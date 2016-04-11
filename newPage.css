@@ -1,0 +1,31 @@
+body {
+	min-width: 960px; 
+	font-family: arial, verdana;
+	background-color: #dadada; }
+.ImgRow {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto; }
+img {
+    margin-right: 5px;
+    margin-bottom: 20px;
+    margin-left: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: DarkBlue; }
+iframe {
+    margin-bottom: 20px; }
+.captionList { 
+    display: none; }
+.popupCap {
+    margin: 0px;
+    display: none;
+    position: absolute;
+    width: 300px;
+    top: 0px;
+    left: 0px; }
+.capLine {
+    margin: 0px;
+    font-style: bold;
+    background-color: #dadada; }
+
