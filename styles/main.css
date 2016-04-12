@@ -51,14 +51,53 @@ a:visited {
 	height: 32px;
 	line-height: 1.8em;
 	padding: 10px;
-	background-color: #fcfae2;
-	border-style: solid;
-	border-width: thin;
+	background-color: #d4e8d4;
+	border-style: outset;
+	border-width: 2px;
+	border-color: #d4e8d4;
 	text-align: center; }
 body img {
 	margin-right: 10px;
 	margin-left: 10px;
 	}
+/* table dressing */
+#tbl_index {
+	text-align: center;
+	margin-left: 25px; }
+table {
+	font-size: 14px;
+	text-align: left;
+	margin-top: 5px;
+	background-color: #ffffdf;
+	border-style: groove;
+	border-width: 4px;
+	border-color: goldenRod; }
+th {
+	padding-left: 5px;
+	padding-right: 5px;
+	border-style: outset;
+	border-width: 2px;
+	border-color: peru; }
+td {
+	vertical-align: top;
+	padding-left: 5px;
+	padding-right: 5px; }
+.hdr_row {
+	background-color: bisque;
+	cursor: pointer; }
+#tbltopper {
+	margin-bottom: 0px;
+	color: red; }
+#metric {
+	text-align: center;
+	width: 100px;
+	padding-left: 10px;
+	padding-right: 10px;
+	color: purple;
+	border-style: inset;
+	border-width: 3px;
+	border-color: paleVioletRed;
+	cursor: pointer; }
 
 	
 	
