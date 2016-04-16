@@ -1,6 +1,7 @@
 // Generic used to create html content (string)
 var pic;    // html for row of pictures
 var cap;    // html for row of corresponding captions
+var lnk;    // html for links to Flickr ablum pictures
 // Generic to create debug messages
 var msg;
 
@@ -18,9 +19,11 @@ var picDates = new Array();
 var picYear = new Array();
 var picMonth = new Array();
 var picDay = new Array();
-var mo;
+var nSize = new Array();
+var albPics = new Array();
 var gpsv_data;
 var gpsv_array = new Array();
+var mo;
 
 // For calculating image sizes & captions
 var rowHeight = 260; 
@@ -33,9 +36,9 @@ var curRowWidth;
 var imgRowNo = 0;
 var captions = new Array();
 
-// add error checking for presence of geomap & tsvFile (length > 1) 
+// add error checking for presence of geomap & tsvFile (length > 1) later on... 
 msg = '<p><strong>Start javascript output here...</strong></p><p>Number of pic names read in: ' +
-    $htmlNameLocs.length + '</p>';
+    noOfPics + '</p>';
 $('#tmp_dump_area').append(msg);
 // Get the creator-specified photo names from the html:
 for ( var m=0; m<noOfPics; m++ ) {
@@ -51,6 +54,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	var txtLength = gpsv_data.length;
 	// determine the number of fields in the header line
 	var hdrIndx = gpsv_data.indexOf('\n');
+	// the first line of info reveals the columns in play
 	var dataStrt = hdrIndx + 1;
 	var hdrData = gpsv_data.substring(0,hdrIndx);
 	var hdrArray = hdrData.split('\t');
@@ -68,13 +72,19 @@ jQuery.get(tsvFile, function(txt_data) {
 		if ( gpsv_array[j] == gpsv_array[0] ) {
 			picNames[i] = gpsv_array[j+1];
 			picDescs[i] = gpsv_array[j+2];
-			// date info is the last field prior to the next ~ gpsv_array[0] 
-			for ( k = j + 2; k < gpsv_array.length; k++ ) {
-				if ( k == gpsv_array.length - 1 ) {
-					picDates[i] = gpsv_array[k];
+			// date info and "n-size pic ref" are the last fields prior to the next ~ gpsv_array[0] 
+			for ( k = j + 2; k < gpsv_array.length; k++ ) {  // +2 skips over early items
+				if ( k == gpsv_array.length - 1 ) {  // there's no "next gpsv_array[0]" to find
+					nSize[i] = gpsv_array[k];
+					picDates[i] = gpsv_array[k - 1];
+					albPics[i] = gpsv_array[k - 2];
+					break;
 				} else {
 					if ( gpsv_array[k] == gpsv_array[0] ) {
-						picDates[i] = gpsv_array[k-1];
+                        nSize[i] = gpsv_array[k - 1];
+						picDates[i] = gpsv_array[k - 2];
+						albPics[i] = gpsv_array[k - 3];
+                        break;
 					}
 				}
 			}
@@ -130,22 +140,23 @@ jQuery.get(tsvFile, function(txt_data) {
 		}  // end of if statement (gpsv_array[j] == gpsv_array[0])
 	}  // end of for loop
 	
+	 
 	// this function will test load a picture, capture the width, then form
 	// the html string to eventually be used in the new site
 	// it calls itself in order to process all the named pics in the sequence given
 	function ldNewPic() {
-	    pic = '<img height="' + rowHeight + '" src="' + picNames[curPic] + 
-	            '.jpg" alt="" />';
-    	$('#picload').html(pic);
-    	curPic++;
+	    msg = '<img height="' + rowHeight + '" src="' + nSize[curPic] + 
+	            '" alt="" />';
+    	$('#picload').html(msg);
     	
     	$('img').on('load', function() {
             picWidths[curPic] = $(this).width();
             msg	= '<p>Width for image ' + curPic + ' is ' + picWidths[curPic] + '</p>';
             $('#tmp_dump_area').append(msg);
+            curPic++;
             if ( curPic < noOfPics ) {
                 ldNewPic();
-            } else {
+            } else {  // PROCEED WITH BUILD OF HTML...
                 // Get max-width for picture rows
 	            rowPicWidth =  $('.bodyBox').css('width');
 	            msg = '<p>Specified row width for bodyBox is ' + rowPicWidth;
@@ -158,30 +169,36 @@ jQuery.get(tsvFile, function(txt_data) {
 	            imgRowNo = 0;
 	            pic = '<div class="ImgRow">'; // one class per row
 	            cap = '<div class="captionList">\n\t<ol>';
+	            lnk = '<div class="lnkList">\n\t<ol>';
 	            // build html, one pic at a time: don't forget borders, etc.
 	            // current margins + border = 14px
                 for ( var bld=0; bld<noOfPics; bld++ ) {
-                    curRowWidth += picWidths[bld+1] + 14;
+                    curRowWidth += picWidths[bld] + 14;
                     if ( curRowWidth > rowLineWidth ) {
                         imgRowNo++;
                         pic += '\n</div>\n<div class="ImgRow">';
-                        curRowWidth = 0;
+                        curRowWidth = picWidths[bld] + 14;
                     }
-                    pic += '\n\t<img id="pic' + bld + '" height="' + rowHeight + '" src="' + picNames[bld] +
-                        '.jpg" alt="' + picDescs[bld] + '" />';
+                    pic += '\n\t<img id="pic' + bld + '" height="' + rowHeight + '" src="' + nSize[bld] +
+                        '" alt="' + picDescs[bld] + '" />';
                     cap += '\n\t\t<li>' + captions[bld] + '</li>';
+                    lnk += '\n\t\t<li>' + albPics[bld] + '</li>';
                 }
+                imgRowNo++;
                 msg = '<p>The number of rows created was ' + imgRowNo + ' prior to iframe</p>';
                 $('#tmp_dump_area').append(msg);
-                curRowWidth += rowHeight; // will iframe exceed the line width?
+                msg = '<p>Current width before iframe = ' + curRowWidth + '</p>';
+                $('#tmp_dump_area').append(msg);
+                curRowWidth += rowHeight; // will iframe [width = rowHeight] exceed the line width?
                 if ( curRowWidth > rowLineWidth ) {
                     imgRowNo++;
                     pic += '\n</div>\n<div class="ImgRow">';
                 }
-                pic += '\n\t<scan><iframe height="' + rowHeight + '" width="' + rowHeight +
+                pic += '\n\t<scan><iframe id="theMap" height="' + rowHeight + '" width="' + rowHeight +
                     '" src="' + geoMap + '"></iframe></scan>\n</div>';
                 cap += '\n\t</ol>\n</div>';
-                pic += '\n' + cap;
+                lnk += '\n\t</ol>\n</div>';
+                pic += '\n' + cap + '\n' + lnk;
                 cap = '\n<div class="popupCap"></div>';
                 pic += cap;
                 $('#theRows').html(pic);

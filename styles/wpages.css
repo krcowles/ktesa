@@ -1,11 +1,24 @@
+/* Styles for all of the "whole info" web-links (wlnks) */
 body {
-	min-width: 960px; 
+	min-width: 960px;
 	font-family: arial, verdana;
 	background-color: #dadada; }
+#page_title {
+	font-size: 28px;
+	color: #302DD3;
+	text-align: center; }
+#hikeInfo {
+	border-style: outset;
+	border-width: 2px;
+	border-color: #d4e8d4;
+	padding: 10px;
+	background-color: #c5d5d5; }
+/* image & iframe alignment and pop-up caption styles */
 .ImgRow {
 	text-align: center;
 	margin-left: auto;
-	margin-right: auto; }
+	margin-right: auto;
+	margin-bottom: 0px; }
 img {
     margin-right: 5px;
     margin-bottom: 20px;
@@ -17,6 +30,8 @@ iframe {
     margin-bottom: 20px; }
 .captionList { 
     display: none; }
+.lnkList {
+	display: none; }
 .popupCap {
     margin: 0px;
     display: none;
@@ -28,4 +43,3 @@ iframe {
     margin: 0px;
     font-style: bold;
     background-color: #dadada; }
-
