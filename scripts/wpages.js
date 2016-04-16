@@ -1,7 +1,27 @@
 $( function () { // when page is loaded...
+    // object locations
     var $images = $('img');
     var $maps = $('iframe');
-    var picSel;
+    var $desc = $('.captionList li');
+    var $links = $('.lnkList li');
+    
+	// set up a positioning array for caption locations
+	var noOfPix = $images.length;
+	var capTop = new Array();
+	var capLeft = new Array();
+	var capWidth = new Array();
+	var picId;
+	var $picEl;
+	var picPos;
+	for ( var i=0; i<noOfPix; i++ ) {
+		picId = 'pic' + i;
+		$picEl = document.getElementById(picId);
+		picPos = $picEl.getBoundingClientRect();
+		capTop[i] = picPos.top + 'px';
+		capLeft[i] = picPos.left + 'px';
+		capWidth[i] = picPos.right - picPos.left + 'px';
+	}
+    var picSel;  // argument passed to popup function
     var htmlLnk;
     var desc;
     var htmlDesc;
@@ -25,27 +45,15 @@ $( function () { // when page is loaded...
         // get the image number
         var argLgth = picTarget.length;
         var picNo = picTarget.substring(3,argLgth);
-        // find the image position; set top/left for the caption to display
-        var $picEl = document.getElementById(picTarget);
-        var picPos = $picEl.getBoundingClientRect();
-        var capTop = picPos.top + 'px';
-        var capLeft = picPos.left + 'px'; 
-        var capWidth = picPos.right - picPos.left + 'px';
-        var i = 0;
         // get the corresponding description
-        $('.captionList li').each( function() {
-            if ( i == picNo ) {
-                desc = this.textContent;
-            }
-            i++;
-        });
+        desc = $desc[picNo].textContent;
         // form the popup and turn it on
         htmlDesc = '<p class="capLine">' + desc + '</p>';
         $('.popupCap').prepend(htmlDesc);
         $('.popupCap').css('position','absolute');
-        $('.popupCap').css('top',capTop);
-        $('.popupCap').css('left',capLeft);
-        $('.popupCap').css('width',capWidth);
+        $('.popupCap').css('top',capTop[picNo]);
+        $('.popupCap').css('left',capLeft[picNo]);
+        $('.popupCap').css('width',capWidth[picNo]);
         $('.popupCap').css('z-index','10');
         $('.popupCap').css('display','block');
     }
@@ -69,14 +77,8 @@ $( function () { // when page is loaded...
 		var clickWhich = ev.target;
 		var picSrc = clickWhich.id;
 		var picIndx = picSrc.indexOf('pic') + 3;
-		var picNo = picSrc.substring(picIndx,picSrc.length);
-		var j = 0;
-		$('.lnkList li').each( function() {
-			if ( j == picNo ) {
-				FlickrLnk = this.textContent;
-			}
-			j++;
-		});
+		var clkPicNo = picSrc.substring(picIndx,picSrc.length);
+		FlickrLnk = $links[clkPicNo].textContent;
 		window.open(FlickrLnk);
 	}); 
 
