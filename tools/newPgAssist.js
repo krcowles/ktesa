@@ -53,7 +53,7 @@ for ( var m=0; m<noOfPics; m++ ) {
   and the names come right from the Flickr album, which at least have a default name... */
 jQuery.get(tsvFile, function(txt_data) {
 	gpsv_data = txt_data;
-	msg = '<p>File read occurred</p>>';
+	msg = '<p>File read occurred</p>';
 	$('#tmp_dump_area').append(msg);
 	var txtLength = gpsv_data.length;
 	// determine the number of fields in the header line
@@ -144,7 +144,9 @@ jQuery.get(tsvFile, function(txt_data) {
 		}  // end of if statement (gpsv_array[j] == gpsv_array[0])
 	}  // end of for loop
 	
-	 
+	msg = '<p>End of tsv read section: ' + picNames[0] + '; ' + picDescs[0] + '</p>';
+	$('#tmp_dump_area').append(msg);
+	 /*
 	// this function will test load a picture, capture the width, then form
 	// the html string to eventually be used in the new site
 	// it calls itself in order to process all the named pics in the sequence given
@@ -250,7 +252,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	
 	ldNewPic(); // I don't like using recursive calls, but it works:
 	// needed to wait for each picture to load before loading its successor
-	
+	*/
 })
 .fail( function() {
 	document.getElementById('tmp_dump_area').textContent = 'FAILED TO GET GPSV DATA';
