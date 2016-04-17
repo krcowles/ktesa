@@ -258,7 +258,6 @@ jQuery.get(tsvFile, function(txt_data) {
 	$('#tmp_dump_area').append(msg);
 	ldNewPic(); // I don't like using recursive calls, but it works:
 	// needed to wait for each picture to load before loading its successor
-	*/
 })
 .fail( function() {
 	document.getElementById('tmp_dump_area').textContent = 'FAILED TO GET GPSV DATA';
