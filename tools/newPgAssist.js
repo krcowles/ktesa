@@ -10,9 +10,9 @@ var $htmlNameLocs = $('li'); // an array holding the list element locations
 var noOfPics = $htmlNameLocs.length;
 var htmlPicNames = new Array();
 var geoMap = $('#frm_name').text();
-geoMap = '../maps/' + geoMap;
+// geoMap = 'https://github.com/krcowles/ktesa/tree/gh-pages/gpsv/' + geoMap;
 var tsvFile = $('#tsv_file').text();
-tsvFile = '../gpsv/' + tsvFile;
+// tsvFile = 'https://github.com/krcowles/ktesa/tree/gh-pages/maps/' + tsvFile;
 
 // For reading in the GPSVinput.tsv data:
 var picNames = new Array();
