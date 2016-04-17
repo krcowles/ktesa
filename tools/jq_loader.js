@@ -1,6 +1,6 @@
 $(function() {
 
-jQuery.get('diablo.tsv', function(gitData) {
+jQuery.get('../gpsv/diablo.tsv', function(gitData) {
 	var gitTxt = gitData;
 	$('#fritz').append('<p>SUCCESS</p>');
 })
