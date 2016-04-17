@@ -154,6 +154,8 @@ jQuery.get(tsvFile, function(txt_data) {
 	function ldNewPic() {
 	    msg = '<p>ldNewPic Function called...</p>';
 	    $('#tmp_dump_area').append(msg);
+	    msg = '<p>First pic to load: ' + nSize[curPic] + '</p>';
+	    $('#tmp_dump_area').append(msg);
 	    /*
 	    msg = '<img height="' + rowHeight + '" src="' + nSize[curPic] + 
 	            '" alt="" />';
