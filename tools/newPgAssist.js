@@ -55,7 +55,6 @@ jQuery.get(tsvFile, function(txt_data) {
 	gpsv_data = txt_data;
 	msg = '<p>File read occurred</p>>';
 	$('#tmp_dump_area').append(msg);
-	/*
 	var txtLength = gpsv_data.length;
 	// determine the number of fields in the header line
 	var hdrIndx = gpsv_data.indexOf('\n');
@@ -250,7 +249,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	}  // end of function 'ldNewPic()'
 	
 	ldNewPic(); // I don't like using recursive calls, but it works:
-	// needed to wait for each picture to load before loading its successor */
+	// needed to wait for each picture to load before loading its successor
 	
 })
 .fail( function() {
