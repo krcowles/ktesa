@@ -144,7 +144,8 @@ jQuery.get(tsvFile, function(txt_data) {
 		}  // end of if statement (gpsv_array[j] == gpsv_array[0])
 	}  // end of for loop
 	
-	msg = '<p>End of tsv read section: ' + picNames[0] + '; ' + picDescs[0] + '</p>';
+	msg = '<p>End of tsv read section: ' + picNames[0] + '; ' + picDescs[0] +
+			+ '; lnk = ' + nSize[0] +  '; curPic is ' + curPic +'</p>';
 	$('#tmp_dump_area').append(msg);
 	msg = '<p>Now starting picture load process...</p>';
 	$('#tmp_dump_area').append(msg);
