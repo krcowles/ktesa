@@ -149,6 +149,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	$('#tmp_dump_area').append(msg);
 	msg = '<p>Now starting picture load process...</p>';
 	$('#tmp_dump_area').append(msg);
+	
 	// this function will test load a picture, capture the width, then form
 	// the html string to eventually be used in the new site
 	// it calls itself in order to process all the named pics in the sequence given
@@ -157,7 +158,6 @@ jQuery.get(tsvFile, function(txt_data) {
 	    $('#tmp_dump_area').append(msg);
 	    msg = '<p>First pic to load: ' + nSize[curPic] + '</p>';
 	    $('#tmp_dump_area').append(msg);
-	    /*
 	    msg = '<img height="' + rowHeight + '" src="' + nSize[curPic] + 
 	            '" alt="" />';
     	$('#picload').html(msg);
@@ -254,7 +254,7 @@ jQuery.get(tsvFile, function(txt_data) {
                 }
                 download(pic,'newPage.txt','text/plain');
             }
-	    }); */
+	    });
 	}  // end of function 'ldNewPic()'
 	
 	msg = '<p>FUNCTION LOADED, attempt to call it...</p>';
