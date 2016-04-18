@@ -144,8 +144,8 @@ jQuery.get(tsvFile, function(txt_data) {
 		}  // end of if statement (gpsv_array[j] == gpsv_array[0])
 	}  // end of for loop
 	
-	msg = '<p>End of tsv read section: ' + picNames[0] + '; ' + picDescs[0] +
-			'; lnk = ' + nSize[0] +  '; curPic is ' + curPic +'</p>';
+	msg = '<p>End of tsv read section: last elements: ' + picNames[3] + '; ' + picDescs[3] +
+			'; lnk = ' + nSize[3] +  '; curPic is ' + curPic +'</p>';
 	$('#tmp_dump_area').append(msg);
 	msg = '<p>Now starting picture load process...</p>';
 	$('#tmp_dump_area').append(msg);
@@ -154,9 +154,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	// the html string to eventually be used in the new site
 	// it calls itself in order to process all the named pics in the sequence given
 	function ldNewPic() {
-	    msg = '<p>ldNewPic Function called...</p>';
-	    $('#tmp_dump_area').append(msg);
-	    msg = '<p>First pic to load: ' + nSize[curPic] + '</p>';
+	    msg = '<p>Next pic to load: item ' + curPic + ': ' + nSize[curPic] + '</p>';
 	    $('#tmp_dump_area').append(msg);
 	    msg = '<img height="' + rowHeight + '" src="' + nSize[curPic] + 
 	            '" alt="" />';
@@ -257,8 +255,6 @@ jQuery.get(tsvFile, function(txt_data) {
 	    });
 	}  // end of function 'ldNewPic()'
 	
-	msg = '<p>FUNCTION LOADED, attempt to call it...</p>';
-	$('#tmp_dump_area').append(msg);
 	ldNewPic(); // I don't like using recursive calls, but it works:
 	// needed to wait for each picture to load before loading its successor
 })
