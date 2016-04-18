@@ -78,8 +78,8 @@ jQuery.get(tsvFile, function(txt_data) {
 			for ( k = j + 2; k < gpsv_array.length; k++ ) {  // +2 skips over early items
 				if ( k == gpsv_array.length - 1 ) {  // there's no "next gpsv_array[0]" to find
 					msg = '<p>Last elements encountered for k = ' + k;
-					msg += ': ' + gpsv_array(k) + ', ' + gpsv_array(k-1) + ', ' +
-							gpsv_array(k-2) + '</p>';
+					msg += ': ' + gpsv_array[k] + ', ' + gpsv_array[k-1] + ', ' +
+							gpsv_array[k-2] + '</p>';
 					$('#tmp_dump_area').append(msg);
 					nSize[i] = gpsv_array[k];
 					picDates[i] = gpsv_array[k - 1];
