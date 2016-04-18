@@ -81,6 +81,13 @@ jQuery.get(tsvFile, function(txt_data) {
 					msg += ': ' + gpsv_array[k] + ', ' + gpsv_array[k-1] + ', ' +
 							gpsv_array[k-2] + '</p>';
 					$('#tmp_dump_area').append(msg);
+					msg = ' ending code is ' + gpsv_array[k].charCodeAt(0);
+					$('#tmp_dump_area').append(msg);
+					/* sometimes the last element is an <eof> or non-ASCII char, therefore
+					   ensure k hasn't gone past the desired elements: */
+					if ( k >= j + hdrFlds ) { 
+						k = j + hdrFlds - 1;
+					}
 					nSize[i] = gpsv_array[k];
 					picDates[i] = gpsv_array[k - 1];
 					albPics[i] = gpsv_array[k - 2];
