@@ -53,8 +53,6 @@ for ( var m=0; m<noOfPics; m++ ) {
   and the names come right from the Flickr album, which at least have a default name... */
 jQuery.get(tsvFile, function(txt_data) {
 	gpsv_data = txt_data;
-	msg = '<p>File read occurred</p>';
-	$('#tmp_dump_area').append(msg);
 	var txtLength = gpsv_data.length;
 	// determine the number of fields in the header line
 	var hdrIndx = gpsv_data.indexOf('\n');
@@ -79,6 +77,10 @@ jQuery.get(tsvFile, function(txt_data) {
 			// date info and "n-size pic ref" are the last fields prior to the next ~ gpsv_array[0] 
 			for ( k = j + 2; k < gpsv_array.length; k++ ) {  // +2 skips over early items
 				if ( k == gpsv_array.length - 1 ) {  // there's no "next gpsv_array[0]" to find
+					msg = '<p>Last elements encountered for k = ' + k;
+					msg += ': ' + gpsv_array(k) + ', ' + gpsv_array(k-1) + ', ' +
+							gpsv_array(k-2) + '</p>';
+					$('#tmp_dump_area').append(msg);
 					nSize[i] = gpsv_array[k];
 					picDates[i] = gpsv_array[k - 1];
 					albPics[i] = gpsv_array[k - 2];
