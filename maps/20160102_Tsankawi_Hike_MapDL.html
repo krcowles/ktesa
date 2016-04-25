@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>GPSVinput + 20160102_193231</title>
+		<base target="_top"></base>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<meta name="geo.position" content="35.861164; -106.218819" />
+		<meta name="ICBM" content="35.861164, -106.218819" />
+	</head>
+	<body style="margin:0px;">
+		<script type="text/javascript">
+			var google_api_key = ''; // Your project's Google Maps API key goes here (https://code.google.com/apis/console)
+			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;'+((self.google_api_key&&document.location.toString().indexOf('file://')!=0)?'key='+google_api_key:'')+'"><'+'/script>');
+		</script>
+		
+		<!--
+			If you want to transplant this map into another Web page, by far the best method is to
+			simply include it in a IFRAME tag (see http://www.gpsvisualizer.com/faq.html#google_html).
+			But, if you must paste the code into another page, be sure to include all of these parts:
+			   1. The "div" tags that contain the map and its widgets, below
+			   2. Three sections of JavaScript code:
+			      a. The Google code (maps.google.com or googleapis.com) code, above
+			      b. "gv_options" and the code that calls a .js file on maps.gpsvisualizer.com
+			      c. The "GV_Map" function, which contains all the geographic info for the map
+		-->
+		<div style="margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px;">
+			<div id="gmap_div" style="width:700px; height:350px; margin:0px; margin-right:12px; background-color:#f0f0f0; float:left; overflow:hidden;">
+				<p align="center" style="font:10px Arial;">This map was created using <a target="_blank" href="https://gpsvisualizer.github.io/">GPS Visualizer</a>'s do-it-yourself geographic utilities.<br /><br />Please wait while the map data loads...</p>
+			</div>
+				
+			<div id="gv_infobox" class="gv_infobox" style="font:11px Arial; border:solid #666666 1px; background-color:#ffffff; padding:4px; overflow:auto; display:none; max-width:400px;">
+				<!-- Although GPS Visualizer didn't create an legend/info box with your map, you can use this space for something else if you'd like; enable it by setting gv_options.infobox_options.enabled to true -->
+			</div>
+
+
+			<div id="gv_tracklist" class="gv_tracklist" style="font:11px Arial; line-height:11px; background-color:#ffffff; overflow:auto; display:none;"><!-- --></div>
+
+			<div id="gv_marker_list" class="gv_marker_list" style="background-color:#ffffff; overflow:auto; display:none;"><!-- --></div>
+
+			<div id="gv_clear_margins" style="height:0px; clear:both;"><!-- clear the "float" --></div>
+		</div>
+
+		
+		<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->
+		<script type="text/javascript">
+			/* Global variables used by the GPS Visualizer functions (20160303191636): */
+			gv_options = {};
+			
+			// basic map parameters:
+			gv_options.center = [35.861164,-106.218819];  // [latitude,longitude] - be sure to keep the square brackets
+			gv_options.zoom = 16;  // higher number means closer view; can also be 'auto' for automatic zoom/center based on map elements
+			gv_options.map_type = 'GV_HYBRID';  // popular map_type choices are 'GV_STREET', 'GV_SATELLITE', 'GV_HYBRID', 'GV_TERRAIN', 'GV_TOPO_US', 'GV_TOPO_WORLD', 'GV_OSM' (http://www.gpsvisualizer.com/misc/google_map_types.html)
+			gv_options.map_opacity = 1.00;  // number from 0 to 1
+			gv_options.full_screen = true;  // true|false: should the map fill the entire page (or frame)?
+			gv_options.width = 700;  // width of the map, in pixels
+			gv_options.height = 350;  // height of the map, in pixels
+			
+			gv_options.map_div = 'gmap_div';  // the name of the HTML "div" tag containing the map itself; usually 'gmap_div'
+			gv_options.doubleclick_zoom = true;  // true|false: zoom in when mouse is double-clicked?
+			gv_options.doubleclick_center = true;  // true|false: re-center the map on the point that was double-clicked?
+			gv_options.mousewheel_zoom = true; // true|false; or 'reverse' for down=in and up=out
+			gv_options.autozoom_adjustment = 0;
+			gv_options.centering_options = { 'open_info_window':true, 'partial_match':true, 'center_key':'center', 'default_zoom':null } // URL-based centering (e.g., ?center=name_of_marker&zoom=14)
+			gv_options.tilt = false; // true|false: allow Google to show 45-degree tilted aerial imagery?
+			gv_options.street_view = false; // true|false: allow Google Street View on the map
+			gv_options.animated_zoom = false; // true|false: may or may not work properly
+			gv_options.disable_google_pois = false;  // true|false: if you disable clickable POIs, you also lose the labels on parks, airports, etc.
+				
+			// widgets on the map:
+			gv_options.zoom_control = 'large'; // 'large'|'small'|'none'
+			gv_options.recenter_button = true; // true|false: is there a 'double-click to recenter' option in the zoom control?
+			gv_options.scale_control = true; // true|false
+			gv_options.center_coordinates = true;  // true|false: show a "center coordinates" box and crosshair?
+			gv_options.mouse_coordinates = false;  // true|false: show a "mouse coordinates" box?
+			gv_options.measurement_tools = 'separate';  // true|false|'separate' ('separate' to put a ruler outside the utilities menu)
+			gv_options.measurement_options = { visible:false, distance_color:'', area_color:'' };
+			gv_options.crosshair_hidden = true;  // true|false: hide the crosshair initially?
+			gv_options.map_opacity_control = true;  // true|false|'separate' ('separate' to put a control outside the utilities menu)
+			gv_options.map_type_control = {};  // widget to change the background map
+			  gv_options.map_type_control.style = 'menu';  // 'menu'|'none'
+			  gv_options.map_type_control.filter = false;  // true|false: when map loads, are irrelevant maps ignored?
+			  gv_options.map_type_control.excluded = [];  // comma-separated list of quoted map IDs that will never show in the list ('included' also works)
+			gv_options.infobox_options = {}; // options for a floating info box (id="gv_infobox"), which can contain anything
+			  gv_options.infobox_options.enabled = true;  // true|false: enable or disable the info box altogether
+			  gv_options.infobox_options.position = ['LEFT_TOP',76,6];  // [Google anchor name, relative x, relative y]
+			  gv_options.infobox_options.draggable = true;  // true|false: can it be moved around the screen?
+			  gv_options.infobox_options.collapsible = true;  // true|false: can it be collapsed by double-clicking its top bar?
+			gv_options.utilities_menu = true;  // true|false
+			gv_options.allow_export = false;  // true|false
+
+			// track-related options:
+			gv_options.track_tooltips = false; // true|false: should the name of a track appear on the map when you mouse over the track itself?
+			gv_options.tracklist_options = {}; // options for a floating list of the tracks visible on the map
+			  gv_options.tracklist_options.enabled = true;  // true|false: enable or disable the tracklist altogether
+			  gv_options.tracklist_options.position = ['RIGHT_TOP',4,32];  // [Google anchor name, relative x, relative y]
+			  gv_options.tracklist_options.min_width = 100; // minimum width of the tracklist, in pixels
+			  gv_options.tracklist_options.max_width = 180; // maximum width of the tracklist, in pixels
+			  gv_options.tracklist_options.min_height = 0; // minimum height of the tracklist, in pixels; if the list is longer, scrollbars will appear
+			  gv_options.tracklist_options.max_height = 135; // maximum height of the tracklist, in pixels; if the list is longer, scrollbars will appear
+			  gv_options.tracklist_options.desc = true;  // true|false: should tracks' descriptions be shown in the list
+			  gv_options.tracklist_options.toggle = true;  // true|false: should clicking on a track's name turn it on or off?
+			  gv_options.tracklist_options.checkboxes = false;  // true|false: should there be a separate icon/checkbox for toggling visibility?
+			  gv_options.tracklist_options.zoom_links = true;  // true|false: should each item include a small icon that will zoom to that track?
+			  gv_options.tracklist_options.highlighting = true;  // true|false: should the track be highlighted when you mouse over the name in the list?
+			  gv_options.tracklist_options.tooltips = false;  // true|false: should the name of the track appear on the map when you mouse over the name in the list?
+			  gv_options.tracklist_options.draggable = true;  // true|false: can it be moved around the screen?
+			  gv_options.tracklist_options.collapsible = true;  // true|false: can it be collapsed by double-clicking its top bar?
+			  gv_options.tracklist_options.header = 'Tracks:'; // HTML code; be sure to put backslashes in front of any single quotes, and don't include any line breaks
+			  gv_options.tracklist_options.footer = ''; // HTML code
+
+			// marker-related options:
+			gv_options.default_marker = { color:'red',icon:'googlemini',scale:1 }; // icon can be a URL, but be sure to also include size:[w,h] and optionally anchor:[x,y]
+			gv_options.marker_tooltips = true; // do the names of the markers show up when you mouse-over them?
+			gv_options.marker_shadows = true; // true|false: do the standard markers have "shadows" behind them?
+			gv_options.marker_link_target = '_blank'; // the name of the window or frame into which markers' URLs will load
+			gv_options.info_window_width = 0;  // in pixels, the width of the markers' pop-up info "bubbles" (can be overridden by 'window_width' in individual markers)
+			gv_options.thumbnail_width = 0;  // in pixels, the width of the markers' thumbnails (can be overridden by 'thumbnail_width' in individual markers)
+			gv_options.photo_size = [0,0];  // in pixels, the size of the photos in info windows (can be overridden by 'photo_width' or 'photo_size' in individual markers)
+			gv_options.hide_labels = false;  // true|false: hide labels when map first loads?
+			gv_options.labels_behind_markers = false; // true|false: are the labels behind other markers (true) or in front of them (false)?
+			gv_options.label_offset = [0,0];  // [x,y]: shift all markers' labels (positive numbers are right and down)
+			gv_options.label_centered = false;  // true|false: center labels with respect to their markers?  (label_left is also a valid option.)
+			gv_options.driving_directions = false;  // put a small "driving directions" form in each marker's pop-up window? (override with dd:true or dd:false in a marker's options)
+			gv_options.garmin_icon_set = 'gpsmap'; // 'gpsmap' are the small 16x16 icons; change it to '24x24' for larger icons
+			gv_options.marker_list_options = {};  // options for a dynamically-created list of markers
+			  gv_options.marker_list_options.enabled = true;  // true|false: enable or disable the marker list altogether
+			  gv_options.marker_list_options.floating = true;  // is the list a floating box inside the map itself?
+			  gv_options.marker_list_options.position = ['RIGHT_BOTTOM',6,38];  // floating list only: position within map
+			  gv_options.marker_list_options.min_width = 160; // minimum width, in pixels, of the floating list
+			  gv_options.marker_list_options.max_width = 160;  // maximum width
+			  gv_options.marker_list_options.min_height = 0;  // minimum height, in pixels, of the floating list
+			  gv_options.marker_list_options.max_height = 135;  // maximum height
+			  gv_options.marker_list_options.draggable = true;  // true|false, floating list only: can it be moved around the screen?
+			  gv_options.marker_list_options.collapsible = true;  // true|false, floating list only: can it be collapsed by double-clicking its top bar?
+			  gv_options.marker_list_options.include_tickmarks = false;  // true|false: are distance/time tickmarks included in the list?
+			  gv_options.marker_list_options.include_trackpoints = false;  // true|false: are "trackpoint" markers included in the list?
+			  gv_options.marker_list_options.dividers = false;  // true|false: will a thin line be drawn between each item in the list?
+			  gv_options.marker_list_options.desc = true;  // true|false: will the markers' descriptions be shown below their names in the list?
+			  gv_options.marker_list_options.icons = true;  // true|false: should the markers' icons appear to the left of their names in the list?
+			  gv_options.marker_list_options.thumbnails = false;  // true|false: should markers' thumbnails be shown in the list?
+			  gv_options.marker_list_options.folders_collapsed = false;  // true|false: do folders in the list start out in a collapsed state?
+			  gv_options.marker_list_options.folders_hidden = false;  // true|false: do folders in the list start out in a hidden state?
+			  gv_options.marker_list_options.collapsed_folders = []; // an array of folder names
+			  gv_options.marker_list_options.hidden_folders = []; // an array of folder names
+			  gv_options.marker_list_options.count_folder_items = false;  // true|false: list the number of items in each folder?
+			  gv_options.marker_list_options.wrap_names = true;  // true|false: should marker's names be allowed to wrap onto more than one line?
+			  gv_options.marker_list_options.unnamed = '[unnamed]';  // what 'name' should be assigned to  unnamed markers in the list?
+			  gv_options.marker_list_options.colors = false;  // true|false: should the names/descs of the points in the list be colorized the same as their markers?
+			  gv_options.marker_list_options.default_color = '';  // default HTML color code for the names/descs in the list
+			  gv_options.marker_list_options.limit = 0;  // how many markers to show in the list; 0 for no limit
+			  gv_options.marker_list_options.center = false;  // true|false: does the map center upon a marker when you click its name in the list?
+			  gv_options.marker_list_options.zoom = false;  // true|false: does the map zoom to a certain level when you click on a marker's name in the list?
+			  gv_options.marker_list_options.zoom_level = 17;  // if 'zoom' is true, what level should the map zoom to?
+			  gv_options.marker_list_options.info_window = true;  // true|false: do info windows pop up when the markers' names are clicked in the list?
+			  gv_options.marker_list_options.url_links = false;  // true|false: do the names in the list become instant links to the markers' URLs?
+			  gv_options.marker_list_options.toggle = false;  // true|false: does a marker disappear if you click on its name in the list?
+			  gv_options.marker_list_options.help_tooltips = false;  // true|false: do "tooltips" appear on marker names that tell you what happens when you click?
+			  gv_options.marker_list_options.id = 'gv_marker_list';  // id of a DIV tag that holds the list
+			  gv_options.marker_list_options.header = ''; // HTML code; be sure to put backslashes in front of any single quotes, and don't include any line breaks
+			  gv_options.marker_list_options.footer = ''; // HTML code
+			gv_options.marker_filter_options = {};  // options for removing waypoints that are out of the current view
+			  gv_options.marker_filter_options.enabled = false;  // true|false: should out-of-range markers be removed?
+			  gv_options.marker_filter_options.movement_threshold = 8;  // in pixels, how far the map has to move to trigger filtering
+			  gv_options.marker_filter_options.limit = 0;  // maximum number of markers to display on the map; 0 for no limit
+			  gv_options.marker_filter_options.update_list = true;  // true|false: should the marker list be updated with only the filtered markers?
+			  gv_options.marker_filter_options.sort_list_by_distance = false;  // true|false: should the marker list be sorted by distance from the center of the map?
+			  gv_options.marker_filter_options.min_zoom = 0;  // below this zoom level, don't show any markers at all
+			  gv_options.marker_filter_options.zoom_message = '';  // message to put in the marker list if the map is below the min_zoom threshold
+			gv_options.synthesize_fields = {}; // for example: {label:'{name}'} would cause all markers' names to become visible labels
+				
+			
+			// Load GPS Visualizer's Google Maps functions (this must be loaded AFTER gv_options are set):
+			if (window.location.toString().indexOf('https://') == 0) { // secure pages require secure scripts
+				document.writeln('<script src="https://gpsvisualizer.github.io/google_maps/functions3.js" type="text/javascript"><'+'/script>');
+			} else {
+				document.writeln('<script src="https://gpsvisualizer.github.io/google_maps/functions3.js" type="text/javascript"><'+'/script>');
+			}
+			
+		</script>
+		
+		<style type="text/css">
+			/* Put any custom style definitions here (e.g., .gv_marker_info_window, .gv_marker_info_window_name, .gv_marker_list_item, .gv_tooltip, .gv_label, etc.) */
+			#gmap_div .gv_marker_info_window {
+				font-size:11px !important;
+			}
+			#gmap_div .gv_label {
+				background-color:#333333; border:1px solid black; padding:1px;
+				color:white; font:9px Verdana,sans-serif !important; font-weight:normal !important;
+				opacity:0.80; filter:alpha(opacity=80);
+			}
+			
+		</style>
+		
+		<!-- end GPSV setup script and styles; begin map-drawing script (they must be separate) -->
+		<script type="text/javascript">
+			function GV_Map() {
+			  
+				GV_Setup_Map();
+				
+				// Track #1
+				t = 1; trk[t] = {info:[],segments:[]};
+				trk[t].info.name = '20160102_193231'; trk[t].info.desc = '<br />[<a target="_blank" href="https://www.endomondo.com/workouts/651498046/7544338">endomondo</a>]'; trk[t].info.clickable = true;
+				trk[t].info.color = '#e60000'; trk[t].info.width = 3; trk[t].info.opacity = 0.9;
+				trk[t].info.outline_color = 'black'; trk[t].info.outline_width = 0; trk[t].info.fill_color = '#e60000'; trk[t].info.fill_opacity = 0;
+				trk[t].segments.push({ points:[ [35.860116,-106.224269],[35.860183,-106.224085],[35.860205,-106.223837],[35.860216,-106.223718],[35.860138,-106.223431],[35.860094,-106.223193],[35.860204,-106.222973],[35.860308,-106.222766],[35.86038,-106.222562],[35.860371,-106.222345],[35.86038,-106.222132],[35.860443,-106.221906],[35.860436,-106.221641],[35.860465,-106.221576],[35.86052,-106.221458],[35.860571,-106.221439],[35.860623,-106.221392],[35.860849,-106.22152],[35.860981,-106.221537],[35.861137,-106.221421],[35.861204,-106.221295],[35.861273,-106.221142],[35.86132,-106.220995],[35.861318,-106.220839],[35.861266,-106.22067],[35.861286,-106.220628],[35.861352,-106.220299],[35.861534,-106.22],[35.861566,-106.219642],[35.861656,-106.219333],[35.861645,-106.21916],[35.861702,-106.218984],[35.861773,-106.218813],[35.861788,-106.218757],[35.861773,-106.218813],[35.861827,-106.218652],[35.861911,-106.21853],[35.861955,-106.218181],[35.861971,-106.218011],[35.862003,-106.217796],[35.862053,-106.217599],[35.862127,-106.217494],[35.862165,-106.217396],[35.862224,-106.217045],[35.862211,-106.216729],[35.862147,-106.216502],[35.862095,-106.216317],[35.862219,-106.216124],[35.862173,-106.215871],[35.862224,-106.215753],[35.862234,-106.215379],[35.862105,-106.215167],[35.862097,-106.214966],[35.862015,-106.214851],[35.862002,-106.214836],[35.861771,-106.214589],[35.861782,-106.214409],[35.861745,-106.214147],[35.861744,-106.213961],[35.861716,-106.213906],[35.861744,-106.213961],[35.861577,-106.213664],[35.861536,-106.213453],[35.861358,-106.213369],[35.861189,-106.21358],[35.860885,-106.213544],[35.86061,-106.213646],[35.860497,-106.21375],[35.860246,-106.213932],[35.860221,-106.213948],[35.860217,-106.214049],[35.860135,-106.214387],[35.860247,-106.214727],[35.860379,-106.214816],[35.860502,-106.215116],[35.860508,-106.215227],[35.860501,-106.215235],[35.860422,-106.215587],[35.860718,-106.215758],[35.86089,-106.216022],[35.861103,-106.216205],[35.861208,-106.216514],[35.861307,-106.216868],[35.861399,-106.217098],[35.861418,-106.217292],[35.861339,-106.217448],[35.861291,-106.217798],[35.861219,-106.218183],[35.861191,-106.218282],[35.861188,-106.218338],[35.860983,-106.218556],[35.860893,-106.218696],[35.860813,-106.218898],[35.860748,-106.219251],[35.860707,-106.219514],[35.8607,-106.219567],[35.860777,-106.219908],[35.860792,-106.220087],[35.860864,-106.220299],[35.860934,-106.220428],[35.861094,-106.220724],[35.861145,-106.220853],[35.861188,-106.221075],[35.861172,-106.2212],[35.861118,-106.221367],[35.86096,-106.221569],[35.86087,-106.221541],[35.860477,-106.2216],[35.860444,-106.221968],[35.86039,-106.222581],[35.860167,-106.222944],[35.860173,-106.223058],[35.860109,-106.223222],[35.860241,-106.224016],[35.860136,-106.224041],[35.860136,-106.224041] ] }); // track 1 segment 1
+				trk[t].segments.push({ points:[ [35.860136,-106.224041] ] }); // track 1 segment 2
+				GV_Draw_Track(t);
+				
+				t = 1; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:trk[t].info.desc,color:trk[t].info.color,number:t});
+				
+				
+				GV_Draw_Marker({lat:35.8605843,lon:-106.2214279,name:'Enter description here',desc:'20160102_123717',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23769795239',thumbnail:'https://c2.staticflickr.com/6/5729/23769795239_292199c3cd_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8608131,lon:-106.2215194,name:'Enter description here',desc:'20160102_123813',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24029495392',thumbnail:'https://c2.staticflickr.com/2/1459/24029495392_5f3181a546_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8612785,lon:-106.2206039,name:'Enter description here',desc:'20160102_124030',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23510789963',thumbnail:'https://c2.staticflickr.com/6/5819/23510789963_0e89aaf9e2_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8613701,lon:-106.2203674,name:'Enter description here',desc:'20160102_124123',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24111481366',thumbnail:'https://c2.staticflickr.com/2/1668/24111481366_a8d829c995_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8615036,lon:-106.2201691,name:'Enter description here',desc:'20160102_124509',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24054971731',thumbnail:'https://c2.staticflickr.com/2/1571/24054971731_44377b68b1_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8615379,lon:-106.2201462,name:'Enter description here',desc:'20160102_124555',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24137591715',thumbnail:'https://c2.staticflickr.com/6/5664/24137591715_9b84e8eb6f_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8615456,lon:-106.2196121,name:'Enter description here',desc:'20160102_124832',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24029469432',thumbnail:'https://c2.staticflickr.com/2/1486/24029469432_694fde8c36_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8615570,lon:-106.2194748,name:'Enter description here',desc:'20160102_124927',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24111459056',thumbnail:'https://c2.staticflickr.com/2/1628/24111459056_422741000c_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8617477,lon:-106.2188263,name:'Enter description here',desc:'20160102_125117',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23509347114',thumbnail:'https://c2.staticflickr.com/2/1514/23509347114_5b6b08a67d_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8619461,lon:-106.2185135,name:'Enter description here',desc:'20160102_125219',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23769744449',thumbnail:'https://c2.staticflickr.com/2/1703/23769744449_ea14a8eda8_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8617248,lon:-106.2139206,name:'Enter description here',desc:'20160102_130253',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24029448072',thumbnail:'https://c2.staticflickr.com/2/1602/24029448072_e0481053de_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8615227,lon:-106.2132721,name:'Enter description here',desc:'20160102_130441',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23841884210',thumbnail:'https://c2.staticflickr.com/6/5794/23841884210_c668a07677_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8612060,lon:-106.2135010,name:'Enter description here',desc:'20160102_130747',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24111428106',thumbnail:'https://c2.staticflickr.com/6/5724/24111428106_204f9f4967_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8612251,lon:-106.2134857,name:'Enter description here',desc:'20160102_130841',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24111425606',thumbnail:'https://c2.staticflickr.com/6/5719/24111425606_bccc4550ff_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8604507,lon:-106.2148438,name:'Enter description here',desc:'20160102_131753',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23509316934',thumbnail:'https://c2.staticflickr.com/6/5741/23509316934_f2e913bde8_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8604507,lon:-106.2148438,name:'Enter description here',desc:'20160102_131759',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23769714239',thumbnail:'https://c2.staticflickr.com/6/5754/23769714239_3ccaccac21_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8607712,lon:-106.2158890,name:'Enter description here',desc:'20160102_132451',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23510713183',thumbnail:'https://c2.staticflickr.com/2/1524/23510713183_107684ddd5_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8611908,lon:-106.2164688,name:'Enter description here',desc:'20160102_132750',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24029411582',thumbnail:'https://c2.staticflickr.com/6/5694/24029411582_a0c6cbc2de_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8612137,lon:-106.2166061,name:'Enter description here',desc:'20160102_132833',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23769696219',thumbnail:'https://c2.staticflickr.com/2/1694/23769696219_2527e05f96_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8612137,lon:-106.2166061,name:'Enter description here',desc:'20160102_132844',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23769692029',thumbnail:'https://c2.staticflickr.com/2/1563/23769692029_7659655254_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8612709,lon:-106.2176666,name:'Enter description here',desc:'20160102_133111',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/23510690643',thumbnail:'https://c2.staticflickr.com/2/1572/23510690643_2b519fbf9b_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8607500,lon:-106.2197000,name:'Enter description here',desc:'20160102_133822',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24029389242',thumbnail:'https://c2.staticflickr.com/6/5804/24029389242_679a8b3c0b_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8607559,lon:-106.2197876,name:'Enter description here',desc:'20160102_133844',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24137501295',thumbnail:'https://c2.staticflickr.com/6/5629/24137501295_ace7c4155f_m.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8601761,lon:-106.2240219,name:'Enter description here',desc:'20160102_134626',color:'',icon:'',url:'https://www.flickr.com/photos/30474783@N06/24054867811',thumbnail:'https://c2.staticflickr.com/6/5684/24054867811_0bceae8b07_m.jpg',folder:'Folder1'});
+				
+				
+				GV_Finish_Map();
+					
+			  
+			}
+			GV_Map(); // execute the above code
+			// http://www.gpsvisualizer.com/map_input?form=google&wpt_list=desc
+		</script>
+		
+		
+		
+	</body>
+
+</html>
