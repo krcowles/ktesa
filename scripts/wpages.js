@@ -1,18 +1,40 @@
 $( function () { // when page is loaded...
-    // object locations
+    // object locations: $xyz
     var $images = $('img');
+    var noOfPix = $images.length;
     var $maps = $('iframe');
+    var $mapAddr = document.getElementById('theMap');
+    var	fullMap = $maps.attr('src');
     var $desc = $('.captionList li');
     var $links = $('.lnkList li');
-    
-	// set up a positioning array for caption locations
-	var noOfPix = $images.length;
+    // argument passed to popup function
+    var picSel;
+    // textual vars
+    var htmlLnk;
+    var desc;
+    var htmlDesc;
+    var FlickrLnk;
+    // caption position vars
 	var capTop = new Array();
 	var capLeft = new Array();
 	var capWidth = new Array();
 	var picId;
 	var $picEl;
 	var picPos;
+	// map position vars
+	var $mapLoc;
+	var mapPos;
+	var mapLeft;
+	var mapRight;
+	var mapWidth;
+	var mapBot;
+	var lnkLoc;
+	var msg;
+	
+	
+	/* START THE LOCATION-SETTING BASED ON 1st OPENING OF BROWSER WINDOW
+		NOTE: offset() only retrieves left and top positions in doc */
+	// INITIAL positioning array for caption locations
 	for ( var i=0; i<noOfPix; i++ ) {
 		picId = 'pic' + i;
 		$picEl = document.getElementById(picId);
@@ -21,24 +43,43 @@ $( function () { // when page is loaded...
 		capLeft[i] = picPos.left + 'px';
 		capWidth[i] = picPos.right - picPos.left + 'px';
 	}
-    var picSel;  // argument passed to popup function
-    var htmlLnk;
-    var desc;
-    var htmlDesc;
-    var FlickrLnk;
-    
-	// place link to full-size map below iframe (relative positioning)
-	var fullMap = $maps.attr('src');
-	var $mapAddr = document.getElementById('theMap');
-	var mapPos = $mapAddr.getBoundingClientRect();
-	var mapLeft = mapPos.left;
-	var mapWidth = mapPos.right - mapPos.left;
-	// text is approx. 160 px
-	var lnkLoc = ( mapWidth - 160 ) / 2;
+	// INITIAL link to full-size map below iframe
+	mapPos = $mapAddr.getBoundingClientRect();
+	mapLeft = mapPos.left;
+	mapRight = mapPos.right;
+	mapWidth = mapRight - mapLeft;
+	mapBot = mapPos.bottom + 10;
+	msg = 'Left: ' + mapLeft + '; Right: ' + mapRight;
+	$('#dbug').append(msg);
+	// text is approx. 160 px long
+	lnkLoc = ( mapWidth - 160 ) / 2;
 	mapLeft += lnkLoc;
-	htmlLnk = '<a style="position:relative; left:' + mapLeft + 
-			'px; top:-20px;" href="' + fullMap + '">Click for full-page map</a>';
+	htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
+			mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
 	$('.lnkList').after(htmlLnk);
+	
+	$(window).resize( function() {
+		msg = 'resized';
+		$('#dbug').append(msg);
+		// set up a positioning array for caption locations
+		for ( var i=0; i<noOfPix; i++ ) {
+			picId = '#pic' + i;
+			$picEl = $(picId);
+			picPos  = $picEl.offset();
+			capTop[i] = picPos.top + 'px';
+			capLeft[i] = picPos.left + 'px';
+		}
+		// place link to full-size map below iframe
+		//mapPos = $mapAddr.getBoundingClientRect();
+		$mapLoc = $('#theMap');
+		mapPos = $mapLoc.offset();
+		mapLeft = mapPos.left;
+		mapLeft += lnkLoc;
+		$('#mapLnk').remove();
+		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
+				mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
+		$('.lnkList').after(htmlLnk);
+	});
 	
     // function to popup the description for the picture 'selected'
     function picPop(picTarget) {
@@ -77,8 +118,14 @@ $( function () { // when page is loaded...
 		var clickWhich = ev.target;
 		var picSrc = clickWhich.id;
 		var picIndx = picSrc.indexOf('pic') + 3;
-		var clkPicNo = picSrc.substring(picIndx,picSrc.length);
-		FlickrLnk = $links[clkPicNo].textContent;
+		var picNo = picSrc.substring(picIndx,picSrc.length);
+		var j = 0;
+		$('.lnkList li').each( function() {
+			if ( j == picNo ) {
+				FlickrLnk = this.textContent;
+			}
+			j++;
+		});
 		window.open(FlickrLnk);
 	}); 
 
