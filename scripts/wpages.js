@@ -1,15 +1,14 @@
 $( function () { // when page is loaded...
-    // object locations: $xyz
+    // object locations
     var $images = $('img');
     var noOfPix = $images.length;
     var $maps = $('iframe');
-    var $mapAddr = document.getElementById('theMap');
     var	fullMap = $maps.attr('src');
     var $desc = $('.captionList li');
     var $links = $('.lnkList li');
     // argument passed to popup function
     var picSel;
-    // textual vars
+    // string vars
     var htmlLnk;
     var desc;
     var htmlDesc;
@@ -19,62 +18,72 @@ $( function () { // when page is loaded...
 	var capLeft = new Array();
 	var capWidth = new Array();
 	var picId;
-	var $picEl;
 	var picPos;
 	// map position vars
-	var $mapLoc;
 	var mapPos;
 	var mapLeft;
-	var mapRight;
 	var mapWidth;
 	var mapBot;
 	var lnkLoc;
 	var msg;
+	// generic
+	var i;
+	var rx = 0;
 	
-	
-	/* START THE LOCATION-SETTING BASED ON 1st OPENING OF BROWSER WINDOW
-		NOTE: offset() only retrieves left and top positions in doc */
-	// INITIAL positioning array for caption locations
-	for ( var i=0; i<noOfPix; i++ ) {
-		picId = 'pic' + i;
-		$picEl = document.getElementById(picId);
-		picPos = $picEl.getBoundingClientRect();
-		capTop[i] = picPos.top + 'px';
-		capLeft[i] = picPos.left + 'px';
-		capWidth[i] = picPos.right - picPos.left + 'px';
+	// Get element widths: these don't change with resize, scroll or refresh
+	// NOTE: can't seem to extract CSS params to calculate specified border & margin...
+	i = 0;
+	$images.each( function() {
+		capWidth[i] = this.width +14; // account for border and margin (14)
+		i++;
+	});
+	mapWidth = $maps.attr('width');
+	mapWidth = parseFloat(mapWidth);
+
+
+	// function to calculate current location of images/captions
+	function calcPos() {
+		for ( var j=0; j<noOfPix; j++ ) {
+			picId = '#pic' + j;
+			picPos = $(picId).offset();
+			capTop[j] = picPos.top + 'px';
+			capLeft[j] = picPos.left + 'px';
+			msg = '<p>pic' + j + ' : ' + capTop[j] + ', ' + capLeft[j] + ', </p>';
+			$('#dbug').append(msg);
+		}
 	}
-	// INITIAL link to full-size map below iframe
-	mapPos = $mapAddr.getBoundingClientRect();
-	mapLeft = mapPos.left;
-	mapRight = mapPos.right;
-	mapWidth = mapRight - mapLeft;
-	mapBot = mapPos.bottom + 10;
-	msg = 'Left: ' + mapLeft + '; Right: ' + mapRight;
+	
+	// INITIAL positioning for captions & map locations
+	msg = '<p>Top, Left, for images as follows:</p>';
 	$('#dbug').append(msg);
+	calcPos();
+	mapPos = $maps.offset();
+	mapLeft = mapPos.left;
 	// text is approx. 160 px long
 	lnkLoc = ( mapWidth - 160 ) / 2;
 	mapLeft += lnkLoc;
+	msg = 'current map top is ' + mapPos.top;
+	$('#dbug').append(msg);
+	mapBot = mapPos.top + mapWidth + 15;
 	htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
 			mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
 	$('.lnkList').after(htmlLnk);
+	msg = '<p>Map link is located left at: ' + mapLeft.toFixed(1) + 'px, top is ' +
+			mapPos.top.toFixed(1) + 'px and below map at: ' + 
+			mapBot.toFixed(1) + 'px</p>';
+	$('#dbug').append(msg);
 	
+	
+	// WHEN WINDOW RESIZES:
 	$(window).resize( function() {
-		msg = 'resized';
+		rx++;
+		msg = '<p>resize ' + rx + 'ht x w = ' + window.innerHeight + ' x ' +
+				window.innerWidth + '</p>';
 		$('#dbug').append(msg);
-		// set up a positioning array for caption locations
-		for ( var i=0; i<noOfPix; i++ ) {
-			picId = '#pic' + i;
-			$picEl = $(picId);
-			picPos  = $picEl.offset();
-			capTop[i] = picPos.top + 'px';
-			capLeft[i] = picPos.left + 'px';
-		}
+		calcPos();
 		// place link to full-size map below iframe
-		//mapPos = $mapAddr.getBoundingClientRect();
-		$mapLoc = $('#theMap');
-		mapPos = $mapLoc.offset();
-		mapLeft = mapPos.left;
-		mapLeft += lnkLoc;
+		mapPos = $maps.offset();
+		mapLeft = mapPos.left + lnkLoc;
 		$('#mapLnk').remove();
 		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
 				mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
@@ -90,13 +99,16 @@ $( function () { // when page is loaded...
         desc = $desc[picNo].textContent;
         // form the popup and turn it on
         htmlDesc = '<p class="capLine">' + desc + '</p>';
-        $('.popupCap').prepend(htmlDesc);
+        $('.popupCap').css('display','block');
         $('.popupCap').css('position','absolute');
         $('.popupCap').css('top',capTop[picNo]);
         $('.popupCap').css('left',capLeft[picNo]);
         $('.popupCap').css('width',capWidth[picNo]);
         $('.popupCap').css('z-index','10');
-        $('.popupCap').css('display','block');
+        $('.popupCap').prepend(htmlDesc);
+        msg = '<p>popup loc: ' + capTop[picNo] + ', ' + capLeft[picNo] + ', ' + 
+        	capWidth[picNo] + '</p>';
+        $('#dbug').append(msg);
     }
     
     // popup a description when mouseover a picture
