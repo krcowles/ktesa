@@ -28,19 +28,59 @@ $( function () { // when page is loaded...
 	var msg;
 	// generic
 	var i;
+	var loc;
 	var rx = 0;
 	
-	// Get element widths: these don't change with resize, scroll or refresh
-	// NOTE: can't seem to extract CSS params to calculate specified border & margin...
-	i = 0;
-	$images.each( function() {
-		capWidth[i] = this.width +14; // account for border and margin (14)
-		i++;
-	});
-	mapWidth = $maps.attr('width');
-	mapWidth = parseFloat(mapWidth);
+	if ( window.sessionStorage ) {
+		if ( sessionStorage.getItem('prevLoad') != 2.71828 ) { //proceed normally
+			// Get element widths (can't seem to derive border & margin from CSS -- ??)
+			i = 0;
+			$images.each( function() {
+				capWidth[i] = this.width +14 + 'px'; // account for border and margin (14)
+				loc = 'loc'+ i;
+				sessionStorage.setItem(loc,capWidth[i]);
+				i++;
+			});
+			mapWidth = $maps.attr('width');
+			sessionStorage.setItem('mwidth',mapWidth);
+			mapWidth = parseFloat(mapWidth);
+		} else {
+			msg = '<p>Refresh: reload previous widths</p>';
+			$('#dbug').append(msg);
+			for ( i=0; i<noOfPix; i++ ) {
+				loc = 'loc' + i;
+				capWidth[i] = sessionStorage.getItem(loc);
+			}
+			mapWidth = parseFloat(sessionStorage.getItem('mwidth'));
+		}  // end of session storage value check
+	}  else {
+		window.alert('Window does not support Session Storage\nRefresh may cause problems');
+	}  // end of session storage IF
+			
+			
+			
+			// INITIAL positioning for captions & map locations
+			msg = '<p>Top, Left, for images as follows:</p>';
+			$('#dbug').append(msg);
+			calcPos();
+			mapPos = $maps.offset();
+			mapLeft = mapPos.left;
+			// text is approx. 160 px long
+			lnkLoc = ( mapWidth - 160 ) / 2;
+			mapLeft += lnkLoc;
+			msg = 'current map top is ' + mapPos.top;
+			$('#dbug').append(msg);
+			mapBot = mapPos.top + mapWidth + 15;
+			htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
+					mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
+			$('.lnkList').after(htmlLnk);
+			msg = '<p>Map link is located left at: ' + mapLeft.toFixed(1) + 'px, top is ' +
+					mapPos.top.toFixed(1) + 'px and below map at: ' + 
+					mapBot.toFixed(1) + 'px</p>';
+			$('#dbug').append(msg);
+			sessionStorage.setItem('prevLoad','2.71828'); // Euler's number
 
-
+	
 	// function to calculate current location of images/captions
 	function calcPos() {
 		for ( var j=0; j<noOfPix; j++ ) {
@@ -52,44 +92,7 @@ $( function () { // when page is loaded...
 			$('#dbug').append(msg);
 		}
 	}
-	
-	// INITIAL positioning for captions & map locations
-	msg = '<p>Top, Left, for images as follows:</p>';
-	$('#dbug').append(msg);
-	calcPos();
-	mapPos = $maps.offset();
-	mapLeft = mapPos.left;
-	// text is approx. 160 px long
-	lnkLoc = ( mapWidth - 160 ) / 2;
-	mapLeft += lnkLoc;
-	msg = 'current map top is ' + mapPos.top;
-	$('#dbug').append(msg);
-	mapBot = mapPos.top + mapWidth + 15;
-	htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-			mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
-	$('.lnkList').after(htmlLnk);
-	msg = '<p>Map link is located left at: ' + mapLeft.toFixed(1) + 'px, top is ' +
-			mapPos.top.toFixed(1) + 'px and below map at: ' + 
-			mapBot.toFixed(1) + 'px</p>';
-	$('#dbug').append(msg);
-	
-	
-	// WHEN WINDOW RESIZES:
-	$(window).resize( function() {
-		rx++;
-		msg = '<p>resize ' + rx + 'ht x w = ' + window.innerHeight + ' x ' +
-				window.innerWidth + '</p>';
-		$('#dbug').append(msg);
-		calcPos();
-		// place link to full-size map below iframe
-		mapPos = $maps.offset();
-		mapLeft = mapPos.left + lnkLoc;
-		$('#mapLnk').remove();
-		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-				mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
-		$('.lnkList').after(htmlLnk);
-	});
-	
+			
     // function to popup the description for the picture 'selected'
     function picPop(picTarget) {
         // get the image number
@@ -140,5 +143,21 @@ $( function () { // when page is loaded...
 		});
 		window.open(FlickrLnk);
 	}); 
+	
+	// WHEN WINDOW RESIZES:
+	$(window).resize( function() {
+		rx++;
+		msg = '<p>resize ' + rx + 'ht x w = ' + window.innerHeight + ' x ' +
+				window.innerWidth + '</p>';
+		$('#dbug').append(msg);
+		calcPos();
+		// place link to full-size map below iframe
+		mapPos = $maps.offset();
+		mapLeft = mapPos.left + lnkLoc;
+		$('#mapLnk').remove();
+		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
+				mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
+		$('.lnkList').after(htmlLnk);
+	});
 
 });
