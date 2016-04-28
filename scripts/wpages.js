@@ -25,7 +25,6 @@ $( function () { // when page is loaded...
 	var mapWidth;
 	var mapBot;
 	var lnkLoc;
-	var msg;
 	// for stashing into session storage
 	var mleft;
 	var mbot;
@@ -33,6 +32,7 @@ $( function () { // when page is loaded...
 	var pleft;
 	var ptop;
 	// generic
+	var msg;
 	var i;
 	var rx = 0;
 	
@@ -50,7 +50,6 @@ $( function () { // when page is loaded...
 				i++;
 			});
 			mapWidth = $maps.attr('width');
-			sessionStorage.setItem('mwidth',mapWidth);
 			mapWidth = parseFloat(mapWidth);
 			lnkLoc = ( mapWidth - 160 ) / 2;
 			mapPos = $maps.offset();
@@ -67,7 +66,6 @@ $( function () { // when page is loaded...
 				pwidth = 'pwidth' + i;
 				capWidth[i] = sessionStorage.getItem(pwidth);
 			}
-			mapWidth = parseFloat(sessionStorage.getItem('mwidth'));
 			mapLeft = sessionStorage.getItem('mleft');
 			mapBot = sessionStorage.getItem('mbot');
 			for ( i=0; i<noOfPix; i++ ) {
@@ -91,6 +89,7 @@ $( function () { // when page is loaded...
 		mapPos = $maps.offset();
 		mapLeft = mapPos.left + lnkLoc;
 		mapBot = mapPos.top + mapWidth + 15;
+		calcPos();
 	}  // end of session storage IF
 
 	// make map link and place below map
@@ -117,8 +116,6 @@ $( function () { // when page is loaded...
 				sessionStorage.setItem(ptop,capTop[j]);
 				sessionStorage.setItem(pleft,capLeft[j]);
 			} 
-			msg = '<p>pic' + j + ' : ' + capTop[j] + ', ' + capLeft[j] + ', </p>';
-			$('#dbug').append(msg);
 		}
 	}
 			
@@ -172,17 +169,28 @@ $( function () { // when page is loaded...
 		window.open(FlickrLnk);
 	}); 
 	
-	// WHEN WINDOW RESIZES:
+	// WHEN WINDOW RESIZES (because left margin may change)
 	$(window).resize( function() {
 		rx++;
 		msg = '<p>resize ' + rx + 'ht x w = ' + window.innerHeight + ' x ' +
 				window.innerWidth + '</p>';
 		$('#dbug').append(msg);
 		calcPos();
-		// place link to full-size map below iframe
+		mapWidth = $maps.attr('width');
+		mapWidth = parseFloat(mapWidth);
+		lnkLoc = ( mapWidth - 160 ) / 2;
 		mapPos = $maps.offset();
 		mapLeft = mapPos.left + lnkLoc;
-		$('#mapLnk').remove();
+		mapBot = mapPos.top + mapWidth + 15;
+		$('#dbug').append(mapLeft);
+		if ( window.sessionStorage ) {
+			sessionStorage.setItem('mleft',mapLeft);
+			sessionStorage.setItem('mbot',mapBot);
+		}
+		// place link to full-size map below iframe;
+		var tst = document.getElementById('mapLnk');
+		var tstParent = tst.parentNode;
+		tstParent.removeChild(tst);
 		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
 				mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
 		$('.lnkList').after(htmlLnk);
