@@ -26,68 +26,97 @@ $( function () { // when page is loaded...
 	var mapBot;
 	var lnkLoc;
 	var msg;
+	// for stashing into session storage
+	var mleft;
+	var mbot;
+	var pwidth;
+	var pleft;
+	var ptop;
 	// generic
 	var i;
-	var loc;
 	var rx = 0;
 	
-	if ( window.sessionStorage ) {
+	/* problems with refresh in Chrome prompted the use of the following technique
+	   which "detects" a refresh condition and restores previously loaded values.
+	   User gets a window alert if sessionStorage is not supported and and is advised
+	   about potential refresh issues */
+	if ( window.sessionStorage ) { 
 		if ( sessionStorage.getItem('prevLoad') != 2.71828 ) { //proceed normally
-			// Get element widths (can't seem to derive border & margin from CSS -- ??)
 			i = 0;
 			$images.each( function() {
-				capWidth[i] = this.width +14 + 'px'; // account for border and margin (14)
-				loc = 'loc'+ i;
-				sessionStorage.setItem(loc,capWidth[i]);
+				capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
+				pwidth = 'pwidth'+ i;
+				sessionStorage.setItem(pwidth,capWidth[i]);
 				i++;
 			});
 			mapWidth = $maps.attr('width');
 			sessionStorage.setItem('mwidth',mapWidth);
 			mapWidth = parseFloat(mapWidth);
-		} else {
+			lnkLoc = ( mapWidth - 160 ) / 2;
+			mapPos = $maps.offset();
+			mapLeft = mapPos.left + lnkLoc;
+			sessionStorage.setItem('mleft',mapLeft);
+			mapBot = mapPos.top + mapWidth + 15;
+			sessionStorage.setItem('mbot',mapBot);
+			// get caption locations
+			calcPos(); 
+		} else {  // need to reload items for placing captions & map link
 			msg = '<p>Refresh: reload previous widths</p>';
 			$('#dbug').append(msg);
 			for ( i=0; i<noOfPix; i++ ) {
-				loc = 'loc' + i;
-				capWidth[i] = sessionStorage.getItem(loc);
+				pwidth = 'pwidth' + i;
+				capWidth[i] = sessionStorage.getItem(pwidth);
 			}
 			mapWidth = parseFloat(sessionStorage.getItem('mwidth'));
+			mapLeft = sessionStorage.getItem('mleft');
+			mapBot = sessionStorage.getItem('mbot');
+			for ( i=0; i<noOfPix; i++ ) {
+				pleft = 'pleft' + i;
+				capLeft[i] = sessionStorage.getItem(pleft);
+				ptop = 'ptop' + i;
+				capTop[i] = sessionStorage.getItem(ptop);
+			}
 		}  // end of session storage value check
 	}  else {
-		window.alert('Window does not support Session Storage\nRefresh may cause problems');
+		window.alert('Browser does not support Session Storage\nRefresh may cause problems');
+		// code with no session storage support...
+		i = 0;
+		$images.each( function() {
+			capWidth[i] = this.width + 14 + 'px';
+			i++;
+		});
+		mapWidth = $maps.attr('width');
+		mapWidth = parseFloat(mapWidth);
+		lnkLoc = ( mapWidth - 160 ) / 2;
+		mapPos = $maps.offset();
+		mapLeft = mapPos.left + lnkLoc;
+		mapBot = mapPos.top + mapWidth + 15;
 	}  // end of session storage IF
-			
-			
-			
-			// INITIAL positioning for captions & map locations
-			msg = '<p>Top, Left, for images as follows:</p>';
-			$('#dbug').append(msg);
-			calcPos();
-			mapPos = $maps.offset();
-			mapLeft = mapPos.left;
-			// text is approx. 160 px long
-			lnkLoc = ( mapWidth - 160 ) / 2;
-			mapLeft += lnkLoc;
-			msg = 'current map top is ' + mapPos.top;
-			$('#dbug').append(msg);
-			mapBot = mapPos.top + mapWidth + 15;
-			htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-					mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
-			$('.lnkList').after(htmlLnk);
-			msg = '<p>Map link is located left at: ' + mapLeft.toFixed(1) + 'px, top is ' +
-					mapPos.top.toFixed(1) + 'px and below map at: ' + 
-					mapBot.toFixed(1) + 'px</p>';
-			$('#dbug').append(msg);
-			sessionStorage.setItem('prevLoad','2.71828'); // Euler's number
 
-	
-	// function to calculate current location of images/captions
+	// make map link and place below map
+	htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
+			mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
+	$('.lnkList').after(htmlLnk);
+	msg = '<p>Map link is located left at: ' + mapLeft + 'px, and below map at: ' + 
+			mapBot + 'px</p>';
+	$('#dbug').append(msg);
+	if ( window.sessionStorage ) { 
+		sessionStorage.setItem('prevLoad','2.71828'); // Euler's number
+	}
+
+	// function to calculate current & (potentially) store location of images/captions
 	function calcPos() {
 		for ( var j=0; j<noOfPix; j++ ) {
 			picId = '#pic' + j;
 			picPos = $(picId).offset();
 			capTop[j] = picPos.top + 'px';
 			capLeft[j] = picPos.left + 'px';
+			if ( window.sessionStorage ) {
+				ptop = 'ptop' + j;
+				pleft = 'pleft' + j;
+				sessionStorage.setItem(ptop,capTop[j]);
+				sessionStorage.setItem(pleft,capLeft[j]);
+			} 
 			msg = '<p>pic' + j + ' : ' + capTop[j] + ', ' + capLeft[j] + ', </p>';
 			$('#dbug').append(msg);
 		}
@@ -100,7 +129,6 @@ $( function () { // when page is loaded...
         var picNo = picTarget.substring(3,argLgth);
         // get the corresponding description
         desc = $desc[picNo].textContent;
-        // form the popup and turn it on
         htmlDesc = '<p class="capLine">' + desc + '</p>';
         $('.popupCap').css('display','block');
         $('.popupCap').css('position','absolute');
