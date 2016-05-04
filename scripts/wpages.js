@@ -1,6 +1,6 @@
 $( function () { // when page is loaded...
     // object locations
-    var $images = $('img').not('#chart');
+    var $images = $('img');
     var noOfPix = $images.length;
     var $maps = $('iframe');
     var	fullMap = $maps.attr('src');
