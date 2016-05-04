@@ -2,6 +2,9 @@ $( function () { // when page is loaded...
     // object locations
     var $images = $('img');
     var noOfPix = $images.length;
+    if ( $('#chart').length ) {  // if exists, chart does not participate
+    	noOfPix--;
+    }
     var $maps = $('iframe');
     var	fullMap = $maps.attr('src');
     var $desc = $('.captionList li');
@@ -35,6 +38,8 @@ $( function () { // when page is loaded...
 	var msg;
 	var i;
 	var rx = 0;
+	//msg = '<p>No of images (w/o chart) is ' + noOfPix + '</p>';
+	//$('#dbug').append(msg);
 	
 	/* problems with refresh in Chrome prompted the use of the following technique
 	   which "detects" a refresh condition and restores previously loaded values.
@@ -43,7 +48,7 @@ $( function () { // when page is loaded...
 	if ( window.sessionStorage ) { 
 		if ( sessionStorage.getItem('prevLoad') != 2.71828 ) { //proceed normally
 			i = 0;
-			$images.each( function() {
+			$images.each( function() { // note that this will also compute chart width
 				capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
 				pwidth = 'pwidth'+ i;
 				sessionStorage.setItem(pwidth,capWidth[i]);
@@ -59,9 +64,7 @@ $( function () { // when page is loaded...
 			sessionStorage.setItem('mbot',mapBot);
 			// get caption locations
 			calcPos(); 
-		} else {  // need to reload items for placing captions & map link
-			msg = '<p>Refresh: reload previous widths</p>';
-			$('#dbug').append(msg);
+		} else {  // Refresh: need to reload items for placing captions & map link
 			for ( i=0; i<noOfPix; i++ ) {
 				pwidth = 'pwidth' + i;
 				capWidth[i] = sessionStorage.getItem(pwidth);
@@ -96,9 +99,6 @@ $( function () { // when page is loaded...
 	htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
 			mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
 	$('.lnkList').after(htmlLnk);
-	msg = '<p>Map link is located left at: ' + mapLeft + 'px, and below map at: ' + 
-			mapBot + 'px</p>';
-	$('#dbug').append(msg);
 	if ( window.sessionStorage ) { 
 		sessionStorage.setItem('prevLoad','2.71828'); // Euler's number
 	}
@@ -144,7 +144,9 @@ $( function () { // when page is loaded...
     $images.on('mouseover', function(ev) {
         var eventObj = ev.target;
         picSel = eventObj.id;
-        picPop(picSel);
+        if ( picSel != 'chart' ) {
+        	picPop(picSel);
+        }
     });
     
     // kill the popup when mouseout
@@ -157,24 +159,23 @@ $( function () { // when page is loaded...
 	$images.on('click', function(ev) {
 		var clickWhich = ev.target;
 		var picSrc = clickWhich.id;
-		var picIndx = picSrc.indexOf('pic') + 3;
-		var picNo = picSrc.substring(picIndx,picSrc.length);
-		var j = 0;
-		$('.lnkList li').each( function() {
-			if ( j == picNo ) {
-				FlickrLnk = this.textContent;
-			}
-			j++;
-		});
-		window.open(FlickrLnk);
+		if ( picSrc != 'chart' ) {
+			var picIndx = picSrc.indexOf('pic') + 3;
+			var picNo = picSrc.substring(picIndx,picSrc.length);
+			var j = 0;
+			$('.lnkList li').each( function() {
+				if ( j == picNo ) {
+					FlickrLnk = this.textContent;
+				}
+				j++;
+			});
+			window.open(FlickrLnk);
+		}
 	}); 
 	
 	// WHEN WINDOW RESIZES (because left margin may change)
 	$(window).resize( function() {
 		rx++;
-		msg = '<p>resize ' + rx + 'ht x w = ' + window.innerHeight + ' x ' +
-				window.innerWidth + '</p>';
-		$('#dbug').append(msg);
 		calcPos();
 		mapWidth = $maps.attr('width');
 		mapWidth = parseFloat(mapWidth);
@@ -182,7 +183,6 @@ $( function () { // when page is loaded...
 		mapPos = $maps.offset();
 		mapLeft = mapPos.left + lnkLoc;
 		mapBot = mapPos.top + mapWidth + 15;
-		$('#dbug').append(mapLeft);
 		if ( window.sessionStorage ) {
 			sessionStorage.setItem('mleft',mapLeft);
 			sessionStorage.setItem('mbot',mapBot);

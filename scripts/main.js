@@ -39,9 +39,6 @@ var compare = {
 	} 
 };  // end of object declaration
 
-msg = ' >> starting javascript <<';
-$('#dis').append(msg);
-
 $('.sortable').each(function() {
 	var $table = $(this); 
 	var $tbody = $table.find('tbody');
