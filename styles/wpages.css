@@ -13,6 +13,7 @@ body {
 	border-color: #d4e8d4;
 	padding: 10px;
 	background-color: #c5d5d5; }
+	
 /* image & iframe alignment and pop-up caption styles */
 .ImgRow {
 	text-align: center;
@@ -28,6 +29,8 @@ img {
     border-color: DarkBlue; }
 iframe {
     margin-bottom: 20px; }
+.Solo {
+	margin-top: 30px; }
 .captionList { 
     display: none; }
 .lnkList {

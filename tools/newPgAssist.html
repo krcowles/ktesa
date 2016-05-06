@@ -9,7 +9,7 @@
 		    site" />
 	<meta http-equiv="author" content="Tom Sandberg and Ken Cowles" />
 	<meta robots="nofollow" />
-	<link href="newPgAssist.css"
+	<link href="wa_demo.css"
 		type="text/css" rel="stylesheet" />	
 	<script src="jquery-1.12.1.js"></script>
 </head>
@@ -33,28 +33,36 @@
 	with track and marker lists turned off. <strong>THIRD:</strong>
 	specify the GPSVinput.tsv file name to be associated with this page (to be
 	processed by javascript) in the 'p' element id="tsv_file". For example,
-	the Flickr album "Ancho Rapids" has a corresponding GPSVinput.tsv file,
-	named Ancho.tsv. That's it - save and execute! A text file (newPage.txt)
-	will be created which can be copied and pasted into the page template
-	(hikePgTempl.html). The template CSS file (wpages.css) will center the images and
-	iframe on the page, provide pop-up descriptions, and links to the album(s) and/or
-	geomap.</p>
+	the Flickr album "Ancho Rapids" whas a corresponding GPSVinput.tsv file,
+	named Ancho.tsv. <strong>NEW OPTION:</strong>If an elevation graph is to be
+	included, type "YES" in the 'p id="inclElev"' element and populate the
+	'p id="egraph"' element with the file (presumably .jpg will be used). Type
+	"NO" otherwise and leave the egraph empty.
+	That's it - save and execute! A text file will be created
+	which can be cut and pasted into the page template. The template CSS file
+	will center the images and iframe on the page, provide pop-up descriptions,
+	and links to the album(s) and/or geomap.</p>
+	<p id="checkbox">Framistad ala king</p>
 	<p id="page_title">TRAIL NAME </p>
 	<div id="theRows">
     	<ul>
-        	<li>Canyon_Trailhead</li>
-        	<li>Tom_and_lava</li>
-        	<li>Crazy_rocks</li>
-        	<li>Otowi_view</li>
+        	<li>SangreDeCristos</li>
+        	<li>KarenNearTop</li>
+        	<li>JackLeads</li>
+        	<li>TomSurveys</li>
+        	<li>PajaritoSpring</li>
+        	<li>RedRioGrande</li>
     	</ul>
-    	<p id="frm_name">diablo_geomap.html</p>
-    	<p id="tsv_file">diablo.tsv</p>
+    	<p id="frm_name">Red_Blue_geomap_no_lists.html</p>
+    	<p id="tsv_file">RedBlue.tsv</p>
+    	<p id="inclElev">YES</p>
+    	<p id="egraph">RedBlueElev.jpg</p>
 	</div>
 	<p id="tmp_dump_area"></p>
     <p id="picload">place test load here...</p>
 </div>  <!-- end of bodyBox -->
 
-<script src="newPgAssist.js"></script>
+<script src="wa_demo.js"></script>
 </body>
 
 </html>

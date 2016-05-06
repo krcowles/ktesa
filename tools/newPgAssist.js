@@ -270,12 +270,13 @@ jQuery.get(tsvFile, function(txt_data) {
 	       } else {
 	           itmCnt = picsInRow;
 	       }
-           var mult = 1.10;
+           var mult = 1.00;
            var tryHt;
+           var lastWidth;
 	       buildWidth = 0;
-	       while ( marg >= 80 ) {
-	           // set new optHeight for this loop:
-	           tryHt = mult * optHeight;
+	       while ( marg >= 100 ) {
+	           mult = 1.1 * mult;
+	           tryHt = mult * rowHeight;
 	           msg = '<p>Current height being attempted: ' + tryHt + '</p>';
 	           $('#tmp_dump_area').append(msg);
 	           for ( var p=0; p<itmCnt; p++ ) {
@@ -284,29 +285,27 @@ jQuery.get(tsvFile, function(txt_data) {
 	               } else {
 	                   buildWidth += mult * newWidths[p] + 14;
 	               }
-	               // passing the test below means not there yet
 	               msg = '<p> for p = ' + p + ', bld = ' + buildWidth + '</p>';
 	               $('#tmp_dump_area').append(msg);
-	               if ( buildWidth > rowLineWidth ) { // otherwise
-	                   // current value of optHeight is good
-	                   if ( p == (itmCnt-1) && inclFrame ) {
-	                       buildWidth -= (tryHt +5);
-	                   } else {
-	                       buildWidth -= (mult * newWidths[p] + 14);
-	                   }
-	                   break;
-	               } else {
-	                   optHeight = tryHt; // try the next increment
+	               if ( buildWidth > rowLineWidth ) {
+	                   // previous value of tryHt ( = optHeight ) was good
+	                   tryHt = optHeight;
+	                   marg = 99; // break out of the "while" - no more tries
+	                   break; // out of FOR loop
 	               }
+	               marg = rowLineWidth - buildWidth;
 	           }  // end FOR
-	           marg = rowLineWidth - buildWidth;
-	           if ( tryHt > maxHeight ) {
-	               maxHeight = tryHt;
+	           
+	           buildWidth = 0; // start over for next attempt in "while"
+	           optHeight = tryHt; // this represents the last successful try
+	           if ( optHeight > maxHeight ) {
+	               maxHeight = optHeight;
 	           }
+	           
 	       }  //end WHILE
-	       msg = '<p>New Width: ' + buildWidth + '; NEW HT: ' + optHeight + '</p>';
+	       msg = '<p>New Row Ht: ' + optHeight + '</p>';
 	       $('#tmp_dump_area').append(msg);
-	       return parms = [picsInRow, optHeight, inclFrame, marg] 
+	       return parms = [picsInRow, optHeight, inclFrame, marg];
 	    }  // end ELSE
 	}  // end optRowHt FUNCTION
 	 
@@ -375,7 +374,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	            cap = '<div class="captionList">\n\t<ol>';
 	            lnk = '<div class="lnkList">\n\t<ol>';
 	            msg = '<p>Completed loads...begin optimizing rows;</p>' +
-	                '<p>Row optimizer [RO] returns: no of pix in the row, '
+	                '<p>Row optimizer [RO] returns [prior to sizing]: no of pix in the row, '
 	                + 'if iframe is present, pixel width of space consumed, and'
 	                + ' left-over space to edge (for 960-wide rows);</p>';
 	            msg += '"Return values" are: no. of images placed, row height used '
@@ -419,7 +418,7 @@ jQuery.get(tsvFile, function(txt_data) {
                         msg = '<p>Solo row for elevation chart</p>';
                         $('#tmp_dump_area').append(msg);
                         imgRowNo++;
-                        msg = '\n<div id="row' + imgRowNo + '" class="ImgRow">'
+                        msg = '\n<div id="row' + imgRowNo + '" class="ImgRow Solo">'
                             + '\n\t<img id="chart" height="' + maxHeight + '" src="' +
                             egraph + '" alt="Elevation Chart" />\n</div>';
                         pic += msg;
