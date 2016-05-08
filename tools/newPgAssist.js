@@ -9,10 +9,10 @@ var msg;
 var $htmlNameLocs = $('li'); // an array holding the list element locations
 var noOfPics = $htmlNameLocs.length;
 var htmlPicNames = new Array();
-var geoMap = '../maps/' + $('#frm_name').text();
-var tsvFile = '../gpsv/' + $('#tsv_file').text();
+var geoMap = $('#frm_name').text();
+var tsvFile = $('#tsv_file').text();
 var eopt = $('#inclElev').text();
-var egraph = '../images/' + $('#egraph').text();
+var egraph = $('#egraph').text();
 var ewidth;
 
 // For reading in the GPSVinput.tsv data:
@@ -260,53 +260,58 @@ jQuery.get(tsvFile, function(txt_data) {
 	            buildWidth + '; and margin = ' + marg + '</p>';
 	    $('#tmp_dump_area').append(msg);
 
-	    // new rowHeight ONLY IF: current margins > 80px but < 260px
-	    if ( marg < 80 || marg > 310 ) {
+	    // new rowHeight ONLY IF: current margins > 80px 
+	    if ( marg < 80 ) {
 	       return parms = [picsInRow, optHeight, inclFrame, marg];
 	    } else {
-	       // try increasing rowHeight by 10% per try until optimally filled
-	       if ( inclFrame ) {
-	           itmCnt = picsInRow + 1;
-	       } else {
-	           itmCnt = picsInRow;
-	       }
-           var mult = 1.00;
-           var tryHt;
-           var lastWidth;
-	       buildWidth = 0;
-	       while ( marg >= 100 ) {
-	           mult = 1.1 * mult;
-	           tryHt = mult * rowHeight;
-	           msg = '<p>Current height being attempted: ' + tryHt + '</p>';
-	           $('#tmp_dump_area').append(msg);
-	           for ( var p=0; p<itmCnt; p++ ) {
-	               if ( p == (itmCnt-1) && inclFrame ) {
-	                   buildWidth += tryHt + 5; // 5px for iframe border
-	               } else {
-	                   buildWidth += mult * newWidths[p] + 14;
-	               }
-	               msg = '<p> for p = ' + p + ', bld = ' + buildWidth + '</p>';
-	               $('#tmp_dump_area').append(msg);
-	               if ( buildWidth > rowLineWidth ) {
-	                   // previous value of tryHt ( = optHeight ) was good
-	                   tryHt = optHeight;
-	                   marg = 99; // break out of the "while" - no more tries
-	                   break; // out of FOR loop
-	               }
-	               marg = rowLineWidth - buildWidth;
-	           }  // end FOR
+            if ( marg > 310 ) { // at least grow it a little bit!
+                optHeight = 1.4 * rowHeight;
+                return parms = [picsInRow, optHeight, inclFrame, marg];
+            } else {
+    	       // try increasing rowHeight by 10% per try until optimally filled
+    	       if ( inclFrame ) {
+    	           itmCnt = picsInRow + 1;
+    	       } else {
+    	           itmCnt = picsInRow;
+    	       }
+               var mult = 1.00;
+               var tryHt;
+               var lastWidth;
+    	       buildWidth = 0;
+    	       while ( marg >= 100 ) {
+    	           mult = 1.1 * mult;
+    	           tryHt = mult * rowHeight;
+    	           msg = '<p>Current height being attempted: ' + tryHt + '</p>';
+    	           $('#tmp_dump_area').append(msg);
+    	           for ( var p=0; p<itmCnt; p++ ) {
+    	               if ( p == (itmCnt-1) && inclFrame ) {
+    	                   buildWidth += tryHt + 5; // 5px for iframe border
+    	               } else {
+    	                   buildWidth += mult * newWidths[p] + 14;
+    	               }
+    	               msg = '<p> for p = ' + p + ', bld = ' + buildWidth + '</p>';
+    	               $('#tmp_dump_area').append(msg);
+    	               if ( buildWidth > rowLineWidth ) {
+    	                   // previous value of tryHt ( = optHeight ) was good
+    	                   tryHt = optHeight;
+    	                   marg = 99; // break out of the "while" - no more tries
+    	                   break; // out of FOR loop
+    	               }
+    	               marg = rowLineWidth - buildWidth;
+    	           }  // end FOR
+    	           
+    	           buildWidth = 0; // start over for next attempt in "while"
+    	           optHeight = tryHt; // this represents the last successful try
+    	           if ( optHeight > maxHeight ) {
+    	               maxHeight = optHeight;
+    	           }
 	           
-	           buildWidth = 0; // start over for next attempt in "while"
-	           optHeight = tryHt; // this represents the last successful try
-	           if ( optHeight > maxHeight ) {
-	               maxHeight = optHeight;
-	           }
-	           
-	       }  //end WHILE
-	       msg = '<p>New Row Ht: ' + optHeight + '</p>';
-	       $('#tmp_dump_area').append(msg);
-	       return parms = [picsInRow, optHeight, inclFrame, marg];
-	    }  // end ELSE
+        	   }  //end WHILE
+    	       msg = '<p>New Row Ht: ' + optHeight + '</p>';
+    	       $('#tmp_dump_area').append(msg);
+    	       return parms = [picsInRow, optHeight, inclFrame, marg];
+            }  // end ELSE try slow grow...
+	    }  // end ELSE within bounds to try growing
 	}  // end optRowHt FUNCTION
 	 
 	 
