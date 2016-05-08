@@ -9,10 +9,10 @@ var msg;
 var $htmlNameLocs = $('li'); // an array holding the list element locations
 var noOfPics = $htmlNameLocs.length;
 var htmlPicNames = new Array();
-var geoMap = $('#frm_name').text();
-var tsvFile = $('#tsv_file').text();
+var geoMap = '../maps/' + $('#frm_name').text();
+var tsvFile = '../gpsv/' + $('#tsv_file').text();
 var eopt = $('#inclElev').text();
-var egraph = $('#egraph').text();
+var egraph = '../images/' + $('#egraph').text();
 var ewidth;
 
 // For reading in the GPSVinput.tsv data:
