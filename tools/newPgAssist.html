@@ -18,9 +18,10 @@
 <div class="bodyBox">
 	<p>This 'new page assist' html file, with its accompanying javascript, will
 	dynamically load and size user-selected images to fit into a row of
-	specified height (the default for height, if not changed, is 260px - if a
-	different height is desired, change the var 'rowHeight' near the top of the
-	javascript file). The images will fill a row of 'rowLineWidth (specified in
+	specified height (the default for height, if not increased during row
+	optimization, is 260px - if a different "seed" height is desired, change the
+	var 'rowHeight' near the top of the javascript file). 
+	The images will fill a row of 'rowLineWidth (specified in
 	the accompanying CSS file 'body' element - it is best to leave this as is
 	to ensure consistency across sites). The specification of photo images
 	begins immediately after the 'p id="page_title"'.
@@ -28,7 +29,8 @@
 	to be displayed into the set of consecutive "li" elements (div id="theRows"). 
 	<em>NOTE: the names must be an EXACT MATCH, case sensitive, to the 
 	name appearing in the Flickr ablum. NO OTHER LIST ELEMENTS can be present
-	in this html</em>. <strong>SECOND:</strong> specify the geo-map to be used
+	in this html</em> Also note that there are no "jpg" suffixes on the names.
+	<strong>SECOND:</strong> specify the geo-map to be used
 	for the iframe into a "p" element, id="frm_name". It is preferred to use one
 	with track and marker lists turned off. <strong>THIRD:</strong>
 	specify the GPSVinput.tsv file name to be associated with this page (to be
@@ -45,15 +47,15 @@
 	<p id="page_title">ABQ Volcanoes</p>
 	<div id="theRows">
     	<ul>
-        	<li>BlackPeak</li>
-        	<li>VulcanFromBlack</li>
-        	<li>Vulcan_Up_Close</li>
-        	<li>Bond_and_Butte</li>
+        	<li>Mesa_View</li>
+        	<li>All_on_trail</li>
+        	<li>Bill_enroute</li>
+        	<li>PL_jct</li>
     	</ul>
-    	<p id="frm_name">volcano_geomap_no_lists.html</p>
-    	<p id="tsv_file">volcano.tsv</p>
+    	<p id="frm_name">delagua_geomap_no_lists.html</p>
+    	<p id="tsv_file">delagua.tsv</p>
     	<p id="inclElev">YES</p>
-    	<p id="egraph">VolcanoMap.jpg</p>
+    	<p id="egraph">DelAguaElev.jpg</p>
 	</div>
 	<p id="tmp_dump_area"></p>
     <p id="picload">place test load here...</p>
