@@ -1,8 +1,9 @@
 $( function () { // when page is loaded...
+
     // object locations
     var $images = $('img');
     var noOfPix = $images.length;
-    if ( $('#chart').length ) {  // if exists, chart does not participate
+    if ( $('#chart').length ) {  // if it exists, chart does not participate
     	noOfPix--;
     }
     var $maps = $('iframe');
@@ -37,9 +38,6 @@ $( function () { // when page is loaded...
 	// generic
 	var msg;
 	var i;
-	var rx = 0;
-	//msg = '<p>No of images (w/o chart) is ' + noOfPix + '</p>';
-	//$('#dbug').append(msg);
 	
 	/* problems with refresh in Chrome prompted the use of the following technique
 	   which "detects" a refresh condition and restores previously loaded values.
@@ -47,13 +45,13 @@ $( function () { // when page is loaded...
 	   about potential refresh issues */
 	if ( window.sessionStorage ) { 
 		if ( sessionStorage.getItem('prevLoad') != 2.71828 ) { //proceed normally
-			i = 0;
-			$images.each( function() { // note that this will also compute chart width
-				capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
+			for ( i=0; i<noOfPix; i++ ) {
+				capWidth[i] = $images[i].width + 14 + 'px'; // account for border and margin (14)
+				//msg = '<p>image' + i + ' width is ' + capWidth[i] + '</p>';
+				//$('#dbug').append(msg);
 				pwidth = 'pwidth'+ i;
 				sessionStorage.setItem(pwidth,capWidth[i]);
-				i++;
-			});
+			}
 			mapWidth = $maps.attr('width');
 			mapWidth = parseFloat(mapWidth);
 			lnkLoc = ( mapWidth - 160 ) / 2;
@@ -81,11 +79,13 @@ $( function () { // when page is loaded...
 	}  else {
 		window.alert('Browser does not support Session Storage\nRefresh may cause problems');
 		// code with no session storage support...
-		i = 0;
-		$images.each( function() {
-			capWidth[i] = this.width + 14 + 'px';
-			i++;
-		});
+		for ( i=0; i<noOfPix; i++ ) {
+			capWidth[i] = $images[i].width + 14 + 'px'; // account for border and margin (14)
+			//msg = '<p>image' + i + ' width is ' + capWidth[i] + '</p>';
+			//$('#dbug').append(msg);
+			pwidth = 'pwidth'+ i;
+			sessionStorage.setItem(pwidth,capWidth[i]);
+		}
 		mapWidth = $maps.attr('width');
 		mapWidth = parseFloat(mapWidth);
 		lnkLoc = ( mapWidth - 160 ) / 2;
@@ -134,9 +134,6 @@ $( function () { // when page is loaded...
         $('.popupCap').css('width',capWidth[picNo]);
         $('.popupCap').css('z-index','10');
         $('.popupCap').prepend(htmlDesc);
-        msg = '<p>popup loc: ' + capTop[picNo] + ', ' + capLeft[picNo] + ', ' + 
-        	capWidth[picNo] + '</p>';
-        $('#dbug').append(msg);
     }
     
     // popup a description when mouseover a picture
@@ -175,7 +172,6 @@ $( function () { // when page is loaded...
 	
 	// WHEN WINDOW RESIZES (because left margin may change)
 	$(window).resize( function() {
-		rx++;
 		calcPos();
 		mapWidth = $maps.attr('width');
 		mapWidth = parseFloat(mapWidth);
