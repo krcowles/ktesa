@@ -13,10 +13,10 @@ var noOfPics = $fotos.length;
 var htmlPicNames = new Array();
 var tsvFile = '../gpsv/' + $('#tsvFile').text();
 var noOfPixWCaps = parseFloat( $('#noOfOthr').text() );
-var $imgWCaps = '../images/' + $('#othrImg>li');
+var $imgWCaps = $('#othrImg>li');
 var $imgCapts = $('#imgCaptions>li');
 var noOfNoCaps = parseFloat( $('#noOfNons').text() );
-var $imgNoCaps = '../images/' + $('#nonCaps>li');
+var $imgNoCaps = $('#nonCaps>li');
 var totalImgCnt = noOfPics + noOfPixWCaps + noOfNoCaps;
 msg = '<p>' + totalImgCnt + '</p>';
 $('#tmp_dump_area').append(msg);
@@ -206,7 +206,7 @@ jQuery.get(tsvFile, function(txt_data) {
     // k is next pic no.
     if ( noOfPixWCaps > 0 ) {
         for ( var s=0; s<noOfPixWCaps; s++ ) {
-            nSize[k+s] = $imgWCaps[s].textContent; // assumes image is local
+            nSize[k+s] = '../images/' + $imgWCaps[s].textContent;
             captions[k+s] = $imgCapts[s].textContent;
             picDescs[k+s] = 'non-photo, no album link';
         }
@@ -217,7 +217,7 @@ jQuery.get(tsvFile, function(txt_data) {
     // next, add images that don't have captions
     if ( noOfNoCaps > 0 ) {
         for ( var d=0; d<noOfNoCaps; d++ ) {
-            nSize[k+d] = $imgNoCaps[d].textContent;
+            nSize[k+d] = '../images/' + $imgNoCaps[d].textContent;
             msg = '<p>nSize for non-cap: ' + nSize[i+d] + '</p>';
             $('#tmp_dump_area').append(msg);
             // dont bother filling in captions, descs, etc.
