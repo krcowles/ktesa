@@ -43,15 +43,20 @@ $( function () { // when page is loaded...
 	   which "detects" a refresh condition and restores previously loaded values.
 	   User gets a window alert if sessionStorage is not supported and and is advised
 	   about potential refresh issues */
-	if ( window.sessionStorage ) { 
-		if ( sessionStorage.getItem('prevLoad') != 2.71828 ) { //proceed normally
-			for ( i=0; i<noOfPix; i++ ) {
-				capWidth[i] = $images[i].width + 14 + 'px'; // account for border and margin (14)
+	if ( window.sessionStorage ) {
+		var tst = sessionStorage.getItem('prevLoad');
+		if ( !tst ) { 
+			//msg = '<p>NORMAL ENTRY</p>';
+			//$('#dbug').append(msg);
+			i = 0;
+			$('img').each( function() {
+				capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
 				//msg = '<p>image' + i + ' width is ' + capWidth[i] + '</p>';
 				//$('#dbug').append(msg);
 				pwidth = 'pwidth'+ i;
 				sessionStorage.setItem(pwidth,capWidth[i]);
-			}
+				i++;
+			});
 			mapWidth = $maps.attr('width');
 			mapWidth = parseFloat(mapWidth);
 			lnkLoc = ( mapWidth - 160 ) / 2;
@@ -63,6 +68,8 @@ $( function () { // when page is loaded...
 			// get caption locations
 			calcPos(); 
 		} else {  // Refresh: need to reload items for placing captions & map link
+			//msg = '<p>ALLEGED REFRESH; prevLoad is ' + tst + '<p>';
+			//$('#dbug').append(msg);
 			for ( i=0; i<noOfPix; i++ ) {
 				pwidth = 'pwidth' + i;
 				capWidth[i] = sessionStorage.getItem(pwidth);
@@ -172,6 +179,8 @@ $( function () { // when page is loaded...
 	
 	// WHEN WINDOW RESIZES (because left margin may change)
 	$(window).resize( function() {
+		//msg = '<p>WINDOW RESIZED</p>';
+		//$('#dbug').append(msg);
 		calcPos();
 		mapWidth = $maps.attr('width');
 		mapWidth = parseFloat(mapWidth);

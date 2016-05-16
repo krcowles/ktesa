@@ -34,7 +34,8 @@ $( function () { // when page is loaded...
 	   User gets a window alert if sessionStorage is not supported and and is advised
 	   about potential refresh issues */
 	if ( window.sessionStorage ) { 
-		if ( sessionStorage.getItem('prevLoad') != 2.71828 ) { //proceed normally
+		var tst = sessionStorage.getItem('prevLoad');
+		if ( !tst ) {
 			// get caption locations & widths - both 'pics' and 'caps'
 			calcPos(); 
 		} else {  // Refresh: need to reload items for placing captions & map link
@@ -70,6 +71,8 @@ $( function () { // when page is loaded...
 				}
 				capWidth[j] = $(picId).width() + 14 + 'px';
 				picPos = $(picId).offset();
+				//msg = '<p>picWidth' + j + ' is ' + capWidth[j] + '</p>';
+				//$('#dbug').append(msg);
 				capTop[j] = picPos.top + 'px';
 				capLeft[j] = picPos.left + 'px';
 				if ( window.sessionStorage ) {
