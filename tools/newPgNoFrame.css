@@ -22,6 +22,8 @@ img {
     border-style: solid;
     border-width: 2px;
     border-color: DarkBlue; }
+#hikeInfo {
+	text-algin: left; }
 
 
 

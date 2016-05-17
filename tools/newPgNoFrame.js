@@ -315,7 +315,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	    for ( var br=0; br<noOfPix; br++ ) {
     	    msg = '<p>imNo + br = ' + (imNo + br) + '</p>';
     	    $('#tmp_dump_area').append(msg);
-    	    newWidth = growth * picWidths[br];
+    	    newWidth = growth * picWidths[imNo+br];
     	    floorWidth = Math.floor(newWidth);
     	    if ( (imNo + br) >= noOfPics ) { // this is a non-photo
                 if ( (imNo + br) >= (noOfPics + noOfPixWCaps) ) { // this is a no-cap

@@ -8,6 +8,7 @@ body {
 	color: #302DD3;
 	text-align: center; }
 #hikeInfo {
+	text-align: left;
 	border-style: outset;
 	border-width: 2px;
 	border-color: #d4e8d4;
