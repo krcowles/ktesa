@@ -1,4 +1,4 @@
-Vers. 20160506
+Vers. 20160506 + 20160517 Tom's comments
 
 I. Images with iFrame (and optional Elevation Chart)
 ------------------------------------------------------------------------
@@ -13,18 +13,26 @@ if available.
     can be run (later) without having to copy that utility locally into the work area.
     Ensure that you get copies of the photos that contain full meta-data
     (e.g. for Apple, in photos, choose: Export->unmodified originals).
+I sort of understand limiting the number of pictures on the page, but this also limits the number of pictures on the map. Ideally, there would be no limits. Next best is to limit only the number of pictures on the summary page.
+Clumsy to require another copy of the pictures in a work area. One way around this might be to use links in the work area (ln or "ln -s"). These would point to the picture files in their regular directory on the local machine.
 
 2.  Change the name of the photos from their original generic names, to indicate content.
+Renaming the files is optional, I think.
 
 3.  Assuming the Flickr album doesn't already exist, upload the photos to Flickr and
     create a new album with those items in it.
+No need to upload the photos if they are already on Flickr. Just create the album.
+Consider using tags instead of albums.
 
 4.  Enter descriptions for each of the photos in the album.
+Allow the "Unused" description which is my current clumsy way to have more photos on Flickr than on the map. Using tags might make this less clumsy.
 
 5.  Provide an appropriate name for the album. If the photos are derived from more than
     one contributor, append the album name with "_Combo".
+Is "_Combo" required for the tools to work, or is this just an optional naming convention? 
    
-6.  Copy the album URL, or leave the page open for later use of cut and paste of the URL. 
+6.  Copy the album URL, or leave the page open for later use of cut and paste of the URL.
+Or download the html. 
 
 7.  Make sure that exiftool has been installed and is accessible from the
     work area. Copy the <hike>.GPX file into the same workarea as the photos.
@@ -33,16 +41,21 @@ if available.
     above. This will create a file called GPSVinput.tsv; RENAME the file to <hike>.tsv 
     **** NOTE: the pictures in the Flickr album must exactly match the 
     photo names and number of photos in the work area, or mkgpsv_r6 will fail!!
+If you have downloaded the Flickr album's html file, you can use the -f option. 
+Use "Unused" description or tags to eliminate the need to have the number of photos on Flickr match the number in the work area. 
 
 9.  If not already done, go to the GPSVisualizer website and create the map file using
     the work area files: <hike>.GPX and <hike>.tsv -- make sure that all marker and
     list files are turned off. Download the map and move it into the local work
     area, renaming it <hike>_geomap_no_lists.html
+Consider using a jpg version of the map. Then we could store the map on Flickr, and the tools can handle it as just another picture. We would still want a link to the "live map" but this would eliminate the need to store a second (no lists) version of the map in git.
    
 10. Copy other optional elements into the working area, such as <hike_elevation_chart>.jpg
     **** NOTE: Do not place the optional <hike_elevation_chart.jpg into the work
     area before running mkgpsv_r6, or it will think it is a photo that does
     not exist in the Flickr album, and it will not execute.
+Consider adding the elevation chart to Flickr. Then this procedure and the tools can handle it as just another picture.
+Consider adding a link to a live elevation chart like the one produced by Endomondo that shows your position on the map as you mouse over the chart. There are web based and other tools to create elevation charts from a gpx file. I'm not sure if they do it as nicely as Endomondo does though.
     
 11. Using the html editor of choice: Edit the "tools/newPgAssist.html" file from the git
     workarea and list the photo names EXACTLY as they appear in the Flickr album and
@@ -51,26 +64,31 @@ if available.
     contains only the text "YES" when specifying the cart, and "NO" when not). Place a
     copy of the <hike>.tsv in the git 'gpsv' directory, a copy of the elevation chart in
     the git 'images' directory, and a copy of the map in the git 'maps/ directory.
+Maybe create a sed/awk/shell script to do this step.
 
 12. Add the modified and new files to the next commit staging area, commit and push
 	>git add <files modified and added from above>
 	>git commit -m "files needed to create new page for <hike>"
 	>git push
+Maybe create a sed/awk/shell script to do this step.
 
 13. Run the tool:
 	http://krcowles.github.io/ktesa/newPgAssist.html
     This will download text for the images portion of the new website, used below.
+Still wondering why this tool needs to be web based. Why does it need to be written in html/javascript? My ignorance, laziness, stubborness are behind this question for sure.
 
 14. In the local git directory, edit the file 'pages/hikePgTempl.html' and copy the text
     from the file downloaded (above) into the indicated area.
     Edit the remaining areas to correspond with the hike name, details, pointers,
     etc. ***** SAVE AS <hike>.html - DO NOT 'SAVE' AND OVERWRITE hikePgTempl.html *****!
+Maybe create a sed/awk/shell script to do this step.
 
 15. Double-click the newly created <hike>.html to ensure all details are correct
     before proceeding.
 
 16. Edit the 'index.html' file in the local git directory, and add a <tr> row
     element for the hike, with the required information.
+Maybe create a sed/awk/shell script to do this step.
 
 17. Double-click the index.html file to ensure that the entries are correct, and that
     the link to the new hike page works properly, and that all elements of the new
