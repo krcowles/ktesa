@@ -1,0 +1,84 @@
+Vers. 20160506
+
+I. Images with iFrame (and optional Elevation Chart)
+------------------------------------------------------------------------
+THIS PROCESS describes how to create a website page when there
+is a GPS track file available, and optionally an elevation chart,
+if available.
+------------------------------------------------------------------------
+
+1.  Select 2-7 pictures from any album desired (e.g. Tom's Flickr album, Ken's Apple
+    photos, etc.), and place them in a designated work area. [kc: Currently using
+    ~/src/HIKES/CompletedWebPgs/<hike_name>]  Preferably, choose a work area where the 'mkgpsv_r6'
+    can be run (later) without having to copy that utility locally into the work area.
+    Ensure that you get copies of the photos that contain full meta-data
+    (e.g. for Apple, in photos, choose: Export->unmodified originals).
+
+2.  Change the name of the photos from their original generic names, to indicate content.
+
+3.  Assuming the Flickr album doesn't already exist, upload the photos to Flickr and
+    create a new album with those items in it.
+
+4.  Enter descriptions for each of the photos in the album.
+
+5.  Provide an appropriate name for the album. If the photos are derived from more than
+    one contributor, append the album name with "_Combo".
+   
+6.  Copy the album URL, or leave the page open for later use of cut and paste of the URL. 
+
+7.  Make sure that exiftool has been installed and is accessible from the
+    work area. Copy the <hike>.GPX file into the same workarea as the photos.
+
+8.  Run the mkgps_v6 utility with the -u flag containing the URL of the Flickr album,
+    above. This will create a file called GPSVinput.tsv; RENAME the file to <hike>.tsv 
+    **** NOTE: the pictures in the Flickr album must exactly match the 
+    photo names and number of photos in the work area, or mkgpsv_r6 will fail!!
+
+9.  If not already done, go to the GPSVisualizer website and create the map file using
+    the work area files: <hike>.GPX and <hike>.tsv -- make sure that all marker and
+    list files are turned off. Download the map and move it into the local work
+    area, renaming it <hike>_geomap_no_lists.html
+   
+10. Copy other optional elements into the working area, such as <hike_elevation_chart>.jpg
+    **** NOTE: Do not place the optional <hike_elevation_chart.jpg into the work
+    area before running mkgpsv_r6, or it will think it is a photo that does
+    not exist in the Flickr album, and it will not execute.
+    
+11. Using the html editor of choice: Edit the "tools/newPgAssist.html" file from the git
+    workarea and list the photo names EXACTLY as they appear in the Flickr album and
+    work area. Also specify the <hike>.tsv file, the <hike>_geomap_no_lists.html file
+    and the (optional) <hike_elevation_chart>.jpg (make sure the option "inclElev"
+    contains only the text "YES" when specifying the cart, and "NO" when not). Place a
+    copy of the <hike>.tsv in the git 'gpsv' directory, a copy of the elevation chart in
+    the git 'images' directory, and a copy of the map in the git 'maps/ directory.
+
+12. Add the modified and new files to the next commit staging area, commit and push
+	>git add <files modified and added from above>
+	>git commit -m "files needed to create new page for <hike>"
+	>git push
+
+13. Run the tool:
+	http://krcowles.github.io/ktesa/newPgAssist.html
+    This will download text for the images portion of the new website, used below.
+
+14. In the local git directory, edit the file 'pages/hikePgTempl.html' and copy the text
+    from the file downloaded (above) into the indicated area.
+    Edit the remaining areas to correspond with the hike name, details, pointers,
+    etc. ***** SAVE AS <hike>.html - DO NOT 'SAVE' AND OVERWRITE hikePgTempl.html *****!
+
+15. Double-click the newly created <hike>.html to ensure all details are correct
+    before proceeding.
+
+16. Edit the 'index.html' file in the local git directory, and add a <tr> row
+    element for the hike, with the required information.
+
+17. Double-click the index.html file to ensure that the entries are correct, and that
+    the link to the new hike page works properly, and that all elements of the new
+    page are as desired. When edits are complete, push the data to github as described
+    above. Allow time for the site to update, then go to the siteto test the push: 
+	http://krcowles.github.io/ktesa
+	
+II. Images with no iFrame (but possibly other generic map images)
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
