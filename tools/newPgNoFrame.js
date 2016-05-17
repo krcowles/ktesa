@@ -307,13 +307,16 @@ jQuery.get(tsvFile, function(txt_data) {
 	        1st non-photo = noOfPics */
         pic += '\n<div id="row' + imgRowNo + '" class="ImgRow">';
         imgRowNo++;
+        var growth = rowHt/rowHeight;
         var floorHeight = Math.floor(rowHt);
+        var newWidth;
         var floorWidth;
         var imNo = curPic - noOfPix; // 1st image in this row
 	    for ( var br=0; br<noOfPix; br++ ) {
     	    msg = '<p>imNo + br = ' + (imNo + br) + '</p>';
     	    $('#tmp_dump_area').append(msg);
-    	    floorWidth = Math.floor(picWidths[br]);
+    	    newWidth = growth * picWidths[br];
+    	    floorWidth = Math.floor(newWidth);
     	    if ( (imNo + br) >= noOfPics ) { // this is a non-photo
                 if ( (imNo + br) >= (noOfPics + noOfPixWCaps) ) { // this is a no-cap
                     pic += '\n\t<img id="noCapImg' + picId + '" height="' + floorHeight + 
@@ -371,7 +374,6 @@ jQuery.get(tsvFile, function(txt_data) {
                     // row-optimizer doesn't care if captioned pics or not;
                     fctArgs = optRowHt();
                     curPic += fctArgs[0]; // curPic now points to the next image
-                    rowMargin = fctArgs[2];
                     msg = '<p>Return values: ' + fctArgs[0] + '; ' + fctArgs[1] + 
                         '; ' + fctArgs[2] + '; new picNo is ' + curPic + '</p>';
                     $('#tmp_dump_area').append(msg);
