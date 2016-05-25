@@ -1,0 +1,31 @@
+body {
+	font-family: arial, verdana;
+	background-color: #dadada; }
+#siteIndx {
+	background-color: #fffdf;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #ffffdf;
+	border-style: groove;
+	border-width: 4px;
+	border-color: goldenRod; }
+.hdrRow {
+	background-color: bisque; }
+#siteIndx th {
+	padding-left: 5px;
+	padding-right: 5px;
+	border-style: outset;
+	border-width: 2px;
+	border-color: peru; }
+#siteIndx td {
+	min-width: 60px;
+	padding-left: 10px;
+	padding-right: 10px; }
+#siteIndx tr {
+	margin: 6px; }
+#gray {
+	color: gray; }
+img {
+	margin-left: 80px;
+	margin-top: 20px;
+ }
