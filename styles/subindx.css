@@ -9,8 +9,6 @@ body {
 	border-style: groove;
 	border-width: 4px;
 	border-color: goldenRod; }
-.hdrRow {
-	background-color: bisque; }
 #siteIndx th {
 	padding-left: 5px;
 	padding-right: 5px;
@@ -23,9 +21,17 @@ body {
 	padding-right: 10px; }
 #siteIndx tr {
 	margin: 6px; }
+.hdrRow {
+	background-color: bisque; }
 #gray {
 	color: gray; }
 img {
 	margin-left: 80px;
-	margin-top: 20px;
+	margin-top: 10px;
  }
+ #indxTitle {
+ 	color: MediumBlue;
+ 	text-align: center;
+ 	font-size: 24px;
+ 	margin-top: 6px;
+ 	margin-bottom: 10px; }
