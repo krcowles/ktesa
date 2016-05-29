@@ -326,9 +326,9 @@ jQuery.get(tsvFile, function(txt_data) {
 	        if ( noOfPix == 0 ) {  // iframe only - no images
                 msg = '<p>Input rowHt = ' + floorHeight + '</p>';
                 $('#tmp_dump_area').append(msg);
-                pic += '\n\t<scan><iframe id="theMap" height="' + floorHeight +
+                pic += '\n\t<iframe id="theMap" height="' + floorHeight +
                        '" width="' + floorHeight + '" src="' + geoMap +
-                       '"></iframe></scan>\n</div>';
+                       '"></iframe>\n</div>';
 	        } else {  // images + iframe
     	        for ( var q=0; q<noOfPix; q++ ) {
                     // first, place image(s)

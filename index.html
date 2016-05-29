@@ -4,10 +4,15 @@
 <head>
 	<title>trial site KTESA-E</title>
 	<meta charset="utf-8" />
+	<!-- if search engine keys are desired, use: <meta name="keywords" content="key1, key2, .." -->
+	<meta name="language"
+			content="EN" />
 	<meta name="description"
-		content="Listing of hikes the authors have undertaken in New Mexico" />
-	<meta http-equiv="author" content="Tom Sandberg and Ken Cowles" />
-	<meta robots="nofollow" />
+			content="Listing of hikes the authors have undertaken in New Mexico" />
+	<meta name="author"
+			content="Tom Sandberg and Ken Cowles" />
+	<meta name="robots"
+			content="nofollow" />
 	<link href="styles/960_16_col.css"
 		type="text/css" rel="stylesheet" />
 	<link href="styles/main.css"
@@ -59,21 +64,25 @@
 		[descending]; repeat clicks will toggle the opposite sort</em></p>
 		<!-- this is a "sortable" long table -->
 		<table class="sortable">
-				<col style="width: 180px"></col>
-				<col style="width: 150px"></col>
-				<col style="width: 72px"></col>
-				<col style="width: 78px"></col>
-				<col style="width: 100px"></col>
-				<col style="width: 160px"></col>
-				<col style="width: 160px>"</col>
+			<colgroup>	
+				<col style="width:180px">
+				<col style="width:140px">
+				<col style="width:72px">
+				<col style="width:78px">
+				<col style="width:100px">
+				<col style="width:160px">
+				<col style="width:170px">
+			</colgroup>
 			<thead>
-				<th class="hdr_row" data-sort="std">General Location</th>
-				<th class="hdr_row" data-sort="std">Hike/Trail Name</th>
-				<th class="hdr_row" data-sort="lan">Length</th>
-				<th class="hdr_row" data-sort="lan">Elev Chg</th>
-				<th class="hdr_row" data-sort="std">Rel Difficulty</th>
-				<th class="hdr_row" data-sort="std">Album link(s)</th>
-				<th class="hdr_row" data-sort="std">Info Web Page</th>
+				<tr>
+					<th class="hdr_row" data-sort="std">General Location</th>
+					<th class="hdr_row" data-sort="std">Hike/Trail Name</th>
+					<th class="hdr_row" data-sort="lan">Length</th>
+					<th class="hdr_row" data-sort="lan">Elev Chg</th>
+					<th class="hdr_row" data-sort="std">Rel Difficulty</th>
+					<th class="hdr_row" data-sort="std">Album link(s)</th>
+					<th class="hdr_row" data-sort="std">Info Web Page</th>
+				</tr>
 			</thead>
 			<tbody>
 				<tr>
@@ -241,7 +250,7 @@
 		<br />
 		<p id="closer" class="grid_16 alpha omega"> If you see something that you'd like to comment on - suggestions, 
 		improvements, things not working,
-		etc... <a href="mailto:krcowles29@gmail.com">email us!<a/>
+		etc... <a href="mailto:krcowles29@gmail.com">email us!</a>
 		</p>
 	</div> <!-- end of 960, 16-column container -->
 	<script src="scripts/jquery-1.12.1.js"></script>
