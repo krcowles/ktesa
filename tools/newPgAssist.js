@@ -343,9 +343,9 @@ jQuery.get(tsvFile, function(txt_data) {
                     lnk += '\n\t\t<li>' + albPics[picId] + '</li>';
                     picId++;
     	        } // end FOR, next, place iframe
-    	        pic += '\n\t<scan><iframe id="theMap" height="' + floorHeight +
+    	        pic += '\n\t<iframe id="theMap" height="' + floorHeight +
                        '" width="' + floorHeight + '" src="' + geoMap +
-                       '"></iframe></scan>\n</div>';
+                       '"></iframe>\n</div>';
 	        } // end IF-ELSE
 	    } else { // images only loop:
 	        for ( var r=0; r<noOfPix; r++ ) {
