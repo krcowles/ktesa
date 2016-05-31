@@ -278,6 +278,7 @@ jQuery.get(tsvFile, function(txt_data) {
                var tryHt;
                var lastWidth;
     	       buildWidth = 0;
+    	       var calcNewWidth;
     	       while ( marg >= 100 ) {
     	           mult = 1.1 * mult;
     	           tryHt = mult * rowHeight;
@@ -286,8 +287,10 @@ jQuery.get(tsvFile, function(txt_data) {
     	           for ( var p=0; p<itmCnt; p++ ) {
     	               if ( p == (itmCnt-1) && inclFrame ) {
     	                   buildWidth += tryHt + 5; // 5px for iframe border
+    	                   calcNewWidth = false;
     	               } else {
     	                   buildWidth += mult * newWidths[p] + 14;
+    	                   calcNewWidth = true;
     	               }
     	               msg = '<p> for p = ' + p + ', bld = ' + buildWidth + '</p>';
     	               $('#tmp_dump_area').append(msg);
@@ -296,6 +299,10 @@ jQuery.get(tsvFile, function(txt_data) {
     	                   tryHt = optHeight;
     	                   marg = 99; // break out of the "while" - no more tries
     	                   break; // out of FOR loop
+    	               }
+    	               // capture the new picWidth for html before trying hext height
+    	               if ( calcNewWidth ) {
+    	               		picWidths[curPic+p] = mult * newWidths[p];
     	               }
     	               marg = rowLineWidth - buildWidth;
     	           }  // end FOR
