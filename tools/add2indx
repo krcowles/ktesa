@@ -249,7 +249,7 @@ good="NotOK"
 while
         [ $good != OK ]
 do
-	read -p "Do you wish to permanently save these changes in $indxLoc [Y/N]?" ans
+	read -p "Do you wish to permanently save these changes in $indxLoc [Y/N]? " ans
 	case $ans in
 	    [nN]* ) echo "$indxLoc unchanged; Changes reside in newindex.html"
 		    good="OK" ;;
