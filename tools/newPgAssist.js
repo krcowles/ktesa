@@ -35,7 +35,7 @@ var maxHeight = rowHeight; // will track the biggest optimization
 var picWidths = new Array();
 var rowPicWidth = $('.bodyBox').css('width');
 var rowChIndx = rowPicWidth.indexOf('px');
-var rowLineWidth = rowPicWidth.substring(0,rowChIndx);
+var rowLineWidth = rowPicWidth.substring(0,rowChIndx) - 14;
 var rowMargin;
 var curPic = 0;
 var curRowWidth = 0;
