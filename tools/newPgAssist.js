@@ -266,6 +266,10 @@ jQuery.get(tsvFile, function(txt_data) {
 	    } else {
             if ( marg > 310 ) { // at least grow it a little bit!
                 optHeight = 1.4 * rowHeight;
+                // calculate new picWidths (if only iFrame, routine already exited)
+                for ( var m=curPic; m<noOfPics; m++ ) {
+                	picWidths[m] = 1.4 * picWidths[m];
+                }
                 return parms = [picsInRow, optHeight, inclFrame, marg];
             } else {
     	       // try increasing rowHeight by 10% per try until optimally filled
