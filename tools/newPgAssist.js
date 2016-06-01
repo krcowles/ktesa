@@ -425,17 +425,19 @@ jQuery.get(tsvFile, function(txt_data) {
                     $('#tmp_dump_area').append(msg);
                     // the last row height is the one to be applied 
                     var pratio = fctArgs[1]/rowHeight;
-                    picWidths[noOfPics] = pratio * picWidths[noOfPics];
-                    msg = '<p>Width for graph is: ' + picWidths[noOfPics] + 
+                    var chartWidth = pratio * picWidths[noOfPics];
+                    chartWidth = Math.floor(chartWidth);
+                    msg = '<p>Width for graph is: ' +  + 
                             ' if row height is ' + fctArgs[1] + '</p>';
                     $('#tmp_dump_area').append(msg);
                     // now see if graph fits on last row...
-                    if ( picWidths[noOfPics] + 7 <= fctArgs[3] ) {
+                    if ( chartWidth + 7 <= fctArgs[3] ) {
                         // ok, append graph
                         msg = '<p>Chart appended to last row</p>';
                         $('#tmp_dump_area').append(msg);
-                        msg = '\n\t<img id="chart" height ="' + fctArgs[1] +
-                                '" src="' + egraph + '" alt="Elevation Chart" />';
+                        msg = '\n\t<img id="chart" height ="' + Math.floor(fctArgs[1]) +
+                        		'" width="' + chartWidth + '" src="' +
+                                egraph + '" alt="Elevation Chart" />';
                         msg += '\n</div>';
                         pic = pic.substring(0,pic.length-7) + msg;
                     } else {
@@ -444,7 +446,8 @@ jQuery.get(tsvFile, function(txt_data) {
                         $('#tmp_dump_area').append(msg);
                         imgRowNo++;
                         msg = '\n<div id="row' + imgRowNo + '" class="ImgRow Solo">'
-                            + '\n\t<img id="chart" height="' + maxHeight + '" src="' +
+                            + '\n\t<img id="chart" height="' + Math.floor(maxHeight) + 
+                            '" width="' + chartWidth + '" src="' +
                             egraph + '" alt="Elevation Chart" />\n</div>';
                         pic += msg;
                     }
