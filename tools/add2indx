@@ -1,5 +1,5 @@
 #!/bin/bash
-# VERSION 1.0;
+# VERSION 2.0;
 # NOTE: Flags which have arguments must have a space between the flag and argument
 # Specify starting & default values for shell variables 
 FILESRC=0
@@ -19,6 +19,9 @@ do
         case $i in
 	-p) FILESRC=1 ;;
 	-h) echo "
+*** Version 2.0
+Added prompt to locate region of NM Map in which hike occurred
+
 *** Version 1.0
 This utility will prompt the user for input to create a new row in \"index.html\".
 Inputs will be verified by the user before creating the html.
@@ -53,6 +56,7 @@ do
     esac
 done
 good="NotOK"
+read -p "Enter a number corresponding to the Region in which this hike occurs: " region
 read -p "Enter the name of the hike location (nearest city): " city
 read -p "Enter hike name: " hike
 if [ $notindx -gt 0 ]
@@ -72,6 +76,19 @@ read -p "Enter hike html page (assumed to be in project pages dir with .html ext
 read -p "Enter link name to appear for html page: " wbpgName
 echo "Check the data for accuracy before proceeding:"
 # ----------------- TEST THE INPUT DATA --------------------
+while
+	[ $good != OK ]
+do
+	msg=$'\nRegion on NM of hike: '
+	echo "$msg" $region
+	read -p "Is the region of the hike Correct? [Y or N]: " answer
+	case $answer in
+		[nN]* ) read -p "Enter correct region: " region;;
+		[yY]* ) good="OK";;
+		* ) echo "Y or N only please!";;
+	esac
+done
+good="NotOK"
 while
 	[ $good != OK ]
 do
@@ -201,7 +218,7 @@ good="NotOK"
 # Now, create the new table entry:
 if [ $notindx -gt 0 ] 
 then {
-	echo "                          <tr>
+	echo "                          <tr class=\"reg""$region"\"">
                                         <td>""$city""</td>
                                         <td>""$hike""</td>
                                         <td>""$miles"" miles</td>
