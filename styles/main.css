@@ -4,6 +4,8 @@ body {
 	background-color: #dadada; }
 a:visited {
 	color: DarkGreen; }
+.container_16 {
+	position: relative; }
 #tompic {
 	display: block;
 	float: right; }

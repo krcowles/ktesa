@@ -18,13 +18,13 @@
 	background: Khaki; }
 #hikes1 {
 	position: absolute;
-	top: 60px;
+	top: 52px;
 	left: 40px; 
 	color: Blue;
 	font-size: 14px; }
 #hikes2 {
 	position: absolute;
-	top: 60px;
+	top: 52px;
 	left: 275px;
 	color: Blue; 
 	font-size: 14px; }
@@ -47,19 +47,19 @@
 	background: LightGray; }
 #hikes3 {
 	position: absolute;
-	top: 190px;
+	top: 182px;
 	left: 25px;
 	color: Blue; 
 	font-size: 14px; }
 #hikes4 {
 	position: absolute;
-	top: 190px;
+	top: 182px;
 	left: 140px;
 	color: Blue; 
 	font-size: 14px; }
 #hikes5 {
 	position: absolute;
-	top: 190px;
+	top: 182px;
 	left: 320px;
 	color: Blue; 
 	font-size: 14px; }
@@ -76,13 +76,13 @@
 	background: #c7dde1; }
 #hikes6 {
 	position: absolute;
-	top: 320px;
+	top: 312px;
 	left: 100px;
 	color: Blue; 
 	font-size: 14px; }
 #hikes7 {
 	position: absolute;
-	top: 320px;
+	top: 312px;
 	left: 300px;
 	color: Blue; 
 	font-size: 14px; }
@@ -91,12 +91,6 @@
 	width: 180px;
 	height: 15px;
 	background: #f7d9e2; }
-#btm1 {
-	display: inline-block;
-	margin-left: -4px;
-	width: 270px;
-	height: 15px;
-	background: brown; }
 #nmbtm2 {
 	display: inline-block;
 	width: 60px;
@@ -118,7 +112,7 @@
 /* Cities & Names */
 #santafe {
 	position: absolute;
-	top: 114px;
+	top: 106px;
 	left: 242px;
 	width: 8px;
 	height: 8px;
@@ -128,12 +122,12 @@
 	border-radius: 4px; }
 #sftxt {
 	position: absolute;
-	top: 111px;
+	top: 103px;
 	left: 256px;
 	font-size: 12px; }
 #abq {
 	position: absolute;
-	top: 161px;
+	top: 153px;
 	left: 186px;
 	width: 12px;
 	height: 12px;
@@ -143,12 +137,12 @@
 	border-radius: 6px; }
 #abqtxt {
 	position: absolute;
-	top: 161px;
+	top: 153px;
 	left: 200px;
 	font-size: 14px; }
 #socor {
 	position: absolute;
-	top: 243px;
+	top: 235px;
 	left: 163px;
 	width: 8px;
 	height: 8px;
@@ -158,12 +152,12 @@
 	border-radius: 4px; }
 #soctxt {
 	position: absolute;
-	top: 241px;
+	top: 233px;
 	left: 176px;
 	font-size: 12px; }
 #gallup {
 	position: absolute;
-	top: 127px;
+	top: 119px;
 	left: 27px;
 	width: 8px;
 	height: 8px;
@@ -173,12 +167,12 @@
 	border-radius: 4px; }
 #galtxt {
 	position: absolute;
-	top: 125px;
+	top: 117px;
 	left: 40px;
 	font-size: 12px; }
 #scity {
 	position: absolute;
-	top: 345px;
+	top: 337px;
 	left: 52px;
 	width: 8px;
 	height: 8px;
@@ -188,12 +182,12 @@
 	border-radius: 4px; }
 #scitytxt {
 	position: absolute;
-	top: 344px;
+	top: 336px;
 	left: 65px;
 	font-size: 12px; }
 #lascruces {
 	position: absolute;
-	top: 384px;
+	top: 376px;
 	left: 177px;
 	width: 8px;
 	height: 8px;
@@ -203,12 +197,12 @@
 	border-radius: 4px; }
 #lctxt {
 	position: absolute;
-	top: 382px;
+	top: 374px;
 	left: 190px;
 	font-size: 12px; }
 #ros {
 	position: absolute;
-	top: 294px;
+	top: 286px;
 	left: 355px;
 	width: 8px;
 	height: 8px;
@@ -218,12 +212,12 @@
 	border-radius: 4px; }
 #rostxt {
 	position: absolute;
-	top: 292px;
+	top: 284px;
 	left: 367px;
 	font-size: 12px; }
 #raton {
 	position: absolute;
-	top: 16px;
+	top: 8px;
 	left: 355px;
 	width: 8px;
 	height: 8px;
@@ -233,12 +227,12 @@
 	border-radius: 4px; }
 #rattxt {
 	position: absolute;
-	top: 14px;
+	top: 6px;
 	left: 368px;
 	font-size: 12px; }
 #srosa {
 	position: absolute;
-	top: 173px;
+	top: 165px;
 	left: 336px;
 	width: 8px;
 	height: 8px;
@@ -248,12 +242,12 @@
 	border-radius: 4px; }
 #srosatxt {
 	position: absolute;
-	top: 171px;
+	top: 163px;
 	left: 349px;
 	font-size: 12px; }
 #farm {
 	position: absolute;
-	top: 28px;
+	top: 20px;
 	left: 69px;
 	width: 8px;
 	height: 8px;
@@ -263,12 +257,12 @@
 	border-radius: 4px; }
 #farmtxt {
 	position: absolute;
-	top: 25px;
+	top: 17px;
 	left: 82px;
 	font-size: 12px; }
 #cbad {
 	position: absolute;
-	top: 373px;
+	top: 365px;
 	left: 378px;
 	width: 8px;
 	height: 8px;
@@ -278,7 +272,7 @@
 	border-radius: 4px; }
 #cbadtxt {
 	position: absolute;
-	top: 371px;
+	top: 363px;
 	left: 391px;
 	font-size: 12px; }
 #btm1 {

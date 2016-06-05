@@ -36,7 +36,6 @@ for ( var j=0; j<7; j++ ) {
 	regIndx = '.reg' + (j + 1);
 	$regRows[j] = $(regIndx);
 }
-
 // get count of hikes for each region
 var regCnt = new Array();
 var totalHikes = 0;
@@ -54,6 +53,8 @@ $regHikes.each( function() {
 	this.textContent = curCnt;
 	i++;
 })
+
+window.onload = function() {
 // get offset from everything prior to the map and centering of the map
 var nwLoc = $('#nmnw').offset();
 var topLoc = Math.floor(nwLoc.top);
@@ -73,7 +74,7 @@ $('.tloc').each( function() {
 	$(this).css('top',topAdj);
 	$(this).css('left',leftAdj);
 });
-
+}
 
 // Create the tables for each specific region
 var regRowTblDat = new Array();
