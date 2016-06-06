@@ -3,6 +3,28 @@ $( function () { // anonymous function waits until page is loaded
 
 var msg;  // for printing info during debug
 
+function getBrowserInfo()
+{
+	var ua = navigator.userAgent, tem,
+	M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+	if(/trident/i.test(M[1]))
+	{
+		tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+		return 'IE '+(tem[1] || '');
+	}
+	if(M[1]=== 'Chrome')
+	{
+		tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+		if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+	}
+	M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+	if((tem= ua.match(/version\/(\d+)/i))!= null) 
+		M.splice(1, 1, tem[1]);
+	return M.join(' ');
+}
+var browserInfo = getBrowserInfo();
+
+
 // Form the table header & tail for each of the regions
 var tblHtml = '<table class="rsortable">';
 tblHtml += ' <colgroup>';
@@ -54,26 +76,27 @@ $regHikes.each( function() {
 	i++;
 })
 
-window.onload = function() {
-// get offset from everything prior to the map and centering of the map
-var nwLoc = $('#nmnw').offset();
-var topLoc = Math.floor(nwLoc.top);
-var leftLoc = Math.floor(nwLoc.left);
-// adjust cities & text w/absolute positioning for current location
-$('.tloc').each( function() {
-	var toff = $(this).css('top');
-	var loff = $(this).css('left');
-	var tindx = toff.indexOf('px');
-	var lindx = loff.indexOf('px');
-	var oldTop = parseFloat(toff.substring(0,tindx));
-	var oldLeft = parseFloat(loff.substring(0,lindx));
-	var newTop = oldTop + topLoc;
-	var newLeft = oldLeft + leftLoc -4;
-	var topAdj = newTop + 'px';
-	var leftAdj = newLeft + 'px';
-	$(this).css('top',topAdj);
-	$(this).css('left',leftAdj);
-});
+window.onload = function() { // AFTER window loads, it is safe to use $.offset()
+	// get offset from everything prior to the map and centering of the map
+	var nwLoc = $('#nmnw').offset();
+	var topLoc = parseInt(nwLoc.top);
+	var leftLoc = parseInt(nwLoc.left);
+
+	// adjust cities & text w/absolute positioning for current location
+	$('.tloc').each( function() {
+		var toff = $(this).css('top');
+		var loff = $(this).css('left');
+		var tindx = toff.indexOf('px');
+		var lindx = loff.indexOf('px');
+		var oldTop = parseFloat(toff.substring(0,tindx));
+		var oldLeft = parseFloat(loff.substring(0,lindx));
+		var newTop = oldTop + topLoc - 8; //8 is page margin
+		var newLeft = oldLeft + 254; //254 is the centering offset
+		var topAdj = newTop + 'px';
+		var leftAdj = newLeft + 'px';
+		$(this).css('top',topAdj);
+		$(this).css('left',leftAdj);
+	});
 }
 
 // Create the tables for each specific region
@@ -106,7 +129,7 @@ $('#getWholeTbl').on('click', function() {
 	$tblArea.css('display','none');
 	$('#wholeTbl').css('display','block');
 });
-// regional sorting
+
 var compare = {
 	std: function(a,b) {	// standard sorting - literal
 		if ( a < b ) {
