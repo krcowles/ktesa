@@ -297,6 +297,10 @@
 	display: none; }
 #getWholeTbl {
 	cursor: pointer; }
+.region  {
+	cursor: pointer; }
+.tloc {
+	cursor: pointer; }
 /* Tried to apply tapers to NM map, but seemed tricky, so omitted:
 #leftside-triangle {
 	display: inline-block;
