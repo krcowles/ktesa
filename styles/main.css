@@ -12,6 +12,12 @@ a:visited {
 #tompic {
 	display: block;
 	float: right; }
+img.webShift {
+	padding-left: 19px; }
+img.flckrShift {
+	padding-left: 15px; }
+img.expShift {
+	padding-left: 24px; }
 #banner {
 	height: 58px;
 	margin-left: 8px;
@@ -49,10 +55,6 @@ a:visited {
 	border-width: 2px;
 	border-color: #d4e8d4;
 	text-align: center; }
-body img {
-	margin-right: 10px;
-	margin-left: 10px;
-	}
 /* table dressing */
 #tbl_index {
 	text-align: center;
@@ -93,6 +95,8 @@ td {
 	cursor: pointer; }
 .dressing {
 	display: none; }
+.indxd {
+	color: brown; }
 
 	
 	

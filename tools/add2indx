@@ -1,6 +1,5 @@
 #!/bin/bash
-# VERSION 2.0;
-# NOTE: Flags which have arguments must have a space between the flag and argument
+# VERSION 3.0;
 # Specify starting & default values for shell variables 
 FILESRC=0
 indxLoc="./index.html"
@@ -19,6 +18,9 @@ do
         case $i in
 	-p) FILESRC=1 ;;
 	-h) echo "
+*** Version 3.0
+Added prompt to identify expected exposure 
+
 *** Version 2.0
 Added prompt to locate region of NM Map in which hike occurred
 
@@ -28,6 +30,7 @@ Inputs will be verified by the user before creating the html.
 
 Use the -p flag to specify the path to the index.html file if not local.
 Do not include the \"/\" at the end of the path, nor the index.html filename.
+For example:   ../../ktesa
 
 The user will have the opportunity to save the file to index.html, or save only
 the local copy, \"newindex.html\" if review is desired before saving to index.html
@@ -36,10 +39,13 @@ the local copy, \"newindex.html\" if review is desired before saving to index.ht
 	exit;;
         esac
 done
+echo ""
 echo "The file:" "$indxLoc" "will be modified (if user opts) to add a row to the table"
 fext=.html
 echo ""
+# start prompting for data, depending on whether or not the entry is an index site:
 good="NotOK"
+echo ""
 while
 	[ $good != "OK" ]
 do
@@ -48,33 +54,35 @@ do
         [nN]* ) notindx=1
 		good="OK";;
         [yY]* ) notindx=0
-		echo "The Flickr album entry will state: See Index Page"
-		echo "Miles will indicate: 0*"
-		echo "Use max elevation & difficulty of all hikes for those entries"
+		echo "The following parameters will indicate:\" See Index\""
+		echo "    Distance"
+		echo "    Elevation"
+		echo "    Difficulty"
+		echo "    Flickr album entry"
+		echo "Row class will be \"indxd\""
 		good="OK";;
         * ) echo "Y or N only please!";;
     esac
 done
 good="NotOK"
-read -p "Enter a number corresponding to the Region in which this hike occurs: " region
+echo ""
+read -p "Enter a number corresponding to the Region in which this/these hike(s) occurs: " region
 read -p "Enter the name of the hike location (nearest city): " city
 read -p "Enter hike name: " hike
 if [ $notindx -gt 0 ]
 then {
 	read -p "Enter hike distance (round trip) in miles: " miles
-}
-fi
-read -p "Enter hike elevation max in feet: " elev
-read -p "Enter hike difficulty: " ease
-if [ $notindx -gt 0 ]
-then {
+	read -p "Enter hike elevation max in feet: " elev
+	read -p "Enter hike difficulty: " ease
+	read -p "Enter S (sunny-exposed), M (mix sun-shade), or W (well-shaded): " exp
 	read -p "Enter hike Flickr album link (url): " flnk
 	read -p "Enter link name to appear for Flickr album: " flnkName
 }
 fi
-read -p "Enter hike html page (assumed to be in project pages dir with .html extension): " webpg
+read -p "Enter hike (or index site) html page (assumed to be in project pages dir with .html extension): " webpg
 read -p "Enter link name to appear for html page: " wbpgName
-echo "Check the data for accuracy before proceeding:"
+echo ""
+echo "*** Check the data for accuracy before proceeding ***"
 # ----------------- TEST THE INPUT DATA --------------------
 while
 	[ $good != OK ]
@@ -115,8 +123,10 @@ do
     esac
 done
 good="NotOK"
+# if the entry is not an index site, prompt for the distance, elevation, ease of hike::
 if [ $notindx -gt 0 ]
 then {
+	# DISTANCE:
 	while
 	        [ $good != OK ]
 	do
@@ -130,36 +140,88 @@ then {
 	    esac
 	done
 	good="NotOK"
-}
-fi
-while
-        [ $good != OK ]
-do
-    msg=$'\nElevation (feet): '
-    echo "$msg" $elev
-    read -p "Is the elevation in feet correct? [Y or N]: " answer
-    case $answer in
-        [nN]* ) read -p "Enter correct elevation in feet here: " elev;;
-        [yY]* ) good="OK";;
-        * ) echo "Y or N only please!";;
-    esac
-done
-good="NotOK"
-while
-        [ $good != OK ]
-do
-    msg=$'\nEase of hike: '
-    echo "$msg" $ease
-    read -p "Is the ease-of-hike rating correct? [Y or N]: " answer
-    case $answer in
-        [nN]* ) read -p "Enter correct ease-of-hike rating here: " ease;;
-        [yY]* ) good="OK";;
-        * ) echo "Y or N only please!";;
-    esac
-done
-good="NotOK"
-if [ $notindx -gt 0 ]
-then {
+	# ELEVATION:
+	while
+       	 [ $good != OK ]
+	do
+	    msg=$'\nElevation (feet): '
+	    echo "$msg" $elev
+	    read -p "Is the elevation in feet correct? [Y or N]: " answer
+	    case $answer in
+	        [nN]* ) read -p "Enter correct elevation in feet here: " elev;;
+	        [yY]* ) good="OK";;
+	        * ) echo "Y or N only please!";;
+	    esac
+	done
+	good="NotOK"
+	# EASE OF HIKE:
+	while
+       	 [ $good != OK ]
+	do
+	    msg=$'\nEase of hike: '
+	    echo "$msg" $ease
+	    read -p "Is the ease-of-hike rating correct? [Y or N]: " answer
+	    case $answer in
+	        [nN]* ) read -p "Enter correct ease-of-hike rating here: " ease;;
+	        [yY]* ) good="OK";;
+	        * ) echo "Y or N only please!";;
+	    esac
+	done
+	good="NotOK"
+	# EXPOSURE RATING:
+	# FIRST: check exposure rating;
+	case $exp in
+	    [mMsSwW] ) setting="OK" ;;
+	    * ) setting="notOK" ;;
+	esac
+	# if the setting was incorrect to begin with, get a legitimate one:
+	if [ $setting != OK ]
+	then
+	    while [ $setting != OK ]
+	    do
+		echo ""
+	        echo "Exposure factor is incorrectly set to" "$exp"
+	        read -p "Enter S (sunny-exposed), M (mix sun-shade), or W (well-shaded) only: " exp
+		case $exp in
+		    [mMsSwW] ) setting="OK" ;;
+		    * )  setting="notOK" ;;
+		esac
+	    done
+	fi
+	# now that there is a legitimate setting, ask the user if it is the one desired:
+	while 
+	    [ $good != OK ]
+	do
+	    msg=$'\nExposure Factor: '
+	    echo "$msg" $exp
+	    read -p "Is the Exposure Factor correctly specified? [Y or N]: " answer
+	    case $answer in
+		# if not, prompt and test the entry until it is qualified:
+		[nN]* ) read -p "Enter S (sunny-exposed), M (mix sun-shade), or W (well-shaded) only: " exp
+			# Make sure it is qualified:
+			case $exp in
+				[mMsSwW] ) setting="OK" ;;
+				* ) setting="notOK" ;;
+			esac
+			if [ $setting != OK ]
+			then	
+				while [ $setting != OK ]
+				do
+					echo ""
+					echo "Exposure factor is incorrectly set to" "$exp"
+					read -p "Enter S (sunny-exposed), M (mix sun-shade), or W (well-shaded) only: " exp
+					case $exp in
+						[mMsSwW] ) setting="OK" ;;
+						* ) setting="notOK" ;;
+					esac
+				done
+			fi ;;
+		[yY]* ) good="OK" ;;
+		* ) echo "Y or N only please!" ;;
+	    esac
+	done
+	good="NotOK"
+	# NEXT, Check Flickr album line
 	while
     	    [ $good != OK ]
 	do
@@ -173,6 +235,7 @@ then {
 	    esac
 	done
 	good="NotOK"
+	# LASTLY, Check Flickr album link name
 	while
 	        [ $good != OK ]
 	do
@@ -188,6 +251,7 @@ then {
 	good="NotOK"
 }
 fi
+# whether an index site or not, prompt for the following:
 while
         [ $good != OK ]
 do
@@ -215,30 +279,37 @@ do
 done
 good="NotOK"
 # ----------------------- END OF INPUT DATA TESTING ----------------------
+# translate the Exposure Rating letter into the corresponding class name:
+case $exp in
+	[mM] ) expClass="mix" ;;
+	[sS] ) expClass="s-e" ;;
+	[wW] ) expClass="w-s" ;;
+esac
 # Now, create the new table entry:
 if [ $notindx -gt 0 ] 
 then {
-	echo "                          <tr class=\"reg""$region"\"">
-                                        <td>""$city""</td>
-                                        <td>""$hike""</td>
-                                        <td>""$miles"" miles</td>
-                                        <td>""$elev"" ft</td>
-                                        <td>""$ease""</td>
-                                        <td><a href=\"""$flnk""\" target=\"_blank\">""$flnkName""</a></td>
-                                        <td><a href=\"pages/""$webpg"".html""\" target=\"_blank\">""$wbpgName""</a></td>
-                                </tr>" > newRow
+	echo "                        <tr class=\"reg""$region" "$expClass"\"">
+                                    <td>""$city""</td>
+                                    <td>""$hike""</td>
+                                    <td>""$miles"" miles</td>
+                                    <td>""$elev"" ft</td                                    >
+                                    <td>""$ease""</td>
+                                    <td><a href=\"""$flnk""\" target=\"_blank\">""$flnkName""</a></td>
+                                    <td><a href=\"pages/""$webpg"".html""\" target=\"_blank\">""$wbpgName""</a></td>
+                        </tr>" > newRow
 
 }
 else {
-	echo "				<tr>
-					<td>""$city""</td>
-					<td>""$hike""</td>
-					<td>0* miles</td>
-					<td>""$elev"" ft</td>
-					<td>""$ease""</td>
-					<td>See Index Page</td>
-					<td><a href=\"pages/""$webpg"".html""\" target=\"_blank\">""$wbpgName""</a></td>
-				</tr>" > newRow
+# if an index site, some parameters are automatically assigned or empty:
+	echo "                        <tr class=\"indxd\">
+                                    <td>""$city""</td>
+                                    <td>""$hike""</td>
+                                    <td>See Index</td>
+                                    <td>See Index</td>
+                                    <td>See Index</td>
+                                    <td>See Index</td>
+                                    <td><a href=\"pages/""$webpg"".html""\" target=\"_blank\">""$wbpgName""</a></td>
+                        </tr>" > newRow
 }
 fi
 # pull in the index.html file:

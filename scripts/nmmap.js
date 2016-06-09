@@ -1,53 +1,34 @@
 $( function () { // anonymous function waits until page is loaded
-// CONVENTION: variable names preceded by '$' represent node lists
+// CONVENTION: variable names preceded by '$' represent jQuery node lists
 
 var msg;  // for printing info during debug
-
-function getBrowserInfo()
-{
-	var ua = navigator.userAgent, tem,
-	M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-	if(/trident/i.test(M[1]))
-	{
-		tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
-		return 'IE '+(tem[1] || '');
-	}
-	if(M[1]=== 'Chrome')
-	{
-		tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
-		if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
-	}
-	M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-	if((tem= ua.match(/version\/(\d+)/i))!= null) 
-		M.splice(1, 1, tem[1]);
-	return M.join(' ');
-}
-var browserInfo = getBrowserInfo();
-
 
 // Form the table header & tail for each of the regions
 var tblHtml = '<table class="rsortable">';
 tblHtml += ' <colgroup>';
 tblHtml += '  <col style="width:180px">';
-tblHtml += '  <col style="width:160px">';
-tblHtml += '  <col style="width:72px">';
+tblHtml += '  <col style="width:170px">';
+tblHtml += '  <col style="width:70px">';
 tblHtml += '  <col style="width:78px">';
 tblHtml += '  <col style="width:100px">';
-tblHtml += '  <col style="width:160px">';
-tblHtml += '  <col style="width:170px">';
+tblHtml += '  <col style="width:100px">';
+tblHtml += '  <col style="width:70px">';
+tblHtml += '  <col style="width:70px">';
 tblHtml += ' <colgroup>';
 tblHtml += ' <thead>';
 tblHtml += '  <tr>';
 tblHtml += '   <th class="hdr_row" data-sort="std">General Location</th>';
 tblHtml += '   <th class="hdr_row" data-sort="std">Hike/Trail Name</th>';
+tblHtml += '   <th class="hdr_row">Web Pg</th>';
 tblHtml += '   <th class="hdr_row" data-sort="lan">Length</th>';
 tblHtml += '   <th class="hdr_row" data-sort="lan">Elev Chg</th>';
-tblHtml += '   <th class="hdr_row" data-sort="std">Rel Difficulty</th>';
-tblHtml += '   <th class="hdr_row" data-sort="std">Album link(s)</th>';
-tblHtml += '   <th class="hdr_row" data-sort="std">Info Web Page</th>';
+tblHtml += '   <th class="hdr_row" data-sort="std">Difficulty</th>';
+tblHtml += '   <th class="hdr_row">Exposure</th>';
+tblHtml += '   <th class="hdr_row">Flickr</th>';
 tblHtml += '  </tr>';
 tblHtml += ' </thead>';
 tblHtml += '<tbody>';
+
 var endTbl = '</tbody>';
 endTbl += '</table>';
 
@@ -82,7 +63,7 @@ window.onload = function() { // AFTER window loads, it is safe to use $.offset()
 	var topLoc = parseInt(nwLoc.top);
 	var leftLoc = parseInt(nwLoc.left);
 
-	// adjust cities & text w/absolute positioning for current location
+	// adjust cities & text using absolute positioning for centered map
 	$('.tloc').each( function() {
 		var toff = $(this).css('top');
 		var loff = $(this).css('left');
@@ -90,12 +71,12 @@ window.onload = function() { // AFTER window loads, it is safe to use $.offset()
 		var lindx = loff.indexOf('px');
 		var oldTop = parseFloat(toff.substring(0,tindx));
 		var oldLeft = parseFloat(loff.substring(0,lindx));
-		var newTop = oldTop + topLoc - 8; //8 is page margin
-		var newLeft = oldLeft + 254; //254 is the centering offset
+		var newTop = oldTop + topLoc - 8; // 8 is page margin
+		var newLeft = oldLeft + 255; //255 : map centering (960body - 450map)/2
 		var topAdj = newTop + 'px';
 		var leftAdj = newLeft + 'px';
 		$(this).css('top',topAdj);
-		$(this).css('left',leftAdj);
+		$(this).css('left',leftAdj)
 	});
 }
 
@@ -111,10 +92,10 @@ for ( var m=0; m<7; m++ ) {
 	}  else {
 		// collect whatever row data exists
 		regRowTblDat[m] = tblHtml;
-		//regRowId = 'reg' + (m + 1);
 		$regRows[m].each( function() {
-			//regRowTblDat[m] += ' <tr class="' + regRowId + '">';
-			regRowTblDat[m] += ' <tr>';
+			// get class info for this row
+			var classInfo = $(this).attr('class');
+			regRowTblDat[m] += ' <tr class="' + classInfo + '">';
 			regRowTblDat[m] += $(this).html() + ' </tr>';
 		});
 		regRowTblDat[m] += endTbl;
@@ -127,6 +108,7 @@ for ( var m=0; m<7; m++ ) {
 // to see the whole table...
 $('#getWholeTbl').on('click', function() {
 	$tblArea.css('display','none');
+	$('.dressing').css('display','block');
 	$('#wholeTbl').css('display','block');
 });
 
@@ -341,5 +323,26 @@ $('.cities').on('click', function(cit) {
 	}	
 });
 
+// as needed... (but not currently used)
+function getBrowserInfo()
+{
+	var ua = navigator.userAgent, tem,
+	M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+	if(/trident/i.test(M[1]))
+	{
+		tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+		return 'IE '+(tem[1] || '');
+	}
+	if(M[1]=== 'Chrome')
+	{
+		tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+		if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+	}
+	M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+	if((tem= ua.match(/version\/(\d+)/i))!= null) 
+		M.splice(1, 1, tem[1]);
+	return M.join(' ');
+}
+var browserInfo = getBrowserInfo();
 
-}); // end page loaded
+}); // end function for page loading
