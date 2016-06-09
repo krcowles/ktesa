@@ -301,6 +301,9 @@
 	cursor: pointer; }
 .tloc {
 	cursor: pointer; }
+.rsortable {
+	margin-left: auto;
+	margin-right: auto; }
 /* Tried to apply tapers to NM map, but seemed tricky, so omitted:
 #leftside-triangle {
 	display: inline-block;
