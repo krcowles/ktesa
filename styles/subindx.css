@@ -26,9 +26,11 @@ body {
 .gray {
 	color: gray; }
 img {
-	margin-left: 80px;
-	margin-top: 10px;
- }
+	margin-top: 10px; }
+.mainPic {
+	display: block;
+	margin-left: auto;
+	margin-right: auto; }
  #indxTitle {
  	color: MediumBlue;
  	text-align: center;
