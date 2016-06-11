@@ -1,5 +1,5 @@
 #!/bin/bash
-# VERSION 3.0;
+# VERSION 4.0;
 # Specify starting & default values for shell variables 
 FILESRC=0
 indxLoc="./index.html"
@@ -18,14 +18,18 @@ do
         case $i in
 	-p) FILESRC=1 ;;
 	-h) echo "
-*** Version 3.0
-Added prompt to identify expected exposure 
+*** Version 4.0
+Rewritten to accommodate icon-based index table
+"
+# *** Version 3.0
+# Added prompt to identify expected exposure 
+# *** Version 2.0
+# Added prompt to locate region of NM Map in which hike occurred
+# *** Version 1.0
+	echo "
+This utility will prompt the user for input to create a new row
+in the table for \"index.html\".
 
-*** Version 2.0
-Added prompt to locate region of NM Map in which hike occurred
-
-*** Version 1.0
-This utility will prompt the user for input to create a new row in \"index.html\".
 Inputs will be verified by the user before creating the html.
 
 Use the -p flag to specify the path to the index.html file if not local.
@@ -39,6 +43,15 @@ the local copy, \"newindex.html\" if review is desired before saving to index.ht
 	exit;;
         esac
 done
+# Test for existence of index.html for the path:
+if [ -f $indxLoc ] 
+then
+	echo "using" "$indxLoc" "as basis for potential modification..."
+	echo ""
+else
+	echo "index.html file not found at" "$indxLoc"
+	exit
+fi
 echo ""
 echo "The file:" "$indxLoc" "will be modified (if user opts) to add a row to the table"
 fext=.html
@@ -54,11 +67,12 @@ do
         [nN]* ) notindx=1
 		good="OK";;
         [yY]* ) notindx=0
-		echo "The following parameters will indicate:\" See Index\""
-		echo "    Distance"
-		echo "    Elevation"
-		echo "    Difficulty"
-		echo "    Flickr album entry"
+		echo "The following parameters will be pre-assigned:"
+		echo "    Distance: 0* miles"
+		echo "    Elevation: 0* ft"
+		echo "    Difficulty: See Indx"
+		echo "    Exposure: See Indx"
+		echo "    Flickr album entry: See Indx"
 		echo "Row class will be \"indxd\""
 		good="OK";;
         * ) echo "Y or N only please!";;
@@ -68,7 +82,8 @@ good="NotOK"
 echo ""
 read -p "Enter a number corresponding to the Region in which this/these hike(s) occurs: " region
 read -p "Enter the name of the hike location (nearest city): " city
-read -p "Enter hike name: " hike
+read -p "Enter hike name [Append with \"Index\" for Index pages]: " hike
+read -p "Enter hike (or index site) html page (* Assumed to be in project pages dir with .html extension): " webpg
 if [ $notindx -gt 0 ]
 then {
 	read -p "Enter hike distance (round trip) in miles: " miles
@@ -76,11 +91,8 @@ then {
 	read -p "Enter hike difficulty: " ease
 	read -p "Enter S (sunny-exposed), M (mix sun-shade), or W (well-shaded): " exp
 	read -p "Enter hike Flickr album link (url): " flnk
-	read -p "Enter link name to appear for Flickr album: " flnkName
 }
 fi
-read -p "Enter hike (or index site) html page (assumed to be in project pages dir with .html extension): " webpg
-read -p "Enter link name to appear for html page: " wbpgName
 echo ""
 echo "*** Check the data for accuracy before proceeding ***"
 # ----------------- TEST THE INPUT DATA --------------------
@@ -221,7 +233,7 @@ then {
 	    esac
 	done
 	good="NotOK"
-	# NEXT, Check Flickr album line
+	# LASTLY, Check Flickr album line
 	while
     	    [ $good != OK ]
 	do
@@ -235,22 +247,18 @@ then {
 	    esac
 	done
 	good="NotOK"
-	# LASTLY, Check Flickr album link name
-	while
-	        [ $good != OK ]
-	do
-	    msg=$'\nFlickr album link name: '
-	    echo "$msg" $flnkName
-	    read -p "Is the name of the link to the Flickr ablum correct? [Y or N]: " answer
-	    case $answer in
-	        [nN]* ) read -p "Enter correct link name for Flickr album here: " flnkName;;
-	        [yY]* ) good="OK";;
-	        * ) echo "Y or N only please!";;
-	    esac
-	done
-	good="NotOK"
+	# translate the Exposure Rating letter into the corresponding icon
+	case $exp in
+	        [mM] ) expIcon="images/greenshade.jpg"
+			expTxt="Partial shade icon" ;;
+	        [sS] ) expIcon="images/sun.jpg"
+			expTxt="Full sun - exposed icon" ;;
+	        [wW] ) expIcon="images/shady.png"
+			expTxt="Partial sun/shade icon" ;;
+	esac
 }
 fi
+
 # whether an index site or not, prompt for the following:
 while
         [ $good != OK ]
@@ -264,52 +272,38 @@ do
         * ) echo "Y or N only please!";;
     esac
 done
-good="NotOK"
-while
-        [ $good != OK ]
-do
-    msg=$'\nNAME for the new web page link: '
-    echo "$msg" $wbpgName
-    read -p "Is the name for the link to the new web page correct? [Y or N]: " answer
-    case $answer in
-        [nN]* ) read -p "Enter correct link name here: " wbpgName;;
-        [yY]* ) good="OK";;
-        * ) echo "Y or N only please!";;
-    esac
-done
-good="NotOK"
 # ----------------------- END OF INPUT DATA TESTING ----------------------
-# translate the Exposure Rating letter into the corresponding class name:
-case $exp in
-	[mM] ) expClass="mix" ;;
-	[sS] ) expClass="s-e" ;;
-	[wW] ) expClass="w-s" ;;
-esac
+
 # Now, create the new table entry:
 if [ $notindx -gt 0 ] 
 then {
-	echo "                        <tr class=\"reg""$region" "$expClass"\"">
-                                    <td>""$city""</td>
-                                    <td>""$hike""</td>
-                                    <td>""$miles"" miles</td>
-                                    <td>""$elev"" ft</td                                    >
-                                    <td>""$ease""</td>
-                                    <td><a href=\"""$flnk""\" target=\"_blank\">""$flnkName""</a></td>
-                                    <td><a href=\"pages/""$webpg"".html""\" target=\"_blank\">""$wbpgName""</a></td>
-                        </tr>" > newRow
+	echo "                    <tr class=\"reg""$region"\"">
+                            <td>""$city""</td>
+                            <td>""$hike""</td>
+                            <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
+                                <img class=\"webShift\" src=\"images/greencheck.jpg\" alt=\"checkbox\" /></a></td>
+                            <td>""$miles"" miles</td>
+                            <td>""$elev"" ft</td>
+                            <td>""$ease""</td>
+                            <td><img class=\"expShift\" src=\""$expIcon"\" alt=\""$expTxt"\" /></td>
+                            <td><a href=\""$flnk"\" target=\"_blank\">
+                                <img class=\"flckrShift\" src=\"images/flckr.jpg\" alt=\"Flickr symbol\" /></a></td>
+                    </tr>" > newRow
 
 }
 else {
 # if an index site, some parameters are automatically assigned or empty:
-	echo "                        <tr class=\"indxd\">
-                                    <td>""$city""</td>
-                                    <td>""$hike""</td>
-                                    <td>See Index</td>
-                                    <td>See Index</td>
-                                    <td>See Index</td>
-                                    <td>See Index</td>
-                                    <td><a href=\"pages/""$webpg"".html""\" target=\"_blank\">""$wbpgName""</a></td>
-                        </tr>" > newRow
+	echo "                    <tr class=\"reg""$region"" indxd\">
+                            <td>""$city""</td>
+                            <td>""$hike""</td>
+                            <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
+                                <img class=\"webShift\" src=\"images/indxCheck.png\" alt=\"checkbox\" /></td>
+                            <td>0* miles</td>
+                            <td>0* ft</td>
+                            <td>See Indx</td>
+                            <td>See Indx</td>
+                            <td>See Indx</td>
+                    </tr>" > newRow
 }
 fi
 # pull in the index.html file:
@@ -332,7 +326,12 @@ mv IndxHead.html newindex.html
 rm IndxTail.html
 echo "
 The following data will be added:"
-diff newindex.html "$indxLoc" | tail -9
+if [ $notindx -gt 0 ]
+then
+diff newindex.html "$indxLoc" | tail -12
+else
+diff newindex.html "$indxLoc" | tail -11
+fi
 good="NotOK"
 while
         [ $good != OK ]
