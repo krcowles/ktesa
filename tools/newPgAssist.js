@@ -172,7 +172,7 @@ jQuery.get(tsvFile, function(txt_data) {
 		}  // end of if statement: (gpsv_array[j] == gpsv_array[0])
 	}  // end of for loop
 	
-	/* ****** SECTION 2: correlate the html-specified pix with the loaded array */
+	/* ****** SECTION 2: correlate the html-specified pix with the loaded .tsv array */
 	msg = '<p>NO OF ARRAY ELEMENTS READ IN: ' + i + '</p>';
 	$('#tmp_dump_area').append(msg);
 	var tmp_names = new Array();
@@ -267,7 +267,7 @@ jQuery.get(tsvFile, function(txt_data) {
             if ( marg > 310 ) { // at least grow it a little bit!
                 optHeight = 1.4 * rowHeight;
                 // calculate new picWidths (if only iFrame, routine already exited)
-                for ( var m=curPic; m<noOfPics; m++ ) {
+                for ( var m=curPic; m<(curPic + picsInRow); m++ ) {
                 	picWidths[m] = 1.4 * picWidths[m];
                 }
                 return parms = [picsInRow, optHeight, inclFrame, marg];
@@ -327,7 +327,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	 
 	 
 	/* ****** SECTION 4: function to build html from row created by optRowHt() 
-	    NOTE: Safari can't get widths implicitly, so explicitly specified here*/
+	    NOTE: Safari can't extract widths implicitly, so explicitly specified here*/
 	function bldRow(noOfPix, rowHt, isLast) {
         var floorWidth;
         var floorHeight = Math.floor(rowHt);
