@@ -1,5 +1,5 @@
 #!/bin/bash
-# VERSION 4.0;
+# VERSION 4.1; Added local check for FlckrAlbum link (from mkgpsv)
 # Specify starting & default values for shell variables 
 FILESRC=0
 indxLoc="./index.html"
@@ -18,8 +18,9 @@ do
         case $i in
 	-p) FILESRC=1 ;;
 	-h) echo "
-*** Version 4.0
+*** Version 4.1
 Rewritten to accommodate icon-based index table
+[4.1: added local check for FlckrAlbumURL created by mkgpsv]
 "
 # *** Version 3.0
 # Added prompt to identify expected exposure 
@@ -83,14 +84,19 @@ echo ""
 read -p "Enter a number corresponding to the Region in which this/these hike(s) occurs: " region
 read -p "Enter the name of the hike location (nearest city): " city
 read -p "Enter hike name [Append with \"Index\" for Index pages]: " hike
-read -p "Enter hike (or index site) html page (* Assumed to be in project pages dir with .html extension): " webpg
+read -p "Enter hike (or index site) html page [* Assumed to be in project pages dir with .html extension]: " webpg
 if [ $notindx -gt 0 ]
 then {
 	read -p "Enter hike distance (round trip) in miles: " miles
 	read -p "Enter hike elevation max in feet: " elev
 	read -p "Enter hike difficulty: " ease
 	read -p "Enter S (sunny-exposed), M (mix sun-shade), or W (well-shaded): " exp
-	read -p "Enter hike Flickr album link (url): " flnk
+	if [ -f FlckrAlbumURL ] 
+	then
+		flnk=`cat FlckrAlbumURL`
+	else
+		read -p "Enter hike Flickr album link (url): " flnk
+	fi
 }
 fi
 echo ""
@@ -278,31 +284,31 @@ done
 if [ $notindx -gt 0 ] 
 then {
 	echo "                    <tr class=\"reg""$region"\"">
-                            <td>""$city""</td>
-                            <td>""$hike""</td>
-                            <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
-                                <img class=\"webShift\" src=\"images/greencheck.jpg\" alt=\"checkbox\" /></a></td>
-                            <td>""$miles"" miles</td>
-                            <td>""$elev"" ft</td>
-                            <td>""$ease""</td>
-                            <td><img class=\"expShift\" src=\""$expIcon"\" alt=\""$expTxt"\" /></td>
-                            <td><a href=\""$flnk"\" target=\"_blank\">
-                                <img class=\"flckrShift\" src=\"images/flckr.jpg\" alt=\"Flickr symbol\" /></a></td>
+                        <td>""$city""</td>
+                        <td>""$hike""</td>
+                        <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
+                            <img class=\"webShift\" src=\"images/greencheck.jpg\" alt=\"checkbox\" /></a></td>
+                        <td>""$miles"" miles</td>
+                        <td>""$elev"" ft</td>
+                        <td>""$ease""</td>
+                        <td><img class=\"expShift\" src=\""$expIcon"\" alt=\""$expTxt"\" /></td>
+                        <td><a href=\""$flnk"\" target=\"_blank\">
+                            <img class=\"flckrShift\" src=\"images/flckr.jpg\" alt=\"Flickr symbol\" /></a></td>
                     </tr>" > newRow
 
 }
 else {
 # if an index site, some parameters are automatically assigned or empty:
 	echo "                    <tr class=\"reg""$region"" indxd\">
-                            <td>""$city""</td>
-                            <td>""$hike""</td>
-                            <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
-                                <img class=\"webShift\" src=\"images/indxCheck.png\" alt=\"checkbox\" /></td>
-                            <td>0* miles</td>
-                            <td>0* ft</td>
-                            <td>See Indx</td>
-                            <td>See Indx</td>
-                            <td>See Indx</td>
+                        <td>""$city""</td>
+                        <td>""$hike""</td>
+                        <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
+                            <img class=\"webShift\" src=\"images/indxCheck.png\" alt=\"checkbox\" /></td>
+                        <td>0* miles</td>
+                        <td>0* ft</td>
+                        <td>See Indx</td>
+                        <td>See Indx</td>
+                        <td>See Indx</td>
                     </tr>" > newRow
 }
 fi

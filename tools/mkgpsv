@@ -1,5 +1,5 @@
 #!/bin/bash
-# VERSION 7.0; added -h help flag
+# VERSION 7.1; added -h help flag; save url for add2indx utility use later
 # Specify starting & default values for shell variables 
 FILESRC=0
 SrcFileName=""
@@ -34,6 +34,7 @@ do
 	then {
 		SrcUrl=$i
 		URLSRC=0
+		echo "$SrcUrl" | cat > FlckrAlbumURL
 	}
 	fi
 	# file spec for location of jpg's
@@ -62,7 +63,7 @@ do
         case $i in
 	-f) FILESRC=1 ;;
 	-h) echo "
-*** Version 7.0 
+*** Version 7.1 
 This utility will create a local file called \"GPSVinput.tsv\", suitable for use
 as input (along with the corresponding .GPX file) on the GPSVisualizer website.
 That site will create a geomap providing popup photos from a Flickr album. The Flickr
