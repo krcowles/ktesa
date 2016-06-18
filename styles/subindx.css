@@ -1,6 +1,17 @@
 body {
 	font-family: arial, verdana;
 	background-color: #dadada; }
+#hdrContainer {
+	text-align: center; }
+#tblHdr {
+	display: inline-block;
+	text-align: left;
+	color: DarkGreen;
+	font-size: 16px;
+	margin-left: auto;
+	margin-right: auto; }
+#forceWidth {
+	width: 140px; }
 #siteIndx {
 	background-color: #fffdf;
 	margin-left: auto;
@@ -37,3 +48,11 @@ img {
  	font-size: 24px;
  	margin-top: 6px;
  	margin-bottom: 10px; }
+img.expShift {
+	padding-left: 24px; }
+img.webShift {
+	padding-left: 19px; }
+img.flckrShift {
+	padding-left: 20px; }
+.naShift {
+	text-align: center; }
