@@ -1,5 +1,5 @@
 #!/bin/bash
-# VERSION 4.1; Added local check for FlckrAlbum link (from mkgpsv)
+# VERSION 4.2; Added local check for FlckrAlbum link (from mkgpsv); tweaked help output
 # Specify starting & default values for shell variables 
 FILESRC=0
 indxLoc="./index.html"
@@ -35,6 +35,7 @@ Inputs will be verified by the user before creating the html.
 
 Use the -p flag to specify the path to the index.html file if not local.
 Do not include the \"/\" at the end of the path, nor the index.html filename.
+Specify the path as if you were going to do a \"cd\" to the directory
 For example:   ../../ktesa
 
 The user will have the opportunity to save the file to index.html, or save only
