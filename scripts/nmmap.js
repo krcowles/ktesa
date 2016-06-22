@@ -57,6 +57,24 @@ $regHikes.each( function() {
 	i++;
 })
 
+// get the count of indexed hikes documented to date
+var indxTxt;
+var bracket;
+var slash;
+var indxCnt;
+
+$('tr.indxd').children().each( function() {
+	indxTxt = this.textContent;
+	bracket = indxTxt.indexOf('[') + 1;
+	if ( bracket > 0 ) {
+		slash = indxTxt.indexOf('/');
+		indxCnt = indxTxt.substring(bracket,slash);
+		totalHikes += parseFloat(indxCnt);
+	}
+});
+msg = totalHikes + ' ]';
+$('#hikeCnt').append(msg);
+
 window.onload = function() { // AFTER window loads, it is safe to use $.offset()
 	// get offset from everything prior to the map and centering of the map
 	var nwLoc = $('#nmnw').offset();

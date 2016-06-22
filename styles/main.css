@@ -39,7 +39,8 @@ img.expShift {
 #intro {
 	margin-left: 8px; }
 #disasters {
-	list-style-type: square; }
+	list-style-type: square;
+	width: 960px; }
 #features {
 	margin-left: 8px;
 	border-style: outset;
@@ -47,6 +48,10 @@ img.expShift {
 	border-color: #d4e8d4;
 	background-color: #d4e8d4;
 	padding: 8px; }
+#hikeCnt {
+	color: blue;
+	text-align: center;
+	margin-top: -10px; }
 #closer {
 	margin-left: 8px;
 	height: 32px;
