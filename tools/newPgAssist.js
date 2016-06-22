@@ -11,8 +11,18 @@ var noOfPics = $htmlNameLocs.length;
 var htmlPicNames = new Array();
 var geoMap = '../maps/' + $('#frm_name').text();
 var tsvFile = '../gpsv/' + $('#tsv_file').text();
+// get elevation chart(s), if any
 var eopt = $('#inclElev').text();
-var egraph = '../images/' + $('#egraph').text();
+eopt = parseFloat(eopt);
+var $elevCharts = $('.egraph');
+if ( eopt > 0 ) {
+	var egraph = new Array();
+	for ( var egno=0; egno<eopt; egno++ ) {
+		egraph[egno] = '../images/' + $elevCharts[egno].textContent;
+		msg = '<p>Elevation Chart loaded: ' + egraph[egno] + '</p>';
+		$('#tmp_dump_area').append(msg);
+	}
+}
 var ewidth;
 
 // For reading in the GPSVinput.tsv data:
@@ -393,8 +403,8 @@ jQuery.get(tsvFile, function(txt_data) {
                 /* ****** SECTION 6: when loads are done, create the html - row
                    by row; include captions, picture links & optional chart */
                 $('img').off();
-                if ( eopt == 'YES' ) {  // chart treated differently - no popup
-                    noOfPics--; // however, width has been captured
+                if ( eopt > 0 ) {  // chart(s) treated differently - no popup
+                    noOfPics -= eopt; // however, width has been captured
                 }
 	            cap = '<div class="captionList">\n\t<ol>';
 	            lnk = '<div class="lnkList">\n\t<ol>';
@@ -420,38 +430,37 @@ jQuery.get(tsvFile, function(txt_data) {
                     $('#tmp_dump_area').append(msg);
                     bldRow(fctArgs[0], fctArgs[1], fctArgs[2]); // invoke html builder
                 }
-                if ( eopt == 'YES' ) {  // then add it to the image rows
-                    msg = '<p>Add graph here if present</p>';
+                if ( eopt > 0 ) {  // then add it to the image rows
+                    msg = '<p>Add graph(s) here if present</p>';
                     $('#tmp_dump_area').append(msg);
-                    // the last row height is the one to be applied 
-                    var pratio = fctArgs[1]/rowHeight;
-                    var chartWidth = pratio * picWidths[noOfPics];
-                    chartWidth = Math.floor(chartWidth);
-                    msg = '<p>Width for graph is: ' +  + 
-                            ' if row height is ' + fctArgs[1] + '</p>';
-                    $('#tmp_dump_area').append(msg);
-                    // now see if graph fits on last row...
-                    if ( chartWidth + 7 <= fctArgs[3] ) {
-                        // ok, append graph
-                        msg = '<p>Chart appended to last row</p>';
-                        $('#tmp_dump_area').append(msg);
-                        msg = '\n\t<img id="chart" height ="' + Math.floor(fctArgs[1]) +
-                        		'" width="' + chartWidth + '" src="' +
-                                egraph + '" alt="Elevation Chart" />';
-                        msg += '\n</div>';
-                        pic = pic.substring(0,pic.length-7) + msg;
-                    } else {
-                        // new row for graph
-                        msg = '<p>Solo row for elevation chart</p>';
-                        $('#tmp_dump_area').append(msg);
-                        imgRowNo++;
-                        msg = '\n<div id="row' + imgRowNo + '" class="ImgRow Solo">'
-                            + '\n\t<img id="chart" height="' + Math.floor(maxHeight) + 
-                            '" width="' + chartWidth + '" src="' +
-                            egraph + '" alt="Elevation Chart" />\n</div>';
-                        pic += msg;
-                    }
-                }
+                    // don't grow the charts: they are relatively large already
+                    var availMarg = fctArgs[3];
+                    for ( gno=0; gno<eopt; gno++ ) {
+						var chartWidth = picWidths[noOfPics+gno];
+						// now see if graph fits on last row...
+						if ( chartWidth + 7 <= availMarg ) {
+							// ok, append graph
+							msg = '<p>Chart ' + gno + ' appended to last row</p>';
+							$('#tmp_dump_area').append(msg);
+							msg = '\n\t<img class="chart" height ="' + rowHeight +
+									'" width="' + chartWidth + '" src="' +
+									egraph[gno] + '" alt="Elevation Chart" />';
+							msg += '\n</div>';
+							pic = pic.substring(0,pic.length-7) + msg;
+							availMarg -= (chartWidth + 7);
+						} else {
+							// new row for graph: *** ASSUMING 2 GRAPHS WONT FIT ON SAME ROW
+							msg = '<p>Solo row for elevation chart</p>';
+							$('#tmp_dump_area').append(msg);
+							imgRowNo++;
+							msg = '\n<div id="row' + imgRowNo + '" class="ImgRow Solo">'
+								+ '\n\t<img class="chart" height="' + rowHeight + 
+								'" width="' + chartWidth + '" src="' +
+								egraph[gno] + '" alt="Elevation Chart" />\n</div>';
+							pic += msg;
+						}
+                    } // end for gno=0
+                }  // end if eopt > 0
                 cap += '\n\t</ol>\n</div>';
                 lnk += '\n\t</ol>\n</div>';
                 pic += '\n' + cap + '\n' + lnk;
@@ -498,9 +507,11 @@ jQuery.get(tsvFile, function(txt_data) {
 	    });
 	}  // end of function 'ldNewPic()'
 	
-	if ( eopt == 'YES' ) {
-        nSize[noOfPics] = egraph;
-	    noOfPics++;  // add the chart image into the count before sizing all
+	if ( eopt > 0 ) {
+        for ( var nog=0; nog<eopt; nog++ ) {
+        	nSize[noOfPics] = egraph[nog];
+	    	noOfPics++;  // add the chart images into the count before sizing all
+		}
 	}
 	ldNewPic(); // I don't like using recursive calls, but it works:
 	// needed to wait for each picture to load before loading its successor

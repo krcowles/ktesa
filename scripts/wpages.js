@@ -3,8 +3,8 @@ $( function () { // when page is loaded...
     // object locations
     var $images = $('img');
     var noOfPix = $images.length;
-    if ( $('#chart').length ) {  // if it exists, chart does not participate
-    	noOfPix--;
+    if ( $('.chart').length ) {  // if it exists, chart does not participate
+    	noOfPix -= $('.chart').length;
     }
     var $maps = $('iframe');
     var	fullMap = $maps.attr('src');
@@ -148,7 +148,8 @@ $( function () { // when page is loaded...
     $images.on('mouseover', function(ev) {
         var eventObj = ev.target;
         picSel = eventObj.id;
-        if ( picSel != 'chart' ) {
+        var picHdr = picSel.substring(0,3);
+        if ( picHdr == 'pic' ) {
         	picPop(picSel);
         }
     });
@@ -163,7 +164,9 @@ $( function () { // when page is loaded...
 	$images.on('click', function(ev) {
 		var clickWhich = ev.target;
 		var picSrc = clickWhich.id;
-		if ( picSrc != 'chart' ) {
+		var picHdr = picSrc.substring(0,3);
+		// again, no id for class='chart', hence no album links
+		if ( picHdr == 'pic' ) {
 			var picIndx = picSrc.indexOf('pic') + 3;
 			var picNo = picSrc.substring(picIndx,picSrc.length);
 			var j = 0;

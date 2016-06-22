@@ -29,6 +29,8 @@ img {
     border-color: DarkBlue; }
 iframe {
     margin-bottom: 20px; }
+.chart {
+	margin-top: 20px; }
 .Solo {
 	margin-top: 30px; }
 .captionList { 
@@ -46,3 +48,4 @@ iframe {
     margin: 0px;
     font-style: bold;
     background-color: #dadada; }
+
