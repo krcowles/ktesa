@@ -13,7 +13,8 @@ img#tompic {
 	display: block;
 	float: right;
 	margin-left: 10px;
-	margin-right: 7px; }
+	margin-right: 7px;
+	margin-top: -6px; }
 img.webShift {
 	padding-left: 19px; }
 img.flckrShift {
