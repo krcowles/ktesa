@@ -1,12 +1,21 @@
 #!/bin/bash
-# VERSION 4.2; Added local check for FlckrAlbum link (from mkgpsv); tweaked help output
+# VERSION 5: added geomap Google API Key insertion if not present
 # Specify starting & default values for shell variables 
 FILESRC=0
+MAPFILE=0
 indxLoc="./index.html"
 export indxLoc
 # Now process command line arguments
 for i
 do
+#	-m: get geomap spec
+	if [ $MAPFILE -eq 1 ]
+	then {
+		mapfile=$i
+		mapreqd=1
+		MAPFILE=2
+	}
+	fi
 # 	-p: Get path for html 
 	if [ $FILESRC -gt 0 ]
 	then {
@@ -16,12 +25,15 @@ do
 	fi
         # find flags:
         case $i in
+	-m) MAPFILE=1 ;;
 	-p) FILESRC=1 ;;
 	-h) echo "
-*** Version 4.1
-Rewritten to accommodate icon-based index table
-[4.1: added local check for FlckrAlbumURL created by mkgpsv]
+*** Version 5
+Added checking of map file to ensure Google API key is present
 "
+#*** Version 4.1
+#Rewritten to accommodate icon-based index table
+#[4.1: added local check for FlckrAlbumURL created by mkgpsv]
 # *** Version 3.0
 # Added prompt to identify expected exposure 
 # *** Version 2.0
@@ -38,6 +50,8 @@ Do not include the \"/\" at the end of the path, nor the index.html filename.
 Specify the path as if you were going to do a \"cd\" to the directory
 For example:   ../../ktesa
 
+Use the -m flag to specify the name (not path) of the geomap, including extension
+
 The user will have the opportunity to save the file to index.html, or save only
 the local copy, \"newindex.html\" if review is desired before saving to index.html
 
@@ -45,6 +59,92 @@ the local copy, \"newindex.html\" if review is desired before saving to index.ht
 	exit;;
         esac
 done
+if [ $MAPFILE -eq 0 ]
+then {
+	mapreqd=1
+	good="NotOK"
+	while
+		[ $good != "OK" ]
+	do
+		echo ""
+		echo "Map file not specified:"
+        	read -p "Is geomap included with this web page? " map
+        	case $map in
+                	[nN]* ) echo "Google API Key not required"
+				mapreqd=0
+				good="OK" ;;
+                	[yY]* ) echo "Google API Key is required;"
+				read -p "please specify geomap name (with extension,no path): " mapfile
+				good="OK" ;;
+                	* ) echo "Y or N only please!";;
+        	esac
+	done
+}
+fi
+if [ $mapreqd -gt 0 ]
+# assert validity of geomap name
+then {
+        good="NotOK"
+        while
+	        [ $good != OK ]
+        do
+            msg=$'\nGeomap name: '
+            echo "$msg" "$mapfile"
+            read -p "Is the geomap name Correct? [Y or N]: " answer
+            case $answer in
+                [nN]* ) read -p "Enter correct geomap name here: " mapfile;;
+                [yY]* ) good="OK";;
+                * ) echo "Y or N only please!";;
+            esac
+        done
+	mapLoc="/Users/kencowles/src/ktesa/maps/""$mapfile"
+	echo ""
+	echo "The map at "${mapLoc}" will be checked for existence of the Google API Key;
+    -if not present, the key will be inserted;
+    You will have the opportunity to accept the change or not"
+	# now process the map for the Google API Key:
+	/usr/bin/awk -v sq="'" '
+	{
+		if( match($0,/google_api_key = /) ) {
+			APIloc=index($0,"google_api_key = ") +17
+			currVal=substr($0,APIloc,2)
+			newStr=substr($0,1,APIloc)
+			strLgth=length - APIloc
+			remains=substr($0,APIloc+2,strLgth)
+			key="AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU"sq
+			if( currVal == sq"A" ) {
+				print "YOWZAH"
+			}
+			else {
+				print newStr key remains
+			}
+		} else {
+			print $0
+		}
+	}' $mapLoc > zool
+	chg=`grep YOWZAH zool | wc -l`
+	if [ $chg -eq 0 ] 
+	then {
+		good="NotOK"
+		echo ""
+		read -p "** API key not detected in map; Do you wish to overwrite "${mapfile}" with key? [Y/N]: " answer
+		while
+		        [ $good != OK ]
+		do
+		        case $answer in
+		                [nN]* ) echo "No changes made" 
+					good="OK" ;;
+		                [yY]* ) mv zool $mapLoc
+					echo "Map ["${mapfile}"] updated"
+					good="OK";;
+		                * ) echo "Y or N only please!";;
+		        esac
+		done
+	}
+	fi
+}
+fi
+echo ""
 # Test for existence of index.html for the path:
 if [ -f $indxLoc ] 
 then
