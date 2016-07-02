@@ -289,14 +289,15 @@
 	display: block;
 	margin-top: -6px; }
 .mapHdr {
-	color: blue;
+	color: #0000cc;
 	text-align: center; }
 	
 /* Keep tables invisible until region is selected */
 .tblDivs {
 	display: none; }
 #getWholeTbl {
-	cursor: pointer; }
+	cursor: pointer;
+	margin-top: -5px; }
 .region  {
 	cursor: pointer; }
 .tloc {
