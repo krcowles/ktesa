@@ -1,16 +1,21 @@
-// Generic used to create html content (string)
+// Generic variables used to create html content (string)
 var pic;    // html for row of pictures
 var cap;    // html for row of corresponding captions
 var lnk;    // html for links to Flickr ablum pictures
-// Generic to create debug messages
+// Generic variable to create debug messages to be output on the page during runtime
 var msg;
 
-// Get info from html elements:
-var $htmlNameLocs = $('li'); // an array holding the list element locations
+/* GET all the info from the main page that will be used to load and size photos and 
+   create corresponding captions acquired from the Flickr description fields */
+var $htmlNameLocs = $('li'); // an array holding the list element locations [pic names]
 var noOfPics = $htmlNameLocs.length;
+// Get the user-specified photo names from the html:
 var htmlPicNames = new Array();
-var geoMap = '../maps/' + $('#frm_name').text();
-var tsvFile = '../gpsv/' + $('#tsv_file').text();
+for ( var m=0; m<noOfPics; m++ ) {
+	htmlPicNames[m] = $htmlNameLocs[m].innerText;
+}
+var geoMap = $('#frm_name').text();
+var tsvFile = $('#tsv_file').text();
 // get elevation chart(s), if any
 var eopt = $('#inclElev').text();
 eopt = parseFloat(eopt);
@@ -18,59 +23,93 @@ var $elevCharts = $('.egraph');
 if ( eopt > 0 ) {
 	var egraph = new Array();
 	for ( var egno=0; egno<eopt; egno++ ) {
-		egraph[egno] = '../images/' + $elevCharts[egno].textContent;
+		egraph[egno] = $elevCharts[egno].textContent;
 		msg = '<p>Elevation Chart loaded: ' + egraph[egno] + '</p>';
 		$('#tmp_dump_area').append(msg);
 	}
 }
 var ewidth;
 
-// For reading in the GPSVinput.tsv data:
-var picNames = new Array();
-var picDescs = new Array();
-var picDates = new Array();
-var picYear = new Array();
-var picMonth = new Array();
-var picDay = new Array();
-var nSize = new Array();
-var albPics = new Array();
-var gpsv_data;
-var gpsv_array = new Array();
-var mo;
-var countAdj;
+// Make sure the required files are present:
+// .tsv file:
+$.ajax({
+    url:tsvFile,
+    type:'HEAD',
+    error: function()
+    {
+        msg = '<p><strong>.tsv FILE NOT FOUND</strong></p>';
+        $('#tmp_dump_area').append(msg);
+    }
+});
+// geomap:
+$.ajax({
+    url:geoMap,
+    type:'HEAD',
+    error: function()
+    {
+        msg = '<p><strong>GEOMAP NOT FOUND</strong></p>';
+        $('#tmp_dump_area').append(msg);
+    }
+});
 
-// For calculating image sizes & captions
-var rowHeight = 260;  // starting point only
-var maxHeight = rowHeight; // will track the biggest optimization
-var picWidths = new Array();
-var rowPicWidth = $('.bodyBox').css('width');
-var rowChIndx = rowPicWidth.indexOf('px');
-var rowLineWidth = rowPicWidth.substring(0,rowChIndx) - 14;
-var rowMargin;
-var curPic = 0;
-var curRowWidth = 0;
-var imgRowNo = 0;
-var captions = new Array();
-var fctArgs = new Array();
-var picId = 0;
-var newHt;
+// Function to DOWNLOAD the resulting html
+function download(strData, strFileName, strMimeType) {
+    var D = document,
+        A = arguments,
+        a = D.createElement("a"),
+        d = A[0],  // 1st arg = strData (text data to send)
+        n = A[1],  // 2nd arg = strFileName (name to send to computer)
+        t = A[2] || "text/plain";
 
-// add error checking for presence of geomap & tsvFile (length > 1) 
-msg = '<p><strong>Start javascript output here...</strong></p><p>Number of html pic names read in: ' +
-    noOfPics + '</p>';
-$('#tmp_dump_area').append(msg);
-// Get the creator-specified photo names from the html:
-for ( var m=0; m<noOfPics; m++ ) {
-	htmlPicNames[m] = $htmlNameLocs[m].innerText;
+    //build download link:
+    a.href = "data:" + strMimeType + "charset=utf-8," + escape(strData);
+	if ('download' in a) { //FF20, CH19
+			a.setAttribute("download", n);
+			a.innerHTML = "downloading...";
+			D.body.appendChild(a);
+			setTimeout(function() {
+				var e = D.createEvent("MouseEvents");
+				e.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+				a.dispatchEvent(e);
+				D.body.removeChild(a);
+			}, 66);
+			return true;
+	}; // end if('download' in a)
+
+    //do iframe dataURL download: (older W3)
+    var f = D.createElement("iframe");
+    D.body.appendChild(f);
+    f.src = "data:" + (A[2] ? A[2] : "application/octet-stream") + (window.btoa ? ";base64" : "") + "," + (window.btoa ? window.btoa : escape)(strData);
+    setTimeout(function() {
+        D.body.removeChild(f);
+    }, 333);
+    return true;
 }
 
+// Print the js output message for all further report-back
+msg = '<p><strong>Start javascript output here...</strong></p>' +
+        '<p>Number of html pic names read in: ' + noOfPics + '</p>';
+$('#tmp_dump_area').append(msg);
+
+// THIS IS THE AREA WHERE THE .tsv FILE GETS READ AND PROCESSED:
 jQuery.get(tsvFile, function(txt_data) {
+
+    var picNames = new Array();
+    var picDescs = new Array();
+    var picDates = new Array();
+    var picYear = new Array();
+    var picMonth = new Array();
+    var picDay = new Array();
+    var nSize = new Array();
+    var albPics = new Array();
+    var captions = new Array();
+    var gpsv_data;
+    var gpsv_array = new Array();
+    var mo;
+    var countAdj;
     
-	/* ****** SECTION 1: Read in the (*ENTIRE*) GPSVinput.tsv file:
-      NOTE: Only if a line in  GPSVinput.tsv does NOT contain name & desc does
-      this process fail, and that is highly unlikely, since a default for desc
-      is "Enter Description Here", and the names come right from the Flickr
-      album, which at least have a default name... */
+	/* ****** SECTION 1: Read in the (*ENTIRE*) GPSVinput.tsv file
+	   as specified by the user (the 'tsvFile' var) */
 	gpsv_data = txt_data;
 	var txtLength = gpsv_data.length;
 	// determine the number of fields in the header line
@@ -89,7 +128,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	var k = 0;
 	
 	/* NOTE: there appears to be an anomaly whereby the last field in the gpsv
-	   array (created by mkgpsv_r6) can SOMETIMES be an unrecognizable element,
+	   array (created by mkgpsv) can SOMETIMES be an unrecognizable element,
 	   perhaps EOF or other. To account for this anomaly, a check is performed
 	   to see if the expected number of elements is present, or one more than
 	   that...  */
@@ -109,7 +148,7 @@ jQuery.get(tsvFile, function(txt_data) {
 	    }
 	}
 	   
-	// start the loop at the first array element AFTER the hdrFlds
+	// start the data extraction at the first array element AFTER the hdrFlds
 	for ( var j = 0; j < gpsv_array.length; j++ ) {
 		if ( gpsv_array[j] == gpsv_array[0] ) {
 			picNames[i] = gpsv_array[j+1];
@@ -221,9 +260,26 @@ jQuery.get(tsvFile, function(txt_data) {
 	}
 	
 	/* ****** SECTION 3: function to "grow" row height in order to optimize
-	   space utilization: tabulates next row (one row only) and returns to caller
-	   with array "parms": #pix in the new row; row height; is iframe included?;
-	   remaining margin */
+	   space utilization across the page width: tabulates row size (one row only)
+	   and returns to caller with array "parms": #pix in the new row; row height;
+	   iframe included (boolean); remaining margin */
+	   
+	// For calculating image sizes & captions
+	var rowHeight = 260;  // starting point only, but this var won't ever change
+	var maxHeight = rowHeight; // will track the biggest optimization
+	var picWidths = new Array();
+	var rowPicWidth = $('.bodyBox').css('width');
+	var rowChIndx = rowPicWidth.indexOf('px');
+	var rowLineWidth = rowPicWidth.substring(0,rowChIndx) - 14;
+	var rowMargin;
+	var curPic = 0;
+	var curRowWidth = 0;
+	var imgRowNo = 0;
+	var fctArgs = new Array();
+	var picId = 0;
+	var newHt;
+	var soloMap = false;
+	
 	function optRowHt() { 
         var parms;
         var marg;
@@ -234,7 +290,8 @@ jQuery.get(tsvFile, function(txt_data) {
         var newWidths = new Array();
 	    var buildWidth = 0;
 	    if ( curPic == noOfPics ) {
-	        // iframe only in this row: optimize to maxHeight
+	        soloMap = true;
+	        // iframe only in this row: optimize to maxHeight of rows thus far
 	        msg = '<p>[RO] iframe is only item in this row; row width '
 	            + '= row height (default): ' + maxHeight + '</p>';
 	        $('#tmp_dump_area').append(msg);
@@ -274,11 +331,11 @@ jQuery.get(tsvFile, function(txt_data) {
 	    if ( marg < 80 ) {
 	       return parms = [picsInRow, optHeight, inclFrame, marg];
 	    } else {
-            if ( marg > 310 ) { // at least grow it a little bit!
-                optHeight = 1.4 * rowHeight;
+            if ( marg > 310 ) { // big margin, at least grow it a little bit!
+                optHeight = 1.3 * rowHeight;
                 // calculate new picWidths (if only iFrame, routine already exited)
                 for ( var m=curPic; m<(curPic + picsInRow); m++ ) {
-                	picWidths[m] = 1.4 * picWidths[m];
+                	picWidths[m] = 1.3 * picWidths[m];
                 }
                 return parms = [picsInRow, optHeight, inclFrame, marg];
             } else {
@@ -331,13 +388,13 @@ jQuery.get(tsvFile, function(txt_data) {
     	       msg = '<p>New Row Ht: ' + optHeight + '</p>';
     	       $('#tmp_dump_area').append(msg);
     	       return parms = [picsInRow, optHeight, inclFrame, marg];
-            }  // end ELSE try slow grow...
-	    }  // end ELSE within bounds to try growing
-	}  // end optRowHt FUNCTION
+            }  // end ELSE - try slow grow...
+	    }  // end ELSE - within bounds to try growing
+	}  // end FUNCTION optRowHt()
 	 
 	 
 	/* ****** SECTION 4: function to build html from row created by optRowHt() 
-	    NOTE: Safari can't extract widths implicitly, so explicitly specified here*/
+	    NOTE: Safari can't extract widths implicitly, so width explicitly provided */
 	function bldRow(noOfPix, rowHt, isLast) {
         var floorWidth;
         var floorHeight = Math.floor(rowHt);
@@ -380,12 +437,12 @@ jQuery.get(tsvFile, function(txt_data) {
 	        }
 	        pic += '\n</div>';
 	    } // end IF-ELSE
-	} // end FUNCTION bldRow
+	} // end FUNCTION bldRow()
 	
 
-	/* ****** SECTION 5: function test loads a picture and captures its width:
+	/* ****** SECTION 5: Function to test load a picture and capture its width:
        recursive calls are made in order to process all the named pics in the
-       sequence given */
+       sequence specified by the html */
 	function ldNewPic() {
 	    msg = '<img height="' + rowHeight + '" src="' + nSize[curPic] + 
 	            '" alt="" />';
@@ -430,10 +487,13 @@ jQuery.get(tsvFile, function(txt_data) {
                     $('#tmp_dump_area').append(msg);
                     bldRow(fctArgs[0], fctArgs[1], fctArgs[2]); // invoke html builder
                 }
-                if ( eopt > 0 ) {  // then add it to the image rows
+                
+                // if Elevation Charts are present, add them
+                if ( eopt > 0 ) {
                     msg = '<p>Add graph(s) here if present</p>';
                     $('#tmp_dump_area').append(msg);
-                    // don't grow the charts: they are relatively large already
+                    // don't grow the charts: they are relatively large already,
+                    // and if in row w/soloMap, shrink map to chart-size
                     var availMarg = fctArgs[3];
                     for ( gno=0; gno<eopt; gno++ ) {
 						var chartWidth = picWidths[noOfPics+gno];
@@ -446,10 +506,26 @@ jQuery.get(tsvFile, function(txt_data) {
 									'" width="' + chartWidth + '" src="' +
 									egraph[gno] + '" alt="Elevation Chart" />';
 							msg += '\n</div>';
+							/* When the only other item in this row is a map,
+							   adjust the map size down to 'rowHeight', so that
+							   the chart doesn't grow */
+							if ( soloMap ) {
+							    // find the iframe in the html code, extract height param.
+							    var frmIndx = pic.indexOf('iframe');
+							    var htIndx = frmIndx + 27;
+							    var closeIndx = pic.indexOf('</iframe');
+							    var oldHt = pic.substring(htIndx,htIndx+3);
+							    var srchStr = pic.substring(frmIndx,closeIndx);
+							    // replace the oldHt with rowHeight
+							    var replStr = srchStr.replace(oldHt,rowHeight);
+							    replStr = replStr.replace(oldHt,rowHeight);
+							    pic = pic.replace(srchStr,replStr);
+							}
 							pic = pic.substring(0,pic.length-7) + msg;
 							availMarg -= (chartWidth + 7);
 						} else {
-							// new row for graph: *** ASSUMING 2 GRAPHS WONT FIT ON SAME ROW
+							/* new row for graph:
+							    ** ASSUMES 2 GRAPHS WONT FIT ON SAME ROW */
 							msg = '<p>Solo row for elevation chart</p>';
 							$('#tmp_dump_area').append(msg);
 							imgRowNo++;
@@ -459,46 +535,12 @@ jQuery.get(tsvFile, function(txt_data) {
 								egraph[gno] + '" alt="Elevation Chart" />\n</div>';
 							pic += msg;
 						}
-                    } // end for gno=0
-                }  // end if eopt > 0
+                    } // end for loop
+                }  // end if eopt > 0 [Elevation Chart processing]
+                
                 cap += '\n\t</ol>\n</div>';
                 lnk += '\n\t</ol>\n</div>';
                 pic += '\n' + cap + '\n' + lnk;
-                
-                /* ****** SECTION 7: function to download the text file to
-                   local computer */
-            	function download(strData, strFileName, strMimeType) {
-                    var D = document,
-                        A = arguments,
-                        a = D.createElement("a"),
-                        d = A[0],  // 1st arg = strData (text data to send)
-                        n = A[1],  // 2nd arg = strFileName (name to send to computer)
-                        t = A[2] || "text/plain";
-                
-                    //build download link:
-                    a.href = "data:" + strMimeType + "charset=utf-8," + escape(strData);
-                	if ('download' in a) { //FF20, CH19
-                			a.setAttribute("download", n);
-                			a.innerHTML = "downloading...";
-                			D.body.appendChild(a);
-                			setTimeout(function() {
-                				var e = D.createEvent("MouseEvents");
-                				e.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                				a.dispatchEvent(e);
-                				D.body.removeChild(a);
-                			}, 66);
-                			return true;
-                	}; // end if('download' in a)
-                
-                    //do iframe dataURL download: (older W3)
-                    var f = D.createElement("iframe");
-                    D.body.appendChild(f);
-                    f.src = "data:" + (A[2] ? A[2] : "application/octet-stream") + (window.btoa ? ";base64" : "") + "," + (window.btoa ? window.btoa : escape)(strData);
-                    setTimeout(function() {
-                        D.body.removeChild(f);
-                    }, 333);
-                    return true;
-                }
                 download(pic,'newPage.txt','text/plain');
                 $('#theRows').html(pic);
                 $('img').addClass('newPics'); 
@@ -514,7 +556,7 @@ jQuery.get(tsvFile, function(txt_data) {
 		}
 	}
 	ldNewPic(); // I don't like using recursive calls, but it works:
-	// needed to wait for each picture to load before loading its successor
+	// reason: to wait for each picture to load before loading its successor
 	
 })
 .fail( function() {
