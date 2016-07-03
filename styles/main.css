@@ -96,16 +96,18 @@ td {
 	cursor: pointer; }
 #tbltopper {
 	margin-bottom: 0px;
-	color: red; }
+	color: MidnightBlue;
+	text-align: center; }
 #metric {
 	text-align: left;
 	width: 190px;
+	margin-left: 20px;
 	padding-left: 10px;
 	padding-right: 10px;
-	color: purple;
+	color: MidnightBlue;
 	border-style: inset;
 	border-width: 3px;
-	border-color: paleVioletRed;
+	border-color: MidnightBlue;
 	cursor: pointer; }
 .dressing {
 	display: none; }
