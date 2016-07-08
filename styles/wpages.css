@@ -3,20 +3,56 @@ body {
 	min-width: 960px;
 	font-family: arial, verdana;
 	background-color: #dadada;
-	border-style: groove;
+	border-style: solid;
 	border-width: 4px;
 	border-color: DarkBlue; }
-#page_title {
-	font-size: 28px;
-	color: #302DD3;
-	text-align: center; }
-#hikeInfo {
-	border-style: outset;
-	border-width: 2px;
-	border-color: #d4e8d4;
-	padding: 10px;
-	background-color: #c5d5d5; }
 	
+/* Placing and centering the logo image & associated text */
+#logoBlock {
+	width: 960px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto; }
+#page_title {
+	position: absolute;
+	top: -8px;
+	font-size: 28px;
+	text-align: center;
+	color: DarkBlue;
+	// color: #302DD3; }
+#pgLogo  {
+	height: 70px;
+	width: 920px;
+	//background-color: #c0beff;
+	border-style: inset;
+	border-width: 3px;
+	border-color: DarkBlue;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+	background-image: url("../images/PageTopper.jpg");
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	opacity: 0.25; }
+#logoLeft {
+	color: DarkBlue;
+	font-size: 15px;
+	font-style: italic;
+	font-weight: bold;
+	opacity: 0.8;
+	position: absolute;
+	top: 0px;
+	left: 36px; }
+#logoRight {
+	color: DarkBlue;
+	font-size: 15px;
+	font-style: italic;
+	font-weight: bold;
+	opacity: 0.8;
+	position: absolute;
+	top: 0px;
+	left: 822px; }
+
 /* image & iframe alignment and pop-up caption styles */
 .ImgRow {
 	text-align: center;
@@ -52,3 +88,13 @@ iframe {
     font-style: bold;
     background-color: #dadada; }
 
+/* details about the hike */
+#hikeInfo {
+	margin-left: 10px;
+	margin-right: 10px;
+	border-style: outset;
+	border-width: 2px;
+	border-color: #d4e8d4;
+	padding: 10px;
+	background-color: #c5d5d5; }
+	
