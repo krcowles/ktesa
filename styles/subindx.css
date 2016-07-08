@@ -1,8 +1,66 @@
 body {
+	min-width: 960px;
 	font-family: arial, verdana;
-	background-color: #dadada; }
+	background-color: #dadada;
+	border-style: solid;
+	border-width: 4px;
+	border-color: DarkBlue; }
+#indxContent {
+	margin-left: 10px;
+	margin-right: 10px;
+	border-style: outset;
+	border-width: 2px;
+	border-color: #d4e8d4;
+	padding: 10px;
+	background-color: #c5d5d5; }
 #hdrContainer {
-	text-align: center; }
+	text-align: center;
+	margin-top: -10px; }
+	
+/* Placing and centering the logo image & associated text */
+#logoBlock {
+	width: 960px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto; }
+#indxTitle {
+	position: absolute;
+	top: -8px;
+	font-size: 28px;
+	text-align: center;
+	color: DarkBlue; }
+#pgLogo  {
+	height: 70px;
+	width: 920px;
+	border-style: inset;
+	border-width: 3px;
+	border-color: DarkBlue;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+	background-image: url("../images/PageTopper.jpg");
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	opacity: 0.25; }
+#logoLeft {
+	color: DarkBlue;
+	font-size: 15px;
+	font-style: italic;
+	font-weight: bold;
+	opacity: 0.8;
+	position: absolute;
+	top: 0px;
+	left: 36px; }
+#logoRight {
+	color: DarkBlue;
+	font-size: 15px;
+	font-style: italic;
+	font-weight: bold;
+	opacity: 0.8;
+	position: absolute;
+	top: 0px;
+	left: 822px; }
+
 #tblHdr {
 	display: inline-block;
 	text-align: left;
@@ -42,12 +100,6 @@ img {
 	display: block;
 	margin-left: auto;
 	margin-right: auto; }
- #indxTitle {
- 	color: MediumBlue;
- 	text-align: center;
- 	font-size: 24px;
- 	margin-top: 6px;
- 	margin-bottom: 10px; }
 img.expShift {
 	padding-left: 24px; }
 img.webShift {
