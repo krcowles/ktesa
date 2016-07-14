@@ -14,3 +14,4 @@ The tools in this directory are intended for the following use:
 3. newPage.html: an example of html source created by incorporating newPage.txt,
    with corresponding CSS and javascript to effect the popup descriptions on
    included photos.
+4. laksdjfalksdjflkasjfklsdfgj
