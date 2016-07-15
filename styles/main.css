@@ -4,7 +4,11 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	font-family: arial, verdana;
-	background-color: #dadada; }
+	background-color: #dadada;
+	/*
+	border-style: solid;
+	border-color: DarkBlue;
+	border-width: 4px; */ }
 a:visited {
 	color: DarkGreen; }
 .container {
@@ -40,7 +44,8 @@ img.expShift {
 #intro {
 	margin-left: 8px; }
 #features {
-	margin-left: 8px; }
+	margin-left: 8px;
+	margin-top: 30px; }
 #disclaimers {
 	border-style: outset;
 	border-width: 2px;
@@ -56,6 +61,10 @@ img.expShift {
 	color: MidnightBlue;
 	text-align: center;
 	margin-top: -10px; }
+div #usrTbl table {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px; }
 #linkNote {
 	padding-left: 12px;
 	padding-right: 6px; }
@@ -72,7 +81,8 @@ img.expShift {
 /* table dressing */
 #tbl_index {
 	text-align: center;
-	margin-left: 25px; }
+	margin-left: 25px;
+	display: none; }
 table {
 	font-size: 14px;
 	text-align: left;
@@ -113,6 +123,12 @@ td {
 	display: none; }
 .indxd {
 	color: brown; }
-
+#map {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px;
+    width: 600px;
+    height: 600px;
+    z-index: 1; }
 	
 	
