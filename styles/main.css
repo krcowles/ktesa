@@ -97,6 +97,8 @@ th {
 	border-style: outset;
 	border-width: 2px;
 	border-color: peru; }
+tr:hover {
+	background-color: BlanchedAlmond; }
 td {
 	vertical-align: top;
 	padding-left: 5px;
@@ -120,7 +122,7 @@ td {
 	border-color: MidnightBlue;
 	cursor: pointer; }
 .dressing {
-	display: none; }
+	display: block; }
 .indxd {
 	color: brown; }
 #map {

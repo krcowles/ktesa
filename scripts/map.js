@@ -5,32 +5,45 @@ var trailHead;
 var markerLoc;
 var pgUrl;
 
-// Table structure [Table re-created for each center/zoom change]
-var tblHtml = '<table class="rsortable">';
-tblHtml += ' <colgroup>';
-tblHtml += '  <col style="width:180px">';
-tblHtml += '  <col style="width:170px">';
-tblHtml += '  <col style="width:70px">';
-tblHtml += '  <col style="width:78px">';
-tblHtml += '  <col style="width:100px">';
-tblHtml += '  <col style="width:100px">';
-tblHtml += '  <col style="width:70px">';
-tblHtml += '  <col style="width:70px">';
-tblHtml += ' <colgroup>';
-tblHtml += ' <thead>';
-tblHtml += '  <tr>';
-tblHtml += '   <th class="hdr_row" data-sort="std">General Location</th>';
-tblHtml += '   <th class="hdr_row" data-sort="std">Hike/Trail Name</th>';
-tblHtml += '   <th class="hdr_row">Web Pg</th>';
-tblHtml += '   <th class="hdr_row" data-sort="lan">Length</th>';
-tblHtml += '   <th class="hdr_row" data-sort="lan">Elev Chg</th>';
-tblHtml += '   <th class="hdr_row" data-sort="std">Difficulty</th>';
-tblHtml += '   <th class="hdr_row">Exposure</th>';
-tblHtml += '   <th class="hdr_row">Flickr</th>';
-tblHtml += '  </tr>';
-tblHtml += ' </thead>';
-tblHtml += '<tbody>';
-var endTbl = '</tbody></table>';
+// Table structure to populate with rows in script:
+var tblHtml = '<table class="msortable">';
+tblHtml += $('table').html();
+var inx = tblHtml.indexOf('<tbody') + 8;
+tblHtml = tblHtml.substring(0,inx);
+var endTbl = ' </tbody> </table>';
+
+// Establish the compare method (object) for table sorts:
+var compare = {
+	std: function(a,b) {	// standard sorting - literal
+		if ( a < b ) {
+			return -1;
+		} else {
+			return a > b ? 1 : 0;
+		}
+	},
+	lan: function(a,b) {    // "Like A Number": extract numeric portion for sort
+		// commas allowed in numbers, so;
+		var indx = a.indexOf(',');
+		if ( indx < 0 ) {
+			a = parseFloat(a);
+		} else {
+			noPart1 = parseFloat(a);
+			msg = a.substring(indx + 1, indx + 4);
+			noPart2 = msg.valueOf();
+			a = noPart1 + noPart2;
+		}
+		indx = b.indexOf(',');
+		if ( indx < 0 ) {
+			b = parseFloat(b);
+		} else {
+			noPart1 = parseFloat(b);
+			msg = b.substring(indx + 1, indx + 4);
+			noPart2 = msg.valueOf();
+			b = noPart1 + noPart2;
+		}
+		return a - b;
+	} 
+};  // end of object declaration
 
 // -------------------------------   IMPORTANT NOTE: ----------------------------
 //	The index.html table MUST list items in the
@@ -154,6 +167,7 @@ var othrHikes = [
 var ctrIcon = 'images/greenpin.png';
 var clusterIcon = 'images/bluepin.png';
 var hikeIcon = 'images/redpin.png';
+var $tblRows = $('.sortable tbody tr');
 
 // THE MAP CALLBACK FUNCTION:
 function initMap() {
@@ -196,6 +210,9 @@ function initMap() {
 	});
 	BandMrkr.addListener('click', function() {
 		window.open(BandLoc[3],'_blank');
+	});
+	BandMrkr.addListener('mouseover', function() {
+		$('.sortable tbody tr').eq(0).trigger('mouseover');
 	});
 	var ChacoLoc = ctrPinHikes[1];
 	var ChacoMrkr = new google.maps.Marker({
@@ -377,6 +394,7 @@ function initMap() {
 		IdTableElements(newBds);
 	});
 	
+	
 	// Function to find elements within current bounds and display them in a table
 	function IdTableElements(boundsStr) {
 		// ESTABLISH CURRENT VIEWPORT BOUNDS:
@@ -397,7 +415,7 @@ function initMap() {
 		var pinLat;
 		var pinLng;
 		// REMOVE previous table:
-		$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
+		$('div #wholeTbl').replaceWith('<div id="wholeTbl"></div>');
 		
 		/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
 		// First, check to see if any ctrPinHikes are within the viewport;
@@ -446,11 +464,44 @@ function initMap() {
 			var indxRow;
 			for (m=0; m<rowCnt; m++) {
 				indxRow = tblEl[m];
-				thisTbl += $('.sortable tbody tr').eq(indxRow).html();
-				thisTbl += ' </tr>';
+				thisTbl += $tblRows.eq(indxRow).html();
+				thisTbl += ' </tr> ';
 			}
 			thisTbl += endTbl;
 			$('#usrTbl').html(thisTbl);
+			$('#metric').css('display','block');
+			$('.msortable').each(function() {
+				var $table = $(this); 
+				var $tbody = $table.find('tbody');
+				var $controls = $table.find('th'); // store all headers
+				var trows = $tbody.find('tr').toArray();  // array of rows
+	
+				$controls.on('click', function() {
+					var $header = $(this);
+					var order = $header.data('sort');
+					var column;
+		
+					// IF defined for selected column, toggle ascending/descending class
+					if ( $header.is('.ascending') || $header.is('.descending') ) {
+						$header.toggleClass('ascending descending');
+						$tbody.append(trows.reverse());
+					} else {
+					// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
+						$header.addClass('ascending');
+						$header.siblings().removeClass('ascending descending');
+						if ( compare.hasOwnProperty(order) ) {
+							column = $controls.index(this);  // index into the row array's data
+							trows.sort(function(a,b) {
+								a = $(a).find('td').eq(column).text();
+								b = $(b).find('td').eq(column).text();
+								return compare[order](a,b);
+							});
+							$tbody.append(trows);
+						} // end if-compare
+					} // end else
+		
+				}); // end on.click
+			}); // end '.msortable each' loop
 		}
 	}
 
