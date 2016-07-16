@@ -5,7 +5,7 @@ var trailHead;
 var markerLoc;
 var pgUrl;
 
-// Table structure to populate with rows in script:
+// Table structure, to be populated with rows later in script (see 'var outHike'):
 var tblHtml = '<table class="msortable">';
 tblHtml += $('table').html();
 var inx = tblHtml.indexOf('<tbody') + 8;
@@ -168,6 +168,11 @@ var ctrIcon = 'images/greenpin.png';
 var clusterIcon = 'images/bluepin.png';
 var hikeIcon = 'images/redpin.png';
 var $tblRows = $('.sortable tbody tr');
+var iCnt = $tblRows.length;
+var mCnt = ctrPinHikes.length + clusterPinHikes.length + othrHikes.length;
+if ( mCnt != iCnt ) {
+	window.alert('Index table row count does not match script: investigate!');
+}
 
 // THE MAP CALLBACK FUNCTION:
 function initMap() {
@@ -209,10 +214,8 @@ function initMap() {
 		title: BandLoc[0]
 	});
 	BandMrkr.addListener('click', function() {
-		window.open(BandLoc[3],'_blank');
-	});
-	BandMrkr.addListener('mouseover', function() {
-		$('.sortable tbody tr').eq(0).trigger('mouseover');
+		var Bpg = 'pages/' + BandLoc[0];
+		window.open(Bpg,'_blank');
 	});
 	var ChacoLoc = ctrPinHikes[1];
 	var ChacoMrkr = new google.maps.Marker({
@@ -222,7 +225,8 @@ function initMap() {
 		title: ChacoLoc[0]
 	});
 	ChacoMrkr.addListener('click', function() {
-		window.open(ChacoLoc[3],'_blank');
+		var Cpg = 'pages/' + ChacoLoc[3];
+		window.open(Cpg,'_blank');
 	});
 	var ElMalLoc = ctrPinHikes[2];
 	var ElMalMrkr = new google.maps.Marker({
@@ -232,7 +236,8 @@ function initMap() {
 		title: ElMalLoc[0]
 	});
 	ElMalMrkr.addListener('click', function() {
-		window.open(ElMalLoc[3],'_blank');
+		Epg = 'pages/' + ElMalLoc[3];
+		window.open(Epg,'_blank');
 	});
 	var PetroLoc = ctrPinHikes[3];
 	var PetroMrkr = new google.maps.Marker({
@@ -242,14 +247,15 @@ function initMap() {
 		title: PetroLoc[0]
 	});
 	PetroMrkr.addListener('click', function() {
-		window.open(PetroLoc[3],'_blank');
+		var Ppg = 'pages/' + PetroLoc[3];
+		window.open(Ppg,'_blank');
 	});
 	// generic markers (always on):
 	var clusterPin;
 	for ( var i=0; i<clusterPinHikes.length; i++ ) {
 		trailHead = clusterPinHikes[i];
 		markerLoc = {lat: trailHead[1], lng: trailHead[2]};
-		pgUrl = '../pages/' + trailHead[3];
+		pgUrl = 'pages/' + trailHead[3];
 		clusterPin = new google.maps.Marker( {
 			position: markerLoc,
 			map: map,
@@ -264,7 +270,7 @@ function initMap() {
 	for ( var i=0; i<othrHikes.length; i++ ) {
 		trailHead = othrHikes[i];
 		markerLoc = {lat: trailHead[1], lng: trailHead[2]};
-		pgUrl = '../pages/' + trailHead[3];
+		pgUrl = 'pages/' + trailHead[3];
 		othrPin = new google.maps.Marker( {
 			position: markerLoc,
 			map: map,
