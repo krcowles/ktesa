@@ -1,17 +1,20 @@
 // generic var for outputting debug messages
 var msg;
+
 // generics for setting up multiple markers
 var trailHead;
 var markerLoc;
-var pgUrl;
 
 // Table structure, to be populated with rows later in script (see 'var outHike'):
-var tblHtml = '<table class="msortable">';
+var tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
+tblHtml += ' onMouseOut="javascript:undoMarker();">';
 tblHtml += $('table').html();
 var inx = tblHtml.indexOf('<tbody') + 8;
 tblHtml = tblHtml.substring(0,inx);
 var endTbl = ' </tbody> </table>';
 
+
+/* ******************** FUNCTION DECLARATIONS / DEFINITIONS ****************** */
 // Establish the compare method (object) for table sorts:
 var compare = {
 	std: function(a,b) {	// standard sorting - literal
@@ -45,6 +48,34 @@ var compare = {
 	} 
 };  // end of object declaration
 
+// ROW-FINDING FUNCTIONS FOR mouseover TABLE...
+function findPinFromRow(eventArg) {
+	if ( !eventArg ) {
+		eventArg = window.event;
+	}
+	// IE browsers:
+	if ( eventArg.srcElement ) {
+		getRowNo(eventArg.srcElement);
+	} else if ( eventArg.target ) {
+		getRowNo(eventArg.target)
+	}
+}
+function getRowNo(El) {
+	if ( El.nodeName == "TD" ) {
+		El = El.parentNode;
+		//msg = '<p>Now El is ' + El.nodeName + '; row indx is ' + El.rowIndex;
+		var cellDat = El.cells[1].textContent;
+		//msg += 'w/Cell data = ' + cellDat + '</p>';
+		//$('#features').append(msg);
+	} else return;
+}
+function undoMarker() {
+	msg = '<p>Mouse out of row...</p>';
+	//$('#features').append(msg);
+}
+/* ***************************************************************************** */
+			
+			
 // -------------------------------   IMPORTANT NOTE: ----------------------------
 //	The index.html table MUST list items in the
 //	order shown below in order for the correct elements to be listed
@@ -81,15 +112,15 @@ var clusterPinHikes = [
 	['Una Vida',36.033331,-107.911942,'UnaVida.html'],
 	['Hungo Pavi',36.049536,-107.93031,'HungoPavi.html'],
 	['Pueblo Bonito',36.059216,-107.958934,'Bonito.html'],
-	['Pueblo Alto',36.065393,-107.968054,'PuebloAlto.html'],
-	['Kin Kletso',36.064890,-107.969792,'KinKletso.html'],
+	['Pueblo Alto',36.068608,-107.959900,'PuebloAlto.html'],
+	['Kin Kletso',36.063864,-107.981315,'KinKletso.html'],
 	// El Malpais hikes:
 	['Big Tubes',34.944733,-108.106983,'BigTubes.html'],
 	['Ice Caves',34.99311,-108.080084,'IceCave.html'],
 	['El Calderon',34.9698,-108.00325,'ElCalderon.html'],
 	// Elena Gallegos hikes:
-	['Pino Trail',35.163732, -106.468270,'Pino.html'],
-	['Domingo Baca',35.166117,-106.467717,'Domgingo.html'],
+	['Pino Trail',35.160419, -106.463184,'Pino.html'],
+	['Domingo Baca',35.167093,-106.465502,'Domingo.html'],
 	// Ghost Ranch hikes:
 	['Chimney Rock',36.330525,-106.47482,'ChimneyRock.html'],
 	['Kitchen Mesa',36.336353,-106.469007,'Kitchen.html'],
@@ -102,12 +133,12 @@ var clusterPinHikes = [
 	// Petroglyphs hikes:
 	['Piedras Marcadas',35.188867,-106.686269,'Piedras.html'],
 	['Mesa Point Trail',35.160629,-106.716645,'MesaPoint.html'],
-	['Cliff Base Trail',35.162105,-106.718386,'CliffBase.html'],
-	['Macaw Trail',35.162157,-106.718032,'Macaw.html'],
+	['Cliff Base Trail',35.165471,-106.729088,'CliffBase.html'],
+	['Macaw Trail',35.170242,-106.717243,'Macaw.html'],
 	['Rinconada Canyon',35.126851,-106.724635,'Rinconada.html'],
 	['ABQ Volcanoes',35.13075,-106.7802667,'ABQVolcanoes.html'],
 	// Big Tesuque Campground hikes:
-	['Upper Tesuque',35.764427,-105.769501,'UpperTesugue.html'],
+	['Upper Tesuque',35.764427,-105.769501,'UpperTesuque.html'],
 	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html'],
 	// Winsor Trailhead hikes:
 	['Deception Pk',35.807036,-105.783577,'Deception.html'],
@@ -174,6 +205,8 @@ if ( mCnt != iCnt ) {
 	window.alert('Index table row count does not match script: investigate!');
 }
 
+
+/* **************************** MAIN MAP CALL ************************** */
 // THE MAP CALLBACK FUNCTION:
 function initMap() {
 	
@@ -204,6 +237,9 @@ function initMap() {
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
 	
+/* ************************** MANY MARKER DEFINITIONS ************************** */
+/* ***************************************************************************** */
+
 	// Establish the markers for the "Index Page" hikes [aka: ctrPinHikes] are individually
 	// named, so that they can be turned off during zoom in [by name].
 	var BandLoc = ctrPinHikes[0];
@@ -214,7 +250,7 @@ function initMap() {
 		title: BandLoc[0]
 	});
 	BandMrkr.addListener('click', function() {
-		var Bpg = 'pages/' + BandLoc[0];
+		var Bpg = 'pages/' + BandLoc[3];
 		window.open(Bpg,'_blank');
 	});
 	var ChacoLoc = ctrPinHikes[1];
@@ -226,6 +262,7 @@ function initMap() {
 	});
 	ChacoMrkr.addListener('click', function() {
 		var Cpg = 'pages/' + ChacoLoc[3];
+		var msgOut = ChacoMrkr.getTitle();
 		window.open(Cpg,'_blank');
 	});
 	var ElMalLoc = ctrPinHikes[2];
@@ -250,39 +287,961 @@ function initMap() {
 		var Ppg = 'pages/' + PetroLoc[3];
 		window.open(Ppg,'_blank');
 	});
-	// generic markers (always on):
-	var clusterPin;
-	for ( var i=0; i<clusterPinHikes.length; i++ ) {
-		trailHead = clusterPinHikes[i];
-		markerLoc = {lat: trailHead[1], lng: trailHead[2]};
-		pgUrl = 'pages/' + trailHead[3];
-		clusterPin = new google.maps.Marker( {
-			position: markerLoc,
-			map: map,
-			icon: clusterIcon,
-			title: trailHead[0]
-		});
-		clusterPin.addListener('click', function() {
-			window.open(pgUrl,'_blank');
-		});
-	}
-	var othrPin;
-	for ( var i=0; i<othrHikes.length; i++ ) {
-		trailHead = othrHikes[i];
-		markerLoc = {lat: trailHead[1], lng: trailHead[2]};
-		pgUrl = 'pages/' + trailHead[3];
-		othrPin = new google.maps.Marker( {
-			position: markerLoc,
-			map: map,
-			icon: hikeIcon,
-			title: trailHead[0]
-		});
-		othrPin.addListener('click', function() {
-			window.open(pgUrl,'_blank');
-		});
-	}	
+	// LOTS OF CODE, but no more execution than the generic loop which was useless in
+	// terms of assigning listener functions: always defaulted to last loop value :-(
+	// CLUSTER PIN HIKES:
+	var RuinsDat = clusterPinHikes[0];
+	var Ruins = new google.maps.Marker({
+		position: {lat: RuinsDat[1], lng: RuinsDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: RuinsDat[0]
+	});
+	Ruins.addListener('click', function() {
+		var pgUrl = 'pages/' + RuinsDat[3];
+		window.open(pgUrl,'_blank');
+	});
 
-	/* Establish polylines for areas where trailhead has more than 1 hike */
+	var FallsDat = clusterPinHikes[1];
+	var Falls = new google.maps.Marker({
+		position: {lat: FallsDat[1], lng: FallsDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: FallsDat[0]
+	});
+	Falls.addListener('click', function() {
+		var pgUrl = 'pages/' + FallsDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var FreyDat = clusterPinHikes[2];
+	var Frey = new google.maps.Marker({
+		position: {lat: FreyDat[1], lng: FreyDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: FreyDat[0]
+	});
+	Frey.addListener('click', function() {
+		var pgUrl = 'pages/' + FreyDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var FrijDat = clusterPinHikes[3];
+	var Frij = new google.maps.Marker({
+		position: {lat: FrijDat[1], lng: FrijDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: FrijDat[0]
+	});
+	Frij.addListener('click', function() {
+		var pgUrl = 'pages/' + FrijDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var AlcDat = clusterPinHikes[4];
+	var Alc = new google.maps.Marker({
+		position: {lat: AlcDat[1], lng: AlcDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: AlcDat[0]
+	});
+	Alc.addListener('click', function() {
+		var pgUrl = 'pages/' + AlcDat[3];
+		window.open(pgUrl,'_blank');
+	}); 
+	
+	var TsanDat = clusterPinHikes[5];
+	var Tsan = new google.maps.Marker({
+		position: {lat: TsanDat[1], lng: TsanDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: TsanDat[0]
+	});
+	Tsan.addListener('click', function() {
+		var pgUrl = 'pages/' + TsanDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var CanyDat = clusterPinHikes[6];
+	var Cany = new google.maps.Marker({
+		position: {lat: CanyDat[1], lng: CanyDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: CanyDat[0]
+	});
+	Cany.addListener('click', function() {
+		var pgUrl = 'pages/' + CanyDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var UnaDat = clusterPinHikes[7];
+	var Una = new google.maps.Marker({
+		position: {lat: UnaDat[1], lng: UnaDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: UnaDat[0]
+	});
+	Una.addListener('click', function() {
+		var pgUrl = 'pages/' + UnaDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var HungoDat = clusterPinHikes[8];
+	var Hungo = new google.maps.Marker({
+		position: {lat: HungoDat[1], lng: HungoDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: HungoDat[0]
+	});
+	Hungo.addListener('click', function() {
+		var pgUrl = 'pages/' + HungoDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var BonDat = clusterPinHikes[9];
+	var Bon = new google.maps.Marker({
+		position: {lat: BonDat[1], lng: BonDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: BonDat[0]
+	});
+	Bon.addListener('click', function() {
+		var pgUrl = 'pages/' + BonDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var AltoDat = clusterPinHikes[10];
+	var Alto = new google.maps.Marker({
+		position: {lat: AltoDat[1], lng: AltoDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: AltoDat[0]
+	});
+	Alto.addListener('click', function() {
+		var pgUrl = 'pages/' + AltoDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var KletDat = clusterPinHikes[11];
+	var Klet = new google.maps.Marker({
+		position: {lat: KletDat[1], lng: KletDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: KletDat[0]
+	});
+	Klet.addListener('click', function() {
+		var pgUrl = 'pages/' + KletDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var TubeDat = clusterPinHikes[12];
+	var Tube = new google.maps.Marker({
+		position: {lat: TubeDat[1], lng: TubeDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: TubeDat[0]
+	});
+	Tube.addListener('click', function() {
+		var pgUrl = 'pages/' + TubeDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var IceDat = clusterPinHikes[13];
+	var Ice = new google.maps.Marker({
+		position: {lat: IceDat[1], lng: IceDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: IceDat[0]
+	});
+	Ice.addListener('click', function() {
+		var pgUrl = 'pages/' + IceDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var CaldDat = clusterPinHikes[14];
+	var Cald = new google.maps.Marker({
+		position: {lat: CaldDat[1], lng: CaldDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: CaldDat[0]
+	});
+	Cald.addListener('click', function() {
+		var pgUrl = 'pages/' + CaldDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var PinoDat = clusterPinHikes[15];
+	var Pino = new google.maps.Marker({
+		position: {lat: PinoDat[1], lng: PinoDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: PinoDat[0]
+	});
+	Pino.addListener('click', function() {
+		var pgUrl = 'pages/' + PinoDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var DomDat = clusterPinHikes[16];
+	var Dom = new google.maps.Marker({
+		position: {lat: DomDat[1], lng: DomDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: DomDat[0]
+	});
+	Dom.addListener('click', function() {
+		var pgUrl = 'pages/' + DomDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var ChimDat = clusterPinHikes[17];
+	var Chim = new google.maps.Marker({
+		position: {lat: ChimDat[1], lng: ChimDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: ChimDat[0]
+	});
+	Chim.addListener('click', function() {
+		var pgUrl = 'pages/' + ChimDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var KitchDat = clusterPinHikes[18];
+	var Kitch = new google.maps.Marker({
+		position: {lat: KitchDat[1], lng: KitchDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: KitchDat[0]
+	});
+	Kitch.addListener('click', function() {
+		var pgUrl = 'pages/' + KitchDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var TunDat = clusterPinHikes[19];
+	var Tun = new google.maps.Marker({
+		position: {lat: TunDat[1], lng: TunDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: TunDat[0]
+	});
+	Tun.addListener('click', function() {
+		var pgUrl = 'pages/' + TunDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var BhseDat = clusterPinHikes[20];
+	var Bhse = new google.maps.Marker({
+		position: {lat: BhseDat[1], lng: BhseDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: BhseDat[0]
+	});
+	Bhse.addListener('click', function() {
+		var pgUrl = 'pages/' + BhseDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var AlbDat = clusterPinHikes[21];
+	var Alb = new google.maps.Marker({
+		position: {lat: AlbDat[1], lng: AlbDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: AlbDat[0]
+	});
+	Alb.addListener('click', function() {
+		var pgUrl = 'pages/' + AlbDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var J4Dat = clusterPinHikes[22];
+	var J4 = new google.maps.Marker({
+		position: {lat: J4Dat[1], lng: J4Dat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: J4Dat[0]
+	});
+	J4.addListener('click', function() {
+		var pgUrl = 'pages/' + J4Dat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var PiedDat = clusterPinHikes[23];
+	var Pied = new google.maps.Marker({
+		position: {lat: PiedDat[1], lng: PiedDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: PiedDat[0]
+	});
+	Pied.addListener('click', function() {
+		var pgUrl = 'pages/' + PiedDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var MPtDat = clusterPinHikes[24];
+	var MPt = new google.maps.Marker({
+		position: {lat: MPtDat[1], lng: MPtDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: MPtDat[0]
+	});
+	MPt.addListener('click', function() {
+		var pgUrl = 'pages/' + MPtDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var CliffDat = clusterPinHikes[25];
+	var Cliff = new google.maps.Marker({
+		position: {lat: CliffDat[1], lng: CliffDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: CliffDat[0]
+	});
+	Cliff.addListener('click', function() {
+		var pgUrl = 'pages/' + CliffDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var MacaDat = clusterPinHikes[26];
+	var Maca = new google.maps.Marker({
+		position: {lat: MacaDat[1], lng: MacaDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: MacaDat[0]
+	});
+	Maca.addListener('click', function() {
+		var pgUrl = 'pages/' + MacaDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var RincDat = clusterPinHikes[27];
+	var Rinc = new google.maps.Marker({
+		position: {lat: RincDat[1], lng: RincDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: RincDat[0]
+	});
+	Rinc.addListener('click', function() {
+		var pgUrl = 'pages/' + RincDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var VolcDat = clusterPinHikes[28];
+	var Volc = new google.maps.Marker({
+		position: {lat: VolcDat[1], lng: VolcDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: VolcDat[0]
+	});
+	Volc.addListener('click', function() {
+		var pgUrl = 'pages/' + VolcDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var UTesDat = clusterPinHikes[29];
+	var UTes = new google.maps.Marker({
+		position: {lat: UTesDat[1], lng: UTesDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: UTesDat[0]
+	});
+	UTes.addListener('click', function() {
+		var pgUrl = 'pages/' + UTesDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var MTesDat = clusterPinHikes[30];
+	var MTes = new google.maps.Marker({
+		position: {lat: MTesDat[1], lng: MTesDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: MTesDat[0]
+	});
+	MTes.addListener('click', function() {
+		var pgUrl = 'pages/' + MTesDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var DecDat = clusterPinHikes[31];
+	var Dec = new google.maps.Marker({
+		position: {lat: DecDat[1], lng: DecDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: DecDat[0]
+	});
+	Dec.addListener('click', function() {
+		var pgUrl = 'pages/' + DecDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var NambDat = clusterPinHikes[32];
+	var Namb = new google.maps.Marker({
+		position: {lat: NambDat[1], lng: NambDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: NambDat[0]
+	});
+	Namb.addListener('click', function() {
+		var pgUrl = 'pages/' + NambDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var LaVDat = clusterPinHikes[33];
+	var LaV = new google.maps.Marker({
+		position: {lat: LaVDat[1], lng: LaVDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: LaVDat[0]
+	});
+	LaV.addListener('click', function() {
+		var pgUrl = 'pages/' + LaVDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var URioDat = clusterPinHikes[34];
+	var URio = new google.maps.Marker({
+		position: {lat: URioDat[1], lng: URioDat[2] },
+		map: map,
+		icon: clusterIcon,
+		title: URioDat[0]
+	});
+	URio.addListener('click', function() {
+		var pgUrl = 'pages/' + URioDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	// ALL THE "SINGLETON", NON-OVERLAPPING HIKE MARKERS:
+	var ThreeDat = othrHikes[0];
+	var Three = new google.maps.Marker({
+		position: {lat: ThreeDat[1], lng: ThreeDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: ThreeDat[0]
+	});
+	Three.addListener('click', function() {
+		var pgUrl = 'pages/' + ThreeDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var AceqDat = othrHikes[1];
+	var Aceq = new google.maps.Marker({
+		position: {lat: AceqDat[1], lng: AceqDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: AceqDat[0]
+	});
+	Aceq.addListener('click', function() {
+		var pgUrl = 'pages/' + AceqDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var SarcDat = othrHikes[2];
+	var Sarca = new google.maps.Marker({
+		position: {lat: SarcDat[1], lng: SarcDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: SarcDat[0]
+	});
+	Sarca.addListener('click', function() {
+		var pgUrl = 'pages/' + SarcDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var AnchoDat = othrHikes[3];
+	var Ancho = new google.maps.Marker({
+		position: {lat: AnchoDat[1], lng: AnchoDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: AnchoDat[0]
+	});
+	Ancho.addListener('click', function() {
+		var pgUrl = 'pages/' + AnchoDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var ApachDat = othrHikes[4];
+	var Apache = new google.maps.Marker({
+		position: {lat: ApachDat[1], lng: ApachDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: ApachDat[0]
+	});
+	Apache.addListener('click', function() {
+		var pgUrl = 'pages/' + ApachDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var AspDat = othrHikes[5];
+	var Aspen = new google.maps.Marker({
+		position: {lat: AspDat[1], lng: AspDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: AspDat[0]
+	});
+	Aspen.addListener('click', function() {
+		var pgUrl = 'pages/' + AspDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var AtaDat = othrHikes[6];
+	var Atal = new google.maps.Marker({
+		position: {lat: AtaDat[1], lng: AtaDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: AtaDat[0]
+	});
+	Atal.addListener('click', function() {
+		var pgUrl = 'pages/' + AtaDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var BattDat = othrHikes[7];
+	var Battle = new google.maps.Marker({
+		position: {lat: BattDat[1], lng: BattDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: BattDat[0]
+	});
+	Battle.addListener('click', function() {
+		var pgUrl = 'pages/' + BattDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var BorrDat = othrHikes[8];
+	var Borreg = new google.maps.Marker({
+		position: {lat: BorrDat[1], lng: BorrDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: BorrDat[0]
+	});
+	Borreg.addListener('click', function() {
+		var pgUrl = 'pages/' + BorrDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var BuckDat = othrHikes[9];
+	var Buck = new google.maps.Marker({
+		position: {lat: BuckDat[1], lng: BuckDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: BuckDat[0]
+	});
+	Buck.addListener('click', function() {
+		var pgUrl = 'pages/' + BuckDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var CabDat = othrHikes[10];
+	var Cabzon = new google.maps.Marker({
+		position: {lat: CabDat[1], lng: CabDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: CabDat[0]
+	});
+	Cabzon.addListener('click', function() {
+		var pgUrl = 'pages/' + CabDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var CerrDat = othrHikes[11];
+	var Ceril = new google.maps.Marker({
+		position: {lat: CerrDat[1], lng: CerrDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: CerrDat[0]
+	});
+	Ceril.addListener('click', function() {
+		var pgUrl = 'pages/' + CerrDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var ChamDat = othrHikes[12];
+	var Chami = new google.maps.Marker({
+		position: {lat: ChamDat[1], lng: ChamDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: ChamDat[0]
+	});
+	Chami.addListener('click', function() {
+		var pgUrl = 'pages/' + ChamDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var ChavDat = othrHikes[13];
+	var Chavez = new google.maps.Marker({
+		position: {lat: ChavDat[1], lng: ChavDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: ChavDat[0]
+	});
+	Chavez.addListener('click', function() {
+		var pgUrl = 'pages/' + ChavDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var CoyDat = othrHikes[14];
+	var Coyo = new google.maps.Marker({
+		position: {lat: CoyDat[1], lng: CoyDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: CoyDat[0]
+	});
+	Coyo.addListener('click', function() {
+		var pgUrl = 'pages/' + CoyDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var DaleDat = othrHikes[15];
+	var DBallN = new google.maps.Marker({
+		position: {lat: DaleDat[1], lng: DaleDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: DaleDat[0]
+	});
+	DBallN.addListener('click', function() {
+		var pgUrl = 'pages/' + DaleDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var DelDat = othrHikes[16];
+	var DelAg = new google.maps.Marker({
+		position: {lat: DelDat[1], lng: DelDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: DelDat[0]
+	});
+	DelAg.addListener('click', function() {
+		var pgUrl = 'pages/' + DelDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var DiabDat = othrHikes[17];
+	var Diablo = new google.maps.Marker({
+		position: {lat: DiabDat[1], lng: DiabDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: DiabDat[0]
+	});
+	Diablo.addListener('click', function() {
+		var pgUrl = 'pages/' + DiabDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var ElmoDat = othrHikes[18];
+	var ElMor = new google.maps.Marker({
+		position: {lat: ElmoDat[1], lng: ElmoDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: ElmoDat[0]
+	});
+	ElMor.addListener('click', function() {
+		var pgUrl = 'pages/' + ElmoDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var FtBDat = othrHikes[19];
+	var Bayrd = new google.maps.Marker({
+		position: {lat: FtBDat[1], lng: FtBDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: FtBDat[0]
+	});
+	Bayrd.addListener('click', function() {
+		var pgUrl = 'pages/' + FtBDat[3];
+		window.open(pgUrl,'_blank');
+	});
+
+	var HydeDat = othrHikes[20];
+	var HydePk = new google.maps.Marker({
+		position: {lat: HydeDat[1], lng: HydeDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: HydeDat[0]
+	});
+	HydePk.addListener('click', function() {
+		var pgUrl = 'pages/' + HydeDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var JosDat = othrHikes[21];
+	var JMine = new google.maps.Marker({
+		position: {lat: JosDat[1], lng: JosDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: JosDat[0]
+	});
+	JMine.addListener('click', function() {
+		var pgUrl = 'pages/' + JosDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var BajDat = othrHikes[22];
+	var Bajada = new google.maps.Marker({
+		position: {lat: BajDat[1], lng: BajDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: BajDat[0]
+	});
+	Bajada.addListener('click', function() {
+		var pgUrl = 'pages/' + BajDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var LuzDat = othrHikes[23];
+	var LaLuz = new google.maps.Marker({
+		position: {lat: LuzDat[1], lng:LuzDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: LuzDat[0]
+	});
+	LaLuz.addListener('click', function() {
+		var pgUrl = 'pages/' + LuzDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var VerdeDat = othrHikes[24];
+	var Verde = new google.maps.Marker({
+		position: {lat: VerdeDat[1], lng: VerdeDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: VerdeDat[0]
+	});
+	Verde.addListener('click', function() {
+		var pgUrl = 'pages/' + VerdeDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var ConchDat = othrHikes[25];
+	var Conchas = new google.maps.Marker({
+		position: {lat: ConchDat[1], lng: ConchDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: ConchDat[0]
+	});
+	Conchas.addListener('click', function() {
+		var pgUrl = 'pages/' + ConchDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var ChijDat = othrHikes[26];
+	var Chiju = new google.maps.Marker({
+		position: {lat: ChijDat[1], lng: ChijDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: ChijDat[0]
+	});
+	Chiju.addListener('click', function() {
+		var pgUrl = 'pages/' + ChijDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var CubDat = othrHikes[27];
+	var MCuba = new google.maps.Marker({
+		position: {lat: CubDat[1], lng: CubDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: CubDat[0]
+	});
+	MCuba.addListener('click', function() {
+		var pgUrl = 'pages/' + CubDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var NatDat = othrHikes[28];
+	var Conser = new google.maps.Marker({
+		position: {lat: NatDat[1], lng: NatDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: NatDat[0]
+	});
+	Conser.addListener('click', function() {
+		var pgUrl = 'pages/' + NatDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var OjDat = othrHikes[29];
+	var Ojito = new google.maps.Marker({
+		position: {lat: OjDat[1], lng: OjDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: OjDat[0]
+	});
+	Ojito.addListener('click', function() {
+		var pgUrl = 'pages/' + OjDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var BeteDat = othrHikes[30];
+	var Pinab = new google.maps.Marker({
+		position: {lat: BeteDat[1], lng: BeteDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: BeteDat[0]
+	});
+	Pinab.addListener('click', function() {
+		var pgUrl = 'pages/' + BeteDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var PurgDat = othrHikes[31];
+	var Purga = new google.maps.Marker({
+		position: {lat: PurgDat[1], lng: PurgDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: PurgDat[0]
+	});
+	Purga.addListener('click', function() {
+		var pgUrl = 'pages/' + PurgDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var PyrDat = othrHikes[32];
+	var Pymid = new google.maps.Marker({
+		position: {lat: PyrDat[1], lng: PyrDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: PyrDat[0]
+	});
+	Pymid.addListener('click', function() {
+		var pgUrl = 'pages/' + PyrDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var RedDat = othrHikes[33];
+	var RedBlue = new google.maps.Marker({
+		position: {lat: RedDat[1], lng: RedDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: RedDat[0]
+	});
+	RedBlue.addListener('click', function() {
+		var pgUrl = 'pages/' + RedDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var LorenDat = othrHikes[34];
+	var Lorenzo = new google.maps.Marker({
+		position: {lat: LorenDat[1], lng: LorenDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: LorenDat[0]
+	});
+	Lorenzo.addListener('click', function() {
+		var pgUrl = 'pages/' + LorenDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var StripDat = othrHikes[35];
+	var SMine = new google.maps.Marker({
+		position: {lat: StripDat[1], lng: StripDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: StripDat[0]
+	});
+	SMine.addListener('click', function() {
+		var pgUrl = 'pages/' + StripDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var SunMDat = othrHikes[36];
+	var SunMtn = new google.maps.Marker({
+		position: {lat: SunMDat[1], lng: SunMDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: SunMDat[0]
+	});
+	SunMtn.addListener('click', function() {
+		var pgUrl = 'pages/' + SunMDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var TentDat = othrHikes[37];
+	var Kashe = new google.maps.Marker({
+		position: {lat: TentDat[1], lng: TentDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: TentDat[0]
+	});
+	Kashe.addListener('click', function() {
+		var pgUrl = 'pages/' + TentDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var LTesDat = othrHikes[38];
+	var LowTes = new google.maps.Marker({
+		position: {lat: LTesDat[1], lng: LTesDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: LTesDat[0]
+	});
+	LowTes.addListener('click', function() {
+		var pgUrl = 'pages/' + LTesDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var CatDat = othrHikes[39];
+	var CWalks = new google.maps.Marker({
+		position: {lat: CatDat[1], lng: CatDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: CatDat[0]
+	});
+	CWalks.addListener('click', function() {
+		var pgUrl = 'pages/' + CatDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var TetDat = othrHikes[40];
+	var Tetilla = new google.maps.Marker({
+		position: {lat: TetDat[1], lng: TetDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: TetDat[0]
+	});
+	Tetilla.addListener('click', function() {
+		var pgUrl = 'pages/' + TetDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var VGDat = othrHikes[41];
+	var VGrande = new google.maps.Marker({
+		position: {lat: VGDat[1], lng: VGDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: VGDat[0]
+	});
+	VGrande.addListener('click', function() {
+		var pgUrl = 'pages/' + VGDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var VwPtDat = othrHikes[42];
+	var ViewPt = new google.maps.Marker({
+		position: {lat: VwPtDat[1], lng: VwPtDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: VwPtDat[0]
+	});
+	ViewPt.addListener('click', function() {
+		var pgUrl = 'pages/' + VwPtDat[3];
+		window.open(pgUrl,'_blank');
+	});
+	
+	var WillDat = othrHikes[43];
+	var WilLake = new google.maps.Marker({
+		position: {lat: WillDat[1], lng: WillDat[2] },
+		map: map,
+		icon: hikeIcon,
+		title: WillDat[0]
+	});
+	WilLake.addListener('click', function() {
+		var pgUrl = 'pages/' + WillDat[3];
+		window.open(pgUrl,'_blank');
+	});
+/* ***************************************************************************** */
+/* ***************************************************************************** */
+
+/* Establish polylines for areas where trailhead has more than 1 hike */
 	// BANDELIER:
 	var BandCtr = {lat: 35.778943, lng: -106.270838 };	
 	var BandHikeMrkrLocs = [ 
@@ -304,6 +1263,20 @@ function initMap() {
         strokeWeight: 2
 	});
 	Blines.setMap(null);
+	var KinAltoLoc = {lat: 36.064977, lng: -107.969867 };
+	var KinAltMrkrLocs = [
+		{lat: 36.063864, lng: -107.981315 },
+		KinAltoLoc,
+		{lat: 36.068608, lng: -107.959900 }
+	];
+	var KinAltLines = new google.maps.Polyline({
+		path: KinAltMrkrLocs,
+		geodesic: false,
+		strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+	});
+	KinAltLines.setMap(null);
 	// SANTA FE SKI AREA (Winsor Trailhead):
 	var SkiCtr = {lat: 35.795845, lng: -105.804605 };
 	var SkiMrkrLocs = [
@@ -326,9 +1299,9 @@ function initMap() {
 	// ELENA GALLEGOS: PINO & DOMINGO BACA:
 	var eg = {lat:35.163250, lng: -106.470067 };
 	var egMrkrLocs = [
-		{lat: 35.163732, lng: -106.468270 },
+		{lat: 35.160419, lng: -106.463184 },
 		eg,
-		{lat: 35.166117, lng: -106.467717 }
+		{lat: 35.167093, lng: -106.465502}
 	];
 	var egLines = new google.maps.Polyline({
 		path: egMrkrLocs,
@@ -353,6 +1326,22 @@ function initMap() {
 		strokeWeight: 2
 	});
 	tesLines.setMap(null);
+	// PETROGLYPHS: BOCA NEGRA
+	var CliffCtr = {lat: 35.161988, lng: -106.718203 };
+	var CliffMacMrkrLocs = [
+		{lat: 35.165471, lng: -106.729088 },
+		CliffCtr,
+		{lat: 35.170242, lng: -106.717243 }
+	];
+	var CliffMacLines = new google.maps.Polyline({
+		path: CliffMacMrkrLocs,
+		geodesic: false,
+		strokeColor: '#FF0000',
+		strokeOpacity: 1.0,
+		strokeWeight: 2
+	});
+	CliffMacLines.setMap(null);
+	
 	// MANZANITAS MTN TRAILS:
 	var mmt = {lat: 35.046562, lng: -106.383088 };
 	var bhse = {lat: 35.055938, lng: -106.388512 };
@@ -367,16 +1356,20 @@ function initMap() {
 	});
 	mmtLines.setMap(null);
 	/* END OF POLYLINES CREATION */
+/* ***************************************************************************** */
 
+/* ************************** PAN & ZOOM HANDLERS ****************************** */
 	map.addListener('zoom_changed', function() {
 		var curZoom = map.getZoom();
 		var perim = String(map.getBounds());
 		IdTableElements(perim);
 		if ( curZoom > 10 ) {
 			Blines.setMap(map);
+			KinAltLines.setMap(map);
 			SkiLines.setMap(map);
 			egLines.setMap(map);
 			tesLines.setMap(map);
+			CliffMacLines.setMap(map);
 			mmtLines.setMap(map);
 			BandMrkr.setMap(null);
 			ChacoMrkr.setMap(null);
@@ -384,9 +1377,11 @@ function initMap() {
 			PetroMrkr.setMap(null);
 		} else {
 			Blines.setMap(null);
+			KinAltLines.setMap(null);
 			SkiLines.setMap(null);
 			egLines.setMap(null);
 			tesLines.setMap(null);
+			CliffMacLines.setMap(null);
 			mmtLines.setMap(null);
 			BandMrkr.setMap(map);
 			ChacoMrkr.setMap(map);
@@ -421,7 +1416,7 @@ function initMap() {
 		var pinLat;
 		var pinLng;
 		// REMOVE previous table:
-		$('div #wholeTbl').replaceWith('<div id="wholeTbl"></div>');
+		$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
 		
 		/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
 		// First, check to see if any ctrPinHikes are within the viewport;
@@ -505,10 +1500,9 @@ function initMap() {
 							$tbody.append(trows);
 						} // end if-compare
 					} // end else
-		
 				}); // end on.click
 			}); // end '.msortable each' loop
-		}
-	}
+		}  //END ELSE [outHike]
+	} // END: IdTableElements() FUNCTION
 
 }  // end of initMap()
