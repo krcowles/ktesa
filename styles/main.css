@@ -113,7 +113,8 @@ td {
 #metric {
 	text-align: left;
 	width: 190px;
-	margin-left: 20px;
+	margin-left: 45px;
+	margin-top: -10px;
 	padding-left: 10px;
 	padding-right: 10px;
 	color: MidnightBlue;
