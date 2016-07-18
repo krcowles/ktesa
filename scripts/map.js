@@ -64,10 +64,10 @@ function findPinFromRow(eventArg) {
 function getRowNo(El) {
 	if ( El.nodeName == "TD" ) {
 		El = El.parentNode;
-		//msg = '<p>Now El is ' + El.nodeName + '; row indx is ' + El.rowIndex;
+		msg = '<p>Now El is ' + El.nodeName + '; row indx is ' + El.rowIndex;
 		var cellDat = El.cells[1].textContent;
-		//msg += 'w/Cell data = ' + cellDat + '</p>';
-		//$('#features').append(msg);
+		msg += 'w/Cell data = ' + cellDat + '</p>';
+		$('#dbug').append(msg);
 	} else return;
 }
 function undoMarker() {
