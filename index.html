@@ -43,7 +43,9 @@
 			on this site. As you zoom in and pan to different locations, the table of
 			hikes below the map will list what can be seen on the screen. Clicking on a 
 			marker pin will take you to the website for that hike. Alternately, choose
-			a hike from the table, where useful hike data is presented.
+			a hike from the table, where useful hike data is presented. Trails with
+			overlapping trailheads appear as blue pins, and will show their common
+			trailhead when zooming in sufficiently.
 			The tables also have sort capability, so that the table sorts in ascending,
 			then descending order, with successive clicks. Click on a hike and see what
 			awaits you!</p>
@@ -56,7 +58,7 @@
 	<div id="tbl_index">
 		<!-- this is a "sortable" long table -->
 		<div id="wholeTbl">
-			<table class="sortable">
+			<table id="staticTbl" class="sortable">
 				<colgroup>	
 					<col style="width:180px">
 					<col style="width:170px">
@@ -1076,9 +1078,10 @@
 			</table>
 		</div>
 <!-- END OF 'WHOLE TABLE' -->
+		<!-- IN JAVASCRIPT NOW
 		<div>
 			<p id="metric" class="dressing">Click here for metric units</p>
-		</div>
+		</div> -->
 	</div>
 <!-- END OF tbl_index -->
 		<div id="disclaimers">A number of the
