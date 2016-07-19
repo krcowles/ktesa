@@ -5,74 +5,76 @@ var msg;
 var trailHead;
 var markerLoc;
 
-// Table structure, to be populated with rows later in script (see 'var outHike'):
-var tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
-tblHtml += ' onMouseOut="javascript:undoMarker();">';
-tblHtml += $('table').html();
-var inx = tblHtml.indexOf('<tbody') + 8;
-tblHtml = tblHtml.substring(0,inx);
-var endTbl = ' </tbody> </table>';
-endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
+var useTbl = $('title').text() == 'Hike Map' ? false : true;
+if ( useTbl ) {
+	// Table structure, to be populated with rows later in script (see 'var outHike'):
+	var tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
+	tblHtml += ' onMouseOut="javascript:undoMarker();">';
+	tblHtml += $('table').html();
+	var inx = tblHtml.indexOf('<tbody') + 8;
+	tblHtml = tblHtml.substring(0,inx);
+	var endTbl = ' </tbody> </table>';
+	endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
 
+	/* ******************** TABLE FUNCTION DECLARATIONS / DEFINITIONS ****************** */
+	// Establish the compare method (object) for table sorts:
+	var compare = {
+		std: function(a,b) {	// standard sorting - literal
+			if ( a < b ) {
+				return -1;
+			} else {
+				return a > b ? 1 : 0;
+			}
+		},
+		lan: function(a,b) {    // "Like A Number": extract numeric portion for sort
+			// commas allowed in numbers, so;
+			var indx = a.indexOf(',');
+			if ( indx < 0 ) {
+				a = parseFloat(a);
+			} else {
+				noPart1 = parseFloat(a);
+				msg = a.substring(indx + 1, indx + 4);
+				noPart2 = msg.valueOf();
+				a = noPart1 + noPart2;
+			}
+			indx = b.indexOf(',');
+			if ( indx < 0 ) {
+				b = parseFloat(b);
+			} else {
+				noPart1 = parseFloat(b);
+				msg = b.substring(indx + 1, indx + 4);
+				noPart2 = msg.valueOf();
+				b = noPart1 + noPart2;
+			}
+			return a - b;
+		} 
+	};  // end of object declaration
 
-/* ******************** FUNCTION DECLARATIONS / DEFINITIONS ****************** */
-// Establish the compare method (object) for table sorts:
-var compare = {
-	std: function(a,b) {	// standard sorting - literal
-		if ( a < b ) {
-			return -1;
-		} else {
-			return a > b ? 1 : 0;
+	// ROW-FINDING FUNCTIONS FOR mouseover TABLE...
+	function findPinFromRow(eventArg) {
+		if ( !eventArg ) {
+			eventArg = window.event;
 		}
-	},
-	lan: function(a,b) {    // "Like A Number": extract numeric portion for sort
-		// commas allowed in numbers, so;
-		var indx = a.indexOf(',');
-		if ( indx < 0 ) {
-			a = parseFloat(a);
-		} else {
-			noPart1 = parseFloat(a);
-			msg = a.substring(indx + 1, indx + 4);
-			noPart2 = msg.valueOf();
-			a = noPart1 + noPart2;
+		// IE browsers:
+		if ( eventArg.srcElement ) {
+			getRowNo(eventArg.srcElement);
+		} else if ( eventArg.target ) {
+			getRowNo(eventArg.target)
 		}
-		indx = b.indexOf(',');
-		if ( indx < 0 ) {
-			b = parseFloat(b);
-		} else {
-			noPart1 = parseFloat(b);
-			msg = b.substring(indx + 1, indx + 4);
-			noPart2 = msg.valueOf();
-			b = noPart1 + noPart2;
-		}
-		return a - b;
-	} 
-};  // end of object declaration
-
-// ROW-FINDING FUNCTIONS FOR mouseover TABLE...
-function findPinFromRow(eventArg) {
-	if ( !eventArg ) {
-		eventArg = window.event;
 	}
-	// IE browsers:
-	if ( eventArg.srcElement ) {
-		getRowNo(eventArg.srcElement);
-	} else if ( eventArg.target ) {
-		getRowNo(eventArg.target)
+	function getRowNo(El) {
+		if ( El.nodeName == "TD" ) {
+			El = El.parentNode;
+			msg = '<p>Now El is ' + El.nodeName + '; row indx is ' + El.rowIndex;
+			var cellDat = El.cells[1].textContent;
+			msg += 'w/Cell data = ' + cellDat + '</p>';
+			$('#dbug').append(msg);
+		} else return;
 	}
-}
-function getRowNo(El) {
-	if ( El.nodeName == "TD" ) {
-		El = El.parentNode;
-		msg = '<p>Now El is ' + El.nodeName + '; row indx is ' + El.rowIndex;
-		var cellDat = El.cells[1].textContent;
-		msg += 'w/Cell data = ' + cellDat + '</p>';
-		$('#dbug').append(msg);
-	} else return;
-}
-function undoMarker() {
-	msg = '<p>Mouse out of row...</p>';
-	//$('#features').append(msg);
+	function undoMarker() {
+		msg = '<p>Mouse out of row...</p>';
+		//$('#features').append(msg);
+	}
 }
 /* ***************************************************************************** */
 			
@@ -196,24 +198,32 @@ var othrHikes = [
 ];
 
 // icon defs:
-var ctrIcon = 'images/greenpin.png';
-var clusterIcon = 'images/bluepin.png';
-var hikeIcon = 'images/redpin.png';
-var $tblRows = $('.sortable tbody tr');
-var iCnt = $tblRows.length;
-var mCnt = ctrPinHikes.length + clusterPinHikes.length + othrHikes.length;
-if ( mCnt != iCnt ) {
-	window.alert('Index table row count does not match script: investigate!');
+var prefix = useTbl ? '' : '../';
+var ctrIcon = prefix + 'images/greenpin.png';
+var clusterIcon = prefix + 'images/bluepin.png';
+var hikeIcon = prefix + 'images/redpin.png';
+
+if ( useTbl ) {
+	var $tblRows = $('.sortable tbody tr');
+	var iCnt = $tblRows.length;
+	var mCnt = ctrPinHikes.length + clusterPinHikes.length + othrHikes.length;
+	if ( mCnt != iCnt ) {
+		window.alert('Index table row count does not match script: investigate!');
+	}
 }
+var pgLnk = useTbl ? 'pages/' : '../pages/';
 
-
+if (!useTbl) {
+	msg = '<p>GOT HERE</p>';
+	$('#mdbug').append(msg);
+}
 /* **************************** MAIN MAP CALL ************************** */
 // THE MAP CALLBACK FUNCTION:
+
 function initMap() {
-	
 	// NOW TO THE MAP!!
 	var nmCtr = {lat: 34.450, lng: -106.042};
-	
+
 	var mapDiv = document.getElementById('map');
 	var map = new google.maps.Map(mapDiv, {
 		center: nmCtr,
@@ -237,7 +247,7 @@ function initMap() {
 		rotateControl: false,
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
-	
+
 /* ************************** MANY MARKER DEFINITIONS ************************** */
 /* ***************************************************************************** */
 
@@ -251,7 +261,7 @@ function initMap() {
 		title: BandLoc[0]
 	});
 	BandMrkr.addListener('click', function() {
-		var Bpg = 'pages/' + BandLoc[3];
+		var Bpg = pgLnk + BandLoc[3];
 		window.open(Bpg,'_blank');
 	});
 	var ChacoLoc = ctrPinHikes[1];
@@ -262,7 +272,7 @@ function initMap() {
 		title: ChacoLoc[0]
 	});
 	ChacoMrkr.addListener('click', function() {
-		var Cpg = 'pages/' + ChacoLoc[3];
+		var Cpg = pgLnk + ChacoLoc[3];
 		var msgOut = ChacoMrkr.getTitle();
 		window.open(Cpg,'_blank');
 	});
@@ -274,7 +284,7 @@ function initMap() {
 		title: ElMalLoc[0]
 	});
 	ElMalMrkr.addListener('click', function() {
-		Epg = 'pages/' + ElMalLoc[3];
+		Epg = pgLnk + ElMalLoc[3];
 		window.open(Epg,'_blank');
 	});
 	var PetroLoc = ctrPinHikes[3];
@@ -285,7 +295,7 @@ function initMap() {
 		title: PetroLoc[0]
 	});
 	PetroMrkr.addListener('click', function() {
-		var Ppg = 'pages/' + PetroLoc[3];
+		var Ppg = pgLnk + PetroLoc[3];
 		window.open(Ppg,'_blank');
 	});
 	// LOTS OF CODE, but no more execution than the generic loop which was useless in
@@ -299,7 +309,7 @@ function initMap() {
 		title: RuinsDat[0]
 	});
 	Ruins.addListener('click', function() {
-		var pgUrl = 'pages/' + RuinsDat[3];
+		var pgUrl = pgLnk + RuinsDat[3];
 		window.open(pgUrl,'_blank');
 	});
 
@@ -311,7 +321,7 @@ function initMap() {
 		title: FallsDat[0]
 	});
 	Falls.addListener('click', function() {
-		var pgUrl = 'pages/' + FallsDat[3];
+		var pgUrl = pgLnk + FallsDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -323,7 +333,7 @@ function initMap() {
 		title: FreyDat[0]
 	});
 	Frey.addListener('click', function() {
-		var pgUrl = 'pages/' + FreyDat[3];
+		var pgUrl = pgLnk + FreyDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -335,7 +345,7 @@ function initMap() {
 		title: FrijDat[0]
 	});
 	Frij.addListener('click', function() {
-		var pgUrl = 'pages/' + FrijDat[3];
+		var pgUrl = pgLnk + FrijDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -347,7 +357,7 @@ function initMap() {
 		title: AlcDat[0]
 	});
 	Alc.addListener('click', function() {
-		var pgUrl = 'pages/' + AlcDat[3];
+		var pgUrl = pgLnk + AlcDat[3];
 		window.open(pgUrl,'_blank');
 	}); 
 	
@@ -359,7 +369,7 @@ function initMap() {
 		title: TsanDat[0]
 	});
 	Tsan.addListener('click', function() {
-		var pgUrl = 'pages/' + TsanDat[3];
+		var pgUrl = pgLnk + TsanDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -371,7 +381,7 @@ function initMap() {
 		title: CanyDat[0]
 	});
 	Cany.addListener('click', function() {
-		var pgUrl = 'pages/' + CanyDat[3];
+		var pgUrl = pgLnk + CanyDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -383,7 +393,7 @@ function initMap() {
 		title: UnaDat[0]
 	});
 	Una.addListener('click', function() {
-		var pgUrl = 'pages/' + UnaDat[3];
+		var pgUrl = pgLnk + UnaDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -395,7 +405,7 @@ function initMap() {
 		title: HungoDat[0]
 	});
 	Hungo.addListener('click', function() {
-		var pgUrl = 'pages/' + HungoDat[3];
+		var pgUrl = pgLnk + HungoDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -407,7 +417,7 @@ function initMap() {
 		title: BonDat[0]
 	});
 	Bon.addListener('click', function() {
-		var pgUrl = 'pages/' + BonDat[3];
+		var pgUrl = pgLnk + BonDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -419,7 +429,7 @@ function initMap() {
 		title: AltoDat[0]
 	});
 	Alto.addListener('click', function() {
-		var pgUrl = 'pages/' + AltoDat[3];
+		var pgUrl = pgLnk + AltoDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -431,7 +441,7 @@ function initMap() {
 		title: KletDat[0]
 	});
 	Klet.addListener('click', function() {
-		var pgUrl = 'pages/' + KletDat[3];
+		var pgUrl = pgLnk + KletDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -443,7 +453,7 @@ function initMap() {
 		title: TubeDat[0]
 	});
 	Tube.addListener('click', function() {
-		var pgUrl = 'pages/' + TubeDat[3];
+		var pgUrl = pgLnk + TubeDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -455,7 +465,7 @@ function initMap() {
 		title: IceDat[0]
 	});
 	Ice.addListener('click', function() {
-		var pgUrl = 'pages/' + IceDat[3];
+		var pgUrl = pgLnk + IceDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -467,7 +477,7 @@ function initMap() {
 		title: CaldDat[0]
 	});
 	Cald.addListener('click', function() {
-		var pgUrl = 'pages/' + CaldDat[3];
+		var pgUrl = pgLnk + CaldDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -479,7 +489,7 @@ function initMap() {
 		title: PinoDat[0]
 	});
 	Pino.addListener('click', function() {
-		var pgUrl = 'pages/' + PinoDat[3];
+		var pgUrl = pgLnk + PinoDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -491,7 +501,7 @@ function initMap() {
 		title: DomDat[0]
 	});
 	Dom.addListener('click', function() {
-		var pgUrl = 'pages/' + DomDat[3];
+		var pgUrl = pgLnk + DomDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -503,7 +513,7 @@ function initMap() {
 		title: ChimDat[0]
 	});
 	Chim.addListener('click', function() {
-		var pgUrl = 'pages/' + ChimDat[3];
+		var pgUrl = pgLnk + ChimDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -515,7 +525,7 @@ function initMap() {
 		title: KitchDat[0]
 	});
 	Kitch.addListener('click', function() {
-		var pgUrl = 'pages/' + KitchDat[3];
+		var pgUrl = pgLnk + KitchDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -527,7 +537,7 @@ function initMap() {
 		title: TunDat[0]
 	});
 	Tun.addListener('click', function() {
-		var pgUrl = 'pages/' + TunDat[3];
+		var pgUrl = pgLnk + TunDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -539,7 +549,7 @@ function initMap() {
 		title: BhseDat[0]
 	});
 	Bhse.addListener('click', function() {
-		var pgUrl = 'pages/' + BhseDat[3];
+		var pgUrl = pgLnk + BhseDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -551,7 +561,7 @@ function initMap() {
 		title: AlbDat[0]
 	});
 	Alb.addListener('click', function() {
-		var pgUrl = 'pages/' + AlbDat[3];
+		var pgUrl = pgLnk + AlbDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -563,7 +573,7 @@ function initMap() {
 		title: J4Dat[0]
 	});
 	J4.addListener('click', function() {
-		var pgUrl = 'pages/' + J4Dat[3];
+		var pgUrl = pgLnk + J4Dat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -575,7 +585,7 @@ function initMap() {
 		title: PiedDat[0]
 	});
 	Pied.addListener('click', function() {
-		var pgUrl = 'pages/' + PiedDat[3];
+		var pgUrl = pgLnk + PiedDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -587,7 +597,7 @@ function initMap() {
 		title: MPtDat[0]
 	});
 	MPt.addListener('click', function() {
-		var pgUrl = 'pages/' + MPtDat[3];
+		var pgUrl = pgLnk + MPtDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -599,7 +609,7 @@ function initMap() {
 		title: CliffDat[0]
 	});
 	Cliff.addListener('click', function() {
-		var pgUrl = 'pages/' + CliffDat[3];
+		var pgUrl = pgLnk + CliffDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -611,7 +621,7 @@ function initMap() {
 		title: MacaDat[0]
 	});
 	Maca.addListener('click', function() {
-		var pgUrl = 'pages/' + MacaDat[3];
+		var pgUrl = pgLnk + MacaDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -623,7 +633,7 @@ function initMap() {
 		title: RincDat[0]
 	});
 	Rinc.addListener('click', function() {
-		var pgUrl = 'pages/' + RincDat[3];
+		var pgUrl = pgLnk + RincDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -635,7 +645,7 @@ function initMap() {
 		title: VolcDat[0]
 	});
 	Volc.addListener('click', function() {
-		var pgUrl = 'pages/' + VolcDat[3];
+		var pgUrl = pgLnk + VolcDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -647,7 +657,7 @@ function initMap() {
 		title: UTesDat[0]
 	});
 	UTes.addListener('click', function() {
-		var pgUrl = 'pages/' + UTesDat[3];
+		var pgUrl = pgLnk + UTesDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -659,7 +669,7 @@ function initMap() {
 		title: MTesDat[0]
 	});
 	MTes.addListener('click', function() {
-		var pgUrl = 'pages/' + MTesDat[3];
+		var pgUrl = pgLnk + MTesDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -671,7 +681,7 @@ function initMap() {
 		title: DecDat[0]
 	});
 	Dec.addListener('click', function() {
-		var pgUrl = 'pages/' + DecDat[3];
+		var pgUrl = pgLnk + DecDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -683,7 +693,7 @@ function initMap() {
 		title: NambDat[0]
 	});
 	Namb.addListener('click', function() {
-		var pgUrl = 'pages/' + NambDat[3];
+		var pgUrl = pgLnk + NambDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -695,7 +705,7 @@ function initMap() {
 		title: LaVDat[0]
 	});
 	LaV.addListener('click', function() {
-		var pgUrl = 'pages/' + LaVDat[3];
+		var pgUrl = pgLnk + LaVDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -707,7 +717,7 @@ function initMap() {
 		title: URioDat[0]
 	});
 	URio.addListener('click', function() {
-		var pgUrl = 'pages/' + URioDat[3];
+		var pgUrl = pgLnk + URioDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -720,7 +730,7 @@ function initMap() {
 		title: ThreeDat[0]
 	});
 	Three.addListener('click', function() {
-		var pgUrl = 'pages/' + ThreeDat[3];
+		var pgUrl = pgLnk + ThreeDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -732,7 +742,7 @@ function initMap() {
 		title: AceqDat[0]
 	});
 	Aceq.addListener('click', function() {
-		var pgUrl = 'pages/' + AceqDat[3];
+		var pgUrl = pgLnk + AceqDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -744,7 +754,7 @@ function initMap() {
 		title: SarcDat[0]
 	});
 	Sarca.addListener('click', function() {
-		var pgUrl = 'pages/' + SarcDat[3];
+		var pgUrl = pgLnk + SarcDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -756,7 +766,7 @@ function initMap() {
 		title: AnchoDat[0]
 	});
 	Ancho.addListener('click', function() {
-		var pgUrl = 'pages/' + AnchoDat[3];
+		var pgUrl = pgLnk + AnchoDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -768,7 +778,7 @@ function initMap() {
 		title: ApachDat[0]
 	});
 	Apache.addListener('click', function() {
-		var pgUrl = 'pages/' + ApachDat[3];
+		var pgUrl = pgLnk + ApachDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -780,7 +790,7 @@ function initMap() {
 		title: AspDat[0]
 	});
 	Aspen.addListener('click', function() {
-		var pgUrl = 'pages/' + AspDat[3];
+		var pgUrl = pgLnk + AspDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -792,7 +802,7 @@ function initMap() {
 		title: AtaDat[0]
 	});
 	Atal.addListener('click', function() {
-		var pgUrl = 'pages/' + AtaDat[3];
+		var pgUrl = pgLnk + AtaDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -804,7 +814,7 @@ function initMap() {
 		title: BattDat[0]
 	});
 	Battle.addListener('click', function() {
-		var pgUrl = 'pages/' + BattDat[3];
+		var pgUrl = pgLnk + BattDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -816,7 +826,7 @@ function initMap() {
 		title: BorrDat[0]
 	});
 	Borreg.addListener('click', function() {
-		var pgUrl = 'pages/' + BorrDat[3];
+		var pgUrl = pgLnk + BorrDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -828,7 +838,7 @@ function initMap() {
 		title: BuckDat[0]
 	});
 	Buck.addListener('click', function() {
-		var pgUrl = 'pages/' + BuckDat[3];
+		var pgUrl = pgLnk + BuckDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -840,7 +850,7 @@ function initMap() {
 		title: CabDat[0]
 	});
 	Cabzon.addListener('click', function() {
-		var pgUrl = 'pages/' + CabDat[3];
+		var pgUrl = pgLnk + CabDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -852,7 +862,7 @@ function initMap() {
 		title: CerrDat[0]
 	});
 	Ceril.addListener('click', function() {
-		var pgUrl = 'pages/' + CerrDat[3];
+		var pgUrl = pgLnk + CerrDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -864,7 +874,7 @@ function initMap() {
 		title: ChamDat[0]
 	});
 	Chami.addListener('click', function() {
-		var pgUrl = 'pages/' + ChamDat[3];
+		var pgUrl = pgLnk + ChamDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -876,7 +886,7 @@ function initMap() {
 		title: ChavDat[0]
 	});
 	Chavez.addListener('click', function() {
-		var pgUrl = 'pages/' + ChavDat[3];
+		var pgUrl = pgLnk + ChavDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -888,7 +898,7 @@ function initMap() {
 		title: CoyDat[0]
 	});
 	Coyo.addListener('click', function() {
-		var pgUrl = 'pages/' + CoyDat[3];
+		var pgUrl = pgLnk + CoyDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -900,7 +910,7 @@ function initMap() {
 		title: DaleDat[0]
 	});
 	DBallN.addListener('click', function() {
-		var pgUrl = 'pages/' + DaleDat[3];
+		var pgUrl = pgLnk + DaleDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -912,7 +922,7 @@ function initMap() {
 		title: DelDat[0]
 	});
 	DelAg.addListener('click', function() {
-		var pgUrl = 'pages/' + DelDat[3];
+		var pgUrl = pgLnk + DelDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -924,7 +934,7 @@ function initMap() {
 		title: DiabDat[0]
 	});
 	Diablo.addListener('click', function() {
-		var pgUrl = 'pages/' + DiabDat[3];
+		var pgUrl = pgLnk + DiabDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -936,7 +946,7 @@ function initMap() {
 		title: ElmoDat[0]
 	});
 	ElMor.addListener('click', function() {
-		var pgUrl = 'pages/' + ElmoDat[3];
+		var pgUrl = pgLnk + ElmoDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -948,7 +958,7 @@ function initMap() {
 		title: FtBDat[0]
 	});
 	Bayrd.addListener('click', function() {
-		var pgUrl = 'pages/' + FtBDat[3];
+		var pgUrl = pgLnk + FtBDat[3];
 		window.open(pgUrl,'_blank');
 	});
 
@@ -960,7 +970,7 @@ function initMap() {
 		title: HydeDat[0]
 	});
 	HydePk.addListener('click', function() {
-		var pgUrl = 'pages/' + HydeDat[3];
+		var pgUrl = pgLnk + HydeDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -972,7 +982,7 @@ function initMap() {
 		title: JosDat[0]
 	});
 	JMine.addListener('click', function() {
-		var pgUrl = 'pages/' + JosDat[3];
+		var pgUrl = pgLnk + JosDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -984,7 +994,7 @@ function initMap() {
 		title: BajDat[0]
 	});
 	Bajada.addListener('click', function() {
-		var pgUrl = 'pages/' + BajDat[3];
+		var pgUrl = pgLnk + BajDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -996,7 +1006,7 @@ function initMap() {
 		title: LuzDat[0]
 	});
 	LaLuz.addListener('click', function() {
-		var pgUrl = 'pages/' + LuzDat[3];
+		var pgUrl = pgLnk + LuzDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1008,7 +1018,7 @@ function initMap() {
 		title: VerdeDat[0]
 	});
 	Verde.addListener('click', function() {
-		var pgUrl = 'pages/' + VerdeDat[3];
+		var pgUrl = pgLnk + VerdeDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1020,7 +1030,7 @@ function initMap() {
 		title: ConchDat[0]
 	});
 	Conchas.addListener('click', function() {
-		var pgUrl = 'pages/' + ConchDat[3];
+		var pgUrl = pgLnk + ConchDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1032,7 +1042,7 @@ function initMap() {
 		title: ChijDat[0]
 	});
 	Chiju.addListener('click', function() {
-		var pgUrl = 'pages/' + ChijDat[3];
+		var pgUrl = pgLnk + ChijDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1044,7 +1054,7 @@ function initMap() {
 		title: CubDat[0]
 	});
 	MCuba.addListener('click', function() {
-		var pgUrl = 'pages/' + CubDat[3];
+		var pgUrl = pgLnk + CubDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1056,7 +1066,7 @@ function initMap() {
 		title: NatDat[0]
 	});
 	Conser.addListener('click', function() {
-		var pgUrl = 'pages/' + NatDat[3];
+		var pgUrl = pgLnk + NatDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1068,7 +1078,7 @@ function initMap() {
 		title: OjDat[0]
 	});
 	Ojito.addListener('click', function() {
-		var pgUrl = 'pages/' + OjDat[3];
+		var pgUrl = pgLnk + OjDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1080,7 +1090,7 @@ function initMap() {
 		title: BeteDat[0]
 	});
 	Pinab.addListener('click', function() {
-		var pgUrl = 'pages/' + BeteDat[3];
+		var pgUrl = pgLnk + BeteDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1092,7 +1102,7 @@ function initMap() {
 		title: PurgDat[0]
 	});
 	Purga.addListener('click', function() {
-		var pgUrl = 'pages/' + PurgDat[3];
+		var pgUrl = pgLnk + PurgDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1104,7 +1114,7 @@ function initMap() {
 		title: PyrDat[0]
 	});
 	Pymid.addListener('click', function() {
-		var pgUrl = 'pages/' + PyrDat[3];
+		var pgUrl = pgLnk + PyrDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1116,7 +1126,7 @@ function initMap() {
 		title: RedDat[0]
 	});
 	RedBlue.addListener('click', function() {
-		var pgUrl = 'pages/' + RedDat[3];
+		var pgUrl = pgLnk + RedDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1128,7 +1138,7 @@ function initMap() {
 		title: LorenDat[0]
 	});
 	Lorenzo.addListener('click', function() {
-		var pgUrl = 'pages/' + LorenDat[3];
+		var pgUrl = pgLnk + LorenDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1140,7 +1150,7 @@ function initMap() {
 		title: StripDat[0]
 	});
 	SMine.addListener('click', function() {
-		var pgUrl = 'pages/' + StripDat[3];
+		var pgUrl = pgLnk + StripDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1152,7 +1162,7 @@ function initMap() {
 		title: SunMDat[0]
 	});
 	SunMtn.addListener('click', function() {
-		var pgUrl = 'pages/' + SunMDat[3];
+		var pgUrl = pgLnk + SunMDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1164,7 +1174,7 @@ function initMap() {
 		title: TentDat[0]
 	});
 	Kashe.addListener('click', function() {
-		var pgUrl = 'pages/' + TentDat[3];
+		var pgUrl = pgLnk + TentDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1176,7 +1186,7 @@ function initMap() {
 		title: LTesDat[0]
 	});
 	LowTes.addListener('click', function() {
-		var pgUrl = 'pages/' + LTesDat[3];
+		var pgUrl = pgLnk + LTesDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1188,7 +1198,7 @@ function initMap() {
 		title: CatDat[0]
 	});
 	CWalks.addListener('click', function() {
-		var pgUrl = 'pages/' + CatDat[3];
+		var pgUrl = pgLnk + CatDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1200,7 +1210,7 @@ function initMap() {
 		title: TetDat[0]
 	});
 	Tetilla.addListener('click', function() {
-		var pgUrl = 'pages/' + TetDat[3];
+		var pgUrl = pgLnk + TetDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1212,7 +1222,7 @@ function initMap() {
 		title: VGDat[0]
 	});
 	VGrande.addListener('click', function() {
-		var pgUrl = 'pages/' + VGDat[3];
+		var pgUrl = pgLnk + VGDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1224,7 +1234,7 @@ function initMap() {
 		title: VwPtDat[0]
 	});
 	ViewPt.addListener('click', function() {
-		var pgUrl = 'pages/' + VwPtDat[3];
+		var pgUrl = pgLnk + VwPtDat[3];
 		window.open(pgUrl,'_blank');
 	});
 	
@@ -1236,9 +1246,10 @@ function initMap() {
 		title: WillDat[0]
 	});
 	WilLake.addListener('click', function() {
-		var pgUrl = 'pages/' + WillDat[3];
+		var pgUrl = pgLnk + WillDat[3];
 		window.open(pgUrl,'_blank');
 	});
+
 /* ***************************************************************************** */
 /* ***************************************************************************** */
 
@@ -1362,8 +1373,10 @@ function initMap() {
 /* ************************** PAN & ZOOM HANDLERS ****************************** */
 	map.addListener('zoom_changed', function() {
 		var curZoom = map.getZoom();
-		var perim = String(map.getBounds());
-		IdTableElements(perim);
+		if (useTbl) {
+			var perim = String(map.getBounds());
+			IdTableElements(perim);
+		}
 		if ( curZoom > 10 ) {
 			Blines.setMap(map);
 			KinAltLines.setMap(map);
@@ -1391,11 +1404,12 @@ function initMap() {
 		}
 	});
 	
-	map.addListener('dragend', function() {
-		var newBds = String(map.getBounds());
-		IdTableElements(newBds);
-	});
-	
+	if( useTbl) {
+		map.addListener('dragend', function() {
+			var newBds = String(map.getBounds());
+			IdTableElements(newBds);
+		});
+	}
 	
 	// Function to find elements within current bounds and display them in a table
 	function IdTableElements(boundsStr) {
@@ -1418,7 +1432,6 @@ function initMap() {
 		var pinLng;
 		// REMOVE previous table:
 		$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
-		
 		/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
 		// First, check to see if any ctrPinHikes are within the viewport;
 		// if so, include them in the table
@@ -1571,8 +1584,27 @@ function initMap() {
 					$(this).find('td').eq(4).text(tmpUnits);
 		
 				});  // end 'each erow'	
-			}); // end of click on metric */
+			}); // end of click on metric
 		}  //END ELSE [outHike]
 	} // END: IdTableElements() FUNCTION
 
 }  // end of initMap()
+
+if (useTbl) {
+	// User-select map size:
+	$('#l').on('click',function() {
+		$('#map').css('height','600');
+		$('#map').css('width','600');
+	});
+	$('#m').on('click',function() {
+		$('#map').css('height','400');
+		$('#map').css('width','400');
+	});
+	$('#s').on('click',function() {
+		$('#map').css('height','250');
+		$('#map').css('width','250');
+	});
+	$('#f').on('click', function() {
+		window.open('pages/mapPg.html','_blank');
+	});
+}
