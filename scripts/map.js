@@ -380,9 +380,25 @@ function initMap() {
 		icon: clusterIcon,
 		title: CanyDat[0]
 	});
+	var CanyTxt = '<div style="color:DarkBlue">' + '<p>' + CanyDat[0] + '</p><p>See highlighted row in Table</p></div>';
+	var Canywin = new google.maps.InfoWindow({
+			content: CanyTxt,
+			maxWidth: 90
+	});
+	Cany.addListener('mouseover', function() {
+		Canywin.open(map, Cany);
+	});
+	Cany.addListener('mouseout', function() {
+		Canywin.close();
+	});
 	Cany.addListener('click', function() {
-		var pgUrl = pgLnk + CanyDat[3];
-		window.open(pgUrl,'_blank');
+		var iwin = new google.maps.InfoWindow({
+			content: CanyTxt,
+			maxWidth: 90
+		});
+		iwin.open(map, Cany);
+		//var pgUrl = pgLnk + CanyDat[3];
+		//window.open(pgUrl,'_blank');
 	});
 	
 	var UnaDat = clusterPinHikes[7];
@@ -1593,16 +1609,16 @@ function initMap() {
 if (useTbl) {
 	// User-select map size:
 	$('#l').on('click',function() {
-		$('#map').css('height','600');
-		$('#map').css('width','600');
+		$('#map').css('height','900');
+		$('#map').css('width','900');
 	});
 	$('#m').on('click',function() {
-		$('#map').css('height','400');
-		$('#map').css('width','400');
+		$('#map').css('height','750');
+		$('#map').css('width','750');
 	});
 	$('#s').on('click',function() {
-		$('#map').css('height','250');
-		$('#map').css('width','250');
+		$('#map').css('height','600');
+		$('#map').css('width','600');
 	});
 	$('#f').on('click', function() {
 		window.open('pages/mapPg.html','_blank');
