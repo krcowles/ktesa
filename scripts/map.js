@@ -192,6 +192,9 @@ var prefix = useTbl ? '' : '../';
 var ctrIcon = prefix + 'images/greenpin.png';
 var clusterIcon = prefix + 'images/bluepin.png';
 var hikeIcon = prefix + 'images/redpin.png';
+var smallGeo = prefix + 'images/starget.png';
+var medGeo = prefix + 'images/mtarget.png';
+var lgGeo = prefix + 'images/ltarget.png';
 
 if ( useTbl ) {
 	var $tblRows = $('.sortable tbody tr');
@@ -645,6 +648,42 @@ function initMap() {
 			}); // end of click on metric
 		}  //END ELSE [outHike]
 	} // END: IdTableElements() FUNCTION
+	
+	// //////////////////////////  TEST AREA ////////////////////////
+	// Geolocation code testing area
+	//var rloop = 1;
+	//setInterval(captureDat, 8000);
+	var tmLoc = {lat: 32.208851, lng: -105.325928 };
+	smallMark = new google.maps.Marker({
+		position: tmLoc,
+		icon: smallGeo
+	});
+	medMark = new google.maps.Marker({
+		position: tmLoc,
+		icon: medGeo
+	});
+	largMark = new google.maps.Marker({
+		position: tmLoc,
+		icon: lgGeo
+	});
+	setInterval(anim, 1000);
+
+	//tstMrk.setAnimation(google.maps.Animation.BOUNCE);
+	function anim() {
+		largMark.setMap(null);
+		smallMark.setMap(map);
+		setTimeout(growMid,350);
+	}
+	function growMid() {
+		smallMark.setMap(null);
+		medMark.setMap(map);
+		setTimeout(growLg,350);
+	}
+	function growLg() {
+		medMark.setMap(null);
+		largMark.setMap(map);
+	}
+	// //////////////////////////////////////////////////////////////
 
 }  // end of initMap()
 
