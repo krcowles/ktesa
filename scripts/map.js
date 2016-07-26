@@ -665,7 +665,6 @@ function initMap() {
 		}
 	} // END: IdTableElements() FUNCTION
 
-
 	// //////////////////////////  TEST AREA ////////////////////////
 	// Geolocation code testing area
 	var geoOptions = {
@@ -675,7 +674,6 @@ function initMap() {
 	};
 	if (Modernizr.geolocation) {
 		navigator.geolocation.getCurrentPosition(success, fail, geoOptions);
-		
 		function fail(PositionError) {
 			switch (PositionError.code) {
 				case 1:
@@ -692,6 +690,7 @@ function initMap() {
 		}  // end of FAIL function
 		
 		function success(Position) {
+			window.alert('got here');
 			var cLat = Position.coords.latitude;
 			var cLng = Position.coords.longitude;
 			//var cAlt = Position.coords.altitude;
