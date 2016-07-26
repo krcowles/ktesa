@@ -1,9 +1,11 @@
 // generic var for outputting debug messages
 var msg;
 
+// Determine which page is calling this script: for full page map, no tables displayed
 var useTbl = $('title').text() == 'Hike Map' ? false : true;
+
 if ( useTbl ) {
-	// Table structure, to be populated with rows later in script (see 'var outHike'):
+	// Table html wrapper, to be populated with rows later in script (see 'var outHike'):
 	var tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
 	tblHtml += ' onMouseOut="javascript:undoMarker();">';
 	tblHtml += $('table').html();
@@ -12,7 +14,7 @@ if ( useTbl ) {
 	var endTbl = ' </tbody> </table>';
 	endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
 
-	/* ******************** TABLE FUNCTION DECLARATIONS / DEFINITIONS ****************** */
+	// ///////////////////////  TABLE FUNCTION DECLARATIONS /////////////////////////
 	// Establish the compare method (object) for table sorts:
 	var compare = {
 		std: function(a,b) {	// standard sorting - literal
@@ -44,9 +46,125 @@ if ( useTbl ) {
 			}
 			return a - b;
 		} 
-	};  // end of object declaration
+	};  // end of COMPARE object
+	
+	// Create the html for the table, and add sort definitions and metric conversion
+	function formTbl ( noOfRows, tblRowsArray ) {
+		// HTML CREATION:
+		var thisTbl = tblHtml + ' <tr>';
+		var indxRow;
+		for (var m=0; m<noOfRows; m++) {
+			indxRow = tblRowsArray[m];
+			thisTbl += $tblRows.eq(indxRow).html();
+			thisTbl += ' </tr> ';
+		}
+		thisTbl += endTbl;
+		$('#usrTbl').html(thisTbl);
+		$('#metric').css('display','block');
+		// ADD SORT FUNCTIONALITY ANEW FOR EACH CREATION OF TABLE:
+		$('.msortable').each(function() {
+			var $table = $(this); 
+			var $tbody = $table.find('tbody');
+			var $controls = $table.find('th'); // store all headers
+			var trows = $tbody.find('tr').toArray();  // array of rows
 
-	// ROW-FINDING FUNCTIONS FOR mouseover TABLE...
+			$controls.on('click', function() {
+				var $header = $(this);
+				var order = $header.data('sort');
+				var column;
+	
+				// IF defined for selected column, toggle ascending/descending class
+				if ( $header.is('.ascending') || $header.is('.descending') ) {
+					$header.toggleClass('ascending descending');
+					$tbody.append(trows.reverse());
+				} else {
+				// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
+					$header.addClass('ascending');
+					$header.siblings().removeClass('ascending descending');
+					if ( compare.hasOwnProperty(order) ) {
+						column = $controls.index(this);  // index into the row array's data
+						trows.sort(function(a,b) {
+							a = $(a).find('td').eq(column).text();
+							b = $(b).find('td').eq(column).text();
+							return compare[order](a,b);
+						});
+						$tbody.append(trows);
+					} // end if-compare
+				} // end else
+			}); // end on.click
+		}); // end '.msortable each' loop
+		// ADD METRIC CONVERSION ANEW FOR EACH CREATION OF TABLE:
+		$('#metric').on('click', function() {
+			// table locators:
+			var $etable = $('table');
+			var $etbody = $etable.find('tbody');
+			var $erows = $etbody.find('tr');
+			var state = this.textContent;
+			// conversion variables:
+			var tmpUnits;
+			var tmpConv;
+			var newDist;
+			var newElev;
+			var dist;
+			var elev;
+			// determine which state to convert from
+			var mindx = state.indexOf('metric');
+			if ( mindx < 0 ) { // currently metric; convert TO English
+				newDist = 'miles';
+				newElev = 'ft';
+				state = state.replace('English','metric');
+				dist = 0.6214;
+				elev = 3.278;
+			} else { // currently English; convert TO metric
+				newDist = 'kms';
+				newElev = 'm';
+				state = state.replace('metric','English');
+				dist = 1.61;
+				elev = 0.305;
+			}
+			$('#metric').text(state); // new data element text
+			$erows.each( function() {
+				// index 3 is column w/distance units (miles/kms)
+				// ASSUMPTION: always less than 1,000 miles or kms!
+				tmpUnits = $(this).find('td').eq(3).text();
+				tmpConv = parseFloat(tmpUnits);
+				tmpConv = dist * tmpConv;
+				var indxLoc = tmpUnits.substring(0,2);
+				if ( indxLoc === '0*' ) {
+					tmpUnits = '0* ' + newDist;
+				} else {
+					tmpUnits = tmpConv.toFixed(1);
+					tmpUnits = tmpUnits + ' ' + newDist;
+				}
+				$(this).find('td').eq(3).text(tmpUnits);
+				// index 4 is column w/elevation units (ft/m)
+				tmpUnits = $(this).find('td').eq(4).text();
+				// need to worry about commas...
+				mindx = tmpUnits.indexOf(',');
+				if ( mindx < 0 ) {
+					tmpConv = parseFloat(tmpUnits);
+				} else {
+					noPart1 = parseFloat(tmpUnits);
+					noPart2 = tmpUnits.substring(mindx + 1,mindx + 4);
+					noPart2 = noPart2.valueOf();
+					tmpConv = noPart1 + noPart2;
+				}
+				tmpConv = dist * tmpConv;
+				indxLoc = tmpUnits.substring(0,2);
+				if ( indxLoc === '0*' ) {
+					tmpUnits = '0* ' + newElev;
+				} else {
+					tmpUnits = tmpConv.toFixed(0);
+					tmpUnits = tmpUnits + ' ' + newElev;
+				}
+				$(this).find('td').eq(4).text(tmpUnits);
+	
+			});  // end 'each erow'	
+		}); // end of click on metric
+	}  // end of FORMTBL function
+
+	// ROW-FINDING FUNCTIONS FOR mouseover TABLE... [not currently used]
+	/*
 	function findPinFromRow(eventArg) {
 		if ( !eventArg ) {
 			eventArg = window.event;
@@ -71,25 +189,26 @@ if ( useTbl ) {
 		msg = '<p>Mouse out of row...</p>';
 		//$('#features').append(msg);
 	}
-}
+	// END OF ROW-FINDING FUNCTIONS
+	*/
+	
+}  // end of useTbl test
 /* ***************************************************************************** */
 			
 			
 // -------------------------------   IMPORTANT NOTE: ----------------------------
 //	The index.html table MUST list items in the
-//	order shown below in order for the correct elements to be listed
+//	order shown below [as listed in arrays] in order for the correct elements to be listed
 //	in the user table of hikes
 //	-----------------------------------------------------------------------------                                         */
 
 // THE FOLLOWING HIKE SITES ARE ALWAYS SHOWN IN THE TABLE IF IN BOUNDS
-// When zoom <= 10, show these markers; When zoom > 10, don't show markers
 var ctrPinHikes = [
 	['Bandelier',35.779039,-106.270788,'Bandelier.html'],
 	['Chaco Canyon',36.030250,-107.91080,'Chaco.html'],
 	['El Malpais',34.970407,-107.810152,'ElMalpais.html'],
 	['Petroglyphs Natl Mon',35.138644,-106.711196,'Petroglyphs.html']
 ];
-// Always shoiw markers:
 var clusterPinHikes = [
 	// Bandelier hikes:
 	['Ruins Trail',35.793670,-106.273155,'MainLoop.html'],
@@ -138,7 +257,6 @@ var clusterPinHikes = [
 	['La Vega',35.816873,-105.815796,'LaVega.html'],
 	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html']
 ];
-// Always show markers:
 var othrHikes = [
 	['Three Rivers',33.419574,-105.987682,'ThreeRivers.html'],
 	['Corrales Acequia',35.249327,-106.607283,'Acequia.html'],
@@ -187,15 +305,17 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html']
 ];
 
-// icon defs:
+// icon defs: need prefix when calling from full map page
 var prefix = useTbl ? '' : '../';
 var ctrIcon = prefix + 'images/greenpin.png';
 var clusterIcon = prefix + 'images/bluepin.png';
 var hikeIcon = prefix + 'images/redpin.png';
+// icons for geolocation:
 var smallGeo = prefix + 'images/starget.png';
 var medGeo = prefix + 'images/mtarget.png';
 var lgGeo = prefix + 'images/ltarget.png';
 
+// Display whole table when index.html page loads
 if ( useTbl ) {
 	var $tblRows = $('.sortable tbody tr');
 	var iCnt = $tblRows.length;
@@ -203,6 +323,12 @@ if ( useTbl ) {
 	if ( mCnt != iCnt ) {
 		window.alert('Index table row count does not match script: investigate!');
 	}
+	var fullTbl = new Array();
+	for ( var x=0; x<mCnt; x++ ) {
+		// every row will be used, so create a sequential array:
+		fullTbl[x] = x;
+	}
+	formTbl( mCnt, fullTbl );
 }
 var pgLnk = useTbl ? 'pages/' : '../pages/';
 
@@ -531,159 +657,80 @@ function initMap() {
 			}
 		}
 		
-		var outHike = new Array();
 		if ( rowCnt === 0 ) {
 			msg = '<p>NO hikes in this area</p>';;
 			$('#usrTbl').append(msg);
 		} else {
-			var thisTbl = tblHtml + ' <tr>';
-			var indxRow;
-			for (m=0; m<rowCnt; m++) {
-				indxRow = tblEl[m];
-				thisTbl += $tblRows.eq(indxRow).html();
-				thisTbl += ' </tr> ';
-			}
-			thisTbl += endTbl;
-			$('#usrTbl').html(thisTbl);
-			$('#metric').css('display','block');
-			// ADD SORT FUNCTIONALITY ANEW FOR EACH CREATION OF TABLE:
-			$('.msortable').each(function() {
-				var $table = $(this); 
-				var $tbody = $table.find('tbody');
-				var $controls = $table.find('th'); // store all headers
-				var trows = $tbody.find('tr').toArray();  // array of rows
-	
-				$controls.on('click', function() {
-					var $header = $(this);
-					var order = $header.data('sort');
-					var column;
-		
-					// IF defined for selected column, toggle ascending/descending class
-					if ( $header.is('.ascending') || $header.is('.descending') ) {
-						$header.toggleClass('ascending descending');
-						$tbody.append(trows.reverse());
-					} else {
-					// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
-						$header.addClass('ascending');
-						$header.siblings().removeClass('ascending descending');
-						if ( compare.hasOwnProperty(order) ) {
-							column = $controls.index(this);  // index into the row array's data
-							trows.sort(function(a,b) {
-								a = $(a).find('td').eq(column).text();
-								b = $(b).find('td').eq(column).text();
-								return compare[order](a,b);
-							});
-							$tbody.append(trows);
-						} // end if-compare
-					} // end else
-				}); // end on.click
-			}); // end '.msortable each' loop
-			// ADD METRIC CONVERSION ANEW FOR EACH CREATION OF TABLE:
-			$('#metric').on('click', function() {
-				// table locators:
-				var $etable = $('table');
-				var $etbody = $etable.find('tbody');
-				var $erows = $etbody.find('tr');
-				var state = this.textContent;
-				// conversion variables:
-				var tmpUnits;
-				var tmpConv;
-				var newDist;
-				var newElev;
-				var dist;
-				var elev;
-				// determine which state to convert from
-				var mindx = state.indexOf('metric');
-				if ( mindx < 0 ) { // currently metric; convert TO English
-					newDist = 'miles';
-					newElev = 'ft';
-					state = state.replace('English','metric');
-					dist = 0.6214;
-					elev = 3.278;
-				} else { // currently English; convert TO metric
-					newDist = 'kms';
-					newElev = 'm';
-					state = state.replace('metric','English');
-					dist = 1.61;
-					elev = 0.305;
-				}
-				$('#metric').text(state); // new data element text
-				$erows.each( function() {
-					// index 3 is column w/distance units (miles/kms)
-					// ASSUMPTION: always less than 1,000 miles or kms!
-					tmpUnits = $(this).find('td').eq(3).text();
-					tmpConv = parseFloat(tmpUnits);
-					tmpConv = dist * tmpConv;
-					var indxLoc = tmpUnits.substring(0,2);
-					if ( indxLoc === '0*' ) {
-						tmpUnits = '0* ' + newDist;
-					} else {
-						tmpUnits = tmpConv.toFixed(1);
-						tmpUnits = tmpUnits + ' ' + newDist;
-					}
-					$(this).find('td').eq(3).text(tmpUnits);
-					// index 4 is column w/elevation units (ft/m)
-					tmpUnits = $(this).find('td').eq(4).text();
-					// need to worry about commas...
-					mindx = tmpUnits.indexOf(',');
-					if ( mindx < 0 ) {
-						tmpConv = parseFloat(tmpUnits);
-					} else {
-						noPart1 = parseFloat(tmpUnits);
-						noPart2 = tmpUnits.substring(mindx + 1,mindx + 4);
-						noPart2 = noPart2.valueOf();
-						tmpConv = noPart1 + noPart2;
-					}
-					tmpConv = dist * tmpConv;
-					indxLoc = tmpUnits.substring(0,2);
-					if ( indxLoc === '0*' ) {
-						tmpUnits = '0* ' + newElev;
-					} else {
-						tmpUnits = tmpConv.toFixed(0);
-						tmpUnits = tmpUnits + ' ' + newElev;
-					}
-					$(this).find('td').eq(4).text(tmpUnits);
-		
-				});  // end 'each erow'	
-			}); // end of click on metric
-		}  //END ELSE [outHike]
+			formTbl( rowCnt, tblEl );
+		}
 	} // END: IdTableElements() FUNCTION
-	
+
+/*
 	// //////////////////////////  TEST AREA ////////////////////////
 	// Geolocation code testing area
-	//var rloop = 1;
-	//setInterval(captureDat, 8000);
-	var tmLoc = {lat: 32.208851, lng: -105.325928 };
-	smallMark = new google.maps.Marker({
-		position: tmLoc,
-		icon: smallGeo
-	});
-	medMark = new google.maps.Marker({
-		position: tmLoc,
-		icon: medGeo
-	});
-	largMark = new google.maps.Marker({
-		position: tmLoc,
-		icon: lgGeo
-	});
-	setInterval(anim, 1000);
-
-	//tstMrk.setAnimation(google.maps.Animation.BOUNCE);
-	function anim() {
-		largMark.setMap(null);
-		smallMark.setMap(map);
-		setTimeout(growMid,350);
-	}
-	function growMid() {
-		smallMark.setMap(null);
-		medMark.setMap(map);
-		setTimeout(growLg,350);
-	}
-	function growLg() {
-		medMark.setMap(null);
-		largMark.setMap(map);
-	}
+	if (Modernizr.geolocation) {
+		navigator.geolocation.getCurrentPosition(success, fail);
+		
+		function fail(PositionError) {
+			switch (PositionError.code) {
+				case 1:
+					msg = 'GEOLOCATION: Permission denied';
+					break;
+				case 2:
+					msg = 'GEOLOCATION: Unavailable';
+					break;
+				case 3:
+					msg = 'GEOLOCATION: Request timed out';
+					break;
+			}
+			window.alert(msg);
+		}  // end of FAIL function
+		
+		function success(Position) {
+			var cLat = Position.coords.latitude;
+			var cLng = Position.coords.longitude;
+			var cAlt = Position.coords.altitude;
+			//msg = 'Lat: ' + cLat + ', Lng: ' + cLng + ', Alt: ' + cAlt;
+			//window.alert(msg);
+			var myLoc = new google.maps.LatLng(cLat, cLng);
+			// set up geolocation animated marker:
+			//var tmLoc = {lat: 32.208851, lng: -105.325928 };
+			smallMark = new google.maps.Marker({
+				position: myLoc,
+				icon: smallGeo
+			});
+			medMark = new google.maps.Marker({
+				position: myLoc,
+				icon: medGeo
+			});
+			largMark = new google.maps.Marker({
+				position: myLoc,
+				icon: lgGeo
+			});
+			setInterval(anim, 1000);
+			function anim() {
+				largMark.setMap(null);
+				smallMark.setMap(map);
+				setTimeout(growMid,350);
+			}
+			function growMid() {
+				smallMark.setMap(null);
+				medMark.setMap(map);
+				setTimeout(growLg,350);
+			}
+			function growLg() {
+				medMark.setMap(null);
+				largMark.setMap(map);
+			}
+		
+		} // end of SUCCESS function
+		
+		
+	}  else {
+		window.alert('Geolocation not supported on this browser')
+	}  // END OF GEOLOCATION-SUPPORTED TEST
 	// //////////////////////////////////////////////////////////////
+*/
 
 }  // end of initMap()
 
