@@ -1,14 +1,15 @@
 #!/bin/bash
-# VERSION 5: added geomap Google API Key insertion if not present
+# VERSION 6: Revised for new Google Map index page (no regions, also fix .js)
 # Specify starting & default values for shell variables 
-FILESRC=0
 MAPFILE=0
-indxLoc="./index.html"
-export indxLoc
+TOM=0
+indxLoc="/Users/kencowles/src/ktesa/index.html"
+mapjsLoc="/Users/kencowles/src/ktesa/scripts/map.js" 
+geomapLoc="/Users/kencowles/src/ktesa/maps/"
 # Now process command line arguments
 for i
 do
-#	-m: get geomap spec
+#	-m: get geomap name
 	if [ $MAPFILE -eq 1 ]
 	then {
 		mapfile=$i
@@ -16,21 +17,19 @@ do
 		MAPFILE=2
 	}
 	fi
-# 	-p: Get path for html 
-	if [ $FILESRC -gt 0 ]
-	then {
-		indxLoc=$i"/index.html"
-		FILESRC=0
-	}
-	fi
         # find flags:
         case $i in
+	-T) read -p "TOM: Specify your complete filespec for the index page: " indxLoc
+            read -p "TOM: Also specify the complete filespec for the map.js file: " mapjsLoc
+            read -p "FINALLY: specify the DIRECTORY (ending with \"/\") for the geomap: " geomapLoc ;;
 	-m) MAPFILE=1 ;;
-	-p) FILESRC=1 ;;
 	-h) echo "
-*** Version 5
-Added checking of map file to ensure Google API key is present
+*** Version 6
+Compatible with new Google Map index page; potentially modifies both index.html and map.js
+User can choose not to modify, but independently save local copies of modified files.
 "
+#*** Version 5
+#Added checking of map file to ensure Google API key is present
 #*** Version 4.1
 #Rewritten to accommodate icon-based index table
 #[4.1: added local check for FlckrAlbumURL created by mkgpsv]
@@ -40,20 +39,25 @@ Added checking of map file to ensure Google API key is present
 # Added prompt to locate region of NM Map in which hike occurred
 # *** Version 1.0
 	echo "
-This utility will prompt the user for input to create a new row
-in the table for \"index.html\".
+This utility will prompt the user for input to create a new row in the
+table of \"index.html\", and to modify the corresponding map.js file 
+in order to add a marker on the map.
 
-Inputs will be verified by the user before creating the html.
+Inputs will be verified by the user before creating the html,
+or modifying the map.js file.
 
-Use the -p flag to specify the path to the index.html file if not local.
-Do not include the \"/\" at the end of the path, nor the index.html filename.
-Specify the path as if you were going to do a \"cd\" to the directory
-For example:   ../../ktesa
+TOM: Use -T flag (no arg) so that you can specify the correct filepaths to the files
+(the routine will prompt you)
 
-Use the -m flag to specify the name (not path) of the geomap, including extension
+Use the -m flag to specify the NAME ONLY of the geomap: it is assumed that the location
+of the geomap is /Users/kencowles/src/ktesa/maps or as specified by TOM
+If there is no geomap (ie no -m flag), the routine will check for one, but ask if it is needed.
+Example if present:   -m example_geomap_no_lists.html
 
 The user will have the opportunity to save the file to index.html, or save only
-the local copy, \"newindex.html\" if review is desired before saving to index.html
+the local copy, \"newindex.html\" if review is desired before saving to index.html;
+The user similarly will have the opportunity to save the map.js file, or save only a 
+local copy, \"newmap.js\".
 
 "
 	exit;;
@@ -70,11 +74,11 @@ then {
 		echo "Map file not specified:"
         	read -p "Is geomap included with this web page? " map
         	case $map in
-                	[nN]* ) echo "Google API Key not required"
+                	[nN]* ) echo "*** Google API Key not required"
 				mapreqd=0
 				good="OK" ;;
                 	[yY]* ) echo "Google API Key is required;"
-				read -p "please specify geomap name (with extension,no path): " mapfile
+				read -p "please specify geomap name (no path): " mapfile
 				good="OK" ;;
                 	* ) echo "Y or N only please!";;
         	esac
@@ -88,17 +92,27 @@ then {
         while
 	        [ $good != OK ]
         do
-            msg=$'\nGeomap name: '
+            msg=$'\nGeomap name (including file extension): '
             echo "$msg" "$mapfile"
-            read -p "Is the geomap name Correct? [Y or N]: " answer
+            read -p "Is the geomap filename Correct? [Y or N]: " answer
             case $answer in
-                [nN]* ) read -p "Enter correct geomap name here: " mapfile;;
+                [nN]* ) read -p "Enter correct geomap filename here: " mapfile;;
                 [yY]* ) good="OK";;
                 * ) echo "Y or N only please!";;
             esac
         done
-	mapLoc="/Users/kencowles/src/ktesa/maps/""$mapfile"
+	mapLoc="$geomapLoc""$mapfile"
 	echo ""
+	if [ -f $mapLoc ] 
+	then {
+		echo "File located"
+		echo ""
+	}
+	else {
+		echo "geomap file not located"
+		exit
+	}
+	fi
 	echo "The map at "${mapLoc}" will be checked for existence of the Google API Key;
     -if not present, the key will be inserted;
     You will have the opportunity to accept the change or not"
@@ -141,6 +155,7 @@ then {
 		        esac
 		done
 	}
+	else echo "Key already present - nothing modified"
 	fi
 }
 fi
@@ -149,12 +164,10 @@ echo ""
 if [ -f $indxLoc ] 
 then
 	echo "using" "$indxLoc" "as basis for potential modification..."
-	echo ""
 else
 	echo "index.html file not found at" "$indxLoc"
 	exit
 fi
-echo ""
 echo "The file:" "$indxLoc" "will be modified (if user opts) to add a row to the table"
 fext=.html
 echo ""
@@ -182,7 +195,6 @@ do
 done
 good="NotOK"
 echo ""
-read -p "Enter a number corresponding to the Region in which this/these hike(s) occurs: " region
 read -p "Enter the name of the hike location (nearest city): " city
 read -p "Enter hike name [Append with \"Index\" for Index pages]: " hike
 read -p "Enter hike (or index site) html page [* Assumed to be in project pages dir with .html extension]: " webpg
@@ -203,18 +215,6 @@ fi
 echo ""
 echo "*** Check the data for accuracy before proceeding ***"
 # ----------------- TEST THE INPUT DATA --------------------
-while
-	[ $good != OK ]
-do
-	msg=$'\nRegion on NM of hike: '
-	echo "$msg" $region
-	read -p "Is the region of the hike Correct? [Y or N]: " answer
-	case $answer in
-		[nN]* ) read -p "Enter correct region: " region;;
-		[yY]* ) good="OK";;
-		* ) echo "Y or N only please!";;
-	esac
-done
 good="NotOK"
 while
 	[ $good != OK ]
@@ -384,7 +384,7 @@ done
 # Now, create the new table entry:
 if [ $notindx -gt 0 ] 
 then {
-	echo "                    <tr class=\"reg""$region"\"">
+	echo "                    <tr>
                         <td>""$city""</td>
                         <td>""$hike""</td>
                         <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
@@ -400,7 +400,7 @@ then {
 }
 else {
 # if an index site, some parameters are automatically assigned or empty:
-	echo "                    <tr class=\"reg""$region"" indxd\">
+	echo "                    <tr class=\"indxd\">
                         <td>""$city""</td>
                         <td>""$hike""</td>
                         <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
@@ -453,4 +453,125 @@ do
 	    * ) echo "Y or N only please!";;
 	esac
 done
+# NOW - modify the map.js file accordingly
+# Test for existence of map.js:
+echo "
+
+"
+if [ -f $mapjsLoc ]
+then
+        echo "using" "$mapjsLoc" "as basis for potential modification..."
+else
+        echo "map.js file not found at" "$indxLoc"
+        exit
+fi
+echo ""
+echo "The file:" "$mapjsLoc" "will be modified (if user opts) to add a marker to the map"
+echo ""
+echo "This routine needs to know what kind of marker to specify [CAPITAL LETTERS ONLY]:
+     Type \"V\" for Visitor Center-based marker (i.e. index page);
+     Type \"C\" for cluster hike - i.e. hike in very close proximity to another;
+     Type \"H\" for \"normal\" hike - i.e. none of the above types."
+read -p "Enter single letter here: " hikeType
+good="NotOK"
+while 
+	[ $good != OK ]
+do
+	msg=$'\nYou selected: '
+        echo "$msg""$hikeType"
+        read -p "Is this the type of marker you wish to use [Capital Letter Only]? [Y or N]: " answer
+        case $answer in
+		[nN]* ) read -p "Re-enter single-letter marker type [Capital Letter Only]: [V, C, H]: " hikeType ;;
+		[yY]* ) good="OK" ;;
+		* ) echo "Y or N only please!" ;;
+        esac
+	if [ $hikeType != C ] && [ $hikeType != V ] && [ $hikeType != H ]  
+        then {
+                read -p "Unrecognized type; enter [V, C, or H]: " hikeType
+		good="NotOK"
+        }
+        fi
+done
+case $hikeType in
+	V) hikeAR="ctrPinHikes" ;;
+	C) hikeAR="clusterPinHikes" ;;
+	H) hikeAR="othrHikes" ;;
+esac
+#Find the line number to start adding the new marker data
+mapjsHd=`/usr/bin/awk -v MArray=$hikeAR '
+BEGIN {
+	foundArray=0
+}
+{
+	if( match($0,MArray) ) {
+		# just look for the first occurrance...
+		foundArray=1
+	} else {
+		if( foundArray == 1 ) {
+			if( match($0,/];/) ) {
+				eoArray=NR
+				eoArray=eoArray-1
+				print eoArray
+				exit(4)
+			}
+		}
+	}
+}' $mapjsLoc`
+head -n "$mapjsHd" "$mapjsLoc" > newmap.js
+sed -i.bck '$s/$/,/' newmap.js
+rm newmap.js.bck
+mapLgth=`cat "$mapjsLoc" | wc -l`
+tailCnt=$(( $mapLgth - $mapjsHd ))
+tailCnt=$(( $tailCnt + 1 ))
+tail -n "$tailCnt" "$mapjsLoc" > maptail.js
+read -p "Please enter the latitude for this marker: " lat
+good="NotOK"
+while 
+	[ $good != OK ]
+do
+	msg=$'\nYou entered a latitude of '
+	echo "$msg""$lat"
+        read -p "Is the latitude Correct? [Y or N]: " answer
+        case $answer in
+                [nN]* ) read -p "Enter correct latitude here: " lat ;;
+                [yY]* ) good="OK";;
+                * ) echo "Y or N only please!";;
+        esac
+done
+read -p "Please enter the longitude for this marker (negative number): " lng
+good="NotOK"
+while
+        [ $good != OK ]
+do
+        msg=$'\nYou entered a longitude of '
+        echo "$msg""$lng"
+        read -p "Is the longitude Correct? [Y or N]: " answer
+        case $answer in
+                [nN]* ) read -p "Enter correct longitude here: " lng ;;
+                [yY]* ) good="OK";;
+                * ) echo "Y or N only please!";;
+        esac
+done
+echo "	['""$hike""',""$lat"",""$lng"",'""$webpg"".html']" > latlng
+cat latlng >> newmap.js
+rm latlng
+cat maptail.js >> newmap.js
+rm maptail.js
+echo "Here are the changes made to the map.js file:"
+diff newmap.js "$mapjsLoc"
+good="NotOK"
+while
+        [ $good != OK ]
+do
+        read -p "Do you wish to permanently save these changes in $mapjsLoc [Y/N]? " ans
+        case $ans in
+            [nN]* ) echo "$mapjsLoc unchanged; Changes reside in newmap.js"
+                    good="OK" ;;
+            [yY]* ) echo "$mapjsLoc has been re-written with new marker data"
+                    mv newmap.js "$mapjsLoc"
+                    good="OK";;
+            * ) echo "Y or N only please!";;
+        esac
+done
 echo "DONE!"
+

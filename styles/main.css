@@ -4,11 +4,7 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	font-family: arial, verdana;
-	background-color: #dadada;
-	/*
-	border-style: solid;
-	border-color: DarkBlue;
-	border-width: 4px; */ }
+	background-color: #dadada; }
 a:visited {
 	color: DarkGreen; }
 .container {
@@ -19,12 +15,6 @@ img#tompic {
 	margin-left: 10px;
 	margin-right: 7px;
 	margin-top: -6px; }
-img.webShift {
-	padding-left: 19px; }
-img.flckrShift {
-	padding-left: 15px; }
-img.expShift {
-	padding-left: 24px; }
 #banner {
 	height: 58px;
 	margin-left: 8px;
@@ -46,6 +36,26 @@ img.expShift {
 #features {
 	margin-left: 8px;
 	margin-top: 30px; }
+#formSet {
+	margin-bottom: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;  }
+form {
+	color: DarkGreen; }
+#map {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px;
+    width: 600px;
+    height: 600px;
+    z-index: 1; }
+img.webShift {
+	padding-left: 19px; }
+img.flckrShift {
+	padding-left: 15px; }
+img.expShift {
+	padding-left: 24px; }
 #disclaimers {
 	border-style: outset;
 	border-width: 2px;
@@ -57,10 +67,11 @@ img.expShift {
 	width: 960px;
 	margin-top: 0px;
 	margin-bottom: 0px; }
+/* OBSOLETE
 #hikeCnt {
 	color: MidnightBlue;
 	text-align: center;
-	margin-top: -10px; }
+	margin-top: -10px; } */
 div #usrTbl table {
 	margin-left: auto;
 	margin-right: auto;
@@ -106,10 +117,11 @@ td {
 .hdr_row {
 	background-color: bisque;
 	cursor: pointer; }
+/* OBSOLETE:
 #tbltopper {
 	margin-bottom: 0px;
 	color: MidnightBlue;
-	text-align: center; }
+	text-align: center; } */
 #metric {
 	text-align: left;
 	width: 190px;
@@ -126,12 +138,9 @@ td {
 	display: block; }
 .indxd {
 	color: brown; }
-#map {
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 30px;
-    width: 600px;
-    height: 600px;
-    z-index: 1; }
-	
+#ftNote {
+	font-size: 9px;
+	padding-left: 10px; }
+
+
 	

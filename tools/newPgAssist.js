@@ -14,8 +14,8 @@ var htmlPicNames = new Array();
 for ( var m=0; m<noOfPics; m++ ) {
 	htmlPicNames[m] = $htmlNameLocs[m].innerText;
 }
-var geoMap = $('#frm_name').text();
-var tsvFile = $('#tsv_file').text();
+var geoMap = '../maps/' + $('#frm_name').text();
+var tsvFile = '../gpsv/' + $('#tsv_file').text();
 // get elevation chart(s), if any
 var eopt = $('#inclElev').text();
 eopt = parseFloat(eopt);

@@ -50,7 +50,14 @@
 			then descending order, with successive clicks. Click on a hike and see what
 			awaits you!</p>
 		</div> <!-- end of 'features' -->
-		
+		<div id="formSet">
+			<form id="mapButtons" action="" method="post">
+			<span id="mapSizer">Select the size of map you wish to display:</span>
+			<input type="radio" name="size" value="small" id="s" />Small
+			<input type="radio" name="size" value="medium" id="m" />Medium
+			<input type="radio" name="size" value="large" checked="checked" id="l" />Large
+			<input type="radio" name="size" value="full" id="f" />Full Page</form>
+		</div>
 		<div id="map"></div>
 		<div id="usrTbl"></div>
 		
@@ -1074,6 +1081,18 @@
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668795870731" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>  
+                    <tr>
+                        <td>Taos</td>
+                        <td>Traders Trail</td>
+                        <td><a href="pages/Traders.html" target="_blank">
+                            <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
+                        <td>3.6 miles</td>
+                        <td>300 ft</td>
+                        <td>Easy</td>
+                        <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157671398356076" target="_blank">
+                            <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
+                    </tr>
 				</tbody>
 			</table>
 		</div>
@@ -1098,7 +1117,7 @@
 				<li> Volcanoes & Earthquakes: we hope not!</li>
 			</ul>
 		</div>
-		
+		<p id="dbug"></p>
 		<p id="linkNote">
 		<em>Note: All of the links on this site (denoted by check-boxes) will open new
 		windows (or tabs)</em>. The corresponding web pages ("Info Web Pages") provide sample
@@ -1111,7 +1130,12 @@
 		etc... <a href="mailto:krcowles29@gmail.com">email us!</a>
 		</p>
 	</div> <!-- end of container -->
-
+	<div id="ftNote">Icons made by <a href="http://www.flaticon.com/authors/tutsplus" title="TutsPlus">TutsPlus</a>
+		 from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by 
+		 <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" 
+		 target="_blank">CC 3.0 BY</a></div>
+		 
+	<script src="scripts/modernizr-custom.js"></script>
 	<script src="scripts/main.js"></script>
 	<script src="scripts/map.js"></script>
 	<script async defer
