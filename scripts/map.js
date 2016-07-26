@@ -665,7 +665,7 @@ function initMap() {
 		}
 	} // END: IdTableElements() FUNCTION
 
-/*
+
 	// //////////////////////////  TEST AREA ////////////////////////
 	// Geolocation code testing area
 	if (Modernizr.geolocation) {
@@ -689,12 +689,10 @@ function initMap() {
 		function success(Position) {
 			var cLat = Position.coords.latitude;
 			var cLng = Position.coords.longitude;
-			var cAlt = Position.coords.altitude;
-			//msg = 'Lat: ' + cLat + ', Lng: ' + cLng + ', Alt: ' + cAlt;
-			//window.alert(msg);
+			//var cAlt = Position.coords.altitude;
 			var myLoc = new google.maps.LatLng(cLat, cLng);
-			// set up geolocation animated marker:
-			//var tmLoc = {lat: 32.208851, lng: -105.325928 };
+			
+			// set up geolocation animated marker: [not currently active]
 			smallMark = new google.maps.Marker({
 				position: myLoc,
 				icon: smallGeo
@@ -705,9 +703,40 @@ function initMap() {
 			});
 			largMark = new google.maps.Marker({
 				position: myLoc,
-				icon: lgGeo
+				map: map,
+				icon: lgGeo,
+				// This marker is 32 pixels wide by 32 pixels high.
+				size: new google.maps.Size(32, 32),
+				// The origin for this image is (0, 0)
+				origin: new google.maps.Point(0, 0),
+				// The anchor for this image is the center (16, 16).
+				anchor: new google.maps.Point(16, 16)
 			});
-			setInterval(anim, 1000);
+			setInterval(updateMrkr, 10000);
+			
+			function updateMrkr() {
+				navigator.geolocation.getCurrentPosition(updateSuccess, updateFail);
+				function updateSuccess(newPosition) {
+					largMark.setMap(null);
+					largMark = null;
+					var newLat = newPosition.coords.latitude;
+					var newLng = newPosition.coords.longitude;
+					var newLoc = new google.maps.LatLng(newLat, newLng);
+					largMark = new google.maps.Marker({
+						position: newLoc,
+						icon: lgGeo,
+						map: map,
+						size: new google.maps.Size(32,32),
+						origin: new google.maps.Point(0,0),
+						anchor: new google.maps.Point(16,16)
+					});
+				}
+				function updateFail() {
+					msg = 'oops';
+					window.alert(msg);
+				}
+			} // end of UPDATEMRKR function
+			/*
 			function anim() {
 				largMark.setMap(null);
 				smallMark.setMap(map);
@@ -722,6 +751,7 @@ function initMap() {
 				medMark.setMap(null);
 				largMark.setMap(map);
 			}
+			*/
 		
 		} // end of SUCCESS function
 		
@@ -730,7 +760,7 @@ function initMap() {
 		window.alert('Geolocation not supported on this browser')
 	}  // END OF GEOLOCATION-SUPPORTED TEST
 	// //////////////////////////////////////////////////////////////
-*/
+	
 
 }  // end of initMap()
 
