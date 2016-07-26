@@ -668,8 +668,13 @@ function initMap() {
 
 	// //////////////////////////  TEST AREA ////////////////////////
 	// Geolocation code testing area
+	var geoOptions = {
+	  enableHighAccuracy: true,
+	  timeout: 9500,
+	  maximumAge: 0
+	};
 	if (Modernizr.geolocation) {
-		navigator.geolocation.getCurrentPosition(success, fail);
+		navigator.geolocation.getCurrentPosition(success, fail, geoOptions);
 		
 		function fail(PositionError) {
 			switch (PositionError.code) {
@@ -715,7 +720,7 @@ function initMap() {
 			setInterval(updateMrkr, 10000);
 			
 			function updateMrkr() {
-				navigator.geolocation.getCurrentPosition(updateSuccess, updateFail);
+				navigator.geolocation.getCurrentPosition(updateSuccess, updateFail, geoOptions);
 				function updateSuccess(newPosition) {
 					largMark.setMap(null);
 					largMark = null;
