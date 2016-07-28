@@ -339,15 +339,15 @@ var vcMarkers = [];
 var clusterMarkers = [];
 var hikeMarkers = [];
 
-/* **************************** MAIN MAP CALL ************************** */
+// //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 // THE MAP CALLBACK FUNCTION:
-
+var map;  // needs to be global!
 function initMap() {
 	// NOW TO THE MAP!!
 	var nmCtr = {lat: 34.450, lng: -106.042};
 
 	var mapDiv = document.getElementById('map');
-	var map = new google.maps.Map(mapDiv, {
+	map = new google.maps.Map(mapDiv, {
 		center: nmCtr,
 		zoom: 7,
 		// optional settings:
@@ -407,8 +407,6 @@ function initMap() {
 			window.open(hikePg,'_blank');
 		});
 	}
-	// /////////////////////////////////////////////////////////////////////
-
 	var loc;
 	var sym;
 	var nme;
@@ -557,9 +555,7 @@ function initMap() {
 	});
 	mmtLines.setMap(null);
 	/* END OF POLYLINES CREATION */
-/* ***************************************************************************** */
-
-/* ************************** PAN & ZOOM HANDLERS ****************************** */
+	// PAN AND ZOOM HANDLERS:
 	map.addListener('zoom_changed', function() {
 		var curZoom = map.getZoom();
 		if (useTbl) {
@@ -598,80 +594,177 @@ function initMap() {
 		});
 	}
 	
-	// Function to find elements within current bounds and display them in a table
-	function IdTableElements(boundsStr) {
-		// ESTABLISH CURRENT VIEWPORT BOUNDS:
-		var beginA = boundsStr.indexOf('((') + 2;
-		var leftParm = boundsStr.substring(beginA,boundsStr.length);
-		var beginB = leftParm.indexOf('(') + 1;
-		var rightParm = leftParm.substring(beginB,leftParm.length);
-		var south = parseFloat(leftParm);
-		var north = parseFloat(rightParm);
-		var westIndx = leftParm.indexOf(',') + 1;
-		var westStr = leftParm.substring(westIndx,leftParm.length);
-		var west = parseFloat(westStr);
-		var eastIndx = rightParm.indexOf(',') + 1;
-		var eastStr = rightParm.substring(eastIndx,rightParm.length);
-		var east = parseFloat(eastStr);
-		var hikeSet = new Array();
-		var tblEl = new Array(); // holds the index into the row number array: tblRows
-		var pinLat;
-		var pinLng;
-		// REMOVE previous table:
-		$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
-		/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
-		// First, check to see if any ctrPinHikes are within the viewport;
-		// if so, include them in the table
-		var n = 0; //
-		var rowCnt = 0;
-		for (j=0; j<ctrPinHikes.length; j++) {
-			hikeSet = ctrPinHikes[j];
-			pinLat = parseFloat(hikeSet[1]);
-			pinLng = parseFloat(hikeSet[2]);
-			if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
-				tblEl[n] = j;
-				n++;
-				rowCnt ++;
-			}
-		}
-		// now look for clusterPinHikes
-		for (k=0; k<clusterPinHikes.length; k++) {
-			hikeSet = clusterPinHikes[k];
-			pinLat = parseFloat(hikeSet[1]);
-			pinLng = parseFloat(hikeSet[2]);
-			if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
-				tblEl[n] = ctrPinHikes.length + k;
-				n++;
-				rowCnt++;
-			}
-		}
-		// and lastly, othrHikes
-		for (l=0; l<othrHikes.length; l++) {
-			hikeSet = othrHikes[l];
-			pinLat = parseFloat(hikeSet[1]);
-			pinLng = parseFloat(hikeSet[2]);
-			if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
-				tblEl[n] = ctrPinHikes.length + clusterPinHikes.length + l;
-				n++;
-				rowCnt++;
-			}
-		}
-		
-		if ( rowCnt === 0 ) {
-			msg = '<p>NO hikes in this area</p>';;
-			$('#usrTbl').append(msg);
-		} else {
-			formTbl( rowCnt, tblEl );
-		}
-	} // END: IdTableElements() FUNCTION
+}  // end of initMap()
+// /////////////////////////////////////////////////////////////////////
 
-	// //////////////////////////  TEST AREA ////////////////////////
-	// Geolocation code testing area
-	var geoOptions = {
-	  enableHighAccuracy: true,
-	  timeout: 9500,
-	  maximumAge: 0
-	};
+
+// Function to find elements within current bounds and display them in a table
+function IdTableElements(boundsStr) {
+	// ESTABLISH CURRENT VIEWPORT BOUNDS:
+	var beginA = boundsStr.indexOf('((') + 2;
+	var leftParm = boundsStr.substring(beginA,boundsStr.length);
+	var beginB = leftParm.indexOf('(') + 1;
+	var rightParm = leftParm.substring(beginB,leftParm.length);
+	var south = parseFloat(leftParm);
+	var north = parseFloat(rightParm);
+	var westIndx = leftParm.indexOf(',') + 1;
+	var westStr = leftParm.substring(westIndx,leftParm.length);
+	var west = parseFloat(westStr);
+	var eastIndx = rightParm.indexOf(',') + 1;
+	var eastStr = rightParm.substring(eastIndx,rightParm.length);
+	var east = parseFloat(eastStr);
+	var hikeSet = new Array();
+	var tblEl = new Array(); // holds the index into the row number array: tblRows
+	var pinLat;
+	var pinLng;
+	// REMOVE previous table:
+	$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
+	/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
+	// First, check to see if any ctrPinHikes are within the viewport;
+	// if so, include them in the table
+	var n = 0; //
+	var rowCnt = 0;
+	for (j=0; j<ctrPinHikes.length; j++) {
+		hikeSet = ctrPinHikes[j];
+		pinLat = parseFloat(hikeSet[1]);
+		pinLng = parseFloat(hikeSet[2]);
+		if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
+			tblEl[n] = j;
+			n++;
+			rowCnt ++;
+		}
+	}
+	// now look for clusterPinHikes
+	for (k=0; k<clusterPinHikes.length; k++) {
+		hikeSet = clusterPinHikes[k];
+		pinLat = parseFloat(hikeSet[1]);
+		pinLng = parseFloat(hikeSet[2]);
+		if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
+			tblEl[n] = ctrPinHikes.length + k;
+			n++;
+			rowCnt++;
+		}
+	}
+	// and lastly, othrHikes
+	for (l=0; l<othrHikes.length; l++) {
+		hikeSet = othrHikes[l];
+		pinLat = parseFloat(hikeSet[1]);
+		pinLng = parseFloat(hikeSet[2]);
+		if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
+			tblEl[n] = ctrPinHikes.length + clusterPinHikes.length + l;
+			n++;
+			rowCnt++;
+		}
+	}
+	
+	if ( rowCnt === 0 ) {
+		msg = '<p>NO hikes in this area</p>';;
+		$('#usrTbl').append(msg);
+	} else {
+		formTbl( rowCnt, tblEl );
+	}
+} // END: IdTableElements() FUNCTION
+
+
+// //////////////////////////  GEOLOCATION CODE ////////////////////////
+var geoMark;			// the geolocation marker object
+var geoStat = false;    // false if geolocation is off, true if it is enabled
+var firstCall = true;   // invoke geolocation 'firstCall' function only once, first time turned on
+					    // after that, simply turn interval update on or off;
+var clickEnabled = false; // when click updates are enabled...
+var clickOn;			// var for setting listener when On-Click update is active
+var buttonEna = false;  // when update buttons are enabled...
+var intTarg; 			// variable used to access key value in rateObj
+var chgCnt = 1;			// used in an effort to NOT reuse variables for setInterval
+var rateObj = { 'key1': 'int1' };
+var geoOptions = {
+	enableHighAccuracy: true };
+		  
+function updateOnClick() {
+	if ( buttonEna ) {
+		clearInterval(rateObj[intTarg]);
+		$('#firstRate').css('background-color','White');
+		$('#secondRate').css('background-color','White');
+		$('#clicker').css('background-color','#cfe2cf');
+		if ( !clickEnabled ) {
+			clickEnabled = true;
+			clickOn = geoMark.addListener('click', getLoc);
+		} else {
+			clickEnabled = false;
+			$('#clicker').css('background-color','white');
+			google.maps.event.removeListener(clickOn);
+		}
+	} 
+}
+function refreshFct1( newRate ) {
+	if ( buttonEna ) {
+		if ( clickEnabled ) {
+			$('#clicker').css('background-color','White');
+			//google.maps.event.removeListener(clickOn);
+			clickEnabled = false;	
+		}
+		$('#secondRate').css('background-color','White');
+		$('#firstRate').css('background-color','#cfe2cf');
+		clearInterval(rateObj[intTarg]);	
+		refreshRate( newRate );
+	}
+}
+function refreshFct2( newRate ) {
+	if ( buttonEna ) {
+		if ( clickEnabled ) {
+			$('#clicker').css('background-color','White');
+			//google.maps.event.removeListener(clickOn);
+			clickEnabled = false;	
+		}
+		$('#firstRate').css('background-color','White');
+		$('#secondRate').css('background-color','#cfe2cf');	
+		clearInterval(rateObj[intTarg]);
+		refreshRate( newRate );
+	}
+}
+function refreshRate( milliSeconds ) {
+	clearInterval(rateObj[intTarg]);
+	intTarg = 'key' + chgCnt++;
+	rateObj[intTarg] = setInterval(getLoc, milliSeconds);
+}
+
+function geoLoc() {  // this is called when 'Enable: Turn On/Off' button is clicked
+	if ( firstCall ) {
+		firstCall = false;
+		getLoc();
+	} // end of firstCall test
+	// now turn on/off the interval timer to do position updates: (and update panel colors)
+	if ( !geoStat ) {   
+		$('#geoExtras').css('background-color','DarkSeaGreen');
+		$('#firstRate').css('background-color','White');
+		$('#secondRate').css('background-color','White');
+		$('#clicker').css('background-color','White');
+		$('.sw').addClass('friendly');
+		geoStat = true;
+		$('#toggle').val('Turn Off');
+		buttonEna = true;
+		intTarg = 'key' + chgCnt++;
+		rateObj[intTarg] = setInterval(getLoc, 10000); // this is the default refresh value
+		if( geoMark ) {
+			geoMark.setMap(map);
+		}
+	} else {
+		clearInterval(rateObj[intTarg]);
+		$('.sw').removeClass('friendly');
+		$('#geoExtras').css('background-color','LightGray');
+		$('#firstRate').css('background-color','LightGray');
+		$('#secondRate').css('background-color','LightGray');
+		$('#clicker').css('background-color','LightGray');
+		geoStat = false;
+		buttonEna = false;
+		$('#toggle').val('Turn On');
+		if( geoMark ) {
+			geoMark.setMap(null);
+		}
+	} // end of geoStat testing	
+} // end of GEOLOC function (called by button-click)
+
+function getLoc() {
 	if (Modernizr.geolocation) {
 		navigator.geolocation.getCurrentPosition(success, fail, geoOptions);
 		function fail(PositionError) {
@@ -688,101 +781,29 @@ function initMap() {
 			}
 			window.alert(msg);
 		}  // end of FAIL function
-		
 		function success(Position) {
-			window.alert('got here');
+			if ( geoMark ) {
+				geoMark.setMap(null);
+				geoMark = null;
+			}
 			var cLat = Position.coords.latitude;
 			var cLng = Position.coords.longitude;
-			//var cAlt = Position.coords.altitude;
 			var myLoc = new google.maps.LatLng(cLat, cLng);
-			
-			// set up geolocation animated marker: [not currently active]
-			smallMark = new google.maps.Marker({
-				position: myLoc,
-				icon: smallGeo
-			});
-			medMark = new google.maps.Marker({
-				position: myLoc,
-				icon: medGeo
-			});
-			largMark = new google.maps.Marker({
+			geoMark = new google.maps.Marker({
 				position: myLoc,
 				map: map,
 				icon: lgGeo,
-				// This marker is 32 pixels wide by 32 pixels high.
 				size: new google.maps.Size(32, 32),
 				// The origin for this image is (0, 0)
 				origin: new google.maps.Point(0, 0),
 				// The anchor for this image is the center (16, 16).
 				anchor: new google.maps.Point(16, 16)
 			});
-			setInterval(updateMrkr, 10000);
-			
-			function updateMrkr() {
-				navigator.geolocation.getCurrentPosition(updateSuccess, updateFail, geoOptions);
-				function updateSuccess(newPosition) {
-					largMark.setMap(null);
-					largMark = null;
-					var newLat = newPosition.coords.latitude;
-					var newLng = newPosition.coords.longitude;
-					var newLoc = new google.maps.LatLng(newLat, newLng);
-					largMark = new google.maps.Marker({
-						position: newLoc,
-						icon: lgGeo,
-						map: map,
-						size: new google.maps.Size(32,32),
-						origin: new google.maps.Point(0,0),
-						anchor: new google.maps.Point(16,16)
-					});
-				}
-				function updateFail() {
-					msg = 'oops';
-					window.alert(msg);
-				}
-			} // end of UPDATEMRKR function
-			/*
-			function anim() {
-				largMark.setMap(null);
-				smallMark.setMap(map);
-				setTimeout(growMid,350);
-			}
-			function growMid() {
-				smallMark.setMap(null);
-				medMark.setMap(map);
-				setTimeout(growLg,350);
-			}
-			function growLg() {
-				medMark.setMap(null);
-				largMark.setMap(map);
-			}
-			*/
-		
 		} // end of SUCCESS function
-		
-		
-	}  else {
-		window.alert('Geolocation not supported on this browser')
-	}  // END OF GEOLOCATION-SUPPORTED TEST
-	// //////////////////////////////////////////////////////////////
-	
-
-}  // end of initMap()
-
-if (useTbl) {
-	// User-select map size:
-	$('#l').on('click',function() {
-		$('#map').css('height','900');
-		$('#map').css('width','900');
-	});
-	$('#m').on('click',function() {
-		$('#map').css('height','750');
-		$('#map').css('width','750');
-	});
-	$('#s').on('click',function() {
-		$('#map').css('height','600');
-		$('#map').css('width','600');
-	});
-	$('#f').on('click', function() {
-		window.open('pages/mapPg.html','_blank');
-	});
+	} else {
+		window.alert('Geolocation not supported on this browser');
+	}
 }
+
+// //////////////////////////////////////////////////////////////
+	

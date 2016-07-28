@@ -36,18 +36,58 @@ img#tompic {
 #features {
 	margin-left: 8px;
 	margin-top: 30px; }
-#formSet {
-	margin-bottom: 20px;
+fieldset {
+	position: relative;
+	top: -10px;
+	width: 520px;
 	margin-left: auto;
-	margin-right: auto;
-	text-align: center;  }
-form {
-	color: DarkGreen; }
+	margin-right: auto; }
+#geo {
+	display: inline-block;
+	color: White;
+	width: 135px;
+	margin-left: 15px;
+	margin-top: 0px;
+	z-index: 5;
+	background-color: DarkSeaGreen;
+	padding: 5px;
+	border: 1px solid #999;
+	text-align: center;
+	font-family: 'Roboto','sans-serif';
+	line-height: 30px;
+	padding-left: 10px; }
+#geoExtras {
+	display: inline-block;
+	color: White;
+	width: 300px;
+	margin-left: 20px;
+	margin-top: 0px;
+	z-index: 5;
+	background-color: LightGrey;
+	padding: 5px;
+	border: 1px solid #999;
+	text-align: center;
+	font-family: 'Roboto','sans-serif';
+	line-height: 30px;
+	padding-left: 10px;  }
+.panelTxt {
+	font-size: 12px; }
+input {
+	background-color: white; }
+.sw	{
+	background-color: LightGray;
+	color: Gray; }
+.friendly {
+	color: DarkGreen;
+	background-color: white; }
+.friendly:hover {
+	cursor: pointer;
+	background-color: PapayaWhip; }
 #map {
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 30px;
-    width: 600px;
+    width: 90%;
     height: 600px;
     z-index: 1; }
 img.webShift {
@@ -67,11 +107,6 @@ img.expShift {
 	width: 960px;
 	margin-top: 0px;
 	margin-bottom: 0px; }
-/* OBSOLETE
-#hikeCnt {
-	color: MidnightBlue;
-	text-align: center;
-	margin-top: -10px; } */
 div #usrTbl table {
 	margin-left: auto;
 	margin-right: auto;
@@ -117,11 +152,6 @@ td {
 .hdr_row {
 	background-color: bisque;
 	cursor: pointer; }
-/* OBSOLETE:
-#tbltopper {
-	margin-bottom: 0px;
-	color: MidnightBlue;
-	text-align: center; } */
 #metric {
 	text-align: left;
 	width: 190px;

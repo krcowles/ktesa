@@ -49,15 +49,22 @@
 			The tables also have sort capability, so that the table sorts in ascending,
 			then descending order, with successive clicks. Click on a hike and see what
 			awaits you!</p>
+			<p id="dbug"></p>
 		</div> <!-- end of 'features' -->
-		<div id="formSet">
-			<form id="mapButtons" action="" method="post">
-			<span id="mapSizer">Select the size of map you wish to display:</span>
-			<input type="radio" name="size" value="small" id="s" />Small
-			<input type="radio" name="size" value="medium" id="m" />Medium
-			<input type="radio" name="size" value="large" checked="checked" id="l" />Large
-			<input type="radio" name="size" value="full" id="f" />Full Page</form>
-		</div>
+		<fieldset>
+			<legend>Geolocation</legend>
+			<div id="geo">
+				  <span class="panelTxt">Enable: &nbsp;</span>
+				  <input id="toggle" class="friendly" onclick="geoLoc();" type=button value="Turn On">
+			</div>
+			<div id="geoExtras">
+				  <span class="panelTxt">Update Rate: &nbsp;</span>
+				  <input class="sw" id="firstRate" onclick="refreshFct1(20000);" type=button value="20sec">
+				  <input class="sw" id="secondRate" onclick="refreshFct2(30000);" type=button value="30sec">
+				  <input class="sw"id="clicker" onclick="updateOnClick();" type=button value="On Click">
+			</div>
+		</fieldset>
+
 		<div id="map"></div>
 		<div id="usrTbl"></div>
 		
@@ -1117,7 +1124,6 @@
 				<li> Volcanoes & Earthquakes: we hope not!</li>
 			</ul>
 		</div>
-		<p id="dbug"></p>
 		<p id="linkNote">
 		<em>Note: All of the links on this site (denoted by check-boxes) will open new
 		windows (or tabs)</em>. The corresponding web pages ("Info Web Pages") provide sample
