@@ -19,16 +19,17 @@
 
 <body>
 <div id="tstMap"></div>
-<div id="settings">
-	<fieldset>
-	  	<legend>Geolocation Tracking</legend>
-		<span>10s Interval Updates: &nbsp;</span>
-		<input id="int" class="highlight" onclick="intervals();" type=button value="10sec">
-		<span> &nbsp; or 'WatchPosition: &nbsp;</span>
-		<input id="wtch" class="highlight" onclick="wtch();" type=button value="AutoMove">
-	</fieldset>
-</div>
+<fieldset>
+	<legend>Geolocation Tracking</legend>
+	<div id="switches">Watch Position: <span id="wstat">OFF</span>&nbsp;
+		<div id="won">Watch On</div>&nbsp;
+		<div id="woff">Watch Off</div>&nbsp;&nbsp;10s Update: <span id="istat">OFF</span>&nbsp;
+		<div id="ion">Update On</div>&nbsp;
+		<div id="ioff">Update Off</div>
+	</div>
+</fieldset>
 <p id="dbug">Debug messages:</p>
+
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="play.js"></script>
 <script async defer

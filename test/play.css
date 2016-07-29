@@ -12,11 +12,66 @@ body {
     height: 600px;
     z-index: 1; }
 fieldset {
-	width: 480px;
+	width: 680px;
 	margin-left: auto;
 	margin-right: auto; }
-.highlight {
-	background-color: white; }
-.highlight:hover {
-	color: Brown;
-	background-color: Beige; }
+#won {
+	display: inline-block;
+	font-size: 14px;
+	text-align: center;
+	padding-top: 6px;
+	background-color: Beige;
+	width: 80px;
+	height: 20px;
+	border: solid;
+	border-width: 2px; }
+#won:hover {
+	cursor: pointer;
+	color: Beige;
+	background-color: Brown; }
+#woff {	
+	display: inline-block;
+	font-size: 14px;
+	text-align: center;
+	padding-top: 6px;
+	background-color: Beige;
+	width: 80px;
+	height: 20px;
+	border: solid;
+	border-width: 2px; }
+#woff:hover {
+	cursor: pointer;
+	color: Beige;
+	background-color: Brown; }
+#ion {
+	display: inline-block;
+	font-size: 14px;
+	text-align: center;
+	padding-top: 6px;
+	background-color: Azure;
+	width: 80px;
+	height: 20px;
+	border: solid;
+	border-width: 2px; }
+#ion:hover {
+	cursor: pointer;
+	color: Beige;
+	background-color: Brown; }
+#ioff {
+	display: inline-block;
+	font-size: 14px;
+	text-align: center;
+	padding-top: 6px;
+	background-color: Azure;
+	width: 80px;
+	height: 20px;
+	border: solid;
+	border-width: 2px; }
+#ioff:hover {
+	cursor: pointer;
+	color: Beige;
+	background-color: Brown; }
+#istat {
+	color: Red; }
+#wstat {
+	color: Red; }

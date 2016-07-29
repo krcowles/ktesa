@@ -8,7 +8,7 @@ var mapStartPos = {lat: 35.690183, lng: -106.013517};
 var geoMarker;
 var geoIcon = '../images/grnTarget.png';
 
-// IIFE:
+// IIFE: Set to current location
 (function() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(success, fail, geoOptions);
@@ -30,6 +30,7 @@ var geoIcon = '../images/grnTarget.png';
 			var cLat = Position.coords.latitude;
 			var cLng = Position.coords.longitude;
 			var myLoc = new google.maps.LatLng(cLat, cLng);
+			var startPos = map.setCenter(myLoc);
 			geoMarker = new google.maps.Marker({
 				position: myLoc,
 				map: map,
@@ -46,6 +47,7 @@ var geoIcon = '../images/grnTarget.png';
 	}
 }());
 
+// Callback to establish the map
 function initMap() {
 	var mapDiv = document.getElementById('tstMap');
 	map = new google.maps.Map(mapDiv, {
@@ -72,6 +74,7 @@ function initMap() {
 	});
 }
 
+// All the "button" behaviors, colors, including interval updates & watchPosition method
 var rateObj = { key1: 'val1' }; // somewhat elaborate method to avoid repeated usage
 // of interval timer names, in case it causes confusion...
 var keyVal = 1;
@@ -84,26 +87,60 @@ var watchObjKey;
 var intType = false;
 var watType = false;
 
-function intervals() {
+$('#ion').on('click', function() {
+	$('#istat').text('ON');
+	$('#istat').css('color','Green');
+	$('#istat').css('font-weight','bold');
 	if ( watType ) {
+		$('#wstat').text('OFF');
+		$('#wstat').css('color','Red');
+		$('#wstat').css('font-weight','normal');
 		watType = false;
-		$('#wtch').css('background-color','white');
 		navigator.geolocation.clearWatch(watchObj[watchObjKey]);
-		}
-	intType = true;
-	$('#int').css('background-color','pink');
-	rateObjKey = 'key' + keyVal++;
-	rateObj[rateObjKey] = setInterval(getLoc, 10000);
-}
-
-function wtch() {
-	if ( intType ) {
-		clearInterval(rateObj[rateObjKey]);
-		$('#int').css('background-color','white');
-		intType = false;
 	}
-	$('#wtch').css('background-color','pink');
-	watType = true;
+	if ( !intType ) {
+		intType = true;
+		rateObjKey = 'key' + keyVal++;
+		rateObj[rateObjKey] = setInterval(getLoc, 10000);;
+	}
+});
+$('#ioff').on('click', function() {
+	$('#istat').text('OFF');
+	$('#istat').css('color','Red');
+	$('#istat').css('font-weight','normal');
+	if ( intType ) {
+		intType = false;
+		clearInterval(rateObj[rateObjKey]);
+	}
+});
+
+$('#won').on('click', function() {
+	$('#wstat').text('ON');
+	$('#wstat').css('color','Green');
+	$('#wstat').css('font-weight','bold');
+	if ( intType ) {
+		intType = false;
+		$('#istat').text('OFF');
+		$('#istat').css('color','Red');
+		$('#istat').css('font-weight','normal');
+		clearInterval(rateObj[rateObjKey]);
+	}
+	if ( !watType ) {
+		watType = true;
+		wtch();	
+	}
+});
+$('#woff').on('click', function() {
+	$('#wstat').text('OFF');
+	$('#wstat').css('color','Red');
+	$('#wstat').css('font-weight','normal');
+	if ( watType ) {
+		navigator.geolocation.clearWatch(watchObj[watchObjKey]);
+	}
+});
+
+var locCount = 0;
+function wtch() {
 	watchObjKey = 'key' + wkeyVal++;
 	watchObj[watchObjKey] = navigator.geolocation.watchPosition(watchSuccess, watchError, watchOptions);
 	function watchSuccess(pos) {
@@ -121,6 +158,7 @@ function wtch() {
 			origin: new google.maps.Point(0, 0),
 			anchor: new google.maps.Point(12, 12)
 		});
+		trackDraw(wLat, wLng);
 	} // end of watchSuccess function
 	function watchError(eobj) {
 		msg = '<p>Error in watch call: code ' + eobj.code + '</p>';
@@ -150,8 +188,6 @@ function getLoc() {
 		var newLat = newPosition.coords.latitude;
 		var newLng = newPosition.coords.longitude;
 		var newLoc = new google.maps.LatLng(newLat, newLng);
-		//msg = '<p>New position obtained</p>';
-		//$('#dbug').append(msg);
 		geoMarker = new google.maps.Marker({
 			position: newLoc,
 			map: map,
@@ -164,3 +200,26 @@ function getLoc() {
 	} // end of SUCCESS function
 	
 }  // end of getLoc function
+
+// Since javascript uses 64bit double precision:
+var dx = .000222;	// experimental latitude diff for 100ft stride
+var dy = .000106;	// experimental longitude diff for 100ft stride
+var hyp = dx*dx + dy*dy; // used as square of hypotenuse for determining min track distance
+var trkPts = [];
+// Attempt to draw tracking lines
+function trackDraw( trkLat, trkLng ) {
+	if ( locCount === 0 ) {
+		var firstPt = google.maps.LatLng(trkLat,trkLng);
+		trkPts.push(firstPt);
+		locCount++;
+	} else {  // all the rest of the points
+		var lastPt = trkPts[count-1];
+		var tstLat = lastPt[lat] - trkLat;
+		var tstLng = lastPt[lng] - trkLng;
+		var tstHyp = tstLat*tstLat + tstLng*tstLng;
+		if ( tstHyp >= hyp ) {  // we have a winner...
+			msg = '<p>Greater than 100ft traversed</p>';
+			$('#dbug').append(msg);
+		}
+	}
+}
