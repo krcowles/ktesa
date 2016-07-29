@@ -204,7 +204,7 @@ function getLoc() {
 // Since javascript uses 64bit double precision:
 var dx = .000222;	// experimental latitude diff for 100ft stride
 var dy = .000106;	// experimental longitude diff for 100ft stride
-var hyp = dx*dx + dy*dy; // used as square of hypotenuse for determining min track distance
+var hyp = 4*(dx*dx + dy*dy); // used as square of hypotenuse for determining min track distance
 var trkPts = [];
 
 //var fake1 = trackDraw( 35.000000, -106.000000 );
@@ -221,11 +221,11 @@ function trackDraw( trkLat, trkLng ) {
 		$('#dbug').append(msg);
 	} else {  // all the rest of the points
 		var lastPt = trkPts[locCount-1];
-		var tstLat = lastPt['lat'] - trkLat;
-		var tstLng = lastPt['lng'] - trkLng;
+		var tstLat = trkLat - lastPt['lat'];
+		var tstLng = trkLng - lastPt['lng'];
 		var tstHyp = tstLat*tstLat + tstLng*tstLng;
 		if ( tstHyp >= hyp ) {  // we have a winner...
-			msg = '<p>Greater than 100ft traversed</p>';
+			msg = '<p>Greater than 400ft traversed</p>';
 			$('#dbug').append(msg);
 		}
 	}
