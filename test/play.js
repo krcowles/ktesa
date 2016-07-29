@@ -31,7 +31,7 @@ var geoIcon = '../images/grnTarget.png';
 			var cLng = Position.coords.longitude;
 			var myLoc = new google.maps.LatLng(cLat, cLng);
 			geoMarker = new google.maps.Marker({
-				position: mapStartPos,
+				position: myLoc,
 				map: map,
 				icon: geoIcon,
 				size: new google.maps.Size(24,24),
