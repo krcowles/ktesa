@@ -206,16 +206,23 @@ var dx = .000222;	// experimental latitude diff for 100ft stride
 var dy = .000106;	// experimental longitude diff for 100ft stride
 var hyp = dx*dx + dy*dy; // used as square of hypotenuse for determining min track distance
 var trkPts = [];
+
+//var fake1 = trackDraw( 35.000000, -106.000000 );
+//var fake2 = trackDraw( 35.000620, -106.00620 );
 // Attempt to draw tracking lines
+
 function trackDraw( trkLat, trkLng ) {
 	if ( locCount === 0 ) {
-		var firstPt = google.maps.LatLng(trkLat,trkLng);
+		//var firstPt = google.maps.LatLng(trkLat,trkLng);
+		var firstPt = { lat: trkLat, lng: trkLng };
 		trkPts.push(firstPt);
 		locCount++;
+		msg = '<p>First pt [' + locCount + '] pushed: lat ' + trkLat + '; lng ' + trkLng + '</p>';
+		$('#dbug').append(msg);
 	} else {  // all the rest of the points
-		var lastPt = trkPts[count-1];
-		var tstLat = lastPt[lat] - trkLat;
-		var tstLng = lastPt[lng] - trkLng;
+		var lastPt = trkPts[locCount-1];
+		var tstLat = lastPt['lat'] - trkLat;
+		var tstLng = lastPt['lng'] - trkLng;
 		var tstHyp = tstLat*tstLat + tstLng*tstLng;
 		if ( tstHyp >= hyp ) {  // we have a winner...
 			msg = '<p>Greater than 100ft traversed</p>';
