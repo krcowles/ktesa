@@ -1,0 +1,22 @@
+body {
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: arial, verdana;
+	background-color: #dadada; }
+#tstMap {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px;
+    width: 90%;
+    height: 600px;
+    z-index: 1; }
+fieldset {
+	width: 480px;
+	margin-left: auto;
+	margin-right: auto; }
+.highlight {
+	background-color: white; }
+.highlight:hover {
+	color: Brown;
+	background-color: Beige; }

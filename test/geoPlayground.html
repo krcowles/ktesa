@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Geolocation</title>
+	<meta charset="utf-8" />
+	<meta name="language"
+			content="EN" />
+	<meta name="description"
+			content="Test area for geolocation code" />
+	<meta name="author"
+			content="Tom Sandberg and Ken Cowles" />
+	<meta name="robots"
+			content="nofollow" />
+	<link href="play.css"
+		type="text/css" rel="stylesheet" />
+    
+</head>
+
+<body>
+<div id="tstMap"></div>
+<div id="settings">
+	<fieldset>
+	  	<legend>Geolocation Tracking</legend>
+		<span>10s Interval Updates: &nbsp;</span>
+		<input id="int" class="highlight" onclick="intervals();" type=button value="10sec">
+		<span> &nbsp; or 'WatchPosition: &nbsp;</span>
+		<input id="wtch" class="highlight" onclick="wtch();" type=button value="AutoMove">
+	</fieldset>
+</div>
+<p id="dbug">Debug messages:</p>
+<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="play.js"></script>
+<script async defer
+		src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap"
+			type="text/javascript">
+</script>
+    
+</body>
+</html>
