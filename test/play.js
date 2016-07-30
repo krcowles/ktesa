@@ -204,7 +204,7 @@ function getLoc() {
 // Since javascript uses 64bit double precision:
 var dx = .000222;	// experimental latitude diff for 100ft stride
 var dy = .000106;	// experimental longitude diff for 100ft stride
-var hyp = 4*(dx*dx + dy*dy); // used as square of hypotenuse for determining min track distance
+var hyp = 2*(dx*dx + dy*dy); // used as square of hypotenuse for determining min track distance
 var trkPts = [];
 
 //var fake1 = trackDraw( 35.000000, -106.000000 );
@@ -213,7 +213,6 @@ var trkPts = [];
 
 function trackDraw( trkLat, trkLng ) {
 	if ( locCount === 0 ) {
-		//var firstPt = google.maps.LatLng(trkLat,trkLng);
 		var firstPt = { lat: trkLat, lng: trkLng };
 		trkPts.push(firstPt);
 		locCount++;
@@ -225,8 +224,11 @@ function trackDraw( trkLat, trkLng ) {
 		var tstLng = trkLng - lastPt['lng'];
 		var tstHyp = tstLat*tstLat + tstLng*tstLng;
 		if ( tstHyp >= hyp ) {  // we have a winner...
-			msg = '<p>Greater than 400ft traversed</p>';
+			msg = '<p>point ' + (locCount + 1) + ' saved: lat ' + trkLat + '; lng ' + trakLng + '<p>';
 			$('#dbug').append(msg);
+			var newPt = { lat: trkLat, lng: trkLng };
+			trkPts.push(newPt);
+			locCount++
 		}
 	}
 }
