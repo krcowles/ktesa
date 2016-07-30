@@ -62,7 +62,8 @@ function download(strData, strFileName, strMimeType) {
         t = A[2] || "text/plain";
 
     //build download link:
-    a.href = "data:" + strMimeType + "charset=utf-8," + escape(strData);
+    // NOTE: I swapped out 'escape' (deprecated) and replaced it with 'encodeURI'
+    a.href = "data:" + strMimeType + "charset=utf-8," + encodeURI(strData);
 	if ('download' in a) { //FF20, CH19
 			a.setAttribute("download", n);
 			a.innerHTML = "downloading...";
@@ -79,7 +80,7 @@ function download(strData, strFileName, strMimeType) {
     //do iframe dataURL download: (older W3)
     var f = D.createElement("iframe");
     D.body.appendChild(f);
-    f.src = "data:" + (A[2] ? A[2] : "application/octet-stream") + (window.btoa ? ";base64" : "") + "," + (window.btoa ? window.btoa : escape)(strData);
+    f.src = "data:" + (A[2] ? A[2] : "application/octet-stream") + (window.btoa ? ";base64" : "") + "," + (window.btoa ? window.btoa : encodeURI)(strData);
     setTimeout(function() {
         D.body.removeChild(f);
     }, 333);
