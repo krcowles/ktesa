@@ -207,9 +207,9 @@ var dy = .000106;	// experimental longitude diff for 100ft stride
 var hyp = 2*(dx*dx + dy*dy); // used as square of hypotenuse for determining min track distance
 var trkPts = [];
 
-var fake1 = trackDraw( 35.000000, -106.000000 );
-var fake2 = trackDraw( 35.000620, -106.00620 );
-var fake3 = trackDraw( 35.000820, -106.00820 );
+//var fake1 = trackDraw( 35.000000, -106.000000 );
+//var fake2 = trackDraw( 35.000620, -106.00620 );
+//var fake3 = trackDraw( 35.000820, -106.00820 );
 // Attempt to draw tracking lines
 
 function trackDraw( trkLat, trkLng ) {
