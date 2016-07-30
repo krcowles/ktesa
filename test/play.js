@@ -294,7 +294,14 @@ function trackDraw( trkLat, trkLng ) {
 		var firstPt = { lat: trkLat, lng: trkLng };
 		trkPts.push(firstPt);
 		locCount++;
-		msg = '<p>First pt [' + locCount + '] pushed: lat ' + trkLat + '; lng ' + trkLng + '</p>';
+		var firstDate = new Date();
+		var timeStamp = 'Month:Day/Hr:Min:Sec ';
+		msg = '<p>Timestamp format is ' + timeStamp + '</p>';
+		$('#dbug').append(msg);
+		var firstBase = firstDate.getMonth() + 1;
+		firstBase += ':' + firstDate.getDate() + '/' + firstDate.getHours();
+		firstBase += ':' + firstDate.getMinutes() + ':' + firstDate.getSeconds();
+		msg = '<p>' + firstBase + '; First pt [' + locCount + '] pushed: lat ' + trkLat + '; lng ' + trkLng + '</p>';
 		$('#dbug').append(msg);
 	} else {  // all the rest of the points
 		var lastPt = trkPts[locCount-1];
@@ -302,7 +309,11 @@ function trackDraw( trkLat, trkLng ) {
 		var tstLng = trkLng - lastPt['lng'];
 		var tstHyp = tstLat*tstLat + tstLng*tstLng;
 		if ( tstHyp >= hyp ) {  // we have a winner...
-			msg = '<p>point ' + (locCount + 1) + ' saved: lat ' + trkLat + '; lng ' + trkLng + '<p>';
+			var nxtDate = new Date();
+			var nxtStamp = nxtDate.getMonth() + 1;
+			nxtStamp += ':' + nxtDate.getDate() + '/' + nxtDate.getHours();
+			nxtStamp += ':' + nxtDate.getMinutes() + ':' + nxtDate.getSeconds();
+			msg = '<p>' + nxtStamp + '; point ' + (locCount + 1) + ' saved: lat ' + trkLat + '; lng ' + trkLng + '<p>';
 			$('#dbug').append(msg);
 			var newPt = { lat: trkLat, lng: trkLng };
 			trkPts.push(newPt);
