@@ -1,6 +1,7 @@
 // generic debug output var:
 var msg; 
 
+// ///////////////////////////// GLOBAL VARIABLES //////////////////////////////
 var geoOptions = { enableHighAccuracy: true };
 var watchOptions = { enableHighAccuracy: true };
 var map;
@@ -8,6 +9,36 @@ var mapStartPos = {lat: 35.690183, lng: -106.013517};
 var geoMarker;
 var geoIcon = '../images/grnTarget.png';
 
+// /////////////////////////////// BROWSER TYPE /////////////////////////////////
+// determine the browser (non-mobile):
+function getBrowserInfo()
+{
+	var ua = navigator.userAgent, tem,
+	M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+	if(/trident/i.test(M[1]))
+	{
+		tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+		return 'IE '+(tem[1] || '');
+	}
+	if(M[1]=== 'Chrome')
+	{
+		tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+		if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+	}
+	M = M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+	if((tem= ua.match(/version\/(\d+)/i))!= null) 
+		M.splice(1, 1, tem[1]);
+	return M.join(' ');
+}
+mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
+if (mobile_browser) {
+	window.alert('Mobile Browser');
+} else {
+	var browserInfo = getBrowserInfo();
+	//window.alert(browserInfo);
+}
+
+// //////////////////////////// CENTER MAP WHERE YOU ARE //////////////////////////
 // IIFE: Set to current location
 (function() {
 	if (navigator.geolocation) {
@@ -47,6 +78,7 @@ var geoIcon = '../images/grnTarget.png';
 	}
 }());
 
+// //////////////////////////// GOOGLE MAP SETUP ////////////////////////////////
 // Callback to establish the map
 function initMap() {
 	var mapDiv = document.getElementById('tstMap');
@@ -74,6 +106,7 @@ function initMap() {
 	});
 }
 
+// ///////////////////////////////// BUTTONS //////////////////////////////////
 // All the "button" behaviors, colors, including interval updates & watchPosition method
 var rateObj = { key1: 'val1' }; // somewhat elaborate method to avoid repeated usage
 // of interval timer names, in case it causes confusion...
@@ -139,6 +172,7 @@ $('#woff').on('click', function() {
 	}
 });
 
+// ////////////////////////////// GEOLOCATION FUNCTIONS ////////////////////////////
 var locCount = 0;
 function wtch() {
 	watchObjKey = 'key' + wkeyVal++;
@@ -201,6 +235,8 @@ function getLoc() {
 	
 }  // end of getLoc function
 
+
+// ///////////////////////////// TRACK SETUP /////////////////////////////////
 // Since javascript uses 64bit double precision:
 var dx = .000222;	// experimental latitude diff for 100ft stride
 var dy = .000106;	// experimental longitude diff for 100ft stride
@@ -243,14 +279,13 @@ function download(strData, strFileName, strMimeType) {
 }
 
 //setTimeout( fakeit, 2000 );
-
 function fakeit() {
-	var fake1 = trackDraw( 35.690183, -106.013517 );
-	var fake2 = trackDraw( 35.690500, -106.014000 );
-	var fake3 = trackDraw( 35.691000, -106.014500 );
-	var fake4 = trackDraw( 35.691500, -106.015000 );
-	var fake5 = trackDraw( 35.692000, -106.015500 );
-	var fake6 = trackDraw( 35.692500, -106.016000 );
+	var fake1 = trackDraw( 35.6903502, -106.0135077 );
+	var fake2 = trackDraw( 35.6885545, -106.0142811 );
+	var fake3 = trackDraw( 35.6893862, -106.0142786);
+	var fake4 = trackDraw( 35.6903876, -106.0136131 );
+	var fake5 = trackDraw( 35.6905510, -106.0131575 );
+	var fake6 = trackDraw( 35.6903234, -106.0134661 );
 }
 
 // Attempt to draw tracking lines
