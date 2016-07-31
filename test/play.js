@@ -11,6 +11,7 @@ var geoIcon = '../images/grnTarget.png';
 
 // /////////////////////////////// BROWSER TYPE /////////////////////////////////
 // determine the browser (non-mobile):
+// NOTE: RE "i" modifier at end of pattern => case insensitive
 function getBrowserInfo()
 {
 	var ua = navigator.userAgent, tem,
@@ -32,7 +33,17 @@ function getBrowserInfo()
 }
 mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
 if (mobile_browser) {
-	window.alert('Mobile Browser');
+	//window.alert('Mobile Browser');
+	if ( !navigator.userAgent.match(/\b(IEMobile)\b/i ) ) {
+		// IE phone: use this for sleep/awake:
+		window.addEventListener('pageshow', function() {
+			window.alert('Awakened!');
+		}, false);
+	} else {
+		window.attachEvent('pageshow', function() {
+			window.alert('Awake now');
+		});
+	}
 } else {
 	var browserInfo = getBrowserInfo();
 	//window.alert(browserInfo);
@@ -79,7 +90,7 @@ if (mobile_browser) {
 }());
 
 // //////////////////////////// GOOGLE MAP SETUP ////////////////////////////////
-// Callback to establish the map
+// Google Callback to establish the map
 function initMap() {
 	var mapDiv = document.getElementById('tstMap');
 	map = new google.maps.Map(mapDiv, {
@@ -330,7 +341,7 @@ function trackDraw( trkLat, trkLng ) {
 			});
 			firstTrack.setMap(map);
 				
-		/* TURN OFF DOWNLOAD FOR NOW...
+		// (DONT) TURN OFF DOWNLOAD FOR NOW...
 			var dataStr = '[ ';
 			for ( var j=0; j<6; j++ ) {
 				dataStr += '{lat: '
@@ -342,7 +353,6 @@ function trackDraw( trkLat, trkLng ) {
 			dataStr = dataStr.substring(0,lastComma);
 			dataStr += ' ];';
 			download(dataStr,'GPSpoints.txt','text/plain');
-		*/
 		}
 	}
 }
