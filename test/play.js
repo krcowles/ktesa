@@ -302,6 +302,7 @@ function fakeit() {
 }
 
 // Attempt to draw tracking lines
+var trackLine;
 function trackDraw( trkLat, trkLng ) {
 	if ( locCount === 0 ) {
 		var firstPt = { lat: trkLat, lng: trkLng };
@@ -321,7 +322,7 @@ function trackDraw( trkLat, trkLng ) {
 		var tstLat = trkLat - lastPt['lat'];
 		var tstLng = trkLng - lastPt['lng'];
 		var tstHyp = tstLat*tstLat + tstLng*tstLng;
-		if ( tstHyp >= hyp ) {  // we have a winner...
+		if ( tstHyp >= hyp ) {  // we have a qualified point
 			var nxtDate = new Date();
 			var nxtStamp = nxtDate.getMonth() + 1;
 			nxtStamp += ':' + nxtDate.getDate() + '/' + nxtDate.getHours();
@@ -330,30 +331,44 @@ function trackDraw( trkLat, trkLng ) {
 			$('#dbug').append(msg);
 			var newPt = { lat: trkLat, lng: trkLng };
 			trkPts.push(newPt);
-			locCount++
-			if ( locCount === 6 ) {
-				// try polyline:
-				var firstTrack = new google.maps.Polyline({
-					path: trkPts,
-					geodesic: false,
+			locCount++;
+			// create first piece (locCount = 2) then "add" to it as you go
+			if ( locCount === 2 ) {  // create the first line, don't delete it before doing so
+				var thisLine = [ lastPt, newPt ];
+				trackLine = new google.maps.Polyline({
+					path: thisLine,
+					map: map,
+					geodesic: true,
 					strokeColor: '#FF0000',
 					strokeOpacity: 1.0,
-					strokeWeight: 2 
+					strokeWeight: 3
 				});
-				firstTrack.setMap(map);
-				
-				var dataStr = '[ ';
-				for ( var j=0; j<6; j++ ) {
-					dataStr += '{lat: '
-					dataStr += trkPts[j]['lat'];
-					dataStr += ',lng: ' + trkPts[j]['lng'];
-					dataStr += ' }, ';
-				}
-				var lastComma = dataStr.lastIndexOf(',');
-				dataStr = dataStr.substring(0,lastComma);
-				dataStr += ' ];';
-				download(dataStr,'GPSpoints.txt','text/plain');
-			} // end of LOCCOUNT = 6
+			} else {  // remaining points
+				trackLine.setMap(null);  // is this required? test later....
+				trackLine = null;
+				trackLine = new google.maps.Polyline({
+					path: trkPts,
+					map: map,
+					geodesic: true,
+					strokeColor: '#FF0000',
+					strokeOpacity: 1.0,
+					strokeWeight: 3 
+				});
+				if ( locCount === 6 ) {
+					var dataStr = '[ ';
+					for ( var j=0; j<6; j++ ) {
+						dataStr += '{lat: '
+						dataStr += trkPts[j]['lat'];
+						dataStr += ',lng: ' + trkPts[j]['lng'];
+						dataStr += ' }, ';
+					}
+					var lastComma = dataStr.lastIndexOf(',');
+					dataStr = dataStr.substring(0,lastComma);
+					dataStr += ' ];';
+					download(dataStr,'GPSpoints.txt','text/plain');
+				} // end of LOCCOUNT = 6
+			} // end ELSE of IF LOCCOUNT === 2
+			
 		} // end of IF - GOOD DATA POINT
 	}
 }
