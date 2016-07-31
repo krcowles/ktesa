@@ -32,22 +32,24 @@ function getBrowserInfo()
 	return M.join(' ');
 }
 mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
+/*
 if (mobile_browser) {
 	//window.alert('Mobile Browser');
 	if ( !navigator.userAgent.match(/\b(IEMobile)\b/i ) ) {
 		// IE phone: use this for sleep/awake:
 		window.addEventListener('pageshow', function() {
-			window.alert('Awakened!');
+			//window.alert('Awakened!');
 		}, false);
 	} else {
 		window.attachEvent('pageshow', function() {
-			window.alert('Awake now');
+			//window.alert('Awake now');
 		});
 	}
 } else {
 	var browserInfo = getBrowserInfo();
 	//window.alert(browserInfo);
 }
+*/
 
 // //////////////////////////// CENTER MAP WHERE YOU ARE //////////////////////////
 // IIFE: Set to current location
@@ -329,30 +331,29 @@ function trackDraw( trkLat, trkLng ) {
 			var newPt = { lat: trkLat, lng: trkLng };
 			trkPts.push(newPt);
 			locCount++
-		}
-		if ( locCount === 6 ) {
-			// try polyline:
-			var firstTrack = new google.maps.Polyline({
-				path: trkPts,
-				geodesic: false,
-				strokeColor: '#FF0000',
-				strokeOpacity: 1.0,
-				strokeWeight: 2 
-			});
-			firstTrack.setMap(map);
+			if ( locCount === 6 ) {
+				// try polyline:
+				var firstTrack = new google.maps.Polyline({
+					path: trkPts,
+					geodesic: false,
+					strokeColor: '#FF0000',
+					strokeOpacity: 1.0,
+					strokeWeight: 2 
+				});
+				firstTrack.setMap(map);
 				
-		// (DONT) TURN OFF DOWNLOAD FOR NOW...
-			var dataStr = '[ ';
-			for ( var j=0; j<6; j++ ) {
-				dataStr += '{lat: '
-				dataStr += trkPts[j]['lat'];
-				dataStr += ',lng: ' + trkPts[j]['lng'];
-				dataStr += ' }, ';
-			}
-			var lastComma = dataStr.lastIndexOf(',');
-			dataStr = dataStr.substring(0,lastComma);
-			dataStr += ' ];';
-			download(dataStr,'GPSpoints.txt','text/plain');
-		}
+				var dataStr = '[ ';
+				for ( var j=0; j<6; j++ ) {
+					dataStr += '{lat: '
+					dataStr += trkPts[j]['lat'];
+					dataStr += ',lng: ' + trkPts[j]['lng'];
+					dataStr += ' }, ';
+				}
+				var lastComma = dataStr.lastIndexOf(',');
+				dataStr = dataStr.substring(0,lastComma);
+				dataStr += ' ];';
+				download(dataStr,'GPSpoints.txt','text/plain');
+			} // end of LOCCOUNT = 6
+		} // end of IF - GOOD DATA POINT
 	}
 }
