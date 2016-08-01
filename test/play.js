@@ -194,6 +194,7 @@ function wtch() {
 		var watchPos = pos.coords;
 		var wLat = watchPos.latitude;
 		var wLng = watchPos.longitude;
+		trackDraw(wLat, wLng);
 		var newWPos = {lat: wLat, lng: wLng };
 		geoMarker.setMap(null);
 		geoMarker = null;
@@ -205,7 +206,6 @@ function wtch() {
 			origin: new google.maps.Point(0, 0),
 			anchor: new google.maps.Point(12, 12)
 		});
-		trackDraw(wLat, wLng);
 	} // end of watchSuccess function
 	function watchError(eobj) {
 		msg = '<p>Error in watch call: code ' + eobj.code + '</p>';
@@ -309,12 +309,13 @@ function trackDraw( trkLat, trkLng ) {
 		trkPts.push(firstPt);
 		locCount++;
 		var firstDate = new Date();
-		var timeStamp = 'Month:Day/Hr:Min:Sec ';
+		var timeStamp = 'Month:Day/Hr:Min:Sec:MilliSec ';
 		msg = '<p>Timestamp format is ' + timeStamp + '</p>';
 		$('#dbug').append(msg);
 		var firstBase = firstDate.getMonth() + 1;
 		firstBase += ':' + firstDate.getDate() + '/' + firstDate.getHours();
 		firstBase += ':' + firstDate.getMinutes() + ':' + firstDate.getSeconds();
+		firstBase += ':' + firstDate.getMilliseconds();
 		msg = '<p>' + firstBase + '; First pt [' + locCount + '] pushed: lat ' + trkLat + '; lng ' + trkLng + '</p>';
 		$('#dbug').append(msg);
 	} else {  // all the rest of the points
@@ -327,6 +328,7 @@ function trackDraw( trkLat, trkLng ) {
 			var nxtStamp = nxtDate.getMonth() + 1;
 			nxtStamp += ':' + nxtDate.getDate() + '/' + nxtDate.getHours();
 			nxtStamp += ':' + nxtDate.getMinutes() + ':' + nxtDate.getSeconds();
+			nxtStamp += ':' + nxtDate.getMilliseconds();
 			msg = '<p>' + nxtStamp + '; point ' + (locCount + 1) + ' saved: lat ' + trkLat + '; lng ' + trkLng + '<p>';
 			$('#dbug').append(msg);
 			var newPt = { lat: trkLat, lng: trkLng };
@@ -370,5 +372,5 @@ function trackDraw( trkLat, trkLng ) {
 			} // end ELSE of IF LOCCOUNT === 2
 			
 		} // end of IF - GOOD DATA POINT
-	}
+	}  // end of IF/ELSE: locCount === 0
 }
