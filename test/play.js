@@ -8,6 +8,7 @@ var map;
 var mapStartPos = {lat: 35.690183, lng: -106.013517};
 var geoMarker;
 var geoIcon = '../images/grnTarget.png';
+// Directions stuff:
 var directionsDisplay; // for directions renderer
 var DSObj; // directions service object
 var myLoc; // geolocation
@@ -90,6 +91,8 @@ if (mobile_browser) {
 				anchor: new google.maps.Point(12, 12)
 			});
 			directionsDisplay.setMap(map);
+			var dirPrint = document.getElementById('printDirs');
+			directionsDisplay.setPanel(dirPrint);
 			// Create the DirectionsService object:
 			DSObj = new google.maps.DirectionsService();
 
@@ -132,17 +135,25 @@ function initMap() {
 // ///////////////////////////////// BUTTONS //////////////////////////////////
 // NEW DIRECTIONS BUTTON:
 $('#getDirs').on('click', function() {
-	var LCloc = new google.maps.LatLng(35.814841,-106.533158);
-	var LCdirs = {
-		origin: myLoc,
-		destination: LCloc,
-		travelMode: 'DRIVING'
-	}
-	DSObj.route(LCdirs, function(result, status) {
-		if ( status == 'OK' ) {
-			directionsDisplay.setDirections(result);
+	if ( !myLoc ) {
+		msg = 'Please wait for current position to enable (you must RESTART and SHARE LOCATION)'
+		window.alert(msg);
+	} else {
+		var LCloc = new google.maps.LatLng(35.814841,-106.533158);
+		var LCdirs = {
+			origin: myLoc,
+			destination: LCloc,
+			travelMode: 'DRIVING'
 		}
-	});
+		DSObj.route(LCdirs, function(result, status) {
+			if ( status == 'OK' ) {
+				directionsDisplay.setDirections(result);
+			} else {
+				msg = 'Error when attempting to retrieve directions: ' + status;
+				window.alert(msg);
+			}
+		});
+	}
 });
 
 // All the other "button" behaviors, colors, including interval updates & watchPosition method
