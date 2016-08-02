@@ -8,6 +8,9 @@ var map;
 var mapStartPos = {lat: 35.690183, lng: -106.013517};
 var geoMarker;
 var geoIcon = '../images/grnTarget.png';
+var directionsDisplay; // for directions renderer
+var DSObj; // directions service object
+var myLoc; // geolocation
 
 // /////////////////////////////// BROWSER TYPE /////////////////////////////////
 // determine the browser (non-mobile):
@@ -53,6 +56,8 @@ if (mobile_browser) {
 
 // //////////////////////////// CENTER MAP WHERE YOU ARE //////////////////////////
 // IIFE: Set to current location
+// NOTE: google map should already be setup & google API established by the time user 
+//       responds with "share location" ok click...
 (function() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(success, fail, geoOptions);
@@ -73,7 +78,7 @@ if (mobile_browser) {
 		function success(Position) {
 			var cLat = Position.coords.latitude;
 			var cLng = Position.coords.longitude;
-			var myLoc = new google.maps.LatLng(cLat, cLng);
+			myLoc = new google.maps.LatLng(cLat, cLng);
 			var startPos = map.setCenter(myLoc);
 			geoMarker = new google.maps.Marker({
 				position: myLoc,
@@ -84,6 +89,10 @@ if (mobile_browser) {
 				// The anchor for this image is the center (12, 12).
 				anchor: new google.maps.Point(12, 12)
 			});
+			directionsDisplay.setMap(map);
+			// Create the DirectionsService object:
+			DSObj = new google.maps.DirectionsService();
+
 			
 		} // end of SUCCESS function
 	} else {
@@ -92,8 +101,9 @@ if (mobile_browser) {
 }());
 
 // //////////////////////////// GOOGLE MAP SETUP ////////////////////////////////
-// Google Callback to establish the map
+// Google Callback to establish the map (and directions)
 function initMap() {
+	directionsDisplay = new google.maps.DirectionsRenderer();
 	var mapDiv = document.getElementById('tstMap');
 	map = new google.maps.Map(mapDiv, {
 		center: mapStartPos,
@@ -120,7 +130,22 @@ function initMap() {
 }
 
 // ///////////////////////////////// BUTTONS //////////////////////////////////
-// All the "button" behaviors, colors, including interval updates & watchPosition method
+// NEW DIRECTIONS BUTTON:
+$('#getDirs').on('click', function() {
+	var LCloc = new google.maps.LatLng(35.814841,-106.533158);
+	var LCdirs = {
+		origin: myLoc,
+		destination: LCloc,
+		travelMode: 'DRIVING'
+	}
+	DSObj.route(LCdirs, function(result, status) {
+		if ( status == 'OK' ) {
+			directionsDisplay.setDirections(result);
+		}
+	});
+});
+
+// All the other "button" behaviors, colors, including interval updates & watchPosition method
 var rateObj = { key1: 'val1' }; // somewhat elaborate method to avoid repeated usage
 // of interval timer names, in case it causes confusion...
 var keyVal = 1;

@@ -75,3 +75,18 @@ fieldset {
 	color: Red; }
 #wstat {
 	color: Red; }
+#getDirs {
+	width: 180px;
+	height: 30px;
+	margin-top: 15px;
+	padding-top: 10px;
+	padding-left: 18px;
+	font-size: 18px;
+	border-style: solid;
+	border-width: 2px;
+	border-color: DarkBlue;
+	background-color: Beige; }
+#getDirs:hover {
+	cursor: pointer;
+	background-color: Brown;
+	color: Beige; }
