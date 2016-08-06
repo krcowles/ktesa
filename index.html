@@ -51,7 +51,7 @@
 			awaits you!</p>
 			<p id="dbug"></p>
 		</div> <!-- end of 'features' -->
-		<fieldset>
+		<fieldset id="forMobile">
 			<legend>Geolocation</legend>
 			<div id="geo">
 				  <span class="panelTxt">Enable: &nbsp;</span>
@@ -74,24 +74,28 @@
 		<div id="wholeTbl">
 			<table id="staticTbl" class="sortable">
 				<colgroup>	
-					<col style="width:180px">
+					<col style="width:120px">
 					<col style="width:170px">
+					<col style="width: 110px"> <!-- WOW Factor -->
 					<col style="width:70px">
-					<col style="width:78px">
-					<col style="width:100px">
+					<col style="width:70px">
+					<col style="width:80px">
 					<col style="width:100px">
 					<col style="width:70px">
+					<col style="width:86px">
 					<col style="width:70px">
 				</colgroup>
 				<thead>
 					<tr>
-						<th class="hdr_row" data-sort="std">General Location</th>
+						<th class="hdr_row" data-sort="std">Locale</th>
 						<th class="hdr_row" data-sort="std">Hike/Trail Name</th>
+						<th class="hdr_row" data-sort="std">WOW Factor
 						<th class="hdr_row">Web Pg</th>
 						<th class="hdr_row" data-sort="lan">Length</th>
 						<th class="hdr_row" data-sort="lan">Elev Chg</th>
 						<th class="hdr_row" data-sort="std">Difficulty</th>
 						<th class="hdr_row">Exposure</th>
+						<th class="hdr_row">Get There</th>
 						<th class="hdr_row">Flickr</th>
 					</tr>
 				</thead>
@@ -99,1004 +103,1172 @@
 					<tr class="indxd">
 						<td>Los Alamos</td>
 						<td>Bandelier Index [6/10]</td>
+						<td>See Indx</td>
 						<td><a href="pages/Bandelier.html" target="_blank">
 							<img class="webShift" src="images/indxCheck.png" alt="index checkbox" /></a></td>
 						<td>0* miles</td>
 						<td>0* ft</td>
 						<td>See Indx</td>
 						<td>See Indx</td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td>See Indx</td>
 					</tr>
 					<tr class="indxd">
 						<td>Lybrook</td>
 						<td>Chaco Index [5/10]</td>
+						<td>See Indx</td>
 						<td><a href="pages/Chaco.html" target="_blank">
 							<img class="webShift" src="images/indxCheck.png" alt="index checkbox" /></a></td>
 						<td>0* miles</td>
 						<td>0* ft</td>
 						<td>See Indx</td>
 						<td>See Indx</td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td>See Indx</td>
 					</tr>
 					<tr class="indxd">
 						<td>Grants</td>
 						<td>El Malpais Index [3/8]</td>
+						<td>See Indx</td>
 						<td><a href="pages/ElMalpais.html" target="_blank">
 							<img class="webShift" src="images/indxCheck.png" alt="index checkbox" /></a></td>
 						<td>0* miles</td>
 						<td>0* ft</td>
 						<td>See Indx</td>
 						<td>See Indx</td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td>See Indx</td>
 					</tr>
 					<tr class="indxd">
                         <td>Albuquerque</td>
                         <td>Petroglyphs Index [6/6]</td>
+                        <td>See Indx</td>
                         <td><a href="pages/Petroglyphs.html" target="_blank">
                             <img class="webShift" src="images/indxCheck.png" alt="checkbox" /></a></td>
                         <td>0* miles</td>
                         <td>0* ft</td>
                         <td>See Indx</td>
                         <td>See Indx</td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td>See Indx</td>
                     </tr>
 					<tr>
 						<td>Los Alamos</td>
 						<td>Ruins Trail</td>
+						<td>Ancient ruins</td>
 						<td><a href="pages/MainLoop.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>1.2 miles</td>
 						<td>200 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669594168785" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Los Alamos</td>
 						<td>Upper & Lower Falls</td>
+						<td>Falls Views</td>
 						<td><a href="pages/FallsTrail.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>3 miles</td>
 						<td>300 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="Partial sun icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669136001962" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Los Alamos</td>
 						<td>Frey Trail</td>
+						<td>Views en route</td>
 						<td><a href="pages/Frey.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>3 miles</td>
 						<td>550 ft</td>
 						<td>Moderate</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667010406084" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Los Alamos</td>
 						<td>Frijolito Loop</td>
+						<td>Canyon views</td>
 						<td><a href="pages/Frijolito.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2.5 mile</td>
 						<td>550 ft</td>
 						<td>Moderate</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669635072405" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Los Alamos</td>
 						<td>Alcove House</td>
+						<td>Ruins & view</td>
 						<td><a href="pages/AlcoveHouse.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>1 mile</td>
 						<td>140 ft</td>
 						<td>Moderate</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667002560044" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>White Rock</td>
 						<td>Tsankawi Ruins</td>
+						<td>Great views</td>
 						<td><a href="pages/Tsankawi.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>3 miles
 						<td>100 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669593119256" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>San Antonio</td>
 						<td>Canyon Trail</td>
+						<td>Scenery</td>
 						<td><a href="pages/CanyonTrail.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2.2 miles</td>
 						<td>200 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668959173142" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Lybrook</td>
 						<td>Una Vida</td>
+						<td>Ancient ruins</td>
 						<td><a href="pages/UnaVida.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>0.75 mile</td>
 						<td>100 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157666368675313" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Lybrook</td>
 						<td>Hungo Pavi</td>
+						<td>Ancient ruins</td>
 						<td><a href="pages/HungoPavi.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>0.25 mile</td>
 						<td>20 ft</td>
 						<td>Very Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668823314186" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Lybrook</td>
 						<td>Pueblo Bonito</td>
+						<td>Huge ruins</td>
 						<td><a href="pages/Bonito.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>1 mile</td>
 						<td>50 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668825446256" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Lybrook</td>
 						<td>Pueblo Alto</td>
+						<td>Great views</td>
 						<td><a href="pages/PuebloAlto.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>5.7 miles</td>
 						<td>200 ft</td>
 						<td>Moderate</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668935441575" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Lybrook</td>
 						<td>Kin Kletso</td>
+						<td>Ancient ruins</td>
 						<td><a href="pages/KinKletso.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>0.6 miles</td>
 						<td>0 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668542309892" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Grants</td>
 						<td>Big Tubes Area</td>
+						<td>Massive lava</td>
 						<td><a href="pages/BigTubes.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>1.5 miles</td>
 						<td>20 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157666437314513" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Grants</td>
 						<td>Ice Cave</td>
+						<td>Fascinating</td>
 						<td><a href="pages/IceCave.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2 miles</td>
 						<td>200 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668605933682" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Grants</td>
 						<td>El Calderon</td>
+						<td>Lava features</td>
 						<td><a href="pages/ElCalderon.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4.5 mile</td>
 						<td>500 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157666391880544" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
                         <td>Albuquerque</td>
                         <td>Pino Trail</td>
+                        <td>Sandia views</td>
                         <td><a href="pages/Pino.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>9.8 miles</td>
                         <td>2800 ft</td>
                         <td>Medium-Diff</td>
                         <td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157670328044815" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Albuquerque</td>
                         <td>Domingo Baca</td>
+                        <td>Fascinating</td>
                         <td><a href="pages/Domingo.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>8.6 miles</td>
                         <td>2300 ft</td>
                         <td>Difficult</td>
                         <td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669872133506" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Abiquiu</td>
                         <td>Chimney Rock</td>
+                        <td>Great vistas</td>
                         <td><a href="pages/ChimneyRock.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>3 miles</td>
                         <td>400 ft</td>
                         <td>Medium</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667485914153" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Abiquiu</td>
                         <td>Kitchen Mesa</td>
+                        <td>Colorful rocks</td>
                         <td><a href="pages/Kitchen.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>5 miles</td>
                         <td>600 ft</td>
                         <td>Difficult-Easy</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669237103060" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
 						<td>Tijeras</td>
 						<td>Tunnel Canyon</td>
+						<td>Sandia's back</td>
 						<td><a href="pages/TunnelCanyon.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>5.2 miles</td>
 						<td>600 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="partial shade icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668655233912" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Tijeras</td>
 						<td>Birdhouse Ridge</td>
+						<td>Sandia's back</td>
 						<td><a href="pages/Birdhouse.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>5.2 miles</td>
 						<td>1000 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="partial shade icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668687108211" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
                      <tr>
                         <td>Tajique</td>
                         <td>Albuquerque Trail</td>
+                        <td>Forest views</td>
                         <td><a href="pages/ABQ.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>5 miles</td>
                         <td>600 ft</td>
                         <td>Easy-Meidum</td>
                         <td><img class="expShift" src="images/shady.png" alt="Partial sun/shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157670395400435" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Tajique</td>
                         <td>Fourth of July Trail</td>
+                        <td>Manzano peak</td>
                         <td><a href="pages/July4.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>4 miles</td>
                         <td>800 ft</td>
                         <td>Easy-Medium</td>
                         <td><img class="expShift" src="images/shady.png" alt="Partial sun/shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157670328044815" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
 						<td>Albuquerque</td>
 						<td>Piedras Marcadas</td>
+						<td>Petroglyphs</td>
 						<td><a href="pages/Piedras.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2 miles</td>
 						<td>20 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669829880176" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Albuquerque</td>
-						<td>Boca Negra: Mesa Point</td>
+						<td>Boca Negra: Mesa Pt.</td>
+						<td>Petroglyphs</td>
 						<td><a href="pages/MesaPoint.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>0.25 mile</td>
 						<td>150 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669925680945" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
                     <tr>
 						<td>Albuquerque</td>
 						<td>Boca Negra: Cliff Base</td>
+						<td>Petroglyphs</td>
 						<td><a href="pages/CliffBase.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>1 mile</td>
 						<td>20 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669833765256" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Albuquerque</td>
 						<td>Boca Negra: Macaw</td>
+						<td>Petroglyphs</td>
 						<td><a href="pages/Macaw.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>0.5 mile</td>
 						<td>20 ft</td>
 						<td>Very Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669926951595" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
                     <tr>
 						<td>Albuquerque</td>
 						<td>Rinconada Canyon</td>
+						<td>Glyphs & view</td>
 						<td><a href="pages/Rinconada.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2.2 miles</td>
 						<td>20 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669380888432" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Albuquerque</td>
 						<td>ABQ Volcanoes</td>
+						<td>Geology/views</td>
 						<td><a href="pages/ABQvolcanoes.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4 miles</td>
 						<td>200 ft</td>
 						<td>Moderate</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668175624985" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
                     <tr>
                         <td>Santa Fe</td>
-                        <td>Tesuque Creek - Upper</td>
+                        <td>Tesuque Creek - Uppr</td>
+                        <td>Mountain views</td>
                         <td><a href="pages/UpperTesuque.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>5 miles</td>
                         <td>1800 ft</td>
                         <td>Medium</td>
                         <td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669979230415" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                      </tr>
                      <tr>
                         <td>Santa Fe</td>
                         <td>Tesuque Creek - Mid</td>
+                        <td>River valley</td>
                         <td><a href="pages/MiddleTesuque.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>7 miles</td>
                         <td>1200 ft</td>
                         <td>Medium</td>
                         <td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669941376466" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                      <tr>
                         <td>Santa Fe</td>
                         <td>Deception Peak</td>
+                        <td>Great vistas!</td>
                         <td><a href="pages/Deception.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>6.3 miles</td>
                         <td>2200 ft</td>
                         <td>Difficult</td>
                         <td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669132112560" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Santa Fe</td>
                         <td>Nambe Lake</td>
+                        <td>Gorgeous view</td>
                         <td><a href="pages/Nambe.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>7.3 miles</td>
                         <td>1200 ft</td>
                         <td>Difficult</td>
                         <td><img class="expShift" src="images/shady.png" alt="Partial sun/shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157670306506915" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Santa Fe</td>
                         <td>La Vega</td>
+                        <td>Meadow</td>
                         <td><a href="pages/LaVega.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>7.3 miles</td>
                         <td>1450 ft</td>
                         <td>Medium</td>
                         <td><img class="expShift" src="images/shady.png" alt="Partial sun/shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667272929494" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Santa Fe</td>
                         <td>Upper Rio En Medio</td>
+                        <td>Cascades</td>
                         <td><a href="pages/UpperRio.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>5.4 miles</td>
                         <td>1450 ft</td>
                         <td>Medium</td>
                         <td><img class="expShift" src="images/shady.png" alt="Partial sun/shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667671555303" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
 						<td>Tularosa</td>
 						<td>3 Rivers Petroglyphs</td>
+						<td>Many glyphs!</td>
 						<td><a href="pages/ThreeRivers.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>1.5 miles</td>
 						<td>150 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157666607748474" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Corrales</td>
 						<td>Acequias</td>
+						<td>Peaceful</td>
 						<td><a href="pages/Acequia.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>5 miles</td>
 						<td>50 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="partial shade icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157664469121925" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
                     <tr>
 						<td>Placitas</td>
 						<td>Agua Sarca</td>
+						<td>Final view</td>
 						<td><a href="pages/AguaSarca.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2.9 miles</td>
 						<td>2750 ft</td>
 						<td>Difficult</td>
 						<td><img class="expShift" src="images/shady.png" alt="shady icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157664498582465" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>White Rock</td>
 						<td>Ancho Rapids</td>
+						<td>Canyon views</td>
 						<td><a href="pages/AnchoComb.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>7.3 miles</td>
 						<td>956 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667622546192" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Santa Fe</td>
 						<td>Apache Canyon</td>
+						<td>Canyon</td>
 						<td><a href="pages/ApacheCanyon.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>7.1 miles</td>
 						<td>600 ft</td>
 						<td>Medium-Easy</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669370481531" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                      </tr>
                      <tr>
                         <td>Santa Fe</td>
                         <td>Aspen Vista</td>
+                        <td>Autumn views</td>
                         <td><a href="pages/Aspen.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>5.2 miles</td>
                         <td>800 ft</td>
                         <td>Easy-medium</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667627609484" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
 					<tr>
 						<td>Santa Fe</td>
 						<td>Atalaya Mountain</td>
+						<td>Local views</td>
 						<td><a href="pages/Atalaya.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4.7 miles</td>
 						<td>1500 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/shady.png" alt="shady icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668956020832" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>	
 					<tr>
 						<td>Jemez Springs</td>
 						<td>Battleship Rock</td>
+						<td>Springs/views</td>
 						<td><a href="pages/Battleship.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4.0 miles</td>
 						<td>500 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="partial shade icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669063455305" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>	
 					</tr>
 					<tr>
                         <td>Santa Fe</td>
                         <td>Borrego-Bear Wallow</td>
+                        <td>Forest & creek</td>
                         <td><a href="pages/Borrego.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>4.9 miles</td>
                         <td>750 ft</td>
                         <td>Medium-Easy</td>
                         <td><img class="expShift" src="images/shady.png" alt="Partial sun/shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667529966953" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
 						<td>Santa Fe</td>
 						<td>Buckman Mesa</td>
+						<td>Great views</td>
 						<td><a href="pages/Buckman.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>5 miles</td>
 						<td>1000 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669889980505" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>San Luis</td>
 						<td>Cabezon Peak</td>
+						<td>Badlands view</td>
 						<td><a href="pages/Cabezon.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2.3 miles</td>
 						<td>1150 ft</td>
 						<td>Difficult</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157666331175593" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Cerrillos</td>
 						<td>Cerrillos Hills</td>
+						<td>Views & mines</td>
 						<td><a href="pages/Cerrillos.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4 miles</td>
 						<td>200 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669429537095" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					 <tr>
                         <td>Santa Fe</td>
                         <td>Chamisa Trail</td>
+                        <td>Forest & views</td>
                         <td><a href="pages/Chamisa.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>5.3 miles</td>
                         <td>1000 ft</td>
                         <td>Medium</td>
                         <td><img class="expShift" src="images/shady.png" alt="Partial sun/shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157670243652485" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
 					<tr>
 						<td>Abiquiu</td>
 						<td>Chavez Canyon</td>
+						<td>Box canyon</td>
 						<td><a href="pages/ChavezCanyon.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2 miles</td>
 						<td>600 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157666523519104" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
                         <td>Los Alamos</td>
                         <td>Coyote Call</td>
+                        <td>Views of VC</td>
                         <td><a href="pages/CoyoteCall.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>3 miles</td>
                         <td>400 ft</td>
                         <td>Easy</td>
                         <td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667458405014" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
 						<td>Santa Fe</td>
 						<td>Dale Ball Trails</td>
+						<td>Local views</td>
 						<td><a href="pages/DBallNorth.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2 miles</td>
 						<td>200+ ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="partial shade icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157666078737535" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
                     <tr>
 						<td>Placitas</td>
 						<td>Del Agua</td>
+						<td>Sandia views</td>
 						<td><a href="pages/DelAguaHike.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4.6 miles</td>
 						<td>1,050 ft</td>
 						<td>Easy-Medium</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="partial shade icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157663779952699" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
                     <tr>
 						<td>Santa Fe: West</td>
 						<td>Diablo Canyon</td>
+						<td>Lava canyon</td>
 						<td><a href="pages/DiabloComb.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4 miles</td>
 						<td>300 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667965478846" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
                     <tr>
 						<td>Ramah</td>
 						<td>El Morro</td>
+						<td>History & views</td>
 						<td><a href="pages/ElMorro.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2.5 miles</td>
 						<td>300 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669107208625" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
                         <td>Silver City</td>
                         <td>Fort Bayard Tree</td>
+                        <td>Huge juniper</td>
                         <td><a href="pages/FtBayard.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>2 miles</td>
                         <td>200 ft</td>
                         <td>Easy</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669851935591" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Santa Fe</td>
                         <td>Hyde Park Circle</td>
+                        <td>Views & falls</td>
                         <td><a href="pages/HydePk.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>3.9 miles</td>
                         <td>1400 ft</td>
                         <td>Medium</td>
                         <td><img class="expShift" src="images/shady.png" alt="Partial sun/shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157670357476726" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
 					<tr>
 						<td>Ojo Caliente</td>
 						<td>Joseph's Mine</td>
+						<td>Mica mine</td>
 						<td><a href="pages/OjoCaliente.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4 miles</td>
 						<td>200 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669097029026" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Santa Fe: South</td>
 						<td>La Bajada</td>
+						<td>History & views</td>
 						<td><a href="pages/LaBajada.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2.4 miles</td>
 						<td>626 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157665564206092" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
                         <td>Albuquerque</td>
                         <td>La Luz Trail</td>
+                        <td>Great views!</td>
                         <td><a href="pages/LaLuz.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>7.9 miles</td>
                         <td>3400 ft</td>
                         <td>Diff-Medium</td>
                         <td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669021931350" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
 					<tr>
                         <td>Pilar</td>
                         <td>La Vista Verde</td>
+                        <td>Gorge views</td>
                         <td><a href="pages/VistaVerde.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>2.5 miles</td>
                         <td>100 ft</td>
                         <td>Easy</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669891167806" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Los Alamos</td>
                         <td>Las Conchas</td>
+                        <td>Woods & creek</td>
                         <td><a href="pages/Conchas.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>3.8 miles</td>
                         <td>100 ft</td>
                         <td>Easy</td>
                         <td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667299232734" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr> 
 						<td>Cuba</td>
 						<td>Mesa Chijuilla</td>
+						<td>Badlands</td>
 						<td><a href="pages/Chijuilla.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td class="thin">1.5 miles</td>
 						<td class="thin">160 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157664510209436" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Cuba</td>
 						<td>Mesa de Cuba</td>
+						<td>Badlands</td>
 						<td><a href="pages/MesaCuba.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>1.5 miles</td>
 						<td>100 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667761292860" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
                     <tr>
                         <td>Santa Fe</td>
-                        <td>Nature Conservancy Trail</td>
+                        <td>Nature Conservancy</td>
+                        <td>Local views</td>
                         <td><a href="pages/Conservancy.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>1.5 miles</td>
                         <td>300 ft</td>
                         <td>Easy</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667668829694" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>San Ysidro</td>
                         <td>Ojito Wilderness</td>
+                        <td>Badlands/hoodoos</td>
                         <td><a href="pages/Ojito.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>7.2 miles</td>
                         <td>750 ft</td>
                         <td>Easy-Medium</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157670484666515" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                      <tr>
                         <td>Santa Fe</td>
                         <td>Pinabete Tank</td>
+                        <td>Canyon views</td>
                         <td><a href="pages/Pinabete.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>2.8 miles</td>
                         <td>500 ft</td>
                         <td>Easy-medium</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669818007681" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Pinos Altos</td>
                         <td>Purgatory Chasm</td>
+                        <td>Meandering Creek</td>
                         <td><a href="pages/Purgatory.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>2.2 miles</td>
                         <td>200 ft</td>
                         <td>Easy</td>
                         <td><img class="expShift" src="images/shady.png" alt="Partial sun/shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667474534894" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
 						<td>Gallup</td>
 						<td>Pyramid Rock</td>
+						<td>Great vistas</td>
 						<td><a href="pages/PyramidRock.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>6 miles</td>
 						<td>600 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668378600840" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>White Rock</td>
 						<td>Red/Blue Dot Trail</td>
+						<td>Canyon views</td>
 						<td><a href="pages/RedBlueComb.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4.3 miles</td>
 						<td>1,134 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667955617065" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>San Acacia</td>
 						<td>San Lorenzo Canyon</td>
+						<td>Geology</td>
 						<td><a href="pages/SanLorenzo.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2 miles</td>
 						<td>100 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157669105693376" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Placitas</td>
 						<td>Strip Mine Trail</td>
+						<td>Views & mine</td>
 						<td><a href="pages/StripMine.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2 miles</td>
 						<td>524 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157664272218552" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>			
 					<tr>
 						<td>Santa Fe</td>
 						<td>Sun Mountain</td>
+						<td>Local views</td>
 						<td><a href="pages/SunMountain.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2 miles</td>
 						<td>840 ft</td>
 						<td>Medium-Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157664604465663" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
                         <td>Albuquerque</td>
                         <td>Tent Rocks</td>
+                        <td>Slot canyon!</td>
                         <td><a href="pages/TentRocks.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>3 miles</td>
                         <td>600 ft</td>
                         <td>Medium-Easy</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157670138528866" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
                     <tr>
                         <td>Santa Fe</td>
                         <td>Tesuque Creek - Lower</td>
+                        <td>River valley</td>
                         <td><a href="pages/LowerTesuque.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>7.3 miles</td>
                         <td>1800 ft</td>
                         <td>Easy</td>
                         <td><img class="expShift" src="images/greenshade.jpg" alt="Partial shade icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157670025828456" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
 					<tr>
 						<td>Glenwood</td>
 						<td>The Catwalks</td>
+						<td>Manmade walk</td>
 						<td><a href="pages/Catwalks.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>1.5 miles</td>
 						<td>100 ft</td>
 						<td>Easy</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="partial shade icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157662925553623" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					 <tr>
 						<td>Santa Fe</td>
 						<td>Tetilla Peak</td>
+						<td>Great vistas</td>
 						<td><a href="pages/Tetilla.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2.7 miles</td>
 						<td>800 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157667042096804" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>
 					<tr>
 						<td>Valles Caldera</td>
 						<td>Valle Grande Loop</td>
+						<td>Expansiveness</td>
 						<td><a href="pages/ValleGrandeInSnow.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>5 miles</td>
 						<td>40 ft</td>
 						<td>Medium-Easy</td>
 						<td><img class="expShift" src="images/sun.jpg" alt="sunny icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/30474783@N06/albums/72157663614542159" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>
 					<tr>
 						<td>Villanueva</td>
 						<td>Viewpoint Loop</td>
+						<td>Water & views</td>
 						<td><a href="pages/Villanueva.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>2 miles</td>
 						<td>200 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/greenshade.jpg" alt="partial shade icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668297226520" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>		
 					<tr>
 						<td>Taos</td>
 						<td>Williams Lake</td>
+						<td>High mtn lake</td>
 						<td><a href="pages/WilliamsLake.html" target="_blank">
 							<img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
 						<td>4 miles</td>
 						<td>1200 ft</td>
 						<td>Medium</td>
 						<td><img class="expShift" src="images/shady.png" alt="shady icon" /></td>
+						<td><a href="" target="_blank">MapIt!</a></td>
 						<td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157668795870731" target="_blank">
 							<img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
 					</tr>  
                     <tr>
                         <td>Taos</td>
                         <td>Traders Trail</td>
+                        <td>Gorge views</td>
                         <td><a href="pages/Traders.html" target="_blank">
                             <img class="webShift" src="images/greencheck.jpg" alt="checkbox" /></a></td>
                         <td>3.6 miles</td>
                         <td>300 ft</td>
                         <td>Easy</td>
                         <td><img class="expShift" src="images/sun.jpg" alt="Full sun - exposed icon" /></td>
+                        <td><a href="" target="_blank">MapIt!</a></td>
                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157671398356076" target="_blank">
                             <img class="flckrShift" src="images/flckr.jpg" alt="Flickr symbol" /></a></td>
                     </tr>

@@ -90,6 +90,13 @@ if (mobile_browser) {
 				// The anchor for this image is the center (12, 12).
 				anchor: new google.maps.Point(12, 12)
 			});
+			if ( mobile_browser ) {
+				var emtrs = Position.coords.altitude;
+				var eft = 3.278 * emtrs;
+				msg = 'Mobile: current elevation is ' + emtrs + ' meters/' + eft + ' ft';
+				msg = '<p>' + msg + '</p>';
+				$('#dbug').append(msg);
+			}
 			directionsDisplay.setMap(map);
 			var dirPrint = document.getElementById('printDirs');
 			directionsDisplay.setPanel(dirPrint);

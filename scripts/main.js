@@ -6,6 +6,10 @@ var indx;
 var noPart1;
 var noPart2;
 
+mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
+if ( !mobile_browser ) {
+	$('#forMobile').css('display','none');
+}
 // Establish the compare method (object)
 var compare = {
 	std: function(a,b) {	// standard sorting - literal

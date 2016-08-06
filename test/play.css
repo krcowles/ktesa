@@ -17,12 +17,12 @@ fieldset {
 	margin-right: auto; }
 #won {
 	display: inline-block;
-	font-size: 14px;
+	font-size: 18px;
 	text-align: center;
-	padding-top: 6px;
+	padding-top: 14px;
 	background-color: Beige;
-	width: 80px;
-	height: 20px;
+	width: 85px;
+	height: 40px;
 	border: solid;
 	border-width: 2px; }
 #won:hover {
@@ -31,12 +31,12 @@ fieldset {
 	background-color: Brown; }
 #woff {	
 	display: inline-block;
-	font-size: 14px;
+	font-size: 18px;
 	text-align: center;
-	padding-top: 6px;
+	padding-top: 14px;
 	background-color: Beige;
-	width: 80px;
-	height: 20px;
+	width: 85px;
+	height: 40px;
 	border: solid;
 	border-width: 2px; }
 #woff:hover {
@@ -45,12 +45,12 @@ fieldset {
 	background-color: Brown; }
 #ion {
 	display: inline-block;
-	font-size: 14px;
+	font-size: 18px;
 	text-align: center;
-	padding-top: 6px;
+	padding-top: 14px;
 	background-color: Azure;
-	width: 80px;
-	height: 20px;
+	width: 85px;
+	height: 40px;
 	border: solid;
 	border-width: 2px; }
 #ion:hover {
@@ -59,12 +59,12 @@ fieldset {
 	background-color: Brown; }
 #ioff {
 	display: inline-block;
-	font-size: 14px;
+	font-size: 18px;
 	text-align: center;
-	padding-top: 6px;
+	padding-top: 14px;
 	background-color: Azure;
-	width: 80px;
-	height: 20px;
+	width: 85px;
+	height: 40px;
 	border: solid;
 	border-width: 2px; }
 #ioff:hover {
