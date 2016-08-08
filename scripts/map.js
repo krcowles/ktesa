@@ -266,7 +266,7 @@ var othrHikes = [
 	['Corrales Acequia',35.249327,-106.607283,'Acequia.html',''], //
 	['Agua Sarca',35.291533,-106.441050,'AguaSarca.html',''], //
 	['Ancho Rapids',35.797000,-106.246417,'AnchoComb.html','ancho.json'],
-	['Apache Canyon',35.629817,-105.858967,'ApacheCanyon.html',''], //
+	['Apache Canyon',35.629817,-105.858967,'ApacheCanyon.html',''],
 	['Aspen Vista',35.777433,-105.810933,'Aspen.html',''], //
 	['Atalaya Mtn',35.670450,-105.900667,'Atalaya.html',''], //
 	['Battleship Rock',35.828099,-106.641862,'Battleship.html',''],
@@ -674,14 +674,16 @@ function IdTableElements(boundsStr) {
 // //////////////////////////  HIKING TRACKS  //////////////////////////
 // /////////////////////////////////////////////////////////////////////
 var xhr = new XMLHttpRequest();
-var trackFile;
-var newTrack;
-var trkPtsArray = [];
+var trackFile; // name of the JSON file to be read in
+var newTrack; // used repeatedly to assign incoming JSON data
+var trkPtsArray = []; // array of google lat/lng objects (cleared and reused for each track)
+var allTheTracks = []; // array of all existing track objects
+var syncSemaphore = false;
 var trackForm = setInterval(drawTracks,200);
 
 $.ajax({
 	dataType: "json",
-	url: '../test/ancho.json',
+	url: 'test/ancho.json',
 	success: function() {
 		msg = '<p>Got JSON data</p>';
 		$('#dbug').append(msg);
@@ -693,22 +695,24 @@ $.ajax({
 });
 
 
+// need to give each track (polyline) a unique reference: using trkObj
+var trkObj = { trk: 'ref', trkName: 'trkname' };
+
 xhr.onload = function() {
 	if ( xhr.status === 200 ) {
 		newTrack = JSON.parse(xhr.responseText); // array of objects (track points)
-		//msg = '<p>First data: ' + newTrack.track[0].lat + ', ' + newTrack.track[0].lng + '</p>';
-		//$('#dbug').append(msg);
 		for (var i=0; i<newTrack.track.length; i++) {
 			trkPtsArray.push(newTrack.track[i]);
 		}
-		var testTrack = new google.maps.Polyline({
+		var trkObj[trk] = new google.maps.Polyline({
 				path: trkPtsArray,
 				geodesic: true,
 				strokeColor: '#FF0000',
 				strokeOpacity: 1.0,
 				strokeWeight: 2
 			  });
-		testTrack.setMap(map);
+		trkObj[trk].setMap(map);
+		trkPtsArray = []; // clear array for next time around...
 	} // end of successful load
 	
 	if ( xhr.status === 404 ) {
@@ -741,8 +745,11 @@ function drawTracks() {
 		for ( m=0; m<othrHikes.length; m++ ) {
 			if ( othrHikes[m][4] ) {
 				trackFile = othrHikes[m][4];
-				msg = '<p>othrHikes: use ' + trackFile + '</p>';
+				var jindx  = trackFile.indexOf('.json');
+				trkObj[trkName] = trackFile.substring(0,jindx);
+				msg = '<p>othrHikes: use ' + trkObj[trkName] + '</p>';
 				$('#dbug').append(msg);
+				syncSemaphore = true;
 				xhr.open('GET','test/ancho.json',true);
 				xhr.send(null);
 			}
