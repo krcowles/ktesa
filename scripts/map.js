@@ -697,6 +697,7 @@ $.ajax({
 
 // need to give each track (polyline) a unique reference: using trkObj
 var trkObj = { trk: 'ref', trkName: 'trkname' };
+var ktesa;
 
 xhr.onload = function() {
 	if ( xhr.status === 200 ) {
@@ -704,14 +705,14 @@ xhr.onload = function() {
 		for (var i=0; i<newTrack.track.length; i++) {
 			trkPtsArray.push(newTrack.track[i]);
 		}
-		trkObj[trk] = new google.maps.Polyline({
+		ktesa = new google.maps.Polyline({
 			path: trkPtsArray,
 			geodesic: true,
 			strokeColor: '#FF0000',
 			strokeOpacity: 1.0,
 			strokeWeight: 2
 		});
-		trkObj[trk].setMap(map);
+		ktesa.setMap(map);
 		trkPtsArray = []; // clear array for next time around...
 	} // end of successful load
 	
