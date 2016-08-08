@@ -704,13 +704,13 @@ xhr.onload = function() {
 		for (var i=0; i<newTrack.track.length; i++) {
 			trkPtsArray.push(newTrack.track[i]);
 		}
-		var trkObj[trk] = new google.maps.Polyline({
-				path: trkPtsArray,
-				geodesic: true,
-				strokeColor: '#FF0000',
-				strokeOpacity: 1.0,
-				strokeWeight: 2
-			  });
+		trkObj[trk] = new google.maps.Polyline({
+			path: trkPtsArray,
+			geodesic: true,
+			strokeColor: '#FF0000',
+			strokeOpacity: 1.0,
+			strokeWeight: 2
+		});
 		trkObj[trk].setMap(map);
 		trkPtsArray = []; // clear array for next time around...
 	} // end of successful load
