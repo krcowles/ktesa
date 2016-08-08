@@ -677,9 +677,19 @@ var xhr = new XMLHttpRequest();
 var trackFile;
 var newTrack;
 var trkPtsArray = [];
-var trackForm = setInterval(drawTracks,200);
+//var trackForm = setInterval(drawTracks,200);
 
 
+$.ajax({
+	dataType: "json",
+	url: '../test/ancho.json',
+	success: function() {
+		msg'<p>Got JSON data</p>';
+		$('#dbug').append(msg);
+	}
+});
+
+/*
 xhr.onload = function() {
 	if ( xhr.status === 200 ) {
 		newTrack = JSON.parse(xhr.responseText); // array of objects (track points)
@@ -708,10 +718,8 @@ xhr.onload = function() {
 		$('#dbug').append(outTxt);
 	}
 }  // END OF 'onload' FUNCTION
+*/
 
-
-//JSONtrkFile = 'ancho.json';
-//xhr.overrideMimeType(); // trying to turn off "not well-formed" error-msg in Firefox
 
 function drawTracks() {
 	if ( mapRdy ) {
@@ -732,7 +740,7 @@ function drawTracks() {
 				trackFile = othrHikes[m][4];
 				msg = '<p>othrHikes: use ' + trackFile + '</p>';
 				$('#dbug').append(msg);
-				xhr.open('GET','../test/ancho.json',true);
+				xhr.open('GET','test/ancho.json',true);
 				xhr.send(null);
 			}
 		}  // End of BIG LOOP
