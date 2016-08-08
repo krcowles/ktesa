@@ -684,7 +684,7 @@ $.ajax({
 	dataType: "json",
 	url: '../test/ancho.json',
 	success: function() {
-		msg'<p>Got JSON data</p>';
+		msg = '<p>Got JSON data</p>';
 		$('#dbug').append(msg);
 	}
 });
