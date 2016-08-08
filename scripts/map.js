@@ -677,8 +677,7 @@ var xhr = new XMLHttpRequest();
 var trackFile;
 var newTrack;
 var trkPtsArray = [];
-//var trackForm = setInterval(drawTracks,200);
-
+var trackForm = setInterval(drawTracks,200);
 
 $.ajax({
 	dataType: "json",
@@ -686,10 +685,14 @@ $.ajax({
 	success: function() {
 		msg = '<p>Got JSON data</p>';
 		$('#dbug').append(msg);
+	},
+	error: function() {
+		msg = '<p>Did not succeed in getting JSON data</p>';
+		$('#dbug').append(msg);
 	}
 });
 
-/*
+
 xhr.onload = function() {
 	if ( xhr.status === 200 ) {
 		newTrack = JSON.parse(xhr.responseText); // array of objects (track points)
@@ -718,7 +721,7 @@ xhr.onload = function() {
 		$('#dbug').append(outTxt);
 	}
 }  // END OF 'onload' FUNCTION
-*/
+
 
 
 function drawTracks() {
