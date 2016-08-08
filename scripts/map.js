@@ -705,14 +705,14 @@ xhr.onload = function() {
 		for (var i=0; i<newTrack.track.length; i++) {
 			trkPtsArray.push(newTrack.track[i]);
 		}
-		ktesa = new google.maps.Polyline({
+		trkObj['trk'] = new google.maps.Polyline({
 			path: trkPtsArray,
 			geodesic: true,
 			strokeColor: '#FF0000',
 			strokeOpacity: 1.0,
 			strokeWeight: 2
 		});
-		ktesa.setMap(map);
+		trkObj['trk'].setMap(map);
 		trkPtsArray = []; // clear array for next time around...
 	} // end of successful load
 	
@@ -747,8 +747,8 @@ function drawTracks() {
 			if ( othrHikes[m][4] ) {
 				trackFile = othrHikes[m][4];
 				var jindx  = trackFile.indexOf('.json');
-				trkObj[trkName] = trackFile.substring(0,jindx);
-				msg = '<p>othrHikes: use ' + trkObj[trkName] + '</p>';
+				trkObj['trkName'] = trackFile.substring(0,jindx);
+				msg = '<p>othrHikes: use ' + trkObj['trkName'] + '</p>';
 				$('#dbug').append(msg);
 				syncSemaphore = true;
 				xhr.open('GET','test/ancho.json',true);
