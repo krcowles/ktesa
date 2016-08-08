@@ -55,6 +55,7 @@ if (mobile_browser) {
 }
 */
 
+/* TURN OFF FOR NOW TO TEST TRACK-DRAW OF ANCHO RAPIDS 
 // //////////////////////////// CENTER MAP WHERE YOU ARE //////////////////////////
 // IIFE: Set to current location
 // NOTE: google map should already be setup & google API established by the time user 
@@ -92,8 +93,10 @@ if (mobile_browser) {
 			});
 			if ( mobile_browser ) {
 				var emtrs = Position.coords.altitude;
+				emtrs = emtrs.toFixed(6);
 				var eft = 3.278 * emtrs;
-				msg = 'Mobile: current elevation is ' + emtrs + ' meters/' + eft + ' ft';
+				eft = eft.toFixed(6);
+				msg = 'Mobile: current elevation is ' + emtrs + ' meters / ' + eft + ' ft';
 				msg = '<p>' + msg + '</p>';
 				$('#dbug').append(msg);
 			}
@@ -109,6 +112,15 @@ if (mobile_browser) {
 		window.alert('Geolocation not supported on this browser');
 	}
 }());
+*/
+
+// TESTING OF ANCHO TRACK CREATION:
+var ok2go = false;
+var JSONtrkFile;
+var anchoLoc = { lat: 35.7970051, lng: -106.2464188 };
+var newTrack;
+var trkPtsArray = new Array();
+
 
 // //////////////////////////// GOOGLE MAP SETUP ////////////////////////////////
 // Google Callback to establish the map (and directions)
@@ -116,8 +128,10 @@ function initMap() {
 	directionsDisplay = new google.maps.DirectionsRenderer();
 	var mapDiv = document.getElementById('tstMap');
 	map = new google.maps.Map(mapDiv, {
-		center: mapStartPos,
-		zoom: 18,
+		//center: mapStartPos,
+		center: anchoLoc, //ancho
+		// zoom: 18,
+		zoom: 12, // ancho
 		// optional settings:
 		zoomControl: true,
 		scaleControl: true,
@@ -135,10 +149,63 @@ function initMap() {
 		fullscreenControl: true,
 		streetViewControl: false,
 		rotateControl: false,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
+		mapTypeId: google.maps.MapTypeId.SATELLITE
 	});
+	ok2go = true;
 }
 
+// trying out track-making...
+var xhr = new XMLHttpRequest();
+
+xhr.onload = function() {
+	if ( xhr.status === 200 ) {
+		newTrack = JSON.parse(xhr.responseText); // array of objects (track points)
+		msg = '<p>First data: ' + newTrack.track[0].lat + ', ' + newTrack.track[0].lng + '</p>';
+		$('#dbug').append(msg);
+		for (var i=0; i<newTrack.track.length; i++) {
+			trkPtsArray.push(newTrack.track[i]);
+		}
+		var testTrack = new google.maps.Polyline({
+				path: trkPtsArray,
+				geodesic: true,
+				strokeColor: '#FF0000',
+				strokeOpacity: 1.0,
+				strokeWeight: 2
+			  });
+		testTrack.setMap(map);
+	} // end of successful load
+	
+	if ( xhr.status === 404 ) {
+		outTxt = '<p>URL NOT FOUND (ye olde message)</p>';
+		$('#dbug').append(outTxt);
+	}
+	
+	if (xhr.status === 500 ) {
+		outTxt = '<p>Some kind of internal server error...</p>';
+		$('#dbug').append(outTxt);
+	}
+}  // END OF 'onload' FUNCTION
+
+
+JSONtrkFile = 'ancho.json';
+//xhr.overrideMimeType(); // trying to turn off "not well-formed" error-msg in Firefox
+var readyTst = setInterval( ok2send, 100);
+
+function ok2send() {
+	if ( ok2go ) {
+		msg = '<p>In timer</p>';
+		$('#dbug').append(msg);
+		xhr.open('GET',JSONtrkFile,true);
+		xhr.send(null);
+		clearInterval(readyTst);
+	}
+}
+
+
+
+
+
+/* TURN OF FOR ANCHO TEST
 // ///////////////////////////////// BUTTONS //////////////////////////////////
 // NEW DIRECTIONS BUTTON:
 $('#getDirs').on('click', function() {
@@ -290,7 +357,7 @@ function getLoc() {
 	} // end of SUCCESS function
 	
 }  // end of getLoc function
-
+*/
 
 // ///////////////////////////// TRACK SETUP /////////////////////////////////
 // Since javascript uses 64bit double precision:
