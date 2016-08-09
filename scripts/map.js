@@ -673,6 +673,9 @@ function IdTableElements(boundsStr) {
 // /////////////////////////////////////////////////////////////////////
 // //////////////////////////  HIKING TRACKS  //////////////////////////
 // /////////////////////////////////////////////////////////////////////
+msg = '<p>Push x</p>';
+$('#dbug').append(msg);
+
 var xhr = new XMLHttpRequest();
 var trackFile; // name of the JSON file to be read in
 var newTrack; // used repeatedly to assign incoming JSON data
@@ -688,8 +691,8 @@ function sglTrack(trkUrl) {
 		url: trkUrl,
 		success: function(trackDat) {
 			console.log(trackDat);
-			newTrack = $.parseJSON(trackDat);
-			msg = '<p>Got JSON data ' + newTrack.track[0].lat + '</p>';
+			newTrack = trackDat;
+			msg = '<p>Got JSON data ' + newTrack[0].lat + '</p>';
 			$('#dbug').append(msg);
 		},
 		error: function() {
