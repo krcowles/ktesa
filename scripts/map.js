@@ -221,7 +221,6 @@ var clusterPinHikes = [
 	['Frey Trail',35.779219,-106.285744,'Frey.html',''],
 	['Frijolito Ruins',35.769573,-106.282433,'Frijolito.html',''],
 	['Alcove House',35.764312,-106.273698,'AlcoveHouse.html',''],
-	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html',''],
 	// Bosque del Apache hikes:
 	['Canyon Trail',33.759012,-106.895278,'CanyonTrail.html',''],
 	// Chaco Canyon hikes:
@@ -294,23 +293,24 @@ var othrHikes = [
 	['Nature Conservancy',35.68701,-105.89697,'Conservancy.html',''],
 	['Ojito Wilderness',35.495067,-106.921767,'Ojito.html','ojito.json'],
 	['Pinabete Tank',35.771583,-106.19055,'Pinabete.html','ptank.json'],
-	['Purgatory Chasm',33.032667,-108.1536667,'Purgatory.html',''], //
+	['Purgatory Chasm',33.032667,-108.1536667,'Purgatory.html','purg.json'],
 	['Pyramid Rock',35.542743,-108.613801,'PyramidRock.html',''],
-	['Red Dot - Blue Dot',35.809767,-106.200917,'RedBlueComb.html',''], //
+	['Red Dot - Blue Dot',35.809767,-106.200917,'RedBlueComb.html','rbdot.json'],
 	['San Lorenzo Canyon',34.239571,-107.026899,'SanLorenzo.html',''],
-	['Strip Mine Trail',35.30015,-106.4804667,'StripMine.html',''], //
-	['Sun Mountain',35.65675,-105.92095,'SunMountain.html',''], //
+	['Strip Mine Trail',35.30015,-106.4804667,'StripMine.html','smine.json'],
+	['Sun Mountain',35.65675,-105.92095,'SunMountain.html','sun.json'],
 	['Tent Rocks',35.661033,-106.416106,'TentRocks.html',''],
-	['Tesuque-Lower',35.759783,-105.845917,'LowerTesuque.html',''], //
+	['Tesuque-Lower',35.759783,-105.845917,'LowerTesuque.html','ltes.json'],
+	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html',''],
 	['Catwalks',33.37781,-108.839842,'Catwalks.html',''],
-	['Tetilla Peak',35.602683,-106.19663,'Tetilla.html',''], //
+	['Tetilla Peak',35.602683,-106.19663,'Tetilla.html','tet.json'],
 	['Valle Grande',35.857077,-106.491058,'ValleGrandeInSnow.html',''], //
 	['Viewpoint Loop',35.264798,-105.33362,'Villanueva.html',''],
 	['Williams Lake',36.572704,-105.436408,'WilliamsLake.html',''],
-	['Traders Trail',36.323333,-105.70366666,'Traders.html',''] //
+	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.8</p>';
+msg = '<p>Push x.9</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
