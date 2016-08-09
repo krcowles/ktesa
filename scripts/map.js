@@ -673,7 +673,7 @@ function IdTableElements(boundsStr) {
 // /////////////////////////////////////////////////////////////////////
 // //////////////////////////  HIKING TRACKS  //////////////////////////
 // /////////////////////////////////////////////////////////////////////
-msg = '<p>Push x.2</p>';
+msg = '<p>Push x.3</p>';
 $('#dbug').append(msg);
 
 var trackFile; // name of the JSON file to be read in
@@ -685,7 +685,7 @@ var othrCnt = 0; // number of othrHikes processed
 
 var trackForm = setInterval(startTracks,200);
 
-function sglTrack(trkUrl) {
+function sglTrack(trkUrl,trkType) {
 	$.ajax({
 		dataType: "json",
 		url: trkUrl,
@@ -703,6 +703,11 @@ function sglTrack(trkUrl) {
 			});
 			trkObj['trk'].setMap(map);
 			allTheTracks.push(trkObj);
+			if ( trkType == 0 ) {
+				drawTracks(clusterCnt++,othrCnt);
+			} else {
+				drawTracks(clusterCnt,othrCnt++);
+			}
 		},
 		error: function() {
 			msg = '<p>Did not succeed in getting JSON data</p>';
@@ -727,6 +732,7 @@ function drawTracks(cluster,othr) {
 			var kindx = trackFile.indexOf('.json');	
 			//msg = '<p>clusterHike file is ' + trackFile + '</p>';
 			//$('#dbug').append(msg);
+			//drawTracks(trackFile,0);
 			drawTracks(clusterCnt++,othrCnt);
 		} else {
 			drawTracks(clusterCnt++,othrCnt);
@@ -740,7 +746,7 @@ function drawTracks(cluster,othr) {
 				msg = '<p>othrHike file is ' + trackFile + '</p>';
 				$('#dbug').append(msg);
 				trackFile = 'json/' + trackFile;
-				drawTracks(clusterCnt,othrCnt++);
+				sglTrack(trackFile,1);
 			} else {
 				drawTracks(clusterCnt,othrCnt++);
 			}
