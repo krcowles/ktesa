@@ -673,7 +673,7 @@ function IdTableElements(boundsStr) {
 // /////////////////////////////////////////////////////////////////////
 // //////////////////////////  HIKING TRACKS  //////////////////////////
 // /////////////////////////////////////////////////////////////////////
-msg = '<p>Push x</p>';
+msg = '<p>Push x.1</p>';
 $('#dbug').append(msg);
 
 var xhr = new XMLHttpRequest();
@@ -685,6 +685,7 @@ var syncSemaphore = true;
 var trackForm = setInterval(drawTracks,200);
 
 var trkObj = { trk: 'ref', trkName: 'trkname' };
+
 function sglTrack(trkUrl) {
 	$.ajax({
 		dataType: "json",
@@ -694,6 +695,14 @@ function sglTrack(trkUrl) {
 			newTrack = trackDat;
 			msg = '<p>Got JSON data ' + newTrack[0].lat + '</p>';
 			$('#dbug').append(msg);
+			trkObj['trk'] = new google.maps.Polyline({
+				path: newTrack,
+				geodesic: true,
+				strokeColor: '#FF0000',
+				strokeOpacity: 1.0,
+				strokeWeight: 2
+			});
+		trkObj['trk'].setMap(map);
 		},
 		error: function() {
 			msg = '<p>Did not succeed in getting JSON data</p>';
