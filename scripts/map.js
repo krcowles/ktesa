@@ -678,26 +678,27 @@ var trackFile; // name of the JSON file to be read in
 var newTrack; // used repeatedly to assign incoming JSON data
 var trkPtsArray = []; // array of google lat/lng objects (cleared and reused for each track)
 var allTheTracks = []; // array of all existing track objects
-var syncSemaphore = false;
+var syncSemaphore = true;
 var trackForm = setInterval(drawTracks,200);
 
-$.ajax({
-	dataType: "json",
-	url: 'test/ancho.json',
-	success: function() {
-		msg = '<p>Got JSON data</p>';
-		$('#dbug').append(msg);
-	},
-	error: function() {
-		msg = '<p>Did not succeed in getting JSON data</p>';
-		$('#dbug').append(msg);
-	}
-});
-
-
-// need to give each track (polyline) a unique reference: using trkObj
 var trkObj = { trk: 'ref', trkName: 'trkname' };
-var ktesa;
+function sglTrack(trkUrl) {
+	$.ajax({
+		dataType: "json",
+		url: trkUrl,
+		success: function(trackDat) {
+			newTrack = $.parseJSON(trackDat);
+			msg = '<p>Got JSON data ' + newTrack.track[0].lat + '</p>';
+			$('#dbug').append(msg);
+		},
+		error: function() {
+			msg = '<p>Did not succeed in getting JSON data</p>';
+			$('#dbug').append(msg);
+		}
+	});
+}
+// need to give each track (polyline) a unique reference: using trkObj
+
 
 xhr.onload = function() {
 	if ( xhr.status === 200 ) {
@@ -737,22 +738,24 @@ function drawTracks() {
 		for ( var k=0; k<clusterPinHikes.length; k++ ) {
 			if ( clusterPinHikes[k][4] ) {
 				trackFile = clusterPinHikes[k][4];
-				msg = '<p>use ' + trackFile + '</p>';
-				$('#dbug').append(msg);
-				//xhr.open('GET',JSONtrkFile,true);
-				//xhr.send(null);
+				var kindx = trackFile.indexOf('.json');
+				
 			}
 		} // End of clusterPinHikes loop
 		for ( m=0; m<othrHikes.length; m++ ) {
 			if ( othrHikes[m][4] ) {
 				trackFile = othrHikes[m][4];
-				var jindx  = trackFile.indexOf('.json');
-				trkObj['trkName'] = trackFile.substring(0,jindx);
+				var mindx  = trackFile.indexOf('.json');
+				trkObj['trkName'] = trackFile.substring(0,mindx);
+				trackFile = 'json/' + trackFile;
+				if ( syncSemaphore ) {
+					sglTrack(trackFile);
+				}
 				msg = '<p>othrHikes: use ' + trkObj['trkName'] + '</p>';
 				$('#dbug').append(msg);
-				syncSemaphore = true;
-				xhr.open('GET','test/ancho.json',true);
-				xhr.send(null);
+				syncSemaphore = false;
+				//xhr.open('GET','test/ancho.json',true);
+				//xhr.send(null);
 			}
 		}  // End of BIG LOOP
 	}
