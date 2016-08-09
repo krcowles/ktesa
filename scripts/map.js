@@ -714,7 +714,7 @@ function sglTrack(trkUrl) {
 
 function startTracks() {
 	if ( mapRdy ) {
-		clearInterval(trackform);
+		clearInterval(trackForm);
 		drawTracks(clusterCnt, othrCnt);
 	}
 }
