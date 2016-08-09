@@ -279,11 +279,11 @@ var othrHikes = [
 	['Chavez Canyon',36.367385,-106.677235,'ChavezCanyon.html',''],
 	['Coyote Call',35.848167,-106.465383,'CoyoteCall.html','ccall.json'],
 	['Dale Ball North',35.71075,-105.899467,'DBallNorth.html','dbnorth.json'],
-	['Del Agua',35.277,-106.4840333,'DelAguaHike.html',''], //
-	['Diablo Canyon',35.8046,-106.1362333,'DiabloComb.html',''], //
+	['Del Agua',35.277,-106.4840333,'DelAguaHike.html','del.json'],
+	['Diablo Canyon',35.8046,-106.1362333,'DiabloComb.html','diablo.json'],
 	['El Morro',35.038224,-108.348783,'ElMorro.html',''],
 	['Ft Bayard Tree',32.782028,-108.147333,'FtBayard.html',''],
-	['Hyde Park Circle',35.730717,-105.8371,'HydePk.html',''], //
+	['Hyde Park Circle',35.730717,-105.8371,'HydePk.html','hyde.json'],
 	['Josephs Mine',36.305933,-106.05142,'OjoCaliente.html',''],
 	['La Bajada',35.551633,-106.23655,'LaBajada.html',''], //
 	['La Luz',35.219667,-106.4810167,'LaLuz.html',''], //
@@ -676,7 +676,7 @@ function IdTableElements(boundsStr) {
 // //////////////////////// END OF DYNAMIC TABLE SIZING /////////////////////
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
-msg = '<p>Push x.6</p>';
+msg = '<p>Push x.7</p>';
 $('#dbug').append(msg);
 
 var trackFile; // name of the JSON file to be read in
