@@ -9,10 +9,11 @@ var useTbl = $('title').text() == 'Hike Map' ? false : true;
 
 if ( useTbl ) {
 	// Table html wrapper, to be populated with rows later in script (see 'var outHike'):
-	// when row-finding is enabled:
+	
+	// when row-finding is enabled, use the next 2 lines:
 	//var tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
-	var tblHtml = '<table class="msortable">';
 	//tblHtml += ' onMouseOut="javascript:undoMarker();">';
+	var tblHtml = '<table class="msortable">';
 	tblHtml += $('table').html();
 	var inx = tblHtml.indexOf('<tbody') + 8;
 	tblHtml = tblHtml.substring(0,inx);
@@ -168,7 +169,7 @@ if ( useTbl ) {
 		}); // end of click on metric
 	}  // end of FORMTBL function
 
-	// ROW-FINDING FUNCTIONS FOR mouseover TABLE... [not currently used]
+	// ROW-FINDING FUNCTIONS FOR mouseover TABLE... [not currently enabled]
 	/*
 	function findPinFromRow(eventArg) {
 		if ( !eventArg ) {
@@ -198,7 +199,7 @@ if ( useTbl ) {
 	*/
 	
 }  // end of useTbl test
-/* ***************************************************************************** */
+
 			
 // -------------------------------   IMPORTANT NOTE: ----------------------------
 //	The index.html table MUST list items in the
@@ -206,7 +207,7 @@ if ( useTbl ) {
 //	in the user table of hikes
 //	-----------------------------------------------------------------------------                                         */
 // HIKE DATA ARRAYS:
-// [ 'Name', lat, lng, html source for page, GPX file present (true/false) ]
+// [ 'Name', lat, lng, html source for page, GPX file string (if present, .json file name) ]
 var ctrPinHikes = [
 	['Bandelier',35.779039,-106.270788,'Bandelier.html',''],
 	['Chaco Canyon',36.030250,-107.91080,'Chaco.html',''],
@@ -264,9 +265,9 @@ var clusterPinHikes = [
 var othrHikes = [
 	['Three Rivers',33.419574,-105.987682,'ThreeRivers.html',''],
 	['Corrales Acequia',35.249327,-106.607283,'Acequia.html','aceq.json'],
-	['Agua Sarca',35.291533,-106.441050,'AguaSarca.html',''], //
+	['Agua Sarca',35.291533,-106.441050,'AguaSarca.html','sarca.json'],
 	['Ancho Rapids',35.797000,-106.246417,'AnchoComb.html','ancho.json'],
-	['Apache Canyon',35.629817,-105.858967,'ApacheCanyon.html',''],
+	['Apache Canyon',35.629817,-105.858967,'ApacheCanyon.html','apache.json'],
 	['Aspen Vista',35.777433,-105.810933,'Aspen.html',''], //
 	['Atalaya Mtn',35.670450,-105.900667,'Atalaya.html',''], //
 	['Battleship Rock',35.828099,-106.641862,'Battleship.html',''],
@@ -318,7 +319,9 @@ var hikeIcon = prefix + 'images/redpin.png';
 var smallGeo = prefix + 'images/starget.png';
 var medGeo = prefix + 'images/mtarget.png';
 var lgGeo = prefix + 'images/ltarget.png';
-
+// colors
+var lineColor = '#2974EB';
+var trackColor = '#FF0000';
 // Display whole table when index.html page loads
 if ( useTbl ) {
 	var $tblRows = $('.sortable tbody tr');
@@ -462,7 +465,7 @@ function initMap() {
 	var Blines = new google.maps.Polyline({
 		path: BandHikeMrkrLocs,
         geodesic: false,
-        strokeColor: '#FF0000',
+        strokeColor: lineColor,
         strokeOpacity: 1.0,
         strokeWeight: 2
 	});
@@ -476,7 +479,7 @@ function initMap() {
 	var KinAltLines = new google.maps.Polyline({
 		path: KinAltMrkrLocs,
 		geodesic: false,
-		strokeColor: '#FF0000',
+		strokeColor: lineColor,
         strokeOpacity: 1.0,
         strokeWeight: 2
 	});
@@ -495,7 +498,7 @@ function initMap() {
 	var SkiLines = new google.maps.Polyline({
 		path: SkiMrkrLocs,
         geodesic: false,
-        strokeColor: '#FF0000',
+        strokeColor: lineColor,
         strokeOpacity: 1.0,
         strokeWeight: 2
 	});
@@ -510,7 +513,7 @@ function initMap() {
 	var egLines = new google.maps.Polyline({
 		path: egMrkrLocs,
         geodesic: false,
-        strokeColor: '#FF0000',
+        strokeColor: lineColor,
         strokeOpacity: 1.0,
         strokeWeight: 2
 	});
@@ -525,7 +528,7 @@ function initMap() {
 	var tesLines = new google.maps.Polyline({
 		path: tesMrkrLocs,
 		geodesic: false,
-		strokeColor: '#FF0000',
+		strokeColor: lineColor,
 		strokeOpacity: 1.0,
 		strokeWeight: 2
 	});
@@ -540,7 +543,7 @@ function initMap() {
 	var CliffMacLines = new google.maps.Polyline({
 		path: CliffMacMrkrLocs,
 		geodesic: false,
-		strokeColor: '#FF0000',
+		strokeColor: lineColor,
 		strokeOpacity: 1.0,
 		strokeWeight: 2
 	});
@@ -553,7 +556,7 @@ function initMap() {
 	var mmtLines = new google.maps.Polyline({
 		path: mmtMrkrLocs,
 		geodesic: false,
-		strokeColor: '#FF0000',
+		strokeColor: lineColor,
 		strokeOpacity: 1.0,
 		strokeWeight: 2
 	});
@@ -600,9 +603,10 @@ function initMap() {
 	}
 	
 }  // end of initMap()
-// /////////////////////////////////////////////////////////////////////
+// ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
 
+// //////////////////////// DYNAMIC TABLE SIZING  ////////////////////////////////
 // Function to find elements within current bounds and display them in a table
 function IdTableElements(boundsStr) {
 	// ESTABLISH CURRENT VIEWPORT BOUNDS:
@@ -669,10 +673,9 @@ function IdTableElements(boundsStr) {
 		formTbl( rowCnt, tblEl );
 	}
 } // END: IdTableElements() FUNCTION
+// //////////////////////// END OF DYNAMIC TABLE SIZING /////////////////////
 
-// /////////////////////////////////////////////////////////////////////
-// //////////////////////////  HIKING TRACKS  //////////////////////////
-// /////////////////////////////////////////////////////////////////////
+// ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 msg = '<p>Push x.3</p>';
 $('#dbug').append(msg);
 
@@ -685,6 +688,13 @@ var othrCnt = 0; // number of othrHikes processed
 
 var trackForm = setInterval(startTracks,200);
 
+function startTracks() {
+	if ( mapRdy ) {
+		clearInterval(trackForm);
+		drawTracks(clusterCnt, othrCnt);
+	}
+}
+
 function sglTrack(trkUrl,trkType) {
 	$.ajax({
 		dataType: "json",
@@ -692,12 +702,10 @@ function sglTrack(trkUrl,trkType) {
 		success: function(trackDat) {
 			console.log(trackDat);
 			newTrack = trackDat;
-			msg = '<p>Got JSON data ' + newTrack[0].lat + '</p>';
-			$('#dbug').append(msg);
 			trkObj['trk'] = new google.maps.Polyline({
 				path: newTrack,
 				geodesic: true,
-				strokeColor: '#FF0000',
+				strokeColor: trackColor,
 				strokeOpacity: 1.0,
 				strokeWeight: 2
 			});
@@ -715,21 +723,15 @@ function sglTrack(trkUrl,trkType) {
 		}
 	});
 }
-// need to give each track (polyline) a unique reference: using trkObj
-
-function startTracks() {
-	if ( mapRdy ) {
-		clearInterval(trackForm);
-		drawTracks(clusterCnt, othrCnt);
-	}
-}
 
 // NO GPX files for Visitor Centers, so start with cluster hikes:
 function drawTracks(cluster,othr) {
 	if ( cluster < clusterPinHikes.length ) {
 		if ( clusterPinHikes[cluster][4] ) {
 			trackFile = clusterPinHikes[cluster][4];
-			var kindx = trackFile.indexOf('.json');	
+			var kindx = trackFile.indexOf('.json');
+			// THIS PIECE NOT FULLY IMPLEMENTED YET !!!!
+			// USE NEXT PIECE AS TEMPLATE	
 			//msg = '<p>clusterHike file is ' + trackFile + '</p>';
 			//$('#dbug').append(msg);
 			//drawTracks(trackFile,0);
@@ -743,8 +745,8 @@ function drawTracks(cluster,othr) {
 				trackFile = othrHikes[othr][4];
 				var oindx = trackFile.indexOf('.json');
 				trkObj['trkName'] = trackFile.substring(0,oindx);
-				msg = '<p>othrHike file is ' + trackFile + '</p>';
-				$('#dbug').append(msg);
+				//msg = '<p>othrHike file is ' + trackFile + '</p>';
+				//$('#dbug').append(msg);
 				trackFile = 'json/' + trackFile;
 				sglTrack(trackFile,1);
 			} else {
@@ -753,8 +755,10 @@ function drawTracks(cluster,othr) {
 		} // End of othrHike test
 	}  // End of whole test
 }  // END FUNCTION
+// /////////////////////// END OF HIKING TRACK DRAWING /////////////////////
 
-// //////////////////////////  GEOLOCATION CODE ////////////////////////
+
+// ////////////////////////////  GEOLOCATION CODE //////////////////////////
 var geoMark;			// the geolocation marker object
 var geoStat = false;    // false if geolocation is off, true if it is enabled
 var firstCall = true;   // invoke geolocation 'firstCall' function only once, first time turned on
