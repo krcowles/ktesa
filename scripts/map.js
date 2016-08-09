@@ -310,7 +310,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.9</p>';
+msg = '<p>Push x.10</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -729,13 +729,10 @@ function drawTracks(cluster,othr) {
 	if ( cluster < clusterPinHikes.length ) {
 		if ( clusterPinHikes[cluster][4] ) {
 			trackFile = clusterPinHikes[cluster][4];
-			var kindx = trackFile.indexOf('.json');
-			// THIS PIECE NOT FULLY IMPLEMENTED YET !!!!
-			// USE NEXT PIECE AS TEMPLATE	
-			//msg = '<p>clusterHike file is ' + trackFile + '</p>';
-			//$('#dbug').append(msg);
-			//drawTracks(trackFile,0);
-			drawTracks(clusterCnt++,othrCnt);
+			var cindx = trackFile.indexOf('.json');
+			trkObj['trkName'] = trackFile.substring(0,cindx);
+			trackFile = 'json/' + trackFile'
+			sglTrack(trackFile,0);
 		} else {
 			drawTracks(clusterCnt++,othrCnt);
 		}
@@ -745,8 +742,6 @@ function drawTracks(cluster,othr) {
 				trackFile = othrHikes[othr][4];
 				var oindx = trackFile.indexOf('.json');
 				trkObj['trkName'] = trackFile.substring(0,oindx);
-				//msg = '<p>othrHike file is ' + trackFile + '</p>';
-				//$('#dbug').append(msg);
 				trackFile = 'json/' + trackFile;
 				sglTrack(trackFile,1);
 			} else {
