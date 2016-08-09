@@ -687,6 +687,7 @@ function sglTrack(trkUrl) {
 		dataType: "json",
 		url: trkUrl,
 		success: function(trackDat) {
+			console.log(trackDat);
 			newTrack = $.parseJSON(trackDat);
 			msg = '<p>Got JSON data ' + newTrack.track[0].lat + '</p>';
 			$('#dbug').append(msg);
