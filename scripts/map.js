@@ -285,15 +285,15 @@ var othrHikes = [
 	['Ft Bayard Tree',32.782028,-108.147333,'FtBayard.html',''],
 	['Hyde Park Circle',35.730717,-105.8371,'HydePk.html','hyde.json'],
 	['Josephs Mine',36.305933,-106.05142,'OjoCaliente.html',''],
-	['La Bajada',35.551633,-106.23655,'LaBajada.html',''], //
-	['La Luz',35.219667,-106.4810167,'LaLuz.html',''], //
+	['La Bajada',35.551633,-106.23655,'LaBajada.html','baj.json'],
+	['La Luz',35.219667,-106.4810167,'LaLuz.html','luz.json'],
 	['La Vista Verde',36.341432,-105.736461,'VistaVerde.html',''],
-	['Las Conchas Trail',35.814841,-106.533158,'Conchas.html',''], //
+	['Las Conchas Trail',35.814841,-106.533158,'Conchas.html','conch.json'],
 	['Mesa Chijuilla',35.995233,-107.0827,'Chijuilla.html',''],
 	['Mesa de Cuba',36.010603,-106.980625,'MesaCuba.html',''],
 	['Nature Conservancy',35.68701,-105.89697,'Conservancy.html',''],
-	['Ojito Wilderness',35.495067,-106.921767,'Ojito.html',''], //
-	['Pinabete Tank',35.771583,-106.19055,'Pinabete.html',''], //
+	['Ojito Wilderness',35.495067,-106.921767,'Ojito.html','ojito.json'],
+	['Pinabete Tank',35.771583,-106.19055,'Pinabete.html','ptank.json'],
 	['Purgatory Chasm',33.032667,-108.1536667,'Purgatory.html',''], //
 	['Pyramid Rock',35.542743,-108.613801,'PyramidRock.html',''],
 	['Red Dot - Blue Dot',35.809767,-106.200917,'RedBlueComb.html',''], //
@@ -309,6 +309,9 @@ var othrHikes = [
 	['Williams Lake',36.572704,-105.436408,'WilliamsLake.html',''],
 	['Traders Trail',36.323333,-105.70366666,'Traders.html',''] //
 ];
+
+msg = '<p>Push x.8</p>';
+$('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
 var prefix = useTbl ? '' : '../';
@@ -676,9 +679,6 @@ function IdTableElements(boundsStr) {
 // //////////////////////// END OF DYNAMIC TABLE SIZING /////////////////////
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
-msg = '<p>Push x.7</p>';
-$('#dbug').append(msg);
-
 var trackFile; // name of the JSON file to be read in
 var newTrack; // used repeatedly to assign incoming JSON data
 var allTheTracks = []; // array of all existing track object references [trkObj's]
