@@ -1,21 +1,33 @@
 #!/bin/bash
-#VERSION: 1.0 First attempt to extract from .GPX file to get lat/lng's
+#VERSION: 1.1 added output path spec
 GPX_FILE=0
+SETOPATH=0
 GPXfname=""
+OPATH="."
 for i
 do
 	# -f get filename for gpx file
 	if [ $GPX_FILE -gt 0 ]
 	then {
 		GPXfname=$i
-		GPX_FILE=2
+		GPX_FILE=0
+	}
+	fi
+	# -p get pathspec for output file
+	if [ $SETOPATH -gt 0 ]
+	then {
+		OPATH=$i
+		SETOPATH=0
 	}
 	fi
 	case $i in
 		-f) GPX_FILE=1 ;;
+		-p) SETOPATH=1 ;;
 		-h) echo "
-*** Version 1.0
+*** Version 1.1
 This utility requires the -f flag followed by a space, then the GPX filename.
+The filename can be preceded by a relative (or absolute) pathspec.
+Use the -p to specify the pathspec for writing the output file: default (no flag) is local.
 
 This routine will extract longitude/latitude data and convert it to 
 an array of google-maps-compatible lat/lng objects, creating a file
@@ -25,16 +37,48 @@ with the same base filename, but a .json extension
 exit ;;
 	esac
 done
-echo "$GPXfname"
 if [ ! -r $GPXfname ]
 then {
 	echo "GPX file "${GPXfname}" does not exist or is not readable"
 	exit
 }
 fi
+if [ ! -d $OPATH ]
+then {
+	echo "${OPATH} is not a directory"
+	exit
+}
+fi
+# if GPXfname is a filespec w/path:
+export GPXfname
+#flgth=${#GPXfname}
+#echo "input filespec is ${flgth} characters"
+getName=`echo $GPXfname | tr "/" "\n"`
+for partspec in $getName
+do
+	echo "$partspec" >> tmpfile
+done
+gpxSpec=`tail -1 tmpfile`
+#echo $gpxSpec
+rm tmpfile
 echo "JSON data file will be created with name:
->>>>>   ${GPXfname%.*}.json   <<<<<"
-outFile=${GPXfname%.*}.json
+>>>>>   ${gpxSpec%.*}.json   <<<<<
+- and will be written to: ${OPATH}"
+outFile=${gpxSpec%.*}.json
+good="NotOK"
+while
+      [ $good != "OK" ]
+do
+      read -p "Do you wish to change the output filename [Y/N]? " ans
+      case $ans in
+           [nN]* ) echo "No changes made"
+                   good="OK" ;;
+           [yY]* ) read -p "Enter new name (include .json ext): " outFile
+                   good="OK";;
+            * ) echo "Y or N only please!";;
+      esac
+done
+outFile="${OPATH}/${outFile}"
 export outFile
 cat $GPXfname | /usr/bin/awk -v gpxfile=$GPXFname '
 BEGIN {
