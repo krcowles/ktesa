@@ -25,6 +25,7 @@ with the same base filename, but a .json extension
 exit ;;
 	esac
 done
+echo "$GPXfname"
 if [ ! -r $GPXfname ]
 then {
 	echo "GPX file "${GPXfname}" does not exist or is not readable"
@@ -37,11 +38,9 @@ outFile=${GPXfname%.*}.json
 export outFile
 cat $GPXfname | /usr/bin/awk -v gpxfile=$GPXFname '
 BEGIN {
-	FS=","
 	OFS="{ \"lat\": "
 	OBJ=", \"lng\": "
-	print "{"
-	print "\"track\": ["
+	fline=1
 }
 {
 	if (match($0,/trkpt lat/)) {
@@ -53,16 +52,21 @@ BEGIN {
 		eostr=match($0,/\">/)
 		lngend=eostr-lngstrt
 		lng=substr($0,lngstrt,lngend)
-		print OFS lat OBJ lng " },"
+		if( fline == 1 ) {
+			print "[" OFS lat OBJ lng " },"
+			fline=2
+		} else {
+			print OFS lat OBJ lng " },"
+		}
 	}
 } 
 ' > $outFile
 # remove final comma:
 sed -i.bck '$s/.$//' $outFile
-echo "" >> $outFile
-sed -i.bck '$s/$/ ]/' $outFile
-echo "" >> $outFile
-sed -i.bck '$s/$/}/' $outFile
+# add closing bracket
+sed -i.bck '$s/$/]/' $outFile
+#echo "" >> $outFile
+#sed -i.bck '$s/$/}/' $outFile
 backupFile=${outFile}.bck
 rm $backupFile
 npts=`cat $outFile | wc -l`

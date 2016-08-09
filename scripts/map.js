@@ -263,7 +263,7 @@ var clusterPinHikes = [
 ];
 var othrHikes = [
 	['Three Rivers',33.419574,-105.987682,'ThreeRivers.html',''],
-	['Corrales Acequia',35.249327,-106.607283,'Acequia.html',''], //
+	['Corrales Acequia',35.249327,-106.607283,'Acequia.html','aceq.json'],
 	['Agua Sarca',35.291533,-106.441050,'AguaSarca.html',''], //
 	['Ancho Rapids',35.797000,-106.246417,'AnchoComb.html','ancho.json'],
 	['Apache Canyon',35.629817,-105.858967,'ApacheCanyon.html',''],
@@ -673,18 +673,17 @@ function IdTableElements(boundsStr) {
 // /////////////////////////////////////////////////////////////////////
 // //////////////////////////  HIKING TRACKS  //////////////////////////
 // /////////////////////////////////////////////////////////////////////
-msg = '<p>Push x.1</p>';
+msg = '<p>Push x.2</p>';
 $('#dbug').append(msg);
 
-var xhr = new XMLHttpRequest();
 var trackFile; // name of the JSON file to be read in
 var newTrack; // used repeatedly to assign incoming JSON data
-var trkPtsArray = []; // array of google lat/lng objects (cleared and reused for each track)
-var allTheTracks = []; // array of all existing track objects
-var syncSemaphore = true;
-var trackForm = setInterval(drawTracks,200);
-
+var allTheTracks = []; // array of all existing track object references [trkObj's]
 var trkObj = { trk: 'ref', trkName: 'trkname' };
+var clusterCnt = 0; // number of clusterPinHikes processed
+var othrCnt = 0; // number of othrHikes processed
+
+var trackForm = setInterval(startTracks,200);
 
 function sglTrack(trkUrl) {
 	$.ajax({
@@ -702,7 +701,8 @@ function sglTrack(trkUrl) {
 				strokeOpacity: 1.0,
 				strokeWeight: 2
 			});
-		trkObj['trk'].setMap(map);
+			trkObj['trk'].setMap(map);
+			allTheTracks.push(trkObj);
 		},
 		error: function() {
 			msg = '<p>Did not succeed in getting JSON data</p>';
@@ -712,67 +712,41 @@ function sglTrack(trkUrl) {
 }
 // need to give each track (polyline) a unique reference: using trkObj
 
-
-xhr.onload = function() {
-	if ( xhr.status === 200 ) {
-		newTrack = JSON.parse(xhr.responseText); // array of objects (track points)
-		for (var i=0; i<newTrack.track.length; i++) {
-			trkPtsArray.push(newTrack.track[i]);
-		}
-		trkObj['trk'] = new google.maps.Polyline({
-			path: trkPtsArray,
-			geodesic: true,
-			strokeColor: '#FF0000',
-			strokeOpacity: 1.0,
-			strokeWeight: 2
-		});
-		trkObj['trk'].setMap(map);
-		trkPtsArray = []; // clear array for next time around...
-	} // end of successful load
-	
-	if ( xhr.status === 404 ) {
-		outTxt = '<p>URL NOT FOUND (ye olde message)</p>';
-		$('#dbug').append(outTxt);
-	}
-	
-	if (xhr.status === 500 ) {
-		outTxt = '<p>Some kind of internal server error...</p>';
-		$('#dbug').append(outTxt);
-	}
-}  // END OF 'onload' FUNCTION
-
-
-
-function drawTracks() {
+function startTracks() {
 	if ( mapRdy ) {
-		clearInterval(trackForm);
-		// BIG LOOPS TO CATCH ALL THE HIKES w/GPX FILES...
-		// NO GPX files for Visitor Centers, so start with cluster hikes:
-		for ( var k=0; k<clusterPinHikes.length; k++ ) {
-			if ( clusterPinHikes[k][4] ) {
-				trackFile = clusterPinHikes[k][4];
-				var kindx = trackFile.indexOf('.json');
-				
-			}
-		} // End of clusterPinHikes loop
-		for ( m=0; m<othrHikes.length; m++ ) {
-			if ( othrHikes[m][4] ) {
-				trackFile = othrHikes[m][4];
-				var mindx  = trackFile.indexOf('.json');
-				trkObj['trkName'] = trackFile.substring(0,mindx);
-				trackFile = 'json/' + trackFile;
-				if ( syncSemaphore ) {
-					sglTrack(trackFile);
-				}
-				msg = '<p>othrHikes: use ' + trkObj['trkName'] + '</p>';
-				$('#dbug').append(msg);
-				syncSemaphore = false;
-				//xhr.open('GET','test/ancho.json',true);
-				//xhr.send(null);
-			}
-		}  // End of BIG LOOP
+		clearInterval(trackform);
+		drawTracks(clusterCnt, othrCnt);
 	}
 }
+
+// NO GPX files for Visitor Centers, so start with cluster hikes:
+function drawTracks(cluster,othr) {
+	if ( cluster < clusterPinHikes.length ) {
+		if ( clusterPinHikes[cluster][4] ) {
+			trackFile = clusterPinHikes[cluster][4];
+			var kindx = trackFile.indexOf('.json');	
+			//msg = '<p>clusterHike file is ' + trackFile + '</p>';
+			//$('#dbug').append(msg);
+			drawTracks(clusterCnt++,othrCnt);
+		} else {
+			drawTracks(clusterCnt++,othrCnt);
+		}
+	} else {  // End of clusterHike test
+		if ( othr < othrHikes.length ) {
+			if ( othrHikes[othr][4] ) {
+				trackFile = othrHikes[othr][4];
+				var oindx = trackFile.indexOf('.json');
+				trkObj['trkName'] = trackFile.substring(0,oindx);
+				msg = '<p>othrHike file is ' + trackFile + '</p>';
+				$('#dbug').append(msg);
+				trackFile = 'json/' + trackFile;
+				drawTracks(clusterCnt,othrCnt++);
+			} else {
+				drawTracks(clusterCnt,othrCnt++);
+			}
+		} // End of othrHike test
+	}  // End of whole test
+}  // END FUNCTION
 
 // //////////////////////////  GEOLOCATION CODE ////////////////////////
 var geoMark;			// the geolocation marker object
