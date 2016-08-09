@@ -271,9 +271,9 @@ var othrHikes = [
 	['Aspen Vista',35.777433,-105.810933,'Aspen.html','aspen.json'],
 	['Atalaya Mtn',35.670450,-105.900667,'Atalaya.html','atalaya.json'],
 	['Battleship Rock',35.828099,-106.641862,'Battleship.html',''],
-	['Borrego/Bear Wallow',35.7462,-105.8342667,'Borrego.html',''], //
-	['Buckman Mesa',35.835833,-106.161033,'Buckman.html',''], //
-	['Cabezon Pk',35.597,-107.1053833,'Cabezon.html',''], //
+	['Borrego/Bear Wallow',35.7462,-105.8342667,'Borrego.html','borrego.json'],
+	['Buckman Mesa',35.835833,-106.161033,'Buckman.html','buckman.json'],
+	['Cabezon Pk',35.597,-107.1053833,'Cabezon.html','czon.json'],
 	['Cerrillos Hills',35.444819,-106.122029,'Cerrillos.html',''],
 	['Chamisa Trail',35.728417,-105.86597,'Chamisa.html',''], //
 	['Chavez Canyon',36.367385,-106.677235,'ChavezCanyon.html',''],
@@ -676,7 +676,7 @@ function IdTableElements(boundsStr) {
 // //////////////////////// END OF DYNAMIC TABLE SIZING /////////////////////
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
-msg = '<p>Push x.4</p>';
+msg = '<p>Push x.5</p>';
 $('#dbug').append(msg);
 
 var trackFile; // name of the JSON file to be read in
