@@ -275,10 +275,10 @@ var othrHikes = [
 	['Buckman Mesa',35.835833,-106.161033,'Buckman.html','buckman.json'],
 	['Cabezon Pk',35.597,-107.1053833,'Cabezon.html','czon.json'],
 	['Cerrillos Hills',35.444819,-106.122029,'Cerrillos.html',''],
-	['Chamisa Trail',35.728417,-105.86597,'Chamisa.html',''], //
+	['Chamisa Trail',35.728417,-105.86597,'Chamisa.html','cham.json'],
 	['Chavez Canyon',36.367385,-106.677235,'ChavezCanyon.html',''],
-	['Coyote Call',35.848167,-106.465383,'CoyoteCall.html',''], //
-	['Dale Ball North',35.71075,-105.899467,'DBallNorth.html',''], //
+	['Coyote Call',35.848167,-106.465383,'CoyoteCall.html','ccall.json'],
+	['Dale Ball North',35.71075,-105.899467,'DBallNorth.html','dbnorth.json'],
 	['Del Agua',35.277,-106.4840333,'DelAguaHike.html',''], //
 	['Diablo Canyon',35.8046,-106.1362333,'DiabloComb.html',''], //
 	['El Morro',35.038224,-108.348783,'ElMorro.html',''],
@@ -676,7 +676,7 @@ function IdTableElements(boundsStr) {
 // //////////////////////// END OF DYNAMIC TABLE SIZING /////////////////////
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
-msg = '<p>Push x.5</p>';
+msg = '<p>Push x.6</p>';
 $('#dbug').append(msg);
 
 var trackFile; // name of the JSON file to be read in
@@ -752,6 +752,9 @@ function drawTracks(cluster,othr) {
 			} else {
 				drawTracks(clusterCnt,othrCnt++);
 			}
+		}  else {
+			msg = '<p>Total number of tracks loaded: ' + allTheTracks.length + '</p>';
+			$('#dbug').append(msg);
 		} // End of othrHike test
 	}  // End of whole test
 }  // END FUNCTION
