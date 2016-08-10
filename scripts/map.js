@@ -241,7 +241,7 @@ var clusterPinHikes = [
 	['Kitchen Mesa',36.336353,-106.469007,'Kitchen.html',''],
 	// Manzanitas Trail hikes:
 	['Tunnel Canyon',35.055938,-106.371517,'TunnelCanyon.html','tun.json'],
-	['Birdhouse Ridge',35.055938,-106.388512,'Birdhouse.html','bird.json'],
+	['Birdhouse Ridge',35.055938,-106.388512,'Birdhouse.html',''],
 	// Manzanos hikes:
 	['Albuquerque Trail',34.793491,-106.372268,'ABQ.html',''],
 	['July 4th Trail',34.790707,-106.382439,'July4.html',''],
@@ -304,13 +304,13 @@ var othrHikes = [
 	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html',''],
 	['Catwalks',33.37781,-108.839842,'Catwalks.html',''],
 	['Tetilla Peak',35.602683,-106.19663,'Tetilla.html','tet.json'],
-	['Valle Grande',35.857077,-106.491058,'ValleGrandeInSnow.html',''], //
+	['Valle Grande',35.857077,-106.491058,'ValleGrandeInSnow.html','vgrand.json'],
 	['Viewpoint Loop',35.264798,-105.33362,'Villanueva.html',''],
 	['Williams Lake',36.572704,-105.436408,'WilliamsLake.html',''],
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.11</p>';
+msg = '<p>Push x.12</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
