@@ -310,7 +310,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.10</p>';
+msg = '<p>Push x.11</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -695,12 +695,21 @@ function startTracks() {
 	}
 }
 
-function sglTrack(trkUrl,trkType) {
+function sglTrack(trkUrl,trkType,tflag) {
 	$.ajax({
 		dataType: "json",
 		url: trkUrl,
 		success: function(trackDat) {
-			console.log(trackDat);
+			if ( tflag ) {
+				for ( var i=0; i<6; i++ ) {
+					console.log(trackDat[i]);
+				}
+				var endArray = trackDat.length;
+				var strtArray = endArray - 6;
+				for ( var j=strtArray; j<endArray; j++ ) {
+					console.log(trackDat[j]);
+				}
+			}
 			newTrack = trackDat;
 			trkObj['trk'] = new google.maps.Polyline({
 				path: newTrack,
@@ -724,15 +733,21 @@ function sglTrack(trkUrl,trkType) {
 	});
 }
 
+var tstFlag = 0;
 // NO GPX files for Visitor Centers, so start with cluster hikes:
 function drawTracks(cluster,othr) {
 	if ( cluster < clusterPinHikes.length ) {
 		if ( clusterPinHikes[cluster][4] ) {
 			trackFile = clusterPinHikes[cluster][4];
+			if ( trackFile == 'tun.json' || trackFile == 'bird.json' ) {
+				tstFlag = 1;
+			} else {
+				tstFlag = 0;
+			}
 			var cindx = trackFile.indexOf('.json');
 			trkObj['trkName'] = trackFile.substring(0,cindx);
 			trackFile = 'json/' + trackFile;
-			sglTrack(trackFile,0);
+			sglTrack(trackFile,0,tstFlag);
 		} else {
 			drawTracks(clusterCnt++,othrCnt);
 		}
@@ -743,7 +758,7 @@ function drawTracks(cluster,othr) {
 				var oindx = trackFile.indexOf('.json');
 				trkObj['trkName'] = trackFile.substring(0,oindx);
 				trackFile = 'json/' + trackFile;
-				sglTrack(trackFile,1);
+				sglTrack(trackFile,1,0);
 			} else {
 				drawTracks(clusterCnt,othrCnt++);
 			}
