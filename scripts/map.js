@@ -310,7 +310,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.15</p>';
+msg = '<p>Push x.16</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
