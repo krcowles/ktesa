@@ -254,7 +254,7 @@ var clusterPinHikes = [
 	['ABQ Volcanoes',35.13075,-106.7802667,'ABQVolcanoes.html','volc.json'],
 	// Big Tesuque Campground hikes:
 	['Upper Tesuque',35.764427,-105.769501,'UpperTesuque.html','utes.json'],
-	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html','mtes.json'],
+	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html',''],
 	// Winsor Trailhead hikes:
 	['Deception Pk',35.807036,-105.783577,'Deception.html','decp.json'],
 	['Nambe Lake',35.818627,-105.797649,'Nambe.html','nambe.json'],
@@ -310,7 +310,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.13</p>';
+msg = '<p>Push x.14</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
