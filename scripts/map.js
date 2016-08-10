@@ -731,7 +731,7 @@ function drawTracks(cluster,othr) {
 			trackFile = clusterPinHikes[cluster][4];
 			var cindx = trackFile.indexOf('.json');
 			trkObj['trkName'] = trackFile.substring(0,cindx);
-			trackFile = 'json/' + trackFile'
+			trackFile = 'json/' + trackFile;
 			sglTrack(trackFile,0);
 		} else {
 			drawTracks(clusterCnt++,othrCnt);
