@@ -221,6 +221,7 @@ var clusterPinHikes = [
 	['Frey Trail',35.779219,-106.285744,'Frey.html',''],
 	['Frijolito Ruins',35.769573,-106.282433,'Frijolito.html',''],
 	['Alcove House',35.764312,-106.273698,'AlcoveHouse.html',''],
+	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html',''],
 	// Bosque del Apache hikes:
 	['Canyon Trail',33.759012,-106.895278,'CanyonTrail.html',''],
 	// Chaco Canyon hikes:
@@ -254,7 +255,7 @@ var clusterPinHikes = [
 	['ABQ Volcanoes',35.13075,-106.7802667,'ABQVolcanoes.html','volc.json'],
 	// Big Tesuque Campground hikes:
 	['Upper Tesuque',35.764427,-105.769501,'UpperTesuque.html','utes.json'],
-	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html',''],
+	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html','mtes.json'],
 	// Winsor Trailhead hikes:
 	['Deception Pk',35.807036,-105.783577,'Deception.html','decp.json'],
 	['Nambe Lake',35.818627,-105.797649,'Nambe.html','nambe.json'],
@@ -301,7 +302,6 @@ var othrHikes = [
 	['Sun Mountain',35.65675,-105.92095,'SunMountain.html','sun.json'],
 	['Tent Rocks',35.661033,-106.416106,'TentRocks.html',''],
 	['Tesuque-Lower',35.759783,-105.845917,'LowerTesuque.html','ltes.json'],
-	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html',''],
 	['Catwalks',33.37781,-108.839842,'Catwalks.html',''],
 	['Tetilla Peak',35.602683,-106.19663,'Tetilla.html','tet.json'],
 	['Valle Grande',35.857077,-106.491058,'ValleGrandeInSnow.html','vgrand.json'],
@@ -310,7 +310,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.14</p>';
+msg = '<p>Push x.15</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -695,21 +695,11 @@ function startTracks() {
 	}
 }
 
-function sglTrack(trkUrl,trkType,tflag) {
+function sglTrack(trkUrl,trkType) {
 	$.ajax({
 		dataType: "json",
 		url: trkUrl,
 		success: function(trackDat) {
-			if ( tflag ) {
-				for ( var i=0; i<6; i++ ) {
-					console.log(trackDat[i]);
-				}
-				var endArray = trackDat.length;
-				var strtArray = endArray - 6;
-				for ( var j=strtArray; j<endArray; j++ ) {
-					console.log(trackDat[j]);
-				}
-			}
 			newTrack = trackDat;
 			trkObj['trk'] = new google.maps.Polyline({
 				path: newTrack,
@@ -739,15 +729,10 @@ function drawTracks(cluster,othr) {
 	if ( cluster < clusterPinHikes.length ) {
 		if ( clusterPinHikes[cluster][4] ) {
 			trackFile = clusterPinHikes[cluster][4];
-			if ( trackFile == 'tun.json' || trackFile == 'bird.json' ) {
-				tstFlag = 1;
-			} else {
-				tstFlag = 0;
-			}
 			var cindx = trackFile.indexOf('.json');
 			trkObj['trkName'] = trackFile.substring(0,cindx);
 			trackFile = 'json/' + trackFile;
-			sglTrack(trackFile,0,tstFlag);
+			sglTrack(trackFile,0);
 		} else {
 			drawTracks(clusterCnt++,othrCnt);
 		}
@@ -758,7 +743,7 @@ function drawTracks(cluster,othr) {
 				var oindx = trackFile.indexOf('.json');
 				trkObj['trkName'] = trackFile.substring(0,oindx);
 				trackFile = 'json/' + trackFile;
-				sglTrack(trackFile,1,0);
+				sglTrack(trackFile,1);
 			} else {
 				drawTracks(clusterCnt,othrCnt++);
 			}
