@@ -318,7 +318,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.20</p>';
+msg = '<p>Push x.21</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -924,7 +924,7 @@ function setupLoc() {
 			var wLat = watchPos.latitude;
 			var wLng = watchPos.longitude;
 			var newWPos = {lat: wLat, lng: wLng };
-			if ( geoMarker ) {
+			if (  geoMarker != 'undefined' ) {
 				geoMarker.setMap(null);
 				geoMarker = null;
 			}
