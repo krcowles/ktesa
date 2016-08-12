@@ -203,7 +203,7 @@ if ( useTbl ) {
 // colors
 var lineColor = '#2974EB';
 var trackColor = '#FF0000';
-var altTrkClr1 = '#008080';
+var altTrkClr1 = '#0000FF';
 var altTrkClr2 = '#14613E';
 //var altTrkClr3 = '#AAAAAA';
 var noTrk = '#000000';
@@ -318,7 +318,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.19</p>';
+msg = '<p>Push x.20</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -739,8 +739,6 @@ function drawTracks(cluster,othr) {
 			trkObj['trkName'] = trackFile.substring(0,cindx);
 			trackFile = 'json/' + trackFile;
 			clusColor = clusterPinHikes[cluster][5];
-			msg = trkObj['trkName'] + ';' + clusColor;
-			$('#dbug').append(msg);
 			sglTrack(trackFile,0,clusColor);
 		} else {
 			drawTracks(clusterCnt++,othrCnt);
