@@ -200,6 +200,13 @@ if ( useTbl ) {
 	
 }  // end of useTbl test
 
+// colors
+var lineColor = '#2974EB';
+var trackColor = '#FF0000';
+var altTrkClr1 = '#008080';
+var altTrkClr2 = '#14613E';
+//var altTrkClr3 = '#AAAAAA';
+var noTrk = '#000000';
 			
 // -------------------------------   IMPORTANT NOTE: ----------------------------
 //	The index.html table ***** MUST ***** list items in the
@@ -311,7 +318,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.18</p>';
+msg = '<p>Push x.19</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -323,13 +330,7 @@ var hikeIcon = prefix + 'images/redpin.png';
 var smallGeo = prefix + 'images/starget.png';
 var medGeo = prefix + 'images/mtarget.png';
 var lgGeo = prefix + 'images/ltarget.png';
-// colors
-var lineColor = '#2974EB';
-var trackColor = '#FF0000';
-var altTrkClr1 = '#008080';
-var altTrkClr2 = '#14613E';
-var altTrkClr3 = '#AAAAAA';
-var noTrk = '#000000';
+
 // Display whole table when index.html page loads
 if ( useTbl ) {
 	var $tblRows = $('.sortable tbody tr');
