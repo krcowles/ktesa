@@ -205,6 +205,7 @@ var lineColor = '#2974EB';
 var trackColor = '#FF0000';
 var altTrkClr1 = '#0000FF';
 var altTrkClr2 = '#14613E';
+var altTrkClr3 = '#000000';
 //var altTrkClr3 = '#AAAAAA';
 var noTrk = '#000000';
 			
@@ -318,7 +319,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.21</p>';
+msg = '<p>Push x.22</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -754,156 +755,13 @@ function drawTracks(cluster,othr) {
 			} else {
 				drawTracks(clusterCnt,othrCnt++);
 			}
-		}  else {
-			msg = '<p>Total number of tracks loaded: ' + allTheTracks.length + '</p>';
-			$('#dbug').append(msg);
-		} // End of othrHike test
+		}  // End of othrHikes segment
 	}  // End of whole test
 }  // END FUNCTION
 // /////////////////////// END OF HIKING TRACK DRAWING /////////////////////
 
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
-/*
-var geoMark;			// the geolocation marker object
-var geoStat = false;    // false if geolocation is off, true if it is enabled
-var firstCall = true;   // invoke geolocation 'firstCall' function only once, first time turned on
-					    // after that, simply turn interval update on or off;
-var clickEnabled = false; // when click updates are enabled...
-var clickOn;			// var for setting listener when On-Click update is active
-var buttonEna = false;  // when update buttons are enabled...
-var intTarg; 			// variable used to access key value in rateObj
-var chgCnt = 1;			// used in an effort to NOT reuse variables for setInterval
-var rateObj = { 'key1': 'int1' };
-var geoOptions = { enableHighAccuracy: true };
-		  
-function updateOnClick() {
-	if ( buttonEna ) {
-		clearInterval(rateObj[intTarg]);
-		$('#firstRate').css('background-color','White');
-		$('#secondRate').css('background-color','White');
-		$('#clicker').css('background-color','#cfe2cf');
-		if ( !clickEnabled ) {
-			clickEnabled = true;
-			clickOn = geoMark.addListener('click', getLoc);
-		} else {
-			clickEnabled = false;
-			$('#clicker').css('background-color','white');
-			google.maps.event.removeListener(clickOn);
-		}
-	} 
-}
-function refreshFct1( newRate ) {
-	if ( buttonEna ) {
-		if ( clickEnabled ) {
-			$('#clicker').css('background-color','White');
-			//google.maps.event.removeListener(clickOn);
-			clickEnabled = false;	
-		}
-		$('#secondRate').css('background-color','White');
-		$('#firstRate').css('background-color','#cfe2cf');
-		clearInterval(rateObj[intTarg]);	
-		refreshRate( newRate );
-	}
-}
-function refreshFct2( newRate ) {
-	if ( buttonEna ) {
-		if ( clickEnabled ) {
-			$('#clicker').css('background-color','White');
-			//google.maps.event.removeListener(clickOn);
-			clickEnabled = false;	
-		}
-		$('#firstRate').css('background-color','White');
-		$('#secondRate').css('background-color','#cfe2cf');	
-		clearInterval(rateObj[intTarg]);
-		refreshRate( newRate );
-	}
-}
-function refreshRate( milliSeconds ) {
-	clearInterval(rateObj[intTarg]);
-	intTarg = 'key' + chgCnt++;
-	rateObj[intTarg] = setInterval(getLoc, milliSeconds);
-}
-
-function geoLoc() {  // this is called when 'Enable: Turn On/Off' button is clicked
-	if ( firstCall ) {
-		firstCall = false;
-		getLoc();
-	} // end of firstCall test
-	// now turn on/off the interval timer to do position updates: (and update panel colors)
-	if ( !geoStat ) {   
-		$('#geoExtras').css('background-color','DarkSeaGreen');
-		$('#firstRate').css('background-color','White');
-		$('#secondRate').css('background-color','White');
-		$('#clicker').css('background-color','White');
-		$('.sw').addClass('friendly');
-		geoStat = true;
-		$('#toggle').val('Turn Off');
-		buttonEna = true;
-		intTarg = 'key' + chgCnt++;
-		rateObj[intTarg] = setInterval(getLoc, 10000); // this is the default refresh value
-		if( geoMark ) {
-			geoMark.setMap(map);
-		}
-	} else {
-		clearInterval(rateObj[intTarg]);
-		$('.sw').removeClass('friendly');
-		$('#geoExtras').css('background-color','LightGray');
-		$('#firstRate').css('background-color','LightGray');
-		$('#secondRate').css('background-color','LightGray');
-		$('#clicker').css('background-color','LightGray');
-		geoStat = false;
-		buttonEna = false;
-		$('#toggle').val('Turn On');
-		if( geoMark ) {
-			geoMark.setMap(null);
-		}
-	} // end of geoStat testing	
-} // end of GEOLOC function (called by button-click)
-
-function getLoc() {
-	if (Modernizr.geolocation) {
-		navigator.geolocation.getCurrentPosition(success, fail, geoOptions);
-		function fail(PositionError) {
-			switch (PositionError.code) {
-				case 1:
-					msg = 'GEOLOCATION: Permission denied';
-					break;
-				case 2:
-					msg = 'GEOLOCATION: Unavailable';
-					break;
-				case 3:
-					msg = 'GEOLOCATION: Request timed out';
-					break;
-			}
-			window.alert(msg);
-		}  // end of FAIL function
-		function success(Position) {
-			if ( geoMark ) {
-				geoMark.setMap(null);
-				geoMark = null;
-			}
-			var cLat = Position.coords.latitude;
-			var cLng = Position.coords.longitude;
-			var myLoc = new google.maps.LatLng(cLat, cLng);
-			geoMark = new google.maps.Marker({
-				position: myLoc,
-				map: map,
-				icon: lgGeo,
-				size: new google.maps.Size(32, 32),
-				// The origin for this image is (0, 0)
-				origin: new google.maps.Point(0, 0),
-				// The anchor for this image is the center (16, 16).
-				anchor: new google.maps.Point(16, 16)
-			});
-		} // end of SUCCESS function
-	} else {
-		window.alert('Geolocation not supported on this browser');
-	}
-}
-*/
-
-// CURRENT USAGE:
 var watchOptions = { enableHighAccuracy: true };
 var geoIcon = medGeo;
 
@@ -924,10 +782,6 @@ function setupLoc() {
 			var wLat = watchPos.latitude;
 			var wLng = watchPos.longitude;
 			var newWPos = {lat: wLat, lng: wLng };
-			if (  geoMarker != 'undefined' ) {
-				geoMarker.setMap(null);
-				geoMarker = null;
-			}
 			geoMarker = new google.maps.Marker({
 				position: newWPos,
 				map: map,

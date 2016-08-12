@@ -85,6 +85,16 @@ input {
 	cursor: pointer;
 	background-color: PapayaWhip; }
 */
+.modal {
+	text-align: left;
+	padding: 10px;
+	background-color: AliceBlue;
+    position: absolute;
+    z-index: 1000; }
+#intro2intro {
+	font-size: 22px;
+	color: blue;
+	text-align: center; }
 #map {
 	margin-left: auto;
 	margin-right: auto;
