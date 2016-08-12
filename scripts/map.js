@@ -202,7 +202,7 @@ if ( useTbl ) {
 
 			
 // -------------------------------   IMPORTANT NOTE: ----------------------------
-//	The index.html table MUST list items in the
+//	The index.html table ***** MUST ***** list items in the
 //	order shown below [as listed in arrays] in order for the correct elements to be listed
 //	in the user table of hikes
 //	-----------------------------------------------------------------------------                                         */
@@ -214,53 +214,54 @@ var ctrPinHikes = [
 	['El Malpais',34.970407,-107.810152,'ElMalpais.html',''],
 	['Petroglyphs Natl Mon',35.138644,-106.711196,'Petroglyphs.html','']
 ];
+// NOTE: clusterPinHikes have an added field of "trackColor" to differentiate overlaps
 var clusterPinHikes = [
 	// Bandelier hikes:
-	['Ruins Trail',35.793670,-106.273155,'MainLoop.html',''],
-	['Falls Trail',35.788735,-106.282079,'FallsTrail.html',''],
-	['Frey Trail',35.779219,-106.285744,'Frey.html',''],
-	['Frijolito Ruins',35.769573,-106.282433,'Frijolito.html',''],
-	['Alcove House',35.764312,-106.273698,'AlcoveHouse.html',''],
-	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html',''],
+	['Ruins Trail',35.793670,-106.273155,'MainLoop.html','',noTrk],
+	['Falls Trail',35.788735,-106.282079,'FallsTrail.html','',noTrk],
+	['Frey Trail',35.779219,-106.285744,'Frey.html','',noTrk],
+	['Frijolito Ruins',35.769573,-106.282433,'Frijolito.html','',noTrk],
+	['Alcove House',35.764312,-106.273698,'AlcoveHouse.html','',noTrk],
+	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html','',noTrk],
 	// Bosque del Apache hikes:
-	['Canyon Trail',33.759012,-106.895278,'CanyonTrail.html',''],
+	['Canyon Trail',33.759012,-106.895278,'CanyonTrail.html','',noTrk],
 	// Chaco Canyon hikes:
-	['Una Vida',36.033331,-107.911942,'UnaVida.html',''],
-	['Hungo Pavi',36.049536,-107.93031,'HungoPavi.html',''],
-	['Pueblo Bonito',36.059216,-107.958934,'Bonito.html',''],
-	['Pueblo Alto',36.068608,-107.959900,'PuebloAlto.html','palto.json'],
-	['Kin Kletso',36.063864,-107.981315,'KinKletso.html',''],
+	['Una Vida',36.033331,-107.911942,'UnaVida.html','',noTrk],
+	['Hungo Pavi',36.049536,-107.93031,'HungoPavi.html','',noTrk],
+	['Pueblo Bonito',36.059216,-107.958934,'Bonito.html','',noTrk],
+	['Pueblo Alto',36.068608,-107.959900,'PuebloAlto.html','palto.json',trackColor],
+	['Kin Kletso',36.063864,-107.981315,'KinKletso.html','',noTrk],
 	// El Malpais hikes:
-	['Big Tubes',34.944733,-108.106983,'BigTubes.html','tubes.json'],
-	['Ice Caves',34.99311,-108.080084,'IceCave.html',''],
-	['El Calderon',34.9698,-108.00325,'ElCalderon.html','cald.json'],
+	['Big Tubes',34.944733,-108.106983,'BigTubes.html','tubes.json',trackColor],
+	['Ice Caves',34.99311,-108.080084,'IceCave.html','',noTrk],
+	['El Calderon',34.9698,-108.00325,'ElCalderon.html','cald.json',trackColor],
 	// Elena Gallegos hikes:
-	['Pino Trail',35.160419, -106.463184,'Pino.html','pino.json'],
-	['Domingo Baca',35.167093,-106.465502,'Domingo.html','baca.json'],
+	['Pino Trail',35.160419, -106.463184,'Pino.html','pino.json',trackColor],
+	['Domingo Baca',35.167093,-106.465502,'Domingo.html','baca.json',trackColor],
 	// Ghost Ranch hikes:
-	['Chimney Rock',36.330525,-106.47482,'ChimneyRock.html',''],
-	['Kitchen Mesa',36.336353,-106.469007,'Kitchen.html',''],
+	['Chimney Rock',36.330525,-106.47482,'ChimneyRock.html','',noTrk],
+	['Kitchen Mesa',36.336353,-106.469007,'Kitchen.html','',noTrk],
 	// Manzanitas Trail hikes:
-	['Tunnel Canyon',35.055938,-106.371517,'TunnelCanyon.html','tun.json'],
-	['Birdhouse Ridge',35.055938,-106.388512,'Birdhouse.html','bird.json'],
+	['Tunnel Canyon',35.055938,-106.371517,'TunnelCanyon.html','tun.json',trackColor],
+	['Birdhouse Ridge',35.055938,-106.388512,'Birdhouse.html','bird.json',trackColor],
 	// Manzanos hikes:
-	['Albuquerque Trail',34.793491,-106.372268,'ABQ.html',''],
-	['July 4th Trail',34.790707,-106.382439,'July4.html',''],
+	['Albuquerque Trail',34.793491,-106.372268,'ABQ.html','',noTrk],
+	['July 4th Trail',34.790707,-106.382439,'July4.html','',noTrk],
 	// Petroglyphs hikes:
-	['Piedras Marcadas',35.188867,-106.686269,'Piedras.html',''],
-	['Mesa Point Trail',35.160629,-106.716645,'MesaPoint.html',''],
-	['Cliff Base Trail',35.165471,-106.729088,'CliffBase.html',''],
-	['Macaw Trail',35.170242,-106.717243,'Macaw.html',0],
-	['Rinconada Canyon',35.126851,-106.724635,'Rinconada.html',''],
-	['ABQ Volcanoes',35.13075,-106.7802667,'ABQVolcanoes.html','volc.json'],
+	['Piedras Marcadas',35.188867,-106.686269,'Piedras.html','',noTrk],
+	['Mesa Point Trail',35.160629,-106.716645,'MesaPoint.html','',noTrk],
+	['Cliff Base Trail',35.165471,-106.729088,'CliffBase.html','',noTrk],
+	['Macaw Trail',35.170242,-106.717243,'Macaw.html','',noTrk],
+	['Rinconada Canyon',35.126851,-106.724635,'Rinconada.html','',noTrk],
+	['ABQ Volcanoes',35.13075,-106.7802667,'ABQVolcanoes.html','volc.json',trackColor],
 	// Big Tesuque Campground hikes:
-	['Upper Tesuque',35.764427,-105.769501,'UpperTesuque.html','utes.json'],
-	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html','mtes.json'],
+	['Upper Tesuque',35.764427,-105.769501,'UpperTesuque.html','utes.json',altTrkClr1],
+	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html','mtes.json',altTrkClr2],
 	// Winsor Trailhead hikes:
-	['Deception Pk',35.807036,-105.783577,'Deception.html','decp.json'],
-	['Nambe Lake',35.818627,-105.797649,'Nambe.html','nambe.json'],
-	['La Vega',35.816873,-105.815796,'LaVega.html','vega.json'],
-	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json']
+	['Deception Pk',35.807036,-105.783577,'Deception.html','decp.json',trackColor],
+	['Nambe Lake',35.818627,-105.797649,'Nambe.html','nambe.json',altTrkClr1],
+	['La Vega',35.816873,-105.815796,'LaVega.html','vega.json',altTrkClr2],
+	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',trackColor]
 ];
 var othrHikes = [
 	['Three Rivers',33.419574,-105.987682,'ThreeRivers.html',''],
@@ -310,7 +311,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.16</p>';
+msg = '<p>Push x.17</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -325,6 +326,10 @@ var lgGeo = prefix + 'images/ltarget.png';
 // colors
 var lineColor = '#2974EB';
 var trackColor = '#FF0000';
+var altTrkClr1 = '#462C93';
+var altTrkClr2 = '#14613E';
+var altTrkClr3 = '#AAAAAA';
+var noTrk = '#000000';
 // Display whole table when index.html page loads
 if ( useTbl ) {
 	var $tblRows = $('.sortable tbody tr');
@@ -439,7 +444,7 @@ function initMap() {
 		loc = {lat: clusterPinHikes[j][1], lng: clusterPinHikes[j][2] };
 		nme = clusterPinHikes[j][0];
 		hpg = pgLnk + clusterPinHikes[j][3];
-		AddClusterMarker(loc, sym, nme, hpg);
+		AddClusterMarker(loc, sym, nme, hpg); // could add color id here...
 	}
 	// Finally, the remaining "normal" hike markers
 	var noOfSolo = othrHikes.length;
@@ -681,12 +686,13 @@ function IdTableElements(boundsStr) {
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 var trackFile; // name of the JSON file to be read in
 var newTrack; // used repeatedly to assign incoming JSON data
+// the following is not used yet, but intended to allow individual turn on/off of tracks
 var allTheTracks = []; // array of all existing track object references [trkObj's]
 var trkObj = { trk: 'ref', trkName: 'trkname' };
 var clusterCnt = 0; // number of clusterPinHikes processed
 var othrCnt = 0; // number of othrHikes processed
 
-var trackForm = setInterval(startTracks,200);
+var trackForm = setInterval(startTracks,40);
 
 function startTracks() {
 	if ( mapRdy ) {
@@ -695,7 +701,7 @@ function startTracks() {
 	}
 }
 
-function sglTrack(trkUrl,trkType) {
+function sglTrack(trkUrl,trkType,trkColor) {
 	$.ajax({
 		dataType: "json",
 		url: trkUrl,
@@ -704,7 +710,7 @@ function sglTrack(trkUrl,trkType) {
 			trkObj['trk'] = new google.maps.Polyline({
 				path: newTrack,
 				geodesic: true,
-				strokeColor: trackColor,
+				strokeColor: trkColor,
 				strokeOpacity: 1.0,
 				strokeWeight: 2
 			});
@@ -723,7 +729,6 @@ function sglTrack(trkUrl,trkType) {
 	});
 }
 
-var tstFlag = 0;
 // NO GPX files for Visitor Centers, so start with cluster hikes:
 function drawTracks(cluster,othr) {
 	if ( cluster < clusterPinHikes.length ) {
@@ -732,7 +737,8 @@ function drawTracks(cluster,othr) {
 			var cindx = trackFile.indexOf('.json');
 			trkObj['trkName'] = trackFile.substring(0,cindx);
 			trackFile = 'json/' + trackFile;
-			sglTrack(trackFile,0);
+			clusColor = clusterPinHikes[cluster][5];
+			sglTrack(trackFile,0,clusColor);
 		} else {
 			drawTracks(clusterCnt++,othrCnt);
 		}
@@ -743,7 +749,7 @@ function drawTracks(cluster,othr) {
 				var oindx = trackFile.indexOf('.json');
 				trkObj['trkName'] = trackFile.substring(0,oindx);
 				trackFile = 'json/' + trackFile;
-				sglTrack(trackFile,1);
+				sglTrack(trackFile,1,trackColor);
 			} else {
 				drawTracks(clusterCnt,othrCnt++);
 			}
@@ -757,6 +763,7 @@ function drawTracks(cluster,othr) {
 
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
+/*
 var geoMark;			// the geolocation marker object
 var geoStat = false;    // false if geolocation is off, true if it is enabled
 var firstCall = true;   // invoke geolocation 'firstCall' function only once, first time turned on
@@ -767,8 +774,7 @@ var buttonEna = false;  // when update buttons are enabled...
 var intTarg; 			// variable used to access key value in rateObj
 var chgCnt = 1;			// used in an effort to NOT reuse variables for setInterval
 var rateObj = { 'key1': 'int1' };
-var geoOptions = {
-	enableHighAccuracy: true };
+var geoOptions = { enableHighAccuracy: true };
 		  
 function updateOnClick() {
 	if ( buttonEna ) {
@@ -894,6 +900,49 @@ function getLoc() {
 		window.alert('Geolocation not supported on this browser');
 	}
 }
+*/
 
+// CURRENT USAGE:
+var watchOptions = { enableHighAccuracy: true };
+var geoIcon = medGeo;
+
+var geoTmr = setInterval(turnOnGeoLoc,100);
+
+function turnOnGeoLoc() {
+	if ( mapRdy ) {
+		clearInterval(geoTmr);
+		setupLoc();
+	}
+}
+
+function setupLoc() {
+	if (Modernizr.geolocation) {
+		var myGeoLoc = navigator.geolocation.watchPosition(watchSuccess, watchError, watchOptions);
+		function watchSuccess(pos) {
+			var watchPos = pos.coords;
+			var wLat = watchPos.latitude;
+			var wLng = watchPos.longitude;
+			var newWPos = {lat: wLat, lng: wLng };
+			if ( geoMarker ) {
+				geoMarker.setMap(null);
+				geoMarker = null;
+			}
+			geoMarker = new google.maps.Marker({
+				position: newWPos,
+				map: map,
+				icon: geoIcon,
+				size: new google.maps.Size(24,24),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(12, 12)
+			});
+		} // end of watchSuccess function
+		function watchError(eobj) {
+			msg = '<p>Error in watch call: code ' + eobj.code + '</p>';
+			window.alert(msg);
+		}
+	} else {
+		window.alert('Geolocation not supported on this browser');
+	}
+}
 // //////////////////////////////////////////////////////////////
 	

@@ -33,7 +33,7 @@ body {
 	background-image: url("../images/PageTopper.jpg");
 	background-repeat: no-repeat;
 	background-attachment: scroll;
-	opacity: 0.25; }
+	opacity: 0.30; }
 #logoLeft {
 	color: MidNightBlue;
 	font-size: 15px;
@@ -50,6 +50,29 @@ body {
 	position: absolute;
 	top: 0px;
 	left: 822px; }
+#topper {
+	margin-top: 8px;
+	margin-bottom: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	border-style: solid;
+	border-width: 3px;
+	border-color: DarkBlue;
+	background-color: #EDF2F7; }
+table th {
+	text-align: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-style: solid;
+	border-width: 2px;
+	border-color: DarkBlue; }
+table td {
+	text-align: center;
+	padding: 5px; 
+	background-color: Gainsboro; 
+	border-style: solid;
+	border-width: 1px;
+	border-color: DarkBlue; }
 #hikeInfo {
 	margin-left: 10px;
 	margin-right: 10px;
