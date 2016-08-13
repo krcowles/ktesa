@@ -38,6 +38,7 @@ var modal = (function() {
 			$modal.css({
 				width: '650',
 				height: '400',
+				opacity: '1.0'
 			}).appendTo('body');
 			modal.center();
 			$(window).on('resize',modal.center);
@@ -46,12 +47,14 @@ var modal = (function() {
 			$content.empty();
 			$modal.detach();
 			$(window).off('resize',modal.center);
+			$('.container').css('opacity','1.0');
 		}
 	};
 }());
 // modal-init:
 (function() {
 	var $content = $('#introModal').detach();
+	$('.container').css('opacity','0.4');
 	modal.open($content);
 }());	
 			
