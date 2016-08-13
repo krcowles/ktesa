@@ -269,7 +269,7 @@ var clusterPinHikes = [
 	['Deception Pk',35.807036,-105.783577,'Deception.html','decp.json',trackColor],
 	['Nambe Lake',35.818627,-105.797649,'Nambe.html','nambe.json',altTrkClr1],
 	['La Vega',35.816873,-105.815796,'LaVega.html','vega.json',altTrkClr2],
-	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',trackColor]
+	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',altTrkClr3]
 ];
 var othrHikes = [
 	['Three Rivers',33.419574,-105.987682,'ThreeRivers.html',''],
@@ -319,7 +319,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.22</p>';
+msg = '<p>Push x.23</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -329,7 +329,7 @@ var clusterIcon = prefix + 'images/bluepin.png';
 var hikeIcon = prefix + 'images/redpin.png';
 // icons for geolocation:
 var smallGeo = prefix + 'images/starget.png';
-var medGeo = prefix + 'images/mtarget.png';
+var medGeo = prefix + 'images/grnTarget.png';
 var lgGeo = prefix + 'images/ltarget.png';
 
 // Display whole table when index.html page loads
@@ -389,8 +389,13 @@ function initMap() {
 	mapRdy = true;
 
 	// /////////////   THE HEART OF ALL MARKER CREATION!!   ///////////////
+	// Reference array of markers:
+	markerSet = [];
+	markerObj = { mrkr: 'ref1', mrkrName: 'name1' };
+	
+	
 	function AddVCMarker(location, iconType, pinName, hikePg) {
-		var marker = new google.maps.Marker({
+		var markerObj['mrkr'] = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
@@ -457,7 +462,21 @@ function initMap() {
 		hpg = pgLnk + othrHikes[k][3];
 		AddHikeMarker(loc, sym, nme, hpg);
 	}
-
+    // NOW: INFOWINDOWS...
+    // Once again, need to maintain separate references for all marker/infoWindows:
+    var iwObj = { ref1: 'infoWin1', content1: 'html' };
+    var iwIndx = 0;
+    var iwContent = $('#win1').html();
+    var tstIW =  new google.maps.InfoWindow({
+    	content: iwContent
+    });
+    clusterMarkers[6].addListener('mouseover', function() {
+    	tstIW.open(map, clusterMarkers[6])
+    });
+    clusterMarkers[6].addListener('mouseout', function() {
+    	tstIW.close();
+    });
+    
 	// Establish polylines for areas where trailhead has more than 1 hike
 	// BANDELIER:
 	var BandCtr = {lat: 35.778943, lng: -106.270838 };	
