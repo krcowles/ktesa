@@ -395,7 +395,7 @@ function initMap() {
 	
 	
 	function AddVCMarker(location, iconType, pinName, hikePg) {
-		var markerObj['mrkr'] = new google.maps.Marker({
+		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
@@ -471,7 +471,7 @@ function initMap() {
     	content: iwContent
     });
     clusterMarkers[6].addListener('mouseover', function() {
-    	tstIW.open(map, clusterMarkers[6])
+    	tstIW.open(map, clusterMarkers[6]);
     });
     clusterMarkers[6].addListener('mouseout', function() {
     	tstIW.close();
