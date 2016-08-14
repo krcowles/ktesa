@@ -351,11 +351,10 @@ var pgLnk = useTbl ? 'pages/' : '../pages/';
 
 // There are three separate arrays for markers, based on their characteristic:
 //	1) Visitor Center / Index Pages; 2) "Cluster Hikes" (trailheads overlap or are very
-//  close togther; 3) all other hikes: the following arrays save marker references, but
-//  are not currently used (if need to access to turn on/off)
-//var vcMarkers = [];
-//var clusterMarkers = [];
-//var hikeMarkers = [];
+//  close togther; 3) all other hikes
+var vcMarkers = [];
+var clusterMarkers = [];
+var hikeMarkers = [];
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 // THE MAP CALLBACK FUNCTION:
@@ -390,75 +389,42 @@ function initMap() {
 	mapRdy = true;
 
 	// /////////////   THE HEART OF ALL MARKER CREATION!!   ///////////////
-	function AddVCMarker(location, iconType, pinName, hikePg, indx) {
+	function AddVCMarker(location, iconType, pinName, hikePg) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
-		//vcMarkers.push(marker);
-		// Event definition
-		var hName = ctrPinHikes[indx][0];
-		var hPg = ctrPinHikes[indx][3];
-		var iwContent = '<p>Visitor Center</p>Park: ' + hName + '</p>' +
-				'<a href="pages/' + hPg + '" target="_blank">Hike Index</a>';
-		//$('#dbug').append(iwContent);
-		var iw = new google.maps.InfoWindow({
-			content: iwContent
-		});
-		//marker.addListener('mouseover', function() {
-		//	iw.open(map,marker);
-		//});
+		vcMarkers.push(marker);
 		marker.addListener('click', function() {
-			iw.open(map,marker);
+			window.open(hikePg,'_blank');
 		});
 	}
-	function AddClusterMarker(location, iconType, pinName, hikePg, indx) {
+	function AddClusterMarker(location, iconType, pinName, hikePg) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
-		//clusterMarkers.push(marker);
-		var hName = clusterPinHikes[indx][0];
-		var hPg = clusterPinHikes[indx][3];
-		indx += ctrPinHikes.length;
-		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
-		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
-		var iwContent = '<p>Hike: ' + hName + '</p><p>Length: ' + hLgth + '</p><p>Alt Chg: ' +
-				hElev + '</p><a href="pages/' + hPg + '" target="_blank">Website</a>';
-		var iw = new google.maps.InfoWindow({
-			content: iwContent
-		});
+		clusterMarkers.push(marker);
 		marker.addListener('click', function() {
-			iw.open(map,marker);
+			window.open(hikePg,'_blank');
 		});
 	}
-	function AddHikeMarker(location, iconType, pinName, hikePg, indx) {
+	function AddHikeMarker(location, iconType, pinName, hikePg) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
-		//hikeMarkers.push(marker)
-		var hName = othrHikes[indx][0];
-		var hPg = othrHikes[indx][3];
-		indx += ctrPinHikes.length + clusterPinHikes.length; 
-		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
-		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
-		var iwContent = '<p>Hike: ' + hName + '</p><p>Length: ' + hLgth + '</p><p>Alt Chg: ' +
-				hElev + '</p><a href="pages/' + hPg + '" target="_blank">Website</a>';
-		var iw = new google.maps.InfoWindow({
-			content: iwContent
-		});
+		hikeMarkers.push(marker);
 		marker.addListener('click', function() {
-			iw.open(map,marker);
+			window.open(hikePg,'_blank');
 		});
 	}
-	
 	var loc;
 	var sym;
 	var nme;
@@ -471,7 +437,7 @@ function initMap() {
 		loc = {lat: ctrPinHikes[i][1], lng: ctrPinHikes[i][2] };
 		nme = ctrPinHikes[i][0];
 		hpg = pgLnk + ctrPinHikes[i][3];
-		AddVCMarker(loc, sym, nme, hpg, i);
+		AddVCMarker(loc, sym, nme, hpg);
 	}
 	// Now, the "clustered" hikes:
 	var noOfCHikes = clusterPinHikes.length;
@@ -480,7 +446,7 @@ function initMap() {
 		loc = {lat: clusterPinHikes[j][1], lng: clusterPinHikes[j][2] };
 		nme = clusterPinHikes[j][0];
 		hpg = pgLnk + clusterPinHikes[j][3];
-		AddClusterMarker(loc, sym, nme, hpg, j); // could add color id here...
+		AddClusterMarker(loc, sym, nme, hpg); // could add color id here...
 	}
 	// Finally, the remaining "normal" hike markers
 	var noOfSolo = othrHikes.length;
@@ -489,9 +455,14 @@ function initMap() {
 		loc = {lat: othrHikes[k][1], lng: othrHikes[k][2] };
 		nme = othrHikes[k][0];
 		hpg = pgLnk + othrHikes[k][3];
-		AddHikeMarker(loc, sym, nme, hpg, k);
+		AddHikeMarker(loc, sym, nme, hpg);
 	}
-
+    // NOW: INFOWINDOWS...
+    // Once again, need to maintain separate references for all marker/infoWindows:
+    var iwObj = { ref1: 'infoWin1', content1: 'html' };
+    var iwIndx = 0;
+    
+    
 	// Establish polylines for areas where trailhead has more than 1 hike
 	// BANDELIER:
 	var BandCtr = {lat: 35.778943, lng: -106.270838 };	

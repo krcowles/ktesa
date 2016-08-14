@@ -36,8 +36,8 @@ var modal = (function() {
 		open: function(details) {
 			$content.empty().append(details.html());
 			$modal.css({
-				width: '650',
-				height: '400',
+				width: '940',
+				height: '600',
 				opacity: '1.0'
 			}).appendTo('body');
 			modal.center();
@@ -53,7 +53,7 @@ var modal = (function() {
 }());
 // modal-init:
 (function() {
-	var $content = $('#introModal').detach();
+	var $content = $('#pageModal').detach();
 	$('.container').css('opacity','0.4');
 	modal.open($content);
 }());	

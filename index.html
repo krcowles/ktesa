@@ -21,7 +21,7 @@
 </head>
 
 <body>
-	<div class="container">
+<div id="pageModal">
 		<img id="tompic" src="../ktesa/images/TomAndKenSummit.JPG" alt="Authors on Deception Peak"
 			title="Authors on Deception Peak" />
 		<p id="banner">Welcome to Tom and Ken's <strong>New Mexico Hiking
@@ -40,25 +40,34 @@
 			is that not all of the hikes listed can be found in popular hiking books, or 
 			even in on-line trail apps. References are supplied, however, when
 			available. Check out the interactive features and begin to explore! </p>
-			<p id="dbug"></p>
 		</div> <!-- end of 'features' -->
-		<!-- DISABLED GEOLOCATION BUTTONS & FUNCTIONS FOR NOW 
-		<fieldset id="forMobile">
-			<legend>Geolocation</legend>
-			<div id="geo">
-				  <span class="panelTxt">Enable: &nbsp;</span>
-				  <input id="toggle" class="friendly" onclick="geoLoc();" type=button value="Turn On">
-			</div>
-			<div id="geoExtras">
-				  <span class="panelTxt">Update Rate: &nbsp;</span>
-				  <input class="sw" id="firstRate" onclick="refreshFct1(20000);" type=button value="20sec">
-				  <input class="sw" id="secondRate" onclick="refreshFct2(30000);" type=button value="30sec">
-				  <input class="sw" id="clicker" onclick="updateOnClick();" type=button value="On Click">
-			</div>
-		</fieldset> -->
-
-		<div id="map"></div>
-		<div id="usrTbl"></div>
+		<div id="mapStuff"><em>When you close this window</em>, you will see an interactive
+		   Google map with marker pins denoting locations of the various New Mexico hikes
+		   undertaken by the authors.</p><p>As you zoom in and 
+		   pan to different locations, the table of hikes below the map will list only
+		   those hikes that 
+		   can currently be seen on the map. Clicking on a map marker pin will take you
+		   to the website for that hike. </p><p>Trails with overlapping trailheads appear
+		   as blue pins, and will show their common trailhead when zooming in sufficiently.
+		   Locations of park Visitor's Centers are indicated by green pins.</p>
+		   <p>OR - choose a hike from the table, where additional useful hike 
+		   information is presented. From there, you can click on the specific hike website, 
+		   or go to the hike's corresponding Flickr album.
+			The tables also have sort capability, so that the table sorts in ascending,
+			then descending order, with successive clicks. Click on a hike and see what
+			awaits you!</p>
+		</div>
+		<div id="ftNote">Icons made by <a href="http://www.flaticon.com/authors/tutsplus" title="TutsPlus">TutsPlus</a>
+			 from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by 
+			 <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" 
+			 target="_blank">CC 3.0 BY</a><br />
+		</div>
+</div>  <!-- End of PAGEMODAL -->
+		 
+<div class="container">
+	<div id="map"></div>
+	<p id="dbug"></p>
+	<div id="usrTbl"></div>
 		
 <!-- START WHOLE TABLE LISTING -->
 	<div id="tbl_index">
@@ -1268,10 +1277,6 @@
 			</table>
 		</div>
 <!-- END OF 'WHOLE TABLE' -->
-		<!-- IN JAVASCRIPT NOW
-		<div>
-			<p id="metric" class="dressing">Click here for metric units</p>
-		</div> -->
 	</div>
 <!-- END OF tbl_index -->
 		<div id="disclaimers">A number of the
@@ -1300,34 +1305,7 @@
 		etc... <a href="mailto:krcowles29@gmail.com">email us!</a>
 		</p>
 	</div> <!-- end of container -->
-	<div id="ftNote">Icons made by <a href="http://www.flaticon.com/authors/tutsplus" title="TutsPlus">TutsPlus</a>
-		 from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by 
-		 <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" 
-		 target="_blank">CC 3.0 BY</a></div>
-	<div id="introModal">
-		<p id="intro2intro">Welcome to our site!</p>
-		<p>On this site, you will see an interactive Google map showing locations of the 
-		   various New Mexico hikes undertaken by the authors.</p><p>As you zoom in and 
-		   pan to different 
-		   locations, the table of hikes below the map will list only those hikes that 
-		   can currently be seen on the map. Clicking on a map marker pin will take you
-		   to the website for that hike. </p><p>Trails with overlapping trailheads appear
-		   as blue pins, and will show their common trailhead when zooming in sufficiently.
-		   Locations of park Visitor's Centers are indicated by green pins.</p><p>
-		   OR - choose a hike from the table, where additional useful hike 
-		   information is presented. From there, you can click on the specific hike website, 
-		   or go to the hike's corresponding Flickr album.
-			The tables also have sort capability, so that the table sorts in ascending,
-			then descending order, with successive clicks. Click on a hike and see what
-			awaits you!</p>
-	</div>
-	<div id="infoWins">
-		<div id="win1">
-			<p id="thisHike">NAME</p>
-			<a href="x" target="_blank">Website</a>
-			<p id="centerMap">Center Map</p>
-		<div>
-	</div>
+	
 	<script src="scripts/modernizr-custom.js"></script>
 	<script src="scripts/main.js"></script>
 	<script src="scripts/map.js"></script>
