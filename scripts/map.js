@@ -319,7 +319,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.23</p>';
+msg = '<p>Push x.24</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -401,8 +401,8 @@ function initMap() {
 		// Event definition
 		var hName = ctrPinHikes[indx][0];
 		var hPg = ctrPinHikes[indx][3];
-		var iwContent = '<p>Visitor Center</p>Park: ' + hName + '</p>' +
-				'<a href="pages/' + hPg + '" target="_blank">Hike Index</a>';
+		var iwContent = '<div id="iwVC"><p>Visitor Center<br>Park: ' + hName + '<br>' +
+				'<a href="pages/' + hPg + '" target="_blank">Hike Index</a></p></div>';
 		//$('#dbug').append(iwContent);
 		var iw = new google.maps.InfoWindow({
 			content: iwContent
@@ -427,8 +427,10 @@ function initMap() {
 		indx += ctrPinHikes.length;
 		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
 		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
-		var iwContent = '<p>Hike: ' + hName + '</p><p>Length: ' + hLgth + '</p><p>Alt Chg: ' +
-				hElev + '</p><a href="pages/' + hPg + '" target="_blank">Website</a>';
+		var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
+		var iwContent = '<div id="iwCH">Hike: ' + hName + '<br>Difficulty: ' +
+			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
+			hPg + '" target="_blank">Website</a></div>';
 		var iw = new google.maps.InfoWindow({
 			content: iwContent
 		});
@@ -449,8 +451,10 @@ function initMap() {
 		indx += ctrPinHikes.length + clusterPinHikes.length; 
 		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
 		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
-		var iwContent = '<p>Hike: ' + hName + '</p><p>Length: ' + hLgth + '</p><p>Alt Chg: ' +
-				hElev + '</p><a href="pages/' + hPg + '" target="_blank">Website</a>';
+		var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
+		var iwContent = '<div id="iwOH">Hike: ' + hName + '<br>Difficulty: ' +
+			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
+			hPg + '" target="_blank">Website</a></div>';
 		var iw = new google.maps.InfoWindow({
 			content: iwContent
 		});

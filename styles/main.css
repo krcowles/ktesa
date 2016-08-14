@@ -40,10 +40,12 @@ img#tompic {
 	margin-top: 30px; }
 #mapStuff {
 	margin-left: 8px; }
+#closeNote {
+	color: DarkGreen; }
 .modal {
 	text-align: left;
 	padding: 10px;
-	background-color: #eff2ef;
+	background-color: #eff0ef;
     position: absolute;
     border-style: ridge;
     border-width: 4px;
@@ -55,6 +57,21 @@ img#tompic {
 	font-size: 18px;
 	color: blue;
 	text-align: center; }
+#iwVC {
+	background-color: #f0f0f0;
+	color: DarkGreen;
+	padding: 8px;
+	margin: 3px; }
+#iwCH {
+	background-color: #f0f0f0;
+	color: DarkBlue;
+	padding: 8px;
+	margin: 3px; }
+#iwOH {
+	background-color: #f0f0f0;
+	color: DarkBlue;
+	padding: 8px;
+	margin: 3px; }
 #map {
 	margin-left: auto;
 	margin-right: auto;
