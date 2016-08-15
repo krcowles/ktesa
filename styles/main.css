@@ -42,10 +42,12 @@ img#tompic {
 	margin-left: 8px; }
 #closeNote {
 	color: DarkGreen; }
+#it2 {
+	color: DarkBlue; }
 .modal {
 	text-align: left;
 	padding: 10px;
-	background-color: #eff0ef;
+	background-color: #d5d7d5;
     position: absolute;
     border-style: ridge;
     border-width: 4px;

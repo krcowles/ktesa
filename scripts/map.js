@@ -10,7 +10,7 @@ var useTbl = $('title').text() == 'Hike Map' ? false : true;
 if ( useTbl ) {
 	// Table html wrapper, to be populated with rows later in script (see 'var outHike'):
 	
-	// when row-finding is enabled, use the next 2 lines:
+	// -- when row-finding is enabled, use the next 2 lines instead...
 	//var tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
 	//tblHtml += ' onMouseOut="javascript:undoMarker();">';
 	var tblHtml = '<table class="msortable">';
@@ -319,7 +319,7 @@ var othrHikes = [
 	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];
 
-msg = '<p>Push x.24</p>';
+msg = '<p>Push x.25</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -626,9 +626,9 @@ function initMap() {
 			tesLines.setMap(map);
 			CliffMacLines.setMap(map);
 			mmtLines.setMap(map);
-			for (var m=0; m<ctrPinHikes.length; m++) {
-				vcMarkers[m].setMap(null);
-			}
+			//for (var m=0; m<ctrPinHikes.length; m++) {
+			//	vcMarkers[m].setMap(null);
+			//}
 		} else {
 			Blines.setMap(null);
 			KinAltLines.setMap(null);
@@ -637,9 +637,9 @@ function initMap() {
 			tesLines.setMap(null);
 			CliffMacLines.setMap(null);
 			mmtLines.setMap(null);
-			for (var n=0; n<ctrPinHikes.length; n++) {
-				vcMarkers[n].setMap(map);
-			}
+			//for (var n=0; n<ctrPinHikes.length; n++) {
+			//	vcMarkers[n].setMap(map);
+			//}
 		}
 	});
 	
