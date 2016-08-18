@@ -316,7 +316,8 @@ var othrHikes = [
 	['Valle Grande',35.857077,-106.491058,'ValleGrandeInSnow.html','vgrand.json'],
 	['Viewpoint Loop',35.264798,-105.33362,'Villanueva.html',''],
 	['Williams Lake',36.572704,-105.436408,'WilliamsLake.html',''],
-	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
+	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json'],
+	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
 msg = '<p>Push x.25</p>';

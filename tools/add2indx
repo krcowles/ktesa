@@ -1,11 +1,12 @@
 #!/bin/bash
-# VERSION 6: Revised for new Google Map index page (no regions, also fix .js)
+# VERSION 7: Update for increased table elements and map.js markers & tracks
 # Specify starting & default values for shell variables 
 MAPFILE=0
 TOM=0
 indxLoc="/Users/kencowles/src/ktesa/index.html"
 mapjsLoc="/Users/kencowles/src/ktesa/scripts/map.js" 
 geomapLoc="/Users/kencowles/src/ktesa/maps/"
+jsonLoc="/Users/kencowles/src/ktesa/json/"
 # Now process command line arguments
 for i
 do
@@ -19,15 +20,19 @@ do
 	fi
         # find flags:
         case $i in
-	-T) read -p "TOM: Specify your complete filespec for the index page: " indxLoc
-            read -p "TOM: Also specify the complete filespec for the map.js file: " mapjsLoc
-            read -p "FINALLY: specify the DIRECTORY (ending with \"/\") for the geomap: " geomapLoc ;;
+	-T) read -p "TOM: Specify your complete filespec (include index.html) for the index page: " indxLoc
+            read -p "TOM: Also specify the complete filespec (include map.js) for the map.js file: " mapjsLoc
+            read -p "TOM: specify the DIRECTORY (ending with \"/\") for the geomap: " geomapLoc
+	    read -p "Lastly, provide the complete filespec for the json DIRECTORY (with ending \"/\"): " jsonLoc ;;
 	-m) MAPFILE=1 ;;
 	-h) echo "
-*** Version 6
-Compatible with new Google Map index page; potentially modifies both index.html and map.js
-User can choose not to modify, but independently save local copies of modified files.
+*** Version 7
+Updated to add increased number of data elements per row of table in index.html
+and added updates to map.js to accommodate marker and track creation
 "
+#*** Version 6
+#Compatible with new Google Map index page; potentially modifies both index.html and map.js
+#User can choose not to modify, but independently save local copies of modified files.
 #*** Version 5
 #Added checking of map file to ensure Google API key is present
 #*** Version 4.1
@@ -90,7 +95,7 @@ if [ $mapreqd -gt 0 ]
 then {
         good="NotOK"
         while
-	        [ $good != OK ]
+	        [ $good != "OK" ]
         do
             msg=$'\nGeomap name (including file extension): '
             echo "$msg" "$mapfile"
@@ -143,7 +148,7 @@ then {
 		echo ""
 		read -p "** API key not detected in map; Do you wish to overwrite "${mapfile}" with key? [Y/N]: " answer
 		while
-		        [ $good != OK ]
+		        [ $good != "OK" ]
 		do
 		        case $answer in
 		                [nN]* ) echo "No changes made" 
@@ -155,7 +160,10 @@ then {
 		        esac
 		done
 	}
-	else echo "Key already present - nothing modified"
+	else {
+		echo "Key already present - nothing modified"
+		rm zool
+	}
 	fi
 }
 fi
@@ -171,39 +179,66 @@ fi
 echo "The file:" "$indxLoc" "will be modified (if user opts) to add a row to the table"
 fext=.html
 echo ""
-# start prompting for data, depending on whether or not the entry is an index site:
+# in order to properly create the markers & tracks in the js file, this utility needs to know
+# what "type" the hike is, as below:
+echo "This routine needs to know what kind of hike to specify [CAPITAL LETTERS ONLY]:
+     Type \"V\" for Park Visitor Center-based marker (i.e. index page);
+     Type \"C\" for cluster hike - i.e. trailhead in very close proximity to another, or overlapping;
+     Type \"H\" for \"normal\" hike - i.e. none of the above types."
+read -p "Enter single letter here: " hikeType
 good="NotOK"
-echo ""
 while
-	[ $good != "OK" ]
+        [ $good != "OK" ]
 do
-	read -p "Is this table entry for an Index Site (page with another table of links)? [Y or N]: " answer
-    case $answer in
-        [nN]* ) notindx=1
-		good="OK";;
-        [yY]* ) notindx=0
-		echo "The following parameters will be pre-assigned:"
-		echo "    Distance: 0* miles"
-		echo "    Elevation: 0* ft"
-		echo "    Difficulty: See Indx"
-		echo "    Exposure: See Indx"
-		echo "    Flickr album entry: See Indx"
-		echo "Row class will be \"indxd\""
-		good="OK";;
-        * ) echo "Y or N only please!";;
-    esac
+        msg=$'\nYou selected: '
+        echo "$msg""$hikeType"
+        read -p "Is this the type of marker you wish to use [Capital Letter Only]? [Y or N]: " answer
+        case $answer in
+                [nN]* ) read -p "Re-enter single-letter marker type [Capital Letter Only]: [V, C, H]: " hikeType ;;
+                [yY]* ) good="OK" ;;
+                * ) echo "Y or N only please!" ;;
+        esac
+        if [ $hikeType != "C" ] && [ $hikeType != "V" ] && [ $hikeType != "H" ]
+        then {
+                read -p "Unrecognized type; enter [cap. V, C, or H]: " hikeType
+                good="NotOK"
+        }
+        fi
 done
-good="NotOK"
+notindx=1
+case $hikeType in
+        V) hikeAR="ctrPinHikes"
+	   echo "setting notindx=0"
+	   notindx=0 ;;
+        C) hikeAR="clusterPinHikes" ;;
+        H) hikeAR="othrHikes" ;;
+esac
+if [ $notindx -eq 0 ]
+then {
+	echo "The following parameters will be pre-assigned:"
+	echo "    WOW Factor: See Indx"
+        echo "    Distance: 0* miles"
+        echo "    Elevation: 0* ft"
+        echo "    Difficulty: See Indx"
+        echo "    Exposure: See Indx"
+	echo "    Google Directions: See Indx"
+        echo "    Flickr album entry: See Indx"
+        echo "Row class will be \"indxd\""
+}
+fi
 echo ""
 read -p "Enter the name of the hike location (nearest city): " city
 read -p "Enter hike name [Append with \"Index\" for Index pages]: " hike
-read -p "Enter hike (or index site) html page [* Assumed to be in project pages dir with .html extension]: " webpg
+read -p "Enter hike page (or index site) base filename [* Assumed to be in project pages dir with .html extension]: " webpg
 if [ $notindx -gt 0 ]
 then {
+	dirs=""
+	read -p "Enter WOW Factor: " wow
 	read -p "Enter hike distance (round trip) in miles: " miles
 	read -p "Enter hike elevation max in feet: " elev
 	read -p "Enter hike difficulty: " ease
 	read -p "Enter S (sunny-exposed), M (mix sun-shade), or W (well-shaded): " exp
+	read -p "Enter Google Map Directions link, if known (otherwise hit RETURN): " dirs
 	if [ -f FlckrAlbumURL ] 
 	then
 		flnk=`cat FlckrAlbumURL`
@@ -217,7 +252,7 @@ echo "*** Check the data for accuracy before proceeding ***"
 # ----------------- TEST THE INPUT DATA --------------------
 good="NotOK"
 while
-	[ $good != OK ]
+	[ $good != "OK" ]
 do
     msg=$'\nLocation: '
     echo "$msg" $city
@@ -230,7 +265,7 @@ do
 done
 good="NotOK"
 while
-        [ $good != OK ]
+        [ $good != "OK" ]
 do
     msg=$'\nHike Name: '
     echo "$msg" $hike
@@ -242,12 +277,39 @@ do
     esac
 done
 good="NotOK"
+while
+	[ $good != "OK" ]
+do
+	msg=$'\nWeb page for hike (or index): pages/'
+	echo "$msg"$webpg".html"
+	read -p "Is this the correct webpage html file? [Y or N]: " answer
+	case $answer in
+	    [nN]* ) read -p "Enter correct web page base name [* Assumed to be in project pages dir with .html extension]: " webpg ;;
+	    [yY]* ) good="OK" ;;
+	    * ) echo "Y or N only please!" ;;
+	esac
+done
 # if the entry is not an index site, prompt for the distance, elevation, ease of hike::
 if [ $notindx -gt 0 ]
 then {
-	# DISTANCE:
+	# WOW FACTOR:
+	good="NotOK"
 	while
-	        [ $good != OK ]
+       		 [ $good != "OK" ]
+	do
+    		msg=$'\nWow Factor: '
+    		echo "$msg" $wow
+   		read -p "Is the specified WOW Factor correct? [Y/N]: " answer
+    		case $answer in
+        		[nN]* ) read -p "Enter correct WOW Factor here: " wow ;;
+        		[yY]* ) good="OK" ;;
+        		* ) echo "Y or N only pleas!" ;;
+    		esac
+	done
+	# DISTANCE:
+	good="NotOK"
+	while
+	        [ $good != "OK" ]
 	do
 	    msg=$'\nDistance (miles): '
 	    echo "$msg" $miles
@@ -261,7 +323,7 @@ then {
 	good="NotOK"
 	# ELEVATION:
 	while
-       	 [ $good != OK ]
+       	 [ $good != "OK" ]
 	do
 	    msg=$'\nElevation (feet): '
 	    echo "$msg" $elev
@@ -275,7 +337,7 @@ then {
 	good="NotOK"
 	# EASE OF HIKE:
 	while
-       	 [ $good != OK ]
+       	 [ $good != "OK" ]
 	do
 	    msg=$'\nEase of hike: '
 	    echo "$msg" $ease
@@ -309,7 +371,7 @@ then {
 	fi
 	# now that there is a legitimate setting, ask the user if it is the one desired:
 	while 
-	    [ $good != OK ]
+	    [ $good != "OK" ]
 	do
 	    msg=$'\nExposure Factor: '
 	    echo "$msg" $exp
@@ -340,9 +402,41 @@ then {
 	    esac
 	done
 	good="NotOK"
+	# Directions
+	while [ $good != "OK" ]
+	do
+	    echo ""
+	    read -p "Is there currently a known link to Google map directions? [Y/N]: " answer
+	    case $answer in
+		[nN]* ) dirs="" 
+			dirstest=0
+			good="OK" ;;
+		[yY]* )	dirstest=1
+			good="OK" ;;
+		* ) echo "Y or N only please!" ;;
+            esac
+        done
+	if [ $dirstest -gt 0 ] 
+	then {
+	    good="NotOK"
+	    while
+		[ $good != "OK" ]
+	    do
+	    	msg=$'\nGoogle map directions link: '
+            	echo "$msg" $dirs
+	    	read -p "Is that the correct link? [y/N]: " answer
+	    	case $answer in 
+	  		[nN]* ) read -p "Enter correct link to Google map directions here: " dirs ;;
+			[yY]* ) good="OK" ;;
+			* ) echo "Y or N only please!"
+	    	esac
+	    done
+	}
+	fi
+	good="NotOK"
 	# LASTLY, Check Flickr album line
 	while
-    	    [ $good != OK ]
+    	    [ $good != "OK" ]
 	do
 	    msg=$'\nFlickr album link: '
 	    echo "$msg" $flnk
@@ -365,20 +459,6 @@ then {
 	esac
 }
 fi
-
-# whether an index site or not, prompt for the following:
-while
-        [ $good != OK ]
-do
-    msg=$'\nNew html web page name: '
-    echo "$msg""pages/"${webpg}${fext}
-    read -p "Is the html web page name Correct? [Y or N]: " answer
-    case $answer in
-        [nN]* ) read -p "Enter correct html name (no .html extension) here: " webpg;;
-        [yY]* ) good="OK";;
-        * ) echo "Y or N only please!";;
-    esac
-done
 # ----------------------- END OF INPUT DATA TESTING ----------------------
 
 # Now, create the new table entry:
@@ -387,22 +467,24 @@ then {
 	echo "                    <tr>
                         <td>""$city""</td>
                         <td>""$hike""</td>
+                        <td>""$wow""</td>
                         <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
                             <img class=\"webShift\" src=\"images/greencheck.jpg\" alt=\"checkbox\" /></a></td>
                         <td>""$miles"" miles</td>
                         <td>""$elev"" ft</td>
                         <td>""$ease""</td>
                         <td><img class=\"expShift\" src=\""$expIcon"\" alt=\""$expTxt"\" /></td>
+                        <td><a href=\""$dirs"\" target=\"_blank\">MapIt!</a></td>
                         <td><a href=\""$flnk"\" target=\"_blank\">
                             <img class=\"flckrShift\" src=\"images/flckr.jpg\" alt=\"Flickr symbol\" /></a></td>
                     </tr>" > newRow
-
 }
 else {
 # if an index site, some parameters are automatically assigned or empty:
 	echo "                    <tr class=\"indxd\">
                         <td>""$city""</td>
                         <td>""$hike""</td>
+                        <td>See Indx</td>
                         <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
                             <img class=\"webShift\" src=\"images/indxCheck.png\" alt=\"checkbox\" /></td>
                         <td>0* miles</td>
@@ -410,16 +492,42 @@ else {
                         <td>See Indx</td>
                         <td>See Indx</td>
                         <td>See Indx</td>
+                        <td>See Indx</td>
                     </tr>" > newRow
 }
 fi
 # pull in the index.html file:
-indxHd=`/usr/bin/awk '{
-	#Get the end of the table, marked by the </tbody> tag:
-	if( match($0,/<\/tbody>/) ) {
-		eotbl=NR
-		eotbl=eotbl-1
-		print eotbl
+# NOTE: the location of this entry depends on hike type!
+indxHd=`/usr/bin/awk -v loc="$hikeType" '
+BEGIN {
+	located=0
+}
+{
+	if( loc == "V" ) {
+		#Find the end of the indexed hikes in the table
+		if ( located == 0 ) {
+			if ( match($0,/<tr class=\"indxd\">/) ) {
+				while ( located == 0 ) {
+					getline
+					if( match($0,/<tr>/) ) {
+						located = 1
+						indxEnd=NR
+						indxEnd=NR-1
+						print indxEnd
+						break
+					}
+				}
+			}
+		}
+	}
+	else {
+		#Get the end of the table, marked by the </tbody> tag:
+		if( match($0,/<\/tbody>/) ) {
+       		 	eotbl=NR
+       		       	eotbl=eotbl-1
+       	        	print eotbl
+       		 }
+
 	}
 }'  "$indxLoc"`
 head -n "$indxHd" "$indxLoc" > IndxHead.html
@@ -435,13 +543,13 @@ echo "
 The following data will be added:"
 if [ $notindx -gt 0 ]
 then
-diff newindex.html "$indxLoc" | tail -12
+diff newindex.html "$indxLoc" | tail -14
 else
-diff newindex.html "$indxLoc" | tail -11
+diff newindex.html "$indxLoc" | tail -13
 fi
 good="NotOK"
 while
-        [ $good != OK ]
+        [ $good != "OK" ]
 do
 	read -p "Do you wish to permanently save these changes in $indxLoc [Y/N]? " ans
 	case $ans in
@@ -468,35 +576,6 @@ fi
 echo ""
 echo "The file:" "$mapjsLoc" "will be modified (if user opts) to add a marker to the map"
 echo ""
-echo "This routine needs to know what kind of marker to specify [CAPITAL LETTERS ONLY]:
-     Type \"V\" for Visitor Center-based marker (i.e. index page);
-     Type \"C\" for cluster hike - i.e. hike in very close proximity to another;
-     Type \"H\" for \"normal\" hike - i.e. none of the above types."
-read -p "Enter single letter here: " hikeType
-good="NotOK"
-while 
-	[ $good != OK ]
-do
-	msg=$'\nYou selected: '
-        echo "$msg""$hikeType"
-        read -p "Is this the type of marker you wish to use [Capital Letter Only]? [Y or N]: " answer
-        case $answer in
-		[nN]* ) read -p "Re-enter single-letter marker type [Capital Letter Only]: [V, C, H]: " hikeType ;;
-		[yY]* ) good="OK" ;;
-		* ) echo "Y or N only please!" ;;
-        esac
-	if [ $hikeType != C ] && [ $hikeType != V ] && [ $hikeType != H ]  
-        then {
-                read -p "Unrecognized type; enter [V, C, or H]: " hikeType
-		good="NotOK"
-        }
-        fi
-done
-case $hikeType in
-	V) hikeAR="ctrPinHikes" ;;
-	C) hikeAR="clusterPinHikes" ;;
-	H) hikeAR="othrHikes" ;;
-esac
 #Find the line number to start adding the new marker data
 mapjsHd=`/usr/bin/awk -v MArray=$hikeAR '
 BEGIN {
@@ -518,16 +597,24 @@ BEGIN {
 	}
 }' $mapjsLoc`
 head -n "$mapjsHd" "$mapjsLoc" > newmap.js
-sed -i.bck '$s/$/,/' newmap.js
-rm newmap.js.bck
+if [ hikeType == "H" ]
+then {
+	sed -i.bck '$s/$/,/' newmap.js
+	rm newmap.js.bck
+}
+else {
+	sed -i.bck '$s/$/,/' newmap.js
+	rm newmap.js.bck
+}
+fi
 mapLgth=`cat "$mapjsLoc" | wc -l`
 tailCnt=$(( $mapLgth - $mapjsHd ))
-tailCnt=$(( $tailCnt + 1 ))
+#tailCnt=$(( $tailCnt + 1 ))
 tail -n "$tailCnt" "$mapjsLoc" > maptail.js
 read -p "Please enter the latitude for this marker: " lat
 good="NotOK"
 while 
-	[ $good != OK ]
+	[ $good != "OK" ]
 do
 	msg=$'\nYou entered a latitude of '
 	echo "$msg""$lat"
@@ -541,7 +628,7 @@ done
 read -p "Please enter the longitude for this marker (negative number): " lng
 good="NotOK"
 while
-        [ $good != OK ]
+        [ $good != "OK" ]
 do
         msg=$'\nYou entered a longitude of '
         echo "$msg""$lng"
@@ -552,16 +639,70 @@ do
                 * ) echo "Y or N only please!";;
         esac
 done
-echo "	['""$hike""',""$lat"",""$lng"",'""$webpg"".html']" > latlng
+if [ $hikeType != "V" ]
+then {
+	good="NotOK"
+
+	while
+		[ $good != "OK" ]
+	do
+	    read -p "Is there a json (GPX) track file for this hike? [Y or N]: " answer
+	    case $answer in
+		[nN]* ) trackPres=0
+			json=""
+			trkclr="noTrk"
+			good="OK" ;;
+		[yY]* ) trackPres=1
+			read -p "Enter the json filename (with extension: must reside in json dir: " json
+			good="OK" ;;
+		* ) echo "Y or N only please!" ;;
+	    esac
+	done
+	if [ $trackPres -gt 0 ]
+	then {
+		good="NotOK"
+		trkclr="trackColor"
+		while
+			[ $good != "OK" ]
+		do
+			msg=$'\nYou entered a json filename of: '
+			echo "$msg" "$json"
+			read -p "Is the filename correct? [Y/N]: " answer
+			case $answer in 
+			    [nN]* ) read -p "Enter correct filename here (with extension): " json ;;
+			    [yY]* ) good="OK" ;;
+			    * ) echo "Y or N only please!" ;;
+			esac
+		done
+	}
+	fi
+}
+fi
+if [ $hikeType == "C" ]
+then {
+	echo "        ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','""$json""',""$trkclr""]" > latlng
+}
+else {
+	if [ $hikeType == "H" ]
+	then {
+		echo "        ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','""$json""']" > latlng
+	}
+	else {
+		echo "        ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','']" > latlng
+	}
+	fi
+}
+fi
 cat latlng >> newmap.js
 rm latlng
 cat maptail.js >> newmap.js
 rm maptail.js
-echo "Here are the changes made to the map.js file:"
+echo "Here are the potential changes for the map.js file:"
+echo "NOTE: < changes listed first, > current map.js file second"
 diff newmap.js "$mapjsLoc"
 good="NotOK"
 while
-        [ $good != OK ]
+        [ $good != "OK" ]
 do
         read -p "Do you wish to permanently save these changes in $mapjsLoc [Y/N]? " ans
         case $ans in
