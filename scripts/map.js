@@ -320,7 +320,7 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.25</p>';
+msg = '<p>Push x.26</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -764,7 +764,7 @@ function sglTrack(trkUrl,trkType,trkColor) {
 			}
 		},
 		error: function() {
-			msg = '<p>Did not succeed in getting JSON data</p>';
+			msg = '<p>Did not succeed in getting JSON data: ' + trkUrl + '</p>';
 			$('#dbug').append(msg);
 		}
 	});
