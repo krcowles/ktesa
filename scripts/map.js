@@ -320,7 +320,7 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.28</p>';
+msg = '<p>Push x.29</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -519,14 +519,6 @@ function initMap() {
         strokeWeight: 2
 	});
 	Blines.setMap(null);
-	var tstWin = 'Bandelier Line';
-	var tstInfo = new google.maps.InfoWindow({
-		content: tstWin
-	});
-	Blines.addListener('mouseover', function() {
-		tstInfo.open(map, Blines);
-	});
-	
 	var KinAltoLoc = {lat: 36.064977, lng: -107.969867 };
 	var KinAltMrkrLocs = [
 		{lat: 36.063864, lng: -107.981315 },
@@ -761,7 +753,7 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 				geodesic: true,
 				strokeColor: trkColor,
 				strokeOpacity: 1.0,
-				strokeWeight: 2
+				strokeWeight: 3
 			});
 			trkObj['trk'].setMap(map);
 			allTheTracks.push(trkObj);
@@ -780,12 +772,13 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 			var iwContent = '<div id="iwOH">Hike: ' + hName + '<br>Difficulty: ' +
 				hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
 				hPg + '" target="_blank">Website</a></div>'; 
-			var iwContent = 'POLYLINE';
 			var iw = new google.maps.InfoWindow({
 				content: iwContent
 			});
-			trkObj['trk'].addListener('mouseover', function() {
-				iw.open(map,trkObj['trk']);
+			trkObj['trk'].addListener('mouseover', function(mo) {
+				var trkPtr = mo.latLng;
+				iw.setPosition(trkPtr);
+				iw.open(map);
 			});
 			trkObj['trk'].addListener('mouseout', function() {
 				iw.close();
