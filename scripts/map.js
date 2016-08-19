@@ -320,7 +320,7 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.27</p>';
+msg = '<p>Push x.28</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -519,6 +519,14 @@ function initMap() {
         strokeWeight: 2
 	});
 	Blines.setMap(null);
+	var tstWin = 'Bandelier Line';
+	var tstInfo = new google.maps.InfoWindow({
+		content: tstWin
+	});
+	Blines.addListener('mouseover', function() {
+		tstInfo.open(map, Blines);
+	});
+	
 	var KinAltoLoc = {lat: 36.064977, lng: -107.969867 };
 	var KinAltMrkrLocs = [
 		{lat: 36.063864, lng: -107.981315 },
@@ -771,7 +779,8 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 			var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
 			var iwContent = '<div id="iwOH">Hike: ' + hName + '<br>Difficulty: ' +
 				hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
-				hPg + '" target="_blank">Website</a></div>';
+				hPg + '" target="_blank">Website</a></div>'; 
+			var iwContent = 'POLYLINE';
 			var iw = new google.maps.InfoWindow({
 				content: iwContent
 			});
