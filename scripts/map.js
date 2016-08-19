@@ -320,7 +320,7 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.26</p>';
+msg = '<p>Push x.27</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -742,7 +742,7 @@ function startTracks() {
 	}
 }
 
-function sglTrack(trkUrl,trkType,trkColor) {
+function sglTrack(trkUrl,trkType,trkColor,indx) {
 	$.ajax({
 		dataType: "json",
 		url: trkUrl,
@@ -757,6 +757,30 @@ function sglTrack(trkUrl,trkType,trkColor) {
 			});
 			trkObj['trk'].setMap(map);
 			allTheTracks.push(trkObj);
+			if ( trkType ) {
+				var hName = othrHikes[indx][0];
+				var hPg = othrHikes[indx][3];
+				indx += ctrPinHikes.length + clusterPinHikes.length;
+			} else {
+				var hName = clusterPinHikes[indx][0];
+				var hPg = clusterPinHikes[indx][3];
+				indx += ctrPinHikes.length;
+			}
+			var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
+			var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
+			var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
+			var iwContent = '<div id="iwOH">Hike: ' + hName + '<br>Difficulty: ' +
+				hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
+				hPg + '" target="_blank">Website</a></div>';
+			var iw = new google.maps.InfoWindow({
+				content: iwContent
+			});
+			trkObj['trk'].addListener('mouseover', function() {
+				iw.open(map,trkObj['trk']);
+			});
+			trkObj['trk'].addListener('mouseout', function() {
+				iw.close();
+			});
 			if ( trkType == 0 ) {
 				drawTracks(clusterCnt++,othrCnt);
 			} else {
@@ -779,7 +803,7 @@ function drawTracks(cluster,othr) {
 			trkObj['trkName'] = trackFile.substring(0,cindx);
 			trackFile = 'json/' + trackFile;
 			clusColor = clusterPinHikes[cluster][5];
-			sglTrack(trackFile,0,clusColor);
+			sglTrack(trackFile,0,clusColor,cluster);
 		} else {
 			drawTracks(clusterCnt++,othrCnt);
 		}
@@ -790,7 +814,7 @@ function drawTracks(cluster,othr) {
 				var oindx = trackFile.indexOf('.json');
 				trkObj['trkName'] = trackFile.substring(0,oindx);
 				trackFile = 'json/' + trackFile;
-				sglTrack(trackFile,1,trackColor);
+				sglTrack(trackFile,1,trackColor,othr);
 			} else {
 				drawTracks(clusterCnt,othrCnt++);
 			}

@@ -120,7 +120,7 @@ has successfully completed.
 	
 18. Use the utility 'add2indx' to create the new row in the index.html file and to add
 	the required hike data into map.js for creating markers & tracks. Use add2indx -h
-	to assess needed information: be sure you have the geomap name, the trail latitude
+	to assess needed information: be sure you have the geomap name, the latitude
 	and longitude of the trailhead, and the name of the json track file created above.
 
 19. Double-click the index.html file to ensure that the entries are correct, and that
@@ -135,6 +135,57 @@ has successfully completed.
 	http://krcowles.github.io/ktesa
 	
 II. Images with no iFrame (but possibly other generic map images)
-------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+This process describes how to create a website page when there is no map or GPX file.
+It is largely the same as above with the following exceptions:
+------------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------
+ 1-6. Same
+ 7.  There is no GPX file, and it is not required.
+ 8.  Use the 'mkpgfile' utility instead of the 'mkgpsv' utility. The -h help details the
+     required/optional arguments. It is very similar except that the GPS data will not
+     be captured, if there is any (often there isn't any on older photos). The same
+     NOTE applies.
+     
+ 9.  Instead of using a GPSVisualizer map, you may wish to create a jpg file of another
+     online map (or screen capture, for example) to clarify the hike location. Place the 
+     jpg file in the images directory.
+
+10-11.  Copy any required files into the build directory:
+-----------------------------------------------------------------------------------------
+    THE FOLLOWING FILES MUST ALL RESIDE IN THE SAME DIRECTORY ['build'] IN ORDER FOR
+    THE PAGE CREATION TOOLS TO WORK - This is due to ajax restrictions on writing to a 
+    local computer via javascript. Copy these from your work area to the build directory.
+    	- newPgNoFrame.html [should already reside there]
+    	- newPgNoFrame.js [should already reside there]
+    	- newPgNoFrame.css [should already reside there]
+    	- jQuery-1.12.1.js [should already reside there, OR a newer version of it]
+    	- <hike>.tsv
+		- other jpg you wish to include
+-----------------------------------------------------------------------------------------
+
+12. Using the html editor of choice: Edit the "newPgNoFrame.html" file from the build
+    directory and list the photo names EXACTLY as they appear in the Flickr album and
+    work area. The names will reside in the list area <li> elements. Also specify the 
+    <hike>.tsv file in the corresponding <p> element. This file provides the opportunity
+    to supply two types of additional images: 1) images for which you may create your
+    own captions; 2) images for which no captions will appear when moused-over. These
+    areas are clearly marked in the body.
+    
+13. Run the tool:
+	Double-click the newPgNoFrame.html file
+	
+14. Same
+
+15. Before invoking the newly saved <hike>.html file, move the following files from the
+    build directory:
+    	- <hike.tsv> should be moved to the project/gpsv directory
+    	- .jpg files in the images directory
+    	
+16. Same
+
+17. N/A
+
+18. Same, no json file.
+
+19. Same
