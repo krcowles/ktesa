@@ -320,7 +320,7 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.29</p>';
+msg = '<p>Push x.30</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -402,8 +402,10 @@ function initMap() {
 		// Event definition
 		var hName = ctrPinHikes[indx][0];
 		var hPg = ctrPinHikes[indx][3];
+		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var iwContent = '<div id="iwVC"><p>Visitor Center<br>Park: ' + hName + '<br>' +
-				'<a href="pages/' + hPg + '" target="_blank">Hike Index</a></p></div>';
+				'<a href="pages/' + hPg + '" target="_blank">Hike Index Pg</a>' + '<br>' +
+				 hDir + '</p></div>';
 		//$('#dbug').append(iwContent);
 		var iw = new google.maps.InfoWindow({
 			content: iwContent
@@ -426,12 +428,13 @@ function initMap() {
 		var hName = clusterPinHikes[indx][0];
 		var hPg = clusterPinHikes[indx][3];
 		indx += ctrPinHikes.length;
+		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
 		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
 		var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
 		var iwContent = '<div id="iwCH">Hike: ' + hName + '<br>Difficulty: ' +
 			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
-			hPg + '" target="_blank">Website</a></div>';
+			hPg + '" target="_blank">Website</a> <br>' + hDir + '</div>';
 		var iw = new google.maps.InfoWindow({
 			content: iwContent
 		});
@@ -450,12 +453,13 @@ function initMap() {
 		var hName = othrHikes[indx][0];
 		var hPg = othrHikes[indx][3];
 		indx += ctrPinHikes.length + clusterPinHikes.length; 
+		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
 		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
 		var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
 		var iwContent = '<div id="iwOH">Hike: ' + hName + '<br>Difficulty: ' +
 			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
-			hPg + '" target="_blank">Website</a></div>';
+			hPg + '" target="_blank">Website</a> <br>' + hDir + '</div>';
 		var iw = new google.maps.InfoWindow({
 			content: iwContent
 		});
