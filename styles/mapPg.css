@@ -1,0 +1,20 @@
+#geoCtrl {
+	display: none;
+	position: absolute;
+	top: 70px;
+	left: 180px;
+	width: 140px;
+	height: 40px;
+	padding-left: 18px;
+	padding-top: 20px;
+	color: DarkGreen;
+	font-weight: bold;
+	font-size: 18px;
+	background-color: white;
+	z-index: 100; }
+#geoCtrl:hover {
+	cursor: pointer;
+	background-color: Brown;
+	color: White; }
+#map {
+	z-index: 1; }

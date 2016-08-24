@@ -1,0 +1,91 @@
+/* Styles for the New Mexico Hiking Adventures page */
+body {
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: arial, verdana;
+	background-color: #dfdfdf; }
+a:visited {
+	color: DarkGreen; }
+.container {
+	position: relative; }
+#geoCtrl {
+	display: none;
+	position: absolute;
+	top: 70px;
+	left: 180px;
+	width: 140px;
+	height: 40px;
+	padding-left: 16px;
+	padding-top: 18px;
+	color: DarkGreen;
+	font-weight: bold;
+	font-size: 18px;
+	background-color: white;
+	z-index: 100; }
+#geoCtrl:hover {
+	cursor: pointer;
+	background-color: Brown;
+	color: White; }
+#map {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px;
+    width: 100%;
+    height: 700px;
+    z-index: 1; }
+#wholeTbl {
+	display: none; }
+img.webShift {
+	padding-left: 19px; }
+img.flckrShift {
+	padding-left: 15px; }
+img.expShift {
+	padding-left: 24px; }
+div #usrTbl table {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px; }
+/* table dressing */
+table {
+	font-size: 14px;
+	text-align: left;
+	margin-top: 5px;
+	background-color: #ffffdf;
+	border-style: groove;
+	border-width: 4px;
+	border-color: goldenRod; }
+th {
+	text-align: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-style: outset;
+	border-width: 2px;
+	border-color: peru; }
+tr:hover {
+	background-color: BlanchedAlmond; }
+td {
+	vertical-align: top;
+	padding-left: 5px;
+	padding-right: 5px; }
+.hdr_row {
+	background-color: bisque; }
+.hdr_row:hover {
+	cursor: pointer;
+	background-color: Brown;
+	color: White; }
+.indxd {
+	color: brown; }
+#metric {
+	text-align: left;
+	width: 190px;
+	margin-left: 45px;
+	margin-top: -10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	color: MidnightBlue;
+	border-style: inset;
+	border-width: 3px;
+	border-color: MidnightBlue;
+	cursor: pointer; }
+
