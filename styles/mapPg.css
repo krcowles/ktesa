@@ -18,3 +18,5 @@
 	color: White; }
 #map {
 	z-index: 1; }
+#dbase {
+	display: none; }

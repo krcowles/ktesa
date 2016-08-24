@@ -279,6 +279,7 @@ var clusterPinHikes = [
 	['La Vega',35.816873,-105.815796,'LaVega.html','vega.json',altTrkClr2],
 	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',altTrkClr3]
 ];
+// NOTE: Default trackcolor for remaining hikes is red ('trackColor')
 var othrHikes = [
 	['Three Rivers',33.419574,-105.987682,'ThreeRivers.html',''],
 	['Corrales Acequia',35.249327,-106.607283,'Acequia.html','aceq.json'],
@@ -355,7 +356,23 @@ if ( useTbl ) {
 		fullTbl[x] = x;
 	}
 	formTbl( mCnt, fullTbl );
+} else {  // get table as database for mapPg.html's otherwise empty div
+	var dbloc = prefix + 'mapTblPg.html';
+	$.ajax({
+		dataType: "html",
+		url: dbloc,
+		type: 'GET',
+		success: function(data, textStatus) {
+			$('#dbase').html($(data).find('#wholeTbl').html());
+		},
+		error: function(xhrStat, errCode, errObj) {
+			errmsg = errObj.textContent;
+			msg = 'ajax request for mapTblPg failed: ' + errmsg;
+			window.alert(msg);
+		}
+	});
 }
+			
 var pgLnk = useTbl ? 'pages/' : '../pages/';
 
 // There are three separate arrays for markers, based on their characteristic:
@@ -435,14 +452,19 @@ function initMap() {
 		//clusterMarkers.push(marker);
 		var hName = clusterPinHikes[indx][0];
 		var hPg = clusterPinHikes[indx][3];
+		if ( !useTbl ) {
+			hPg = '<a href="' + hpg + '" target="_blank">Website</a>';
+		} else {
+			hPg = '<a href="pages/' + hPg + '" target="_blank">Website</a>';
+		}
 		indx += ctrPinHikes.length;
 		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
 		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
 		var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
 		var iwContent = '<div id="iwCH">Hike: ' + hName + '<br>Difficulty: ' +
-			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
-			hPg + '" target="_blank">Website</a> <br>' + hDir + '</div>';
+			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br>' + 
+			hPg + '<br>' + hDir + '</div>';
 		var iw = new google.maps.InfoWindow({
 			content: iwContent
 		});
@@ -460,14 +482,19 @@ function initMap() {
 		//hikeMarkers.push(marker)
 		var hName = othrHikes[indx][0];
 		var hPg = othrHikes[indx][3];
+		if ( !useTbl ) {
+			hPg = '<a href="' + hpg + '" target="_blank">Website</a>';
+		} else {
+			hPg = '<a href="pages/' + hPg + '" target="_blank">Website</a>';
+		}
 		indx += ctrPinHikes.length + clusterPinHikes.length; 
 		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
 		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
 		var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
 		var iwContent = '<div id="iwOH">Hike: ' + hName + '<br>Difficulty: ' +
-			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
-			hPg + '" target="_blank">Website</a> <br>' + hDir + '</div>';
+			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br>' + 
+			hPg + '<br>' + hDir + '</div>';
 		var iw = new google.maps.InfoWindow({
 			content: iwContent
 		});
@@ -815,7 +842,7 @@ function drawTracks(cluster,othr) {
 			trackFile = clusterPinHikes[cluster][4];
 			var cindx = trackFile.indexOf('.json');
 			trkObj['trkName'] = trackFile.substring(0,cindx);
-			trackFile = 'json/' + trackFile;
+			trackFile = prefix + 'json/' + trackFile;
 			clusColor = clusterPinHikes[cluster][5];
 			sglTrack(trackFile,0,clusColor,cluster);
 		} else {
@@ -827,7 +854,7 @@ function drawTracks(cluster,othr) {
 				trackFile = othrHikes[othr][4];
 				var oindx = trackFile.indexOf('.json');
 				trkObj['trkName'] = trackFile.substring(0,oindx);
-				trackFile = 'json/' + trackFile;
+				trackFile = prefix + 'json/' + trackFile;
 				sglTrack(trackFile,1,trackColor,othr);
 			} else {
 				drawTracks(clusterCnt,othrCnt++);
@@ -839,7 +866,7 @@ function drawTracks(cluster,othr) {
 
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
-var geoOptions = { enableHighAccuracy: true };
+var geoOptions = { enableHighAccuracy: 'true' };
 var geoIcon = medGeo;
 
 if ( turnOnGeo === 'true' ) {
