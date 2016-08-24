@@ -329,7 +329,7 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.x0</p>';
+msg = '<p>Push x.x1</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -427,10 +427,14 @@ function initMap() {
 		// Event definition
 		var hName = ctrPinHikes[indx][0];
 		var hPg = ctrPinHikes[indx][3];
+		if ( !useTbl ) {
+			hPg = '<a href="' + hPg + '" target="_blank">Hike Index</a>';
+		} else {
+			hPg = '<a href="pages/' + hPg + '" target="_blank">Hike Index Pg</a>';
+		}
 		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var iwContent = '<div id="iwVC"><p>Visitor Center<br>Park: ' + hName + '<br>' +
-				'<a href="pages/' + hPg + '" target="_blank">Hike Index Pg</a>' + '<br>' +
-				 hDir + '</p></div>';
+			hPg + '<br>' + hDir + '</p></div>';
 		//$('#dbug').append(iwContent);
 		var iw = new google.maps.InfoWindow({
 			content: iwContent
@@ -453,7 +457,7 @@ function initMap() {
 		var hName = clusterPinHikes[indx][0];
 		var hPg = clusterPinHikes[indx][3];
 		if ( !useTbl ) {
-			hPg = '<a href="' + hpg + '" target="_blank">Website</a>';
+			hPg = '<a href="' + hPg + '" target="_blank">Website</a>';
 		} else {
 			hPg = '<a href="pages/' + hPg + '" target="_blank">Website</a>';
 		}
@@ -483,7 +487,7 @@ function initMap() {
 		var hName = othrHikes[indx][0];
 		var hPg = othrHikes[indx][3];
 		if ( !useTbl ) {
-			hPg = '<a href="' + hpg + '" target="_blank">Website</a>';
+			hPg = '<a href="' + hPg + '" target="_blank">Website</a>';
 		} else {
 			hPg = '<a href="pages/' + hPg + '" target="_blank">Website</a>';
 		}
@@ -666,9 +670,11 @@ function initMap() {
 			tesLines.setMap(map);
 			CliffMacLines.setMap(map);
 			mmtLines.setMap(map);
-			//for (var m=0; m<ctrPinHikes.length; m++) {
-			//	vcMarkers[m].setMap(null);
-			//}
+			for (var m=0; m<allTheTracks.length; m++) {
+				trkKeyStr = 'trk' + m;
+				trkObj[trkKeyStr].setMap(map);
+			}
+
 		} else {
 			Blines.setMap(null);
 			KinAltLines.setMap(null);
@@ -677,9 +683,10 @@ function initMap() {
 			tesLines.setMap(null);
 			CliffMacLines.setMap(null);
 			mmtLines.setMap(null);
-			//for (var n=0; n<ctrPinHikes.length; n++) {
-			//	vcMarkers[n].setMap(map);
-			//}
+			for (var n=0; n<allTheTracks.length; n++) {
+				trkKeyStr = 'trk' + n;
+				trkObj[trkKeyStr].setMap(null);
+			}
 		}
 	});
 	
@@ -765,10 +772,12 @@ function IdTableElements(boundsStr) {
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 var trackFile; // name of the JSON file to be read in
-var newTrack; // used repeatedly to assign incoming JSON data
+//var newTrack; // used repeatedly to assign incoming JSON data
 // the following is not used yet, but intended to allow individual turn on/off of tracks
-var allTheTracks = []; // array of all existing track object references [trkObj's]
-var trkObj = { trk: 'ref', trkName: 'trkname' };
+var allTheTracks = []; // array of all existing track objects
+var trkObj = { trk0: {}, trkName0: 'name' };
+var trkKeyNo = 0;
+var trkKeyStr;
 var clusterCnt = 0; // number of clusterPinHikes processed
 var othrCnt = 0; // number of othrHikes processed
 
@@ -786,16 +795,17 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 		dataType: "json",
 		url: trkUrl,
 		success: function(trackDat) {
-			newTrack = trackDat;
-			trkObj['trk'] = new google.maps.Polyline({
+			var newTrack = trackDat;
+			trkKeyStr = 'trk' + trkKeyNo;	
+			trkObj[trkKeyStr] = new google.maps.Polyline({
 				path: newTrack,
 				geodesic: true,
 				strokeColor: trkColor,
 				strokeOpacity: 1.0,
 				strokeWeight: 3
 			});
-			trkObj['trk'].setMap(map);
-			allTheTracks.push(trkObj);
+			//trkObj['trk'].setMap(map);
+			allTheTracks.push(trkKeyStr);
 			if ( trkType ) {
 				var hName = othrHikes[indx][0];
 				var hPg = othrHikes[indx][3];
@@ -814,14 +824,15 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 			var iw = new google.maps.InfoWindow({
 				content: iwContent
 			});
-			trkObj['trk'].addListener('mouseover', function(mo) {
+			trkObj[trkKeyStr].addListener('mouseover', function(mo) {
 				var trkPtr = mo.latLng;
 				iw.setPosition(trkPtr);
 				iw.open(map);
 			});
-			trkObj['trk'].addListener('mouseout', function() {
+			trkObj[trkKeyStr].addListener('mouseout', function() {
 				iw.close();
 			});
+			trkKeyNo++;
 			if ( trkType == 0 ) {
 				drawTracks(clusterCnt++,othrCnt);
 			} else {
@@ -841,7 +852,9 @@ function drawTracks(cluster,othr) {
 		if ( clusterPinHikes[cluster][4] ) {
 			trackFile = clusterPinHikes[cluster][4];
 			var cindx = trackFile.indexOf('.json');
-			trkObj['trkName'] = trackFile.substring(0,cindx);
+			var handle = trackFile.substring(0,cindx);
+			trkKeyStr = 'trkName' + trkKeyNo;
+			trkObj[trkKeyStr] = handle;
 			trackFile = prefix + 'json/' + trackFile;
 			clusColor = clusterPinHikes[cluster][5];
 			sglTrack(trackFile,0,clusColor,cluster);
@@ -853,7 +866,9 @@ function drawTracks(cluster,othr) {
 			if ( othrHikes[othr][4] ) {
 				trackFile = othrHikes[othr][4];
 				var oindx = trackFile.indexOf('.json');
-				trkObj['trkName'] = trackFile.substring(0,oindx);
+				var handle = trackFile.substring(0,oindx);
+				trkKeyStr = 'trkName' + trkKeyNo;
+				trkObj[trkKeyStr] = handle;
 				trackFile = prefix + 'json/' + trackFile;
 				sglTrack(trackFile,1,trackColor,othr);
 			} else {
