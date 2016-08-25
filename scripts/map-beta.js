@@ -12,6 +12,8 @@ if ( turnOnGeo === 'true' ) {
 	$('#geoCtrl').on('click', setupLoc);
 }
 
+mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
+
 // Determine which page is calling this script: for full page map, no tables displayed
 var useTbl = $('title').text() == 'Hike Map' ? false : true;
 
@@ -223,7 +225,8 @@ var noTrk = '#000000';
 //	in the user table of hikes
 //	-----------------------------------------------------------------------------                                         */
 // HIKE DATA ARRAYS:
-// [ 'Name', lat, lng, html source for page, GPX file string (if present, .json file name) ]
+// [ 'Name', lat, lng, 'html source for page', 'GPX file string (if present, .json file name)',
+//		if present, var: colorOfTrackForThisHike ]
 var ctrPinHikes = [
 	['Bandelier',35.779039,-106.270788,'Bandelier.html',''],
 	['Chaco Canyon',36.030250,-107.91080,'Chaco.html',''],
@@ -329,18 +332,32 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.x1</p>';
+msg = '<p>Push x.x2</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
 var prefix = useTbl ? '' : '../';
-var ctrIcon = prefix + 'images/greenpin.png';
-var clusterIcon = prefix + 'images/bluepin.png';
-var hikeIcon = prefix + 'images/redpin.png';
 // icons for geolocation:
 var smallGeo = prefix + 'images/starget.png';
 var medGeo = prefix + 'images/grnTarget.png';
 var lgGeo = prefix + 'images/ltarget.png';
+
+// icons depend on whether mobile or not (size factor for visibility)
+// also text size for pop-ups
+if ( mobile_browser ) {
+	var geoIcon = lgGeo;
+	var ctrIcon = prefix + 'images/green64.png';
+	var clusterIcon = prefix + 'images/blue64.png';
+	var hikeIcon = prefix + 'images/pink64.png';
+	$('#iwVC').css('font-size','22px');
+	$('#iwCH').css('font-size','22px');
+	$('#iwOH').css('font-size','22px');
+} else {
+	var geoIcon = medGeo;
+	var ctrIcon = prefix + 'images/greenpin.png';
+	var clusterIcon = prefix + 'images/bluepin.png';
+	var hikeIcon = prefix + 'images/redpin.png';
+} 
 
 // Display whole table when index.html page loads
 if ( useTbl ) {
@@ -882,7 +899,6 @@ function drawTracks(cluster,othr) {
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
 var geoOptions = { enableHighAccuracy: 'true' };
-var geoIcon = medGeo;
 
 if ( turnOnGeo === 'true' ) {
 	var geoTmr = setInterval(turnOnGeoLoc,100);

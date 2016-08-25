@@ -20,3 +20,18 @@
 	z-index: 1; }
 #dbase {
 	display: none; }
+#iwVC {
+	background-color: #f0f0f0;
+	color: DarkGreen;
+	padding: 8px;
+	margin: 3px; }
+#iwCH {
+	background-color: #f0f0f0;
+	color: DarkBlue;
+	padding: 8px;
+	margin: 3px; }
+#iwOH {
+	background-color: #f0f0f0;
+	color: DarkBlue;
+	padding: 8px;
+	margin: 3px; }
