@@ -332,7 +332,7 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.x5</p>';
+msg = '<p>Push x.x6</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -349,9 +349,9 @@ if ( mobile_browser ) {
 	var ctrIcon = prefix + 'images/green64.png';
 	var clusterIcon = prefix + 'images/blue64.png';
 	var hikeIcon = prefix + 'images/pink64.png';
-	$('#iwVC').css('font-size','400%');
-	$('#iwCH').css('font-size','400%');
-	$('#iwOH').css('font-size','400%');
+	$('#iwVC').css('font-size','800%');
+	$('#iwCH').css('font-size','800%');
+	$('#iwOH').css('font-size','800%');
 } else {
 	var geoIcon = medGeo;
 	var ctrIcon = prefix + 'images/greenpin.png';
@@ -390,6 +390,7 @@ if ( useTbl ) {
 	});
 }
 			
+var ourTick;
 var pgLnk = useTbl ? 'pages/' : '../pages/';
 
 // There are three separate arrays for markers, based on their characteristic:
@@ -431,6 +432,14 @@ function initMap() {
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
 	mapRdy = true;
+	ourTick = {
+		path: 'M 0,0 -5,11 0,8 5,11 Z',
+		fillcolor: 'DarkBlue',
+		fillOpacity: 0.8,
+		scale: 1,
+		strokeColor: 'DarkBlue',
+		strokeWeight: 2
+	};
 
 	// /////////////   THE HEART OF ALL MARKER CREATION!!   ///////////////
 	function AddVCMarker(location, iconType, pinName, hikePg, indx) {
@@ -797,6 +806,7 @@ var trkKeyNo = 0;
 var trkKeyStr;
 var clusterCnt = 0; // number of clusterPinHikes processed
 var othrCnt = 0; // number of othrHikes processed
+// use pre-defined directional arrow for tracks
 
 var trackForm = setInterval(startTracks,40);
 
@@ -815,6 +825,11 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 			var newTrack = trackDat;
 			trkKeyStr = 'trk' + trkKeyNo;	
 			trkObj[trkKeyStr] = new google.maps.Polyline({
+				icons: [{
+					icon: ourTick,
+					offset: '0%',
+					repeat: '15%' 
+				}],
 				path: newTrack,
 				geodesic: true,
 				strokeColor: trkColor,
