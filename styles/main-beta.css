@@ -4,7 +4,15 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	font-family: arial, verdana;
-	background-color: #dfdfdf; }
+	background-color: #dfdfdf;
+	border-style: solid;
+	border-width: 2px;
+	border-color: DarkBlue; }
+#container {
+	width: 940px;
+	margin-left: auto;
+	margin-right: auto;
+	postion: relative; }
 img#tompic {
 	display: block;
 	float: right;
@@ -34,6 +42,8 @@ img#tompic {
 #features {
 	margin-left: 8px;
 	margin-top: 30px; }
+#expl {
+	padding-left: 8px; }
 .btxt {
 	color: DarkBlue; }
 #b1:hover {
@@ -88,6 +98,7 @@ legend {
 #closer {
 	margin-top: 20px;
 	margin-left: 8px;
+	margin-bottom: 20px;
 	height: 32px;
 	line-height: 1.8em;
 	padding: 10px;
