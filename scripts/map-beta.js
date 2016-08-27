@@ -332,7 +332,7 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.x6</p>';
+msg = '<p>Push x.x7</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -374,19 +374,26 @@ if ( useTbl ) {
 	}
 	formTbl( mCnt, fullTbl );
 } else {  // get table as database for mapPg.html's otherwise empty div
-	var dbloc = prefix + 'mapTblPg.html';
+	var dbloc = '../mapTblPg.html';
 	$.ajax({
 		dataType: "html",
 		url: dbloc,
 		type: 'GET',
 		success: function(data, textStatus) {
 			$('#dbase').html($(data).find('#wholeTbl').html());
+			$('#dbase tr>td').each(function() {
+				var linkFix = $(this).text();
+				if ( linkFix.indexOf('images')  > 0 ) {
+					linkFix.replace('images','../images');
+					$(this).text(linkFix);
+				}	
+			});	
 		},
 		error: function(xhrStat, errCode, errObj) {
 			errmsg = errObj.textContent;
 			msg = 'ajax request for mapTblPg failed: ' + errmsg;
 			window.alert(msg);
-		}
+		}	
 	});
 }
 			
@@ -395,11 +402,7 @@ var pgLnk = useTbl ? 'pages/' : '../pages/';
 
 // There are three separate arrays for markers, based on their characteristic:
 //	1) Visitor Center / Index Pages; 2) "Cluster Hikes" (trailheads overlap or are very
-//  close togther; 3) all other hikes: the following arrays save marker references, but
-//  are not currently used (if need to access to turn on/off)
-//var vcMarkers = [];
-//var clusterMarkers = [];
-//var hikeMarkers = [];
+//  close togther; 3) all other hikes.
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 // THE MAP CALLBACK FUNCTION:
@@ -432,6 +435,7 @@ function initMap() {
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
 	mapRdy = true;
+	// directional symbol for tracks:
 	ourTick = {
 		path: 'M 0,0 -5,11 0,8 5,11 Z',
 		fillcolor: 'DarkBlue',
@@ -449,7 +453,6 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
-		//vcMarkers.push(marker);
 		// Event definition
 		var hName = ctrPinHikes[indx][0];
 		var hPg = ctrPinHikes[indx][3];
@@ -461,7 +464,6 @@ function initMap() {
 		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var iwContent = '<div id="iwVC"><p>Visitor Center<br>Park: ' + hName + '<br>' +
 			hPg + '<br>' + hDir + '</p></div>';
-		//$('#dbug').append(iwContent);
 		var iw = new google.maps.InfoWindow({
 			content: iwContent,
 			maxWidth: 400
@@ -477,7 +479,6 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
-		//clusterMarkers.push(marker);
 		var hName = clusterPinHikes[indx][0];
 		var hPg = clusterPinHikes[indx][3];
 		if ( !useTbl ) {
@@ -508,7 +509,6 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
-		//hikeMarkers.push(marker)
 		var hName = othrHikes[indx][0];
 		var hPg = othrHikes[indx][3];
 		if ( !useTbl ) {
