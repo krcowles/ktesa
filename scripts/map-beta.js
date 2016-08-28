@@ -348,7 +348,7 @@ function initMap() {
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
-
+/*
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 var trackFile; // name of the JSON file to be read in
 //var newTrack; // used repeatedly to assign incoming JSON data
@@ -463,7 +463,7 @@ function drawTracks(cluster,othr) {
 	}  // End of whole test
 }  // END FUNCTION
 // /////////////////////// END OF HIKING TRACK DRAWING /////////////////////
-
+*/
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
 var geoOptions = { enableHighAccuracy: 'true' };

@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x18</p>';
+msg = '<p>Push x.x19</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -42,15 +42,22 @@ var compare = {
 		return a - b;
 	} 
 };  // end of COMPARE object
-// scope the event handler vars globally (outside of fct def)
+
+// scope the 'click on tbl headers' event handler vars globally (outside of fct def)
+var $table;
 var $tbody;
 var $controls;
 var trows = [];
+
 function mkTblSortable() {
-	var $table = $('table'); 
+	$table = $('table'); 
 	$tbody = $table.find('tbody');
 	$controls = $table.find('th'); // store all headers
-	trows = $tbody.find('tr').toArray();  // array of rows
+	msg = '<p>tbody stuff: ' + $tbody.text().substring(0,400) + '</p>';
+	$('#dbug').append(msg);
+	trows = $tbody.children().toArray();  // array of rows
+	msg = '<p>First element is: ' + trows[0].textContent + 'of ' + trows.length + '</p>';
+	$('#dbug').append(msg);
 	
 	// click on row headers event handler:
 	$controls.on('click', function() {
@@ -62,9 +69,13 @@ function mkTblSortable() {
 		// IF already defined for selected column, toggle ascending/descending class
 		if ( $header.is('.ascending') || $header.is('.descending') ) {
 			$header.toggleClass('ascending descending');
-			msg = '<p>Reverse order sort</p>';
+			msg = '<p>Reverse order sort, where item1 is ' + trows[1].textContent + '</p>';
 			$('#dbug').append(msg);
-			$tbody.replaceWith(trows.reverse());
+			var jim = trows.reverse();
+			msg = '<p>Now item1 is ' + jim[1].textContent + '</p>';
+			$('#dbug').append(msg);
+			$tbody.empty();
+			$tbody.html(jim);
 		} else {
 		// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
 			$header.addClass('ascending');
@@ -76,7 +87,10 @@ function mkTblSortable() {
 					b = $(b).find('td').eq(column).text();
 					return compare[order](a,b);
 				});
-				$tbody.replaceWith(trows);
+				msg = '<p>No of rows is ' + trows.length + '</p>';
+				$('#dbug').append(msg);
+				$tbody.empty();
+				$tbody.append(trows);
 				msg = '<p>Class is now: ' + $header.attr('class') + '</p>';
 				$('#dbug').append(msg);
 			} // end if-compare
