@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x17</p>';
+msg = '<p>Push x.x18</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -64,7 +64,7 @@ function mkTblSortable() {
 			$header.toggleClass('ascending descending');
 			msg = '<p>Reverse order sort</p>';
 			$('#dbug').append(msg);
-			$tbody.append(trows.reverse());
+			$tbody.replaceWith(trows.reverse());
 		} else {
 		// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
 			$header.addClass('ascending');
@@ -76,7 +76,7 @@ function mkTblSortable() {
 					b = $(b).find('td').eq(column).text();
 					return compare[order](a,b);
 				});
-				$tbody.append(trows);
+				$tbody.replaceWith(trows);
 				msg = '<p>Class is now: ' + $header.attr('class') + '</p>';
 				$('#dbug').append(msg);
 			} // end if-compare
