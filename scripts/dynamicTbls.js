@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x13</p>';
+msg = '<p>Push x.x14</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -68,8 +68,6 @@ $.ajax({
 			var $table = $(this); 
 			var $tbody = $table.find('tbody');
 			var $controls = $table.find('th'); // store all headers
-			msg = '<p>No of headers found: ' + $controls.length + '</p>';
-			$('#dbug').append(msg);
 			var trows = $tbody.find('tr').toArray();  // array of rows
 			$controls.on('click', function() {
 				var $header = $(this);
@@ -78,9 +76,11 @@ $.ajax({
 				var order = $header.data('sort');
 				var column;
 
-				// IF defined for selected column, toggle ascending/descending class
+				// IF already defined for selected column, toggle ascending/descending class
 				if ( $header.is('.ascending') || $header.is('.descending') ) {
 					$header.toggleClass('ascending descending');
+					msg = '<p>Reverse order sort</p>';
+					$('#dbug').append(msg);
 					$tbody.append(trows.reverse());
 				} else {
 				// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
@@ -94,6 +94,8 @@ $.ajax({
 							return compare[order](a,b);
 						});
 						$tbody.append(trows);
+						msg = '<p>Class is now: ' + $header.css('class') + '</p>';
+						$('#dbug').append(msg);
 					} // end if-compare
 				} // end else
 			}); // end on.click
