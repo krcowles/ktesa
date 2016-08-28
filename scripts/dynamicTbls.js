@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x14</p>';
+msg = '<p>Push x.x15</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -42,6 +42,44 @@ var compare = {
 		return a - b;
 	} 
 };  // end of COMPARE object
+function sortableTbl() {
+	$('.sortable').each(function() {
+		var $table = $(this); 
+		var $tbody = $table.find('tbody');
+		var $controls = $table.find('th'); // store all headers
+		var trows = $tbody.find('tr').toArray();  // array of rows
+		$controls.on('click', function() {
+			var $header = $(this);
+			msg = '<p>Header name: ' + $(this).text() + '</p>';
+			$('#dbug').append(msg);
+			var order = $header.data('sort');
+			var column;
+
+			// IF already defined for selected column, toggle ascending/descending class
+			if ( $header.is('.ascending') || $header.is('.descending') ) {
+				$header.toggleClass('ascending descending');
+				msg = '<p>Reverse order sort</p>';
+				$('#dbug').append(msg);
+				$tbody.append(trows.reverse());
+			} else {
+			// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
+				$header.addClass('ascending');
+				$header.siblings().removeClass('ascending descending');
+				if ( compare.hasOwnProperty(order) ) {
+					column = $controls.index(this);  // index into the row array's data
+					trows.sort(function(a,b) {
+						a = $(a).find('td').eq(column).text();
+						b = $(b).find('td').eq(column).text();
+						return compare[order](a,b);
+					});
+					$tbody.append(trows);
+					msg = '<p>Class is now: ' + $header.attr('class') + '</p>';
+					$('#dbug').append(msg);
+				} // end if-compare
+			} // end else
+		}); // end on.click
+	}); end of EACH
+}  // end of mkTblSortable function
 
 
 // Get the index table of hikes and place the html in <div id="usrTbl">
@@ -62,44 +100,8 @@ $.ajax({
 		tblHtml = tblHtml.substring(0,indx);  // strip off the main body
 		endTbl = ' </tbody> </table>';
 		endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
-		
-		// now make the full table sortable: (note re-do for re-formed & re-sized tables)
-		$('.sortable').each(function() {
-			var $table = $(this); 
-			var $tbody = $table.find('tbody');
-			var $controls = $table.find('th'); // store all headers
-			var trows = $tbody.find('tr').toArray();  // array of rows
-			$controls.on('click', function() {
-				var $header = $(this);
-				msg = '<p>Header name: ' + $(this).text() + '</p>';
-				$('#dbug').append(msg);
-				var order = $header.data('sort');
-				var column;
-
-				// IF already defined for selected column, toggle ascending/descending class
-				if ( $header.is('.ascending') || $header.is('.descending') ) {
-					$header.toggleClass('ascending descending');
-					msg = '<p>Reverse order sort</p>';
-					$('#dbug').append(msg);
-					$tbody.append(trows.reverse());
-				} else {
-				// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
-					$header.addClass('ascending');
-					$header.siblings().removeClass('ascending descending');
-					if ( compare.hasOwnProperty(order) ) {
-						column = $controls.index(this);  // index into the row array's data
-						trows.sort(function(a,b) {
-							a = $(a).find('td').eq(column).text();
-							b = $(b).find('td').eq(column).text();
-							return compare[order](a,b);
-						});
-						$tbody.append(trows);
-						msg = '<p>Class is now: ' + $header.css('class') + '</p>';
-						$('#dbug').append(msg);
-					} // end if-compare
-				} // end else
-			}); // end on.click
-		}); // end '.sortable each' loop
+		// now make the full table sortable
+		mkTblSortable();
 	
 	},  // end of SUCCESS reading data
 	error: function(xhrStat, errCode, errObj) {
