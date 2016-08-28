@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x15</p>';
+msg = '<p>Push x.x16</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -42,43 +42,46 @@ var compare = {
 		return a - b;
 	} 
 };  // end of COMPARE object
-function sortableTbl() {
-	$('.sortable').each(function() {
-		var $table = $(this); 
-		var $tbody = $table.find('tbody');
-		var $controls = $table.find('th'); // store all headers
-		var trows = $tbody.find('tr').toArray();  // array of rows
-		$controls.on('click', function() {
-			var $header = $(this);
-			msg = '<p>Header name: ' + $(this).text() + '</p>';
+// scope the event handler vars globally (outside of fct def)
+var $tbody;
+var $controls;
+var trows = [];
+function mkTblSortable() {
+	var $table = $('table'); 
+	$tbody = $table.find('tbody');
+	$controls = $table.find('th'); // store all headers
+	trows = $tbody.find('tr').toArray();  // array of rows
+	
+	// click on row headers event handler:
+	$controls.on('click', function() {
+		var $header = $(this);
+		msg = '<p>Header name: ' + $(this).text() + '</p>';
+		$('#dbug').append(msg);
+		var order = $header.data('sort');
+		var column;
+		// IF already defined for selected column, toggle ascending/descending class
+		if ( $header.is('.ascending') || $header.is('.descending') ) {
+			$header.toggleClass('ascending descending'// );
+			msg = '<p>Reverse order sort</p>';
 			$('#dbug').append(msg);
-			var order = $header.data('sort');
-			var column;
-
-			// IF already defined for selected column, toggle ascending/descending class
-			if ( $header.is('.ascending') || $header.is('.descending') ) {
-				$header.toggleClass('ascending descending');
-				msg = '<p>Reverse order sort</p>';
+			$tbody.append(trows.reverse());
+		} else {
+		// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
+			$header.addClass('ascending');
+			$header.siblings().removeClass('ascending descending');
+			if ( compare.hasOwnProperty(order) ) {
+				column = $controls.index(this);  // index into the row array's data
+				trows.sort(function(a,b) {
+					a = $(a).find('td').eq(column).text();
+					b = $(b).find('td').eq(column).text();
+					return compare[order](a,b);
+				});
+				$tbody.append(trows);
+				msg = '<p>Class is now: ' + $header.attr('class') + '</p>';
 				$('#dbug').append(msg);
-				$tbody.append(trows.reverse());
-			} else {
-			// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
-				$header.addClass('ascending');
-				$header.siblings().removeClass('ascending descending');
-				if ( compare.hasOwnProperty(order) ) {
-					column = $controls.index(this);  // index into the row array's data
-					trows.sort(function(a,b) {
-						a = $(a).find('td').eq(column).text();
-						b = $(b).find('td').eq(column).text();
-						return compare[order](a,b);
-					});
-					$tbody.append(trows);
-					msg = '<p>Class is now: ' + $header.attr('class') + '</p>';
-					$('#dbug').append(msg);
-				} // end if-compare
-			} // end else
-		}); // end on.click
-	}); end of EACH
+			} // end if-compare
+		} // end else
+	}); // end on.click
 }  // end of mkTblSortable function
 
 
