@@ -332,7 +332,7 @@ var othrHikes = [
 	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
 ];
 
-msg = '<p>Push x.x7</p>';
+msg = '<p>Push x.x8</p>';
 $('#dbug').append(msg);
 
 // icon defs: need prefix when calling from full map page
@@ -380,11 +380,16 @@ if ( useTbl ) {
 		url: dbloc,
 		type: 'GET',
 		success: function(data, textStatus) {
+			var i =0;
 			$('#dbase').html($(data).find('#wholeTbl').html());
 			$('#dbase img').each( function() {
 				var tblImg = $(this).attr('src')
 				var linkFix = tblImg.replace('images','../images');
 				$(this).attr('src',linkFix);
+				if ( i === 0 ) {
+					window.alert(linkFix);
+					i++;
+				}
 			});
 		},
 		error: function(xhrStat, errCode, errObj) {
