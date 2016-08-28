@@ -381,13 +381,11 @@ if ( useTbl ) {
 		type: 'GET',
 		success: function(data, textStatus) {
 			$('#dbase').html($(data).find('#wholeTbl').html());
-			$('#dbase tr>td').each(function() {
-				var linkFix = $(this).text();
-				if ( linkFix.indexOf('images')  > 0 ) {
-					linkFix.replace('images','../images');
-					$(this).text(linkFix);
-				}	
-			});	
+			$('#dbase img').each( function() {
+				var tblImg = $(this).attr('src')
+				var linkFix = tblImg.replace('images','../images');
+				$(this).attr('src',linkFix);
+			});
 		},
 		error: function(xhrStat, errCode, errObj) {
 			errmsg = errObj.textContent;
