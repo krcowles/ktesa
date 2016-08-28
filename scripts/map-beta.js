@@ -1,8 +1,6 @@
-// generic var for outputting debug messages
-var msg;
-
-// detect when the map is ready for hike track inputting
-var mapRdy = false;
+var map;  // needs to be global!
+var mapRdy = false; // flag for map initialized & ready to draw tracks
+var mapTick;  // custom shape for track tick-marks
 
 // is geoloc on or off?
 var turnOnGeo = localStorage.getItem('geoLoc');
@@ -12,404 +10,39 @@ if ( turnOnGeo === 'true' ) {
 	$('#geoCtrl').on('click', setupLoc);
 }
 
-mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
-
-// Determine which page is calling this script: for full page map, no tables displayed
-var useTbl = $('title').text() == 'Hike Map' ? false : true;
-
-if ( useTbl ) {
-	// Table html wrapper, to be populated with rows later in script (see 'var outHike'):
-	
-	// -- when row-finding is enabled, use the next 2 lines instead...
-	//var tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
-	//tblHtml += ' onMouseOut="javascript:undoMarker();">';
-	var tblHtml = '<table class="msortable">';
-	tblHtml += $('table').html();
-	var inx = tblHtml.indexOf('<tbody') + 8;
-	tblHtml = tblHtml.substring(0,inx);
-	var endTbl = ' </tbody> </table>';
-	endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
-
-	// ///////////////////////  TABLE FUNCTION DECLARATIONS /////////////////////////
-	// Establish the compare method (object) for table sorts:
-	var compare = {
-		std: function(a,b) {	// standard sorting - literal
-			if ( a < b ) {
-				return -1;
-			} else {
-				return a > b ? 1 : 0;
-			}
-		},
-		lan: function(a,b) {    // "Like A Number": extract numeric portion for sort
-			// commas allowed in numbers, so;
-			var indx = a.indexOf(',');
-			if ( indx < 0 ) {
-				a = parseFloat(a);
-			} else {
-				noPart1 = parseFloat(a);
-				msg = a.substring(indx + 1, indx + 4);
-				noPart2 = msg.valueOf();
-				a = noPart1 + noPart2;
-			}
-			indx = b.indexOf(',');
-			if ( indx < 0 ) {
-				b = parseFloat(b);
-			} else {
-				noPart1 = parseFloat(b);
-				msg = b.substring(indx + 1, indx + 4);
-				noPart2 = msg.valueOf();
-				b = noPart1 + noPart2;
-			}
-			return a - b;
-		} 
-	};  // end of COMPARE object
-	
-	// Create the html for the table, and add sort definitions and metric conversion
-	function formTbl ( noOfRows, tblRowsArray ) {
-		// HTML CREATION:
-		var thisTbl = tblHtml + ' <tr>';
-		var indxRow;
-		for (var m=0; m<noOfRows; m++) {
-			indxRow = tblRowsArray[m];
-			thisTbl += $tblRows.eq(indxRow).html();
-			thisTbl += ' </tr> ';
-		}
-		thisTbl += endTbl;
-		$('#usrTbl').html(thisTbl);
-		$('#metric').css('display','block');
-		// ADD SORT FUNCTIONALITY ANEW FOR EACH CREATION OF TABLE:
-		$('.msortable').each(function() {
-			var $table = $(this); 
-			var $tbody = $table.find('tbody');
-			var $controls = $table.find('th'); // store all headers
-			var trows = $tbody.find('tr').toArray();  // array of rows
-
-			$controls.on('click', function() {
-				var $header = $(this);
-				var order = $header.data('sort');
-				var column;
-	
-				// IF defined for selected column, toggle ascending/descending class
-				if ( $header.is('.ascending') || $header.is('.descending') ) {
-					$header.toggleClass('ascending descending');
-					$tbody.append(trows.reverse());
-				} else {
-				// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
-					$header.addClass('ascending');
-					$header.siblings().removeClass('ascending descending');
-					if ( compare.hasOwnProperty(order) ) {
-						column = $controls.index(this);  // index into the row array's data
-						trows.sort(function(a,b) {
-							a = $(a).find('td').eq(column).text();
-							b = $(b).find('td').eq(column).text();
-							return compare[order](a,b);
-						});
-						$tbody.append(trows);
-					} // end if-compare
-				} // end else
-			}); // end on.click
-		}); // end '.msortable each' loop
-		// ADD METRIC CONVERSION ANEW FOR EACH CREATION OF TABLE:
-		$('#metric').on('click', function() {
-			// table locators:
-			var $etable = $('table');
-			var $etbody = $etable.find('tbody');
-			var $erows = $etbody.find('tr');
-			var state = this.textContent;
-			// conversion variables:
-			var tmpUnits;
-			var tmpConv;
-			var newDist;
-			var newElev;
-			var dist;
-			var elev;
-			// determine which state to convert from
-			var mindx = state.indexOf('metric');
-			if ( mindx < 0 ) { // currently metric; convert TO English
-				newDist = 'miles';
-				newElev = 'ft';
-				state = state.replace('English','metric');
-				dist = 0.6214;
-				elev = 3.278;
-			} else { // currently English; convert TO metric
-				newDist = 'kms';
-				newElev = 'm';
-				state = state.replace('metric','English');
-				dist = 1.61;
-				elev = 0.305;
-			}
-			$('#metric').text(state); // new data element text
-			$erows.each( function() {
-				// index 4 is column w/distance units (miles/kms)
-				// ASSUMPTION: always less than 1,000 miles or kms!
-				tmpUnits = $(this).find('td').eq(4).text();
-				tmpConv = parseFloat(tmpUnits);
-				tmpConv = dist * tmpConv;
-				var indxLoc = tmpUnits.substring(0,2);
-				if ( indxLoc === '0*' ) {
-					tmpUnits = '0* ' + newDist;
-				} else {
-					tmpUnits = tmpConv.toFixed(1);
-					tmpUnits = tmpUnits + ' ' + newDist;
-				}
-				$(this).find('td').eq(4).text(tmpUnits);
-				// index 5 is column w/elevation units (ft/m)
-				tmpUnits = $(this).find('td').eq(5).text();
-				// need to worry about commas...
-				mindx = tmpUnits.indexOf(',');
-				if ( mindx < 0 ) {
-					tmpConv = parseFloat(tmpUnits);
-				} else {
-					noPart1 = parseFloat(tmpUnits);
-					noPart2 = tmpUnits.substring(mindx + 1,mindx + 4);
-					noPart2 = noPart2.valueOf();
-					tmpConv = noPart1 + noPart2;
-				}
-				tmpConv = dist * tmpConv;
-				indxLoc = tmpUnits.substring(0,2);
-				if ( indxLoc === '0*' ) {
-					tmpUnits = '0* ' + newElev;
-				} else {
-					tmpUnits = tmpConv.toFixed(0);
-					tmpUnits = tmpUnits + ' ' + newElev;
-				}
-				$(this).find('td').eq(5).text(tmpUnits);
-	
-			});  // end 'each erow'	
-		}); // end of click on metric
-	}  // end of FORMTBL function
-
-	// ROW-FINDING FUNCTIONS FOR mouseover TABLE... [not currently enabled]
-	/*
-	function findPinFromRow(eventArg) {
-		if ( !eventArg ) {
-			eventArg = window.event;
-		}
-		// IE browsers:
-		if ( eventArg.srcElement ) {
-			getRowNo(eventArg.srcElement);
-		} else if ( eventArg.target ) {
-			getRowNo(eventArg.target)
-		}
-	}
-	function getRowNo(El) {
-		if ( El.nodeName == "TD" ) {
-			El = El.parentNode;
-			msg = '<p>Now El is ' + El.nodeName + '; row indx is ' + El.rowIndex;
-			var cellDat = El.cells[1].textContent;
-			msg += 'w/Cell data = ' + cellDat + '</p>';
-			$('#dbug').append(msg);
-		} else return;
-	}
-	function undoMarker() {
-		msg = '<p>Mouse out of row...</p>';
-		//$('#features').append(msg);
-	}
-	// END OF ROW-FINDING FUNCTIONS
-	*/
-	
-}  // end of useTbl test
-
-// colors
-var lineColor = '#2974EB';
-var trackColor = '#FF0000';
-var altTrkClr1 = '#0000FF';
-var altTrkClr2 = '#14613E';
-var altTrkClr3 = '#000000';
-//var altTrkClr3 = '#AAAAAA';
-var noTrk = '#000000';
-			
-// -------------------------------   IMPORTANT NOTE: ----------------------------
-//	The index.html table ***** MUST ***** list items in the
-//	order shown below [as listed in arrays] in order for the correct elements to be listed
-//	in the user table of hikes
-//	-----------------------------------------------------------------------------                                         */
-// HIKE DATA ARRAYS:
-// [ 'Name', lat, lng, 'html source for page', 'GPX file string (if present, .json file name)',
-//		if present, var: colorOfTrackForThisHike ]
-var ctrPinHikes = [
-	['Bandelier',35.779039,-106.270788,'Bandelier.html',''],
-	['Chaco Canyon',36.030250,-107.91080,'Chaco.html',''],
-	['El Malpais',34.970407,-107.810152,'ElMalpais.html',''],
-	['Petroglyphs Natl Mon',35.138644,-106.711196,'Petroglyphs.html','']
-];
-// NOTE: clusterPinHikes have an added field of "trackColor" to differentiate overlaps
-var clusterPinHikes = [
-	// Bandelier hikes:
-	['Ruins Trail',35.793670,-106.273155,'MainLoop.html','',noTrk],
-	['Falls Trail',35.788735,-106.282079,'FallsTrail.html','',noTrk],
-	['Frey Trail',35.779219,-106.285744,'Frey.html','',noTrk],
-	['Frijolito Ruins',35.769573,-106.282433,'Frijolito.html','',noTrk],
-	['Alcove House',35.764312,-106.273698,'AlcoveHouse.html','',noTrk],
-	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html','',noTrk],
-	// Bosque del Apache hikes:
-	['Canyon Trail',33.759012,-106.895278,'CanyonTrail.html','',noTrk],
-	// Chaco Canyon hikes:
-	['Una Vida',36.033331,-107.911942,'UnaVida.html','',noTrk],
-	['Hungo Pavi',36.049536,-107.93031,'HungoPavi.html','',noTrk],
-	['Pueblo Bonito',36.059216,-107.958934,'Bonito.html','',noTrk],
-	['Pueblo Alto',36.068608,-107.959900,'PuebloAlto.html','palto.json',trackColor],
-	['Kin Kletso',36.063864,-107.981315,'KinKletso.html','',noTrk],
-	// El Malpais hikes:
-	['Big Tubes',34.944733,-108.106983,'BigTubes.html','tubes.json',trackColor],
-	['Ice Caves',34.99311,-108.080084,'IceCave.html','',noTrk],
-	['El Calderon',34.9698,-108.00325,'ElCalderon.html','cald.json',trackColor],
-	// Elena Gallegos hikes:
-	['Pino Trail',35.160419, -106.463184,'Pino.html','pino.json',trackColor],
-	['Domingo Baca',35.167093,-106.465502,'Domingo.html','baca.json',trackColor],
-	// Ghost Ranch hikes:
-	['Chimney Rock',36.330525,-106.47482,'ChimneyRock.html','',noTrk],
-	['Kitchen Mesa',36.336353,-106.469007,'Kitchen.html','',noTrk],
-	// Manzanitas Trail hikes:
-	['Tunnel Canyon',35.055938,-106.371517,'TunnelCanyon.html','tun.json',trackColor],
-	['Birdhouse Ridge',35.055938,-106.388512,'Birdhouse.html','bird.json',trackColor],
-	// Manzanos hikes:
-	['Albuquerque Trail',34.793491,-106.372268,'ABQ.html','',noTrk],
-	['July 4th Trail',34.790707,-106.382439,'July4.html','',noTrk],
-	// Petroglyphs hikes:
-	['Piedras Marcadas',35.188867,-106.686269,'Piedras.html','',noTrk],
-	['Mesa Point Trail',35.160629,-106.716645,'MesaPoint.html','',noTrk],
-	['Cliff Base Trail',35.165471,-106.729088,'CliffBase.html','',noTrk],
-	['Macaw Trail',35.170242,-106.717243,'Macaw.html','',noTrk],
-	['Rinconada Canyon',35.126851,-106.724635,'Rinconada.html','',noTrk],
-	['ABQ Volcanoes',35.13075,-106.7802667,'ABQVolcanoes.html','volc.json',trackColor],
-	// Big Tesuque Campground hikes:
-	['Upper Tesuque',35.764427,-105.769501,'UpperTesuque.html','utes.json',altTrkClr1],
-	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html','mtes.json',altTrkClr2],
-	// Winsor Trailhead hikes:
-	['Deception Pk',35.807036,-105.783577,'Deception.html','decp.json',trackColor],
-	['Nambe Lake',35.818627,-105.797649,'Nambe.html','nambe.json',altTrkClr1],
-	['La Vega',35.816873,-105.815796,'LaVega.html','vega.json',altTrkClr2],
-	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',altTrkClr3]
-];
-// NOTE: Default trackcolor for remaining hikes is red ('trackColor')
-var othrHikes = [
-	['Three Rivers',33.419574,-105.987682,'ThreeRivers.html',''],
-	['Corrales Acequia',35.249327,-106.607283,'Acequia.html','aceq.json'],
-	['Agua Sarca',35.291533,-106.441050,'AguaSarca.html','sarca.json'],
-	['Ancho Rapids',35.797000,-106.246417,'AnchoComb.html','ancho.json'],
-	['Apache Canyon',35.629817,-105.858967,'ApacheCanyon.html','apache.json'],
-	['Aspen Vista',35.777433,-105.810933,'Aspen.html','aspen.json'],
-	['Atalaya Mtn',35.670450,-105.900667,'Atalaya.html','atalaya.json'],
-	['Battleship Rock',35.828099,-106.641862,'Battleship.html',''],
-	['Borrego/Bear Wallow',35.7462,-105.8342667,'Borrego.html','borrego.json'],
-	['Buckman Mesa',35.835833,-106.161033,'Buckman.html','buckman.json'],
-	['Cabezon Pk',35.597,-107.1053833,'Cabezon.html','czon.json'],
-	['Cerrillos Hills',35.444819,-106.122029,'Cerrillos.html',''],
-	['Chamisa Trail',35.728417,-105.86597,'Chamisa.html','cham.json'],
-	['Chavez Canyon',36.367385,-106.677235,'ChavezCanyon.html',''],
-	['Coyote Call',35.848167,-106.465383,'CoyoteCall.html','ccall.json'],
-	['Dale Ball North',35.71075,-105.899467,'DBallNorth.html','dbnorth.json'],
-	['Del Agua',35.277,-106.4840333,'DelAguaHike.html','del.json'],
-	['Diablo Canyon',35.8046,-106.1362333,'DiabloComb.html','diablo.json'],
-	['El Morro',35.038224,-108.348783,'ElMorro.html',''],
-	['Ft Bayard Tree',32.782028,-108.147333,'FtBayard.html',''],
-	['Hyde Park Circle',35.730717,-105.8371,'HydePk.html','hyde.json'],
-	['Josephs Mine',36.305933,-106.05142,'OjoCaliente.html',''],
-	['La Bajada',35.551633,-106.23655,'LaBajada.html','baj.json'],
-	['La Luz',35.219667,-106.4810167,'LaLuz.html','luz.json'],
-	['La Vista Verde',36.341432,-105.736461,'VistaVerde.html',''],
-	['Las Conchas Trail',35.814841,-106.533158,'Conchas.html','conch.json'],
-	['Mesa Chijuilla',35.995233,-107.0827,'Chijuilla.html',''],
-	['Mesa de Cuba',36.010603,-106.980625,'MesaCuba.html',''],
-	['Nature Conservancy',35.68701,-105.89697,'Conservancy.html',''],
-	['Ojito Wilderness',35.495067,-106.921767,'Ojito.html','ojito.json'],
-	['Pinabete Tank',35.771583,-106.19055,'Pinabete.html','ptank.json'],
-	['Purgatory Chasm',33.032667,-108.1536667,'Purgatory.html','purg.json'],
-	['Pyramid Rock',35.542743,-108.613801,'PyramidRock.html',''],
-	['Red Dot - Blue Dot',35.809767,-106.200917,'RedBlueComb.html','rbdot.json'],
-	['San Lorenzo Canyon',34.239571,-107.026899,'SanLorenzo.html',''],
-	['Strip Mine Trail',35.30015,-106.4804667,'StripMine.html','smine.json'],
-	['Sun Mountain',35.65675,-105.92095,'SunMountain.html','sun.json'],
-	['Tent Rocks',35.661033,-106.416106,'TentRocks.html',''],
-	['Tesuque-Lower',35.759783,-105.845917,'LowerTesuque.html','ltes.json'],
-	['Catwalks',33.37781,-108.839842,'Catwalks.html',''],
-	['Tetilla Peak',35.602683,-106.19663,'Tetilla.html','tet.json'],
-	['Valle Grande',35.857077,-106.491058,'ValleGrandeInSnow.html','vgrand.json'],
-	['Viewpoint Loop',35.264798,-105.33362,'Villanueva.html',''],
-	['Williams Lake',36.572704,-105.436408,'WilliamsLake.html',''],
-	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json'],
-	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
-];
-
-msg = '<p>Push x.x8</p>';
-$('#dbug').append(msg);
-
-// icon defs: need prefix when calling from full map page
-var prefix = useTbl ? '' : '../';
 // icons for geolocation:
-var smallGeo = prefix + 'images/starget.png';
-var medGeo = prefix + 'images/grnTarget.png';
-var lgGeo = prefix + 'images/ltarget.png';
+var smallGeo = '../images/starget.png';
+var medGeo = '../images/grnTarget.png';
+var lgGeo = '../images/ltarget.png';
 
+var mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
 // icons depend on whether mobile or not (size factor for visibility)
 // also text size for pop-ups
 if ( mobile_browser ) {
 	var geoIcon = lgGeo;
-	var ctrIcon = prefix + 'images/green64.png';
-	var clusterIcon = prefix + 'images/blue64.png';
-	var hikeIcon = prefix + 'images/pink64.png';
+	var ctrIcon = prefix + '../images/green64.png';
+	var clusterIcon = prefix + '../images/blue64.png';
+	var hikeIcon = prefix + '../images/pink64.png';
 	$('#iwVC').css('font-size','800%');
 	$('#iwCH').css('font-size','800%');
 	$('#iwOH').css('font-size','800%');
 } else {
 	var geoIcon = medGeo;
-	var ctrIcon = prefix + 'images/greenpin.png';
-	var clusterIcon = prefix + 'images/bluepin.png';
-	var hikeIcon = prefix + 'images/redpin.png';
+	var ctrIcon = '../images/greenpin.png';
+	var clusterIcon = '../images/bluepin.png';
+	var hikeIcon = '../images/redpin.png';
 } 
 
-// Display whole table when index.html page loads
-if ( useTbl ) {
-	var $tblRows = $('.sortable tbody tr');
-	var iCnt = $tblRows.length;
-	var mCnt = ctrPinHikes.length + clusterPinHikes.length + othrHikes.length;
-	if ( mCnt != iCnt ) {
-		window.alert('Index table row count does not match script: investigate!');
-	}
-	var fullTbl = new Array();
-	for ( var x=0; x<mCnt; x++ ) {
-		// every row will be used, so create a sequential array:
-		fullTbl[x] = x;
-	}
-	formTbl( mCnt, fullTbl );
-} else {  // get table as database for mapPg.html's otherwise empty div
-	var dbloc = '../mapTblPg.html';
-	$.ajax({
-		dataType: "html",
-		url: dbloc,
-		type: 'GET',
-		success: function(data, textStatus) {
-			var i =0;
-			$('#dbase').html($(data).find('#wholeTbl').html());
-			$('#dbase img').each( function() {
-				var tblImg = $(this).attr('src')
-				var linkFix = tblImg.replace('images','../images');
-				$(this).attr('src',linkFix);
-				if ( i === 0 ) {
-					window.alert(linkFix);
-					i++;
-				}
-			});
-		},
-		error: function(xhrStat, errCode, errObj) {
-			errmsg = errObj.textContent;
-			msg = 'ajax request for mapTblPg failed: ' + errmsg;
-			window.alert(msg);
-		}	
-	});
-}
-			
-var ourTick;
-var pgLnk = useTbl ? 'pages/' : '../pages/';
+var pgLnk = ''; // get to the current hike.html storage location;
+// the above variable is used because during development, this loc has changed
 
-// There are three separate arrays for markers, based on their characteristic:
-//	1) Visitor Center / Index Pages; 2) "Cluster Hikes" (trailheads overlap or are very
-//  close togther; 3) all other hikes.
+// INSIDE the initMap function, the listener is defined, and depending on whether
+// or not there is a table present, a definition is added for "dragend"
+var useTbl = $('title').text() == 'Hike Map' ? false : true;
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 // THE MAP CALLBACK FUNCTION:
-var map;  // needs to be global!
+
 function initMap() {
 	// NOW TO THE MAP!!
 	var nmCtr = {lat: 34.450, lng: -106.042};
@@ -439,7 +72,7 @@ function initMap() {
 	});
 	mapRdy = true;
 	// directional symbol for tracks:
-	ourTick = {
+	mapTick = {
 		path: 'M 0,0 -5,11 0,8 5,11 Z',
 		fillcolor: 'DarkBlue',
 		fillOpacity: 0.8,
@@ -730,75 +363,6 @@ function initMap() {
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
 
-// //////////////////////// DYNAMIC TABLE SIZING  ////////////////////////////////
-// Function to find elements within current bounds and display them in a table
-function IdTableElements(boundsStr) {
-	// ESTABLISH CURRENT VIEWPORT BOUNDS:
-	var beginA = boundsStr.indexOf('((') + 2;
-	var leftParm = boundsStr.substring(beginA,boundsStr.length);
-	var beginB = leftParm.indexOf('(') + 1;
-	var rightParm = leftParm.substring(beginB,leftParm.length);
-	var south = parseFloat(leftParm);
-	var north = parseFloat(rightParm);
-	var westIndx = leftParm.indexOf(',') + 1;
-	var westStr = leftParm.substring(westIndx,leftParm.length);
-	var west = parseFloat(westStr);
-	var eastIndx = rightParm.indexOf(',') + 1;
-	var eastStr = rightParm.substring(eastIndx,rightParm.length);
-	var east = parseFloat(eastStr);
-	var hikeSet = new Array();
-	var tblEl = new Array(); // holds the index into the row number array: tblRows
-	var pinLat;
-	var pinLng;
-	// REMOVE previous table:
-	$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
-	/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
-	// First, check to see if any ctrPinHikes are within the viewport;
-	// if so, include them in the table
-	var n = 0; //
-	var rowCnt = 0;
-	for (j=0; j<ctrPinHikes.length; j++) {
-		hikeSet = ctrPinHikes[j];
-		pinLat = parseFloat(hikeSet[1]);
-		pinLng = parseFloat(hikeSet[2]);
-		if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
-			tblEl[n] = j;
-			n++;
-			rowCnt ++;
-		}
-	}
-	// now look for clusterPinHikes
-	for (k=0; k<clusterPinHikes.length; k++) {
-		hikeSet = clusterPinHikes[k];
-		pinLat = parseFloat(hikeSet[1]);
-		pinLng = parseFloat(hikeSet[2]);
-		if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
-			tblEl[n] = ctrPinHikes.length + k;
-			n++;
-			rowCnt++;
-		}
-	}
-	// and lastly, othrHikes
-	for (l=0; l<othrHikes.length; l++) {
-		hikeSet = othrHikes[l];
-		pinLat = parseFloat(hikeSet[1]);
-		pinLng = parseFloat(hikeSet[2]);
-		if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
-			tblEl[n] = ctrPinHikes.length + clusterPinHikes.length + l;
-			n++;
-			rowCnt++;
-		}
-	}
-	
-	if ( rowCnt === 0 ) {
-		msg = '<p>NO hikes in this area</p>';;
-		$('#usrTbl').append(msg);
-	} else {
-		formTbl( rowCnt, tblEl );
-	}
-} // END: IdTableElements() FUNCTION
-// //////////////////////// END OF DYNAMIC TABLE SIZING /////////////////////
-
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 var trackFile; // name of the JSON file to be read in
 //var newTrack; // used repeatedly to assign incoming JSON data
@@ -829,7 +393,7 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 			trkKeyStr = 'trk' + trkKeyNo;	
 			trkObj[trkKeyStr] = new google.maps.Polyline({
 				icons: [{
-					icon: ourTick,
+					icon: mapTick,
 					offset: '0%',
 					repeat: '15%' 
 				}],
@@ -890,7 +454,7 @@ function drawTracks(cluster,othr) {
 			var handle = trackFile.substring(0,cindx);
 			trkKeyStr = 'trkName' + trkKeyNo;
 			trkObj[trkKeyStr] = handle;
-			trackFile = prefix + 'json/' + trackFile;
+			trackFile = '../json/' + trackFile;
 			clusColor = clusterPinHikes[cluster][5];
 			sglTrack(trackFile,0,clusColor,cluster);
 		} else {
@@ -904,7 +468,7 @@ function drawTracks(cluster,othr) {
 				var handle = trackFile.substring(0,oindx);
 				trkKeyStr = 'trkName' + trkKeyNo;
 				trkObj[trkKeyStr] = handle;
-				trackFile = prefix + 'json/' + trackFile;
+				trackFile = '../json/' + trackFile;
 				sglTrack(trackFile,1,trackColor,othr);
 			} else {
 				drawTracks(clusterCnt,othrCnt++);

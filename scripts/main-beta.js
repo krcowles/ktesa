@@ -3,7 +3,7 @@ $( function() {  // wait until document is loaded...
 
 $('#b1').on('click', function() {
 	localStorage.setItem('geoLoc',true);
-	window.open('mapTblPg.html','_self');
+	window.open('pages/mapTblPg.html','_self');
 });
 $('#b2').on('click', function() {
 	localStorage.setItem('geoLoc',true);
@@ -11,7 +11,7 @@ $('#b2').on('click', function() {
 });
 $('#b3').on('click', function() {
 	localStorage.setItem('geoLoc',false);
-	window.open('mapTblPg.html','_self');
+	window.open('pages/mapTblPg.html','_self');
 });
 $('#b4').on('click', function() {
 	localStorage.setItem('geoLoc',false);
