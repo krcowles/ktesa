@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x12</p>';
+msg = '<p>Push x.x13</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -68,9 +68,13 @@ $.ajax({
 			var $table = $(this); 
 			var $tbody = $table.find('tbody');
 			var $controls = $table.find('th'); // store all headers
+			msg = '<p>No of headers found: ' + $controls.length + '</p>';
+			$('#dbug').append(msg);
 			var trows = $tbody.find('tr').toArray();  // array of rows
 			$controls.on('click', function() {
 				var $header = $(this);
+				msg = '<p>Header name: ' + $(this).text() + '</p>';
+				$('#dbug').append(msg);
 				var order = $header.data('sort');
 				var column;
 
@@ -222,6 +226,8 @@ function undoMarker() {
 
 // Function to find elements within current bounds and display them in a table
 function IdTableElements(boundsStr) {
+	msg = '<p>IdTableElements invoked with ' + boundsStr + '</p>';
+	$('#dbug').append(msg);
 	// ESTABLISH CURRENT VIEWPORT BOUNDS:
 	var beginA = boundsStr.indexOf('((') + 2;
 	var leftParm = boundsStr.substring(beginA,boundsStr.length);
