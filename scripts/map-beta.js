@@ -1,6 +1,13 @@
 var map;  // needs to be global!
 var mapRdy = false; // flag for map initialized & ready to draw tracks
-var mapTick;  // custom shape for track tick-marks
+var mapTick = {   // custom tick-mark symbol for tracks
+	path: 'M 0,0 -5,11 0,8 5,11 Z',
+	fillcolor: 'DarkBlue',
+	fillOpacity: 0.8,
+	scale: 1,
+	strokeColor: 'DarkBlue',
+	strokeWeight: 2
+};
 
 // is geoloc on or off?
 var turnOnGeo = localStorage.getItem('geoLoc');
@@ -71,15 +78,6 @@ function initMap() {
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
 	mapRdy = true;
-	// directional symbol for tracks:
-	mapTick = {
-		path: 'M 0,0 -5,11 0,8 5,11 Z',
-		fillcolor: 'DarkBlue',
-		fillOpacity: 0.8,
-		scale: 1,
-		strokeColor: 'DarkBlue',
-		strokeWeight: 2
-	};
 
 	// /////////////   THE HEART OF ALL MARKER CREATION!!   ///////////////
 	function AddVCMarker(location, iconType, pinName, hikePg, indx) {
@@ -92,11 +90,7 @@ function initMap() {
 		// Event definition
 		var hName = ctrPinHikes[indx][0];
 		var hPg = ctrPinHikes[indx][3];
-		if ( !useTbl ) {
-			hPg = '<a href="' + hPg + '" target="_blank">Hike Index</a>';
-		} else {
-			hPg = '<a href="pages/' + hPg + '" target="_blank">Hike Index Pg</a>';
-		}
+		hPg = '<a href="' + hPg + '" target="_blank">Hike Index Pg</a>';
 		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var iwContent = '<div id="iwVC"><p>Visitor Center<br>Park: ' + hName + '<br>' +
 			hPg + '<br>' + hDir + '</p></div>';
@@ -117,11 +111,7 @@ function initMap() {
 		});
 		var hName = clusterPinHikes[indx][0];
 		var hPg = clusterPinHikes[indx][3];
-		if ( !useTbl ) {
-			hPg = '<a href="' + hPg + '" target="_blank">Website</a>';
-		} else {
-			hPg = '<a href="pages/' + hPg + '" target="_blank">Website</a>';
-		}
+		hPg = '<a href="' + hPg + '" target="_blank">Website</a>';
 		indx += ctrPinHikes.length;
 		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
@@ -147,11 +137,7 @@ function initMap() {
 		});
 		var hName = othrHikes[indx][0];
 		var hPg = othrHikes[indx][3];
-		if ( !useTbl ) {
-			hPg = '<a href="' + hPg + '" target="_blank">Website</a>';
-		} else {
-			hPg = '<a href="pages/' + hPg + '" target="_blank">Website</a>';
-		}
+		hPg = '<a href="' + hPg + '" target="_blank">Website</a>';
 		indx += ctrPinHikes.length + clusterPinHikes.length; 
 		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
 		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();

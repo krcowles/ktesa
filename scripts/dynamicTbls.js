@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x9</p>';
+msg = '<p>Push x.x10</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -15,7 +15,12 @@ $.ajax({
 	url: databaseLoc,
 	type: 'GET',
 	success: function(data) {
-		$('#usrTbl').html($(data).html());
+		msg = '<p>Success reading data</p>';
+		$('#dbug').append(msg);
+		msg = '<p>1st Chars: ' + $(data).text().substring(0,100) + '</p>';
+		$('#dbug').append(msg);
+		$('#usrTbl').append($(data).html());
+		//$('#usrTbl').html($(data).html());
 		// Create the html wrapper that goes around the viewport rows	
 			// -- when row-finding is enabled, use the next 2 lines instead...
 			//tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
