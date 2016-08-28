@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x16</p>';
+msg = '<p>Push x.x17</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -61,7 +61,7 @@ function mkTblSortable() {
 		var column;
 		// IF already defined for selected column, toggle ascending/descending class
 		if ( $header.is('.ascending') || $header.is('.descending') ) {
-			$header.toggleClass('ascending descending'// );
+			$header.toggleClass('ascending descending');
 			msg = '<p>Reverse order sort</p>';
 			$('#dbug').append(msg);
 			$tbody.append(trows.reverse());
