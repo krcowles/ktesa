@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x20</p>';
+msg = '<p>Push x.x21</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -46,40 +46,45 @@ var compare = {
 // Get the index table of hikes and place the html in <div id="refTbl">
 var databaseLoc = '../data/hikeDataTbl.html';
 var refRows; // needs to be global to effect dynamic table construction & sorts
+// flag for which page is invoking this script:
+var useTbl = $('title').text() == 'Hike Map' ? false : true;
+
 $.ajax({
 	dataType: "html",
 	url: databaseLoc,
 	type: 'GET',
 	success: function(data) {
 		$('#refTbl').append($(data));
-		// Create the html wrapper that goes around the viewport rows	
-			// -- when row-finding is enabled, use the next 2 lines instead...
-			//tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
-			//tblHtml += ' onMouseOut="javascript:undoMarker();">';
-		tblHtml = '<table class="msortable">';
-		tblHtml += $('table').html();
-		var indx = tblHtml.indexOf('<tbody') + 7;
-		tblHtml = tblHtml.substring(0,indx);  // strip off the main body
-		endTbl = ' </tbody> </table>';
-		endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
-		// For display, sorting, etc., create the full table, put it in <div id="usrTbl">
-		$tblRows = $('#refTbl tbody tr');
+		if ( useTbl ) {
+			// Create the html wrapper that goes around the viewport rows	
+				// -- when row-finding is enabled, use the next 2 lines instead...
+				//tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
+				//tblHtml += ' onMouseOut="javascript:undoMarker();">';
+			tblHtml = '<table class="msortable">';
+			tblHtml += $('table').html();
+			var indx = tblHtml.indexOf('<tbody') + 7;
+			tblHtml = tblHtml.substring(0,indx);  // strip off the main body
+			endTbl = ' </tbody> </table>';
+			endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
+			// For display, sorting, etc., create the full table, put it in <div id="usrTbl">
+			$tblRows = $('#refTbl tbody tr');
 
-		/* THERE IS AN INEXPLICABLE ANOMALY IN THE BEHAVIOR - PERHAPS A FUNCTION OF THE
-		ajax PARSER:  THE <tr> ELEMENT *PRIOR TO* <tbody> IS INCLUDED IN THE SELECTION
-		'$tblRows', THOUGH IT IS NOT A CHILD OR DESCENDANT OF <tbody>; THIS HAS RESULTED
-		IN CODE ADJUSTMENTS, MARKED WITH "HACK" COMMENTS FOR REFERENCE */
-		refRows = $tblRows.toArray(); // HACK
-		refRows.shift(); // HACK (eliminate hdr from row array)
-		//hdrRow = $tblRows[0].innerHTML; // HACK
-		tblHtml += $tblRows[0].innerHTML; // HACK: NOTE - this places hdrs in <tbody>; req's sorting HACK
-		var iCnt = refRows.length;
-		var fullTbl = new Array();
-		for ( var x=0; x<iCnt; x++ ) {
-			// every row will be used, so create a sequential array:
-			fullTbl[x] = x;
+			/* THERE IS AN INEXPLICABLE ANOMALY IN THE BEHAVIOR - PERHAPS A FUNCTION OF THE
+			ajax PARSER:  THE <tr> ELEMENT *PRIOR TO* <tbody> IS INCLUDED IN THE SELECTION
+			'$tblRows', THOUGH IT IS NOT A CHILD OR DESCENDANT OF <tbody>; THIS HAS RESULTED
+			IN CODE ADJUSTMENTS, MARKED WITH "HACK" COMMENTS FOR REFERENCE */
+			refRows = $tblRows.toArray(); // HACK
+			refRows.shift(); // HACK (eliminate hdr from row array)
+			//hdrRow = $tblRows[0].innerHTML; // HACK
+			tblHtml += $tblRows[0].innerHTML; // HACK: NOTE - this places hdrs in <tbody>; req's sorting HACK
+			var iCnt = refRows.length;
+			var fullTbl = new Array();
+			for ( var x=0; x<iCnt; x++ ) {
+				// every row will be used, so create a sequential array:
+				fullTbl[x] = x;
+			}
+			formTbl( iCnt, fullTbl ); // form the usrTbl - variably sized later
 		}
-		formTbl( iCnt, fullTbl ); // form the usrTbl - variably sized later
 	},  // end of SUCCESS reading data
 	error: function(xhrStat, errCode, errObj) {
 		errmsg = errObj.textContent;

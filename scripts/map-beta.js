@@ -45,7 +45,7 @@ var pgLnk = ''; // get to the current hike.html storage location;
 
 // INSIDE the initMap function, the listener is defined, and depending on whether
 // or not there is a table present, a definition is added for "dragend"
-var useTbl = $('title').text() == 'Hike Map' ? false : true;
+//var useTbl = $('title').text() == 'Hike Map' ? false : true;
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 // THE MAP CALLBACK FUNCTION:
@@ -80,6 +80,7 @@ function initMap() {
 	mapRdy = true;
 
 	// /////////////   THE HEART OF ALL MARKER CREATION!!   ///////////////
+	// NOTE: indx+1 is used due to anamolous behavior of parser - see dynamicTbls.js
 	function AddVCMarker(location, iconType, pinName, hikePg, indx) {
 		var marker = new google.maps.Marker({
 		  position: location,
@@ -91,8 +92,8 @@ function initMap() {
 		var hName = ctrPinHikes[indx][0];
 		var hPg = ctrPinHikes[indx][3];
 		hPg = '<a href="' + hPg + '" target="_blank">Hike Index Pg</a>';
-		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
-		var iwContent = '<div id="iwVC"><p>Visitor Center<br>Park: ' + hName + '<br>' +
+		var hDir = $('tbody tr').eq(indx+1).find('td:nth-child(9)').html();
+		var iwContent = '<div id="iwVC"><p>Visitor Center for<br>Park: ' + hName + '<br>' +
 			hPg + '<br>' + hDir + '</p></div>';
 		var iw = new google.maps.InfoWindow({
 			content: iwContent,
@@ -113,10 +114,10 @@ function initMap() {
 		var hPg = clusterPinHikes[indx][3];
 		hPg = '<a href="' + hPg + '" target="_blank">Website</a>';
 		indx += ctrPinHikes.length;
-		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
-		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
-		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
-		var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
+		var hDir = $('tbody tr').eq(indx+1).find('td:nth-child(9)').html();
+		var hLgth = $('tbody tr').eq(indx+1).find('td:nth-child(5)').text();
+		var hElev = $('tbody tr').eq(indx+1).find('td:nth-child(6)').text();
+		var hDiff = $('tbody tr').eq(indx+1).find('td:nth-child(7)').text();
 		var iwContent = '<div id="iwCH">Hike: ' + hName + '<br>Difficulty: ' +
 			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br>' + 
 			hPg + '<br>' + hDir + '</div>';
@@ -139,10 +140,10 @@ function initMap() {
 		var hPg = othrHikes[indx][3];
 		hPg = '<a href="' + hPg + '" target="_blank">Website</a>';
 		indx += ctrPinHikes.length + clusterPinHikes.length; 
-		var hDir = $('tbody tr').eq(indx).find('td:nth-child(9)').html();
-		var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
-		var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
-		var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
+		var hDir = $('tbody tr').eq(indx+1).find('td:nth-child(9)').html();
+		var hLgth = $('tbody tr').eq(indx+1).find('td:nth-child(5)').text();
+		var hElev = $('tbody tr').eq(indx+1).find('td:nth-child(6)').text();
+		var hDiff = $('tbody tr').eq(indx+1).find('td:nth-child(7)').text();
 		var iwContent = '<div id="iwOH">Hike: ' + hName + '<br>Difficulty: ' +
 			hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br>' + 
 			hPg + '<br>' + hDir + '</div>';
@@ -348,7 +349,7 @@ function initMap() {
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
-/*
+
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 var trackFile; // name of the JSON file to be read in
 //var newTrack; // used repeatedly to assign incoming JSON data
@@ -463,7 +464,7 @@ function drawTracks(cluster,othr) {
 	}  // End of whole test
 }  // END FUNCTION
 // /////////////////////// END OF HIKING TRACK DRAWING /////////////////////
-*/
+
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
 var geoOptions = { enableHighAccuracy: 'true' };
