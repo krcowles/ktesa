@@ -49,8 +49,6 @@ a:visited {
 	color: DarkBlue;
 	padding: 8px;
 	margin: 3px; }
-#wholeTbl {
-	display: none; }
 img.webShift {
 	padding-left: 19px; }
 img.flckrShift {
@@ -61,6 +59,8 @@ div #usrTbl table {
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 30px; }
+#refTbl {
+	display: none; }
 /* table dressing */
 table {
 	font-size: 14px;

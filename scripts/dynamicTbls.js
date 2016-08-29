@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x19</p>';
+msg = '<p>Push x.x20</p>';
 $('#dbug').append(msg);
 
 //global vars:
@@ -43,83 +43,43 @@ var compare = {
 	} 
 };  // end of COMPARE object
 
-// scope the 'click on tbl headers' event handler vars globally (outside of fct def)
-var $table;
-var $tbody;
-var $controls;
-var trows = [];
-
-function mkTblSortable() {
-	$table = $('table'); 
-	$tbody = $table.find('tbody');
-	$controls = $table.find('th'); // store all headers
-	msg = '<p>tbody stuff: ' + $tbody.text().substring(0,400) + '</p>';
-	$('#dbug').append(msg);
-	trows = $tbody.children().toArray();  // array of rows
-	msg = '<p>First element is: ' + trows[0].textContent + 'of ' + trows.length + '</p>';
-	$('#dbug').append(msg);
-	
-	// click on row headers event handler:
-	$controls.on('click', function() {
-		var $header = $(this);
-		msg = '<p>Header name: ' + $(this).text() + '</p>';
-		$('#dbug').append(msg);
-		var order = $header.data('sort');
-		var column;
-		// IF already defined for selected column, toggle ascending/descending class
-		if ( $header.is('.ascending') || $header.is('.descending') ) {
-			$header.toggleClass('ascending descending');
-			msg = '<p>Reverse order sort, where item1 is ' + trows[1].textContent + '</p>';
-			$('#dbug').append(msg);
-			var jim = trows.reverse();
-			msg = '<p>Now item1 is ' + jim[1].textContent + '</p>';
-			$('#dbug').append(msg);
-			$tbody.empty();
-			$tbody.html(jim);
-		} else {
-		// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
-			$header.addClass('ascending');
-			$header.siblings().removeClass('ascending descending');
-			if ( compare.hasOwnProperty(order) ) {
-				column = $controls.index(this);  // index into the row array's data
-				trows.sort(function(a,b) {
-					a = $(a).find('td').eq(column).text();
-					b = $(b).find('td').eq(column).text();
-					return compare[order](a,b);
-				});
-				msg = '<p>No of rows is ' + trows.length + '</p>';
-				$('#dbug').append(msg);
-				$tbody.empty();
-				$tbody.append(trows);
-				msg = '<p>Class is now: ' + $header.attr('class') + '</p>';
-				$('#dbug').append(msg);
-			} // end if-compare
-		} // end else
-	}); // end on.click
-}  // end of mkTblSortable function
-
-
-// Get the index table of hikes and place the html in <div id="usrTbl">
+// Get the index table of hikes and place the html in <div id="refTbl">
 var databaseLoc = '../data/hikeDataTbl.html';
+var refRows; // needs to be global to effect dynamic table construction & sorts
 $.ajax({
 	dataType: "html",
 	url: databaseLoc,
 	type: 'GET',
 	success: function(data) {
-		$('#usrTbl').append($(data));
+		$('#refTbl').append($(data));
 		// Create the html wrapper that goes around the viewport rows	
 			// -- when row-finding is enabled, use the next 2 lines instead...
 			//tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
 			//tblHtml += ' onMouseOut="javascript:undoMarker();">';
-		tblHtml = '<table class="sortable">';
+		tblHtml = '<table class="msortable">';
 		tblHtml += $('table').html();
-		var indx = tblHtml.indexOf('<tbody') + 8;
+		var indx = tblHtml.indexOf('<tbody') + 7;
 		tblHtml = tblHtml.substring(0,indx);  // strip off the main body
 		endTbl = ' </tbody> </table>';
 		endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
-		// now make the full table sortable
-		mkTblSortable();
-	
+		// For display, sorting, etc., create the full table, put it in <div id="usrTbl">
+		$tblRows = $('#refTbl tbody tr');
+
+		/* THERE IS AN INEXPLICABLE ANOMALY IN THE BEHAVIOR - PERHAPS A FUNCTION OF THE
+		ajax PARSER:  THE <tr> ELEMENT *PRIOR TO* <tbody> IS INCLUDED IN THE SELECTION
+		'$tblRows', THOUGH IT IS NOT A CHILD OR DESCENDANT OF <tbody>; THIS HAS RESULTED
+		IN CODE ADJUSTMENTS, MARKED WITH "HACK" COMMENTS FOR REFERENCE */
+		refRows = $tblRows.toArray(); // HACK
+		refRows.shift(); // HACK (eliminate hdr from row array)
+		//hdrRow = $tblRows[0].innerHTML; // HACK
+		tblHtml += $tblRows[0].innerHTML; // HACK: NOTE - this places hdrs in <tbody>; req's sorting HACK
+		var iCnt = refRows.length;
+		var fullTbl = new Array();
+		for ( var x=0; x<iCnt; x++ ) {
+			// every row will be used, so create a sequential array:
+			fullTbl[x] = x;
+		}
+		formTbl( iCnt, fullTbl ); // form the usrTbl - variably sized later
 	},  // end of SUCCESS reading data
 	error: function(xhrStat, errCode, errObj) {
 		errmsg = errObj.textContent;
@@ -128,24 +88,59 @@ $.ajax({
 	}	
 });
 
-// ///////////////////////  TABLE FUNCTION DECLARATIONS /////////////////////////
-
-
-// Create the html for the viewport table, using the rows identified in "tblRowsArray" arg
+// Create the html for the viewport table, using the rows identified in "tblRowsArray"
+// arg of the function below   
 function formTbl ( noOfRows, tblRowsArray ) {
 	// HTML CREATION:
 	var thisTbl = tblHtml + ' <tr>';
 	var indxRow;
 	for (var m=0; m<noOfRows; m++) {
 		indxRow = tblRowsArray[m];
-		thisTbl += $tblRows.eq(indxRow).html();
+		thisTbl += refRows[indxRow].innerHTML;
+		//thisTbl += $tblRows.eq(indxRow).html();
 		thisTbl += ' </tr> ';
 	}
 	thisTbl += endTbl;
 	$('#usrTbl').html(thisTbl);
 	$('#metric').css('display','block');
 	// ADD SORT FUNCTIONALITY ANEW FOR EACH CREATION OF TABLE:
-	
+	$('.msortable').each(function() {
+		var $table = $(this); 
+		var $tbody = $table.find('tbody');
+		var $controls = $table.find('th'); // store all headers
+		var trows = $tbody.find('tr').toArray();  // array of rows
+
+		$controls.on('click', function() {
+			var $header = $(this);
+			var order = $header.data('sort');
+			var column;
+
+			// IF defined for selected column, toggle ascending/descending class
+			if ( $header.is('.ascending') || $header.is('.descending') ) {
+				$header.toggleClass('ascending descending');
+				// HACK
+				hdrRow = trows[0];
+				trows.reverse();
+				trows.pop();
+				trows.unshift(hdrRow);
+				// END
+				$tbody.append(trows);
+			} else {
+			// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
+				$header.addClass('ascending');
+				$header.siblings().removeClass('ascending descending');
+				if ( compare.hasOwnProperty(order) ) {
+					column = $controls.index(this);  // index into the row array's data
+					trows.sort(function(a,b) {
+						a = $(a).find('td').eq(column).text();
+						b = $(b).find('td').eq(column).text();
+						return compare[order](a,b);
+					});
+					$tbody.append(trows);
+				} // end if-compare
+			} // end else
+		}); // end on.click
+	}); // end '.msortable each' loop
 	// ADD METRIC CONVERSION ANEW FOR EACH CREATION OF TABLE:
 	$('#metric').on('click', function() {
 		// table locators:
@@ -247,8 +242,6 @@ function undoMarker() {
 
 // Function to find elements within current bounds and display them in a table
 function IdTableElements(boundsStr) {
-	msg = '<p>IdTableElements invoked with ' + boundsStr + '</p>';
-	$('#dbug').append(msg);
 	// ESTABLISH CURRENT VIEWPORT BOUNDS:
 	var beginA = boundsStr.indexOf('((') + 2;
 	var leftParm = boundsStr.substring(beginA,boundsStr.length);
@@ -271,7 +264,7 @@ function IdTableElements(boundsStr) {
 	/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
 	// First, check to see if any ctrPinHikes are within the viewport;
 	// if so, include them in the table
-	var n = 0; //
+	var n = 0;
 	var rowCnt = 0;
 	for (j=0; j<ctrPinHikes.length; j++) {
 		hikeSet = ctrPinHikes[j];
@@ -292,7 +285,7 @@ function IdTableElements(boundsStr) {
 			tblEl[n] = ctrPinHikes.length + k;
 			n++;
 			rowCnt++;
-		}
+		}		
 	}
 	// and lastly, othrHikes
 	for (l=0; l<othrHikes.length; l++) {
