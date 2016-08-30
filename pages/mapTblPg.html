@@ -20,6 +20,13 @@
 
 <body>
 
+<div id="geo">
+<?php 
+	if( $_GET["geoLoc"] ) {
+		echo "Geoloc is" . $_GET['geoLoc'];
+	}
+?>
+</div>
 <div id="geoCtrl">Geolocate Me!</div>
 
 <div class="container">

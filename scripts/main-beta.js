@@ -18,5 +18,9 @@ $('#b4').on('click', function() {
 	window.open('pages/mapPg.html','_self');
 });
 
+var passIt = true;
+$('#keepTryin').on('click', function() {
+	window.location.href = "pages/mapTblPg.html?geoLoc="+passIt+"";
+});
 
 }); // end of page-loading wait statement

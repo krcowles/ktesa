@@ -9,8 +9,12 @@ var mapTick = {   // custom tick-mark symbol for tracks
 	strokeWeight: 2
 };
 
+var geoLoc;
 // is geoloc on or off?
 var turnOnGeo = localStorage.getItem('geoLoc');
+
+msg = '<p>geoLoc ' + geoLoc + '</p>';
+$('#dbug').append(msg);
 
 if ( turnOnGeo === 'true' ) {
 	$('#geoCtrl').css('display','block');
