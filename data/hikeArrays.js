@@ -6,11 +6,14 @@ var altTrkClr2 = '#14613E';
 var altTrkClr3 = '#000000';
 var noTrk = '#000000';
 
-// -------------------------------   IMPORTANT NOTE: ----------------------------
-//	The hikeDataTbl.html file ***** MUST ***** list items in the
-//	order shown below [as listed in arrays] in order for the correct elements to be listed
-//	in the user table of hikes
-//	-----------------------------------------------------------------------------                                         */
+// ***************************************************************************************
+// -----------------------------------   IMPORTANT NOTE: --------------------------------
+//	The hikeDataTbl.html file ***** MUST ***** list items in the ORDER SHOWN
+//	below [as listed in arrays] in order for the correct elements to be listed
+//	in the user table of hikes !!!!!!
+//	-------------------------------------------------------------------------------------    
+// ***************************************************************************************
+                                     
 // HIKE DATA ARRAYS:
 //  1. 'Hike Name',
 //  2. trailhead (or visitor center) latitude,
@@ -74,7 +77,10 @@ var clusterPinHikes = [
 	['Deception Pk',35.807036,-105.783577,'Deception.html','decp.json',trackColor],
 	['Nambe Lake',35.818627,-105.797649,'Nambe.html','nambe.json',altTrkClr1],
 	['La Vega',35.816873,-105.815796,'LaVega.html','vega.json',altTrkClr2],
-	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',altTrkClr3]
+	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',altTrkClr3],
+	// Jemez East Fork trails
+	['East Fork - Las Conchas',35.827885,-106.580129,'EForkConchas.html','efconchas.json',altTrkClr1],
+	['East Fork - Battleship',35.825727,-106.599355,'EForkBattle.html','efbattle.json',trackColor]
 ];
 
 // All other hikes not covered by above:
@@ -123,6 +129,5 @@ var othrHikes = [
 	['Valle Grande',35.857077,-106.491058,'ValleGrandeInSnow.html','vgrand.json'],
 	['Viewpoint Loop',35.264798,-105.33362,'Villanueva.html',''],
 	['Williams Lake',36.572704,-105.436408,'WilliamsLake.html',''],
-	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json'],
-	['East Fork - Las Conchas',35.820792,-106.591174,'EForkConchas.html','efconchas.json']
+	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
 ];

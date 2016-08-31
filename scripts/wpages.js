@@ -104,7 +104,7 @@ $( function () { // when page is loaded...
 
 	// make map link and place below map
 	htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-			mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
+			mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
 	$('.lnkList').after(htmlLnk);
 	if ( window.sessionStorage ) { 
 		sessionStorage.setItem('prevLoad','2.71828'); // Euler's number
@@ -200,7 +200,7 @@ $( function () { // when page is loaded...
 		var tstParent = tst.parentNode;
 		tstParent.removeChild(tst);
 		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-				mapBot + 'px;" href="' + fullMap + '">Click for full-page map</a>';
+				mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
 		$('.lnkList').after(htmlLnk);
 	});
 

@@ -303,7 +303,6 @@ function IdTableElements(boundsStr) {
 			rowCnt++;
 		}
 	}
-	
 	if ( rowCnt === 0 ) {
 		msg = '<p>NO hikes in this area</p>';;
 		$('#usrTbl').append(msg);

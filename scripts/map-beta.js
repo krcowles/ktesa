@@ -306,6 +306,19 @@ function initMap() {
 		strokeWeight: 2
 	});
 	mmtLines.setMap(null);
+	// EAST FORK TRAILS:
+	var efth = {lat: 35.820818, lng: -106.591123 };
+	var eflc = {lat: 35.827885, lng: -106.580129 };
+	var efbs = {lat: 35.825727, lng: -106.599355 };
+	var efpath = [ efbs, efth, eflc ];
+	var eftrails = new google.maps.Polyline({
+		path: efpath,
+		geodesic: false,
+		strokeColor: lineColor,
+		strokeOpacity: 1.0,
+		strokeWeight: 2
+	});
+	eftrails.setMap(null);	
 	// END OF POLYLINES CREATION
 	
 	// PAN AND ZOOM HANDLERS:
@@ -322,6 +335,7 @@ function initMap() {
 			egLines.setMap(map);
 			tesLines.setMap(map);
 			CliffMacLines.setMap(map);
+			eftrails.setMap(map);
 			mmtLines.setMap(map);
 			for (var m=0; m<allTheTracks.length; m++) {
 				trkKeyStr = 'trk' + m;
@@ -336,6 +350,7 @@ function initMap() {
 			tesLines.setMap(null);
 			CliffMacLines.setMap(null);
 			mmtLines.setMap(null);
+			eftrails.setMap(null);
 			for (var n=0; n<allTheTracks.length; n++) {
 				trkKeyStr = 'trk' + n;
 				trkObj[trkKeyStr].setMap(null);
