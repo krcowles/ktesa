@@ -1,7 +1,7 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
 // let the user know which version is being used here		
-msg = '<p>Push x.x21</p>';
+msg = '<p>Push x.x22</p>';
 $('#dbug').append(msg);
 
 //global vars:
