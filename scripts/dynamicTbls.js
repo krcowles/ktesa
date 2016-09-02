@@ -1,9 +1,5 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
 	
-// let the user know which version is being used here		
-msg = '<p>Push x.x22</p>';
-$('#dbug').append(msg);
-
 //global vars:
 var tblHtml; // this will hold an html "wrapper" for rows id'd for inclusion by the viewport
 var endTbl;  // the closing part of the wrapper

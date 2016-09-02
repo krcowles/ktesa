@@ -26,12 +26,12 @@ var mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|
 // also text size for pop-ups
 if ( mobile_browser ) {
 	var geoIcon = lgGeo;
-	var ctrIcon = prefix + '../images/green64.png';
-	var clusterIcon = prefix + '../images/blue64.png';
-	var hikeIcon = prefix + '../images/pink64.png';
-	$('#iwVC').css('font-size','800%');
-	$('#iwCH').css('font-size','800%');
-	$('#iwOH').css('font-size','800%');
+	var ctrIcon = '../images/green64.png';
+	var clusterIcon = '../images/blue64.png';
+	var hikeIcon = '../images/pink64.png';
+	$('#iwVC').css('font-size','400%');
+	$('#iwCH').css('font-size','400%');
+	$('#iwOH').css('font-size','400%');
 } else {
 	var geoIcon = medGeo;
 	var ctrIcon = '../images/greenpin.png';
