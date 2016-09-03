@@ -1,131 +1,18 @@
 $( function() {  // wait until document is loaded...
 // ------------------
 
-var msg;
-var indx;
-var noPart1;
-var noPart2;
+$('#b1').on('click', function() {
+	window.open('pages/mapTblWithGeo.html','_blank');
+});
+$('#b2').on('click', function() {
+	window.open('pages/mapPgWithGeo.html','_blank');
+});
+$('#b3').on('click', function() {
+	window.open('pages/mapTblPg.html','_blank');
+});
+$('#b4').on('click', function() {
+	window.open('pages/mapPg.html','_blank');
+});
 
-mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
-if ( !mobile_browser ) {
-	$('#forMobile').css('display','none');
-}
 
-// establish modal-object
-var modal = (function() {
-	var $window = $(window);
-	var $modal = $('<div class="modal"/>');
-	var $content = $('<div class="modal-content"/>');
-	var $close = $('<button role="button" class="modal-close">close</button>');
-	
-	$modal.append($content, $close);
-	
-	$close.on('click', function(e) {
-		e.preventDefault();
-		modal.close();
-	});
-	return {
-		center: function() {
-			var top = Math.max($window.height() - $modal.outerHeight(), 0) / 2;
-			var left = Math.max($window.width() - $modal.outerWidth(), 0) / 2;
-			$modal.css({
-				top: top + $window.scrollTop(),
-				left: left + $window.scrollLeft()
-			});
-		},
-		open: function(details) {
-			$content.empty().append(details.html());
-			$modal.css({
-				width: '940',
-				height: '575',
-				opacity: '1.0'
-			}).appendTo('body');
-			modal.center();
-			$(window).on('resize',modal.center);
-		},
-		close: function() {
-			$content.empty();
-			$modal.detach();
-			$(window).off('resize',modal.center);
-			$('.container').css('opacity','1.0');
-		}
-	};
-}());
-// modal-init:
-(function() {
-	var $content = $('#pageModal').detach();
-	$('.container').css('opacity','0.3');
-	modal.open($content);
-}());	
-			
-	
-// Establish the compare method (object)
-var compare = {
-
-	std: function(a,b) {	// standard sorting - literal
-		if ( a < b ) {
-			return -1;
-		} else {
-			return a > b ? 1 : 0;
-		}
-	},
-	lan: function(a,b) {    // "Like A Number": extract numeric portion for sort
-		// commas allowed in numbers, so;
-		var indx = a.indexOf(',');
-		if ( indx < 0 ) {
-			a = parseFloat(a);
-		} else {
-			noPart1 = parseFloat(a);
-			msg = a.substring(indx + 1, indx + 4);
-			noPart2 = msg.valueOf();
-			a = noPart1 + noPart2;
-		}
-		indx = b.indexOf(',');
-		if ( indx < 0 ) {
-			b = parseFloat(b);
-		} else {
-			noPart1 = parseFloat(b);
-			msg = b.substring(indx + 1, indx + 4);
-			noPart2 = msg.valueOf();
-			b = noPart1 + noPart2;
-		}
-		return a - b;
-	} 
-};  // end of object declaration
-
-$('.sortable').each(function() {
-	var $table = $(this); 
-	var $tbody = $table.find('tbody');
-	var $controls = $table.find('th'); // store all headers
-	var trows = $tbody.find('tr').toArray();  // array of rows
-	
-	$controls.on('click', function() {
-		var $header = $(this);
-		var order = $header.data('sort');
-		var column;
-		
-		// IF defined for selected column, toggle ascending/descending class
-		if ( $header.is('.ascending') || $header.is('.descending') ) {
-			$header.toggleClass('ascending descending');
-			$tbody.append(trows.reverse());
-		} else {
-		// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
-			$header.addClass('ascending');
-			$header.siblings().removeClass('ascending descending');
-			if ( compare.hasOwnProperty(order) ) {
-				column = $controls.index(this);  // index into the row array's data
-				trows.sort(function(a,b) {
-					a = $(a).find('td').eq(column).text();
-					b = $(b).find('td').eq(column).text();
-					return compare[order](a,b);
-				});
-				$tbody.append(trows);
-			} // end if-compare
-		} // end else
-		
-	}); // end on.click
-	
-}); // end '.sortable each' loop
-	
-// ---------------
-});  // end of 'wait til document loaded'
+}); // end of page-loading wait statement

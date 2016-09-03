@@ -4,11 +4,15 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	font-family: arial, verdana;
-	background-color: #dfdfdf; }
-a:visited {
-	color: DarkGreen; }
-.container {
-	position: relative; }
+	background-color: #dfdfdf;
+	border-style: solid;
+	border-width: 2px;
+	border-color: DarkBlue; }
+#container {
+	width: 940px;
+	margin-left: auto;
+	margin-right: auto;
+	postion: relative; }
 img#tompic {
 	display: block;
 	float: right;
@@ -22,7 +26,6 @@ img#tompic {
 	border-width: 2px;
 	border-color: #d4e8d4;
 	font-style: oblique;
-	//background-color: #d4e8d4;
 	background-color: #dff8e3;
 	line-height: 3.0em;
 	text-align: center; }
@@ -38,75 +41,73 @@ img#tompic {
 #features {
 	margin-left: 8px;
 	margin-top: 30px; }
-#mapStuff {
-	margin-left: 8px; }
+#expl {
+	padding-left: 8px; }
+.btxt {
+	color: DarkBlue; }
+#b1:hover {
+	cursor: pointer;
+	background-color: #cfe2cf; }
+#b2:hover {
+	cursor: pointer;
+	background-color: #cfe2cf; }
+#b3:hover {
+	cursor: pointer;
+	background-color: #f8dcd3; }
+#b4:hover {
+	cursor: pointer;
+	background-color: #f8dcd3; }
+#expect {
+	padding-left: 8px;
+	font-style: bold;
+	text-decoration: underline;
+	color: DarkBlue;
+	font-size: 20px; }
 #closeNote {
 	color: DarkGreen; }
-#it2 {
+#itals {
 	color: DarkBlue; }
-.modal {
-	text-align: left;
-	padding: 10px;
-	background-color: #dAdBdA;
-    position: absolute;
-    border-style: ridge;
-    border-width: 4px;
-    border-color: black;
-    z-index: 1000; }
-.modal button {
-	width: 70px;
-	height: 30px;
+.strtup {
+	width: 140px;
+	height: 40px;
 	font-size: 18px;
-	color: blue;
-	text-align: center; }
-#iwVC {
-	background-color: #f0f0f0;
-	color: DarkGreen;
-	padding: 8px;
-	margin: 3px; }
-#iwCH {
-	background-color: #f0f0f0;
+	text-align: center;
 	color: DarkBlue;
-	padding: 8px;
-	margin: 3px; }
-#iwOH {
-	background-color: #f0f0f0;
+	background-color: white;
+	border-style: solid;
+	border-width: 2px;
+	border-color: black; }
+fieldset {
+	width: 285px;
+	display: inline-block; }
+legend {
+	color: DarkGreen; }
+#mapDetails {
+	margin-top: 10px;
 	color: DarkBlue;
-	padding: 8px;
-	margin: 3px; }
-#map {
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 30px;
-    width: 100%;
-    height: 700px;
-    z-index: 1; }
-img.webShift {
-	padding-left: 19px; }
-img.flckrShift {
-	padding-left: 15px; }
-img.expShift {
-	padding-left: 24px; }
-#disclaimers {
+	text-decoration: underline; }
+#notes {
+	margin-top: 8px;
 	border-style: outset;
 	border-width: 2px;
 	border-color: #d4e8d4;
-	background-color: #d4e8d4;
+	background-color: #dff8e3;
+	padding: 8px; }
+#disclaimers {
+	margin-top: 12px;
 	padding: 8px; }
 #disasters {
 	list-style-type: square;
 	width: 960px;
 	margin-top: 0px;
 	margin-bottom: 0px; }
-div #usrTbl table {
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 30px; }
 #linkNote {
 	padding-left: 12px;
 	padding-right: 6px; }
 #closer {
+	margin-top: 20px;
 	margin-left: 8px;
+	margin-bottom: 20px;
 	height: 32px;
 	line-height: 1.8em;
 	padding: 10px;
@@ -115,61 +116,3 @@ div #usrTbl table {
 	border-width: 2px;
 	border-color: #c9d7e8;
 	text-align: center; }
-/* table dressing */
-#tbl_index {
-	text-align: center;
-	margin-left: 25px;
-	display: none; }
-table {
-	font-size: 14px;
-	text-align: left;
-	margin-top: 5px;
-	background-color: #ffffdf;
-	border-style: groove;
-	border-width: 4px;
-	border-color: goldenRod; }
-th {
-	text-align: center;
-	padding-left: 5px;
-	padding-right: 5px;
-	border-style: outset;
-	border-width: 2px;
-	border-color: peru; }
-tr:hover {
-	background-color: BlanchedAlmond; }
-td {
-	vertical-align: top;
-	padding-left: 5px;
-	padding-right: 5px; }
-.hdr_row {
-	background-color: bisque; }
-.hdr_row:hover {
-	cursor: pointer;
-	background-color: Brown;
-	color: White; }
-#metric {
-	text-align: left;
-	width: 190px;
-	margin-left: 45px;
-	margin-top: -10px;
-	padding-left: 10px;
-	padding-right: 10px;
-	color: MidnightBlue;
-	border-style: inset;
-	border-width: 3px;
-	border-color: MidnightBlue;
-	cursor: pointer; }
-.dressing {
-	display: block; }
-.indxd {
-	color: brown; }
-#ftNote {
-	font-size: 9px;
-	padding-left: 10px;
-	margin-bottom: 10px; }
-/*
-#infoWins {
-	display: none; }
-*/
-
-	
