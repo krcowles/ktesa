@@ -103,4 +103,6 @@ td {
 	border-width: 3px;
 	border-color: MidnightBlue;
 	cursor: pointer; }
+#geoSetting {
+	display: none; }
 

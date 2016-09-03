@@ -19,8 +19,9 @@ var noTrk = '#000000';
 //  2. trailhead (or visitor center) latitude,
 //  3. trailhead (or visitor center) longitude,
 //  4. 'html source for page',
-//  5. 'track json file' [may be '' if no file available] (N/A for ctrPinHikes)
+//  5. 'track json file' [may be '' if no file available]
 //  6. if track is present: color variable defined above (N/A for ctrPinHikes)
+//  7. clustered hikes -> 1 = represent group with marker, 0 = don't represent
 
 // Visitor Center array:
 var ctrPinHikes = [
@@ -33,54 +34,35 @@ var ctrPinHikes = [
 // Hikes where trailheads overlap or are in very close proximity:
 var clusterPinHikes = [
 	// Bandelier hikes:
-	['Ruins Trail',35.793670,-106.273155,'MainLoop.html','',noTrk],
-	['Falls Trail',35.788735,-106.282079,'FallsTrail.html','',noTrk],
-	['Frey Trail',35.779219,-106.285744,'Frey.html','',noTrk],
-	['Frijolito Ruins',35.769573,-106.282433,'Frijolito.html','',noTrk],
-	['Alcove House',35.764312,-106.273698,'AlcoveHouse.html','',noTrk],
-	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html','',noTrk],
-	// Bosque del Apache hikes:
-	['Canyon Trail',33.759012,-106.895278,'CanyonTrail.html','',noTrk],
+	['Ruins Trail',35.778943,-106.270838,'MainLoop.html','',noTrk,1],
+	['Falls Trail',35.788735,-106.282079,'FallsTrail.html','',noTrk,0],
+	['Frey Trail',35.779219,-106.285744,'Frey.html','',noTrk,0],
+	['Frijolito Ruins',35.769573,-106.282433,'Frijolito.html','',noTrk,0],
+	['Alcove House',35.764312,-106.273698,'AlcoveHouse.html','',noTrk,0],
 	// Chaco Canyon hikes:
-	['Una Vida',36.033331,-107.911942,'UnaVida.html','',noTrk],
-	['Hungo Pavi',36.049536,-107.93031,'HungoPavi.html','',noTrk],
-	['Pueblo Bonito',36.059216,-107.958934,'Bonito.html','',noTrk],
-	['Pueblo Alto',36.068608,-107.959900,'PuebloAlto.html','palto.json',trackColor],
-	['Kin Kletso',36.063864,-107.981315,'KinKletso.html','',noTrk],
-	// El Malpais hikes:
-	['Big Tubes',34.944733,-108.106983,'BigTubes.html','tubes.json',trackColor],
-	['Ice Caves',34.99311,-108.080084,'IceCave.html','',noTrk],
-	['El Calderon',34.9698,-108.00325,'ElCalderon.html','cald.json',trackColor],
+	['Pueblo Alto',36.068608,-107.959900,'PuebloAlto.html','palto.json',trackColor,1],
+	['Kin Kletso',36.063864,-107.981315,'KinKletso.html','',noTrk,0],
 	// Elena Gallegos hikes:
-	['Pino Trail',35.160419, -106.463184,'Pino.html','pino.json',trackColor],
-	['Domingo Baca',35.167093,-106.465502,'Domingo.html','baca.json',trackColor],
-	// Ghost Ranch hikes:
-	['Chimney Rock',36.330525,-106.47482,'ChimneyRock.html','',noTrk],
-	['Kitchen Mesa',36.336353,-106.469007,'Kitchen.html','',noTrk],
+	['Pino Trail',35.163250, -106.470067,'Pino.html','pino.json',trackColor,1],
+	['Domingo Baca',35.167093,-106.465502,'Domingo.html','baca.json',trackColor,0],
 	// Manzanitas Trail hikes:
-	['Tunnel Canyon',35.055938,-106.371517,'TunnelCanyon.html','tun.json',trackColor],
-	['Birdhouse Ridge',35.055938,-106.388512,'Birdhouse.html','bird.json',trackColor],
-	// Manzanos hikes:
-	['Albuquerque Trail',34.793491,-106.372268,'ABQ.html','',noTrk],
-	['July 4th Trail',34.790707,-106.382439,'July4.html','',noTrk],
+	['Tunnel Canyon',35.046562,-106.383088,'TunnelCanyon.html','tun.json',trackColor,1],
+	['Birdhouse Ridge',35.055938,-106.388512,'Birdhouse.html','bird.json',trackColor,0],
 	// Petroglyphs hikes:
-	['Piedras Marcadas',35.188867,-106.686269,'Piedras.html','',noTrk],
-	['Mesa Point Trail',35.160629,-106.716645,'MesaPoint.html','',noTrk],
-	['Cliff Base Trail',35.165471,-106.729088,'CliffBase.html','',noTrk],
-	['Macaw Trail',35.170242,-106.717243,'Macaw.html','',noTrk],
-	['Rinconada Canyon',35.126851,-106.724635,'Rinconada.html','',noTrk],
-	['ABQ Volcanoes',35.13075,-106.7802667,'ABQVolcanoes.html','volc.json',trackColor],
+	['Mesa Point Trail',35.161988,-106.718203,'MesaPoint.html','',noTrk,1],
+	['Cliff Base Trail',35.165471,-106.729088,'CliffBase.html','',noTrk,0],
+	['Macaw Trail',35.170242,-106.717243,'Macaw.html','',noTrk,0],
 	// Big Tesuque Campground hikes:
-	['Upper Tesuque',35.764427,-105.769501,'UpperTesuque.html','utes.json',altTrkClr1],
-	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html','mtes.json',altTrkClr2],
+	['Upper Tesuque',35.769508,-105.809155,'UpperTesuque.html','utes.json',altTrkClr1,1],
+	['Middle Tesuque',35.738236,-105.779114,'MiddleTesuque.html','mtes.json',altTrkClr2,0],
 	// Winsor Trailhead hikes:
-	['Deception Pk',35.807036,-105.783577,'Deception.html','decp.json',trackColor],
-	['Nambe Lake',35.818627,-105.797649,'Nambe.html','nambe.json',altTrkClr1],
-	['La Vega',35.816873,-105.815796,'LaVega.html','vega.json',altTrkClr2],
-	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',altTrkClr3],
+	['Deception Pk',35.795845,-105.804605,'Deception.html','decp.json',trackColor,1],
+	['Nambe Lake',35.818627,-105.797649,'Nambe.html','nambe.json',altTrkClr1,0],
+	['La Vega',35.816873,-105.815796,'LaVega.html','vega.json',altTrkClr2,0],
+	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',altTrkClr3,0],
 	// Jemez East Fork trails
-	['East Fork - Las Conchas',35.827885,-106.580129,'EForkConchas.html','efconchas.json',altTrkClr1],
-	['East Fork - Battleship',35.825727,-106.599355,'EForkBattle.html','efbattle.json',trackColor]
+	['East Fork - Las Conchas',35.820818,-106.591123,'EForkConchas.html','efconchas.json',altTrkClr1,1],
+	['East Fork - Battleship',35.825727,-106.599355,'EForkBattle.html','efbattle.json',trackColor,0]
 ];
 
 // All other hikes not covered by above:
@@ -129,5 +111,20 @@ var othrHikes = [
 	['Valle Grande',35.857077,-106.491058,'ValleGrandeInSnow.html','vgrand.json'],
 	['Viewpoint Loop',35.264798,-105.33362,'Villanueva.html',''],
 	['Williams Lake',36.572704,-105.436408,'WilliamsLake.html',''],
-	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json']
+	['Traders Trail',36.323333,-105.70366666,'Traders.html','trader.json'],
+	['Tsankawi Ruins',35.860416,-106.224682,'Tsankawi.html',''],
+	['Canyon Trail',33.759012,-106.895278,'CanyonTrail.html',''],
+	['Piedras Marcadas',35.188867,-106.686269,'Piedras.html',''],
+	['Rinconada Canyon',35.126851,-106.724635,'Rinconada.html',''],
+	['ABQ Volcanoes',35.13075,-106.7802667,'ABQVolcanoes.html','volc.json'],
+	['Big Tubes',34.944733,-108.106983,'BigTubes.html','tubes.json'],
+	['Ice Caves',34.99311,-108.080084,'IceCave.html',''],
+	['El Calderon',34.9698,-108.00325,'ElCalderon.html','cald.json'],
+	['Una Vida',336.064977,-107.969867,'UnaVida.html',''],
+	['Hungo Pavi',36.049536,-107.93031,'HungoPavi.html',''],
+	['Pueblo Bonito',36.059216,-107.958934,'Bonito.html',''],
+	['Chimney Rock',36.330525,-106.47482,'ChimneyRock.html',''],
+	['Kitchen Mesa',36.336353,-106.469007,'Kitchen.html',''],
+	['Albuquerque Trail',34.793491,-106.372268,'ABQ.html',''],
+	['July 4th Trail',34.790707,-106.382439,'July4.html','']
 ];

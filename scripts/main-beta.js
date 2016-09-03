@@ -2,25 +2,17 @@ $( function() {  // wait until document is loaded...
 // ------------------
 
 $('#b1').on('click', function() {
-	localStorage.setItem('geoLoc',true);
-	window.open('pages/mapTblPg.html','_self');
+	window.open('pages/mapTblWithGeo.html','_blank');
 });
 $('#b2').on('click', function() {
-	localStorage.setItem('geoLoc',true);
-	window.open('pages/mapPg.html','_self');
+	window.open('pages/mapPgWithGeo.html','_blank');
 });
 $('#b3').on('click', function() {
-	localStorage.setItem('geoLoc',false);
-	window.open('pages/mapTblPg.html','_self');
+	window.open('pages/mapTblPg.html','_blank');
 });
 $('#b4').on('click', function() {
-	localStorage.setItem('geoLoc',false);
-	window.open('pages/mapPg.html','_self');
+	window.open('pages/mapPg.html','_blank');
 });
 
-var passIt = true;
-$('#keepTryin').on('click', function() {
-	window.location.href = "pages/mapTblPg.html?geoLoc="+passIt+"";
-});
 
 }); // end of page-loading wait statement
