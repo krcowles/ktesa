@@ -51,7 +51,6 @@ $( function () { // when page is loaded...
 		var tst = sessionStorage.getItem('prevLoad');
 		if ( !tst ) { 
 			//msg = '<p>NORMAL ENTRY</p>';
-			//$('#dbug').append(msg);
 			i = 0;
 			$('img').each( function() {
 				capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
@@ -61,20 +60,14 @@ $( function () { // when page is loaded...
 				sessionStorage.setItem(pwidth,capWidth[i]);
 				i++;
 			});
-			// NOTE: Added height attr because not all maps height=width!!
+			// NOTE: ASSUMPTION: width = height !!!
 			mapWidth = $maps.attr('width');
 			mapWidth = parseFloat(mapWidth);
-			msg = '<p>Width = ' + mapWidth + '; Height = ';
-			mapHeight = $maps.attr('height');
-			mapHeight = parseFloat(mapHeight);
-			msg += mapHeight + '</p>';
-			$('#dbug').append(msg);
 			lnkLoc = ( mapWidth - 160 ) / 2;
 			mapPos = $maps.offset();
 			mapLeft = mapPos.left + lnkLoc;
 			sessionStorage.setItem('mleft',mapLeft);
-			mapBot = mapPos.top + mapHeight + 15;
-			//mapBot = mapPos.top + mapWidth + 15;
+			mapBot = mapPos.top + mapWidth + 15;
 			sessionStorage.setItem('mbot',mapBot);
 			// get caption locations
 			calcPos(); 
@@ -104,12 +97,10 @@ $( function () { // when page is loaded...
 		}
 		mapWidth = $maps.attr('width');
 		mapWidth = parseFloat(mapWidth);
-		mapHeight = $maps.attr('height');
-		mapHeight = parseFloat(mapHeight);
 		lnkLoc = ( mapWidth - 160 ) / 2;
 		mapPos = $maps.offset();
 		mapLeft = mapPos.left + lnkLoc;
-		mapBot = mapPos.top + mapHeight + 15;
+		mapBot = mapPos.top + mapWidth + 15;
 		calcPos();
 	}  // end of session storage IF
 

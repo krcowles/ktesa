@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>eforkbattle + EForkBattleship</title>
+		<title>EForkBattleship + fork</title>
 		<base target="_top"></base>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -11,7 +11,7 @@
 	<body style="margin:0px;">
 		<script type="text/javascript">
 			google_api_key = 'AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU'; // Your project's Google Maps API key goes here (https://code.google.com/apis/console)
-			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;key='+self.google_api_key+'"><'+'/script>');
+			if (document.location.toString().indexOf('http://www.gpsvisualizer.com') > -1) { google_api_key = ''; }			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;key='+self.google_api_key+'"><'+'/script>');
 		</script>
 		
 		<!--
@@ -44,7 +44,7 @@
 		
 		<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->
 		<script type="text/javascript">
-			/* Global variables used by the GPS Visualizer functions (20160831081052): */
+			/* Global variables used by the GPS Visualizer functions (20160905131242): */
 			gv_options = {};
 			
 			// basic map parameters:
@@ -59,7 +59,7 @@
 			gv_options.map_div = 'gmap_div';  // the name of the HTML "div" tag containing the map itself; usually 'gmap_div'
 			gv_options.doubleclick_zoom = true;  // true|false: zoom in when mouse is double-clicked?
 			gv_options.doubleclick_center = true;  // true|false: re-center the map on the point that was double-clicked?
-			gv_options.mousewheel_zoom = true; // true|false; or 'reverse' for down=in and up=out
+			gv_options.scroll_zoom = true; // true|false; or 'reverse' for down=in and up=out
 			gv_options.autozoom_adjustment = 0;
 			gv_options.centering_options = { 'open_info_window':true, 'partial_match':true, 'center_key':'center', 'default_zoom':null } // URL-based centering (e.g., ?center=name_of_marker&zoom=14)
 			gv_options.tilt = false; // true|false: allow Google to show 45-degree tilted aerial imagery?
@@ -110,7 +110,7 @@
 			  gv_options.tracklist_options.footer = ''; // HTML code
 
 			// marker-related options:
-			gv_options.default_marker = { color:'orange',icon:'googlemini',scale:1 }; // icon can be a URL, but be sure to also include size:[w,h] and optionally anchor:[x,y]
+			gv_options.default_marker = { color:'red',icon:'googlemini',scale:1 }; // icon can be a URL, but be sure to also include size:[w,h] and optionally anchor:[x,y]
 			gv_options.marker_tooltips = true; // do the names of the markers show up when you mouse-over them?
 			gv_options.marker_shadows = true; // true|false: do the standard markers have "shadows" behind them?
 			gv_options.marker_link_target = '_blank'; // the name of the window or frame into which markers' URLs will load
@@ -210,23 +210,25 @@
 				t = 1; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:trk[t].info.desc,color:trk[t].info.color,number:t});
 				
 				
-				GV_Draw_Marker({lat:35.8218000,lon:-106.6274250,name:'Guarding the warm springs',desc:'WildflowerGuards',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28741092493/in/photostream/',thumbnail:'https://c6.staticflickr.com/9/8571/28741092493_25ffc220bb.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8190917,lon:-106.6140528,name:'Tom, Bill &amp; Ken at the canyon overlook',desc:'TresAmigos',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328790156/in/photostream/',thumbnail:'https://c5.staticflickr.com/9/8221/29328790156_da91b932df.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8174528,lon:-106.5926361,name:'Near NM4 at the trailhead',desc:'TrailStart',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29075050510/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8351/29075050510_279e86a9f3.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8165944,lon:-106.5999000,name:'Tall ponderosas dominate the trail',desc:'TomsForest',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328823296/in/photostream/',thumbnail:'https://c1.staticflickr.com/9/8807/29328823296_dbd935c387.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8190361,lon:-106.6142722,name:'Overlook near Jemez Falls',desc:'TomsCanyon',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739010254/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8226/28739010254_1d0760d199.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8220250,lon:-106.6274500,name:'Reflections of Tom at the springs',desc:'Reflections',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328876006/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8554/29328876006_874dde4212.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8213722,lon:-106.6276167,name:'One of the two beautiful pools at Macauley',desc:'Pool2',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739058534/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8192/28739058534_15d4c06915.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8171306,lon:-106.6046611,name:'Heading down the East Fork trail',desc:'PonderosaTom',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739075204/in/photostream/',thumbnail:'https://c5.staticflickr.com/9/8648/28739075204_5e0ae228c9.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8238250,lon:-106.6331556,name:'Tres amigos on the obsidian plateau',desc:'Obserdians',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29254638412/in/photostream/',thumbnail:'https://c5.staticflickr.com/9/8024/29254638412_abf5f74fcb.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8279722,lon:-106.6434556,name:'Battleship from the end of the trail',desc:'Namesake',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29254654712/in/photostream/',thumbnail:'https://c1.staticflickr.com/9/8522/29254654712_829c33ce9b.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8248167,lon:-106.6391667,name:'Coming around the bend towards Battleship',desc:'LastLegView',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328938006/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8482/29328938006_f32dd5a32a.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8195333,lon:-106.6227333,name:'Jemez red clay contrasts the ponderosas',desc:'JemezRed',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29075241150/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8365/29075241150_928cffafa3.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8203194,lon:-106.6143639,name:'Fantastic views descending the canyon',desc:'HikersView',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739124554/in/photostream/',thumbnail:'https://c3.staticflickr.com/8/7546/28739124554_9ef84015fa.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8174333,lon:-106.6033667,name:'Twisted rocks and trees highlight the journey',desc:'GnarlyRock',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28741160703/in/photostream/',thumbnail:'https://c8.staticflickr.com/9/8543/28741160703_c0fb2034ee.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8220111,lon:-106.6275639,name:'Karen illustrates how to relax',desc:'EnjoyingMacauley',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739139264/in/photostream/',thumbnail:'https://c1.staticflickr.com/9/8245/28739139264_f2d77e3892.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8189861,lon:-106.6140528,name:'Another view near Jemez Falls',desc:'CanyonOverlook',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328855526/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8852/29328855526_5b8829ff0b.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8169417,lon:-106.5990000,name:'Never resist a chance to elevate!',desc:'AlwaysPrecarious',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28741187223/in/photostream/',thumbnail:'https://c8.staticflickr.com/9/8107/28741187223_dc26d242d6.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8218000,lon:-106.6274250,name:'Guarding the warm springs',desc:'WildflowerGuards',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28741092493/in/photostream/',thumbnail:'https://c6.staticflickr.com/9/8571/28741092493_25ffc220bb.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8190917,lon:-106.6140528,name:'Tom, Bill &amp; Ken at the canyon overlook',desc:'TresAmigos',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328790156/in/photostream/',thumbnail:'https://c5.staticflickr.com/9/8221/29328790156_da91b932df.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8174528,lon:-106.5926361,name:'Near NM4 at the trailhead',desc:'TrailStart',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29075050510/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8351/29075050510_279e86a9f3.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8165944,lon:-106.5999000,name:'Tall ponderosas dominate the trail',desc:'TomsForest',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328823296/in/photostream/',thumbnail:'https://c1.staticflickr.com/9/8807/29328823296_dbd935c387.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8190361,lon:-106.6142722,name:'Overlook near Jemez Falls',desc:'TomsCanyon',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739010254/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8226/28739010254_1d0760d199.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8220250,lon:-106.6274500,name:'Reflections of Tom at the springs',desc:'Reflections',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328876006/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8554/29328876006_874dde4212.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8213722,lon:-106.6276167,name:'One of the two beautiful pools at Macauley',desc:'Pool2',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739058534/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8192/28739058534_15d4c06915.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8171306,lon:-106.6046611,name:'Heading down the East Fork trail',desc:'PonderosaTom',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739075204/in/photostream/',thumbnail:'https://c5.staticflickr.com/9/8648/28739075204_5e0ae228c9.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8238250,lon:-106.6331556,name:'Tres amigos on the obsidian plateau',desc:'Obserdians',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29254638412/in/photostream/',thumbnail:'https://c5.staticflickr.com/9/8024/29254638412_abf5f74fcb.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8279722,lon:-106.6434556,name:'Battleship from the end of the trail',desc:'Namesake',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29254654712/in/photostream/',thumbnail:'https://c1.staticflickr.com/9/8522/29254654712_829c33ce9b.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8248167,lon:-106.6391667,name:'Coming around the bend towards Battleship',desc:'LastLegView',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328938006/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8482/29328938006_f32dd5a32a.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8195333,lon:-106.6227333,name:'Jemez red clay contrasts the ponderosas',desc:'JemezRed',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29075241150/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8365/29075241150_928cffafa3.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8203194,lon:-106.6143639,name:'Fantastic views descending the canyon',desc:'HikersView',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739124554/in/photostream/',thumbnail:'https://c3.staticflickr.com/8/7546/28739124554_9ef84015fa.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8174333,lon:-106.6033667,name:'Twisted rocks and trees highlight the journey',desc:'GnarlyRock',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28741160703/in/photostream/',thumbnail:'https://c8.staticflickr.com/9/8543/28741160703_c0fb2034ee.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8178400,lon:-106.6019830,name:'Dont turn north here like we did. Continue west through the gulley.',desc:'WrongTurn',color:'',icon:'http://krcowles.github.io/ktesa/images/Fork.png',folder:'Folder1',icon_size:[32,32]});
+				GV_Draw_Marker({lat:35.8220111,lon:-106.6275639,name:'Karen illustrates how to relax',desc:'EnjoyingMacauley',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28739139264/in/photostream/',thumbnail:'https://c1.staticflickr.com/9/8245/28739139264_f2d77e3892.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8189861,lon:-106.6140528,name:'Another view near Jemez Falls',desc:'CanyonOverlook',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/29328855526/in/photostream/',thumbnail:'https://c7.staticflickr.com/9/8852/29328855526_5b8829ff0b.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8169417,lon:-106.5990000,name:'Never resist a chance to elevate!',desc:'AlwaysPrecarious',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/28741187223/in/photostream/',thumbnail:'https://c8.staticflickr.com/9/8107/28741187223_dc26d242d6.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8192790,lon:-106.6134000,name:'Great views on this leg',desc:'Diversion',color:'',icon:'http://krcowles.github.io/ktesa/images/Fork.png',folder:'Folder2',icon_size:[32,32]});
 				
 				
 				GV_Finish_Map();
@@ -234,7 +236,7 @@
 			  
 			}
 			GV_Map(); // execute the above code
-			// http://www.gpsvisualizer.com/map_input?form=google&trk_list=0&wpt_color=orange
+			// http://www.gpsvisualizer.com/map_input?form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&trk_list=0
 		</script>
 		
 		
