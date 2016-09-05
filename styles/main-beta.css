@@ -26,7 +26,6 @@ img#tompic {
 	border-width: 2px;
 	border-color: #d4e8d4;
 	font-style: oblique;
-	//background-color: #d4e8d4;
 	background-color: #dff8e3;
 	line-height: 3.0em;
 	text-align: center; }
@@ -54,10 +53,10 @@ img#tompic {
 	background-color: #cfe2cf; }
 #b3:hover {
 	cursor: pointer;
-	background-color: LightBlue; }
+	background-color: #f8dcd3; }
 #b4:hover {
 	cursor: pointer;
-	background-color: LightBlue; }
+	background-color: #f8dcd3; }
 #expect {
 	padding-left: 8px;
 	font-style: bold;
@@ -83,9 +82,19 @@ fieldset {
 	display: inline-block; }
 legend {
 	color: DarkGreen; }
+#mapDetails {
+	margin-top: 10px;
+	color: DarkBlue;
+	text-decoration: underline; }
 #notes {
-	margin-top: 20px; }
+	margin-top: 8px;
+	border-style: outset;
+	border-width: 2px;
+	border-color: #d4e8d4;
+	background-color: #dff8e3;
+	padding: 8px; }
 #disclaimers {
+	margin-top: 12px;
 	padding: 8px; }
 #disasters {
 	list-style-type: square;
