@@ -6,6 +6,9 @@ $( function () { // when page is loaded...
     if ( $('.chart').length ) {  // if it exists, chart does not participate
     	noOfPix -= $('.chart').length;
     }
+    if ( $('#tipPic').length ) { // if tip icon present, that does not participate
+    	noOfPix -= 1;
+    }
     var $maps = $('iframe');
     var	fullMap = $maps.attr('src');
     var $desc = $('.captionList li');
@@ -27,6 +30,7 @@ $( function () { // when page is loaded...
 	var mapPos;
 	var mapLeft;
 	var mapWidth;
+	var mapHeight;
 	var mapBot;
 	var lnkLoc;
 	// for stashing into session storage
@@ -57,19 +61,24 @@ $( function () { // when page is loaded...
 				sessionStorage.setItem(pwidth,capWidth[i]);
 				i++;
 			});
+			// NOTE: Added height attr because not all maps height=width!!
 			mapWidth = $maps.attr('width');
 			mapWidth = parseFloat(mapWidth);
+			msg = '<p>Width = ' + mapWidth + '; Height = ';
+			mapHeight = $maps.attr('height');
+			mapHeight = parseFloat(mapHeight);
+			msg += mapHeight + '</p>';
+			$('#dbug').append(msg);
 			lnkLoc = ( mapWidth - 160 ) / 2;
 			mapPos = $maps.offset();
 			mapLeft = mapPos.left + lnkLoc;
 			sessionStorage.setItem('mleft',mapLeft);
-			mapBot = mapPos.top + mapWidth + 15;
+			mapBot = mapPos.top + mapHeight + 15;
+			//mapBot = mapPos.top + mapWidth + 15;
 			sessionStorage.setItem('mbot',mapBot);
 			// get caption locations
 			calcPos(); 
 		} else {  // Refresh: need to reload items for placing captions & map link
-			//msg = '<p>ALLEGED REFRESH; prevLoad is ' + tst + '<p>';
-			//$('#dbug').append(msg);
 			for ( i=0; i<noOfPix; i++ ) {
 				pwidth = 'pwidth' + i;
 				capWidth[i] = sessionStorage.getItem(pwidth);
@@ -95,10 +104,12 @@ $( function () { // when page is loaded...
 		}
 		mapWidth = $maps.attr('width');
 		mapWidth = parseFloat(mapWidth);
+		mapHeight = $maps.attr('height');
+		mapHeight = parseFloat(mapHeight);
 		lnkLoc = ( mapWidth - 160 ) / 2;
 		mapPos = $maps.offset();
 		mapLeft = mapPos.left + lnkLoc;
-		mapBot = mapPos.top + mapWidth + 15;
+		mapBot = mapPos.top + mapHeight + 15;
 		calcPos();
 	}  // end of session storage IF
 
