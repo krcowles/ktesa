@@ -110,3 +110,37 @@ img {
     margin: 0px;
     font-style: bold;
     background-color: #dadada; }
+#trailTips {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 16px;
+	padding-top: 10px;
+	padding-left: 8px;
+	padding-right: 8px;
+	border-style: inset;
+	border-width: 2px;
+	border-color: Brown; }
+#tipPic {
+	float: left; }
+#tipHdr {
+	position: relative;
+	left: 12px;
+	top: -20px;
+	color: Brown;
+	font-style: bold;
+	font-size: 20px;
+	padding-left: 12px; }
+#tipNotes {
+	position: relative;
+	top: -30px;
+	left: 10px;
+	padding-left: 10px;
+	padding-right; 8px;
+	margin-bottom: -4px; }
+fieldset {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 12px;
+	text-align: left;
+	padding: 10px;
+	padding-top: 0px; }
