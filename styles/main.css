@@ -98,12 +98,13 @@ ul {
 
 #disclaimers {
 	margin-top: 12px;
+	margin-bottom: 15px;
 	padding: 8px; }
 #disasters {
 	list-style-type: square;
 	width: 960px;
 	margin-top: 0px;
-	margin-bottom: 0px; }
+	margin-bottom: 20px; }
 #linkNote {
 	padding-left: 12px;
 	padding-right: 6px; }
