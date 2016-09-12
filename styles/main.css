@@ -30,7 +30,6 @@ img#tompic {
 	line-height: 3.0em;
 	text-align: center; }
 #banner:first-letter {
-	//background-color: #d4e8d4;
 	background-color: #dff8e3;
 	font-size: 38px;
 	font-style: serif;
@@ -41,10 +40,19 @@ img#tompic {
 #features {
 	margin-left: 8px;
 	margin-top: 30px; }
+#expect {
+	padding-left: 8px;
+	font-style: bold;
+	text-decoration: underline;
+	color: DarkBlue;
+	font-size: 20px; }
 #expl {
 	padding-left: 8px; }
-.btxt {
-	color: DarkBlue; }
+fieldset {
+	width: 285px;
+	display: inline-block; }
+legend {
+	color: DarkGreen; }	
 #b1:hover {
 	cursor: pointer;
 	background-color: #cfe2cf; }
@@ -57,16 +65,26 @@ img#tompic {
 #b4:hover {
 	cursor: pointer;
 	background-color: #f8dcd3; }
-#expect {
-	padding-left: 8px;
-	font-style: bold;
-	text-decoration: underline;
-	color: DarkBlue;
-	font-size: 20px; }
-#closeNote {
-	color: DarkGreen; }
+.hilites {
+	font-size: 18px;
+	font-style: italic;
+	color: DarkBlue; }
+#turnon:hover {
+	color: Brown; }
+#turnoff:hover {
+	color: Brown; }
+#more {
+	display: none; }
+ul {
+	position: relative;
+	top: -10px; }
+.dashed {
+	list-style-type: disc;
+	list-style-position: inside; }
 #itals {
 	color: DarkBlue; }
+#closeNote {
+	color: DarkGreen; }
 .strtup {
 	width: 140px;
 	height: 40px;
@@ -77,22 +95,7 @@ img#tompic {
 	border-style: solid;
 	border-width: 2px;
 	border-color: black; }
-fieldset {
-	width: 285px;
-	display: inline-block; }
-legend {
-	color: DarkGreen; }
-#mapDetails {
-	margin-top: 10px;
-	color: DarkBlue;
-	text-decoration: underline; }
-#notes {
-	margin-top: 8px;
-	border-style: outset;
-	border-width: 2px;
-	border-color: #d4e8d4;
-	background-color: #dff8e3;
-	padding: 8px; }
+
 #disclaimers {
 	margin-top: 12px;
 	padding: 8px; }
