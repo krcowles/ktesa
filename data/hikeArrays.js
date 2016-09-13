@@ -116,7 +116,7 @@ var othrHikes = [
 	['Canyon Trail',33.759012,-106.895278,'CanyonTrail.html',''],
 	['Piedras Marcadas',35.188867,-106.686269,'Piedras.html',''],
 	['Rinconada Canyon',35.126851,-106.724635,'Rinconada.html',''],
-	['ABQ Volcanoes',35.13075,-106.7802667,'ABQVolcanoes.html','volc.json'],
+	['ABQ Volcanoes',35.13075,-106.7802667,'ABQvolcanoes.html','volc.json'],
 	['Big Tubes',34.944733,-108.106983,'BigTubes.html','tubes.json'],
 	['Ice Caves',34.99311,-108.080084,'IceCave.html',''],
 	['El Calderon',34.9698,-108.00325,'ElCalderon.html','cald.json'],

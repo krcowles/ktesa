@@ -16,10 +16,11 @@ $('#b4').on('click', function() {
 
 $('#turnon').on('click', function() {
 	$('#more').css('display','block');
+	$(this).css('display','none');
 });
 $('#turnoff').on('click', function() {
-	
 	$('#more').css('display','none');
+	$('#turnon').css('display','block');
 });
 
 }); // end of page-loading wait statement
