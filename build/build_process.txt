@@ -18,19 +18,20 @@ has successfully completed.
 	without otherwise affecting this process in any way.
 	
 2.  If desired, change the name of the photos from their original generic names, in order
-    to indicate content. This may simplify identification of the photos later.
+    to indicate content. This may simplify identification of the photos later, but is
+    NOT required.
 
 3.  Assuming the Flickr album doesn't already exist, upload the photos to Flickr and
     create a new album with those items in it. If the photos are already uploaded,
 	simply create a new album.
 	
 4.  Enter descriptions for each of the photos in the album, otherwise the default of "unused"
-	will appear in the final description.
+	will appear in the final description on the web page.
 
 5.  Provide an appropriate name for the album. If the photos are derived from more than
     one contributor, and you wish to identify that in the album name, you may
     optionally append the album name with "_Combo" (or other designator of your choice).
-    This is not required for the process to work as specified here.
+    This is NOT required for the process to work as specified here.
    
 6.  Copy the album URL, or leave the page open for later use of cut and paste of the URL.
 	Alternately, download the html for the page and use that in the build process as
@@ -55,19 +56,20 @@ has successfully completed.
 
 9.  If not already done, go to the GPSVisualizer website and create the map file using
     the work area files: <hike>.GPX and <hike>.tsv -- make sure that all marker and
-    list files are turned off. Download the map and move it into the local work
+    list files are turned OFF. You may enter the Google Map API key here, or let the
+    'add2indx' utility do that for you. Download the map and move it into the local work
     area, renaming it <hike>_geomap_no_lists.html.
 	[Consider using a jpg version of the map. Then we could store the map on Flickr, 
 	and the tools can handle it as just another picture. We would still want a link to 
 	the "live map" but this would eliminate the need to store a second (no lists) version 
 	of the map in git.][NOTE: the second version (with lists) can be created via javascript
-	and is not required to be stored...]
+	and is not required to be stored in git...]
    
 10. Create and store optional files, such as the elevation chart, which should also have
 	a unique identifying filename, e.g. <hike>_Elev.jpg.
 	**** NOTE: Do not place the optional <hike_elevation_chart.jpg into the work
     area before running mkgpsv, or it will think it is a photo that does not exist in the
-    Flickr album, and it will not execute.
+    Flickr album, and mkgpsv will not execute!
     [Consider adding the elevation chart to Flickr. Then this procedure and the tools can
     handle it as just another picture. Consider adding a link to a live elevation chart
     like the one produced by Endomondo that shows your position on the map as you mouse
@@ -78,6 +80,7 @@ has successfully completed.
     THE FOLLOWING FILES MUST ALL RESIDE IN THE SAME DIRECTORY ['build'] IN ORDER FOR
     THE PAGE CREATION TOOLS TO WORK - This is due to ajax restrictions on writing to a 
     local computer via javascript. Copy these from your work area to the build directory.
+    NOTE: This process cannot be invoked on Chrome - it does not support it. Use Firefox.
     	- newPgAssist.html [should already reside there]
     	- newPgAssist.js [should already reside there]
     	- newPgAssist.css [should already reside there]
@@ -97,14 +100,17 @@ has successfully completed.
     "YES" when specifying the chart, and "NO" when not).
 
 13. Run the tool:
-	Simply double-click the newPgAssist.html file.
+	Simply double-click the newPgAssist.html file. It will create/download a file
+	called newPage.txt.
 
 14. In the local git directory, edit the file 'pages/TemplateWFrame.html' and copy the text
     from the file downloaded (above) into the indicated area. Edit the remaining areas to
     correspond with the hike name, details, links, etc. ***** SAVE AS <hike>.html - DO 
     NOT JUST 'SAVE' AND OVERWRITE TemplateWFrame.html *****!
 	[Maybe create a sed/awk/shell script to do this step.]
-
+	NOTE: for now, enter the summary data table info & references & links: will be
+	automated later...
+	
 15. Before invoking the newly saved <hike>.html file, move the following files from the
     build directory:
     	- <hike.tsv> should be moved to the project/gpsv directory
@@ -118,11 +124,46 @@ has successfully completed.
 	Use the mktrk -h call to assess required information for the utility. The resulting
 	.json file should be placed in the 'json' project directory.
 	
-18. Use the utility 'add2indx' to create the new row in the index.html file and to add
-	the required hike data into map.js for creating markers & tracks. Use add2indx -h
+18. Use the utility 'add2indx' to create the new row in the hikeDataTbl.html file and to add
+	the required hike data into newArrays.js for creating markers & tracks. Use add2indx -h
 	to assess needed information: be sure you have the geomap name, the latitude
 	and longitude of the trailhead, and the name of the json track file created above.
-
+	NOTE: if you don't wish to manually respond to the inquiries in 'add2indx', you can
+	create an "inputs" file and invoke add2indx < inputs. The inputs file should have
+	the following lines for "standard" (not Visitor Centers) hikes: (do not include #comments)
+		y		# are geomaps used? (if -m flag not set)
+		geomapname_geomap_no_lists.html
+		y
+		H		# or "C" for Cluster Hikes
+		y
+		NearestCity
+		NameOfHikeToAppearInTable
+		HtmlFileNameWithout.htmlExtension
+		LinkToGoogleMap
+		LinkToFlickrAlbum
+		y		# verifying all data inputs: assumed correct with "y" entries (11)
+		y
+		y
+		y
+		y
+		y
+		y
+		y
+		y
+		y
+		y
+		Y		# "N" if don't wish to overwrite hikeDataTbl.html and save locally instead
+		xxx.xxxxxx	#latitude to 6 or more decimal places
+		y		# is latitude correct?
+		-xxx.xxxxxx #lingitude to 6 or more decimal places
+		y		# is longitude correct?
+		y		# is json file  present
+		jsonfilename.json
+		y		# is name correct?
+		Y		# "N" if don't wish to overwrite hikeArrays.js and save locally instead
+		
+		NOTE: NOT recommended until you are thoroughly familiar with add2indx inputs!!!!
+		
 19. Double-click the index.html file to ensure that the entries are correct, and that
     the link to the new hike page works properly, and that all elements of the new
     page are as desired. When edits are complete, push the data to github:

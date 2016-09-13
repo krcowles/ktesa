@@ -414,7 +414,7 @@ xhr.onload = function() {
 					msg = '<p>Input rowHt = ' + floorHeight + '</p>';
 					$('#dbug').append(msg);
 					pic += '\n\t<iframe id="theMap" height="' + floorHeight +
-						   '" width="' + floorHeight + '" src="' + geoMap +
+						   '" width="' + floorHeight + '" src="../maps/' + geoMap +
 						   '"></iframe>\n</div>';
 				} else {  // images + iframe
 					for ( var q=0; q<noOfPix; q++ ) {
@@ -511,7 +511,7 @@ xhr.onload = function() {
 								msg = '<p>Chart ' + gno + ' appended to last row</p>';
 								$('#dbug').append(msg);
 								msg = '\n\t<img class="chart" height ="' + rowHeight +
-										'" width="' + chartWidth + '" src="' +
+										'" width="' + chartWidth + '" src="../images/' +
 										egraph[gno] + '" alt="Elevation Chart" />';
 								msg += '\n</div>';
 								/* When the only other item in this row is a map,
@@ -539,7 +539,7 @@ xhr.onload = function() {
 								imgRowNo++;
 								msg = '\n<div id="row' + imgRowNo + '" class="ImgRow Solo">'
 									+ '\n\t<img class="chart" height="' + rowHeight + 
-									'" width="' + chartWidth + '" src="' +
+									'" width="' + chartWidth + '" src="../images/' +
 									egraph[gno] + '" alt="Elevation Chart" />\n</div>';
 								pic += msg;
 							}

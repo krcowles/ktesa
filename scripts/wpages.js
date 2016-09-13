@@ -6,6 +6,9 @@ $( function () { // when page is loaded...
     if ( $('.chart').length ) {  // if it exists, chart does not participate
     	noOfPix -= $('.chart').length;
     }
+    if ( $('#tipPic').length ) { // if tip icon present, that does not participate
+    	noOfPix -= 1;
+    }
     var $maps = $('iframe');
     var	fullMap = $maps.attr('src');
     var $desc = $('.captionList li');
@@ -27,6 +30,7 @@ $( function () { // when page is loaded...
 	var mapPos;
 	var mapLeft;
 	var mapWidth;
+	var mapHeight;
 	var mapBot;
 	var lnkLoc;
 	// for stashing into session storage
@@ -47,7 +51,6 @@ $( function () { // when page is loaded...
 		var tst = sessionStorage.getItem('prevLoad');
 		if ( !tst ) { 
 			//msg = '<p>NORMAL ENTRY</p>';
-			//$('#dbug').append(msg);
 			i = 0;
 			$('img').each( function() {
 				capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
@@ -57,6 +60,7 @@ $( function () { // when page is loaded...
 				sessionStorage.setItem(pwidth,capWidth[i]);
 				i++;
 			});
+			// NOTE: ASSUMPTION: width = height !!!
 			mapWidth = $maps.attr('width');
 			mapWidth = parseFloat(mapWidth);
 			lnkLoc = ( mapWidth - 160 ) / 2;
@@ -68,8 +72,6 @@ $( function () { // when page is loaded...
 			// get caption locations
 			calcPos(); 
 		} else {  // Refresh: need to reload items for placing captions & map link
-			//msg = '<p>ALLEGED REFRESH; prevLoad is ' + tst + '<p>';
-			//$('#dbug').append(msg);
 			for ( i=0; i<noOfPix; i++ ) {
 				pwidth = 'pwidth' + i;
 				capWidth[i] = sessionStorage.getItem(pwidth);

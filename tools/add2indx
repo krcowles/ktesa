@@ -1,10 +1,10 @@
 #!/bin/bash
-# VERSION 7: Update for increased table elements and map.js markers & tracks
+# VERSION 8: modified to conform to new index table location and format
 # Specify starting & default values for shell variables 
 MAPFILE=0
 TOM=0
-indxLoc="/Users/kencowles/src/ktesa/index.html"
-mapjsLoc="/Users/kencowles/src/ktesa/scripts/map.js" 
+indxLoc="/Users/kencowles/src/ktesa/data/hikeDataTbl.html"
+mapjsLoc="/Users/kencowles/src/ktesa/data/hikeArrays.js" 
 geomapLoc="/Users/kencowles/src/ktesa/maps/"
 jsonLoc="/Users/kencowles/src/ktesa/json/"
 # Now process command line arguments
@@ -20,16 +20,17 @@ do
 	fi
         # find flags:
         case $i in
-	-T) read -p "TOM: Specify your complete filespec (include index.html) for the index page: " indxLoc
-            read -p "TOM: Also specify the complete filespec (include map.js) for the map.js file: " mapjsLoc
-            read -p "TOM: specify the DIRECTORY (ending with \"/\") for the geomap: " geomapLoc
-	    read -p "Lastly, provide the complete filespec for the json DIRECTORY (with ending \"/\"): " jsonLoc ;;
+	-T) read -p "TOM: Specify your project directory, ending with \"ktesa/\" : " tom
+	    TOM=1 ;;
 	-m) MAPFILE=1 ;;
 	-h) echo "
-*** Version 7
-Updated to add increased number of data elements per row of table in index.html
-and added updates to map.js to accommodate marker and track creation
+*** Version 8
+Updated to load index from data directory and conform to new format
 "
+# OLD VERSION HEADERS:
+#*** Version 7
+#Updated to add increased number of data elements per row of table in index.html
+#and added updates to map.js to accommodate marker and track creation
 #*** Version 6
 #Compatible with new Google Map index page; potentially modifies both index.html and map.js
 #User can choose not to modify, but independently save local copies of modified files.
@@ -45,29 +46,38 @@ and added updates to map.js to accommodate marker and track creation
 # *** Version 1.0
 	echo "
 This utility will prompt the user for input to create a new row in the
-table of \"index.html\", and to modify the corresponding map.js file 
-in order to add a marker on the map.
+table of \"hikeDataTbl.html\", and to modify the corresponding hikeArrays.js file 
+for creation of markers and tracks.
 
 Inputs will be verified by the user before creating the html,
-or modifying the map.js file.
+or modifying the hikeArray.js file.
 
 TOM: Use -T flag (no arg) so that you can specify the correct filepaths to the files
 (the routine will prompt you)
 
 Use the -m flag to specify the NAME ONLY of the geomap: it is assumed that the location
-of the geomap is /Users/kencowles/src/ktesa/maps or as specified by TOM
-If there is no geomap (ie no -m flag), the routine will check for one, but ask if it is needed.
-Example if present:   -m example_geomap_no_lists.html
+of the geomap is /Users/kencowles/src/ktesa/maps, or as specified by TOM.
+If there is no geomap (ie no -m flag), the routine will check for one, and ask if 
+a geomap is being used for this hike page.
+    Example using flag: add2indx  -m example_geomap_no_lists.html
 
-The user will have the opportunity to save the file to index.html, or save only
-the local copy, \"newindex.html\" if review is desired before saving to index.html;
-The user similarly will have the opportunity to save the map.js file, or save only a 
-local copy, \"newmap.js\".
+The user will have the opportunity to over-write the hikeDataTbl.html file, or save only
+the local copy, \"newindex.html\" if review is desired before over-writing.
+The user similarly will have the opportunity to over-write the hikeArrays.js file, or 
+save only a local copy, \"newarray.js\".
 
 "
 	exit;;
         esac
 done
+if [ $TOM -gt 0 ]
+then {
+	indxLoc="${tom}data/hikeDataTbl.html"
+	mapjsLoc="${tom}data/hikeArrays.js"
+	geomapLoc="${tom}maps/"
+	jsonLoc="${tom}json/"
+}
+fi
 if [ $MAPFILE -eq 0 ]
 then {
 	mapreqd=1
@@ -168,12 +178,12 @@ then {
 }
 fi
 echo ""
-# Test for existence of index.html for the path:
+# Test for existence of hikeDataTbl.html for the path:
 if [ -f $indxLoc ] 
 then
 	echo "using" "$indxLoc" "as basis for potential modification..."
 else
-	echo "index.html file not found at" "$indxLoc"
+	echo "hikeDataTbl.html file not found at" "$indxLoc"
 	exit
 fi
 echo "The file:" "$indxLoc" "will be modified (if user opts) to add a row to the table"
@@ -450,11 +460,11 @@ then {
 	good="NotOK"
 	# translate the Exposure Rating letter into the corresponding icon
 	case $exp in
-	        [mM] ) expIcon="images/greenshade.jpg"
+	        [mM] ) expIcon="../images/greenshade.jpg"
 			expTxt="Partial shade icon" ;;
-	        [sS] ) expIcon="images/sun.jpg"
+	        [sS] ) expIcon="../images/sun.jpg"
 			expTxt="Full sun - exposed icon" ;;
-	        [wW] ) expIcon="images/shady.png"
+	        [wW] ) expIcon="../images/shady.png"
 			expTxt="Partial sun/shade icon" ;;
 	esac
 }
@@ -464,36 +474,36 @@ fi
 # Now, create the new table entry:
 if [ $notindx -gt 0 ] 
 then {
-	echo "                    <tr>
-                        <td>""$city""</td>
-                        <td>""$hike""</td>
-                        <td>""$wow""</td>
-                        <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
-                            <img class=\"webShift\" src=\"images/greencheck.jpg\" alt=\"checkbox\" /></a></td>
-                        <td>""$miles"" miles</td>
-                        <td>""$elev"" ft</td>
-                        <td>""$ease""</td>
-                        <td><img class=\"expShift\" src=\""$expIcon"\" alt=\""$expTxt"\" /></td>
-                        <td><a href=\""$dirs"\" target=\"_blank\">MapIt!</a></td>
-                        <td><a href=\""$flnk"\" target=\"_blank\">
-                            <img class=\"flckrShift\" src=\"images/flckr.jpg\" alt=\"Flickr symbol\" /></a></td>
-                    </tr>" > newRow
+	echo "        <tr>
+            <td>""$city""</td>
+            <td>""$hike""</td>
+            <td>""$wow""</td>
+            <td><a href=\"${webpg}.html\" target=\"_blank\">
+                <img class=\"webShift\" src=\"../images/greencheck.jpg\" alt=\"checkbox\" /></a></td>
+            <td>""$miles"" miles</td>
+            <td>""$elev"" ft</td>
+            <td>""$ease""</td>
+            <td><img class=\"expShift\" src=\"${expIcon}\" alt=\""$expTxt"\" /></td>
+            <td><a href=\""$dirs"\" target=\"_blank\">MapIt!</a></td>
+            <td><a href=\""$flnk"\" target=\"_blank\">
+                <img class=\"flckrShift\" src=\"../images/flckr.jpg\" alt=\"Flickr symbol\" /></a></td>
+        </tr>" > newRow
 }
 else {
 # if an index site, some parameters are automatically assigned or empty:
-	echo "                    <tr class=\"indxd\">
-                        <td>""$city""</td>
-                        <td>""$hike""</td>
-                        <td>See Indx</td>
-                        <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
-                            <img class=\"webShift\" src=\"images/indxCheck.png\" alt=\"checkbox\" /></td>
-                        <td>0* miles</td>
-                        <td>0* ft</td>
-                        <td>See Indx</td>
-                        <td>See Indx</td>
-                        <td>See Indx</td>
-                        <td>See Indx</td>
-                    </tr>" > newRow
+	echo "        <tr class=\"indxd\">
+            <td>""$city""</td>
+            <td>""$hike""</td>
+            <td>See Indx</td>
+            <td><a href=\"pages/""$webpg"".html\" target=\"_blank\">
+                <img class=\"webShift\" src=\"images/indxCheck.png\" alt=\"checkbox\" /></td>
+            <td>0* miles</td>
+            <td>0* ft</td>
+            <td>See Indx</td>
+            <td>See Indx</td>
+            <td>See Indx</td>
+            <td>See Indx</td>
+        </tr>" > newRow
 }
 fi
 # pull in the index.html file:
@@ -561,8 +571,8 @@ do
 	    * ) echo "Y or N only please!";;
 	esac
 done
-# NOW - modify the map.js file accordingly
-# Test for existence of map.js:
+# NOW - modify the hikeArrays.js file accordingly
+# Test for existence of hikeArrays.js:
 echo "
 
 "
@@ -596,21 +606,21 @@ BEGIN {
 		}
 	}
 }' $mapjsLoc`
-head -n "$mapjsHd" "$mapjsLoc" > newmap.js
+head -n "$mapjsHd" "$mapjsLoc" > newarray.js
 if [ hikeType == "H" ]
 then {
-	sed -i.bck '$s/$/,/' newmap.js
-	rm newmap.js.bck
+	sed -i.bck '$s/$/,/' newarray.js
+	rm newarray.js.bck
 }
 else {
-	sed -i.bck '$s/$/,/' newmap.js
-	rm newmap.js.bck
+	sed -i.bck '$s/$/,/' newarray.js
+	rm newarray.js.bck
 }
 fi
 mapLgth=`cat "$mapjsLoc" | wc -l`
 tailCnt=$(( $mapLgth - $mapjsHd ))
 #tailCnt=$(( $tailCnt + 1 ))
-tail -n "$tailCnt" "$mapjsLoc" > maptail.js
+tail -n 1 "$mapjsLoc" > maptail.js
 read -p "Please enter the latitude for this marker: " lat
 good="NotOK"
 while 
@@ -642,7 +652,6 @@ done
 if [ $hikeType != "V" ]
 then {
 	good="NotOK"
-
 	while
 		[ $good != "OK" ]
 	do
@@ -680,36 +689,36 @@ then {
 fi
 if [ $hikeType == "C" ]
 then {
-	echo "        ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','""$json""',""$trkclr""]" > latlng
+	echo "    ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','""$json""',""$trkclr""]" > latlng
 }
 else {
 	if [ $hikeType == "H" ]
 	then {
-		echo "        ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','""$json""']" > latlng
+		echo "    ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','""$json""']" > latlng
 	}
 	else {
-		echo "        ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','']" > latlng
+		echo "    ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','']" > latlng
 	}
 	fi
 }
 fi
-cat latlng >> newmap.js
+cat latlng >> newarray.js
 rm latlng
-cat maptail.js >> newmap.js
+cat maptail.js >> newarray.js
 rm maptail.js
 echo "Here are the potential changes for the map.js file:"
 echo "NOTE: < changes listed first, > current map.js file second"
-diff newmap.js "$mapjsLoc"
+diff newarray.js "$mapjsLoc"
 good="NotOK"
 while
         [ $good != "OK" ]
 do
         read -p "Do you wish to permanently save these changes in $mapjsLoc [Y/N]? " ans
         case $ans in
-            [nN]* ) echo "$mapjsLoc unchanged; Changes reside in newmap.js"
+            [nN]* ) echo "$mapjsLoc unchanged; Changes reside in newarray.js"
                     good="OK" ;;
             [yY]* ) echo "$mapjsLoc has been re-written with new marker data"
-                    mv newmap.js "$mapjsLoc"
+                    mv newarray.js "$mapjsLoc"
                     good="OK";;
             * ) echo "Y or N only please!";;
         esac

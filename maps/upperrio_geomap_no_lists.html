@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>upperrio + Upper Rio En Medio</title>
+		<title>Upper_Rio_En_Medio + upperrio</title>
 		<base target="_top"></base>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -11,7 +11,7 @@
 	<body style="margin:0px;">
 		<script type="text/javascript">
 			google_api_key = 'AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU'; // Your project's Google Maps API key goes here (https://code.google.com/apis/console)
-			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;key='+self.google_api_key+'"><'+'/script>');
+			if (document.location.toString().indexOf('http://www.gpsvisualizer.com') > -1) { google_api_key = ''; }			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;key='+self.google_api_key+'"><'+'/script>');
 		</script>
 		
 		<!--
@@ -44,7 +44,7 @@
 		
 		<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->
 		<script type="text/javascript">
-			/* Global variables used by the GPS Visualizer functions (20160630122843): */
+			/* Global variables used by the GPS Visualizer functions (20160906160839): */
 			gv_options = {};
 			
 			// basic map parameters:
@@ -59,7 +59,7 @@
 			gv_options.map_div = 'gmap_div';  // the name of the HTML "div" tag containing the map itself; usually 'gmap_div'
 			gv_options.doubleclick_zoom = true;  // true|false: zoom in when mouse is double-clicked?
 			gv_options.doubleclick_center = true;  // true|false: re-center the map on the point that was double-clicked?
-			gv_options.mousewheel_zoom = true; // true|false; or 'reverse' for down=in and up=out
+			gv_options.scroll_zoom = true; // true|false; or 'reverse' for down=in and up=out
 			gv_options.autozoom_adjustment = 0;
 			gv_options.centering_options = { 'open_info_window':true, 'partial_match':true, 'center_key':'center', 'default_zoom':null } // URL-based centering (e.g., ?center=name_of_marker&zoom=14)
 			gv_options.tilt = false; // true|false: allow Google to show 45-degree tilted aerial imagery?
@@ -69,7 +69,7 @@
 				
 			// widgets on the map:
 			gv_options.zoom_control = 'large'; // 'large'|'small'|'none'
-			gv_options.recenter_button = true; // true|false: is there a 'double-click to recenter' option in the zoom control?
+			gv_options.recenter_button = true; // true|false: is there a 'click to recenter' option in the zoom control?
 			gv_options.scale_control = true; // true|false
 			gv_options.center_coordinates = true;  // true|false: show a "center coordinates" box and crosshair?
 			gv_options.mouse_coordinates = false;  // true|false: show a "mouse coordinates" box?
@@ -83,7 +83,7 @@
 			  gv_options.map_type_control.excluded = [];  // comma-separated list of quoted map IDs that will never show in the list ('included' also works)
 			gv_options.infobox_options = {}; // options for a floating info box (id="gv_infobox"), which can contain anything
 			  gv_options.infobox_options.enabled = true;  // true|false: enable or disable the info box altogether
-			  gv_options.infobox_options.position = ['LEFT_TOP',76,6];  // [Google anchor name, relative x, relative y]
+			  gv_options.infobox_options.position = ['LEFT_TOP',52,6];  // [Google anchor name, relative x, relative y]
 			  gv_options.infobox_options.draggable = true;  // true|false: can it be moved around the screen?
 			  gv_options.infobox_options.collapsible = true;  // true|false: can it be collapsed by double-clicking its top bar?
 			gv_options.utilities_menu = true;  // true|false
@@ -110,7 +110,7 @@
 			  gv_options.tracklist_options.footer = ''; // HTML code
 
 			// marker-related options:
-			gv_options.default_marker = { color:'tan',icon:'googlemini',scale:1 }; // icon can be a URL, but be sure to also include size:[w,h] and optionally anchor:[x,y]
+			gv_options.default_marker = { color:'red',icon:'googlemini',scale:1 }; // icon can be a URL, but be sure to also include size:[w,h] and optionally anchor:[x,y]
 			gv_options.marker_tooltips = true; // do the names of the markers show up when you mouse-over them?
 			gv_options.marker_shadows = true; // true|false: do the standard markers have "shadows" behind them?
 			gv_options.marker_link_target = '_blank'; // the name of the window or frame into which markers' URLs will load
@@ -209,11 +209,12 @@
 				t = 1; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:trk[t].info.desc,color:trk[t].info.color,number:t});
 				
 				
-				GV_Draw_Marker({lat:35.7937444,lon:-105.8094778,name:'It\'s all uphill coming back!',desc:'LongTrekBack',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27724072460/in/photostream/',thumbnail:'https://c5.staticflickr.com/8/7351/27724072460_53d757b4ec.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.8003000,lon:-105.8292000,name:'Sidetrip along the irrigation channel',desc:'IrrigationControl',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27926200131/in/photostream/',thumbnail:'https://c4.staticflickr.com/8/7455/27926200131_ab85320179.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7936833,lon:-105.8099528,name:'A gorgeous meadow adds to the enjoyment',desc:'FirstOpenArea',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27926210931/in/photostream/',thumbnail:'https://c4.staticflickr.com/8/7452/27926210931_0064a384a1.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7931556,lon:-105.8137583,name:'Climb every mountain...',desc:'Clowning',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27390115253/in/photostream/',thumbnail:'https://c6.staticflickr.com/8/7447/27390115253_dcccf696e5.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7935306,lon:-105.8086000,name:'The trail follows the creek most of the way to Aspen Ranch',desc:'CascadesAlongTheWay',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27926242881/in/photostream/',thumbnail:'https://c2.staticflickr.com/8/7378/27926242881_bf5dd951e4.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7937444,lon:-105.8094778,name:'It\'s all uphill coming back!',desc:'LongTrekBack',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27724072460/in/photostream/',thumbnail:'https://c5.staticflickr.com/8/7351/27724072460_53d757b4ec.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.8003000,lon:-105.8292000,name:'Sidetrip along the irrigation channel',desc:'IrrigationControl',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27926200131/in/photostream/',thumbnail:'https://c4.staticflickr.com/8/7455/27926200131_ab85320179.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7936833,lon:-105.8099528,name:'A gorgeous meadow adds to the enjoyment',desc:'FirstOpenArea',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27926210931/in/photostream/',thumbnail:'https://c4.staticflickr.com/8/7452/27926210931_0064a384a1.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7931556,lon:-105.8137583,name:'Climb every mountain...',desc:'Clowning',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27390115253/in/photostream/',thumbnail:'https://c6.staticflickr.com/8/7447/27390115253_dcccf696e5.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7935306,lon:-105.8086000,name:'The trail follows the creek most of the way to Aspen Ranch',desc:'CascadesAlongTheWay',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/27926242881/in/photostream/',thumbnail:'https://c2.staticflickr.com/8/7378/27926242881_bf5dd951e4.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7978833,lon:-105.8261500,name:'Trail forks left over creek',desc:'Wrong Way!',color:'',icon:'http://krcowles.github.io/ktesa/images/Fork.png',folder:'Folder1',icon_size:[32,32]});
 				
 				
 				GV_Finish_Map();
@@ -221,7 +222,7 @@
 			  
 			}
 			GV_Map(); // execute the above code
-			// http://www.gpsvisualizer.com/map_input?form=google&padding=80&trk_list=0&wpt_color=tan
+			// http://www.gpsvisualizer.com/map_input?form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&trk_list=0
 		</script>
 		
 		

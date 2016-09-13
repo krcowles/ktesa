@@ -44,6 +44,7 @@
                          <th>Wow Factor</th>
                          <th>Facilities</th>
                          <th>Seasons</th>
+                         <th>Flickr</th>
                          <th>Get There</th>
                     </tr>
                 </thead>
@@ -58,8 +59,10 @@
                          <td>Views &amp; Springs</td>
                          <td>Picnic area</td>
                          <td>Not Winter</td>
-                         <td><a href="https://www.google.com/maps/dir/35.8909091,-106.7157833/East+Fork+Trailhead,+NM-4,+New+Mexico+87544/Battleship+Rock/@35.8241279,-106.6862575,12z/data=!4m15!4m14!1m0!1m5!1m1!1s0x8722a1b1b735bd35:0xb3851e41943293dc!2m2!1d-106.5901769!2d35.8199506!1m5!1m1!1s0x0:0xa2d77d4b5f2c1ac8!2m2!1d-106.642258!2d35.8283458!3e0"
-                         	target="_blank">Directions</a>
+                         <td><a href="https://www.flickr.com/photos/139088815@N08/albums/72157672215839861" target="_blank">
+                         	Album</a></td>
+                         <td><a href="https://www.google.com/maps/dir/East+Fork+Trailhead,+NM-4,+New+Mexico+87544/Battleship+Rock/@35.8487164,-106.652696,13z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x8722a1b1b735bd35:0xb3851e41943293dc!2m2!1d-106.5901769!2d35.8199506!1m5!1m1!1s0x0:0xa2d77d4b5f2c1ac8!2m2!1d-106.642258!2d35.8283458!3e0"
+                         	target="_blank">Directions</a></td>
                     </tr>
                 </tbody>
             </table>
@@ -81,6 +84,7 @@
 			<iframe id="theMap" height="260" width="260" src="../maps/eforkbattle_geomap_no_lists.html"></iframe>
 			<img class="chart" height ="260" width="503" src="../images/EForkBattleElev.jpg" alt="Elevation Chart" />
 		</div>
+		<p id="dbug"></p>
 		<div class="captionList">
 			<ol>
 				<li>Aug 30, 2016: Near NM4 at the trailhead</li>
@@ -103,20 +107,50 @@
 				<li>https://www.flickr.com/photos/139088815@N08/29254654712/in/photostream/</li>
 			</ol>
 		</div>
+		<div id="trailTips">
+		<img id="tipPic" src="../images/tips.png" alt="special notes icon" />
+		<p id="tipHdr">TRAIL TIPS!</p>
+		<p id="tipNotes">The East Fork trail has some unmarkerd forks - beware! At the 
+		trailhead near Highway 4, a trail cuts across this trail (#137) running mostly
+		parallel to NM 4 - the sign at the trailhead makes it pretty clear which way to go
+		(away from the road). However, about a mile later (east-most red flag on map above),
+		the trail appears to split off to the right, up and over a rise. This looks to be
+		the more well-traveled route, but keep going straight, following the gulley.
+		Also, shortly after leaving the Jemez Falls picnic grounds, in about a half-mile,
+		a more obvious path to the left affords some really great views of the Jemez
+		valley, while 137 goes downhill (west-most red flag on map above). The views at
+		the overlook are well worth it, and it is a short diversion.</p>
+		</div>
 		<p id="hikeInfo">The East Fork trailhead starts on Highway 4, as does the
-		hike to Las Conchas, but cross the road and head south to start this one.
-		Trail 137 has markers (some old and almost illegible), but some key junctures
-		are not marked: about 1.5 miles in (near photo of Twisted Rock on geomap)
-		a well-worn branch ascends while a slightly lesser-used branch continues
-		down the gulley. Continue down the gulley (left branch)! Just past Jemez
-		Falls picnic area, another branch occurs, but the left one ends quickly
-		at a beautiful canyon overlook. This is worth the diversion. Then take the
-		right branch down into the canyon. The USDA Forest Service maintains a link
-		with up-to-date trail conditions worth visiting:
-		<a href="http://www.fs.usda.gov/recarea/santafe/recreation/recarea/?recid=75774&actid=50"
-			target="_blank">E Fork Trailhead #137</a>. Other sites, such as 
-		<a href="http://www.alltrails.com/trail/us/new-mexico/jemez-river-east-fork-trail"
-			target="_blank">AllTrails.com</a> also contain useful information.</p>
+		hike toward Las Conchas, but cross the road and head south to start this one.
+		There are occassional trail markers for Trail #137, some old and barely legible,
+		but they rarely seem to appear at useful locations (branches, etc.). The trail
+		begins with a lovely walk through an open Ponderosa forest, with interesting
+		rock formations en route. Eventually, you begin to follow a dry gulley downhill to
+		the Jemez River, where a footbridge crosses over it. The trail ascends sharply
+		(a short distance) to the Jemez Falls Picnic Area. From there, you can make
+		a 1/4 mile diversion to see the Falls - a very lovely view. <br /><br />
+		137 heads west from the picnic area, where before long, 
+		a fantastic view of the valley is seen before a long descent down towards Macauley
+		Warm Springs. The springs are about body temperature, and surrounded by tall
+		beautiful ponderosas and wildflowers. A dip in the warm springs is almost essential!
+		From the warm springs, it is about two miles to Battleship Rock Picnic Area, also
+		on Highway 4 -- hence the need to make this a 2-car trip. From the warm springs,
+		there are some lovely views of the valley and as you get closer, Battleship Rock.
+		The trail is lined with a phenomenal amount of obsidian - bolders, rocks, and
+		small chunks, which make the final leg memorable. Most of the references cite only
+		the portion between Battleship Rock and Jemez Falls.</p>
+		<fieldset>
+		<legend>References &amp; Links</legend>
+		<ul id="refs">
+			<li>Book: <em>100 Hikes In New Mexico</em>, by Craig Martin</li>
+			<li>Book: <em>Guide To The Jemez Mountain Trail</em>, by Judith Ann Isaacs</li>
+			<li>Book: <em>Hiking New Mexico</em>, by Laurence Parent ["McCauley Hot Springs"]</li>
+			<li>Book: <em>Best Hikes Near Albuquerque</em>, by JD Tanner &amp; Emily Ressler-Tanner</li>
+			<li>Website: <a href="http://www.fs.usda.gov/recarea/santafe/recreation/recarea/?recid=75774&actid=50"
+			target="_blank">Forest Service: E Fork Trailhead #137</a></li>
+		</ul>
+		</fieldset>
 	</div><!-- end of container 16 -->
 	<div class="popupCap"></div>
 	

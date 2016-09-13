@@ -14,5 +14,12 @@ $('#b4').on('click', function() {
 	window.open('pages/mapPg.html','_blank');
 });
 
+$('#turnon').on('click', function() {
+	$('#more').css('display','block');
+});
+$('#turnoff').on('click', function() {
+	
+	$('#more').css('display','none');
+});
 
 }); // end of page-loading wait statement
