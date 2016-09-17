@@ -68,11 +68,8 @@ table th {
 	border-color: DarkBlue; }
 table td {
 	text-align: center;
-	vertical-align: top;
-	padding-left: 5px;
-	padding-right: 5px;
-	padding-top: 5px;
-	padding-bottom: 0px;
+	vertical-align: center;
+	padding: 5px;
 	background-color: Gainsboro; 
 	border-style: solid;
 	border-width: 1px;

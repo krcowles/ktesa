@@ -51,7 +51,7 @@ body {
 	position: absolute;
 	top: 0px;
 	left: 822px; }
-#topper {
+table {
 	margin-top: 8px;
 	margin-bottom: 20px;
 	margin-left: auto;
@@ -69,6 +69,7 @@ table th {
 	border-color: DarkBlue; }
 table td {
 	text-align: center;
+	vertical-align: center;
 	padding: 5px; 
 	background-color: Gainsboro; 
 	border-style: solid;
