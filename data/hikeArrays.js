@@ -93,7 +93,7 @@ var othrHikes = [
 	['La Luz',35.219667,-106.4810167,'LaLuz.html','luz.json'],
 	['La Vista Verde',36.341432,-105.736461,'VistaVerde.html',''],
 	['Las Conchas Trail',35.814841,-106.533158,'Conchas.html','conch.json'],
-	['Mesa Chijuilla',35.995233,-107.0827,'Chijuilla.html',''],
+	['Mesa Chijuilla',35.995233,-107.0827,'Chijuilla.html','chij.json'],
 	['Mesa de Cuba',36.010603,-106.980625,'MesaCuba.html',''],
 	['Nature Conservancy',35.68701,-105.89697,'Conservancy.html',''],
 	['Ojito Wilderness',35.495067,-106.921767,'Ojito.html','ojito.json'],
