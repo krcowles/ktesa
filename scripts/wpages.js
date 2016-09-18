@@ -42,6 +42,7 @@ $( function () { // when page is loaded...
 	// generic
 	var msg;
 	var i;
+	var skipImg;
 	
 	/* problems with refresh in Chrome prompted the use of the following technique
 	   which "detects" a refresh condition and restores previously loaded values.
@@ -52,13 +53,17 @@ $( function () { // when page is loaded...
 		if ( !tst ) { 
 			//msg = '<p>NORMAL ENTRY</p>';
 			i = 0;
+			skipImg = 0;	// the first two img's are links in summary table
 			$('img').each( function() {
-				capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
-				//msg = '<p>image' + i + ' width is ' + capWidth[i] + '</p>';
-				//$('#dbug').append(msg);
-				pwidth = 'pwidth'+ i;
-				sessionStorage.setItem(pwidth,capWidth[i]);
-				i++;
+				if ( skipImg > 1 ) {
+					capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
+					//msg = '<p>image' + i + ' width is ' + capWidth[i] + '</p>';
+					//$('#dbug').append(msg);
+					pwidth = 'pwidth'+ i;
+					sessionStorage.setItem(pwidth,capWidth[i]);
+					i++;
+				}
+				skipImg++;
 			});
 			// NOTE: ASSUMPTION: width = height !!!
 			mapWidth = $maps.attr('width');
@@ -114,7 +119,7 @@ $( function () { // when page is loaded...
 
 	// function to calculate current & (potentially) store location of images/captions
 	function calcPos() {
-		for ( var j=0; j<noOfPix; j++ ) {
+		for ( var j=0; j<noOfPix-2; j++ ) {  // -2 as the first two images are icons
 			picId = '#pic' + j;
 			picPos = $(picId).offset();
 			capTop[j] = picPos.top + 'px';

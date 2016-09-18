@@ -59,29 +59,27 @@ $( function () { // when page is loaded...
 
 	// function to calculate current & (potentially) store location of images/captions
 	function calcPos() {
-		for ( var j=0; j<noOfPix; j++ ) {
+		for ( var j=2; j<noOfPix; j++ ) {  // first 2 images appear as icons in summary table
 			// check to see if pic, capImg, or noCapImg
 			var imId = $images[j].id;
 			imId = imId.substring(0,3);
 			if ( imId != 'noC' ) { // don't do anything for the 'noCapImg'
 				if ( imId == 'cap' ) {
-					picId = '#capImg' + j;
+					picId = '#capImg' + (j - 2);
 				} else {
-					picId = '#pic' + j;
+					picId = '#pic' + (j - 2);
 				}
-				capWidth[j] = $(picId).width() + 14 + 'px';
+				capWidth[j-2] = $(picId).width() + 14 + 'px';
 				picPos = $(picId).offset();
-				//msg = '<p>picWidth' + j + ' is ' + capWidth[j] + '</p>';
-				//$('#dbug').append(msg);
-				capTop[j] = picPos.top + 'px';
-				capLeft[j] = picPos.left + 'px';
+				capTop[j-2] = picPos.top + 'px';
+				capLeft[j-2] = picPos.left + 'px';
 				if ( window.sessionStorage ) {
-					iwidth = 'iwidth' + j;
-					itop = 'itop' + j;
-					ileft = 'ileft' + j;
-					sessionStorage.setItem(iwidth,capWidth[j]);
-					sessionStorage.setItem(itop,capTop[j]);
-					sessionStorage.setItem(ileft,capLeft[j]);
+					iwidth = 'iwidth' + (j - 2);
+					itop = 'itop' + (j - 2);
+					ileft = 'ileft' + (j - 2);
+					sessionStorage.setItem(iwidth,capWidth[j-2]);
+					sessionStorage.setItem(itop,capTop[j-2]);
+					sessionStorage.setItem(ileft,capLeft[j-2]);
 				} 
 			}
 		}
@@ -98,9 +96,9 @@ $( function () { // when page is loaded...
         $('.popupCap').css('width',capWidth[popCap]);
         $('.popupCap').css('z-index','10');
         $('.popupCap').prepend(htmlDesc);
-        msg = '<p>popup loc: ' + capTop[popCap] + ', ' + capLeft[popCap] + ', ' + 
-        	capWidth[popCap] + '</p>';
-        $('#dbug').append(msg);
+        //msg = '<p>popup loc: ' + capTop[popCap] + ', ' + capLeft[popCap] + ', ' + 
+        //	capWidth[popCap] + '</p>';
+        //$('#dbug').append(msg);
     }
     
     // popup a description when mouseover a picture
