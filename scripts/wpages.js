@@ -1,14 +1,10 @@
 $( function () { // when page is loaded...
 
+	var msg;
+	var i;
     // object locations
-    var $images = $('img');
+    var $images = $('img[id^="pic"]');
     var noOfPix = $images.length;
-    if ( $('.chart').length ) {  // if it exists, chart does not participate
-    	noOfPix -= $('.chart').length;
-    }
-    if ( $('#tipPic').length ) { // if tip icon present, that does not participate
-    	noOfPix -= 1;
-    }
     var $maps = $('iframe');
     var	fullMap = $maps.attr('src');
     var $desc = $('.captionList li');
@@ -40,10 +36,7 @@ $( function () { // when page is loaded...
 	var pleft;
 	var ptop;
 	// generic
-	var msg;
-	var i;
-	var skipImg;
-	
+		
 	/* problems with refresh in Chrome prompted the use of the following technique
 	   which "detects" a refresh condition and restores previously loaded values.
 	   User gets a window alert if sessionStorage is not supported and and is advised
@@ -53,17 +46,13 @@ $( function () { // when page is loaded...
 		if ( !tst ) { 
 			//msg = '<p>NORMAL ENTRY</p>';
 			i = 0;
-			skipImg = 0;	// the first two img's are links in summary table
-			$('img').each( function() {
-				if ( skipImg > 1 ) {
-					capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
-					//msg = '<p>image' + i + ' width is ' + capWidth[i] + '</p>';
-					//$('#dbug').append(msg);
-					pwidth = 'pwidth'+ i;
-					sessionStorage.setItem(pwidth,capWidth[i]);
-					i++;
-				}
-				skipImg++;
+			$images.each( function() {
+				capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
+				//msg = '<p>image' + i + ' width is ' + capWidth[i] + '</p>';
+				//$('#dbug').append(msg);
+				pwidth = 'pwidth'+ i;
+				sessionStorage.setItem(pwidth,capWidth[i]);
+				i++;
 			});
 			// NOTE: ASSUMPTION: width = height !!!
 			mapWidth = $maps.attr('width');
@@ -119,7 +108,7 @@ $( function () { // when page is loaded...
 
 	// function to calculate current & (potentially) store location of images/captions
 	function calcPos() {
-		for ( var j=0; j<noOfPix-2; j++ ) {  // -2 as the first two images are icons
+		for ( var j=0; j<noOfPix; j++ ) {
 			picId = '#pic' + j;
 			picPos = $(picId).offset();
 			capTop[j] = picPos.top + 'px';
