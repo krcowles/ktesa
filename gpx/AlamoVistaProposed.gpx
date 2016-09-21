@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="MyGPSFiles" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <trk>
+    <name>AlamoVistaProposed</name>
+    <desc>Total: 1.6km</desc>
+    <trkseg>
+      <trkpt lat="35.777233" lon="-105.809669"/>
+      <trkpt lat="35.776746" lon="-105.808468"/>
+      <trkpt lat="35.777164" lon="-105.805893"/>
+      <trkpt lat="35.780471" lon="-105.802846"/>
+      <trkpt lat="35.78357" lon="-105.799241"/>
+      <trkpt lat="35.785689" lon="-105.796366"/>
+    </trkseg>
+  </trk>
+</gpx>
