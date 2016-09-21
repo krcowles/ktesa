@@ -3,7 +3,7 @@ $( function () { // when page is loaded...
 /* NOTE: this script has not yet been fully vetted, but seems to work */
 
     // object locations
-    var $images = $('img');
+    var $images = $('img[id^="pic"]');
     var noOfPix = $images.length;
     var $desc = $('.captionList li');
     var $links = $('.lnkList li');
@@ -59,27 +59,27 @@ $( function () { // when page is loaded...
 
 	// function to calculate current & (potentially) store location of images/captions
 	function calcPos() {
-		for ( var j=2; j<noOfPix; j++ ) {  // first 2 images appear as icons in summary table
+		for ( var j=0; j<noOfPix; j++ ) { 
 			// check to see if pic, capImg, or noCapImg
 			var imId = $images[j].id;
 			imId = imId.substring(0,3);
 			if ( imId != 'noC' ) { // don't do anything for the 'noCapImg'
 				if ( imId == 'cap' ) {
-					picId = '#capImg' + (j - 2);
+					picId = '#capImg' + (j);
 				} else {
-					picId = '#pic' + (j - 2);
+					picId = '#pic' + (j);
 				}
-				capWidth[j-2] = $(picId).width() + 14 + 'px';
+				capWidth[j] = $(picId).width() + 14 + 'px';
 				picPos = $(picId).offset();
-				capTop[j-2] = picPos.top + 'px';
-				capLeft[j-2] = picPos.left + 'px';
+				capTop[j] = picPos.top + 'px';
+				capLeft[j] = picPos.left + 'px';
 				if ( window.sessionStorage ) {
-					iwidth = 'iwidth' + (j - 2);
-					itop = 'itop' + (j - 2);
-					ileft = 'ileft' + (j - 2);
-					sessionStorage.setItem(iwidth,capWidth[j-2]);
-					sessionStorage.setItem(itop,capTop[j-2]);
-					sessionStorage.setItem(ileft,capLeft[j-2]);
+					iwidth = 'iwidth' + (j);
+					itop = 'itop' + (j);
+					ileft = 'ileft' + (j);
+					sessionStorage.setItem(iwidth,capWidth[j]);
+					sessionStorage.setItem(itop,capTop[j]);
+					sessionStorage.setItem(ileft,capLeft[j]);
 				} 
 			}
 		}
