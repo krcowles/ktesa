@@ -62,8 +62,10 @@ var clusterPinHikes = [
 	['Upper Rio En Medio',35.802801,-105.827387,'UpperRio.html','uriom.json',altTrkClr3,0],
 	// Jemez East Fork trails
 	['East Fork - Las Conchas',35.820818,-106.591123,'EForkConchas.html','efconchas.json',altTrkClr1,1],
-	['East Fork - Battleship',35.825727,-106.599355,'EForkBattle.html','efbattle.json',trackColor,0]
-];
+	['East Fork - Battleship',35.825727,-106.599355,'EForkBattle.html','efbattle.json',trackColor,0],
+	// Aspen Vista Trails
+	['Aspen Vista',35.777433,-105.810933,'Aspen.html','aspen.json'],
+    ['Alamo Vista',35.777433,-105.810933,'AlamoVista.html','alamo.json',trackColor]
 
 // All other hikes not covered by above:
 var othrHikes = [
@@ -72,7 +74,6 @@ var othrHikes = [
 	['Agua Sarca',35.291533,-106.441050,'AguaSarca.html','sarca.json'],
 	['Ancho Rapids',35.797000,-106.246417,'AnchoComb.html','ancho.json'],
 	['Apache Canyon',35.629817,-105.858967,'ApacheCanyon.html','apache.json'],
-	['Aspen Vista',35.777433,-105.810933,'Aspen.html','aspen.json'],
 	['Atalaya Mtn',35.670450,-105.900667,'Atalaya.html','atalaya.json'],
 	['Battleship Rock',35.828099,-106.641862,'Battleship.html',''],
 	['Borrego/Bear Wallow',35.7462,-105.8342667,'Borrego.html','borrego.json'],
