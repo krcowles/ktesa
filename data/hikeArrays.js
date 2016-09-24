@@ -66,6 +66,7 @@ var clusterPinHikes = [
 	// Aspen Vista Trails
 	['Aspen Vista',35.777433,-105.810933,'Aspen.html','aspen.json'],
     ['Alamo Vista',35.777433,-105.810933,'AlamoVista.html','alamo.json',trackColor]
+];
 
 // All other hikes not covered by above:
 var othrHikes = [
