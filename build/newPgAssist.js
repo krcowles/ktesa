@@ -32,7 +32,6 @@ if ( eopt > 0 ) {
 }
 var ewidth;
 
-/*
 // Make sure the required files are present:
 // .tsv file:
 $.ajax({
@@ -54,7 +53,7 @@ $.ajax({
         $('#dbug').append(msg);
     }
 });
-*/
+
 
 // Function to DOWNLOAD the resulting html
 function download(strData, strFileName, strMimeType) {
