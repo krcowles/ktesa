@@ -9,6 +9,7 @@ var mapTick = {   // custom tick-mark symbol for tracks
 	strokeWeight: 2
 };
 
+var msg;  // debug message string
 var turnOnGeo = $('#geoSetting').text();
 
 if ( turnOnGeo === 'ON' ) {
@@ -23,7 +24,7 @@ var lgGeo = '../images/ltarget.png';
 
 var mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
 // icons depend on whether mobile or not (size factor for visibility)
-// also text size for pop-ups
+// also text size for pop-ups - which doesn't seem to work!
 if ( mobile_browser ) {
 	var geoIcon = lgGeo;
 	var ctrIcon = '../images/green64.png';
@@ -39,6 +40,12 @@ if ( mobile_browser ) {
 	var hikeIcon = '../images/redpin.png';
 } 
 
+// ANIMATED NEW HIKE MARKER: CURRENT WINNER IS: (marker type & array no)
+var NewHikeType = 'C';
+var NewHike = 22;
+msg = 'Alamo Vista';
+$('#winner').append(msg);
+$('#winner').css('color','DarkGreen');
 // INSIDE the initMap function, the listener is defined, and depending on whether
 // or not there is a table present, a definition is added for "dragend"
 
@@ -96,7 +103,9 @@ function initMap() {
 	}	
 	// Now, the "clustered" hikes:
 	sym =clusterIcon;
-	for (var j=0; j<noOfCHikes; j++ ) {
+	// remember - the first 5 belong to the Bandelier marker...
+	vcoffset = 5;
+	for (var j=vcoffset; j<noOfCHikes; j++ ) {
 		if ( clusterPinHikes[j][6] === 1 ) {
 			loc = {lat: clusterPinHikes[j][1], lng: clusterPinHikes[j][2] };
 			nme = clusterPinHikes[j][0];
@@ -112,7 +121,9 @@ function initMap() {
 	}
 	
 	// the actual functions to create the markers & setup info windows
-	// Visitor Center Markers: 
+	// Visitor Center Markers:
+	// -- There's ALWAYS an exception: The Bandelier Visitor Center will show hikes which
+	// begin from the center; Currently, Bandelier is the very first item in the list [0];
 	function AddVCMarker(location, iconType, pinName,indx) {
 		// save marker reference
 		var title = 'title' + mrkrIndx;
@@ -126,6 +137,7 @@ function initMap() {
 		  title: pinName
 		});
 		allMarkers[marker].addListener( 'click', function() {
+			map.setCenter(location);
 			var markerId = this.getTitle();
 			for (var p=0; p<noOfVCs; p++ ) {
 				if ( markerId === ctrPinHikes[p][0] ) {
@@ -154,12 +166,18 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
+		if ( NewHikeType == 'C' && NewHike == indx ) {
+			allMarkers[marker].setAnimation(google.maps.Animation.BOUNCE);
+			setTimeout(function(){ 
+				allMarkers[marker].setAnimation(null); 
+				$('#anbox').css('display','none'); }, 6000);
+		}
 		// info window content: add in all the hikes for this group
 		allMarkers[marker].addListener( 'click', function() {
+			map.setCenter(location);
 			var tblIndx = noOfVCs + indx + 1;
 			// get "cluster group"
 			var ctype =  $('tbody tr').eq(tblIndx).data('cluster');
-			$('#dbug').append(ctype);
 			var iwContent = '<div id="iwCH">';  // one 1 directions link needed
 			var gDirs = $('tbody tr').eq(tblIndx).find('td:nth-child(9)').html();
 			for (var q=indx; q<noOfCHikes; q++ ) {
@@ -193,6 +211,7 @@ function initMap() {
 		  title: pinName
 		});
 		allMarkers[marker].addListener( 'click', function() {
+			map.setCenter(location);
 			var markerId = this.getTitle();
 			for (var r=0; r<noOfOthr; r++) {
 				if ( markerId === othrHikes[r][0] ) {
@@ -216,10 +235,30 @@ function initMap() {
 			case VC_TYPE:
 				var hName = ctrPinHikes[elementNo][0];
 				var hPg = ctrPinHikes[elementNo][3];
-				hPg = '<a href="' + hPg + '" target="_blank">Hike Index Pg</a>';
-				var hDir = $('tbody tr').eq(elementNo+1).find('td:nth-child(9)').html();
-				var popup = '<div id="iwVC"><p>Visitor Center for<br>Park: ' + hName + '<br>' +
-					hPg + '<br>' + hDir + '</p></div>';
+				if ( elementNo === 0 ) {  // the ONE exception (so far!)
+					hPg = '<a href="' + hPg + '" target="_blank">About Bandelier + Hike Table</a>';
+					noOfVCHikes = 5;
+					locInTbl = 5;  // this cluster-group (A) starts at the 5th row in the table
+					var popup = '<div id="iwVC"><p>Visitor Center: ' +
+							 hPg + '<br>' + '<em>Hikes Available from Visitor Center:</em>';
+					for ( k=0; k<noOfVCHikes; k++ ) {
+						var vchike = clusterPinHikes[k][0];
+						var vcpg = clusterPinHikes[k][3];
+						vcpg = '<a href="' + vcpg + '" target="_blank">Website</a>';
+						var vclgth = $('tbody tr').eq(locInTbl+k).find('td:nth-child(5)').html();
+						var vcelev = $('tbody tr').eq(locInTbl+k).find('td:nth-child(6)').html();
+						var vcdiff = $('tbody tr').eq(locInTbl+k).find('td:nth-child(7)').html();
+						popup += '<br>Hike:' + vchike + '; Lgth:' + vclgth + '; Elev Chg:' + vcelev +
+							'; Diff:' + vcdiff + '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
+							vcpg;
+					}
+					popup += '</div>';
+				} else {
+					hPg = '<a href="' + hPg + '" target="_blank">Hike Index Pg</a>';
+					var hDir = $('tbody tr').eq(elementNo+1).find('td:nth-child(9)').html();
+					var popup = '<div id="iwVC"><p>Visitor Center for<br>Park: ' + hName + '<br>' +
+						hPg + '<br>' + 'Directions: ' + hDir + '</p></div>';
+				}
 				break;
 			case CH_TYPE:
 				var hName = clusterPinHikes[elementNo][0];
@@ -245,7 +284,7 @@ function initMap() {
 				var hDiff = $('tbody tr').eq(elementNo).find('td:nth-child(7)').text();
 				var popup = '<div id="iwOH">Hike: ' + hName + '<br>Difficulty: ' +
 					hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br>' + 
-					hPg + '<br>' + hDir + '</div>';
+					hPg + '<br>Directions: ' + hDir + '</div>';
 				break;
 			default:
 				break;

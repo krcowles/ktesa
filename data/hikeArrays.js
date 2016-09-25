@@ -64,8 +64,8 @@ var clusterPinHikes = [
 	['East Fork - Las Conchas',35.820818,-106.591123,'EForkConchas.html','efconchas.json',altTrkClr1,1],
 	['East Fork - Battleship',35.825727,-106.599355,'EForkBattle.html','efbattle.json',trackColor,0],
 	// Aspen Vista Trails
-	['Aspen Vista',35.777433,-105.810933,'Aspen.html','aspen.json'],
-    ['Alamo Vista',35.777433,-105.810933,'AlamoVista.html','alamo.json',trackColor]
+	['Aspen Vista',35.777433,-105.810933,'Aspen.html','aspen.json',altTrkClr3,1],
+    ['Alamo Vista',35.777433,-105.810933,'AlamoVista.html','alamo.json',trackColor,0]
 ];
 
 // All other hikes not covered by above:

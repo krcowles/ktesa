@@ -1,5 +1,6 @@
 $( function () { // when page is loaded...
 
+	// generic
 	var msg;
 	var i;
     // object locations
@@ -35,8 +36,10 @@ $( function () { // when page is loaded...
 	var pwidth;
 	var pleft;
 	var ptop;
-	// generic
 		
+	$images.each( function() {
+		$(this).css('cursor','pointer');
+	});
 	/* problems with refresh in Chrome prompted the use of the following technique
 	   which "detects" a refresh condition and restores previously loaded values.
 	   User gets a window alert if sessionStorage is not supported and and is advised

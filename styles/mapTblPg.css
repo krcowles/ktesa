@@ -105,4 +105,15 @@ td {
 	cursor: pointer; }
 #geoSetting {
 	display: none; }
+#anbox {
+	position: absolute;
+	top: 20px;
+	left: 440px;
+	width: 110px;
+	height: 50px;
+	background-color: #D1E5CF;
+	color: Blue;
+	text-align: center;
+	padding-top: 10px;
+	z-index: 100; }
 
