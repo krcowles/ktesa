@@ -136,6 +136,12 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
+		if ( NewHikeType == 'V' && NewHike == indx ) {
+			allMarkers[marker].setAnimation(google.maps.Animation.BOUNCE);
+			setTimeout(function(){ 
+				allMarkers[marker].setAnimation(null); 
+				$('#anbox').css('display','none'); }, 6000);
+		}
 		allMarkers[marker].addListener( 'click', function() {
 			map.setCenter(location);
 			var markerId = this.getTitle();
@@ -210,6 +216,12 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
+		if ( NewHikeType == 'H' && NewHike == indx ) {
+			allMarkers[marker].setAnimation(google.maps.Animation.BOUNCE);
+			setTimeout(function(){ 
+				allMarkers[marker].setAnimation(null); 
+				$('#anbox').css('display','none'); }, 6000);
+		}
 		allMarkers[marker].addListener( 'click', function() {
 			map.setCenter(location);
 			var markerId = this.getTitle();
@@ -235,6 +247,7 @@ function initMap() {
 			case VC_TYPE:
 				var hName = ctrPinHikes[elementNo][0];
 				var hPg = ctrPinHikes[elementNo][3];
+				var hDir = $('tbody tr').eq(elementNo+1).find('td:nth-child(9)').html();
 				if ( elementNo === 0 ) {  // the ONE exception (so far!)
 					hPg = '<a href="' + hPg + '" target="_blank">About Bandelier + Hike Table</a>';
 					noOfVCHikes = 5;
@@ -252,7 +265,7 @@ function initMap() {
 							'; Diff:' + vcdiff + '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
 							vcpg;
 					}
-					popup += '</div>';
+					popup += '<br>Visitor Center Directions: ' + hDir + '</div>';
 				} else {
 					hPg = '<a href="' + hPg + '" target="_blank">Hike Index Pg</a>';
 					var hDir = $('tbody tr').eq(elementNo+1).find('td:nth-child(9)').html();
