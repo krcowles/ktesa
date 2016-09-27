@@ -36,10 +36,17 @@ $( function () { // when page is loaded...
 	var pwidth;
 	var pleft;
 	var ptop;
+<<<<<<< HEAD
 		
 	$images.each( function() {
 		$(this).css('cursor','pointer');
 	});
+=======
+
+	$images.each( function() {
+		$(this).css('cursor','pointer');
+	});		
+>>>>>>> BurntMesa
 	/* problems with refresh in Chrome prompted the use of the following technique
 	   which "detects" a refresh condition and restores previously loaded values.
 	   User gets a window alert if sessionStorage is not supported and and is advised
