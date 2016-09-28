@@ -29,10 +29,13 @@ $( function () { // when page is loaded...
 	var msg;
 	var i;
 	
+	$images.each( function() {
+		$(this).css('cursor','pointer');
+	});
 	/* problems with refresh in Chrome prompted the use of the following technique
-	   which "detects" a refresh condition and restores previously loaded values.
-	   User gets a window alert if sessionStorage is not supported and and is advised
-	   about potential refresh issues */
+   which "detects" a refresh condition and restores previously loaded values.
+   User gets a window alert if sessionStorage is not supported and and is advised
+   about potential refresh issues */
 	if ( window.sessionStorage ) { 
 		var tst = sessionStorage.getItem('prevLoad');
 		if ( !tst ) {
