@@ -151,6 +151,31 @@ fieldset {
 	margin-right: 10px;
 	margin-bottom: 12px;
 	padding: 10px;
-	padding-top: 0px;
-	}
+	padding-top: 0px; }
+#fldrefs {
+	color: Teal; }
+#flddat {
+	color: Purple; }
+#albumlinks {
+	color: DarkBlue; }
+div em {
+	color: DarkGreen; }
+#proposed {
+	position: relative;
+	top: -5px; }
+#proptitle {
+	color: DarkGreen; }
+#plinks { 
+	position: relative;
+	top: -15px; }
+#actual {
+	position: relative;
+	top: -25px; }
+#acttitle {
+	color: DarkBlue; }
+#alinks {
+	position: relative;
+	top: -15px; }
+
+	
 	
