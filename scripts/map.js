@@ -41,9 +41,9 @@ if ( mobile_browser ) {
 } 
 
 // ANIMATED NEW HIKE MARKER: CURRENT WINNER IS: (marker type & array no)
-var NewHikeType = 'C';
-var NewHike = 22;
-msg = 'Alamo Vista';
+var NewHikeType = 'H';
+var NewHike = othrHikes.length - 1;
+msg = 'Burnt Mesa';
 $('#winner').append(msg);
 $('#winner').css('color','DarkGreen');
 // INSIDE the initMap function, the listener is defined, and depending on whether
