@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>New Page Assist</title>
+	<meta charset="utf-8" />
+	<meta name="language"
+			content="EN" />
+	<meta name="description"
+		content="Work-area to develop html for the image portion of a new site" />
+	<meta name="author"
+		content="Tom Sandberg and Ken Cowles" />
+	<meta name="robots"
+		content="nofollow" />
+	<link href="newPgAssist.css"
+		type="text/css" rel="stylesheet" />	
+	<script src="jquery-1.12.1.js"></script>
+</head>
+
+<body>
+<div class="bodyBox">
+	<p>This 'geo Page Maker' html file, with its accompanying javascript, will
+	dynamically load and size user-selected images to fit into a row of
+	specified height (the default for height - if not increased during row
+	optimization - is 260px; if a different "seed" height is desired, change the
+	var 'rowHeight' near the top of the javascript file). 
+	The images will fill a row of 'rowLineWidth (specified in
+	the accompanying CSS file 'body' element - it is best to leave this as is
+	to ensure consistency across sites). The specification of photo images
+	begins immediately after the 'p id="page_title"'. This is your job!
+	<strong>FIRST:</strong> specify the Flickr "name" of the photo(s) you wish
+	to be displayed into the set of consecutive "li" elements (div id="theRows"). 
+	<em>NOTE: the names must be an EXACT MATCH, case sensitive, to the 
+	name appearing in the Flickr ablum. NO OTHER LIST ELEMENTS can be present
+	in this html</em> Also note that there are no "jpg" suffixes on the names.
+	<strong>SECOND:</strong> specify the geo-map to be used
+	for the iframe into a "p" element, id="frm_name". It is preferred to use one
+	with track and marker lists turned off. <strong>THIRD:</strong>
+	specify the GPSVinput.tsv file name to be associated with this page (to be
+	processed by javascript) in the 'p' element id="tsv_file". For example,
+	the Flickr album "Ancho Rapids" whas a corresponding GPSVinput.tsv file,
+	named Ancho.tsv. <strong>NEW OPTION:</strong>If one or more elevation graphs are to be
+	included, type the number in the 'p id="inclElev"' element and populate the
+	'p class="egraph"' elements with the files (presumably .jpg will be used). Type
+	0 otherwise and leave the egraph elements as is.
+	That's it - save and execute! A text file will be created
+	which can be cut and pasted into the page template. The template CSS file
+	will center the images and iframe on the page, provide pop-up descriptions,
+	and links to the album(s) and/or geomap.</p>
+	<p id="page_title">Burnt Mesa</p>
+	<div id="theRows">
+    	<ul>
+        	<li>TomStPeter</li>
+        	<li>MulleinView</li>
+        	<li>RedStuff</li>
+        	<li>MtnGoatTom</li>
+        	<li>FlowerView</li>
+        	<li>FrijolesCanyon</li>
+    	</ul>
+    	<p id="frm_name">burntmesa_geomap_no_lists.html</p>
+    	<p id="tsv_file">burntmesa.tsv</p>
+<!-- More than one elevation chart can be added: please specify the count from 0 to "n" -->
+    	<p id="inclElev">1</p>
+    	<p class="egraph">BurntMesaElev.jpg</p>
+    	<p class="egraph">TestElev.jpg</p>
+	</div>
+	<p id="dbug"></p>
+    <p id="picload">place test load here...</p>
+</div>  <!-- end of bodyBox -->
+
+<script src="geoPgMaker.js"></script>
+</body>
+
+</html>

@@ -1,13 +1,14 @@
 #!/bin/bash
-# VERSION 8: modified to conform to new index table location and format
-# Specify starting & default values for shell variables 
+# VERSION 8: modified to conform to new (data directory) index table location and format
 MAPFILE=0
+# file locations usedn script: -T Tom, will supply his via prompt
 TOM=0
 indxLoc="/Users/kencowles/src/ktesa/data/hikeDataTbl.html"
 mapjsLoc="/Users/kencowles/src/ktesa/data/hikeArrays.js" 
 geomapLoc="/Users/kencowles/src/ktesa/maps/"
 jsonLoc="/Users/kencowles/src/ktesa/json/"
-# Now process command line arguments
+#
+# ------------------------ COMMAND LINE PROCESSING & HELP INFO ---------------------
 for i
 do
 #	-m: get geomap name
@@ -78,6 +79,9 @@ then {
 	jsonLoc="${tom}json/"
 }
 fi
+# --- END COMMAND LINE / HELP
+#
+# ------------------------ GOOGLE MAP API KEY CHECKING / INSERTION ---------------------
 if [ $MAPFILE -eq 0 ]
 then {
 	mapreqd=1
@@ -171,13 +175,16 @@ then {
 		done
 	}
 	else {
-		echo "Key already present - nothing modified"
+		echo "** Key already present - nothing modified"
 		rm zool
 	}
 	fi
 }
 fi
 echo ""
+# --- END OF API KEY CHECK
+#
+# -------------------------- READING IN REQUIRED INFO FOR HIKE DATA TABLE ---------------------
 # Test for existence of hikeDataTbl.html for the path:
 if [ -f $indxLoc ] 
 then
@@ -191,38 +198,137 @@ fext=.html
 echo ""
 # in order to properly create the markers & tracks in the js file, this utility needs to know
 # what "type" the hike is, as below:
-echo "This routine needs to know what kind of hike to specify [CAPITAL LETTERS ONLY]:
+echo "This routine needs to know what kind of hike to specify:
      Type \"V\" for Park Visitor Center-based marker (i.e. index page);
      Type \"C\" for cluster hike - i.e. trailhead in very close proximity to another, or overlapping;
-     Type \"H\" for \"normal\" hike - i.e. none of the above types."
-read -p "Enter single letter here: " hikeType
+     Type \"H\" for \"normal\" hike - i.e. none of the above types.
+"
 good="NotOK"
 while
         [ $good != "OK" ]
 do
-        msg=$'\nYou selected: '
-        echo "$msg""$hikeType"
-        read -p "Is this the type of marker you wish to use [Capital Letter Only]? [Y or N]: " answer
-        case $answer in
-                [nN]* ) read -p "Re-enter single-letter marker type [Capital Letter Only]: [V, C, H]: " hikeType ;;
-                [yY]* ) good="OK" ;;
-                * ) echo "Y or N only please!" ;;
-        esac
-        if [ $hikeType != "C" ] && [ $hikeType != "V" ] && [ $hikeType != "H" ]
-        then {
-                read -p "Unrecognized type; enter [cap. V, C, or H]: " hikeType
-                good="NotOK"
-        }
-        fi
+	read -p "Enter single letter here: " hikeType
+	case $hikeType in
+		[vV] ) good="OK" ;;
+		[cC] ) good="OK" ;;
+		[hH] ) good="OK" ;;
+		* )    echo "Unrecognized hike type:"
+		       echo "" ;;
+	esac
 done
+echo "Hike type is ${hikeType}"
 notindx=1
 case $hikeType in
-        V) hikeAR="ctrPinHikes"
-	   echo "setting notindx=0"
-	   notindx=0 ;;
-        C) hikeAR="clusterPinHikes" ;;
-        H) hikeAR="othrHikes" ;;
+        [vV] ) hikeType="V"
+	       hikeAR="ctrPinHikes"
+	       echo "setting notindx=0"
+	       notindx=0 ;;
+        [cC] ) hikeType="C"
+	       hikeAR="clusterPinHikes" ;;
+        [hH] ) hikeType="H"
+	       hikeAR="othrHikes" ;;
 esac
+if [ $hikeType == "C" ]
+#
+# ------------------------- CLUSTERED HIKES REQUIRE EXTRA INFO -------------------------
+# --- First, determine the "data-cluster" group assignment:
+then {
+	echo ""
+	# Get the last letter currently used in the "data-cluster" assignments:
+	lastClus=`cat "$indxLoc" | grep "clustered" | tail -1`
+        export lastClus
+        # first cut eliminates variable lead-in tabs/spaces
+        lastletter=`echo $lastClus | cut -f3 -d" " | cut -c15`
+        echo "Last cluster group letter is ${lastletter}"
+	echo
+        export lastletter
+	# determine the next letter in sequence:
+        dval=`printf '%d' "'$lastletter"`
+        dval=$(( $dval + 1 ))
+        nxtc=`/usr/bin/awk -v num=$dval 'BEGIN{printf "%c", num}'`
+	good="NotOK"
+	while
+       	 [ $good != "OK" ]
+	do
+	    read -p "Does this hike begin a new cluster (overlapping trailhead)? [Y/N]: " ans
+	    case $ans in
+	        [nN]* ) newClus=0
+			good="OK" ;;
+	        [yY]* ) newClus=1
+			good="OK";;
+	        * ) echo "Y or N only please!";;
+	    esac
+	done
+	if [ $newClus -gt 0 ] 
+	then {
+		echo "
+     **** New clusters will require altering of the hikeArrays.js AND hikeDataTbl.html
+     files to move the related hikes to the new cluster, and be re-assigned as cluster hikes!
+"
+		good="notOK"
+		while [ $good != "OK" ]
+		do
+			read -p "Do you wish to use the next letter in sequence [${nxtc}] for the new cluster group? [Y/N]: " ans
+			case $ans in 
+				[yY]* ) newval="${nxtc}"
+					good="OK" ;;
+				[nN]* ) read -p "Specify desired cluster-group letter here: " newval
+					if [ ${#newval} -gt 1 ]
+					then
+						read -p "Too many characters: try again: " newval
+					fi
+					echo "You selected ${newval}"
+					good="OK" ;;
+				* ) echo "Only Y or N please!" ;;
+			esac
+		done
+	}
+	else {
+		good="notOK"
+		while [ $good != "OK" ]
+		do
+			read -p "Please specify the cluster-group with which this hike is to be associated: " newval
+			if [ ${#newval} -gt 1 ] 
+			then
+				read -p "Too many characters - single letter only: " newval
+			else {
+				tstd=`printf '%d' "'$newval"`
+				#dec "A" is 65
+				if [ $tstd -ge 65 ] && [ $tstd -lt $dval ]
+				then
+					good="OK"
+				else
+					echo "This letter group [${newval}] is not in the correct range [A-${lastletter}]"
+				fi
+			}
+			fi
+		done
+	}
+	fi
+	good="notOK"
+	while [ $good != "OK" ]
+	do
+		read -p "Do you wish to assign a track color other than the default (red)? [Y/N] :" ans
+		case $ans in 
+			[nN]* ) trkcol="R"
+			        good="OK" ;;
+			[yY]* ) read -p "Enter the capitalized letter for the track color of choice [R-ed,B-lue,G-reen,blac-K]: " trkcol
+				echo "[Unrecognized responses will default to Red]"
+				good="OK" ;;
+			* ) 	echo "Y or N only please!" ;;
+		esac
+	done
+	case $trkcol in
+		[bB] ) trkdes="altTrkClr1" ;;
+		[gG] ) trkdes="altTrkClr2" ;;
+		[kK] ) trkdes="altTrkClr3" ;;
+		* ) trkdes = "trackColor" ;;
+	esac
+}
+fi
+# --- END CLUSTER GROUP ASSIGNMENT
+# 
+# ------------------------ COLLECT USER INPUT DATA ON HIKE ----------------------
 if [ $notindx -eq 0 ]
 then {
 	echo "The following parameters will be pre-assigned:"
@@ -257,9 +363,29 @@ then {
 	fi
 }
 fi
+# --- END INPUT GATHERING FOR DATA TABLE
 echo ""
 echo "*** Check the data for accuracy before proceeding ***"
-# ----------------- TEST THE INPUT DATA --------------------
+# -------------------------- FUNCTION TO PROCESS INPUT TESTING -------------------------
+input_test() {
+good="notOK"
+while [ $good != "OK" ]
+do
+	msg=$'\n${1}: '
+	echo "$msg" "$2"
+	read -p "Is the ${1} correct? [Y/N]: " ans
+	case $ans in
+		[nN]* ) echo "Enter new ${1} here: " out ;;
+		[yY]* ) out=$2
+			good="OK" ;;
+		* )     echo "Y or N only please!" ;;
+	esac
+done
+return out
+}
+# ----------------------------- TEST THE INPUT DATA --------------------------------
+#newcity=input_test "Location" $city
+#echo "TEST FUNCTION: " "$newcity"
 good="NotOK"
 while
 	[ $good != "OK" ]
@@ -469,13 +595,19 @@ then {
 	esac
 }
 fi
-# ----------------------- END OF INPUT DATA TESTING ----------------------
-
-# Now, create the new table entry:
+# --- END OF INPUT DATA TESTING
+#
+# ---------------------------------- CREATE THE TABLE ENTRIES ---------------------------
+# Basic data entry will reside in "newRow"
 if [ $notindx -gt 0 ] 
 then {
-	echo "        <tr>
-            <td>""$city""</td>
+	if [ $hikeType == "C" ]
+	then
+		echo "        <tr class=\"clustered\" data-cluster=\"${newval}\">" > newRow
+	else 
+		echo "        <tr>" > newRow
+	fi
+	echo "            <td>""$city""</td>
             <td>""$hike""</td>
             <td>""$wow""</td>
             <td><a href=\"${webpg}.html\" target=\"_blank\">
@@ -484,10 +616,10 @@ then {
             <td>""$elev"" ft</td>
             <td>""$ease""</td>
             <td><img class=\"expShift\" src=\"${expIcon}\" alt=\""$expTxt"\" /></td>
-            <td><a href=\""$dirs"\" target=\"_blank\">MapIt!</a></td>
+            <td style=\"text-align:center\"><a href=\""$dirs"\" target=\"_blank\"><img src=\"../images/dirs.png\" alt=\"google driving directions\" /></a></td>
             <td><a href=\""$flnk"\" target=\"_blank\">
-                <img class=\"flckrShift\" src=\"../images/flckr.jpg\" alt=\"Flickr symbol\" /></a></td>
-        </tr>" > newRow
+                <img class=\"flckrShift\" src=\"../images/album_lnk.png\" alt=\"Flickr symbol\" /></a></td>
+        </tr>" >> newRow
 }
 else {
 # if an index site, some parameters are automatically assigned or empty:
@@ -506,8 +638,12 @@ else {
         </tr>" > newRow
 }
 fi
-# pull in the index.html file:
-# NOTE: the location of this entry depends on hike type!
+# ------------------ LOCATE THE PLACE IN THE TABLE WHERE THE DATA WILL RESIDE ---------------
+# NOTE:
+#	Indexed hikes are located at the top of the table
+#	Clustered Hikes are immediately after Indexed hikes
+#	Other Hikes follow the above
+#   var indxHd is assigned the Line Number in the table where data will be inserted
 indxHd=`/usr/bin/awk -v loc="$hikeType" '
 BEGIN {
 	located=0
@@ -516,12 +652,11 @@ BEGIN {
 	if( loc == "V" ) {
 		#Find the end of the indexed hikes in the table
 		if ( located == 0 ) {
-			if ( match($0,/<tr class=\"indxd\">/) ) {
+			if ( match($0,/<tr class=\"indxd\"/) ) {
 				while ( located == 0 ) {
 					getline
-					if( match($0,/<tr>/) ) {
+					if( match($0,/<tr class=\"clustered\"/) ) {
 						located = 1
-						indxEnd=NR
 						indxEnd=NR-1
 						print indxEnd
 						break
@@ -530,16 +665,32 @@ BEGIN {
 			}
 		}
 	}
-	else {
+	else if( loc == "C" ) {
+		#Find the end of the clustered hikes in the table
+		if (located == 0 ) {
+			if ( match($0,/<tr class=\"clustered\"/) ) {
+				while ( located == 0 ) {
+					getline
+					if ( match($0,/<tr>/) ) {
+						located = 1
+						indxEnd = NR-1
+						print indxEnd
+						break
+					}
+				}
+			}
+		}
+	} else {
 		#Get the end of the table, marked by the </tbody> tag:
 		if( match($0,/<\/tbody>/) ) {
-       		 	eotbl=NR
-       		       	eotbl=eotbl-1
-       	        	print eotbl
-       		 }
-
+       		 	eotbl=NR-1
+       	       	print eotbl
+     	}
 	}
 }'  "$indxLoc"`
+# --- END OF LOCATING INSERTION POINT
+#
+# ---------------------  CONSTRUCT NEW TABLE (BUT DON'T OVERWRITE ------------------
 head -n "$indxHd" "$indxLoc" > IndxHead.html
 indxLines=`cat "$indxLoc" | wc -l`
 indxTl=$(( $indxLines - $indxHd ))
@@ -557,6 +708,9 @@ diff newindex.html "$indxLoc" | tail -14
 else
 diff newindex.html "$indxLoc" | tail -13
 fi
+# --- END OF TABLE CREATION
+#
+# --------- DOES USER WISH TO OVERWRITE HIKE DATA TABLE OR KEEP A SEPARATE FILE? ---------
 good="NotOK"
 while
         [ $good != "OK" ]
@@ -571,7 +725,9 @@ do
 	    * ) echo "Y or N only please!";;
 	esac
 done
-# NOW - modify the hikeArrays.js file accordingly
+# --- DONE PROMPTING USER FOR CHOICE
+#
+# ------------------- PREPARE HIKEARRAY.JS FOR DATA INSERTION -------------------
 # Test for existence of hikeArrays.js:
 echo "
 
@@ -586,7 +742,7 @@ fi
 echo ""
 echo "The file:" "$mapjsLoc" "will be modified (if user opts) to add a marker to the map"
 echo ""
-#Find the line number to start adding the new marker data
+# the line number for inserting data will be held in "mapjsHd"
 mapjsHd=`/usr/bin/awk -v MArray=$hikeAR '
 BEGIN {
 	foundArray=0
@@ -598,8 +754,7 @@ BEGIN {
 	} else {
 		if( foundArray == 1 ) {
 			if( match($0,/];/) ) {
-				eoArray=NR
-				eoArray=eoArray-1
+				eoArray=NR-1
 				print eoArray
 				exit(4)
 			}
@@ -607,20 +762,15 @@ BEGIN {
 	}
 }' $mapjsLoc`
 head -n "$mapjsHd" "$mapjsLoc" > newarray.js
-if [ hikeType == "H" ]
-then {
-	sed -i.bck '$s/$/,/' newarray.js
-	rm newarray.js.bck
-}
-else {
-	sed -i.bck '$s/$/,/' newarray.js
-	rm newarray.js.bck
-}
-fi
+# former last array element needs comma before adding next array
+sed -i.bck '$s/$/,/' newarray.js
+rm newarray.js.bck
 mapLgth=`cat "$mapjsLoc" | wc -l`
-tailCnt=$(( $mapLgth - $mapjsHd ))
-#tailCnt=$(( $tailCnt + 1 ))
-tail -n 1 "$mapjsLoc" > maptail.js
+tailCnt=$(( $mapLgth - $mapjsHd + 1 )) 
+tail -n "$tailCnt" "$mapjsLoc" > maptail.js
+# --- END OF PREP
+#
+# ----------------------------- PROMPT USER FOR DATA ---------------------------
 read -p "Please enter the latitude for this marker: " lat
 good="NotOK"
 while 
@@ -687,9 +837,12 @@ then {
 	fi
 }
 fi
+# --- END OF DATA ACQUISITION
+#
+# ----------------------- CREATE DATA FOR NEW ELEMENT -----------------------
 if [ $hikeType == "C" ]
 then {
-	echo "    ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','""$json""',""$trkclr""]" > latlng
+	echo "    ['""$hike""',""$lat"",""$lng"",'""$webpg"".html','""$json""',""$trkdes"",0]" > latlng
 }
 else {
 	if [ $hikeType == "H" ]
@@ -706,6 +859,9 @@ cat latlng >> newarray.js
 rm latlng
 cat maptail.js >> newarray.js
 rm maptail.js
+# --- END DATA CREATION
+# 
+# ----------------------- OVERWIRTE FILE OR KEEP A SEPARATE COPY? ------------------
 echo "Here are the potential changes for the map.js file:"
 echo "NOTE: < changes listed first, > current map.js file second"
 diff newarray.js "$mapjsLoc"
