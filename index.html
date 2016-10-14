@@ -21,7 +21,7 @@
 
 <div id="container">
 
-	<img id="tompic" src="../ktesa/images/TomAndKenSummit.JPG" alt="Authors on Deception Peak"
+	<img id="tompic" src="images/TomAndKenSummit.JPG" alt="Authors on Deception Peak"
 		title="Authors on Deception Peak" />
 	<p id="banner">Welcome to Tom and Ken's <strong>New Mexico Hiking
 	Adventures!</strong>
@@ -52,16 +52,27 @@
 			allow you to display and update your location on the map.
 		</p>
 		<p id="dbug"></p>
-		<fieldset>
-			<legend><em>With Geolocation ON</em></legend>
-			<button id="b1" class="strtup">Map + Table</button>
-			<button id="b2" class="strtup">Full Pg Map</button>
-		</fieldset>&emsp;
-		<fieldset>
-			<legend><em>With Geolocation OFF</em></legend>
-			<button id="b3" class="strtup">Map + Table</button>
-			<button id="b4" class="strtup">Full Pg Map</button>
-		</fieldset>
+		<form action="pages/mapPg.php" method="GET">
+			<div id="settings">
+			<fieldset id="gloc">
+				<legend>Geolocation</legend>
+				<input type="radio" name="geo" value="ON" />ON&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="geo" value="OFF" checked="checked" />OFF
+			</fieldset>
+			<fieldset id="mtype">
+				<legend>Page Type</legend>
+				<input type="radio" name="tbl" value="ON" checked="checked" />
+					Map With Table&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="tbl" value="OFF" />Full Page Map
+			</fieldset>
+			</div>
+			<div id="next">
+			<fieldset id="go">
+				<legend>Submit</legend>
+				<input id="exe" type=submit value="Display Page">
+			</fieldset>
+			</div>
+		</form>
 		<p id="turnon" class="hilites">
 			More detail on site features...
 		</p>

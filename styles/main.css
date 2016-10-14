@@ -12,7 +12,7 @@ body {
 	width: 940px;
 	margin-left: auto;
 	margin-right: auto;
-	postion: relative; }
+	position: relative; }
 img#tompic {
 	display: block;
 	float: right;
@@ -32,7 +32,7 @@ img#tompic {
 #banner:first-letter {
 	background-color: #dff8e3;
 	font-size: 38px;
-	font-style: serif;
+	font-style: oblique;
 	font-weight: bold;
 	color: #302dd3; }
 #intro {
@@ -42,29 +42,40 @@ img#tompic {
 	margin-top: 30px; }
 #expect {
 	padding-left: 8px;
-	font-style: bold;
+	font-weight: bold;
 	text-decoration: underline;
 	color: DarkBlue;
 	font-size: 20px; }
 #expl {
 	padding-left: 8px; }
-fieldset {
-	width: 285px;
+#settings {
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto; }
+#next {
+	width: 200px;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto; }
+#gloc {
+	width: 140px;
+	display: inline-block; }
+#mtype {
+	width: 290px;
+	display: inline-block; }
+#go {
+	width: 120px;
 	display: inline-block; }
 legend {
 	color: DarkGreen; }	
-#b1:hover {
+#exe {
+	width: 140px;
+	height: 40px;
+	color: DarkGreen;
+	font-size: 16px; }
+#exe:hover {
 	cursor: pointer;
 	background-color: #cfe2cf; }
-#b2:hover {
-	cursor: pointer;
-	background-color: #cfe2cf; }
-#b3:hover {
-	cursor: pointer;
-	background-color: #f8dcd3; }
-#b4:hover {
-	cursor: pointer;
-	background-color: #f8dcd3; }
 .hilites {
 	font-size: 18px;
 	font-style: italic;
