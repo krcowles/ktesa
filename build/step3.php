@@ -104,7 +104,8 @@
 		$picHeight[$i] = $picSize[1];
 		$name[$i] = $picName[$x];
 		$desc[$i] = $picDesc[$x];
-		$album[$i] = $picAlbm[$x]; 
+		$album[$i] = $picAlbm[$x];
+		$photolink[$i] = $nsize[$x]; 
 	}
 	
 	# function will be used to optimize row height - always starts at "$rowHt"
@@ -145,11 +146,10 @@
 			for ($m=0; $m<$itemNo; $m++) {
 				$thispic = $rowItems[$m];
 				$scaleWidth = $newHt/$picHeight[$thispic];
-				echo " scaleFactor is {$scaleFactor}, while scaleWidth is {$scaleWidth}";
 				$pwdth = floor($scaleWidth * $picWidth[$thispic]);
 				$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img id="pic' . $thispic .
 					'" height="' . $newHt . '" width="' . $pwdth . '" src="' . 
-					$nsize[$thispic] . '" alt="' . $desc[$thispic] . '" />';
+					$photolink[$thispic] . '" alt="' . $desc[$thispic] . '" />';
 			}
 			$rowNo++;
 			$curRowWidth = 0;
@@ -164,6 +164,7 @@
 	$nonPics[$npItem] = '';  # empty string indicates nothing has been added
 	# rowItems holds only pix at this point: add geomap if able
 	if ((MaxWidth - $curRowWidth) > Min_Iframe_Size) {
+		# there is room for the geomap
 		$curRowWidth += Min_Iframe_Size;
 		$nonPics[$npItem] = $gpsvMap; # 0 will always represent the geomap by definition
 		$npItem++;
@@ -176,7 +177,7 @@
 			$pwdth = floor($scaleWidth * $picWidth[$thispic]);
 			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img id="pic' . $thispic .
 				'" height="' . $newHt . '" width="' . $pwdth . '" src="' . 
-				$nsize[$thispic] . '" alt="' . $desc[$thispic] . '" />';
+				$photolink[$thispic] . '" alt="' . $desc[$thispic] . '" />';
 		}
 		$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<iframe id="theMap" height="' . $newHt .
 				'" width="' . $newHt . '" src="../../maps/' . $gpsvMap . '"></iframe>';
@@ -191,6 +192,7 @@
 			exit;
 		} else {
 			# nothing fits, so end the row (only pix) and start a new row with the geomap:
+			echo "Looks like nothing else fits in row{$rowNo}";
 			$scaleFactor = opt_row_ht($curRowWidth);
 			$newHt = floor($scaleFactor * RowHt);
 			$rowHtml[$rowNo] = '';
@@ -200,14 +202,24 @@
 				$pwdth = floor($scaleWidth * $picWidth[$thispic]);
 				$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img id="pic' . $thispic .
 					'" height="' . $newHt . '" width="' . $pwdth . '" src="' . 
-					$nsize[$thispic] . '" alt="' . $desc[$thispic] . '" />';
+					$photolink[$thispic] . '" alt="' . $desc[$thispic] . '" />';
 			}
 			$rowNo++;
 			$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow">';
+			$curRowWidth += Min_Iframe_Size;
 			# add geomap to row
-			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<iframe id="theMap" height="' . $newHt .
-				'" width="' . $newHt . '" src="../../maps/' . $gpsvMap . '"></iframe>';
+			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<iframe id="theMap" height="' . RowHt .
+				'" width="' . RowHt . '" src="../../maps/' . $gpsvMap . '"></iframe>';
+			# elev chart should fit since only the map occupies this row
+			if ($curElevWith > (MaxWidth - Min_Iframe_Size)) {
+				echo "Guess what? Chart is too big to fit w/map!!";
+				exit;
+			} else {
+				$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img class="chart" height="' . RowHt .
+					'" width="' . $curElevWidth . '" src="../images/' . $elevChart .
+					'" alt="elevation graph" />';
 			}
+		}
 	}
 	?>
 <html>
@@ -257,15 +269,11 @@
 	</table>
 </div>
 <?php 
-	echo $rowDiv[0];
-	echo $rowHtml[0];
-	echo $closingDiv;
-	echo $rowDiv[1];
-	echo $rowHtml[1];
-	echo $closingDiv;
-	echo $rowDiv[2];
-	echo $rowHtml[2];
-	echo $closingDiv;
+	for ($i=0; $i<4; $i++) {
+		echo $rowDiv[$i];
+		echo $rowHtml[$i];
+		echo $closingDiv;
+	}
 ?>
 
 
