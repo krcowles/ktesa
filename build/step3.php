@@ -52,7 +52,6 @@
 	define("TOOMUCHMARGIN", 80, true);
 	define("MIN_IFRAME_SIZE", 270, true);
 	$startChartWidth = floor(RowHt/$elevHeight * $elevWidth) + 7; # allow for margin
-	echo "Beginning width for elevation chart is " . $startChartWidth;
 	$closingDiv = "</div>";
 	
 #	Read in the tsv file and extract ALL usable data:
@@ -218,12 +217,10 @@
 		$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow Solo">';
 		$curRowWidth = Min_Iframe_Size;
 		$addchart = false;
-		echo "frame is 270, chart is " . $startChartWidth;
 		if ((MaxWidth - $curRowWidth) > $startChartWidth) { #room for the chart
 			$addchart = true;
 			$curRowWidth += $startChartWidth;
 			$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow">';
-			echo "Room found for chart";
 		}
 		$scaleFactor = opt_row_ht($curRowWidth);
 		$newHt = floor($scaleFactor * RowHt);
@@ -237,11 +234,23 @@
 				'" alt="elevation graph" />';
 		} 
 	}
+	# Create the list of captions
+	$captionHtml = '<div class="captionList"><ol>';
+	for ($j=0; $j<$noOfPix; $j++) {
+		$captionHtml = $captionHtml . "<li>{$caption[$j]}</li>";
+	}
+	$captionHtml = $captionHtml . "</ol></div>";
+	# Create the list of album links
+	$albumHtml = '<div class="lnkList"><ol>';
+	for ($k=0; $k<$noOfPix; $k++ ) {
+		$albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
+	}
+	$albumHtml = $albumHtml . "</ol></div>";
 	?>
 <html>
 <head>
 	<title>Making The Page</title>
-	<link href="step3.css" type="text/css" rel="stylesheet" />
+	<link href="../styles/wpages.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div id="logoBlock">
@@ -290,8 +299,34 @@
 		echo $rowHtml[$i];
 		echo $closingDiv;
 	}
+	echo $captionHtml;
+	echo $albumHtml;
 ?>
+	<div id="albumlinks"><em>-- To see more photos:</em> click on
+		<a href="<?php echo $purl2;?>"
+			target="_blank">Tom's Flickr Album</a> or
+		<a href="<?php echo $purl1;?>"
+			target="_blank">Ken's Flickr Album</a>.
+	</div>
+	<p id="hikeInfo">Burnt Mesa, a finger of land, (part of the Pajarito Plateau 
+	</p>
+	</p>
+	<fieldset>
+	<legend id="fldrefs">References &amp; Links</legend>
+	<ul id="refs">
+		<li>Book: <em>Day Hikes In The Santa Fe Area [8th Ed.]</em>, by The Northern New
+			Mexico Group of the Sierra Club</li>
+		<li>App: <a href="http://www.alltrails.com/trail/us/new-mexico/burnt-mesa-trail"
+			target="_blank">AllTrails</a></li>
+	</ul>
+	</fieldset>
+	<fieldset>
+	<legend id="flddat">GPS Maps &amp; Data</legend>
+	</fieldset>
 
-
+	<div class="popupCap"></div>
+	<p id="dbug"></p>
+	<script src="../scripts/jquery-1.12.1.js"></script>
+	<script src="../scripts/wpages.js"></script>
 </body>
 </html>

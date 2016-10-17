@@ -208,8 +208,8 @@ $icount = count($farray) - 1;
 	<input type="hidden" name="img1"  value="<?php echo $_REQUEST['othr1'];?>" />
 	<input type="hidden" name="img2"  value="<?php echo $_REQUEST['othr2'];?>" />
 	<input type="hidden" name="mrkr"  value="<?php echo $_REQUEST['mstyle'];?>" />
-	<input type="hidden" name="phot1" value="<?php echo $_REQUEST['url1'];?>" />
-	<input type="hidden" name="phot2" value="<?php echo $_REQUEST['url2'];?>" />
+	<input type="hidden" name="phot1" value="<?php echo $_REQUEST['photo1'];?>" />
+	<input type="hidden" name="phot2" value="<?php echo $_REQUEST['photo2'];?>" />
 	<input type="hidden" name="gdirs" value="<?php echo $_REQUEST['dirs'];?>" />
 	<div id="phpins" style="position:relative;top:-20px">
 	<?php

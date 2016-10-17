@@ -15,11 +15,11 @@ body {
 	margin-right: auto; }
 #page_title {
 	position: absolute;
+	//left: 360px;
 	top: -8px;
 	font-size: 28px;
 	text-align: center;
-	color: DarkBlue;
-	// color: #302DD3; }
+	color: Brown; }
 #pgLogo  {
 	height: 70px;
 	width: 920px;
