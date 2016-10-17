@@ -31,8 +31,10 @@
 	enctype="multipart/form-data">
 	<fieldset id="basic">
 		<legend>Basic Hike Data</legend>
-		<label for="hname">Hike Name (As it will appear in the table):</label> 
+		<label for="hname" class="nr">Hike Name (As it will appear in the table):</label> 
 		  <input id="hname" type="text" name="hike_name" size="30" />
+		<label for="htitle">Hike Page Title:</label>
+		  <input id="htitle" type="text" name="hpgTitle" size="35" /><br />
 		<label for="area">Locale (Nearest city/landmark):</label>
 		  <select id="area" name="locale">
 		  <optgroup label="North/Northeast">
@@ -70,7 +72,7 @@
 		  	<option value="Silver City">Silver City</option>
 		  	<option value="Pinos Altos">Pinos Altos</option>
 		  	<option value="Glenwood">Glenwood</option>
-		</select><br />
+		</select>
 		<label for="type">Hike Type:</label>
 		  <select id="type" name="htype">
 			<option value="loop">Loop</option>
@@ -78,7 +80,7 @@
 			<option value="oab">Out-and-Back</option>
 		  </select>
 		<label for="lgth">Total Length (Miles):</label>
-			<input id="lgth" type="text" name="dist" size="6" />
+			<input id="lgth" type="text" name="dist" size="6" /><br />
 		<label for="ht">Elevation Change (Feet):</label>
 			<input id="ht" type="text" name="elev" size="8" />
 		<label for="ease">Relative Difficulty:</label>
@@ -89,14 +91,14 @@
 				<option value="Med-Difficult">Medium-Difficult</option>
 				<option value="Difficult">Difficult</option>
 			</select><br />
-		<label for="n-s">Trailhead Latitude (decimal value):</label>
+		<label for="n-s" class="nr">Trailhead Latitude (decimal value):</label>
 			<input id="n-s" type="text" name="lat" size="16" />&nbsp;&nbsp;
-		<label for="e-w">Longitude (decimal value):</label>
+		<label for="e-w" class="nr">Longitude (decimal value):</label>
 			<input id="e-w" type="text" name="lon" size="16" /><br />
 		<label for="useful">Facilities Available at Trailhead (if any):</label>
-			<input id="useful" type="text" name="fac" size="20" />
-		<label for="pgname">File Name for Web Pg (e.g. Aspen.html):</label> 
-		  <input id="pgname" type="text" name="hikepg" size="30" /><br />
+			<input id="useful" type="text" name="fac" size="15" />
+		<label for="pgname" class="nr">File Name for Web Pg (e.g. Aspen.html):</label> 
+		  <input id="pgname" type="text" name="hikepg" size="20" /><br />
 		<label for="wow">"Wow" Factor (What makes this hike special):</label> 
 		  <input id="wow" type="text" name="wow_factor" size="24" />
 		<label for="times">Seasons</label>
@@ -120,20 +122,20 @@
 		  <input id="tsv" type="file" name="csvfile" /><br />
 		<label for="geomap">Name of geomap (MUST reside in ktesa/maps directory WITH API KEY!)&nbsp;</label>
 	      <input id="geomap" type="text" name="gpsvMap" size="42" /><br />
-	    <label for="elev">Include elevation chart, if available (MUST reside in ktesa/images directory!)&nbsp;</label>
+	    <label for="elev">Elevation chart (MUST reside in ktesa/images directory!)&nbsp;</label>
 	  	  <input id="elev" type="text" name="chart" size="30" /><br />
-	  	<pre>        </pre><label for="ewd">Width (px)</label>
+	  	<label for="ewd">Elevation Chart: Width (px)</label>
 	  	  <input id="ewd" type="text" name="elevWd" size="4" />
 	  	<label for="eht">Height (px)</label>
 	  	  <input id="eht" type="text" name="elevHt" size="4" /><br />
-		<label for="gpxfile">GPX File:</label>
+		<label for="gpxfile" class="nr">GPX File:</label>
 		 <input id="gpxfile" type="text" name="gpxname" size="30" />
-		<label for="trkfile">&nbsp;&nbsp;Track File (MUST reside in ktesa/json directory):</label>
+		<label for="trkfile" class="nr">&nbsp;&nbsp;Track File (MUST reside in ktesa/json directory):</label>
 		  <input id="trkfile" type="text" name="track" size="30" /><br /><br />
 		Additonal images, as needed: MUST reside in ktesa/images directory<br />
-		<label for="addon1">Other image (not implemented)</label>
+		<label for="addon1" class="nr">Other image (not implemented)</label>
 	  	  <input id="addon1" type="text" name="othr1" size="30" /><br />
-		<label for="addon2">Other image (not implemented)</label>
+		<label for="addon2" class="nr">Other image (not implemented)</label>
 	  	  <input id="addon2" type="text" name="othr2" size="30" />
 	</fieldset>
 		

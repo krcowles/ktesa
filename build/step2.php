@@ -18,7 +18,7 @@
 		<colgroup>	
 			<col style="width:120px">
 			<col style="width:140px">
-			<col style="width: 120px">
+			<col style="width: 95px">
 			<col style="width:80px">
 			<col style="width:80px">
 			<col style="width:85px">
@@ -139,6 +139,7 @@
 </ul>
 <h2>Other data submitted:</h2>
 <ul>
+	<li>Title to appear on Hike Page: <?php echo trim($_REQUEST['hpgTitle']);?></li>
 	<li>GPSVisualizer map: <?php echo trim($_REQUEST['gpsvMap']);?></li>
 	<li>Elevation chart: <?php
 		echo "{$_REQUEST['chart']}: {$_REQUEST['elevWd']}px x {$_REQUEST['elevHt']}px";?></li>
@@ -187,6 +188,7 @@ $icount = count($farray) - 1;
 <form action="step3.php" method="POST">
 	<input type="hidden" name="whose" value="<?php echo $buildLoc;?>" />
 	<input type="hidden" name="hname" value="<?php echo $_REQUEST['hike_name'];?>" />
+	<input type="hidden" name="hTitle" value="<?php echo $_REQUEST['hpgTitle'];?>" />
 	<input type="hidden" name="area"  value="<?php echo $locale;?>" />
 	<input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
 	<input type="hidden" name="lgth"  value="<?php echo $_REQUEST['dist'];?>" />

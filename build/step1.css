@@ -60,5 +60,10 @@ legend {
 	color: Brown; }
 fieldset {
 	margin-bottom: 10px; }
+fieldset .nr {
+	color: gray; }
 input {
 	margin: 6px; }
+.nr {
+	color: Gray; }
+	

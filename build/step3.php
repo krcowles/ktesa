@@ -2,6 +2,7 @@
 #	All this data from step 2: (eventually in database, not passed via form!)
 	$tsvFile = $_POST['whose'];
 	$hikeName = $_POST['hname'];
+	$pgTitle = $_POST['hTitle'];
 	$locale = $_POST['area'];
 	$hikeType = $_POST['htype'];
 	if ($hikeType === "oab") {
@@ -257,7 +258,7 @@
 	<p id="pgLogo"></p>
 	<p id="logoLeft">Hike New Mexico</p>
 	<p id="logoRight">w/ Tom &amp; Ken</p>
-	<p id="page_title">Add A New Hike!</p>
+	<p id="page_title"><?php echo $pgTitle;?></p>
 </div> <!-- end of logoBlock -->
 <div id="hikeSummary">
 	 <table id="topper">
