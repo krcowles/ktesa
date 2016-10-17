@@ -30,9 +30,8 @@
 	}
 	$gpsvMap = $_POST['geomp'];
 	$elevChart = $_POST['chart'];
-	$elevWidth = floatval(trim($_POST['chrtW']));
-	$elevHeight = floatval(trim($_POST['chrtH']));
-	$elevAR = $elevWidth/$elevHeight;
+	$elevWidth = $_POST['chrtW'];
+	$elevHeight = $_POST['chrtH'];
 	$gpxFname = $_POST['gpx'];
 	$trackFname = $_POST['json'];
 	$addonImg1 = $_POST['img1'];
@@ -52,6 +51,8 @@
 	define("ROWHT", 260, true);
 	define("TOOMUCHMARGIN", 80, true);
 	define("MIN_IFRAME_SIZE", 270, true);
+	$startChartWidth = floor(RowHt/$elevHeight * $elevWidth) + 7; # allow for margin
+	echo "Beginning width for elevation chart is " . $startChartWidth;
 	$closingDiv = "</div>";
 	
 #	Read in the tsv file and extract ALL usable data:
@@ -157,17 +158,19 @@
 		}
 		$itemNo++;
 	} 
-	# at this point, by definition, the row-in-progress is not overflowing,
-	#    hence, define this row as starting with 1 or more photos from above:
+	# ALL PHOTOS HAVE BEEN PROCESSED
 	$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow">';
-	$npItem = 0;  # index no. of non-photo image (geomap, etc)
-	$nonPics[$npItem] = '';  # empty string indicates nothing has been added
-	# rowItems holds only pix at this point: add geomap if able
-	if ((MaxWidth - $curRowWidth) > Min_Iframe_Size) {
-		# there is room for the geomap
-		$curRowWidth += Min_Iframe_Size;
-		$nonPics[$npItem] = $gpsvMap; # 0 will always represent the geomap by definition
-		$npItem++;
+	# at this point, by definition, the row-in-progress is not overflowing,
+	#    hence, the current row has  1 or more photos from above:
+	# most important 1st decision: is there room on this row for the map?
+	if ((MaxWidth - $curRowWidth) > Min_Iframe_Size) { # YES, map room...
+		$curRowWidth += Min_Iframe_Size; # add map size to width; now:
+		$addchart = false;
+		if ((MaxWidth - $curRowWidth) > $startChartWidth) {
+			# room for chart, too:
+			$curRowWidth += $startChartWidth;
+			$addchart = true;
+		}
 		$scaleFactor = opt_row_ht($curRowWidth);
 		$newHt = floor($scaleFactor * RowHt);
 		$rowHtml[$rowNo] = '';
@@ -180,46 +183,59 @@
 				$photolink[$thispic] . '" alt="' . $desc[$thispic] . '" />';
 		}
 		$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<iframe id="theMap" height="' . $newHt .
-				'" width="' . $newHt . '" src="../../maps/' . $gpsvMap . '"></iframe>';
-		# don't optimize until it is seen if something else fits...
-	} else {  # the map won't fit, so goto the next step: elevation chart - does that fit?
-		# elevation height starts at RowHt, so
-		$curElevWidth = floor(RowHt/$elevHeight * $elevWidth); 
-		echo "chart width at 260 is {$curElevWidth}";
-		if ((MaxWidth - $curRowWidth) > $curElevWidth) {
-			# chart fits - surprising, but ok
-			echo "chart fits - wow!";
-			exit;
-		} else {
-			# nothing fits, so end the row (only pix) and start a new row with the geomap:
-			echo "Looks like nothing else fits in row{$rowNo}";
+			'" width="' . $newHt . '" src="../../maps/' . $gpsvMap . '"></iframe>';
+		if ($addchart === true) { # add chart to this row
+			$newChartWidth = floor($scaleFactor * $startChartWidth);
+			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img class="chart" height="' . $newHt .
+					'" width="' . $newChartWidth . '" src="../images/' . $elevChart .
+					'" alt="elevation graph" />';
+		} else { # or else add new row for chart
+			$rowNo++;
+			$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow Solo">';
+			$curRowWidth = $startChartWidth;
 			$scaleFactor = opt_row_ht($curRowWidth);
 			$newHt = floor($scaleFactor * RowHt);
-			$rowHtml[$rowNo] = '';
-			for ($m=0; $m<$itemNo; $m++) {
-				$thispic = $rowItems[$m];
-				$scaleWidth = $newHt/$picHeight[$thispic];
-				$pwdth = floor($scaleWidth * $picWidth[$thispic]);
-				$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img id="pic' . $thispic .
-					'" height="' . $newHt . '" width="' . $pwdth . '" src="' . 
-					$photolink[$thispic] . '" alt="' . $desc[$thispic] . '" />';
-			}
-			$rowNo++;
-			$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow">';
-			$curRowWidth += Min_Iframe_Size;
-			# add geomap to row
-			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<iframe id="theMap" height="' . RowHt .
-				'" width="' . RowHt . '" src="../../maps/' . $gpsvMap . '"></iframe>';
-			# elev chart should fit since only the map occupies this row
-			if ($curElevWith > (MaxWidth - Min_Iframe_Size)) {
-				echo "Guess what? Chart is too big to fit w/map!!";
-				exit;
-			} else {
-				$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img class="chart" height="' . RowHt .
-					'" width="' . $curElevWidth . '" src="../images/' . $elevChart .
+			$newChartWidth = floor($scaleFactor * $startChartWidth);
+			$rowHtml[$rowNo] = '<img class="chart" height="' . $newHt .
+					'" width="' . $newChartWidth . '" src="../images/' . $elevChart .
 					'" alt="elevation graph" />';
-			}
 		}
+	} else { # NO, no room for map...
+		# optimize current row...
+		$scaleFactor = opt_row_ht($curRowWidth);
+		$newHt = floor($scaleFactor * RowHt);
+		$rowHtml[$rowNo] = '';
+		for ($m=0; $m<$itemNo; $m++) {
+			$thispic = $rowItems[$m];
+			$scaleWidth = $newHt/$picHeight[$thispic];
+			$pwdth = floor($scaleWidth * $picWidth[$thispic]);
+			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img id="pic' . $thispic .
+				'" height="' . $newHt . '" width="' . $pwdth . '" src="' . 
+				$photolink[$thispic] . '" alt="' . $desc[$thispic] . '" />';
+		}
+		# and start a new one
+		$rowNo++;
+		$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow Solo">';
+		$curRowWidth = Min_Iframe_Size;
+		$addchart = false;
+		echo "frame is 270, chart is " . $startChartWidth;
+		if ((MaxWidth - $curRowWidth) > $startChartWidth) { #room for the chart
+			$addchart = true;
+			$curRowWidth += $startChartWidth;
+			$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow">';
+			echo "Room found for chart";
+		}
+		$scaleFactor = opt_row_ht($curRowWidth);
+		$newHt = floor($scaleFactor * RowHt);
+		$rowHtml[$rowNo] = '<iframe id="theMap" height="' . $newHt .
+			'" width="' . $newHt . '" src="../../maps/' . $gpsvMap . '"></iframe>';
+		if ($addchart === true) {
+			$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow">';
+			$newChartWidth = floor($scaleFactor * $startChartWidth);
+			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img class="chart" height="' . $newHt .
+				'" width="' . $newChartWidth . '" src="../images/' . $elevChart .
+				'" alt="elevation graph" />';
+		} 
 	}
 	?>
 <html>
