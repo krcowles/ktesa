@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Upload</title>
-	<link href="step2.css" type="text/css" rel="stylesheet" />
+	<link href="stepW.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div id="logoBlock">
@@ -213,7 +213,6 @@ $icount = count($farray) - 1;
 	<input type="hidden" name="phot1" value="<?php echo $_REQUEST['photo1'];?>" />
 	<input type="hidden" name="phot2" value="<?php echo $_REQUEST['photo2'];?>" />
 	<input type="hidden" name="gdirs" value="<?php echo $_REQUEST['dirs'];?>" />
-	<div id="phpins" style="position:relative;top:-20px">
 	<?php
 		$handle = fopen($tsvFile, "r");
 		if ($handle !== false) {
@@ -223,6 +222,7 @@ $icount = count($farray) - 1;
 				$tsvArray = str_getcsv($line,"\t");
 				if ($lineno !== 0) {
 					$picarray[$picno] = $tsvArray[$indx];
+					$thumb[$picno] = $tsvArray[$indx+4];
 					$picno += 1;
 				} else {
 					if (strcmp($tsvArray[0],"folder") == 0) {
@@ -238,21 +238,20 @@ $icount = count($farray) - 1;
 			$lineno -= 1;
 		} else {
 			echo "<p>Could not open {$fname}</p>";
-		} ?>
-	</div>
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[0];?>" /><?php echo $picarray[0];?><br />
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[1];?>" /><?php echo $picarray[1];?><br />
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[2];?>" /><?php echo $picarray[2];?><br />
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[3];?>" /><?php echo $picarray[3];?><br />
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[4];?>" /><?php echo $picarray[4];?><br />
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[5];?>" /><?php echo $picarray[5];?><br />
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[6];?>" /><?php echo $picarray[6];?><br />
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[7];?>" /><?php echo $picarray[7];?><br />
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[8];?>" /><?php echo $picarray[8];?><br />
-	<input type="checkbox" name="pix[]" value="<?php echo $picarray[9];?>" /><?php echo $picarray[9];?><br />
-	<input type="submit" value="Go To Next Step" />
+		} 
+		$nmeno = 0;
+		for ($i=0; $i<$icount; $i++) {
+			echo '<div style="width:150px;float:left;">';
+			echo '<input type="checkbox" name="pix[]" value="' .  $picarray[$nmeno] .
+				'" />' . $picarray[$nmeno] . '<br />';
+			echo '<img height="150px" width="150px" src="' .$thumb[$nmeno] . '" alt="pic choice" />';
+			echo '</div>';
+			$nmeno +=1;
+		}
+		echo '<br />';
+		echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use These Pics" /></div>';
+		?>	
 </form>
-<h2>END OF DATA</h2>
 </body>
 
 </html>
