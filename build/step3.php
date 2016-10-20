@@ -29,14 +29,41 @@
 	} else {
 		$exposure = "Mixed sun/shade";
 	}
+	# AT This point, geomaps & charts are assumed to be at most, 1 per page.
+	# IF this ever changes, change these to arrays & modify html creation loop
 	$gpsvMap = $_POST['geomp'];
+	if ($gpsvMap === '') 
+		$noOfIframes = 0;
+	else
+		$noOfIframes = 1;
 	$elevChart = $_POST['chart'];
-	$elevWidth = $_POST['chrtW'];
-	$elevHeight = $_POST['chrtH'];
+	if ($elevChart === '') {
+		$noOfCharts = 0;
+	} else {
+		$elevWidth = $_POST['chrtW'];
+		$elevHeight = $_POST['chrtH'];
+		$noOfCharts = 1;
+	}
 	$gpxFname = $_POST['gpx'];
 	$trackFname = $_POST['json'];
-	$addonImg1 = $_POST['img1'];
-	$addonImg2 = $_POST['img2'];
+	$addonImg[0] = $_POST['img1'];
+	$imgIndx = 0;
+	if ($addonImg[0] === '')
+		$noOfOthr = 0;
+	else {
+		$noOfOthr = 1;
+		$firstimg = getimagesize("../images/" . $addonImg[0]);
+		$othrWidth[$imgIndx] = $firstimg[0];
+		$othrHeight[$imgIndx] = $firstimg[1];
+		$imgIndx += 1;
+	}
+	$addonImg[1] = $_POST['img2'];
+	if ($addonImg[1] !== '') {
+		$noOfOthr += 1;
+		$secondimg = getimagesize("../images/" . $addonImg[1]);
+		$othrWidth[$imgIndx] = $secondimg[0];
+		$othrHeight[$imgIndx] = $secondimg[1];
+	}
 	$marker = $_POST['mrkr'];
 	$purl1 = $_POST['phot1'];
 	$purl2 = $_POST['phot2'];
@@ -248,12 +275,29 @@
 	}
 	$albumHtml = $albumHtml . "</ol></div>";
 	?>
+<!DOCTYPE html>
 <html>
+
 <head>
-	<title>Making The Page</title>
-	<link href="../styles/wpages.css" type="text/css" rel="stylesheet" />
+	<title><?php echo $hikeName;?></title>
+	<meta charset="utf-8" />
+	<meta name="language"
+			content="EN" />
+	<meta name="description"
+		content="Details about the <?php echo $hikeName;?> hike" />
+	<meta name="author"
+		content="Tom Sandberg and Ken Cowles" />
+	<meta name="robots"
+		content="nofollow" />
+	<link href="../styles/960_16_col.css"
+		type="text/css" rel="stylesheet" />
+	<link href="../styles/wpages.css"
+		type="text/css" rel="stylesheet" />
 </head>
+
 <body>
+<div class="container_16 clearfix">
+
 <div id="logoBlock">
 	<p id="pgLogo"></p>
 	<p id="logoLeft">Hike New Mexico</p>
@@ -324,10 +368,11 @@
 	<fieldset>
 	<legend id="flddat">GPS Maps &amp; Data</legend>
 	</fieldset>
+</div><!-- end of container 16 -->
 
-	<div class="popupCap"></div>
-	<p id="dbug"></p>
-	<script src="../scripts/jquery-1.12.1.js"></script>
-	<script src="../scripts/wpages.js"></script>
+<div class="popupCap"></div>
+<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/wpages.js"></script>
+
 </body>
 </html>

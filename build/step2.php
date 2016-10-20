@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Upload</title>
-	<link href="stepW.css" type="text/css" rel="stylesheet" />
+	<link href="step2.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div id="logoBlock">
@@ -249,7 +249,7 @@ $icount = count($farray) - 1;
 			$nmeno +=1;
 		}
 		echo '<br />';
-		echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use These Pics" /></div>';
+		echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
 		?>	
 </form>
 </body>
