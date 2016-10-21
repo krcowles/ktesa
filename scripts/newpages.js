@@ -48,9 +48,13 @@ $( function () { // when page is loaded...
 		var tst = sessionStorage.getItem('prevLoad');
 		if ( !tst ) { 
 			// NORMAL ENTRY
+			msg = '<p>Normal entry</p>';
+			$('#dbug').append(msg);
 			i = 0;
 			$images.each( function() {
 				capWidth[i] = this.width + 'px';
+				msg = '<p>Img width is ' + capWidth[i] + 'px; </p>';
+				$('#dbug').append(msg);
 				pwidth = 'pwidth'+ i;
 				sessionStorage.setItem(pwidth,capWidth[i]);
 				i++;
@@ -67,9 +71,13 @@ $( function () { // when page is loaded...
 			// get caption locations
 			calcPos(); 
 		} else {  // Refresh: need to reload items for placing captions & map link
+			//msg = '<p>Looks like a refresh? Cached?</p>';
+			//$('#dbug').append(msg);
 			for ( i=0; i<noOfPix; i++ ) {
 				pwidth = 'pwidth' + i;
 				capWidth[i] = sessionStorage.getItem(pwidth);
+				//msg = '<p>Width' + i + ' is ' + capWidth[i] + '; </p>';
+				//$('#dbug').append(msg);
 			}
 			mapLeft = sessionStorage.getItem('mleft');
 			mapBot = sessionStorage.getItem('mbot');

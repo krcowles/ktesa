@@ -1,280 +1,275 @@
 <?php
 #	All this data from step 2: (eventually in database, not passed via form!)
-	$tsvFile = $_POST['whose'];
-	$hikeName = $_POST['hname'];
-	$pgTitle = $_POST['hTitle'];
-	$locale = $_POST['area'];
-	$hikeType = $_POST['htype'];
-	if ($hikeType === "oab") {
-		$htype = "Out-and-back";
-	} else if ($hikeType === "loop") {
-		$htype = "Loop";
-	} else {
-		$htype = "2-Cars";
-	}
-	$distance = $_POST['lgth'];
-	$elevation = $_POST['elev'];
-	$difficulty = $_POST['diffi'];
-	$lat = $_POST['lati'];
-	$lon = $_POST['long'];
-	$facilities = $_POST['facil'];
-	$hikePg = $_POST['webpg'];
-	$wowFactor = $_POST['wow'];
-	$seasons = $_POST['seasn'];
-	$exp = $_POST['expo'];
-	if ($exp === "sun") {
-		$exposure = "Full sun";
-	} else if ($exp = "shade") {
-		$exposure = "Good shade";
-	} else {
-		$exposure = "Mixed sun/shade";
-	}
-	# AT This point, geomaps & charts are assumed to be at most, 1 per page.
-	# IF this ever changes, change these to arrays & modify html creation loop
-	$gpsvMap = $_POST['geomp'];
-	if ($gpsvMap === '') 
-		$noOfIframes = 0;
-	else
-		$noOfIframes = 1;
-	$elevChart = $_POST['chart'];
-	if ($elevChart === '') {
-		$noOfCharts = 0;
-	} else {
-		$elevWidth = $_POST['chrtW'];
-		$elevHeight = $_POST['chrtH'];
-		$noOfCharts = 1;
-	}
-	$gpxFname = $_POST['gpx'];
-	$trackFname = $_POST['json'];
-	$addonImg[0] = $_POST['img1'];
-	$imgIndx = 0;
-	if ($addonImg[0] === '')
-		$noOfOthr = 0;
-	else {
-		$noOfOthr = 1;
-		$firstimg = getimagesize("../images/" . $addonImg[0]);
-		$othrWidth[$imgIndx] = $firstimg[0];
-		$othrHeight[$imgIndx] = $firstimg[1];
-		$imgIndx += 1;
-	}
-	$addonImg[1] = $_POST['img2'];
-	if ($addonImg[1] !== '') {
-		$noOfOthr += 1;
-		$secondimg = getimagesize("../images/" . $addonImg[1]);
-		$othrWidth[$imgIndx] = $secondimg[0];
-		$othrHeight[$imgIndx] = $secondimg[1];
-	}
-	$marker = $_POST['mrkr'];
-	$purl1 = $_POST['phot1'];
-	$purl2 = $_POST['phot2'];
-	$googledirs = $_POST['gdirs'];
-	$picarray = $_POST['pix'];
-	$noOfPix = count($picarray);
-	# end of form data, start local page data & routines
-	
-	$month = array("Jan","Feb","Mar","Apr","May","Jun",
-					"Jul","Aug","Sep","Oct","Nov","Dec");
-	define("SPACING", 14, true);
-	define("MAXWIDTH", 960, true);
-	define("ROWHT", 260, true);
-	define("TOOMUCHMARGIN", 80, true);
-	define("MIN_IFRAME_SIZE", 270, true);
-	$startChartWidth = floor(RowHt/$elevHeight * $elevWidth) + 7; # allow for margin
-	$closingDiv = "</div>";
+$tsvFile = $_POST['whose'];
+$hikeName = $_POST['hname'];
+$pgTitle = $_POST['hTitle'];
+$locale = $_POST['area'];
+$hikeType = $_POST['htype'];
+if ($hikeType === "oab") {
+	$htype = "Out-and-back";
+} else if ($hikeType === "loop") {
+	$htype = "Loop";
+} else {
+	$htype = "2-Cars";
+}
+$distance = $_POST['lgth'];
+$elevation = $_POST['elev'];
+$difficulty = $_POST['diffi'];
+$lat = $_POST['lati'];
+$lon = $_POST['long'];
+$facilities = $_POST['facil'];
+$hikePg = $_POST['webpg'];
+$wowFactor = $_POST['wow'];
+$seasons = $_POST['seasn'];
+$exp = $_POST['expo'];
+if ($exp === "sun") {
+	$exposure = "Full sun";
+} else if ($exp = "shade") {
+	$exposure = "Good shade";
+} else {
+	$exposure = "Mixed sun/shade";
+}
+# AT This point, geomaps & charts are assumed to be at most, 1 per page.
+# IF this ever changes, change these to arrays & modify html creation loop
+$gpsvMap = $_POST['geomp'];
+if ($gpsvMap === '') 
+	$noOfIframes = 0;
+else
+	$noOfIframes = 1;
+$elevChart = $_POST['chart'];
+if ($elevChart === '') {
+	$noOfCharts = 0;
+} else {
+	$elevWidth = $_POST['chrtW'];
+	$elevHeight = $_POST['chrtH'];
+	$noOfCharts = 1;
+}
+$gpxFname = $_POST['gpx'];
+$trackFname = $_POST['json'];
+$addonImg[0] = $_POST['img1'];
+$imgIndx = 0;
+if ($addonImg[0] === '')
+	$noOfOthr = 0;
+else {
+	$noOfOthr = 1;
+	$firstimg = getimagesize("../images/" . $addonImg[0]);
+	$othrWidth[$imgIndx] = $firstimg[0];
+	$othrHeight[$imgIndx] = $firstimg[1];
+	$imgIndx += 1;
+}
+$addonImg[1] = $_POST['img2'];
+if ($addonImg[1] !== '') {
+	$noOfOthr += 1;
+	$secondimg = getimagesize("../images/" . $addonImg[1]);
+	$othrWidth[$imgIndx] = $secondimg[0];
+	$othrHeight[$imgIndx] = $secondimg[1];
+}
+$marker = $_POST['mrkr'];
+$purl1 = $_POST['phot1'];
+$purl2 = $_POST['phot2'];
+$googledirs = $_POST['gdirs'];
+$picarray = $_POST['pix'];
+$noOfPix = count($picarray);
+# end of form data, start local page data & routines
+
+$month = array("Jan","Feb","Mar","Apr","May","Jun",
+				"Jul","Aug","Sep","Oct","Nov","Dec");
+define("SPACING", 14, true);
+define("MAXWIDTH", 960, true);
+define("ROWHT", 260, true);
+define("TOOMUCHMARGIN", 80, true);
+define("MIN_IFRAME_SIZE", 270, true);
+$startChartWidth = floor(RowHt/$elevHeight * $elevWidth) + 7; # allow for margin
+$closingDiv = "</div>";
 	
 #	Read in the tsv file and extract ALL usable data:
-	$handle = fopen($tsvFile, "r");
-	if ($handle !== false) {
-		$lineno = 0;
-		$picno = 0;
-		while ( ($line = fgets($handle)) !== false ) {
-			$tsvArray = str_getcsv($line,"\t");
-			if ($lineno !== 0) {
-				$picName[$picno] = $tsvArray[1];
-				$picDesc[$picno] = $tsvArray[2];
-				$picAlbm[$picno] = $tsvArray[6];
-				$picDate[$picno] = $tsvArray[7];
-				$nsize[$picno] = $tsvArray[8];
-				$picno++;
-			}
-			$lineno++;
+$handle = fopen($tsvFile, "r");
+if ($handle !== false) {
+	$lineno = 0;
+	$picno = 0;
+	while ( ($line = fgets($handle)) !== false ) {
+		$tsvArray = str_getcsv($line,"\t");
+		if ($lineno !== 0) {
+			$picName[$picno] = $tsvArray[1];
+			$picDesc[$picno] = $tsvArray[2];
+			$picAlbm[$picno] = $tsvArray[6];
+			$picDate[$picno] = $tsvArray[7];
+			$nsize[$picno] = $tsvArray[8];
+			$picno++;
 		}
-		$lineno--;
-	} else {
-		die( "<p>Could not open {$fname}</p>" );
+		$lineno++;
 	}
-	
-	# Pull out the index numbers of the chosen few:
-	$k = 0;
-	for ($i=0; $i<$noOfPix; $i++) {
-		$targ = $picarray[$i];
-		for ($j=0; $j<$lineno; $j++) {
-			if( $targ === $picName[$j] ) {
-				$indx[$k] = $j;
-				$k++;
-				break;
-			}
-		}
-	}
-	# for each of the <user-selected> pix, define needed arrays
-	for ($i=0; $i<$noOfPix; $i++) {
-		$x = $indx[$i];
-		$picYear = substr($picDate[$x],0,4);
-		$picMoDigits = substr($picDate[$x],5,2) - 1;
-		$picMonth = $month[$picMoDigits];
-		$picDay = substr($picDate[$x],8,2);
-		if (substr($picDay,0,1) === '0') {
-			$picDay = substr($picDay,1,1);
-		}
-		$caption[$i] = "{$picMonth} {$picDay}, {$picYear}: {$picDesc[$x]}";
-		$picSize = getimagesize($nsize[$x]);
-		$picWidth[$i] = $picSize[0];
-		$picHeight[$i] = $picSize[1];
-		$name[$i] = $picName[$x];
-		$desc[$i] = $picDesc[$x];
-		$album[$i] = $picAlbm[$x];
-		$photolink[$i] = $nsize[$x]; 
-	}
-	
-	# function will be used to optimize row height - always starts at "$rowHt"
-	function opt_row_ht($fillSpace) {
-		$rowMargin = MaxWidth - $fillSpace;
-		$scale = 1.000;
-		while ($rowMargin > TooMuchMargin) {
-			$scale *= 1.1;
-			if ($scale > 1.50) { 
-				$scale /= 1.1;
-				break;
-			}
-			$newSpace = $scale * $fillSpace;
-			$rowMargin = MaxWidth - $newSpace;
-		}
-		return $scale;	
-	}
+	$lineno--;
+} else {
+	die( "<p>Could not open {$fname}</p>" );
+}
 
-	# Everything is now in place to make rows
-	$rowNo = 0;
-	$itemNo = 0;
-	$curRowWidth = 0;
-	# for each of the user-selected pix, calculate a row and scale it
-	for ($i=0; $i<$noOfPix; $i++) {
-		$aspect = $picWidth[$i]/$picHeight[$i];
-		$curPicWidth = RowHt * $aspect;
-		$curRowWidth += $curPicWidth + Spacing;
-		$rowItems[$itemNo] = $i;
-		if ($curRowWidth >= MaxWidth) {
-			$curRowWidth -= ($curPicWidth + Spacing);
-			$rowItems[$itemNo] = 0;
-			$i--;
-			$scaleFactor = opt_row_ht($curRowWidth);
-			$newHt = floor($scaleFactor * RowHt);
-			# create the row html
-			$rowDiv[$rowNo] = '<div id="row' . $rowNo . '" class="ImgRow">';
-			$rowHtml[$rowNo] = '';
-			for ($m=0; $m<$itemNo; $m++) {
-				$thispic = $rowItems[$m];
-				$scaleWidth = $newHt/$picHeight[$thispic];
-				$pwdth = floor($scaleWidth * $picWidth[$thispic]);
-				$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img id="pic' . $thispic .
-					'" height="' . $newHt . '" width="' . $pwdth . '" src="' . 
-					$photolink[$thispic] . '" alt="' . $desc[$thispic] . '" />';
-			}
-			$rowNo++;
-			$curRowWidth = 0;
-			$itemNo = -1;
+# Pull out the index numbers of the chosen few:
+$k = 0;
+for ($i=0; $i<$noOfPix; $i++) {
+	$targ = $picarray[$i];
+	for ($j=0; $j<$lineno; $j++) {
+		if( $targ === $picName[$j] ) {
+			$indx[$k] = $j;
+			$k++;
+			break;
 		}
-		$itemNo++;
-	} 
-	# ALL PHOTOS HAVE BEEN PROCESSED
-	$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow">';
-	# at this point, by definition, the row-in-progress is not overflowing,
-	#    hence, the current row has  1 or more photos from above:
-	# most important 1st decision: is there room on this row for the map?
-	if ((MaxWidth - $curRowWidth) > Min_Iframe_Size) { # YES, map room...
-		$curRowWidth += Min_Iframe_Size; # add map size to width; now:
-		$addchart = false;
-		if ((MaxWidth - $curRowWidth) > $startChartWidth) {
-			# room for chart, too:
-			$curRowWidth += $startChartWidth;
-			$addchart = true;
-		}
-		$scaleFactor = opt_row_ht($curRowWidth);
-		$newHt = floor($scaleFactor * RowHt);
-		$rowHtml[$rowNo] = '';
-		for ($m=0; $m<$itemNo; $m++) {
-			$thispic = $rowItems[$m];
-			$scaleWidth = $newHt/$picHeight[$thispic];
-			$pwdth = floor($scaleWidth * $picWidth[$thispic]);
-			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img id="pic' . $thispic .
-				'" height="' . $newHt . '" width="' . $pwdth . '" src="' . 
-				$photolink[$thispic] . '" alt="' . $desc[$thispic] . '" />';
-		}
-		$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<iframe id="theMap" height="' . $newHt .
-			'" width="' . $newHt . '" src="../../maps/' . $gpsvMap . '"></iframe>';
-		if ($addchart === true) { # add chart to this row
-			$newChartWidth = floor($scaleFactor * $startChartWidth);
-			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img class="chart" height="' . $newHt .
-					'" width="' . $newChartWidth . '" src="../images/' . $elevChart .
-					'" alt="elevation graph" />';
-		} else { # or else add new row for chart
-			$rowNo++;
-			$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow Solo">';
-			$curRowWidth = $startChartWidth;
-			$scaleFactor = opt_row_ht($curRowWidth);
-			$newHt = floor($scaleFactor * RowHt);
-			$newChartWidth = floor($scaleFactor * $startChartWidth);
-			$rowHtml[$rowNo] = '<img class="chart" height="' . $newHt .
-					'" width="' . $newChartWidth . '" src="../images/' . $elevChart .
-					'" alt="elevation graph" />';
-		}
-	} else { # NO, no room for map...
-		# optimize current row...
-		$scaleFactor = opt_row_ht($curRowWidth);
-		$newHt = floor($scaleFactor * RowHt);
-		$rowHtml[$rowNo] = '';
-		for ($m=0; $m<$itemNo; $m++) {
-			$thispic = $rowItems[$m];
-			$scaleWidth = $newHt/$picHeight[$thispic];
-			$pwdth = floor($scaleWidth * $picWidth[$thispic]);
-			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img id="pic' . $thispic .
-				'" height="' . $newHt . '" width="' . $pwdth . '" src="' . 
-				$photolink[$thispic] . '" alt="' . $desc[$thispic] . '" />';
-		}
-		# and start a new one
-		$rowNo++;
-		$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow Solo">';
-		$curRowWidth = Min_Iframe_Size;
-		$addchart = false;
-		if ((MaxWidth - $curRowWidth) > $startChartWidth) { #room for the chart
-			$addchart = true;
-			$curRowWidth += $startChartWidth;
-			$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow">';
-		}
-		$scaleFactor = opt_row_ht($curRowWidth);
-		$newHt = floor($scaleFactor * RowHt);
-		$rowHtml[$rowNo] = '<iframe id="theMap" height="' . $newHt .
-			'" width="' . $newHt . '" src="../../maps/' . $gpsvMap . '"></iframe>';
-		if ($addchart === true) {
-			$rowDiv[$rowNo] =  '<div id="row' . $rowNo . '" class="ImgRow">';
-			$newChartWidth = floor($scaleFactor * $startChartWidth);
-			$rowHtml[$rowNo] = $rowHtml[$rowNo] . '<img class="chart" height="' . $newHt .
-				'" width="' . $newChartWidth . '" src="../images/' . $elevChart .
-				'" alt="elevation graph" />';
-		} 
 	}
-	# Create the list of captions
-	$captionHtml = '<div class="captionList"><ol>';
-	for ($j=0; $j<$noOfPix; $j++) {
-		$captionHtml = $captionHtml . "<li>{$caption[$j]}</li>";
+}
+# for each of the <user-selected> pix, define needed arrays
+for ($i=0; $i<$noOfPix; $i++) {
+	$x = $indx[$i];
+	$picYear = substr($picDate[$x],0,4);
+	$picMoDigits = substr($picDate[$x],5,2) - 1;
+	$picMonth = $month[$picMoDigits];
+	$picDay = substr($picDate[$x],8,2);
+	if (substr($picDay,0,1) === '0') {
+		$picDay = substr($picDay,1,1);
 	}
-	$captionHtml = $captionHtml . "</ol></div>";
-	# Create the list of album links
-	$albumHtml = '<div class="lnkList"><ol>';
-	for ($k=0; $k<$noOfPix; $k++ ) {
-		$albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
+	$caption[$i] = "{$picMonth} {$picDay}, {$picYear}: {$picDesc[$x]}";
+	$picSize = getimagesize($nsize[$x]);
+	$picWidth[$i] = $picSize[0];
+	$picHeight[$i] = $picSize[1];
+	$name[$i] = $picName[$x];
+	$desc[$i] = $picDesc[$x];
+	$album[$i] = $picAlbm[$x];
+	$photolink[$i] = $nsize[$x]; 
+}
+
+$maxRowHt = 260;
+$rowWidth = 950;
+# start by calculating the various images' widths when rowht = maxRowHt
+# PHOTOS:
+for ($i=0; $i<$noOfPix; $i++) {
+	$widthAtMax[$i] = floor($picWidth[$i] * ($maxRowHt/$picHeight[$i]));
+}
+# IFRAME(s):
+for ($j=0; $j<$noOfIframes; $j++) {
+	$indx = $noOfPix + $j;
+	$widthAtMax[$indx] = $maxRowHt;  # iframes: use square shape at maxRowHt x maxRowHt
+}
+# CHART(s):    NOTE: Modify if multiple charts per page, currently only one expected
+for ($k=0; $k<$noOfCharts; $k++) {
+	$indx = $noOfPix + $noOfIframes;
+	$widthAtMax[$indx] = floor($elevWidth * ($maxRowHt/$elevHeight));
+}
+# OTHER IMAGES: 
+for ($l=0; $l<$noOfOthr; $l++) {
+	$indx = $noOfPix + $noOfIframes + $noOfCharts;
+	$widthAtMax[$indx] = floor($othrWidth[$l] * ($maxRowHt/$othrHeight[$l]));
+}
+$items = $noOfPix + $noOfIframes + $noOfCharts + $noOfOthr;
+# initialize starting rowWidth, counters, and starting point for html creation
+$curWidth = 0;	# row Width as it's being built
+$startIndx = 0;	# when creating html, index to set loop start
+$rowHtml = '';
+$rowNo = 0;
+$totalProcessed = 0;
+$othrIndx = 0;	 # counter for number of other images being loaded
+for ($i=0; $i<$items; $i++) {
+	$rowCompleted = false;
+	$curWidth += $widthAtMax[$i];
+	if ($i < $noOfPix) {
+		$itype[$i] = "picture";
 	}
-	$albumHtml = $albumHtml . "</ol></div>";
-	?>
+	else if ($i >= $noOfPix && $i < ($noOfPix + $noOfIframes)) {
+		$itype[$i] = "iframe";
+	}
+	else if ($i >= ($noOfPix + $noOfIframes) && $i < ($noOfPix + $noOfIframes + $noOfCharts)){
+		$itype[$i] = "chart";
+	} else {
+		$itype[$i] = "image";
+	}
+	if ($curWidth > $rowWidth) {
+		$rowItems = $i - $startIndx + 1;
+		$totalProcessed += $rowItems;
+		$scaleFactor = $rowWidth/$curWidth;
+		$actualHt = floor($scaleFactor * $maxRowHt);
+		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
+		for ($n=$startIndx; $n<=$i; $n++) {
+					if ($itype[$n] === "picture") {
+						$picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
+						$picHeight[$n] = $actualHt;
+						$rowHtml = $rowHtml . '<img id="pic' .$n . '" width="' . $picWidth[$n] . '" height="' .
+							$actualHt . '" src="' . $photolink[$n] . '" alt="' . $desc[$n] .
+							'" />';
+					} else if ($itype[$n] === "iframe") {
+						$rowHtml = $rowHtml . '<iframe id="theMap" height="' . $actualHt .
+							'" width="' . $actualHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
+					} else if ($itype[$n] === "chart") {
+						$elevWidth = floor($scaleFactor * $widthAtMax[$n]);
+						$rowHtml = $rowHtml . '<img class="chart" width="' . $elevWidth . 
+							'" height="' . $actualHt . '" src="../images/' . $elevChart .
+							'" alt="Elevation Chart" />';
+					} else {
+						$othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
+						$othrHeight[$othrIndx] = $actualHt;
+						$rowHtml = $rowHtml . '<img width="' . $othrWidth[$n] . '" height="' .
+							$$actualHt . '" src="../images/' . $addonImg[$othrIndx] . '" alt="' . $desc[$n] .
+							'" />';
+						$othrIndx += 1;
+					}
+		}	
+		$rowHtml = $rowHtml . '</div>';
+		$rowNo += 1;
+		$startIndx += $rowItems;
+		$curWidth = 0;
+		$rowCompleted = true;
+	}
+}
+# last row may not be filled, and will be at maxRowHt
+# last item index was "startIndx"
+if ($rowCompleted === false) {
+	$itemsLeft = $items - $totalProcessed;
+	if ($itemsLeft === 1)
+		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow Solo">';
+	else
+		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
+	for ($i=0; $i<$itemsLeft; $i++) {
+		if ($itype[$startIndx] === "picture") {
+			$picWidth[$startIndx] = $widthAtMax[$startIndx];
+			$picHeight[$startIndx] = $maxRowHt;
+			$rowHtml = $rowHtml . '<img id="pic' . $startIndx . '" width="' . 
+				$picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
+				$photolink[$startIndx] . '" alt="' . $desc[$startIndx] . '" />';
+			$startIndx += 1;
+		} else if ($itype[$startIndx] === "iframe") {
+			$rowHtml = $rowHtml . '<iframe id="theMap" height="' . $maxRowHt .
+				'" width="' . $maxRowHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
+			$startIndx += 1;
+		} else if ($itype[$startIndx] === "chart") {
+			$elevWidth = $widthAtMax[$startIndx];
+			$rowHtml = $rowHtml . '<img class="chart" width="' . $elevWidth . 
+				'" height="' . $maxRowHt . '" src="../images/' . $elevChart .
+				'" alt="Elevation Chart" />';
+			$startIndx += 1;
+		} else {
+			$othrWidth[$othrIndx] = $widthAtMax[$startIndx];
+			$othrHeight[$othrIndx] = $maxRowHt;
+			$rowHtml = $rowHtml . '<img width="' . $othrWidth[$othrIndx] . '" height="' .
+				$maxRowHt . '" src="../images/' . $addonImg[$othrIndx] .
+				'" alt="Additional page image" />';
+			$othrIndx += 1;
+			$startIndx += 1;
+		}
+	}
+	$rowHtml = $rowHtml . "</div>";
+}
+# all items have been processed and actual width/heights retained
+
+# Create the list of captions
+$captionHtml = '<div class="captionList"><ol>';
+for ($j=0; $j<$noOfPix; $j++) {
+	$captionHtml = $captionHtml . "<li>{$caption[$j]}</li>";
+}
+$captionHtml = $captionHtml . "</ol></div>";
+# Create the list of album links
+$albumHtml = '<div class="lnkList"><ol>';
+for ($k=0; $k<$noOfPix; $k++ ) {
+	$albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
+}
+$albumHtml = $albumHtml . "</ol></div>";
+?>
 <!DOCTYPE html>
 <html>
 
@@ -291,7 +286,7 @@
 		content="nofollow" />
 	<link href="../styles/960_16_col.css"
 		type="text/css" rel="stylesheet" />
-	<link href="../styles/wpages.css"
+	<link href="../styles/newpages.css"
 		type="text/css" rel="stylesheet" />
 </head>
 
@@ -302,7 +297,7 @@
 	<p id="pgLogo"></p>
 	<p id="logoLeft">Hike New Mexico</p>
 	<p id="logoRight">w/ Tom &amp; Ken</p>
-	<p id="page_title"><?php echo $pgTitle;?></p>
+	<p id="page_title" class="grid_16"><?php echo $pgTitle;?></p>
 </div> <!-- end of logoBlock -->
 <div id="hikeSummary">
 	 <table id="topper">
@@ -339,11 +334,7 @@
 	</table>
 </div>
 <?php 
-	for ($i=0; $i<4; $i++) {
-		echo $rowDiv[$i];
-		echo $rowHtml[$i];
-		echo $closingDiv;
-	}
+	echo $rowHtml;
 	echo $captionHtml;
 	echo $albumHtml;
 ?>
@@ -354,7 +345,6 @@
 			target="_blank">Ken's Flickr Album</a>.
 	</div>
 	<p id="hikeInfo">Burnt Mesa, a finger of land, (part of the Pajarito Plateau 
-	</p>
 	</p>
 	<fieldset>
 	<legend id="fldrefs">References &amp; Links</legend>
@@ -368,11 +358,12 @@
 	<fieldset>
 	<legend id="flddat">GPS Maps &amp; Data</legend>
 	</fieldset>
+	<div id="dbug"></div>
 </div><!-- end of container 16 -->
 
 <div class="popupCap"></div>
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="../scripts/wpages.js"></script>
+<script src="../scripts/newpages.js"></script>
 
 </body>
 </html>
