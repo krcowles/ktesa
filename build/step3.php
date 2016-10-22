@@ -185,14 +185,14 @@ for ($i=0; $i<$items; $i++) {
 		$totalProcessed += $rowItems;
 		$scaleFactor = $rowWidth/$curWidth;
 		$actualHt = floor($scaleFactor * $maxRowHt);
-		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
+		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
 		for ($n=$startIndx; $n<=$i; $n++) {
 					if ($itype[$n] === "picture") {
 						$picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
 						$picHeight[$n] = $actualHt;
 						$rowHtml = $rowHtml . '<img id="pic' .$n . '" width="' . $picWidth[$n] . '" height="' .
 							$actualHt . '" src="' . $photolink[$n] . '" alt="' . $desc[$n] .
-							'" />';
+							'" />' . "\n";
 					} else if ($itype[$n] === "iframe") {
 						$rowHtml = $rowHtml . '<iframe id="theMap" height="' . $actualHt .
 							'" width="' . $actualHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
