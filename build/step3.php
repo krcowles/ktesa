@@ -136,8 +136,9 @@ for ($i=0; $i<$noOfPix; $i++) {
 	$photolink[$i] = $nsize[$x]; 
 }
 
-$maxRowHt = 260;
-$rowWidth = 950;
+# ROW-FILLING ALGORITHM:
+$maxRowHt = 260;	# change as desired
+$rowWidth = 950;	# change as desired, current page width is 960
 # start by calculating the various images' widths when rowht = maxRowHt
 # PHOTOS:
 for ($i=0; $i<$noOfPix; $i++) {
@@ -185,14 +186,14 @@ for ($i=0; $i<$items; $i++) {
 		$totalProcessed += $rowItems;
 		$scaleFactor = $rowWidth/$curWidth;
 		$actualHt = floor($scaleFactor * $maxRowHt);
-		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
+		$rowHtml = $rowHtml . "\n" . '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
 		for ($n=$startIndx; $n<=$i; $n++) {
 					if ($itype[$n] === "picture") {
 						$picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
 						$picHeight[$n] = $actualHt;
 						$rowHtml = $rowHtml . '<img id="pic' .$n . '" width="' . $picWidth[$n] . '" height="' .
 							$actualHt . '" src="' . $photolink[$n] . '" alt="' . $desc[$n] .
-							'" />' . "\n";
+							'" />';
 					} else if ($itype[$n] === "iframe") {
 						$rowHtml = $rowHtml . '<iframe id="theMap" height="' . $actualHt .
 							'" width="' . $actualHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
@@ -222,9 +223,9 @@ for ($i=0; $i<$items; $i++) {
 if ($rowCompleted === false) {
 	$itemsLeft = $items - $totalProcessed;
 	if ($itemsLeft === 1)
-		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow Solo">';
+		$rowHtml = $rowHtml . "\n" . '<div id="row' . $rowNo . '" class="ImgRow Solo">';
 	else
-		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
+		$rowHtml = $rowHtml . "\n" . '<div id="row' . $rowNo . '" class="ImgRow">';
 	for ($i=0; $i<$itemsLeft; $i++) {
 		if ($itype[$startIndx] === "picture") {
 			$picWidth[$startIndx] = $widthAtMax[$startIndx];
@@ -286,7 +287,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 		content="nofollow" />
 	<link href="../styles/960_16_col.css"
 		type="text/css" rel="stylesheet" />
-	<link href="../styles/newpages.css"
+	<link href="../styles/phpwpages.css"
 		type="text/css" rel="stylesheet" />
 </head>
 

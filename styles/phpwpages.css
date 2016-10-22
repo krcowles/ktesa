@@ -75,6 +75,9 @@ table td {
 	border-width: 1px;
 	border-color: DarkBlue; }
 /* image & iframe alignment and pop-up caption styles */
+img {
+	margin: 0px;
+	padding: 0px; }
 .ImgRow {
 	text-align: center;
 	margin-left: auto;
