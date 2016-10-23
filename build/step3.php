@@ -147,7 +147,7 @@ for ($i=0; $i<$noOfPix; $i++) {
 # IFRAME(s):
 for ($j=0; $j<$noOfIframes; $j++) {
 	$indx = $noOfPix + $j;
-	$widthAtMax[$indx] = $maxRowHt;  # iframes: use square shape at maxRowHt x maxRowHt
+	$widthAtMax[$indx] = $maxRowHt - 6;  # iframes: have default border width; assume square shape
 }
 # CHART(s):    NOTE: Modify if multiple charts per page, currently only one expected
 for ($k=0; $k<$noOfCharts; $k++) {
@@ -167,9 +167,14 @@ $rowHtml = '';
 $rowNo = 0;
 $totalProcessed = 0;
 $othrIndx = 0;	 # counter for number of other images being loaded
+$leftMostImg = true;
 for ($i=0; $i<$items; $i++) {
+	if ($leftMostImg === false) {  # modify width for added pic margins for all but first img
+		$curWidth += 1;
+	}
 	$rowCompleted = false;
 	$curWidth += $widthAtMax[$i];
+	$leftMostImg = false;
 	if ($i < $noOfPix) {
 		$itype[$i] = "picture";
 	}
@@ -188,34 +193,41 @@ for ($i=0; $i<$items; $i++) {
 		$actualHt = floor($scaleFactor * $maxRowHt);
 		$rowHtml = $rowHtml . "\n" . '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
 		for ($n=$startIndx; $n<=$i; $n++) {
-					if ($itype[$n] === "picture") {
-						$picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
-						$picHeight[$n] = $actualHt;
-						$rowHtml = $rowHtml . '<img id="pic' .$n . '" width="' . $picWidth[$n] . '" height="' .
-							$actualHt . '" src="' . $photolink[$n] . '" alt="' . $desc[$n] .
-							'" />';
-					} else if ($itype[$n] === "iframe") {
-						$rowHtml = $rowHtml . '<iframe id="theMap" height="' . $actualHt .
-							'" width="' . $actualHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
-					} else if ($itype[$n] === "chart") {
-						$elevWidth = floor($scaleFactor * $widthAtMax[$n]);
-						$rowHtml = $rowHtml . '<img class="chart" width="' . $elevWidth . 
-							'" height="' . $actualHt . '" src="../images/' . $elevChart .
-							'" alt="Elevation Chart" />';
-					} else {
-						$othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
-						$othrHeight[$othrIndx] = $actualHt;
-						$rowHtml = $rowHtml . '<img width="' . $othrWidth[$n] . '" height="' .
-							$$actualHt . '" src="../images/' . $addonImg[$othrIndx] . '" alt="' . $desc[$n] .
-							'" />';
-						$othrIndx += 1;
-					}
+			if ($n === $startIndx)
+				$styling = '';
+			else
+				$styling = 'margin-left:1px;';
+			# don't add left-margin to leftmost image
+			if ($itype[$n] === "picture") {
+				$picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
+				$picHeight[$n] = $actualHt;
+				$rowHtml = $rowHtml . '<img id="pic' .$n . '" style="' . $styling . '" width="' .
+					$picWidth[$n] . '" height="' . $actualHt . '" src="' . $photolink[$n] . 
+					'" alt="' . $desc[$n] . '" />';
+			} else if ($itype[$n] === "iframe") {
+				$mapDims = floor($scaleFactor * $widthAtMax[$n]); # subtracts border
+				$rowHtml = $rowHtml . '<iframe id="theMap" style="' . $styling . '" height="' .
+					$mapDims . '" width="' . $mapDims . '" src="../maps/' . $gpsvMap . '"></iframe>';
+			} else if ($itype[$n] === "chart") {
+				$elevWidth = floor($scaleFactor * $widthAtMax[$n]);
+				$rowHtml = $rowHtml . '<img class="chart" style="' . $styling . '" width="' .
+					$elevWidth . '" height="' . $actualHt . '" src="../images/' . $elevChart .
+					'" alt="Elevation Chart" />';
+			} else {
+				$othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
+				$othrHeight[$othrIndx] = $actualHt;
+				$rowHtml = $rowHtml . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
+					'" height="' . $$actualHt . '" src="../images/' . $addonImg[$othrIndx] .
+					'" alt="' . $desc[$n] . '" />';
+				$othrIndx += 1;
+			}
 		}	
 		$rowHtml = $rowHtml . '</div>';
 		$rowNo += 1;
 		$startIndx += $rowItems;
 		$curWidth = 0;
 		$rowCompleted = true;
+		$leftMostImg = true;
 	}
 }
 # last row may not be filled, and will be at maxRowHt
