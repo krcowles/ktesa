@@ -287,7 +287,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 		content="nofollow" />
 	<link href="../styles/960_16_col.css"
 		type="text/css" rel="stylesheet" />
-	<link href="../styles/phpwpages.css"
+	<link href="../styles/wpages.css"
 		type="text/css" rel="stylesheet" />
 </head>
 
@@ -364,7 +364,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 
 <div class="popupCap"></div>
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="../scripts/newpages.js"></script>
+<script src="../scripts/wpages.js"></script>
 
 </body>
 </html>

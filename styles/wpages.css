@@ -75,22 +75,14 @@ table td {
 	border-width: 1px;
 	border-color: DarkBlue; }
 /* image & iframe alignment and pop-up caption styles */
+img {
+	margin: 0px;
+	padding: 0px; }
 .ImgRow {
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
-	margin-bottom: 0px; }
-img {
-    margin-right: 5px;
-    margin-bottom: 20px;
-    margin-left: 5px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: DarkBlue; }
-iframe {
-    margin-bottom: 20px; }
-.chart {
-	margin-top: 20px; }
+	margin-bottom: 2px; }
 .Solo {
 	margin-top: 30px; }
 .captionList { 
@@ -156,7 +148,8 @@ fieldset {
 #flddat {
 	color: Teal; }
 #albumlinks {
-	color: DarkBlue; }
+	color: DarkBlue;
+	margin-top: 30px; }
 div em {
 	color: DarkGreen; }
 #proposed {
