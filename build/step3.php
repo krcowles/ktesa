@@ -1,7 +1,6 @@
 <?php
 #	All this data from step 2: (eventually in database, not passed via form!)
 $tsvFile = $_POST['whose'];
-$hikeName = $_POST['hname'];
 $pgTitle = $_POST['hTitle'];
 $locale = $_POST['area'];
 $hikeType = $_POST['htype'];
@@ -287,12 +286,12 @@ $albumHtml = $albumHtml . "</ol></div>";
 <html>
 
 <head>
-	<title><?php echo $hikeName;?></title>
+	<title><?php echo $hTitle;?></title>
 	<meta charset="utf-8" />
 	<meta name="language"
 			content="EN" />
 	<meta name="description"
-		content="Details about the <?php echo $hikeName;?> hike" />
+		content="Details about the <?php echo $hTitle;?> hike" />
 	<meta name="author"
 		content="Tom Sandberg and Ken Cowles" />
 	<meta name="robots"

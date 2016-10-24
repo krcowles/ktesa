@@ -4,11 +4,13 @@
 	<link href="step2.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
+<div class="container_16 clearfix">
+
 <div id="logoBlock">
 	<p id="pgLogo"></p>
 	<p id="logoLeft">Hike New Mexico</p>
 	<p id="logoRight">w/ Tom &amp; Ken</p>
-	<p id="page_title">Add A New Hike!</p>
+	<p id="page_title class="grid_16"">Add A New Hike!</p>
 </div> <!-- end of logoBlock -->
 
 <h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>
@@ -44,7 +46,7 @@
 		<tbody>
 			<tr>
 				<td><?php echo trim($_REQUEST['locale']);?></td>
-				<td><?php echo trim($_REQUEST['hike_name']);?></td>
+				<td><?php echo trim($_REQUEST['hpgTitle']);?></td>
 				<td><?php echo trim($_REQUEST['wow_factor']);?></td>
 				<td><a href="pages/<?php echo trim($_REQUEST['hikepg']);?>" target="_blank">
 					<img class="webShift" src="../images/<?php  
@@ -187,7 +189,6 @@ $icount = count($farray) - 1;
 <!-- The following will be replaced by database entries eventually -->
 <form action="step3.php" method="POST">
 	<input type="hidden" name="whose" value="<?php echo $buildLoc;?>" />
-	<input type="hidden" name="hname" value="<?php echo $_REQUEST['hike_name'];?>" />
 	<input type="hidden" name="hTitle" value="<?php echo $_REQUEST['hpgTitle'];?>" />
 	<input type="hidden" name="area"  value="<?php echo $locale;?>" />
 	<input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
@@ -252,6 +253,8 @@ $icount = count($farray) - 1;
 		echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
 		?>	
 </form>
+
+</div> 
 </body>
 
 </html>

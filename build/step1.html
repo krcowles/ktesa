@@ -31,9 +31,7 @@
 	enctype="multipart/form-data">
 	<fieldset id="basic">
 		<legend>Basic Hike Data</legend>
-		<label for="hname" class="nr">Hike Name (As it will appear in the table):</label> 
-		  <input id="hname" type="text" name="hike_name" size="30" />
-		<label for="htitle">Hike Page Title:</label>
+		<label for="htitle">Hike Name (As it will appear in the table & window tab):</label> 
 		  <input id="htitle" type="text" name="hpgTitle" size="35" /><br />
 		<label for="area">Locale (Nearest city/landmark):</label>
 		  <select id="area" name="locale">
@@ -98,7 +96,7 @@
 		<label for="useful">Facilities Available at Trailhead (if any):</label>
 			<input id="useful" type="text" name="fac" size="15" />
 		<label for="pgname" class="nr">File Name for Web Pg (e.g. Aspen.html):</label> 
-		  <input id="pgname" type="text" name="hikepg" size="20" /><br />
+		  <input id="pgname" type="text" name="hikepg" placeholder = "Hike_Name.html" size="20" /><br />
 		<label for="wow">"Wow" Factor (What makes this hike special):</label> 
 		  <input id="wow" type="text" name="wow_factor" size="24" />
 		<label for="times">Seasons</label>
@@ -121,17 +119,17 @@
 		<label for="tsv">CSV File:</label>
 		  <input id="tsv" type="file" name="csvfile" /><br />
 		<label for="geomap">Name of geomap (MUST reside in ktesa/maps directory WITH API KEY!)&nbsp;</label>
-	      <input id="geomap" type="text" name="gpsvMap" size="42" /><br />
+	      <input id="geomap" type="text" name="gpsvMap" placeholder="Hike_Name_Map.html" size="42" /><br />
 	    <label for="elev">Elevation chart (MUST reside in ktesa/images directory!)&nbsp;</label>
-	  	  <input id="elev" type="text" name="chart" size="30" /><br />
+	  	  <input id="elev" type="text" name="chart" placeholder="Hike_Name_Elev.jpg"size="30" /><br />
 	  	<label for="ewd">Elevation Chart: Width (px)</label>
 	  	  <input id="ewd" type="text" name="elevWd" size="4" />
 	  	<label for="eht">Height (px)</label>
 	  	  <input id="eht" type="text" name="elevHt" size="4" /><br />
 		<label for="gpxfile" class="nr">GPX File:</label>
-		 <input id="gpxfile" type="text" name="gpxname" size="30" />
+		 <input id="gpxfile" type="text" name="gpxname" placeholder="Hike_Name.gpx" size="30" />
 		<label for="trkfile" class="nr">&nbsp;&nbsp;Track File (MUST reside in ktesa/json directory):</label>
-		  <input id="trkfile" type="text" name="track" size="30" /><br /><br />
+		  <input id="trkfile" type="text" name="track" placeholder="Hike_Name.json" size="30" /><br /><br />
 		Additonal images, as needed: MUST reside in ktesa/images directory<br />
 		<label for="addon1" class="nr">Other image (not implemented)</label>
 	  	  <input id="addon1" type="text" name="othr1" size="30" /><br />
@@ -153,9 +151,9 @@
 	
 	<fieldset id="urls">
 		<legend>URL's</legend>
-		<label for="url1">URL for Photo Site:</label>
+		<label for="url1">URL for Photo Album Site:</label>
 			<input id="url1" type="text" name="photo1" size="75" /><br />
-		<label for="url2">URL for additional Photo Site (as needed)</label>
+		<label for="url2">URL for Secondary Photo Album (Tom or Ken):</label>
 			<input id="url2" type="text" name="photo2" size="75" /><br />
 		<label for="gdir">Google Map Directions:</label> 
 			<input id="gdir" type="text" name="dirs" size="150" />
