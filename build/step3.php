@@ -126,7 +126,7 @@ for ($i=0; $i<$noOfPix; $i++) {
 		$picDay = substr($picDay,1,1);
 	}
 	$caption[$i] = "{$picMonth} {$picDay}, {$picYear}: {$picDesc[$x]}";
-	$picSize = getimagesize($nsize[$x]);
+	$picSize = getimagesize($nsize[$x]); # PROVIDE THIS IN GPSV FILE??
 	$picWidth[$i] = $picSize[0];
 	$picHeight[$i] = $picSize[1];
 	$name[$i] = $picName[$x];
