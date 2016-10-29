@@ -132,5 +132,6 @@ var othrHikes = [
 	['San Ysidro Trials',35.568616666,-106.8122000,'SanYsidroTrials.html','sany.json'],
     ['Burnt Mesa',35.828253,-106.328961,'BurntMesa.html','Burnt_Mesa.json'],
     ['Rio En Medio - Lower',35.821132,-105.893742,'RioEnMedioLower.html','lrioenmedio.json'],
-    ['Tapia Canyon',35.506111,-107.149912,'Tapia_Canyon.html','Tapia_Canyon.json']
+    ['Tapia Canyon',35.506111,-107.149912,'Tapia_Canyon.html','Tapia_Canyon.json'],
+    ['De Na Zin',36.311775,-108.0025944,'De_Na_Zin.html','De_Na_Zin.json']
 ];
