@@ -346,20 +346,30 @@ $albumHtml = $albumHtml . "</ol></div>";
 			</tr>
 		</tbody>
 	</table>
+</div>  <!-- end of hikeSummary table -->
+
+<div id="albumlinks"><em>-- To see more photos:</em> click on
+	<a href="<?php echo $purl2;?>"
+		target="_blank">Tom's Flickr Album</a> or
+	<a href="<?php echo $purl1;?>"
+		target="_blank">Ken's Flickr Album</a>.
 </div>
+
 <?php 
 	echo $rowHtml;
 	echo $captionHtml;
 	echo $albumHtml;
 ?>
-	<div id="albumlinks"><em>-- To see more photos:</em> click on
-		<a href="<?php echo $purl2;?>"
-			target="_blank">Tom's Flickr Album</a> or
-		<a href="<?php echo $purl1;?>"
-			target="_blank">Ken's Flickr Album</a>.
+
+<div id="postPhoto">
+	<div id="trailTips">
+		<img id="tipPic" src="../images/tips.png" alt="special notes icon" />
+		<p id="tipHdr">TRAIL TIPS!</p>
+		<p id="tipNotes">Put tip info here...</p>
 	</div>
-	<p id="hikeInfo">Burnt Mesa, a finger of land, (part of the Pajarito Plateau 
-	</p>
+	
+	<p id="hikeInfo">Burnt Mesa, a finger of land, (part of the Pajarito Plateau</p>
+	
 	<fieldset>
 	<legend id="fldrefs">References &amp; Links</legend>
 	<ul id="refs">
@@ -371,9 +381,13 @@ $albumHtml = $albumHtml . "</ol></div>";
 	</fieldset>
 	<fieldset>
 	<legend id="flddat">GPS Maps &amp; Data</legend>
+	
 	</fieldset>
+	
 	<div id="dbug"></div>
-</div><!-- end of container 16 -->
+</div>  <!-- end of postPhoto -->
+
+</div>  <!-- end of container 16 -->
 
 <div class="popupCap"></div>
 <script src="../scripts/jquery-1.12.1.js"></script>
