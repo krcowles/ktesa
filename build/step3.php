@@ -378,7 +378,24 @@ $albumHtml = $albumHtml . "</ol></div>";
 	</fieldset>
 	<fieldset>
 	<legend id="flddat">GPS Maps &amp; Data</legend>
-	
+		<div id="proposed">
+			<p id="proptitle">- Proposed Hike Data</p>
+			<ul id="plinks">
+				<li>Map: <a href="../maps/BistiWestProposed.html"
+						target="_blank">Proposed Trail</a></li>
+				<li>GPX: <a href="../gpx/BistiWestProposed.gpx"
+						target="_blank">Proposed Trail</a></li>
+			</ul>
+		</div>
+		<div id="actual">
+			<p id="acttitle">- Actual Hike Data</p>
+			<ul id="alinks">
+				<li>Map: <a href="../maps/Bisti_geomap.html"
+					target="_blank">Actual Hike</a></li>
+				<li>GPX: <a href="../gpx/Bisti.GPX" target="_blank">
+					Actual GPX</a></li>
+			</ul>
+		</div>
 	</fieldset>
 	
 	<div id="dbug"></div>
