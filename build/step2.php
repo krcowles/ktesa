@@ -10,7 +10,7 @@
 	<p id="pgLogo"></p>
 	<p id="logoLeft">Hike New Mexico</p>
 	<p id="logoRight">w/ Tom &amp; Ken</p>
-	<p id="page_title class="grid_16"">Add A New Hike!</p>
+	<p id="page_title" class="grid_16">Add A New Hike!</p>
 </div> <!-- end of logoBlock -->
 
 <h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>

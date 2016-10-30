@@ -39,8 +39,10 @@ $elevChart = $_POST['chart'];
 if ($elevChart === '') {
 	$noOfCharts = 0;
 } else {
-	$elevWidth = $_POST['chrtW'];
-	$elevHeight = $_POST['chrtH'];
+	$echart = "../images/" . $elevChart;
+	$chartDat = getimagesize($echart);
+	$elevWidth = $chartDat[0];
+	$elevHeight = $chartDat[1];
 	$noOfCharts = 1;
 }
 $gpxFname = $_POST['gpx'];
@@ -286,7 +288,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 <html>
 
 <head>
-	<title><?php echo $hTitle;?></title>
+	<title><?php echo $pgTitle;?></title>
 	<meta charset="utf-8" />
 	<meta name="language"
 			content="EN" />
