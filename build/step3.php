@@ -325,7 +325,6 @@ $albumHtml = $albumHtml . "</ol></div>";
 				<th>Wow Factor</th>
 				<th>Facilities</th>
 				<th>Seasons</th>
-				<th>Photos</th>
 				<th>By Car</th>
 			</tr>
 		</thead>
@@ -339,8 +338,6 @@ $albumHtml = $albumHtml . "</ol></div>";
 				<td><?php echo $wowFactor;?></td>
 				<td><?php echo $facilities;?></td>
 				<td><?php echo $seasons;?></td>
-				<td><a href="<?php echo $purl1;?>" target="_blank">
-					<img style="margin-bottom:0px;border-style:none;" src="../images/album_lnk.png" alt="photo album link icon" /></a></td>
 				<td><a href="<?php echo $googledirs;?>" target="_blank">
 				<img style="margin-bottom:0px;padding-bottom:0px;" src="../images/dirs.png" alt="google driving directions" /></a></td>
 			</tr>
