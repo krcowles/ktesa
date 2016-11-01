@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="MyGPSFiles" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <trk>
+    <name>NewTrack</name>
+    <desc>Total: 2.5km</desc>
+    <trkseg>
+      <trkpt lat="35.679024" lon="-105.886316"/>
+      <trkpt lat="35.678396" lon="-105.886745"/>
+      <trkpt lat="35.677908" lon="-105.88666"/>
+      <trkpt lat="35.677071" lon="-105.886488"/>
+      <trkpt lat="35.677002" lon="-105.88696"/>
+      <trkpt lat="35.678257" lon="-105.887389"/>
+      <trkpt lat="35.678884" lon="-105.887518"/>
+      <trkpt lat="35.678428" lon="-105.887668"/>
+      <trkpt lat="35.678114" lon="-105.887625"/>
+      <trkpt lat="35.676792" lon="-105.88769"/>
+      <trkpt lat="35.678501" lon="-105.888548"/>
+      <trkpt lat="35.678884" lon="-105.888591"/>
+      <trkpt lat="35.678462" lon="-105.888805"/>
+      <trkpt lat="35.678933" lon="-105.888956"/>
+      <trkpt lat="35.678375" lon="-105.888999"/>
+      <trkpt lat="35.678951" lon="-105.889235"/>
+      <trkpt lat="35.678515" lon="-105.889299"/>
+      <trkpt lat="35.678985" lon="-105.889492"/>
+      <trkpt lat="35.678783" lon="-105.889567"/>
+      <trkpt lat="35.678635" lon="-105.889707"/>
+      <trkpt lat="35.678818" lon="-105.890061"/>
+      <trkpt lat="35.678605" lon="-105.890479"/>
+      <trkpt lat="35.67878" lon="-105.891209"/>
+      <trkpt lat="35.679337" lon="-105.891123"/>
+      <trkpt lat="35.67986" lon="-105.890822"/>
+      <trkpt lat="35.680209" lon="-105.891466"/>
+      <trkpt lat="35.680976" lon="-105.891638"/>
+      <trkpt lat="35.681356" lon="-105.891767"/>
+      <trkpt lat="35.681931" lon="-105.891445"/>
+      <trkpt lat="35.682262" lon="-105.891359"/>
+      <trkpt lat="35.683151" lon="-105.891531"/>
+      <trkpt lat="35.684702" lon="-105.891402"/>
+      <trkpt lat="35.685643" lon="-105.891273"/>
+      <trkpt lat="35.68617" lon="-105.891809"/>
+      <trkpt lat="35.686414" lon="-105.892324"/>
+      <trkpt lat="35.686867" lon="-105.892968"/>
+    </trkseg>
+  </trk>
+</gpx>
