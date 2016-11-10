@@ -23,7 +23,7 @@ $seasons = $_POST['seasn'];
 $exp = $_POST['expo'];
 if ($exp === "sun") {
 	$exposure = "Full sun";
-} else if ($exp = "shade") {
+} else if ($exp === "shade") {
 	$exposure = "Good shade";
 } else {
 	$exposure = "Mixed sun/shade";
