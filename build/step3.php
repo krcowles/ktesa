@@ -345,6 +345,8 @@ $albumHtml = $albumHtml . "</ol></div>";
 	</table>
 </div>  <!-- end of hikeSummary table -->
 
+</div>  <!-- end of container 16 -->
+
 <div id="albumlinks"><em>-- To see more photos:</em> click on
 	<a href="<?php echo $purl2;?>"
 		target="_blank">Tom's Flickr Album</a> or
@@ -400,8 +402,6 @@ $albumHtml = $albumHtml . "</ol></div>";
 	
 	<div id="dbug"></div>
 </div>  <!-- end of postPhoto -->
-
-</div>  <!-- end of container 16 -->
 
 <div class="popupCap"></div>
 <script src="../scripts/jquery-1.12.1.js"></script>
