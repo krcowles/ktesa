@@ -12,7 +12,7 @@
 		<script type="text/javascript">
 			google_api_key = 'AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU'; // Your project's Google Maps API key goes here (https://code.google.com/apis/console)
 			language_code = '';
-			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language='+self.language_code+'&amp;key='+self.google_api_key+'"><'+'/script>');
+			if (document.location.toString().indexOf('http://www.gpsvisualizer.com') > -1) { google_api_key = ''; }			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language='+self.language_code+'&amp;key='+self.google_api_key+'"><'+'/script>');
 		</script>
 		
 		<!--
@@ -45,7 +45,7 @@
 		
 		<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->
 		<script type="text/javascript">
-			/* Global variables used by the GPS Visualizer functions (20161110075312): */
+			/* Global variables used by the GPS Visualizer functions (20161111070832): */
 			gv_options = {};
 			
 			// basic map parameters:
@@ -211,7 +211,7 @@
 				t = 1; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:trk[t].info.desc,color:trk[t].info.color,number:t});
 				
 				
-				GV_Draw_Marker({lat:35.2308200,lon:-106.4795240,name:'Waterfall',desc:'WaterFall',color:'',icon:'http://krcowles.github.io/ktesa/images/Fork.png',folder:'Folder1',icon_size:[32,32]});
+				GV_Draw_Marker({lat:35.2308200,lon:-106.4795240,name:'Waterfall Trailhead',desc:'WaterFall Trailhead',color:'',icon:'http://krcowles.github.io/ktesa/images/Fork.png',folder:'Folder1',icon_size:[32,32]});
 				GV_Draw_Marker({lat:35.2292111,lon:-106.4810194,name:'Junction of three more trails down the hill',desc:'PtOfDivegence',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30752725922/in/album-72157676230377366',thumbnail:'https://c3.staticflickr.com/6/5521/30752725922_3ea7808841_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.2304333,lon:-106.4794917,name:'Quiet and autumn-like view down the trail',desc:'AutumnInTheCanyon',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30237130734/in/album-72157676230377366',thumbnail:'https://c7.staticflickr.com/6/5732/30237130734_e2ec1aa1ee_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.2265778,lon:-106.4810417,name:'Bill poses before the Sandia Shield',desc:'BillAndShield',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30752737352/in/album-72157676230377366',thumbnail:'https://c1.staticflickr.com/6/5471/30752737352_e9b0780b80_q.jpg',folder:'Folder1'});
@@ -227,7 +227,7 @@
 			  
 			}
 			GV_Map(); // execute the above code
-			// http://www.gpsvisualizer.com/map_input?form=google
+			// http://www.gpsvisualizer.com/map_input?form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU
 		</script>
 		
 		
