@@ -1,4 +1,5 @@
 #!/bin/bash
+tmpIFS=$IFS
 # VERSION 8.0 -- Use expanded .csv table to include custom icons & marker colors
 #
 # --- Specify starting & default values for shell variables  ----
@@ -25,7 +26,7 @@ OnClick=2
 # THUMBARG indicates if -t flag is present, specifying popup photo size
 # ThumbSize indicates popup photo size, default is "m" (see size chart below)
 THUMBARG=0
-ThumbSize=m	# Default size for thumbnails
+ThumbSize=q	# Default size for thumbnails
 #
 # ICONFLAG indicates if -i flag is present, allowing user to enter custom icon data;
 #   otherwise, if desired, user must enter data manually after this utility completes
@@ -218,6 +219,7 @@ echo ""
 iconindx=0
 if [ $ICONFLAG -gt 0 ]
 then {
+	IFS=$'|'
 	declare -a icondes
 	declare -a iconnme
 	declare -a iconlat
@@ -281,6 +283,7 @@ if editing is required, do so after the utility has completed."
 	    iconindx=$(( $iconindx + 1 ))
 	done
 	k=0
+	echo "$k" ", ${iconindx}"
 	while
 		[ $k -lt $iconindx ]
 	do
@@ -294,6 +297,7 @@ if editing is required, do so after the utility has completed."
         	echo "Pixel size: ${iconsize[k]}"
 		k=$(( $k + 1 ))
 	done
+	IFS=tmpIFS
 }
 fi
 #
@@ -349,13 +353,12 @@ BEGIN   {
 #
 # Enter custom icon data, if any...
 	if ( noOfIcons > 0 ) {
-                split(icodes,iDesc," ")
-                split(iconms,iName," ")
+                split(icodes,iDesc,"|")
+                split(iconms,iName,"|")
                 split(icolats,iLat," ")
                 split(icolngs,iLng," ")
                 split(icourls,iURL," ")
                 x = split(icopix,iSize," ")
-		print "split size = " x
 		for( n=1;n<noOfIcons+1;n++ ) {
 			print "Folder1" OFS iDesc[n] OFS iName[n] OFS iLat[n] OFS iLng[n] OFS OFS OFS OFS OFS iURL[n] OFS iSize[n]
 		}
@@ -369,7 +372,6 @@ BEGIN   {
 	# Find the photo-models segment and form an array of sizes with album links (PicsArray)
         if (match($0,/\{\"_flickrModelRegistry\":\"photo-models\"/)) {
                 NumPix = split($0,PicsArray,/\{\"_flickrModelRegistry\":\"photo-models\"/)
-
                 # Get Owner ID
                 if( match(PicsArray[1], /\"id\":/)) {
                         ownerId=ExtractString($0,1)
