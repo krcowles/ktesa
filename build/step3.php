@@ -76,6 +76,7 @@ $googledirs = $_POST['gdirs'];
 $picarray = $_POST['pix'];
 $noOfPix = count($picarray);
 $trailTips = $_POST['TT'];
+$forceLoad = $_POST['setForce'];
 # end of form data, start local page data & routines
 
 $month = array("Jan","Feb","Mar","Apr","May","Jun",
@@ -305,7 +306,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 		content="nofollow" />
 	<link href="../styles/960_16_col.css"
 		type="text/css" rel="stylesheet" />
-	<link href="../styles/wpages.css"
+	<link href="../styles/hikes.css"
 		type="text/css" rel="stylesheet" />
 </head>
 
@@ -330,7 +331,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 				<th>Wow Factor</th>
 				<th>Facilities</th>
 				<th>Seasons</th>
-				<?php if($twoLinks === false) echo "<th>Photos</th>";?>
+				<?php if($twoLinks === false) echo "<th>Photos</th>\n";?>
 				<th>By Car</th>
 			</tr>
 		</thead>
@@ -344,8 +345,9 @@ $albumHtml = $albumHtml . "</ol></div>";
 				<td><?php echo $wowFactor;?></td>
 				<td><?php echo $facilities;?></td>
 				<td><?php echo $seasons;?></td>
-				<?php if($twoLinks === false) echo '<td><a href="' . $purl1 . '" target="_blank">' .
-					'<img style="margin-bottom:0px;border-style:none;" src="../images/album_lnk.png" alt="photo album link icon" /></a></td>';?>
+				<?php if($twoLinks === false) echo '<td><a href="' . $purl1 . '" target="_blank">' . "\n\t\t\t\t" .
+					'<img style="margin-bottom:0px;border-style:none;" src="../images/album_lnk.png" alt="photo album link icon" /></a></td>' .
+					"\n";?>
 				<td><a href="<?php echo $googledirs;?>" target="_blank">
 				<img style="margin-bottom:0px;padding-bottom:0px;" src="../images/dirs.png" alt="google driving directions" /></a></td>
 			</tr>
@@ -353,24 +355,27 @@ $albumHtml = $albumHtml . "</ol></div>";
 	</table>
 </div>  <!-- end of hikeSummary table -->
 
-</div>  <!-- end of container 16 -->
-
-<?php if($twoLinks === true) echo '<div><em>-- To see more photos:</em> click on ' .
+<?php if($twoLinks === true) echo '<div style="margin-bottom:8px;"><em>-- To see more photos:</em> click on ' .
 	'<a href="' . $purl2 . '" target="_blank">Tom' . "'" . 's Flickr Album</a> or ' .
 	'<a href="' . $purl1 . '" target="_blank">Ken' . "'" . 's Flickr Album</a></div>';
 ?>
+
+</div>  <!-- end of container 16 -->
 
 <?php 
 	echo $rowHtml;
 	echo $captionHtml;
 	echo $albumHtml;
+	if ($forceLoad == 'force') {
+		echo '<div id="pgLoad" style="display:none">force</div>';
+	}
 ?>
 
 <div id="postPhoto">
-	<?php if($trailTips == 'YES') echo '<div id="trailTips">' .
-		'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
-		'<p id="tipHdr">TRAIL TIPS!</p>' . '<p id="tipNotes">Put tip info here...</p>' .
-		'</div>';?>
+	<?php if($trailTips == 'YES') echo '<div id="trailTips">' . "\n\t\t" .
+		'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
+		'<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">Put tip info here...</p>' .
+		"\n\t" . '</div>';?>
 
 	<p id="hikeInfo">ENTER TRAIL DESCRIPTION AND NOTES HERE...</p>
 	
@@ -410,7 +415,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 
 <div class="popupCap"></div>
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="../scripts/wpages.js"></script>
+<script src="../scripts/hikes_build.js"></script>
 
 </body>
 </html>

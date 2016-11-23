@@ -192,6 +192,11 @@ $icount = count($farray) - 1;
 		<input id="noTT" type="radio" name="TT" value="NO" />
 			<label style="color:DarkBlue;" for="noTT">No Trail Tips</label>
 	</div>
+	<div style="padding-left:8px;">
+		<h4 style="margin-bottom:4px">Checkbox to Force Non-Refresh Page Loading
+			<em>(Useful when using back/forward arrows in browser during build process)</em></h4>
+		<input id="forceLoad" type="checkbox" name="setForce" value="force" checked="checked" />Force
+	</div>
 	<br />
 	<h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish to include on the new page:</h4>
 	<p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note: these names were extracted from the .tsv file</em></p>
