@@ -68,9 +68,14 @@ if ($addonImg[1] !== '') {
 $marker = $_POST['mrkr'];
 $purl1 = $_POST['phot1'];
 $purl2 = $_POST['phot2'];
+if ($purl2 == '' ) 
+	$twoLinks = false;
+else
+	$twoLinks = true;
 $googledirs = $_POST['gdirs'];
 $picarray = $_POST['pix'];
 $noOfPix = count($picarray);
+$trailTips = $_POST['TT'];
 # end of form data, start local page data & routines
 
 $month = array("Jan","Feb","Mar","Apr","May","Jun",
@@ -325,6 +330,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 				<th>Wow Factor</th>
 				<th>Facilities</th>
 				<th>Seasons</th>
+				<?php if($twoLinks === false) echo "<th>Photos</th>";?>
 				<th>By Car</th>
 			</tr>
 		</thead>
@@ -338,6 +344,8 @@ $albumHtml = $albumHtml . "</ol></div>";
 				<td><?php echo $wowFactor;?></td>
 				<td><?php echo $facilities;?></td>
 				<td><?php echo $seasons;?></td>
+				<?php if($twoLinks === false) echo '<td><a href="' . $purl1 . '" target="_blank">' .
+					'<img style="margin-bottom:0px;border-style:none;" src="../images/album_lnk.png" alt="photo album link icon" /></a></td>';?>
 				<td><a href="<?php echo $googledirs;?>" target="_blank">
 				<img style="margin-bottom:0px;padding-bottom:0px;" src="../images/dirs.png" alt="google driving directions" /></a></td>
 			</tr>
@@ -347,12 +355,10 @@ $albumHtml = $albumHtml . "</ol></div>";
 
 </div>  <!-- end of container 16 -->
 
-<div id="albumlinks"><em>-- To see more photos:</em> click on
-	<a href="<?php echo $purl2;?>"
-		target="_blank">Tom's Flickr Album</a> or
-	<a href="<?php echo $purl1;?>"
-		target="_blank">Ken's Flickr Album</a>.
-</div>
+<?php if($twoLinks === true) echo '<div><em>-- To see more photos:</em> click on ' .
+	'<a href="' . $purl2 . '" target="_blank">Tom' . "'" . 's Flickr Album</a> or ' .
+	'<a href="' . $purl1 . '" target="_blank">Ken' . "'" . 's Flickr Album</a></div>';
+?>
 
 <?php 
 	echo $rowHtml;
@@ -361,13 +367,12 @@ $albumHtml = $albumHtml . "</ol></div>";
 ?>
 
 <div id="postPhoto">
-	<div id="trailTips">
-		<img id="tipPic" src="../images/tips.png" alt="special notes icon" />
-		<p id="tipHdr">TRAIL TIPS!</p>
-		<p id="tipNotes">Put tip info here...</p>
-	</div>
-	
-	<p id="hikeInfo">Burnt Mesa, a finger of land, (part of the Pajarito Plateau</p>
+	<?php if($trailTips == 'YES') echo '<div id="trailTips">' .
+		'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
+		'<p id="tipHdr">TRAIL TIPS!</p>' . '<p id="tipNotes">Put tip info here...</p>' .
+		'</div>';?>
+
+	<p id="hikeInfo">ENTER TRAIL DESCRIPTION AND NOTES HERE...</p>
 	
 	<fieldset>
 	<legend id="fldrefs">References &amp; Links</legend>

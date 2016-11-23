@@ -184,10 +184,19 @@ $icount = count($farray) - 1;
 	<li>File type: <?php echo $tsvType;?></li>
 </ul>
 
-<h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish to include on the new page:</h4>
-<p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note: these names were extracted from the .tsv file</em></p>
-<!-- The following will be replaced by database entries eventually -->
 <form action="step3.php" method="POST">
+	<div style="padding-left:8px">
+		<h4 style="margin-bottom:4px">Include a 'Trail Tips' section for new page?</h4>
+		<input id="addTT" type="radio" name="TT" value="YES" />
+			<label style="color:DarkBlue;" for="addTT">Add Trail Tips</label>
+		<input id="noTT" type="radio" name="TT" value="NO" />
+			<label style="color:DarkBlue;" for="noTT">No Trail Tips</label>
+	</div>
+	<br />
+	<h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish to include on the new page:</h4>
+	<p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note: these names were extracted from the .tsv file</em></p>
+	<!-- The following will be replaced by database entries eventually -->
+
 	<input type="hidden" name="whose" value="<?php echo $buildLoc;?>" />
 	<input type="hidden" name="hTitle" value="<?php echo $_REQUEST['hpgTitle'];?>" />
 	<input type="hidden" name="area"  value="<?php echo $locale;?>" />
