@@ -27,7 +27,7 @@
 
 <div id="theForm">
 <h1>STEP 1: Enter Hike Data</h1>
-<form action="step2.php" method="POST"
+<form id="hikeData" action="step2.php" method="POST"
 	enctype="multipart/form-data">
 	<fieldset id="basic">
 		<legend>Basic Hike Data</legend>
@@ -122,7 +122,7 @@
 		<label for="geomap">Name of geomap (MUST reside in ktesa/maps directory WITH API KEY!)&nbsp;</label>
 	      <input id="geomap" type="text" name="gpsvMap" placeholder="Hike_Name_Map.html" size="42" /><br />
 	    <label for="elev">Elevation chart (MUST reside in ktesa/images directory!)&nbsp;</label>
-	  	  <input id="elev" type="text" name="chart" placeholder="Hike_Name_Elev.jpg"size="30" /><br />
+	  	  <input id="elev" type="text" name="chart" placeholder="Hike_Name_Elev.jpg" size="30" /><br />
 		<label for="gpxfile" class="nr">GPX File:</label>
 		 <input id="gpxfile" type="text" name="gpxname" placeholder="Hike_Name.gpx" size="30" />
 		<label for="trkfile" class="nr">&nbsp;&nbsp;Track File (MUST reside in ktesa/json directory):</label>
@@ -159,10 +159,28 @@
 	  <fieldset id="submissions">
 			<input type="submit" value="Validate Data" />
 			<input type="reset" value="Clear and Restart" />
+			
 	  </fieldset>
 </form>
 </div>
 
+<div style="margin-left:12px;">
+	<button id="saver">Save Form Data</button>
+	<p id="unsaver">Restore a previously saved form: (currently none)</p>
+	<div id="save-modal" class="modal" style="background-color:white;">
+		<p id="prev"><em> NOTE: You may save up to two different forms</em></p>
+		<p>Please enter a name to identify the saved form: <span><input id="savetxt" type="text"
+			name="saveName" placeholder="hikeLoc" /></span></p>
+		<input id="edit" type="radio" name="dothis" value="cont" />Save &amp; continue editing 
+			<input id="closeit" type="radio" name="dothis" value="leave" />Save &amp; end session<br /><br />
+			<input id="dontsave" type="radio" name="dothis" value="nosave" />
+				-- Close this popup and do NOT save form --
+	</div>
+</div>
+
+<script src="jquery-1.12.1.js"></script>
+<script src="modal_setup.js"></script>
+<script src="step1.js"></script>
 </body>
 
 </html>

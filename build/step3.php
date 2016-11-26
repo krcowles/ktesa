@@ -72,11 +72,14 @@ if ($purl2 == '' )
 	$twoLinks = false;
 else
 	$twoLinks = true;
+if ($_POST['allPix'] == 'useAll') {
+}
 $googledirs = $_POST['gdirs'];
 $picarray = $_POST['pix'];
 $noOfPix = count($picarray);
 $trailTips = $_POST['TT'];
 $forceLoad = $_POST['setForce'];
+$useAllPix = $_POST['allPix'];
 # end of form data, start local page data & routines
 
 $month = array("Jan","Feb","Mar","Apr","May","Jun",

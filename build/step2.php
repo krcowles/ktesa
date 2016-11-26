@@ -198,36 +198,11 @@ $icount = count($farray) - 1;
 		<input id="forceLoad" type="checkbox" name="setForce" value="force" checked="checked" />Force
 	</div>
 	<br />
-	<h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish to include on the new page:</h4>
-	<p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note: these names were extracted from the .tsv file</em></p>
-	<!-- The following will be replaced by database entries eventually -->
-
-	<input type="hidden" name="whose" value="<?php echo $buildLoc;?>" />
-	<input type="hidden" name="hTitle" value="<?php echo $_REQUEST['hpgTitle'];?>" />
-	<input type="hidden" name="area"  value="<?php echo $locale;?>" />
-	<input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
-	<input type="hidden" name="lgth"  value="<?php echo $_REQUEST['dist'];?>" />
-	<input type="hidden" name="elev"  value="<?php echo $_REQUEST['elev'];?>" />
-	<input type="hidden" name="diffi" value="<?php echo $_REQUEST['diff'];?>" />
-	<input type="hidden" name="lati"  value="<?php echo $_REQUEST['lat'];?>" />
-	<input type="hidden" name="long"  value="<?php echo $_REQUEST['lon'];?>" /> 
-	<input type="hidden" name="facil" value="<?php echo $_REQUEST['fac'];?>" />
-	<input type="hidden" name="webpg" value="<?php echo $_REQUEST['hikepg'];?>" />
-	<input type="hidden" name="wow"   value="<?php echo $_REQUEST['wow_factor'];?>" />
-	<input type="hidden" name="seasn" value="<?php echo $_REQUEST['seas'];?>" />
-	<input type="hidden" name="expo"  value="<?php echo $_REQUEST['expos'];?>" />
-	<input type="hidden" name="geomp" value="<?php echo $_REQUEST['gpsvMap'];?>" />
-	<input type="hidden" name="chart" value="<?php echo $_REQUEST['chart'];?>" />
-	<input type="hidden" name="chrtW" value="<?php echo $_REQUEST['elevWd'];?>" />
-	<input type="hidden" name="chrtH" value="<?php echo $_REQUEST['elevHt'];?>" />
-	<input type="hidden" name="gpx"   value="<?php echo $_REQUEST['gpxname'];?>" />
-	<input type="hidden" name="json"  value="<?php echo $_REQUEST['track'];?>" />
-	<input type="hidden" name="img1"  value="<?php echo $_REQUEST['othr1'];?>" />
-	<input type="hidden" name="img2"  value="<?php echo $_REQUEST['othr2'];?>" />
-	<input type="hidden" name="mrkr"  value="<?php echo $_REQUEST['mstyle'];?>" />
-	<input type="hidden" name="phot1" value="<?php echo $_REQUEST['photo1'];?>" />
-	<input type="hidden" name="phot2" value="<?php echo $_REQUEST['photo2'];?>" />
-	<input type="hidden" name="gdirs" value="<?php echo $_REQUEST['dirs'];?>" />
+	<h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish
+		to include on the new page:</h4>
+	<p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note:
+	these names were extracted from the .tsv file</em><br />
+	<input style="margin-left:8px" id="all" type="checkbox" name="allPix" value="useAll" />Use All Photos</p>
 	<?php
 		$handle = fopen($tsvFile, "r");
 		if ($handle !== false) {
@@ -256,9 +231,9 @@ $icount = count($farray) - 1;
 		} 
 		$nmeno = 0;
 		for ($i=0; $i<$icount; $i++) {
-			echo '<div style="width:150px;float:left;">';
+			echo '<div class="selPic" style="width:150px;float:left;margin-left:2px;margin-right:2px;">';
 			echo '<input type="checkbox" name="pix[]" value="' .  $picarray[$nmeno] .
-				'" />' . $picarray[$nmeno] . '<br />';
+				'" />' . substr($picarray[$nmeno],0,10) . '...<br />';
 			echo '<img height="150px" width="150px" src="' .$thumb[$nmeno] . '" alt="pic choice" />';
 			echo '</div>';
 			$nmeno +=1;
@@ -266,9 +241,38 @@ $icount = count($farray) - 1;
 		echo '<br />';
 		echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
 		?>	
+		<!-- The following will be replaced by database entries eventually -->
+		<input type="hidden" name="whose" value="<?php echo $buildLoc;?>" />
+		<input type="hidden" name="hTitle" value="<?php echo $_REQUEST['hpgTitle'];?>" />
+		<input type="hidden" name="area"  value="<?php echo $locale;?>" />
+		<input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
+		<input type="hidden" name="lgth"  value="<?php echo $_REQUEST['dist'];?>" />
+		<input type="hidden" name="elev"  value="<?php echo $_REQUEST['elev'];?>" />
+		<input type="hidden" name="diffi" value="<?php echo $_REQUEST['diff'];?>" />
+		<input type="hidden" name="lati"  value="<?php echo $_REQUEST['lat'];?>" />
+		<input type="hidden" name="long"  value="<?php echo $_REQUEST['lon'];?>" /> 
+		<input type="hidden" name="facil" value="<?php echo $_REQUEST['fac'];?>" />
+		<input type="hidden" name="webpg" value="<?php echo $_REQUEST['hikepg'];?>" />
+		<input type="hidden" name="wow"   value="<?php echo $_REQUEST['wow_factor'];?>" />
+		<input type="hidden" name="seasn" value="<?php echo $_REQUEST['seas'];?>" />
+		<input type="hidden" name="expo"  value="<?php echo $_REQUEST['expos'];?>" />
+		<input type="hidden" name="geomp" value="<?php echo $_REQUEST['gpsvMap'];?>" />
+		<input type="hidden" name="chart" value="<?php echo $_REQUEST['chart'];?>" />
+		<input type="hidden" name="chrtW" value="<?php echo $_REQUEST['elevWd'];?>" />
+		<input type="hidden" name="chrtH" value="<?php echo $_REQUEST['elevHt'];?>" />
+		<input type="hidden" name="gpx"   value="<?php echo $_REQUEST['gpxname'];?>" />
+		<input type="hidden" name="json"  value="<?php echo $_REQUEST['track'];?>" />
+		<input type="hidden" name="img1"  value="<?php echo $_REQUEST['othr1'];?>" />
+		<input type="hidden" name="img2"  value="<?php echo $_REQUEST['othr2'];?>" />
+		<input type="hidden" name="mrkr"  value="<?php echo $_REQUEST['mstyle'];?>" />
+		<input type="hidden" name="phot1" value="<?php echo $_REQUEST['photo1'];?>" />
+		<input type="hidden" name="phot2" value="<?php echo $_REQUEST['photo2'];?>" />
+		<input type="hidden" name="gdirs" value="<?php echo $_REQUEST['dirs'];?>" />
 </form>
 
-</div> 
+<script src="jquery-1.12.1.js"></script>
+<script src="step2.js"></script>
+
 </body>
 
 </html>

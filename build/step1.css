@@ -66,4 +66,7 @@ input {
 	margin: 6px; }
 .nr {
 	color: Gray; }
+.modal {
+	position: absolute;
+	z-index: 1000; }
 	
