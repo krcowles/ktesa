@@ -164,20 +164,20 @@
 </form>
 </div>
 
-<div style="margin-left:12px;">
+<div style="margin-left:24px;margin-top:-4px;">
 	<button id="saver">Save Form Data</button>
-	<p id="unsaver">Restore a previously saved form: (currently none)</p>
+	<p id="unsaver" style="margin-top:6px;">Restore a previously saved form: (currently none)</p>
 	<div id="save-modal" class="modal" style="background-color:white;">
-		<p id="prev"><em> NOTE: You may save up to two different forms</em></p>
+		<p id="prev" style="text-align:center;"> NOTE: You may save up to two different forms<br />
+		<em> You must re-upload CSV File for complete restore!!</em></p>
 		<p>Please enter a name to identify the saved form: <span><input id="savetxt" type="text"
 			name="saveName" placeholder="hikeLoc" /></span></p>
-		<input id="edit" type="radio" name="dothis" value="cont" />Save &amp; continue editing 
-			<input id="closeit" type="radio" name="dothis" value="leave" />Save &amp; end session<br /><br />
-			<input id="dontsave" type="radio" name="dothis" value="nosave" />
-				-- Close this popup and do NOT save form --
+		<input id="edit" type="radio" name="dothis" value="cont" /> Save &amp; continue editing<br />
+		<input id="dontsave" type="radio" name="dothis" value="nosave" /> Close this popup and do NOT save form
 	</div>
 </div>
-
+<div id="dbugr">CLICK</div>
+<div id="cleaner">CLEAN</div>
 <script src="jquery-1.12.1.js"></script>
 <script src="modal_setup.js"></script>
 <script src="step1.js"></script>

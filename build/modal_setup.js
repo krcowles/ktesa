@@ -15,7 +15,7 @@ var modal = (function() {
 	});
 	
 	/* FUNCTION TO CONVERT FORM DATA INTO STRING FOR SAVING IN LOCAL STORAGE */
-	function formToString(filledForm) {
+	function form2String(filledForm) {
 		formObject = new Object
 		filledForm.find("input, select").each(function() {
 			if (this.id) {
@@ -30,6 +30,21 @@ var modal = (function() {
 		formString = JSON.stringify(formObject);
 		return formString;
 	}
+	/* FUNCTION TO CONVERT STRING BACK INTO FORM DATA */
+	function string2Form(formString, unfilledForm) {
+	formObject = JSON.parse(formString);
+	unfilledForm.find("input, select, textarea").each(function() {
+		if (this.id) {
+			id = this.id;
+			elem = $(this); 
+			if (elem.attr("type") == "checkbox" || elem.attr("type") == "radio" ) {
+				elem.attr("checked", formObject[id]);
+			} else {
+				elem.val(formObject[id]);
+			}
+		}
+	});
+}
 	// THE WORKHORSE TO SAVE THE FORM
 	function formSaver() {
 		var msg;
@@ -40,7 +55,7 @@ var modal = (function() {
 			$(this).attr('checked',false);
 		} else {
 			// save the current state of the form
-			formString = formToString($('#hikeData'));
+			formString = form2String($('#hikeData'));
 			var currentSaves = parseFloat(window.localStorage.noOfSaves);
 			if (currentSaves >= 2) {
 				msg = 'ALREADY SAVED 2: Nothing new will be saved';
@@ -54,24 +69,46 @@ var modal = (function() {
 					$('#closeit').prop('checked',false);
 					closeModal = false;
 				} else {
-					msg = '<p>You have previously saved: ' + prevName + '</p>';
-					window.alert(msg);
+					// SECOND ITEM STORED
 					window.localStorage.oldName2 = saveName;
 					window.localStorage.oldForm2 = formString;
 					window.localStorage.noOfSaves = 2;
-					msg = '<input id="second" type="radio" name="restores" value="name2" />' + saveName + '<br />';
+					msg = '<p id="second" style="margin-top:-1px;margin-bottom:0px;"><input type="radio" name="restores" value="name2" />' + saveName + '</p>';
 					$('#unsaver').after(msg);
 					$('#second').on('click', function() {
+						var restoredForm = window.localStorage.oldForm2;
+						string2Form(restoredForm, $('#theForm'));
+						currentSaves = parseFloat(window.localStorage.noOfSaves);
+						currentSaves -= 1;
+						if (currentSaves === 0) {
+							$('#unsaver').text('Restore a previously saved form: (currently none)');
+						}
+						window.localStorage.noOfSaves = currentSaves;
+						window.localStorage.removeItem('oldName2');
+						window.localStorage.removeItem('oldForm2');
+						$(this).remove();
 					});
 				}
 			} else {
+				// FIRST ITEM STORED:
 				window.localStorage.oldName1 = saveName;
 				window.localStorage.oldForm1 = formString;
 				window.localStorage.noOfSaves = 1;
 				$('#unsaver').text('Restore a previously saved form: ');
-				msg = '<input id="first" type="radio" name="restores" value="name1" />' + saveName;
+				msg = '<p id="first" style="margin-top:-1px;"><input type="radio" name="restores" value="name1" />' + saveName + '</p>';
 				$('#unsaver').after(msg);
 				$('#first').on('click', function() {
+					var restoredForm = window.localStorage.oldForm1	;
+					string2Form(restoredForm, $('#theForm'));
+					currentSaves = parseFloat(window.localStorage.noOfSaves);
+					currentSaves -= 1;
+					if (currentSaves === 0) {
+						$('#unsaver').text('Restore a previously saved form: (currently none)');
+					}
+					window.localStorage.noOfSaves = currentSaves;
+					window.localStorage.removeItem('oldName1');	
+					window.localStorage.removeItem('oldForm1');
+					$(this).remove();
 				});
 			}
 			if (closeModal === true) {
@@ -103,10 +140,6 @@ var modal = (function() {
 			if (settings.id === 'saver') {
 				$close.detach();
 				$('#edit').on('click', formSaver);
-				$('#closeit').on('click', function() {
-					formSaver();
-					window.close()
-				});
 				$('#dontsave').on('click', function() {
 					modal.close();
 				});
