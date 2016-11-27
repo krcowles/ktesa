@@ -160,11 +160,7 @@ $tsvSize = filesize($tsvFile);
 $tsvType = $_FILES['csvfile']['type'];
 $fname = $_FILES['csvfile']['name'];
 
-$kfile = KENS_KTESA . "index.html";
-if( file_exists($kfile) )
-	$buildLoc = KENS_KTESA . "build/tsvfile";
-else
-	$buildLoc = TOMS_KTESA . "build/tsvfile";
+$buildLoc = $_SERVER['DOCUMENT_ROOT'] . "/ktesa/build/tsvfile";
 if($fname !== "") {
 	copy($tsvFile, $buildLoc) or
 		die( "Could not copy file to ktesa directory!" );
