@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="GPS Visualizer Sandbox http://www.gpsvisualizer.com/draw/" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
 	<wpt lat="35.8354022" lon="-106.1606956">
-		<name>Park Here</name>
+		<name>Buckman Trailhead Parking</name>
 		<sym>Parking Area</sym>
 	</wpt>
 	<wpt lat="35.8033527" lon="-106.1696005">
-		<name>Park shuttle vehicle here</name>
+		<name>Parking for Trail 302 on Mesa Top</name>
 		<sym>Parking Area</sym>
+	</wpt>
+	<wpt lat="35.80585" lon="-106.15679">
+		<name>Very steep trail starting here</name>
+		<sym>Danger Area</sym>
 	</wpt>
 	<wpt lat="35.7184339" lon="-106.1208057">
 		<name>Turn Off of FR24 here</name>
 		<sym>Navaid, Blue</sym>
 	</wpt>
 	<wpt lat="35.6900300" lon="-106.0131110">
-		<name>7 West V�a Plaza Nueva, Santa Fe, NM 87501</name>
-		<sym>Navaid, Blue</sym>
-	</wpt>
-	<wpt lat="35.7184339" lon="-106.1208057">
-		<name>35.7184339,-106.1208057</name>
-		<sym>Navaid, Blue</sym>
-	</wpt>
-	<wpt lat="35.6900300" lon="-106.0131110">
-		<name>7 West V�a Plaza Nueva, Santa Fe, NM 87501</name>
-		<sym>Navaid, Blue</sym>
-	</wpt>
-	<wpt lat="35.8354022" lon="-106.1606956">
-		<name>35.8354022,-106.1606956</name>
+		<name>Tom's House</name>
 		<sym>Navaid, Blue</sym>
 	</wpt>
 	<trk>
-		<name>Proposed Hike: Soda Springs</name>
+		<name>Proposed Hike: Soda Springs Trail 302</name>
 		<desc>Length: 5.976 km (3.714 mi)</desc>
 		<trkseg>
 			<trkpt lat="35.8355588" lon="-106.1607385"></trkpt>
@@ -114,6 +106,40 @@
 			<trkpt lat="35.8048842" lon="-106.1700511"></trkpt>
 			<trkpt lat="35.8042925" lon="-106.1701584"></trkpt>
 			<trkpt lat="35.8035790" lon="-106.1698151"></trkpt>
+		</trkseg>
+	</trk>
+	<trk>
+		<name>Proposed Hike: Loop back via Diablo Canyon</name>
+		<desc>Length: At least 3.157 miles</desc>
+		<extensions>
+			<line xmlns="http://www.topografix.com/GPX/gpx_style/0/2"><color>ff8000</color></line>
+		</extensions>
+		<trkseg>
+			<trkpt lat="35.8034398" lon="-106.1692142"></trkpt>
+			<trkpt lat="35.8033005" lon="-106.1686563"></trkpt>
+			<trkpt lat="35.8038226" lon="-106.1657810"></trkpt>
+			<trkpt lat="35.8037530" lon="-106.1628199"></trkpt>
+			<trkpt lat="35.8033005" lon="-106.1619616"></trkpt>
+			<trkpt lat="35.8030917" lon="-106.1596012"></trkpt>
+			<trkpt lat="35.8041359" lon="-106.1592150"></trkpt>
+			<trkpt lat="35.8051800" lon="-106.1590862"></trkpt>
+			<trkpt lat="35.8058761" lon="-106.1581850"></trkpt>
+			<trkpt lat="35.8059457" lon="-106.1572409"></trkpt>
+			<trkpt lat="35.8056673" lon="-106.1562967"></trkpt>
+			<trkpt lat="35.8062590" lon="-106.1553097"></trkpt>
+			<trkpt lat="35.8071291" lon="-106.1544943"></trkpt>
+			<trkpt lat="35.8082080" lon="-106.1538506"></trkpt>
+			<trkpt lat="35.8093217" lon="-106.1526489"></trkpt>
+			<trkpt lat="35.8107486" lon="-106.1516619"></trkpt>
+			<trkpt lat="35.8114446" lon="-106.1508894"></trkpt>
+			<trkpt lat="35.8150988" lon="-106.1511469"></trkpt>
+			<trkpt lat="35.8182307" lon="-106.1513186"></trkpt>
+			<trkpt lat="35.8208754" lon="-106.1543226"></trkpt>
+			<trkpt lat="35.8245639" lon="-106.1563396"></trkpt>
+			<trkpt lat="35.8273824" lon="-106.1574554"></trkpt>
+			<trkpt lat="35.8295744" lon="-106.1583138"></trkpt>
+			<trkpt lat="35.8321492" lon="-106.1594725"></trkpt>
+			<trkpt lat="35.8350717" lon="-106.1608028"></trkpt>
 		</trkseg>
 	</trk>
 	<trk>
