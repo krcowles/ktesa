@@ -135,5 +135,6 @@ var othrHikes = [
     ['Tapia Canyon',35.506111,-107.149912,'Tapia_Canyon.html','Tapia_Canyon.json'],
     ['De Na Zin',36.311775,-108.0025944,'De_Na_Zin.html','De_Na_Zin.json'],
     ['Bisti Badlands',36.2414389,-108.2632335,'Bisti.html','Bisti.json'],
-    ['Waterfall Canyon',35.222725,-106.483480,'Waterfall_Canyon.html','Waterfall_Canyon.json']
+    ['Waterfall Canyon',35.222725,-106.483480,'Waterfall_Canyon.html','Waterfall_Canyon.json'],
+    ['Aldo Leopold',35.130690,-106.684523,'Aldo_Leopold.html','Aldo_Leopold.json']
 ];
