@@ -19,11 +19,9 @@ body {
 	font-size: 28px;
 	text-align: center;
 	color: DarkBlue;
-	// color: #302DD3; }
 #pgLogo  {
 	height: 70px;
 	width: 920px;
-	//background-color: #c0beff;
 	border-style: inset;
 	border-width: 3px;
 	border-color: DarkBlue;
@@ -128,7 +126,7 @@ img {
 	left: 12px;
 	top: -20px;
 	color: Brown;
-	font-style: bold;
+	font-weight: bold;
 	font-size: 20px;
 	padding-left: 12px; }
 #tipNotes {
