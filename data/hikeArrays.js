@@ -65,7 +65,9 @@ var clusterPinHikes = [
 	['East Fork - Battleship',35.825727,-106.599355,'EForkBattle.html','efbattle.json',trackColor,0],
 	// Aspen Vista Trails
 	['Aspen Vista',35.777433,-105.810933,'Aspen.html','aspen.json',altTrkClr3,1],
-    ['Alamo Vista',35.777433,-105.810933,'AlamoVista.html','alamo.json',trackColor,0]
+    ['Alamo Vista',35.777433,-105.810933,'AlamoVista.html','alamo.json',trackColor,0],
+    ['Buckman Mesa',35.835833,-106.161033,'Buckman.html','buckman.json',trackColor,1],
+    ['Sagebrush Flats',35.809766,-106.170268,'SagebrushFlats.html','SagebrushFlats.json',altTrkClr1,0]
 ];
 
 // All other hikes not covered by above:
@@ -78,7 +80,6 @@ var othrHikes = [
 	['Atalaya Mtn',35.670450,-105.900667,'Atalaya.html','atalaya.json'],
 	['Battleship Rock',35.828099,-106.641862,'Battleship.html',''],
 	['Borrego/Bear Wallow',35.7462,-105.8342667,'Borrego.html','borrego.json'],
-	['Buckman Mesa',35.835833,-106.161033,'Buckman.html','buckman.json'],
 	['Cabezon Pk',35.597,-107.1053833,'Cabezon.html','czon.json'],
 	['Cerrillos Hills',35.444819,-106.122029,'Cerrillos.html',''],
 	['Chamisa Trail',35.728417,-105.86597,'Chamisa.html','cham.json'],
