@@ -69,4 +69,6 @@ input {
 .modal {
 	position: absolute;
 	z-index: 1000; }
+#ul {
+	display: none; }
 	
