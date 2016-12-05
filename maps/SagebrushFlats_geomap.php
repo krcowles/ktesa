@@ -94,7 +94,7 @@
 			// track-related options:
 			gv_options.track_tooltips = true; // true|false: should the name of a track appear on the map when you mouse over the track itself?
 			gv_options.tracklist_options = {}; // options for a floating list of the tracks visible on the map
-			  gv_options.tracklist_options.enabled = <?php echo $_GET[tracklist_options_enabled]; ?>;  // true|false: enable or disable the tracklist altogether
+			  gv_options.tracklist_options.enabled = <?php if (isset($_GET[tracklist_options_enabled])) {echo $_GET[tracklist_options_enabled];} else {echo "true";}?>;  // true|false: enable or disable the tracklist altogether
 			  gv_options.tracklist_options.position = ['RIGHT_TOP',4,32];  // [Google anchor name, relative x, relative y]
 			  gv_options.tracklist_options.min_width = 100; // minimum width of the tracklist, in pixels
 			  gv_options.tracklist_options.max_width = 180; // maximum width of the tracklist, in pixels

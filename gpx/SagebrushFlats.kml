@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="yes"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
-    <name><![CDATA[SodaSprings]]></name>
+    <name><![CDATA[SagebrushFlats]]></name>
     <visibility>1</visibility>
     <open>1</open>
-    <Snippet><![CDATA[created using <A href="http://www.gpsvisualizer.com/?ref=ge&time=20161130214225">GPS Visualizer</A>]]></Snippet>
+    <Snippet><![CDATA[created using <A href="http://www.gpsvisualizer.com/?ref=ge&time=20161205110901">GPS Visualizer</A>]]></Snippet>
     <Style id="gv_waypoint_normal">
       <IconStyle>
         <color>ffffffff</color>
@@ -59,7 +59,7 @@
       <name>Waypoints</name>
       <visibility>1</visibility>
       <Placemark>
-        <name>SSFork</name>
+        <name>Fork: We turned south here. Might be better to turn north and follow Trail 306 more closely.</name>
         <Snippet></Snippet>
         <description><![CDATA[&nbsp;]]></description>
         <styleUrl>#gv_waypoint</styleUrl>
@@ -77,7 +77,7 @@
         </Point>
       </Placemark>
       <Placemark>
-        <name>SSTH</name>
+        <name>Trailhead: Start of ascent to Sagebrush Flats. This is marked with a trailhead sign, so it seems to be the official turning point, even though Trail 306 on the topo map turns uphill farther north.</name>
         <Snippet></Snippet>
         <description><![CDATA[&nbsp;]]></description>
         <styleUrl>#gv_waypoint</styleUrl>
@@ -227,7 +227,7 @@
         </MultiGeometry>
       </Placemark>
       <Placemark>
-        <name><![CDATA[Proposed Hike: Soda Springs Trail 306]]></name>
+        <name><![CDATA[Proposed Hike: Sagebrush Flats Trail 306]]></name>
         <description><![CDATA[Length: 5.976 km (3.714 mi)]]></description>
         <styleUrl>#gv_track</styleUrl>
         <Style>
