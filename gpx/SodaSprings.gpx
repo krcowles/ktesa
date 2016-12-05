@@ -12,7 +12,7 @@
   <wpt lat="35.809766035526991" lon="-106.170268021523952">
     <ele>1824.470947000000024</ele>
     <time>2016-11-29T21:06:45Z</time>
-    <name>SSFork</name>
+    <name>Fork: We turned south here. Might be better to turn north and follow Trail 306 more closely.</name>
     <sym>Flag, Red</sym>
     <type>user</type>
     <extensions>
@@ -31,7 +31,7 @@
   <wpt lat="35.809750026091933" lon="-106.178630981594324">
     <ele>1672.402831999999989</ele>
     <time>2016-11-29T21:25:49Z</time>
-    <name>SSTH</name>
+    <name>Trailhead: Start of ascent to Sagebrush Flats. This is marked with a trailhead sign, so it seems to be the official turning point, even though Trail 306 on the topo map turns uphill farther north.</name>
     <sym>Flag, Red</sym>
     <type>user</type>
     <extensions>
@@ -5264,7 +5264,7 @@
 	</wpt>
 
 	<trk>
-		<name>Proposed Hike: Soda Springs Trail 306</name>
+		<name>Proposed Hike: Sagebrush Flats Trail 306</name>
 		<desc>Length: 5.976 km (3.714 mi)</desc>
 		<trkseg>
 			<trkpt lat="35.8355588" lon="-106.1607385"></trkpt>
