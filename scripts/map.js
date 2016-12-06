@@ -41,9 +41,10 @@ if ( mobile_browser ) {
 } 
 
 // ANIMATED NEW HIKE MARKER: CURRENT WINNER IS: (marker type & array no)
-var NewHikeType = 'H';
-var NewHike = othrHikes.length - 1;
-msg = othrHikes[NewHike][0];
+var NewHikeType = 'C';
+var NewHike = clusterPinHikes.length - 1;
+msg = clusterPinHikes[NewHike][0];
+NewHike = NewHike - 1; // adjustment for cluster marker, which is one less than this one
 $('#winner').append(msg);
 $('#winner').css('color','DarkGreen');
 // INSIDE the initMap function, the listener is defined, and depending on whether
