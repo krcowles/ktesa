@@ -70,9 +70,11 @@ legend {
 	font-style: italic;
 	color: DarkBlue; }
 #turnon:hover {
-	color: Brown; }
+	color: Brown;
+	cursor: pointer; }
 #turnoff:hover {
-	color: Brown; }
+	color: Brown;
+	cursor: pointer; }
 #more {
 	display: none; }
 ul {
