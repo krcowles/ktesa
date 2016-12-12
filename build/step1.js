@@ -1,5 +1,27 @@
 $( function () { // when page is loaded...
 
+
+// Display to indicate user has selected a file
+$('#geomap').change( function() {
+	$('#l_gmap').css('color','DarkBlue');
+});
+$('#elev').change( function() {
+	$('#l_elev').css('color','DarkBlue');
+});
+$('#gpxfile').change( function() {
+	$('#l_gpx').css('color','DarkBlue');
+});
+$('#trkfile').change( function() {
+	$('#l_trk').css('color','DarkBlue');
+});
+$('#addon1').change( function() {
+	$('#l_add1').css('color','DarkBlue');
+});
+$('#addon2').change( function() {
+	$('#l_add2').css('color','DarkBlue');
+});
+
+
 if (typeof(Storage) !== undefined) {
 	var msg; //debug outputs
 	var previousSaves;
@@ -33,7 +55,7 @@ if (typeof(Storage) !== undefined) {
 				uploadedFile = uploadedFile.substring(1);
 			}
 		}
-		$('l_tsv').css('color','DarkBlue');
+		$('#l_tsv').css('color','DarkBlue');
 		$('#ul').append(uploadedFile);
 	});
 	
