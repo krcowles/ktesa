@@ -335,7 +335,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 				<th>Facilities</th>
 				<th>Seasons</th>
 				<?php if($twoLinks === false) echo "<th>Photos</th>\n";?>
-				<th>By Car</th>
+<th>By Car</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -351,7 +351,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 				<?php if($twoLinks === false) echo '<td><a href="' . $purl1 . '" target="_blank">' . "\n\t\t\t\t" .
 					'<img style="margin-bottom:0px;border-style:none;" src="../images/album_lnk.png" alt="photo album link icon" /></a></td>' .
 					"\n";?>
-				<td><a href="<?php echo $googledirs;?>" target="_blank">
+<td><a href="<?php echo $googledirs;?>" target="_blank">
 				<img style="margin-bottom:0px;padding-bottom:0px;" src="../images/dirs.png" alt="google driving directions" /></a></td>
 			</tr>
 		</tbody>

@@ -14,6 +14,92 @@
 </div> <!-- end of logoBlock -->
 
 <h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>
+<?php
+// This is where the variables are assigned - eventually to be replaced with database
+$hikeFile = $_FILES['xlfile']['tmp_name'];
+$hfSize = filesize($hikeFile);
+$hikeFileName = $_FILES['xlfile']['name'];
+if ($hikeFileName == "") {
+	// hike form entry
+	$hikeName = trim($_REQUEST['hpgTitle']);
+	$hikeLocale = trim($_REQUEST['locale']);
+	$hikeType = trim($_REQUEST['htype']);
+	$hikeLgth = trim($_REQUEST['dist']);
+	$hikeElev = trim($_REQUEST['elev']);
+	$hikeDiff = trim($_REQUEST['diff']);
+	$hikeFac = trim($_REQUEST['fac']);
+	$hikeWow = trim($_REQUEST['wow_factor']);
+	$hikeSeasons = trim($_REQUEST['seas']);
+	$hikeExp = trim($_REQUEST['expos']);
+	$hikeGmap = $_FILES['gpsvMap']['name'];
+	$hikeEChart = $_FILES['chart']['name'];
+	$hikeGpx = "../gpx/" . $_FILES['gpxname']['name'];
+	$hikeJSON = "../json/" . $_FILES['track']['name'];
+	$hikeLat = trim($_REQUEST['lat']);
+	$hikeLong = trim($_REQUEST['lon']);
+	$hikeOthrImage1 = $_FILES['othr1']['name'];
+	$hikeOthrImage2 = $_FILES['othr2']['name'];
+	$hikeMarker = trim($_REQUEST['mstyle']);
+	$hikePurl1 = trim($_REQUEST['photo1']);
+	$hikePurl2 = trim($_REQUEST['photo2']);
+	$hikeDir = trim($_REQUEST['dirs']);
+	$hikePage = "pages/" . trim($_REQUEST['hikepg']);
+	// Process the uploaded tsv file:
+	$tsvFile = $_FILES['csvfile']['tmp_name'];
+	$tsvSize = filesize($tsvFile);
+	$tsvType = $_FILES['csvfile']['type'];
+	$fname = $_FILES['csvfile']['name'];
+	if($fname == "") {
+		die( "No tsv file specified..." );
+	}
+	$rawfile = fopen($tsvFile, "r");
+	$fdat = fread($rawfile,$tsvSize);
+} else {
+	// hike datafile entry
+	$datfile = fopen($hikeFile,"r");
+	$hdat = fread($datfile,$hfSize);
+	$harray = str_getcsv($hdat,"\n");  // array of rows
+	$lineCnt = count($harray) - 1;  // row number of latest entry
+	// always read in the last row for the latest hike info:
+	$hikeDataArray = str_getcsv($harray[$lineCnt],",");
+	// VARIABLE ASSIGNMENTS USING CSV FILE:
+	$hikeName = trim($hikeDataArray[0]);
+	$hikeLocale = trim($hikeDataArray[1]);
+	$hikeType = trim($hikeDataArray[2]);
+	$hikeLgth = trim($hikeDataArray[3]);
+	$hikeElev = trim($hikeDataArray[4]);
+	$hikeDiff = trim($hikeDataArray[5]);
+	$hikeFac = trim($hikeDataArray[6]);
+	$hikeWow = trim($hikeDataArray[7]);
+	$hikeSeasons = trim($hikeDataArray[8]);
+	$hikeExp = trim($hikeDataArray[9]);
+	$tsvFile = "../gpsv/" . trim($hikeDataArray[10]);
+	$hikeGmap = trim($hikeDataArray[11]);
+	$hikeEChart = trim($hikeDataArray[12]);
+	$hikeGpx = "../gpx/" . trim($hikeDataArray[13]);
+	$hikeJSON = "../json/" . trim($hikeDataArray[14]);
+	$hikeLat = trim($hikeDataArray[15]);
+	$hikeLong = trim($hikeDataArray[16]);
+	$hikeOthrImage1 = trim($hikeDataArray[17]);
+	$hikeOthrImage2 = trim($hikeDataArray[18]);
+	$hikeMarker = trim($hikeDataArray[19]);
+	$hikePurl1 = trim($hikeDataArray[20]);
+	$hikePurl2 = trim($hikeDataArray[21]);
+	$hikeDir = trim($hikeDataArray[22]);
+	$hikePage = "pages/" . trim($hikeDataArray[23]);
+	// Get the specified tsv for processing...
+	$tsvSize = filesize($tsvFile);
+	$rawfile = fopen($tsvFile,"r") or die ("Could not open TSV FILE in gpsv directory");
+	$fdat = fread($rawfile,$tsvSize);
+}
+// CHECK ON PATHS LATER
+$chartLoc = "../images/" . $hikeEChart;
+$EChartSize = getimagesize($chartLoc);
+$elevWidth = $EChartSize[0];
+$elevHeight = $EChartSize[1];
+$farray = str_getcsv($fdat,"\n");
+$icount = count($farray) - 1;  // no. of rows in csv file
+?>
 <h2>The Data As It Will Appear In The Index Table (w/Map)</h2>
 <div id="tbl1">
 	<table id="indxtbl">
@@ -45,30 +131,30 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td><?php echo trim($_REQUEST['locale']);?></td>
-				<td><?php echo trim($_REQUEST['hpgTitle']);?></td>
-				<td><?php echo trim($_REQUEST['wow_factor']);?></td>
-				<td><a href="pages/<?php echo trim($_REQUEST['hikepg']);?>" target="_blank">
+				<td><?php echo $hikeLocale;?></td>
+				<td><?php echo $hikeName;?></td>
+				<td><?php echo $hikeWow;?></td>
+				<td><a href="<?php echo $hikePage;?>" target="_blank">
 					<img class="webShift" src="../images/<?php  
-					if($_REQUEST['mstyle'] === 'vc' || $_REQUEST['mstyle'] === 'vch')
-						$mimg = 'indxCheck.png';
+					if($hikeMarker === 'center' || $hikeMarker === 'ctrhike')
+						$pgLnk = 'indxCheck.png';
 					else
-						$mimg = 'greencheck.jpg';
-					echo $mimg;?>" alt="hikepg link" /></td>
-				<td><?php echo trim($_REQUEST['dist']);?> miles</td>
-				<td><?php echo trim($_REQUEST['elev']);?> ft</td>
-				<td><?php echo trim($_REQUEST['diff']);?> </td>
+						$pgLnk = 'greencheck.jpg';
+					echo $pgLnk;?>" alt="hikepg link" /></td>
+				<td><?php echo $hikeLgth;?> miles</td>
+				<td><?php echo $hikeElev;?> ft</td>
+				<td><?php echo $hikeDiff;?> </td>
 				<td><img class="expShift" src="../images/<?php 
-					if($_REQUEST['expos'] === 'sun')
+					if($hikeExp === 'sun')
 						$eimg = 'sun.jpg';
-					else if($_REQUEST['expos'] === 'shade')
+					else if($hikeExp === 'shade')
 						$eimg = 'greenshade.jpg';
 					else
 						$eimg = 'shady.png';
 					echo $eimg;?>" alt="exposure icon" /></td>
-				<td><a href="<?php echo $_REQUEST['dirs']?>" target="_blank">
+				<td><a href="<?php echo $hikeDir?>" target="_blank">
 					<img style="position:relative;left:17px;" src="../images/dirs.png" alt="google driving directions" /></a></td>
-				<td><a href="<?php echo $_REQUEST['photo1']?>" target="_blank">
+				<td><a href="<?php echo $hikePurl1?>" target="_blank">
 					<img class="flckrShift" src="../images/album_lnk.png" alt="Flickr symbol" /></a></td>
 			</tr>	
 		</tbody>
@@ -94,31 +180,29 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td><?php echo trim($_REQUEST['diff']);?></td>
-				<td><?php echo trim($_REQUEST['dist']);?> miles</td>
+				<td><?php echo $hikeDiff;?></td>
+				<td><?php echo $hikeLgth;?> miles</td>
 				<td><?php
-					$hikeType = $_REQUEST['htype'];
 					if($hikeType === 'loop')
 						echo 'Loop';
-					else if ($hikeType === 'oab')
+					else if ($hikeType === 'outandback')
 						echo 'Out-and-Back';
 					else
 						echo 'Two-car';?></td>
-				<td><?php echo trim($_REQUEST['elev']);?> ft</td>
+				<td><?php echo $hikeElev;?> ft</td>
 				<td><?php
-					$exposure = $_REQUEST['expos'];
-					if($exposure === 'sun')
+					if($hikeExp === 'sun')
 						echo 'Full sun';
-					else if ($exposure === 'shade')
+					else if ($hikeExp === 'shade')
 						echo 'Good shade';
 					else
 						echo "Mixed sun/shade";?></td>
-				<td><?php echo trim($_REQUEST['wow_factor']);?></td>
-				<td><?php echo trim($_REQUEST['fac']);?></td>
-				<td><?php echo trim($_REQUEST['seas']);?></td>
-				<td><a href="<?php echo trim($_REQUEST['photo1']);?>" target="_blank">
+				<td><?php echo $hikeWow;?></td>
+				<td><?php echo $hikeFac;?></td>
+				<td><?php echo $hikeSeasons;?></td>
+				<td><a href="<?php $hikePurl1;?>" target="_blank">
 					<img style="margin-bottom:0px;border-style:none;" src="../images/album_lnk.png" alt="photo album link icon" /></a></td>
-				<td><a href="<?php echo trim($_REQUEST['dirs']);?>" target="_blank">
+				<td><a href="<?php echo $hikeDir;?>" target="_blank">
 				<img style="margin-bottom:0px;padding-bottom:0px;" src="../images/dirs.png" alt="google driving directions" /></a></td>
 			</tr>
 		</tbody>
@@ -126,58 +210,41 @@
 </div>
 <h2>Data for Google Maps API</h2>
 <ul>
-	<li>Marker Latitude: <?php echo trim($_REQUEST['lat']);?></li>
-	<li>Marker Longitude: <?php echo trim($_REQUEST['lon']);?></li>
+	<li>Marker Latitude: <?php echo $hikeLat;?></li>
+	<li>Marker Longitude: <?php echo $hikeLong;?></li>
 	<li>Marker Style: <?php
-		if ($_REQUEST['mstyle'] === "center")
+		if ($hikeMarker === "center")
 			echo "Visitor Center";
-		else if ($_REQUEST['mstyle'] === "ctrhike")
+		else if ($hikeMarker === "ctrhike")
 			echo "Visitor Center Hike Start";
-		else if ($_REQUEST['mstyle'] === "cluster")
+		else if ($hikeMarker === "cluster")
 			echo "Overlapping Trailhead";
 		else
 			echo "'Normal' Hike"; ?></li>
-	<li>Track File: <?php echo trim($_REQUEST['track']);?></li>
+	<li>Track File: <?php echo $hikeJSON;?></li>
 </ul>
 <h2>Other data submitted:</h2>
 <ul>
-	<li>Title to appear on Hike Page: <?php echo trim($_REQUEST['hpgTitle']);?></li>
-	<li>GPSVisualizer map: <?php echo trim($_REQUEST['gpsvMap']);?></li>
+	<li>Title to appear on Hike Page: <?php echo $hikeName;?></li>
+	<li>GPSVisualizer map: <?php echo $hikeGmap;?></li>
 	<li>Elevation chart: <?php
-		echo "{$_REQUEST['chart']}: {$_REQUEST['elevWd']}px x {$_REQUEST['elevHt']}px";?></li>
-	<li>GPX File: <?php echo trim($_REQUEST['gpxname']);?></li>
-	<li>Added Image 1: <?php echo trim($_REQUEST['othr1']);?></li>
-	<li>Added Image 2: <?php echo trim($_REQUEST['othr2']);?></li>
-	<li>Photo Link 1: <?php echo trim($_REQUEST['photo1']);?></li>
-	<li>Photo Link 2: <?php echo trim($_REQUEST['photo2']);?></li>
-	<li>Google Directions Link: <?php echo trim($_REQUEST['dirs']);?></li>
+		echo "{$hikeEChart}: {$elevWidth}px x {$elevHeight}px";?></li>
+	<li>GPX File: <?php echo $hikeGpx;?></li>
+	<li>Added Image 1: <?php echo $hikeOthrImage1;?></li>
+	<li>Added Image 2: <?php echo $hikeOthrImage2;?></li>
+	<li>Photo Link 1: <?php echo $hikePurl1;?></li>
+	<li>Photo Link 2: <?php echo $hikePurl2;?></li>
+	<li>Google Directions Link: <?php echo $hikeDir;?></li>
 </ul>
 <?php
-require "../scripts/mysql_config.php";
 
-$tsvFile = $_FILES['csvfile']['tmp_name'];
-$tsvSize = filesize($tsvFile);
-$tsvType = $_FILES['csvfile']['type'];
-$fname = $_FILES['csvfile']['name'];
 
-$buildLoc = $_SERVER['DOCUMENT_ROOT'] . "/build/tsvfile";
-if($fname !== "") {
-	copy($tsvFile, $buildLoc) or
-		die( "Could not copy file to ktesa directory!" );
-} else {
-	die( "No file specified..." );
-}
-$rawfile = fopen($tsvFile, "r");
-$fsize = filesize($tsvFile);
-$fdat = fread($rawfile,$fsize);
-$farray = str_getcsv($fdat,"\n");
-$icount = count($farray) - 1;
 ?>
 <h3 style="text-indent:8px">Uploaded File Info:</h3>
 <ul>
-	<li>Sent file: <?php echo $fname;?></li>
+	<li>Sent file: <?php if ($fname) {echo $fname;} else {echo "Not uploaded";}?></li>
 	<li>File size: <?php echo $tsvSize;?> bytes</li>
-	<li>File type: <?php echo $tsvType;?></li>
+	<li>File type: <?php if ($fname) {echo $fname;} else {echo "Not uploaded";}?></li>
 </ul>
 
 <form action="step3.php" method="POST">
@@ -238,32 +305,32 @@ $icount = count($farray) - 1;
 		echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
 		?>	
 		<!-- The following will be replaced by database entries eventually -->
-		<input type="hidden" name="whose" value="<?php echo $buildLoc;?>" />
-		<input type="hidden" name="hTitle" value="<?php echo $_REQUEST['hpgTitle'];?>" />
-		<input type="hidden" name="area"  value="<?php echo $locale;?>" />
+		<input type="hidden" name="whose" value="<?php echo $tsvFile;?>" />
+		<input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
+		<input type="hidden" name="area"  value="<?php echo $hikeLocalelocale;?>" />
 		<input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
-		<input type="hidden" name="lgth"  value="<?php echo $_REQUEST['dist'];?>" />
-		<input type="hidden" name="elev"  value="<?php echo $_REQUEST['elev'];?>" />
-		<input type="hidden" name="diffi" value="<?php echo $_REQUEST['diff'];?>" />
-		<input type="hidden" name="lati"  value="<?php echo $_REQUEST['lat'];?>" />
-		<input type="hidden" name="long"  value="<?php echo $_REQUEST['lon'];?>" /> 
-		<input type="hidden" name="facil" value="<?php echo $_REQUEST['fac'];?>" />
-		<input type="hidden" name="webpg" value="<?php echo $_REQUEST['hikepg'];?>" />
-		<input type="hidden" name="wow"   value="<?php echo $_REQUEST['wow_factor'];?>" />
-		<input type="hidden" name="seasn" value="<?php echo $_REQUEST['seas'];?>" />
-		<input type="hidden" name="expo"  value="<?php echo $_REQUEST['expos'];?>" />
-		<input type="hidden" name="geomp" value="<?php echo $_REQUEST['gpsvMap'];?>" />
-		<input type="hidden" name="chart" value="<?php echo $_REQUEST['chart'];?>" />
-		<input type="hidden" name="chrtW" value="<?php echo $_REQUEST['elevWd'];?>" />
-		<input type="hidden" name="chrtH" value="<?php echo $_REQUEST['elevHt'];?>" />
-		<input type="hidden" name="gpx"   value="<?php echo $_REQUEST['gpxname'];?>" />
-		<input type="hidden" name="json"  value="<?php echo $_REQUEST['track'];?>" />
-		<input type="hidden" name="img1"  value="<?php echo $_REQUEST['othr1'];?>" />
-		<input type="hidden" name="img2"  value="<?php echo $_REQUEST['othr2'];?>" />
-		<input type="hidden" name="mrkr"  value="<?php echo $_REQUEST['mstyle'];?>" />
-		<input type="hidden" name="phot1" value="<?php echo $_REQUEST['photo1'];?>" />
-		<input type="hidden" name="phot2" value="<?php echo $_REQUEST['photo2'];?>" />
-		<input type="hidden" name="gdirs" value="<?php echo $_REQUEST['dirs'];?>" />
+		<input type="hidden" name="lgth"  value="<?php echo $hikeLgth;?>" />
+		<input type="hidden" name="elev"  value="<?php echo $hikeElev;?>" />
+		<input type="hidden" name="diffi" value="<?php echo $hikeDiff;?>" />
+		<input type="hidden" name="lati"  value="<?php echo $hikeLat;?>" />
+		<input type="hidden" name="long"  value="<?php echo $hikeLong;?>" /> 
+		<input type="hidden" name="facil" value="<?php echo $hikeFac;?>" />
+		<input type="hidden" name="webpg" value="<?php echo $hikePage;?>" />
+		<input type="hidden" name="wow"   value="<?php echo $hikeWow;?>" />
+		<input type="hidden" name="seasn" value="<?php echo $hikeSeasons;?>" />
+		<input type="hidden" name="expo"  value="<?php echo $hikeExp;?>" />
+		<input type="hidden" name="geomp" value="<?php echo $hikeGmap;?>" />
+		<input type="hidden" name="chart" value="<?php echo $hikeEChart;?>" />
+		<input type="hidden" name="chrtW" value="<?php echo $elevWidth;?>" />
+		<input type="hidden" name="chrtH" value="<?php echo $elevHeight;?>" />
+		<input type="hidden" name="gpx"   value="<?php echo $hikeGpx;?>" />
+		<input type="hidden" name="json"  value="<?php echo $hikeJSON;?>" />
+		<input type="hidden" name="img1"  value="<?php echo $hikeOthrImage1;?>" />
+		<input type="hidden" name="img2"  value="<?php echo $hikeOthrImage2;?>" />
+		<input type="hidden" name="mrkr"  value="<?php echo $hikeMarker;?>" />
+		<input type="hidden" name="phot1" value="<?php echo $hikePurl1;?>" />
+		<input type="hidden" name="phot2" value="<?php echo $hikePurl2;?>" />
+		<input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
 </form>
 
 <script src="jquery-1.12.1.js"></script>

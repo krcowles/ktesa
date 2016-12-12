@@ -31,6 +31,16 @@
 <h1>STEP 1: Enter Hike Data</h1>
 <form id="hikeData" action="step2.php" method="POST"
 	enctype="multipart/form-data">
+	<fieldset id="bypass">
+		<p>-- IF you would rather upload an Xcel Spreadsheet with hike data, specify it here,
+			then select the submit button; otherwise, fill in the data below using the submit 
+			button at the bottom of the form (partially-filled forms can be saved for retrieval
+			later)</p>
+		<legend>Excel Hike Data [Must be in CSV format]</legend>
+		<label>CSV Hike Data Inputs File<input id="xl" type="file" name="xlfile" /></label>
+		&nbsp;&nbsp;<input type="submit" value="submit csv" />
+	</fieldset>
+	 
 	<fieldset id="basic">
 		<legend>Basic Hike Data</legend>
 		<label for="htitle">Hike Name (As it will appear in the table & window tab):</label> 
@@ -73,13 +83,13 @@
 		  	<option value="Silver City">Silver City</option>
 		  	<option value="Pinos Altos">Pinos Altos</option>
 		  	<option value="Glenwood">Glenwood</option>
-		</select>
+		</select>&nbsp;&nbsp;
 		<label for="type">Hike Type:</label>
 		  <select id="type" name="htype">
 			<option value="loop">Loop</option>
 			<option value="twocar">2-Cars</option>
-			<option value="oab">Out-and-Back</option>
-		  </select>
+			<option value="outandback">Out-and-Back</option>
+		  </select>&nbsp;&nbsp;
 		<label for="lgth">Total Length (Miles):</label>
 			<input id="lgth" type="text" name="dist" size="6" /><br />
 		<label for="ht">Elevation Change (Feet):</label>
@@ -92,10 +102,6 @@
 				<option value="Med-Difficult">Medium-Difficult</option>
 				<option value="Difficult">Difficult</option>
 			</select><br />
-		<label for="n-s" class="nr">Trailhead Latitude (decimal value):</label>
-			<input id="n-s" type="text" name="lat" size="16" />&nbsp;&nbsp;
-		<label for="e-w" class="nr">Longitude (decimal value):</label>
-			<input id="e-w" type="text" name="lon" size="16" /><br />
 		<label for="useful">Facilities Available at Trailhead (if any):</label>
 			<input id="useful" type="text" name="fac" size="15" />
 		<label for="pgname" class="nr">File Name for Web Pg (e.g. Aspen.html):</label> 
@@ -118,22 +124,24 @@
 	</fieldset>
 
 	<fieldset>
+		<p>NOTE: <em>For the page to be created correctly, each of the following files
+			must reside in its indicated directory.</em></p>
 		<legend>File Data</legend>
-		<label for="tsv">CSV File:</label>
+		<label id="l_tsv" for="tsv">CSV file: [resides in tsv/]</label>
 		  <input id="tsv" type="file" name="csvfile" /><br />
-		<label for="geomap">Name of geomap (MUST reside in ktesa/maps directory WITH API KEY!)&nbsp;</label>
-	      <input id="geomap" type="text" name="gpsvMap" placeholder="Hike_Name_Map.html" size="42" /><br />
-	    <label for="elev">Elevation chart (MUST reside in ktesa/images directory!)&nbsp;</label>
-	  	  <input id="elev" type="text" name="chart" placeholder="Hike_Name_Elev.jpg" size="30" /><br />
-		<label for="gpxfile" class="nr">GPX File:</label>
-		 <input id="gpxfile" type="text" name="gpxname" placeholder="Hike_Name.gpx" size="30" />
-		<label for="trkfile" class="nr">&nbsp;&nbsp;Track File (MUST reside in ktesa/json directory):</label>
-		  <input id="trkfile" type="text" name="track" placeholder="Hike_Name.json" size="30" /><br /><br />
-		Additonal images, as needed: MUST reside in ktesa/images directory<br />
-		<label for="addon1" class="nr">Other image (pop-up captions not provided at this time)</label>
-	  	  <input id="addon1" type="text" name="othr1" size="30" /><br />
-		<label for="addon2" class="nr">Other image (pop-up captions not provided at this time)</label>
-	  	  <input id="addon2" type="text" name="othr2" size="30" />
+		<label id="l_gmap" for="geomap">Geomap: [html file resides in maps/]</label>
+	      <input id="geomap" type="file" name="gpsvMap" /><br />
+	    <label id="l_elev" for="elev">Elevation chart: [resides in images/] &nbsp;</label>
+	  	  <input id="elev" type="file" name="chart" /><br />
+		<label id="l_gpx" for="gpxfile" class="nr">GPX File: [resides in gpx/] &nbsp;</label>
+		 <input id="gpxfile" type="file" name="gpxname" /><br />
+		<label id="l_trk" for="trkfile" class="nr">&nbsp;&nbsp;Track File: [resides in json/] &nbsp;:</label>
+		  <input id="trkfile" type="file" name="track" /><br /><br />
+		Additonal images - optional<br />
+		<label id="l_add1" for="addon1" class="nr">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
+	  	  <input id="addon1" type="file" name="othr1" /><br />
+		<label id="l_add2" for="addon2" class="nr">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
+	  	  <input id="addon2" type="file" name="othr2" />
 	</fieldset>
 		
 	<fieldset id="marker">
@@ -146,6 +154,10 @@
 			<label for="ch">Trailhead Common to Multiple Hikes</label>
 		<input id="othr" type="radio" name="mstyle" value="other" />
 			<label for="othr">All Others</label><br />
+		<label for="n-s" class="nr">Trailhead Latitude (decimal value):</label>
+			<input id="n-s" type="text" name="lat" size="16" />&nbsp;&nbsp;
+		<label for="e-w" class="nr">Longitude (decimal value):</label>
+			<input id="e-w" type="text" name="lon" size="16" /><br />
 	</fieldset>
 	
 	<fieldset id="urls">

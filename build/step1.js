@@ -23,6 +23,7 @@ if (typeof(Storage) !== undefined) {
 		});
 	}
 
+	// only needed to save the filename in the ul div so that a save/restore can provide it
 	$('#tsv').change(function() {
 		var fullPath = document.getElementById('tsv').value;
 		if (fullPath) {
@@ -32,8 +33,8 @@ if (typeof(Storage) !== undefined) {
 				uploadedFile = uploadedFile.substring(1);
 			}
 		}
+		$('l_tsv').css('color','DarkBlue');
 		$('#ul').append(uploadedFile);
-		//window.alert(uploadedFile);
 	});
 	
 	// MODAL WINDOW SETUP AND EVENT DEFINITION

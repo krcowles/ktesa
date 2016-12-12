@@ -71,4 +71,9 @@ input {
 	z-index: 1000; }
 #ul {
 	display: none; }
-	
+#altLoad {
+    margin-left: 12px;
+    padding-left: 12px; 
+}
+label {
+	color: red; }
