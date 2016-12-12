@@ -131,5 +131,5 @@ var othrHikes = [
 	['July 4th Trail',34.790707,-106.382439,'July4.html',''],
 	['San Ysidro Trials',35.568616666,-106.8122000,'SanYsidroTrials.html','sany.json'],
     ['Burnt Mesa',35.828253,-106.328961,'BurntMesa.html','Burnt_Mesa.json'],
-    ['Cerrillos Canyon',35.471102,-106.139079,'CerrillosCanyon.html','CerrillosCanyon.json']
+    ['Cerrillos Canyon',35.450367, -106.139023,'CerrillosCanyon.html','CerrillosCanyon.json']
 ];
