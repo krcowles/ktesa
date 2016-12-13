@@ -17,11 +17,11 @@ var modal = (function() {
 	/* FUNCTION TO CONVERT FORM DATA INTO STRING FOR SAVING IN LOCAL STORAGE */
 	function form2String(filledForm) {
 		formObject = new Object
-		filledForm.find("input:not('#tsv'), select").each(function() {
+		$('input:text, input:radio, select').each(function() {
 			if (this.id) {
 				elem = $(this);
 				if (elem.attr("type") == 'checkbox' || elem.attr("type") == 'radio') {
-					formObject[this.id] = elem.attr("checked");
+					formObject[this.id] = elem.prop("checked");
 				} else {
 					formObject[this.id] = elem.val();
 				}
@@ -33,12 +33,12 @@ var modal = (function() {
 	/* FUNCTION TO CONVERT STRING BACK INTO FORM DATA */
 	function string2Form(formString, unfilledForm) {
 		formObject = JSON.parse(formString);
-		unfilledForm.find("input:not('#tsv'), select, textarea").each(function() {
+		$('input:text, input:radio, select').each(function() {
 			if (this.id) {
 				id = this.id;
 				elem = $(this); 
 				if (elem.attr("type") == "checkbox" || elem.attr("type") == "radio" ) {
-					elem.attr("checked", formObject[id]);
+					elem.prop("checked", formObject[id]);
 				} else {
 					elem.val(formObject[id]);
 				}

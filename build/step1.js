@@ -21,7 +21,6 @@ $('#addon2').change( function() {
 	$('#l_add2').css('color','DarkBlue');
 });
 
-
 if (typeof(Storage) !== undefined) {
 	var msg; //debug outputs
 	var previousSaves;
@@ -32,12 +31,12 @@ if (typeof(Storage) !== undefined) {
 	// FUNCTION FOR RESTORING FORM DATA FROM A STRING
 	function stringToForm(formString, unfilledForm) {
 		formObject = JSON.parse(formString);
-		unfilledForm.find("input:not('#tsv'), select, textarea").each(function() {
+		$('input:text, input:radio, select').each(function() {
 			if (this.id) {
 				id = this.id;
 				elem = $(this); 
 				if (elem.attr("type") == "checkbox" || elem.attr("type") == "radio" ) {
-					elem.attr("checked", formObject[id]);
+					elem.prop("checked", formObject[id]);
 				} else {
 					elem.val(formObject[id]);
 				}
