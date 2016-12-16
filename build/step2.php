@@ -244,7 +244,7 @@ $icount = count($farray) - 1;  // no. of rows in csv file
 <ul>
 	<li>Sent file: <?php if ($fname) {echo $fname;} else {echo "Not uploaded";}?></li>
 	<li>File size: <?php echo $tsvSize;?> bytes</li>
-	<li>File type: <?php if ($fname) {echo $fname;} else {echo "Not uploaded";}?></li>
+	<li>File type: <?php if ($tsvType) {echo $fname;} else {echo "Not uploaded";}?></li>
 </ul>
 
 <form action="step3.php" method="POST">

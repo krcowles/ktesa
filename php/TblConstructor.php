@@ -1,0 +1,105 @@
+<!-- CREATE THE SORTABLE TABLE OF HIKES -->
+<table id="staticTbl">
+	<colgroup>	
+		<col style="width:120px">
+		<col style="width:190px">
+		<col style="width: 140px">
+		<col style="width:80px">
+		<col style="width:70px">
+		<col style="width:85px">
+		<col style="width:100px">
+		<col style="width:70px">
+		<col style="width:70px">
+		<col style="width:74px">
+	</colgroup>
+	<tr>
+		<th class="hdr_row" data-sort="std">Locale</th>
+		<th class="hdr_row" data-sort="std">Hike/Trail Name</th>
+		<th class="hdr_row" data-sort="std">WOW Factor</th>
+		<th class="hdr_row">Web Pg</th>
+		<th class="hdr_row" data-sort="lan">Length</th>
+		<th class="hdr_row" data-sort="lan">Elev Chg</th>
+		<th class="hdr_row" data-sort="std">Difficulty</th>
+		<th class="hdr_row">Exposure</th>
+		<th class="hdr_row">By Car</th>
+		<th class="hdr_row">Photos</th>
+	</tr>
+	<tbody>
+	<tr>
+	<!-- ADD HIKE ROWS VIA PHP HERE: -->
+	<?php
+	$dataTable = '../data/TblDB.csv';
+	$handle = fopen($dataTable,'r');
+	if ($handle !== false) {
+		$lineno = 0;
+		/* some image definitions for icons that will appear as hyperlinks in the table */
+		$webIcon = '<img class="webShift" src="../images/indxCheck.png" alt="index checkbox" />';
+		$dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
+		$picIcon = '<img class="flckrShift" src="../images/album_lnk.png" alt="Flickr symbol" />';
+		$sunIcon = '<img class="expShift" src="../images/sun.jpg" alt="Sunny icon" />';
+		$partialIcon = '<img class="expShift" src="../images/greenshade.jpg" alt="Partial shade icon" />';
+		$shadeIcon = '<img class="expShift" src="../images/shady.png" alt="Partial sun/shade icon" />';
+		// loop through each entry in the csv file
+		while ( ($line = fgets($handle)) !== false ) {
+			if ($lineno > 0) {
+				$hikeArray = str_getcsv($line,",");
+				/* the following variables are assigned depending on marker types; the 
+				   $hikeArray supplies defaults (over-ruled when an index page) */
+				$hikeWow = $hikeArray[11];
+				$hikeLgth = $hikeArray[7];
+				$hikeElev = $hikeArray[8];
+				$hikeDiff = $hikeArray[9];
+				$hikeExposure = $hkeArray[13];
+				if ($hikeExposure === 'sun') {
+					$hikeExpIcon = '<td>' . $sunIcon . '</td>';
+				} elseif ($hikeExposure === 'partial') {
+					$hikeExpIcon = '<td>' . $partialIcon . '</td>';
+				} else {
+					$hikeExpIcon = '<td>' . $shadeIcon . '</td>';
+				}
+				/* There are three types of markers to consider,
+					each one receives somewhat different treatment */
+				$hikeMarker = $hikeArray[3];
+				if ($hikeMarker === 'Visitor Ctr') {
+					echo '<tr class="indxd">';  // Visitor centers have a separate index pg
+					$hikeWow = "See Indx";
+					$hikeLgth = "0*";
+					$hikeElev = "0*";
+					$hikeDiff = "See Indx";
+					$hikeExpIcon = '<td>See Indx</td>';
+				} elseif ($hikeMarker === 'Cluster') {
+					echo '<tr class="clustered" data-cluster="' . $hikeArray[5] . '">';
+				} else {  // "Normal"
+					echo '<tr class="normal">';
+				}
+				$hikePage = $hikeArray[27];
+				$hikeName = $hikeArray[1];
+				$hikeLocale = $hikeArray[2];
+				$hikeDirections = $hikeArray[25];
+				/* There may be either one or two photo links... if only one, then
+				   post the icon for photos on the hike page summary table; regardless,
+				   post the "main" link here in the data table */
+				$hikeMainURL = $hikeArray[23];
+				//print out a row:
+				echo '<td>' . $hikeLocale . '</td>';
+				echo '<td>' . $hikeName . '</td>';
+				echo '<td>' . $hikeWow . '</td>';
+				echo '<td><a href="' . $hikePage . '" target="_blank">' . $webIcon . '</a></td>';
+				echo '<td>' . $hikeLgth . '</td>';
+				echo '<td>' . $hikeElev . '</td>';
+				echo '<td>' . $hikeDiff . '</td>';
+				echo $hikeExpIcon;
+				echo '<td style="text-align:center"><a href="' . $hikeDirections . '" target="_blank">' .
+						$dirIcon . '</a></td>';
+				echo '<td><a href="' . $hikeMainURL . '" target="_blank">' . $picIcon . '</a></td>';
+				echo '</tr>';
+			}
+			$lineno++;
+		}
+		$lineno -= 1;
+	} else {
+		echo "<p>Could not open {$fname}</p>";
+	} 
+	?>
+	</tbody>
+</table>
