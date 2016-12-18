@@ -33,7 +33,8 @@
 	if ($handle !== false) {
 		$lineno = 0;
 		/* some image definitions for icons that will appear as hyperlinks in the table */
-		$webIcon = '<img class="webShift" src="../images/indxCheck.png" alt="index checkbox" />';
+		$indxIcon = '<img class="webShift" src="../images/indxCheck.png" alt="index checkbox" />';
+		$webIcon = '<img class="webShift" src="../images/greencheck.jpg" alt="checkbox" />';
 		$dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
 		$picIcon = '<img class="flckrShift" src="../images/album_lnk.png" alt="Flickr symbol" />';
 		$sunIcon = '<img class="expShift" src="../images/sun.jpg" alt="Sunny icon" />';
@@ -43,13 +44,14 @@
 		while ( ($line = fgets($handle)) !== false ) {
 			if ($lineno > 0) {
 				$hikeArray = str_getcsv($line,",");
+				
 				/* the following variables are assigned depending on marker types; the 
 				   $hikeArray supplies defaults (over-ruled when an index page) */
 				$hikeWow = $hikeArray[11];
 				$hikeLgth = $hikeArray[7];
 				$hikeElev = $hikeArray[8];
 				$hikeDiff = $hikeArray[9];
-				$hikeExposure = $hkeArray[13];
+				$hikeExposure = $hikeArray[13];
 				if ($hikeExposure === 'sun') {
 					$hikeExpIcon = '<td>' . $sunIcon . '</td>';
 				} elseif ($hikeExposure === 'partial') {
@@ -57,16 +59,21 @@
 				} else {
 					$hikeExpIcon = '<td>' . $shadeIcon . '</td>';
 				}
+				$hikeMainURL = $hikeArray[23];
+				$hikePhotoLink = '<td><a href="' . $hikeMainURL . '" target="_blank">' . $picIcon . '</a></td>';
+				$hikeLinkIcon = $webIcon;
 				/* There are three types of markers to consider,
 					each one receives somewhat different treatment */
 				$hikeMarker = $hikeArray[3];
 				if ($hikeMarker === 'Visitor Ctr') {
 					echo '<tr class="indxd">';  // Visitor centers have a separate index pg
+					$hikeLinkIcon = $indxIcon;
 					$hikeWow = "See Indx";
 					$hikeLgth = "0*";
 					$hikeElev = "0*";
 					$hikeDiff = "See Indx";
 					$hikeExpIcon = '<td>See Indx</td>';
+					$hikePhotoLink = '<td>See Indx</td>';
 				} elseif ($hikeMarker === 'Cluster') {
 					echo '<tr class="clustered" data-cluster="' . $hikeArray[5] . '">';
 				} else {  // "Normal"
@@ -79,19 +86,19 @@
 				/* There may be either one or two photo links... if only one, then
 				   post the icon for photos on the hike page summary table; regardless,
 				   post the "main" link here in the data table */
-				$hikeMainURL = $hikeArray[23];
+				
 				//print out a row:
 				echo '<td>' . $hikeLocale . '</td>';
 				echo '<td>' . $hikeName . '</td>';
 				echo '<td>' . $hikeWow . '</td>';
-				echo '<td><a href="' . $hikePage . '" target="_blank">' . $webIcon . '</a></td>';
+				echo '<td><a href="' . $hikePage . '" target="_blank">' . $hikeLinkIcon . '</a></td>';
 				echo '<td>' . $hikeLgth . '</td>';
 				echo '<td>' . $hikeElev . '</td>';
 				echo '<td>' . $hikeDiff . '</td>';
 				echo $hikeExpIcon;
 				echo '<td style="text-align:center"><a href="' . $hikeDirections . '" target="_blank">' .
 						$dirIcon . '</a></td>';
-				echo '<td><a href="' . $hikeMainURL . '" target="_blank">' . $picIcon . '</a></td>';
+				echo $hikePhotoLink;
 				echo '</tr>';
 			}
 			$lineno++;

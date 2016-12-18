@@ -1,0 +1,28 @@
+#!/bin/bash
+/usr/bin/awk -v sq="'" '
+{
+    if( match($0,/othrHikes/) ) {    #ID the start of the relevant data sections
+	for(i=0;i<61;i++) {
+	    getline
+	    str1Strt=match($0,/,/)+1
+	    str1=substr($0,str1Strt,length)
+	    str2Strt=match(str1,/,/)+1
+	    str2=substr(str1,str2Strt,length)
+	    str3Strt=match(str2,/html/)+6
+	    str3=substr(str2,str3Strt,length)
+	    str1End=match(str1,/,/)-1
+	    str1=substr(str1,1,str1End)
+	    str2End=match(str2,/,/)-1
+	    str2=substr(str2,1,str2End)
+	    if( match(str3,/json/) ) {
+                jstrt=match(str3,/sq/)+2
+                jremain=substr(str3,jstrt,length)
+		jend=match(jremain,/]/)-2
+		jstr=substr(jremain,1,jend)
+	    } else {
+		jstr=""
+	    }    
+	    print ",,,,,,,,,,,,,,,,,," jstr "," str1 "," str2
+	}
+    }   #end if match <td>
+} ' hikeArrays.js > check	
