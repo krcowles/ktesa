@@ -65,7 +65,9 @@ var clusterPinHikes = [
 	['East Fork - Battleship',35.825727,-106.599355,'EForkBattle.html','efbattle.json',trackColor,0],
 	// Aspen Vista Trails
 	['Aspen Vista',35.777433,-105.810933,'Aspen.html','aspen.json',altTrkClr3,1],
-    ['Alamo Vista',35.777433,-105.810933,'AlamoVista.html','alamo.json',trackColor,0]
+    ['Alamo Vista',35.777433,-105.810933,'AlamoVista.html','alamo.json',trackColor,0],
+    ['Buckman Mesa',35.835833,-106.161033,'Buckman.html','buckman.json',trackColor,1],
+    ['Sagebrush Flats',35.809766,-106.170268,'SagebrushFlats.html','SagebrushFlats.json',altTrkClr1,0]
 ];
 
 // All other hikes not covered by above:
@@ -78,7 +80,6 @@ var othrHikes = [
 	['Atalaya Mtn',35.670450,-105.900667,'Atalaya.html','atalaya.json'],
 	['Battleship Rock',35.828099,-106.641862,'Battleship.html',''],
 	['Borrego/Bear Wallow',35.7462,-105.8342667,'Borrego.html','borrego.json'],
-	['Buckman Mesa',35.835833,-106.161033,'Buckman.html','buckman.json'],
 	['Cabezon Pk',35.597,-107.1053833,'Cabezon.html','czon.json'],
 	['Cerrillos Hills',35.444819,-106.122029,'Cerrillos.html',''],
 	['Chamisa Trail',35.728417,-105.86597,'Chamisa.html','cham.json'],
@@ -131,5 +132,11 @@ var othrHikes = [
 	['July 4th Trail',34.790707,-106.382439,'July4.html',''],
 	['San Ysidro Trials',35.568616666,-106.8122000,'SanYsidroTrials.html','sany.json'],
     ['Burnt Mesa',35.828253,-106.328961,'BurntMesa.html','Burnt_Mesa.json'],
-    ['Cerrillos Canyon',35.450367, -106.139023,'CerrillosCanyon.html','CerrillosCanyon.json']
-];
+    ['Rio En Medio - Lower',35.821132,-105.893742,'RioEnMedioLower.html','lrioenmedio.json'],
+    ['Tapia Canyon',35.506111,-107.149912,'Tapia_Canyon.html','Tapia_Canyon.json'],
+    ['De Na Zin',36.311775,-108.0025944,'De_Na_Zin.html','De_Na_Zin.json'],
+    ['Bisti Badlands',36.2414389,-108.2632335,'Bisti.html','Bisti.json'],
+    ['Waterfall Canyon',35.222725,-106.483480,'Waterfall_Canyon.html','Waterfall_Canyon.json'],
+    ['Aldo Leopold',35.130690,-106.684523,'Aldo_Leopold.html','Aldo_Leopold.json'],
+	['Cerrillos Canyon',35.450367, -106.139023,'CerrillosCanyon.html','CerrillosCanyon.json']
+ ];
