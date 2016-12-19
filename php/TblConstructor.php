@@ -1,12 +1,12 @@
-<!-- CREATE THE SORTABLE TABLE OF HIKES -->
-<table id="staticTbl">
+<!-- REFERENCE TABLE OF HIKES -->
+<table>
 	<colgroup>	
 		<col style="width:120px">
 		<col style="width:190px">
 		<col style="width: 140px">
 		<col style="width:80px">
 		<col style="width:70px">
-		<col style="width:85px">
+		<col style="width:95px">
 		<col style="width:100px">
 		<col style="width:70px">
 		<col style="width:70px">
@@ -25,7 +25,6 @@
 		<th class="hdr_row">Photos</th>
 	</tr>
 	<tbody>
-	<tr>
 	<!-- ADD HIKE ROWS VIA PHP HERE: -->
 	<?php
 	$dataTable = '../data/TblDB.csv';
