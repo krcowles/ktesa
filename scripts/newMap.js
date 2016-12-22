@@ -370,7 +370,7 @@ function initMap() {
 		if ( !hikeLocated ) {
 			window.alert('Could not find hike in index table!')
 		}
-		if (markerType = NH_TYPE) {
+		if (markerType === NH_TYPE) {
 			return $hikeData;
 		}
 		var iwDat = '<br />' + $hikeData.eq(1).text() + '; ';
