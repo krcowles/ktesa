@@ -44,11 +44,12 @@
 			if ($lineno > 0) {
 				$hikeArray = str_getcsv($line,",");
 				
-				/* The next 3 variables are hidden in the html text using data- attributes */
+				/* The next 4 variables are hidden in the html text using data- attributes */
+				$hikeIndx = $hikeArray[0];
 				$hikeLat = $hikeArray[19];
 				$hikeLon = $hikeArray[20];
 				$hikeTrk = $hikeArray[18];
-				$hikeHiddenDat = 'data-lat="' . $hikeLat . '" data-lon="' . $hikeLon .
+				$hikeHiddenDat = 'data-indx="' . $hikeIndx . '" data-lat="' . $hikeLat . '" data-lon="' . $hikeLon .
 					'" data-track="' . $hikeTrk . '"';
 				/* the following variables are assigned depending on marker types: the 
 				   $hikeArray supplies defaults which are over-ruled if an index page */
@@ -71,7 +72,8 @@
 					each one receives somewhat different treatment */
 				$hikeMarker = $hikeArray[3];
 				if ($hikeMarker === 'Visitor Ctr') {
-					echo '<tr class="indxd" ' . $hikeHiddenDat . '>';  // Visitor centers have a separate index pg
+					echo '<tr class="indxd" ' . $hikeHiddenDat . ' data-org-hikes="' .
+						$hikeArray[4] . '">';  // Visitor centers id any subhikes
 					$hikeLinkIcon = $indxIcon;
 					$hikeWow = "See Indx";
 					$hikeLgth = "0*";
@@ -81,7 +83,7 @@
 					$hikePhotoLink = '<td>See Indx</td>';
 				} elseif ($hikeMarker === 'Cluster') {
 					echo '<tr class="clustered" data-cluster=" ' . $hikeArray[5] . '" ' .
-						$hikeHiddenDat . '>';
+						$hikeHiddenDat . ' data-tool="' . $hikeArray[28] . '">';
 				} else {  // "Normal"
 					echo '<tr class="normal" ' . $hikeHiddenDat . '>';
 				}

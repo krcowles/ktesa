@@ -63,7 +63,7 @@
 	} else {
 		echo "OFF";
 	}?></p>
-<div id="anbox">New Hike!<br><em id="winner"></em></div>
+<div id="newHikeBox">New Hike!<br><em id="winner"></em></div>
 <?php
 	if($tbls === false) {
 		echo $mapDivStrt;
@@ -79,7 +79,7 @@
 <script src="../scripts/modernizr-custom.js"></script>
 <script src="../data/hikeArrays.js"></script>
 <script src="../scripts/phpDynamicTbls.js"></script>
-<script src="../scripts/map.js"></script>
+<script src="../scripts/newMap.js"></script>
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap">
 </script>
