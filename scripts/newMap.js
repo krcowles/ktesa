@@ -1,3 +1,15 @@
+// TRACK COLORS 
+var lineColor = '#2974EB';  // apparently a google api function also assigns to this name
+const trackClr1 = '#FF0000';
+const trackClr2 = '#0000FF';
+const trackClr3 = '#F88C00';
+const trackClr4 = '#884998';
+// constants for readability during marker creation
+const VC_TYPE = 0; 
+const CH_TYPE = 1;
+const NH_TYPE = 2;
+
+
 var map;  // needs to be global!
 var mapRdy = false; // flag for map initialized & ready to draw tracks
 var mapTick = {   // custom tick-mark symbol for tracks
@@ -73,7 +85,7 @@ $hikeRows.each( function() {
 		allVs.push(this);
 	} else if ( $(this).hasClass('clustered') ) {
 		allCs.push(this);
-	} else {
+	} else if ( $(this).hasClass('normal') ) {
 		allNs.push(this);
 	}
 });
@@ -123,9 +135,6 @@ function initMap() {
 	var clustersUsed = '';
 	var subHikes = [];
 	var animateMe;
-	var VC_TYPE = 0; // constants for readability during "make content" function: mkContent()
-	var CH_TYPE = 1;
-	var NH_TYPE = 2;
 	
 	// Loop through marker definitions and call marker-creator fcts: 1st, visitor centers:
 	sym = ctrIcon;
@@ -415,31 +424,124 @@ function initMap() {
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 var trackFile; // name of the JSON file to be read in
-//var newTrack; // used repeatedly to assign incoming JSON data
-// the following is not used yet, but intended to allow individual turn on/off of tracks
-var allTheTracks = []; // array of all existing track objects
 var trkObj = { trk0: {}, trkName0: 'name' };
 var trkKeyNo = 0;
 var trkKeyStr;
-var clusterCnt = 0; // number of clusterPinHikes processed
-var othrCnt = 0; // number of othrHikes processed
-// use pre-defined directional arrow ['mapTick'] for tracks
+var allTheTracks = [];
+var trackColor;
 
 var trackForm = setInterval(startTracks,40);
-
 function startTracks() {
 	if ( mapRdy ) {
 		clearInterval(trackForm);
-		drawTracks(clusterCnt, othrCnt);
+		drawTracks();
 	}
 }
 
-function sglTrack(trkUrl,trkType,trkColor,indx) {
+function ClusterGroups( clusId ) {
+	this.id = clusId;
+	this.cnt = 1;
+	this.color = 1;
+}
+function idClusters() {
+	var cId;
+	var cObj;
+	var csUsed = '';
+	var cTracks = [];
+	for (j=0; j<allCs.length; j++) {
+		cId = $(allCs[j]).data('cluster');
+		if (csUsed.indexOf(cId) == -1) {
+			// new group
+			cObj = new ClusterGroups(cId);
+			cTracks.push(cObj);
+		} else {
+			// this group already exists
+			for (k=0; k<ctracks.length; k++) {
+				if (cTracks[k].id == cId) {
+					cTracks[k].cnt++;
+					break;
+				}
+			}
+		}
+	}  // end of for loop
+	return cTracks;
+}
+// NO GPX files for Visitor Centers, so start with cluster hikes:
+function drawTracks() {
+	var clusGrp;
+	var clusters = idClusters();
+	var trackFile;
+	var cindx;
+	var handle;
+	var hikeId;
+	var colorId;
+	var cGrpNo;
+	for (i=0; i<allCs.length; i++) {
+		cGrpNo = -1;
+		clusGrp = $(allCs[i]).data('cluster');
+		trackFile = $(allCs[i]).data('track');
+		hikeId = $(allCs[i]).data('indx');
+		if (trackFile !== '') {
+			cindx = trackFile.indexOf('.json');
+			handle = trackFile.substring(0,cindx);
+			trkKeyStr = 'trkName' + trkKeyNo;
+			trkObj[trkKeyStr] = handle;
+			trackFile = '../json/' + trackFile;
+			// find the corresponding object
+			for (k=0; k<clusters.length; k++) {
+				if (clusGrp == clusters[k].id) {
+					colorId = clusters[k].color;
+					cGrpNo = k;
+					switch (colorId) {
+						case 1:
+							trackColor = trackClr1;
+							break;
+						case 2:
+							trackColor = trackClr2;
+							break;
+						case 3: 
+							trackColor = trackClr3;
+							break;
+						case 4:
+							trackColor = trackClr4;
+							break;
+						default:
+							trackColor = '#000000';
+							break;
+					}
+					break;
+				}
+			}
+		}	
+		sglTrack(trackFile,CH_TYPE,trackColor,hikeId);
+		if (cGrpNo !== -1) {
+			clusters[cGrpNo].color++;
+		}
+	}  // end of cluster drawing
+	for (j=0; j<allNs.length; j++) {
+		trackFile = $(allNs[j]).data('track');
+		hikeId = $(allNs[j]).data('indx');
+		if (trackFile !== '') {
+			cindx = trackFile.indexOf('.json');
+			handle = trackFile.substring(0,cindx);
+			trkKeyStr = 'trkName' + trkKeyNo;
+			trkObj[trkKeyStr] = handle;
+			trackFile = '../json/' + trackFile;
+		}
+		sglTrack(trackFile,NH_TYPE,trackClr1,hikeId);
+	}
+}  // END FUNCTION
+function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
+	if (trkUrl === '') {
+		return;
+	}
 	$.ajax({
 		dataType: "json",
 		url: trkUrl,
 		success: function(trackDat) {
 			var newTrack = trackDat;
+			var mdiv;
+			var $trkRow;
 			trkKeyStr = 'trk' + trkKeyNo;	
 			trkObj[trkKeyStr] = new google.maps.Polyline({
 				icons: [{
@@ -453,23 +555,34 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 				strokeOpacity: 1.0,
 				strokeWeight: 3
 			});
-			//trkObj['trk'].setMap(map);
-			allTheTracks.push(trkKeyStr);
-			if ( trkType ) {
-				var hName = othrHikes[indx][0];
-				var hPg = othrHikes[indx][3];
-				indx += ctrPinHikes.length + clusterPinHikes.length;
+			// when loaded, all tracks are off (not set)
+		    allTheTracks.push(trkKeyStr);
+			// create the mouseover text:
+			if ( trkType === CH_TYPE ) {
+				
+				mdiv = '<div id="iwCH">';
+				$(allCs).each( function() {
+					if ( $(this).data('indx') == hikeNo ) {
+						$trkRow = $(this).find('td');
+						return;
+					}
+				});
 			} else {
-				var hName = clusterPinHikes[indx][0];
-				var hPg = clusterPinHikes[indx][3];
-				indx += ctrPinHikes.length;
+				mdiv = '<div id="iwNH">';
+				$(allNs).each( function() {
+					var hIndx = $(this).data('indx');
+					if ( $(this).data('indx') == hikeNo ) {
+						$trkRow = $(this).find('td');
+						return;
+					}
+				});
 			}
-			var hLgth = $('tbody tr').eq(indx).find('td:nth-child(5)').text();
-			var hElev = $('tbody tr').eq(indx).find('td:nth-child(6)').text();
-			var hDiff = $('tbody tr').eq(indx).find('td:nth-child(7)').text();
-			var iwContent = '<div id="iwOH">Hike: ' + hName + '<br>Difficulty: ' +
-				hDiff + '<br>Length: ' + hLgth + '<br>Elev Chg: ' + hElev + '<br><a href="pages/' + 
-				hPg + '" target="_blank">Website</a></div>'; 
+			var hName = $trkRow.eq(1).text();
+			var hLgth = $trkRow.eq(4).text();
+			var hElev = $trkRow.eq(5).text();
+			var hDiff = $trkRow.eq(6).text();
+			var iwContent = mdiv + hName + '<br />Length: ' +
+				hLgth + '<br />Elev Chg: ' + hElev + '<br />Difficulty: ' + hDiff + '</div>'; 
 			var iw = new google.maps.InfoWindow({
 				content: iwContent
 			});
@@ -482,11 +595,6 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 				iw.close();
 			});
 			trkKeyNo++;
-			if ( trkType == 0 ) {
-				drawTracks(clusterCnt++,othrCnt);
-			} else {
-				drawTracks(clusterCnt,othrCnt++);
-			}
 		},
 		error: function() {
 			msg = '<p>Did not succeed in getting JSON data: ' + trkUrl + '</p>';
@@ -494,39 +602,7 @@ function sglTrack(trkUrl,trkType,trkColor,indx) {
 		}
 	});
 }
-
-// NO GPX files for Visitor Centers, so start with cluster hikes:
-function drawTracks(cluster,othr) {
-	if ( cluster < clusterPinHikes.length ) {
-		if ( clusterPinHikes[cluster][4] ) {
-			trackFile = clusterPinHikes[cluster][4];
-			var cindx = trackFile.indexOf('.json');
-			var handle = trackFile.substring(0,cindx);
-			trkKeyStr = 'trkName' + trkKeyNo;
-			trkObj[trkKeyStr] = handle;
-			trackFile = '../json/' + trackFile;
-			clusColor = clusterPinHikes[cluster][5];
-			sglTrack(trackFile,0,clusColor,cluster);
-		} else {
-			drawTracks(clusterCnt++,othrCnt);
-		}
-	} else {  // End of clusterHike test
-		if ( othr < othrHikes.length ) {
-			if ( othrHikes[othr][4] ) {
-				trackFile = othrHikes[othr][4];
-				var oindx = trackFile.indexOf('.json');
-				var handle = trackFile.substring(0,oindx);
-				trkKeyStr = 'trkName' + trkKeyNo;
-				trkObj[trkKeyStr] = handle;
-				trackFile = '../json/' + trackFile;
-				sglTrack(trackFile,1,trackColor,othr);
-			} else {
-				drawTracks(clusterCnt,othrCnt++);
-			}
-		}  // End of othrHikes segment
-	}  // End of whole test
-}  // END FUNCTION
-// /////////////////////// END OF HIKING TRACK DRAWING /////////////////////
+// /////////////////////// END OF HIKE TRACK DRAWING /////////////////////
 
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
