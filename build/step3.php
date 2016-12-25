@@ -418,7 +418,7 @@ $albumHtml = $albumHtml . "</ol></div>";
 
 <div class="popupCap"></div>
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="../scripts/hikes_build.js"></script>
+<script src="../scripts/hikes.js"></script>
 
 </body>
 </html>
