@@ -333,7 +333,7 @@ $icount = count($farray) - 1;  // no. of rows in csv file
 		<input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
 </form>
 
-<script src="jquery-1.12.1.js"></script>
+<script src="../scripts/jquery-1.12.1.js"></script>
 <script src="step2.js"></script>
 
 </body>
