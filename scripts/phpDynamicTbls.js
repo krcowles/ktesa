@@ -268,19 +268,21 @@ function IdTableElements(boundsStr) {
 	// REMOVE previous table:
 	$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
 	/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
-	// First, check to see if any ctrPinHikes are within the viewport;
-	// if so, include them in the table
 	var n = 0;
 	var rowCnt = 0;
-	$('table tbody tr').each( function() {
-		pinLat = parseFloat($(this).data('lat'));
-		pinLon = parseFloat($(this).data('lon'));	
+	// back to this anomalous behavior where jQuery returns  header row with trs in 'tbody'
+	var $allRows = $('#refTbl tbody tr');
+	for (i=1; i<$allRows.length; i++) {  // note that i starts at 1 instead of 0
+		var tmpLat = $($allRows[i]).data('lat');
+		var tmpLng = $($allRows[i]).data('lon');
+		pinLat = parseFloat(tmpLat);
+		pinLon = parseFloat(tmpLng);	
 		if( pinLon <= east && pinLon >= west && pinLat <= north && pinLat >= south ) {
-			tblEl[n] = j;
+			tblEl[n] = i-1;
 			n++;
 			rowCnt ++;
 		}	
-	});
+	}
 	if ( rowCnt === 0 ) {
 		msg = '<p>NO hikes in this area</p>';;
 		$('#usrTbl').append(msg);

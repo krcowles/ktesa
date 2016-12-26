@@ -401,6 +401,9 @@ function initMap() {
 		if ( curZoom > 12 ) {
 			for (var m=0; m<allTheTracks.length; m++) {
 				trkKeyStr = 'trk' + m;
+				//var db = 'trkName' + m;
+				//msg = '<p>Track: ' + trkObj[db] + '</p>';
+				//$('#dbug').append(msg);
 				trkObj[trkKeyStr].setMap(map);
 			}
 
