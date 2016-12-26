@@ -18,7 +18,7 @@ body {
 	top: -8px;
 	font-size: 28px;
 	text-align: center;
-	color: DarkBlue;
+	color: DarkBlue; }
 #pgLogo  {
 	height: 70px;
 	width: 920px;
@@ -33,18 +33,20 @@ body {
 	background-attachment: scroll;
 	opacity: 0.30; }
 #logoLeft {
-	color: MidNightBlue;
+	color: DarkBlue;
 	font-size: 15px;
 	font-style: italic;
 	font-weight: bold;
+	opacity: 0.8;
 	position: absolute;
 	top: 0px;
 	left: 36px; }
 #logoRight {
-	color: MidNightBlue;
+	color: DarkBlue;
 	font-size: 15px;
 	font-style: italic;
 	font-weight: bold;
+	opacity: 0.8;
 	position: absolute;
 	top: 0px;
 	left: 822px; }
@@ -66,7 +68,7 @@ table th {
 	border-color: DarkBlue; }
 table td {
 	text-align: center;
-	vertical-align: center;
+	vertical-align: middle;
 	padding: 5px;
 	background-color: Gainsboro; 
 	border-style: solid;
