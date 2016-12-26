@@ -272,6 +272,16 @@ function IdTableElements(boundsStr) {
 	// if so, include them in the table
 	var n = 0;
 	var rowCnt = 0;
+	$('table tbody tr').each( function() {
+		pinLat = parseFloat($(this).data('lat'));
+		pinLon = parseFloat($(this).data('lon'));	
+		if( pinLon <= east && pinLon >= west && pinLat <= north && pinLat >= south ) {
+			tblEl[n] = j;
+			n++;
+			rowCnt ++;
+		}	
+	});
+	/*
 	for (j=0; j<ctrPinHikes.length; j++) {
 		hikeSet = ctrPinHikes[j];
 		pinLat = parseFloat(hikeSet[1]);
@@ -304,6 +314,7 @@ function IdTableElements(boundsStr) {
 			rowCnt++;
 		}
 	}
+	*/
 	if ( rowCnt === 0 ) {
 		msg = '<p>NO hikes in this area</p>';;
 		$('#usrTbl').append(msg);
