@@ -272,38 +272,15 @@ function IdTableElements(boundsStr) {
 	// if so, include them in the table
 	var n = 0;
 	var rowCnt = 0;
-	for (j=0; j<ctrPinHikes.length; j++) {
-		hikeSet = ctrPinHikes[j];
-		pinLat = parseFloat(hikeSet[1]);
-		pinLng = parseFloat(hikeSet[2]);
-		if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
+	$('table tbody tr').each( function() {
+		pinLat = parseFloat($(this).data('lat'));
+		pinLon = parseFloat($(this).data('lon'));	
+		if( pinLon <= east && pinLon >= west && pinLat <= north && pinLat >= south ) {
 			tblEl[n] = j;
 			n++;
 			rowCnt ++;
-		}
-	}
-	// now look for clusterPinHikes
-	for (k=0; k<clusterPinHikes.length; k++) {
-		hikeSet = clusterPinHikes[k];
-		pinLat = parseFloat(hikeSet[1]);
-		pinLng = parseFloat(hikeSet[2]);
-		if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
-			tblEl[n] = ctrPinHikes.length + k;
-			n++;
-			rowCnt++;
-		}		
-	}
-	// and lastly, othrHikes
-	for (l=0; l<othrHikes.length; l++) {
-		hikeSet = othrHikes[l];
-		pinLat = parseFloat(hikeSet[1]);
-		pinLng = parseFloat(hikeSet[2]);
-		if( pinLng <= east && pinLng >= west && pinLat <= north && pinLat >= south ) {
-			tblEl[n] = ctrPinHikes.length + clusterPinHikes.length + l;
-			n++;
-			rowCnt++;
-		}
-	}
+		}	
+	});
 	if ( rowCnt === 0 ) {
 		msg = '<p>NO hikes in this area</p>';;
 		$('#usrTbl').append(msg);
