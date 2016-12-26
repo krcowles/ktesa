@@ -51,7 +51,7 @@ $( function () { // when page is loaded...
 	   about potential refresh issues */
 	if ( window.sessionStorage ) {
 		var tst = sessionStorage.getItem('prevLoad');
-		if ( !tst  || $('#pgLoad').text() == 'force' ) { 
+		if ( !tst ) { 
 			//msg = '<p>NORMAL ENTRY</p>';
 			i = 0;
 			$images.each( function() {
@@ -74,10 +74,6 @@ $( function () { // when page is loaded...
 			// get caption locations
 			calcPos(); 
 		} else {  // Refresh: need to reload items for placing captions & map link
-			/* NOTE: When creating a page using php build, refresh can be encountered
-			   as a result of using forward/backward arrows in browser, resulting in 
-			   misalignment of captions when settings are changed: Force Non-Refresh Entry 
-			   in those cases (default) */
 			for ( i=0; i<noOfPix; i++ ) {
 				pwidth = 'pwidth' + i;
 				capWidth[i] = sessionStorage.getItem(pwidth);

@@ -47,13 +47,11 @@ $( function () { // when page is loaded...
 	if ( window.sessionStorage ) {
 		var tst = sessionStorage.getItem('prevLoad');
 		if ( !tst ) { 
-			// NORMAL ENTRY
-			//msg = '<p>Normal entry</p>';
-			//$('#dbug').append(msg);
+			//msg = '<p>NORMAL ENTRY</p>';
 			i = 0;
 			$images.each( function() {
-				capWidth[i] = this.width + 'px';
-				//msg = '<p>Img width is ' + capWidth[i] + 'px; </p>';
+				capWidth[i] = this.width + 14 + 'px'; // account for border and margin (14)
+				//msg = '<p>image' + i + ' width is ' + capWidth[i] + '</p>';
 				//$('#dbug').append(msg);
 				pwidth = 'pwidth'+ i;
 				sessionStorage.setItem(pwidth,capWidth[i]);
@@ -71,13 +69,9 @@ $( function () { // when page is loaded...
 			// get caption locations
 			calcPos(); 
 		} else {  // Refresh: need to reload items for placing captions & map link
-			//msg = '<p>Looks like a refresh? Cached?</p>';
-			//$('#dbug').append(msg);
 			for ( i=0; i<noOfPix; i++ ) {
 				pwidth = 'pwidth' + i;
 				capWidth[i] = sessionStorage.getItem(pwidth);
-				//msg = '<p>Width' + i + ' is ' + capWidth[i] + '; </p>';
-				//$('#dbug').append(msg);
 			}
 			mapLeft = sessionStorage.getItem('mleft');
 			mapBot = sessionStorage.getItem('mbot');
@@ -92,7 +86,9 @@ $( function () { // when page is loaded...
 		window.alert('Browser does not support Session Storage\nRefresh may cause problems');
 		// code with no session storage support...
 		for ( i=0; i<noOfPix; i++ ) {
-			capWidth[i] = $images[i].width + 'px';
+			capWidth[i] = $images[i].width + 14 + 'px'; // account for border and margin (14)
+			//msg = '<p>image' + i + ' width is ' + capWidth[i] + '</p>';
+			//$('#dbug').append(msg);
 			pwidth = 'pwidth'+ i;
 			sessionStorage.setItem(pwidth,capWidth[i]);
 		}
@@ -185,6 +181,8 @@ $( function () { // when page is loaded...
 	
 	// WHEN WINDOW RESIZES (because left margin may change)
 	$(window).resize( function() {
+		//msg = '<p>WINDOW RESIZED</p>';
+		//$('#dbug').append(msg);
 		calcPos();
 		mapWidth = $maps.attr('width');
 		mapWidth = parseFloat(mapWidth);
