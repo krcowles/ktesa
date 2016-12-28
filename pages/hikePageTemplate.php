@@ -3,6 +3,7 @@
 
 <?php
 	$hikeIndexNo = $_GET['hikeIndx'];
+	echo $hikeIndexNo;
 	/* Use the common database (excel csv file) to extract info */
 	$dataTable = '../data/TblDB.csv';
 	$handle = fopen($dataTable,'r');
@@ -135,7 +136,8 @@
 		<div id="postPhoto">
 		<?php
 			if ($hikeTipsPresent) {
-        		echo $hikeTips;
+				echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
+					'<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . $hikeTips . '</div>';
         	}
 			echo $hikeInfo;
 		?>
