@@ -87,7 +87,8 @@
 				} else {  // "Normal"
 					echo '<tr class="normal" ' . $hikeHiddenDat . '>';
 				}
-				$hikePage = $hikeArray[27];
+				//$hikePage = $hikeArray[27]
+				$hikePage = 'hikePageTemplate.php?hikeIndx=' . $hikeIndx;
 				$hikeName = $hikeArray[1];
 				$hikeLocale = $hikeArray[2];
 				$hikeDirections = $hikeArray[25];
