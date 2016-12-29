@@ -39,7 +39,7 @@ var mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|
 // also text size for pop-ups - which doesn't seem to work!
 if ( mobile_browser ) {
 	var geoIcon = lgGeo;
-	var ctrIcon = '../images/green64.png';
+	var ctrIcon = '../images/yellow64.png';
 	var clusterIcon = '../images/blue64.png';
 	var hikeIcon = '../images/pink64.png';
 	$('#iwVC').css('font-size','400%');
@@ -47,7 +47,7 @@ if ( mobile_browser ) {
 	$('#iwOH').css('font-size','400%');
 } else {
 	var geoIcon = medGeo;
-	var ctrIcon = '../images/greenpin.png';
+	var ctrIcon = '../images/yellow.png';
 	var clusterIcon = '../images/bluepin.png';
 	var hikeIcon = '../images/redpin.png';
 } 
