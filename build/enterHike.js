@@ -1,7 +1,10 @@
 $( function () { // when page is loaded...
 
+var msgA;  // generic
+var msgB;
+var msgC;
 
-// Display to indicate user has selected a file
+// Turn text blue to indicate user has uploaded a file
 $('#geomap').change( function() {
 	$('#l_gmap').css('color','DarkBlue');
 });
@@ -21,6 +24,58 @@ $('#addon2').change( function() {
 	$('#l_add2').css('color','DarkBlue');
 });
 
+/*       Setting the page-creation type for the submit button
+			NOTE: the "pageType" radio buttons are not part of the form submitted
+*/
+$('input[name="pageType"]').click( function() {
+	if($('input:radio[name=pageType]:checked').val() == "vcenter") {
+		useIndexPg();
+		$('input[name="mstyle"][value="center"]').prop('checked',true);
+	} else {
+		useStdPg();
+		$('input[name="mstyle"][value="center"]').prop('checked',false);
+	}
+});
+$('input[name="mstyle"]').click( function() {
+	if($('input:radio[name=mstyle]:checked').val() == "center") {
+		useIndexPg();
+		$('input[name="pageType"][value="standard"]').prop('checked',false);
+		$('input[name="pageType"][value="vcenter"]').prop('checked',true);
+	} else {
+		useStdPg();
+		$('input[name="pageType"][value="standard"]').prop('checked',true);
+		$('input[name="pageType"][value="vcenter"]').prop('checked',false);
+	}
+});
+function useIndexPg() {
+	pageSelector = "makeIndexPg.php";
+	msgA = "Index Page Name (Include 'Index' at end of descriptor): ";
+	$('.notVC').css('color','Gray');
+	msgB = "Provide image for Index Page: ";
+	msgC = "Visitor Center/Park Map  [ image size around 700px x 450px ]: ";
+	$('#l_add1').css('color','Black');
+	$('#pgTitleText').text(msgA);
+	$('#spImg').text(msgB);
+	$('#l_add1').text(msgC);
+}
+function useStdPg() {
+	pageSelector = "validateHike.php";
+	msgA = "Hike Name (As it will appear in the table & window tab): ";
+	$('.notVC').css('color','Black');
+	msgB = "Additional Images - optional";
+	msgC = "Other image (pop-up captions not provided at this time): [resides in images/] ";
+	$('#l_add1').css('color','Gray');
+	$('#pgTitleText').text(msgA);
+	$('#spImg').text(msgB);
+	$('#l_add1').text(msgC);
+}
+$('#clrIt').on('click', function(e) {
+	e.preventDefault();
+	document.getElementById("xl").value = "";
+});
+/* END OF page-creation type */
+
+// PARTIALLY FILLED FORM-SAVING
 if (typeof(Storage) !== undefined) {
 	var msg; //debug outputs
 	var previousSaves;
@@ -106,6 +161,7 @@ if (typeof(Storage) !== undefined) {
 		$('#save1').on('click', function() {
 			var restoredForm = window.localStorage.oldForm1;
 			stringToForm(restoredForm, $('#hikeData'));
+			window.alert("Form Restored - Please Re-enter files: they cannot be saved");
 			$(this).attr('checked',false);
 		});
 		$('#kill1').on('click', function() {
@@ -136,6 +192,7 @@ if (typeof(Storage) !== undefined) {
 		$('#save2').on('click', function() {
 			var restoredForm = window.localStorage.oldForm2;
 			stringToForm(restoredForm, $('#hikeData'));
+			window.alert("File Resotred");
 			$(this).attr('checked',false);
 		});
 		$('#kill2').on('click', function() {
@@ -154,6 +211,6 @@ if (typeof(Storage) !== undefined) {
 	}
 } else {
   	window.alert('Sorry - no local web storage: cannot save form data for later use');   
-}
+}  // END OF FORM-SAVING
 
 }); // end of page is loaded...

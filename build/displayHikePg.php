@@ -1,6 +1,6 @@
 <?php
 #	All this data from step 2: (eventually in database, not passed via form!)
-$tsvFile = $_POST['whose'];
+$tsvFile = $_POST['tsv'];
 $pgTitle = $_POST['hTitle'];
 $locale = $_POST['area'];
 $hikeType = $_POST['htype'];
@@ -9,8 +9,9 @@ if ($hikeType === "oab") {
 } else if ($hikeType === "loop") {
 	$htype = "Loop";
 } else {
-	$htype = "2-Cars";
+	$htype = "Two-Cars";
 }
+$ctrHikeLoc = $_POST['vcList'];
 $distance = $_POST['lgth'];
 $elevation = $_POST['elev'];
 $difficulty = $_POST['diffi'];
@@ -91,7 +92,7 @@ define("TOOMUCHMARGIN", 80, true);
 define("MIN_IFRAME_SIZE", 270, true);
 $startChartWidth = floor(RowHt/$elevHeight * $elevWidth) + 7; # allow for margin
 $closingDiv = "</div>";
-	
+
 #	Read in the tsv file and extract ALL usable data:
 $handle = fopen($tsvFile, "r");
 if ($handle !== false) {
@@ -147,6 +148,7 @@ for ($i=0; $i<$noOfPix; $i++) {
 }
 
 # ROW-FILLING ALGORITHM:
+$imgRows = array(6);
 $maxRowHt = 260;	# change as desired
 $rowWidth = 950;	# change as desired, current page width is 960
 # start by calculating the various images' widths when rowht = maxRowHt
@@ -201,7 +203,10 @@ for ($i=0; $i<$items; $i++) {
 		$totalProcessed += $rowItems;
 		$scaleFactor = $rowWidth/$curWidth;
 		$actualHt = floor($scaleFactor * $maxRowHt);
-		$rowHtml = $rowHtml . "\n" . '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
+		# ALL rows concatenated in $rowHtml
+		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
+		/* Creating a row unconcatenated to be used for $rowHtml, or passed solo via php */
+		$thisRow = '';
 		for ($n=$startIndx; $n<=$i; $n++) {
 			if ($n === $startIndx)
 				$styling = '';
@@ -211,28 +216,30 @@ for ($i=0; $i<$items; $i++) {
 			if ($itype[$n] === "picture") {
 				$picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
 				$picHeight[$n] = $actualHt;
-				$rowHtml = $rowHtml . '<img id="pic' .$n . '" style="' . $styling . '" width="' .
+				$thisRow = $thisRow . '<img id="pic' .$n . '" style="' . $styling . '" width="' .
 					$picWidth[$n] . '" height="' . $actualHt . '" src="' . $photolink[$n] . 
 					'" alt="' . $desc[$n] . '" />';
 			} else if ($itype[$n] === "iframe") {
 				$mapDims = floor($scaleFactor * $widthAtMax[$n]); # subtracts border
-				$rowHtml = $rowHtml . '<iframe id="theMap" style="' . $styling . '" height="' .
+				$thisRow = $thisRow . '<iframe id="theMap" style="' . $styling . '" height="' .
 					$mapDims . '" width="' . $mapDims . '" src="../maps/' . $gpsvMap . '"></iframe>';
 			} else if ($itype[$n] === "chart") {
 				$elevWidth = floor($scaleFactor * $widthAtMax[$n]);
-				$rowHtml = $rowHtml . '<img class="chart" style="' . $styling . '" width="' .
+				$thisRow = $thisRow . '<img class="chart" style="' . $styling . '" width="' .
 					$elevWidth . '" height="' . $actualHt . '" src="../images/' . $elevChart .
 					'" alt="Elevation Chart" />';
 			} else {
 				$othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
 				$othrHeight[$othrIndx] = $actualHt;
-				$rowHtml = $rowHtml . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
+				$thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
 					'" height="' . $$actualHt . '" src="../images/' . $addonImg[$othrIndx] .
 					'" alt="' . $desc[$n] . '" />';
 				$othrIndx += 1;
 			}
-		}	
-		$rowHtml = $rowHtml . '</div>';
+		}
+		# thisRow is completed and will be used below in different ways:
+		$rowHtml = $rowHtml . $thisRow . '</div>';
+		$imgRows[$rowNo] = '<div id="row' . $rowNo . '" class="ImgRow">' . $thisRow . '</div/';	
 		$rowNo += 1;
 		$startIndx += $rowItems;
 		$curWidth = 0;
@@ -245,53 +252,65 @@ for ($i=0; $i<$items; $i++) {
 if ($rowCompleted === false) {
 	$itemsLeft = $items - $totalProcessed;
 	if ($itemsLeft === 1)
-		$rowHtml = $rowHtml . "\n" . '<div id="row' . $rowNo . '" class="ImgRow Solo">';
+		//$rowHtml = $rowHtml .'<div id="row' . $rowNo . '" class="ImgRow Solo">';
+		$thisRow = '<div id="row' . $rowNo . '" class="ImgRow Solo">';
 	else
-		$rowHtml = $rowHtml . "\n" . '<div id="row' . $rowNo . '" class="ImgRow">';
+		//$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
+		$thisRow = '<div id="row' . $rowNo . '" class="ImgRow">';
 	for ($i=0; $i<$itemsLeft; $i++) {
 		if ($itype[$startIndx] === "picture") {
 			$picWidth[$startIndx] = $widthAtMax[$startIndx];
 			$picHeight[$startIndx] = $maxRowHt;
-			$rowHtml = $rowHtml . '<img id="pic' . $startIndx . '" width="' . 
+			$thisRow = $thisRow . '<img id="pic' . $startIndx . '" width="' . 
 				$picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
 				$photolink[$startIndx] . '" alt="' . $desc[$startIndx] . '" />';
 			$startIndx += 1;
 		} else if ($itype[$startIndx] === "iframe") {
-			$rowHtml = $rowHtml . '<iframe id="theMap" height="' . $maxRowHt .
+			$thisRow = $thisRow . '<iframe id="theMap" height="' . $maxRowHt .
 				'" width="' . $maxRowHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
 			$startIndx += 1;
 		} else if ($itype[$startIndx] === "chart") {
 			$elevWidth = $widthAtMax[$startIndx];
-			$rowHtml = $rowHtml . '<img class="chart" width="' . $elevWidth . 
+			$thisRow = $thisRow . '<img class="chart" width="' . $elevWidth . 
 				'" height="' . $maxRowHt . '" src="../images/' . $elevChart .
 				'" alt="Elevation Chart" />';
 			$startIndx += 1;
 		} else {
 			$othrWidth[$othrIndx] = $widthAtMax[$startIndx];
 			$othrHeight[$othrIndx] = $maxRowHt;
-			$rowHtml = $rowHtml . '<img width="' . $othrWidth[$othrIndx] . '" height="' .
+			$thisRow = $thisRow . '<img width="' . $othrWidth[$othrIndx] . '" height="' .
 				$maxRowHt . '" src="../images/' . $addonImg[$othrIndx] .
 				'" alt="Additional page image" />';
 			$othrIndx += 1;
 			$startIndx += 1;
 		}
 	}
-	$rowHtml = $rowHtml . "</div>";
+	$imgRows[$rowNo] = $thisRow . "</div>";
+	$rowHtml = $rowHtml . $thisRow . "</div>";
+
 }
 # all items have been processed and actual width/heights retained
-
 # Create the list of captions
 $captionHtml = '<div class="captionList"><ol>';
 for ($j=0; $j<$noOfPix; $j++) {
 	$captionHtml = $captionHtml . "<li>{$caption[$j]}</li>";
 }
 $captionHtml = $captionHtml . "</ol></div>";
+$csvCap = rawurlencode($captionHtml);
 # Create the list of album links
 $albumHtml = '<div class="lnkList"><ol>';
 for ($k=0; $k<$noOfPix; $k++ ) {
 	$albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
 }
 $albumHtml = $albumHtml . "</ol></div>";
+$csvAlb = rawurlencode($albumHtml);
+session_start();
+$_SESSION['row0'] = $imgRows[0];
+$_SESSION['row1'] = $imgRows[1];
+$_SESSION['row2'] = $imgRows[2];
+$_SESSION['row3'] = $imgRows[3];
+$_SESSION['row4'] = $imgRows[4];
+$_SESSION['row5'] = $imgRows[5];
 ?>
 <!DOCTYPE html>
 <html>
@@ -373,22 +392,40 @@ $albumHtml = $albumHtml . "</ol></div>";
 		echo '<div id="pgLoad" style="display:none">force</div>';
 	}
 ?>
+<form action="saveHike.php" method="POST">
 
 <div id="postPhoto">
 	<?php if($trailTips == 'YES') echo '<div id="trailTips">' . "\n\t\t" .
 		'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
-		'<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">Put tip info here...</p>' .
-		"\n\t" . '</div>';?>
-
-	<p id="hikeInfo">ENTER TRAIL DESCRIPTION AND NOTES HERE...</p>
+		'<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">' . 
+		'<textarea id="tips" name="trailtiptxt" rows="6" cols="130" maxlength="1500">
+		Enter Trail Tips text here...</textarea></p>' ."\n\t" . '</div>';?>
+		
+	<p id="hikeInfo"><textarea id="hdesc" name="hiketxt" cols="145" rows="12" maxlength="3000">
+	ENTER TRAIL DESCRIPTION AND NOTES HERE...</textarea></p>
 	
 	<fieldset>
+
 	<legend id="fldrefs">References &amp; Links</legend>
 	<ul id="refs">
-		<li>Book: <em>Day Hikes In The Santa Fe Area [8th Ed.]</em>, by The Northern New
-			Mexico Group of the Sierra Club</li>
-		<li>App: <a href="http://www.alltrails.com/trail/us/new-mexico/burnt-mesa-trail"
-			target="_blank">AllTrails</a></li>
+		<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference" />
+				<input name="auth[]" type="text" size="40" placeholder="Name of author(s)" /></li>
+		<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference" />
+				<input name="auth[]" type="text" size="40" placeholder="Name of author(s)" /></li>
+		<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference" />
+				<input name="auth[]" type="text" size="40" placeholder="Name of author(s)" /></li>
+		<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here" />
+				<input name="webtxt[]" type="text" size="20" placeholder="Text to click on" /></li>
+		<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here" />
+				<input name="webtxt[]" type="text" size="20" placeholder="Text to click on" /></li>
+		<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here" />
+				<input name="webtxt[]" type="text" size="20" placeholder="Text to click on" /></li>
+		<li>App: <input name="app[]" type="text" size="100" placeholder="Paste link to app here" />
+				<input name="apptxt[]" type="text" size="20" placeholder="Text to click on" /></li>
+		<li>App: <input name="app[]" type="text" size="100" placeholder="Paste link to app here" />
+				<input name="apptxt[]" type="text" size="20" placeholder="Text to click on" /></li>
+		<li>App: <input name="app[]" type="text" size="100" placeholder="Paste link to app here" />
+				<input name="apptxt[]" type="text" size="20" placeholder="Text to click on" /></li>
 	</ul>
 	</fieldset>
 	<fieldset>
@@ -396,22 +433,74 @@ $albumHtml = $albumHtml . "</ol></div>";
 		<div id="proposed">
 			<p id="proptitle">- Proposed Hike Data</p>
 			<ul id="plinks">
-				<li>Map: <a href="../maps/BistiWestProposed.html"
-						target="_blank">Proposed Trail</a></li>
-				<li>GPX: <a href="../gpx/BistiWestProposed.gpx"
-						target="_blank">Proposed Trail</a></li>
+				<li>Map: <input name="pmap[]" type="text" size="40" placeholder="Path to map" />
+					<input name="pmtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
+				<li>GPX: <input name="pgpx[]" type="text" size="40" placeholder="Path to map" />
+					<input name="pgpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
+				<li>Map: <input name="pmap[]" type="text" size="40" placeholder="Path to map" />
+					<input name="pmtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
+				<li>GPX: <input name="pgpx[]" type="text" size="40" placeholder="Path to map" />
+					<input name="pgpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
 			</ul>
 		</div>
 		<div id="actual">
 			<p id="acttitle">- Actual Hike Data</p>
 			<ul id="alinks">
-				<li>Map: <a href="../maps/Bisti_geomap.html"
-					target="_blank">Actual Hike</a></li>
-				<li>GPX: <a href="../gpx/Bisti.GPX" target="_blank">
-					Actual GPX</a></li>
+				<li>Map: <input name="amap[]" type="text" size="40" placeholder="Path to map" />
+					<input name="amtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
+				<li>GPX: <input name="agpx[]" type="text" size="40" placeholder="Path to map" />
+					<input name="agpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
+				<li>Map: <input name="amap[]" type="text" size="40" placeholder="Path to map" />
+					<input name="amtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
+				<li>GPX: <input name="agpx[]" type="text" size="40" placeholder="Path to map" />
+					<input name="agpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
 			</ul>
 		</div>
 	</fieldset>
+	<!-- Hidden Data Passed to hikeCSV.php -->
+	<input type="hidden" name="hname" value="<?php echo $pgTitle;?>" />
+	<input type="hidden" name="hlocale" value="<?php echo $locale;?>" />
+	<input type="hidden" name="hmarker" value="<?php echo $marker;?>" />
+	<input type="hidden" name="hvcgrp" value="<?php echo $ctrHikeLoc;?>" />
+	<input type="hidden" name="htype" value="<?php echo $htype;?>" />
+	<input type="hidden" name="hmiles" value="<?php echo $distance;?>" />
+	<input type="hidden" name="hfeet" value="<?php echo $elevation;?>" />
+	<input type="hidden" name="hdiff" value="<?php echo $difficulty;?>" />
+	<input type="hidden" name="hfac" value="<?php echo $facilities;?>" />
+	<input type="hidden" name="hwow" value="<?php echo $wowFactor;?>" />
+	<input type="hidden" name="hseas" value="<?php echo $seasons;?>" />
+	<input type="hidden" name="hexp" value="<?php echo $exposure;?>" />
+	<input type="hidden" name="htsv" value="<?php echo $tsvFile;?>" />
+	<input type="hidden" name="hmap" value="<?php echo $gpsvMap;?>" />
+	<input type="hidden" name="hchart" value="<?php echo $elevChart;?>" />
+	<input type="hidden" name="hgpx" value="<?php echo $gpxFname;?>" />
+	<input type="hidden" name="htrk" value="<?php echo $trackFname;?>" />
+	<input type="hidden" name="hlat" value="<?php echo $lat;?>" />
+	<input type="hidden" name="hlon" value="<?php echo $lon;?>" />
+	<input type="hidden" name="hadd1" value="<?php echo $addonImg[0];?>" />
+	<input type="hidden" name="hadd2" value="<?php echo $addonImg[1];?>" />
+	<input type="hidden" name="hphoto1" value="<?php echo $purl1;?>" />
+	<input type="hidden" name="hphoto2" value="<?php echo $purl2;?>" />
+	<input type="hidden" name="hdir" value="<?php echo $googledirs;?>" />
+	<input type="hidden" name="htyn" value="<?php echo $trailTips;?>" />
+	<input type="hidden" name="htool" value="<?php echo $clusterGrp;?>" />
+	<input type="hidden" name="hrow0" value="<?php $imgRows[0]?>" />
+	<input type="hidden" name="hrow1" value="<?php $imgRows[1]?>" />
+	<input type="hidden" name="hrow2" value="<?php $imgRows[2]?>" />
+	<input type="hidden" name="hrow3" value="<?php $imgRows[3]?>" />
+	<input type="hidden" name="hrow4" value="<?php $imgRows[4]?>" />
+	<input type="hidden" name="hrow5" value="<?php $imgRows[5]?>" />
+	<input type="hidden" name="hcaps" value='<?php echo $csvCap;?>' />
+	<input type="hidden" name="hplnks" value='<?php echo $csvAlb;?>' />
+	<input type="hidden" name="httxt" value="<?php echo $tipsTxt;?>" />
+	<input type="hidden" name="hinfo" value="<?php echo $hikeInfo;?>" />
+	<input type="hidden" name="href" value="<?php echo $references;?>" />
+	<input type="hidden" name="hpdat" value="<?php echo $propDat;?>" />
+	<input type="hidden" name="hadat" value="<?php echo $actDat;?>" />
+	
+	<input style="margin-left:8px;margin-bottom:10px;" type="submit" value="Make New Hike Page" />
+	
+</form>
 	
 	<div id="dbug"></div>
 </div>  <!-- end of postPhoto -->

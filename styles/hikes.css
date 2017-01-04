@@ -169,6 +169,9 @@ div em {
 #alinks {
 	position: relative;
 	top: -15px; }
-
+#tips {
+	text-align: left; }
+#hdesc {
+	text-align: left; }
 	
 	

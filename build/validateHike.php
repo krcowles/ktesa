@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Upload</title>
-	<link href="step2.css" type="text/css" rel="stylesheet" />
+	<link href="validateHike.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div class="container_16 clearfix">
@@ -14,6 +14,7 @@
 </div> <!-- end of logoBlock -->
 
 <h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>
+<form action="displayHikePg.php" method="POST">
 <?php
 // This is where the variables are assigned - eventually to be replaced with database
 $hikeFile = $_FILES['xlfile']['tmp_name'];
@@ -52,6 +53,7 @@ if ($hikeFileName == "") {
 	if($fname == "") {
 		die( "No tsv file specified..." );
 	}
+	$name2pass = '../gpsv/' . $fname;
 	$rawfile = fopen($tsvFile, "r");
 	$fdat = fread($rawfile,$tsvSize);
 } else {
@@ -73,7 +75,9 @@ if ($hikeFileName == "") {
 	$hikeWow = trim($hikeDataArray[7]);
 	$hikeSeasons = trim($hikeDataArray[8]);
 	$hikeExp = trim($hikeDataArray[9]);
-	$tsvFile = "../gpsv/" . trim($hikeDataArray[10]);
+	$tsvFile = "../gpsv/" . trim($hikeDataArray[10]); // NOTE: this file was not uploaded,
+		// as was the file provided by the form... 
+	$name2pass = $tsvFile;
 	$hikeGmap = trim($hikeDataArray[11]);
 	$hikeEChart = trim($hikeDataArray[12]);
 	$hikeGpx = "../gpx/" . trim($hikeDataArray[13]);
@@ -99,6 +103,43 @@ $elevWidth = $EChartSize[0];
 $elevHeight = $EChartSize[1];
 $farray = str_getcsv($fdat,"\n");
 $icount = count($farray) - 1;  // no. of rows in csv file
+/*
+	MARKER-DEPENDENT PAGE CONSTRUCTION
+*/
+if ($hikeMarker === 'ctrhike') {
+	$database = '../data/TblDB.csv';
+	$dbFile = fopen($database, "r");
+	$VClist = array();
+	$VCOrgHikes = array();
+	if ($dbFile !== false) {
+		$srchCnt = 0;
+		while ( ($hike = fgets($dbFile)) !== false ) {
+			$srchArray = str_getcsv($hike,",");
+			if ( preg_match("/Visitor/i", $srchArray[3]) ==1 ) {
+				$VCList[$srchCnt] = $srchArray[0] . ": " . $srchArray[1];
+				$VCOrgHikes[$srchCnt] = $srchArray[4];
+				$srchCnt++;
+			}
+		}
+	} else {
+		echo "Could not open database file ../data/TblDB.csv";
+	}
+	echo '<div id="findvc"><p>This hike was identified as starting at, or in close proximity to,' .
+	' a Visitor Center.<br /><em id="vcnote">NOTE: if a page for this Visitor Center does not yet exist, please ' .
+	'go back and create it before continuing with this hike.</em></p>' .
+	'<p><label style="color:DarkBlue">Select the Visitor Center Page for this hike: <select name="vcList">';
+	for ($k=0; $k<$srchCnt; $k++) {
+		$namePos = strpos($VCList[$k],":") + 2;
+		$namelgth = strlen($VCList[$k]) - $namePos;
+		$vcName = substr($VCList[$k],$namePos,$namelgth);
+		$vcIndxLgth = $namePos -2;
+		$vcIndx = substr($VCList[$k],0,$vcIndxLgth);
+		echo '<option value="' . $vcIndx . '">' . $vcName . '</option>';
+	}
+	echo "</select></p></div>";
+} elseif ($hikeMarker === 'cluster') {
+} else {
+}
 ?>
 <h2>The Data As It Will Appear In The Index Table (w/Map)</h2>
 <div id="tbl1">
@@ -246,95 +287,89 @@ $icount = count($farray) - 1;  // no. of rows in csv file
 	<li>File size: <?php echo $tsvSize;?> bytes</li>
 	<li>File type: <?php if ($tsvType) {echo $fname;} else {echo "Not uploaded";}?></li>
 </ul>
-
-<form action="step3.php" method="POST">
-	<div style="padding-left:8px">
-		<h4 style="margin-bottom:4px">Include a 'Trail Tips' section for new page?</h4>
-		<input id="addTT" type="radio" name="TT" value="YES" />
-			<label style="color:DarkBlue;" for="addTT">Add Trail Tips</label>
-		<input id="noTT" type="radio" name="TT" value="NO" />
-			<label style="color:DarkBlue;" for="noTT">No Trail Tips</label>
-	</div>
-	<div style="padding-left:8px;">
-		<h4 style="margin-bottom:4px">Checkbox to Force Non-Refresh Page Loading
-			<em>(Useful when using back/forward arrows in browser during build process)</em></h4>
-		<input id="forceLoad" type="checkbox" name="setForce" value="force" checked="checked" />Force
-	</div>
-	<br />
-	<h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish
-		to include on the new page:</h4>
-	<p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note:
-	these names were extracted from the .tsv file</em><br />
-	<input style="margin-left:8px" id="all" type="checkbox" name="allPix" value="useAll" />Use All Photos</p>
-	<?php
-		$handle = fopen($tsvFile, "r");
-		if ($handle !== false) {
-			$lineno = 0;
-			$picno = 0;
-			while ( ($line = fgets($handle)) !== false ) {
-				$tsvArray = str_getcsv($line,"\t");
-				if ($lineno !== 0) {
-					$picarray[$picno] = $tsvArray[$indx];
-					$thumb[$picno] = $tsvArray[$indx+4];
-					$picno += 1;
+<div style="padding-left:8px">
+	<h4 style="margin-bottom:4px">Include a 'Trail Tips' section for new page?</h4>
+	<input id="addTT" type="radio" name="TT" value="YES" />
+		<label style="color:DarkBlue;" for="addTT">Add Trail Tips</label>
+	<input id="noTT" type="radio" name="TT" value="NO" checked="checked" />
+		<label style="color:DarkBlue;" for="noTT">No Trail Tips</label>
+</div>
+<div style="padding-left:8px;">
+	<h4 style="margin-bottom:4px">Checkbox to Force Non-Refresh Page Loading
+		<em>(Useful when using back/forward arrows in browser during build process)</em></h4>
+	<input id="forceLoad" type="checkbox" name="setForce" value="force" checked="checked" />Force
+</div>
+<br />
+<h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish
+	to include on the new page:</h4>
+<p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note:
+these names were extracted from the .tsv file</em><br />
+<input style="margin-left:8px" id="all" type="checkbox" name="allPix" value="useAll" />Use All Photos</p>
+<?php
+	$handle = fopen($tsvFile, "r");
+	if ($handle !== false) {
+		$lineno = 0;
+		$picno = 0;
+		while ( ($line = fgets($handle)) !== false ) {
+			$tsvArray = str_getcsv($line,"\t");
+			if ($lineno !== 0) {
+				$picarray[$picno] = $tsvArray[$indx];
+				$thumb[$picno] = $tsvArray[$indx+4];
+				$picno += 1;
+			} else {
+				if (strcmp($tsvArray[0],"folder") == 0) {
+					$indx = 1;
+					//echo "<p>This tsv file has 'folder' field description</p>";
 				} else {
-					if (strcmp($tsvArray[0],"folder") == 0) {
-						$indx = 1;
-						//echo "<p>This tsv file has 'folder' field description</p>";
-					} else {
-						$indx = 0;
-						//echo "<p>Older tsv file - no 'folder' field</p>";
-					}
+					$indx = 0;
+					//echo "<p>Older tsv file - no 'folder' field</p>";
 				}
-				$lineno += 1;
 			}
-			$lineno -= 1;
-		} else {
-			echo "<p>Could not open {$fname}</p>";
-		} 
-		$nmeno = 0;
-		for ($i=0; $i<$icount; $i++) {
-			echo '<div class="selPic" style="width:150px;float:left;margin-left:2px;margin-right:2px;">';
-			echo '<input type="checkbox" name="pix[]" value="' .  $picarray[$nmeno] .
-				'" />' . substr($picarray[$nmeno],0,10) . '...<br />';
-			echo '<img height="150px" width="150px" src="' .$thumb[$nmeno] . '" alt="pic choice" />';
-			echo '</div>';
-			$nmeno +=1;
+			$lineno += 1;
 		}
-		echo '<br />';
-		echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
-		?>	
-		<!-- The following will be replaced by database entries eventually -->
-		<input type="hidden" name="whose" value="<?php echo $tsvFile;?>" />
-		<input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
-		<input type="hidden" name="area"  value="<?php echo $hikeLocalelocale;?>" />
-		<input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
-		<input type="hidden" name="lgth"  value="<?php echo $hikeLgth;?>" />
-		<input type="hidden" name="elev"  value="<?php echo $hikeElev;?>" />
-		<input type="hidden" name="diffi" value="<?php echo $hikeDiff;?>" />
-		<input type="hidden" name="lati"  value="<?php echo $hikeLat;?>" />
-		<input type="hidden" name="long"  value="<?php echo $hikeLong;?>" /> 
-		<input type="hidden" name="facil" value="<?php echo $hikeFac;?>" />
-		<input type="hidden" name="webpg" value="<?php echo $hikePage;?>" />
-		<input type="hidden" name="wow"   value="<?php echo $hikeWow;?>" />
-		<input type="hidden" name="seasn" value="<?php echo $hikeSeasons;?>" />
-		<input type="hidden" name="expo"  value="<?php echo $hikeExp;?>" />
-		<input type="hidden" name="geomp" value="<?php echo $hikeGmap;?>" />
-		<input type="hidden" name="chart" value="<?php echo $hikeEChart;?>" />
-		<input type="hidden" name="chrtW" value="<?php echo $elevWidth;?>" />
-		<input type="hidden" name="chrtH" value="<?php echo $elevHeight;?>" />
-		<input type="hidden" name="gpx"   value="<?php echo $hikeGpx;?>" />
-		<input type="hidden" name="json"  value="<?php echo $hikeJSON;?>" />
-		<input type="hidden" name="img1"  value="<?php echo $hikeOthrImage1;?>" />
-		<input type="hidden" name="img2"  value="<?php echo $hikeOthrImage2;?>" />
-		<input type="hidden" name="mrkr"  value="<?php echo $hikeMarker;?>" />
-		<input type="hidden" name="phot1" value="<?php echo $hikePurl1;?>" />
-		<input type="hidden" name="phot2" value="<?php echo $hikePurl2;?>" />
-		<input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
+		$lineno -= 1;
+	} else {
+		echo "<p>Could not open {$fname}</p>";
+	} 
+	$nmeno = 0;
+	for ($i=0; $i<$icount; $i++) {
+		echo '<div class="selPic" style="width:150px;float:left;margin-left:2px;margin-right:2px;">';
+		echo '<input type="checkbox" name="pix[]" value="' .  $picarray[$nmeno] .
+			'" />' . substr($picarray[$nmeno],0,10) . '...<br />';
+		echo '<img height="150px" width="150px" src="' .$thumb[$nmeno] . '" alt="pic choice" />';
+		echo '</div>';
+		$nmeno +=1;
+	}
+	echo '<br />';
+	echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
+?>	
+<input type="hidden" name="tsv" value="<?php echo $name2pass;?>" />
+<input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
+<input type="hidden" name="area"  value="<?php echo $hikeLocale;?>" />
+<input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
+<input type="hidden" name="lgth"  value="<?php echo $hikeLgth;?>" />
+<input type="hidden" name="elev"  value="<?php echo $hikeElev;?>" />
+<input type="hidden" name="diffi" value="<?php echo $hikeDiff;?>" />
+<input type="hidden" name="lati"  value="<?php echo $hikeLat;?>" />
+<input type="hidden" name="long"  value="<?php echo $hikeLong;?>" /> 
+<input type="hidden" name="facil" value="<?php echo $hikeFac;?>" />
+<input type="hidden" name="webpg" value="<?php echo $hikePage;?>" />
+<input type="hidden" name="wow"   value="<?php echo $hikeWow;?>" />
+<input type="hidden" name="seasn" value="<?php echo $hikeSeasons;?>" />
+<input type="hidden" name="expo"  value="<?php echo $hikeExp;?>" />
+<input type="hidden" name="geomp" value="<?php echo $hikeGmap;?>" />
+<input type="hidden" name="chart" value="<?php echo $hikeEChart;?>" />
+<input type="hidden" name="json"  value="<?php echo $hikeJSON;?>" />
+<input type="hidden" name="img1"  value="<?php echo $hikeOthrImage1;?>" />
+<input type="hidden" name="img2"  value="<?php echo $hikeOthrImage2;?>" />
+<input type="hidden" name="mrkr"  value="<?php echo $hikeMarker;?>" />
+<input type="hidden" name="phot1" value="<?php echo $hikePurl1;?>" />
+<input type="hidden" name="phot2" value="<?php echo $hikePurl2;?>" />
+<input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
 </form>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="step2.js"></script>
+<script src="validateHike.js"></script>
 
 </body>
 

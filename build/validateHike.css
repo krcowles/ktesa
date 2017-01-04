@@ -1,5 +1,6 @@
 body {
 	min-width: 960px;
+	height: 2000px;
 	font-family: arial, verdana;
 	background-color: #dadada;
 	border-style: solid;
@@ -8,6 +9,8 @@ body {
 h1 { 
 	position: relative;
 	top: -16px; }
+h2 {
+	text-align: center; }
 /* Placing and centering the logo image & associated text */
 #logoBlock {
 	width: 960px;
@@ -52,8 +55,39 @@ h1 {
 	position: absolute;
 	top: 0px;
 	left: 822px; }
-h2 {
-	text-align: center; 
+#indxtbl {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px;
+	font-size: 12px;
+	text-align: left;
+	margin-top: 5px;
+	background-color: #ffffdf;
+	border-style: groove;
+	border-width: 4px;
+	border-color: goldenRod; }
+#indxtbl th {
+	text-align: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-style: outset;
+	border-width: 2px;
+	border-color: peru; }
+#indxtbl tr:hover {
+	background-color: BlanchedAlmond; }
+#indxtbl td {
+	color: darkgreen;
+	font-size: 16px;
+	vertical-align: top;
+	padding-left: 5px;
+	padding-right: 5px; }
+#indxtbl .hdr_row {
+	background-color: bisque; }
+#indxtbl .hdr_row:hover {
+	cursor: pointer;
+	background-color: Brown;
+	color: White; }
+img.webShift {
 	padding-left: 25px; }
 img.flckrShift {
 	padding-left: 22px; }
@@ -80,7 +114,7 @@ img.expShift {
 	border-color: DarkBlue; }
 #topper td {
 	text-align: center;
-	vertical-align: center;
+	vertical-align: middle;
 	padding: 5px; 
 	background-color: Gainsboro; 
 	border-style: solid;
@@ -89,17 +123,8 @@ img.expShift {
 ul {
 	font-size: 18px;
 	color: DarkBlue; }
-.ImgRow {
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 0px; }
-img {
-    margin-right: 5px;
-    margin-bottom: 20px;
-    margin-left: 5px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: DarkBlue; }
-iframe {
-    margin-bottom: 20px; }
+#findvc {
+	margin-left: 12px;
+	padding: 8px; }
+#vcnote {
+	font-style: italic; }

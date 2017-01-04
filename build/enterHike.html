@@ -14,12 +14,20 @@
 		content="nofollow" />
 	<link href="../styles/960_16_col.css"
 		type="text/css" rel="stylesheet" />
-	<link href="step1.css"
+	<link href="enterHike.css"
 		type="text/css" rel="stylesheet" />
 </head>
 
 <body>
- 
+
+<!-- Setup function to be able to change which php gets called -->
+<script type="text/javascript">
+    var pageSelector = "validateHike.php"
+    function page_type(form) {
+        form.action = pageSelector;
+    }
+</script>
+
 <div id="logoBlock">
 	<p id="pgLogo"></p>
 	<p id="logoLeft">Hike New Mexico</p>
@@ -27,9 +35,18 @@
 	<p id="page_title">Add A New Hike!</p>
 </div> <!-- end of logoBlock -->
 
+
+<div id="setup">
+	<h1>STEP 1: Enter Hike Data</h1>
+	<p id="intent">I WANT TO: &nbsp;&nbsp;[data not required are grayed out]</p>
+	<input id="ctr" type="radio" name="pageType" value="vcenter" />
+	<label id="VC">CREATE A NEW: Visitor Center/Index Page</label><br />
+	<input id="reg" type="radio" name="pageType" value="standard" checked />
+	<label id="STD">CREATE A NEW: Hike Page (includes hikes from a Visitor Center)</label>
+</div>
+
 <div id="theForm">
-<h1>STEP 1: Enter Hike Data</h1>
-<form id="hikeData" action="step2.php" method="POST"
+<form id="hikeData" onsubmit="page_type(this);" method="POST"
 	enctype="multipart/form-data">
 	<fieldset id="bypass">
 		<p>-- IF you would rather upload an Xcel Spreadsheet with hike data, specify it here,
@@ -39,11 +56,14 @@
 		<legend>Excel Hike Data [Must be in CSV format]</legend>
 		<label>CSV Hike Data Inputs File<input id="xl" type="file" name="xlfile" /></label>
 		&nbsp;&nbsp;<input type="submit" value="submit csv" />
+		<p>PLEASE NOTE: Once a file is selected, the form data below will be ignored.<br />To clear the
+		file selected above and use the data entry below, click here: 
+		<button id="clrIt">Clear Upload and Use Entry Form Below</button>
 	</fieldset>
 	 
 	<fieldset id="basic">
 		<legend>Basic Hike Data</legend>
-		<label for="htitle">Hike Name (As it will appear in the table & window tab):</label> 
+		<label id="pgTitleText" for="htitle">Hike Name (As it will appear in the table & window tab):</label> 
 		  <input id="htitle" type="text" name="hpgTitle" size="35" /><br />
 		<label for="area">Locale (Nearest city/landmark):</label>
 		  <select id="area" name="locale">
@@ -84,17 +104,17 @@
 		  	<option value="Pinos Altos">Pinos Altos</option>
 		  	<option value="Glenwood">Glenwood</option>
 		</select>&nbsp;&nbsp;
-		<label for="type">Hike Type:</label>
+		<label class="notVC" for="type">Hike Type:</label>
 		  <select id="type" name="htype">
 			<option value="loop">Loop</option>
 			<option value="twocar">2-Cars</option>
 			<option value="outandback">Out-and-Back</option>
 		  </select>&nbsp;&nbsp;
-		<label for="lgth">Total Length (Miles):</label>
+		<label class="notVC" for="lgth">Total Length (Miles):</label>
 			<input id="lgth" type="text" name="dist" size="6" /><br />
-		<label for="ht">Elevation Change (Feet):</label>
+		<label class="notVC" for="ht">Elevation Change (Feet):</label>
 			<input id="ht" type="text" name="elev" size="8" />
-		<label for="ease">Relative Difficulty:</label>
+		<label class="notVC" for="ease">Relative Difficulty:</label>
 			<select id="ease" name="diff">
 				<option value="Easy">Easy</option>
 				<option value="Easy-Moderate">Easy-Moderate</option>
@@ -102,43 +122,43 @@
 				<option value="Med-Difficult">Medium-Difficult</option>
 				<option value="Difficult">Difficult</option>
 			</select><br />
-		<label for="useful">Facilities Available at Trailhead (if any):</label>
+		<label class="notVC" for="useful">Facilities Available at Trailhead (if any):</label>
 			<input id="useful" type="text" name="fac" size="15" />
-		<label for="pgname" class="nr">File Name for Web Pg (e.g. Aspen.html):</label> 
+		<label style="color:gray;" for="pgname" class="nr">File Name for Web Pg (e.g. Aspen.html):</label> 
 		  <input id="pgname" type="text" name="hikepg" placeholder = "Hike_Name.html" size="20" /><br />
-		<label for="wow">"Wow" Factor (What makes this hike special):</label> 
+		<label class="notVC" for="wow">"Wow" Factor (What makes this hike special):</label> 
 		  <input id="wow" type="text" name="wow_factor" size="24" />
-		<label for="times">Seasons</label>
+		<label class="notVC" for="times">Seasons</label>
 		  <input id="times" type="text" name="seas" size="40" /><br />
 	</fieldset>
 		
 	<fieldset id="exposure">
 		<legend>Exposure Factor</legend>
-		<em id="selexp">Select Exposure to Sun: </em>
+		<em id="selexp" class="notVC">Select Exposure to Sun: </em>
 		<input id="sunny" type="radio" name="expos" value="sun" />
-			<label for="sunny">Full Sun</label>
+			<label class="notVC" for="sunny">Full Sun</label>
 		<input id="shady" type="radio" name="expos" value="shade" />
-			<label for="shady">Good Shade</label>
+			<label class="notVC" for="shady">Good Shade</label>
 		<input id="partly" type="radio" name="expos" value="mixed" />
-			<label for="partly">Mixed Sun &amp; Shade</label>
+			<label class="notVC" for="partly">Mixed Sun &amp; Shade</label>
 	</fieldset>
 
 	<fieldset>
 		<p>NOTE: <em>For the page to be created correctly, each of the following files
 			must reside in its indicated directory.</em></p>
 		<legend>File Data</legend>
-		<label id="l_tsv" for="tsv">CSV file: [resides in tsv/]</label>
+		<label id="l_tsv" class="notVC" for="tsv">CSV file: [resides in gpsv/]</label>
 		  <input id="tsv" type="file" name="csvfile" /><br />
-		<label id="l_gmap" for="geomap">Geomap: [html file resides in maps/]</label>
+		<label id="l_gmap" class="notVC" for="geomap">Geomap: [html file resides in maps/]</label>
 	      <input id="geomap" type="file" name="gpsvMap" /><br />
-	    <label id="l_elev" for="elev">Elevation chart: [resides in images/] &nbsp;</label>
-	  	  <input id="elev" type="file" name="chart" /><br />
-		<label id="l_gpx" for="gpxfile" class="nr">GPX File: [resides in gpx/] &nbsp;</label>
+	    <label id="l_elev" class="notVC" for="elev">Elevation chart: [resides in images/] &nbsp;</label>
+	  	  <input id="elev" class="notVC" type="file" name="chart" /><br />
+		<label id="l_gpx" class="notVC" for="gpxfile" class="nr">GPX File: [resides in gpx/] &nbsp;</label>
 		 <input id="gpxfile" type="file" name="gpxname" /><br />
-		<label id="l_trk" for="trkfile" class="nr">Track File: [resides in json/] &nbsp;:</label>
+		<label id="l_trk" class="notVC" for="trkfile" class="nr">Track File: [resides in json/] &nbsp;:</label>
 		  <input id="trkfile" type="file" name="track" /><br /><br />
-		Additonal images - optional<br />
-		<label id="l_add1" for="addon1" class="nr">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
+		<p style="margin-bottom:4px;" id="spImg">Additonal images - optional</p>
+		<label style="color:Gray;" id="l_add1" for="addon1">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
 	  	  <input id="addon1" type="file" name="othr1" /><br />
 		<label id="l_add2" for="addon2" class="nr">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
 	  	  <input id="addon2" type="file" name="othr2" />
@@ -147,24 +167,24 @@
 	<fieldset id="marker">
 		<legend>Google Maps Marker Style</legend>
 		<input id="vc" type="radio" name="mstyle" value="center" />
-			<label for="vc">Visitor Center (no hikes start here)</label>
+			<label for="vc">Visitor Center [New Index Page]</label>
 		<input id="vch" type="radio" name="mstyle" value="ctrhike" />
-			<label for="vch">Visitor Center (hikes start here)</label>
+			<label for="vch">Hike At / In Close Proximity To Visitor Center</label>
 		<input id="ch" type="radio" name="mstyle" value="cluster" />
 			<label for="ch">Trailhead Common to Multiple Hikes</label>
 		<input id="othr" type="radio" name="mstyle" value="other" />
 			<label for="othr">All Others</label><br />
-		<label for="n-s" class="nr">Trailhead Latitude (decimal value):</label>
+		<label for="n-s">--Trailhead/Visitor Center Latitude (decimal value):</label>
 			<input id="n-s" type="text" name="lat" size="16" />&nbsp;&nbsp;
-		<label for="e-w" class="nr">Longitude (decimal value):</label>
+		<label for="e-w">Longitude (decimal value):</label>
 			<input id="e-w" type="text" name="lon" size="16" /><br />
 	</fieldset>
 	
 	<fieldset id="urls">
 		<legend>URL's</legend>
-		<label for="url1">URL for Photo Album Site:</label>
+		<label class="notVC" for="url1">URL for Photo Album Site:</label>
 			<input id="url1" type="text" name="photo1" size="75" /><br />
-		<label for="url2">URL for Secondary Photo Album (Tom or Ken):</label>
+		<label class="notVC" for="url2">URL for Secondary Photo Album (Tom or Ken):</label>
 			<input id="url2" type="text" name="photo2" size="75" /><br />
 		<label for="gdir">Google Map Directions:</label> 
 			<input id="gdir" type="text" name="dirs" size="150" />
@@ -188,7 +208,7 @@
 	<div id="right2" class="grid_8"></div>
 	<div id="save-modal" class="modal" style="background-color:white;">
 		<p id="prev" style="text-align:center;"> NOTE: You may save up to two different forms<br />
-		<em> You must re-upload CSV File for complete restore!!</em></p>
+		<em> You must re-upload CSV File (and associated image files) for complete restore!!</em></p>
 		<p>Please enter a name to identify the saved form: <span><input id="savetxt" type="text"
 			name="saveName" placeholder="hikeLoc" /></span></p>
 		<input id="edit" type="radio" name="dothis" value="cont" /> Save &amp; Continue Editing or Submit Data<br />
@@ -197,12 +217,13 @@
 </div>
 <div id="ul"></div>
 
+<p id="dbug"></p>
 <div id="dbugr">CLICK</div>
 <div id="cleaner">CLEAN</div>
 
-<script src="jquery-1.12.1.js"></script>
-<script src="modal_setup.js"></script>
-<script src="step1.js"></script>
+<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/modal_setup.js"></script>
+<script src="enterHike.js"></script>
 </body>
 
 </html>
