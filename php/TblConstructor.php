@@ -27,7 +27,7 @@
 	<tbody>
 	<!-- ADD HIKE ROWS VIA PHP HERE: -->
 	<?php
-	$dataTable = '../data/TblDB.csv';
+	$dataTable = '../data/test.csv';
 	$handle = fopen($dataTable,'r');
 	if ($handle !== false) {
 		$lineno = 0;
@@ -91,7 +91,7 @@
 				$hikePage = 'hikePageTemplate.php?hikeIndx=' . $hikeIndx;
 				$hikeName = $hikeArray[1];
 				$hikeLocale = $hikeArray[2];
-				$hikeDirections = $hikeArray[25];
+				$hikeDirections = rawurldecode($hikeArray[25]);
 				/* There may be either one or two photo links... if only one, then
 				   post the icon for photos on the hike page summary table; regardless,
 				   post the "main" link here in the data table */

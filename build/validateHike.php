@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Upload</title>
+	<title>Validate &amp; Select Images</title>
 	<link href="validateHike.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
@@ -34,8 +34,8 @@ if ($hikeFileName == "") {
 	$hikeExp = trim($_REQUEST['expos']);
 	$hikeGmap = $_FILES['gpsvMap']['name'];
 	$hikeEChart = $_FILES['chart']['name'];
-	$hikeGpx = "../gpx/" . $_FILES['gpxname']['name'];
-	$hikeJSON = "../json/" . $_FILES['track']['name'];
+	$hikeGpx = $_FILES['gpxname']['name'];
+	$hikeJSON = $_FILES['track']['name'];
 	$hikeLat = trim($_REQUEST['lat']);
 	$hikeLong = trim($_REQUEST['lon']);
 	$hikeOthrImage1 = $_FILES['othr1']['name'];
@@ -64,7 +64,7 @@ if ($hikeFileName == "") {
 	$lineCnt = count($harray) - 1;  // row number of latest entry
 	// always read in the last row for the latest hike info:
 	$hikeDataArray = str_getcsv($harray[$lineCnt],",");
-	// VARIABLE ASSIGNMENTS USING CSV FILE:
+	// VARIABLE ASSIGNMENTS USING NewHikeData.CSV FILE:
 	$hikeName = trim($hikeDataArray[0]);
 	$hikeLocale = trim($hikeDataArray[1]);
 	$hikeType = trim($hikeDataArray[2]);
@@ -75,13 +75,12 @@ if ($hikeFileName == "") {
 	$hikeWow = trim($hikeDataArray[7]);
 	$hikeSeasons = trim($hikeDataArray[8]);
 	$hikeExp = trim($hikeDataArray[9]);
-	$tsvFile = "../gpsv/" . trim($hikeDataArray[10]); // NOTE: this file was not uploaded,
-		// as was the file provided by the form... 
-	$name2pass = $tsvFile;
+	$tsvFile = trim($hikeDataArray[10]);
+	$name2pass = '../gpsv/' . $tsvFile;
 	$hikeGmap = trim($hikeDataArray[11]);
 	$hikeEChart = trim($hikeDataArray[12]);
-	$hikeGpx = "../gpx/" . trim($hikeDataArray[13]);
-	$hikeJSON = "../json/" . trim($hikeDataArray[14]);
+	$hikeGpx = trim($hikeDataArray[13]);
+	$hikeJSON = trim($hikeDataArray[14]);
 	$hikeLat = trim($hikeDataArray[15]);
 	$hikeLong = trim($hikeDataArray[16]);
 	$hikeOthrImage1 = trim($hikeDataArray[17]);
@@ -92,8 +91,9 @@ if ($hikeFileName == "") {
 	$hikeDir = trim($hikeDataArray[22]);
 	$hikePage = "pages/" . trim($hikeDataArray[23]);
 	// Get the specified tsv for processing...
-	$tsvSize = filesize($tsvFile);
-	$rawfile = fopen($tsvFile,"r") or die ("Could not open TSV FILE in gpsv directory");
+	$tsvSize = filesize($name2pass);
+	$rawfile = fopen($name2pass,"r") or 
+		die ("Could not open TSV FILE in gpsv directory");
 	$fdat = fread($rawfile,$tsvSize);
 }
 // CHECK ON PATHS LATER
@@ -306,7 +306,7 @@ if ($hikeMarker === 'ctrhike') {
 these names were extracted from the .tsv file</em><br />
 <input style="margin-left:8px" id="all" type="checkbox" name="allPix" value="useAll" />Use All Photos</p>
 <?php
-	$handle = fopen($tsvFile, "r");
+	$handle = fopen($name2pass, "r");
 	if ($handle !== false) {
 		$lineno = 0;
 		$picno = 0;

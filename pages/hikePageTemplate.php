@@ -3,9 +3,8 @@
 
 <?php
 	$hikeIndexNo = $_GET['hikeIndx'];
-	echo $hikeIndexNo;
 	/* Use the common database (excel csv file) to extract info */
-	$dataTable = '../data/TblDB.csv';
+	$dataTable = '../data/test.csv';
 	$handle = fopen($dataTable,'r');
 	if ($handle !== false) {
 		$lineno = 0;
@@ -24,7 +23,7 @@
 					$hikeSeasons = $hikeArray[12];
 					$hikePhotoLink1 = $hikeArray[23];
 					$hikePhotoLink2 = $hikeArray[24];
-					$hikeDirections = $hikeArray[25];
+					$hikeDirections = rawurldecode($hikeArray[25]);
 					$rows = array();
 					for ($j=0; $j<6; $j++) {
 						$thisRow = $hikeArray[$j+29];
@@ -32,11 +31,11 @@
 							$rowCount = $j;
 							break;
 						} else {
-							$rows[$j] = '<div id="row' . $j . '" class="ImgRow">' . $thisRow . '</div>';
+							$rows[$j] = $thisRow;
 						}
 					}
-					$picCaptions = '<div class="captionList"><ol>' . $hikeArray[35] . '</ol></div>';
-					$picLinks = '<div class="lnkList"><ol>' . $hikeArray[36] . '</ol></div>';
+					$picCaptions = rawurldecode($hikeArray[35]);
+					$picLinks = rawurldecode($hikeArray[36]);
 					if ($hikeArray[26] == 'Y') {
 						$hikeTipsPresent = true;
 						$hikeTips = $hikeArray[37];
@@ -44,9 +43,9 @@
 						$hikeTipsPresent = false;
 					}
 					$hikeInfo = '<p id="hikeInfo">' . $hikeArray[38] . '</p>';
-					$hikeReferences = '<ul id="refs">' . $hikeArray[39] . '</ul>';
-					$hikeProposedData = $hikeArray[40];
-					$hikeActualData = $hikeArray[41];
+					$hikeReferences = rawurldecode($hikeArray[39]);
+					$hikeProposedData = rawurldecode($hikeArray[40]);
+					$hikeActualData = rawurldecode($hikeArray[41]);
 				}
 			}
 			$lineno++;
@@ -134,32 +133,34 @@
         	echo $picLinks;
         ?>
 		<div id="postPhoto">
-		<?php
-			if ($hikeTipsPresent) {
-				echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
-					'<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . $hikeTips . '</div>';
-        	}
-			echo $hikeInfo;
-		?>
-		<fieldset>
-		<legend>References &amp; Links</legend>
-		<?php
-			echo $hikeReferences;
-		?>
-		</fieldset>
-		<fieldset>
-		<legend id="flddat">GPS Maps &amp; Data</legend>
-		<?php
-			if ($hikeProposedData !== '') {
-				echo $hikeProposedData;
-			}
-			if ($hikeActualData !== '') {
-				echo $hikeActualData;
-			}
-		?>
-		</fieldset>
-
-		<div id="dbug"></div>
+			<?php
+				if ($hikeTipsPresent) {
+					echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
+						'<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . $hikeTips . '</div>';
+				}
+				echo $hikeInfo;
+				if ($hikeReferences !== '') {
+					echo '<fieldset>'."\n";
+					echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
+					echo $hikeReferences . "\n";
+					echo '</fieldset>';
+				}
+				if ($hikeProposedData !== '' || $hikeActualData !== '') {
+					echo '<fieldset>'."\n";
+					echo '<legend id="flddat">GPS Maps &amp; Data</legend>'."\n";
+					if ($hikeProposedData !== '') {
+						echo '<p id="proptitle">- Proposed Hike Data</p>'."\n";
+						echo $hikeProposedData."\n";
+					}
+					if ($hikeActualData !== '') {
+						echo '<p id="acttitle">- Actual Hike Data</p>'."\n";
+						echo $hikeActualData."\n";
+					}
+					echo '</fieldset>';
+				}
+			?>
+			
+			<div id="dbug"></div>
 	
 		</div>  <!-- end of postPhoto section -->
 

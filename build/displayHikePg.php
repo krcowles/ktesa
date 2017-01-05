@@ -239,7 +239,7 @@ for ($i=0; $i<$items; $i++) {
 		}
 		# thisRow is completed and will be used below in different ways:
 		$rowHtml = $rowHtml . $thisRow . '</div>';
-		$imgRows[$rowNo] = '<div id="row' . $rowNo . '" class="ImgRow">' . $thisRow . '</div/';	
+		$imgRows[$rowNo] = '<div id="row' . $rowNo . '" class="ImgRow">' . $thisRow . '</div>';	
 		$rowNo += 1;
 		$startIndx += $rowItems;
 		$curWidth = 0;

@@ -102,9 +102,9 @@
 	$newHike[27] = '';
 	$newHike[28] = $_POST['htool'];
 	$newHike[29] = $_SESSION['row0'];
-	$newHike[30] = trim($_SESSION['row1']);
-	#echo "; length row1: " . strlen($newHike[30]);
-	#echo "Row1 start chars are: " . substr($newHike[30],0,10);
+	echo "; length row0: " . strlen($newHike[29]);
+	echo "Row0 start chars are: " . substr($newHike[29],1,10);
+	$newHike[30] = $_SESSION['row1'];
 	$newHike[31] = $_SESSION['row2'];
 	$newHike[32] = $_SESSION['row3'];
 	$newHike[33] = $_SESSION['row4'];
@@ -115,11 +115,13 @@
 	$newHike[38] = $_POST['hiketxt'];
 	/* COLLECT REFERENCES FROM PREVIOUS PAGE */
 	$refsHtml = '<ul id="refs">';
+	$any = false;
 	$bks = $_POST['bk'];
 	$auths = $_POST['auth'];
 	for ($j=0; $j<3; $j++) {
 		if ($bks[$j] !== '') {
 			$refsHtml = $refsHtml . '<li>Book: <em>' . $bks[$j] . '</em>, ' . $auths[$j] . '</li>';
+			$any = true;
 		}
 	}
 	$webs = $_POST['web'];
@@ -128,6 +130,7 @@
 		if ($webs[$k] !== '') {
 			$refsHtml = $refsHtml . '<li>Website: <a href="' . $webs[$k] . '" target="_blank">' . 
 				$wtxt[$k] . '</a></li>';
+			$any = true;
 		}
 	}
 	$apps = $_POST['app'];
@@ -136,49 +139,64 @@
 		if ($apps[$n] !== '') {
 			$refsHtml = $refsHtml . '<li>App: <a href="' . $apps[$n] . '" target="_blank">' . 
 				$apptxt[$n] . '</a></li>';
+			$any = true;
 		}
 	}
-	$refsHtml = $refsHtml . '</ul>';
-	$refEnc = rawurlencode($refsHtml);
-	$newHike[39] = $refEnc;
+	if ($any) {
+		$refsHtml = $refsHtml . '</ul>';
+		$refEnc = rawurlencode($refsHtml);
+		$newHike[39] = $refEnc;
+	}
 	/* COLLECT PROPOSED DATA FROM PREVIOUS PAGE */
+	$any = false;
 	$propMaps = $_POST['pmap'];
 	$propTxt = $_POST['pmtxt'];
 	$propGpx = $_POST['pgpx'];
 	$propGpxTxt = $_POST['pgpxtxt'];
 	$propRefs = '<ul id="plinks">';
+	# NOTE: assuming that a map & gpx file coexist - this may not be so!
 	for ($i=0; $i<2; $i++) {
-		$propRefs = $propRefs . '<li>Map: <a hef="' . $propMaps[$i] . '" target="_blank">' .
-			$propTxt[$i] . '</a></li>';
-		$propRefs = $propRefs . '<li>GPX: <a href="' . $propGpx[$i] . '" target="_blank">' .
-			$propGpxTxt[$i] . '</a></li>';
+		if ($propMaps[$i] !== '' || $propGpx[$i] !== '') {
+			$propRefs = $propRefs . '<li>Map: <a hef="' . $propMaps[$i] . '" target="_blank">' .
+				$propTxt[$i] . '</a></li>';
+			$propRefs = $propRefs . '<li>GPX: <a href="' . $propGpx[$i] . '" target="_blank">' .
+				$propGpxTxt[$i] . '</a></li>';
+			$any = true;
+		}
 	}
-	$propRefs = $propRefs . '</ul>';
-	$propEnc = rawurlencode($propRefs);
-	$newHike[40] = $propEnc;
+	if ($any) {
+		$propRefs = $propRefs . '</ul>';
+		$propEnc = rawurlencode($propRefs);
+		$newHike[40] = $propEnc;
+	}
 	/* COLLECT ACTUAL DATA FROM PREVIOUS PAGE */
+	$any = false;
 	$actMaps = $_POST['amap'];
 	$actTxt = $_POST['amtxt'];
 	$actGpx = $_POST['agpx'];
 	$actGpxTxt = $_POST['agpxtxt'];
 	$actRefs = '<ul id="alinks">';
 	for ($i=0; $i<2; $i++) {
-		$actRefs = $actRefs . '<li>Map: <a hef="' . $actMaps[$i] . '" target="_blank">' .
-			$actTxt[$i] . '</a></li>';
-		$actRefs = $actRefs . '<li>GPX: <a href="' . $actGpx[$i] . '" target="_blank">' .
-			$actGpxTxt[$i] . '</a></li>';
+		if ($actMaps[$i] !== '' || $actGpx[$i] !== '') {
+			$actRefs = $actRefs . '<li>Map: <a hef="' . $actMaps[$i] . '" target="_blank">' .
+				$actTxt[$i] . '</a></li>';
+			$actRefs = $actRefs . '<li>GPX: <a href="' . $actGpx[$i] . '" target="_blank">' .
+				$actGpxTxt[$i] . '</a></li>';
+			$any = true;
+		}
 	}
-	$actRefs = $actRefs . '</ul>';
-	$actEnc = rawurlencode($actRefs);
-	$newHike[41] = $actEnc;
+	if ($any) {
+		$actRefs = $actRefs . '</ul>';
+		$actEnc = rawurlencode($actRefs);
+		$newHike[41] = $actEnc;
+	}
 	ksort($newHike, SORT_NUMERIC);
 	$csvData = implode(',',$newHike);
 	fputs($handle, $csvData."\n");
 	echo "<br />NEW: ";
 	for ($i=0; $i<42; $i++) {
 		if ($i === 29 || $i === 30 || $i === 31 || $i === 32 || $i === 33 || $i === 34) {
-			echo "Not outputting row ;" . $i;
-			#fputcsv($handle,$newHike[$i]);
+			echo "Not outputting row" . ($i - 29) . " ;";
 		} else {
 			echo $listOut[$i] . "-> " . $newHike[$i] . "<br />";
 		}
