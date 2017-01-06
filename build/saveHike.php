@@ -21,19 +21,17 @@
 <div style="margin-left:12px;padding:8px;">
 <?php
 	$newOrgHike = $_POST['hvcgrp'];
-	echo "Imported Index No for Visitor Center Link: " . $newOrgHike;
 	if ($newOrgHike !== '') {
 		$addLoc = intval($newOrgHike);
 	} else {
 		$addLoc = 0; // there is no 0 hike index...
 	}
-	echo "addLoc is " . $addLoc . "\n";
 	/* get last used hike No.. */
 	$listOut = array("Hike Index No.","Hike Name","Locale","Marker","Indx. Cluster String","Cluster Letter",
 		"Hike Type","Length","Elevation Change","Difficulty","Facilities","Wow Factor",
 		"Seasons","Exposure","tsv File","Geomap","Elevation Chart","Geomap GPX",
 		"Track File","Latitude","Longitude","Additonal Image1","Additional Image2",
-		"Ken's Photo Album","Tom's Photo Album","Google Directions","Trail Tips?",
+		"Ken's Photo Album","Tom's Photo Album","Google Directions","Trail Tips?","NO PAGE HTML FILE",
 		"Cluster Group Label","Row0 HTML","Row1 HTML","Row2 HTML","Row 3HTML","Row4 HTML",
 		"Row5 HTML","Captions","Photo Links","Tips Text","Hike Info","References","Proposed Data",
 		"Actual Data");
@@ -67,6 +65,8 @@
 		$newHike[3] = 'Normal';
 	}
 	# [4]is index page reference only: Cluster String
+	
+	/* NEED TO WRITE TO INDEX, NOT THIS HIKE!!! */
 	if ($newHike[4] !== '') {
 		$newHike[4] = $newHike[4] . "." . $newHike[0];
 	}  else {
@@ -75,7 +75,7 @@
 	if ($addLoc === 0) {
 		$newHike[4] = '';
 	}
-	$newHike[5] = 'K';
+	$newHike[5] = $_POST['hclus'];
 	$newHike[6] = $_POST['htype'];
 	$newHike[7] = $_POST['hmiles'];
 	$newHike[8] = $_POST['hfeet'];
@@ -101,9 +101,8 @@
 	/* page.html becoming obsolete */
 	$newHike[27] = '';
 	$newHike[28] = $_POST['htool'];
+	echo "Passed cluster group letter " . $newHike[5] . ", tip is " . $newHike[28];
 	$newHike[29] = $_SESSION['row0'];
-	echo "; length row0: " . strlen($newHike[29]);
-	echo "Row0 start chars are: " . substr($newHike[29],1,10);
 	$newHike[30] = $_SESSION['row1'];
 	$newHike[31] = $_SESSION['row2'];
 	$newHike[32] = $_SESSION['row3'];

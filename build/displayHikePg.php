@@ -1,4 +1,5 @@
 <?php
+session_start();
 #	All this data from step 2: (eventually in database, not passed via form!)
 $tsvFile = $_POST['tsv'];
 $pgTitle = $_POST['hTitle'];
@@ -12,6 +13,22 @@ if ($hikeType === "oab") {
 	$htype = "Two-Cars";
 }
 $ctrHikeLoc = $_POST['vcList'];
+$clusGrp = $_POST['tipLtr'];
+$str2find = $clusGrp . "$";
+$lgthOfGrp = strlen($str2find);
+/*
+	With clusGrp, find the associated tooltip
+*/
+$clusString = $_SESSION['clusGroupings'];
+$strLoc = strpos($clusString,$str2find);
+$tipStrt = $strLoc + $lgthOfGrp;
+$strEnd = strlen($clusString) - $tipStrt;
+$firstHalf = substr($clusString,$tipStrt,$strEnd);
+$grpEndPos = strpos($firstHalf,";");
+$clusTip = substr($firstHalf,0,$grpEndPos);
+/* 
+	End of cluster tooltip processing
+*/
 $distance = $_POST['lgth'];
 $elevation = $_POST['elev'];
 $difficulty = $_POST['diffi'];
@@ -304,7 +321,6 @@ for ($k=0; $k<$noOfPix; $k++ ) {
 }
 $albumHtml = $albumHtml . "</ol></div>";
 $csvAlb = rawurlencode($albumHtml);
-session_start();
 $_SESSION['row0'] = $imgRows[0];
 $_SESSION['row1'] = $imgRows[1];
 $_SESSION['row2'] = $imgRows[2];
@@ -462,6 +478,7 @@ $_SESSION['row5'] = $imgRows[5];
 	<input type="hidden" name="hlocale" value="<?php echo $locale;?>" />
 	<input type="hidden" name="hmarker" value="<?php echo $marker;?>" />
 	<input type="hidden" name="hvcgrp" value="<?php echo $ctrHikeLoc;?>" />
+	<input type="hidden" name="hclus" value="<?php echo $clusGrp;?>" />
 	<input type="hidden" name="htype" value="<?php echo $htype;?>" />
 	<input type="hidden" name="hmiles" value="<?php echo $distance;?>" />
 	<input type="hidden" name="hfeet" value="<?php echo $elevation;?>" />
@@ -483,7 +500,7 @@ $_SESSION['row5'] = $imgRows[5];
 	<input type="hidden" name="hphoto2" value="<?php echo $purl2;?>" />
 	<input type="hidden" name="hdir" value="<?php echo $googledirs;?>" />
 	<input type="hidden" name="htyn" value="<?php echo $trailTips;?>" />
-	<input type="hidden" name="htool" value="<?php echo $clusterGrp;?>" />
+	<input type="hidden" name="htool" value="<?php echo $clusTip;?>" />
 	<input type="hidden" name="hrow0" value="<?php $imgRows[0]?>" />
 	<input type="hidden" name="hrow1" value="<?php $imgRows[1]?>" />
 	<input type="hidden" name="hrow2" value="<?php $imgRows[2]?>" />

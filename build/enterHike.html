@@ -56,9 +56,10 @@
 		<legend>Excel Hike Data [Must be in CSV format]</legend>
 		<label>CSV Hike Data Inputs File<input id="xl" type="file" name="xlfile" /></label>
 		&nbsp;&nbsp;<input type="submit" value="submit csv" />
-		<p style="color:DarkBlue;">PLEASE NOTE:</p><span> Once a file is selected, the form data below will be ignored.<br />To clear the
-		file selected above and use the data entry below, click here:</span> 
-		<button id="clrIt">Clear Upload and Use Entry Form Below</button>
+		<p style="color:DarkBlue;">PLEASE NOTE: <span style="color:Black;"> Once a file is
+		selected, the form data below will be ignored.<br />To clear the
+		file selected above and use the data entry below, click here:
+		<button id="clrIt">Clear Upload and Use Entry Form Below</button></span></p>
 	</fieldset>
 	 
 	<fieldset id="basic">
@@ -157,8 +158,8 @@
 		 <input id="gpxfile" type="file" name="gpxname" /><br />
 		<label id="l_trk" class="notVC" for="trkfile" class="nr">Track File: [resides in json/] &nbsp;:</label>
 		  <input id="trkfile" type="file" name="track" /><br /><br />
-		<p style="margin-bottom:4px;" id="spImg">Additonal images - optional</p>
-		<label style="color:Gray;" id="l_add1" for="addon1">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
+		<p style="margin-bottom:4px;" id="spImg">Additional images - optional</p>
+		<label id="l_add1" for="addon1">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
 	  	  <input id="addon1" type="file" name="othr1" /><br />
 		<label id="l_add2" for="addon2" class="nr">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
 	  	  <input id="addon2" type="file" name="othr2" />

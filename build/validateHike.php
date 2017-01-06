@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <html>
 <head>
 	<title>Validate &amp; Select Images</title>
@@ -104,20 +105,18 @@ $elevHeight = $EChartSize[1];
 $farray = str_getcsv($fdat,"\n");
 $icount = count($farray) - 1;  // no. of rows in csv file
 /*
-	MARKER-DEPENDENT PAGE CONSTRUCTION
+	MARKER-DEPENDENT PAGE ELEMENTS
 */
+$database = '../data/TblDB.csv';
 if ($hikeMarker === 'ctrhike') {
-	$database = '../data/TblDB.csv';
 	$dbFile = fopen($database, "r");
 	$VClist = array();
-	$VCOrgHikes = array();
 	if ($dbFile !== false) {
 		$srchCnt = 0;
 		while ( ($hike = fgets($dbFile)) !== false ) {
 			$srchArray = str_getcsv($hike,",");
 			if ( preg_match("/Visitor/i", $srchArray[3]) ==1 ) {
 				$VCList[$srchCnt] = $srchArray[0] . ": " . $srchArray[1];
-				$VCOrgHikes[$srchCnt] = $srchArray[4];
 				$srchCnt++;
 			}
 		}
@@ -127,7 +126,7 @@ if ($hikeMarker === 'ctrhike') {
 	echo '<div id="findvc"><p>This hike was identified as starting at, or in close proximity to,' .
 	' a Visitor Center.<br /><em id="vcnote">NOTE: if a page for this Visitor Center does not yet exist, please ' .
 	'go back and create it before continuing with this hike.</em></p>' .
-	'<p><label style="color:DarkBlue">Select the Visitor Center Page for this hike: <select name="vcList">';
+	'<p><label style="color:DarkBlue;">Select the Visitor Center Page for this hike: </label><select name="vcList">';
 	for ($k=0; $k<$srchCnt; $k++) {
 		$namePos = strpos($VCList[$k],":") + 2;
 		$namelgth = strlen($VCList[$k]) - $namePos;
@@ -138,8 +137,46 @@ if ($hikeMarker === 'ctrhike') {
 	}
 	echo "</select></p></div>";
 } elseif ($hikeMarker === 'cluster') {
-} else {
-}
+	$dbFile = fopen($database,"r");
+	$clusterList = array();
+	if ($dbFile !== false) {
+		$srchCnt = 0;
+		while ( ($hike = fgets($dbFile)) !== false ) {
+			$srchArray = str_getcsv($hike,",");
+			if ( preg_match("/cluster/i",$srchArray[3]) == 1) {
+				if ($srchArray[28] !== '') {
+					$clusterList[$srchCnt] = $srchArray[5] . "$" . $srchArray[28];
+					$srchCnt++;
+				}
+			}
+		}
+		# Now eliminate duplicates...
+		$result = array_unique($clusterList);
+	} else {
+		echo "Could not open database file ..data/TblDB.csv";
+	}
+	$passGroup = implode(";",$result); //Since the value is already associated, save it now
+	$_SESSION['clusGroupings'] = $passGroup;
+	echo '<div id="clus_sel"><p>This hike was identified as belonging to a group of hikes ' .
+	'in close proximity with other hikes.<br /><label style="color:DarkBlue;">' .
+	'Select the Group to which this hike belongs: </label><select name="tipLtr">';
+
+	foreach ($result as $group) {
+		$groupNamePos = strpos($group,"$") + 1;
+		$groupNameLgth = strlen($group) - $groupNamePos;
+		$groupName = substr($group,$groupNamePos,$groupNameLgth);
+		$groupName = trim($groupName);
+		$clusLtrLgth = $groupNamePos - 1;
+		$clusLtr = substr($group,0,$clusLtrLgth);
+		#debug:
+		array_push($vals,$clusLtr);
+		echo '<option value="' . $clusLtr . '">' . $groupName . '</option>';
+	}
+	echo "</select></p></div>";
+} 
+/*
+	END OF MARKER=DEPENDENT PAGE CONSTRUCTION
+*/
 ?>
 <h2>The Data As It Will Appear In The Index Table (w/Map)</h2>
 <div id="tbl1">
