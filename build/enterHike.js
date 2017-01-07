@@ -120,7 +120,7 @@ if (typeof(Storage) !== undefined) {
 		/* NOTE: "id" key added as it was thought there would be other modal windows to process,
 		   and the routine (modal_setup.js) would need to know which type modal to produce */
 	});
-	// DEBUG STUFF...
+	/*           DEBUG STUFF...
 	$('#dbugr').on('click', function() {
 		var a = window.localStorage.noOfSaves;
 		var b = window.localStorage.oldName1;
@@ -143,6 +143,7 @@ if (typeof(Storage) !== undefined) {
 		window.localStorage.removeItem('oldForm2');
 		window.localStorage.removeITem('oldFile2');
 	});
+	*/
 
 	// Load previous saves and set event handlers
 	previousSaves = parseFloat(window.localStorage.noOfSaves);
