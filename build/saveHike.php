@@ -3,7 +3,7 @@
 <html>
 
 <head>
-	<title>Create CSV File</title>
+	<title>Write Hike File</title>
 	<meta charset="utf-8" />
 	<meta name="language"
 			content="EN" />
@@ -20,38 +20,19 @@
 <body>
 <div style="margin-left:12px;padding:8px;">
 <?php
-	$newOrgHike = $_POST['hvcgrp'];
-	if ($newOrgHike !== '') {
-		$addLoc = intval($newOrgHike);
-	} else {
-		$addLoc = 0; // there is no 0 hike index...
-	}
 	/* get last used hike No.. */
-	$listOut = array("Hike Index No.","Hike Name","Locale","Marker","Indx. Cluster String","Cluster Letter",
-		"Hike Type","Length","Elevation Change","Difficulty","Facilities","Wow Factor",
-		"Seasons","Exposure","tsv File","Geomap","Elevation Chart","Geomap GPX",
-		"Track File","Latitude","Longitude","Additonal Image1","Additional Image2",
-		"Ken's Photo Album","Tom's Photo Album","Google Directions","Trail Tips?","NO PAGE HTML FILE",
-		"Cluster Group Label","Row0 HTML","Row1 HTML","Row2 HTML","Row 3HTML","Row4 HTML",
-		"Row5 HTML","Captions","Photo Links","Tips Text","Hike Info","References","Proposed Data",
-		"Actual Data");
 	$database = '../data/test.csv';
 	$handle = fopen($database, "c+");
 	if ($handle !== false) {
-		$newHike[4] = '';
 		while ( ($line = fgets($handle)) !== false ) {
 			$dbLineArray = str_getcsv($line,",");
-			if ($addLoc > 0 && intval($dbLineArray[0]) == $addLoc) {
-				$newHike[4] = $dbLineArray[4];  // may be empty
-				echo "Found string: " . $newHike[4];
-			}
 		}
-		echo "last hike is " . $dbLineArray[0];
+		# echo "last hike is " . $dbLineArray[0];
 	} else {
-		echo "Could not open database file ../data/TblDB.csv";
+		echo "<p>Could not open database file</p>";
 	}
 	echo " ...Start import...";
-	/* imported data from step3 */
+	/* imported data from displayHikePg.php */
 	$newHike[0] = intval($dbLineArray[0]) + 1;
 	$newHike[1] = $_POST['hname'];
 	$newHike[2] = $_POST['hlocale'];
@@ -59,22 +40,24 @@
 	# define text for marker type
 	if ($newHike[3] == 'center') {
 		$newHike[3] = 'Visitor Ctr';
-	} else if ($newHike[3] == 'cluster') {
+		$msg = "New Yellow Marker will be added on the map page for this Visitor Center Index;" .
+			" the page will begin with no hikes listed in its table";
+	} elseif ($newHike[3] == 'ctrhike') {
+		$newHike[3] = "Normal";
+		$msg = "No Marker will be added to the map page for this hike, as it will be " .
+			"listed in the Visitor Center Index Page, and appear in the info window for " .
+			"the Center's yellow marker. The hike will also initially appear at the " .
+			"bottom of the Index Table of Hikes";
+	} elseif ($newHike[3] == 'cluster') {
 		$newHike[3] = 'Cluster';
+		$msg = "This hike will be added to the others in the group: " . $_POST['htool'] .
+			", which is currently already indicated by a Blue Marker";
 	} else {
 		$newHike[3] = 'Normal';
+		$msg = "A Red Marker will be added to the map page for this hike. The hike will " .
+			"initially appear at the bottom of the Index Table of Hikes";
 	}
-	# [4]is index page reference only: Cluster String
-	
-	/* NEED TO WRITE TO INDEX, NOT THIS HIKE!!! */
-	if ($newHike[4] !== '') {
-		$newHike[4] = $newHike[4] . "." . $newHike[0];
-	}  else {
-		$newHike[4] = $newHike[0];
-	}
-	if ($addLoc === 0) {
-		$newHike[4] = '';
-	}
+	$newHike[4] = '';  // NOTE: Index page cluster string updated in previous displayHikePg.php
 	$newHike[5] = $_POST['hclus'];
 	$newHike[6] = $_POST['htype'];
 	$newHike[7] = $_POST['hmiles'];
@@ -101,7 +84,7 @@
 	/* page.html becoming obsolete */
 	$newHike[27] = '';
 	$newHike[28] = $_POST['htool'];
-	echo "Passed cluster group letter " . $newHike[5] . ", tip is " . $newHike[28];
+	# echo "Passed cluster group letter " . $newHike[5] . ", tip is " . $newHike[28];
 	$newHike[29] = $_SESSION['row0'];
 	$newHike[30] = $_SESSION['row1'];
 	$newHike[31] = $_SESSION['row2'];
@@ -192,6 +175,15 @@
 	ksort($newHike, SORT_NUMERIC);
 	$csvData = implode(',',$newHike);
 	fputs($handle, $csvData."\n");
+/*  DEBUG OUTPUT ---
+	$listOut = array("Hike Index No.","Hike Name","Locale","Marker","Indx. Cluster String","Cluster Letter",
+		"Hike Type","Length","Elevation Change","Difficulty","Facilities","Wow Factor",
+		"Seasons","Exposure","tsv File","Geomap","Elevation Chart","Geomap GPX",
+		"Track File","Latitude","Longitude","Additonal Image1","Additional Image2",
+		"Ken's Photo Album","Tom's Photo Album","Google Directions","Trail Tips?","NO PAGE HTML FILE",
+		"Cluster Group Label","Row0 HTML","Row1 HTML","Row2 HTML","Row 3HTML","Row4 HTML",
+		"Row5 HTML","Captions","Photo Links","Tips Text","Hike Info","References","Proposed Data",
+		"Actual Data");
 	echo "<br />NEW: ";
 	for ($i=0; $i<42; $i++) {
 		if ($i === 29 || $i === 30 || $i === 31 || $i === 32 || $i === 33 || $i === 34) {
@@ -200,6 +192,9 @@
 			echo $listOut[$i] . "-> " . $newHike[$i] . "<br />";
 		}
 	}
+*/
+	echo "<h1>HIKE SUCCESSFULLY SAVED!</h1>";
+	echo "<h2>" . $msg . "</h2>";
 ?>
 </div>
 

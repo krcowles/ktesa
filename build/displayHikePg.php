@@ -13,19 +13,55 @@ if ($hikeType === "oab") {
 	$htype = "Two-Cars";
 }
 $ctrHikeLoc = $_POST['vcList'];
+/*
+	If $ctrHikeLoc not empty, find the Index Page for the assoc. hike and update it
+*/
+if ($ctrHikeLoc !== '') {
+	$database = '../data/test.csv';
+	$wholeDB = file($database);
+	$lastline = $wholeDB[count($wholeDB) - 1];
+	$llArray = str_getcsv($lastline,",");
+	$nxtHikeNo = intval($llArray[0]) + 1;
+	foreach($wholeDB as &$dbLine) {
+		$hikeLine = str_getcsv($dbLine,",");
+		if ($hikeLine[0] == $ctrHikeLoc) {
+			$currentStr = $hikeLine[4];
+			if ($currentStr == '') {
+				$hikeLine[4] = $nxtHikeNo;
+			} else {
+				$hikeLine[4] = $hikeLine[4] . "." .$nxtHikeNo;
+			}
+			$dbLine = implode(",",$hikeLine);
+			break;
+		}
+	}
+}
+$newFile = implode($wholeDB);
+$output = fopen($database,"w");
+if ($output !== false) {
+	fputs($output,$newFile);
+} else {
+	echo "Could not open file to update index pg cluster string";
+}
+/*
+	End of ctrHikeLoc processing
+*/
 $clusGrp = $_POST['tipLtr'];
-$str2find = $clusGrp . "$";
-$lgthOfGrp = strlen($str2find);
+$clusTip = '';
 /*
 	With clusGrp, find the associated tooltip
 */
-$clusString = $_SESSION['clusGroupings'];
-$strLoc = strpos($clusString,$str2find);
-$tipStrt = $strLoc + $lgthOfGrp;
-$strEnd = strlen($clusString) - $tipStrt;
-$firstHalf = substr($clusString,$tipStrt,$strEnd);
-$grpEndPos = strpos($firstHalf,";");
-$clusTip = substr($firstHalf,0,$grpEndPos);
+if ($clusGrp !== '') {
+	$str2find = $clusGrp . "$";
+	$lgthOfGrp = strlen($str2find);
+	$clusString = $_SESSION['clusGroupings'];
+	$strLoc = strpos($clusString,$str2find);
+	$tipStrt = $strLoc + $lgthOfGrp;
+	$strEnd = strlen($clusString) - $tipStrt;
+	$firstHalf = substr($clusString,$tipStrt,$strEnd);
+	$grpEndPos = strpos($firstHalf,";");
+	$clusTip = substr($firstHalf,0,$grpEndPos);
+}
 /* 
 	End of cluster tooltip processing
 */
@@ -129,7 +165,7 @@ if ($handle !== false) {
 	}
 	$lineno--;
 } else {
-	die( "<p>Could not open {$fname}</p>" );
+	die( "Could not open tsv file for this hike" );
 }
 
 # Pull out the index numbers of the chosen few:
