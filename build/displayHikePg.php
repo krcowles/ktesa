@@ -1,7 +1,16 @@
 <?php
 session_start();
-#	All this data from step 2: (eventually in database, not passed via form!)
 $tsvFile = $_POST['tsv'];
+# Is this a rebuild?
+$redo = $_POST['rbld'];
+if ($redo === "YES") {
+	$rebuild = true;
+	$hikeNo = $_POST['indx'];
+	$tsvFile = '../gpsv/' . $tsvFile;
+} else {
+	$rebuild = false;
+}
+#	All this data from validateHike.php
 $pgTitle = $_POST['hTitle'];
 $locale = $_POST['area'];
 $hikeType = $_POST['htype'];
@@ -47,20 +56,24 @@ if ($output !== false) {
 	End of ctrHikeLoc processing
 */
 $clusGrp = $_POST['tipLtr'];
-$clusTip = '';
-/*
-	With clusGrp, find the associated tooltip
-*/
-if ($clusGrp !== '') {
-	$str2find = $clusGrp . "$";
-	$lgthOfGrp = strlen($str2find);
-	$clusString = $_SESSION['clusGroupings'];
-	$strLoc = strpos($clusString,$str2find);
-	$tipStrt = $strLoc + $lgthOfGrp;
-	$strEnd = strlen($clusString) - $tipStrt;
-	$firstHalf = substr($clusString,$tipStrt,$strEnd);
-	$grpEndPos = strpos($firstHalf,";");
-	$clusTip = substr($firstHalf,0,$grpEndPos);
+if ($rebuild) {
+	$clusTip = $_POST['tooltip'];
+} else {
+	$clusTip = '';  // default: may change below
+	/*
+		With clusGrp, find the associated tooltip
+	*/
+	if ($clusGrp !== '') {
+		$str2find = $clusGrp . "$";
+		$lgthOfGrp = strlen($str2find);
+		$clusString = $_SESSION['clusGroupings'];
+		$strLoc = strpos($clusString,$str2find);
+		$tipStrt = $strLoc + $lgthOfGrp;
+		$strEnd = strlen($clusString) - $tipStrt;
+		$firstHalf = substr($clusString,$tipStrt,$strEnd);
+		$grpEndPos = strpos($firstHalf,";");
+		$clusTip = substr($firstHalf,0,$grpEndPos);
+	}
 }
 /* 
 	End of cluster tooltip processing
@@ -147,31 +160,84 @@ $startChartWidth = floor(RowHt/$elevHeight * $elevWidth) + 7; # allow for margin
 $closingDiv = "</div>";
 
 #	Read in the tsv file and extract ALL usable data:
+/* NOTE: For some older files, the fields in the tsv file vary considerably and may
+   omit key data that later files contain. Look for these special files when
+   executing a page rebuild. The only fields required for row-filling are:
+		desc
+		name
+		date
+		n-size
+*/
 $handle = fopen($tsvFile, "r");
-if ($handle !== false) {
-	$lineno = 0;
-	$picno = 0;
-	while ( ($line = fgets($handle)) !== false ) {
-		$tsvArray = str_getcsv($line,"\t");
-		if ($lineno !== 0) {
-			$picName[$picno] = $tsvArray[1];
-			$picDesc[$picno] = $tsvArray[2];
-			$picAlbm[$picno] = $tsvArray[6];
-			$picDate[$picno] = $tsvArray[7];
-			$nsize[$picno] = $tsvArray[8];
-			$picno++;
+if ($rebuild) {
+	# find out how where key fields are located
+	$wholeTSV = file($tsvFile);
+	$tsvRecs = count($wholeTSV);
+	# parse the header line for field-types:
+	$headers = str_getcsv($wholeTSV[0],"\t");
+	for ($j=0; $j<count($headers); $j++) {
+		$item = $headers[$j];
+		#echo $item;
+		switch ($item) {  // note that name & desc terminology are opp of tsv file
+			case 'desc':
+				$rname = $j;
+				break;
+			case 'name':
+				$rdesc = $j;
+				break;
+			case 'date':
+				$rdate = $j;
+				break;
+			case 'n-size':
+				$rsize = $j;
+				break;
+			case 'album-link':
+			case 'url':
+				$ralb = $j;
+				break;
+			default:
+				# don't care
+				break;
 		}
-		$lineno++;
 	}
-	$lineno--;
+	$picno = 0;
+	for ($w=1; $w<$tsvRecs; $w++) {
+		$fieldDat = str_getcsv($wholeTSV[$w],"\t");
+		$picName[$picno] = $fieldDat[$rname];
+		$picDesc[$picno] = $fieldDat[$rdesc];
+		$picAlbm[$picno] = $fieldDat[$ralb];
+		$picDate[$picno] = $fieldDat[$rdate];
+		$nsize[$picno] = $fieldDat[$rsize];
+		#echo "Pic link: " . $nsize[$picno];
+		$picno++;
+	}
+	$lineno = count($picName);
 } else {
-	die( "Could not open tsv file for this hike" );
+	if ($handle !== false) {
+		$lineno = 0;
+		$picno = 0;
+		while ( ($line = fgets($handle)) !== false ) {
+			$tsvArray = str_getcsv($line,"\t");
+			if ($lineno !== 0) {
+				$picName[$picno] = $tsvArray[1];
+				$picDesc[$picno] = $tsvArray[2];
+				$picAlbm[$picno] = $tsvArray[6];
+				$picDate[$picno] = $tsvArray[7];
+				$nsize[$picno] = $tsvArray[8];
+				$picno++;
+			}
+			$lineno++;
+		}
+		$lineno--;
+	} else {
+		die( "Could not open tsv file for this hike" );
+	}
 }
-
-# Pull out the index numbers of the chosen few:
+# Pull out the index numbers of the chosen few: (or maybe all!)
 $k = 0;
 for ($i=0; $i<$noOfPix; $i++) {
 	$targ = $picarray[$i];
+	echo "target from picarray: " . $targ;
 	for ($j=0; $j<$lineno; $j++) {
 		if( $targ === $picName[$j] ) {
 			$indx[$k] = $j;
@@ -180,6 +246,7 @@ for ($i=0; $i<$noOfPix; $i++) {
 		}
 	}
 }
+echo "length of new index array is " . count($indx);
 # for each of the <user-selected> pix, define needed arrays
 for ($i=0; $i<$noOfPix; $i++) {
 	$x = $indx[$i];
@@ -193,6 +260,9 @@ for ($i=0; $i<$noOfPix; $i++) {
 	$caption[$i] = "{$picMonth} {$picDay}, {$picYear}: {$picDesc[$x]}";
 	$picSize = getimagesize($nsize[$x]); # PROVIDE THIS IN GPSV FILE??
 	$picWidth[$i] = $picSize[0];
+	if (is_numeric($picWidth[$i]) === false) {
+		echo "MAJOR PROBLEM WITH " . $i . "th ELEMENT!";
+	}
 	$picHeight[$i] = $picSize[1];
 	$name[$i] = $picName[$x];
 	$desc[$i] = $picDesc[$x];
@@ -447,68 +517,95 @@ $_SESSION['row5'] = $imgRows[5];
 <form action="saveHike.php" method="POST">
 
 <div id="postPhoto">
-	<?php if($trailTips == 'YES') echo '<div id="trailTips">' . "\n\t\t" .
-		'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
-		'<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">' . 
-		'<textarea id="tips" name="trailtiptxt" rows="6" cols="130" maxlength="1500">
-		Enter Trail Tips text here...</textarea></p>' ."\n\t" . '</div>';?>
-		
-	<p id="hikeInfo"><textarea id="hdesc" name="hiketxt" cols="145" rows="12" maxlength="3000">
-	ENTER TRAIL DESCRIPTION AND NOTES HERE...</textarea></p>
-	
-	<fieldset>
-
-	<legend id="fldrefs">References &amp; Links</legend>
-	<ul id="refs">
-		<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference" />
-				<input name="auth[]" type="text" size="40" placeholder="Name of author(s)" /></li>
-		<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference" />
-				<input name="auth[]" type="text" size="40" placeholder="Name of author(s)" /></li>
-		<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference" />
-				<input name="auth[]" type="text" size="40" placeholder="Name of author(s)" /></li>
-		<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here" />
-				<input name="webtxt[]" type="text" size="20" placeholder="Text to click on" /></li>
-		<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here" />
-				<input name="webtxt[]" type="text" size="20" placeholder="Text to click on" /></li>
-		<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here" />
-				<input name="webtxt[]" type="text" size="20" placeholder="Text to click on" /></li>
-		<li>App: <input name="app[]" type="text" size="100" placeholder="Paste link to app here" />
-				<input name="apptxt[]" type="text" size="20" placeholder="Text to click on" /></li>
-		<li>App: <input name="app[]" type="text" size="100" placeholder="Paste link to app here" />
-				<input name="apptxt[]" type="text" size="20" placeholder="Text to click on" /></li>
-		<li>App: <input name="app[]" type="text" size="100" placeholder="Paste link to app here" />
-				<input name="apptxt[]" type="text" size="20" placeholder="Text to click on" /></li>
-	</ul>
-	</fieldset>
-	<fieldset>
-	<legend id="flddat">GPS Maps &amp; Data</legend>
-		<div id="proposed">
-			<p id="proptitle">- Proposed Hike Data</p>
-			<ul id="plinks">
-				<li>Map: <input name="pmap[]" type="text" size="40" placeholder="Path to map" />
-					<input name="pmtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
-				<li>GPX: <input name="pgpx[]" type="text" size="40" placeholder="Path to map" />
-					<input name="pgpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
-				<li>Map: <input name="pmap[]" type="text" size="40" placeholder="Path to map" />
-					<input name="pmtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
-				<li>GPX: <input name="pgpx[]" type="text" size="40" placeholder="Path to map" />
-					<input name="pgpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
-			</ul>
-		</div>
-		<div id="actual">
-			<p id="acttitle">- Actual Hike Data</p>
-			<ul id="alinks">
-				<li>Map: <input name="amap[]" type="text" size="40" placeholder="Path to map" />
-					<input name="amtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
-				<li>GPX: <input name="agpx[]" type="text" size="40" placeholder="Path to map" />
-					<input name="agpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
-				<li>Map: <input name="amap[]" type="text" size="40" placeholder="Path to map" />
-					<input name="amtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
-				<li>GPX: <input name="agpx[]" type="text" size="40" placeholder="Path to map" />
-					<input name="agpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>
-			</ul>
-		</div>
-	</fieldset>
+	<?php 
+		if($trailTips == 'Y') {
+			echo '<div id="trailTips">' . "\n\t\t" .
+				'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
+				'<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">';
+			if ($rebuild) {
+				$tipsTxt = $_SESSION['tips'];
+				echo rawurldecode($tipsTxt) . '</p></div>';
+				echo '<input type="hidden" value="' . $tipTxt . '" />';
+			} else {
+				echo '<textarea id="tips" name="trailtiptxt" rows="6" cols="130" maxlength="1500">' .
+					'Enter Trail Tips text here...</textarea></p>' ."\n\t" . '</div>';
+			}
+		}
+		if ($rebuild) {
+			$hikeInfo = $_SESSION['hInfo'];
+			echo '<p id="hikeInfo">' . rawurldecode($hikeInfo) . '</p>';
+		} else {
+			echo  '<p id="hikeInfo"><textarea id="hdesc" name="hiketxt" cols="145" rows="12" maxlength="3000">' .
+				'ENTER TRAIL DESCRIPTION AND NOTES HERE...</textarea></p>';
+		}
+		if ($rebuild) {
+			$references = $_SESSION['hrefs'];
+			echo '<fieldset><legend id="fldrefs">References &amp; Links</legend>';
+			echo rawurldecode($references);
+			echo '</fieldset>';
+		} else {	
+			echo '<fieldset><legend id="fldrefs">References &amp; Links</legend>';
+			echo '<ul id="refs">';
+			echo '<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference" />' .
+				'<input name="auth[]" type="text" size="40" placeholder="Name of author(s)" /></li>';
+			echo '<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference" />' .
+				'<input name="auth[]" type="text" size="40" placeholder="Name of author(s)" /></li>';
+			echo '<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference" />' .
+				'<input name="auth[]" type="text" size="40" placeholder="Name of author(s)" /></li>';
+			echo '<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here" />' .
+				 '<input name="webtxt[]" type="text" size="20" placeholder="Text to click on" /></li>';
+			echo '<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here" />' .
+				'<input name="webtxt[]" type="text" size="20" placeholder="Text to click on" /></li>';
+			echo '<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here" />' .
+				'<input name="webtxt[]" type="text" size="20" placeholder="Text to click on" /></li>';
+			echo '<li>App: <input name="app[]" type="text" size="100" placeholder="Paste link to app here" />' .
+				'<input name="apptxt[]" type="text" size="20" placeholder="Text to click on" /></li>';
+			echo '<li>App: <input name="app[]" type="text" size="100" placeholder="Paste link to app here" />' .
+				'<input name="apptxt[]" type="text" size="20" placeholder="Text to click on" /></li>';
+			echo '<li>App: <input name="app[]" type="text" size="100" placeholder="Paste link to app here" />' .
+				'<input name="apptxt[]" type="text" size="20" placeholder="Text to click on" /></li>';
+			echo '</ul></fieldset>';
+		}
+		if ($rebuild) {
+			$propDat = $_SESSION['prop'];
+			$actDat = $_SESSION['act'];
+			if ($propDat !== '' || $actDat !== '') {
+				echo '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
+				if ($propDat !== '') {
+					echo '<div id="proposed"><p id="proptitle">- Proposed Hike Data</p>';
+					echo rawurldecode($propDat);
+					echo '</div>';
+				}
+				if ($actDat !== '') {
+					echo '<div id="actual"><p id="acttitle">- Actual Hike Data</p>';
+					echo rawurldecode($actDat);
+					echo '</div>';
+				}
+				echo '</fieldset>';
+			}
+		} else {
+			echo '<div id="proposed"><p id="proptitle">- Proposed Hike Data</p><ul id="plinks">';
+			echo '<li>Map: <input name="pmap[]" type="text" size="40" placeholder="Path to map" />' .
+					'<input name="pmtxt[]" type="text" size="40" placeholder="Text to click on" /></li>';
+			echo '<li>GPX: <input name="pgpx[]" type="text" size="40" placeholder="Path to map" />' .
+					'<input name="pgpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>';
+			echo '<li>Map: <input name="pmap[]" type="text" size="40" placeholder="Path to map" />' .
+					'<input name="pmtxt[]" type="text" size="40" placeholder="Text to click on" /></li>';
+			echo '<li>GPX: <input name="pgpx[]" type="text" size="40" placeholder="Path to map" />' .
+					'<input name="pgpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>' ;
+			echo '</ul></div>';
+			echo '<div id="actual"><p id="acttitle">- Actual Hike Data</p><ul id="alinks">';
+			echo '<li>Map: <input name="amap[]" type="text" size="40" placeholder="Path to map" />' .
+					'<input name="amtxt[]" type="text" size="40" placeholder="Text to click on" /></li>';
+			echo '<li>GPX: <input name="agpx[]" type="text" size="40" placeholder="Path to map" />' .
+					'<input name="agpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>';
+			echo '<li>Map: <input name="amap[]" type="text" size="40" placeholder="Path to map" />' .
+					'<input name="amtxt[]" type="text" size="40" placeholder="Text to click on" /></li>';
+			echo '<li>GPX: <input name="agpx[]" type="text" size="40" placeholder="Path to map" />' .
+					'<input name="agpxtxt[]" type="text" size="40" placeholder="Text to click on" /></li>';
+			echo '</ul></div>';
+		}
+	?>
 	<!-- Hidden Data Passed to hikeCSV.php -->
 	<input type="hidden" name="hname" value="<?php echo $pgTitle;?>" />
 	<input type="hidden" name="hlocale" value="<?php echo $locale;?>" />
@@ -550,6 +647,8 @@ $_SESSION['row5'] = $imgRows[5];
 	<input type="hidden" name="href" value="<?php echo $references;?>" />
 	<input type="hidden" name="hpdat" value="<?php echo $propDat;?>" />
 	<input type="hidden" name="hadat" value="<?php echo $actDat;?>" />
+	<input type="hidden" name="remake" value="<?php echo $redo;?>" />
+	<input type="hidden" name="rhno" value="<?php echo $hikeNo;?>" />
 	
 	<input style="margin-left:8px;margin-bottom:10px;" type="submit" value="Make New Hike Page" />
 	

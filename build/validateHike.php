@@ -108,6 +108,7 @@ $icount = count($farray) - 1;  // no. of rows in csv file
 	MARKER-DEPENDENT PAGE ELEMENTS
 */
 $database = '../data/TblDB.csv';
+# Index page ref -> ctrhike
 if ($hikeMarker === 'ctrhike') {
 	$dbFile = fopen($database, "r");
 	$VClist = array();
@@ -136,6 +137,7 @@ if ($hikeMarker === 'ctrhike') {
 		echo '<option value="' . $vcIndx . '">' . $vcName . '</option>';
 	}
 	echo "</select></p></div>";
+# cluster hike:
 } elseif ($hikeMarker === 'cluster') {
 	$dbFile = fopen($database,"r");
 	$clusterList = array();
@@ -156,7 +158,7 @@ if ($hikeMarker === 'ctrhike') {
 		echo "Could not open database file ..data/TblDB.csv";
 	}
 	$passGroup = implode(";",$result); //Since the value is already associated, save it now
-	$_SESSION['clusGroupings'] = $passGroup;
+	#$_SESSION['clusGroupings'] = $passGroup;
 	echo '<div id="clus_sel"><p>This hike was identified as belonging to a group of hikes ' .
 	'in close proximity with other hikes.<br /><label style="color:DarkBlue;">' .
 	'Select the Group to which this hike belongs: </label><select name="tipLtr">';
@@ -403,6 +405,8 @@ these names were extracted from the .tsv file</em><br />
 <input type="hidden" name="phot1" value="<?php echo $hikePurl1;?>" />
 <input type="hidden" name="phot2" value="<?php echo $hikePurl2;?>" />
 <input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
+<input type="hidden" name="rbld" value="NO" />  <!-- Display needs to know whether or not
+	this is a rebuild -->
 </form>
 
 <script src="../scripts/jquery-1.12.1.js"></script>

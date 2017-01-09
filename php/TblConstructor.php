@@ -1,5 +1,5 @@
 <!-- REFERENCE TABLE OF HIKES -->
-<table>
+<table id="sortable">
 	<colgroup>	
 		<col style="width:120px">
 		<col style="width:190px">
@@ -87,8 +87,10 @@
 				} else {  // "Normal"
 					echo '<tr class="normal" ' . $hikeHiddenDat . '>';
 				}
-				//$hikePage = $hikeArray[27]
-				$hikePage = 'hikePageTemplate.php?hikeIndx=' . $hikeIndx;
+				$hikePage = $hikeArray[27];
+				if ($hikePage === '') {
+					$hikePage = 'hikePageTemplate.php?hikeIndx=' . $hikeIndx;
+				}
 				$hikeName = $hikeArray[1];
 				$hikeLocale = $hikeArray[2];
 				$hikeDirections = rawurldecode($hikeArray[25]);
@@ -101,8 +103,8 @@
 				echo '<td>' . $hikeName . '</td>';
 				echo '<td>' . $hikeWow . '</td>';
 				echo '<td><a href="' . $hikePage . '" target="_blank">' . $hikeLinkIcon . '</a></td>';
-				echo '<td>' . $hikeLgth . '</td>';
-				echo '<td>' . $hikeElev . '</td>';
+				echo '<td>' . $hikeLgth . 'miles</td>';
+				echo '<td>' . $hikeElev . 'ft</td>';
 				echo '<td>' . $hikeDiff . '</td>';
 				echo $hikeExpIcon;
 				echo '<td style="text-align:center"><a href="' . $hikeDirections . '" target="_blank">' .
