@@ -79,7 +79,7 @@
 <script src="../scripts/modernizr-custom.js"></script>
 <script src="../data/hikeArrays.js"></script>
 <script src="../scripts/phpDynamicTbls.js"></script>
-<script src="../scripts/newMap.js"></script>
+<script src="../scripts/animMap.js"></script>
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap">
 </script>

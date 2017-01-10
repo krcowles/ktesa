@@ -354,7 +354,7 @@ for ($i=0; $i<$items; $i++) {
 				$othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
 				$othrHeight[$othrIndx] = $actualHt;
 				$thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
-					'" height="' . $$actualHt . '" src="../images/' . $addonImg[$othrIndx] .
+					'" height="' . $actualHt . '" src="../images/' . $addonImg[$othrIndx] .
 					'" alt="' . $desc[$n] . '" />';
 				$othrIndx += 1;
 			}
