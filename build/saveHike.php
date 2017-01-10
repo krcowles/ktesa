@@ -99,24 +99,24 @@
 	$newHike[23] = rawurlencode($plink1);
 	$newHike[24] = rawurlencode($plink2);
 	$gdirs = $_POST['hdir'];
-	$newHike[25] = rawurlencode($gidrs);
+	$newHike[25] = rawurlencode($gdirs);
 	/* don't need Y/N on tips */
 	$newHike[26] = $_POST['htyn'];
 	/* page.html becoming obsolete */
 	$newHike[27] = '';
 	$newHike[28] = $_POST['htool'];
-	$newHike[29] = $_SESSION['row0'];
-	$newHike[30] = $_SESSION['row1'];
-	$newHike[31] = $_SESSION['row2'];
-	$newHike[32] = $_SESSION['row3'];
-	$newHike[33] = $_SESSION['row4'];
-	$newHike[34] = $_SESSION['row5'];
+	$newHike[29] = rawurlencode($_SESSION['row0']);
+	$newHike[30] = rawurlencode($_SESSION['row1']);
+	$newHike[31] = rawurlencode($_SESSION['row2']);
+	$newHike[32] = rawurlencode($_SESSION['row3']);
+	$newHike[33] = rawurlencode($_SESSION['row4']);
+	$newHike[34] = rawurlencode($_SESSION['row5']);
 	$newHike[35] = $_POST['hcaps'];  // already encoded in displayHike.php
 	$newHike[36] = $_POST['hplnks'];  // already encoded in displayHike.php
 	if ($rebuild) {
 		$newHike[37] = $_SESSION['tips']; // already encoded in rebuildData.php
 		$newHike[38] = $_SESSION['hInfo'];  // already encoded in rebuildData.php
-		$$newHike[39] = $_SESSION['hrefs'];  // already encoded in rebuildData.php
+		$newHike[39] = $_SESSION['hrefs'];  // already encoded in rebuildData.php
 		$newHike[40] = $_SESSION['prop'];   // already encoded in rebuildData.php
 		$newHike[41] = $_SESSION['act'];   // already encoded in rebuildData.php
 	
@@ -220,7 +220,8 @@
 		$rbd = fopen($database,"w");
 		fputs($rbd, $newFile."\n");
 		echo "<h1>HIKE NO. " . $newHike[0] . " SUCCESSFULLY UPDATED!</h1>";
-		echo "<h2>If you wish to rebuild another page, check below</h2>";
+		echo "<h2>Click below to continue, or else exit this page to finish</h2>";
+		echo '<button style="height:24px;" id="cont">Click here to rebuild another page</button>';
 	} else {
 		fputs($handle, $csvData."\n");
 		echo "<h1>HIKE SUCCESSFULLY SAVED!</h1>";
@@ -246,6 +247,6 @@
 */
 ?>
 </div>
-
+<script src="saveHike.js"></script>
 </body>
 </html>

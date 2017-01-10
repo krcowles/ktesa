@@ -19,14 +19,21 @@
 
 <p>Please use the table below to select the hike you wish to rebuild. Simply click
 on the checkmark in the column "Web" corresponding to the hike in order to begin the
-process. NOTE: This table is not sortable at this point.</p>
+process. NOTES:</p>
+<ul>
+	<li>TABLE IS NOT SORTABLE (at this time);</li>
+	<li>Index pages can not be rebuilt;</li>
+	<li>If a row is 'grayed-out' (dark), it has already been rebuilt and entered into the database file.</li> 
+	<li>If a row is 'grayed-out' (light), it has no tsv file/li>
+</ul>
 
 <?php
 		require "../php/TblConstructor.php";
+		require "../php/nonTsvHikes.php";
 ?>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="enterHike2Redo.js"></script>	
+<script src="selectRebuild.js"></script>	
     
 </body>
 

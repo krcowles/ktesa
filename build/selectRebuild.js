@@ -1,23 +1,15 @@
 $( function () { // when page is loaded...
 
-
-$('a').on('click', function(e) {
-	e.preventDefault();
-	var $containerCell = $(this).parent();
-	var $containerRow = $containerCell.parent();
-	var hikeToUse = $containerRow.data('indx');
-	var callPhp = 'rebuildData.php?hikeNo=' + hikeToUse;
-	window.open(callPhp,"_blank");
-});
-
+// gray out rows (non-index pages) that point to the template page (ie have been converted)
 var $rows = $('table tbody tr');
+var $cells;
 var pageHtml;
 var classType;
 $rows.each( function() {
 	classType = this.class;
 	if (classType !== 'indxd') {
 		$cells = $(this).children();
-		pageHtml = $cells.eq(3).text();
+		pageHtml = $cells.eq(3).html()
 		if (pageHtml.indexOf('PageTemplate') !== -1) {
 			$cells.each( function() {
 				$(this).css('background-color','DarkGray');
@@ -25,7 +17,37 @@ $rows.each( function() {
 		}
 	}
 });
-$rows = [];
+
+// gray out rows identified as having no tsv file
+var noOfRows = $rows.length;
+var hikeNo;
+var listels = $('ul').children();
+listels.each( function() {
+	for (var i=0; i<noOfRows; i++) {
+		hikeNo = $($rows[i]).data('indx');
+		if (hikeNo == $(this).text()) {
+			$cells = $($rows[i]).children();
+			$cells.each( function() {
+				$(this).css('background-color','LightGray');
+			});
+			break;
+		}
+	}
+});
+
+// make links point to php file
+$('a').on('click', function(e) {
+	e.preventDefault();
+	var $containerCell = $(this).parent();
+	var $containerRow = $containerCell.parent();
+	var hikeToUse = $containerRow.data('indx');
+	var callPhp = 'rebuildData.php?hikeNo=' + hikeToUse;
+	window.open(callPhp);
+});
+
+
+
+
 
 // Provide sorting:
 // global object used to define how table items get compared in a sort:
@@ -62,7 +84,7 @@ var compare = {
 		return a - b;
 	} 
 };  // end of COMPARE object
-/* CAN'T GET THIS TO WORK - EVEN THOUGH IT DOES ELSEWHERE!! PRODUCES TWO TABLES...
+/* CAN'T GET THIS TO WORK - EVEN THOUGH IT DOES ELSEWHERE!! PRODUCES TWO TABLES... */
 (function () {
 	var $table = $('#sortable'); 
 	var $tbody = $table.find('tbody');
@@ -100,7 +122,6 @@ var compare = {
 		} // end else
 	}); // end on.click
 }()); // end '#sortable' loop
-*/
 
 
 }); // end of page is loaded...

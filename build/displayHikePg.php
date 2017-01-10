@@ -44,14 +44,15 @@ if ($ctrHikeLoc !== '') {
 			break;
 		}
 	}
+	$newFile = implode($wholeDB);
+	$output = fopen($database,"w");
+	if ($output !== false) {
+		fputs($output,$newFile);
+	} else {
+		echo "Could not open file to update index pg cluster string";
+	}
 }
-$newFile = implode($wholeDB);
-$output = fopen($database,"w");
-if ($output !== false) {
-	fputs($output,$newFile);
-} else {
-	echo "Could not open file to update index pg cluster string";
-}
+
 /*
 	End of ctrHikeLoc processing
 */
@@ -237,7 +238,6 @@ if ($rebuild) {
 $k = 0;
 for ($i=0; $i<$noOfPix; $i++) {
 	$targ = $picarray[$i];
-	echo "target from picarray: " . $targ;
 	for ($j=0; $j<$lineno; $j++) {
 		if( $targ === $picName[$j] ) {
 			$indx[$k] = $j;
@@ -246,7 +246,6 @@ for ($i=0; $i<$noOfPix; $i++) {
 		}
 	}
 }
-echo "length of new index array is " . count($indx);
 # for each of the <user-selected> pix, define needed arrays
 for ($i=0; $i<$noOfPix; $i++) {
 	$x = $indx[$i];
@@ -260,16 +259,16 @@ for ($i=0; $i<$noOfPix; $i++) {
 	$caption[$i] = "{$picMonth} {$picDay}, {$picYear}: {$picDesc[$x]}";
 	$picSize = getimagesize($nsize[$x]); # PROVIDE THIS IN GPSV FILE??
 	$picWidth[$i] = $picSize[0];
+	/*  -DEBUG
 	if (is_numeric($picWidth[$i]) === false) {
 		echo "MAJOR PROBLEM WITH " . $i . "th ELEMENT!";
-	}
+	} */
 	$picHeight[$i] = $picSize[1];
 	$name[$i] = $picName[$x];
 	$desc[$i] = $picDesc[$x];
 	$album[$i] = $picAlbm[$x];
 	$photolink[$i] = $nsize[$x]; 
 }
-
 # ROW-FILLING ALGORITHM:
 $imgRows = array(6);
 $maxRowHt = 260;	# change as desired
@@ -369,44 +368,48 @@ for ($i=0; $i<$items; $i++) {
 		$rowCompleted = true;
 		$leftMostImg = true;
 	}
-}
+} # end of for loop creating initial rows
 # last row may not be filled, and will be at maxRowHt
-# last item index was "startIndx"
+# last item index was "startIndx"; coming into last row as $leftMostImg = true
 if ($rowCompleted === false) {
 	$itemsLeft = $items - $totalProcessed;
 	if ($itemsLeft === 1)
-		//$rowHtml = $rowHtml .'<div id="row' . $rowNo . '" class="ImgRow Solo">';
 		$thisRow = '<div id="row' . $rowNo . '" class="ImgRow Solo">';
 	else
-		//$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
 		$thisRow = '<div id="row' . $rowNo . '" class="ImgRow">';
 	for ($i=0; $i<$itemsLeft; $i++) {
+			if ($leftMostImg) {
+				$styling = ''; 
+			} else {
+				$styling = 'margin-left:1px;';
+			}
 		if ($itype[$startIndx] === "picture") {
 			$picWidth[$startIndx] = $widthAtMax[$startIndx];
 			$picHeight[$startIndx] = $maxRowHt;
-			$thisRow = $thisRow . '<img id="pic' . $startIndx . '" width="' . 
-				$picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
+			$thisRow = $thisRow . '<img id="pic' . $startIndx . '" style="' . $styling .
+				'" width="' . $picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
 				$photolink[$startIndx] . '" alt="' . $desc[$startIndx] . '" />';
 			$startIndx += 1;
 		} else if ($itype[$startIndx] === "iframe") {
-			$thisRow = $thisRow . '<iframe id="theMap" height="' . $maxRowHt .
+			$thisRow = $thisRow . '<iframe id="theMap" style="' . $styling . '" height="' . $maxRowHt .
 				'" width="' . $maxRowHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
-			$startIndx += 1;
+			#$startIndx += 1;
 		} else if ($itype[$startIndx] === "chart") {
 			$elevWidth = $widthAtMax[$startIndx];
-			$thisRow = $thisRow . '<img class="chart" width="' . $elevWidth . 
+			$thisRow = $thisRow . '<img class="chart" style="' . $styling . '" width="' . $elevWidth . 
 				'" height="' . $maxRowHt . '" src="../images/' . $elevChart .
 				'" alt="Elevation Chart" />';
 			$startIndx += 1;
 		} else {
 			$othrWidth[$othrIndx] = $widthAtMax[$startIndx];
 			$othrHeight[$othrIndx] = $maxRowHt;
-			$thisRow = $thisRow . '<img width="' . $othrWidth[$othrIndx] . '" height="' .
+			$thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$othrIndx] . '" height="' .
 				$maxRowHt . '" src="../images/' . $addonImg[$othrIndx] .
 				'" alt="Additional page image" />';
 			$othrIndx += 1;
 			$startIndx += 1;
 		}
+		$leftMostImg = false;
 	}
 	$imgRows[$rowNo] = $thisRow . "</div>";
 	$rowHtml = $rowHtml . $thisRow . "</div>";

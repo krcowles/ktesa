@@ -14,15 +14,15 @@
 				if ($hikeIndexNo == $hikeArray[0]) {  // find the target hike
 					$hikeTitle = $hikeArray[1];
 					$hikeDifficulty = $hikeArray[9];
-					$hikeLength = $hikeArray[7];
+					$hikeLength = $hikeArray[7] . " miles";
 					$hikeType = $hikeArray[6];
-					$hikeElevation = $hikeArray[8];
+					$hikeElevation = $hikeArray[8] . " ft";
 					$hikeExposure = $hikeArray[13];
 					$hikeWow = $hikeArray[11];
 					$hikeFacilities = $hikeArray[10];
 					$hikeSeasons = $hikeArray[12];
-					$hikePhotoLink1 = $hikeArray[23];
-					$hikePhotoLink2 = $hikeArray[24];
+					$hikePhotoLink1 = rawurldecode($hikeArray[23]);
+					$hikePhotoLink2 = rawurldecode($hikeArray[24]);
 					$hikeDirections = rawurldecode($hikeArray[25]);
 					$rows = array();
 					for ($j=0; $j<6; $j++) {
@@ -38,11 +38,11 @@
 					$picLinks = rawurldecode($hikeArray[36]);
 					if ($hikeArray[26] == 'Y') {
 						$hikeTipsPresent = true;
-						$hikeTips = $hikeArray[37];
+						$hikeTips = rawurldecode($hikeArray[37]);
 					} else {
 						$hikeTipsPresent = false;
 					}
-					$hikeInfo = '<p id="hikeInfo">' . $hikeArray[38] . '</p>';
+					$hikeInfo = '<p id="hikeInfo">' . rawurldecode($hikeArray[38]) . '</p>';
 					$hikeReferences = rawurldecode($hikeArray[39]);
 					$hikeProposedData = rawurldecode($hikeArray[40]);
 					$hikeActualData = rawurldecode($hikeArray[41]);
@@ -127,7 +127,7 @@
 					$hikePhotoLink1 . '" target="_blank">Ken\'s Photo Album</a></div>';
 			}
         	for ($k=0; $k<$rowCount; $k++) {
-        		echo $rows[$k];
+        		echo rawurldecode($rows[$k]);
         	}
         	echo $picCaptions;
         	echo $picLinks;
