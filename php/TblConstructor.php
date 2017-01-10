@@ -103,8 +103,8 @@
 				echo '<td>' . $hikeName . '</td>';
 				echo '<td>' . $hikeWow . '</td>';
 				echo '<td><a href="' . $hikePage . '" target="_blank">' . $hikeLinkIcon . '</a></td>';
-				echo '<td>' . $hikeLgth . 'miles</td>';
-				echo '<td>' . $hikeElev . 'ft</td>';
+				echo '<td>' . $hikeLgth . ' miles</td>';
+				echo '<td>' . $hikeElev . ' ft</td>';
 				echo '<td>' . $hikeDiff . '</td>';
 				echo $hikeExpIcon;
 				echo '<td style="text-align:center"><a href="' . $hikeDirections . '" target="_blank">' .

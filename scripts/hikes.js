@@ -7,7 +7,11 @@ $( function () { // when page is loaded...
     var $images = $('img[id^="pic"]');
     var noOfPix = $images.length;
     var $maps = $('iframe');
-    var	fullMap = $maps.attr('src');
+    var mapPresent = false;
+    if ($maps.length) {
+    	mapPresent = true;
+    	var	fullMap = $maps.attr('src');
+    }
     var $desc = $('.captionList li');
     var $links = $('.lnkList li');
     // space down for map link when map is in bottom row
@@ -63,14 +67,16 @@ $( function () { // when page is loaded...
 				i++;
 			});
 			// NOTE: ASSUMPTION: width = height !!!
-			mapWidth = $maps.attr('width');
-			mapWidth = parseFloat(mapWidth);
-			lnkLoc = ( mapWidth - 160 ) / 2;
-			mapPos = $maps.offset();
-			mapLeft = mapPos.left + lnkLoc;
-			sessionStorage.setItem('mleft',mapLeft);
-			mapBot = mapPos.top + mapWidth + 15;
-			sessionStorage.setItem('mbot',mapBot);
+			if (mapPresent) {
+				mapWidth = $maps.attr('width');
+				mapWidth = parseFloat(mapWidth);
+				lnkLoc = ( mapWidth - 160 ) / 2;
+				mapPos = $maps.offset();
+				mapLeft = mapPos.left + lnkLoc;
+				sessionStorage.setItem('mleft',mapLeft);
+				mapBot = mapPos.top + mapWidth + 15;
+				sessionStorage.setItem('mbot',mapBot);
+			}
 			// get caption locations
 			calcPos(); 
 		} else {  // Refresh: need to reload items for placing captions & map link
@@ -78,8 +84,10 @@ $( function () { // when page is loaded...
 				pwidth = 'pwidth' + i;
 				capWidth[i] = sessionStorage.getItem(pwidth);
 			}
-			mapLeft = sessionStorage.getItem('mleft');
-			mapBot = sessionStorage.getItem('mbot');
+			if (mapPresent) {
+				mapLeft = sessionStorage.getItem('mleft');
+				mapBot = sessionStorage.getItem('mbot');
+			}
 			for ( i=0; i<noOfPix; i++ ) {
 				pleft = 'pleft' + i;
 				capLeft[i] = sessionStorage.getItem(pleft);
@@ -97,19 +105,23 @@ $( function () { // when page is loaded...
 			pwidth = 'pwidth'+ i;
 			sessionStorage.setItem(pwidth,capWidth[i]);
 		}
-		mapWidth = $maps.attr('width');
-		mapWidth = parseFloat(mapWidth);
-		lnkLoc = ( mapWidth - 160 ) / 2;
-		mapPos = $maps.offset();
-		mapLeft = mapPos.left + lnkLoc;
-		mapBot = mapPos.top + mapWidth + 15;
+		if (mapPresent) {
+			mapWidth = $maps.attr('width');
+			mapWidth = parseFloat(mapWidth);
+			lnkLoc = ( mapWidth - 160 ) / 2;
+			mapPos = $maps.offset();
+			mapLeft = mapPos.left + lnkLoc;
+			mapBot = mapPos.top + mapWidth + 15;
+		}
 		calcPos();
 	}  // end of session storage IF
-
-	// make map link and place below map
-	htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
+	
+	if (mapPresent) {
+		// make map link and place below map
+		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
 			mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
 	$('.lnkList').after(htmlLnk);
+	}
 	if ( window.sessionStorage ) { 
 		sessionStorage.setItem('prevLoad','2.71828'); // Euler's number
 	}
@@ -189,23 +201,25 @@ $( function () { // when page is loaded...
 		//msg = '<p>WINDOW RESIZED</p>';
 		//$('#dbug').append(msg);
 		calcPos();
-		mapWidth = $maps.attr('width');
-		mapWidth = parseFloat(mapWidth);
-		lnkLoc = ( mapWidth - 160 ) / 2;
-		mapPos = $maps.offset();
-		mapLeft = mapPos.left + lnkLoc;
-		mapBot = mapPos.top + mapWidth + 15;
-		if ( window.sessionStorage ) {
-			sessionStorage.setItem('mleft',mapLeft);
-			sessionStorage.setItem('mbot',mapBot);
+		if (mapPresent) {
+			mapWidth = $maps.attr('width');
+			mapWidth = parseFloat(mapWidth);
+			lnkLoc = ( mapWidth - 160 ) / 2;
+			mapPos = $maps.offset();
+			mapLeft = mapPos.left + lnkLoc;
+			mapBot = mapPos.top + mapWidth + 15;
+			if ( window.sessionStorage ) {
+				sessionStorage.setItem('mleft',mapLeft);
+				sessionStorage.setItem('mbot',mapBot);
+			}
+			// place link to full-size map below iframe;
+			var tst = document.getElementById('mapLnk');
+			var tstParent = tst.parentNode;
+			tstParent.removeChild(tst);
+			htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
+					mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
+			$('.lnkList').after(htmlLnk);
 		}
-		// place link to full-size map below iframe;
-		var tst = document.getElementById('mapLnk');
-		var tstParent = tst.parentNode;
-		tstParent.removeChild(tst);
-		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-				mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
-		$('.lnkList').after(htmlLnk);
 	});
 
 });

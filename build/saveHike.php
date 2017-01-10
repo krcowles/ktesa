@@ -247,6 +247,7 @@
 */
 ?>
 </div>
+<script src="../scripts/jquery-1.12.1.js"></script>
 <script src="saveHike.js"></script>
 </body>
 </html>
