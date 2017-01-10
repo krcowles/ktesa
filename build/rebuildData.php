@@ -85,6 +85,7 @@ $_SESSION['act'] = '';
 			$hikeDirs = $lineDat[25];
 			# [26] trailTips defined below
 			$hikeHtml = $lineDat[27];
+			echo "Hike empty? " . $hikeHtml;
 			if ($hikeHtml == '') {
 				die ("NO HTML FILE SPECIFIED IN DATABASE FOR THIS HIKE");
 			}

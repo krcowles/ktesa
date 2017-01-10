@@ -393,7 +393,7 @@ if ($rowCompleted === false) {
 		} else if ($itype[$startIndx] === "iframe") {
 			$thisRow = $thisRow . '<iframe id="theMap" style="' . $styling . '" height="' . $maxRowHt .
 				'" width="' . $maxRowHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
-			#$startIndx += 1;
+			$startIndx += 1;
 		} else if ($itype[$startIndx] === "chart") {
 			$elevWidth = $widthAtMax[$startIndx];
 			$thisRow = $thisRow . '<img class="chart" style="' . $styling . '" width="' . $elevWidth . 
