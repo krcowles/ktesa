@@ -85,14 +85,9 @@ $_SESSION['act'] = '';
 			$hikeDirs = $lineDat[25];
 			# [26] trailTips defined below
 			$hikeHtml = $lineDat[27];
-			echo "Hike empty? " . $hikeHtml;
 			if ($hikeHtml == '') {
 				die ("NO HTML FILE SPECIFIED IN DATABASE FOR THIS HIKE");
 			}
-			echo '<p style="margin-left:12px;">The html file being processed is "' . $hikeHtml .
-				'". The data below is extracted from that file.</p>';
-			echo '<p style="margin-left:12px;">Please review the data below for correspondence to the rebuild
-			page before submitting.</p>';
 			$hikeGrpNm = $lineDat[28];
 			break;
 		}
@@ -102,6 +97,10 @@ $_SESSION['act'] = '';
 	$htmlFile = '../pages/' . $hikeHtml;
 	$html = file($htmlFile);
 	$noOfLines = count($html);
+	echo '<p style="margin-left:12px;">The html file being processed is "' . $hikeHtml .
+		'" (' . $noOfLines . ' lines). The data below is extracted from that file.</p>';
+	echo '<p style="margin-left:12px;">Please review the data below for correspondence to the rebuild' .
+			' the page before submitting.</p>';
 	# See if there are tip notes to process:
 	$trailTips = 'N';
 	$tipNotes = ''; # text only: no html tags
