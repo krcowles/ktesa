@@ -43,6 +43,7 @@ $('a').on('click', function(e) {
 	var hikeToUse = $containerRow.data('indx');
 	var callPhp = 'rebuildData.php?hikeNo=' + hikeToUse;
 	window.open(callPhp);
+	window.close(window.self);
 });
 
 
