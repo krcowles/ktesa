@@ -65,9 +65,9 @@ if ($rebuild) {
 		With clusGrp, find the associated tooltip
 	*/
 	if ($clusGrp !== '') {
-		$str2find = $clusGrp . "$";
+		$str2find = $clusGrp . "$";  // this may not work if double-letter groups...?
 		$lgthOfGrp = strlen($str2find);
-		$clusString = $_SESSION['clusGroupings'];
+		$clusString = $_SESSION['allTips'];
 		$strLoc = strpos($clusString,$str2find);
 		$tipStrt = $strLoc + $lgthOfGrp;
 		$strEnd = strlen($clusString) - $tipStrt;

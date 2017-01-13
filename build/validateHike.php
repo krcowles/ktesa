@@ -135,6 +135,7 @@ if ($hikeMarker === 'ctrhike') {
 		$vcIndxLgth = $namePos -2;
 		$vcIndx = substr($VCList[$k],0,$vcIndxLgth);
 		echo '<option value="' . $vcIndx . '">' . $vcName . '</option>';
+		# the hike id for the affected visitor center will be passed and processed
 	}
 	echo "</select></p></div>";
 # cluster hike:
@@ -157,12 +158,11 @@ if ($hikeMarker === 'ctrhike') {
 	} else {
 		echo "Could not open database file ..data/TblDB.csv";
 	}
-	$passGroup = implode(";",$result); //Since the value is already associated, save it now
-	#$_SESSION['clusGroupings'] = $passGroup;
+	$passGroup = implode(";",$result);
+	$_SESSION['allTips'] = $passGroup;
 	echo '<div id="clus_sel"><p>This hike was identified as belonging to a group of hikes ' .
 	'in close proximity with other hikes.<br /><label style="color:DarkBlue;">' .
 	'Select the Group to which this hike belongs: </label><select name="tipLtr">';
-
 	foreach ($result as $group) {
 		$groupNamePos = strpos($group,"$") + 1;
 		$groupNameLgth = strlen($group) - $groupNamePos;
@@ -216,10 +216,11 @@ if ($hikeMarker === 'ctrhike') {
 				<td><?php echo $hikeWow;?></td>
 				<td><a href="<?php echo $hikePage;?>" target="_blank">
 					<img class="webShift" src="../images/<?php  
-					if($hikeMarker === 'center' || $hikeMarker === 'ctrhike')
+					if($hikeMarker === 'center') {
 						$pgLnk = 'indxCheck.png';
-					else
+					} else {
 						$pgLnk = 'greencheck.jpg';
+					}
 					echo $pgLnk;?>" alt="hikepg link" /></td>
 				<td><?php echo $hikeLgth;?> miles</td>
 				<td><?php echo $hikeElev;?> ft</td>
@@ -328,9 +329,9 @@ if ($hikeMarker === 'ctrhike') {
 </ul>
 <div style="padding-left:8px">
 	<h4 style="margin-bottom:4px">Include a 'Trail Tips' section for new page?</h4>
-	<input id="addTT" type="radio" name="TT" value="YES" />
+	<input id="addTT" type="radio" name="TT" value="Y" />
 		<label style="color:DarkBlue;" for="addTT">Add Trail Tips</label>
-	<input id="noTT" type="radio" name="TT" value="NO" checked="checked" />
+	<input id="noTT" type="radio" name="TT" value="N" checked="checked" />
 		<label style="color:DarkBlue;" for="noTT">No Trail Tips</label>
 </div>
 <div style="padding-left:8px;">

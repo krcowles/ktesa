@@ -68,8 +68,7 @@
 				$hikeMainURL = $hikeArray[23];
 				$hikePhotoLink = '<td><a href="' . $hikeMainURL . '" target="_blank">' . $picIcon . '</a></td>';
 				$hikeLinkIcon = $webIcon;
-				/* There are three types of markers to consider,
-					each one receives somewhat different treatment */
+				/* There are four types of markers to consider requiring different treatment: */
 				$hikeMarker = $hikeArray[3];
 				if ($hikeMarker === 'Visitor Ctr') {
 					echo '<tr class="indxd" ' . $hikeHiddenDat . ' data-org-hikes="' .
@@ -84,6 +83,9 @@
 				} elseif ($hikeMarker === 'Cluster') {
 					echo '<tr class="clustered" data-cluster=" ' . $hikeArray[5] . '" ' .
 						$hikeHiddenDat . ' data-tool="' . $hikeArray[28] . '">';
+				} elseif ($hikeMarker === 'At VC') {
+					# At VC hikes will be ignored when time to create markers
+					echo '<tr class="vchike"  ' . $hikeHiddenDat . '>';
 				} else {  // "Normal"
 					echo '<tr class="normal" ' . $hikeHiddenDat . '>';
 				}

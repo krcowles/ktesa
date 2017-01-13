@@ -80,14 +80,18 @@ $('#newHikeBox').css('display','block');
 var allVs = [];
 var allCs = [];
 var allNs = [];
+var allXs = [];  // this array will hold the special-case "At VC" hikes
+// NOTE: "At VC" hikes are ignored for purposes of creating separate markers
 $hikeRows.each( function() {
 	if ( $(this).hasClass('indxd') ) {
 		allVs.push(this);
 	} else if ( $(this).hasClass('clustered') ) {
 		allCs.push(this);
+	} else if ( $(this).hasClass('vchike') ) {
+		allXs.push(this);
 	} else if ( $(this).hasClass('normal') ) {
 		allNs.push(this);
-	}
+	}  // anything not caught in this trap is an anomaly!!
 });
 
 /* INSIDE the initMap function, the map listener is defined, and depending on whether
@@ -133,7 +137,7 @@ function initMap() {
 	var allMarkers = []; // array of marker objects
 	var allMarkerTitles = [];  // for name-to-marker correspondence
 	var clustersUsed = '';
-	var subHikes = [];
+	//var subHikes = []; no longer needed with "At VC" marker type
 	var animateMe;
 	
 	// Loop through marker definitions and call marker-creator fcts: 1st, visitor centers:
@@ -148,17 +152,17 @@ function initMap() {
 		// orgDat looks like a string to the debugger, but not the browser! so:
 		var orgHikes = String(orgDat);
 		if (orgHikes !== '') {
-			if (orgHikes.indexOf(".") === -1) {
-				subHikes.push(orgHikes);
+			if (orgHikes.indexOf(".") === -1) { // no "." means only one hike is listed
+				//subHikes.push(orgHikes);
 				thisVorgs.push(orgHikes);
 			} else {
-				var orgHikeArray = orgHikes.split(".");
+				var orgHikeArray = orgHikes.split("."); // for multiple hike listings
 				for (j=0; j<orgHikeArray.length; j++) {
-					subHikes.push(orgHikeArray[j]);
+					//subHikes.push(orgHikeArray[j]);
 					thisVorgs.push(orgHikeArray[j]);
 				}
 			}
-		}
+		} // if emtpy string, thisVorgs will be an empty array (0 elements)
 		var $dataCells = $(this).find('td');
 		var $link = $dataCells.eq(3).find('a');
 		var vpage = $link.attr('href');
@@ -172,9 +176,9 @@ function initMap() {
 	// Now, the "clustered" hikes: Add one and only one cluster marker per group
 	sym =clusterIcon;
 	$(allCs).each( function() {
+		/* new "At VC" marker type excludes these subhikes from being listed as cluster hikes
 		// exclude if an originating hike - these would override the VC markers
 		var hikeIndx = $(this).data('indx');
-		var chikeArray;
 		var notOrgHike = true;
 		for (i=0; i<subHikes.length; i++) {
 			if (hikeIndx == subHikes[i]) {
@@ -182,60 +186,52 @@ function initMap() {
 			}
 		}
 		if ( notOrgHike ) {  // don't include any Visitor Center hikes designated as cluster
-			var clusterGrp = $(this).data('cluster'); // must be a single char
-			var cindx;
-			if ( clustersUsed.indexOf(clusterGrp) === -1 ) { // skip over other members in group
-				// a new group has been encountered
-				chikeArray = [];
-				clustersUsed += clusterGrp; // update "Used"
-				// collect the indices for all hikes in this group
-				for (n=0; n<allCs.length; n++) {
-					if ($(allCs[n]).data('cluster') == clusterGrp) {
-						cindx = $(allCs[n]).data('indx');
-						chikeArray.push(cindx);
-					}
+		*/
+		var chikeArray;
+		var clusterGrp = $(this).data('cluster'); // must be a single char
+		var cindx;
+		if ( clustersUsed.indexOf(clusterGrp) === -1 ) { // skip over other members in group
+			// a new group has been encountered
+			chikeArray = [];
+			clustersUsed += clusterGrp; // update "Used"
+			// collect the indices for all hikes in this group
+			for (n=0; n<allCs.length; n++) {
+				if ($(allCs[n]).data('cluster') == clusterGrp) {
+					cindx = $(allCs[n]).data('indx');
+					chikeArray.push(cindx);
 				}
-				// proceed with def's for other arguments
-				var clat = parseFloat($(this).data('lat'));
-				var clon = parseFloat($(this).data('lon'));
-				nme = $(this).data('tool');
-				loc = {lat: clat, lng: clon};
-				animateMe = nme == newHikeName ? true : false;
-				var hikeId = $(this).data('indx');
-				var $dataCells = $(this).find('td');
-				var $plink = $dataCells.eq(3).find('a');
-				cpage = $plink.attr('href');
-				var $dlink = $dataCells.eq(8).find('a');
-				var dirLink = $dlink.attr('href');
-				AddClusterMarker(loc, sym, nme, animateMe, cpage, dirLink, chikeArray);
 			}
+			// proceed with def's for other arguments
+			var clat = parseFloat($(this).data('lat'));
+			var clon = parseFloat($(this).data('lon'));
+			nme = $(this).data('tool');
+			loc = {lat: clat, lng: clon};
+			animateMe = nme == newHikeName ? true : false;
+			var hikeId = $(this).data('indx');
+			var $dataCells = $(this).find('td');
+			var $plink = $dataCells.eq(3).find('a');
+			cpage = $plink.attr('href');
+			var $dlink = $dataCells.eq(8).find('a');
+			var dirLink = $dlink.attr('href');
+			AddClusterMarker(loc, sym, nme, animateMe, cpage, dirLink, chikeArray);
 		}
+		//}
 	});
 	// Finally, the remaining hike markers
 	sym = hikeIcon;
-	$(allNs).each( function() {
-		// exclude if an originating hike:
-		var hikeIndx = $(this).data('indx');
-		var notOrgHike = true;
-		for (i=0; i<subHikes.length; i++) {
-			if (hikeIndx == subHikes[i]) {
-				notOrgHike = false;
-			}
-		}
-		if ( notOrgHike ) {  // don't include any Visitor Center hikes designated as normal
-			var nlat = parseFloat($(this).data('lat'));
-			var nlon = parseFloat($(this).data('lon'));
-			loc = {lat: nlat, lng: nlon};
-			var hikeNo = $(this).data('indx');
-			var $dataCells = $(this).find('td');
-			nme = $dataCells.eq(1).text();
-			$plink = $dataCells.eq(3).find('a');
-			npage = $plink.attr('href');
-			$dlink = $dataCells.eq(8).find('a');
-			dirLink = $dlink.attr('href');
-			animateMe = nme == newHikeName ? true : false;
-			AddHikeMarker(loc, sym, nme, animateMe, npage, dirLink, hikeNo);
-		}
+	$(allNs).each( function() { // by def, no vchikes here
+		var nlat = parseFloat($(this).data('lat'));
+		var nlon = parseFloat($(this).data('lon'));
+		loc = {lat: nlat, lng: nlon};
+		var hikeNo = $(this).data('indx');
+		var $dataCells = $(this).find('td');
+		nme = $dataCells.eq(1).text();
+		$plink = $dataCells.eq(3).find('a');
+		npage = $plink.attr('href');
+		$dlink = $dataCells.eq(8).find('a');
+		dirLink = $dlink.attr('href');
+		animateMe = nme == newHikeName ? true : false;
+		AddHikeMarker(loc, sym, nme, animateMe, npage, dirLink, hikeNo);
 	});
 	
 	/* the actual functions to create the markers & setup info windows */
@@ -265,7 +261,7 @@ function initMap() {
 			vLine2 = '<a href="' + website + 
 					'" target="_blank">Park Information and Hike Index</a>';  // web link
 			iwContent = vLine1 + '<br />' + vLine2;
-			if (orgHikes.length > 0) {
+			if (orgHikes.length > 0) { // orgHikes is an array parameter passed in
 				vLine3 = '<em>Hikes Originating from Visitor Center</em>';
 				if(orgHikes.length === 1) {
 					vLine3 = vLine3.replace('Hikes','Hike');
@@ -282,7 +278,7 @@ function initMap() {
 			});
 			iw.open(map, this);
 		});
-	}
+	} // end function AddVCMarker
 	// Clustered Trailhead Markers:
 	function AddClusterMarker(location, iconType, pinName, bounce, website, dirs, hikes) {
 		// save marker reference
@@ -317,7 +313,7 @@ function initMap() {
 			});
 			iw.open(map, this);
 		});
-	}
+	} // end AddClusterMarker
 	function AddHikeMarker(location, iconType, pinName, bounce, website, dirs, hike) {
 		// save marker reference
 		allMarkerTitles.push(pinName);
@@ -357,9 +353,8 @@ function initMap() {
 	function coreHikeData(markerType, hikeNo) {
 		var $hikeData;
 		var hikeLocated = false;
-		if (markerType === VC_TYPE || markerType === NH_TYPE) {
-			$(allNs).each( function() {
-				var hIndx = $(this).data('indx');
+		if (markerType === VC_TYPE) {
+			$(allXs).each( function() {
 				if ( $(this).data('indx') == hikeNo ) {
 					hikeLocated = true;
 					$hikeData = $(this).find('td');
@@ -367,7 +362,16 @@ function initMap() {
 				}
 			});
 		}
-		if ( (markerType === VC_TYPE && !hikeLocated) || markerType === CH_TYPE) {
+		if (markerType === NH_TYPE) {
+			$(allNs).each( function() {
+				if ( $(this).data('indx') == hikeNo ) {
+					hikeLocated = true;
+					$hikeData = $(this).find('td');
+					return true;
+				}
+			});
+		}
+		if (markerType === CH_TYPE) {
 			$(allCs).each( function() {
 				if ( $(this).data('indx') == hikeNo ) {
 					hikeLocated = true;
@@ -389,7 +393,7 @@ function initMap() {
 		var $plink = $hikeData.eq(3).find('a');
 		iwDat += '<a href="' + $plink.attr('href') + '" target="_blank">Website</a>';
 		return iwDat;
-	}
+	} // end function coreHikeData
 	
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	map.addListener('zoom_changed', function() {
@@ -533,7 +537,8 @@ function drawTracks() {
 		}
 		sglTrack(trackFile,NH_TYPE,trackClr1,hikeId);
 	}
-}  // END FUNCTION
+	// may need one for allXs ????
+}  // END FUNCTION DrawTracks
 function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
 	if (trkUrl === '') {
 		return;
@@ -604,7 +609,7 @@ function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
 			$('#dbug').append(msg);
 		}
 	});
-}
+} // end of function sglTrack
 // /////////////////////// END OF HIKE TRACK DRAWING /////////////////////
 
 

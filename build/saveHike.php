@@ -59,7 +59,7 @@
 		$msg = "No Marker will be added to the map page for this hike, as it will be " .
 			"listed in the Visitor Center Index Page, and appear in the info window for " .
 			"the Center's yellow marker. The hike will also initially appear at the " .
-			"bottom of the Index Table of Hikes";
+			"bottom of the Index Table of Hikes as a separate hike";
 	} elseif ($newHike[3] == 'cluster') {
 		$newHike[3] = 'Cluster';
 		$msg = "This hike will be added to the others in the group: " . $_POST['htool'] .
