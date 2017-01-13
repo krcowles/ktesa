@@ -49,14 +49,10 @@ img#tompic {
 #expl {
 	padding-left: 8px; }
 #settings {
-	width: 500px;
 	margin-left: auto;
 	margin-right: auto; }
-#next {
-	width: 200px;
-	margin-top: 20px;
-	margin-left: auto;
-	margin-right: auto; }
+fieldset {
+	height: 45px; }
 #gloc {
 	width: 140px;
 	display: inline-block; }
@@ -64,15 +60,11 @@ img#tompic {
 	width: 290px;
 	display: inline-block; }
 #go {
+	margin-left: 80px;
 	width: 120px;
 	display: inline-block; }
 legend {
 	color: DarkGreen; }	
-#exe {
-	width: 140px;
-	height: 40px;
-	color: DarkGreen;
-	font-size: 16px; }
 #exe:hover {
 	cursor: pointer;
 	background-color: #cfe2cf; }
