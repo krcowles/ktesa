@@ -65,19 +65,12 @@
 	}?></p>
 <div id="newHikeBox">New Hike!<br><em id="winner"></em></div>
 <?php
-	if($tbls === false) {
-		echo $mapDivStrt;
-		require "../php/TblConstructor.php";
-		echo $mapDivEnd;
-	} else {
-		echo $mapDivStrt;
-		require "../php/TblConstructor.php";
-		echo $mapDivEnd;
-	}
+	echo $mapDivStrt;
+	require "../php/TblConstructor.php";
+	echo $mapDivEnd;
 ?>
 		
 <script src="../scripts/modernizr-custom.js"></script>
-<script src="../data/hikeArrays.js"></script>
 <script src="../scripts/phpDynamicTbls.js"></script>
 <script src="../scripts/animMap.js"></script>
 <script async defer

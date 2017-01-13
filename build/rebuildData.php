@@ -271,7 +271,7 @@ these names were extracted from the .tsv file</em><br />
 <input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
 <input type="hidden" name="area"  value="<?php echo $hikeLocale;?>" />
 <input type="hidden" name="mrkr"  value="<?php echo $hikeMarker;?>" />
-<input type="hidden" name="vclist"  value="<?php echo $hikeClusterStr;?>" />
+<input type="hidden" name="vcList"  value="<?php echo $hikeClusterStr;?>" />
 <input type="hidden" name="tipLtr"  value="<?php echo $hikeClusGrp;?>" />
 <input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
 <input type="hidden" name="lgth"  value="<?php echo $hikeLength;?>" />
