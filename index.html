@@ -52,30 +52,31 @@
 			allow you to display and update your location on the map.
 		</p>
 		<p id="dbug"></p>
+		<p id="turnon" class="hilites">
+			More detail on site features... (Recommended for first-time users)
+		</p>
 		<form action="pages/mapPg.php" method="GET">
 			<div id="settings">
-			<fieldset id="gloc">
-				<legend>Geolocation</legend>
-				<input type="radio" name="geo" value="ON" />ON&nbsp;&nbsp;&nbsp;
-				<input type="radio" name="geo" value="OFF" checked="checked" />OFF
-			</fieldset>
-			<fieldset id="mtype">
-				<legend>Page Type</legend>
-				<input type="radio" name="tbl" value="ON" checked="checked" />
-					Map With Table&nbsp;&nbsp;&nbsp;
-				<input type="radio" name="tbl" value="OFF" />Full Page Map
-			</fieldset>
-			</div>
-			<div id="next">
-			<fieldset id="go">
-				<legend>Submit</legend>
-				<input id="exe" type=submit value="Display Page">
-			</fieldset>
+				<fieldset id="gloc">
+					<legend>Geolocation</legend>
+					<input type="radio" name="geo" value="ON" />ON&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="geo" value="OFF" checked="checked" />OFF
+				</fieldset>
+				<fieldset id="mtype">
+					<legend>Page Type</legend>
+					<input type="radio" name="tbl" value="ON" checked="checked" />
+						Map With Table&nbsp;&nbsp;&nbsp;
+					<input type="radio" name="tbl" value="OFF" />Full Page Map
+				</fieldset>
+				<!-- </div>
+				<div id="next"> -->
+				<fieldset id="go">
+					<legend>Submit</legend>
+					<input style="color:DarkGreen;font-size:14px;" 
+						id="exe" type="submit" value="Display Page">
+				</fieldset>
 			</div>
 		</form>
-		<p id="turnon" class="hilites">
-			More detail on site features...
-		</p>
 		<div id="more">
 			<p>Map features (both Full-Page and Map-With-Table):</p>
 			<ul class="dashed">
@@ -87,8 +88,8 @@
 				<li>When zoomed in sufficiently, tracks indicating the trail or path
 					the authors took will display, with arrows indicating
 					the direction the authors traveled.</li>
-				<li>Green marker pins indicate Visitor Center locations for National
-					Parks and Monuments, or other public/private information center
+				<li>Yellow marker pins indicate Visitor Center locations for National or
+					State Parks and Monuments, or other public/private information center
 					buildings (e.g. Ghost Ranch). These markers may also contain a list
 					of hikes, when the hikes begin at the center.</li>
 				<li>Blue pins indicate trailheads where multiple hikes begin. When
@@ -99,10 +100,10 @@
 			</ul>
 			<p>Table features:</p>
 			<ul class="dashed">	
-				<li>The list is intended to provide a brief summary of hike statistics,
+				<li>The table of hikes is intended to provide a brief summary of hike statistics,
 					and also links to the corresponding website, google directions, or
 					that hike's Flickr album.</li>
-				<li>The starting  list of hikes is not sorted in any particular order, but
+				<li>The table of hikes initially displayed is not sorted in any particular order, but
 					clicking on a column header allows alphabetical (or numerical) sorting.
 					The first click will sort in ascending order, each successive click
 					will reverse the sort order.</li>
@@ -127,10 +128,10 @@
 					</ul>
 			<div id="linkNote">
 				<em>Note: All of the links on this site (denoted by check-boxes) will open new
-				windows (or tabs)</em>. The corresponding web pages ("Info Web Pages") provide sample
+				windows (or tabs)</em>. The corresponding web pages ("Info/Hike Pages") provide sample
 				pictures, trail descriptions, maps or tracks, and links to related materials.
-				To see the Flickr albums containing the authors' photographs, click the
-				corresponding Flickr symbol in the table
+				To see the photo albums containing the authors' photographs, click the
+				corresponding photo album symbol in the table of hikes, or on the hike page.
 			</div>
 			<p id="turnoff" class="hilites">Less detail...</p>
 		</div>
