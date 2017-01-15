@@ -10,7 +10,7 @@ $( function () { // when page is loaded...
     var mapPresent = false;
     if ($maps.length) {
     	mapPresent = true;
-    	var	fullMap = $maps.attr('src');
+    	var	fullMap = $maps.attr('src') + "?show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true";
     }
     var $desc = $('.captionList li');
     var $links = $('.lnkList li');
