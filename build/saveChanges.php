@@ -56,7 +56,7 @@
 	$dbfile[$hikeNo] = $replace."\n";
 	$newfile = implode($dbfile);
 	$dbhandle = fopen($database,"w");
-	fputs($dbhandle, $newfile."\n");
+	fputs($dbhandle, $newfile);
 	fclose($dbhandle);
 ?>
 <div style="padding:16px;">

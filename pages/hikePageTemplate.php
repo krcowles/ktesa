@@ -32,6 +32,9 @@
 							break;
 						} else {
 							$rows[$j] = $thisRow;
+							if ($j === 5) {
+								$rowCount = 6;
+							}
 						}
 					}
 					$picCaptions = rawurldecode($hikeArray[35]);
