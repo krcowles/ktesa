@@ -65,7 +65,7 @@
 				} else {
 					$hikeExpIcon = '<td>' . $shadeIcon . '</td>';
 				}
-				$hikeMainURL = $hikeArray[23];
+				$hikeMainURL = rawurldecode($hikeArray[23]);
 				$hikePhotoLink = '<td><a href="' . $hikeMainURL . '" target="_blank">' . $picIcon . '</a></td>';
 				$hikeLinkIcon = $webIcon;
 				/* There are four types of markers to consider requiring different treatment: */
@@ -95,8 +95,11 @@
 				}
 				$hikeName = $hikeArray[1];
 				$hikeLocale = $hikeArray[2];
-				$gdirs = $hikeArray[25];
-				$hikeDirections = rawurldecode($gdirs);
+				$hikeDirections = rawurldecode($hikeArray[25]);
+				$hno = intval($hikeIndx);
+				if ($hno === 37) {
+					echo "GARBAGE: " . $gdirs . " " . $hikeDirections;
+				}
 				/* There may be either one or two photo links... if only one, then
 				   post the icon for photos on the hike page summary table; regardless,
 				   post the "main" link here in the data table */
