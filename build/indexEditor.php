@@ -1,5 +1,5 @@
 <head>
-	<title>Select Hike To Edit</title>
+	<title>Select Index Page To Edit</title>
 	<meta charset="utf-8" />
 	<meta name="language"
 			content="EN" />
@@ -15,8 +15,8 @@
 
 <body>
 
-<div style="padding:16px;">Select the hike you wish to edit by clicking on the "Web Pg" for the
-hike as listed in the table below.</div>
+<div style="padding:16px;">Select the index page you wish to edit by clicking on the "Web Pg" for the
+index as listed in the table below.</div>
 <div><br />
 <?php 
 		require "../php/TblConstructor.php";
@@ -24,6 +24,6 @@ hike as listed in the table below.</div>
 </div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="hikeEditor.js"></script>
+<script src="indexEditor.js"></script>
 </body>
 </html>

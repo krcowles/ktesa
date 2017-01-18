@@ -22,7 +22,7 @@ Edit the URLs or html code as desired, then click on the "Submit" button.
 <?php
 	$database = '../data/test.csv';
 	$dbfile = file($database);
-	$hikeNo = $_GET['hikeNo'];
+	$hikeNo = intval($_GET['hikeNo']);
 	$info = str_getcsv($dbfile[$hikeNo]);
 	$hikeName = $info[1];
 	$photoURL1 = rawurldecode($info[23]);
