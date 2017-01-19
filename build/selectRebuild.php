@@ -29,7 +29,6 @@ process. NOTES:</p>
 
 <?php
 		require "../php/TblConstructor.php";
-		require "../php/nonTsvHikes.php";
 ?>
 
 <script src="../scripts/jquery-1.12.1.js"></script>

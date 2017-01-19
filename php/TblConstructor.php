@@ -58,9 +58,9 @@
 				$hikeElev = $hikeArray[8];
 				$hikeDiff = $hikeArray[9];
 				$hikeExposure = $hikeArray[13];
-				if ($hikeExposure === 'sun') {
+				if ($hikeExposure === 'Full sun') {
 					$hikeExpIcon = '<td>' . $sunIcon . '</td>';
-				} elseif ($hikeExposure === 'partial') {
+				} elseif ($hikeExposure === 'Mixed sun/shade') {
 					$hikeExpIcon = '<td>' . $partialIcon . '</td>';
 				} else {
 					$hikeExpIcon = '<td>' . $shadeIcon . '</td>';
