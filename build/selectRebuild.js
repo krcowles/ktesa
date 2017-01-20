@@ -18,6 +18,7 @@ $rows.each( function() {
 	}
 });
 
+/* No longer needed
 // gray out rows identified as having no tsv file
 var noOfRows = $rows.length;
 var hikeNo;
@@ -33,7 +34,7 @@ listels.each( function() {
 			break;
 		}
 	}
-});
+}); */
 
 // make links point to php file
 $('a').on('click', function(e) {
