@@ -4,6 +4,7 @@
 	if ($redo === 'YES') {
 		$rebuild = true;
 		$hikeNo = $_POST['rhno'];
+		echo "Page rebuild";
 	} else {
 		$rebuild = false;
 	}
@@ -227,7 +228,7 @@
 		echo "<h1>HIKE SUCCESSFULLY SAVED!</h1>";
 		echo "<h2>" . $msg . "</h2>";
 	}
-/*  DEBUG OUTPUT ---
+# DEBUG OUTPUT ---
 	$listOut = array("Hike Index No.","Hike Name","Locale","Marker","Indx. Cluster String","Cluster Letter",
 		"Hike Type","Length","Elevation Change","Difficulty","Facilities","Wow Factor",
 		"Seasons","Exposure","tsv File","Geomap","Elevation Chart","Geomap GPX",
@@ -244,7 +245,7 @@
 			echo $listOut[$i] . "-> " . $newHike[$i] . "<br />";
 		}
 	}
-*/
+
 ?>
 </div>
 <script src="../scripts/jquery-1.12.1.js"></script>
