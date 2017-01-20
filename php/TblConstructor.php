@@ -91,15 +91,16 @@
 				}
 				$hikePage = $hikeArray[27];
 				if ($hikePage === '') {
-					$hikePage = 'hikePageTemplate.php?hikeIndx=' . $hikeIndx;
+					if ($hikeMarker === 'Visitor Ctr') {
+						$hikePage = 'indexPageTemplate.php?hikeIndx=' . $hikeIndx;
+					} else {
+						$hikePage = 'hikePageTemplate.php?hikeIndx=' . $hikeIndx;
+					}
 				}
 				$hikeName = $hikeArray[1];
 				$hikeLocale = $hikeArray[2];
 				$hikeDirections = rawurldecode($hikeArray[25]);
 				$hno = intval($hikeIndx);
-				if ($hno === 37) {
-					echo "GARBAGE: " . $gdirs . " " . $hikeDirections;
-				}
 				/* There may be either one or two photo links... if only one, then
 				   post the icon for photos on the hike page summary table; regardless,
 				   post the "main" link here in the data table */
