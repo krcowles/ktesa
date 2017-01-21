@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Picacho + Picacho_Peak</title>
+		<title>Picacho_Peak + Picacho_Peak</title>
 		<base target="_top"></base>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -11,7 +11,8 @@
 	<body style="margin:0px;">
 		<script type="text/javascript">
 			google_api_key = 'AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU'; // Your project's Google Maps API key goes here (https://code.google.com/apis/console)
-			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;key='+self.google_api_key+'"><'+'/script>');
+			language_code = '';
+			if (document.location.toString().indexOf('http://www.gpsvisualizer.com') > -1) { google_api_key = ''; }			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language='+self.language_code+'&amp;key='+self.google_api_key+'"><'+'/script>');
 		</script>
 		
 		<!--
@@ -44,7 +45,7 @@
 		
 		<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->
 		<script type="text/javascript">
-			/* Global variables used by the GPS Visualizer functions (20161101174145): */
+			/* Global variables used by the GPS Visualizer functions (20170121140051): */
 			gv_options = {};
 			
 			// basic map parameters:
@@ -63,7 +64,7 @@
 			gv_options.autozoom_adjustment = 0;
 			gv_options.centering_options = { 'open_info_window':true, 'partial_match':true, 'center_key':'center', 'default_zoom':null } // URL-based centering (e.g., ?center=name_of_marker&zoom=14)
 			gv_options.tilt = false; // true|false: allow Google to show 45-degree tilted aerial imagery?
-			gv_options.street_view = false; // true|false: allow Google Street View on the map
+			gv_options.street_view = true; // true|false: allow Google Street View on the map
 			gv_options.animated_zoom = false; // true|false: may or may not work properly
 			gv_options.disable_google_pois = false;  // true|false: if you disable clickable POIs, you also lose the labels on parks, airports, etc.
 				
@@ -73,12 +74,13 @@
 			gv_options.scale_control = true; // true|false
 			gv_options.center_coordinates = true;  // true|false: show a "center coordinates" box and crosshair?
 			gv_options.mouse_coordinates = false;  // true|false: show a "mouse coordinates" box?
-			gv_options.measurement_tools = 'separate';  // true|false|'separate' ('separate' to put a ruler outside the utilities menu)
+			gv_options.measurement_tools = 'both';  // 'map'|'utilities'|'both'|'none'
 			gv_options.measurement_options = { visible:false, distance_color:'', area_color:'' };
 			gv_options.crosshair_hidden = true;  // true|false: hide the crosshair initially?
-			gv_options.map_opacity_control = true;  // true|false|'separate' ('separate' to put a control outside the utilities menu)
+			gv_options.map_opacity_control = 'utilities';  // 'map'|'utilities'|'both'|'none'
 			gv_options.map_type_control = {};  // widget to change the background map
 			  gv_options.map_type_control.style = 'menu';  // 'menu'|'none'
+			  gv_options.map_type_control.placement = 'both';  // 'map'|'utilities'|'both'
 			  gv_options.map_type_control.filter = false;  // true|false: when map loads, are irrelevant maps ignored?
 			  gv_options.map_type_control.excluded = [];  // comma-separated list of quoted map IDs that will never show in the list ('included' also works)
 			gv_options.infobox_options = {}; // options for a floating info box (id="gv_infobox"), which can contain anything
@@ -87,10 +89,10 @@
 			  gv_options.infobox_options.draggable = true;  // true|false: can it be moved around the screen?
 			  gv_options.infobox_options.collapsible = true;  // true|false: can it be collapsed by double-clicking its top bar?
 			gv_options.utilities_menu = true;  // true|false
-			gv_options.allow_export = false;  // true|false
+			gv_options.allow_export = true;  // true|false
 
 			// track-related options:
-			gv_options.track_tooltips = false; // true|false: should the name of a track appear on the map when you mouse over the track itself?
+			gv_options.track_tooltips = true; // true|false: should the name of a track appear on the map when you mouse over the track itself?
 			gv_options.tracklist_options = {}; // options for a floating list of the tracks visible on the map
 			  gv_options.tracklist_options.enabled = true;  // true|false: enable or disable the tracklist altogether
 			  gv_options.tracklist_options.position = ['RIGHT_TOP',4,32];  // [Google anchor name, relative x, relative y]
@@ -100,7 +102,7 @@
 			  gv_options.tracklist_options.max_height = 310; // maximum height of the tracklist, in pixels; if the list is longer, scrollbars will appear
 			  gv_options.tracklist_options.desc = true;  // true|false: should tracks' descriptions be shown in the list
 			  gv_options.tracklist_options.toggle = true;  // true|false: should clicking on a track's name turn it on or off?
-			  gv_options.tracklist_options.checkboxes = false;  // true|false: should there be a separate icon/checkbox for toggling visibility?
+			  gv_options.tracklist_options.checkboxes = true;  // true|false: should there be a separate icon/checkbox for toggling visibility?
 			  gv_options.tracklist_options.zoom_links = true;  // true|false: should each item include a small icon that will zoom to that track?
 			  gv_options.tracklist_options.highlighting = true;  // true|false: should the track be highlighted when you mouse over the name in the list?
 			  gv_options.tracklist_options.tooltips = false;  // true|false: should the name of the track appear on the map when you mouse over the name in the list?
@@ -121,7 +123,7 @@
 			gv_options.labels_behind_markers = false; // true|false: are the labels behind other markers (true) or in front of them (false)?
 			gv_options.label_offset = [0,0];  // [x,y]: shift all markers' labels (positive numbers are right and down)
 			gv_options.label_centered = false;  // true|false: center labels with respect to their markers?  (label_left is also a valid option.)
-			gv_options.driving_directions = false;  // put a small "driving directions" form in each marker's pop-up window? (override with dd:true or dd:false in a marker's options)
+			gv_options.driving_directions = true;  // put a small "driving directions" form in each marker's pop-up window? (override with dd:true or dd:false in a marker's options)
 			gv_options.garmin_icon_set = 'gpsmap'; // 'gpsmap' are the small 16x16 icons; change it to '24x24' for larger icons
 			gv_options.marker_list_options = {};  // options for a dynamically-created list of markers
 			  gv_options.marker_list_options.enabled = false;  // true|false: enable or disable the marker list altogether
@@ -210,13 +212,31 @@
 				t = 1; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:trk[t].info.desc,color:trk[t].info.color,number:t});
 				
 				
-				GV_Draw_Marker({lat:35.6769972,lon:-105.8869694,name:'Looking towards Tetilla Peak',desc:'Tetilla',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30422174780/in/album-72157674844266790',thumbnail:'https://c5.staticflickr.com/6/5490/30422174780_b0a5c354fb_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.6785389,lon:-105.8863750,name:'From Picacho, the mountains north and east',desc:'PicachoView',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30634312811/in/album-72157674844266790',thumbnail:'https://c4.staticflickr.com/6/5499/30634312811_5c6587f43a_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.6786694,lon:-105.8864750,name:'From top of ol\' Picacho',desc:'PicachoSummit',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30685767866/in/album-72157674844266790',thumbnail:'https://c3.staticflickr.com/6/5533/30685767866_29ce2a84c1_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.6713472,lon:-105.8933333,name:'Good sign at the start!',desc:'LikeThis',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30634325861/in/album-72157674844266790',thumbnail:'https://c6.staticflickr.com/6/5694/30634325861_9b5dc7385a_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.6708306,lon:-105.8901278,name:'A well-defined trail simplifies the climb',desc:'HeadingUp',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30634343571/in/album-72157674844266790',thumbnail:'https://c4.staticflickr.com/6/5487/30634343571_7eec774c28_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.6733861,lon:-105.8905111,name:'Valley views appear all along the trail up',desc:'HalfwayView',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30722687165/in/album-72157674844266790',thumbnail:'https://c6.staticflickr.com/6/5737/30722687165_7ea47b72f2_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.6746306,lon:-105.8873528,name:'Taking a break and looking out from the trail',desc:'Break',color:'',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30087865903/in/album-72157674844266790',thumbnail:'https://c8.staticflickr.com/6/5740/30087865903_39ce243d76_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6698466,lon:-105.8966876,name:'0.3 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:118.9,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6711895,lon:-105.8950182,name:'0.6 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:80.1,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6709967,lon:-105.8900508,name:'0.9 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:25.6,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6724977,lon:-105.8897826,name:'1.2 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:227.3,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6734140,lon:-105.8903738,name:'1.5 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:81.1,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6745041,lon:-105.8878290,name:'1.8 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:349.5,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6769301,lon:-105.8866197,name:'2.1 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:85.7,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6772252,lon:-105.8867199,name:'2.4 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:329.3,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6777201,lon:-105.8879978,name:'2.7 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:344.6,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6782008,lon:-105.8901240,name:'3.0 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:313.7,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6792467,lon:-105.8917845,name:'3.3 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:52.5,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6817788,lon:-105.8930307,name:'3.6 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:47.5,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6832588,lon:-105.8911339,name:'3.9 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:337.1,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6858086,lon:-105.8926037,name:'4.2 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:43.7,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6863844,lon:-105.8948853,name:'4.5 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:133.1,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6863803,lon:-105.8948728,name:'4.52 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Picacho Peak [tickmarks]',rotation:284.9,track_number:1,dd:false});
+				GV_Draw_Marker({lat:35.6769972,lon:-105.8869694,name:'Looking towards Tetilla Peak',desc:'Tetilla',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30422174780/in/album-72157674844266790',thumbnail:'https://c5.staticflickr.com/6/5490/30422174780_b0a5c354fb_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6785389,lon:-105.8863750,name:'From Picacho, the mountains north and east',desc:'PicachoView',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30634312811/in/album-72157674844266790',thumbnail:'https://c4.staticflickr.com/6/5499/30634312811_5c6587f43a_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6786694,lon:-105.8864750,name:'From top of ol\' Picacho',desc:'PicachoSummit',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30685767866/in/album-72157674844266790',thumbnail:'https://c3.staticflickr.com/6/5533/30685767866_29ce2a84c1_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6713472,lon:-105.8933333,name:'Good sign at the start!',desc:'LikeThis',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30634325861/in/album-72157674844266790',thumbnail:'https://c6.staticflickr.com/6/5694/30634325861_9b5dc7385a_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6708306,lon:-105.8901278,name:'A well-defined trail simplifies the climb',desc:'HeadingUp',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30634343571/in/album-72157674844266790',thumbnail:'https://c4.staticflickr.com/6/5487/30634343571_7eec774c28_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6733861,lon:-105.8905111,name:'Valley views appear all along the trail up',desc:'HalfwayView',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30722687165/in/album-72157674844266790',thumbnail:'https://c6.staticflickr.com/6/5737/30722687165_7ea47b72f2_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6746306,lon:-105.8873528,name:'Taking a break and looking out from the trail',desc:'Break',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/30087865903/in/album-72157674844266790',thumbnail:'https://c8.staticflickr.com/6/5740/30087865903_39ce243d76_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6812300,lon:-105.8917800,name:'Turn up here to take a short detour to another viewpoint',desc:'DetourStart',color:'',icon:'Flag, Blue',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6828300,lon:-105.8912800,name:'Rejoin the trail here.',desc:'DetourEnd',color:'',icon:'Flag, Blue',folder:'Folder1'});
 				
 				
 				GV_Finish_Map();
@@ -224,7 +244,7 @@
 			  
 			}
 			GV_Map(); // execute the above code
-			// http://www.gpsvisualizer.com/map_input?form=google
+			// http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=auto
 		</script>
 		
 		
