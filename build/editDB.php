@@ -52,7 +52,7 @@ Edit the URLs or html code as desired, then click on the "Submit" button.
 	Edit or add to any "Proposed Data" list elements:<br />
 	<textarea name="pdat" rows="8" cols="130" wrap="hard"><?php echo $pDat;?></textarea><br /><br />
 	Edit or add to any "Actual Data" list elements:<br />
-	<textarea name="adat" rows="8" cols="130" wrap="hard"><?php echo $pDat;?></textarea><br /><br />
+	<textarea name="adat" rows="8" cols="130" wrap="hard"><?php echo $aDat;?></textarea><br /><br />
 	
 	<input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
 	<input type="hidden" name="nme" value="<?php echo $hikeName;?>" />
