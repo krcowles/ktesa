@@ -68,6 +68,19 @@ legend {
 #exe:hover {
 	cursor: pointer;
 	background-color: #cfe2cf; }
+#experts {
+	display: none; }
+#expOpt {
+	color: DarkGreen; }
+#editor {
+	color: DarkBlue;
+	font-size: 16px; }
+#creator {
+	color: DarkBlue;
+	font-size: 16px; }
+#hide {
+	color: DarkBlue;
+	font-size: 16px; }
 .hilites {
 	font-size: 18px;
 	font-style: italic;
