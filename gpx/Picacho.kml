@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+	<Document>
+		<name>Picacho Peak - Santa Fe, NM</name>
+		<description><![CDATA[A hilly, summit climb on the south Dale Ball/North Atalaya trail system. Intersections are signed and mapped. One of the more steep, sustained climbs in town. Approx. 4.1 mi roundtrip with 1,250 ft of climbing.<br><br>Photos and trail report at - http://highdesertdirt.blogspot.com/p/trails.html<br><br>]]></description>
+		<Folder>
+			<name>Untitled layer</name>
+			<Placemark>
+				<name>Wilderness Gate Trailhead</name>
+				<description><![CDATA[Parking and trailhead for Picacho Peak, Atalaya Mountain, Talaya Hill, Dale Ball south and the Dorothy Stewart Trails.]]></description>
+				<styleUrl>#icon-67</styleUrl>
+				<Point>
+					<coordinates>-105.90058900000001,35.670418,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mile 1</name>
+				<styleUrl>#line-FFFF00-5-nodesc</styleUrl>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>-105.90058900000001,35.670418,0.0 -105.90062000000002,35.67041,0.0 -105.900635,35.670456,0.0 -105.900528,35.670383,0.0 -105.90049,35.670403,0.0 -105.900299,35.670357,0.0 -105.90066500000002,35.670391,0.0 -105.900642,35.670349,0.0 -105.900658,35.670204,0.0 -105.90058900000001,35.669991,0.0 -105.90067300000001,35.669731,0.0 -105.900604,35.669651,0.0 -105.900566,35.669655,0.0 -105.900459,35.669765,0.0 -105.900436,35.669708,0.0 -105.900307,35.669682,0.0 -105.900124,35.669724,0.0 -105.900146,35.669682,0.0 -105.900078,35.66967,0.0 -105.899826,35.669697,0.0 -105.899673,35.669773,0.0 -105.899246,35.670155,0.0 -105.899109,35.670212,0.0 -105.89884900000001,35.67025,0.0 -105.89863600000001,35.670181,0.0 -105.898384,35.67004,0.0 -105.898094,35.669964,0.0 -105.897888,35.669998,0.0 -105.897598,35.66996,0.0 -105.897003,35.670006,0.0 -105.896896,35.67009,0.0 -105.896805,35.670261,0.0 -105.89669,35.670383,0.0 -105.89625500000001,35.670567,0.0 -105.896011,35.670788,0.0 -105.895767,35.670925,0.0 -105.895416,35.670998,0.0 -105.895073,35.671139,0.0 -105.894882,35.671162,0.0 -105.894524,35.671375,0.0 -105.893944,35.671474,0.0 -105.893486,35.671459,0.0 -105.893051,35.671368,0.0 -105.892891,35.671391,0.0 -105.892723,35.67131400000001,0.0 -105.892502,35.671284,0.0 -105.892159,35.67118500000001,0.0 -105.891869,35.671131,0.0 -105.891731,35.67114300000001,0.0 -105.890999,35.671001,0.0 -105.890663,35.670841,0.0 -105.890213,35.670795,0.0 -105.890129,35.670837,0.0 -105.890015,35.67099,0.0 -105.889664,35.671211,0.0 -105.889557,35.671364,0.0 -105.889603,35.671394,0.0 -105.889992,35.671352,0.0 -105.890198,35.671276,0.0 -105.89003,35.671349,0.0 -105.889763,35.671555,0.0 -105.889587,35.671768,0.0 -105.889526,35.671955,0.0 -105.889359,35.672123,0.0 -105.889389,35.672157,0.0 -105.889465,35.672169,0.0 -105.889702,35.6721,0.0 -105.889984,35.671894,0.0 -105.889854,35.671997,0.0 -105.889801,35.672123,0.0 -105.889732,35.672207,0.0 -105.889702,35.672314,0.0 -105.88961,35.672394,0.0</coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name>Mile 2</name>
+				<styleUrl>#line-FFFF00-5-nodesc</styleUrl>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>-105.889587,35.672424,0.0 -105.88945000000001,35.672554,0.0 -105.889473,35.672604,0.0 -105.889557,35.672623,0.0 -105.889793,35.672531,0.0 -105.889877,35.672455,0.0 -105.890038,35.672237,0.0 -105.89016,35.672138,0.0 -105.890221,35.672123,0.0 -105.890282,35.672134,0.0 -105.890335,35.672207,0.0 -105.89019,35.67234,0.0 -105.890099,35.67261500000001,0.0 -105.890038,35.672699,0.0 -105.890259,35.672691,0.0 -105.890465,35.672543,0.0 -105.890541,35.672523,0.0 -105.890419,35.672668,0.0 -105.890419,35.672775,0.0 -105.890381,35.672813,0.0 -105.89003,35.672878000000004,0.0 -105.889931,35.672955,0.0 -105.889954,35.672989,0.0 -105.890152,35.673,0.0 -105.889984,35.673103,0.0 -105.88983900000001,35.673645,0.0 -105.889801,35.673676,0.0 -105.889656,35.673744,0.0 -105.889488,35.673744,0.0 -105.88936600000001,35.673779,0.0 -105.888931,35.673775,0.0 -105.88874800000002,35.67371,0.0 -105.888435,35.673534,0.0 -105.888161,35.673565,0.0 -105.888092,35.673519,0.0 -105.88797,35.673508,0.0 -105.88739,35.673714,0.0 -105.887321,35.674145,0.0 -105.887199,35.67432,0.0 -105.887177,35.674454,0.0 -105.88710800000001,35.674507,0.0 -105.887115,35.674603,0.0 -105.887161,35.674648,0.0 -105.88726,35.674637,0.0 -105.887375,35.674553,0.0 -105.887581,35.67448,0.0 -105.887726,35.674374,0.0 -105.88784,35.674416,0.0 -105.887856,35.674519,0.0 -105.887703,35.67477,0.0 -105.887589,35.674892,0.0 -105.887619,35.675152,0.0 -105.887482,35.675274,0.0 -105.887268,35.675362,0.0 -105.887238,35.6754,0.0 -105.887314,35.675549,0.0 -105.887314,35.675632,0.0 -105.887291,35.675659,0.0 -105.887207,35.675674,0.0 -105.887154,35.67573200000001,0.0 -105.886909,35.675831,0.0 -105.88654300000002,35.675861,0.0 -105.885956,35.676025,0.0 -105.885895,35.676022,0.0 -105.885704,35.675915,0.0 -105.885239,35.675858,0.0 -105.885017,35.675785,0.0 -105.884949,35.675812,0.0 -105.884911,35.675922,0.0 -105.885124,35.67601,0.0 -105.885185,35.676083000000006,0.0 -105.885475,35.676132,0.0 -105.885628,35.676296,0.0 -105.885757,35.676373,0.0 -105.885498,35.67635,0.0 -105.885338,35.676426,0.0 -105.885475,35.676559,0.0 -105.885635,35.676773,0.0 -105.886032,35.676884,0.0 -105.886147,35.67686100000001,0.0 -105.886314,35.676758,0.0 -105.88633000000002,35.676838,0.0</coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name>Picacho Peak - 8,577 ft</name>
+				<styleUrl>#icon-55-nodesc</styleUrl>
+				<Point>
+					<coordinates>-105.886273,35.678634,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mile 3</name>
+				<styleUrl>#line-FFFF00-5-nodesc</styleUrl>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>-105.88633000000002,35.676865,0.0 -105.886345,35.677013,0.0 -105.886574,35.67704,0.0 -105.88665,35.677086,0.0 -105.88665,35.677143,0.0 -105.886589,35.677242,0.0 -105.886696,35.677612,0.0 -105.88681,35.677853,0.0 -105.886757,35.677994,0.0 -105.886658,35.678089,0.0 -105.88665,35.678154,0.0 -105.886589,35.678226,0.0 -105.88662700000002,35.678284,0.0 -105.886597,35.678329,0.0 -105.886612,35.678432,0.0 -105.886452,35.678555,0.0 -105.886475,35.678612,0.0 -105.886528,35.67863800000001,0.0 -105.886681,35.678505,0.0 -105.886681,35.67844,0.0 -105.886726,35.67836,0.0 -105.886703,35.678299,0.0 -105.886734,35.6782,0.0 -105.886765,35.67811600000001,0.0 -105.886826,35.67807400000001,0.0 -105.886818,35.678032,0.0 -105.88678,35.678009,0.0 -105.886833,35.677868,0.0 -105.886795,35.67767,0.0 -105.886681,35.677444,0.0 -105.886688,35.677364,0.0 -105.88663500000001,35.677273,0.0 -105.886726,35.677147,0.0 -105.886589,35.677055,0.0 -105.886581,35.676945,0.0 -105.886681,35.676907,0.0 -105.886894,35.676914,0.0 -105.886986,35.67696,0.0 -105.887054,35.677074,0.0 -105.887146,35.676941,0.0 -105.887306,35.676846,0.0 -105.887344,35.676788,0.0 -105.887352,35.676567,0.0 -105.887199,35.676338,0.0 -105.887146,35.676304,0.0 -105.887146,35.676247,0.0 -105.887192,35.676197,0.0 -105.887383,35.676186,0.0 -105.887505,35.676109,0.0 -105.887611,35.676109,0.0 -105.887718,35.67599500000001,0.0 -105.887657,35.675941,0.0 -105.887421,35.67586500000001,0.0 -105.887421,35.675804,0.0 -105.887199,35.675789,0.0 -105.88710800000001,35.67573200000001,0.0 -105.887222,35.675678,0.0 -105.887367,35.675701,0.0 -105.887436,35.675659,0.0 -105.88732900000001,35.675411,0.0 -105.887367,35.675346,0.0 -105.887627,35.67527,0.0 -105.887703,35.675125,0.0 -105.887688,35.675068,0.0 -105.887711,35.674976,0.0 -105.887672,35.674862,0.0 -105.887817,35.674789,0.0 -105.887901,35.674664,0.0 -105.887978,35.674641,0.0 -105.887848,35.67445,0.0 -105.887642,35.674519,0.0 -105.88739,35.67453,0.0 -105.887337,35.674557,0.0 -105.887299,35.674667,0.0 -105.887276,35.674652,0.0 -105.887253,35.6744,0.0 -105.887337,35.674206,0.0 -105.88732900000001,35.673973,0.0 -105.887398,35.67378600000001,0.0 -105.887527,35.673672,0.0 -105.887978,35.67356900000001,0.0 -105.88806200000002,35.673607,0.0 -105.88826,35.673595,0.0 -105.888329,35.673641,0.0 -105.888481,35.673672,0.0 -105.88866400000002,35.673782,0.0 -105.88887,35.673828,0.0 -105.889702,35.673805,0.0 -105.889854,35.673733,0.0 -105.890083,35.673161,0.0 -105.890236,35.673107,0.0 -105.890175,35.673073,0.0 -105.889977,35.673054,0.0 -105.890259,35.672905,0.0 -105.890457,35.672722,0.0 -105.890511,35.672482,0.0 -105.890373,35.67252,0.0 -105.890236,35.672653,0.0</coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name>Mile 4</name>
+				<styleUrl>#line-FFFF00-5-nodesc</styleUrl>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>-105.890221,35.672676,0.0 -105.890076,35.672768,0.0 -105.890221,35.672661000000005,0.0 -105.89032,35.672367,0.0 -105.890396,35.672272,0.0 -105.890404,35.672218,0.0 -105.890373,35.672157,0.0 -105.890244,35.672104,0.0 -105.89003,35.67223,0.0 -105.889801,35.672501,0.0 -105.889503,35.672592,0.0 -105.889664,35.672512,0.0 -105.889732,35.672394,0.0 -105.889793,35.67218,0.0 -105.890076,35.671852,0.0 -105.889877,35.67189,0.0 -105.889603,35.672096,0.0 -105.88945000000001,35.672131,0.0 -105.88945000000001,35.672096,0.0 -105.889481,35.672043,0.0 -105.889603,35.671989,0.0 -105.889824,35.671719,0.0 -105.890251,35.671387,0.0 -105.890305,35.67128,0.0 -105.890076,35.671227,0.0 -105.889832,35.671303,0.0 -105.889793,35.671379,0.0 -105.889664,35.671383,0.0 -105.889717,35.671394,0.0 -105.889954,35.671249,0.0 -105.890099,35.67123,0.0 -105.890182,35.67114300000001,0.0 -105.890327,35.670914,0.0 -105.89057200000002,35.670918,0.0 -105.890724,35.670986,0.0 -105.89106,35.67104,0.0 -105.89117400000002,35.671104,0.0 -105.891609,35.671146,0.0 -105.891869,35.671227,0.0 -105.892044,35.671211,0.0 -105.892418,35.671303,0.0 -105.892647,35.671303,0.0 -105.892937,35.671371,0.0 -105.893745,35.671471,0.0 -105.89430200000001,35.671509,0.0 -105.894684,35.671459,0.0 -105.894875,35.671307,0.0 -105.895302,35.671089,0.0 -105.895798,35.670963,0.0 -105.89592,35.670868,0.0 -105.89603400000001,35.670677,0.0 -105.89612600000001,35.670624,0.0 -105.896606,35.670403,0.0 -105.896797,35.670269,0.0 -105.897034,35.67028,0.0 -105.89724,35.670116,0.0 -105.897964,35.670036,0.0 -105.898125,35.669968,0.0 -105.898209,35.669971,0.0 -105.89832300000002,35.670055,0.0 -105.898453,35.670082,0.0 -105.898651,35.67018900000001,0.0 -105.898766,35.670219,0.0 -105.89933,35.670204,0.0 -105.899399,35.670185,0.0 -105.899628,35.669937,0.0 -105.899857,35.669769,0.0 -105.900391,35.669662,0.0</coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name>Picacho (Part 5)</name>
+				<styleUrl>#line-FFFF00-5-nodesc</styleUrl>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>-105.900436,35.669682,0.0 -105.900574,35.669743,0.0 -105.900658,35.669853,0.0 -105.90067300000001,35.670174,0.0 -105.900597,35.670441,0.0 -105.90065,35.67041,0.0 -105.900696,35.670441,0.0 -105.900635,35.670433,0.0</coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name>Picacho (End)</name>
+				<description><![CDATA[<img src="https://lh4.googleusercontent.com/proxy/LNQH8Qb98HX8gCmRew_9btRK-rsLL1Mp3MYCTFvHE6HJawHAo9bZ2Do3qCwjhgK-ND2NdlwdffDUgHPeZB_HwUs5usLksoI8fJdk-suTageT4xD3JVAKd2ih--jAgshXGzGA1ok21BUCdXv2OVGu09LmODPYXdb-Srw1b-CtFVx9igb3J99uYAQWiTyaGfJYLlAq7ekUd1BybZpIj7WO58VH119RScOj5rBliorjDQ9tcUy5bHRE4S0C_YBcx-sg27__VUAHOMfatmY21UWQkznkb_cRev6emo7yBrCHlWrzI2RjwxPPt4b54Ty8coRVwjAk7QtH8RqHgHW3IWyZ-nW-dOQ8t09jCr5SpJl9YSp-_AQbjAXYOxxz44-e1_WSNM4Fu2EqtOIPLoi6MmL4vABJkMoQ5XTWVFOy-M7ndsmjnRkmk_AsDVWQ8wocfHYgyXfVDXCRycmCtgnd43U602-wIQankNWcGnHLui6rmPaTKpWQzZ3GjpC8Pf9-89pT0A4qPLmjnGF8kJn2KQQQUtJj_e9VvIGfOAczxy6ouxzjFD59JqfUos0I2ltfePMFa10rubAhJVW-Ys0WDLrprW0M6Adfu9136tsOvhfSO0Pi0A3OwFO7hS8tcssiKRi9pgOezol4xwQ_Xd3w0VF7rDWgdPhuM7dkjMuYBuzHiq0BzaH1lx0I5YLaHBMZWcMaLnTj281KFBXBipFgotKWZ4Ad9pFIVEHpk9tyGV-F6U5fH_JGOIcUnqCD0yGxziPRrenq8TZUO218_56ujOYTfxbYQ9dwmlGcl1Mi-p1rAkJZ07FASF6roWswsqQmXZOYbL04wMh5xIf04hDE-D85EhAgHVNd5kegnLevF23RwtX9GtKGWDpwUomSkPNCyi21VzY7BtOROdmSPffHOYP7ELSLGIyRsDlOafD83Olzlc7VfIIVHwEVFY5iJiwAF60uM9ZPG64CpqL5nA3NIYnAnI-g_Xi1x8wVBDwOgO5RLuCmXfbmPnBw4d_C5N-Smt91E7Imi7YzDUUpTaBkcGD8ddP7niI6xV6XzGfFPVIni5x9TOxpeU9Zq-EYC4pNRSg9BlzF4ZnuyyxLljx6k3YFdAxZQrZeOlpbiRENd-C29XyQHR9-7sPNhwz6fkQHNii-gUKTrIF5lDFFvxV0LXiTqx1gdFe13TQ6V1IoodG0kUcXdEVaedz3UCCQXqSFXivZqrMj7BGS-kJg9xAWErf2avI1e6wpOzgdwx8-85nOvfibV4K3xKDVkiWGKv0WqP4gNIZoVSq6XpF2yLR4rBNunIFK7yPl3YxV8r5FSc7basdDlew2A-oo6hGHLWxGMGP42HqU_EaQiD9jJRC8rCaxNRz7RtatZdjI4aOc3TXhY7KsdUn5t1t2evd7ipY4lfr0WM8joLlsHuUR-ihUEZrOG8Meidsjdbr3i0EHhWlQzj4MMffiFOxwlpSPeGny01D-2HN0E89XX7l0Wf4WlZtlgQprYg_cWRjeZLBnUPhlMhzFwAxK7RZHoPbUrwmqM5gYiV6HWxONfD6E0AvObaJKMVmqCfDvTIehCSHDvzTIgXbdmd9Ylzi6fgqzh17a83PEUQid_Pg3PDItGshPEc5ELnlF1yY7_M1oJUBpZLM" height="200" width="auto" /><br><br>Created by Google My Tracks (http://www.google.com/mobile/mytracks) on Android.<br>Name: Picacho<br>Activity type: -<br>Description: -<br>Total distance: 6.56 km (4.1 mi)<br>Total time: 1:13:19<br>Moving time: 1:05:31<br>Average speed: 5.37 km/h (3.3 mi/h)<br>Average moving speed: 6.01 km/h (3.7 mi/h)<br>Max speed: 20.70 km/h (12.9 mi/h)<br>Average pace: 11.18 min/km (18.0 min/mi)<br>Average moving pace: 9.99 min/km (16.1 min/mi)<br>Fastest pace: 2.90 min/km (4.7 min/mi)<br>Max elevation: 2597 m (8521 ft)<br>Min elevation: 2273 m (7459 ft)<br>Elevation gain: 386 m (1266 ft)<br>Max grade: 0 %<br>Min grade: 0 %<br>Recorded: 6/30/2013 7:22am]]></description>
+				<styleUrl>#icon-503-DB4436</styleUrl>
+				<ExtendedData>
+					<Data name='gx_media_links'>
+						<value>https://lh4.googleusercontent.com/proxy/LNQH8Qb98HX8gCmRew_9btRK-rsLL1Mp3MYCTFvHE6HJawHAo9bZ2Do3qCwjhgK-ND2NdlwdffDUgHPeZB_HwUs5usLksoI8fJdk-suTageT4xD3JVAKd2ih--jAgshXGzGA1ok21BUCdXv2OVGu09LmODPYXdb-Srw1b-CtFVx9igb3J99uYAQWiTyaGfJYLlAq7ekUd1BybZpIj7WO58VH119RScOj5rBliorjDQ9tcUy5bHRE4S0C_YBcx-sg27__VUAHOMfatmY21UWQkznkb_cRev6emo7yBrCHlWrzI2RjwxPPt4b54Ty8coRVwjAk7QtH8RqHgHW3IWyZ-nW-dOQ8t09jCr5SpJl9YSp-_AQbjAXYOxxz44-e1_WSNM4Fu2EqtOIPLoi6MmL4vABJkMoQ5XTWVFOy-M7ndsmjnRkmk_AsDVWQ8wocfHYgyXfVDXCRycmCtgnd43U602-wIQankNWcGnHLui6rmPaTKpWQzZ3GjpC8Pf9-89pT0A4qPLmjnGF8kJn2KQQQUtJj_e9VvIGfOAczxy6ouxzjFD59JqfUos0I2ltfePMFa10rubAhJVW-Ys0WDLrprW0M6Adfu9136tsOvhfSO0Pi0A3OwFO7hS8tcssiKRi9pgOezol4xwQ_Xd3w0VF7rDWgdPhuM7dkjMuYBuzHiq0BzaH1lx0I5YLaHBMZWcMaLnTj281KFBXBipFgotKWZ4Ad9pFIVEHpk9tyGV-F6U5fH_JGOIcUnqCD0yGxziPRrenq8TZUO218_56ujOYTfxbYQ9dwmlGcl1Mi-p1rAkJZ07FASF6roWswsqQmXZOYbL04wMh5xIf04hDE-D85EhAgHVNd5kegnLevF23RwtX9GtKGWDpwUomSkPNCyi21VzY7BtOROdmSPffHOYP7ELSLGIyRsDlOafD83Olzlc7VfIIVHwEVFY5iJiwAF60uM9ZPG64CpqL5nA3NIYnAnI-g_Xi1x8wVBDwOgO5RLuCmXfbmPnBw4d_C5N-Smt91E7Imi7YzDUUpTaBkcGD8ddP7niI6xV6XzGfFPVIni5x9TOxpeU9Zq-EYC4pNRSg9BlzF4ZnuyyxLljx6k3YFdAxZQrZeOlpbiRENd-C29XyQHR9-7sPNhwz6fkQHNii-gUKTrIF5lDFFvxV0LXiTqx1gdFe13TQ6V1IoodG0kUcXdEVaedz3UCCQXqSFXivZqrMj7BGS-kJg9xAWErf2avI1e6wpOzgdwx8-85nOvfibV4K3xKDVkiWGKv0WqP4gNIZoVSq6XpF2yLR4rBNunIFK7yPl3YxV8r5FSc7basdDlew2A-oo6hGHLWxGMGP42HqU_EaQiD9jJRC8rCaxNRz7RtatZdjI4aOc3TXhY7KsdUn5t1t2evd7ipY4lfr0WM8joLlsHuUR-ihUEZrOG8Meidsjdbr3i0EHhWlQzj4MMffiFOxwlpSPeGny01D-2HN0E89XX7l0Wf4WlZtlgQprYg_cWRjeZLBnUPhlMhzFwAxK7RZHoPbUrwmqM5gYiV6HWxONfD6E0AvObaJKMVmqCfDvTIehCSHDvzTIgXbdmd9Ylzi6fgqzh17a83PEUQid_Pg3PDItGshPEc5ELnlF1yY7_M1oJUBpZLM</value>
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>-105.900635,35.670433,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>FR TR 170</name>
+				<description><![CDATA[Alternate approach for Picacho and Atalaya. Easiest bike route for Atalaya.]]></description>
+				<styleUrl>#line-FFFF00-5</styleUrl>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>-105.895234,35.669282,0.0 -105.89488,35.669439,0.0 -105.894686,35.669635,0.0 -105.894337,35.669735,0.0 -105.893876,35.669966,0.0 -105.893763,35.670249,0.0 -105.893849,35.670393,0.0 -105.893441,35.670607,0.0 -105.892685,35.67062,0.0 -105.892315,35.670668,0.0 -105.892186,35.670515,0.0 -105.891724,35.670611,0.0 -105.891279,35.67048,0.0 -105.89074800000002,35.670563,0.0 -105.890555,35.670498,0.0 -105.890324,35.670755,0.0 -105.890276,35.670759,0.0</coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name>Atalaya Mtn - 9,117 ft</name>
+				<styleUrl>#icon-55-nodesc</styleUrl>
+				<Point>
+					<coordinates>-105.87623100000002,35.667722000000005,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Style id='icon-503-DB4436-normal'>
+			<IconStyle>
+				<color>ff3644DB</color>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+				<hotSpot x='16' y='31' xunits='pixels' yunits='insetPixels'>
+				</hotSpot>
+			</IconStyle>
+			<LabelStyle>
+				<scale>0.0</scale>
+			</LabelStyle>
+		</Style>
+		<Style id='icon-503-DB4436-highlight'>
+			<IconStyle>
+				<color>ff3644DB</color>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+				<hotSpot x='16' y='31' xunits='pixels' yunits='insetPixels'>
+				</hotSpot>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.1</scale>
+			</LabelStyle>
+		</Style>
+		<StyleMap id='icon-503-DB4436'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#icon-503-DB4436-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#icon-503-DB4436-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id='icon-55-nodesc-normal'>
+			<IconStyle>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/55-flag.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>0.0</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id='icon-55-nodesc-highlight'>
+			<IconStyle>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/55-flag.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.1</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<StyleMap id='icon-55-nodesc'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#icon-55-nodesc-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#icon-55-nodesc-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id='icon-67-normal'>
+			<IconStyle>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/67-hiker.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>0.0</scale>
+			</LabelStyle>
+		</Style>
+		<Style id='icon-67-highlight'>
+			<IconStyle>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/67-hiker.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>1.1</scale>
+			</LabelStyle>
+		</Style>
+		<StyleMap id='icon-67'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#icon-67-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#icon-67-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id='line-FFFF00-5-normal'>
+			<LineStyle>
+				<color>ff00FFFF</color>
+				<width>5</width>
+			</LineStyle>
+		</Style>
+		<Style id='line-FFFF00-5-highlight'>
+			<LineStyle>
+				<color>ff00FFFF</color>
+				<width>8.0</width>
+			</LineStyle>
+		</Style>
+		<StyleMap id='line-FFFF00-5'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#line-FFFF00-5-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#line-FFFF00-5-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id='line-FFFF00-5-nodesc-normal'>
+			<LineStyle>
+				<color>ff00FFFF</color>
+				<width>5</width>
+			</LineStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id='line-FFFF00-5-nodesc-highlight'>
+			<LineStyle>
+				<color>ff00FFFF</color>
+				<width>8.0</width>
+			</LineStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<StyleMap id='line-FFFF00-5-nodesc'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#line-FFFF00-5-nodesc-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#line-FFFF00-5-nodesc-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+	</Document>
+</kml>
