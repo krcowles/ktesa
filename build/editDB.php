@@ -32,7 +32,7 @@ Edit the URLs or html code as desired, then click on the "Submit" button.
 	$hikeInfo = rawurldecode($info[38]);
 	$refs = rawurldecode($info[39]);
 	$pDat = rawurldecode($info[40]);
-	$adat = rawurldecode($info[41]);
+	$aDat = rawurldecode($info[41]);
 ?>
 <form action="saveChanges.php" method="POST">
 	<em style="color:DarkBlue;">Any changes below will be made for the hike: "<?php echo $hikeName;?>". If no changes 
