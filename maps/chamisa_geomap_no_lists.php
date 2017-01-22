@@ -29,12 +29,6 @@
 				<p align="center" style="font:10px Arial;">This map was created using <a target="_blank" href="http://www.gpsvisualizer.com/">GPS Visualizer</a>'s do-it-yourself geographic utilities.<br /><br />Please wait while the map data loads...</p>
 			</div>
 				
-			<div id="gv_infobox" class="gv_infobox" style="font:11px Arial; border:solid #666666 1px; background-color:#ffffff; padding:4px; overflow:auto; display:none; max-width:400px;">
-				<!-- Although GPS Visualizer didn't create an legend/info box with your map, you can use this space for something else if you'd like; enable it by setting gv_options.infobox_options.enabled to true -->
-			<?php if (isset($_GET[show_geoloc]) == true && $_GET[show_geoloc] == "true") {echo "
-				<p><a href='javascript:GV_Geolocate({marker:true,info_window:true})' style='font-size:12px'>Geolocate me!</a></p>
-			";}?>
-			</div>
 
 
 			<div id="gv_tracklist" class="gv_tracklist" style="font:11px Arial; line-height:11px; background-color:#ffffff; overflow:auto; display:none;"><!-- --></div>
@@ -95,7 +89,7 @@
 			// track-related options:
 			gv_options.track_tooltips = false; // true|false: should the name of a track appear on the map when you mouse over the track itself?
 			gv_options.tracklist_options = {}; // options for a floating list of the tracks visible on the map
-			  gv_options.tracklist_options.enabled = <?php if (isset($_GET[tracklist_options_enabled])) {echo $_GET[tracklist_options_enabled];} else {echo "false";}?>;  // true|false: enable or disable the tracklist altogether
+			  gv_options.tracklist_options.enabled = false;  // true|false: enable or disable the tracklist altogether
 			  gv_options.tracklist_options.position = ['RIGHT_TOP',4,32];  // [Google anchor name, relative x, relative y]
 			  gv_options.tracklist_options.min_width = 100; // minimum width of the tracklist, in pixels
 			  gv_options.tracklist_options.max_width = 180; // maximum width of the tracklist, in pixels
@@ -127,7 +121,7 @@
 			gv_options.driving_directions = false;  // put a small "driving directions" form in each marker's pop-up window? (override with dd:true or dd:false in a marker's options)
 			gv_options.garmin_icon_set = 'gpsmap'; // 'gpsmap' are the small 16x16 icons; change it to '24x24' for larger icons
 			gv_options.marker_list_options = {};  // options for a dynamically-created list of markers
-			  gv_options.marker_list_options.enabled = <?php if (isset($_GET[marker_list_options_enabled])) {echo $_GET[marker_list_options_enabled];} else {echo "false";}?>;;  // true|false: enable or disable the marker list altogether
+			  gv_options.marker_list_options.enabled = false;  // true|false: enable or disable the marker list altogether
 			  gv_options.marker_list_options.floating = true;  // is the list a floating box inside the map itself?
 			  gv_options.marker_list_options.position = ['RIGHT_BOTTOM',6,38];  // floating list only: position within map
 			  gv_options.marker_list_options.min_width = 160; // minimum width, in pixels, of the floating list
@@ -171,7 +165,17 @@
 			  gv_options.marker_filter_options.min_zoom = 0;  // below this zoom level, don't show any markers at all
 			  gv_options.marker_filter_options.zoom_message = '';  // message to put in the marker list if the map is below the min_zoom threshold
 			gv_options.synthesize_fields = {}; // for example: {label:'{name}'} would cause all markers' names to become visible labels
-				
+	
+			// Reset certain map options based on url parameters
+			<div id="gv_infobox" class="gv_infobox" style="font:11px Arial; border:solid #666666 1px; background-color:#ffffff; padding:4px; overflow:auto; display:none; max-width:400px;">
+				<!-- Although GPS Visualizer didn't create an legend/info box with your map, you can use this space for something else if you'd like; enable it by setting gv_options.infobox_options.enabled to true -->
+			<?php if (isset($_GET[show_geoloc]) == true && $_GET[show_geoloc] == "true") {echo "
+				<p><a href='javascript:GV_Geolocate({marker:true,info_window:true})' style='font-size:12px'>Geolocate me!</a></p>
+			";}?>
+			  gv_options.tracklist_options.enabled = <?php if (isset($_GET[tracklist_options_enabled])) {echo $_GET[tracklist_options_enabled];} else {echo "false";}?>;  // true|false: enable or disable the tracklist altogether
+			  gv_options.marker_list_options.enabled = <?php if (isset($_GET[marker_list_options_enabled])) {echo $_GET[marker_list_options_enabled];} else {echo "false";}?>;;  // true|false: enable or disable the marker list altogether
+			</div>
+			
 			
 			// Load GPS Visualizer's Google Maps functions (this must be loaded AFTER gv_options are set):
 			if (window.location.toString().indexOf('https://') == 0) { // secure pages require secure scripts
