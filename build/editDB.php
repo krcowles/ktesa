@@ -28,6 +28,9 @@ Edit the URLs or html code as desired, then click on the "Submit" button.
 	$photoURL1 = rawurldecode($info[23]);
 	$photoURL2 = rawurldecode($info[24]);
 	$dirs = rawurldecode($info[25]);
+	# TEMP CODE - SECT 1 of 2
+	$trailTips = $info[26];
+	# END TEMP CODE - SECT 1 of 2
 	$hikeTips = rawurldecode($info[37]);
 	$hikeInfo = rawurldecode($info[38]);
 	$refs = rawurldecode($info[39]);
@@ -44,7 +47,18 @@ Edit the URLs or html code as desired, then click on the "Submit" button.
 	Enter or change the Google Maps Directions URL [NOTE: this is a single line, despite text-wrapping]<br />
 	<textarea name="gdirs" rows="1" cols="130" wrap="soft"><?php echo $dirs;?></textarea><br /><br />
 	Enter or change any "Tips Text" for the hike:<br />
-	<textarea name="tips" rows="12" cols="130" wrap="hard"><?php echo $hikeTips;?></textarea><br /><br />
+	<textarea name="tips" rows="12" cols="130" wrap="hard"><?php 
+	# TEMP CODE - SECT 2 of 2
+		if($trailTips == 'Y') {
+			echo '<div id="trailTips">' . "\n\t\t" .
+				'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
+				'<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">';
+		}
+	# END TEMP CODE - SECT 2 of 2
+	?>
+	ENTER TIPS HERE
+	<?php echo '</p></div>';?>
+	</textarea><br /><br />
 	Edit the hike information as desired:<br />
 	<textarea name="info" rows="20" cols="130" wrap="hard"><?php echo $hikeInfo;?></textarea><br /><br />
 	Edit the following references list:<br />
