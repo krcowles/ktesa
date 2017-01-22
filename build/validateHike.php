@@ -45,7 +45,7 @@ if ($hikeFileName == "") {
 	$hikePurl1 = trim($_REQUEST['photo1']);
 	$hikePurl2 = trim($_REQUEST['photo2']);
 	$hikeDir = trim($_REQUEST['dirs']);
-	$hikePage = "pages/" . trim($_REQUEST['hikepg']);
+	# NO LONGER NEEDED $hikePage = "pages/" . trim($_REQUEST['hikepg']);
 	// Process the uploaded tsv file:
 	$tsvFile = $_FILES['csvfile']['tmp_name'];
 	$tsvSize = filesize($tsvFile);
@@ -66,38 +66,37 @@ if ($hikeFileName == "") {
 	// always read in the last row for the latest hike info:
 	$hikeDataArray = str_getcsv($harray[$lineCnt],",");
 	// VARIABLE ASSIGNMENTS USING NewHikeData.CSV FILE:
-	$hikeName = trim($hikeDataArray[0]);
-	$hikeLocale = trim($hikeDataArray[1]);
-	$hikeType = trim($hikeDataArray[2]);
-	$hikeLgth = trim($hikeDataArray[3]);
-	$hikeElev = trim($hikeDataArray[4]);
-	$hikeDiff = trim($hikeDataArray[5]);
-	$hikeFac = trim($hikeDataArray[6]);
-	$hikeWow = trim($hikeDataArray[7]);
-	$hikeSeasons = trim($hikeDataArray[8]);
-	$hikeExp = trim($hikeDataArray[9]);
-	$tsvFile = trim($hikeDataArray[10]);
+	$hikeName = trim($hikeDataArray[1]);
+	$hikeLocale = trim($hikeDataArray[2]);
+	$hikeMarker = trim($hikeDataArray[3]);
+	$hikeType = trim($hikeDataArray[6]);
+	$hikeLgth = trim($hikeDataArray[7]);
+	$hikeElev = trim($hikeDataArray[8]);
+	$hikeDiff = trim($hikeDataArray[9]);
+	$hikeFac = trim($hikeDataArray[10]);
+	$hikeWow = trim($hikeDataArray[11]);
+	$hikeSeasons = trim($hikeDataArray[12]);
+	$hikeExp = trim($hikeDataArray[13]);
+	$tsvFile = trim($hikeDataArray[14]);
 	$name2pass = '../gpsv/' . $tsvFile;
-	$hikeGmap = trim($hikeDataArray[11]);
-	$hikeEChart = trim($hikeDataArray[12]);
-	$hikeGpx = trim($hikeDataArray[13]);
-	$hikeJSON = trim($hikeDataArray[14]);
-	$hikeLat = trim($hikeDataArray[15]);
-	$hikeLong = trim($hikeDataArray[16]);
-	$hikeOthrImage1 = trim($hikeDataArray[17]);
-	$hikeOthrImage2 = trim($hikeDataArray[18]);
-	$hikeMarker = trim($hikeDataArray[19]);
-	$hikePurl1 = trim($hikeDataArray[20]);
-	$hikePurl2 = trim($hikeDataArray[21]);
-	$hikeDir = trim($hikeDataArray[22]);
-	$hikePage = "pages/" . trim($hikeDataArray[23]);
+	$hikeGmap = trim($hikeDataArray[15]);
+	$hikeEChart = trim($hikeDataArray[16]);
+	$hikeGpx = trim($hikeDataArray[17]);
+	$hikeJSON = trim($hikeDataArray[18]);
+	$hikeLat = trim($hikeDataArray[19]);
+	$hikeLong = trim($hikeDataArray[20]);
+	$hikeOthrImage1 = trim($hikeDataArray[21]);
+	$hikeOthrImage2 = trim($hikeDataArray[22]);
+	$hikePurl1 = trim($hikeDataArray[23]);
+	$hikePurl2 = trim($hikeDataArray[24]);
+	$hikeDir = trim($hikeDataArray[25]);
+	# NO LONGER NEEDED: $hikePage = "pages/" . trim($hikeDataArray[23]);
 	// Get the specified tsv for processing...
 	$tsvSize = filesize($name2pass);
 	$rawfile = fopen($name2pass,"r") or 
 		die ("Could not open TSV FILE in gpsv directory");
 	$fdat = fread($rawfile,$tsvSize);
 }
-// CHECK ON PATHS LATER
 $chartLoc = "../images/" . $hikeEChart;
 $EChartSize = getimagesize($chartLoc);
 $elevWidth = $EChartSize[0];
@@ -107,7 +106,7 @@ $icount = count($farray) - 1;  // no. of rows in csv file
 /*
 	MARKER-DEPENDENT PAGE ELEMENTS
 */
-$database = '../data/TblDB.csv';
+$database = '../data/test.csv';
 # Index page ref -> ctrhike
 if ($hikeMarker === 'ctrhike') {
 	$dbFile = fopen($database, "r");
@@ -122,7 +121,7 @@ if ($hikeMarker === 'ctrhike') {
 			}
 		}
 	} else {
-		echo "Could not open database file ../data/TblDB.csv";
+		echo "Could not open database file ../data/test.csv";
 	}
 	echo '<div id="findvc"><p>This hike was identified as starting at, or in close proximity to,' .
 	' a Visitor Center.<br /><em id="vcnote">NOTE: if a page for this Visitor Center does not yet exist, please ' .

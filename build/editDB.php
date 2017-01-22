@@ -22,7 +22,7 @@ Edit the URLs or html code as desired, then click on the "Submit" button.
 <?php
 	$database = '../data/test.csv';
 	$dbfile = file($database);
-	$hikeNo = $_GET['hikeNo'];
+	$hikeNo = intval($_GET['hikeNo']);
 	$info = str_getcsv($dbfile[$hikeNo]);
 	$hikeName = $info[1];
 	$photoURL1 = rawurldecode($info[23]);
@@ -32,7 +32,7 @@ Edit the URLs or html code as desired, then click on the "Submit" button.
 	$hikeInfo = rawurldecode($info[38]);
 	$refs = rawurldecode($info[39]);
 	$pDat = rawurldecode($info[40]);
-	$adat = rawurldecode($info[41]);
+	$aDat = rawurldecode($info[41]);
 ?>
 <form action="saveChanges.php" method="POST">
 	<em style="color:DarkBlue;">Any changes below will be made for the hike: "<?php echo $hikeName;?>". If no changes 
@@ -52,7 +52,7 @@ Edit the URLs or html code as desired, then click on the "Submit" button.
 	Edit or add to any "Proposed Data" list elements:<br />
 	<textarea name="pdat" rows="8" cols="130" wrap="hard"><?php echo $pDat;?></textarea><br /><br />
 	Edit or add to any "Actual Data" list elements:<br />
-	<textarea name="adat" rows="8" cols="130" wrap="hard"><?php echo $pDat;?></textarea><br /><br />
+	<textarea name="adat" rows="8" cols="130" wrap="hard"><?php echo $aDat;?></textarea><br /><br />
 	
 	<input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
 	<input type="hidden" name="nme" value="<?php echo $hikeName;?>" />

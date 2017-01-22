@@ -8,7 +8,7 @@ if ($hikeFileName == "") {
 	// hike form entry
 	$indexPage = trim($_REQUEST['hpgTitle']);
 	$hikeLocale = trim($_REQUEST['locale']);
-	$hikeType = trim($_REQUEST['htype']);
+	# $hikeType = trim($_REQUEST['htype']);  // always center
 	$hikeLat = trim($_REQUEST['lat']);
 	$hikeLong = trim($_REQUEST['lon']);
 	$indexImage = $_FILES['othr1']['name'];
@@ -30,8 +30,24 @@ if ($hikeFileName == "") {
 	$indexImage = trim($hikeDataArray[17]);
 	$parkDir = trim($hikeDataArray[22]);
 }
-$hikeMarker = "VC";
+$passMap = $indexImage;
 $indexImage = '../images/' . $indexImage;
+$database = '../data/test.csv';
+# determine number of hikes for drop-down list
+$noOfHikes = 0;
+$choices = array();
+$indices = array();
+$hikes = file($database);
+foreach ( $hikes as $entry) {
+	$hikeArray = str_getcsv($entry,",");
+	if ($hikeArray[3] === 'Cluster' || $hikeArray[3] === 'Normal') {
+		$choices[$noOfHikes] = $hikeArray[1];
+		$indices[$noOfHikes] = $hikeArray[0];
+		$noOfHikes++;
+	}
+}
+#echo "No of hikes located: " . $noOfHikes;
+#echo "Index 0: " . $indices[0];
 ?>
 
 <head>
@@ -61,73 +77,53 @@ $indexImage = '../images/' . $indexImage;
 		<p id="indxTitle" class="grid_16"><?php echo $indexPage;?></p>
 	</div> <!-- end of logoBlock -->
 	
-	<img class="mainPic" src="<?php echo $indexImage;?>" alt="Park Map" />
-	<p id="dirs"><a href="<?php echo $parkDir?>" target="_blank">Directions to the Visitor Center</a></p>
+	<img class="mainPic" src="<?php echo $indexImage;?>" alt="Park Map" /><br />
 	
-	<form action="indexPgCreator.php" method="POST">
-	<p id="indxContent"><textarea cols="112" rows="8">Enter Park Description Here...</textarea></p>
-	<ul>
-		<li>Book: <input name="bk1" type="text" size="40" placeholder="Title of book reference">
-				<input name="auth1" type="text" size="40" placeholder="Name of author(s)">
-		<li>Book: <input name="bk2" type="text" size="40" placeholder="Title of book reference">
-				<input name="auth2" type="text" size="40"placeholder="Name of author(s)">
-		<li>Book: <input name="bk3" type="text" size="40"placeholder="Title of book reference">
-				<input name="auth3" type="text" size="40" placeholder="Name of author(s)">
-		<li>Website: <input name="web1" type="text" size="100" placeholder="Paste link to app here">
-				<input name="webtxt1" type="text" size="20" placeholder="Text to click on">
-		<li>Website: <input name="web2" type="text" size="100" placeholder="Paste link to app here">
-				<input name="webtxt2" type="text" size="20" placeholder="Text to click on">
-		<li>Website: <input name="web3" type="text" size="100" placeholder="Paste link to app here">
-				<input name="webtxt3" type="text" size="20" placeholder="Text to click on">
-	</ul>
+	<form action="saveIndex.php" method="POST">
+	<p id="dirs"><a href="<?php echo $parkDir?>" target="_blank">Directions to the Visitor Center</a></p>
+	<input type="hidden" name="pgName" value="<?php echo $indexPage;?>" />
+	<input type="hidden" name="hLocale" value="<?php echo $hikeLocale;?>" />
+	<input type="hidden" name="imap" value="<?php echo $passMap;?>" />
+	<input type="hidden" name="hlat" value="<?php echo $hikeLat;?>" />
+	<input type="hidden" name="hlon" value="<?php echo $hikeLong;?>" />
+	<input type="hidden" name="gdirs" value="<?php echo $parkDir;?>" />
+	
+	<p id="indxContent"><textarea name="parkInfo" cols="116" rows="12">Enter Park Description Here...</textarea></p>
+	<?php 
+		echo '<fieldset><legend id="fldrefs">References &amp; Links</legend>';
+		echo '<ul id="refs">';
+		echo '<ul>';
+		echo '<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference"><br>' .
+				'<input name="auth[]" type="text" size="40" placeholder="Name of author(s)">';
+		echo '<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference"><br>' .
+				'<input name="auth[]" type="text" size="40"placeholder="Name of author(s)">';
+		echo '<li>Book: <input name="bk[]" type="text" size="40" placeholder="Title of book reference"><br>' .
+				'<input name="auth[]" type="text" size="40" placeholder="Name of author(s)">';
+		echo '<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here"><br>' .
+				'<input name="webtxt[]" type="text" size="20" placeholder="Text to click on">';
+		echo '<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here"><br>' .
+				'<input name="webtxt[]" type="text" size="20" placeholder="Text to click on">';
+		echo '<li>Website: <input name="web[]" type="text" size="100" placeholder="Paste link to app here"><br>' .
+				'<input name="webtxt[]" type="text" size="20" placeholder="Text to click on">';
+		echo '</ul></fieldset>';
+	?>
 	
 	<div id="hdrContainer">
 		<p id="tblHdr">Park Hiking & Walking Opportunities:</p>
-		<p>Enter the following information about all park hikes available: This will be
-		tabulated for review on the next page</p>
+		<p>List any hikes associated with this park by selecting one or more hikes
+		from the drop-down list below. They will then appear in a summary table for this park.
+		If there are no hikes in the database yet, simply do not select any below. You 
+		will be able to add hikes later.</p><br />
+		<?php 
+			for ($j=0; $j<$noOfHikes; $j++) {
+				echo '<label style="text-align:left;" class="grid_4"><input type="checkbox" name="tblList[]"' .
+					'value="' . $indices[$j] . '" />' . $choices[$j] . '</label>';
+			}
+		?>
 	</div>
-
-	<label>Enter Hike Name</label><input type="text" name="hk1" size="40" /><br />
-	<label>Enter Hike Index Number</label><input type="text" name="lnk1" size="10" /><br />
-	<label>Enter Trail Length (miles)</label><input type="text" name="lgth1" size="40" /><br />
-	<label>Enter Elevation Change (feet)</label><input type="text" name="elev1" size="40" /><br />
-	Enter Exposure Type: 
-	<input id="sunny" type="radio" name="exp1" value="sun" /><label for="sunny">Full Sun</label>
-		<input id="shady" type="radio" name="exp1" value="shade" /><label for="shady">Good Shade</label>
-		<input id="partly" type="radio" name="exp1" value="mixed" /><label for="partly">Mixed Sun &amp; Shade</label><br />
-	<label>Enter URL for photo album<input type="text" name="purl1" size="80" />
-	<br /><br />
-	<label>Enter Hike Name</label><input type="text" name="hk2" size="40" /><br />
-	<label>Enter Hike Index Number</label><input type="text" name="lnk2" size="10" /><br />
-	<label>Enter Trail Length (miles)</label><input type="text" name="lgth2" size="40" /><br />
-	<label>Enter Elevation Change (feet)</label><input type="text" name="elev2" size="40" /><br />
-	Enter Exposure Type: 
-	<input id="sunny" type="radio" name="exp2" value="sun" /><label for="sunny">Full Sun</label>
-		<input id="shady" type="radio" name="exp2" value="shade" /><label for="shady">Good Shade</label>
-		<input id="partly" type="radio" name="exp2" value="mixed" /><label for="partly">Mixed Sun &amp; Shade</label><br />
-	<label>Enter URL for photo album<input type="text" name="purl2" size="80" />
-	
-	<br /><br />
-	<label>Enter Hike Name</label><input type="text" name="hk3" size="40" /><br />
-	<label>Enter Hike Index Number</label><input type="text" name="lnk3" size="10" /><br />
-	<label>Enter Trail Length (miles)</label><input type="text" name="lgth3" size="40" /><br />
-	<label>Enter Elevation Change (feet)</label><input type="text" name="elev3" size="40" /><br />
-	Enter Exposure Type: 
-	<input id="sunny" type="radio" name="exp3" value="sun" /><label for="sunny">Full Sun</label>
-		<input id="shady" type="radio" name="exp3" value="shade" /><label for="shady">Good Shade</label>
-		<input id="partly" type="radio" name="exp3" value="mixed" /><label for="partly">Mixed Sun &amp; Shade</label><br />
-	<label>Enter URL for photo album<input type="text" name="purl3" size="80" />
-	
-	<br /><br />
-	<label>Enter Hike Name</label><input type="text" name="hk4" size="40" /><br />
-	<label>Enter Hike Index Number</label><input type="text" name="lnk4" size="10" /><br />
-	<label>Enter Trail Length (miles)</label><input type="text" name="lgth4" size="40" /><br />
-	<label>Enter Elevation Change (feet)</label><input type="text" name="elev4" size="40" /><br />
-	Enter Exposure Type: 
-	<input id="sunny" type="radio" name="exp4" value="sun" /><label for="sunny">Full Sun</label>
-		<input id="shady" type="radio" name="exp4" value="shade" /><label for="shady">Good Shade</label>
-		<input id="partly" type="radio" name="exp4" value="mixed" /><label for="partly">Mixed Sun &amp; Shade</label><br />
-	<label>Enter URL for photo album<input type="text" name="purl4" size="80" />
+	<div>
+	<input type="submit" value="Save Index Page" />
+	</div>
 	</form>
 		
 </div>  <!-- END OF CONTAINER 16 -->
