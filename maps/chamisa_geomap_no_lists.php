@@ -207,7 +207,7 @@
 	
 			<?php
 				$lines = file('ChamisaSpecificMap.php');
-				foreach ($lines as $line_num => $line) {
+				foreach ($lines as $line) {
 				    echo ($line);
 				}
 //				include 'ChamisaSpecificMap.php';
