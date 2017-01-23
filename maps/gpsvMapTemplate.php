@@ -1,5 +1,5 @@
 <?php
-	$lines = file('chamisa_geomap_no_lists.html');
+	$lines = file($_GET[map_name]);
 	for($i = 0; $i < count($lines); ++$i) {
 		echo ($lines[$i]);
 		if (strpos($lines[$i], "Although GPS Visualizer didn't create") !== false) {
