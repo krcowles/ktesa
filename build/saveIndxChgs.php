@@ -51,6 +51,14 @@
 <h2>The changes submitted for <?php echo $indxName;?> (if any) have been saved to the database.</h2>
 </div>
 
+<div data-pageType="index" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
+	<button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this Index Page</button><br />
+	<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different Index Page</button>
+</div>
+
+<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="moreEdits.js"></script>
+
 
 </body>
 
