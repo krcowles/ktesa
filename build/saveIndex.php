@@ -143,13 +143,13 @@
 <h2 style="margin:16px;">Index Page Has Been Saved to the Database</h2>
 </div>
 
-<div data-pageType="index" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
+<div data-ptype="index" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
 	<button style="font-size:16px;color:DarkBlue;" id="same">Edit this Index Page</button><br />
 	<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different Index Page</button>
 </div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="moreEdits.js"></script>
+<script src="postEdit.js"></script>
 
 </body>
 

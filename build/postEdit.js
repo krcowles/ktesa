@@ -1,6 +1,6 @@
 $( function() {  // wait until document is loaded...
 
-var pageType = $('#more').data('pageType');
+var pageType = $('#more').data('ptype');
 var hike = $('#more').data('indxno');
 var editThisPg;
 var editDiffPg;

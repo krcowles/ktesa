@@ -249,13 +249,13 @@
 	*/
 ?>
 </div>
-<div data-pageType="hike" data-indxno="<?php echo $newHike[0];?>" style="padding:16px;" id="more">
+<div data-ptype="hike" data-indxno="<?php echo $newHike[0];?>" style="padding:16px;" id="more">
 	<button style="font-size:16px;color:DarkBlue;" id="same">Edit this hike</button><br />
 	<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button>
 </div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="saveHike.js"></script>
-<script src="moreEdits.js"></script>
+<script src="postEdit.js"></script>
 </body>
 </html>

@@ -63,13 +63,13 @@
 <h2>The changes submitted for <?php echo $hikeName;?> (if any) have been saved to the database.</h2>
 </div>
 
-<div data-pageType="hike" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
+<div data-ptype="hike" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
 	<button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this hike</button><br />
 	<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button>
 </div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="moreEdits.js"></script>
+<script src="postEdit.js"></script>
 
 </body>
 
