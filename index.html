@@ -55,7 +55,7 @@
 		<p id="turnon" class="hilites">
 			More detail on site features... (Recommended for first-time users)
 		</p>
-		<form action="pages/mapPg.php" method="GET">
+		<form id="mainfrm" action="pages/mapPg.php" method="GET">
 			<div id="settings">
 				<fieldset id="gloc">
 					<legend>Geolocation</legend>
@@ -68,8 +68,6 @@
 						Map With Table&nbsp;&nbsp;&nbsp;
 					<input type="radio" name="tbl" value="OFF" />Full Page Map
 				</fieldset>
-				<!-- </div>
-				<div id="next"> -->
 				<fieldset id="go">
 					<legend>Submit</legend>
 					<input style="color:DarkGreen;font-size:14px;" 
@@ -77,6 +75,16 @@
 				</fieldset>
 			</div>
 		</form>
+		<form id="auxfrm" action="#">
+			<p><em id="expOpt">Expert user options:</em> Enter Registration Key to Display &nbsp;&nbsp;
+			<input type="password" name="regkey" size="12" maxlength="6" /></p>
+		</form>
+		<div id="experts">
+			<button id="editor">Edit a Page</button><br />
+			<button id="creator">Create New Hike or Index Page</button><br />
+			<button id="hide">Hide Options</button>
+		</div>
+			
 		<div id="more">
 			<p>Map features (both Full-Page and Map-With-Table):</p>
 			<ul class="dashed">

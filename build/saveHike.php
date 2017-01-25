@@ -229,6 +229,7 @@
 		echo "<h2>" . $msg . "</h2>";
 	}
 # DEBUG OUTPUT ---
+	/*
 	$listOut = array("Hike Index No.","Hike Name","Locale","Marker","Indx. Cluster String","Cluster Letter",
 		"Hike Type","Length","Elevation Change","Difficulty","Facilities","Wow Factor",
 		"Seasons","Exposure","tsv File","Geomap","Elevation Chart","Geomap GPX",
@@ -245,10 +246,16 @@
 			echo $listOut[$i] . "-> " . $newHike[$i] . "<br />";
 		}
 	}
-
+	*/
 ?>
 </div>
+<div data-ptype="hike" data-indxno="<?php echo $newHike[0];?>" style="padding:16px;" id="more">
+	<button style="font-size:16px;color:DarkBlue;" id="same">Edit this hike</button><br />
+	<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button>
+</div>
+
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="saveHike.js"></script>
+<script src="postEdit.js"></script>
 </body>
 </html>
