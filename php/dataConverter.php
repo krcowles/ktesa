@@ -122,6 +122,7 @@ foreach($oldDat as $oldLine) {
 				}
 			} 
 			$caparray = implode("^",$caps);
+			$hikeDat[35] = $caparray;
 			$capCnt = count($caps);
 			# ROWS:
 			for ($i=29; $i<35; $i++) {
@@ -219,11 +220,64 @@ foreach($oldDat as $oldLine) {
 						$imgCnt++;
 					}  // end of while (looking at one row here)
 					$rowStr = $imgCnt . '^' . $rowHt . '^' . implode("^",$rowEls);
-					$rowno = $i - 29;
-					echo 'hike ' . $hikeNo . ': Row no. ' . $rowno . '; ' . $rowStr . ' ;     ';
+					#$rowno = $i - 29;
+					#echo 'hike ' . $hikeNo . ': Row no. ' . $rowno . '; ' . $rowStr . ' ;     ';
 					$hikeDat[$i] = $rowStr;
 				}
 			}  // end of for loop row processing
+			# Now get the link list for the photos:
+			$linklist = rawurldecode($hikeDat[36]);
+			$linklist = str_replace("lnkList","any",$linklist);
+			$lnkStrt = strpos($linklist,"http");
+			$links = array();
+			$linkCnt = 0;
+			for ($k=0; $k<100; $k++) {
+				$lnkEnd = strpos($linklist,"</li>");
+				$lnkLgth = $lnkEnd - $lnkStrt;
+				$plink = substr($linklist,$lnkStrt,$lnkLgth);
+				$linkCnt++;
+				array_push($links,$plink);
+				$fragLgth = strlen($linklist) - $lnkEnd - 5;
+				$linklist = substr($linklist,$lnkEnd+5,$fragLgth);
+				$lnkStrt = strpos($linklist,"http");
+				if ($lnkStrt === false) {
+					break;
+				}
+			} 
+			$linkStr = $linkCnt . '^' . implode("^",$links);
+			$hikeDat[36] = $linkStr;
+			# Now process any Tips Text:
+			$tips = rawurldecode($hikeDat[37]);
+			if ($tips !== '') {
+				$hikeDat[37] = preg_replace("/\s/"," ",$tips);
+			}
+			# If there is any Proposed Data:
+			# There are 3 pieces: label, href, click txt
+			$propDat = rawurldecode($hikeDat[40]);
+			$actDat = rawurldecode($hikeDat[41]);
+			$props = array();
+			$acts = array();
+			if ($propDat !== '') {
+				echo "Prop data found... Hike " . $hikeNo;
+				$itemStrt = strpos($propDat,"<li");
+				for ($n=0;$n<20; $n++) {
+					$itemStrt += 4;
+					$itemEnd = strpos($propDat,"</li");
+					$itemLgth = $itemEnd - $itemStrt; 
+					$item = substr($propDat,$itemStr,$itemLgth); // all 3 pieces within
+					array_push($props,$item);
+					echo "Whole item is " . $item;
+					$fragLgth = strlen($propDat) - ($itemEnd + 5);
+					$prodDat = substr($propDat,$itemEnd+5,$fragLgth);
+					$itemStrt = strpos($propDat,"<li");
+					if ($itemStrt === false) {
+						break;
+					}
+				}
+			}
+			if ($actDat !== '') {
+			
+			}
 		}  // end of else to process non-index-page line
 	}  // end of else to process non-header line
 	$i++;
