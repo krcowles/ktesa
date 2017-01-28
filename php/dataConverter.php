@@ -14,8 +14,7 @@ $newbase = '../data/tmptest.csv';
 $handle = fopen($newbase,"a");
 
 $oldDat = file($database);
-#$newDat = array();
-$x = 0;
+#$fileLgth = count($oldDat);
 function reformList($htmlList) {
 	$strt = strpos($htmlList,"<li>");
 	$newlgth = strlen($htmlList) - $strt;
@@ -41,9 +40,6 @@ foreach($oldDat as $oldLine) {
 		$hikeDat[25] = rawurldecode($hikeDat[25]); // google directions
 		$hikeInfo = rawurldecode($hikeDat[38]); // hike info (or index page info)
 		$hikeDat[38] = preg_replace("/\s/"," ",$hikeInfo);
-		if ($hikeNo === 13) {
-			die ("Starting info for hike 13");
-		}
 /* REFERENCES PROCESSING */
 		/* references are lists which require additonal processing to strip html */
 		$itemStr = rawurldecode($hikeDat[39]);
@@ -57,13 +53,22 @@ foreach($oldDat as $oldLine) {
 		$itemStr = substr($itemStr,$cntEnd+1,$remlgth);
 		$refStr = $refCnt;
 		$tagType = substr($itemStr,0,3);
-		/* There are currently five items types: Book, Website, App, Downloadable Doc,
-		   and html link; the array string formed will use the following identifiers:
-				- Book ->  b:	b^title^author
-				- Website -> w
-				- App -> a
-				- Downloadable doc -> d
-				- Html linke -> h */
+		/* There are currently eleven items types: Book, Website, App, Downloadable Doc,
+		   blog, Related link, On-line Map, Magazine, News Article, html link, and Nothing
+		   Relevant;
+		   the array string formed will use the following identifiers:
+				- Book ->       b:	b^title^author
+				- Website ->    w:  w^href^clicktxt
+				- App ->        a:  a^href^clicktxt
+				- Downloadable doc -> d:  d^href^clicktxt
+				- Blog ->       l:  l^href^clicktxt 
+				- Related link -> r:  r^href^clicktxt
+				- On-line Map -> o:   o^href^clicktxt (or Map)
+				- Magazine ->   m:  m^href^clicktxt
+				- News article -> n:  n^href^clicktxt
+				- Meetup Group -> g:  g^href^clicktxt
+				- Html link ->  h:  h^href^clicktxt
+				- Nothing Relevant -> n:   no other members      */
 		for ($j=0; $j<$refCnt; $j++) {
 			if ($tagType == 'Boo') {
 				$emStrt = strpos($itemStr,'<em>') + 4;
@@ -82,6 +87,8 @@ foreach($oldDat as $oldLine) {
 				$author = substr($itemStr,$authStrt,$authLgth);
 				#echo "; Author: " . $author;
 				$refStr = $refStr . "^b^" . $title . "^" . $author;
+			} elseif ($tagType = 'Not') {
+				$refStr = $refStr . "^n";
 			} else { // everything else has an <a> tag:
 				$hrefStrt = strpos($itemStr,"href") + 6;
 				$hrefEnd = strpos($itemStr,'target=');
@@ -101,7 +108,8 @@ foreach($oldDat as $oldLine) {
 				}
 				$thisItem = substr($itemStr,0,$thisItemEnd);
 				$clickTxt = strip_tags($thisItem);
-				#echo "Click text for link is " . $clickTxt;
+				/* NOTE: if there is text preceding the link other than standard,
+				   it will be included as click text */
 				if ($tagType === 'Web') {
 					$linkType = 'w';
 				} elseif ($tagType === 'App') {
@@ -110,8 +118,21 @@ foreach($oldDat as $oldLine) {
 					$linkType = 'd';
 				} elseif ($tagType === '<a ') {
 					$linkType = 'h';
+				} elseif ($tagType === 'Blo') {
+					$linkType = 'l';
+				} elseif ($tagType === 'Rel') {
+					$linkType = 'r';
+				} elseif ($tagType === 'On-' || $tagType === 'Map') {
+					$linkType = 'o';
+				} elseif ($tagType === 'Mag') {
+					$linkType = 'm';
+				} elseif ($tagType === 'New') {
+					$linkType = 'n';
+				} elseif ($tagType === 'Mee') {
+					$linkType = 'g';
 				} else {
 					echo "Unrecognizable tag type" . $tagType;
+					echo " --Remaining string: " . $itemStr;
 					$linkType = "u";
 				}
 				$refStr = $refStr . "^" . $linkType . "^" . $href . "^" . $clickTxt;
@@ -266,15 +287,17 @@ foreach($oldDat as $oldLine) {
 			if ($tips !== '') {
 				$hikeDat[37] = preg_replace("/\s/"," ",$tips);
 			}
-/* PROPOSED & ACTUAL DATA SECTION PROCESSING */
+/* PROPOSED DATA SECTION PROCESSING */
 			# If there is any Proposed Data:
 			# There are 3 pieces: label, href, click txt
 			$propDat = rawurldecode($hikeDat[40]);
+			$propDat = preg_replace("/\n|\r|\t/","",$propDat);
 			$propDat = trim($propDat);
 			$actDat = rawurldecode($hikeDat[41]);
+			$actDat = preg_replace("/\n|\r|\t/","",$actDat);
 			$actDat = trim($actDat);
 			if ($propDat !== '') {
-				echo "Prop data found... Hike " . $hikeNo;
+				#echo "Prop data found... Hike " . $hikeNo . "\n";
 				$proplist = reformList($propDat);
 				$pCntEnd = strpos($proplist,"^");
 				$pCnt = intval(substr($proplist,0,$pCntEnd));
@@ -302,27 +325,62 @@ foreach($oldDat as $oldLine) {
 					$href = trim($href);
 					$endRef = strlen($href) - 1;
 					$href = substr($href,0,$endRef);
-					echo "pdat href is : " . $href;
 					# CLICK TXT:
 					$clickTxt = strip_tags($thisp);
+					$clickTxt = trim($clickTxt);
 					# prep for next iteration
-					$pStr = "^" . $label . "^" . $href . "^" . $clickTxt;
+					$pStr = $pStr . "^" . $label . "^" . $href . "^" . $clickTxt;
 					$nxtpStrt = strpos($proplist,"^") + 1;
 					$nxtpLgth = strlen($proplist) - $nxtpStrt;
 					$proplist = substr($proplist,$nxtpStrt,$nxtpLgth);
 				}
+				$hikeDat[40] = $pStr;
 			} // end of propdat
+/* ACTUAL DATA PROCESSING SECTION: */
 			if ($actDat !== '') {
-				echo "Act data found... Hike " . $hikeNo;
+				#echo "Act data found... Hike " . $hikeNo;
+				$actlist = reformList($actDat);
+				$aCntEnd = strpos($actlist,"^");
+				$aCnt = intval(substr($actlist,0,$aCntEnd));
+				$aLgth = strlen($actlist) - ($aCntEnd + 1);
+				$aStr = $aCnt;
+				$actlist = substr($actlist,$aCntEnd+1,$aLgth);
+				for ($j=0; $j<$aCnt; $j++) {
+					# LABEL:
+					$lblEnd = strpos($actlist,"<a");
+					$label = substr($actlist,0,$lblEnd);
+					if ($j === $aCnt - 1) {
+						$aEnd = strlen($actlist) - $lblEnd;
+					} else {
+						$aEnd = strpos($actlist,"^") - $lblEnd;
+					}
+					$thisa = substr($actlist,$lblEnd,$aEnd);
+					# HREF:
+					$hrefStrt = strpos($thisa,"href") + 6;
+					$hrefEnd = strpos($thisa,'target');
+					/* NOTE: there may be some issue where end of href and start of
+					   target= has more than one space or some goofy character, so
+					   finding target will leave at least the closing " on the href */
+					$hrefLgth = $hrefEnd - $hrefStrt;
+					$href = substr($thisa,$hrefStrt,$hrefLgth);
+					$href = trim($href);
+					$endRef = strlen($href) - 1;
+					$href = substr($href,0,$endRef);
+					# CLICK TXT:
+					$clickTxt = strip_tags($thisp);
+					$clickTxt = trim($clickTxt);
+					# prep for next iteration
+					$aStr = $aStr . "^" . $label . "^" . $href . "^" . $clickTxt;
+					$nxtaStrt = strpos($actlist,"^") + 1;
+					$nxtaLgth = strlen($actlist) - $nxtaStrt;
+					$actlist = substr($actlist,$nxtaStrt,$nxtaLgth);
+				}
+				$hikeDat[41] = $aStr;
 			}
 			$x++;
 		}  // end of if-else to separate index page and hike page processing
 	}  // end of "if $hdr !== 'Ind'  [test to see if header row]
 	fputcsv($handle,$hikeDat);
-	if ($x > 12) {
-		echo "Last hike no " . $hikeNo;
-		break;
-	}
 }  // end of foreach
 
 ?>
