@@ -9,6 +9,8 @@
     tabs, etc.) replaced with a single space character to resolve issues where the
     data would otherwise be written across several cells in csv. The new page template
     will parse the array strings to re-create the html sections appropriately. */
+    
+# **** NOTE: Currently reading from test.csv but saving results to tmptest.csv:
 $database = '../data/test.csv';
 $newbase = '../data/tmptest.csv';
 $handle = fopen($newbase,"a");
@@ -58,6 +60,7 @@ foreach($oldDat as $oldLine) {
 		   Relevant;
 		   the array string formed will use the following identifiers:
 				- Book ->       b:	b^title^author
+				- Photo Essay -> p: p^title^author
 				- Website ->    w:  w^href^clicktxt
 				- App ->        a:  a^href^clicktxt
 				- Downloadable doc -> d:  d^href^clicktxt
@@ -68,9 +71,9 @@ foreach($oldDat as $oldLine) {
 				- News article -> n:  n^href^clicktxt
 				- Meetup Group -> g:  g^href^clicktxt
 				- Html link ->  h:  h^href^clicktxt
-				- Nothing Relevant -> n:   no other members      */
+				- String only -> n: n^string      */
 		for ($j=0; $j<$refCnt; $j++) {
-			if ($tagType == 'Boo') {
+			if ($tagType == 'Boo' || $tagType == 'Pho') {
 				$emStrt = strpos($itemStr,'<em>') + 4;
 				$emEnd = strpos($itemStr,'</em>');
 				$titleLgth = $emEnd - $emStrt;
@@ -86,8 +89,12 @@ foreach($oldDat as $oldLine) {
 				}
 				$author = substr($itemStr,$authStrt,$authLgth);
 				#echo "; Author: " . $author;
-				$refStr = $refStr . "^b^" . $title . "^" . $author;
-			} elseif ($tagType = 'Not') {
+				if ($tagType == 'Boo') {
+					$refStr = $refStr . "^b^" . $title . "^" . $author;
+				} else {
+					$refStr = $refStr . "^p^" . $title . "^" . $author;
+				}
+			} elseif ($tagType == 'Not' || $tagType == 'See' || $tagType == 'No ') {
 				$refStr = $refStr . "^n";
 			} else { // everything else has an <a> tag:
 				$hrefStrt = strpos($itemStr,"href") + 6;
@@ -127,11 +134,11 @@ foreach($oldDat as $oldLine) {
 				} elseif ($tagType === 'Mag') {
 					$linkType = 'm';
 				} elseif ($tagType === 'New') {
-					$linkType = 'n';
+					$linkType = 's';
 				} elseif ($tagType === 'Mee') {
 					$linkType = 'g';
 				} else {
-					echo "Unrecognizable tag type" . $tagType;
+					echo "Unrecognizable tag type in Hike " . $hikeNo . ": " . $tagType;
 					echo " --Remaining string: " . $itemStr;
 					$linkType = "u";
 				}
@@ -168,8 +175,11 @@ foreach($oldDat as $oldLine) {
 			$oldCaps = trim($oldCaps);
 			$capsStr = reformList($oldCaps);
 			$hikeDat[35] = $capsStr;
+			$caps = explode("^",$capsStr);
+			$firstoff = array_shift($caps);
 /* IMAGE ROW PROCESSING */
 			# ROWS: already working by the time I made fct reformList
+			$picNo = 0;
 			for ($i=29; $i<35; $i++) {
 				# ROW DATA
 				if ($hikeDat[$i] == '') {
@@ -186,7 +196,6 @@ foreach($oldDat as $oldLine) {
 					$strleft = substr($oldrow,$imgPos,$sublgth);
 					$tagtype = substr($strleft,0,3);
 					$imgCnt = 0;
-					$picNo = 0;
 					# each row is enclosed in <div> </div> tags; procure images tag by tag
 					$rowEls = array();
 					while ($tagtype !== '/di') {
@@ -229,7 +238,11 @@ foreach($oldDat as $oldLine) {
 								# some jpgs don't seem to have a width param:
 								if ($width == '') {
 									$imgParms = getimagesize($src);
-									$width = $imgParms[0];
+									$width = intval($imgParms[0]);
+									$height = intval($imgParms[1]);
+									$htFactor = $rowHt/$height;
+									# maintain aspect ratio
+									$width = intval($htFactor * $width);
 								}
 								$imgStr = 'n^' . $width . '^' . $src;
 							}
@@ -403,7 +416,7 @@ foreach($oldDat as $oldLine) {
 <body>
 
 <div>
-DATA CONVERTER EXECUTED: NOT YET COMPLETE
+DATA CONVERTER FULLY FUNCTIONAL & EXECUTED (But -- there may be an anomaly or two!)
 </div>
 
 </body>
