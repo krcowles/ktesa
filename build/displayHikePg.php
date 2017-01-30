@@ -85,7 +85,6 @@ $difficulty = $_POST['diffi'];
 $lat = $_POST['lati'];
 $lon = $_POST['long'];
 $facilities = $_POST['facil'];
-$hikePg = $_POST['webpg'];
 $wowFactor = $_POST['wow'];
 $seasons = $_POST['seasn'];
 $exp = $_POST['expo'];
@@ -145,7 +144,6 @@ if ($_POST['allPix'] == 'useAll') {
 $googledirs = $_POST['gdirs'];
 $picarray = $_POST['pix'];
 $noOfPix = count($picarray);
-$trailTips = $_POST['TT'];
 $forceLoad = $_POST['setForce'];
 $useAllPix = $_POST['allPix'];
 # end of form data, start local page data & routines
@@ -521,6 +519,7 @@ $_SESSION['row5'] = $imgRows[5];
 
 <div id="postPhoto">
 	<?php 
+/* REVAMP */
 		if($trailTips == 'Y') {
 			echo '<div id="trailTips">' . "\n\t\t" .
 				'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
@@ -534,6 +533,7 @@ $_SESSION['row5'] = $imgRows[5];
 					'Enter Trail Tips text here...</textarea></p>' ."\n\t" . '</div>';
 			}
 		}
+/* END TIPS */
 		if ($rebuild) {
 			$hikeInfo = $_SESSION['hInfo'];
 			echo '<p id="hikeInfo">' . rawurldecode($hikeInfo) . '</p>';
@@ -635,7 +635,6 @@ $_SESSION['row5'] = $imgRows[5];
 	<input type="hidden" name="hphoto1" value="<?php echo $purl1;?>" />
 	<input type="hidden" name="hphoto2" value="<?php echo $purl2;?>" />
 	<input type="hidden" name="hdir" value="<?php echo $googledirs;?>" />
-	<input type="hidden" name="htyn" value="<?php echo $trailTips;?>" />
 	<input type="hidden" name="htool" value="<?php echo $clusTip;?>" />
 	<input type="hidden" name="hrow0" value="<?php $imgRows[0]?>" />
 	<input type="hidden" name="hrow1" value="<?php $imgRows[1]?>" />

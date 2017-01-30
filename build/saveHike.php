@@ -101,9 +101,8 @@
 	$newHike[24] = rawurlencode($plink2);
 	$gdirs = $_POST['hdir'];
 	$newHike[25] = rawurlencode($gdirs);
-	/* don't need Y/N on tips */
-	$newHike[26] = $_POST['htyn'];
-	/* page.html becoming obsolete */
+	/* Tips [Y/N] & HikePg.html obsolete: [26], [27] */
+	$newHike[26] = '';
 	$newHike[27] = '';
 	$newHike[28] = $_POST['htool'];
 	$newHike[29] = rawurlencode($_SESSION['row0']);
@@ -234,7 +233,7 @@
 		"Hike Type","Length","Elevation Change","Difficulty","Facilities","Wow Factor",
 		"Seasons","Exposure","tsv File","Geomap","Elevation Chart","Geomap GPX",
 		"Track File","Latitude","Longitude","Additonal Image1","Additional Image2",
-		"Ken's Photo Album","Tom's Photo Album","Google Directions","Trail Tips?","NO PAGE HTML FILE",
+		"Ken's Photo Album","Tom's Photo Album","Google Directions","OBS: Trail Tips?","OBS: Page.html",
 		"Cluster Group Label","Row0 HTML","Row1 HTML","Row2 HTML","Row 3HTML","Row4 HTML",
 		"Row5 HTML","Captions","Photo Links","Tips Text","Hike Info","References","Proposed Data",
 		"Actual Data");

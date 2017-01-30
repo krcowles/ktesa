@@ -45,7 +45,6 @@ if ($hikeFileName == "") {
 	$hikePurl1 = trim($_REQUEST['photo1']);
 	$hikePurl2 = trim($_REQUEST['photo2']);
 	$hikeDir = trim($_REQUEST['dirs']);
-	# NO LONGER NEEDED $hikePage = "pages/" . trim($_REQUEST['hikepg']);
 	// Process the uploaded tsv file:
 	$tsvFile = $_FILES['csvfile']['tmp_name'];
 	$tsvSize = filesize($tsvFile);
@@ -55,9 +54,86 @@ if ($hikeFileName == "") {
 		die( "No tsv file specified..." );
 	}
 	$name2pass = '../gpsv/' . $fname;
+	$tipTxt = $_POST['tipstxt'];
+	$hikeInfo = $_POST['hiketxt'];
+	$hikeRefTypes = $_POST['rtype'];
+	$hikeRefItems1 = $_POST['rit1'];
+	$hikeRefItems2 = $_POST['rit2'];
+	/* get a count of items actually specified: */
+	$noOfRefs = count($hikeRefTypes);
+	for ($k=0; $k<$noOfRefs; $k++) {
+		if ($hikeRefItems1[$k] == '') {
+			$noOfRefs = $k;
+			break;
+		}
+	}
+	$refLbls = array();
+	for ($k=0; $k<$noOfRefs; $k++) {
+		switch ($hikeRefTypes[$k]) {
+			case 'b':
+				array_push($refLbls,'Book: ');
+				break;
+			case 'p':
+				array_push($refLbls,'Photo Essay: ');
+				break;
+			case 'w':
+				array_push($refLbls,'Website: ');
+				break;
+			case 'a':
+				array_push($refLblbs,'App: ');
+				break;
+			case 'd':
+				array_push($refLbls,'Downloadable Doc: ');
+				break;
+			case 'l':
+				array_push($refLbls,'Blog: ');
+				break;
+			case 'r':
+				array_push($refLbls,'Related Link: ');
+				break;
+			case 'o':
+				array_push($refLbls,'On-Line Map: ');
+				break;
+			case 'm':
+				array_push($refLbls,'Magazine: ');
+				break;
+			case 's':
+				array_push($refLbls,'News Article: ');
+				break;
+			case 'g':
+				array_push($refLbls,'Meetup Group: ');
+				break;
+			case 'n':
+				array_push($refLbls,'');
+				break;
+			default:
+				echo "Unrecognized reference type passed";
+		}
+	}
+	$hikePDatLbls = $_POST['plbl'];
+	$noOfPDats = count($hikePDatLbls);
+	for ($i=0; $i<$noOfPDats; $i++) {
+		if ($hikePDatLbls[$i] == '') {
+			$noOfPDats = $i;
+			break;
+		}
+	}
+	$hikePDatUrls = $_POST['purl'];
+	$hikePDatCTxts = $_POST['pctxt'];
+	$hikeADatLbls = $_POST['albl'];
+	$noOfADats = count($hikeADatLbls);
+	for ($j=0; $j<$noOfADats; $j++) {
+		if ($hikeADatLbls[$j] == '') {
+			$noOfADats = $j;
+			break;
+		}
+	}
+	$hikeADatUrls = $_POST['aurl'];
+	$hikeADatCTxts = $_POST['actxt'];
 	$rawfile = fopen($tsvFile, "r");
 	$fdat = fread($rawfile,$tsvSize);
 } else {
+	/* ******************** CURRENTLY OUT OF DATE **************** */
 	// hike datafile entry
 	$datfile = fopen($hikeFile,"r");
 	$hdat = fread($datfile,$hfSize);
@@ -90,7 +166,6 @@ if ($hikeFileName == "") {
 	$hikePurl1 = trim($hikeDataArray[23]);
 	$hikePurl2 = trim($hikeDataArray[24]);
 	$hikeDir = trim($hikeDataArray[25]);
-	# NO LONGER NEEDED: $hikePage = "pages/" . trim($hikeDataArray[23]);
 	// Get the specified tsv for processing...
 	$tsvSize = filesize($name2pass);
 	$rawfile = fopen($name2pass,"r") or 
@@ -213,8 +288,7 @@ if ($hikeMarker === 'ctrhike') {
 				<td><?php echo $hikeLocale;?></td>
 				<td><?php echo $hikeName;?></td>
 				<td><?php echo $hikeWow;?></td>
-				<td><a href="<?php echo $hikePage;?>" target="_blank">
-					<img class="webShift" src="../images/<?php  
+				<td><img class="webShift" src="../images/<?php  
 					if($hikeMarker === 'center') {
 						$pgLnk = 'indxCheck.png';
 					} else {
@@ -303,7 +377,7 @@ if ($hikeMarker === 'ctrhike') {
 			echo "'Normal' Hike"; ?></li>
 	<li>Track File: <?php echo $hikeJSON;?></li>
 </ul>
-<h2>Other data submitted:</h2>
+<h3 style="text-indent:8px">Other data submitted:</h3>
 <ul>
 	<li>Title to appear on Hike Page: <?php echo $hikeName;?></li>
 	<li>GPSVisualizer map: <?php echo $hikeGmap;?></li>
@@ -316,23 +390,89 @@ if ($hikeMarker === 'ctrhike') {
 	<li>Photo Link 2: <?php echo $hikePurl2;?></li>
 	<li>Google Directions Link: <?php echo $hikeDir;?></li>
 </ul>
-<?php
-
-
-?>
 <h3 style="text-indent:8px">Uploaded File Info:</h3>
 <ul>
 	<li>Sent file: <?php if ($fname) {echo $fname;} else {echo "Not uploaded";}?></li>
 	<li>File size: <?php echo $tsvSize;?> bytes</li>
 	<li>File type: <?php if ($tsvType) {echo $fname;} else {echo "Not uploaded";}?></li>
 </ul>
-<div style="padding-left:8px">
-	<h4 style="margin-bottom:4px">Include a 'Trail Tips' section for new page?</h4>
-	<input id="addTT" type="radio" name="TT" value="Y" />
-		<label style="color:DarkBlue;" for="addTT">Add Trail Tips</label>
-	<input id="noTT" type="radio" name="TT" value="N" checked="checked" />
-		<label style="color:DarkBlue;" for="noTT">No Trail Tips</label>
-</div>
+
+<?php
+	if (substr($tipTxt,0,10) !== '[OPTIONAL]') {
+		echo '<h2 style="text-align:center;">Hike Tips Text:</h2>';
+		echo '<div id="trailTips" style="margin:8px;"><img id="tipPic" 
+			src="../images/tips.png" alt="special notes icon" />';
+		echo '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">';
+		echo $tipTxt . '</div>';
+	}
+?>
+<h2 style="text-align:center;">Hike Information:</h2>
+<?php 
+	echo '<p id="hikeInfo" style="text-indent:8px;">';
+	echo $hikeInfo;
+	echo '</p>';
+?>
+<h2>Hike References:</h2>
+<?php 
+	# by defni, there should always be a references section...
+	$refhtml = '<fieldset><legend id="fldrefs">References &amp; Links</legend><ul id="refs">';
+	$refStr = $noOfRefs;
+	for ($j=0; $j<$noOfRefs; $j++) {
+		$x = $hikeRefTypes[$j];
+		$refStr .= '^' . $x;
+		if ($x === 'n') {
+			# only one item in this list element: the text
+			$refhtml .= '<li>' . $hikeRefItems1[$j] . '</li>';
+			$refStr .= '^' . $hikeRefItems1[$j];
+		} else {
+			# all other items have two parts + the id label
+			$refStr .= '^' . $hikeRefItems1[$j] . '^' . $hikeRefItems2[$j];
+			$refhtml .= '<li>' . $refLbls[$j];
+			if ($x === 'b' || $x === 'p') {
+				# no links in these
+				$refhtml .= '<em>' . $hikeRefItems1[$j] . '</em>' . $hikeRefItems2[$j] . '</li>';
+			} else {
+				$refhtml .= '<a href="' . $hikeRefItems1[$j] . '" target="_blank">' . 
+					$hikeRefItems2[$j] . '</a></li>';
+			}
+		}
+	}
+	$refhtml .= '</ul></fieldset>';
+	echo $refhtml;
+	echo "Ref string to pass: " . $refStr;
+?>	
+
+<?php
+	$pStr = '';
+	$aStr = '';
+
+	if ($noOfPDats > 0 || $noOfADats > 0) {
+		echo '<h2 style="text-align:center">Hike Data: Proposed and/or Actual</h2>';
+		echo '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
+		if ($noOfPDats > 0) {
+			$pStr = $noOfPDats;
+			echo '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">';
+			for ($j=0; $j<$noOfPDats; $j++) {
+				echo '<li>' . $hikePDatLbls[$j] . '<a href="' . $hikePDatUrls[$j] .
+					'" target="_blank">' . $hikePDatCTxts[$j] . '</a></li>';
+				$pStr .= '^' . $hikePDatLbls[$j] . '^' . $hikePDatUrls[$j] . '^' . $hikePDatCTxts[$j];	
+			}
+			echo '</ul>';
+		}
+		if ($noOfADats > 0) {
+			$aStr = $noOfADats;
+			echo '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">';
+			for ($k=0; $k<$noOfADats; $k++) {
+				echo '<li>' . $hikeADatLbls[$k] . '<a href="' . $hikeADatUrls[$k] .
+					'" target="_blank">' . $hikeADatCTxts[$k] . '</a></li>';
+				$aStr .= '^' . $hikeADatLbls[$k] . '^' . $hikeADatUrls[$k] . '^' . $hikeADatCTxts[$k];
+			}
+		}
+		echo '</fieldset>';
+	}
+	echo "P & A Dat strings: PDat - " . $pStr . ";   ADat - " . $aStr;
+
+?>
 <div style="padding-left:8px;">
 	<h4 style="margin-bottom:4px">Checkbox to Force Non-Refresh Page Loading
 		<em>(Useful when using back/forward arrows in browser during build process)</em></h4>
@@ -392,7 +532,6 @@ these names were extracted from the .tsv file</em><br />
 <input type="hidden" name="lati"  value="<?php echo $hikeLat;?>" />
 <input type="hidden" name="long"  value="<?php echo $hikeLong;?>" /> 
 <input type="hidden" name="facil" value="<?php echo $hikeFac;?>" />
-<input type="hidden" name="webpg" value="<?php echo $hikePage;?>" />
 <input type="hidden" name="wow"   value="<?php echo $hikeWow;?>" />
 <input type="hidden" name="seasn" value="<?php echo $hikeSeasons;?>" />
 <input type="hidden" name="expo"  value="<?php echo $hikeExp;?>" />
@@ -405,6 +544,11 @@ these names were extracted from the .tsv file</em><br />
 <input type="hidden" name="phot1" value="<?php echo $hikePurl1;?>" />
 <input type="hidden" name="phot2" value="<?php echo $hikePurl2;?>" />
 <input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
+<input type="hidden" name="tiptxt" value="<?php echo $tipTxt;?>" />
+<input type="hidden" name="hktxt" value="<?php echo $hikeInfo;?>" />
+<input type="hidden" name="refstr" value="<?php echo $refStr;?>" />
+<input type="hidden" name="pstr" value="<?php echo $pStr;?>" />
+<input type="hidden" name="astr" value="<?php echo $aStr;?>" />
 <input type="hidden" name="rbld" value="NO" />  <!-- Display needs to know whether or not
 	this is a rebuild -->
 </form>
