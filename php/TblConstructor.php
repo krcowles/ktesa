@@ -100,7 +100,6 @@
 				$hikeName = $hikeArray[1];
 				$hikeLocale = $hikeArray[2];
 				$hikeDirections = rawurldecode($hikeArray[25]);
-				$hno = intval($hikeIndx);
 				/* There may be either one or two photo links... if only one, then
 				   post the icon for photos on the hike page summary table; regardless,
 				   post the "main" link here in the data table */
