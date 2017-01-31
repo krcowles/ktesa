@@ -1,13 +1,5 @@
 <?php 
 	session_start();
-	$redo = $_POST['remake'];
-	if ($redo === 'YES') {
-		$rebuild = true;
-		$hikeNo = $_POST['rhno'];
-		echo "Page rebuild";
-	} else {
-		$rebuild = false;
-	}
  ?>
 <!DOCTYPE html>
 <html>
@@ -41,12 +33,8 @@
 		echo "<p>Could not open database file</p>";
 	}
 	echo " ...Start import...";
-	/* imported data from displayHikePg.php */
-	if ($rebuild) {
-		$newHike[0] = $hikeNo;
-	} else {
-		$newHike[0] = intval($dbLineArray[0]) + 1;
-	}
+	# NEW HIKE INDX STARTS AT LAST INDX + 1:
+	$newHike[0] = intval($dbLineArray[0]) + 1;
 	$newHike[1] = $_POST['hname'];
 	$newHike[2] = $_POST['hlocale'];
 	$newHike[3] = $_POST['hmarker'];
@@ -95,138 +83,32 @@
 	$newHike[20] = $_POST['hlon'];
 	$newHike[21] = $_POST['hadd1'];
 	$newHike[22] = $_POST['hadd2'];
-	$plink1 = $_POST['hphoto1'];
-	$plink2 = $_POST['hphoto2'];
-	$newHike[23] = rawurlencode($plink1);
-	$newHike[24] = rawurlencode($plink2);
-	$gdirs = $_POST['hdir'];
-	$newHike[25] = rawurlencode($gdirs);
-	/* Tips [Y/N] & HikePg.html obsolete: [26], [27] */
+	$newHike[23] = $_POST['hphoto1'];
+	$newHike[24] = $_POST['hphoto2'];
+	$newHike[25] = $_POST['hdir'];
+	/* Tips [Y/N] & HikePg.html OBSOLETE: [26], [27] */
 	$newHike[26] = '';
 	$newHike[27] = '';
 	$newHike[28] = $_POST['htool'];
-	$newHike[29] = rawurlencode($_SESSION['row0']);
-	$newHike[30] = rawurlencode($_SESSION['row1']);
-	$newHike[31] = rawurlencode($_SESSION['row2']);
-	$newHike[32] = rawurlencode($_SESSION['row3']);
-	$newHike[33] = rawurlencode($_SESSION['row4']);
-	$newHike[34] = rawurlencode($_SESSION['row5']);
-	$newHike[35] = $_POST['hcaps'];  // already encoded in displayHike.php
-	$newHike[36] = $_POST['hplnks'];  // already encoded in displayHike.php
-	if ($rebuild) {
-		$newHike[37] = $_SESSION['tips']; // already encoded in rebuildData.php
-		$newHike[38] = $_SESSION['hInfo'];  // already encoded in rebuildData.php
-		$newHike[39] = $_SESSION['hrefs'];  // already encoded in rebuildData.php
-		$newHike[40] = $_SESSION['prop'];   // already encoded in rebuildData.php
-		$newHike[41] = $_SESSION['act'];   // already encoded in rebuildData.php
-	
-	} else {
-		$tipImport = $_POST['trailtiptxt'];
-		$newHike[37] = rawurlencode($tipImport);
-		$infoImport = $_POST['hiketxt'];
-		$newHike[38] = rawurlencode($infoImport);
-		/* COLLECT REFERENCES FROM PREVIOUS PAGE */
-		$refsHtml = '<ul id="refs">';
-		$any = false;
-		$bks = $_POST['bk'];
-		$auths = $_POST['auth'];
-		for ($j=0; $j<3; $j++) {
-			if ($bks[$j] !== '') {
-				$refsHtml = $refsHtml . '<li>Book: <em>' . $bks[$j] . '</em>, ' . $auths[$j] . '</li>';
-				$any = true;
-			}
-		}
-		$webs = $_POST['web'];
-		$wtxt = $_POST['webtxt'];
-		for ($k=0; $k<3; $k++) {
-			if ($webs[$k] !== '') {
-				$refsHtml = $refsHtml . '<li>Website: <a href="' . $webs[$k] . '" target="_blank">' . 
-					$wtxt[$k] . '</a></li>';
-				$any = true;
-			}
-		}
-		$apps = $_POST['app'];
-		$apptxt = $_POST['apptxt'];
-		for ($n=0; $n<3; $n++) {
-			if ($apps[$n] !== '') {
-				$refsHtml = $refsHtml . '<li>App: <a href="' . $apps[$n] . '" target="_blank">' . 
-					$apptxt[$n] . '</a></li>';
-				$any = true;
-			}
-		}
-		if ($any) {
-			$refsHtml = $refsHtml . '</ul>';
-			$refEnc = rawurlencode($refsHtml);
-			$newHike[39] = $refEnc;
-		}
-
-		/* COLLECT PROPOSED DATA FROM PREVIOUS PAGE */
-		$any = false;
-		$propMaps = $_POST['pmap'];
-		$propTxt = $_POST['pmtxt'];
-		$propGpx = $_POST['pgpx'];
-		$propGpxTxt = $_POST['pgpxtxt'];
-		$propRefs = '<ul id="plinks">';
-		# NOTE: assuming that a map & gpx file coexist - this may not be so!
-		for ($i=0; $i<2; $i++) {
-			if ($propMaps[$i] !== '' || $propGpx[$i] !== '') {
-				$propRefs = $propRefs . '<li>Map: <a hef="' . $propMaps[$i] . '" target="_blank">' .
-					$propTxt[$i] . '</a></li>';
-				$propRefs = $propRefs . '<li>GPX: <a href="' . $propGpx[$i] . '" target="_blank">' .
-					$propGpxTxt[$i] . '</a></li>';
-				$any = true;
-			}
-		}
-		if ($any) {
-			$propRefs = $propRefs . '</ul>';
-			$propEnc = rawurlencode($propRefs);
-			$newHike[40] = $propEnc;
-		}
-		/* COLLECT ACTUAL DATA FROM PREVIOUS PAGE */
-		$any = false;
-		$actMaps = $_POST['amap'];
-		$actTxt = $_POST['amtxt'];
-		$actGpx = $_POST['agpx'];
-		$actGpxTxt = $_POST['agpxtxt'];
-		$actRefs = '<ul id="alinks">';
-		for ($i=0; $i<2; $i++) {
-			if ($actMaps[$i] !== '' || $actGpx[$i] !== '') {
-				$actRefs = $actRefs . '<li>Map: <a hef="' . $actMaps[$i] . '" target="_blank">' .
-					$actTxt[$i] . '</a></li>';
-				$actRefs = $actRefs . '<li>GPX: <a href="' . $actGpx[$i] . '" target="_blank">' .
-					$actGpxTxt[$i] . '</a></li>';
-				$any = true;
-			}
-		}
-		if ($any) {
-			$actRefs = $actRefs . '</ul>';
-			$actEnc = rawurlencode($actRefs);
-			$newHike[41] = $actEnc;
-		}
-	
-	}
+	$newHike[29] = $_SESSION['row0'];
+	$newHike[30] = $_SESSION['row1'];
+	$newHike[31] = $_SESSION['row2'];
+	$newHike[32] = $_SESSION['row3'];
+	$newHike[33] = $_SESSION['row4'];
+	$newHike[34] = $_SESSION['row5'];
+	$newHike[35] = $_POST['hcaps'];
+	# COMMAS IN THE ABOVE DATA KILL THE SAVE...
+	$newHike[36] = $_POST['hplnks'];
+	$newHike[37] = $_POST['httxt'];
+	$newHike[38] = $_POST['hInfo'];
+	$newHike[39] = $_POST['href'];
+	$newHike[40] = $_POST['hpdat'];
+	$newHike[41] = $_POST['hadat'];
 	ksort($newHike, SORT_NUMERIC);
 	$csvData = implode(',',$newHike);
-	if ($rebuild) {
-		$rbdFile = file($database);
-		foreach($rbdFile as &$hline) {
-			$hikeLine = str_getcsv($hline);
-			if ($hikeLine[0] == $hikeNo) {
-				$hline = $csvData."\n";
-			}
-		}
-		$newFile = implode($rbdFile);
-		fclose($handle);
-		$rbd = fopen($database,"w");
-		fputs($rbd, $newFile."\n");
-		echo "<h1>HIKE NO. " . $newHike[0] . " SUCCESSFULLY UPDATED!</h1>";
-		echo "<h2>Click below to continue, or else exit this page to finish</h2>";
-		echo '<button style="height:24px;" id="cont">Click here to rebuild another page</button>';
-	} else {
-		fputs($handle, $csvData."\n");
-		echo "<h1>HIKE SUCCESSFULLY SAVED!</h1>";
-		echo "<h2>" . $msg . "</h2>";
-	}
+	fputs($handle, $csvData."\n");
+	echo "<h1>HIKE SUCCESSFULLY SAVED!</h1>";
+	echo "<h2>" . $msg . "</h2>";
 # DEBUG OUTPUT ---
 	/*
 	$listOut = array("Hike Index No.","Hike Name","Locale","Marker","Indx. Cluster String","Cluster Letter",

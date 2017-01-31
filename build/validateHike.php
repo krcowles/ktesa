@@ -362,7 +362,7 @@ if ($hikeMarker === 'ctrhike') {
 		</tbody>
 	</table>
 </div>
-<h2>Data for Google Maps API</h2>
+<h3 style="text-indent:8px">Data for Google Maps API</h3>
 <ul>
 	<li>Marker Latitude: <?php echo $hikeLat;?></li>
 	<li>Marker Longitude: <?php echo $hikeLong;?></li>
@@ -439,7 +439,7 @@ if ($hikeMarker === 'ctrhike') {
 	}
 	$refhtml .= '</ul></fieldset>';
 	echo $refhtml;
-	echo "Ref string to pass: " . $refStr;
+	#echo "Ref string to pass: " . $refStr;
 ?>	
 
 <?php
@@ -470,8 +470,7 @@ if ($hikeMarker === 'ctrhike') {
 		}
 		echo '</fieldset>';
 	}
-	echo "P & A Dat strings: PDat - " . $pStr . ";   ADat - " . $aStr;
-
+	#echo "P & A Dat strings: PDat - " . $pStr . ";   ADat - " . $aStr;
 ?>
 <div style="padding-left:8px;">
 	<h4 style="margin-bottom:4px">Checkbox to Force Non-Refresh Page Loading
