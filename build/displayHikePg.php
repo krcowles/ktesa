@@ -85,6 +85,7 @@ $difficulty = $_POST['diffi'];
 $lat = $_POST['lati'];
 $lon = $_POST['long'];
 $facilities = $_POST['facil'];
+$hikePg = $_POST['webpg'];
 $wowFactor = $_POST['wow'];
 $seasons = $_POST['seasn'];
 $exp = $_POST['expo'];
@@ -142,6 +143,11 @@ else
 if ($_POST['allPix'] == 'useAll') {
 }
 $googledirs = $_POST['gdirs'];
+$tips = $_POST['tipstxt'];
+$info = $_POST['hiketxt'];
+$refs = $_POST['refstr'];
+$pdat = $_POST['pstr'];
+$adat = $_POST['astr'];
 $picarray = $_POST['pix'];
 $noOfPix = count($picarray);
 $forceLoad = $_POST['setForce'];
@@ -267,7 +273,11 @@ for ($i=0; $i<$noOfPix; $i++) {
 	$album[$i] = $picAlbm[$x];
 	$photolink[$i] = $nsize[$x]; 
 }
-# ROW-FILLING ALGORITHM:
+$noOfCaps = count($caption);
+$capStr = $noOfCaps . '^' . implode("^",$caption);
+$noOfAlbumLinks = count($album);
+$albStr = $noOfAlbumLinks . '^' . implode("^",$album);
+/* -------------------  ROW FILLING ALGORITHM --------------- */
 $imgRows = array(6);
 $maxRowHt = 260;	# change as desired
 $rowWidth = 950;	# change as desired, current page width is 960
@@ -300,6 +310,7 @@ $rowNo = 0;
 $totalProcessed = 0;
 $othrIndx = 0;	 # counter for number of other images being loaded
 $leftMostImg = true;
+$rowStr = array();
 for ($i=0; $i<$items; $i++) {
 	if ($leftMostImg === false) {  # modify width for added pic margins for all but first img
 		$curWidth += 1;
@@ -327,6 +338,8 @@ for ($i=0; $i<$items; $i++) {
 		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
 		/* Creating a row unconcatenated to be used for $rowHtml, or passed solo via php */
 		$thisRow = '';
+		$imgCnt = 0;
+		$imel = '';
 		for ($n=$startIndx; $n<=$i; $n++) {
 			if ($n === $startIndx)
 				$styling = '';
@@ -338,26 +351,33 @@ for ($i=0; $i<$items; $i++) {
 				$picHeight[$n] = $actualHt;
 				$thisRow = $thisRow . '<img id="pic' .$n . '" style="' . $styling . '" width="' .
 					$picWidth[$n] . '" height="' . $actualHt . '" src="' . $photolink[$n] . 
-					'" alt="' . $desc[$n] . '" />';
+					'" alt="' . $desc[$n] . '" />';	
+				$imel .= 'p^' . $picWidth[$n] . '^' . $photolink[$n] . '^' . $desc[$n];
 			} else if ($itype[$n] === "iframe") {
 				$mapDims = floor($scaleFactor * $widthAtMax[$n]); # subtracts border
 				$thisRow = $thisRow . '<iframe id="theMap" style="' . $styling . '" height="' .
 					$mapDims . '" width="' . $mapDims . '" src="../maps/' . $gpsvMap . '"></iframe>';
+				$imel .= 'f^' . $mapDims . '^' . $gpsvMap;
 			} else if ($itype[$n] === "chart") {
 				$elevWidth = floor($scaleFactor * $widthAtMax[$n]);
 				$thisRow = $thisRow . '<img class="chart" style="' . $styling . '" width="' .
 					$elevWidth . '" height="' . $actualHt . '" src="../images/' . $elevChart .
 					'" alt="Elevation Chart" />';
+				$imel .= 'n^' . $elevWidth . '^' . $elevChart;	
 			} else {
 				$othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
 				$othrHeight[$othrIndx] = $actualHt;
 				$thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
 					'" height="' . $actualHt . '" src="../images/' . $addonImg[$othrIndx] .
-					'" alt="' . $desc[$n] . '" />';
+					'" alt="Additional non-captioned image" />';
 				$othrIndx += 1;
+				$imel .= 'n^' . $othrWidth[$n] . '^' . $addonImg[$othrIndx];
 			}
+			$imgCnt++;
 		}
 		# thisRow is completed and will be used below in different ways:
+		$imel = $imgCnt . '^' . $imel;
+		array_push($rowStr,$imel);
 		$rowHtml = $rowHtml . $thisRow . '</div>';
 		$imgRows[$rowNo] = '<div id="row' . $rowNo . '" class="ImgRow">' . $thisRow . '</div>';	
 		$rowNo += 1;
@@ -371,10 +391,13 @@ for ($i=0; $i<$items; $i++) {
 # last item index was "startIndx"; coming into last row as $leftMostImg = true
 if ($rowCompleted === false) {
 	$itemsLeft = $items - $totalProcessed;
-	if ($itemsLeft === 1)
+	if ($itemsLeft === 1) {
 		$thisRow = '<div id="row' . $rowNo . '" class="ImgRow Solo">';
-	else
+	} else {
 		$thisRow = '<div id="row' . $rowNo . '" class="ImgRow">';
+	}
+	$imel = '';
+	$imgCnt = 0;
 	for ($i=0; $i<$itemsLeft; $i++) {
 			if ($leftMostImg) {
 				$styling = ''; 
@@ -388,16 +411,20 @@ if ($rowCompleted === false) {
 				'" width="' . $picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
 				$photolink[$startIndx] . '" alt="' . $desc[$startIndx] . '" />';
 			$startIndx += 1;
+			$imel .= 'p^' . $picWidth[$startIndx] . '^' . $photolink[$startIndx] . 
+				'^' . $desc[$startIndx];
 		} else if ($itype[$startIndx] === "iframe") {
 			$thisRow = $thisRow . '<iframe id="theMap" style="' . $styling . '" height="' . $maxRowHt .
 				'" width="' . $maxRowHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
 			$startIndx += 1;
+			$imel .= 'f^' . $maxRowHt . '^' . $gpsvMap;
 		} else if ($itype[$startIndx] === "chart") {
 			$elevWidth = $widthAtMax[$startIndx];
 			$thisRow = $thisRow . '<img class="chart" style="' . $styling . '" width="' . $elevWidth . 
 				'" height="' . $maxRowHt . '" src="../images/' . $elevChart .
 				'" alt="Elevation Chart" />';
 			$startIndx += 1;
+			$imel .= 'n^' . $elevWidth . '^' . $elevChart;
 		} else {
 			$othrWidth[$othrIndx] = $widthAtMax[$startIndx];
 			$othrHeight[$othrIndx] = $maxRowHt;
@@ -406,9 +433,13 @@ if ($rowCompleted === false) {
 				'" alt="Additional page image" />';
 			$othrIndx += 1;
 			$startIndx += 1;
+			$imel .= 'n^' . $othrWidth[$othrIndx] . '^' . $addonImg[$othrIndx];
 		}
 		$leftMostImg = false;
+		$imgCnt++;
 	}
+	$imel = $imgCnt . '^' . $imel;
+	array_push($rowStr,$imel);
 	$imgRows[$rowNo] = $thisRow . "</div>";
 	$rowHtml = $rowHtml . $thisRow . "</div>";
 
@@ -420,20 +451,22 @@ for ($j=0; $j<$noOfPix; $j++) {
 	$captionHtml = $captionHtml . "<li>{$caption[$j]}</li>";
 }
 $captionHtml = $captionHtml . "</ol></div>";
-$csvCap = rawurlencode($captionHtml);
 # Create the list of album links
 $albumHtml = '<div class="lnkList"><ol>';
 for ($k=0; $k<$noOfPix; $k++ ) {
 	$albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
 }
 $albumHtml = $albumHtml . "</ol></div>";
-$csvAlb = rawurlencode($albumHtml);
-$_SESSION['row0'] = $imgRows[0];
-$_SESSION['row1'] = $imgRows[1];
-$_SESSION['row2'] = $imgRows[2];
-$_SESSION['row3'] = $imgRows[3];
-$_SESSION['row4'] = $imgRows[4];
-$_SESSION['row5'] = $imgRows[5];
+$noOfRows = count($rowStr);
+for ($x=$noOfRows; $x<6; $x++) {
+	$rowStr[$x] = '';
+}
+$_SESSION['row0'] = $rowStr[0];
+$_SESSION['row1'] = $rowStr[1];
+$_SESSION['row2'] = $rowStr[2];
+$_SESSION['row3'] = $rowStr[3];
+$_SESSION['row4'] = $rowStr[4];
+$_SESSION['row5'] = $rowStr[5];
 ?>
 <!DOCTYPE html>
 <html>
@@ -519,7 +552,7 @@ $_SESSION['row5'] = $imgRows[5];
 
 <div id="postPhoto">
 	<?php 
-/* REVAMP */
+	/*
 		if($trailTips == 'Y') {
 			echo '<div id="trailTips">' . "\n\t\t" .
 				'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
@@ -533,7 +566,7 @@ $_SESSION['row5'] = $imgRows[5];
 					'Enter Trail Tips text here...</textarea></p>' ."\n\t" . '</div>';
 			}
 		}
-/* END TIPS */
+	*/
 		if ($rebuild) {
 			$hikeInfo = $_SESSION['hInfo'];
 			echo '<p id="hikeInfo">' . rawurldecode($hikeInfo) . '</p>';
@@ -642,13 +675,13 @@ $_SESSION['row5'] = $imgRows[5];
 	<input type="hidden" name="hrow3" value="<?php $imgRows[3]?>" />
 	<input type="hidden" name="hrow4" value="<?php $imgRows[4]?>" />
 	<input type="hidden" name="hrow5" value="<?php $imgRows[5]?>" />
-	<input type="hidden" name="hcaps" value='<?php echo $csvCap;?>' />
-	<input type="hidden" name="hplnks" value='<?php echo $csvAlb;?>' />
-	<input type="hidden" name="httxt" value="<?php echo $tipsTxt;?>" />
-	<input type="hidden" name="hinfo" value="<?php echo $hikeInfo;?>" />
-	<input type="hidden" name="href" value="<?php echo $references;?>" />
-	<input type="hidden" name="hpdat" value="<?php echo $propDat;?>" />
-	<input type="hidden" name="hadat" value="<?php echo $actDat;?>" />
+	<input type="hidden" name="hcaps" value='<?php echo $capStr;?>' />
+	<input type="hidden" name="hplnks" value='<?php echo $albStr;?>' />
+	<input type="hidden" name="httxt" value="<?php echo $tips;?>" />
+	<input type="hidden" name="hinfo" value="<?php echo $info;?>" />
+	<input type="hidden" name="href" value="<?php echo $refs;?>" />
+	<input type="hidden" name="hpdat" value="<?php echo $pdat;?>" />
+	<input type="hidden" name="hadat" value="<?php echo $adat;?>" />
 	<input type="hidden" name="remake" value="<?php echo $redo;?>" />
 	<input type="hidden" name="rhno" value="<?php echo $hikeNo;?>" />
 	
