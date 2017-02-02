@@ -1,0 +1,62 @@
+body {
+	min-width: 960px;
+	font-family: arial, verdana;
+	background-color: #dadada;
+	border-style: solid;
+	border-width: 4px;
+	border-color: DarkBlue; }
+#hike {
+	height: 34px;
+	width: 260px; }
+#cgrp {
+	height: 34px;
+	width: 50px; }
+#ctip {
+	height: 34px;
+	width: 220px; }
+#newg {
+	height: 16px;
+	width: 16px; }
+#miles {
+	height: 34px;
+	width: 70px; }
+#type {
+	height: 34px;
+	width: 130; }
+#elev {
+	height: 34px;
+	width: 100px; }
+#diff {
+	height: 34px;
+	width: 160px; }
+#fac {
+	height: 34px;
+	width: 200px; }
+#wow {
+	height: 34px;
+	width: 200px; }
+#seas {
+	height: 34px;
+	width: 160px; }
+label {
+	padding-bottom: 5px; }
+textarea {
+	font-family: Tahoma, sans-serif;
+	vertical-align: center;
+	border-style: solid;
+	border-width: 2px;
+	border-color: DarkGray;
+	padding: 5px;
+	background-color: LavenderBlush; }
+textarea:focus {
+	background-color: PapayaWhip; }
+select {
+	position: relative;
+	top: -8px;
+	font-family: Tahoma, sans-serif;
+	font-size: 14px;
+	height: 34px;
+	width: 140;
+	background-color: LavenderBlush; }
+select:focus {
+	background-color: PapayaWhip; }
