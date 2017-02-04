@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Hike or Index Page Data</title>
+	<title>Hike or Index Page Creation</title>
 	<meta charset="utf-8" />
 	<meta name="language"
 			content="EN" />
@@ -64,8 +64,8 @@
 	 
 	<fieldset id="basic">
 		<legend>Basic Hike Data</legend>
-		<label id="pgTitleText" for="htitle">Hike Name (As it will appear in the table & window tab):</label> 
-		  <input id="htitle" type="text" name="hpgTitle" size="35" /><br />
+		<label id="pgTitleText" for="htitle">Hike Name (As it will appear in the table):</label> 
+		  <input id="htitle" type="text" name="hpgTitle" size="35" />&nbsp;&nbsp;
 		<label for="area">Locale (Nearest city/landmark):</label>
 		  <select id="area" name="locale">
 		  <optgroup label="North/Northeast">
@@ -104,7 +104,7 @@
 		  	<option value="Silver City">Silver City</option>
 		  	<option value="Pinos Altos">Pinos Altos</option>
 		  	<option value="Glenwood">Glenwood</option>
-		</select>&nbsp;&nbsp;
+		</select><br />
 		<label class="notVC" for="type">Hike Type:</label>
 		  <select id="type" name="htype">
 			<option value="loop">Loop</option>
@@ -112,7 +112,7 @@
 			<option value="outandback">Out-and-Back</option>
 		  </select>&nbsp;&nbsp;
 		<label class="notVC" for="lgth">Total Length (Miles):</label>
-			<input id="lgth" type="text" name="dist" size="6" /><br />
+			<input id="lgth" type="text" name="dist" size="6" />
 		<label class="notVC" for="ht">Elevation Change (Feet):</label>
 			<input id="ht" type="text" name="elev" size="8" />
 		<label class="notVC" for="ease">Relative Difficulty:</label>
@@ -124,11 +124,9 @@
 				<option value="Difficult">Difficult</option>
 			</select><br />
 		<label class="notVC" for="useful">Facilities Available at Trailhead (if any):</label>
-			<input id="useful" type="text" name="fac" size="15" />
-		<label style="color:gray;" for="pgname" class="nr">File Name for Web Pg (e.g. Aspen.html):</label> 
-		  <input id="pgname" type="text" name="hikepg" placeholder = "Hike_Name.html" size="20" /><br />
+			<input id="useful" type="text" name="fac" size="25" />
 		<label class="notVC" for="wow">"Wow" Factor (What makes this hike special):</label> 
-		  <input id="wow" type="text" name="wow_factor" size="24" />
+		  <input id="wow" type="text" name="wow_factor" size="24" /><br />
 		<label class="notVC" for="times">Seasons</label>
 		  <input id="times" type="text" name="seas" size="40" /><br />
 	</fieldset>
@@ -161,7 +159,7 @@
 		<p style="margin-bottom:4px;" id="spImg">Additional images - optional</p>
 		<label id="l_add1" for="addon1">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
 	  	  <input id="addon1" type="file" name="othr1" /><br />
-		<label id="l_add2" for="addon2" class="nr">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
+		<label id="l_add2" for="addon2">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
 	  	  <input id="addon2" type="file" name="othr2" />
 	</fieldset>
 		
@@ -181,8 +179,177 @@
 			<input id="e-w" type="text" name="lon" size="16" /><br />
 	</fieldset>
 	
+	<fieldset id="txtdat">
+		<legend>Text Sections</legend>
+		<textarea name="tipstxt" rows="12" cols="130" wrap="hard">[OPTIONAL] Enter 'Tips Text' here</textarea><br />
+		<textarea name="hiketxt" rows="20" cols="130" wrap="hard">Enter the description of the hike here, as it will appear on the completed hike page...</textarea>
+	</fieldset>
+	
+	<fieldset id="refdat">
+		<legend>Hike References</legend>
+		<p>Select the type of reference (up to 8) and its accompanying data below:</p>
+		<select id="hrefs" name="rtype[]">
+			<option value="b">Book</option>
+			<option value="p">Photo Essay</option>
+			<option value="w">Website</option>
+			<option value="a">App</option>
+			<option value="d">Downloadable Doc</option>
+			<option value="l">Blog</option>
+			<option value="o">On-line Map</option>
+			<option value="m">Magazine</option>
+			<option value="s">News Article</option>
+			<option value="g">Meetup Group</option>
+			<option value="r">Related Link</option>
+			<option value="n">Text Only - No Link</option>
+		</select>
+		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+		<select id="hrefs" name="rtype[]">
+			<option value="b">Book</option>
+			<option value="p">Photo Essay</option>
+			<option value="w">Website</option>
+			<option value="a">App</option>
+			<option value="d">Downloadable Doc</option>
+			<option value="l">Blog</option>
+			<option value="o">On-line Map</option>
+			<option value="m">Magazine</option>
+			<option value="s">News Article</option>
+			<option value="g">Meetup Group</option>
+			<option value="r">Related Link</option>
+			<option value="n">Text Only - No Link</option>
+		</select>
+		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+		<select id="hrefs" name="rtype[]">
+			<option value="b">Book</option>
+			<option value="p">Photo Essay</option>
+			<option value="w">Website</option>
+			<option value="a">App</option>
+			<option value="d">Downloadable Doc</option>
+			<option value="l">Blog</option>
+			<option value="o">On-line Map</option>
+			<option value="m">Magazine</option>
+			<option value="s">News Article</option>
+			<option value="g">Meetup Group</option>
+			<option value="r">Related Link</option>
+			<option value="n">Text Only - No Link</option>
+		</select>
+		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+		<select id="hrefs" name="rtype[]">
+			<option value="b">Book</option>
+			<option value="p">Photo Essay</option>
+			<option value="w">Website</option>
+			<option value="a">App</option>
+			<option value="d">Downloadable Doc</option>
+			<option value="l">Blog</option>
+			<option value="o">On-line Map</option>
+			<option value="m">Magazine</option>
+			<option value="s">News Article</option>
+			<option value="g">Meetup Group</option>
+			<option value="r">Related Link</option>
+			<option value="n">Text Only - No Link</option>
+		</select>
+		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+		<select id="hrefs" name="rtype[]">
+			<option value="b">Book</option>
+			<option value="p">Photo Essay</option>
+			<option value="w">Website</option>
+			<option value="a">App</option>
+			<option value="d">Downloadable Doc</option>
+			<option value="l">Blog</option>
+			<option value="o">On-line Map</option>
+			<option value="m">Magazine</option>
+			<option value="s">News Article</option>
+			<option value="g">Meetup Group</option>
+			<option value="r">Related Link</option>
+			<option value="n">Text Only - No Link</option>
+		</select>
+		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+		<select id="hrefs" name="rtype[]">
+			<option value="b">Book</option>
+			<option value="p">Photo Essay</option>
+			<option value="w">Website</option>
+			<option value="a">App</option>
+			<option value="d">Downloadable Doc</option>
+			<option value="l">Blog</option>
+			<option value="o">On-line Map</option>
+			<option value="m">Magazine</option>
+			<option value="s">News Article</option>
+			<option value="g">Meetup Group</option>
+			<option value="r">Related Link</option>
+			<option value="n">Text Only - No Link</option>
+		</select>
+		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+		<select id="hrefs" name="rtype[]">
+			<option value="b">Book</option>
+			<option value="p">Photo Essay</option>
+			<option value="w">Website</option>
+			<option value="a">App</option>
+			<option value="d">Downloadable Doc</option>
+			<option value="l">Blog</option>
+			<option value="o">On-line Map</option>
+			<option value="m">Magazine</option>
+			<option value="s">News Article</option>
+			<option value="g">Meetup Group</option>
+			<option value="r">Related Link</option>
+			<option value="n">Text Only - No Link</option>
+		</select>
+		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+		<select id="hrefs" name="rtype[]">
+			<option value="b">Book</option>
+			<option value="p">Photo Essay</option>
+			<option value="w">Website</option>
+			<option value="a">App</option>
+			<option value="d">Downloadable Doc</option>
+			<option value="l">Blog</option>
+			<option value="o">On-line Map</option>
+			<option value="m">Magazine</option>
+			<option value="s">News Article</option>
+			<option value="g">Meetup Group</option>
+			<option value="r">Related Link</option>
+			<option value="n">Text Only - No Link</option>
+		</select>
+		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+	</fieldset>
+	
+	<fieldset id="datasect">
+		<legend>GPS Maps &amp; Data</legend>
+		<p>Proposed Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
+		Label Text:<input type="text" name="plbl[]" size="12" /> 
+		Item URL:<input type="text" name="purl[]" size="60" />
+		Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
+		Label Text:<input type="text" name="plbl[]" size="12" /> 
+		Item URL:<input type="text" name="purl[]" size="60" />
+		Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
+		Label Text:<input type="text" name="plbl[]" size="12" /> 
+		Item URL:<input type="text" name="purl[]" size="60" />
+		Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
+		Label Text:<input type="text" name="plbl[]" size="12" /> 
+		Item URL:<input type="text" name="purl[]" size="60" />
+		Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
+		<p>Actual Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
+		Label Text:<input type="text" name="albl[]" size="12" /> 
+		Item URL:<input type="text" name="aurl[]" size="60" />
+		Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
+		Label Text:<input type="text" name="albl[]" size="12" /> 
+		Item URL:<input type="text" name="aurl[]" size="60" />
+		Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
+		Label Text:<input type="text" name="albl[]" size="12" /> 
+		Item URL:<input type="text" name="aurl[]" size="60" />
+		Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
+		Label Text:<input type="text" name="albl[]" size="12" /> 
+		Item URL:<input type="text" name="aurl[]" size="60" />
+		Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
+	</fieldset>
+	
 	<fieldset id="urls">
-		<legend>URL's</legend>
+		<legend>Other URL's</legend>
 		<label class="notVC" for="url1">URL for Photo Album Site:</label>
 			<input id="url1" type="text" name="photo1" size="75" /><br />
 		<label class="notVC" for="url2">URL for Secondary Photo Album (Tom or Ken):</label>

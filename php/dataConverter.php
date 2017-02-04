@@ -68,7 +68,7 @@ foreach($oldDat as $oldLine) {
 				- Related link -> r:  r^href^clicktxt
 				- On-line Map -> o:   o^href^clicktxt (or Map)
 				- Magazine ->   m:  m^href^clicktxt
-				- News article -> n:  n^href^clicktxt
+				- News article -> s:  s^href^clicktxt
 				- Meetup Group -> g:  g^href^clicktxt
 				- Html link ->  h:  h^href^clicktxt
 				- String only -> n: n^string      */
@@ -379,7 +379,7 @@ foreach($oldDat as $oldLine) {
 					$href = trim($href);
 					$endRef = strlen($href) - 1;
 					$href = substr($href,0,$endRef);
-					# CLICK TXT:
+					# CLICK TXT: NOTE: **** BUG - INCLUDES PRE-LINK TEXT!!
 					$clickTxt = strip_tags($thisp);
 					$clickTxt = trim($clickTxt);
 					# prep for next iteration

@@ -1,6 +1,5 @@
 body {
 	min-width: 960px;
-	height: 2000px;
 	font-family: arial, verdana;
 	background-color: #dadada;
 	border-style: solid;
@@ -131,3 +130,49 @@ ul {
 #clus_sel {
 	margin-left: 12px;
 	padding: 8px; }
+#hikeInfo {
+	margin-left: 10px;
+	margin-right: 10px;
+	border-style: outset;
+	border-width: 2px;
+	border-color: #d4e8d4;
+	padding: 10px;
+	background-color: #c5d5d5; }
+#trailTips {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 16px;
+	padding-top: 10px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-bottom: 10px;
+	border-style: inset;
+	border-width: 2px;
+	border-color: Brown; }
+#tipPic {
+	float: left; }
+#tipHdr {
+	display: inline;
+	left: 14px;
+	top: -20px;
+	color: Brown;
+	font-weight: bold;
+	font-size: 20px;
+	padding-left: 12px; }
+#tipNotes {
+	position: relative;
+	top: -14px;
+	left: 12px;
+	padding-left: 10px;
+	padding-right: 8px;
+	margin-bottom: -4px; }
+fieldset {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 8px;
+	padding: 10px;
+	padding-top: 0px; }
+#fldrefs {
+	color: Teal; }
+#flddat {
+	color: Teal; }
