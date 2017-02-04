@@ -23,11 +23,14 @@ function makeHtmlList($type,$str) {
 		for ($k=0; $k<$noOfItems; $k++) {
 			$tagType = $list[$nxt];
 			if ($tagType === 'b') { 
-				$htmlout .= '<li>Book: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2];
+				$htmlout .= '<li>Book: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
 				$nxt += 3;
 			} elseif ($tagType === 'p') {
-				$htmlout .= '<li>Photo Essay: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2];
+				$htmlout .= '<li>Photo Essay: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
 				$nxt += 3;
+			} elseif ($tagType === 'n') {
+				$htmlout .= '<li>' . $list[$nxt+1] . '</li>';
+				$nxt += 2;
 			} else {
 				if ($tagType === 'w') {
 					$tag = '<li>Website: ';
@@ -52,7 +55,7 @@ function makeHtmlList($type,$str) {
 				} else {
 					$tag = '<li>CHECK DATABASE: ';
 				}
-				$htmlout .= $tag . '<a href="' . $list[nxt+1] . '" target="_blank">' .
+				$htmlout .= $tag . '<a href="' . $list[$nxt+1] . '" target="_blank">' .
 					$list[$nxt+2] . '</a></li>';
 				$nxt += 3;
 			}
@@ -170,7 +173,7 @@ function makeHtmlList($type,$str) {
 					$hikeProposedData = $hikeArray[40];
 					$hikeActualData = $hikeArray[41];
 					/* No fieldset when there is neither prop or act data */
-					if ($hikeProposedData !== '' || $hikeProposedData !== '') {
+					if ($hikeProposedData !== '' || $hikeActualData !== '') {
 						$fieldsets = true;
 						$datasect = '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
 						if ($hikeProposedData !== '') {

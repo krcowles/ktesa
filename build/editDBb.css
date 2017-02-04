@@ -6,8 +6,11 @@ body {
 	border-width: 4px;
 	border-color: DarkBlue; }
 #hike {
-	height: 34px;
+	height: 20px;
 	width: 260px; }
+#area {
+	height: 34px;
+	width: 120px; }
 #cgrp {
 	height: 34px;
 	width: 50px; }
@@ -15,34 +18,49 @@ body {
 	height: 34px;
 	width: 220px; }
 #newg {
-	height: 16px;
-	width: 16px; }
+	height: 18px;
+	width: 18px; }
 #miles {
-	height: 34px;
+	height: 20px;
 	width: 70px; }
 #type {
 	height: 34px;
-	width: 130; }
+	width: 130px; }
 #elev {
-	height: 34px;
+	height: 20px;
 	width: 100px; }
 #diff {
 	height: 34px;
 	width: 160px; }
 #fac {
-	height: 34px;
+	height: 20px;
 	width: 200px; }
 #wow {
-	height: 34px;
+	height: 20px;
 	width: 200px; }
 #seas {
-	height: 34px;
+	height: 20px;
 	width: 160px; }
-label {
-	padding-bottom: 5px; }
+#sun {
+	height: 34px;
+	width: 150px; }
+#lat {
+	height: 20px;
+	width: 130px; }
+#lon {
+	height: 20px;
+	width: 140px; }
+#ph1 {
+	height: 20px;
+	width: 680px; }
+#ph2 {
+	height: 20px;
+	width: 680px; }
+#murl {
+	height: 68px;
+	width: 850px; }
 textarea {
 	font-family: Tahoma, sans-serif;
-	vertical-align: center;
 	border-style: solid;
 	border-width: 2px;
 	border-color: DarkGray;
@@ -56,7 +74,7 @@ select {
 	font-family: Tahoma, sans-serif;
 	font-size: 14px;
 	height: 34px;
-	width: 140;
+	width: 140px;
 	background-color: LavenderBlush; }
 select:focus {
 	background-color: PapayaWhip; }
