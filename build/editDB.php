@@ -207,7 +207,7 @@ name="nxtg" /> and enter the name for the new group here: <input id="newt" type=
 	}
 ?>
 <p>Add references here:</p>
-<p>Select the type of reference (up to 8) and its accompanying data below:</p>
+<p>Select the type of reference (with above, up to 8 total) and its accompanying data below:</p>
 <select style="height:26px;" name="rtype[]">
 	<option value="b">Book</option>
 	<option value="p">Photo Essay</option>
@@ -242,12 +242,71 @@ Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
 Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 
 <h3>Proposed Data:</h3>
-
-<p>Additional Proposed Data:</p>
+<?php 
+	if ($info[40] !== '') {
+		$prop = explode("^",$info[40]);
+		$pcnt = intval($prop[0]);
+		array_shift($prop);
+		$nxt = 0;
+		for ($i=0; $i<$pcnt; $i++) {
+			$plbl = 'plbl' . $nxt;
+			$plnk = 'plnk' . $nxt;
+			$ptxt = 'ptxt' . $nxt;
+			$lid = 'plid' . $nxt;
+			$kid = 'klid' . $nxt;
+			$cid = 'clid' . $nxt;
+			echo '<p id="' . $plbl . '" style="display:none">' . $prop[$nxt] . '</p>';
+			echo '<p id="' . $plnk . '" style="display:none">' . $prop[$nxt+1] . '</p>';
+			echo '<p id="' . $ptxt . '" style="display:none">' . $prop[$nxt+2] . '</p>'; 
+			echo 'Label: <textarea id="' . $lid . '" class="tstyle1" name="plbl[]">' . $prop[$nxt] . '</textarea>&nbsp;&nbsp;';
+			echo 'Url: <textarea id="' . $kid . '" class="tstyle2" name="ltxt[]">' . $prop[$nxt+1] . '</textarea>&nbsp;&nbsp;';
+			echo 'Click-on text: <textarea id="' . $cid . '" class="tstyle3" name="ctxt[]">' . $prop[$nxt+2] . 
+				'</textarea><br />';
+			$nxt +=3;
+		}
+	}
+?>
+<p>Add Proposed Data:</p>
+<label>Label: </label><input id="addpl1" class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input id="addpk1" class="tstyle2" name="ltxt[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input id="addpc1" class="tstyle3" name="ctxt[]" size="30" /><br />
+<label>Label: </label><input id="addpl2" class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input id="addpk2" class="tstyle2" name="ltxt[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input id="addpc2" class="tstyle3" name="ctxt[]" size="30" />
 
 <h3>Actual Data:</h3>
 
-<p>Additional Actual Data:</p>
+<?php
+	if ($info[41] !== '') {
+		$act = explode("^",$info[41]);
+		$acnt = intval($act[0]);
+		array_shift($act);
+		$nxt =0;
+		for ($j=0; $j<$acnt; $j++) {
+			$albl = 'albl' . $nxt;
+			$alnk = 'alnk' . $nxt;
+			$atxt = 'atxt' . $nxt;
+			$lid = 'alid' . $nxt;
+			$kid = 'klid' . $nxt;
+			$cid = 'clid' . $nxt;
+			echo '<p id="' . $albl . '" style="display:none">' . $act[$nxt] . '</p>';
+			echo '<p id="' . $alnk . '" style="display:none">' . $act[$nxt+1] . '</p>';
+			echo '<p id="' . $atxt . '" style="display:none">' . $act[$nxt+2] . '</p>'; 
+			echo 'Label: <textarea id="' . $lid . '" class="tstyle1" name="plbl[]">' . $act[$nxt] . '</textarea>&nbsp;&nbsp;';
+			echo 'Url: <textarea id="' . $kid . '" class="tstyle2" name="ltxt[]">' . $act[$nxt+1] . '</textarea>&nbsp;&nbsp;';
+			echo 'Click-on text: <textarea id="' . $cid . '" class="tstyle3" name="ctxt[]">' . $act[$nxt+2] . 
+				'</textarea><br />';
+			$nxt +=3;
+		}
+	}
+?>
+<p>Add Actual Data:</p>
+<label>Label: </label><input id="addal1" class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input id="addak1" class="tstyle2" name="ltxt[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input id="addac1" class="tstyle3" name="ctxt[]" size="30" /><br />
+<label>Label: </label><input id="addal2" class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input id="addak2" class="tstyle2" name="ltxt[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input id="addac2" class="tstyle3" name="ctxt[]" size="30" />
 
 <input type="hidden" name="hname" value="<?php echo $info[1];?>" />
 

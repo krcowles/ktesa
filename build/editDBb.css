@@ -59,6 +59,15 @@ body {
 #murl {
 	height: 68px;
 	width: 850px; }
+.tstyle1 {
+	height: 20px;
+	width: 100px; }
+.tstyle2 {
+	height: 20px;
+	width: 460px; }
+.tstyle3 {
+	height: 20px;
+	width: 320px; }
 textarea {
 	font-family: Tahoma, sans-serif;
 	border-style: solid;
