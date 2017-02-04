@@ -242,7 +242,15 @@ Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
 Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 
 <h3>Proposed Data:</h3>
+
+<p>Additional Proposed Data:</p>
+
 <h3>Actual Data:</h3>
+
+<p>Additional Actual Data:</p>
+
+<input type="hidden" name="hname" value="<?php echo $info[1];?>" />
+
 </form>
 
 </div>

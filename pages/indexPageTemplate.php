@@ -12,11 +12,59 @@
 					$indxTitle = $indxArray[1];
 					$lnkText = str_replace('Index','',$indxTitle);
 					$parkMap = $indxArray[21];
-					$parkDirs = rawurldecode($indxArray[25]);
-					$parkInfo = rawurldecode($indxArray[38]);
-					$refs = rawurldecode($indxArray[39]);
+					$parkDirs = $indxArray[25];
+					$parkInfo = $indxArray[38];
+					$refStr = $indxArray[39];
+					/* Convert string array into real references */
+					$list = explode("^",$refStr);
+					$noOfItems = intval($list[0]);
+					array_shift($list);
+					$nxt = 0;
+					$htmlout = '<ul id="refs">';
+					for ($k=0; $k<$noOfItems; $k++) {
+						$tagType = $list[$nxt];
+						if ($tagType === 'b') { 
+							$htmlout .= '<li>Book: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
+							$nxt += 3;
+						} elseif ($tagType === 'p') {
+							$htmlout .= '<li>Photo Essay: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
+							$nxt += 3;
+						} elseif ($tagType === 'n') {
+							$htmlout .= '<li>' . $list[$nxt+1] . '</li>';
+							$nxt += 2;
+						} else {
+							if ($tagType === 'w') {
+								$tag = '<li>Website: ';
+							} elseif ($tagType === 'a') {
+								$tag = '<li>App: ';
+							} elseif ($tagType === 'd') {
+								$tag = '<li>Downloadable Doc: ';
+							} elseif ($tagType === 'h') {
+								$tag = '<li>';
+							} elseif ($tagType === 'l') {
+								$tag = '<li>Blog: ';
+							} elseif ($tagType === 'r') {
+								$tag = '<li>Related Site: ';
+							} elseif ($tagType === 'o') {
+								$tag = '<li>Map: ';
+							} elseif ($tagType === 'm') {
+								$tag = '<li>Magazine: ';
+							} elseif ($tagType === 's') {
+								$tag = '<li>News article: ';
+							} elseif ($tagType === 'g') {
+								$tag = '<li>Meetup Group: ';
+							} else {
+								$tag = '<li>CHECK DATABASE: ';
+							}
+							$htmlout .= $tag . '<a href="' . $list[$nxt+1] . '" target="_blank">' .
+								$list[$nxt+2] . '</a></li>';
+							$nxt += 3;
+						}
+					} // end of for loop in references
+					$htmlout .= '</ul>';
 					$indxTbl = rawurldecode($indxArray[29]);
-				}
+					break;
+				}  // end of: if this is the hike
 			}
 			$lineno++;
 		}
@@ -56,7 +104,7 @@
     <?php
         echo '<p id="indxContent">' . $parkInfo . '</p>';
         echo '<fieldset><legend id="fldrefs">References &amp; Links</legend>';
-        echo $refs . '</fieldset>';
+        echo $htmlout . '</fieldset>';
     ?>
     <div id="hdrContainer">
 		<p id="tblHdr">Hiking & Walking Opportunities at <?php echo $lnkText;?>:</p>
