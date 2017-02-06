@@ -10,7 +10,7 @@ var $maps = $('iframe');
 var mapPresent = false;
 if ($maps.length) {
 	mapPresent = true;
-	var	fullMap = $maps.attr('src') + '&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true';
+	var	fullMap = $maps.attr('src') + '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true';
 }
 var $desc = $('.captionList li');
 var $links = $('.lnkList li');
