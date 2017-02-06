@@ -270,13 +270,14 @@ function makeHtmlList($type,$str) {
 		<?php
 			if ($hikeTips !== '') {
 				echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
-					'<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . $hikeTips . '</p></div>';
+					'<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . 
+					htmlspecialchars_decode($hikeTips,ENT_COMPAT) . '</p></div>';
 			}
 			echo $hikeInfo;
 			if ($hikeReferences !== '') {
 				echo '<fieldset>'."\n";
 				echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
-				echo $hikeReferences . "\n";
+				echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
 				echo '</fieldset>';
 			}
 			if ($fieldsets) {

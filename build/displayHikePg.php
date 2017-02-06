@@ -136,11 +136,9 @@ if ($purl2 == '' ) {
 if ($_POST['allPix'] == 'useAll') {
 }
 $googledirs = $_POST['gdirs'];
-$tips = $_POST['tiptxt'];
-if (substr($tips,0,10) === '[OPTIONAL]') {
-	$tips = '';
-}
-$info = $_POST['hktxt'];
+$tips = $_SESSION['hikeTips'];
+# the passed tips may be an empty string
+$info = $_SESSION['hikeDetails'];
 $refs = $_POST['refstr'];
 $pdat = $_POST['pstr'];
 $adat = $_POST['astr'];
@@ -230,6 +228,7 @@ for ($i=0; $i<$noOfPix; $i++) {
 	$photolink[$i] = $nsize[$x]; 
 }
 $noOfCaps = count($caption);
+#echo "Found " . $noOfCaps . " captions in tsv file";
 $capStr = $noOfCaps . '^' . implode("^",$caption);
 $capStr = preg_replace("/\n\t\r/"," ",$capStr);
 $noOfAlbumLinks = count($album);
@@ -526,10 +525,10 @@ $_SESSION['row5'] = $rowStr[5];
 			echo '<div id="trailTips">' . "\n\t\t" .
 				'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
 				'<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">' . 
-				html_entity_decode($tips,ENT_COMPAT) . '</p></div>';
+				$tips . '</p></div>';
 		}
 		/* ----- HIKE INfORMATION PROCESSING ---- */
-		echo  '<p id="hikeInfo">' . html_entity_decode($info,ENT_COMPAT) . '</p>';
+		echo  '<p id="hikeInfo">' . $info . '</p>';
 		/* ----- REFERENCES PROCESSING ----- */
 		echo '<fieldset><legend id="fldrefs">References &amp; Links</legend>';
 		echo '<ul id="refs">';
@@ -676,18 +675,8 @@ $_SESSION['row5'] = $rowStr[5];
 	<input type="hidden" name="hphoto2" value="<?php echo $purl2;?>" />
 	<input type="hidden" name="hdir" value="<?php echo $googledirs;?>" />
 	<input type="hidden" name="htool" value="<?php echo $clusTip;?>" />
-	<!-- ROW DATA PASSED VIA SESSION STORAGE
-	<input type="hidden" name="hrow0" value="<?php $imgRows[0]?>" />
-	<input type="hidden" name="hrow1" value="<?php $imgRows[1]?>" />
-	<input type="hidden" name="hrow2" value="<?php $imgRows[2]?>" />
-	<input type="hidden" name="hrow3" value="<?php $imgRows[3]?>" />
-	<input type="hidden" name="hrow4" value="<?php $imgRows[4]?>" />
-	<input type="hidden" name="hrow5" value="<?php $imgRows[5]?>" />
-	-->
-	<input type="hidden" name="hcaps" value='<?php echo $capStr;?>' />
-	<input type="hidden" name="hplnks" value='<?php echo $albStr;?>' />
-	<input type="hidden" name="httxt" value="<?php echo $tips;?>" />
-	<input type="hidden" name="hinfo" value="<?php echo $info;?>" />
+	<input type="hidden" name="hcaps" value="<?php echo $capStr;?>" />
+	<input type="hidden" name="hplnks" value="<?php echo $albStr;?>" />
 	<input type="hidden" name="href" value="<?php echo $refs;?>" />
 	<input type="hidden" name="hpdat" value="<?php echo $pdat;?>" />
 	<input type="hidden" name="hadat" value="<?php echo $adat;?>" />
