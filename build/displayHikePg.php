@@ -1,7 +1,7 @@
 <?php
 session_start();
-$tsvFile = $_POST['tsv'];
-
+$tsvname = $_POST['tsv'];
+$tsvFile = '../gpsv/' . $tsvname;
 /* 
 	--------------- THE FOLLOWING DATA IS IMPORTED FROM VALIDATEHIKE.PHP --------------
 */
@@ -92,6 +92,7 @@ $gpsvMap = $_POST['geomp'];
 if ($gpsvMap === '') { 
 	$noOfIframes = 0;
 } else {
+	$map = '../maps/gpsvMapTemplate.php?map_name=' . $gpsvMap;
 	$noOfIframes = 1;
 }
 $elevChart = $_POST['chart'];
@@ -313,14 +314,14 @@ for ($i=0; $i<$items; $i++) {
 			} else if ($itype[$n] === "iframe") {
 				$mapDims = floor($scaleFactor * $widthAtMax[$n]); # subtracts border
 				$thisRow = $thisRow . '<iframe id="theMap" style="' . $styling . '" height="' .
-					$mapDims . '" width="' . $mapDims . '" src="../maps/' . $gpsvMap . '"></iframe>';
-				$imel .= 'f^' . $mapDims . '^' . $gpsvMap;
+					$mapDims . '" width="' . $mapDims . '" src="' . $map . '"></iframe>';
+				$imel .= 'f^' . $mapDims . '^' . $map;
 			} else if ($itype[$n] === "chart") {
 				$elevWidth = floor($scaleFactor * $widthAtMax[$n]);
 				$thisRow = $thisRow . '<img class="chart" style="' . $styling . '" width="' .
-					$elevWidth . '" height="' . $actualHt . '" src="../images/' . $elevChart .
+					$elevWidth . '" height="' . $actualHt . '" src="' . $echart .
 					'" alt="Elevation Chart" />';
-				$imel .= 'n^' . $elevWidth . '^' . $elevChart;	
+				$imel .= 'n^' . $elevWidth . '^' . $echart;	
 			} else {
 				$othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
 				$othrHeight[$othrIndx] = $actualHt;
@@ -373,16 +374,15 @@ if ($rowCompleted === false) {
 				'^' . $desc[$startIndx];
 		} else if ($itype[$startIndx] === "iframe") {
 			$thisRow = $thisRow . '<iframe id="theMap" style="' . $styling . '" height="' . $maxRowHt .
-				'" width="' . $maxRowHt . '" src="../maps/' . $gpsvMap . '"></iframe>';
+				'" width="' . $maxRowHt . '" src="' . $map . '"></iframe>';
 			$startIndx += 1;
-			$imel .= 'f^' . $maxRowHt . '^' . $gpsvMap;
+			$imel .= 'f^' . $maxRowHt . '^' . $map;
 		} else if ($itype[$startIndx] === "chart") {
 			$elevWidth = $widthAtMax[$startIndx];
 			$thisRow = $thisRow . '<img class="chart" style="' . $styling . '" width="' . $elevWidth . 
-				'" height="' . $maxRowHt . '" src="../images/' . $elevChart .
-				'" alt="Elevation Chart" />';
+				'" height="' . $maxRowHt . '" src="' . $echart . '" alt="Elevation Chart" />';
 			$startIndx += 1;
-			$imel .= 'n^' . $elevWidth . '^' . $elevChart;
+			$imel .= 'n^' . $elevWidth . '^' . $echart;
 		} else {
 			$othrWidth[$othrIndx] = $widthAtMax[$startIndx];
 			$othrHeight[$othrIndx] = $maxRowHt;
@@ -525,10 +525,11 @@ $_SESSION['row5'] = $rowStr[5];
 		if($tips !== '') {
 			echo '<div id="trailTips">' . "\n\t\t" .
 				'<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
-				'<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">' . $tips . '</div>';
+				'<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">' . 
+				html_entity_decode($tips,ENT_COMPAT) . '</p></div>';
 		}
 		/* ----- HIKE INfORMATION PROCESSING ---- */
-		echo  '<p id="hikeInfo">' . $info . '</p>';
+		echo  '<p id="hikeInfo">' . html_entity_decode($info,ENT_COMPAT) . '</p>';
 		/* ----- REFERENCES PROCESSING ----- */
 		echo '<fieldset><legend id="fldrefs">References &amp; Links</legend>';
 		echo '<ul id="refs">';
@@ -662,7 +663,7 @@ $_SESSION['row5'] = $rowStr[5];
 	<input type="hidden" name="hwow" value="<?php echo $wowFactor;?>" />
 	<input type="hidden" name="hseas" value="<?php echo $seasons;?>" />
 	<input type="hidden" name="hexp" value="<?php echo $exposure;?>" />
-	<input type="hidden" name="htsv" value="<?php echo $tsvFile;?>" />
+	<input type="hidden" name="htsv" value="<?php echo $tsvname;?>" />
 	<input type="hidden" name="hmap" value="<?php echo $gpsvMap;?>" />
 	<input type="hidden" name="hchart" value="<?php echo $elevChart;?>" />
 	<input type="hidden" name="hgpx" value="<?php echo $gpxFname;?>" />

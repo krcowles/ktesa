@@ -68,13 +68,7 @@
 	$newHike[11] = $_POST['hwow'];
 	$newHike[12] = $_POST['hseas'];
 	$newHike[13] = $_POST['hexp'];
-	$tmpTsv = $_POST['htsv'];
-	$pageLgth = strlen($tmpTsv) -  8;
-	# strip off the relative path leader:
-	$pageStrt = strpos($tmpTsv,"gpsv");
-	if ($pageStrt !== -1) {
-		$newHike[14] = substr($tmpTsv,$pageStrt+5,$pageLgth);
-	}
+	$newHike[14] = $_POST['htsv'];
 	$newHike[15] = $_POST['hmap'];
 	$newHike[16] = $_POST['hchart'];
 	$newHike[17] = $_POST['hgpx'];
@@ -100,13 +94,14 @@
 	# COMMAS IN THE ABOVE DATA KILL THE SAVE...
 	$newHike[36] = $_POST['hplnks'];
 	$newHike[37] = $_POST['httxt'];
-	$newHike[38] = $_POST['hInfo'];
+	$newHike[38] = $_POST['hinfo'];
 	$newHike[39] = $_POST['href'];
 	$newHike[40] = $_POST['hpdat'];
 	$newHike[41] = $_POST['hadat'];
 	ksort($newHike, SORT_NUMERIC);
-	$csvData = implode(',',$newHike);
-	fputs($handle, $csvData."\n");
+	#$csvData = implode(',',$newHike);
+	#fputs($handle, $csvData."\n");
+	fputcsv($handle,$newHike);
 	echo "<h1>HIKE SUCCESSFULLY SAVED!</h1>";
 	echo "<h2>" . $msg . "</h2>";
 # DEBUG OUTPUT ---

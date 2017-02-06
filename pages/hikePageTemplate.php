@@ -78,7 +78,7 @@ function makeHtmlList($type,$str) {
 			echo "Unknown argument in makeHtmlList, Hike " . $hikeIndexNo . ': ' . $tagType;
 	}  // end of if tagtype ifs
 	return $htmlout;
-}
+} // FUNCTION END....
 	
 	$hikeIndexNo = $_GET['hikeIndx'];
 	/* Use the common database (excel csv file) to extract info */
@@ -161,12 +161,8 @@ function makeHtmlList($type,$str) {
 					$picCaptions = makeHtmlList(Simple,$picCaptions);
 					$picLinks = $hikeArray[36];
 					$picLinks = makeHtmlList(Simple,$picLinks);
-					if ($hikeArray[26] == 'Y') {
-						$hikeTipsPresent = true;
-						$hikeTips = rawurldecode($hikeArray[37]);
-					} else {
-						$hikeTipsPresent = false;
-					}
+					$hikeTips = $hikeArray[37];
+					$hikeTips = preg_replace("/\s/"," ",$hikeTips);
 					$hikeInfo = '<p id="hikeInfo">' . $hikeArray[38] . '</p>';
 					$hikeReferences = $hikeArray[39];
 					$hikeReferences = makeHtmlList(References,$hikeReferences);
@@ -272,9 +268,9 @@ function makeHtmlList($type,$str) {
 	?>
 	<div id="postPhoto">
 		<?php
-			if ($hikeTipsPresent) {
+			if ($hikeTips !== '') {
 				echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
-					'<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . $hikeTips . '</div>';
+					'<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . $hikeTips . '</p></div>';
 			}
 			echo $hikeInfo;
 			if ($hikeReferences !== '') {

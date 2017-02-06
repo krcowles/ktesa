@@ -53,9 +53,14 @@ if ($hikeFileName == "") {
 	if($fname == "") {
 		die( "No tsv file specified..." );
 	}
-	$name2pass = '../gpsv/' . $fname;
-	$tipTxt = $_POST['tipstxt'];
-	$hikeInfo = $_POST['hiketxt'];
+	$tsvpath = '../gpsv/' . $fname;
+	$rawtips = 'tipstxt';
+	$tipTxt = filter_input(INPUT_POST,$rawtips,FILTER_SANITIZE_SPECIAL_CHARS);
+	# I CAN'T GET RID OF THE ^M's - apparently caused by textarea wrap="hard"...
+	$tipTxt = htmlentities($tipTxt,ENT_COMPAT);
+	$hikeInfo = 'hiketxt';
+	$hikeInfo = filter_input(INPUT_POST,$hikeInfo,FILTER_SANITIZE_SPECIAL_CHARS);
+	$hikeInfo = htmlentities($hikeInfo,ENT_COMPAT);
 	$hikeRefTypes = $_POST['rtype'];
 	$hikeRefItems1 = $_POST['rit1'];
 	$hikeRefItems2 = $_POST['rit2'];
@@ -154,7 +159,7 @@ if ($hikeFileName == "") {
 	$hikeSeasons = trim($hikeDataArray[12]);
 	$hikeExp = trim($hikeDataArray[13]);
 	$tsvFile = trim($hikeDataArray[14]);
-	$name2pass = '../gpsv/' . $tsvFile;
+	$tsvpath = '../gpsv/' . $tsvFile;
 	$hikeGmap = trim($hikeDataArray[15]);
 	$hikeEChart = trim($hikeDataArray[16]);
 	$hikeGpx = trim($hikeDataArray[17]);
@@ -167,8 +172,8 @@ if ($hikeFileName == "") {
 	$hikePurl2 = trim($hikeDataArray[24]);
 	$hikeDir = trim($hikeDataArray[25]);
 	// Get the specified tsv for processing...
-	$tsvSize = filesize($name2pass);
-	$rawfile = fopen($name2pass,"r") or 
+	$tsvSize = filesize($tsvpath);
+	$rawfile = fopen($tsvpath,"r") or 
 		die ("Could not open TSV FILE in gpsv directory");
 	$fdat = fread($rawfile,$tsvSize);
 }
@@ -394,7 +399,7 @@ if ($hikeMarker === 'ctrhike') {
 <ul>
 	<li>Sent file: <?php if ($fname) {echo $fname;} else {echo "Not uploaded";}?></li>
 	<li>File size: <?php echo $tsvSize;?> bytes</li>
-	<li>File type: <?php if ($tsvType) {echo $fname;} else {echo "Not uploaded";}?></li>
+	<li>File type: <?php if ($fname) {echo $tsvType;} else {echo "Not uploaded";}?></li>
 </ul>
 
 <?php
@@ -403,13 +408,13 @@ if ($hikeMarker === 'ctrhike') {
 		echo '<div id="trailTips" style="margin:8px;"><img id="tipPic" 
 			src="../images/tips.png" alt="special notes icon" />';
 		echo '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">';
-		echo $tipTxt . '</div>';
+		echo $tipTxt . '</p></div>';
 	}
 ?>
 <h2 style="text-align:center;">Hike Information:</h2>
 <?php 
 	echo '<p id="hikeInfo" style="text-indent:8px;">';
-	echo $hikeInfo;
+	echo html_entity_decode($hikeInfo,ENT_COMPAT);
 	echo '</p>';
 ?>
 <h2>Hike References:</h2>
@@ -484,7 +489,7 @@ if ($hikeMarker === 'ctrhike') {
 these names were extracted from the .tsv file</em><br />
 <input style="margin-left:8px" id="all" type="checkbox" name="allPix" value="useAll" />Use All Photos</p>
 <?php
-	$handle = fopen($name2pass, "r");
+	$handle = fopen($tsvpath, "r");
 	if ($handle !== false) {
 		$lineno = 0;
 		$picno = 0;
@@ -521,7 +526,7 @@ these names were extracted from the .tsv file</em><br />
 	echo '<br />';
 	echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
 ?>	
-<input type="hidden" name="tsv" value="<?php echo $name2pass;?>" />
+<input type="hidden" name="tsv" value="<?php echo $fname;?>" />
 <input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
 <input type="hidden" name="area"  value="<?php echo $hikeLocale;?>" />
 <input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
@@ -536,6 +541,7 @@ these names were extracted from the .tsv file</em><br />
 <input type="hidden" name="expo"  value="<?php echo $hikeExp;?>" />
 <input type="hidden" name="geomp" value="<?php echo $hikeGmap;?>" />
 <input type="hidden" name="chart" value="<?php echo $hikeEChart;?>" />
+<input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
 <input type="hidden" name="json"  value="<?php echo $hikeJSON;?>" />
 <input type="hidden" name="img1"  value="<?php echo $hikeOthrImage1;?>" />
 <input type="hidden" name="img2"  value="<?php echo $hikeOthrImage2;?>" />
