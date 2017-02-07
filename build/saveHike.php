@@ -93,8 +93,9 @@
 	$newHike[35] = $_POST['hcaps'];
 	# COMMAS IN THE ABOVE DATA KILL THE SAVE...
 	$newHike[36] = $_POST['hplnks'];
-	$newHike[37] = $_POST['httxt'];
-	$newHike[38] = $_POST['hinfo'];
+	$newHike[37] = $_SESSION['hikeTips'];
+	echo "PASSED: " . $newHike[37];
+	$newHike[38] = $_SESSION['hikeDetails'];
 	$newHike[39] = $_POST['href'];
 	$newHike[40] = $_POST['hpdat'];
 	$newHike[41] = $_POST['hadat'];

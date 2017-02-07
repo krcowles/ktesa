@@ -1,4 +1,5 @@
 <?php session_start(); ?>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Validate &amp; Select Images</title>
@@ -21,124 +22,153 @@
 $hikeFile = $_FILES['xlfile']['tmp_name'];
 $hfSize = filesize($hikeFile);
 $hikeFileName = $_FILES['xlfile']['name'];
-if ($hikeFileName == "") {
-	// hike form entry
-	$hikeName = trim($_REQUEST['hpgTitle']);
-	$hikeLocale = trim($_REQUEST['locale']);
-	$hikeType = trim($_REQUEST['htype']);
-	$hikeLgth = trim($_REQUEST['dist']);
-	$hikeElev = trim($_REQUEST['elev']);
-	$hikeDiff = trim($_REQUEST['diff']);
-	$hikeFac = trim($_REQUEST['fac']);
-	$hikeWow = trim($_REQUEST['wow_factor']);
-	$hikeSeasons = trim($_REQUEST['seas']);
-	$hikeExp = trim($_REQUEST['expos']);
-	$hikeGmap = $_FILES['gpsvMap']['name'];
-	$hikeEChart = $_FILES['chart']['name'];
-	$hikeGpx = $_FILES['gpxname']['name'];
-	$hikeJSON = $_FILES['track']['name'];
-	$hikeLat = trim($_REQUEST['lat']);
-	$hikeLong = trim($_REQUEST['lon']);
-	$hikeOthrImage1 = $_FILES['othr1']['name'];
-	$hikeOthrImage2 = $_FILES['othr2']['name'];
-	$hikeMarker = trim($_REQUEST['mstyle']);
-	$hikePurl1 = trim($_REQUEST['photo1']);
-	$hikePurl2 = trim($_REQUEST['photo2']);
-	$hikeDir = trim($_REQUEST['dirs']);
-	// Process the uploaded tsv file:
-	$tsvFile = $_FILES['csvfile']['tmp_name'];
-	$tsvSize = filesize($tsvFile);
-	$tsvType = $_FILES['csvfile']['type'];
-	$fname = $_FILES['csvfile']['name'];
-	if($fname == "") {
-		die( "No tsv file specified..." );
-	}
-	$tsvpath = '../gpsv/' . $fname;
-	$rawtips = 'tipstxt';
-	$tipTxt = filter_input(INPUT_POST,$rawtips,FILTER_SANITIZE_SPECIAL_CHARS);
-	# I CAN'T GET RID OF THE ^M's - apparently caused by textarea wrap="hard"...
-	$tipTxt = htmlentities($tipTxt,ENT_COMPAT);
-	$hikeInfo = 'hiketxt';
-	$hikeInfo = filter_input(INPUT_POST,$hikeInfo,FILTER_SANITIZE_SPECIAL_CHARS);
-	$hikeInfo = htmlentities($hikeInfo,ENT_COMPAT);
-	$hikeRefTypes = $_POST['rtype'];
-	$hikeRefItems1 = $_POST['rit1'];
-	$hikeRefItems2 = $_POST['rit2'];
-	/* get a count of items actually specified: */
-	$noOfRefs = count($hikeRefTypes);
-	for ($k=0; $k<$noOfRefs; $k++) {
-		if ($hikeRefItems1[$k] == '') {
-			$noOfRefs = $k;
-			break;
-		}
-	}
-	$refLbls = array();
-	for ($k=0; $k<$noOfRefs; $k++) {
-		switch ($hikeRefTypes[$k]) {
-			case 'b':
-				array_push($refLbls,'Book: ');
-				break;
-			case 'p':
-				array_push($refLbls,'Photo Essay: ');
-				break;
-			case 'w':
-				array_push($refLbls,'Website: ');
-				break;
-			case 'a':
-				array_push($refLblbs,'App: ');
-				break;
-			case 'd':
-				array_push($refLbls,'Downloadable Doc: ');
-				break;
-			case 'l':
-				array_push($refLbls,'Blog: ');
-				break;
-			case 'r':
-				array_push($refLbls,'Related Link: ');
-				break;
-			case 'o':
-				array_push($refLbls,'On-Line Map: ');
-				break;
-			case 'm':
-				array_push($refLbls,'Magazine: ');
-				break;
-			case 's':
-				array_push($refLbls,'News Article: ');
-				break;
-			case 'g':
-				array_push($refLbls,'Meetup Group: ');
-				break;
-			case 'n':
-				array_push($refLbls,'');
-				break;
-			default:
-				echo "Unrecognized reference type passed";
-		}
-	}
-	$hikePDatLbls = $_POST['plbl'];
-	$noOfPDats = count($hikePDatLbls);
-	for ($i=0; $i<$noOfPDats; $i++) {
-		if ($hikePDatLbls[$i] == '') {
-			$noOfPDats = $i;
-			break;
-		}
-	}
-	$hikePDatUrls = $_POST['purl'];
-	$hikePDatCTxts = $_POST['pctxt'];
-	$hikeADatLbls = $_POST['albl'];
-	$noOfADats = count($hikeADatLbls);
-	for ($j=0; $j<$noOfADats; $j++) {
-		if ($hikeADatLbls[$j] == '') {
-			$noOfADats = $j;
-			break;
-		}
-	}
-	$hikeADatUrls = $_POST['aurl'];
-	$hikeADatCTxts = $_POST['actxt'];
-	$rawfile = fopen($tsvFile, "r");
-	$fdat = fread($rawfile,$tsvSize);
+/* until -and if- the file-entry method is re-instituted, use only form entry: 
+if ($hikeFileName == "") { */
+
+// hike form entry
+$hikeName = trim($_REQUEST['hpgTitle']);
+$hikeLocale = trim($_REQUEST['locale']);
+$hikeType = trim($_REQUEST['htype']);
+$hikeLgth = trim($_REQUEST['dist']);
+$hikeElev = trim($_REQUEST['elev']);
+$hikeDiff = trim($_REQUEST['diff']);
+$hikeFac = trim($_REQUEST['fac']);
+$hikeWow = trim($_REQUEST['wow_factor']);
+$hikeSeasons = trim($_REQUEST['seas']);
+$hikeExp = trim($_REQUEST['expos']);
+$hikeGmap = $_FILES['gpsvMap']['name'];
+$hikeEChart = $_FILES['chart']['name'];
+$hikeGpx = $_FILES['gpxname']['name'];
+$hikeJSON = $_FILES['track']['name'];
+$hikeLat = trim($_REQUEST['lat']);
+$hikeLong = trim($_REQUEST['lon']);
+$hikeOthrImage1 = $_FILES['othr1']['name'];
+$hikeOthrImage2 = $_FILES['othr2']['name'];
+$hikeMarker = trim($_REQUEST['mstyle']);
+$hikePurl1 = trim($_REQUEST['photo1']);
+$hikePurl2 = trim($_REQUEST['photo2']);
+$hikeDir = trim($_REQUEST['dirs']);
+// Process the uploaded tsv file:
+$tsvFile = $_FILES['csvfile']['tmp_name'];
+$tsvSize = filesize($tsvFile);
+$tsvType = $_FILES['csvfile']['type'];
+$fname = $_FILES['csvfile']['name'];
+if($fname == "") {
+	die( "No tsv file specified..." );
+}
+$tsvpath = '../gpsv/' . $fname;
+$rawtips = 'tipstxt';
+$preTips = $_POST[$rawtips];
+if (substr($preTips,0,10) === '[OPTIONAL]') {
+	$tipTxt = '';
 } else {
-	/* ******************** CURRENTLY OUT OF DATE **************** */
+/*  Input filters encode, not eliminate newlines, etc. so this next step is necessary
+	to keep the csv file from crashing when written to with these characters */
+	$tipTxt = '';
+	$badboys = 0;
+	for ($c=0; $c<strlen($preTips); $c++) {
+		$char = substr($preTips,$c,1);
+		if (ord($char) < 31) {
+			$badboys++;  // for debug readout only
+		} else {
+			$tipTxt .= $char;
+		}
+	}
+	$tipTxt = htmlspecialchars($tipTxt,ENT_QUOTES);
+}
+$_SESSION['hikeTips'] = $tipTxt;  // using <input type="hidden" w/echo is a problem!
+$rawHike = 'hiketxt';
+$preHike = $_POST[$rawHike];
+$hikeInfo = '';
+$badboys = 0;
+for ($c=0; $c<strlen($preHike); $c++) {
+	$char = substr($preHike,$c,1);
+	if (ord($char) < 31) {
+		$badboys++;
+	} else {
+		$hikeInfo .= $char;
+	}
+}
+$hikeInfo = htmlspecialchars($hikeInfo,ENT_QUOTES);
+$_SESSION['hikeDetails'] = $hikeInfo;
+$hikeRefTypes = $_POST['rtype'];
+$hikeRefItems1 = $_POST['rit1'];
+$hikeRefItems2 = $_POST['rit2'];
+/* get a count of items actually specified: */
+$noOfRefs = count($hikeRefTypes);
+for ($k=0; $k<$noOfRefs; $k++) {
+	if ($hikeRefItems1[$k] == '') {
+		$noOfRefs = $k;
+		break;
+	}
+}
+$refLbls = array();
+for ($k=0; $k<$noOfRefs; $k++) {
+	switch ($hikeRefTypes[$k]) {
+		case 'b':
+			array_push($refLbls,'Book: ');
+			break;
+		case 'p':
+			array_push($refLbls,'Photo Essay: ');
+			break;
+		case 'w':
+			array_push($refLbls,'Website: ');
+			break;
+		case 'a':
+			array_push($refLblbs,'App: ');
+			break;
+		case 'd':
+			array_push($refLbls,'Downloadable Doc: ');
+			break;
+		case 'l':
+			array_push($refLbls,'Blog: ');
+			break;
+		case 'r':
+			array_push($refLbls,'Related Link: ');
+			break;
+		case 'o':
+			array_push($refLbls,'On-Line Map: ');
+			break;
+		case 'm':
+			array_push($refLbls,'Magazine: ');
+			break;
+		case 's':
+			array_push($refLbls,'News Article: ');
+			break;
+		case 'g':
+			array_push($refLbls,'Meetup Group: ');
+			break;
+		case 'n':
+			array_push($refLbls,'');
+			break;
+		default:
+			echo "Unrecognized reference type passed";
+	}
+}
+$hikePDatLbls = $_POST['plbl'];
+$noOfPDats = count($hikePDatLbls);
+for ($i=0; $i<$noOfPDats; $i++) {
+	if ($hikePDatLbls[$i] == '') {
+		$noOfPDats = $i;
+		break;
+	}
+}
+$hikePDatUrls = $_POST['purl'];
+$hikePDatCTxts = $_POST['pctxt'];
+$hikeADatLbls = $_POST['albl'];
+$noOfADats = count($hikeADatLbls);
+for ($j=0; $j<$noOfADats; $j++) {
+	if ($hikeADatLbls[$j] == '') {
+		$noOfADats = $j;
+		break;
+	}
+}
+$hikeADatUrls = $_POST['aurl'];
+$hikeADatCTxts = $_POST['actxt'];
+$rawfile = fopen($tsvFile, "r");
+$fdat = fread($rawfile,$tsvSize);
+#} else {
+	/* ******************** CURRENTLY OUT OF DATE ****************
 	// hike datafile entry
 	$datfile = fopen($hikeFile,"r");
 	$hdat = fread($datfile,$hfSize);
@@ -176,7 +206,7 @@ if ($hikeFileName == "") {
 	$rawfile = fopen($tsvpath,"r") or 
 		die ("Could not open TSV FILE in gpsv directory");
 	$fdat = fread($rawfile,$tsvSize);
-}
+} */
 $chartLoc = "../images/" . $hikeEChart;
 $EChartSize = getimagesize($chartLoc);
 $elevWidth = $EChartSize[0];
@@ -403,7 +433,7 @@ if ($hikeMarker === 'ctrhike') {
 </ul>
 
 <?php
-	if (substr($tipTxt,0,10) !== '[OPTIONAL]') {
+	if ($tipTxt !== '') {
 		echo '<h2 style="text-align:center;">Hike Tips Text:</h2>';
 		echo '<div id="trailTips" style="margin:8px;"><img id="tipPic" 
 			src="../images/tips.png" alt="special notes icon" />';
@@ -414,34 +444,40 @@ if ($hikeMarker === 'ctrhike') {
 <h2 style="text-align:center;">Hike Information:</h2>
 <?php 
 	echo '<p id="hikeInfo" style="text-indent:8px;">';
-	echo html_entity_decode($hikeInfo,ENT_COMPAT);
+	echo $hikeInfo;
 	echo '</p>';
 ?>
 <h2>Hike References:</h2>
 <?php 
-	# by defni, there should always be a references section...
+	/* There SHOULD always be at least one reference, however, if there is not,
+	   a message will appear in this section: No References Found */
 	$refhtml = '<fieldset><legend id="fldrefs">References &amp; Links</legend><ul id="refs">';
-	$refStr = $noOfRefs;
-	for ($j=0; $j<$noOfRefs; $j++) {
-		$x = $hikeRefTypes[$j];
-		$refStr .= '^' . $x;
-		if ($x === 'n') {
-			# only one item in this list element: the text
-			$refhtml .= '<li>' . $hikeRefItems1[$j] . '</li>';
-			$refStr .= '^' . $hikeRefItems1[$j];
-		} else {
-			# all other items have two parts + the id label
-			$refStr .= '^' . $hikeRefItems1[$j] . '^' . $hikeRefItems2[$j];
-			$refhtml .= '<li>' . $refLbls[$j];
-			if ($x === 'b' || $x === 'p') {
-				# no links in these
-				$refhtml .= '<em>' . $hikeRefItems1[$j] . '</em>' . $hikeRefItems2[$j] . '</li>';
+	if ($noOfRefs === 0) {
+		$refStr = '1^n^No References Found';
+		$refhtml .= '<li>No References Found</li>';
+	} else {
+		$refStr = $noOfRefs;
+		for ($j=0; $j<$noOfRefs; $j++) {
+			$x = $hikeRefTypes[$j];
+			$refStr .= '^' . $x;
+			if ($x === 'n') {
+				# only one item in this list element: the text
+				$refhtml .= '<li>' . $hikeRefItems1[$j] . '</li>';
+				$refStr .= '^' . $hikeRefItems1[$j];
 			} else {
-				$refhtml .= '<a href="' . $hikeRefItems1[$j] . '" target="_blank">' . 
-					$hikeRefItems2[$j] . '</a></li>';
+				# all other items have two parts + the id label
+				$refStr .= '^' . $hikeRefItems1[$j] . '^' . $hikeRefItems2[$j];
+				$refhtml .= '<li>' . $refLbls[$j];
+				if ($x === 'b' || $x === 'p') {
+					# no links in these
+					$refhtml .= '<em>' . $hikeRefItems1[$j] . '</em>' . $hikeRefItems2[$j] . '</li>';
+				} else {
+					$refhtml .= '<a href="' . $hikeRefItems1[$j] . '" target="_blank">' . 
+						$hikeRefItems2[$j] . '</a></li>';
+				}
 			}
-		}
-	}
+		}  // end of for loop processing
+	}  // end of if-else
 	$refhtml .= '</ul></fieldset>';
 	echo $refhtml;
 	#echo "Ref string to pass: " . $refStr;
@@ -549,14 +585,12 @@ these names were extracted from the .tsv file</em><br />
 <input type="hidden" name="phot1" value="<?php echo $hikePurl1;?>" />
 <input type="hidden" name="phot2" value="<?php echo $hikePurl2;?>" />
 <input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
-<input type="hidden" name="tiptxt" value="<?php echo $tipTxt;?>" />
-<input type="hidden" name="hktxt" value="<?php echo $hikeInfo;?>" />
 <input type="hidden" name="refstr" value="<?php echo $refStr;?>" />
 <input type="hidden" name="pstr" value="<?php echo $pStr;?>" />
 <input type="hidden" name="astr" value="<?php echo $aStr;?>" />
-<input type="hidden" name="rbld" value="NO" />  <!-- Display needs to know whether or not
-	this is a rebuild -->
 </form>
+
+</div>  <!-- end of container_16 -->
 
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="validateHike.js"></script>
