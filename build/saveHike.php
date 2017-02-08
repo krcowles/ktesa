@@ -91,7 +91,6 @@
 	$newHike[33] = $_SESSION['row4'];
 	$newHike[34] = $_SESSION['row5'];
 	$newHike[35] = $_POST['hcaps'];
-	# COMMAS IN THE ABOVE DATA KILL THE SAVE...
 	$newHike[36] = $_POST['hplnks'];
 	$newHike[37] = $_SESSION['hikeTips'];
 	echo "PASSED: " . $newHike[37];
@@ -100,8 +99,6 @@
 	$newHike[40] = $_POST['hpdat'];
 	$newHike[41] = $_POST['hadat'];
 	ksort($newHike, SORT_NUMERIC);
-	#$csvData = implode(',',$newHike);
-	#fputs($handle, $csvData."\n");
 	fputcsv($handle,$newHike);
 	echo "<h1>HIKE SUCCESSFULLY SAVED!</h1>";
 	echo "<h2>" . $msg . "</h2>";
