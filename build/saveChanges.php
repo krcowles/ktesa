@@ -66,6 +66,7 @@
 	$info[23] = $_POST['purl1'];
 	$info[24] = $_POST['purl2'];
 	$info[25] = $_POST['gdirs'];
+	$info[37] = $_POST['tips'];
 	$info[38] = $_POST['hinfo'];
 	
 	# Re-assemble ref string
