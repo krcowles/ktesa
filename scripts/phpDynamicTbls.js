@@ -39,63 +39,31 @@ var compare = {
 	} 
 };  // end of COMPARE object
 
-// Get the index table of hikes and place the html in <div id="refTbl">
-//var databaseLoc = '../data/hikeDataTbl.html';
 var refRows; // needs to be global to effect dynamic table construction & sorts
-// flag for which page is invoking this script:
 var useTbl = $('title').text() == 'Hike Map' ? false : true;
-
-// php has already put ref table in place...
-/*
-$.ajax({
-	dataType: "html",
-	url: databaseLoc,
-	type: 'GET',
-	success: function(data) {
-		$('#refTbl').append($(data));
-*/
-		if ( useTbl ) {
-			// Create the html wrapper that goes around the viewport rows	
-				// -- when row-finding is enabled, use the next 2 lines instead...
-				//tblHtml = '<table class="msortable" onMouseOver="javascript:findPinFromRow(event);"'
-				//tblHtml += ' onMouseOut="javascript:undoMarker();">';
-			tblHtml = '<table class="msortable">';
-			tblHtml += $('table').html();
-			var indx = tblHtml.indexOf('<tbody') + 7;
-			tblHtml = tblHtml.substring(0,indx);  // strip off the main body
-			endTbl = ' </tbody> </table>';
-			endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
-			// For display, sorting, etc., create the full table, put it in <div id="usrTbl">
-			$tblRows = $('#refTbl tbody tr');
-
-			/* THERE IS AN INEXPLICABLE ANOMALY IN THE BEHAVIOR - PERHAPS A FUNCTION OF THE
-			ajax PARSER:  THE <tr> ELEMENT *PRIOR TO* <tbody> IS INCLUDED IN THE SELECTION
-			'$tblRows', THOUGH IT IS NOT A CHILD OR DESCENDANT OF <tbody>; THIS HAS RESULTED
-			IN CODE ADJUSTMENTS, MARKED WITH "HACK" COMMENTS FOR REFERENCE */
-			refRows = $tblRows.toArray(); // HACK
-			refRows.shift(); // HACK (eliminate hdr from row array)
-			//hdrRow = $tblRows[0].innerHTML; // HACK
-			tblHtml += $tblRows[0].innerHTML; // HACK: NOTE - this places hdrs in <tbody>; req's sorting HACK
-			var iCnt = refRows.length;
-			var fullTbl = new Array();
-			for ( var x=0; x<iCnt; x++ ) {
-				// every row will be used, so create a sequential array:
-				fullTbl[x] = x;
-			}
-			formTbl( iCnt, fullTbl ); // form the usrTbl - variably sized later
-		}
-/*
-	},  // end of SUCCESS reading data
-	error: function(xhrStat, errCode, errObj) {
-		errmsg = errObj.textContent;
-		msg = 'ajax request for hikeDataTbl failed: ' + errmsg;
-		window.alert(msg);
-	}	
-});
-*/
+if ( useTbl ) {
+	/* Create the html wrapper that goes around the viewport rows*/
+	tblHtml = '<table class="msortable">';
+	tblHtml += $('table').html();
+	var indx = tblHtml.indexOf('<tbody') + 7;
+	tblHtml = tblHtml.substring(0,indx);  // strip off the main body (after colgrp & hdr)
+	endTbl = ' </tbody> </table>';
+	endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
+	/* For display, sorting, etc., create the full table on initial page load, 
+	   put it in <div id="usrTbl">  */
+	$tblRows = $('#refTbl tbody tr');
+	refRows = $tblRows.toArray();
+	var iCnt = refRows.length;
+	var fullTbl = new Array();
+	for ( var x=0; x<iCnt; x++ ) {
+		// every row will be used on initial page load, so create a full sequential array:
+		fullTbl[x] = x;
+	}
+	formTbl( iCnt, fullTbl ); // form the usrTbl - variably sized later
+}
 
 // Create the html for the viewport table, using the rows identified in "tblRowsArray"
-// arg of the function below   
+//   arg of the function below   
 function formTbl ( noOfRows, tblRowsArray ) {
 	// HTML CREATION:
 	var thisTbl = tblHtml + ' <tr>';
@@ -124,13 +92,7 @@ function formTbl ( noOfRows, tblRowsArray ) {
 			// IF defined for selected column, toggle ascending/descending class
 			if ( $header.is('.ascending') || $header.is('.descending') ) {
 				$header.toggleClass('ascending descending');
-				// HACK
-				hdrRow = trows[0];
-				trows.reverse();
-				trows.pop();
-				trows.unshift(hdrRow);
-				// END
-				$tbody.append(trows);
+				$tbody.append(trows.reverse());
 			} else {
 			// NOT DEFINED - add 'ascending' to current; remove remaining headers' classes
 				$header.addClass('ascending');
@@ -216,35 +178,6 @@ function formTbl ( noOfRows, tblRowsArray ) {
 		});  // end 'each erow'	
 	}); // end of click on metric
 }  // end of FORMTBL function
-
-// ROW-FINDING FUNCTIONS FOR mouseover TABLE... [not currently enabled]
-/*
-function findPinFromRow(eventArg) {
-	if ( !eventArg ) {
-		eventArg = window.event;
-	}
-	// IE browsers:
-	if ( eventArg.srcElement ) {
-		getRowNo(eventArg.srcElement);
-	} else if ( eventArg.target ) {
-		getRowNo(eventArg.target)
-	}
-}
-function getRowNo(El) {
-	if ( El.nodeName == "TD" ) {
-		El = El.parentNode;
-		msg = '<p>Now El is ' + El.nodeName + '; row indx is ' + El.rowIndex;
-		var cellDat = El.cells[1].textContent;
-		msg += 'w/Cell data = ' + cellDat + '</p>';
-		$('#dbug').append(msg);
-	} else return;
-}
-function undoMarker() {
-	msg = '<p>Mouse out of row...</p>';
-	//$('#features').append(msg);
-}
-// END OF ROW-FINDING FUNCTIONS
-*/
 
 // Function to find elements within current bounds and display them in a table
 function IdTableElements(boundsStr) {

@@ -1,5 +1,5 @@
 <!-- REFERENCE TABLE OF HIKES -->
-<table id="sortable">
+<table class="sortable">
 	<colgroup>	
 		<col style="width:120px">
 		<col style="width:190px">
@@ -12,18 +12,20 @@
 		<col style="width:70px">
 		<col style="width:74px">
 	</colgroup>
-	<tr>
-		<th class="hdr_row" data-sort="std">Locale</th>
-		<th class="hdr_row" data-sort="std">Hike/Trail Name</th>
-		<th class="hdr_row" data-sort="std">WOW Factor</th>
-		<th class="hdr_row">Web Pg</th>
-		<th class="hdr_row" data-sort="lan">Length</th>
-		<th class="hdr_row" data-sort="lan">Elev Chg</th>
-		<th class="hdr_row" data-sort="std">Difficulty</th>
-		<th class="hdr_row">Exposure</th>
-		<th class="hdr_row">By Car</th>
-		<th class="hdr_row">Photos</th>
-	</tr>
+	<thead>
+		<tr>
+			<th class="hdr_row" data-sort="std">Locale</th>
+			<th class="hdr_row" data-sort="std">Hike/Trail Name</th>
+			<th class="hdr_row" data-sort="std">WOW Factor</th>
+			<th class="hdr_row">Web Pg</th>
+			<th class="hdr_row" data-sort="lan">Length</th>
+			<th class="hdr_row" data-sort="lan">Elev Chg</th>
+			<th class="hdr_row" data-sort="std">Difficulty</th>
+			<th class="hdr_row">Exposure</th>
+			<th class="hdr_row">By Car</th>
+			<th class="hdr_row">Photos</th>
+		</tr>
+	</thead>
 	<tbody>
 	<!-- ADD HIKE ROWS VIA PHP HERE: -->
 	<?php
