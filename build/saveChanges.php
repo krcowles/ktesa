@@ -26,10 +26,6 @@
 	$hikeNo = intval($_POST['hno']);
 	# get the hike number's line and convert to array
 	$info = str_getcsv($dbfile[$hikeNo]);
-        /* NOTE: At this point, it has been verified that the items with commas,
-         * such as Captions, Google Dirs, etc, are still represented by ONE
-         * each member of $info. When does it splatter acroos fields????
-         */
 	# the old data is now in the array $info
 	# $info[0] is the index no, already determined
 	$info[1] = $_POST['hname'];
@@ -47,6 +43,7 @@
 		$newgrp = substr($availLtrs,$nxtavail,1);
                 echo "New Letter for Clusters: " . $newgrp . "\n";
                 echo "New group name: "  . $_POST['newgname'];
+        $info[3] = 'Cluster';
 		$info[5] = $newgrp;
 		$info[28] = $_POST['newgname'];
 	} else {
@@ -71,24 +68,44 @@
 	
 	# Re-assemble ref string
 	$rawreftypes = $_POST['rtype'];
+	$noOfRefs = count($rawreftypes);  // should always be 1 or greater
 	$rawrit1 = $_POST['rit1'];
 	$rawrit2 = $_POST['rit2'];
 	# there will always be the same no of rtype's & rit1's, BUT NOT rit2's!
 	$r2indx = 0;
-        $rcnt = 0;
-        $refStr = '';
-	$noOfRefs = count($rawreftypes);  // always 1 or greater
-	for ($j=0; $j<$noOfRefs; $j++) {
-		if ($rawreftypes[$j] === 'b' && $rawrit1[$j] === '') {
-			break;
-		} elseif ($rawreftypes[$j] === 'n') {
-			$refStr .= '^' . $rawreftypes[$j] . '^' . $rawrit1[$j];
-		} else {
-			$refStr .= '^' . $rawreftypes[$j] . '^' . $rawrit1[$j] . '^' . $rawrit2[$r2indx];
-			$r2indx++;
-		}
-                $rcnt++;
+    $rcnt = 0;
+    $refStr = '';
+    /* When reading an array of checkboxes, the array order is skewed with checked
+       boxes first: check to see if any current references are being deleted */
+    $refDels = $_POST['delref'];
+    $skips = array();
+    for ($k=0; $k<$noOfRefs; $k++) {
+    	$skips[$k] = false;
+    }
+    foreach ($refDels as $box) {
+    	if ( isset($box) ) {
+    		$indx = $box;
+    		$skips[$indx] = true;
+    	}
+    }
+	for ($j=0; $j<$noOfRefs; $j++) {		
+		if (!$skips[$j]) {
+			if ($rawreftypes[$j] === 'b' && $rawrit1[$j] === '') { // first added empty input
+				break;
+			} elseif ($rawreftypes[$j] === 'n') {
+				$refStr .= '^' . $rawreftypes[$j] . '^' . $rawrit1[$j];
+			} else {
+				$refStr .= '^' . $rawreftypes[$j] . '^' . $rawrit1[$j] . '^' . $rawrit2[$r2indx];
+				$r2indx++;
+			}
+			$rcnt++;
+        } else {
+        	if ($rawreftypes[$j] !== 'n') {
+        		$r2indx++;
+        	}
+        }
 	}
+	echo $rcnt . $refStr;
 	$info[39] = $rcnt . $refStr;
 	
 	# Re-assemble Proposed Data String
@@ -132,17 +149,19 @@
 		$actStr = '';
 	}
 	$info[41] = $actStr;
-        $dbhandle = fopen($database,"c+");
-        foreach ($dbfile as $hikeline) {
-            $hikedat = str_getcsv($hikeline,",");
-            if ($hikedat[0] == $hikeNo) {
-                fputcsv($dbhandle,$info);
-            } else {
-                fputcsv($dbhandle,$hikedat);
-            }
-      
-        }
+	/*
+	$dbhandle = fopen($database,"c+");
+	foreach ($dbfile as $hikeline) {
+		$hikedat = str_getcsv($hikeline,",");
+		if ($hikedat[0] == $hikeNo) {
+			fputcsv($dbhandle,$info);
+		} else {
+			fputcsv($dbhandle,$hikedat);
+		}
+  
+	}
 	fclose($dbhandle);
+	*/
 ?>
 <div style="padding:16px;">
 <h2>The changes submitted for <?php echo $hikeName;?> (if any) have been saved to the database.</h2>

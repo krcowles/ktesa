@@ -162,6 +162,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	if ($info[37] !== '') {
 		echo '<p>Tips Text: </p>';
 		echo '<textarea id="ttxt" name="tips" rows="10" cols="140">' . $info[37] . '</textarea><br />';
+	} else {
+		echo '<textarea id="ttxt" name="tips" rows="10" cols="140">' . 
+			'[NO TIPS FOUND]' . '</textarea><br />';
 	}
 ?>
 <p>Hike Information:</p>
@@ -172,6 +175,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	$rcnt = $refs[0];
 	$noOfRefs = intval($rcnt);
 	echo '<p id="refcnt" style="display:none">' . $noOfRefs . '</p>';
+	echo '<input type="hidden" name = "orgrefs" value="' . $noOfRefs . '" />';
 	array_shift($refs);
 	$nxt = 0;
 	for ($j=0; $j<$noOfRefs; $j++) {
@@ -198,18 +202,21 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 				$refs[$nxt+1] . '</textarea>&nbsp;&nbsp;';
 			echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
 				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp<label>Delete this: </label>' .
-			   '<input style="height:18px;width:18px;" type="checkbox" name="del[]" /><br /><br />';
+			   '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
+			   		$j . '"><br /><br />';
 			$nxt +=3;
 		} elseif ($refs[$nxt] === 'n') {
 			echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
 				$refs[$nxt+1] . '</textarea><label>Delete this: </label>' .
-				'<input style="height:18px;width:18px;" type="checkbox" name="del[]" /><br /><br />';
+				'<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
+					$j . '"><br /><br />';
 			$nxt += 2;
 		} else {
 			echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
 				$refs[$nxt+1] . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
 				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp;<label>Delete this: </label>' .
-				'<input style="height:18px;width:18px;" type="checkbox" name="del[]" /><br /><br />';
+				'<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
+					$j . '"><br /><br />';
 			$nxt += 3;
 		}
 	}
