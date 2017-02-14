@@ -42,7 +42,7 @@ var compare = {
 var refRows; // needs to be global to effect dynamic table construction & sorts
 var useTbl = $('title').text() == 'Hike Map' ? false : true;
 if ( useTbl ) {
-	/* Create the html wrapper that goes around the viewport rows*/
+	/* INITIAL PAGE LOAD OF USER TABLE */
 	tblHtml = '<table class="msortable">';
 	tblHtml += $('table').html();
 	var indx = tblHtml.indexOf('<tbody') + 7;
@@ -203,15 +203,14 @@ function IdTableElements(boundsStr) {
 	/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
 	var n = 0;
 	var rowCnt = 0;
-	// back to this anomalous behavior where jQuery returns  header row with trs in 'tbody'
 	var $allRows = $('#refTbl tbody tr');
-	for (i=1; i<$allRows.length; i++) {  // note that i starts at 1 instead of 0
+	for (i=0; i<$allRows.length; i++) {
 		var tmpLat = $($allRows[i]).data('lat');
 		var tmpLng = $($allRows[i]).data('lon');
 		pinLat = parseFloat(tmpLat);
 		pinLon = parseFloat(tmpLng);	
 		if( pinLon <= east && pinLon >= west && pinLat <= north && pinLat >= south ) {
-			tblEl[n] = i-1;
+			tblEl[n] = i;
 			n++;
 			rowCnt ++;
 		}	
