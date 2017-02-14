@@ -201,20 +201,20 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 			echo '<label style="text-indent:24px;">Title: </label><textarea style="height:20px;width:320px" name="rit1[]">' .
 				$refs[$nxt+1] . '</textarea>&nbsp;&nbsp;';
 			echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
-				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp<label>Delete this: </label>' .
+				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp<label>Delete: </label>' .
 			   '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
 			   		$j . '"><br /><br />';
 			$nxt +=3;
 		} elseif ($refs[$nxt] === 'n') {
 			echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
-				$refs[$nxt+1] . '</textarea><label>Delete this: </label>' .
+				$refs[$nxt+1] . '</textarea><label>Delete: </label>' .
 				'<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
 					$j . '"><br /><br />';
 			$nxt += 2;
 		} else {
 			echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
 				$refs[$nxt+1] . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
-				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp;<label>Delete this: </label>' .
+				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
 				'<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
 					$j . '"><br /><br />';
 			$nxt += 3;
@@ -267,7 +267,9 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 			echo 'Label: <textarea class="tstyle1" name="plabl[]">' . $prop[$nxt] . '</textarea>&nbsp;&nbsp;';
 			echo 'Url: <textarea class="tstyle2" name="plnk[]">' . $prop[$nxt+1] . '</textarea>&nbsp;&nbsp;';
 			echo 'Click-on text: <textarea class="tstyle3" name="pctxt[]">' . $prop[$nxt+2] . 
-				'</textarea><br />';
+				'</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+				'<input style="height:18px;width:18px;" type="checkbox" name="delprop[]" value="' .
+					$i . '"><br /><br />';
 			$nxt +=3;
 		}
 	}
@@ -292,7 +294,9 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 			echo 'Label: <textarea class="tstyle1" name="alabl[]">' . $act[$nxt] . '</textarea>&nbsp;&nbsp;';
 			echo 'Url: <textarea class="tstyle2" name="alnk[]">' . $act[$nxt+1] . '</textarea>&nbsp;&nbsp;';
 			echo 'Click-on text: <textarea class="tstyle3" name="actxt[]">' . $act[$nxt+2] . 
-				'</textarea><br />';
+				'</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+				'<input style="height:18px;width:18px;" type="checkbox" name="delact[]" value="' .
+					$j . '"><br /><br />';
 			$nxt +=3;
 		}
 	}
