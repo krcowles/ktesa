@@ -63,7 +63,13 @@
 	$info[23] = $_POST['purl1'];
 	$info[24] = $_POST['purl2'];
 	$info[25] = $_POST['gdirs'];
-	$info[37] = $_POST['tips'];
+	$htips = $_POST['tips'];
+	if (substr($htips,0,15) !== '[NO TIPS FOUND]') {
+		$info[37] = $htips;
+	} else {
+		$info[37] = '';
+	}
+	echo "TIPS TEXT: " . $info[37];
 	$info[38] = $_POST['hinfo'];
 	
 	# Re-assemble ref string
@@ -179,9 +185,7 @@
         	$actStr = '';
         }
 	}  // end of actual data processing, if present
-	echo "OUTPUT: " . $actStr;
 	$info[41] = $actStr;
-	/*
 	$dbhandle = fopen($database,"c+");
 	foreach ($dbfile as $hikeline) {
 		$hikedat = str_getcsv($hikeline,",");
@@ -193,10 +197,9 @@
   
 	}
 	fclose($dbhandle);
-	*/
 ?>
 <div style="padding:16px;">
-<h2>The changes submitted for <?php echo $hikeName;?> (if any) have been saved to the database.</h2>
+<h2>The changes submitted for <?php echo $info[1];?> (if any) have been saved to the database.</h2>
 </div>
 
 <div data-ptype="hike" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
