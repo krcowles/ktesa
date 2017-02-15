@@ -18,8 +18,8 @@ body {
 	height: 34px;
 	width: 220px; }
 #newg {
-	height: 18px;
-	width: 18px; }
+	height: 22px;
+	width: 22px; }
 #miles {
 	height: 20px;
 	width: 70px; }
@@ -64,10 +64,10 @@ body {
 	width: 100px; }
 .tstyle2 {
 	height: 20px;
-	width: 460px; }
+	width: 400px; }
 .tstyle3 {
 	height: 20px;
-	width: 320px; }
+	width: 280px; }
 textarea {
 	font-family: Tahoma, sans-serif;
 	border-style: solid;
@@ -87,3 +87,6 @@ select {
 	background-color: LavenderBlush; }
 select:focus {
 	background-color: PapayaWhip; }
+#go {
+	height: 24px;
+	width: 100px; }

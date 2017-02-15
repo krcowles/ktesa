@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,12 +47,17 @@
 			}
 		}
 	} 
+	$clusgrps = implode(",",$cgrps);
+	$_SESSION['cluster_letters'] = $clusgrps;
 ?>
 <form action="saveChanges.php" method="POST">
+<?php
+echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
+?>
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for the hike: "<?php echo $info[1];?>".
 	If no changes are made you may either exit this page or hit the "sbumit" button.</em><br /><br />
-<p style="display:none;" id="locality"><?php echo trim($info[2])?></p>
 <label for="hike">Hike Name: </label><textarea id="hike" name="hname"><?php echo $info[1]?></textarea>&nbsp;&nbsp;
+<p style="display:none;" id="locality"><?php echo trim($info[2])?></p>
 <label for="area">Locale (City/POI): </label>
 <select id="area" name="locale">
   <optgroup label="North/Northeast">
@@ -73,6 +79,7 @@
 	<option value="Lybrook">Lybrook</option>
   <optgroup label="Central NM">
 	<option value="Cerrillos">Cerrillos</option>
+        <option value="Golden">Golden</option>
 	<option value="Albuquerque">Albuquerque</option>
 	<option value="Placitas">Placitas</option>
 	<option value="Corrales">Corrales</option>
@@ -110,7 +117,8 @@
 	echo '</select>';
 ?>
 <p>If you are establishing a new group, select the checkbox: <input id="newg" type="checkbox"
-name="nxtg" /> and enter the name for the new group here: <input id="newt" type="text" size="50" /></p><br />
+	name="nxtg" value="YES" /> and enter the name for the new group here: <input id="newt" 
+	type="text" name="newgname" size="50" /></p><br />
 
 <p id="ctype" style="display:none"><?php echo $info[6];?></p>
 <label for="type">Hike Type: </label>
@@ -145,15 +153,18 @@ name="nxtg" /> and enter the name for the new group here: <input id="newt" type=
 <label for="lon">Longitude </label>
 <textarea id="lon" name="hlon"><?php echo $info[20];?></textarea><br />
 <label for="ph1">Photo URL1 (If solo, main album link): </label>
-<textarea id="ph1" name="purl1" wrap="hard"><?php echo $info[23];?></textarea><br />
+<textarea id="ph1" name="purl1"><?php echo $info[23];?></textarea><br />
 <label for="ph2">Photo URL2 (Will appear as "Tom's"): </label>
-<textarea id="ph2" name="purl2" wrap="hard"><?php echo $info[24];?></textarea><br /><br />
+<textarea id="ph2" name="purl2"><?php echo $info[24];?></textarea><br /><br />
 <label for="murl">Map Directions Link (Url): </label>
-<textarea id="murl" name="gdirs" wrap="hard"><?php echo $info[25];?></textarea><br /><br />
+<textarea id="murl" name="gdirs"><?php echo $info[25];?></textarea><br /><br />
 <?php 
 	if ($info[37] !== '') {
 		echo '<p>Tips Text: </p>';
 		echo '<textarea id="ttxt" name="tips" rows="10" cols="140">' . $info[37] . '</textarea><br />';
+	} else {
+		echo '<textarea id="ttxt" name="tips" rows="10" cols="140">' . 
+			'[NO TIPS FOUND]' . '</textarea><br />';
 	}
 ?>
 <p>Hike Information:</p>
@@ -164,6 +175,7 @@ name="nxtg" /> and enter the name for the new group here: <input id="newt" type=
 	$rcnt = $refs[0];
 	$noOfRefs = intval($rcnt);
 	echo '<p id="refcnt" style="display:none">' . $noOfRefs . '</p>';
+	echo '<input type="hidden" name = "orgrefs" value="' . $noOfRefs . '" />';
 	array_shift($refs);
 	$nxt = 0;
 	for ($j=0; $j<$noOfRefs; $j++) {
@@ -189,19 +201,22 @@ name="nxtg" /> and enter the name for the new group here: <input id="newt" type=
 			echo '<label style="text-indent:24px;">Title: </label><textarea style="height:20px;width:320px" name="rit1[]">' .
 				$refs[$nxt+1] . '</textarea>&nbsp;&nbsp;';
 			echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
-				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp<label>Delete this: </label>' .
-			   '<input style="height:18px;width:18px;" type="checkbox" name="del[]" /><br /><br />';
+				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp<label>Delete: </label>' .
+			   '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
+			   		$j . '"><br /><br />';
 			$nxt +=3;
 		} elseif ($refs[$nxt] === 'n') {
 			echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
-				$refs[$nxt+1] . '</textarea><label>Delete this: </label>' .
-				'<input style="height:18px;width:18px;" type="checkbox" name="del[]" /><br /><br />';
+				$refs[$nxt+1] . '</textarea><label>Delete: </label>' .
+				'<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
+					$j . '"><br /><br />';
 			$nxt += 2;
 		} else {
 			echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
 				$refs[$nxt+1] . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
-				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp;<label>Delete this: </label>' .
-				'<input style="height:18px;width:18px;" type="checkbox" name="del[]" /><br /><br />';
+				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+				'<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
+					$j . '"><br /><br />';
 			$nxt += 3;
 		}
 	}
@@ -249,30 +264,23 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 		array_shift($prop);
 		$nxt = 0;
 		for ($i=0; $i<$pcnt; $i++) {
-			$plbl = 'plbl' . $nxt;
-			$plnk = 'plnk' . $nxt;
-			$ptxt = 'ptxt' . $nxt;
-			$lid = 'plid' . $nxt;
-			$kid = 'klid' . $nxt;
-			$cid = 'clid' . $nxt;
-			echo '<p id="' . $plbl . '" style="display:none">' . $prop[$nxt] . '</p>';
-			echo '<p id="' . $plnk . '" style="display:none">' . $prop[$nxt+1] . '</p>';
-			echo '<p id="' . $ptxt . '" style="display:none">' . $prop[$nxt+2] . '</p>'; 
-			echo 'Label: <textarea id="' . $lid . '" class="tstyle1" name="plbl[]">' . $prop[$nxt] . '</textarea>&nbsp;&nbsp;';
-			echo 'Url: <textarea id="' . $kid . '" class="tstyle2" name="ltxt[]">' . $prop[$nxt+1] . '</textarea>&nbsp;&nbsp;';
-			echo 'Click-on text: <textarea id="' . $cid . '" class="tstyle3" name="ctxt[]">' . $prop[$nxt+2] . 
-				'</textarea><br />';
+			echo 'Label: <textarea class="tstyle1" name="plabl[]">' . $prop[$nxt] . '</textarea>&nbsp;&nbsp;';
+			echo 'Url: <textarea class="tstyle2" name="plnk[]">' . $prop[$nxt+1] . '</textarea>&nbsp;&nbsp;';
+			echo 'Click-on text: <textarea class="tstyle3" name="pctxt[]">' . $prop[$nxt+2] . 
+				'</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+				'<input style="height:18px;width:18px;" type="checkbox" name="delprop[]" value="' .
+					$i . '"><br /><br />';
 			$nxt +=3;
 		}
 	}
 ?>
 <p>Add Proposed Data:</p>
-<label>Label: </label><input id="addpl1" class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input id="addpk1" class="tstyle2" name="ltxt[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input id="addpc1" class="tstyle3" name="ctxt[]" size="30" /><br />
-<label>Label: </label><input id="addpl2" class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input id="addpk2" class="tstyle2" name="ltxt[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input id="addpc2" class="tstyle3" name="ctxt[]" size="30" />
+<label>Label: </label><input class="tstyle1" name="plabl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input class="tstyle2" name="plnk[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="pctxt[]" size="30" /><br />
+<label>Label: </label><input class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input class="tstyle2" name="ltxt[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="ctxt[]" size="30" />
 
 <h3>Actual Data:</h3>
 
@@ -282,34 +290,26 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 		$acnt = intval($act[0]);
 		array_shift($act);
 		$nxt =0;
-		for ($j=0; $j<$acnt; $j++) {
-			$albl = 'albl' . $nxt;
-			$alnk = 'alnk' . $nxt;
-			$atxt = 'atxt' . $nxt;
-			$lid = 'alid' . $nxt;
-			$kid = 'klid' . $nxt;
-			$cid = 'clid' . $nxt;
-			echo '<p id="' . $albl . '" style="display:none">' . $act[$nxt] . '</p>';
-			echo '<p id="' . $alnk . '" style="display:none">' . $act[$nxt+1] . '</p>';
-			echo '<p id="' . $atxt . '" style="display:none">' . $act[$nxt+2] . '</p>'; 
-			echo 'Label: <textarea id="' . $lid . '" class="tstyle1" name="plbl[]">' . $act[$nxt] . '</textarea>&nbsp;&nbsp;';
-			echo 'Url: <textarea id="' . $kid . '" class="tstyle2" name="ltxt[]">' . $act[$nxt+1] . '</textarea>&nbsp;&nbsp;';
-			echo 'Click-on text: <textarea id="' . $cid . '" class="tstyle3" name="ctxt[]">' . $act[$nxt+2] . 
-				'</textarea><br />';
+		for ($j=0; $j<$acnt; $j++) { 
+			echo 'Label: <textarea class="tstyle1" name="alabl[]">' . $act[$nxt] . '</textarea>&nbsp;&nbsp;';
+			echo 'Url: <textarea class="tstyle2" name="alnk[]">' . $act[$nxt+1] . '</textarea>&nbsp;&nbsp;';
+			echo 'Click-on text: <textarea class="tstyle3" name="actxt[]">' . $act[$nxt+2] . 
+				'</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+				'<input style="height:18px;width:18px;" type="checkbox" name="delact[]" value="' .
+					$j . '"><br /><br />';
 			$nxt +=3;
 		}
 	}
 ?>
 <p>Add Actual Data:</p>
-<label>Label: </label><input id="addal1" class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input id="addak1" class="tstyle2" name="ltxt[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input id="addac1" class="tstyle3" name="ctxt[]" size="30" /><br />
-<label>Label: </label><input id="addal2" class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input id="addak2" class="tstyle2" name="ltxt[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input id="addac2" class="tstyle3" name="ctxt[]" size="30" />
+<label>Label: </label><input class="tstyle1" name="alabl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" /><br />
+<label>Label: </label><input class="tstyle1" name="alabl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" /><br />
 
-<input type="hidden" name="hname" value="<?php echo $info[1];?>" />
-
+<br /><input id="go" type="submit" value="Save Changes" />
 </form>
 
 </div>
