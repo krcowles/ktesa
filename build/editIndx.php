@@ -21,14 +21,19 @@ Edit the URLs or html code as desired, then click on the "Submit" button.
 <div style="padding:16px;">
 <?php
 	$database = '../data/test.csv';
-	$dbfile = file($database);
-	$hikeNo = intval($_GET['hikeNo']);
-	$info = str_getcsv($dbfile[$hikeNo]);
-	$indxName = $info[1];
-	$dirs = rawurldecode($info[25]);
-	$indxInfo = rawurldecode($info[38]);
-	$refs = rawurldecode($info[39]);
-	$indxTbl = rawurldecode($info[29]);
+	$dbhandle = fopen($database,"r");
+	$hikeNo = $_POST['hikeNo'];
+	while ( ($info = fgetcsv($dbhandle)) !== false) {
+		if ( $info[0] == $hikeNo) {
+			$indxName = $info[1];
+			$dirs = rawurldecode($info[25]);
+			$indxInfo = rawurldecode($info[38]);
+			$refs = rawurldecode($info[39]);
+			$indxTbl = rawurldecode($info[29]);
+			break;
+		}
+	}
+	fclose($dbhandle);
 ?>
 <form action="saveIndxChgs.php" method="POST">
 	<em style="color:DarkBlue;">Any changes below will be made for the Index Page: "<?php echo $indxName;?>". If no changes 

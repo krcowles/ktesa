@@ -32,7 +32,7 @@
 		$refEnc = rawurlencode($refsHtml);
 	}
 	$database = '../data/test.csv';
-	$allHikes = file($database);
+	$handle = fopen($database,"r");
 	# table images:
 	$webIcon = '<img class="webShift" src="../images/greencheck.jpg" alt="checkbox" />';
 	$dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
@@ -57,8 +57,7 @@
 		$first = true;
 		for ($k=0; $k<$noInTable; $k++) {
 			$selected = $assocHikes[$k];
-			foreach ($allHikes as $line) {
-				$hike = str_getcsv($line,",");
+			while ( ($hike = fgetcsv($handle)) !== false) {
 				if ($selected == $hike[0]) {
 					$trail = '<td>' . $hike[1] . '</td>';
 					$hlnk = '<td><a href="../pages/hikePageTemplate.php?hikeIndx=' .
@@ -84,21 +83,26 @@
 					break;
 				}
 			}
+			rewind($handle);
 			$tblCode = $tblCode . $trail . $hlnk . $lgth . $elev . $hikeExpIcon . $purl . '</tr>';
 		}
 		$tblCode = $tblCode . '</tbody></table>';
+		rewind($handle);
 		# the Cluster Str for this park is formed of the associated hike index nos.	
 	} else {
 		$tblCode = '';
 	}
 	/* SAVE THE DATA TO THE DATABASE */
+	while ( ($hikes = fgetcsv($handle)) !== false) {
+		$lastIndx = $hikes[0];
+	}
+	fclose($handle);	
+	$hikeNo = intval($lastIndx) + 1;
 	$newIndx = array();
 	for ($n=0; $n<42; $n++) {
 		$newIndx[$n] = '';
 	}  // required for implode to function properly
-	# get next index number in database:
-	$hikeNo = count($allHikes);   // first row is table headers
-	$newIndx[0] = $hikeNo;  // -1 for headers, +1 for next number
+	$newIndx[0] = $hikeNo; 
 	$newIndx[1] = $indexPage;
 	$newIndx[2] = $pkLocale;
 	$newIndx[3] = "Visitor Ctr";
@@ -106,10 +110,10 @@
 	$newIndx[19] = $pkLat;
 	$newIndx[20] = $pkLon;
 	$newIndx[21] = $parkMap;
-	$newIndx[25] = rawurlencode($dirs);
-	$newIndx[29] = rawurlencode($tblCode);
-	$newIndx[38] = rawurlencode($indxDesc);
-	$newIndx[39] = $refEnc;
+	$newIndx[25] = $dirs;
+	$newIndx[29] = $tblCode;
+	$newIndx[38] = $indxDesc;
+	$newIndx[39] = $refsHtml;
 ?>
 <!DOCTYPE html>
 <head>
@@ -136,9 +140,9 @@
 	if ($noInTable > 0) {
 		echo $tblCode;
 	}
-	$csvData = implode(',',$newIndx);
 	$handle = fopen($database,"a");
-	fputs($handle,"\n".$csvData);
+	fputcsv($handle,$newIndx);
+	fclose($handle);
 ?>
 <h2 style="margin:16px;">Index Page Has Been Saved to the Database</h2>
 </div>

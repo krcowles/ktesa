@@ -81,14 +81,13 @@ function makeHtmlList($type,$str) {
 } // FUNCTION END....
 	
 	$hikeIndexNo = $_GET['hikeIndx'];
-	/* Use the common database (excel csv file) to extract info */
+	/* NOTE: The database file is only read in here, no writing to it occurs */
 	$dataTable = '../data/test.csv';
 	$handle = fopen($dataTable,'r');
 	if ($handle !== false) {
 		$lineno = 0;
-		while ( ($line = fgets($handle)) !== false ) {
-			if ($lineno > 0) {
-				$hikeArray = str_getcsv($line,",");
+		while ( ($hikeArray = fgetcsv($handle)) !== false ) {
+			if ($lineno > 0) {  // skip the header row
 				if ($hikeIndexNo == $hikeArray[0]) {  // find the target hike
 					$hikeTitle = $hikeArray[1];
 					$hikeDifficulty = $hikeArray[9];

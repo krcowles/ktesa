@@ -19,15 +19,21 @@
 
 <?php
 	$database = '../data/test.csv';
-	$dbfile = file($database);  // all hikes, as an array of lines, with newlines
-	if (count($dbfile) < 10) {
-		die("did not retrieve data base file!");
-	}	
-	$hikeNo = intval($_POST['hno']);
-	# get the hike number's line and convert to array
-	$info = str_getcsv($dbfile[$hikeNo]);
-	# the old data is now in the array $info
-	# $info[0] is the index no, already determined
+	$dbhandle = fopen($database,"r");	
+	$hikeNo = $_POST['hno'];
+	$wholeDB = array();
+	$dbindx = 0;
+	while ( ($hikeDat = fgetcsv($dbhandle)) !== false ) {
+		$wholeDB[$dbindx] = $hikeDat;
+		$dbindx++;
+	}
+	fclose($dbhandle);
+	foreach ($wholeDB as $hikeLine) {
+		if ($hikeLine[0] == $hikeNo) {
+			$info = $hikeLine;
+			break;
+		}
+	}
 	$info[1] = $_POST['hname'];
 	$info[2] = $_POST['locale'];
 	# $info[3] is marker type - not changeable at this time
@@ -41,8 +47,8 @@
 		$availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$nxtavail = strpos($availLtrs,$lastused) + 1;
 		$newgrp = substr($availLtrs,$nxtavail,1);
-                echo "New Letter for Clusters: " . $newgrp . "\n";
-                echo "New group name: "  . $_POST['newgname'];
+        #echo "New Letter for Clusters: " . $newgrp . "\n";
+        #echo "New group name: "  . $_POST['newgname'];
         $info[3] = 'Cluster';
 		$info[5] = $newgrp;
 		$info[28] = $_POST['newgname'];
@@ -69,7 +75,6 @@
 	} else {
 		$info[37] = '';
 	}
-	echo "TIPS TEXT: " . $info[37];
 	$info[38] = $_POST['hinfo'];
 	
 	# Re-assemble ref string
@@ -186,9 +191,8 @@
         }
 	}  // end of actual data processing, if present
 	$info[41] = $actStr;
-	$dbhandle = fopen($database,"c+");
-	foreach ($dbfile as $hikeline) {
-		$hikedat = str_getcsv($hikeline,",");
+	$dbhandle = fopen($database,"w");
+	foreach ($wholeDB as $hikedat) {
 		if ($hikedat[0] == $hikeNo) {
 			fputcsv($dbhandle,$info);
 		} else {

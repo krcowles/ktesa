@@ -26,15 +26,15 @@
 	$database = '../data/test.csv';
 	$handle = fopen($database, "c+");
 	if ($handle !== false) {
-		while ( ($line = fgets($handle)) !== false ) {
-			$dbLineArray = str_getcsv($line,",");
+		while ( ($hikeLine = fgetcsv($handle)) !== false ) {
+			$lastIndx = $hikeLine[0];
 		}
 	} else {
 		echo "<p>Could not open database file</p>";
 	}
 	echo " ...Start import...";
 	# NEW HIKE INDX STARTS AT LAST INDX + 1:
-	$newHike[0] = intval($dbLineArray[0]) + 1;
+	$newHike[0] = intval($lastIndx) + 1;
 	$newHike[1] = $_POST['hname'];
 	$newHike[2] = $_POST['hlocale'];
 	$newHike[3] = $_POST['hmarker'];
@@ -93,7 +93,6 @@
 	$newHike[35] = $_POST['hcaps'];
 	$newHike[36] = $_POST['hplnks'];
 	$newHike[37] = $_SESSION['hikeTips'];
-	echo "PASSED: " . $newHike[37];
 	$newHike[38] = $_SESSION['hikeDetails'];
 	$newHike[39] = $_POST['href'];
 	$newHike[40] = $_POST['hpdat'];

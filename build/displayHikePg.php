@@ -21,32 +21,38 @@ $ctrHikeLoc = $_POST['vcList'];
 */
 if ($ctrHikeLoc !== '') {
 	$database = '../data/test.csv';
-	$wholeDB = file($database);
-	$lastline = $wholeDB[count($wholeDB) - 1];
-	$llArray = str_getcsv($lastline,",");
-	$nxtHikeNo = intval($llArray[0]) + 1;
-	foreach($wholeDB as &$dbLine) {
-		$hikeLine = str_getcsv($dbLine,",");
-		if ($hikeLine[0] == $ctrHikeLoc) {
-			$currentStr = $hikeLine[4];
+	$dbHandle = fopen($database,"r");
+	/* $ctrHikeLoc holds the index number of the Visitor Center associated with this hike;	
+	   This new hike will have the next available index no, which number is to be added to
+	   the Visitor Center's "Cluster Str", array index [4] */
+	$wholeDB = array();
+	$dbindx = 0;
+	while ( ($hikeLine = fgetcsv($dbHandle)) !== false ) {
+		$wholeDB[$dbindx] = $hikeLine;
+		$dbindx++;
+		$lastIndxNo = $hikeLine[0];
+	}
+	fclose($dbHandle);
+	$nxtIndxNo = intval($lastIndxNo) + 1;
+	# find the associated Visitor Center:
+	foreach ($wholeDB as &$hikeInfo) {
+		if ($hikeInfo[0] == $ctrHikeLoc) {
+			$currentStr = $hikeInfo[4];
 			if ($currentStr == '') {
-				$hikeLine[4] = $nxtHikeNo;
+				$hikeInfo[4] = $nxtIndxNo;
 			} else {
-				$hikeLine[4] = $hikeLine[4] . "." .$nxtHikeNo;
+				$hikeInfo[4] = $hikeInfo[4] . "." . $nxtIndxNo;
 			}
-			$dbLine = implode(",",$hikeLine);
 			break;
 		}
 	}
-	$newFile = implode($wholeDB);
-	$output = fopen($database,"w");
-	if ($output !== false) {
-		fputs($output,$newFile);
-	} else {
-		echo "Could not open file to update index pg cluster string";
+	# write the wholeDB back out
+	$dbHandle = fopen($database,"w");
+	foreach ($wholeDB as $outArray) {
+		fputcsv($dbHandle,$outArray);
 	}
+	fclose($dbHandle);
 }
-
 /*
 	End of ctrHikeLoc processing
 */
