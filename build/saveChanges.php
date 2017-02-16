@@ -20,14 +20,20 @@
 <?php
 	$database = '../data/test.csv';
 	$dbhandle = fopen($database,"r");	
-	$hikeNo = intval($_POST['hno']);
-	# get the hike number's line and convert to array
-	while ( ($info = fgetcsv($dbhandle)) !== false ) {
-		if ($info[0] == $hikeNo) {
+	$hikeNo = $_POST['hno'];
+	$wholeDB = array();
+	$dbindx = 0;
+	while ( ($hikeDat = fgetcsv($dbhandle)) !== false ) {
+		$wholeDB[$dbindx] = $hikeDat;
+		$dbindx++;
+	}
+	fclose($dbhandle);
+	foreach ($wholeDB as $hikeLine) {
+		if ($hikeLine[0] == $hikeNo) {
+			$info = $hikeLine;
 			break;
 		}
 	}
-	fclose($dbhandle);
 	$info[1] = $_POST['hname'];
 	$info[2] = $_POST['locale'];
 	# $info[3] is marker type - not changeable at this time
@@ -186,9 +192,8 @@
         }
 	}  // end of actual data processing, if present
 	$info[41] = $actStr;
-	$dbhandle = fopen($database,"c+");
-	foreach ($dbfile as $hikeline) {
-		$hikedat = str_getcsv($hikeline,",");
+	$dbhandle = fopen($database,"w");
+	foreach ($wholeDB as $hikedat) {
 		if ($hikedat[0] == $hikeNo) {
 			fputcsv($dbhandle,$info);
 		} else {

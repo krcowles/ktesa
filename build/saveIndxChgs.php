@@ -17,16 +17,22 @@
 
 <?php
 	$database = '../data/test.csv';
-	$dbfile = file($database);
-	if (count($dbfile) < 10) {
-		die("did not retrieve data base file!");
-	}	
-	$hikeNo = intval($_POST['hno']);
+	$db = fopen($database,"r");	
+	$hikeNo = $_POST['hno'];
 	$indxName = $_POST['nme'];
-	# get the hike number's line and convert to array
-	$info = str_getcsv($dbfile[$hikeNo]);
-	# NOTE: when I tried to save via "rawurlencode($string), it wouldn't work, but
-	#	    if I encoded first, then saved, it worked... ???
+	$wholeDB = array();
+	$windx = 0;
+	while ( ($info = fgetcsv($db)) !== false ) {
+		$wholeDB[$windx] = $info;
+		$windx++;
+	}
+	fclose($db);
+	foreach ($wholeDB as $hikeline) {
+		if ($hikeline[0] == $hikeNo) {
+			$info = $hikeline;
+			break;
+		}
+	}
 	$googleDirs = $_POST['gdirs'];
 	$encGDirs = rawurlencode($googleDirs);
 	$indxInfo = $_POST['info'];
@@ -39,12 +45,15 @@
 	$info[38] = $encInfo;
 	$info[39] = $encRefs;
 	$info[29] = $encTbl;
-	# convert info back to a csv string and replace the old hike line with the new
-	$replace = implode(",",$info);
-	$dbfile[$hikeNo] = $replace."\n";
-	$newfile = implode($dbfile);
 	$dbhandle = fopen($database,"w");
-	fputs($dbhandle, $newfile);
+	foreach ($wholeDB as $hikedat) {
+		if ($hikedat[0] == $hikeNo) {
+			fputcsv($dbhandle,$info);
+		} else {
+			fputcsv($dbhandle,$hikedat);
+		}
+  
+	}
 	fclose($dbhandle);
 ?>
 <div style="padding:16px;">
