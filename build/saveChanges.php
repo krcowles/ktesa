@@ -47,8 +47,8 @@
 		$availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$nxtavail = strpos($availLtrs,$lastused) + 1;
 		$newgrp = substr($availLtrs,$nxtavail,1);
-                echo "New Letter for Clusters: " . $newgrp . "\n";
-                echo "New group name: "  . $_POST['newgname'];
+        #echo "New Letter for Clusters: " . $newgrp . "\n";
+        #echo "New group name: "  . $_POST['newgname'];
         $info[3] = 'Cluster';
 		$info[5] = $newgrp;
 		$info[28] = $_POST['newgname'];
@@ -75,7 +75,6 @@
 	} else {
 		$info[37] = '';
 	}
-	echo "TIPS TEXT: " . $info[37];
 	$info[38] = $_POST['hinfo'];
 	
 	# Re-assemble ref string
