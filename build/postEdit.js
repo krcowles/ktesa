@@ -21,4 +21,10 @@ $('#diff').on('click', function() {
 	window.open(editDiffPg);
 });
 
+$('#view').on('click', function() {
+	var hikeno = $('#more').data('indxno');
+	hikeno = '../pages/hikePageTemplate.php?hikeIndx=' + hikeno;
+	window.open(hikeno,"_blank");
+});
+
 }); // end of page-loading wait statement
