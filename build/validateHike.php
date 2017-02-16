@@ -22,9 +22,6 @@
 $hikeFile = $_FILES['xlfile']['tmp_name'];
 $hfSize = filesize($hikeFile);
 $hikeFileName = $_FILES['xlfile']['name'];
-/* until -and if- the file-entry method is re-instituted, use only form entry: 
-if ($hikeFileName == "") { */
-
 // hike form entry
 $hikeName = trim($_REQUEST['hpgTitle']);
 $hikeLocale = trim($_REQUEST['locale']);
@@ -57,40 +54,15 @@ if($fname == "") {
 	die( "No tsv file specified..." );
 }
 $tsvpath = '../gpsv/' . $fname;
-$rawtips = 'tipstxt';
-$preTips = $_POST[$rawtips];
-if (substr($preTips,0,10) === '[OPTIONAL]') {
+$rawtips = $_POST['tipstxt'];
+if (substr($rawtips,0,10) === '[OPTIONAL]') {
 	$tipTxt = '';
 } else {
-/*  Input filters encode, not eliminate newlines, etc. so this next step is necessary
-	to keep the csv file from crashing when written to with these characters */
-	$tipTxt = '';
-	$badboys = 0;
-	for ($c=0; $c<strlen($preTips); $c++) {
-		$char = substr($preTips,$c,1);
-		if (ord($char) < 31) {
-			$badboys++;  // for debug readout only
-		} else {
-			$tipTxt .= $char;
-		}
-	}
-	$tipTxt = htmlspecialchars($tipTxt,ENT_QUOTES);
+	$tipTxt = $rawtips;
 }
-$_SESSION['hikeTips'] = $tipTxt;  // using <input type="hidden" w/echo is a problem!
-$rawHike = 'hiketxt';
-$preHike = $_POST[$rawHike];
-$hikeInfo = '';
-$badboys = 0;
-for ($c=0; $c<strlen($preHike); $c++) {
-	$char = substr($preHike,$c,1);
-	if (ord($char) < 31) {
-		$badboys++;
-	} else {
-		$hikeInfo .= $char;
-	}
-}
-$hikeInfo = htmlspecialchars($hikeInfo,ENT_QUOTES);
-$_SESSION['hikeDetails'] = $hikeInfo;
+$_SESSION['hikeTips'] = $tipTxt;
+$rawhike = $_POST['hiketxt'];
+$_SESSION['hikeDetails'] = $rawhike;
 $hikeRefTypes = $_POST['rtype'];
 $hikeRefItems1 = $_POST['rit1'];
 $hikeRefItems2 = $_POST['rit2'];
@@ -165,54 +137,33 @@ for ($j=0; $j<$noOfADats; $j++) {
 }
 $hikeADatUrls = $_POST['aurl'];
 $hikeADatCTxts = $_POST['actxt'];
-$rawfile = fopen($tsvFile, "r");
-$fdat = fread($rawfile,$tsvSize);
-#} else {
-	/* ******************** CURRENTLY OUT OF DATE ****************
-	// hike datafile entry
-	$datfile = fopen($hikeFile,"r");
-	$hdat = fread($datfile,$hfSize);
-	$harray = str_getcsv($hdat,"\n");  // array of rows
-	$lineCnt = count($harray) - 1;  // row number of latest entry
-	// always read in the last row for the latest hike info:
-	$hikeDataArray = str_getcsv($harray[$lineCnt],",");
-	// VARIABLE ASSIGNMENTS USING NewHikeData.CSV FILE:
-	$hikeName = trim($hikeDataArray[1]);
-	$hikeLocale = trim($hikeDataArray[2]);
-	$hikeMarker = trim($hikeDataArray[3]);
-	$hikeType = trim($hikeDataArray[6]);
-	$hikeLgth = trim($hikeDataArray[7]);
-	$hikeElev = trim($hikeDataArray[8]);
-	$hikeDiff = trim($hikeDataArray[9]);
-	$hikeFac = trim($hikeDataArray[10]);
-	$hikeWow = trim($hikeDataArray[11]);
-	$hikeSeasons = trim($hikeDataArray[12]);
-	$hikeExp = trim($hikeDataArray[13]);
-	$tsvFile = trim($hikeDataArray[14]);
-	$tsvpath = '../gpsv/' . $tsvFile;
-	$hikeGmap = trim($hikeDataArray[15]);
-	$hikeEChart = trim($hikeDataArray[16]);
-	$hikeGpx = trim($hikeDataArray[17]);
-	$hikeJSON = trim($hikeDataArray[18]);
-	$hikeLat = trim($hikeDataArray[19]);
-	$hikeLong = trim($hikeDataArray[20]);
-	$hikeOthrImage1 = trim($hikeDataArray[21]);
-	$hikeOthrImage2 = trim($hikeDataArray[22]);
-	$hikePurl1 = trim($hikeDataArray[23]);
-	$hikePurl2 = trim($hikeDataArray[24]);
-	$hikeDir = trim($hikeDataArray[25]);
-	// Get the specified tsv for processing...
-	$tsvSize = filesize($tsvpath);
-	$rawfile = fopen($tsvpath,"r") or 
-		die ("Could not open TSV FILE in gpsv directory");
-	$fdat = fread($rawfile,$tsvSize);
-} */
+# NOTE: reading tsv file only - no writing
+$fdat = file($tsvFile); // simple read - not using fgetcsv as there is no "special" data
+$icount = count($fdat) - 1; // image count: do not count the header row
+# Form array of pictures to display for selection by the user later on...
+$lineno = 0;
+$picno = 0;
+foreach ($fdat as $rawTsvLine) {
+	$tsvArray = str_getcsv($rawTsvLine,"\t");
+	if ($lineno !== 0) {
+		$picarray[$picno] = $tsvArray[$indx];
+		$thumb[$picno] = $tsvArray[$indx+4];
+		$picno += 1;
+	} else {
+		if (strcmp($tsvArray[0],"folder") == 0) {
+			$indx = 1;
+			# echo "<p>This tsv file has 'folder' field description</p>";
+		} else {
+			$indx = 0;
+			# echo "<p>Older tsv file - no 'folder' field</p>";
+		}
+	}
+	$lineno++;
+}
 $chartLoc = "../images/" . $hikeEChart;
 $EChartSize = getimagesize($chartLoc);
 $elevWidth = $EChartSize[0];
 $elevHeight = $EChartSize[1];
-$farray = str_getcsv($fdat,"\n");
-$icount = count($farray) - 1;  // no. of rows in csv file
 /*
 	MARKER-DEPENDENT PAGE ELEMENTS
 */
@@ -223,9 +174,8 @@ if ($hikeMarker === 'ctrhike') {
 	$VClist = array();
 	if ($dbFile !== false) {
 		$srchCnt = 0;
-		while ( ($hike = fgets($dbFile)) !== false ) {
-			$srchArray = str_getcsv($hike,",");
-			if ( preg_match("/Visitor/i", $srchArray[3]) ==1 ) {
+		while ( ($srchArray = fgetcsv($dbFile)) !== false ) {
+			if ( preg_match("/Visitor/i", $srchArray[3]) == 1 ) {
 				$VCList[$srchCnt] = $srchArray[0] . ": " . $srchArray[1];
 				$srchCnt++;
 			}
@@ -247,14 +197,14 @@ if ($hikeMarker === 'ctrhike') {
 		# the hike id for the affected visitor center will be passed and processed
 	}
 	echo "</select></p></div>";
+	fclose($dbFile);
 # cluster hike:
 } elseif ($hikeMarker === 'cluster') {
 	$dbFile = fopen($database,"r");
 	$clusterList = array();
 	if ($dbFile !== false) {
 		$srchCnt = 0;
-		while ( ($hike = fgets($dbFile)) !== false ) {
-			$srchArray = str_getcsv($hike,",");
+		while ( ($srchArray = fgetcsv($dbFile)) !== false ) {
 			if ( preg_match("/cluster/i",$srchArray[3]) == 1) {
 				if ($srchArray[28] !== '') {
 					$clusterList[$srchCnt] = $srchArray[5] . "$" . $srchArray[28];
@@ -284,6 +234,7 @@ if ($hikeMarker === 'ctrhike') {
 		echo '<option value="' . $clusLtr . '">' . $groupName . '</option>';
 	}
 	echo "</select></p></div>";
+	fclose($dbFile);
 } 
 /*
 	END OF MARKER=DEPENDENT PAGE CONSTRUCTION
@@ -444,7 +395,7 @@ if ($hikeMarker === 'ctrhike') {
 <h2 style="text-align:center;">Hike Information:</h2>
 <?php 
 	echo '<p id="hikeInfo" style="text-indent:8px;">';
-	echo $hikeInfo;
+	echo $rawhike;
 	echo '</p>';
 ?>
 <h2>Hike References:</h2>
@@ -525,31 +476,6 @@ if ($hikeMarker === 'ctrhike') {
 these names were extracted from the .tsv file</em><br />
 <input style="margin-left:8px" id="all" type="checkbox" name="allPix" value="useAll" />Use All Photos</p>
 <?php
-	$handle = fopen($tsvpath, "r");
-	if ($handle !== false) {
-		$lineno = 0;
-		$picno = 0;
-		while ( ($line = fgets($handle)) !== false ) {
-			$tsvArray = str_getcsv($line,"\t");
-			if ($lineno !== 0) {
-				$picarray[$picno] = $tsvArray[$indx];
-				$thumb[$picno] = $tsvArray[$indx+4];
-				$picno += 1;
-			} else {
-				if (strcmp($tsvArray[0],"folder") == 0) {
-					$indx = 1;
-					//echo "<p>This tsv file has 'folder' field description</p>";
-				} else {
-					$indx = 0;
-					//echo "<p>Older tsv file - no 'folder' field</p>";
-				}
-			}
-			$lineno += 1;
-		}
-		$lineno -= 1;
-	} else {
-		echo "<p>Could not open {$fname}</p>";
-	} 
 	$nmeno = 0;
 	for ($i=0; $i<$icount; $i++) {
 		echo '<div class="selPic" style="width:150px;float:left;margin-left:2px;margin-right:2px;">';

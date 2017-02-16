@@ -13,7 +13,8 @@ if ($hikeFileName == "") {
 	$hikeLong = trim($_REQUEST['lon']);
 	$indexImage = $_FILES['othr1']['name'];
 	$parkDir = trim($_REQUEST['dirs']);
-} else {
+} else {  // OBSOLETED
+/*
 	// hike datafile entry
 	$datfile = fopen($hikeFile,"r");
 	$hdat = fread($datfile,$hfSize);
@@ -29,25 +30,24 @@ if ($hikeFileName == "") {
 	$hikeLong = trim($hikeDataArray[16]);
 	$indexImage = trim($hikeDataArray[17]);
 	$parkDir = trim($hikeDataArray[22]);
+	*/
 }
 $passMap = $indexImage;
 $indexImage = '../images/' . $indexImage;
 $database = '../data/test.csv';
+$handle = fopen($database,"r");
 # determine number of hikes for drop-down list
 $noOfHikes = 0;
 $choices = array();
 $indices = array();
-$hikes = file($database);
-foreach ( $hikes as $entry) {
-	$hikeArray = str_getcsv($entry,",");
+while ( ($hikeArray = fgetcsv($handle)) !== false ) {
 	if ($hikeArray[3] === 'Cluster' || $hikeArray[3] === 'Normal') {
 		$choices[$noOfHikes] = $hikeArray[1];
 		$indices[$noOfHikes] = $hikeArray[0];
 		$noOfHikes++;
 	}
 }
-#echo "No of hikes located: " . $noOfHikes;
-#echo "Index 0: " . $indices[0];
+fclose($handle);
 ?>
 
 <head>

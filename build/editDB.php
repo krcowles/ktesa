@@ -20,17 +20,18 @@
 <div style="padding:16px;">
 <?php
 	$database = '../data/test.csv';
-	$dbfile = file($database);
-	$hikeNo = intval($_GET['hikeNo']);
-	$info = str_getcsv($dbfile[$hikeNo]);
+	$db = fopen($database,"r");
+	$hikeNo = $_GET['hikeNo'];
 	# parameterize the data for presentation in the text boxes
 	# cannot change the marker type here ($info[3])
 	# 'cluster string' ($info[4]) is associated with index pages
 	# pull out the cluster groups
 	$cnames = array();
 	$cgrps = array();
-	foreach ($dbfile as $hikeline) {
-		$hdat = str_getcsv($hikeline);
+	while ( ($hdat = fgetcsv($db)) !== false) {
+		if ($hdat[0] == $hikeNo) {
+			$info = $hdat;
+		}
 		if ($hdat[5] !== '') {
 			$match = false;
 			$noOfGrps = count($cgrps);
@@ -46,6 +47,7 @@
 			}
 		}
 	} 
+	fclose($db);
 ?>
 <form action="saveChanges.php" method="POST">
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for the hike: "<?php echo $info[1];?>".
@@ -153,7 +155,7 @@ name="nxtg" /> and enter the name for the new group here: <input id="newt" type=
 <?php 
 	if ($info[37] !== '') {
 		echo '<p>Tips Text: </p>';
-		echo '<textarea id="ttxt" name="tips" rows="10" cols="140">' . $info[37] . '</textarea><br />';
+		echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $info[37] . '</textarea><br />';
 	}
 ?>
 <p>Hike Information:</p>

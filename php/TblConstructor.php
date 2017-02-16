@@ -29,6 +29,9 @@
 	<tbody>
 	<!-- ADD HIKE ROWS VIA PHP HERE: -->
 	<?php
+	/* THIS FILE IS NOT A FULL HTML DOCUMENT AND IS MEANT TO BE INSERTED AS A TABLE
+	   IN VARIOUS OTHER HTML DOCS (e.g. INDEX TABLE w/MAP; hikeEditor.php)
+	   NOTE: There is only reading of data from the database, no writing to it */
 	$dataTable = '../data/test.csv';
 	$handle = fopen($dataTable,'r');
 	if ($handle !== false) {
@@ -42,10 +45,8 @@
 		$partialIcon = '<img class="expShift" src="../images/greenshade.jpg" alt="Partial shade icon" />';
 		$shadeIcon = '<img class="expShift" src="../images/shady.png" alt="Partial sun/shade icon" />';
 		// loop through each entry in the csv file
-		while ( ($line = fgets($handle)) !== false ) {
-			if ($lineno > 0) {
-				$hikeArray = str_getcsv($line,",");
-				
+		while ( ($hikeArray = fgetcsv($handle)) !== false ) {
+			if ($lineno > 0) { // skip the header row
 				/* The next 4 variables are hidden in the html text using data- attributes */
 				$hikeIndx = $hikeArray[0];
 				$hikeLat = $hikeArray[19];
@@ -124,7 +125,7 @@
 		}
 		$lineno -= 1;
 	} else {
-		echo "<p>Could not open {$fname}</p>";
+		echo "<p>Could not open {$dataTable}</p>";
 	} 
 	?>
 	</tbody>
