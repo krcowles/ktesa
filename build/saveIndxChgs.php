@@ -33,18 +33,10 @@
 			break;
 		}
 	}
-	$googleDirs = $_POST['gdirs'];
-	$encGDirs = rawurlencode($googleDirs);
-	$indxInfo = $_POST['info'];
-	$encInfo = rawurlencode($indxInfo);
-	$indxRefs = $_POST['ref'];
-	$encRefs = rawurlencode($indxRefs);
-	$indxTbl = $_POST['tbl'];
-	$encTbl = rawurlencode($indxTbl);
-	$info[25] = $encGDirs;
-	$info[38] = $encInfo;
-	$info[39] = $encRefs;
-	$info[29] = $encTbl;
+	$info[25] = $_POST['gdirs'];
+	$info[29] = $_POST['tbl'];
+	$info[38] = $_POST['info'];
+	$info[39] = $_POST['ref'];
 	$dbhandle = fopen($database,"w");
 	foreach ($wholeDB as $hikedat) {
 		if ($hikedat[0] == $hikeNo) {

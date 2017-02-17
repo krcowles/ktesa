@@ -11,6 +11,10 @@ $('#auxfrm').submit( function() {
 			var editUrl = 'build/hikeEditor.php';
 			window.open(editUrl);
 		});
+		$('#indxpg').on('click', function() {
+			var indxurl = 'build/indexEditor.php';
+			window.open(indxurl);
+		});
 		$('#creator').on('click', function() {
 			var createUrl = 'build/enterHike.html';
 			window.open(createUrl);
