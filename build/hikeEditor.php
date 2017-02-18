@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html>
 <head>
 	<title>Select Hike To Edit</title>
 	<meta charset="utf-8" />

@@ -12,7 +12,7 @@
 		content="Tom Sandberg and Ken Cowles" />
 	<meta name="robots"
 		content="nofollow" />
-	<link href="editDBb.css"
+	<link href="editDB.css"
 		type="text/css" rel="stylesheet" />
 </head>
 
@@ -189,6 +189,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 		echo '<option value="b">Book</option>';
 		echo '<option value="p">Photo Essay</option>';
 		echo '<option value="w">Website</option>';
+		echo '<option value="h">Website</option>'; # leftover category from index pages
 		echo '<option value="a">App</option>';
 		echo '<option value="d">Downloadable Doc</option>';
 		echo '<option value="l">Blog</option>';

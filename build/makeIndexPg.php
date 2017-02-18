@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 
 <?php 
 $hikeFile = $_FILES['xlfile']['tmp_name'];

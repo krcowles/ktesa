@@ -116,6 +116,7 @@
 	$newIndx[39] = $refsHtml;
 ?>
 <!DOCTYPE html>
+<html>
 <head>
 	<title>Write Hike File</title>
 	<meta charset="utf-8" />

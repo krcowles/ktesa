@@ -1,5 +1,6 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
+<html>
 <head>
 	<title>Save Changes to Database</title>
 	<meta charset="utf-8" />
