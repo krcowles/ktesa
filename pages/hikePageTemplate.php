@@ -236,10 +236,7 @@ function makeHtmlList($type,$str) {
 					<td><?php echo $hikeLength;?></td>
 					<td><?php echo $hikeType;?></td>
 					<td><?php echo $hikeElevation;?></td>
-					<td><?php if($hikeExposure == 'sun') {
-						echo "Full Sun"; } elseif($hikeExposure == 'partial') {
-						echo "Some shade"; } else {
-						echo "Good shade"; }?></td>
+					<td><?php echo $hikeExposure;?></td>
 					<td><?php echo $hikeWow;?></td>
 					<td><?php echo $hikeFacilities;?></td>
 					<td><?php echo $hikeSeasons;?></td>
