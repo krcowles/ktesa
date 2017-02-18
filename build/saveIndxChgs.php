@@ -106,7 +106,8 @@
 
 <div data-ptype="index" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
 	<button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this Index Page</button><br />
-	<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different Index Page</button>
+	<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different Index Page</button><br />
+	<button style="font-size:16px;color:DarkBlue;" id="view">View Changed Page</button>
 </div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>

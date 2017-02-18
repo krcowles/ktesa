@@ -5,9 +5,8 @@
 	$handle = fopen($dataTable,'r');
 	if ($handle !== false) {
 		$lineno = 0;
-		while ( ($line = fgets($handle)) !== false ) {
+		while ( ($indxArray = fgetcsv($handle)) !== false ) {
 			if ($lineno > 0) {
-				$indxArray = str_getcsv($line,",");
 				if ($hikeIndexNo == $indxArray[0]) {  // find the target hike
 					$indxTitle = $indxArray[1];
 					$lnkText = str_replace('Index','',$indxTitle);
@@ -62,7 +61,12 @@
 						}
 					} // end of for loop in references
 					$htmlout .= '</ul>';
-					$indxTbl = rawurldecode($indxArray[29]);
+					/* This code is in place as we transfer over to strictly unencoded
+					   html table code: */
+					$indxTbl = $indxArray[29];
+					if (substr($indxTbl,0,3) === '%3C') {
+						$indxTbl = rawurldecode($indxTbl);
+					}
 					break;
 				}  // end of: if this is the hike
 			}

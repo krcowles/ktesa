@@ -32,7 +32,8 @@
 	$indxName = $info[1];
 	/* NOTE: The cluster string ($info[4]) will not be available for editing here: the
 	   proper means of adding a hike to the Index Page is to edit that hike
-	   and add the Visitor Center association */
+	   and add the Visitor Center association; */
+	# Until database has settled with unencoded tables, the following will not alter data
 	$dirs = rawurldecode($info[25]);
 	$indxInfo = rawurldecode($info[38]);
 	$refs = rawurldecode($info[39]);

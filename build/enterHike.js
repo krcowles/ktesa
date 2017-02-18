@@ -3,6 +3,8 @@ $( function () { // when page is loaded...
 var msgA;  // generic
 var msgB;
 var msgC;
+var msgD;
+var msgE;
 
 // Turn text blue to indicate user has uploaded a file
 $('#geomap').change( function() {
@@ -23,6 +25,9 @@ $('#addon1').change( function() {
 $('#addon2').change( function() {
 	$('#l_add2').css('color','DarkBlue');
 });
+
+// CURRENTLY, UPLOADING A FILE WITH NEW PAGE INFO IS DISABLED:
+$('#bypass').css('display','none');
 
 /*       Setting the page-creation type for the submit button
 			NOTE: the "pageType" radio buttons are not part of the form submitted
@@ -48,7 +53,7 @@ $('input[name="mstyle"]').click( function() {
 	}
 });
 function useIndexPg() {
-	pageSelector = "makeIndexPg.php";
+	pageSelector = "displayIndexPg.php";
 	msgA = "Index Page Name (Include 'Index' at end of descriptor): ";
 	$('.notVC').css('color','Gray');
 	msgB = "Provide image for Index Page: ";
@@ -57,6 +62,13 @@ function useIndexPg() {
 	$('#pgTitleText').text(msgA);
 	$('#spImg').text(msgB);
 	$('#l_add1').text(msgC);
+	msgD = $('#ifac').text();
+	msgD = msgD.replace("Trailhead, if any","Visitor Center");
+	$('#ifac').text(msgD);
+	msgE = $('#iwow').text();
+	msgE = msgE.replace('hike','place');
+	$('#iwow').text(msgE);
+	$('.honly').css('display','none');
 }
 function useStdPg() {
 	pageSelector = "validateHike.php";
@@ -68,6 +80,13 @@ function useStdPg() {
 	$('#pgTitleText').text(msgA);
 	$('#spImg').text(msgB);
 	$('#l_add1').text(msgC);
+	msgD = $('#ifac').text();
+	msgD = msgD.replace("Visitor Center","Trailhead, if any");
+	$('#ifac').text(msgD);
+	msgE = $('#iwow').text();
+	msgE = msgE.replace('place','hike');
+	$('#iwow').text(msgE);
+	$('.honly').css('display','block');
 }
 $('#clrIt').on('click', function(e) {
 	e.preventDefault();
