@@ -44,7 +44,7 @@
 <em style="color:DarkBlue;">Any changes below will be made for the Index Page: "<?php echo $indxName;?>". If no changes 
 are made you may either exit this page or hit the "sbumit" button.</em><br /><br />
 
-<label for="hike">Index Page Name: </label><textarea id="hike" name="hname"><?php echo $info[1]?></textarea>&nbsp;&nbsp;
+<label for="hike">Index Page Name: </label><textarea style="height:20px;" id="hike" name="hname"><?php echo $info[1]?></textarea>&nbsp;&nbsp;
 <p style="display:none;" id="locality"><?php echo trim($info[2])?></p>
 <label for="area">Locale (City/POI): </label>
 <select id="area" name="locale">
@@ -86,12 +86,12 @@ are made you may either exit this page or hit the "sbumit" button.</em><br /><br
 	<option value="Pinos Altos">Pinos Altos</option>
 	<option value="Glenwood">Glenwood</option>
 </select>&nbsp;&nbsp;
-<label for="facil">Facilities at the trailhead: </label><textarea id="facil" name="hfac"><?php echo $info[10];?></textarea><br /><br />
-<label for="wow">"Wow" Appeal: </label><textarea id="wow" name="hwow"><?php echo $info[11];?></textarea>&nbsp;&nbsp;
+<label for="facil">Facilities at the trailhead: </label><textarea style="height:20px;" id="facil" name="hfac"><?php echo $info[10];?></textarea><br /><br />
+<label for="wow">"Wow" Appeal: </label><textarea style="height:20px;" id="wow" name="hwow"><?php echo $info[11];?></textarea>&nbsp;&nbsp;
 <label for="lat">Visitor Center Location: Latitude </label>
-<textarea id="lat" name="hlat"><?php echo $info[19];?></textarea>&nbsp;&nbsp;
+<textarea style="height:20px;" id="lat" name="hlat"><?php echo $info[19];?></textarea>&nbsp;&nbsp;
 <label for="lon">Longitude </label>
-<textarea id="lon" name="hlon"><?php echo $info[20];?></textarea><br /><br />
+<textarea style="height:20px;" id="lon" name="hlon"><?php echo $info[20];?></textarea><br /><br />
 Enter or change the Google Maps Directions to the Visitor Center [NOTE: this is a single line, despite text-wrapping]<br />
 <textarea id="vcdirs" name="gdirs" rows="1" cols="140" wrap="soft"><?php echo $dirs;?></textarea><br /><br />
 
@@ -127,22 +127,22 @@ Edit the Park Information as desired:<br />
 		echo '<option value="n">Text Only - No Link</option>';
 		echo '</select><br />';
 		if ($refs[$nxt] === 'b' || $refs[$nxt] === 'p') {
-			echo '<label style="text-indent:20px;">Title: </label><textarea style="height:34px;width:320px" name="rit1[]">' .
+			echo '<label style="text-indent:20px;height:20px;">Title: </label><textarea style="height:34px;width:320px" name="rit1[]">' .
 				$refs[$nxt+1] . '</textarea>&nbsp;&nbsp;';
-			echo '<label>Author: </label><textarea style="height:34px;width:320px" name="rit2[]">' .
+			echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
 				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp<label>Delete: </label>' .
 			   '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
 			   		$j . '"><br /><br />';
 			$nxt +=3;
 		} elseif ($refs[$nxt] === 'n') {
-			echo '<label>Text only item: </label><textarea style="height:34px;width:320px;" name="rit1[]">' .
+			echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
 				$refs[$nxt+1] . '</textarea><label>Delete: </label>' .
 				'<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
 					$j . '"><br /><br />';
 			$nxt += 2;
 		} else {
-			echo '<label>Item link: </label><textarea style="height:34px;width:500px;" name="rit1[]">' .
-				$refs[$nxt+1] . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:34px;width:330px;" name="rit2[]">' . 
+			echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
+				$refs[$nxt+1] . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
 				$refs[$nxt+2] . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
 				'<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
 					$j . '"><br /><br />';
