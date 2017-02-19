@@ -36,9 +36,30 @@ $hikeExp = trim($_REQUEST['expos']);
 $hikeGmap = $_FILES['gpsvMap']['name'];
 $hikeEChart = $_FILES['chart']['name'];
 $hikeGpx = $_FILES['gpxname']['name'];
+$gpxFile = $_FILES['gpxname']['tmp_name'];
 $hikeJSON = $_FILES['track']['name'];
-$hikeLat = trim($_REQUEST['lat']);
-$hikeLong = trim($_REQUEST['lon']);
+$extractGeos = $_REQUEST['thgeos'];
+if ( isset($extractGeos) ) {
+	if ($_FILES['gpxname']['error'] == UPLOAD_ERR_OK
+      && is_uploaded_file($_FILES['gpxname']['tmp_name'])) { 
+  		$gpxdat = file_get_contents($gpxFile); 
+		$trksegloc = strpos($gpxdat,"<trkpt lat=");
+		$trksubstr = substr($gpxdat,$trksegloc,100);
+		$latloc = strpos($trksubstr,"lat=") + 5;
+		$latend = strpos($trksubstr,'" lon=');
+		$latlgth = $latend - $latloc;
+		$hikeLat = substr($trksubstr,$latloc,$latlgth);
+		$lonloc = strpos($trksubstr,"lon=") + 5;
+		$lonend = strpos($trksubstr,">") - 1;
+		$lonlgth = $lonend - $lonloc;
+		$hikeLong = substr($trksubstr,$lonloc,$lonlgth);
+	} else {
+		echo "Failed to extract trailhead coordinates: Go back and re-enter manually";
+	}
+} else {
+	$hikeLat = trim($_REQUEST['lat']);
+	$hikeLong = trim($_REQUEST['lon']);
+}
 $hikeOthrImage1 = $_FILES['othr1']['name'];
 $hikeOthrImage2 = $_FILES['othr2']['name'];
 $hikeMarker = trim($_REQUEST['mstyle']);

@@ -63,6 +63,9 @@ input {
 	margin: 6px; }
 .notVC {
 	color: Black; }
+#extract {
+	height: 22px;
+	width: 22px; }
 .modal {
 	position: absolute;
 	z-index: 1000; }
