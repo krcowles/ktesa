@@ -1,0 +1,59 @@
+body {
+	min-width: 960px;
+	font-family: arial, verdana;
+	background-color: #dadada;
+	border-style: solid;
+	border-width: 4px;
+	border-color: DarkBlue; }
+#hike {
+	height: 36px;
+	width: 260px; }
+#area {
+	height: 34px;
+	width: 120px; }
+#facil {
+	height: 36px;
+	width: 200px; }
+#wow {
+	height: 36px;
+	width: 200px; }
+#lat {
+	height: 36px;
+	width: 130px; }
+#lon {
+	height: 36px;
+	width: 140px; }
+#vcdirs {
+	height: 68px;
+	width: 850px; }
+.tstyle1 {
+	height: 36px;
+	width: 100px; }
+.tstyle2 {
+	height: 36px;
+	width: 380px; }
+.tstyle3 {
+	height: 36px;
+	width: 300px; }
+textarea {
+	font-family: Tahoma, sans-serif;
+	border-style: solid;
+	border-width: 2px;
+	border-color: DarkGray;
+	padding: 5px;
+	background-color: LavenderBlush; }
+textarea:focus {
+	background-color: PapayaWhip; }
+select {
+	position: relative;
+	top: -8px;
+	font-family: Tahoma, sans-serif;
+	font-size: 14px;
+	height: 34px;
+	width: 140px;
+	background-color: LavenderBlush; }
+select:focus {
+	background-color: PapayaWhip; }
+#go {
+	height: 24px;
+	width: 100px; }

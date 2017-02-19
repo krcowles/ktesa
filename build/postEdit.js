@@ -4,13 +4,16 @@ var pageType = $('#more').data('ptype');
 var hike = $('#more').data('indxno');
 var editThisPg;
 var editDiffPg;
+var viewPg;
 
 if (pageType == 'hike') {
 	editThisPg = 'editDB.php?hikeNo=' + hike;
 	editDiffPg = 'hikeEditor.php';
+	viewPg = '../pages/hikePageTemplate.php?hikeIndx=' + hike;
 } else {
 	editThisPg = 'editIndx.php?hikeNo=' + hike;
 	editDiffPg = 'indexEditor.php';
+	viewPg = '../pages/indexPageTemplate.php?hikeIndx=' + hike;
 }
 
 $('#same').on('click', function() {
@@ -22,9 +25,7 @@ $('#diff').on('click', function() {
 });
 
 $('#view').on('click', function() {
-	var hikeno = $('#more').data('indxno');
-	hikeno = '../pages/hikePageTemplate.php?hikeIndx=' + hikeno;
-	window.open(hikeno,"_blank");
+	window.open(viewPg,"_blank");
 });
 
 }); // end of page-loading wait statement

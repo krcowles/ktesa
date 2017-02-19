@@ -48,19 +48,21 @@
 <div id="theForm">
 <form id="hikeData" onsubmit="page_type(this);" method="POST"
 	enctype="multipart/form-data">
-	<fieldset id="bypass">
-		<p>-- IF you would rather upload an Xcel Spreadsheet with hike data, specify it here,
-			then select the submit button; otherwise, fill in the data below using the submit 
-			button at the bottom of the form (partially-filled forms can be saved for retrieval
-			later)</p>
-		<legend>Excel Hike Data [Must be in CSV format]</legend>
-		<label>CSV Hike Data Inputs File<input id="xl" type="file" name="xlfile" /></label>
-		&nbsp;&nbsp;<input type="submit" value="submit csv" />
-		<p style="color:DarkBlue;">PLEASE NOTE: <span style="color:Black;"> Once a file is
-		selected, the form data below will be ignored.<br />To clear the
-		file selected above and use the data entry below, click here:
-		<button id="clrIt">Clear Upload and Use Entry Form Below</button></span></p>
-	</fieldset>
+	<div id="bypass">
+		<fieldset>
+			<p>-- IF you would rather upload an Xcel Spreadsheet with hike data, specify it here,
+				then select the submit button; otherwise, fill in the data below using the submit 
+				button at the bottom of the form (partially-filled forms can be saved for retrieval
+				later)</p>
+			<legend>Excel Hike Data [Must be in CSV format]</legend>
+			<label>CSV Hike Data Inputs File<input id="xl" type="file" name="xlfile" /></label>
+			&nbsp;&nbsp;<input type="submit" value="submit csv" />
+			<p style="color:DarkBlue;">PLEASE NOTE: <span style="color:Black;"> Once a file is
+			selected, the form data below will be ignored.<br />To clear the
+			file selected above and use the data entry below, click here:
+			<button id="clrIt">Clear Upload and Use Entry Form Below</button></span></p>
+		</fieldset>
+	</div>
 	 
 	<fieldset id="basic">
 		<legend>Basic Hike Data</legend>
@@ -124,9 +126,9 @@
 				<option value="Med-Difficult">Medium-Difficult</option>
 				<option value="Difficult">Difficult</option>
 			</select><br />
-		<label class="notVC" for="useful">Facilities Available at Trailhead (if any):</label>
+		<label id="ifac" for="useful">Facilities Available at Trailhead, if any:</label>
 			<input id="useful" type="text" name="fac" size="25" />
-		<label class="notVC" for="wow">"Wow" Factor (What makes this hike special):</label> 
+		<label id="iwow" for="wow">"Wow" Factor (What makes this hike special):</label> 
 		  <input id="wow" type="text" name="wow_factor" size="24" /><br />
 		<label class="notVC" for="times">Seasons</label>
 		  <input id="times" type="text" name="seas" size="40" /><br />
@@ -160,7 +162,7 @@
 		<p style="margin-bottom:4px;" id="spImg">Additional images - optional</p>
 		<label id="l_add1" for="addon1">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
 	  	  <input id="addon1" type="file" name="othr1" /><br />
-		<label id="l_add2" for="addon2">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
+		<label id="l_add2" class="notVC" for="addon2">Other image (pop-up captions not provided at this time): [resides in images/] &nbsp;</label>
 	  	  <input id="addon2" type="file" name="othr2" />
 	</fieldset>
 		
@@ -182,7 +184,7 @@
 	
 	<fieldset id="txtdat">
 		<legend>Text Sections</legend>
-		<textarea name="tipstxt" rows="12" cols="130">[OPTIONAL] Enter 'Tips Text' here</textarea><br />
+		<textarea class="honly" name="tipstxt" rows="12" cols="130">[OPTIONAL] Enter 'Tips Text' here</textarea><br />
 		<textarea name="hiketxt" rows="20" cols="130">Enter the description of the hike here, as it will appear on the completed hike page...</textarea>
 	</fieldset>
 	
@@ -319,35 +321,37 @@
 		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 	</fieldset>
 	
-	<fieldset id="datasect">
-		<legend>GPS Maps &amp; Data</legend>
-		<p>Proposed Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-		Label Text:<input type="text" name="plbl[]" size="12" /> 
-		Item URL:<input type="text" name="purl[]" size="60" />
-		Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
-		Label Text:<input type="text" name="plbl[]" size="12" /> 
-		Item URL:<input type="text" name="purl[]" size="60" />
-		Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
-		Label Text:<input type="text" name="plbl[]" size="12" /> 
-		Item URL:<input type="text" name="purl[]" size="60" />
-		Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
-		Label Text:<input type="text" name="plbl[]" size="12" /> 
-		Item URL:<input type="text" name="purl[]" size="60" />
-		Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
-		<p>Actual Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-		Label Text:<input type="text" name="albl[]" size="12" /> 
-		Item URL:<input type="text" name="aurl[]" size="60" />
-		Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
-		Label Text:<input type="text" name="albl[]" size="12" /> 
-		Item URL:<input type="text" name="aurl[]" size="60" />
-		Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
-		Label Text:<input type="text" name="albl[]" size="12" /> 
-		Item URL:<input type="text" name="aurl[]" size="60" />
-		Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
-		Label Text:<input type="text" name="albl[]" size="12" /> 
-		Item URL:<input type="text" name="aurl[]" size="60" />
-		Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
-	</fieldset>
+	<div class="honly">
+		<fieldset id="datasect">
+			<legend>GPS Maps &amp; Data</legend>
+			<p>Proposed Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
+			Label Text:<input type="text" name="plbl[]" size="12" /> 
+			Item URL:<input type="text" name="purl[]" size="60" />
+			Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
+			Label Text:<input type="text" name="plbl[]" size="12" /> 
+			Item URL:<input type="text" name="purl[]" size="60" />
+			Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
+			Label Text:<input type="text" name="plbl[]" size="12" /> 
+			Item URL:<input type="text" name="purl[]" size="60" />
+			Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
+			Label Text:<input type="text" name="plbl[]" size="12" /> 
+			Item URL:<input type="text" name="purl[]" size="60" />
+			Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
+			<p>Actual Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
+			Label Text:<input type="text" name="albl[]" size="12" /> 
+			Item URL:<input type="text" name="aurl[]" size="60" />
+			Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
+			Label Text:<input type="text" name="albl[]" size="12" /> 
+			Item URL:<input type="text" name="aurl[]" size="60" />
+			Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
+			Label Text:<input type="text" name="albl[]" size="12" /> 
+			Item URL:<input type="text" name="aurl[]" size="60" />
+			Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
+			Label Text:<input type="text" name="albl[]" size="12" /> 
+			Item URL:<input type="text" name="aurl[]" size="60" />
+			Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
+		</fieldset>
+	</div>
 	
 	<fieldset id="urls">
 		<legend>Other URL's</legend>

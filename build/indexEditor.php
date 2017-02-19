@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html>
 <head>
 	<title>Select Index Page To Edit</title>
 	<meta charset="utf-8" />
