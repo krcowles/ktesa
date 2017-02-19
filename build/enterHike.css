@@ -63,9 +63,15 @@ input {
 	margin: 6px; }
 .notVC {
 	color: Black; }
-#extract {
-	height: 22px;
-	width: 22px; }
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes  - Browser dependent code */
+  -ms-transform: scale(1.5); /* IE */
+  -moz-transform: scale(1.5); /* FF */
+  -webkit-transform: scale(1.5); /* Safari and Chrome */
+  -o-transform: scale(1.5); /* Opera */
+  padding: 10px;
+}
 .modal {
 	position: absolute;
 	z-index: 1000; }
