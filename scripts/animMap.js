@@ -70,6 +70,10 @@ var $hikeRows = $('#refTbl tbody tr');
 var lastHikeIndx = $hikeRows.length - 1; // offset 1 for header row
 var $lastHikeRow = $hikeRows.eq(lastHikeIndx).find('td');
 var newHikeName = $lastHikeRow.eq(1).text();
+if ($hikeRows.eq(lastHikeIndx).hasClass('clustered')) {
+	// in this case, animate the cluster group marker
+	newHikeName = $hikeRows.eq(lastHikeIndx).data('tool');
+}
 newHikeName = newHikeName.replace('Index','Visitor Center');
 $('#winner').append(newHikeName);
 $('#winner').css('color','DarkGreen');
@@ -133,11 +137,7 @@ function initMap() {
 	var loc; // google lat/lng object
 	var sym; // type of icon to display for marker
 	var nme; // name of hike (for 'tooltip' type title of marker
-	var mrkrIndx = 0; // index number for object below to create marker obj references
-	var allMarkers = []; // array of marker objects
-	var allMarkerTitles = [];  // for name-to-marker correspondence
 	var clustersUsed = '';
-	//var subHikes = []; no longer needed with "At VC" marker type
 	var animateMe;
 	
 	// Loop through marker definitions and call marker-creator fcts: 1st, visitor centers:
@@ -153,12 +153,10 @@ function initMap() {
 		var orgHikes = String(orgDat);
 		if (orgHikes !== '') {
 			if (orgHikes.indexOf(".") === -1) { // no "." means only one hike is listed
-				//subHikes.push(orgHikes);
 				thisVorgs.push(orgHikes);
 			} else {
 				var orgHikeArray = orgHikes.split("."); // for multiple hike listings
 				for (j=0; j<orgHikeArray.length; j++) {
-					//subHikes.push(orgHikeArray[j]);
 					thisVorgs.push(orgHikeArray[j]);
 				}
 			}
@@ -176,17 +174,6 @@ function initMap() {
 	// Now, the "clustered" hikes: Add one and only one cluster marker per group
 	sym =clusterIcon;
 	$(allCs).each( function() {
-		/* new "At VC" marker type excludes these subhikes from being listed as cluster hikes
-		// exclude if an originating hike - these would override the VC markers
-		var hikeIndx = $(this).data('indx');
-		var notOrgHike = true;
-		for (i=0; i<subHikes.length; i++) {
-			if (hikeIndx == subHikes[i]) {
-				notOrgHike = false;
-			}
-		}
-		if ( notOrgHike ) {  // don't include any Visitor Center hikes designated as cluster
-		*/
 		var chikeArray;
 		var clusterGrp = $(this).data('cluster'); // must be a single char
 		var cindx;
@@ -215,7 +202,6 @@ function initMap() {
 			var dirLink = $dlink.attr('href');
 			AddClusterMarker(loc, sym, nme, animateMe, cpage, dirLink, chikeArray);
 		}
-		//}
 	});
 	// Finally, the remaining hike markers
 	sym = hikeIcon;
@@ -237,15 +223,12 @@ function initMap() {
 	/* the actual functions to create the markers & setup info windows */
 	// Visitor Center Markers:
 	function AddVCMarker(location, iconType, pinName, bounce, website, dirs, orgHikes) {
-		// save marker object reference for use later
-		allMarkerTitles.push(pinName);
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
-		allMarkers.push(marker);
 		// animated marker if new hike is a visitor center
 		if ( bounce ) {
 			marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -281,15 +264,12 @@ function initMap() {
 	} // end function AddVCMarker
 	// Clustered Trailhead Markers:
 	function AddClusterMarker(location, iconType, pinName, bounce, website, dirs, hikes) {
-		// save marker reference
-		allMarkerTitles.push(pinName);
-		marker = new google.maps.Marker({
+		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
-		allMarkers.push(marker);
 		if ( bounce ) {
 			marker.setAnimation(google.maps.Animation.BOUNCE);
 			setTimeout(function(){ 
@@ -315,15 +295,12 @@ function initMap() {
 		});
 	} // end AddClusterMarker
 	function AddHikeMarker(location, iconType, pinName, bounce, website, dirs, hike) {
-		// save marker reference
-		allMarkerTitles.push(pinName);
-		marker = new google.maps.Marker({
+		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
-		allMarkers.push(marker);
 		if ( bounce ) {
 			marker.setAnimation(google.maps.Animation.BOUNCE);
 			setTimeout(function(){ 
