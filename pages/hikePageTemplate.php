@@ -103,6 +103,7 @@ function makeHtmlList($type,$str) {
 					$hikeDirections = $hikeArray[25];
 					$rows = array();
 					$picNo = 0;
+					$frameFlag = false;  # true identifies next row needs space for link under map
 					for ($j=0; $j<6; $j++) {
 						$thisrow = $hikeArray[$j+29];
 						if ($thisrow == '') {
@@ -115,8 +116,10 @@ function makeHtmlList($type,$str) {
 							$rowht = $rowdat[1];
 							$elType = $rowdat[2]; // can be either 'p' 'n' or 'f'
 							$nxtel = 2;
-							if ($els === 1) {
+							if ($frameFlag) {
 								$rowhtml = '<div id="row' . $j . '" class="ImgRow Solo">';
+								# class Solo is a misnomer, but allows the needed space for the map link
+								$frameFlag = false;
 							} else {
 								$rowhtml = '<div id="row' . $j . '" class="ImgRow">';
 							}
@@ -139,12 +142,13 @@ function makeHtmlList($type,$str) {
 								} elseif ($elType === 'n') { // non-captioned image
 									$rowhtml = $rowhtml . '<img style="' . $style .
 										'" width="' . $width . '" height="' . $rowht .
-										'" src="' . $src . '" alt="no caption" />';
+										'" src="../images/' . $src . '" alt="no caption" />';
 									$nxtel +=3;
 								} else {  // iframe
 									$rowhtml = $rowhtml . '<iframe id="theMap" style="' . $style .
 										'" width="' . $rowht . '" height="' . $rowht . '" src="' .
 										$src . '"></iframe>';
+									$frameFlag = true;
 									$nxtel += 3;
 								}
 								$elType = $rowdat[$nxtel];

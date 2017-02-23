@@ -250,18 +250,18 @@ for ($i=0; $i<$noOfPix; $i++) {
 	$widthAtMax[$i] = floor($picWidth[$i] * ($maxRowHt/$picHeight[$i]));
 }
 # IFRAME(s):
-for ($j=0; $j<$noOfIframes; $j++) {
+for ($j=0; $j<$noOfIframes; $j++) {  # for now, only one assumed, multiple not tested
 	$indx = $noOfPix + $j;
 	$widthAtMax[$indx] = $maxRowHt - 6;  # iframes: have default border width; assume square shape
 }
 # CHART(s):    NOTE: Modify if multiple charts per page, currently only one expected
 for ($k=0; $k<$noOfCharts; $k++) {
-	$indx = $noOfPix + $noOfIframes;
+	$indx = $noOfPix + $noOfIframes;  // else + $k
 	$widthAtMax[$indx] = floor($elevWidth * ($maxRowHt/$elevHeight));
 }
 # OTHER IMAGES: 
 for ($l=0; $l<$noOfOthr; $l++) {
-	$indx = $noOfPix + $noOfIframes + $noOfCharts;
+	$indx = $noOfPix + $noOfIframes + $noOfCharts + $l;
 	$widthAtMax[$indx] = floor($othrWidth[$l] * ($maxRowHt/$othrHeight[$l]));
 }
 $items = $noOfPix + $noOfIframes + $noOfCharts + $noOfOthr;
@@ -273,6 +273,7 @@ $rowNo = 0;
 $totalProcessed = 0;
 $othrIndx = 0;	 # counter for number of other images being loaded
 $leftMostImg = true;
+$frameFlag = false;  # flag the row containing the iframe so space can be allowed for link
 $rowStr = array();
 for ($i=0; $i<$items; $i++) {
 	if ($leftMostImg === false) {  # modify width for added pic margins for all but first img
@@ -298,7 +299,12 @@ for ($i=0; $i<$items; $i++) {
 		$scaleFactor = $rowWidth/$curWidth;
 		$actualHt = floor($scaleFactor * $maxRowHt);
 		# ALL rows concatenated in $rowHtml
-		$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
+		if ($frameFlag) { # class Solo is a misnomer, but allows space for iframe link
+			$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow Solo">';
+			$frameFlag = false;
+		} else {
+			$rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
+		}
 		/* Creating a row unconcatenated to be used for $rowHtml, or passed solo via php */
 		$thisRow = '';
 		$imgCnt = 0;
@@ -321,6 +327,7 @@ for ($i=0; $i<$items; $i++) {
 				$thisRow = $thisRow . '<iframe id="theMap" style="' . $styling . '" height="' .
 					$mapDims . '" width="' . $mapDims . '" src="' . $map . '"></iframe>';
 				$imel .= 'f^' . $mapDims . '^' . $map;
+				$frameFlag = true;
 			} else if ($itype[$n] === "chart") {
 				$elevWidth = floor($scaleFactor * $widthAtMax[$n]);
 				$thisRow = $thisRow . '<img class="chart" style="' . $styling . '" width="' .
@@ -333,8 +340,8 @@ for ($i=0; $i<$items; $i++) {
 				$thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
 					'" height="' . $actualHt . '" src="../images/' . $addonImg[$othrIndx] .
 					'" alt="Additional non-captioned image" />';
-				$othrIndx += 1;
 				$imel .= 'n^' . $othrWidth[$n] . '^' . $addonImg[$othrIndx];
+				$othrIndx += 1;
 			}
 			$imgCnt++;
 			$imel .= '^';
@@ -343,20 +350,20 @@ for ($i=0; $i<$items; $i++) {
 		$imel = $imgCnt . '^' . $actualHt . '^' . $imel;
 		array_push($rowStr,$imel);
 		$rowHtml = $rowHtml . $thisRow . '</div>';
-		$imgRows[$rowNo] = '<div id="row' . $rowNo . '" class="ImgRow">' . $thisRow . '</div>';	
 		$rowNo += 1;
 		$startIndx += $rowItems;
 		$curWidth = 0;
 		$rowCompleted = true;
 		$leftMostImg = true;
-	}
+	}  # end of if currentWidth > rowWidth
 } # end of for loop creating initial rows
 # last row may not be filled, and will be at maxRowHt
 # last item index was "startIndx"; coming into last row as $leftMostImg = true
 if ($rowCompleted === false) {
 	$itemsLeft = $items - $totalProcessed;
-	if ($itemsLeft === 1) {
+	if ($frameFlag) {
 		$thisRow = '<div id="row' . $rowNo . '" class="ImgRow Solo">';
+		$frameFlag = false;
 	} else {
 		$thisRow = '<div id="row' . $rowNo . '" class="ImgRow">';
 	}
@@ -394,9 +401,9 @@ if ($rowCompleted === false) {
 			$thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$othrIndx] . '" height="' .
 				$maxRowHt . '" src="../images/' . $addonImg[$othrIndx] .
 				'" alt="Additional page image" />';
+			$imel .= 'n^' . $othrWidth[$othrIndx] . '^' . $addonImg[$othrIndx];
 			$othrIndx += 1;
 			$startIndx += 1;
-			$imel .= 'n^' . $othrWidth[$othrIndx] . '^' . $addonImg[$othrIndx];
 		}
 		$leftMostImg = false;
 		$imgCnt++;
