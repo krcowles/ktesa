@@ -17,7 +17,8 @@ var modal = (function() {
 	/* FUNCTION TO CONVERT FORM DATA INTO STRING FOR SAVING IN LOCAL STORAGE */
 	function form2String(filledForm) {
 		formObject = new Object
-		$('input:text, input:radio, select, textarea').each(function() {
+		$savers = $('input:text, input:radio, input:checkbox, select, textarea');
+		$savers.each(function() {
 			if (this.id) {
 				elem = $(this);
 				if (elem.attr("type") == 'checkbox' || elem.attr("type") == 'radio') {
@@ -33,7 +34,7 @@ var modal = (function() {
 	/* FUNCTION TO CONVERT STRING BACK INTO FORM DATA */
 	function string2Form(formString, unfilledForm) {
 		formObject = JSON.parse(formString);
-		$('input:text, input:radio, select, textarea').each(function() {
+		$('input:text, input:radio, input:checkbox, select, textarea').each(function() {
 			if (this.id) {
 				id = this.id;
 				elem = $(this); 
