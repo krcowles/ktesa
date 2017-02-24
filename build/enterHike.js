@@ -105,7 +105,7 @@ if (typeof(Storage) !== undefined) {
 	// FUNCTION FOR RESTORING FORM DATA FROM A STRING
 	function stringToForm(formString, unfilledForm) {
 		formObject = JSON.parse(formString);
-		$('input:text, input:radio, select, textarea').each(function() {
+		$('input:text, input:radio, input:checkbox, select, textarea').each(function() {
 			if (this.id) {
 				id = this.id;
 				elem = $(this); 
@@ -139,7 +139,8 @@ if (typeof(Storage) !== undefined) {
 		/* NOTE: "id" key added as it was thought there would be other modal windows to process,
 		   and the routine (modal_setup.js) would need to know which type modal to produce */
 	});
-	/*           DEBUG STUFF...
+	
+/* DEBUG CODE
 	$('#dbugr').on('click', function() {
 		var a = window.localStorage.noOfSaves;
 		var b = window.localStorage.oldName1;
@@ -152,9 +153,10 @@ if (typeof(Storage) !== undefined) {
 		dout += '<p>Saves: ' + a + '</p><p> Item1: ' + b + ' / ' + d + ';   ' + c + '</p>';
 		dout += '<p>Item2: ' + e + ' / ' + g + '; ' + f + '</p>';
 		$(this).prepend(dout);
-	});
+	}); 
 	$('#cleaner').on('click', function() {
 		window.localStorage.noOfSaves = 0;
+		$(this).append(window.localStorage.noOfSaves);
 		window.localStorage.removeItem('oldName1');
 		window.localStorage.removeItem('oldForm1');
 		window.localStorage.removeItem('oldFile1');
@@ -162,7 +164,7 @@ if (typeof(Storage) !== undefined) {
 		window.localStorage.removeItem('oldForm2');
 		window.localStorage.removeITem('oldFile2');
 	});
-	*/
+*/
 
 	// Load previous saves and set event handlers
 	previousSaves = parseFloat(window.localStorage.noOfSaves);

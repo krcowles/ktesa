@@ -88,7 +88,7 @@
 		  	<option value="Cuba">Cuba</option>
 		  	<option value="Lybrook">Lybrook</option>
 		  <optgroup label="Central NM">
-                        <option value="Golden">Golden</option>
+            <option value="Golden">Golden</option>
 		  	<option value="Cerrillos">Cerrillos</option>
 		  	<option value="Albuquerque">Albuquerque</option>
 		  	<option value="Placitas">Placitas</option>
@@ -186,14 +186,14 @@
 	
 	<fieldset id="txtdat">
 		<legend>Text Sections</legend>
-		<textarea class="honly" name="tipstxt" rows="12" cols="130">[OPTIONAL] Enter 'Tips Text' here</textarea><br />
-		<textarea name="hiketxt" rows="20" cols="130">Enter the description of the hike here, as it will appear on the completed hike page...</textarea>
+		<textarea id="usrtips" class="honly" name="tipstxt" rows="12" cols="130">[OPTIONAL] Enter 'Tips Text' here</textarea><br />
+		<textarea id="usrinfo" name="hiketxt" rows="20" cols="130">Enter the description of the hike here, as it will appear on the completed hike page...</textarea>
 	</fieldset>
 	
 	<fieldset id="refdat">
 		<legend>Hike References</legend>
 		<p>Select the type of reference (up to 8) and its accompanying data below:</p>
-		<select id="hrefs" name="rtype[]">
+		<select id="href1" name="rtype[]">
 			<option value="b">Book</option>
 			<option value="p">Photo Essay</option>
 			<option value="w">Website</option>
@@ -207,9 +207,9 @@
 			<option value="r">Related Link</option>
 			<option value="n">Text Only - No Link</option>
 		</select>
-		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
-		<select id="hrefs" name="rtype[]">
+		Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35" /><br />
+		<select id="href2" name="rtype[]">
 			<option value="b">Book</option>
 			<option value="p">Photo Essay</option>
 			<option value="w">Website</option>
@@ -223,9 +223,9 @@
 			<option value="r">Related Link</option>
 			<option value="n">Text Only - No Link</option>
 		</select>
-		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
-		<select id="hrefs" name="rtype[]">
+		Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" /><br />
+		<select id="href3" name="rtype[]">
 			<option value="b">Book</option>
 			<option value="p">Photo Essay</option>
 			<option value="w">Website</option>
@@ -239,9 +239,9 @@
 			<option value="r">Related Link</option>
 			<option value="n">Text Only - No Link</option>
 		</select>
-		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
-		<select id="hrefs" name="rtype[]">
+		Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35" /><br />
+		<select id="href4" name="rtype[]">
 			<option value="b">Book</option>
 			<option value="p">Photo Essay</option>
 			<option value="w">Website</option>
@@ -255,9 +255,9 @@
 			<option value="r">Related Link</option>
 			<option value="n">Text Only - No Link</option>
 		</select>
-		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
-		<select id="hrefs" name="rtype[]">
+		Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35" /><br />
+		<select id="href5" name="rtype[]">
 			<option value="b">Book</option>
 			<option value="p">Photo Essay</option>
 			<option value="w">Website</option>
@@ -271,9 +271,9 @@
 			<option value="r">Related Link</option>
 			<option value="n">Text Only - No Link</option>
 		</select>
-		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
-		<select id="hrefs" name="rtype[]">
+		Book Title/Link URL:<input id="ritE1" type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input id="ritE2" type="text" name="rit2[]" size="35" /><br />
+		<select id="href6" name="rtype[]">
 			<option value="b">Book</option>
 			<option value="p">Photo Essay</option>
 			<option value="w">Website</option>
@@ -287,9 +287,9 @@
 			<option value="r">Related Link</option>
 			<option value="n">Text Only - No Link</option>
 		</select>
-		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
-		<select id="hrefs" name="rtype[]">
+		Book Title/Link URL:<input id="ritF1" type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input id="ritF2" type="text" name="rit2[]" size="35" /><br />
+		<select id="href7" name="rtype[]">
 			<option value="b">Book</option>
 			<option value="p">Photo Essay</option>
 			<option value="w">Website</option>
@@ -303,9 +303,9 @@
 			<option value="r">Related Link</option>
 			<option value="n">Text Only - No Link</option>
 		</select>
-		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
-		<select id="hrefs" name="rtype[]">
+		Book Title/Link URL:<input id="ritG1" type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input id="ritG2" type="text" name="rit2[]" size="35" /><br />
+		<select id="href8" name="rtype[]">
 			<option value="b">Book</option>
 			<option value="p">Photo Essay</option>
 			<option value="w">Website</option>
@@ -319,39 +319,39 @@
 			<option value="r">Related Link</option>
 			<option value="n">Text Only - No Link</option>
 		</select>
-		Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-		Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+		Book Title/Link URL:<input id="ritH1" type="text" name="rit1[]" size="55" />&nbsp;
+		Author/Click-on Text<input id="ritH2" type="text" name="rit2[]" size="35" /><br />
 	</fieldset>
 	
 	<div class="honly">
 		<fieldset id="datasect">
 			<legend>GPS Maps &amp; Data</legend>
 			<p>Proposed Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-			Label Text:<input type="text" name="plbl[]" size="12" /> 
-			Item URL:<input type="text" name="purl[]" size="60" />
-			Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
-			Label Text:<input type="text" name="plbl[]" size="12" /> 
-			Item URL:<input type="text" name="purl[]" size="60" />
-			Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
-			Label Text:<input type="text" name="plbl[]" size="12" /> 
-			Item URL:<input type="text" name="purl[]" size="60" />
-			Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
-			Label Text:<input type="text" name="plbl[]" size="12" /> 
-			Item URL:<input type="text" name="purl[]" size="60" />
-			Text to Click On:<input type="text" name="pctxt[]" size="30" /><br />
+			Label Text: <input id="lt1" type="text" name="plbl[]" size="12" /> 
+			Item URL: <input id="ur1" type="text" name="purl[]" size="60" />
+			Text to Click On: <input id="ct1" type="text" name="pctxt[]" size="30" /><br />
+			Label Text: <input id="lt2" type="text" name="plbl[]" size="12" /> 
+			Item URL: <input id="ur2" type="text" name="purl[]" size="60" />
+			Text to Click On: <input id="ct2" type="text" name="pctxt[]" size="30" /><br />
+			Label Text: <input id="lt3" type="text" name="plbl[]" size="12" /> 
+			Item URL: <input id="ur3" type="text" name="purl[]" size="60" />
+			Text to Click On: <input id="ct3" type="text" name="pctxt[]" size="30" /><br />
+			Label Text: <input id="lt4" type="text" name="plbl[]" size="12" /> 
+			Item URL: <input id="ur4" type="text" name="purl[]" size="60" />
+			Text to Click On: <input id="ct4" type="text" name="pctxt[]" size="30" /><br />
 			<p>Actual Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-			Label Text:<input type="text" name="albl[]" size="12" /> 
-			Item URL:<input type="text" name="aurl[]" size="60" />
-			Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
-			Label Text:<input type="text" name="albl[]" size="12" /> 
-			Item URL:<input type="text" name="aurl[]" size="60" />
-			Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
-			Label Text:<input type="text" name="albl[]" size="12" /> 
-			Item URL:<input type="text" name="aurl[]" size="60" />
-			Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
-			Label Text:<input type="text" name="albl[]" size="12" /> 
-			Item URL:<input type="text" name="aurl[]" size="60" />
-			Text to Click On:<input type="text" name="actxt[]" size="30" /><br />
+			Label Text: <input id="lt5" type="text" name="albl[]" size="12" /> 
+			Item URL: <input id="ur5" type="text" name="aurl[]" size="60" />
+			Text to Click On: <input id="ct5" type="text" name="actxt[]" size="30" /><br />
+			Label Text: <input id="lt6" type="text" name="albl[]" size="12" /> 
+			Item URL: <input id="ur6" type="text" name="aurl[]" size="60" />
+			Text to Click On: <input id="ct6" type="text" name="actxt[]" size="30" /><br />
+			Label Text: <input id="lt7" type="text" name="albl[]" size="12" /> 
+			Item URL: <input id="ur7" type="text" name="aurl[]" size="60" />
+			Text to Click On: <input id="ct7" type="text" name="actxt[]" size="30" /><br />
+			Label Text: <input id="lt8" type="text" name="albl[]" size="12" /> 
+			Item URL: <input id="ur8" type="text" name="aurl[]" size="60" />
+			Text to Click On: <input id="ct8" type="text" name="actxt[]" size="30" /><br />
 		</fieldset>
 	</div>
 	
@@ -392,7 +392,7 @@
 </div>
 <div id="ul"></div>
 
-<!--
+<!--  DEBUG SECTION:
 <p id="dbug"></p>
 <div id="dbugr">CLICK</div>
 <div id="cleaner">CLEAN</div>
