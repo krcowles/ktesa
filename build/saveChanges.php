@@ -37,25 +37,37 @@
 	}
 	$info[1] = $_POST['hname'];
 	$info[2] = $_POST['locale'];
-	# $info[3] is marker type - not changeable at this time
+	# check to see if marker type changed TO 'Cluster' when orginally not 'Cluster'
+	$availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$cgroups = $_SESSION['cluster_names'];
+	$grpArray = explode(",",$cgroups);
+	$markerChanged = $_POST['chgClus'];
+	if ($markerChanged === 'YES' && !isset($_POST['restore']) {
+		$info[3] = 'Cluster';
+	}
 	# $info[4] is string for index pages only
 	# if checkbox is checked, add a new group letter and name:
-	if( isset($_POST['nxtg']) && $_POST['nxtg'] == 'YES' ) {
-		$cgroups = $_SESSION['cluster_letters'];
-		$curgroups = explode(",",$cgroups);
-		$lastmem = count($curgroups) - 1;
-		$lastused = $curgroups[$lastmem];
-		$availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$nxtavail = strpos($availLtrs,$lastused) + 1;
-		$newgrp = substr($availLtrs,$nxtavail,1);
-        #echo "New Letter for Clusters: " . $newgrp . "\n";
-        #echo "New group name: "  . $_POST['newgname'];
+	if( isset($_POST['nxtg']) && $_POST['nxtg'] == 'YES' ) {	
+		$nextmem = count($grpArray);
+		# group letters are assigned sequentially
+		$newgrp = substr($availLtrs,$nextmem,1);
         $info[3] = 'Cluster';
 		$info[5] = $newgrp;
 		$info[28] = $_POST['newgname'];
 	} else {
-		$info[5] = $_POST['hclus'];
-		$info[28] = $_POST['htool'];
+		if ($_POST['chgd'] === 'YES') {
+			$passedgrp = $_POST['htool'];
+			for ($i=0; $i<count($grpArray); $i++) {
+				if ($passedgrp == $grpArray[$i]) {
+					$pos = $i;
+					break;
+				}
+			}
+			$ltr = substr($availLtrs,$pos,1);
+			echo "Group letter for " . $passedgrp . " is " . $ltr;
+			$info[3] = $ltr;
+			$info[28] = $passedgrp;
+		}
 	}
 	$info[6] = $_POST['htype'];
 	$info[7] = $_POST['hlgth'];
@@ -195,6 +207,8 @@
 	$dbhandle = fopen($database,"w");
 	foreach ($wholeDB as $hikedat) {
 		if ($hikedat[0] == $hikeNo) {
+			echo 'For hike - ' . $info[1] . ' : ';
+			echo 'Pre-write marker type: ' $info[3];
 			fputcsv($dbhandle,$info);
 		} else {
 			fputcsv($dbhandle,$hikedat);

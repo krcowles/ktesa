@@ -23,34 +23,29 @@
 	$database = '../data/test.csv';
 	$db = fopen($database,"r");
 	$hikeNo = $_GET['hikeNo'];
-	# parameterize the data for presentation in the text boxes
-	# cannot change the marker type here ($info[3])
-	# 'cluster string' ($info[4]) is associated with index pages
-	# pull out the cluster groups
+	# Below: pull out the available cluster groups and establish $info array as hike data
 	$cnames = array();
-	$cgrps = array();
 	while ( ($hdat = fgetcsv($db)) !== false) {
 		if ($hdat[0] == $hikeNo) {
 			$info = $hdat;
 		}
-		if ($hdat[5] !== '') {
+		if ($hdat[28] !== '' && trim($hdat[28]) !== 'Clus tooltip') {
 			$match = false;
-			$noOfGrps = count($cgrps);
-			for ($k=0; $k<$noOfGrps; $k++) {
-				if ($hdat[5] == $cgrps[$k]) {
+			for ($k=0; $k<count($cnames); $k++) {
+				if ($hdat[28] == $cnames[$k]) {
 					$match = true;
 					break;
 				}
 			}
 			if ($match === false) {
-				array_push($cgrps,$hdat[5]);
 				array_push($cnames,$hdat[28]);
 			}
 		}
 	} 
 	fclose($db);
-	$clusgrps = implode(",",$cgrps);
-	$_SESSION['cluster_letters'] = $clusgrps;
+	$grpCnt = count($cnames);
+	$clusNames = implode(",",$cnames);
+	$_SESSION['cluster_names'] = $clusNames;	
 ?>
 <form action="saveChanges.php" method="POST">
 <?php
@@ -100,28 +95,24 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	<option value="Pinos Altos">Pinos Altos</option>
 	<option value="Glenwood">Glenwood</option>
 </select>&nbsp;&nbsp;
-<p id="gletr" style="display:none"><?php echo $info[5];?></p>
-<p id="gnme" style="display:none"><?php echo $info[28];?></p>
-<label for="cgrp">Cluster: Group </label>
+<p id="mrkr" style="display:none"><?php echo $info[3];?></p>
+<p id="group" style="display:none"><?php echo $info[28];?></p>
+<p id="addbrk" style="display:none;"> </p>
 <?php
-	echo '<select id="cgrp" name="hclus">';
-	for ($j=0; $j<count($cgrps); $j++) {
-		echo '<option value="' . $cgrps[$j] . '">' . $cgrps[$j] . '</option>';
-	}
-	echo '</select>&nbsp;&nbsp;';
-?>
-<label for="ctip">Name </label>
-<?php
+	echo '<label for="ctip">&nbsp;&nbsp;Cluster: </label>';
 	echo '<select id="ctip" name="htool">';
-	for ($i=0; $i<count($cnames); $i++) {
+	for ($i=0; $i<$grpCnt; $i++) {
 		echo '<option value="' . $cnames[$i] . '">' . $cnames[$i] . '</option>';
 	}
 	echo '</select>';
 ?>
+<span id="chgBack" style="display:none;"><input id="oldmrkr" type="checkbox"
+	name="restore" value="Default" /></span>
+<input id="chg2Clus" type="hidden" name="chgClus" value="NO" />
+<input id="grpChg" type="hidden" name="chgd" value="NO" />
 <p>If you are establishing a new group, select the checkbox: <input id="newg" type="checkbox"
 	name="nxtg" value="YES" /> and enter the name for the new group here: <input id="newt" 
 	type="text" name="newgname" size="50" /></p><br />
-
 <p id="ctype" style="display:none"><?php echo $info[6];?></p>
 <label for="type">Hike Type: </label>
 <select id="type" name="htype">
