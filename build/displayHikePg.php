@@ -189,7 +189,7 @@ $handle = fopen($tsvFile, "r");
 			$picDesc[$picno] = $tsvArray[2];
 			$picAlbm[$picno] = $tsvArray[6];
 			$picDate[$picno] = $tsvArray[7];
-			$nsize[$picno] = $tsvArray[8];
+			$nsize[$picno] = $tsvArray[8]; 
 			$picno++;
 		}
 		$lineno++;
@@ -231,7 +231,7 @@ for ($i=0; $i<$noOfPix; $i++) {
 	$name[$i] = $picName[$x];
 	$desc[$i] = $picDesc[$x];
 	$album[$i] = $picAlbm[$x];
-	$photolink[$i] = $nsize[$x]; 
+	$photolink[$i] = $nsize[$x];
 }
 $noOfCaps = count($caption);
 #echo "Found " . $noOfCaps . " captions in tsv file";
@@ -361,6 +361,7 @@ for ($i=0; $i<$items; $i++) {
 # last item index was "startIndx"; coming into last row as $leftMostImg = true
 if ($rowCompleted === false) {
 	$itemsLeft = $items - $totalProcessed;
+	$leftMostImg = true;
 	if ($frameFlag) {
 		$thisRow = '<div id="row' . $rowNo . '" class="ImgRow Solo">';
 		$frameFlag = false;
@@ -372,6 +373,7 @@ if ($rowCompleted === false) {
 	for ($i=0; $i<$itemsLeft; $i++) {
 		if ($leftMostImg) {
 			$styling = ''; 
+			$leftMostImg = false;
 		} else {
 			$styling = 'margin-left:1px;';
 		}
@@ -381,20 +383,20 @@ if ($rowCompleted === false) {
 			$thisRow = $thisRow . '<img id="pic' . $startIndx . '" style="' . $styling .
 				'" width="' . $picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
 				$photolink[$startIndx] . '" alt="' . $desc[$startIndx] . '" />';
-			$startIndx += 1;
 			$imel .= 'p^' . $picWidth[$startIndx] . '^' . $photolink[$startIndx] . 
 				'^' . $desc[$startIndx];
+			$startIndx += 1;
 		} else if ($itype[$startIndx] === "iframe") {
 			$thisRow = $thisRow . '<iframe id="theMap" style="' . $styling . '" height="' . $maxRowHt .
 				'" width="' . $maxRowHt . '" src="' . $map . '"></iframe>';
-			$startIndx += 1;
 			$imel .= 'f^' . $maxRowHt . '^' . $map;
+			$startIndx += 1;
 		} else if ($itype[$startIndx] === "chart") {
 			$elevWidth = $widthAtMax[$startIndx];
 			$thisRow = $thisRow . '<img class="chart" style="' . $styling . '" width="' . $elevWidth . 
 				'" height="' . $maxRowHt . '" src="' . $echart . '" alt="Elevation Chart" />';
-			$startIndx += 1;
 			$imel .= 'n^' . $elevWidth . '^' . $echart;
+			$startIndx += 1;
 		} else {
 			$othrWidth[$othrIndx] = $widthAtMax[$startIndx];
 			$othrHeight[$othrIndx] = $maxRowHt;
@@ -405,11 +407,13 @@ if ($rowCompleted === false) {
 			$othrIndx += 1;
 			$startIndx += 1;
 		}
-		$leftMostImg = false;
 		$imgCnt++;
-		$imel .=  '^';
+		if ($i !== $itemsLeft - 1) {
+			$imel .=  '^';
+		}
 	} // end of for loop processing
 	$imel = $imgCnt . '^' . $maxRowHt . '^' . $imel;
+	echo "array string: " . $imel;
 	array_push($rowStr,$imel);
 	$imgRows[$rowNo] = $thisRow . "</div>";
 	$rowHtml = $rowHtml . $thisRow . "</div>";
