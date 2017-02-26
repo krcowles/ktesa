@@ -3,6 +3,10 @@ $( function () { // when page is loaded...
 // generic
 var msg;
 var i;
+
+// GPSV map options
+var mapDisplayOpts = '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true';
+
 // object locations
 var $images = $('img[id^="pic"]');
 var noOfPix = $images.length;
@@ -10,7 +14,7 @@ var $maps = $('iframe');
 var mapPresent = false;
 if ($maps.length) {
 	mapPresent = true;
-	var	fullMap = $maps.attr('src') + '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true';
+	var	fullMap = $maps.attr('src') + mapDisplayOpts;
 }
 var $desc = $('.captionList li');
 var $links = $('.lnkList li');
@@ -19,6 +23,22 @@ var $rowDivs = $('div[class="Solo"]');
 if ($rowDivs.length === 0) {
 	$('#postPhoto').css('margin-top','40px');
 }
+
+var link;
+var rel_link;
+var mapname;
+var mapnameLgth;
+$('a').each( function() {
+	link = $(this).attr('href');
+	rel_link = link.substring(0,8);
+	if (rel_link == '../maps/') {
+		mapnameLgth = link.length;
+		mapname = link.substring(8,mapnameLgth);
+		link = '../maps/gpsvMapTemplate.php?map_name=' + mapname + mapDisplayOpts;
+		$(this).attr('href',link);
+	}
+});
+
 // argument passed to popup function
 var picSel;
 // string vars
