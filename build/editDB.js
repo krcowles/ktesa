@@ -19,7 +19,7 @@ var clusnme = $('#group').text();  // previous cluster for hike being edited (ma
 var currnme = clusnme;  // current selection value
 $('#ctip').val(clusnme);  // show above in select box on page load
 var mrkr = $('#mrkr').text();  // original state of marker type
-var msg = "&nbsp;&nbsp;&nbsp;Restore Marker to: " + mrkr = "&nbsp;&nbsp;";
+var msg = "&nbsp;&nbsp;&nbsp;Restore Marker to: " + mrkr + "&nbsp;&nbsp;";
 $('#chgBack').prepend(msg);  // if cluster is selected, record previous state
 
 /* Special case: when changing to or from a cluster marker */

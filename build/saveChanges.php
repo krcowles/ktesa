@@ -42,8 +42,11 @@
 	$cgroups = $_SESSION['cluster_names'];
 	$grpArray = explode(",",$cgroups);
 	$markerChanged = $_POST['chgClus'];
-	if ($markerChanged === 'YES' && !isset($_POST['restore']) {
+	if ($markerChanged == 'YES' && !isset($_POST['restore']) ) {
 		$info[3] = 'Cluster';
+		$keep = false;
+	} else {
+		$keep = true;
 	}
 	# $info[4] is string for index pages only
 	# if checkbox is checked, add a new group letter and name:
@@ -55,7 +58,7 @@
 		$info[5] = $newgrp;
 		$info[28] = $_POST['newgname'];
 	} else {
-		if ($_POST['chgd'] === 'YES') {
+		if ($_POST['chgd'] === 'YES' && !$keep) {
 			$passedgrp = $_POST['htool'];
 			for ($i=0; $i<count($grpArray); $i++) {
 				if ($passedgrp == $grpArray[$i]) {
@@ -64,8 +67,7 @@
 				}
 			}
 			$ltr = substr($availLtrs,$pos,1);
-			echo "Group letter for " . $passedgrp . " is " . $ltr;
-			$info[3] = $ltr;
+			$info[5] = $ltr;
 			$info[28] = $passedgrp;
 		}
 	}
@@ -89,7 +91,6 @@
 		$info[37] = '';
 	}
 	$info[38] = $_POST['hinfo'];
-	
 	# Re-assemble ref string
 	$rawreftypes = $_POST['rtype'];
 	$noOfRefs = count($rawreftypes);  // should always be 1 or greater
@@ -130,7 +131,6 @@
         }
 	}
 	$info[39] = $rcnt . $refStr;
-	
 	# Re-assemble Proposed Data String
 	$rawprops = $_POST['plabl'];
 	$rawplnks = $_POST['plnk'];
@@ -167,7 +167,6 @@
         }
 	}  // end of processing proposed data, if present
 	$info[40] = $propStr;
-	
 	# Re-assemble Acutal Data String
 	$rawacts = $_POST['alabl'];
 	$rawalnks = $_POST['alnk'];
@@ -203,19 +202,17 @@
         	$actStr = '';
         }
 	}  // end of actual data processing, if present
-	$info[41] = $actStr;
+	$info[41] = $actStr;	
 	$dbhandle = fopen($database,"w");
 	foreach ($wholeDB as $hikedat) {
 		if ($hikedat[0] == $hikeNo) {
-			echo 'For hike - ' . $info[1] . ' : ';
-			echo 'Pre-write marker type: ' $info[3];
 			fputcsv($dbhandle,$info);
 		} else {
 			fputcsv($dbhandle,$hikedat);
 		}
-  
 	}
 	fclose($dbhandle);
+
 ?>
 <div style="padding:16px;">
 <h2>The changes submitted for <?php echo $info[1];?> (if any) have been saved to the database.</h2>
