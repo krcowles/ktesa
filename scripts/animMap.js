@@ -286,7 +286,7 @@ function initMap() {
 			for (m=0; m<hikes.length; m++) {
 				iwContent += coreHikeData(CH_TYPE, hikes[m]);
 			}
-			iwContent += '<br /><a href="' + dirs + '" target="_blank">Directions</a></div>';
+			//iwContent += '<br /><a href="' + dirs + '" target="_blank">Directions</a></div>';
 			var iw = new google.maps.InfoWindow({
 					content: iwContent,
 					maxWidth: 600
