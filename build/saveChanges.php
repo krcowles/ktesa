@@ -19,7 +19,7 @@
 <body>
 
 <?php
-	$database = '../data/test.csv';
+	$database = '../data/database.csv';
 	$dbhandle = fopen($database,"r");	
 	$hikeNo = $_POST['hno'];
 	$wholeDB = array();

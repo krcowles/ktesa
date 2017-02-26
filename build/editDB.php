@@ -20,7 +20,7 @@
 
 <div style="padding:16px;">
 <?php
-	$database = '../data/test.csv';
+	$database = '../data/database.csv';
 	$db = fopen($database,"r");
 	$hikeNo = $_GET['hikeNo'];
 	# Below: pull out the available cluster groups and establish $info array as hike data

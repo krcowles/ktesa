@@ -2,7 +2,7 @@
 <html>
 
 <?php 
-$database = '../data/test.csv';
+$database = '../data/database.csv';
 $handle = fopen($database,"r");
 while ( ($indxInfo = fgetcsv($handle)) !== false ) {
 	$lastNo = $indxInfo[0];

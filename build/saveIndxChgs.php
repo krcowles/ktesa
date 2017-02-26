@@ -18,7 +18,7 @@
 <body>
 
 <?php
-	$database = '../data/test.csv';
+	$database = '../data/database.csv';
 	$db = fopen($database,"r");	
 	$hikeNo = $_POST['hno'];
 	$indxName = $_POST['nme'];

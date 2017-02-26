@@ -188,7 +188,7 @@ $elevHeight = $EChartSize[1];
 /*
 	MARKER-DEPENDENT PAGE ELEMENTS
 */
-$database = '../data/test.csv';
+$database = '../data/database.csv';
 # Index page ref -> ctrhike
 if ($hikeMarker === 'ctrhike') {
 	$dbFile = fopen($database, "r");
@@ -202,7 +202,7 @@ if ($hikeMarker === 'ctrhike') {
 			}
 		}
 	} else {
-		echo "Could not open database file ../data/test.csv";
+		echo "Could not open database file ../data/database.csv";
 	}
 	echo '<div id="findvc"><p>This hike was identified as starting at, or in close proximity to,' .
 	' a Visitor Center.<br /><em id="vcnote">NOTE: if a page for this Visitor Center does not yet exist, please ' .

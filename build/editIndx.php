@@ -19,7 +19,7 @@
 
 <div style="padding:16px;">
 <?php
-	$database = '../data/test.csv';
+	$database = '../data/database.csv';
 	$dbhandle = fopen($database,"r");
 	$hikeNo = $_GET['hikeNo'];
 	while ( ($indxdat = fgetcsv($dbhandle)) !== false) {

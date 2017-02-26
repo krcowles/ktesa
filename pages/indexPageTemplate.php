@@ -1,7 +1,7 @@
 <?php
 	$hikeIndexNo = $_GET['hikeIndx'];
 	/* Use the common database (excel csv file) to extract info */
-	$dataTable = '../data/test.csv';
+	$dataTable = '../data/database.csv';
 	$handle = fopen($dataTable,'r');
 	if ($handle !== false) {
 		$lineno = 0;

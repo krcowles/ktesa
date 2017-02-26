@@ -23,7 +23,7 @@
 <div style="margin-left:12px;padding:8px;">
 <?php
 	/* get last used hike No.. */
-	$database = '../data/test.csv';
+	$database = '../data/database.csv';
 	$handle = fopen($database, "c+");
 	if ($handle !== false) {
 		while ( ($hikeLine = fgetcsv($handle)) !== false ) {

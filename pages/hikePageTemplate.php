@@ -82,7 +82,7 @@ function makeHtmlList($type,$str) {
 	
 	$hikeIndexNo = $_GET['hikeIndx'];
 	/* NOTE: The database file is only read in here, no writing to it occurs */
-	$dataTable = '../data/test.csv';
+	$dataTable = '../data/database.csv';
 	$handle = fopen($dataTable,'r');
 	if ($handle !== false) {
 		$lineno = 0;

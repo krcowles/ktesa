@@ -38,7 +38,7 @@
 	$indx[39] = $import[11];
 	ksort($indx, SORT_NUMERIC);
 	echo '<p style="margin:16px;">Name for this center is: ' . $indx[0] . '</p>';
-	$database = '../data/test.csv';
+	$database = '../data/database.csv';
 	$handle = fopen($database,"a");
 	fputcsv($handle,$indx);
 	fclose($handle);

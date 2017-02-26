@@ -32,7 +32,7 @@
 	/* THIS FILE IS NOT A FULL HTML DOCUMENT AND IS MEANT TO BE INSERTED AS A TABLE
 	   IN VARIOUS OTHER HTML DOCS (e.g. INDEX TABLE w/MAP; hikeEditor.php)
 	   NOTE: There is only reading of data from the database, no writing to it */
-	$dataTable = '../data/test.csv';
+	$dataTable = '../data/database.csv';
 	$handle = fopen($dataTable,'r');
 	if ($handle !== false) {
 		$lineno = 0;

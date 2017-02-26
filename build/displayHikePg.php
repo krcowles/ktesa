@@ -20,7 +20,7 @@ $ctrHikeLoc = $_POST['vcList'];
 	If $ctrHikeLoc not empty, find the Index Page for the assoc. hike and update it
 */
 if ($ctrHikeLoc !== '') {
-	$database = '../data/test.csv';
+	$database = '../data/database.csv';
 	$dbHandle = fopen($database,"r");
 	/* $ctrHikeLoc holds the index number of the Visitor Center associated with this hike;	
 	   This new hike will have the next available index no, which number is to be added to
