@@ -24,28 +24,36 @@
 	$db = fopen($database,"r");
 	$hikeNo = $_GET['hikeNo'];
 	# Below: pull out the available cluster groups and establish $info array as hike data
+	# NOTE: Organize by cluster letter to simplify editing process
+	$clusters = array();
+	$groups = array();
 	$cnames = array();
 	while ( ($hdat = fgetcsv($db)) !== false) {
 		if ($hdat[0] == $hikeNo) {
 			$info = $hdat;
 		}
-		if ($hdat[28] !== '' && trim($hdat[28]) !== 'Clus tooltip') {
+		# Check to see if this is a cluster hike:
+		if ($hdat[28] !== '' && trim($hdat[28]) !== 'Clus tooltip') { # don't include header row
 			$match = false;
-			for ($k=0; $k<count($cnames); $k++) {
-				if ($hdat[28] == $cnames[$k]) {
+			for ($k=0; $k<count($groups); $k++) {
+				if (trim($hdat[5]) == $groups[$k]) {
 					$match = true;
 					break;
 				}
 			}
 			if ($match === false) {
-				array_push($cnames,$hdat[28]);
+				# form an association of group to tooltip:
+				array_push($groups,trim($hdat[5]));
+				array_push($cnames,trim($hdat[28]));
+				$assoc = trim($hdat[5]) . "$" . trim($hdat[28]);
+				array_push($clusters,$assoc);
 			}
 		}
 	} 
 	fclose($db);
-	$grpCnt = count($cnames);
-	$clusNames = implode(",",$cnames);
-	$_SESSION['cluster_names'] = $clusNames;	
+	$grpCnt = count($groups);
+	$clusStr = implode(";",$clusters);
+	$_SESSION['allClusters'] = $clusStr;	
 ?>
 <form action="saveChanges.php" method="POST">
 <?php

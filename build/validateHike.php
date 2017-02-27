@@ -239,20 +239,20 @@ if ($hikeMarker === 'ctrhike') {
 		echo "Could not open database file ..data/TblDB.csv";
 	}
 	$passGroup = implode(";",$result);
+	/* NOTE: even though the array holds empty keys where duplicates were eliminated,
+	   when imploding, the empty keys are disregarded */
 	$_SESSION['allTips'] = $passGroup;
 	echo '<div id="clus_sel"><p>This hike was identified as belonging to a group of hikes ' .
 	'in close proximity with other hikes.<br /><label style="color:DarkBlue;">' .
-	'Select the Group to which this hike belongs: </label><select name="tipLtr">';
+	'Select the Group to which this hike belongs: </label><select name="clusgrp">';
 	foreach ($result as $group) {
 		$groupNamePos = strpos($group,"$") + 1;
 		$groupNameLgth = strlen($group) - $groupNamePos;
 		$groupName = substr($group,$groupNamePos,$groupNameLgth);
 		$groupName = trim($groupName);
-		$clusLtrLgth = $groupNamePos - 1;
-		$clusLtr = substr($group,0,$clusLtrLgth);
-		#debug:
-		array_push($vals,$clusLtr);
-		echo '<option value="' . $clusLtr . '">' . $groupName . '</option>';
+		$clusGrpLgth = $groupNamePos - 1; # may be larger than 1 char
+		$clusGrp = substr($group,0,$clusGrpLgth);
+		echo '<option value="' . $clusGrp . '">' . $groupName . '</option>';
 	}
 	echo "</select></p></div>";
 	fclose($dbFile);
