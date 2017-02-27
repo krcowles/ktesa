@@ -413,7 +413,6 @@ if ($rowCompleted === false) {
 		}
 	} // end of for loop processing
 	$imel = $imgCnt . '^' . $maxRowHt . '^' . $imel;
-	echo "array string: " . $imel;
 	array_push($rowStr,$imel);
 	$imgRows[$rowNo] = $thisRow . "</div>";
 	$rowHtml = $rowHtml . $thisRow . "</div>";

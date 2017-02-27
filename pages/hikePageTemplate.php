@@ -142,7 +142,7 @@ function makeHtmlList($type,$str) {
 								} elseif ($elType === 'n') { // non-captioned image
 									$rowhtml = $rowhtml . '<img style="' . $style .
 										'" width="' . $width . '" height="' . $rowht .
-										'" src="../images/' . $src . '" alt="no caption" />';
+										'" src="' . $src . '" alt="no caption" />';
 									$nxtel +=3;
 								} else {  // iframe
 									$rowhtml = $rowhtml . '<iframe id="theMap" style="' . $style .
