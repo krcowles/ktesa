@@ -56,13 +56,13 @@ if ($ctrHikeLoc !== '') {
 /*
 	End of ctrHikeLoc processing
 */
-$clusGrp = $_POST['tipLtr'];
+$clusGrp = $_POST['clusgrp'];
 $clusTip = '';  // default: may change below
 /*
 	With clusGrp, find the associated tooltip
 */
 if ($clusGrp !== '') {
-	$str2find = $clusGrp . "$";  // this may not work if double-letter groups...?
+	$str2find = $clusGrp . "$";
 	$lgthOfGrp = strlen($str2find);
 	$clusString = $_SESSION['allTips'];
 	$strLoc = strpos($clusString,$str2find);

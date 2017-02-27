@@ -149,7 +149,7 @@
 		<p>NOTE: <em>For the page to be created correctly, each of the following files
 			must reside in its indicated directory.</em></p>
 		<legend>File Data</legend>
-		<label id="l_tsv" class="notVC" for="tsv">CSV file: [resides in gpsv/]</label>
+		<label id="l_tsv" class="notVC" for="tsv">TSV file: [resides in gpsv/]</label>
 		  <input id="tsv" type="file" name="csvfile" /><br />
 		<label id="l_gmap" class="notVC" for="geomap">Geomap: [html file resides in maps/]</label>
 	      <input id="geomap" type="file" name="gpsvMap" /><br />
@@ -171,9 +171,10 @@
 		<input id="vc" type="radio" name="mstyle" value="center" />
 			<label for="vc">Visitor Center [New Index Page]</label>
 		<input id="vch" type="radio" name="mstyle" value="ctrhike" />
-			<label for="vch">Hike At / In Close Proximity To Visitor Center</label>
+			<label for="vch">Hike At / In Close Proximity To Visitor Center</label><br />
 		<input id="ch" type="radio" name="mstyle" value="cluster" />
-			<label for="ch">Trailhead Common to Multiple Hikes</label>
+			<label for="ch">Trailhead Common to Multiple Hikes [NOTE: Group must already exist 
+			in database - if not, create using hikeEditor.php]</label>
 		<input id="othr" type="radio" name="mstyle" value="other" />
 			<label for="othr">All Others</label><br />
 		<label for="n-s">--Trailhead/Visitor Center Latitude (decimal value):</label>
