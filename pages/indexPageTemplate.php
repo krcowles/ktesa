@@ -61,13 +61,43 @@
 						}
 					} // end of for loop in references
 					$htmlout .= '</ul>';
-					/* This code is in place as we transfer over to strictly unencoded
-					   html table code: */
+					/* CREATE THE TABLE FROM THE ARRAY STRING: */
 					$indxTbl = $indxArray[29];
-					if (substr($indxTbl,0,3) === '%3C') {
-						$indxTbl = rawurldecode($indxTbl);
-					}
-					break;
+					#echo "Prelim string: " . $indxTbl;
+					$rows = explode("|",$indxTbl);
+					$tblhtml = '<table id="siteIndx">' . "\n" . '<thead>' . "\n" . '<tr>' . "\n";
+					$tblhtml .= '<th class="hdrRow" scope="col">Trail</th>' . "\n";
+					$tblhtml .= '<th class="hdrRow" scope="col">Web Pg</th>' . "\n";
+					$tblhtml .= '<th class="hdrRow" scope="col">Trail Length</th>' . "\n";
+					$tblhtml .= '<th class="hdrRow" scope="col">Elevation</th>' . "\n";
+					$tblhtml .= '<th class="hdrRow" scope="col">Exposure</th>' . "\n";
+					$tblhtml .= '<th class="hdrRow" scope="col">Photos</th>'  . "\n";
+					$tblhtml .= '</tr>' . "\n" . '</thead>' . "\n" . '<tbody>' . "\n";
+					$rowcnt = count($rows);
+					#echo "Seeing " . $rowcnt . " rows...";
+					for ($j=0; $j<$rowcnt; $j++) {
+						$row = explode("^",$rows[$j]);
+						# there are always 7 pieces, counting row type
+						if ($row[0] === 'n') {  // "normal" - not grayed out
+							$tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] . '</td>' . "\n";
+							$tblhtml .= '<td><a href="' . $row[2] . '" target="_blank">' . "\n" .
+								'<img class="webShift" src="../images/greencheck.jpg" alt="checkbox" /></a></td>' . "\n";
+							$tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
+							$tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
+							$tblhtml .= '<td><img class="expShift" src="' . $row[5] . '" alt="exposure icon" /></td>' . "\n";
+							$tblhtml .= '<td><a href="' . $row[6] . '" target="_blank">' . "\n" .
+								'<img class="flckrShift" src="../images/album_lnk.png" alt="Photos symbol" /></a></td>' . "\n";
+							$tblhtml .= '</tr>' . "\n";
+						} else {   // $row[0]=g  - grayed out row
+							$tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] . '</td>' . "\n";
+							$tblhtml .= '<td><img class="webShift" src="../images/x-box.png" alt="box with x" /></td>' . "\n";
+							$tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
+							$tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
+							$tblhtml .= '<td class="naShift">N/A</td>' . "\n";
+							$tblhtml .= '<td><img class="flckrShift" src="../images/x-box.png" alt="box with x" /></td>' . "\n";
+							$tblhtml .= '</tr>' . "\n";
+						}  # end of if row is grayed out...
+					}  #end of row data-processing loop	
 				}  // end of: if this is the hike
 			}
 			$lineno++;
@@ -116,7 +146,7 @@
 	<div>
 	<?php 
 		if ($indxTbl !== '') {
-			echo $indxTbl;
+			echo $tblhtml;
 		} else {
 			echo "No hikes yet associated with this park";
 		}
