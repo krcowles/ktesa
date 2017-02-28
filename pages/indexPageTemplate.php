@@ -63,7 +63,6 @@
 					$htmlout .= '</ul>';
 					/* CREATE THE TABLE FROM THE ARRAY STRING: */
 					$indxTbl = $indxArray[29];
-					#echo "Prelim string: " . $indxTbl;
 					$rows = explode("|",$indxTbl);
 					$tblhtml = '<table id="siteIndx">' . "\n" . '<thead>' . "\n" . '<tr>' . "\n";
 					$tblhtml .= '<th class="hdrRow" scope="col">Trail</th>' . "\n";
@@ -98,6 +97,7 @@
 							$tblhtml .= '</tr>' . "\n";
 						}  # end of if row is grayed out...
 					}  #end of row data-processing loop	
+					$tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";
 				}  // end of: if this is the hike
 			}
 			$lineno++;
