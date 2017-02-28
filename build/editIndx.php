@@ -34,10 +34,49 @@
 	   proper means of adding a hike to the Index Page is to edit that hike
 	   and add the Visitor Center association; */
 	# Until database has settled with unencoded tables, the following will not alter data
-	$dirs = rawurldecode($info[25]);
-	$indxInfo = rawurldecode($info[38]);
-	$refs = rawurldecode($info[39]);
-	$indxTbl = rawurldecode($info[29]);
+	$dirs = $info[25];
+	$indxInfo = $info[38];
+	$refs = $info[39];
+	$indxTbl = $info[29];
+	/* The following code is copied from 'indexPageTemplate.php' in order to produce a
+	   readable html file for the user to edit. It will be converted back into a string
+	   array when saved */
+	$rows = explode("|",$indxTbl);
+	$tblhtml = '<table id="siteIndx">' . "\n" . '<thead>' . "\n" . '<tr>' . "\n";
+	$tblhtml .= '<th class="hdrRow" scope="col">Trail</th>' . "\n";
+	$tblhtml .= '<th class="hdrRow" scope="col">Web Pg</th>' . "\n";
+	$tblhtml .= '<th class="hdrRow" scope="col">Trail Length</th>' . "\n";
+	$tblhtml .= '<th class="hdrRow" scope="col">Elevation</th>' . "\n";
+	$tblhtml .= '<th class="hdrRow" scope="col">Exposure</th>' . "\n";
+	$tblhtml .= '<th class="hdrRow" scope="col">Photos</th>'  . "\n";
+	$tblhtml .= '</tr>' . "\n" . '</thead>' . "\n" . '<tbody>' . "\n";
+	$rowcnt = count($rows);
+	#echo "Seeing " . $rowcnt . " rows...";
+	for ($j=0; $j<$rowcnt; $j++) {
+		$row = explode("^",$rows[$j]);
+		# there are always 7 pieces, counting row type
+		if ($row[0] === 'n') {  // "normal" - not grayed out
+			$tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] . '</td>' . "\n";
+			$tblhtml .= '<td><a href="' . $row[2] . '" target="_blank">' . "\n" .
+				'<img class="webShift" src="../images/greencheck.jpg" alt="checkbox" /></a></td>' . "\n";
+			$tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
+			$tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
+			$tblhtml .= '<td><img class="expShift" src="' . $row[5] . '" alt="exposure icon" /></td>' . "\n";
+			$tblhtml .= '<td><a href="' . $row[6] . '" target="_blank">' . "\n" .
+				'<img class="flckrShift" src="../images/album_lnk.png" alt="Photos symbol" /></a></td>' . "\n";
+			$tblhtml .= '</tr>' . "\n";
+		} else {   // $row[0]=g  - grayed out row
+			$tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] . '</td>' . "\n";
+			$tblhtml .= '<td><img class="webShift" src="../images/x-box.png" alt="box with x" /></td>' . "\n";
+			$tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
+			$tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
+			$tblhtml .= '<td class="naShift">N/A</td>' . "\n";
+			$tblhtml .= '<td><img class="flckrShift" src="../images/x-box.png" alt="box with x" /></td>' . "\n";
+			$tblhtml .= '</tr>' . "\n";
+		}  # end of if row is grayed out...
+	}  #end of row data-processing loop	
+	$tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";
+	$indxTbl = $tblhtml;	   
 ?>
 <form action="saveIndxChgs.php" method="POST">
 

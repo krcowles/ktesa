@@ -21,9 +21,10 @@ $('a').on('click', function(e) {
 	e.preventDefault();
 	var $containerCell = $(this).parent();
 	var $containerRow = $containerCell.parent();
-	var hikeToUse = $containerRow.data('indx');
+	var indxToUse = $containerRow.data('indx');
 	if ( $containerRow.hasClass('indxd') ) {
-		var callPhp = 'editIndx.php?hikeNo=' + hikeToUse;
+		var callPhp = 'editIndx.php?hikeNo=' + indxToUse;
+		//var callPhp = 'convertIndxTbls.php?hikeNo=' + indxToUse; TO CONVERT ONE-TIME
 		window.open(callPhp);
 		window.close(window.self);
 	}

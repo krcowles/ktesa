@@ -5,7 +5,7 @@ depending on whether one wishes to create a page, edit a page, or rebuild a page
 	invoke:   enterHike.html  ----> if Hike:      	validateHike.php
 												  	displayHikePg.php
 												  	saveHike.php								
-							  ----> if Index:		makeIndexPg.php
+				   ----> if Index:		makeIndexPg.php
 													saveIndex.php
 														
 														
