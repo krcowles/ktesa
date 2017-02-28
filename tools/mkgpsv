@@ -1,7 +1,7 @@
 #!/bin/bash
 tmpIFS=$IFS
-# VERSION 8.0 -- Use expanded .csv table to include custom icons & marker colors
-#
+# VERSION 8.1 -- Use expanded .csv table to include custom icons & marker colors
+#     add $IFS-related cmds to address spaces between words when performing a read
 # --- Specify starting & default values for shell variables  ----
 #
 # FILESRC is flag indicating if a source file is being specified (-f flag)
