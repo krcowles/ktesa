@@ -55,7 +55,7 @@
 	$clusStr = implode(";",$clusters);
 	$_SESSION['allClusters'] = $clusStr;	
 ?>
-<form action="saveChanges.php" method="POST">
+<form target="_blank" action="saveChanges.php" method="POST">
 <?php
 echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 ?>

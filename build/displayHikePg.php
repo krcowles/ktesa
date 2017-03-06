@@ -532,7 +532,7 @@ $_SESSION['row5'] = $rowStr[5];
 		echo '<div id="pgLoad" style="display:none">force</div>';
 	}
 ?>
-<form action="saveHike.php" method="POST">
+<form target="_blank" action="saveHike.php" method="POST">
 
 <div id="postPhoto">
 	<?php 

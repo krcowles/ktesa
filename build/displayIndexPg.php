@@ -156,7 +156,7 @@ $index[38] = $_POST['hiketxt'];
 	<div id="hdrContainer">
 	<p id="tblHdr">Hiking & Walking Opportunities [EMPTY AT THIS TIME]</p>
 	</div>
-	<form action="saveIndex.php" method="POST">
+	<form target="_blank" action="saveIndex.php" method="POST">
 	<input type="hidden" name="indx[]" value="<?php echo $index[0];?>" />
 	<input type="hidden" name="indx[]" value="<?php echo $index[1];?>" />
 	<input type="hidden" name="indx[]" value="<?php echo $index[2];?>" />

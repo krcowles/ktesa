@@ -78,7 +78,7 @@
 	$tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";
 	$indxTbl = $tblhtml;	   
 ?>
-<form action="saveIndxChgs.php" method="POST">
+<form target="_blank" action="saveIndxChgs.php" method="POST">
 
 <em style="color:DarkBlue;">Any changes below will be made for the Index Page: "<?php echo $indxName;?>". If no changes 
 are made you may either exit this page or hit the "sbumit" button.</em><br /><br />

@@ -16,7 +16,7 @@
 </div> <!-- end of logoBlock -->
 
 <h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>
-<form action="displayHikePg.php" method="POST">
+<form target="_blank" action="displayHikePg.php" method="POST">
 <?php
 // This is where the variables are assigned - eventually to be replaced with database
 $hikeFile = $_FILES['xlfile']['tmp_name'];
