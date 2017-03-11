@@ -17,6 +17,7 @@ $('#area').val(sel);
 
 /* 
  * THE FOLLOWING CODE ADDRESSES EDITS TO CLUSTER ASSIGNMENTS
+ *   - Refer to the state machine for behavior assessment
  */
 var msg;
 var rule = "The specified new group will be added;" + "\n" + 
@@ -113,8 +114,7 @@ $('#ctip').change(function() {  // record any changes to the cluster assignment
 		window.alert("Changes ignored while New Group Box is checked");
 	}
 });
-
-
+// --------- end of cluster processing
 
 // Hike type:
 var htype = $('#ctype').text();
