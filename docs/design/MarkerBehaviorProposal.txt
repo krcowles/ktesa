@@ -1,0 +1,113 @@
+--- MARKER & INFO-WINDOW GROUPINGS - PROPOSED:
+
+1. VISITOR CENTER
+
+NOTE: "Visitor Center" markers will apply to National, State, or Private Parks or Monuments
+      where there is a public building with facilities and park information and/or rangers
+      or other official park representatives:
+      	e.g.  Bandelier National Monument
+      		  Rio Grande Nature Center State Park
+      		  Ghost Ranch
+      		  El Malpais Ranger Station
+      		  
+      "Visitor Centers" will have 0, 1, or many hikes originating at the center (within
+      easy walking distance or very short drive). By definition, these will be referred
+      to as "originating hikes". All "Visitor Center" locations are
+      identified with a green marker pin on the map. The tooltip will display the
+      visitor center name.
+      
+      "Visitor Centers" will have a separate park information page with a park map, information
+      about the park (summary), and links to further information about the park on the web.
+      The park information page will include a table of hikes associated with the park,
+      whether they are in near proximity or remote from the visitor center.
+      		  
+	a. Visitor Center with 0 Hikes Originating: e.g. Petroglyphs National Monument
+	   When clicked, the info window popup will contain the following information:
+			- Name of the Visitor Center, e.g. "Petroglyphs Visitor Center"
+			- Website link to Visitor Center info page, e.g. "Park Information and
+			  Hike Index" [link]
+			- Google map driving directions, e.g. "Directions: <car icon>" [link]
+	    *** Currently popup shows "Visitor Center for Park: <park>"; "Hike Index" [link];
+		    "Directions: <car icon>" [link] ***
+		    
+	b. Visitor Center with 1 Hike Originating: e.g. Chaco Culture National Historical Monument
+	   When clicked, the info window popup will contain the following information:
+			- Name of the Visitor Center, e.g. "Chaco Visitor Center"
+			- Website link to Visitor Center info page, e.g. "Park Information and
+			  Index" [link]
+			- "Hike Available from Visitor Center:" [italics]
+			- Name of originating hike, e.g. "Una Vida Hike: "
+			- Length of hike, e.g. "Lgth: 0.3 mi; "
+			- Elev Change of hike, e.g. "Elev.Chg: 100 ft; "
+			- Difficulty of hike, e.g. "Diff: Easy"
+			- Website link to Hike Page, e.g. "Website" [link]
+			- Google map driving directions, "Directions: <car icon>" [link]
+	    *** Currently popup shows "Visitor Center for Park: <park>"; "Hike Index Pg" [link]
+		    "Directions: <car icon>" [link]  NO ORIGINATING HIKE IS SHOW ***
+		
+	c. Visitor Center with Multiple Hikes Originating: e.g. Bandelier National Monument
+		When clicked, the info window popup will contain the following information:
+			- Name of the Visitor Center, e.g. "Bandelier Visitor Center"
+			- Website link to Visitor Center info page, e.g. "Park Information and
+			  Hike Index" [link]
+			- "Hikes Available From Visitor Center:" [italics]
+			- Hike Info Repeated for EACH HIKE:
+				- Name of originating hike, e.g. "Frey Trail: "
+				- Length of hike, e.g. "Lgth: 3 mi; "
+				- Elev Change of hike, e.g. "Elev.Chg: 550 ft; "
+				- Difficulty of hike, e.g. "Diff: Moderate"
+				- Website link to Hike Page, e.g. "Website" [link]
+			- Google map driving directions, "Directions: <car icon>" [link]
+	    *** Currently popup shows "Visitor Center: About <park> + Hike Table" [link]
+	        "Hikes Available from Visitor Center:" [italics]
+	        "Hike:<hike>; Lgth:3 miles; Elev Chg:550 ft; Diff:Moderate"
+	        "Website" [link] [repeated for all]
+	        "Visitor Center Directions: <car icon>" [link] ***
+	
+2. "CLUSTER" HIKES
+	When multiple trails share a common trailhead, or are in very close proximity,
+	the hikes will be identified as "Cluster Hikes":
+	        e.g. Ski Area Hikes; Chino Mesa; etc.
+	and will be identified with a blue pin on the map. The tooltip will
+	be the common reference for the trails, e.g. "Ski Area Hikes".
+	When clicked, the info window will display the following:
+		- The common reference for the area hikes, e.g. "Ski Area Hikes"
+		- Hike Info Repeated for EACH HIKE:
+				- Name of hike, e.g. "Deception Peak: "
+				- Length of hike, e.g. "Lgth: 6.3 mi; "
+				- Elev Change of hike, e.g. "Elev.Chg: 2300 ft; "
+				- Difficulty of hike, e.g. "Diff: Difficult"
+				- Website link to Hike Page, e.g. "Website" [link]
+		- Google map driving directions, "Directions: <car icon>" [link]
+	*** Currently popup shows: (tooltip is ONE of the hikes at the cluster)
+	    "Hike: <hike>; Lgth: 6.3 miles; Elev Chg: 2300 ft; Diff: Difficult"
+	    "Website" [link] (repeated for each hike)
+	    "Common Trailhead Directions: <car icon> [link] ***
+	
+3. "NORMAL" HIKES
+   When none of the above conditions occur, the hike is considered "normal" and will
+   be designated by a red marker pin on the map. The tooltip will display the hike name.
+   When clicked, the info window will display the following information:
+   		- Name of hike, e.g. "Apache Canyon"
+   		- Length of hike, e.g. "Lgth: 7.1 miles; "
+   		- Elev Change of hike, e.g. "Elev. Chg: 600 ft"
+   		- Difficulty of hike, e.g. "Diff: Moderate"
+   		- Website link to Hike Page, e.g. "Website" [link]
+   		- Google map driving directions, "Directions: <car icon>" [link]
+   	*** Currently popup only differs in the name text, stating: "Hike: Apache Canyon"
+   
+   
+   
+--- TRACK COLORS:
+ 	Track colors will be red, with blue directional arrows, unless they are hikes of the
+ 	"cluster" type. In this case, multiple track colors will be used to identify the 
+ 	various possibilities of the cluster. In addition to the standard color, the additional
+ 	colors will be sequentially assigned as they appear in the index, listed below as constants:
+ */
+ const STANDARD_TRACK = '#FF0000';  // RED
+ const TRACK_ALT1 = '#0000FF';      // BLUE
+ const TRACK_ALT2 = '#14613E';      // DARK GREEN
+ const TRACK_ALT3 = '#943E6E';      // RED-VIOLET
+ const TRACK_ALT4 = '#F27712';      // ORANGE
+
+		

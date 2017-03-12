@@ -1,0 +1,81 @@
+Cluster Assignments:
+
+NOTE: These started off as a single-character letter, but in preparation for future 
+assignments, it seems important to allow for 2 or more characters.
+
+
+I. Create a New Hike Page:
+	A. enterHike.html:
+		Select Radio Button [no size attribution at this point]
+		Pass to validateHike.php as: name="mstyle" value="cluster"
+	B. validateHike.php:
+		If $hikeMarker ($_REQUEST['mstyle']) is "cluster" then:
+			- Create string of array:  'group$name'  and store in $_SESSION['allTips']
+			  NOTE: 'group' is read in from database and is not constrained to a single
+			        letter at this point. Each 'group' is tied to a 'name'.
+			- Display available names in drop-down box and pass to displayHikePg.php as
+			  name="clusgrp" 
+			  NOTE: only clusgrp is passed as the selected item (code specifically checks
+			        for size of "$clusGrp" and may be larger than 1 char);
+			        the string of associations is stored in session memory as 'allTips'
+	C. displayHikePg.php:
+		If $clusGrp ($_POST['clusgrp']) is not empty:
+			NOTE: no size limitation on $clusGrp at this point;
+			$clusGrp is passed to saveHike.php in a hidden input name="hclus"
+			- Search for  (clusGrp)$  string
+			- Get length of above search string
+			- Pull in session memory ($_SESSION['allTips'])
+			- Find the position in the session memory var for which search string begins
+			- Identify the start of the tooltip as right after the search string
+			- Get the end of the tooltip string by first stripping off the beginning part
+			- Next locate the separator " ; " in the remaining string
+			- Extract the tooltip as   $clusTip  (default established as '' earlier)
+			- Pass the tooltip to saveHike.php in a hidden input name="htool"
+			
+	CONCLUSION: No size problems in page creation; sequencing is fine
+	
+II. Edit a hike page:
+	A. hikeEditor.php:
+		No assignments at this point; only select a hike to edit
+	B. editDB.php:
+		Intially, the database is read and the association of group and name is stored
+		in array $clusters:   group$name  (NOTE: no size constraints on group)
+		The $clusters array is imploded into a string separated by " ; " and stored in
+		session memory as $_SESSION['allClusters']. Also stored separately as arrays 
+		are all the groups ($groups) and names ($cnames).
+		
+		The editor displays only the imported group name (if already assigned), and will
+		tie the association later in saveChanges.php;
+		The selected group name is passed to saveChanges.php as name="htool"
+	C. saveChanges.php
+		Establish available cluster group assignments ($availLtrs = A-Z, $doubleLtrs = AA-ZZ)
+		- Get $clusters = session memory ($_SESSION['allClusters'])
+		- Explode as array $clusArray
+		- If marker was formerly NOT cluster type, and is now - change type to 'Cluster'
+		- If adding a NEW cluster, auto-assign from $availLtrs or $doubleLtrs
+		- If group has otherwise changed, get   $passedgrp = $_POST['htool']
+		- For each element in $clusArray:
+			find the field separator ($) + 1 (beginning of tool name)
+			extract the tool name
+			compare to the imported name ($passedgrp), if the same:
+				extract the corresponding group assignment
+				break from the loop
+		- Establish the new paramenters for the database
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
