@@ -1,0 +1,27 @@
+body {
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: arial, verdana;
+	background-color: #dfdfdf;
+	border-style: solid;
+	border-width: 3px;
+	border-color: DarkBlue;
+	text-align: center;
+}
+h1 {
+	color: DarkBlue;
+}
+#countdown {
+	font-size: 36px;
+	color: FireBrick;
+	border-style: solid;
+	border-width: 4px;
+	border-color: DarkBlue;
+	padding: 18px;
+	margin: 24px;
+	width: 240px;
+	margin-left: auto;
+	margin-right: auto;
+}
+	
