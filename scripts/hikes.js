@@ -1,8 +1,44 @@
 $( function () { // when page is loaded...
 
+/* The following global variable assignments are associated with the routines
+ * which manage the filling of rows (with fixed margin).
+ */
+const bodySurplus = $(window).width() - $('body').innerWidth(); // Default browser margin + body border width:
+var maxRow = 0; // width of biggest row on initial page loading (used to maintain consistent margin)
+var initMarg; // this is space between rows of images & page border (calc after maxRow is determined)
+var rowht;
+var imgwd;
+// staging the initial execution
+var resizeFlag = true;  // semaphore: don't execute resize event code if true
+var notInit = true; // state of initial loading process
+var noOfImgs = 0;
+var $rowImgs;  // general purpose var to get list of current images in a row
+var orgImgList = [];  // id/class, height & width of each image consecutively as loaded
+var rowDat = [5]; // each item in orgImgList is an array of [0] attr. type (id or class),
+				  // [1] id/class, [2] height, [3] width, [4] src attribute
+var orgRowCnts = []; // the initial image counts in each row
+var ssdat;  // key-name for data stored in session storage corresponding to orgImgList
+// variables associated with sizing images in rows:
+var unProcSpace = 0;  // used to detect multiple small incremental growth in resizing
+var winWidth = $(window).width(); // initial document width
+var prevWidth = winWidth;
+var minWidth = $('body').css('min-width'); // normally 960
+var pxLoc = minWidth.indexOf('px');
+minWidth = parseFloat(minWidth.substring(0,pxLoc));
+var triggerWidth = minWidth + 40; // nominal 20px on each side
+var tooLittle = 8;  // don't grow images if re-size only increased width by this amount or less
+var rowHts = new Array();
+var rowWds = new Array();
+var rowht;
+// Variables associated with redrawing rows due to changing no of images in rows
+var triggerPoint;
+var redrawn = false;
+var bigRows = [];
+var imgNo;
+/* END of row-fill global variable assignments */
+
 // generic
-var msg;
-var i;
+var msg, i, j, k;
 
 // GPSV map options
 var mapDisplayOpts = '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true';
