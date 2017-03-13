@@ -30,8 +30,9 @@ var imgNo;
 // generic
 var msg, i, j, k;
 
-// Variable used as a basename to construct keys for storing data in session memory
+// Variables used as a basename to construct keys for storing data in session memory
 var ssdat;
+var rowcnt;
 
 // GPSV map options
 var mapDisplayOpts = '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true';
@@ -128,11 +129,13 @@ $('#photoDisplay').on('click', function() {
 	}
 });
 */
+var sessSupport = window.sessionStorage ? true : false
+
 /* problems with refresh in Chrome prompted the use of the following technique
    which "detects" a refresh condition and restores previously loaded values.
    User gets a window alert if sessionStorage is not supported and and is advised
    about potential refresh issues */
-if ( window.sessionStorage ) {
+if ( sessSupport ) {
 	var tst = sessionStorage.getItem('prevLoad');
 	if ( !tst ) { 
 		// NORMAL FIRST-TIME ENTRY:
@@ -141,6 +144,7 @@ if ( window.sessionStorage ) {
 		// get caption locations
 		calcPos(); 
 	} else {  // REFRESH ENTRY
+		//getOrgDat();
 		// retrieve location data
 		for ( i=0; i<noOfPix; i++ ) {
 			pwidth = 'pwidth' + i;
@@ -159,20 +163,25 @@ if ( window.sessionStorage ) {
 		// retrieve initial image data
 		noOfImgs = sessionStorage.getItem('imgCnt');
 		initMarg = sessionStorage.getItem('firstMarg');
+		maxRow = sessionStorage.getItem('mrowwidth');
 		var initRowDat = [];
 		for (i=0; i<noOfImgs; i++) {
 			ssdat = 'ssdat' + i + '_0';
-			initRowDat[0] = sessionStorage.getItem('ssdat');
+			initRowDat[0] = sessionStorage.getItem(ssdat);
 			ssdat = 'ssdat' + i + '_1';
-			initRowDat[1] = sessionStorage.getItem('ssdat');
+			initRowDat[1] = sessionStorage.getItem(ssdat);
 			ssdat = 'ssdat' + i + '_2';
-			initRowDat[2] = sessionStorage.getItem('ssdat');
+			initRowDat[2] = sessionStorage.getItem(ssdat);
 			ssdat = 'ssdat' + i + '_3';
-			initRowDat[3] = sessionStorage.getItem('ssdat');
+			initRowDat[3] = sessionStorage.getItem(ssdat);
 			ssdat = 'ssdat' + i + '_4';
-			initRowDat[4] = sessionStorage.getItem('ssdat');
+			initRowDat[4] = sessionStorage.getItem(ssdat);
 			orgImgList.push(initRowDat);
 			initRowDat = [];
+		}
+		for (j=0; j<noOfRows; j++) {
+			rowcnt = "row" + j + "Count";
+			orgRowCnts[j] = sessionStorage.getItem(rowcnt);
 		}
 	}  // end of session storage value check
 }  else {
@@ -184,7 +193,7 @@ if ( window.sessionStorage ) {
 	calcPos();
 }  // end of session storage IF
 
-if ( window.sessionStorage ) { 
+if ( sessSupport ) { 
 	sessionStorage.setItem('prevLoad','2.71828'); // Euler's number
 }
 // Establish a link below the iframe map for full page map display:
@@ -197,7 +206,7 @@ $('.lnkList').after(htmlLnk);
 /* CALCULATE THE POINT at which the image sizer can add a photo to the first row and re-size
  * If the current winWidth is greater than the width of the page's initially loaded row width
  * PLUS the next available image in the next row (row1), recalculate the number of images per row
- * and resize the rows.
+ * and resize the rows. Note: no need if there is only one row.
  */ 
 if (noOfRows > 1) {
 	var $rowImgs = $($rows[1]).children();
@@ -205,19 +214,18 @@ if (noOfRows > 1) {
 	triggerPoint = maxRow + row1TargWidth;
 	//msg = '<p>calculated triggerPoint is ' + triggerPoint + '</p>';
 	//$('#dbug').append(msg);
+} else {
+	triggerPoint = 10000; // ain't gonna happen
 }
-
-// DOES THIS BELONG HERE????
 // if the winWidth > triggerWidth, grow the rows before proceeding
+// remember that triggerWidth is arbitrarily established during var declarations
 if (winWidth > triggerWidth) {
 	// set previous width to starting point to execute routine properly
 	prevWidth = triggerWidth;
 	//imageSizer(winWidth);
+	window.alert("RESIZE ROWS");
 	prevWidth = winWidth;
 }
-
-
-
 // Now that everything is done, enable events
 eventSet(); // turn on the image events
 initFlag = false; 
@@ -307,7 +315,7 @@ function getOrgDat() {
 			rowDat[3] = parseFloat(this.width);
 			rowDat[4] = this.src; 
 			orgImgList.push(rowDat);
-			if (window.sessionStorage) {
+			if (sessSupport) {
 				// save the data in browser memory
 				ssdat = 'ssdat' + noOfImgs + '_0';
 				sessionStorage.setItem(ssdat, rowDat[0]);
@@ -325,6 +333,10 @@ function getOrgDat() {
 			j++
 		});
 		orgRowCnts.push(j);
+		if (sessSupport) {
+			rowcnt = "row" + i + "Count";
+			sessionStorage.setItem(rowcnt,j);
+		}
 		i++;
 		if ( maxRow < rwidth ) {
 			maxRow = rwidth;  
@@ -334,11 +346,10 @@ function getOrgDat() {
 	if (initMarg < 24) {
 		initMarg = 24;
 	}
-	if (window.sessionStorage) {
+	if (sessSupport) {
 		sessionStorage.setItem('firstMarg',initMarg);
 		sessionStorage.setItem('imgCnt',noOfImgs);
-		//msg = '<p>Total no of images is ' + noOfImgs + '</p>';
-		//$('#dbug').append(msg);
+		sessionStorage.setItem('mrowwidth',maxRow);
 	}
 }		
 // function to capture *current* image widths & map link loc
@@ -347,7 +358,7 @@ function captureWidths() {
 	$images.each( function() {
 		capWidth[i] = this.width + 'px';
 		pwidth = 'pwidth'+ i;
-		if (window.sessionStorage) {
+		if (sessSupport) {
 			sessionStorage.setItem(pwidth,capWidth[i]);
 		}
 		i++;
@@ -360,7 +371,7 @@ function captureWidths() {
 		mapPos = $('iframe').offset();
 		mapLeft = mapPos.left + lnkLoc;
 		mapBot = mapPos.top + mapWidth + 15;
-		if (window.sessionStorage) {
+		if (sessSupport) {
 			sessionStorage.setItem('mleft',mapLeft);
 			sessionStorage.setItem('mbot',mapBot);
 		}
@@ -373,7 +384,7 @@ function calcPos() {
 		picPos = $(picId).offset();
 		capTop[j] = Math.round(picPos.top) + 'px';
 		capLeft[j] = Math.round(picPos.left) + 'px';
-		if ( window.sessionStorage ) {
+		if ( sessSupport ) {
 			ptop = 'ptop' + j;
 			pleft = 'pleft' + j;
 			sessionStorage.setItem(ptop,capTop[j]);
