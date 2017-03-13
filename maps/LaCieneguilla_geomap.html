@@ -47,7 +47,7 @@
 		
 		<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->
 		<script type="text/javascript">
-			/* Global variables used by the GPS Visualizer functions (20170312124938): */
+			/* Global variables used by the GPS Visualizer functions (20170312182301): */
 			gv_options = {};
 			
 			// basic map parameters:
@@ -113,7 +113,8 @@
 			  gv_options.tracklist_options.footer = ''; // HTML code
 
 			// marker-related options:
-			gv_options.default_marker = { color:'red',icon:'googlemini',scale:1 }; // icon can be a URL, but be sure to also include size:[w,h] and optionally anchor:[x,y]
+			gv_options.default_marker = { color:'orange',icon:'googlemini',scale:1 }; // icon can be a URL, but be sure to also include size:[w,h] and optionally anchor:[x,y]
+			gv_options.vector_markers = false; // are the icons on the map in embedded SVG format?
 			gv_options.marker_tooltips = true; // do the names of the markers show up when you mouse-over them?
 			gv_options.marker_shadows = true; // true|false: do the standard markers have "shadows" behind them?
 			gv_options.marker_link_target = '_blank'; // the name of the window or frame into which markers' URLs will load
@@ -127,7 +128,7 @@
 			gv_options.driving_directions = true;  // put a small "driving directions" form in each marker's pop-up window? (override with dd:true or dd:false in a marker's options)
 			gv_options.garmin_icon_set = 'gpsmap'; // 'gpsmap' are the small 16x16 icons; change it to '24x24' for larger icons
 			gv_options.marker_list_options = {};  // options for a dynamically-created list of markers
-			  gv_options.marker_list_options.enabled = false;  // true|false: enable or disable the marker list altogether
+			  gv_options.marker_list_options.enabled = true;  // true|false: enable or disable the marker list altogether
 			  gv_options.marker_list_options.floating = true;  // is the list a floating box inside the map itself?
 			  gv_options.marker_list_options.position = ['RIGHT_BOTTOM',6,38];  // floating list only: position within map
 			  gv_options.marker_list_options.min_width = 160; // minimum width, in pixels, of the floating list
@@ -218,14 +219,14 @@
 				GV_Draw_Marker({lat:35.6027331,lon:-106.1241111,name:'0.9 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'La Cieneguilla [tickmarks]',rotation:2.1,track_number:1,dd:false});
 				GV_Draw_Marker({lat:35.6066035,lon:-106.1224691,name:'1.2 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'La Cieneguilla [tickmarks]',rotation:10.2,track_number:1,dd:false});
 				GV_Draw_Marker({lat:35.6088856,lon:-106.1199634,name:'1.48 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'La Cieneguilla [tickmarks]',rotation:27.5,track_number:1,dd:false});
-				GV_Draw_Marker({lat:35.6027000,lon:-106.1250083,name:'One of many spiral shapes - with crossbars',desc:'Nautilus',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/32559846204/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/1/650/32559846204_9c35ff9b7a_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.6038778,lon:-106.1242750,name:'Hands and spirals are popular themes',desc:'HandSpiral',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33019726270/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/3/2810/33019726270_96c485632c_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.6050028,lon:-106.1238722,name:'Kokopellis abound',desc:'Kokopellis2',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/32559861694/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/4/3882/32559861694_83e9c9e254_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6038778,lon:-106.1242750,name:'Hands and spirals are popular themes',desc:'HandSpiral',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33019726270/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/3/2810/33019726270_96c485632c_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.6039556,lon:-106.1241778,name:'Unknown bird character',desc:'BirdBath',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33246992072/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/1/643/33246992072_8c5d6c962a_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.6035250,lon:-106.1243639,name:'A view from the hills with Kokopelli',desc:'KokopelliVista',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33246998812/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/1/640/33246998812_5f3283ce9a_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.6025972,lon:-106.1250528,name:'Occassionally a saw-tooth style is seen',desc:'OddStyle',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/32559886334/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/4/3693/32559886334_2aaa3b0c06_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.6033889,lon:-106.1246417,name:'Many animals are depicted here',desc:'AnimalKingdom',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33362145746/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/1/718/33362145746_52fc83ed54_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.6034889,lon:-106.1246611,name:'Characters often have odd shapes',desc:'CleftHead',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33247015722/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/4/3874/33247015722_7feb121671_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6027000,lon:-106.1250083,name:'One of many spiral shapes - with crossbars',desc:'Nautilus',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/32559846204/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/1/650/32559846204_9c35ff9b7a_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.6025972,lon:-106.1250528,name:'Occassionally a saw-tooth style is seen',desc:'OddStyle',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/32559886334/in/album-72157681340745155',thumbnail:'https://c1.staticflickr.com/4/3693/32559886334_2aaa3b0c06_q.jpg',folder:'Folder1'});
 				
 				
 				GV_Finish_Map();
@@ -233,7 +234,7 @@
 			  
 			}
 			GV_Map(); // execute the above code
-			// http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=auto
+			// http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_stats=1&units=us&wpt_color=orange&wpt_driving_directions=1&wpt_list=name&add_elevation=auto
 		</script>
 		
 		
