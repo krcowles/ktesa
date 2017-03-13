@@ -1,0 +1,157 @@
+Captions and row-sizing
+
+hike.js is the module containing the code that manages image rows, including caption 
+display and sizing the rows to fill the page. Note that the code for re-sizing only
+occurs when the window is re-sized.
+
+INITIALIZATION:
+1.  The margin available between the window frame and document body is calculated and
+    made available as a constant. This calculation is done once at page load, so it reveals
+    the margin available with the -initial- window size. The minimum body width is 960px, so
+    it is possible that the margin available will be negative. The body min-width is held
+    in the variable 'minWidth'.
+2.  Numerous processing steps must be completed before enabling the row-sizing algorithm.
+    To ensure that these steps are completed, a flag 'notInit' is set on page load, and 
+    not turned off until initialization is completed.
+3.  Since row-sizing is performed whenever the resize event occurs, and that event can
+    trigger in very rapid succession, a semaphore is established to allow the code 
+    execution to complete before being re-invoked. That semaphore is 'resizeFlag'.
+4.  An arbitrary decision was made to allow for 20px of margin on each side of the image
+    row when the window shrinks to minWidth. This is called 'triggerWidth'.
+5.  When the window resizing is rather small, don't bother recalculating rows. The arbitrary
+    value for smallness is held in the  variable 'tooLittle'.
+6.  A variable 'unProcSpace' is established to collect multiple undersized resize events,
+    and is compared to 'tooLittle' to determine if resizing should occur. Initial value
+    is 0.
+7.  The last established window frame size is held in 'prevWidth', so that comparisons
+    with the size after a resize event can be made to determine whether or not row-sizing
+    should occur.
+8.  The data pertaining to number of images in each row, and each image's size when the
+	page is loaded is held in the arrays 'orgRowCnts[]' (no of images per row), and 
+	'orgImgList[]' (image data). When the page shrinks sufficiently, these values are
+	easily recalled and restored. This data is also stored in sessionStorage so that when
+	a refresh occurs, values can be guaranteed (NOTE: there was a problem with Chrome
+	that occurred during page refresh prompting this action). The keyname for the values
+	stored in sessionStorage is 'ssdat', hence ssdatImg#_1, ssdatImg#_2, etc.
+9.  Behavior is different depending on whether maps are present or not. jQuery is used to
+    identify the iframe node, and if not present will set the variable 'mapPresent' to 
+    false. Conditional code then calculates where the link below the iframe will appear.
+10. Map links (in addition to the iframe link) may appear on the page. These are loaded
+    as relative urls (../maps/xyz_geomap.html). These links are reset to point to the
+    php-map processing page to display page-appropriate options (see 'mapDisplayOpts').
+11. Variables associated with establishing caption pop-up locations and behaviors are
+    presented next.
+    
+    
+MAIN ROUTINE EXECUTION:
+1.  Processing is contingent upon whether or not the browser supports
+    sessionStorage. Most browser do, but if not, the user is alerted so that expectations
+    of performance can be established.
+2.  Since there is no javascript method to detect when a page refresh occurs, the following
+    method was established in attempt to do so (note this code was put in place due to
+    unexpected performance on Chrome when executing a page refresh):
+    	-- IF Window sessionStorage is supported:
+    	a. On initial page load, there will be no pre-defined value stored in sessionStorage
+    	   for the variable 'prevLoad'. In that case, the code after the "NORMAL ENTRY" comment
+    	   will be executed, which simply captures the incoming data from the page load.
+    	   (This code is detailed below: DATA CAPTURE); The statement following the 
+    	   conditional test for 'prevLoad' will establish 'prevLoad' after-the-fact.
+    	b. If 'prevLoad' exists, then the initial page-loaded data is recovered from
+    	   sessionStorage, rather than being re-calculated. This code is listed after the
+    	   "REFRESH ENTRY" comment.
+    	-- IF Window sessionStorage is NOT supported:
+    	a. A message is displayed to the user advising him/her that sessionStorage is not
+    	   supported and that page refresh problems may result.
+    	b. Page-loaded data is calculated and variables for execution are established.
+3.  If an iframe is present, a link for full-page map display is established and placed
+    directly below the iframe.
+4.  At this point, the 'triggerPoint' is established allowing the image-sizer to know 
+	when there is sufficient reason to add an image to the 0th row and size the row 
+	accordingly. * NOTE: AVOID CONFUSION WITH var 'triggerWidth'!
+    This point has been (arbitrarily) established as the width of the next picture after 
+    the end of row0 (i.e. the img width of the first img in row1). When the maxRow width
+    exceeds this value, recalculate rows. If there is only one row, skip this step.
+5.  Here the var 'triggerWidth' is used to see if resizing of rows is necessary after 
+	page load: it is arbitrarily set as body min-width + 40;
+6.  Event triggering with respect to images is collected together in a function [eventSet()]
+    This is so that the resizer can collectively turn on and off these events while it is
+    resizing the rows. At this point in the initial page load, eventSet() can be invoked.
+7.  The image sizer needs to know if this is an initial page load, or an resize event.
+    The 'initFlag' flag is set to false here so that the routine can differentiate.
+8.  Allow resizing to take place by setting 'resizeFlag' to false.
+
+1.  Set up each picture such that when a mouseover event occurs, the cursor changes style
+    to indicate to the user that it can be clicked on to go to the photo album directly.
+5.  Make sure images have a z-index smaller than the caption z-index (here, z-index=1);
+5.  Establish the photo mouseover event to call the function picPop() (turn on caption)
+6.  Establish the photo mouseout event to turn off a photo caption
+7.  Establish the photo click event to open the corresponding photo album page
+    	
+DATA CAPTURE FUNCTIONS:
+1.  The getOrgDat() function: called on page load (normal entry):
+	a. This routine calculates each row's width, and saves the largest in the 'maxRow' 
+	   variable. Note that the rows widths will vary by only a few pixels.
+	b. Each row's image data is stored in the rowDat[] array: 0 => class/id; 
+	   1 => value of class/id; 2 => img height; 3 => img width; 4 => image src.
+	   The data is stored in session memory (if supported).
+	c. The image data from above is stored in the array 'orgImgList[]' for active use
+	   by the sizing routine.
+	d. The number of images in each row on page load is stored in the 'orgRowCnts[]' array.
+	   *** NOTE: should this be stored in sessionStorage too????
+	e. Once the row data is captured and the max row width is known, the 'initMarg' var
+	   is calculated to determine how much margin should be maintained between the rows
+	   and the border during resizes. (Half of this value at each end). This var is 
+	   also stored in sessionStorage for refresh retrieval.
+2.  The captureWidths() function: called on page load (normal entry):
+	a. Establish the width for each image that has a caption so that the caption will
+	   display within the boundaries of the image. The values are stored in the 
+	   'capWidth[]' array. If supported, the data is also saved in sessionStorage as
+	   'pwidth0', 'pwidth1', etc.
+	b. If an iframe is present, capture its position in order to determine where to 
+	   place the constructed full-page map link. The critical values 'mapLeft' and 
+	   'mapBot' are stored in sessionStorage (if supported) as 'mleft' and 'mbot' 
+	   respectively.
+3.  The calcPos() function: called on page load (normal entry):
+	a. For each photo, establish the top and left position and store in the arrays
+	   'capLeft[]' and 'capTop[]'.
+	b. Save each of the above in sessionStorage, if supported, as 'ptop0', 'ptop1', ...
+	   and 'pleft0', 'pleft1', ...
+
+CAPTION POP-UP FUNCTIONS:
+1.  The picPop() function: called when there is a mouseover event on a photo: (id=pic...)
+    a. Get the caption from the photo's target pic no. ( desc[picNo] )
+    b. Form the caption and location from the target's capWidth, capTop, and capLeft arrays
+    c. Place (prepend) the description in the 'popupCap' div on the page
+    d. Turn on the display of the div (z-index high enough to appear on top of the photo)
+    e. The caption will be removed from the div and its display turned off on mouseout (but
+       that is not part of this function)
+
+PROCESSING WINDOW RESIZE EVENTS:
+
+ 
+	
+	WHAT'S IN SESSIONSTORAGE"
+	1. 'prevLoad' - needed for refresh detection
+	2. 'rowDat' values for each image:  'ssdatImg#_0', 'ssdatImg#_1', etc. stored in 
+	   the array: 'orgImgList[]'
+	3. 'firstMarg' - initial margin to be used in keeping constant margins on rows for resize
+	4. 'ImgCnt' - total number of images
+	5. 'row0Count', 'row1Count', etc. : no of images in corresponding row placed in array
+	   'orgRowCnts[]'
+	6. 'pwidth0', 'pwidth1', etc. (photo widths)
+	7. 'mleft' (map left position) and 'mbot' (map bottom position) 
+	8. 'ptop0', 'ptop1', ...
+	9. 'pleft0', 'pleft1', ...
+	
+	
+	
+	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
