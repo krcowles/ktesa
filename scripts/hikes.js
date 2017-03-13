@@ -4,7 +4,7 @@ $( function () { // when page is loaded...
  * which manage the sizing of rows (with fixed margin as window frame grows/shrinks).
  */
 // window size and margin calculations; NOTE: innerWidth provides the dimension inside the border
-var winWidth = $(window).width(); // initial document width
+var winWidth = $(window).width(); // document width at page load
 const bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
 var maxRow = 0; // width of biggest row on initial page loading (used to maintain consistent margin)
 var initMarg; // this is space between rows of images & page border (calc after maxRow is determined)
@@ -12,7 +12,7 @@ var minWidth = $('body').css('min-width'); // normally 960
 var pxLoc = minWidth.indexOf('px');
 minWidth = parseFloat(minWidth.substring(0,pxLoc));
 // staging the initial execution
-var notInit = true; // state of initial loading process
+var initFlag = true; // state of initial loading process
 var resizeFlag = true;  // semaphore: don't execute resize event code if true
 var noOfImgs = 0;
 var unProcSpace = 0;  // used to detect multiple small incremental growth in resizing
@@ -111,9 +111,6 @@ var ptop;
  *      The operation of the code is somewhat dependent on whether or not sessionStorage
  *      is available with the browser used, which most browsers support.
  */
-$images.each( function() {
-	$(this).css('cursor','pointer');
-});
 /* Not implemented at this time....
 // HIDE/SHOW images on click: definition:
 $('#photoDisplay').on('click', function() {
@@ -144,7 +141,6 @@ if ( window.sessionStorage ) {
 		// get caption locations
 		calcPos(); 
 	} else {  // REFRESH ENTRY
-		getOrgDat();
 		// retrieve location data
 		for ( i=0; i<noOfPix; i++ ) {
 			pwidth = 'pwidth' + i;
@@ -160,6 +156,24 @@ if ( window.sessionStorage ) {
 			ptop = 'ptop' + i;
 			capTop[i] = sessionStorage.getItem(ptop);
 		}
+		// retrieve initial image data
+		noOfImgs = sessionStorage.getItem('imgCnt');
+		initMarg = sessionStorage.getItem('firstMarg');
+		var initRowDat = [];
+		for (i=0; i<noOfImgs; i++) {
+			ssdat = 'ssdat' + i + '_0';
+			initRowDat[0] = sessionStorage.getItem('ssdat');
+			ssdat = 'ssdat' + i + '_1';
+			initRowDat[1] = sessionStorage.getItem('ssdat');
+			ssdat = 'ssdat' + i + '_2';
+			initRowDat[2] = sessionStorage.getItem('ssdat');
+			ssdat = 'ssdat' + i + '_3';
+			initRowDat[3] = sessionStorage.getItem('ssdat');
+			ssdat = 'ssdat' + i + '_4';
+			initRowDat[4] = sessionStorage.getItem('ssdat');
+			orgImgList.push(initRowDat);
+			initRowDat = [];
+		}
 	}  // end of session storage value check
 }  else {
 	window.alert('Browser does not support Session Storage\nRefresh may cause problems');
@@ -169,6 +183,7 @@ if ( window.sessionStorage ) {
 	// get caption locations
 	calcPos();
 }  // end of session storage IF
+
 if ( window.sessionStorage ) { 
 	sessionStorage.setItem('prevLoad','2.71828'); // Euler's number
 }
@@ -179,40 +194,87 @@ if (mapPresent) {
 		mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
 $('.lnkList').after(htmlLnk);
 }
-// popup a description when mouseover a photo
-$images.css('z-index','1'); // keep pix in the background
-$images.on('mouseover', function(ev) {
-	var eventObj = ev.target;
-	picSel = eventObj.id;
-	var picHdr = picSel.substring(0,3);
-	if ( picHdr == 'pic' ) {
-		picPop(picSel);
-	}
-});
-// kill the popup when mouseout
-$images.on('mouseout', function() {
-	$('.popupCap > p').remove();
-	$('.popupCap').css('display','none');
-});
-// clicking images:
-$images.on('click', function(ev) {
-	var clickWhich = ev.target;
-	var picSrc = clickWhich.id;
-	var picHdr = picSrc.substring(0,3);
-	// again, no id for class='chart', hence no album links
-	if ( picHdr == 'pic' ) {
-		var picIndx = picSrc.indexOf('pic') + 3;
-		var picNo = picSrc.substring(picIndx,picSrc.length);
-		var j = 0;
-		$('.lnkList li').each( function() {
-			if ( j == picNo ) {
-				FlickrLnk = this.textContent;
-			}
-			j++;
-		});
-		window.open(FlickrLnk);
-	}
-}); 
+/* CALCULATE THE POINT at which the image sizer can add a photo to the first row and re-size
+ * If the current winWidth is greater than the width of the page's initially loaded row width
+ * PLUS the next available image in the next row (row1), recalculate the number of images per row
+ * and resize the rows.
+ */ 
+if (noOfRows > 1) {
+	var $rowImgs = $($rows[1]).children();
+	var row1TargWidth = $($rowImgs[0]).width();
+	triggerPoint = maxRow + row1TargWidth;
+	//msg = '<p>calculated triggerPoint is ' + triggerPoint + '</p>';
+	//$('#dbug').append(msg);
+}
+
+// DOES THIS BELONG HERE????
+// if the winWidth > triggerWidth, grow the rows before proceeding
+if (winWidth > triggerWidth) {
+	// set previous width to starting point to execute routine properly
+	prevWidth = triggerWidth;
+	//imageSizer(winWidth);
+	prevWidth = winWidth;
+}
+
+
+
+// Now that everything is done, enable events
+eventSet(); // turn on the image events
+initFlag = false; 
+resizeFlag = false;
+
+
+/* EVENT MANAGEMENT DURING A RE-SIZE and RECALCULATION OF ROWS
+ * During a resize, all the events associated with setting up captions and links
+ * are contained in a function call. This way, all events can be enabled together, or
+ * turned off together (see killEvents). Obviously, eventSet is also called after page load.
+ */
+function eventSet() {
+	$images.each( function() {
+		$(this).css('cursor','pointer');
+	});
+	// popup a description when mouseover a photo
+	$images.css('z-index','1'); // keep pix in the background
+	$images.on('mouseover', function(ev) {
+		var eventObj = ev.target;
+		picSel = eventObj.id;
+		var picHdr = picSel.substring(0,3);
+		if ( picHdr == 'pic' ) {
+			picPop(picSel);
+		}
+	});
+	// kill the popup when mouseout
+	$images.on('mouseout', function() {
+		$('.popupCap > p').remove();
+		$('.popupCap').css('display','none');
+	});
+	// clicking images:
+	$images.on('click', function(ev) {
+		var clickWhich = ev.target;
+		var picSrc = clickWhich.id;
+		var picHdr = picSrc.substring(0,3);
+		// again, no id for class='chart', hence no album links
+		if ( picHdr == 'pic' ) {
+			var picIndx = picSrc.indexOf('pic') + 3;
+			var picNo = picSrc.substring(picIndx,picSrc.length);
+			var j = 0;
+			$('.lnkList li').each( function() {
+				if ( j == picNo ) {
+					FlickrLnk = this.textContent;
+				}
+				j++;
+			});
+			window.open(FlickrLnk);
+		}
+	}); 
+}
+// turn off events during resize until finished resizing
+function killEvents() {
+	$images.off('mouseover');
+	$images.off('mouseout');
+	$images.off('click');    // specifying multiple events in one call gave error
+	$images = null;
+}
 
 /* SOME FUNCTIONS TO SIMPLIFY MAIN ROUTINE CALLS:
  *  1. Function to capture -Initially Loaded- image data and save it in Session 
@@ -337,31 +399,35 @@ function picPop(picTarget) {
 }
 
 
-/* PROCESSING WINDOW RESIZES AS EVENTS
- * Re-establish photo locations to recalculate captions
- * as well as the iframe full-page map link, if present
+/* PROCESSING WINDOW RESIZE EVENTS
+ * Re-establish photo locations to recalculate captions, as well as the iframe 
+ * full-page map link, if present;
+ * Note: the semaphore 'resizeFlag' prevents multiple recursive calls during rapid
+ * resize triggering. The timeout allows a quiet period until another trigger can occur.
  */
 $(window).resize( function() {
-	calcPos();  // note: resets position-based session memory variables as well
-	if (mapPresent) {
-		mapWidth = $maps.attr('width');
-		mapWidth = parseFloat(mapWidth);
-		lnkLoc = ( mapWidth - 160 ) / 2;
-		mapPos = $maps.offset();
-		mapLeft = mapPos.left + lnkLoc;
-		mapBot = mapPos.top + mapWidth + 15;
-		if ( window.sessionStorage ) {
-			sessionStorage.setItem('mleft',mapLeft);
-			sessionStorage.setItem('mbot',mapBot);
-		}
-		// place link to full-size map below iframe;
-		var mapLinkNode = document.getElementById('mapLnk');
-		var mapLinkContainer = mapLinkNode.parentNode;
-		mapLinkContainer.removeChild(mapLinkNode);
-		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-				mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
-		$('.lnkList').after(htmlLnk);
-	}
+	if (resizeFlag === false) {
+		resizeFlag = true;
+		setTimeout( function() {	
+			winWidth = $(window).width();  // get new window width
+			//imageSizer(winWidth);
+			prevWidth = winWidth;
+			// now re-calc image & iframe positions
+			captureWidths();
+			calcPos();
+			if (mapPresent) {
+				// place link to full-size map below iframe;
+				var lnkNode = document.getElementById('mapLnk');
+				var lnkParent = lnkNode.parentNode;
+				lnkParent.removeChild(lnkNode);
+				var mapLnk = $('iframe').attr('src');
+				htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
+						mapBot + 'px;" href="' + mapLnk + '" target="_blank">Click for full-page map</a>';
+				$('.lnkList').after(htmlLnk);	
+			}
+			resizeFlag = false;  // can now process another resize event
+		}, 400);
+	}  // end of resizeFlag = false
 });
 
 });
