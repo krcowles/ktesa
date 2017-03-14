@@ -32,14 +32,18 @@ INITIALIZATION:
 	easily recalled and restored. This data is also stored in sessionStorage so that when
 	a refresh occurs, values can be guaranteed (NOTE: there was a problem with Chrome
 	that occurred during page refresh prompting this action). The keyname for the values
-	stored in sessionStorage is 'ssdat', hence ssdatImg#_1, ssdatImg#_2, etc.
-9.  Behavior is different depending on whether maps are present or not. jQuery is used to
+	stored in sessionStorage is 'ssdat', hence ssdatImg#_1, ssdatImg#_2, etc., as well as
+	in row#Count.
+9.  Some variables are used to pass information to the image sizer, and status as to 
+	whether or not the rows have been redrawn and now contain more images per row than at
+	load time. The flag 'redrawn' is true if imgs/row has increased.
+10. Behavior is different depending on whether maps are present or not. jQuery is used to
     identify the iframe node, and if not present will set the variable 'mapPresent' to 
     false. Conditional code then calculates where the link below the iframe will appear.
-10. Map links (in addition to the iframe link) may appear on the page. These are loaded
+11. Map links (in addition to the iframe link) may appear on the page. These are loaded
     as relative urls (../maps/xyz_geomap.html). These links are reset to point to the
     php-map processing page to display page-appropriate options (see 'mapDisplayOpts').
-11. Variables associated with establishing caption pop-up locations and behaviors are
+12. Variables associated with establishing caption pop-up locations and behaviors are
     presented next.
     
     
@@ -71,28 +75,36 @@ MAIN ROUTINE EXECUTION:
     This point has been (arbitrarily) established as the width of the next picture after 
     the end of row0 (i.e. the img width of the first img in row1). When the maxRow width
     exceeds this value, recalculate rows. If there is only one row, skip this step.
-5.  Here the var 'triggerWidth' is used to see if resizing of rows is necessary after 
+5.  At this point the var 'triggerWidth' is used to see if resizing of rows is necessary after 
 	page load: it is arbitrarily set as body min-width + 40;
 6.  Event triggering with respect to images is collected together in a function [eventSet()]
     This is so that the resizer can collectively turn on and off these events while it is
     resizing the rows. At this point in the initial page load, eventSet() can be invoked.
-7.  The image sizer needs to know if this is an initial page load, or an resize event.
+7.  The image sizer needs to know if this is an initial page load, or a resize event.
     The 'initFlag' flag is set to false here so that the routine can differentiate.
 8.  Allow resizing to take place by setting 'resizeFlag' to false.
 
+
+
+EVENT SETUP FUNCTION: (NOTE: NOT Window Resize Event)
 1.  Set up each picture such that when a mouseover event occurs, the cursor changes style
     to indicate to the user that it can be clicked on to go to the photo album directly.
-5.  Make sure images have a z-index smaller than the caption z-index (here, z-index=1);
-5.  Establish the photo mouseover event to call the function picPop() (turn on caption)
-6.  Establish the photo mouseout event to turn off a photo caption
-7.  Establish the photo click event to open the corresponding photo album page
+2.  Make sure images have a z-index smaller than the caption z-index (here, z-index=1);
+3.  Establish the photo mouseover event to call the function picPop() (turn on caption)
+4.  Establish the photo mouseout event to turn off a photo caption
+5.  Establish the photo click event to open the corresponding photo album page
+EVENT KILL FUNCTION:
+Disable the above functions, and set the jQuery $images object to null so that it will be
+re-configured with correctly identified images.
+ 
     	
 DATA CAPTURE FUNCTIONS:
 1.  The getOrgDat() function: called on page load (normal entry):
 	a. This routine calculates each row's width, and saves the largest in the 'maxRow' 
 	   variable. Note that the rows widths will vary by only a few pixels.
 	b. Each row's image data is stored in the rowDat[] array: 0 => class/id; 
-	   1 => value of class/id; 2 => img height; 3 => img width; 4 => image src.
+	   1 => value of class/id; 2 => img height; 3 => img width; 4 => image src;
+	   5 => img alt desc if applicable;
 	   The data is stored in session memory (if supported).
 	c. The image data from above is stored in the array 'orgImgList[]' for active use
 	   by the sizing routine.
@@ -127,21 +139,59 @@ CAPTION POP-UP FUNCTIONS:
        that is not part of this function)
 
 PROCESSING WINDOW RESIZE EVENTS:
-
+1. The restoreOrgDat() function: called either by the image-sizer when the window shrinks
+   to or below the triggerWidth, or by the redrawRows function when it is redrawing rows
+   to reduce the number of images back to the original state before resizing to fit.
+   a. A loop is established to step through each of the original rows (page load time)
+   b. Each row is enclosed in a <div> tag with id="row#" and class="ImgRow"
+   c. Html is added to the div for each image, limit determined by the no. of images in
+      that row at load time (orgRowCnts).
+2. The imageSizer(targWidth) function: called by the resize event, or at load time when image
+   space consumed is small in comparison to available space. The parameter 'targWidth' is
+   the current value of the window size (width). There are primarily two situations 
+   addressed by this routine:
+    a. The new winWidth is less than or equal to the triggerWidth (min-width+40). When this
+       is the case, the image size & placement is returned to its value established at
+       load time (all original data is calculated based on a 960px wide frame).
+       i. The value of 'prevWidth' plays a critical role in determining whether or not
+          action should be taken. If it, too, is less than or equal to triggerWidth, then
+          the adjustments have already taken place - no need to re-perform them.
+      ii. If it was not previously restored to this setting, then perform the restoration
+          process. 
+           - turn off event processing [ killEvents() ]
+           - call restoreOrgDat to re-establish the row html
+           - no of rows can never decrease, but may increase due to increased img sizes,
+             therefore, check to see if there are additional rows which need to be 
+             nulled out
+           - re-establish the picture width and picture position data
+           - turn on event processing  [ eventSet() ]
+      iv. 
+       
+    b. The new minWidth is larger than the triggerWidth.
  
 	
-	WHAT'S IN SESSIONSTORAGE"
-	1. 'prevLoad' - needed for refresh detection
-	2. 'rowDat' values for each image:  'ssdatImg#_0', 'ssdatImg#_1', etc. stored in 
-	   the array: 'orgImgList[]'
-	3. 'firstMarg' - initial margin to be used in keeping constant margins on rows for resize
-	4. 'ImgCnt' - total number of images
-	5. 'row0Count', 'row1Count', etc. : no of images in corresponding row placed in array
-	   'orgRowCnts[]'
-	6. 'pwidth0', 'pwidth1', etc. (photo widths)
-	7. 'mleft' (map left position) and 'mbot' (map bottom position) 
-	8. 'ptop0', 'ptop1', ...
-	9. 'pleft0', 'pleft1', ...
+	
+2. The redrawRows(direction) function: called by imageSizer when warranted. The direction
+   is either increase or decrease no of images in rows.
+   
+   
+   
+   
+   
+   
+   
+WHAT'S IN SESSIONSTORAGE"
+1. 'prevLoad' - needed for refresh detection
+2. 'rowDat' values for each image:  'ssdatImg#_0', 'ssdatImg#_1', etc. stored in 
+   the array: 'orgImgList[]'
+3. 'firstMarg' - initial margin to be used in keeping constant margins on rows for resize
+4. 'ImgCnt' - total number of images
+5. 'row0Count', 'row1Count', etc. : no of images in corresponding row placed in array
+   'orgRowCnts[]'
+6. 'pwidth0', 'pwidth1', etc. (photo widths)
+7. 'mleft' (map left position) and 'mbot' (map bottom position) 
+8. 'ptop0', 'ptop1', ...
+9. 'pleft0', 'pleft1', ...
 	
 	
 	

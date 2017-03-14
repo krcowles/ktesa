@@ -28,7 +28,7 @@ var bigRows = [];
 var imgNo;
 
 // generic
-var msg, i, j, k;
+var msg, i, j, k, n;
 
 // Variables used as a basename to construct keys for storing data in session memory
 var ssdat;
@@ -176,6 +176,8 @@ if ( sessSupport ) {
 			initRowDat[3] = sessionStorage.getItem(ssdat);
 			ssdat = 'ssdat' + i + '_4';
 			initRowDat[4] = sessionStorage.getItem(ssdat);
+			ssdat = 'ssdat' + i + '_5';
+			initRowDat[5] = sessionStorage.getItem(ssdat);
 			orgImgList.push(initRowDat);
 			initRowDat = [];
 		}
@@ -222,15 +224,13 @@ if (noOfRows > 1) {
 if (winWidth > triggerWidth) {
 	// set previous width to starting point to execute routine properly
 	prevWidth = triggerWidth;
-	//imageSizer(winWidth);
-	window.alert("RESIZE ROWS");
+	imageSizer(winWidth);
 	prevWidth = winWidth;
 }
 // Now that everything is done, enable events
 eventSet(); // turn on the image events
 initFlag = false; 
 resizeFlag = false;
-
 
 /* EVENT MANAGEMENT DURING A RE-SIZE and RECALCULATION OF ROWS
  * During a resize, all the events associated with setting up captions and links
@@ -314,6 +314,11 @@ function getOrgDat() {
 			rwidth += parseFloat(this.width);
 			rowDat[3] = parseFloat(this.width);
 			rowDat[4] = this.src; 
+			if ( $(this).attr('alt') !== 'undefined' ) {
+				rowDat[5] = $(this).attr('alt');
+			} else {
+				rowDat[5] = '';
+			}
 			orgImgList.push(rowDat);
 			if (sessSupport) {
 				// save the data in browser memory
@@ -327,6 +332,8 @@ function getOrgDat() {
 				sessionStorage.setItem(ssdat, rowDat[3]);
 				ssdat = 'ssdat' + noOfImgs + '_4';
 				sessionStorage.setItem(ssdat, rowDat[4]);
+				ssdat = 'ssdat' + noOfImgs + '_5';
+				sessionStorage.setItem(ssdat, rowDat[5]);
 			}
 			noOfImgs++;
 			rowDat = [];  //  orgImgList.push will NOT work properly without this!!!
@@ -421,7 +428,7 @@ $(window).resize( function() {
 		resizeFlag = true;
 		setTimeout( function() {	
 			winWidth = $(window).width();  // get new window width
-			//imageSizer(winWidth);
+			imageSizer(winWidth);
 			prevWidth = winWidth;
 			// now re-calc image & iframe positions
 			captureWidths();
@@ -441,4 +448,287 @@ $(window).resize( function() {
 	}  // end of resizeFlag = false
 });
 
-});
+/* ROW-SIZING AND RE-DRAWING FUNCTIONS: CALLED AS NEEDED FROM RESIZE (or LOAD-TIME)
+ * The last two functions do the work of re-sizing (same no of images per row as 
+ * previously maintained) or re-drawing (when more or fewer images per row can
+ * or should be supported). Re-sizing is conditional - if the resize has grown or
+ * shrunk the window frame 'available space' in excess of 'tooLittle'. Re-draws are
+ * dependent on the increase being sufficiently large to accommodate another picture
+ * (based on size at load time) in a row, or conversely, the decrease is sufficiently 
+ * large to warrant reducing the number of images per row. redrawRows() is only called
+ * from the imageSizer() function.
+ */
+ function restoreOrgDat() {
+ 	var rowHtml;
+ 	imgNo = 0;
+	for (k=0; k<orgRowCnts.length; k++) {  // each row in the original page load
+		rowHtml = '<div id="row' + k + '" class="ImgRow">';
+		for (n=0; n<orgRowCnts[k]; n++) {  // each img in the original row
+			if (n === 0) {
+				picMarg = '""'; 
+			} else {
+				picMarg = '"margin-left:1px;"';
+			}
+			if (orgImgList[imgNo][1] === 'theMap') {
+				rowHtml += '<iframe style=' + picMarg + ' id="theMap" height="' + 
+				   orgImgList[imgNo][2] + '" width="' + orgImgList[imgNo][2] + '" src="' +
+				   orgImgList[imgNo][4] + '"></iframe>';
+			} else {
+				// construct non-map item	
+				rowHtml += '<img style=' + picMarg + ' ' + orgImgList[imgNo][0] + '="' + 
+					orgImgList[imgNo][1] + '" height="' + orgImgList[imgNo][2] + 
+					'" width="' + orgImgList[imgNo][3] + '" src="' + orgImgList[imgNo][4] +
+					'" alt="' + orgImgList[imgNo][5] + '" />';
+			}
+			imgNo++;
+		}  // end of single row creation for loop
+		rowHtml += '</div>';
+		$($rows[k]).replaceWith(rowHtml);
+	}  // end of row-creation for loop
+}
+function imageSizer(targWidth) {
+	// local vars
+	var newWidth;
+	var $imgInRow;
+	var newStyle;
+	var newImgHtml;
+	var space;
+	var runAlgorithm = true;
+	var nxtWidth;
+	var curWidth;
+	var scaling;
+	var newHt;
+	var imgWidth;
+	var nxtImgWidth;
+	if (targWidth <= triggerWidth) {  // then restore to original size
+		if (prevWidth > triggerWidth) {
+			// don't bother if previous width was already <= triggerWidth; already restored
+			killEvents();
+			restoreOrgDat();			
+			// were there additional rows owing to increased image size?
+			if (redrawn) {
+				var orgCnt = orgRowCnts.length; // original no of rows when loaded
+				var excess = noOfRows - orgCnt;
+				var indx;
+				for (i=0; i<excess; i++) {  // won't execute if excess == 0
+					indx = orgCnt + i;
+					$rows[indx] = null;
+				}
+				noOfRows = $rows.length;
+			}
+			// test process
+			if (noOfRows !== orgRowCnts.length) {
+				window.alert("Resize no of rows got garbled");
+			}
+			$images = $('img[id^="pic"]');
+			captureWidths();
+			calcPos();
+			eventSet();
+		} // end of restore to original
+	} else { // all other cases...
+	    return;
+		if (targWidth >= prevWidth) {
+			// don't bother if increase is too small...
+			space = targWidth - prevWidth;
+			if ( space <= tooLittle ) {
+				runAlgorithm = false;
+				unProcSpace += space;
+				msg = '<p>Incremental: ' + unProcSpace + 'px</p>';
+				$('#dbug').append(msg);
+				if ( unProcSpace > tooLittle ) {
+					space = unProcSpace;
+					unProcSpace = 0;
+					runAlgorith = true;
+				}
+			} 
+		} 
+		if ( runAlgorithm === true ) { 
+			msg = '<p>Incoming targWidth is ' + targWidth + ', initMarg is ' + initMarg + '</p>';
+			$('#dbug').append(msg);
+			
+			
+			
+			// NOTE ********* what if bodySurplus is negative?????
+			nxtWidth = targWidth - bodySurplus - initMarg;
+			msg = '<p>Next space available is ' + nxtWidth + '</p>';
+			$('#dbug').append(msg);
+			// check to see if need to redraw rows due to growth or shrinkage:
+			if (redrawn === false && nxtWidth >= triggerPoint ) {
+				redrawRows('grow');
+			} else { 
+				if (redrawn === true && nxtWidth < triggerPoint) {
+					redrawRows('shrink');
+					msg = '<p>Returned from shrink subroutine</p>';
+					$('#dbug').append(msg);
+				}
+			}
+			msg = '<p>New width for row is ' + nxtWidth + '</p>';
+			$('#dbug').append(msg);
+			$rows.each( function() {
+				$imgInRow = $(this).children();
+				// get current row widths to calculate scaling factor
+				curWidth = 0;
+				$imgInRow.each( function() {
+					curWidth += parseFloat(this.width);
+				});
+				scaling = nxtWidth/curWidth;  // either larger or smaller...
+				newHt = Math.floor(scaling * $imgInRow[0].height)
+				newWidth = 0;
+				$imgInRow.each( function() {
+					if (newWidth === 0) {
+						newStyle = '""';
+					} else {
+						newStyle = '"margin-left:1px;"';
+					}
+					imgWidth = Math.floor(scaling * this.width);
+					if (this.id == 'theMap') {
+						newImgHtml = '<iframe id="theMap" style=' + newStyle +
+							' height="' + newHt + '" width="' + newHt + '" src="' +
+							this.src + '"></iframe>';
+					} else {
+						newImgHtml = '<img id="' + this.id + '" style=' + newStyle +
+							' height="' + newHt + '" width="' + imgWidth + '" src="' +
+							this.src + '" alt="" />';
+					}
+					$(this).replaceWith(newImgHtml);
+					newWidth = 100; // anything but 0
+					
+				});  // end of processing each image in the row
+			});  // end of processing each row
+			$images = $('img[id^="pic"]');
+			if ( initFlag === false ) {
+				captureWidths();
+				calcPos();
+				eventSet();
+			}
+		} // end of "run algorithm" section
+	} // end of else (re-size rows)
+} // end of imageSizer function
+function redrawRows(direction) {
+	var remaining = noOfImgs;
+	var imgIndx = 0;
+	var dynIndx;
+	var bigRowHt;
+	var widthAdj; 
+	var thisImg;
+	var imgSrc;
+	var rowHtml;
+	
+	if (direction === 'grow') {
+		msg = '<p>Add image to first row and redraw</p>';
+		$('#dbug').append(msg);
+		// re-calculate no of images per row and no of rows:
+		if (noOfRows != 1) {  // unlikely, but just in case
+			for (i=0; i<noOfRows; i++) {
+				bigRows[i] = $($rows[i]).children().length + 1
+				if (remaining > bigRows[i]) {
+					remaining -= bigRows[i];
+				} else {
+					bigRows[i] = remaining;
+					break;
+				}
+			}
+		}
+		// remake the new row html (all same hts) and replace current row html
+		for (j=0; j<bigRows.length; j++) {
+			rowHtml = '<div id="row' + j + '" class="ImgRow">';
+			dynIndx = imgIndx + bigRows[j];
+			for (k=imgIndx; k<dynIndx; k++) {  // the k-th image of all the images
+				// any "borrowed" successor image in the new row must be scaled to current ht/wdth
+				if (k === imgIndx) { // this will be the new row's consistent height
+					bigRowHt = orgImgList[k][2];
+				} else {
+					if (orgImgList[k][2] != bigRowHt) {
+						//scale width accordingly
+						widthAdj = parseFloat(bigRowHt)/parseFloat(orgImgList[k][2]);
+						thisImg = Math.floor(widthAdj * parseFloat(orgImgList[k][3]));
+					} else {
+						thisImg = orgImgList[k][3];
+					}
+				}
+				imgSrc = orgImgList[k][4];
+				if (orgImgList[j][1] === 'theMap') {
+					rowHtml += '<iframe id="theMap" height="' + bigRowHt  +
+						'" width="' + thisImg + '" src="' + imgSrc + '"></iframe>'; 
+				} else {
+					if (orgImgList[j][0] === 'class') { // it's a class attribute-based item
+						rowHtml += '<img class="' + orgImgList[k][1] + '" height="' + bigRowHt + 
+							'" width="' + thisImg + '" src="' + imgSrc + '" alt="" />';
+					} else { // it's an id attribute-based item
+						rowHtml += '<img id="' + orgImgList[k][1] + '" height="' + bigRowHt +
+							'" width="' + thisImg + '" src="' + imgSrc + '" alt="" />';
+					}
+				}
+			}
+			rowHtml += '</div>';
+			$($rows[j]).replaceWith(rowHtml);
+			imgIndx += bigRows[j];
+		}
+		if (noOfRows > bigRows.length) {
+			$($rows[noOfRows-1]).remove();
+		}
+		$rows = null;
+		$rows = $('div[id^="row"]');
+		noOfRows = $rows.length;
+		redrawn = true;
+	} else {
+		msg = '<p>Shrink and remove image from first row</p>';
+		$('#dbug').append(msg);
+		$rows.each( function() {
+			$(this).remove();
+		});
+		$rows = null;
+		// reconstruct rows with original data:
+		noOfRows = orgRowCnts.length;
+		rowHtml = '';
+		for (i=0; i<noOfRows; i++) {
+			rowHtml += '<div id="row' + i + '" class="ImgRow">';
+			for (j=imgIndx; j<imgIndx + orgRowCnts[i]; j++) {
+				imgSrc = orgImgList[j][4];	
+				if (orgImgList[j][1] === 'theMap') {
+					rowHtml += '<iframe id="theMap" height="' + orgImgList[j][2]  +
+						'" width="' + orgImgList[j][3] + '" src="' + imgSrc + '"></iframe>'; 
+				} else {
+					if (orgImgList[j][0] === 'class') { // it's a class attribute-based item
+						rowHtml += '<img class="' + orgImgList[j][1] + '" height="' +
+							orgImgList[j][2] + '" width="' + orgImgList[j][3] + '" src="' +
+							imgSrc + '" alt="chart" />';
+					} else { // it's an id attribute-based item
+						rowHtml += '<img id="' + orgImgList[j][1] + '" height="' + 
+							orgImgList[j][2] + '" width="' + orgImgList[j][3] + 
+							'" src="' + imgSrc + '" alt="" />';
+					}
+				}
+			}
+			rowHtml += '</div>';
+			imgIndx += orgRowCnts[i];
+		}		
+		$('.container_16').after(rowHtml);
+		$rows = $('div[id^="row"]');
+		redrawn = false;
+	}
+}
+/*  may be used in debug process...
+function readDat() {
+	for (var n=0; n<noOfImgs; n++) {
+		msg = '<p>For image' + n + ': ';
+		for (var w=0; w<5; w++) {
+			msg += orgImgList[n][w] + ', ';
+			}
+	msg += '<p>';
+	$('#dbug').append(msg);
+	}
+} */
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+});  // end of 'page (DOM) loading complete'
