@@ -3,9 +3,14 @@ $( function () { // when page is loaded...
 /* The following global variable assignments are associated with the routines
  * which manage the sizing of rows (with fixed margin as window frame grows/shrinks).
  */
+const GROW = 0;
+const SHRINK = 1;
 // window size and margin calculations; NOTE: innerWidth provides the dimension inside the border
 var winWidth = $(window).width(); // document width at page load
-const bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
+var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
+if (bodySurplus < 24) {
+	bodySurplus = 24;
+}   // var can actually be negative on initial load if frame is smaller than body min-width
 var maxRow = 0; // width of biggest row on initial page loading (used to maintain consistent margin)
 var initMarg; // this is space between rows of images & page border (calc after maxRow is determined)
 var minWidth = $('body').css('min-width'); // normally 960
@@ -144,8 +149,8 @@ if ( sessSupport ) {
 		// get caption locations
 		calcPos(); 
 	} else {  // REFRESH ENTRY
-		//getOrgDat();
-		// retrieve location data
+		// retrieve location data (pic/iframe data is string type and does not need 
+		//   to be converted to numeric)
 		for ( i=0; i<noOfPix; i++ ) {
 			pwidth = 'pwidth' + i;
 			capWidth[i] = sessionStorage.getItem(pwidth);
@@ -160,12 +165,13 @@ if ( sessSupport ) {
 			ptop = 'ptop' + i;
 			capTop[i] = sessionStorage.getItem(ptop);
 		}
-		// retrieve initial image data
-		noOfImgs = sessionStorage.getItem('imgCnt');
-		initMarg = sessionStorage.getItem('firstMarg');
-		maxRow = sessionStorage.getItem('mrowwidth');
+		// retrieve initial image data: some of these need to be type numeric
+		noOfImgs = parseFloat(sessionStorage.getItem('imgCnt'));
+		initMarg = parseFloat(sessionStorage.getItem('firstMarg'));
+		maxRow = parseFloat(sessionStorage.getItem('mrowwidth'));
 		var initRowDat = [];
 		for (i=0; i<noOfImgs; i++) {
+			// these are all type string and will be used as such in row creation
 			ssdat = 'ssdat' + i + '_0';
 			initRowDat[0] = sessionStorage.getItem(ssdat);
 			ssdat = 'ssdat' + i + '_1';
@@ -183,7 +189,7 @@ if ( sessSupport ) {
 		}
 		for (j=0; j<noOfRows; j++) {
 			rowcnt = "row" + j + "Count";
-			orgRowCnts[j] = sessionStorage.getItem(rowcnt);
+			orgRowCnts[j] = parseFloat(sessionStorage.getItem(rowcnt));
 		}
 	}  // end of session storage value check
 }  else {
@@ -214,8 +220,6 @@ if (noOfRows > 1) {
 	var $rowImgs = $($rows[1]).children();
 	var row1TargWidth = $($rowImgs[0]).width();
 	triggerPoint = maxRow + row1TargWidth;
-	//msg = '<p>calculated triggerPoint is ' + triggerPoint + '</p>';
-	//$('#dbug').append(msg);
 } else {
 	triggerPoint = 10000; // ain't gonna happen
 }
@@ -525,45 +529,34 @@ function imageSizer(targWidth) {
 			calcPos();
 			eventSet();
 		} // end of restore to original
-	} else { // all other cases...
-	    return;
-		if (targWidth >= prevWidth) {
+	} else { // targWidth > triggerWidth
+		if (targWidth >= prevWidth) { // grow, but:
 			// don't bother if increase is too small...
 			space = targWidth - prevWidth;
 			if ( space <= tooLittle ) {
 				runAlgorithm = false;
 				unProcSpace += space;
-				msg = '<p>Incremental: ' + unProcSpace + 'px</p>';
-				$('#dbug').append(msg);
 				if ( unProcSpace > tooLittle ) {
 					space = unProcSpace;
 					unProcSpace = 0;
-					runAlgorith = true;
+					runAlgorithm = true;
 				}
 			} 
 		} 
-		if ( runAlgorithm === true ) { 
-			msg = '<p>Incoming targWidth is ' + targWidth + ', initMarg is ' + initMarg + '</p>';
-			$('#dbug').append(msg);
-			
-			
-			
-			// NOTE ********* what if bodySurplus is negative?????
+		if ( runAlgorithm === true ) {
+			// by definition, targWidth > triggerWidth => bodySurplus is positive
 			nxtWidth = targWidth - bodySurplus - initMarg;
-			msg = '<p>Next space available is ' + nxtWidth + '</p>';
-			$('#dbug').append(msg);
 			// check to see if need to redraw rows due to growth or shrinkage:
 			if (redrawn === false && nxtWidth >= triggerPoint ) {
-				redrawRows('grow');
+				redrawRows(GROW);
 			} else { 
 				if (redrawn === true && nxtWidth < triggerPoint) {
-					redrawRows('shrink');
-					msg = '<p>Returned from shrink subroutine</p>';
-					$('#dbug').append(msg);
+					redrawRows(SHRINK);
 				}
 			}
-			msg = '<p>New width for row is ' + nxtWidth + '</p>';
-			$('#dbug').append(msg);
+			// DOES killevents need to be invoked???
+			// resize images to fit in this larger-than-triggerWidth frame, larger or smaller
+		    // than they were previously...
 			$rows.each( function() {
 				$imgInRow = $(this).children();
 				// get current row widths to calculate scaling factor
@@ -614,9 +607,9 @@ function redrawRows(direction) {
 	var imgSrc;
 	var rowHtml;
 	
-	if (direction === 'grow') {
-		msg = '<p>Add image to first row and redraw</p>';
-		$('#dbug').append(msg);
+	if (direction === GROW) {
+		//msg = '<p>Add image to first row and redraw</p>';
+		//$('#dbug').append(msg);
 		// re-calculate no of images per row and no of rows:
 		if (noOfRows != 1) {  // unlikely, but just in case
 			for (i=0; i<noOfRows; i++) {
@@ -672,39 +665,7 @@ function redrawRows(direction) {
 		noOfRows = $rows.length;
 		redrawn = true;
 	} else {
-		msg = '<p>Shrink and remove image from first row</p>';
-		$('#dbug').append(msg);
-		$rows.each( function() {
-			$(this).remove();
-		});
-		$rows = null;
-		// reconstruct rows with original data:
-		noOfRows = orgRowCnts.length;
-		rowHtml = '';
-		for (i=0; i<noOfRows; i++) {
-			rowHtml += '<div id="row' + i + '" class="ImgRow">';
-			for (j=imgIndx; j<imgIndx + orgRowCnts[i]; j++) {
-				imgSrc = orgImgList[j][4];	
-				if (orgImgList[j][1] === 'theMap') {
-					rowHtml += '<iframe id="theMap" height="' + orgImgList[j][2]  +
-						'" width="' + orgImgList[j][3] + '" src="' + imgSrc + '"></iframe>'; 
-				} else {
-					if (orgImgList[j][0] === 'class') { // it's a class attribute-based item
-						rowHtml += '<img class="' + orgImgList[j][1] + '" height="' +
-							orgImgList[j][2] + '" width="' + orgImgList[j][3] + '" src="' +
-							imgSrc + '" alt="chart" />';
-					} else { // it's an id attribute-based item
-						rowHtml += '<img id="' + orgImgList[j][1] + '" height="' + 
-							orgImgList[j][2] + '" width="' + orgImgList[j][3] + 
-							'" src="' + imgSrc + '" alt="" />';
-					}
-				}
-			}
-			rowHtml += '</div>';
-			imgIndx += orgRowCnts[i];
-		}		
-		$('.container_16').after(rowHtml);
-		$rows = $('div[id^="row"]');
+		restoreOrgDat();
 		redrawn = false;
 	}
 }

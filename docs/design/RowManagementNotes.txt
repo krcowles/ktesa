@@ -4,7 +4,7 @@ hike.js is the module containing the code that manages image rows, including cap
 display and sizing the rows to fill the page. Note that the code for re-sizing only
 occurs when the window is re-sized.
 
-INITIALIZATION:
+*** INITIALIZATION:
 1.  The margin available between the window frame and document body is calculated and
     made available as a constant. This calculation is done once at page load, so it reveals
     the margin available with the -initial- window size. The minimum body width is 960px, so
@@ -47,7 +47,7 @@ INITIALIZATION:
     presented next.
     
     
-MAIN ROUTINE EXECUTION:
+*** MAIN ROUTINE EXECUTION:
 1.  Processing is contingent upon whether or not the browser supports
     sessionStorage. Most browser do, but if not, the user is alerted so that expectations
     of performance can be established.
@@ -85,20 +85,19 @@ MAIN ROUTINE EXECUTION:
 8.  Allow resizing to take place by setting 'resizeFlag' to false.
 
 
-
-EVENT SETUP FUNCTION: (NOTE: NOT Window Resize Event)
+*** EVENT SETUP FUNCTION: (NOTE: NOT Window Resize Event)
 1.  Set up each picture such that when a mouseover event occurs, the cursor changes style
     to indicate to the user that it can be clicked on to go to the photo album directly.
 2.  Make sure images have a z-index smaller than the caption z-index (here, z-index=1);
 3.  Establish the photo mouseover event to call the function picPop() (turn on caption)
 4.  Establish the photo mouseout event to turn off a photo caption
 5.  Establish the photo click event to open the corresponding photo album page
-EVENT KILL FUNCTION:
-Disable the above functions, and set the jQuery $images object to null so that it will be
-re-configured with correctly identified images.
+*** EVENT KILL FUNCTION:
+	Disable the above functions, and set the jQuery $images object to null so that it will be
+	re-configured with correctly identified images.
  
     	
-DATA CAPTURE FUNCTIONS:
+*** DATA CAPTURE FUNCTIONS:
 1.  The getOrgDat() function: called on page load (normal entry):
 	a. This routine calculates each row's width, and saves the largest in the 'maxRow' 
 	   variable. Note that the rows widths will vary by only a few pixels.
@@ -129,7 +128,7 @@ DATA CAPTURE FUNCTIONS:
 	b. Save each of the above in sessionStorage, if supported, as 'ptop0', 'ptop1', ...
 	   and 'pleft0', 'pleft1', ...
 
-CAPTION POP-UP FUNCTIONS:
+*** CAPTION POP-UP FUNCTIONS:
 1.  The picPop() function: called when there is a mouseover event on a photo: (id=pic...)
     a. Get the caption from the photo's target pic no. ( desc[picNo] )
     b. Form the caption and location from the target's capWidth, capTop, and capLeft arrays
@@ -138,7 +137,8 @@ CAPTION POP-UP FUNCTIONS:
     e. The caption will be removed from the div and its display turned off on mouseout (but
        that is not part of this function)
 
-PROCESSING WINDOW RESIZE EVENTS:
+
+*** PROCESSING ROW RESIZING:
 1. The restoreOrgDat() function: called either by the image-sizer when the window shrinks
    to or below the triggerWidth, or by the redrawRows function when it is redrawing rows
    to reduce the number of images back to the original state before resizing to fit.
@@ -164,11 +164,23 @@ PROCESSING WINDOW RESIZE EVENTS:
              therefore, check to see if there are additional rows which need to be 
              nulled out
            - re-establish the picture width and picture position data
-           - turn on event processing  [ eventSet() ]
-      iv. 
-       
-    b. The new minWidth is larger than the triggerWidth.
- 
+           - turn on event processing  [ eventSet() ]   
+    b. The new winWidth is larger than the triggerWidth.
+ 	   i. Calculate the amount of increase: 'space'
+ 	  ii. If 'space' is 'tooLittle', set the 'runAlgorithm' flag to false and add the 
+ 	      incremental growth to 'unProcSpace'. Now check 'unProcSpace' to see if it has
+ 	      achieved sufficient size to change the set the 'runAlgorithm' flag back to true,
+ 	      in which case reset unProcSpace to 0.
+ 	 iii. Calculate the new width for the rows: the new window width ('targWidth') minus
+ 	      the needed margins (bodySurplus and initMarg)
+ 	  iv. If this width is greater than the 'triggerPoint' at which more images can be
+ 	      added, AND they haven't already been added, call redrawRows('grow')
+ 	   v. Otherwise, if this width is less than the 'triggerPoint' AND the rows have
+ 	      been redrawn w/more images, call redrawRows('shrink')
+ 	  vi. In any case, whether or not any of the above calls have been made, adjust the
+ 	      row size to fill this larger-than-triggerWidth scenario:
+	
+	
 	
 	
 2. The redrawRows(direction) function: called by imageSizer when warranted. The direction
