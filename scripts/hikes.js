@@ -3,8 +3,9 @@ $( function () { // when page is loaded...
 /* The following global variable assignments are associated with the routines
  * which manage the sizing of rows (with fixed margin as window frame grows/shrinks).
  */
-const GROW = 0;
-const SHRINK = 1;
+const GROW = 1;
+const SHRINK = 0;
+
 // window size and margin calculations; NOTE: innerWidth provides the dimension inside the border
 var winWidth = $(window).width(); // document width at page load
 var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
@@ -17,7 +18,6 @@ var minWidth = $('body').css('min-width'); // normally 960
 var pxLoc = minWidth.indexOf('px');
 minWidth = parseFloat(minWidth.substring(0,pxLoc));
 // staging the initial execution
-var initFlag = true; // state of initial loading process
 var resizeFlag = true;  // semaphore: don't execute resize event code if true
 var noOfImgs = 0;
 var unProcSpace = 0;  // used to detect multiple small incremental growth in resizing
@@ -31,6 +31,8 @@ var triggerPoint;
 var redrawn = false;
 var bigRows = [];
 var imgNo;
+var imgNoAtEnd0;  // image no of last img in row0 - used to identify when to add imgs/row
+
 
 // generic
 var msg, i, j, k, n;
@@ -216,25 +218,20 @@ $('.lnkList').after(htmlLnk);
  * PLUS the next available image in the next row (row1), recalculate the number of images per row
  * and resize the rows. Note: no need if there is only one row.
  */ 
-if (noOfRows > 1) {
-	var $rowImgs = $($rows[1]).children();
-	var row1TargWidth = $($rowImgs[0]).width();
-	triggerPoint = maxRow + row1TargWidth;
-} else {
-	triggerPoint = 10000; // ain't gonna happen
-}
+imgNoAtEnd0 = document.getElementById('row0').childNodes.length - 1;
+tippingPoint(imgNoAtEnd0);  // set point at which to recalculate no of images per row
+ 
+// Now that everything is done, enable events
+eventSet(); // turn on the image events
+resizeFlag = false;
+
 // if the winWidth > triggerWidth, grow the rows before proceeding
 // remember that triggerWidth is arbitrarily established during var declarations
 if (winWidth > triggerWidth) {
-	// set previous width to starting point to execute routine properly
+	// set previous width to starting point to execute routine properly (make prevWidth < winWidth)
 	prevWidth = triggerWidth;
-	imageSizer(winWidth);
-	prevWidth = winWidth;
+	sizeProcessor();
 }
-// Now that everything is done, enable events
-eventSet(); // turn on the image events
-initFlag = false; 
-resizeFlag = false;
 
 /* EVENT MANAGEMENT DURING A RE-SIZE and RECALCULATION OF ROWS
  * During a resize, all the events associated with setting up captions and links
@@ -293,6 +290,11 @@ function killEvents() {
  *     Storage: getOrgDat();   This will be used to restore image rows as they were
  *     at load time whenever the window shrinks to or below the threshold value;
  *  2. Function to capture CURRENT image widths: captureWidths()
+ *  3. Function to capture image positions on the current page:  calcPos()
+ *  4. Function to display photo captions as popups:  picPop()
+ *  5. Function to determine 'triggerPoint': window frame size at which rows can contain
+ *     additional images:  tippingPoint(); NOTE: At this time only one image per row will
+ *     be added or subtracted - this function is presumed to enable future changes
  */ 
 function getOrgDat() {
 	var rwidth;
@@ -419,7 +421,15 @@ function picPop(picTarget) {
 	$('.popupCap').css('z-index','10');
 	$('.popupCap').prepend(htmlDesc);
 }
-
+// function to determine window size that is threshold for re-calculating # of images/row
+function tippingPoint(oldLastImg) {
+	if (noOfRows > 1) {
+		var nxtImgSize = $images[oldLastImg].width;
+		triggerPoint = maxRow + nxtImgSize;
+	} else {
+		triggerPoint = 10000; // ain't gonna happen
+	}
+}
 
 /* PROCESSING WINDOW RESIZE EVENTS
  * Re-establish photo locations to recalculate captions, as well as the iframe 
@@ -430,41 +440,154 @@ function picPop(picTarget) {
 $(window).resize( function() {
 	if (resizeFlag === false) {
 		resizeFlag = true;
-		setTimeout( function() {	
-			winWidth = $(window).width();  // get new window width
-			imageSizer(winWidth);
-			prevWidth = winWidth;
-			// now re-calc image & iframe positions
-			captureWidths();
-			calcPos();
-			if (mapPresent) {
-				// place link to full-size map below iframe;
-				var lnkNode = document.getElementById('mapLnk');
-				var lnkParent = lnkNode.parentNode;
-				lnkParent.removeChild(lnkNode);
-				var mapLnk = $('iframe').attr('src');
-				htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-						mapBot + 'px;" href="' + mapLnk + '" target="_blank">Click for full-page map</a>';
-				$('.lnkList').after(htmlLnk);	
-			}
+		setTimeout( function() {
+			sizeProcessor();
 			resizeFlag = false;  // can now process another resize event
 		}, 400);
 	}  // end of resizeFlag = false
 });
+function sizeProcessor() {
+	winWidth = $(window).width();  // get new window width
+	killEvents();  // NO $images object NOW....
+	imageSizer(winWidth); // $images object is restored with new values
+	prevWidth = winWidth;
+	// now re-calc image & iframe positions
+	captureWidths();
+	calcPos();
+	eventSet();
+	if (mapPresent) {
+		// place link to full-size map below iframe;
+		var lnkNode = document.getElementById('mapLnk');
+		var lnkParent = lnkNode.parentNode;
+		lnkParent.removeChild(lnkNode);
+		var mapLnk = $('iframe').attr('src');
+		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
+				mapBot + 'px;" href="' + mapLnk + '" target="_blank">Click for full-page map</a>';
+		$('.lnkList').after(htmlLnk);	
+	}
+}
 
-/* ROW-SIZING AND RE-DRAWING FUNCTIONS: CALLED AS NEEDED FROM RESIZE (or LOAD-TIME)
- * The last two functions do the work of re-sizing (same no of images per row as 
- * previously maintained) or re-drawing (when more or fewer images per row can
- * or should be supported). Re-sizing is conditional - if the resize has grown or
- * shrunk the window frame 'available space' in excess of 'tooLittle'. Re-draws are
- * dependent on the increase being sufficiently large to accommodate another picture
- * (based on size at load time) in a row, or conversely, the decrease is sufficiently 
- * large to warrant reducing the number of images per row. redrawRows() is only called
- * from the imageSizer() function.
+/* ROW-SIZING AND RE-DRAWING FUNCTIONS: CALLED AS NEEDED FROM RESIZE (or at LOAD-TIME)
+ *  The imageSizer() function is the main execution program. It first determines whether
+ *  or not the rows should be restored to their original form (whenever the window size
+ *  is reduced to the triggerWidth or smaller), and if not, whether or not the rows
+ *  should be redrawn with a different number of images per row. If the rows need to be
+ *  restored to their original form, then restoreOrgDat() is invoked. If the rows need to
+ *  have their image count adjusted, then redrawRows() is invoked. If neither of these
+ *  two processes are required, then imageSizer will resize the images using the current
+ *  number and context of $rows. Note that re-sizing is conditional - only if the window
+ *  size has increased the window frame 'available space' in excess of 'tooLittle'. 
+ *  These less-than-sufficient increases are accumulated in 'unProcSpace' so that when
+ *  that quantity indicates a sufficiently large total increase, resizing will occur.
  */
- function restoreOrgDat() {
+function imageSizer(targWidth) {
+	// local vars
+	var newWidth;
+	var $imgInRow;
+	var newStyle;
+	var newImgHtml;
+	var space;
+	var runAlgorithm = true;
+	var nxtWidth;
+	var curWidth;
+	var scaling;
+	var newHt;
+	var imgWidth;
+	var nxtImgWidth;
+	var rowHtml;
+	var rowId;
+	if (targWidth <= triggerWidth) {  // then restore to original size
+		// don't bother if previous width was already <= triggerWidth; (has already been restored)
+		if (prevWidth > triggerWidth) {
+			restoreOrgDat();			
+		} // end of restore to original
+	} else { // targWidth > triggerWidth  - there are no other possibilites....
+		if (targWidth > prevWidth) { // grow, but:
+			// don't bother if increase is too small...
+			space = targWidth - prevWidth;
+			if ( space <= tooLittle ) {
+				runAlgorithm = false;
+				unProcSpace += space;
+				if ( unProcSpace > tooLittle ) {
+					space = unProcSpace;
+					unProcSpace = 0;
+					runAlgorithm = true;
+				}
+			} 
+		} else {
+			// should there be a test for shrinking too little as well?
+		}
+		if ( runAlgorithm === true ) {
+			// calculate the space available for rows after addressing needed margins:
+			nxtWidth = targWidth - bodySurplus - initMarg;
+			// check to see if need to redraw rows due to growth or shrinkage:
+			if (redrawn === false && nxtWidth >= triggerPoint ) {
+				if (orgRowCnts.length > 1) {
+					redrawRows(GROW);
+				}
+			} else { 
+				if (redrawn === true && nxtWidth < triggerPoint) {
+					redrawRows(SHRINK);
+				}
+			}
+		    /* ASSUMPTIONS: there currently exists a viable (though outdated) set of 
+		     * rows with an accurate row count. The current height/widths can be
+		     * adjusted up/down to obtain new values and the rows redrawn.
+		     */
+		    for (j=0; j<noOfRows; j++) {
+		    	rowId = '#row' + j;
+		    	curWidth = 0;
+		    	rowHtml = '';
+		    	$imgInRow = $(rowId).children();
+		    	$imgInRow.each( function() {
+					curWidth += parseFloat(this.width);
+				});
+				scaling = nxtWidth/curWidth;  // either larger or smaller...
+				newHt = Math.floor(scaling * $imgInRow[0].height)
+				newWidth = 0;
+				$imgInRow.each( function() {
+		    	if (newWidth === 0) {
+						newStyle = '""';
+					} else {
+						newStyle = '"margin-left:1px;"';
+					}
+					imgWidth = Math.floor(scaling * this.width);
+					if (this.id == 'theMap') {
+						newImgHtml = '<iframe id="theMap" style=' + newStyle +
+							' height="' + newHt + '" width="' + newHt + '" src="' +
+							this.src + '"></iframe>';
+					} else {
+						if (this.id == '') {
+							newImgHtml = '<img class="' + this.class  + '" style=' + 
+							  newStyle + ' height="' + newHt + '" width="' + 
+							  imgWidth + '" src="' + this.src + '" alt="' +
+							  this.alt + '" />';
+						} else {
+							newImgHtml = '<img id="' + this.id + '" style=' + newStyle +
+							  ' height="' + newHt + '" width="' + imgWidth + '" src="' +
+							  this.src + '" alt="' + this.alt + '" />';
+						}
+					}
+					rowHtml += newImgHtml;
+					newWidth = 100; // anything but 0
+				});  // end of processing each image in the row
+				$(rowId).html(rowHtml);
+				//document.getElementById(rowId).innerHTML = rowHtml;
+		    }
+		} // end of "run algorithm" section
+	} // end of else (re-size rows)
+	$images = $('img[id^="pic"]');
+} // end of imageSizer function
+function restoreOrgDat() {
+ 	/* NOTE: When rows are re-drawn with more images/row than at original load, it might
+ 	 * result in fewer rows. This function therefore assumes a 'blank' starting point.
+ 	 */
  	var rowHtml;
+ 	var rowDisplay = '';
  	imgNo = 0;
+ 	$rows.each( function() {
+ 		$(this).remove();
+ 	});
 	for (k=0; k<orgRowCnts.length; k++) {  // each row in the original page load
 		rowHtml = '<div id="row' + k + '" class="ImgRow">';
 		for (n=0; n<orgRowCnts[k]; n++) {  // each img in the original row
@@ -487,118 +610,14 @@ $(window).resize( function() {
 			imgNo++;
 		}  // end of single row creation for loop
 		rowHtml += '</div>';
-		$($rows[k]).replaceWith(rowHtml);
+		rowDisplay += rowHtml;
 	}  // end of row-creation for loop
+	$('.captionList').before(rowDisplay);
+	$rows = $('div[id^="row"]');
+	noOfRows = $rows.length;
 }
-function imageSizer(targWidth) {
-	// local vars
-	var newWidth;
-	var $imgInRow;
-	var newStyle;
-	var newImgHtml;
-	var space;
-	var runAlgorithm = true;
-	var nxtWidth;
-	var curWidth;
-	var scaling;
-	var newHt;
-	var imgWidth;
-	var nxtImgWidth;
-	if (targWidth <= triggerWidth) {  // then restore to original size
-		if (prevWidth > triggerWidth) {
-			// don't bother if previous width was already <= triggerWidth; already restored
-			killEvents();
-			restoreOrgDat();			
-			// were there additional rows owing to increased image size?
-			if (redrawn) {
-				var orgCnt = orgRowCnts.length; // original no of rows when loaded
-				var excess = noOfRows - orgCnt;
-				var indx;
-				for (i=0; i<excess; i++) {  // won't execute if excess == 0
-					indx = orgCnt + i;
-					$rows[indx] = null;
-				}
-				noOfRows = $rows.length;
-			}
-			// test process
-			if (noOfRows !== orgRowCnts.length) {
-				window.alert("Resize no of rows got garbled");
-			}
-			$images = $('img[id^="pic"]');
-			captureWidths();
-			calcPos();
-			eventSet();
-		} // end of restore to original
-	} else { // targWidth > triggerWidth
-		if (targWidth >= prevWidth) { // grow, but:
-			// don't bother if increase is too small...
-			space = targWidth - prevWidth;
-			if ( space <= tooLittle ) {
-				runAlgorithm = false;
-				unProcSpace += space;
-				if ( unProcSpace > tooLittle ) {
-					space = unProcSpace;
-					unProcSpace = 0;
-					runAlgorithm = true;
-				}
-			} 
-		} 
-		if ( runAlgorithm === true ) {
-			// by definition, targWidth > triggerWidth => bodySurplus is positive
-			nxtWidth = targWidth - bodySurplus - initMarg;
-			// check to see if need to redraw rows due to growth or shrinkage:
-			if (redrawn === false && nxtWidth >= triggerPoint ) {
-				redrawRows(GROW);
-			} else { 
-				if (redrawn === true && nxtWidth < triggerPoint) {
-					redrawRows(SHRINK);
-				}
-			}
-			// DOES killevents need to be invoked???
-			// resize images to fit in this larger-than-triggerWidth frame, larger or smaller
-		    // than they were previously...
-			$rows.each( function() {
-				$imgInRow = $(this).children();
-				// get current row widths to calculate scaling factor
-				curWidth = 0;
-				$imgInRow.each( function() {
-					curWidth += parseFloat(this.width);
-				});
-				scaling = nxtWidth/curWidth;  // either larger or smaller...
-				newHt = Math.floor(scaling * $imgInRow[0].height)
-				newWidth = 0;
-				$imgInRow.each( function() {
-					if (newWidth === 0) {
-						newStyle = '""';
-					} else {
-						newStyle = '"margin-left:1px;"';
-					}
-					imgWidth = Math.floor(scaling * this.width);
-					if (this.id == 'theMap') {
-						newImgHtml = '<iframe id="theMap" style=' + newStyle +
-							' height="' + newHt + '" width="' + newHt + '" src="' +
-							this.src + '"></iframe>';
-					} else {
-						newImgHtml = '<img id="' + this.id + '" style=' + newStyle +
-							' height="' + newHt + '" width="' + imgWidth + '" src="' +
-							this.src + '" alt="" />';
-					}
-					$(this).replaceWith(newImgHtml);
-					newWidth = 100; // anything but 0
-					
-				});  // end of processing each image in the row
-			});  // end of processing each row
-			$images = $('img[id^="pic"]');
-			if ( initFlag === false ) {
-				captureWidths();
-				calcPos();
-				eventSet();
-			}
-		} // end of "run algorithm" section
-	} // end of else (re-size rows)
-} // end of imageSizer function
 function redrawRows(direction) {
-	var remaining = noOfImgs;
+	var remaining = noOfImgs;  // total number of images to process
 	var imgIndx = 0;
 	var dynIndx;
 	var bigRowHt;
@@ -606,59 +625,78 @@ function redrawRows(direction) {
 	var thisImg;
 	var imgSrc;
 	var rowHtml;
+	var rowId;
+	var imgStyle;
+	var orgImgDat = [];
 	
 	if (direction === GROW) {
-		//msg = '<p>Add image to first row and redraw</p>';
-		//$('#dbug').append(msg);
-		// re-calculate no of images per row and no of rows:
-		if (noOfRows != 1) {  // unlikely, but just in case
-			for (i=0; i<noOfRows; i++) {
-				bigRows[i] = $($rows[i]).children().length + 1
-				if (remaining > bigRows[i]) {
-					remaining -= bigRows[i];
-				} else {
-					bigRows[i] = remaining;
-					break;
-				}
+		/* Add 1 image to each row as able
+		 * NOTE: redrawRows() function not called if original load has only 1 row
+		 */
+		for (i=0; i<noOfRows; i++) {
+			rowId = '#row' + i;
+			bigRows[i] = $(rowId).children().length + 1
+			if (remaining > bigRows[i]) {
+				remaining -= bigRows[i];
+			} else {
+				bigRows[i] = remaining;
+				break;
 			}
 		}
 		// remake the new row html (all same hts) and replace current row html
+		imgNo = 0;
 		for (j=0; j<bigRows.length; j++) {
-			rowHtml = '<div id="row' + j + '" class="ImgRow">';
+			rowId = '#row' + j;
+			rowHtml = '';
 			dynIndx = imgIndx + bigRows[j];
-			for (k=imgIndx; k<dynIndx; k++) {  // the k-th image of all the images
-				// any "borrowed" successor image in the new row must be scaled to current ht/wdth
-				if (k === imgIndx) { // this will be the new row's consistent height
-					bigRowHt = orgImgList[k][2];
+			for (k=imgIndx; k<dynIndx; k++) {
+				/* At the beginning of each row, the initial height will be established
+				 * as the height of the beginning image when originally loaded. The heights
+				 * and widths will be scaled to fit the window when this function returns
+				 * to caller
+				 */
+				thisImg = orgImgList[imgNo][3];
+				if (k === imgIndx) { 
+					imgStyle = '""';
+					bigRowHt = orgImgList[imgNo][2];	
 				} else {
-					if (orgImgList[k][2] != bigRowHt) {
+					imgStyle = '"margin-left:1px;"';
+					if (orgImgList[imgNo][2] != bigRowHt) {
 						//scale width accordingly
-						widthAdj = parseFloat(bigRowHt)/parseFloat(orgImgList[k][2]);
-						thisImg = Math.floor(widthAdj * parseFloat(orgImgList[k][3]));
-					} else {
-						thisImg = orgImgList[k][3];
-					}
+						widthAdj = parseFloat(bigRowHt)/parseFloat(orgImgList[imgNo][2]);
+						thisImg = Math.floor(widthAdj * parseFloat(orgImgList[imgNo][3]));
+					} 
 				}
-				imgSrc = orgImgList[k][4];
-				if (orgImgList[j][1] === 'theMap') {
-					rowHtml += '<iframe id="theMap" height="' + bigRowHt  +
-						'" width="' + thisImg + '" src="' + imgSrc + '"></iframe>'; 
+				imgSrc = orgImgList[imgNo][4];
+				if (orgImgList[imgNo][1] === 'theMap') {
+					rowHtml += '<iframe style=' + imgStyle + ' id="theMap" height="' + 
+					bigRowHt  + '" width="' + bigRowHt + '" src="' + imgSrc + '"></iframe>'; 
 				} else {
-					if (orgImgList[j][0] === 'class') { // it's a class attribute-based item
-						rowHtml += '<img class="' + orgImgList[k][1] + '" height="' + bigRowHt + 
-							'" width="' + thisImg + '" src="' + imgSrc + '" alt="" />';
+					imgAlt = 0;
+					if (orgImgList[imgNo][0] === 'class') { // it's a class attribute-based item
+						rowHtml += '<img style=' + imgStyle + ' class="' + 
+						orgImgList[imgNo][1] + '" height="' + bigRowHt + '" width="' + 
+						thisImg + '" src="' + imgSrc + '" alt="' + orgImgList[imgNo][5]+ '" />';
 					} else { // it's an id attribute-based item
-						rowHtml += '<img id="' + orgImgList[k][1] + '" height="' + bigRowHt +
-							'" width="' + thisImg + '" src="' + imgSrc + '" alt="" />';
+						rowHtml += '<img style="' + imgStyle + '" id="' + orgImgList[imgNo][1] + 
+						'" height="' + bigRowHt + '" width="' + thisImg + '" src="' + 
+						imgSrc + '" alt="' + orgImgList[imgNo][5] + '" />';
 					}
 				}
+				imgNo++;
 			}
-			rowHtml += '</div>';
-			$($rows[j]).replaceWith(rowHtml);
+			$(rowId).html(rowHtml);
 			imgIndx += bigRows[j];
 		}
-		if (noOfRows > bigRows.length) {
-			$($rows[noOfRows-1]).remove();
+		/* Adding images to rows may reduce the total row count: */
+		if (noOfRows > bigRows.length) {  // if redraw has resulted in fewer rows:
+			var excess = noOfRows - bigRows.length;
+			var nxtRow = bigRows.length;
+			for (i=0; i<excess; i++) {
+				rowId = '#row' + nxtRow;
+				$(rowId).remove();
+				nxtRow++;
+			}
 		}
 		$rows = null;
 		$rows = $('div[id^="row"]');
@@ -669,27 +707,5 @@ function redrawRows(direction) {
 		redrawn = false;
 	}
 }
-/*  may be used in debug process...
-function readDat() {
-	for (var n=0; n<noOfImgs; n++) {
-		msg = '<p>For image' + n + ': ';
-		for (var w=0; w<5; w++) {
-			msg += orgImgList[n][w] + ', ';
-			}
-	msg += '<p>';
-	$('#dbug').append(msg);
-	}
-} */
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
  
 });  // end of 'page (DOM) loading complete'

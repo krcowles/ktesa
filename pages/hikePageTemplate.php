@@ -254,12 +254,14 @@ function makeHtmlList($type,$str) {
 			</tbody>
 		</table>
 	</div>
+
 	<?php
 		if ($hikePhotoLink2 !== '') {
 			echo '<div style="margin-bottom:8px;"><em>-- To see more photos:</em> click on <a href="' .
 				$hikePhotoLink2 . '" target="_blank">Tom\'s Photo Album</a>, or <a href="' .
 				$hikePhotoLink1 . '" target="_blank">Ken\'s Photo Album</a></div>';
 		}
+		echo '</div>'; # end of container_16 forced width
 		for ($k=0; $k<$rowCount; $k++) {
 			echo $rows[$k];
 		}
@@ -289,7 +291,6 @@ function makeHtmlList($type,$str) {
 
 	</div>  <!-- end of postPhoto section -->
 
-</div><!-- end of container 16 -->
 <div class="popupCap"></div>
 	
 <script src="../scripts/jquery-1.12.1.js"></script>
