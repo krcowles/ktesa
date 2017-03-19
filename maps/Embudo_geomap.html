@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Embudo + Embudo_Trail</title>
+		<title>Embudo_Trail + Embudo</title>
 		<base target="_top"></base>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -47,7 +47,7 @@
 		
 		<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->
 		<script type="text/javascript">
-			/* Global variables used by the GPS Visualizer functions (20170318164629): */
+			/* Global variables used by the GPS Visualizer functions (20170319130338): */
 			gv_options = {};
 			
 			// basic map parameters:
@@ -128,7 +128,7 @@
 			gv_options.driving_directions = true;  // put a small "driving directions" form in each marker's pop-up window? (override with dd:true or dd:false in a marker's options)
 			gv_options.garmin_icon_set = 'gpsmap'; // 'gpsmap' are the small 16x16 icons; change it to '24x24' for larger icons
 			gv_options.marker_list_options = {};  // options for a dynamically-created list of markers
-			  gv_options.marker_list_options.enabled = false;  // true|false: enable or disable the marker list altogether
+			  gv_options.marker_list_options.enabled = true;  // true|false: enable or disable the marker list altogether
 			  gv_options.marker_list_options.floating = true;  // is the list a floating box inside the map itself?
 			  gv_options.marker_list_options.position = ['RIGHT_BOTTOM',6,38];  // floating list only: position within map
 			  gv_options.marker_list_options.min_width = 160; // minimum width, in pixels, of the floating list
@@ -240,6 +240,7 @@
 				GV_Draw_Marker({lat:35.0966139,lon:-106.4644694,name:'The wide expansive view narrows quickly',desc:'EnteringTheNeck',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33518713415/in/album-72157678122594474',thumbnail:'https://c1.staticflickr.com/1/641/33518713415_9158462b3b_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.0966722,lon:-106.4637667,name:'The narrow entrance makes scrambling a necessity',desc:'SomeScramblingRequired',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33390025621/in/album-72157678122594474',thumbnail:'https://c1.staticflickr.com/4/3679/33390025621_9ba33fd51f_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.0959889,lon:-106.4601222,name:'The road to Embudo Canyon',desc:'IntoEmbudo',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/32703893443/in/album-72157678122594474',thumbnail:'https://c1.staticflickr.com/3/2921/32703893443_3076ede061_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.0960300,lon:-106.4592300,name:'Turn up the bank here',desc:'IMG_20170315_120626',color:'',icon:'Flag, Red',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.0958056,lon:-106.4542083,name:'Once past the neck, the funnel canyon is seen',desc:'PastTheFunnelNeck',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33135035730/in/album-72157678122594474',thumbnail:'https://c1.staticflickr.com/3/2838/33135035730_39cb7e9c7c_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.0952639,lon:-106.4533750,name:'Not much shade along the way, but it can enhance a view',desc:'ShadyView',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33477723066/in/album-72157678122594474',thumbnail:'https://c1.staticflickr.com/4/3954/33477723066_b483811283_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.0995444,lon:-106.4490278,name:'Along the way, many unique shapes (not just Tom)',desc:'UniqueShapes',color:'orange',icon:'',url:'https://www.flickr.com/photos/139088815@N08/32674763524/in/album-72157678122594474',thumbnail:'https://c1.staticflickr.com/4/3946/32674763524_d95d467c93_q.jpg',folder:'Folder1'});
@@ -252,7 +253,7 @@
 			  
 			}
 			GV_Map(); // execute the above code
-			// http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=auto
+			// http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&wpt_list=name&add_elevation=auto
 		</script>
 		
 		
