@@ -408,9 +408,7 @@ if ($rowCompleted === false) {
 			$startIndx += 1;
 		}
 		$imgCnt++;
-		if ($i !== $itemsLeft - 1) {
-			$imel .=  '^';
-		}
+		$imel .=  '^';
 	} // end of for loop processing
 	$imel = $imgCnt . '^' . $maxRowHt . '^' . $imel;
 	array_push($rowStr,$imel);
