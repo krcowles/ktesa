@@ -55,7 +55,8 @@ var $maps = $('iframe');
 var mapPresent = false;
 if ($maps.length) {
 	mapPresent = true;
-	var	fullMap = $maps.attr('src') + mapDisplayOpts;
+	var orgMapLink = $('#theMap').attr('src');
+	var fullMap = orgMapLink + mapDisplayOpts;
 }
 var $desc = $('.captionList li');
 var $links = $('.lnkList li');
@@ -71,21 +72,6 @@ var imgwd;
 var rowHts = new Array();
 var rowWds = new Array();
 
-// point map links (if present) to the php-map processing page
-var link;
-var rel_link;
-var mapname;
-var mapnameLgth;
-$('a').each( function() {
-	link = $(this).attr('href');
-	rel_link = link.substring(0,8);
-	if (rel_link == '../maps/') {
-		mapnameLgth = link.length;
-		mapname = link.substring(8,mapnameLgth);
-		link = '../maps/gpsvMapTemplate.php?map_name=' + mapname + mapDisplayOpts;
-		$(this).attr('href',link);
-	}
-});
 // argument passed to popup function
 var picSel;
 // string vars photo links
@@ -460,9 +446,8 @@ function sizeProcessor() {
 		var lnkNode = document.getElementById('mapLnk');
 		var lnkParent = lnkNode.parentNode;
 		lnkParent.removeChild(lnkNode);
-		var mapLnk = $('iframe').attr('src');
 		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-				mapBot + 'px;" href="' + mapLnk + '" target="_blank">Click for full-page map</a>';
+				mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
 		$('.lnkList').after(htmlLnk);	
 	}
 }
