@@ -36,23 +36,26 @@
 		}
 	}
 	$info[1] = $_POST['hname'];
-	$info[2] = $_POST['locale'];
-	# check to see if marker type changed TO 'Cluster' when orginally not 'Cluster'
-	$availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	$doubleLtrs = 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ';
-	# add another later if needed
+	$info[2] = $_POST['locale'];	
+	/*  CLUSTER ASSIGNMENT PROCESSING 
+	 *     The order of changes processed are in the following priority:
+	 *     1. Existing assignment deleted: Marker changes to "Normal"
+	 *	   2. New Group Assignment
+	 *     3. Group Assignment Changed
+	 *     4. Nothing Changed
+	 */
 	$clusters = $_SESSION['allClusters'];
 	$clusArray = explode(";",$clusters);
-	$markerChanged = $_POST['chgClus'];
-	if ($markerChanged == 'YES' && !isset($_POST['restore']) ) {
-		$info[3] = 'Cluster';
-		$keep = false;
-	} else {
-		$keep = true;
-	}
-	# $info[4] is string for index pages only
-	# if checkbox is checked, add a new group letter and name:
-	if( isset($_POST['nxtg']) && $_POST['nxtg'] == 'YES' ) {	
+	# 1.
+	if ( isset($_POST['rmclus']) && $_POST['rmclus'] === 'YES' ) {
+		$info[3] = 'Normal';
+		$info[5] = '';
+		$info[28] = '';
+	} elseif ( isset($_POST['nxtg']) && $_POST['nxtg'] === 'YES' ) {	
+	# 2.
+		$availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$doubleLtrs = 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ';
+		# add another group of letters later if needed
 		$nextmem = count($clusArray);
 		# group letters are assigned sequentially
 		if ($nextmem < 26) {
@@ -61,29 +64,34 @@
 			#assign from doubleLtrs:
 			$pos = 2*($nextmem - 26);
 			$newgrp = substr($doubleLtrs,$pos,2);
-		}  # elseif more...
+		}  # elseif more groups of letters are added later...
         $info[3] = 'Cluster';
 		$info[5] = $newgrp;
 		$info[28] = $_POST['newgname'];
-	} else {
-		if ($_POST['chgd'] === 'YES' && !$keep) {
-			$passedgrp = $_POST['htool'];
-			# get association with group letter
-			for ($i=0; $i<count($clusArray); $i++) {
-				$dollarpos = strpos($clusArray[$i],"$") + 1;
-				$nmLgth = strlen($clusArray[$i]) - $dollarpos;
-				$cname = substr($clusArray[$i],$dollarpos,$nmLgth);
-				if ($cname == trim($passedgrp)) {
-					# get group assignment:
-					$grpLgth = $dollarpos - 1;
-					$newgrp = substr($clusArray[$i],0,$grpLgth);
-					break;
-				}
+	} elseif ( $_POST['chgd'] === 'YES' ) {
+	# 3. (NOTE: marker can be assigned to 'Cluster' regardless of whether previously cluster type
+		$info[3] = 'Cluster';
+		$newname = $_POST['htool'];
+		# get association with group letter
+		for ($i=0; $i<count($clusArray); $i++) {
+			$dollarpos = strpos($clusArray[$i],"$") + 1;
+			$nmLgth = strlen($clusArray[$i]) - $dollarpos;
+			$cname = substr($clusArray[$i],$dollarpos,$nmLgth);
+			if ($cname == $newname) {
+				# get group assignment:
+				$grpLgth = $dollarpos - 1;
+				$newgrp = substr($clusArray[$i],0,$grpLgth);
+				break;
 			}
-			$info[5] = $newgrp;
-			$info[28] = $passedgrp;
 		}
+		$info[5] = $newgrp;
+		$info[28] = $newname;
+	} else {
+	# 4.
+		# No Changes Assigned to $info[3,5,28]
 	}
+	
+	# $info[4] is string for index pages only
 	$info[6] = $_POST['htype'];
 	$info[7] = $_POST['hlgth'];
 	$info[8] = $_POST['helev'];

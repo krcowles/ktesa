@@ -105,22 +105,27 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 </select>&nbsp;&nbsp;
 <p id="mrkr" style="display:none"><?php echo $info[3];?></p>
 <p id="group" style="display:none"><?php echo $info[28];?></p>
-<p id="addbrk" style="display:none;"> </p>
+<h3>------- Cluster Hike Assignments: (Hikes with overlapping trailheads or in close proximity) &nbsp;&nbsp;&nbsp;
+<span style="font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
+	<input id="ignore" type="checkbox" name="nocare" /></span></h3>
 <?php
 	echo '<label for="ctip">&nbsp;&nbsp;Cluster: </label>';
 	echo '<select id="ctip" name="htool">';
 	for ($i=0; $i<$grpCnt; $i++) {
 		echo '<option value="' . $cnames[$i] . '">' . $cnames[$i] . '</option>';
 	}
-	echo '</select>';
+	echo '</select>&nbsp;&nbsp;';
 ?>
-<span id="chgBack" style="display:none;"><input id="oldmrkr" type="checkbox"
-	name="restore" value="Default" /></span>
-<input id="chg2Clus" type="hidden" name="chgClus" value="NO" />
-<input id="grpChg" type="hidden" name="chgd" value="NO" />
+<span id="notclus" style="display:none;">There is no currently assigned cluster for this hike</span>
+<input id="mrkrchg" type="hidden" name="chg2clus" value="NO" />
+<input id="grpchg" type="hidden" name="chgd" value="NO" />
 <p>If you are establishing a new group, select the checkbox: <input id="newg" type="checkbox"
-	name="nxtg" value="YES" /> and enter the name for the new group here: <input id="newt" 
-	type="text" name="newgname" size="50" /></p><br />
+	name="nxtg" value="NO" /> and enter the name for the new group here: <input id="newt" 
+	type="text" name="newgname" size="50" /></p>
+<p id="showdel" style="display:none;">You may remove the cluster assignment by checking here:&nbsp;&nbsp;
+	<input id="deassign" type="checkbox" name="rmclus" value="NO" /></p>
+<h3>------- End of Cluster Assignments</h3>
+
 <p id="ctype" style="display:none"><?php echo $info[6];?></p>
 <label for="type">Hike Type: </label>
 <select id="type" name="htype">
