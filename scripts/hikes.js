@@ -31,8 +31,9 @@ var triggerPoint;
 var redrawn = false;
 var bigRows = [];
 var imgNo;
-var imgNoAtEnd0;  // image no of last img in row0 - used to identify when to add imgs/row
-
+var orgRow1Strt;  // first img in row1: used to determine pt at which image can be added to row
+var LRnotFilled;  // if the last row is not "filled" with images, process sizing differently
+var LRscaling;    // in the case of above 'true', grow by this factor instead of filling the row
 
 // generic
 var msg, i, j, k, n;
@@ -71,6 +72,33 @@ var rowht;
 var imgwd;
 var rowHts = new Array();
 var rowWds = new Array();
+/* Calculate the last two row's widths: last & next-to-last; if the last row's width is
+ * less than the next-to-last row's width by at least 12px, then apply the special
+ * scaling factor to the last row, instead of completely filling that row. This will
+ * happen when the LRnotFilled flag is true. This has to be set before beginning execution.
+ */
+if (noOfRows > 1) {
+	var LRid = '#row' + (noOfRows -1); // last row
+	var NLRid = '#row' + (noOfRows -2);  // next-to-last row
+	var $NLRimgs = $(NLRid).children();
+	var NLRwidth = 0;
+	$NLRimgs.each( function() {
+		NLRwidth += parseFloat(this.width);
+	});
+	var $LRimgs = $(LRid).children();
+	var LRwidth = 0;
+	$LRimgs.each( function() {
+		LRwidth += parseFloat(this.width);
+	});
+	if (NLRwidth > (LRwidth + 12)) {  // 12 is arbitrary - just enough space to operate row-filled
+		LRnotFilled = true;
+	} else {
+		LRnotFilled = false;
+	}
+} else {
+	LRnotFilled = false;
+}
+var LRFlagAtLoad = LRnotFilled;
 
 // argument passed to popup function
 var picSel;
@@ -204,8 +232,8 @@ $('.lnkList').after(htmlLnk);
  * PLUS the next available image in the next row (row1), recalculate the number of images per row
  * and resize the rows. Note: no need if there is only one row.
  */ 
-imgNoAtEnd0 = document.getElementById('row0').childNodes.length - 1;
-tippingPoint(imgNoAtEnd0);  // set point at which to recalculate no of images per row
+orgRow1Strt = document.getElementById('row0').childNodes.length;
+tippingPoint(orgRow1Strt);  // set point at which to recalculate no of images per row
  
 // Now that everything is done, enable events
 eventSet(); // turn on the image events
@@ -408,12 +436,12 @@ function picPop(picTarget) {
 	$('.popupCap').prepend(htmlDesc);
 }
 // function to determine window size that is threshold for re-calculating # of images/row
-function tippingPoint(oldLastImg) {
+function tippingPoint(row1StrtImg) {
 	if (noOfRows > 1) {
-		var nxtImgSize = $images[oldLastImg].width;
-		triggerPoint = maxRow + nxtImgSize;
+		var trigImg = parseFloat($images[row1StrtImg].width);
+		triggerPoint = maxRow + trigImg;
 	} else {
-		triggerPoint = 10000; // ain't gonna happen
+		triggerPoint = 100000; // ain't gonna happen
 	}
 }
 
@@ -481,10 +509,11 @@ function imageSizer(targWidth) {
 	var nxtImgWidth;
 	var rowHtml;
 	var rowId;
+	var fullSizeCnt;
 	if (targWidth <= triggerWidth) {  // then restore to original size
 		// don't bother if previous width was already <= triggerWidth; (has already been restored)
 		if (prevWidth > triggerWidth) {
-			restoreOrgDat();			
+			restoreOrgDat();	
 		} // end of restore to original
 	} else { // targWidth > triggerWidth  - there are no other possibilites....
 		if (targWidth > prevWidth) { // grow, but:
@@ -519,7 +548,8 @@ function imageSizer(targWidth) {
 		     * rows with an accurate row count. The current height/widths can be
 		     * adjusted up/down to obtain new values and the rows redrawn.
 		     */
-		    for (j=0; j<noOfRows; j++) {
+		    fullSizeCnt = LRnotFilled ? noOfRows - 1 : noOfRows;
+		    for (j=0; j<fullSizeCnt; j++) {
 		    	rowId = '#row' + j;
 		    	curWidth = 0;
 		    	rowHtml = '';
@@ -528,7 +558,8 @@ function imageSizer(targWidth) {
 					curWidth += parseFloat(this.width);
 				});
 				scaling = nxtWidth/curWidth;  // either larger or smaller...
-				newHt = Math.floor(scaling * $imgInRow[0].height)
+				LRscaling = scaling;  // the last time this is set, it will be used for last row
+				newHt = Math.floor(scaling * parseFloat($imgInRow[0].height));
 				newWidth = 0;
 				$imgInRow.each( function() {
 		    	if (newWidth === 0) {
@@ -536,7 +567,7 @@ function imageSizer(targWidth) {
 					} else {
 						newStyle = '"margin-left:1px;"';
 					}
-					imgWidth = Math.floor(scaling * this.width);
+					imgWidth = Math.floor(scaling * parseFloat(this.width));
 					if (this.id == 'theMap') {
 						newImgHtml = '<iframe id="theMap" style=' + newStyle +
 							' height="' + newHt + '" width="' + newHt + '" src="' +
@@ -557,7 +588,40 @@ function imageSizer(targWidth) {
 					newWidth = 100; // anything but 0
 				});  // end of processing each image in the row
 				$(rowId).html(rowHtml);
-				//document.getElementById(rowId).innerHTML = rowHtml;
+		    }
+		    if (LRnotFilled) {
+		    	rowId = '#row' + (noOfRows - 1);
+		    	rowHtml = '';
+		    	$imgInRow = $(rowId).children();
+		    	newHt = Math.floor(LRscaling * parseFloat($imgInRow[0].height));
+		    	newWidth = 0;
+				$imgInRow.each( function() {
+		    		if (newWidth === 0) {
+						newStyle = '""';
+					} else {
+						newStyle = '"margin-left:1px;"';
+					}
+					imgWidth = Math.floor(LRscaling * parseFloat(this.width));
+					if (this.id == 'theMap') {
+						newImgHtml = '<iframe id="theMap" style=' + newStyle +
+							' height="' + newHt + '" width="' + newHt + '" src="' +
+							this.src + '"></iframe>';
+					} else {
+						if (this.id == '') {
+							newImgHtml = '<img class="' + this.class  + '" style=' + 
+							  newStyle + ' height="' + newHt + '" width="' + 
+							  imgWidth + '" src="' + this.src + '" alt="' +
+							  this.alt + '" />';
+						} else {
+							newImgHtml = '<img id="' + this.id + '" style=' + newStyle +
+							  ' height="' + newHt + '" width="' + imgWidth + '" src="' +
+							  this.src + '" alt="' + this.alt + '" />';
+						}
+					}
+					rowHtml += newImgHtml;
+					newWidth = 100; // anything but 0
+				});  // end of processing each image in the row
+				$(rowId).html(rowHtml);
 		    }
 		} // end of "run algorithm" section
 	} // end of else (re-size rows)
@@ -600,6 +664,7 @@ function restoreOrgDat() {
 	$('.captionList').before(rowDisplay);
 	$rows = $('div[id^="row"]');
 	noOfRows = $rows.length;
+	LRnotFilled = LRFlagAtLoad;
 }
 function redrawRows(direction) {
 	var remaining = noOfImgs;  // total number of images to process
@@ -613,24 +678,29 @@ function redrawRows(direction) {
 	var rowId;
 	var imgStyle;
 	var orgImgDat = [];
+	var bigLimit;
+	var thisRowCnt;
 	
 	if (direction === GROW) {
-		/* Add 1 image to each row as able
+		/* Add 1 image to each (original) row until done
 		 * NOTE: redrawRows() function not called if original load has only 1 row
 		 */
-		for (i=0; i<noOfRows; i++) {
-			rowId = '#row' + i;
-			bigRows[i] = $(rowId).children().length + 1
-			if (remaining > bigRows[i]) {
-				remaining -= bigRows[i];
-			} else {
+		LRnotFilled = false;  // determine that state for new rows...
+		var i = 0;
+		while ( remaining > 0 ) {
+			thisRowCnt = orgRowCnts[i];
+			if ( thisRowCnt + 1 > remaining ) {
 				bigRows[i] = remaining;
+				LRnotFilled = true;
 				break;
 			}
+			bigRows[i] = thisRowCnt + 1;
+			remaining -= bigRows[i];
+			i++;
 		}
-		// remake the new row html (all same hts) and replace current row html
 		imgNo = 0;
-		for (j=0; j<bigRows.length; j++) {
+		bigLimit = bigRows.length;
+		for (j=0; j<bigLimit; j++) {
 			rowId = '#row' + j;
 			rowHtml = '';
 			dynIndx = imgIndx + bigRows[j];
@@ -638,12 +708,19 @@ function redrawRows(direction) {
 				/* At the beginning of each row, the initial height will be established
 				 * as the height of the beginning image when originally loaded. The heights
 				 * and widths will be scaled to fit the window when this function returns
-				 * to caller
+				 * to caller. NOTE: Original data is being used to fill the rows, but
+				 * since imgs are 'borrowed' from others rows, their original heights may
+				 * be different than the row in which they are now being placed. Hence,
+				 * the 'orgDat' must be scaled to the current bigRow height.
 				 */
 				thisImg = orgImgList[imgNo][3];
 				if (k === imgIndx) { 
 					imgStyle = '""';
-					bigRowHt = orgImgList[imgNo][2];	
+					bigRowHt = orgImgList[imgNo][2];
+					if (j === (bigLimit - 1) && LRnotFilled) {
+						// set a minimum ht for the last unfilled row of 260
+						bigRowHt = 260;
+					}
 				} else {
 					imgStyle = '"margin-left:1px;"';
 					if (orgImgList[imgNo][2] != bigRowHt) {
@@ -657,19 +734,18 @@ function redrawRows(direction) {
 					rowHtml += '<iframe style=' + imgStyle + ' id="theMap" height="' + 
 					bigRowHt  + '" width="' + bigRowHt + '" src="' + imgSrc + '"></iframe>'; 
 				} else {
-					imgAlt = 0;
 					if (orgImgList[imgNo][0] === 'class') { // it's a class attribute-based item
 						rowHtml += '<img style=' + imgStyle + ' class="' + 
 						orgImgList[imgNo][1] + '" height="' + bigRowHt + '" width="' + 
 						thisImg + '" src="' + imgSrc + '" alt="' + orgImgList[imgNo][5]+ '" />';
 					} else { // it's an id attribute-based item
-						rowHtml += '<img style="' + imgStyle + '" id="' + orgImgList[imgNo][1] + 
+						rowHtml += '<img style=' + imgStyle + ' id="' + orgImgList[imgNo][1] + 
 						'" height="' + bigRowHt + '" width="' + thisImg + '" src="' + 
 						imgSrc + '" alt="' + orgImgList[imgNo][5] + '" />';
 					}
 				}
 				imgNo++;
-			}
+			}  // end for creating row html
 			$(rowId).html(rowHtml);
 			imgIndx += bigRows[j];
 		}

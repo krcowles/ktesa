@@ -40,7 +40,15 @@ occurs when the window is re-sized (or at load time if there is more space than 
 10. Map links (in addition to the iframe link) may appear on the page. These are loaded
     as relative urls (../maps/xyz_geomap.html). These links are reset to point to the
     php-map processing page to display page-appropriate options (see 'mapDisplayOpts').
-11. Variables associated with establishing caption pop-up locations and behaviors are
+11. Because the last row of images is sometimes not filled (less width than other rows),
+    expanding them to take up the full row results in over-sized images. In order to 
+    process this case properly, a flag is established ('LRnotFilled') to guide the image
+    sizer. The variable 'LRscaling' keeps track of on-going scaling behaviors in previous
+    rows and so identifies an appropriate scale to apply to non-filled rows (instead of 
+    maxing to full row size). The 'LRnotFilled' flag is determined by comparing the last
+    row's width to the previous row's width. If there is a disparity of more than 12px
+    (arbitrarily chosen), the flag is set.
+12. Variables associated with establishing caption pop-up locations and behaviors are
     presented next.
     
     
@@ -212,10 +220,13 @@ occurs when the window is re-sized (or at load time if there is more space than 
    no of images in rows.
    ---> INCREASE:
    	    Since there will always be less than or equal no. of rows than before, $rows can
-   	    be re-used and trimmed if needed (less than).
-   		- add 1 image to each row until images are exhausted (hold count in biRows[])
+   	    be re-used and trimmed if needed (less than orginal count).
+   		- add 1 image to each row until images are exhausted (hold count in bigRows[])
    		For each row:
    		- create a new row html with the additional image
+   		- in the special case of the last row being not filled, there is a minimum ht
+   		  established of 260px, as it was found that in some cases, a much smaller min
+   		  resulted in disproportionate rows sizing.
    		- replace the row's html with the new html
    		- if new row html is exhausted before existing number of rows, find the excess
    		  no of rows and remove them
