@@ -50,8 +50,8 @@ var mapDisplayOpts = '&show_markers_url=true&street_view_url=true&map_type_url=G
  *  and will be re-set to point to the php map-processing page using 'mapDisplayOpts'
  */
 // jQuery objects & variables
-var $images = $('img[id^="pic"]');
-var noOfPix = $images.length;
+var $photos = $('img[id^="pic"]');
+var noOfPix = $photos.length;
 var $maps = $('iframe');
 var mapPresent = false;
 if ($maps.length) {
@@ -232,8 +232,7 @@ $('.lnkList').after(htmlLnk);
  * PLUS the next available image in the next row (row1), recalculate the number of images per row
  * and resize the rows. Note: no need if there is only one row.
  */ 
-orgRow1Strt = document.getElementById('row0').childNodes.length;
-tippingPoint(orgRow1Strt);  // set point at which to recalculate no of images per row
+tippingPoint();  // set point at which to recalculate no of images per row
  
 // Now that everything is done, enable events
 eventSet(); // turn on the image events
@@ -253,12 +252,12 @@ if (winWidth > triggerWidth) {
  * turned off together (see killEvents). Obviously, eventSet is also called after page load.
  */
 function eventSet() {
-	$images.each( function() {
+	$photos.each( function() {
 		$(this).css('cursor','pointer');
 	});
 	// popup a description when mouseover a photo
-	$images.css('z-index','1'); // keep pix in the background
-	$images.on('mouseover', function(ev) {
+	$photos.css('z-index','1'); // keep pix in the background
+	$photos.on('mouseover', function(ev) {
 		var eventObj = ev.target;
 		picSel = eventObj.id;
 		var picHdr = picSel.substring(0,3);
@@ -267,12 +266,12 @@ function eventSet() {
 		}
 	});
 	// kill the popup when mouseout
-	$images.on('mouseout', function() {
+	$photos.on('mouseout', function() {
 		$('.popupCap > p').remove();
 		$('.popupCap').css('display','none');
 	});
 	// clicking images:
-	$images.on('click', function(ev) {
+	$photos.on('click', function(ev) {
 		var clickWhich = ev.target;
 		var picSrc = clickWhich.id;
 		var picHdr = picSrc.substring(0,3);
@@ -293,10 +292,10 @@ function eventSet() {
 }
 // turn off events during resize until finished resizing
 function killEvents() {
-	$images.off('mouseover');
-	$images.off('mouseout');
-	$images.off('click');    // specifying multiple events in one call gave error
-	$images = null;
+	$photos.off('mouseover');
+	$photos.off('mouseout');
+	$photos.off('click');    // specifying multiple events in one call gave error
+	$photos = null;
 }
 
 /* SOME FUNCTIONS TO SIMPLIFY MAIN ROUTINE CALLS:
@@ -382,7 +381,7 @@ function getOrgDat() {
 // function to capture *current* image widths & map link loc
 function captureWidths() {
 	i = 0;
-	$images.each( function() {
+	$photos.each( function() {
 		capWidth[i] = this.width + 'px';
 		pwidth = 'pwidth'+ i;
 		if (sessSupport) {
@@ -436,10 +435,10 @@ function picPop(picTarget) {
 	$('.popupCap').prepend(htmlDesc);
 }
 // function to determine window size that is threshold for re-calculating # of images/row
-function tippingPoint(row1StrtImg) {
+function tippingPoint() {
 	if (noOfRows > 1) {
-		var trigImg = parseFloat($images[row1StrtImg].width);
-		triggerPoint = maxRow + trigImg;
+		var trigImg = $('#row1').children().eq(0).width();
+		triggerPoint = maxRow + parseFloat(trigImg);
 	} else {
 		triggerPoint = 100000; // ain't gonna happen
 	}
@@ -462,8 +461,8 @@ $(window).resize( function() {
 });
 function sizeProcessor() {
 	winWidth = $(window).width();  // get new window width
-	killEvents();  // NO $images object NOW....
-	imageSizer(winWidth); // $images object is restored with new values
+	killEvents();  // NO $photos object NOW....
+	imageSizer(winWidth); // $photos object is restored with new values
 	prevWidth = winWidth;
 	// now re-calc image & iframe positions
 	captureWidths();
@@ -625,7 +624,7 @@ function imageSizer(targWidth) {
 		    }
 		} // end of "run algorithm" section
 	} // end of else (re-size rows)
-	$images = $('img[id^="pic"]');
+	$photos = $('img[id^="pic"]');
 } // end of imageSizer function
 function restoreOrgDat() {
  	/* NOTE: When rows are re-drawn with more images/row than at original load, it might
@@ -719,7 +718,7 @@ function redrawRows(direction) {
 					bigRowHt = orgImgList[imgNo][2];
 					if (j === (bigLimit - 1) && LRnotFilled) {
 						// set a minimum ht for the last unfilled row of 260
-						bigRowHt = 260;
+						bigRowHt = 230;
 					}
 				} else {
 					imgStyle = '"margin-left:1px;"';
