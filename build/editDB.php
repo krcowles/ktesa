@@ -164,6 +164,68 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <textarea id="ph2" name="purl2"><?php echo $info[24];?></textarea><br /><br />
 <label for="murl">Map Directions Link (Url): </label>
 <textarea id="murl" name="gdirs"><?php echo $info[25];?></textarea><br /><br />
+
+<?php
+	$alpha = 30;	# space overlap for placement
+	$beta = 20;		
+	$scale = 900/960;   # allows 30 px on each end of row
+	$rowCnt = 0;
+	$rows = array();
+	for ($i=0; $i<6; $i++) {
+		# determine the number of rows:
+		if ($info[29+$i] !== '') {
+			$imgDat = array();
+			$rowDat = explode("^",$info[29+$i]);
+			$noOfImgs = $rowDat[0];
+			$rowHt = floor($scale * $rowDat[1]);
+			array_push($imgDat,$rowHt);
+			$nxtIndx = 2;
+			$rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow">';
+			$picNo = 0;
+			$nonCap = 0;
+			for ($j=0; $j<$noOfImgs; $j++) {
+				$sym = $rowDat[$nxtIndx];
+				$imgWd = $rowDat[$nxtIndx+1];
+				$imgWd = floor($scale * $imgWd);
+				array_push($imgDat,$imgWd);
+				if ($sym === 'p') {
+					$rowHtml .= '<img id="pic' . $picNo . '" style="margin-left:1px;" ' .
+						'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
+						'" width="' . $imgWd . '" src="' .
+						$rowDat[$nxtIndx+2] . '" alt="' . $rowDat[$nxtIndx+3] . '" />';
+					$picNo++;
+					$nxtIndx += 4;
+				} elseif ($sym === 'f') {
+					$rowHtml .= '<iframe id="theMap" style="margin-left:1px;" ' .
+					'draggable="true" ondragstart="drag(event)" height="' .$rowHt . 
+					'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] .'"></iframe>';
+					$nxtIndx += 3;
+				} else { 
+					$rowHtml .= '<img class="noCap" style="margin-left:1px;" ' .
+						'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
+						'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] . 
+						'" alt="no Caption" />';
+					$nonCap++;
+					$nxtIndx += 3;
+				}
+				# create a box for this image:
+			}
+			$rowHtml .= '</div>';
+			array_push($rows,$rowHtml);
+			$rowCnt++;
+		}  # end of if 'row with images'
+	}  # end of for all possible rows
+	echo $rows[0];
+?>
+<!-- INSERT DRAGGABLE ELEMENTS HERE
+<div id = "d00" class="gridbox"></div><div id = "d01" class="gridbox"></div><div id = "d02" class="gridbox"></div><div id = "d03" class="gridbox"></div><div id = "d04" class="gridbox"></div><div id = "d05" class="gridbox"></div><div id = "d06" class="gridbox"></div><div id = "d07" class="gridbox"></div><div id = "d08" class="gridbox"></div><div id = "d09" class="gridbox"></div><div id = "d0a" class="gridbox"></div><div id = "d0b" class="gridbox"></div><div id = "d0c" class="gridbox"></div><div id = "d0d" class="gridbox"></div><div id = "d0e" class="gridbox"></div><div id = "d0f" class="gridbox"></div>
+<div id = "d10" class="gridbox"></div><div id = "d11" class="gridbox"></div><div id = "d12" class="gridbox"></div><div id = "d13" class="gridbox"></div><div id = "d14" class="gridbox"></div><div id = "d15" class="gridbox"></div><div id = "d16" class="gridbox"></div><div id = "d17" class="gridbox"></div><div id = "d18" class="gridbox"></div><div id = "d19" class="gridbox"></div><div id = "d1a" class="gridbox"></div><div id = "d1b" class="gridbox"></div><div id = "d1c" class="gridbox"></div><div id = "d1d" class="gridbox"></div><div id = "d1e" class="gridbox"></div><div id = "d1f" class="gridbox"></div>
+<div id = "d20" class="gridbox"></div><div id = "d21" class="gridbox"></div><div id = "d22" class="gridbox"></div><div id = "d23" class="gridbox"></div><div id = "d24" class="gridbox"></div><div id = "d25" class="gridbox"></div><div id = "d26" class="gridbox"></div><div id = "d27" class="gridbox"></div><div id = "d28" class="gridbox"></div><div id = "d29" class="gridbox"></div><div id = "d2a" class="gridbox"></div><div id = "d2b" class="gridbox"></div><div id = "d2c" class="gridbox"></div><div id = "d2d" class="gridbox"></div><div id = "d2e" class="gridbox"></div><div id = "d2f" class="gridbox"></div>
+<div id = "d30" class="gridbox"></div><div id = "d31" class="gridbox"></div><div id = "d32" class="gridbox"></div><div id = "d33" class="gridbox"></div><div id = "d34" class="gridbox"></div><div id = "d35" class="gridbox"></div><div id = "d36" class="gridbox"></div><div id = "d37" class="gridbox"></div><div id = "d38" class="gridbox"></div><div id = "d39" class="gridbox"></div><div id = "d3a" class="gridbox"></div><div id = "d3b" class="gridbox"></div><div id = "d3c" class="gridbox"></div><div id = "d3d" class="gridbox"></div><div id = "d3e" class="gridbox"></div><div id = "d3f" class="gridbox"></div>
+-->
+
+
+
 <?php 
 	if ($info[37] !== '') {
 		echo '<p>Tips Text: </p>';

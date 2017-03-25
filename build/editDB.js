@@ -137,7 +137,8 @@ for (var i=0; i<refCnt; i++) {
 	$(refname).val(rid);
 }
 
-// When changing marker type to Cluster:
-
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
 
 }); // end of page is loaded...
