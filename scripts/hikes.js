@@ -1,5 +1,32 @@
 $( function () { // when page is loaded...
 
+/* Zoom detection is not provided as standard, and is browser-dependent. The methodology
+ * employed here works well only where the devicePixelRatio property actually reveals
+ * browser pixel-scaling. As an example, the method works for Firefox and Chrome, but
+ * not Safari. Safari always reports "2" for retina displays, and "1" otherwise.
+ * This ratio is used to decide whether or not to allow image sizing to take place.
+ * Where devicePixelRatio is not supported, another method is used (ratio of current window
+ * to available screen width). The latter works only for zooming out, not on zooming in.
+ */
+var usePixelRatio;
+(function browserType() { 
+     if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1 ) {
+        usePixelRatio = false; }
+    else if(navigator.userAgent.indexOf("Chrome") != -1 ) {
+    	usePixelRatio = true; }
+    else if(navigator.userAgent.indexOf("Safari") != -1) {
+        usePixelRatio = false; }
+    else if(navigator.userAgent.indexOf("Firefox") != -1 ) {
+        usePixelRatio = true; }
+    else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) { //IF IE > 10 
+        usePixelRatio = false; }  
+    else {
+        usePixelRatio = false; }
+}());
+var zoomMax = screen.width;
+var winWidth = $(window).width();
+var winrat; // ratio of window to available screen width: use when can't use devicePixelRatio
+
 /* The following global variable assignments are associated with the routines
  * which manage the sizing of rows (with fixed margin as window frame grows/shrinks).
  */
@@ -7,7 +34,6 @@ const GROW = 1;
 const SHRINK = 0;
 
 // window size and margin calculations; NOTE: innerWidth provides the dimension inside the border
-var winWidth = $(window).width(); // document width at page load
 var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
 if (bodySurplus < 24) {
 	bodySurplus = 24;
@@ -451,13 +477,28 @@ function tippingPoint() {
  * resize triggering. The timeout allows a quiet period until another trigger can occur.
  */
 $(window).resize( function() {
-	if (resizeFlag === false) {
+	winWidth = $(window).width();
+	winrat = winWidth/zoomMax;
+	var runSizer = false;
+	if (usePixelRatio) {
+		if (resizeFlag === false && window.devicePixelRatio === 1) {
+			runSizer = true;
+		}
+	} else {
+		if (resizeFlag === false && (winrat > 0.95 && winrat < 1.05)) {
+			runSizer = true; 
+		}
+	}
+	if (runSizer) {
 		resizeFlag = true;
 		setTimeout( function() {
 			sizeProcessor();
 			resizeFlag = false;  // can now process another resize event
 		}, 400);
-	}  // end of resizeFlag = false
+	} else {  // when zoom modifies image sizes:
+		captureWidths();
+		calcPos();
+	}
 });
 function sizeProcessor() {
 	winWidth = $(window).width();  // get new window width
