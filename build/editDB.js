@@ -1,5 +1,5 @@
 $( function () { // when page is loaded...
-	
+
 /* Each drop-down field parameter is held in a hidden <p> element; the data (text)
    in that hidden <p> element is the default that should appear in the drop-down box
    The drop-down style parameters are:
@@ -137,8 +137,4 @@ for (var i=0; i<refCnt; i++) {
 	$(refname).val(rid);
 }
 
-function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-}
-
-}); // end of page is loaded...
+});  // end of 'page (DOM) loading complete'

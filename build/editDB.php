@@ -14,12 +14,17 @@
 		content="nofollow" />
 	<link href="editDB.css"
 		type="text/css" rel="stylesheet" />
+	<!-- early scripts to define drag functions for images -->
+	<script src="../scripts/jquery-1.12.1.js"></script>
+	<script src="picNplace.js"></script>
+	
 </head>
 
 <body>
 
 <div style="padding:16px;">
 <?php
+	$loadIcon = 'insert.png';
 	$database = '../data/database.csv';
 	$db = fopen($database,"r");
 	$hikeNo = $_GET['hikeNo'];
@@ -166,67 +171,82 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <textarea id="murl" name="gdirs"><?php echo $info[25];?></textarea><br /><br />
 
 <?php
-	$alpha = 30;	# space overlap for placement
-	$beta = 20;		
-	$scale = 900/960;   # allows 30 px on each end of row
+	$alpha = 30;	# insert-icon size
+	$beta = 10;  # space between images
 	$rowCnt = 0;
 	$rows = array();
+	$inserts = array();
 	for ($i=0; $i<6; $i++) {
-		# determine the number of rows:
 		if ($info[29+$i] !== '') {
+			/*
+			 * START NEW ROW
+			 */
 			$imgDat = array();
 			$rowDat = explode("^",$info[29+$i]);
 			$noOfImgs = $rowDat[0];
+			$firstMarg = 0;
+			$lastMarg = $noOfImgs - 1;
+			$noOfInserts = $noOfImgs + 1;
+			$extraSpace = 2 * $alpha + 10 * ($noOfImgs - 1); // consumed by row spacing & insert icons
+			$scale = (960 - $extraSpace)/960;
+			# insert icons:
+			$insRow = '<div class="ins">';
+			$insRow .= '<img id="lead" style="float:left;" height="' . $alpha . '" width="' .
+						$alpha . '" src="' . $loadIcon . '" alt="drop-point" />';
 			$rowHt = floor($scale * $rowDat[1]);
 			array_push($imgDat,$rowHt);
 			$nxtIndx = 2;
-			$rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow">';
+			$rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow" style="margin-left:30px;display:block;">';
 			$picNo = 0;
 			$nonCap = 0;
-			for ($j=0; $j<$noOfImgs; $j++) {
+			for ($j=0; $j<$noOfImgs; $j++) {  // FOR EACH IMAGE IN THIS ROW...
 				$sym = $rowDat[$nxtIndx];
-				$imgWd = $rowDat[$nxtIndx+1];
-				$imgWd = floor($scale * $imgWd);
+				$strtImgWd = $rowDat[$nxtIndx+1];
+				$imgWd = floor($scale * $strtImgWd);
+				if ( $j === $firstMarg || $j === $lastMarg ) {
+					$insPos = $imgWd - 10;   # use symbols instead of numbers....
+				} else { 
+					$insPos = $imgWd - 20;   # use symbols instead of numbers....
+				}
+				$insRow .= '<img style="float:left;margin-left:' . $insPos . 'px;" id="ins' . 
+					$j . '" height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
+					'" alt="drop-point" />';
 				array_push($imgDat,$imgWd);
 				if ($sym === 'p') {
-					$rowHtml .= '<img id="pic' . $picNo . '" style="margin-left:1px;" ' .
+					$rowHtml .= '<img id="pic' . $picNo . '" style="margin-right:' . $beta . 'px;" ' .
 						'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
 						'" width="' . $imgWd . '" src="' .
 						$rowDat[$nxtIndx+2] . '" alt="' . $rowDat[$nxtIndx+3] . '" />';
 					$picNo++;
 					$nxtIndx += 4;
 				} elseif ($sym === 'f') {
-					$rowHtml .= '<iframe id="theMap" style="margin-left:1px;" ' .
+					$rowHtml .= '<iframe id="theMap" style="margin-right:' . $beta . 'px;" ' .
 					'draggable="true" ondragstart="drag(event)" height="' .$rowHt . 
 					'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] .'"></iframe>';
 					$nxtIndx += 3;
 				} else { 
-					$rowHtml .= '<img class="noCap" style="margin-left:1px;" ' .
+					$rowHtml .= '<img class="noCap" style="margin-right:' . $beta . 'px;" ' .
 						'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
 						'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] . 
 						'" alt="no Caption" />';
 					$nonCap++;
 					$nxtIndx += 3;
 				}
-				# create a box for this image:
-			}
+			} // end of for creating images in row & inserts
+			# have not yet saved $imgDat array....
 			$rowHtml .= '</div>';
 			array_push($rows,$rowHtml);
+			$insRow .= '</div>';
+			//echo $insRow;
+			array_push($inserts,$insRow);
 			$rowCnt++;
 		}  # end of if 'row with images'
 	}  # end of for all possible rows
-	echo $rows[0];
-?>
-<!-- INSERT DRAGGABLE ELEMENTS HERE
-<div id = "d00" class="gridbox"></div><div id = "d01" class="gridbox"></div><div id = "d02" class="gridbox"></div><div id = "d03" class="gridbox"></div><div id = "d04" class="gridbox"></div><div id = "d05" class="gridbox"></div><div id = "d06" class="gridbox"></div><div id = "d07" class="gridbox"></div><div id = "d08" class="gridbox"></div><div id = "d09" class="gridbox"></div><div id = "d0a" class="gridbox"></div><div id = "d0b" class="gridbox"></div><div id = "d0c" class="gridbox"></div><div id = "d0d" class="gridbox"></div><div id = "d0e" class="gridbox"></div><div id = "d0f" class="gridbox"></div>
-<div id = "d10" class="gridbox"></div><div id = "d11" class="gridbox"></div><div id = "d12" class="gridbox"></div><div id = "d13" class="gridbox"></div><div id = "d14" class="gridbox"></div><div id = "d15" class="gridbox"></div><div id = "d16" class="gridbox"></div><div id = "d17" class="gridbox"></div><div id = "d18" class="gridbox"></div><div id = "d19" class="gridbox"></div><div id = "d1a" class="gridbox"></div><div id = "d1b" class="gridbox"></div><div id = "d1c" class="gridbox"></div><div id = "d1d" class="gridbox"></div><div id = "d1e" class="gridbox"></div><div id = "d1f" class="gridbox"></div>
-<div id = "d20" class="gridbox"></div><div id = "d21" class="gridbox"></div><div id = "d22" class="gridbox"></div><div id = "d23" class="gridbox"></div><div id = "d24" class="gridbox"></div><div id = "d25" class="gridbox"></div><div id = "d26" class="gridbox"></div><div id = "d27" class="gridbox"></div><div id = "d28" class="gridbox"></div><div id = "d29" class="gridbox"></div><div id = "d2a" class="gridbox"></div><div id = "d2b" class="gridbox"></div><div id = "d2c" class="gridbox"></div><div id = "d2d" class="gridbox"></div><div id = "d2e" class="gridbox"></div><div id = "d2f" class="gridbox"></div>
-<div id = "d30" class="gridbox"></div><div id = "d31" class="gridbox"></div><div id = "d32" class="gridbox"></div><div id = "d33" class="gridbox"></div><div id = "d34" class="gridbox"></div><div id = "d35" class="gridbox"></div><div id = "d36" class="gridbox"></div><div id = "d37" class="gridbox"></div><div id = "d38" class="gridbox"></div><div id = "d39" class="gridbox"></div><div id = "d3a" class="gridbox"></div><div id = "d3b" class="gridbox"></div><div id = "d3c" class="gridbox"></div><div id = "d3d" class="gridbox"></div><div id = "d3e" class="gridbox"></div><div id = "d3f" class="gridbox"></div>
--->
+	for ($j=0; $j<$rowCnt; $j++) {
+		echo $inserts[$j];
+		echo $rows[$j];
+	}
 
-
-
-<?php 
 	if ($info[37] !== '') {
 		echo '<p>Tips Text: </p>';
 		echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $info[37] . '</textarea><br />';
@@ -383,7 +403,6 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 
 </div>
 
-<script src="../scripts/jquery-1.12.1.js"></script>
 <script src="editDB.js"></script>
 </body>
 </html>
