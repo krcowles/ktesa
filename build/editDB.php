@@ -176,6 +176,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	$rowCnt = 0;
 	$rows = array();
 	$inserts = array();
+	$insNo = 0;
+	$picNo = 0;
+	$nonCap = 0;
 	for ($i=0; $i<6; $i++) {
 		if ($info[29+$i] !== '') {
 			/*
@@ -190,15 +193,14 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 			$extraSpace = 2 * $alpha + 10 * ($noOfImgs - 1); // consumed by row spacing & insert icons
 			$scale = (960 - $extraSpace)/960;
 			# insert icons:
-			$insRow = '<div class="ins">';
-			$insRow .= '<img id="lead" style="float:left;" height="' . $alpha . '" width="' .
+			$insRow = '<div id="insRow' . $rowCnt . '" class="ins">';
+			$insRow .= '<img class="lead" style="float:left;" height="' . $alpha . '" width="' .
 						$alpha . '" src="' . $loadIcon . '" alt="drop-point" />';
 			$rowHt = floor($scale * $rowDat[1]);
 			array_push($imgDat,$rowHt);
 			$nxtIndx = 2;
-			$rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow" style="margin-left:30px;display:block;">';
-			$picNo = 0;
-			$nonCap = 0;
+			$rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow" style="margin-left:30px;clear:both;">';
+			$capTxt = array();
 			for ($j=0; $j<$noOfImgs; $j++) {  // FOR EACH IMAGE IN THIS ROW...
 				$sym = $rowDat[$nxtIndx];
 				$strtImgWd = $rowDat[$nxtIndx+1];
@@ -209,23 +211,26 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 					$insPos = $imgWd - 20;   # use symbols instead of numbers....
 				}
 				$insRow .= '<img style="float:left;margin-left:' . $insPos . 'px;" id="ins' . 
-					$j . '" height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
+					$insNo . '" height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
 					'" alt="drop-point" />';
+				$insNo++;
 				array_push($imgDat,$imgWd);
 				if ($sym === 'p') {
 					$rowHtml .= '<img id="pic' . $picNo . '" style="margin-right:' . $beta . 'px;" ' .
 						'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
 						'" width="' . $imgWd . '" src="' .
 						$rowDat[$nxtIndx+2] . '" alt="' . $rowDat[$nxtIndx+3] . '" />';
+					array_push($capTxt,$rowDat[$nxtIndx+3]);
 					$picNo++;
 					$nxtIndx += 4;
-				} elseif ($sym === 'f') {
-					$rowHtml .= '<iframe id="theMap" style="margin-right:' . $beta . 'px;" ' .
-					'draggable="true" ondragstart="drag(event)" height="' .$rowHt . 
-					'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] .'"></iframe>';
+				} elseif ($sym === 'f') { // to make draggable, place inside draggable div
+					$rowHtml .= '<div style="display:inline-block;margin-right:' . 
+						$beta . 'px;" id="map0" draggable="true" ' .
+						'ondragstart="drag(event)"><iframe id="theMap" height="' .$rowHt . 
+						'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] .'"></iframe></div>';
 					$nxtIndx += 3;
 				} else { 
-					$rowHtml .= '<img class="noCap" style="margin-right:' . $beta . 'px;" ' .
+					$rowHtml .= '<img id="nocap' . $nonCap . '" style="margin-right:' . $beta . 'px;" ' .
 						'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
 						'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] . 
 						'" alt="no Caption" />';
