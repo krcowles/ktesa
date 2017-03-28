@@ -1,4 +1,6 @@
 // This routine is called early - before html - in order to set up drag function
+var msg; // generic
+
 function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
     setTimeout( function() {
@@ -50,3 +52,12 @@ function redrawSmaller(imgId) {
 		$(txtA).remove();
 	}
 }  // end function redrawSmaller
+function allowDrop(ev) {
+	ev.preventDefault();
+	msg = ev.target.id;
+}
+function drop(ev) {
+	var img = ev.dataTransfer.getData("text");
+	msg = 'Drop target id is ' + msg;
+	window.alert(msg);
+}

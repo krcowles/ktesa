@@ -195,8 +195,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 			$scale = (960 - $extraSpace)/960;
 			# insert icons:
 			$insRow = '<div id="insRow' . $rowCnt . '" class="ins">';
-			$insRow .= '<img class="lead" style="float:left;" height="' . $alpha . '" width="' .
-						$alpha . '" src="' . $loadIcon . '" alt="drop-point" />';
+			$insRow .= '<img class="lead" style="float:left;" ondrop="drop(event)"' .
+				' ondragover="allowDrop(event)" height="' . $alpha . '" width="' . 
+				$alpha . '" src="' . $loadIcon . '" alt="drop-point" />';
 			$rowHt = floor($scale * $rowDat[1]);
 			array_push($imgDat,$rowHt);
 			$nxtIndx = 2;
@@ -216,7 +217,8 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 					$insPos = $imgWd - 20;   # use symbols instead of numbers....
 				}
 				$insRow .= '<img style="float:left;margin-left:' . $insPos . 'px;" id="ins' . 
-					$insNo . '" height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
+					$insNo . '" ondrop="drop(event)" ondragover="allowDrop(event)"' .
+					' height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
 					'" alt="drop-point" />';
 				$insNo++;
 				array_push($imgDat,$imgWd);
