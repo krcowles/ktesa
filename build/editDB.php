@@ -176,6 +176,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	$rowCnt = 0;
 	$rows = array();
 	$inserts = array();
+	$captions = array();
 	$insNo = 0;
 	$picNo = 0;
 	$nonCap = 0;
@@ -200,7 +201,11 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 			array_push($imgDat,$rowHt);
 			$nxtIndx = 2;
 			$rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow" style="margin-left:30px;clear:both;">';
-			$capTxt = array();
+			$capDiv = '<div id="caps' . $rowCnt . '">';
+			$capMarg = $alpha;
+			/* 
+			 * Process each image in row:
+			 */
 			for ($j=0; $j<$noOfImgs; $j++) {  // FOR EACH IMAGE IN THIS ROW...
 				$sym = $rowDat[$nxtIndx];
 				$strtImgWd = $rowDat[$nxtIndx+1];
@@ -216,11 +221,18 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 				$insNo++;
 				array_push($imgDat,$imgWd);
 				if ($sym === 'p') {
+					$caption = $rowDat[$nxtIndx+3];
 					$rowHtml .= '<img id="pic' . $picNo . '" style="margin-right:' . $beta . 'px;" ' .
 						'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
 						'" width="' . $imgWd . '" src="' .
-						$rowDat[$nxtIndx+2] . '" alt="' . $rowDat[$nxtIndx+3] . '" />';
-					array_push($capTxt,$rowDat[$nxtIndx+3]);
+						$rowDat[$nxtIndx+2] . '" alt="' . $caption . '" />';
+					# for some reason, textarea px doesn't scale, so:
+					$capWidth = intval($imgWd) - 12;
+					$leftMarg = $capMarg - 2;
+					$capDiv .= 	'<textarea id="capTxt' . $picNo . '" style="margin-left:' .
+						$leftMarg . 'px;height:70px;width:' . $capWidth . 'px;">' . $caption .
+						'</textarea>';
+					if ($capMarg === $alpha) { $capMarg = $beta; }			
 					$picNo++;
 					$nxtIndx += 4;
 				} elseif ($sym === 'f') { // to make draggable, place inside draggable div
@@ -229,6 +241,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 						'ondragstart="drag(event)"><iframe id="theMap" height="' .$rowHt . 
 						'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] .'"></iframe></div>';
 					$nxtIndx += 3;
+					$capMarg += intval($imgWd) + $beta;
 				} else { 
 					$rowHtml .= '<img id="nocap' . $nonCap . '" style="margin-right:' . $beta . 'px;" ' .
 						'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
@@ -236,20 +249,23 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 						'" alt="no Caption" />';
 					$nonCap++;
 					$nxtIndx += 3;
+					$capMarg += intval($imgWd) + $beta;
 				}
 			} // end of for creating images in row & inserts
 			# have not yet saved $imgDat array....
 			$rowHtml .= '</div>';
 			array_push($rows,$rowHtml);
 			$insRow .= '</div>';
-			//echo $insRow;
 			array_push($inserts,$insRow);
+			$capDiv .= '</div>';
+			array_push($captions,$capDiv);
 			$rowCnt++;
 		}  # end of if 'row with images'
 	}  # end of for all possible rows
 	for ($j=0; $j<$rowCnt; $j++) {
 		echo $inserts[$j];
 		echo $rows[$j];
+		echo $captions[$j];
 	}
 
 	if ($info[37] !== '') {
