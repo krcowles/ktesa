@@ -166,7 +166,7 @@ function makeHtmlList($type,$str) {
 					$picLinks = makeHtmlList(Simple,$picLinks);
 					$hikeTips = $hikeArray[37];
 					$hikeTips = preg_replace("/\s/"," ",$hikeTips);
-					$hikeInfo = '<p id="hikeInfo">' . $hikeArray[38] . '</p>';
+					$hikeInfo = '<p id="hikeInfo" style="clear:both;">' . $hikeArray[38] . '</p>';
 					$hikeReferences = $hikeArray[39];
 					$hikeReferences = makeHtmlList(References,$hikeReferences);
 					$hikeProposedData = $hikeArray[40];
@@ -271,7 +271,7 @@ function makeHtmlList($type,$str) {
 	<div id="postPhoto">
 		<?php
 			if ($hikeTips !== '') {
-				echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
+				echo '<div id="trailTips" style="clear:both;"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
 					'<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . 
 					htmlspecialchars_decode($hikeTips,ENT_COMPAT) . '</p></div>';
 			}

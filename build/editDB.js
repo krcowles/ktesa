@@ -137,4 +137,43 @@ for (var i=0; i<refCnt; i++) {
 	$(refname).val(rid);
 }
 
+// FOR USE BY picNPlace ROUTINE:
+var $img;
+var rowHeight = [];  // current row heights, for scaling up/down
+for (var i=0; i<6; i++) {
+	var rowid = '#row' + i;
+	$img = $(rowid).children().eq(0);
+	if ($img.attr('id') === 'map0') {
+		 rowHeight[i] = document.getElementById('theMap').height;
+	} else {
+		rowHeight[i] = $img.height();
+	}
+}
+$('#loadimg').change( function(e) {
+	e.preventDefault();
+	var isrc = $('#picurl').val();
+    $('#newpic').on('load', function() {
+		var loadedImg = document.getElementById('newpic');
+		var oldht = loadedImg.height;
+		var oldwd = loadedImg.width;
+		var scale = oldwd/oldht;
+		var newwd = Math.floor(scale * 200);
+		loadedImg.height = 200; // start with reasonably sized image
+		loadedImg.width = newwd;
+	});
+	var newimg = '<img id= "newpic" draggable="true" ondragstart="drag(event)" src="' + 
+		isrc + '" alt="image from url" />';
+	$('#getimg').append(newimg);
+	$(this).attr('checked',false);
+});
+
+
 });  // end of 'page (DOM) loading complete'
+
+
+
+
+
+
+
+

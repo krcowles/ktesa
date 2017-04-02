@@ -60,6 +60,7 @@
 	$clusStr = implode(";",$clusters);
 	$_SESSION['allClusters'] = $clusStr;	
 ?>
+
 <form target="_blank" action="saveChanges.php" method="POST">
 <?php
 echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
@@ -169,6 +170,13 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <textarea id="ph2" name="purl2"><?php echo $info[24];?></textarea><br /><br />
 <label for="murl">Map Directions Link (Url): </label>
 <textarea id="murl" name="gdirs"><?php echo $info[25];?></textarea><br /><br />
+<div id="getimg">The following images may be re-ordered by using drag &amp; drop. To add a new image,
+	specify the url in the txt box. The image will appear below. Then drag the image to the 
+	desired location. NOTE: The url must be a web-based address not a local machine image.<br />
+	<input id="picurl" type="text" size="100" />&nbsp;&nbsp;Check the box to upload: 
+	<input id="loadimg" type="checkbox" name="ldimg" value="NO" /><br /><br />
+	<!-- <p id="extImg"></p><br /> -->
+</div><br />
 
 <?php
 	$alpha = 30;	# insert-icon size
@@ -188,11 +196,10 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 			$imgDat = array();
 			$rowDat = explode("^",$info[29+$i]);
 			$noOfImgs = $rowDat[0];
-			$firstMarg = 0;
-			$lastMarg = $noOfImgs - 1;
 			$noOfInserts = $noOfImgs + 1;
 			$extraSpace = 2 * $alpha + 10 * ($noOfImgs - 1); // consumed by row spacing & insert icons
-			$scale = (960 - $extraSpace)/960;
+			$scale = (850 - $extraSpace)/960;
+			#echo 'Calculated scale: ' . $scale;
 			# insert icons:
 			$insRow = '<div id="insRow' . $rowCnt . '" class="ins">';
 			$insRow .= '<img id="lead' . $rowCnt . '" style="float:left;" ondrop="drop(event)"' .
@@ -201,9 +208,10 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 			$rowHt = floor($scale * $rowDat[1]);
 			array_push($imgDat,$rowHt);
 			$nxtIndx = 2;
+			$divMarg = $alpha/2 + $beta/2;
 			$rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow" style="margin-left:' .
-				$alpha . 'px;clear:both;">';
-			$capRow = '<div id="caps' . $rowCnt . '" style="margin-left:' . $alpha . 'px;">';
+				$divMarg . 'px;clear:both;">';
+			$capRow = '<div id="caps' . $rowCnt . '" style="margin-left:' . $divMarg . 'px;">';
 			$capMarg = $alpha;
 			/* 
 			 * Process each image in row:
@@ -212,11 +220,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 				$sym = $rowDat[$nxtIndx];
 				$strtImgWd = $rowDat[$nxtIndx+1];
 				$imgWd = floor($scale * $strtImgWd);
-				if ( $j === $firstMarg || $j === $lastMarg ) {
-					$insPos = intval($imgWd) - intval($alpha/2 - $beta/2);
-				} else { 
-					$insPos = intval($imgWd) - intval($alpha - $beta);
-				}
+				$insPos = intval($imgWd + $beta - $alpha);
 				$insRow .= '<img style="float:left;margin-left:' . $insPos . 'px;" id="ins' . 
 					$insNo . '" ondrop="drop(event)" ondragover="allowDrop(event)"' .
 					' height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
@@ -239,12 +243,14 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 					$nxtIndx += 4;
 				} elseif ($sym === 'f') { // to make draggable, place inside draggable div
 					$rowHtml .= '<div style="display:inline-block;margin-right:' . 
-						$beta . 'px;" id="map0" draggable="true" ' .
-						'ondragstart="drag(event)"><iframe id="theMap" height="' .$rowHt . 
-						'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] .'"></iframe></div>';
+						$beta . 'px;border-style:solid;border-width:4px;border-color:brown;"' .
+						' id="map0" draggable="true" ondragstart="drag(event)">' .
+						'<iframe id="theMap" height="' .$rowHt . '" width="' . $imgWd . 
+						'" src="' . $rowDat[$nxtIndx+2] .'"></iframe></div>';
 					$nonCapWidth = intval($imgWd) + $beta;
-					$capRow .= '<div id="capArea' . $insNo . '" style="display:inline-block;height:60px;width:' .
-						$nonCapWidth . 'px;border-style:solid;border-width:1px;vertical-align:bottom">NO EDIT</div>';
+					$capRow .= '<div id="capArea' . $insNo . '" class="notTA" style="display:' .
+						'inline-block;text-align:center;height:60px;width:' . $nonCapWidth . 
+						'px;border-style:solid;border-width:1px;vertical-align:bottom">NO EDIT</div>';
 					$nxtIndx += 3;
 				} else { 
 					$rowHtml .= '<img id="nocap' . $nonCap . '" style="margin-right:' . $beta . 'px;" ' .
@@ -252,8 +258,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 						'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] . 
 						'" alt="no Caption" />';
 					$nonCapWidth = intval($imgWd) + $beta;
-					$capRow .= '<div id="capArea' . $insNo . '" style="display:inline-block;height:60px;width:' .
-						$nonCapWidth . 'px;border-style:solid;border-width:1px;vertical-align:bottom;">NO EDIT<div>';
+					$capRow .= '<div id="capArea' . $insNo . '" class="notTA" style="display:' .
+						'inline-block;text-align:center;height:60px;width:' . $nonCapWidth . 
+						'px;border-style:solid;border-width:1px;vertical-align:bottom;">NO EDIT</div>';
 					$nonCap++;
 					$nxtIndx += 3;
 				}
