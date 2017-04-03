@@ -138,17 +138,6 @@ for (var i=0; i<refCnt; i++) {
 }
 
 // FOR USE BY picNPlace ROUTINE:
-var $img;
-var rowHeight = [];  // current row heights, for scaling up/down
-for (var i=0; i<6; i++) {
-	var rowid = '#row' + i;
-	$img = $(rowid).children().eq(0);
-	if ($img.attr('id') === 'map0') {
-		 rowHeight[i] = document.getElementById('theMap').height;
-	} else {
-		rowHeight[i] = $img.height();
-	}
-}
 $('#loadimg').change( function(e) {
 	e.preventDefault();
 	var isrc = $('#picurl').val();

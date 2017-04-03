@@ -181,6 +181,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <?php
 	$alpha = 30;	# insert-icon size
 	$beta = 10;  # space between images
+	$dragBorder = 8;
 	$rowCnt = 0;
 	$rows = array();		// holds imgs
 	$inserts = array();     // holds insert points (.png)
@@ -221,6 +222,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 				$strtImgWd = $rowDat[$nxtIndx+1];
 				$imgWd = floor($scale * $strtImgWd);
 				$insPos = intval($imgWd + $beta - $alpha);
+				if ($sym === 'f') {
+					$insPos += $dragBorder;
+				}
 				$insRow .= '<img style="float:left;margin-left:' . $insPos . 'px;" id="ins' . 
 					$insNo . '" ondrop="drop(event)" ondragover="allowDrop(event)"' .
 					' height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
@@ -242,25 +246,26 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 					$picNo++;
 					$nxtIndx += 4;
 				} elseif ($sym === 'f') { // to make draggable, place inside draggable div
-					$rowHtml .= '<div style="display:inline-block;margin-right:' . 
+					$mapDims = $rowHt - 8; // account for draggable border
+					$rowHtml .= '<div style="display:inline-block;cursor:move;margin-right:' . 
 						$beta . 'px;border-style:solid;border-width:4px;border-color:brown;"' .
 						' id="map0" draggable="true" ondragstart="drag(event)">' .
-						'<iframe id="theMap" height="' .$rowHt . '" width="' . $imgWd . 
+						'<iframe id="theMap" height="' .$mapDims . '" width="' . $mapDims . 
 						'" src="' . $rowDat[$nxtIndx+2] .'"></iframe></div>';
 					$nonCapWidth = intval($imgWd) + $beta;
 					$capRow .= '<div id="capArea' . $insNo . '" class="notTA" style="display:' .
-						'inline-block;text-align:center;height:60px;width:' . $nonCapWidth . 
-						'px;border-style:solid;border-width:1px;vertical-align:bottom">NO EDIT</div>';
+						'inline-block;margin-right:' . $beta . 'px;text-align:center;height:60px;width:' . 
+						$nonCapWidth . 'px;border-style:solid;border-width:1px;vertical-align:bottom">NO EDIT</div>';
 					$nxtIndx += 3;
 				} else { 
 					$rowHtml .= '<img id="nocap' . $nonCap . '" style="margin-right:' . $beta . 'px;" ' .
 						'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
 						'" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] . 
 						'" alt="no Caption" />';
-					$nonCapWidth = intval($imgWd) + $beta;
+					$nonCapWidth = intval($imgWd);
 					$capRow .= '<div id="capArea' . $insNo . '" class="notTA" style="display:' .
-						'inline-block;text-align:center;height:60px;width:' . $nonCapWidth . 
-						'px;border-style:solid;border-width:1px;vertical-align:bottom;">NO EDIT</div>';
+						'inline-block;margin-right:' . $beta . 'px;text-align:center;height:60px;width:' . 
+						$nonCapWidth . 'px;border-style:solid;border-width:1px;vertical-align:bottom;">NO EDIT</div>';
 					$nonCap++;
 					$nxtIndx += 3;
 				}
