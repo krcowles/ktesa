@@ -141,7 +141,10 @@ for (var i=0; i<refCnt; i++) {
 $('#loadimg').change( function(e) {
 	e.preventDefault();
 	var isrc = $('#picurl').val();
-    $('#newpic').on('load', function() {
+	var newimg = '<img style="margin-right:10px;" id= "newpic" draggable="true" ondragstart="drag(event)" src="' + 
+		isrc + '" alt="image from url" />';
+	$('#getimg').append(newimg);
+    $('img').load( function() {
 		var loadedImg = document.getElementById('newpic');
 		var oldht = loadedImg.height;
 		var oldwd = loadedImg.width;
@@ -150,9 +153,7 @@ $('#loadimg').change( function(e) {
 		loadedImg.height = 200; // start with reasonably sized image
 		loadedImg.width = newwd;
 	});
-	var newimg = '<img id= "newpic" draggable="true" ondragstart="drag(event)" src="' + 
-		isrc + '" alt="image from url" />';
-	$('#getimg').append(newimg);
+
 	$(this).attr('checked',false);
 });
 

@@ -14,6 +14,7 @@ var targetInsert; // global
 var maxRow = 850;  // current row size for images (coordinated with editDB.php)
 var rowHeight = [];
 var dragBorder = 10;
+var xcnt = 0; // no of images brought in from external source
 /*
  *  --------------  DRAG EVENT PROCESSOR --------------
  *  The event processor captures the id of the drag item, then, after a short
@@ -38,22 +39,27 @@ function reduceImgCnt(imgId) {
 	// ------ detach image:
 	var imgTargId = '#' + imgId;
 	if (imgId === 'newpic') { // for an externally sourced image
-		dragRow = -1;  // indicates not from a row
+		dragRow = -1;  // indicates not from a row (not used at this time)
 		var xwidth = parseInt($('#newpic').width());
+		// provide a name for tracking
+		var xid = 'ext' + xcnt;
+		xcnt++;
+		//$('#newpic').attr('id',xid);
 		draggedImg = $(imgTargId).detach();
+		draggedImg[0].id = xid;
 		// make a corresponding insert:
 		var xmarg = xwidth + insertDelta;
 		var xInsHtml = '<img style="float:left;margin-left:' + xmarg + 
 			'px;" id="insX" ondrop="drop(event)" ondragover="allowDrop(event)"' +
 			' height="30" width="30" src="insert.png" alt="drop-point" />';
 		$('#xInsert').append(xInsHtml);
-		draggedInsert = $('#insX');
+		draggedInsert = $('#insX').detach(); // to get the jQuery object equivalent
 		// provide textarea to add in caption:
-		var xcap = xwidth - 11;  // empirical offset for textareas
+		var xcap = xwidth - 12;  // empirical offset for textareas
 		var xCapHtml = '<textarea id="capAreaX" style="height:60px;margin-right:8px;' +
 			'width:' + xcap + 'px;"></textarea>';
 		$('#xCap').append(xCapHtml);
-		draggedCap = $('#capAreaX');
+		draggedCap = $('#capAreaX').detach();
 	} else {
 		// get row number from which item is being dragged
 		var rowId = $(imgTargId).parent().attr('id');
