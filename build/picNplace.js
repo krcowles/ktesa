@@ -13,7 +13,7 @@ var draggedCap;  // textarea or text div
 var targetInsert; // global
 var maxRow = 850;  // current row size for images (coordinated with editDB.php)
 var rowHeight = [];
-var dragBorder = 8;
+var dragBorder = 10;
 /*
  *  --------------  DRAG EVENT PROCESSOR --------------
  *  The event processor captures the id of the drag item, then, after a short
@@ -127,9 +127,11 @@ function increaseImgCnt(targ) {
 	
 	// corresponding (target) image row id:
 	rowId = '#row' + dropRow;
+	var empty = false;
 	var $dropChildren = $(rowId).children();
+	if ($dropChildren.length === 0) { empty = true; }
 	// scale the dragged items to the current row height, if needed
-	if (dropRow !== dragRow) {
+	if (dropRow !== dragRow && !empty) {
 		var currRowHt = $dropChildren.eq(0).height();
 		// the dragged image:
 		if (draggedImg[0].id === 'map0') {
@@ -194,19 +196,26 @@ function increaseImgCnt(targ) {
 	rowId = 'row' + dropRow;
 	dropParentNode = document.getElementById(rowId);
 	if (insertAtLead) {
-		// first, insert the image:
-		dropChildNode = dropParentNode.firstChild;
-		dropParentNode.insertBefore(draggedImg[0],dropChildNode);
-		// now the insert:
-		dropInsParent = document.getElementById(insParentRowId);
-		var dropInsChildren = dropInsParent.childNodes;
-		dropInsChild = dropInsChildren[1];
-		dropInsParent.insertBefore(draggedInsert[0],dropInsChild);
-		// now the caption field:
-		rowId = 'caps' + dropRow;
-		dropCapDiv = document.getElementById(rowId);
-		dropCapChild = dropCapDiv.firstChild;
-		dropCapDiv.insertBefore(draggedCap[0],dropCapChild);
+		if (dropParentNode.childElementCount === 0) {
+			dropParentNode.appendChild(draggedImg[0]);
+			dropInsParent.appendChild(draggedInsert[0]);
+			var capId = '#caps' + dropRow;
+			$(capId).append(draggedCap);
+		} else {
+			// first, insert the image:
+			dropChildNode = dropParentNode.firstChild;
+			dropParentNode.insertBefore(draggedImg[0],dropChildNode);
+			// now the insert:
+			dropInsParent = document.getElementById(insParentRowId);
+			var dropInsChildren = dropInsParent.childNodes;
+			dropInsChild = dropInsChildren[1];
+			dropInsParent.insertBefore(draggedInsert[0],dropInsChild);
+			// now the caption field:
+			rowId = 'caps' + dropRow;
+			dropCapDiv = document.getElementById(rowId);
+			dropCapChild = dropCapDiv.firstChild;
+			dropCapDiv.insertBefore(draggedCap[0],dropCapChild);
+		}
 	} else { 
 		// insert image:
 		var rowChildren = dropParentNode.childNodes;
@@ -297,17 +306,16 @@ function fitToNewRow(triggerWidth) {
 	// ------ fit caption areas:
 	var caprow = '#caps' + dropRow;
 	var $capFields = $(caprow).children();
-	$capFields.each( function() {
-		if ( $(this).hasClass('notTA') ) {
-			var cwidth = $(this).css('width');
-			cwidth = parseInt(cwidth.replace('px',''));
-			cwidth = Math.floor(scale * cwidth);
-			$(this).css('width',cwidth);
-		} else {
-			// for textarea, clientWidth must be used instead of width: (read only)
-			var cwidth = parseInt(this.clientWidth);
-			$(this).width( Math.floor(scale * cwidth) - 10 );
+		
+	var j = 0;	
+	var cwidth;
+	$capFields.each( function() { // a one-to-one correspondence w/row imgs (widths)
+		cwidth = rowWidths[j];
+		if ( !$(this).hasClass('notTA') ) {
+			cwidth -= 11;   // textareas don't seem to follow css pixels....
 		}
+		$(this).css('width',cwidth);
+		j++;
 	});
 	var dwidth = draggedCap.width();
 	var newCapWd = Math.floor(scale * dwidth);

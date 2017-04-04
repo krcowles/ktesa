@@ -253,7 +253,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 						'<iframe id="theMap" height="' .$mapDims . '" width="' . $mapDims . 
 						'" src="' . $rowDat[$nxtIndx+2] .'"></iframe></div>';
 					$nonCapWidth = intval($imgWd) + $beta;
-					$capRow .= '<div id="capArea' . $insNo . '" class="notTA" style="display:' .
+					$capRow .= '<div id="capArea' . $insNo . '" class="ifrm" style="display:' .
 						'inline-block;margin-right:' . $beta . 'px;text-align:center;height:60px;width:' . 
 						$nonCapWidth . 'px;border-style:solid;border-width:1px;vertical-align:bottom">NO EDIT</div>';
 					$nxtIndx += 3;
@@ -265,7 +265,8 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 					$nonCapWidth = intval($imgWd);
 					$capRow .= '<div id="capArea' . $insNo . '" class="notTA" style="display:' .
 						'inline-block;margin-right:' . $beta . 'px;text-align:center;height:60px;width:' . 
-						$nonCapWidth . 'px;border-style:solid;border-width:1px;vertical-align:bottom;">NO EDIT</div>';
+						$nonCapWidth . 'px;border-style:solid;border-width:1px;' . 
+						'vertical-align:bottom;margin-right:' . $beta . 'px;">NO EDIT</div>';
 					$nonCap++;
 					$nxtIndx += 3;
 				}
