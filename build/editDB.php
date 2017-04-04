@@ -175,8 +175,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	desired location. NOTE: The url must be a web-based address not a local machine image.<br />
 	<input id="picurl" type="text" size="100" />&nbsp;&nbsp;Check the box to upload: 
 	<input id="loadimg" type="checkbox" name="ldimg" value="NO" /><br /><br />
-	<!-- <p id="extImg"></p><br /> -->
 </div><br />
+<div id="xInsert" style="display:none"></div>
+<div id="xCap" style="display:none"></div>
 
 <?php
 	$alpha = 30;	# insert-icon size

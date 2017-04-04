@@ -37,9 +37,23 @@ function drag(ev) {
 function reduceImgCnt(imgId) {	
 	// ------ detach image:
 	var imgTargId = '#' + imgId;
-	if (imgId === 'newpic') {
+	if (imgId === 'newpic') { // for an externally sourced image
 		dragRow = -1;  // indicates not from a row
+		var xwidth = parseInt($('#newpic').width());
 		draggedImg = $(imgTargId).detach();
+		// make a corresponding insert:
+		var xmarg = xwidth + insertDelta;
+		var xInsHtml = '<img style="float:left;margin-left:' + xmarg + 
+			'px;" id="insX" ondrop="drop(event)" ondragover="allowDrop(event)"' +
+			' height="30" width="30" src="insert.png" alt="drop-point" />';
+		$('#xInsert').append(xInsHtml);
+		draggedInsert = $('#insX');
+		// provide textarea to add in caption:
+		var xcap = xwidth - 11;  // empirical offset for textareas
+		var xCapHtml = '<textarea id="capAreaX" style="height:60px;margin-right:8px;' +
+			'width:' + xcap + 'px;"></textarea>';
+		$('#xCap').append(xCapHtml);
+		draggedCap = $('#capAreaX');
 	} else {
 		// get row number from which item is being dragged
 		var rowId = $(imgTargId).parent().attr('id');
