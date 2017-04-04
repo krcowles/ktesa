@@ -176,8 +176,41 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	<input id="picurl" type="text" size="100" />&nbsp;&nbsp;Check the box to upload: 
 	<input id="loadimg" type="checkbox" name="ldimg" value="NO" /><br /><br />
 </div><br />
-<div id="xInsert" style="display:none"></div>
-<div id="xCap" style="display:none"></div>
+<div id="xInsert" style="display:none;"></div>
+<div id="xCap" style="display:none;"></div>
+<div id="rowdat" style="display:none;">
+<?php
+	/* This section creates an invisible list of the row elements, which can then
+	 * be adjusted by the script to account for ongoing row edits
+	 */
+	$rowdat = '';
+	for ($x=0; $x<6; $x++) {
+		$orgStr = explode("^",$info[29+$x]);
+		$mainStr;
+		$rowdat .= '<ol id="r' . $x . '" data-icnt="' . $orgStr[0] . '" data-rht="' . 
+			$orgStr[1] . '">';
+		$rcnt = intval($orgStr[0]);
+		array_shift($orgStr);
+		array_shift($orgStr);
+		$offset = 0;
+		$indx = 0;
+		for ($y=0; $y<$rcnt; $y++) {
+			$sym = $orgStr[$offset+0];
+			if ($sym === 'p') {
+				$rowdat .= '<li id="li' . $indx . '">' . $sym . '^' . $orgStr[$offset+1] .
+					'^' . $orgStr[$offset+2] . '^' . $orgStr[$offset+3] . '</li>';
+				$offset += 4;
+			} elseif ($sym !== '') {
+				$rowdat .= '<li id="li' . $indx . '">' . $sym . '^' . $orgStr[$offset+1] .
+					'^' . $orgStr[$offset+2] . '^' . '</li>';
+				$offset += 3;				
+			}
+		}
+		$rowdat .= '</ol>';
+	}
+	echo $rowdat;
+?>
+</div>
 
 <?php
 	$alpha = 30;	# insert-icon size
@@ -288,7 +321,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 		echo $rows[$j];
 		echo $captions[$j];
 	}
-
+	echo '<br />';
 	if ($info[37] !== '') {
 		echo '<p>Tips Text: </p>';
 		echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $info[37] . '</textarea><br />';
