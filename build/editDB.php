@@ -170,47 +170,26 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <textarea id="ph2" name="purl2"><?php echo $info[24];?></textarea><br /><br />
 <label for="murl">Map Directions Link (Url): </label>
 <textarea id="murl" name="gdirs"><?php echo $info[25];?></textarea><br /><br />
-<div id="getimg">The following images may be re-ordered by using drag &amp; drop. To add a new image,
-	specify the url in the txt box. The image will appear below. Then drag the image to the 
-	desired location. NOTE: The url must be a web-based address not a local machine image.<br />
+<div id="getimg">The following images may be re-ordered by using drag &amp; drop. The 
+	drop must occur on any insertion point (purple icon w/down arrow). The image can be
+	deleted by dropping elsewhere. To add a new image, specify the url in the txt box. 
+	The image will appear below. Then drag the image to the desired location. 
+	NOTE: The url must be a web-based address not a local machine image.<br /><br />
 	<input id="picurl" type="text" size="100" />&nbsp;&nbsp;Check the box to upload: 
 	<input id="loadimg" type="checkbox" name="ldimg" value="NO" /><br /><br />
 </div><br />
+<!-- for externally sourced images: -->
 <div id="xInsert" style="display:none;"></div>
 <div id="xCap" style="display:none;"></div>
-<div id="rowdat" style="display:none;">
-<?php
-	/* This section creates an invisible list of the row elements, which can then
-	 * be adjusted by the script to account for ongoing row edits
-	 */
-	$rowdat = '';
-	for ($x=0; $x<6; $x++) {
-		$orgStr = explode("^",$info[29+$x]);
-		$mainStr;
-		$rowdat .= '<ol id="r' . $x . '" data-icnt="' . $orgStr[0] . '" data-rht="' . 
-			$orgStr[1] . '">';
-		$rcnt = intval($orgStr[0]);
-		array_shift($orgStr);
-		array_shift($orgStr);
-		$offset = 0;
-		$indx = 0;
-		for ($y=0; $y<$rcnt; $y++) {
-			$sym = $orgStr[$offset+0];
-			if ($sym === 'p') {
-				$rowdat .= '<li id="li' . $indx . '">' . $sym . '^' . $orgStr[$offset+1] .
-					'^' . $orgStr[$offset+2] . '^' . $orgStr[$offset+3] . '</li>';
-				$offset += 4;
-			} elseif ($sym !== '') {
-				$rowdat .= '<li id="li' . $indx . '">' . $sym . '^' . $orgStr[$offset+1] .
-					'^' . $orgStr[$offset+2] . '^' . '</li>';
-				$offset += 3;				
-			}
-		}
-		$rowdat .= '</ol>';
-	}
-	echo $rowdat;
-?>
-</div>
+<!-- row string storage -->
+<input id="rcnts" type="hidden" name="rowcnts" value="" />
+<input id="rhts" type="hidden" name="rowhts" value="" />
+<input id="r0" type="hidden" name="row0" value="" />
+<input id="r1" type="hidden" name="row1" value="" />
+<input id="r2" type="hidden" name="row2" value="" />
+<input id="r3" type="hidden" name="row3" value="" />
+<input id="r4" type="hidden" name="row4" value="" />
+<input id="r5" type="hidden" name="row5" value="" />
 
 <?php
 	$alpha = 30;	# insert-icon size
