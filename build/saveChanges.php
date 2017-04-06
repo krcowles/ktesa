@@ -19,6 +19,25 @@
 <body>
 
 <?php
+	function scaleRow($rowArray,$indx,&$heights) {
+		$oldWidth = 0;
+		foreach( $rowArray as $istr ) {
+			$strArray = explode("^",$istr);
+			$oldWidth += intval($strArray[1]);
+		}
+		$newscale = 950/$oldWidth;
+		# adjust the row height:
+		$heights[$indx] = floor($newscale * $heights[$indx]);
+		# scale each image width:
+		foreach( $rowArray as &$imgStr ) {
+			$strArray = explode("^",$imgStr);
+			$oldWidth = intval($strArray[1]);
+			$newWidth = floor($newscale * $oldWidth);
+			$strArray[1] = $newWidth;
+			$imgStr = implode("^",$strArray);
+		}
+		return implode("^",$rowArray);
+	}
 	$database = '../data/database.csv';
 	$dbhandle = fopen($database,"r");	
 	$hikeNo = $_POST['hno'];
@@ -105,6 +124,44 @@
 	$info[23] = $_POST['purl1'];
 	$info[24] = $_POST['purl2'];
 	$info[25] = $_POST['gdirs'];
+	
+	
+	/* ROW EDITING: RE-SCALE to 950  (960 - margin) */
+	$rowcounts = json_decode($_POST['rowcnts']);
+	$rowheights = json_decode($_POST['rowhts']);
+	$row0 = json_decode($_POST['row0']);
+	$rowStr = scaleRow($row0,0,$rowheights);
+	$info[29] = $rowcounts[0] . "^" . $rowheights[0] . "^" . $rowStr;
+	echo $info[29];
+	
+	$row1 = json_decode($_POST['row1']);
+	if (count($row1) > 0) {
+		$rowStr = scaleRow($row1,1,$rowheights);
+		$info[30] = $rowcounts[1] . "^" . $rowheights[1] . "^" . $rowStr;
+	}	
+	$row2 = json_decode($_POST['row2']);
+	if (count($row2) > 0) {
+		$rowStr = scaleRow($row2,2,$rowheights);
+		$info[31] = $rowcounts[2] . "^" . $rowheights[2] . "^" . $rowStr;
+	}
+	$row3 = json_decode($_POST['row3']);
+	if (count($row3) > 0) {
+		$rowStr = scaleRow($row3,3,$rowheights);
+		$info[32] = $rowcounts[3] . "^" . $rowheights[3] . "^" . $rowStr;
+	}
+	$row4 = json_decode($_POST['row4']);
+	if (count($row4) > 0) {
+		$rowStr = scaleRow($row4,4,$rowheights);
+		$info[33] = $rowcounts[4] . "^" . $rowheights[4] . "^" . $rowStr;
+	}
+	$row5 = json_decode($_POST['row5']);
+	if (count($row5) > 0) {
+		$rowStr = scaleRow($row5,5,$rowheights);
+		$info[34] = $rowcounts[5] . "^" . $rowheights[5] . "^" . $rowStr;
+	}
+	
+	
+	
 	$htips = $_POST['tips'];
 	if (substr($htips,0,15) !== '[NO TIPS FOUND]') {
 		$info[37] = $htips;
