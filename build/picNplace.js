@@ -238,6 +238,8 @@ function reduceImgCnt(imgId) {
 		// reduce img count in dragRow:
 		var cnt = rcnts[dragRow] - 1
 		rcnts[dragRow] = cnt;
+		// update page info
+		$('#rcnts').val(JSON.stringify(rcnts));
 		// pull out image and save in moveString; adjust row parameters to reflect change
 		var rowArray = getRow( dragRow );
 		moveString = rowArray[nodeNo];
