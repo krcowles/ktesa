@@ -301,6 +301,8 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 		echo $captions[$j];
 	}
 	echo '<br />';
+	echo '<p>To add another row (6 max allowed), check this box: ' .
+		'<input id="addbox" type="checkbox" name="nocall" /></p>';
 	if ($info[37] !== '') {
 		echo '<p>Tips Text: </p>';
 		echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $info[37] . '</textarea><br />';
