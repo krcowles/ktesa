@@ -95,6 +95,8 @@ function makeHtmlList($type,$str) {
 					$hikeType = $hikeArray[6];
 					$hikeElevation = $hikeArray[8] . " ft";
 					$hikeExposure = $hikeArray[13];
+                                        $mapsrc = $hikeArray[15];
+                                        $chartsrc = $hikeArray[16];
 					$hikeWow = $hikeArray[11];
 					$hikeFacilities = $hikeArray[10];
 					$hikeSeasons = $hikeArray[12];
@@ -262,6 +264,15 @@ function makeHtmlList($type,$str) {
 				$hikePhotoLink1 . '" target="_blank">Ken\'s Photo Album</a></div>';
 		}
 		echo '</div>'; # end of container_16 forced width
+                echo '<div style="display:block;text-align:center;color:DarkBlue;border-style:solid;' .
+                        'border-width:2px;margin-left:auto;margin-right:auto;margin-bottom:20px;width:800px">Scroll down for pictures, descriptions, ' .
+                        'and other details!</div>';
+                echo '<iframe style="display:block;margin-left:auto;margin-right:auto;margin-bottom:12px;" ' .
+                        'id="mapline" height="200" width="94%"' .
+                        ' src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . '"></iframe>';
+                echo '<img style="display:block;align-center;margin-left:auto;margin-right:auto;" ' .
+                        'id="chartline" height="200" width="95%" src="../images/' . 
+                        $chartsrc . '" alt="elevation chart" /><br />';
 		for ($k=0; $k<$rowCount; $k++) {
 			echo $rows[$k];
 		}

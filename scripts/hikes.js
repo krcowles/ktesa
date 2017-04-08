@@ -85,6 +85,7 @@ if ($maps.length) {
 	var orgMapLink = $('#theMap').attr('src');
 	var fullMap = orgMapLink + mapDisplayOpts;
 }
+mapPresent = false;
 var $desc = $('.captionList li');
 var $links = $('.lnkList li');
 // space down for map link when map is in bottom row
