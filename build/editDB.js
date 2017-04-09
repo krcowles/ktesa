@@ -182,6 +182,14 @@ $('#addbox').change( function(e) {
 	$(this).attr('checked',false);
 });
 
+var $rows = $('div[id^="row"]');
+var guts;
+var phptag;
+$rows.each( function(rowno) {
+	guts = $(this).html();
+	formtag = '#r' + rowno + '0';
+	$(formtag).val(guts);
+});
 
 });  // end of 'page (DOM) loading complete'
 
