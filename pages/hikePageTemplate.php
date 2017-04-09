@@ -268,8 +268,8 @@ function makeHtmlList($type,$str) {
                         'border-width:2px;margin-left:auto;margin-right:auto;margin-bottom:20px;width:800px">Scroll down for pictures, descriptions, ' .
                         'and other details!</div>';
                 echo '<iframe style="display:block;margin-left:auto;margin-right:auto;margin-bottom:12px;" ' .
-                        'id="mapline" height="200" width="94%"' .
-                        ' src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . '"></iframe>';
+                        'id="mapline" height="600" width="94%"' .
+                        ' src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true"></iframe>';
                 echo '<img style="display:block;align-center;margin-left:auto;margin-right:auto;" ' .
                         'id="chartline" height="200" width="95%" src="../images/' . 
                         $chartsrc . '" alt="elevation chart" /><br />';
