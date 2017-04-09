@@ -253,7 +253,7 @@
         	$actStr = '';
         }
 	}  // end of actual data processing, if present
-	$info[41] = $actStr;	
+	$info[41] = $actStr;
 	$dbhandle = fopen($database,"w");
 	foreach ($wholeDB as $hikedat) {
 		if ($hikedat[0] == $hikeNo) {
