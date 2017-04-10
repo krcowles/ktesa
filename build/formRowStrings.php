@@ -116,6 +116,7 @@ for ($i=0; $i<6;$i++) {
         # now form the complete string:
         $rowstr = $imgCnt . "^" . $rowht . $imgstr;
         $rows[$i] = $rowstr;
+        
     }
 }
 ?>

@@ -181,22 +181,13 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <!-- for externally sourced images: -->
 <div id="xInsert" style="display:none;"></div>
 <div id="xCap" style="display:none;"></div>
-<!-- row string storage -->
-<input id="rcnts" type="hidden" name="rowcnts" value="" />
-<input id="rhts" type="hidden" name="rowhts" value="" />
-<input id="r0" type="hidden" name="row00" value="" />
-<input id="r1" type="hidden" name="row10" value="" />
-<input id="r2" type="hidden" name="row20" value="" />
-<input id="r3" type="hidden" name="row30" value="" />
-<input id="r4" type="hidden" name="row40" value="" />
-<input id="r5" type="hidden" name="row50" value="" />
-
-<input id="r00" type="hidden" name="row0" value="" />
-<input id="r10" type="hidden" name="row1" value="" />
-<input id="r20" type="hidden" name="row2" value="" />
-<input id="r30" type="hidden" name="row3" value="" />
-<input id="r40" type="hidden" name="row4" value="" />
-<input id="r50" type="hidden" name="row5" value="" />
+# row areas to pass to saveChanges.php
+<input id="r0" type="hidden" name="row0" value="" />
+<input id="r1" type="hidden" name="row1" value="" />
+<input id="r2" type="hidden" name="row2" value="" />
+<input id="r3" type="hidden" name="row3" value="" />
+<input id="r4" type="hidden" name="row4" value="" />
+<input id="r5" type="hidden" name="row5" value="" />
 
 
 <?php

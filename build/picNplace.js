@@ -1,82 +1,21 @@
 /* This script is called early - before html - in order to define the drag/drop functions
- * specified in the html. However, some variables, which depend on html elements, require
- * definition in order to use the drag/drop functions, and are thus included here, with
- * a timeout sufficient to allow page loading, so that those variables can be built before
- * drag/drop is invoked. These variables are needed to enable the 'save' php code.
+ * specified in the html. Since the routine needs to update row information
+ * whenever changes are made, and the page hasn't been loaded yet, the $rows
+ * object is established after a brief timeout.
  */
- // Create initial row arrays for storing rowdata to pass to save routine
-var rcnts = [];
-var rhts = [];
-var rstrs = [];
-var rowstr = '';
-var rowindx = 0;
-var row0 = [];  // row arrays must be globals
-var row1 = [];
-var row2 = [];
-var row3 = [];
-var row4 = [];
-var row5 = [];
-setTimeout( loadArrays, 1200);
-function loadArrays() {
-	var $irows = $('div[id^="row"]');
-	$irows.each( function() {
-		var $imgs = $(this).children();
-		var cnt = $imgs.length;
-		rcnts.push(cnt);
-		var first = true;
-		$imgs.each( function() {
-			if (first) {
-				var rowht = $(this).height();
-				rhts.push(rowht);
-				first = false;
-			}
-			var imgid = this.id
-			imgid = imgid.substr(0,3);
-			if (imgid === 'pic') {
-				rowstr += "p^";
-				rowstr += $(this).width() + "^";
-				rowstr += $(this).attr('src') + "^";
-				rowstr += $(this).attr('alt') + "^";
-			} else if (imgid === 'map') {
-				ifrm = document.getElementById('theMap');
-				rowstr += "f^";
-				rowstr += ifrm.width + "^";
-				rowstr += ifrm.src + "^";
-			} else {
-				rowstr += "n^";
-				rowstr += $(this).width() + "^";
-				rowstr += $(this).attr('src') + "^"
-			}
-			var rstrlen = rowstr.length - 1;
-			rowstr = rowstr.substring(0,rstrlen);   // strip off end "^"
-			rstrs.push(rowstr);
-			rowstr = '';
-		});
-		switch (rowindx) {
-			case 0:
-				row0 = rstrs;
-				break;
-			case 1:
-				row1 = rstrs;
-				break;
-			case 2:
-				row2 = rstrs;
-				break;
-			case 3:
-				row3 = rstrs;
-				break;
-			case 4: 
-				row4 = rstrs;
-				break;
-			case 5:
-				row5 = rstrs;
-				break;
-		}
-		rstrs = [];
-		rowindx++;
-	});
+var $rows; // must be global
+function rowSetup() {
+    $rows = $('div[id^="row"]');
+    // NOTE: this is a "live" object -> changes to it will update the page
+    var rowid;
+    $rows.each( function(rowno) {
+        rowid = '#r' + rowno;
+        var guts = $(this).html();
+        $(rowid).val(guts);
+    });
 }
-// the following are established to echo the constants used in editDB.php
+setTimeout( rowSetup, 1200);
+// the following vars are established to mimic the constants used in editDB.php
 var alpha = 30;
 var beta = 10;
 var insertDelta = beta - alpha;  // to be added to image width to determine margin-left
@@ -86,71 +25,10 @@ var dropRow;
 var draggedImg;  // pic, noncap pic, or iframe
 var draggedInsert;
 var draggedCap;  // textarea or text div
-var moveString;  // database string for item being moved
 var targetInsert; // global
 var maxRow = 850;  // current row size for images (coordinated with editDB.php)
-var rowHeight = [];
 var dragBorder = 10;
 var xcnt = 0; // no of images brought in from external source
-/* These two functions are called when items are being moved in order to identify which
- * row is being affected, return the correct data, and then transfer the new data back
- * to the affected row.
- */
-var tmpArray = [];
-function getRow(targetRow) {
-	switch (targetRow) {
-		case 0:
-			tmpArray = row0;
-			break;
-		case 1:
-			tmpArray = row1;
-			break;
-		case 2:
-			tmpArray = row2;
-			break;
-		case 3:
-			tmpArray = row3;
-			break;
-		case 4:
-			tmpArray = row4;
-			break;
-		case 5:
-			tmpArray = row5;
-	}
-	return tmpArray;
-}
-function setRow(changedRow,newArray) {
-	switch (changedRow) {
-		case 0:
-			row0 = newArray;
-			break;
-		case 1:
-			row1 = newArray;
-			break;
-		case 2:
-			row2 = newArray;
-			break;
-		case 3:
-			row3 = newArray;
-			break;
-		case 4:
-			row4 = newArray;
-			break;
-		case 5:
-			row5 = newArray;
-	}
-}
-// filter out the moveString from the array and return reduced array
-function removeString(str) {
-	return str != moveString;
-}
-// update the string for the image to the new image width
-function updateWidth(targetString,newWidth) {
-	var targArray = targetString.split("^");
-	targArray[1] = newWidth;
-	var newString = targArray.join("^");
-	return newString;
-}
 /*
  *  --------------  DRAG EVENT PROCESSOR --------------
  *  The event processor captures the id of the drag item, then, after a short
@@ -196,9 +74,7 @@ function reduceImgCnt(imgId) {
 			'width:' + xcap + 'px;"></textarea>';
 		$('#xCap').append(xCapHtml);
 		draggedCap = $('#capAreaX').detach();
-		// create an image string for saving in database
-		moveString = 'p^' + xwidth + '^' + xsrc + '^EXTERNAL IMAGE';
-		// no item count to change or row ht yet
+		// no row needs modification yet...
 	} else {
 		// get row number from which item is being dragged
 		var rowId = $(imgTargId).parent().attr('id');
@@ -234,17 +110,11 @@ function reduceImgCnt(imgId) {
 				draggedCap = $(this).detach();
 			}
 		});
-		// ------ detach database string to be relocated
-		// reduce img count in dragRow:
-		var cnt = rcnts[dragRow] - 1
-		rcnts[dragRow] = cnt;
-		// update page info
-		$('#rcnts').val(JSON.stringify(rcnts));
-		// pull out image and save in moveString; adjust row parameters to reflect change
-		var rowArray = getRow( dragRow );
-		moveString = rowArray[nodeNo];
-		rowArray = rowArray.filter(removeString);
-		setRow(dragRow,rowArray);
+		// ------ re-write the row html to eliminate this image
+                var newrow = $rows.eq(dragRow).html();
+                var rid = '#r' + dragRow;
+                $(rid).val(newrow);
+                
 	}
 }
 /*
@@ -328,8 +198,6 @@ function increaseImgCnt(targ) {
 		var capWidth = draggedCap.width();
 		capWidth = Math.floor(diScale * capWidth);
 		draggedCap.css('width',capWidth);
-		// adjust imgWidth in moveString
-		moveString = updateWidth(moveString,diWd);
 	}
 	var insertAtLead = false;
 	if (targetInsert.substring(0,3) === 'lea') { insertAtLead = true; }
@@ -388,9 +256,6 @@ function increaseImgCnt(targ) {
 			dropCapChild = dropCapDiv.firstChild;
 			dropCapDiv.insertBefore(draggedCap[0],dropCapChild);
 		}
-		// place relocatable database string:
-		var strid = '#r' + dropRow;
-		$(strid).append(moveString);
 	} else { 
 		// insert image:
 		var rowChildren = dropParentNode.childNodes;
@@ -406,16 +271,10 @@ function increaseImgCnt(targ) {
 		dropCapChild = dropCapChildren[childNodeNo];
 		dropCapDiv.insertBefore(draggedCap[0],dropCapChild);
 	}  // end of if-else
-	/* The last item to take care of is to update the inputs on the page that hold
-	 * the row strings to be passed on to saveChanges.php. */ 
-	$('#rcnts').val(JSON.stringify(rcnts));
-	$('#rhts').val(JSON.stringify(rhts));
-	$('#r0').val(JSON.stringify(row0));
-	$('#r1').val(JSON.stringify(row1));
-	$('#r2').val(JSON.stringify(row2));
-	$('#r3').val(JSON.stringify(row3));
-	$('#r4').val(JSON.stringify(row4));
-	$('#r5').val(JSON.stringify(row5));
+        // update the page:
+        var newhtml = $rows.eq(dropRow).html();
+        var rid = '#r' + dropRow;
+        $(rid).val(newhtml);
 }
 /*
  *  -------------------  fitToNewRow -------------------
@@ -437,8 +296,6 @@ function fitToNewRow(triggerWidth) {
 		var oldHt = $imgs.eq(0).attr('height');
 	}
 	var newHt = Math.floor(scale * oldHt);
-	// update rowhts array:
-	rhts[dropRow] = newHt;
 	// ------ fit existing images in row:
 	var rowWidths = [];  // save the row's image widths for use in calc. insert margins
 	var imgEl;
@@ -458,11 +315,6 @@ function fitToNewRow(triggerWidth) {
 			this.height = newHt;
 			rowWidths.push(newWd);
 		}
-		var modArray = getRow(dropRow);
-		var oldString = modArray[imgNo];
-		var newString = updateWidth(oldString,newWd);
-		modArray[imgNo] = newString;
-		setRow(dropRow,modArray);
 	});
 	if (draggedImg[0].id === 'map0') {
 		var mapNode = draggedImg[0].firstChild;
