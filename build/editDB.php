@@ -181,7 +181,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <!-- for externally sourced images: -->
 <div id="xInsert" style="display:none;"></div>
 <div id="xCap" style="display:none;"></div>
-# row areas to pass to saveChanges.php
+<!-- row areas to pass to saveChanges.php -->
 <input id="r0" type="hidden" name="row0" value="" />
 <input id="r1" type="hidden" name="row1" value="" />
 <input id="r2" type="hidden" name="row2" value="" />

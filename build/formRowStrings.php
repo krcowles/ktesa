@@ -59,6 +59,7 @@ function stringForm($sym,$remainder) {
 }
 /* -------      MAIN      ------- */
 $rows = ['','','','','',''];
+$capts = [];
 for ($i=0; $i<6;$i++) {
     $tag = 'row' . $i;
     #echo "***ROW " . $i;
@@ -98,6 +99,7 @@ for ($i=0; $i<6;$i++) {
                 $altstr = substr($stringSeg,$altpos,$altstrlgth);
                 $altend = strpos($altstr,'"');
                 $alt = substr($altstr,0,$altend);
+                array_push($capts,$alt);
                 $imgstr .= "^" . $alt;
             }
             #echo "**RETURNED STRING**: " . $imgstr;

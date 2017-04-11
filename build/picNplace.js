@@ -4,6 +4,7 @@
  * object is established after a brief timeout.
  */
 var $rows; // must be global
+var $captions;
 function rowSetup() {
     $rows = $('div[id^="row"]');
     // NOTE: this is a "live" object -> changes to it will update the page
@@ -12,6 +13,36 @@ function rowSetup() {
         rowid = '#r' + rowno;
         var guts = $(this).html();
         $(rowid).val(guts);
+    });
+    $captions = $('textarea[id^="capArea"]');
+    $captions.change( function() {
+        // get caption id
+        var cid = this.id;
+        cid = cid.replace("capArea","");
+        var rid;
+        // since the only items w/captions are photos, correlate to pic no.
+        $rows.each( function(rowno) {
+            var $rowkids = $(this).children();
+            $rowkids.each( function() {
+                var kid = this.id;
+                if (kid.substring(0,3) === 'pic') {
+                    kid = kid.replace("pic","");
+                    if (kid === cid) {
+                        rid = rowno;
+                        return;
+                    }
+                }    
+            });
+            // if (rid === undefined) { window.alert("caption not located"); }
+        });
+        // update rid with new html
+        var img2chg = '#pic' + cid;
+        var newcap = $(this).val();
+        $(img2chg).attr('alt',newcap);
+        var rowToUpdate = '#row' + rid;
+        var rowhtml = $(rowToUpdate).html()
+        var pageRow = '#r' + rid;
+        $(pageRow).val(rowhtml);
     });
 }
 setTimeout( rowSetup, 1200);

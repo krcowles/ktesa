@@ -133,6 +133,10 @@
 	$info[32] = $rows[3];
 	$info[33] = $rows[4];
 	$info[34] = $rows[5];
+        /* CAPTIONS */
+        $noOfCaps = count($capts);
+        $dbCaps = implode("^",$capts);
+        $info[35] = $noOfCaps . "^" . $dbCaps;
 	
 	
 	$htips = $_POST['tips'];
