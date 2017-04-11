@@ -206,7 +206,6 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 			/*
 			 * START NEW ROW
 			 */
-			$imgDat = array();
 			$rowDat = explode("^",$info[29+$i]);
 			$noOfImgs = $rowDat[0];
 			$noOfInserts = $noOfImgs + 1;
@@ -219,7 +218,6 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 				' ondragover="allowDrop(event)" height="' . $alpha . '" width="' . 
 				$alpha . '" src="' . $loadIcon . '" alt="drop-point" />';
 			$rowHt = floor($scale * $rowDat[1]);
-			array_push($imgDat,$rowHt);
 			$nxtIndx = 2;
 			$divMarg = $alpha/2 + $beta/2;
 			$rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow" style="margin-left:' .
@@ -241,7 +239,6 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 					$insNo . '" ondrop="drop(event)" ondragover="allowDrop(event)"' .
 					' height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
 					'" alt="drop-point" />';
-				array_push($imgDat,$imgWd);
 				# caption textareas are dependent on sym type, so embedded in the 'if'
 				if ($sym === 'p') {
 					$caption = $rowDat[$nxtIndx+3];

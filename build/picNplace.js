@@ -14,6 +14,9 @@ function rowSetup() {
         var guts = $(this).html();
         $(rowid).val(guts);
     });
+    captureCaps();
+}
+function captureCaps() {
     $captions = $('textarea[id^="capArea"]');
     $captions.change( function() {
         // get caption id
@@ -43,7 +46,7 @@ function rowSetup() {
         var rowhtml = $(rowToUpdate).html()
         var pageRow = '#r' + rid;
         $(pageRow).val(rowhtml);
-    });
+    });   
 }
 setTimeout( rowSetup, 1200);
 // the following vars are established to mimic the constants used in editDB.php
@@ -59,7 +62,7 @@ var draggedCap;  // textarea or text div
 var targetInsert; // global
 var maxRow = 850;  // current row size for images (coordinated with editDB.php)
 var dragBorder = 10;
-var xcnt = 0; // no of images brought in from external source
+var xcnt = 100; // no of images brought in from external source, start at 100
 /*
  *  --------------  DRAG EVENT PROCESSOR --------------
  *  The event processor captures the id of the drag item, then, after a short
@@ -88,23 +91,28 @@ function reduceImgCnt(imgId) {
 		var xwidth = parseInt($('#newpic').width());
 		var xsrc = $('#newpic').attr('src');
 		// provide a name for tracking
-		var xid = 'ext' + xcnt;
+		var xid = 'pic' + xcnt;
+                var insid = 'ins' + xcnt;
+                var jins = '#' + insid;
+                var capid = 'capArea' + xcnt;
+                var jcap = '#' + capid;
 		xcnt++;
-		draggedImg = $(imgTargId).detach();
+		draggedImg = $('#newpic').detach();
 		draggedImg[0].id = xid;
+                draggedImg.attr('alt',"Entry");
 		// make a corresponding insert:
 		var xmarg = xwidth + insertDelta;
 		var xInsHtml = '<img style="float:left;margin-left:' + xmarg + 
-			'px;" id="insX" ondrop="drop(event)" ondragover="allowDrop(event)"' +
+			'px;" id="' + insid + '" ondrop="drop(event)" ondragover="allowDrop(event)"' +
 			' height="30" width="30" src="insert.png" alt="drop-point" />';
 		$('#xInsert').append(xInsHtml);
-		draggedInsert = $('#insX').detach(); // to get the jQuery object equivalent
+		draggedInsert = $(jins).detach(); // to get the jQuery object equivalent
 		// provide textarea to add in caption:
 		var xcap = xwidth - 12;  // empirical offset for textareas
-		var xCapHtml = '<textarea id="capAreaX" style="height:60px;margin-right:8px;' +
+		var xCapHtml = '<textarea id="' + capid + '" style="height:60px;margin-right:8px;' +
 			'width:' + xcap + 'px;"></textarea>';
 		$('#xCap').append(xCapHtml);
-		draggedCap = $('#capAreaX').detach();
+		draggedCap = $(jcap).detach();
 		// no row needs modification yet...
 	} else {
 		// get row number from which item is being dragged
@@ -264,6 +272,8 @@ function increaseImgCnt(targ) {
 	 * or, the insert number (get parent row's attribute id)
 	 * There are three pieces to drop: insert, img, and caption field
 	 */
+        var capType = draggedCap[0].id;  // if cap for externally srced img...
+        capType = parseInt(capType.replace('capArea',''));
 	rowId = 'row' + dropRow;
 	dropParentNode = document.getElementById(rowId);
 	if (insertAtLead) {
@@ -302,6 +312,11 @@ function increaseImgCnt(targ) {
 		dropCapChild = dropCapChildren[childNodeNo];
 		dropCapDiv.insertBefore(draggedCap[0],dropCapChild);
 	}  // end of if-else
+        if (capType > 99) {
+            $captions.off('change');
+            $captions = null;
+            captureCaps();
+        }
         // update the page:
         var newhtml = $rows.eq(dropRow).html();
         var rid = '#r' + dropRow;
