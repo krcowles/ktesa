@@ -158,8 +158,8 @@ $('#loadimg').change( function(e) {
 });
 $('#addbox').change( function(e) {
 	e.preventDefault();
-	var currRows = $('div[id^="row"]');
-	var rowno = currRows.length;
+	var $currRows = $('div[id^="row"]');
+	var rowno = $currRows.length;
 	if (rowno > 5) {
 		window.alert('Already at maximum number of rows; cannot add new one');
 	} else {
@@ -175,11 +175,11 @@ $('#addbox').change( function(e) {
 		var newcap = '<div id="caps' + rowno + '" style="margin-left:20px;"></div>';
 		var capdiv = '#row' + rowno;
 		$(newcap).insertAfter(capdiv);
-		rcnts.push(0);
-		rhts.push('');
-		rstrs.push('');
 	}
 	$(this).attr('checked',false);
+        // add new row to rows object
+        $rows = null;
+        $rows = $('div[id^="row"]');
 });
 
 

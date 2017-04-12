@@ -196,6 +196,7 @@ function increaseImgCnt(targ) {
 	var dropCapChild;
 	var currWidth = 0;
 	var diWd;
+        var diHt;
 	var mapNode;
 	var insMarg;
 	
@@ -209,20 +210,26 @@ function increaseImgCnt(targ) {
 	var empty = false;
 	var $dropChildren = $(rowId).children();
 	if ($dropChildren.length === 0) { empty = true; }
+        // capture the dimensions of the dragged item:
+        if (draggedImg[0].id === 'map0') {
+            mapNode = draggedImg[0].firstChild;
+            diWd = mapNode.width;
+            diHt = diWd;
+        } else {
+            diWd = draggedImg[0].width;
+            diHt = draggedImg[0].height;  
+        }
 	// scale the dragged items to the current row height, if needed
 	if (dropRow !== dragRow && !empty) {
 		var currRowHt = $dropChildren.eq(0).height();
 		// the dragged image:
 		if (draggedImg[0].id === 'map0') {
-			mapNode = draggedImg[0].firstChild;
-			var diHt = mapNode.height;
 			var diScale = currRowHt/diHt;
 			diWd = Math.floor(diScale * diHt);  
 			mapNode.height = diWd;
 			mapNode.width = diWd;
 			diScale = currRowHt/(parseInt(diHt) + dragBorder); // in case map is at end, correct scaling
 		} else {
-			var diHt = draggedImg[0].height;
 			var diScale = currRowHt/diHt;
 			diWd = Math.floor(diScale * draggedImg[0].width);
 			draggedImg[0].height = currRowHt;
@@ -253,20 +260,22 @@ function increaseImgCnt(targ) {
 	}
 	/* CHECK TO SEE IF INCOMING WIDTH IS TOO BIG FOR CURRENT ROW MAX */
 	var imgEl;
-	$dropChildren.each( function () {
-		imgEl = this.id;
-		imgEl = imgEl.substring(0,3);
-		if (imgEl === 'map') { 
-			var $mapDiv = $(this).children().eq(0);
-			currWidth += $mapDiv.width() + 10;
-		} else {
-			currWidth += this.width + 10;  // 10 = space between images ($beta in php)
-		}
-	});
-	var insWidth = currWidth + diWd + 10;
-	if (insWidth > maxRow) { 
-		fitToNewRow(insWidth);
-	}
+        if ( !empty ) {
+            $dropChildren.each( function () {
+                    imgEl = this.id;
+                    imgEl = imgEl.substring(0,3);
+                    if (imgEl === 'map') { 
+                            var $mapDiv = $(this).children().eq(0);
+                            currWidth += $mapDiv.width() + 10;
+                    } else {
+                            currWidth += this.width + 10;  // 10 = space between images ($beta in php)
+                    }
+            });
+            var insWidth = currWidth + diWd + 10;
+            if (insWidth > maxRow) { 
+                    fitToNewRow(insWidth);
+            }
+        }
 	/* 
 	 * The drop row is extracted from either the 'lead' insert (followed by row no)
 	 * or, the insert number (get parent row's attribute id)
