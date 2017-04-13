@@ -168,7 +168,7 @@ function makeHtmlList($type,$str) {
 					$picLinks = makeHtmlList(Simple,$picLinks);
 					$hikeTips = $hikeArray[37];
 					$hikeTips = preg_replace("/\s/"," ",$hikeTips);
-					$hikeInfo = '<p id="hikeInfo">' . $hikeArray[38] . '</p>';
+					$hikeInfo = '<p id="hikeInfo" style="margin-top:0px;">' . $hikeArray[38] . '</p>';
 					$hikeReferences = $hikeArray[39];
 					$hikeReferences = makeHtmlList(References,$hikeReferences);
 					$hikeProposedData = $hikeArray[40];
@@ -266,20 +266,36 @@ function makeHtmlList($type,$str) {
 				$hikePhotoLink1 . '" target="_blank">Ken\'s Photo Album</a></div>';
 		}
 		echo '</div>'; # end of container_16 forced width
-                echo '<div style="display:block;text-align:center;color:DarkBlue;border-style:solid;' .
-                        'border-width:2px;margin-left:auto;margin-right:auto;margin-bottom:20px;width:800px">Scroll down for pictures, descriptions, ' .
-                        'and other details!</div>';
-                echo '<iframe style="display:block;margin-left:auto;margin-right:auto;margin-bottom:12px;" ' .
-                        'id="mapline" height="40%" width="94%"' .
+?>
+	<div id="panel" style="float:left;margin-top:0px;margin-left:0px;margin-right:0px;
+		width:25%;height:614px;overflow:scroll;">
+        <?php 
+            echo $hikeInfo;
+            if ($hikeReferences !== '') {
+                echo '<fieldset>'."\n";
+                echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
+                echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
+                echo '</fieldset>';
+            }
+        ?>
+    </div>
+    	<?php
+                echo '<div style="float:left;display:block;text-align:center;color:DarkBlue;' .
+                	'border-style:solid;' . 'border-width:2px;margin-bottom:20px;' .
+                	'margin-left:12px;width:70%">' .
+                	'Scroll down for more!</div>';
+                echo '<iframe style="display:block;float:left;margin-bottom:12px;margin-left:12px;" ' .
+                        'id="mapline" height="280" width="73%"' .
                         ' src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true"></iframe>';
-                echo '<img style="display:block;align-center;margin-left:auto;margin-right:auto;" ' .
-                        'id="chartline" height="200" width="95%" src="../images/' . 
+                echo '<img style="display:block;" ' .
+                        'id="chartline" height="280" width="75%" src="../images/' . 
                         $chartsrc . '" alt="elevation chart" /><br />';
 		for ($k=0; $k<$rowCount; $k++) {
 			echo $rows[$k];
 		}
 		echo '<div class="captionList">' . $picCaptions . '</div>';
 		echo '<div class="lnkList">' . $picLinks . '</div>';
+		?>
 	?>
 	<div id="postPhoto">
 		<?php
