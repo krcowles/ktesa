@@ -1,0 +1,47 @@
+body {
+	min-width: 960px; }
+#logo {
+	width: 100%;
+	height: 94px;
+	background-color: gold;
+	background-image: url("southwest_pattern.png");
+	background-repeat: repeat-x;
+	background-attachment: scroll;
+	border-style: solid;
+	border-size: 5px;
+	border-color: red;
+	z-index: 1;
+	-moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box; }
+#hikers {
+	float: left;
+	margin-left: 12px;
+	margin-top: 17px;
+	z-index:100; }
+#tmap {
+	float: right;
+	margin-right: 6px;
+	margin-top: 17px;
+	z-index: 100; }
+#logo_left {
+	float: left;
+	margin-left: 12px;
+	margin-top: 38px;
+	color: black;
+	z-index:5; }
+#logo_right {
+	float: right;
+	margin-right: 12px;
+	margin-top: 38px;
+	color: black;
+	z-index:5; }
+#trail {
+	position: absolute;
+	top: 8px;
+	width: 100%;
+	text-align: center;
+	color: brown;
+	font-size: 32px;
+	z-index:100; }
