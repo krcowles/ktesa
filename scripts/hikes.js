@@ -30,8 +30,8 @@ var winrat; // ratio of window to available screen width: use when can't use dev
 /* The following global variable assignments are associated with the routines
  * which manage the sizing of rows (with fixed margin as window frame grows/shrinks).
  */
-const GROW = 1;
-const SHRINK = 0;
+var GROW = 1;
+var SHRINK = 0;
 
 // window size and margin calculations; NOTE: innerWidth provides the dimension inside the border
 var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:

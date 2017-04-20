@@ -79,7 +79,7 @@ function makeHtmlList($type,$str) {
 	}  // end of if tagtype ifs
 	return $htmlout;
 } // FUNCTION END....
-	
+// -----------------  MAIN ROUTINE ----------------
 $hikeIndexNo = $_GET['hikeIndx'];
 /* NOTE: The database file is only read in here, no writing to it occurs */
 $dataTable = '../data/database.csv';
@@ -89,6 +89,7 @@ if ($handle !== false) {
     while ( ($hikeArray = fgetcsv($handle)) !== false ) {
         if ($lineno > 0) {  // skip the header row
             if ($hikeIndexNo == $hikeArray[0]) {  // find the target hike
+                $newstyle = true;
                 $hikeTitle = $hikeArray[1];
                 $hikeDifficulty = $hikeArray[9];
                 $hikeLength = $hikeArray[7] . " miles";
@@ -96,7 +97,13 @@ if ($handle !== false) {
                 $hikeElevation = $hikeArray[8] . " ft";
                 $hikeExposure = $hikeArray[13];
                 $mapsrc = $hikeArray[15];
+                if ($mapsrc === '') {
+                    $newstyle = false;
+                }
                 $chartsrc = $hikeArray[16];
+                if ($chartsrc === '') {
+                    $newstyle = false;
+                }
                 $hikeWow = $hikeArray[11];
                 $hikeFacilities = $hikeArray[10];
                 $hikeSeasons = $hikeArray[12];
@@ -105,7 +112,6 @@ if ($handle !== false) {
                 $hikeDirections = $hikeArray[25];
                 $rows = array();
                 $picNo = 0;
-                $frameFlag = false;  # true identifies next row needs space for link under map
                 for ($j=0; $j<6; $j++) {
                     $thisrow = $hikeArray[$j+29];
                     if ($thisrow == '') {
@@ -118,13 +124,7 @@ if ($handle !== false) {
                         $rowht = $rowdat[1];
                         $elType = $rowdat[2]; // can be either 'p' 'n' or 'f'
                         $nxtel = 2;
-                        if ($frameFlag) {
-                            $rowhtml = '<div id="row' . $j . '" class="ImgRow Solo">';
-                            # class Solo is a misnomer, but allows the needed space for the map link
-                            $frameFlag = false;
-                        } else {
-                            $rowhtml = '<div id="row' . $j . '" class="ImgRow">';
-                        }
+                        $rowhtml = '<div id="row' . $j . '" class="ImgRow">';
                         for ($k=0; $k<$els; $k++) {
                             if ($leftmost) {
                                 $style = '';
@@ -146,11 +146,7 @@ if ($handle !== false) {
                                         '" width="' . $width . '" height="' . $rowht .
                                         '" src="' . $src . '" alt="no caption" />';
                                 $nxtel +=3;
-                            } else {  // iframe
-                                $rowhtml = $rowhtml . '<iframe id="theMap" style="' . $style .
-                                        '" width="' . $rowht . '" height="' . $rowht . '" src="' .
-                                        $src . '"></iframe>';
-                                $frameFlag = true;
+                            } else {  // iframe - no longer used
                                 $nxtel += 3;
                             }
                             $elType = $rowdat[$nxtel];
@@ -204,112 +200,128 @@ if ($handle !== false) {
         content="nofollow" />
     <link href="../styles/hikes.css"
         type="text/css" rel="stylesheet" />
-    <style type='text/css'> html, body { 
-        height: 100%; margin: 0; padding: 0; }</style>
+    <link href="../styles/logo.css"
+        type="text/css" rel="stylesheet" />
 </head>
 
 <body>
-<div>
-    
-	<div id="hikeSummary">
-		 <table id="topper">
-			 <thead>
-				 <tr>
-					<th>Difficulty</th>
-					<th>Round-trip</th>
-					<th>Type</th>
-					<th>Elev. Chg.</th>
-					<th>Exposure</th>
-					<th>Wow Factor</th>
-					<th>Facilities</th>
-					<th>Seasons</th>
-					<?php if($hikePhotoLink2 == '') {
-						echo "<th>Photos</th>";
-					}?>
-					<th>By Car</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><?php echo $hikeDifficulty;?></td>
-					<td><?php echo $hikeLength;?></td>
-					<td><?php echo $hikeType;?></td>
-					<td><?php echo $hikeElevation;?></td>
-					<td><?php echo $hikeExposure;?></td>
-					<td><?php echo $hikeWow;?></td>
-					<td><?php echo $hikeFacilities;?></td>
-					<td><?php echo $hikeSeasons;?></td>
-					<?php if($hikePhotoLink2 == '') {
-						echo '<td><a href="' . $hikePhotoLink1 . '" target="_blank">' .
-							'<img style="margin-bottom:0px;border-style:none;" src="../images/album_lnk.png" alt="photo album link icon" /></a></td>';
-						}?>
-					<td><a href="<?php echo $hikeDirections?>" target="_blank">
-						 <img style="margin-bottom:0px;padding-bottom:0px;" src="../images/dirs.png" alt="google driving directions" /></a></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
 
-	<?php
-		if ($hikePhotoLink2 !== '') {
-			echo '<div style="margin-bottom:8px;"><em>-- To see more photos:</em> click on <a href="' .
-				$hikePhotoLink2 . '" target="_blank">Tom\'s Photo Album</a>, or <a href="' .
-				$hikePhotoLink1 . '" target="_blank">Ken\'s Photo Album</a></div>';
-		}
-		echo '</div>'; # end of container_16 forced width
+<div id="logo">
+	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+	<p id="logo_left">Hike New Mexico</p>
+	
+	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
+	<p id="logo_right">w/Tom &amp; Ken</p>
+</div>
+<p id="trail"><?php echo $hikeTitle;?></p>
+
+<div id="hikeSummary">
+    <table id="topper">
+        <thead>
+            <tr>
+                <th>Difficulty</th>
+                <th>Round-trip</th>
+                <th>Type</th>
+                <th>Elev. Chg.</th>
+                <th>Exposure</th>
+                <th>Wow Factor</th>
+                <th>Facilities</th>
+                <th>Seasons</th>
+                <?php if($hikePhotoLink2 == '') {
+                        echo "<th>Photos</th>";
+                }?>
+                <th>By Car</th>
+           </tr>
+       </thead>
+       <tbody>
+            <tr>
+                <td><?php echo $hikeDifficulty;?></td>
+                <td><?php echo $hikeLength;?></td>
+                <td><?php echo $hikeType;?></td>
+                <td><?php echo $hikeElevation;?></td>
+                <td><?php echo $hikeExposure;?></td>
+                <td><?php echo $hikeWow;?></td>
+                <td><?php echo $hikeFacilities;?></td>
+                <td><?php echo $hikeSeasons;?></td>
+                <?php if($hikePhotoLink2 == '') {
+                    echo '<td><a href="' . $hikePhotoLink1 . '" target="_blank">' .
+                        '<img style="margin-bottom:0px;border-style:none;"' .
+                        ' src="../images/album_lnk.png"' .
+                        ' alt="photo album link icon" /></a></td>';
+                    }?>
+                <td><a href="<?php echo $hikeDirections?>" target="_blank">
+                         <img style="margin-bottom:0px;padding-bottom:0px;"
+                              src="../images/dirs.png" alt="google driving directions" />
+                    </a>
+                </td>
+            </tr>
+       </tbody>
+   </table>
+</div>
+
+<?php
+    if ($hikePhotoLink2 !== '') {
+        echo '<div style="margin-bottom:8px;"><em>-- To see more photos:</em> click on <a href="' .
+            $hikePhotoLink2 . '" target="_blank">Tom\'s Photo Album</a>, or <a href="' .
+            $hikePhotoLink1 . '" target="_blank">Ken\'s Photo Album</a></div>';
+    }
+    /* There are two page styles from which to choose: 
+     *  if there is either no map OR no chart, the "original" style is presented;
+     *  if there is both a map AND a chart, the "new" style is presented
+     */
+    if ($newstyle) {  # newstyle has the side panel with map & chart on right
+        # SIDE PANEL:
+        echo '<div id="sidePanel">' . "\n";
+        echo $hikeInfo;
+        if ($hikeReferences !== '') {
+            echo '<fieldset>'."\n";
+            echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
+            echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
+            echo '</fieldset>';
+        }
+        echo '</div>' . "\n";
+        # MAP AND CHART ON RIGHT:
+        echo '<div id="scrollmsg">Scroll down for more!</div>' . "\n";
+        echo '<iframe style="display:block;float:left;margin-bottom:12px;margin-left:12px;" ' .
+            'id="mapline" height="280" width="73%"' .
+            ' src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . 
+            '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true"></iframe>';
+        echo '<img style="display:block;" ' .
+            'id="chartline" height="280" width="75%" src="../images/' . 
+            $chartsrc . '" alt="elevation chart" /><br />';
+    }
+    /* BOTH PAGE STYLES */
+    for ($k=0; $k<$rowCount; $k++) {
+        echo $rows[$k]; 
+    }
+    echo '<div class="captionList">' . $picCaptions . '</div>';
+    echo '<div class="lnkList">' . $picLinks . '</div>';
+
+    echo '<div id="postPhoto">';
+    if ($hikeTips !== '') {
+        echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
+            '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . 
+            htmlspecialchars_decode($hikeTips,ENT_COMPAT) . '</p></div>';
+    }
+    /* OLD STYLE: */
+    if (!$newstyle) {
+        echo $hikeInfo;
+        if ($hikeReferences !== '') {
+            echo '<fieldset>'."\n";
+            echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
+            echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
+            echo '</fieldset>';
+        }
+    }
+    /* BOTH STYLES: */
+    if ($fieldsets) {
+        echo $datasect;
+    }
 ?>
-	<div id="panel" style="float:left;margin-top:0px;margin-left:0px;margin-right:0px;
-		width:25%;height:614px;overflow:scroll;">
-        <?php 
-            echo $hikeInfo;
-            if ($hikeReferences !== '') {
-                echo '<fieldset>'."\n";
-                echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
-                echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
-                echo '</fieldset>';
-            }
-        ?>
-    </div>
-    	<?php
-                echo '<div style="float:left;display:block;text-align:center;color:DarkBlue;' .
-                	'border-style:solid;' . 'border-width:2px;margin-bottom:20px;' .
-                	'margin-left:12px;width:70%">' .
-                	'Scroll down for more!</div>';
-                echo '<iframe style="display:block;float:left;margin-bottom:12px;margin-left:12px;" ' .
-                        'id="mapline" height="280" width="73%"' .
-                        ' src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true"></iframe>';
-                echo '<img style="display:block;" ' .
-                        'id="chartline" height="280" width="75%" src="../images/' . 
-                        $chartsrc . '" alt="elevation chart" /><br />';
-		for ($k=0; $k<$rowCount; $k++) {
-			echo $rows[$k];
-		}
-		echo '<div class="captionList">' . $picCaptions . '</div>';
-		echo '<div class="lnkList">' . $picLinks . '</div>';
-		?>
-	?>
-	<div id="postPhoto">
-		<?php
-			if ($hikeTips !== '') {
-				echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
-					'<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . 
-					htmlspecialchars_decode($hikeTips,ENT_COMPAT) . '</p></div>';
-			}
-			echo $hikeInfo;
-			if ($hikeReferences !== '') {
-				echo '<fieldset>'."\n";
-				echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
-				echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
-				echo '</fieldset>';
-			}
-			if ($fieldsets) {
-				echo $datasect;
-			}
-		?>
-		
-		<div id="dbug"></div>
 
-	</div>  <!-- end of postPhoto section -->
+    <div id="dbug"></div>
+
+</div>  <!-- end of postPhoto section -->
 
 <div class="popupCap"></div>
 	
