@@ -3,6 +3,9 @@
 	for($i = 0; $i < count($lines); ++$i) {
 		// if (strpos($lines[$i], "GV_Draw_Marker") === false || ($_GET[show_markers_url] === true)) { // suppress markers? 
 		if (strpos($lines[$i], "GV_Draw_Marker") === false) {  
+			if (strpos($lines[$i], "GV_Finish_Map") !== false) {
+				include 'dynamic_Elev.php';	// insert dynamic marker from elevation chart 
+			}
 			echo ($lines[$i]);
 		}
 		elseif ($_GET[show_markers_url] == true) {
