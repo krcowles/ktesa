@@ -6,6 +6,8 @@ define('Simple','0');
 define('References','1');
 define('Proposed','2');
 define('Actual','3');
+define('mapOpts','&show_markers_url=true&street_view_url=true&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true"');
+
 	
 function makeHtmlList($type,$str) {
 	$list = explode("^",$str);
@@ -284,8 +286,7 @@ if ($handle !== false) {
         echo '<div id="scrollmsg">Scroll down for more!</div>' . "\n";
         echo '<iframe style="display:block;float:left;margin-bottom:12px;margin-left:12px;" ' .
             'id="mapline" height="280" width="73%"' .
-            ' src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . 
-            '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true"></iframe>';
+            ' src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . mapOpts . '></iframe>';
         echo '<img style="display:block;" ' .
             'id="chartline" height="280" width="75%" src="../images/' . 
             $chartsrc . '" alt="elevation chart" /><br />';
