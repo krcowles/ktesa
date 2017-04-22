@@ -12,6 +12,7 @@ var emax;  // maximum value found for elevation
 var emin;  // minimum value found for evlevatiom
 var msg;
 var ajaxDone = false;
+var chartLoc = {};
 
 // Function to convert lats/lons to miles:
 function distance(lat1, lon1, lat2, lon2, unit) {
@@ -27,7 +28,7 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     if (unit === "N") { dist = dist * 0.8684; }  // else result is in miles "M"
     return dist;
 }
-
+	
 // asynchronous load & processing of the gpx file:
 $.ajax({
     dataType: "xml",  // xml document object can be handled by jQuery
@@ -67,7 +68,6 @@ $.ajax({
         emax = 100 * (Math.round(emax/100) + adder);
         emin = 100 * (Math.floor(emin/100) - adder);
         ajaxDone = true;
-        //window.alert("min: " + emin + ", max: " + emax);
     },
     error: function() {
         msg = '<p>Did not succeed in getting XML data: ' + trackfile + '</p>';
@@ -91,13 +91,19 @@ var chart = new CanvasJS.Chart("chartContainer", {
 				   after the chart has been rendered */
 				var indx = 0;
 				for (var k=0; k<rows.length; k++) {
-					if (rows[k].x = e.dataPoint.x) {
+					if (rows[k].x === e.dataPoint.x) {
 						indx = k;
 						break;
 					}
 				}
 				msg = lats[indx] + ", " + lngs[indx];
 				$('#currentLLs').text(msg);
+				chartLoc = { lat: lats[indx], lng: lngs[indx] };
+				if (iframeWindow.circSet) {
+					document.getElementById('gpsvmap').contentWindow.chartMrkr.setMap(null);
+				}
+				document.getElementById('gpsvmap').contentWindow.drawCircle(chartLoc);
+				//window.alert("DONE");
 			},
 			dataPoints: [ ]
 		}
@@ -121,5 +127,6 @@ var drawit = setInterval( function() {
 		clearInterval(drawit);
 	}
 }, 100);
-	
+
+
 }); // end of page-loading wait statement
