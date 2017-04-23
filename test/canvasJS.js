@@ -76,11 +76,36 @@ $.ajax({
 });
 
 // chart-making:
-var chart = new CanvasJS.Chart("chartContainer", {
+var chart = new CanvasJS.Chart("chartContainer", {  // options object:
+	toolTip: {
+		borderThickness: 2,
+		backgroundColor: 'White',
+		contentFormatter: function(e) { 
+			var content = "";
+			var ypt = e.entries[0].dataPoint.y;
+			var yout = '<span style="color:DarkBlue;">' + Math.round(ypt) + ' ft</span>';
+			content += yout;
+			var xpt = e.entries[0].dataPoint.x;
+			var xout = '<br /><span style="color:DimGray;">' + Math.round(xpt * 100)/100 + ' miles</span>';
+			content += xout;
+			var indx = 0;
+			for (var k=0; k<rows.length; k++) {
+				if (rows[k].x === xpt) {
+					indx = k;
+					break;
+				}
+			}
+			chartLoc = { lat: lats[indx], lng: lngs[indx] };
+			if (iframeWindow.circSet) {
+				document.getElementById('gpsvmap').contentWindow.chartMrkr.setMap(null);
+			}
+			document.getElementById('gpsvmap').contentWindow.drawCircle(chartLoc);
+			return content;	
+		}
+	},
 	data: [       // only 1 array element: elevation dataseries: no title here   
 		{
-			type: "line",
-			tooltipContent: "{x} miles, {y} ft",
+			type: "line",	
 			cursor: "crosshair",
 			click: function(e) {
 				xval = Math.round(e.dataPoint.x * 100)/100 + ' miles';
@@ -126,7 +151,7 @@ var drawit = setInterval( function() {
 		chart.render();
 		clearInterval(drawit);
 	}
-}, 100);
+}, 50);
 
 
 }); // end of page-loading wait statement
