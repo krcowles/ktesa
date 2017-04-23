@@ -103,33 +103,10 @@ var chart = new CanvasJS.Chart("chartContainer", {  // options object:
 			return content;	
 		}
 	},
-	data: [       // only 1 array element: elevation dataseries: no title here   
+	data: [       // only 1 array element: elevation dataseries 
 		{
 			type: "line",	
 			cursor: "crosshair",
-			click: function(e) {
-				xval = Math.round(e.dataPoint.x * 100)/100 + ' miles';
-				yval = Math.round(e.dataPoint.y) + ' ft';
-				msg = xval + ", " + yval;
-				$('#currentVals').text(msg);
-				/* vertical markers not available yet, and can't set stripLines
-				   after the chart has been rendered */
-				var indx = 0;
-				for (var k=0; k<rows.length; k++) {
-					if (rows[k].x === e.dataPoint.x) {
-						indx = k;
-						break;
-					}
-				}
-				msg = lats[indx] + ", " + lngs[indx];
-				$('#currentLLs').text(msg);
-				chartLoc = { lat: lats[indx], lng: lngs[indx] };
-				if (iframeWindow.circSet) {
-					document.getElementById('gpsvmap').contentWindow.chartMrkr.setMap(null);
-				}
-				document.getElementById('gpsvmap').contentWindow.drawCircle(chartLoc);
-				//window.alert("DONE");
-			},
 			dataPoints: [ ]
 		}
 	],
@@ -152,6 +129,11 @@ var drawit = setInterval( function() {
 		clearInterval(drawit);
 	}
 }, 50);
+
+// remove map symbol when leaving chart
+$('#chartContainer').on('mouseout', function() {
+	document.getElementById('gpsvmap').contentWindow.chartMrkr.setMap(null);
+});
 
 
 }); // end of page-loading wait statement
