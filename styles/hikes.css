@@ -36,23 +36,69 @@ table td {
 /* Side Panel styling, including hikeInfo & refs */
 #sidePanel {
     float: left;
-    margin-top: 0px;
-    margin-left: 0px;
+    margin-top: -12px;
+    margin-left: 4px;
     margin-right: 0px;
     width: 25%;
-    height: 616px;
+    min-height: 400px;
+    border-style: inset;
+    border-width: 2px;
+    border-color: Brown;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
     overflow:scroll;
 }
+#stats {
+	margin-top: 6px;
+	margin-bottom: 0px;
+	text-align: center;
+	color: Brown;
+	font-size: 20px;
+}
+#summary {
+	margin-top: -8px;
+	margin-bottom: 0px;
+	padding: 10px;
+}
+#addtl {
+	margin-top: -6px;
+	margin-bottom: 0px;
+	text-align: center;
+	color: Brown;
+	font-size: 20px;
+}
+#albums {
+	margin-top: 0px;
+	text-align: center;
+}
+#alnks {
+	margin-top: -12px;
+	text-align: center;
+}
+#directions {
+	margin-top: -12px;
+	text-align: center;
+}
+#dlnk {
+	margin-top: -12px;
+	text-align: center;
+}
 #scrollmsg {
-    float: left;
-    display: block;
-    text-align: center;
-    color: DarkBlue;
-    border-style: solid;
-    border-width: 2px;
-    margin-bottom: 20px;
-    margin-left: 12px;
-    width: 72%;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+iframe {
+	float: left;
+	margin-top: -12px;
+	min-height: 200px;
+	width:73%;
+}
+#chartline {
+	float: left;
+	min-height: 200px;
+	width: 73%;
 }
 #hikeInfo {
     margin-top: 0px;
@@ -153,5 +199,14 @@ div em {
     text-align: left; }
 #hdesc {
     text-align: left; }
+#closer {
+	margin-left: 12px;
+	margin-right: 12px;
+	padding: 10px;
+	background-color: #c9d7e8;
+	border-style: outset;
+	border-width: 2px;
+	border-color: #c9d7e8;
+}
 	
 	

@@ -43,6 +43,16 @@ var initMarg; // this is space between rows of images & page border (calc after 
 var minWidth = $('body').css('min-width'); // normally 960
 var pxLoc = minWidth.indexOf('px');
 minWidth = parseFloat(minWidth.substring(0,pxLoc));
+// setting up map & chart to occupy viewport space
+var vpHeight = window.innerHeight;
+var sidePnlPos = $('#sidePanel').offset();
+var sidePnlLoc = parseInt(sidePnlPos.top);
+var usable = vpHeight - sidePnlLoc;
+var elHeights = Math.floor(usable/2) + 'px';
+var pnlHeight = (usable - 1) + 'px';
+$('#mapline').css('height',elHeights);
+$('#chartline').css('height',elHeights);
+$('#sidePanel').css('height',pnlHeight);
 // staging the initial execution
 var resizeFlag = true;  // semaphore: don't execute resize event code if true
 var noOfImgs = 0;
@@ -478,6 +488,16 @@ function tippingPoint() {
  * resize triggering. The timeout allows a quiet period until another trigger can occur.
  */
 $(window).resize( function() {
+        // resize elements per new viewport:
+        if (window.innerHeight < (vpHeight - 10) || window.innerHeight > (vpHeight + 10)) {
+            vpHeight = window.innerHeight;
+            usable = vpHeight - sidePnlLoc;
+            elHeights = Math.floor(usable/2) + 'px';
+            pnlHeight = (usable - 1) + 'px';
+            $('#mapline').css('height',elHeights);
+            $('#chartline').css('height',elHeights);
+            $('#sidePanel').css('height',pnlHeight);
+        }
 	winWidth = $(window).width();
 	winrat = winWidth/zoomMax;
 	var runSizer = false;
