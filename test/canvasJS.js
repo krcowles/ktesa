@@ -1,6 +1,6 @@
 $( function() {  // wait until document is loaded...
 
-var trackfile = 'Apache_Canyon.GPX';
+var trackfile = '../gpx/Apache_Canyon.GPX';
 
 var lats = [];
 var lngs = [];
@@ -130,7 +130,7 @@ var drawit = setInterval( function() {
 	}
 }, 50);
 
-// remove map symbol when leaving chart
+// remove map circle when leaving chart
 $('#chartContainer').on('mouseout', function() {
 	document.getElementById('gpsvmap').contentWindow.chartMrkr.setMap(null);
 });
