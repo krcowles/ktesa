@@ -296,6 +296,8 @@ if (!$newstyle) {
                 'Seasons : ' . $hikeSeasons . '<br />' .
                 '"Wow" Factor: ' . $hikeWow . '</p>' . "\n";
         echo '<p id="addtl"><strong>More!</strong></p>';
+        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . mapOpts .
+                    'target="_blank">Full Page Map Link</a></p>';
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 '<p id="alnks"><a href="' . $hikePhotoLink1 . '" target="_blank">Photo Album Link</a>';
         if ($hikePhotoLink2 !== '') {

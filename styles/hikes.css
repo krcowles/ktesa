@@ -69,8 +69,12 @@ table td {
 	color: Brown;
 	font-size: 20px;
 }
-#albums {
+#mlnk {
+	text-align: center;
 	margin-top: 0px;
+}
+#albums {
+	margin-top: -6px;
 	text-align: center;
 }
 #alnks {

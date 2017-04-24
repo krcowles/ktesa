@@ -48,10 +48,13 @@ var vpHeight = window.innerHeight;
 var sidePnlPos = $('#sidePanel').offset();
 var sidePnlLoc = parseInt(sidePnlPos.top);
 var usable = vpHeight - sidePnlLoc;
-var elHeights = Math.floor(usable/2) + 'px';
-var pnlHeight = (usable - 1) + 'px';
-$('#mapline').css('height',elHeights);
-$('#chartline').css('height',elHeights);
+var mapHeight = Math.floor(0.65 * usable);
+var chartHeight = Math.floor(0.35 * usable);
+var pnlHeight = (mapHeight + chartHeight) + 'px';
+mapHeight += 'px';
+chartHeight += 'px';
+$('#mapline').css('height',mapHeight);
+$('#chartline').css('height',chartHeight);
 $('#sidePanel').css('height',pnlHeight);
 // staging the initial execution
 var resizeFlag = true;  // semaphore: don't execute resize event code if true
@@ -492,10 +495,13 @@ $(window).resize( function() {
         if (window.innerHeight < (vpHeight - 10) || window.innerHeight > (vpHeight + 10)) {
             vpHeight = window.innerHeight;
             usable = vpHeight - sidePnlLoc;
-            elHeights = Math.floor(usable/2) + 'px';
-            pnlHeight = (usable - 1) + 'px';
-            $('#mapline').css('height',elHeights);
-            $('#chartline').css('height',elHeights);
+            mapHeight = Math.floor(0.65 * usable);
+            chartHeight = Math.floor(0.35 * usable);
+            pnlHeight = (mapHeight + chartHeight) + 'px';
+            mapHeight += 'px';
+            chartHeight += 'px';
+            $('#mapline').css('height',mapHeight);
+            $('#chartline').css('height',chartHeight);
             $('#sidePanel').css('height',pnlHeight);
         }
 	winWidth = $(window).width();
