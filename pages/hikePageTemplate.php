@@ -206,6 +206,8 @@ function makeHtmlList($type,$str) {
 		type="text/css" rel="stylesheet" />
 	<link href="../styles/hikes.css"
 		type="text/css" rel="stylesheet" />
+	<script type="text/javascript"> var iframeWindow; </script>
+	<script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"> </script>
 </head>
 
 <body>
@@ -267,6 +269,8 @@ function makeHtmlList($type,$str) {
 		}
 		echo '<div class="captionList">' . $picCaptions . '</div>';
 		echo '<div class="lnkList">' . $picLinks . '</div>';
+		echo '<div> <iframe id="gpsvmap" height="300" width="100%" src="../maps/DiabloSouthMesa.html"></iframe></div>';
+		echo '<div id="chartContainer" style="height:300px; width:100%;"> </div>';
 	?>
 	<div id="postPhoto">
 		<?php
@@ -295,6 +299,7 @@ function makeHtmlList($type,$str) {
 	
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/hikes.js"></script> 
+<script src="../scripts/canvasJS.js"></script> 
 
 </body>
 

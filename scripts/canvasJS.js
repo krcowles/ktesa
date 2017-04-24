@@ -1,6 +1,6 @@
 $( function() {  // wait until document is loaded...
 
-var trackfile = 'Apache_Canyon.GPX';
+var trackfile = '../gpx/DiabloSouthMesa.gpx';
 
 var lats = [];
 var lngs = [];
