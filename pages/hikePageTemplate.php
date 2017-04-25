@@ -6,7 +6,8 @@ define('Simple','0');
 define('References','1');
 define('Proposed','2');
 define('Actual','3');
-define('mapOpts','&show_markers_url=true&street_view_url=true&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true"');
+define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false"');
+define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
 define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
 
 /* 
@@ -298,7 +299,7 @@ if (!$newstyle) {
                 'Seasons : <span class=sumClr>' . $hikeSeasons . '</span><br />' .
                 '"Wow" Factor: <span class=sumClr>' . $hikeWow . '</span></p>' . "\n";
         echo '<p id="addtl"><strong>More!</strong></p>' . "\n";
-        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . mapOpts .
+        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . fullMapOpts .
                     ' target="_blank">Full Page Map Link</a></p>' ."\n";
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 '<p id="alnks"><a href="' . $hikePhotoLink1 . '" target="_blank">Photo Album Link</a>';
@@ -316,7 +317,7 @@ if (!$newstyle) {
             '<a href="mailto:krcowles29@gmail.com">send us a note!</a></p>' ."\n";
     echo '</div>';
     # MAP AND CHART ON RIGHT:
-    echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . mapOpts . '></iframe>' ."\n";
+    echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . iframeMapOpts . '></iframe>' ."\n";
     echo '<div data-gpx="' . $gpxfile. '" id="chartline"></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
