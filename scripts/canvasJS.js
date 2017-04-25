@@ -1,6 +1,6 @@
 $( function() {  // wait until document is loaded...
 
-var trackfile = '../gpx/Apache_Canyon.GPX';
+var trackfile = '../gpx/DiabloSouthMesa.gpx';
 
 var lats = [];
 var lngs = [];
@@ -130,7 +130,7 @@ var drawit = setInterval( function() {
 	}
 }, 50);
 
-// remove map circle when leaving chart
+// remove map symbol when leaving chart
 $('#chartContainer').on('mouseout', function() {
 	document.getElementById('theMap').contentWindow.chartMrkr.setMap(null);
 });

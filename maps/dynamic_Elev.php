@@ -1,6 +1,17 @@
-<?php
-if (isset($_GET[dynMarkerLoc_url]) == true) {
-//	echo "GV_Draw_Marker({"; echo $_GET[dynMarkerLoc_url];         echo ",name:'',desc:'',color:'',icon:'Navaid, Blue'});";
-	echo "GV_Draw_Marker({"; echo "lat:35.805245,lon:-106.141636"; echo ",name:'',desc:'',color:'',icon:'Navaid, Blue'});";
-	}
-?>
+				function drawCircle( circCtr ) {
+				chartMrkr = new google.maps.Circle({
+					strokeColor: '#FF0000',
+					strokeOpacity: 0.8,
+					strokeWeight: 3,
+					fillColor: '#FF0000',
+					fillOpacity: 0.35,
+					center: circCtr,
+					map: gmap,
+					radius: 40
+				});
+				circSet = true;
+			}
+			// create context for passing iframe variables to parent
+			setTimeout( function() {	
+				parent.iframeWindow = window;
+				}, 2000 );
