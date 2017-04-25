@@ -14,76 +14,76 @@ define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
  *  which were retrieved from the database in the form of 'string arrays'
  */
 function makeHtmlList($type,$str) {
-	$list = explode("^",$str);
-	$noOfItems = intval($list[0]);
-	array_shift($list);
-	if ($type === Simple) {
-		$htmlout = '<ol>';
-		for ($j=0; $j<$noOfItems; $j++) {
-			$htmlout = $htmlout . '<li>' . $list[$j] . '</li>';
-		}
-		$htmlout = $htmlout . '</ol>';
-	} elseif ($type === References) {
-		$nxt = 0;
-		$htmlout = '<ul id="refs">';
-		for ($k=0; $k<$noOfItems; $k++) {
-			$tagType = $list[$nxt];
-			if ($tagType === 'b') { 
-				$htmlout .= '<li>Book: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
-				$nxt += 3;
-			} elseif ($tagType === 'p') {
-				$htmlout .= '<li>Photo Essay: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
-				$nxt += 3;
-			} elseif ($tagType === 'n') {
-				$htmlout .= '<li>' . $list[$nxt+1] . '</li>';
-				$nxt += 2;
-			} else {
-				if ($tagType === 'w') {
-					$tag = '<li>Website: ';
-				} elseif ($tagType === 'a') {
-					$tag = '<li>App: ';
-				} elseif ($tagType === 'd') {
-					$tag = '<li>Downloadable Doc: ';
-				} elseif ($tagType === 'h') {
-					$tag = '<li>';
-				} elseif ($tagType === 'l') {
-					$tag = '<li>Blog: ';
-				} elseif ($tagType === 'r') {
-					$tag = '<li>Related Site: ';
-				} elseif ($tagType === 'o') {
-					$tag = '<li>Map: ';
-				} elseif ($tagType === 'm') {
-					$tag = '<li>Magazine: ';
-				} elseif ($tagType === 's') {
-					$tag = '<li>News article: ';
-				} elseif ($tagType === 'g') {
-					$tag = '<li>Meetup Group: ';
-				} else {
-					$tag = '<li>CHECK DATABASE: ';
-				}
-				$htmlout .= $tag . '<a href="' . $list[$nxt+1] . '" target="_blank">' .
-					$list[$nxt+2] . '</a></li>';
-				$nxt += 3;
-			}
-		} // end of for loop in references
-		$htmlout .= '</ul>';
-	} elseif ($type === Proposed || $type === Actual) {
-		$nxt = 0;
-		if ($type === Proposed) {
-			$htmlout = '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">';
-		} else {
-			$htmlout = '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">';
-		}
-		for ($n=0; $n<$noOfItems; $n++) {
-			$htmlout .= '<li>' . $list[$nxt] . '<a href="' . $list[$nxt+1] .
-				'" target="_blank">' . $list[$nxt+2] . '</a></li>';
-			$nxt += 3;
-		}
-		$htmlout .= '</ul>';
-	} else {
-			echo "Unknown argument in makeHtmlList, Hike " . $hikeIndexNo . ': ' . $tagType;
-	}  // end of if tagtype ifs
-	return $htmlout;
+    $list = explode("^",$str);
+    $noOfItems = intval($list[0]);
+    array_shift($list);
+    if ($type === Simple) {
+        $htmlout = '<ol>';
+        for ($j=0; $j<$noOfItems; $j++) {
+            $htmlout = $htmlout . '<li>' . $list[$j] . '</li>';
+        }
+        $htmlout = $htmlout . '</ol>';
+    } elseif ($type === References) {
+        $nxt = 0;
+        $htmlout = '<ul id="refs">';
+        for ($k=0; $k<$noOfItems; $k++) {
+            $tagType = $list[$nxt];
+            if ($tagType === 'b') { 
+                $htmlout .= '<li>Book: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
+                $nxt += 3;
+            } elseif ($tagType === 'p') {
+                $htmlout .= '<li>Photo Essay: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
+                $nxt += 3;
+            } elseif ($tagType === 'n') {
+                $htmlout .= '<li>' . $list[$nxt+1] . '</li>';
+                $nxt += 2;
+            } else {
+                if ($tagType === 'w') {
+                    $tag = '<li>Website: ';
+                } elseif ($tagType === 'a') {
+                    $tag = '<li>App: ';
+                } elseif ($tagType === 'd') {
+                    $tag = '<li>Downloadable Doc: ';
+                } elseif ($tagType === 'h') {
+                    $tag = '<li>';
+                } elseif ($tagType === 'l') {
+                    $tag = '<li>Blog: ';
+                } elseif ($tagType === 'r') {
+                    $tag = '<li>Related Site: ';
+                } elseif ($tagType === 'o') {
+                    $tag = '<li>Map: ';
+                } elseif ($tagType === 'm') {
+                    $tag = '<li>Magazine: ';
+                } elseif ($tagType === 's') {
+                    $tag = '<li>News article: ';
+                } elseif ($tagType === 'g') {
+                    $tag = '<li>Meetup Group: ';
+                } else {
+                    $tag = '<li>CHECK DATABASE: ';
+                }
+                $htmlout .= $tag . '<a href="' . $list[$nxt+1] . '" target="_blank">' .
+                    $list[$nxt+2] . '</a></li>';
+                $nxt += 3;
+            }
+        } // end of for loop in references
+        $htmlout .= '</ul>';
+    } elseif ($type === Proposed || $type === Actual) {
+        $nxt = 0;
+        if ($type === Proposed) {
+            $htmlout = '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">';
+        } else {
+            $htmlout = '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">';
+        }
+        for ($n=0; $n<$noOfItems; $n++) {
+            $htmlout .= '<li>' . $list[$nxt] . '<a href="' . $list[$nxt+1] .
+                    '" target="_blank">' . $list[$nxt+2] . '</a></li>';
+            $nxt += 3;
+        }
+        $htmlout .= '</ul>';
+    } else {
+        echo "Unknown argument in makeHtmlList, Hike " . $hikeIndexNo . ': ' . $tagType;
+    }  // end of if tagtype ifs
+    return $htmlout;
 } // FUNCTION END....
 /*
  * -------------------------  MAIN ROUTINE ------------------------
@@ -212,13 +212,15 @@ if ($handle !== false) {
 	<title><?php echo $hikeTitle;?></title>
 	<meta charset="utf-8" />
 	<meta name="description"
-		content="Details about the {$hikeTitle} hike" />
+            content="Details about the {$hikeTitle} hike" />
 	<meta name="author"
-		content="Tom Sandberg and Ken Cowles" />
+            content="Tom Sandberg and Ken Cowles" />
 	<meta name="robots"
-		content="nofollow" />
+            content="nofollow" />
+        <link href="../styles/logo.css"
+            type="text/css" rel="stylesheet" />
 	<link href="../styles/hikes.css"
-		type="text/css" rel="stylesheet" />
+            type="text/css" rel="stylesheet" />
 	<script type="text/javascript"> var iframeWindow; </script>
 	<script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"> </script>
 </head>
@@ -242,63 +244,62 @@ if ($handle !== false) {
   */
 if (!$newstyle) {
     echo '<div id="hikeSummary">' .
-            '<table id="topper">' .
-                    '<thead>' .
-                            '<tr>' .
-                                    '<th>Difficulty</th>' .
-                                    '<th>Round-trip</th>' .
-                                    '<th>Type</th>' .
-                                    '<th>Elev. Chg.</th>' .
-                                    '<th>Exposure</th>' .
-                                    '<th>Wow Factor</th>' .
-                                    '<th>Facilities</th>' .
-                                    '<th>Seasons</th>';
-                                    if($hikePhotoLink2 == '') {
-                                                    echo "<th>Photos</th>";
-                                    }
-                                    echo '<th>By Car</th>' .
-                       '</tr>' .
-               '</thead>' .
-               '<tbody>' .
-                            '<tr>' .
-                                    '<td>' . $hikeDifficulty . '</td>' .
-                                    '<td>' . $hikeLength . '</td>' .
-                                    '<td>' . $hikeType . '</td>' .
-                                    '<td>' . $hikeElevation . '</td>' .
-                                    '<td>' . $hikeExposure . '</td>' .
-                                    '<td>' . $hikeWow . '</td>' .
-                                    '<td>' . $hikeFacilities . '</td>' .
-                                    '<td>' . $hikeSeasons . '</td>';
-                                    if($hikePhotoLink2 == '') {
-                                            echo '<td><a href="' . $hikePhotoLink1 . '" target="_blank">' .
-                                                    '<img style="margin-bottom:0px;border-style:none;"' .
-                                                    ' src="../images/album_lnk.png"' .
-                                                    ' alt="photo album link icon" /></a></td>';
-                                    }
-                                    echo '<td><a href="' . $hikeDirections . '" target="_blank">' .
-                                                     '<img style="margin-bottom:0px;padding-bottom:0px;"' .
-                                                              'src="../images/dirs.png" alt="google driving directions" />' .
-                                            '</a>' .
-                                    '</td>' .
-                            '</tr>' .
-               '</tbody>' .
+        '<table id="topper">' .
+            '<thead>' .
+                '<tr>' .
+                    '<th>Difficulty</th>' .
+                    '<th>Round-trip</th>' .
+                    '<th>Type</th>' .
+                    '<th>Elev. Chg.</th>' .
+                    '<th>Exposure</th>' .
+                    '<th>Wow Factor</th>' .
+                    '<th>Facilities</th>' .
+                    '<th>Seasons</th>';
+                    if($hikePhotoLink2 == '') {
+                                    echo "<th>Photos</th>";
+                    }
+                    echo '<th>By Car</th>' .
+               '</tr>' .
+           '</thead>' .
+           '<tbody>' .
+                '<tr>' .
+                    '<td>' . $hikeDifficulty . '</td>' .
+                    '<td>' . $hikeLength . '</td>' .
+                    '<td>' . $hikeType . '</td>' .
+                    '<td>' . $hikeElevation . '</td>' .
+                    '<td>' . $hikeExposure . '</td>' .
+                    '<td>' . $hikeWow . '</td>' .
+                    '<td>' . $hikeFacilities . '</td>' .
+                    '<td>' . $hikeSeasons . '</td>';
+                    if($hikePhotoLink2 == '') {
+                        echo '<td><a href="' . $hikePhotoLink1 . '" target="_blank">' .
+                            '<img style="margin-bottom:0px;border-style:none;"' .
+                            ' src="../images/album_lnk.png"' .
+                            ' alt="photo album link icon" /></a></td>';
+                    }
+                    echo '<td><a href="' . $hikeDirections . '" target="_blank">' .
+                        '<img style="margin-bottom:0px;padding-bottom:0px;"' .
+                        'src="../images/dirs.png" alt="google driving directions" />' .
+                        '</a></td>' .
+                '</tr>' .
+           '</tbody>' .
        '</table>' .
     '</div>';
 } else { # newstyle has the side panel with map & chart on right
     # SIDE PANEL:
     echo '<div id="sidePanel"><p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' .
-                'Nearby City or Landmark: ' . $hikeLocale . '<br />' .
-                'Hike Difficulty: ' . $hikeDifficulty . '<br />' .
-                'Total Length of Hike: ' . $hikeLength . '<br />' .
-                'Max to Min Elevation: ' . $hikeElevation . '<br />' .
-                'Logistics: ' . $hikeType . '<br />' .
-                'Exposure Type: ' . $hikeExposure . '<br />' .
-                'Seasons : ' . $hikeSeasons . '<br />' .
-                '"Wow" Factor: ' . $hikeWow . '</p>' . "\n";
+                'Nearby City or Landmark: <span class=sumClr>' . $hikeLocale . '</span><br />' .
+                'Hike Difficulty: <span class=sumClr>' . $hikeDifficulty . '</span><br />' .
+                'Total Length of Hike: <span class=sumClr>' . $hikeLength . '</span><br />' .
+                'Max to Min Elevation: <span class=sumClr>' . $hikeElevation . '</span><br />' .
+                'Logistics: <span class=sumClr>' . $hikeType . '</span><br />' .
+                'Exposure Type: <span class=sumClr>' . $hikeExposure . '</span><br />' .
+                'Seasons : <span class=sumClr>' . $hikeSeasons . '</span><br />' .
+                '"Wow" Factor: <span class=sumClr>' . $hikeWow . '</span></p>' . "\n";
         echo '<p id="addtl"><strong>More!</strong></p>';
         echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . mapOpts .
-                    'target="_blank">Full Page Map Link</a></p>';
+                    ' target="_blank">Full Page Map Link</a></p>';
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 '<p id="alnks"><a href="' . $hikePhotoLink1 . '" target="_blank">Photo Album Link</a>';
         if ($hikePhotoLink2 !== '') {
