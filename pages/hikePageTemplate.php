@@ -6,6 +6,8 @@ define('Simple','0');
 define('References','1');
 define('Proposed','2');
 define('Actual','3');
+define('mapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true');
+define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
 	
 function makeHtmlList($type,$str) {
 	$list = explode("^",$str);
@@ -98,6 +100,7 @@ function makeHtmlList($type,$str) {
 					$hikeWow = $hikeArray[11];
 					$hikeFacilities = $hikeArray[10];
 					$hikeSeasons = $hikeArray[12];
+                                        $hikeMap = $hikeArray[15];
 					$hikePhotoLink1 = $hikeArray[23];
 					$hikePhotoLink2 = $hikeArray[24];
 					$hikeDirections = $hikeArray[25];
@@ -269,7 +272,7 @@ function makeHtmlList($type,$str) {
 		}
 		echo '<div class="captionList">' . $picCaptions . '</div>';
 		echo '<div class="lnkList">' . $picLinks . '</div>';
-		echo '<div> <iframe id="gpsvmap" height="300" width="100%" src="../maps/DiabloSouthMesa.html"></iframe></div>';
+		echo '<div> <iframe id="gpsvmap" height="300" width="100%" src="' . gpsvTemplate . $hikeMap . mapOpts . '"></iframe></div>';
 		echo '<div id="chartContainer" style="height:300px; width:100%;"> </div>';
 	?>
 	<div id="postPhoto">

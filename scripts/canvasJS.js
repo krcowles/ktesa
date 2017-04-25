@@ -97,9 +97,9 @@ var chart = new CanvasJS.Chart("chartContainer", {  // options object:
 			}
 			chartLoc = { lat: lats[indx], lng: lngs[indx] };
 			if (iframeWindow.circSet) {
-				document.getElementById('theMap').contentWindow.chartMrkr.setMap(null);
+				document.getElementById('gpsvmap').contentWindow.chartMrkr.setMap(null);
 			}
-			document.getElementById('theMap').contentWindow.drawCircle(chartLoc);
+			document.getElementById('gpsvmap').contentWindow.drawCircle(chartLoc);
 			return content;	
 		}
 	},
@@ -132,7 +132,7 @@ var drawit = setInterval( function() {
 
 // remove map symbol when leaving chart
 $('#chartContainer').on('mouseout', function() {
-	document.getElementById('theMap').contentWindow.chartMrkr.setMap(null);
+	document.getElementById('gpsvmap').contentWindow.chartMrkr.setMap(null);
 });
 
 
