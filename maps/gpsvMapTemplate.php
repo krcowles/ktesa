@@ -14,5 +14,8 @@
 		if (strpos($lines[$i], "this must be loaded AFTER gv_options are set") !== false) {
 			include 'map_gv_options.php';	// insert gv_options code
 		}
+		if (strpos($lines[$i], "GV_Map();") !== false) {
+			include 'dynamic_Elev.php';	// insert dynamic marker from elevation chart 
+		}
 	}
 ?>

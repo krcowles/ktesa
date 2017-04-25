@@ -7,6 +7,7 @@ define('References','1');
 define('Proposed','2');
 define('Actual','3');
 define('mapOpts','&show_markers_url=true&street_view_url=true&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true"');
+define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
 
 /* 
  * The following function is used to create the html code for the items in a string,
@@ -208,18 +209,18 @@ if ($handle !== false) {
 }
 ?>
 <head>
-    <title><?php echo $hikeTitle;?></title>
-    <meta charset="utf-8" />
-    <meta name="description"
-        content="Details about the {$hikeTitle} hike" />
-    <meta name="author"
-        content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots"
-        content="nofollow" />
-    <link href="../styles/hikes.css"
-        type="text/css" rel="stylesheet" />
-    <link href="../styles/logo.css"
-        type="text/css" rel="stylesheet" />
+	<title><?php echo $hikeTitle;?></title>
+	<meta charset="utf-8" />
+	<meta name="description"
+		content="Details about the {$hikeTitle} hike" />
+	<meta name="author"
+		content="Tom Sandberg and Ken Cowles" />
+	<meta name="robots"
+		content="nofollow" />
+	<link href="../styles/hikes.css"
+		type="text/css" rel="stylesheet" />
+	<script type="text/javascript"> var iframeWindow; </script>
+	<script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"> </script>
 </head>
 
 <body>
@@ -350,6 +351,7 @@ if ($fieldsets) {
 	
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/hikes.js"></script> 
+<script src="../scripts/canvasJS.js"></script> 
 
 </body>
 
