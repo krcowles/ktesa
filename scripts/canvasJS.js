@@ -1,6 +1,8 @@
 $( function() {  // wait until document is loaded...
 
-var trackfile = '../gpx/DiabloSouthMesa.gpx';
+var trackfile = '../gpx/' + $('#chartline').data('gpx');
+
+        //'../gpx/Apache_Canyon.GPX';
 
 var lats = [];
 var lngs = [];
@@ -76,7 +78,7 @@ $.ajax({
 });
 
 // chart-making:
-var chart = new CanvasJS.Chart("chartContainer", {  // options object:
+var chart = new CanvasJS.Chart("chartline", {  // options object:
 	toolTip: {
 		borderThickness: 2,
 		backgroundColor: 'White',
@@ -97,9 +99,9 @@ var chart = new CanvasJS.Chart("chartContainer", {  // options object:
 			}
 			chartLoc = { lat: lats[indx], lng: lngs[indx] };
 			if (iframeWindow.circSet) {
-				document.getElementById('gpsvmap').contentWindow.chartMrkr.setMap(null);
+				document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
 			}
-			document.getElementById('gpsvmap').contentWindow.drawCircle(chartLoc);
+			document.getElementById('mapline').contentWindow.drawCircle(chartLoc);
 			return content;	
 		}
 	},
@@ -130,9 +132,9 @@ var drawit = setInterval( function() {
 	}
 }, 50);
 
-// remove map symbol when leaving chart
-$('#chartContainer').on('mouseout', function() {
-	document.getElementById('gpsvmap').contentWindow.chartMrkr.setMap(null);
+// remove map circle when leaving chart
+$('#chartline').on('mouseout', function() {
+	document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
 });
 
 

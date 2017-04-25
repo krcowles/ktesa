@@ -112,8 +112,8 @@ if ($handle !== false) {
                 if ($mapsrc === '') {
                     $newstyle = false;
                 }
-                $chartsrc = $hikeArray[16];
-                if ($chartsrc === '') {
+                $gpxfile = $hikeArray[17];
+                if ($gpxfile === '') {
                     $newstyle = false;
                 }
                 $hikeWow = $hikeArray[11];
@@ -287,7 +287,7 @@ if (!$newstyle) {
     '</div>';
 } else { # newstyle has the side panel with map & chart on right
     # SIDE PANEL:
-    echo '<div id="sidePanel"><p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
+    echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' .
                 'Nearby City or Landmark: <span class=sumClr>' . $hikeLocale . '</span><br />' .
                 'Hike Difficulty: <span class=sumClr>' . $hikeDifficulty . '</span><br />' .
@@ -297,9 +297,9 @@ if (!$newstyle) {
                 'Exposure Type: <span class=sumClr>' . $hikeExposure . '</span><br />' .
                 'Seasons : <span class=sumClr>' . $hikeSeasons . '</span><br />' .
                 '"Wow" Factor: <span class=sumClr>' . $hikeWow . '</span></p>' . "\n";
-        echo '<p id="addtl"><strong>More!</strong></p>';
+        echo '<p id="addtl"><strong>More!</strong></p>' . "\n";
         echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . mapOpts .
-                    ' target="_blank">Full Page Map Link</a></p>';
+                    ' target="_blank">Full Page Map Link</a></p>' ."\n";
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 '<p id="alnks"><a href="' . $hikePhotoLink1 . '" target="_blank">Photo Album Link</a>';
         if ($hikePhotoLink2 !== '') {
@@ -311,24 +311,24 @@ if (!$newstyle) {
         echo '<p id="dlnk"><a href="' . $hikeDirections . '" target="_blank">' .
                 'Google Directions</a></p>' . "\n";
         echo '<p id="scrollmsg">Scroll down to see images, hike description, reference sources and ' .
-                'additonal information as applicable</p>';
+                'additonal information as applicable</p>' . "\n";
         echo '<p id="closer">If you are having problems with this page, please: ' .
-            '<a href="mailto:krcowles29@gmail.com">send us a note!</a></p>';
+            '<a href="mailto:krcowles29@gmail.com">send us a note!</a></p>' ."\n";
     echo '</div>';
     # MAP AND CHART ON RIGHT:
-    echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . mapOpts . '></iframe>';
-    echo '<img id="chartline"  src="../images/' . $chartsrc . '" alt="elevation chart" />';
+    echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . mapOpts . '></iframe>' ."\n";
+    echo '<div data-gpx="' . $gpxfile. '" id="chartline"></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
 for ($k=0; $k<$rowCount; $k++) {
-    echo $rows[$k]; 
+    echo $rows[$k] . "\n"; 
 }
-echo '<div class="captionList">' . $picCaptions . '</div>';
-echo '<div class="lnkList">' . $picLinks . '</div>';
+echo '<div class="captionList">' . $picCaptions . '</div>' . "\n";
+echo '<div class="lnkList">' . $picLinks . '</div>' . "\n";
 if ($hikeTips !== '') {
     echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
         '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . 
-        htmlspecialchars_decode($hikeTips,ENT_COMPAT) . '</p></div>';
+        htmlspecialchars_decode($hikeTips,ENT_COMPAT) . '</p></div>' . "\n";
 }
 echo $hikeInfo;
 if ($hikeReferences !== '') {
@@ -337,7 +337,6 @@ if ($hikeReferences !== '') {
     echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
     echo '</fieldset>';
 }
-echo '</div>' . "\n";
 echo '<div id="postPhoto">';
 if ($fieldsets) {
     echo $datasect;
