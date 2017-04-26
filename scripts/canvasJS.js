@@ -1,9 +1,6 @@
 $( function() {  // wait until document is loaded...
 
 var trackfile = '../gpx/' + $('#chartline').data('gpx');
-
-        //'../gpx/Apache_Canyon.GPX';
-
 var lats = [];
 var lngs = [];
 var elevs = [];  // elevations, in ft.
@@ -15,9 +12,11 @@ var emin;  // minimum value found for evlevatiom
 var msg;
 var ajaxDone = false;
 var chartLoc = {};
+var chart;
 
 // Function to convert lats/lons to miles:
 function distance(lat1, lon1, lat2, lon2, unit) {
+    if (lat1 === lat2 && lon1 === lon2) { return 0; }
     var radlat1 = Math.PI * lat1/180;
     var radlat2 = Math.PI * lat2/180;
     var theta = lon1-lon2;
@@ -54,6 +53,9 @@ $.ajax({
     	emax = 0;
         emin = 20000;
         for (var i=0; i<lats.length-1; i++) {
+            if (i >= 23) {
+                    var x = 'what';
+            }
             hikelgth += distance(lats[i],lngs[i],lats[i+1],lngs[i+1],"M");
             if (elevs[i+1] > emax) { emax = elevs[i+1]; }
             if (elevs[i+1] < emin) { emin = elevs[i+1]; }
@@ -61,14 +63,21 @@ $.ajax({
             rows.push(dataPtObj);
         }
         // set y axis range values:
-        var delta = emax - emin;
-        if (delta > 500) {
-        	var adder = 1;
+        // NOTE: this algorithm works for elevs above 1,000ft (untested below that)
+        var Cmin = Math.floor(emin/100);
+        var Cmax = Math.ceil(emax/100);
+        if ( (emin - 100 * Cmin) < 40 ) {
+            emin = Cmin - 0.5;
         } else {
-        	var adder = 2;
+            emin = Cmin;
         }
-        emax = 100 * (Math.round(emax/100) + adder);
-        emin = 100 * (Math.floor(emin/100) - adder);
+        if ( (100 * Cmax - emax) < 40 ) {
+            emax = Cmax + 0.5;
+        } else {
+            emax = Cmax;
+        }
+        emax *= 100;
+        emin *= 100;
         ajaxDone = true;
     },
     error: function() {
@@ -78,7 +87,7 @@ $.ajax({
 });
 
 // chart-making:
-var chart = new CanvasJS.Chart("chartline", {  // options object:
+chart = new CanvasJS.Chart("chartline", {  // options object:
 	toolTip: {
 		borderThickness: 2,
 		backgroundColor: 'White',

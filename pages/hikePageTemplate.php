@@ -289,7 +289,7 @@ if (!$newstyle) {
     # SIDE PANEL:
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' .
-                'Nearby City or Landmark: <span class=sumClr>' . $hikeLocale . '</span><br />' .
+                'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . '</span><br />' .
                 'Hike Difficulty: <span class=sumClr>' . $hikeDifficulty . '</span><br />' .
                 'Total Length of Hike: <span class=sumClr>' . $hikeLength . '</span><br />' .
                 'Max to Min Elevation: <span class=sumClr>' . $hikeElevation . '</span><br />' .
