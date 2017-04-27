@@ -12,7 +12,8 @@
 		<script type="text/javascript">
 			google_api_key = 'AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU'; // Your project's Google Maps API key goes here (https://code.google.com/apis/console)
 			language_code = '';
-			if (document.location.toString().indexOf('http://www.gpsvisualizer.com') > -1) { google_api_key = ''; }			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language='+(self.language_code?self.language_code:'')+'&amp;key='+(self.google_api_key?self.google_api_key:'')+'"><'+'/script>');
+			if (document.location.toString().indexOf('http://www.gpsvisualizer.com') > -1) { google_api_key = ''; }
+			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language='+(self.language_code?self.language_code:'')+'&amp;key='+(self.google_api_key?self.google_api_key:'')+'"><'+'/script>');
 			
 			thunderforest_api_key = ''; // To display OpenStreetMap tiles from ThunderForest, you need a key (http://www.thunderforest.com/docs/apikeys/)
 		</script>
@@ -185,10 +186,10 @@
 		
 		<style type="text/css">
 			/* Put any custom style definitions here (e.g., .gv_marker_info_window, .gv_marker_info_window_name, .gv_marker_list_item, .gv_tooltip, .gv_label, etc.) */
-			#gmap_div .gv_marker_info_window {
+			gmap_div .gv_marker_info_window {
 				font-size:11px !important;
 			}
-			#gmap_div .gv_label {
+			gmap_div .gv_label {
 				opacity:0.80; filter:alpha(opacity=80);
 				color:white; background-color:#333333; border:1px solid black; padding:1px;
 				font:9px Verdana !important;

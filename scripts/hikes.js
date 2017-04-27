@@ -43,6 +43,19 @@ var initMarg; // this is space between rows of images & page border (calc after 
 var minWidth = $('body').css('min-width'); // normally 960
 var pxLoc = minWidth.indexOf('px');
 minWidth = parseFloat(minWidth.substring(0,pxLoc));
+// setting up map & chart to occupy viewport space
+var vpHeight = window.innerHeight;
+var sidePnlPos = $('#sidePanel').offset();
+var sidePnlLoc = parseInt(sidePnlPos.top);
+var usable = vpHeight - sidePnlLoc;
+var mapHeight = Math.floor(0.65 * usable);
+var chartHeight = Math.floor(0.35 * usable);
+var pnlHeight = (mapHeight + chartHeight) + 'px';
+mapHeight += 'px';
+chartHeight += 'px';
+$('#mapline').css('height',mapHeight);
+$('#chartline').css('height',chartHeight);
+$('#sidePanel').css('height',pnlHeight);
 // staging the initial execution
 var resizeFlag = true;  // semaphore: don't execute resize event code if true
 var noOfImgs = 0;
@@ -85,6 +98,7 @@ if ($maps.length) {
 	var orgMapLink = $('#theMap').attr('src');
 	var fullMap = orgMapLink + mapDisplayOpts;
 }
+mapPresent = false;
 var $desc = $('.captionList li');
 var $links = $('.lnkList li');
 // space down for map link when map is in bottom row
@@ -477,6 +491,19 @@ function tippingPoint() {
  * resize triggering. The timeout allows a quiet period until another trigger can occur.
  */
 $(window).resize( function() {
+        // resize elements per new viewport:
+        if (window.innerHeight < (vpHeight - 10) || window.innerHeight > (vpHeight + 10)) {
+            vpHeight = window.innerHeight;
+            usable = vpHeight - sidePnlLoc;
+            mapHeight = Math.floor(0.65 * usable);
+            chartHeight = Math.floor(0.35 * usable);
+            pnlHeight = (mapHeight + chartHeight) + 'px';
+            mapHeight += 'px';
+            chartHeight += 'px';
+            $('#mapline').css('height',mapHeight);
+            $('#chartline').css('height',chartHeight);
+            $('#sidePanel').css('height',pnlHeight);
+        }
 	winWidth = $(window).width();
 	winrat = winWidth/zoomMax;
 	var runSizer = false;
