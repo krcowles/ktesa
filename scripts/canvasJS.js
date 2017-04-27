@@ -107,10 +107,10 @@ chart = new CanvasJS.Chart("chartline", {  // options object:
 				}
 			}
 			chartLoc = { lat: lats[indx], lng: lngs[indx] };
-			if (iframeWindow.circSet) {
+			if (iframeWindow.mrkrSet) {
 				document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
 			}
-			document.getElementById('mapline').contentWindow.drawCircle(chartLoc);
+			document.getElementById('mapline').contentWindow.drawMarker(chartLoc);
 			return content;	
 		}
 	},
