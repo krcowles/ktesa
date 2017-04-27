@@ -5,7 +5,7 @@
         if (strpos($lines[$i], "GV_Draw_Marker") === false) {  
                 echo ($lines[$i]);
         }
-        elseif ($_GET[show_markers_url] === true) {
+        elseif ($_GET[show_markers_url] == true) {
                 echo ($lines[$i]);		// suppress markers per url param
         }
         if (strpos($lines[$i], "Although GPS Visualizer didn't create") !== false) {
