@@ -160,6 +160,7 @@ if ( isset($_POST['maketrack']) ) {
         echo '<p style="margin-left:10px;">Track file creation failed: Please '
         . 'return to the hike Editor, un-check the box, and upload a track file</p>';
     }
+    $hikeJSON = $hikeGpx . ".json";
 } else {
     $jsonFile = $_FILES['track']['tmp_name'];
     $hikeJSON = $_FILES['track']['name'];
@@ -353,10 +354,6 @@ foreach ($fdat as $rawTsvLine) {
 	}
 	$lineno++;
 }
-$chartLoc = "../images/" . $hikeEChart;
-$EChartSize = getimagesize($chartLoc);
-$elevWidth = $EChartSize[0];
-$elevHeight = $EChartSize[1];
 /*
 	MARKER-DEPENDENT PAGE ELEMENTS
 */
@@ -562,10 +559,6 @@ if ($hikeMarker === 'ctrhike') {
 <h3 style="text-indent:8px">Other data submitted:</h3>
 <ul>
 	<li>Title to appear on Hike Page: <?php echo $hikeName;?></li>
-	<li>GPSVisualizer map: <?php echo $hikeMap;?></li>
-	<li>Elevation chart: <?php
-		echo "{$hikeEChart}: {$elevWidth}px x {$elevHeight}px";?></li>
-	<li>GPX File: <?php echo $hikeGpx;?></li>
 	<li>Added Image 1: <?php echo $hikeOthrImage1;?></li>
 	<li>Added Image 2: <?php echo $hikeOthrImage2;?></li>
 	<li>Photo Link 1: <?php echo $hikePurl1;?></li>
