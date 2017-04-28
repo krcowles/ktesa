@@ -65,20 +65,6 @@ echo "JSON data file will be created with name:
 >>>>>   ${gpxSpec%.*}.json   <<<<<
 - and will be written to: ${OPATH}"
 outFile=${gpxSpec%.*}.json
-good="NotOK"
-while
-      [ $good != "OK" ]
-do
-      read -p "Do you wish to change the output filename [Y/N]? " ans
-      case $ans in
-           [nN]* ) echo "No changes made"
-                   good="OK" ;;
-           [yY]* ) read -p "Enter new name (include .json ext): " outFile
-                   good="OK";;
-            * ) echo "Y or N only please!";;
-      esac
-done
-outFile="${OPATH}/${outFile}"
 export outFile
 cat $GPXfname | /usr/bin/awk -v gpxfile=$GPXFname '
 BEGIN {
