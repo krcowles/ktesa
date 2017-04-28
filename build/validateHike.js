@@ -14,35 +14,42 @@ $('#all').on('change', function() {
     }
 });
 
-$('#overTsv').on('change', function() {
+$('#owtsv').on('change', function() {
     if ( $(this).prop('checked') === true ) {
-        $(this).val("YES");
+        $('#overTsv').val("YES");
     } else {
-        $(this).val("NO");
+        $('#overTsv').val("NO");
     }
 });
 
-$('#overMap').on('change', function() {
+$('#owmap').on('change', function() {
     if ( $(this).prop('checked') === true ) {
-        $(this).val("YES");
+        $('#overMap').val("YES");
     } else {
-        $(this).val("NO");
+        $('#overMap').val("NO");
     }
 });
-$('#overGpx').on('change', function() {
+$('#owgpx').on('change', function() {
     if ( $(this).prop('checked') === true ) {
-        $(this).val("YES");
+        $('#overGpx').val("YES");
     } else {
-        $(this).val("NO");
+        $('#overGpx').val("NO");
     }
 });
-$('#overJSON').on('change', function() {
+$('#owjson').on('change', function() {
     if ( $(this).prop('checked') === true ) {
-        $(this).val("YES");
+        $('#overJSON').val("YES");
     } else {
-        $(this).val("NO");
+        $('#overJSON').val("NO");
     }
 });
 
+$('#owtrk').on('change', function() {
+    if ( $(this).prop('checked') === true ) {
+        $('#overJSON').val("YES");
+    } else {
+        $('#overJSON').val("NO");
+    }
+});
 
 }); // end of page is loaded...

@@ -66,7 +66,7 @@ $tmpTsv = '../tmp/gpsv/' . $tsvFname;
 $tsvLoc = '../gpsv/' . $tsvFname;
 if ( file_exists($tsvLoc) ) {
     echo $fexists1 . $tsvFname . $fexists2. 
-        '<input id="tsvnew" type="checkbox" name="tsvow" />' . $fexists3;
+        '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
     $dupTsv = 'YES';
 }
 $saveTsv = fopen($tmpTsv,"w");
@@ -88,7 +88,7 @@ $tmpMap = '../tmp/maps/' . $hikeMap;
 $mapLoc = '../maps/' . $hikeMap;
 if ( $hikeMap !== '' && file_exists($mapLoc) ) {
     echo $fexists1 . $hikeMap . $fexists2. 
-        '<input id="mapnew" type="checkbox" name="mapow" />' . $fexists3;
+        '<input id="owmap" type="checkbox" name="mapow" />' . $fexists3;
     $dupMap = 'YES';
 }
 if ( $hikeMap !== '') {
@@ -121,7 +121,7 @@ $tmpGpx = '../tmp/gpx/' . $hikeGpx;
 $gpxLoc = '../gpx/' . $hikeGpx;
 if ( $hikeGpx !== '' && file_exists($gpxLoc) ) {
     echo $fexists1 . $hikeGpx . $fexists2 . 
-        '<input id="gpxnew" type="checkbox" name="gpxow" />' . $fexists3;
+        '<input id="owgpx" type="checkbox" name="gpxow" />' . $fexists3;
     $dupGpx = 'YES';
 } 
 if ( $hikeGpx !== '') {
@@ -160,7 +160,14 @@ if ( isset($_POST['maketrack']) ) {
         echo '<p style="margin-left:10px;">Track file creation failed: Please '
         . 'return to the hike Editor, un-check the box, and upload a track file</p>';
     }
-    $hikeJSON = $hikeGpx . ".json";
+    $jpos = strpos($hikeGpx,".");
+    $hikeJSON = substr($hikeGpx,0,$jpos) . ".json";
+    $JSONloc = '../json/' . $hikeJSON;
+    if ( file_exists($JSONloc) ) {
+        echo $fexists1 . $hikeJSON . $fexists2 . 
+         '<input id="owtrk" type="checkbox" name="trkow" />' . $fexists3;
+        $dupJSON = 'YES';
+    }
 } else {
     $jsonFile = $_FILES['track']['tmp_name'];
     $hikeJSON = $_FILES['track']['name'];
@@ -170,7 +177,7 @@ if ( isset($_POST['maketrack']) ) {
     $jsonLoc = '../json/' . $hikeJSON;
     if ( $hikeJSON !== '' && file_exists($jsonLoc) ) {
         echo $fexists1 . $hikeJSON . $fexists2. 
-            '<input id="jsonnew" type="checkbox" name="jsonow" />' . $fexists3;
+            '<input id="owjson" type="checkbox" name="jsonow" />' . $fexists3;
         $dupJSON = 'YES';
     }
     if ( $hikeJSON !== '') {
@@ -669,7 +676,7 @@ these names were extracted from the .tsv file</em><br />
 		$nmeno +=1;
 	}
 	echo '<br />';
-	echo '<div style="width:200;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
+	echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
 ?>	
 <input type="hidden" name="tsv" value="<?php echo $tsvFname;?>" />
 <input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
