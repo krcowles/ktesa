@@ -2,6 +2,7 @@
 session_start();
 $tsvname = $_POST['tsv'];
 $tsvFile = '../gpsv/' . $tsvname;
+#  ******** PULL ouT FILES TO OVERWRITE!!!! ************
 /* 
 	--------------- THE FOLLOWING DATA IS IMPORTED FROM VALIDATEHIKE.PHP --------------
 */

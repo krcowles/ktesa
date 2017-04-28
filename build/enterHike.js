@@ -26,9 +26,6 @@ $('#addon2').change( function() {
 	$('#l_add2').css('color','DarkBlue');
 });
 
-// CURRENTLY, UPLOADING A FILE WITH NEW PAGE INFO IS DISABLED:
-$('#bypass').css('display','none');
-
 /*       Setting the page-creation type for the submit button
 			NOTE: the "pageType" radio buttons are not part of the form submitted
 */
