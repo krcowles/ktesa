@@ -52,4 +52,19 @@ $('#owtrk').on('change', function() {
     }
 });
 
+$('#owim1').on('change', function() {
+    if ( $(this).prop('checked') === true ) {
+        $('#overimg1').val("YES");
+    } else {
+        $('#overImg1').val("NO");
+    }
+});
+
+$('#owim2').on('change', function() {
+    if ( $(this).prop('checked') === true ) {
+        $('#overImg2').val("YES");
+    } else {
+        $('#overImg2').val("NO");
+    }
+});
 }); // end of page is loaded...

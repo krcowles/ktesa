@@ -33,6 +33,10 @@ $dupGpx = 'NO';
 $owGpx = 'NO';
 $dupJSON = 'NO';
 $owJSON = 'NO';
+$dupImg1 = 'NO';
+$owImg1 = 'NO';
+$dupImg2 = 'NO';
+$owImg2 = 'NO';
 /* Message text for upload data section */
 $fexists1 = '<p style="margin-left:8px;margin-top:-12px;color:brown;"><em>NOTE: ';
 $fexists2 = ' has been previously saved on the server; ' .
@@ -200,6 +204,61 @@ if ( isset($_POST['maketrack']) ) {
     }
     echo '</ul>' . "\n";
 }
+# ADDITIONAL IMAGES FILES (IF ANY):
+echo '<h3 style="text-indent:8px">Uploaded Image Files (if any):</h3>' . "\n";
+$othrImg1 = $_FILES['othr1']['tmp_name'];
+$othrImg1Size = filesize($othrImg1);
+$hikeOthrImage1 = $_FILES['othr1']['name'];
+$othrImg1Type = $_FILES['othrs1']['type'];
+$othrImg2 = $_FIlES['othr2']['tmp_name'];
+$othrImg2Size = filesize($othrImg2);
+$hikeOthrImage2 = $_FILES['othr2']['name'];
+$othrImg2Type = $_FILES['othr2']['type'];
+$tmp1 = '../tmp/images/' . $hikeOthrImage1;
+$tmp1Loc = '../images/' . $hikeOthrImage1;
+$tmp2 = '../tmp/images/' . $hikeOthrImage2;
+$tmp2Loc = '../images/' . $hikeOthrImage2;  
+if ( $hikeOthrImage1 !== '' && file_exists($tmp1Loc) ) {
+    echo $fexists1 . $hikeOthrImage1 . $fexists2. 
+        '<input id="owim1" type="checkbox" name="im1ow" />' . $fexists3;
+    $dupImg1 = 'YES';
+}
+if ( $hikeOthrImage1 !== '') {
+    $saveImg1 = fopen($tmp1,"w");
+    fwrite($saveImg1,$othrImg1);
+    fclose($saveImg1);
+}
+echo '<ul style="margin-top:-10px;">' . "\n";
+if ($hikeOthrImage1 !== '') {
+    echo '<li>Uploaded Image1: ' .  $hikeOthrImage1 . '</li>' . "\n";
+    echo '<li>File size: ' . $othrImg1Size . ' bytes</li>' . "\n";
+    echo '<li>File type: ' . $othrImg1Type . '</li>' . "\n";
+} else {
+    echo '<li>NO ADDITIONAL FIRST IMAGE UPLOADED: If needed, go back and '
+    . 'select in hike Editor</li>' . "\n";
+}
+echo '</ul>' . "\n";
+if ( $hikeOthrImage2 !== '' && file_exists($tmp2Loc) ) {
+    echo $fexists1 . $hikeOthrImage2 . $fexists2. 
+        '<input id="owim2" type="checkbox" name="im2ow" />' . $fexists3;
+    $dupImg1 = 'YES';
+}
+if ( $hikeOthrImage2 !== '') {
+    $saveImg2 = fopen($tmp2,"w");
+    fwrite($saveImg2,$othrImg2);
+    fclose($saveImg2);
+}
+echo '<ul style="margin-top:-10px;">' . "\n";
+if ($hikeOthrImage2 !== '') {
+    echo '<li>Uploaded Image1: ' .  $hikeOthrImage2 . '</li>' . "\n";
+    echo '<li>File size: ' . $othrImg2Size . ' bytes</li>' . "\n";
+    echo '<li>File type: ' . $othrImg2Type . '</li>' . "\n";
+} else {
+    echo '<li>NO ADDITIONAL SECOND IMAGE UPLOADED: If needed, go back and '
+    . 'select in hike Editor</li>' . "\n";
+}
+echo '</ul>' . "\n";
+/* ------------- END OF UPLOADED FILE OPS -------------- */
 ?>
 <input type="hidden" name="tsv" value="<?php echo $dupTsv;?>" />
 <input id="overTsv" type="hidden" name="owt" value="<?php echo $owTsv;?>" />
@@ -209,7 +268,10 @@ if ( isset($_POST['maketrack']) ) {
 <input id="overGpx" type="hidden" name="owg" value="<?php echo $owGpx;?>" />
 <input type="hidden" name="json" value="<?php echo $dupJSON;?>" />
 <input id="overJSON" type="hidden" name="owj" value="<?php echo $owJSON;?>" />
-
+<input type="hidden" name="img1" value="<?php echo $dupImg1;?>" />
+<input id="overImg1" type="hidden" name="ow1" value="<?php echo $owImg1;?>" />
+<input type="hidden" name="img2" value="<?php echo $dupImg2;?>" />
+<input id="overImg2" type="hidden" name="ow2" value="<?php echo $owImg2;?>" />
 <?php
 // hike form entry
 $hikeName = trim($_REQUEST['hpgTitle']);
@@ -247,8 +309,6 @@ if ( isset($extractGeos) ) {
 	$hikeLat = trim($_REQUEST['lat']);
 	$hikeLong = trim($_REQUEST['lon']);
 }
-$hikeOthrImage1 = $_FILES['othr1']['name'];
-$hikeOthrImage2 = $_FILES['othr2']['name'];
 $hikeMarker = trim($_REQUEST['mstyle']);
 $hikePurl1 = trim($_REQUEST['photo1']);
 $hikePurl2 = trim($_REQUEST['photo2']);
@@ -420,7 +480,7 @@ if ($hikeMarker === 'ctrhike') {
 	$_SESSION['allTips'] = $passGroup;
 	echo '<div id="clus_sel"><p>This hike was identified as belonging to a group of hikes ' .
 	'in close proximity with other hikes.<br /><label style="color:DarkBlue;">' .
-	'Select the Group to which this hike belongs: </label><select name="clusgrp">';
+	'Select the Group to which this hike belongs: </label><select name="webpg">';
 	foreach ($result as $group) {
 		$groupNamePos = strpos($group,"$") + 1;
 		$groupNameLgth = strlen($group) - $groupNamePos;
@@ -692,7 +752,6 @@ these names were extracted from the .tsv file</em><br />
 <input type="hidden" name="seasn" value="<?php echo $hikeSeasons;?>" />
 <input type="hidden" name="expo"  value="<?php echo $hikeExp;?>" />
 <input type="hidden" name="geomp" value="<?php echo $hikeMap;?>" />
-<input type="hidden" name="chart" value="<?php echo $hikeEChart;?>" />
 <input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
 <input type="hidden" name="json"  value="<?php echo $hikeJSON;?>" />
 <input type="hidden" name="img1"  value="<?php echo $hikeOthrImage1;?>" />

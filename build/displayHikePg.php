@@ -1,14 +1,49 @@
 <?php
 session_start();
-$tsvname = $_POST['tsv'];
-$tsvFile = '../gpsv/' . $tsvname;
-#  ******** PULL ouT FILES TO OVERWRITE!!!! ************
-/* 
-	--------------- THE FOLLOWING DATA IS IMPORTED FROM VALIDATEHIKE.PHP --------------
-*/
-$pgTitle = $_POST['hTitle'];
-$locale = $_POST['area'];
-$hikeType = $_POST['htype'];
+/* Form elements used by validateHike.js, not used here:
+ *  'tsvow', 'mapow', 'gpxow' ,'trkow', 'jsonow'
+ * PHP DATA SUBMITTED FROM VALIDATEHIKE.PHP
+ * FIRST: UPLOADED FILES
+ */
+$tsvname = filter_input(INPUT_POST,'tsv');
+$tsvFile = '../tmp/gpsv/' . $tsvname;
+$geomap = filter_input(INPUT_POST,'geomp');
+if ($geomap !== '') {
+    $mapfile = '../tmp/maps/' . $geomap;
+}
+$gpxfile = filter_input(INPUT_POST,'gpx');
+if ($gpxfile !== '') {
+    $gpx = '../tmp/gpx/' . $gpxfile;
+}
+$trkfile = filter_input(INPUT_POST,'json');
+if ($trkfile !== '') {
+    $jsonfile = '../tmp/json/' . $trkfile;
+}
+$addonImg[0] = filter_input(INPUT_POST,'img1');
+$imgIndx = 0;
+if ($addonImg[0] === '') {
+	$noOfOthr = 0;
+} else {
+	$noOfOthr = 1;
+	$firstimg = getimagesize("../images/" . $addonImg[0]);
+	$othrWidth[$imgIndx] = $firstimg[0];
+	$othrHeight[$imgIndx] = $firstimg[1];
+	$imgIndx += 1;
+}
+$addonImg[1] = filter_input(INPUT_POST,'img2');
+if ($addonImg[1] !== '') {
+	$noOfOthr += 1;
+	$secondimg = getimagesize("../images/" . $addonImg[1]);
+	$othrWidth[$imgIndx] = $secondimg[0];
+	$othrHeight[$imgIndx] = $secondimg[1];
+}
+echo "NO OF ADDTL IMAGES: " . $noOfOthr;
+# ----- end of file uploads ------
+
+/* NEXT: IMPORTED VARIABLE DATA (HIKE DATA) */
+$pgTitle = filter_input(INPUT_POST,'hTitle');
+$locale = filter_input(INPUT_POST,'area');
+$hikeType = filter_input(INPUT_POST,'htype');
 if ($hikeType === "oab") {
 	$htype = "Out-and-back";
 } else if ($hikeType === "loop") {
@@ -16,7 +51,7 @@ if ($hikeType === "oab") {
 } else {
 	$htype = "Two-Cars";
 }
-$ctrHikeLoc = $_POST['vcList'];
+$ctrHikeLoc = filter_input(INPUT_POST,'vcList');  # from select drop-down;
 /*
 	If $ctrHikeLoc not empty, find the Index Page for the assoc. hike and update it
 */
@@ -48,16 +83,16 @@ if ($ctrHikeLoc !== '') {
 		}
 	}
 	# write the wholeDB back out
-	$dbHandle = fopen($database,"w");
+	$dbWriteBack = fopen($database,"w");
 	foreach ($wholeDB as $outArray) {
-		fputcsv($dbHandle,$outArray);
+		fputcsv($dbWriteBack,$outArray);
 	}
-	fclose($dbHandle);
+	fclose($dbWriteBack);
 }
 /*
 	End of ctrHikeLoc processing
 */
-$clusGrp = $_POST['clusgrp'];
+$clusGrp = filter_input(INPUT_POST,'clusgrp');  # from select drop-down
 $clusTip = '';  // default: may change below
 /*
 	With clusGrp, find the associated tooltip
@@ -76,61 +111,21 @@ if ($clusGrp !== '') {
 /* 
 	End of cluster tooltip processing
 */
-$distance = $_POST['lgth'];
-$elevation = $_POST['elev'];
-$difficulty = $_POST['diffi'];
-$lat = $_POST['lati'];
-$lon = $_POST['long'];
-$facilities = $_POST['facil'];
-$hikePg = $_POST['webpg'];
-$wowFactor = $_POST['wow'];
-$seasons = $_POST['seasn'];
-$exp = $_POST['expo'];
+$distance = filter_input(INPUT_POST,'lgth');
+$elevation = filter_input(INPUT_POST,'elev');
+$difficulty = filter_input(INPUT_POST,'diffi');
+$lat = filter_input(INPUT_POST,'lati');
+$lon = filter_input(INPUT_POST,'long');
+$facilities = filter_input(INPUT_POST,'facil');
+$wowFactor = filter_input(INPUT_POST,'wow');
+$seasons = filter_input(INPUT_POST,'seasn');
+$exp = filter_input(INPUT_POST,'expo');
 if ($exp === "sun") {
 	$exposure = "Full sun";
 } else if ($exp === "shade") {
 	$exposure = "Good shade";
 } else {
 	$exposure = "Mixed sun/shade";
-}
-# AT This point, geomaps & charts are assumed to be at most, 1 per page.
-# IF this ever changes, change these to arrays & modify html creation loop
-$gpsvMap = $_POST['geomp'];
-if ($gpsvMap === '') { 
-	$noOfIframes = 0;
-} else {
-	$map = '../maps/gpsvMapTemplate.php?map_name=' . $gpsvMap;
-	$noOfIframes = 1;
-}
-$elevChart = $_POST['chart'];
-if ($elevChart === '') {
-	$noOfCharts = 0;
-} else {
-	$echart = "../images/" . $elevChart;
-	$chartDat = getimagesize($echart);
-	$elevWidth = $chartDat[0];
-	$elevHeight = $chartDat[1];
-	$noOfCharts = 1;
-}
-$gpxFname = $_POST['gpx'];
-$trackFname = $_POST['json'];
-$addonImg[0] = $_POST['img1'];
-$imgIndx = 0;
-if ($addonImg[0] === '') {
-	$noOfOthr = 0;
-} else {
-	$noOfOthr = 1;
-	$firstimg = getimagesize("../images/" . $addonImg[0]);
-	$othrWidth[$imgIndx] = $firstimg[0];
-	$othrHeight[$imgIndx] = $firstimg[1];
-	$imgIndx += 1;
-}
-$addonImg[1] = $_POST['img2'];
-if ($addonImg[1] !== '') {
-	$noOfOthr += 1;
-	$secondimg = getimagesize("../images/" . $addonImg[1]);
-	$othrWidth[$imgIndx] = $secondimg[0];
-	$othrHeight[$imgIndx] = $secondimg[1];
 }
 $marker = $_POST['mrkr'];
 $purl1 = $_POST['phot1'];
