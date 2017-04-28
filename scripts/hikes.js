@@ -10,15 +10,15 @@ $( function () { // when page is loaded...
  */
 var usePixelRatio;
 (function browserType() { 
-     if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1 ) {
+     if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) !== -1 ) {
         usePixelRatio = false; }
-    else if(navigator.userAgent.indexOf("Chrome") != -1 ) {
+    else if(navigator.userAgent.indexOf("Chrome") !== -1 ) {
     	usePixelRatio = true; }
-    else if(navigator.userAgent.indexOf("Safari") != -1) {
+    else if(navigator.userAgent.indexOf("Safari") !== -1) {
         usePixelRatio = false; }
-    else if(navigator.userAgent.indexOf("Firefox") != -1 ) {
+    else if(navigator.userAgent.indexOf("Firefox") !== -1 ) {
         usePixelRatio = true; }
-    else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) { //IF IE > 10 
+    else if((navigator.userAgent.indexOf("MSIE") !== -1 ) || (!!document.documentMode === true )) { //IF IE > 10 
         usePixelRatio = false; }  
     else {
         usePixelRatio = false; }
@@ -190,7 +190,7 @@ $('#photoDisplay').on('click', function() {
 	}
 });
 */
-var sessSupport = window.sessionStorage ? true : false
+var sessSupport = window.sessionStorage ? true : false;
 
 /* problems with refresh in Chrome prompted the use of the following technique
    which "detects" a refresh condition and restores previously loaded values.
@@ -301,7 +301,7 @@ function eventSet() {
 		var eventObj = ev.target;
 		picSel = eventObj.id;
 		var picHdr = picSel.substring(0,3);
-		if ( picHdr == 'pic' ) {
+		if ( picHdr === 'pic' ) {
 			picPop(picSel);
 		}
 	});
@@ -316,7 +316,7 @@ function eventSet() {
 		var picSrc = clickWhich.id;
 		var picHdr = picSrc.substring(0,3);
 		// again, no id for class='chart', hence no album links
-		if ( picHdr == 'pic' ) {
+		if ( picHdr === 'pic' ) {
 			var picIndx = picSrc.indexOf('pic') + 3;
 			var picNo = picSrc.substring(picIndx,picSrc.length);
 			var j = 0;
@@ -669,12 +669,12 @@ function imageSizer(targWidth) {
 						newStyle = '"margin-left:1px;"';
 					}
 					imgWidth = Math.floor(LRscaling * parseFloat(this.width));
-					if (this.id == 'theMap') {
+					if (this.id === 'theMap') {
 						newImgHtml = '<iframe id="theMap" style=' + newStyle +
 							' height="' + newHt + '" width="' + newHt + '" src="' +
 							this.src + '"></iframe>';
 					} else {
-						if (this.id == '') {
+						if (this.id === '') {
 							newImgHtml = '<img class="' + this.class  + '" style=' + 
 							  newStyle + ' height="' + newHt + '" width="' + 
 							  imgWidth + '" src="' + this.src + '" alt="' +
@@ -790,7 +790,7 @@ function redrawRows(direction) {
 					}
 				} else {
 					imgStyle = '"margin-left:1px;"';
-					if (orgImgList[imgNo][2] != bigRowHt) {
+					if (orgImgList[imgNo][2] !== bigRowHt) {
 						//scale width accordingly
 						widthAdj = parseFloat(bigRowHt)/parseFloat(orgImgList[imgNo][2]);
 						thisImg = Math.floor(widthAdj * parseFloat(orgImgList[imgNo][3]));

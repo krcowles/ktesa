@@ -223,7 +223,7 @@ if ($handle !== false) {
 	<link href="../styles/hikes.css"
             type="text/css" rel="stylesheet" />
 	<script type="text/javascript"> var iframeWindow; </script>
-	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"> </script>
+	<script type="text/javascript" src="../scripts/canvasjs.min.js"> </script>
 </head>
 
 <body>

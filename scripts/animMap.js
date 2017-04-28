@@ -440,7 +440,7 @@ function idClusters() {
 			cTracks.push(cObj);
 		} else {
 			// this group already exists
-			for (k=0; k<ctracks.length; k++) {
+			for (k=0; k<cTracks.length; k++) {
 				if (cTracks[k].id == cId) {
 					cTracks[k].cnt++;
 					break;
