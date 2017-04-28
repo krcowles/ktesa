@@ -64,7 +64,7 @@ rm tmpfile
 echo "JSON data file will be created with name:
 >>>>>   ${gpxSpec%.*}.json   <<<<<
 - and will be written to: ${OPATH}"
-outFile=${gpxSpec%.*}.json
+outFile=${OPATH}/${gpxSpec%.*}.json
 export outFile
 cat $GPXfname | /usr/bin/awk -v gpxfile=$GPXFname '
 BEGIN {

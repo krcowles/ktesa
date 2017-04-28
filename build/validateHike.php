@@ -34,7 +34,7 @@ $owGpx = 'NO';
 $dupJSON = 'NO';
 $owJSON = 'NO';
 /* Message text for upload data section */
-$fexists1 = '<p style="margin-left:8px;margin-top:-12px;"><em>NOTE: ';
+$fexists1 = '<p style="margin-left:8px;margin-top:-12px;color:brown;"><em>NOTE: ';
 $fexists2 = ' has been previously saved on the server; ' .
             'Check here to overwrite: ';
 $fexists3 = '</em></p>' . "\n";
@@ -195,13 +195,13 @@ if ( isset($_POST['maketrack']) ) {
 }
 ?>
 <input type="hidden" name="tsv" value="<?php echo $dupTsv;?>" />
-<input type="hidden" name="owt" value="<?php echo $owTsv;?>" />
+<input id="overTsv" type="hidden" name="owt" value="<?php echo $owTsv;?>" />
 <input type="hidden" name="map" value="<?php echo $dupMap;?>" />
-<input type="hidden" name="owm" value="<?php echo $owMap;?>" />
+<input id="overMap" type="hidden" name="owm" value="<?php echo $owMap;?>" />
 <input type="hidden" name="gpx" value="<?php echo $dupGpx;?>" />
-<input type="hidden" name="owg" value="<?php echo $owGpx;?>" />
+<input id="overGpx" type="hidden" name="owg" value="<?php echo $owGpx;?>" />
 <input type="hidden" name="json" value="<?php echo $dupJSON;?>" />
-<input type="hidden" name="owj" value="<?php echo $owJSON;?>" />
+<input id="overJSON" type="hidden" name="owj" value="<?php echo $owJSON;?>" />
 
 <?php
 // hike form entry
