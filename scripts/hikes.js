@@ -10,7 +10,7 @@ $( function () { // when page is loaded...
  */
 var usePixelRatio;
 (function browserType() { 
-     if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) !== -1 ) {
+    if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) !== -1 ) {
         usePixelRatio = false; }
     else if(navigator.userAgent.indexOf("Chrome") !== -1 ) {
     	usePixelRatio = true; }
@@ -36,7 +36,7 @@ var SHRINK = 0;
 // window size and margin calculations; NOTE: innerWidth provides the dimension inside the border
 var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
 if (bodySurplus < 24) {
-	bodySurplus = 24;
+    bodySurplus = 24;
 }   // var can actually be negative on initial load if frame is smaller than body min-width
 var maxRow = 0; // width of biggest row on initial page loading (used to maintain consistent margin)
 var initMarg; // this is space between rows of images & page border (calc after maxRow is determined)
@@ -94,11 +94,13 @@ var noOfPix = $photos.length;
 var $maps = $('iframe');
 var mapPresent = false;
 if ($maps.length) {
-	mapPresent = true;
-	var orgMapLink = $('#theMap').attr('src');
-	var fullMap = orgMapLink + mapDisplayOpts;
+    mapPresent = true;
+    var orgMapLink = $('#theMap').attr('src');
+    var fullMap = orgMapLink + mapDisplayOpts;
 }
+// for SIDEPANEL USE ONLY ------------------------------------------- //
 mapPresent = false;
+// ----------------
 var $desc = $('.captionList li');
 var $links = $('.lnkList li');
 // space down for map link when map is in bottom row
@@ -118,25 +120,25 @@ var rowWds = new Array();
  * happen when the LRnotFilled flag is true. This has to be set before beginning execution.
  */
 if (noOfRows > 1) {
-	var LRid = '#row' + (noOfRows -1); // last row
-	var NLRid = '#row' + (noOfRows -2);  // next-to-last row
-	var $NLRimgs = $(NLRid).children();
-	var NLRwidth = 0;
-	$NLRimgs.each( function() {
-		NLRwidth += parseFloat(this.width);
-	});
-	var $LRimgs = $(LRid).children();
-	var LRwidth = 0;
-	$LRimgs.each( function() {
-		LRwidth += parseFloat(this.width);
-	});
-	if (NLRwidth > (LRwidth + 12)) {  // 12 is arbitrary - just enough space to operate row-filled
-		LRnotFilled = true;
-	} else {
-		LRnotFilled = false;
-	}
+    var LRid = '#row' + (noOfRows -1); // last row
+    var NLRid = '#row' + (noOfRows -2);  // next-to-last row
+    var $NLRimgs = $(NLRid).children();
+    var NLRwidth = 0;
+    $NLRimgs.each( function() {
+        NLRwidth += parseFloat(this.width);
+    });
+    var $LRimgs = $(LRid).children();
+    var LRwidth = 0;
+    $LRimgs.each( function() {
+        LRwidth += parseFloat(this.width);
+    });
+    if (NLRwidth > (LRwidth + 12)) {  // 12 is arbitrary - just enough space to operate row-filled
+        LRnotFilled = true;
+    } else {
+        LRnotFilled = false;
+    }
 } else {
-	LRnotFilled = false;
+    LRnotFilled = false;
 }
 var LRFlagAtLoad = LRnotFilled;
 
@@ -167,29 +169,7 @@ var pwidth;
 var pleft;
 var ptop;
 
-/*  --- EXECUTION BEGINS HERE ---
- *      Functions are listed after the active code and constitute a significant 
- *      portion of the code utilized to effect the management of rows.
- *      The operation of the code is somewhat dependent on whether or not sessionStorage
- *      is available with the browser used, which most browsers support.
- */
-/* Not implemented at this time....
-// HIDE/SHOW images on click: definition:
-$('#photoDisplay').on('click', function() {
-	if ($(this).text() == 'Hide Images') {
-		this.textContent = 'Show Images';
-		$rows.each( function() {
-			$(this).css('display','none');
-		});
-		
-	} else {
-		this.textContent = 'Hide Images';
-		$rows.each( function() {
-			$(this).css('display','block');
-		});
-	}
-});
-*/
+/*  --- EXECUTION BEGINS HERE --- */
 var sessSupport = window.sessionStorage ? true : false;
 
 /* problems with refresh in Chrome prompted the use of the following technique
@@ -281,9 +261,9 @@ resizeFlag = false;
 // if the winWidth > triggerWidth, grow the rows before proceeding
 // remember that triggerWidth is arbitrarily established during var declarations
 if (winWidth > triggerWidth) {
-	// set previous width to starting point to execute routine properly (make prevWidth < winWidth)
-	prevWidth = triggerWidth;
-	sizeProcessor();
+    // set previous width to starting point to execute routine properly (make prevWidth < winWidth)
+    prevWidth = triggerWidth;
+    sizeProcessor();
 }
 
 /* EVENT MANAGEMENT DURING A RE-SIZE and RECALCULATION OF ROWS
@@ -292,50 +272,50 @@ if (winWidth > triggerWidth) {
  * turned off together (see killEvents). Obviously, eventSet is also called after page load.
  */
 function eventSet() {
-	$photos.each( function() {
-		$(this).css('cursor','pointer');
-	});
-	// popup a description when mouseover a photo
-	$photos.css('z-index','1'); // keep pix in the background
-	$photos.on('mouseover', function(ev) {
-		var eventObj = ev.target;
-		picSel = eventObj.id;
-		var picHdr = picSel.substring(0,3);
-		if ( picHdr === 'pic' ) {
-			picPop(picSel);
-		}
-	});
-	// kill the popup when mouseout
-	$photos.on('mouseout', function() {
-		$('.popupCap > p').remove();
-		$('.popupCap').css('display','none');
-	});
-	// clicking images:
-	$photos.on('click', function(ev) {
-		var clickWhich = ev.target;
-		var picSrc = clickWhich.id;
-		var picHdr = picSrc.substring(0,3);
-		// again, no id for class='chart', hence no album links
-		if ( picHdr === 'pic' ) {
-			var picIndx = picSrc.indexOf('pic') + 3;
-			var picNo = picSrc.substring(picIndx,picSrc.length);
-			var j = 0;
-			$('.lnkList li').each( function() {
-				if ( j == picNo ) {
-					FlickrLnk = this.textContent;
-				}
-				j++;
-			});
-			window.open(FlickrLnk);
-		}
-	}); 
+    $photos.each( function() {
+        $(this).css('cursor','pointer');
+    });
+    // popup a description when mouseover a photo
+    $photos.css('z-index','1'); // keep pix in the background
+    $photos.on('mouseover', function(ev) {
+        var eventObj = ev.target;
+        picSel = eventObj.id;
+        var picHdr = picSel.substring(0,3);
+        if ( picHdr === 'pic' ) {
+            picPop(picSel);
+        }
+    });
+    // kill the popup when mouseout
+    $photos.on('mouseout', function() {
+        $('.popupCap > p').remove();
+        $('.popupCap').css('display','none');
+    });
+    // clicking images:
+    $photos.on('click', function(ev) {
+        var clickWhich = ev.target;
+        var picSrc = clickWhich.id;
+        var picHdr = picSrc.substring(0,3);
+        // again, no id for class='chart', hence no album links
+        if ( picHdr === 'pic' ) {
+            var picIndx = picSrc.indexOf('pic') + 3;
+            var picNo = picSrc.substring(picIndx,picSrc.length);
+            var j = 0;
+            $('.lnkList li').each( function() {
+                if ( j == picNo ) {
+                    FlickrLnk = this.textContent;
+                }
+                j++;
+            });
+            window.open(FlickrLnk);
+        }
+    }); 
 }
 // turn off events during resize until finished resizing
 function killEvents() {
-	$photos.off('mouseover');
-	$photos.off('mouseout');
-	$photos.off('click');    // specifying multiple events in one call gave error
-	$photos = null;
+    $photos.off('mouseover');
+    $photos.off('mouseout');
+    $photos.off('click');    // specifying multiple events in one call gave error
+    $photos = null;
 }
 
 /* SOME FUNCTIONS TO SIMPLIFY MAIN ROUTINE CALLS:
@@ -420,59 +400,59 @@ function getOrgDat() {
 }		
 // function to capture *current* image widths & map link loc
 function captureWidths() {
-	i = 0;
-	$photos.each( function() {
-		capWidth[i] = this.width + 'px';
-		pwidth = 'pwidth'+ i;
-		if (sessSupport) {
-			sessionStorage.setItem(pwidth,capWidth[i]);
-		}
-		i++;
-	});
-	if (mapPresent) {
-		//ASSUMPTION: width = height for iframes
-		mapWidth = $('iframe').attr('width');
-		mapWidth = parseFloat(mapWidth);
-		lnkLoc = ( mapWidth - 160 ) / 2;
-		mapPos = $('iframe').offset();
-		mapLeft = mapPos.left + lnkLoc;
-		mapBot = mapPos.top + mapWidth + 15;
-		if (sessSupport) {
-			sessionStorage.setItem('mleft',mapLeft);
-			sessionStorage.setItem('mbot',mapBot);
-		}
-	}
+    i = 0;
+    $photos.each( function() {
+        capWidth[i] = this.width + 'px';
+        pwidth = 'pwidth'+ i;
+        if (sessSupport) {
+                sessionStorage.setItem(pwidth,capWidth[i]);
+        }
+        i++;
+    });
+    if (mapPresent) {
+        //ASSUMPTION: width = height for iframes
+        mapWidth = $('iframe').attr('width');
+        mapWidth = parseFloat(mapWidth);
+        lnkLoc = ( mapWidth - 160 ) / 2;
+        mapPos = $('iframe').offset();
+        mapLeft = mapPos.left + lnkLoc;
+        mapBot = mapPos.top + mapWidth + 15;
+        if (sessSupport) {
+            sessionStorage.setItem('mleft',mapLeft);
+            sessionStorage.setItem('mbot',mapBot);
+        }
+    }
 }
 // function to calculate current & (potentially) store location of images/captions
 function calcPos() {
-	for ( var j=0; j<noOfPix; j++ ) {
-		picId = '#pic' + j;
-		picPos = $(picId).offset();
-		capTop[j] = Math.round(picPos.top) + 'px';
-		capLeft[j] = Math.round(picPos.left) + 'px';
-		if ( sessSupport ) {
-			ptop = 'ptop' + j;
-			pleft = 'pleft' + j;
-			sessionStorage.setItem(ptop,capTop[j]);
-			sessionStorage.setItem(pleft,capLeft[j]);
-		} 
-	}
+    for ( var j=0; j<noOfPix; j++ ) {
+        picId = '#pic' + j;
+        picPos = $(picId).offset();
+        capTop[j] = Math.round(picPos.top) + 'px';
+        capLeft[j] = Math.round(picPos.left) + 'px';
+        if ( sessSupport ) {
+            ptop = 'ptop' + j;
+            pleft = 'pleft' + j;
+            sessionStorage.setItem(ptop,capTop[j]);
+            sessionStorage.setItem(pleft,capLeft[j]);
+        } 
+    }
 }
 // function to popup the description for the picture 'selected'
 function picPop(picTarget) {
-	// get the image number
-	var argLgth = picTarget.length;
-	var picNo = picTarget.substring(3,argLgth);
-	// get the corresponding description
-	desc = $desc[picNo].textContent;
-	htmlDesc = '<p class="capLine">' + desc + '</p>';
-	$('.popupCap').css('display','block');
-	$('.popupCap').css('position','absolute');
-	$('.popupCap').css('top',capTop[picNo]);
-	$('.popupCap').css('left',capLeft[picNo]);
-	$('.popupCap').css('width',capWidth[picNo]);
-	$('.popupCap').css('z-index','10');
-	$('.popupCap').prepend(htmlDesc);
+    // get the corresponding description
+    var picidlgth = picTarget.length;
+    picNo = parseInt(picTarget.substring(3,picidlgth));
+    var jqid = '#' + picTarget;
+    var desc = $(jqid).attr('alt');
+    htmlDesc = '<p class="capLine">' + desc + '</p>';
+    $('.popupCap').css('display','block');
+    $('.popupCap').css('position','absolute');
+    $('.popupCap').css('top',capTop[picNo]);
+    $('.popupCap').css('left',capLeft[picNo]);
+    $('.popupCap').css('width',capWidth[picNo]);
+    $('.popupCap').css('z-index','10');
+    $('.popupCap').prepend(htmlDesc);
 }
 // function to determine window size that is threshold for re-calculating # of images/row
 function tippingPoint() {
