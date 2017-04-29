@@ -736,26 +736,21 @@ if ($hikeMarker === 'ctrhike') {
         echo '</fieldset>';
     }
 ?>
-<div style="padding-left:8px;">
-    <h4 style="margin-bottom:4px">Checkbox to Force Non-Refresh Page Loading
-            <em>(Useful when using back/forward arrows in browser during build process)</em></h4>
-    <input id="forceLoad" type="checkbox" name="setForce" value="force" checked="checked" />Force
-</div>
 <br />
 <h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish
 	to include on the new page:</h4>
 <p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note:
-these names were extracted from the .tsv file</em><br />
-<input style="margin-left:8px" id="all" type="checkbox" name="allPix" value="useAll" />Use All Photos</p>
+    these names were extracted from the <?php echo $tsvFname;?> file</em><br />
+    <input style="margin-left:8px" id="all" type="checkbox" name="allPix" value="useAll" />Use All Photos</p>
 <?php
     $nmeno = 0;
     for ($i=0; $i<$icount; $i++) {
-            echo '<div class="selPic" style="width:150px;float:left;margin-left:2px;margin-right:2px;">';
-            echo '<input type="checkbox" name="pix[]" value="' .  $picarray[$nmeno] .
-                '" />' . substr($picarray[$nmeno],0,10) . '...<br />';
-            echo '<img height="150px" width="150px" src="' .$thumb[$nmeno] . '" alt="pic choice" />';
-            echo '</div>';
-            $nmeno +=1;
+        echo '<div class="selPic" style="width:150px;float:left;margin-left:2px;margin-right:2px;">';
+        echo '<input type="checkbox" name="pix[]" value="' .  $picarray[$nmeno] .
+            '" />' . substr($picarray[$nmeno],0,10) . '...<br />';
+        echo '<img height="150px" width="150px" src="' .$thumb[$nmeno] . '" alt="pic choice" />';
+        echo '</div>';
+        $nmeno +=1;
     }
     echo '<br />';
     echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
