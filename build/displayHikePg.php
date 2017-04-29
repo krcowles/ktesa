@@ -1,8 +1,11 @@
 <?php
 session_start();
-/* Form elements used by validateHike.js, not used here:
+define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false');
+define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true');
+define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
+/* HTML form elements used by validateHike.js that are not used here:
  *  'tsvow', 'mapow', 'gpxow' ,'trkow', 'jsonow'
- * PHP DATA SUBMITTED FROM VALIDATEHIKE.PHP
+ * 
  * FIRST: UPLOADED FILES
  */
 $tsvname = filter_input(INPUT_POST,'tsv');
@@ -19,6 +22,7 @@ $trkfile = filter_input(INPUT_POST,'json');
 if ($trkfile !== '') {
     $jsonfile = '../tmp/json/' . $trkfile;
 }
+#echo "MULTS: " . $tsvFile . ' ' . $mapfile . ' ' . $gpx .  ' ' . $jsonfile;
 $addonImg[0] = filter_input(INPUT_POST,'img1');
 $imgIndx = 0;
 if ($addonImg[0] === '') {
@@ -29,6 +33,7 @@ if ($addonImg[0] === '') {
 	$othrWidth[$imgIndx] = $firstimg[0];
 	$othrHeight[$imgIndx] = $firstimg[1];
 	$imgIndx += 1;
+        $img1file = '../tmp/images/' . $addonImg[0];
 }
 $addonImg[1] = filter_input(INPUT_POST,'img2');
 if ($addonImg[1] !== '') {
@@ -36,8 +41,29 @@ if ($addonImg[1] !== '') {
 	$secondimg = getimagesize("../images/" . $addonImg[1]);
 	$othrWidth[$imgIndx] = $secondimg[0];
 	$othrHeight[$imgIndx] = $secondimg[1];
+        $img2file = '../tmp/images/' . $addonImg[1];
 }
-echo "NO OF ADDTL IMAGES: " . $noOfOthr;
+#echo "ADDTL: " . $img1file . ' ' . $img2file;
+/* An 'array string' is passed to 'saveHike.php' consisting of 6 pairs of values;
+ * each value in the pair is either "YES" or "NO": 1) has a duplicate file name
+ * been detected? 2) if so, should it be replaced with the newly uploaded file?
+ * Order of array: tsv file, geomap, gpx file, track file, image1, image2 
+ */
+$saveFileInfo = [];
+array_push($saveFileInfo,filter_input(INPUT_POST,'tsvf'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'owt'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'mapf'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'owm'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'gpxf'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'owg'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'jsonf'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'owj'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'img1f'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'ow1'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'img2f'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'ow2'));
+$fileSaveData = implode("^",$saveFileInfo);
+$_SESSION['filesaves'] = $fileSaveData;
 # ----- end of file uploads ------
 
 /* NEXT: IMPORTED VARIABLE DATA (HIKE DATA) */
@@ -127,6 +153,7 @@ if ($exp === "sun") {
 } else {
 	$exposure = "Mixed sun/shade";
 }
+
 $marker = $_POST['mrkr'];
 $purl1 = $_POST['phot1'];
 $purl2 = $_POST['phot2'];
@@ -151,10 +178,92 @@ $useAllPix = $_POST['allPix'];
 /*
     ------------------------------ END OF IMPORTING DATA -------------------------
 */
+?>
 
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<title><?php echo $pgTitle;?></title>
+	<meta charset="utf-8" />
+	<meta name="description"
+		content="Details about the <?php echo $pgTitle;?> hike" />
+	<meta name="author"
+		content="Tom Sandberg and Ken Cowles" />
+	<meta name="robots"
+		content="nofollow" />
+        <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+	<link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
+        <script type="text/javascript"> var iframeWindow; </script>
+	<script type="text/javascript" src="../scripts/canvasjs.min.js"></script>
+</head>
+
+<body>
+
+<div id="logo">
+	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+	<p id="logo_left">Hike New Mexico</p>
+	
+	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
+	<p id="logo_right">w/Tom &amp; Ken</p>
+</div>
+<p id="trail"><?php echo $hikeTitle;?></p>
+
+<div id="sidePanel">
+    <p id="stats">
+        <strong>Hike Statistics</strong>
+    </p>
+    <p id="summary">
+        Nearby City / Locale: <span class=sumClr><?php echo $locale;?></span><br />
+        Hike Difficulty: <span class=sumClr><?php echo $difficulty;?></span><br />
+        Total Length of Hike: <span class=sumClr><?php echo $distance;?></span><br />
+        Max to Min Elevation: <span class=sumClr><?php echo $elevation;?></span><br />
+        Logistics: <span class=sumClr><?php echo $htype;?></span><br />
+        Exposure Type: <span class=sumClr><?php echo $exposure;?></span><br />
+        Seasons : <span class=sumClr><?php echo $seasons;?></span><br />
+        "Wow" Factor: <span class=sumClr><?php echo $wowFactor;?></span>
+    </p>
+    <p id="addtl">
+        <strong>More!</strong>
+    </p>
+    <p id="mlnk">
+        <a href="../maps/gpsvMapTemplate.php?map_name=<?php echo $geomap . 
+                fullMapOpts;?>" target="_blank">Full Page Map Link</a>
+    </p>
+    <p id="albums">
+        For improved photo viewing,<br />check out the following album(s):
+    </p>
+    <p id="alnks">
+        <a href="<?php echo $purl1;?>" target="_blank">Photo Album Link</a>
+        <?php 
+        if ($purl2 !== '') {
+            echo '<br /><a href="' . $purl2 . '" target="_blank">' .
+                'Additional Album Link</a>'; 
+        }
+        ?>
+    </p>
+    <p id="directions">The following link provides on-line directions
+        to the trailhead:
+    </p>
+    <p id="dlnk"><a href="<?php echo $googledirs;?>" target="_blank">
+        Google Directions</a>
+    </p>
+    <p id="scrollmsg">Scroll down to see images, hike description, 
+        reference sources and additonal information as applicable
+    </p>
+    <p id="closer">If you are having problems with this page, please:
+        <a href="mailto:krcowles29@gmail.com">send us a note!</a>
+    </p>
+</div>
+<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=<?php echo $geomap . 
+    iframeMapOpts;?>"></iframe>
+<div data-gpx="<?php echo $gpx;?>" id="chartline"></div>
+
+<?php
 /*  
     ---------------------------  BEGIN IMAGE ROW PROCESSING ----------------------
 */
+
 $month = array("Jan","Feb","Mar","Apr","May","Jun",
 				"Jul","Aug","Sep","Oct","Nov","Dec");
 define("SPACING", 14, true);
@@ -446,35 +555,7 @@ $_SESSION['row5'] = $rowStr[5];
     ---------------------------  END OF IMAGE ROW PROCESSING ----------------------
 */
 ?>
-<!DOCTYPE html>
-<html>
 
-<head>
-	<title><?php echo $pgTitle;?></title>
-	<meta charset="utf-8" />
-	<meta name="language"
-			content="EN" />
-	<meta name="description"
-		content="Details about the <?php echo $pgTitle;?> hike" />
-	<meta name="author"
-		content="Tom Sandberg and Ken Cowles" />
-	<meta name="robots"
-		content="nofollow" />
-	<link href="../styles/960_16_col.css"
-		type="text/css" rel="stylesheet" />
-	<link href="../styles/hikes.css"
-		type="text/css" rel="stylesheet" />
-</head>
-
-<body>
-<div class="container_16 clearfix">
-
-<div id="logoBlock">
-	<p id="pgLogo"></p>
-	<p id="logoLeft">Hike New Mexico</p>
-	<p id="logoRight">w/ Tom &amp; Ken</p>
-	<p id="page_title" class="grid_16"><?php echo $pgTitle;?></p>
-</div> <!-- end of logoBlock -->
 <div id="hikeSummary">
 	 <table id="topper">
 		 <thead>
@@ -515,8 +596,6 @@ $_SESSION['row5'] = $rowStr[5];
 	'<a href="' . $purl2 . '" target="_blank">Tom' . "'" . 's Flickr Album</a> or ' .
 	'<a href="' . $purl1 . '" target="_blank">Ken' . "'" . 's Flickr Album</a></div>';
 ?>
-
-</div>  <!-- end of container 16 -->
 
 <?php 
 	echo $rowHtml;
@@ -702,6 +781,7 @@ $_SESSION['row5'] = $rowStr[5];
 
 <div class="popupCap"></div>
 <script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/canvasJS.js"></script>
 <script src="../scripts/hikes.js"></script>
 
 </body>

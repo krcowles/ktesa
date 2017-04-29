@@ -1,6 +1,10 @@
 $( function() {  // wait until document is loaded...
 
-var trackfile = '../gpx/' + $('#chartline').data('gpx');
+// account for building new page - files not stored in main yet
+var trackfile = $('#chartline').data('gpx');
+if ( trackfile.indexOf('tmp/') !== -1 ) {
+    trackfile = '../gpx/' . trackfile;
+}
 var lats = [];
 var lngs = [];
 var elevs = [];  // elevations, in ft.
