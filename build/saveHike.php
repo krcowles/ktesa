@@ -13,12 +13,22 @@
         content="Tom Sandberg and Ken Cowles" />
     <meta name="robots"
         content="nofollow" />
+    <link href="../styles/logo.css"
+          type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css"
         type="text/css" rel="stylesheet" />
 </head>
 
 <body>
-<div style="margin-left:12px;padding:8px;">
+
+<div id="logo">
+	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+	<p id="logo_left">Hike New Mexico</p>
+	
+	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
+	<p id="logo_right">w/Tom &amp; Ken</p>
+</div>
+
 <?php
     /* get last used hike No.. */
     $database = '../data/database.csv';
@@ -33,6 +43,11 @@
     # NEW HIKE INDX STARTS AT LAST INDX + 1:
     $newHike[0] = intval($lastIndx) + 1;
     $newHike[1] = filter_input(INPUT_POST,'hname');
+?>
+    <p id="trail"><?php echo $newHike[1];?></p>
+    
+<div style="margin-left:12px;padding:8px;">
+<?php
     $newHike[2] = filter_input(INPUT_POST,'hlocale');
     $newHike[3] = filter_input(INPUT_POST,'hmarker');
     # define text for marker type
