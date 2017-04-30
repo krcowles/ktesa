@@ -658,8 +658,17 @@ echo $albumHtml;
 <input type="hidden" name="remake" value="<?php echo $redo;?>" />
 <input type="hidden" name="rhno" value="<?php echo $hikeNo;?>" />
 
-<input style="margin-left:8px;margin-bottom:10px;" type="submit" value="Make New Hike Page" />
-	
+<div style="margin-left:8px;">
+<h3>Select an option below to save the hike page</h3>
+<p><em>Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
+    <input id="master" type="password" name="mpass" size="12" maxlength="10" 
+           title="8-character code required"/><br />
+    <input type="submit" name="savePg" value="Site Master" />
+</p>
+<p><em>Registered Users:</em> Select button to submit for review&nbsp;&nbsp;
+    <input type="submit" name="savePg" value="Submit for Review" />
+</p>
+</div>	
 </form>
 	
 <div id="dbug"></div>
