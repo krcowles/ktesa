@@ -232,7 +232,7 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
         <strong>More!</strong>
     </p>
     <p id="mlnk">
-        <a href="../maps/gpsvMapTemplate.php?map_name=<?php echo $geomap . 
+        <a href="../maps/gpsvMapTemplate.php?map_name=<?php echo $mapfile . 
                 fullMapOpts;?>" target="_blank">Full Page Map Link</a>
     </p>
     <p id="albums">
@@ -638,10 +638,10 @@ echo $albumHtml;
 <input type="hidden" name="hseas" value="<?php echo $seasons;?>" />
 <input type="hidden" name="hexp" value="<?php echo $exposure;?>" />
 <input type="hidden" name="htsv" value="<?php echo $tsvname;?>" />
-<input type="hidden" name="hmap" value="<?php echo $gpsvMap;?>" />
+<input type="hidden" name="hmap" value="<?php echo $geomap;?>" />
 <input type="hidden" name="hchart" value="<?php echo $elevChart;?>" />
-<input type="hidden" name="hgpx" value="<?php echo $gpxFname;?>" />
-<input type="hidden" name="htrk" value="<?php echo $trackFname;?>" />
+<input type="hidden" name="hgpx" value="<?php echo $gpx;?>" />
+<input type="hidden" name="htrk" value="<?php echo $trkfile;?>" />
 <input type="hidden" name="hlat" value="<?php echo $lat;?>" />
 <input type="hidden" name="hlon" value="<?php echo $lon;?>" />
 <input type="hidden" name="hadd1" value="<?php echo $addonImg[0];?>" />
@@ -662,7 +662,7 @@ echo $albumHtml;
 <h3>Select an option below to save the hike page</h3>
 <p><em>Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
     <input id="master" type="password" name="mpass" size="12" maxlength="10" 
-           title="8-character code required"/><br />
+           title="8-character code required" />&nbsp;&nbsp;&nbsp;&nbsp;
     <input type="submit" name="savePg" value="Site Master" />
 </p>
 <p><em>Registered Users:</em> Select button to submit for review&nbsp;&nbsp;

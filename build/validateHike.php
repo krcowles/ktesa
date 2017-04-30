@@ -162,12 +162,12 @@ echo '</ul>' . "\n";
 
 /* JSON FILE OPS: */
 echo '<h3 style="text-indent:8px">Uploaded Track File Info:</h3>' . "\n";
-$mktrk = filter_input(INPUT_POST,'maketrck');
+$mktrk = filter_input(INPUT_POST,'maketrack');
 if ( isset($mktrk) ) {
     $cwd = getcwd();
     $ktesaPos = strpos($cwd,"ktesa") + 6;
     $ktesaDir = substr($cwd,0,$ktesaPos);
-    $trkcmd = $ktesaDir . 'tools/mktrk.sh -f ' . $ktesaDir . 
+    $trkcmd = $ktesaDir . 'tools/mktrk.sh -f ' . $cwd . '/' . $uploads .
             'gpx/' . $hikeGpx . ' -p ' . $cwd . '/' . $uploads . 'json';
     $json = exec($trkcmd);
     if ( preg_match("/DONE/",$json) === 1 ) {
@@ -310,9 +310,9 @@ $hikeExp = filter_input(INPUT_POST,'expos');
 
 $extractGeos = filter_input(INPUT_POST,'thgeos');
 if ( isset($extractGeos) ) {
-    if ($_FILES['gpxname']['error'] == UPLOAD_ERR_OK
-      && is_uploaded_file($_FILES['gpxname']['tmp_name'])) { 
-        $gpxdat = file_get_contents($gpxFile); 
+    if ($gpxStat == UPLOAD_ERR_OK) { 
+        $gpxupload = getcwd() . '/' . $uploads . 'gpx/' . $hikeGpx;
+        $gpxdat = file_get_contents($gpxupload);
         $trksegloc = strpos($gpxdat,"<trkpt lat=");
         $trksubstr = substr($gpxdat,$trksegloc,100);
         $latloc = strpos($trksubstr,"lat=") + 5;
@@ -334,8 +334,6 @@ $hikeMarker = filter_input(INPUT_POST,'mstyle');
 $hikePurl1 = filter_input(INPUT_POST,'photo1');
 $hikePurl2 = filter_input(INPUT_POST,'photo2');
 $hikeDir = filter_input(INPUT_POST,'dirs');
-// Process the uploaded tsv file:
-
 $rawtips = filter_input(INPUT_POST,'tipstxt');
 if (substr($rawtips,0,10) === '[OPTIONAL]') {
 	$tipTxt = '';
@@ -345,9 +343,10 @@ if (substr($rawtips,0,10) === '[OPTIONAL]') {
 $_SESSION['hikeTips'] = $tipTxt;
 $rawhike = filter_input(INPUT_POST,'hiketxt');
 $_SESSION['hikeDetails'] = $rawhike;
-$hikeRefTypes = filter_input(INPUT_POST,'rtype');
-$hikeRefItems1 = filter_input(INPUT_POST,'rit1');
-$hikeRefItems2 = filter_input(INPUT_POST,'rit2');
+# don't know how to filter arrays:
+$hikeRefTypes = $_POST['rtype'];
+$hikeRefItems1 = $_POST['rit1'];
+$hikeRefItems2 = $_POST['rit2'];
 /* get a count of items actually specified: */
 $noOfRefs = count($hikeRefTypes);
 for ($k=0; $k<$noOfRefs; $k++) {
@@ -667,9 +666,7 @@ if ($hikeMarker === 'ctrhike') {
 ?>
 <h2 style="text-align:center;">Hike Information:</h2>
 <?php 
-    echo '<p id="hikeInfo" style="text-indent:8px;">';
-    echo $rawhike;
-    echo '</p>';
+    echo '<p id="hikeInfo" style="text-indent:8px;">' . $rawhike . '</p>' . "\n";
 ?>
 <h2>Hike References:</h2>
 <?php 
@@ -753,7 +750,8 @@ if ($hikeMarker === 'ctrhike') {
         $nmeno +=1;
     }
     echo '<br />';
-    echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;"><input type="submit" value="Use Selected Pics" /></div>';
+    echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;">' .
+            '<input type="submit" value="Use Selected Pics" /><br /><br /></div>';
 ?>	
 <input type="hidden" name="tsv" value="<?php echo $tsvFname;?>" />
 <input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />

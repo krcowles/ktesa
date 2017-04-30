@@ -5,7 +5,7 @@
 <html lang="en-us">
 
 <head>
-    <title>Write Hike File</title>
+    <title>Save New Hike</title>
     <meta charset="utf-8" />
     <meta name="description"
         content="Write hike data to TblDB.csv" />
@@ -30,7 +30,6 @@
     } else {
         echo "<p>Could not open database file</p>";
     }
-    echo " ...Start import...";
     # NEW HIKE INDX STARTS AT LAST INDX + 1:
     $newHike[0] = intval($lastIndx) + 1;
     $newHike[1] = filter_input(INPUT_POST,'hname');
@@ -102,9 +101,8 @@
     $rules = explode("^",$saveRules);
     # Estabish directory locations
     $cwd = getcwd();
-    $basedirpos = strpos($cwd."/build");
-    $basedir = $cwd.substring(0,$basedirpos);
-    echo "BASEDIR IS: " . $basedir;
+    $basedirlgth = strpos($cwd,"/build");
+    $basedir = substr($cwd,0,$basedirlgth);
     $uploads = '/tmp/';
     /* DATA WILL BE SAVED TO DIFFERENT PLACES DEPENDING ON SUBMITTER
      * Site Masters: Hike Data will be saved to the standard site usign the
@@ -113,28 +111,113 @@
      * Registered Users: Data will be saved to the pending.csv database (also
      *   in the data directory), and the tmp files will not be moved.
      */
-    $passwd = filter_input(INPUT_POST,'mpass');
+    $user = true;
     if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
+        $passwd = filter_input(INPUT_POST,'mpass');
+        if ($passwd !== '000ktesa') {
+            die('<p style="color:brown;">Incorrect Password - save not executed</p>');
+        }
+        $user = false;
         # There is always a tsv file...
         if ( ($rules[0] === 'YES' && $rules[1] === 'YES') || $rules[0] === 'NO' ) {
             $oldLoc = $cwd . $uploads . 'gpsv/' . $newHike[14];
             $newLoc = $basedir . '/gpsv/' . $newHike[14];
             if (!rename($oldLoc,$newLoc)) {
-                die("COULD NOT MOVE TSV FILE");
+                die('<p style="color:brown;">COULD NOT MOVE TSV FILE</p>');
             } else {
-                echo "Successfully moved tsv file";
+                echo "<p>Successfully moved tsv file</p>";
             }
+        } else {
+            echo '<p style="color:brown;">' . $newHike[14] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
         }
-        #fputcsv($handle,$newHike);
+        # remaining files should be tested for existence:
+        # MAP FILE
+        if ( $newHike[15] !== '' && 
+                (($rules[2] === 'YES' && $rules[3] === 'YES') || $rules[2] === 'NO' )) {
+            $oldLoc = $cwd . $uploads . 'maps/' . $newHike[15];
+            $newLoc = $basedir . '/maps/' . $newHike[15];
+            if (!rename($oldLoc,$newLoc)) {
+                die('<p style="color:brown;">COULD NOT MOVE GEOMAP FILE</p>');
+            } else {
+                echo "<p>Successfully moved geomap file</p>";
+            }
+        } elseif ($newHike[15] !== '') {
+            echo '<p style="color:brown;">' . $newHike[15] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        }
+        # GPX FILE
+        if ( $newHike[17] !== '' &&
+                (($rules[4] === 'YES' && $rules[5] === 'YES') || $rules[4] === 'NO')) {
+            $oldLoc = $cwd . $uploads . 'gpx/' . $newHike[17];
+            $newLoc = $basedir . '/gpx/' . $newHike[17];
+            if (!rename($oldLoc,$newLoc)) {
+                die('<p style="color:brown;">COULD NOT MOVE GPX FILE</p>');
+            } else {
+                echo "<p>Successfully moved gpx file</p>";
+            }
+        } elseif ($newHike[17] !== '') {
+            echo '<p style="color:brown;">' . $newHike[17] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        }
+        # JSON FILE:
+        if ( $newHike[18] !== '' &&
+                (($rules[6] === 'YES' && $rules[7] === 'YES') || $rules[6] === 'NO')) {
+            $oldLoc = $cwd . $uploads . 'json/' . $newHike[18];
+            $newLoc = $basedir . '/json/' . $newHike[18];
+            if (!rename($oldLoc,$newLoc)) {
+                die('<p style="color:brown;">COULD NOT MOVE JSON FILE</p>');
+            } else {
+                echo "<p>Successfully moved json file</p>";
+            }
+        } elseif ($newHike[18] !== '') {
+            echo '<p style="color:brown;">' . $newHike[18] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        }
+        # IMAGE1 FILE:
+        if ( $newHike[21] !== '' &&
+                (($rules[8] === 'YES' && $rules[9] === 'YES') || $rules[8] === 'NO')) {
+            $oldLoc = $cwd . $uploads . 'images/' . $newHike[21];
+            $newLoc = $basedir . '/images/' . $newHike[21];
+            if (!rename($oldLoc,$newLoc)) {
+                die('<p style="color:brown;">COULD NOT MOVE 1st IMAGE FILE</p>');
+            } else {
+                echo "<p>Successfully moved 1st image file</p>";
+            } 
+        } elseif ($newHike[21] !== '') {
+            echo '<p style="color:brown;">' . $newHike[21] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        }
+        # IMAGE2 FILE:
+        if ( $newHike[22] !== '' &&
+                (($rules[10] === 'YES' && $rules[11] === 'YES') || $rules[10] === 'NO')) {
+            $oldLoc = $cwd . $uploads . 'images/' . $newHike[22];
+            $newLoc = $basedir . '/images/' . $newHike[22];
+            if (!rename($oldLoc,$newLoc)) {
+                die('<p style="color:brown;">COULD NOT MOVE 2nd IMAGE FILE</p>');
+            } else {
+                echo "<p>Successfully moved 2nd image file</p>";
+            } 
+        } elseif ($newHike[22] !== '') {
+            echo '<p style="color:brown;">' . $newHike[22] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        }
+        fputcsv($handle,$newHike);
+        echo "<h2>" . $msg . "</h2>";
+        fclose($handle);
     } else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
-        echo "Registered user: files not moved";
+        fclose($handle);
+        $usrdb = '../data/reviewdat.csv';
+        $usrHandle = fopen($usrdb,"a");
+        if(!fputcsv($usrHandle,$newHike)) {
+            die('<p style="color:brown;">Hike Data could not be saved: contact Site Master<p>');
+        }
+        echo '<h2>Hike Data saved for review - you will be notified when ' .  
+            'the data has been accepted and posted.</h2>';
+        fclose($usrHandle);
     } else {
-        die("Contact Site Master: Submission not recognized");
-    }
-    
-    
-    echo "<h1>HIKE SUCCESSFULLY SAVED!</h1>";
-    echo "<h2>" . $msg . "</h2>";
+        die('<p style="color:brown;">Contact Site Master: Submission not recognized');
+    } 
     # DEBUG OUTPUT ---
     /*
     $listOut = array("Hike Index No.","Hike Name","Locale","Marker","Indx. Cluster String","Cluster Letter",
@@ -157,8 +240,12 @@
 ?>
 </div>
 <div data-ptype="hike" data-indxno="<?php echo $newHike[0];?>" style="padding:16px;" id="more">
-    <button style="font-size:16px;color:DarkBlue;" id="same">Edit this hike</button><br />
-    <button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button>
+<?php
+    if ( !user ) {
+        echo '<button style="font-size:16px;color:DarkBlue;" id="same">Edit this hike</button><br />';
+        echo '<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button>';
+    }
+?>
 </div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>

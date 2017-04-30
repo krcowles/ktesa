@@ -1,5 +1,13 @@
 <?php
-    $lines = file($_GET[map_name]);
+    # During build process, map won't be in this directory:
+    $map = filter_input(INPUT_GET,'map_name');
+    if ( !file_exists($map) ) {
+        $map = '../build/tmp/maps/' . $map;
+    }
+    if (!file_exists($map)) {
+        die("Geomap could not be located");
+    }
+    $lines = file($map);
     for($i = 0; $i < count($lines); ++$i) {
         // if (strpos($lines[$i], "GV_Draw_Marker") === false || ($_GET[show_markers_url] === true)) { // suppress markers? 
         if (strpos($lines[$i], "GV_Draw_Marker") === false) {  
