@@ -33,6 +33,23 @@ var winrat; // ratio of window to available screen width: use when can't use dev
 var GROW = 1;
 var SHRINK = 0;
 
+// Detecting old or new style pages via iframe id="mapline"
+if ($('#mapline').length) {
+    var newStyle = true;
+    var mapPresent = false;
+} else {
+    // there may be an iframe:
+    var newStyle = false;
+    var mapPresent = false;
+    var $maps = $('iframe');
+    if ($maps.length) {
+        // GPSV map options - used by old style pages w/small iframes
+        var mapDisplayOpts = '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true';
+        mapPresent = true;
+        var orgMapLink = $('#theMap').attr('src');
+        var fullMap = orgMapLink + mapDisplayOpts;
+    }
+}
 // window size and margin calculations; NOTE: innerWidth provides the dimension inside the border
 var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
 if (bodySurplus < 24) {
@@ -43,19 +60,21 @@ var initMarg; // this is space between rows of images & page border (calc after 
 var minWidth = $('body').css('min-width'); // normally 960
 var pxLoc = minWidth.indexOf('px');
 minWidth = parseFloat(minWidth.substring(0,pxLoc));
-// setting up map & chart to occupy viewport space
-var vpHeight = window.innerHeight;
-var sidePnlPos = $('#sidePanel').offset();
-var sidePnlLoc = parseInt(sidePnlPos.top);
-var usable = vpHeight - sidePnlLoc;
-var mapHeight = Math.floor(0.65 * usable);
-var chartHeight = Math.floor(0.35 * usable);
-var pnlHeight = (mapHeight + chartHeight) + 'px';
-mapHeight += 'px';
-chartHeight += 'px';
-$('#mapline').css('height',mapHeight);
-$('#chartline').css('height',chartHeight);
-$('#sidePanel').css('height',pnlHeight);
+if (newStyle) {
+    // setting up map & chart to occupy viewport space
+    var vpHeight = window.innerHeight;
+    var sidePnlPos = $('#sidePanel').offset();
+    var sidePnlLoc = parseInt(sidePnlPos.top);
+    var usable = vpHeight - sidePnlLoc;
+    var mapHeight = Math.floor(0.65 * usable);
+    var chartHeight = Math.floor(0.35 * usable);
+    var pnlHeight = (mapHeight + chartHeight) + 'px';
+    mapHeight += 'px';
+    chartHeight += 'px';
+    $('#mapline').css('height',mapHeight);
+    $('#chartline').css('height',chartHeight);
+    $('#sidePanel').css('height',pnlHeight);
+}
 // staging the initial execution
 var resizeFlag = true;  // semaphore: don't execute resize event code if true
 var noOfImgs = 0;
@@ -81,27 +100,13 @@ var msg, i, j, k, n;
 var ssdat;
 var rowcnt;
 
-// GPSV map options
-var mapDisplayOpts = '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true';
-
-/*  MAPS, PHOTO LINKS, CAPTIONS and POP-UP VARIABLES
+/*  PHOTO LINKS, CAPTIONS and POP-UP VARIABLES
  *  Note that map links are expected to be in the form of relative urls (../maps/xyz_geomap.html)
  *  and will be re-set to point to the php map-processing page using 'mapDisplayOpts'
  */
 // jQuery objects & variables
 var $photos = $('img[id^="pic"]');
 var noOfPix = $photos.length;
-var $maps = $('iframe');
-var mapPresent = false;
-if ($maps.length) {
-    mapPresent = true;
-    var orgMapLink = $('#theMap').attr('src');
-    var fullMap = orgMapLink + mapDisplayOpts;
-}
-// for SIDEPANEL USE ONLY ------------------------------------------- //
-mapPresent = false;
-// ----------------
-var $desc = $('.captionList li');
 var $links = $('.lnkList li');
 // space down for map link when map is in bottom row
 var $rowDivs = $('div[class="Solo"]');
