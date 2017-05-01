@@ -280,7 +280,7 @@ if (!$newstyle) {
                     }
                     echo '<td><a href="' . $hikeDirections . '" target="_blank">' .
                         '<img style="margin-bottom:0px;padding-bottom:0px;"' .
-                        'src="../images/dirs.png" alt="google driving directions" />' .
+                        ' src="../images/dirs.png" alt="google driving directions" />' .
                         '</a></td>' .
                 '</tr>' .
            '</tbody>' .
