@@ -1,13 +1,12 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
+
 <head>
 	<title>Save Changes to Database</title>
 	<meta charset="utf-8" />
-	<meta name="language"
-			content="EN" />
 	<meta name="description"
-		content="Edit a given hike" />
+		content="Save any hike page changes back to the database" />
 	<meta name="author"
 		content="Tom Sandberg and Ken Cowles" />
 	<meta name="robots"

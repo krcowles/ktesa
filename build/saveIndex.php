@@ -1,21 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 <head>
-	<title>Write Hike File</title>
-	<meta charset="utf-8" />
-	<meta name="language"
-			content="EN" />
-	<meta name="description"
-		content="Write hike data to TblDB.csv" />
-	<meta name="author"
-		content="Tom Sandberg and Ken Cowles" />
-	<meta name="robots"
-		content="nofollow" />
-	<link href="../styles/hikes.css"
-		type="text/css" rel="stylesheet" />
+    <title>Write Hike File</title>
+    <meta charset="utf-8" />
+    <meta name="description"
+        content="Write hike data to TblDB.csv" />
+    <meta name="author"
+        content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots"
+        content="nofollow" />
+    <link href="../styles/hikes.css"
+        type="text/css" rel="stylesheet" />
+    <link href="../styles/logo.css"
+        type="text/css" rel="stylesheet" />
 </head>
 
 <body>
+
+<div id="logo">
+    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+    <p id="logo_left">Hike New Mexico</p>
+
+    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
+    <p id="logo_right">w/Tom &amp; Ken</p>
+</div>
+<p id="trail"><?php echo $hikeTitle;?></p>
 
 <div style="margin-left:12px;padding:8px;">
 <?php

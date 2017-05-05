@@ -19,17 +19,17 @@
 					$noOfItems = intval($list[0]);
 					array_shift($list);
 					$nxt = 0;
-					$htmlout = '<ul id="refs">';
+					$htmlout = '<ul id="refs">' . "\n";
 					for ($k=0; $k<$noOfItems; $k++) {
 						$tagType = $list[$nxt];
 						if ($tagType === 'b') { 
-							$htmlout .= '<li>Book: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
+							$htmlout .= '<li>Book: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>' ."\n";
 							$nxt += 3;
 						} elseif ($tagType === 'p') {
-							$htmlout .= '<li>Photo Essay: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
+							$htmlout .= '<li>Photo Essay: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>' . "\n";
 							$nxt += 3;
 						} elseif ($tagType === 'n') {
-							$htmlout .= '<li>' . $list[$nxt+1] . '</li>';
+							$htmlout .= '<li>' . $list[$nxt+1] . '</li>' . "\n";
 							$nxt += 2;
 						} else {
 							if ($tagType === 'w') {
@@ -56,11 +56,11 @@
 								$tag = '<li>CHECK DATABASE: ';
 							}
 							$htmlout .= $tag . '<a href="' . $list[$nxt+1] . '" target="_blank">' .
-								$list[$nxt+2] . '</a></li>';
+								$list[$nxt+2] . '</a></li>' . "\n";
 							$nxt += 3;
 						}
 					} // end of for loop in references
-					$htmlout .= '</ul>';
+					$htmlout .= '</ul>' . "\n";
 					/* CREATE THE TABLE FROM THE ARRAY STRING: */
 					$indxTbl = $indxArray[29];
 					$rows = explode("|",$indxTbl);
@@ -119,26 +119,27 @@
 		content="Tom Sandberg and Ken Cowles" />
 	<meta name="robots"
 		content="nofollow" />
-	<link href="../styles/960_16_col.css" type="text/css" rel="stylesheet" />
+        <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 	<link href="../styles/subindx.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
-<div class="container_16 clearfix">
-	<div id="logoBlock">
-		<p id="pgLogo"></p>
-		<p id="logoLeft">Hike New Mexico</p>
-		<p id="logoRight">w/ Tom &amp; Ken</p>
-		<p id="indxTitle" class="grid_16"><?php echo $indxTitle;?></p>
-	</div> <!-- end of logoBlock -->
+<div id="logo">
+	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+	<p id="logo_left">Hike New Mexico</p>
 	
-	<img class="mainPic" src="<?php echo '../images/' . $parkMap;?>" alt="Park Service Map" />
+	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
+	<p id="logo_right">w/Tom &amp; Ken</p>
+</div>
+<p id="trail"><?php echo $hikeTitle;?></p>
+
+    <img class="mainPic" src="<?php echo '../images/' . $parkMap;?>" alt="Park Service Map" />
 	<p id="dirs"><a href="<?php echo $parkDirs;?>" target="_blank">
 	Directions to the <?php echo $lnkText;?></a></p>
     <?php
-        echo '<p id="indxContent">' . $parkInfo . '</p>';
+        echo '<p id="indxContent">' . $parkInfo . '</p>' . "\n";
         echo '<fieldset><legend id="fldrefs">References &amp; Links</legend>';
-        echo $htmlout . '</fieldset>';
+        echo $htmlout . '</fieldset>' . "\n";
     ?>
     <div id="hdrContainer">
 		<p id="tblHdr">Hiking & Walking Opportunities at <?php echo $lnkText;?>:</p>
@@ -153,7 +154,7 @@
 	?>
 	</div>
 
-</div>  <!-- end of container 16 -->
+
 	
 <script src="../scripts/jquery-1.12.1.js"></script>
 
