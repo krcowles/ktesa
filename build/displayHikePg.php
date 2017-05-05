@@ -232,7 +232,7 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
         <strong>More!</strong>
     </p>
     <p id="mlnk">
-        <a href="../maps/gpsvMapTemplate.php?map_name=<?php echo $mapfile . 
+        <a href="../maps/gpsvMapTemplate.php?map_name=<?php echo $geomap . 
                 fullMapOpts;?>" target="_blank">Full Page Map Link</a>
     </p>
     <p id="albums">
