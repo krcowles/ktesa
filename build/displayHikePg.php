@@ -598,7 +598,13 @@ echo $albumHtml;
             array_shift($prop);
             $nxt = 0;
             for ($i=0; $i<$noOfProps; $i++) {
-                $listel .= '<li>' . $prop[$nxt] . ' <a href="' . $prop[$nxt+1] .
+                $tmploc = $prop[$nxt+1];
+                if (strpos($tmploc,'../maps/') !== FALSE) {
+                    $tmpurl = str_replace('../maps/','tmp/maps/',$tmploc);
+                } else {
+                    $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
+                }
+                $listel .= '<li>' . $prop[$nxt] . ' <a href="' . $tmpurl .
                         '" target="_blank">' . $prop[$nxt+2] . '</a></li>';
                 $nxt += 3;
             }
@@ -613,7 +619,13 @@ echo $albumHtml;
             array_shift($act);
             $nxt = 0;
             for ($j=0; $j<$noOfActs; $j++) {
-                $listel .= '<li>' . $act[$nxt] . ' <a href="' . $act[$nxt+1] .
+                $tmploc = $act[$nxt+1];
+                if (strpos($tmploc,'../maps/') !== FALSE) {
+                    $tmpurl = str_replace('../maps/','tmp/maps/',$tmploc);
+                } else {
+                    $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
+                }
+                $listel .= '<li>' . $act[$nxt] . ' <a href="' . $tmpurl .
                         '" target="_blank">' . $act[$nxt+2] . '</a></li>';
                 $nxt += 3;
             }
@@ -655,7 +667,6 @@ echo $albumHtml;
 <input type="hidden" name="href" value="<?php echo $refs;?>" />
 <input type="hidden" name="hpdat" value="<?php echo $pdat;?>" />
 <input type="hidden" name="hadat" value="<?php echo $adat;?>" />
-<input type="hidden" name="remake" value="<?php echo $redo;?>" />
 <input type="hidden" name="rhno" value="<?php echo $hikeNo;?>" />
 
 <div style="margin-left:8px;">

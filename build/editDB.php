@@ -328,9 +328,22 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" /><br />
 <label>Label: </label><input class="tstyle1" name="alabl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" /><br />
+<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" />
+<br /><br />
 
-<br /><input id="go" type="submit" value="Save Changes" />
+<div style="margin-left:8px;">
+<h3>Select an option below to save the edits</h3>
+<p><em>Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
+    <input id="master" type="password" name="mpass" size="12" maxlength="10" 
+        title="8-character code required" />&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="submit" name="savePg" value="Site Master" />
+</p>
+<p><em>Registered Users:</em> Select button to submit for review&nbsp;&nbsp;
+    <input type="submit" name="savePg" value="Submit for Review" />
+</p>
+</div>	
+
+<!-- <br /><input id="go" type="submit" value="Save Changes" /> -->
 </form>
 
 </div>

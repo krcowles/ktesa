@@ -217,6 +217,10 @@
             echo '<p style="color:brown;">' . $newHike[22] . " was not moved because it was detected"
                 . " as a duplicate file, and it was not designated to overwrite.</p>";
         }
+        
+        
+        
+        
         fputcsv($handle,$newHike);
         echo "<h2>" . $msg . "</h2>";
         fclose($handle);

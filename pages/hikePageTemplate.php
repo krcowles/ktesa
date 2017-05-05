@@ -331,6 +331,7 @@ if ($hikeTips !== '') {
         '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . 
         htmlspecialchars_decode($hikeTips,ENT_COMPAT) . '</p></div>' . "\n";
 }
+echo "<br />";
 echo $hikeInfo;
 if ($hikeReferences !== '') {
     echo '<fieldset>'."\n";

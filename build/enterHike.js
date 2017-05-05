@@ -8,23 +8,39 @@ var msgE;
 
 // Turn text blue to indicate user has uploaded a file
 $('#geomap').change( function() {
-	$('#l_gmap').css('color','DarkBlue');
+    $('#l_gmap').css('color','DarkBlue');
 });
 $('#elev').change( function() {
-	$('#l_elev').css('color','DarkBlue');
+    $('#l_elev').css('color','DarkBlue');
 });
 $('#gpxfile').change( function() {
-	$('#l_gpx').css('color','DarkBlue');
+    $('#l_gpx').css('color','DarkBlue');
 });
 $('#trkfile').change( function() {
-	$('#l_trk').css('color','DarkBlue');
+    $('#l_trk').css('color','DarkBlue');
 });
 $('#addon1').change( function() {
-	$('#l_add1').css('color','DarkBlue');
+    $('#l_add1').css('color','DarkBlue');
 });
 $('#addon2').change( function() {
-	$('#l_add2').css('color','DarkBlue');
+    $('#l_add2').css('color','DarkBlue');
 });
+
+// Preload the GPS Maps & Data Section based on user file uploads...
+function preload(targfile,datasect) {
+    var ptype = targfile.val();
+    if ( ptype.indexOf('html') === -1 ) {
+        var fname = '../gpx/' + ptype;
+        $(datasect).val(fname);
+    } else {
+        var fname  = '../maps/' + ptype;
+        $(datasect).val(fname);
+    }
+}
+$('#pmap').change( function() { preload($(this),'#ur1'); });
+$('#pgpx').change( function() { preload($(this),'#ur2'); });
+$('#amap').change( function() { preload($(this),'#ur5'); });
+$('#agpx').change( function() { preload($(this),'#ur6'); });
 
 /*       Setting the page-creation type for the submit button
 			NOTE: the "pageType" radio buttons are not part of the form submitted
@@ -90,6 +106,17 @@ $('#clrIt').on('click', function(e) {
 	document.getElementById("xl").value = "";
 });
 /* END OF page-creation type */
+
+// Turn on text to display additional options
+$('#opts').on('click', function() {
+    if ( $(this).text().substring(6,10) === 'this' ) {
+        $(this).text("Click here to hide optional files");
+        $('#ofiles').css('display','block');
+    } else {
+        $(this).text("Click this text for additional upload options");
+        $('#ofiles').css('display','none');
+    }
+});
 
 // PARTIALLY FILLED FORM-SAVING
 if (typeof(Storage) !== undefined) {
