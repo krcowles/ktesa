@@ -4,6 +4,7 @@
     if ( !file_exists($map) ) {
         $map = '../build/tmp/maps/' . $map;
     }
+    # the above should have located the map...
     if (!file_exists($map)) {
         die("Geomap could not be located");
     }
