@@ -322,6 +322,7 @@ if (!$newstyle) {
     echo '<div data-gpx="' . $gpxfile. '" id="chartline"></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
+echo " *** ROW COUNT *** " . $rowCount;
 for ($k=0; $k<$rowCount; $k++) {
     echo $rows[$k] . "\n"; 
 }

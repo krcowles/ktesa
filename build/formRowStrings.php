@@ -1,82 +1,68 @@
 <?php
-/* Each row retrieved is the html for that row's div element, consisting of all the
- * images contained in that row. When retrieved, it is in string form, so the html string
- * must be parsed to extract all the images. The images may be either <img id="pic...,
- * <iframe>, or <img (not pic id). The algorithm below then forms the row string for the
- * row in the form of a concatenated string with "^" separators.
+/* Each row retrieved is the html for that row's div, consisting of all the
+ * images contained in that row. When retrieved, it is in string form, so the 
+ * html string must be parsed to extract the data required to form the string
+ * arrays, which are ulitmately saved in the database. The POSTed images may 
+ * be either: <img id="pic..., or <img (not pic id). The algorithm below forms 
+ * the row string by concatenating image data with ^ separators. Remember that 
+ * the edit page scaled the pix down a bit for easier manipulation, so they
+ * need to be re-sized for the default page (950 = 960-margin)
  */
-function stringForm($sym,$remainder) {
-    $flag = '';
-    if ($sym !== 'div') {  # maps are surrounded by a div w/draggable border
-        $imgid = '';
-        if (preg_match("/id/",$remainder) > 0) {
-            $idpos = strpos($remainder,"id") + 4;
-            $imgid = substr($remainder,$idpos,3); 
-        } 
-        # get the image width;
-        $wdpos = strpos($remainder,"width") + 7;
-        $imgwd = substr($remainder,$wdpos,3);
+
+/* This function accepts a portion of the html text (for one image only)
+ * and forms the corresponding array string segment.
+ */
+function stringForm($targetTxt) {
+    $sym = '';
+    $imgid = '';
+    if (preg_match("/id/",$targetTxt) > 0) {
+        $idpos = strpos($targetTxt,"id") + 4;
+        $imgid = substr($targetTxt,$idpos,3); 
+    } 
+    # get the image width;
+    $wdpos = strpos($targetTxt,"width") + 7;
+    # assumption: width will be either 3 or 2 digits
+    $imgwd = substr($targetTxt,$wdpos,3);
+    if ( !is_numeric($imgwd) ) {
+        $imgwd = substr($targetTxt,$wdpos,2);
         if ( !is_numeric($imgwd) ) {
-            $imgwd = substr($remainder,$wdpos,2);
-            if ( !is_numeric($imgwd) ) {
-                echo "FAILED TO EXTRACT PIC WIDTH!";
-                $imgwd = 20;
-            }
+            echo "FAILED TO EXTRACT PIC WIDTH!";
+            $imgwd = 20;
         }
-        $srcpos = strpos($remainder,"src") + 5;
-        $srcend = strpos($remainder,"alt=") - 2;
-        $srclgth = $srcend - $srcpos;
-        $src = substr($remainder,$srcpos,$srclgth); 
-        if ($imgid === 'pic') {
-            $retstr = 'p^' . $imgwd . '^' . $src;
-            $flag = 'p';
-        } else {
-            $retstr = 'n^' . $imgwd . '^' . $src;
-            $flag = 'n';
-        }
-    } else {  #mapdiv
-        # note: both div & map have widths:
-        $divpos = strpos($remainder,"width") + 7;
-        $wdpos = strpos($remainder,"width",$divpos) + 7;
-        $imgwd = substr($remainder,$wdpos,3);
-        if ( !is_numeric($imgwd) ) {
-            $imgwd = substr($remainder,$wdpos,2);
-            if ( !is_numeric($imgwd) ) {
-                echo "FAILED TO EXTRACT PIC WIDTH!";
-                $imgwd = 20;
-            }
-        }
-        $srcpos = strpos($remainder,"src") + 5;
-        $refend = strpos($remainder,"map_name");
-        $srcend = strpos($remainder,'"',$refend);
-        $srclgth = $srcend - $srcpos;
-        $src = substr($remainder,$srcpos,$srclgth); 
-        $retstr = 'f^' . $imgwd . "^" . $src;
-        $flag = 'f';
-        #echo "MAP DATA:" . $retstr;
     }
-    return array($flag,$retstr);
+    $srcpos = strpos($targetTxt,"src") + 5;
+    $srcend = strpos($targetTxt,"alt=") - 2;
+    $srclgth = $srcend - $srcpos;
+    $src = substr($targetTxt,$srcpos,$srclgth); 
+
+    if ($imgid === 'pic') {
+        $retstr = 'p^' . $imgwd . '^' . $src;
+        $sym = 'p';
+    } else {
+        $retstr = 'n^' . $imgwd . '^' . $src;
+        $sym = 'n';
+    }
+    return array($sym,$retstr,$imgwd);
 }
 /* -------      MAIN      ------- */
 $rows = ['','','','','',''];
 $capts = [];
 for ($i=0; $i<6;$i++) {
     $tag = 'row' . $i;
-    #echo "***ROW " . $i;
-    $rowhtml = $_POST[$tag];
+    $rowhtml = filter_input(INPUT_POST,$tag);
     if ($rowhtml !== '') {
+        /* As the processing of images proceeds, collect the accumulated row
+         * width so that the rescaling to page width can be executed following
+         * this routine.
+         */
+        $rowWidth = 0;
         $imgCnt = 0;
-        # first img will always start immediately...
-        $type = substr($rowhtml,1,3);
-        if ($type !== 'div') {
-            $nextsympos = strpos($rowhtml,">");
-        } else {
-            $nextsympos = strpos($rowhtml,"/div>") + 4;
-        }
+        # prime the loop
+        $type = substr($rowhtml,1,3); # should always be img (formerly had map divs)
+        $nextsympos = strpos($rowhtml,">");
         $stringSeg = substr($rowhtml,1,$nextsympos);
         $unproclgth = strlen($rowhtml) - $nextsympos;
         $unprocStr = substr($rowhtml,$nextsympos+2,$unproclgth); // strip off beginning "<"
-        #echo "-------remainder at beginning of loop----------" . $unprocStr;
         # get the row ht (same for all images)
         $htpos = strpos($stringSeg,"height") + 8;
         $rowht = substr($stringSeg,$htpos,3);
@@ -90,7 +76,8 @@ for ($i=0; $i<6;$i++) {
         $imgstr = '';
         while ($stringSeg !== '') {
             $imgCnt++;
-            $stringEls = stringForm($type,$stringSeg);
+            $stringEls = stringForm($stringSeg);
+            $rowWidth += $stringEls[2];
             $imgstr .= '^' . $stringEls[1];
             $idtype = substr($imgstr,1,1);
             if ($stringEls[0] === 'p') {
@@ -102,23 +89,19 @@ for ($i=0; $i<6;$i++) {
                 array_push($capts,$alt);
                 $imgstr .= "^" . $alt;
             }
-            #echo "**RETURNED STRING**: " . $imgstr;
-            # trim off the lead and use the remainder
+            # trim off the lead and use the targetTxt
             $type = substr($unprocStr,0,3);
-            if ($type !== 'div') {
-                $nextstrend = strpos($unprocStr,">");
-            } else {
-                $nextstrend = strpos($unprocStr,"/div>") + 4;
-            }
+            $nextstrend = strpos($unprocStr,">");
             $stringSeg = substr($unprocStr,0,$nextstrend);
             $nextstrlgth = strlen($unprocStr) - $nextstrend;
             $unprocStr = substr($unprocStr,$nextstrend+2,$nextstrlgth);
-            #echo "NEXT type: " .$type . "; -- next: " . $stringSeg . "--remainder: " . $unprocStr;
         }
         # now form the complete string:
         $rowstr = $imgCnt . "^" . $rowht . $imgstr;
         $rows[$i] = $rowstr;
-        
+        $scale[$i] = 950/$rowWidth;
+    } else {
+        break;
     }
 }
 ?>
