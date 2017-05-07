@@ -10,7 +10,6 @@
             content="Tom Sandberg and Ken Cowles" />
     <meta name="robots"
             content="nofollow" />
-    <link href="../styles/960_16_col.css" type="text/css" rel="stylesheet" />
     <link href="enterHike.css" type="text/css" rel="stylesheet" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 </head>
@@ -395,14 +394,12 @@
 </form>
 </div>
 
-<div style="margin-left:24px;margin-top:-4px;" class="container_16">
+<div style="margin-left:24px;margin-top:-4px;">
     <p style="margin-bottom:4px">Save the current state of the form for later recall...</p>
     <button id="saver">Save Form Data</button>
-    <p id="unsaver" class="grid_16" style="margin-top:6px;">Restore a previously saved form: (currently none)</p>
-    <div id="left1" class="grid_8"></div>
-    <div id="right1" class="grid_8"></div>
-    <div id="left2" class="grid_8"></div>
-    <div id="right2" class="grid_8"></div>
+    <p id="unsaver" style="margin-top:6px;">Restore a previously saved form: (currently none)</p>
+    <div id="right1"><span id="left1"></span></div>
+    <div id="right2"><span id="left2"></span></div>
     <div id="save-modal" class="modal" style="background-color:white;">
         <p id="prev" style="text-align:center;"> NOTE: You may save up to two different forms<br />
         <em> You must re-upload CSV File (and associated image files) for complete restore!!</em></p>

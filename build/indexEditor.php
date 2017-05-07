@@ -9,7 +9,7 @@
             content="Tom Sandberg and Ken Cowles" />
 	<meta name="robots"
             content="nofollow" />
-	<link href="../styles/mapTblPg.css" type="text/css" rel="stylesheet" />
+	<link href="tables.css" type="text/css" rel="stylesheet" />
         <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 
 </head>
@@ -25,7 +25,7 @@
 </div>
 <p id="trail">Save Index Page Changes</p>
 
-<div style="padding:16px;">Select the index page you wish to edit by clicking on the "Web Pg" for the
+<div style="padding:16px;text-align:center;">Select the index page you wish to edit by clicking on the "Web Pg" for the
 index as listed in the table below.</div>
 <div><br />
 <?php 

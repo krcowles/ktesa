@@ -5,11 +5,9 @@
 	<meta charset="utf-8" />
 	<meta name="description"
 		content="Select hike to edit from table" />
-	<meta name="author"
-		content="Tom Sandberg and Ken Cowles" />
-	<meta name="robots"
-		content="nofollow" />
-	<link href="../styles/mapTblPg.css" type="text/css" rel="stylesheet" />
+	<meta name="author" content="Tom Sandberg and Ken Cowles" />
+	<meta name="robots" content="nofollow" />
+	<link href="tables.css" type="text/css" rel="stylesheet" />
         <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 
 </head>

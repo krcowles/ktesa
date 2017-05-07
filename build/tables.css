@@ -1,0 +1,62 @@
+/* Styles for the New Mexico Hiking Adventures page */
+body {
+    margin-left: auto;
+    margin-right: auto;
+    font-family: arial, verdana;
+    background-color: #dfdfdf; }
+a:visited {
+    color: DarkGreen; }
+.container {
+    position: relative; }
+img.webShift {
+    padding-left: 19px; }
+img.flckrShift {
+    padding-left: 15px; }
+img.expShift {
+    padding-left: 24px; }
+/* table dressing */
+table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    font-size: 14px;
+    text-align: left;
+    margin-top: 5px;
+    background-color: #ffffdf;
+    border-style: groove;
+    border-width: 4px;
+    border-color: goldenRod; }
+th {
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-style: outset;
+    border-width: 2px;
+    border-color: peru; }
+tr:hover {
+    background-color: BlanchedAlmond; }
+td {
+    vertical-align: top;
+    padding-left: 5px;
+    padding-right: 5px; }
+.hdr_row {
+    background-color: bisque; }
+.hdr_row:hover {
+    cursor: pointer;
+    background-color: Brown;
+    color: White; }
+.indxd {
+    color: brown; }
+#metric {
+    text-align: left;
+    width: 190px;
+    margin-left: 8px;
+    margin-top: -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: MidnightBlue;
+    border-style: inset;
+    border-width: 3px;
+    border-color: MidnightBlue;
+    cursor: pointer; }
+
