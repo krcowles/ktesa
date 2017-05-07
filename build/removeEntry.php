@@ -68,7 +68,7 @@
         } else if (filter_input(INPUT_GET,'savePg') === 'Submit for Review') {
             $msgout = '<p style="color:Brown;font-size:20px;">Your request to delete
                 the hike "' . $delete[1] . '" will be sent to the site master</p>';
-            $sent = mail("krcowles29@gmail.com","User submitted hike for deletion",$msgout);
+            $sent = mail("krcowles29@gmail.com","User submitted hike for deletion",$msgout,'From: krcowles29@gmail.com');
             if (!$sent) {
                 echo "FAILED TO SEND EMAIL...";
             }
