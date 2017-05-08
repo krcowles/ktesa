@@ -1,7 +1,7 @@
-/* This script is called early - before html - in order to define the drag/drop functions
- * specified in the html. Since the routine needs to update row information
- * whenever changes are made, and the page hasn't been loaded yet, the $rows
- * object is established after a brief timeout.
+/* This script is called early - before the main html - in order to define 
+ * the drag/drop functions specified in the html. Since the routine needs 
+ * to update row information whenever changes are made, and the page hasn't
+ * been loaded yet, the $rows object is established after a brief timeout.
  */
 var $rows; // must be global
 var $captions;

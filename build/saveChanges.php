@@ -293,9 +293,10 @@
      */
     if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
         $passwd = filter_input(INPUT_POST,'mpass');
-        if ($passwd !== '000ktesa') {
+        echo "PUT IN: " . $passwd;
+        /*if ($passwd !== '000ktesa') {
             die('<p style="color:brown;">Incorrect Password - save not executed</p>');
-        }
+        } */
         $dbhandle = fopen($database,"w");
         foreach ($wholeDB as $hikedat) {
             if ($hikedat[0] == $hikeNo) {
