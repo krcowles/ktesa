@@ -3,16 +3,26 @@
 <html lang="en-us">
 
 <head>
-	<title>Save Changes to Database</title>
-	<meta charset="utf-8" />
-	<meta name="description"
-		content="Save any hike page changes back to the database" />
-	<meta name="author" content="Tom Sandberg and Ken Cowles" />
-	<meta name="robots" content="nofollow" />
-	<link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
+    <title>Save Changes to Database</title>
+    <meta charset="utf-8" />
+    <meta name="description"
+            content="Save any hike page changes back to the database" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
+    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
+
+<div id="logo">
+    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+    <p id="logo_left">Hike New Mexico</p>
+
+    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
+    <p id="logo_right">w/Tom &amp; Ken</p>
+</div>
+<p id="trail">Saving Hike Page Edits</p>
 
 <?php
     $database = '../data/database.csv';

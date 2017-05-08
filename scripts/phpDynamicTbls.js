@@ -8,58 +8,58 @@ var endTbl;  // the closing part of the wrapper
 var noPart1;
 var noPart2;
 var compare = {
-	std: function(a,b) {	// standard sorting - literal
-		if ( a < b ) {
-			return -1;
-		} else {
-			return a > b ? 1 : 0;
-		}
-	},
-	lan: function(a,b) {    // "Like A Number": extract numeric portion for sort
-		// commas allowed in numbers, so;
-		var indx = a.indexOf(',');
-		if ( indx < 0 ) {
-			a = parseFloat(a);
-		} else {
-			noPart1 = parseFloat(a);
-			msg = a.substring(indx + 1, indx + 4);
-			noPart2 = msg.valueOf();
-			a = noPart1 + noPart2;
-		}
-		indx = b.indexOf(',');
-		if ( indx < 0 ) {
-			b = parseFloat(b);
-		} else {
-			noPart1 = parseFloat(b);
-			msg = b.substring(indx + 1, indx + 4);
-			noPart2 = msg.valueOf();
-			b = noPart1 + noPart2;
-		}
-		return a - b;
-	} 
+    std: function(a,b) {	// standard sorting - literal
+        if ( a < b ) {
+            return -1;
+        } else {
+            return a > b ? 1 : 0;
+        }
+    },
+    lan: function(a,b) {    // "Like A Number": extract numeric portion for sort
+        // commas allowed in numbers, so;
+        var indx = a.indexOf(',');
+        if ( indx < 0 ) {
+            a = parseFloat(a);
+        } else {
+            noPart1 = parseFloat(a);
+            msg = a.substring(indx + 1, indx + 4);
+            noPart2 = msg.valueOf();
+            a = noPart1 + noPart2;
+        }
+        indx = b.indexOf(',');
+        if ( indx < 0 ) {
+            b = parseFloat(b);
+        } else {
+            noPart1 = parseFloat(b);
+            msg = b.substring(indx + 1, indx + 4);
+            noPart2 = msg.valueOf();
+            b = noPart1 + noPart2;
+        }
+        return a - b;
+    } 
 };  // end of COMPARE object
 
 var refRows; // needs to be global to effect dynamic table construction & sorts
 var useTbl = $('title').text() == 'Hike Map' ? false : true;
 if ( useTbl ) {
-	/* INITIAL PAGE LOAD OF USER TABLE */
-	tblHtml = '<table class="msortable">';
-	tblHtml += $('table').html();
-	var indx = tblHtml.indexOf('<tbody') + 7;
-	tblHtml = tblHtml.substring(0,indx);  // strip off the main body (after colgrp & hdr)
-	endTbl = ' </tbody> </table>';
-	endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
-	/* For display, sorting, etc., create the full table on initial page load, 
-	   put it in <div id="usrTbl">  */
-	$tblRows = $('#refTbl tbody tr');
-	refRows = $tblRows.toArray();
-	var iCnt = refRows.length;
-	var fullTbl = new Array();
-	for ( var x=0; x<iCnt; x++ ) {
-		// every row will be used on initial page load, so create a full sequential array:
-		fullTbl[x] = x;
-	}
-	formTbl( iCnt, fullTbl ); // form the usrTbl - variably sized later
+    /* INITIAL PAGE LOAD OF USER TABLE */
+    tblHtml = '<table class="msortable">';
+    tblHtml += $('table').html();
+    var indx = tblHtml.indexOf('<tbody') + 7;
+    tblHtml = tblHtml.substring(0,indx);  // strip off the main body (after colgrp & hdr)
+    endTbl = ' </tbody> </table>';
+    //endTbl += ' <div> <p id="metric" class="dressing">Click here for metric units</p> </div>';
+    /* For display, sorting, etc., create the full table on initial page load, 
+       put it in <div id="usrTbl">  */
+    $tblRows = $('#refTbl tbody tr');
+    refRows = $tblRows.toArray();
+    var iCnt = refRows.length;
+    var fullTbl = new Array();
+    for ( var x=0; x<iCnt; x++ ) {
+        // every row will be used on initial page load, so create a full sequential array:
+        fullTbl[x] = x;
+    }
+    formTbl( iCnt, fullTbl ); // form the usrTbl - variably sized later
 }
 
 // Create the html for the viewport table, using the rows identified in "tblRowsArray"
@@ -181,44 +181,44 @@ function formTbl ( noOfRows, tblRowsArray ) {
 
 // Function to find elements within current bounds and display them in a table
 function IdTableElements(boundsStr) {
-	// ESTABLISH CURRENT VIEWPORT BOUNDS:
-	var beginA = boundsStr.indexOf('((') + 2;
-	var leftParm = boundsStr.substring(beginA,boundsStr.length);
-	var beginB = leftParm.indexOf('(') + 1;
-	var rightParm = leftParm.substring(beginB,leftParm.length);
-	var south = parseFloat(leftParm);
-	var north = parseFloat(rightParm);
-	var westIndx = leftParm.indexOf(',') + 1;
-	var westStr = leftParm.substring(westIndx,leftParm.length);
-	var west = parseFloat(westStr);
-	var eastIndx = rightParm.indexOf(',') + 1;
-	var eastStr = rightParm.substring(eastIndx,rightParm.length);
-	var east = parseFloat(eastStr);
-	var hikeSet = new Array();
-	var tblEl = new Array(); // holds the index into the row number array: tblRows
-	var pinLat;
-	var pinLng;
-	// REMOVE previous table:
-	$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
-	/* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
-	var n = 0;
-	var rowCnt = 0;
-	var $allRows = $('#refTbl tbody tr');
-	for (i=0; i<$allRows.length; i++) {
-		var tmpLat = $($allRows[i]).data('lat');
-		var tmpLng = $($allRows[i]).data('lon');
-		pinLat = parseFloat(tmpLat);
-		pinLon = parseFloat(tmpLng);	
-		if( pinLon <= east && pinLon >= west && pinLat <= north && pinLat >= south ) {
-			tblEl[n] = i;
-			n++;
-			rowCnt ++;
-		}	
-	}
-	if ( rowCnt === 0 ) {
-		msg = '<p>NO hikes in this area</p>';;
-		$('#usrTbl').append(msg);
-	} else {
-		formTbl( rowCnt, tblEl );
-	}
+    // ESTABLISH CURRENT VIEWPORT BOUNDS:
+    var beginA = boundsStr.indexOf('((') + 2;
+    var leftParm = boundsStr.substring(beginA,boundsStr.length);
+    var beginB = leftParm.indexOf('(') + 1;
+    var rightParm = leftParm.substring(beginB,leftParm.length);
+    var south = parseFloat(leftParm);
+    var north = parseFloat(rightParm);
+    var westIndx = leftParm.indexOf(',') + 1;
+    var westStr = leftParm.substring(westIndx,leftParm.length);
+    var west = parseFloat(westStr);
+    var eastIndx = rightParm.indexOf(',') + 1;
+    var eastStr = rightParm.substring(eastIndx,rightParm.length);
+    var east = parseFloat(eastStr);
+    var hikeSet = new Array();
+    var tblEl = new Array(); // holds the index into the row number array: tblRows
+    var pinLat;
+    var pinLng;
+    // REMOVE previous table:
+    $('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
+    /* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
+    var n = 0;
+    var rowCnt = 0;
+    var $allRows = $('#refTbl tbody tr');
+    for (i=0; i<$allRows.length; i++) {
+        var tmpLat = $($allRows[i]).data('lat');
+        var tmpLng = $($allRows[i]).data('lon');
+        pinLat = parseFloat(tmpLat);
+        pinLon = parseFloat(tmpLng);	
+        if( pinLon <= east && pinLon >= west && pinLat <= north && pinLat >= south ) {
+            tblEl[n] = i;
+            n++;
+            rowCnt ++;
+        }	
+    }
+    if ( rowCnt === 0 ) {
+        msg = '<p>NO hikes in this area</p>';;
+        $('#usrTbl').append(msg);
+    } else {
+        formTbl( rowCnt, tblEl );
+    }
 } // END: IdTableElements() FUNCTION
