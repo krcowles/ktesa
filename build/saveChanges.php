@@ -25,10 +25,40 @@
 <p id="trail">Saving Hike Page Edits</p>
 
 <?php
+    # Function to resize rows to standard page width
+    function scaleRow($rowString,$scaling) {
+        $rowEls = explode("^",$rowString);
+        $noOfImgs = $rowEls[0];
+        array_shift($rowEls);
+        $oldht = intval($rowEls[0]);
+        $newHeight = floor($scaling * $oldht);
+        array_shift($rowEls);
+        # remaining $rowEls are images
+        $indx = 0;
+        $returnString = '';
+        for ($j=0; $j<$noOfImgs; $j++) {
+            $itype = $rowEls[$indx];
+            $owdth = $rowEls[$indx+1];
+            $iwdth = floor($scaling * $owdth);
+            $isrc = $rowEls[$indx+2];
+            if ($itype === 'p') {
+                $returnString .= '^p^' . $iwdth . '^' . $isrc . '^' . 
+                   $rowEls[$indx+3];
+                $indx += 4;
+            } else {
+                $returnString .= '^n^' . $iwdth . '^' . $isrc;
+                $indx += 3;
+            }
+        }
+        $returnString = $noOfImgs . "^" . $newHeight . $returnString;
+        return $returnString;
+    }
+    # END FUNCTION
+    
     $database = '../data/database.csv';
     $dbhandle = fopen($database,"r");	
     $hikeNo = filter_input(INPUT_POST,'hno');
-    $wholeDB = [];
+    $wholeDB = array();
     $dbindx = 0;
     while ( ($hikeDat = fgetcsv($dbhandle)) !== false ) {
         $wholeDB[$dbindx] = $hikeDat;
@@ -54,13 +84,13 @@
     $clusArray = explode(";",$clusters);
     # 1.
     $delClus = filter_input(INPUT_POST,'rmclus');
-    $nxtGrp = filter_input(INPUT_POST,'nxtg');
+    $nextGrp = filter_input(INPUT_POST,'nxtg');
     $grpChg = filter_input(INPUT_POST,'chgd');
-    if ( isset($delClus) && $delCLus === 'YES' ) {
+    if ( isset($delClus) && $delClus === 'YES' ) {
         $info[3] = 'Normal';
         $info[5] = '';
         $info[28] = '';
-    } elseif ( isset($nxtGrp) && $nxtGrp === 'YES' ) {	
+    } elseif ( isset($nextGrp) && $nextGrp === 'YES' ) {	
     # 2.
         $availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $doubleLtrs = 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ';
@@ -77,7 +107,7 @@
         $info[3] = 'Cluster';
         $info[5] = $newgrp;
         $info[28] = filter_input(INPUT_POST,'newgname');
-    } elseif ( $grpChg === 'YES' ) {
+    } elseif ($grpChg  === 'YES') {
     # 3. (NOTE: marker can be assigned to 'Cluster' regardless of whether previously cluster type
         $info[3] = 'Cluster';
         $newname = filter_input(INPUT_POST,'htool');
@@ -114,18 +144,39 @@
     $info[23] = filter_input(INPUT_POST,'purl1');
     $info[24] = filter_input(INPUT_POST,'purl2');
     $info[25] = filter_input(INPUT_POST,'gdirs');
+
+    include('formRowStrings.php');  /* $rows array is formed from passed strings
+     * along with the scaling factor to be applied to restore the row to 
+     * the standard page width (950 = 960 - margin)
+     */
+    
+    #ROW EDITING: RE-SCALE to 950
+    for ($k=0; $k<6; $k++) {
+        if ($rows[$k] !== '') {
+            $resizedRow = scaleRow($rows[$k],$scale[$k]);
+            $info[29+$k] = $resizedRow;
+        } else {
+            $info[29+$k] = '';
+        }
+    }
+    /* CAPTIONS - no longer used
+    $noOfCaps = count($capts);
+    $dbCaps = implode("^",$capts);
+    $info[35] = $noOfCaps . "^" . $dbCaps;
+     */
+
     $htips = filter_input(INPUT_POST,'tips');
     if (substr($htips,0,15) !== '[NO TIPS FOUND]') {
-        $info[37] = $htips;
+            $info[37] = $htips;
     } else {
-        $info[37] = '';
+            $info[37] = '';
     }
     $info[38] = filter_input(INPUT_POST,'hinfo');
     # Re-assemble ref string
-    $rawreftypes = $_POST['rtype'];  // rtype is array
+    $rawreftypes = $_POST['rtype'];
     $noOfRefs = count($rawreftypes);  // should always be 1 or greater
-    $rawrit1 = $_POST['rit1'];  // array
-    $rawrit2 = $_POST['rit2'];  // array
+    $rawrit1 = $_POST['rit1'];
+    $rawrit2 = $_POST['rit2'];
     # there will always be the same no of rtype's & rit1's, BUT NOT rit2's!
     $r2indx = 0;
     $rcnt = 0;
@@ -227,16 +278,17 @@
             }
         }
         if ($acnt > 0) {
-                $actStr = $acnt . $actStr;	
+            $actStr = $acnt . $actStr;	
         } else {
-                $actStr = '';
+            $actStr = '';
         }
     }  // end of actual data processing, if present
     $info[41] = $actStr;
     
     /* Save changes based on whether or not site master: registered users
      * will have a temporary database change saved for review by the site
-     * master, to be integrated with the site after acceptance.
+     * master, to be integrated with the site after acceptance. The temp
+     * database will contain only the modified page, not the entire db.
      * NOTE: THIS IS PRELIMINARY AND BY NO MEANS A VETTED USER PROCESS!!!!
      */
     if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
@@ -245,31 +297,32 @@
             die('<p style="color:brown;">Incorrect Password - save not executed</p>');
         }
         $dbhandle = fopen($database,"w");
+        foreach ($wholeDB as $hikedat) {
+            if ($hikedat[0] == $hikeNo) {
+                fputcsv($dbhandle,$info);
+            } else {
+                fputcsv($dbhandle,$hikedat);
+            }
+        }
+        fclose($dbhandle);
     } else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
-        $userchgs = '../data/reviewdat.csv';
-        $dbhandle = fopen($userchgs,"w");
+        $database = '../data/reviewdat.csv';
+        $dbhandle = fopen($database,"a");
+        fputcsv($dbhandle,$info);
+        fclose($dbhandle);
     } else {
         die('<p style="color:brown;">Contact Site Master: Submission not recognized');
     } 
-    foreach ($wholeDB as $hikedat) {
-        if ($hikedat[0] == $hikeNo) {
-            fputcsv($dbhandle,$info);
-        } else {
-            fputcsv($dbhandle,$hikedat);
-        }
-    }
-    fclose($dbhandle);
- 
-
+    
 ?>
 <div style="padding:16px;">
 <h2>The changes submitted for <?php echo $info[1];?> (if any) have been saved to the database.</h2>
 </div>
 
 <div data-ptype="hike" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
-	<button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this hike</button><br />
-	<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button><br />
-	<button style="font-size:16px;color:DarkBlue;" id="view">View the Edited Page</button>
+    <button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this hike</button><br />
+    <button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button><br />
+    <button style="font-size:16px;color:DarkBlue;" id="view">View the Edited Page</button>
 </div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>

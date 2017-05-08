@@ -1,5 +1,5 @@
 $( function () { // when page is loaded...
-	
+
 /* Each drop-down field parameter is held in a hidden <p> element; the data (text)
    in that hidden <p> element is the default that should appear in the drop-down box
    The drop-down style parameters are:
@@ -137,7 +137,58 @@ for (var i=0; i<refCnt; i++) {
 	$(refname).val(rid);
 }
 
-// When changing marker type to Cluster:
+// FOR USE BY picNPlace ROUTINE:
+$('#loadimg').change( function(e) {
+	e.preventDefault();
+	var isrc = $('#picurl').val();
+	var newimg = '<img style="margin-right:10px;" id= "newpic" draggable="true" ondragstart="drag(event)" src="' + 
+		isrc + '" alt="image from url" />';
+	$('#getimg').append(newimg);
+    $('img').load( function() {
+		var loadedImg = document.getElementById('newpic');
+		var oldht = loadedImg.height;
+		var oldwd = loadedImg.width;
+		var scale = oldwd/oldht;
+		var newwd = Math.floor(scale * 200);
+		loadedImg.height = 200; // start with reasonably sized image
+		loadedImg.width = newwd;
+	});
+
+	$(this).attr('checked',false);
+});
+$('#addbox').change( function(e) {
+	e.preventDefault();
+	var $currRows = $('div[id^="row"]');
+	var rowno = $currRows.length;
+	if (rowno > 5) {
+		window.alert('Already at maximum number of rows; cannot add new one');
+	} else {
+		var newins = '<div id="insRow' + rowno + '" class="ins">';
+		newins += '<img id="lead' + rowno + '" style="float:left;" ondrop="drop(event)"' +
+			' ondragover="allowDrop(event)" height="30" width="30" src="insert.png" alt="drop-point" />';
+		newins += '</div>';
+		var olddiv = '#caps' + (rowno - 1);
+		$(newins).insertAfter(olddiv);
+		var newimg = '<div id="row' + rowno + '" class="ImgRow" style="margin-left:20px;clear:both;"></div>';
+		var insdiv = '#insRow' + rowno;
+		$(newimg).insertAfter(insdiv);
+		var newcap = '<div id="caps' + rowno + '" style="margin-left:20px;"></div>';
+		var capdiv = '#row' + rowno;
+		$(newcap).insertAfter(capdiv);
+	}
+	$(this).attr('checked',false);
+        // add new row to rows object
+        $rows = null;
+        $rows = $('div[id^="row"]');
+});
 
 
-}); // end of page is loaded...
+});  // end of 'page (DOM) loading complete'
+
+
+
+
+
+
+
+

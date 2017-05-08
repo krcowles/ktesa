@@ -90,3 +90,11 @@ input[type=checkbox]
   -o-transform: scale(1.5); /* Opera */
   padding: 10px;
 }
+.gridbox {
+	float: left;
+	height: 60px;
+	width: 58px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+}
