@@ -1,13 +1,13 @@
 // TRACK COLORS 
 var lineColor = '#2974EB';  // apparently a google api function also assigns to this name
-const trackClr1 = '#FF0000';
-const trackClr2 = '#0000FF';
-const trackClr3 = '#F88C00';
-const trackClr4 = '#884998';
+var trackClr1 = '#FF0000';
+var trackClr2 = '#0000FF';
+var trackClr3 = '#F88C00';
+var trackClr4 = '#884998';
 // constants for readability during marker creation
-const VC_TYPE = 0; 
-const CH_TYPE = 1;
-const NH_TYPE = 2;
+var VC_TYPE = 0; 
+var CH_TYPE = 1;
+var NH_TYPE = 2;
 
 
 var map;  // needs to be global!
@@ -440,7 +440,7 @@ function idClusters() {
 			cTracks.push(cObj);
 		} else {
 			// this group already exists
-			for (k=0; k<ctracks.length; k++) {
+			for (k=0; k<cTracks.length; k++) {
 				if (cTracks[k].id == cId) {
 					cTracks[k].cnt++;
 					break;

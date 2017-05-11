@@ -1,23 +1,29 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
 <head>
 	<title>Edit Database</title>
 	<meta charset="utf-8" />
-	<meta name="language"
-			content="EN" />
 	<meta name="description"
-		content="Edit a given hike" />
+		content="Edit the selected hike" />
 	<meta name="author"
 		content="Tom Sandberg and Ken Cowles" />
 	<meta name="robots"
 		content="nofollow" />
-	<link href="editDB.css"
-		type="text/css" rel="stylesheet" />
+	<link href="editDB.css" type="text/css" rel="stylesheet" />
+        <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
-
+    
+<div id="logo">
+	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+	<p id="logo_left">Hike New Mexico</p>
+	
+	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
+	<p id="logo_right">w/Tom &amp; Ken</p>
+</div>
+<p id="trail">Hike Page Editor</p>
 <div style="padding:16px;">
 <?php
 	$database = '../data/database.csv';
@@ -105,26 +111,34 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 </select>&nbsp;&nbsp;
 <p id="mrkr" style="display:none"><?php echo $info[3];?></p>
 <p id="group" style="display:none"><?php echo $info[28];?></p>
-<h3>------- Cluster Hike Assignments: (Hikes with overlapping trailheads or in close proximity) &nbsp;&nbsp;&nbsp;
-<span style="font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
+<h3>------- Cluster Hike Assignments: (Hikes with overlapping trailheads or in 
+    close proximity) -------<br />
+<span style="margin-left:50px;font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
 	<input id="ignore" type="checkbox" name="nocare" /></span></h3>
 <?php
 	echo '<label for="ctip">&nbsp;&nbsp;Cluster: </label>';
 	echo '<select id="ctip" name="htool">';
 	for ($i=0; $i<$grpCnt; $i++) {
-		echo '<option value="' . $cnames[$i] . '">' . $cnames[$i] . '</option>';
+		echo '<option value="' . $cnames[$i] . '">' . $cnames[$i] .
+                     '</option>';
 	}
-	echo '</select>&nbsp;&nbsp;';
+	echo '</select>&nbsp;&nbsp;' .
+            '<span id="showdel" style="display:none;">You may remove the cluster ' .
+                'assignment by checking here:&nbsp;<input id="deassign" ' .
+                'type="checkbox" name="rmclus" value="NO" /></span>' .
+            '<span id="notclus" style="display:none;">There is no currently ' .
+                'assigned cluster for this hike.</span>';
 ?>
-<span id="notclus" style="display:none;">There is no currently assigned cluster for this hike</span>
 <input id="mrkrchg" type="hidden" name="chg2clus" value="NO" />
 <input id="grpchg" type="hidden" name="chgd" value="NO" />
-<p>If you are establishing a new group, select the checkbox: <input id="newg" type="checkbox"
-	name="nxtg" value="NO" /> and enter the name for the new group here: <input id="newt" 
-	type="text" name="newgname" size="50" /></p>
-<p id="showdel" style="display:none;">You may remove the cluster assignment by checking here:&nbsp;&nbsp;
-	<input id="deassign" type="checkbox" name="rmclus" value="NO" /></p>
-<h3>------- End of Cluster Assignments</h3>
+
+<p>If you are establishing a new group, select the checkbox: 
+    <input id="newg" type="checkbox" name="nxtg" value="NO" />
+</p>
+<p style="margin-top:-10px;margin-left:40px;">and enter the name for the new group here: 
+        <input id="newt" type="text" name="newgname" size="50" />
+</p>
+<h3>------- End of Cluster Assignments -------</h3>
 
 <p id="ctype" style="display:none"><?php echo $info[6];?></p>
 <label for="type">Hike Type: </label>
@@ -134,7 +148,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	<option value="Out-and-back">Out-and-back</option>
 </select>&nbsp;&nbsp;
 <label for="miles">Round-trip length in miles: </label><textarea id="miles" name="hlgth"><?php echo $info[7];?></textarea>&nbsp;&nbsp;
-<label for="elev">Elevation change in feet: </label><textarea id="elev" name="helev"><?php echo $info[8];?></textarea>&nbsp;&nbsp;
+<label for="elev">Elevation change in feet: </label><textarea id="elev" name="helev"><?php echo $info[8];?></textarea><br /><br />
 <p id="dif" style="display:none"><?php echo $info[9];?></p>
 <label for="diff">Level of difficulty: </label>
 <select id="diff" name="hdiff">
@@ -143,10 +157,10 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	<option value="Moderate">Moderate</option>
 	<option value="Med-Difficult">Medium-Difficult</option>
 	<option value="Difficult">Difficult</option>
-</select><br />
-<label for="fac">Facilities at the trailhead: </label><textarea id="fac" name="hfac"><?php echo $info[10];?></textarea>&nbsp;&nbsp;
+</select>
+<label for="fac">Facilities at the trailhead: </label><textarea id="fac" name="hfac"><?php echo $info[10];?></textarea><br /><br />
 <label for="wow">"Wow" Appeal: </label><textarea id="wow" name="hwow"><?php echo $info[11];?></textarea>&nbsp;&nbsp;
-<label for="seas">Best Hiking Times: </label><textarea id="seas" name="hsea"><?php echo $info[12];?></textarea><br /><br />
+<label for="seas">Best Hiking Seasons: </label><textarea id="seas" name="hsea"><?php echo $info[12];?></textarea><br /><br />
 <p id="expo" style="display:none"><?php echo $info[13];?></p>
 <label for="sun">Exposure: </label>
 <select id="sun" name="hexp">
@@ -314,9 +328,22 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" /><br />
 <label>Label: </label><input class="tstyle1" name="alabl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" /><br />
+<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" />
+<br /><br />
 
-<br /><input id="go" type="submit" value="Save Changes" />
+<div style="margin-left:8px;">
+<h3>Select an option below to save the edits</h3>
+<p><em>Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
+    <input id="master" type="password" name="mpass" size="12" maxlength="10" 
+        title="8-character code required" />&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="submit" name="savePg" value="Site Master" />
+</p>
+<p><em>Registered Users:</em> Select button to submit for review&nbsp;&nbsp;
+    <input type="submit" name="savePg" value="Submit for Review" />
+</p>
+</div>	
+
+<!-- <br /><input id="go" type="submit" value="Save Changes" /> -->
 </form>
 
 </div>
