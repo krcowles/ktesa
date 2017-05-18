@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Paliza_Goblin_Colony + GPSVinput</title>
+		<title>Paliza_Goblin_Colony + PalizaCanyon</title>
 		<base target="_top"></base>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -47,7 +47,7 @@
 		
 		<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->
 		<script type="text/javascript">
-			/* Global variables used by the GPS Visualizer functions (20170512180307): */
+			/* Global variables used by the GPS Visualizer functions (20170517200642): */
 			gv_options = {};
 			
 			// basic map parameters:
@@ -128,7 +128,7 @@
 			gv_options.driving_directions = true;  // put a small "driving directions" form in each marker's pop-up window? (override with dd:true or dd:false in a marker's options)
 			gv_options.garmin_icon_set = 'gpsmap'; // 'gpsmap' are the small 16x16 icons; change it to '24x24' for larger icons
 			gv_options.marker_list_options = {};  // options for a dynamically-created list of markers
-			  gv_options.marker_list_options.enabled = false;  // true|false: enable or disable the marker list altogether
+			  gv_options.marker_list_options.enabled = true;  // true|false: enable or disable the marker list altogether
 			  gv_options.marker_list_options.floating = true;  // is the list a floating box inside the map itself?
 			  gv_options.marker_list_options.position = ['RIGHT_BOTTOM',6,38];  // floating list only: position within map
 			  gv_options.marker_list_options.min_width = 160; // minimum width, in pixels, of the floating list
@@ -229,18 +229,19 @@
 				GV_Draw_Marker({lat:35.7138855,lon:-106.6221277,name:'3.9 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Paliza Goblin Colony [tickmarks]',rotation:233.1,track_number:1,dd:false});
 				GV_Draw_Marker({lat:35.7119735,lon:-106.6263897,name:'4.2 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Paliza Goblin Colony [tickmarks]',rotation:228.4,track_number:1,dd:false});
 				GV_Draw_Marker({lat:35.7088794,lon:-106.6274132,name:'4.44 mi',desc:'',color:trk[1].info.color,icon:'tickmark',type:'tickmark',folder:'Paliza Goblin Colony [tickmarks]',rotation:345.0,track_number:1,dd:false});
-				GV_Draw_Marker({lat:35.7233472,lon:-106.6163778,name:'Near the turn-around, a look back',desc:'RidgeView',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33778272654/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4156/33778272654_9df4fa3f2f_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7256861,lon:-106.6208639,name:'Looking back over the route up',desc:'HoodooHts',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34235409230/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4177/34235409230_a540889a59_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7254056,lon:-106.6211306,name:'Paget highlights the scenery',desc:'GoblinModel',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34235423640/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4166/34235423640_051577c75e_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7249972,lon:-106.6169889,name:'A small burn area allows a forest of mullein invaders',desc:'MulleinForest',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34579831696/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4170/34579831696_82cea5aca8_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7253417,lon:-106.6210944,name:'Topping the hill, the \'holey\' rock full of swallows',desc:'KensClimb',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34490781091/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4181/34490781091_7e4d63ed71_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7260083,lon:-106.6180583,name:'A miniature version of the Natl Monument',desc:'MiniTentRocks',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34490790911/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4162/34490790911_b0ce4a4261_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7250028,lon:-106.6203167,name:'Contorted rock shapes line the hills',desc:'TwistedShapes',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34490800101/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4184/34490800101_f256fb48ae_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7258389,lon:-106.6179889,name:'Mushroom rock with a hard hat',desc:'Mushroom',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33811343863/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4182/33811343863_acf7fd88dc_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7240139,lon:-106.6204917,name:'A family of hoodoos as you leave the forest road',desc:'HoodooFamily',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34459366442/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4165/34459366442_02afc1de82_q.jpg',folder:'Folder1'});
-				GV_Draw_Marker({lat:35.7245417,lon:-106.6202167,name:'A member of the goblin family',desc:'ResidentGoblin',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34490804551/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4190/34490804551_67baf13c7a_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.7096889,lon:-106.6272500,name:'Bill leads the way at the trailhead.',desc:'TrailheadBill',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34621433995/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4162/34621433995_b1955493b4_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7240139,lon:-106.6204917,name:'A family of hoodoos as you leave the forest road',desc:'HoodooFamily',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34459366442/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4165/34459366442_02afc1de82_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7250028,lon:-106.6203167,name:'Contorted rock shapes line the hills',desc:'TwistedShapes',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34490800101/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4184/34490800101_f256fb48ae_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7252043,lon:-106.6207791,name:'Bill\'s appreciation begins to grow',desc:'HoodooAdmirer',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33811308993/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4164/33811308993_abc7c167f7_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7253417,lon:-106.6210944,name:'Topping the hill, the \'holey\' rock full of swallows',desc:'KensClimb',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34490781091/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4181/34490781091_7e4d63ed71_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7254056,lon:-106.6211306,name:'Paget highlights the scenery',desc:'GoblinModel',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34235423640/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4166/34235423640_051577c75e_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7256861,lon:-106.6208639,name:'Looking back over the route up',desc:'HoodooHts',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34235409230/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4177/34235409230_a540889a59_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.7251500,lon:-106.6207056,name:'Looking back on the beautiful sight of hoodoos',desc:'HoodooHindsight',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33811359953/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4160/33811359953_168c422d25_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7245417,lon:-106.6202167,name:'A member of the goblin family',desc:'ResidentGoblin',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34490804551/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4190/34490804551_67baf13c7a_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7258389,lon:-106.6179889,name:'Mushroom rock with a hard hat',desc:'Mushroom',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33811343863/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4182/33811343863_acf7fd88dc_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7260083,lon:-106.6180583,name:'A miniature version of the Natl Monument',desc:'MiniTentRocks',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34490790911/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4162/34490790911_b0ce4a4261_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7249972,lon:-106.6169889,name:'A small burn area allows a forest of mullein invaders',desc:'MulleinForest',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34579831696/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4170/34579831696_82cea5aca8_q.jpg',folder:'Folder1'});
+				GV_Draw_Marker({lat:35.7233472,lon:-106.6163778,name:'Near the turn-around, a look back',desc:'RidgeView',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/33778272654/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4156/33778272654_9df4fa3f2f_q.jpg',folder:'Folder1'});
 				GV_Draw_Marker({lat:35.7261000,lon:-106.6167917,name:'Bill finds a spot to rest with crested rock formations behind.',desc:'BillsBreak',color:'pink',icon:'',url:'https://www.flickr.com/photos/139088815@N08/34490824741/in/album-72157680666183383',thumbnail:'https://c1.staticflickr.com/5/4162/34490824741_cf59d5a600_q.jpg',folder:'Folder1'});
 				
 				
@@ -249,7 +250,7 @@
 			  
 			}
 			GV_Map(); // execute the above code
-			// http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=auto
+			// http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&wpt_list=name&add_elevation=auto
 		</script>
 		
 		
