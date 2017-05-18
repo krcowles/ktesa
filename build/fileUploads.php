@@ -251,6 +251,7 @@ echo '</ul>' . "\n";
  * At this time, only two files of either type are provided for;
  * NOTE: Not testing for duplicate file names: these would over-write any such
  */
+$noup = '<p>This file has been previously uploaded; No further action taken on this file</p>';
 # PROPOSED DATA FILE1:
 echo '<h3 style="text-indent:8px">Uploaded Proposed Data User File1 Info:</h3>' . "\n";
 $pdatf1 = $_FILES['propmap']['tmp_name'];
@@ -259,7 +260,7 @@ $pf1Size = filesize($pfile1);
 $pf1Type = $_FILES['propmap']['type'];
 $pf1Stat = $_FILES['propmap']['error'];
 $pf1loc = filter_input(INPUT_POST,'f1');
-$pf1path = '../' . $pf1loc;
+$pf1site = '../' . $pf1loc . '/' . $pfile1;
 if ($pf1loc === 'maps') {
     $ftype = "/html/";
 } else {
@@ -273,10 +274,21 @@ if ( $pfile1 !== '') {
             ': should be ' . $ftype;
         die($msgout);
     }
-    if ($pf1Stat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($pdatf1,$fupload)) {
-            die("Could not save file - contact site master...");
-        }
+    # Check against previously uploaded files
+    if ( file_exists($fupload) ) {
+    	echo $noup;
+    } else {
+		# Check agains existing site files
+		if ( file_exists($pf1site) ) {
+			echo $fexists1 . $pfile1 . $fexists2. 
+				'<input id="owpf1" type="checkbox" name="pf1ow" />' . $fexists3;
+			$dupPmap = 'YES';
+		}
+		if ($pf1Stat === UPLOAD_ERR_OK) {
+			if (!move_uploaded_file($pdatf1,$fupload)) {
+				die("Could not save file - contact site master...");
+			}
+		}
     }
 }
 echo '<ul style="margin-top:-10px;">' . "\n";
@@ -298,7 +310,7 @@ $pf2Size = filesize($pfile2);
 $pf2Type = $_FILES['propgpx']['type'];
 $pf2Stat = $_FILES['propgpx']['error'];
 $pf2loc = filter_input(INPUT_POST,'f2');
-$pf2path = '../' . $pf2loc;
+$pf2site = '../' . $pf2loc . '/' . $pfile2;
 if ($pf2loc === 'maps') {
     $ftype = "/html/";
 } else {
@@ -312,10 +324,21 @@ if ( $pfile2 !== '') {
             ': should be ' . $ftype;
         die($msgout);
     }
-    if ($pf1Stat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($pdatf2,$fupload)) {
-            die("Could not save file - contact site master...");
-        }
+    # Check against previously uploaded files
+    if ( file_exists($fupload) ) {
+    	echo $noup;
+    } else {
+		# Check agains existing site files
+		if ( file_exists($pf2site) ) {
+			echo $fexists1 . $pfile2 . $fexists2. 
+				'<input id="owpf2" type="checkbox" name="pf2ow" />' . $fexists3;
+			$dupPgpx = 'YES';
+		}
+		if ($pf2Stat === UPLOAD_ERR_OK) {
+			if (!move_uploaded_file($pdatf2,$fupload)) {
+				die("Could not save file - contact site master...");
+			}
+		}
     }
 }
 echo '<ul style="margin-top:-10px;">' . "\n";
@@ -337,7 +360,7 @@ $af1Size = filesize($afile1);
 $af1Type = $_FILES['actmap']['type'];
 $af1Stat = $_FILES['actmap']['error'];
 $af1loc = filter_input(INPUT_POST,'f3');
-$af1path = '../' . $af1loc;
+$af1site = '../' . $af1loc . '/' . $afile1;
 if ($af1loc === 'maps') {
     $ftype = "/html/";
 } else {
@@ -350,12 +373,23 @@ if ( $afile1 !== '') {
             . ' file type for [' . $af1loc . '] ' . $afile1 . 
             ': should be ' . $ftype;
         die($msgout);
-    }
-    if ($af1Stat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($adatf1,$fupload)) {
-            die("Could not save file - contact site master...");
-        }
-    }
+    }   
+    # Check against previously uploaded files
+    if ( file_exists($fupload) ) {
+    	echo $noup;
+    } else {
+		# Check agains existing site files
+		if ( file_exists($af1site) ) {
+			echo $fexists1 . $afile1 . $fexists2. 
+				'<input id="owaf1" type="checkbox" name="af1ow" />' . $fexists3;
+			$dupAmap = 'YES';
+		}
+		if ($af1Stat === UPLOAD_ERR_OK) {
+			if (!move_uploaded_file($adatf1,$fupload)) {
+				die("Could not save file - contact site master...");
+			}
+		}
+	}
 }
 echo '<ul style="margin-top:-10px;">' . "\n";
 if ($afile1 !== '') {
@@ -376,7 +410,7 @@ $af2Size = filesize($pfile1);
 $af2Type = $_FILES['actgpx']['type'];
 $af2Stat = $_FILES['actgpx']['error'];
 $af2loc = filter_input(INPUT_POST,'f4');
-$af2path = '../' . $af2loc;
+$af2site = '../' . $af2loc . '/' . $afile2;
 if ($af2loc === 'maps') {
     $ftype = "/html/";
 } else {
@@ -390,7 +424,17 @@ if ( $afile2 !== '') {
             ': should be ' . $ftype;
         die($msgout);
     }
-    if ($pf1Stat === UPLOAD_ERR_OK) {
+    # Check against previously uploaded files
+    if ( file_exists($fupload) ) {
+    	echo $noup;
+    } else {
+		# Check agains existing site files
+		if ( file_exists($af2site) ) {
+			echo $fexists1 . $afile2 . $fexists2. 
+				'<input id="owaf2" type="checkbox" name="af2ow" />' . $fexists3;
+			$dupAmap = 'YES';
+		}
+    if ($af2Stat === UPLOAD_ERR_OK) {
         if (!move_uploaded_file($adatf2,$fupload)) {
             die("Could not save gpx file - contact site master...");
         }

@@ -10,14 +10,13 @@
 
  <div id="logo">
 	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-	<p id="logo_left">Hike New Mexico</p>
-	
+	<p id="logo_left">Hike New Mexico</p>	
 	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
 	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail">Validate This Hike!</p>
 
-<h2>VALIDATE DATA AND SELECT IMAGES</h2>
+<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>
 
 <form target="_blank" action="displayHikePg.php" method="POST">
 
@@ -37,9 +36,17 @@
     $owImg1 = 'NO';
     $dupImg2 = 'NO';
     $owImg2 = 'NO';
-    include "fileUploads.php";
-?>
-   
+    $dupPmap = 'NO';
+    $owPmap = 'NO';
+    $dupPgpx = 'NO';
+    $owPgpx = 'NO';
+    $dupAmap = 'NO';
+    $owAmap = 'NO';
+    $dupAgpx = 'NO';
+    $owAgpx = 'NO';
+    require "fileUploads.php";
+?>  
+<!-- Hidden Inputs Carrying File Upload Status --> 
 <input type="hidden" name="tsvf" value="<?php echo $dupTsv;?>" />
 <input id="overTsv" type="hidden" name="owt" value="<?php echo $owTsv;?>" />
 <input type="hidden" name="mapf" value="<?php echo $dupMap;?>" />
@@ -52,6 +59,15 @@
 <input id="overImg1" type="hidden" name="ow1" value="<?php echo $owImg1;?>" />
 <input type="hidden" name="img2f" value="<?php echo $dupImg2;?>" />
 <input id="overImg2" type="hidden" name="ow2" value="<?php echo $owImg2;?>" />
+<input type="hidden" name="pmapf" value="<?php echo $dupPmap;?>" />
+<input id="overPmap" type="hidden" name="owpm" value="<?php echo $owPmap;?>" />
+<input type="hidden" name="pgpxf" value="<?php echo $dupPgpx;?>" />
+<input id="overPgpx" type="hidden" name="owpg" value="<?php echo $owPgpx;?>" />
+<input type="hidden" name="amapf" value="<?php echo $dupAmap;?>" />
+<input id="overAmap" type="hidden" name="owam" value="<?php echo $owAmap;?>" />
+<input type="hidden" name="agpxf" value="<?php echo $dupAgpx;?>" />
+<input id="overAgpx" type="hidden" name="owag" value="<?php echo $owAgpx;?>" />
+
 <?php
 // hike form entry
 $hikeName = filter_input(INPUT_POST,'hpgTitle');
