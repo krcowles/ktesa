@@ -6,6 +6,7 @@ $fexists2 = ' has been previously saved on the server; ' .
             'Check here to overwrite: ';
 $fexists3 = '</em></p>' . "\n";
 $uploads = "tmp/"; 
+$datfileArray = [];  # prop & act data file names
 /* Uploaded file data looks for presence / absence of files and responds
  * accordingly. The data type for each file is also checked for correctness.
  * If a filename is found corresponding to an existing host file, the user
@@ -256,10 +257,12 @@ $noup = '<p>This file has been previously uploaded; No further action taken on t
 echo '<h3 style="text-indent:8px">Uploaded Proposed Data User File1 Info:</h3>' . "\n";
 $pdatf1 = $_FILES['propmap']['tmp_name'];
 $pfile1 = basename($_FILES['propmap']['name']);
+array_push($datfileArray,$pfile1);
 $pf1Size = filesize($pfile1);
 $pf1Type = $_FILES['propmap']['type'];
 $pf1Stat = $_FILES['propmap']['error'];
 $pf1loc = filter_input(INPUT_POST,'f1');
+array_push($datfileArray,$pf1loc);
 $pf1site = '../' . $pf1loc . '/' . $pfile1;
 if ($pf1loc === 'maps') {
     $ftype = "/html/";
@@ -306,10 +309,12 @@ echo '</ul>' . "\n";
 echo '<h3 style="text-indent:8px">Uploaded Proposed Data User File2 Info:</h3>' . "\n";
 $pdatf2 = $_FILES['propgpx']['tmp_name'];
 $pfile2 = basename($_FILES['propgpx']['name']);
+array_push($datfileArray,$pfile2);
 $pf2Size = filesize($pfile2);
 $pf2Type = $_FILES['propgpx']['type'];
 $pf2Stat = $_FILES['propgpx']['error'];
 $pf2loc = filter_input(INPUT_POST,'f2');
+array_push($datfileArray,$pf2loc);
 $pf2site = '../' . $pf2loc . '/' . $pfile2;
 if ($pf2loc === 'maps') {
     $ftype = "/html/";
@@ -356,10 +361,12 @@ echo '</ul>' . "\n";
 echo '<h3 style="text-indent:8px">Uploaded Actual Data User File1 Info:</h3>' . "\n";
 $adatf1 = $_FILES['actmap']['tmp_name'];
 $afile1 = basename($_FILES['actmap']['name']);
+array_push($datfileArray,$afile1);
 $af1Size = filesize($afile1);
 $af1Type = $_FILES['actmap']['type'];
 $af1Stat = $_FILES['actmap']['error'];
 $af1loc = filter_input(INPUT_POST,'f3');
+array_push($datfileArray,$af1loc);
 $af1site = '../' . $af1loc . '/' . $afile1;
 if ($af1loc === 'maps') {
     $ftype = "/html/";
@@ -406,10 +413,12 @@ echo '</ul>' . "\n";
 echo '<h3 style="text-indent:8px">Uploaded Actual Data User File2 Info:</h3>' . "\n";
 $adatf2 = $_FILES['actgpx']['tmp_name'];
 $afile2 = basename($_FILES['actgpx']['name']);
+array_push($datfileArray,$afile2);
 $af2Size = filesize($pfile1);
 $af2Type = $_FILES['actgpx']['type'];
 $af2Stat = $_FILES['actgpx']['error'];
 $af2loc = filter_input(INPUT_POST,'f4');
+array_push($datfileArray,$af2loc);
 $af2site = '../' . $af2loc . '/' . $afile2;
 if ($af2loc === 'maps') {
     $ftype = "/html/";
@@ -450,5 +459,5 @@ if ($afile2 !== '') {
         'Editor</li>' . "\n";
 }
 echo '</ul>' . "\n";
-
+$datfiles = implode("^",$datfileArray);
 ?>

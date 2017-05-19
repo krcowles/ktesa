@@ -1,5 +1,8 @@
 <?php 
 	session_start();
+	$sunIcon = '../images/sun.jpg';
+	$partialIcon = '../images/greenshade.jpg';
+	$shadeIcon = '../images/shady.png';
  ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -7,16 +10,11 @@
 <head>
     <title>Save New Hike</title>
     <meta charset="utf-8" />
-    <meta name="description"
-        content="Write hike data to TblDB.csv" />
-    <meta name="author"
-        content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots"
-        content="nofollow" />
-    <link href="../styles/logo.css"
-          type="text/css" rel="stylesheet" />
-    <link href="../styles/hikes.css"
-        type="text/css" rel="stylesheet" />
+    <meta name="description" content="Write hike data to TblDB.csv" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
+    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
@@ -24,7 +22,6 @@
 <div id="logo">
 	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
 	<p id="logo_left">Hike New Mexico</p>
-	
 	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
 	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
@@ -32,7 +29,7 @@
 <?php
     /* get last used hike No.. */
     $database = '../data/database.csv';
-    $handle = fopen($database, "c+");
+    $handle = fopen($database, "r");
     if ($handle !== false) {
         while ( ($hikeLine = fgetcsv($handle)) !== false ) {
             $lastIndx = $hikeLine[0];
@@ -71,7 +68,7 @@
         $msg = "A Red Marker will be added to the map page for this hike. The hike will " .
             "initially appear at the bottom of the Index Table of Hikes";
     }
-    $newHike[4] = '';  // NOTE: Index page cluster string updated in previous displayHikePg.php
+    $newHike[4] = filter_input(INPUT_POST,'hindx');
     $newHike[5] = filter_input(INPUT_POST,'hclus');
     $newHike[6] = filter_input(INPUT_POST,'htype');
     $newHike[7] = filter_input(INPUT_POST,'hmiles');
@@ -111,6 +108,46 @@
     $newHike[40] = filter_input(INPUT_POST,'hpdat');
     $newHike[41] = filter_input(INPUT_POST,'hadat');
     ksort($newHike, SORT_NUMERIC);
+    $supptFiles = filter_input(INPUT_POST,'hdatf');
+    $newDatFiles = explode("^",$supptFiles);
+    /* Updates involving Index Page, if the hike is associated with a 
+     * Visitor Center. This updates the Index Page's 'Cluster String' and
+     * Table of Hikes
+     */
+    $updateIndx = false;
+    if ($newHike[4] !== '') {  # then process the index page for updates
+    	# the value of $newHike[4] is the 'hike indx no' for the Visitor Center/Index Page
+    	$newstr = $_SESSION['indxCluster'];
+    	if ($newstr !== '') {
+    		$newstr .= '.' . $newHike[0];
+    	} else {
+    		$newstr = $newHike[0];
+    	}
+		rewind($handle);
+		while ( ($indxLine = fgetcsv($handle)) !== false ) {
+			if ($indxLine[0] == $newHike[4]) {
+				$updateIndx = true;
+				break;
+			}
+		}
+		if (!$updateIndx) {
+			die ("Visitor Center Page for this hike not found - contact site master");
+		}
+    	# create the table entry
+    	$row0 = '|n^' . $newHike[1] . '^hikePageTemplate.php?hikeIndx=' . $newHike[0] .
+    		'^' . $newHike[7] . ' miles^' . $newHike[8] . ' ft.^';
+    	if ($newHike[13] === 'Full sun') {
+    		$expIcon = $sunIcon;
+    	} elseif ($newHike[13] === 'Good shade') {
+    		$expIcon = $shadeIcon;
+    	} else {
+    		$expIcon = $partialIcon;
+    	}
+    	$row0 .= $expIcon . '^' . $newHike[23];
+    	$indxLine[29] = $row0;
+    	$indxLine[4] = $newstr;
+    }
+    flcose($handle);
     # Array to determine which files to overwrite, if any
     $saveRules = $_SESSION['filesaves'];
     $rules = explode("^",$saveRules);
@@ -123,7 +160,7 @@
      * Site Masters: Hike Data will be saved to the standard site usign the
      *   database.csv; this means files will be moved from build/tmp to their
      *   correct respective locations;
-     * Registered Users: Data will be saved to the pending.csv database (also
+     * Registered Users: Data will be saved to the reviewdat.csv database (also
      *   in the data directory), and the tmp files will not be moved.
      */
     $user = true;
@@ -217,19 +254,94 @@
             echo '<p style="color:brown;">' . $newHike[22] . " was not moved because it was detected"
                 . " as a duplicate file, and it was not designated to overwrite.</p>";
         }
-        
-        
-        
-        
-        fputcsv($handle,$newHike);
+        # PROP DAT FILE1
+        if ( $newDatFiles[0] !== '' &&
+        		(($rules[12] === 'YES' && $rules[13] === 'YES') || $rules[12] === 'NO')) {
+        	$oldLoc = $cwd . $uploads . $newDatFiles[1] . '/' . $newDatFiles[0];
+            $newLoc = $basedir . '/' . $newDatFiles[1] . '/' . $newDatFiles[0];
+            if (!rename($oldLoc,$newLoc)) {
+                die('<p style="color:brown;">COULD NOT MOVE 1st PROP DAT FILE</p>');
+            } else {
+                echo "<p>Successfully moved 1st prop dat file</p>";
+            } 
+        } elseif ($newDatFiles[0] !== '') {
+            echo '<p style="color:brown;">' . $newDatFiles[0] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        }
+        # PROP DAT FILE2  
+        if ( $newDatFiles[2] !== '' &&
+        		(($rules[14] === 'YES' && $rules[15] === 'YES') || $rules[14] === 'NO')) {
+        	$oldLoc = $cwd . $uploads . $newDatFiles[3] . '/' . $newDatFiles[2];
+            $newLoc = $basedir . '/' . $newDatFiles[3] . '/' . $newDatFiles[2];
+            if (!rename($oldLoc,$newLoc)) {
+                die('<p style="color:brown;">COULD NOT MOVE 2nd PROP DAT FILE</p>');
+            } else {
+                echo "<p>Successfully moved 2nd prop dat file</p>";
+            } 
+        } elseif ($newDatFiles[2] !== '') {
+            echo '<p style="color:brown;">' . $newDatFiles[2] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        }   
+        # ACT DAT FILE1:
+        if ( $newDatFiles[4] !== '' &&
+        		(($rules[16] === 'YES' && $rules[17] === 'YES') || $rules[16] === 'NO')) {
+        	$oldLoc = $cwd . $uploads . $newDatFiles[5] . '/' . $newDatFiles[4];
+            $newLoc = $basedir . '/' . $newDatFiles[5] . '/' . $newDatFiles[4];
+            if (!rename($oldLoc,$newLoc)) {
+                die('<p style="color:brown;">COULD NOT MOVE 1st ACT DAT FILE</p>');
+            } else {
+                echo "<p>Successfully moved 1st act dat file</p>";
+            } 
+        } elseif ($newDatFiles[4] !== '') {
+            echo '<p style="color:brown;">' . $newDatFiles[4] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        }
+        # ACT DAT FILE2:
+        if ( $newDatFiles[6] !== '' &&
+        		(($rules[18] === 'YES' && $rules[19] === 'YES') || $rules[18] === 'NO')) {
+        	$oldLoc = $cwd . $uploads . $newDatFiles[7] . '/' . $newDatFiles[6];
+            $newLoc = $basedir . '/' . $newDatFiles[7] . '/' . $newDatFiles[6];
+            if (!rename($oldLoc,$newLoc)) {
+                die('<p style="color:brown;">COULD NOT MOVE 2nd ACT DAT FILE</p>');
+            } else {
+                echo "<p>Successfully moved 2nd act dat file</p>";
+            } 
+        } elseif ($newDatFiles[6] !== '') {
+            echo '<p style="color:brown;">' . $newDatFiles[6] . " was not moved because it was detected"
+                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        }  
+        # need to add index page changes...
+        if ($updateIndx) {
+        	$outdat = fopen($database,"r");
+        	$ptr = 0;
+        	while ( ($db = fgetcsv($outdat)) !== false ) {
+        		$wholeDB[$ptr] = $db;
+        		$ptr++;
+        	}
+        	fclose($outdat);
+        	$outdat = fopen($databse,"w");
+        	for ($j=0; $j<count($wholeDB); $j++) {
+        		if ($wholdDB[$j][0] == $newHike[4]) {
+        			fputcsv($outdat,$indxLine);
+        		} else {
+        			fputcsv($outdat,$wholeDB[$j]);
+        		}
+        	}
+        	fputcsv($outdat,$newHike);
+        } else {
+        	$outdat = fopen($database,"a");
+        	fputcsv($outdat,$newHike);
+        }
+        fclose($outdat);
         echo "<h2>" . $msg . "</h2>";
-        fclose($handle);
     } else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
-        fclose($handle);
+        # NOT UPDATED FOR VISITOR CENTER HIKES - need process
         $usrdb = '../data/reviewdat.csv';
         $usrHandle = fopen($usrdb,"a");
         if(!fputcsv($usrHandle,$newHike)) {
             die('<p style="color:brown;">Hike Data could not be saved: contact Site Master<p>');
+        }
+        if ($updateInx) {
         }
         echo '<h2>Hike Data saved for review - you will be notified when ' .  
             'the data has been accepted and posted.</h2>';
@@ -237,25 +349,6 @@
     } else {
         die('<p style="color:brown;">Contact Site Master: Submission not recognized');
     } 
-    # DEBUG OUTPUT ---
-    /*
-    $listOut = array("Hike Index No.","Hike Name","Locale","Marker","Indx. Cluster String","Cluster Letter",
-            "Hike Type","Length","Elevation Change","Difficulty","Facilities","Wow Factor",
-            "Seasons","Exposure","tsv File","Geomap","Elevation Chart","Geomap GPX",
-            "Track File","Latitude","Longitude","Additonal Image1","Additional Image2",
-            "Ken's Photo Album","Tom's Photo Album","Google Directions","OBS: Trail Tips?","OBS: Page.html",
-            "Cluster Group Label","Row0 HTML","Row1 HTML","Row2 HTML","Row 3HTML","Row4 HTML",
-            "Row5 HTML","Captions","Photo Links","Tips Text","Hike Info","References","Proposed Data",
-            "Actual Data");
-    echo "<br />NEW: ";
-    for ($i=0; $i<42; $i++) {
-            if ($i === 29 || $i === 30 || $i === 31 || $i === 32 || $i === 33 || $i === 34) {
-                    echo "Not outputting row" . ($i - 29) . " ;";
-            } else {
-                    echo $listOut[$i] . "-> " . $newHike[$i] . "<br />";
-            }
-    }
-    */
 ?>
 </div>
 <div data-ptype="hike" data-indxno="<?php echo $newHike[0];?>" style="padding:16px;" id="more">

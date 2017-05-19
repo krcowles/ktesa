@@ -45,6 +45,7 @@
     $dupAgpx = 'NO';
     $owAgpx = 'NO';
     require "fileUploads.php";
+    
 ?>  
 <!-- Hidden Inputs Carrying File Upload Status --> 
 <input type="hidden" name="tsvf" value="<?php echo $dupTsv;?>" />
@@ -546,6 +547,7 @@ if ($hikeMarker === 'ctrhike') {
 <input type="hidden" name="json"  value="<?php echo $hikeJSON;?>" />
 <input type="hidden" name="img1"  value="<?php echo $hikeOthrImage1;?>" />
 <input type="hidden" name="img2"  value="<?php echo $hikeOthrImage2;?>" />
+<input type="hidden" name="dfiles" value="<?php echo $datfiles;?>" />
 <input type="hidden" name="mrkr"  value="<?php echo $hikeMarker;?>" />
 <input type="hidden" name="phot1" value="<?php echo $hikePurl1;?>" />
 <input type="hidden" name="phot2" value="<?php echo $hikePurl2;?>" />

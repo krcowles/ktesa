@@ -45,7 +45,7 @@ if ($addonImg[1] !== '') {
     $othrHeight[$imgIndx] = $secondimg[1];
     $img2File = $buildFiles . 'images/' . $addonImg[1];
 }
-
+$propact = filter_input(INPUT_POST,'dfiles');
 /* An 'array string' is passed to 'saveHike.php' consisting of 10 pairs of values;
  * each value in the pair is either "YES" or "NO": First val: has a duplicate file name
  * been detected? Second val: if so, should it be replaced with the newly uploaded file?
@@ -632,7 +632,7 @@ echo $albumHtml;
 <input type="hidden" name="hname" value="<?php echo $pgTitle;?>" />
 <input type="hidden" name="hlocale" value="<?php echo $locale;?>" />
 <input type="hidden" name="hmarker" value="<?php echo $marker;?>" />
-<input type="hidden" name="hindxstr" value="<?php echo $ctrHikeLoc;?>" />
+<input type="hidden" name="hindx" value="<?php echo $ctrHikeLoc;?>" />
 <input type="hidden" name="hclus" value="<?php echo $clusGrp;?>" />
 <input type="hidden" name="htype" value="<?php echo $htype;?>" />
 <input type="hidden" name="hmiles" value="<?php echo $distance;?>" />
@@ -650,6 +650,7 @@ echo $albumHtml;
 <input type="hidden" name="hlon" value="<?php echo $lon;?>" />
 <input type="hidden" name="hadd1" value="<?php echo $addonImg[0];?>" />
 <input type="hidden" name="hadd2" value="<?php echo $addonImg[1];?>" />
+<input type="hidden" name="hdatf" value="<?php echo $propact;?>" />
 <input type="hidden" name="hphoto1" value="<?php echo $purl1;?>" />
 <input type="hidden" name="hphoto2" value="<?php echo $purl2;?>" />
 <input type="hidden" name="hdir" value="<?php echo $googledirs;?>" />

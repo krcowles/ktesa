@@ -73,7 +73,6 @@
 					$tblhtml .= '<th class="hdrRow" scope="col">Photos</th>'  . "\n";
 					$tblhtml .= '</tr>' . "\n" . '</thead>' . "\n" . '<tbody>' . "\n";
 					$rowcnt = count($rows);
-					#echo "Seeing " . $rowcnt . " rows...";
 					for ($j=0; $j<$rowcnt; $j++) {
 						$row = explode("^",$rows[$j]);
 						# there are always 7 pieces, counting row type
