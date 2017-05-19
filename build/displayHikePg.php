@@ -112,8 +112,7 @@ if ($ctrHikeLoc !== '') {
     # find the associated Visitor Center:
     foreach ($wholeDB as &$hikeInfo) {
         if ($hikeInfo[0] == $ctrHikeLoc) {
-            $currentStr = $hikeInfo[4];
-            $_SESSION['indxCluster'];
+            $_SESSION['indxCluster'] = $hikeInfo[4];
             break;
         }
     }

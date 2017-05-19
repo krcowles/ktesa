@@ -117,37 +117,47 @@
     $updateIndx = false;
     if ($newHike[4] !== '') {  # then process the index page for updates
     	# the value of $newHike[4] is the 'hike indx no' for the Visitor Center/Index Page
-    	$newstr = $_SESSION['indxCluster'];
-    	if ($newstr !== '') {
-    		$newstr .= '.' . $newHike[0];
+    	$othrhikes = true;
+        $newstr = $_SESSION['indxCluster'];
+        if ($newstr === '') {
+            $othrhikes = false;
+        }
+    	if ($othrhikes) {
+            $newstr .= '.' . $newHike[0];
     	} else {
-    		$newstr = $newHike[0];
+            $newstr = $newHike[0];
     	}
-		rewind($handle);
-		while ( ($indxLine = fgetcsv($handle)) !== false ) {
-			if ($indxLine[0] == $newHike[4]) {
-				$updateIndx = true;
-				break;
-			}
-		}
-		if (!$updateIndx) {
-			die ("Visitor Center Page for this hike not found - contact site master");
-		}
+        rewind($handle);
+        while ( ($indxLine = fgetcsv($handle)) !== false ) {
+            if ($indxLine[0] == $newHike[4]) {
+                $prevTbl = $indxLine[29];
+                $updateIndx = true;
+                break;
+            }
+        }
+        if (!$updateIndx) {
+            die ("Visitor Center Page for this hike not found - contact site master");
+        }
     	# create the table entry
-    	$row0 = '|n^' . $newHike[1] . '^hikePageTemplate.php?hikeIndx=' . $newHike[0] .
-    		'^' . $newHike[7] . ' miles^' . $newHike[8] . ' ft.^';
+        if ($othrhikes) {
+            $row0 = '|n^';
+        } else {
+            $row0 = 'n^';
+        }
+    	$row0 .= $newHike[1] . '^hikePageTemplate.php?hikeIndx=' . $newHike[0] .
+            '^' . $newHike[7] . ' miles^' . $newHike[8] . ' ft.^';
     	if ($newHike[13] === 'Full sun') {
-    		$expIcon = $sunIcon;
+            $expIcon = $sunIcon;
     	} elseif ($newHike[13] === 'Good shade') {
-    		$expIcon = $shadeIcon;
+            $expIcon = $shadeIcon;
     	} else {
-    		$expIcon = $partialIcon;
+            $expIcon = $partialIcon;
     	}
     	$row0 .= $expIcon . '^' . $newHike[23];
-    	$indxLine[29] = $row0;
+    	$indxLine[29] = $prevTbl . $row0;
     	$indxLine[4] = $newstr;
     }
-    flcose($handle);
+    fclose($handle);
     # Array to determine which files to overwrite, if any
     $saveRules = $_SESSION['filesaves'];
     $rules = explode("^",$saveRules);
