@@ -180,9 +180,12 @@
             die('<p style="color:brown;">Incorrect Password - save not executed</p>');
         }
         $user = false;
+        $delmsg1 = '<p style="color:brown;">';
+        $delmsg2 = " is being deleted because it was detected as a duplicate " .
+            "file, and was not designated to overwrite the existing file.</p>";
         # There is always a tsv file...
+        $oldLoc = $cwd . $uploads . 'gpsv/' . $newHike[14];
         if ( ($rules[0] === 'YES' && $rules[1] === 'YES') || $rules[0] === 'NO' ) {
-            $oldLoc = $cwd . $uploads . 'gpsv/' . $newHike[14];
             $newLoc = $basedir . '/gpsv/' . $newHike[14];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE TSV FILE</p>');
@@ -190,14 +193,14 @@
                 echo "<p>Successfully moved tsv file</p>";
             }
         } else {
-            echo '<p style="color:brown;">' . $newHike[14] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
+            echo $delmsg1 . $newHike[14] . $delmsg2;
+            unlink($oldLoc);
         }
         # remaining files should be tested for existence:
         # MAP FILE
+        $oldLoc = $cwd . $uploads . 'maps/' . $newHike[15];
         if ( $newHike[15] !== '' && 
                 (($rules[2] === 'YES' && $rules[3] === 'YES') || $rules[2] === 'NO' )) {
-            $oldLoc = $cwd . $uploads . 'maps/' . $newHike[15];
             $newLoc = $basedir . '/maps/' . $newHike[15];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE GEOMAP FILE</p>');
@@ -205,13 +208,13 @@
                 echo "<p>Successfully moved geomap file</p>";
             }
         } elseif ($newHike[15] !== '') {
-            echo '<p style="color:brown;">' . $newHike[15] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
+            echo $delmsg1 . $newHike[15] . $delmsg2;
+            unlink($oldLoc);
         }
         # GPX FILE
+        $oldLoc = $cwd . $uploads . 'gpx/' . $newHike[17];
         if ( $newHike[17] !== '' &&
                 (($rules[4] === 'YES' && $rules[5] === 'YES') || $rules[4] === 'NO')) {
-            $oldLoc = $cwd . $uploads . 'gpx/' . $newHike[17];
             $newLoc = $basedir . '/gpx/' . $newHike[17];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE GPX FILE</p>');
@@ -219,13 +222,13 @@
                 echo "<p>Successfully moved gpx file</p>";
             }
         } elseif ($newHike[17] !== '') {
-            echo '<p style="color:brown;">' . $newHike[17] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
+            echo $delmsg1 . $newHike[17] . $delmsg2;
+            unlink($oldLoc);
         }
         # JSON FILE:
+        $oldLoc = $cwd . $uploads . 'json/' . $newHike[18];
         if ( $newHike[18] !== '' &&
                 (($rules[6] === 'YES' && $rules[7] === 'YES') || $rules[6] === 'NO')) {
-            $oldLoc = $cwd . $uploads . 'json/' . $newHike[18];
             $newLoc = $basedir . '/json/' . $newHike[18];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE JSON FILE</p>');
@@ -233,13 +236,13 @@
                 echo "<p>Successfully moved json file</p>";
             }
         } elseif ($newHike[18] !== '') {
-            echo '<p style="color:brown;">' . $newHike[18] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
+            echo $delmsg1 . $newHike[18] . $delmsg2;
+            unlink($oldLoc);
         }
         # IMAGE1 FILE:
+        $oldLoc = $cwd . $uploads . 'images/' . $newHike[21];
         if ( $newHike[21] !== '' &&
                 (($rules[8] === 'YES' && $rules[9] === 'YES') || $rules[8] === 'NO')) {
-            $oldLoc = $cwd . $uploads . 'images/' . $newHike[21];
             $newLoc = $basedir . '/images/' . $newHike[21];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE 1st IMAGE FILE</p>');
@@ -247,13 +250,13 @@
                 echo "<p>Successfully moved 1st image file</p>";
             } 
         } elseif ($newHike[21] !== '') {
-            echo '<p style="color:brown;">' . $newHike[21] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
+            echo $delmsg1 . $newHike[21] . $delmsg2;
+            unlink($oldLoc);
         }
         # IMAGE2 FILE:
+        $oldLoc = $cwd . $uploads . 'images/' . $newHike[22];
         if ( $newHike[22] !== '' &&
                 (($rules[10] === 'YES' && $rules[11] === 'YES') || $rules[10] === 'NO')) {
-            $oldLoc = $cwd . $uploads . 'images/' . $newHike[22];
             $newLoc = $basedir . '/images/' . $newHike[22];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE 2nd IMAGE FILE</p>');
@@ -261,81 +264,89 @@
                 echo "<p>Successfully moved 2nd image file</p>";
             } 
         } elseif ($newHike[22] !== '') {
-            echo '<p style="color:brown;">' . $newHike[22] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
+            echo $delmsg1 . $newHike[22] . $delmsg2;
+            unlink($oldLoc);
         }
         # PROP DAT FILE1
-        if ( $newDatFiles[0] !== '' &&
-        		(($rules[12] === 'YES' && $rules[13] === 'YES') || $rules[12] === 'NO')) {
-        	$oldLoc = $cwd . $uploads . $newDatFiles[1] . '/' . $newDatFiles[0];
+        $oldLoc = $cwd . $uploads . $newDatFiles[1] . '/' . $newDatFiles[0];
+        if ( $newDatFiles[0] !== '' && $newDatFiles[2] == '0' &&
+                (($rules[12] === 'YES' && $rules[13] === 'YES') || $rules[12] === 'NO')) {
             $newLoc = $basedir . '/' . $newDatFiles[1] . '/' . $newDatFiles[0];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE 1st PROP DAT FILE</p>');
             } else {
                 echo "<p>Successfully moved 1st prop dat file</p>";
             } 
-        } elseif ($newDatFiles[0] !== '') {
-            echo '<p style="color:brown;">' . $newDatFiles[0] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        } elseif ($newDatFiles[0] !== '' && $newDatFiles[2] == '0') {
+            echo $delmsg1 . $newDatFiles[0] . $delmsg2;
+            unlink($oldLoc);
+        } elseif ($newDatFiles[2] == '1') {
+            echo '<p>' . $newDatFiles[0] . ' had already been uploaded - no activity</p>';
         }
         # PROP DAT FILE2  
-        if ( $newDatFiles[2] !== '' &&
-        		(($rules[14] === 'YES' && $rules[15] === 'YES') || $rules[14] === 'NO')) {
-        	$oldLoc = $cwd . $uploads . $newDatFiles[3] . '/' . $newDatFiles[2];
-            $newLoc = $basedir . '/' . $newDatFiles[3] . '/' . $newDatFiles[2];
+        $oldLoc = $cwd . $uploads . $newDatFiles[4] . '/' . $newDatFiles[3];
+        if ( $newDatFiles[3] !== '' && $newDatFiles[5] == '0' &&
+                (($rules[14] === 'YES' && $rules[15] === 'YES') || $rules[14] === 'NO')) {	
+            $newLoc = $basedir . '/' . $newDatFiles[4] . '/' . $newDatFiles[3];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE 2nd PROP DAT FILE</p>');
             } else {
                 echo "<p>Successfully moved 2nd prop dat file</p>";
             } 
-        } elseif ($newDatFiles[2] !== '') {
-            echo '<p style="color:brown;">' . $newDatFiles[2] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
-        }   
+        } elseif ($newDatFiles[3] !== '' && $newDatFiles[5] == '0') {
+            echo $delmsg1 . $newDatFiles[2] . $delmsg2;
+            unlink($oldLoc);
+        } elseif ($newDatFiles[5] == '1') {
+            echo '<p>' . $newDatFiles[3] . ' had already been uploaded - no activity</p>';
+        }
         # ACT DAT FILE1:
-        if ( $newDatFiles[4] !== '' &&
+        $oldLoc = $cwd . $uploads . $newDatFiles[7] . '/' . $newDatFiles[6];
+        if ( $newDatFiles[6] !== '' &&$newDatFiles[8] == '0' &&
         		(($rules[16] === 'YES' && $rules[17] === 'YES') || $rules[16] === 'NO')) {
-        	$oldLoc = $cwd . $uploads . $newDatFiles[5] . '/' . $newDatFiles[4];
-            $newLoc = $basedir . '/' . $newDatFiles[5] . '/' . $newDatFiles[4];
+            $newLoc = $basedir . '/' . $newDatFiles[7] . '/' . $newDatFiles[6];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE 1st ACT DAT FILE</p>');
             } else {
                 echo "<p>Successfully moved 1st act dat file</p>";
             } 
-        } elseif ($newDatFiles[4] !== '') {
-            echo '<p style="color:brown;">' . $newDatFiles[4] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
+        } elseif ($newDatFiles[6] !== '' && $newDatFiles[8] == '0') {
+            echo $delmsg1 . $newDatFiles[4] . $delmsg2;
+            unlink($oldLoc);
+        } elseif ($newDatFiles[8] == '1') {
+            echo '<p>' . $newDatFiles[6] . ' had already been uploaded - no activity</p>';
         }
         # ACT DAT FILE2:
-        if ( $newDatFiles[6] !== '' &&
-        		(($rules[18] === 'YES' && $rules[19] === 'YES') || $rules[18] === 'NO')) {
-        	$oldLoc = $cwd . $uploads . $newDatFiles[7] . '/' . $newDatFiles[6];
-            $newLoc = $basedir . '/' . $newDatFiles[7] . '/' . $newDatFiles[6];
+        $oldLoc = $cwd . $uploads . $newDatFiles[10] . '/' . $newDatFiles[9];
+        if ( $newDatFiles[9] !== '' && $newDatFiles[11] == '0' &&
+                (($rules[18] === 'YES' && $rules[19] === 'YES') || $rules[18] === 'NO')) {	
+            $newLoc = $basedir . '/' . $newDatFiles[10] . '/' . $newDatFiles[9];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE 2nd ACT DAT FILE</p>');
             } else {
                 echo "<p>Successfully moved 2nd act dat file</p>";
             } 
-        } elseif ($newDatFiles[6] !== '') {
-            echo '<p style="color:brown;">' . $newDatFiles[6] . " was not moved because it was detected"
-                . " as a duplicate file, and it was not designated to overwrite.</p>";
-        }  
+        } elseif ($newDatFiles[9] !== '' && $newDatFiles[11] == '0') {
+            echo $delmsg1 . $newDatFiles[9] . $delmsg2;
+            unlink($oldLoc);
+        } elseif ($newDatFiles[11] == '1') {
+            echo '<p>' . $newDatFiles[9] . ' had already been uploaded - no activity</p>';
+        }
         # need to add index page changes...
         if ($updateIndx) {
         	$outdat = fopen($database,"r");
         	$ptr = 0;
         	while ( ($db = fgetcsv($outdat)) !== false ) {
-        		$wholeDB[$ptr] = $db;
-        		$ptr++;
+                    $wholeDB[$ptr] = $db;
+                    $ptr++;
         	}
         	fclose($outdat);
-        	$outdat = fopen($databse,"w");
+        	$outdat = fopen($database,"w");
         	for ($j=0; $j<count($wholeDB); $j++) {
-        		if ($wholdDB[$j][0] == $newHike[4]) {
-        			fputcsv($outdat,$indxLine);
-        		} else {
-        			fputcsv($outdat,$wholeDB[$j]);
-        		}
+                    if ($wholeDB[$j][0] == $newHike[4]) {
+                        fputcsv($outdat,$indxLine);
+                    } else {
+                        fputcsv($outdat,$wholeDB[$j]);
+                    }
         	}
         	fputcsv($outdat,$newHike);
         } else {
