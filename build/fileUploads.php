@@ -1,11 +1,11 @@
 <?php
-
 /* Message text for upload data section */
 $fexists1 = '<p style="margin-left:8px;margin-top:-12px;color:brown;"><em>NOTE: ';
 $fexists2 = ' has been previously saved on the server; ' .
             'Check here to overwrite: ';
 $fexists3 = '</em></p>' . "\n";
 $uploads = "tmp/"; 
+$datfileArray = [];  # prop & act data file names
 /* Uploaded file data looks for presence / absence of files and responds
  * accordingly. The data type for each file is also checked for correctness.
  * If a filename is found corresponding to an existing host file, the user
@@ -251,15 +251,19 @@ echo '</ul>' . "\n";
  * At this time, only two files of either type are provided for;
  * NOTE: Not testing for duplicate file names: these would over-write any such
  */
+$noup = '<p style="color:brown;">This file has been previously uploaded; ' .
+    'No further action taken on this file</p>';
 # PROPOSED DATA FILE1:
 echo '<h3 style="text-indent:8px">Uploaded Proposed Data User File1 Info:</h3>' . "\n";
 $pdatf1 = $_FILES['propmap']['tmp_name'];
 $pfile1 = basename($_FILES['propmap']['name']);
-$pf1Size = filesize($pfile1);
+array_push($datfileArray,$pfile1);
+$pf1Size = filesize($pdatf1);
 $pf1Type = $_FILES['propmap']['type'];
 $pf1Stat = $_FILES['propmap']['error'];
 $pf1loc = filter_input(INPUT_POST,'f1');
-$pf1path = '../' . $pf1loc;
+array_push($datfileArray,$pf1loc);
+$pf1site = '../' . $pf1loc . '/' . $pfile1;
 if ($pf1loc === 'maps') {
     $ftype = "/html/";
 } else {
@@ -273,9 +277,22 @@ if ( $pfile1 !== '') {
             ': should be ' . $ftype;
         die($msgout);
     }
-    if ($pf1Stat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($pdatf1,$fupload)) {
-            die("Could not save file - contact site master...");
+    # Check against previously uploaded files
+    if ( file_exists($fupload) ) {
+    	echo $noup;
+        array_push($datfileArray,1);
+    } else {
+        # Check agains existing site files
+        array_push($datfileArray,0);
+        if ( file_exists($pf1site) ) {
+            echo $fexists1 . $pfile1 . $fexists2. 
+                '<input id="owpf1" type="checkbox" name="pf1ow" />' . $fexists3;
+            $dupPmap = 'YES';
+        }
+        if ($pf1Stat === UPLOAD_ERR_OK) {
+            if (!move_uploaded_file($pdatf1,$fupload)) {
+                die("Could not save file - contact site master...");
+            }
         }
     }
 }
@@ -289,16 +306,17 @@ if ($pfile1 !== '') {
         'Editor</li>' . "\n";
 }
 echo '</ul>' . "\n";
-
 # PROPOSED DATA FILE2
 echo '<h3 style="text-indent:8px">Uploaded Proposed Data User File2 Info:</h3>' . "\n";
 $pdatf2 = $_FILES['propgpx']['tmp_name'];
 $pfile2 = basename($_FILES['propgpx']['name']);
-$pf2Size = filesize($pfile2);
+array_push($datfileArray,$pfile2);
+$pf2Size = filesize($pdatf2);
 $pf2Type = $_FILES['propgpx']['type'];
 $pf2Stat = $_FILES['propgpx']['error'];
 $pf2loc = filter_input(INPUT_POST,'f2');
-$pf2path = '../' . $pf2loc;
+array_push($datfileArray,$pf2loc);
+$pf2site = '../' . $pf2loc . '/' . $pfile2;
 if ($pf2loc === 'maps') {
     $ftype = "/html/";
 } else {
@@ -312,9 +330,22 @@ if ( $pfile2 !== '') {
             ': should be ' . $ftype;
         die($msgout);
     }
-    if ($pf1Stat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($pdatf2,$fupload)) {
-            die("Could not save file - contact site master...");
+    # Check against previously uploaded files
+    if ( file_exists($fupload) ) {
+    	echo $noup;
+        array_push($datfileArray,1);
+    } else {
+        array_push($datfileArray,0);
+        # Check agains existing site files
+        if ( file_exists($pf2site) ) {
+            echo $fexists1 . $pfile2 . $fexists2. 
+                '<input id="owpf2" type="checkbox" name="pf2ow" />' . $fexists3;
+            $dupPgpx = 'YES';
+        }
+        if ($pf2Stat === UPLOAD_ERR_OK) {
+            if (!move_uploaded_file($pdatf2,$fupload)) {
+                die("Could not save file - contact site master...");
+            }
         }
     }
 }
@@ -328,16 +359,17 @@ if ($pfile2 !== '') {
         'Editor</li>' . "\n";
 }
 echo '</ul>' . "\n";
-
 # ACTUAL DATA FILE1:
 echo '<h3 style="text-indent:8px">Uploaded Actual Data User File1 Info:</h3>' . "\n";
 $adatf1 = $_FILES['actmap']['tmp_name'];
 $afile1 = basename($_FILES['actmap']['name']);
-$af1Size = filesize($afile1);
+array_push($datfileArray,$afile1);
+$af1Size = filesize($adatf1);
 $af1Type = $_FILES['actmap']['type'];
 $af1Stat = $_FILES['actmap']['error'];
 $af1loc = filter_input(INPUT_POST,'f3');
-$af1path = '../' . $af1loc;
+array_push($datfileArray,$af1loc);
+$af1site = '../' . $af1loc . '/' . $afile1;
 if ($af1loc === 'maps') {
     $ftype = "/html/";
 } else {
@@ -350,10 +382,23 @@ if ( $afile1 !== '') {
             . ' file type for [' . $af1loc . '] ' . $afile1 . 
             ': should be ' . $ftype;
         die($msgout);
-    }
-    if ($af1Stat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($adatf1,$fupload)) {
-            die("Could not save file - contact site master...");
+    }   
+    # Check against previously uploaded files
+    if ( file_exists($fupload) ) {
+    	echo $noup;
+        array_push($datfileArray,1);
+    } else {
+        array_push($datfileArray,0);
+        # Check agains existing site files
+        if ( file_exists($af1site) ) {
+            echo $fexists1 . $afile1 . $fexists2. 
+                '<input id="owaf1" type="checkbox" name="af1ow" />' . $fexists3;
+            $dupAmap = 'YES';
+        }
+        if ($af1Stat === UPLOAD_ERR_OK) {
+            if (!move_uploaded_file($adatf1,$fupload)) {
+                die("Could not save file - contact site master...");
+            }
         }
     }
 }
@@ -367,16 +412,17 @@ if ($afile1 !== '') {
         'Editor</li>' . "\n";
 }
 echo '</ul>' . "\n";
-
 # ACTUAL DATA FILE2
 echo '<h3 style="text-indent:8px">Uploaded Actual Data User File2 Info:</h3>' . "\n";
 $adatf2 = $_FILES['actgpx']['tmp_name'];
 $afile2 = basename($_FILES['actgpx']['name']);
-$af2Size = filesize($pfile1);
+array_push($datfileArray,$afile2);
+$af2Size = filesize($adatf2);
 $af2Type = $_FILES['actgpx']['type'];
 $af2Stat = $_FILES['actgpx']['error'];
 $af2loc = filter_input(INPUT_POST,'f4');
-$af2path = '../' . $af2loc;
+array_push($datfileArray,$af2loc);
+$af2site = '../' . $af2loc . '/' . $afile2;
 if ($af2loc === 'maps') {
     $ftype = "/html/";
 } else {
@@ -390,15 +436,28 @@ if ( $afile2 !== '') {
             ': should be ' . $ftype;
         die($msgout);
     }
-    if ($pf1Stat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($adatf2,$fupload)) {
-            die("Could not save gpx file - contact site master...");
+    # Check against previously uploaded files
+    if ( file_exists($fupload) ) {
+    	echo $noup;
+        array_push($datfileArray,1);
+    } else {
+        array_push($datfileArray,0);
+        # Check agains existing site files
+        if ( file_exists($af2site) ) {
+            echo $fexists1 . $afile2 . $fexists2. 
+                '<input id="owaf2" type="checkbox" name="af2ow" />' . $fexists3;
+            $dupAmap = 'YES';
+        }
+        if ($af2Stat === UPLOAD_ERR_OK) {
+            if (!move_uploaded_file($adatf2,$fupload)) {
+                die("Could not save gpx file - contact site master...");
+            }
         }
     }
 }
 echo '<ul style="margin-top:-10px;">' . "\n";
 if ($afile2 !== '') {
-    echo '<li>Uploaded Proposed Data User File1: ' .  $afile2 . '</li>' . "\n";
+    echo '<li>Uploaded Actual Data User File2: ' .  $afile2 . '</li>' . "\n";
     echo '<li>File size: ' . $af2Size . ' bytes</li>' . "\n";
     echo '<li>File type: ' . $af2Type . '</li>' . "\n";
 } else {
@@ -406,5 +465,5 @@ if ($afile2 !== '') {
         'Editor</li>' . "\n";
 }
 echo '</ul>' . "\n";
-
+$datfiles = implode("^",$datfileArray);
 ?>

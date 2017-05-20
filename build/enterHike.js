@@ -6,27 +6,12 @@ var msgC;
 var msgD;
 var msgE;
 
-// Turn text blue to indicate user has uploaded a file
-$('#geomap').change( function() {
-    $('#l_gmap').css('color','DarkBlue');
-});
-$('#elev').change( function() {
-    $('#l_elev').css('color','DarkBlue');
-});
-$('#gpxfile').change( function() {
-    $('#l_gpx').css('color','DarkBlue');
-});
-$('#trkfile').change( function() {
-    $('#l_trk').css('color','DarkBlue');
-});
-$('#addon1').change( function() {
-    $('#l_add1').css('color','DarkBlue');
-});
-$('#addon2').change( function() {
-    $('#l_add2').css('color','DarkBlue');
-});
-
-// Preload the GPS Maps & Data Section based on user file uploads...
+/* Preload the GPS Maps & Data Section with the urls for uploaded files;
+ * The user will still be required to fill in the remaining fields for these items:
+ * note the addition of the 'required' attribute for the uploaded items;
+ * Currently, only two items in each section are supported, but this can be
+ * easily expanded by adding code here (and additional upload elements in the html)
+ */
 function preload(targfile,datasect) {
     var ptype = targfile.val();
     if ( ptype.indexOf('html') === -1 ) {
@@ -37,14 +22,31 @@ function preload(targfile,datasect) {
         $(datasect).val(fname);
     }
 }
-$('#pmap').change( function() { preload($(this),'#ur1'); });
-$('#pgpx').change( function() { preload($(this),'#ur2'); });
-$('#amap').change( function() { preload($(this),'#ur5'); });
-$('#agpx').change( function() { preload($(this),'#ur6'); });
+$('#pmap').change( function() { 
+	preload($(this),'#ur1');
+	$('#lt1').attr('required',true);
+	$('#ct1').attr('required',true);
+});
+$('#pgpx').change( function() {
+	preload($(this),'#ur2');
+	$('#lt2').attr('required',true);
+	$('#ct2').attr('required',true);
+});
+$('#amap').change( function() {
+	preload($(this),'#ur5');
+	$('#lt5').attr('required',true);
+	$('#ct5').attr('required',true);
+});
+$('#agpx').change( function() {
+	preload($(this),'#ur6');
+	$('#lt6').attr('required',true);
+	$('#ct6').attr('requried',true);
+});
 
-/*       Setting the page-creation type for the submit button
-			NOTE: the "pageType" radio buttons are not part of the form submitted
-*/
+/* Setting the target action for the submit button, based on whether the submission is
+ * for a new hike page, or a new index pg;
+ * NOTE: the "pageType" radio buttons are not within the <form> element
+ */
 $('input[name="pageType"]').click( function() {
 	if($('input:radio[name=pageType]:checked').val() == "vcenter") {
 		useIndexPg();
@@ -101,10 +103,6 @@ function useStdPg() {
 	$('#iwow').text(msgE);
 	$('.honly').css('display','block');
 }
-$('#clrIt').on('click', function(e) {
-	e.preventDefault();
-	document.getElementById("xl").value = "";
-});
 /* END OF page-creation type */
 
 // Turn on text to display additional options

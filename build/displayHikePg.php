@@ -20,18 +20,11 @@ $buildFiles = 'tmp/';
 $tsvname = filter_input(INPUT_POST,'tsv');
 $tsvFile = $buildFiles . 'gpsv/' . $tsvname;
 $geomap = filter_input(INPUT_POST,'geomp');
-if ($geomap !== '') {
-    $mapFile = $buildFiles . 'maps/' . $geomap;
-}
 $gpx = filter_input(INPUT_POST,'gpx');
 if ($gpx !== '') {
     $gpxFile = $buildFiles . 'gpx/' . $gpx;
 }
 $trkfile = filter_input(INPUT_POST,'json');
-if ($trkfile !== '') {
-    $jsonFile = $buildFiles . 'json/' . $trkfile;
-}
-#echo "MULTS: " . $tsvFile . ' ' . $mapfile . ' ' . $gpx .  ' ' . $jsonfile;
 $addonImg[0] = filter_input(INPUT_POST,'img1');
 $imgIndx = 0;
 if ($addonImg[0] === '') {
@@ -52,10 +45,12 @@ if ($addonImg[1] !== '') {
     $othrHeight[$imgIndx] = $secondimg[1];
     $img2File = $buildFiles . 'images/' . $addonImg[1];
 }
-/* An 'array string' is passed to 'saveHike.php' consisting of 6 pairs of values;
- * each value in the pair is either "YES" or "NO": 1) has a duplicate file name
- * been detected? 2) if so, should it be replaced with the newly uploaded file?
- * Order of array: tsv file, geomap, gpx file, track file, image1, image2 
+$propact = filter_input(INPUT_POST,'dfiles');
+/* An 'array string' is passed to 'saveHike.php' consisting of 10 pairs of values;
+ * each value in the pair is either "YES" or "NO": First val: has a duplicate file name
+ * been detected? Second val: if so, should it be replaced with the newly uploaded file?
+ * Order of array: tsv file, geomap, gpx file, track file, image1, image2, prop dat1,
+ * prop dat2, act dat1, act dat2 
  */
 $saveFileInfo = [];
 array_push($saveFileInfo,filter_input(INPUT_POST,'tsvf'));
@@ -70,9 +65,20 @@ array_push($saveFileInfo,filter_input(INPUT_POST,'img1f'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'ow1'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'img2f'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'ow2'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'pmapf'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'owpm'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'pgpxf'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'owpg'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'amapf'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'owam'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'agpxf'));
+array_push($saveFileInfo,filter_input(INPUT_POST,'owag'));
+
 $fileSaveData = implode("^",$saveFileInfo);
 $_SESSION['filesaves'] = $fileSaveData;
 # ----- end of file uploads ------
+
+
 
 /* NEXT: IMPORTED VARIABLE DATA (HIKE DATA) */
 $pgTitle = filter_input(INPUT_POST,'hTitle');
@@ -87,7 +93,8 @@ if ($hikeType === "oab") {
 }
 $ctrHikeLoc = filter_input(INPUT_POST,'vcList');  # from select drop-down;
 /*
-    If $ctrHikeLoc not empty, find the Index Page for the assoc. hike and update it
+    If $ctrHikeLoc not empty, find the Index Page for the assoc. hike and update it,
+    passing the value on to 'saveHike.php'.
 */
 if ($ctrHikeLoc !== '') {
     $database = '../data/database.csv';
@@ -100,28 +107,15 @@ if ($ctrHikeLoc !== '') {
     while ( ($hikeLine = fgetcsv($dbHandle)) !== false ) {
         $wholeDB[$dbindx] = $hikeLine;
         $dbindx++;
-        $lastIndxNo = $hikeLine[0];
     }
     fclose($dbHandle);
-    $nxtIndxNo = intval($lastIndxNo) + 1;
     # find the associated Visitor Center:
     foreach ($wholeDB as &$hikeInfo) {
         if ($hikeInfo[0] == $ctrHikeLoc) {
-            $currentStr = $hikeInfo[4];
-            if ($currentStr == '') {
-                $hikeInfo[4] = $nxtIndxNo;
-            } else {
-                $hikeInfo[4] = $hikeInfo[4] . "." . $nxtIndxNo;
-            }
+            $_SESSION['indxCluster'] = $hikeInfo[4];
             break;
         }
     }
-    # write the wholeDB back out
-    $dbWriteBack = fopen($database,"w");
-    foreach ($wholeDB as $outArray) {
-            fputcsv($dbWriteBack,$outArray);
-    }
-    fclose($dbWriteBack);
 }
 /*
     End of ctrHikeLoc processing
@@ -193,10 +187,8 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
     <meta charset="utf-8" />
     <meta name="description"
         content="Details about the <?php echo $pgTitle;?> hike" />
-    <meta name="author"
-        content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots"
-        content="nofollow" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript"> var iframeWindow; </script>
@@ -208,7 +200,6 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>
-
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
@@ -640,6 +631,7 @@ echo $albumHtml;
 <input type="hidden" name="hname" value="<?php echo $pgTitle;?>" />
 <input type="hidden" name="hlocale" value="<?php echo $locale;?>" />
 <input type="hidden" name="hmarker" value="<?php echo $marker;?>" />
+<input type="hidden" name="hindx" value="<?php echo $ctrHikeLoc;?>" />
 <input type="hidden" name="hclus" value="<?php echo $clusGrp;?>" />
 <input type="hidden" name="htype" value="<?php echo $htype;?>" />
 <input type="hidden" name="hmiles" value="<?php echo $distance;?>" />
@@ -651,13 +643,13 @@ echo $albumHtml;
 <input type="hidden" name="hexp" value="<?php echo $exposure;?>" />
 <input type="hidden" name="htsv" value="<?php echo $tsvname;?>" />
 <input type="hidden" name="hmap" value="<?php echo $geomap;?>" />
-<input type="hidden" name="hchart" value="<?php echo $elevChart;?>" />
 <input type="hidden" name="hgpx" value="<?php echo $gpx;?>" />
 <input type="hidden" name="htrk" value="<?php echo $trkfile;?>" />
 <input type="hidden" name="hlat" value="<?php echo $lat;?>" />
 <input type="hidden" name="hlon" value="<?php echo $lon;?>" />
 <input type="hidden" name="hadd1" value="<?php echo $addonImg[0];?>" />
 <input type="hidden" name="hadd2" value="<?php echo $addonImg[1];?>" />
+<input type="hidden" name="hdatf" value="<?php echo $propact;?>" />
 <input type="hidden" name="hphoto1" value="<?php echo $purl1;?>" />
 <input type="hidden" name="hphoto2" value="<?php echo $purl2;?>" />
 <input type="hidden" name="hdir" value="<?php echo $googledirs;?>" />

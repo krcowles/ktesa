@@ -4,12 +4,9 @@
 <head>
     <title>Hike or Index Page Creation</title>
     <meta charset="utf-8" />
-    <meta name="description"
-            content="Form for entering new hike data" />
-    <meta name="author"
-            content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots"
-            content="nofollow" />
+    <meta name="description" content="Form for entering new hike data" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
     <link href="enterHike.css" type="text/css" rel="stylesheet" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 </head>
@@ -134,7 +131,7 @@
     <fieldset>
         <legend>File Data</legend>
         <label id="l_tsv" class="notVC" for="tsv">TSV file:</label>
-        <input id="tsv" type="file" name="csvfile" /><br />
+        <input id="tsv" type="file" name="csvfile" required="required" /><br />
         <label id="l_gmap" class="notVC" for="geomap">Geomap:</label>
         <input id="geomap" type="file" name="gpsvMap" /><br />
         <label id="l_gpx" class="notVC" for="gpxfile">GPX File: &nbsp;</label>
@@ -360,6 +357,7 @@
             Label Text: <input id="lt4" type="text" name="plbl[]" size="12" /> 
             Item URL: <input id="ur4" type="text" name="purl[]" size="60" />
             Text to Click On: <input id="ct4" type="text" name="pctxt[]" size="30" /><br />
+            
             <p>Actual Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
             Label Text: <input id="lt5" type="text" name="albl[]" size="12" /> 
             Item URL: <input id="ur5" type="text" name="aurl[]" size="60" />

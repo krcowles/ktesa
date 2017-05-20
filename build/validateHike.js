@@ -68,4 +68,34 @@ $('#owim2').on('change', function() {
     }
 });
 
+$('#owpf1').on('change', function() {
+    if ( $(this).prop('checked') === true ) {
+        $('#overPmap').val("YES");
+    } else {
+        $('#overPmap').val("NO");
+    }
+});
+$('#owpf2').on('change', function() {
+    if ( $(this).prop('checked') === true ) {
+        $('#overPgpx').val("YES");
+    } else {
+        $('#overPgpx').val("NO");
+    }
+});
+$('#owaf1').on('change', function() {
+    if ( $(this).prop('checked') === true ) {
+        $('#overAmap').val("YES");
+    } else {
+        $('#overAmap').val("NO");
+    }
+});
+
+$('#owaf2').on('change', function() {
+    if ( $(this).prop('checked') === true ) {
+        $('#overAgpx').val("YES");
+    } else {
+        $('#overAgpx').val("NO");
+    }
+});
+
 }); // end of page is loaded...

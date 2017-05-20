@@ -13,20 +13,20 @@ var NH_TYPE = 2;
 var map;  // needs to be global!
 var mapRdy = false; // flag for map initialized & ready to draw tracks
 var mapTick = {   // custom tick-mark symbol for tracks
-	path: 'M 0,0 -5,11 0,8 5,11 Z',
-	fillcolor: 'Red',
-	fillOpacity: 0.8,
-	scale: 1,
-	strokeColor: 'Red',
-	strokeWeight: 2
+    path: 'M 0,0 -5,11 0,8 5,11 Z',
+    fillcolor: 'Red',
+    fillOpacity: 0.8,
+    scale: 1,
+    strokeColor: 'Red',
+    strokeWeight: 2
 };
 
 var msg;  // debug message string
 var turnOnGeo = $('#geoSetting').text(); // get the setting from the html, compliments php
 
 if ( turnOnGeo === 'ON' ) {
-	$('#geoCtrl').css('display','block');
-	$('#geoCtrl').on('click', setupLoc);
+    $('#geoCtrl').css('display','block');
+    $('#geoCtrl').on('click', setupLoc);
 }
 
 // icons for geolocation:
@@ -38,32 +38,32 @@ var mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|
 // icons depend on whether mobile or not (size factor for visibility)
 // also text size for pop-ups - which doesn't seem to work!
 if ( mobile_browser ) {
-	var geoIcon = lgGeo;
-	var ctrIcon = '../images/yellow64.png';
-	var clusterIcon = '../images/blue64.png';
-	var hikeIcon = '../images/pink64.png';
-	$('#iwVC').css('font-size','400%');
-	$('#iwCH').css('font-size','400%');
-	$('#iwOH').css('font-size','400%');
+    var geoIcon = lgGeo;
+    var ctrIcon = '../images/yellow64.png';
+    var clusterIcon = '../images/blue64.png';
+    var hikeIcon = '../images/pink64.png';
+    $('#iwVC').css('font-size','400%');
+    $('#iwCH').css('font-size','400%');
+    $('#iwOH').css('font-size','400%');
 } else {
-	var geoIcon = medGeo;
-	var ctrIcon = '../images/yellow.png';
-	var clusterIcon = '../images/bluepin.png';
-	var hikeIcon = '../images/redpin.png';
+    var geoIcon = medGeo;
+    var ctrIcon = '../images/yellow.png';
+    var clusterIcon = '../images/bluepin.png';
+    var hikeIcon = '../images/redpin.png';
 } 
 
 /* Animated "New Hike" Marker:
-	- Place the box on the left-hand side of the map, below the map-style drop-down 
-	  far enough down to ensure clearance when drop-down is selected
-	- Assume that the last hike in the table is the new hike */
+    - Place the box on the left-hand side of the map, below the map-style drop-down 
+      far enough down to ensure clearance when drop-down is selected
+    - Assume that the last hike in the table is the new hike */
 // Determine & set box position:
 var winWidth = $(window).width();
 var mapWidth = $('#map').width();  // same as container size (currently 960)
 if (winWidth < mapWidth) {
-	$('#newHikeBox').css('left',12);
+    $('#newHikeBox').css('left',12);
 } else {
-	var newHikeBoxLeft = Math.floor( (winWidth - mapWidth)/2 ) + 12;
-	$('#newHikeBox').css('left',newHikeBoxLeft);
+    var newHikeBoxLeft = Math.floor( (winWidth - mapWidth)/2 ) + 12;
+    $('#newHikeBox').css('left',newHikeBoxLeft);
 }
 // Determine last hike name & hike type:
 var $hikeRows = $('#refTbl tbody tr');
@@ -71,8 +71,14 @@ var lastHikeIndx = $hikeRows.length - 1; // offset 1 for header row
 var $lastHikeRow = $hikeRows.eq(lastHikeIndx).find('td');
 var newHikeName = $lastHikeRow.eq(1).text();
 if ($hikeRows.eq(lastHikeIndx).hasClass('clustered')) {
-	// in this case, animate the cluster group marker
-	newHikeName = $hikeRows.eq(lastHikeIndx).data('tool');
+    // in this case, animate the cluster group marker
+    newHikeName = $hikeRows.eq(lastHikeIndx).data('tool');
+}
+if ($hikeRows.eq(lastHikeIndx).hasClass('vchike')) {
+    // animate the marker for the associated visitor center:
+    var vcIndx = parseInt($hikeRows.eq(lastHikeIndx).data('vc'));
+    $lastHikeRow = $hikeRows.eq(vcIndx).find('td');
+    newHikeName = $lastHikeRow.eq(1).text();
 }
 newHikeName = newHikeName.replace('Index','Visitor Center');
 $('#winner').append(newHikeName);
