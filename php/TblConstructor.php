@@ -88,7 +88,7 @@
                         $hikeHiddenDat . ' data-tool="' . $hikeArray[28] . '">';
                 } elseif ($hikeMarker === 'At VC') {
                     # At VC hikes will be ignored when time to create markers
-                    echo '<tr class="vchike"  data-vc="' $hikeArray[4] . '" '. 
+                    echo '<tr class="vchike"  data-vc="' . $hikeArray[4] . '" '. 
                         $hikeHiddenDat . '>';
                 } else {  // "Normal"
                     echo '<tr class="normal" ' . $hikeHiddenDat . '>';
