@@ -154,8 +154,10 @@
             $expIcon = $partialIcon;
     	}
     	$row0 .= $expIcon . '^' . $newHike[23];
+        $indxLine[4] = $newstr;
+        
     	$indxLine[29] = $prevTbl . $row0;
-    	$indxLine[4] = $newstr;
+    	
     }
     fclose($handle);
     # Array to determine which files to overwrite, if any
