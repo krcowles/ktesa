@@ -291,12 +291,14 @@
      * database will contain only the modified page, not the entire db.
      * NOTE: THIS IS PRELIMINARY AND BY NO MEANS A VETTED USER PROCESS!!!!
      */
+    $user = true;
     if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
         $passwd = filter_input(INPUT_POST,'mpass');
-        echo "PUT IN: " . $passwd;
-        /*if ($passwd !== '000ktesa') {
+        if ($passwd !== '000ktesa') {
             die('<p style="color:brown;">Incorrect Password - save not executed</p>');
-        } */
+        }
+        $user = false;
+        $msgout = " have been saved on the site";
         $dbhandle = fopen($database,"w");
         foreach ($wholeDB as $hikedat) {
             if ($hikedat[0] == $hikeNo) {
@@ -311,20 +313,25 @@
         $dbhandle = fopen($database,"a");
         fputcsv($dbhandle,$info);
         fclose($dbhandle);
+        $msgout = " have been submitted for review by the site masters";
     } else {
         die('<p style="color:brown;">Contact Site Master: Submission not recognized');
     } 
     
 ?>
 <div style="padding:16px;">
-<h2>The changes submitted for <?php echo $info[1];?> (if any) have been saved to the database.</h2>
+<h2>The changes submitted for <?php echo $info[1] . $msgout;?></h2>
 </div>
 
-<div data-ptype="hike" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
-    <button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this hike</button><br />
-    <button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button><br />
-    <button style="font-size:16px;color:DarkBlue;" id="view">View the Edited Page</button>
-</div>
+<?php
+if (!$user) {
+    echo '<div data-ptype="hike" data-indxno="' . $hikeNo . '" style="padding:16px;" id="more">';
+    echo '<button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this hike</button><br />';
+    echo '<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button><br />';
+    echo '<button style="font-size:16px;color:DarkBlue;" id="view">View the Edited Page</button>';
+    echo '</div>';
+}
+?>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="postEdit.js"></script>

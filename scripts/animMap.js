@@ -76,9 +76,14 @@ if ($hikeRows.eq(lastHikeIndx).hasClass('clustered')) {
 }
 if ($hikeRows.eq(lastHikeIndx).hasClass('vchike')) {
     // animate the marker for the associated visitor center:
-    var vcIndx = parseInt($hikeRows.eq(lastHikeIndx).data('vc'));
-    $lastHikeRow = $hikeRows.eq(vcIndx).find('td');
-    newHikeName = $lastHikeRow.eq(1).text();
+    var vcIndx = $hikeRows.eq(lastHikeIndx).data('vc');
+    $hikeRows.each( function() {
+        if ( $(this).data('indx') == vcIndx ) { 
+            var $indxRow = $(this).find('td');
+            newHikeName = $indxRow.eq(1).text();
+            return;
+        }
+    });
 }
 newHikeName = newHikeName.replace('Index','Visitor Center');
 $('#winner').append(newHikeName);
