@@ -9,27 +9,48 @@ while ( ($indxInfo = fgetcsv($handle)) !== false ) {
 }
 $index[0] = intval($lastNo) + 1;
 # hike form entry
-$index[1] = trim($_POST['hpgTitle']);
-$index[2] = trim($_POST['locale']);
+$index[1] = filter_input(INPUT_POST,'hpgTitle');
+$index[2] = filter_input(INPUT_POST,'locale');
 $index[3] = 'Visitor Ctr';
 # NOTE: No cluster string yet - assigned as hikes are created
-$index[10] = trim($_POST['fac']);
-$index[11] = trim($_POST['wow_factor']);
-$index[19] = trim($_POST['lat']);
-$index[20] = trim($_POST['lon']);
+$index[10] = filter_input(INPUT_POST,'fac');
+$index[11] = filter_input(INPUT_POST,'wow_factor');
+$index[19] = filter_input(INPUT_POST,'lat');
+$index[20] = filter_input(INPUT_POST,'lon');
+# File Upload Checking & Saving
+$fexists1 = '<p style="margin-left:8px;margin-top:-12px;color:brown;"><em>NOTE: ';
+$fexists2 = ' has been previously saved on the server; ' .
+            'Check here to overwrite: ';
+$fexists3 = '</em></p>' . "\n";
+$uploads = "tmp/";
+$pkmapdup = "NO";
+$pkmapow = "NO";
 $parkMap = $_FILES['othr1']['tmp_name'];
 $parkMapSize = filesize($parkMap);
 $parkMapType = $_FILES['othr1']['type'];
 $parkMapName = $_FILES['othr1']['name'];
-if($parkMapName == "") {
-    die( "No park map specified..." );
+$parkStat = $_FILES['othr1']['error'];
+if($parkMapName == '') {
+    $mapMsg = '<p style="color:red;font-size:20px;">Park Map Not Specified</p>';
+    die($mapMsg);
+} 
+$siteLoc = '../images/' . $parkMapName;
+if ( file_exists($siteLoc) ) {
+    echo $fexists1 . $parkMapName . $fexists2 . 
+        '<input id="owpkmap" type="checkbox" name="pkmapchk" />' . $fexists3;
+    $pkmapdup = 'YES';
+} 
+$pkmapUpload = $uploads . 'images/' . $parkMapName;
+if ($parkStat === UPLOAD_ERR_OK) {
+    if (!move_uploaded_file($parkMap,$pkmapUpload)) {
+        die("Could not save park map file - contact site master...");
+    }
 }
-$mapPath = '../images/' . $parkMapName;
-$index[21] = $mapPath;
-$index[25] = $_POST['dirs'];
+$index[21] = $siteLoc;
+$index[25] = filter_input(INPUT_POST,'dirs');
 # No table yet ( $info[29] )
 
-/* ASSEMBLE REFERENCES */
+/* ASSEMBLE REFERENCES  NOTE: not sure how to filter input arrays yet... */
 $hikeRefTypes = $_POST['rtype'];
 $hikeRefItems1 = $_POST['rit1'];
 $hikeRefItems2 = $_POST['rit2'];
@@ -84,24 +105,17 @@ for ($k=0; $k<$noOfRefs; $k++) {
             echo "Unrecognized reference type passed";
     }
 }
-$index[38] = $_POST['hiketxt'];
+$index[38] = filter_input(INPUT_POST,'hiketxt');
 ?>
 
 <head>
     <title><?php echo $index[1];?></title>
     <meta charset="utf-8" />
-    <meta name="description"
-        content="Index Page Creation" />
-    <meta name="author"
-        content="Tom Sandberg & Ken Cowles" />
-    <meta name="robots"
-        content="nofollow" />
-    <link href="../styles/960_16_col.css"
-        type="text/css" rel="stylesheet" />
-    <link href="../styles/subindx.css"
-        type="text/css" rel="stylesheet" />
-    <link href="../styles/logo.css"
-        type="text/css" rel="stylesheet" />
+    <meta name="description" content="Index Page Creation" />
+    <meta name="author" content="Tom Sandberg & Ken Cowles" />
+    <meta name="robots" content="nofollow" />
+    <link href="../styles/subindx.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
@@ -109,14 +123,13 @@ $index[38] = $_POST['hiketxt'];
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>
-
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail"><?php echo $index[1];?></p>
 	
 <div class="container_16 clearfix">
-    <img class="mainPic" src="<?php echo $mapPath;?>" alt="Park Map" /><br />
+    <img class="mainPic" src="<?php echo $pkmapUpload;?>" alt="Park Map" /><br />
     <p id="dirs"><a href="<?php echo $index[25]?>" target="_blank">Directions to the Visitor Center</a></p>
     <p id="indxContent"><?php echo $index[38];?></p>
 
@@ -159,6 +172,8 @@ $index[38] = $_POST['hiketxt'];
     <p id="tblHdr">Hiking & Walking Opportunities [EMPTY AT THIS TIME]</p>
     </div>
     <form target="_blank" action="saveIndex.php" method="POST">
+        <input type="hidden" name="pmapdup" value ="<?php echo $pkmapdup;?>" />
+        <input id="owflag" type="hidden" name="pmapow" value ="<?php echo $pkmapow;?>" />"
         <input type="hidden" name="indx[]" value="<?php echo $index[0];?>" />
         <input type="hidden" name="indx[]" value="<?php echo $index[1];?>" />
         <input type="hidden" name="indx[]" value="<?php echo $index[2];?>" />
@@ -167,15 +182,28 @@ $index[38] = $_POST['hiketxt'];
         <input type="hidden" name="indx[]" value="<?php echo $index[11];?>" />
         <input type="hidden" name="indx[]" value="<?php echo $index[19];?>" />
         <input type="hidden" name="indx[]" value="<?php echo $index[20];?>" />
+        <input type="hidden" name="indx[]" value="<?php echo $index[21];?>" />"
         <input type="hidden" name="indx[]" value="<?php echo $parkMapName;?>" />
         <input type="hidden" name="indx[]" value="<?php echo $index[25];?>" />
         <input type="hidden" name="indx[]" value="<?php echo $index[38];?>" />
         <input type="hidden" name="indx[]" value="<?php echo $index[39];?>" />
 
-        <input type="submit" value="Save Index Page" />
+        <div style="margin-left:8px;">
+            <h3>Select an option below to save this Index page</h3>
+            <p><em>Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
+                <input id="master" type="password" name="mpass" size="12" maxlength="10" 
+                       title="8-character code required" />&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="submit" name="savePg" value="Site Master" />
+            </p>
+            <p><em>Registered Users:</em> Select button to submit for review&nbsp;&nbsp;
+                <input type="submit" name="savePg" value="Submit for Review" />
+            </p>
+        </div>
     </form>
 		
 </div>  <!-- END OF CONTAINER 16 -->
 
+<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/displayIndexPg.js"></script>
 </body>
 </html>
