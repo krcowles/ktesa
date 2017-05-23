@@ -39,6 +39,7 @@
     $indx[25] = $import[10];
     $indx[38] = $import[11];
     $indx[39] = $import[12];
+    $indx[41] .= "\n";
     ksort($indx, SORT_NUMERIC);
     echo '<p style="margin:16px;">Name for this center is: ' . $indx[1] . '</p>';
     $user = true;
@@ -77,9 +78,7 @@
     } else {
         die('<p style="color:brown;">Contact Site Master: Submission not recognized');
     } 
-    # PLEASE CHECK THIS LATER!!! IS LAST LINE EOF !== newline?????
     if ( ($handle = fopen($database,"a")) !== false ) {
-        fputs($handle,"\n");
         fputcsv($handle,$indx);
         fclose($handle);
     } else {

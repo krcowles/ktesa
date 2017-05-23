@@ -51,7 +51,7 @@ $info[11] = filter_input(INPUT_POST,'hwow');
 $info[19] = filter_input(INPUT_POST,'hlat');
 $info[20] = filter_input(INPUT_POST,'hlon');
 $info[25] = filter_input(INPUT_POST,'gdirs');
-$info[29] = filter_input(INPUT_POST,'tbl');
+#$info[29] = filter_input(INPUT_POST,'tbl');  // not editable at ths time
 $info[38] = filter_input(INPUT_POST,'info');
 # Re-form references string array:
 $rawreftypes = $_POST['rtype'];
@@ -94,7 +94,7 @@ for ($j=0; $j<$noOfRefs; $j++) {
 }
 $info[39] = $rcnt . $refStr;
 
-/* Convert the html table back into a string array: code copied from 'convertIndxTbls.php' */
+/* Convert the html table back into a string array: code copied from 'convertIndxTbls.php' *//*
 $htmlTbl = $info[29];
 # form an array of rows in the table
 $bodyStart = strpos($htmlTbl,"<tbody>");
@@ -170,20 +170,24 @@ for ($i=0; $i<$rowcount; $i++) {
 # replace table with new array strings:
 $tbldat = implode("|",$array_strings);
 $info[29] = $tbldat;
+ * 
+ */
 
 /* Save changes based on whether or not site master: registered users
  * will have a temporary database change saved for review by the site
  * master, to be integrated with the site after acceptance.
  * NOTE: THIS IS PRELIMINARY AND BY NO MEANS A VETTED USER PROCESS!!!!
  */
+$user = true;
 if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
     $passwd = filter_input(INPUT_POST,'mpass');
     if ($passwd !== '000ktesa') {
         die('<p style="color:brown;">Incorrect Password - save not executed</p>');
     }
+    $user = false;
     /* WRITE OUT THE NEW INDEX PAGE */
     $msgout = '<p>The index page changes for ' . $info[1] . ' (if any)' .
-        'have been made.</p>';
+        'have been made to the site</p>';
     $dbhandle = fopen($database,"w");
     foreach ($wholeDB as $hikedat) {
         if ($hikedat[0] == $hikeNo) {
@@ -207,11 +211,15 @@ fclose($dbhandle);
 <div style="margin-left:16px;">
     <?php echo $msgout;?>
 </div>
-<div data-ptype="index" data-indxno="<?php echo $hikeNo;?>" style="padding:16px;" id="more">
-	<button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this Index Page</button><br />
-	<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different Index Page</button><br />
-	<button style="font-size:16px;color:DarkBlue;" id="view">View Changed Page</button>
-</div>
+<?php
+if (!user) {
+    echo '<div data-ptype="index" data-indxno="' . $hikeNo . '" style="padding:16px;" id="more">';
+    echo '<button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this Index Page</button><br />';
+    echo '<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different Index Page</button><br />';
+    echo '<button style="font-size:16px;color:DarkBlue;" id="view">View Changed Page</button>';
+    echo '</div>';
+}
+?>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="postEdit.js"></script>

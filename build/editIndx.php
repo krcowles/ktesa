@@ -3,16 +3,11 @@
 <head>
     <title>Edit Database</title>
     <meta charset="utf-8" />
-    <meta name="description"
-        content="Edit a given hike" />
-    <meta name="author"
-        content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots"
-        content="nofollow" />
-    <link href="editIndx.css"
-        type="text/css" rel="stylesheet" />
-    <link href="../styles/logo.css"
-        type="text/css" rel="stylesheet" />
+    <meta name="description" content="Edit the selected Index Pg" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
+    <link href="editIndx.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
@@ -20,7 +15,6 @@
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>
-
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
@@ -31,10 +25,10 @@
     $dbhandle = fopen($database,"r");
     $hikeNo = $_GET['hikeNo'];
     while ( ($indxdat = fgetcsv($dbhandle)) !== false) {
-            if ( $indxdat[0] == $hikeNo) {
-                    $info = $indxdat;
-                    break;
-            }
+        if ( $indxdat[0] == $hikeNo) {
+            $info = $indxdat;
+            break;
+        }
     }
     fclose($dbhandle);
     $indxName = $info[1];
@@ -44,7 +38,6 @@
     /* NOTE: The cluster string ($info[4]) will not be available for editing here: the
        proper means of adding a hike to the Index Page is to edit that hike
        and add the Visitor Center association; */
-    # Until database has settled with unencoded tables, the following will not alter data
     $dirs = $info[25];
     $indxInfo = $info[38];
     $refs = $info[39];
@@ -62,7 +55,6 @@
     $tblhtml .= '<th class="hdrRow" scope="col">Photos</th>'  . "\n";
     $tblhtml .= '</tr>' . "\n" . '</thead>' . "\n" . '<tbody>' . "\n";
     $rowcnt = count($rows);
-    #echo "Seeing " . $rowcnt . " rows...";
     for ($j=0; $j<$rowcnt; $j++) {
         $row = explode("^",$rows[$j]);
         # there are always 7 pieces, counting row type
@@ -235,9 +227,10 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br /><br />
 Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
 Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 
-<h2>HTML Code for Table of Hikes Associated With This Park</h2>
+<h2>The Table of Hikes Cannot Be Edited At This Time</h2>
+<!--
 <textarea name="tbl" rows="20" cols="120" wrap="soft">
-<?php echo $indxTbl;?></textarea><br /><br />
+<?php echo $indxTbl;?></textarea><br /><br /> -->
 	
 <input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
 <input type="hidden" name="nme" value="<?php echo $indxName;?>" />
