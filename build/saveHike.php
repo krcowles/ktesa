@@ -106,7 +106,7 @@
     $newHike[38] = $_SESSION['hikeDetails'];
     $newHike[39] = filter_input(INPUT_POST,'href');
     $newHike[40] = filter_input(INPUT_POST,'hpdat');
-    $newHike[41] = filter_input(INPUT_POST,'hadat');
+    $newHike[41] = filter_input(INPUT_POST,'hadat') . "\n";
     ksort($newHike, SORT_NUMERIC);
     $supptFiles = filter_input(INPUT_POST,'hdatf');
     $newDatFiles = explode("^",$supptFiles);
@@ -333,7 +333,7 @@
         } elseif ($newDatFiles[11] == '1') {
             echo '<p>' . $newDatFiles[9] . ' had already been uploaded - no activity</p>';
         }
-        # need to add index page changes...
+        # if any, need to add index page changes...
         if ($updateIndx) {
         	$outdat = fopen($database,"r");
         	$ptr = 0;
@@ -354,6 +354,7 @@
         } else {
         	$outdat = fopen($database,"a");
         	fputcsv($outdat,$newHike);
+                #fputs($outdat,"\n");
         }
         fclose($outdat);
         echo "<h2>" . $msg . "</h2>";

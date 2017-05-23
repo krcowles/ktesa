@@ -45,6 +45,7 @@
 	$indx[25] = $import[9];
 	$indx[38] = $import[10];
 	$indx[39] = $import[11];
+        $indx[41] .= "\n";
 	ksort($indx, SORT_NUMERIC);
 	echo '<p style="margin:16px;">Name for this center is: ' . $indx[0] . '</p>';
 	$database = '../data/database.csv';
