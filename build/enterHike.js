@@ -84,6 +84,8 @@ function useIndexPg() {
 	msgE = msgE.replace('hike','place');
 	$('#iwow').text(msgE);
 	$('.honly').css('display','none');
+        $('#tsv').attr('required',false);
+        $('#opts').trigger('click');
 }
 function useStdPg() {
 	pageSelector = "validateHike.php";
@@ -102,6 +104,7 @@ function useStdPg() {
 	msgE = msgE.replace('place','hike');
 	$('#iwow').text(msgE);
 	$('.honly').css('display','block');
+        $('#tsv').attr('required',true);
 }
 /* END OF page-creation type */
 
