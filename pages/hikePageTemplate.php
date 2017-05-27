@@ -224,15 +224,14 @@ if ($handle !== false) {
 	<link href="../styles/hikes.css"
             type="text/css" rel="stylesheet" />
 	<script type="text/javascript"> var iframeWindow; </script>
-	<script type="text/javascript" src="../scripts/canvasjs.min.js"> </script>
+	<script type="text/javascript" src="../scripts/canvas.js"> </script>
 </head>
 
 <body>
 
 <div id="logo">
 	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-	<p id="logo_left">Hike New Mexico</p>
-	
+	<p id="logo_left">Hike New Mexico</p>	
 	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
 	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
@@ -318,8 +317,10 @@ if (!$newstyle) {
             '<a href="mailto:krcowles29@gmail.com">send us a note!</a></p>' ."\n";
     echo '</div>';
     # MAP AND CHART ON RIGHT:
-    echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . iframeMapOpts . '></iframe>' ."\n";
-    echo '<div data-gpx="' . $gpxfile. '" id="chartline"></div>' . "\n";
+    echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
+                $mapsrc . iframeMapOpts . '></iframe>' ."\n";
+    echo '<div data-gpx="' . $gpxfile. '" id="chartline"><canvas id="grph" ' .
+            'width="600" height="200"></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
 for ($k=0; $k<$rowCount; $k++) {
@@ -354,7 +355,7 @@ if ($fieldsets) {
 	
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/hikes.js"></script> 
-<script src="../scripts/canvasJS.js"></script> 
+<script src="../scripts/dynamicChart.js"></script> 
 
 </body>
 
