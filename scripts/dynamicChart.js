@@ -90,7 +90,6 @@ $.ajax({
             elevs.push(tag);
         });
         // form the array of datapoint objects for the chart:
-        // datapoint = { y: elevation }
         rows[0] = { x: 0, y: elevs[0] };
     	emax = 0;
         emin = 20000;
@@ -162,18 +161,24 @@ var hikeDat = [{ x: 0, y: 5150 },
     { x: 4.00, y: 5152}];
 // data object for the chart:
 var dataDef = { title: "",
-    minY: 5150,
-    maxY: 5210,
+    minY: emin,
+    maxY: emax,
     xLabel: 'Distance (miles)', 
     yLabel: 'Elevation (feet)',
     labelFont: '10pt Arial', 
     dataPointFont: '8pt Arial',
     renderTypes: [ChartObj.renderType.lines, ChartObj.renderType.points],
-    dataPoints: hikeDat
+    dataPoints: rows
 };
 // render the chart using predefined objects
-ChartObj.render('grph', dataDef);
-crossHairs();
+var waitForDat = setInterval( function() {
+    if (ajaxDone) {
+        ChartObj.render('grph', dataDef);
+        crossHairs();
+        clearInterval(waitForDat);
+    }
+}, 200);
+
 function window2canvas(canvas,x,y) {
     /* it is necessary to get bounding rect each time as the user may have
      * scrolled the window down (or resized), and the rect is measured wrt/viewport
