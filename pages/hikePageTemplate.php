@@ -319,8 +319,7 @@ if (!$newstyle) {
     # MAP AND CHART ON RIGHT:
     echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
                 $mapsrc . iframeMapOpts . '></iframe>' ."\n";
-    echo '<div data-gpx="' . $gpxfile. '" id="chartline"><canvas id="grph" ' .
-            'width="600" height="200"></div>' . "\n";
+    echo '<div data-gpx="' . $gpxfile. '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
 for ($k=0; $k<$rowCount; $k++) {

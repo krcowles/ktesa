@@ -104,7 +104,6 @@ iframe {
 }
 #chartline {
 	float: left;
-	min-height: 200px;
         background-color: white;
 }
 #hikeInfo {
