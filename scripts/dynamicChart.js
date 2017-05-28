@@ -53,8 +53,6 @@ var msg;
 var ajaxDone = false;
 var resizeFlag = true;
 
-var chartLoc = {};
-var chart;
 /* This section of code reads in the GPX file (ajax) capturing the latitudes
  * and longitudes, calculating the distances between points via fct 'distance',
  * and storing the results in the array 'elevs'.
@@ -123,7 +121,7 @@ $.ajax({
     },
     error: function() {
         msg = '<p>Did not succeed in getting XML data: ' + trackfile + '</p>';
-        $('#dbug').append(msg);
+        alert(msg);
     }
 });
 /* This section of code renders the graph itself based on the data obtained above */
@@ -159,20 +157,21 @@ var hikeDat = [{ x: 0, y: 5150 },
     { x: 3.68, y: 5171},
     { x: 3.84, y: 5163},
     { x: 4.00, y: 5152}];
-// data object for the chart:
-var dataDef = { title: "",
-    minY: emin,
-    maxY: emax,
-    xLabel: 'Distance (miles)', 
-    yLabel: 'Elevation (feet)',
-    labelFont: '10pt Arial', 
-    dataPointFont: '8pt Arial',
-    renderTypes: [ChartObj.renderType.lines, ChartObj.renderType.points],
-    dataPoints: rows
-};
+
 // render the chart using predefined objects
 var waitForDat = setInterval( function() {
     if (ajaxDone) {
+        // data object for the chart:
+        var dataDef = { title: "",
+            minY: emin,
+            maxY: emax,
+            xLabel: 'Distance (miles)', 
+            yLabel: 'Elevation (feet)',
+            labelFont: '10pt Arial', 
+            dataPointFont: '8pt Arial',
+            renderTypes: [ChartObj.renderType.lines, ChartObj.renderType.points],
+            dataPoints: rows
+        };
         ChartObj.render('grph', dataDef);
         crossHairs();
         clearInterval(waitForDat);
