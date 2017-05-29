@@ -100,19 +100,20 @@ $.ajax({
         var $trackpts = $("trkpt",trackDat);
         var hikelgth = 0;  // distance between pts, in miles
         var dataPtObj;
-        $trackpts.each( function(indx) {
+        $trackpts.each( function() {
             var tag = parseFloat($(this).attr('lat'));
             lats.push(tag);
             tag =parseFloat( $(this).attr('lon'));
             lngs.push(tag);
             //var $ele = $(this).children().eq(0);
             var $ele = $(this).find('ele').text();
-            if ( $ele.length ) {  // some GPX files sometimes are missing attr...
+            if ( $ele.length ) { 
                 tag = parseFloat($ele) * 3.2808;
                 elevs.push(tag);
-            } else {
-                tag = elevs[indx-1];
-                elevs.push(tag);
+            } else {   // some GPX files contain trkpts w/no ele tag
+                // remove entries for trkpts that have no elevation:
+                lats.pop();
+                lngs.pop();
             }
         });
         // form the array of datapoint objects for the chart:
