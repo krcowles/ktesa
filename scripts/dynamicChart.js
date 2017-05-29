@@ -55,6 +55,7 @@ function crossHairs() {
     canvasEl.onmouseout = function (e) {
         context.putImageData(imageData,0,0);
         prevCHairs = false;
+        document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
     }
 }
 // account for building new page - files not stored in main yet
@@ -99,14 +100,20 @@ $.ajax({
         var $trackpts = $("trkpt",trackDat);
         var hikelgth = 0;  // distance between pts, in miles
         var dataPtObj;
-        $trackpts.each( function() {
+        $trackpts.each( function(indx) {
             var tag = parseFloat($(this).attr('lat'));
             lats.push(tag);
             tag =parseFloat( $(this).attr('lon'));
             lngs.push(tag);
-            var $ele = $(this).children().eq(0);
-            tag = parseFloat($ele.text()) * 3.2808;
-            elevs.push(tag);
+            //var $ele = $(this).children().eq(0);
+            var $ele = $(this).find('ele').text();
+            if ( $ele.length ) {  // some GPX files sometimes are missing attr...
+                tag = parseFloat($ele) * 3.2808;
+                elevs.push(tag);
+            } else {
+                tag = elevs[indx-1];
+                elevs.push(tag);
+            }
         });
         // form the array of datapoint objects for the chart:
         rows[0] = { x: 0, y: elevs[0] };
@@ -149,36 +156,7 @@ var coords = {};  // data points by which to mark the track
 var indxOfPt;
 var prevCHairs = false;
 var imageData;
-var hikeDat = [{ x: 0, y: 5150 },
-    { x: 0, y: 5150 },
-    { x: 0.16, y: 5153},
-    { x: 0.32, y: 5160},
-    { x: 0.48, y: 5190},
-    { x: 0.64, y: 5192},
-    { x: 0.80, y: 5200},
-    { x: 0.96, y: 5202},
-    { x: 1.12, y: 5210},
-    { x: 1.28, y: 5200},
-    { x: 1.44, y: 5190},
-    { x: 1.60, y: 5175},
-    { x: 1.76, y: 5165},
-    { x: 1.92, y: 5155},
-    { x: 1.92, y: 5155},
-    { x: 2.08, y: 5150},
-    { x: 2.24, y: 5155},
-    { x: 2.40, y: 5161},
-    { x: 2.56, y: 5169},
-    { x: 2.72, y: 5174},
-    { x: 2.88, y: 5181},
-    { x: 3.04, y: 5186},
-    { x: 3.20, y: 5190},
-    { x: 3.36, y: 5182},
-    { x: 3.52, y: 5179},
-    { x: 3.68, y: 5171},
-    { x: 3.84, y: 5163},
-    { x: 4.00, y: 5152}];
-// test code for eliminating duplication in array
-var newArray = [];
+/* Test code - filter out duplicate values from GPX file
 var naIndx;
 for (var n=0; n<hikeDat.length; n++) {
     if (n === 0) {
@@ -193,6 +171,8 @@ for (var n=0; n<hikeDat.length; n++) {
 }
 msg = "New array length is " + newArray.length;
 //window.alert(msg);
+*/
+
 // render the chart using predefined objects
 var waitForDat = setInterval( function() {
     if (ajaxDone) {
