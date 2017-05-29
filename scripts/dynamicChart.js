@@ -14,8 +14,28 @@ function setChartDims() {
     var sidePnlLoc = parseInt(sidePnlPos.top);
     var usable = vpHeight - sidePnlLoc;
     var chartHeight = Math.floor(0.35 * usable);
-    canvasEl.height = chartHeight;
+    if (chartHeight < 100) {
+        $('#chartline').height(100);
+        canvasEl.height = 100;
+    } else {
+        $('#chartline').height(chartHeight);
+        canvasEl.height = chartHeight;
+    }
     canvasEl.width = chartWidth;
+}
+function defineData() {
+    // data object for the chart:
+    var dataDef = { title: "",
+        minY: emin,
+        maxY: emax,
+        xLabel: 'Distance (miles)', 
+        yLabel: 'Elev. (ft)',
+        labelFont: '10pt Arial', 
+        dataPointFont: '8pt Arial',
+        renderTypes: [ChartObj.renderType.lines, ChartObj.renderType.points],
+        dataPoints: rows
+    };
+    return dataDef;
 }
 function crossHairs() {
     canvasEl.onmousemove = function (e) {
@@ -29,7 +49,7 @@ function crossHairs() {
         }
         drawLine(coords.px,margin.top,coords.px,margin.top+yMax,'Tomato',1);
         drawLine(margin.left,coords.py,margin.left+xMax,coords.py);
-        infoBox(coords.px,coords.py,coords.x.toFixed(2),coords.y);
+        infoBox(coords.px,coords.py,coords.x.toFixed(2),coords.y.toFixed());
     };
     canvasEl.onmouseout = function (e) {
         context.putImageData(imageData,0,0);
@@ -132,6 +152,7 @@ var noOfXincs;
 var prevCHairs = false;
 var imageData;
 var hikeDat = [{ x: 0, y: 5150 },
+    { x: 0, y: 5150 },
     { x: 0.16, y: 5153},
     { x: 0.32, y: 5160},
     { x: 0.48, y: 5190},
@@ -143,6 +164,7 @@ var hikeDat = [{ x: 0, y: 5150 },
     { x: 1.44, y: 5190},
     { x: 1.60, y: 5175},
     { x: 1.76, y: 5165},
+    { x: 1.92, y: 5155},
     { x: 1.92, y: 5155},
     { x: 2.08, y: 5150},
     { x: 2.24, y: 5155},
@@ -157,22 +179,13 @@ var hikeDat = [{ x: 0, y: 5150 },
     { x: 3.68, y: 5171},
     { x: 3.84, y: 5163},
     { x: 4.00, y: 5152}];
-
+// test code for eliminating duplication in array
+// 
 // render the chart using predefined objects
 var waitForDat = setInterval( function() {
     if (ajaxDone) {
-        // data object for the chart:
-        var dataDef = { title: "",
-            minY: emin,
-            maxY: emax,
-            xLabel: 'Distance (miles)', 
-            yLabel: 'Elevation (feet)',
-            labelFont: '10pt Arial', 
-            dataPointFont: '8pt Arial',
-            renderTypes: [ChartObj.renderType.lines, ChartObj.renderType.points],
-            dataPoints: rows
-        };
-        ChartObj.render('grph', dataDef);
+        var chartData = defineData();
+        ChartObj.render('grph', chartData);
         crossHairs();
         clearInterval(waitForDat);
     }
@@ -194,32 +207,32 @@ function dataReadout(mousePos) {
     if (mousePos.x > margin.left) {
         var chartPos = mousePos.x - margin.left;
         var chartY = mousePos.y - margin.top;
-        var lastEl = hikeDat.length - 1;
-        var maxMile = hikeDat[lastEl].x;
+        var lastEl = rows.length - 1;
+        var maxMile = rows[lastEl].x;
         var unitsPerPixel = maxMile/xMax;
         var xDat = chartPos * unitsPerPixel;
         var bounds = findNeighbors(xDat);
         if (bounds.u === bounds.l) {
-            yDat = hikeDat[bounds.u].y;
+            yDat = rows[bounds.u].y;
             noOfXincs = bounds.u;
         } else {
-            var higher = hikeDat[bounds.u].x;
-            var lower = hikeDat[bounds.l].x;
+            var higher = rows[bounds.u].x;
+            var lower = rows[bounds.l].x;
             var extrap = (xDat - lower)/(higher - lower);
             if (extrap >= 0.5) {
                 xDat = higher;
-                yDat = hikeDat[bounds.u].y;
+                yDat = rows[bounds.u].y;
                 noOfXincs = bounds.u;
             } else {
                 xDat = lower;
-                yDat = hikeDat[bounds.l].y;
+                yDat = rows[bounds.l].y;
                 noOfXincs = bounds.l;
             }
         }
         return {
             x: xDat,
             y: yDat,
-            px: margin.left + noOfXincs * xInc,
+            px: margin.left + pxPerMile * xDat,
             py: margin.top + (rgMax - yDat) * ratio
         };
     } else {
@@ -227,13 +240,13 @@ function dataReadout(mousePos) {
     }    
 }
 function findNeighbors(xDataPt) {
-    for (var k=0; k<hikeDat.length; k++) {
-        if (hikeDat[k].x === xDataPt) {
+    for (var k=0; k<rows.length; k++) {
+        if (rows[k].x === xDataPt) {
             upper = k;
             lower = k;
             break;
         } else {
-            if (xDataPt < hikeDat[k].x) {
+            if (xDataPt < rows[k].x) {
                 var upper = k;
                 var lower = k-1;
                 break;
@@ -253,7 +266,8 @@ $(window).resize( function() {
         setTimeout( function() {
             canvasEl.onmousemove = null;
             setChartDims();
-            ChartObj.render('grph', dataDef);
+            var chartData = defineData();
+            ChartObj.render('grph', chartData);
             crossHairs();
             resizeFlag = true; 
             //var msg = 'New width: ' + canvasEl.width + ', height: ' + canvasEl.height;

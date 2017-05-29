@@ -14,7 +14,7 @@ var chart_ranges = [50,100,200,500,1000,2000,3000,4000];
 var deltaY;
 var median;
 var rgMax;
-var xInc;
+var pxPerMile;
 // INFO BOX VARS (CONSTANTS)
 var xwidth = 72;
 var ywidth = 40;
@@ -63,7 +63,30 @@ var getMaxDataYValue = function () {
         
     };
 var getXInc = function() {
-        return Math.round(xMax/(data.dataPoints.length -1));
+        var lastWP = data.dataPoints.length - 1;
+        var lastX = data.dataPoints[lastWP].x.toFixed(2);
+        pxPerMile = xMax/lastX;
+        if (lastX <= 2) {
+            var incr = 0.1;
+            lastX = lastX.toFixed(1);
+        } else {
+            var incr = 0.25;
+        }
+        for (var j=0; j<50; j++) {
+            if (j * incr > lastX) {
+                var noOfRegIncs = j;
+                break;
+            }
+        }
+        var lastValDelta = lastX - (noOfRegIncs-1)*incr;
+        var lastValpx = pxPerMile * lastValDelta;
+        return {
+            XaxisPx: xMax/noOfRegIncs,  // value in pixels
+            XaxisVal: incr,  // value in miles
+            RegXIncs: noOfRegIncs,
+            LastXInc: lastValpx,
+            LastXVal: lastX
+        };
     };
 var renderBackground = function () {
     context.fillStyle = "White";
@@ -115,6 +138,7 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
     var yInc = yMax / noOfGrids; // no of pixels per grid
     var yPos = 0;  // in pixels also
     var yVal; // data value, NOT in pixels
+    var tx;
     context.font = (data.dataPointFont != null) ? data.dataPointFont : '10pt Calibri';
     context.fillStyle = 'Blue';
     // Y AXIS:
@@ -147,16 +171,36 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
     context.fillText(yVal,tx,yPos+4);
     
     // X AXIS:
-    var xInc = getXInc();
+    /* When there are so many X-axis datapoints, there is a need to define a
+     * reasonable grid spacing and x-value readout. Those calculations are 
+     * performed in 'getXInc()'
+     */
+    var xAxisData = getXInc();
     var xPos = margin.left;
     context.fillStyle = 'Blue';
-    ty = margin.top + yMax + 16;
-    for (var j=0; j<data.dataPoints.length; j++) {
+    var ty = margin.top + yMax + 16;
+    var lastSize;
+    var txt;
+    context.textAlign = "center";
+    for (var j=0; j<xAxisData.RegXIncs; j++) {
         //x axis labels
-        txt = data.dataPoints[j].x;
-        txtSize = context.measureText(txt);
+        txt = j * xAxisData.XaxisVal;
         context.fillText(txt, xPos, ty);
-        xPos += xInc;
+        xPos += xAxisData.XaxisPx;
+        lastSize = context.measureText(txt);
+    }
+    xPos -= xAxisData.XaxisPx;  // back up to previous label
+    // one more label:
+    var lastXSize = context.measureText(xAxisData.LastXVal);
+    var minSpace = 4; // set minimum space between prevX and lastX labels
+    if ( (lastSize.width/2 + minSpace + lastXSize.width/2) < xAxisData.LastXInc &&
+            (xAxisData.LastXInc + lastSize.width/2) < xAxisData.XaxisPx ) {
+        xPos += xAxisData.LastXInc;
+        context.fillText(xAxisData.LastXVal,xPos,ty);
+    } else {
+        xPos += xAxisData.XaxisPx;
+        txt = xAxisData.RegXIncs * xAxisData.XaxisVal;
+        context.fillText(txt,xPos,ty);
     }
     //Vertical line
     drawLine(margin.left, margin.top, margin.left, margin.top + yMax, 'black',2);
@@ -198,7 +242,6 @@ var infoBox = function infoBox(xloc,yloc,xval,yval) {
     context.fillText(miles,txtx,txty);
 }
 var renderData = function renderData(type) {
-    xInc = getXInc();
     var prevX = 0;
     var prevY = 0;
     var ptY;
@@ -210,7 +253,8 @@ var renderData = function renderData(type) {
         if (ptY < margin.top) {
             ptY = margin.top;
         }
-        var ptX = (i * xInc) + margin.left;
+        var ptX = margin.left + pxPerMile * data.dataPoints[i].x;
+        //var ptX = (i * xInc) + margin.left;
 
         if (i > 0 && type == renderType.lines) {
             //Draw connecting lines
