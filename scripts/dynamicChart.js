@@ -47,9 +47,10 @@ function crossHairs() {
         } else {
             context.putImageData(imageData, 0, 0);
         }
+        var mapObj = { lat: lats[indxOfPt], lng: lngs[indxOfPt] };
         drawLine(coords.px,margin.top,coords.px,margin.top+yMax,'Tomato',1);
         drawLine(margin.left,coords.py,margin.left+xMax,coords.py);
-        infoBox(coords.px,coords.py,coords.x.toFixed(2),coords.y.toFixed());
+        infoBox(coords.px,coords.py,coords.x.toFixed(2),coords.y.toFixed(),mapObj);
     };
     canvasEl.onmouseout = function (e) {
         context.putImageData(imageData,0,0);
@@ -112,9 +113,6 @@ $.ajax({
     	emax = 0;
         emin = 20000;
         for (var i=0; i<lats.length-1; i++) {
-            if (i >= 23) {
-                    var x = 'what';
-            }
             hikelgth += distance(lats[i],lngs[i],lats[i+1],lngs[i+1],"M");
             if (elevs[i+1] > emax) { emax = elevs[i+1]; }
             if (elevs[i+1] < emin) { emin = elevs[i+1]; }
@@ -148,7 +146,7 @@ $.ajax({
 var canvasEl = document.getElementById('grph');
 setChartDims();
 var coords = {};  // data points by which to mark the track
-var noOfXincs;
+var indxOfPt;
 var prevCHairs = false;
 var imageData;
 var hikeDat = [{ x: 0, y: 5150 },
@@ -180,7 +178,21 @@ var hikeDat = [{ x: 0, y: 5150 },
     { x: 3.84, y: 5163},
     { x: 4.00, y: 5152}];
 // test code for eliminating duplication in array
-// 
+var newArray = [];
+var naIndx;
+for (var n=0; n<hikeDat.length; n++) {
+    if (n === 0) {
+        newArray[0] = hikeDat[0];
+        naIndx = 1;
+    } else {
+        if (hikeDat[n].x !== hikeDat[n-1].x) {
+            newArray[naIndx] = hikeDat[n];
+            naIndx++;
+        }
+    }
+}
+msg = "New array length is " + newArray.length;
+//window.alert(msg);
 // render the chart using predefined objects
 var waitForDat = setInterval( function() {
     if (ajaxDone) {
@@ -214,7 +226,7 @@ function dataReadout(mousePos) {
         var bounds = findNeighbors(xDat);
         if (bounds.u === bounds.l) {
             yDat = rows[bounds.u].y;
-            noOfXincs = bounds.u;
+            indxOfPt = bounds.u;
         } else {
             var higher = rows[bounds.u].x;
             var lower = rows[bounds.l].x;
@@ -222,11 +234,11 @@ function dataReadout(mousePos) {
             if (extrap >= 0.5) {
                 xDat = higher;
                 yDat = rows[bounds.u].y;
-                noOfXincs = bounds.u;
+                indxOfPt = bounds.u;
             } else {
                 xDat = lower;
                 yDat = rows[bounds.l].y;
-                noOfXincs = bounds.l;
+                indxOfPt = bounds.l;
             }
         }
         return {

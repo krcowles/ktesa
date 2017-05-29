@@ -216,7 +216,10 @@ var drawLine = function drawLine(startX, startY, endX, endY, strokeStyle, lineWi
     context.stroke();
     context.closePath();    
 };
-var infoBox = function infoBox(xloc,yloc,xval,yval) {
+var infoBox = function infoBox(xloc,yloc,xval,yval,mapLink) {
+    if (iframeWindow.mrkrSet) {
+            document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
+    }
     var miles = xval + ' miles';
     yval = Thousands(yval);
     var feet = yval + ' ft';
