@@ -64,7 +64,8 @@ var getMaxDataYValue = function () {
     };
 var getXInc = function() {
         var lastWP = data.dataPoints.length - 1;
-        var lastX = data.dataPoints[lastWP].x.toFixed(2);
+        var lastX = parseFloat(data.dataPoints[lastWP].x);
+        var lastX = parseFloat(lastX.toFixed(2));
         pxPerMile = xMax/lastX;
         if (lastX <= 2) {
             var incr = 0.1;
@@ -181,10 +182,22 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
     var ty = margin.top + yMax + 16;
     var lastSize;
     var txt;
+    var xInc = xAxisData.XaxisVal;
+    if (xInc === 0.1) {
+        var single = true;
+    } else {
+        var single = false;
+    }
     context.textAlign = "center";
     for (var j=0; j<xAxisData.RegXIncs; j++) {
         //x axis labels
-        txt = j * xAxisData.XaxisVal;
+        txt = j * xInc;
+        // for some reason, there is an occasional digit about 20 decimals out...
+        if (single) {
+            txt = txt.toFixed(1);
+        } else {
+            txt = txt.toFixed(2);
+        }
         context.fillText(txt, xPos, ty);
         xPos += xAxisData.XaxisPx;
         lastSize = context.measureText(txt);
@@ -286,9 +299,12 @@ var renderData = function renderData(type) {
 }
 function Thousands(value) {
     var newval = value;
-    if (value > 999) { // add coma
-        var yTh = Math.round(value/1000);
-        var yRem = value % 1000;
+    if (newval > 999) { // add coma
+        var yTh = Math.floor(newval/1000); // truncated to thousands
+        var yRem = newval - 1000 * yTh;
+        if (yRem === 0) {
+            yRem = '000';
+        }
         newval = yTh + ',' + yRem;
     }
     return newval;
