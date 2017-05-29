@@ -218,8 +218,9 @@ var drawLine = function drawLine(startX, startY, endX, endY, strokeStyle, lineWi
 };
 var infoBox = function infoBox(xloc,yloc,xval,yval,mapLink) {
     if (iframeWindow.mrkrSet) {
-            document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
+        document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
     }
+    document.getElementById('mapline').contentWindow.drawMarker(mapLink);
     var miles = xval + ' miles';
     yval = Thousands(yval);
     var feet = yval + ' ft';
