@@ -192,7 +192,7 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript"> var iframeWindow; </script>
-    <script type="text/javascript" src="../scripts/canvasjs.min.js"></script>
+    <script type="text/javascript" src="../scripts/canvas.js"></script>
 </head>
 
 <body>
@@ -253,7 +253,7 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
 </div> <!-- END OF SIDE PANEL DIV -->
 <iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=<?php echo $geomap . 
     iframeMapOpts;?>"></iframe>
-<div data-gpx="<?php echo $gpxFile;?>" id="chartline"></div>
+<div data-gpx="<?php echo $gpxFile;?>" id="chartline"><canvas id="grph"></canvas></div>
 
 <?php
 /*  
@@ -680,8 +680,9 @@ echo $albumHtml;
 <div class="popupCap"></div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src="../scripts/canvasJS.js"></script>
 <script src="../scripts/hikes.js"></script>
+<script src="../scripts/dynamicChart.js"></script>
+
 
 </body>
 </html>
