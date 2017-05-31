@@ -191,7 +191,7 @@ if ($handle !== false) {
                 $hikeReferences = makeHtmlList(References,$hikeReferences);
                 $hikeProposedData = $hikeArray[40];
                 $hikeActualData = $hikeArray[41];
-                if ($hikeProposedData !== '' || $hikeActualData !== '') {
+                if ($hikeProposedData !== '' || ($hikeActualData !== '' && $hikeActualData !== "\n")) {
                         $fieldsets = true;
                         $datasect = '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
                         if ($hikeProposedData !== '') {
@@ -347,8 +347,6 @@ if ($fieldsets) {
 ?>
 
 <div id="dbug"></div>
-
-</div>  <!-- end of postPhoto section -->
 
 <div class="popupCap"></div>
 	

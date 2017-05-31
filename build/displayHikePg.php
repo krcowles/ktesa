@@ -170,6 +170,7 @@ $info = $_SESSION['hikeDetails'];
 $refs = filter_input(INPUT_POST,'refstr');
 $pdat = filter_input(INPUT_POST,'pstr');
 $adat = filter_input(INPUT_POST,'astr');
+echo "DATA Sects: adat: " . $adat . ", pdat: " . $pdat;
 $picarray = $_POST['pix'];  # don't know how to filter passed array...
 $noOfPix = count($picarray);
 $forceLoad = filter_input(INPUT_POST,'setForce');
@@ -475,11 +476,6 @@ $_SESSION['row5'] = $rowStr[5];
 /*  
     ---------------------------  END OF IMAGE ROW PROCESSING ----------------------
 */
-if($twoLinks === true) {
-    echo '<div style="margin-bottom:8px;"><em>-- To see more photos:</em> click on ' .
-        '<a href="' . $purl2 . '" target="_blank">Tom' . "'" . 's Flickr Album</a> or ' .
-        '<a href="' . $purl1 . '" target="_blank">Ken' . "'" . 's Flickr Album</a></div>';
-}
 echo $rowHtml;
 echo $albumHtml;
 ?>
@@ -626,7 +622,6 @@ echo $albumHtml;
     }
 ?>
 </div>  <!-- end of postPhoto -->
-
 <!-- Hidden Data Passed to saveHike.php -->
 <input type="hidden" name="hname" value="<?php echo $pgTitle;?>" />
 <input type="hidden" name="hlocale" value="<?php echo $locale;?>" />
