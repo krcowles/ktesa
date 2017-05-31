@@ -271,13 +271,13 @@ if ($hikeMarker === 'ctrhike') {
     } else {
         echo "Could not open database file ..data/TblDB.csv";
     }
-    $passGroup = implode(";",$result);
+    $passGroup = implode(";",$result) . ";";  // display hike looks for terminal semi-colon
     /* NOTE: even though the array holds empty keys where duplicates were eliminated,
        when imploding, the empty keys are disregarded */
     $_SESSION['allTips'] = $passGroup;
-    echo '<div id="clus_sel"><p>This hike was identified as belonging to a group of hikes ' .
+    echo '<div id="clus_sel"><p style="font-size:18px;color:Brown;">This hike was identified as belonging to a group of hikes ' .
     'in close proximity with other hikes.<br /><label style="color:DarkBlue;">' .
-    'Select the Group to which this hike belongs: </label><select name="webpg">';
+    'Select the Group to which this hike belongs: </label><select name="clusgrp">';
     foreach ($result as $group) {
         $groupNamePos = strpos($group,"$") + 1;
         $groupNameLgth = strlen($group) - $groupNamePos;
@@ -407,18 +407,29 @@ if ($hikeMarker === 'ctrhike') {
     </table>
 </div>
 <h3 style="text-indent:8px">Data for Google Maps API</h3>
+<?php 
+    if ($hikeMarker === 'center') {
+        $listType = "Visitor Center";
+        $listLat = $hikeLat;
+        $listLng = $hikeLong;
+    } elseif ($hikeMarker === 'cluster') {
+        $listType = "Hike Trailhead Common With or in Close Proximity to Others";
+        $listLat = "[Using Cluster Group Coordinates]";
+        $listLng = "[Using Cluster Group Coordinates]";
+    } elseif ($hikeMarker === 'ctrhike') {
+        $listType = "Hike Starts At/Near Visitor Center";
+        $listLat = "[Using Visitor Center Coordinates]";
+        $listLng = "[Using Visitor Center Coordiantes]";
+    } else {
+        $listType = "'Normal' Hike - Not Overlapping;";
+        $listLat = $hikeLat;
+        $listLng = $hikeLong;
+    }
+?>
 <ul>
-    <li>Marker Latitude: <?php echo $hikeLat;?></li>
-    <li>Marker Longitude: <?php echo $hikeLong;?></li>
-    <li>Marker Style: <?php
-        if ($hikeMarker === "center") {
-            echo "Visitor Center";
-        } elseif ($hikeMarker === "ctrhike") {
-            echo "Visitor Center Hike Start";
-        } elseif ($hikeMarker === "cluster") {
-            echo "Overlapping Trailhead";
-        } else {
-        echo "'Normal' Hike"; }?></li>
+    <li>Marker Style: <?php echo $listType;?></li>
+    <li>Marker Latitude: <?php echo $listLat;?></li>
+    <li>Marker Longitude: <?php echo $listLng;?></li>
     <li>Track File: <?php echo $hikeJSON;?></li>
 </ul>
 <h3 style="text-indent:8px">Other data submitted:</h3>
