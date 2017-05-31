@@ -150,7 +150,7 @@
      * the standard page width (950 = 960 - margin)
      */
     
-    #ROW EDITING: RE-SCALE to 950
+    #ROW EDITING: RE-SCALE to final page row width
     for ($k=0; $k<6; $k++) {
         if ($rows[$k] !== '') {
             $resizedRow = scaleRow($rows[$k],$scale[$k]);

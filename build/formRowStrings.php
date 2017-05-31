@@ -47,6 +47,7 @@ function stringForm($targetTxt) {
 /* -------      MAIN      ------- */
 $rows = ['','','','','',''];
 $capts = [];
+$prevRowWidth = 0;
 for ($i=0; $i<6;$i++) {
     $tag = 'row' . $i;
     $rowhtml = filter_input(INPUT_POST,$tag);
@@ -99,7 +100,20 @@ for ($i=0; $i<6;$i++) {
         # now form the complete string:
         $rowstr = $imgCnt . "^" . $rowht . $imgstr;
         $rows[$i] = $rowstr;
-        $scale[$i] = 950/$rowWidth;
+        /* 
+         * if the previous row is bigger than the current row by > 10px, scale = 1.0;
+         * this should happen only when the last row on the page w/images has 
+         * too few images to fill the whole row.
+         * 
+         */
+        if ($prevRowWidth > 0) {
+          if ($prevRowWidth > ($rowWidth + 10)) {
+              $scale[$i] = 1.000;
+          } else {
+              $scale[$i] = 950/$rowWidth;
+          }
+        } 
+        $prevRowWidth = $rowWidth;
     } else {
         break;
     }
