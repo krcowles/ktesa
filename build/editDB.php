@@ -379,7 +379,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 ?>
 <p>Add references here:</p>
 <p>Select the type of reference (with above, up to 8 total) and its accompanying data below:</p>
-<select style="height:26px;" name="rtype[]">
+<select id="href1" style="height:26px;" name="rtype[]">
     <option value="b">Book</option>
     <option value="p">Photo Essay</option>
     <option value="w">Website</option>
@@ -393,9 +393,11 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     <option value="r">Related Link</option>
     <option value="n">Text Only - No Link</option>
 </select>
-Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br /><br />
-<select style="height:26px;" name="rtype[]">
+Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="55" 
+    placeholder="Book Title" />&nbsp;
+Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35" 
+    placeholder=", by Author Name" /><br /><br />
+<select id="href2" style="height:26px;" name="rtype[]">
     <option value="b">Book</option>
     <option value="p">Photo Essay</option>
     <option value="w">Website</option>
@@ -409,8 +411,10 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br /><br />
     <option value="r">Related Link</option>
     <option value="n">Text Only - No Link</option>
 </select>
-Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
-Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
+Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" 
+    placeholder="Book Title" />&nbsp;
+Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" 
+    placeholder=", by Author Name" /><br />
 
 <h3>Proposed Data:</h3>
 <?php 

@@ -121,7 +121,6 @@ $('#opts').on('click', function() {
 
 // add placeholder attribute when input text is book/author
 $reftags = $('select[id^="href"]');
-$remtags = $('input[id^="rit"]');
 $reftags.each( function() {
     $(this).change( function() {
         var selId = this.id;

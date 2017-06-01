@@ -182,6 +182,39 @@ $('#addbox').change( function(e) {
     $rows = $('div[id^="row"]');
 });
 
+// placeholder text for reference input boxes (copied from enterHike.js)
+$reftags = $('select[id^="href"]');
+$reftags.each( function() {
+    $(this).change( function() {
+        var selId = this.id;
+        var elNo = parseInt(selId.substring(4,5));
+        var elStr = "ABCDEFGH".substring(elNo-1,elNo);
+        var box1 = '#rit' + elStr + '1';
+        var box2 = '#rit' + elStr + '2';
+        if ($(this).val() === 'b') {
+            if ($(box1).val() === '') {
+                $(box1).attr('placeholder','Book Title');
+            }
+            if ($(box2).val() === '') {
+                $(box2).attr('placeholder',', by Author Name');
+            }
+        } else if ($(this).val() !== 'n') {
+            if ($(box1).val() === '') {
+                $(box1).attr('placeholder','URL');
+            }
+            if ($(box2).val() === '') {
+                $(box2).attr('placeholder','Clickable text');
+            }
+        } else {
+            if ($(box1).val() === '') {
+                $(box1).attr('placeholder','Enter Text Here');
+            } 
+            if ($(box2).val() === '') {
+                $(box2).attr('placeholder','THIS BOX IGNORED');
+            }
+        }
+    });
+});
 
 });  // end of 'page (DOM) loading complete'
 
