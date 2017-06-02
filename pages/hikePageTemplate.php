@@ -76,7 +76,7 @@ function makeHtmlList($type,$str) {
             $htmlout = '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">';
         }
         for ($n=0; $n<$noOfItems; $n++) {
-            $htmlout .= '<li>' . $list[$nxt] . '<a href="' . $list[$nxt+1] .
+            $htmlout .= '<li>' . $list[$nxt] . ' <a href="' . $list[$nxt+1] .
                     '" target="_blank">' . $list[$nxt+2] . '</a></li>';
             $nxt += 3;
         }
