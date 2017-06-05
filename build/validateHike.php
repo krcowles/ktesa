@@ -21,6 +21,7 @@
 <form target="_blank" action="displayHikePg.php" method="POST">
 
 <?php
+    $hikeName = filter_input(INPUT_POST,'hpgTitle');
     /*  Default values for identifying previously saved files 
      *  and whether or not to overwite them when saving the page
      */
@@ -44,6 +45,7 @@
     $owAmap = 'NO';
     $dupAgpx = 'NO';
     $owAgpx = 'NO';
+    require "makeTsv.php";
     require "fileUploads.php";
     
 ?>  
