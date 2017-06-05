@@ -335,6 +335,8 @@ if ($curlid !== '') {
                 fputcsv($tsvfile,$outdat,"\t");
             }
             fclose($tsvfile);
+            $tsvSize = filesize($newtsv);
+            $uploadedTsv = false;
         } elseif ($albType === 'apple') {
             # no code at this time
         } elseif ($albType === 'googl') {
@@ -346,6 +348,7 @@ if ($curlid !== '') {
                 . 'contact the Site Master</p>';
         die($noread);
     }
+    
 }
 # if no $curlid, look for an uploaded tsv file....
 # remember to check against duplicates in fileUploads... 

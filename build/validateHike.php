@@ -22,6 +22,7 @@
 
 <?php
     $hikeName = filter_input(INPUT_POST,'hpgTitle');
+    $uploadedTsv = true;
     /*  Default values for identifying previously saved files 
      *  and whether or not to overwite them when saving the page
      */
@@ -45,8 +46,9 @@
     $owAmap = 'NO';
     $dupAgpx = 'NO';
     $owAgpx = 'NO';
-    require "makeTsv.php";
+    require "makeTsv.php";  // may change $uploadedTsv flag state
     require "fileUploads.php";
+    
     
 ?>  
 <!-- Hidden Inputs Carrying File Upload Status --> 
