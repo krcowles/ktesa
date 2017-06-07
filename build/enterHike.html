@@ -131,7 +131,46 @@
     <fieldset>
         <legend>File Data</legend>
         <label id="l_tsv" class="notVC" for="tsv">TSV file:</label>
-        <input id="tsv" type="file" name="csvfile" required="required" /><br />
+        <input id="tsv" type="file" name="csvfile" /><br />
+        <div style="margin-left:16px;color:Brown;">
+            -OR: Specify your on-line photo album type and url below:<br />
+            Select type of album:&nbsp;
+            <select id="alb" name="albtype">
+                <option value="flckr">Flickr Album</option>
+                <option value="apple">Apple iCloud Album</option>
+                <option value="googl">Google Album</option>
+            </select>&nbsp;&nbsp;Album URL:&nbsp;
+            <input id="curl" name="phpcurl" size="80" /><br />
+            Select the color of the icon which will be used to mark photo locations:&nbsp;&nbsp;
+            <select id="icolor" name="icon">
+                <option value="pink">Pink</option>
+                <option value="red">Red</option>
+                <option value="maroon">Maroon</option>
+                <option value="orange">Orange</option>
+                <option value="yellow">Yellow</option>
+                <option value="olive">Olive</option>
+                <option value="lime">Lime</option>
+                <option value="green">Green</option>
+                <option value="aqua">Aqua</option>
+                <option value="teal">Teal</option>
+                <option value="blue">Blue</option>
+                <option value="navy">Navy</option>
+                <option value="violet">Violet</option>
+                <option value="purple">Purple</option>
+                <option value="fuchsia">Fuchsia</option>
+                <option value="silver">Silver</option>
+                <option value="gray">Gray</option>
+                <option value="black">Black</option>
+                <option value="tan">Tan</option>
+                <option value="brown">Brown</option>
+                <option value="Google default">Google default</option>
+            </select><br />
+            You will also need to specify the 'absolute' path to your local 
+            copy of the photos -<br />
+            (NOTE: Cannot be a url &amp; must be same number and names as in 
+            online album)
+            &nbsp;&nbsp;<input id="localps" type="text" name="lphotos" size="35" /><br /><br />
+        </div>
         <label id="l_gmap" class="notVC" for="geomap">Geomap:</label>
         <input id="geomap" type="file" name="gpsvMap" /><br />
         <label id="l_gpx" class="notVC" for="gpxfile">GPX File: &nbsp;</label>

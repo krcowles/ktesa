@@ -104,7 +104,6 @@ function useStdPg() {
 	msgE = msgE.replace('place','hike');
 	$('#iwow').text(msgE);
 	$('.honly').css('display','block');
-        $('#tsv').attr('required',true);
 }
 /* END OF page-creation type */
 

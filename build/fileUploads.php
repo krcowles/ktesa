@@ -15,39 +15,52 @@ $datfileArray = [];  # prop & act data file names
 
 # TSV FILE OPS:
 echo '<h3 style="text-indent:8px">Uploaded TSV File Info:</h3>' . "\n";
-$tsvFile = $_FILES['csvfile']['tmp_name'];
-$tsvSize = filesize($tsvFile);
-$tsvType = $_FILES['csvfile']['type'];
-$tsvFname = basename($_FILES['csvfile']['name']);
-$tsvStat = $_FILES['csvfile']['error'];
-# NOTE: Cannot proceed without the tsv file!
-$nofile = '</form>' . "\n" .
-    '<p><strong>--- No tsv file specified...</strong></p>' . "\n" .
-        '</body>' . "\n" .
-        '</html>';
-if($tsvFname == "") { die( $nofile ); }
-if ( preg_match("/tab-separated-values/",$tsvType) === 0 ) {
-    $msgout = '<p style="margin-left:20px;color:red"><strong>Incorrect file type for ' .
-            $tsvFname . ': must be "tab-separated-variables"</strong></p>';
-    die ($msgout);
-}
-$tsvLoc = '../gpsv/' . $tsvFname;
-if ( file_exists($tsvLoc) ) {
-    echo $fexists1 . $tsvFname . $fexists2. 
-        '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
-    $dupTsv = 'YES';
-}
-$tsvUpload = $uploads . 'gpsv/' . $tsvFname;
-if ($tsvStat === UPLOAD_ERR_OK) {
-    if (!move_uploaded_file($tsvFile,$tsvUpload)) {
-        die("Could not save tsv file - contact site master...");
-    }
-}
 echo '<ul style="margin-top:-10px;">' . "\n";
-echo '<li>Uploaded tsv file: ' .  $tsvFname . '</li>' . "\n";
-echo '<li>File size: ' . $tsvSize . ' bytes</li>' . "\n";
-echo '<li>File type: ' . $tsvType . '</li>' . "\n";
+if ($uploadedTsv) {
+    $tsvFile = $_FILES['csvfile']['tmp_name'];
+    $tsvSize = filesize($tsvFile);
+    $tsvType = $_FILES['csvfile']['type'];
+    $tsvFname = basename($_FILES['csvfile']['name']);
+    $tsvStat = $_FILES['csvfile']['error'];
+    # NOTE: Cannot proceed without the tsv file!
+    $nofile = '</form>' . "\n" .
+        '<p><strong>--- No tsv file specified...</strong></p>' . "\n" .
+            '</body>' . "\n" .
+            '</html>';
+    if($tsvFname == "") { die( $nofile ); }
+    if ( preg_match("/tab-separated-values/",$tsvType) === 0 ) {
+        $msgout = '<p style="margin-left:20px;color:red"><strong>Incorrect file type for ' .
+                $tsvFname . ': must be "tab-separated-variables"</strong></p>';
+        die ($msgout);
+    }
+    $tsvLoc = '../gpsv/' . $tsvFname;
+    if ( file_exists($tsvLoc) ) {
+        echo $fexists1 . $tsvFname . $fexists2. 
+            '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
+        $dupTsv = 'YES';
+    }
+    $tsvUpload = $uploads . 'gpsv/' . $tsvFname;
+    if ($tsvStat === UPLOAD_ERR_OK) {
+        if (!move_uploaded_file($tsvFile,$tsvUpload)) {
+            die("Could not save tsv file - contact site master...");
+        }
+    }
+    echo '<li>Uploaded tsv file: ' .  $tsvFname . '</li>' . "\n";
+    echo '<li>File size: ' . $tsvSize . ' bytes</li>' . "\n";
+    echo '<li>File type: ' . $tsvType . '</li>' . "\n";
+} else {
+    $tsvFname = $tsvName;
+    $tsvLoc = '../gpsv/' . $tsvName;
+    if ( file_exists($tsvLoc) ) {
+        echo $fexists1 . $tsvFname . $fexists2. 
+            '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
+        $dupTsv = 'YES';
+    }
+    echo '<li>Created tsv file: ' . $tsvName . '</li>' . "\n";
+    echo '<li>File size: ' . $tsvSize . '</li>' . "\n";
+}
 echo '</ul>' . "\n";
+
 
 # GEOMAP FILE OPS:
 echo '<h3 style="text-indent:8px">Uploaded Geomap File Info:</h3>' . "\n";
