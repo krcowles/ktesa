@@ -218,6 +218,16 @@
         </div>
     </fieldset>
 
+    <fieldset id="latlng">
+        <legend>Latitude & Longitude of Trailhead</legend>
+        <label for="extract">To automatically extract latitude & longitude from the GPX file, check the box: </label>
+        <input id="extract" type="checkbox" name="thgeos" value="UseGpx" /><br />
+        <label for="n-s">Otherwise, enter decimal values here:</label>
+        <input id="n-s" type="text" name="lat" size="16" />&nbsp;&nbsp;
+        <label for="e-w">Longitude (decimal value):</label>
+        <input id="e-w" type="text" name="lon" size="16" />&nbsp;&nbsp; 
+    </fieldset>
+        
     <fieldset id="marker">
         <legend>Google Maps Marker Style</legend>
         <input id="vc" type="radio" name="mstyle" value="center" />
@@ -226,16 +236,11 @@
         <label for="vch">Hike At / In Close Proximity To Visitor 
             Center</label><br />
         <input id="ch" type="radio" name="mstyle" value="cluster" />
-        <label for="ch">Trailhead Common to Multiple Hikes [NOTE: Group must 
-            already exist in database - if not, create using hikeEditor.php]</label>
+        <label for="ch">Trailhead Common to Multiple Hikes [
+            <span style="color:brown;">NOTE: Group must already exist in database</span>
+            - if not, first create one using hikeEditor]</label><br />
         <input id="othr" type="radio" name="mstyle" value="other" />
         <label for="othr">All Others</label><br />
-        <label for="n-s">--Trailhead/Visitor Center Latitude (decimal value):</label>
-        <input id="n-s" type="text" name="lat" size="16" />&nbsp;&nbsp;
-        <label for="e-w">Longitude (decimal value):</label>
-        <input id="e-w" type="text" name="lon" size="16" />&nbsp;&nbsp;
-        <label for="extract"> Or, extract from GPX file </label>
-        <input id="extract" type="checkbox" name="thgeos" value="UseGpx" />
     </fieldset>
 
     <fieldset id="txtdat">
