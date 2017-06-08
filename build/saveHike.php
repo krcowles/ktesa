@@ -1,5 +1,6 @@
 <?php 
 	session_start();
+        #ini_set("auto_detect_line_endings", true); // if trouble on Mac w/newlines
 	$sunIcon = '../images/sun.jpg';
 	$partialIcon = '../images/greenshade.jpg';
 	$shadeIcon = '../images/shady.png';
@@ -106,7 +107,7 @@
     $newHike[38] = $_SESSION['hikeDetails'];
     $newHike[39] = filter_input(INPUT_POST,'href');
     $newHike[40] = filter_input(INPUT_POST,'hpdat');
-    $newHike[41] = filter_input(INPUT_POST,'hadat') . "\n";
+    $newHike[41] = filter_input(INPUT_POST,'hadat');
     ksort($newHike, SORT_NUMERIC);
     $supptFiles = filter_input(INPUT_POST,'hdatf');
     $newDatFiles = explode("^",$supptFiles);
