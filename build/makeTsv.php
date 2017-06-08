@@ -325,8 +325,8 @@ if ($curlid !== '') {
                     }  
                 }
                 #echo "; Img index: " . $ino;
-                $plink = 'https://www.flickr.com/photos/' . $ownerIds[$a] .
-                    '/' . $Nsids[$a] . '/in/album-' . $albumId;
+                $plink = 'https://www.flickr.com/photos/' . $Nsids[$a] .
+                    '/' . $ownerIds[$a] . '/in/album-' . $albumId;
                 $outdat = array('Folder1',$titles[$a],$descriptions[$a],
                     $lats[$ino],$lngs[$ino],$t[$a],$plink,$timeStamp[$ino],
                     $n[$a],'','',$icon_clr);
