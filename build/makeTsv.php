@@ -1,12 +1,11 @@
 <?php
 
-/* This function converts the exif data latitude/longitude into a decimal no.
+/* The following function converts the exif data latitude/longitude into a decimal no.
  * Each lat/lng passed in via exif is an array with three parts: 
  *  1. degrees / divisor: usually 1
  *  2. minutes / divisor: usually 1
  *  3. seconds / divisor: often 100)
  */
-
 function mantissa($degrees) {
     $coords = 0;
     for ($z = 0; $z < 3; $z++) {
@@ -310,10 +309,9 @@ if ($curlid !== '') {
                 echo "COULD NOT OPEN FILE FOR TSV OUTPUT IN tmp/gpsv";
             }    
             $header = array('folder','desc','name','Latitude','Longitude',
-                'thumbnail','url','date','n-size','symbol','icon_size','color');
-            /* Later, add 'c-size','h-size','k-size','l-size','m-size','o-size',
-             * 'q-size','s-size','sq-size','t-size','z-size'
-            */
+                'thumbnail','url','date','n-size','symbol','icon_size','color',
+                'c-size','h-size','k-size','l-size','m-size','o-size',
+                'q-size','s-size','sq-size','t-size','z-size');
             fputcsv($tsvfile,$header,"\t");
             # Go in the order of images appearing in the album:
             # arbitrary choice for thumbnail: 't-size'
@@ -329,10 +327,8 @@ if ($curlid !== '') {
                     '/' . $ownerIds[$a] . '/in/album-' . $albumId;
                 $outdat = array('Folder1',$titles[$a],$descriptions[$a],
                     $lats[$ino],$lngs[$ino],$t[$a],$plink,$timeStamp[$ino],
-                    $n[$a],'','',$icon_clr);
-                /* Later, add: $c[$a],$h[$a],$k[$a],$l[$a],$m[$a],$o[$a],
-                 * $q[$a],$s[$a],$sq[$a],$t[$a],$z[$a]
-                 */
+                    $n[$a],'','',$icon_clr,$c[$a],$h[$a],$k[$a],$l[$a],$m[$a],
+                    $o[$a],$q[$a],$s[$a],$sq[$a],$t[$a],$z[$a]);
                 fputcsv($tsvfile,$outdat,"\t");
             }
             fclose($tsvfile);
