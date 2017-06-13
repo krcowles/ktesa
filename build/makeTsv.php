@@ -39,6 +39,16 @@ function getDat($photomodel,$size) {
     $url = 'https:' . preg_replace('/\\\\/','',$rawurl);
     return $url;
 }
+function convtTime($GPStime) {
+    $hrs = explode("/",$GPStime[0]);
+    $hr = intval($hrs[0]/$hrs[1]);
+    $mins = explode("/",$GPStime[1]);
+    $min = intval($mins[0]/$mins[1]);
+    $secs = explode("/",$GPStime[2]);
+    $sec = intval($secs[0]/$secs[1]);
+    $tstring = $hr . ':' . $min . ":" . $sec;
+    return $tstring;
+}
 /*
  * Extract and validate the form data:
  * If there is something missing, the user will be notified;
@@ -113,6 +123,8 @@ if ($curlid !== '') {
         $lats = [];
         $lngs = [];
         $elev = [];   // not currently used for anything...
+        $gpds = [];   // GPS DateStamp
+        $gpts = [];   // GPS TimeStamp array
         for ($x = 0; $x < $noOfImgs; $x++) {
             $exifdata = exif_read_data($photos[$x], ANY_TAG, EXIF);
             if ($exifdata !== false) {
@@ -149,7 +161,13 @@ if ($curlid !== '') {
                                     $lngs[$x] = -1 * mantissa($val);
                                 } elseif ($name === 'GPSAltitude') {
                                     $elev[$x] = $val;
+                                } elseif ($name === 'GPSDateStamp') {
+                                    $gpds[$x] = $val;
+                                } elseif ($name === 'GPSTimeStamp') {
+                                    // array
+                                    $gpts[$x] = $val;
                                 }
+                              
                                 break;
                             default:
                                 break;
@@ -322,13 +340,13 @@ if ($curlid !== '') {
                         break;
                     }  
                 }
-                #echo "; Img index: " . $ino;
+                $gpsDateTime = $gpds[$a] . " " . convtTime($gpts[$a]);
                 $plink = 'https://www.flickr.com/photos/' . $Nsids[$a] .
                     '/' . $ownerIds[$a] . '/in/album-' . $albumId;
                 $outdat = array('Folder1',$titles[$a],$descriptions[$a],
-                    $lats[$ino],$lngs[$ino],$t[$a],$plink,$timeStamp[$ino],
+                    $lats[$ino],$lngs[$ino],$n[$a],$plink,$timeStamp[$ino],
                     $n[$a],'','',$icon_clr,$c[$a],$h[$a],$k[$a],$l[$a],$m[$a],
-                    $o[$a],$q[$a],$s[$a],$sq[$a],$t[$a],$z[$a]);
+                    $o[$a],$q[$a],$s[$a],$sq[$a],$t[$a],$z[$a],$gpsDateTime);
                 fputcsv($tsvfile,$outdat,"\t");
             }
             fclose($tsvfile);
