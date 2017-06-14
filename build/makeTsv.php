@@ -228,25 +228,24 @@ if ($curlid !== '') {
                 $modelInfo = substr($flickrInfo, $pmodels);
                 $titleEnd = strpos($modelInfo, '"');
                 $titles[$j] = substr($modelInfo, 0, $titleEnd);
-                #echo "<p>Photo Title: " . $titles[$j] . "</p>";
-                $descPos = strpos($modelInfo, '"description":"') + 15;
-                $descEnd = strpos($modelInfo, '"', $descPos);
-                $descLgth = $descEnd - $descPos;
-                $descriptions[$j] = substr($modelInfo, $descPos, $descLgth);
-                if ($descriptions[$j] === '') {
+                # if the 'description' field does not exist, use default desc. below:
+                $descPos = strpos($modelInfo, '"description":"');
+                if ($descPos === false) {
                     $descriptions[$j] = 'Enter description here';
+                } else {
+                    $descPos += 15;
+                    $descEnd = strpos($modelInfo, '"', $descPos);
+                    $descLgth = $descEnd - $descPos;
+                    $descriptions[$j] = substr($modelInfo, $descPos, $descLgth);
                 }
-                #echo "<p>Description for photo: " . $descriptions[$j] . "</p>";
                 $idPos = strpos($modelInfo, '"id":"') + 6;
                 $idEnd = strpos($modelInfo, '"', $idPos);
                 $idLgth = $idEnd - $idPos;
                 $ownerIds[$j] = substr($modelInfo, $idPos, $idLgth);
-                #echo "<p>Owner id: " . $ownerId . "</p>";
                 $nsidPos = strpos($modelInfo, '"ownerNsid":"') + 13;
                 $nsidEnd = strpos($modelInfo, '"', $nsidPos);
                 $nsidLgth = $nsidEnd - $nsidPos;
                 $Nsids[$j] = substr($modelInfo, $nsidPos, $nsidLgth);
-                #echo "<p>Owner Nsid: " . $nsid . "</p>";
                 for ($y = 0; $y < $noOfSizes; $y++) {
                     switch ($allSizes[$y]) {
                         case 'c':
