@@ -100,19 +100,18 @@ for ($i=0; $i<6;$i++) {
         # now form the complete string:
         $rowstr = $imgCnt . "^" . $rowht . $imgstr;
         $rows[$i] = $rowstr;
+        $scale[$i] = 950/$rowWidth;
         /* 
-         * if the previous row is bigger than the current row by > 10px, scale = 1.0;
+         * if the previous row is bigger than the current row by > 40px, don't
+         * scale up to the full row-width - this is a 'last-row-not-filled' 
+         * condition addressed by the hike page js. scale = 1.05;
          * this should happen only when the last row on the page w/images has 
-         * too few images to fill the whole row.
+         * too few images to fill the whole row. Previous row for row0 = 0
          * 
          */
-        if ($prevRowWidth > 0) {
-          if ($prevRowWidth > ($rowWidth + 10)) {
-              $scale[$i] = 1.000;
-          } else {
-              $scale[$i] = 950/$rowWidth;
-          }
-        } 
+         if ($prevRowWidth > ($rowWidth + 30)) {
+             $scale[$i] = 1.05; 
+        }
         $prevRowWidth = $rowWidth;
     } else {
         break;
