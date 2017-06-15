@@ -90,7 +90,7 @@ function makeHtmlList($type,$str) {
 /*
  * -------------------------  MAIN ROUTINE ------------------------
  */
-$hikeIndexNo = $_GET['hikeIndx'];
+$hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
 /* NOTE: The database file is only read in here, no writing to it occurs */
 $dataTable = '../data/database.csv';
 $handle = fopen($dataTable,'r');
@@ -102,7 +102,7 @@ if ($handle !== false) {
                 /* 
                  * IMPORT the data from database.csv 
                  */     
-                $newstyle = true;
+                $newstyle = true;  // change later if no geomap
                 $hikeTitle = $hikeArray[1];
                 $hikeLocale = $hikeArray[2];
                 $hikeDifficulty = $hikeArray[9];
@@ -110,11 +110,20 @@ if ($handle !== false) {
                 $hikeType = $hikeArray[6];
                 $hikeElevation = $hikeArray[8] . " ft";
                 $hikeExposure = $hikeArray[13];
+                /* 
+                 * This version eliminates a static imported map,
+                 * instead one will be created dynamically by the
+                 * included 'makeGpsv.php' file
+                 * 
                 $mapsrc = $hikeArray[15];
                 if ($mapsrc === '') {
                     $newstyle = false;
                 }
+                 * 
+                 */
+                $gpsvFile = $hikeArray[14];
                 $gpxfile = $hikeArray[17];
+                $jsonFile = $hikeArray[18];
                 if ($gpxfile === '') {
                     $newstyle = false;
                 }
@@ -299,6 +308,9 @@ if (!$newstyle) {
                 'Seasons : <span class=sumClr>' . $hikeSeasons . '</span><br />' .
                 '"Wow" Factor: <span class=sumClr>' . $hikeWow . '</span></p>' . "\n";
         echo '<p id="addtl"><strong>More!</strong></p>' . "\n";
+        
+        include "makeGpsv.php";
+        
         echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . fullMapOpts .
                     ' target="_blank">Full Page Map Link</a></p>' ."\n";
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
