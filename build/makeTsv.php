@@ -1,12 +1,11 @@
 <?php
 
-/* This function converts the exif data latitude/longitude into a decimal no.
+/* The following function converts the exif data latitude/longitude into a decimal no.
  * Each lat/lng passed in via exif is an array with three parts: 
  *  1. degrees / divisor: usually 1
  *  2. minutes / divisor: usually 1
  *  3. seconds / divisor: often 100)
  */
-
 function mantissa($degrees) {
     $coords = 0;
     for ($z = 0; $z < 3; $z++) {
@@ -39,6 +38,16 @@ function getDat($photomodel,$size) {
     $rawurl = substr($photomodel, $urlPos, $urlLgth);
     $url = 'https:' . preg_replace('/\\\\/','',$rawurl);
     return $url;
+}
+function convtTime($GPStime) {
+    $hrs = explode("/",$GPStime[0]);
+    $hr = intval($hrs[0]/$hrs[1]);
+    $mins = explode("/",$GPStime[1]);
+    $min = intval($mins[0]/$mins[1]);
+    $secs = explode("/",$GPStime[2]);
+    $sec = intval($secs[0]/$secs[1]);
+    $tstring = $hr . ':' . $min . ":" . $sec;
+    return $tstring;
 }
 /*
  * Extract and validate the form data:
@@ -114,6 +123,8 @@ if ($curlid !== '') {
         $lats = [];
         $lngs = [];
         $elev = [];   // not currently used for anything...
+        $gpds = [];   // GPS DateStamp
+        $gpts = [];   // GPS TimeStamp array
         for ($x = 0; $x < $noOfImgs; $x++) {
             $exifdata = exif_read_data($photos[$x], ANY_TAG, EXIF);
             if ($exifdata !== false) {
@@ -150,7 +161,13 @@ if ($curlid !== '') {
                                     $lngs[$x] = -1 * mantissa($val);
                                 } elseif ($name === 'GPSAltitude') {
                                     $elev[$x] = $val;
+                                } elseif ($name === 'GPSDateStamp') {
+                                    $gpds[$x] = $val;
+                                } elseif ($name === 'GPSTimeStamp') {
+                                    // array
+                                    $gpts[$x] = $val;
                                 }
+                              
                                 break;
                             default:
                                 break;
@@ -309,10 +326,9 @@ if ($curlid !== '') {
                 echo "COULD NOT OPEN FILE FOR TSV OUTPUT IN tmp/gpsv";
             }    
             $header = array('folder','desc','name','Latitude','Longitude',
-                'thumbnail','url','date','n-size','symbol','icon_size','color');
-            /* Later, add 'c-size','h-size','k-size','l-size','m-size','o-size',
-             * 'q-size','s-size','sq-size','t-size','z-size'
-            */
+                'thumbnail','url','date','n-size','symbol','icon_size','color',
+                'c-size','h-size','k-size','l-size','m-size','o-size',
+                'q-size','s-size','sq-size','t-size','z-size');
             fputcsv($tsvfile,$header,"\t");
             # Go in the order of images appearing in the album:
             # arbitrary choice for thumbnail: 't-size'
@@ -323,15 +339,13 @@ if ($curlid !== '') {
                         break;
                     }  
                 }
-                #echo "; Img index: " . $ino;
+                $gpsDateTime = $gpds[$a] . " " . convtTime($gpts[$a]);
                 $plink = 'https://www.flickr.com/photos/' . $Nsids[$a] .
                     '/' . $ownerIds[$a] . '/in/album-' . $albumId;
                 $outdat = array('Folder1',$titles[$a],$descriptions[$a],
-                    $lats[$ino],$lngs[$ino],$t[$a],$plink,$timeStamp[$ino],
-                    $n[$a],'','',$icon_clr);
-                /* Later, add: $c[$a],$h[$a],$k[$a],$l[$a],$m[$a],$o[$a],
-                 * $q[$a],$s[$a],$sq[$a],$t[$a],$z[$a]
-                 */
+                    $lats[$ino],$lngs[$ino],$n[$a],$plink,$timeStamp[$ino],
+                    $n[$a],'','',$icon_clr,$c[$a],$h[$a],$k[$a],$l[$a],$m[$a],
+                    $o[$a],$q[$a],$s[$a],$sq[$a],$t[$a],$z[$a],$gpsDateTime);
                 fputcsv($tsvfile,$outdat,"\t");
             }
             fclose($tsvfile);
