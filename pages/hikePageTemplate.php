@@ -337,21 +337,14 @@ if (!$newstyle) {
     
     # dynamically created map:
     include "../php/makeGpsv.php";
- 
+    # textarea set up for on-the-fly iframe via js, not currently working, but leaving here for now
     echo '<textarea style="display:none;" id="mapcode">' . "\n" . $html . 
             '</textarea>' . "\n"; # contents will be place in mapline iframe by js
-    echo '<iframe id="mapline" src="' . $tmpMap . '"></iframe>';
-    /*
-    echo '<script type="text/javascript">' . "\n" .
-            
-            "    $(document).ready( function() {" . "\n" .
-            "        var hikemap = $('#mapcode').val();" . "\n" .
-            '        var test = "<p>yeh, sure</p>";' . "\n" .
-            "        $('#mapline').contents().find('body').html(test);" . "\n" .
-            '    });' . "\n" .
-            '</script>' . "\n";
+    echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
+                $tmpMap . iframeMapOpts . '"></iframe>' . "\n";
+    #echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
+    #            $mapsrc . iframeMapOpts . '></iframe>' ."\n";
     # elevation chart:
-     */
     echo '<div data-gpx="' . $gpxfile. '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
