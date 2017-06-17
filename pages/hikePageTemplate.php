@@ -328,6 +328,9 @@ if (!$newstyle) {
         echo '<p id="closer">If you are having problems with this page, please: ' .
             '<a href="mailto:krcowles29@gmail.com">send us a note!</a></p>' ."\n";
     echo '</div>';
+    
+    include "../php/makeGpsv.php";
+    
     # MAP AND CHART ON RIGHT:
     echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
                 $mapsrc . iframeMapOpts . '></iframe>' ."\n";
