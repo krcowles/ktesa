@@ -45,20 +45,16 @@ $tsvmsg = $intro . 'Could not open tsv file ';
 $noOfTrks = 1;  // for a single hike page, this is a reasonable constraint
 $tno = 1;
 
-# In main: $hikeIndexNo, $hikeTitle, $gpsvFile, $jsonFile
+# Using variables established in main: $hikeIndexNo, $hikeTitle, $gpsvFile, $jsonFile
 # gpsvMap ini:
 $extLoc = strrpos($gpsvFile,'.');
 $gpsvMap = substr($gpsvFile,0,$extLoc);
+
+# holding place for page's hike map
 $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
 if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
     die ($mapmsg);
 }
-
-#gpsv html declaration:
-$html = '<!DOCTYPE html>' . "\n";
-$html .= '<html>' . "\n";
-fputs($mapHandle,$html);
-
 # Files: tsv  file
 $gpsvPath = '../gpsv/' . $gpsvFile;
 $gpsvData = file($gpsvPath);
@@ -202,14 +198,15 @@ foreach ($gpsvData as $entry) {
         array_push($plnks,$plnk);
     }   
 }
-
 /*
-echo '<script type="text/javascript">window.alert("' . $badspot .
-        '");</script>';
-#die ("Stop here");
-*/
+ * The next section copies the template for GPSV.html into a variable to be
+ * passed to javascript to create the iframe with map.
+ */
+#gpsv html declaration:
+$html = '<!DOCTYPE html>' . "\n";
+$html .= '<html>' . "\n";
 # gpsv <head> element:
-$html = '<head>' . "\n" .
+$html .= '<head>' . "\n" .
         '    <title>' . $hikeTitle . '</title>' . "\n" .
         '    <base target="_top">' . "\n" .
         '    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />' . "\n" .
@@ -227,38 +224,34 @@ $html = '<head>' . "\n" .
         '           font-weight:normal !important;' . "\n" .
         '       }' . "\n" .
         '    </style>' . "\n" .
-    '</head>' . "\n" .
-    '<body>' . "\n";
-fputs($mapHandle,$html);
+        '</head>' . "\n" .
+        '<body>' . "\n";
 # gpsv initial script & map div:
-$html = '<script type="text/javascript">' . "\n" .
+$html .= '<script type="text/javascript">' . "\n" .
         "    google_api_key = 'AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU';" . "\n" .
         "    language_code = '';" . "\n" .
         "    if (document.location.toString().indexOf('http://www.gpsvisualizer.com') > -1) { google_api_key = ''; }" . "\n" .
         "    document.writeln('<script type=" . '"text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language=' . "'+(self.language_code?self.language_code:'')+'&amp;key='+(self.google_api_key?self.google_api_key:'')+'" . '"' . "><'+'/script>');" . "\n" .
-    '</script>' . "\n" .
-    '<div style="margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px;">' . "\n" .
-    '    <div id="gmap_div" style="width:700px; height:700px; margin:0px;  background-color:#f0f0f0; float:left; overflow:hidden;">' . "\n" .
-    '        <p align="center" style="font:10px Arial;">This map was created using <a target="_blank" href="http://www.gpsvisualizer.com/">GPS Visualizer</a>' . "s do-it-yourself geographic utilities.<br /><br />Please wait while the map data loads...</p>" . "\n" .
-    '    </div>' . "\n" .
-    '    <div id="gv_infobox" class="gv_infobox" style="font:11px Arial; border:solid #666666 1px; background-color:#ffffff; padding:4px; overflow:auto; display:none; max-width:400px;">' . "\n" .
-    "        <!-- Although GPS Visualizer didn't create an legend/info box with your map, you can use this space for something else if you'd like; enable it by setting     gv_options.infobox_options.enabled to true -->" . "\n" .
-    '    </div>' . "\n" .
-    '    <div id="gv_tracklist" class="gv_tracklist" style="font:11px Arial; line-height:11px; background-color:#ffffff; overflow:auto; display:none;">' . "\n" .
-    '    </div>' . "\n" .
-    '    <div id="gv_marker_list" class="gv_marker_list" style="background-color:#ffffff; overflow:auto; display:none;">' . "\n" .
-    '    </div>' . "\n" .
-    '    <div id="gv_clear_margins" style="height:0px; clear:both;">' . "\n" .
-    '    </div>' . "\n" .
-    '</div>' . "\n";
-fputs($mapHandle,$html);
+        '</script>' . "\n" .
+        '<div style="margin-left:0px; margin-right:0px; margin-top:0px; margin-bottom:0px;">' . "\n" .
+        '    <div id="gmap_div" style="width:700px; height:700px; margin:0px;  background-color:#f0f0f0; float:left; overflow:hidden;">' . "\n" .
+        '        <p align="center" style="font:10px Arial;">This map was created using <a target="_blank" href="http://www.gpsvisualizer.com/">GPS Visualizer</a>' . "s do-it-yourself geographic utilities.<br /><br />Please wait while the map data loads...</p>" . "\n" .
+        '    </div>' . "\n" .
+        '    <div id="gv_infobox" class="gv_infobox" style="font:11px Arial; border:solid #666666 1px; background-color:#ffffff; padding:4px; overflow:auto; display:none; max-width:400px;">' . "\n" .
+        "        <!-- Although GPS Visualizer didn't create an legend/info box with your map, you can use this space for something else if you'd like; enable it by setting     gv_options.infobox_options.enabled to true -->" . "\n" .
+        '    </div>' . "\n" .
+        '    <div id="gv_tracklist" class="gv_tracklist" style="font:11px Arial; line-height:11px; background-color:#ffffff; overflow:auto; display:none;">' . "\n" .
+        '    </div>' . "\n" .
+        '    <div id="gv_marker_list" class="gv_marker_list" style="background-color:#ffffff; overflow:auto; display:none;">' . "\n" .
+        '    </div>' . "\n" .
+        '    <div id="gv_clear_margins" style="height:0px; clear:both;">' . "\n" .
+        '    </div>' . "\n" .
+        '</div>' . "\n";
 # begin GPS Visualizer setup script
-$html = '<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->' . "\n";
-$html .= '<script type="text/javascript">' . "\n";
-    
+$html .= '<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->' . "\n";
+$html .= '<script type="text/javascript">' . "\n"; 
 $html .= '/* Global variables used by the GPS Visualizer functions (20170530080154): */' . "\n";
-$html .= '    gv_options = {};' . "\n";
-        
+$html .= '    gv_options = {};' . "\n";     
 $html .= '// basic map parameters:' . "\n";
 $html .= '    gv_options.center = [' .$clat . ',' . $clon . '];  // [latitude,longitude] - be sure to keep the square brackets' . "\n";
 $html .= "    gv_options.zoom = 'auto';  // higher number means closer view; can also be 'auto' for automatic zoom/center based on map elements" . "\n";
@@ -266,8 +259,7 @@ $html .= "    gv_options.map_type = 'GV_HYBRID';  // popular map_type choices ar
 $html .= '    gv_options.map_opacity = 1.00;  // number from 0 to 1' . "\n";
 $html .= '    gv_options.full_screen = true;  // true|false: should the map fill the entire page (or frame)?' . "\n";
 $html .= '    gv_options.width = 700;  // width of the map, in pixels' . "\n";
-$html .= '    gv_options.height = 700;  // height of the map, in pixels' . "\n";
-
+$html .= '    gv_options.height = 300;  // height of the map, in pixels' . "\n";
 $html .= "    gv_options.map_div = 'gmap_div';  // the name of the HTML div tag containing the map itself; usually 'gmap_div'" . "\n";
 $html .= '    gv_options.doubleclick_zoom = true;  // true|false: zoom in when mouse is double-clicked?' . "\n";
 $html .= '    gv_options.doubleclick_center = true;  // true|false: re-center the map on the point that was double-clicked?' . "\n";
@@ -278,7 +270,6 @@ $html .= '    gv_options.tilt = false; // true|false: allow Google to show 45-de
 $html .= '    gv_options.street_view = true; // true|false: allow Google Street View on the map' . "\n";
 $html .= '    gv_options.animated_zoom = false; // true|false: may or may not work properly' . "\n";
 $html .= '    gv_options.disable_google_pois = false;  // true|false: if you disable clickable POIs, you also lose the labels on parks, airports, etc.' . "\n";
-
 $html .= '// widgets on the map:' . "\n";
 $html .= "    gv_options.zoom_control = 'large'; // 'large'|'small'|'none'" . "\n";
 $html .= '    gv_options.recenter_button = true; // true|false: is there a "click to recenter" option in the zoom control?' . "\n";
@@ -295,7 +286,6 @@ $html .= '    gv_options.crosshair_hidden = true;  // true|false: hide the cross
 $html .= '    gv_options.mouse_coordinates = false;  // true|false: show a "mouse coordinates" box?' . "\n";
 $html .= "    gv_options.utilities_menu = { 'maptype':true, 'opacity':true, 'measure':true, 'export':true };" . "\n";
 $html .= '    gv_options.allow_export = true;  // true|false' . "\n";
-
 $html .= '    gv_options.infobox_options = {}; // options for a floating info box (id="gv_infobox"), which can contain anything' . "\n";
 $html .= '    gv_options.infobox_options.enabled = true;  // true|false: enable or disable the info box altogether' . "\n";
 $html .= "    gv_options.infobox_options.position = ['RIGHT_TOP',4,84];  // [Google anchor name, relative x, relative y]" . "\n";
@@ -320,7 +310,6 @@ $html .= '    gv_options.tracklist_options.draggable = true;  // true|false: can
 $html .= '    gv_options.tracklist_options.collapsible = true;  // true|false: can it be collapsed by double-clicking its top bar?' . "\n";
 $html .= "    gv_options.tracklist_options.header = 'Tracks:'; // HTML code; be sure to put backslashes in front of any single quotes, and don't include any line breaks" . "\n";
 $html .= "    gv_options.tracklist_options.footer = ''; // HTML code" . "\n";
-
 $html .= '// marker-related options:' . "\n";
 $html .= "    gv_options.default_marker = { color:'red',icon:'googlemini',scale:1 }; // icon can be a URL, but be sure to also include size:[w,h] and optionally anchor:[x,y]" . "\n";
 $html .= '    gv_options.vector_markers = false; // are the icons on the map in embedded SVG format?' . "\n";
@@ -381,7 +370,6 @@ $html .= '    gv_options.marker_filter_options.sort_list_by_distance = false;  /
 $html .= '    gv_options.marker_filter_options.min_zoom = 0;  // below this zoom level, dont show any markers at all' . "\n";
 $html .= "    gv_options.marker_filter_options.zoom_message = '';  // message to put in the marker list if the map is below the min_zoom threshold" . "\n";
 $html .= "    gv_options.synthesize_fields = {}; // for example: {label:'{name}'} would cause all markers' names to become visible labels" . "\n";
-
 $html .= "// Load GPS Visualizer's Google Maps functions (this must be loaded AFTER     gv_options are set):" . "\n";
 $html .= "    if (window.location.toString().indexOf('https://') == 0) { // secure pages require secure scripts" . "\n";
 $html .= "        document.writeln('<script src=" . '"https://gpsvisualizer.com/google_maps/functions3.js" type="text/javascript"><' . "'+'/script>');" . "\n";
@@ -390,9 +378,7 @@ $html .= "        document.writeln('<script src=" . '"http://maps.gpsvisualizer.
 $html .= '    }' . "\n";
 $html .= '</script>' . "\n";
 $html .= '<!-- end GPSV setup script and styles; begin map-drawing script (they must be separate) -->' . "\n";
-fputs($mapHandle,$html);
-
-$html =  '<script type="text/javascript">' . "\n";
+$html .=  '<script type="text/javascript">' . "\n";
 $html .= '    function GV_Map() {' . "\n";
 $html .= '        GV_Setup_Map();' . "\n";
 $html .= '        // Track #1' . "\n";

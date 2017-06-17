@@ -220,20 +220,21 @@ if ($handle !== false) {
 }
 ?>
 <head>
-	<title><?php echo $hikeTitle;?></title>
-	<meta charset="utf-8" />
-	<meta name="description"
-            content="Details about the {$hikeTitle} hike" />
-	<meta name="author"
-            content="Tom Sandberg and Ken Cowles" />
-	<meta name="robots"
-            content="nofollow" />
-        <link href="../styles/logo.css"
-            type="text/css" rel="stylesheet" />
-	<link href="../styles/hikes.css"
-            type="text/css" rel="stylesheet" />
-	<script type="text/javascript"> var iframeWindow; </script>
-	<script type="text/javascript" src="../scripts/canvas.js"> </script>
+    <title><?php echo $hikeTitle;?></title>
+    <meta charset="utf-8" />
+    <meta name="description"
+        content="Details about the {$hikeTitle} hike" />
+    <meta name="author"
+        content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots"
+        content="nofollow" />
+    <link href="../styles/logo.css"
+        type="text/css" rel="stylesheet" />
+    <link href="../styles/hikes.css"
+        type="text/css" rel="stylesheet" />
+    <script type="text/javascript"> var iframeWindow; </script>
+    <script type="text/javascript" src="../scripts/canvas.js"> </script>
+        
 </head>
 
 <body>
@@ -329,11 +330,28 @@ if (!$newstyle) {
             '<a href="mailto:krcowles29@gmail.com">send us a note!</a></p>' ."\n";
     echo '</div>';
     
-    include "../php/makeGpsv.php";
-    
     # MAP AND CHART ON RIGHT:
-    echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
-                $mapsrc . iframeMapOpts . '></iframe>' ."\n";
+    /*
+    echo '<iframe id="mapline" srcdoc="<html><p>Loading map...</p></html>"' .
+            ' src="../maps/defaultMap.html"></iframe>' ."\n"; */
+    
+    # dynamically created map:
+    include "../php/makeGpsv.php";
+ 
+    echo '<textarea style="display:none;" id="mapcode">' . "\n" . $html . 
+            '</textarea>' . "\n"; # contents will be place in mapline iframe by js
+    echo '<iframe id="mapline" src="' . $tmpMap . '"></iframe>';
+    /*
+    echo '<script type="text/javascript">' . "\n" .
+            
+            "    $(document).ready( function() {" . "\n" .
+            "        var hikemap = $('#mapcode').val();" . "\n" .
+            '        var test = "<p>yeh, sure</p>";' . "\n" .
+            "        $('#mapline').contents().find('body').html(test);" . "\n" .
+            '    });' . "\n" .
+            '</script>' . "\n";
+    # elevation chart:
+     */
     echo '<div data-gpx="' . $gpxfile. '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
@@ -355,7 +373,7 @@ if ($hikeReferences !== '') {
     echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
     echo '</fieldset>';
 }
-echo '<div id="postPhoto">';
+#echo '<div id="postPhoto">';
 if ($fieldsets) {
     echo $datasect;
 }
@@ -364,7 +382,7 @@ if ($fieldsets) {
 <div id="dbug"></div>
 
 <div class="popupCap"></div>
-	
+
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/hikes.js"></script> 
 <script src="../scripts/dynamicChart.js"></script> 
