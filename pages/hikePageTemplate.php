@@ -381,6 +381,7 @@ if ($fieldsets) {
 <script src="../scripts/hikes.js"></script> 
 <script src="../scripts/dynamicChart.js"></script> 
 <script type="text/javascript">
+    window.onbeforeunload = deleteTmpMap;
     function deleteTmpMap() {
         $.ajax({
             url: '../php/tmpMapDelete.php',
