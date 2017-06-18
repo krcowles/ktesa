@@ -232,7 +232,6 @@ if ($handle !== false) {
         type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css"
         type="text/css" rel="stylesheet" />
-    <script src="../scripts/jquery-1.12.1.js"></script>
     <script type="text/javascript"> var iframeWindow; </script>
     <script type="text/javascript" src="../scripts/canvas.js"> </script>
 </head>
@@ -378,8 +377,25 @@ if ($fieldsets) {
 
 <div class="popupCap"></div>
 
+<script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/hikes.js"></script> 
 <script src="../scripts/dynamicChart.js"></script> 
+<script type="text/javascript">
+    function deleteTmpMap() {
+        $.ajax({
+            url: '../php/tmpMapDelete.php',
+            data: {'file' : "<?php echo $tmpMap;?>" },
+            success: function (response) {
+               var msg = "Map deleted: " + "<?php echo $tmpMap?>";
+               //window.alert(msg);  debug msg
+            },
+            error: function () {
+               var msg = "Map NOT deleted: " + "<?php echo $tmpMap?>";
+               //window.alert(msg);  debug msg
+            }
+        });
+    }
+</script>
 
 </body>
 
