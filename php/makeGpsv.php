@@ -370,7 +370,7 @@ $html .= '    gv_options.marker_filter_options.sort_list_by_distance = false;  /
 $html .= '    gv_options.marker_filter_options.min_zoom = 0;  // below this zoom level, dont show any markers at all' . "\n";
 $html .= "    gv_options.marker_filter_options.zoom_message = '';  // message to put in the marker list if the map is below the min_zoom threshold" . "\n";
 $html .= "    gv_options.synthesize_fields = {}; // for example: {label:'{name}'} would cause all markers' names to become visible labels" . "\n";
-$html .= "// Load GPS Visualizer's Google Maps functions (this must be loaded AFTER     gv_options are set):" . "\n";
+$html .= "// Load GPS Visualizer's Google Maps functions (this must be loaded AFTER gv_options are set):" . "\n";
 $html .= "    if (window.location.toString().indexOf('https://') == 0) { // secure pages require secure scripts" . "\n";
 $html .= "        document.writeln('<script src=" . '"https://gpsvisualizer.com/google_maps/functions3.js" type="text/javascript"><' . "'+'/script>');" . "\n";
 $html .= '    } else {' . "\n";
