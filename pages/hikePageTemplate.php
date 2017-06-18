@@ -232,13 +232,13 @@ if ($handle !== false) {
         type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css"
         type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
     <script type="text/javascript"> var iframeWindow; </script>
     <script type="text/javascript" src="../scripts/canvas.js"> </script>
-        
 </head>
 
 <body>
-
+    
 <div id="logo">
 	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
 	<p id="logo_left">Hike New Mexico</p>	
@@ -246,7 +246,6 @@ if ($handle !== false) {
 	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail"><?php echo $hikeTitle;?></p>
-
 
 <?php
  /* There are two page styles from which to choose: 
@@ -298,6 +297,9 @@ if (!$newstyle) {
     '</div>';
 } else { # newstyle has the side panel with map & chart on right
     # SIDE PANEL:
+    # dynamically created map:
+    include "../php/makeGpsv.php";
+    #
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' .
                 'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . '</span><br />' .
@@ -312,7 +314,7 @@ if (!$newstyle) {
         
         include "makeGpsv.php";
         
-        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . fullMapOpts .
+        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $tmpMap . fullMapOpts .
                     ' target="_blank">Full Page Map Link</a></p>' ."\n";
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 '<p id="alnks"><a href="' . $hikePhotoLink1 . '" target="_blank">Photo Album Link</a>';
@@ -332,16 +334,16 @@ if (!$newstyle) {
     
     # MAP AND CHART ON RIGHT:
     /*
-    echo '<iframe id="mapline" srcdoc="<html><p>Loading map...</p></html>"' .
-            ' src="../maps/defaultMap.html"></iframe>' ."\n"; */
-    
-    # dynamically created map:
-    include "../php/makeGpsv.php";
-    # textarea set up for on-the-fly iframe via js, not currently working, but leaving here for now
-    echo '<textarea style="display:none;" id="mapcode">' . "\n" . $html . 
-            '</textarea>' . "\n"; # contents will be place in mapline iframe by js
+     * trying out srcdoc (not supported in IE
+     * echo '<iframe id="mapline" srcdoc="<html><p>Loading map...</p></html>"' .
+     *      ' src="../maps/defaultMap.html"></iframe>' ."\n";
+     * textarea set up for on-the-fly iframe via js, not currently working, 
+     * but leaving here for now in case of future adoption...
+     * echo '<textarea style="display:none;" id="mapcode">' . "\n" . $html . 
+     *      '</textarea>' . "\n"; # contents will be place in mapline iframe by js
+     */
     echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
-                $tmpMap . iframeMapOpts . '"></iframe>' . "\n";
+                $tmpMap . iframeMapOpts . '></iframe>' . "\n";
     #echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
     #            $mapsrc . iframeMapOpts . '></iframe>' ."\n";
     # elevation chart:
@@ -376,7 +378,6 @@ if ($fieldsets) {
 
 <div class="popupCap"></div>
 
-<script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/hikes.js"></script> 
 <script src="../scripts/dynamicChart.js"></script> 
 
