@@ -90,7 +90,7 @@ function makeHtmlList($type,$str) {
 /*
  * -------------------------  MAIN ROUTINE ------------------------
  */
-$hikeIndexNo = $_GET['hikeIndx'];
+$hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
 /* NOTE: The database file is only read in here, no writing to it occurs */
 $dataTable = '../data/database.csv';
 $handle = fopen($dataTable,'r');
@@ -102,7 +102,7 @@ if ($handle !== false) {
                 /* 
                  * IMPORT the data from database.csv 
                  */     
-                $newstyle = true;
+                $newstyle = true;  // change later if no geomap
                 $hikeTitle = $hikeArray[1];
                 $hikeLocale = $hikeArray[2];
                 $hikeDifficulty = $hikeArray[9];
@@ -110,11 +110,20 @@ if ($handle !== false) {
                 $hikeType = $hikeArray[6];
                 $hikeElevation = $hikeArray[8] . " ft";
                 $hikeExposure = $hikeArray[13];
+                /* 
+                 * This version eliminates a static imported map,
+                 * instead one will be created dynamically by the
+                 * included 'makeGpsv.php' file
+                 * 
                 $mapsrc = $hikeArray[15];
                 if ($mapsrc === '') {
                     $newstyle = false;
                 }
+                 * 
+                 */
+                $gpsvFile = $hikeArray[14];
                 $gpxfile = $hikeArray[17];
+                $jsonFile = $hikeArray[18];
                 if ($gpxfile === '') {
                     $newstyle = false;
                 }
@@ -211,24 +220,24 @@ if ($handle !== false) {
 }
 ?>
 <head>
-	<title><?php echo $hikeTitle;?></title>
-	<meta charset="utf-8" />
-	<meta name="description"
-            content="Details about the {$hikeTitle} hike" />
-	<meta name="author"
-            content="Tom Sandberg and Ken Cowles" />
-	<meta name="robots"
-            content="nofollow" />
-        <link href="../styles/logo.css"
-            type="text/css" rel="stylesheet" />
-	<link href="../styles/hikes.css"
-            type="text/css" rel="stylesheet" />
-	<script type="text/javascript"> var iframeWindow; </script>
-	<script type="text/javascript" src="../scripts/canvas.js"> </script>
+    <title><?php echo $hikeTitle;?></title>
+    <meta charset="utf-8" />
+    <meta name="description"
+        content="Details about the {$hikeTitle} hike" />
+    <meta name="author"
+        content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots"
+        content="nofollow" />
+    <link href="../styles/logo.css"
+        type="text/css" rel="stylesheet" />
+    <link href="../styles/hikes.css"
+        type="text/css" rel="stylesheet" />
+    <script type="text/javascript"> var iframeWindow; </script>
+    <script type="text/javascript" src="../scripts/canvas.js"> </script>
 </head>
 
 <body>
-
+    
 <div id="logo">
 	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
 	<p id="logo_left">Hike New Mexico</p>	
@@ -236,7 +245,6 @@ if ($handle !== false) {
 	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail"><?php echo $hikeTitle;?></p>
-
 
 <?php
  /* There are two page styles from which to choose: 
@@ -288,6 +296,9 @@ if (!$newstyle) {
     '</div>';
 } else { # newstyle has the side panel with map & chart on right
     # SIDE PANEL:
+    # dynamically created map:
+    include "../php/makeGpsv.php";
+    #
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' .
                 'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . '</span><br />' .
@@ -299,7 +310,10 @@ if (!$newstyle) {
                 'Seasons : <span class=sumClr>' . $hikeSeasons . '</span><br />' .
                 '"Wow" Factor: <span class=sumClr>' . $hikeWow . '</span></p>' . "\n";
         echo '<p id="addtl"><strong>More!</strong></p>' . "\n";
-        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $mapsrc . fullMapOpts .
+        
+        include "makeGpsv.php";
+        
+        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $tmpMap . fullMapOpts .
                     ' target="_blank">Full Page Map Link</a></p>' ."\n";
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 '<p id="alnks"><a href="' . $hikePhotoLink1 . '" target="_blank">Photo Album Link</a>';
@@ -316,9 +330,22 @@ if (!$newstyle) {
         echo '<p id="closer">If you are having problems with this page, please: ' .
             '<a href="mailto:krcowles29@gmail.com">send us a note!</a></p>' ."\n";
     echo '</div>';
+    
     # MAP AND CHART ON RIGHT:
+    /*
+     * trying out srcdoc (not supported in IE
+     * echo '<iframe id="mapline" srcdoc="<html><p>Loading map...</p></html>"' .
+     *      ' src="../maps/defaultMap.html"></iframe>' ."\n";
+     * textarea set up for on-the-fly iframe via js, not currently working, 
+     * but leaving here for now in case of future adoption...
+     * echo '<textarea style="display:none;" id="mapcode">' . "\n" . $html . 
+     *      '</textarea>' . "\n"; # contents will be place in mapline iframe by js
+     */
     echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
-                $mapsrc . iframeMapOpts . '></iframe>' ."\n";
+                $tmpMap . iframeMapOpts . '></iframe>' . "\n";
+    #echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
+    #            $mapsrc . iframeMapOpts . '></iframe>' ."\n";
+    # elevation chart:
     echo '<div data-gpx="' . $gpxfile. '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
@@ -340,7 +367,7 @@ if ($hikeReferences !== '') {
     echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
     echo '</fieldset>';
 }
-echo '<div id="postPhoto">';
+#echo '<div id="postPhoto">';
 if ($fieldsets) {
     echo $datasect;
 }
@@ -349,10 +376,27 @@ if ($fieldsets) {
 <div id="dbug"></div>
 
 <div class="popupCap"></div>
-	
+
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/hikes.js"></script> 
 <script src="../scripts/dynamicChart.js"></script> 
+<script type="text/javascript">
+    window.onbeforeunload = deleteTmpMap;
+    function deleteTmpMap() {
+        $.ajax({
+            url: '../php/tmpMapDelete.php',
+            data: {'file' : "<?php echo $tmpMap;?>" },
+            success: function (response) {
+               var msg = "Map deleted: " + "<?php echo $tmpMap?>";
+               //window.alert(msg);  debug msg
+            },
+            error: function () {
+               var msg = "Map NOT deleted: " + "<?php echo $tmpMap?>";
+               //window.alert(msg);  debug msg
+            }
+        });
+    }
+</script>
 
 </body>
 

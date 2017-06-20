@@ -8,12 +8,12 @@ var $captions;
 setTimeout(rowSetup, 1200);
 function rowSetup() {
     $rows = $('div[id^="row"]');
-    // NOTE: this is a "live" object -> changes to it will update the page
+    // NOTE: the above is a "live" object -> changes to it will update the page
     var rowid;
     $rows.each( function(rowno) {
         rowid = '#r' + rowno;
         var guts = $(this).html();
-        $(rowid).val(guts);
+        $(rowid).val(guts);  // these are the rows passed via php
     });
     captureCaps();
 }
