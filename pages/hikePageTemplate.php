@@ -297,8 +297,18 @@ if (!$newstyle) {
 } else { # newstyle has the side panel with map & chart on right
     # SIDE PANEL:
     # dynamically created map:
+    $extLoc = strrpos($gpsvFile,'.');
+    $gpsvMap = substr($gpsvFile,0,$extLoc); # name used for tmp file
+    # holding place for page's hike map (deleted when page exited)
+    $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
+    if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
+        $mapmsg = "Contact Site Master: could not open tmp map file: " . $tmpMap . ", for writing";
+        die ($mapmsg);
+    }
     include "../php/makeGpsv.php";
-    #
+    fputs($mapHandle,$html);
+    fclose($mapHandle);
+    
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' .
                 'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . '</span><br />' .

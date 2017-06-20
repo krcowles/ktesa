@@ -37,79 +37,80 @@ function distance($lat1, $lon1, $lat2, $lon2) {
 # Error messages:
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
-$mapmsg = $intro . 'Could not open tmp map file - contact Site Master';
 $trkmsg = $intro . 'Could not open track file: ';
-$tsvmsg = $intro . 'Could not open tsv file ';
+$tsvmsg = $intro . 'Could not open tsv file: ';
+$xmlmsg = $intro . 'Could not parse XML in gpx file: '; 
 
 # Settings:
-$noOfTrks = 1;  // for a single hike page, this is a reasonable constraint
+$noOfTrks = 1;  # for a single hike page, this is a reasonable constraint, but
+# perhaps other pages will need to set this value
 $tno = 1;
 
-# Using variables established in main: $hikeIndexNo, $hikeTitle, $gpsvFile, $jsonFile
-# gpsvMap ini:
-$extLoc = strrpos($gpsvFile,'.');
-$gpsvMap = substr($gpsvFile,0,$extLoc);
-
-# holding place for page's hike map
-$tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
-if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
-    die ($mapmsg);
-}
+# NOTE: Currently using variables established in hikePageTemplate.php: 
+#   $hikeTitle, $gpsvFile, $gpxfile - ultimately, switch to database technique
 # Files: tsv  file
 $gpsvPath = '../gpsv/' . $gpsvFile;
 $gpsvData = file($gpsvPath);
 if ($gpsvData === false) {
     die ($tsvmsg . $gpsvPath . $close);
 } 
-# Files: JSON track file
-$trkPath = '../json/' . $jsonFile;
-if (($track = fopen($trkPath,"r")) === false) {
-    die ($trkmsg . $trkPath . $close );
+# Files: GPX track file
+$gpxPath = '../gpx/' . $gpxfile;
+$gpxdat = simplexml_load_file($gpxPath);
+if ($gpxdat === false) {
+    die ($xmlmsg . $gpxPath . $close);
 }
-/* 
- * Getting track data from track.json and formatting for gpsv:
+
+/*
+ * Getting track data from gpx file and formatting for gpsv:
  */
-$jlats = [];
-$jlons = [];
-$jindx = 0;
-while ( ($jsonData = fgets($track)) !== false ) {
+$gpxlats = [];
+$gpxlons = [];
+$gpxelev = []; // this will be used for elevation charts on the hike page
+$gpxindx = 0;
+$trkpts = [];
+foreach ($gpxdat->children() as $track) {
+    array_push($trkpts,$track[0]);
+}
+echo 'First lat is ' . $trkpts[0];
+die ("No of lats: " . count($trkpts));
+
     $latstrt = strpos($jsonData,":") + 2;
     $latend = strpos($jsonData,",");
     $latlgth = $latend - $latstrt;
-    $jlats[$jindx] = substr($jsonData,$latstrt,$latlgth);
+    $gpxlats[$gpxindx] = substr($jsonData,$latstrt,$latlgth);
     $lonstrt = strpos($jsonData,"lng") + 6;
     $lonend = strpos($jsonData," ",$lonstrt);
     $lonlgth = $lonend - $lonstrt;
-    $jlons[$jindx] = substr($jsonData,$lonstrt,$lonlgth);
-    $jindx++;
-}
+    $gpxlons[$gpxindx] = substr($jsonData,$lonstrt,$lonlgth);
+    $gpxindx++;
 fclose($track);
-$north = $jlats[0];
+$north = $gpxlats[0];
 $south = $north;
-$east = $jlons[0];
+$east = $gpxlons[0];
 $west = $east;
 $seg = '[' . $north . ',' . $east . ']';
 $hikeLgth = 0;
 $tickMrk = round(0.3,1);
 $ticks = [];
-for ($i=1; $i<count($jlons)-1; $i++) {
-    if ($jlats[$i] > $north) {
-        $north = $jlats[$i];
+for ($i=1; $i<count($gpxlons)-1; $i++) {
+    if ($gpxlats[$i] > $north) {
+        $north = $gpxlats[$i];
     }
-    if ($jlats[$i] < $south) {
-        $south = $jlats[$i];
+    if ($gpxlats[$i] < $south) {
+        $south = $gpxlats[$i];
     }
-    if ($jlons[$i] < $west) {
-        $west = $jlons[$i];
+    if ($gpxlons[$i] < $west) {
+        $west = $gpxlons[$i];
     }
-    if ($jlons[$i] > $east) {
-        $east = $jlons[$i];
+    if ($gpxlons[$i] > $east) {
+        $east = $gpxlons[$i];
     }
-    $seg .= ',[' . $jlats[$i] . ',' . $jlons[$i] . ']';
-    $parms = distance($jlats[$i-1],$jlons[$i-1],$jlats[$i],$jlons[$i]);
+    $seg .= ',[' . $gpxlats[$i] . ',' . $gpxlons[$i] . ']';
+    $parms = distance($gpxlats[$i-1],$gpxlons[$i-1],$gpxlats[$i],$gpxlons[$i]);
     $hikeLgth += $parms[0];
     if ($hikeLgth > $tickMrk) {
-        $tick = "GV_Draw_Marker({lat:" . $jlats[$i] . ",lon:" . $jlons[$i] .
+        $tick = "GV_Draw_Marker({lat:" . $gpxlats[$i] . ",lon:" . $gpxlons[$i] .
             ",name:'" . $tickMrk . " mi',desc:'',color:trk[" . $tno . 
             "].info.color,icon:'tickmark',type:'tickmark',folder:'" . $hikeTitle .
             " [tickmarks]',rotation:" . $parms[1] . ",track_number:" . $tno . ",dd:false});";
@@ -119,7 +120,7 @@ for ($i=1; $i<count($jlons)-1; $i++) {
 }
 $clat = $south + ($north - $south)/2;
 $clon = $west + ($east - $west)/2;
-$lastpoints = '[' . $jlats[$jindx-1] . ',' . $jlons[$jindx-1] . ']';
+$lastpoints = '[' . $gpxlats[$gpxindx-1] . ',' . $gpxlons[$gpxindx-1] . ']';
 /*
  * Form the photo links from the gpsvData
  */
@@ -405,6 +406,4 @@ $html .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1&form=g
 $html .= '</script>' . "\n";  
 $html .= '</body>' . "\n";
 $html .= '</html>' . "\n";
-fputs($mapHandle,$html);
-fclose($mapHandle);
 ?>
