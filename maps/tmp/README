@@ -1,0 +1,11 @@
+There are some differences between a gpsv.html file created online, and the files created here:
+NOTE: Using template from a more 'recent' gpsv file: when different than older version, denoted by **
+
+ 1. Using html5 in files, not gpsv html4 declaration
+ 2. <base> tag should not have closing tag per WWW3Schools
+ 3. <meta name="geo.position"   and name="ICBM"   are not supported in (XHTML) html4
+ 4. <body> tag does not have per gpsv: <body style="margin:0px";
+ 5. comment in style: ' ... put any custom style definition here ...'  excluded in files
+ 6. comment after google api key omitted in file
+ 7. html comment after first <script> omitted (... If you want to transplant this map ...)
+ 8. html comment after <div id="gv_clear_margins" omitted (clear the "float")
