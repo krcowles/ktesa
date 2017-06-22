@@ -298,7 +298,7 @@ if (!$newstyle) {
     # SIDE PANEL:
     # dynamically created map:
     $extLoc = strrpos($gpsvFile,'.');
-    $gpsvMap = substr($gpsvFile,0,$extLoc); # name used for tmp file
+    $gpsvMap = substr($gpsvFile,0,$extLoc); # strip file extension
     # holding place for page's hike map (deleted when page exited)
     $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
     if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
@@ -356,6 +356,8 @@ if (!$newstyle) {
     #echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
     #            $mapsrc . iframeMapOpts . '></iframe>' ."\n";
     # elevation chart:
+    echo '<script>' . "\n" .
+            'var alts = ' . $jsElevation . ';' . "\n" . '</script>' . "\n";
     echo '<div data-gpx="' . $gpxfile. '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */

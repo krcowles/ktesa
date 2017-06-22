@@ -67,24 +67,33 @@ if ($gpxdat === false) {
 $gpxlats = [];
 $gpxlons = [];
 $gpxelev = []; // this will be used for elevation charts on the hike page
-$gpxindx = 0;
-$trkpts = [];
-foreach ($gpxdat->children() as $track) {
-    array_push($trkpts,$track[0]);
+/* 
+ * In some cases, e.g. proposed routes, there may be more than one trkseg;
+ * While the code does not yet process this case, some hooks are provided
+ * to ease the transition: could there also be > 1 trk?
+ */
+$segcnt = 0;
+$trksPerSeg = [];
+foreach ($gpxdat->trk->trkseg as $trkinfo) {
+    $segcnt++;
+    array_push($trksPerSeg,$trkinfo->count());
 }
-echo 'First lat is ' . $trkpts[0];
-die ("No of lats: " . count($trkpts));
-
-    $latstrt = strpos($jsonData,":") + 2;
-    $latend = strpos($jsonData,",");
-    $latlgth = $latend - $latstrt;
-    $gpxlats[$gpxindx] = substr($jsonData,$latstrt,$latlgth);
-    $lonstrt = strpos($jsonData,"lng") + 6;
-    $lonend = strpos($jsonData," ",$lonstrt);
-    $lonlgth = $lonend - $lonstrt;
-    $gpxlons[$gpxindx] = substr($jsonData,$lonstrt,$lonlgth);
-    $gpxindx++;
-fclose($track);
+$plat = 0;
+$plng = 0;
+foreach($gpxdat->trk->trkseg as $trackdat) {
+    foreach ($trackdat->trkpt as $datum) {
+        if ( !($datum['lat'] === $plat && $datum['lon'] === $plng) ) {
+            $plat = $datum['lat'];
+            $plng = $datum['lon'];
+            array_push($gpxlats,$plat);
+            array_push($gpxlons,$plng);
+            $meters = $datum->ele;
+            $feet = round(3.28084 * $meters,1);
+            array_push($gpxelev,$feet);
+        }
+    }
+}
+$jsElevation = json_encode($gpxelev);
 $north = $gpxlats[0];
 $south = $north;
 $east = $gpxlons[0];
