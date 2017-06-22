@@ -397,7 +397,7 @@ $html .= "        trk[t].info.name = '" . $hikeTitle . "'; trk[t].info.desc = ''
 $html .= "        trk[t].info.color = '#e60000'; trk[t].info.width = 3; trk[t].info.opacity = 0.9; trk[t].info.hidden = false;" . "\n";
 $html .= "        trk[t].info.outline_color = 'black'; trk[t].info.outline_width = 0; trk[t].info.fill_color = '#e60000'; trk[t].info.fill_opacity = 0;" . "\n";
 $html .= '        trk[t].segments.push({ points:[' . $seg .  '] });' . "\n";
-$html .= '        trk[t].segments.push({ points:[' . $lastpoints .  '] });' . "\n";
+#$html .= '        trk[t].segments.push({ points:[' . $lastpoints .  '] });' . "\n";
 $html .= '        GV_Draw_Track(t);' . "\n";
 $html .= "        t = 1; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:trk[t].info.desc,color:trk[t].info.color,number:t});" . "\n";
        
