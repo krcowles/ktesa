@@ -93,7 +93,7 @@ foreach($gpxdat->trk->trkseg as $trackdat) {
         }
     }
 }
-$jsElevation = json_encode($gpxelev);
+$jsElevation = json_encode($gpxelev); # future use in elevation chart creation?
 $north = $gpxlats[0];
 $south = $north;
 $east = $gpxlons[0];

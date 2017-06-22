@@ -104,6 +104,9 @@ if ($handle !== false) {
                  */     
                 $newstyle = true;  // change later if no geomap
                 $hikeTitle = $hikeArray[1];
+                # NOTE: Some titles may use quotations - provide for that case:
+                $hikeTitle = str_replace("'","\\'",$hikeTitle);
+                $hikeTitle = str_replace('"','\\"',$hikeTitle);
                 $hikeLocale = $hikeArray[2];
                 $hikeDifficulty = $hikeArray[9];
                 $hikeLength = $hikeArray[7] . " miles";
