@@ -6,7 +6,7 @@ define('Simple','0');
 define('References','1');
 define('Proposed','2');
 define('Actual','3');
-define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false"');
+define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false');
 define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
 define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
 
@@ -117,12 +117,6 @@ if ($handle !== false) {
                  * This version eliminates a static imported map,
                  * instead one will be created dynamically by the
                  * included 'makeGpsv.php' file
-                 * 
-                $mapsrc = $hikeArray[15];
-                if ($mapsrc === '') {
-                    $newstyle = false;
-                }
-                 * 
                  */
                 $gpsvFile = $hikeArray[14];
                 $gpxfile = $hikeArray[17];
@@ -311,7 +305,9 @@ if (!$newstyle) {
     include "../php/makeGpsv.php";
     fputs($mapHandle,$html);
     fclose($mapHandle);
-    
+    # Full-ppage map link cannot assume existence of tmp file: (Name is bogus 'MapLink')
+    $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . '&gpsv=' . 
+            $gpsvFile . '&gpx=' . $gpxfile;
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' .
                 'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . '</span><br />' .
@@ -322,12 +318,9 @@ if (!$newstyle) {
                 'Exposure Type: <span class=sumClr>' . $hikeExposure . '</span><br />' .
                 'Seasons : <span class=sumClr>' . $hikeSeasons . '</span><br />' .
                 '"Wow" Factor: <span class=sumClr>' . $hikeWow . '</span></p>' . "\n";
-        echo '<p id="addtl"><strong>More!</strong></p>' . "\n";
-        
-        include "makeGpsv.php";
-        
-        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . $tmpMap . fullMapOpts .
-                    ' target="_blank">Full Page Map Link</a></p>' ."\n";
+        echo '<p id="addtl"><strong>More!</strong></p>' . "\n";        
+        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . 
+                $fpLnk . '" target="_blank">Full Page Map Link</a></p>' ."\n";
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 '<p id="alnks"><a href="' . $hikePhotoLink1 . '" target="_blank">Photo Album Link</a>';
         if ($hikePhotoLink2 !== '') {

@@ -46,8 +46,11 @@ $noOfTrks = 1;  # for a single hike page, this is a reasonable constraint, but
 # perhaps other pages will need to set this value
 $tno = 1;
 
-# NOTE: Currently using variables established in hikePageTemplate.php: 
-#   $hikeTitle, $gpsvFile, $gpxfile - ultimately, switch to database technique
+/*
+ *  NOTE: Currently using variables established in hikePageTemplate.php: 
+ *    $hikeTitle, $gpsvFile, $gpxfile - ultimately, switch to database technique;
+ * These are the 'black-box' inputs to this module
+ */
 # Files: tsv  file
 $gpsvPath = '../gpsv/' . $gpsvFile;
 $gpsvData = file($gpsvPath);
