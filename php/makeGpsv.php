@@ -88,8 +88,8 @@ foreach($gpxdat->trk->trkseg as $trackdat) {
         if ( !($datum['lat'] === $plat && $datum['lon'] === $plng) ) {
             $plat = $datum['lat'];
             $plng = $datum['lon'];
-            array_push($gpxlats,$plat);
-            array_push($gpxlons,$plng);
+            array_push($gpxlats,(float)$plat);
+            array_push($gpxlons,(float)$plng);
             $meters = $datum->ele;
             $feet = round(3.28084 * $meters,1);
             array_push($gpxelev,$feet);
@@ -103,11 +103,14 @@ $east = $gpxlons[0];
 $west = $east;
 $seg = '[' . $north . ',' . $east . ']';
 $hikeLgth = 0;
-$tickMrk = round(0.3,1);
+$tickMrk = 0.30;
 $ticks = [];
 for ($i=1; $i<count($gpxlons)-1; $i++) {
     if ($gpxlats[$i] > $north) {
         $north = $gpxlats[$i];
+    }
+    if ($i === 55) {
+        $msg = "lat: " . $gpxlats[$i] . ', north: ' . $north;
     }
     if ($gpxlats[$i] < $south) {
         $south = $gpxlats[$i];
@@ -127,12 +130,12 @@ for ($i=1; $i<count($gpxlons)-1; $i++) {
             "].info.color,icon:'tickmark',type:'tickmark',folder:'" . $mapTitle .
             " [tickmarks]',rotation:" . $parms[1] . ",track_number:" . $tno . ",dd:false});";
         array_push($ticks,$tick);
-        $tickMrk += round(0.3,1);
+        $tickMrk += 0.30;
     }
 }
 $clat = $south + ($north - $south)/2;
 $clon = $west + ($east - $west)/2;
-$lastpoints = '[' . $gpxlats[$gpxindx-1] . ',' . $gpxlons[$gpxindx-1] . ']';
+#$lastpoints = '[' . $gpxlats[$gpxindx-1] . ',' . $gpxlons[$gpxindx-1] . ']';
 /*
  * Form the photo links from the gpsvData
  */
