@@ -48,6 +48,9 @@ $tno = 1;
 
 # NOTE: Currently using variables established in hikePageTemplate.php: 
 #   $hikeTitle, $gpsvFile, $gpxfile - ultimately, switch to database technique
+# Some titles may use quotations - provide for that case:
+$mapTitle = str_replace("'","\\'",$hikeTitle);
+$mapTitle = str_replace('"','\\"',$mapTitle);
 # Files: tsv  file
 $gpsvPath = '../gpsv/' . $gpsvFile;
 $gpsvData = file($gpsvPath);
@@ -121,7 +124,7 @@ for ($i=1; $i<count($gpxlons)-1; $i++) {
     if ($hikeLgth > $tickMrk) {
         $tick = "GV_Draw_Marker({lat:" . $gpxlats[$i] . ",lon:" . $gpxlons[$i] .
             ",name:'" . $tickMrk . " mi',desc:'',color:trk[" . $tno . 
-            "].info.color,icon:'tickmark',type:'tickmark',folder:'" . $hikeTitle .
+            "].info.color,icon:'tickmark',type:'tickmark',folder:'" . $mapTitle .
             " [tickmarks]',rotation:" . $parms[1] . ",track_number:" . $tno . ",dd:false});";
         array_push($ticks,$tick);
         $tickMrk += round(0.3,1);
@@ -393,7 +396,7 @@ $html .= '    function GV_Map() {' . "\n";
 $html .= '        GV_Setup_Map();' . "\n";
 $html .= '        // Track #1' . "\n";
 $html .= '        t = 1; trk[t] = {info:[],segments:[]};' . "\n";
-$html .= "        trk[t].info.name = '" . $hikeTitle . "'; trk[t].info.desc = ''; trk[t].info.clickable = true;" . "\n";
+$html .= "        trk[t].info.name = '" . $mapTitle . "'; trk[t].info.desc = ''; trk[t].info.clickable = true;" . "\n";
 $html .= "        trk[t].info.color = '#e60000'; trk[t].info.width = 3; trk[t].info.opacity = 0.9; trk[t].info.hidden = false;" . "\n";
 $html .= "        trk[t].info.outline_color = 'black'; trk[t].info.outline_width = 0; trk[t].info.fill_color = '#e60000'; trk[t].info.fill_opacity = 0;" . "\n";
 $html .= '        trk[t].segments.push({ points:[' . $seg .  '] });' . "\n";
