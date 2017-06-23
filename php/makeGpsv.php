@@ -46,11 +46,12 @@ $noOfTrks = 1;  # for a single hike page, this is a reasonable constraint, but
 # perhaps other pages will need to set this value
 $tno = 1;
 
-/*
- *  NOTE: Currently using variables established in hikePageTemplate.php: 
- *    $hikeTitle, $gpsvFile, $gpxfile - ultimately, switch to database technique;
- * These are the 'black-box' inputs to this module
- */
+# NOTE: Currently using variables established in hikePageTemplate.php: 
+#   $hikeTitle, $gpsvFile, $gpxfile - ultimately, switch to database technique
+# Some titles may use quotations - provide for that case:
+$mapTitle = str_replace("'","\\'",$hikeTitle);
+$mapTitle = str_replace('"','\\"',$mapTitle);
+
 # Files: tsv  file
 $gpsvPath = '../gpsv/' . $gpsvFile;
 $gpsvData = file($gpsvPath);
@@ -88,8 +89,8 @@ foreach($gpxdat->trk->trkseg as $trackdat) {
         if ( !($datum['lat'] === $plat && $datum['lon'] === $plng) ) {
             $plat = $datum['lat'];
             $plng = $datum['lon'];
-            array_push($gpxlats,$plat);
-            array_push($gpxlons,$plng);
+            array_push($gpxlats,(float)$plat);
+            array_push($gpxlons,(float)$plng);
             $meters = $datum->ele;
             $feet = round(3.28084 * $meters,1);
             array_push($gpxelev,$feet);
@@ -103,11 +104,14 @@ $east = $gpxlons[0];
 $west = $east;
 $seg = '[' . $north . ',' . $east . ']';
 $hikeLgth = 0;
-$tickMrk = round(0.3,1);
+$tickMrk = 0.30;
 $ticks = [];
 for ($i=1; $i<count($gpxlons)-1; $i++) {
     if ($gpxlats[$i] > $north) {
         $north = $gpxlats[$i];
+    }
+    if ($i === 55) {
+        $msg = "lat: " . $gpxlats[$i] . ', north: ' . $north;
     }
     if ($gpxlats[$i] < $south) {
         $south = $gpxlats[$i];
@@ -124,15 +128,15 @@ for ($i=1; $i<count($gpxlons)-1; $i++) {
     if ($hikeLgth > $tickMrk) {
         $tick = "GV_Draw_Marker({lat:" . $gpxlats[$i] . ",lon:" . $gpxlons[$i] .
             ",name:'" . $tickMrk . " mi',desc:'',color:trk[" . $tno . 
-            "].info.color,icon:'tickmark',type:'tickmark',folder:'" . $hikeTitle .
+            "].info.color,icon:'tickmark',type:'tickmark',folder:'" . $mapTitle .
             " [tickmarks]',rotation:" . $parms[1] . ",track_number:" . $tno . ",dd:false});";
         array_push($ticks,$tick);
-        $tickMrk += round(0.3,1);
+        $tickMrk += 0.30;
     }
 }
 $clat = $south + ($north - $south)/2;
 $clon = $west + ($east - $west)/2;
-$lastpoints = '[' . $gpxlats[$gpxindx-1] . ',' . $gpxlons[$gpxindx-1] . ']';
+#$lastpoints = '[' . $gpxlats[$gpxindx-1] . ',' . $gpxlons[$gpxindx-1] . ']';
 /*
  * Form the photo links from the gpsvData
  */
@@ -396,7 +400,7 @@ $html .= '    function GV_Map() {' . "\n";
 $html .= '        GV_Setup_Map();' . "\n";
 $html .= '        // Track #1' . "\n";
 $html .= '        t = 1; trk[t] = {info:[],segments:[]};' . "\n";
-$html .= "        trk[t].info.name = '" . $hikeTitle . "'; trk[t].info.desc = ''; trk[t].info.clickable = true;" . "\n";
+$html .= "        trk[t].info.name = '" . $mapTitle . "'; trk[t].info.desc = ''; trk[t].info.clickable = true;" . "\n";
 $html .= "        trk[t].info.color = '#e60000'; trk[t].info.width = 3; trk[t].info.opacity = 0.9; trk[t].info.hidden = false;" . "\n";
 $html .= "        trk[t].info.outline_color = 'black'; trk[t].info.outline_width = 0; trk[t].info.fill_color = '#e60000'; trk[t].info.fill_opacity = 0;" . "\n";
 $html .= '        trk[t].segments.push({ points:[' . $seg .  '] });' . "\n";
