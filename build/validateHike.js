@@ -21,14 +21,6 @@ $('#owtsv').on('change', function() {
         $('#overTsv').val("NO");
     }
 });
-
-$('#owmap').on('change', function() {
-    if ( $(this).prop('checked') === true ) {
-        $('#overMap').val("YES");
-    } else {
-        $('#overMap').val("NO");
-    }
-});
 $('#owgpx').on('change', function() {
     if ( $(this).prop('checked') === true ) {
         $('#overGpx').val("YES");

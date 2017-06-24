@@ -14,88 +14,20 @@ $datfileArray = [];  # prop & act data file names
  */
 
 # TSV FILE OPS:
-echo '<h3 style="text-indent:8px">Uploaded TSV File Info:</h3>' . "\n";
+echo '<h3 style="text-indent:8px">Hike TSV File Info (Created):</h3>' . "\n";
 echo '<ul style="margin-top:-10px;">' . "\n";
-if ($uploadedTsv) {
-    $tsvFile = $_FILES['csvfile']['tmp_name'];
-    $tsvSize = filesize($tsvFile);
-    $tsvType = $_FILES['csvfile']['type'];
-    $tsvFname = basename($_FILES['csvfile']['name']);
-    $tsvStat = $_FILES['csvfile']['error'];
-    # NOTE: Cannot proceed without the tsv file!
-    $nofile = '</form>' . "\n" .
-        '<p><strong>--- No tsv file specified...</strong></p>' . "\n" .
-            '</body>' . "\n" .
-            '</html>';
-    if($tsvFname == "") { die( $nofile ); }
-    if ( preg_match("/tab-separated-values/",$tsvType) === 0 ) {
-        $msgout = '<p style="margin-left:20px;color:red"><strong>Incorrect file type for ' .
-                $tsvFname . ': must be "tab-separated-variables"</strong></p>';
-        die ($msgout);
-    }
-    $tsvLoc = '../gpsv/' . $tsvFname;
-    if ( file_exists($tsvLoc) ) {
-        echo $fexists1 . $tsvFname . $fexists2. 
-            '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
-        $dupTsv = 'YES';
-    }
-    $tsvUpload = $uploads . 'gpsv/' . $tsvFname;
-    if ($tsvStat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($tsvFile,$tsvUpload)) {
-            die("Could not save tsv file - contact site master...");
-        }
-    }
-    echo '<li>Uploaded tsv file: ' .  $tsvFname . '</li>' . "\n";
-    echo '<li>File size: ' . $tsvSize . ' bytes</li>' . "\n";
-    echo '<li>File type: ' . $tsvType . '</li>' . "\n";
-} else {
-    $tsvFname = $tsvName;
-    $tsvLoc = '../gpsv/' . $tsvName;
-    if ( file_exists($tsvLoc) ) {
-        echo $fexists1 . $tsvFname . $fexists2. 
-            '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
-        $dupTsv = 'YES';
-    }
-    echo '<li>Created tsv file: ' . $tsvName . '</li>' . "\n";
-    echo '<li>File size: ' . $tsvSize . '</li>' . "\n";
+$tsvFname = $tsvName;  // $tsvFname is being used in validateHike.php
+if ($tsvFname === '') {
+    die("No name for tsv file!");
 }
-echo '</ul>' . "\n";
-
-
-# GEOMAP FILE OPS:
-echo '<h3 style="text-indent:8px">Uploaded Geomap File Info:</h3>' . "\n";
-$gmapFile = $_FILES['gpsvMap']['tmp_name'];
-$hikeMap = basename($_FILES['gpsvMap']['name']);
-$mapSize = filesize($gmapFile);
-$mapType = $_FILES['gpsvMap']['type'];
-$mapStat = $_FILES['gpsvMap']['error'];
-$mapLoc = '../maps/' . $hikeMap;
-if ( $hikeMap !== '' && file_exists($mapLoc) ) {
-    echo $fexists1 . $hikeMap . $fexists2. 
-        '<input id="owmap" type="checkbox" name="mapow" />' . $fexists3;
-    $dupMap = 'YES';
+$tsvLoc = '../gpsv/' . $tsvName;
+if ( file_exists($tsvLoc) ) {
+    echo $fexists1 . $tsvFname . $fexists2. 
+        '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
+    $dupTsv = 'YES';
 }
-if ( $hikeMap !== '') {
-    if ( preg_match("/html/",$mapType) === 0 ) { 
-        $msgout = '<p style="margin-left:20px;color:red;"><strong>Incorrect '
-                . 'file type for ' . $hikeMap . ': must be html</strong></p>';
-        die($msgout);
-    }
-    $mapUpload = $uploads . 'maps/' . $hikeMap;
-    if ($mapStat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($gmapFile,$mapUpload)) {
-            die("Could not save map file - contact site master...");
-        }
-    }
-}
-echo '<ul style="margin-top:-10px;">' . "\n";
-if ($hikeMap !== '') {
-    echo '<li>Uploaded map file: ' .  $hikeMap . '</li>' . "\n";
-    echo '<li>File size: ' . $mapSize . ' bytes</li>' . "\n";
-    echo '<li>File type: ' . $mapType . '</li>' . "\n";
-} else {
-    echo '<li>NO GEOMAP UPLOADED: If needed, go back and select in hike Editor</li>' . "\n";
-}
+echo '<li>Created tsv file: ' . $tsvName . '</li>' . "\n";
+echo '<li>File size: ' . $tsvSize . '</li>' . "\n";
 echo '</ul>' . "\n";
 
 # GPX FILE OPS
@@ -136,65 +68,34 @@ if ($hikeGpx !== '') {
 echo '</ul>' . "\n";
 
 /* JSON FILE OPS: */
-echo '<h3 style="text-indent:8px">Uploaded Track File Info:</h3>' . "\n";
-$mktrk = filter_input(INPUT_POST,'maketrack');
-if ( isset($mktrk) ) {
-    $cwd = getcwd();
-    $ktesaPos = strpos($cwd,"ktesa") + 6;
-    $ktesaDir = substr($cwd,0,$ktesaPos);
-    $trkcmd = $ktesaDir . 'tools/mktrk.sh -f ' . $cwd . '/' . $uploads .
-            'gpx/' . $hikeGpx . ' -p ' . $cwd . '/' . $uploads . 'json';
-    $json = exec($trkcmd);
-    if ( preg_match("/DONE/",$json) === 1 ) {
-        echo '<p style="margin-left:10px;">Track file created from GPX and saved</p>';
-    } else {
-        echo '<p style="margin-left:10px;">Track file creation failed: Please ' .
-            'return to the hike Editor, un-check the box, and upload a track file' .
-            ' or contact site master</p>';
-    }
-    $jpos = strpos($hikeGpx,".");
-    $hikeJSON = substr($hikeGpx,0,$jpos) . ".json";
-    $JSONloc = '../json/' . $hikeJSON;
-    if ( file_exists($JSONloc) ) {
-        echo $fexists1 . $hikeJSON . $fexists2 . 
-         '<input id="owtrk" type="checkbox" name="trkow" />' . $fexists3;
-        $dupJSON = 'YES';
-    }
+echo '<h3 style="text-indent:8px">Track File Info (Created):</h3>' . "\n";
+echo '<ul style="margin-top:-10px;">' . "\n";
+$cwd = getcwd();
+$ktesaPos = strpos($cwd,"ktesa") + 6;
+$ktesaDir = substr($cwd,0,$ktesaPos);
+$trkcmd = $ktesaDir . 'tools/mktrk.sh -f ' . $cwd . '/' . $uploads .
+        'gpx/' . $hikeGpx . ' -p ' . $cwd . '/' . $uploads . 'json';
+$json = exec($trkcmd);
+if ( preg_match("/DONE/",$json) === 1 ) {
+    echo '<p style="margin-left:10px;">Track file created from GPX and saved</p>';
 } else {
-    $jsonFile = $_FILES['track']['tmp_name'];
-    $hikeJSON = basename($_FILES['track']['name']);
-    $jsonSize = filesize($jsonFile);
-    $jsonType = $_FILES['track']['type'];
-    $jsonStat = $_FILES['track']['error'];
-    $jsonLoc = '../json/' . $hikeJSON;
-    if ( $hikeJSON !== '' && file_exists($jsonLoc) ) {
-        echo $fexists1 . $hikeJSON . $fexists2. 
-            '<input id="owjson" type="checkbox" name="jsonow" />' . $fexists3;
-        $dupJSON = 'YES';
-    }
-    if ( $hikeJSON !== '') {
-        if ( preg_match("/json/",$jsonType) === 0 ) {
-            $msgout = '<p style="margin-left:20px;color:red;"><strong>Incorrect'
-                . ' file type for ' . $hikeJSON . ': should be "json"</strong</p>';
-            die($msgout);
-        }
-        $jsonUpload = $uploads . 'json/' . $hikeJSON;
-        if ($jsonStat === UPLOAD_ERR_OK) {
-            if (!move_uploaded_file($jsonFile,$jsonUpload)) {
-                die("Could not save json file - contact site master...");
-            }
-        }
-    }
-    echo '<ul style="margin-top:-10px;">' . "\n";
-    if ($hikeJSON !== '') {
-        echo '<li>Uploaded track file: ' .  $hikeJSON . '</li>' . "\n";
-        echo '<li>File size: ' . $jsonSize . ' bytes</li>' . "\n";
-        echo '<li>File type: ' . $jsonType . '</li>' . "\n";
-    } else {
-        echo '<li>NO JSON/TRACK FILE UPLOADED: If needed, go back and select in hike Editor</li>' . "\n";
-    }
-    echo '</ul>' . "\n";
+    echo '<p style="margin-left:10px;">Track file creation failed: Please ' .
+        'return to the hike Editor, un-check the box, and upload a track file' .
+        ' or contact site master</p>';
 }
+$jpos = strpos($hikeGpx,".");
+$hikeJSON = substr($hikeGpx,0,$jpos) . ".json";
+$JSONloc = '../json/' . $hikeJSON;
+if ( file_exists($JSONloc) ) {
+    echo $fexists1 . $hikeJSON . $fexists2 . 
+     '<input id="owtrk" type="checkbox" name="trkow" />' . $fexists3;
+    $dupJSON = 'YES';
+}
+$tmpLoc = $uploads . $hikeJSON;
+$jsonSize = filesize($tmpLoc);
+echo '<li>Created json file: ' . $hikeJSON . '</li>' . "\n";
+echo '<li>File size: ' . $jsonSize . '</li>' . "\n";
+echo '</ul>' . "\n";
 
 # ADDITIONAL IMAGES FILES (IF ANY):
 echo '<h3 style="text-indent:8px">Uploaded Image Files (if any):</h3>' . "\n";
