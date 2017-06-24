@@ -1,10 +1,7 @@
 body {
 	min-width: 960px;
 	font-family: arial, verdana;
-	background-color: #dadada;
-	border-style: solid;
-	border-width: 4px;
-	border-color: DarkBlue; }
+	background-color: #dadada; }
 #hike {
 	height: 20px;
 	width: 260px; }
@@ -92,4 +89,12 @@ input[type=checkbox]
   -webkit-transform: scale(1.5); /* Safari and Chrome */
   -o-transform: scale(1.5); /* Opera */
   padding: 10px;
+}
+.gridbox {
+	float: left;
+	height: 60px;
+	width: 58px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
 }

@@ -21,8 +21,7 @@ $('a').on('click', function(e) {
 	if ( !$containerRow.hasClass('indxd') ) {
 		var hikeToUse = $containerRow.data('indx');
 		var callPhp = 'editDB.php?hikeNo=' + hikeToUse;
-		window.open(callPhp);
-		window.close(window.self);
+		window.open(callPhp, target="_blank");
 	}
 });
 

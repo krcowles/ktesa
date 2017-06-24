@@ -1,91 +1,143 @@
-/* Styles for all of the "whole info" web-links (wlnks) */
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0; }
 body {
-	min-width: 960px;
-	font-family: arial, verdana;
-	background-color: #dadada;
-	border-style: solid;
-	border-width: 4px;
-	border-color: DarkBlue; }
-	
-/* Placing and centering the logo image & associated text */
-#logoBlock {
-	width: 960px;
-	position: relative;
-	margin-left: auto;
-	margin-right: auto; }
-#page_title {
-	position: absolute;
-	top: -8px;
-	font-size: 28px;
-	text-align: center;
-	color: DarkBlue; }
-#pgLogo  {
-	height: 70px;
-	width: 920px;
-	border-style: inset;
-	border-width: 3px;
-	border-color: DarkBlue;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 20px;
-	background-image: url("../images/PageTopper.jpg");
-	background-repeat: no-repeat;
-	background-attachment: scroll;
-	opacity: 0.30; }
-#logoLeft {
-	color: DarkBlue;
-	font-size: 15px;
-	font-style: italic;
-	font-weight: bold;
-	opacity: 0.8;
-	position: absolute;
-	top: 0px;
-	left: 36px; }
-#logoRight {
-	color: DarkBlue;
-	font-size: 15px;
-	font-style: italic;
-	font-weight: bold;
-	opacity: 0.8;
-	position: absolute;
-	top: 0px;
-	left: 822px; }
+    min-width: 960px;
+    height: 100%;
+    margin: 0px;
+    padding: 0px; 
+    font-family: Arial, Verdana;
+    background-color: #eaeaea; }
 table {
-	margin-top: 8px;
-	margin-bottom: 20px;
-	margin-left: auto;
-	margin-right: auto;
-	border-style: solid;
-	border-width: 3px;
-	border-color: DarkBlue;
-	background-color: #EDF2F7; }
+    margin-top: 8px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
+    border-width: 3px;
+    border-color: DarkBlue;
+    background-color: #EDF2F7; }
 table th {
-	text-align: center;
-	padding-left: 5px;
-	padding-right: 5px;
-	border-style: solid;
-	border-width: 2px;
-	border-color: DarkBlue; }
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: DarkBlue; }
 table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 5px; 
+    background-color: Gainsboro; 
+    border-style: solid;
+    border-width: 1px;
+    border-color: DarkBlue; }
+/* Side Panel styling, including hikeInfo & refs */
+#sidePanel {
+    float: left;
+    margin-top: -12px;
+    margin-left: 4px;
+    margin-right: 0px;
+    width: 25%;
+    min-height: 400px;
+    border-style: inset;
+    border-width: 2px;
+    border-color: Brown;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow:scroll;
+}
+#stats {
+	margin-top: 6px;
+	margin-bottom: 0px;
 	text-align: center;
-	vertical-align: middle;
-	padding: 5px; 
-	background-color: Gainsboro; 
-	border-style: solid;
-	border-width: 1px;
-	border-color: DarkBlue; }
-/* image & iframe alignment and pop-up caption styles */
+	color: Brown;
+	font-size: 20px;
+}
+#summary {
+	margin-top: -8px;
+	margin-bottom: 0px;
+	padding: 10px;
+}
+.sumClr {
+    color: Brown;
+}
+#addtl {
+	margin-top: -6px;
+	margin-bottom: 0px;
+	text-align: center;
+	color: Brown;
+	font-size: 20px;
+}
+#mlnk {
+	text-align: center;
+	margin-top: 0px;
+}
+#albums {
+	margin-top: -6px;
+	text-align: center;
+}
+#alnks {
+	margin-top: -12px;
+	text-align: center;
+}
+#directions {
+	margin-top: -12px;
+	text-align: center;
+}
+#dlnk {
+	margin-top: -12px;
+	text-align: center;
+}
+#scrollmsg {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+iframe {
+	float: left;
+	margin-top: -12px;
+	min-height: 200px;
+	width:74%;
+}
+#chartline {
+	float: left;
+        width: 74%;
+        background-color: white;
+}
+#hikeInfo {
+    margin-top: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #d4e8d4;
+    padding: 10px;
+    background-color: #c5d5d5; }
+fieldset {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 8px;
+    padding: 10px;
+    padding-top: 0px; }
+#fldrefs {
+    color: Teal; }
+#flddat {
+    color: Teal; }
+/* image alignment and pop-up caption styles */
 .ImgRow {
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 0px; }
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px; }
 img {
     margin-bottom: 0px; }
 iframe {
-	border: none; }
+    border: none; }
 .Solo {
-	margin-top: 60px; }
+    margin-top: 60px; }
 .captionList { 
     display: none; }
 .lnkList {
@@ -100,78 +152,68 @@ iframe {
 .capLine {
     margin: 0px;
     font-weight: bold;
-    background-color: #dadada; }
-
+    background-color: #eaeaea; }
 /* details about the hike */
 #postPhoto {
 	margin-top: 40px; }
-#hikeInfo {
-	margin-left: 10px;
-	margin-right: 10px;
-	border-style: outset;
-	border-width: 2px;
-	border-color: #d4e8d4;
-	padding: 10px;
-	background-color: #c5d5d5; }
 #trailTips {
-	margin-left: 10px;
-	margin-right: 10px;
-	margin-top: 16px;
-	padding-top: 10px;
-	padding-left: 8px;
-	padding-right: 8px;
-	padding-bottom: 10px;
-	border-style: inset;
-	border-width: 2px;
-	border-color: Brown; }
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 16px;
+    padding-top: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 10px;
+    border-style: inset;
+    border-width: 2px;
+    border-color: Brown; }
 #tipPic {
 	float: left; }
 #tipHdr {
-	display: inline;
-	left: 14px;
-	top: -20px;
-	color: Brown;
-	font-weight: bold;
-	font-size: 20px;
-	padding-left: 12px; }
+    display: inline;
+    left: 14px;
+    top: -20px;
+    color: Brown;
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 12px; }
 #tipNotes {
-	position: relative;
-	top: -14px;
-	left: 12px;
-	padding-left: 10px;
-	padding-right: 8px;
-	margin-bottom: -4px; }
-fieldset {
-	margin-left: 10px;
-	margin-right: 10px;
-	margin-bottom: 8px;
-	padding: 10px;
-	padding-top: 0px; }
-#fldrefs {
-	color: Teal; }
-#flddat {
-	color: Teal; }
+    position: relative;
+    top: -14px;
+    left: 12px;
+    padding-left: 10px;
+    padding-right: 8px;
+    margin-bottom: -4px; }
 #albumlinks {
-	color: DarkBlue;
-	margin-bottom: 12px; }
+    color: DarkBlue;
+    margin-bottom: 12px; }
 div em {
-	color: DarkGreen; }
+    color: DarkGreen; }
 #proposed {
-	position: relative;
-	top: -5px; }
+    position: relative;
+    top: -5px; }
 #proptitle {
-	color: DarkGreen; }
+    color: DarkGreen; }
 #plinks { 
-	position: relative;
-	top: -10px; }
+    position: relative;
+    top: -10px; }
 #acttitle {
-	color: DarkBlue; }
+    color: DarkBlue; }
 #alinks {
-	position: relative;
-	top: -15px; }
+    position: relative;
+    top: -15px; }
 #tips {
-	text-align: left; }
+    text-align: left; }
 #hdesc {
-	text-align: left; }
+    text-align: left; }
+#closer {
+	margin-left: 12px;
+	margin-right: 12px;
+	padding: 10px;
+	background-color: #c9d7e8;
+	border-style: outset;
+	border-width: 2px;
+	border-color: #c9d7e8;
+}
 	
 	

@@ -1,54 +1,6 @@
 body {
-	min-width: 960px;
 	font-family: arial, verdana;
-	background-color: #dadada;
-	border-style: solid;
-	border-width: 4px;
-	border-color: DarkBlue; }
-/* Placing and centering the logo image & associated text */
-#logoBlock {
-	width: 960px;
-	position: relative;
-	margin-left: auto;
-	margin-right: auto; }
-#page_title {
-	position: absolute;
-	top: -8px;
-	left: 360px;
-	font-size: 28px;
-	text-align: center;
-	color: DarkBlue; }
-#pgLogo  {
-	height: 70px;
-	width: 920px;
-	border-style: inset;
-	border-width: 3px;
-	border-color: DarkBlue;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 12px;
-	background-image: url("../images/PageTopper.jpg");
-	background-repeat: no-repeat;
-	background-attachment: scroll;
-	opacity: 0.30; }
-#logoLeft {
-	color: DarkBlue;
-	font-size: 15px;
-	font-style: italic;
-	font-weight: bold;
-	opacity: 0.8;
-	position: absolute;
-	top: 0px;
-	left: 36px; }
-#logoRight {
-	color: DarkBlue;
-	font-size: 15px;
-	font-style: italic;
-	font-weight: bold;
-	opacity: 0.8;
-	position: absolute;
-	top: 0px;
-	left: 822px; }
+	background-color: #dadada; }
 #theForm {
 	padding: 12px;
 	margin: 8px; }

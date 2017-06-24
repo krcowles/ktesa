@@ -9,15 +9,19 @@ $('#auxfrm').submit( function() {
 		$('#experts').css('display','block');
 		$('#editor').on('click', function() {
 			var editUrl = 'build/hikeEditor.php';
-			window.open(editUrl);
+			window.open(editUrl, target="_blank");
 		});
 		$('#indxpg').on('click', function() {
 			var indxurl = 'build/indexEditor.php';
-			window.open(indxurl);
+			window.open(indxurl, target="_blank");
 		});
 		$('#creator').on('click', function() {
 			var createUrl = 'build/enterHike.html';
-			window.open(createUrl);
+			window.open(createUrl, target="_blank");
+		});
+		$('#delpg').on('click', function() {
+			var deleteUrl = 'build/deletePage.php';
+			window.open(deleteUrl, target="_blank");
 		});
 		$('#hide').on('click', function() {
 			$("input[type='password']").val('');

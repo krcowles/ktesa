@@ -8,3 +8,7 @@ gv_options.measurement_tools = <?php if (isset($_GET[measurement_tools_url])) {e
 gv_options.street_view = <?php if (isset($_GET[street_view_url])) {echo $_GET[street_view_url];} else {echo "false";}?>;  // true|false: allow Google Street View on the map
 gv_options.tracklist_options.enabled = <?php if (isset($_GET[tracklist_options_enabled])) {echo $_GET[tracklist_options_enabled];} else {echo "false";}?>;  // true|false: enable or disable the tracklist altogether
 gv_options.marker_list_options.enabled = <?php if (isset($_GET[marker_list_options_enabled])) {echo $_GET[marker_list_options_enabled];} else {echo "false";}?>;  // true|false: enable or disable the marker list altogether
+gv_options.infobox_options.position = ['LEFT_TOP',52,6];  // [Google anchor name, relative x, relative y]
+var mrkrSet = false;
+var chartMrkr;
+var imageLoc = '../images/azureMrkr.ico';

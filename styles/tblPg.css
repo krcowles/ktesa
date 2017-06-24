@@ -1,70 +1,20 @@
 /* Styles for the New Mexico Hiking Adventures page */
 body {
-	width: 960px;
 	margin-left: auto;
 	margin-right: auto;
 	font-family: arial, verdana;
 	background-color: #dfdfdf; }
 a:visited {
 	color: DarkGreen; }
-.container {
-	position: relative; }
-#logoBlock {
-	width: 960px;
-	position: relative;
-	margin-left: auto;
-	margin-right: auto; }
-#page_title {
-	position: absolute;
-	top: 4px;
-	left: 132px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-	font-size: 28px;
-	color: DarkBlue; }
-#pgLogo  {
-	height: 70px;
-	width: 920px;
-	border-style: inset;
-	border-width: 3px;
-	border-color: DarkBlue;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 20px;
-	background-image: url("../images/PageTopper.jpg");
-	background-repeat: no-repeat;
-	background-attachment: scroll;
-	opacity: 0.30; }
-#logoLeft {
-	color: DarkBlue;
-	font-size: 15px;
-	font-style: italic;
-	font-weight: bold;
-	opacity: 0.8;
-	position: absolute;
-	top: 0px;
-	left: 36px; }
-#logoRight {
-	color: DarkBlue;
-	font-size: 15px;
-	font-style: italic;
-	font-weight: bold;
-	opacity: 0.8;
-	position: absolute;
-	top: 0px;
-	left: 822px; }
 img.webShift {
 	padding-left: 19px; }
 img.flckrShift {
 	padding-left: 15px; }
 img.expShift {
 	padding-left: 24px; }
-div #refTbl table {
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 30px; }
 table {
+        margin-left: auto;
+        margin-right: auto;
 	font-size: 14px;
 	text-align: left;
 	margin-top: 5px;
