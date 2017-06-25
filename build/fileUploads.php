@@ -5,7 +5,18 @@ $fexists2 = ' has been previously saved on the server; ' .
             'Check here to overwrite: ';
 $fexists3 = '</em></p>' . "\n";
 $uploads = "tmp/"; 
-$datfileArray = [];  # prop & act data file names
+/*
+ * Since file info for the proposed and actual data sections (in 'GPS Maps & 
+ * Data' on the actual hike page) is not saved directly in the database (it's 
+ * saved in the database string arrays only), the save routine will need to know
+ * which files to store on the site, and and which, if any, have already been
+ * stored. The following array starts out with non-empty values, which will be
+ * overwritten if files are present. The data is in trios: file name,
+ * file type (gpx or map), and 0 or 1 -> 1 indicating that the file has already
+ * been uploaded/saved elsewhere. The array is imploded and passed as a string
+ * via hidden inputs through to the saveHike.php page. There are four candidates.
+ */
+$datfileArray = array('x','x',0,'x','x',0,'x','x',0,'x','x',0); 
 /* Uploaded file data looks for presence / absence of files and responds
  * accordingly. The data type for each file is also checked for correctness.
  * If a filename is found corresponding to an existing host file, the user
@@ -77,7 +88,7 @@ $trkcmd = $ktesaDir . 'tools/mktrk.sh -f ' . $cwd . '/' . $uploads .
         'gpx/' . $hikeGpx . ' -p ' . $cwd . '/' . $uploads . 'json';
 $json = exec($trkcmd);
 if ( preg_match("/DONE/",$json) === 1 ) {
-    echo '<p style="margin-left:10px;">Track file created from GPX and saved</p>';
+    # echo '<p style="margin-left:10px;">Track file created from GPX and saved</p>';
 } else {
     echo '<p style="margin-left:10px;">Track file creation failed: Please ' .
         'return to the hike Editor, un-check the box, and upload a track file' .
@@ -91,7 +102,7 @@ if ( file_exists($JSONloc) ) {
      '<input id="owtrk" type="checkbox" name="trkow" />' . $fexists3;
     $dupJSON = 'YES';
 }
-$tmpLoc = $uploads . $hikeJSON;
+$tmpLoc = $uploads . 'json/' . $hikeJSON;
 $jsonSize = filesize($tmpLoc);
 echo '<li>Created json file: ' . $hikeJSON . '</li>' . "\n";
 echo '<li>File size: ' . $jsonSize . '</li>' . "\n";
@@ -171,12 +182,10 @@ $noup = '<p style="color:brown;">This file has been previously uploaded; ' .
 echo '<h3 style="text-indent:8px">Uploaded Proposed Data User File1 Info:</h3>' . "\n";
 $pdatf1 = $_FILES['propmap']['tmp_name'];
 $pfile1 = basename($_FILES['propmap']['name']);
-array_push($datfileArray,$pfile1);
 $pf1Size = filesize($pdatf1);
 $pf1Type = $_FILES['propmap']['type'];
 $pf1Stat = $_FILES['propmap']['error'];
 $pf1loc = filter_input(INPUT_POST,'f1');
-array_push($datfileArray,$pf1loc);
 $pf1site = '../' . $pf1loc . '/' . $pfile1;
 if ($pf1loc === 'maps') {
     $ftype = "/html/";
@@ -185,6 +194,8 @@ if ($pf1loc === 'maps') {
 }
 $fupload = $uploads . $pf1loc . '/' . $pfile1;
 if ( $pfile1 !== '') {
+    $datfileArray[0] = $pfile1;
+    $datfileArray[1] = $pf1loc;
     if ( preg_match($ftype,$pf1Type) === 0 ) {
         $msgout = '<p style="margin-left:20px;color:red;"><strong>Incorrect'
             . ' file type for [' . $pf1loc . '] ' . $pfile1 . 
@@ -194,10 +205,10 @@ if ( $pfile1 !== '') {
     # Check against previously uploaded files
     if ( file_exists($fupload) ) {
     	echo $noup;
-        array_push($datfileArray,1);
+        $datfileArray[2] = 1;
     } else {
         # Check agains existing site files
-        array_push($datfileArray,0);
+        $datfileArray[2] = 0;
         if ( file_exists($pf1site) ) {
             echo $fexists1 . $pfile1 . $fexists2. 
                 '<input id="owpf1" type="checkbox" name="pf1ow" />' . $fexists3;
@@ -224,12 +235,10 @@ echo '</ul>' . "\n";
 echo '<h3 style="text-indent:8px">Uploaded Proposed Data User File2 Info:</h3>' . "\n";
 $pdatf2 = $_FILES['propgpx']['tmp_name'];
 $pfile2 = basename($_FILES['propgpx']['name']);
-array_push($datfileArray,$pfile2);
 $pf2Size = filesize($pdatf2);
 $pf2Type = $_FILES['propgpx']['type'];
 $pf2Stat = $_FILES['propgpx']['error'];
 $pf2loc = filter_input(INPUT_POST,'f2');
-array_push($datfileArray,$pf2loc);
 $pf2site = '../' . $pf2loc . '/' . $pfile2;
 if ($pf2loc === 'maps') {
     $ftype = "/html/";
@@ -238,6 +247,8 @@ if ($pf2loc === 'maps') {
 }
 $fupload = $uploads . $pf2loc . '/' . $pfile2;
 if ( $pfile2 !== '') {
+    $datfileArray[3] = $pfile2;
+    $datfileArray[4] = $pf2loc;
     if ( preg_match($ftype,$pf2Type) === 0 ) {
         $msgout = '<p style="margin-left:20px;color:red;"><strong>Incorrect'
             . ' file type for [' . $pf2loc . '] ' . $pfile2 . 
@@ -247,9 +258,9 @@ if ( $pfile2 !== '') {
     # Check against previously uploaded files
     if ( file_exists($fupload) ) {
     	echo $noup;
-        array_push($datfileArray,1);
+        $datfileArray[5] = 1;
     } else {
-        array_push($datfileArray,0);
+        $datfileArray[5] = 0;
         # Check agains existing site files
         if ( file_exists($pf2site) ) {
             echo $fexists1 . $pfile2 . $fexists2. 
@@ -277,12 +288,10 @@ echo '</ul>' . "\n";
 echo '<h3 style="text-indent:8px">Uploaded Actual Data User File1 Info:</h3>' . "\n";
 $adatf1 = $_FILES['actmap']['tmp_name'];
 $afile1 = basename($_FILES['actmap']['name']);
-array_push($datfileArray,$afile1);
 $af1Size = filesize($adatf1);
 $af1Type = $_FILES['actmap']['type'];
 $af1Stat = $_FILES['actmap']['error'];
 $af1loc = filter_input(INPUT_POST,'f3');
-array_push($datfileArray,$af1loc);
 $af1site = '../' . $af1loc . '/' . $afile1;
 if ($af1loc === 'maps') {
     $ftype = "/html/";
@@ -291,6 +300,8 @@ if ($af1loc === 'maps') {
 }
 $fupload = $uploads . $af1loc . '/' . $afile1;
 if ( $afile1 !== '') {
+    $datfileArray[6] = $afile1;
+    $datfileArray[7] = $af1loc;
     if ( preg_match($ftype,$af1Type) === 0 ) {
         $msgout = '<p style="margin-left:20px;color:red;"><strong>Incorrect'
             . ' file type for [' . $af1loc . '] ' . $afile1 . 
@@ -300,9 +311,9 @@ if ( $afile1 !== '') {
     # Check against previously uploaded files
     if ( file_exists($fupload) ) {
     	echo $noup;
-        array_push($datfileArray,1);
+        $datfileArray[8] = 1;
     } else {
-        array_push($datfileArray,0);
+        $datfileArray[8] = 0;
         # Check agains existing site files
         if ( file_exists($af1site) ) {
             echo $fexists1 . $afile1 . $fexists2. 
@@ -330,12 +341,10 @@ echo '</ul>' . "\n";
 echo '<h3 style="text-indent:8px">Uploaded Actual Data User File2 Info:</h3>' . "\n";
 $adatf2 = $_FILES['actgpx']['tmp_name'];
 $afile2 = basename($_FILES['actgpx']['name']);
-array_push($datfileArray,$afile2);
 $af2Size = filesize($adatf2);
 $af2Type = $_FILES['actgpx']['type'];
 $af2Stat = $_FILES['actgpx']['error'];
 $af2loc = filter_input(INPUT_POST,'f4');
-array_push($datfileArray,$af2loc);
 $af2site = '../' . $af2loc . '/' . $afile2;
 if ($af2loc === 'maps') {
     $ftype = "/html/";
@@ -344,6 +353,8 @@ if ($af2loc === 'maps') {
 }
 $fupload = $uploads . $af2loc . '/' . $afile2;
 if ( $afile2 !== '') {
+    $datfileArray[9] = $afile2;
+    $datfileArray[10] = $af2loc;
     if ( preg_match($ftype,$af2Type) === 0 ) {
         $msgout = '<p style="margin-left:20px;color:red;"><strong>Incorrect'
             . ' file type for [' . $af2loc . '] ' . $afile2 . 
@@ -353,9 +364,9 @@ if ( $afile2 !== '') {
     # Check against previously uploaded files
     if ( file_exists($fupload) ) {
     	echo $noup;
-        array_push($datfileArray,1);
+        $datfileArray[11] = 1;
     } else {
-        array_push($datfileArray,0);
+        $datfileArray[11] = 0;
         # Check agains existing site files
         if ( file_exists($af2site) ) {
             echo $fexists1 . $afile2 . $fexists2. 

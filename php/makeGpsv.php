@@ -37,7 +37,6 @@ function distance($lat1, $lon1, $lat2, $lon2) {
 # Error messages:
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
-$mapmsg = $intro . 'Could not open tmp map file - contact Site Master';
 $trkmsg = $intro . 'Could not open track file: ';
 $tsvmsg = $intro . 'Could not open tsv file ';
 
@@ -46,23 +45,22 @@ $noOfTrks = 1;  // for a single hike page, this is a reasonable constraint
 $tno = 1;
 
 # Using variables established in main: $hikeIndexNo, $hikeTitle, $gpsvFile, $jsonFile
-# gpsvMap ini:
-$extLoc = strrpos($gpsvFile,'.');
-$gpsvMap = substr($gpsvFile,0,$extLoc);
-
-# holding place for page's hike map
-$tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
-if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
-    die ($mapmsg);
-}
 # Files: tsv  file
-$gpsvPath = '../gpsv/' . $gpsvFile;
+if (isset($building)) {
+    $gpsvPath = 'tmp/gpsv/' . $gpsvFile;
+} else {
+    $gpsvPath = '../gpsv/' . $gpsvFile;
+}
 $gpsvData = file($gpsvPath);
 if ($gpsvData === false) {
     die ($tsvmsg . $gpsvPath . $close);
 } 
 # Files: JSON track file
-$trkPath = '../json/' . $jsonFile;
+if (isset($building)) {
+    $trkPath = 'tmp/json/' . $jsonFile;
+} else {
+    $trkPath = '../json/' . $jsonFile;
+}
 if (($track = fopen($trkPath,"r")) === false) {
     die ($trkmsg . $trkPath . $close );
 }
@@ -405,6 +403,4 @@ $html .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1&form=g
 $html .= '</script>' . "\n";  
 $html .= '</body>' . "\n";
 $html .= '</html>' . "\n";
-fputs($mapHandle,$html);
-fclose($mapHandle);
 ?>

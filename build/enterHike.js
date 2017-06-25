@@ -79,9 +79,9 @@ function useIndexPg() {
     $('#l_add1').css('color','Black');
     $('#pgTitleText').text(msgA);
     $('#spImg').text(msgB);
-    $('.indxFile').toggle();
-    $('#latlng').toggle();
-    $('#refdat').toggle();
+    $('.indxFile').css('display','none');
+    $('#latlng').css('display','block');
+    $('#refdat').css('display','none');
     $('#l_add1').css('color','Brown');
     $('#l_add1').text(msgC);
     $('.honly').css('display','none');
@@ -91,14 +91,14 @@ function useStdPg() {
     msgA = "Hike Name (As it will appear in the table & window tab): ";
     $('.notVC').css('color','Black');
     msgB = "Additional Images - optional";
-    msgC = "Other image (pop-up captions not provided at this time): [resides in images/] ";
-    $('.indxFile').toggle();
-    $('#latlng').toggle();
-    $('#refdat').toggle();
+    msgC = "Other image (pop-up captions not provided at this time): &nbsp;";
+    $('.indxFile').css('display','block');
+    $('#latlng').css('display','none');
+    $('#refdat').css('display','block');
     $('#l_add1').css('color','Black');
     $('#pgTitleText').text(msgA);
     $('#spImg').text(msgB);
-    $('#l_add1').text(msgC);
+    $('#l_add1').html(msgC);
     $('.honly').css('display','block');
 }
 /* END OF page-creation type */
