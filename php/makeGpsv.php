@@ -37,89 +37,106 @@ function distance($lat1, $lon1, $lat2, $lon2) {
 # Error messages:
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
-$mapmsg = $intro . 'Could not open tmp map file - contact Site Master';
 $trkmsg = $intro . 'Could not open track file: ';
-$tsvmsg = $intro . 'Could not open tsv file ';
+$tsvmsg = $intro . 'Could not open tsv file: ';
+$xmlmsg = $intro . 'Could not parse XML in gpx file: '; 
 
 # Settings:
-$noOfTrks = 1;  // for a single hike page, this is a reasonable constraint
+$noOfTrks = 1;  # for a single hike page, this is a reasonable constraint, but
+# perhaps other pages will need to set this value
 $tno = 1;
 
-# Using variables established in main: $hikeIndexNo, $hikeTitle, $gpsvFile, $jsonFile
-# gpsvMap ini:
-$extLoc = strrpos($gpsvFile,'.');
-$gpsvMap = substr($gpsvFile,0,$extLoc);
+# NOTE: Currently using variables established in hikePageTemplate.php: 
+#   $hikeTitle, $gpsvFile, $gpxfile - ultimately, switch to database technique
+# Some titles may use quotations - provide for that case:
+$mapTitle = str_replace("'","\\'",$hikeTitle);
+$mapTitle = str_replace('"','\\"',$mapTitle);
 
-# holding place for page's hike map
-$tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
-if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
-    die ($mapmsg);
-}
 # Files: tsv  file
 $gpsvPath = '../gpsv/' . $gpsvFile;
 $gpsvData = file($gpsvPath);
 if ($gpsvData === false) {
     die ($tsvmsg . $gpsvPath . $close);
 } 
-# Files: JSON track file
-$trkPath = '../json/' . $jsonFile;
-if (($track = fopen($trkPath,"r")) === false) {
-    die ($trkmsg . $trkPath . $close );
+# Files: GPX track file
+$gpxPath = '../gpx/' . $gpxfile;
+$gpxdat = simplexml_load_file($gpxPath);
+if ($gpxdat === false) {
+    die ($xmlmsg . $gpxPath . $close);
 }
-/* 
- * Getting track data from track.json and formatting for gpsv:
+
+/*
+ * Getting track data from gpx file and formatting for gpsv:
  */
-$jlats = [];
-$jlons = [];
-$jindx = 0;
-while ( ($jsonData = fgets($track)) !== false ) {
-    $latstrt = strpos($jsonData,":") + 2;
-    $latend = strpos($jsonData,",");
-    $latlgth = $latend - $latstrt;
-    $jlats[$jindx] = substr($jsonData,$latstrt,$latlgth);
-    $lonstrt = strpos($jsonData,"lng") + 6;
-    $lonend = strpos($jsonData," ",$lonstrt);
-    $lonlgth = $lonend - $lonstrt;
-    $jlons[$jindx] = substr($jsonData,$lonstrt,$lonlgth);
-    $jindx++;
+$gpxlats = [];
+$gpxlons = [];
+$gpxelev = []; // this will be used for elevation charts on the hike page
+/* 
+ * In some cases, e.g. proposed routes, there may be more than one trkseg;
+ * While the code does not yet process this case, some hooks are provided
+ * to ease the transition: could there also be > 1 trk?
+ */
+$segcnt = 0;
+$trksPerSeg = [];
+foreach ($gpxdat->trk->trkseg as $trkinfo) {
+    $segcnt++;
+    array_push($trksPerSeg,$trkinfo->count());
 }
-fclose($track);
-$north = $jlats[0];
+$plat = 0;
+$plng = 0;
+foreach($gpxdat->trk->trkseg as $trackdat) {
+    foreach ($trackdat->trkpt as $datum) {
+        if ( !($datum['lat'] === $plat && $datum['lon'] === $plng) ) {
+            $plat = $datum['lat'];
+            $plng = $datum['lon'];
+            array_push($gpxlats,(float)$plat);
+            array_push($gpxlons,(float)$plng);
+            $meters = $datum->ele;
+            $feet = round(3.28084 * $meters,1);
+            array_push($gpxelev,$feet);
+        }
+    }
+}
+$jsElevation = json_encode($gpxelev); # future use in elevation chart creation?
+$north = $gpxlats[0];
 $south = $north;
-$east = $jlons[0];
+$east = $gpxlons[0];
 $west = $east;
 $seg = '[' . $north . ',' . $east . ']';
 $hikeLgth = 0;
-$tickMrk = round(0.3,1);
+$tickMrk = 0.30;
 $ticks = [];
-for ($i=1; $i<count($jlons)-1; $i++) {
-    if ($jlats[$i] > $north) {
-        $north = $jlats[$i];
+for ($i=1; $i<count($gpxlons)-1; $i++) {
+    if ($gpxlats[$i] > $north) {
+        $north = $gpxlats[$i];
     }
-    if ($jlats[$i] < $south) {
-        $south = $jlats[$i];
+    if ($i === 55) {
+        $msg = "lat: " . $gpxlats[$i] . ', north: ' . $north;
     }
-    if ($jlons[$i] < $west) {
-        $west = $jlons[$i];
+    if ($gpxlats[$i] < $south) {
+        $south = $gpxlats[$i];
     }
-    if ($jlons[$i] > $east) {
-        $east = $jlons[$i];
+    if ($gpxlons[$i] < $west) {
+        $west = $gpxlons[$i];
     }
-    $seg .= ',[' . $jlats[$i] . ',' . $jlons[$i] . ']';
-    $parms = distance($jlats[$i-1],$jlons[$i-1],$jlats[$i],$jlons[$i]);
+    if ($gpxlons[$i] > $east) {
+        $east = $gpxlons[$i];
+    }
+    $seg .= ',[' . $gpxlats[$i] . ',' . $gpxlons[$i] . ']';
+    $parms = distance($gpxlats[$i-1],$gpxlons[$i-1],$gpxlats[$i],$gpxlons[$i]);
     $hikeLgth += $parms[0];
     if ($hikeLgth > $tickMrk) {
-        $tick = "GV_Draw_Marker({lat:" . $jlats[$i] . ",lon:" . $jlons[$i] .
+        $tick = "GV_Draw_Marker({lat:" . $gpxlats[$i] . ",lon:" . $gpxlons[$i] .
             ",name:'" . $tickMrk . " mi',desc:'',color:trk[" . $tno . 
-            "].info.color,icon:'tickmark',type:'tickmark',folder:'" . $hikeTitle .
+            "].info.color,icon:'tickmark',type:'tickmark',folder:'" . $mapTitle .
             " [tickmarks]',rotation:" . $parms[1] . ",track_number:" . $tno . ",dd:false});";
         array_push($ticks,$tick);
-        $tickMrk += round(0.3,1);
+        $tickMrk += 0.30;
     }
 }
 $clat = $south + ($north - $south)/2;
 $clon = $west + ($east - $west)/2;
-$lastpoints = '[' . $jlats[$jindx-1] . ',' . $jlons[$jindx-1] . ']';
+#$lastpoints = '[' . $gpxlats[$gpxindx-1] . ',' . $gpxlons[$gpxindx-1] . ']';
 /*
  * Form the photo links from the gpsvData
  */
@@ -383,11 +400,11 @@ $html .= '    function GV_Map() {' . "\n";
 $html .= '        GV_Setup_Map();' . "\n";
 $html .= '        // Track #1' . "\n";
 $html .= '        t = 1; trk[t] = {info:[],segments:[]};' . "\n";
-$html .= "        trk[t].info.name = '" . $hikeTitle . "'; trk[t].info.desc = ''; trk[t].info.clickable = true;" . "\n";
+$html .= "        trk[t].info.name = '" . $mapTitle . "'; trk[t].info.desc = ''; trk[t].info.clickable = true;" . "\n";
 $html .= "        trk[t].info.color = '#e60000'; trk[t].info.width = 3; trk[t].info.opacity = 0.9; trk[t].info.hidden = false;" . "\n";
 $html .= "        trk[t].info.outline_color = 'black'; trk[t].info.outline_width = 0; trk[t].info.fill_color = '#e60000'; trk[t].info.fill_opacity = 0;" . "\n";
 $html .= '        trk[t].segments.push({ points:[' . $seg .  '] });' . "\n";
-$html .= '        trk[t].segments.push({ points:[' . $lastpoints .  '] });' . "\n";
+#$html .= '        trk[t].segments.push({ points:[' . $lastpoints .  '] });' . "\n";
 $html .= '        GV_Draw_Track(t);' . "\n";
 $html .= "        t = 1; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:trk[t].info.desc,color:trk[t].info.color,number:t});" . "\n";
        
@@ -405,6 +422,4 @@ $html .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1&form=g
 $html .= '</script>' . "\n";  
 $html .= '</body>' . "\n";
 $html .= '</html>' . "\n";
-fputs($mapHandle,$html);
-fclose($mapHandle);
 ?>
