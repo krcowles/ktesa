@@ -73,7 +73,7 @@ var getXInc = function() {
         } else {
             var incr = 0.25;
         }
-        for (var j=0; j<50; j++) {
+        for (var j=0; j<lastWP; j++) {
             if (j * incr > lastX) {
                 var noOfRegIncs = j;
                 break;
