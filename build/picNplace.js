@@ -3,8 +3,13 @@
  * to update row information whenever changes are made, and the page hasn't
  * been loaded yet, the $rows object is established after a brief timeout.
  */
-var $rows; // must be global
+// Functions require some global vars
+var hist = " -History: ";
+var $rows;
 var $captions;
+var orgSrcOrder = []
+var orgLinks = [];
+var links = []; // the dynamic version of orgLinks
 setTimeout(rowSetup, 1200);
 function rowSetup() {
     $rows = $('div[id^="row"]');
@@ -14,6 +19,10 @@ function rowSetup() {
         rowid = '#r' + rowno;
         var guts = $(this).html();
         $(rowid).val(guts);  // these are the rows passed via php
+        var $orgImgs = $(this).children();
+        $orgImgs.each( function() {
+           orgSrcOrder.push($(this).attr('src')); 
+        });
     });
     captureCaps();
 }
@@ -37,7 +46,6 @@ function captureCaps() {
                     }
                 }    
             });
-            // if (rid === undefined) { window.alert("caption not located"); }
         });
         // update rid with new html
         var img2chg = '#pic' + cid;
@@ -49,6 +57,21 @@ function captureCaps() {
         $(pageRow).val(rowhtml);
     });   
 }
+setTimeout(orgLinkList, 1000);
+/*
+ * Unexpected behavior: when setting a new variable = existing array, any
+ * changes made to the new var are made to the old one as well... Hence, 
+ * it became necessary to 'read in' one array into another so as to establish
+ * independent behaviors for the two...
+ */
+function orgLinkList() {
+    var linkStr = $('#plinks').text();
+    orgLinks = linkStr.split("^");  // this array remains untouched
+    orgLinks.shift();  // strip off the count to establish 1-1 corr. w/orgSrcOrder
+    for (var i=0; i<orgLinks.length; i++) {
+        links[i] = orgLinks[i];
+    }
+}
 // the following vars are established to mimic the constants used in editDB.php
 var alpha = 30;
 var beta = 10;
@@ -59,6 +82,7 @@ var dropRow;
 var draggedImg;  // pic, noncap pic, or iframe
 var draggedInsert;
 var draggedCap;  // textarea or text div
+var draggedLink; // corresponding link to photo
 var targetInsert; // global
 var maxRow = 850;  // current row size for images (coordinated with editDB.php)
 var dragBorder = 10;
@@ -86,6 +110,7 @@ function drag(ev) {
 function reduceImgCnt(imgId) {	
     // ------ detach image:
     var imgTargId = '#' + imgId;
+    // newpic is mostly broken right now...
     if (imgId === 'newpic') { // for an externally sourced image
         dragRow = -1;  // indicates not from a row (not used at this time)
         var xwidth = parseInt($('#newpic').width());
@@ -123,10 +148,20 @@ function reduceImgCnt(imgId) {
         var $targRowChildren = $(rowId).children();
         var targCnt = 0;
         var nodeNo;
+        // find the image id and detach the image
         $targRowChildren.each( function() {
             if (this.id === imgId) {
                 draggedImg = $(this).detach(); // detach keeps a copy out of DOM
                 nodeNo = targCnt;
+                // find corresponding photo link:
+                var matchSrc = $(this).attr('src');
+                draggedLink = 'xyz';  // to check for a non-captioned/no-link image
+                for (var j=0; j<orgSrcOrder.length; j++) {
+                    if (matchSrc === orgSrcOrder[j]) {
+                        draggedLink = orgLinks[j];
+                        break;
+                    }
+                }
             }
             targCnt++;
         });
@@ -152,7 +187,23 @@ function reduceImgCnt(imgId) {
         // ------ re-write the row html to eliminate this image
         var newrow = $rows.eq(dragRow).html();
         var rid = '#r' + dragRow;
-        $(rid).val(newrow);         
+        $(rid).val(newrow);   
+        // ------ re-write the link array to eliminate this link
+        if (draggedLink !== 'xyz') {  // only modify for imgs with links
+            for (var j=0; j<links.length; j++) {
+                if (draggedLink === links[j]) {
+                    links.splice(j,1);
+                    break;
+                }
+            }
+            linkCnt = links.length;
+            links.unshift(linkCnt);
+            var linkStr = links.join("^");
+            links.shift();  // return to 'links-only' state
+            $('#elink').val(linkStr);
+            //hist += "drag " + draggedLink + ", loc ";
+        }
+        //if (linkCnt !== 8) { window.alert("Delete count off: " + linkCnt); }
     }
 }
 /*
@@ -160,7 +211,8 @@ function reduceImgCnt(imgId) {
  *  The event processor identifies the id of the target (insert at which the drop is
  *  being processed) and stores it in the global variable 'targetInsert'
  *  ---------------------------------------------------- */
-function allowDrop(ev) {
+function allowDrop(ev) {   // spedified by the insert 'ondragover' attribute
+    // NOTE: This event fires every 350 ms when a drag starts...
     ev.preventDefault();
     targetInsert = ev.target.id;
 }
@@ -193,6 +245,7 @@ function increaseImgCnt(targ) {
     var dropInsChild;
     var dropCapDiv;
     var dropCapChild;
+    var lnkDropLoc;
     var currWidth = 0;
     var diWd;
     var diHt;
@@ -283,6 +336,7 @@ function increaseImgCnt(targ) {
             dropCapChild = dropCapDiv.firstChild;
             dropCapDiv.insertBefore(draggedCap[0],dropCapChild);
         }
+        lnkDropLoc = 0;
     } else { 
         // insert image:
         var rowChildren = dropParentNode.childNodes;
@@ -297,6 +351,7 @@ function increaseImgCnt(targ) {
         var dropCapChildren = dropCapDiv.childNodes;
         dropCapChild = dropCapChildren[childNodeNo];
         dropCapDiv.insertBefore(draggedCap[0],dropCapChild);
+        lnkDropLoc = childNodeNo;
     }  // end of if-else
     if (capType > 99) {
         $captions.off('change');
@@ -307,6 +362,21 @@ function increaseImgCnt(targ) {
     var newhtml = $rows.eq(dropRow).html();
     var rid = '#r' + dropRow;
     $(rid).val(newhtml);
+    // update the links, only if a photo w/link:
+    if (draggedLink !== 'xyz') {
+        for (var k=0; k<dropRow; k++) {
+            lnkDropLoc += $rows[k].childElementCount;
+        }
+        links.splice(lnkDropLoc,0,draggedLink);
+        linkCnt = links.length;
+        if (linkCnt !== 9) { window.alert("Drop count off: " + linkCnt); }
+        links.unshift(linkCnt);  // put the new count in
+        var linkStr = links.join("^");
+        links.shift();  // restore to original condition
+        $('#elink').val(linkStr);
+        //hist += lnkDropLoc + ' newstring: ' + linkStr;
+        //window.alert(hist);
+    } 
 }
 /*
  *  -------------------  fitToNewRow -------------------

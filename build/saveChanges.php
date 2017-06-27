@@ -164,7 +164,7 @@
     $dbCaps = implode("^",$capts);
     $info[35] = $noOfCaps . "^" . $dbCaps;
      */
-
+    $info[36] = filter_input(INPUT_POST,'editedLinks');
     $htips = filter_input(INPUT_POST,'tips');
     if (substr($htips,0,15) !== '[NO TIPS FOUND]') {
             $info[37] = $htips;
