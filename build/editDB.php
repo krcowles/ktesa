@@ -196,16 +196,16 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <textarea id="murl" name="gdirs"><?php echo $info[25];?></textarea><br /><br />
 <div id="getimg">The following images may be re-ordered by using drag &amp; drop. 
     The drop must occur on any insertion point (purple icon w/down arrow). 
-    The image can be deleted by dropping elsewhere. To add a new image, specify
-    the url in the txt box. The image will appear below. Then drag the image to
-    the desired location. NOTE: The url must be a web-based address not a local
-    machine image.<br /><br />
+    The image can be deleted by dropping elsewhere. <!-- NOT WORKING: To add 
+    a new image, specify the url in the txt box. The image will appear below. 
+    Then drag the image to the desired location. NOTE: The url must be a 
+    web-based address not a local machine image.<br /><br />
     <input id="picurl" type="text" size="100" />&nbsp;&nbsp;Check the box to upload: 
     <input id="loadimg" type="checkbox" name="ldimg" value="NO" /><br /><br />
-</div><br />
-<!-- for externally sourced images: -->
+</div><br /> 
 <div id="xInsert" style="display:none;"></div>
-<div id="xCap" style="display:none;"></div>
+<div id="xCap" style="display:none;"></div> -->
+    
 <!-- row areas to pass to saveChanges.php -->
 <input id="r0" type="hidden" name="row0" value="" />
 <input id="r1" type="hidden" name="row1" value="" />
@@ -314,6 +314,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     echo '<br />';
     echo '<p>To add another row (6 max allowed), check this box: ' .
         '<input id="addbox" type="checkbox" name="nocall" /></p>';
+    $linkData = $info[36];
     if ($info[37] !== '') {
         echo '<p>Tips Text: </p>';
         echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $info[37] . '</textarea><br />';
@@ -322,6 +323,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
            '[NO TIPS FOUND]' . '</textarea><br />';
     }
 ?>
+<p id="plinks" style="display:none;"><?php echo $linkData;?></p>
+<input id="oldlinks" type="hidden" name="orgLinks" value="<?php echo $linkData;?>" />
+<input id="elink" type="hidden" name="editedLinks" value="<?php echo $linkData;?>" />
 <p>Hike Information:</p>
 <textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $info[38];?></textarea>
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, delete and add a new one)</h3>
