@@ -70,8 +70,12 @@ var getXInc = function() {
         if (lastX <= 2) {
             var incr = 0.1;
             lastX = lastX.toFixed(1);
+        } else if (lastX <= 5) {
+            var incr = 0.5;
+            lastX = lastX.toFixed(1);
         } else {
-            var incr = 0.25;
+            var incr = 1.0;
+            lastX = lastX.toFixed(1);
         }
         for (var j=0; j<lastWP; j++) {
             if (j * incr > lastX) {
