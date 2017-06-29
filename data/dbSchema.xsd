@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<xs:schema 
+    targetNamespace="https://www.w3schools.com"
+    attributeFormDefault="unqualified"
+    elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="row">
+    <xs:complexType>
+        <xs:sequence>
+          <xs:element type="xs:string" name="Indx_No" use="required"/>
+          <xs:element type="xs:string" name="Hike_Name" use="required"/>
+          <xs:element type="xs:string" name="Locale" use="required"/>
+          <xs:element name="Marker" type="markerStyle" use="required">
+            <xs:simpleType name="markerStyle">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Visitor Ctr"/>
+                    <xs:enumeration value="At VC"/>
+                    <xs:enumeration value="Cluster"/>
+                    <xs:enumeration value="Normal"/>
+                </xs:restriction>
+            <xs:/simpleType>
+          </xs:element>
+          <xs:element type="xs:string" name="Cluster_Str"/>
+          <xs:element type="xs:string" name="Clus_Grp"/>
+          <xs:element name="Type" type="hikeType">
+            <xs:simpleType name="hikeType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Out-and-back"/>
+                    <xs:enumeration value="Loop"/>
+                    <xs:enumeration value="Two-Cars"/>
+                </xs:restriction>
+            </xs:simpleType>
+          </xs:element> 
+          <xs:element type="xs:decimal" name="Miles"/>
+          <xs:element type="xs:integer" name="Feet"/>
+          <xs:element type="xs:string" name="Difficulty"/>
+          <xs:element type="xs:string" name="Facilities"/>
+          <xs:element type="xs:string" name="WOW"/>
+          <xs:element type="xs:string" name="Seasons"/>
+          <xs:element type="xs:string" name="Exposure"/>
+          <xs:element type="xs:string" name="TSV_File"/>
+          <xs:element type="xs:string" name="Geomap"/>
+          <xs:element type="xs:string" name="Elev_Chart"/>
+          <xs:element type="xs:string" name="GPX_File" use="required"/>
+          <xs:element type="xs:string" name="JSON_File"/>
+          <xs:element type="xs:decimal" name="Latitude" use="required"/>
+          <xs:element type="xs:decimal" name="Longitude" use="required"/>
+          <xs:element type="xs:string" name="Add_Image1"/>
+          <xs:element type="xs:string" name="Add_Image2"/>
+          <xs:element type="xs:string" name="Main_Photo_URL"/>
+          <xs:element type="xs:string" name="Sec_Photo_URL"/>
+          <xs:element type="xs:string" name="Directions" use="required"/>
+          <xs:element type="xs:string" name="Tips"/>
+          <xs:element type="xs:string" name="html_Page"/>
+          <xs:element type="xs:string" name="Clus_tooltip"/>
+          <xs:complexType name="PicRow0">
+              <xs:sequence>
+                <xs:element name="rowHt" type="xs:integer" minOccurs=0 maxOccurs=1/>
+                <xs:complexType name="PicElement" minOccurs=1 maxOccurs=10/>>
+                    <xs:element name="picWidth" minOccurs=1 maxOccurs=1/>
+                    <xs:element name="picUrl" minOccurs=1 maxOccurs=1/>
+                    <xs:element name="picCap" minOccurs=0 maxOccurs=1/>
+                </xs:complexType>
+              </xs:sequence>
+          </xs:complexType>
+          <xs:element type="xs:string" name="Row1"/>
+          <xs:element type="xs:string" name="Row2"/>
+          <xs:element type="xs:string" name="Row3"/>
+          <xs:element type="xs:string" name="Row4"/>
+          <xs:element type="xs:string" name="Row5"/>
+          <xs:element type="xs:string" name="Captions"/>
+          <xs:element type="xs:string" name="PhotoLinks"/>
+          <xs:element type="xs:string" name="Tips_Txt"/>
+          <xs:element type="xs:string" name="HikeInfo"/>
+          <xs:element type="xs:string" name="Refs"/>
+          <xs:element type="xs:string" name="Prop_Data"/>
+          <xs:element type="xs:string" name="Act_Data"/>
+        </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+
+
