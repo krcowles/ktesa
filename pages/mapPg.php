@@ -73,7 +73,7 @@ $mstyle = '<style type="text/css">' . "\n" .
                 echo 'tblPg.css"';
         } else {
                 echo 'mapPg.css"';
-        }?> type="text/css" rel="stylesheet" />
+        }?>" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery-1.12.1.js"></script>
 </head>
 

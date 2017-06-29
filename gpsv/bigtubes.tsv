@@ -1,5 +1,5 @@
-desc	name	album-link	date	n-size
-Trench	Huge lava trench	https://www.flickr.com/photos/139088815@N08/26687870873/in/album-72157666437314513	2016:05:23 13:45:35	https://c2.staticflickr.com/8/7551/26687870873_824ac8b82d_n.jpg
-MonotoneLava	It looks the same in every direction	https://www.flickr.com/photos/139088815@N08/27018773420/in/album-72157666437314513	2005:06:29 15:50:20	https://c5.staticflickr.com/8/7545/27018773420_a163e91f6b_n.jpg
-LavaBridge	Another unique lava feature	https://www.flickr.com/photos/139088815@N08/26687877053/in/album-72157666437314513	2005:06:29 16:44:21	https://c6.staticflickr.com/8/7287/26687877053_de5b39f694_n.jpg
-CollapsedTube	When lava collapses...	https://www.flickr.com/photos/139088815@N08/27224034961/in/album-72157666437314513	2016:05:23 13:30:28	https://c2.staticflickr.com/8/7290/27224034961_d41aed206f_n.jpg
+desc	name	Latitude	Longitude	thumbnail	url	date	n-size
+Trench	Huge lava trench	34.94365	-108.0999167	https://c2.staticflickr.com/8/7551/26687870873_824ac8b82d_n.jpg	https://www.flickr.com/photos/139088815@N08/26687870873/in/album-72157666437314513	2016:05:23 13:45:35	https://c2.staticflickr.com/8/7551/26687870873_824ac8b82d_n.jpg
+MonotoneLava	It looks the same in every direction	34.9446	-108.105733	https://c5.staticflickr.com/8/7545/27018773420_a163e91f6b_n.jpg	https://www.flickr.com/photos/139088815@N08/27018773420/in/album-72157666437314513	2005:06:29 15:50:20	https://c5.staticflickr.com/8/7545/27018773420_a163e91f6b_n.jpg
+LavaBridge	Another unique lava feature	34.94535	-108.1012667	https://c6.staticflickr.com/8/7287/26687877053_de5b39f694_n.jpg	https://www.flickr.com/photos/139088815@N08/26687877053/in/album-72157666437314513	2005:06:29 16:44:21	https://c6.staticflickr.com/8/7287/26687877053_de5b39f694_n.jpg
+CollapsedTube	When lava collapses...	34.9460333	-108.1010667	https://c2.staticflickr.com/8/7290/27224034961_d41aed206f_n.jpg	https://www.flickr.com/photos/139088815@N08/27224034961/in/album-72157666437314513	2016:05:23 13:30:28	https://c2.staticflickr.com/8/7290/27224034961_d41aed206f_n.jpg
