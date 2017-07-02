@@ -120,6 +120,8 @@ if ($handle !== false) {
                 $jsonFile = $hikeArray[18];
                 if ($gpxfile === '') {
                     $newstyle = false;
+                } else {
+                    $gpxPath = '../gpx/' . $gpxfile;
                 }
                 $hikeWow = $hikeArray[11];
                 $hikeFacilities = $hikeArray[10];
@@ -302,9 +304,9 @@ if (!$newstyle) {
     include "../php/makeGpsv.php";
     fputs($mapHandle,$html);
     fclose($mapHandle);
-    # Full-ppage map link cannot assume existence of tmp file: (Name is bogus 'MapLink')
+    # Full-page map link cannot assume existence of tmp file: (Name is bogus 'MapLink')
     $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . '&gpsv=' . 
-            $gpsvFile . '&gpx=' . $gpxfile;
+            $gpsvFile . '&gpx=' . $gpxPath;
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' .
                 'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . '</span><br />' .
@@ -351,7 +353,7 @@ if (!$newstyle) {
     # elevation chart:
     echo '<script>' . "\n" .
             'var alts = ' . $jsElevation . ';' . "\n" . '</script>' . "\n";
-    echo '<div data-gpx="' . $gpxfile. '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
+    echo '<div data-gpx="' . $gpxPath . '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
 for ($k=0; $k<$rowCount; $k++) {
