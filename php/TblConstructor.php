@@ -35,7 +35,7 @@
     $datatable = '../data/database.xml';
     $tabledat = simplexml_load_file($datatable);
     if ($tabledat === false) {
-        die ("Could not load convertcsv.html as simplexml");
+        die ("Could not load database.xml as simplexml");
     }
     /* some image definitions for icons that will appear as hyperlinks in the table */
     $indxIcon = '<img class="webShift" src="../images/indxCheck.png" alt="index checkbox" />';

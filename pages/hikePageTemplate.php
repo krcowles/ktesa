@@ -91,6 +91,16 @@ function makeHtmlList($type,$str) {
  * -------------------------  MAIN ROUTINE ------------------------
  */
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
+$datatable = '../data/database.xml';
+$tabledat = simplexml_load_file($datatable);
+if ($tabledat === false) {
+    die ("Could not load database.xml as simplexml");
+}
+foreach ($tabledat->row as $page) {
+    if ($page->indxNo === $hikeIndexNo) {
+        echo "<p>GOT Indx " . $page->indxNo . "</p>";     
+    }
+}
 /* NOTE: The database file is only read in here, no writing to it occurs */
 $dataTable = '../data/database.csv';
 $handle = fopen($dataTable,'r');
