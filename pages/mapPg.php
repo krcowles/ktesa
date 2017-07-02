@@ -68,11 +68,11 @@ $mstyle = '<style type="text/css">' . "\n" .
     ?>
     <link href="../styles/<?php
         if($tblVar === 'D') {
-                echo 'mapTblPg.css"'; 
+                echo 'mapTblPg.css'; 
         } elseif ($tblVar === 'T') { 
-                echo 'tblPg.css"';
+                echo 'tblPg.css';
         } else {
-                echo 'mapPg.css"';
+                echo 'mapPg.css';
         }?>" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery-1.12.1.js"></script>
 </head>
