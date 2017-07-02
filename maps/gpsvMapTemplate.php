@@ -14,7 +14,7 @@
             # Using GET params instead of calling in db and searching for hike (for now)
             $hikeTitle = filter_input(INPUT_GET,'hike');
             $gpsvFile = filter_input(INPUT_GET,'gpsv');
-            $gpxfile = filter_input(INPUT_GET,'gpx');
+            $gpxPath = filter_input(INPUT_GET,'gpx');
             include '../php/makeGpsv.php';
             $lines = explode("\n",$html); # $html comes in as a string
             foreach ($lines as &$dat) {
