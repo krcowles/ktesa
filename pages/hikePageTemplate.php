@@ -97,130 +97,124 @@ if ($tabledat === false) {
     die ("Could not load database.xml as simplexml");
 }
 foreach ($tabledat->row as $page) {
-    if ($page->indxNo === $hikeIndexNo) {
-        echo "<p>GOT Indx " . $page->indxNo . "</p>";     
-    }
-}
-/* NOTE: The database file is only read in here, no writing to it occurs */
-$dataTable = '../data/database.csv';
-$handle = fopen($dataTable,'r');
-if ($handle !== false) {
-    $lineno = 0;
-    while ( ($hikeArray = fgetcsv($handle)) !== false ) {
-        if ($lineno > 0) {  // skip the header row
-            if ($hikeIndexNo == $hikeArray[0]) {  // find the target hike
-                /* 
-                 * IMPORT the data from database.csv 
-                 */     
-                $newstyle = true;  // change later if no geomap
-                $hikeTitle = $hikeArray[1];
-                $hikeLocale = $hikeArray[2];
-                $hikeDifficulty = $hikeArray[9];
-                $hikeLength = $hikeArray[7] . " miles";
-                $hikeType = $hikeArray[6];
-                $hikeElevation = $hikeArray[8] . " ft";
-                $hikeExposure = $hikeArray[13];
-                /* 
-                 * This version eliminates a static imported map,
-                 * instead one will be created dynamically by the
-                 * included 'makeGpsv.php' file
-                 */
-                $gpsvFile = $hikeArray[14];
-                $gpxfile = $hikeArray[17];
-                $jsonFile = $hikeArray[18];
-                if ($gpxfile === '') {
-                    $newstyle = false;
-                }
-                $hikeWow = $hikeArray[11];
-                $hikeFacilities = $hikeArray[10];
-                $hikeSeasons = $hikeArray[12];
-                $hikePhotoLink1 = $hikeArray[23];
-                $hikePhotoLink2 = $hikeArray[24];
-                $hikeDirections = $hikeArray[25];
-                /* 
-                 * ----- create the html that will display the image rows
-                 */
-                $rows = array();
-                $picNo = 0;
-                for ($j=0; $j<6; $j++) {
-                    $thisrow = $hikeArray[$j+29];
-                    if ($thisrow == '') {
-                        $rowCount = $j;
-                        break;
-                    } else {
-                        $rowdat = explode("^",$thisrow);
-                        $leftmost = true;
-                        $els = intval($rowdat[0]);
-                        $rowht = $rowdat[1];
-                        $elType = $rowdat[2]; // can be either 'p' 'n' or 'f'
-                        $nxtel = 2;
-                        $rowhtml = '<div id="row' . $j . '" class="ImgRow">';
-                        for ($k=0; $k<$els; $k++) {
-                            if ($leftmost) {
-                                $style = '';
-                                $leftmost = false;
-                            } else {
-                                $style = 'margin-left:1px;';
-                            }
-                            $width = $rowdat[$nxtel+1];
-                            $src = $rowdat[$nxtel+2];
-                            if ($elType === 'p') { // captioned image
-                                $cap = $rowdat[$nxtel+3];
-                                $rowhtml = $rowhtml . '<img id="pic' . $picNo . '" style="' .
-                                        $style . '" width="' . $width . '" height="' . $rowht .
-                                        '" src="' . $src . '" alt="' . $cap . '" />';
-                                $picNo++;
-                                $nxtel += 4;
-                            } elseif ($elType === 'n') { // non-captioned image
-                                $rowhtml = $rowhtml . '<img style="' . $style .
-                                        '" width="' . $width . '" height="' . $rowht .
-                                        '" src="' . $src . '" alt="no caption" />';
-                                $nxtel +=3;
-                            } else {  // iframe - no longer used
-                                $nxtel += 3;
-                            }
-                            $elType = $rowdat[$nxtel];
-                        }
-                        $rowhtml = $rowhtml . '</div>';
-                        array_push($rows,$rowhtml);
-                        if ($j === 5) {
-                                $rowCount = 6;
-                        }
-                    } // end of if row not empty
-                }  // end of row loop
-                /* 
-                 * Extract remaining database elements:
-                 */
-                $picCaptions = $hikeArray[35];
-                $picCaptions = makeHtmlList(Simple,$picCaptions);
-                $picLinks = $hikeArray[36];
-                $picLinks = makeHtmlList(Simple,$picLinks);
-                $hikeTips = $hikeArray[37];
-                $hikeTips = preg_replace("/\s/"," ",$hikeTips);
-                $hikeInfo = '<p id="hikeInfo">' . $hikeArray[38] . '</p>';
-                # there should always be something to report in 'references'
-                $hikeReferences = $hikeArray[39];
-                # there may or may not be any proposed data or actual data to present
-                $hikeReferences = makeHtmlList(References,$hikeReferences);
-                $hikeProposedData = $hikeArray[40];
-                $hikeActualData = $hikeArray[41];
-                if ($hikeProposedData !== '' || ($hikeActualData !== '' && $hikeActualData !== "\n")) {
-                        $fieldsets = true;
-                        $datasect = '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
-                        if ($hikeProposedData !== '') {
-                                $datasect .= makeHtmlList(Proposed,$hikeProposedData);
-                        }
-                        if ($hikeActualData !== '') {
-                                $datasect .= makeHtmlList(Actual,$hikeActualData);
-                        }
-                        $datasect .= '</fieldset>';
-                }
-            }  // end of if finding the hike to display
+    if ($page->indxNo == $hikeIndexNo) {
+        $newstyle = true;  // change later if no gpx file
+        $hikeTitle = $page->pgTitle;
+        $hikeLocale = $page->locale;
+        $hikeDifficulty = $page->difficulty;
+        $hikeLength = $page->miles . " miles";
+        $hikeType = $page->logistics;
+        $hikeElevation = $page->feet . " ft";
+        $hikeExposure = $page->expo;
+        $gpsvFile = $page->tsv;
+        $gpxfile = $page->gpxfile;
+        $jsonFile = $page->trkfile;
+        if ($gpxfile === '') {
+            $newstyle = false;
         }
-        $lineno++;
+        $hikeWow = $page->wow;
+        $hikeFacilities = $page->facilities;
+        $hikeSeasons = $page->seasons;
+        $hikePhotoLink1 = $page->mpUrl;
+        $hikePhotoLink2 = $page->spUrl;
+        $hikeDirections = $page->dirs;
+        /* 
+         * ----- create the html that will display the image rows
+         */
+        $rows = array();
+        $picNo = 0;
+        for ($j=0; $j<6; $j++) {
+            switch ($j) {
+                case 0:
+                    $thisrow = $page->picRow0;
+                    break;
+                case 1:
+                    $thisrow = $page->picRow1;
+                    break;
+                case 2:
+                    $thisrow = $page->picRow2;
+                    break;
+                case 3:
+                    $thisrow = $page->picRow3;
+                    break;
+                case 4:
+                    $thisrow = $page->picRow4;
+                    break;
+                case 5:
+                    $thisrow = $page->picRow5;
+                    break;
+            }
+            if ($thisrow == '') {
+                $rowCount = $j;
+                break;
+            } else {
+                $rowdat = explode("^",$thisrow);
+                $leftmost = true;
+                $els = intval($rowdat[0]);
+                $rowht = $rowdat[1];
+                $elType = $rowdat[2]; // can be either 'p' 'n' or 'f'
+                $nxtel = 2;
+                $rowhtml = '<div id="row' . $j . '" class="ImgRow">';
+                for ($k=0; $k<$els; $k++) {
+                    if ($leftmost) {
+                        $style = '';
+                        $leftmost = false;
+                    } else {
+                        $style = 'margin-left:1px;';
+                    }
+                    $width = $rowdat[$nxtel+1];
+                    $src = $rowdat[$nxtel+2];
+                    if ($elType === 'p') { // captioned image
+                        $cap = $rowdat[$nxtel+3];
+                        $rowhtml = $rowhtml . '<img id="pic' . $picNo . '" style="' .
+                                $style . '" width="' . $width . '" height="' . $rowht .
+                                '" src="' . $src . '" alt="' . $cap . '" />';
+                        $picNo++;
+                        $nxtel += 4;
+                    } elseif ($elType === 'n') { // non-captioned image
+                        $rowhtml = $rowhtml . '<img style="' . $style .
+                                '" width="' . $width . '" height="' . $rowht .
+                                '" src="' . $src . '" alt="no caption" />';
+                        $nxtel +=3;
+                    } else {  // iframe - no longer used
+                        $nxtel += 3;
+                    }
+                    $elType = $rowdat[$nxtel];
+                }
+                $rowhtml = $rowhtml . '</div>';
+                array_push($rows,$rowhtml);
+                if ($j === 5) {
+                        $rowCount = 6;
+                }
+            } // end of if row not empty
+        }  // end of row loop
+        /* 
+        * Extract remaining database elements:
+        */
+        $picLinks = $page->albLinks;
+        $picLinks = makeHtmlList(Simple,$picLinks);
+        $hikeTips = $page->tipsTxt;
+        $hikeTips = preg_replace("/\s/"," ",$hikeTips);
+        $hikeInfo = '<p id="hikeInfo">' . $page->hikeInfo . '</p>';
+        # there should always be something to report in 'references'
+        $hikeReferences = $page->refs;
+        # there may or may not be any proposed data or actual data to present
+        $hikeReferences = makeHtmlList(References,$hikeReferences);
+        $hikeProposedData = $page->dataProp;
+        $hikeActualData = $page->dataAct;
+        if ($hikeProposedData !== '' || ($hikeActualData !== '' && $hikeActualData !== "\n")) {
+                $fieldsets = true;
+                $datasect = '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
+                if ($hikeProposedData !== '') {
+                        $datasect .= makeHtmlList(Proposed,$hikeProposedData);
+                }
+                if ($hikeActualData !== '') {
+                        $datasect .= makeHtmlList(Actual,$hikeActualData);
+                }
+                $datasect .= '</fieldset>';
+        }
+        break;
     }
-} else {
-    echo "<p>Could not open {$dataTable}</p>";
 }
 ?>
 <head>
