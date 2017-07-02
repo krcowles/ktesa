@@ -4,80 +4,97 @@
     attributeFormDefault="unqualified"
     elementFormDefault="qualified"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:element name="row">
-    <xs:complexType>
-        <xs:sequence>
-          <xs:element type="xs:string" name="Indx_No" use="required"/>
-          <xs:element type="xs:string" name="Hike_Name" use="required"/>
-          <xs:element type="xs:string" name="Locale" use="required"/>
-          <xs:element name="Marker" type="markerStyle" use="required">
-            <xs:simpleType name="markerStyle">
-                <xs:restriction base="xs:string">
-                    <xs:enumeration value="Visitor Ctr"/>
-                    <xs:enumeration value="At VC"/>
-                    <xs:enumeration value="Cluster"/>
-                    <xs:enumeration value="Normal"/>
-                </xs:restriction>
-            <xs:/simpleType>
-          </xs:element>
-          <xs:element type="xs:string" name="Cluster_Str"/>
-          <xs:element type="xs:string" name="Clus_Grp"/>
-          <xs:element name="Type" type="hikeType">
-            <xs:simpleType name="hikeType">
-                <xs:restriction base="xs:string">
-                    <xs:enumeration value="Out-and-back"/>
-                    <xs:enumeration value="Loop"/>
-                    <xs:enumeration value="Two-Cars"/>
-                </xs:restriction>
-            </xs:simpleType>
-          </xs:element> 
-          <xs:element type="xs:decimal" name="Miles"/>
-          <xs:element type="xs:integer" name="Feet"/>
-          <xs:element type="xs:string" name="Difficulty"/>
-          <xs:element type="xs:string" name="Facilities"/>
-          <xs:element type="xs:string" name="WOW"/>
-          <xs:element type="xs:string" name="Seasons"/>
-          <xs:element type="xs:string" name="Exposure"/>
-          <xs:element type="xs:string" name="TSV_File"/>
-          <xs:element type="xs:string" name="Geomap"/>
-          <xs:element type="xs:string" name="Elev_Chart"/>
-          <xs:element type="xs:string" name="GPX_File" use="required"/>
-          <xs:element type="xs:string" name="JSON_File"/>
-          <xs:element type="xs:decimal" name="Latitude" use="required"/>
-          <xs:element type="xs:decimal" name="Longitude" use="required"/>
-          <xs:element type="xs:string" name="Add_Image1"/>
-          <xs:element type="xs:string" name="Add_Image2"/>
-          <xs:element type="xs:string" name="Main_Photo_URL"/>
-          <xs:element type="xs:string" name="Sec_Photo_URL"/>
-          <xs:element type="xs:string" name="Directions" use="required"/>
-          <xs:element type="xs:string" name="Tips"/>
-          <xs:element type="xs:string" name="html_Page"/>
-          <xs:element type="xs:string" name="Clus_tooltip"/>
-          <xs:complexType name="PicRow0">
-              <xs:sequence>
-                <xs:element name="rowHt" type="xs:integer" minOccurs=0 maxOccurs=1/>
-                <xs:complexType name="PicElement" minOccurs=1 maxOccurs=10/>>
-                    <xs:element name="picWidth" minOccurs=1 maxOccurs=1/>
-                    <xs:element name="picUrl" minOccurs=1 maxOccurs=1/>
-                    <xs:element name="picCap" minOccurs=0 maxOccurs=1/>
-                </xs:complexType>
-              </xs:sequence>
-          </xs:complexType>
-          <xs:element type="xs:string" name="Row1"/>
-          <xs:element type="xs:string" name="Row2"/>
-          <xs:element type="xs:string" name="Row3"/>
-          <xs:element type="xs:string" name="Row4"/>
-          <xs:element type="xs:string" name="Row5"/>
-          <xs:element type="xs:string" name="Captions"/>
-          <xs:element type="xs:string" name="PhotoLinks"/>
-          <xs:element type="xs:string" name="Tips_Txt"/>
-          <xs:element type="xs:string" name="HikeInfo"/>
-          <xs:element type="xs:string" name="Refs"/>
-          <xs:element type="xs:string" name="Prop_Data"/>
-          <xs:element type="xs:string" name="Act_Data"/>
-        </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+    <xs:element name="rows">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="row" maxOccurs="unbounded">
+                    <xs:complexType> 
+                        <xs:sequence>
+                           
+                            <xs:element type="xs:string" name="indxNo" use="required"/>
+                            <xs:element type="xs:string" name="pgTitle" use="required"/>
+                            <xs:element type="xs:string" name="locale" use="required"/>
+                            <xs:element name="marker" type="markerStyle" use="required">
+                                <xs:simpleType name="markerStyle">
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="Visitor Ctr"/>
+                                        <xs:enumeration value="At VC"/>
+                                        <xs:enumeration value="Cluster"/>
+                                        <xs:enumeration value="Normal"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element type="xs:string" name="clusterStr"/>
+                            <xs:element type="xs:string" name="clusGrp"/>
+                            <xs:element name="logistics" type="hikeType">
+                                <xs:simpleType name="hikeType">
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="Out-and-back"/>
+                                        <xs:enumeration value="Loop"/>
+                                        <xs:enumeration value="Two-Cars"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element> 
+                            <xs:element type="xs:decimal" name="miles"/>
+                            <xs:element type="xs:integer" name="feet"/>
+                            <xs:element name="difficulty" type="diffType">
+                                <xs:simpleType name="diffType">
+                                    <xs:restriction>
+                                        <xs:enumeration value="Easy"/>
+                                        <xs:enumeration value="Easy-Moderate"/>
+                                        <xs:enumeration value="Moderate"/>
+                                        <xs:enumeration value="Med-Difficult"/>
+                                        <xs:enumeration value="Difficult"/>        
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element type="xs:string" name="facilities"/>
+                            <xs:element type="xs:string" name="wow"/>
+                            <xs:element type="xs:string" name="seasons"/>
+                            <xs:element name="expo" type="expFactor">
+                                <xs:simpleType name="expFactor">
+                                    <xs:restriction>
+                                        <xs:enumeration value="Full sun"/>
+                                        <xs:enumeration value="Mixed sun/shade"/>
+                                        <xs:enumeration value="Good shade"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element type="xs:string" name="tsv"/>
+                            <xs:element type="xs:string" name="geomap"/>
+                            <xs:element type="xs:string" name="echart"/>
+                            <xs:element type="xs:string" name="gpxfile"/>
+                            <xs:element type="xs:string" name="trkfile"/>
+                            <xs:element type="xs:decimal" name="lat"/>
+                            <xs:element type="xs:decimal" name="lng"/>
+                            <xs:element type="xs:string" name="aoimg1"/>
+                            <xs:element type="xs:string" name="aoimg2"/>
+                            <xs:element type="xs:string" name="mpUrl"/>
+                            <xs:element type="xs:string" name="spUrl"/>
+                            <xs:element type="xs:string" name="dirs" use="required"/>
+                            <xs:element type="xs:string" name="obs1"/>
+                            <xs:element type="xs:string" name="obs2"/>
+                            <xs:element type="xs:string" name="cgName"/>
+                            <xs:element type="xs:string" name="picRow0"/>
+                            <xs:element type="xs:string" name="picRow1"/>
+                            <xs:element type="xs:string" name="picRow2"/>
+                            <xs:element type="xs:string" name="picRow3"/>
+                            <xs:element type="xs:string" name="picRow4"/>
+                            <xs:element type="xs:string" name="picRow5"/>
+                            <xs:element type="xs:string" name="obs3"/>
+                            <xs:element type="xs:string" name="albLinks"/>
+                            <xs:element type="xs:string" name="tipsTxt"/>
+                            <xs:element type="xs:string" name="hikeInfo"/>
+                            <xs:element type="xs:string" name="refs"/>
+                            <xs:element type="xs:string" name="dataProp"/>
+                            <xs:element type="xs:string" name="dataAct"/>
+                            
+                        </xs:sequence>               
+                    </xs:complexType>
+                </xs:element>  // row
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>   // rows
 </xs:schema>
 
 
