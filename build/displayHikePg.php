@@ -22,8 +22,10 @@ $tsvFile = $buildFiles . 'gpsv/' . $tsvname;
 #$geomap = filter_input(INPUT_POST,'geomp');
 $gpx = filter_input(INPUT_POST,'gpx');
 if ($gpx !== '') {
-    $gpxFile = $buildFiles . 'gpx/' . $gpx;
-}
+    $gpxPath = $buildFiles . 'gpx/' . $gpx;
+} else {
+    die ("GPX FILE REQUIRED: Go back and upload");
+ }
 $trkfile = filter_input(INPUT_POST,'json');
 $addonImg[0] = filter_input(INPUT_POST,'img1');
 $imgIndx = 0;
@@ -270,7 +272,7 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
 </div> <!-- END OF SIDE PANEL DIV -->
 <iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=<?php echo $tmpMap . 
     iframeMapOpts;?>"></iframe>
-<div data-gpx="<?php echo $gpxFile;?>" id="chartline"><canvas id="grph"></canvas></div>
+<div data-gpx="<?php echo $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
 
 <?php
 /*  
