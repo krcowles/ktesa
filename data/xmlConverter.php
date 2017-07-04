@@ -30,41 +30,54 @@ $lineno = 0;
 while ( ($hikeLine = fgetcsv($csvfile)) !== false) {
     if ($lineno !== 0) {
         $xml .= '<row>' . "\n";
-        $xml .= '<indxNo>' . htmlspecialchars($hikeLine[0]) . '</indxNo>' . "\n";
+        $xml .= '<indxNo>' . $hikeLine[0] . '</indxNo>' . "\n";
         $xml .= '<pgTitle>' . htmlspecialchars($hikeLine[1]) . '</pgTitle>' . "\n";
         $xml .= '<locale>' . htmlspecialchars($hikeLine[2]) . '</locale>' . "\n";
-        $xml .= '<marker>' . htmlspecialchars($hikeLine[3]) . '</marker>' . "\n";
-        $xml .= '<clusterStr>' . htmlspecialchars($hikeLine[4]) . '</clusterStr>' . "\n";
-        $xml .= '<clusGrp>' . htmlspecialchars($hikeLine[5]) . '</clusGrp>' . "\n";
-        $xml .= '<logistics>' . htmlspecialchars($hikeLine[6]) . '</logistics>' . "\n";
-        $xml .= '<miles>' . htmlspecialchars($hikeLine[7]) . '</miles>' . "\n";
-        $xml .= '<feet>' . htmlspecialchars($hikeLine[8]) . '</feet>' . "\n";
-        $xml .= '<difficulty>' . htmlspecialchars($hikeLine[9]) . '</difficulty>' . "\n";
+        $xml .= '<marker>' . $hikeLine[3] . '</marker>' . "\n";
+        $xml .= '<clusterStr>' . $hikeLine[4] . '</clusterStr>' . "\n";
+        $xml .= '<clusGrp>' . $hikeLine[5] . '</clusGrp>' . "\n";
+        $xml .= '<logistics>' . $hikeLine[6] . '</logistics>' . "\n";
+        $xml .= '<miles>' . $hikeLine[7] . '</miles>' . "\n";
+        $xml .= '<feet>' . $hikeLine[8] . '</feet>' . "\n";
+        $xml .= '<difficulty>' . $hikeLine[9] . '</difficulty>' . "\n";
         $xml .= '<facilities>' . htmlspecialchars($hikeLine[10]) . '</facilities>' . "\n";
         $xml .= '<wow>' . htmlspecialchars($hikeLine[11]) . '</wow>' . "\n";
         $xml .= '<seasons>' . htmlspecialchars($hikeLine[12]) . '</seasons>' . "\n";
-        $xml .= '<expo>' . htmlspecialchars($hikeLine[13]) . '</expo>' . "\n";
-        $xml .= '<tsv>' . htmlspecialchars($hikeLine[14]) . '</tsv>' . "\n";
-        $xml .= '<geomap>' . htmlspecialchars($hikeLine[15]) . '</geomap>' . "\n";
-        $xml .= '<echart>' . htmlspecialchars($hikeLine[16]) . '</echart>' . "\n";
-        $xml .= '<gpxfile>' . htmlspecialchars($hikeLine[17]) . '</gpxfile>' . "\n";
-        $xml .= '<trkfile>' . htmlspecialchars($hikeLine[18]) . '</trkfile>' . "\n";
-        $xml .= '<lat>' . htmlspecialchars($hikeLine[19]) . '</lat>' . "\n";
-        $xml .= '<lng>' . htmlspecialchars($hikeLine[20]) . '</lng>' . "\n";
-        $xml .= '<aoimg1>' . htmlspecialchars($hikeLine[21]) . '</aoimg1>' . "\n";
-        $xml .= '<aoimg2>' . htmlspecialchars($hikeLine[22]) . '</aoimg2>' . "\n";
+        $xml .= '<expo>' . $hikeLine[13] . '</expo>' . "\n";
+        $xml .= '<tsv>' . $hikeLine[14] . '</tsv>' . "\n";
+        $xml .= '<geomap>' . $hikeLine[15] . '</geomap>' . "\n";
+        $xml .= '<echart>' . $hikeLine[16] . '</echart>' . "\n";
+        $xml .= '<gpxfile>' . $hikeLine[17] . '</gpxfile>' . "\n";
+        $xml .= '<trkfile>' . $hikeLine[18] . '</trkfile>' . "\n";
+        $xml .= '<lat>' . $hikeLine[19] . '</lat>' . "\n";
+        $xml .= '<lng>' . $hikeLine[20] . '</lng>' . "\n";
+        $xml .= '<aoimg1>' . $hikeLine[21] . '</aoimg1>' . "\n";
+        $xml .= '<aoimg2>' . $hikeLine[22] . '</aoimg2>' . "\n";
         $xml .= '<mpUrl>' . htmlspecialchars($hikeLine[23]) . '</mpUrl>' . "\n";
         $xml .= '<spUrl>' . htmlspecialchars($hikeLine[24]) . '</spUrl>' . "\n";
         $xml .= '<dirs>' . htmlspecialchars($hikeLine[25]) . '</dirs>' . "\n";
         $xml .= '<obs1></obs1>' . "\n";
         $xml .= '<obs2></obs2>' . "\n";
         $xml .= '<cgName>' . htmlspecialchars($hikeLine[28]) . '</cgName>' . "\n";
-        $xml .= '<picRow0>' . htmlspecialchars($hikeLine[29]) . '</picRow0>' . "\n";
-        $xml .= '<picRow1>' . htmlspecialchars($hikeLine[30]) . '</picRow1>' . "\n";
-        $xml .= '<picRow2>' . htmlspecialchars($hikeLine[31]) . '</picRow2>' . "\n";
-        $xml .= '<picRow3>' . htmlspecialchars($hikeLine[32]) . '</picRow3>' . "\n";
-        $xml .= '<picRow4>' . htmlspecialchars($hikeLine[33]) . '</picRow4>' . "\n";
-        $xml .= '<picRow5>' . htmlspecialchars($hikeLine[34]) . '</picRow5>' . "\n";
+        $xml .='<content>' . "\n";
+        if ($hikeLine[3] === 'Visitor Ctr') {
+            # there are always 7 elements in each table entry
+            if ($hikeLine[29] !== '') {
+                $tblrows = explode("|",$hikeLine[29]);
+                for ($j=0; $j<count($tblrows); $j++) {
+                    $xml .= '<tblRow>' . htmlspecialchars($tblrows[$j]) . '</tblRow>' . "\n";
+                }
+            }
+        } else {  // hike page
+            for ($k=0; $k<6; $k++) {
+                if ($hikeLine[29+$k] !== '') {
+                    $xml .= '<picRow>' . htmlspecialchars($hikeLine[29+k]) . '</picRow>' . "\n";
+                } else {
+                    break;
+                }
+            }
+        }
+        $xml .= '</content>' . "\n";   
         $xml .= '<obs3></obs3>' . "\n";
         $xml .= '<albLinks>' . htmlspecialchars($hikeLine[36]) . '</albLinks>' . "\n";
         $xml .= '<tipsTxt>' . htmlspecialchars($hikeLine[37]) . '</tipsTxt>' . "\n";

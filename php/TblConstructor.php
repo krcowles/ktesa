@@ -73,6 +73,9 @@
         $hikeLinkIcon = $webIcon;
         /* There are four types of markers to consider requiring different treatment: */
         $hikeMarker = $page->marker;
+        if ($hikeIndx == 1) {
+            $spkmarker = $hikeMarker;
+        }
         if ($hikeMarker === 'Visitor Ctr') {
             echo '<tr class="indxd" ' . $hikeHiddenDat . ' data-org-hikes="' .
                 $page->clusterStr . '">';  // Visitor centers id any subhikes
@@ -83,17 +86,17 @@
             $hikeDiff = "See Indx";
             $hikeExpIcon = '<td>See Indx</td>';
             $hikePhotoLink = '<td>See Indx</td>';
-        } elseif ($hikeMarker === 'Cluster') {
+        } elseif ($hikeMarker == 'Cluster') {
             echo '<tr class="clustered" data-cluster="' . $page->clusGrp . '" ' .
                 $hikeHiddenDat . ' data-tool="' . $page->cgName . '">';
-        } elseif ($hikeMarker === 'At VC') {
+        } elseif ($hikeMarker == 'At VC') {
             # At VC hikes will be ignored when time to create markers
             echo '<tr class="vchike"  data-vc="' . $page->clusterStr . '" '. 
                 $hikeHiddenDat . '>';
         } else {  // "Normal"
             echo '<tr class="normal" ' . $hikeHiddenDat . '>';
         }
-        if ($hikeMarker === 'Visitor Ctr') {
+        if ($hikeMarker == 'Visitor Ctr') {
             $hikePage = 'indexPageTemplate.php?hikeIndx=' . $hikeIndx;
         } else {
             $hikePage = 'hikePageTemplate.php?hikeIndx=' . $hikeIndx;
