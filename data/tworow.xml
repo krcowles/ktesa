@@ -31,16 +31,24 @@
 <obs2></obs2>
 <cgName></cgName>
 <content>
-<tblRow>n^Ruins Trail^hikePageTemplate.php?hikeIndx=5^1.2 miles^200 ft^../images/sun.jpg^https://www.flickr.com/photos/139088815@N08/albums/72157669594168785</tblRow>
-<tblRow>n^Upper &amp; Lower Falls Trail^hikePageTemplate.php?hikeIndx=6^3 miles^300 ft ^../images/greenshade.jpg^https://www.flickr.com/photos/139088815@N08/albums/72157669136001962</tblRow>
-<tblRow>n^Frijolito Loop^hikePageTemplate.php?hikeIndx=8^2.5 mile^550 ft^../images/sun.jpg^https://www.flickr.com/photos/139088815@N08/albums/72157669635072405</tblRow>
-<tblRow>n^Frey Trail^hikePageTemplate.php?hikeIndx=7^3 miles^550 ft^../images/sun.jpg^https://www.flickr.com/photos/139088815@N08/albums/72157667010406084</tblRow>
-<tblRow>g^Tyuonyi Overlook^X^2.2 miles^50 ft^N^X</tblRow>                                                
-<tblRow>n^Alcove House^hikePageTemplate.php?hikeIndx=9^1 mile^140 ft^../images/sun.jpg^https://www.flickr.com/photos/139088815@N08/albums/72157667002560044</tblRow>
-<tblRow>n^Tsankawi Ruins^hikePageTemplate.php?hikeIndx=74^3 miles^100 ft^../images/sun.jpg^https://www.flickr.com/photos/139088815@N08/albums/72157669593119256</tblRow>
-<tblRow>n^Burnt Mesa^hikePageTemplate.php?hikeIndx=90^7.3 miles^450 ft^../images/sun.jpg^https://www.flickr.com/photos/139088815@N08/albums/72157673291961720</tblRow>
-<tblRow>g^Cerro Grande^X^4.6 miles^1,200 ft^N^X</tblRow>
-<tblRow>g^Alamo Boundary^X^2.6 miles^400 ft^N^X</tblRow>
+<tblRow>
+    <compl>Y</compl>
+    <tdname>Ruins Trail</tdname>
+    <tdpg>5</tdpg>
+    <tdmiles>1.2</tdmiles>
+    <tdft>200</tdft>
+    <tdexp>Sunny</tdexp>
+    <tdalb>https://www.flickr.com/photos/139088815@N08/albums/72157669594168785</tdalb>
+</tblRow>  
+<tblRow>
+    <compl>N</compl>
+    <tdname>Tyuonyi Overlook</tdname>
+    <tdpg>X</tdpg>
+    <tdmiles>2.2</tdmiles>
+    <tdft>50</tdft>
+    <tdexp>X</tdexp>
+    <tdalb>X</tdalb>
+</tblRow> 
 </content>
 <obs3></obs3>
 <albLinks></albLinks>

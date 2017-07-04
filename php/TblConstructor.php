@@ -60,9 +60,9 @@
         $hikeElev = $page->feet;
         $hikeDiff = $page->difficulty;
         $hikeExposure = $page->expo;
-        if ($hikeExposure === 'Full sun') {
+        if ($hikeExposure == 'Full sun') {
             $hikeExpIcon = '<td>' . $sunIcon . '</td>';
-        } elseif ($hikeExposure === 'Mixed sun/shade') {
+        } elseif ($hikeExposure == 'Mixed sun/shade') {
             $hikeExpIcon = '<td>' . $partialIcon . '</td>';
         } else {
             $hikeExpIcon = '<td>' . $shadeIcon . '</td>';
@@ -76,7 +76,7 @@
         if ($hikeIndx == 1) {
             $spkmarker = $hikeMarker;
         }
-        if ($hikeMarker === 'Visitor Ctr') {
+        if ($hikeMarker == 'Visitor Ctr') {
             echo '<tr class="indxd" ' . $hikeHiddenDat . ' data-org-hikes="' .
                 $page->clusterStr . '">';  // Visitor centers id any subhikes
             $hikeLinkIcon = $indxIcon;

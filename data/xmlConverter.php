@@ -60,23 +60,66 @@ while ( ($hikeLine = fgetcsv($csvfile)) !== false) {
         $xml .= '<obs2></obs2>' . "\n";
         $xml .= '<cgName>' . htmlspecialchars($hikeLine[28]) . '</cgName>' . "\n";
         $xml .='<content>' . "\n";
+        # INDEX PAGE:
         if ($hikeLine[3] === 'Visitor Ctr') {
-            # there are always 7 elements in each table entry
             if ($hikeLine[29] !== '') {
+                # there are always 7 elements in each table entry
                 $tblrows = explode("|",$hikeLine[29]);
-                for ($j=0; $j<count($tblrows); $j++) {
-                    $xml .= '<tblRow>' . htmlspecialchars($tblrows[$j]) . '</tblRow>' . "\n";
-                }
-            }
-        } else {  // hike page
+                for ($i=0; $i<count($tblrows); $i++) {  # for each row of data:
+                    $xml .= '<tblRow>' . "\n";
+                    $tbldat = explode("^",$tblrows[$i]);
+                    if ($tbldat[0] === 'n') {
+                        # completed this hike
+                        $xml .= '<compl>Y</compl>' . "\n";
+                        $xml .= '<tdname>' . htmlspecialchars($tbldat[1]) . 
+                            '</tdname>' . "\n";  
+                        $pgloc = strrpos($tbldat[2],"=") + 1;
+                        $pglgth = strlen($tbldat[2]) - $pgloc;
+                        $pgno = substr($tbldat[2],$pgloc,$pglgth);
+                        $xml .= '<tdpg>' . $pgno . '</tdpg>' . "\n";
+                        $mipos = strpos($tbldat[3]," mile");
+                        $mis = substr($tbldat[3],0,$mipos);
+                        $xml .= '<tdmiles>' . $mis . '</tdmiles>' . "\n";
+                        $ftpos = strpos($tbldat[4]," ft");
+                        $ft = substr($tbldat[4],0,$ftpos);
+                        $xml .= '<tdft>' . $ft . '</tdft>' . "\n";
+                        if (strpos($tbldat[5],'sun') !== false) {
+                            $expicon = "Sunny";
+                        } elseif (strpos($tbldat[5],'shady') !== false) {
+                            $expicon = "Shady";
+                        } else {
+                            $expicon = "Partial";
+                        }
+                        $xml .= '<tdexp>' . $expicon . '</tdexp>' . "\n";
+                        $xml .= '<tdalb>' . $tbldat[6] . '</tdalb>' . "\n";
+                    } else {
+                        # this hike not taken yet
+                        $xml .= '<compl>N</compl>' . "\n";
+                        $xml .= '<tdname>' . htmlspecialchars($tbldat[1]) . 
+                            '</tdname>' . "\n";
+                        $xml .= '<tdpg>X</tdpg>' . "\n";
+                        $mipos = strpos($tbldat[3]," mile");
+                        $mis = substr($tbldat[3],0,$mipos);
+                        $xml .= '<tdmiles>' . $mis . '</tdmiles>' . "\n";
+                        $ftpos = strpos($tbldat[4]," ft");
+                        $ft = substr($tbldat[4],0,$ftpos);
+                        $xml .= '<tdft>' . $ft . '</tdft>' . "\n";
+                        $xml .= '<tdexp>X</tdexp>' . "\n";
+                        $xml .= '<tdalb>X</tdalb>' . "\n";
+                    }
+                    $xml .= '</tblRow>' . "\n";
+                }  # end of foreach row in the table    
+            }  # end if hikes present for table of hikes
+        # HIKE PAGE:
+        } else {
             for ($k=0; $k<6; $k++) {
                 if ($hikeLine[29+$k] !== '') {
-                    $xml .= '<picRow>' . htmlspecialchars($hikeLine[29+k]) . '</picRow>' . "\n";
+                    $xml .= '<picRow>' . htmlspecialchars($hikeLine[29+$k]) . '</picRow>' . "\n";
                 } else {
                     break;
                 }
             }
-        }
+        }  # end of Index Pg marker
         $xml .= '</content>' . "\n";   
         $xml .= '<obs3></obs3>' . "\n";
         $xml .= '<albLinks>' . htmlspecialchars($hikeLine[36]) . '</albLinks>' . "\n";
@@ -86,9 +129,9 @@ while ( ($hikeLine = fgetcsv($csvfile)) !== false) {
         $xml .= '<dataProp>' . htmlspecialchars($hikeLine[40]) . '</dataProp>' . "\n";
         $xml .= '<dataAct>' . htmlspecialchars($hikeLine[41]) . '</dataAct>' . "\n";
         $xml .= '</row>' . "\n";
-    }
+    }  # end of if non-header lines
     $lineno++;
-}
+}  # end of while reading in data
 
 $xml .= $xmlend;
 #echo substr($xml,2,10);

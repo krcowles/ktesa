@@ -63,6 +63,7 @@
             $htmlout .= '</ul>' . "\n";
             # INDEX TABLE OF HIKES, if any:
             $indxTbl = 0;  # if no table elements are present, default msg shows
+            # table header:
             $tblhtml = '<table id="siteIndx">' . "\n" . '<thead>' . "\n" . '<tr>' . "\n";
             $tblhtml .= '<th class="hdrRow" scope="col">Trail</th>' . "\n";
             $tblhtml .= '<th class="hdrRow" scope="col">Web Pg</th>' . "\n";
@@ -72,39 +73,56 @@
             $tblhtml .= '<th class="hdrRow" scope="col">Photos</th>'  . "\n";
             $tblhtml .= '</tr>' . "\n" . '</thead>' . "\n" . '<tbody>' . "\n";
             foreach ($page->content->tblRow as $tdat) {
-                $row = explode("^",$tdat);
-                # there are always 7 pieces, counting row type
-                if ($row[0] === 'n') {  // "normal" - not grayed out
-                    $tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] .
+                # Exposure settings:
+                if ($tdat->tdexp == 'Sunny') {
+                    $exposure = '../images/sun.jpg';
+                } elseif ($tdat->tdexp == 'Partial') {
+                    $exposure = '../images/greenshade.jpg';
+                } elseif ($tdat->tdexp == 'Shady') {
+                    $exposure = '../images/shady.png';
+                } elseif ($tdat->tdexp == 'X') {
+                    $exposure = '';
+                }
+                $hiked = ($tdat->compl == 'Y') ? true : false;
+                if ($hiked) {
+                    $tblhtml .= '<tr>' . "\n" . '<td>' . $tdat->tdname .
                         '</td>' . "\n";
-                    $tblhtml .= '<td><a href="' . $row[2] .
-                        '" target="_blank">' . "\n" . '<img class="webShift" ' .
-                        'src="../images/greencheck.jpg" alt="checkbox" />' .
-                        '</a></td>' . "\n";
-                    $tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
-                    $tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
+                    $tblhtml .= '<td><a href="hikePageTemplate.php?hikeIndx=' .
+                        $tdat->tdpg . '" target="_blank">' . "\n" . 
+                        '<img class="webShift" src="../images/greencheck.jpg"' .
+                        ' alt="website click-on icon" /></a></td>' . "\n";
+                    $tblhtml .= '<td>' . $tdat->tdmiles . ' miles</td>' . "\n";
+                    $tblhtml .= '<td>' . $tdat->tdft . ' ft</td>' . "\n";
                     $tblhtml .= '<td><img class="expShift" src="' .
-                        $row[5] . '" alt="exposure icon" /></td>' . "\n";
-                    $tblhtml .= '<td><a href="' . $row[6] .
+                        $exposure . '" alt="exposure icon" /></td>' . "\n";
+                    $tblhtml .= '<td><a href="' . $tdat->tdalb .
                         '" target="_blank">' . "\n" . '<img class="flckrShift" ' .
                         'src="../images/album_lnk.png" alt="Photos symbol" />' .
                         '</a></td>' . "\n";
                         $tblhtml .= '</tr>' . "\n";
-                } else {   // $row[0]=g  - grayed out row
-                        $tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] . 
-                            '</td>' . "\n";
-                        $tblhtml .= '<td><img class="webShift" ' .
-                            'src="../images/x-box.png" alt="box with x" />' .
-                            '</td>' . "\n";
-                        $tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
-                        $tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
-                        $tblhtml .= '<td class="naShift">N/A</td>' . "\n";
-                        $tblhtml .= '<td><img class="flckrShift" ' .
-                            'src="../images/x-box.png" alt="box with x" /></td>' . "\n";
-                        $tblhtml .= '</tr>' . "\n";
-                }  # end of if row is grayed out...
+                } else {  # not hiked yet
+                    $tblhtml .= '<tr>' . "\n" . '<td>' . $tdat->tdname . 
+                        '</td>' . "\n";
+                    $tblhtml .= '<td><img class="webShift" ' .
+                        'src="../images/x-box.png" alt="box with x" />' .
+                        '</td>' . "\n";
+                    $miles = $tdat->tdmiles;
+                    if (strlen($miles) === 0) {
+                        $miles = '?';
+                    }
+                    $tblhtml .= '<td>' . $miles . ' miles</td>' . "\n";
+                    $feet = $tdat->tdft;
+                    if (strlen($feet) === 0) {
+                        $feet = '?';
+                    }
+                    $tblhtml .= '<td>' . $feet . ' ft</td>' . "\n";
+                    $tblhtml .= '<td class="naShift">N/A</td>' . "\n";
+                    $tblhtml .= '<td><img class="flckrShift" ' .
+                        'src="../images/x-box.png" alt="box with x" /></td>' . "\n";
+                    $tblhtml .= '</tr>' . "\n";
+                }
                 $indxTbl++;
-            }  # of for each tblRow in xml file	
+            }  # end of foreach $tdat
             $tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";    
             break;
         }  # if target hike indx no
