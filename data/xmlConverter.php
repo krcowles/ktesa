@@ -114,13 +114,32 @@ while ( ($hikeLine = fgetcsv($csvfile)) !== false) {
         } else {
             for ($k=0; $k<6; $k++) {
                 if ($hikeLine[29+$k] !== '') {
-                    $xml .= '<picRow>' . htmlspecialchars($hikeLine[29+$k]) . '</picRow>' . "\n";
+                    $xml .= '<picRow>' . "\n";  
+                    $picArray = explode("^",$hikeLine[29+$k]);
+                    $noOfPix = intval($picArray[0]);
+                    $xml .= '<rowHt>' . $picArray[1] . '</rowHt>' . "\n";
+                    $xml .= '<pics>' . "\n";
+                    $indx = 2;  # position of 1st pic data element
+                    for ($m=0; $m<$noOfPix; $m++) {
+                        $cap = ($picArray[$indx] === 'p') ? true : false;
+                        $xml .= '<picWdth>' . $picArray[$indx+1] . '</picWdth>' . "\n";
+                        $xml .= '<picSrc>' . $picArray[$indx+2] . '</picSrc>' . "\n";
+                        $l = $k;
+                        if ($cap) {
+                            $xml .= '<picCap>' . $picArray[$indx+3] . '</picCap>' . "\n";
+                            $indx += 4;
+                        } else {
+                            $indx += 3;
+                        }
+                    }
+                    $xml .= '</pics>' . "\n";
+                    $xml .= '</picRow>' . "\n";
                 } else {
                     break;
                 }
-            }
+            }  # end of for each of the 6 rows in db
         }  # end of Index Pg marker
-        $xml .= '</content>' . "\n";   
+        $xml .= '</content>' . "\n"; 
         $xml .= '<obs3></obs3>' . "\n";
         $xml .= '<albLinks>' . htmlspecialchars($hikeLine[36]) . '</albLinks>' . "\n";
         $xml .= '<tipsTxt>' . htmlspecialchars($hikeLine[37]) . '</tipsTxt>' . "\n";
@@ -131,6 +150,13 @@ while ( ($hikeLine = fgetcsv($csvfile)) !== false) {
         $xml .= '</row>' . "\n";
     }  # end of if non-header lines
     $lineno++;
+    /*
+    if ($lineno > 93) {
+        $msg = "Hike Indx No " . $hikeLine[0];
+        die ($msg);
+    }
+     * 
+     */
 }  # end of while reading in data
 
 $xml .= $xmlend;
