@@ -127,41 +127,34 @@ foreach ($tabledat->row as $page) {
         $rowNo = 0;
         $picNo = 0;
         foreach ($page->content->picRow as $thisrow) {
-            $rowdat = explode("^",$thisrow);
+            $rowhtml = '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
             $leftmost = true;
-            $els = intval($rowdat[0]);
-            $rowht = $rowdat[1];
-            $elType = $rowdat[2]; // can be either 'p' (w/caption) or 'n' (no caption)
-            $nxtel = 2;
-            $rowhtml = '<div id="row' . $rowNo . '" class="ImgRow">';
-            for ($k=0; $k<$els; $k++) {
+            $rowht = $thisrow->rowHt;
+            foreach ($thisrow->pic as $picdata) {
                 if ($leftmost) {
                     $style = '';
                     $leftmost = false;
                 } else {
                     $style = 'margin-left:1px;';
                 }
-                $width = $rowdat[$nxtel+1];
-                $src = $rowdat[$nxtel+2];
-                if ($elType === 'p') { // captioned image
-                    $cap = $rowdat[$nxtel+3];
-                    $rowhtml = $rowhtml . '<img id="pic' . $picNo . '" style="' .
-                            $style . '" width="' . $width . '" height="' . $rowht .
-                            '" src="' . $src . '" alt="' . $cap . '" />';
-                    $picNo++;
-                    $nxtel += 4;
-                } elseif ($elType === 'n') { // non-captioned image
-                    $rowhtml = $rowhtml . '<img style="' . $style .
-                            '" width="' . $width . '" height="' . $rowht .
-                            '" src="' . $src . '" alt="no caption" />';
-                    $nxtel +=3;
+                $width = $picdata->picWdth;
+                $src = $picdata->picSrc;
+                $caption = ($picdata->picCap == 'NO') ? false : true;
+                if ($caption) {
+                    $rowhtml .= '<img id="pic' . $picNo . '" style="' .
+                        $style . '" width="' . $width . '" height="' . $rowht .
+                        '" src="' . $src . '" alt="' . $picdata->picCap . '" />' . "\n";
+                    $picNo++;    
+                } else {
+                    $rowhtml .= '<img style="' . $style . '" class="noCap"' .
+                        '" width="' . $width . '" height="' . $rowht .
+                        '" src="' . $src . '" alt="no caption" />' . "\n";
                 }
-                $elType = $rowdat[$nxtel];
-            }  # end of for imgs in row processing
-            $rowhtml = $rowhtml . '</div>';
+            }  # end of foreach picture in the row
+            $rowhtml .= '</div>' . "\n";
             array_push($rows,$rowhtml);
             $rowNo++;
-        }  # end of foreach picRow in xml file
+        }  # end of foreach picRow for this hike page 
         /* 
         * Extract remaining database elements:
         */
@@ -265,7 +258,7 @@ if (!$newstyle) {
                 '</tr>' .
            '</tbody>' .
        '</table>' .
-    '</div>';
+    '</div>' . "\n";
 } else { # newstyle has the side panel with map & chart on right
     # SIDE PANEL:
     # dynamically created map:
