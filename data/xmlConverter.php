@@ -118,21 +118,21 @@ while ( ($hikeLine = fgetcsv($csvfile)) !== false) {
                     $picArray = explode("^",$hikeLine[29+$k]);
                     $noOfPix = intval($picArray[0]);
                     $xml .= '<rowHt>' . $picArray[1] . '</rowHt>' . "\n";
-                    $xml .= '<pics>' . "\n";
                     $indx = 2;  # position of 1st pic data element
                     for ($m=0; $m<$noOfPix; $m++) {
+                        $xml .= '<pic>' . "\n";
                         $cap = ($picArray[$indx] === 'p') ? true : false;
                         $xml .= '<picWdth>' . $picArray[$indx+1] . '</picWdth>' . "\n";
                         $xml .= '<picSrc>' . $picArray[$indx+2] . '</picSrc>' . "\n";
                         $l = $k;
                         if ($cap) {
-                            $xml .= '<picCap>' . $picArray[$indx+3] . '</picCap>' . "\n";
-                            $indx += 4;
+                            $xml .= '<picCap>' . $picArray[$indx+3] . '</picCap>' . "\n";   
                         } else {
-                            $indx += 3;
+                            $xml .= '<picCap>NO</picCap>' . "\n";
                         }
+                        $indx += 4;
+                        $xml .= '</pic>' . "\n";
                     }
-                    $xml .= '</pics>' . "\n";
                     $xml .= '</picRow>' . "\n";
                 } else {
                     break;
