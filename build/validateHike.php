@@ -43,9 +43,16 @@
     $owAmap = 'NO';
     $dupAgpx = 'NO';
     $owAgpx = 'NO';
-    require "makeTsv.php";  // may change $uploadedTsv flag state
+    $nopics = filter_input(INPUT_POST,'nopix');
+    if ( !isset($nopics) ) {
+        $usetsv = true;
+        require "makeTsv.php";
+    } else {
+        $usetsv = false;
+    }
     require "fileUploads.php";
 ?>  
+<p style="display:none" id="tsvStat"><?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?></p>
 <!-- Hidden Inputs Carrying File Upload Status --> 
 <input type="hidden" name="tsvf" value="<?php echo $dupTsv;?>" />
 <input id="overTsv" type="hidden" name="owt" value="<?php echo $owTsv;?>" />
@@ -183,28 +190,30 @@ $hikeADatUrls = $_POST['aurl'];
 $hikeADatCTxts = $_POST['actxt'];
 
 # NOTE: reading tsv file only - no writing
-$tmpTsvLoc = $uploads . 'gpsv/' . $tsvFname;
-$fdat = file($tmpTsvLoc); // simple read - not using fgetcsv as there is no "special" data
-$icount = count($fdat) - 1; // image count: do not count the header row
-# Form array of pictures to display for selection by the user later on...
-$lineno = 0;
-$picno = 0;
-foreach ($fdat as $rawTsvLine) {
-    $tsvArray = str_getcsv($rawTsvLine,"\t");
-    if ($lineno !== 0) {
-        $picarray[$picno] = $tsvArray[$indx];
-        $thumb[$picno] = $tsvArray[$indx+4];
-        $picno += 1;
-    } else {
-        if (strcmp($tsvArray[0],"folder") == 0) {
-            $indx = 1;
-            # echo "<p>This tsv file has 'folder' field description</p>";
+if ($usetsv) {
+    $tmpTsvLoc = $uploads . 'gpsv/' . $tsvFname;
+    $fdat = file($tmpTsvLoc); // simple read - not using fgetcsv as there is no "special" data
+    $icount = count($fdat) - 1; // image count: do not count the header row
+    # Form array of pictures to display for selection by the user later on...
+    $lineno = 0;
+    $picno = 0;
+    foreach ($fdat as $rawTsvLine) {
+        $tsvArray = str_getcsv($rawTsvLine,"\t");
+        if ($lineno !== 0) {
+            $picarray[$picno] = $tsvArray[$indx];
+            $thumb[$picno] = $tsvArray[$indx+4];
+            $picno += 1;
         } else {
-            $indx = 0;
-            # echo "<p>Older tsv file - NO 'folder' field</p>";
+            if (strcmp($tsvArray[0],"folder") == 0) {
+                $indx = 1;
+                # echo "<p>This tsv file has 'folder' field description</p>";
+            } else {
+                $indx = 0;
+                # echo "<p>Older tsv file - NO 'folder' field</p>";
+            }
         }
+        $lineno++;
     }
-    $lineno++;
 }
 /*
     MARKER-DEPENDENT PAGE ELEMENTS
@@ -476,7 +485,6 @@ if ($hikeMarker === 'ctrhike') {
     }  // end of if-else
     $refhtml .= '</ul></fieldset>';
     echo $refhtml;
-    #echo "Ref string to pass: " . $refStr;
 ?>	
 
 <?php
@@ -484,7 +492,7 @@ if ($hikeMarker === 'ctrhike') {
     $aStr = '';
 
     if ($noOfPDats > 0 || $noOfADats > 0) {
-        echo '<h2 style="text-align:center">Hike Data: Proposed and/or Actual</h2>';
+        echo '<h2 style="text-align:center">Hike Data: Proposed and/or Actual</h2>' . "\n";
         echo '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
         if ($noOfPDats > 0) {
             $pStr = $noOfPDats;
@@ -504,11 +512,13 @@ if ($hikeMarker === 'ctrhike') {
                     '" target="_blank">' . $hikeADatCTxts[$k] . '</a></li>';
                 $aStr .= '^' . $hikeADatLbls[$k] . '^' . $hikeADatUrls[$k] . '^' . $hikeADatCTxts[$k];
             }
+            echo '</ul>';
         }
         echo '</fieldset>';
     }
 ?>
-<br />
+
+<div id="showpics">
 <h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish
 	to include on the new page:</h4>
 <p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note:
@@ -524,10 +534,13 @@ if ($hikeMarker === 'ctrhike') {
         echo '</div>';
         $nmeno +=1;
     }
-    echo '<br />';
-    echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;">' .
-            '<input type="submit" value="Use Selected Pics" /><br /><br /></div>';
-?>	
+?>
+</div>
+
+<div style="width:200px;position:relative;top:90px;left:20px;float:left;">
+    <input type="submit" value="Use Selected Pics" /><br /><br />
+</div>
+
 <input type="hidden" name="tsv" value="<?php echo $tsvFname;?>" />
 <input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
 <input type="hidden" name="area"  value="<?php echo $hikeLocale;?>" />
@@ -554,6 +567,7 @@ if ($hikeMarker === 'ctrhike') {
 <input type="hidden" name="refstr" value="<?php echo $refStr;?>" />
 <input type="hidden" name="pstr" value="<?php echo $pStr;?>" />
 <input type="hidden" name="astr" value="<?php echo $aStr;?>" />
+<input type="hidden" name="usepics" value="<?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?>" />
 </form>
 
 <script src="../scripts/jquery-1.12.1.js"></script>

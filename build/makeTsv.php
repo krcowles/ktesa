@@ -363,8 +363,5 @@ if ($curlid !== '') {
         die($noread);
     }
     
-}
-# if no $curlid, look for an uploaded tsv file....
-# remember to check against duplicates in fileUploads... 
+} 
 ?>
-
