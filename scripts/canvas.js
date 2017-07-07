@@ -308,6 +308,10 @@ function Thousands(value) {
         var yRem = newval - 1000 * yTh;
         if (yRem === 0) {
             yRem = '000';
+        } else if (yRem > 0 && yRem < 10) {
+            yRem = '00' + yRem;
+        } else if (yRem > 9 && yRem < 100) {
+            yRem = '0' + yRem;
         }
         newval = yTh + ',' + yRem;
     }
