@@ -22,14 +22,11 @@
 
 <?php
     $hikeName = filter_input(INPUT_POST,'hpgTitle');
-    $uploadedTsv = true;
     /*  Default values for identifying previously saved files 
      *  and whether or not to overwite them when saving the page
      */
     $dupTsv = 'NO';
     $owTsv = 'NO';
-    $dupMap = 'NO';
-    $owMap = 'NO';
     $dupGpx = 'NO';
     $owGpx = 'NO';
     $dupJSON = 'NO';
@@ -48,14 +45,10 @@
     $owAgpx = 'NO';
     require "makeTsv.php";  // may change $uploadedTsv flag state
     require "fileUploads.php";
-    
-    
 ?>  
 <!-- Hidden Inputs Carrying File Upload Status --> 
 <input type="hidden" name="tsvf" value="<?php echo $dupTsv;?>" />
 <input id="overTsv" type="hidden" name="owt" value="<?php echo $owTsv;?>" />
-<input type="hidden" name="mapf" value="<?php echo $dupMap;?>" />
-<input id="overMap" type="hidden" name="owm" value="<?php echo $owMap;?>" />
 <input type="hidden" name="gpxf" value="<?php echo $dupGpx;?>" />
 <input id="overGpx" type="hidden" name="owg" value="<?php echo $owGpx;?>" />
 <input type="hidden" name="jsonf" value="<?php echo $dupJSON;?>" />
@@ -86,29 +79,20 @@ $hikeWow = filter_input(INPUT_POST,'wow_factor');
 $hikeSeasons = filter_input(INPUT_POST,'seas');
 $hikeExp = filter_input(INPUT_POST,'expos');
 
-$extractGeos = filter_input(INPUT_POST,'thgeos');
-if ( isset($extractGeos) ) {
-    if ($gpxStat == UPLOAD_ERR_OK) { 
-        $gpxupload = getcwd() . '/' . $uploads . 'gpx/' . $hikeGpx;
-        $gpxdat = file_get_contents($gpxupload);
-        $trksegloc = strpos($gpxdat,"<trkpt lat=");
-        $trksubstr = substr($gpxdat,$trksegloc,100);
-        $latloc = strpos($trksubstr,"lat=") + 5;
-        $latend = strpos($trksubstr,'" lon=');
-        $latlgth = $latend - $latloc;
-        $hikeLat = substr($trksubstr,$latloc,$latlgth);
-        $lonloc = strpos($trksubstr,"lon=") + 5;
-        $lonend = strpos($trksubstr,">") - 1;
-        $lonlgth = $lonend - $lonloc;
-        $hikeLong = substr($trksubstr,$lonloc,$lonlgth);
-    } else {
-            echo '<p style="margin-left:8px;font-size:18px;color:red;">Failed to ' .
-                'extract trailhead coordinates: Go back and re-enter manually</p>';
-    }
-} else {
-    $hikeLat = filter_input(INPUT_POST,'lat');
-    $hikeLong = filter_input(INPUT_POST,'lon');
-}
+# Extract trailhead lat & lng from gpx file
+$gpxupload = getcwd() . '/' . $uploads . 'gpx/' . $hikeGpx;
+$gpxdat = file_get_contents($gpxUpload);
+$trksegloc = strpos($gpxdat,"<trkpt lat=");
+$trksubstr = substr($gpxdat,$trksegloc,100);
+$latloc = strpos($trksubstr,"lat=") + 5;
+$latend = strpos($trksubstr,'" lon=');
+$latlgth = $latend - $latloc;
+$hikeLat = substr($trksubstr,$latloc,$latlgth);
+$lonloc = strpos($trksubstr,"lon=") + 5;
+$lonend = strpos($trksubstr,">") - 1;
+$lonlgth = $lonend - $lonloc;
+$hikeLong = substr($trksubstr,$lonloc,$lonlgth);
+
 $hikeMarker = filter_input(INPUT_POST,'mstyle');
 $hikePurl1 = filter_input(INPUT_POST,'photo1');
 $hikePurl2 = filter_input(INPUT_POST,'photo2');

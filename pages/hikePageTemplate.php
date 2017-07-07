@@ -273,9 +273,9 @@ if (!$newstyle) {
     include "../php/makeGpsv.php";
     fputs($mapHandle,$html);
     fclose($mapHandle);
-    # Full-ppage map link cannot assume existence of tmp file: (Name is bogus 'MapLink')
+    # Full-page map link cannot assume existence of tmp file: (Name is bogus 'MapLink')
     $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . '&gpsv=' . 
-            $gpsvFile . '&gpx=' . $gpxfile;
+            $gpsvFile . '&gpx=' . $gpxPath;
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' .
                 'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . '</span><br />' .

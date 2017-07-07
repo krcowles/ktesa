@@ -200,24 +200,10 @@
             unlink($oldLoc);
         }
         # remaining files should be tested for existence:
-        # MAP FILE
-        $oldLoc = $cwd . $uploads . 'maps/' . $newHike[15];
-        if ( $newHike[15] !== '' && 
-                (($rules[2] === 'YES' && $rules[3] === 'YES') || $rules[2] === 'NO' )) {
-            $newLoc = $basedir . '/maps/' . $newHike[15];
-            if (!rename($oldLoc,$newLoc)) {
-                die('<p style="color:brown;">COULD NOT MOVE GEOMAP FILE</p>');
-            } else {
-                echo "<p>Successfully moved geomap file</p>";
-            }
-        } elseif ($newHike[15] !== '') {
-            echo $delmsg1 . $newHike[15] . $delmsg2;
-            unlink($oldLoc);
-        }
         # GPX FILE
         $oldLoc = $cwd . $uploads . 'gpx/' . $newHike[17];
         if ( $newHike[17] !== '' &&
-                (($rules[4] === 'YES' && $rules[5] === 'YES') || $rules[4] === 'NO')) {
+                (($rules[2] === 'YES' && $rules[3] === 'YES') || $rules[2] === 'NO')) {
             $newLoc = $basedir . '/gpx/' . $newHike[17];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE GPX FILE</p>');
@@ -231,7 +217,7 @@
         # JSON FILE:
         $oldLoc = $cwd . $uploads . 'json/' . $newHike[18];
         if ( $newHike[18] !== '' &&
-                (($rules[6] === 'YES' && $rules[7] === 'YES') || $rules[6] === 'NO')) {
+                (($rules[4] === 'YES' && $rules[5] === 'YES') || $rules[4] === 'NO')) {
             $newLoc = $basedir . '/json/' . $newHike[18];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE JSON FILE</p>');
@@ -245,7 +231,7 @@
         # IMAGE1 FILE:
         $oldLoc = $cwd . $uploads . 'images/' . $newHike[21];
         if ( $newHike[21] !== '' &&
-                (($rules[8] === 'YES' && $rules[9] === 'YES') || $rules[8] === 'NO')) {
+                (($rules[6] === 'YES' && $rules[7] === 'YES') || $rules[6] === 'NO')) {
             $newLoc = $basedir . '/images/' . $newHike[21];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE 1st IMAGE FILE</p>');
@@ -259,7 +245,7 @@
         # IMAGE2 FILE:
         $oldLoc = $cwd . $uploads . 'images/' . $newHike[22];
         if ( $newHike[22] !== '' &&
-                (($rules[10] === 'YES' && $rules[11] === 'YES') || $rules[10] === 'NO')) {
+                (($rules[8] === 'YES' && $rules[9] === 'YES') || $rules[8] === 'NO')) {
             $newLoc = $basedir . '/images/' . $newHike[22];
             if (!rename($oldLoc,$newLoc)) {
                 die('<p style="color:brown;">COULD NOT MOVE 2nd IMAGE FILE</p>');
@@ -271,67 +257,80 @@
             unlink($oldLoc);
         }
         # PROP DAT FILE1
-        $oldLoc = $cwd . $uploads . $newDatFiles[1] . '/' . $newDatFiles[0];
-        if ( $newDatFiles[0] !== '' && $newDatFiles[2] == '0' &&
-                (($rules[12] === 'YES' && $rules[13] === 'YES') || $rules[12] === 'NO')) {
-            $newLoc = $basedir . '/' . $newDatFiles[1] . '/' . $newDatFiles[0];
-            if (!rename($oldLoc,$newLoc)) {
-                die('<p style="color:brown;">COULD NOT MOVE 1st PROP DAT FILE</p>');
+        # Check to see if a file is specified, and is not already uploaded:
+        if ($newDatFiles[0] !== 'x' && $newDatFiles[2] == 0) {
+            $oldLoc = $cwd . $uploads . $newDatFiles[1] . '/' . $newDatFiles[0];
+            # $newDatFiles[1] holds either the 'gpx' or 'maps' dir value
+            if (($rules[10] === 'YES' && $rules[11] === 'YES') || $rules[10] === 'NO') {
+                $newLoc = $basedir . '/' . $newDatFiles[1] . '/' . $newDatFiles[0];
+                if (!rename($oldLoc,$newLoc)) {
+                    die('<p style="color:brown;">COULD NOT MOVE 1st PROP DAT FILE</p>');
+                } else {
+                    echo "<p>Successfully moved 1st prop dat file</p>";
+                } 
             } else {
-                echo "<p>Successfully moved 1st prop dat file</p>";
-            } 
-        } elseif ($newDatFiles[0] !== '' && $newDatFiles[2] == '0') {
-            echo $delmsg1 . $newDatFiles[0] . $delmsg2;
-            unlink($oldLoc);
-        } elseif ($newDatFiles[2] == '1') {
+                echo $delmsg1 . $newDatFiles[0] . $delmsg2;
+                unlink($oldLoc);
+            }
+        } elseif ($newDatFiles[2] === 1) {  # "1" -> already uploaded
             echo '<p>' . $newDatFiles[0] . ' had already been uploaded - no activity</p>';
         }
         # PROP DAT FILE2  
-        $oldLoc = $cwd . $uploads . $newDatFiles[4] . '/' . $newDatFiles[3];
-        if ( $newDatFiles[3] !== '' && $newDatFiles[5] == '0' &&
-                (($rules[14] === 'YES' && $rules[15] === 'YES') || $rules[14] === 'NO')) {	
-            $newLoc = $basedir . '/' . $newDatFiles[4] . '/' . $newDatFiles[3];
-            if (!rename($oldLoc,$newLoc)) {
-                die('<p style="color:brown;">COULD NOT MOVE 2nd PROP DAT FILE</p>');
-            } else {
-                echo "<p>Successfully moved 2nd prop dat file</p>";
-            } 
-        } elseif ($newDatFiles[3] !== '' && $newDatFiles[5] == '0') {
-            echo $delmsg1 . $newDatFiles[2] . $delmsg2;
-            unlink($oldLoc);
-        } elseif ($newDatFiles[5] == '1') {
+        # Check to see if a file is specified, and is not already uploaded:
+        if ( $newDatFiles[3] !== 'x' && $newDatFiles[5] == 0) {
+            $oldLoc = $cwd . $uploads . $newDatFiles[4] . '/' . $newDatFiles[3];
+            # $newDatFiles[4] holds either the 'gpx' or 'maps' dir value
+            if (($rules[12] === 'YES' && $rules[13] === 'YES') || $rules[12] === 'NO') {	
+                $newLoc = $basedir . '/' . $newDatFiles[4] . '/' . $newDatFiles[3];
+                if (!rename($oldLoc,$newLoc)) {
+                    die('<p style="color:brown;">COULD NOT MOVE 2nd PROP DAT FILE</p>');
+                } else {
+                    echo "<p>Successfully moved 2nd prop dat file</p>";
+                } 
+            }
+            else {
+                echo $delmsg1 . $newDatFiles[3] . $delmsg2;
+                unlink($oldLoc);
+            }
+        } elseif ($newDatFiles[5] === 1) {
             echo '<p>' . $newDatFiles[3] . ' had already been uploaded - no activity</p>';
         }
         # ACT DAT FILE1:
-        $oldLoc = $cwd . $uploads . $newDatFiles[7] . '/' . $newDatFiles[6];
-        if ( $newDatFiles[6] !== '' &&$newDatFiles[8] == '0' &&
-        		(($rules[16] === 'YES' && $rules[17] === 'YES') || $rules[16] === 'NO')) {
-            $newLoc = $basedir . '/' . $newDatFiles[7] . '/' . $newDatFiles[6];
-            if (!rename($oldLoc,$newLoc)) {
-                die('<p style="color:brown;">COULD NOT MOVE 1st ACT DAT FILE</p>');
+        # Check to see if a file is specified, and is not already uploaded:
+        if ( $newDatFiles[6] !== 'x' && $newDatFiles[8] == 0) {
+            $oldLoc = $cwd . $uploads . $newDatFiles[7] . '/' . $newDatFiles[6];
+            
+            if (($rules[14] === 'YES' && $rules[15] === 'YES') || $rules[14] === 'NO') {
+                $newLoc = $basedir . '/' . $newDatFiles[7] . '/' . $newDatFiles[6];
+                if (!rename($oldLoc,$newLoc)) {
+                    die('<p style="color:brown;">COULD NOT MOVE 1st ACT DAT FILE</p>');
+                } else {
+                    echo "<p>Successfully moved 1st act dat file</p>";
+                } 
             } else {
-                echo "<p>Successfully moved 1st act dat file</p>";
-            } 
-        } elseif ($newDatFiles[6] !== '' && $newDatFiles[8] == '0') {
-            echo $delmsg1 . $newDatFiles[4] . $delmsg2;
-            unlink($oldLoc);
-        } elseif ($newDatFiles[8] == '1') {
+                echo $delmsg1 . $newDatFiles[6] . $delmsg2;
+                unlink($oldLoc);
+            }
+        } elseif ($newDatFiles[8] === 1) {
             echo '<p>' . $newDatFiles[6] . ' had already been uploaded - no activity</p>';
         }
         # ACT DAT FILE2:
-        $oldLoc = $cwd . $uploads . $newDatFiles[10] . '/' . $newDatFiles[9];
-        if ( $newDatFiles[9] !== '' && $newDatFiles[11] == '0' &&
-                (($rules[18] === 'YES' && $rules[19] === 'YES') || $rules[18] === 'NO')) {	
-            $newLoc = $basedir . '/' . $newDatFiles[10] . '/' . $newDatFiles[9];
-            if (!rename($oldLoc,$newLoc)) {
-                die('<p style="color:brown;">COULD NOT MOVE 2nd ACT DAT FILE</p>');
+        # Check to see if a file is specified, and is not already uploaded:
+        if ( $newDatFiles[9] !== 'x' && $newDatFiles[11] == 0) {
+            $oldLoc = $cwd . $uploads . $newDatFiles[10] . '/' . $newDatFiles[9];
+            # $newDatFiles[10] holds either the 'gpx' or 'maps' dir value
+            if (($rules[16] === 'YES' && $rules[17] === 'YES') || $rules[16] === 'NO') {
+                $newLoc = $basedir . '/' . $newDatFiles[10] . '/' . $newDatFiles[9];
+                if (!rename($oldLoc,$newLoc)) {
+                    die('<p style="color:brown;">COULD NOT MOVE 2nd ACT DAT FILE</p>');
+                } else {
+                    echo "<p>Successfully moved 2nd act dat file</p>";
+                } 
             } else {
-                echo "<p>Successfully moved 2nd act dat file</p>";
-            } 
-        } elseif ($newDatFiles[9] !== '' && $newDatFiles[11] == '0') {
-            echo $delmsg1 . $newDatFiles[9] . $delmsg2;
-            unlink($oldLoc);
-        } elseif ($newDatFiles[11] == '1') {
+                echo $delmsg1 . $newDatFiles[9] . $delmsg2;
+                unlink($oldLoc);
+            }
+        } elseif ($newDatFiles === 1) {
             echo '<p>' . $newDatFiles[9] . ' had already been uploaded - no activity</p>';
         }
         # if any, need to add index page changes...

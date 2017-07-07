@@ -107,10 +107,10 @@
             <option value="Med-Difficult">Medium-Difficult</option>
             <option value="Difficult">Difficult</option>
         </select><br />
-        <label id="ifac" for="useful">Facilities Available at Trailhead, 
+        <label class="notVC" id="ifac" for="useful">Facilities Available at Trailhead, 
             if any:</label>
         <input id="useful" type="text" name="fac" size="25" />
-        <label id="iwow" for="wow">"Wow" Factor (What makes this hike 
+        <label class="notVC" id="iwow" for="wow">"Wow" Factor (What makes this hike 
             special):</label> 
         <input id="wow" type="text" name="wow_factor" size="24" /><br />
         <label class="notVC" for="times">Seasons</label>
@@ -130,10 +130,11 @@
 
     <fieldset>
         <legend>File Data</legend>
+        <!--
         <label id="l_tsv" class="notVC" for="tsv">TSV file:</label>
-        <input id="tsv" type="file" name="csvfile" /><br />
-        <div style="margin-left:16px;color:Brown;">
-            -OR: Specify your on-line photo album type and url below:<br />
+        <input id="tsv" type="file" name="csvfile" /><br /> -->
+        <div class="indxFile">
+            Specify your on-line photo album type and url below:<br />
             Select type of album:&nbsp;
             <select id="alb" name="albtype">
                 <option value="flckr">Flickr Album</option>
@@ -167,28 +168,26 @@
             </select><br />
             You will also need to specify the 'absolute' path to your local 
             copy of the photos -<br />
-            (NOTE: Cannot be a url &amp; must be same number and names as in 
+            (NOTE: Cannot be a url &amp; must be same no. of photos and names as in 
             online album)
-            &nbsp;&nbsp;<input id="localps" type="text" name="lphotos" size="35" /><br /><br />
+            &nbsp;&nbsp;<input id="localps" type="text" name="lphotos" size="35" /><br />
+            <!--
+            <label id="l_gmap" class="notVC" for="geomap">Geomap:</label>
+            <input id="geomap" type="file" name="gpsvMap" /><br /> -->
+            <label id="l_gpx" class="notVC" for="gpxfile">GPX File: &nbsp;</label>
+            <input id="gpxfile" type="file" name="gpxname" /><br />
+            <!--
+            If you wish to create the track file from the above GPX file instead
+            of loading an existing file, check here: 
+            <input id="mktrk" type="checkbox" name="maketrack" value="NO" /><br />
+            <label id="l_trk" class="notVC" for="trkfile">Track File: &nbsp;:</label>
+            <input id="trkfile" type="file" name="track" /><br />
+            <em style="color:DarkBlue;cursor:pointer;" id="opts">Click this text for additional upload options</em>
+            -->
         </div>
-        <label id="l_gmap" class="notVC" for="geomap">Geomap:</label>
-        <input id="geomap" type="file" name="gpsvMap" /><br />
-        <label id="l_gpx" class="notVC" for="gpxfile">GPX File: &nbsp;</label>
-        <input id="gpxfile" type="file" name="gpxname" /><br />
-        If you wish to create the track file from the above GPX file instead
-        of loading an existing file, check here: 
-        <input id="mktrk" type="checkbox" name="maketrack" value="NO" /><br />
-        <label id="l_trk" class="notVC" for="trkfile">Track File: &nbsp;:</label>
-        <input id="trkfile" type="file" name="track" /><br />
         
-        <em style="color:DarkBlue;cursor:pointer;" id="opts">Click this text for additional upload options</em>
-        <div id="ofiles" style="display:none">
-            <label id="l_add1" for="addon1">Other image (pop-up captions not 
-                provided at this time): &nbsp;</label>
-            <input id="addon1" type="file" name="othr1" /><br />
-            <label id="l_add2" class="notVC" for="addon2">Other image (pop-up 
-                captions not provided at this time): &nbsp;</label>
-            <input id="addon2" type="file" name="othr2" /><br />
+        <div class="indxFile">
+            OPTIONAL FILES:<br />
             <em>The following files are to be referenced in the "Proposed" or
             "Actual" Data Sections of "GPS Maps &amp; Data"</em><br />
             <label for="pmap">Proposed Data: User File1 (e.g. Map): &nbsp;</label>
@@ -214,15 +213,21 @@
             Storage Location: &nbsp;<select name="f4">
                 <option value="maps">Maps</option>
                 <option value="gpx">Gpx</option>
-            </select>
+            </select><br />
+            <em>Additional images (not photos from album) may be specified below:</em><br />
         </div>
+        <label id="l_add1" for="addon1">Other image (pop-up captions not 
+            provided at this time): &nbsp;</label>
+        <input id="addon1" type="file" name="othr1" /><br />
+        <label id="l_add2" class="notVC" for="addon2">Other image (pop-up 
+            captions not provided at this time): &nbsp;</label>
+        <input id="addon2" type="file" name="othr2" /><br />
+        
     </fieldset>
 
     <fieldset id="latlng">
-        <legend>Latitude & Longitude of Trailhead</legend>
-        <label for="extract">To automatically extract latitude & longitude from the GPX file, check the box: </label>
-        <input id="extract" type="checkbox" name="thgeos" value="UseGpx" /><br />
-        <label for="n-s">Otherwise, enter decimal values here:</label>
+        <legend>Latitude & Longitude of Visitor Center</legend>
+        <label for="n-s">Enter decimal values here:</label>
         <input id="n-s" type="text" name="lat" size="16" />&nbsp;&nbsp;
         <label for="e-w">Longitude (decimal value):</label>
         <input id="e-w" type="text" name="lon" size="16" />&nbsp;&nbsp; 
@@ -452,12 +457,13 @@
 </form>
 </div>
 
+<!-- Modal popup for saving form data section -->
 <div style="margin-left:24px;margin-top:-4px;">
     <p style="margin-bottom:4px">Save the current state of the form for later recall...</p>
     <button id="saver">Save Form Data</button>
     <p id="unsaver" style="margin-top:6px;">Restore a previously saved form: (currently none)</p>
-    <div id="right1"><span id="left1"></span></div>
-    <div id="right2"><span id="left2"></span></div>
+    <div id="rest1"><span id="rem1"></span></div>
+    <div id="rest2"><span id="rem2"></span></div>
     <div id="save-modal" class="modal" style="background-color:white;">
         <p id="prev" style="text-align:center;"> NOTE: You may save up to two different forms<br />
         <em> You must re-upload CSV File (and associated image files) for complete restore!!</em></p>
@@ -467,9 +473,9 @@
         <input id="dontsave" type="radio" name="dothis" value="nosave" /> Close this popup and do NOT save form
     </div>
 </div>
-<div id="ul"></div>
 
-<!--  DEBUG SECTION:
+
+<!-- Debug Section 
 <p id="dbug"></p>
 <div id="dbugr">CLICK</div>
 <div id="cleaner">CLEAN</div>

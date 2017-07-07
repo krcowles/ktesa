@@ -314,7 +314,7 @@ if ($curlid !== '') {
              * Order is the same as original 'mkgpsv.sh' utility
              */
             # name for tsv file
-            $tmpnme = str_replace(":","_",$hikeName);
+            $tmpnme = str_replace(":","_",$hikeName); // O/S doesnt like ":"
             $tsvName = str_replace(" ","_",$tmpnme) . '.tsv';
             $newtsv = 'tmp/gpsv/' . $tsvName;
             if (chdir($cwdStart) === false) {

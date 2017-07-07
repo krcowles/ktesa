@@ -47,19 +47,22 @@ $noOfTrks = 1;  # for a single hike page, this is a reasonable constraint, but
 $tno = 1;
 
 # NOTE: Currently using variables established in hikePageTemplate.php: 
-#   $hikeTitle, $gpsvFile, $gpxfile - ultimately, switch to database technique
+#   $hikeTitle, $gpsvFile, $gpxPath - ultimately, switch to database technique
 # Some titles may use quotations - provide for that case:
 $mapTitle = str_replace("'","\\'",$hikeTitle);
 $mapTitle = str_replace('"','\\"',$mapTitle);
 
 # Files: tsv  file
-$gpsvPath = '../gpsv/' . $gpsvFile;
+if (isset($building)) {
+    $gpsvPath = 'tmp/gpsv/' . $gpsvFile;
+} else {
+    $gpsvPath = '../gpsv/' . $gpsvFile;
+}
 $gpsvData = file($gpsvPath);
 if ($gpsvData === false) {
     die ($tsvmsg . $gpsvPath . $close);
 } 
 # Files: GPX track file
-$gpxPath = '../gpx/' . $gpxfile;
 $gpxdat = simplexml_load_file($gpxPath);
 if ($gpxdat === false) {
     die ($xmlmsg . $gpxPath . $close);

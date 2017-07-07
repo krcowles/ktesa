@@ -19,11 +19,13 @@ $buildFiles = 'tmp/';
  */
 $tsvname = filter_input(INPUT_POST,'tsv');
 $tsvFile = $buildFiles . 'gpsv/' . $tsvname;
-$geomap = filter_input(INPUT_POST,'geomp');
+#$geomap = filter_input(INPUT_POST,'geomp');
 $gpx = filter_input(INPUT_POST,'gpx');
 if ($gpx !== '') {
-    $gpxFile = $buildFiles . 'gpx/' . $gpx;
-}
+    $gpxPath = $buildFiles . 'gpx/' . $gpx;
+} else {
+    die ("GPX FILE REQUIRED: Go back and upload");
+ }
 $trkfile = filter_input(INPUT_POST,'json');
 $addonImg[0] = filter_input(INPUT_POST,'img1');
 $imgIndx = 0;
@@ -45,6 +47,7 @@ if ($addonImg[1] !== '') {
     $othrHeight[$imgIndx] = $secondimg[1];
     $img2File = $buildFiles . 'images/' . $addonImg[1];
 }
+# All files associated with proposed & actual data sections:
 $propact = filter_input(INPUT_POST,'dfiles');
 /* An 'array string' is passed to 'saveHike.php' consisting of 10 pairs of values;
  * each value in the pair is either "YES" or "NO": First val: has a duplicate file name
@@ -55,8 +58,6 @@ $propact = filter_input(INPUT_POST,'dfiles');
 $saveFileInfo = [];
 array_push($saveFileInfo,filter_input(INPUT_POST,'tsvf'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'owt'));
-array_push($saveFileInfo,filter_input(INPUT_POST,'mapf'));
-array_push($saveFileInfo,filter_input(INPUT_POST,'owm'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'gpxf'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'owg'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'jsonf'));
@@ -206,6 +207,23 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
 </div>
 <p id="trail"><?php echo $hikeTitle;?></p>
 
+<?php
+    # MAP CONSTRUCTION:
+    $building = true;
+    $gpsvFile = $tsvname;  # include file uses gpsvFle var
+    $jsonFile = $trkfile;   # include file uses jsonFie var
+    $extLoc = strrpos($gpsvFile,'.');
+    $gpsvMap = substr($gpsvFile,0,$extLoc);
+    # holding place for page's hike map
+    $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
+    if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
+        $mapmsg = $intro . 'Could not open tmp map file - contact Site Master';
+        die ($mapmsg);
+    }
+    include "../php/makeGpsv.php";
+    fputs($mapHandle,$html);
+    fclose($mapHandle);
+?>
 <div id="sidePanel">
     <p id="stats">
         <strong>Hike Statistics</strong>
@@ -224,7 +242,7 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
         <strong>More!</strong>
     </p>
     <p id="mlnk">
-        <a href="../maps/gpsvMapTemplate.php?map_name=<?php echo $geomap . 
+        <a href="../maps/gpsvMapTemplate.php?map_name=<?php echo $tmpMap . 
                 fullMapOpts;?>" target="_blank">Full Page Map Link</a>
     </p>
     <p id="albums">
@@ -252,9 +270,9 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
         <a href="mailto:krcowles29@gmail.com">send us a note!</a>
     </p>
 </div> <!-- END OF SIDE PANEL DIV -->
-<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=<?php echo $geomap . 
+<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=<?php echo $tmpMap . 
     iframeMapOpts;?>"></iframe>
-<div data-gpx="<?php echo $gpxFile;?>" id="chartline"><canvas id="grph"></canvas></div>
+<div data-gpx="<?php echo $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
 
 <?php
 /*  
@@ -677,6 +695,23 @@ echo $albumHtml;
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/hikes.js"></script>
 <script src="../scripts/dynamicChart.js"></script>
+<script type="text/javascript">
+    window.onbeforeunload = deleteTmpMap;
+    function deleteTmpMap() {
+        $.ajax({
+            url: '../php/tmpMapDelete.php',
+            data: {'file' : "<?php echo $tmpMap;?>" },
+            success: function (response) {
+               var msg = "Map deleted: " + "<?php echo $tmpMap?>";
+               //window.alert(msg);  debug msg
+            },
+            error: function () {
+               var msg = "Map NOT deleted: " + "<?php echo $tmpMap?>";
+               //window.alert(msg);  debug msg
+            }
+        });
+    }
+</script>
 
 
 </body>
