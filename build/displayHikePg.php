@@ -203,7 +203,7 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail"><?php echo $hikeTitle;?></p>
+<p id="trail"><?php echo $pgTitle;?></p>
 
 <?php
     # MAP CONSTRUCTION:
@@ -214,6 +214,9 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
     $gpsvMap = substr($gpsvFile,0,$extLoc);
     # holding place for page's hike map
     $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
+    if ($gpsvMap === '') {
+        $tmpMap = '../maps/tmp/' . $pgTitle . '.html';
+    }
     if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
         $mapmsg = $intro . 'Could not open tmp map file - contact Site Master';
         die ($mapmsg);

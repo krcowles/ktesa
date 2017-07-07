@@ -187,7 +187,7 @@
         $delmsg1 = '<p style="color:brown;">';
         $delmsg2 = " is being deleted because it was detected as a duplicate " .
             "file, and was not designated to overwrite the existing file.</p>";
-        if ($formpics === 'YES') {
+        if ($saveTsv === 'YES') {
             $oldLoc = $cwd . $uploads . 'gpsv/' . $newHike[14];
             if ( ($rules[0] === 'YES' && $rules[1] === 'YES') || $rules[0] === 'NO' ) {
                 $newLoc = $basedir . '/gpsv/' . $newHike[14];
