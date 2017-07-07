@@ -538,7 +538,7 @@ if ($hikeMarker === 'ctrhike') {
 </div>
 
 <div style="width:200px;position:relative;top:90px;left:20px;float:left;">
-    <input type="submit" value="Use Selected Pics" /><br /><br />
+    <input type="submit" value="Create Page w/This Data" /><br /><br />
 </div>
 
 <input type="hidden" name="tsv" value="<?php echo $tsvFname;?>" />
