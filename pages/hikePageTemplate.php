@@ -321,6 +321,8 @@ for ($k=0; $k<count($rows); $k++) {
 }
 echo '<div class="captionList">' . $picCaptions . '</div>' . "\n";
 echo '<div class="lnkList">' . $picLinks . '</div>' . "\n";
+# clear floats when no pics:
+echo '<div style="clear:both;">' . "\n";
 if ($hikeTips !== '') {
     echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
         '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . 
@@ -338,6 +340,7 @@ if ($hikeReferences !== '') {
 if ($fieldsets) {
     echo $datasect;
 }
+echo '</div>';
 ?>
 
 <div id="dbug"></div>

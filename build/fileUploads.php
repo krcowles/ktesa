@@ -25,21 +25,23 @@ $datfileArray = array('x','x',0,'x','x',0,'x','x',0,'x','x',0);
  */
 
 # TSV FILE OPS:
-echo '<h3 style="text-indent:8px">Hike TSV File Info (Created):</h3>' . "\n";
-echo '<ul style="margin-top:-10px;">' . "\n";
-$tsvFname = $tsvName;  // $tsvFname is being used in validateHike.php
-if ($tsvFname === '') {
-    die("No name for tsv file!");
+if ($usetsv) {
+    echo '<h3 style="text-indent:8px">Hike TSV File Info (Created):</h3>' . "\n";
+    echo '<ul style="margin-top:-10px;">' . "\n";
+    $tsvFname = $tsvName;  // $tsvFname is being used in validateHike.php
+    if ($tsvFname === '') {
+        die("No name for tsv file!");
+    }
+    $tsvLoc = '../gpsv/' . $tsvName;
+    if ( file_exists($tsvLoc) ) {
+        echo $fexists1 . $tsvFname . $fexists2. 
+            '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
+        $dupTsv = 'YES';
+    }
+    echo '<li>Created tsv file: ' . $tsvName . '</li>' . "\n";
+    echo '<li>File size: ' . $tsvSize . '</li>' . "\n";
+    echo '</ul>' . "\n";
 }
-$tsvLoc = '../gpsv/' . $tsvName;
-if ( file_exists($tsvLoc) ) {
-    echo $fexists1 . $tsvFname . $fexists2. 
-        '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
-    $dupTsv = 'YES';
-}
-echo '<li>Created tsv file: ' . $tsvName . '</li>' . "\n";
-echo '<li>File size: ' . $tsvSize . '</li>' . "\n";
-echo '</ul>' . "\n";
 
 # GPX FILE OPS
 echo '<h3 style="text-indent:8px">Uploaded GPX File Info:</h3>' . "\n";
