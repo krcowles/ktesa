@@ -177,6 +177,7 @@
      *   in the data directory), and the tmp files will not be moved.
      */
     $user = true;
+    $saveTsv = filter_input(INPUT_POST,'savetsv');
     if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
         $passwd = filter_input(INPUT_POST,'mpass');
         if ($passwd !== '000ktesa') {
@@ -186,18 +187,19 @@
         $delmsg1 = '<p style="color:brown;">';
         $delmsg2 = " is being deleted because it was detected as a duplicate " .
             "file, and was not designated to overwrite the existing file.</p>";
-        # There is always a tsv file...
-        $oldLoc = $cwd . $uploads . 'gpsv/' . $newHike[14];
-        if ( ($rules[0] === 'YES' && $rules[1] === 'YES') || $rules[0] === 'NO' ) {
-            $newLoc = $basedir . '/gpsv/' . $newHike[14];
-            if (!rename($oldLoc,$newLoc)) {
-                die('<p style="color:brown;">COULD NOT MOVE TSV FILE</p>');
+        if ($saveTsv === 'YES') {
+            $oldLoc = $cwd . $uploads . 'gpsv/' . $newHike[14];
+            if ( ($rules[0] === 'YES' && $rules[1] === 'YES') || $rules[0] === 'NO' ) {
+                $newLoc = $basedir . '/gpsv/' . $newHike[14];
+                if (!rename($oldLoc,$newLoc)) {
+                    die('<p style="color:brown;">COULD NOT MOVE TSV FILE</p>');
+                } else {
+                    echo "<p>Successfully moved tsv file</p>";
+                }
             } else {
-                echo "<p>Successfully moved tsv file</p>";
+                echo $delmsg1 . $newHike[14] . $delmsg2;
+                unlink($oldLoc);
             }
-        } else {
-            echo $delmsg1 . $newHike[14] . $delmsg2;
-            unlink($oldLoc);
         }
         # remaining files should be tested for existence:
         # GPX FILE

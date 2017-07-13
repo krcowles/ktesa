@@ -136,6 +136,14 @@ $reftags.each( function() {
         }
     });
 });
+// Hide or display the part of the form used to enter pictures
+$('#nopics').on('change', function() {
+    if ( $(this).prop('checked') === false ) {
+        $('#picopt').css('display','block');
+    } else {
+        $('#picopt').css('display','none');
+    }
+});
 
 // PARTIALLY FILLED FORM-SAVING
 if (typeof(Storage) !== undefined) {

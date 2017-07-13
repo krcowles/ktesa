@@ -90,4 +90,9 @@ $('#owaf2').on('change', function() {
     }
 });
 
+if ( $('#tsvStat').text() == 'NO') {
+    $('#showpics').css('display','none');
+} else {
+    $('#showpics').css('display','block');
+}
 }); // end of page is loaded...

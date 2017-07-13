@@ -15,11 +15,10 @@ $buildFiles = 'tmp/';
 /* HTML form elements used by validateHike.js that are not used here:
  *  'tsvow', 'mapow', 'gpxow' ,'trkow', 'jsonow'
  * 
- * FIRST: Uploaded filenames
+ * FIRST: Uploaded filenames (tsv may be empty)
  */
 $tsvname = filter_input(INPUT_POST,'tsv');
 $tsvFile = $buildFiles . 'gpsv/' . $tsvname;
-#$geomap = filter_input(INPUT_POST,'geomp');
 $gpx = filter_input(INPUT_POST,'gpx');
 if ($gpx !== '') {
     $gpxPath = $buildFiles . 'gpx/' . $gpx;
@@ -171,7 +170,6 @@ $info = $_SESSION['hikeDetails'];
 $refs = filter_input(INPUT_POST,'refstr');
 $pdat = filter_input(INPUT_POST,'pstr');
 $adat = filter_input(INPUT_POST,'astr');
-echo "DATA Sects: adat: " . $adat . ", pdat: " . $pdat;
 $picarray = $_POST['pix'];  # don't know how to filter passed array...
 $noOfPix = count($picarray);
 $forceLoad = filter_input(INPUT_POST,'setForce');
@@ -205,7 +203,7 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail"><?php echo $hikeTitle;?></p>
+<p id="trail"><?php echo $pgTitle;?></p>
 
 <?php
     # MAP CONSTRUCTION:
@@ -216,6 +214,9 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
     $gpsvMap = substr($gpsvFile,0,$extLoc);
     # holding place for page's hike map
     $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
+    if ($gpsvMap === '') {
+        $tmpMap = '../maps/tmp/' . $pgTitle . '.html';
+    }
     if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
         $mapmsg = $intro . 'Could not open tmp map file - contact Site Master';
         die ($mapmsg);
@@ -278,241 +279,244 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
 /*  
     ---------------------------  BEGIN IMAGE ROW PROCESSING ----------------------
 */
-# predefined var
-$month = array("Jan","Feb","Mar","Apr","May","Jun",
-				"Jul","Aug","Sep","Oct","Nov","Dec");
-#  Read in the tsv file and extract ALL usable data:
-/* NOTE: For some older files, the fields in the tsv file vary considerably and may
-   omit key data that later files contain. Look for these special files when
-   executing a page rebuild. The only fields required for row-filling are:
-   -- desc, name, date, n-size
-*/
-$handle = fopen($tsvFile, "r");
-if ($handle !== false) {
-    $lineno = 0;
-    $picno = 0;
-    while ( ($line = fgets($handle)) !== false ) {
-        $tsvArray = str_getcsv($line,"\t");
-        if ($lineno !== 0) {
-            $picName[$picno] = $tsvArray[1];
-            $picDesc[$picno] = $tsvArray[2];
-            $picAlbm[$picno] = $tsvArray[6];
-            $picDate[$picno] = $tsvArray[7];
-            $nsize[$picno] = $tsvArray[8]; 
-            $picno++;
+$formpics = filter_input(INPUT_POST,'usepics');
+if ($formpics === "YES") {
+    # predefined var
+    $month = array("Jan","Feb","Mar","Apr","May","Jun",
+                                    "Jul","Aug","Sep","Oct","Nov","Dec");
+    #  Read in the tsv file and extract ALL usable data:
+    /* NOTE: For some older files, the fields in the tsv file vary considerably and may
+       omit key data that later files contain. Look for these special files when
+       executing a page rebuild. The only fields required for row-filling are:
+       -- desc, name, date, n-size
+    */
+    $handle = fopen($tsvFile, "r");
+    if ($handle !== false) {
+        $lineno = 0;
+        $picno = 0;
+        while ( ($line = fgets($handle)) !== false ) {
+            $tsvArray = str_getcsv($line,"\t");
+            if ($lineno !== 0) {
+                $picName[$picno] = $tsvArray[1];
+                $picDesc[$picno] = $tsvArray[2];
+                $picAlbm[$picno] = $tsvArray[6];
+                $picDate[$picno] = $tsvArray[7];
+                $nsize[$picno] = $tsvArray[8]; 
+                $picno++;
+            }
+            $lineno++;
         }
-        $lineno++;
-    }
-    $lineno--;
-} else {
-    die( "Could not open tsv file for this hike" );
-}
-# Pull out the index numbers of the chosen few: (or maybe all!)
-$k = 0;
-for ($i=0; $i<$noOfPix; $i++) {
-    $targ = $picarray[$i];
-    for ($j=0; $j<$lineno; $j++) {
-        if( $targ === $picName[$j] ) {
-            $indx[$k] = $j;
-            $k++;
-            break;
-        }
-    }
-}
-# for each of the <user-selected> pix, define needed arrays
-for ($i=0; $i<$noOfPix; $i++) {
-    $x = $indx[$i];
-    $picYear = substr($picDate[$x],0,4);
-    $picMoDigits = substr($picDate[$x],5,2) - 1;
-    $picMonth = $month[$picMoDigits];
-    $picDay = substr($picDate[$x],8,2);
-    if (substr($picDay,0,1) === '0') {
-        $picDay = substr($picDay,1,1);
-    }
-    $caption[$i] = "{$picMonth} {$picDay}, {$picYear}: {$picDesc[$x]}";
-    $picSize = getimagesize($nsize[$x]); # PROVIDE THIS IN GPSV FILE??
-    $picWidth[$i] = $picSize[0];
-    $picHeight[$i] = $picSize[1];
-    $name[$i] = $picName[$x];
-    $desc[$i] = $picDesc[$x];
-    $album[$i] = $picAlbm[$x];
-    $photolink[$i] = $nsize[$x];
-}
-$noOfAlbumLinks = count($album);
-$albStr = $noOfAlbumLinks . '^' . implode("^",$album);
-$albStr = preg_replace("/\n\t\r/"," ",$albStr);
-# Preliminary setup complete, begin row-filling algorithm:
-$imgRows = array(6);
-$maxRowHt = 260;	# change as desired
-$rowWidth = 950;	# change as desired, current page width is 960
-# start by calculating the various images' widths when rowht = maxRowHt
-# PHOTOS:
-for ($i=0; $i<$noOfPix; $i++) {
-    $widthAtMax[$i] = floor($picWidth[$i] * ($maxRowHt/$picHeight[$i]));
-}
-# OTHER IMAGES: 
-for ($l=0; $l<$noOfOthr; $l++) {
-    $indx = $noOfPix + $l;
-    $widthAtMax[$indx] = floor($othrWidth[$l] * ($maxRowHt/$othrHeight[$l]));
-}
-$items = $noOfPix + $noOfOthr;
-# initialize starting rowWidth, counters, and starting point for html creation
-$curWidth = 0;	# row Width as it's being built
-$startIndx = 0;	# when creating html, index to set loop start
-$rowHtml = '';
-$rowNo = 0;
-$totalProcessed = 0;
-$othrIndx = 0;	 # counter for number of other images being loaded
-$leftMostImg = true;
-$rowStr = array();
-for ($i=0; $i<$items; $i++) {
-    if ($leftMostImg === false) {  # modify width for added pic margins for all but first img
-            $curWidth += 1;
-    }
-    $rowCompleted = false;
-    $curWidth += $widthAtMax[$i];
-    $leftMostImg = false;
-    if ($i < $noOfPix) {
-        $itype[$i] = "picture";
+        $lineno--;
     } else {
-        $itype[$i] = "image";
+        die( "Could not open tsv file for this hike" );
     }
-    if ($curWidth > $rowWidth) {
-        $rowItems = $i - $startIndx + 1;
-        $totalProcessed += $rowItems;
-        $scaleFactor = $rowWidth/$curWidth;
-        $actualHt = floor($scaleFactor * $maxRowHt);
-        # ALL rows concatenated in $rowHtml
-        $rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
-        /* Create a row unconcatenated to be used for $rowHtml, or passed solo via php */
-        $thisRow = '';
-        $imgCnt = 0;
-        $imel = '';
-        for ($n=$startIndx; $n<=$i; $n++) {
-            if ($n === $startIndx) {
-                $styling = ''; # don't add left-margin to leftmost image
-            } else {
-                $styling = 'margin-left:1px;';
+    # Pull out the index numbers of the chosen few: (or maybe all!)
+    $k = 0;
+    for ($i=0; $i<$noOfPix; $i++) {
+        $targ = $picarray[$i];
+        for ($j=0; $j<$lineno; $j++) {
+            if( $targ === $picName[$j] ) {
+                $indx[$k] = $j;
+                $k++;
+                break;
             }
-            if ($itype[$n] === "picture") {
-                $picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
-                $picHeight[$n] = $actualHt;
-                $thisRow = $thisRow . '<img id="pic' .$n . '" style="' . $styling . '" width="' .
-                        $picWidth[$n] . '" height="' . $actualHt . '" src="' . $photolink[$n] . 
-                        '" alt="' . $caption[$n] . '" />';	
-                $imel .= 'p^' . $picWidth[$n] . '^' . $photolink[$n] . '^' . $caption[$n];             
-            } else {  # its an additional non-captioned image
-                $othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
-                $othrHeight[$othrIndx] = $actualHt;
-                $thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
-                        '" height="' . $actualHt . '" src="../images/' . $addonImg[$othrIndx] .
-                        '" alt="Additional non-captioned image" />';
-                $imel .= 'n^' . $othrWidth[$n] . '^' . $addonImg[$othrIndx];
-                $othrIndx += 1;
-            }
-            $imgCnt++;
-            $imel .= '^';
-        }  # end of for loop $n
-        # thisRow is completed and will be used below in different ways:
-        $imel = $imgCnt . '^' . $actualHt . '^' . $imel;
-        array_push($rowStr,$imel);
-        $rowHtml = $rowHtml . $thisRow . '</div>';
-        $rowNo += 1;
-        $startIndx += $rowItems;
-        $curWidth = 0;
-        $rowCompleted = true;
-        $leftMostImg = true;
-    }  # end of if currentWidth > rowWidth
-} # end of for loop creating initial rows
-# last row may not be filled, and will be at maxRowHt
-# last item index was "startIndx"; coming into last row as $leftMostImg = true
-if ($rowCompleted === false) {
-    $itemsLeft = $items - $totalProcessed;
+        }
+    }
+    # for each of the <user-selected> pix, define needed arrays
+    for ($i=0; $i<$noOfPix; $i++) {
+        $x = $indx[$i];
+        $picYear = substr($picDate[$x],0,4);
+        $picMoDigits = substr($picDate[$x],5,2) - 1;
+        $picMonth = $month[$picMoDigits];
+        $picDay = substr($picDate[$x],8,2);
+        if (substr($picDay,0,1) === '0') {
+            $picDay = substr($picDay,1,1);
+        }
+        $caption[$i] = "{$picMonth} {$picDay}, {$picYear}: {$picDesc[$x]}";
+        $picSize = getimagesize($nsize[$x]); # PROVIDE THIS IN GPSV FILE??
+        $picWidth[$i] = $picSize[0];
+        $picHeight[$i] = $picSize[1];
+        $name[$i] = $picName[$x];
+        $desc[$i] = $picDesc[$x];
+        $album[$i] = $picAlbm[$x];
+        $photolink[$i] = $nsize[$x];
+    }
+    $noOfAlbumLinks = count($album);
+    $albStr = $noOfAlbumLinks . '^' . implode("^",$album);
+    $albStr = preg_replace("/\n\t\r/"," ",$albStr);
+    # Preliminary setup complete, begin row-filling algorithm:
+    $imgRows = array(6);
+    $maxRowHt = 260;	# change as desired
+    $rowWidth = 950;	# change as desired, current page width is 960
+    # start by calculating the various images' widths when rowht = maxRowHt
+    # PHOTOS:
+    for ($i=0; $i<$noOfPix; $i++) {
+        $widthAtMax[$i] = floor($picWidth[$i] * ($maxRowHt/$picHeight[$i]));
+    }
+    # OTHER IMAGES: 
+    for ($l=0; $l<$noOfOthr; $l++) {
+        $indx = $noOfPix + $l;
+        $widthAtMax[$indx] = floor($othrWidth[$l] * ($maxRowHt/$othrHeight[$l]));
+    }
+    $items = $noOfPix + $noOfOthr;
+    # initialize starting rowWidth, counters, and starting point for html creation
+    $curWidth = 0;	# row Width as it's being built
+    $startIndx = 0;	# when creating html, index to set loop start
+    $rowHtml = '';
+    $rowNo = 0;
+    $totalProcessed = 0;
+    $othrIndx = 0;	 # counter for number of other images being loaded
     $leftMostImg = true;
-    $thisRow = '<div id="row' . $rowNo . '" class="ImgRow">';
-    $imel = '';
-    $imgCnt = 0;
-	for ($i=0; $i<$itemsLeft; $i++) {
-            if ($leftMostImg) {
-                $styling = ''; 
-                $leftMostImg = false;
-            } else {
-                $styling = 'margin-left:1px;';
-            }
-            if ($itype[$startIndx] === "picture") {
-                $picWidth[$startIndx] = $widthAtMax[$startIndx];
-                $picHeight[$startIndx] = $maxRowHt;
-                $thisRow = $thisRow . '<img id="pic' . $startIndx . '" style="' . $styling .
-                        '" width="' . $picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
-                        $photolink[$startIndx] . '" alt="' . $caption[$startIndx] . '" />';
-                $imel .= 'p^' . $picWidth[$startIndx] . '^' . $photolink[$startIndx] . 
-                        '^' . $caption[$startIndx];
-                $startIndx += 1;
-            } else {
-                $othrWidth[$othrIndx] = $widthAtMax[$startIndx];
-                $othrHeight[$othrIndx] = $maxRowHt;
-                $thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$othrIndx] . '" height="' .
-                        $maxRowHt . '" src="../images/' . $addonImg[$othrIndx] .
-                        '" alt="Additional page image" />';
-                $imel .= 'n^' . $othrWidth[$othrIndx] . '^' . $addonImg[$othrIndx];
-                $othrIndx += 1;
-                $startIndx += 1;
-            }
-            $imgCnt++;
-            $imel .=  '^';
-	} // end of for loop processing
-	$imel = $imgCnt . '^' . $maxRowHt . '^' . $imel;
-	array_push($rowStr,$imel);
-	$imgRows[$rowNo] = $thisRow . "</div>";
-	$rowHtml = $rowHtml . $thisRow . "</div>";
-} // end of last row conditional
-# all items have been processed and actual width/heights retained
-# Create the list of album links
-$albumHtml = '<div class="lnkList"><ol>';
-for ($k=0; $k<$noOfPix; $k++ ) {
-	$albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
-}
-$albumHtml = $albumHtml . "</ol></div>";
-
-$noOfRows = count($rowStr);
-for ($x=$noOfRows; $x<6; $x++) {
-    $rowStr[$x] = '';
-}
-for ($y=0; $y<6; $y++) {
-    if ($rowStr[$y] !== '') {
-        $rlgth = strlen($rowStr[$y]) - 1;
-        $rowStr[$y] = substr($rowStr[$y],0,$rlgth);
+    $rowStr = array();
+    for ($i=0; $i<$items; $i++) {
+        if ($leftMostImg === false) {  # modify width for added pic margins for all but first img
+                $curWidth += 1;
+        }
+        $rowCompleted = false;
+        $curWidth += $widthAtMax[$i];
+        $leftMostImg = false;
+        if ($i < $noOfPix) {
+            $itype[$i] = "picture";
+        } else {
+            $itype[$i] = "image";
+        }
+        if ($curWidth > $rowWidth) {
+            $rowItems = $i - $startIndx + 1;
+            $totalProcessed += $rowItems;
+            $scaleFactor = $rowWidth/$curWidth;
+            $actualHt = floor($scaleFactor * $maxRowHt);
+            # ALL rows concatenated in $rowHtml
+            $rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
+            /* Create a row unconcatenated to be used for $rowHtml, or passed solo via php */
+            $thisRow = '';
+            $imgCnt = 0;
+            $imel = '';
+            for ($n=$startIndx; $n<=$i; $n++) {
+                if ($n === $startIndx) {
+                    $styling = ''; # don't add left-margin to leftmost image
+                } else {
+                    $styling = 'margin-left:1px;';
+                }
+                if ($itype[$n] === "picture") {
+                    $picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
+                    $picHeight[$n] = $actualHt;
+                    $thisRow = $thisRow . '<img id="pic' .$n . '" style="' . $styling . '" width="' .
+                            $picWidth[$n] . '" height="' . $actualHt . '" src="' . $photolink[$n] . 
+                            '" alt="' . $caption[$n] . '" />';	
+                    $imel .= 'p^' . $picWidth[$n] . '^' . $photolink[$n] . '^' . $caption[$n];             
+                } else {  # its an additional non-captioned image
+                    $othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
+                    $othrHeight[$othrIndx] = $actualHt;
+                    $thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
+                            '" height="' . $actualHt . '" src="../images/' . $addonImg[$othrIndx] .
+                            '" alt="Additional non-captioned image" />';
+                    $imel .= 'n^' . $othrWidth[$n] . '^' . $addonImg[$othrIndx];
+                    $othrIndx += 1;
+                }
+                $imgCnt++;
+                $imel .= '^';
+            }  # end of for loop $n
+            # thisRow is completed and will be used below in different ways:
+            $imel = $imgCnt . '^' . $actualHt . '^' . $imel;
+            array_push($rowStr,$imel);
+            $rowHtml = $rowHtml . $thisRow . '</div>';
+            $rowNo += 1;
+            $startIndx += $rowItems;
+            $curWidth = 0;
+            $rowCompleted = true;
+            $leftMostImg = true;
+        }  # end of if currentWidth > rowWidth
+    } # end of for loop creating initial rows
+    # last row may not be filled, and will be at maxRowHt
+    # last item index was "startIndx"; coming into last row as $leftMostImg = true
+    if ($rowCompleted === false) {
+        $itemsLeft = $items - $totalProcessed;
+        $leftMostImg = true;
+        $thisRow = '<div id="row' . $rowNo . '" class="ImgRow">';
+        $imel = '';
+        $imgCnt = 0;
+            for ($i=0; $i<$itemsLeft; $i++) {
+                if ($leftMostImg) {
+                    $styling = ''; 
+                    $leftMostImg = false;
+                } else {
+                    $styling = 'margin-left:1px;';
+                }
+                if ($itype[$startIndx] === "picture") {
+                    $picWidth[$startIndx] = $widthAtMax[$startIndx];
+                    $picHeight[$startIndx] = $maxRowHt;
+                    $thisRow = $thisRow . '<img id="pic' . $startIndx . '" style="' . $styling .
+                            '" width="' . $picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
+                            $photolink[$startIndx] . '" alt="' . $caption[$startIndx] . '" />';
+                    $imel .= 'p^' . $picWidth[$startIndx] . '^' . $photolink[$startIndx] . 
+                            '^' . $caption[$startIndx];
+                    $startIndx += 1;
+                } else {
+                    $othrWidth[$othrIndx] = $widthAtMax[$startIndx];
+                    $othrHeight[$othrIndx] = $maxRowHt;
+                    $thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$othrIndx] . '" height="' .
+                            $maxRowHt . '" src="../images/' . $addonImg[$othrIndx] .
+                            '" alt="Additional page image" />';
+                    $imel .= 'n^' . $othrWidth[$othrIndx] . '^' . $addonImg[$othrIndx];
+                    $othrIndx += 1;
+                    $startIndx += 1;
+                }
+                $imgCnt++;
+                $imel .=  '^';
+            } // end of for loop processing
+            $imel = $imgCnt . '^' . $maxRowHt . '^' . $imel;
+            array_push($rowStr,$imel);
+            $imgRows[$rowNo] = $thisRow . "</div>";
+            $rowHtml = $rowHtml . $thisRow . "</div>";
+    } // end of last row conditional
+    # all items have been processed and actual width/heights retained
+    # Create the list of album links
+    $albumHtml = '<div class="lnkList"><ol>';
+    for ($k=0; $k<$noOfPix; $k++ ) {
+            $albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
     }
-}
-$_SESSION['row0'] = $rowStr[0];
-$_SESSION['row1'] = $rowStr[1];
-$_SESSION['row2'] = $rowStr[2];
-$_SESSION['row3'] = $rowStr[3];
-$_SESSION['row4'] = $rowStr[4];
-$_SESSION['row5'] = $rowStr[5];
+    $albumHtml = $albumHtml . "</ol></div>";
 
-/*  
-    ---------------------------  END OF IMAGE ROW PROCESSING ----------------------
-*/
-echo $rowHtml;
-echo $albumHtml;
+    $noOfRows = count($rowStr);
+    for ($x=$noOfRows; $x<6; $x++) {
+        $rowStr[$x] = '';
+    }
+    for ($y=0; $y<6; $y++) {
+        if ($rowStr[$y] !== '') {
+            $rlgth = strlen($rowStr[$y]) - 1;
+            $rowStr[$y] = substr($rowStr[$y],0,$rlgth);
+        }
+    }
+    $_SESSION['row0'] = $rowStr[0];
+    $_SESSION['row1'] = $rowStr[1];
+    $_SESSION['row2'] = $rowStr[2];
+    $_SESSION['row3'] = $rowStr[3];
+    $_SESSION['row4'] = $rowStr[4];
+    $_SESSION['row5'] = $rowStr[5];
+
+    /*  
+        ---------------------------  END OF IMAGE ROW PROCESSING ----------------------
+    */
+    echo $rowHtml;
+    echo $albumHtml;
+}
 ?>
 <form target="_blank" action="saveHike.php" method="POST">
 
-<div id="postPhoto">
+<div id="postPhoto" style="clear:both;">
 <?php 
     /* ------ TIPS TEXT PROCESSING ----- */
     if($tips !== '') {
         echo '<div id="trailTips">' . "\n\t\t" .
             '<img id="tipPic" src="../images/tips.png" alt="special notes icon" />' . "\n\t\t" .
             '<p id="tipHdr">TRAIL TIPS!</p>' . "\n\t\t" . '<p id="tipNotes">' . 
-            $tips . '</p></div>';
+            $tips . '</p></div>' . "\n";
     }
     /* ----- HIKE INfORMATION PROCESSING ---- */
-    echo  '<p id="hikeInfo">' . $info . '</p>';
+    echo  '<p id="hikeInfo">' . $info . '</p>' . "\n";
     /* ----- REFERENCES PROCESSING ----- */
-    echo '<fieldset><legend id="fldrefs">References &amp; Links</legend>';
-    echo '<ul id="refs">';
+    echo '<fieldset>' . "\n" . '<legend id="fldrefs">References &amp; Links</legend>' . "\n";
+    echo '<ul id="refs">' . "\n";
     $dispRefs = explode("^",$refs);
     $noOfRefs = intval($dispRefs[0]);
     array_shift($dispRefs);
@@ -522,81 +526,81 @@ echo $albumHtml;
     for ($i=0; $i<$noOfRefs; $i++) {
         switch ($dispRefs[$nxt]) {
             case 'b':
-                $listel .= '<li>Book: <em>' . $dispRefs[$nxt+1] . '</em> ' . $dispRefs[$nxt+2] . '</li>';
+                $listel .= '<li>Book: <em>' . $dispRefs[$nxt+1] . '</em> ' . $dispRefs[$nxt+2] . '</li>' . "\n";
                 $nxt += 3;
                 break;
             case 'p':
-                $listel .= '<li>Photo Essay: <em>' . $dispRefs[$nxt+1] . '</em> ' . $dispRefs[$nxt+2] . '</li>';
+                $listel .= '<li>Photo Essay: <em>' . $dispRefs[$nxt+1] . '</em> ' . $dispRefs[$nxt+2] . '</li>' . "\n";
                 $nxt += 3;
                 break;
             case 'w':
                 $lbl ='Website: ';
                 $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
                 break;
             case 'a':
                 $lbl = 'App: ';
                 $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
                 break;
             case 'd':
                 $lbl = 'Downloadable Doc: ';
                 $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
                 break;
             case 'l':
                 $lbl = 'Blog: ';
                 $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
                 break;
             case 'r':
                 $lbl = 'Related Link: ';
                 $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
                 break;
             case 'o':
                 $lbl = 'On-Line Map: ';
                 $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
                 break;
             case 'm':
                 $lbl = 'Magazine: ';
                 $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
                 break;
             case 's':
                 $lbl = 'News Article: ';
                 $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
                 break;
             case 'g':
                 $lbl = 'Meetup Group: ';
                 $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
                 break;
             case 'n':
-                $listel .= '<li>' . $dispRefs[$nxt+1] . '</li>';
+                $listel .= '<li>' . $dispRefs[$nxt+1] . '</li>' . "\n";
                 break;
             default:
                 echo "Unrecognized reference type passed";
         }  // end of switch
     } // end of for loop - refs processing
-    echo $listel . '</ul></fieldset>';
+    echo $listel . '</ul>' . "\n" . '</fieldset>' . "\n";
     /* ----- PROPOSED AND/OR ACTUAL DATA PROCESSING ---- */
     if ($pdat !== '' || $adat !== '') {
-        echo '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
+        echo '<fieldset>' . "\n" . '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
         if ($pdat !== '') {
             $listel = '';
-            echo '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">';
+            echo '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">' . "\n";
             # get no. of pdats:
             $prop = explode("^",$pdat);
             $noOfProps = intval($prop[0]);
@@ -610,14 +614,14 @@ echo $albumHtml;
                     $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
                 }
                 $listel .= '<li>' . $prop[$nxt] . ' <a href="' . $tmpurl .
-                        '" target="_blank">' . $prop[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $prop[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
             }
             echo $listel . '</ul>';
         }
         if ($adat !== '') {
             $listel = '';
-            echo '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">';
+            echo '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">' . "\n";
             # get no of adats:
             $act = explode("^",$adat);
             $noOfActs = intval($act[0]);
@@ -631,12 +635,12 @@ echo $albumHtml;
                     $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
                 }
                 $listel .= '<li>' . $act[$nxt] . ' <a href="' . $tmpurl .
-                        '" target="_blank">' . $act[$nxt+2] . '</a></li>';
+                        '" target="_blank">' . $act[$nxt+2] . '</a></li>' . "\n";
                 $nxt += 3;
             }
-            echo $listel . '</ul>';
+            echo $listel . '</ul>' . "\n";
         }
-        echo '</fieldset';
+        echo '</fieldset>';
     }
 ?>
 </div>  <!-- end of postPhoto -->
@@ -673,6 +677,7 @@ echo $albumHtml;
 <input type="hidden" name="hpdat" value="<?php echo $pdat;?>" />
 <input type="hidden" name="hadat" value="<?php echo $adat;?>" />
 <input type="hidden" name="rhno" value="<?php echo $hikeNo;?>" />
+<input type="hidden" name="savetsv" value="<?php echo $formpics;?>" />
 
 <div style="margin-left:8px;">
 <h3>Select an option below to save the hike page</h3>
