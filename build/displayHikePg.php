@@ -209,7 +209,6 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
     # MAP CONSTRUCTION:
     $building = true;
     $gpsvFile = $tsvname;  # include file uses gpsvFle var
-    $jsonFile = $trkfile;   # include file uses jsonFie var
     $extLoc = strrpos($gpsvFile,'.');
     $gpsvMap = substr($gpsvFile,0,$extLoc);
     # holding place for page's hike map
@@ -221,7 +220,11 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
         $mapmsg = $intro . 'Could not open tmp map file - contact Site Master';
         die ($mapmsg);
     }
+    $hikeTitle = $pgTitle;  # include file uses $hikeTitle var
+    # include file also uses $gpxPath var defined earlier
     include "../php/makeGpsv.php";
+    #echo "html is " . strlen($html);
+    #echo " placing file in " . $tmpMap;
     fputs($mapHandle,$html);
     fclose($mapHandle);
 ?>
