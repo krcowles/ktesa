@@ -45,6 +45,7 @@ if ($usetsv) {  // false only if no pictures are specified at this time
 
 # GPX FILE OPS
 echo '<h3 style="text-indent:8px">Uploaded GPX File Info:</h3>' . "\n";
+echo '<ul style="margin-top:-10px;">' . "\n";
 $gpxFile = $_FILES['gpxname']['tmp_name'];
 $hikeGpx = basename($_FILES['gpxname']['name']);
 $gpxSize = filesize($gpxFile);
@@ -69,7 +70,6 @@ if ( $hikeGpx !== '') {
         }
     }
 }
-echo '<ul style="margin-top:-10px;">' . "\n";
 if ($hikeGpx !== '') {
     echo '<li>Uploaded gpx file: ' .  $hikeGpx . '</li>' . "\n";
     echo '<li>File size: ' . $gpxSize . ' bytes</li>' . "\n";

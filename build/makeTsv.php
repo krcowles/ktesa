@@ -49,6 +49,8 @@ function convtTime($GPStime) {
     $tstring = $hr . ':' . $min . ":" . $sec;
     return $tstring;
 }
+# output msg styling:
+$pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
 /*
  * Extract and validate the form data:
  * If there is something missing, the user will be notified;
@@ -57,8 +59,7 @@ function convtTime($GPStime) {
  */
 $curlid = filter_input(INPUT_POST, 'phpcurl', FILTER_VALIDATE_URL);
 if ($curlid === false) {
-    $badmsg = '<p style="margin-left:16px;color:red;font-size:20px;">' .
-            'The value you entered is not a qualified url address<br />' .
+    $badmsg = $pstyle . 'The value you entered is not a qualified url address<br />' .
             'Please go back and re-enter the url with a valid address.</p>';
     die($badmsg);
 }
@@ -76,20 +77,20 @@ if ($curlid !== '') {
      */
     $localPath = filter_input(INPUT_POST, 'lphotos');
     if ($localPath === '') {
-        $nofind = '<p style="margin-left:16px;color:red;font-size:20px;"' .
+        $nofind = $pstyle .
                 'There is no specified path to your local copy of the photos:' .
                 '<br />Please go back and re-enter a valid path.</p>';
         die($nofind);
     }
     $cwdStart = getcwd();
     if (chdir($localPath) === false) {
-        $badpath = '<p style="margin-left:16px;color:red;font-size:20px;"' .
-                'Could not access ' . $localPath;
+        $badpath = $pstyle . 'Could not access ' . $localPath . ';<br />Please ' .
+                'verify that the path is correct and has appropriate permissions</p>';
         die($badpath);
     }
     if (($files = scandir($localPath)) === false) {
-        $nofiles = '<p style="margin-left:16px;color:red;font-size:20px;"' .
-                'Could not find files in ' . $localPath;
+        $nofiles = $pstyle .'Could not find files in ' . $localPath . ';<br />' .
+                'Please verify that the path you supplied is a readable directory</p>';
     } else {
         # collect the photos into an array
         $photos = [];
@@ -108,8 +109,8 @@ if ($curlid !== '') {
         }
         $noOfImgs = count($photos);
         if ($noOfImgs === 0) {
-            $noimgs = '<p style="margin-left:16px;color:red;font-size:20px;"' .
-                    'No jpg photos were found in the ' . $localPath . ' directory';
+            $noimgs = $pstyle . 'No supported (jpg) photos were found in the ' . 
+                    $localPath . ' directory</p>';
             die($noimgs);
         }
         /*
@@ -153,6 +154,10 @@ if ($curlid !== '') {
                             case 'EXIF':
                                 if ($name === 'DateTimeOriginal') {
                                     $timeStamp[$x] = $val;
+                                    if ($val == '') {
+                                        echo "WARNING: No date/time data found " .
+                                                'for ' . $photos[$x] . '</p>';
+                                    }
                                 }
                             case 'GPS':
                                 if ($name === 'GPSLatitude') {
@@ -174,8 +179,15 @@ if ($curlid !== '') {
                         }  // end of switch statement
                     }  // end of foreach $name loop
                 }  // end of foreach $section loop
-            }  // end of 'if exif data found  
-            #echo "endloop" . $x . ", HT: " . $imgHt[$x];
+                if ($lats[$x] == 0 || $lngs[$x] == 0) {
+                    echo $pstyle . "WARNING: No latitude/longitude data obtained for " .
+                        $photos[$x] . '</p>';
+                }
+            } else {  // end of 'if exif data found 
+                echo $pstyle . 'WARNING: Could not read exif data: please ' .
+                        'verify that the photos contain metadata, and check '
+                        . 'file permissions</p>';
+            }
         }  // end of loop to extract all photo exif data 
     }  // end of 'if got photos'else scandir'
     /*
@@ -221,6 +233,7 @@ if ($curlid !== '') {
              *  Original      o       2560 x 1536     iPhone6: 3264 x 2448
              */
             $srchPat = '{"_flickrModelRegistry":"photo-models","title":"';
+            $patCnt = 0;
             $ownerIds = [];
             $Nsids = [];
             $titles = [];
@@ -239,9 +252,22 @@ if ($curlid !== '') {
             $sq = [];
             $t = [];
             $z = [];
-            for ($j = 0; $j < $noOfImgs; $j++) {
-                # find the next $srchPat:
-                $pmodels = strpos($flickrInfo, $srchPat) + 48;
+            #for ($j = 0; $j < $noOfImgs; $j++) {
+            /* The pattern of interest is $srchPat, and there should be
+             * one such pattern for each picture in $photos, no more
+             * no less. This routine will scan the Flickr html and go
+             * through all the $rschPat's in the file, looking for a photo
+             * match.
+             */
+            $j = 0;
+            $pmodels = strpos($flickrInfo, $srchPat) + 48;
+            while ( $pmodels !== false && $pmodels !== 48 ) {
+                $patCnt++;
+                if ($patCnt > $noOfImgs) {
+                    echo '<p style="color:red;font-size:20px;margin-left:16px;">' .
+                            'WARNING: There are fewer photos in the local album '
+                            . 'than are contained in the Flickr album...</p>';
+                }
                 $modelInfo = substr($flickrInfo, $pmodels);
                 $titleEnd = strpos($modelInfo, '"');
                 $titles[$j] = substr($modelInfo, 0, $titleEnd);
@@ -308,7 +334,16 @@ if ($curlid !== '') {
                 }  // end of all sizes loop
                 # adjust the search to the next photo-model:
                 $flickrInfo = $modelInfo;
-            }  // end of all images loop
+                $pmodels = strpos($flickrInfo, $srchPat) + 48;
+                $j++;
+            }  // end of while $srchPat exists
+            if ($noOfImgs > $patCnt) {
+                echo '<p style="color:red;font-size:20px;margin-left:16px;">' .
+                        'WARNING: There are more photos in the local album ' .
+                        'than are contained in the Flickr album.<br />' .
+                        'NOTE: Extra local images will NOT appear at the '
+                        . 'bottom of the page</p>';
+            }
             /*
              * Create the tsv file with the above data:
              * Order is the same as original 'mkgpsv.sh' utility
@@ -357,11 +392,13 @@ if ($curlid !== '') {
             # no code at this time
         }
     } else {
-        $noread = '<p sytle="margin-left:16px;color:red;font-size:20px"> .'
-                . 'Could not read the album link: try re-entering the url or'
-                . 'contact the Site Master</p>';
+        $noread = $pstyle . 'Could not read the album link: try re-entering '
+                . 'the url or contact the Site Master</p>';
         die($noread);
     }
-    
-} 
+} else {
+    $badmsg = $pstyle . 'The URL field is blank: please go back and supply ' .
+            'a valid URL for the on-line photo album</p>';
+    die ($badmsg);
+}
 ?>
