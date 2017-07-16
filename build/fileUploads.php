@@ -4,7 +4,7 @@ $fexists1 = '<p style="margin-left:8px;margin-top:-12px;color:brown;"><em>NOTE: 
 $fexists2 = ' has been previously saved on the server; ' .
             'Check here to overwrite: ';
 $fexists3 = '</em></p>' . "\n";
-$uploads = "tmp/"; 
+$uploads = "tmp/";  # NOTE: impacts code if moved
 /*
  * Since file info for the proposed and actual data sections (in 'GPS Maps & 
  * Data' on the actual hike page) is not saved directly in the database (it's 
@@ -25,7 +25,7 @@ $datfileArray = array('x','x',0,'x','x',0,'x','x',0,'x','x',0);
  */
 
 # TSV FILE OPS:
-if ($usetsv) {
+if ($usetsv) {  // false only if no pictures are specified at this time
     echo '<h3 style="text-indent:8px">Hike TSV File Info (Created):</h3>' . "\n";
     echo '<ul style="margin-top:-10px;">' . "\n";
     $tsvFname = $tsvName;  // $tsvFname is being used in validateHike.php
@@ -45,6 +45,7 @@ if ($usetsv) {
 
 # GPX FILE OPS
 echo '<h3 style="text-indent:8px">Uploaded GPX File Info:</h3>' . "\n";
+echo '<ul style="margin-top:-10px;">' . "\n";
 $gpxFile = $_FILES['gpxname']['tmp_name'];
 $hikeGpx = basename($_FILES['gpxname']['name']);
 $gpxSize = filesize($gpxFile);
@@ -69,7 +70,6 @@ if ( $hikeGpx !== '') {
         }
     }
 }
-echo '<ul style="margin-top:-10px;">' . "\n";
 if ($hikeGpx !== '') {
     echo '<li>Uploaded gpx file: ' .  $hikeGpx . '</li>' . "\n";
     echo '<li>File size: ' . $gpxSize . ' bytes</li>' . "\n";
@@ -84,9 +84,13 @@ echo '</ul>' . "\n";
 echo '<h3 style="text-indent:8px">Track File Info (Created):</h3>' . "\n";
 echo '<ul style="margin-top:-10px;">' . "\n";
 $cwd = getcwd();
-$ktesaPos = strpos($cwd,"ktesa") + 6;
-$ktesaDir = substr($cwd,0,$ktesaPos);
-$trkcmd = $ktesaDir . 'tools/mktrk.sh -f ' . $cwd . '/' . $uploads .
+/* --- NOTE: if the 'tmp' directory (specified by $uploads) is moved,
+ * the following code will need to be adjusted to account for the new
+ * location. Currently in the 'build' directory.
+ */
+$sitePos = strpos($cwd,"build");
+$siteLoc = substr($cwd,0,$sitePos);
+$trkcmd = $siteLoc . 'tools/mktrk.sh -f ' . $cwd . '/' . $uploads .
         'gpx/' . $hikeGpx . ' -p ' . $cwd . '/' . $uploads . 'json';
 $json = exec($trkcmd);
 if ( preg_match("/DONE/",$json) === 1 ) {

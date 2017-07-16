@@ -208,8 +208,9 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
 <?php
     # MAP CONSTRUCTION:
     $building = true;
-    $gpsvFile = $tsvname;  # include file uses gpsvFle var
-    $jsonFile = $trkfile;   # include file uses jsonFie var
+    $hikeTitle = $pgTitle;  # include file uses $hikeTitle var
+    $gpsvFile = $tsvname;   # include file uses $gpsvFile var
+    # include file also uses $gpxPath, defined earlier in this routine
     $extLoc = strrpos($gpsvFile,'.');
     $gpsvMap = substr($gpsvFile,0,$extLoc);
     # holding place for page's hike map
