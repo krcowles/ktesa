@@ -1,0 +1,126 @@
+UPDATED 7/14/2017 – only GPX file is needed, and there is a ‘noPics’ option
+
+    Except for cases where code is shared with run-time code, the [project]/build 
+directory contains various scripts required to build and edit hike pages and 
+index pages for the site.  The following activities can be performed with the 
+scripts in this directory:
+    1.  Create a new hike page
+    2.  Create a new index page
+    3.  Edit a hike page
+    4.  Edit an index page
+    5.  Delete a hike page
+
+    The scripts are designed such that two types of users are expected to deploy
+them: the site masters (Tom Sandberg and Ken Cowles), and ‘registered users’ 
+(an option not yet fully specified but expected to accommodate outside users 
+who wish to maintain/enter their own relevant hikes after potential review and 
+acceptance by the site masters). Site masters will make changes directly to 
+the file system and database, whereas registered users will have changes stored
+in temporary directories and in a temporary database, pending review by the 
+site masters. The site masters will review the entries and move them into the 
+site if accepted, deleting the temporary data. (NOTE: This process has not 
+yet been defined and documented by the site masters, and the description here 
+is purely speculative).
+
+    To invoke any of the above processes, the ‘registered user key’ must be 
+entered into the main site page (index.html). When entered, the available 
+options will appear and be enabled.
+
+********************************************************************************
+
+ I. CREATING A NEW HIKE PAGE
+    To begin the process of creating a new hike page for the site, the user
+    should be prepared with the appropriate data required:
+    A. Total Hike Length (in miles), whether loop, out-and-back, or two-car hike;
+    B. The elevation change (in feet), from min to max, experienced on the hike;
+    C. Available GPX file (xml file with GPS data) of the actual track taken on
+       the hike, using any appropriate device or phone app: e.g. "EndoMondo"
+       (phone app), Garmin GPS Handheld, etc. The file should be accessible from
+       the users local machine;
+    D. Google maps direction link to trailhead;
+    E. Photo album link(s) to on-line photos taken during the hike (e.g. Flickr, 
+       Google, etc). Note, these should contain GPS metadata in order to be
+       displayed on the hike map.
+    F. References: Book/Author containing trail descriptions (and/or other 
+       info pertinent to the hike); Weblinks to site about the hike; App links,
+       Blogs, On-line Newslinks, etc with significant or interesting info about
+       the hike;
+    G. Other prompted information (some optional):
+        - Hike/Trail Name: 
+            NOTE Script must encode special html characters (e.g. &, <, >)
+        - Locale: select from a drop-down. Missing one? Notify site master...
+        - Hike "Type": logistics, i.e. Out-and-back, Loop, Two-car (select from
+            drop-down)
+        - Relative difficulty: select from a drop-down
+        - Facilities available at trailhead, if any
+        - WOW Factor - what makes this hike special in a word or two
+        - What seasons are best or should be avoided?
+
+        - Any other GPX or MAP files you wish to appear on the page (see "L." below)
+        - Any other images you wish to include with the photos (may be on your
+          local machine)
+    H. Select Exposure: select a radio button corresponding to conditions
+    I. Hike relative to other hikes on the site: select a radio button
+       corresponding to the set-up: e.g. "trailhead common to multiple hikes",
+       "hike at Visitor Center", etc.
+    J. OPTIONAL: Trail Tips: any warnings, special circumstances about the hike
+       that the hiker should be aware of prior to embarking.
+    K. Hike Description: In your own words, describe the hike, locale, views, 
+       special features of the hike.
+    L. OPTIONAL: enter/label any extra data of interest, such as Proposed Routes,
+       Alternate Maps, etc. in the "GPS Maps & Data" section.
+
+    NOTE: Any hike data entered may be saved until you return to complete it 
+    later, by selecting the 'Save Form Data' button. You will be prompted to give
+    it a name. This action adds a button to the bottom of the page allowing you
+    to either restore the data (except for any uploaded files - e.g. GPX), or to
+    delete the saved form. This button will remain active until you explicitly
+    delete it, and there is only room for two such buttons at this time. It
+    resides in your browser's memory until you delete it.
+
+    ** STYLING **
+    enterHike.css contains styling for the enterHike.html form, described below.
+    Note the browser-dependent code for enlarging the check boxes on the page.
+    Included is some styling for the accompanying modal window.
+
+    ** JAVASCRIPT **
+    The enterHike.html script, containing the entry form, calls up two javascript
+    files: modal_setup.js and enterHike.js. 
+        - modal_setup.js contains the code for the modal window that appears
+          when you wish to save form data, along with code supporting the form
+          save process.
+        - enterHike.js contains the code to accomplish multiple tasks:
+            1. Preload a file name into the corresponding "GPS Maps & Data"
+               section when a file is uploaded in the "File Data" section. The
+               option "maps" or "gpx" in the adjacent "Storage Location" 
+               drop-down will properly locate the file. Then the user need only 
+               to supply the labeling information in the GPS Maps & Data section.
+            2. Suppress text boxes for entry of latitude/longitude unless an
+               Index Page is being created (needed for location of Visitor Center).
+            3. Select the appropriate action for form submittal based on whether
+               the radio button for "CREATE A NEW: Visitor Center/Index Page" or
+               "CREATE A NEW: Hike Page" is selected at the top of the form.
+               This will also gray out data not required when Index Page is 
+               selected and modify some other form presentation.
+            4. Fill in 'placeholder' information in the References section,
+               depending on Reference Type selected from the accompanying
+               drop-down box.
+            5. Toggle displays for items not needed when "I don't want to specify
+               pictures at this time" is selected.
+            6. IF form data has been previously saved, include the item(s)
+               retained in browser memory, and provide a means for restoring
+               if a button is selected, and a means for deleting and removing
+               from browser memory if that is selected. Code is provided for
+               activating the modal window if "Save Form Data" is selected.
+    ** HTML/FORM **
+    The form, with inputs for the above-listed information, is invoked from the
+    main page by selecting the 'Create New Hike or Index Page' button. The
+    registration code is currently set as '1948'. The form html is contained in 
+    'enterHike.html'. There is no php in this file, only form elements to submit
+    containing the data required to construct a page in the following scripts.
+    As noted above, up to two partially-filled forms may be saved in memory, to
+    be restored at any time in the future. When the 'Validate Data' button is
+    selected, the form calls 'validateHike.php'.
+
+    ** VALIDATION.PHP **
+    

@@ -133,16 +133,37 @@
             <em style="font-size:18px;color:Brown;">I don't want to specify 
                 pictures at this time:</em>&nbsp;&nbsp;
             <input id="nopics" type="checkbox" name="nopix" /><br />
-            <div id="picopt">Specify your on-line photo album type and url below:<br />
-                <span style="text-decoration:underline;line-height:200%;">Otherwise:</span><br/>
-                Select type of album:&nbsp;
-                <select id="alb" name="albtype">
+            <div id="picopt">
+                <span style="text-decoration:underline;line-height:200%;">
+                    Otherwise:</span><br/>
+                Specify one or more on-line photo albums below (currently 3 max) - 
+                    types and urls:
+                <div style="margin-left:12px;">    
+                Type of album:&nbsp;
+                <select id="alb1" name="albtype[]">
                     <option value="flckr">Flickr Album</option>
                     <option value="apple">Apple iCloud Album</option>
                     <option value="googl">Google Album</option>
                 </select>&nbsp;&nbsp;Album URL:&nbsp;
-                <input id="curl" name="phpcurl" size="80" /><br />
-                Select the color of the icon which will be used to mark photo locations:&nbsp;&nbsp;
+                <input id="curl1" name="phpcurl[]" size="80" /><br />
+                Type of album:&nbsp;
+                <select id="alb2" name="albtype[]">
+                    <option value="flckr">Flickr Album</option>
+                    <option value="apple">Apple iCloud Album</option>
+                    <option value="googl">Google Album</option>
+                </select>&nbsp;&nbsp;Album URL:&nbsp;
+                <input id="curl2" name="phpcurl[]" size="80" /><br />
+                Type of album:&nbsp;
+                <select id="alb3" name="albtype[]">
+                    <option value="flckr">Flickr Album</option>
+                    <option value="apple">Apple iCloud Album</option>
+                    <option value="googl">Google Album</option>
+                </select>&nbsp;&nbsp;Album URL:&nbsp;
+                <input id="curl3" name="phpcurl[]" size="80" /><br />
+                </div><br />
+                
+                Select the color of the icon which will be used to mark photo 
+                locations on the map:&nbsp;&nbsp;
                 <select id="icolor" name="icon">
                     <option value="pink">Pink</option>
                     <option value="red">Red</option>
@@ -165,15 +186,10 @@
                     <option value="tan">Tan</option>
                     <option value="brown">Brown</option>
                     <option value="Google default">Google default</option>
-                </select><br />
-                You will also need to specify the 'absolute' path to your local 
-                copy of the photos -<br />
-                (NOTE: Cannot be a url &amp; must be same no. of photos and names as in 
-                online album)
-                &nbsp;&nbsp;<input id="localps" type="text" name="lphotos" size="35" /><br />
+                </select><br /><br />
             </div>
             <label id="l_gpx" class="notVC" for="gpxfile">GPX File: [REQUIRED]&nbsp;</label>
-            <input id="gpxfile" type="file" name="gpxname" required /><br />
+            <input id="gpxfile" type="file" name="gpxname" required /><br /><br />
         </div>
         
         <div class="indxFile">
