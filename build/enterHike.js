@@ -46,6 +46,30 @@ $('#agpx').change( function() {
 // Start with no display of lat/lng inputs - only used for Index Page Creation
 $('#latlng').css('display','none');
 
+// When adding photo urls, populate the first two in the 'Other URL's' section
+$('#curl1').change( function() {
+    var ph1 = 'Currently: ' + $(this).val();
+    console.log(ph1);
+    var tst = 'Photo url: ' + $('#url1').val();
+    console.log(tst);
+    if ($(this).val() === '') {
+        $('#url1').val('');
+    } else {
+        console.log("Correct if result");
+        $('#url1)').val(ph1);
+    }
+})
+$('#curl2').change( function() {
+    var ph2 = 'Currently: ' + $(this).val();
+    console.log(ph2);
+    if ($(this).val() === '') {
+        $('#url2').val('');
+    } else {
+        console.log("Correct if result");
+        $('#url2)').val(ph2);
+    }
+})
+
 /* Setting the target action for the submit button, based on whether the submission is
  * for a new hike page, or a new index pg;
  * NOTE: the "pageType" radio buttons are not within the <form> element
