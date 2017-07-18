@@ -1,5 +1,7 @@
-UPDATED 7/14/2017 – only GPX file is needed, and there is a ‘noPics’ option
+UPDATED 7/17/2017 – only GPX file is needed, there is a ‘noPics’ option, and
+    local copies of photos for the page are no longer required.
 
+INTRODUCTION:
     Except for cases where code is shared with run-time code, the [project]/build 
 directory contains various scripts required to build and edit hike pages and 
 index pages for the site.  The following activities can be performed with the 
@@ -26,8 +28,8 @@ is purely speculative).
 entered into the main site page (index.html). When entered, the available 
 options will appear and be enabled.
 
-********************************************************************************
 
+PROCESS:
  I. CREATING A NEW HIKE PAGE
     To begin the process of creating a new hike page for the site, the user
     should be prepared with the appropriate data required:
@@ -78,6 +80,7 @@ options will appear and be enabled.
     delete it, and there is only room for two such buttons at this time. It
     resides in your browser's memory until you delete it.
 
+    ---------- Enter Hike Date ----------
     ** STYLING **
     enterHike.css contains styling for the enterHike.html form, described below.
     Note the browser-dependent code for enlarging the check boxes on the page.
@@ -122,5 +125,132 @@ options will appear and be enabled.
     be restored at any time in the future. When the 'Validate Data' button is
     selected, the form calls 'validateHike.php'.
 
-    ** VALIDATION.PHP **
+    The presentation of the page is organized as into sections. The first
+    section allows the user to select the option to create either an Index
+    Page (Visitor Center Location), or a hike page. Succeeding sections are
+    enclosed in a box with legend (i.e. 'fieldset'). 
+        1. Basic Hike Data - Text box or drop-down fields for entering the
+           information outlined in A., B., and G. above;
+        2. Exposure data - radio button selection;
+        3. File Data: DEPENDING ON PAGE TYPE:
+           a. HIKE PAGE:
+                i.   First, a checkbox indicating whether or not pictures (jpg files) 
+                     will be incorporated on the page.
+                     1) If not, the item following will be hidden from view and the
+                        user can proceed with uploading the GPX file (ii., below);
+                     2) If so, the user can enter up to three individual album links
+                        containing the photos from which to draw for the hike page.
+                       Also, a drop-down selects the color of the icons to appear on
+                         the constructed hike map page marking the location where the
+                        photos were snapped;
+                ii.  REQUIRED - GPX File; Identify the gpx file to
+                     upload from your desktop. This is the basis for much of the 
+                     hike page construction.
+                iii. OPTIONAL FILES:
+                    1) Proposed Data: O, 1, or 2 items may appear here identifying
+                       either a map file, or a gpx (track) file to be placed on
+                       the page in the 'GPS & Maps Data' section, 'Proposed Data';
+                       Note that the file reference(s) will automatically be placed
+                       in the 'GPS Maps & Data' section below, but the user will
+                       need to complete the entry by providing a label and the
+                       'click-on' text.
+                    2) Actual Data: 0, 1, or 2 itmes may appear here identifying
+                       additonal map files or gpx (track) files to be placed on
+                       the page in the 'Maps & GPS Data' section, 'Actual Data';
+                       Note that the file reference(s) will automatically be placed
+                       in the 'GPS Maps & Data' section below, but the user will
+                       need to complete the entry by providing a label and the
+                       'click-on' text.
+                    3) 0, 1, or 2 additional images (not in photo albums) that
+                       you may wish to include in the picture rows on the page.
+                       For example, perhaps a jpg of a geological map of the
+                       area, or other informational data. Note, captions for these
+                       additional files is not currently supported.
+           b. INDEX PAGE:
+                i.   File data is now limited to uploading of a map file for 
+                     display on the index page, intended to show park boundaries
+                     trails, and other useful information. 
+                ii.  Latitude/Longitude: enter the GPS location of the Visitor
+                     Center.
+        4. Map Marker Type:
+            a. Selecting 'Visitor Center' automatically switches page mode to
+               Index Page Creation. Deselecting reverts to Hike Page creation;
+            b. Many parks have trailheads at the Visitor Center or in very  close
+               proximity thereto. For these types, select 'Hike At / In Close
+               Proximity to Visitor Center';
+            c. Some trailheads provide access to multiple hiking possibilities
+               (e.g. Santa Fe Ski Area). Where trailheads overlap, or are 
+               close enough to warrant grouping, select the 'Trailhead Common
+               to Multiple Hikes';
+            d. All Others - hikes which meet none of the above conditions.
+        5. Test Sections
+            a. Trail Tips: If there are any special conditions or circumstances
+               about which the user should be apprised, include those notes 
+               here. This is optional and normally not required.
+            b. Always include a Hike Description, describing the environment,
+               trail conditions, access, interesting features, etc.
+        6. Hike References
+            Help the user by providing book references and/or on-line resources
+            about the hike. There is rarely a time when no such references will
+            exist. What would have helped you on this hike? Entry is self-
+            explanatory, and 'hints' are provided when the reference type is
+            selected. Default is 'Book'.
+        7. GPS Maps & Data Section:
+            a. Proposed Data: If selections were made in the "File Data" section
+               above (3.), then add the label for the data (usually something 
+               like "GPX File") and the text that when clicked-on will 
+               display the data for the user (e.g. "Proposed Route").
+            b. Actual Data: If selections were made in the "File Data" section
+               above (3.), then add the label for the data (usually something 
+               like "MAP") and the text that when clicked-on will 
+               display the data for the user (e.g. "Actual Track").
+        8. Other URL's:
+            a. If not entered above in 3.a.1, provide album links here.
+            b. Provide a link to the Google Maps directions for the trailhead.
+    When data entry is complete, select 'Validate Data', or if not complete
+    and you wish to complete it later, select 'Save Form Data'. Note that 
+    selecting this option will save all text entries, but NOT file uploads.
+    This is a security provision, so please re-enter any GPX or other file
+    uploads needed for the page. Of course, you can clear the data completely
+    with the 'Clear and Restart' button. Note that selecting the 'Validate Data'
+    button opens a new tab, and the data entry form is still available.
+
+    ---------- Validate Hike Data & Select Photos If Applicable ----------
+    
+    Once the 'Validate Data' button is selected on the enterHike.html page, the
+    form is submitted and calls either:
+    A. Hike Page Validation
+       The form submittal data is presented on a new page, "Validate This Hike!"
+       The main driver, with additonal modules invoked therefrom, is
+       'validateHike.php'. 
+
+       ** STYLING **
+       validateHike.css provides styling for the presentation of summary tables
+       and page elements, the same as they will appear on the final product.
+       Again, browser-dependent styling is added for enlarged checkboxes.
+
+       ** JAVASCRIPT **
+       validateHike.js contains the code for user-interaction on the validation
+       page. 
+       1. Operation of the 'Select All' pictures checkbox;
+       2. Operation of the 'Overwrite File' buttons appearing on the page
+          only when a filename for a new file matches a pre-existing filename.
+
+       ** PHP FORM **
+       1. The hike page title is retrieved and encoded for special html characters
+          for display on the final page.
+       2. The base name for any newly created files is formed the the uploaded
+          GPX file name by dropping the .gpx/.GPX extension.
+       3. (At this time) the .tsv file is created with headers, and will be
+          filled in later (below).
+       4. The 'I don't want to specify pictures at this time' checkbox status
+          is checked. The status is saved in var $usetsv (boolean).
+          a. If selected, skip the process creating a tsv file;
+          b. If not selected:
+             i.     The process is initiated by invoking 'getPicDat.php'. This
+                    script will...
+          
+    B. (or) Index Page Validation
+
+    
     
