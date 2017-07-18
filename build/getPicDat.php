@@ -88,7 +88,6 @@ for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
                 $flickrInfo = substr($albumHtml, $albLoc);
                 $albEnd = strpos($flickrInfo, '"');
                 $albumId = substr($flickrInfo, 0, $albEnd);
-                #echo "<p>Album ID: " . $albumId . '</p>';
                 $alubmHtml = '';
                 $srchPat = '{"_flickrModelRegistry":"photo-models","title":"';
                 $patCnt = 0;
@@ -131,7 +130,6 @@ for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
                     $flickrInfo = $modelInfo;
                     $pmodels = strpos($flickrInfo, $srchPat) + 48;
                 }  # end of while loop collecting album data for pics
-                echo "No of pictures in album is " . $patCnt . '<br />';
                 # Now capture the exif data for the $o(riginal photos) array
                 include 'getExif.php';
                 # for now, make a .tsv file from all this...
@@ -150,8 +148,5 @@ for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
             die ($noalb);
         }
     }  # end of non-empty curlid
-    echo "Finished url" . $i;
 }  # end of for each album url input box
-die ("QUIT HERE");
-
 ?>

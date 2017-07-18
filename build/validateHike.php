@@ -45,6 +45,7 @@
         $usetsv = true;
         require "getPicDat.php";
         fclose($tsvOut);
+        $tsvSize = filesize($tmpTsv);
     } else {
         $usetsv = false;
     }

@@ -125,5 +125,4 @@ for ($k=0; $k<count($o); $k++) {
                 '</p>';
     }
 }  # end of for each original photo loop
-echo "Exif for url" . $i;
 ?>

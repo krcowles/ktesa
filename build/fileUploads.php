@@ -25,20 +25,17 @@ $datfileArray = array('x','x',0,'x','x',0,'x','x',0,'x','x',0);
  */
 
 # TSV FILE OPS:
-if ($usetsv) {  // false only if no pictures are specified at this time
+if ($usetsv) {  # false only if no pictures are specified at this time
     echo '<h3 style="text-indent:8px">Hike TSV File Info (Created):</h3>' . "\n";
     echo '<ul style="margin-top:-10px;">' . "\n";
-    $tsvFname = $baseName . '.tsv';  // $tsvFname is being used in validateHike.php
-    if ($tsvFname === '') {
-        die("No name for tsv file!");
-    }
-    $tsvLoc = '../gpsv/' . $tsvName;
+    $tsvFname = $baseName . '.tsv';  # $tsvFname is being used in validateHike.php
+    $tsvLoc = '../gpsv/' . $tsvFname;
     if ( file_exists($tsvLoc) ) {
         echo $fexists1 . $tsvFname . $fexists2. 
             '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
         $dupTsv = 'YES';
     }
-    echo '<li>Created tsv file: ' . $tsvName . '</li>' . "\n";
+    echo '<li>Created tsv file: ' . $tsvFname . '</li>' . "\n";
     echo '<li>File size: ' . $tsvSize . '</li>' . "\n";
     echo '</ul>' . "\n";
 }
