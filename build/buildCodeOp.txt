@@ -140,8 +140,10 @@ PROCESS:
                         user can proceed with uploading the GPX file (ii., below);
                      2) If so, the user can enter up to three individual album links
                         containing the photos from which to draw for the hike page.
-                       Also, a drop-down selects the color of the icons to appear on
-                         the constructed hike map page marking the location where the
+                        Entering data into the first two auto-fills the url's 
+                        at the bottom of the form, labeled 'URL for Photo Album..."
+                        Also, a drop-down selects the color of the icons to appear on
+                        the constructed hike map page marking the location where the
                         photos were snapped;
                 ii.  REQUIRED - GPX File; Identify the gpx file to
                      upload from your desktop. This is the basis for much of the 
@@ -235,6 +237,8 @@ PROCESS:
        1. Operation of the 'Select All' pictures checkbox;
        2. Operation of the 'Overwrite File' buttons appearing on the page
           only when a filename for a new file matches a pre-existing filename.
+       3. Hide/Display the File Data section pertaining to photos depending on 
+          whether or not
 
        ** PHP FORM **
        1. The hike page title is retrieved and encoded for special html characters

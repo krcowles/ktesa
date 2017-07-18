@@ -186,7 +186,11 @@ if (typeof(Storage) !== undefined) {
             }
         });
     }
-
+    // The very first time, or after a system clean-up, noOfSaves may be undefined:
+    var tst = window.localStorage.noOfSaves;
+    if (typeof(tst) === undefined) {
+        window.localStorage.noOfSaves = 0;
+    }
     // MODAL WINDOW SETUP AND EVENT DEFINITION
     var $savePopup = $('#save-modal').detach();
     $('#saver').on('click', function() {
@@ -236,7 +240,7 @@ if (typeof(Storage) !== undefined) {
             $('#save2').on('click', function() {
                     var restoredForm = window.localStorage.oldForm2;
                     stringToForm(restoredForm, $('#hikeData'));
-                    window.alert("File Resotred");
+                    window.alert("Form Restored - Please Re-enter files: they cannot be saved");
                     $(this).attr('checked',false);
             });
             $('#kill2').on('click', function() {

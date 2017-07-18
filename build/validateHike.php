@@ -512,7 +512,6 @@ if ($hikeMarker === 'ctrhike') {
 <?php
     $pStr = '';
     $aStr = '';
-
     if ($noOfPDats > 0 || $noOfADats > 0) {
         echo '<h2 style="text-align:center">Hike Data: Proposed and/or Actual</h2>' . "\n";
         echo '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
