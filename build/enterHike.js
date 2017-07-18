@@ -48,25 +48,19 @@ $('#latlng').css('display','none');
 
 // When adding photo urls, populate the first two in the 'Other URL's' section
 $('#curl1').change( function() {
-    var ph1 = 'Currently: ' + $(this).val();
-    console.log(ph1);
-    var tst = 'Photo url: ' + $('#url1').val();
-    console.log(tst);
+    var ph1 = $(this).val();
     if ($(this).val() === '') {
         $('#url1').val('');
     } else {
-        console.log("Correct if result");
-        $('#url1)').val(ph1);
+        $('#url1').val(ph1);
     }
 })
 $('#curl2').change( function() {
-    var ph2 = 'Currently: ' + $(this).val();
-    console.log(ph2);
+    var ph2 = $(this).val();
     if ($(this).val() === '') {
         $('#url2').val('');
     } else {
-        console.log("Correct if result");
-        $('#url2)').val(ph2);
+        $('#url2').val(ph2);
     }
 })
 
