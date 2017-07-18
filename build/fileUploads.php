@@ -28,7 +28,7 @@ $datfileArray = array('x','x',0,'x','x',0,'x','x',0,'x','x',0);
 if ($usetsv) {  // false only if no pictures are specified at this time
     echo '<h3 style="text-indent:8px">Hike TSV File Info (Created):</h3>' . "\n";
     echo '<ul style="margin-top:-10px;">' . "\n";
-    $tsvFname = $tsvName;  // $tsvFname is being used in validateHike.php
+    $tsvFname = $baseName . '.tsv';  // $tsvFname is being used in validateHike.php
     if ($tsvFname === '') {
         die("No name for tsv file!");
     }

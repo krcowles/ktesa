@@ -49,7 +49,6 @@ function convtTime($GPStime) {
     $tstring = $hr . ':' . $min . ":" . $sec;
     return $tstring;
 }
-include 'getShortPics.php';
 # output msg styling:
 $pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
 /*

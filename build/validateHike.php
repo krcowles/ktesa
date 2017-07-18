@@ -21,7 +21,35 @@
 <form target="_blank" action="displayHikePg.php" method="POST">
 
 <?php
-    $hikeName = filter_input(INPUT_POST,'hpgTitle');
+    # Process $hikeName to ensure no html special characters will disrupt
+    $hike = filter_input(INPUT_POST,'hpgTitle');
+    $hikeName = htmlspecialchars($hike);
+    # Get the gpx filename and derive the 'baseName' to precede all file extensions
+    $gpxInput = basename($_FILES['gpxname']['name']);
+    $ext = strrpos($gpxInput,".");
+    $baseName = substr($gpxInput,0,$ext);
+    # FOR NOW - make a tsv file, later place in database
+    $tmpTsv = 'tmp/gpsv/' . $baseName . '.tsv';
+    $tsvOut = fopen($tmpTsv,"w");
+    if ($tsvOut === false) {
+        die ("COULD NOT OPEN TSV FILE IN tmp/gpsv FOR WRITE");
+    }
+    $header = array('folder','desc','name','Latitude','Longitude','thumbnail',
+            'url','date','n-size','symbol','icon_size','color');
+    fputcsv($tsvOut,$header,"\t");
+    fclose($tsvOut);
+    $tsvOut = fopen($tmpTsv,"a");  # if it succeeded above, should be ok here..
+    # Check to see if pictures will be used for this page
+    $nopics = filter_input(INPUT_POST,'nopix');
+    if ( !isset($nopics) ) {
+        $usetsv = true;
+        require "getPicDat.php";
+        fclose($tsvOut);
+    } else {
+        $usetsv = false;
+    }
+    # Peform any uploads and file validation & summaries
+    require "fileUploads.php";
     /*  Default values for identifying previously saved files 
      *  and whether or not to overwite them when saving the page
      */
@@ -43,14 +71,7 @@
     $owAmap = 'NO';
     $dupAgpx = 'NO';
     $owAgpx = 'NO';
-    $nopics = filter_input(INPUT_POST,'nopix');
-    if ( !isset($nopics) ) {
-        $usetsv = true;
-        require "makeTsv.php";
-    } else {
-        $usetsv = false;
-    }
-    require "fileUploads.php";
+    
 ?>  
 <p style="display:none" id="tsvStat"><?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?></p>
 <!-- Hidden Inputs Carrying File Upload Status --> 

@@ -7,18 +7,63 @@
  * Later, no tsv file will be created - the data will instead be stored
  * directly in the xml database.
  */
-
+function getFlickrDat($photomodel,$size) {
+    $ltrSize = strlen($size);  # NOTE: at least 1 size is two letters
+    $offset = 4 + $ltrSize;
+    $modelLtr = '"' . $size . '":{';
+    $sizePos = strpos($photomodel,$modelLtr) + $offset;
+    $urlPos = strpos($photomodel, '"url":"',$sizePos) + 7;
+    $urlEnd = strpos($photomodel, '"', $urlPos);
+    $urlLgth = $urlEnd - $urlPos;
+    $rawurl = substr($photomodel, $urlPos, $urlLgth);
+    $url = 'https:' . preg_replace('/\\\\/','',$rawurl);
+    return $url;
+}
+function mantissa($degrees) {
+    $coords = 0;
+    for ($z = 0; $z < 3; $z++) {
+        $div = strpos($degrees[$z], '/');
+        $body = substr($degrees[$z], 0, $div);
+        $divisor = substr($degrees[$z], $div + 1);
+        switch ($z) {
+            case 0:
+                $coords = $body / $divisor;
+                break;
+            case 1:
+                $mins = $body / $divisor;
+                break;
+            case 2:
+                $secs = $body / $divisor;
+                break;
+        }
+    }
+    $coords += ($mins + $secs / 60) / 60;
+    return $coords;
+}
 # output msg styling:
 $pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
-/* IMAGE TYPES CURRENTLY SUPPORTED: only .jpg, .JPG - expandable below:
- * Note: file extensions converted to all lower case during search
- */
-$supportedImgs = array('jpg');
-$noOfImgTypes = count($supportedImgs);
+#default icon color:
+$icon_clr = filter_input(INPUT_POST,'icon');
+if ($icon_clr === '') {
+    $icon_clr = 'Google default';
+}
 
 $curlids = $_POST['phpcurl'];
+$supplied = 0;
+for ($n=0; $n<count($curlids); $n++) {
+    if ($curlids[$n] !== '') {
+        $supplied++;
+    }
+}
+if ($supplied === 0) {
+    $nourls = $pstyle . 'No urls were specified for photo albums: please go '
+            . 'back and provide one or more legitimate photo album urls, or '
+            . 'select the box for "I do not wish to specify pictures at '
+            . 'this time"</p>';
+    die ($nourls);
+}
 $albums = $_POST['albtype'];
-for ($i=0; $i<count($curlids); $i++) {
+for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
     /* For each album link, extract the 'orginal' size photo link, and then
      * read enough of it to ensure exif data; also extract other data items
      * needed to create the tsv file (or be stored in the database, later),
@@ -37,6 +82,7 @@ for ($i=0; $i<count($curlids); $i++) {
         if (($albumHtml = file_get_contents($curlid)) !== false) {
             # FLICKR:
             if ($albType === 'flckr') {
+                $folder = 'Folder' . ($i+1);
                 # First, find "albumId":
                 $albLoc = strpos($albumHtml, '{"albumId":"') + 12;
                 $flickrInfo = substr($albumHtml, $albLoc);
@@ -77,9 +123,9 @@ for ($i=0; $i<count($curlids); $i++) {
                     $Nsid = substr($modelInfo, $nsidPos, $nsidLgth);
                     $alinks[$patCnt] = 'https://www.flickr.com/photos/' . $Nsid .
                     '/' . $ownerId . '/in/album-' . $albumId;
-                    $o[$patCnt] = getDat($modelInfo,'o');
-                    $n[$patcnt] = getDat($modelInfo,'n');
-                    $t[$patCnt] = getDat($modelInfo,'t');
+                    $o[$patCnt] = getFlickrDat($modelInfo,'o');
+                    $n[$patCnt] = getFlickrDat($modelInfo,'n');
+                    $t[$patCnt] = getFlickrDat($modelInfo,'t');
                     $patCnt++;
                     # adjust the search to the next photo-model:
                     $flickrInfo = $modelInfo;
@@ -87,7 +133,10 @@ for ($i=0; $i<count($curlids); $i++) {
                 }  # end of while loop collecting album data for pics
                 echo "No of pictures in album is " . $patCnt . '<br />';
                 # Now capture the exif data for the $o(riginal photos) array
-                require 'getExif.php';
+                include 'getExif.php';
+                # for now, make a .tsv file from all this...
+                # LATER, place in database instead
+                include 'writeTsv.php';
             # APPLE:
             } elseif ($albType === 'apple') {
                 # no code at this time
@@ -101,6 +150,7 @@ for ($i=0; $i<count($curlids); $i++) {
             die ($noalb);
         }
     }  # end of non-empty curlid
+    echo "Finished url" . $i;
 }  # end of for each album url input box
 die ("QUIT HERE");
 
