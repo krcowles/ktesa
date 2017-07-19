@@ -237,22 +237,84 @@ PROCESS:
        1. Operation of the 'Select All' pictures checkbox;
        2. Operation of the 'Overwrite File' buttons appearing on the page
           only when a filename for a new file matches a pre-existing filename.
-       3. Hide/Display the File Data section pertaining to photos depending on 
-          whether or not
+       3. Hide/Display the 'File Data' section pertaining to photos depending on 
+          whether or not the user selection 'I don't want to specify pictures
+          at this time' was made.
 
        ** PHP FORM **
        1. The hike page title is retrieved and encoded for special html characters
           for display on the final page.
        2. The base name for any newly created files is formed the the uploaded
           GPX file name by dropping the .gpx/.GPX extension.
-       3. (At this time) the .tsv file is created with headers, and will be
-          filled in later (below).
-       4. The 'I don't want to specify pictures at this time' checkbox status
+       3. The 'I don't want to specify pictures at this time' checkbox status
           is checked. The status is saved in var $usetsv (boolean).
-          a. If selected, skip the process creating a tsv file;
+          a. If selected, skip the process creating acquiring photo album data;
           b. If not selected:
              i.     The process is initiated by invoking 'getPicDat.php'. This
-                    script will...
+                    script will process all album links specified by the user
+                    in the 'File Data' section, one by one (max 3). For each
+                    album, the html is parsed and required data is extracted,
+                    including the link for the 'original' uploaded photo with
+                    metadata. The information is stored in sequential arrays 
+                    for forming the xml tags later. 
+             ii.    Once data has been extracted from the album, the routine
+                    invokes the 'getExif.php' script to extract metadata. This
+                    script loads abbreviated jpg files, of sufficient size to
+                    contain the metadata. The abbreviated files are temporarily
+                    stored, and exif data is extracted. Afterwards, the files are
+                    deleted. 
+             iii.   Finally, the 'xmlTsv.php' script is called to form the
+                    xml <picDat> tags for the data collected. The result is
+                    stored in session memory until the page save occurs.
+       4. Now 'fileUploads' is invoked to process uploaded files, one by one,
+          and to provide a summary of the activity to user, along with any
+          associated warnings or errors. 
+          a. First, an array is initialized which will hold the status of any
+             uploaded files for the "GPS Maps & Data" Proposed/Actual data
+             sections. At this time, there is provision for two files in each
+             of the subsections: Proposed, or Actual. (Refer to the comments
+             on this array in the fileUploads.php script)
+          b. The first file, the only required file, is the GPX file. This file
+             upload is tested for upload errors, and file type. If either of these
+             occurs, the user is notified and the script stops. Otherwise,
+             validation data is listed for the file, including file name, type,
+             and size in bytes. NOTE: if the filename already exists on the 
+             site, the user is notified, but given a chance to overwrite the
+             existing file by checking the accompanying checkbox.
+          c. The next file is the track (JSON) file. It is automatically created
+             from the above GPX file and stored in a tmp directory until saved
+             to the site. Currently, a tool in the tools directory (mktrk.sh)
+             is used to create the file. The relevant file data is summarized
+             for this file, similar to the above GPX file. It too is checked
+             against existing filenames to ensure uniqueness, or, as above, 
+             the user is notified and afforded the opportunity to overwrite it.
+          d. REMAINING FILE UPLOADS ARE OPTIONAL. Up to two image files may
+             be uploaded to supplement the hike page picture rows. These are
+             processed in a manner similar to the GPX file, with stats and
+             duplicate name checking.
+          e. Two files each in the 'Proposed' and 'Actual' sections of the
+             'GPS Maps & Data' section may be uploaded. Files are checked 
+             against other existing files on the site AND against currently
+             uploaded files. If existing, the behavior of notification and 
+             overwriting is similar to above. If already uploaded, the user
+             is notified, and the file is not uploaded again.
+       5. The information relative to duplication and overwriting choice(s) for
+          uploaded files is saved in hidden inputs and passed via form submission
+          to the next form. This information is used during the save routine
+          to determine which files get moved (not duplicates, or user elected
+          to overwrite them), and which get deleted.
+       6. Form data from enterHike.html is now extracted and saved in local
+          variables. Some info is saved in session memory to be utilized to 
+          create the <row> xml during save.
+       7. Reference data is processed into xml next by the 'xmlRefs.php' script.
+       8. GPS Maps & Data: Proposed & Actual - any data is processed into xml
+          by including the 'xmlGpsDat.php' script.
+       9. IF pictures are to be included ($usetsv is true), the xml string formed
+          in the 'xmlTsv.php' script is processed to extract info for the photo
+          summary at the bottom of the validation page.
+      10. Marker-dependent page elements:
+          a. 
+
           
     B. (or) Index Page Validation
 

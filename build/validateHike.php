@@ -28,24 +28,11 @@
     $gpxInput = basename($_FILES['gpxname']['name']);
     $ext = strrpos($gpxInput,".");
     $baseName = substr($gpxInput,0,$ext);
-    # FOR NOW - make a tsv file, later place in database
-    $tmpTsv = 'tmp/gpsv/' . $baseName . '.tsv';
-    $tsvOut = fopen($tmpTsv,"w");
-    if ($tsvOut === false) {
-        die ("COULD NOT OPEN TSV FILE IN tmp/gpsv FOR WRITE");
-    }
-    $header = array('folder','desc','name','Latitude','Longitude','thumbnail',
-            'url','date','n-size','symbol','icon_size','color');
-    fputcsv($tsvOut,$header,"\t");
-    fclose($tsvOut);
-    $tsvOut = fopen($tmpTsv,"a");  # if it succeeded above, should be ok here..
     # Check to see if pictures will be used for this page
     $nopics = filter_input(INPUT_POST,'nopix');
     if ( !isset($nopics) ) {
         $usetsv = true;
         require "getPicDat.php";
-        fclose($tsvOut);
-        $tsvSize = filesize($tmpTsv);
     } else {
         $usetsv = false;
     }
@@ -147,49 +134,8 @@ for ($k=0; $k<$noOfRefs; $k++) {
         break;
     }
 }
-$refLbls = array();
-for ($k=0; $k<$noOfRefs; $k++) {
-    switch ($hikeRefTypes[$k]) {
-        case 'b':
-            array_push($refLbls,'Book: ');
-            break;
-        case 'p':
-            array_push($refLbls,'Photo Essay: ');
-            break;
-        case 'w':
-            array_push($refLbls,'Website: ');
-            break;
-        case 'a':
-            array_push($refLblbs,'App: ');
-            break;
-        case 'd':
-            array_push($refLbls,'Downloadable Doc: ');
-            break;
-        case 'l':
-            array_push($refLbls,'Blog: ');
-            break;
-        case 'r':
-            array_push($refLbls,'Related Link: ');
-            break;
-        case 'o':
-            array_push($refLbls,'On-Line Map: ');
-            break;
-        case 'm':
-            array_push($refLbls,'Magazine: ');
-            break;
-        case 's':
-            array_push($refLbls,'News Article: ');
-            break;
-        case 'g':
-            array_push($refLbls,'Meetup Group: ');
-            break;
-        case 'n':
-            array_push($refLbls,'');
-            break;
-        default:
-            echo "Unrecognized reference type passed";
-    }
-}
+include "xmlRefs.php";
+
 $hikePDatLbls = $_POST['plbl'];
 $noOfPDats = count($hikePDatLbls);
 for ($i=0; $i<$noOfPDats; $i++) {
@@ -210,37 +156,35 @@ for ($j=0; $j<$noOfADats; $j++) {
 }
 $hikeADatUrls = $_POST['aurl'];
 $hikeADatCTxts = $_POST['actxt'];
+include "xmlGpsDat.php";
 
-# NOTE: reading tsv file only - no writing
 if ($usetsv) {
-    $tmpTsvLoc = $uploads . 'gpsv/' . $tsvFname;
-    $fdat = file($tmpTsvLoc); // simple read - not using fgetcsv as there is no "special" data
-    $icount = count($fdat) - 1; // image count: do not count the header row
-    # Form array of pictures to display for selection by the user later on...
-    $lineno = 0;
+    $photoXml = "<?xml version='1.0'?>\n<photos>\n" . $xmlTsvStr . "</photos>\n";
+    $picXml = simplexml_load_string($photoXml);
+    if ($picXml === false) {
+        $noxml = '<p style="color:brown;margin-left:8px;font-size:18px;>' .
+                'Photo data contained in xml string would not load: Contact ' .
+                'Site Master</p>';
+        die($noxml);
+    }
     $picno = 0;
-    foreach ($fdat as $rawTsvLine) {
-        $tsvArray = str_getcsv($rawTsvLine,"\t");
-        if ($lineno !== 0) {
-            $picarray[$picno] = $tsvArray[$indx];
-            $thumb[$picno] = $tsvArray[$indx+4];
-            $picno += 1;
-        } else {
-            if (strcmp($tsvArray[0],"folder") == 0) {
-                $indx = 1;
-                # echo "<p>This tsv file has 'folder' field description</p>";
-            } else {
-                $indx = 0;
-                # echo "<p>Older tsv file - NO 'folder' field</p>";
-            }
-        }
-        $lineno++;
+    $phNames = [];
+    $phPics = [];
+    $phWds = [];
+    $rowHt = 220; 
+    foreach ($picXml->picDat as $imgData) {
+        $phNames[$picno] = $imgData->title;
+        $phPics[$picno] = $imgData->mid;
+        $pHeight = $imgData->imgHt;
+        $aspect = $rowHt/$pHeight;
+        $pWidth = $imgData->imgWd;
+        $phWds[$picno] = floor($aspect * $pWidth);
+        $picno += 1;
     }
 }
 /*
     MARKER-DEPENDENT PAGE ELEMENTS
 */
-$database = '../data/database.csv';
 # Index page ref -> ctrhike
 if ($hikeMarker === 'ctrhike') {
     $dbFile = fopen($database, "r");
@@ -542,18 +486,23 @@ if ($hikeMarker === 'ctrhike') {
 <div id="showpics">
 <h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish
 	to include on the new page:</h4>
-<p style="text-indent:8px;font-size:16px"><em style="position:relative;top:-20px">Note:
-    these names were extracted from the <?php echo $tsvFname;?> file</em><br />
-    <input style="margin-left:8px" id="all" type="checkbox" name="allPix" value="useAll" />Use All Photos</p>
+<div style="position:relative;top:-14px;">
+    <input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;
+    Use All Photos on Hike Page<br />
+    <input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;
+    Use All Photos on Map
+</div>
 <?php
-    $nmeno = 0;
-    for ($i=0; $i<$icount; $i++) {
-        echo '<div class="selPic" style="width:150px;float:left;margin-left:2px;margin-right:2px;">';
-        echo '<input type="checkbox" name="pix[]" value="' .  $picarray[$nmeno] .
-            '" />' . substr($picarray[$nmeno],0,10) . '...<br />';
-        echo '<img height="150px" width="150px" src="' .$thumb[$nmeno] . '" alt="pic choice" />';
+    for ($i=0; $i<$picno; $i++) {
+        echo '<div class="selPic" style="width:' . $phWds[$i] . 'px;float:left;'
+                . 'margin-left:2px;margin-right:2px;">';
+        echo '<input type="checkbox" name="pix[]" value="' .  $phNames[$i] .
+            '" />Use&nbsp;&nbsp;';
+        echo '<input type="checkbox" name="mapit[]" value="' . $phNames[$i] .
+             '" />Map<br />';
+        echo '<img height="200px" width="' . $phWds[$i] . 'px" src="' .
+                $phPics[$i] . '" alt="pic choice" />';
         echo '</div>';
-        $nmeno +=1;
     }
 ?>
 </div>

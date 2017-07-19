@@ -1,10 +1,11 @@
 <?php
 /* Message text for upload data section */
-$fexists1 = '<p style="margin-left:8px;margin-top:-12px;color:brown;"><em>NOTE: ';
+$msgStyle = '<p style="margin-left:8px;margin-top:-12px;color:brown;">';
+$fexists1 = $msgStyle . '<em>NOTE: ';
 $fexists2 = ' has been previously saved on the server; ' .
             'Check here to overwrite: ';
 $fexists3 = '</em></p>' . "\n";
-$uploads = "tmp/";  # NOTE: impacts code if moved
+$uploads = "tmp/";  # NOTE: impacts code if moved: please scrutinize it's use!
 /*
  * Since file info for the proposed and actual data sections (in 'GPS Maps & 
  * Data' on the actual hike page) is not saved directly in the database (it's 
@@ -24,22 +25,6 @@ $datfileArray = array('x','x',0,'x','x',0,'x','x',0,'x','x',0);
  * All uploaded files are saved in the 'tmp' directory according to type.
  */
 
-# TSV FILE OPS:
-if ($usetsv) {  # false only if no pictures are specified at this time
-    echo '<h3 style="text-indent:8px">Hike TSV File Info (Created):</h3>' . "\n";
-    echo '<ul style="margin-top:-10px;">' . "\n";
-    $tsvFname = $baseName . '.tsv';  # $tsvFname is being used in validateHike.php
-    $tsvLoc = '../gpsv/' . $tsvFname;
-    if ( file_exists($tsvLoc) ) {
-        echo $fexists1 . $tsvFname . $fexists2. 
-            '<input id="owtsv" type="checkbox" name="tsvow" />' . $fexists3;
-        $dupTsv = 'YES';
-    }
-    echo '<li>Created tsv file: ' . $tsvFname . '</li>' . "\n";
-    echo '<li>File size: ' . $tsvSize . '</li>' . "\n";
-    echo '</ul>' . "\n";
-}
-
 # GPX FILE OPS
 echo '<h3 style="text-indent:8px">Uploaded GPX File Info:</h3>' . "\n";
 echo '<ul style="margin-top:-10px;">' . "\n";
@@ -49,42 +34,35 @@ $gpxSize = filesize($gpxFile);
 $gpxType = $_FILES['gpxname']['type'];
 $gpxStat = $_FILES['gpxname']['error'];
 $gpxLoc = '../gpx/' . $hikeGpx;
-if ( $hikeGpx !== '' && file_exists($gpxLoc) ) {
+if ( file_exists($gpxLoc) ) {
     echo $fexists1 . $hikeGpx . $fexists2 . 
         '<input id="owgpx" type="checkbox" name="gpxow" />' . $fexists3;
     $dupGpx = 'YES';
 } 
-if ( $hikeGpx !== '') {
-    if ( preg_match("/octet-stream/",$gpxType) === 0 ) {
-        $msgout = '<p style="margin-left:20px;color:red;"><strong>Incorrect'
-                . ' file type for ' . $hikeGpx . ': should be "octet-stream"';
-        die($msgout);
-    }
-    $gpxUpload = $uploads . 'gpx/' . $hikeGpx;
-    if ($gpxStat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($gpxFile,$gpxUpload)) {
-            die("Could not save gpx file - contact site master...");
-        }
-    }
+if ( preg_match("/octet-stream/",$gpxType) === 0 ) {
+    $msgout = '<p style="margin-left:20px;color:red;"><strong>Incorrect'
+            . ' file type for ' . $hikeGpx . ': should be "octet-stream"';
+    die($msgout);
 }
-if ($hikeGpx !== '') {
-    echo '<li>Uploaded gpx file: ' .  $hikeGpx . '</li>' . "\n";
-    echo '<li>File size: ' . $gpxSize . ' bytes</li>' . "\n";
-    echo '<li>File type: ' . $gpxType . '</li>' . "\n";
+$gpxUpload = $uploads . 'gpx/' . $hikeGpx;
+if ($gpxStat === UPLOAD_ERR_OK) {
+    if (!move_uploaded_file($gpxFile,$gpxUpload)) {
+        die("Could not save gpx file - contact site master...");
+    }
 } else {
-    echo '<li>NO GPX FILE UPLOADED: If needed, go back and select in hike ' .
-        'Editor</li>' . "\n";
+    $uplderr = $msgStyle . 'An error was encountered during upload: Contact'
+            . 'Site Master';
+    die ($uplderr);
 }
+echo '<li>Uploaded gpx file: ' .  $hikeGpx . '</li>' . "\n";
+echo '<li>File size: ' . $gpxSize . ' bytes</li>' . "\n";
+echo '<li>File type: ' . $gpxType . '</li>' . "\n";
 echo '</ul>' . "\n";
 
 /* JSON FILE OPS: */
 echo '<h3 style="text-indent:8px">Track File Info (Created):</h3>' . "\n";
 echo '<ul style="margin-top:-10px;">' . "\n";
 $cwd = getcwd();
-/* --- NOTE: if the 'tmp' directory (specified by $uploads) is moved,
- * the following code will need to be adjusted to account for the new
- * location. Currently in the 'build' directory.
- */
 $sitePos = strpos($cwd,"build");
 $siteLoc = substr($cwd,0,$sitePos);
 $trkcmd = $siteLoc . 'tools/mktrk.sh -f ' . $cwd . '/' . $uploads .
@@ -97,7 +75,7 @@ if ( preg_match("/DONE/",$json) === 1 ) {
         'return to the hike Editor, un-check the box, and upload a track file' .
         ' or contact site master</p>';
 }
-$jpos = strpos($hikeGpx,".");
+$jpos = strrpos($hikeGpx,".");
 $hikeJSON = substr($hikeGpx,0,$jpos) . ".json";
 $JSONloc = '../json/' . $hikeJSON;
 if ( file_exists($JSONloc) ) {

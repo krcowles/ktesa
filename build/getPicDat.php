@@ -63,6 +63,7 @@ if ($supplied === 0) {
     die ($nourls);
 }
 $albums = $_POST['albtype'];
+$xmlTsvStr = '';
 for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
     /* For each album link, extract the 'orginal' size photo link, and then
      * read enough of it to ensure exif data; also extract other data items
@@ -132,9 +133,7 @@ for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
                 }  # end of while loop collecting album data for pics
                 # Now capture the exif data for the $o(riginal photos) array
                 include 'getExif.php';
-                # for now, make a .tsv file from all this...
-                # LATER, place in database instead
-                include 'writeTsv.php';
+                include 'xmlTsv.php';
             # APPLE:
             } elseif ($albType === 'apple') {
                 # no code at this time
@@ -149,4 +148,5 @@ for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
         }
     }  # end of non-empty curlid
 }  # end of for each album url input box
+$_SESSION['tsvdata'] = $xmlTsvStr;
 ?>
