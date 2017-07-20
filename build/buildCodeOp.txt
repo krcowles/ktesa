@@ -313,7 +313,8 @@ PROCESS:
           in the 'xmlTsv.php' script is processed to extract info for the photo
           summary at the bottom of the validation page.
       10. Marker-dependent page elements:
-          a. 
+          a. Hikes at/near a Visitor Center:
+          b. Hikes with trailheads in close proximity:
 
           
     B. (or) Index Page Validation

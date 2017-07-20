@@ -183,27 +183,32 @@ if ($usetsv) {
     }
 }
 /*
-    MARKER-DEPENDENT PAGE ELEMENTS
+ *  MARKER-DEPENDENT PAGE ELEMENTS
+ * ****   UNTESTED ****
 */
 # Index page ref -> ctrhike
+$xmlDataBase = '../data/database.xml';
 if ($hikeMarker === 'ctrhike') {
-    $dbFile = fopen($database, "r");
-    $VClist = array();
-    if ($dbFile !== false) {
-        $srchCnt = 0;
-        while ( ($srchArray = fgetcsv($dbFile)) !== false ) {
-            if ( preg_match("/Visitor/i", $srchArray[3]) == 1 ) {
-                $VCList[$srchCnt] = $srchArray[0] . ": " . $srchArray[1];
-                $srchCnt++;
-            }
-        }
-    } else {
-        echo "Could not open database file ../data/database.csv";
+    $xmlDB = simplexml_load_file($xmlDataBase);
+    if ($xmlDB === false) {
+        $dbnogo = '<p style="margin-left:8px;color:brown;font-size:18px;">' .
+            'Could not load the database to retrieve data for Visitor Center hike.</p>';
+        die($dbnogo);
     }
-    echo '<div id="findvc"><p>This hike was identified as starting at, or in close proximity to,' .
-    ' a Visitor Center.<br /><em id="vcnote">NOTE: if a page for this Visitor Center does not yet exist, please ' .
-    'go back and create it before continuing with this hike.</em></p>' .
-    '<p><label style="color:DarkBlue;">Select the Visitor Center Page for this hike: </label><select name="vcList">';
+    $VClist = array();
+    $srchCnt = 0;
+    foreach ( $xmlDB->row as $hikerow ) {
+        if ( preg_match("/Visitor/i", $hikerow->marker) == 1 ) {
+            $VCList[$srchCnt] = $hikerow->indexNo . ": " . $hikerow->pgTitle;
+            $srchCnt++;
+        }
+    }
+    echo '<div style="color:brown;" id="findvc"><p>This hike was identified as '
+        . 'starting at, or in close proximity to, a Visitor Center.<br /><em '
+        . 'id="vcnote">NOTE: if a page for this Visitor Center does not yet '
+        . 'exist, please go back and create it before continuing with this '
+        . 'hike.</em></p><p><label style="color:DarkBlue;">Select the Visitor '
+        . 'Center Page for this hike: </label><select name="vcList">';
     for ($k=0; $k<$srchCnt; $k++) {
         $namePos = strpos($VCList[$k],":") + 2;
         $namelgth = strlen($VCList[$k]) - $namePos;
@@ -214,33 +219,32 @@ if ($hikeMarker === 'ctrhike') {
         # the hike id for the affected visitor center will be passed and processed
     }
     echo "</select></p></div>";
-    fclose($dbFile);
 # cluster hike:
 } elseif ($hikeMarker === 'cluster') {
-    $dbFile = fopen($database,"r");
-    $clusterList = array();
-    if ($dbFile !== false) {
-        $srchCnt = 0;
-        while ( ($srchArray = fgetcsv($dbFile)) !== false ) {
-            if ( preg_match("/cluster/i",$srchArray[3]) == 1) {
-                if ($srchArray[28] !== '') {
-                    $clusterList[$srchCnt] = $srchArray[5] . "$" . $srchArray[28];
-                    $srchCnt++;
-                }
-            }
-        }
-        # Now eliminate duplicates...
-        $result = array_unique($clusterList);
-    } else {
-        echo "Could not open database file ..data/TblDB.csv";
+    $xmlDB = simplexml_load_file($xmlDataBase);
+    if ($xmlDB === false) {
+        $dbnogo = '<p style="margin-left:8px;color:brown;font-size:18px;">' .
+            'Could not load the database to retrieve data for Cluster hike.</p>';
+        die($dbnogo);
     }
+    $clusterList = Array();
+    $srchCnt = 0;
+    foreach ($xmlDB->row as $hikerow) {
+        if ( preg_match("/cluster/i",$hikerow->marker) == 1) {
+                $clusterList[$srchCnt] = $hikerow->clusGrp . "$" . $hikerow->cgName;
+                $srchCnt++;
+            }
+    }
+    # Now eliminate duplicates...
+    $result = array_unique($clusterList);
     $passGroup = implode(";",$result) . ";";  // display hike looks for terminal semi-colon
     /* NOTE: even though the array holds empty keys where duplicates were eliminated,
        when imploding, the empty keys are disregarded */
     $_SESSION['allTips'] = $passGroup;
-    echo '<div id="clus_sel"><p style="font-size:18px;color:Brown;">This hike was identified as belonging to a group of hikes ' .
-    'in close proximity with other hikes.<br /><label style="color:DarkBlue;">' .
-    'Select the Group to which this hike belongs: </label><select name="clusgrp">';
+    echo '<div style="color:brown;" id="clus_sel"><p style="font-size:18px;color:Brown;">This hike '
+        . 'was identified as belonging to a group of hikes in close proximity '
+        . 'with other hikes.<br /><label style="color:DarkBlue;">Select the '
+        . 'Group to which this hike belongs: </label><select name="clusgrp">';
     foreach ($result as $group) {
         $groupNamePos = strpos($group,"$") + 1;
         $groupNameLgth = strlen($group) - $groupNamePos;
@@ -251,7 +255,6 @@ if ($hikeMarker === 'ctrhike') {
         echo '<option value="' . $clusGrp . '">' . $groupName . '</option>';
     }
     echo "</select></p></div>";
-    fclose($dbFile);
 } 
 /*
 	END OF MARKER=DEPENDENT PAGE CONSTRUCTION
