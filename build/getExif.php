@@ -20,20 +20,11 @@ function convtTime($GPStime) {
 }
  * NOT CURRENTLY USED
  */
-# EXIF data arrays
-$imgs = [];
-$imgHt = [];
-$imgWd = [];
-$imgPh = [];  # not currently utilzed
-$timeStamp = [];
-$lats = [];
-$lngs = [];
-$elev = [];  # not currently utilized
-$gpds = [];
-$gpts = [];
 
 # original photos assumed to be stored in the $o array
-for ($k=0; $k<count($o); $k++) {
+# start processing based on album:
+$kstart = $pcnt - $albOcnt;
+for ($k=$kstart; $k<$pcnt; $k++) {
     # Read the original-sized photo w/metadata
     $orgPhoto = $o[$k];
     $photoHandle = fopen($orgPhoto,"r");

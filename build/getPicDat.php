@@ -62,15 +62,37 @@ if ($supplied === 0) {
             . 'this time"</p>';
     die ($nourls);
 }
+
+# variables used in processing data from albums:
 $albums = $_POST['albtype'];
 $xmlTsvStr = '';
-for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
+$pcnt = 0;  # no of photos processed
+# These arrays will be sorted by date/time after all albums have been processed
+$folder = [];
+$titles = [];
+$descriptions = [];
+$alinks = [];  
+$o = [];
+$t = [];
+$n = [];
+# EXIF data arrays
+$imgs = [];
+$imgHt = [];
+$imgWd = [];
+$timeStamp = [];
+$lats = [];
+$lngs = [];
+$gpds = [];
+$gpts = [];
+
+for ($i=0; $i<$supplied; $i++) {
     /* For each album link, extract the 'orginal' size photo link, and then
      * read enough of it to ensure exif data; also extract other data items
      * needed to create the tsv file (or be stored in the database, later),
      * i.e. name, description, thumbnail, link to photo in album, medium-size
      * (may be identical to thumbnail).
      */
+    
     if ($curlids[$i] !== '') {  # skip empty input-boxes
         $curlid = filter_var($curlids[$i],FILTER_VALIDATE_URL);
         if ($curlid === false) {
@@ -83,26 +105,20 @@ for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
         if (($albumHtml = file_get_contents($curlid)) !== false) {
             # FLICKR:
             if ($albType === 'flckr') {
-                $folder = 'Folder' . ($i+1);
+                $albOcnt = 0; # no of originals in this link
                 # First, find "albumId":
                 $albLoc = strpos($albumHtml, '{"albumId":"') + 12;
                 $flickrInfo = substr($albumHtml, $albLoc);
                 $albEnd = strpos($flickrInfo, '"');
                 $albumId = substr($flickrInfo, 0, $albEnd);
                 $alubmHtml = '';
-                $srchPat = '{"_flickrModelRegistry":"photo-models","title":"';
-                $patCnt = 0;
-                $titles = [];
-                $descriptions = [];
-                $alinks = [];  
-                $o = [];
-                $t = [];
-                $n = [];
+                $srchPat = '{"_flickrModelRegistry":"photo-models","title":"';              
                 $pmodels = strpos($flickrInfo, $srchPat) + 48;
                 while ( $pmodels !== false && $pmodels !== 48 ) {
+                    $folder[$pcnt] = 'Folder' . ($i+1);
                     $modelInfo = substr($flickrInfo, $pmodels);
                     $titleEnd = strpos($modelInfo, '"');
-                    $titles[$patCnt] = substr($modelInfo, 0, $titleEnd);
+                    $titles[$pcnt] = substr($modelInfo, 0, $titleEnd);
                     # if the 'description' field does not exist, use default desc. below:
                     $descPos = strpos($modelInfo, '"description":"');
                     if ($descPos === false) {
@@ -111,7 +127,7 @@ for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
                         $descPos += 15;
                         $descEnd = strpos($modelInfo, '"', $descPos);
                         $descLgth = $descEnd - $descPos;
-                        $descriptions[$patCnt] = substr($modelInfo, $descPos, $descLgth);
+                        $descriptions[$pcnt] = substr($modelInfo, $descPos, $descLgth);
                     }
                     $idPos = strpos($modelInfo, '"id":"') + 6;
                     $idEnd = strpos($modelInfo, '"', $idPos);
@@ -121,19 +137,19 @@ for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
                     $nsidEnd = strpos($modelInfo, '"', $nsidPos);
                     $nsidLgth = $nsidEnd - $nsidPos;
                     $Nsid = substr($modelInfo, $nsidPos, $nsidLgth);
-                    $alinks[$patCnt] = 'https://www.flickr.com/photos/' . $Nsid .
+                    $alinks[$pcnt] = 'https://www.flickr.com/photos/' . $Nsid .
                     '/' . $ownerId . '/in/album-' . $albumId;
-                    $o[$patCnt] = getFlickrDat($modelInfo,'o');
-                    $n[$patCnt] = getFlickrDat($modelInfo,'n');
-                    $t[$patCnt] = getFlickrDat($modelInfo,'t');
-                    $patCnt++;
+                    $o[$pcnt] = getFlickrDat($modelInfo,'o');
+                    $n[$pcnt] = getFlickrDat($modelInfo,'n');
+                    $t[$pcnt] = getFlickrDat($modelInfo,'t');
+                    $albOcnt++;
+                    $pcnt++;
                     # adjust the search to the next photo-model:
                     $flickrInfo = $modelInfo;
                     $pmodels = strpos($flickrInfo, $srchPat) + 48;
-                }  # end of while loop collecting album data for pics
+                }  # end of while loop collecting album data for pics            
                 # Now capture the exif data for the $o(riginal photos) array
                 include 'getExif.php';
-                include 'xmlTsv.php';
             # APPLE:
             } elseif ($albType === 'apple') {
                 # no code at this time
@@ -148,5 +164,14 @@ for ($i=0; $i<$supplied; $i++) {  // replace 1 w/ count($curlids)
         }
     }  # end of non-empty curlid
 }  # end of for each album url input box
+# sort the arrays based on timestamp:
+include "timeSort.php";
+include 'xmlTsv.php';
 $_SESSION['tsvdata'] = $xmlTsvStr;
+$tmp = fopen("xmlPhoto.xml","w");
+if ($tmp === false) {
+    die ("OOPS");
+}
+fwrite($tmp,$xmlTsvStr);
+fclose($tmp);
 ?>
