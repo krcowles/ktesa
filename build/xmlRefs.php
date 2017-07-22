@@ -50,10 +50,13 @@ for ($r=0; $r<$noOfRefs; $r++) {
 }
 $refXmlStr .= "\t</refs>\n";
 $_SESSION['hikerefs'] = $refXmlStr;
+/* DEBUG
 $tmp = fopen("tmpRefs.xml", "w");
 if ($tmp === false) {
        die ("NO OPEN");
 }
 fwrite($tmp,$refXmlStr);
 fclose($tmp);
+ * 
+ */
 ?>

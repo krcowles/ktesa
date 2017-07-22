@@ -3,7 +3,9 @@
 for ($a=0; $a<$pcnt; $a++) {
     $tsvStr = "\t\t<picDat>\n";
     $tsvStr .= "\t\t\t<folder>" . $xmlout[$a]['folder'] . "</folder>\n";
-    $tsvStr .= "\t\t\t<title>" . $xmlout[$a]['pic]'] . "</title>\n";
+    $tsvStr .= "\t\t\t<title>" . $xmlout[$a]['pic'] . "</title>\n";
+    $tsvStr .= "\t\t\t<hpg>N</hpg>\n";
+    $tsvStr .= "\t\t\t<mpg>N</mpg>\n";
     $tsvStr .= "\t\t\t<desc>" . $xmlout[$a]['desc'] . "</desc>\n";
     $tsvStr .= "\t\t\t<lat>" . $xmlout[$a]['lat'] . "</lat>\n";
     $tsvStr .= "\t\t\t<lng>" . $xmlout[$a]['lng'] . "</lng>\n";
@@ -17,6 +19,4 @@ for ($a=0; $a<$pcnt; $a++) {
     $tsvStr .= "\t\t</picDat>\n";
     $xmlTsvStr .= $tsvStr;
 }
-# this is the last executed statement from 'getPicDat.php
-$xmlTsvStr .= $tsvStr;
 ?>

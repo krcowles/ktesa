@@ -263,7 +263,9 @@ PROCESS:
                     contain the metadata. The abbreviated files are temporarily
                     stored, and exif data is extracted. Afterwards, the files are
                     deleted. 
-             iii.   Finally, the 'xmlTsv.php' script is called to form the
+             iii.   Next, the pictures are sorted by date/time the photo was
+                    taken. This is accomplished by the routine 'timeSort.php'
+             iv.    Finally, the 'xmlTsv.php' script is called to form the
                     xml <picDat> tags for the data collected. The result is
                     stored in session memory until the page save occurs.
        4. Now 'fileUploads' is invoked to process uploaded files, one by one,
@@ -307,15 +309,43 @@ PROCESS:
           variables. Some info is saved in session memory to be utilized to 
           create the <row> xml during save.
        7. Reference data is processed into xml next by the 'xmlRefs.php' script.
+          The data will be presented later in the page;
        8. GPS Maps & Data: Proposed & Actual - any data is processed into xml
-          by including the 'xmlGpsDat.php' script.
+          by including the 'xmlGpsDat.php' script. The data will be presented
+          later in the page;
        9. IF pictures are to be included ($usetsv is true), the xml string formed
           in the 'xmlTsv.php' script is processed to extract info for the photo
           summary at the bottom of the validation page.
       10. Marker-dependent page elements:
-          a. Hikes at/near a Visitor Center:
-          b. Hikes with trailheads in close proximity:
-
+          Drop-down boxes will appear after the file upload summaries on the 
+          page, based on:
+          a. Hikes at/near a Visitor Center: the database is scanned for Visitor
+             Centers (existing) so that the user may select one from the drop-down
+             to associate the hike with the selected center;
+          b. Hikes with trailheads in close proximity: the database is scanned
+             for 'cluster' groups so that the user may select one from the
+             drop-down to associate the hike with the selected group.
+      11. Next on the page is a table with the hike data as it will eventually
+          appear in the table of hikes.
+      12. Next is a summary table of the data appearing on the finished page.
+          The table is presented as for those earlier hikes which have no
+          gpx files associated.
+      13. A summary of Google Maps Data is listed next, including marker type,
+          Latitude and Longitude of the marker, and the name of the JSON file
+          used to display track info on the 'big' map 
+      14. More miscellaneous information supplied by the user and utilized to
+          create the hike page.
+      15. Next is the representation of any Trail Tips section, and the hike
+          description
+      16. The user-supplied references are listed next as they will appear on
+          the hike page;
+      17. The user-supplied GPS Maps & Data (if any) will be shown as it will
+          appear on the hike page;
+      18. Lastly, a complete display of photos collected from the user-supplied
+          online album urls. Each image has a check box allowing inclusion of
+          that photo on the hike page, and a check box specifying inclusion on
+          the hike-page map. A check box is also presented to allow selection
+          of all items for inclusion.
           
     B. (or) Index Page Validation
 

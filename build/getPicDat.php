@@ -168,10 +168,12 @@ for ($i=0; $i<$supplied; $i++) {
 include "timeSort.php";
 include 'xmlTsv.php';
 $_SESSION['tsvdata'] = $xmlTsvStr;
+/*  ----- DEBUG ------
 $tmp = fopen("xmlPhoto.xml","w");
 if ($tmp === false) {
     die ("OOPS");
 }
 fwrite($tmp,$xmlTsvStr);
 fclose($tmp);
+ */
 ?>

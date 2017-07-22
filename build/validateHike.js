@@ -13,6 +13,17 @@ $('#all').on('change', function() {
         });
     }
 });
+$('#mall').on('change', function() {
+    if ( $(this).prop('checked') === false ) {
+        $boxes.each( function() {
+                $(this).prop('checked',false);
+        });
+    } else {
+        $boxes.each( function() {
+                $(this).prop('checked',true);
+        });
+    }
+});
 
 $('#owtsv').on('change', function() {
     if ( $(this).prop('checked') === true ) {
