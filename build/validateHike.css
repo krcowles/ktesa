@@ -138,3 +138,14 @@ input[type=checkbox]
   -o-transform: scale(1.5); /* Opera */
   padding: 10px;
 }
+.popupCap {
+    margin: 0px;
+    display: none;
+    position: absolute;
+    width: 300px;
+    top: 0px;
+    left: 0px; }
+.capLine {
+    margin: 0px;
+    font-weight: bold;
+    background-color: #eaeaea; }

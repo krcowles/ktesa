@@ -345,7 +345,8 @@ PROCESS:
           online album urls. Each image has a check box allowing inclusion of
           that photo on the hike page, and a check box specifying inclusion on
           the hike-page map. A check box is also presented to allow selection
-          of all items for inclusion.
+          of all items for inclusion. When there is a mouseover event on a 
+          picture it will display the "title" and "description".
           
     B. (or) Index Page Validation
 

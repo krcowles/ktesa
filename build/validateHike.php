@@ -182,6 +182,8 @@ if ($usetsv) {
         $picno += 1;
     }
 }
+$mdat = preg_replace('/\n/','', $photoXml);
+$mdat = preg_replace('/\t/','', $mdat);
 /*
  *  MARKER-DEPENDENT PAGE ELEMENTS
  * ****   UNTESTED ****
@@ -499,20 +501,23 @@ if ($hikeMarker === 'ctrhike') {
     for ($i=0; $i<$picno; $i++) {
         echo '<div class="selPic" style="width:' . $phWds[$i] . 'px;float:left;'
                 . 'margin-left:2px;margin-right:2px;">';
-        echo '<input type="checkbox" name="pix[]" value="' .  $phNames[$i] .
+        echo '<input class="hpguse" type="checkbox" name="pix[]" value="' .  $phNames[$i] .
             '" />Use&nbsp;&nbsp;';
-        echo '<input type="checkbox" name="mapit[]" value="' . $phNames[$i] .
+        echo '<input class="mpguse" type="checkbox" name="mapit[]" value="' . $phNames[$i] .
              '" />Map<br />';
-        echo '<img height="200px" width="' . $phWds[$i] . 'px" src="' .
-                $phPics[$i] . '" alt="pic choice" />';
+        echo '<img class="allPhotos" height="200px" width="' . $phWds[$i] . 'px" src="' .
+                $phPics[$i] . '" alt="' . $phNames[$i] . '" />';
         echo '</div>';
     }
+    
 ?>
 </div>
 
 <div style="width:200px;position:relative;top:90px;left:20px;float:left;">
     <input type="submit" value="Create Page w/This Data" /><br /><br />
 </div>
+
+<div class="popupCap"></div>
 
 <input type="hidden" name="tsv" value="<?php echo $tsvFname;?>" />
 <input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
@@ -544,7 +549,13 @@ if ($hikeMarker === 'ctrhike') {
 </form>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
+<script type="text/javascript">
+    var mouseDat = $.parseXML("<?php echo $mdat;?>");
+    var phTitles = [];
+    var phDescs = [];
+</script>
 <script src="validateHike.js"></script>
+<script src="../scripts/picPops.js"></script>
 
 </body>
 
