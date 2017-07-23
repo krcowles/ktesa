@@ -12,7 +12,6 @@ var picPos;
 var pwidth;
 var pleft;
 var ptop;
-window.alert("FIRST " + phTitles[0]);
 var sessSupport = window.sessionStorage ? true : false;
 /* problems with refresh in Chrome prompted the use of the following technique
    which "detects" a refresh condition and restores previously loaded values.
@@ -77,7 +76,8 @@ function picPop(photoName) {
             break;
         }
     }
-    htmlDesc = '<p class="capLine">' + photoName + '</p>';
+    htmlDesc = '<p class="capLine">' + photoName + ': ' + '<em>' +
+            phDescs[picNo] + '</em></p>';
     $('.popupCap').css('display','block');
     $('.popupCap').css('position','absolute');
     $('.popupCap').css('top',capTop[picNo]);
