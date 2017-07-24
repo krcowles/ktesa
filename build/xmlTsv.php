@@ -15,7 +15,8 @@ for ($a=0; $a<$pcnt; $a++) {
     $tsvStr .= "\t\t\t<mid>" . $xmlout[$a]['nsize'] . "</mid>\n";
     $tsvStr .= "\t\t\t<imgHt>" . $xmlout[$a]['pHt'] . "</imgHt>\n";
     $tsvStr .= "\t\t\t<imgWd>" . $xmlout[$a]['pWd'] . "</imgWd>\n";
-    $tsvStr .= "\t\t\t<org>" . $xmlout[$a]['org'] . "</org>\n";
+    $tsvStr .= "\t\t\t<iclr>" . $icon_clr . "</iclr>\n";
+    $tsvStr .= "\t\t\t<org>" . $xmlout[$a]['org'] . "</org>\n"; 
     $tsvStr .= "\t\t</picDat>\n";
     $xmlTsvStr .= $tsvStr;
 }

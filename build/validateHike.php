@@ -36,13 +36,9 @@
     } else {
         $usetsv = false;
     }
-    # Peform any uploads and file validation & summaries
-    require "fileUploads.php";
     /*  Default values for identifying previously saved files 
      *  and whether or not to overwite them when saving the page
      */
-    $dupTsv = 'NO';
-    $owTsv = 'NO';
     $dupGpx = 'NO';
     $owGpx = 'NO';
     $dupJSON = 'NO';
@@ -59,12 +55,12 @@
     $owAmap = 'NO';
     $dupAgpx = 'NO';
     $owAgpx = 'NO';
+    # Peform any uploads and file validation & summaries
+    require "fileUploads.php";
     
 ?>  
 <p style="display:none" id="tsvStat"><?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?></p>
 <!-- Hidden Inputs Carrying File Upload Status --> 
-<input type="hidden" name="tsvf" value="<?php echo $dupTsv;?>" />
-<input id="overTsv" type="hidden" name="owt" value="<?php echo $owTsv;?>" />
 <input type="hidden" name="gpxf" value="<?php echo $dupGpx;?>" />
 <input id="overGpx" type="hidden" name="owg" value="<?php echo $owGpx;?>" />
 <input type="hidden" name="jsonf" value="<?php echo $dupJSON;?>" />
@@ -128,12 +124,6 @@ $hikeRefItems1 = $_POST['rit1'];
 $hikeRefItems2 = $_POST['rit2'];
 /* get a count of items actually specified: */
 $noOfRefs = count($hikeRefTypes);
-for ($k=0; $k<$noOfRefs; $k++) {
-    if ($hikeRefItems1[$k] == '') {
-        $noOfRefs = $k;
-        break;
-    }
-}
 include "xmlRefs.php";
 
 $hikePDatLbls = $_POST['plbl'];
@@ -159,6 +149,7 @@ $hikeADatCTxts = $_POST['actxt'];
 include "xmlGpsDat.php";
 
 if ($usetsv) {
+    # place xml declaration and container 'wrapper' on tsvStr for importing as xml
     $photoXml = "<?xml version='1.0'?>\n<photos>\n" . $xmlTsvStr . "</photos>\n";
     $picXml = simplexml_load_string($photoXml);
     if ($picXml === false) {
@@ -181,12 +172,11 @@ if ($usetsv) {
         $phWds[$picno] = floor($aspect * $pWidth);
         $picno += 1;
     }
+    $mdat = preg_replace('/\n/','', $photoXml);
+    $mdat = preg_replace('/\t/','', $mdat);
 }
-$mdat = preg_replace('/\n/','', $photoXml);
-$mdat = preg_replace('/\t/','', $mdat);
 /*
  *  MARKER-DEPENDENT PAGE ELEMENTS
- * ****   UNTESTED ****
 */
 # Index page ref -> ctrhike
 $xmlDataBase = '../data/database.xml';
@@ -428,6 +418,25 @@ if ($hikeMarker === 'ctrhike') {
     /* There SHOULD always be at least one reference, however, if there is not,
        a message will appear in this section: No References Found */
     $refhtml = '<fieldset><legend id="fldrefs">References &amp; Links</legend><ul id="refs">';
+    $combinedStr = $xmlPDat . $xmlADat;
+    $completeGPSDat = "<?xml version='1.0'?>\n<gpsdat>\n" . $combinedStr . "</gpsdat>\n";
+    $gpsdatSection = simplexml_load_string($completeGPSDat);
+    if ($gpsdatSection === false) {
+        $nodat = $msgStyle . 'Could not load $gpsdatSection xml: contact Site Master</p>';
+        die ($nodat);
+    }
+    foreach ($gpsdatSection->dataProp as $gpspdat) {
+        if (strlen($gpspdat->prop) == 0) {
+            $noOfProps = 0;
+        }
+    }
+    foreach ($gpsdatSection->dataAct as $gpsadat) {
+        if (strlen($gpsadat->act) == 0) {
+            $noOfActs = 0;
+        }
+    }
+    echo "PDATA: " . $noOfProps . "; ADATA: " . $noOfActs;
+    die ("YO");
     if ($noOfRefs === 0) {
         $refStr = '1^n^No References Found';
         $refhtml .= '<li>No References Found</li>';
@@ -519,7 +528,6 @@ if ($hikeMarker === 'ctrhike') {
 
 <div class="popupCap"></div>
 
-<input type="hidden" name="tsv" value="<?php echo $tsvFname;?>" />
 <input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
 <input type="hidden" name="area"  value="<?php echo $hikeLocale;?>" />
 <input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
@@ -532,7 +540,6 @@ if ($hikeMarker === 'ctrhike') {
 <input type="hidden" name="wow"   value="<?php echo $hikeWow;?>" />
 <input type="hidden" name="seasn" value="<?php echo $hikeSeasons;?>" />
 <input type="hidden" name="expo"  value="<?php echo $hikeExp;?>" />
-<input type="hidden" name="geomp" value="<?php echo $hikeMap;?>" />
 <input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
 <input type="hidden" name="json"  value="<?php echo $hikeJSON;?>" />
 <input type="hidden" name="img1"  value="<?php echo $hikeOthrImage1;?>" />
@@ -542,12 +549,12 @@ if ($hikeMarker === 'ctrhike') {
 <input type="hidden" name="phot1" value="<?php echo $hikePurl1;?>" />
 <input type="hidden" name="phot2" value="<?php echo $hikePurl2;?>" />
 <input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
-<input type="hidden" name="refstr" value="<?php echo $refStr;?>" />
-<input type="hidden" name="pstr" value="<?php echo $pStr;?>" />
-<input type="hidden" name="astr" value="<?php echo $aStr;?>" />
 <input type="hidden" name="usepics" value="<?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?>" />
 </form>
-
+<?php
+$xyz = $_SESSION['actdata'];
+echo " ---- " . $xyz;
+?>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">
     var mouseDat = $.parseXML("<?php echo $mdat;?>");

@@ -75,8 +75,7 @@ if ( preg_match("/DONE/",$json) === 1 ) {
         'return to the hike Editor, un-check the box, and upload a track file' .
         ' or contact site master</p>';
 }
-$jpos = strrpos($hikeGpx,".");
-$hikeJSON = substr($hikeGpx,0,$jpos) . ".json";
+$hikeJSON = $baseName . ".json";
 $JSONloc = '../json/' . $hikeJSON;
 if ( file_exists($JSONloc) ) {
     echo $fexists1 . $hikeJSON . $fexists2 . 

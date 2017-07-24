@@ -12,20 +12,25 @@ define("TOOMUCHMARGIN", 80, true);
 define("MIN_IFRAME_SIZE", 270, true);
 # Location of user-stored new files
 $buildFiles = 'tmp/';
-/* HTML form elements used by validateHike.js that are not used here:
- *  'tsvow', 'mapow', 'gpxow' ,'trkow', 'jsonow'
- * 
- * FIRST: Uploaded filenames (tsv may be empty)
- */
-$tsvname = filter_input(INPUT_POST,'tsv');
-$tsvFile = $buildFiles . 'gpsv/' . $tsvname;
+
+# output msg styling:
+$pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
+$xmlmsg = $pstyle . 'Could not open new xml string for ';
+
+# FILE INPUTS:
 $gpx = filter_input(INPUT_POST,'gpx');
 if ($gpx !== '') {
     $gpxPath = $buildFiles . 'gpx/' . $gpx;
 } else {
-    die ("GPX FILE REQUIRED: Go back and upload");
+    $nogpx = $pstyle . 'GPX File name is currently empty: conact Site Master</p>';
+    die ($nogpx);
  }
 $trkfile = filter_input(INPUT_POST,'json');
+if ($trkfile === '') {
+    $notrk = $pstyle . "Track file, if created, is no longer present: contact"
+            . "Site Master</p>";
+    die ($notrk);
+}
 $addonImg[0] = filter_input(INPUT_POST,'img1');
 $imgIndx = 0;
 if ($addonImg[0] === '') {
@@ -48,15 +53,13 @@ if ($addonImg[1] !== '') {
 }
 # All files associated with proposed & actual data sections:
 $propact = filter_input(INPUT_POST,'dfiles');
-/* An 'array string' is passed to 'saveHike.php' consisting of 10 pairs of values;
+/* An 'array string' is passed to 'saveHike.php' consisting of 8 pairs of values;
  * each value in the pair is either "YES" or "NO": First val: has a duplicate file name
  * been detected? Second val: if so, should it be replaced with the newly uploaded file?
- * Order of array: tsv file, geomap, gpx file, track file, image1, image2, prop dat1,
+ * Order of array: gpx file, track file, image1, image2, prop dat1,
  * prop dat2, act dat1, act dat2 
  */
 $saveFileInfo = [];
-array_push($saveFileInfo,filter_input(INPUT_POST,'tsvf'));
-array_push($saveFileInfo,filter_input(INPUT_POST,'owt'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'gpxf'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'owg'));
 array_push($saveFileInfo,filter_input(INPUT_POST,'jsonf'));
@@ -76,11 +79,9 @@ array_push($saveFileInfo,filter_input(INPUT_POST,'owag'));
 
 $fileSaveData = implode("^",$saveFileInfo);
 $_SESSION['filesaves'] = $fileSaveData;
-# ----- end of file uploads ------
+# ----- end of file data ------
 
-
-
-/* NEXT: IMPORTED VARIABLE DATA (HIKE DATA) */
+/* NEXT: IMPORTED VARIABLE DATA (i.e. HIKE DATA) */
 $pgTitle = filter_input(INPUT_POST,'hTitle');
 $locale = filter_input(INPUT_POST,'area');
 $hikeType = filter_input(INPUT_POST,'htype');
@@ -91,36 +92,10 @@ if ($hikeType === "oab") {
 } else {
     $htype = "Two-Cars";
 }
-$ctrHikeLoc = filter_input(INPUT_POST,'vcList');  # from select drop-down;
-/*
-    If $ctrHikeLoc not empty, find the Index Page for the assoc. hike and update it,
-    passing the value on to 'saveHike.php'.
-*/
-if ($ctrHikeLoc !== '') {
-    $database = '../data/database.csv';
-    $dbHandle = fopen($database,"r");
-    /* $ctrHikeLoc holds the index number of the Visitor Center associated with this hike;	
-       This new hike will have the next available index no, which number is to be added to
-       the Visitor Center's "Cluster Str", array index [4] */
-    $wholeDB = array();
-    $dbindx = 0;
-    while ( ($hikeLine = fgetcsv($dbHandle)) !== false ) {
-        $wholeDB[$dbindx] = $hikeLine;
-        $dbindx++;
-    }
-    fclose($dbHandle);
-    # find the associated Visitor Center:
-    foreach ($wholeDB as &$hikeInfo) {
-        if ($hikeInfo[0] == $ctrHikeLoc) {
-            $_SESSION['indxCluster'] = $hikeInfo[4];
-            break;
-        }
-    }
-}
-/*
-    End of ctrHikeLoc processing
-*/
-$clusGrp = filter_input(INPUT_POST,'clusgrp');  # from select drop-down
+# from select drop-down for hike at Visitor Center: passed to saveHike.php as is;
+$ctrHikeLoc = filter_input(INPUT_POST,'vcList');
+
+$clusGrp = filter_input(INPUT_POST,'clusgrp');
 $clusTip = '';  // default: may change below
 /*
     With clusGrp, find the associated tooltip
@@ -167,13 +142,55 @@ $googledirs = filter_input(INPUT_POST,'gdirs');
 $tips = $_SESSION['hikeTips'];
 # the passed tips may be an empty string
 $info = $_SESSION['hikeDetails'];
-$refs = filter_input(INPUT_POST,'refstr');
-$pdat = filter_input(INPUT_POST,'pstr');
-$adat = filter_input(INPUT_POST,'astr');
-$picarray = $_POST['pix'];  # don't know how to filter passed array...
-$noOfPix = count($picarray);
-$forceLoad = filter_input(INPUT_POST,'setForce');
-$useAllPix = filter_input(INPUT_POST,'allPix');
+$usePix = filter_input(INPUT_POST,'usepics');
+
+if ($usePix == 'YES') {
+    # establish the $photos for this hike as a complete xml string for loading
+    $sessXml = $_SESSION['tsvdata'];
+    $completeXml = "<?xml version='1.0'?>\n<photos>\n" . $sessXml . "</photos>\n";
+    $photos = simplexml_load_string($completeXml);
+    if ($photos === false) {
+        $nophxml = $xmlmsg . '$completeXml; contact Site Master</p>'; 
+    }
+    # retrieve array of photos checked for inclusion on hike page:
+    $picarray = $_POST['pix'];
+    $noOfPix = count($picarray); # NOTE: the array doesn't include unchecked items...
+    if ($noOfPix === 0) {
+        $nopix = $pstyle . 'No pictures were selected for inclusion on the ' .
+                'hike page: if this is correct, continue; else go back and ' .
+                'select the desired items</p>';
+        echo $nopix;
+    } else {
+        for ($z=0; $z<$noOfPix; $z++) {
+            # change the 'N' to a 'Y' in the $photos xml object
+            foreach ($photos->picDat as $picel) {
+                if ($picel->title == $picarray[$z]) {
+                    $picel->hpg = 'Y';
+                    break;
+                }
+            }
+        }
+    }
+    # retrieve array of photos checked for inclusion on map:
+    $maparray = $_POST['mapit'];
+    $noOfMapPix = count($maparray);
+    if ($noOfMapPix === 0) {
+        $nomappix = $pstyle . 'No pictures were selected for inclusion on the '
+                . 'hike map: if this is correct, continue; else go back and'
+                . ' select desired items</p>';
+        echo $nomappix;
+    } else {
+        for ($q=0; $q<$noOfMapPix; $q++) {
+            # change the 'N' to a 'Y' in the $photos xml object
+            foreach ($photos->picDat as $picel) {
+                if ($picel->title == $maparray[$q]) {
+                    $picel->mpg = 'Y';
+                    break;
+                }
+            }
+        } 
+    }
+}
 /*
     ------------------------------ END OF IMPORTING DATA -------------------------
 */
@@ -206,17 +223,19 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
 <p id="trail"><?php echo $pgTitle;?></p>
 
 <?php
-    # MAP CONSTRUCTION:
+    # SETUP FOR MAP CONSTRUCTION:
     $building = true;
-    $hikeTitle = $pgTitle;  # include file uses $hikeTitle var
-    $gpsvFile = $tsvname;   # include file uses $gpsvFile var
-    # include file also uses $gpxPath, defined earlier in this routine
-    $extLoc = strrpos($gpsvFile,'.');
-    $gpsvMap = substr($gpsvFile,0,$extLoc);
-    # holding place for page's hike map
+    # include file expects defined variables as input for:
+    #   $hikeTitle, $gpxPath ---> $gpxPath is already defined, above,
+    #   and $photos (xml object)
+    $hikeTitle = $pgTitle;
+    # establish temp. map name:
+    # WARNING!!! if a file name has an '&' in the name, strange things happen!!!
+    $extLoc = strrpos($gpx,'.');
+    $gpsvMap = substr($gpx,0,$extLoc);
     $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
     if ($gpsvMap === '') {
-        $tmpMap = '../maps/tmp/' . $pgTitle . '.html';
+        $tmpMap = '../maps/tmp/noGpxName.html';
     }
     if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
         $mapmsg = $intro . 'Could not open tmp map file - contact Site Master';
@@ -280,226 +299,9 @@ $useAllPix = filter_input(INPUT_POST,'allPix');
 /*  
     ---------------------------  BEGIN IMAGE ROW PROCESSING ----------------------
 */
-$formpics = filter_input(INPUT_POST,'usepics');
-if ($formpics === "YES") {
-    # predefined var
-    $month = array("Jan","Feb","Mar","Apr","May","Jun",
-                                    "Jul","Aug","Sep","Oct","Nov","Dec");
-    #  Read in the tsv file and extract ALL usable data:
-    /* NOTE: For some older files, the fields in the tsv file vary considerably and may
-       omit key data that later files contain. Look for these special files when
-       executing a page rebuild. The only fields required for row-filling are:
-       -- desc, name, date, n-size
-    */
-    $handle = fopen($tsvFile, "r");
-    if ($handle !== false) {
-        $lineno = 0;
-        $picno = 0;
-        while ( ($line = fgets($handle)) !== false ) {
-            $tsvArray = str_getcsv($line,"\t");
-            if ($lineno !== 0) {
-                $picName[$picno] = $tsvArray[1];
-                $picDesc[$picno] = $tsvArray[2];
-                $picAlbm[$picno] = $tsvArray[6];
-                $picDate[$picno] = $tsvArray[7];
-                $nsize[$picno] = $tsvArray[8]; 
-                $picno++;
-            }
-            $lineno++;
-        }
-        $lineno--;
-    } else {
-        die( "Could not open tsv file for this hike" );
-    }
-    # Pull out the index numbers of the chosen few: (or maybe all!)
-    $k = 0;
-    for ($i=0; $i<$noOfPix; $i++) {
-        $targ = $picarray[$i];
-        for ($j=0; $j<$lineno; $j++) {
-            if( $targ === $picName[$j] ) {
-                $indx[$k] = $j;
-                $k++;
-                break;
-            }
-        }
-    }
-    # for each of the <user-selected> pix, define needed arrays
-    for ($i=0; $i<$noOfPix; $i++) {
-        $x = $indx[$i];
-        $picYear = substr($picDate[$x],0,4);
-        $picMoDigits = substr($picDate[$x],5,2) - 1;
-        $picMonth = $month[$picMoDigits];
-        $picDay = substr($picDate[$x],8,2);
-        if (substr($picDay,0,1) === '0') {
-            $picDay = substr($picDay,1,1);
-        }
-        $caption[$i] = "{$picMonth} {$picDay}, {$picYear}: {$picDesc[$x]}";
-        $picSize = getimagesize($nsize[$x]); # PROVIDE THIS IN GPSV FILE??
-        $picWidth[$i] = $picSize[0];
-        $picHeight[$i] = $picSize[1];
-        $name[$i] = $picName[$x];
-        $desc[$i] = $picDesc[$x];
-        $album[$i] = $picAlbm[$x];
-        $photolink[$i] = $nsize[$x];
-    }
-    $noOfAlbumLinks = count($album);
-    $albStr = $noOfAlbumLinks . '^' . implode("^",$album);
-    $albStr = preg_replace("/\n\t\r/"," ",$albStr);
-    # Preliminary setup complete, begin row-filling algorithm:
-    $imgRows = array(6);
-    $maxRowHt = 260;	# change as desired
-    $rowWidth = 950;	# change as desired, current page width is 960
-    # start by calculating the various images' widths when rowht = maxRowHt
-    # PHOTOS:
-    for ($i=0; $i<$noOfPix; $i++) {
-        $widthAtMax[$i] = floor($picWidth[$i] * ($maxRowHt/$picHeight[$i]));
-    }
-    # OTHER IMAGES: 
-    for ($l=0; $l<$noOfOthr; $l++) {
-        $indx = $noOfPix + $l;
-        $widthAtMax[$indx] = floor($othrWidth[$l] * ($maxRowHt/$othrHeight[$l]));
-    }
-    $items = $noOfPix + $noOfOthr;
-    # initialize starting rowWidth, counters, and starting point for html creation
-    $curWidth = 0;	# row Width as it's being built
-    $startIndx = 0;	# when creating html, index to set loop start
-    $rowHtml = '';
-    $rowNo = 0;
-    $totalProcessed = 0;
-    $othrIndx = 0;	 # counter for number of other images being loaded
-    $leftMostImg = true;
-    $rowStr = array();
-    for ($i=0; $i<$items; $i++) {
-        if ($leftMostImg === false) {  # modify width for added pic margins for all but first img
-                $curWidth += 1;
-        }
-        $rowCompleted = false;
-        $curWidth += $widthAtMax[$i];
-        $leftMostImg = false;
-        if ($i < $noOfPix) {
-            $itype[$i] = "picture";
-        } else {
-            $itype[$i] = "image";
-        }
-        if ($curWidth > $rowWidth) {
-            $rowItems = $i - $startIndx + 1;
-            $totalProcessed += $rowItems;
-            $scaleFactor = $rowWidth/$curWidth;
-            $actualHt = floor($scaleFactor * $maxRowHt);
-            # ALL rows concatenated in $rowHtml
-            $rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
-            /* Create a row unconcatenated to be used for $rowHtml, or passed solo via php */
-            $thisRow = '';
-            $imgCnt = 0;
-            $imel = '';
-            for ($n=$startIndx; $n<=$i; $n++) {
-                if ($n === $startIndx) {
-                    $styling = ''; # don't add left-margin to leftmost image
-                } else {
-                    $styling = 'margin-left:1px;';
-                }
-                if ($itype[$n] === "picture") {
-                    $picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
-                    $picHeight[$n] = $actualHt;
-                    $thisRow = $thisRow . '<img id="pic' .$n . '" style="' . $styling . '" width="' .
-                            $picWidth[$n] . '" height="' . $actualHt . '" src="' . $photolink[$n] . 
-                            '" alt="' . $caption[$n] . '" />';	
-                    $imel .= 'p^' . $picWidth[$n] . '^' . $photolink[$n] . '^' . $caption[$n];             
-                } else {  # its an additional non-captioned image
-                    $othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
-                    $othrHeight[$othrIndx] = $actualHt;
-                    $thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
-                            '" height="' . $actualHt . '" src="../images/' . $addonImg[$othrIndx] .
-                            '" alt="Additional non-captioned image" />';
-                    $imel .= 'n^' . $othrWidth[$n] . '^' . $addonImg[$othrIndx];
-                    $othrIndx += 1;
-                }
-                $imgCnt++;
-                $imel .= '^';
-            }  # end of for loop $n
-            # thisRow is completed and will be used below in different ways:
-            $imel = $imgCnt . '^' . $actualHt . '^' . $imel;
-            array_push($rowStr,$imel);
-            $rowHtml = $rowHtml . $thisRow . '</div>';
-            $rowNo += 1;
-            $startIndx += $rowItems;
-            $curWidth = 0;
-            $rowCompleted = true;
-            $leftMostImg = true;
-        }  # end of if currentWidth > rowWidth
-    } # end of for loop creating initial rows
-    # last row may not be filled, and will be at maxRowHt
-    # last item index was "startIndx"; coming into last row as $leftMostImg = true
-    if ($rowCompleted === false) {
-        $itemsLeft = $items - $totalProcessed;
-        $leftMostImg = true;
-        $thisRow = '<div id="row' . $rowNo . '" class="ImgRow">';
-        $imel = '';
-        $imgCnt = 0;
-            for ($i=0; $i<$itemsLeft; $i++) {
-                if ($leftMostImg) {
-                    $styling = ''; 
-                    $leftMostImg = false;
-                } else {
-                    $styling = 'margin-left:1px;';
-                }
-                if ($itype[$startIndx] === "picture") {
-                    $picWidth[$startIndx] = $widthAtMax[$startIndx];
-                    $picHeight[$startIndx] = $maxRowHt;
-                    $thisRow = $thisRow . '<img id="pic' . $startIndx . '" style="' . $styling .
-                            '" width="' . $picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
-                            $photolink[$startIndx] . '" alt="' . $caption[$startIndx] . '" />';
-                    $imel .= 'p^' . $picWidth[$startIndx] . '^' . $photolink[$startIndx] . 
-                            '^' . $caption[$startIndx];
-                    $startIndx += 1;
-                } else {
-                    $othrWidth[$othrIndx] = $widthAtMax[$startIndx];
-                    $othrHeight[$othrIndx] = $maxRowHt;
-                    $thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$othrIndx] . '" height="' .
-                            $maxRowHt . '" src="../images/' . $addonImg[$othrIndx] .
-                            '" alt="Additional page image" />';
-                    $imel .= 'n^' . $othrWidth[$othrIndx] . '^' . $addonImg[$othrIndx];
-                    $othrIndx += 1;
-                    $startIndx += 1;
-                }
-                $imgCnt++;
-                $imel .=  '^';
-            } // end of for loop processing
-            $imel = $imgCnt . '^' . $maxRowHt . '^' . $imel;
-            array_push($rowStr,$imel);
-            $imgRows[$rowNo] = $thisRow . "</div>";
-            $rowHtml = $rowHtml . $thisRow . "</div>";
-    } // end of last row conditional
-    # all items have been processed and actual width/heights retained
-    # Create the list of album links
-    $albumHtml = '<div class="lnkList"><ol>';
-    for ($k=0; $k<$noOfPix; $k++ ) {
-            $albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
-    }
-    $albumHtml = $albumHtml . "</ol></div>";
-
-    $noOfRows = count($rowStr);
-    for ($x=$noOfRows; $x<6; $x++) {
-        $rowStr[$x] = '';
-    }
-    for ($y=0; $y<6; $y++) {
-        if ($rowStr[$y] !== '') {
-            $rlgth = strlen($rowStr[$y]) - 1;
-            $rowStr[$y] = substr($rowStr[$y],0,$rlgth);
-        }
-    }
-    $_SESSION['row0'] = $rowStr[0];
-    $_SESSION['row1'] = $rowStr[1];
-    $_SESSION['row2'] = $rowStr[2];
-    $_SESSION['row3'] = $rowStr[3];
-    $_SESSION['row4'] = $rowStr[4];
-    $_SESSION['row5'] = $rowStr[5];
-
-    /*  
-        ---------------------------  END OF IMAGE ROW PROCESSING ----------------------
-    */
-    echo $rowHtml;
-    echo $albumHtml;
+if ($usePix === "YES") {
+    # NOTE - the include file will use the already created $photos xml object (makeGpsv.php)
+    include 'formPicRows.php';
 }
 ?>
 <form target="_blank" action="saveHike.php" method="POST">
@@ -515,88 +317,49 @@ if ($formpics === "YES") {
     }
     /* ----- HIKE INfORMATION PROCESSING ---- */
     echo  '<p id="hikeInfo">' . $info . '</p>' . "\n";
+   
+    
     /* ----- REFERENCES PROCESSING ----- */
     echo '<fieldset>' . "\n" . '<legend id="fldrefs">References &amp; Links</legend>' . "\n";
-    echo '<ul id="refs">' . "\n";
-    $dispRefs = explode("^",$refs);
-    $noOfRefs = intval($dispRefs[0]);
-    array_shift($dispRefs);
-    $nxt = 0;
-    $listel = '';
-    #echo 'Number of references found: ' . $noOfRefs;
-    for ($i=0; $i<$noOfRefs; $i++) {
-        switch ($dispRefs[$nxt]) {
-            case 'b':
-                $listel .= '<li>Book: <em>' . $dispRefs[$nxt+1] . '</em> ' . $dispRefs[$nxt+2] . '</li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'p':
-                $listel .= '<li>Photo Essay: <em>' . $dispRefs[$nxt+1] . '</em> ' . $dispRefs[$nxt+2] . '</li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'w':
-                $lbl ='Website: ';
-                $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'a':
-                $lbl = 'App: ';
-                $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'd':
-                $lbl = 'Downloadable Doc: ';
-                $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'l':
-                $lbl = 'Blog: ';
-                $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'r':
-                $lbl = 'Related Link: ';
-                $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'o':
-                $lbl = 'On-Line Map: ';
-                $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'm':
-                $lbl = 'Magazine: ';
-                $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
-                break;
-            case 's':
-                $lbl = 'News Article: ';
-                $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'g':
-                $lbl = 'Meetup Group: ';
-                $listel .= '<li>' . $lbl . '<a href="' . $dispRefs[$nxt+1] .
-                        '" target="_blank">' . $dispRefs[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
-                break;
-            case 'n':
-                $listel .= '<li>' . $dispRefs[$nxt+1] . '</li>' . "\n";
-                break;
-            default:
-                echo "Unrecognized reference type passed";
-        }  // end of switch
-    } // end of for loop - refs processing
-    echo $listel . '</ul>' . "\n" . '</fieldset>' . "\n";
+    echo "\t" . '<ul id="refs">' . "\n";
+    # form loadable xml string:
+    $importRefs = $_SESSION['hikerefs'];
+    $completeXmlRefs = "<?xml version='1.0'?>\n" . $importRefs . "\n";
+    $xmlRef = simplexml_load_string($completeXmlRefs);
+    if ($xmlRef === false) {
+        $norefs = $xmlmsg . '$completeXmlRefs: contact Site Master</p>';
+        die ($norefs);
+    }
+    foreach ($xmlRef->ref as $refItem) {
+        if ($refItem->rtype == 'Book' || $refItem->rtype == 'Photo Essay') {
+            echo "\t\t<li><em>" . $refItem->rtype . "</em>: " . $refItem->rit1 .
+                $refItem->rit2 . "</li>\n";
+        } else {
+            echo "\t\t<li>" . $refItem->rtype . ': <a href="' . $refITem->rit1 .
+                '" target="_blank"> ' . $refItem->rit2 . "</a></li>\n";
+        }
+    }
+    echo "\t</ul>\n</fieldset>\n";
+
     /* ----- PROPOSED AND/OR ACTUAL DATA PROCESSING ---- */
+    # form loadable xml strings:
+    $importPdat = $_SESSION['propData'];
+    echo "Prop str " . $importPdat;
+    $completeProp = "<?xml version='1.0'?>\n" . $importPdat . "\n";
+    $importAdat = $_SESSION['actData'];
+    echo "Act str " . $importAdat;
+    $completeAct = "<?xml version='1.0'?>\n" . $importAdat . "\n";
+    $xmlProp = simplexml_load_string($completeProp);
+    if ($xmlProp === false) {
+        $noprop = $xmlmsg . '$completeProp; contact Site Master</p>';
+        die ($noprop);
+    }
+    $xmlAct = simplexml_load_string($completeAct);
+    if ($xmlAct === false) {
+        $noact = $xmlmsg . '$completeAct; contact Site Master</p>';
+        die ($noact);
+    }
+    /*
     if ($pdat !== '' || $adat !== '') {
         echo '<fieldset>' . "\n" . '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
         if ($pdat !== '') {
@@ -643,6 +406,8 @@ if ($formpics === "YES") {
         }
         echo '</fieldset>';
     }
+     * 
+     */
 ?>
 </div>  <!-- end of postPhoto -->
 <!-- Hidden Data Passed to saveHike.php -->

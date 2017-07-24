@@ -57,6 +57,5 @@ if ($tmp === false) {
 }
 fwrite($tmp,$refXmlStr);
 fclose($tmp);
- * 
  */
 ?>

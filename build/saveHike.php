@@ -28,6 +28,38 @@
 </div>
 
 <?php
+/*
+ *  If $ctrHikeLoc not empty, find the Index Page for the assoc. hike and update it,
+ *  passing the value on to 'saveHike.php'.
+ */
+if ($ctrHikeLoc !== '') {
+    /* 
+     * $ctrHikeLoc holds the index number of the Visitor Center associated 
+     * with this hike; This new hike will have the next available index no, 
+     * which number is to be added to the Visitor Center's "Cluster Str", array
+     */
+    $xmlDB = simplexml_load_file($database);
+    if ($xmlDB === false) {
+        $dbnogo = '<p style="margin-left:8px;color:brown;font-size:18px;">' .
+            'Could not load the database to retrieve data for Visitor Center hike.</p>';
+        die($dbnogo);
+    }
+    
+    while ( ($hikeLine = fgetcsv($dbHandle)) !== false ) {
+        $wholeDB[$dbindx] = $hikeLine;
+        $dbindx++;
+    }
+    # find the associated Visitor Center:
+    foreach ($wholeDB as &$hikeInfo) {
+        if ($hikeInfo[0] == $ctrHikeLoc) {
+            $_SESSION['indxCluster'] = $hikeInfo[4];
+            break;
+        }
+    }
+}
+/*
+    End of ctrHikeLoc processing
+*/
     /* get last used hike No.. */
     $database = '../data/database.csv';
     $handle = fopen($database, "r");

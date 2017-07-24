@@ -8,17 +8,17 @@ for ($p=0; $p<$noOfPDats; $p++) {
     $xmlPDat .= "\t\t</prop>\n";
 }
 $xmlPDat .= "\t</dataProp>\n";
-$_SESSION['propData'] = $xmlPDat;
+$_SESSION['propdata'] = $xmlPDat;
 $xmlADat = "\t<dataAct>\n";
 for ($q=0; $q<$noOfADats; $q++) {
     $xmlADat .= "\t\t<act>\n";
-    $xmlADat .= "\t\t\t<albl>" . $hikeADatLbls[$q] . "</plbl>\n";
-    $xmlADat .= "\t\t\t<aurl>" . $hikeADatUrls[$q] . "</purl>\n";
-    $xmlADat .= "\t\t\t<acot>" . $hikeADatCTxts[$q] . "</pcot>\n";
+    $xmlADat .= "\t\t\t<albl>" . $hikeADatLbls[$q] . "</albl>\n";
+    $xmlADat .= "\t\t\t<aurl>" . $hikeADatUrls[$q] . "</aurl>\n";
+    $xmlADat .= "\t\t\t<acot>" . $hikeADatCTxts[$q] . "</acot>\n";
     $xmlADat .= "\t\t</act>\n";
 }
 $xmlADat .= "\t</dataAct>\n";
-$_SESSION['actData'] = $xmlADat;
+$_SESSION['actdata'] = $xmlADat;
 $tmp = fopen("gpsDat.xml","w");
 if ($tmp === false) {
     die("NO FILE FOR GPS MAPS AND DATA");

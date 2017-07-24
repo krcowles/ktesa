@@ -1,4 +1,7 @@
 <?php 
+/*
+ * REQUIRED INPUTS FOR THIS ROUTINE:  $hikeTitle; $gpxPath; $photos
+ */
 function distance($lat1, $lon1, $lat2, $lon2) {
     if ($lat1 === $lat2 && $lon1 === $lon2) {
         return array (0,0);
@@ -37,38 +40,24 @@ function distance($lat1, $lon1, $lat2, $lon2) {
 # Error messages:
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
-$trkmsg = $intro . 'Could not open track file: ';
-$tsvmsg = $intro . 'Could not open tsv file: ';
-$xmlmsg = $intro . 'Could not parse XML in gpx file: '; 
+$gpxmsg = $intro . 'Could not parse XML in gpx file: '; 
 
 # Settings:
 $noOfTrks = 1;  # for a single hike page, this is a reasonable constraint, but
 # perhaps other pages will need to set this value
 $tno = 1;
-
-# NOTE: Currently using variables established in hikePageTemplate.php: 
-#   $hikeTitle, $gpsvFile, $gpxPath - ultimately, switch to database technique
+   
 # Some titles may use quotations - provide for that case:
 $mapTitle = str_replace("'","\\'",$hikeTitle);
 $mapTitle = str_replace('"','\\"',$mapTitle);
-
-# Files: tsv  file
-if (isset($building)) {
-    $gpsvPath = 'tmp/gpsv/' . $gpsvFile;
-} else {
-    $gpsvPath = '../gpsv/' . $gpsvFile;
-}
-$gpsvData = file($gpsvPath);
-if ($gpsvData === false) {
-    die ($tsvmsg . $gpsvPath . $close);
-} 
+ 
 # Files: GPX track file
 $gpxdat = simplexml_load_file($gpxPath);
 if ($gpxdat === false) {
-    die ($xmlmsg . $gpxPath . $close);
+    die ($gpxmsg . $gpxPath . $close);
 }
-
 /*
+ *    ---- TRACK DATA ----
  * Getting track data from gpx file and formatting for gpsv:
  */
 $gpxlats = [];
@@ -139,84 +128,28 @@ for ($i=1; $i<count($gpxlons)-1; $i++) {
 }
 $clat = $south + ($north - $south)/2;
 $clon = $west + ($east - $west)/2;
-#$lastpoints = '[' . $gpxlats[$gpxindx-1] . ',' . $gpxlons[$gpxindx-1] . ']';
 /*
- * Form the photo links from the gpsvData
+ *     ---- END OF TRACK DATA ---
+ * 
+ *   ---- ESTABLISH PHOTO DATA ----
+ * Form the photo links from the xml data
  */
-$plnks = [];
-$headerline = true;
+$plnks = [];  # array of photo links
 $defIconColor = 'red';
-# default large nos to see if index value gets set...
-$folder = 10000;
-$desc = 10000;
-$nme = 10000;
-$tsvLat = 10000;
-$tsvLng = 10000;
-$thumb = 10000;
-$albumUrl = 10000;
-$icn = 10000;
-$icolor = 10000;
-foreach ($gpsvData as $entry) {
-    # eliminate ending \n:
-    $stripped = substr($entry,0,strlen($entry)-1);
-    $rawdat = explode("\t",$stripped);
-    if ($headerline) {
-        # use header row to get indices
-        for ($p=0; $p<count($rawdat); $p++) {
-            switch ($rawdat[$p]) {
-                case 'folder':
-                    $folder = $p;
-                    break;
-                case 'desc':
-                    $desc = $p;
-                    break;
-                case 'name':
-                    $nme = $p;
-                    break;
-                case 'Latitude':
-                    $tsvLat = $p;
-                    break;
-                case 'Longitude':
-                    $tsvLng = $p;
-                    break;
-                case 'thumbnail':
-                    $thumb = $p;
-                    break;
-                case 'url':
-                    $albumUrl = $p;
-                    break;
-                case 'symbol':
-                    $icn = $p;
-                    break;
-                case 'color':
-                    $icolor = $p;
-                    break;
-                default:
-                    break;
-            }
+
+if ($usePix == 'YES' && $noOfMapPix > 0) {
+    foreach ($photos->picDat as $xmlPhoto) {
+        if ($xmlPhoto->mpg == 'Y') {
+            $procName = preg_replace("/'/","\'",$xmlPhoto->title);
+            $procName = preg_replace('/"/','\"',$procName);
+            $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
+                $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
+                $xmlPhoto->desc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
+                $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
+                $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
+            array_push($plnks,$plnk);
         }
-        $headerline = false;
-    } else {
-        if ($icolor === 10000) {
-            $icon = $defIconColor;
-        } else {
-            #$out = "indx: " . $icolor . " value: " . (string)$rawdat[$icolor];
-            $icon = $rawdat[$icolor];
-        }
-        if ($icn === 10000) {
-            $mapicon = '';
-        } else {
-            $mapicon = $rawdat[$icn];
-        }
-        $procName = preg_replace("/'/","\'",$rawdat[$nme]);
-        $procName = preg_replace('/"/','\"',$procName);
-        $plnk = "GV_Draw_Marker({lat:" . $rawdat[$tsvLat] . ",lon:" . $rawdat[$tsvLng] . 
-            ",name:'" . $procName . "',desc:'" . $rawdat[$desc] . 
-            "',color:'" . $icon . "',icon:'" . $mapicon . 
-            "',url:'" . $rawdat[$albumUrl] . "',thumbnail:'" . $rawdat[$thumb] .
-            "',folder:'" . $rawdat[$folder] . "'});";
-        array_push($plnks,$plnk);
-    }   
+    }
 }
 /*
  * The next section copies the template for GPSV.html into a variable to be
@@ -416,13 +349,12 @@ for ($j=0; $j<count($ticks); $j++) {
 }
 for ($z=0; $z<count($plnks); $z++) {
  $html .= '        ' . $plnks[$z] . "\n";
-}
-                    
+}            
 $html .= '        GV_Finish_Map();' . "\n";
 $html .= '    }' . "\n";
 $html .= '    GV_Map(); // execute the above code' . "\n";
 $html .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=auto' . "\n";
-$html .= '</script>' . "\n";  
+$html .= '</script>' . "\n"; 
 $html .= '</body>' . "\n";
 $html .= '</html>' . "\n";
 ?>

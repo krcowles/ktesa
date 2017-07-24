@@ -240,6 +240,8 @@ PROCESS:
        3. Hide/Display the 'File Data' section pertaining to photos depending on 
           whether or not the user selection 'I don't want to specify pictures
           at this time' was made.
+       4. The text for photo descriptions and names is extracted from the xml
+          jQuery objects established in the php code.
 
        ** PHP FORM **
        1. The hike page title is retrieved and encoded for special html characters
@@ -341,14 +343,67 @@ PROCESS:
           the hike page;
       17. The user-supplied GPS Maps & Data (if any) will be shown as it will
           appear on the hike page;
-      18. Lastly, a complete display of photos collected from the user-supplied
-          online album urls. Each image has a check box allowing inclusion of
-          that photo on the hike page, and a check box specifying inclusion on
-          the hike-page map. Check boxes are also presented to allow selection
-          of all items for inclusion. When there is a mouseover event on a 
-          picture it will display the "title".
-          
-    B. (or) Index Page Validation
+      18. Last to be displayed, a complete display of photos collected from the 
+          user-supplied online album urls. Each image has a check box allowing
+          inclusion of that photo on the hike page, and a check box specifying 
+          inclusion on the hike-page map. Check boxes are also presented to 
+          allow selection of all items for inclusion. When there is a 
+          mouseover event on a picture it will display the "title" and 
+          "description". The submit button is labeled: 'Creat Page w/This Data'.
+          It invokes 'displayHikePg.php'.
+      19. In the javascript declarations, php passes the xml data string for this
+          hike and makes it capable of being parsed as an xml doc. Variables
+          are created that save information for the popups on the photos (above)
+          when the user mouses over a photo. 
+         
+    B. (or) Index Page Validation 
+
+    ---------- Display Finished Page w/Ability to Save Results ----------
+
+    - Hike Page -
+    The script 'displayHikePg.php" presents the accumulated, validated, and 
+    selected data from the validation page in the manner that it will be displayed
+    as a hike page. 
+
+    ** STYLING **
+    The display page utilizes the same CSS styling that is used on the final
+    hike page: hikes.css. 
+
+    ** JAVASCRIPT **
+    1. The variable 'iframeWindow' is declared separately as a global so that the
+       charting code (for elevation charts) can successfully link to the map and
+       display a corresponding map location for the selected elevation. The
+       variable is declared via a script element, in the html for the page.
+    2. 'canvas.js' is declared in the head, as it needs to establish information
+       to be utilized by the html and can't 'wait' until the body closing tag.
+    3. In order to provide the identical user-experience with the page, the 
+       'hikes.js' javascript file is utilized.
+    4. The script 'dynamicCharts.js' is declared in the typical end-of-body
+       location. This code accesses the gpx file to extract distance/elevation
+       data for the chart to use in its display.
+    5. During the process of page display, a temporary map is saved in maps/tmp/
+       in order to simplify processing. The map is no longer needed after the
+       page closes, so the final script sets up the code to delete the temp map.
+
+    ** HTML/FORM **
+    1. The filenames passed from the validation page are collected in variables.
+    2. For the 'Proposed' and 'Actual' files, status information is retrieved
+       from $_SESSION[dfiles];
+    3. The duplicate file/overwrite file indicators passed via multiple hidden
+       inputs from the validation page, are collected and imploded into a string
+       $fileSaveData and stored as $_SESSION[filesaves].
+    4. Additional hike data is retrieved from the passed inputs.
+    5. If the hike was assigned a cluster group, extract the corresponding 
+       group name and pass to the save routine.
+    6. Complete the acquisition of passed data.
+    7. If 'usepics' is YES, retrieve two sets of data: photonames used for 
+       inclusion on the hike page; photonames used for inclusion on the map.
+    8. Present the html page: <head>, logo, sidePanel, map & chart. (Note: map
+       includes only those photos selected by user for inclusion on the map).
+    9. Invoke 'formPicRows' to create the rows of hike page pictures (using only
+       those selected for inclusion on the hike page)
+       
+    
 
     
     
