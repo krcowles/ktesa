@@ -85,7 +85,7 @@ $_SESSION['filesaves'] = $fileSaveData;
 $pgTitle = filter_input(INPUT_POST,'hTitle');
 $locale = filter_input(INPUT_POST,'area');
 $hikeType = filter_input(INPUT_POST,'htype');
-if ($hikeType === "oab") {
+if ($hikeType === "outandback") {
     $htype = "Out-and-back";
 } else if ($hikeType === "loop") {
     $htype = "Loop";
@@ -427,8 +427,6 @@ if ($usePix === "YES") {
 <input type="hidden" name="hwow" value="<?php echo $wowFactor;?>" />
 <input type="hidden" name="hseas" value="<?php echo $seasons;?>" />
 <input type="hidden" name="hexp" value="<?php echo $exposure;?>" />
-<input type="hidden" name="htsv" value="<?php echo $tsvname;?>" />
-<input type="hidden" name="hmap" value="<?php echo $geomap;?>" />
 <input type="hidden" name="hgpx" value="<?php echo $gpx;?>" />
 <input type="hidden" name="htrk" value="<?php echo $trkfile;?>" />
 <input type="hidden" name="hlat" value="<?php echo $lat;?>" />
@@ -440,13 +438,8 @@ if ($usePix === "YES") {
 <input type="hidden" name="hphoto2" value="<?php echo $purl2;?>" />
 <input type="hidden" name="hdir" value="<?php echo $googledirs;?>" />
 <input type="hidden" name="htool" value="<?php echo $clusTip;?>" />
-<input type="hidden" name="hcaps" value="<?php echo $capStr;?>" />
 <input type="hidden" name="hplnks" value="<?php echo $albStr;?>" />
-<input type="hidden" name="href" value="<?php echo $refs;?>" />
-<input type="hidden" name="hpdat" value="<?php echo $pdat;?>" />
-<input type="hidden" name="hadat" value="<?php echo $adat;?>" />
-<input type="hidden" name="rhno" value="<?php echo $hikeNo;?>" />
-<input type="hidden" name="savetsv" value="<?php echo $formpics;?>" />
+<input type="hidden" name="usepix" value="<?php echo $usePix;?>" />"
 
 <div style="margin-left:8px;">
 <h3>Select an option below to save the hike page</h3>

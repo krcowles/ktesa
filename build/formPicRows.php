@@ -176,6 +176,7 @@ $rowStr = array();
             $rowxml .= "\t</picRow>\n"; 
     } // end of last row conditional
     # all items have been processed and actual width/heights retained
+    $_SESSION['picrows'] = $rowxml;
     # Create the list of album links
     $albumHtml = '<div class="lnkList"><ol>';
     for ($k=0; $k<$noOfPix; $k++ ) {
