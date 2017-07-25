@@ -124,6 +124,13 @@ $hikeRefItems1 = $_POST['rit1'];
 $hikeRefItems2 = $_POST['rit2'];
 /* get a count of items actually specified: */
 $noOfRefs = count($hikeRefTypes);
+for ($w=0; $w<$noOfRefs; $w++) {
+    # Imported data references may not have content other than default label
+    if ($hikeRefItems1[$w] == '') {
+        $noOfRefs = $w;
+        break;
+    }
+}
 include "xmlRefs.php";
 
 $hikePDatLbls = $_POST['plbl'];
@@ -417,7 +424,28 @@ if ($hikeMarker === 'ctrhike') {
 <?php 
     /* There SHOULD always be at least one reference, however, if there is not,
        a message will appear in this section: No References Found */
-    $refhtml = '<fieldset><legend id="fldrefs">References &amp; Links</legend><ul id="refs">';
+    echo '<fieldset>' . "\n" . '<legend id="fldrefs">References &amp; Links</legend>' . "\n";
+    echo "\t" . '<ul id="refs">' . "\n";
+    $completeRef = "<?xml version='1.0'?>\n" . $refXmlStr . "\n";
+    $xmlRef = simplexml_load_string($completeRef);
+    if ($xmlRef === false) {
+        $norefs = $msgStyle . 'Could not load $xmlRef: contact Site Master</p>';
+        die ($norefs);
+    }
+    foreach ($xmlRef->ref as $refItem) {
+        if ($refItem->rtype == 'Book' || $refItem->rtype == 'Photo Essay') {
+            echo "\t\t<li><em>" . $refItem->rtype . "</em>: " . $refItem->rit1 .
+                $refItem->rit2 . "</li>\n";
+        } else {
+            echo "\t\t<li>" . $refItem->rtype . ': <a href="' . $refITem->rit1 .
+                '" target="_blank"> ' . $refItem->rit2 . "</a></li>\n";
+        }
+    }
+    echo "\t</ul>\n</fieldset>\n";
+    
+    /* OPTIONAL INFO: GPS Maps & Data fieldset
+     * No h2 header is used here: just display if present
+     */
     $combinedStr = $xmlPDat . $xmlADat;
     $completeGPSDat = "<?xml version='1.0'?>\n<gpsdat>\n" . $combinedStr . "</gpsdat>\n";
     $gpsdatSection = simplexml_load_string($completeGPSDat);
@@ -425,77 +453,67 @@ if ($hikeMarker === 'ctrhike') {
         $nodat = $msgStyle . 'Could not load $gpsdatSection xml: contact Site Master</p>';
         die ($nodat);
     }
+    $noOfProps = 0;
+    $prop1 = [];
+    $prop2 = [];
+    $prop3 = [];
+    $noOfActs = 0;
+    $act1 = [];
+    $act2 = [];
+    $act3 = [];
     foreach ($gpsdatSection->dataProp as $gpspdat) {
-        if (strlen($gpspdat->prop) == 0) {
-            $noOfProps = 0;
+        if (strlen($gpspdat->prop) !== 0) {
+            foreach ($gpspdat->prop as $placeProp) {
+                $prop1[$noOfProps] = $placeProp->plbl;
+                $prop2[$noOfProps] = $placeProp->purl;
+                $prop3[$noOfProps] = $placeProp->pcot;
+                $noOfProps++;
+            }
         }
     }
     foreach ($gpsdatSection->dataAct as $gpsadat) {
-        if (strlen($gpsadat->act) == 0) {
-            $noOfActs = 0;
+        if (strlen($gpsadat->act) !== 0) {
+            foreach ($gpsadat->act as $placeAct) {
+                $act1[$noOfActs] = $placeAct->albl;
+                $act2[$noOfActs] = $placeAct->aurl;
+                $act3[$noOfActs] = $placeAct->acot;
+                $noOfActs++;
+            }
         }
     }
-    echo "PDATA: " . $noOfProps . "; ADATA: " . $noOfActs;
-    die ("YO");
-    if ($noOfRefs === 0) {
-        $refStr = '1^n^No References Found';
-        $refhtml .= '<li>No References Found</li>';
-    } else {
-        $refStr = $noOfRefs;
-        for ($j=0; $j<$noOfRefs; $j++) {
-            $x = $hikeRefTypes[$j];
-            $refStr .= '^' . $x;
-            if ($x === 'n') {
-                # only one item in this list element: the text
-                $refhtml .= '<li>' . $hikeRefItems1[$j] . '</li>';
-                $refStr .= '^' . $hikeRefItems1[$j];
-            } else {
-                # all other items have two parts + the id label
-                $refStr .= '^' . $hikeRefItems1[$j] . '^' . $hikeRefItems2[$j];
-                $refhtml .= '<li>' . $refLbls[$j];
-                if ($x === 'b' || $x === 'p') {
-                        # no links in these
-                        $refhtml .= '<em>' . $hikeRefItems1[$j] . '</em>' . $hikeRefItems2[$j] . '</li>';
-                } else {
-                        $refhtml .= '<a href="' . $hikeRefItems1[$j] . '" target="_blank">' . 
-                                $hikeRefItems2[$j] . '</a></li>';
+    if ($noOfProps > 0 || $noOfActs > 0) {
+        echo '<fieldset>' . "\n" . '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
+        if ($noOfProps > 0) {
+            echo '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">' . "\n";
+            for ($a=0; $a<$noOfProps; $a++) {
+                $tmploc = $prop2[$a];
+                if (strpos($tmploc,'../maps/') !== false) {
+                    $tmpurl = str_replace('../maps/','tmp/maps/',$tmploc);
+                } elseif (strpos($tmploc,'../gpx/') !== false) {
+                    $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
                 }
+                echo "\t<li>" . $prop1[$a] . ': <a href="' . $tmpurl .
+                        '" target="_blank"> ' . $prop3[$a] . '</a></li>' . "\n";
             }
-        }  // end of for loop processing
-    }  // end of if-else
-    $refhtml .= '</ul></fieldset>';
-    echo $refhtml;
-?>	
-
-<?php
-    $pStr = '';
-    $aStr = '';
-    if ($noOfPDats > 0 || $noOfADats > 0) {
-        echo '<h2 style="text-align:center">Hike Data: Proposed and/or Actual</h2>' . "\n";
-        echo '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
-        if ($noOfPDats > 0) {
-            $pStr = $noOfPDats;
-            echo '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">';
-            for ($j=0; $j<$noOfPDats; $j++) {
-                echo '<li>' . $hikePDatLbls[$j] . '<a href="' . $hikePDatUrls[$j] .
-                    '" target="_blank">' . $hikePDatCTxts[$j] . '</a></li>';
-                $pStr .= '^' . $hikePDatLbls[$j] . '^' . $hikePDatUrls[$j] . '^' . $hikePDatCTxts[$j];	
-            }
-            echo '</ul>';
+            echo "\t</ul>\n";
         }
-        if ($noOfADats > 0) {
-            $aStr = $noOfADats;
-            echo '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">';
-            for ($k=0; $k<$noOfADats; $k++) {
-                echo '<li>' . $hikeADatLbls[$k] . '<a href="' . $hikeADatUrls[$k] .
-                    '" target="_blank">' . $hikeADatCTxts[$k] . '</a></li>';
-                $aStr .= '^' . $hikeADatLbls[$k] . '^' . $hikeADatUrls[$k] . '^' . $hikeADatCTxts[$k];
+        if ($noOfActs > 0) {
+            echo '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">' . "\n";
+            for ($b=0; $b<$noOfActs; $b++) {
+                $tmploc = $act2[$b];
+                if (strpos($tmploc,'../maps/') !== false) {
+                    $tmpurl = str_replace('../maps/','tmp/maps/',$tmploc);
+                } elseif (strpos($tmploc,'../gpx/') !== false) {
+                    $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
+                }
+                echo "\t<li>" . $act1[$b] . ': <a href="' . $tmpurl .
+                        '" target="_blank"> ' . $act3[$b] . '</a></li>' . "\n";
             }
-            echo '</ul>';
-        }
-        echo '</fieldset>';
+            echo "\t</ul>\n";
+        }  
+        echo "</fieldset>\n";
     }
-?>
+?>	
 
 <div id="showpics">
 <h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish
@@ -551,10 +569,7 @@ if ($hikeMarker === 'ctrhike') {
 <input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
 <input type="hidden" name="usepics" value="<?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?>" />
 </form>
-<?php
-$xyz = $_SESSION['actdata'];
-echo " ---- " . $xyz;
-?>
+
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">
     var mouseDat = $.parseXML("<?php echo $mdat;?>");
