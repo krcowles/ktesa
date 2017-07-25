@@ -492,7 +492,7 @@ if ($hikeMarker === 'ctrhike') {
                 } elseif (strpos($tmploc,'../gpx/') !== false) {
                     $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
                 }
-                echo "\t<li>" . $prop1[$a] . ': <a href="' . $tmpurl .
+                echo "\t<li>" . $prop1[$a] . ' <a href="' . $tmpurl .
                         '" target="_blank"> ' . $prop3[$a] . '</a></li>' . "\n";
             }
             echo "\t</ul>\n";
@@ -506,7 +506,7 @@ if ($hikeMarker === 'ctrhike') {
                 } elseif (strpos($tmploc,'../gpx/') !== false) {
                     $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
                 }
-                echo "\t<li>" . $act1[$b] . ': <a href="' . $tmpurl .
+                echo "\t<li>" . $act1[$b] . ' <a href="' . $tmpurl .
                         '" target="_blank"> ' . $act3[$b] . '</a></li>' . "\n";
             }
             echo "\t</ul>\n";

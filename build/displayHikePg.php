@@ -317,7 +317,6 @@ if ($usePix === "YES") {
     }
     /* ----- HIKE INfORMATION PROCESSING ---- */
     echo  '<p id="hikeInfo">' . $info . '</p>' . "\n";
-   
     
     /* ----- REFERENCES PROCESSING ----- */
     echo '<fieldset>' . "\n" . '<legend id="fldrefs">References &amp; Links</legend>' . "\n";
@@ -343,71 +342,75 @@ if ($usePix === "YES") {
 
     /* ----- PROPOSED AND/OR ACTUAL DATA PROCESSING ---- */
     # form loadable xml strings:
-    $importPdat = $_SESSION['propData'];
-    echo "Prop str " . $importPdat;
-    $completeProp = "<?xml version='1.0'?>\n" . $importPdat . "\n";
-    $importAdat = $_SESSION['actData'];
-    echo "Act str " . $importAdat;
-    $completeAct = "<?xml version='1.0'?>\n" . $importAdat . "\n";
-    $xmlProp = simplexml_load_string($completeProp);
-    if ($xmlProp === false) {
-        $noprop = $xmlmsg . '$completeProp; contact Site Master</p>';
-        die ($noprop);
+    $importPdat = $_SESSION['propdata'];
+    $importAdat = $_SESSION['actdata'];
+    $wholeStr = $importPdat . $importAdat;
+    $completeGPSDat = "<?xml version='1.0'?>\n<gpsdat>\n" . $wholeStr . "</gpsdat>\n";
+    $mapsndata = simplexml_load_string($completeGPSDat);
+    if ($mapsndata === false) {
+        $nomd = $xmlmsg . '$completeGPSDat; contact Site Master</p>';
+        die ($nomd);
     }
-    $xmlAct = simplexml_load_string($completeAct);
-    if ($xmlAct === false) {
-        $noact = $xmlmsg . '$completeAct; contact Site Master</p>';
-        die ($noact);
+    $noOfProps = 0;
+    $prop1 = [];
+    $prop2 = [];
+    $prop3 = [];
+    $noOfActs = 0;
+    $act1 = [];
+    $act2 = [];
+    $act3 = [];
+    foreach ($mapsndata->dataProp as $gpspdat) {
+        if (strlen($gpspdat->prop) !== 0) {
+            foreach ($gpspdat->prop as $placeProp) {
+                $prop1[$noOfProps] = $placeProp->plbl;
+                $prop2[$noOfProps] = $placeProp->purl;
+                $prop3[$noOfProps] = $placeProp->pcot;
+                $noOfProps++;
+            }
+        }
     }
-    /*
-    if ($pdat !== '' || $adat !== '') {
+    foreach ($mapsndata->dataAct as $gpsadat) {
+        if (strlen($gpsadat->act) !== 0) {
+            foreach ($gpsadat->act as $placeAct) {
+                $act1[$noOfActs] = $placeAct->albl;
+                $act2[$noOfActs] = $placeAct->aurl;
+                $act3[$noOfActs] = $placeAct->acot;
+                $noOfActs++;
+            }
+        }
+    }
+    if ($noOfProps > 0 || $noOfActs > 0) {
         echo '<fieldset>' . "\n" . '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
-        if ($pdat !== '') {
-            $listel = '';
+        if ($noOfProps > 0) {
             echo '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">' . "\n";
-            # get no. of pdats:
-            $prop = explode("^",$pdat);
-            $noOfProps = intval($prop[0]);
-            array_shift($prop);
-            $nxt = 0;
-            for ($i=0; $i<$noOfProps; $i++) {
-                $tmploc = $prop[$nxt+1];
-                if (strpos($tmploc,'../maps/') !== FALSE) {
+            for ($a=0; $a<$noOfProps; $a++) {
+                $tmploc = $prop2[$a];
+                if (strpos($tmploc,'../maps/') !== false) {
                     $tmpurl = str_replace('../maps/','tmp/maps/',$tmploc);
-                } else {
+                } elseif (strpos($tmploc,'../gpx/') !== false) {
                     $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
                 }
-                $listel .= '<li>' . $prop[$nxt] . ' <a href="' . $tmpurl .
-                        '" target="_blank">' . $prop[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
+                echo "\t<li>" . $prop1[$a] . ' <a href="' . $tmpurl .
+                        '" target="_blank"> ' . $prop3[$a] . '</a></li>' . "\n";
             }
-            echo $listel . '</ul>';
+            echo "\t</ul>\n";
         }
-        if ($adat !== '') {
-            $listel = '';
+        if ($noOfActs > 0) {
             echo '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">' . "\n";
-            # get no of adats:
-            $act = explode("^",$adat);
-            $noOfActs = intval($act[0]);
-            array_shift($act);
-            $nxt = 0;
-            for ($j=0; $j<$noOfActs; $j++) {
-                $tmploc = $act[$nxt+1];
-                if (strpos($tmploc,'../maps/') !== FALSE) {
+            for ($b=0; $b<$noOfActs; $b++) {
+                $tmploc = $act2[$b];
+                if (strpos($tmploc,'../maps/') !== false) {
                     $tmpurl = str_replace('../maps/','tmp/maps/',$tmploc);
-                } else {
+                } elseif (strpos($tmploc,'../gpx/') !== false) {
                     $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
                 }
-                $listel .= '<li>' . $act[$nxt] . ' <a href="' . $tmpurl .
-                        '" target="_blank">' . $act[$nxt+2] . '</a></li>' . "\n";
-                $nxt += 3;
+                echo "\t<li>" . $act1[$b] . ' <a href="' . $tmpurl .
+                        '" target="_blank"> ' . $act3[$b] . '</a></li>' . "\n";
             }
-            echo $listel . '</ul>' . "\n";
-        }
-        echo '</fieldset>';
+            echo "\t</ul>\n";
+        }  
+        echo "</fieldset>\n";
     }
-     * 
-     */
 ?>
 </div>  <!-- end of postPhoto -->
 <!-- Hidden Data Passed to saveHike.php -->
