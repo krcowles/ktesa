@@ -50,6 +50,7 @@ $items = $noOfPix + $noOfOthr;
 $curWidth = 0;	# row Width as it's being built
 $startIndx = 0;	# when creating html, index to set loop start
 $rowHtml = '';
+$rowxml = '';
 $rowNo = 0;
 $totalProcessed = 0;
 $othrIndx = 0;	 # counter for number of other images being loaded
@@ -67,14 +68,15 @@ $rowStr = array();
         } else {
             $itype[$i] = "image";
         }
+        # add images to curWidth until it exceeds rowWidth, then force fit:
         if ($curWidth > $rowWidth) {
             $rowItems = $i - $startIndx + 1;
             $totalProcessed += $rowItems;
             $scaleFactor = $rowWidth/$curWidth;
             $actualHt = floor($scaleFactor * $maxRowHt);
             # ALL rows concatenated in $rowHtml
-            $rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">';
-            /* Create a row unconcatenated to be used for $rowHtml, or passed solo via php */
+            $rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
+            $rowxml .= "\t<picRow>\n\t\t<rowHt>" . $actualHt . "</rowHt>\n";
             $thisRow = '';
             $imgCnt = 0;
             $imel = '';
@@ -88,9 +90,13 @@ $rowStr = array();
                     $picWidth[$n] = floor($scaleFactor * $widthAtMax[$n]);
                     $picHeight[$n] = $actualHt;
                     $thisRow = $thisRow . '<img id="pic' .$n . '" style="' . $styling . '" width="' .
-                            $picWidth[$n] . '" height="' . $actualHt . '" src="' . $photolink[$n] . 
-                            '" alt="' . $caption[$n] . '" />';	
-                    $imel .= 'p^' . $picWidth[$n] . '^' . $photolink[$n] . '^' . $caption[$n];             
+                        $picWidth[$n] . '" height="' . $actualHt . '" src="' . $photolink[$n] . 
+                        '" alt="' . $caption[$n] . '" />';	
+                    $imel .= 'p^' . $picWidth[$n] . '^' . $photolink[$n] . '^' . $caption[$n];
+                    $rowxml .= "\t\t<pic>\n\t\t\t<picWdth>" . $picWidth[$n] .
+                            "</picWdth>\n\t\t\t<picSrc>" . $photolink[$n] .
+                            "</picSrc>\n\t\t\t<picCap>" . $caption[$n] .
+                            "</picCap>\n\t\t</pic>\n";
                 } else {  # its an additional non-captioned image
                     $othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
                     $othrHeight[$othrIndx] = $actualHt;
@@ -98,6 +104,9 @@ $rowStr = array();
                             '" height="' . $actualHt . '" src="../images/' . $addonImg[$othrIndx] .
                             '" alt="Additional non-captioned image" />';
                     $imel .= 'n^' . $othrWidth[$n] . '^' . $addonImg[$othrIndx];
+                    $rowxml .= "\t\t<pic>\n\t\t\t<picWdth>" . $othrWidth[$n] .
+                            "</picWdth>\n\t\t\t<picSrc>../images/" . 
+                            $addonImg[$othrIndx] . "</picSrc>\n\t\t\</pic>\n";
                     $othrIndx += 1;
                 }
                 $imgCnt++;
@@ -106,7 +115,8 @@ $rowStr = array();
             # thisRow is completed and will be used below in different ways:
             $imel = $imgCnt . '^' . $actualHt . '^' . $imel;
             array_push($rowStr,$imel);
-            $rowHtml = $rowHtml . $thisRow . '</div>';
+            $rowHtml = $rowHtml . $thisRow . "\n</div>\n";
+            $rowxml .= "\t</picRow>\n";   
             $rowNo += 1;
             $startIndx += $rowItems;
             $curWidth = 0;
@@ -119,7 +129,8 @@ $rowStr = array();
     if ($rowCompleted === false) {
         $itemsLeft = $items - $totalProcessed;
         $leftMostImg = true;
-        $thisRow = '<div id="row' . $rowNo . '" class="ImgRow">';
+        $thisRow = '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
+        $rowxml .= "\t<picRow>\n\t\t<rowHt>" . $maxRowHt . "</rowHt>\n";
         $imel = '';
         $imgCnt = 0;
             for ($i=0; $i<$itemsLeft; $i++) {
@@ -137,6 +148,10 @@ $rowStr = array();
                             $photolink[$startIndx] . '" alt="' . $caption[$startIndx] . '" />';
                     $imel .= 'p^' . $picWidth[$startIndx] . '^' . $photolink[$startIndx] . 
                             '^' . $caption[$startIndx];
+                    $rowxml .= "\t\t<pic>\n\t\t\t<picWdth>" . $picWidth[$startIndx] .
+                            "</picWdth>\n\t\t\t<picSrc>" . $photolink[$startIndx] .
+                            "</picSrc>\n\t\t\t<picCap>" . $caption[$startIndx] .
+                            "</picCap>\n\t\t</pic>\n";
                     $startIndx += 1;
                 } else {
                     $othrWidth[$othrIndx] = $widthAtMax[$startIndx];
@@ -145,6 +160,9 @@ $rowStr = array();
                             $maxRowHt . '" src="../images/' . $addonImg[$othrIndx] .
                             '" alt="Additional page image" />';
                     $imel .= 'n^' . $othrWidth[$othrIndx] . '^' . $addonImg[$othrIndx];
+                    $rowxml .= "\t\t<pic>\n\t\t\t<picWdth>" . $othrWidth[$othrIndx] .
+                            "</picWdth>\n\t\t\t<picSrc>../images/" . 
+                            $addonImg[$othIndx] . "</picSrc>\n\t\t</pic>\n";
                     $othrIndx += 1;
                     $startIndx += 1;
                 }
@@ -154,7 +172,8 @@ $rowStr = array();
             $imel = $imgCnt . '^' . $maxRowHt . '^' . $imel;
             array_push($rowStr,$imel);
             $imgRows[$rowNo] = $thisRow . "</div>";
-            $rowHtml = $rowHtml . $thisRow . "</div>";
+            $rowHtml = $rowHtml . $thisRow . "\n</div>\n";
+            $rowxml .= "\t</picRow>\n"; 
     } // end of last row conditional
     # all items have been processed and actual width/heights retained
     # Create the list of album links
@@ -163,12 +182,15 @@ $rowStr = array();
             $albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
     }
     $albumHtml = $albumHtml . "</ol></div>";
-
-    $noOfRows = count($rowStr);
-    for ($x=$noOfRows; $x<$noOfRows; $x++) {
-        $sessVar = 'row' . $x;
-        $_SESSION[$sessVar] = rowStr[$x];
-    }
+    
     echo $rowHtml;
     echo $albumHtml;
+    /*  DEBUG
+    $tmprows = fopen("rowXml.xml","w");
+    if ($tmprows === false) {
+        die ("CANT OPEN tmprows");
+    }
+    fwrite($tmprows,$rowxml);
+    fclose($tmprows);
+     */
     ?>
