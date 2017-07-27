@@ -94,6 +94,7 @@ if ($hikeType === "outandback") {
 }
 # from select drop-down for hike at Visitor Center: passed to saveHike.php as is;
 $ctrHikeLoc = filter_input(INPUT_POST,'vcList');
+echo "Saw VCHIKE: " . $ctrHikeLoc . " selected";
 
 $clusGrp = filter_input(INPUT_POST,'clusgrp');
 $clusTip = '';  // default: may change below

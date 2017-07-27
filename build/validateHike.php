@@ -198,7 +198,7 @@ if ($hikeMarker === 'ctrhike') {
     $srchCnt = 0;
     foreach ( $xmlDB->row as $hikerow ) {
         if ( preg_match("/Visitor/i", $hikerow->marker) == 1 ) {
-            $VCList[$srchCnt] = $hikerow->indexNo . ": " . $hikerow->pgTitle;
+            $VCList[$srchCnt] = $hikerow->indxNo . ": " . $hikerow->pgTitle;
             $srchCnt++;
         }
     }
@@ -400,8 +400,6 @@ if ($hikeMarker === 'ctrhike') {
 <h3 style="text-indent:8px">Other data submitted:</h3>
 <ul>
     <li>Title to appear on Hike Page: <?php echo $hikeName;?></li>
-    <li>Added Image 1: <?php echo $hikeOthrImage1;?></li>
-    <li>Added Image 2: <?php echo $hikeOthrImage2;?></li>
     <li>Photo Link 1: <?php echo $hikePurl1;?></li>
     <li>Photo Link 2: <?php echo $hikePurl2;?></li>
     <li>Google Directions Link: <?php echo $hikeDir;?></li>

@@ -351,7 +351,7 @@ if ( $afile2 !== '') {
         if ( file_exists($af2site) ) {
             echo $fexists1 . $afile2 . $fexists2. 
                 '<input id="owaf2" type="checkbox" name="af2ow" />' . $fexists3;
-            $dupAmap = 'YES';
+            $dupAgpx = 'YES';
         }
         if ($af2Stat === UPLOAD_ERR_OK) {
             if (!move_uploaded_file($adatf2,$fupload)) {
