@@ -26,12 +26,13 @@ session_start();
 <?php
 # Styling for output (error) messages:
 $pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
-
 /* Retrieve the last used index number and increment for new hike */
-$xmldb = "../data/database.xml";
-$db = simplexml_load_file($xmldb);
-if ($xmldb === false) {
-    $nodb = $pstyle . 'Could not load xml database: contact Site Master</p>';
+$db = simplexml_load_file('../data/database.xml');
+if ($db === false) {
+    $err = libxml_get_errors();
+    echo count($err) . " errors flagged";
+    $nodb = '<p style="color:red;left-margin:16px;font-size:18px;">Could not '
+            . 'load database as xml file: contact site master</p>';
     die ($nodb);
 }
 foreach($db->row as $hikeRow) {
@@ -39,7 +40,7 @@ foreach($db->row as $hikeRow) {
 }
 $nxtNo = $lastIndxNo + 1;
 # some info is needed in more than one place, so variables assigned:
-$pageTitle = filter_input(INPUT_POST,'hname');
+$pageTitle = htmlspecialchars(filter_input(INPUT_POST,'hname'));
 $hikeMiles = filter_input(INPUT_POST,'hmiles');
 $hikeElev = filter_input(INPUT_POST,'hfeet');
 $hikeExposure = filter_input(INPUT_POST,'hexp');
@@ -81,6 +82,7 @@ $xmlout .= "\t<marker>" . $marker . "</marker>\n";
 
 # if this is a hike at a Visitor Center, that Index Page needs to be updated
 $ctrHikeLoc = filter_input(INPUT_POST,'hindx');
+# UNTESTED SECTION:
 if ($ctrHikeLoc !== '') {
     /*  
      * $ctrHikeLoc holds the index number of the Visitor Center associated with
@@ -104,8 +106,7 @@ if ($ctrHikeLoc !== '') {
             # new table entry
             $tblxml .= "\t\t\t<compl>Y</compl>\n\t\t\t<tdname>" . $pageTitle .
                 "</tdname>\n";
-            $tblxml .= "\t\t\t<tdpg>hikePageTemplate.php?hikeIndx=" . 
-                    $nxtNo . "</tdpg>\n";
+            $tblxml .= "\t\t\t<tdpg>" . $nxtNo . "</tdpg>\n";
             $tblxml .= "\t\t\t<tdmiles>" . $hikeMiles . "</tdmiles>\n";
             $tblxml .= "\t\t\t<tdft>" . $hikeElev . "</tdft>\n";
             if ($hikeExposure === 'Full sun') {
@@ -125,6 +126,7 @@ if ($ctrHikeLoc !== '') {
 } else {
     $xmlout .= "\t<clusterStr></clusterStr>\n";
 }
+# END UNTESTED
 
 # Continue spec'ing xmlout:
 $xmlout .= "\t<clusGrp>" . filter_input(INPUT_POST,'hclus') . "</clusGrp>\n";
@@ -132,9 +134,12 @@ $xmlout .= "\t<logistics>" . filter_input(INPUT_POST,'htype') . "</logistics>\n"
 $xmlout .= "\t<miles>" . $hikeMiles . "</miles>\n";
 $xmlout .= "\t<feet>" . $hikeElev . "</feet>\n";
 $xmlout .= "\t<difficulty>" . filter_input(INPUT_POST,'hdiff') . "</difficulty>\n";
-$xmlout .= "\t<facilities>" . filter_input(INPUT_POST,'hfac') . "</facilities>\n";
-$xmlout .= "\t<wow>" . filter_input(INPUT_POST,'hwow') . "</wow>\n";
-$xmlout .= "\t<seasons>" . filter_input(INPUT_POST,'hseas') . "</seasons>\n";
+$xmlout .= "\t<facilities>" . htmlspecialchars(filter_input(INPUT_POST,'hfac'))
+        . "</facilities>\n";
+$xmlout .= "\t<wow>" . htmlspecialchars(filter_input(INPUT_POST,'hwow')) .
+        "</wow>\n";
+$xmlout .= "\t<seasons>" . htmlspecialchars(filter_input(INPUT_POST,'hseas'))
+        . "</seasons>\n";
 $xmlout .= "\t<expo>" . $hikeExposure . "</expo>\n";
 $xmlout .= "\t<tsv>\n" . $_SESSION['tsvdata'] . "\t</tsv>\n";
 $xmlout .= "\t<gpxfile>" . $hikeGpx . "</gpxfile>\n";
@@ -144,11 +149,13 @@ $xmlout .= "\t<lng>" . filter_input(INPUT_POST,'hlon') . "</lng>\n";
 $xmlout .= "\t<mpUrl>" . $hikeMainAlbumLink . "</mpUrl>\n";
 $xmlout .= "\t<spUrl>" . filter_input(INPUT_POST,'hphoto2') . "</spUrl>\n";
 $xmlout .= "\t<dirs>" . filter_input(INPUT_POST,'hdir') . "</dirs>\n";
-$xmlout .= "\t<cgName>" . filter_input(INPUT_POST,'htool') . "</cgName>\n";
+$xmlout .= "\t<cgName>" . htmlspecialchars(filter_input(INPUT_POST,'htool')) . "</cgName>\n";
 
 $pix = filter_input(INPUT_POST,'usepix');
+
 if ($pix === 'YES') {
-    $xmlout .= "\t<content>\n" . $_SESSION['picrows'] . "\t</content>\n";
+    $xmlout .= "\t<content>\n" . htmlspecialchars($_SESSION['picrows']) . 
+            "\t</content>\n";
     # convert album links to xml:
     $alnks = filter_input(INPUT_POST,'hplnks');
     $phlinks = explode("^",$alnks);
@@ -160,21 +167,32 @@ if ($pix === 'YES') {
     $albxml .= "\t</albLinks>\n";
     $xmlout .= $albxml;
 } else {
-    $xmlout .= "\t<content>\n\t</content\n";
+    $xmlout .= "\t<content>\n\t</content>\n";
 }
-  
-$xmlout .= "\t<tipsTxt>" . $_SESSION['hikeTips'] . "</tipsTxt>\n";
-$xmlout .= "\t<hikeInfo>" . $_SESSION['hikeDetails'] . "</hikeInfo>\n";
-$xmlout .= $_SESSION['hikerefs'];
-$xmlout .= $_SESSION['propdata'];
-$xmlout .= $_SESSION['actdata'];
 
+$xmlout .= "\t<tipsTxt>" . htmlspecialchars($_SESSION['hikeTips']) . "</tipsTxt>\n";
+$xmlout .= "\t<hikeInfo>" . htmlspecialchars($_SESSION['hikeDetails']) . "</hikeInfo>\n";
+$xmlout .= htmlspecialchars($_SESSION['hikerefs']);
+$xmlout .= htmlspecialchars($_SESSION['propdata']);
+$xmlout .= htmlspecialchars($_SESSION['actdata']);
+
+/*
+$completexml = "<?xml version='1.0'?>\n<rows>\n" . $xmlout . "</rows>\n";
+$tout = simplexml_load_string($completexml);
+if ($tout === false) {
+    die ("NOPE");
+   
+} else {
+    die ("MADE IT!");
+}
+/*
 $tmp = fopen('save.xml',"w");
 if ($tmp === false) {
     die ("OUCH");
 }
-fwrite($tmp,$xmlout);
-fclose($tmp);
+ * 
+ */
+
 ?>
     <p id="trail"><?php echo $pageTitle;?></p>
     
@@ -353,7 +371,28 @@ if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
     } elseif ($newDatFiles[9] !== 'x' && $newDatFiles === 1) {
         echo '<p>' . $newDatFiles[9] . ' had already been uploaded - no activity</p>';
     }
-    $db->addChild('row',$xmlout);
+    /* For reasons beyond me, even though a simplexml_load_file returns object
+     * of type SimpleXMLElement, performing the 'addChild' method doesn't seem
+     * to work UNLESS the object is converted to an xml string, then specified 
+     * as a 'new SimpleXMLElemt' ...
+     */
+    $outfile = $db->addChild('row',$xmlout);
+    $db->asXML('save.xml');
+    die ("ALMOST...");
+    /*
+    $oldDB = $db->asXML();  # string version of xml database
+    #fwrite($tmp,$oldDB);
+    $newdb = new SimpleXMLElement($oldDB);
+    echo $newdb->asXML();
+    $row = $newdb->addChild('row');
+    $newrow = $row->asXML();
+    fwrite($tmp,$newrow);
+    #$newdb->asXML('save.xml');
+    #fwrite($tmp,$finishedXml);
+     * 
+     */
+    
+    #fclose($tmp);
     echo "<h2>" . $msg . "</h2>";  
 } else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
     # NOT UPDATED FOR VISITOR CENTER HIKES - need process
@@ -364,7 +403,7 @@ if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
                 . 'contact Site Master';
         die ($udbmsg);
     }
-    $udb->addChild('row',$xmlout);
+    $udb->rows->addChild('row',$xmlout);
     
 } else {
     die('<p style="color:brown;">Contact Site Master: Submission not recognized');

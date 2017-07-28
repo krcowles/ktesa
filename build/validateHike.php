@@ -123,8 +123,7 @@ $hikeRefTypes = $_POST['rtype'];
 $hikeRefItems1 = $_POST['rit1'];
 $hikeRefItems2 = $_POST['rit2'];
 /* get a count of items actually specified: */
-$noOfRefs = count($hikeRefTypes);
-for ($w=0; $w<$noOfRefs; $w++) {
+for ($w=0; $w<count($hikeRefTypes); $w++) {
     # Imported data references may not have content other than default label
     if ($hikeRefItems1[$w] == '') {
         $noOfRefs = $w;
