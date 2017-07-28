@@ -28,11 +28,11 @@ session_start();
 $pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
 /* Retrieve the last used index number and increment for new hike */
 $db = simplexml_load_file('../data/database.xml');
+$err = libxml_get_errors();
 if ($db === false) {
-    $err = libxml_get_errors();
-    echo count($err) . " errors flagged";
     $nodb = '<p style="color:red;left-margin:16px;font-size:18px;">Could not '
-            . 'load database as xml file: contact site master</p>';
+            . 'load database as xml file: contact site master;<br />' .
+            count($err) . ' error flags set</p>';
     die ($nodb);
 }
 foreach($db->row as $hikeRow) {
@@ -82,6 +82,7 @@ $xmlout .= "\t<marker>" . $marker . "</marker>\n";
 
 # if this is a hike at a Visitor Center, that Index Page needs to be updated
 $ctrHikeLoc = filter_input(INPUT_POST,'hindx');
+
 # UNTESTED SECTION:
 if ($ctrHikeLoc !== '') {
     /*  
@@ -118,7 +119,7 @@ if ($ctrHikeLoc !== '') {
             }
             $tblxml .= "\t\t\t<tdexp>" . $expIcon . "</tdexp>";
             $tblxml .= "\t\t\t<tdalb>" . $hikeMainAlbumLink . "</tdalb>\n";
-            $db->content->addChild('tblRow',$tblxml);
+            $rowXml->content->addChild('tblRow',$tblxml);
         }
     }
     $xmlout .= "\t<clusterStr>" . $newStr . "</clusterStr>\n";
@@ -152,10 +153,8 @@ $xmlout .= "\t<dirs>" . filter_input(INPUT_POST,'hdir') . "</dirs>\n";
 $xmlout .= "\t<cgName>" . htmlspecialchars(filter_input(INPUT_POST,'htool')) . "</cgName>\n";
 
 $pix = filter_input(INPUT_POST,'usepix');
-
 if ($pix === 'YES') {
-    $xmlout .= "\t<content>\n" . htmlspecialchars($_SESSION['picrows']) . 
-            "\t</content>\n";
+    $xmlout .= "\t<content>\n" . $_SESSION['picrows'] . "\t</content>\n";
     # convert album links to xml:
     $alnks = filter_input(INPUT_POST,'hplnks');
     $phlinks = explode("^",$alnks);
@@ -172,26 +171,9 @@ if ($pix === 'YES') {
 
 $xmlout .= "\t<tipsTxt>" . htmlspecialchars($_SESSION['hikeTips']) . "</tipsTxt>\n";
 $xmlout .= "\t<hikeInfo>" . htmlspecialchars($_SESSION['hikeDetails']) . "</hikeInfo>\n";
-$xmlout .= htmlspecialchars($_SESSION['hikerefs']);
-$xmlout .= htmlspecialchars($_SESSION['propdata']);
-$xmlout .= htmlspecialchars($_SESSION['actdata']);
-
-/*
-$completexml = "<?xml version='1.0'?>\n<rows>\n" . $xmlout . "</rows>\n";
-$tout = simplexml_load_string($completexml);
-if ($tout === false) {
-    die ("NOPE");
-   
-} else {
-    die ("MADE IT!");
-}
-/*
-$tmp = fopen('save.xml',"w");
-if ($tmp === false) {
-    die ("OUCH");
-}
- * 
- */
+$xmlout .= $_SESSION['hikerefs'];
+$xmlout .= $_SESSION['propdata'];
+$xmlout .= $_SESSION['actdata'];
 
 ?>
     <p id="trail"><?php echo $pageTitle;?></p>
@@ -371,28 +353,25 @@ if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
     } elseif ($newDatFiles[9] !== 'x' && $newDatFiles === 1) {
         echo '<p>' . $newDatFiles[9] . ' had already been uploaded - no activity</p>';
     }
-    /* For reasons beyond me, even though a simplexml_load_file returns object
-     * of type SimpleXMLElement, performing the 'addChild' method doesn't seem
-     * to work UNLESS the object is converted to an xml string, then specified 
-     * as a 'new SimpleXMLElemt' ...
+    /* For reasons beyond me, when I try to use $db->addChild('row',$xmlout),
+     * the $xmlout gets converted with something like htmlspecialchars when
+     * adding, so that $db->asXML('file.xml') has the last row garbled... 
+     * Therefore, the old-fashioned approach:
      */
-    $outfile = $db->addChild('row',$xmlout);
-    $db->asXML('save.xml');
-    die ("ALMOST...");
+    $newRowStr = "\n<row>\n" . $xmlout . "</row>\n</rows>";
+    $updatedb = fopen("database.xml","r+");  # fseek doesn't work with "a" - append
+    if ($updatedb === false) {
+       $noupdb = '<p style="color:brown;">Could not open database.xml: contact'
+               . ' site master;</p>';
+       die ($noupdb);
+    }
+    fseek($updatedb,-8,SEEK_END);  # backup before [newline]</rows>
+    fwrite($updatedb,$newRowStr);
+    fclose($updatedb);
     /*
-    $oldDB = $db->asXML();  # string version of xml database
-    #fwrite($tmp,$oldDB);
-    $newdb = new SimpleXMLElement($oldDB);
-    echo $newdb->asXML();
-    $row = $newdb->addChild('row');
-    $newrow = $row->asXML();
-    fwrite($tmp,$newrow);
-    #$newdb->asXML('save.xml');
-    #fwrite($tmp,$finishedXml);
-     * 
+    $newRow = $db->addChild('row',$xmlout);
+    $db->asXML('save.xml');
      */
-    
-    #fclose($tmp);
     echo "<h2>" . $msg . "</h2>";  
 } else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
     # NOT UPDATED FOR VISITOR CENTER HIKES - need process
