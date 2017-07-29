@@ -69,6 +69,7 @@
             $hikeMarker = $hikeRow->marker->__toString();
             $hikeClusGrp = $hikeRow->clusGrp->__toString();
             $hikeStyle = $hikeRow->logistics->__toString();
+            echo "NOW: " . $hikeStyle;
             $hikeMiles = $hikeRow->miles->__toString();
             $hikeFeet = $hikeRow->feet->__toString();
             $hikeDiff = $hikeRow->difficulty->__toString();
@@ -86,6 +87,7 @@
             $hikeGrpTip = $hikeRow->cgName->__toString();
             $hikeTips = $hikeRow->tipsTxt->__toString();
             $hikeDetails = $hikeRow->hikeInfo->__toSTring();
+            $hikeRefs = $hikeRow->refs;  # still need as an object
             # prop & act data?
         }
     } 
@@ -361,17 +363,12 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $hikeDetails;?></textarea>
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, delete and add a new one)</h3>
 <?php
-    $refs = explode("^",$info[39]);
-    $rcnt = $refs[0];
-    $noOfRefs = intval($rcnt);
-    echo '<p id="refcnt" style="display:none">' . $noOfRefs . '</p>';
-    echo '<input type="hidden" name = "orgrefs" value="' . $noOfRefs . '" />';
-    array_shift($refs);
-    $nxt = 0;
-    for ($j=0; $j<$noOfRefs; $j++) {
-        $rtype = 'rid' . $j;
-        $reftype = 'ref' . $j;
-        echo '<p id="' . $rtype . '" style="display:none">' . $refs[$nxt] . '</p>';
+    $z = 0;  # index for creating unique id's
+    foreach ($hikeRefs->ref as $ritem) {
+        $rid = 'rid' . $z;
+        $reftype = 'ref' . $z;
+        $thisref = $ritem->rtype->__toString();
+        echo '<p id="' . $rid  . '" style="display:none">' . $thisref . '</p>';
         echo '<label for="' . $reftype . '">Reference Type: </label>';
         echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">';
         echo '<option value="b">Book</option>';
@@ -388,29 +385,28 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         echo '<option value="r">Related Link</option>';
         echo '<option value="n">Text Only - No Link</option>';
         echo '</select><br />';
-        if ($refs[$nxt] === 'b' || $refs[$nxt] === 'p') {
+        if ($thisref === 'b' || $thisref === 'p') {
             echo '<label style="text-indent:24px;">Title: </label><textarea style="height:20px;width:320px" name="rit1[]">' .
-                $refs[$nxt+1] . '</textarea>&nbsp;&nbsp;';
+                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;';
             echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
-                $refs[$nxt+2] . '</textarea>&nbsp;&nbsp<label>Delete: </label>' .
+                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp<label>Delete: </label>' .
                '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
-                    $j . '"><br /><br />';
-            $nxt +=3;
-        } elseif ($refs[$nxt] === 'n') {
+                    $z . '"><br /><br />';
+        } elseif ($thisref === 'n') {
             echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
-                $refs[$nxt+1] . '</textarea><label>Delete: </label>' .
+                $ritem->rit1->__toString() . '</textarea><label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
-                $j . '"><br /><br />';
-            $nxt += 2;
+                $z . '"><br /><br />';
         } else {
             echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
-                $refs[$nxt+1] . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
-                $refs[$nxt+2] . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
+                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
-                $j . '"><br /><br />';
-            $nxt += 3;
-        }
+                $z . '"><br /><br />';
+        }    
     }
+    echo '<p id="refcnt" style="display:none">' . $z . '</p>';
+    echo '<input type="hidden" name = "orgrefs" value="' . $z . '" />';
 ?>
 <p>Add references here:</p>
 <p>Select the type of reference (with above, up to 8 total) and its accompanying data below:</p>
