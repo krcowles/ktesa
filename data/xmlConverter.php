@@ -145,7 +145,8 @@ while ( ($hikeLine = fgetcsv($csvfile)) !== false) {
         $xml .= "\t</content>\n"; 
         $xml .= "\t<albLinks>\n";
         if ($hikeLine[36] !== '') {
-            $lnks2photos = explode("^",hikeLine[36]);
+            
+            $lnks2photos = explode("^",$hikeLine[36]);
             array_shift($lnks2photos);
             foreach ($lnks2photos as $plnk) {
                 $xml .= "\t\t<alb>" . $plnk . "</alb>\n";
