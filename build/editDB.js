@@ -125,6 +125,7 @@ $('#diff').val(diffic);
 // Exposure:
 var exposure = $('#expo').text();
 $('#sun').val(exposure);
+
 // References section:
 var refCnt = parseFloat($('#refcnt').text());
 var refid;
@@ -132,7 +133,7 @@ var rid;
 var refname;
 for (var i=0; i<refCnt; i++) {
     refid = '#rid' + i;
-    rid = $(refid).text();
+    rid = $(refid).text();  // single letter in xml
     refname = '#ref' + i;
     $(refname).val(rid);
 }

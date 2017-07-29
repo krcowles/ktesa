@@ -69,7 +69,6 @@
             $hikeMarker = $hikeRow->marker->__toString();
             $hikeClusGrp = $hikeRow->clusGrp->__toString();
             $hikeStyle = $hikeRow->logistics->__toString();
-            echo "NOW: " . $hikeStyle;
             $hikeMiles = $hikeRow->miles->__toString();
             $hikeFeet = $hikeRow->feet->__toString();
             $hikeDiff = $hikeRow->difficulty->__toString();
@@ -87,8 +86,9 @@
             $hikeGrpTip = $hikeRow->cgName->__toString();
             $hikeTips = $hikeRow->tipsTxt->__toString();
             $hikeDetails = $hikeRow->hikeInfo->__toSTring();
-            $hikeRefs = $hikeRow->refs;  # still need as an object
-            # prop & act data?
+            $hikeRefs = $hikeRow->refs;  # still needed as objects ...
+            $hikeProp = $hikeRow->dataProp;
+            $hikeAct = $hikeRow->dataAct;
         }
     } 
     $grpCnt = count($groups);
@@ -403,13 +403,14 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
                 $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
                 $z . '"><br /><br />';
-        }    
+        }  
+        $z++;
     }
     echo '<p id="refcnt" style="display:none">' . $z . '</p>';
     echo '<input type="hidden" name = "orgrefs" value="' . $z . '" />';
 ?>
 <p>Add references here:</p>
-<p>Select the type of reference (with above, up to 8 total) and its accompanying data below:</p>
+<p>Select the type of reference and its accompanying data below:</p>
 <select id="href1" style="height:26px;" name="rtype[]">
     <option value="b">Book</option>
     <option value="p">Photo Essay</option>
@@ -449,19 +450,19 @@ Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35"
 
 <h3>Proposed Data:</h3>
 <?php 
-    if ($info[40] !== '') {
-        $prop = explode("^",$info[40]);
-        $pcnt = intval($prop[0]);
-        array_shift($prop);
-        $nxt = 0;
-        for ($i=0; $i<$pcnt; $i++) {
-            echo 'Label: <textarea class="tstyle1" name="plabl[]">' . $prop[$nxt] . '</textarea>&nbsp;&nbsp;';
-            echo 'Url: <textarea class="tstyle2" name="plnk[]">' . $prop[$nxt+1] . '</textarea>&nbsp;&nbsp;';
-            echo 'Click-on text: <textarea class="tstyle3" name="pctxt[]">' . $prop[$nxt+2] . 
-                '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
-                '<input style="height:18px;width:18px;" type="checkbox" name="delprop[]" value="' .
-                $i . '"><br /><br />';
-            $nxt +=3;
+    if (strlen($hikeProp) !== 0) {
+        $x = 0;
+        foreach ($hikeProp->prop as $pdat) {
+            echo 'Label: <textarea class="tstyle1" name="plabl[]">' . 
+                    $pdat->plbl->__toString() . '</textarea>&nbsp;&nbsp;';
+            echo 'Url: <textarea class="tstyle2" name="plnk[]">' . 
+                    $pdat->purl->__toString() . '</textarea>&nbsp;&nbsp;';
+            echo 'Click-on text: <textarea class="tstyle3" name="pctxt[]">' . 
+                    $pdat->pcot->__toString() . '</textarea>&nbsp;&nbsp;'
+                    . '<label>Delete: </label>' .
+                    '<input style="height:18px;width:18px;" type="checkbox" '
+                    . 'name="delprop[]" value="' . $x . '"><br /><br />';
+            $x++;
         }
     }
 ?>
@@ -474,21 +475,20 @@ Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35"
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="ctxt[]" size="30" />
 
 <h3>Actual Data:</h3>
-
 <?php
-    if ($info[41] !== '') {
-        $act = explode("^",$info[41]);
-        $acnt = intval($act[0]);
-        array_shift($act);
-        $nxt =0;
-        for ($j=0; $j<$acnt; $j++) { 
-            echo 'Label: <textarea class="tstyle1" name="alabl[]">' . $act[$nxt] . '</textarea>&nbsp;&nbsp;';
-            echo 'Url: <textarea class="tstyle2" name="alnk[]">' . $act[$nxt+1] . '</textarea>&nbsp;&nbsp;';
-            echo 'Click-on text: <textarea class="tstyle3" name="actxt[]">' . $act[$nxt+2] . 
-                '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
-                '<input style="height:18px;width:18px;" type="checkbox" name="delact[]" value="' .
-                $j . '"><br /><br />';
-            $nxt +=3;
+    if (strlen($hikeAct) !== 0) {
+        $y = 0;
+        foreach ($hikeAct->act as $adat) {
+            echo "Loop" . $y;
+            echo 'Label: <textarea class="tstyle1" name="alabl[]">' . 
+                    $adat->albl->__toString() . '</textarea>&nbsp;&nbsp;';
+            echo 'Url: <textarea class="tstyle2" name="alnk[]">' . 
+                    $adat->aurl->__toString() . '</textarea>&nbsp;&nbsp;';
+            echo 'Click-on text: <textarea class="tstyle3" name="actxt[]">' . 
+                    $adat->acot->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+                    '<input style="height:18px;width:18px;" type="checkbox" '
+                    . 'name="delact[]" value="' . $y . '"><br /><br />';
+            $y++;
         }
     }
 ?>
