@@ -25,42 +25,73 @@
 <p id="trail">Hike Page Editor</p>
 <div style="padding:16px;">
 <?php
-    $loadIcon = 'insert.png';
-    $database = '../data/database.csv';
-    $db = fopen($database,"r");
+    # Error output styling string:
+    $pstyle = '<p style="color:red;font-size:18px;">';
+    # icon showing allowable location to drop a picture
+    $loadIcon = 'insert.png'; 
+    
+    $xmlDB = simplexml_load_file('../data/database.xml');
+    if ($xmlDB === false) {
+        $nold = $pstyle . "Cannot load the xml database: contact Site Master;</p>";
+        die ($nold);
+    }
+    
     $hikeNo = filter_input(INPUT_GET,'hikeNo');
-    # Below: pull out the available cluster groups and establish $info array as hike data
-    # NOTE: Organize by cluster letter to simplify editing process
-    $clusters = array();
-    $groups = array();
-    $cnames = array();
-    while ( ($hdat = fgetcsv($db)) !== false) {
-        if ($hdat[0] == $hikeNo) {
-            $info = $hdat;
-        }
-        # Check to see if this is a cluster hike:
-        if ($hdat[28] !== '' && trim($hdat[28]) !== 'Clus tooltip') { 
-                                                    # don't include header row
+    # Below: pull out the available cluster groups and establish association
+    # with cluster group name for displaying in drop-down <select>
+    $groups = [];
+    $cnames = [];
+    $clusters = [];
+    foreach ($xmlDB->row as $hikeRow) {
+        $cgrp = $hikeRow->clusGrp->__toString();
+        if ( strlen($cgrp) !== 0) {
+            # no duplicates please (NOTE: array_unique leaves holes)
             $match = false;
-            for ($k=0; $k<count($groups); $k++) {
-                if (trim($hdat[5]) == $groups[$k]) {
+            for ($i=0; $i<count($groups); $i++) {
+                #echo " -Now:" . count($groups);
+                if ($cgrp == $groups[$i]) {
                     $match = true;
                     break;
-                }
+                }  
             }
-            if ($match === false) {
+            if (!$match) {
+                $grpPopup = $hikeRow->cgName->__toString();
+                array_push($groups,$cgrp);
+                array_push($cnames,$grpPopup);
                 # form an association of group to tooltip:
-                array_push($groups,trim($hdat[5]));
-                array_push($cnames,trim($hdat[28]));
-                $assoc = trim($hdat[5]) . "$" . trim($hdat[28]);
+                $assoc = $hikeRow->clusGrp . "$" . $grpPopup;
                 array_push($clusters,$assoc);
             }
         }
+        if ( $hikeRow->indxNo == $hikeNo) {
+            $hikeTitle = $hikeRow->pgTitle->__toString();
+            $hikeLocale = $hikeRow->locale->__toString();
+            $hikeMarker = $hikeRow->marker->__toString();
+            $hikeClusGrp = $hikeRow->clusGrp->__toString();
+            $hikeStyle = $hikeRow->logistics->__toString();
+            $hikeMiles = $hikeRow->miles->__toString();
+            $hikeFeet = $hikeRow->feet->__toString();
+            $hikeDiff = $hikeRow->difficulty->__toString();
+            $hikeFac = $hikeRow->facilities->__toString();
+            $hikeWow = $hikeRow->wow->__toString();
+            $hikeSeasons = $hikeRow->seasons->__toString();
+            $hikeExpos = $hikeRow->expo->__toString();
+            $hikeGpx = $hikeRow->gpxfile->__toString();
+            $hikeTrack = $hikeRow->trkfile->__toString();
+            $hikeLat = $hikeRow->lat->__toString();
+            $hikeLng = $hikeRow->lng->__toString();
+            $hikeUrl1 = $hikeRow->mpUrl->__toString();
+            $hikeUrl2 = $hikeRow->spUrl->__toString();
+            $hikeDirs = $hikeRow->dirs->__toString();
+            $hikeGrpTip = $hikeRow->cgName->__toString();
+            $hikeTips = $hikeRow->tipsTxt->__toString();
+            $hikeDetails = $hikeRow->hikeInfo->__toSTring();
+            # prop & act data?
+        }
     } 
-    fclose($db);
     $grpCnt = count($groups);
     $clusStr = implode(";",$clusters);
-    $_SESSION['allClusters'] = $clusStr;	
+    $_SESSION['allClusters'] = $clusStr;
 ?>
 
 <form target="_blank" action="saveChanges.php" method="POST">
@@ -68,13 +99,13 @@
 echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 ?>
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
-    the hike: "<?php echo $info[1];?>". If no changes are made you may either 
+    the hike: "<?php echo $hikeTitle;?>". If no changes are made you may either 
     exit this page or hit the "sbumit" button.
 </em><br /><br />
 <label for="hike">Hike Name: </label>
-<textarea id="hike" name="hname"><?php echo $info[1]?>
+<textarea id="hike" name="hname"><?php echo $hikeTitle;?>
 </textarea>&nbsp;&nbsp;
-<p style="display:none;" id="locality"><?php echo trim($info[2])?>
+<p style="display:none;" id="locality"><?php echo $hikeLocale;?>
 </p>
 <label for="area">Locale (City/POI): </label>
 <select id="area" name="locale">
@@ -116,8 +147,8 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	<option value="Pinos Altos">Pinos Altos</option>
 	<option value="Glenwood">Glenwood</option>
 </select>&nbsp;&nbsp;
-<p id="mrkr" style="display:none"><?php echo $info[3];?></p>
-<p id="group" style="display:none"><?php echo $info[28];?></p>
+<p id="mrkr" style="display:none"><?php echo $hikeMarker;?></p>
+<p id="group" style="display:none"><?php echo $hikeGrpTip;?></p>
 <h3>------- Cluster Hike Assignments: (Hikes with overlapping trailheads or in 
     close proximity) -------<br />
 <span style="margin-left:50px;font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
@@ -146,7 +177,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 </p>
 <h3>------- End of Cluster Assignments -------</h3>
 
-<p id="ctype" style="display:none"><?php echo $info[6];?></p>
+<p id="ctype" style="display:none"><?php echo $hikeStyle;?></p>
 <label for="type">Hike Type: </label>
 <select id="type" name="htype">
     <option value="Loop">Loop</option>
@@ -154,12 +185,12 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     <option value="Out-and-back">Out-and-back</option>
 </select>&nbsp;&nbsp;
 <label for="miles">Round-trip length in miles: </label>
-<textarea id="miles" name="hlgth"><?php echo $info[7];?>
+<textarea id="miles" name="hlgth"><?php echo $hikeMiles;?>
 </textarea>&nbsp;&nbsp;
 <label for="elev">Elevation change in feet: </label>
-<textarea id="elev" name="helev"><?php echo $info[8];?>
+<textarea id="elev" name="helev"><?php echo $hikeFeet;?>
 </textarea><br /><br />
-<p id="dif" style="display:none"><?php echo $info[9];?></p>
+<p id="dif" style="display:none"><?php echo $hikeDiff;?></p>
 <label for="diff">Level of difficulty: </label>
 <select id="diff" name="hdiff">
     <option value="Easy">Easy</option>
@@ -169,15 +200,15 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     <option value="Difficult">Difficult</option>
 </select>
 <label for="fac">Facilities at the trailhead: </label>
-<textarea id="fac" name="hfac"><?php echo $info[10];?>
+<textarea id="fac" name="hfac"><?php echo $hikeFac;?>
 </textarea><br /><br />
 <label for="wow">"Wow" Appeal: </label>
-<textarea id="wow" name="hwow"><?php echo $info[11];?>
+<textarea id="wow" name="hwow"><?php echo $hikeWow;?>
 </textarea>&nbsp;&nbsp;
 <label for="seas">Best Hiking Seasons: </label>
-<textarea id="seas" name="hsea"><?php echo $info[12];?>
+<textarea id="seas" name="hsea"><?php echo $hikeSeasons;?>
 </textarea><br /><br />
-<p id="expo" style="display:none"><?php echo $info[13];?></p>
+<p id="expo" style="display:none"><?php echo $hikeExpos;?></p>
 <label for="sun">Exposure: </label>
 <select id="sun" name="hexp">
     <option value="Full sun">Full sun</option>
@@ -185,15 +216,15 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     <option value="Good shade">Good shade</option>
 </select>&nbsp;&nbsp;
 <label for="lat">Trailhead: Latitude </label>
-<textarea id="lat" name="hlat"><?php echo $info[19];?></textarea>&nbsp;&nbsp;
+<textarea id="lat" name="hlat"><?php echo $hikeLat;?></textarea>&nbsp;&nbsp;
 <label for="lon">Longitude </label>
-<textarea id="lon" name="hlon"><?php echo $info[20];?></textarea><br />
-<label for="ph1">Photo URL1 (If solo, main album link): </label>
-<textarea id="ph1" name="purl1"><?php echo $info[23];?></textarea><br />
-<label for="ph2">Photo URL2 (Will appear as "Tom's"): </label>
-<textarea id="ph2" name="purl2"><?php echo $info[24];?></textarea><br /><br />
+<textarea id="lon" name="hlon"><?php echo $hikeLng;?></textarea><br />
+<label for="ph1">Photo URL1 ("Main"): </label>
+<textarea id="ph1" name="purl1"><?php echo $hikeUrl1;?></textarea><br />
+<label for="ph2">Photo URL2 ("Additional"): </label>
+<textarea id="ph2" name="purl2"><?php echo $hikeUrl2;?></textarea><br /><br />
 <label for="murl">Map Directions Link (Url): </label>
-<textarea id="murl" name="gdirs"><?php echo $info[25];?></textarea><br /><br />
+<textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
 <div id="getimg">The following images may be re-ordered by using drag &amp; drop. 
     The drop must occur on any insertion point (purple icon w/down arrow). 
     The image can be deleted by dropping elsewhere. <!-- NOT WORKING: To add 
@@ -315,9 +346,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     echo '<p>To add another row (6 max allowed), check this box: ' .
         '<input id="addbox" type="checkbox" name="nocall" /></p>';
     $linkData = $info[36];
-    if ($info[37] !== '') {
+    if ($hikeTips !== '') {
         echo '<p>Tips Text: </p>';
-        echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $info[37] . '</textarea><br />';
+        echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />';
     } else {
         echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . 
            '[NO TIPS FOUND]' . '</textarea><br />';
@@ -327,7 +358,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <input id="oldlinks" type="hidden" name="orgLinks" value="<?php echo $linkData;?>" />
 <input id="elink" type="hidden" name="editedLinks" value="<?php echo $linkData;?>" />
 <p>Hike Information:</p>
-<textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $info[38];?></textarea>
+<textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $hikeDetails;?></textarea>
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, delete and add a new one)</h3>
 <?php
     $refs = explode("^",$info[39]);
