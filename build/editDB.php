@@ -86,7 +86,10 @@
             $hikeGrpTip = $hikeRow->cgName->__toString();
             $hikeTips = $hikeRow->tipsTxt->__toString();
             $hikeDetails = $hikeRow->hikeInfo->__toSTring();
-            $hikeRefs = $hikeRow->refs;  # still needed as objects ...
+            # the following are needed as xml objects (not strings):
+            $hikePhotos = $hikeRow->content;
+            $hikePLinks = $hikeRow->albLinks;
+            $hikeRefs = $hikeRow->refs;
             $hikeProp = $hikeRow->dataProp;
             $hikeAct = $hikeRow->dataAct;
         }
@@ -159,14 +162,14 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     echo '<label for="ctip">&nbsp;&nbsp;Cluster: </label>';
     echo '<select id="ctip" name="htool">';
     for ($i=0; $i<$grpCnt; $i++) {
-        echo '<option value="' . $cnames[$i] . '">' . $cnames[$i] . '</option>';
+        echo '<option value="' . $cnames[$i] . '">' . $cnames[$i] . "</option>\n";
     }
-    echo '</select>&nbsp;&nbsp;' .
+    echo "</select>&nbsp;&nbsp;\n" .
     '<span id="showdel" style="display:none;">You may remove the cluster ' .
         'assignment by checking here:&nbsp;<input id="deassign" ' .
-        'type="checkbox" name="rmclus" value="NO" /></span>' .
+        'type="checkbox" name="rmclus" value="NO" /></span>' . "\n" .
     '<span id="notclus" style="display:none;">There is no currently ' .
-        'assigned cluster for this hike.</span>';
+        "assigned cluster for this hike.</span>\n";
 ?>
 <input id="mrkrchg" type="hidden" name="chg2clus" value="NO" />
 <input id="grpchg" type="hidden" name="chgd" value="NO" />
@@ -229,7 +232,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
 <div id="getimg">The following images may be re-ordered by using drag &amp; drop. 
     The drop must occur on any insertion point (purple icon w/down arrow). 
-    The image can be deleted by dropping elsewhere. <!-- NOT WORKING: To add 
+    The image can be deleted by dropping elsewhere.</div><br /><!-- NOT WORKING: To add 
     a new image, specify the url in the txt box. The image will appear below. 
     Then drag the image to the desired location. NOTE: The url must be a 
     web-based address not a local machine image.<br /><br />
@@ -238,116 +241,106 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 </div><br /> 
 <div id="xInsert" style="display:none;"></div>
 <div id="xCap" style="display:none;"></div> -->
-    
-<!-- row areas to pass to saveChanges.php -->
-<input id="r0" type="hidden" name="row0" value="" />
-<input id="r1" type="hidden" name="row1" value="" />
-<input id="r2" type="hidden" name="row2" value="" />
-<input id="r3" type="hidden" name="row3" value="" />
-<input id="r4" type="hidden" name="row4" value="" />
-<input id="r5" type="hidden" name="row5" value="" />
-
 
 <?php
     $alpha = 30;	# insert-icon size
     $beta = 10;  # space between images
     $dragBorder = 8;
     $rowCnt = 0;
-    $rows = array();		// holds imgs
+    $rows = array();        // holds imgs
     $inserts = array();     // holds insert points (.png)
     $captions = array();    // holds caption txtareas
     $insNo = 0;
     $picNo = 0;
     $nonCap = 0;
-    for ($i=0; $i<6; $i++) {
-        if ($info[29+$i] !== '') {
-            /*
-             * START NEW ROW
-             */
-            $rowDat = explode("^",$info[29+$i]);
-            $noOfImgs = $rowDat[0];
-            $noOfInserts = $noOfImgs + 1;
-            $extraSpace = 2 * $alpha + 10 * ($noOfImgs - 1);
-                // consumed by row spacing & insert icons
-            $scale = (850 - $extraSpace)/960;
-            #echo 'Calculated scale: ' . $scale;
-            # insert icons:
-            $insRow = '<div id="insRow' . $rowCnt . '" class="ins">';
-            $insRow .= '<img id="lead' . $rowCnt . '" style="float:left;" ondrop="drop(event)"' .
-                ' ondragover="allowDrop(event)" height="' . $alpha . '" width="' . 
-                $alpha . '" src="' . $loadIcon . '" alt="drop-point" />';
-            $rowHt = floor($scale * $rowDat[1]);
-            $nxtIndx = 2;
-            $divMarg = $alpha/2 + $beta/2;
-            $rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow" style="margin-left:' .
-                $divMarg . 'px;clear:both;">';
-            $capRow = '<div id="caps' . $rowCnt . '" style="margin-left:' . 
-                $divMarg . 'px;">';
-            $capMarg = $alpha;
-            /* 
-             * Process each image in row:
-             */
-            for ($j=0; $j<$noOfImgs; $j++) {
-                $sym = $rowDat[$nxtIndx];
-                $strtImgWd = $rowDat[$nxtIndx+1];
-                $imgWd = floor($scale * $strtImgWd);
-                $insPos = intval($imgWd + $beta - $alpha);
-                if ($sym === 'f') {
-                    $insPos += $dragBorder;
-                }
-                $insRow .= '<img style="float:left;margin-left:' . $insPos .
-                    'px;" id="ins' . $insNo . '" ondrop="drop(event)" ondragover="allowDrop(event)"' .
-                    ' height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
-                    '" alt="drop-point" />';
-                # caption textareas are dependent on sym type, so embedded in the 'if'
-                if ($sym === 'p') {
-                    $caption = $rowDat[$nxtIndx+3];
-                    $rowHtml .= '<img id="pic' . $picNo . '" style="margin-right:' . $beta . 'px;" ' .
-                            'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
-                            '" width="' . $imgWd . '" src="' .
-                            $rowDat[$nxtIndx+2] . '" alt="' . $caption . '" />';
-                    # for some reason, textarea px doesn't scale, so:
-                    $capWidth = intval($imgWd) - 12;
-                    $capRightMarg = $beta - 2;
-                    $capRow .= 	'<textarea id="capArea' . $insNo . '" style="height:60px;' .
-                            'margin-right:' . $capRightMarg . 'px;width:' . $capWidth . 'px;">' . $caption .
-                            '</textarea>';
-                    $picNo++;
-                    $nxtIndx += 4;
-                } else { 
+    foreach ($hikePhotos->picRow as $prow) {
+        $noOfImgs = 0;
+        foreach ($prow->pic as $photo) {
+            $noOfImgs++;
+        }
+        $noOfInserts = $noOfImgs + 1;
+        # consumed by row spacing & insert icons
+        $extraSpace = 2 * $alpha + 10 * ($noOfImgs - 1); 
+        # Photos are scaled down a bit, hopefully to ease manipulation
+        $scale = (900 - $extraSpace)/960;
+        # insert icons:
+        $insRow = '<div id="insRow' . $rowCnt . '" class="ins">' . "\n";
+        $insRow .= '<img id="lead' . $rowCnt . '" style="float:left;" ondrop="drop(event)"' .
+            ' ondragover="allowDrop(event)" height="' . $alpha . '" width="' . 
+            $alpha . '" src="' . $loadIcon . '" alt="drop-point" />' . "\n";
+        $ht = intval($prow->rowHt->__toString());
+        $rowHt = floor($scale * $ht);
+        $nxtIndx = 2;
+        $divMarg = $alpha/2 + $beta/2;
+        $rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow" style="margin-left:' .
+            $divMarg . 'px;clear:both;">' . "\n";
+        $capRow = '<div id="caps' . $rowCnt . '" style="margin-left:' . 
+            $divMarg . 'px;">' . "\n";
+        $capMarg = $alpha;
+        /* 
+         * Process each image in row:
+         */
+        foreach ($prow->pic as $photo) {
+            $hasCap = strlen($photo->picCap) === 0 ? false : true;
+            $strtImgWd = intval($photo->picWdth->__toString());
+            $imgWd = floor($scale * $strtImgWd);
+            $insPos = intval($imgWd + $beta - $alpha);
+            /* Could not find 'f' in database...
+            if ($sym === 'f') {
+                $insPos += $dragBorder;
+            }
+            */  
+            $insRow .= '<img style="float:left;margin-left:' . $insPos .
+                'px;" id="ins' . $insNo . '" ondrop="drop(event)" ondragover="allowDrop(event)"' .
+                ' height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
+                '" alt="drop-point" />' . "\n";
+            if ($hasCap) {
+                $caption = $photo->picCap->__toString();
+                $rowHtml .= '<img id="pic' . $picNo . '" style="margin-right:' . $beta . 'px;" ' .
+                        'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
+                        '" width="' . $imgWd . '" src="' .
+                        $photo->picSrc . '" alt="' . $caption . '" />' . "\n";
+                # for some reason, textarea px doesn't scale, so:
+                $capWidth = intval($imgWd) - 12;
+                $capRightMarg = $beta - 2;
+                $capRow .= 	'<textarea id="capArea' . $insNo . '" style="height:60px;' .
+                        'margin-right:' . $capRightMarg . 'px;width:' . $capWidth . 'px;">' . $caption .
+                        '</textarea>' . "\n";
+                $picNo++;
+            } else { 
                     $rowHtml .= '<img id="nocap' . $nonCap . '" style="margin-right:' . $beta . 'px;" ' .
                             'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
                             '" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] . 
-                            '" alt="no Caption" />';
+                            '" alt="no Caption" />' . "\n";
                     $nonCapWidth = intval($imgWd);
                     $capRow .= '<div id="capArea' . $insNo . '" class="notTA" style="display:' .
                             'inline-block;margin-right:' . $beta . 'px;text-align:center;height:60px;width:' . 
                             $nonCapWidth . 'px;border-style:solid;border-width:1px;' . 
-                            'vertical-align:bottom;margin-right:' . $beta . 'px;">NO EDIT</div>';
+                            'vertical-align:bottom;margin-right:' . $beta . 'px;">NO EDIT</div>' . "\n";
                     $nonCap++;
-                    $nxtIndx += 3;
                 }
                 $insNo++;
-            } // end of for creating images in row & inserts
-            # have not yet saved $imgDat array....
-            $rowHtml .= '</div>';
+        }  # end of foreach creating images & inserts in row
+            $rowHtml .= "</div>\n";
             array_push($rows,$rowHtml);
-            $insRow .= '</div>';
+            $insRow .= "</div>\n";
             array_push($inserts,$insRow);
-            $capRow .= '</div>';
+            $capRow .= "</div>\n";
             array_push($captions,$capRow);
+            echo '<input id="r' . $rowCnt . '" type="hidden" name="row' . 
+                    $rowCnt . '" value="" />' . "\n";
             $rowCnt++;
-        }  # end of if 'row with images'
-    }  # end of for all possible rows
+
+    }  # end of foreach row of pix
     for ($j=0; $j<$rowCnt; $j++) {
         echo $inserts[$j];
         echo $rows[$j];
         echo $captions[$j];
     }
     echo '<br />';
-    echo '<p>To add another row (6 max allowed), check this box: ' .
-        '<input id="addbox" type="checkbox" name="nocall" /></p>';
-    $linkData = $info[36];
+    echo '<p>To add another row, check this box: ' .
+        '<input id="addbox" type="checkbox" name="nocall" /></p>' . "\n";
+    $linkData = $hikePLinks;
     if ($hikeTips !== '') {
         echo '<p>Tips Text: </p>';
         echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />';
@@ -368,41 +361,41 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         $rid = 'rid' . $z;
         $reftype = 'ref' . $z;
         $thisref = $ritem->rtype->__toString();
-        echo '<p id="' . $rid  . '" style="display:none">' . $thisref . '</p>';
-        echo '<label for="' . $reftype . '">Reference Type: </label>';
-        echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">';
-        echo '<option value="b">Book</option>';
-        echo '<option value="p">Photo Essay</option>';
-        echo '<option value="w">Website</option>';
-        echo '<option value="h">Website</option>'; # leftover category from index pages
-        echo '<option value="a">App</option>';
-        echo '<option value="d">Downloadable Doc</option>';
-        echo '<option value="l">Blog</option>';
-        echo '<option value="o">On-line Map</option>';
-        echo '<option value="m">Magazine</option>';
-        echo '<option value="s">News Article</option>';
-        echo '<option value="g">Meetup Group</option>';
-        echo '<option value="r">Related Link</option>';
-        echo '<option value="n">Text Only - No Link</option>';
-        echo '</select><br />';
+        echo '<p id="' . $rid  . '" style="display:none">' . $thisref . "</p>\n";
+        echo '<label for="' . $reftype . '">Reference Type: </label>' . "\n";
+        echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">' . "\n";
+        echo '<option value="b">Book</option>' . "\n";
+        echo '<option value="p">Photo Essay</option>' . "\n";
+        echo '<option value="w">Website</option>' . "\n";
+        echo '<option value="h">Website</option>' . "\n"; # leftover category from index pages
+        echo '<option value="a">App</option>' . "\n";
+        echo '<option value="d">Downloadable Doc</option>' . "\n";
+        echo '<option value="l">Blog</option>' . "\n";
+        echo '<option value="o">On-line Map</option>' . "\n";
+        echo '<option value="m">Magazine</option>' . "\n";
+        echo '<option value="s">News Article</option>' . "\n";
+        echo '<option value="g">Meetup Group</option>' . "\n";
+        echo '<option value="r">Related Link</option>' . "\n";
+        echo '<option value="n">Text Only - No Link</option>' . "\n";
+        echo '</select><br />' . "\n";
         if ($thisref === 'b' || $thisref === 'p') {
             echo '<label style="text-indent:24px;">Title: </label><textarea style="height:20px;width:320px" name="rit1[]">' .
                 $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;';
             echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
-                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp<label>Delete: </label>' .
+                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
-                    $z . '"><br /><br />';
+                    $z . '"><br /><br />' . "\n";
         } elseif ($thisref === 'n') {
             echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
                 $ritem->rit1->__toString() . '</textarea><label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
-                $z . '"><br /><br />';
+                $z . '"><br /><br />' . "\n";
         } else {
             echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
                 $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
                 $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
-                $z . '"><br /><br />';
+                $z . '"><br /><br />' . "\n";
         }  
         $z++;
     }
