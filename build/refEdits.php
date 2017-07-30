@@ -59,15 +59,12 @@ for ($j=0; $j<$noRefs2Process; $j++) {
                }    
            }
        } else {
-           echo "RINDX: " . $rindx . ", PREVCNT: " . $prevCnt;
            # time to add new nodes!
            $newref = $hRefs->addChild('ref');
-           $newref->addChild('rtype',"A");
-           $newref->addChild('rit1',"B");
-           $newref->addChild('rit2',"C");
+           $newref->addChild('rtype',$rawreftypes[$j]);
+           $newref->addChild('rit1',$rawrit1[$j]);
+           $newref->addChild('rit2',$rawrit2[$j]);
        }
    } 
 }
-echo "----" . $rindx . "; prevcnt: " . $prevCnt . ";   " . $hRefs->asXML();
-
 ?>

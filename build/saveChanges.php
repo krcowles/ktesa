@@ -139,10 +139,13 @@
             $hTips = filter_input(INPUT_POST,'htips');
             $hInfo = filter_input(INPUT_POST,'hinfo');
             $hRefs = $hikeLine->refs;
+            $hProps = $hikeLine->dataProp;
+            $hActs = $hikeLine->dataAct;
             break;
         }  # end of THE EDITED HIKE
     }  
     include "refEdits.php";
+    include "propactEdits.php";
     
 die ("OK");
     include('formRowStrings.php');  /* $rows array is formed from passed strings
@@ -159,11 +162,7 @@ die ("OK");
             $info[29+$k] = '';
         }
     }
-    /* CAPTIONS - no longer used
-    $noOfCaps = count($capts);
-    $dbCaps = implode("^",$capts);
-    $info[35] = $noOfCaps . "^" . $dbCaps;
-     */
+
     $info[36] = filter_input(INPUT_POST,'editedLinks');
     $htips = filter_input(INPUT_POST,'tips');
     if (substr($htips,0,15) !== '[NO TIPS FOUND]') {
@@ -171,90 +170,7 @@ die ("OK");
     } else {
             $info[37] = '';
     }
-    
-    # there will always be the same no of rtype's & rit1's, BUT NOT rit2's!
-    $r2indx = 0;
-    $rcnt = 0;
-    $refStr = '';
-    /* When reading an array of checkboxes, the array order is skewed with checked 
-       boxes first: check to see if any current references are being deleted */
-    
-    
-    
-    
-    $info[39] = $rcnt . $refStr;
-    # Re-assemble Proposed Data String
-    $rawprops = $_POST['plabl'];  // these three are arrays
-    $rawplnks = $_POST['plnk'];
-    $rawpctxt = $_POST['pctxt'];
-    $noOfPs = count($rawprops);
-    $pcnt = 0;
-    $propStr = '';
-    if ($rawprops[0] !== '') {
-        $skips = array();
-        $delProps = $_POST['delprop'];
-        for ($n=0; $n<$noOfPs; $n++) {
-            $skips[$n] = false;
-        }
-        foreach ($delProps as $box) {
-            if ( isset($box) ) {
-                $indx = $box;
-                $skips[$indx] = true;
-            }
-        }
-        for ($k=0; $k<$noOfPs; $k++) {
-            if (!$skips[$k]) {
-                if ($rawprops[$k] === '') { // first empty props box added
-                    break;
-                } else {
-                    $propStr .= '^' . $rawprops[$k] . '^' . $rawplnks[$k] . '^' . $rawpctxt[$k];
-                }
-                $pcnt++;
-            } // end of not skipped
-        }
-        if ($pcnt > 0) {
-            $propStr = $pcnt . $propStr;
-        } else {
-            $propStr = '';
-        }
-    }  // end of processing proposed data, if present
-    $info[40] = $propStr;
-    # Re-assemble Acutal Data String
-    $rawacts = $_POST['alabl'];  // these three are arrays
-    $rawalnks = $_POST['alnk'];
-    $rawactxt = $_POST['actxt'];
-    $noOfAs = count($rawacts);
-    $acnt = 0;
-    $actStr = '';
-    if ($rawacts[0] !== '') {
-        $skips = array();
-        $delActs = $_POST['delact'];
-        for ($m=0; $m<$noOfAs; $m++) {
-            $skips[$m] = false;
-        }
-        foreach ($delActs as $box) {
-            if ( isset($box) ) {
-                $indx = $box;
-                $skips[$indx] = true;
-            }
-        }
-        for ($i=0; $i<$noOfAs; $i++) {
-            if (!$skips[$i]) {
-                if ($rawacts[$i] === '') {  // first empty actual data box
-                    break;
-                } else {
-                    $actStr .= '^' . $rawacts[$i] . '^' . $rawalnks[$i] . '^' . $rawactxt[$i];
-                }
-                $acnt++;
-            }
-        }
-        if ($acnt > 0) {
-            $actStr = $acnt . $actStr;	
-        } else {
-            $actStr = '';
-        }
-    }  // end of actual data processing, if present
-    $info[41] = $actStr;
+
     
     /* Save changes based on whether or not site master: registered users
      * will have a temporary database change saved for review by the site

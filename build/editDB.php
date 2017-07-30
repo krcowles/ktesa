@@ -470,11 +470,11 @@ Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35"
         }
     }
 ?>
-<p><em style="font-weight:bold;">Add</em> Proposed Data:</p>
+<p><em style="color:brown;font-weight:bold;">Add</em> Proposed Data:</p>
 <label>Label: </label><input class="tstyle1" name="plabl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="plnk[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="pctxt[]" size="30" /><br />
-<label>Label: </label><input class="tstyle1" name="plbl[]" size="30" />&nbsp;&nbsp;
+<label>Label: </label><input class="tstyle1" name="plabl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="ltxt[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="ctxt[]" size="30" />
 
@@ -483,7 +483,6 @@ Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35"
     if (strlen($hikeAct) !== 0) {
         $y = 0;
         foreach ($hikeAct->act as $adat) {
-            echo "Loop" . $y;
             echo 'Label: <textarea class="tstyle1" name="alabl[]">' . 
                     $adat->albl->__toString() . '</textarea>&nbsp;&nbsp;';
             echo 'Url: <textarea class="tstyle2" name="alnk[]">' . 
@@ -496,7 +495,7 @@ Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35"
         }
     }
 ?>
-<p><em style="font-weight:bold;">Add</em> Actual Data:</p>
+<p><em style="color:brown;font-weight:bold;">Add</em> Actual Data:</p>
 <label>Label: </label><input class="tstyle1" name="alabl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" /><br />
