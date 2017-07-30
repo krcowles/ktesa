@@ -171,7 +171,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     '<span id="notclus" style="display:none;">There is no currently ' .
         "assigned cluster for this hike.</span>\n";
 ?>
-<input id="mrkrchg" type="hidden" name="chg2clus" value="NO" />
+<!-- don't think the following is used... -->
+    <input id="mrkrchg" type="hidden" name="chg2clus" value="NO" />
+
 <input id="grpchg" type="hidden" name="chgd" value="NO" />
 
 <p>If you are establishing a new group, select the checkbox: 
@@ -340,18 +342,27 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     echo '<br />';
     echo '<p>To add another row, check this box: ' .
         '<input id="addbox" type="checkbox" name="nocall" /></p>' . "\n";
-    $linkData = $hikePLinks;
     if ($hikeTips !== '') {
         echo '<p>Tips Text: </p>';
-        echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />';
+        echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />' . "\n";
     } else {
         echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . 
-           '[NO TIPS FOUND]' . '</textarea><br />';
+           '[NO TIPS FOUND]' . '</textarea><br />' . "\n";
     }
+    
+    
+    # construct string array of links for processing via javascript
+    $alblnkCnt = 0;
+    $lnkStr = '';
+    foreach ($hikePLinks->alb as $photolnk) {
+        $lnkStr .= "^" . $photolnk->__toString();
+        $albnkCnt++;
+    }
+    $lnkStr = $albnkCnt . $lnkStr;
 ?>
-<p id="plinks" style="display:none;"><?php echo $linkData;?></p>
-<input id="oldlinks" type="hidden" name="orgLinks" value="<?php echo $linkData;?>" />
-<input id="elink" type="hidden" name="editedLinks" value="<?php echo $linkData;?>" />
+<p id="plinks" style="display:none;"><?php echo $lnkStr;?></p>
+<input id="oldlinks" type="hidden" name="orgLinks" value="<?php echo $lnkStr;?>" />
+<input id="elink" type="hidden" name="editedLinks" value="<?php echo $lnkStr;?>" />
 <p>Hike Information:</p>
 <textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $hikeDetails;?></textarea>
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, delete and add a new one)</h3>
@@ -364,7 +375,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         echo '<p id="' . $rid  . '" style="display:none">' . $thisref . "</p>\n";
         echo '<label for="' . $reftype . '">Reference Type: </label>' . "\n";
         echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">' . "\n";
-        echo '<option value="b">Book</option>' . "\n";
+        echo '<option value="b" >Book</option>' . "\n";
         echo '<option value="p">Photo Essay</option>' . "\n";
         echo '<option value="w">Website</option>' . "\n";
         echo '<option value="h">Website</option>' . "\n"; # leftover category from index pages
@@ -402,10 +413,10 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     echo '<p id="refcnt" style="display:none">' . $z . '</p>';
     echo '<input type="hidden" name = "orgrefs" value="' . $z . '" />';
 ?>
-<p>Add references here:</p>
+<p><em style="font-weight:bold;">Add</em> references here:</p>
 <p>Select the type of reference and its accompanying data below:</p>
 <select id="href1" style="height:26px;" name="rtype[]">
-    <option value="b">Book</option>
+    <option value="b" selected="selected">Book</option>
     <option value="p">Photo Essay</option>
     <option value="w">Website</option>
     <option value="a">App</option>
@@ -423,7 +434,7 @@ Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="55"
 Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35" 
     placeholder=", by Author Name" /><br /><br />
 <select id="href2" style="height:26px;" name="rtype[]">
-    <option value="b">Book</option>
+    <option value="b" selected="selected">Book</option>
     <option value="p">Photo Essay</option>
     <option value="w">Website</option>
     <option value="a">App</option>
@@ -459,7 +470,7 @@ Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35"
         }
     }
 ?>
-<p>Add Proposed Data:</p>
+<p><em style="font-weight:bold;">Add</em> Proposed Data:</p>
 <label>Label: </label><input class="tstyle1" name="plabl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="plnk[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="pctxt[]" size="30" /><br />
@@ -485,7 +496,7 @@ Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35"
         }
     }
 ?>
-<p>Add Actual Data:</p>
+<p><em style="font-weight:bold;">Add</em> Actual Data:</p>
 <label>Label: </label><input class="tstyle1" name="alabl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" /><br />

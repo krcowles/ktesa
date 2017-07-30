@@ -38,7 +38,8 @@ var mrkr = $('#mrkr').text();
            (Whether or not the previous type was cluster, new info will be extracted at server,
             unless "ignore" is checked to restore original state)
         3. Was marker changed from a non-cluster type to a cluster?  (#mrkrchg) chg2clus
-        4. Was a group different from the original group selected in the drop-down #ctip?  (#grpchg) chgd
+        4. Was a group different from the original group selected in 
+            the drop-down #ctip?  (#grpchg) chgd
         5. Remove an existing cluster assignment?  (#deassign) rmclus
 */
 var fieldflag = false;  // validation: make sure newt gets entered when newg is checked
