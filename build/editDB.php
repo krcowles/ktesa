@@ -329,8 +329,8 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
             array_push($inserts,$insRow);
             $capRow .= "</div>\n";
             array_push($captions,$capRow);
-            echo '<input id="r' . $rowCnt . '" type="hidden" name="row' . 
-                    $rowCnt . '" value="" />' . "\n";
+            echo '<input id="r' . $rowCnt . '" type="hidden" name="row[]"' . 
+                    ' value="" />' . "\n";
             $rowCnt++;
 
     }  # end of foreach row of pix

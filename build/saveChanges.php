@@ -136,6 +136,7 @@
             $hPurl1 = filter_input(INPUT_POST,'purl1');
             $hPurl2 = filter_input(INPUT_POST,'purl2');
             $hDirs = filter_input(INPUT_POST,'gdirs');
+            $hRows = $hikeLine->content;
             $hTips = filter_input(INPUT_POST,'htips');
             $hInfo = filter_input(INPUT_POST,'hinfo');
             $hRefs = $hikeLine->refs;
@@ -146,12 +147,8 @@
     }  
     include "refEdits.php";
     include "propactEdits.php";
-    
-die ("OK");
-    include('formRowStrings.php');  /* $rows array is formed from passed strings
-     * along with the scaling factor to be applied to restore the row to 
-     * the standard page width (950 = 960 - margin)
-     */
+    include "picEdits.php";
+
     
     #ROW EDITING: RE-SCALE to final page row width
     for ($k=0; $k<6; $k++) {
