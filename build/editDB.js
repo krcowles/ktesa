@@ -162,26 +162,29 @@ $('#addbox').change( function(e) {
     e.preventDefault();
     var $currRows = $('div[id^="row"]');
     var rowno = $currRows.length;
-    if (rowno > 5) {
-        window.alert('Already at maximum number of rows; cannot add new one');
-    } else {
-        var newins = '<div id="insRow' + rowno + '" class="ins">';
-        newins += '<img id="lead' + rowno + '" style="float:left;" ondrop="drop(event)"' +
-                ' ondragover="allowDrop(event)" height="30" width="30" src="insert.png" alt="drop-point" />';
-        newins += '</div>';
-        var olddiv = '#caps' + (rowno - 1);
-        $(newins).insertAfter(olddiv);
-        var newimg = '<div id="row' + rowno + '" class="ImgRow" style="margin-left:20px;clear:both;"></div>';
-        var insdiv = '#insRow' + rowno;
-        $(newimg).insertAfter(insdiv);
-        var newcap = '<div id="caps' + rowno + '" style="margin-left:20px;"></div>';
-        var capdiv = '#row' + rowno;
-        $(newcap).insertAfter(capdiv);
-    }
+    var newins = '<div id="insRow' + rowno + '" class="ins">';
+    newins += '<img id="lead' + rowno + '" style="float:left;" ondrop="drop(event)"' +
+            ' ondragover="allowDrop(event)" height="30" width="30" src="insert.png" alt="drop-point" />';
+    newins += '</div>';
+    var olddiv = '#caps' + (rowno - 1);
+    $(newins).insertAfter(olddiv);
+    var newimg = '<div id="row' + rowno + '" class="ImgRow" style="margin-left:20px;clear:both;"></div>';
+    var insdiv = '#insRow' + rowno;
+    $(newimg).insertAfter(insdiv);
+    var newcap = '<div id="caps' + rowno + '" style="margin-left:20px;"></div>';
+    var capdiv = '#row' + rowno;
+    $(newcap).insertAfter(capdiv);
     $(this).attr('checked',false);
     // add new row to rows object
     $rows = null;
-    $rows = $('div[id^="row"]');
+    rowSetup();  // see picNplace.js
+    var newrowid = 'r' + rowno;
+    var photoSect = document.getElementById('picdiv');
+    var addedrow = document.createElement('input');
+    addedrow.setAttribute('id',newrowid);
+    addedrow.setAttribute('type','hidden');
+    addedrow.name = "row[]";
+    photoSect.appendChild(addedrow);
 });
 
 // placeholder text for reference input boxes (copied from enterHike.js)

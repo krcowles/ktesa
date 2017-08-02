@@ -24,37 +24,6 @@
 <p id="trail">Saving Hike Page Edits</p>
 
 <?php
-    # Function to resize rows to standard page width
-    function scaleRow($rowString,$scaling) {
-        $rowEls = explode("^",$rowString);
-        $noOfImgs = $rowEls[0];
-        array_shift($rowEls);
-        $oldht = intval($rowEls[0]);
-        $newHeight = floor($scaling * $oldht);
-        array_shift($rowEls);
-        # remaining $rowEls are images
-        $indx = 0;
-        $returnString = '';
-        for ($j=0; $j<$noOfImgs; $j++) {
-            $itype = $rowEls[$indx];
-            $owdth = $rowEls[$indx+1];
-            $iwdth = floor($scaling * $owdth);
-            $isrc = $rowEls[$indx+2];
-            if ($itype === 'p') {
-                $returnString .= '^p^' . $iwdth . '^' . $isrc . '^' . 
-                   $rowEls[$indx+3];
-                $indx += 4;
-            } else {
-                $returnString .= '^n^' . $iwdth . '^' . $isrc;
-                $indx += 3;
-            }
-        }
-        $returnString = $noOfImgs . "^" . $newHeight . $returnString;
-        return $returnString;
-    }
-    # END FUNCTION
-
-    
     $hikeNo = filter_input(INPUT_POST,'hno');
     $hikeDat = simplexml_load_file('../data/database.xml');
     if ($hikeDat === false) {
@@ -65,7 +34,9 @@
     foreach ($hikeDat->row as $hikeLine) {
         if ($hikeLine->indxNo == $hikeNo) {
             $hTitle = filter_input(INPUT_POST,'hname');
+            $hikeLine->pgTitle = $hTitle;
             $hLoc = filter_input(INPUT_POST,'locale');
+            $hikeLine->locale = $hLoc;
             /*  CLUSTER/MARKER ASSIGNMENT PROCESSING:
              *     The order of changes processed are in the following priority:
              *     1. Existing assignment deleted: Marker changes to "Normal"
@@ -136,38 +107,31 @@
             $hPurl1 = filter_input(INPUT_POST,'purl1');
             $hPurl2 = filter_input(INPUT_POST,'purl2');
             $hDirs = filter_input(INPUT_POST,'gdirs');
-            $hRows = $hikeLine->content;
             $hTips = filter_input(INPUT_POST,'htips');
             $hInfo = filter_input(INPUT_POST,'hinfo');
-            $hRefs = $hikeLine->refs;
-            $hProps = $hikeLine->dataProp;
-            $hActs = $hikeLine->dataAct;
+            include "refEdits.php";
+            include "propactEdits.php";
+            include "picEdits.php";
+            # album links:
+            $elinkStr = filter_input(INPUT_POST,'editedLinks');
+            $photoLinks = explode("^",$elinkStr);
+            $noOfLnks = $photoLinks[0];
+            array_shift($photoLinks);
+            # clean out old links:
+            $hikeLine->albLinks = '';
+            $hAlb = $hikeLine->albLinks;
+            for ($r=0; $r<$noOfLnks; $r++) {
+                $newLink = $hAlb->addChild('alb',$photoLinks[$r]);
+            }
+            # revise tips if no tips were added:
+            if (substr($hTips,0,15) !== '[NO TIPS FOUND]') {
+                    $hTips = '';
+            }
             break;
         }  # end of THE EDITED HIKE
     }  
-    include "refEdits.php";
-    include "propactEdits.php";
-    include "picEdits.php";
-
     
-    #ROW EDITING: RE-SCALE to final page row width
-    for ($k=0; $k<6; $k++) {
-        if ($rows[$k] !== '') {
-            $resizedRow = scaleRow($rows[$k],$scale[$k]);
-            $info[29+$k] = $resizedRow;
-        } else {
-            $info[29+$k] = '';
-        }
-    }
-
-    $info[36] = filter_input(INPUT_POST,'editedLinks');
-    $htips = filter_input(INPUT_POST,'tips');
-    if (substr($htips,0,15) !== '[NO TIPS FOUND]') {
-            $info[37] = $htips;
-    } else {
-            $info[37] = '';
-    }
-
+    die ("DONE BUT NOT SAVED...");
     
     /* Save changes based on whether or not site master: registered users
      * will have a temporary database change saved for review by the site
@@ -182,16 +146,7 @@
             die('<p style="color:brown;">Incorrect Password - save not executed</p>');
         }
         $user = false;
-        $msgout = " have been saved on the site";
-        $dbhandle = fopen($database,"w");
-        foreach ($wholeDB as $hikedat) {
-            if ($hikedat[0] == $hikeNo) {
-                fputcsv($dbhandle,$info);
-            } else {
-                fputcsv($dbhandle,$hikedat);
-            }
-        }
-        fclose($dbhandle);
+        $hikeDat->asXML('newfile.xml');
     } else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
         $database = '../data/reviewdat.csv';
         $dbhandle = fopen($database,"a");

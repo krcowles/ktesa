@@ -23,7 +23,7 @@
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail">Hike Page Editor</p>
-<div style="padding:16px;">
+<div id="main" style="padding:16px;">
 <?php
     # Error output styling string:
     $pstyle = '<p style="color:red;font-size:18px;">';
@@ -245,6 +245,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <div id="xCap" style="display:none;"></div> -->
 
 <?php
+    echo '<div id="picdiv">' . "\n";
     $alpha = 30;	# insert-icon size
     $beta = 10;  # space between images
     $dragBorder = 8;
@@ -342,6 +343,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     echo '<br />';
     echo '<p>To add another row, check this box: ' .
         '<input id="addbox" type="checkbox" name="nocall" /></p>' . "\n";
+    echo "</div>\n";
     if ($hikeTips !== '') {
         echo '<p>Tips Text: </p>';
         echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />' . "\n";

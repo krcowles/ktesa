@@ -32,39 +32,18 @@ foreach ($refDels as $box) {
 }
 # changes may result in the same number, fewer, or more references than before;
 $noRefs2Process = $noOfRefs - $noOfSkips;
-/*
-* After much unsucessful effort to try to 'unset' each ref within refs, 
-* the end result was to set the items within each ref to ''; 
-* $prevCnt advises how many items can be replaced before needing to
-* add child nodes; unset() apparently eliminates only leaf nodes, tag & all;
-*/
-$prevCnt = 0;
-foreach ($hRefs->ref as $ritem) {
-   $prevCnt++;
-   $ritem->rtype = '';
-   $ritem->rit1 = '';
-   $ritem->rit2 = '';
-}
-$rindx = 0;
+
+# clear out old refs:
+$hikeLine->refs = '';
+$hRefs = $hikeLine->refs;
+
+# add xml back in:
 for ($j=0; $j<$noRefs2Process; $j++) {		
    if (!$skips[$j]) {  # NOTE: skips will be false for newly added refs
-       if ($rindx < $prevCnt) {
-           foreach ($hRefs->ref as $nxt) {
-               if ( strlen($nxt->rtype) === 0 ) {  # should always be at least one
-                   $nxt->rtype = $rawreftypes[$j];
-                   $nxt->rit1 = $rawrit1[$j];
-                   $nxt->rit2 = $rawrit2[$j];
-                   $rindx++;
-                   break;
-               }    
-           }
-       } else {
-           # time to add new nodes!
            $newref = $hRefs->addChild('ref');
            $newref->addChild('rtype',$rawreftypes[$j]);
            $newref->addChild('rit1',$rawrit1[$j]);
            $newref->addChild('rit2',$rawrit2[$j]);
-       }
    } 
 }
 ?>

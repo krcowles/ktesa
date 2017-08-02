@@ -4,7 +4,6 @@
  * been loaded yet, the $rows object is established after a brief timeout.
  */
 // Functions require some global vars
-var hist = " -History: ";
 var $rows;
 var $captions;
 var orgSrcOrder = []
@@ -201,9 +200,7 @@ function reduceImgCnt(imgId) {
             var linkStr = links.join("^");
             links.shift();  // return to 'links-only' state
             $('#elink').val(linkStr);
-            //hist += "drag " + draggedLink + ", loc ";
         }
-        //if (linkCnt !== 8) { window.alert("Delete count off: " + linkCnt); }
     }
 }
 /*
@@ -369,13 +366,10 @@ function increaseImgCnt(targ) {
         }
         links.splice(lnkDropLoc,0,draggedLink);
         linkCnt = links.length;
-        if (linkCnt !== 9) { window.alert("Drop count off: " + linkCnt); }
         links.unshift(linkCnt);  // put the new count in
         var linkStr = links.join("^");
         links.shift();  // restore to original condition
         $('#elink').val(linkStr);
-        //hist += lnkDropLoc + ' newstring: ' + linkStr;
-        //window.alert(hist);
     } 
 }
 /*

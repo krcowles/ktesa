@@ -32,36 +32,19 @@ foreach ($delProps as $box) {
 }
 # changes may result in the same number, fewer, or more references than before;
 $noProps2Process = $noOfPs - $noOfSkips;
-# erase previous data, keep track of current no of tags
-$prevCnt = 0;
-foreach ($hProps->prop as $pitem) {
-   $prevCnt++;
-   $pitem->plbl = '';
-   $pitem->purl = '';
-   $pitem->pcot = '';
-}
-$pindx = 0;
+
+# erase previous data:
+$hikeLine->dataProp = '';
+$hProps = $hikeLine->dataProp;
+
+# enter as xml:
 for ($j=0; $j<$noProps2Process; $j++) {		
-   if (!$skips[$j]) {  # NOTE: skips will be false for newly added refs
-       if ($pindx < $prevCnt) {
-           foreach ($hProps->prop as $nxtp) {
-               if ( strlen($nxtp->plbl) === 0 ) {  # should always be at least one
-                   $nxtp->plbl = $rawprops[$j];
-                   $nxtp->purl = $rawplnks[$j];
-                   $nxtp->pcot = $rawpctxt[$j];
-                   $pindx++;
-                   break;
-               }    
-           }
-       } else {
-           # time to add new nodes!
-           $newref = $hProps->addChild('prop');
-           $newref->addChild('plbl',$rawreftypes[$j]);
-           $newref->addChild('purl',$rawrit1[$j]);
-           $newref->addChild('pcot',$rawrit2[$j]);
-       }
-   } 
+    $newprop = $hProps->addChild('prop');
+    $newprop->addChild('plbl',$rawprops[$j]);
+    $newprop->addChild('purl',$rawplnks[$j]);
+    $newprop->addChild('pcot',$rawpctxt[$j]);
 } 
+
 /*
  * Basically, repeat above code, only for Actual Data variables:
  */
@@ -90,34 +73,16 @@ foreach ($delActs as $box) {
 }
 # changes may result in the same number, fewer, or more references than before;
 $noActs2Process = $noOfAs - $noOfSkips;
+
 # erase previous data, keep track of current no of tags
-$prevCnt = 0;
-foreach ($hActs->act as $aitem) {
-   $prevCnt++;
-   $aitem->albl = '';
-   $aitem->aurl = '';
-   $aitem->acot = '';
-}
-$aindx = 0;
+$hikeLine->dataAct = '';
+$hActs = $hikeLine->dataAct;
+
+# enter as xml:
 for ($j=0; $j<$noActs2Process; $j++) {		
-   if (!$skips[$j]) {  # NOTE: skips will be false for newly added refs
-       if ($aindx < $prevCnt) {
-           foreach ($hActs->act as $nxta) {
-               if ( strlen($nxta->albl) === 0 ) {  # should always be at least one
-                   $nxta->albl = $rawacts[$j];
-                   $nxta->aurl = $rawalnks[$j];
-                   $nxta->acot = $rawactxt[$j];
-                   $aindx++;
-                   break;
-               }    
-           }
-       } else {
-           # time to add new nodes!
-           $newref = $hActs->addChild('act');
-           $newref->addChild('albl',$rawacts[$j]);
-           $newref->addChild('aurl',$rawalnks[$j]);
-           $newref->addChild('acot',$rawactxt[$j]);
-       }
-   } 
+    $newact = $hActs->addChild('act');
+    $newact->addChild('albl',$rawacts[$j]);
+    $newact->addChild('aurl',$rawalnks[$j]);
+    $newact->addChild('acot',$rawactxt[$j]);
 } 
 ?>
