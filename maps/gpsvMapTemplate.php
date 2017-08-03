@@ -1,11 +1,11 @@
 <?php
     /*
      * There are two cases to consider:
-     *  1. Map is in an iframe on hike page or during page creation; 
+     *  1. Map is in an iframe: on hike page or during page creation; 
      *      a tmp map file is created by either hikePageTemplate.php or by
      *      displayHikePg.php and stored in maps/tmp/;
-     *  2. Full-page map needs standalone link an assumes no prev. stored files:
-     *      in this case, map_name="MapLink";
+     *  2. Full-page map needs standalone link and assumes no prev. stored files:
+     *      for this case: map_name="MapLink";
      */
     $map = filter_input(INPUT_GET,'map_name');
     if ($map == 'MapLink') {
