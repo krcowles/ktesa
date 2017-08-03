@@ -74,7 +74,8 @@ function makeHtmlList($type,$obj) {
                 $hikeIndexNo . ': ' . $type);
     }  // end of if tagtype ifs
     return $htmlout;
-} // FUNCTION END....
+} 
+# FUNCTION END
 
 /*
  * -------------------------  MAIN ROUTINE ------------------------
@@ -175,6 +176,31 @@ foreach ($tabledat->row as $page) {
             }
             $datasect .= "</fieldset>\n";
         }
+        if ($newstyle) {
+            # dynamically created map:
+            $extLoc = strrpos($gpxfile,'.');
+            $gpsvMap = substr($gpxfile,0,$extLoc); # strip file extension
+            # holding place for page's hike map (deleted when page exited)
+            $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
+            if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
+                $mapmsg = "Contact Site Master: could not open tmp map file: " . $tmpMap . ", for writing";
+                die ($mapmsg);
+            }
+            $photos = $page->tsv;
+            if( strlen($photos->file) === 0 ) {
+                $usetsv = false;
+                $fpLnk = '';
+            } else {
+                $usetsv = true;
+                $gpsvfile = $page->tsv->file->__toString();
+                # Full-page map link cannot assume existence of tmp file: (Name is bogus 'MapLink')
+                $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . '&gpsv=' . 
+                     $gpsvFile . '&gpx=' . $gpxPath;
+            }
+            include "../php/makeGpsv.php";
+            fputs($mapHandle,$html);
+            fclose($mapHandle);
+        }
         break;
     }  # end if the correct hike = indx no
 }  # end of foreach $page
@@ -256,21 +282,6 @@ if (!$newstyle) {
     '</div>' . "\n";
 } else { # newstyle has the side panel with map & chart on right
     # SIDE PANEL:
-    # dynamically created map:
-    $extLoc = strrpos($gpxfile,'.');
-    $gpsvMap = substr($gpxfile,0,$extLoc); # strip file extension
-    # holding place for page's hike map (deleted when page exited)
-    $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
-    if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
-        $mapmsg = "Contact Site Master: could not open tmp map file: " . $tmpMap . ", for writing";
-        die ($mapmsg);
-    }
-    include "../php/makeGpsv.php";
-    fputs($mapHandle,$html);
-    fclose($mapHandle);
-    # Full-page map link cannot assume existence of tmp file: (Name is bogus 'MapLink')
-    $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . '&gpsv=' . 
-            $gpsvFile . '&gpx=' . $gpxPath;
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' . "\n" .
             'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . "</span><br />\n" .
