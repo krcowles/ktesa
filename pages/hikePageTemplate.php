@@ -19,7 +19,7 @@ function makeHtmlList($type,$obj) {
         foreach ($obj->ref as $item) {
             $tagType = $item->rtype->__toString();
             if ($tagType === 'b') { 
-                $htmlout .= '<li>Book: <em>' . $item->rit1 . '</em>' . $item->$rit2 . '</li>';
+                $htmlout .= '<li>Book: <em>' . $item->rit1 . '</em>' . $item->rit2 . '</li>';
             } elseif ($tagType === 'p') {
                 $htmlout .= '<li>Photo Essay: <em>' . $item->rit1 . '</em>' . $item->rit2 . '</li>';
             } elseif ($tagType === 'n') {
@@ -147,11 +147,12 @@ foreach ($tabledat->row as $page) {
         * Extract remaining database elements:
         */
         $rawLinks = $page->albLinks;
+        #echo "LINKS: " . $rawLinks->asXML();
         $picLinks = "<ol>\n";
-        foreach ($rawlinks as $purl) {
+        foreach ($rawLinks->alb as $purl) {
             $picLinks .= "<li>" . $purl . "</li>\n";
         }
-        $picLinks .= "/ol>\n";
+        $picLinks .= "</ol>\n";
         $hikeTips = $page->tipsTxt;
         $hikeTips = preg_replace("/\s/"," ",$hikeTips);
         $hikeInfo = '<p id="hikeInfo">' . $page->hikeInfo . '</p>';
@@ -161,14 +162,15 @@ foreach ($tabledat->row as $page) {
         $hikeReferences = makeHtmlList(References,$hikeRefs);
         $hikeProposedData = $page->dataProp;
         $hikeActualData = $page->dataAct;
-        if ( strlen($hikeProposedData) !== 0 || (strlen($hikeActualData) !== 0) ) {
+        # NOTE: oddly, if no children, ->count() yields a "1"; strlen <> 0 !!, so:
+        if ( strlen($hikeProposedData->prop) !== 0 || strlen($hikeActualData->act) !== 0 ) {
             $fieldsets = true;
             $datasect = "<fieldset>\n" . 
                     '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
-            if (strlen($hikeProposedData) !== 0) {
+            if (strlen($hikeProposedData->prop) !== 0) {
                     $datasect .= makeHtmlList(Proposed,$hikeProposedData);
             }
-            if (strlen($hikeActualData) !== 0) {
+            if (strlen($hikeActualData->act) !== 0) {
                     $datasect .= makeHtmlList(Actual,$hikeActualData);
             }
             $datasect .= "</fieldset>\n";
@@ -270,23 +272,24 @@ if (!$newstyle) {
     $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . '&gpsv=' . 
             $gpsvFile . '&gpx=' . $gpxPath;
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
-        echo '<p id="summary">' .
-                'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . '</span><br />' .
-                'Hike Difficulty: <span class=sumClr>' . $hikeDifficulty . '</span><br />' .
-                'Total Length of Hike: <span class=sumClr>' . $hikeLength . '</span><br />' .
-                'Max to Min Elevation: <span class=sumClr>' . $hikeElevation . '</span><br />' .
-                'Logistics: <span class=sumClr>' . $hikeType . '</span><br />' .
-                'Exposure Type: <span class=sumClr>' . $hikeExposure . '</span><br />' .
-                'Seasons : <span class=sumClr>' . $hikeSeasons . '</span><br />' .
-                '"Wow" Factor: <span class=sumClr>' . $hikeWow . '</span></p>' . "\n";
+        echo '<p id="summary">' . "\n" .
+            'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . "</span><br />\n" .
+            'Hike Difficulty: <span class=sumClr>' . $hikeDifficulty . "</span><br />\n" .
+            'Total Length of Hike: <span class=sumClr>' . $hikeLength . "</span><br />\n" .
+            'Max to Min Elevation: <span class=sumClr>' . $hikeElevation . "</span><br />\n" .
+            'Logistics: <span class=sumClr>' . $hikeType . "</span><br />\n" .
+            'Exposure Type: <span class=sumClr>' . $hikeExposure . "</span><br />\n" .
+            'Seasons : <span class=sumClr>' . $hikeSeasons . "</span><br />\n" .
+            '"Wow" Factor: <span class=sumClr>' . $hikeWow . "</span></p>\n";
         echo '<p id="addtl"><strong>More!</strong></p>' . "\n";        
         echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . 
                 $fpLnk . '" target="_blank">Full Page Map Link</a></p>' ."\n";
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
-                '<p id="alnks"><a href="' . $hikePhotoLink1 . '" target="_blank">Photo Album Link</a>';
-        if ($hikePhotoLink2 !== '') {
-                echo '<br /><p>VALUE OBTAINED FROM XML: ' . $hikePhotoLink2 . '</p>';
-                echo '<br /><a href="' . $hikePhotoLink2 . '" target="_blank">Additional Album Link</a>';
+                "\n" . '<p id="alnks"><a href="' . $hikePhotoLink1 . 
+                '" target="_blank">Photo Album Link</a>' . "\n";
+        if (strlen($hikePhotoLink2) !== 0) {
+            echo '<br /><a href="' . $hikePhotoLink2 . 
+                    '" target="_blank">Additional Album Link</a>' . "\n";
         }
         echo '</p>' . "\n";
         echo '<p id="directions">The following link provides on-line directions' .
@@ -312,7 +315,6 @@ if (!$newstyle) {
 for ($k=0; $k<count($rows); $k++) {
     echo $rows[$k] . "\n"; 
 }
-echo '<div class="captionList">' . $picCaptions . '</div>' . "\n";
 echo '<div class="lnkList">' . $picLinks . '</div>' . "\n";
 # clear floats when no pics:
 echo '<div style="clear:both;">' . "\n";
@@ -329,7 +331,7 @@ if ($hikeReferences !== '') {
     echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
     echo '</fieldset>';
 }
-#echo '<div id="postPhoto">';
+
 if ($fieldsets) {
     echo $datasect;
 }
