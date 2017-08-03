@@ -187,15 +187,16 @@ foreach ($tabledat->row as $page) {
                 die ($mapmsg);
             }
             $photos = $page->tsv;
+            $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle;
             if( strlen($photos->file) === 0 ) {
                 $usetsv = false;
-                $fpLnk = '';
+                $fpLnk .= '&tsv=NO&gpx=' . $gpxPath;
             } else {
                 $usetsv = true;
                 $gpsvfile = $page->tsv->file->__toString();
-                # Full-page map link cannot assume existence of tmp file: (Name is bogus 'MapLink')
-                $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . '&gpsv=' . 
-                     $gpsvFile . '&gpx=' . $gpxPath;
+                # Full-page map link cannot assume existence of tmp file: 
+                #  to advise the mapTemplate, name 'MapLink' is used to indicate
+                $fpLnk .= 'tsv=YES&gpsv=' . $gpsvfile . '&gpx=' . $gpxPath;
             }
             include "../php/makeGpsv.php";
             fputs($mapHandle,$html);

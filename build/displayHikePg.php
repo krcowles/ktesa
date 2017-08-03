@@ -225,13 +225,12 @@ if ($usePix == 'YES') {
 
 <?php
     # SETUP FOR MAP CONSTRUCTION:
-    $building = true;
     # include file expects defined variables as input for:
     #   $hikeTitle, $gpxPath ---> $gpxPath is already defined, above,
-    #   and $photos (xml object)
+    #   $usetsv, and $photos (xml object): $usePix tells include if page creation
     $hikeTitle = $pgTitle;
+    $usetsv = false;
     # establish temp. map name:
-    # WARNING!!! if a file name has an '&' in the name, strange things happen!!!
     $extLoc = strrpos($gpx,'.');
     $gpsvMap = substr($gpx,0,$extLoc);
     $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
@@ -264,8 +263,9 @@ if ($usePix == 'YES') {
         <strong>More!</strong>
     </p>
     <p id="mlnk">
-        <a href="../maps/gpsvMapTemplate.php?map_name=<?php echo $tmpMap . 
-                fullMapOpts;?>" target="_blank">Full Page Map Link</a>
+        <a href="../maps/gpsvMapTemplate.php?map_name=MapLink<?php echo 
+                fullMapOpts . '&hike=' . $pgTitle . '&tsv=NO&gpx=' .
+                $gpxPath;?>" target="_blank">Full Page Map Link</a>
     </p>
     <p id="albums">
         For improved photo viewing,<br />check out the following album(s):
