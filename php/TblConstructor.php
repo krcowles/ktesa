@@ -73,9 +73,6 @@
         $hikeLinkIcon = $webIcon;
         /* There are four types of markers to consider requiring different treatment: */
         $hikeMarker = $page->marker;
-        if ($hikeIndx == 1) {
-            $spkmarker = $hikeMarker;
-        }
         if ($hikeMarker == 'Visitor Ctr') {
             echo '<tr class="indxd" ' . $hikeHiddenDat . ' data-org-hikes="' .
                 $page->clusterStr . '">';  // Visitor centers id any subhikes

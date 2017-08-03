@@ -2,7 +2,6 @@
 <html lang="en-us">
 
 <?php
-define('Simple','0');
 define('References','1');
 define('Proposed','2');
 define('Actual','3');
@@ -14,30 +13,17 @@ define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
  * The following function is used to create the html code for the items in a string,
  *  which were retrieved from the database in the form of 'string arrays'
  */
-function makeHtmlList($type,$str) {
-    $list = explode("^",$str);
-    $noOfItems = intval($list[0]);
-    array_shift($list);
-    if ($type === Simple) {
-        $htmlout = '<ol>';
-        for ($j=0; $j<$noOfItems; $j++) {
-            $htmlout = $htmlout . '<li>' . $list[$j] . '</li>';
-        }
-        $htmlout = $htmlout . '</ol>';
-    } elseif ($type === References) {
-        $nxt = 0;
+function makeHtmlList($type,$obj) {
+    if ($type === References) {
         $htmlout = '<ul id="refs">';
-        for ($k=0; $k<$noOfItems; $k++) {
-            $tagType = $list[$nxt];
+        foreach ($obj->ref as $item) {
+            $tagType = $item->rtype->__toString();
             if ($tagType === 'b') { 
-                $htmlout .= '<li>Book: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
-                $nxt += 3;
+                $htmlout .= '<li>Book: <em>' . $item->rit1 . '</em>' . $item->$rit2 . '</li>';
             } elseif ($tagType === 'p') {
-                $htmlout .= '<li>Photo Essay: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>';
-                $nxt += 3;
+                $htmlout .= '<li>Photo Essay: <em>' . $item->rit1 . '</em>' . $item->rit2 . '</li>';
             } elseif ($tagType === 'n') {
-                $htmlout .= '<li>' . $list[$nxt+1] . '</li>';
-                $nxt += 2;
+                $htmlout .= '<li>' . $item->rit1 . '</li>';
             } else {
                 if ($tagType === 'w') {
                     $tag = '<li>Website: ';
@@ -62,27 +48,30 @@ function makeHtmlList($type,$str) {
                 } else {
                     $tag = '<li>CHECK DATABASE: ';
                 }
-                $htmlout .= $tag . '<a href="' . $list[$nxt+1] . '" target="_blank">' .
-                    $list[$nxt+2] . '</a></li>';
-                $nxt += 3;
+                $htmlout .= $tag . '<a href="' . $item->rit1 . '" target="_blank">' .
+                    $item->rit2 . '</a></li>';
             }
-        } // end of for loop in references
+        } // end of foreach loop in references
         $htmlout .= '</ul>';
-    } elseif ($type === Proposed || $type === Actual) {
-        $nxt = 0;
-        if ($type === Proposed) {
-            $htmlout = '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">';
-        } else {
-            $htmlout = '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">';
+    } elseif ($type === Proposed) {
+        $htmlout = '<p id="proptitle">- Proposed Hike Data</p> ' . "\n" .
+                '<ul id="plinks">' . "\n";
+        foreach ($obj->prop as $pdat) {
+            $htmlout .= '<li>' . $pdat->plbl . ' <a href="' . $pdat->purl .
+                    '" target="_blank">' . $pdat->pcot . "</a></li>\n";
         }
-        for ($n=0; $n<$noOfItems; $n++) {
-            $htmlout .= '<li>' . $list[$nxt] . ' <a href="' . $list[$nxt+1] .
-                    '" target="_blank">' . $list[$nxt+2] . '</a></li>';
-            $nxt += 3;
+        $htmlout .= "</ul>\n";
+    } elseif ($type === Actual) {
+        $htmlout = '<p id="acttitle">- Actual Hike Data</p>' . "\n" .
+                '<ul id="alinks">' . "\n";
+        foreach ($obj->act as $adat) {
+            $htmlout .= '<li>' . $adat->albl . ' <a href="' . $adat->aurl .
+                    '" target="_blank">' . $adat->acot . "</a></li>\n";
         }
-        $htmlout .= '</ul>';
+        $htmlout .= "</ul>\n";
     } else {
-        echo "Unknown argument in makeHtmlList, Hike " . $hikeIndexNo . ': ' . $tagType;
+        die ("Unknown argument in makeHtmlList, Hike " . 
+                $hikeIndexNo . ': ' . $type);
     }  // end of if tagtype ifs
     return $htmlout;
 } // FUNCTION END....
@@ -106,7 +95,6 @@ foreach ($tabledat->row as $page) {
         $hikeType = $page->logistics;
         $hikeElevation = $page->feet . " ft";
         $hikeExposure = $page->expo;
-        $gpsvFile = $page->tsv;
         $gpxfile = $page->gpxfile;
         if (strlen($gpxfile) === 0) {
             $newstyle = false;
@@ -158,27 +146,32 @@ foreach ($tabledat->row as $page) {
         /* 
         * Extract remaining database elements:
         */
-        $picLinks = $page->albLinks;
-        $picLinks = makeHtmlList(Simple,$picLinks);
+        $rawLinks = $page->albLinks;
+        $picLinks = "<ol>\n";
+        foreach ($rawlinks as $purl) {
+            $picLinks .= "<li>" . $purl . "</li>\n";
+        }
+        $picLinks .= "/ol>\n";
         $hikeTips = $page->tipsTxt;
         $hikeTips = preg_replace("/\s/"," ",$hikeTips);
         $hikeInfo = '<p id="hikeInfo">' . $page->hikeInfo . '</p>';
         # there should always be something to report in 'references'
-        $hikeReferences = $page->refs;
+        $hikeRefs = $page->refs;
         # there may or may not be any proposed data or actual data to present
-        $hikeReferences = makeHtmlList(References,$hikeReferences);
+        $hikeReferences = makeHtmlList(References,$hikeRefs);
         $hikeProposedData = $page->dataProp;
         $hikeActualData = $page->dataAct;
-        if ($hikeProposedData !== '' || ($hikeActualData !== '' && $hikeActualData !== "\n")) {
-                $fieldsets = true;
-                $datasect = '<fieldset><legend id="flddat">GPS Maps &amp; Data</legend>';
-                if ($hikeProposedData !== '') {
-                        $datasect .= makeHtmlList(Proposed,$hikeProposedData);
-                }
-                if ($hikeActualData !== '') {
-                        $datasect .= makeHtmlList(Actual,$hikeActualData);
-                }
-                $datasect .= '</fieldset>';
+        if ( strlen($hikeProposedData) !== 0 || (strlen($hikeActualData) !== 0) ) {
+            $fieldsets = true;
+            $datasect = "<fieldset>\n" . 
+                    '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
+            if (strlen($hikeProposedData) !== 0) {
+                    $datasect .= makeHtmlList(Proposed,$hikeProposedData);
+            }
+            if (strlen($hikeActualData) !== 0) {
+                    $datasect .= makeHtmlList(Actual,$hikeActualData);
+            }
+            $datasect .= "</fieldset>\n";
         }
         break;
     }  # end if the correct hike = indx no
@@ -262,8 +255,8 @@ if (!$newstyle) {
 } else { # newstyle has the side panel with map & chart on right
     # SIDE PANEL:
     # dynamically created map:
-    $extLoc = strrpos($gpsvFile,'.');
-    $gpsvMap = substr($gpsvFile,0,$extLoc); # strip file extension
+    $extLoc = strrpos($gpxfile,'.');
+    $gpsvMap = substr($gpxfile,0,$extLoc); # strip file extension
     # holding place for page's hike map (deleted when page exited)
     $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
     if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
