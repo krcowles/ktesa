@@ -95,20 +95,39 @@
                 # No Changes Assigned to marker, clusGrp, cgName
             }
             $hType = filter_input(INPUT_POST,'htype');
+            $hikeLine->logistics = $htype;
             $hLgth = filter_input(INPUT_POST,'hlgth');
+            $hikeLine->miles = $hLgth;
             $hElev = filter_input(INPUT_POST,'helev');
+            $hikeLine->feet = $hElev;
             $hDiff = filter_input(INPUT_POST,'hdiff');
+            $hikeLine->difficulty = $hDiff;
             $hFac = filter_input(INPUT_POST,'hfac');
+            $hikeLine->facilities = $hFac;
             $hWow = filter_input(INPUT_POST,'hwow');
+            $hikeLine->wow = $hWow;
             $hSeas = filter_input(INPUT_POST,'hsea');
+            $hikeLine->seasons = $hSeas;
             $hExpos = filter_input(INPUT_POST,'hexp');
+            $hikeLine->expo = $hExpos;
             $hLat = filter_input(INPUT_POST,'hlat');
+            $hikeLine->lat = $hLat;
             $hLon = filter_input(INPUT_POST,'hlon');
+            $hikeLine->lng = $hLon;
             $hPurl1 = filter_input(INPUT_POST,'purl1');
+            $hikeLine->mpUrl = $hPurl1;
             $hPurl2 = filter_input(INPUT_POST,'purl2');
+            $hikeLine->spUrl = $hPurl2;
             $hDirs = filter_input(INPUT_POST,'gdirs');
+            $hikeLine->dirs = $hDirs;
             $hTips = filter_input(INPUT_POST,'htips');
+            # revise tips if no tips were added:
+            if (substr($hTips,0,15) !== '[NO TIPS FOUND]') {
+                    $hTips = '';
+            }
+            $hikeLine->tipsTxt = $hTips;
             $hInfo = filter_input(INPUT_POST,'hinfo');
+            $hikeLine->hikeInfo = $hInfo;
             include "refEdits.php";
             include "propactEdits.php";
             include "picEdits.php";
@@ -123,16 +142,11 @@
             for ($r=0; $r<$noOfLnks; $r++) {
                 $newLink = $hAlb->addChild('alb',$photoLinks[$r]);
             }
-            # revise tips if no tips were added:
-            if (substr($hTips,0,15) !== '[NO TIPS FOUND]') {
-                    $hTips = '';
-            }
+            
             break;
         }  # end of THE EDITED HIKE
     }  
-    
-    die ("DONE BUT NOT SAVED...");
-    
+        
     /* Save changes based on whether or not site master: registered users
      * will have a temporary database change saved for review by the site
      * master, to be integrated with the site after acceptance. The temp
@@ -146,12 +160,10 @@
             die('<p style="color:brown;">Incorrect Password - save not executed</p>');
         }
         $user = false;
-        $hikeDat->asXML('newfile.xml');
+        $hikeDat->asXML('../data/database.xml');
+        $msgout = " have been saved to the database";
     } else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
-        $database = '../data/reviewdat.csv';
-        $dbhandle = fopen($database,"a");
-        fputcsv($dbhandle,$info);
-        fclose($dbhandle);
+        $hikeDat->asXML('../data/reviewdat.xml');
         $msgout = " have been submitted for review by the site masters";
     } else {
         die('<p style="color:brown;">Contact Site Master: Submission not recognized');
@@ -159,7 +171,7 @@
     
 ?>
 <div style="padding:16px;">
-<h2>The changes submitted for <?php echo $info[1] . $msgout;?></h2>
+<h2>The changes submitted for <?php echo $hTitle . $msgout;?></h2>
 </div>
 
 <?php
