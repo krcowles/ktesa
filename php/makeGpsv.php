@@ -58,11 +58,16 @@ $tno = 1;
 # Some titles may use quotations - provide for that case:
 $mapTitle = str_replace("'","\\'",$hikeTitle);
 $mapTitle = str_replace('"','\\"',$mapTitle);
- 
+
 # Files: GPX track file
 $gpxdat = simplexml_load_file($gpxPath);
 if ($gpxdat === false) {
-    die ($gpxmsg . $gpxPath . $close);
+    if ($gpxPath == '') {
+        $filemsg = "Empty GPX Path String encountered";
+    } else {
+        $filemsg = $gpxPath;
+    }
+    die ($gpxmsg . $filemsg . $close);
 }
 /*
  *    ---- TRACK DATA ----

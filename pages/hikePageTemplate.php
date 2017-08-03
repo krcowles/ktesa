@@ -196,7 +196,7 @@ foreach ($tabledat->row as $page) {
                 $gpsvfile = $page->tsv->file->__toString();
                 # Full-page map link cannot assume existence of tmp file: 
                 #  to advise the mapTemplate, name 'MapLink' is used to indicate
-                $fpLnk .= 'tsv=YES&gpsv=' . $gpsvfile . '&gpx=' . $gpxPath;
+                $fpLnk .= '&tsv=YES&gpsv=' . $gpsvfile . '&gpx=' . $gpxPath;
             }
             include "../php/makeGpsv.php";
             fputs($mapHandle,$html);

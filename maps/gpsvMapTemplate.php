@@ -8,7 +8,7 @@
      *      in this case, map_name="MapLink";
      */
     $map = filter_input(INPUT_GET,'map_name');
-    if ($map = 'MapLink') {
+    if ($map == 'MapLink') {
         /* 
          * This is a full-page map link: the following parameters need to be
          * established prior to calling makeGpsv.php, and depending on whether
