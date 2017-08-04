@@ -99,7 +99,7 @@ function useIndexPg() {
     $('#spImg').text(msgB);
     $('.indxFile').css('display','none');
     $('#latlng').css('display','block');
-    $('#refdat').css('display','none');
+    //$('#refdat').css('display','none');
     $('#l_add1').css('color','Brown');
     $('#l_add1').text(msgC);
     $('.honly').css('display','none');
