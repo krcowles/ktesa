@@ -216,7 +216,7 @@ $refhtml .= "</ul>\n</fieldset>\n";
         }
     }
     # Save the locked entry:
-    $indxPg->asXML('check.xml');
+    $indxPg->asXML('../data/database.xml');
 ?>
     <form target="_blank" action="saveIndex.php" method="POST">
         <input type="hidden" name="ptitle" value="<?php echo $indxTitle;?>" />

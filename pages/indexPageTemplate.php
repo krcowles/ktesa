@@ -12,24 +12,16 @@
             $parkMap = $page->aoimg1;
             $parkDirs = $page->dirs;
             $parkInfo = $page->hikeInfo;
-            $refStr = $page->refs;
-            /* Convert string array into real references */
-            $list = explode("^",$refStr);
-            $noOfItems = intval($list[0]);
-            array_shift($list);
-            $nxt = 0;
-            $htmlout = '<ul id="refs">' . "\n";
-            for ($k=0; $k<$noOfItems; $k++) {
-                $tagType = $list[$nxt];
+            $obj = $page->refs;
+            $htmlout = '<ul id="refs">';
+            foreach ($obj->ref as $item) {
+                $tagType = $item->rtype->__toString();
                 if ($tagType === 'b') { 
-                    $htmlout .= '<li>Book: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>' ."\n";
-                    $nxt += 3;
+                    $htmlout .= '<li>Book: <em>' . $item->rit1 . '</em>' . $item->rit2 . '</li>';
                 } elseif ($tagType === 'p') {
-                    $htmlout .= '<li>Photo Essay: <em>' . $list[$nxt+1] . '</em>' . $list[$nxt+2] . '</li>' . "\n";
-                    $nxt += 3;
+                    $htmlout .= '<li>Photo Essay: <em>' . $item->rit1 . '</em>' . $item->rit2 . '</li>';
                 } elseif ($tagType === 'n') {
-                    $htmlout .= '<li>' . $list[$nxt+1] . '</li>' . "\n";
-                    $nxt += 2;
+                    $htmlout .= '<li>' . $item->rit1 . '</li>';
                 } else {
                     if ($tagType === 'w') {
                         $tag = '<li>Website: ';
@@ -54,12 +46,10 @@
                     } else {
                         $tag = '<li>CHECK DATABASE: ';
                     }
-                    $htmlout .= $tag . '<a href="' . $list[$nxt+1] . 
-                        '" target="_blank">' . $list[$nxt+2] .
-                        '</a></li>' . "\n";
-                    $nxt += 3;
+                    $htmlout .= $tag . '<a href="' . $item->rit1 . '" target="_blank">' .
+                        $item->rit2 . '</a></li>';
                 }
-            } // end of for loop in references
+            } // end of foreach
             $htmlout .= '</ul>' . "\n";
             # INDEX TABLE OF HIKES, if any:
             $indxTbl = 0;  # if no table elements are present, default msg shows
