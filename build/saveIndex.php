@@ -63,6 +63,7 @@
         }
         foreach ($xmlDB->row as $row) {
             if ($row->indxNo == $newPgNo) {
+                $row->pgTitle = $indxPgTitle;
                 $row->rlock = '';
                 break;
             }

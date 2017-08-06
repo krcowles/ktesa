@@ -19,7 +19,7 @@
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Save Index Page Changes</p>
+<p id="trail">Index Page Editor: Selection</p>
 
 <div style="padding:16px;text-align:center;">Select the index page you wish to 
     edit by clicking on the "Web Pg" for the index as listed in the table 

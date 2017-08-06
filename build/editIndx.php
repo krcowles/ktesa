@@ -21,73 +21,40 @@
 
 <div style="padding:16px;">
 <?php
-    $database = '../data/database.csv';
-    $dbhandle = fopen($database,"r");
+    $database = '../data/database.xml';
+    $xmlDat = simplexml_load_file($database);
+    if ($xmlDat === false) {
+        $emsg = '<p style="color:red;font-size:20px;margin-left:16px">' .
+                'Could not load xml database: contact site master</p>';
+        die($emsg);
+    }
     $hikeNo = $_GET['hikeNo'];
-    while ( ($indxdat = fgetcsv($dbhandle)) !== false) {
-        if ( $indxdat[0] == $hikeNo) {
-            $info = $indxdat;
+    foreach( $xmlDat->row as $indxrow) {
+        if ( $indxrow->indxNo == $hikeNo) {
+            $indxName = $indxrow->pgTitle;
+            $indxLocale = $indxrow->locale;
+            $indxLat = $indxrow->lat;
+            $indxLng = $indxrow->lng;
+            $indxDirs = $indxrow->dirs;
+            $indxInfo = $indxrow->hikeInfo;
+            $indxRefs = $indxrow->refs;
             break;
         }
     }
-    fclose($dbhandle);
-    $indxName = $info[1];
 ?>
 <p id="trail"><?php echo $indxName;?></p>
-<?php 
-    /* NOTE: The cluster string ($info[4]) will not be available for editing here: the
-       proper means of adding a hike to the Index Page is to edit that hike
-       and add the Visitor Center association; */
-    $dirs = $info[25];
-    $indxInfo = $info[38];
-    $refs = $info[39];
-    $indxTbl = $info[29];
-    /* The following code is copied from 'indexPageTemplate.php' in order to produce a
-       readable html file for the user to edit. It will be converted back into a string
-       array when saved */
-    $rows = explode("|",$indxTbl);
-    $tblhtml = '<table id="siteIndx">' . "\n" . '<thead>' . "\n" . '<tr>' . "\n";
-    $tblhtml .= '<th class="hdrRow" scope="col">Trail</th>' . "\n";
-    $tblhtml .= '<th class="hdrRow" scope="col">Web Pg</th>' . "\n";
-    $tblhtml .= '<th class="hdrRow" scope="col">Trail Length</th>' . "\n";
-    $tblhtml .= '<th class="hdrRow" scope="col">Elevation</th>' . "\n";
-    $tblhtml .= '<th class="hdrRow" scope="col">Exposure</th>' . "\n";
-    $tblhtml .= '<th class="hdrRow" scope="col">Photos</th>'  . "\n";
-    $tblhtml .= '</tr>' . "\n" . '</thead>' . "\n" . '<tbody>' . "\n";
-    $rowcnt = count($rows);
-    for ($j=0; $j<$rowcnt; $j++) {
-        $row = explode("^",$rows[$j]);
-        # there are always 7 pieces, counting row type
-        if ($row[0] === 'n') {  // "normal" - not grayed out
-            $tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] . '</td>' . "\n";
-            $tblhtml .= '<td><a href="' . $row[2] . '" target="_blank">' . "\n" .
-                '<img class="webShift" src="../images/greencheck.jpg" alt="checkbox" /></a></td>' . "\n";
-            $tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
-            $tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
-            $tblhtml .= '<td><img class="expShift" src="' . $row[5] . '" alt="exposure icon" /></td>' . "\n";
-            $tblhtml .= '<td><a href="' . $row[6] . '" target="_blank">' . "\n" .
-                '<img class="flckrShift" src="../images/album_lnk.png" alt="Photos symbol" /></a></td>' . "\n";
-            $tblhtml .= '</tr>' . "\n";
-        } else {   // $row[0]=g  - grayed out row
-            $tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] . '</td>' . "\n";
-            $tblhtml .= '<td><img class="webShift" src="../images/x-box.png" alt="box with x" /></td>' . "\n";
-            $tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
-            $tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
-            $tblhtml .= '<td class="naShift">N/A</td>' . "\n";
-            $tblhtml .= '<td><img class="flckrShift" src="../images/x-box.png" alt="box with x" /></td>' . "\n";
-            $tblhtml .= '</tr>' . "\n";
-        }  # end of if row is grayed out...
-    }  #end of row data-processing loop	
-    $tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";
-    $indxTbl = $tblhtml;	   
-?>
+
 <form target="_blank" action="saveIndxChgs.php" method="POST">
 
-<em style="color:DarkBlue;">Any changes below will be made for the Index Page: "<?php echo $indxName;?>". If no changes 
+<em style="color:DarkBlue;">Any changes below will be made for the Index Page: 
+    "<?php echo $indxName;?>". If no changes 
 are made you may either exit this page or hit the "sbumit" button.</em><br /><br />
 
-<label for="hike">Index Page Name: </label><textarea style="height:20px;" id="hike" name="hname"><?php echo $info[1]?></textarea>&nbsp;&nbsp;
-<p style="display:none;" id="locality"><?php echo trim($info[2])?></p>
+<label for="hike">Index Page Name: </label>
+<textarea style="height:20px;" id="hike" name="hname">
+    <?php echo $indxName?></textarea>&nbsp;&nbsp;
+    
+<p style="display:none;" id="locality"><?php echo $indxLocale;?></p>
 <label for="area">Locale (City/POI): </label>
 <select id="area" name="locale">
   <optgroup label="North/Northeast">
@@ -127,70 +94,86 @@ are made you may either exit this page or hit the "sbumit" button.</em><br /><br
     <option value="Silver City">Silver City</option>
     <option value="Pinos Altos">Pinos Altos</option>
     <option value="Glenwood">Glenwood</option>
-</select>&nbsp;&nbsp;
-<label for="facil">Facilities at the trailhead: </label><textarea style="height:20px;" id="facil" name="hfac"><?php echo $info[10];?></textarea><br /><br />
-<label for="wow">"Wow" Appeal: </label><textarea style="height:20px;" id="wow" name="hwow"><?php echo $info[11];?></textarea>&nbsp;&nbsp;
+</select><br />
+
 <label for="lat">Visitor Center Location: Latitude </label>
-<textarea style="height:20px;" id="lat" name="hlat"><?php echo $info[19];?></textarea>&nbsp;&nbsp;
+<textarea style="height:20px;" id="lat" name="hlat"><?php echo $indxLat;?></textarea>&nbsp;&nbsp;
 <label for="lon">Longitude </label>
-<textarea style="height:20px;" id="lon" name="hlon"><?php echo $info[20];?></textarea><br /><br />
+<textarea style="height:20px;" id="lon" name="hlon"><?php echo $indxLng;?></textarea><br /><br />
+
 Enter or change the Google Maps Directions to the Visitor Center [NOTE: this is a single line, despite text-wrapping]<br />
-<textarea id="vcdirs" name="gdirs" rows="1" cols="140" wrap="soft"><?php echo $dirs;?></textarea><br /><br />
+<textarea id="vcdirs" name="gdirs" rows="1" cols="140" wrap="soft">
+    <?php echo $indxDirs;?></textarea><br /><br />
 
 Edit the Park Information as desired:<br />
-<textarea name="info" rows="12" cols="120" wrap="soft"><?php echo $indxInfo;?></textarea><br /><br />
-<h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, delete and add a new one)</h3>
+<textarea name="info" rows="12" cols="120" wrap="soft">
+    <?php echo $indxInfo;?></textarea><br /><br />
+    
+<h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, 
+    delete and add a new one)</h3>
 <?php
-    $refs = explode("^",$info[39]);
-    $rcnt = $refs[0];
-    $noOfRefs = intval($rcnt);
+    /*
+     * References display
+     */
+    $noOfRefs = 0;
+    foreach ($indxRefs->ref as $ref) {
+        $noOfRefs++;
+    }
     echo '<p id="refcnt" style="display:none">' . $noOfRefs . '</p>';
-    echo '<input type="hidden" name = "orgrefs" value="' . $noOfRefs . '" />';
-    array_shift($refs);
-    $nxt = 0;
-    for ($j=0; $j<$noOfRefs; $j++) {
-        $rtype = 'rid' . $j;
-        $reftype = 'ref' . $j;
-        echo '<p id="' . $rtype . '" style="display:none">' . $refs[$nxt] . '</p>';
-        echo '<label for="' . $reftype . '">Reference Type: </label>';
-        echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">';
-        echo '<option value="b">Book</option>';
-        echo '<option value="p">Photo Essay</option>';
-        echo '<option value="w">Website</option>';
-        echo '<option value="h">Website</option>';
-        echo '<option value="a">App</option>';
-        echo '<option value="d">Downloadable Doc</option>';
-        echo '<option value="l">Blog</option>';
-        echo '<option value="o">On-line Map</option>';
-        echo '<option value="m">Magazine</option>';
-        echo '<option value="s">News Article</option>';
-        echo '<option value="g">Meetup Group</option>';
-        echo '<option value="r">Related Link</option>';
-        echo '<option value="n">Text Only - No Link</option>';
-        echo '</select><br />';
-        if ($refs[$nxt] === 'b' || $refs[$nxt] === 'p') {
-            echo '<label style="text-indent:20px;height:20px;">Title: </label><textarea style="height:34px;width:320px" name="rit1[]">' .
-                $refs[$nxt+1] . '</textarea>&nbsp;&nbsp;';
+    $z = 0;  # index for creating unique id's
+    foreach ($indxRefs->ref as $ritem) {
+        $rid = 'rid' . $z;
+        $reftype = 'ref' . $z;
+        $thisref = $ritem->rtype->__toString();
+        echo '<p id="' . $rid  . '" style="display:none">' . $thisref . "</p>\n";
+        echo '<label for="' . $reftype . '">Reference Type: </label>' . "\n";
+        echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">' . "\n";
+        echo '<option value="b" >Book</option>' . "\n";
+        echo '<option value="p">Photo Essay</option>' . "\n";
+        echo '<option value="w">Website</option>' . "\n";
+        echo '<option value="h">Website</option>' . "\n"; # leftover category from index pages
+        echo '<option value="a">App</option>' . "\n";
+        echo '<option value="d">Downloadable Doc</option>' . "\n";
+        echo '<option value="l">Blog</option>' . "\n";
+        echo '<option value="o">On-line Map</option>' . "\n";
+        echo '<option value="m">Magazine</option>' . "\n";
+        echo '<option value="s">News Article</option>' . "\n";
+        echo '<option value="g">Meetup Group</option>' . "\n";
+        echo '<option value="r">Related Link</option>' . "\n";
+        echo '<option value="n">Text Only - No Link</option>' . "\n";
+        echo '</select><br />' . "\n";
+        if ($thisref === 'b' || $thisref === 'p') {
+            echo '<label style="text-indent:24px;">Title: </label>'
+                . '<textarea style="height:20px;width:320px" name="rit1[]">' .
+                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;';
             echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
-                $refs[$nxt+2] . '</textarea>&nbsp;&nbsp<label>Delete: </label>' .
+                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
-                    $j . '"><br /><br />';
-            $nxt +=3;
-        } elseif ($refs[$nxt] === 'n') {
+                    $z . '"><br /><br />' . "\n";
+        } elseif ($thisref === 'n') {
             echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
-                $refs[$nxt+1] . '</textarea><label>Delete: </label>' .
+                $ritem->rit1->__toString() . '</textarea><label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
-                    $j . '"><br /><br />';
-            $nxt += 2;
+                $z . '"><br /><br />' . "\n";
         } else {
             echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
-                $refs[$nxt+1] . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
-                $refs[$nxt+2] . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;'
+                    . '<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
+                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
-                    $j . '"><br /><br />';
-            $nxt += 3;
-        }
+                $z . '"><br /><br />' . "\n";
+        }  
+        $z++;
     }
+    # Table Header setup
+    $tblhtml = '<table id="siteIndx">' . "\n" . '<thead>' . "\n" . '<tr>' . "\n";
+    $tblhtml .= '<th class="hdrRow" scope="col">Trail</th>' . "\n";
+    $tblhtml .= '<th class="hdrRow" scope="col">Web Pg</th>' . "\n";
+    $tblhtml .= '<th class="hdrRow" scope="col">Trail Length</th>' . "\n";
+    $tblhtml .= '<th class="hdrRow" scope="col">Elevation</th>' . "\n";
+    $tblhtml .= '<th class="hdrRow" scope="col">Exposure</th>' . "\n";
+    $tblhtml .= '<th class="hdrRow" scope="col">Photos</th>'  . "\n";
+    $tblhtml .= '</tr>' . "\n" . '</thead>' . "\n" . "<tbody></tbody></table>\n";
 ?>
 <p>Add references here:</p>
 <p>Select the type of reference (with above, up to 8 total) and its accompanying data below:</p>
@@ -228,12 +211,39 @@ Book Title/Link URL:<input type="text" name="rit1[]" size="55" />&nbsp;
 Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 
 <h2>The Table of Hikes Cannot Be Edited At This Time</h2>
-<!--
-<textarea name="tbl" rows="20" cols="120" wrap="soft">
-<?php echo $indxTbl;?></textarea><br /><br /> -->
-	
+<?php
+    echo $tblhtml;
+/*
+    $rowcnt = count($rows);
+    for ($j=0; $j<$rowcnt; $j++) {
+        $row = explode("^",$rows[$j]);
+        # there are always 7 pieces, counting row type
+        if ($row[0] === 'n') {  // "normal" - not grayed out
+            $tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] . '</td>' . "\n";
+            $tblhtml .= '<td><a href="' . $row[2] . '" target="_blank">' . "\n" .
+                '<img class="webShift" src="../images/greencheck.jpg" alt="checkbox" /></a></td>' . "\n";
+            $tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
+            $tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
+            $tblhtml .= '<td><img class="expShift" src="' . $row[5] . '" alt="exposure icon" /></td>' . "\n";
+            $tblhtml .= '<td><a href="' . $row[6] . '" target="_blank">' . "\n" .
+                '<img class="flckrShift" src="../images/album_lnk.png" alt="Photos symbol" /></a></td>' . "\n";
+            $tblhtml .= '</tr>' . "\n";
+        } else {   // $row[0]=g  - grayed out row
+            $tblhtml .= '<tr>' . "\n" . '<td>' . $row[1] . '</td>' . "\n";
+            $tblhtml .= '<td><img class="webShift" src="../images/x-box.png" alt="box with x" /></td>' . "\n";
+            $tblhtml .= '<td>' . $row[3] . '</td>' . "\n";
+            $tblhtml .= '<td>' . $row[4] . '</td>' . "\n";
+            $tblhtml .= '<td class="naShift">N/A</td>' . "\n";
+            $tblhtml .= '<td><img class="flckrShift" src="../images/x-box.png" alt="box with x" /></td>' . "\n";
+            $tblhtml .= '</tr>' . "\n";
+        }  # end of if row is grayed out...
+    }  #end of row data-processing loop	
+    $tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";
+    $indxTbl = $tblhtml;
+ */	   
+?>	
 <input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
-<input type="hidden" name="nme" value="<?php echo $indxName;?>" />
+
 <div style="margin-left:8px;">
 <h3>Select an option below to save the edits</h3>
 <p><em>Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
