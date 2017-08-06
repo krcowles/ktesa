@@ -28,10 +28,13 @@
                 'Could not load xml database: contact site master</p>';
         die($emsg);
     }
+    echo "LOADED";
     $hikeNo = $_GET['hikeNo'];
+    echo "NO " . $hikeNo;
     foreach( $xmlDat->row as $indxrow) {
         if ( $indxrow->indxNo == $hikeNo) {
             $indxName = $indxrow->pgTitle;
+            echo "GOT: " . $indxName;
             $indxLocale = $indxrow->locale;
             $indxLat = $indxrow->lat;
             $indxLng = $indxrow->lng;
@@ -246,6 +249,10 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
 
 <div style="margin-left:8px;">
 <h3>Select an option below to save the edits</h3>
+
+<p><em>All Users:</em> Save Current Changes and Re-edit Later&nbsp;&nbsp;
+    <input type="submit" name="savePg" value="Save for Re-edit" />
+</p>
 <p><em>Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
     <input id="master" type="password" name="mpass" size="12" maxlength="10" 
         title="8-character code required" />&nbsp;&nbsp;&nbsp;&nbsp;

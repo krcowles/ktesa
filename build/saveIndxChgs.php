@@ -30,38 +30,53 @@ if ($db === false) {
     die($emsg);
 }
 $hikeNo = filter_input(INPUT_POST,'hno');
-$indxName = filter_input(INPUT_POST,'hname');
-$indxLocale = filter_input(INPUT_POST,'locale');
-$indxLat = filter_input(INPUT_POST,'hlat');
-$indxLng = filter_input(INPUT_POST,'hlon');
-$indxDirs = filter_input(INPUT_POST,'gdirs');
-$indxInfo = filter_input(INPUT_POST,'info');
-include "refEdits.php";
+foreach ($db->row as $hikeLine) {
+    if ($hikeLine->indxNo == $hikeNo) {
+        $indxName = filter_input(INPUT_POST,'hname');
+        $hikeLine->pgTitle = $indxName;
+        $hikeLine->locale = filter_input(INPUT_POST,'locale');
+        $hikeLine->lat = filter_input(INPUT_POST,'hlat');
+        $hikeLine->lng = filter_input(INPUT_POST,'hlon');
+        $hikeLine->dirs = filter_input(INPUT_POST,'gdirs');
+        $hikeLine->hikeInfo = filter_input(INPUT_POST,'info');
+        include "refEdits.php";
+        break;
+    }
+}
 ?>
 <p id="trail"><?php echo $indxName;?></p>
 <?php
 $user = true;
-if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
+/* WRITE OUT THE NEW INDEX PAGE */
+$lead = '<p style="color:brown;font-size:18px;">' .
+        'The index page changes for ' . $indxName . ' (if any) ';
+$msgsave = 'have been made to the site</p>';
+$tmpsave = 'are saved temporarily and can be re-edited at any time; ' .
+        'To save permanently, re-edit, complete the changes, and submit</p>';
+$submitted = filter_input(INPUT_POST,'savePg');
+if ($submitted === 'Site Master') {
     $passwd = filter_input(INPUT_POST,'mpass');
     if ($passwd !== '000ktesa') {
         die('<p style="color:brown;">Incorrect Password - save not executed</p>');
     }
     $user = false;
-    /* WRITE OUT THE NEW INDEX PAGE */
-    $msgout = '<p>The index page changes for ' . $info[1] . ' (if any)' .
-        'have been made to the site</p>';
-    
-} else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
-    $userchgs = '../data/reviewdat.csv';
-    $dbhandle = fopen($userchgs,"a");
-    fputcsv($dbhandle,$info);
-    $msgout = '<p>Your changes for ' . $info[1] . 
+    $hikeLine->rlock = '';
+    $db->asXML($database);
+    $msgout = $lead . $msgsave;
+} elseif ($submitted === 'Submit for Review') {
+    $msgout = '<p>Your changes for ' . $indxName . 
             ' have been submitted for review by the site master.</p>';
+} elseif ($submitted === 'Save for Re-edit') {
+    $hikeLine->rlock = 'Edit';
+    echo "RESULT: " . $hikeLine->asXML();
+    die("ASFD");
+    $db->asXML($database);
+    $msgout = $lead . $tmpsave;
 } else {
-    die('<p style="color:brown;">Contact Site Master: Submission not recognized');
-} 
-
-fclose($dbhandle);
+    $emsg = '<p style="color:red;font-size:20px;margin-left:16px;">' .
+           'SUBMISSION NOT RECOGNIZED: Contact Site Master</p>';
+    die ($emsg);
+}
 ?>
 <div style="margin-left:16px;">
     <?php echo $msgout;?>
