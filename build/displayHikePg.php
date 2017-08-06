@@ -444,12 +444,15 @@ if ($usePix === "YES") {
 
 <div style="margin-left:8px;">
 <h3>Select an option below to save the hike page</h3>
-<p><em>Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
+<p><em style="color:brown;">All Users:</em>Save Data and Re-edit Later&nbsp;&nbsp;
+    <input type="submit" name="savePg" value="Save for Re-edit" />
+</p>
+<p><em style="color:brown;">Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
     <input id="master" type="password" name="mpass" size="12" maxlength="10" 
            title="8-character code required" />&nbsp;&nbsp;&nbsp;&nbsp;
     <input type="submit" name="savePg" value="Site Master" />
 </p>
-<p><em>Registered Users:</em> Select button to submit for review&nbsp;&nbsp;
+<p><em style="color:brown;">Registered Users:</em> Select button to submit for review&nbsp;&nbsp;
     <input type="submit" name="savePg" value="Submit for Review" />
 </p>
 </div>	

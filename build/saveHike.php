@@ -198,7 +198,8 @@ $uploads = '/tmp/';
  */
 $user = true; # default is 'not site master'
 $saveTsv = filter_input(INPUT_POST,'savetsv');
-if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
+$submitted = filter_input(INPUT_POST,'savePg');
+if ($submitted === 'Site Master') {
     $passwd = filter_input(INPUT_POST,'mpass');
     if ($passwd !== '000ktesa') {
         die('<p style="color:brown;">Incorrect Password - save not executed</p>');
@@ -373,7 +374,7 @@ if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
     $db->asXML('save.xml');
      */
     echo "<h2>" . $msg . "</h2>";  
-} else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
+} else if ($submitted === 'Submit for Review') {
     # NOT UPDATED FOR VISITOR CENTER HIKES - need process
     $usrdb = '../data/reviewdat.xml';
     $udb = simplexml_load_file($usrdb);
@@ -384,6 +385,8 @@ if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
     }
     $udb->rows->addChild('row',$xmlout);
     
+} else if ($submitted === 'Save for Re-edit') {
+    echo '<p style="color:red;">Not Yet Implemented: nothing saved</p>';
 } else {
     die('<p style="color:brown;">Contact Site Master: Submission not recognized');
 } 
