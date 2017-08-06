@@ -68,8 +68,6 @@ if ($submitted === 'Site Master') {
             ' have been submitted for review by the site master.</p>';
 } elseif ($submitted === 'Save for Re-edit') {
     $hikeLine->rlock = 'Edit';
-    echo "RESULT: " . $hikeLine->asXML();
-    die("ASFD");
     $db->asXML($database);
     $msgout = $lead . $tmpsave;
 } else {
