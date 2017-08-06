@@ -67,6 +67,7 @@ if ($submitted === 'Site Master') {
     $msgout = '<p>Your changes for ' . $indxName . 
             ' have been submitted for review by the site master.</p>';
 } elseif ($submitted === 'Save for Re-edit') {
+    $user = false;
     $hikeLine->rlock = 'Edit';
     $db->asXML($database);
     $msgout = $lead . $tmpsave;
@@ -80,7 +81,7 @@ if ($submitted === 'Site Master') {
     <?php echo $msgout;?>
 </div>
 <?php
-if (!user) {
+if (!$user) {
     echo '<div data-ptype="index" data-indxno="' . $hikeNo . '" style="padding:16px;" id="more">';
     echo '<button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this Index Page</button><br />';
     echo '<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different Index Page</button><br />';
