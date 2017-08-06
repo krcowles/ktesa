@@ -430,11 +430,47 @@ if ($hikeMarker === 'ctrhike') {
         die ($norefs);
     }
     foreach ($xmlRef->ref as $refItem) {
-        if ($refItem->rtype == 'Book' || $refItem->rtype == 'Photo Essay') {
-            echo "\t\t<li><em>" . $refItem->rtype . "</em>: " . $refItem->rit1 .
+        if ($refItem->rtype == 'b' || $refItem->rtype == 'p') {
+            if ($refItem->rtype == 'b') {
+                $refLbl = 'Book';
+            } else {
+                $refLbl = 'Photo Essay';
+            }
+            echo "\t\t<li>" . $refLbl . ": <em>" . $refItem->rit1 . "</em>" .
                 $refItem->rit2 . "</li>\n";
+        } elseif ($refItem->rtype == 'n') {
+            echo "\t\t<li>" . $refItem->rit1 . "</li>\n";
         } else {
-            echo "\t\t<li>" . $refItem->rtype . ': <a href="' . $refITem->rit1 .
+            switch ($refItem->rtype) {
+                case 'a':
+                    $refLbl = 'App';
+                    break;
+                case 'd':
+                    $refLbl = 'Downloadable Doc';
+                    break;
+                case 'g':
+                    $refLbl = 'Meetup Group';
+                    break;
+                case 'l':
+                    $refLbl = 'Blog' ;
+                    break;
+                case 'm':
+                    $refLbl = 'Magazine';
+                    break;
+                case 'o':
+                    $refLbl = 'On-line Map';
+                    break;
+                case 'r':
+                    $refLbl = 'Related Link';
+                    break;
+                case 's':
+                    $refLbl = 'News Article';
+                    break;
+                case 'w':
+                    $refLbl = 'Website';
+                    break;
+            }
+            echo "\t\t<li>" . $refLbl . ': <a href="' . $refItem->rit1 .
                 '" target="_blank"> ' . $refItem->rit2 . "</a></li>\n";
         }
     }
