@@ -94,7 +94,6 @@ if ($hikeType === "outandback") {
 }
 # from select drop-down for hike at Visitor Center: passed to saveHike.php as is;
 $ctrHikeLoc = filter_input(INPUT_POST,'vcList');
-echo "Saw VCHIKE: " . $ctrHikeLoc . " selected";
 
 $clusGrp = filter_input(INPUT_POST,'clusgrp');
 $clusTip = '';  // default: may change below
@@ -225,13 +224,13 @@ if ($usePix == 'YES') {
 
 <?php
     # SETUP FOR MAP CONSTRUCTION:
-    $building = true;
     # include file expects defined variables as input for:
     #   $hikeTitle, $gpxPath ---> $gpxPath is already defined, above,
-    #   and $photos (xml object)
+    #   $usetsv, and $photos (xml object): $usePix tells include if page creation
+    $building = true;
     $hikeTitle = $pgTitle;
+    $usetsv = false;
     # establish temp. map name:
-    # WARNING!!! if a file name has an '&' in the name, strange things happen!!!
     $extLoc = strrpos($gpx,'.');
     $gpsvMap = substr($gpx,0,$extLoc);
     $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
@@ -264,8 +263,9 @@ if ($usePix == 'YES') {
         <strong>More!</strong>
     </p>
     <p id="mlnk">
-        <a href="../maps/gpsvMapTemplate.php?map_name=<?php echo $tmpMap . 
-                fullMapOpts;?>" target="_blank">Full Page Map Link</a>
+        <a href="../maps/gpsvMapTemplate.php?map_name=MapLink<?php echo 
+                fullMapOpts . '&hike=' . $pgTitle . '&tsv=NO&gpx=' .
+                $gpxPath;?>" target="_blank">Full Page Map Link</a>
     </p>
     <p id="albums">
         For improved photo viewing,<br />check out the following album(s):
@@ -331,11 +331,47 @@ if ($usePix === "YES") {
         die ($norefs);
     }
     foreach ($xmlRef->ref as $refItem) {
-        if ($refItem->rtype == 'Book' || $refItem->rtype == 'Photo Essay') {
-            echo "\t\t<li><em>" . $refItem->rtype . "</em>: " . $refItem->rit1 .
+        if ($refItem->rtype == 'b' || $refItem->rtype == 'p') {
+            if ($refItem->rtype == 'b') {
+                $refLbl = 'Book';
+            } else {
+                $refLbl = 'Photo Essay';
+            }
+            echo "\t\t<li>" . $refLbl . ": <em>" . $refItem->rit1 . "</em>" .
                 $refItem->rit2 . "</li>\n";
+        } elseif ($refItem->rtype == 'n') {
+            echo "\t\t<li>" . $refItem->rit1 . "</li>\n";
         } else {
-            echo "\t\t<li>" . $refItem->rtype . ': <a href="' . $refITem->rit1 .
+            switch ($refItem->rtype) {
+                case 'a':
+                    $refLbl = 'App';
+                    break;
+                case 'd':
+                    $refLbl = 'Downloadable Doc';
+                    break;
+                case 'g':
+                    $refLbl = 'Meetup Group';
+                    break;
+                case 'l':
+                    $refLbl = 'Blog' ;
+                    break;
+                case 'm':
+                    $refLbl = 'Magazine';
+                    break;
+                case 'o':
+                    $refLbl = 'On-line Map';
+                    break;
+                case 'r':
+                    $refLbl = 'Related Link';
+                    break;
+                case 's':
+                    $refLbl = 'News Article';
+                    break;
+                case 'w':
+                    $refLbl = 'Website';
+                    break;
+            }
+            echo "\t\t<li>" . $refLbl . ': <a href="' . $refItem->rit1 .
                 '" target="_blank"> ' . $refItem->rit2 . "</a></li>\n";
         }
     }
@@ -413,7 +449,7 @@ if ($usePix === "YES") {
         echo "</fieldset>\n";
     }
 ?>
-</div>  <!-- end of postPhoto -->
+</div>
 <!-- Hidden Data Passed to saveHike.php -->
 <input type="hidden" name="hname" value="<?php echo $pgTitle;?>" />
 <input type="hidden" name="hlocale" value="<?php echo $locale;?>" />
@@ -440,7 +476,7 @@ if ($usePix === "YES") {
 <input type="hidden" name="hdir" value="<?php echo $googledirs;?>" />
 <input type="hidden" name="htool" value="<?php echo $clusTip;?>" />
 <input type="hidden" name="hplnks" value="<?php echo $albStr;?>" />
-<input type="hidden" name="usepix" value="<?php echo $usePix;?>" />"
+<input type="hidden" name="usepix" value="<?php echo $usePix;?>" />
 
 <div style="margin-left:8px;">
 <h3>Select an option below to save the hike page</h3>

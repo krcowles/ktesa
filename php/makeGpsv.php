@@ -1,7 +1,14 @@
 <?php 
 /*
- * REQUIRED INPUTS FOR THIS ROUTINE:  $hikeTitle; $gpxPath; $photos
+ * REQUIRED INPUTS FOR THIS ROUTINE:  $hikeTitle; $gpxPath; $usetsv; AND
+ *  $photos - which is either:
+ *      - a 'complete' xml sring (w/header) created as an XML object in 
+ *          'displayHikePg.php' and holding all <picDat> tags; OR
+ *      - an xml object for the tsv data holding all <picDat> tages, 
+ *          instantiated via 'hikePageTemplate.php'
  */
+
+# Function to calculate the distance between to lat/lng coordinates
 function distance($lat1, $lon1, $lat2, $lon2) {
     if ($lat1 === $lat2 && $lon1 === $lon2) {
         return array (0,0);
@@ -37,12 +44,13 @@ function distance($lat1, $lon1, $lat2, $lon2) {
 }
 # END FUNCTION
 
-# Error messages:
+# Error message data
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
-$gpxmsg = $intro . 'Could not parse XML in gpx file: '; 
+$gpxmsg = $intro . 'Could not parse XML in gpx file: ';
+$tsvmsg = $intro . 'Could not open tsv file: ';
 
-# Settings:
+# Settings: (subject to change as project evolves)
 $noOfTrks = 1;  # for a single hike page, this is a reasonable constraint, but
 # perhaps other pages will need to set this value
 $tno = 1;
@@ -50,11 +58,20 @@ $tno = 1;
 # Some titles may use quotations - provide for that case:
 $mapTitle = str_replace("'","\\'",$hikeTitle);
 $mapTitle = str_replace('"','\\"',$mapTitle);
- 
+
+# gpxPath needs adjusting for cases where tmp files exist during page creation:
+if (isset($building) && $building === true) {
+    $gpxPath = '../build/' . $gpxPath;
+}
 # Files: GPX track file
 $gpxdat = simplexml_load_file($gpxPath);
 if ($gpxdat === false) {
-    die ($gpxmsg . $gpxPath . $close);
+    if ($gpxPath == '') {
+        $filemsg = "Empty GPX Path String encountered";
+    } else {
+        $filemsg = $gpxPath;
+    }
+    die ($gpxmsg . $filemsg . $close);
 }
 /*
  *    ---- TRACK DATA ----
@@ -136,18 +153,35 @@ $clon = $west + ($east - $west)/2;
  */
 $plnks = [];  # array of photo links
 $defIconColor = 'red';
-
-if ($usePix == 'YES' && $noOfMapPix > 0) {
-    foreach ($photos->picDat as $xmlPhoto) {
-        if ($xmlPhoto->mpg == 'Y') {
-            $procName = preg_replace("/'/","\'",$xmlPhoto->title);
-            $procName = preg_replace('/"/','\"',$procName);
-            $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
-                $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
-                $xmlPhoto->desc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
-                $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
-                $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
-            array_push($plnks,$plnk);
+# PROCESS DEPENDS ON WHETHER OR NOT TSV FILE WILL BE USED:
+if ($usetsv) {
+    include "tsvProc.php";
+} else {
+    /*
+     * During page creation, the user may opt to omit photos from the page
+     * If this routine is not being invoked from page creation, $usePix will
+     * be undefined (i.e. isset will be false)
+     */
+    $pgCreation =  isset($usePix) ? true : false;
+    if ($pgCreation) {
+        $displayPix = $usePix;
+    } else {
+        $displayPix = true;   # may make this variable later...
+    }
+    if ($displayPix) {
+        #$photoCnt = $photos->count();
+        #die ("Count of <picDat> children: " . $photoCnt);
+        foreach ($photos->picDat as $xmlPhoto) {
+            if ($xmlPhoto->mpg == 'Y') {
+                $procName = preg_replace("/'/","\'",$xmlPhoto->title);
+                $procName = preg_replace('/"/','\"',$procName);
+                $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
+                    $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
+                    $xmlPhoto->desc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
+                    $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
+                    $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
+                array_push($plnks,$plnk);
+            }
         }
     }
 }
