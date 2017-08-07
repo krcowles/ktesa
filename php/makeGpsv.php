@@ -59,6 +59,10 @@ $tno = 1;
 $mapTitle = str_replace("'","\\'",$hikeTitle);
 $mapTitle = str_replace('"','\\"',$mapTitle);
 
+# gpxPath needs adjusting for cases where tmp files exist during page creation:
+if (isset($building) && $building === true) {
+    $gpxPath = '../build/' . $gpxPath;
+}
 # Files: GPX track file
 $gpxdat = simplexml_load_file($gpxPath);
 if ($gpxdat === false) {

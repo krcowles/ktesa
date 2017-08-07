@@ -19,6 +19,7 @@ for ($q=0; $q<$noOfADats; $q++) {
 }
 $xmlADat .= "\t</dataAct>\n";
 $_SESSION['actdata'] = $xmlADat;
+/*   ---- DEBUG ---
 $tmp = fopen("gpsDat.xml","w");
 if ($tmp === false) {
     die("NO FILE FOR GPS MAPS AND DATA");
@@ -26,4 +27,5 @@ if ($tmp === false) {
 fwrite($tmp,$xmlPDat);
 fwrite($tmp,$xmlADat);
 fclose($tmp);
+ */
 ?>
