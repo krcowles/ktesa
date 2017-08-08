@@ -29,6 +29,40 @@
 </div>
 <p id="trail">Create A New Page</p>
 
+<?php
+$database = '../data/database.xml';
+$db = simplexml_load_file($database);
+if ($db === false) {
+    $errmsg = '<p style="color:red;font-size:18px;margin-left:16px;">' .
+            'Could not open the xml database: Contact Site Master';
+    die($errmsg);
+}
+$vchikes = [];
+$vcnos = [];
+$clhikes = [];
+$clnos = [];
+foreach( $db->row as $row) {
+    if($row->marker == 'Visitor Ctr') {
+        array_push($vchikes,$row->pgTitle);
+        array_push($vcnos,$row->indxNo);
+    }
+    if($row->marker == 'Cluster') {
+        $dup = false;
+        for ($l=0; $l<count($clhikes); $l++) {
+            # NOTE: algorithm doesn't work without the conversion to string!
+            if ($clhikes[$l] == $row->cgName->__toString()) {
+                $dup = true;
+            }
+        }
+        if (!$dup) {
+            array_push($clhikes,$row->cgName->__toString());
+            array_push($clnos,$row->indxNo);
+        }
+    }
+}
+$vccnt = count($vchikes);
+$clcnt = count($clhikes);
+?>
 <div id="setup">
     <h1>STEP 1: Enter Hike Data</h1>
     <p id="intent">I WANT TO: &nbsp;&nbsp;[data not required are grayed out]</p>
@@ -243,14 +277,46 @@
     <fieldset id="marker">
         <legend>Google Maps Marker Style</legend>
         <input id="vc" type="radio" name="mstyle" value="center" />
-        <label for="vc">Visitor Center [New Index Page]</label>
+        <label for="vc">Visitor Center [New Index Page]</label><br />
         <input id="vch" type="radio" name="mstyle" value="ctrhike" />
         <label for="vch">Hike At / In Close Proximity To Visitor 
             Center</label><br />
-        <input id="ch" type="radio" name="mstyle" value="cluster" />
-        <label for="ch">Trailhead Common to Multiple Hikes [
-            <span style="color:brown;">NOTE: Group must already exist in database</span>
-            - if not, first create one using hikeEditor]</label><br />
+         <span style="color:brown;margin-left:32px;">[NOTE: Visitor Center
+                Page must already exist:</span>&nbsp; if not, save this page, 
+                <span style="text-decoration:underline">exit</span>, and 
+                create the new Index Page before restoring this page]<br />
+                <div id="newvch" style="margin-left:32px;display:none;">
+                    <em style="color:DarkBlue;">Select Visitor Center 
+                        associated with this new hike:</em> &nbsp;
+                    <select id="nvch" name="vchike">
+                    <?php
+                    for ($i=0;$i<$vccnt;$i++) {
+                        echo '<option value="' . $vcnos[$i] . '">' . 
+                                $vchikes[$i] . "</option>\n";
+                    }
+                    ?>
+                    </select>
+                </div>
+         <input id="ch" type="radio" name="mstyle" value="cluster" />
+        <label for="ch">Trailhead Common to Multiple Hikes</label><br />
+            <span style="color:brown;margin-left:32px;">[NOTE: Group must already 
+            exist in database:</span> &nbsp;if not, save this page, 
+                <span style="text-decoration:underline">exit</span>, and edit 
+                the companion hike,<br /><span style="margin-left:32px;">providing
+                    a new group name before restoring this page]</span><br />
+                <div id="newcl" style="margin-left:32px;display:none;">
+                    <em style="color:DarkBlue;">Select group in which to 
+                        include this new hike:</em> &nbsp;
+                    <select id="nclus" name="clusgrp">
+                    <?php
+                    for ($j=0;$j<$clcnt;$j++) {
+                        echo '<option value="' . $clnos[$j] . '">' . 
+                                $clhikes[$j] . "</option>\n";
+                    }
+                    ?>                  
+                    </select>
+                </div>
+                    
         <input id="othr" type="radio" name="mstyle" value="other" />
         <label for="othr">All Others</label><br />
     </fieldset>

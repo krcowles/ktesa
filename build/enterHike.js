@@ -87,6 +87,16 @@ $('input[name="mstyle"]').click( function() {
         $('input[name="pageType"][value="standard"]').prop('checked',true);
         $('input[name="pageType"][value="vcenter"]').prop('checked',false);
     }
+    if ($('input:radio[name=mstyle]:checked').val() == 'ctrhike') {
+        $('#newvch').css('display','block');
+    } else {
+        $('#newvch').css('display','none');
+    }
+    if ($('input:radio[name=mstyle]:checked').val() == 'cluster') {
+        $('#newcl').css('display','block');
+    } else {
+        $('#newcl').css('display','none');
+    }
 });
 function useIndexPg() {
     pageSelector = "displayIndexPg.php";
@@ -99,7 +109,7 @@ function useIndexPg() {
     $('#spImg').text(msgB);
     $('.indxFile').css('display','none');
     $('#latlng').css('display','block');
-    //$('#refdat').css('display','none');
+    $('#refdat').css('display','none');
     $('#l_add1').css('color','Brown');
     $('#l_add1').text(msgC);
     $('.honly').css('display','none');
