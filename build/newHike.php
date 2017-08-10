@@ -47,9 +47,12 @@
             die($errout);
         }
         $newNo = $xmlDB->row->count() + 1; 
+        $xmlDB->row[131]->indxNo = $newNo;
+        echo "Last entry: " . $xmlDB->row[130]->pgTitle;
         foreach ($xmlDB->row as $row) {
-            echo "; Row" . $row->indxNo . ":" . $row->pgTitle . '<br />';
+            echo "  -Row" . $row->indxNo . ":" . $row->pgTitle . "<br />";
         }
+        $xmlDB->asXML('tmp.xml');
         # NOTE: addChild requires string content:
         die ("CHECK FILE");
         if ($newRow === false) {
@@ -57,8 +60,10 @@
                     'Could not get new Hike Row xml as txt: contact Site Master</p>';
             die ($errmsg);
         }
+        
         $rowXml = $xmlDB->addChild('row',$newrow);
         $rowXml->asXML('tmp.xml');
+        die ("HERE");
         ?>
         <p id="assigned" style="display:none;"><?php echo $newNo;?></p>
         <input type="hidden" name="newno" value="<?php echo $newNo;?>" />
