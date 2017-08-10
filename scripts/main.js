@@ -1,7 +1,4 @@
 $( function() {  // wait until document is loaded...
-// ------------------
-
-
 
 $('#auxfrm').submit( function() {
 	var keyval = this.regkey.value;
@@ -16,7 +13,7 @@ $('#auxfrm').submit( function() {
 			window.open(indxurl, target="_blank");
 		});
 		$('#creator').on('click', function() {
-			var createUrl = 'build/enterHike.html';
+			var createUrl = 'build/newHike.php';
 			window.open(createUrl, target="_blank");
 		});
 		$('#delpg').on('click', function() {
