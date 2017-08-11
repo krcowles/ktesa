@@ -41,28 +41,31 @@
         fwrite($xmlfile,"\n</rows>");
         fclose($xmlfile);
         $xmlDB = simplexml_load_file('../data/database.xml');
-        if ($mxlDB === false) {
+        if ($xmlDB === false) {
             $errout = '<p style="color:red;font-size:20px;margin-left:16px">' .
                     'Could not open database: Contact Site Master</p>';
             die($errout);
         }
-        $newNo = $xmlDB->row->count() + 1; 
-        $xmlDB->row[131]->indxNo = $newNo;
-        echo "Last entry: " . $xmlDB->row[130]->pgTitle;
+        $lastIndx = 0;
         foreach ($xmlDB->row as $row) {
-            echo "  -Row" . $row->indxNo . ":" . $row->pgTitle . "<br />";
+            $thisNo = intval($row->indxNo->__toString());
+            if (strpos($thisNo,".") === false && $thisNo !== 0) {
+                /* Allowing for future use of 'fractional' index no's to
+                 * indicate that a hike is being edited.
+                 */
+                if ($thisNo === $lastIndx + 1) {
+                    $lastIndx = $thisNo;
+                } else {
+                    $badindx = '<p style="color:red;font-size:20px;margin-left:16px">' .
+                        'Database index nos are out of sequence: contact Site Master</p>';
+                    echo "last: " . $lastIndx . ", this: " . $thisNo;
+                    die($badindx);
+                }
+            }
         }
+        # Hikes start at "1", but indices for rows start at '0'
+        $xmlDB->row[$lastIndx]->indxNo = ($lastIndx + 1);
         $xmlDB->asXML('tmp.xml');
-        # NOTE: addChild requires string content:
-        die ("CHECK FILE");
-        if ($newRow === false) {
-            $errmsg = '<p style="color:red;font-size:20px;margin-left:16px">' .
-                    'Could not get new Hike Row xml as txt: contact Site Master</p>';
-            die ($errmsg);
-        }
-        
-        $rowXml = $xmlDB->addChild('row',$newrow);
-        $rowXml->asXML('tmp.xml');
         die ("HERE");
         ?>
         <p id="assigned" style="display:none;"><?php echo $newNo;?></p>
