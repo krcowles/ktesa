@@ -9,17 +9,12 @@ input {
 input:focus {
     background-color: PapayaWhip;
 }
-#save {
+#saveit {
     width: 140px;
     height: 28px;
     font-size: 12px;
 }
-#cont {
-    width: 180px;
-    height: 28px;
-    font-size: 12px;
-}
-button:hover {
+input[type="submit"]:hover {
     background-color: #cfe2cf;
     cursor: pointer;
 }

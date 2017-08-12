@@ -30,6 +30,8 @@
 <p id="trail">Create A New Page</p>
 
 <?php
+$hip = intval(filter_input(INPUT_GET,'hikeNo'));  # hike-in-process
+
 $database = '../data/database.xml';
 $db = simplexml_load_file($database);
 if ($db === false) {

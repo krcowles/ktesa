@@ -15,7 +15,7 @@
         </div>
         <p id="trail">Assign New Hike</p>
 
-        <form target="_blank" action="enterHike.php" method="GET">
+        <form target="_blank" action="newSave.php" method="GET">
         <div id="newrow" style="margin-left:16px;font-size:18px;">
             <p>Begin by Assigning a Hike Name: &nbsp;
                 <input id="newname" type="text" name="new" size="40" />
@@ -29,7 +29,6 @@
                 'Could not open database to add new row: contact site master</p>';
             die ($errmsg);
         }
-        fseek($xmlfile,-8,SEEK_END);
         $newrow = file_get_contents('xmlHikeRow.txt');
         if ($newrow === false) {
             $errmsg = '<p style="color:red;font-size:20px;margin-left:16px">' .
@@ -37,6 +36,7 @@
             die ($errmsg);
         }
         $newrow = "\n" . $newrow;
+        fseek($xmlfile,-8,SEEK_END);
         fwrite($xmlfile,$newrow);
         fwrite($xmlfile,"\n</rows>");
         fclose($xmlfile);
@@ -47,38 +47,42 @@
             die($errout);
         }
         $lastIndx = 0;
+        $names = '[';
         foreach ($xmlDB->row as $row) {
             $thisNo = intval($row->indxNo->__toString());
             if (strpos($thisNo,".") === false && $thisNo !== 0) {
                 /* Allowing for future use of 'fractional' index no's to
-                 * indicate that a hike is being edited.
+                 * indicate that a hike is being edited, so not using ->count()
                  */
                 if ($thisNo === $lastIndx + 1) {
                     $lastIndx = $thisNo;
+                    $names .= '"' . $row->pgTitle . '",';
                 } else {
                     $badindx = '<p style="color:red;font-size:20px;margin-left:16px">' .
                         'Database index nos are out of sequence: contact Site Master</p>';
-                    echo "last: " . $lastIndx . ", this: " . $thisNo;
+                    #echo "last found: " . $lastIndx . ", this: " . $thisNo;
                     die($badindx);
                 }
             }
         }
+        $newNo = $lastIndx + 1;
+        $jsnames = substr($names,0,strlen($names)-1);
+        $names = $jsnames . ']';
         # Hikes start at "1", but indices for rows start at '0'
-        $xmlDB->row[$lastIndx]->indxNo = ($lastIndx + 1);
-        $xmlDB->asXML('tmp.xml');
-        die ("HERE");
+        $xmlDB->row[$lastIndx]->indxNo = $newNo;
+        $xmlDB->asXML($database);
         ?>
-        <p id="assigned" style="display:none;"><?php echo $newNo;?></p>
         <input type="hidden" name="newno" value="<?php echo $newNo;?>" />
         <div style="margin-left:16px;">
-            To save this hike and return later to complete it:
-            <button id="save">Save &amp; Return</button><br /><br />
-            To continue with data entry for this hike:
-            <button id="cont">Continue to Create</button>
+            To reserve this hike: &nbsp;&nbsp;
+            <input id="saveit" type="submit" name="resrv" value="Reserve This Hike" /><br /><br />
+            <span style="color:brown">You will be able to continue to add hike data to this hike,
+                or proceed at a later date.</span>
         </div>
-            
         </form>
-
+        <script type="text/javascript">
+            var hnames = <?php echo $names;?>;
+        </script>
         <script src="../scripts/jquery-1.12.1.js"></script>
         <script src="newHike.js"></script>
     </body>
