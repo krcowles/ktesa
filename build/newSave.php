@@ -38,8 +38,8 @@
                 "please enter the following into the browser url bar (or click): ";
             echo '<a style="color:darkBlue;text-indent:24px;font-size:18px;" ' .
                     'href="enterHike.php?hikeNo=' . $hikeIndx .
-                    '">' . 'localhost/build/enterHike.php?hikeNo=' . $hikeIndx .
-                    "</a>";
+                    '" target="_blank">' . 'localhost/build/enterHike.php?hikeNo=' . 
+                    $hikeIndx . "</a>";
             $xmlDB->asXML($database);
         ?>
         </div>

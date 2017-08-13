@@ -5,6 +5,7 @@
     <locale></locale>
     <marker></marker>
     <clusterStr></clusterStr>
+    <clusGrp></clusGrp>
     <logistics></logistics>
     <miles></miles>
     <feet></feet>

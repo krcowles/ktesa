@@ -9,6 +9,7 @@
 <feet></feet>
 <difficulty></difficulty>
 <facilities></facilities>
+<wow></wow>
 <seasons></seasons>
 <expo></expo>
 <tsv>

@@ -133,6 +133,69 @@ function useStdPg() {
 }
 /* END OF page-creation type */
 
+/* Load any data from database via php */
+var dbloc = $('#dbloc').text();  // locale
+$('#area').val(dbloc);
+var dblog = $('#dblog').text();  // logistics (type)
+$('#type').val(dblog);
+var dbmrk = $('#dbmrk').text();  // marker style
+$('#vc').prop('checked',false);
+$('#vch').prop('checked',false);
+$('#ch').prop('checked',false);
+$('#othr').prop('checked',false);
+if (dbmrk == 'At VC') {
+    $('#vch').prop('checked',true);
+    var dbcst = $('#dbcst').text();
+    $('#newvch').css('display','block');
+    $('#nvch').val(dbcst);
+}
+if (dbmrk == 'Cluster') {
+    $('#ch').prop('checked',true);
+    var dbcgr = $('#dbcgr').text();
+    $('#newcl').css('display','block');
+    $('#nclus').val(dbcgr);
+}
+var dbdif = $('#dbdif').text();  // difficulty
+$('#ease').val(dbdif);
+var dbexp = $('#dbexp').text();  // exposure
+$('#sunny').prop('checked',false);
+$('#partly').prop('checked',false);
+$('#shady').prop('checked',false);
+if(dbexp == 'Full sun') {
+    $('#sunny').prop('checked',true);
+} else if(dbexp == 'Mixed sun/shade') {
+    $('#partly').prop('checked',true);
+} else if(dbexp == 'Good shade') {
+    $('#shady').prop('checked',true);
+}
+// References: (up to 6)
+var dbrt1 = $('#dbrt1').text();
+if (dbrt1 !== '') {
+    $('#href1').val(dbrt1);  // there should always be at least one ref...
+}
+var dbrt2 = $('#dbrt2').text();
+if (dbrt2 !== '') {
+    $('#href2').val(dbrt2);
+}
+var dbrt3 = $('#dbrt3').text();
+if (dbrt3 !== '') {
+    $('#href3').val(dbrt3);
+}
+var dbrt4 = $('#dbrt4').text();
+if (dbrt4 !== '') {
+    $('#href4').val(dbrt4);
+}
+var dbrt5 = $('#dbrt5').text();
+if (dbrt5 !== '') {
+    $('#href5').val(dbrt5);
+}
+var dbrt6 = $('#dbrt6').text();
+if (dbrt6 !== '') {
+    $('#href6').val(dbrt6);
+}
+
+/* Section to preload certain elements if present in the database */
+
 // add placeholder attribute when input text is book/author
 $reftags = $('select[id^="href"]');
 $reftags.each( function() {

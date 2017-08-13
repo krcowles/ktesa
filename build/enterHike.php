@@ -30,7 +30,7 @@
 <p id="trail">Create A New Page</p>
 
 <?php
-$hip = intval(filter_input(INPUT_GET,'hikeNo'));  # hike-in-process
+$hip = filter_input(INPUT_GET,'hikeNo');  # hike-in-process
 
 $database = '../data/database.xml';
 $db = simplexml_load_file($database);
@@ -58,8 +58,11 @@ foreach( $db->row as $row) {
         }
         if (!$dup) {
             array_push($clhikes,$row->cgName->__toString());
-            array_push($clnos,$row->indxNo);
+            array_push($clnos,$row->clusGrp);
         }
+    }
+    if($row->indxNo == $hip) {
+        $hiprow = $row;
     }
 }
 $vccnt = count($vchikes);
@@ -79,11 +82,23 @@ $clcnt = count($clhikes);
 <form id="hikeData" target="_blank" onsubmit="page_type(this);" method="POST"
     enctype="multipart/form-data">
 
+    <?php
+    # preset any items already appearing in the database:
+    echo '<p id="dbloc" style="display:none">' . $hiprow->locale . "</p>\n";
+    echo '<p id="dblog" style="display:none">' . $hiprow->logistics . "</p>\n";
+    echo '<p id="dbmrk" style="display:none">' . $hiprow->marker . "</p>\n";
+    echo '<p id="dbcst" style="display:none">' . $hiprow->clusterStr . "</p>\n";
+    echo '<p id="dbcgr" style="display:none">' . $hiprow->clusGrp . "</p>\n";
+    echo '<p id="dbdif" style="display:none">' . $hiprow->difficulty . "</p>\n";
+    echo '<p id="dbexp" style="display:none">' . $hiprow->expo . "</p>\n"; 
+    # continue with references below...
+    ?>
     <fieldset id="basic">
         <legend>Basic Hike Data</legend>
         <label id="pgTitleText" for="htitle">Hike Name (As it will appear 
             in the table):</label> 
-        <input id="htitle" type="text" name="hpgTitle" size="35" />&nbsp;&nbsp;
+        <input id="htitle" type="text" name="hpgTitle" 
+               size="35" value="<?php echo $hiprow->pgTitle;?>" />&nbsp;&nbsp;
         <label for="area">Locale (Nearest city/landmark):</label>
         <select id="area" name="locale">
         <optgroup label="North/Northeast">
@@ -126,14 +141,16 @@ $clcnt = count($clhikes);
         </select><br />
         <label class="notVC" for="type">Hike Type:</label>
         <select id="type" name="htype">
-            <option value="loop">Loop</option>
-            <option value="twocar">2-Cars</option>
-            <option value="outandback">Out-and-Back</option>
+            <option value="Loop">Loop</option>
+            <option value="Two-Cars">Two-Cars</option>
+            <option value="Out-and-back">Out-and-Back</option>
         </select>&nbsp;&nbsp;
         <label class="notVC" for="lgth">Total Length (Miles):</label>
-            <input id="lgth" type="text" name="dist" size="6" />
+            <input id="lgth" type="text" name="dist" size="6" 
+                   value="<?php echo $hiprow->miles;?>" />
         <label class="notVC" for="ht">Elevation Change (Feet):</label>
-            <input id="ht" type="text" name="elev" size="8" />
+            <input id="ht" type="text" name="elev" size="8"
+                   value="<?php echo $hiprow->feet;?>" />
         <label class="notVC" for="ease">Relative Difficulty:</label>
         <select id="ease" name="diff">
             <option value="Easy">Easy</option>
@@ -144,12 +161,15 @@ $clcnt = count($clhikes);
         </select><br />
         <label class="notVC" id="ifac" for="useful">Facilities Available at Trailhead, 
             if any:</label>
-        <input id="useful" type="text" name="fac" size="25" />
+        <input id="useful" type="text" name="fac" size="25" 
+               value="<?php echo $hiprow->facilities;?>" />
         <label class="notVC" id="iwow" for="wow">"Wow" Factor (What makes this hike 
             special):</label> 
-        <input id="wow" type="text" name="wow_factor" size="24" /><br />
+        <input id="wow" type="text" name="wow_factor" size="24" 
+               value="<?php echo $hiprow->wow;?>" /><br />
         <label class="notVC" for="times">Seasons</label>
-        <input id="times" type="text" name="seas" size="40" /><br />
+        <input id="times" type="text" name="seas" size="40" 
+               value="<?php echo $hiprow->seasons;?>" /><br />
     </fieldset>
 
     <fieldset id="exposure">
@@ -283,7 +303,7 @@ $clcnt = count($clhikes);
         <input id="vch" type="radio" name="mstyle" value="ctrhike" />
         <label for="vch">Hike At / In Close Proximity To Visitor 
             Center</label><br />
-         <span style="color:brown;margin-left:32px;">[NOTE: Visitor Center
+        <span style="color:brown;margin-left:32px;">[NOTE: Visitor Center
                 Page must already exist:</span>&nbsp; if not, save this page, 
                 <span style="text-decoration:underline">exit</span>, and 
                 create the new Index Page before restoring this page]<br />
@@ -299,7 +319,7 @@ $clcnt = count($clhikes);
                     ?>
                     </select>
                 </div>
-         <input id="ch" type="radio" name="mstyle" value="cluster" />
+        <input id="ch" type="radio" name="mstyle" value="cluster" />
         <label for="ch">Trailhead Common to Multiple Hikes</label><br />
             <span style="color:brown;margin-left:32px;">[NOTE: Group must already 
             exist in database:</span> &nbsp;if not, save this page, 
@@ -325,13 +345,38 @@ $clcnt = count($clhikes);
 
     <fieldset id="txtdat">
         <legend>Text Sections</legend>
-        <textarea id="usrtips" class="honly" name="tipstxt" rows="12" 
-            cols="130">[OPTIONAL] Enter 'Tips Text' here</textarea><br />
-        <textarea id="usrinfo" name="hiketxt" rows="20" cols="130">
-            Enter the description of the hike here, as it will appear on 
-            the completed hike page...</textarea>
+        <textarea id="usrtips" class="honly" name="tipstxt" rows="10" 
+            cols="130"><?php
+                if ($hiprow->tipsTxt == '' ) {
+                    echo "[OPTIONAL] Enter 'Tips Text' here";
+                } else {
+                    echo $hiprow->tipsTxt;
+                } ?>
+        </textarea><br />
+        <textarea id="usrinfo" name="hiketxt" rows="20" cols="130"><?php
+                if ($hiprow->hikeInfo == '') {
+                    echo "Enter the description of the hike here, as it will " .
+                        "appear on the completed hike page...";
+                } else {
+                    echo $hiprow->hikeInfo;
+                } ?>
+        </textarea>
     </fieldset>
 
+    <?php
+    # database preloads, if any, for references:
+    $refcnt = $hiprow->refs->ref->count();
+    echo '<p id="dbrt1" style="display:none">' . $hiprow->refs->ref[0]->rtype . "</p>\n"; 
+    echo '<p id="dbrt2" style="display:none">' . $hiprow->refs->ref[1]->rtype . "</p>\n";  
+    echo '<p id="dbrt3" style="display:none">' . $hiprow->refs->ref[2]->rtype . "</p>\n"; 
+    echo '<p id="dbrt4" style="display:none">' . $hiprow->refs->ref[3]->rtype . "</p>\n";  
+    echo '<p id="dbrt5" style="display:none">' . $hiprow->refs->ref[4]->rtype . "</p>\n";  
+    echo '<p id="dbrt6" style="display:none">' . $hiprow->refs->ref[5]->rtype . "</p>\n";  
+    /*
+    echo '<p id="dbrt7" style="display:none">' . $hiprow->ref[6]->rtype . "</p>\n";  
+    echo '<p id="dbrt8" style="display:none">' . $hiprow->ref[7]->rtype . "</p>\n"; 
+     */
+    ?>
     <fieldset id="refdat">
         <legend>Hike References</legend>
         <p>Select the type of reference (up to 8) and its accompanying data below:</p>
@@ -350,9 +395,9 @@ $clcnt = count($clhikes);
             <option value="n">Text Only - No Link</option>
         </select>
         Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" />&nbsp;
+            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[0]->rit1;?>" />&nbsp;
         Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
+            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[0]->rit2;?>" /><br />
         <select id="href2" name="rtype[]">
             <option value="b" selected="selected">Book</option>
             <option value="p">Photo Essay</option>
@@ -368,9 +413,9 @@ $clcnt = count($clhikes);
             <option value="n">Text Only - No Link</option>
         </select>
         Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" />&nbsp;
+            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[1]->rit1;?>" />&nbsp;
         Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
+            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[1]->rit2;?>" /><br />
         <select id="href3" name="rtype[]">
             <option value="b" selected="selected">Book</option>
             <option value="p">Photo Essay</option>
@@ -386,9 +431,9 @@ $clcnt = count($clhikes);
             <option value="n">Text Only - No Link</option>
         </select>
         Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" />&nbsp;
+            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[2]->rit1;?>" />&nbsp;
         Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
+            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[2]->rit2;?>" /><br />
         <select id="href4" name="rtype[]">
             <option value="b" selected="selected">Book</option>
             <option value="p">Photo Essay</option>
@@ -404,9 +449,9 @@ $clcnt = count($clhikes);
             <option value="n">Text Only - No Link</option>
         </select>
         Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" />&nbsp;
+            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[3]->rit1;?>" />&nbsp;
         Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
+            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[3]->rit2;?>"/><br />
         <select id="href5" name="rtype[]">
             <option value="b" selected="selected">Book</option>
             <option value="p">Photo Essay</option>
@@ -422,9 +467,9 @@ $clcnt = count($clhikes);
             <option value="n">Text Only - No Link</option>
         </select>
         Book Title/Link URL:<input id="ritE1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" />&nbsp;
+            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[4]->rit1;?>" />&nbsp;
         Author/Click-on Text<input id="ritE2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
+            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[4]->rit2;?>" /><br />
         <select id="href6" name="rtype[]">
             <option value="b" selected="selected">Book</option>
             <option value="p">Photo Essay</option>
@@ -440,9 +485,10 @@ $clcnt = count($clhikes);
             <option value="n">Text Only - No Link</option>
         </select>
         Book Title/Link URL:<input id="ritF1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" />&nbsp;
+            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[5]->rit1;?>" />&nbsp;
         Author/Click-on Text<input id="ritF2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
+            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[5]->rit2;?>" /><br />
+        <!--
         <select id="href7" name="rtype[]">
             <option value="b" selected="selected">Book</option>
             <option value="p">Photo Essay</option>
@@ -479,6 +525,7 @@ $clcnt = count($clhikes);
             placeholder="Book Title" />&nbsp;
         Author/Click-on Text<input id="ritH2" type="text" name="rit2[]" size="35" 
             placeholder=", by Author" /><br />
+        -->
     </fieldset>
 
     <div class="honly">
