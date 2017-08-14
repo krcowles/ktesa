@@ -1,8 +1,26 @@
-<?php session_start(); ?>
+<?php session_start();
+    $pstyle = '<p style="margin-left:16px;font-size:18px;">';
+    # Process $hikeName to ensure no html special characters will disrupt
+    $hike = filter_input(INPUT_POST,'hpgTitle');
+    $hikeName = htmlspecialchars($hike);
+    $hikeNo = filter_input(INPUT_POST,'hno');
+    $saveType = filter_input(INPUT_POST,'saveit');
+    $valType = filter_input(INPUT_POST,'valdat');
+    if ( isset($saveType)) {
+        $tabTitle = 'Save Form Data';
+        $logo = 'Save ' . $hikeName;
+        $type = 'Save';
+    }
+    if ( isset($valType) ) {
+        $tabTitle = 'Validate &amp; Select Images';
+        $logo = 'Validate This Hike!';
+        $type = 'Validate';
+    }
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-	<title>Validate &amp; Select Images</title>
+	<title><?php echo $tabTitle;?></title>
 	<link href="validateHike.css" type="text/css" rel="stylesheet" />
         <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 </head>
@@ -14,72 +32,36 @@
 	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
 	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Validate This Hike!</p>
-
-<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>
-
-<form target="_blank" action="displayHikePg.php" method="POST">
+<p id="trail"><?php echo $logo;?></p>
 
 <?php
-    # Process $hikeName to ensure no html special characters will disrupt
-    $hike = filter_input(INPUT_POST,'hpgTitle');
-    $hikeName = htmlspecialchars($hike);
-    # Get the gpx filename and derive the 'baseName' to precede all file extensions
-    $gpxInput = basename($_FILES['gpxname']['name']);
-    $ext = strrpos($gpxInput,".");
-    $baseName = substr($gpxInput,0,$ext);
-    # Check to see if pictures will be used for this page
-    $nopics = filter_input(INPUT_POST,'nopix');
-    if ( !isset($nopics) ) {
-        $usetsv = true;
-        require "getPicDat.php";
+    if ($type === 'Save') {
+        echo '<div style="margin-left:24px;font-size:18px;">';
+        echo '<h2>You have saved the current data on the form</h2>';
+        echo '<p>You may continue on that page, or come back later to work on it</p>';
+        echo '<p>Your Hike No is ' . $hikeNo . ', and the hike saved is ' .
+            $hikeName . '</p></div>';
+        
     } else {
-        $usetsv = false;
+        echo '<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>';
+        echo '<form target="_blank" action="displayHikePg.php" method="POST">';
+        # Check to see if pictures will be used for this page
+        $nopics = filter_input(INPUT_POST,'nopix');
+        if ( !isset($nopics) ) {
+            $usetsv = true;
+            require "getPicDat.php";
+        } else {
+            $usetsv = false;
+        }
+        # Peform any uploads and file validation & summaries
+        require "fileUploads.php";
+        die ("FTEST");
     }
-    /*  Default values for identifying previously saved files 
-     *  and whether or not to overwite them when saving the page
-     */
-    $dupGpx = 'NO';
-    $owGpx = 'NO';
-    $dupJSON = 'NO';
-    $owJSON = 'NO';
-    $dupImg1 = 'NO';
-    $owImg1 = 'NO';
-    $dupImg2 = 'NO';
-    $owImg2 = 'NO';
-    $dupPmap = 'NO';
-    $owPmap = 'NO';
-    $dupPgpx = 'NO';
-    $owPgpx = 'NO';
-    $dupAmap = 'NO';
-    $owAmap = 'NO';
-    $dupAgpx = 'NO';
-    $owAgpx = 'NO';
-    # Peform any uploads and file validation & summaries
-    require "fileUploads.php";
-    
 ?>  
 <p style="display:none" id="tsvStat"><?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?></p>
-<!-- Hidden Inputs Carrying File Upload Status --> 
-<input type="hidden" name="gpxf" value="<?php echo $dupGpx;?>" />
-<input id="overGpx" type="hidden" name="owg" value="<?php echo $owGpx;?>" />
-<input type="hidden" name="jsonf" value="<?php echo $dupJSON;?>" />
-<input id="overJSON" type="hidden" name="owj" value="<?php echo $owJSON;?>" />
-<input type="hidden" name="img1f" value="<?php echo $dupImg1;?>" />
-<input id="overImg1" type="hidden" name="ow1" value="<?php echo $owImg1;?>" />
-<input type="hidden" name="img2f" value="<?php echo $dupImg2;?>" />
-<input id="overImg2" type="hidden" name="ow2" value="<?php echo $owImg2;?>" />
-<input type="hidden" name="pmapf" value="<?php echo $dupPmap;?>" />
-<input id="overPmap" type="hidden" name="owpm" value="<?php echo $owPmap;?>" />
-<input type="hidden" name="pgpxf" value="<?php echo $dupPgpx;?>" />
-<input id="overPgpx" type="hidden" name="owpg" value="<?php echo $owPgpx;?>" />
-<input type="hidden" name="amapf" value="<?php echo $dupAmap;?>" />
-<input id="overAmap" type="hidden" name="owam" value="<?php echo $owAmap;?>" />
-<input type="hidden" name="agpxf" value="<?php echo $dupAgpx;?>" />
-<input id="overAgpx" type="hidden" name="owag" value="<?php echo $owAgpx;?>" />
 
 <?php
-// hike form entry
+# hike form entry - both 'save form' and 'validate' need this data
 $hikeName = filter_input(INPUT_POST,'hpgTitle');
 $hikeLocale = filter_input(INPUT_POST,'locale');
 $hikeType = filter_input(INPUT_POST,'htype');
@@ -91,19 +73,21 @@ $hikeWow = filter_input(INPUT_POST,'wow_factor');
 $hikeSeasons = filter_input(INPUT_POST,'seas');
 $hikeExp = filter_input(INPUT_POST,'expos');
 
-# Extract trailhead lat & lng from gpx file
-$gpxupload = getcwd() . '/' . $uploads . 'gpx/' . $hikeGpx;
-$gpxdat = file_get_contents($gpxUpload);
-$trksegloc = strpos($gpxdat,"<trkpt lat=");
-$trksubstr = substr($gpxdat,$trksegloc,100);
-$latloc = strpos($trksubstr,"lat=") + 5;
-$latend = strpos($trksubstr,'" lon=');
-$latlgth = $latend - $latloc;
-$hikeLat = substr($trksubstr,$latloc,$latlgth);
-$lonloc = strpos($trksubstr,"lon=") + 5;
-$lonend = strpos($trksubstr,">") - 1;
-$lonlgth = $lonend - $lonloc;
-$hikeLong = substr($trksubstr,$lonloc,$lonlgth);
+if ($haveGpx) {
+    # Extract trailhead lat & lng from gpx file
+    $gpxupload = getcwd() . '/' . $uploads . 'gpx/' . $hikeGpx;
+    $gpxdat = file_get_contents($gpxUpload);
+    $trksegloc = strpos($gpxdat,"<trkpt lat=");
+    $trksubstr = substr($gpxdat,$trksegloc,100);
+    $latloc = strpos($trksubstr,"lat=") + 5;
+    $latend = strpos($trksubstr,'" lon=');
+    $latlgth = $latend - $latloc;
+    $hikeLat = substr($trksubstr,$latloc,$latlgth);
+    $lonloc = strpos($trksubstr,"lon=") + 5;
+    $lonend = strpos($trksubstr,">") - 1;
+    $lonlgth = $lonend - $lonloc;
+    $hikeLong = substr($trksubstr,$lonloc,$lonlgth);
+}
 
 $hikeMarker = filter_input(INPUT_POST,'mstyle');
 $hikePurl1 = filter_input(INPUT_POST,'photo1');
@@ -115,9 +99,7 @@ if (substr($rawtips,0,10) === '[OPTIONAL]') {
 } else {
 	$tipTxt = $rawtips;
 }
-$_SESSION['hikeTips'] = $tipTxt;
 $rawhike = filter_input(INPUT_POST,'hiketxt');
-$_SESSION['hikeDetails'] = $rawhike;
 # don't know how to filter arrays:
 $hikeRefTypes = $_POST['rtype'];
 $hikeRefItems1 = $_POST['rit1'];
@@ -131,7 +113,7 @@ for ($w=0; $w<count($hikeRefTypes); $w++) {
     }
 }
 include "xmlRefs.php";
-
+die ("HERE");
 $hikePDatLbls = $_POST['plbl'];
 $noOfPDats = count($hikePDatLbls);
 for ($i=0; $i<$noOfPDats; $i++) {
@@ -181,82 +163,6 @@ if ($usetsv) {
     $mdat = preg_replace('/\n/','', $photoXml);
     $mdat = preg_replace('/\t/','', $mdat);
 }
-/*
- *  MARKER-DEPENDENT PAGE ELEMENTS
-*/
-# Index page ref -> ctrhike
-$xmlDataBase = '../data/database.xml';
-if ($hikeMarker === 'ctrhike') {
-    $xmlDB = simplexml_load_file($xmlDataBase);
-    if ($xmlDB === false) {
-        $dbnogo = '<p style="margin-left:8px;color:brown;font-size:18px;">' .
-            'Could not load the database to retrieve data for Visitor Center hike.</p>';
-        die($dbnogo);
-    }
-    $VClist = array();
-    $srchCnt = 0;
-    foreach ( $xmlDB->row as $hikerow ) {
-        if ( preg_match("/Visitor/i", $hikerow->marker) == 1 ) {
-            $VCList[$srchCnt] = $hikerow->indxNo . ": " . $hikerow->pgTitle;
-            $srchCnt++;
-        }
-    }
-    echo '<div style="color:brown;" id="findvc"><p>This hike was identified as '
-        . 'starting at, or in close proximity to, a Visitor Center.<br /><em '
-        . 'id="vcnote">NOTE: if a page for this Visitor Center does not yet '
-        . 'exist, please go back and create it before continuing with this '
-        . 'hike.</em></p><p><label style="color:DarkBlue;">Select the Visitor '
-        . 'Center Page for this hike: </label><select name="vcList">';
-    for ($k=0; $k<$srchCnt; $k++) {
-        $namePos = strpos($VCList[$k],":") + 2;
-        $namelgth = strlen($VCList[$k]) - $namePos;
-        $vcName = substr($VCList[$k],$namePos,$namelgth);
-        $vcIndxLgth = $namePos -2;
-        $vcIndx = substr($VCList[$k],0,$vcIndxLgth);
-        echo '<option value="' . $vcIndx . '">' . $vcName . '</option>';
-        # the hike id for the affected visitor center will be passed and processed
-    }
-    echo "</select></p></div>";
-# cluster hike:
-} elseif ($hikeMarker === 'cluster') {
-    $xmlDB = simplexml_load_file($xmlDataBase);
-    if ($xmlDB === false) {
-        $dbnogo = '<p style="margin-left:8px;color:brown;font-size:18px;">' .
-            'Could not load the database to retrieve data for Cluster hike.</p>';
-        die($dbnogo);
-    }
-    $clusterList = Array();
-    $srchCnt = 0;
-    foreach ($xmlDB->row as $hikerow) {
-        if ( preg_match("/cluster/i",$hikerow->marker) == 1) {
-                $clusterList[$srchCnt] = $hikerow->clusGrp . "$" . $hikerow->cgName;
-                $srchCnt++;
-            }
-    }
-    # Now eliminate duplicates...
-    $result = array_unique($clusterList);
-    $passGroup = implode(";",$result) . ";";  // display hike looks for terminal semi-colon
-    /* NOTE: even though the array holds empty keys where duplicates were eliminated,
-       when imploding, the empty keys are disregarded */
-    $_SESSION['allTips'] = $passGroup;
-    echo '<div style="color:brown;" id="clus_sel"><p style="font-size:18px;color:Brown;">This hike '
-        . 'was identified as belonging to a group of hikes in close proximity '
-        . 'with other hikes.<br /><label style="color:DarkBlue;">Select the '
-        . 'Group to which this hike belongs: </label><select name="clusgrp">';
-    foreach ($result as $group) {
-        $groupNamePos = strpos($group,"$") + 1;
-        $groupNameLgth = strlen($group) - $groupNamePos;
-        $groupName = substr($group,$groupNamePos,$groupNameLgth);
-        $groupName = trim($groupName);
-        $clusGrpLgth = $groupNamePos - 1; # may be larger than 1 char
-        $clusGrp = substr($group,0,$clusGrpLgth);
-        echo '<option value="' . $clusGrp . '">' . $groupName . '</option>';
-    }
-    echo "</select></p></div>";
-} 
-/*
-	END OF MARKER=DEPENDENT PAGE CONSTRUCTION
-*/
 ?>
 <h2>The Data As It Will Appear In The Table of Hikes</h2>
 <div id="tbl1">
@@ -319,90 +225,6 @@ if ($hikeMarker === 'ctrhike') {
         </tbody>
     </table>
 </div>
-
-<h2>The Data As It Will Appear On The Hike Page</h2>			
-<div id="hikeSummary">
-    <table id="topper">
-        <thead>
-            <tr>
-                <th>Difficulty</th>
-                <th>Round-trip</th>
-                <th>Type</th>
-                <th>Elev. Chg.</th>
-                <th>Exposure</th>
-                <th>Wow Factor</th>
-                <th>Facilities</th>
-                <th>Seasons</th>
-                <th>Photos</th>
-                <th>By Car</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><?php echo $hikeDiff;?></td>
-                <td><?php echo $hikeLgth;?> miles</td>
-                <td><?php
-                    if($hikeType === 'loop') {
-                        echo 'Loop';
-                    } else if ($hikeType === 'outandback') {
-                        echo 'Out-and-Back';
-                    } else {
-                        echo 'Two-car';
-                    }?></td>
-                <td><?php echo $hikeElev;?> ft</td>
-                <td><?php
-                    if($hikeExp === 'sun') {
-                        echo 'Full sun';
-                    } else if ($hikeExp === 'shade') {
-                        echo 'Good shade';
-                    } else {
-                        echo "Mixed sun/shade";
-                    }?></td>
-                <td><?php echo $hikeWow;?></td>
-                <td><?php echo $hikeFac;?></td>
-                <td><?php echo $hikeSeasons;?></td>
-                <td><a href="<?php $hikePurl1;?>" target="_blank">
-                    <img style="margin-bottom:0px;border-style:none;" src="../images/album_lnk.png" alt="photo album link icon" /></a></td>
-                <td><a href="<?php echo $hikeDir;?>" target="_blank">
-                    <img style="margin-bottom:0px;padding-bottom:0px;" 
-                    src="../images/dirs.png" alt="google driving directions" /></a></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<h3 style="text-indent:8px">Data for Google Maps API</h3>
-<?php 
-    if ($hikeMarker === 'center') {
-        $listType = "Visitor Center";
-        $listLat = $hikeLat;
-        $listLng = $hikeLong;
-    } elseif ($hikeMarker === 'cluster') {
-        $listType = "Hike Trailhead Common With or in Close Proximity to Others";
-        $listLat = "[Using Cluster Group Coordinates]";
-        $listLng = "[Using Cluster Group Coordinates]";
-    } elseif ($hikeMarker === 'ctrhike') {
-        $listType = "Hike Starts At/Near Visitor Center";
-        $listLat = "[Using Visitor Center Coordinates]";
-        $listLng = "[Using Visitor Center Coordiantes]";
-    } else {
-        $listType = "'Normal' Hike - Not Overlapping;";
-        $listLat = $hikeLat;
-        $listLng = $hikeLong;
-    }
-?>
-<ul>
-    <li>Marker Style: <?php echo $listType;?></li>
-    <li>Marker Latitude: <?php echo $listLat;?></li>
-    <li>Marker Longitude: <?php echo $listLng;?></li>
-    <li>Track File: <?php echo $hikeJSON;?></li>
-</ul>
-<h3 style="text-indent:8px">Other data submitted:</h3>
-<ul>
-    <li>Title to appear on Hike Page: <?php echo $hikeName;?></li>
-    <li>Photo Link 1: <?php echo $hikePurl1;?></li>
-    <li>Photo Link 2: <?php echo $hikePurl2;?></li>
-    <li>Google Directions Link: <?php echo $hikeDir;?></li>
-</ul>
 
 <?php
     if ($tipTxt !== '') {
@@ -612,6 +434,11 @@ if ($hikeMarker === 'ctrhike') {
 <script src="validateHike.js"></script>
 <script src="../scripts/picPops.js"></script>
 
+<?php
+    if ($type === 'Save') {
+        echo '-->';
+    }
+?>
 </body>
 
 </html>

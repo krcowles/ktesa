@@ -42,3 +42,34 @@ input[type=checkbox]
 #intent {
 	margin-bottom: 4px; 
 	font-style: italic; }
+#saver {
+    position: fixed;
+    top: 100px;
+    left: 920px;
+    height: 28px;
+    width: 150px;
+    font-size:14px;
+    background-color: pink;
+}
+#saver:hover {
+    background-color: #cfe2cf;
+    cursor: pointer;
+}
+#val {
+    height: 28px;
+    width: 150px;
+    font-size:14px;
+}
+#val:hover {
+    cursor: pointer;
+    background-color: #cfe2cf;
+}
+#res {
+    height: 28px;
+    width: 150px;
+    font-size: 14px;
+}
+#res:hover {
+    cursor: pointer;
+    background-color: #cfe2cf;
+}

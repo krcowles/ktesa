@@ -82,17 +82,16 @@ $clcnt = count($clhikes);
 <form id="hikeData" target="_blank" onsubmit="page_type(this);" method="POST"
     enctype="multipart/form-data">
 
-    <?php
-    # preset any items already appearing in the database:
-    echo '<p id="dbloc" style="display:none">' . $hiprow->locale . "</p>\n";
-    echo '<p id="dblog" style="display:none">' . $hiprow->logistics . "</p>\n";
-    echo '<p id="dbmrk" style="display:none">' . $hiprow->marker . "</p>\n";
-    echo '<p id="dbcst" style="display:none">' . $hiprow->clusterStr . "</p>\n";
-    echo '<p id="dbcgr" style="display:none">' . $hiprow->clusGrp . "</p>\n";
-    echo '<p id="dbdif" style="display:none">' . $hiprow->difficulty . "</p>\n";
-    echo '<p id="dbexp" style="display:none">' . $hiprow->expo . "</p>\n"; 
-    # continue with references below...
-    ?>
+    <p id="dbhno" style="display:none"><?php echo $hiprow->indxNo;?></p>
+    <p id="dbhnm" style="display:none"><?php echo $hiprow->pgTitle;?></p>
+    <p id="dbloc" style="display:none"><?php echo $hiprow->locale;?></p>
+    <p id="dblog" style="display:none"><?php echo $hiprow->logistics;?></p>
+    <p id="dbmrk" style="display:none"><?php echo $hiprow->marker;?></p>
+    <p id="dbcst" style="display:none"><?php echo $hiprow->clusterStr;?></p>
+    <p id="dbcgr" style="display:none"><?php echo $hiprow->clusGrp;?></p>
+    <p id="dbdif" style="display:none"><?php echo $hiprow->difficulty;?></p>
+    <p id="dbexp" style="display:none"><?php echo $hiprow->expo;?></p>
+    <input type="hidden" name="hno" value="<?php echo $hip;?>" />
     <fieldset id="basic">
         <legend>Basic Hike Data</legend>
         <label id="pgTitleText" for="htitle">Hike Name (As it will appear 
@@ -245,8 +244,8 @@ $clcnt = count($clhikes);
                 </select><br /><br />
             </div>
             <label id="l_gpx" class="notVC" for="gpxfile" style="color:Brown">
-                GPX File: [REQUIRED]&nbsp;</label>
-            <input id="gpxfile" type="file" name="gpxname" required /><br /><br />
+                GPX File: [RECOMMENDED]&nbsp;</label>
+            <input id="gpxfile" type="file" name="gpxname" /><br /><br />
         </div>
         
         <div class="indxFile">
@@ -365,7 +364,6 @@ $clcnt = count($clhikes);
 
     <?php
     # database preloads, if any, for references:
-    $refcnt = $hiprow->refs->ref->count();
     echo '<p id="dbrt1" style="display:none">' . $hiprow->refs->ref[0]->rtype . "</p>\n"; 
     echo '<p id="dbrt2" style="display:none">' . $hiprow->refs->ref[1]->rtype . "</p>\n";  
     echo '<p id="dbrt3" style="display:none">' . $hiprow->refs->ref[2]->rtype . "</p>\n"; 
@@ -532,76 +530,80 @@ $clcnt = count($clhikes);
         <fieldset id="datasect">
             <legend>GPS Maps &amp; Data</legend>
             <p>Proposed Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-            Label Text: <input id="lt1" type="text" name="plbl[]" size="12" /> 
-            Item URL: <input id="ur1" type="text" name="purl[]" size="60" />
-            Text to Click On: <input id="ct1" type="text" name="pctxt[]" size="30" /><br />
-            Label Text: <input id="lt2" type="text" name="plbl[]" size="12" /> 
-            Item URL: <input id="ur2" type="text" name="purl[]" size="60" />
-            Text to Click On: <input id="ct2" type="text" name="pctxt[]" size="30" /><br />
-            Label Text: <input id="lt3" type="text" name="plbl[]" size="12" /> 
-            Item URL: <input id="ur3" type="text" name="purl[]" size="60" />
-            Text to Click On: <input id="ct3" type="text" name="pctxt[]" size="30" /><br />
-            Label Text: <input id="lt4" type="text" name="plbl[]" size="12" /> 
-            Item URL: <input id="ur4" type="text" name="purl[]" size="60" />
-            Text to Click On: <input id="ct4" type="text" name="pctxt[]" size="30" /><br />
+            Label Text: <input id="lt1" type="text" name="plbl[]" size="12"
+                value="<?php echo $hiprow->dataProp->prop[0]->plbl;?>" /> 
+            Item URL: <input id="ur1" type="text" name="purl[]" size="60"
+                value="<?php echo $hiprow->dataProp->prop[0]->purl;?>" /> 
+            Text to Click On: <input id="ct1" type="text" name="pctxt[]" size="30" 
+                value="<?php echo $hiprow->dataProp->prop[0]->pcot;?>" /><br />
+            Label Text: <input id="lt2" type="text" name="plbl[]" size="12" 
+                value="<?php echo $hiprow->dataProp->prop[1]->plbl;?>" /> 
+            Item URL: <input id="ur2" type="text" name="purl[]" size="60" 
+                value="<?php echo $hiprow->dataProp->prop[1]->purl;?>" />
+            Text to Click On: <input id="ct2" type="text" name="pctxt[]" size="30" 
+                value="<?php echo $hiprow->dataProp->prop[1]->pcot;?>" /><br />
+            Label Text: <input id="lt3" type="text" name="plbl[]" size="12"
+                value="<?php echo $hiprow->dataProp->prop[2]->plbl;?>" /> 
+            Item URL: <input id="ur3" type="text" name="purl[]" size="60" 
+                value="<?php echo $hiprow->dataProp->prop[2]->purl;?>" />
+            Text to Click On: <input id="ct3" type="text" name="pctxt[]" size="30" 
+                value="<?php echo $hiprow->dataProp->prop[2]->pcot;?>" /><br />
+            Label Text: <input id="lt4" type="text" name="plbl[]" size="12" 
+                value="<?php echo $hiprow->dataProp->prop[3]->plbl;?>" /> 
+            Item URL: <input id="ur4" type="text" name="purl[]" size="60" 
+                value="<?php echo $hiprow->dataProp->prop[3]->purl;?>" />
+            Text to Click On: <input id="ct4" type="text" name="pctxt[]" size="30" 
+                value="<?php echo $hiprow->dataProp->prop[3]->pcot;?>" /><br />
             
             <p>Actual Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-            Label Text: <input id="lt5" type="text" name="albl[]" size="12" /> 
-            Item URL: <input id="ur5" type="text" name="aurl[]" size="60" />
-            Text to Click On: <input id="ct5" type="text" name="actxt[]" size="30" /><br />
-            Label Text: <input id="lt6" type="text" name="albl[]" size="12" /> 
-            Item URL: <input id="ur6" type="text" name="aurl[]" size="60" />
-            Text to Click On: <input id="ct6" type="text" name="actxt[]" size="30" /><br />
-            Label Text: <input id="lt7" type="text" name="albl[]" size="12" /> 
-            Item URL: <input id="ur7" type="text" name="aurl[]" size="60" />
-            Text to Click On: <input id="ct7" type="text" name="actxt[]" size="30" /><br />
-            Label Text: <input id="lt8" type="text" name="albl[]" size="12" /> 
-            Item URL: <input id="ur8" type="text" name="aurl[]" size="60" />
-            Text to Click On: <input id="ct8" type="text" name="actxt[]" size="30" /><br />
+            Label Text: <input id="lt5" type="text" name="albl[]" size="12" 
+                value="<?php echo $hiprow->dataAct->act[0]->albl;?>" /> 
+            Item URL: <input id="ur5" type="text" name="aurl[]" size="60" 
+                value="<?php echo $hiprow->dataAct->act[0]->aurl;?>" />
+            Text to Click On: <input id="ct5" type="text" name="actxt[]" size="30" 
+                value="<?php echo $hiprow->dataAct->act[0]->acot;?>" /><br />
+            Label Text: <input id="lt6" type="text" name="albl[]" size="12" 
+                value="<?php echo $hiprow->dataAct->act[1]->albl;?>" /> 
+            Item URL: <input id="ur6" type="text" name="aurl[]" size="60" 
+                value="<?php echo $hiprow->dataAct->act[1]->aurl;?>" />
+            Text to Click On: <input id="ct6" type="text" name="actxt[]" size="30" 
+                value="<?php echo $hiprow->dataAct->act[1]->acot;?>" /><br />
+            Label Text: <input id="lt7" type="text" name="albl[]" size="12" 
+                value="<?php echo $hiprow->dataAct->act[2]->albl;?>" /> 
+            Item URL: <input id="ur7" type="text" name="aurl[]" size="60" 
+                value="<?php echo $hiprow->dataAct->act[2]->aurl;?>" />
+            Text to Click On: <input id="ct7" type="text" name="actxt[]" size="30" 
+                value="<?php echo $hiprow->dataAct->act[2]->acot;?>" /><br />
+            Label Text: <input id="lt8" type="text" name="albl[]" size="12" 
+                value="<?php echo $hiprow->dataAct->act[3]->albl;?>" /> 
+            Item URL: <input id="ur8" type="text" name="aurl[]" size="60" 
+                value="<?php echo $hiprow->dataAct->act[3]->aurl;?>"/>
+            Text to Click On: <input id="ct8" type="text" name="actxt[]" size="30" 
+                value="<?php echo $hiprow->dataAct->act[3]->acot;?>"/><br />
         </fieldset>
     </div>
 
     <fieldset id="urls">
         <legend>Other URL's</legend>
         <label class="notVC" for="url1">URL for Photo Album Site:</label>
-        <input id="url1" type="text" name="photo1" size="75" /><br />
+        <input id="url1" type="text" name="photo1" size="75" 
+               value="<?php echo $hiprow->mpUrl;?>" /><br />
         <label class="notVC" for="url2">URL for Secondary Photo Album (Tom or Ken):</label>
-        <input id="url2" type="text" name="photo2" size="75" /><br />
+        <input id="url2" type="text" name="photo2" size="75" 
+               value="<?php echo $hiprow->spUrl;?>" /><br />
         <label for="gdir">Google Map Directions:</label> 
-        <input id="gdir" type="text" name="dirs" size="150" />
+        <input id="gdir" type="text" name="dirs" size="150" 
+               value="<?php echo $hiprow->dirs;?>" />
     </fieldset>
 
     <fieldset id="submissions">
-        <input type="submit" value="Validate Data" />
-        <input type="reset" value="Clear and Restart" />
+        <input id="val" type="submit" name="valdat" value="Validate Data" />
+        <input id="saver" type="submit" name="saveit" value="Save Data" />
+        <input id="res" type="reset" value="Clear and Restart" />
 
     </fieldset>
 </form>
 </div>
-
-<!-- Modal popup for saving form data section -->
-<div style="margin-left:24px;margin-top:-4px;">
-    <p style="margin-bottom:4px">Save the current state of the form for later recall...</p>
-    <button id="saver">Save Form Data</button>
-    <p id="unsaver" style="margin-top:6px;">Restore a previously saved form: (currently none)</p>
-    <div id="rest1"><span id="rem1"></span></div>
-    <div id="rest2"><span id="rem2"></span></div>
-    <div id="save-modal" class="modal" style="background-color:white;">
-        <p id="prev" style="text-align:center;"> NOTE: You may save up to two different forms<br />
-        <em> You must re-upload CSV File (and associated image files) for complete restore!!</em></p>
-        <p>Please enter a name to identify the saved form: <span><input id="savetxt" type="text"
-                name="saveName" placeholder="hikeLoc" /></span></p>
-        <input id="edit" type="radio" name="dothis" value="cont" /> Save &amp; Continue Editing or Submit Data<br />
-        <input id="dontsave" type="radio" name="dothis" value="nosave" /> Close this popup and do NOT save form
-    </div>
-</div>
-
-
-<!-- DEBUG
-<p id="dbug"></p>
-<div id="dbugr">CLICK</div>
-<div id="cleaner">CLEAN</div>
--->
 
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/modal_setup.js"></script>

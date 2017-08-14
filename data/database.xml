@@ -15640,7 +15640,7 @@ accumulations.</hikeInfo>
     <pgTitle>Fred Cloppendale</pgTitle>
     <locale>Santa Fe</locale>
     <marker>Cluster</marker>
-    <clusterStr></clusterStr>
+    <clusterStr/>
     <clusGrp>C</clusGrp>
     <logistics>Out-and-back</logistics>
     <miles>4.5</miles>
@@ -15675,9 +15675,9 @@ accumulations.</hikeInfo>
     <lng/>
     <aoimg1/>
     <aoimg2/>
-    <mpUrl/>
-    <spUrl/>
-    <dirs/>
+    <mpUrl>httpONE:yagksajgkjdgjgjkgjg</mpUrl>
+    <spUrl>thpp:TWO:kjfldjkjkjg</spUrl>
+    <dirs>https:goodolgoogle..</dirs>
     <cgName/>
     <content>
         <picRow>
@@ -15713,16 +15713,16 @@ accumulations.</hikeInfo>
     </refs>
     <dataProp>
         <prop>
-            <plbl/>
-            <purl/>
-            <pcot/>
+            <plbl>Proposed-dat</plbl>
+            <purl>https://whoeveryahblah</purl>
+            <pcot>Click here idiot</pcot>
         </prop>
     </dataProp>
     <dataAct>
         <act>
-            <albl/>
-            <aurl/>
-            <acot/>
+            <albl>This is REAL!</albl>
+            <aurl>http:butfakeaddress....</aurl>
+            <acot>Click: who cares?</acot>
         </act>
     </dataAct>
 </row>

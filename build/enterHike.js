@@ -131,9 +131,21 @@ function useStdPg() {
     $('.honly').css('display','block');
     $('#gpxfile').attr('required',true);
 }
+var dwidth = Math.floor($(document).width());
+dwidth -= 170;
+$('#saver').css('left',dwidth+'px');
+$(window).resize( function() {
+    var wwidth = Math.floor($(document).width());
+    wwidth -= 170;
+    $('#saver').css('left',wwidth+'px');
+});
 /* END OF page-creation type */
 
-/* Load any data from database via php */
+/* 
+ * Load any data from database via php
+ */
+var dbhno = $('#dbhno').text();
+var dbhnm = $('#dbhnm').text();
 var dbloc = $('#dbloc').text();  // locale
 $('#area').val(dbloc);
 var dblog = $('#dblog').text();  // logistics (type)
@@ -193,8 +205,11 @@ var dbrt6 = $('#dbrt6').text();
 if (dbrt6 !== '') {
     $('#href6').val(dbrt6);
 }
+// Proposed and Actual GPS Maps & Data:
 
-/* Section to preload certain elements if present in the database */
+/*
+ * END OF DATA PRELOADING FROM DATABASE
+ */
 
 // add placeholder attribute when input text is book/author
 $reftags = $('select[id^="href"]');
@@ -237,124 +252,5 @@ $('#nopics').on('change', function() {
         $('#picopt').css('display','none');
     }
 });
-
-// PARTIALLY FILLED FORM-SAVING
-if (typeof(Storage) !== undefined) {
-    var msg; //debug outputs
-    var previousSaves;
-    var buttonName;
-
-    // FUNCTION FOR RESTORING FORM DATA FROM A STRING
-    function stringToForm(formString, unfilledForm) {
-        formObject = JSON.parse(formString);
-        $('input:text, input:radio, input:checkbox, select, textarea').each(function() {
-            if (this.id) {
-                id = this.id;
-                elem = $(this); 
-                if (elem.attr("type") == "checkbox" || elem.attr("type") == "radio" ) {
-                    elem.prop("checked", formObject[id]);
-                } else {
-                    elem.val(formObject[id]);
-                }
-            }
-        });
-    }
-    // The very first time, or after a system clean-up, noOfSaves may be undefined:
-    var tst = window.localStorage.noOfSaves;
-    if (typeof(tst) === undefined) {
-        window.localStorage.noOfSaves = 0;
-    }
-    // MODAL WINDOW SETUP AND EVENT DEFINITION
-    var $savePopup = $('#save-modal').detach();
-    $('#saver').on('click', function() {
-            modal.open({id: 'saver', content: $savePopup, width:400, height:200});
-            /* NOTE: "id" key added as it was thought there would be other modal windows to process,
-               and the routine (modal_setup.js) would need to know which type modal to produce */
-    });
-
-    // Load previous saves and set event handlers
-    previousSaves = parseFloat(window.localStorage.noOfSaves);
-    if (previousSaves > 0) {
-        $('#unsaver').text('Restore a previously saved form:');
-        buttonName = window.localStorage.oldName1;
-        msg = '<label id="lbl1"><input id="save1" type="radio" name="restores" /> ' + 
-                buttonName + '</label>';
-        $('#rest1').prepend(msg);
-        msg = '<label id="lblr1"><input id="kill1" type="radio" name="delRestore" /> Remove ' +
-                buttonName + '</label>';
-        $('#rem1').append(msg);
-        $('#save1').on('click', function() {
-            var restoredForm = window.localStorage.oldForm1;
-            stringToForm(restoredForm, $('#hikeData'));
-            window.alert("Form Restored - Please Re-enter files: they cannot be saved");
-            $(this).attr('checked',false);
-        });
-        $('#kill1').on('click', function() {
-            var currSaves = parseFloat(window.localStorage.noOfSaves);
-            currSaves -= 1;
-            if (currSaves === 0) {
-                    $('#unsaver').text('Restore a previously saved form: (currently none)');
-            }
-            window.localStorage.noOfSaves = currSaves;
-            window.localStorage.removeItem('oldName1');	
-            window.localStorage.removeItem('oldForm1');
-            $('#lbl1').remove();
-            $('#lblr1').remove();
-        });
-    }
-    if (previousSaves > 1) {
-            buttonName = window.localStorage.oldName2;
-            msg = '<label id="lbl2"><input id="save2" type="radio" name="restores" /> ' + 
-                    buttonName + '</label>';
-            $('#rest2').prepend(msg);
-            msg = '<label id="lblr2"><input id="kill2" type="radio" name="delRestore" /> Remove ' +
-                    buttonName + '</label>';
-            $('#rem2').append(msg);
-            $('#save2').on('click', function() {
-                    var restoredForm = window.localStorage.oldForm2;
-                    stringToForm(restoredForm, $('#hikeData'));
-                    window.alert("Form Restored - Please Re-enter files: they cannot be saved");
-                    $(this).attr('checked',false);
-            });
-            $('#kill2').on('click', function() {
-                    var savesNow = parseFloat(window.localStorage.noOfSaves);
-                    savesNow -= 1;
-                    if (savesNow === 0) {
-                            $('#unsaver').text('Restore a previously saved form: (currently none)');
-                    }
-                    window.localStorage.noOfSaves = savesNow;
-                    window.localStorage.removeItem('oldName2');
-                    window.localStorage.removeItem('oldForm2');
-                    $('#lbl2').remove();
-                    $('#lblr2').remove();
-            });
-	}
-        /*  DEBUG
-        $('#dbugr').on('click', function() {
-            var a = window.localStorage.noOfSaves;
-            var b = window.localStorage.oldName1;
-            var c = window.localStorage.oldForm1;
-            var e = window.localStorage.oldName2;
-            var f = window.localStorage.oldForm2;
-            var dout = '<p>Current storage data:</p> ';
-            dout += '<p>Saves: ' + a + '</p><p>Item1: ' + b  + '</p><p>' + c + '</p>';
-            dout += '<p>Item2: ' + e + '</p><p>' + f + '</p>';
-            $(this).prepend(dout);
-        }); 
-        $('#cleaner').on('click', function() {
-            window.localStorage.noOfSaves = 0;
-            $(this).append(window.localStorage.noOfSaves);
-            window.localStorage.removeItem('oldName1');
-            window.localStorage.removeItem('oldForm1');
-            window.localStorage.removeItem('oldFile1');
-            window.localStorage.removeItem('oldName2');
-            window.localStorage.removeItem('oldForm2');
-            window.localStorage.removeItem('oldFile2');
-        });
-        */
-
-} else {
-    window.alert('Sorry - no local web storage: cannot save form data for later use');   
-}  // END OF FORM-SAVING
 
 }); // end of page is loaded...
