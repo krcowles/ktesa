@@ -58,24 +58,9 @@
     <tipsTxt></tipsTxt>
     <hikeInfo></hikeInfo>
     <refs>
-        <ref>
-            <rtype></rtype>
-            <rit1></rit1>
-            <rit2></rit2>
-        </ref>
     </refs>
     <dataProp>
-        <prop>
-            <plbl></plbl>
-            <purl></purl>
-            <pcot></pcot>
-        </prop>
     </dataProp>
     <dataAct>
-        <act>
-            <albl></albl>
-            <aurl></aurl>
-            <acot></acot>
-        </act>
     </dataAct>
 </row>

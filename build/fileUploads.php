@@ -36,7 +36,6 @@ function dupFileName($oldname) {
  * is alerted, and an alternate name is saved to the site. If an error occurs
  * in the process, that information is presented to  the user.
  */
-$filesPresent = false;  # change if files are encountered
 # Styling for error output messages:
 $pstyle = '<p style="margin-left:20px;color:red;font-size:18px;">';
 $badType = $pstyle . '<strong>Incorrect file type for ';
@@ -48,7 +47,6 @@ $hikeGpx = basename($_FILES['gpxname']['name']);
 $gpxType = $_FILES['gpxname']['type'];
 $gpxStat = $_FILES['gpxname']['error'];
 if ($hikeGpx !== '') {
-    $filesPresent = true;
     if ($gpxStat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($gpxStat) . '</p>';
         die ($errmsg);
@@ -71,8 +69,8 @@ if ($hikeGpx !== '') {
     }
     # gpx file, if present, will be used as a base for creating file names
     # NOTE: name changed if _DUP
-    $ext = strrpos($gpxInput,".");
-    $baseName = substr($gpxInput,0,$ext);
+    $ext = strrpos($hikeGpx,".");
+    $baseName = substr($hikeGpx,0,$ext);
     $haveGpx = true;
 } else {
     echo $pstyle . 'As no gpx file is present, no track file will be '
@@ -96,6 +94,7 @@ if ($haveGpx) {
             'Site Master</p>';
         die ($trkfail);
     }
+    $trkfile = $basename . 'json';
 }
 
 # ADDITIONAL IMAGES FILES (IF ANY):
@@ -104,7 +103,7 @@ $hikeOthrImage1 = basename($_FILES['othr1']['name']);
 $othrImg1Type = $_FILES['othr1']['type'];
 $img1Stat = $_FILES['othr1']['error'];
 if ($hikeOthrImage1 !== '') {
-    $filesPresent = true;
+    $imageFiles = true;
     if ($img1Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($img1Stat) . '</p>';
         die ($errmsg);
@@ -127,7 +126,7 @@ $hikeOthrImage2 = basename($_FILES['othr2']['name']);
 $othrImg2Type = $_FILES['othr2']['type'];
 $img2Stat = $_FILES['othr2']['error'];
 if ($hikeOthrImage2 !== '') {
-    $filesPresent = true;
+    $imageFiles = true;
     if ($img2Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($img2Stat) . '</p>';
         die ($errmsg);
@@ -162,7 +161,7 @@ $pfile1 = basename($_FILES['propmap']['name']);
 $pf1Type = $_FILES['propmap']['type'];
 $pf1Stat = $_FILES['propmap']['error'];
 if ( $pfile1 !== '') {
-    $filesPresent = true;
+    $gpsDatFiles = true;
     if ($pf1Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($pf1Stat) . '</p>';
         die ($errmsg);
@@ -199,7 +198,7 @@ $pf2Size = filesize($pdatf2);
 $pf2Type = $_FILES['propgpx']['type'];
 $pf2Stat = $_FILES['propgpx']['error'];
 if ( $pfile2 !== '') {
-    $filesPresent = true;
+    $gpsDatFiles = true;
     if ($pf2Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($pf2Stat) . '</p>';
         die ($errmsg);
@@ -235,7 +234,7 @@ $afile1 = basename($_FILES['actmap']['name']);
 $af1Type = $_FILES['actmap']['type'];
 $af1Stat = $_FILES['actmap']['error'];
 if ( $afile1 !== '') {
-    $filesPresent = true;
+    $gpsDatFiles = true;
     if ($af1Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($af1Stat) . '</p>';
         die ($errmsg);
@@ -271,7 +270,7 @@ $afile2 = basename($_FILES['actgpx']['name']);
 $af2Type = $_FILES['actgpx']['type'];
 $af2Stat = $_FILES['actgpx']['error'];
 if ( $afile2 !== '') {
-    $filesPresent = true;
+    $gpsDatFiles = true;
     if ($af2Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($af2Stat) . '</p>';
         die ($errmsg);

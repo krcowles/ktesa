@@ -1,9 +1,9 @@
-<?php session_start();
+<?php
     $pstyle = '<p style="margin-left:16px;font-size:18px;">';
     # Process $hikeName to ensure no html special characters will disrupt
     $hike = filter_input(INPUT_POST,'hpgTitle');
     $hikeName = htmlspecialchars($hike);
-    $hikeNo = filter_input(INPUT_POST,'hno');
+    $hikeNo = intval(filter_input(INPUT_POST,'hno'));
     $saveType = filter_input(INPUT_POST,'saveit');
     $valType = filter_input(INPUT_POST,'valdat');
     if ( isset($saveType)) {
@@ -15,6 +15,8 @@
         $tabTitle = 'Validate &amp; Select Images';
         $logo = 'Validate This Hike!';
         $type = 'Validate';
+        $imageFiles = false;  # change if files are encountered
+        $gpsDatFiles = false;  # ditto
     }
 ?>
 <!DOCTYPE html>
@@ -55,25 +57,53 @@
         }
         # Peform any uploads and file validation & summaries
         require "fileUploads.php";
-        die ("FTEST");
     }
 ?>  
 <p style="display:none" id="tsvStat"><?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?></p>
 
 <?php
-# hike form entry - both 'save form' and 'validate' need this data
-$hikeName = filter_input(INPUT_POST,'hpgTitle');
-$hikeLocale = filter_input(INPUT_POST,'locale');
-$hikeType = filter_input(INPUT_POST,'htype');
-$hikeLgth = filter_input(INPUT_POST,'dist');
-$hikeElev = filter_input(INPUT_POST,'elev');
-$hikeDiff = filter_input(INPUT_POST,'diff');
-$hikeFac = filter_input(INPUT_POST,'fac');
-$hikeWow = filter_input(INPUT_POST,'wow_factor');
-$hikeSeasons = filter_input(INPUT_POST,'seas');
-$hikeExp = filter_input(INPUT_POST,'expos');
+/*
+ *  hike form entry - both 'save form' and 'validate' need this data
+ *  NOTE: $hikeNo already saved previously and should not be over-written
+ */
+$xml = simplexml_load_file('../data/database.xml');
+if ($xml === false) {
+    $errmsg = '<p style="margin-left:20px;color:red;font-size:18px;">' .
+        'Could not load xml database: contact Site Master</p>';
+    die ($errmsg);
+}
+# from here on out, $hikeNo is decremented as hikes start at 1, not 0:
+$hikeNo--;
+$xml->row[$hikeNo]->pgTitle = $hikeName;
+
+$xml->row[$hikeNo]->locale = filter_input(INPUT_POST,'locale');
+$marker = filter_input(INPUT_POST,'mstyle');
+$xml->row[$hikeNo]->marker = $marker;
+if ($marker === 'ctrhike') {
+    $xml->row[$hikeNo]->clusterStr = filter_input(INPUT_POST,'vchike');
+} elseif ($marker === 'cluster') {
+    $belongsTo = filter_input(INPUT_POST,'clusgrp');
+    $xml->row[$hikeNo]->clusGrp = $belongsTo;
+    foreach ($xml->row as $row) {
+        if ($row->clusGrp == $belongsTo) {
+            $cname = $row->cgName->__toString();
+            break;
+        }
+    }
+    $xml->row[$hikeNo]->cgName = $cname;
+}
+$xml->row[$hikeNo]->logistics = filter_input(INPUT_POST,'htype');
+$xml->row[$hikeNo]->miles = filter_input(INPUT_POST,'dist');
+$xml->row[$hikeNo]->feet = filter_input(INPUT_POST,'elev');
+$xml->row[$hikeNo]->difficulty = filter_input(INPUT_POST,'diff');
+$xml->row[$hikeNo]->facilities = filter_input(INPUT_POST,'fac');
+$xml->row[$hikeNo]->wow = filter_input(INPUT_POST,'wow_factor');
+$xml->row[$hikeNo]->seasons = filter_input(INPUT_POST,'seas');
+$xml->row[$hikeNo]->expo = filter_input(INPUT_POST,'expos');
 
 if ($haveGpx) {
+    $xml->row[$hikeNo]->gpxfile = $hikeGpx;
+    $xml->row[$hikeNo]->trkfile = $trkfile;
     # Extract trailhead lat & lng from gpx file
     $gpxupload = getcwd() . '/' . $uploads . 'gpx/' . $hikeGpx;
     $gpxdat = file_get_contents($gpxUpload);
@@ -82,24 +112,33 @@ if ($haveGpx) {
     $latloc = strpos($trksubstr,"lat=") + 5;
     $latend = strpos($trksubstr,'" lon=');
     $latlgth = $latend - $latloc;
-    $hikeLat = substr($trksubstr,$latloc,$latlgth);
+    $xml->row[$hikeNo]->lat = substr($trksubstr,$latloc,$latlgth);
     $lonloc = strpos($trksubstr,"lon=") + 5;
     $lonend = strpos($trksubstr,">") - 1;
     $lonlgth = $lonend - $lonloc;
-    $hikeLong = substr($trksubstr,$lonloc,$lonlgth);
+    $xml->row[$hikeNo]->lng = substr($trksubstr,$lonloc,$lonlgth);
 }
-
-$hikeMarker = filter_input(INPUT_POST,'mstyle');
-$hikePurl1 = filter_input(INPUT_POST,'photo1');
-$hikePurl2 = filter_input(INPUT_POST,'photo2');
-$hikeDir = filter_input(INPUT_POST,'dirs');
+if ($imageFiles) {
+    if ($hikeOthrImage1 !== '') {
+        $xml->row[$hikeNo]->aoimg1 = $hikeOthrImage1;
+    }
+    if ($hikeOthrImage2 !== '') {
+        $xml->row[$hikeNo]->aoimg2 = $hikeOthrImage2;
+    }
+}
+$xml->row[$hikeNo]->mpUrl = filter_input(INPUT_POST,'photo1');
+$xml->row[$hikeNo]->spUrl = filter_input(INPUT_POST,'photo2');
+$xml->row[$hikeNo]->dirs = filter_input(INPUT_POST,'dirs');
 $rawtips = filter_input(INPUT_POST,'tipstxt');
-if (substr($rawtips,0,10) === '[OPTIONAL]') {
-	$tipTxt = '';
+if (substr($rawtips,0,10) !== '[OPTIONAL]') {
+    $xml->row[$hikeNo]->tipsTxt = $rawtips;
+    $tipsTxt = $rawtips;
 } else {
-	$tipTxt = $rawtips;
+    $tipsTxt = '';
 }
-$rawhike = filter_input(INPUT_POST,'hiketxt');
+$hikeDetails = filter_input(INPUT_POST,'hiketxt');
+$xml->row[$hikeNo]->hikeInfo = $hikeDetails;
+
 # don't know how to filter arrays:
 $hikeRefTypes = $_POST['rtype'];
 $hikeRefItems1 = $_POST['rit1'];
@@ -112,30 +151,53 @@ for ($w=0; $w<count($hikeRefTypes); $w++) {
         break;
     }
 }
-include "xmlRefs.php";
-die ("HERE");
-$hikePDatLbls = $_POST['plbl'];
-$noOfPDats = count($hikePDatLbls);
-for ($i=0; $i<$noOfPDats; $i++) {
-    if ($hikePDatLbls[$i] == '') {
-            $noOfPDats = $i;
-            break;
-    }
+$newrefs = $xml->row[$hikeNo]->refs->addChild('ref');
+if ($noOfRefs === 0) {
+    $newrefs->addChild('rtype','No References Found');
+} else {
+    for ($r=0; $r<$noOfRefs; $r++) {
+        $newrefs->addChild('rtype',$hikeRefTypes[$r]);
+        $newrefs->addChild('rit1',$hikeRefItems1[$r]);
+        $newrefs->addChild('rit2',$hikeRefItems2[$r]);
 }
-$hikePDatUrls = $_POST['purl'];
-$hikePDatCTxts = $_POST['pctxt'];
-$hikeADatLbls = $_POST['albl'];
-$noOfADats = count($hikeADatLbls);
-for ($j=0; $j<$noOfADats; $j++) {
-    if ($hikeADatLbls[$j] == '') {
-            $noOfADats = $j;
-            break;
+# Proposed and Actual GPS Maps & Data:
+if ($gpsDatFiles) {
+    # PROPOSED:
+    $hikePDatLbls = $_POST['plbl'];
+    $noOfPDats = count($hikePDatLbls);
+    for ($i=0; $i<$noOfPDats; $i++) {
+        if ($hikePDatLbls[$i] == '') {
+                $noOfPDats = $i;
+                break;
+        }
     }
+    $hikePDatUrls = $_POST['purl'];
+    $hikePDatCTxts = $_POST['pctxt'];
+    $newPs = $xml->row[$hikeNo]->dataProp->addChild('prop');
+    for ($p=0; $p<$noOfPDats; $p++) {
+        $newPs->addChild('plbl',$hikePDatLbls[$p]);
+        $newPs->addChild('purl',$hikePDatUrls[$p]);
+        $newPs->addChild('pcot',$hikePDatCTxts[$p]);
+    }
+    # ACTUAL:
+    $hikeADatLbls = $_POST['albl'];
+    $noOfADats = count($hikeADatLbls);
+    for ($j=0; $j<$noOfADats; $j++) {
+        if ($hikeADatLbls[$j] == '') {
+                $noOfADats = $j;
+                break;
+        }
+    }
+    $hikeADatUrls = $_POST['aurl'];
+    $hikeADatCTxts = $_POST['actxt'];
+    $newAs = $xml->row[$hikeNo]->dataAct->addChild('act');
+    for ($q=0; $q<$noOfADats; $q++) {
+        $newAs->addChild('albl',$hikeADatLbls[$q]);
+        $newAs->addChild('aurl',$hikeADatUrls[$q]);
+        $newAs->addChild('acot',$hikeADatCTxts[$q]);
+    }  
 }
-$hikeADatUrls = $_POST['aurl'];
-$hikeADatCTxts = $_POST['actxt'];
-include "xmlGpsDat.php";
-
+/*
 if ($usetsv) {
     # place xml declaration and container 'wrapper' on tsvStr for importing as xml
     $photoXml = "<?xml version='1.0'?>\n<photos>\n" . $xmlTsvStr . "</photos>\n";
@@ -162,87 +224,31 @@ if ($usetsv) {
     }
     $mdat = preg_replace('/\n/','', $photoXml);
     $mdat = preg_replace('/\t/','', $mdat);
+ * 
+ */
 }
 ?>
-<h2>The Data As It Will Appear In The Table of Hikes</h2>
-<div id="tbl1">
-    <table id="indxtbl">
-        <colgroup>	
-            <col style="width:120px">
-            <col style="width:140px">
-            <col style="width:105px">
-            <col style="width:80px">
-            <col style="width:80px">
-            <col style="width:75px">
-            <col style="width:100px">
-            <col style="width:70px">
-            <col style="width:70px">
-            <col style="width:74px">
-        </colgroup>
-        <thead>
-            <tr>
-                <th class="hdr_row">Locale</th>
-                <th class="hdr_row">Hike/Trail Name</th>
-                <th class="hdr_row">WOW Factor</th>
-                <th class="hdr_row">Web Pg</th>
-                <th class="hdr_row">Length</th>
-                <th class="hdr_row">Elev Chg</th>
-                <th class="hdr_row">Difficulty</th>
-                <th class="hdr_row">Exposure</th>
-                <th class="hdr_row">By Car</th>
-                <th class="hdr_row">Photos</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><?php echo $hikeLocale;?></td>
-                <td><?php echo $hikeName;?></td>
-                <td><?php echo $hikeWow;?></td>
-                <td><img class="webShift" src="../images/<?php  
-                    if($hikeMarker === 'center') {
-                        $pgLnk = 'indxCheck.png';
-                    } else {
-                        $pgLnk = 'greencheck.jpg';
-                    }
-                    echo $pgLnk;?>" alt="hikepg link" /></td>
-                <td><?php echo $hikeLgth;?> miles</td>
-                <td><?php echo $hikeElev;?> ft</td>
-                <td><?php echo $hikeDiff;?> </td>
-                <td><img class="expShift" src="../images/<?php 
-                    if($hikeExp === 'sun') {
-                        $eimg = 'sun.jpg';
-                    } elseif($hikeExp === 'shade') {
-                        $eimg = 'greenshade.jpg';
-                    }  else {
-                        $eimg = 'shady.png';
-                    }
-                    echo $eimg;?>" alt="exposure icon" /></td>
-                <td><a href="<?php echo $hikeDir?>" target="_blank">
-                    <img style="position:relative;left:17px;" src="../images/dirs.png" alt="google driving directions" /></a></td>
-                <td><a href="<?php echo $hikePurl1?>" target="_blank">
-                    <img class="flckrShift" src="../images/album_lnk.png" alt="Flickr symbol" /></a></td>
-            </tr>	
-        </tbody>
-    </table>
-</div>
 
-<?php
-    if ($tipTxt !== '') {
+<?php /*
+    if ($tipsTxt !== '') {
         echo '<h2 style="text-align:center;">Hike Tips Text:</h2>';
-        echo '<div id="trailTips" style="margin:8px;"><img id="tipPic" 
+        echo '<div id="trailTips" style="margin:8px;"><img id="tipPic" .
                 src="../images/tips.png" alt="special notes icon" />';
-        echo '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">';
-        echo $tipTxt . '</p></div>';
+        echo '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' .
+                $tipsTxt . '</p></div>';
     }
+ * 
+ */
 ?>
-<h2 style="text-align:center;">Hike Information:</h2>
+<!-- <h2 style="text-align:center;">Hike Information:</h2> -->
 <?php 
-    echo '<p id="hikeInfo" style="text-indent:8px;">' . $rawhike . '</p>' . "\n";
+    #echo '<p id="hikeInfo" style="text-indent:8px;">' . $hikeDetails . '</p>' . "\n";
 ?>
-<h2>Hike References:</h2>
+<!-- <h2>Hike References:</h2> -->
 <?php 
     /* There SHOULD always be at least one reference, however, if there is not,
        a message will appear in this section: No References Found */
+/*
     echo '<fieldset>' . "\n" . '<legend id="fldrefs">References &amp; Links</legend>' . "\n";
     echo "\t" . '<ul id="refs">' . "\n";
     $completeRef = "<?xml version='1.0'?>\n" . $refXmlStr . "\n";
@@ -298,9 +304,12 @@ if ($usetsv) {
     }
     echo "\t</ul>\n</fieldset>\n";
     
+ * 
+ */
     /* OPTIONAL INFO: GPS Maps & Data fieldset
      * No h2 header is used here: just display if present
      */
+/*
     $combinedStr = $xmlPDat . $xmlADat;
     $completeGPSDat = "<?xml version='1.0'?>\n<gpsdat>\n" . $combinedStr . "</gpsdat>\n";
     $gpsdatSection = simplexml_load_string($completeGPSDat);
@@ -368,6 +377,8 @@ if ($usetsv) {
         }  
         echo "</fieldset>\n";
     }
+ * 
+ */
 ?>	
 
 <div id="showpics">
@@ -434,11 +445,6 @@ if ($usetsv) {
 <script src="validateHike.js"></script>
 <script src="../scripts/picPops.js"></script>
 
-<?php
-    if ($type === 'Save') {
-        echo '-->';
-    }
-?>
 </body>
 
 </html>
