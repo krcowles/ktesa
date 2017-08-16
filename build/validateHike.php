@@ -1,9 +1,16 @@
 <?php
+    $database = '../data/database.xml';
     $pstyle = '<p style="margin-left:16px;font-size:18px;">';
     # Process $hikeName to ensure no html special characters will disrupt
     $hike = filter_input(INPUT_POST,'hpgTitle');
     $hikeName = htmlspecialchars($hike);
     $hikeNo = intval(filter_input(INPUT_POST,'hno'));
+    $xml = simplexml_load_file($database);
+    if ($xml === false) {
+        $errmsg = '<p style="margin-left:20px;color:red;font-size:18px;">' .
+            'Could not load xml database: contact Site Master</p>';
+        die ($errmsg);
+    }
     $saveType = filter_input(INPUT_POST,'saveit');
     $valType = filter_input(INPUT_POST,'valdat');
     if ( isset($saveType)) {
@@ -15,6 +22,13 @@
         $tabTitle = 'Validate &amp; Select Images';
         $logo = 'Validate This Hike!';
         $type = 'Validate';
+        $nopics = filter_input(INPUT_POST,'nopix');
+        if ( !isset($nopics) ) {
+            $usetsv = true;
+            require "getPicDat.php";
+        } else {
+            $usetsv = false;
+        }
         $imageFiles = false;  # change if files are encountered
         $gpsDatFiles = false;  # ditto
     }
@@ -45,13 +59,13 @@
             $hikeName . '</p></div>';
         
     } else {
-        echo '<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>';
-        echo '<form target="_blank" action="displayHikePg.php" method="POST">';
+        echo "<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>\n";
+        echo '<form target="_blank" action="displayHikePg.php" method="POST">' . "\n";
         # Check to see if pictures will be used for this page
         $nopics = filter_input(INPUT_POST,'nopix');
         if ( !isset($nopics) ) {
             $usetsv = true;
-            require "getPicDat.php";
+            require_once "getPicDat.php";
         } else {
             $usetsv = false;
         }
@@ -66,12 +80,6 @@
  *  hike form entry - both 'save form' and 'validate' need this data
  *  NOTE: $hikeNo already saved previously and should not be over-written
  */
-$xml = simplexml_load_file('../data/database.xml');
-if ($xml === false) {
-    $errmsg = '<p style="margin-left:20px;color:red;font-size:18px;">' .
-        'Could not load xml database: contact Site Master</p>';
-    die ($errmsg);
-}
 # from here on out, $hikeNo is decremented as hikes start at 1, not 0:
 $hikeNo--;
 $xml->row[$hikeNo]->pgTitle = $hikeName;
@@ -159,6 +167,10 @@ if ($noOfRefs === 0) {
         $newrefs->addChild('rtype',$hikeRefTypes[$r]);
         $newrefs->addChild('rit1',$hikeRefItems1[$r]);
         $newrefs->addChild('rit2',$hikeRefItems2[$r]);
+        if ($r < $noOfRefs-1) {
+            $newrefs = $xml->row[$hikeNo]->refs->addChild('ref');
+        }
+    }
 }
 # Proposed and Actual GPS Maps & Data:
 if ($gpsDatFiles) {
@@ -178,6 +190,9 @@ if ($gpsDatFiles) {
         $newPs->addChild('plbl',$hikePDatLbls[$p]);
         $newPs->addChild('purl',$hikePDatUrls[$p]);
         $newPs->addChild('pcot',$hikePDatCTxts[$p]);
+        if ($p < $noOfPDats-1) {
+            $newPs = $xml->row[$hikeNo]->dataProp->addChild('prop');
+        }
     }
     # ACTUAL:
     $hikeADatLbls = $_POST['albl'];
@@ -195,250 +210,81 @@ if ($gpsDatFiles) {
         $newAs->addChild('albl',$hikeADatLbls[$q]);
         $newAs->addChild('aurl',$hikeADatUrls[$q]);
         $newAs->addChild('acot',$hikeADatCTxts[$q]);
+        if ($q < $noOfADats-1) {
+            $newAs = $xml->row[$hikeNo]->dataAct->addChild('act');
+        }
     }  
 }
+# Done saving data for database: if 'Save Data', then end here....
+$xml->asXML($database);
 /*
-if ($usetsv) {
-    # place xml declaration and container 'wrapper' on tsvStr for importing as xml
-    $photoXml = "<?xml version='1.0'?>\n<photos>\n" . $xmlTsvStr . "</photos>\n";
-    $picXml = simplexml_load_string($photoXml);
-    if ($picXml === false) {
-        $noxml = '<p style="color:brown;margin-left:8px;font-size:18px;>' .
-                'Photo data contained in xml string would not load: Contact ' .
-                'Site Master</p>';
-        die($noxml);
-    }
-    $picno = 0;
-    $phNames = [];
-    $phPics = [];
-    $phWds = [];
-    $rowHt = 220; 
-    foreach ($picXml->picDat as $imgData) {
-        $phNames[$picno] = $imgData->title;
-        $phPics[$picno] = $imgData->mid;
-        $pHeight = $imgData->imgHt;
-        $aspect = $rowHt/$pHeight;
-        $pWidth = $imgData->imgWd;
-        $phWds[$picno] = floor($aspect * $pWidth);
-        $picno += 1;
-    }
-    $mdat = preg_replace('/\n/','', $photoXml);
-    $mdat = preg_replace('/\t/','', $mdat);
- * 
+ * If 'Save', there is no tsv data; nor are there any file uploads.
+ * The remainder of this script displays photos for selection and inclusion
+ * on both the hike page and on the GPSV map, and can be skipped in the case
+ * of a 'Save'.
  */
-}
-?>
+if ($type === 'Validate') {
+    if ($usetsv) {
+        $picno = 0;
+        $phNames = [];
+        $phPics = [];
+        $phWds = [];
+        $rowHt = 220; 
+        foreach ($xml->row[$hikeNo]->tsv->picDat as $imgData) {
+            $phNames[$picno] = $imgData->title;
+            $phPics[$picno] = $imgData->mid;
+            $pHeight = $imgData->imgHt;
+            $aspect = $rowHt/$pHeight;
+            $pWidth = $imgData->imgWd;
+            $phWds[$picno] = floor($aspect * $pWidth);
+            $picno += 1;
+        }
+        #$mdat = preg_replace('/\n/','', $photoXml);
+        #$mdat = preg_replace('/\t/','', $mdat);
+    }
+    echo '<h4 style="text-indent:16px">Please check the boxes corresponding to ' .
+        'the pictures you wish to include on the new page:</h4>';
+    echo '<div style="position:relative;top:-14px;margin-left:16px;">' .
+        '<input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;' .
+        'Use All Photos on Hike Page<br />';
+        '<input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;' .
+        'Use All Photos on Map';
+    echo '</div>';
+    echo '<div style="margin-left:16px;">';
 
-<?php /*
-    if ($tipsTxt !== '') {
-        echo '<h2 style="text-align:center;">Hike Tips Text:</h2>';
-        echo '<div id="trailTips" style="margin:8px;"><img id="tipPic" .
-                src="../images/tips.png" alt="special notes icon" />';
-        echo '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' .
-                $tipsTxt . '</p></div>';
-    }
- * 
- */
-?>
-<!-- <h2 style="text-align:center;">Hike Information:</h2> -->
-<?php 
-    #echo '<p id="hikeInfo" style="text-indent:8px;">' . $hikeDetails . '</p>' . "\n";
-?>
-<!-- <h2>Hike References:</h2> -->
-<?php 
-    /* There SHOULD always be at least one reference, however, if there is not,
-       a message will appear in this section: No References Found */
-/*
-    echo '<fieldset>' . "\n" . '<legend id="fldrefs">References &amp; Links</legend>' . "\n";
-    echo "\t" . '<ul id="refs">' . "\n";
-    $completeRef = "<?xml version='1.0'?>\n" . $refXmlStr . "\n";
-    $xmlRef = simplexml_load_string($completeRef);
-    if ($xmlRef === false) {
-        $norefs = $msgStyle . 'Could not load $xmlRef: contact Site Master</p>';
-        die ($norefs);
-    }
-    foreach ($xmlRef->ref as $refItem) {
-        if ($refItem->rtype == 'b' || $refItem->rtype == 'p') {
-            if ($refItem->rtype == 'b') {
-                $refLbl = 'Book';
-            } else {
-                $refLbl = 'Photo Essay';
-            }
-            echo "\t\t<li>" . $refLbl . ": <em>" . $refItem->rit1 . "</em>" .
-                $refItem->rit2 . "</li>\n";
-        } elseif ($refItem->rtype == 'n') {
-            echo "\t\t<li>" . $refItem->rit1 . "</li>\n";
-        } else {
-            switch ($refItem->rtype) {
-                case 'a':
-                    $refLbl = 'App';
-                    break;
-                case 'd':
-                    $refLbl = 'Downloadable Doc';
-                    break;
-                case 'g':
-                    $refLbl = 'Meetup Group';
-                    break;
-                case 'l':
-                    $refLbl = 'Blog' ;
-                    break;
-                case 'm':
-                    $refLbl = 'Magazine';
-                    break;
-                case 'o':
-                    $refLbl = 'On-line Map';
-                    break;
-                case 'r':
-                    $refLbl = 'Related Link';
-                    break;
-                case 's':
-                    $refLbl = 'News Article';
-                    break;
-                case 'w':
-                    $refLbl = 'Website';
-                    break;
-            }
-            echo "\t\t<li>" . $refLbl . ': <a href="' . $refItem->rit1 .
-                '" target="_blank"> ' . $refItem->rit2 . "</a></li>\n";
-        }
-    }
-    echo "\t</ul>\n</fieldset>\n";
-    
- * 
- */
-    /* OPTIONAL INFO: GPS Maps & Data fieldset
-     * No h2 header is used here: just display if present
-     */
-/*
-    $combinedStr = $xmlPDat . $xmlADat;
-    $completeGPSDat = "<?xml version='1.0'?>\n<gpsdat>\n" . $combinedStr . "</gpsdat>\n";
-    $gpsdatSection = simplexml_load_string($completeGPSDat);
-    if ($gpsdatSection === false) {
-        $nodat = $msgStyle . 'Could not load $gpsdatSection xml: contact Site Master</p>';
-        die ($nodat);
-    }
-    $noOfProps = 0;
-    $prop1 = [];
-    $prop2 = [];
-    $prop3 = [];
-    $noOfActs = 0;
-    $act1 = [];
-    $act2 = [];
-    $act3 = [];
-    foreach ($gpsdatSection->dataProp as $gpspdat) {
-        if (strlen($gpspdat->prop) !== 0) {
-            foreach ($gpspdat->prop as $placeProp) {
-                $prop1[$noOfProps] = $placeProp->plbl;
-                $prop2[$noOfProps] = $placeProp->purl;
-                $prop3[$noOfProps] = $placeProp->pcot;
-                $noOfProps++;
-            }
-        }
-    }
-    foreach ($gpsdatSection->dataAct as $gpsadat) {
-        if (strlen($gpsadat->act) !== 0) {
-            foreach ($gpsadat->act as $placeAct) {
-                $act1[$noOfActs] = $placeAct->albl;
-                $act2[$noOfActs] = $placeAct->aurl;
-                $act3[$noOfActs] = $placeAct->acot;
-                $noOfActs++;
-            }
-        }
-    }
-    if ($noOfProps > 0 || $noOfActs > 0) {
-        echo '<fieldset>' . "\n" . '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
-        if ($noOfProps > 0) {
-            echo '<p id="proptitle">- Proposed Hike Data</p><ul id="plinks">' . "\n";
-            for ($a=0; $a<$noOfProps; $a++) {
-                $tmploc = $prop2[$a];
-                if (strpos($tmploc,'../maps/') !== false) {
-                    $tmpurl = str_replace('../maps/','tmp/maps/',$tmploc);
-                } elseif (strpos($tmploc,'../gpx/') !== false) {
-                    $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
-                }
-                echo "\t<li>" . $prop1[$a] . ' <a href="' . $tmpurl .
-                        '" target="_blank"> ' . $prop3[$a] . '</a></li>' . "\n";
-            }
-            echo "\t</ul>\n";
-        }
-        if ($noOfActs > 0) {
-            echo '<p id="acttitle">- Actual Hike Data</p><ul id="alinks">' . "\n";
-            for ($b=0; $b<$noOfActs; $b++) {
-                $tmploc = $act2[$b];
-                if (strpos($tmploc,'../maps/') !== false) {
-                    $tmpurl = str_replace('../maps/','tmp/maps/',$tmploc);
-                } elseif (strpos($tmploc,'../gpx/') !== false) {
-                    $tmpurl = str_replace('../gpx/','tmp/gpx/',$tmploc);
-                }
-                echo "\t<li>" . $act1[$b] . ' <a href="' . $tmpurl .
-                        '" target="_blank"> ' . $act3[$b] . '</a></li>' . "\n";
-            }
-            echo "\t</ul>\n";
-        }  
-        echo "</fieldset>\n";
-    }
- * 
- */
-?>	
-
-<div id="showpics">
-<h4 style="text-indent:8px">Please check the boxes corresponding to the pictures you wish
-	to include on the new page:</h4>
-<div style="position:relative;top:-14px;">
-    <input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;
-    Use All Photos on Hike Page<br />
-    <input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;
-    Use All Photos on Map
-</div>
-<?php
     for ($i=0; $i<$picno; $i++) {
         echo '<div class="selPic" style="width:' . $phWds[$i] . 'px;float:left;'
                 . 'margin-left:2px;margin-right:2px;">';
         echo '<input class="hpguse" type="checkbox" name="pix[]" value="' .  $phNames[$i] .
-            '" />Use&nbsp;&nbsp;';
+            '" />Display&nbsp;&nbsp;';
         echo '<input class="mpguse" type="checkbox" name="mapit[]" value="' . $phNames[$i] .
              '" />Map<br />';
         echo '<img class="allPhotos" height="200px" width="' . $phWds[$i] . 'px" src="' .
                 $phPics[$i] . '" alt="' . $phNames[$i] . '" />';
         echo '</div>';
     }
-    
+    echo "</div>\n";
+
+
+
+    echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;">' .
+        '<input type="submit" value="Create Page w/This Data" /><br /><br />' . "\n";
+    echo "</div>\n";
+
+    echo '<div class="popupCap"></div>' . "\n";
+    if ($usetsv) {
+        $passtsv = "YES";
+    } else {
+        $passtsv = "NO";
+    }
+    echo '<input type="hidden" name="usepics" value="' . $passtsv . '" />' . "\n";
+
+    echo "</form>\n";
+}
 ?>
-</div>
-
-<div style="width:200px;position:relative;top:90px;left:20px;float:left;">
-    <input type="submit" value="Create Page w/This Data" /><br /><br />
-</div>
-
-<div class="popupCap"></div>
-
-<input type="hidden" name="hTitle" value="<?php echo $hikeName;?>" />
-<input type="hidden" name="area"  value="<?php echo $hikeLocale;?>" />
-<input type="hidden" name="htype" value="<?php echo $hikeType;?>" />
-<input type="hidden" name="lgth"  value="<?php echo $hikeLgth;?>" />
-<input type="hidden" name="elev"  value="<?php echo $hikeElev;?>" />
-<input type="hidden" name="diffi" value="<?php echo $hikeDiff;?>" />
-<input type="hidden" name="lati"  value="<?php echo $hikeLat;?>" />
-<input type="hidden" name="long"  value="<?php echo $hikeLong;?>" /> 
-<input type="hidden" name="facil" value="<?php echo $hikeFac;?>" />
-<input type="hidden" name="wow"   value="<?php echo $hikeWow;?>" />
-<input type="hidden" name="seasn" value="<?php echo $hikeSeasons;?>" />
-<input type="hidden" name="expo"  value="<?php echo $hikeExp;?>" />
-<input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
-<input type="hidden" name="json"  value="<?php echo $hikeJSON;?>" />
-<input type="hidden" name="img1"  value="<?php echo $hikeOthrImage1;?>" />
-<input type="hidden" name="img2"  value="<?php echo $hikeOthrImage2;?>" />
-<input type="hidden" name="dfiles" value="<?php echo $datfiles;?>" />
-<input type="hidden" name="mrkr"  value="<?php echo $hikeMarker;?>" />
-<input type="hidden" name="phot1" value="<?php echo $hikePurl1;?>" />
-<input type="hidden" name="phot2" value="<?php echo $hikePurl2;?>" />
-<input type="hidden" name="gdirs" value="<?php echo $hikeDir;?>" />
-<input type="hidden" name="usepics" value="<?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?>" />
-</form>
-
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">
-    var mouseDat = $.parseXML("<?php echo $mdat;?>");
+    var mouseDat = $.parseXML("<?php $xml->row[$hikeNo]->tsv;?>");
     var phTitles = [];
     var phDescs = [];
 </script>

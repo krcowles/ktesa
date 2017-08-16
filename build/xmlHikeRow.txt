@@ -14,23 +14,6 @@
     <seasons></seasons>
     <expo></expo>
     <tsv>
-            <picDat>
-                <folder></folder>
-                <title></title>
-                <hpg></hpg>
-                <mpg></mpg>
-                <desc></desc>
-                <lat></lat>
-                <lng></lng>
-                <thumb></thumb>
-                <alblnk></alblnk>
-                <date></date>
-                <mid></mid>
-                <imgHt></imgHt>
-                <imgWd></imgWd>
-                <iclr></iclr>
-                <org></org>
-            </picDat>
     </tsv>
     <gpxfile></gpxfile>
     <trkfile></trkfile>

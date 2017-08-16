@@ -2,10 +2,7 @@
 /* 
  * This routine fetches album html from each of the user-specified album
  * links, and parses it for the data needed to create hike page photos with
- * links and captions. While developed in the 'convert2xml' branch, it can at
- * first be used with database.csv code, where it will create a 'tsv' file.
- * Later, no tsv file will be created - the data will instead be stored
- * directly in the xml database.
+ * links and captions. 
  */
 function getFlickrDat($photomodel,$size) {
     $ltrSize = strlen($size);  # NOTE: at least 1 size is two letters
@@ -164,16 +161,24 @@ for ($i=0; $i<$supplied; $i++) {
         }
     }  # end of non-empty curlid
 }  # end of for each album url input box
-# sort the arrays based on timestamp:
+# sort the arrays based on timestamp: (all data will end up in $xmlout array
 include "timeSort.php";
-include 'xmlTsv.php';
-$_SESSION['tsvdata'] = $xmlTsvStr;
-/*  ----- DEBUG ------
-$tmp = fopen("xmlPhoto.xml","w");
-if ($tmp === false) {
-    die ("OOPS");
+foreach ($xmlout as $tsvdata) {  # each item is an array of data
+    # NOTE: $hikeNo has not yet been decremented to correlate hike no w/ indx no
+    $newpic = $xml->row[$hikeNo-1]->tsv->addChild('picDat');
+    $newpic->addChild('title',htmlspecialchars($tsvdata['pic']));
+    $newpic->addChild('hpg','N');
+    $newpic->addChild('mpg','N');
+    $newpic->addChild('desc',htmlspecialchars($tsvdata['desc']));
+    $newpic->addChild('lat',$tsvdata['lat']);
+    $newpic->addChild('lng',$tsvdata['lng']);
+    $newpic->addChild('thumb',$tsvdata['thumb']);
+    $newpic->addChild('alblnk',$tsvdata['alb']);
+    $newpic->addChild('date',$tsvdata['taken']);
+    $newpic->addChild('mid',$tsvdata['nsize']);
+    $newpic->addChild('imgHt',$tsvdata['pHt']);
+    $newpic->addChild('imgWd',$tsvdata['pWd']);
+    $newpic->addChild('iclr',$icon_clr);
+    $newpic->addChild('org',$tsvdata['org']);
 }
-fwrite($tmp,$xmlTsvStr);
-fclose($tmp);
- */
 ?>
