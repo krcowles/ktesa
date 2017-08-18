@@ -113,7 +113,6 @@ function useIndexPg() {
     $('#l_add1').css('color','Brown');
     $('#l_add1').text(msgC);
     $('.honly').css('display','none');
-    $('#gpxfile').attr('required',false);
 }
 function useStdPg() {
     pageSelector = "validateHike.php";
@@ -129,7 +128,6 @@ function useStdPg() {
     $('#spImg').text(msgB);
     $('#l_add1').html(msgC);
     $('.honly').css('display','block');
-    $('#gpxfile').attr('required',true);
 }
 var dwidth = Math.floor($(document).width());
 dwidth -= 170;

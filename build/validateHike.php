@@ -90,6 +90,7 @@ $xml->row[$hikeNo]->locale = filter_input(INPUT_POST,'locale');
 $marker = filter_input(INPUT_POST,'mstyle');
 $xml->row[$hikeNo]->marker = $marker;
 if ($marker === 'ctrhike') {
+    echo 'Saw cluster hike';
     $xml->row[$hikeNo]->clusterStr = filter_input(INPUT_POST,'vchike');
 } elseif ($marker === 'cluster') {
     $belongsTo = filter_input(INPUT_POST,'clusgrp');

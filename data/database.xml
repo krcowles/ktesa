@@ -15675,4 +15675,46 @@ accumulations.</hikeInfo>
     <dataAct>
     </dataAct>
 </row>
+
+<row>
+    <indxNo>134</indxNo>
+    <rlock/>
+    <pgTitle>Piedra Lisa - La Luz Link</pgTitle>
+    <locale>Albuquerque</locale>
+    <marker>cluster</marker>
+    <clusterStr/>
+    <clusGrp>K</clusGrp>
+    <logistics>Out-and-back</logistics>
+    <miles>1.3</miles>
+    <feet>300</feet>
+    <difficulty>Easy</difficulty>
+    <facilities>None</facilities>
+    <wow>Sandia Views</wow>
+    <seasons>All</seasons>
+    <expo>Full sun</expo>
+    <tsv>
+    <picDat><title>AlongTheTrail</title><hpg>Y</hpg><mpg>Y</mpg><desc>Lovely views along the short trail</desc><lat>35.2198972222</lat><lng>-106.479797222</lng><thumb>https://c1.staticflickr.com/5/4345/36365784906_1e3622c260_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36365784906/in/album-72157684842729330</alblnk><date>2017:08:04 09:07:30</date><mid>https://c1.staticflickr.com/5/4345/36365784906_1e3622c260_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4345/36365784906_5f18ffac82_o.jpg</org></picDat><picDat><title>MissingLink</title><hpg>Y</hpg><mpg>Y</mpg><desc>It seems obvious, but ...</desc><lat>35.2230111111</lat><lng>-106.482697222</lng><thumb>https://c1.staticflickr.com/5/4396/35575662194_276e17dd04_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/35575662194/in/album-72157684842729330</alblnk><date>2017:08:04 10:35:22</date><mid>https://c1.staticflickr.com/5/4396/35575662194_276e17dd04_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4396/35575662194_d172ff55b7_o.jpg</org></picDat><picDat><title>BrightFuchsia</title><hpg>Y</hpg><mpg>Y</mpg><desc>Beautiful colors dot the landscape</desc><lat>35.2216416667</lat><lng>-106.480361111</lng><thumb>https://c1.staticflickr.com/5/4336/36014383810_522d3b785c_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36014383810/in/album-72157684842729330</alblnk><date>2017:08:04 10:41:51</date><mid>https://c1.staticflickr.com/5/4336/36014383810_522d3b785c_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4336/36014383810_5e138aacd9_o.jpg</org></picDat><picDat><title>OverTheTopView</title><hpg>Y</hpg><mpg>Y</mpg><desc>Short, but some altitude is involved</desc><lat>35.2215944444</lat><lng>-106.480277778</lng><thumb>https://c1.staticflickr.com/5/4337/36365794286_0b370fc3fd_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36365794286/in/album-72157684842729330</alblnk><date>2017:08:04 10:42:14</date><mid>https://c1.staticflickr.com/5/4337/36365794286_0b370fc3fd_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4337/36365794286_a3cb814458_o.jpg</org></picDat><picDat><title>TowerFarmView</title><hpg>Y</hpg><mpg>Y</mpg><desc>In the distance, the ever present towers</desc><lat>35.2214611111</lat><lng>-106.480469444</lng><thumb>https://c1.staticflickr.com/5/4412/36274283181_e2d2fbe87b_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36274283181/in/album-72157684842729330</alblnk><date>2017:08:04 10:49:24</date><mid>https://c1.staticflickr.com/5/4412/36274283181_e2d2fbe87b_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4412/36274283181_7b7079c5d6_o.jpg</org></picDat><picDat><title>UpAndOver</title><hpg>Y</hpg><mpg>Y</mpg><desc>Up the arroya towards La Luz</desc><lat>35.2203</lat><lng>-106.479477778</lng><thumb>https://c1.staticflickr.com/5/4334/36274279011_65f07d8b19_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36274279011/in/album-72157684842729330</alblnk><date>2017:08:04 10:54:09</date><mid>https://c1.staticflickr.com/5/4334/36274279011_65f07d8b19_n.jpg</mid><imgHt>3264</imgHt><imgWd>2448</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4334/36274279011_0b7e1d18a6_o.jpg</org></picDat></tsv>
+    <gpxfile>PiedraLisa-LaLuzLink.GPX</gpxfile>
+    <trkfile>PiedraLisa-LaLuzLink.json</trkfile>
+    <lat>35.222869450226426</lat>
+    <lng>-106.4834139123559</lng>
+    <aoimg1/>
+    <aoimg2/>
+    <mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157684842729330</mpUrl>
+    <spUrl/>
+    <dirs>https://www.google.com/maps/dir//Piedra+Lisa-south+Trailhead,+State+Rte+333+D,+Sandia+Pueblo,+NM+87004/@35.2119487,-106.5021179,14.04z/data=!4m15!1m6!3m5!1s0x87189c33b662307d:0x92c0ead8cf18c3c4!2sPiedra+Lisa-south+Trailhead!8m2!3d35.2231347!4d-106.4834646!4m7!1m0!1m5!1m1!1s0x87189c33b662307d:0x92c0ead8cf18c3c4!2m2!1d-106.4834646!2d35.2231347</dirs>
+    <cgName>Piedra Lisa Group</cgName>
+    <content>
+    <picRow><rowHt>237</rowHt><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4345/36365784906_1e3622c260_n.jpg</picSrc><picCap>Aug 4, 2017: Lovely views along the short trail</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4396/35575662194_276e17dd04_n.jpg</picSrc><picCap>Aug 4, 2017: It seems obvious, but ...</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4336/36014383810_522d3b785c_n.jpg</picSrc><picCap>Aug 4, 2017: Beautiful colors dot the landscape</picCap></pic></picRow><picRow><rowHt>260</rowHt><pic><picWdth>346</picWdth><picSrc>https://c1.staticflickr.com/5/4337/36365794286_0b370fc3fd_n.jpg</picSrc><picCap>Aug 4, 2017: Short, but some altitude is involved</picCap></pic><pic><picWdth>346</picWdth><picSrc>https://c1.staticflickr.com/5/4412/36274283181_e2d2fbe87b_n.jpg</picSrc><picCap>Aug 4, 2017: In the distance, the ever present towers</picCap></pic><pic><picWdth>195</picWdth><picSrc>https://c1.staticflickr.com/5/4334/36274279011_65f07d8b19_n.jpg</picSrc><picCap>Aug 4, 2017: Up the arroya towards La Luz</picCap></pic></picRow></content>
+    <albLinks>
+    <alb>https://www.flickr.com/photos/139088815@N08/36365784906/in/album-72157684842729330</alb><alb>https://www.flickr.com/photos/139088815@N08/35575662194/in/album-72157684842729330</alb><alb>https://www.flickr.com/photos/139088815@N08/36014383810/in/album-72157684842729330</alb><alb>https://www.flickr.com/photos/139088815@N08/36365794286/in/album-72157684842729330</alb><alb>https://www.flickr.com/photos/139088815@N08/36274283181/in/album-72157684842729330</alb><alb>https://www.flickr.com/photos/139088815@N08/36274279011/in/album-72157684842729330</alb></albLinks>
+    <tipsTxt/>
+    <hikeInfo>This short link trail has some ups and downs, but is relatively easy and offers some unique views of the Sandias. It is well marked from the Piedra Lisa end, but not from La Luz. If beginning from La Luz, take the trail immediately to the left after climbing the steps up from the parking lot. Be careful - once the trail gets going, there are numerous other dead end trails that make identification of the link trail a bit tricky. The author ended up in a small box canyon on one such trail. Not many hikers take this trail, so it is good in general for solitary hiking.               </hikeInfo>
+    <refs>
+    <ref><rtype>b</rtype><rit1>Sandia Mountain Hiking Guide</rit1><rit2>, by Mike Coltrin</rit2></ref><ref><rtype>w</rtype><rit1>https://www.flickr.com/photos/139088815@N08/albums/72157684842729330</rit1><rit2>Trails.com</rit2></ref><ref><rtype>w</rtype><rit1>https://www.fs.usda.gov/recarea/cibola/recarea/?recid=82309</rit1><rit2>Forest Service</rit2></ref></refs>
+    <dataProp>
+    </dataProp>
+    <dataAct>
+    </dataAct>
+</row>
 </rows>
