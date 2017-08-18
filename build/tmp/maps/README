@@ -1,8 +1,0 @@
-This subdirectory is used to temporarily store gpsv html geomaps
-submitted by the user during the new hike page creation process.
-
-The files will be moved either:
-	1. By the site master during saveHike.php execution,
-	   after entering the site master password, or
-	2. Later, after review by the site master, when data is
-	   submitted by a registered user.

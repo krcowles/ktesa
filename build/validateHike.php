@@ -26,6 +26,7 @@
         if ( !isset($nopics) ) {
             $usetsv = true;
             require "getPicDat.php";
+            
         } else {
             $usetsv = false;
         }
@@ -61,14 +62,6 @@
     } else {
         echo "<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>\n";
         echo '<form target="_blank" action="displayHikePg.php" method="POST">' . "\n";
-        # Check to see if pictures will be used for this page
-        $nopics = filter_input(INPUT_POST,'nopix');
-        if ( !isset($nopics) ) {
-            $usetsv = true;
-            require_once "getPicDat.php";
-        } else {
-            $usetsv = false;
-        }
         # Peform any uploads and file validation & summaries
         require "fileUploads.php";
     }
@@ -113,8 +106,16 @@ if ($haveGpx) {
     $xml->row[$hikeNo]->gpxfile = $hikeGpx;
     $xml->row[$hikeNo]->trkfile = $trkfile;
     # Extract trailhead lat & lng from gpx file
-    $gpxupload = getcwd() . '/' . $uploads . 'gpx/' . $hikeGpx;
-    $gpxdat = file_get_contents($gpxUpload);
+    $cwd = getcwd();
+    $bloc = strpos($cwd,"build");
+    $basedir = substr($cwd,0,$bloc);
+    $gpxupload = $basedir . 'gpx/' . $hikeGpx;
+    $gpxdat = file_get_contents($gpxupload);
+    if ($gpxdat === false) {
+        $nord = $pstyle . 'Could not read ' . $hikeGpx . 
+            ': contact Site Master</p>';
+        die($nord);
+    }
     $trksegloc = strpos($gpxdat,"<trkpt lat=");
     $trksubstr = substr($gpxdat,$trksegloc,100);
     $latloc = strpos($trksubstr,"lat=") + 5;
@@ -243,14 +244,14 @@ if ($type === 'Validate') {
         #$mdat = preg_replace('/\t/','', $mdat);
     }
     echo '<h4 style="text-indent:16px">Please check the boxes corresponding to ' .
-        'the pictures you wish to include on the new page:</h4>';
+        'the pictures you wish to include on the new page:</h4>' . "\n";
     echo '<div style="position:relative;top:-14px;margin-left:16px;">' .
         '<input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;' .
-        'Use All Photos on Hike Page<br />';
+        'Use All Photos on Hike Page<br />' . "\n";
         '<input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;' .
-        'Use All Photos on Map';
-    echo '</div>';
-    echo '<div style="margin-left:16px;">';
+        'Use All Photos on Map' . "\n";
+    echo "</div>\n";
+    echo '<div style="margin-left:16px;">' . "\n";
 
     for ($i=0; $i<$picno; $i++) {
         echo '<div class="selPic" style="width:' . $phWds[$i] . 'px;float:left;'
@@ -258,10 +259,10 @@ if ($type === 'Validate') {
         echo '<input class="hpguse" type="checkbox" name="pix[]" value="' .  $phNames[$i] .
             '" />Display&nbsp;&nbsp;';
         echo '<input class="mpguse" type="checkbox" name="mapit[]" value="' . $phNames[$i] .
-             '" />Map<br />';
+             '" />Map<br />' . "\n";
         echo '<img class="allPhotos" height="200px" width="' . $phWds[$i] . 'px" src="' .
-                $phPics[$i] . '" alt="' . $phNames[$i] . '" />';
-        echo '</div>';
+                $phPics[$i] . '" alt="' . $phNames[$i] . '" />' . "\n";
+        echo "</div>\n";
     }
     echo "</div>\n";
 
@@ -278,7 +279,7 @@ if ($type === 'Validate') {
         $passtsv = "NO";
     }
     echo '<input type="hidden" name="usepics" value="' . $passtsv . '" />' . "\n";
-
+    echo '<input type="hidden" name="hikeno" value="' . $hikeNo . '" />' . "\n";
     echo "</form>\n";
 }
 ?>

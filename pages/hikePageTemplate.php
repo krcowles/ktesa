@@ -10,8 +10,8 @@ define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_ur
 define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
 
 /* 
- * The following function is used to create the html code for the items in a string,
- *  which were retrieved from the database in the form of 'string arrays'
+ * The following function is used to create the html code for the items
+ *  which were retrieved from the database 'refs' tag (aka $obj)
  */
 function makeHtmlList($type,$obj) {
     if ($type === References) {
@@ -80,13 +80,19 @@ function makeHtmlList($type,$obj) {
 /*
  * -------------------------  MAIN ROUTINE ------------------------
  */
-$hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
-$datatable = '../data/database.xml';
-$tabledat = simplexml_load_file($datatable);
-if ($tabledat === false) {
-    die ("Could not load database.xml as simplexml");
+if (isset($building) && $building === true) {
+    $hikeIndexNo = $hikeRow + 1;
+} else {
+    $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
+    $database = '../data/database.xml';
+    $xml = simplexml_load_file($database);
+    if ($xml === false) {
+        $noload = '<p style="margin-left:16px;color:red;font-size:18px">' .
+                "Could not load database.xml: contact Site Master</p>";
+        die ($noload);
+    }
 }
-foreach ($tabledat->row as $page) {
+foreach ($xml->row as $page) {
     if ($page->indxNo == $hikeIndexNo) {
         $newstyle = true;  // change later if no gpx file
         $hikeTitle = $page->pgTitle;
@@ -147,25 +153,24 @@ foreach ($tabledat->row as $page) {
         /* 
         * Extract remaining database elements:
         */
-        $rawLinks = $page->albLinks;
-        #echo "LINKS: " . $rawLinks->asXML();
+        # links for photos (javascript access)
         $picLinks = "<ol>\n";
-        foreach ($rawLinks->alb as $purl) {
-            $picLinks .= "<li>" . $purl . "</li>\n";
+        foreach ($page->albLinks->alb as $alink) {
+                $picLinks .= "<li>" . $alink . "</li>\n";
         }
         $picLinks .= "</ol>\n";
         $hikeTips = $page->tipsTxt;
         $hikeTips = preg_replace("/\s/"," ",$hikeTips);
-        $hikeInfo = '<p id="hikeInfo">' . $page->hikeInfo . '</p>';
+        $hikeInfo = '<p id="hikeInfo">' . $page->hikeInfo . "</p>\n";
         # there should always be something to report in 'references'
         $hikeRefs = $page->refs;
         # there may or may not be any proposed data or actual data to present
         $hikeReferences = makeHtmlList(References,$hikeRefs);
         $hikeProposedData = $page->dataProp;
         $hikeActualData = $page->dataAct;
-        # NOTE: oddly, if no children, ->count() yields a "1"; strlen <> 0 !!, so:
-        if ( strlen($hikeProposedData->prop) !== 0 || strlen($hikeActualData->act) !== 0 ) {
+        if ( $hikeProposedData->prop->count() !== 0 || $hikeActualData->act->count() !== 0 ) {
             $fieldsets = true;
+            echo "SET Fieldsets";
             $datasect = "<fieldset>\n" . 
                     '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
             if (strlen($hikeProposedData->prop) !== 0) {

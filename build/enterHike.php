@@ -174,11 +174,11 @@ $clcnt = count($clhikes);
     <fieldset id="exposure">
         <legend>Exposure Factor</legend>
         <em id="selexp" class="notVC">Select Exposure to Sun: </em>
-        <input id="sunny" type="radio" name="expos" value="sun" />
+        <input id="sunny" type="radio" name="expos" value="Full sun" />
         <label class="notVC" for="sunny">Full Sun</label>
-        <input id="shady" type="radio" name="expos" value="shade" />
+        <input id="shady" type="radio" name="expos" value="Good shade" />
         <label class="notVC" for="shady">Good Shade</label>
-        <input id="partly" type="radio" name="expos" value="mixed" />
+        <input id="partly" type="radio" name="expos" value="Mixed sun/shade" />
         <label class="notVC" for="partly">Mixed Sun &amp; Shade</label>
     </fieldset>
 

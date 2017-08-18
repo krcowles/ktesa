@@ -94,7 +94,7 @@ if ($haveGpx) {
             'Site Master</p>';
         die ($trkfail);
     }
-    $trkfile = $basename . 'json';
+    $trkfile = $baseName . '.json';
 }
 
 # ADDITIONAL IMAGES FILES (IF ANY):

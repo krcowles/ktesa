@@ -11,6 +11,7 @@
     <feet></feet>
     <difficulty></difficulty>
     <facilities></facilities>
+    <wow></wow>
     <seasons></seasons>
     <expo></expo>
     <tsv>
@@ -26,17 +27,8 @@
     <dirs></dirs>
     <cgName></cgName>
     <content>
-        <picRow>
-            <rowHt></rowHt>
-            <pic>
-                <picWdth></picWdth>
-                <picSrc></picSrc>
-                <picCap></picCap>
-            </pic>
-        </picRow>
     </content>
     <albLinks>
-        <alb></alb>
     </albLinks>
     <tipsTxt></tipsTxt>
     <hikeInfo></hikeInfo>

@@ -1,6 +1,10 @@
 There are three types of files and associated scripts contained in this directory,
 depending on whether one wishes to create a page, edit a page, or rebuild a page.
 
+
+
+THIS NEEDS UPDATING!!!!
+
 1. PAGE CREATION:
 invoke:   enterHike.html  ----> if Hike:    validateHike.php
                                                     displayHikePg.php

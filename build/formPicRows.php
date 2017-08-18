@@ -1,14 +1,37 @@
 <?php
- /*
-  * This routine will use the already-created $photo xml object to access
-  * picture data. 
-  */ 
+# image processing definitions - see include file: formPicRows.php
+define("SPACING", 14, true);
+define("MAXWIDTH", 960, true);
+define("ROWHT", 260, true);
+define("TOOMUCHMARGIN", 80, true);
+define("MIN_IFRAME_SIZE", 270, true);
+
+$addonImg[0] = $xml->row[$hikeRow]->aoimg1;
+$imgIndx = 0;
+if (strlen($addonImg[0]) === 0) {
+    $noOfOthr = 0;
+} else {
+    $noOfOthr = 1;
+    $firstimg = getimagesize("../images/" . $addonImg[0]);
+    $othrWidth[$imgIndx] = $firstimg[0];
+    $othrHeight[$imgIndx] = $firstimg[1];
+    $imgIndx += 1;
+    $img1File = '../images/' . $addonImg[0];
+}
+$addonImg[1] = $xml->row[$hikeRow]->aoimg2;
+if (strlen($addonImg[1]) !== 0) {
+    $noOfOthr += 1;
+    $secondimg = getimagesize("../images/" . $addonImg[1]);
+    $othrWidth[$imgIndx] = $secondimg[0];
+    $othrHeight[$imgIndx] = $secondimg[1];
+    $img2File = '../images/' . $addonImg[1];
+}
 # predefine array for months...
 $month = array("Jan","Feb","Mar","Apr","May","Jun",
                                 "Jul","Aug","Sep","Oct","Nov","Dec");
 # for each of the <user-selected> pix, define needed arrays
 $i = 0;
-foreach ($photos->picDat as $upic) {
+foreach ($xml->row[$hikeRow]->tsv->picDat as $upic) {
     if ($upic->hpg == 'Y') {
         $picYear = substr($upic->date,0,4);
         $picMoDigits = substr($upic->date,5,2) - 1;
@@ -27,8 +50,6 @@ foreach ($photos->picDat as $upic) {
         $i++;
     }
 }
-# the list of links to photos will be passed as a string to 'saveHike.php'
-$albStr = $noOfPix . '^' . implode("^",$album);
 
 $imgRows = [];          # no limit on number of rows for now...
 $maxRowHt = 260;	# change as desired
@@ -55,8 +76,11 @@ $rowNo = 0;
 $totalProcessed = 0;
 $othrIndx = 0;	 # counter for number of other images being loaded
 $leftMostImg = true;
-$rowStr = array();
     for ($i=0; $i<$items; $i++) {
+        /*
+         *  This begins a new row; each row ends after exiting the 'for' loop
+         *  contained in the if($curWidth > $rowWidth) statement.
+         */
         if ($leftMostImg === false) {  # modify width for added pic margins for all but first img
                 $curWidth += 1;
         }
@@ -76,10 +100,10 @@ $rowStr = array();
             $actualHt = floor($scaleFactor * $maxRowHt);
             # ALL rows concatenated in $rowHtml
             $rowHtml = $rowHtml . '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
-            $rowxml .= "\t<picRow>\n\t\t<rowHt>" . $actualHt . "</rowHt>\n";
+            $newPicRow = $xml->row[$hikeRow]->content->addChild('picRow');
+            $newPicRow->addChild('rowHt',$actualHt);
             $thisRow = '';
             $imgCnt = 0;
-            $imel = '';
             for ($n=$startIndx; $n<=$i; $n++) {
                 if ($n === $startIndx) {
                     $styling = ''; # don't add left-margin to leftmost image
@@ -91,32 +115,28 @@ $rowStr = array();
                     $picHeight[$n] = $actualHt;
                     $thisRow = $thisRow . '<img id="pic' .$n . '" style="' . $styling . '" width="' .
                         $picWidth[$n] . '" height="' . $actualHt . '" src="' . $photolink[$n] . 
-                        '" alt="' . $caption[$n] . '" />';	
-                    $imel .= 'p^' . $picWidth[$n] . '^' . $photolink[$n] . '^' . $caption[$n];
-                    $rowxml .= "\t\t<pic>\n\t\t\t<picWdth>" . $picWidth[$n] .
-                            "</picWdth>\n\t\t\t<picSrc>" . $photolink[$n] .
-                            "</picSrc>\n\t\t\t<picCap>" . $caption[$n] .
-                            "</picCap>\n\t\t</pic>\n";
+                        '" alt="' . $caption[$n] . '" />' . "\n";	
+                    $newPicEl = $newPicRow->addChild('pic');
+                    $newPicEl->addChild('picWdth',$picWidth[$n]);
+                    $newPicEl->addChild('picSrc',$photolink[$n]);
+                    $newPicEl->addChild('picCap',$caption[$n]);
                 } else {  # its an additional non-captioned image
                     $othrWidth[$othrIndx] = floor($scaleFactor * $widthAtMax[$n]);
                     $othrHeight[$othrIndx] = $actualHt;
                     $thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$n] .
                             '" height="' . $actualHt . '" src="../images/' . $addonImg[$othrIndx] .
-                            '" alt="Additional non-captioned image" />';
-                    $imel .= 'n^' . $othrWidth[$n] . '^' . $addonImg[$othrIndx];
-                    $rowxml .= "\t\t<pic>\n\t\t\t<picWdth>" . $othrWidth[$n] .
-                            "</picWdth>\n\t\t\t<picSrc>../images/" . 
-                            $addonImg[$othrIndx] . "</picSrc>\n\t\t\</pic>\n";
+                            '" alt="Additional non-captioned image" />' . "\n";
+                    $newPicEl = $newPicRow->addChild('pic');
+                    $newPicEl->addChild('picWdth', $othrWidth[$n]);
+                    $newPicEl->addChild('picSrc',$addonImg[$othrIndx]);
+                    $newPicEl->addChild('picCap','');
                     $othrIndx += 1;
                 }
                 $imgCnt++;
-                $imel .= '^';
             }  # end of for loop $n
+            
             # thisRow is completed and will be used below in different ways:
-            $imel = $imgCnt . '^' . $actualHt . '^' . $imel;
-            array_push($rowStr,$imel);
             $rowHtml = $rowHtml . $thisRow . "\n</div>\n";
-            $rowxml .= "\t</picRow>\n";   
             $rowNo += 1;
             $startIndx += $rowItems;
             $curWidth = 0;
@@ -130,8 +150,8 @@ $rowStr = array();
         $itemsLeft = $items - $totalProcessed;
         $leftMostImg = true;
         $thisRow = '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
-        $rowxml .= "\t<picRow>\n\t\t<rowHt>" . $maxRowHt . "</rowHt>\n";
-        $imel = '';
+        $newPicRow = $xml->row[$hikeRow]->content->addChild('picRow');
+        $newPicRow->addChild('rowHt',$maxRowHt);
         $imgCnt = 0;
             for ($i=0; $i<$itemsLeft; $i++) {
                 if ($leftMostImg) {
@@ -146,12 +166,10 @@ $rowStr = array();
                     $thisRow = $thisRow . '<img id="pic' . $startIndx . '" style="' . $styling .
                             '" width="' . $picWidth[$startIndx] . '" height="' . $maxRowHt . '" src="' . 
                             $photolink[$startIndx] . '" alt="' . $caption[$startIndx] . '" />';
-                    $imel .= 'p^' . $picWidth[$startIndx] . '^' . $photolink[$startIndx] . 
-                            '^' . $caption[$startIndx];
-                    $rowxml .= "\t\t<pic>\n\t\t\t<picWdth>" . $picWidth[$startIndx] .
-                            "</picWdth>\n\t\t\t<picSrc>" . $photolink[$startIndx] .
-                            "</picSrc>\n\t\t\t<picCap>" . $caption[$startIndx] .
-                            "</picCap>\n\t\t</pic>\n";
+                    $newPicEl = $newPicRow->addChild('pic');
+                    $newPicEl->addChild('picWdth',$picWidth[$startIndx]);
+                    $newPicEl->addChild('picSrc',$photolink[$startIndx]);
+                    $newPicEl->addChild('picCap',$caption[$startIndx]);
                     $startIndx += 1;
                 } else {
                     $othrWidth[$othrIndx] = $widthAtMax[$startIndx];
@@ -159,39 +177,20 @@ $rowStr = array();
                     $thisRow = $thisRow . '<img style="' . $styling . '" width="' . $othrWidth[$othrIndx] . '" height="' .
                             $maxRowHt . '" src="../images/' . $addonImg[$othrIndx] .
                             '" alt="Additional page image" />';
-                    $imel .= 'n^' . $othrWidth[$othrIndx] . '^' . $addonImg[$othrIndx];
-                    $rowxml .= "\t\t<pic>\n\t\t\t<picWdth>" . $othrWidth[$othrIndx] .
-                            "</picWdth>\n\t\t\t<picSrc>../images/" . 
-                            $addonImg[$othIndx] . "</picSrc>\n\t\t</pic>\n";
+                    $newPicEl = $newPicRow->addChild('pic');
+                    $newPicEl->addChild('picWdth',$picWidth[$othrIndx]);
+                    $newPicEl->addChild('picSrc',$photolink[$othrIndx]);
+                    $newPicEl->addChild('picCap','');
                     $othrIndx += 1;
                     $startIndx += 1;
                 }
                 $imgCnt++;
-                $imel .=  '^';
             } // end of for loop processing
-            $imel = $imgCnt . '^' . $maxRowHt . '^' . $imel;
-            array_push($rowStr,$imel);
             $imgRows[$rowNo] = $thisRow . "</div>";
             $rowHtml = $rowHtml . $thisRow . "\n</div>\n";
-            $rowxml .= "\t</picRow>\n"; 
     } // end of last row conditional
-    # all items have been processed and actual width/heights retained
-    $_SESSION['picrows'] = $rowxml;
-    # Create the list of album links
-    $albumHtml = '<div class="lnkList"><ol>';
-    for ($k=0; $k<$noOfPix; $k++ ) {
-            $albumHtml = $albumHtml . "<li>{$album[$k]}</li>";
+    # place album links:
+    foreach ($album as $link) {
+        $xml->row[$hikeRow]->albLinks->addChild('alb',$link);
     }
-    $albumHtml = $albumHtml . "</ol></div>";
-    
-    echo $rowHtml;
-    echo $albumHtml;
-    /*  DEBUG
-    $tmprows = fopen("rowXml.xml","w");
-    if ($tmprows === false) {
-        die ("CANT OPEN tmprows");
-    }
-    fwrite($tmprows,$rowxml);
-    fclose($tmprows);
-     */
     ?>

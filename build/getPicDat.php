@@ -59,7 +59,6 @@ if ($supplied === 0) {
             . 'this time"</p>';
     die ($nourls);
 }
-
 # variables used in processing data from albums:
 $albums = $_POST['albtype'];
 $xmlTsvStr = '';
