@@ -85,7 +85,6 @@
 # from here on out, $hikeNo is decremented as hikes start at 1, not 0:
 $hikeNo--;
 $xml->row[$hikeNo]->pgTitle = $hikeName;
-
 $xml->row[$hikeNo]->locale = filter_input(INPUT_POST,'locale');
 $marker = filter_input(INPUT_POST,'mstyle');
 if ($marker === 'ctrhike') {
@@ -160,7 +159,16 @@ if (substr($rawtips,0,10) !== '[OPTIONAL]') {
 $hikeDetails = filter_input(INPUT_POST,'hiketxt');
 $xml->row[$hikeNo]->hikeInfo = $hikeDetails;
 
-# don't know how to filter arrays:
+/* If a user saves form more than once, the above data will simply be
+ * re-written (along with any updates), but the arrays below use 'addChild'
+ * and would duplicate existing data by adding more of the same. The affected
+ * items are: References, Proposed Data, and Actual Data. Always 'clear out
+ * the old' first...
+ */
+$rcnt = $xml->row[$hikeNo]->refs->ref->count();
+for ($i=0; $i<$rcnt; $i++) {
+    unset($xml->row[$hikeNo]->refs->ref[0]);
+}
 $hikeRefTypes = $_POST['rtype'];
 $hikeRefItems1 = $_POST['rit1'];
 $hikeRefItems2 = $_POST['rit2'];
@@ -188,6 +196,10 @@ if ($noOfRefs === 0) {
 # Proposed and Actual GPS Maps & Data:
 if ($gpsDatFiles) {
     # PROPOSED:
+    $pcnt = $xml->row[$hikeNo]->dataProp->prop->count();
+    for ($j=0; $j<$pcnt; $j++) {
+        unset($xml->row[$hikeNo]->dataProp->prop[0]);
+    }
     $hikePDatLbls = $_POST['plbl'];
     $noOfPDats = count($hikePDatLbls);
     for ($i=0; $i<$noOfPDats; $i++) {
@@ -208,6 +220,10 @@ if ($gpsDatFiles) {
         }
     }
     # ACTUAL:
+    $acnt = $xml->row[$hikeNo]->dataAct->act->count();
+    for ($k=0; $k<$acnt; $k++) {
+        unset($xml->row[$hikeNo]->dataAct->act[0]);
+    }
     $hikeADatLbls = $_POST['albl'];
     $noOfADats = count($hikeADatLbls);
     for ($j=0; $j<$noOfADats; $j++) {
