@@ -55,14 +55,23 @@
     if ($type === 'Save') {
         echo '<div style="margin-left:24px;font-size:18px;">';
         echo '<h2>You have saved the current data on the form</h2>';
-        echo '<p>You may continue on that page, or come back later to work on it</p>';
+        echo '<p >You may continue on that page, or come back later to work '
+            . 'on it:<br />Use: [server]/[project]/build/enterHike.php?hikeNo='
+            . $hikeNo . '</p>';
         echo '<p>Your Hike No is ' . $hikeNo . ', and the hike saved is ' .
             $hikeName . '</p></div>';
         
     } else {
-        echo "<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>\n";
         echo '<form target="_blank" action="displayHikePg.php" method="POST">' . "\n";
-        # Peform any uploads and file validation & summaries
+        echo "<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>\n";
+        echo '<div style="margin-left:24px;font-size:18px;">';
+        echo "<h3>Please Note!</h3>\n" . '<p>You have saved new data. '
+                . 'Do not go back to the previous page and repeat this step or '
+                . 'duplicate data will be created.<br />If you wish to stop '
+                . 'here and return later to select photos, please use the'
+                . 'following url:<br />[server]/[project]/build/finishPage.php?'
+                . 'hikeNo=' . $hikeNo . ' after exiting this page (do not select '
+                . 'the "Create Page.." button</p>';
         require "fileUploads.php";
     }
 ?>  
@@ -240,14 +249,15 @@ if ($type === 'Validate') {
             $phWds[$picno] = floor($aspect * $pWidth);
             $picno += 1;
         }
-        #$mdat = preg_replace('/\n/','', $photoXml);
-        #$mdat = preg_replace('/\t/','', $mdat);
+        $mdat = $xml->row[$hikeNo]->tsv->asXML();
+        $mdat = preg_replace('/\n/','', $mdat);
+        $mdat = preg_replace('/\t/','', $mdat);
     }
     echo '<h4 style="text-indent:16px">Please check the boxes corresponding to ' .
         'the pictures you wish to include on the new page:</h4>' . "\n";
     echo '<div style="position:relative;top:-14px;margin-left:16px;">' .
         '<input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;' .
-        'Use All Photos on Hike Page<br />' . "\n";
+        'Use All Photos on Hike Page<br />' . "\n" .
         '<input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;' .
         'Use All Photos on Map' . "\n";
     echo "</div>\n";
@@ -273,6 +283,7 @@ if ($type === 'Validate') {
     echo "</div>\n";
 
     echo '<div class="popupCap"></div>' . "\n";
+    
     if ($usetsv) {
         $passtsv = "YES";
     } else {
@@ -285,7 +296,7 @@ if ($type === 'Validate') {
 ?>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">
-    var mouseDat = $.parseXML("<?php $xml->row[$hikeNo]->tsv;?>");
+    var mouseDat = $.parseXML("<?php echo $mdat;?>");
     var phTitles = [];
     var phDescs = [];
 </script>

@@ -23,12 +23,7 @@ $usePix = filter_input(INPUT_POST,'usepics');
 if ($usePix == 'YES') {
     $picarray = $_POST['pix'];  # boxes checked for inclusion on hike page
     $noOfPix = count($picarray);
-    if ($noOfPix === 0) {
-        $nopix = $pstyle . 'No pictures were selected for inclusion on the ' .
-                'hike page: if this is correct, continue; else go back and ' .
-                'select the desired items</p>';
-        echo $nopix;
-    } else {
+    if ($noOfPix !== 0) {
         for ($z=0; $z<$noOfPix; $z++) {
             # change the 'N' to a 'Y' in the database
             foreach ($xml->row[$hikeRow]->tsv->picDat as $picel) {
@@ -42,12 +37,7 @@ if ($usePix == 'YES') {
     # retrieve array of photos checked for inclusion on map:
     $maparray = $_POST['mapit'];
     $noOfMapPix = count($maparray);
-    if ($noOfMapPix === 0) {
-        $nomappix = $pstyle . 'No pictures were selected for inclusion on the '
-                . 'hike map: if this is correct, continue; else go back and'
-                . ' select desired items</p>';
-        echo $nomappix;
-    } else {
+    if ($noOfMapPix !== 0) {
         for ($q=0; $q<$noOfMapPix; $q++) {
             # change the 'N' to a 'Y' in the $photos xml object
             foreach ($xml->row[$hikeRow]->tsv->picDat as $picel) {
