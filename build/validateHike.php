@@ -88,11 +88,11 @@ $xml->row[$hikeNo]->pgTitle = $hikeName;
 
 $xml->row[$hikeNo]->locale = filter_input(INPUT_POST,'locale');
 $marker = filter_input(INPUT_POST,'mstyle');
-$xml->row[$hikeNo]->marker = $marker;
 if ($marker === 'ctrhike') {
-    echo 'Saw cluster hike';
+    $xml->row[$hikeNo]->marker = 'At VC';
     $xml->row[$hikeNo]->clusterStr = filter_input(INPUT_POST,'vchike');
 } elseif ($marker === 'cluster') {
+    $xml->row[$hikeNo]->marker = 'Cluster';
     $belongsTo = filter_input(INPUT_POST,'clusgrp');
     $xml->row[$hikeNo]->clusGrp = $belongsTo;
     foreach ($xml->row as $row) {
@@ -102,6 +102,8 @@ if ($marker === 'ctrhike') {
         }
     }
     $xml->row[$hikeNo]->cgName = $cname;
+} elseif ($marker === 'other') {
+    $xml->row[$hikeNo]->marker = 'Normal';
 }
 $xml->row[$hikeNo]->logistics = filter_input(INPUT_POST,'htype');
 $xml->row[$hikeNo]->miles = filter_input(INPUT_POST,'dist');

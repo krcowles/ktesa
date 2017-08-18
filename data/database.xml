@@ -15639,7 +15639,7 @@ accumulations.</hikeInfo>
     <rlock/>
     <pgTitle>Sandia Cave</pgTitle>
     <locale>Placitas</locale>
-    <marker>other</marker>
+    <marker>Normal</marker>
     <clusterStr/>
     <clusGrp/>
     <logistics>Out-and-back</logistics>
@@ -15681,7 +15681,7 @@ accumulations.</hikeInfo>
     <rlock/>
     <pgTitle>Piedra Lisa - La Luz Link</pgTitle>
     <locale>Albuquerque</locale>
-    <marker>cluster</marker>
+    <marker>Cluster</marker>
     <clusterStr/>
     <clusGrp>K</clusGrp>
     <logistics>Out-and-back</logistics>
