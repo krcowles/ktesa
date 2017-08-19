@@ -165,6 +165,7 @@ include "timeSort.php";
 foreach ($xmlout as $tsvdata) {  # each item is an array of data
     # NOTE: $hikeNo has not yet been decremented to correlate hike no w/ indx no
     $newpic = $xml->row[$hikeNo-1]->tsv->addChild('picDat');
+    $newpic->addChild('folder',$tsvdata['folder']);
     $newpic->addChild('title',htmlspecialchars($tsvdata['pic']));
     $newpic->addChild('hpg','N');
     $newpic->addChild('mpg','N');

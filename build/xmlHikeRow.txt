@@ -14,8 +14,7 @@
     <wow></wow>
     <seasons></seasons>
     <expo></expo>
-    <tsv>
-    </tsv>
+    <tsv></tsv>
     <gpxfile></gpxfile>
     <trkfile></trkfile>
     <lat></lat>
@@ -26,16 +25,11 @@
     <spUrl></spUrl>
     <dirs></dirs>
     <cgName></cgName>
-    <content>
-    </content>
-    <albLinks>
-    </albLinks>
+    <content></content>
+    <albLinks></albLinks>
     <tipsTxt></tipsTxt>
     <hikeInfo></hikeInfo>
-    <refs>
-    </refs>
-    <dataProp>
-    </dataProp>
-    <dataAct>
-    </dataAct>
+    <refs></refs>
+    <dataProp></dataProp>
+    <dataAct></dataAct>
 </row>
