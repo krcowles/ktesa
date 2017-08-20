@@ -15717,4 +15717,143 @@ accumulations.</hikeInfo>
     <dataAct>
     </dataAct>
 </row>
+
+<row>
+    <indxNo>135</indxNo>
+    <rlock/>
+    <pgTitle>Travertine Falls</pgTitle>
+    <locale>Tijeras</locale>
+    <marker>Normal</marker>
+    <clusterStr/>
+    <clusGrp/>
+    <logistics>Out-and-back</logistics>
+    <miles>1.5</miles>
+    <feet>350</feet>
+    <difficulty>Easy</difficulty>
+    <facilities>None</facilities>
+    <wow>Travertine Caves and Falls</wow>
+    <seasons>Not Winter</seasons>
+    <expo>Mixed sun/shade</expo>
+    <tsv>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>TravertineTrailhead</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Travertine Trailhead at the parking area</desc>
+            <lat>35.0895638889</lat>
+            <lng>-106.391586111</lng>
+            <thumb>https://c1.staticflickr.com/5/4401/36410971435_28ae92ecfa_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36410971435/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:03:23</date>
+            <mid>https://c1.staticflickr.com/5/4401/36410971435_28ae92ecfa_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4401/36410971435_0bc66544f8_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>ViewsInTheHills</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Some lovely views of the South Sandias</desc>
+            <lat>35.0899277778</lat>
+            <lng>-106.392005556</lng>
+            <thumb>https://c1.staticflickr.com/5/4441/36274416071_cd0a7ff0c6_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36274416071/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:04:51</date>
+            <mid>https://c1.staticflickr.com/5/4441/36274416071_cd0a7ff0c6_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4441/36274416071_4f8dff342d_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>PartOfCrestTrail</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Some trails begin from the South Crest Trail</desc>
+            <lat>35.0946222222</lat>
+            <lng>-106.392486111</lng>
+            <thumb>https://c1.staticflickr.com/5/4430/35575812004_6f2aa8fd91_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/35575812004/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:20:10</date>
+            <mid>https://c1.staticflickr.com/5/4430/35575812004_6f2aa8fd91_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4430/35575812004_02b9314cd1_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>TravertineCaves</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>An interesting feature of the travertine formation</desc>
+            <lat>35.095275</lat>
+            <lng>-106.393875</lng>
+            <thumb>https://c1.staticflickr.com/5/4432/36242913762_703ec41d71_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36242913762/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:21:51</date>
+            <mid>https://c1.staticflickr.com/5/4432/36242913762_703ec41d71_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4432/36242913762_74ea2f938a_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>TrickleFalls</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Not much water late summer</desc>
+            <lat>35.0951888889</lat>
+            <lng>-106.393738889</lng>
+            <thumb>https://c1.staticflickr.com/5/4375/36410981235_7df5c57b2f_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36410981235/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:24:28</date>
+            <mid>https://c1.staticflickr.com/5/4375/36410981235_7df5c57b2f_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4375/36410981235_e79258f63b_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>LookingEast</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Ocassional glimpses looking east en route</desc>
+            <lat>35.0959361111</lat>
+            <lng>-106.395783333</lng>
+            <thumb>https://c1.staticflickr.com/5/4416/36242902822_f8c14fe203_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36242902822/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:31:04</date>
+            <mid>https://c1.staticflickr.com/5/4416/36242902822_f8c14fe203_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4416/36242902822_b2fc7a8f1b_o.jpg</org>
+        </picDat>
+    </tsv>
+    <gpxfile>Travertine_Falls.GPX</gpxfile>
+    <trkfile>Travertine_Falls.json</trkfile>
+    <lat>35.089452853426337</lat>
+    <lng>-106.391439372673631</lng>
+    <aoimg1/>
+    <aoimg2/>
+    <mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157683838569732</mpUrl>
+    <spUrl/>
+    <dirs>https://www.google.com/maps/dir//Travertine+Falls,+Grand+Enchantment+Trail,+Cedar+Crest,+NM+87008/@35.0878409,-106.399459,15.39z/data=!4m15!1m6!3m5!1s0x8718a25563f2e5d7:0xf849c028caed8b2a!2sTravertine+Falls!8m2!3d35.0951739!4d-106.393809!4m7!1m0!1m5!1m1!1s0x8718a25563f2e5d7:0xf849c028caed8b2a!2m2!1d-106.393809!2d35.0951739</dirs>
+    <cgName/>
+    <content><picRow><rowHt>237</rowHt><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4401/36410971435_28ae92ecfa_n.jpg</picSrc><picCap>Aug 6, 2017: Travertine Trailhead at the parking area</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4441/36274416071_cd0a7ff0c6_n.jpg</picSrc><picCap>Aug 6, 2017: Some lovely views of the South Sandias</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4430/35575812004_6f2aa8fd91_n.jpg</picSrc><picCap>Aug 6, 2017: Some trails begin from the South Crest Trail</picCap></pic></picRow><picRow><rowHt>237</rowHt><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4432/36242913762_703ec41d71_n.jpg</picSrc><picCap>Aug 6, 2017: An interesting feature of the travertine formation</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4375/36410981235_7df5c57b2f_n.jpg</picSrc><picCap>Aug 6, 2017: Not much water late summer</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4416/36242902822_f8c14fe203_n.jpg</picSrc><picCap>Aug 6, 2017: Ocassional glimpses looking east en route</picCap></pic></picRow></content>
+    <albLinks><alb>https://www.flickr.com/photos/139088815@N08/36410971435/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/36274416071/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/35575812004/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/36242913762/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/36410981235/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/36242902822/in/album-72157683838569732</alb></albLinks>
+    <tipsTxt/>
+    <hikeInfo>NOTE: The track indicated on the map actually extends beyond the falls area, as the author wished to explore a bit of the South Crest Trail. The Travertine Falls area is a rather popular short and easy hike suitable for a family outing. The trail ascends gradually to the falls area, but at times, the waterflow can be low. The travertine caves, formed by the falls, are nonetheless worth seeing. The trail is the initial part of the Sandia South Crest Trail, which ascends to the crest and proceeds almost 26 miles to Placitas. While there are not a lot of views en route, the hike makes for a pleasant and enjoyable outing.</hikeInfo>
+    <refs><ref><rtype>a</rtype><rit1>https://www.alltrails.com/trail/us/new-mexico/travertine-falls</rit1><rit2>AllTrails</rit2></ref><ref><rtype>l</rtype><rit1>http://www.dailygarnish.com/2017/03/hiking-travertine-falls-new-mexico.html</rit1><rit2>Daily Garnish</rit2></ref></refs>
+    <dataProp/>
+    <dataAct/>
+</row>
 </rows>
