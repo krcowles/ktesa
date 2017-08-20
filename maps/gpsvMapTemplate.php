@@ -32,14 +32,19 @@
             if ($xmldat === false) {
                 die ("MAP TEMPLATE COULD NOT LOAD XML DATABASE");
             }
-            $photos = $xmldat->tsv;
+            foreach ($xmldat->row as $row) {
+                if ($hikeTitle == $row->pgTitle) {
+                    $photos = $row->tsv;
+                    break;
+                }
+            }
         }
         $gpxPath = filter_input(INPUT_GET,'gpx');
         include '../php/makeGpsv.php';
         $lines = explode("\n",$html); # $html comes in as a string
         foreach ($lines as &$dat) {
             $dat .= "\n"; # $lines array uses 'file' which retains newline
-            }
+        }
     } else {
         if ( !file_exists($map) ) {
             $msgout = '<p style="color:red;font-size:18px;margin-left:12px;margin-top:10px;>'
