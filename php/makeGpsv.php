@@ -1,11 +1,8 @@
 <?php 
 /*
  * REQUIRED INPUTS FOR THIS ROUTINE:  $hikeTitle; $gpxPath; $usetsv; AND
- *  $photos - which is either:
- *      - a 'complete' xml sring (w/header) created as an XML object in 
- *          'displayHikePg.php' and holding all <picDat> tags; OR
- *      - an xml object for the tsv data holding all <picDat> tages, 
- *          instantiated via 'hikePageTemplate.php'
+ *  $photos - which (if extant) is an xml object for the tsv data holding all 
+ *  <picDat> tags, from database.xml
  */
 
 # Function to calculate the distance between to lat/lng coordinates
@@ -58,7 +55,6 @@ $tno = 1;
 # Some titles may use quotations - provide for that case:
 $mapTitle = str_replace("'","\\'",$hikeTitle);
 $mapTitle = str_replace('"','\\"',$mapTitle);
-
 # Files: GPX track file
 $gpxdat = simplexml_load_file($gpxPath);
 if ($gpxdat === false) {
@@ -153,31 +149,18 @@ $defIconColor = 'red';
 if ($usetsv) {
     include "tsvProc.php";
 } else {
-    /*
-     * During page creation, the user may opt to omit photos from the page
-     * If this routine is not being invoked from page creation, $usePix will
-     * be undefined (i.e. isset will be false)
-     */
-    $pgCreation =  isset($usePix) ? true : false;
-    if ($pgCreation) {
-        $displayPix = $usePix;
-    } else {
-        $displayPix = true;   # may make this variable later...
-    }
-    if ($displayPix) {
-        #$photoCnt = $photos->count();
-        #die ("Count of <picDat> children: " . $photoCnt);
-        foreach ($photos->picDat as $xmlPhoto) {
-            if ($xmlPhoto->mpg == 'Y') {
-                $procName = preg_replace("/'/","\'",$xmlPhoto->title);
-                $procName = preg_replace('/"/','\"',$procName);
-                $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
-                    $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
-                    $xmlPhoto->desc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
-                    $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
-                    $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
-                array_push($plnks,$plnk);
-            }
+    $mcnt = 0;
+    foreach ($photos->picDat as $xmlPhoto) {
+        if ($xmlPhoto->mpg == 'Y') {
+            $procName = preg_replace("/'/","\'",$xmlPhoto->title);
+            $procName = preg_replace('/"/','\"',$procName);
+            $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
+                $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
+                $xmlPhoto->desc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
+                $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
+                $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
+            array_push($plnks,$plnk);
+            $mcnt++;
         }
     }
 }
