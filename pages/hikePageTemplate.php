@@ -170,7 +170,6 @@ foreach ($xml->row as $page) {
         $hikeActualData = $page->dataAct;
         if ( $hikeProposedData->prop->count() !== 0 || $hikeActualData->act->count() !== 0 ) {
             $fieldsets = true;
-            echo "SET Fieldsets";
             $datasect = "<fieldset>\n" . 
                     '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
             if (strlen($hikeProposedData->prop) !== 0) {
