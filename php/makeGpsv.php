@@ -154,9 +154,11 @@ if ($usetsv) {
         if ($xmlPhoto->mpg == 'Y') {
             $procName = preg_replace("/'/","\'",$xmlPhoto->title);
             $procName = preg_replace('/"/','\"',$procName);
+            $procDesc = preg_replace("/'/","\'",$xmlPhoto->desc);
+            $procDesc = preg_replace('/"/','\"',$procDesc);
             $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
                 $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
-                $xmlPhoto->desc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
+                $procDesc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
                 $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
                 $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
             array_push($plnks,$plnk);
