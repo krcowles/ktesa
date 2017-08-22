@@ -15717,4 +15717,179 @@ accumulations.</hikeInfo>
     <dataAct>
     </dataAct>
 </row>
+
+<row>
+    <indxNo>135</indxNo>
+    <rlock/>
+    <pgTitle>Travertine Falls</pgTitle>
+    <locale>Tijeras</locale>
+    <marker>Normal</marker>
+    <clusterStr/>
+    <clusGrp/>
+    <logistics>Out-and-back</logistics>
+    <miles>1.5</miles>
+    <feet>350</feet>
+    <difficulty>Easy</difficulty>
+    <facilities>None</facilities>
+    <wow>Travertine Caves and Falls</wow>
+    <seasons>Not Winter</seasons>
+    <expo>Mixed sun/shade</expo>
+    <tsv>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>TravertineTrailhead</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Travertine Trailhead at the parking area</desc>
+            <lat>35.0895638889</lat>
+            <lng>-106.391586111</lng>
+            <thumb>https://c1.staticflickr.com/5/4401/36410971435_28ae92ecfa_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36410971435/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:03:23</date>
+            <mid>https://c1.staticflickr.com/5/4401/36410971435_28ae92ecfa_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4401/36410971435_0bc66544f8_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>ViewsInTheHills</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Some lovely views of the South Sandias</desc>
+            <lat>35.0899277778</lat>
+            <lng>-106.392005556</lng>
+            <thumb>https://c1.staticflickr.com/5/4441/36274416071_cd0a7ff0c6_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36274416071/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:04:51</date>
+            <mid>https://c1.staticflickr.com/5/4441/36274416071_cd0a7ff0c6_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4441/36274416071_4f8dff342d_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>PartOfCrestTrail</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Some trails begin from the South Crest Trail</desc>
+            <lat>35.0946222222</lat>
+            <lng>-106.392486111</lng>
+            <thumb>https://c1.staticflickr.com/5/4430/35575812004_6f2aa8fd91_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/35575812004/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:20:10</date>
+            <mid>https://c1.staticflickr.com/5/4430/35575812004_6f2aa8fd91_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4430/35575812004_02b9314cd1_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>TravertineCaves</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>An interesting feature of the travertine formation</desc>
+            <lat>35.095275</lat>
+            <lng>-106.393875</lng>
+            <thumb>https://c1.staticflickr.com/5/4432/36242913762_703ec41d71_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36242913762/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:21:51</date>
+            <mid>https://c1.staticflickr.com/5/4432/36242913762_703ec41d71_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4432/36242913762_74ea2f938a_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>TrickleFalls</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Not much water late summer</desc>
+            <lat>35.0951888889</lat>
+            <lng>-106.393738889</lng>
+            <thumb>https://c1.staticflickr.com/5/4375/36410981235_7df5c57b2f_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36410981235/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:24:28</date>
+            <mid>https://c1.staticflickr.com/5/4375/36410981235_7df5c57b2f_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4375/36410981235_e79258f63b_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>LookingEast</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Ocassional glimpses looking east en route</desc>
+            <lat>35.0959361111</lat>
+            <lng>-106.395783333</lng>
+            <thumb>https://c1.staticflickr.com/5/4416/36242902822_f8c14fe203_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36242902822/in/album-72157683838569732</alblnk>
+            <date>2017:08:06 10:31:04</date>
+            <mid>https://c1.staticflickr.com/5/4416/36242902822_f8c14fe203_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4416/36242902822_b2fc7a8f1b_o.jpg</org>
+        </picDat>
+    </tsv>
+    <gpxfile>Travertine_Falls.GPX</gpxfile>
+    <trkfile>Travertine_Falls.json</trkfile>
+    <lat>35.089452853426337</lat>
+    <lng>-106.391439372673631</lng>
+    <aoimg1/>
+    <aoimg2/>
+    <mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157683838569732</mpUrl>
+    <spUrl/>
+    <dirs>https://www.google.com/maps/dir//Travertine+Falls,+Grand+Enchantment+Trail,+Cedar+Crest,+NM+87008/@35.0878409,-106.399459,15.39z/data=!4m15!1m6!3m5!1s0x8718a25563f2e5d7:0xf849c028caed8b2a!2sTravertine+Falls!8m2!3d35.0951739!4d-106.393809!4m7!1m0!1m5!1m1!1s0x8718a25563f2e5d7:0xf849c028caed8b2a!2m2!1d-106.393809!2d35.0951739</dirs>
+    <cgName/>
+    <content><picRow><rowHt>237</rowHt><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4401/36410971435_28ae92ecfa_n.jpg</picSrc><picCap>Aug 6, 2017: Travertine Trailhead at the parking area</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4441/36274416071_cd0a7ff0c6_n.jpg</picSrc><picCap>Aug 6, 2017: Some lovely views of the South Sandias</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4430/35575812004_6f2aa8fd91_n.jpg</picSrc><picCap>Aug 6, 2017: Some trails begin from the South Crest Trail</picCap></pic></picRow><picRow><rowHt>237</rowHt><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4432/36242913762_703ec41d71_n.jpg</picSrc><picCap>Aug 6, 2017: An interesting feature of the travertine formation</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4375/36410981235_7df5c57b2f_n.jpg</picSrc><picCap>Aug 6, 2017: Not much water late summer</picCap></pic><pic><picWdth>316</picWdth><picSrc>https://c1.staticflickr.com/5/4416/36242902822_f8c14fe203_n.jpg</picSrc><picCap>Aug 6, 2017: Ocassional glimpses looking east en route</picCap></pic></picRow></content>
+    <albLinks><alb>https://www.flickr.com/photos/139088815@N08/36410971435/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/36274416071/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/35575812004/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/36242913762/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/36410981235/in/album-72157683838569732</alb><alb>https://www.flickr.com/photos/139088815@N08/36242902822/in/album-72157683838569732</alb></albLinks>
+    <tipsTxt/>
+    <hikeInfo>NOTE: The track indicated on the map actually extends beyond the falls area, as the author wished to explore a bit of the South Crest Trail. The Travertine Falls area is a rather popular short and easy hike suitable for a family outing. The trail ascends gradually to the falls area, but at times, the waterflow can be low. The travertine caves, formed by the falls, are nonetheless worth seeing. The trail is the initial part of the Sandia South Crest Trail, which ascends to the crest and proceeds almost 26 miles to Placitas. While there are not a lot of views en route, the hike makes for a pleasant and enjoyable outing.</hikeInfo>
+    <refs><ref><rtype>a</rtype><rit1>https://www.alltrails.com/trail/us/new-mexico/travertine-falls</rit1><rit2>AllTrails</rit2></ref><ref><rtype>l</rtype><rit1>http://www.dailygarnish.com/2017/03/hiking-travertine-falls-new-mexico.html</rit1><rit2>Daily Garnish</rit2></ref></refs>
+    <dataProp/>
+    <dataAct/>
+</row>
+
+<row>
+    <indxNo>136</indxNo>
+    <rlock/>
+    <pgTitle>Guaje Canyon</pgTitle>
+    <locale>Los Alamos</locale>
+    <marker>Normal</marker>
+    <clusterStr/>
+    <clusGrp/>
+    <logistics>Out-and-back</logistics>
+    <miles>7.5</miles>
+    <feet>1650</feet>
+    <difficulty>Moderate</difficulty>
+    <facilities>None</facilities>
+    <wow>Canyon views</wow>
+    <seasons>Not Winter</seasons>
+    <expo>Mixed sun/shade</expo>
+    <tsv><picDat><folder>Folder2</folder><title>IMG_20170816_085011</title><hpg>N</hpg><mpg>Y</mpg><desc/><lat>35.8959166667</lat><lng>-106.393088889</lng><thumb>https://c1.staticflickr.com/5/4436/36219087500_f8e7b4dd0f_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36219087500/in/album-72157687700914535</alblnk><date>2017:08:16 08:50:12</date><mid>https://c1.staticflickr.com/5/4436/36219087500_f8e7b4dd0f_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4436/36219087500_5258818791_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_085041</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.8955083333</lat><lng>-106.392486111</lng><thumb>https://c1.staticflickr.com/5/4368/36569327246_8db5456d0d_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36569327246/in/album-72157687700914535</alblnk><date>2017:08:16 08:50:43</date><mid>https://c1.staticflickr.com/5/4368/36569327246_8db5456d0d_n.jpg</mid><imgHt>2688</imgHt><imgWd>1512</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4368/36569327246_03f91cc2b2_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_085949</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.8984861111</lat><lng>-106.387986111</lng><thumb>https://c1.staticflickr.com/5/4384/36569322476_592973c321_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36569322476/in/album-72157687700914535</alblnk><date>2017:08:16 08:59:52</date><mid>https://c1.staticflickr.com/5/4384/36569322476_592973c321_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4384/36569322476_6a0f8573bf_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_090306</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.8993333333</lat><lng>-106.387383333</lng><thumb>https://c1.staticflickr.com/5/4417/36219064090_e6753d5ff9_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36219064090/in/album-72157687700914535</alblnk><date>2017:08:16 09:03:08</date><mid>https://c1.staticflickr.com/5/4417/36219064090_e6753d5ff9_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4417/36219064090_1a6d2302d2_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>BurnRegrowth</title><hpg>Y</hpg><mpg>Y</mpg><desc>The Los Alamos burn of 2011 is being transformed by new growth</desc><lat>35.9009138889</lat><lng>-106.386825</lng><thumb>https://c1.staticflickr.com/5/4415/36550867331_3169262de5_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36550867331/in/album-72157684309181452</alblnk><date>2017:08:16 09:05:40</date><mid>https://c1.staticflickr.com/5/4415/36550867331_3169262de5_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4415/36550867331_6ea46fe857_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_090743</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9000638889</lat><lng>-106.386633333</lng><thumb>https://c1.staticflickr.com/5/4374/36569302716_e75c2bc02e_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36569302716/in/album-72157687700914535</alblnk><date>2017:08:16 09:07:45</date><mid>https://c1.staticflickr.com/5/4374/36569302716_e75c2bc02e_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4374/36569302716_5d17b3feaf_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_090748</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9018027778</lat><lng>-106.387186111</lng><thumb>https://c1.staticflickr.com/5/4406/36615752115_220ef2c8ce_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36615752115/in/album-72157687700914535</alblnk><date>2017:08:16 09:07:49</date><mid>https://c1.staticflickr.com/5/4406/36615752115_220ef2c8ce_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4406/36615752115_f031cce0e7_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_091803</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.8859444444</lat><lng>-106.286966667</lng><thumb>https://c1.staticflickr.com/5/4355/36477740491_d53051633c_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36477740491/in/album-72157687700914535</alblnk><date>2017:08:16 09:18:04</date><mid>https://c1.staticflickr.com/5/4355/36477740491_d53051633c_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4355/36477740491_2f4a1bcdee_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_092244</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9087916667</lat><lng>-106.391130556</lng><thumb>https://c1.staticflickr.com/5/4439/36569275766_cdfa107739_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36569275766/in/album-72157687700914535</alblnk><date>2017:08:16 09:22:45</date><mid>https://c1.staticflickr.com/5/4439/36569275766_cdfa107739_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4439/36569275766_a02e19b8a7_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>Grasslands</title><hpg>Y</hpg><mpg>Y</mpg><desc>Near Canada Bonita, a large meadow.</desc><lat>35.9086944444</lat><lng>-106.391258333</lng><thumb>https://c1.staticflickr.com/5/4395/36293573570_6344fbd2c2_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36293573570/in/album-72157684309181452</alblnk><date>2017:08:16 09:22:53</date><mid>https://c1.staticflickr.com/5/4395/36293573570_6344fbd2c2_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4395/36293573570_f71b4fa140_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_092426</title><hpg>Y</hpg><mpg>N</mpg><desc/><lat>35.9088916667</lat><lng>-106.391197222</lng><thumb>https://c1.staticflickr.com/5/4354/36219022580_f1a99e5b3c_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36219022580/in/album-72157687700914535</alblnk><date>2017:08:16 09:24:28</date><mid>https://c1.staticflickr.com/5/4354/36219022580_f1a99e5b3c_n.jpg</mid><imgHt>2688</imgHt><imgWd>1512</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4354/36219022580_0d8ef41e5e_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_092708</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9099333333</lat><lng>-106.393016667</lng><thumb>https://c1.staticflickr.com/5/4378/36569263806_2161b3d686_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36569263806/in/album-72157687700914535</alblnk><date>2017:08:16 09:27:09</date><mid>https://c1.staticflickr.com/5/4378/36569263806_2161b3d686_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4378/36569263806_4ebc5b588a_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_092717</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9099333333</lat><lng>-106.393016667</lng><thumb>https://c1.staticflickr.com/5/4423/36615727535_cc4302abd1_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36615727535/in/album-72157687700914535</alblnk><date>2017:08:16 09:27:18</date><mid>https://c1.staticflickr.com/5/4423/36615727535_cc4302abd1_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4423/36615727535_aedbc1d0d1_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_093705</title><hpg>Y</hpg><mpg>Y</mpg><desc/><lat>35.9099333333</lat><lng>-106.393016667</lng><thumb>https://c1.staticflickr.com/5/4375/36615716875_19b6b78e6b_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36615716875/in/album-72157687700914535</alblnk><date>2017:08:16 09:37:07</date><mid>https://c1.staticflickr.com/5/4375/36615716875_19b6b78e6b_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4375/36615716875_1c45fd986c_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_093729</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9133138889</lat><lng>-106.397025</lng><thumb>https://c1.staticflickr.com/5/4422/36615702065_d03a42f4e5_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36615702065/in/album-72157687700914535</alblnk><date>2017:08:16 09:37:31</date><mid>https://c1.staticflickr.com/5/4422/36615702065_d03a42f4e5_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4422/36615702065_03715ff065_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_094039</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9142611111</lat><lng>-106.397913889</lng><thumb>https://c1.staticflickr.com/5/4409/35806225583_dbb9178350_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/35806225583/in/album-72157687700914535</alblnk><date>2017:08:16 09:40:41</date><mid>https://c1.staticflickr.com/5/4409/35806225583_dbb9178350_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4409/35806225583_688bf930b1_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_094421</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9154083333</lat><lng>-106.398844444</lng><thumb>https://c1.staticflickr.com/5/4375/36615688385_bf17f14f3c_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36615688385/in/album-72157687700914535</alblnk><date>2017:08:16 09:44:22</date><mid>https://c1.staticflickr.com/5/4375/36615688385_bf17f14f3c_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4375/36615688385_2c08238e07_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_094519</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9147166667</lat><lng>-106.398783333</lng><thumb>https://c1.staticflickr.com/5/4395/35780378274_1c4a0ebc9f_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/35780378274/in/album-72157687700914535</alblnk><date>2017:08:16 09:45:21</date><mid>https://c1.staticflickr.com/5/4395/35780378274_1c4a0ebc9f_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4395/35780378274_e5ce35231b_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_094649</title><hpg>Y</hpg><mpg>Y</mpg><desc/><lat>35.9160527778</lat><lng>-106.398647222</lng><thumb>https://c1.staticflickr.com/5/4410/36446730742_105fafb858_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36446730742/in/album-72157687700914535</alblnk><date>2017:08:16 09:46:51</date><mid>https://c1.staticflickr.com/5/4410/36446730742_105fafb858_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4410/36446730742_df11c6732d_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_094924</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9172305556</lat><lng>-106.398016667</lng><thumb>https://c1.staticflickr.com/5/4375/36569199616_9e8876c254_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36569199616/in/album-72157687700914535</alblnk><date>2017:08:16 09:49:26</date><mid>https://c1.staticflickr.com/5/4375/36569199616_9e8876c254_n.jpg</mid><imgHt>2688</imgHt><imgWd>1512</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4375/36569199616_95798d87e6_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_100936</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.924325</lat><lng>-106.392358333</lng><thumb>https://c1.staticflickr.com/5/4398/36569190366_13d638a7bc_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36569190366/in/album-72157687700914535</alblnk><date>2017:08:16 10:09:38</date><mid>https://c1.staticflickr.com/5/4398/36569190366_13d638a7bc_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4398/36569190366_1708dd3029_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>AboveTheCaldera</title><hpg>N</hpg><mpg>N</mpg><desc>Near the Valle de los Posos, a view of the Valle Caldera</desc><lat>35.92475</lat><lng>-106.392594444</lng><thumb>https://c1.staticflickr.com/5/4411/36293552630_3d89f919f7_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36293552630/in/album-72157684309181452</alblnk><date>2017:08:16 10:13:46</date><mid>https://c1.staticflickr.com/5/4411/36293552630_3d89f919f7_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4411/36293552630_a3f9581702_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_101639</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9244527778</lat><lng>-106.392063889</lng><thumb>https://c1.staticflickr.com/5/4374/35780348524_508ee18383_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/35780348524/in/album-72157687700914535</alblnk><date>2017:08:16 10:16:40</date><mid>https://c1.staticflickr.com/5/4374/35780348524_508ee18383_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4374/35780348524_4403c1ef29_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_101831</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9244527778</lat><lng>-106.392063889</lng><thumb>https://c1.staticflickr.com/5/4387/36218965810_f824008300_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36218965810/in/album-72157687700914535</alblnk><date>2017:08:16 10:18:33</date><mid>https://c1.staticflickr.com/5/4387/36218965810_f824008300_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4387/36218965810_878d5c62cc_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_103128</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9266944444</lat><lng>-106.385283333</lng><thumb>https://c1.staticflickr.com/5/4434/36218957150_3334a52e05_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36218957150/in/album-72157687700914535</alblnk><date>2017:08:16 10:31:30</date><mid>https://c1.staticflickr.com/5/4434/36218957150_3334a52e05_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4434/36218957150_cfce16b315_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>RedondoView</title><hpg>Y</hpg><mpg>Y</mpg><desc>The one portion of the trail that's a bit steep offers good views of Redondo Peak</desc><lat>35.9266972222</lat><lng>-106.385413889</lng><thumb>https://c1.staticflickr.com/5/4378/36550875291_c1379caca8_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36550875291/in/album-72157684309181452</alblnk><date>2017:08:16 10:31:36</date><mid>https://c1.staticflickr.com/5/4378/36550875291_c1379caca8_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4378/36550875291_b270fa6bf3_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_103444</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9319111111</lat><lng>-106.389669444</lng><thumb>https://c1.staticflickr.com/5/4373/36477634051_fb4c9c479a_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36477634051/in/album-72157687700914535</alblnk><date>2017:08:16 10:34:45</date><mid>https://c1.staticflickr.com/5/4373/36477634051_fb4c9c479a_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4373/36477634051_1e717a72d5_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_104049</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9273638889</lat><lng>-106.384655556</lng><thumb>https://c1.staticflickr.com/5/4347/36477626731_ccd0b6ec16_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36477626731/in/album-72157687700914535</alblnk><date>2017:08:16 10:40:51</date><mid>https://c1.staticflickr.com/5/4347/36477626731_ccd0b6ec16_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4347/36477626731_fbab160370_o.jpg</org></picDat><picDat><folder>Folder2</folder><title>IMG_20170816_104054</title><hpg>N</hpg><mpg>N</mpg><desc/><lat>35.9273638889</lat><lng>-106.384655556</lng><thumb>https://c1.staticflickr.com/5/4394/36446661432_b5deb66774_t.jpg</thumb><alblnk>https://www.flickr.com/photos/30474783@N06/36446661432/in/album-72157687700914535</alblnk><date>2017:08:16 10:40:55</date><mid>https://c1.staticflickr.com/5/4394/36446661432_b5deb66774_n.jpg</mid><imgHt>1512</imgHt><imgWd>2688</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4394/36446661432_f9a83923d3_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>PipelineRoad</title><hpg>Y</hpg><mpg>Y</mpg><desc>The one visible trace of the namesake road</desc><lat>35.9268083333</lat><lng>-106.384858333</lng><thumb>https://c1.staticflickr.com/5/4379/36519647472_d5bd87bf94_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36519647472/in/album-72157684309181452</alblnk><date>2017:08:16 10:41:45</date><mid>https://c1.staticflickr.com/5/4379/36519647472_d5bd87bf94_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4379/36519647472_265fbe0c11_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>MajorityPopulation</title><hpg>N</hpg><mpg>N</mpg><desc>So many species of Aster beautify the way.</desc><lat>35.9269638889</lat><lng>-106.38475</lng><thumb>https://c1.staticflickr.com/5/4414/35854111644_03d9e77277_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/35854111644/in/album-72157684309181452</alblnk><date>2017:08:16 10:43:43</date><mid>https://c1.staticflickr.com/5/4414/35854111644_03d9e77277_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4414/35854111644_0bc5e69794_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>GuajeCanyon</title><hpg>Y</hpg><mpg>Y</mpg><desc>A glorious view of Guaje Canyon</desc><lat>35.9262</lat><lng>-106.376105556</lng><thumb>https://c1.staticflickr.com/5/4389/36642945846_2bf6236186_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36642945846/in/album-72157684309181452</alblnk><date>2017:08:16 10:59:01</date><mid>https://c1.staticflickr.com/5/4389/36642945846_2bf6236186_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4389/36642945846_18c0b09577_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>PenstemmonResident</title><hpg>Y</hpg><mpg>N</mpg><desc>Great wildflower populations all along highlight the trail</desc><lat>35.9261583333</lat><lng>-106.376044444</lng><thumb>https://c1.staticflickr.com/5/4366/36293560250_c1fbedb016_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36293560250/in/album-72157684309181452</alblnk><date>2017:08:16 11:03:46</date><mid>https://c1.staticflickr.com/5/4366/36293560250_c1fbedb016_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4366/36293560250_b89b96f62b_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>RidgeView</title><hpg>N</hpg><mpg>N</mpg><desc>From the Guaje Overlook are many spectacular views</desc><lat>35.9261583333</lat><lng>-106.3761</lng><thumb>https://c1.staticflickr.com/5/4437/36688943095_643a080c7b_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36688943095/in/album-72157684309181452</alblnk><date>2017:08:16 11:06:31</date><mid>https://c1.staticflickr.com/5/4437/36688943095_643a080c7b_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4437/36688943095_79b26dd609_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>DownTheRoad</title><hpg>N</hpg><mpg>N</mpg><desc>Looking back on Pipeline Road</desc><lat>35.9264972222</lat><lng>-106.385977778</lng><thumb>https://c1.staticflickr.com/5/4347/35854123434_8b9e035180_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/35854123434/in/album-72157684309181452</alblnk><date>2017:08:16 11:26:30</date><mid>https://c1.staticflickr.com/5/4347/35854123434_8b9e035180_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4347/35854123434_b532ded4f5_o.jpg</org></picDat></tsv>
+    <gpxfile>GuajeCanyon.gpx</gpxfile>
+    <trkfile>GuajeCanyon.json</trkfile>
+    <lat>35.895777</lat>
+    <lng>-106.392072</lng>
+    <aoimg1/>
+    <aoimg2/>
+    <mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157684309181452</mpUrl>
+    <spUrl>https://www.flickr.com/photos/30474783@N06/sets/72157687700914535</spUrl>
+    <dirs>https://www.google.com/maps/dir//Pajarito+Mountain+Ski+Area,+397+Camp+May+Rd,+Los+Alamos,+NM+87544/@35.8871552,-106.3942851,13.76z/data=!4m15!1m6!3m5!1s0x87180dcc3daf4c17:0x56606c59df7070e7!2sPajarito+Mountain+Ski+Area!8m2!3d35.8950144!4d-106.3909148!4m7!1m0!1m5!1m1!1s0x87180dcc3daf4c17:0x56606c59df7070e7!2m2!1d-106.3909148!2d35.8950144</dirs>
+    <cgName/>
+    <content><picRow><rowHt>189</rowHt><pic><picWdth>252</picWdth><picSrc>https://c1.staticflickr.com/5/4415/36550867331_3169262de5_n.jpg</picSrc><picCap>Aug 16, 2017: The Los Alamos burn of 2011 is being transformed by new growth</picCap></pic><pic><picWdth>252</picWdth><picSrc>https://c1.staticflickr.com/5/4395/36293573570_6344fbd2c2_n.jpg</picSrc><picCap>Aug 16, 2017: Near Canada Bonita, a large meadow.</picCap></pic><pic><picWdth>106</picWdth><picSrc>https://c1.staticflickr.com/5/4354/36219022580_f1a99e5b3c_n.jpg</picSrc><picCap>Aug 16, 2017: </picCap></pic><pic><picWdth>336</picWdth><picSrc>https://c1.staticflickr.com/5/4375/36615716875_19b6b78e6b_n.jpg</picSrc><picCap>Aug 16, 2017: </picCap></pic></picRow><picRow><rowHt>213</rowHt><pic><picWdth>379</picWdth><picSrc>https://c1.staticflickr.com/5/4410/36446730742_105fafb858_n.jpg</picSrc><picCap>Aug 16, 2017: </picCap></pic><pic><picWdth>284</picWdth><picSrc>https://c1.staticflickr.com/5/4378/36550875291_c1379caca8_n.jpg</picSrc><picCap>Aug 16, 2017: The one portion of the trail that's a bit steep offers good views of Redondo Peak</picCap></pic><pic><picWdth>284</picWdth><picSrc>https://c1.staticflickr.com/5/4379/36519647472_d5bd87bf94_n.jpg</picSrc><picCap>Aug 16, 2017: The one visible trace of the namesake road</picCap></pic></picRow><picRow><rowHt>260</rowHt><pic><picWdth>346</picWdth><picSrc>https://c1.staticflickr.com/5/4389/36642945846_2bf6236186_n.jpg</picSrc><picCap>Aug 16, 2017: A glorious view of Guaje Canyon</picCap></pic><pic><picWdth>346</picWdth><picSrc>https://c1.staticflickr.com/5/4366/36293560250_c1fbedb016_n.jpg</picSrc><picCap>Aug 16, 2017: Great wildflower populations all along highlight the trail</picCap></pic></picRow></content>
+    <albLinks><alb>https://www.flickr.com/photos/139088815@N08/36550867331/in/album-72157684309181452</alb><alb>https://www.flickr.com/photos/139088815@N08/36293573570/in/album-72157684309181452</alb><alb>https://www.flickr.com/photos/30474783@N06/36219022580/in/album-72157687700914535</alb><alb>https://www.flickr.com/photos/30474783@N06/36615716875/in/album-72157687700914535</alb><alb>https://www.flickr.com/photos/30474783@N06/36446730742/in/album-72157687700914535</alb><alb>https://www.flickr.com/photos/139088815@N08/36550875291/in/album-72157684309181452</alb><alb>https://www.flickr.com/photos/139088815@N08/36519647472/in/album-72157684309181452</alb><alb>https://www.flickr.com/photos/139088815@N08/36642945846/in/album-72157684309181452</alb><alb>https://www.flickr.com/photos/139088815@N08/36293560250/in/album-72157684309181452</alb></albLinks>
+    <tipsTxt/>
+    <hikeInfo>This hike takes one through a lot of new growth - shrubs, young Aspens, and tons of wildflowers - a resurgence after the Los Alamos fire in 2011. Most of the elevation change is easy with the exception traversing Pipeline Road to the overlook area, which is steep though not long. Because of the open areas from the burn, and some large meadows, wildflowers proliferate. There are several areas where the forest remains intact, the fire having missed. The views into the Valles Caldera, and at the Guaje Canyon Overlook, as well as along the ridge leading up to the overlook, are quite striking and well worth the hike. Parking is located at the west end of the Pajarito Ski Area Parking Lot - the trail begins on the right, shortly up the dirt road extension from the lot.</hikeInfo>
+    <refs><ref><rtype>b</rtype><rit1>Day Hikes in the Santa Fe Area</rit1><rit2>, Northern New Mexico Group of the Sierra Club</rit2></ref><ref><rtype>b</rtype><rit1>Los Alamos Trails</rit1><rit2>, by Craig Martin</rit2></ref><ref><rtype>w</rtype><rit1>https://www.hikingproject.com/trail/7021200/barranca-mesa-guaje-mtn-guaje-canyon</rit1><rit2>The Hiking Project (REI Co-op)</rit2></ref><ref><rtype>w</rtype><rit1>https://www.alltrails.com/trail/us/new-mexico/guaje-canyon-trail--3</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1/><rit2>Forest Service</rit2></ref></refs>
+    <dataProp/>
+    <dataAct/>
+</row>
 </rows>
