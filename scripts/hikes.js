@@ -1,12 +1,14 @@
 $( function () { // when page is loaded...
 
-/* Zoom detection is not provided as standard, and is browser-dependent. The methodology
- * employed here works well only where the devicePixelRatio property actually reveals
- * browser pixel-scaling. As an example, the method works for Firefox and Chrome, but
- * not Safari. Safari always reports "2" for retina displays, and "1" otherwise.
- * This ratio is used to decide whether or not to allow image sizing to take place.
- * Where devicePixelRatio is not supported, another method is used (ratio of current window
- * to available screen width). The latter works only for zooming out, not on zooming in.
+/* Zoom detection is not provided as standard, and is browser-dependent. 
+ * The methodology employed here works well only where the devicePixelRatio 
+ * property actually reveals browser pixel-scaling. As an example, the method 
+ * works for Firefox and Chrome, but not Safari: Safari always reports "2" 
+ * for retina displays, and "1" otherwise. This ratio is otherwise used to 
+ * decide whether or not to allow image sizing to take place. 
+ * Where devicePixelRatio is not supported (e.g. Safari), another method is 
+ * used: ratio of current window to available screen width). The latter 
+ * works only for zooming out, not on zooming in.
  */
 var usePixelRatio;
 (function browserType() { 

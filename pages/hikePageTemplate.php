@@ -359,6 +359,7 @@ echo '</div>';
 <div class="popupCap"></div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/picRowFormation.js"></script>
 <script src="../scripts/hikes.js"></script> 
 <script src="../scripts/dynamicChart.js"></script> 
 <script type="text/javascript">
