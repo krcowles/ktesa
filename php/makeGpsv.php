@@ -1,8 +1,8 @@
 <?php 
 /*
- * REQUIRED INPUTS FOR THIS ROUTINE:  $hikeTitle; $gpxPath; $usetsv; AND
- *  $photos - which (if extant) is an xml object for the tsv data holding all 
- *  <picDat> tags, from database.xml
+ * REQUIRED INPUTS FOR THIS ROUTINE:  $hikeTitle; $gpxPath; AND
+ *  $photos, which is an xml object for the tsv data holding all 
+ *  <picDat> tags in database.xml
  */
 
 # Function to calculate the distance between to lat/lng coordinates
@@ -45,7 +45,6 @@ function distance($lat1, $lon1, $lat2, $lon2) {
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
 $gpxmsg = $intro . 'Could not parse XML in gpx file: ';
-$tsvmsg = $intro . 'Could not open tsv file: ';
 
 # Settings: (subject to change as project evolves)
 $noOfTrks = 1;  # for a single hike page, this is a reasonable constraint, but
@@ -145,25 +144,20 @@ $clon = $west + ($east - $west)/2;
  */
 $plnks = [];  # array of photo links
 $defIconColor = 'red';
-# PROCESS DEPENDS ON WHETHER OR NOT TSV FILE WILL BE USED:
-if ($usetsv) {
-    include "tsvProc.php";
-} else {
-    $mcnt = 0;
-    foreach ($photos->picDat as $xmlPhoto) {
-        if ($xmlPhoto->mpg == 'Y') {
-            $procName = preg_replace("/'/","\'",$xmlPhoto->title);
-            $procName = preg_replace('/"/','\"',$procName);
-            $procDesc = preg_replace("/'/","\'",$xmlPhoto->desc);
-            $procDesc = preg_replace('/"/','\"',$procDesc);
-            $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
-                $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
-                $procDesc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
-                $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
-                $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
-            array_push($plnks,$plnk);
-            $mcnt++;
-        }
+$mcnt = 0;
+foreach ($photos->picDat as $xmlPhoto) {
+    if ($xmlPhoto->mpg == 'Y') {
+        $procName = preg_replace("/'/","\'",$xmlPhoto->title);
+        $procName = preg_replace('/"/','\"',$procName);
+        $procDesc = preg_replace("/'/","\'",$xmlPhoto->desc);
+        $procDesc = preg_replace('/"/','\"',$procDesc);
+        $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
+            $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
+            $procDesc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
+            $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
+            $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
+        array_push($plnks,$plnk);
+        $mcnt++;
     }
 }
 /*

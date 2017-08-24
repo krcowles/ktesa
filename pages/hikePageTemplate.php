@@ -80,6 +80,8 @@ function makeHtmlList($type,$obj) {
 /*
  * -------------------------  MAIN ROUTINE ------------------------
  */
+
+# slight difference depending on whether coming from a new page create or not
 if (isset($building) && $building === true) {
     $hikeIndexNo = $hikeRow + 1;
 } else {
@@ -92,8 +94,11 @@ if (isset($building) && $building === true) {
         die ($noload);
     }
 }
+# end difference
+
 foreach ($xml->row as $page) {
     if ($page->indxNo == $hikeIndexNo) {
+        # Extract relevant data from database:
         $newstyle = true;  // change later if no gpx file
         $hikeTitle = $page->pgTitle;
         $hikeLocale = $page->locale;
@@ -115,54 +120,9 @@ foreach ($xml->row as $page) {
         $hikePhotoLink1 = $page->mpUrl;
         $hikePhotoLink2 = $page->spUrl;
         $hikeDirections = $page->dirs;
-        /* 
-         * ----- create the html that will display the image rows
-         */
-        $rows = array();
-        $rowNo = 0;
-        $picNo = 0;
-        foreach ($page->content->picRow as $thisrow) {
-            $rowhtml = '<div id="row' . $rowNo . '" class="ImgRow">' . "\n";
-            $leftmost = true;
-            $rowht = $thisrow->rowHt;
-            foreach ($thisrow->pic as $picdata) {
-                if ($leftmost) {
-                    $style = '';
-                    $leftmost = false;
-                } else {
-                    $style = 'margin-left:1px;';
-                }
-                $width = $picdata->picWdth;
-                $src = $picdata->picSrc;
-                $caption = ($picdata->picCap == 'NO') ? false : true;
-                if ($caption) {
-                    $rowhtml .= '<img id="pic' . $picNo . '" style="' .
-                        $style . '" width="' . $width . '" height="' . $rowht .
-                        '" src="' . $src . '" alt="' . $picdata->picCap . '" />' . "\n";
-                    $picNo++;    
-                } else {
-                    $rowhtml .= '<img style="' . $style . '" class="noCap"' .
-                        '" width="' . $width . '" height="' . $rowht .
-                        '" src="' . $src . '" alt="no caption" />' . "\n";
-                }
-            }  # end of foreach picture in the row
-            $rowhtml .= '</div>' . "\n";
-            array_push($rows,$rowhtml);
-            $rowNo++;
-        }  # end of foreach picRow for this hike page 
-        /* 
-        * Extract remaining database elements:
-        */
-        # links for photos (javascript access)
-        $picLinks = "<ol>\n";
-        foreach ($page->albLinks->alb as $alink) {
-                $picLinks .= "<li>" . $alink . "</li>\n";
-        }
-        $picLinks .= "</ol>\n";
         $hikeTips = $page->tipsTxt;
         $hikeTips = preg_replace("/\s/"," ",$hikeTips);
         $hikeInfo = '<p id="hikeInfo">' . $page->hikeInfo . "</p>\n";
-        # there should always be something to report in 'references'
         $hikeRefs = $page->refs;
         # there may or may not be any proposed data or actual data to present
         $hikeReferences = makeHtmlList(References,$hikeRefs);
@@ -180,6 +140,7 @@ foreach ($xml->row as $page) {
             }
             $datasect .= "</fieldset>\n";
         }
+        # setup hike page map if newstyle
         if ($newstyle) {
             # dynamically created map:
             $extLoc = strrpos($gpxfile,'.');
@@ -191,17 +152,8 @@ foreach ($xml->row as $page) {
                 die ($mapmsg);
             }
             $photos = $page->tsv;
-            $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle;
-            if( strlen($photos->file) === 0 ) {
-                $usetsv = false;
-                $fpLnk .= '&tsv=NO&gpx=' . $gpxPath;
-            } else {
-                $usetsv = true;
-                $gpsvfile = $page->tsv->file->__toString();
-                # Full-page map link cannot assume existence of tmp file: 
-                #  to advise the mapTemplate, name 'MapLink' is used to indicate
-                $fpLnk .= '&tsv=YES&gpsv=' . $gpsvfile . '&gpx=' . $gpxPath;
-            }
+            $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . 
+                '&gpx=' . $gpxPath;
             include "../php/makeGpsv.php";
             fputs($mapHandle,$html);
             fclose($mapHandle);
@@ -223,8 +175,10 @@ foreach ($xml->row as $page) {
         type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css"
         type="text/css" rel="stylesheet" />
-    <script type="text/javascript"> var iframeWindow; </script>
-    <script type="text/javascript" src="../scripts/canvas.js"> </script>
+    <?php if ($newstyle) {
+        echo '<script type="text/javascript"> var iframeWindow; </script>';
+        echo '<script type="text/javascript" src="../scripts/canvas.js"> </script>';
+    } ?>
 </head>
 
 <body>
@@ -328,9 +282,9 @@ if (!$newstyle) {
     echo '<div data-gpx="' . $gpxPath . '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
-for ($k=0; $k<count($rows); $k++) {
-    echo $rows[$k] . "\n"; 
-}
+?>
+<div id="imgArea"></div>
+<?php
 echo '<div class="lnkList">' . $picLinks . '</div>' . "\n";
 # clear floats when no pics:
 echo '<div style="clear:both;">' . "\n";
@@ -361,7 +315,9 @@ echo '</div>';
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/picRowFormation.js"></script>
 <script src="../scripts/hikes.js"></script> 
-<script src="../scripts/dynamicChart.js"></script> 
+<?php if ($newstyle) {
+    echo '<script src="../scripts/dynamicChart.js"></script> ';
+} ?>
 <script type="text/javascript">
     window.onbeforeunload = deleteTmpMap;
     function deleteTmpMap() {

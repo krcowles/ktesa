@@ -11,32 +11,19 @@
     if ($map == 'MapLink') {
         /* 
          * This is a full-page map link: the following parameters need to be
-         * established prior to calling makeGpsv.php, and depending on whether
-         * or not a tsv file will be used: if not, picDat tags from the database
-         * will be required to establish the needed photo data.
-         *  - $hikeTitle  (hike name, placed in map
-         *  - $gpxPath    (gpx track file to create the map track)
-         *  - $usetsv: 
-         *      true=> also supply $gpsvfile; 
-         *      false=> load xml database and establish XML object: $photos ($db->tsv);
+         * established prior to 'including' the makeGpsv.php script:
+         *    - $hikeTitle  (hike name, placed in map)
+         *    - $gpxPath    (gpx file path to create the map track)
          */
         $hikeTitle = filter_input(INPUT_GET,'hike');
-        $old = filter_input(INPUT_GET,'tsv');
-        $usetsv = false;
-        if ($old == 'YES') {
-            $usetsv = true;
-            $gpsvfile = filter_input(INPUT_GET,'gpsv');
-        } else {
-            $usetsv = false;
-            $xmldat = simplexml_load_file('../data/database.xml');
-            if ($xmldat === false) {
-                die ("MAP TEMPLATE COULD NOT LOAD XML DATABASE");
-            }
-            foreach ($xmldat->row as $row) {
-                if ($hikeTitle == $row->pgTitle) {
-                    $photos = $row->tsv;
-                    break;
-                }
+        $xmldat = simplexml_load_file('../data/database.xml');
+        if ($xmldat === false) {
+            die ("MAP TEMPLATE COULD NOT LOAD XML DATABASE");
+        }
+        foreach ($xmldat->row as $row) {
+            if ($hikeTitle == $row->pgTitle) {
+                $photos = $row->tsv;
+                break;
             }
         }
         $gpxPath = filter_input(INPUT_GET,'gpx');

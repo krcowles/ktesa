@@ -119,7 +119,7 @@ $.ajax({
                 rowHt = Math.floor(scale * maxRowHt);
                 rowHtml += '<div id="row' + rowNo + 
                     '" class="ImgRow">' + "\n";
-                for (var k=imgStartNo; k<n+1; k++) { // n was the last img added
+                for (var k=imgStartNo; k<n+1; k++) { // "n' was the last img added
                     // for each pic in this row, resize to fit
                     if (k === imgStartNo) {
                         styling = ''; // don't add left-margin to leftmost image
@@ -171,13 +171,18 @@ $.ajax({
             }
             rowComplete = false;
         } // end of processing images to fit in rows
-
-        $('#therows').html(rowHtml);
+        $('#imgArea').html(rowHtml);
+        $('img[id^="pic"]').each( function(indx) {
+            $(this).css('cursor','pointer');
+            $(this).on('click', function() {
+                window.open(alblnks[indx],"_blank");
+            });
+        });
     },
     error: function() {
         msg = '<p>Did not succeed in loading the xml database</p>';
         alert(msg);
     }
-});
+});  // end ajax
 
-});
+}); // end page load wait
