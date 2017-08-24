@@ -175,9 +175,10 @@ foreach ($xml->row as $page) {
         type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css"
         type="text/css" rel="stylesheet" />
+    <script type="text/javascript">var ajaxDone = false;</script>
     <?php if ($newstyle) {
-        echo '<script type="text/javascript"> var iframeWindow; </script>';
-        echo '<script type="text/javascript" src="../scripts/canvas.js"> </script>';
+        echo '<script type="text/javascript">var iframeWindow;</script>';
+        echo '<script src="../scripts/canvas.js"></script>';
     } ?>
 </head>
 
@@ -308,13 +309,14 @@ if ($fieldsets) {
 echo '</div>';
 ?>
 
+<p id="ptype" style="display:none">Hike</p>
 <div id="dbug"></div>
 
 <div class="popupCap"></div>
 
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/picRowFormation.js"></script>
-<script src="../scripts/hikes.js"></script> 
+<script src="../scripts/picPops.js"></script> 
 <?php if ($newstyle) {
     echo '<script src="../scripts/dynamicChart.js"></script> ';
 } ?>

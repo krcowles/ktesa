@@ -50,6 +50,7 @@
 	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail"><?php echo $logo;?></p>
+<p id="ptype" style="display:none">Validation</p>
 
 <?php
     if ($type === 'Save') {

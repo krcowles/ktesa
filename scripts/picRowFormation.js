@@ -178,6 +178,7 @@ $.ajax({
                 window.open(alblnks[indx],"_blank");
             });
         });
+        ajaxDone = true;
     },
     error: function() {
         msg = '<p>Did not succeed in loading the xml database</p>';
