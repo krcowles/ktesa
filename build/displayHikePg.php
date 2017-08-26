@@ -48,7 +48,7 @@ if ($usePix == 'YES') {
             }
         } 
     }
-    include 'formPicRows.php';
+    #include 'formPicRows.php';
 }
 /*
     ------------------------------ PIC ROW CONSTRUCTION -------------------------
