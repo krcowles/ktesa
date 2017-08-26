@@ -1,5 +1,3 @@
-$( function () { // when page is loaded...
-
 var $photos;
 var noOfPix;
 var picSel;
@@ -20,20 +18,14 @@ var sessSupport = window.sessionStorage ? true : false;
     
 var pageType = $('#ptype').text();
 if (pageType == 'Hike') {
-    var rowsReady = setInterval( function() {
-        if (ajaxDone) {
-            clearInterval(rowsReady);
-            alert("READY");
-            $photos = $('img[id^="pic"]');
-            noOfPix = $photos.length;
-            executeCaptions();
-        }
-    }, 10);
+    $photos = $('img[id^="pic"]');
+    var phTitles = descs.slice();
+    var phDescs = capts.slice();
 } else if (pageType == 'Validation') {
     $photos = $('.allPhotos');
-    noOfPix = $photos.length;
-    executeCaptions();
 }
+noOfPix = $photos.length;
+executeCaptions();
 function executeCaptions() {
     if ( sessSupport ) {
             var tst = sessionStorage.getItem('prevLoad');
@@ -125,7 +117,4 @@ function executeCaptions() {
         calcPos();
     });
 }
-
-});
-
 

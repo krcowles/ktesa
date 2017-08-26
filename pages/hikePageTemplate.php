@@ -8,6 +8,8 @@ define('Actual','3');
 define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false');
 define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
 define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
+$months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
+    "Sep","Oct","Nov","Dec");
 
 /* 
  * The following function is used to create the html code for the items
@@ -120,6 +122,62 @@ foreach ($xml->row as $page) {
         $hikePhotoLink1 = $page->mpUrl;
         $hikePhotoLink2 = $page->spUrl;
         $hikeDirections = $page->dirs;
+        /* 
+         * Retrieve data required to form picture rows:
+         */
+        $descs = [];
+        $alblnks = [];
+        $piclnks = [];
+        $captions = [];
+        $aspects = [];
+        $widths = [];
+        foreach ($page->tsv->picDat as $img) {
+            if ($img->hpg == 'Y') {
+                array_push($descs,$img->title);
+                array_push($alblnks,$img->alblnk);
+                array_push($piclnks,$img->mid);
+                $dateStr = $img->date;
+                $year = substr($dateStr,0,4);
+                $month = intval(substr($dateStr,5,2));
+                $day = intval(substr($dateStr,8,2));  # intval strips leading 0
+                $date = $months[$month] . ' ' . $day . ', ' . $year .
+                        ': ' . $img->desc;
+                array_push($captions,$date);
+                $ht = intval($img->imgHt);
+                $wd = intval($img->imgWd);
+                array_push($widths,$wd);
+                $picRatio = $wd/$ht;
+                array_push($aspects,$picRatio);
+            }
+        }
+        $capCnt = count($descs);
+        if (strlen($page->aoimg1) !== 0) {
+            $aoimg1 = '../images/' . $page->aoimg1->name;
+            array_push($descs,$page->aoimg1->name);
+            array_push($alblnks,'');
+            array_push($piclnks,$aoimg1);
+            array_push($captions,'');
+            $ht = $page->aoimg1->iht;
+            $wd = $page->aoing1->iwd;
+            array_push($widths,$wd);
+            $imgRatio = $wd/$ht;
+            array_push($aspects,$imgRatio);  
+        }
+        if (strlen($page->aoimg2) !== 0) {
+            $aoimg2 = '../images/' . $page->aoimg2->name;
+            array_push($descs,$page->aoimg2->name);
+            array_push($alblnks,'');
+            array_push($piclnks,$aoimg2);
+            array_push($captions,'');
+            $ht = $page->aoimg2->iht;
+            $wd = $page->aoing2->iwd;
+            array_push($widths,$wd);
+            $imgRatio = $wd/$ht;
+            array_push($aspects,$imgRatio);  
+        }
+        /*
+         *  End picture row data prep
+         */
         $hikeTips = $page->tipsTxt;
         $hikeTips = preg_replace("/\s/"," ",$hikeTips);
         $hikeInfo = '<p id="hikeInfo">' . $page->hikeInfo . "</p>\n";
@@ -314,9 +372,25 @@ echo '</div>';
 
 <div class="popupCap"></div>
 
+<script type="text/javascript">
+    <?php
+    /* Oddly, using json_encode on each array resulted in different treatment
+     * on the first 3 arrays - e.g. [{"0":item0},{"0":item1} etc.] whereas later
+     * items were rendered simply [item0,item1,item2, etc]: Hence the use of 
+     * implode encapsulated as string.
+     */
+    echo 'var photocnt = ' . $capCnt . ";\n";
+    echo 'var d = "' . implode("|",$descs) . '";' . "\n";
+    echo 'var al = "' . implode("|",$alblnks) . '";' . "\n";
+    echo 'var p = "' . implode("|",$piclnks) . '";' . "\n";
+    echo 'var c = "' . implode("|",$captions) . '";' . "\n";
+    echo 'var as = "' . implode("|",$aspects) . '";' . "\n";
+    echo 'var w = "' . implode("|",$widths) . '";' . "\n";
+    ?>
+</script>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/picRowFormation.js"></script>
-<script src="../scripts/picPops.js"></script> 
+<script src="../scripts/hikes.js"></script> 
 <?php if ($newstyle) {
     echo '<script src="../scripts/dynamicChart.js"></script> ';
 } ?>
