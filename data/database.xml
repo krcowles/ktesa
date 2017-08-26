@@ -21644,7 +21644,7 @@ Good maps of the area are highly desirable.</tipsTxt>
         <picDat>
             <folder>Folder1</folder>
             <title>DetourStart</title>
-            <hpg>Y</hpg>
+            <hpg>N</hpg>
             <mpg>Y</mpg>
             <desc>Turn up here to take a short detour to another viewpoint</desc>
             <lat>35.68123</lat>
@@ -21663,7 +21663,7 @@ Good maps of the area are highly desirable.</tipsTxt>
         <picDat>
             <folder>Folder1</folder>
             <title>DetourEnd</title>
-            <hpg>Y</hpg>
+            <hpg>N</hpg>
             <mpg>Y</mpg>
             <desc>Rejoin the trail here.</desc>
             <lat>35.68283</lat>
@@ -29668,7 +29668,7 @@ accumulations.</hikeInfo>
         <picDat>
             <folder>Folder1</folder>
             <title>Waypoint1</title>
-            <hpg>Y</hpg>
+            <hpg>N</hpg>
             <mpg>Y</mpg>
             <desc>Reported Purported location of falls</desc>
             <lat>35.748099</lat>
