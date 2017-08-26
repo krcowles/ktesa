@@ -4,44 +4,13 @@
 <locale></locale>
 <marker></marker>
 <clusterStr></clusterstr>
-<<logistics></logistics>
-<miles</miles>
-<feet></feet>
-<difficulty></difficulty>
-<facilities></facilities>
-<wow></wow>
-<seasons></seasons>
-<expo></expo>
-<tsv>
-        <picDat>
-            <folder></folder>
-            <title></title>
-            <hpg></hpg>
-            <mpg></mpg>
-            <desc></desc>
-            <lat></lat>
-            <lng></lng>
-            <thumb></thumb>
-            <alblnk></alblnk>
-            <date></date>
-            <mid></mid>
-            <imgHt></imght>
-            <imgWd></imgwd>
-            <iclr></iclr>
-            <org></org>
-        </picDat>
-</tsv>
-<gpxfile></gpxfile>
-<trkfile></trkfile>
 <lat></lat>
 <lng></lng>
 <aoimg1></aoimg1>
 <aoimg2></aoimg2>
-<mpUrl></mpUrl>
-<spUrl></spUrl>
 <dirs></dirs>
 <cgName></cgName>
-<content>
+<tbls>
     <tblRow>
         <compl>
         <tdname>
@@ -59,10 +28,7 @@
             <picCap>
         </pic>
     </picRow>
-</content>
-<albLinks>
-    <alb></alb>
-</albLinks>
+</tbls>
 <tipsTxt></tipsTxt>
 <hikeInfo></hikeInfo>
 <refs>
@@ -73,16 +39,6 @@
     </ref>
 </refs>
 <dataProp>
-    <prop>
-        <plbl></plbl>
-        <purl></purl>
-        <pcot></pcot>
-    </prop>
 </dataProp>
 <dataAct>
-    <act>
-        <albl></alb>
-        <aurl></aurl>
-        <acot></acot>
-    </act>
 </dataAct>
