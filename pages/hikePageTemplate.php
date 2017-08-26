@@ -160,7 +160,7 @@ foreach ($xml->row as $page) {
                     $year = substr($dateStr,0,4);
                     $month = intval(substr($dateStr,5,2));
                     $day = intval(substr($dateStr,8,2));  # intval strips leading 0
-                    $date = $months[$month] . ' ' . $day . ', ' . $year .
+                    $date = $months[$month-1] . ' ' . $day . ', ' . $year .
                             ': ' . $pDesc;
                     array_push($captions,$date);
                 }
