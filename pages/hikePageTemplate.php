@@ -77,6 +77,19 @@ function makeHtmlList($type,$obj) {
     }  // end of if tagtype ifs
     return $htmlout;
 } 
+function clean($tsvdat) {
+    $curdat = $tsvdat;
+    $tsvlgth = strlen($curdat);
+    if (substr($curdat,0,1) === '"') {
+        $tsvlgth -= 2;
+        $curdat = substr($curdat,1,$tsvlgth);
+    }
+    if (substr($curdat,$tsvlgth-2,2) === '\n') {
+        $curdat = substr($curdat,0,$tsvlgth-2);
+    }
+    return $curdat;
+    
+}
 # FUNCTION END
 
 /*
@@ -131,17 +144,22 @@ foreach ($xml->row as $page) {
         $captions = [];
         $aspects = [];
         $widths = [];
+        /* Note - some of the imported tsv files have fields enclosed
+         * in double quotes, and include a line feed (\n). 
+         */
         foreach ($page->tsv->picDat as $img) {
             if ($img->hpg == 'Y') {
-                array_push($descs,$img->title);
+                $filename = clean($img->title);
+                array_push($descs,$filename);
                 array_push($alblnks,$img->alblnk);
                 array_push($piclnks,$img->mid);
-                $dateStr = $img->date;
+                $dateStr = clean($img->date);
+                $pDesc = clean($img->desc);
                 $year = substr($dateStr,0,4);
                 $month = intval(substr($dateStr,5,2));
                 $day = intval(substr($dateStr,8,2));  # intval strips leading 0
                 $date = $months[$month] . ' ' . $day . ', ' . $year .
-                        ': ' . $img->desc;
+                        ': ' . $pDesc;
                 array_push($captions,$date);
                 $ht = intval($img->imgHt);
                 $wd = intval($img->imgWd);
