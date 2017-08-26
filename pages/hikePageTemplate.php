@@ -151,26 +151,27 @@ foreach ($xml->row as $page) {
             }
         }
         $capCnt = count($descs);
-        if (strlen($page->aoimg1) !== 0) {
+        if (strlen($page->aoimg1->name) !== 0) {
             $aoimg1 = '../images/' . $page->aoimg1->name;
             array_push($descs,$page->aoimg1->name);
             array_push($alblnks,'');
             array_push($piclnks,$aoimg1);
             array_push($captions,'');
             $ht = $page->aoimg1->iht;
-            $wd = $page->aoing1->iwd;
+            $wd = $page->aoimg1->iwd;
+            echo "Addon ht: " . $ht . ", width: " . $wd;
             array_push($widths,$wd);
             $imgRatio = $wd/$ht;
             array_push($aspects,$imgRatio);  
         }
-        if (strlen($page->aoimg2) !== 0) {
+        if (strlen($page->aoimg2->name) !== 0) {
             $aoimg2 = '../images/' . $page->aoimg2->name;
             array_push($descs,$page->aoimg2->name);
             array_push($alblnks,'');
             array_push($piclnks,$aoimg2);
             array_push($captions,'');
             $ht = $page->aoimg2->iht;
-            $wd = $page->aoing2->iwd;
+            $wd = $page->aoimg2->iwd;
             array_push($widths,$wd);
             $imgRatio = $wd/$ht;
             array_push($aspects,$imgRatio);  

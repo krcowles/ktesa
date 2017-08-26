@@ -23,7 +23,7 @@
 	<trkfile/>
 	<lat>35.779039</lat>
 	<lng>-106.270788</lng>
-	<aoimg1>BandelierNM.jpg</aoimg1>
+	<aoimg1><name>BandelierNM.jpg</name><iht>419</iht><iwd>632</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl/>
 	<spUrl/>
@@ -175,7 +175,7 @@
 	<trkfile/>
 	<lat>36.03025</lat>
 	<lng>-107.9108</lng>
-	<aoimg1>chacomap.jpg</aoimg1>
+	<aoimg1><name>chacomap.jpg</name><iht>437</iht><iwd>775</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl/>
 	<spUrl/>
@@ -332,7 +332,7 @@
 	<trkfile/>
 	<lat>34.970407</lat>
 	<lng>-107.810152</lng>
-	<aoimg1>MalpaisMap.jpg</aoimg1>
+	<aoimg1><name>MalpaisMap.jpg</name><iht>592</iht><iwd>824</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl/>
 	<spUrl/>
@@ -476,7 +476,7 @@
 	<trkfile/>
 	<lat>35.138644</lat>
 	<lng>-106.711196</lng>
-	<aoimg1>PetroglyphsMap.jpg</aoimg1>
+	<aoimg1><name>PetroglyphsMap.jpg</name><iht>493</iht><iwd>626</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl/>
 	<spUrl/>
@@ -679,13 +679,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.778943</lat>
 	<lng>-106.270838</lng>
-	<aoimg1>MainloopMap.jpg</aoimg1>
+	<aoimg1><name>MainloopMap.jpg</name><iht>357</iht><iwd>417</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669594168785</mpUrl>
 	<spUrl/>
@@ -846,13 +846,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.788735</lat>
 	<lng>-106.282079</lng>
-	<aoimg1>FallsTrailMap.jpg</aoimg1>
+	<aoimg1><name>FallsTrailMap.jpg</name><iht>260</iht><iwd>340</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669136001962</mpUrl>
 	<spUrl/>
@@ -1018,13 +1018,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.779219</lat>
 	<lng>-106.285744</lng>
-	<aoimg1>FreyMap.jpg</aoimg1>
+	<aoimg1><name>FreyMap.jpg</name><iht>297</iht><iwd>455</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157667010406084</mpUrl>
 	<spUrl/>
@@ -1197,7 +1197,7 @@
             <imgWd>215</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
@@ -1344,13 +1344,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.764312</lat>
 	<lng>-106.273698</lng>
-	<aoimg1>AlcoveMap.jpg</aoimg1>
+	<aoimg1><name>AlcoveMap.jpg</name><iht>235</iht><iwd>400</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157667002560044</mpUrl>
 	<spUrl/>
@@ -1545,7 +1545,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>PuebloAlto.GPX</gpxfile>
 	<trkfile>palto.json</trkfile>
@@ -1705,13 +1705,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>36.064936</lat>
 	<lng>-107.969768</lng>
-	<aoimg1>KletsoMap.jpg</aoimg1>
+	<aoimg1><name>KletsoMap.jpg</name><iht>310</iht><iwd>395</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157668542309892</mpUrl>
 	<spUrl/>
@@ -1952,7 +1952,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Pino_Trail.GPX</gpxfile>
 	<trkfile>pino.json</trkfile>
@@ -2163,7 +2163,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Domingo_Baca.GPX</gpxfile>
 	<trkfile>baca.json</trkfile>
@@ -2331,7 +2331,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Tunnel_Canyon.GPX</gpxfile>
 	<trkfile>tun.json</trkfile>
@@ -2504,7 +2504,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Birdhouse_Ridge.GPX</gpxfile>
 	<trkfile>bird.json</trkfile>
@@ -2673,13 +2673,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.161988</lat>
 	<lng>-106.718203</lng>
-	<aoimg1>BocaNegraMap.jpg</aoimg1>
+	<aoimg1><name>BocaNegraMap.jpg</name><iht>360</iht><iwd>600</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669925680945</mpUrl>
 	<spUrl/>
@@ -2837,13 +2837,13 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.165471</lat>
 	<lng>-106.729088</lng>
-	<aoimg1>BocaNegraMap.jpg</aoimg1>
+	<aoimg1><name>BocaNegraMap.jpg</name><iht>360</iht><iwd>600</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https%3A%2F%2Fwww.flickr.com%2Fphotos%2F139088815%40N08%2Falbums%2F72157669833765256</mpUrl>
 	<spUrl/>
@@ -2974,13 +2974,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.170242</lat>
 	<lng>-106.717243</lng>
-	<aoimg1>BocaNegraMap.jpg</aoimg1>
+	<aoimg1><name>BocaNegraMap.jpg</name><iht>360</iht><iwd>600</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669926951595</mpUrl>
 	<spUrl/>
@@ -3133,14 +3133,14 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Upper_Tesuque.GPX</gpxfile>
 	<trkfile>utes.json</trkfile>
 	<lat>35.769508</lat>
 	<lng>-105.809155</lng>
-	<aoimg1>Ski2ForestRd.jpg</aoimg1>
-	<aoimg2>ForestRd2BigT.jpg</aoimg2>
+	<aoimg1><name>Ski2ForestRd.jpg</name><iht>273</iht><iwd>420</iwd></aoimg1>
+	<aoimg2><name>ForestRd2BigT.jpg</name><iht>275</iht><iwd>420</iwd></aoimg2>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669979230415</mpUrl>
 	<spUrl/>
 	<dirs>https://www.google.com/maps/place/Big+Tesuque+Campground/@35.7716134,-105.8151425,15.64z/data=!4m5!3m4!1s0x87184d1e4f78e5f7:0x607cb44f87419be0!8m2!3d35.7691964!4d-105.8091858</dirs>
@@ -3325,7 +3325,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>20160530_BigTesuqueDown.gpx</gpxfile>
 	<trkfile>mtes.json</trkfile>
@@ -3627,7 +3627,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Deception_Peak.GPX</gpxfile>
 	<trkfile>decp.json</trkfile>
@@ -3865,7 +3865,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Nambe_Lake.GPX</gpxfile>
 	<trkfile>nambe.json</trkfile>
@@ -4124,7 +4124,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>La_Vega.GPX</gpxfile>
 	<trkfile>vega.json</trkfile>
@@ -4341,7 +4341,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Upper_Rio_En_Medio.GPX</gpxfile>
 	<trkfile>uriom.json</trkfile>
@@ -4539,7 +4539,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Jemez_E_Fork_Las_Conchas.GPX</gpxfile>
 	<trkfile>efconchas.json</trkfile>
@@ -4926,7 +4926,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>EForkBattleship.gpx</gpxfile>
 	<trkfile>efbattle.json</trkfile>
@@ -5122,8 +5122,8 @@
             <symbol/>
             <icon_size/>
             <iclr>orange</iclr>
-            <imgHt></imgHt>
-            <imgWd></imgWd>
+            <imgHt/>
+            <imgWd/>
             <org/>
         </picDat>
         <picDat>
@@ -5183,7 +5183,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Aspen_Vista.GPX</gpxfile>
 	<trkfile>aspen.json</trkfile>
@@ -5453,7 +5453,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>AlamoAspenVistaLoopActual22Sep2016.gpx</gpxfile>
 	<trkfile>alamo.json</trkfile>
@@ -5731,7 +5731,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Buckman_Mesa.GPX</gpxfile>
 	<trkfile>buckman.json</trkfile>
@@ -6032,7 +6032,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>SagebrushFlatsActual.GPX</gpxfile>
 	<trkfile>SagebrushFlats.json</trkfile>
@@ -6227,7 +6227,7 @@
             <title>Monoliths</title>
             <hpg>Y</hpg>
             <mpg>N</mpg>
-            <desc>Enter description here</desc>
+            <desc>The Sentinels</desc>
             <alblnk>https://www.flickr.com/photos/139088815@N08/26790979013/in/album-72157666607748474</alblnk>
             <date>2013:10:23 15:05:45</date>
             <mid>https://c6.staticflickr.com/8/7563/26790979013_d2137a486d_n.jpg</mid>
@@ -6239,7 +6239,7 @@
             <title>AFind</title>
             <hpg>Y</hpg>
             <mpg>N</mpg>
-            <desc>Enter description here</desc>
+            <desc>Karen finds something of interest</desc>
             <alblnk>https://www.flickr.com/photos/139088815@N08/26790086564/in/album-72157666607748474</alblnk>
             <date>2013:10:23 14:29:19</date>
             <mid>https://c5.staticflickr.com/8/7218/26790086564_096542a15d_n.jpg</mid>
@@ -6247,13 +6247,13 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>33.419574</lat>
 	<lng>-105.987682</lng>
-	<aoimg1>3RiversMap.jpg</aoimg1>
+	<aoimg1><name>3RiversMap.jpg</name><iht>232</iht><iwd>347</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157666607748474</mpUrl>
 	<spUrl/>
@@ -6435,13 +6435,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile>aceq.json</trkfile>
 	<lat>35.249327</lat>
 	<lng>-106.607283</lng>
-	<aoimg1>acequia_map.jpg</aoimg1>
+	<aoimg1><name>acequia_map.jpg</name><iht>363</iht><iwd>462</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157664469121925</mpUrl>
 	<spUrl/>
@@ -6657,7 +6657,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Agua_Sarca.GPX</gpxfile>
 	<trkfile>sarca.json</trkfile>
@@ -6889,7 +6889,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>AnchoRapids.GPX</gpxfile>
 	<trkfile>ancho.json</trkfile>
@@ -7120,7 +7120,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Apache_Canyon.GPX</gpxfile>
 	<trkfile>apache.json</trkfile>
@@ -7262,7 +7262,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Atalaya.GPX</gpxfile>
 	<trkfile>atalaya.json</trkfile>
@@ -7431,13 +7431,13 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.828099</lat>
 	<lng>-106.641862</lng>
-	<aoimg1>BattleshipMap.jpg</aoimg1>
+	<aoimg1><name>BattleshipMap.jpg</name><iht>286</iht><iwd>444</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669063455305</mpUrl>
 	<spUrl/>
@@ -7632,7 +7632,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Borrego_BearWallow.GPX</gpxfile>
 	<trkfile>borrego.json</trkfile>
@@ -7858,7 +7858,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>CabezonLoop.GPX</gpxfile>
 	<trkfile>czon.json</trkfile>
@@ -8067,13 +8067,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.444819</lat>
 	<lng>-106.122029</lng>
-	<aoimg1>CerrillosHillsMap.jpg</aoimg1>
+	<aoimg1><name>CerrillosHillsMap.jpg</name><iht>384</iht><iwd>304</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669429537095</mpUrl>
 	<spUrl/>
@@ -8294,7 +8294,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Chamisa_Trail.GPX</gpxfile>
 	<trkfile>cham.json</trkfile>
@@ -8484,13 +8484,13 @@
             <imgWd>213</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>36.367385</lat>
 	<lng>-106.677235</lng>
-	<aoimg1>ChavezCanyonMap.jpg</aoimg1>
+	<aoimg1><name>ChavezCanyonMap.jpg</name><iht>215</iht><iwd>328</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157666523519104</mpUrl>
 	<spUrl/>
@@ -8706,7 +8706,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Coyote_Call.GPX</gpxfile>
 	<trkfile>ccall.json</trkfile>
@@ -8896,7 +8896,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Dale_Ball.GPX</gpxfile>
 	<trkfile>dbnorth.json</trkfile>
@@ -9112,7 +9112,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Del_Agua.GPX</gpxfile>
 	<trkfile>del.json</trkfile>
@@ -9297,7 +9297,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Diablo_Canyon.GPX</gpxfile>
 	<trkfile>diablo.json</trkfile>
@@ -9481,13 +9481,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.038224</lat>
 	<lng>-108.348783</lng>
-	<aoimg1>ElMorroMap.jpg</aoimg1>
+	<aoimg1><name>ElMorroMap.jpg</name><iht>331</iht><iwd>499</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669107208625</mpUrl>
 	<spUrl/>
@@ -9654,13 +9654,13 @@
             <imgWd>213</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>32.782028</lat>
 	<lng>-108.147333</lng>
-	<aoimg1>FtBayardMap.jpg</aoimg1>
+	<aoimg1><name>FtBayardMap.jpg</name><iht>240</iht><iwd>320</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669851935591</mpUrl>
 	<spUrl/>
@@ -9822,7 +9822,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Hyde_Park.GPX</gpxfile>
 	<trkfile>hyde.json</trkfile>
@@ -10009,13 +10009,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>36.305933</lat>
 	<lng>-106.05142</lng>
-	<aoimg1>OjoMap.jpg</aoimg1>
+	<aoimg1><name>OjoMap.jpg</name><iht>279</iht><iwd>412</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669097029026</mpUrl>
 	<spUrl/>
@@ -10230,7 +10230,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>La_Bajada.GPX</gpxfile>
 	<trkfile>baj.json</trkfile>
@@ -10520,7 +10520,7 @@
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>La_Luz_Trail_137.GPX</gpxfile>
 	<trkfile>luz.json</trkfile>
@@ -10741,13 +10741,13 @@
             <imgWd>213</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>36.341432</lat>
 	<lng>-105.736461</lng>
-	<aoimg1>VistaVerdeMap.jpg</aoimg1>
+	<aoimg1><name>VistaVerdeMap.jpg</name><iht>280</iht><iwd>400</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669891167806</mpUrl>
 	<spUrl/>
@@ -10946,7 +10946,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Las_Conchas.GPX</gpxfile>
 	<trkfile>conch.json</trkfile>
@@ -11210,7 +11210,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Mesa_Chijuilla.GPX</gpxfile>
 	<trkfile>chij.json</trkfile>
@@ -11405,13 +11405,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>36.010603</lat>
 	<lng>-106.980625</lng>
-	<aoimg1>SJBmap.jpeg</aoimg1>
+	<aoimg1><name>SJBmap.jpeg</name><iht>300</iht><iwd>795</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157667761292860</mpUrl>
 	<spUrl/>
@@ -11576,13 +11576,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.68701</lat>
 	<lng>-105.89697</lng>
-	<aoimg1>NatureMap.jpg</aoimg1>
+	<aoimg1><name>NatureMap.jpg</name><iht>200</iht><iwd>300</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157667668829694</mpUrl>
 	<spUrl/>
@@ -11883,13 +11883,13 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Whole_Ojito.GPX</gpxfile>
 	<trkfile>ojito.json</trkfile>
 	<lat>35.495067</lat>
 	<lng>-106.921767</lng>
-	<aoimg1>OjitoMap.jpg</aoimg1>
+	<aoimg1><name>OjitoMap.jpg</name><iht/><iwd/></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157670484666515</mpUrl>
 	<spUrl/>
@@ -12167,7 +12167,7 @@
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Pinabete_Tank.GPX</gpxfile>
 	<trkfile>ptank.json</trkfile>
@@ -12322,7 +12322,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Purgatory_Chasm.GPX</gpxfile>
 	<trkfile>purg.json</trkfile>
@@ -12493,13 +12493,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.542743</lat>
 	<lng>-108.613801</lng>
-	<aoimg1>PyramidMap.jpg</aoimg1>
+	<aoimg1><name>PyramidMap.jpg</name><iht>248</iht><iwd>354</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157668378600840</mpUrl>
 	<spUrl/>
@@ -12699,7 +12699,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Red_Dot_Blue_Dot.GPX</gpxfile>
 	<trkfile>rbdot.json</trkfile>
@@ -12906,13 +12906,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>34.239571</lat>
 	<lng>-107.026899</lng>
-	<aoimg1>SanLorenzoMap.jpg</aoimg1>
+	<aoimg1><name>SanLorenzoMap.jpg</name><iht>255</iht><iwd>414</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669105693376</mpUrl>
 	<spUrl/>
@@ -13179,7 +13179,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Strip_Mine.GPX</gpxfile>
 	<trkfile>smine.json</trkfile>
@@ -13368,7 +13368,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Sun_Mountain.GPX</gpxfile>
 	<trkfile>sun.json</trkfile>
@@ -13555,13 +13555,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.661033</lat>
 	<lng>-106.416106</lng>
-	<aoimg1>TentRockMap.jpg</aoimg1>
+	<aoimg1><name>TentRockMap.jpg</name><iht>260</iht><iwd>512</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157670138528866</mpUrl>
 	<spUrl/>
@@ -13793,7 +13793,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>LowerT.GPX</gpxfile>
 	<trkfile>ltes.json</trkfile>
@@ -14134,13 +14134,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>33.37781</lat>
 	<lng>-108.839842</lng>
-	<aoimg1>CatWalkMap.jpg</aoimg1>
+	<aoimg1><name>CatWalkMap.jpg</name><iht>401</iht><iwd>350</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157662925553623</mpUrl>
 	<spUrl/>
@@ -14414,7 +14414,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Tetilla_Peak.GPX</gpxfile>
 	<trkfile>tet.json</trkfile>
@@ -14694,7 +14694,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Valle_Grande.gpx</gpxfile>
 	<trkfile>vgrand.json</trkfile>
@@ -14898,13 +14898,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.264798</lat>
 	<lng>-105.33362</lng>
-	<aoimg1>VillanuevaMap.jpg</aoimg1>
+	<aoimg1><name>VillanuevaMap.jpg</name><iht>285</iht><iwd>443</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157668297226520</mpUrl>
 	<spUrl/>
@@ -15182,13 +15182,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>WilliamsLake_20170527.gpx</gpxfile>
 	<trkfile>WilliamsLake_20170527.json</trkfile>
 	<lat>36.572704</lat>
 	<lng>-105.436408</lng>
-	<aoimg1>WilliamsLakeMap.jpg</aoimg1>
+	<aoimg1><name>WilliamsLakeMap.jpg</name><iht>254</iht><iwd>357</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157668795870731</mpUrl>
 	<spUrl>https://www.flickr.com/photos/30474783@N06/albums/72157681380135454</spUrl>
@@ -15389,7 +15389,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Traders_Trail.GPX</gpxfile>
 	<trkfile>trader.json</trkfile>
@@ -15572,13 +15572,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>TsankawiRuins.gpx</gpxfile>
 	<trkfile>TsankawiRuins.json</trkfile>
 	<lat>35.860416</lat>
 	<lng>-106.224682</lng>
-	<aoimg1>TsankawiMap.jpg</aoimg1>
+	<aoimg1><name>TsankawiMap.jpg</name><iht>270</iht><iwd>450</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669593119256</mpUrl>
 	<spUrl/>
@@ -15781,7 +15781,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
@@ -15973,13 +15973,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.188867</lat>
 	<lng>-106.686269</lng>
-	<aoimg1>PiedrasMarcadas.jpg</aoimg1>
+	<aoimg1><name>PiedrasMarcadas.jpg</name><iht>260</iht><iwd>363</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669829880176</mpUrl>
 	<spUrl/>
@@ -16191,13 +16191,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>35.126851</lat>
 	<lng>-106.724635</lng>
-	<aoimg1>RinconadaMap.jpg</aoimg1>
+	<aoimg1><name>RinconadaMap.jpg</name><iht>260</iht><iwd>477</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669380888432</mpUrl>
 	<spUrl/>
@@ -16391,13 +16391,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>ABQ_Volcanoes.GPX</gpxfile>
 	<trkfile>volc.json</trkfile>
 	<lat>35.13075</lat>
 	<lng>-106.7802667</lng>
-	<aoimg1>VolcanoMap.jpg</aoimg1>
+	<aoimg1><name>VolcanoMap.jpg</name><iht>583</iht><iwd>570</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157668175624985</mpUrl>
 	<spUrl/>
@@ -16560,13 +16560,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>BigTubes.GPX</gpxfile>
 	<trkfile>tubes.json</trkfile>
 	<lat>34.944733</lat>
 	<lng>-108.106983</lng>
-	<aoimg1>TubesTrail.jpg</aoimg1>
+	<aoimg1><name>TubesTrail.jpg</name><iht>260</iht><iwd>370</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157666437314513</mpUrl>
 	<spUrl/>
@@ -16760,7 +16760,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
@@ -16967,7 +16967,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>ElCalderon.GPX</gpxfile>
 	<trkfile>cald.json</trkfile>
@@ -17118,13 +17118,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>336.064977</lat>
 	<lng>-107.969867</lng>
-	<aoimg1>UnaVidaMap.jpg</aoimg1>
+	<aoimg1><name>UnaVidaMap.jpg</name><iht>347</iht><iwd>498</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157666368675313</mpUrl>
 	<spUrl/>
@@ -17265,13 +17265,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>36.049536</lat>
 	<lng>-107.93031</lng>
-	<aoimg1>HungoPaviMap.jpg</aoimg1>
+	<aoimg1><name>HungoPaviMap.jpg</name><iht>319</iht><iwd>386</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157668823314186</mpUrl>
 	<spUrl/>
@@ -17430,13 +17430,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>36.059216</lat>
 	<lng>-107.958934</lng>
-	<aoimg1>BonitoMap.jpg</aoimg1>
+	<aoimg1><name>BonitoMap.jpg</name><iht>348</iht><iwd>514</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157668825446256</mpUrl>
 	<spUrl/>
@@ -17631,13 +17631,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>36.330525</lat>
 	<lng>-106.47482</lng>
-	<aoimg1>ChimneyMap.jpg</aoimg1>
+	<aoimg1><name>ChimneyMap.jpg</name><iht>331</iht><iwd>482</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157667485914153</mpUrl>
 	<spUrl/>
@@ -17822,7 +17822,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
@@ -17995,13 +17995,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>214</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>34.793491</lat>
 	<lng>-106.372268</lng>
-	<aoimg1>ABQTrailMap.jpeg</aoimg1>
+	<aoimg1><name>ABQTrailMap.jpeg</name><iht>400</iht><iwd>255</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157670395400435</mpUrl>
 	<spUrl/>
@@ -18128,13 +18128,13 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>213</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile/>
 	<trkfile/>
 	<lat>34.790707</lat>
 	<lng>-106.382439</lng>
-	<aoimg1>ABQTrailMap.jpeg</aoimg1>
+	<aoimg1><name>ABQTrailMap.jpeg</name><iht>400</iht><iwd>255</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157670328044815</mpUrl>
 	<spUrl/>
@@ -18323,7 +18323,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>SanYsidro_1.gpx</gpxfile>
 	<trkfile>sany.json</trkfile>
@@ -18662,7 +18662,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Burnt_Mesa.GPX</gpxfile>
 	<trkfile>Burnt_Mesa.json</trkfile>
@@ -18997,7 +18997,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Lower_Rio_En_Medio.GPX</gpxfile>
 	<trkfile>lrioenmedio.json</trkfile>
@@ -19300,7 +19300,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Tapia_Canyon.GPX</gpxfile>
 	<trkfile>Tapia_Canyon.json</trkfile>
@@ -19631,7 +19631,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>De_Na_Zin.GPX</gpxfile>
 	<trkfile>De_Na_Zin.json</trkfile>
@@ -20056,7 +20056,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Bisti.GPX</gpxfile>
 	<trkfile>Bisti.json</trkfile>
@@ -20426,7 +20426,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Waterfall_Canyon.GPX</gpxfile>
 	<trkfile>Waterfall_Canyon.json</trkfile>
@@ -20693,7 +20693,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Aldo_Leopold.gpx</gpxfile>
 	<trkfile>Aldo_Leopold.json</trkfile>
@@ -20954,7 +20954,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>CerrillosCanyon.GPX</gpxfile>
 	<trkfile>CerrillosCanyon.json</trkfile>
@@ -21079,7 +21079,7 @@ Good maps of the area are highly desirable.</tipsTxt>
 	<trkfile/>
 	<lat>35.039636</lat>
 	<lng>-108.345081</lng>
-	<aoimg1>ElMorroNPMap.jpg</aoimg1>
+	<aoimg1><name>ElMorroNPMap.jpg</name><iht>331</iht><iwd>499</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl/>
 	<spUrl/>
@@ -21145,7 +21145,7 @@ Good maps of the area are highly desirable.</tipsTxt>
 	<trkfile/>
 	<lat>35.1286816</lat>
 	<lng>-106.6850602</lng>
-	<aoimg1>RGNCMap.jpg</aoimg1>
+	<aoimg1><name>RGNCMap.jpg</name><iht>449</iht><iwd>720</iwd></aoimg1>
 	<aoimg2/>
 	<mpUrl/>
 	<spUrl/>
@@ -21372,7 +21372,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Golden_Open_Space.GPX</gpxfile>
 	<trkfile>Golden.json</trkfile>
@@ -21656,8 +21656,8 @@ Good maps of the area are highly desirable.</tipsTxt>
             <symbol>Flag, Blue</symbol>
             <icon_size/>
             <iclr/>
-            <imgHt></imgHt>
-            <imgWd></imgWd>
+            <imgHt/>
+            <imgWd/>
             <org/>
         </picDat>
         <picDat>
@@ -21675,11 +21675,11 @@ Good maps of the area are highly desirable.</tipsTxt>
             <symbol>Flag, Blue</symbol>
             <icon_size/>
             <iclr/>
-            <imgHt></imgHt>
-            <imgWd></imgWd>
+            <imgHt/>
+            <imgWd/>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Picacho_Peak.GPX</gpxfile>
 	<trkfile>Picacho_Peak.json</trkfile>
@@ -22003,7 +22003,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>White_Mesa_BT.GPX</gpxfile>
 	<trkfile>White_Mesa_BT.json</trkfile>
@@ -22252,7 +22252,7 @@ Good maps of the area are highly desirable.</tipsTxt>
             <imgWd>181</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Chino_Mesa.GPX</gpxfile>
 	<trkfile>Chino_Mesa.json</trkfile>
@@ -22544,14 +22544,14 @@ references for this hike, and there are no trails.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>TwinHills.GPX</gpxfile>
 	<trkfile>TwinHills.json</trkfile>
 	<lat>35.70415783</lat>
 	<lng>-106.1193397</lng>
-	<aoimg1>MontosoKey.jpg</aoimg1>
-	<aoimg2>MontosoPkArea.jpg</aoimg2>
+	<aoimg1><name>MontosoKey.jpg</name><iht>260</iht><iwd>421</iwd></aoimg1>
+	<aoimg2><name>MontosoPkArea.jpg</name><iht>260</iht><iwd>332</iwd></aoimg2>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157674263303274</mpUrl>
 	<spUrl>https://www.flickr.com/photos/30474783@N06/albums/72157677808580075</spUrl>
 	<dirs>https://www.google.com/maps/place/35%C2%B042'15.4%22N+106%C2%B007'26.8%22W/@35.6938831,-106.119556,13.92z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.704267!4d-106.12411</dirs>
@@ -22836,7 +22836,7 @@ references for this hike, and there are no trails.</hikeInfo>
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Piedra_Lisa.GPX</gpxfile>
 	<trkfile>Piedra_Lisa.json</trkfile>
@@ -23144,7 +23144,7 @@ Placitas for those who wish to go further, but the authors returned to the start
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Cerro_Columbo.GPX</gpxfile>
 	<trkfile>Cerro_Columbo.json</trkfile>
@@ -23498,7 +23498,7 @@ Placitas for those who wish to go further, but the authors returned to the start
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>DiabloMesa.GPX</gpxfile>
 	<trkfile>DiabloMesa.json</trkfile>
@@ -23761,7 +23761,7 @@ Placitas for those who wish to go further, but the authors returned to the start
             <imgWd>179</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Trail399_Clipped.gpx</gpxfile>
 	<trkfile>Trail399_Clipped.json</trkfile>
@@ -23970,7 +23970,7 @@ Placitas for those who wish to go further, but the authors returned to the start
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Galisteo_Basin.GPX</gpxfile>
 	<trkfile>Galisteo_Basin.json</trkfile>
@@ -24275,7 +24275,7 @@ Placitas for those who wish to go further, but the authors returned to the start
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>DiabloMesaLoop.gpx</gpxfile>
 	<trkfile>DiabloMesaLoop.json</trkfile>
@@ -24587,7 +24587,7 @@ Placitas for those who wish to go further, but the authors returned to the start
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Santa_Fe_Petroglyphs.gpx</gpxfile>
 	<trkfile>Santa_Fe_Petroglyphs.json</trkfile>
@@ -24820,8 +24820,8 @@ Placitas for those who wish to go further, but the authors returned to the start
             <symbol>Flag, Red</symbol>
             <icon_size/>
             <iclr/>
-            <imgHt></imgHt>
-            <imgWd></imgWd>
+            <imgHt/>
+            <imgWd/>
             <org/>
         </picDat>
         <picDat>
@@ -24919,7 +24919,7 @@ Placitas for those who wish to go further, but the authors returned to the start
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Embudo_Trail.GPX</gpxfile>
 	<trkfile>Embudo_Trail.json</trkfile>
@@ -25253,7 +25253,7 @@ routes through the neck, and all require some degree of scrambling, so simply pi
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>20160730_PlazaBlanca.gpx</gpxfile>
 	<trkfile>20160730_PlazaBlanca.json</trkfile>
@@ -25517,7 +25517,7 @@ The Actual Hike Data below is for a relatively short out and back hike with litt
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Little_Tesuque.GPX</gpxfile>
 	<trkfile>Little_Tesuque.json</trkfile>
@@ -25790,7 +25790,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>DiabloSouthMesa.gpx</gpxfile>
 	<trkfile>DiabloSouthMesa.json</trkfile>
@@ -26039,7 +26039,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>ArmijoFaulty.GPX</gpxfile>
 	<trkfile>ArmijoFaulty.json</trkfile>
@@ -26273,7 +26273,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>DeadmanPeaks.GPX</gpxfile>
 	<trkfile>DeadmanPeaks.json</trkfile>
@@ -26516,7 +26516,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Huertas_de_Placitas.GPX</gpxfile>
 	<trkfile>Huertas_de_Placitas.json</trkfile>
@@ -26740,7 +26740,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>PereaNatureTrail.gpx</gpxfile>
 	<trkfile>PereaNatureTrail.json</trkfile>
@@ -27115,7 +27115,7 @@ accumulations.</hikeInfo>
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Paliza_Goblin_Colony.GPX</gpxfile>
 	<trkfile>Paliza_Goblin_Colony.json</trkfile>
@@ -27494,7 +27494,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>ElDoradoCP.gpx</gpxfile>
 	<trkfile>ElDoradoCP.json</trkfile>
@@ -27879,7 +27879,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>TomMano.gpx</gpxfile>
 	<trkfile>TomMano.json</trkfile>
@@ -28235,7 +28235,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Tramway_Trail.GPX</gpxfile>
 	<trkfile>Tramway_Trail.json</trkfile>
@@ -28508,7 +28508,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Cienega_Santa_fe.GPX</gpxfile>
 	<trkfile>Cienega_Santa_fe.json</trkfile>
@@ -28717,7 +28717,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Black_Canyon.GPX</gpxfile>
 	<trkfile>Black_Canyon.json</trkfile>
@@ -28987,7 +28987,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>TesuqueCreekSouthFork.gpx</gpxfile>
 	<trkfile>TesuqueCreekSouthFork.json</trkfile>
@@ -29240,7 +29240,7 @@ accumulations.</hikeInfo>
             <imgWd>240</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>CrestSpur.gpx</gpxfile>
 	<trkfile>CrestSpur.json</trkfile>
@@ -29457,7 +29457,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>SFBaldyFullLoop.gpx</gpxfile>
 	<trkfile>SFBaldyFullLoop.json</trkfile>
@@ -29680,11 +29680,11 @@ accumulations.</hikeInfo>
             <symbol/>
             <icon_size/>
             <iclr>red</iclr>
-            <imgHt></imgHt>
-            <imgWd></imgWd>
+            <imgHt/>
+            <imgWd/>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>LittleTesuqueFalls.gpx</gpxfile>
 	<trkfile>LittleTesuqueFalls.json</trkfile>
@@ -30121,7 +30121,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>LakePeakSnipped.gpx</gpxfile>
 	<trkfile>LakePeakSnipped.json</trkfile>
@@ -30510,7 +30510,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Tree_Spring.GPX</gpxfile>
 	<trkfile>Tree_Spring.json</trkfile>
@@ -31122,7 +31122,7 @@ accumulations.</hikeInfo>
             <imgWd>320</imgWd>
             <org/>
         </picDat>
-        <picDat><imgWd></imgWd><imgHt></imgHt></picDat>
+        <picDat><imgWd/><imgHt/></picDat>
         </tsv>
 	<gpxfile>Puerto_Nambe.GPX</gpxfile>
 	<trkfile>Puerto_Nambe.json</trkfile>
