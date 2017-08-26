@@ -152,14 +152,18 @@ foreach ($xml->row as $page) {
                 array_push($descs,$filename);
                 array_push($alblnks,$img->alblnk);
                 array_push($piclnks,$img->mid);
-                $dateStr = clean($img->date);
                 $pDesc = clean($img->desc);
-                $year = substr($dateStr,0,4);
-                $month = intval(substr($dateStr,5,2));
-                $day = intval(substr($dateStr,8,2));  # intval strips leading 0
-                $date = $months[$month] . ' ' . $day . ', ' . $year .
-                        ': ' . $pDesc;
-                array_push($captions,$date);
+                $dateStr = clean($img->date);
+                if ($dateStr == '') {
+                    array_push($captions,$pDesc);
+                } else {
+                    $year = substr($dateStr,0,4);
+                    $month = intval(substr($dateStr,5,2));
+                    $day = intval(substr($dateStr,8,2));  # intval strips leading 0
+                    $date = $months[$month] . ' ' . $day . ', ' . $year .
+                            ': ' . $pDesc;
+                    array_push($captions,$date);
+                }
                 $ht = intval($img->imgHt);
                 $wd = intval($img->imgWd);
                 array_push($widths,$wd);
