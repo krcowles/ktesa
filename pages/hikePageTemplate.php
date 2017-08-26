@@ -87,8 +87,7 @@ function clean($tsvdat) {
     if (substr($curdat,$tsvlgth-2,2) === '\n') {
         $curdat = substr($curdat,0,$tsvlgth-2);
     }
-    return $curdat;
-    
+    return addslashes($curdat);   
 }
 # FUNCTION END
 
