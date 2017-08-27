@@ -151,11 +151,18 @@ foreach ($photos->picDat as $xmlPhoto) {
         $procName = preg_replace('/"/','\"',$procName);
         $procDesc = preg_replace("/'/","\'",$xmlPhoto->desc);
         $procDesc = preg_replace('/"/','\"',$procDesc);
+        if (strlen($xmlPhoto->symbol) !== 0) {
+            $wayptMrkr = $xmlPhoto->symbol;
+            $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
+            $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
+            $procDesc . "',color:'',icon:'" . $wayptMrkr . "'});";
+        } else {
         $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
             $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
             $procDesc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
             $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
             $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
+        }
         array_push($plnks,$plnk);
         $mcnt++;
     }
