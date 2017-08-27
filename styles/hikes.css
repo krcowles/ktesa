@@ -128,18 +128,20 @@ fieldset {
     color: Teal; }
 /* image alignment and pop-up caption styles */
 .ImgRow {
+    display: inline-block;
+    min-width: 960px;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0px; }
 img {
     margin-bottom: 0px; }
+#imgArea {
+    clear: left;
+    margin-left: 24px;
+}
 iframe {
     border: none; }
-.captionList { 
-    display: none; }
-.lnkList {
-	display: none; }
 .popupCap {
     margin: 0px;
     display: none;
@@ -152,8 +154,6 @@ iframe {
     font-weight: bold;
     background-color: #eaeaea; }
 /* details about the hike */
-#postPhoto {
-	margin-top: 40px; }
 #trailTips {
     margin-left: 10px;
     margin-right: 10px;

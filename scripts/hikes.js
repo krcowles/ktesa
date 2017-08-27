@@ -1,5 +1,3 @@
-$( function () { // when page is loaded...
-
 /* Zoom detection is not provided as standard, and is browser-dependent. 
  * The methodology employed here works well only where the devicePixelRatio 
  * property actually reveals browser pixel-scaling. As an example, the method 
@@ -38,19 +36,8 @@ var SHRINK = 0;
 // Detecting old or new style pages via iframe id="mapline"
 if ($('#mapline').length) {
     var newStyle = true;
-    var mapPresent = false;
 } else {
-    // there may be an iframe:
     var newStyle = false;
-    var mapPresent = false;
-    var $maps = $('iframe');
-    if ($maps.length) {
-        // GPSV map options - used by old style pages w/small iframes
-        var mapDisplayOpts = '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true';
-        mapPresent = true;
-        var orgMapLink = $('#theMap').attr('src');
-        var fullMap = orgMapLink + mapDisplayOpts;
-    }
 }
 // window size and margin calculations; NOTE: innerWidth provides the dimension inside the border
 var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
@@ -108,13 +95,10 @@ var rowcnt;
  */
 // jQuery objects & variables
 var $photos = $('img[id^="pic"]');
+$photos.each( function() {
+    $(this).css('cursor','pointer');
+});
 var noOfPix = $photos.length;
-var $links = $('.lnkList li');
-// space down for map link when map is in bottom row
-var $rowDivs = $('div[class="Solo"]');
-if ($rowDivs.length === 0) {
-	$('#postPhoto').css('margin-top','40px');
-}
 var $rows = $('div[id^="row"]');
 var noOfRows = $rows.length;
 var rowht;
@@ -162,16 +146,7 @@ var capLeft = new Array();
 var capWidth = new Array();
 var picId;
 var picPos;
-// map position vars
-var mapPos;
-var mapLeft;
-var mapWidth;
-var mapHeight;
-var mapBot;
-var lnkLoc;
 // keys for stashing data into session storage
-var mleft;
-var mbot;
 var pwidth;
 var pleft;
 var ptop;
@@ -197,10 +172,6 @@ if ( sessSupport ) {
 		for ( i=0; i<noOfPix; i++ ) {
 			pwidth = 'pwidth' + i;
 			capWidth[i] = sessionStorage.getItem(pwidth);
-		}
-		if (mapPresent) {
-			mapLeft = sessionStorage.getItem('mleft');
-			mapBot = sessionStorage.getItem('mbot');
 		}
 		for ( i=0; i<noOfPix; i++ ) {
 			pleft = 'pleft' + i;
@@ -247,13 +218,6 @@ if ( sessSupport ) {
 if ( sessSupport ) { 
 	sessionStorage.setItem('prevLoad','2.71828'); // Euler's number
 }
-// Establish a link below the iframe map for full page map display:
-if (mapPresent) {
-	// make map link and place below map
-	htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-		mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
-$('.lnkList').after(htmlLnk);
-}
 /* CALCULATE THE POINT at which the image sizer can add a photo to the first row and re-size
  * If the current winWidth is greater than the width of the page's initially loaded row width
  * PLUS the next available image in the next row (row1), recalculate the number of images per row
@@ -279,9 +243,6 @@ if (winWidth > triggerWidth) {
  * turned off together (see killEvents). Obviously, eventSet is also called after page load.
  */
 function eventSet() {
-    $photos.each( function() {
-        $(this).css('cursor','pointer');
-    });
     // popup a description when mouseover a photo
     $photos.css('z-index','1'); // keep pix in the background
     $photos.on('mouseover', function(ev) {
@@ -297,31 +258,17 @@ function eventSet() {
         $('.popupCap > p').remove();
         $('.popupCap').css('display','none');
     });
-    // clicking images:
-    $photos.on('click', function(ev) {
-        var clickWhich = ev.target;
-        var picSrc = clickWhich.id;
-        var picHdr = picSrc.substring(0,3);
-        // again, no id for class='chart', hence no album links
-        if ( picHdr === 'pic' ) {
-            var picIndx = picSrc.indexOf('pic') + 3;
-            var picNo = picSrc.substring(picIndx,picSrc.length);
-            var j = 0;
-            $('.lnkList li').each( function() {
-                if ( j == picNo ) {
-                    FlickrLnk = this.textContent;
-                }
-                j++;
-            });
-            window.open(FlickrLnk);
-        }
-    }); 
+    $photos.each( function(indx) {
+        $(this).on('click', function() {
+        window.open(alblnks[indx],"_blank");
+    });
+    })
 }
 // turn off events during resize until finished resizing
 function killEvents() {
     $photos.off('mouseover');
     $photos.off('mouseout');
-    $photos.off('click');    // specifying multiple events in one call gave error
+    $photos.off('click');
     $photos = null;
 }
 
@@ -405,7 +352,7 @@ function getOrgDat() {
 		sessionStorage.setItem('mrowwidth',maxRow);
 	}
 }		
-// function to capture *current* image widths & map link loc
+// function to capture *current* image widths
 function captureWidths() {
     i = 0;
     $photos.each( function() {
@@ -416,19 +363,6 @@ function captureWidths() {
         }
         i++;
     });
-    if (mapPresent) {
-        //ASSUMPTION: width = height for iframes
-        mapWidth = $('iframe').attr('width');
-        mapWidth = parseFloat(mapWidth);
-        lnkLoc = ( mapWidth - 160 ) / 2;
-        mapPos = $('iframe').offset();
-        mapLeft = mapPos.left + lnkLoc;
-        mapBot = mapPos.top + mapWidth + 15;
-        if (sessSupport) {
-            sessionStorage.setItem('mleft',mapLeft);
-            sessionStorage.setItem('mbot',mapBot);
-        }
-    }
 }
 // function to calculate current & (potentially) store location of images/captions
 function calcPos() {
@@ -523,15 +457,6 @@ function sizeProcessor() {
 	captureWidths();
 	calcPos();
 	eventSet();
-	if (mapPresent) {
-		// place link to full-size map below iframe;
-		var lnkNode = document.getElementById('mapLnk');
-		var lnkParent = lnkNode.parentNode;
-		lnkParent.removeChild(lnkNode);
-		htmlLnk = '<a id="mapLnk" style="position:absolute; left:' + mapLeft + 'px; top:' +
-				mapBot + 'px;" href="' + fullMap + '" target="_blank">Click for full-page map</a>';
-		$('.lnkList').after(htmlLnk);	
-	}
 }
 
 /* ROW-SIZING AND RE-DRAWING FUNCTIONS: CALLED AS NEEDED FROM RESIZE (or at LOAD-TIME)
@@ -822,5 +747,4 @@ function redrawRows(direction) {
 		redrawn = false;
 	}
 }
- 
-});  // end of 'page (DOM) loading complete'
+

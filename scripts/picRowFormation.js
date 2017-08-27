@@ -83,7 +83,7 @@ for (var n=0; n<itemcnt; n++) {
         currWidth = 0;
     }
     if ( (n === itemcnt-1) && !rowComplete ) {
-        // last row will not be filled, so no scaling
+        // in this case, last row will not be filled, so no scaling
         rowHtml += '<div id="row' + rowNo + 
             '" class="ImgRow">' + "\n";
         for (var l=imgStartNo; l< n+1; l++) {
@@ -109,9 +109,4 @@ for (var n=0; n<itemcnt; n++) {
     rowComplete = false;
 } // end of processing images to fit in rows
 $('#imgArea').html(rowHtml);
-$('img[id^="pic"]').each( function(indx) {
-    $(this).css('cursor','pointer');
-    $(this).on('click', function() {
-        window.open(alblnks[indx],"_blank");
-    });
-});
+

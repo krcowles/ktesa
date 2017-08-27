@@ -180,7 +180,6 @@ foreach ($xml->row as $page) {
             array_push($captions,'');
             $ht = $page->aoimg1->iht;
             $wd = $page->aoimg1->iwd;
-            echo "Addon ht: " . $ht . ", width: " . $wd;
             array_push($widths,$wd);
             $imgRatio = $wd/$ht;
             array_push($aspects,$imgRatio);  
@@ -366,7 +365,6 @@ if (!$newstyle) {
 ?>
 <div id="imgArea"></div>
 <?php
-echo '<div class="lnkList">' . $picLinks . '</div>' . "\n";
 # clear floats when no pics:
 echo '<div style="clear:both;">' . "\n";
 if ($hikeTips !== '') {
@@ -412,7 +410,8 @@ echo '</div>';
 </script>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="../scripts/picRowFormation.js"></script>
-<script src="../scripts/hikes.js"></script> 
+<script src="../scripts/captions.js"></script>
+<script src="../scripts/rowManagement.js"></script>
 <?php if ($newstyle) {
     echo '<script src="../scripts/dynamicChart.js"></script> ';
 } ?>
