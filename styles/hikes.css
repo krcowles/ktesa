@@ -128,17 +128,17 @@ fieldset {
     color: Teal; }
 /* image alignment and pop-up caption styles */
 .ImgRow {
-    display: inline-block;
     min-width: 960px;
+    overflow: hidden;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0px; }
 img {
+    display: inline-block;
     margin-bottom: 0px; }
-#imgArea {
-    clear: left;
-    margin-left: 24px;
+#imgArea {;
+    min-width: 960px;
 }
 iframe {
     border: none; }

@@ -440,7 +440,8 @@ $(window).resize( function() {
 	if (runSizer) {
 		resizeFlag = true;
 		setTimeout( function() {
-			sizeProcessor();
+                        alert("RESIZE");
+                    //sizeProcessor();
 			resizeFlag = false;  // can now process another resize event
 		}, 400);
 	} else {  // when zoom modifies image sizes:

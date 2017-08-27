@@ -1,5 +1,7 @@
-// Detecting new style pages via existence of iframe id="mapline"
+// Establish location of picture rows before attempting to capture positions
+var newStyle;
 if ($('#mapline').length) {
+    newStyle = true;
     // setting up map & chart to occupy viewport space
     var vpHeight = window.innerHeight;
     var sidePnlPos = $('#sidePanel').offset();
@@ -13,8 +15,11 @@ if ($('#mapline').length) {
     $('#mapline').css('height',mapHeight);
     $('#chartline').css('height',chartHeight);
     $('#sidePanel').css('height',pnlHeight);
+} else {
+    newStyle = false;
 }
 
+// begin caption popup code
 var $photos = $('img[id^="pic"]');
 var noOfPix = $photos.length;
 var picSel;

@@ -12,7 +12,7 @@ var itemcnt = descs.length;
 
 // NOMINAL SETTINGS:
 var maxRowHt = 260;	
-var rowWidth = 950;
+var rowWidth = 946;  // see note at end of module; if 950, imgs may wrap
 /*
  * Begin the process by starting with all images set to the same
  * height [maxRowHt] for initial placement in a row:
@@ -32,7 +32,7 @@ var iwidth;
 var imgRows = [];   // holds each row's html
 var noProcessed = 0;
 var startIndx = 0;
-var rowComplete = false; // ???????????? where to put this
+var rowComplete = false;
 var itype = [];
 // row width calculation will include 1px between each image
 var leftMostImg = true;
@@ -110,3 +110,13 @@ for (var n=0; n<itemcnt; n++) {
 } // end of processing images to fit in rows
 $('#imgArea').html(rowHtml);
 
+/* 
+ * Note regarding initial row calculations:
+ * A width of 960px is used here (actually, 946 to allow small margin on
+ * each side of the row) as this is the base minimum window width for any
+ * page, below which the window will not shrink, and a scroll bar will appear.
+ * Therefore, the rows are set to their minimum width on page load. The
+ * rowManagement.js script will grow those rows if the window widens, and
+ * will not shrink below this original width when window shrinks.
+ * See more detail in the rowManagement.js script. 
+ */
