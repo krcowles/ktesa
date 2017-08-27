@@ -131,4 +131,11 @@ function eventSet() {
         });
     });
 }
+// turn off events during resize until finished resizing
+function killEvents() {
+    $photos.off('mouseover');
+    $photos.off('mouseout');
+    $photos.off('click');
+    $photos = null;
+}
 eventSet();
