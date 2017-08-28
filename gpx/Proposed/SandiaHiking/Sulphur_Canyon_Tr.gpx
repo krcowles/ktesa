@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<gpx
+version="1.1"
+creator="KML2GPX"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.topografix.com/GPX/1/1"
+xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata>
+<name>Sulpher Canyon Trail.kml</name>
+<desc>Sulpher Canyon Trail.kml</desc>
+<link href="http://www.garmin.com">
+<text>Garmin International</text>
+</link>
+</metadata>
+<trk>
+<name>Sulpher Canyon Trail</name>
+<trkseg>
+<trkpt lat="35.174775" lon="-106.381637">
+<ele>2274.135986</ele>
+</trkpt>
+<trkpt lat="35.174766" lon="-106.381642">
+<ele>2274.135986</ele>
+</trkpt>
+<trkpt lat="35.174756" lon="-106.381647">
+<ele>2272.694092</ele>
+</trkpt>
+<trkpt lat="35.174684" lon="-106.381699">
+<ele>2273.174805</ele>
+</trkpt>
+<trkpt lat="35.17467700000001" lon="-106.381886">
+<ele>2274.135986</ele>
+</trkpt>
+<trkpt lat="35.174679" lon="-106.382018">
+<ele>2275.097168</ele>
+</trkpt>
+<trkpt lat="35.174673" lon="-106.382168">
+<ele>2277.500488</ele>
+</trkpt>
+<trkpt lat="35.174574" lon="-106.382306">
+<ele>2278.942383</ele>
+</trkpt>
+<trkpt lat="35.174539" lon="-106.382469">
+<ele>2279.903809</ele>
+</trkpt>
+<trkpt lat="35.174488" lon="-106.382597">
+<ele>2280.384521</ele>
+</trkpt>
+<trkpt lat="35.17447" lon="-106.382784">
+<ele>2282.787598</ele>
+</trkpt>
+<trkpt lat="35.174469" lon="-106.38286">
+<ele>2283.749023</ele>
+</trkpt>
+<trkpt lat="35.174457" lon="-106.38293">
+<ele>2284.710693</ele>
+</trkpt>
+<trkpt lat="35.174472" lon="-106.383077">
+<ele>2287.11377</ele>
+</trkpt>
+<trkpt lat="35.174491" lon="-106.383141">
+<ele>2288.555908</ele>
+</trkpt>
+<trkpt lat="35.174466" lon="-106.383267">
+<ele>2289.997803</ele>
+</trkpt>
+<trkpt lat="35.174442" lon="-106.383323">
+<ele>2290.478271</ele>
+</trkpt>
+<trkpt lat="35.17435" lon="-106.383424">
+<ele>2291.92041</ele>
+</trkpt>
+<trkpt lat="35.17431" lon="-106.383535">
+<ele>2292.881592</ele>
+</trkpt>
+<trkpt lat="35.17428" lon="-106.383634">
+<ele>2293.843018</ele>
+</trkpt>
+<trkpt lat="35.17416300000001" lon="-106.383794">
+<ele>2295.284912</ele>
+</trkpt>
+<trkpt lat="35.174059" lon="-106.383904">
+<ele>2296.726807</ele>
+</trkpt>
+<trkpt lat="35.174016" lon="-106.383958">
+<ele>2297.688232</ele>
+</trkpt>
+<trkpt lat="35.173937" lon="-106.384032">
+<ele>2299.130127</ele>
+</trkpt>
+<trkpt lat="35.173934" lon="-106.384039">
+<ele>2299.130127</ele>
+</trkpt>
+<trkpt lat="35.173853" lon="-106.384284">
+<ele>2300.572266</ele>
+</trkpt>
+<trkpt lat="35.173768" lon="-106.384484">
+<ele>2302.494873</ele>
+</trkpt>
+<trkpt lat="35.17369" lon="-106.38461">
+<ele>2304.41748</ele>
+</trkpt>
+<trkpt lat="35.173684" lon="-106.38462">
+<ele>2304.41748</ele>
+</trkpt>
+<trkpt lat="35.173603" lon="-106.384714">
+<ele>2305.859375</ele>
+</trkpt>
+<trkpt lat="35.173482" lon="-106.384788">
+<ele>2308.743408</ele>
+</trkpt>
+<trkpt lat="35.173414" lon="-106.384863">
+<ele>2308.743408</ele>
+</trkpt>
+<trkpt lat="35.173381" lon="-106.38495">
+<ele>2309.70459</ele>
+</trkpt>
+<trkpt lat="35.17332500000001" lon="-106.38514">
+<ele>2311.627441</ele>
+</trkpt>
+<trkpt lat="35.173322" lon="-106.385299">
+<ele>2313.549805</ele>
+</trkpt>
+<trkpt lat="35.173306" lon="-106.385504">
+<ele>2315.472656</ele>
+</trkpt>
+<trkpt lat="35.173298" lon="-106.385733">
+<ele>2318.837402</ele>
+</trkpt>
+<trkpt lat="35.173277" lon="-106.385848">
+<ele>2320.76001</ele>
+</trkpt>
+<trkpt lat="35.173205" lon="-106.386046">
+<ele>2323.16333</ele>
+</trkpt>
+<trkpt lat="35.173182" lon="-106.386129">
+<ele>2323.643799</ele>
+</trkpt>
+<trkpt lat="35.173161" lon="-106.386176">
+<ele>2323.16333</ele>
+</trkpt>
+<trkpt lat="35.17310800000001" lon="-106.38625">
+<ele>2323.643799</ele>
+</trkpt>
+<trkpt lat="35.173026" lon="-106.386263">
+<ele>2323.16333</ele>
+</trkpt>
+<trkpt lat="35.172994" lon="-106.386401">
+<ele>2325.085693</ele>
+</trkpt>
+<trkpt lat="35.172973" lon="-106.38647">
+<ele>2325.566406</ele>
+</trkpt>
+<trkpt lat="35.17296500000001" lon="-106.386624">
+<ele>2327.489014</ele>
+</trkpt>
+<trkpt lat="35.173009" lon="-106.386811">
+<ele>2330.85376</ele>
+</trkpt>
+<trkpt lat="35.172974" lon="-106.387042">
+<ele>2333.25708</ele>
+</trkpt>
+<trkpt lat="35.172983" lon="-106.387141">
+<ele>2334.218506</ele>
+</trkpt>
+<trkpt lat="35.172962" lon="-106.387181">
+<ele>2334.699219</ele>
+</trkpt>
+<trkpt lat="35.173005" lon="-106.387192">
+<ele>2334.699219</ele>
+</trkpt>
+</trkseg>
+</trk>
+<extensions>
+</extensions>
+</gpx>

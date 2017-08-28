@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<gpx
+version="1.1"
+creator="KML2GPX"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.topografix.com/GPX/1/1"
+xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata>
+<name>Wolf Creek Trail.kml</name>
+<desc>Wolf Creek Trail.kml</desc>
+<link href="http://www.garmin.com">
+<text>Garmin International</text>
+</link>
+</metadata>
+<trk>
+<name>Wolf Creek Trail</name>
+<trkseg>
+<trkpt lat="35.17328800000001" lon="-106.377285">
+<ele>2231.837891</ele>
+</trkpt>
+<trkpt lat="35.173384" lon="-106.377077">
+<ele>2231.357178</ele>
+</trkpt>
+<trkpt lat="35.173433" lon="-106.377011">
+<ele>2230.876709</ele>
+</trkpt>
+<trkpt lat="35.173432" lon="-106.376998">
+<ele>2230.876709</ele>
+</trkpt>
+<trkpt lat="35.17342" lon="-106.376763">
+<ele>2232.799072</ele>
+</trkpt>
+<trkpt lat="35.17337" lon="-106.376585">
+<ele>2234.721924</ele>
+</trkpt>
+<trkpt lat="35.173458" lon="-106.376567">
+<ele>2237.125244</ele>
+</trkpt>
+<trkpt lat="35.173522" lon="-106.376554">
+<ele>2238.08667</ele>
+</trkpt>
+<trkpt lat="35.173665" lon="-106.376542">
+<ele>2239.047852</ele>
+</trkpt>
+<trkpt lat="35.173851" lon="-106.376645">
+<ele>2240.489746</ele>
+</trkpt>
+<trkpt lat="35.17392" lon="-106.376664">
+<ele>2241.451172</ele>
+</trkpt>
+<trkpt lat="35.174049" lon="-106.376752">
+<ele>2243.373779</ele>
+</trkpt>
+<trkpt lat="35.174095" lon="-106.376776">
+<ele>2243.854492</ele>
+</trkpt>
+<trkpt lat="35.174251" lon="-106.37682">
+<ele>2245.7771</ele>
+</trkpt>
+<trkpt lat="35.174305" lon="-106.37688">
+<ele>2246.257813</ele>
+</trkpt>
+<trkpt lat="35.174409" lon="-106.37695">
+<ele>2247.699707</ele>
+</trkpt>
+<trkpt lat="35.174492" lon="-106.377039">
+<ele>2248.180176</ele>
+</trkpt>
+<trkpt lat="35.174622" lon="-106.377249">
+<ele>2251.064209</ele>
+</trkpt>
+<trkpt lat="35.174675" lon="-106.37733">
+<ele>2250.583496</ele>
+</trkpt>
+<trkpt lat="35.174829" lon="-106.377473">
+<ele>2251.064209</ele>
+</trkpt>
+<trkpt lat="35.174941" lon="-106.377549">
+<ele>2249.622314</ele>
+</trkpt>
+<trkpt lat="35.175022" lon="-106.377604">
+<ele>2247.699707</ele>
+</trkpt>
+<trkpt lat="35.175197" lon="-106.37767">
+<ele>2246.257813</ele>
+</trkpt>
+<trkpt lat="35.175337" lon="-106.377685">
+<ele>2244.334961</ele>
+</trkpt>
+<trkpt lat="35.175436" lon="-106.377744">
+<ele>2246.257813</ele>
+</trkpt>
+<trkpt lat="35.175452" lon="-106.37775">
+<ele>2247.218994</ele>
+</trkpt>
+</trkseg>
+</trk>
+<extensions>
+</extensions>
+</gpx>

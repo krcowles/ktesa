@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<gpx
+version="1.1"
+creator="KML2GPX"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.topografix.com/GPX/1/1"
+xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata>
+<name>BD Loop - JT Canyon Link.kml</name>
+<desc>BD Loop - JT Canyon Link.kml</desc>
+<link href="http://www.garmin.com">
+<text>Garmin International</text>
+</link>
+</metadata>
+<trk>
+<name>BD Loop - JT Canyon Link</name>
+<trkseg>
+<trkpt lat="35.214828" lon="-106.500303">
+<ele>1999.679688</ele>
+</trkpt>
+<trkpt lat="35.21482" lon="-106.500304">
+<ele>2000.640869</ele>
+</trkpt>
+<trkpt lat="35.215071" lon="-106.500387">
+<ele>1999.198975</ele>
+</trkpt>
+<trkpt lat="35.215167" lon="-106.500416">
+<ele>1999.679688</ele>
+</trkpt>
+<trkpt lat="35.21543900000001" lon="-106.500468">
+<ele>1998.237549</ele>
+</trkpt>
+<trkpt lat="35.21566" lon="-106.50042">
+<ele>1997.276367</ele>
+</trkpt>
+<trkpt lat="35.215907" lon="-106.500414">
+<ele>1999.679688</ele>
+</trkpt>
+<trkpt lat="35.216058" lon="-106.500458">
+<ele>2002.563477</ele>
+</trkpt>
+<trkpt lat="35.216132" lon="-106.500533">
+<ele>2002.563477</ele>
+</trkpt>
+<trkpt lat="35.216345" lon="-106.500619">
+<ele>2003.044189</ele>
+</trkpt>
+<trkpt lat="35.216374" lon="-106.500622">
+<ele>2002.082764</ele>
+</trkpt>
+<trkpt lat="35.21646300000001" lon="-106.500627">
+<ele>2001.121582</ele>
+</trkpt>
+<trkpt lat="35.216663" lon="-106.500692">
+<ele>1997.75708</ele>
+</trkpt>
+<trkpt lat="35.216793" lon="-106.500741">
+<ele>1995.834229</ele>
+</trkpt>
+<trkpt lat="35.216894" lon="-106.500807">
+<ele>1993.911621</ele>
+</trkpt>
+<trkpt lat="35.217002" lon="-106.501037">
+<ele>1990.066406</ele>
+</trkpt>
+<trkpt lat="35.217085" lon="-106.50116">
+<ele>1986.70166</ele>
+</trkpt>
+<trkpt lat="35.217177" lon="-106.501218">
+<ele>1983.817871</ele>
+</trkpt>
+<trkpt lat="35.217258" lon="-106.501256">
+<ele>1980.453369</ele>
+</trkpt>
+<trkpt lat="35.217267" lon="-106.501238">
+<ele>1980.934082</ele>
+</trkpt>
+<trkpt lat="35.217301" lon="-106.501101">
+<ele>1977.088623</ele>
+</trkpt>
+<trkpt lat="35.217326" lon="-106.500994">
+<ele>1974.20459</ele>
+</trkpt>
+<trkpt lat="35.217335" lon="-106.500925">
+<ele>1971.80127</ele>
+</trkpt>
+<trkpt lat="35.217357" lon="-106.500881">
+<ele>1969.878662</ele>
+</trkpt>
+<trkpt lat="35.217369" lon="-106.500836">
+<ele>1967.956055</ele>
+</trkpt>
+<trkpt lat="35.217391" lon="-106.500802">
+<ele>1966.994873</ele>
+</trkpt>
+<trkpt lat="35.217442" lon="-106.500792">
+<ele>1964.591553</ele>
+</trkpt>
+<trkpt lat="35.217468" lon="-106.500725">
+<ele>1962.668701</ele>
+</trkpt>
+<trkpt lat="35.217481" lon="-106.500699">
+<ele>1962.187988</ele>
+</trkpt>
+<trkpt lat="35.217525" lon="-106.500653">
+<ele>1958.823486</ele>
+</trkpt>
+<trkpt lat="35.217594" lon="-106.500595">
+<ele>1956.420166</ele>
+</trkpt>
+<trkpt lat="35.21767100000001" lon="-106.500548">
+<ele>1954.497559</ele>
+</trkpt>
+<trkpt lat="35.217711" lon="-106.500497">
+<ele>1951.61377</ele>
+</trkpt>
+<trkpt lat="35.217738" lon="-106.50049">
+<ele>1950.652344</ele>
+</trkpt>
+<trkpt lat="35.217753" lon="-106.500482">
+<ele>1949.691162</ele>
+</trkpt>
+<trkpt lat="35.217765" lon="-106.500499">
+<ele>1948.249023</ele>
+</trkpt>
+<trkpt lat="35.21781" lon="-106.500488">
+<ele>1945.36499</ele>
+</trkpt>
+<trkpt lat="35.21785100000001" lon="-106.500498">
+<ele>1942.96167</ele>
+</trkpt>
+<trkpt lat="35.21788" lon="-106.500563">
+<ele>1940.55835</ele>
+</trkpt>
+<trkpt lat="35.217948" lon="-106.500568">
+<ele>1938.155273</ele>
+</trkpt>
+<trkpt lat="35.217994" lon="-106.500508">
+<ele>1935.751953</ele>
+</trkpt>
+<trkpt lat="35.218007" lon="-106.500495">
+<ele>1933.829346</ele>
+</trkpt>
+<trkpt lat="35.218059" lon="-106.500521">
+<ele>1930.4646</ele>
+</trkpt>
+<trkpt lat="35.218047" lon="-106.500564">
+<ele>1929.983887</ele>
+</trkpt>
+<trkpt lat="35.218105" lon="-106.500567">
+<ele>1927.580566</ele>
+</trkpt>
+<trkpt lat="35.218126" lon="-106.500627">
+<ele>1926.619385</ele>
+</trkpt>
+<trkpt lat="35.218155" lon="-106.500681">
+<ele>1926.619385</ele>
+</trkpt>
+<trkpt lat="35.218145" lon="-106.500696">
+<ele>1927.100098</ele>
+</trkpt>
+</trkseg>
+</trk>
+<extensions>
+</extensions>
+</gpx>

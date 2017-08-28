@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<gpx
+version="1.1"
+creator="KML2GPX"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.topografix.com/GPX/1/1"
+xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata>
+<name>EG Wilderness Boundary Trail.kml</name>
+<desc>EG Wilderness Boundary Trail.kml</desc>
+<link href="http://www.garmin.com">
+<text>Garmin International</text>
+</link>
+</metadata>
+<trk>
+<name>EG Wilderness Boundary Trail</name>
+<trkseg>
+<trkpt lat="35.157414" lon="-106.465213">
+<ele>1977.569092</ele>
+</trkpt>
+<trkpt lat="35.157414" lon="-106.465212">
+<ele>1977.088623</ele>
+</trkpt>
+<trkpt lat="35.15741" lon="-106.465206">
+<ele>1979.010986</ele>
+</trkpt>
+<trkpt lat="35.157396" lon="-106.46519">
+<ele>1978.530518</ele>
+</trkpt>
+<trkpt lat="35.157201" lon="-106.465045">
+<ele>1978.049805</ele>
+</trkpt>
+<trkpt lat="35.157161" lon="-106.465011">
+<ele>1978.530518</ele>
+</trkpt>
+<trkpt lat="35.157166" lon="-106.464987">
+<ele>1978.530518</ele>
+</trkpt>
+<trkpt lat="35.15717500000001" lon="-106.464869">
+<ele>1978.530518</ele>
+</trkpt>
+<trkpt lat="35.156946" lon="-106.4647">
+<ele>1978.049805</ele>
+</trkpt>
+<trkpt lat="35.156745" lon="-106.464654">
+<ele>1977.569092</ele>
+</trkpt>
+<trkpt lat="35.156527" lon="-106.464611">
+<ele>1979.010986</ele>
+</trkpt>
+<trkpt lat="35.156262" lon="-106.464579">
+<ele>1977.569092</ele>
+</trkpt>
+<trkpt lat="35.156127" lon="-106.464556">
+<ele>1979.972412</ele>
+</trkpt>
+<trkpt lat="35.155922" lon="-106.4645">
+<ele>1980.934082</ele>
+</trkpt>
+<trkpt lat="35.15579" lon="-106.464472">
+<ele>1981.414551</ele>
+</trkpt>
+<trkpt lat="35.155494" lon="-106.464545">
+<ele>1983.337158</ele>
+</trkpt>
+<trkpt lat="35.155481" lon="-106.464548">
+<ele>1983.337158</ele>
+</trkpt>
+<trkpt lat="35.155219" lon="-106.464598">
+<ele>1983.337158</ele>
+</trkpt>
+<trkpt lat="35.15496900000001" lon="-106.464648">
+<ele>1983.337158</ele>
+</trkpt>
+<trkpt lat="35.154721" lon="-106.464708">
+<ele>1980.934082</ele>
+</trkpt>
+<trkpt lat="35.154475" lon="-106.464814">
+<ele>1980.453369</ele>
+</trkpt>
+<trkpt lat="35.154225" lon="-106.464872">
+<ele>1979.491699</ele>
+</trkpt>
+<trkpt lat="35.154089" lon="-106.464882">
+<ele>1979.010986</ele>
+</trkpt>
+<trkpt lat="35.153837" lon="-106.465049">
+<ele>1978.049805</ele>
+</trkpt>
+<trkpt lat="35.153598" lon="-106.465067">
+<ele>1977.569092</ele>
+</trkpt>
+<trkpt lat="35.153328" lon="-106.465074">
+<ele>1979.491699</ele>
+</trkpt>
+<trkpt lat="35.153075" lon="-106.465087">
+<ele>1980.934082</ele>
+</trkpt>
+<trkpt lat="35.152867" lon="-106.465123">
+<ele>1980.453369</ele>
+</trkpt>
+<trkpt lat="35.152603" lon="-106.465186">
+<ele>1980.453369</ele>
+</trkpt>
+<trkpt lat="35.15232900000001" lon="-106.465199">
+<ele>1980.453369</ele>
+</trkpt>
+<trkpt lat="35.15219" lon="-106.46527">
+<ele>1979.491699</ele>
+</trkpt>
+<trkpt lat="35.152036" lon="-106.465346">
+<ele>1982.375977</ele>
+</trkpt>
+<trkpt lat="35.15192" lon="-106.46539">
+<ele>1981.895264</ele>
+</trkpt>
+<trkpt lat="35.151885" lon="-106.465407">
+<ele>1980.453369</ele>
+</trkpt>
+<trkpt lat="35.15176" lon="-106.465473">
+<ele>1981.895264</ele>
+</trkpt>
+<trkpt lat="35.151726" lon="-106.465496">
+<ele>1982.856445</ele>
+</trkpt>
+<trkpt lat="35.151565" lon="-106.465623">
+<ele>1984.298584</ele>
+</trkpt>
+<trkpt lat="35.15152" lon="-106.465664">
+<ele>1984.298584</ele>
+</trkpt>
+<trkpt lat="35.151521" lon="-106.465668">
+<ele>1984.298584</ele>
+</trkpt>
+</trkseg>
+</trk>
+<extensions>
+</extensions>
+</gpx>
