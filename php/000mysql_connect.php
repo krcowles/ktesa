@@ -6,9 +6,9 @@
 
     $link = mysqli_connect(HostName, UserName, PASSWORD, Database);
     if (!$link) {
-        echo "Error: Unable to connect to MySQL." . PHP_EOL;
-        echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-        echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+        echo "<p>Error: Unable to connect to MySQL.</p>" . PHP_EOL;
+        echo "<p>Debugging errno: " . mysqli_connect_errno() . "; " . 
+             mysqli_connect_error() . "</p>" . PHP_EOL;
         exit;
     }
     #echo "Host information: " . mysqli_get_host_info($link) . PHP_EOL;
