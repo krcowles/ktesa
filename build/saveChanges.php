@@ -154,8 +154,7 @@
             $hikeLine->hikeInfo = $hInfo;
             include "refEdits.php";
             include "propactEdits.php";
-            include "picEdits.php";
-            $hikeLine->asXML('tmp.xml');
+            $hikeDat->asXML('database.xml');
             break;
         }  # end of THE EDITED HIKE
     }  
