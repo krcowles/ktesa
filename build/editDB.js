@@ -37,10 +37,9 @@ var mrkr = $('#mrkr').text();
         2. Is a totally new cluster group being assigned?  (#newg) nxtg
            (Whether or not the previous type was cluster, new info will be extracted at server,
             unless "ignore" is checked to restore original state)
-        3. Was marker changed from a non-cluster type to a cluster?  (#mrkrchg) chg2clus
-        4. Was a group different from the original group selected in 
+        3. Was a group different from the original group selected in 
             the drop-down #ctip?  (#grpchg) chgd
-        5. Remove an existing cluster assignment?  (#deassign) rmclus
+        4. Remove an existing cluster assignment?  (#deassign) rmclus
 */
 var fieldflag = false;  // validation: make sure newt gets entered when newg is checked
 // RESTORE INCOMING DEFAULTS:
@@ -53,7 +52,6 @@ $('#ignore').change(function() {
         $('input:checkbox[name=nxtg]').attr('checked',false);
         $('#newg').val("NO");
         $('#newt').val("");
-        $('#mrkrchg').val("NO");
         $('#grpchg').val("NO");
         $('#deassign').val("NO");
         $('input:checkbox[name=rmclus]').attr('checked',false);
@@ -76,7 +74,6 @@ $('#newg').change(function() {
         this.value = "YES";
         if (clusnme == '') {
                 $('#notclus').css('display','none');
-                $('#mrkrchg').val("YES");	
         }
         fieldflag = true;
         $('#grpchg').val("NO");
@@ -85,7 +82,6 @@ $('#newg').change(function() {
         this.value = "NO";
         if (clusnme == '') {
                 $('#notclus').css('display','inline');
-                $('#mrkrchg').val("NO");
                 $('#ctip').val(clusnme);
         }
         $('#newt').val("");
@@ -100,7 +96,6 @@ $('#ctip').change(function() {  // record any changes to the cluster assignment
             /* If marker was not originally a cluster type, prepare to change to cluster group: */
             if (mrkr !== 'Cluster') {
                 window.alert("Marker will be changed to cluster type");
-                $('#mrkrchg').val("YES");
                 $('#notclus').css('display','none');
             } else {  // otherwise, let user know the existing cluster group assignment will change
                 msg = "Cluster type will be changed from " + "\n" + "Original setting of: " + clusnme + "\n";

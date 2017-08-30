@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en-us">
 
@@ -23,6 +22,7 @@
 </div>
 <p id="trail">Saving Hike Page Edits</p>
 
+
 <?php
     $hikeNo = filter_input(INPUT_POST,'hno');
     $hikeDat = simplexml_load_file('../data/database.xml');
@@ -31,6 +31,28 @@
                 'Could not open database.xml to save edits: Contact Site Master</p>';
         die ($nodb);
     }
+    # Extract cluster list - and inherent 1 to 1 association with cluster name:
+    $groups = [];
+    $cnames = [];
+    foreach ($hikeDat->row as $hikeRow) {
+        $cgrp = $hikeRow->clusGrp->__toString();
+        if ( strlen($cgrp) !== 0) {
+            # no duplicates please (NOTE: "array_unique" leaves holes)
+            $match = false;
+            for ($i=0; $i<count($groups); $i++) {
+                if ($cgrp == $groups[$i]) {
+                    $match = true;
+                    break;
+                }  
+            }
+            if (!$match) {
+                $grpName = $hikeRow->cgName->__toString();
+                array_push($groups,$cgrp);
+                array_push($cnames,$grpName);
+            }
+        }
+    }
+    # end of cluster group assignment extraction
     foreach ($hikeDat->row as $hikeLine) {
         if ($hikeLine->indxNo == $hikeNo) {
             $hTitle = filter_input(INPUT_POST,'hname');
@@ -44,12 +66,10 @@
              *     3. Group Assignment Changed
              *     4. Nothing Changed
             */
-            $clusters = $_SESSION['allClusters'];
-            $clusArray = explode(";",$clusters);
-            # 1.
             $delClus = filter_input(INPUT_POST,'rmclus');
             $nextGrp = filter_input(INPUT_POST,'nxtg');
             $grpChg = filter_input(INPUT_POST,'chgd');
+            # 1.
             if ( isset($delClus) && $delClus === 'YES' ) {
                 $hikeLine->marker = 'Normal';
                 $hikeLine->clusGrp = '';
@@ -59,7 +79,7 @@
                 $availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $doubleLtrs = 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ';
                 # add another group of letters later if needed
-                $nextmem = count($clusArray);
+                $nextmem = filter_input(INPUT_POST,'grpcnt',FILTER_SANITIZE_NUMBER_INT);
                 # group letters are assigned sequentially
                 if ($nextmem < 26) {
                     $newgrp = substr($availLtrs,$nextmem,1);
@@ -77,14 +97,9 @@
                 $hikeLine->marker = 'Cluster';
                 $newname = filter_input(INPUT_POST,'htool');
                 # get association with group letter
-                for ($i=0; $i<count($clusArray); $i++) {
-                    $dollarpos = strpos($clusArray[$i],"$") + 1;
-                    $nmLgth = strlen($clusArray[$i]) - $dollarpos;
-                    $cname = substr($clusArray[$i],$dollarpos,$nmLgth);
-                    if ($cname == $newname) {
-                        # get group assignment:
-                        $grpLgth = $dollarpos - 1;
-                        $newgrp = substr($clusArray[$i],0,$grpLgth);
+                for ($i=0; $i<count($cnames); $i++) {
+                    if ($cnames[$i] == $newname) {
+                        $newgrp = $groups[$i];
                         break;
                     }
                 }
@@ -121,6 +136,15 @@
             $hDirs = filter_input(INPUT_POST,'gdirs');
             $hikeLine->dirs = $hDirs;
             $hTips = filter_input(INPUT_POST,'htips');
+            # Save captions:
+            $caps = $_POST['ecap'];
+            $p = 0;
+            foreach ($hikeLine->tsv->picDat as $photo) {
+                if ($photo->hpg == 'Y') {
+                    $photo->desc = $caps[$p];
+                    $p++;
+                }
+            }
             # revise tips if no tips were added:
             if (substr($hTips,0,15) !== '[NO TIPS FOUND]') {
                     $hTips = '';
@@ -131,44 +155,11 @@
             include "refEdits.php";
             include "propactEdits.php";
             include "picEdits.php";
-            # album links:
-            $elinkStr = filter_input(INPUT_POST,'editedLinks');
-            $photoLinks = explode("^",$elinkStr);
-            $noOfLnks = $photoLinks[0];
-            array_shift($photoLinks);
-            # clean out old links:
-            $hikeLine->albLinks = '';
-            $hAlb = $hikeLine->albLinks;
-            for ($r=0; $r<$noOfLnks; $r++) {
-                $newLink = $hAlb->addChild('alb',$photoLinks[$r]);
-            }
-            
+            $hikeLine->asXML('tmp.xml');
             break;
         }  # end of THE EDITED HIKE
     }  
         
-    /* Save changes based on whether or not site master: registered users
-     * will have a temporary database change saved for review by the site
-     * master, to be integrated with the site after acceptance. The temp
-     * database will contain only the modified page, not the entire db.
-     * NOTE: THIS IS PRELIMINARY AND BY NO MEANS A VETTED USER PROCESS!!!!
-     */
-    $user = true;
-    if (filter_input(INPUT_POST,'savePg') === 'Site Master') {
-        $passwd = filter_input(INPUT_POST,'mpass');
-        if ($passwd !== '000ktesa') {
-            die('<p style="color:brown;">Incorrect Password - save not executed</p>');
-        }
-        $user = false;
-        $hikeDat->asXML('../data/database.xml');
-        $msgout = " have been saved to the database";
-    } else if (filter_input(INPUT_POST,'savePg') === 'Submit for Review') {
-        $hikeDat->asXML('../data/reviewdat.xml');
-        $msgout = " have been submitted for review by the site masters";
-    } else {
-        die('<p style="color:brown;">Contact Site Master: Submission not recognized');
-    } 
-    
 ?>
 <div style="padding:16px;">
 <h2>The changes submitted for <?php echo $hTitle . $msgout;?></h2>
