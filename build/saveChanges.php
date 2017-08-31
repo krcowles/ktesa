@@ -135,7 +135,7 @@
             $hikeLine->spUrl = $hPurl2;
             $hDirs = filter_input(INPUT_POST,'gdirs');
             $hikeLine->dirs = $hDirs;
-            $hTips = filter_input(INPUT_POST,'htips');
+            $hTips = filter_input(INPUT_POST,'tips');
             # Save captions:
             $caps = $_POST['ecap'];
             $p = 0;
@@ -146,9 +146,10 @@
                 }
             }
             # revise tips if no tips were added:
-            if (substr($hTips,0,15) !== '[NO TIPS FOUND]') {
+            if (substr($hTips,0,15) === '[NO TIPS FOUND]') {
                     $hTips = '';
             }
+                        echo "New tips: " . $hTips;
             $hikeLine->tipsTxt = $hTips;
             $hInfo = filter_input(INPUT_POST,'hinfo');
             $hikeLine->hikeInfo = $hInfo;

@@ -48,7 +48,7 @@ function makeHtmlList($type,$obj) {
                 } elseif ($tagType === 'g') {
                     $tag = '<li>Meetup Group: ';
                 } else {
-                    $tag = '<li>CHECK DATABASE: ';
+                    $tag = '<li>Unrecognized reference type: Contact Site Master';
                 }
                 $htmlout .= $tag . '<a href="' . $item->rit1 . '" target="_blank">' .
                     $item->rit2 . '</a></li>';
