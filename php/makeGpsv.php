@@ -5,7 +5,7 @@
  *  <picDat> tags in database.xml
  */
 
-# Function to calculate the distance between to lat/lng coordinates
+# Function to calculate the distance between two lat/lng coordinates
 function distance($lat1, $lon1, $lat2, $lon2) {
     if ($lat1 === $lat2 && $lon1 === $lon2) {
         return array (0,0);
@@ -151,17 +151,17 @@ foreach ($photos->picDat as $xmlPhoto) {
         $procName = preg_replace('/"/','\"',$procName);
         $procDesc = preg_replace("/'/","\'",$xmlPhoto->desc);
         $procDesc = preg_replace('/"/','\"',$procDesc);
-        if (strlen($xmlPhoto->symbol) !== 0) {
+        if (strlen($xmlPhoto->symbol) !== 0) { # waypoint icon
             $wayptMrkr = $xmlPhoto->symbol;
             $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
-            $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
-            $procDesc . "',color:'',icon:'" . $wayptMrkr . "'});";
-        } else {
-        $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
-            $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
-            $procDesc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
-            $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
-            $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
+                $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
+                $procDesc . "',color:'',icon:'" . $wayptMrkr . "'});";
+        } else { # photo
+            $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
+                $xmlPhoto->lng . ",name:'" . $procDesc . 
+                "',desc:'',color:'" . $xmlPhoto->iclr . "',icon:'" . 
+                $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
+                $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
         }
         array_push($plnks,$plnk);
         $mcnt++;
@@ -292,7 +292,7 @@ $html .= '    gv_options.hide_labels = false;  // true|false: hide labels when m
 $html .= '    gv_options.labels_behind_markers = false; // true|false: are the labels behind other markers (true) or in front of them (false)?' . "\n";
 $html .= '    gv_options.label_offset = [0,0];  // [x,y]: shift all markers labels (positive numbers are right and down)' . "\n";
 $html .= '    gv_options.label_centered = false;  // true|false: center labels with respect to their markers?  (label_left is also a valid option.)' . "\n";
-$html .= '    gv_options.driving_directions = true;  // put a small "driving directions" form in each markers pop-up window? (override with dd:true or dd:false in a markers options)' . "\n";
+$html .= '    gv_options.driving_directions = false;  // put a small "driving directions" form in each markers pop-up window? (override with dd:true or dd:false in a markers options)' . "\n";
 $html .= "    gv_options.garmin_icon_set = 'gpsmap'; // 'gpsmap' are the small 16x16 icons; change it to '24x24' for larger icons" . "\n";
 $html .= '    gv_options.marker_list_options = {};  // options for a dynamically-created list of markers' . "\n";
 $html .= '    gv_options.marker_list_options.enabled = false;  // true|false: enable or disable the marker list altogether' . "\n";
