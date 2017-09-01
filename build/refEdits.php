@@ -34,10 +34,13 @@ foreach ($refDels as $box) {
 $noRefs2Process = $noOfRefs - $noOfSkips;
 
 # clear out old refs:
-$hikeLine->refs = '';
-$hRefs = $hikeLine->refs;
+$rcnt = $hikeLine->refs->ref->count();
+for ($i=0; $i<$rcnt; $i++) {
+    unset($hikeLine->refs->ref[0]);
+}
 
 # add xml back in:
+$hRefs = $hikeLine->refs;
 for ($j=0; $j<$noRefs2Process; $j++) {		
    if (!$skips[$j]) {  # NOTE: skips will be false for newly added refs
            $newref = $hRefs->addChild('ref');
