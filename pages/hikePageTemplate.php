@@ -211,10 +211,10 @@ foreach ($xml->row as $page) {
             $fieldsets = true;
             $datasect = "<fieldset>\n" . 
                     '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
-            if (strlen($hikeProposedData->prop) !== 0) {
+            if ($hikeProposedData->prop->count() !== 0) {
                     $datasect .= makeHtmlList(Proposed,$hikeProposedData);
             }
-            if (strlen($hikeActualData->act) !== 0) {
+            if ($hikeActualData->act->count() !== 0) {
                     $datasect .= makeHtmlList(Actual,$hikeActualData);
             }
             $datasect .= "</fieldset>\n";
