@@ -145,6 +145,15 @@
                     $p++;
                 }
             }
+            # delete any checked photos from the database:
+            $dels = $_POST['delpic'];
+            $delno = 0;
+            foreach ($hikeLine->tsv->picDat as $img) {
+                if ( isset($dels[$delno]) ) {
+                    unset($img[$delno]);
+                }
+                $delno++;
+            }
             # revise tips if no tips were added:
             if (substr($hTips,0,15) === '[NO TIPS FOUND]') {
                     $hTips = '';
