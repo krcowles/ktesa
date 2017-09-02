@@ -158,7 +158,6 @@
             if (substr($hTips,0,15) === '[NO TIPS FOUND]') {
                     $hTips = '';
             }
-                        echo "New tips: " . $hTips;
             $hikeLine->tipsTxt = $hTips;
             $hInfo = filter_input(INPUT_POST,'hinfo');
             $hikeLine->hikeInfo = $hInfo;

@@ -34,10 +34,13 @@ foreach ($delProps as $box) {
 $noProps2Process = $noOfPs - $noOfSkips;
 
 # erase previous data:
-$hikeLine->dataProp = '';
-$hProps = $hikeLine->dataProp;
+$pcnt = $hikeLine->dataProp->prop->count();
+for ($i=0; $i<$pcnt; $i++) {
+    unset($hikeLine->dataProp->prop[0]);
+}
 
-# enter as xml:
+# re-enter modified data
+$hProps = $hikeLine->dataProp;
 for ($j=0; $j<$noProps2Process; $j++) {		
     $newprop = $hProps->addChild('prop');
     $newprop->addChild('plbl',$rawprops[$j]);
@@ -75,10 +78,13 @@ foreach ($delActs as $box) {
 $noActs2Process = $noOfAs - $noOfSkips;
 
 # erase previous data, keep track of current no of tags
-$hikeLine->dataAct = '';
-$hActs = $hikeLine->dataAct;
+$acnt = $hikeLine->dataAct->act->count();
+for ($i=0; $i<$acnt; $i++) {
+    unset($hikeLine->dataAct->act[0]);
+}
 
-# enter as xml:
+# re-enter modified data:
+$hActs = $hikeLine->dataAct;
 for ($j=0; $j<$noActs2Process; $j++) {		
     $newact = $hActs->addChild('act');
     $newact->addChild('albl',$rawacts[$j]);
