@@ -26221,6 +26221,6 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
     <hikeInfo>This hike begins almost at the end of NM63 North from Pecos. This trailhead is the site of multiple hiking possibilities, one of which is Trail 271, the subject of this hike. This hike, if extended far enough, becomes the Stewart Lake hike, making for a 10.8 mile out-and-back. Without going to Stewart Lake however, views of the valley and of the Sangre de Cristo range are well worth the shorter hike. This is not a highly trafficked area, so there is also plenty of solitude, lots of wildflowers, and thick groves of Aspens. The elevation change is gradual and not difficult.</hikeInfo>
     <refs><ref><rtype>b</rtype><rit1>Santa Fe - Taos Hiking Guide</rit1><rit2>, by Bob D'Antonio</rit2></ref><ref><rtype>b</rtype><rit1>Hiking New Mexico</rit1><rit2>, by Laurence Parent</rit2></ref><ref><rtype>b</rtype><rit1>Day Hikes in the Santa Fe Area</rit1><rit2>, Northern New Mexico Group of the Sierra Club</rit2></ref><ref><rtype>a</rtype><rit1>https://www.alltrails.com/trail/us/new-mexico/stewart-lake-trail</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1>https://www.trails.com/tcatalog_trail.aspx?trailid=HGS355-017</rit1><rit2>Trails.com</rit2></ref></refs>
     <dataProp/>
-    <dataAct/>
+	<dataAct><act><albl>GPX: </albl><aurl>../gpx/CowlesTrail271.gpx</aurl><acot>Actual Hike GPX File</acot></act></dataAct>
 </row>
 </rows>
