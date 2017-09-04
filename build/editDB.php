@@ -240,6 +240,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     $picrows = [];
     $caprows = [];
     $cnt = 0;
+    $delItem = 0;
     foreach ($hikePhotos->picDat as $photo) {
         if ($photo->hpg == 'Y') {
             # scale photo dims to nomHt
@@ -275,7 +276,9 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
                 $delwidth = $width - 62;
             }
             $delHtml .= '<span style="margin-right:' . $delwidth . 'px;">' .
-                '<input type="checkbox" name="delpic[]" />&nbsp;Delete</span>';
+                '<input type="checkbox" name="delpic[]" value="'
+                    . $delItem . '" />&nbsp;Delete</span>';
+            $delItem++;
             $cnt++;
         }  
     }
