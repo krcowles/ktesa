@@ -50,7 +50,7 @@ function makeHtmlList($type,$obj) {
                 } else {
                     $tag = '<li>Unrecognized reference type: Contact Site Master';
                 }
-                $htmlout .= $tag . '<a href="' . $item->rit1 . '" target="_blank">' .
+                $htmlout .= $tag . '<a href="' . urldecode($item->rit1) . '" target="_blank">' .
                     $item->rit2 . '</a></li>';
             }
         } // end of foreach loop in references
