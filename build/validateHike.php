@@ -181,9 +181,11 @@ for ($w=0; $w<count($hikeRefTypes); $w++) {
         break;
     }
 }
+
 $newrefs = $xml->row[$hikeNo]->refs->addChild('ref');
 if ($noOfRefs === 0) {
-    $newrefs->addChild('rtype','No References Found');
+    $newrefs->addChild('rtype','n');
+    $newrefs->addChild('rit1','No References Found');
 } else {
     for ($r=0; $r<$noOfRefs; $r++) {
         $newrefs->addChild('rtype',$hikeRefTypes[$r]);
