@@ -45,7 +45,7 @@ for ($j=0; $j<$noRefs2Process; $j++) {
    if (!$skips[$j]) {  # NOTE: skips will be false for newly added refs
            $newref = $hRefs->addChild('ref');
            $newref->addChild('rtype',$rawreftypes[$j]);
-           $newref->addChild('rit1',$rawrit1[$j]);
+           $newref->addChild('rit1',urlencode($rawrit1[$j]));
            $newref->addChild('rit2',$rawrit2[$j]);
    } 
 }
