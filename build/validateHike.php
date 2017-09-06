@@ -189,7 +189,7 @@ if ($noOfRefs === 0) {
 } else {
     for ($r=0; $r<$noOfRefs; $r++) {
         $newrefs->addChild('rtype',$hikeRefTypes[$r]);
-        $newrefs->addChild('rit1',$hikeRefItems1[$r]);
+        $newrefs->addChild('rit1',urlendocde($hikeRefItems1[$r]));
         $newrefs->addChild('rit2',$hikeRefItems2[$r]);
         if ($r < $noOfRefs-1) {
             $newrefs = $xml->row[$hikeNo]->refs->addChild('ref');
