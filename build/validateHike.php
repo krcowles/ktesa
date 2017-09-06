@@ -159,7 +159,6 @@ if (substr($rawtips,0,10) !== '[OPTIONAL]') {
 }
 $hikeDetails = filter_input(INPUT_POST,'hiketxt');
 $xml->row[$hikeNo]->hikeInfo = $hikeDetails;
-
 /* If a user saves form more than once, the above data will simply be
  * re-written (along with any updates), but the arrays below use 'addChild'
  * and would duplicate existing data by adding more of the same. The affected
@@ -181,7 +180,6 @@ for ($w=0; $w<count($hikeRefTypes); $w++) {
         break;
     }
 }
-
 $newrefs = $xml->row[$hikeNo]->refs->addChild('ref');
 if ($noOfRefs === 0) {
     $newrefs->addChild('rtype','n');
@@ -189,7 +187,7 @@ if ($noOfRefs === 0) {
 } else {
     for ($r=0; $r<$noOfRefs; $r++) {
         $newrefs->addChild('rtype',$hikeRefTypes[$r]);
-        $newrefs->addChild('rit1',urlendocde($hikeRefItems1[$r]));
+        $newrefs->addChild('rit1',urlencode($hikeRefItems1[$r]));
         $newrefs->addChild('rit2',$hikeRefItems2[$r]);
         if ($r < $noOfRefs-1) {
             $newrefs = $xml->row[$hikeNo]->refs->addChild('ref');
