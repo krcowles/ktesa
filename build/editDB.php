@@ -333,7 +333,6 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         $z++;
     }
     echo '<p id="refcnt" style="display:none">' . $z . '</p>';
-    echo '<input type="hidden" name = "orgrefs" value="' . $z . '" />';
 ?>
 <p><em style="font-weight:bold;">Add</em> references here:</p>
 <p>Select the type of reference and its accompanying data below:</p>
@@ -372,6 +371,42 @@ Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35"
 Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;
 Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" 
+    placeholder=", by Author Name" /><br /><br />
+<select id="href3" style="height:26px;" name="rtype[]">
+    <option value="b" selected="selected">Book</option>
+    <option value="p">Photo Essay</option>
+    <option value="w">Website</option>
+    <option value="a">App</option>
+    <option value="d">Downloadable Doc</option>
+    <option value="l">Blog</option>
+    <option value="o">On-line Map</option>
+    <option value="m">Magazine</option>
+    <option value="s">News Article</option>
+    <option value="g">Meetup Group</option>
+    <option value="r">Related Link</option>
+    <option value="n">Text Only - No Link</option>
+</select>
+Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="55" 
+    placeholder="Book Title" />&nbsp;
+Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35" 
+    placeholder=", by Author Name" /><br /><br />
+<select id="href4" style="height:26px;" name="rtype[]">
+    <option value="b" selected="selected">Book</option>
+    <option value="p">Photo Essay</option>
+    <option value="w">Website</option>
+    <option value="a">App</option>
+    <option value="d">Downloadable Doc</option>
+    <option value="l">Blog</option>
+    <option value="o">On-line Map</option>
+    <option value="m">Magazine</option>
+    <option value="s">News Article</option>
+    <option value="g">Meetup Group</option>
+    <option value="r">Related Link</option>
+    <option value="n">Text Only - No Link</option>
+</select>
+Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="55" 
+    placeholder="Book Title" />&nbsp;
+Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35" 
     placeholder=", by Author Name" /><br />
 
 <h3>Proposed Data:</h3>
