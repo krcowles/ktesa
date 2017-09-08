@@ -77,6 +77,4 @@ for ($j=0; $j<count($rawalnks); $j++) {
         $newact->addChild('acot',$rawactxt[$j]);
     }
 } 
-$hikeLine->dataAct->asXML('rob.xml');
-die ("Want");
 ?>
