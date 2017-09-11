@@ -24,8 +24,9 @@
 
 
 <?php
+    $database = '../data/database.xml';
     $hikeNo = filter_input(INPUT_POST,'hno');
-    $hikeDat = simplexml_load_file('../data/database.xml');
+    $hikeDat = simplexml_load_file($database);
     if ($hikeDat === false) {
         $nodb = '<p style="color:red;font-size:18px;margin-left:16px;">' .
                 'Could not open database.xml to save edits: Contact Site Master</p>';
@@ -145,6 +146,18 @@
                     $p++;
                 }
             }
+            # delete any checked photos from the database:
+            $dels = $_POST['delpic']; # only passes the CHECKED boxes!
+            $pcnt = $hikeLine->tsv->picDat->count() - 1;
+            $delno = count($dels) - 1;
+            for ($p=$pcnt; $p>=0; $p--) {
+                if ( $delno >= 0 && $dels[$delno] == $p ) {
+                    #echo "POST: " . $dels[$delno] . "->" . $hikeLine->tsv->picDat[$p]->desc . "; <br />";
+                    $hikeLine->tsv->picDat[$p]->hpg = "N";
+                    #unset($hikeLine->tsv->picDat[$p]);
+                    $delno--;
+                }
+            }
             # revise tips if no tips were added:
             if (substr($hTips,0,15) === '[NO TIPS FOUND]') {
                     $hTips = '';
@@ -154,7 +167,7 @@
             $hikeLine->hikeInfo = $hInfo;
             include "refEdits.php";
             include "propactEdits.php";
-            $hikeDat->asXML('../data/database.xml');
+            $hikeDat->asXML($database);
             break;
         }  # end of THE EDITED HIKE
     }  

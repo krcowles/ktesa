@@ -235,8 +235,12 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     $rowCnt = 1;
     $rowHtml = '';
     $capHtml = '';
+    $delHtml = '';
+    $delrows = [];
     $picrows = [];
     $caprows = [];
+    $cnt = 0;
+    $delItem = 0;
     foreach ($hikePhotos->picDat as $photo) {
         if ($photo->hpg == 'Y') {
             # scale photo dims to nomHt
@@ -251,25 +255,40 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
             $curwidth += $width + 2; # 2px left margin
             if ($curwidth > $rwidth) {
                 $rowCnt++;
+                array_push($delrows,$delHtml);
                 array_push($picrows,$rowHtml);
                 array_push($caprows,$capHtml);
+                $delHtml = '';
                 $rowHtml = '';
                 $capHtml = '';
                 $curwidth = $width;
+                $cnt = 0;
             }
             $rowHtml .= '<img style="margin-left:2px;" height="' . $nomHt . 
                 '" width="' . $width . '" src="' . $photo->mid . 
                 '" alt="' . $ecap . '" />' . "\n";
             $tawidth = $width - 12;
             $capHtml .= '<textarea name="ecap[]" style="height:64px;width:' . $tawidth . 
-                    'px">' . $ecap . "</textarea>\n";              
+                    'px">' . $ecap . "</textarea>\n"; 
+            if ($cnt < 1) {
+                $delwidth = $width - 66;
+            } else {
+                $delwidth = $width - 62;
+            }
+            $delHtml .= '<span style="margin-right:' . $delwidth . 'px;">' .
+                '<input type="checkbox" name="delpic[]" value="'
+                    . $delItem . '" />&nbsp;Delete</span>';
+            $delItem++;
+            $cnt++;
         }  
     }
     # last row:
     $rowCnt++;
+    array_push($delrows,$delHtml);
     array_push($picrows,$rowHtml);
     array_push($caprows,$capHtml);
     for ($j=0; $j<$rowCnt; $j++) {
+        echo $delrows[$j] . "<br />";
         echo $picrows[$j] . "<br />";
         echo $caprows[$j] . "<br />";
     }
