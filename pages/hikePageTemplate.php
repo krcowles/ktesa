@@ -20,12 +20,13 @@ function makeHtmlList($type,$obj) {
         $htmlout = '<ul id="refs">';
         foreach ($obj->ref as $item) {
             $tagType = $item->rtype->__toString();
+            $decrit1 = urldecode($item->rit1);
             if ($tagType === 'b') { 
-                $htmlout .= '<li>Book: <em>' . $item->rit1 . '</em>' . $item->rit2 . '</li>';
+                $htmlout .= '<li>Book: <em>' . $decrit1 . '</em>' . $item->rit2 . '</li>';
             } elseif ($tagType === 'p') {
-                $htmlout .= '<li>Photo Essay: <em>' . $item->rit1 . '</em>' . $item->rit2 . '</li>';
+                $htmlout .= '<li>Photo Essay: <em>' . $decrit1 . '</em>' . $item->rit2 . '</li>';
             } elseif ($tagType === 'n') {
-                $htmlout .= '<li>' . $item->rit1 . '</li>';
+                $htmlout .= '<li>' . $decrit1 . '</li>';
             } else {
                 if ($tagType === 'w') {
                     $tag = '<li>Website: ';
@@ -50,7 +51,7 @@ function makeHtmlList($type,$obj) {
                 } else {
                     $tag = '<li>Unrecognized reference type: Contact Site Master';
                 }
-                $htmlout .= $tag . '<a href="' . urldecode($item->rit1) . '" target="_blank">' .
+                $htmlout .= $tag . '<a href="' . $decrit1 . '" target="_blank">' .
                     $item->rit2 . '</a></li>';
             }
         } // end of foreach loop in references
