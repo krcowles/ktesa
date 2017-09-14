@@ -20278,9 +20278,9 @@ accumulations.</hikeInfo>
 	<rlock/>
 	<pgTitle>Armijo-Faulty Trail</pgTitle>
 	<locale>Tijeras</locale>
-	<marker>Normal</marker>
+	<marker>Cluster</marker>
 	<clusterStr/>
-	<clusGrp/>
+        <clusGrp>P</clusGrp>
 	<logistics>Loop</logistics>
 	<miles>6.2</miles>
 	<feet>800</feet>
@@ -20415,7 +20415,7 @@ accumulations.</hikeInfo>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157682544866506</mpUrl>
 	<spUrl/>
 	<dirs>https://www.google.com/maps/place/Sandia+National+Forest+Armijo+Trail/@35.1658419,-106.3757096,15.59z/data=!4m5!3m4!1s0x871898406b005d3f:0xce1671de455e547f!8m2!3d35.1622839!4d-106.371206</dirs>
-	<cgName/>
+        <cgName>Sulpher Canyon Group</cgName>
 	
 	
 	<tipsTxt/>
