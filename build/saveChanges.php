@@ -76,7 +76,7 @@
                 $hikeLine->clusGrp = '';
                 $hikeLine->cgName = '';
             # 2.
-            } elseif ( isset($nextGrp) && $nextGrp === 'YES' ) {	
+            } elseif ( isset($nextGrp) && $nextGrp === 'YES' ) {
                 $availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $doubleLtrs = 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ';
                 # add another group of letters later if needed

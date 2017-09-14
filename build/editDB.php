@@ -31,8 +31,10 @@
     }
     
     $hikeNo = filter_input(INPUT_GET,'hikeNo');
-    # Below: pull out the available cluster groups and establish association
-    # with cluster group name for displaying in drop-down <select>
+    /*
+     *  Below: pull out the available cluster groups and establish association
+     * with cluster group name for displaying in drop-down <select>
+     */
     $groups = [];
     $cnames = [];
     foreach ($xmlDB->row as $hikeRow) {
@@ -53,6 +55,7 @@
                 array_push($cnames,$grpPopup);
             }
         }
+        $groupCount = count($cnames);
         if ( $hikeRow->indxNo == $hikeNo) {
             $hikeTitle = $hikeRow->pgTitle->__toString();
             $hikeLocale = $hikeRow->locale->__toString();
@@ -83,7 +86,6 @@
             $hikeAct = $hikeRow->dataAct;
         }
     }
-    $groupCount = count($cnames)
 ?>
 
 <form target="_blank" action="saveChanges.php" method="POST">
@@ -164,6 +166,8 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 
 <p>If you are establishing a new group, select the checkbox: 
     <input id="newg" type="checkbox" name="nxtg" value="NO" />
+    <input id="curcnt" type="hidden" name="grpcnt" value="<?php echo $groupCount;?>" />
+
 </p>
 <p style="margin-top:-10px;margin-left:40px;">and enter the name for the 
     new group here: <input id="newt" type="text" name="newgname" size="50" />
