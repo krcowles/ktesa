@@ -24858,9 +24858,9 @@ accumulations.</hikeInfo>
     <rlock/>
     <pgTitle>Travertine Falls</pgTitle>
     <locale>Tijeras</locale>
-    <marker>Normal</marker>
+    <marker>Cluster</marker>
     <clusterStr/>
-    <clusGrp/>
+    <clusGrp>R</clusGrp>
     <logistics>Out-and-back</logistics>
     <miles>1.5</miles>
     <feet>350</feet>
@@ -24982,9 +24982,7 @@ accumulations.</hikeInfo>
     <mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157683838569732</mpUrl>
     <spUrl/>
     <dirs>https://www.google.com/maps/dir//Travertine+Falls,+Grand+Enchantment+Trail,+Cedar+Crest,+NM+87008/@35.0878409,-106.399459,15.39z/data=!4m15!1m6!3m5!1s0x8718a25563f2e5d7:0xf849c028caed8b2a!2sTravertine+Falls!8m2!3d35.0951739!4d-106.393809!4m7!1m0!1m5!1m1!1s0x8718a25563f2e5d7:0xf849c028caed8b2a!2m2!1d-106.393809!2d35.0951739</dirs>
-    <cgName/>
-    
-    
+    <cgName>South Crest Group</cgName>
     <tipsTxt/>
     <hikeInfo>NOTE: The track indicated on the map actually extends beyond the falls area, as the author wished to explore a bit of the South Crest Trail. The Travertine Falls area is a rather popular short and easy hike suitable for a family outing. The trail ascends gradually to the falls area, but at times, the waterflow can be low. The travertine caves, formed by the falls, are nonetheless worth seeing. The trail is the initial part of the Sandia South Crest Trail, which ascends to the crest and proceeds almost 26 miles to Placitas. While there are not a lot of views en route, the hike makes for a pleasant and enjoyable outing.</hikeInfo>
     <refs><ref><rtype>a</rtype><rit1>https://www.alltrails.com/trail/us/new-mexico/travertine-falls</rit1><rit2>AllTrails</rit2></ref><ref><rtype>l</rtype><rit1>http://www.dailygarnish.com/2017/03/hiking-travertine-falls-new-mexico.html</rit1><rit2>Daily Garnish</rit2></ref></refs>
@@ -26495,6 +26493,244 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
 From Tree Spring, it is a short walk up to the juncture with Oso Corredor, and well-marked. Immediately, the hiker is struck with bursts of color in mini-meadows along a well-maintained, gently sloping trail. It seems not many hikers take this route, so there is a fair amount of solitude and quiet. There are also occasional views of the interior portion of the Sandias. The grade is gentle and you barely notice it while walking along this lovely trail. This particular hike proceeded past the intersection with Faulty for additional viewing and enjoyment.</hikeInfo>
     <refs>  
     <ref><rtype>b</rtype><rit1>Sandia%2BMountain%2BHiking%2BGuide</rit1><rit2>, by Mike Coltrin</rit2></ref><ref><rtype>a</rtype><rit1>https%3A%2F%2Fwww.alltrails.com%2Ftrail%2Fus%2Fnew-mexico%2Foso-corredor-trail</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1>http%3A%2F%2Fwww.sandiahiking.com%2Ftrailguide.html%23cienega</rit1><rit2>Sandia Mountain Hiking Guide: Trails</rit2></ref></refs>
+    <dataProp/>
+    <dataAct/>
+</row>
+<row>
+    <indxNo>142</indxNo>
+    <rlock/>
+    <pgTitle>Crest - Faulty Loop</pgTitle>
+    <locale>Tijeras</locale>
+    <marker>Cluster</marker>
+    <clusterStr/>
+    <clusGrp>R</clusGrp>
+    <logistics>Loop</logistics>
+    <miles>5.8</miles>
+    <feet>1200</feet>
+    <difficulty>Moderate</difficulty>
+    <facilities>None</facilities>
+    <wow>Occasional views</wow>
+    <seasons>Not Winter</seasons>
+    <expo>Mixed sun/shade</expo>
+    <tsv>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>TravertineResident</title>
+            <hpg>Y</hpg>
+            <mpg>N</mpg>
+            <desc>A beautiful resident adorns the falls</desc>
+            <lat>35.09505</lat>
+            <lng>-106.393586111</lng>
+            <thumb>https://c1.staticflickr.com/5/4378/36358551924_e599a51b2b_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36358551924/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 09:42:43</date>
+            <mid>https://c1.staticflickr.com/5/4378/36358551924_e599a51b2b_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4378/36358551924_d33ba36bea_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>TravertineFalls</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Barely a falls, but pretty</desc>
+            <lat>35.0951194444</lat>
+            <lng>-106.393616667</lng>
+            <thumb>https://c1.staticflickr.com/5/4368/36358560144_8be88428b3_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36358560144/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 09:44:02</date>
+            <mid>https://c1.staticflickr.com/5/4368/36358560144_8be88428b3_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4368/36358560144_bb599dc4c6_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>TravertineFeeder</title>
+            <hpg>Y</hpg>
+            <mpg>N</mpg>
+            <desc>The tiny source of Travertine Falls</desc>
+            <lat>35.0952416667</lat>
+            <lng>-106.393852778</lng>
+            <thumb>https://c1.staticflickr.com/5/4422/36358546114_d93af68de3_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36358546114/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 09:45:58</date>
+            <mid>https://c1.staticflickr.com/5/4422/36358546114_d93af68de3_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4422/36358546114_48c24826b3_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>FaultySouthEnd</title>
+            <hpg>Y</hpg>
+            <mpg>N</mpg>
+            <desc>Where Faulty Trail begiins</desc>
+            <lat>35.0975583333</lat>
+            <lng>-106.397255556</lng>
+            <thumb>https://c1.staticflickr.com/5/4368/37023579902_447d223b75_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/37023579902/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 10:00:20</date>
+            <mid>https://c1.staticflickr.com/5/4368/37023579902_447d223b75_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4368/37023579902_c32829389e_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>AlongFaulty</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Not so many wildflowers, but pleasant views</desc>
+            <lat>35.1029194444</lat>
+            <lng>-106.397322222</lng>
+            <thumb>https://c1.staticflickr.com/5/4383/37195405665_eef1153a35_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/37195405665/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 10:17:35</date>
+            <mid>https://c1.staticflickr.com/5/4383/37195405665_eef1153a35_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4383/37195405665_6132710b9a_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>ManzanoView</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>In the distance, the Monzano Mtns can be seen</desc>
+            <lat>35.1061027778</lat>
+            <lng>-106.397536111</lng>
+            <thumb>https://c1.staticflickr.com/5/4409/37053285271_9c556cb190_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/37053285271/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 10:28:34</date>
+            <mid>https://c1.staticflickr.com/5/4409/37053285271_9c556cb190_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4409/37053285271_48377875ab_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>FirstPonderosas</title>
+            <hpg>Y</hpg>
+            <mpg>N</mpg>
+            <desc>Ascending Faulty to an elevation where Ponderosa appear</desc>
+            <lat>35.1070166667</lat>
+            <lng>-106.397522222</lng>
+            <thumb>https://c1.staticflickr.com/5/4338/36358637314_a6bde4e670_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36358637314/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 10:32:08</date>
+            <mid>https://c1.staticflickr.com/5/4338/36358637314_a6bde4e670_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4338/36358637314_5f53bed699_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>FaultyJct</title>
+            <hpg>N</hpg>
+            <mpg>Y</mpg>
+            <desc>Upper Faulty rejoins Trail 130</desc>
+            <lat>35.0986888889</lat>
+            <lng>-106.405791667</lng>
+            <thumb>https://c1.staticflickr.com/5/4377/36381443633_3a805b94b3_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36381443633/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 11:21:12</date>
+            <mid>https://c1.staticflickr.com/5/4377/36381443633_3a805b94b3_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4377/36381443633_8460166c5a_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>SanPedroSouthMtn</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>A break yields a southeasterly view of South Mountain</desc>
+            <lat>35.0977972222</lat>
+            <lng>-106.400938889</lng>
+            <thumb>https://c1.staticflickr.com/5/4441/36358563134_e1c9fbb6b9_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36358563134/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 11:37:22</date>
+            <mid>https://c1.staticflickr.com/5/4441/36358563134_e1c9fbb6b9_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4441/36358563134_9a20d25bf9_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>FruitSeason</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>September's cacti bear prickly fruit</desc>
+            <lat>35.096</lat>
+            <lng>-106.395338889</lng>
+            <thumb>https://c1.staticflickr.com/5/4422/37195415375_bbbe846ebd_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/37195415375/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 12:01:22</date>
+            <mid>https://c1.staticflickr.com/5/4422/37195415375_bbbe846ebd_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4422/37195415375_724d575c0f_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>HondoStart</title>
+            <hpg>Y</hpg>
+            <mpg>N</mpg>
+            <desc>At the entrance of Hondo Canyon</desc>
+            <lat>35.0948416667</lat>
+            <lng>-106.392188889</lng>
+            <thumb>https://c1.staticflickr.com/5/4421/36381432493_497c26be13_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36381432493/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 12:08:38</date>
+            <mid>https://c1.staticflickr.com/5/4421/36381432493_497c26be13_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4421/36381432493_2d9e1f198e_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>CrestSouthEnd</title>
+            <hpg>N</hpg>
+            <mpg>Y</mpg>
+            <desc>The beginning of a 26-mile hike north</desc>
+            <lat>35.0895416667</lat>
+            <lng>-106.391708333</lng>
+            <thumb>https://c1.staticflickr.com/5/4429/36381456113_77f0bce99b_t.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/36381456113/in/album-72157688970549785</alblnk>
+            <date>2017:09:12 12:19:43</date>
+            <mid>https://c1.staticflickr.com/5/4429/36381456113_77f0bce99b_n.jpg</mid>
+            <imgHt>2448</imgHt>
+            <imgWd>3264</imgWd>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4429/36381456113_4560c2c682_o.jpg</org>
+        </picDat>
+    </tsv>
+    <gpxfile>Crest-Faulty_Loop.GPX</gpxfile>
+    <trkfile>Crest-Faulty_Loop.json</trkfile>
+    <lat>35.089503396302462</lat>
+    <lng>-106.391403330489993</lng>
+    <aoimg1/>
+    <aoimg2/>
+    <mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157688970549785</mpUrl>
+    <spUrl/>
+    <dirs>https://www.google.com/maps/dir//Arrowhead+Trail,+Tijeras,+NM+87059/@35.0854971,-106.3963912,15.16z/data=!4m16!1m7!3m6!1s0x8718a300d1e0078f:0xd327add59d6d8629!2sArrowhead+Trail,+Tijeras,+NM+87059!3b1!8m2!3d35.0888891!4d-106.3913648!4m7!1m0!1m5!1m1!1s0x8718a300d1e0078f:0xd327add59d6d8629!2m2!1d-106.3913648!2d35.0888891</dirs>
+    <cgName>South Crest Group</cgName>
+    <tipsTxt/>
+    <hikeInfo>This hike begins at the south terminus of the Sandia Crest Trail, and features a trickle-waterfall (Travertine Falls) as well as the beginning of the Faulty Trail extending 8.6 miles north. As the Faulty Trail heads uphill - steep for a short distance, then continually less grade - it meets the north end of a short connecting segment, the Upper Faulty Trail. During this part of the trip, there are not a lot of views, as the tree cover is extensive. A sharp turn left along Upper Faulty Trail takes the hiker on fairly level ground to the juncture with Trail 130 - the Crest Trail. Following that trail downhill returns you to the trailhead. One feature of this loop is that there are some breaks allowing views from southwest to the Manzano Mountains, to northeast to the San Pedro Mountains. It is also not heavily traveled (after Travertine Falls) and allows some solitude and quiet in the woods.             </hikeInfo>
+    <refs><ref><rtype>b</rtype><rit1>Sandia+Mountain+Hiking+Guide</rit1><rit2>, by Mike Coltrin</rit2></ref><ref><rtype>a</rtype><rit1>https%3A%2F%2Fwww.alltrails.com%2Ftrail%2Fus%2Fnew-mexico%2Fupper-faulty-and-south-crest-trail-loop</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1>https%3A%2F%2Fexplorenm.com%2Fhikes%2FFaultyLoop%2F</rit1><rit2>Explore New Mexico</rit2></ref><ref><rtype>w</rtype><rit1>http%3A%2F%2Fwww.sandiahiking.com%2Ftrailguide.html%23southcrestfaulty</rit1><rit2>Sandia Mountain Hiking Guide: Trails</rit2></ref></refs>
     <dataProp/>
     <dataAct/>
 </row>
