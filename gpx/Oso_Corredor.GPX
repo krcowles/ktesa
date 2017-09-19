@@ -71,10 +71,6 @@
       </gpxtrkx:TrackStatsExtension>
     </extensions>
     <trkseg>
-      <trkpt lat="35.193119645118713" lon="-106.403197841718793">
-        <ele>2426.570000000000164</ele>
-        <time>2017-09-08T15:34:54Z</time>
-      </trkpt>
       <trkpt lat="35.193775445222855" lon="-106.404706500470638">
         <ele>2428.860000000000127</ele>
         <time>2017-09-08T15:35:26Z</time>

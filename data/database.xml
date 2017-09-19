@@ -26245,7 +26245,7 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
     <marker>Cluster</marker>
     <clusterStr/>
     <clusGrp>Q</clusGrp>
-    <logistics>Out-and-back</logistics>
+    <logistics></logistics>
     <miles>7.7</miles>
     <feet>1000</feet>
     <difficulty>Easy-Moderate</difficulty>
@@ -26293,7 +26293,7 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
             <title>ComplimentaryColors</title>
             <hpg>Y</hpg>
             <mpg>N</mpg>
-            <desc>The striking contrasts can surprise one</desc>
+            <desc>The striking contrasts can be surprising</desc>
             <lat/>
             <lng/>
             <thumb>https://c1.staticflickr.com/5/4355/37004324932_df68c3b118_t.jpg</thumb>
@@ -26395,7 +26395,7 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
             <title>WellAdornedTrail</title>
             <hpg>Y</hpg>
             <mpg>N</mpg>
-            <desc>A &amp;quot;Faulty&amp;quot; but beautiful section</desc>
+            <desc>A beautiful section on the Faulty</desc>
             <lat/>
             <lng/>
             <thumb>https://c1.staticflickr.com/5/4375/36778565030_45e8453000_t.jpg</thumb>
@@ -26412,7 +26412,7 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
             <title>WellShadedTrail</title>
             <hpg>Y</hpg>
             <mpg>N</mpg>
-            <desc>Most of the trail is out of the sun</desc>
+            <desc>Much of the trail is out of the sun</desc>
             <lat/>
             <lng/>
             <thumb>https://c1.staticflickr.com/5/4385/36339512994_d70b7bc825_t.jpg</thumb>
@@ -26466,13 +26466,13 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
     <aoimg1/>
     <aoimg2/>
     <mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157686459213233</mpUrl>
-    <spUrl/>
+    <spUrl></spUrl>
     <dirs>https://www.google.com/maps/place/Tree+Springs+Trailhead/@35.1839513,-106.4130963,13.29z/data=!4m5!3m4!1s0x87189911fe481135:0x3847221ed2c4ad71!8m2!3d35.193298!4d-106.40535</dirs>
     <cgName>Tree Spring Group</cgName>
     <tipsTxt>Check the Sandia Ranger Station or facebook for latest info on trail closings. In late August/early September, sections can be closed off due to a feeding bear population, and from winter on, until the snow melts sometime in the Spring.     </tipsTxt>
     <hikeInfo>This trail can only be reached from another trail - either Tree Spring (in this case), or Faulty Trail (Doc Long Picnic Area).&#13;
 From Tree Spring, it is a short walk up to the juncture with Oso Corredor, and well-marked. Immediately, the hiker is struck with bursts of color in mini-meadows along a well-maintained, gently sloping trail. It seems not many hikers take this route, so there is a fair amount of solitude and quiet. There are also occasional views of the interior portion of the Sandias. The grade is gentle and you barely notice it while walking along this lovely trail. This particular hike proceeded past the intersection with Faulty for additional viewing and enjoyment.</hikeInfo>
-    <refs><ref><rtype>b</rtype><rit1>Sandia+Mountain+Hiking+Guide</rit1><rit2>, by Mike Coltrin</rit2></ref><ref><rtype>a</rtype><rit1>https%3A%2F%2Fwww.alltrails.com%2Ftrail%2Fus%2Fnew-mexico%2Foso-corredor-trail</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1>http%3A%2F%2Fwww.sandiahiking.com%2Ftrailguide.html%23cienega</rit1><rit2>Sandia Mountain Hiking Guide: Trails</rit2></ref></refs>
+    <refs><ref><rtype>b</rtype><rit1>Sandia%2BMountain%2BHiking%2BGuide</rit1><rit2>, by Mike Coltrin</rit2></ref><ref><rtype>a</rtype><rit1>https%253A%252F%252Fwww.alltrails.com%252Ftrail%252Fus%252Fnew-mexico%252Foso-corredor-trail</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1>http%253A%252F%252Fwww.sandiahiking.com%252Ftrailguide.html%2523cienega</rit1><rit2>Sandia Mountain Hiking Guide: Trails</rit2></ref></refs>
     <dataProp/>
     <dataAct/>
 </row>
