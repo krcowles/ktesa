@@ -26232,7 +26232,28 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
     <cgName/>
     <tipsTxt>Four mile dirt road to trailhead is dusty and has a few ruts. Otherwise not a difficult drive. </tipsTxt>
     <hikeInfo>Nice hike up through the woods and ultimately to Serpent Lake with beautiful views of the surrounding ridge. Wildflowers and grasses provide color.</hikeInfo>
-    <refs><ref><rtype>b</rtype><rit1>Santa Fe - Taos Hiking Guide</rit1><rit2>, by Bob D'Antonio</rit2></ref><ref><rtype>b</rtype><rit1>Hiking New Mexico</rit1><rit2>, by Laurence Parent</rit2></ref><ref><rtype>a</rtype><rit1>https://www.alltrails.com/trail/us/new-mexico/serpent-lake-trail</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1>http://www.thearmchairexplorer.com/new-mexico/carson-national-forest-serpent-lake-trail</rit1><rit2>Armchair Explorer</rit2></ref></refs>
+    <refs>
+        <ref>
+            <rtype>b</rtype>
+            <rit1>Santa Fe - Taos Hiking Guide</rit1>
+            <rit2>, by Bob D'Antonio</rit2>
+        </ref>
+        <ref>
+            <rtype>b</rtype>
+            <rit1>Hiking New Mexico</rit1>
+            <rit2>, by Laurence Parent</rit2>
+        </ref>
+        <ref>
+            <rtype>a</rtype>
+            <rit1>https://www.alltrails.com/trail/us/new-mexico/serpent-lake-trail</rit1>
+            <rit2>AllTrails</rit2>
+        </ref>
+        <ref>
+            <rtype>w</rtype>
+            <rit1>http://www.thearmchairexplorer.com/new-mexico/carson-national-forest-serpent-lake-trail</rit1>
+            <rit2>Armchair Explorer</rit2>
+        </ref>
+    </refs>
     <dataProp/>
     <dataAct/>
 </row>
@@ -26472,7 +26493,8 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
     <tipsTxt>Check the Sandia Ranger Station or facebook for latest info on trail closings. In late August/early September, sections can be closed off due to a feeding bear population, and from winter on, until the snow melts sometime in the Spring.     </tipsTxt>
     <hikeInfo>This trail can only be reached from another trail - either Tree Spring (in this case), or Faulty Trail (Doc Long Picnic Area).&#13;
 From Tree Spring, it is a short walk up to the juncture with Oso Corredor, and well-marked. Immediately, the hiker is struck with bursts of color in mini-meadows along a well-maintained, gently sloping trail. It seems not many hikers take this route, so there is a fair amount of solitude and quiet. There are also occasional views of the interior portion of the Sandias. The grade is gentle and you barely notice it while walking along this lovely trail. This particular hike proceeded past the intersection with Faulty for additional viewing and enjoyment.</hikeInfo>
-    <refs><ref><rtype>b</rtype><rit1>Sandia%2BMountain%2BHiking%2BGuide</rit1><rit2>, by Mike Coltrin</rit2></ref><ref><rtype>a</rtype><rit1>https%253A%252F%252Fwww.alltrails.com%252Ftrail%252Fus%252Fnew-mexico%252Foso-corredor-trail</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1>http%253A%252F%252Fwww.sandiahiking.com%252Ftrailguide.html%2523cienega</rit1><rit2>Sandia Mountain Hiking Guide: Trails</rit2></ref></refs>
+    <refs>  
+    <ref><rtype>b</rtype><rit1>Sandia%2BMountain%2BHiking%2BGuide</rit1><rit2>, by Mike Coltrin</rit2></ref><ref><rtype>a</rtype><rit1>https%3A%2F%2Fwww.alltrails.com%2Ftrail%2Fus%2Fnew-mexico%2Foso-corredor-trail</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1>http%3A%2F%2Fwww.sandiahiking.com%2Ftrailguide.html%23cienega</rit1><rit2>Sandia Mountain Hiking Guide: Trails</rit2></ref></refs>
     <dataProp/>
     <dataAct/>
 </row>
