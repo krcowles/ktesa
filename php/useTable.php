@@ -23,7 +23,6 @@
 <body>
     <?php
     require '000mysql_connect.php';
-    echo "Opened";
     ?>
     <div>
         <table>
