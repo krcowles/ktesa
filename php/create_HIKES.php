@@ -9,14 +9,25 @@
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
+        body { background-color: #eaeaea; }
         table {
            border-collapse: collapse;
            border-style: solid;
            border-width: 3px;
+           margin-left: 80px;
+           border-color: DarkBlue;
+           background-color: #EDF2F7;
         }
         thead tr {
            border-style: solid;
            border-width: 2px;
+        }
+        td {
+            text-align: center;
+        }
+        td:nth-child(1) {
+            text-align: left;
+            padding-left: 12px;
         }
     </style>
 </head>
@@ -85,12 +96,12 @@
     <p>Description of the HIKES table:</p>
     <table>
         <colgroup>	
-            <col style="width:160px">
-            <col style="width:80px">
-            <col style="width: 80px">
+            <col style="width:100px">
             <col style="width:120px">
-            <col style="width:80px">
-            <col style="width:200px">
+            <col style="width: 80px">
+            <col style="width:60px">
+            <col style="width:60px">
+            <col style="width:160px">
         </colgroup>
         <thead>
             <tr>

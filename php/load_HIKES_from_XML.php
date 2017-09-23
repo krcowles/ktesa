@@ -19,7 +19,7 @@
         <img id="tmap" src="../images/trail.png" alt="trail map icon" />
        <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
-    <p id="trail">Populate HIKES from XML</p>
+    <p id="trail">Create A New Page</p>
     <div style="margin-left:16px;font-size:18px;">
         <p>Use database.xml to populate the HIKES table in the id140870_hikemaster database...</p>
 
@@ -137,19 +137,22 @@
         if (strlen($ao2) === 0 ) {
             $ao2 = '';
         }
-        $url1 = $row->mpUrl;
+        /*
+         * At some time, some of the url's may have been encoded for one reason or another...
+         */
+        $url1 = urldecode($row->mpUrl);
         if (strlen($url1) === 0 ) {
             $url1 = '';
         } else {
             $url1 = mysqli_real_escape_string($link,$url1);
         }
-        $url2 = $row->spUurl;
+        $url2 = urldecode($row->spUurl);
         if (strlen($url2) === 0 ) {
             $url2 = '';
         } else {
             $url2 = mysqli_real_escape_string($link,$url2);
         }
-        $dirs = $row->dirs;
+        $dirs = urldecode($row->dirs);
         if (strlen($dirs) === 0 ) {
             $dirs = '';
         } else {
@@ -171,7 +174,7 @@
         $refitem = [];
         foreach ($row->refs->ref as $ref) {
             $refitem[0] = $ref->rtype;
-            $refitem[1] = $ref->rit1;
+            $refitem[1] = urldecode($ref->rit1);
             $refitem[2] = $ref->rit2;
             $catref = implode("^",$refitem);
             array_push($refarray,$catref);
@@ -280,7 +283,6 @@
                 $tsv = mysqli_real_escape_string($link,$tsv);
             }
         }
-echo "Start " . "E";
         $SQL_query = "INSERT INTO HIKES " .
             "( pgTitle,locale,marker," .
             "collection,cgroup,cname," .
@@ -307,15 +309,18 @@ echo "Start " . "E";
             die("Failed to add data to HIKES: " . mysqli_error());
         } else {
             echo $row->indxNo . "..";
+            if (intval($row->indxNo) % 10 === 0) {
+                echo '<br />';
+            }
         }
     }
     
-    echo "Maximum lengths for: <br />";
+    echo "<p>Maximum lengths for: <br />";
     echo "Refs: " . $maxref . "<br />";
     echo "Props: " . $maxprop . "<br />";
     echo "Acts: " . $maxact . "<br />";
     echo "Tables: " . $maxtbl . "<br />";
-    echo "Pics: " . $maxpic . "<br />";
+    echo "Pics: " . $maxpic . "</p>";
     
 ?>
         <p>Done!</p>
