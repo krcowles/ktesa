@@ -2,21 +2,35 @@
 <html lang="en-us">
 
 <head>
-    <title>Load the XML Database</title>
+    <title>Populate HIKES</title>
     <meta charset="utf-8" />
-    <meta name="description" content="Use MySql database" />
+    <meta name="description" content="Fill the HIKES table w/xml database" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
+    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <style type="text/css">
+        body { background-color: #eaeaea; }
+    </style>
 </head>
 <body>
-    <div>
-        <p>Begin loading the HIKES table in the database from the database.xml file</p>
+    <div id="logo">
+        <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+        <p id="logo_left">Hike New Mexico</p>
+        <img id="tmap" src="../images/trail.png" alt="trail map icon" />
+       <p id="logo_right">w/Tom &amp; Ken</p>
+    </div>
+    <p id="trail">Populate HIKES from XML</p>
+    <div style="margin-left:16px;font-size:18px;">
+        <p>Use database.xml to populate the HIKES table in the id140870_hikemaster database...</p>
+
 <?php
     $db = simplexml_load_file('../data/database.xml');
     if (!$db) {
         $errmsg = '<p style="color:red;font-size:18px;margin-left:16px">' .
             'Failed to load xml database.</p>';
         die($errmsg);
+    } else {
+        echo '<p>XML Database successfully opened.</p>';
     }
     # Extract each row's variables and load into mysql HIKES table
     # NOTE: 'serialize' will have content even when the array is empty.
@@ -27,7 +41,7 @@
     $maxtbl = 0;
     
     require "000mysql_connect.php";
-    echo "<p>Opened</p>";
+    echo "<p>mySql Connection Opened.</p>";
 
     foreach ($db->row as $row) {
         # $htitle is a non-NULL field, no test for existence here:
@@ -266,7 +280,7 @@
                 $tsv = mysqli_real_escape_string($link,$tsv);
             }
         }
-echo "Start " . "D";
+echo "Start " . "E";
         $SQL_query = "INSERT INTO HIKES " .
             "( pgTitle,locale,marker," .
             "collection,cgroup,cname," .
@@ -276,10 +290,8 @@ echo "Start " . "D";
             "trk,lat,lng," .
             "aoimg1,aoimg2,purl1," .
             "purl2,dirs,tips," .
-            "info,refs,props ) " .
-/*
-            "acts,tsv,  ) " .
-*/
+            "info,refs,props," .
+            "acts,tsv  ) " .
             "VALUES ( '{$htitle}','{$hloc}','{$marker}'," .
             "'{$coll}','{$clus}','{$grpName}'," .
             "'{$log}','{$dist}','{$elev}'," .
@@ -288,10 +300,8 @@ echo "Start " . "D";
             "'{$trk}','{$lat}','{$lng}'," .
             "'{$ao1}','{$ao2}','{$url1}'," .
             "'{$url2}','{$dirs}','{$tips}'," .
-            "'{$desc}','{$refs}','{$props}' );";
-/*
+            "'{$desc}','{$refs}','{$props}'," .
             "'{$acts}','{$tsv}' );";
-*/
         $req = mysqli_query( $link,$SQL_query );
         if (!$req) {
             die("Failed to add data to HIKES: " . mysqli_error());
