@@ -20,12 +20,13 @@ function makeHtmlList($type,$obj) {
         $htmlout = '<ul id="refs">';
         foreach ($obj->ref as $item) {
             $tagType = $item->rtype->__toString();
+            $decrit1 = urldecode($item->rit1);
             if ($tagType === 'b') { 
-                $htmlout .= '<li>Book: <em>' . $item->rit1 . '</em>' . $item->rit2 . '</li>';
+                $htmlout .= '<li>Book: <em>' . $decrit1 . '</em>' . $item->rit2 . '</li>';
             } elseif ($tagType === 'p') {
-                $htmlout .= '<li>Photo Essay: <em>' . $item->rit1 . '</em>' . $item->rit2 . '</li>';
+                $htmlout .= '<li>Photo Essay: <em>' . $decrit1 . '</em>' . $item->rit2 . '</li>';
             } elseif ($tagType === 'n') {
-                $htmlout .= '<li>' . $item->rit1 . '</li>';
+                $htmlout .= '<li>' . $decrit1 . '</li>';
             } else {
                 if ($tagType === 'w') {
                     $tag = '<li>Website: ';
@@ -48,9 +49,9 @@ function makeHtmlList($type,$obj) {
                 } elseif ($tagType === 'g') {
                     $tag = '<li>Meetup Group: ';
                 } else {
-                    $tag = '<li>CHECK DATABASE: ';
+                    $tag = '<li>Unrecognized reference type: Contact Site Master';
                 }
-                $htmlout .= $tag . '<a href="' . $item->rit1 . '" target="_blank">' .
+                $htmlout .= $tag . '<a href="' . $decrit1 . '" target="_blank">' .
                     $item->rit2 . '</a></li>';
             }
         } // end of foreach loop in references
@@ -211,10 +212,10 @@ foreach ($xml->row as $page) {
             $fieldsets = true;
             $datasect = "<fieldset>\n" . 
                     '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
-            if (strlen($hikeProposedData->prop) !== 0) {
+            if ($hikeProposedData->prop->count() !== 0) {
                     $datasect .= makeHtmlList(Proposed,$hikeProposedData);
             }
-            if (strlen($hikeActualData->act) !== 0) {
+            if ($hikeActualData->act->count() !== 0) {
                     $datasect .= makeHtmlList(Actual,$hikeActualData);
             }
             $datasect .= "</fieldset>\n";
@@ -276,6 +277,7 @@ foreach ($xml->row as $page) {
   *  if there is either no map OR no chart, the "original" style is presented;
   *  if there is both a map AND a chart, the "new" style is presented
   */
+include "mysql_get_row.php";
 if (!$newstyle) {
     echo '<div id="hikeSummary">' .
         '<table id="topper">' .
