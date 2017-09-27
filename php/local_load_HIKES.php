@@ -67,7 +67,7 @@
         if (strlen($grpName) === 0) {
             $grpName = '';
         }
-        $log = $row->logisitics;  # controlled - no special characters
+        $log = $row->logistics;  # controlled - no special characters
         if (strlen($log) === 0 ) {
             $log = '';
         }
@@ -129,13 +129,24 @@
         } else {
             $lng = floatval($lng);
         }
-        $ao1 = $row->aoimg1;  # filename - no special characters
-        if (strlen($ao1) === 0 ) {
+        # ADD-ON IMAGES HAVE SUB-ELEMENTS: (won't work w/o __toString() !!)
+        if($row->aoimg1->name->count() === 0) {
             $ao1 = '';
+        } else {
+            $addon1 = [];
+            $addon1[0] = $row->aoimg1->name->__toString();
+            $addon1[1] = $row->aoimg1->iht->__toString();
+            $addon1[2] = $row->aoimg1->iwd->__toString();
+            $ao1 = serialize($addon1);
         }
-        $ao2 = $row->aoimg2;  # filename - no special characters
-        if (strlen($ao2) === 0 ) {
+        if ($row->aoimg2->name->count() === 0 ) {
             $ao2 = '';
+        } else {
+            $addon2 = [];
+            $addon2[0] = $row->aoimg2->name->__toString();
+            $addon2[1] = $row->aoimg2->iht->__toString();
+            $addon2[2] = $row->aoimg2->iwd->__toString();
+            $ao2 = serialize($addon2);
         }
         /*
          * At some time, some of the url's may have been encoded for one reason or another...

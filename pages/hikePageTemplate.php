@@ -15,16 +15,19 @@ $months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
  * The following function is used to create the html code for the items
  *  which were retrieved from the database 'refs' tag (aka $obj)
  */
-function makeHtmlList($type,$obj) {
+function makeHtmlList($type,$array) {
     if ($type === References) {
         $htmlout = '<ul id="refs">';
-        foreach ($obj->ref as $item) {
-            $tagType = $item->rtype->__toString();
-            $decrit1 = urldecode($item->rit1);
+        foreach ($array as $item) {
+            $refdata = explode("^",$item);
+            $tagType = $refdata[0];
+            $decrit1 = urldecode($refdata[1]);
             if ($tagType === 'b') { 
-                $htmlout .= '<li>Book: <em>' . $decrit1 . '</em>' . $item->rit2 . '</li>';
+                $htmlout .= '<li>Book: <em>' . $decrit1 . '</em>' . 
+                        $refdata[2] . '</li>';
             } elseif ($tagType === 'p') {
-                $htmlout .= '<li>Photo Essay: <em>' . $decrit1 . '</em>' . $item->rit2 . '</li>';
+                $htmlout .= '<li>Photo Essay: <em>' . $decrit1 . '</em>' . 
+                        $refdata[2] . '</li>';
             } elseif ($tagType === 'n') {
                 $htmlout .= '<li>' . $decrit1 . '</li>';
             } else {
@@ -52,24 +55,24 @@ function makeHtmlList($type,$obj) {
                     $tag = '<li>Unrecognized reference type: Contact Site Master';
                 }
                 $htmlout .= $tag . '<a href="' . $decrit1 . '" target="_blank">' .
-                    $item->rit2 . '</a></li>';
+                    $refdata[2] . '</a></li>';
             }
         } // end of foreach loop in references
         $htmlout .= '</ul>';
     } elseif ($type === Proposed) {
         $htmlout = '<p id="proptitle">- Proposed Hike Data</p> ' . "\n" .
                 '<ul id="plinks">' . "\n";
-        foreach ($obj->prop as $pdat) {
-            $htmlout .= '<li>' . $pdat->plbl . ' <a href="' . $pdat->purl .
-                    '" target="_blank">' . $pdat->pcot . "</a></li>\n";
+        foreach ($array as $pdat) {
+            $htmlout .= '<li>' . $pdat[0] . ' <a href="' . $pdat[1] .
+                    '" target="_blank">' . $pdat[2] . "</a></li>\n";
         }
         $htmlout .= "</ul>\n";
     } elseif ($type === Actual) {
         $htmlout = '<p id="acttitle">- Actual Hike Data</p>' . "\n" .
                 '<ul id="alinks">' . "\n";
-        foreach ($obj->act as $adat) {
-            $htmlout .= '<li>' . $adat->albl . ' <a href="' . $adat->aurl .
-                    '" target="_blank">' . $adat->acot . "</a></li>\n";
+        foreach ($array as $adat) {
+            $htmlout .= '<li>' . $adat[0] . ' <a href="' . $adat[1] .
+                    '" target="_blank">' . $adat[2] . "</a></li>\n";
         }
         $htmlout .= "</ul>\n";
     } else {
@@ -96,6 +99,7 @@ function clean($tsvdat) {
  * -------------------------  MAIN ROUTINE ------------------------
  */
 
+/* UNTIL BUILDS GET FIXED...
 # slight difference depending on whether coming from a new page create or not
 if (isset($building) && $building === true) {
     $hikeIndexNo = $hikeRow + 1;
@@ -110,116 +114,105 @@ if (isset($building) && $building === true) {
     }
 }
 # end difference
+ */
 
-foreach ($xml->row as $page) {
-    if ($page->indxNo == $hikeIndexNo) {
-        # Extract relevant data from database:
-        $newstyle = true;  // change later if no gpx file
-        $hikeTitle = $page->pgTitle;
-        $hikeLocale = $page->locale;
-        $hikeDifficulty = $page->difficulty;
-        $hikeLength = $page->miles . " miles";
-        $hikeType = $page->logistics;
-        $hikeElevation = $page->feet . " ft";
-        $hikeExposure = $page->expo;
-        $gpxfile = $page->gpxfile;
-        if (strlen($gpxfile) === 0) {
-            $newstyle = false;
-        } else {
-            $gpxPath = '../gpx/' . $gpxfile;
-        }
-        $jsonFile = $page->trkfile;
-        $hikeWow = $page->wow;
-        $hikeFacilities = $page->facilities;
-        $hikeSeasons = $page->seasons;
-        $hikePhotoLink1 = $page->mpUrl;
-        $hikePhotoLink2 = $page->spUrl;
-        $hikeDirections = $page->dirs;
-        /* 
-         * Retrieve data required to form picture rows:
-         */
-        $descs = [];
-        $alblnks = [];
-        $piclnks = [];
-        $captions = [];
-        $aspects = [];
-        $widths = [];
-        /* Note - some of the imported tsv files have fields enclosed
-         * in double quotes, and include a line feed (\n). 
-         */
-        foreach ($page->tsv->picDat as $img) {
-            if ($img->hpg == 'Y') {
-                $filename = clean($img->title);
-                array_push($descs,$filename);
-                array_push($alblnks,$img->alblnk);
-                array_push($piclnks,$img->mid);
-                $pDesc = clean($img->desc);
-                $dateStr = clean($img->date);
-                if ($dateStr == '') {
-                    array_push($captions,$pDesc);
-                } else {
-                    $year = substr($dateStr,0,4);
-                    $month = intval(substr($dateStr,5,2));
-                    $day = intval(substr($dateStr,8,2));  # intval strips leading 0
-                    $date = $months[$month-1] . ' ' . $day . ', ' . $year .
-                            ': ' . $pDesc;
-                    array_push($captions,$date);
-                }
-                $ht = intval($img->imgHt);
-                $wd = intval($img->imgWd);
-                array_push($widths,$wd);
-                $picRatio = $wd/$ht;
-                array_push($aspects,$picRatio);
+$table = "HIKES";
+$hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
+include "../php/local_get_HIKES_row.php";
+if ($gpxfile == '') {
+    $newstyle = false;
+} else {
+    $newstyle = true;
+    $gpxPath = '../gpx/' . $gpxfile;
+}
+/* 
+ * Form image rows:
+ */
+$descs = [];
+$alblnks = [];
+$piclnks = [];
+$captions = [];
+$aspects = [];
+$widths = [];
+/* 
+ * Note - some of the imported tsv files have fields enclosed
+ * in double quotes, and include a line feed (\n): use function clean() 
+ */
+if (is_array($hikeImages)) {
+    foreach ($hikeImages as $img) {
+        $picData = explode("^",$img);
+        if ($picData[2] === 'Y') {
+            $filename = clean($picData[1]);
+            array_push($descs,$filename);
+            array_push($alblnks,$picData[8]);
+            array_push($piclnks,$picData[10]);
+            $pDesc = clean($picData[4]);
+            $dateStr = clean($picData[9]);
+            if ($dateStr == '') {
+                array_push($captions,$pDesc);
+            } else {
+                $year = substr($dateStr,0,4);
+                $month = intval(substr($dateStr,5,2));
+                $day = intval(substr($dateStr,8,2));  # intval strips leading 0
+                $date = $months[$month-1] . ' ' . $day . ', ' . $year .
+                        ': ' . $pDesc;
+                array_push($captions,$date);
             }
-        }
-        $capCnt = count($descs);
-        if (strlen($page->aoimg1->name) !== 0) {
-            $aoimg1 = '../images/' . $page->aoimg1->name;
-            array_push($descs,$page->aoimg1->name);
-            array_push($alblnks,'');
-            array_push($piclnks,$aoimg1);
-            array_push($captions,'');
-            $ht = $page->aoimg1->iht;
-            $wd = $page->aoimg1->iwd;
+            $ht = intval($picData[14]);
+            $wd = intval($picData[15]);
             array_push($widths,$wd);
-            $imgRatio = $wd/$ht;
-            array_push($aspects,$imgRatio);  
+            $picRatio = $wd/$ht;
+            array_push($aspects,$picRatio);
         }
-        if (strlen($page->aoimg2->name) !== 0) {
-            $aoimg2 = '../images/' . $page->aoimg2->name;
-            array_push($descs,$page->aoimg2->name);
-            array_push($alblnks,'');
-            array_push($piclnks,$aoimg2);
-            array_push($captions,'');
-            $ht = $page->aoimg2->iht;
-            $wd = $page->aoimg2->iwd;
-            array_push($widths,$wd);
-            $imgRatio = $wd/$ht;
-            array_push($aspects,$imgRatio);  
-        }
-        /*
-         *  End picture row data prep
-         */
-        $hikeTips = $page->tipsTxt;
-        $hikeTips = preg_replace("/\s/"," ",$hikeTips);
-        $hikeInfo = '<p id="hikeInfo">' . $page->hikeInfo . "</p>\n";
-        $hikeRefs = $page->refs;
-        # there may or may not be any proposed data or actual data to present
-        $hikeReferences = makeHtmlList(References,$hikeRefs);
-        $hikeProposedData = $page->dataProp;
-        $hikeActualData = $page->dataAct;
-        if ( $hikeProposedData->prop->count() !== 0 || $hikeActualData->act->count() !== 0 ) {
-            $fieldsets = true;
-            $datasect = "<fieldset>\n" . 
-                    '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
-            if ($hikeProposedData->prop->count() !== 0) {
-                    $datasect .= makeHtmlList(Proposed,$hikeProposedData);
-            }
-            if ($hikeActualData->act->count() !== 0) {
-                    $datasect .= makeHtmlList(Actual,$hikeActualData);
-            }
-            $datasect .= "</fieldset>\n";
-        }
+    }
+}
+$capCnt = count($descs);
+if (is_array($hikeAddonImg1)) {
+    $aoimg1 = '../images/' . $hikeAddonImg1[0];
+    array_push($descs,$hikeAddonImg1);
+    array_push($alblnks,'');
+    array_push($piclnks,$aoimg1);
+    array_push($captions,'');
+    $ht = $hikeAddonImg1[1];
+    $wd = $hikeAddonImg1[2];
+    array_push($widths,$wd);
+    $imgRatio = $wd/$ht;
+    array_push($aspects,$imgRatio);  
+}
+if (is_array($hikeAddonImg2)) {
+    echo "Think #2 is real..." . $hikeAddonImg2;
+    $aoimg2 = '../images/' . $hikeAddonImg2[0];
+    array_push($descs,$hikeAddonImg2[0]);
+    array_push($alblnks,'');
+    array_push($piclnks,$aoimg2);
+    array_push($captions,'');
+    $ht = $hikeAddonImg2[1];
+    $wd = $hikeAddonImg2[2];
+    array_push($widths,$wd);
+    $imgRatio = $wd/$ht;
+    array_push($aspects,$imgRatio);  
+}
+/*
+ *  End picture row data prep
+ */
+if (is_array($hikeRefs)) {  # Should never be an empty string....
+    $hikeReferences = makeHtmlList(References,$hikeRefs);
+} else {
+    $hikeReferences = "<p>ERROR: NO REFERENCES DETECTED</p>";
+}
+# there may or may not be any proposed data or actual data to present
+if ( is_array($hikeProposedData) || is_array($hikeActualData) ) {
+    $fieldsets = true;
+    $datasect = "<fieldset>\n" . 
+            '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
+    if (is_array($hikeProposedData)) {
+            $datasect .= makeHtmlList(Proposed,$hikeProposedData);
+    }
+    if (is_array($hikeActualData)) {
+            $datasect .= makeHtmlList(Actual,$hikeActualData);
+    }
+    $datasect .= "</fieldset>\n";
+}
         # setup hike page map if newstyle
         if ($newstyle) {
             # dynamically created map:
@@ -238,9 +231,6 @@ foreach ($xml->row as $page) {
             fputs($mapHandle,$html);
             fclose($mapHandle);
         }
-        break;
-    }  # end if the correct hike = indx no
-}  # end of foreach $page
 ?>
 <head>
     <title><?php echo $hikeTitle;?></title>
@@ -277,36 +267,36 @@ foreach ($xml->row as $page) {
   *  if there is either no map OR no chart, the "original" style is presented;
   *  if there is both a map AND a chart, the "new" style is presented
   */
-include "mysql_get_row.php";
 if (!$newstyle) {
-    echo '<div id="hikeSummary">' .
-        '<table id="topper">' .
-            '<thead>' .
-                '<tr>' .
-                    '<th>Difficulty</th>' .
-                    '<th>Round-trip</th>' .
-                    '<th>Type</th>' .
-                    '<th>Elev. Chg.</th>' .
-                    '<th>Exposure</th>' .
-                    '<th>Wow Factor</th>' .
-                    '<th>Facilities</th>' .
-                    '<th>Seasons</th>';
+    /* ---------------------------- OLD STYLE -------------------------- */
+    echo '<div id="hikeSummary">' . PHP_EOL .
+        '<table id="topper">' . PHP_EOL .
+            '<thead>' .  PHP_EOL .
+                '<tr>' .  PHP_EOL .
+                    '<th>Difficulty</th>' .  PHP_EOL .
+                    '<th>Round-trip</th>' .  PHP_EOL .
+                    '<th>Type</th>' .  PHP_EOL .
+                    '<th>Elev. Chg.</th>' .  PHP_EOL .
+                    '<th>Exposure</th>' .  PHP_EOL .
+                    '<th>Wow Factor</th>' .  PHP_EOL .
+                    '<th>Facilities</th>' .  PHP_EOL .
+                    '<th>Seasons</th>' . PHP_EOL;
                     if($hikePhotoLink2 == '') {
-                                    echo "<th>Photos</th>";
+                        echo "<th>Photos</th>";
                     }
-                    echo '<th>By Car</th>' .
-               '</tr>' .
-           '</thead>' .
-           '<tbody>' .
-                '<tr>' .
-                    '<td>' . $hikeDifficulty . '</td>' .
-                    '<td>' . $hikeLength . '</td>' .
-                    '<td>' . $hikeType . '</td>' .
-                    '<td>' . $hikeElevation . '</td>' .
-                    '<td>' . $hikeExposure . '</td>' .
-                    '<td>' . $hikeWow . '</td>' .
-                    '<td>' . $hikeFacilities . '</td>' .
-                    '<td>' . $hikeSeasons . '</td>';
+                    echo '<th>By Car</th>' .  PHP_EOL .
+               '</tr>' .  PHP_EOL .
+           '</thead>' .  PHP_EOL .
+           '<tbody>' .  PHP_EOL .
+                '<tr>' .  PHP_EOL .
+                    '<td>' . $hikeDifficulty . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeLength . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeType . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeElevation . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeExposure . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeWow . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeFacilities . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeSeasons . '</td>' .  PHP_EOL;
                     if($hikePhotoLink2 == '') {
                         echo '<td><a href="' . $hikePhotoLink1 . '" target="_blank">' .
                             '<img style="margin-bottom:0px;border-style:none;"' .
@@ -316,12 +306,13 @@ if (!$newstyle) {
                     echo '<td><a href="' . $hikeDirections . '" target="_blank">' .
                         '<img style="margin-bottom:0px;padding-bottom:0px;"' .
                         ' src="../images/dirs.png" alt="google driving directions" />' .
-                        '</a></td>' .
-                '</tr>' .
-           '</tbody>' .
-       '</table>' .
-    '</div>' . "\n";
+                        '</a></td>' .  PHP_EOL .
+                '</tr>' .  PHP_EOL .
+           '</tbody>' .  PHP_EOL .
+       '</table>' .  PHP_EOL .
+    '</div>' .   PHP_EOL ;
 } else { # newstyle has the side panel with map & chart on right
+    /* ---------------------------- NEW STYLE -------------------------- */
     # SIDE PANEL:
     echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' . "\n" .
@@ -359,8 +350,10 @@ if (!$newstyle) {
     echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' . 
                 $tmpMap . iframeMapOpts . '></iframe>' . "\n";
     # elevation chart:
+    /*
     echo '<script>' . "\n" .
             'var alts = ' . $jsElevation . ';' . "\n" . '</script>' . "\n";
+     */
     echo '<div data-gpx="' . $gpxPath . '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
