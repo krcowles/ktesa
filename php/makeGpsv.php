@@ -1,8 +1,9 @@
 <?php 
 /*
- * REQUIRED INPUTS FOR THIS ROUTINE:  $hikeTitle; $gpxPath; AND
- *  $photos, which is an xml object for the tsv data holding all 
- *  <picDat> tags in database.xml
+ * REQUIRED INPUTS FOR THIS ROUTINE:  $dev will indicate whether running
+ * this script locally (development mode) or remotely on the server.
+ * The photo settings for the map will be selected from the mysql db
+ * Otherwise $hikeIndexNo, $hikeTitle and $gpxPath should be defined.
  */
 
 # Function to calculate the distance between to lat/lng coordinates
@@ -97,7 +98,7 @@ foreach($gpxdat->trk->trkseg as $trackdat) {
         }
     }
 }
-$jsElevation = json_encode($gpxelev); # future use in elevation chart creation?
+#$jsElevation = json_encode($gpxelev); # future use in elevation chart creation?
 $north = $gpxlats[0];
 $south = $north;
 $east = $gpxlons[0];
@@ -140,22 +141,36 @@ $clon = $west + ($east - $west)/2;
  *     ---- END OF TRACK DATA ---
  * 
  *   ---- ESTABLISH PHOTO DATA ----
- * Form the photo links from the xml data
+ * Form the photo links from the mysql database:
  */
+if ($dev) {
+    include "local_mysql_connect.php";
+} else {
+    include "000mysql_connect.php";
+}
+$query = "SELECT tsv FROM HIKES WHERE indxNo = " . $hikeIndexNo;
+$result = mysqli_query($link,$query);
+if (!$result) {
+    die ("Could not execute query to extract photo data: " . mysqli_error());
+}
+$row = mysqli_fetch_row($result);
+$photos = unserialize($row[0]);
+mysqli_close($link);
 $plnks = [];  # array of photo links
 $defIconColor = 'red';
 $mcnt = 0;
-foreach ($photos->picDat as $xmlPhoto) {
-    if ($xmlPhoto->mpg == 'Y') {
-        $procName = preg_replace("/'/","\'",$xmlPhoto->title);
+foreach ($photos as $photo) {
+    $img = explode("^",$photo);
+    if ($img[3] == 'Y') {
+        $procName = preg_replace("/'/","\'",$img[1]);
         $procName = preg_replace('/"/','\"',$procName);
-        $procDesc = preg_replace("/'/","\'",$xmlPhoto->desc);
+        $procDesc = preg_replace("/'/","\'",$img[4]);
         $procDesc = preg_replace('/"/','\"',$procDesc);
-        $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
-            $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
-            $procDesc . "',color:'" . $xmlPhoto->iclr . "',icon:'" . 
-            $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
-            $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
+        $plnk = "GV_Draw_Marker({lat:" . $img[5] . ",lon:" . 
+            $img[6] . ",name:'" . $procName . "',desc:'" . 
+            $procDesc . "',color:'" . $img[13] . "',icon:'" . 
+            $mapicon . "',url:'" . $img[8] . "',thumbnail:'" . 
+            $img[7] . "',folder:'" . $img[0] . "'});";
         array_push($plnks,$plnk);
         $mcnt++;
     }

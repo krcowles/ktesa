@@ -2,7 +2,7 @@
 <html lang="en-us">
 
 <head>
-    <title>Create HIKES Table</title>
+    <title>CREATE HIKES</title>
     <meta charset="utf-8" />
     <meta name="description" content="Create the HIKES Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
@@ -41,9 +41,9 @@
 </div>
 <p id="trail">Create the HIKES Table</p>
 <div style="margin-left:16px;font-size:18px;">
-    <p>This script will create the HIKES table in the id140870_hikemaster database...</p>
+    <p>This script will create the HIKES table in the 'mysql' database...</p>
 <?php
-    require '000mysql_connect.php';   # returns $link as connection
+    include '000mysql_connect.php';   # returns $link as connection
     echo "<p>mySql Connection Opened</p>";
 
     # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY

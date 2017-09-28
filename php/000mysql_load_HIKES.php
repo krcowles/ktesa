@@ -21,7 +21,7 @@
     </div>
     <p id="trail">Create A New Page</p>
     <div style="margin-left:16px;font-size:18px;">
-        <p>Use database.xml to populate the HIKES table in the id140870_hikemaster database...</p>
+        <p>Use database.xml to populate the HIKES table in the 'mysql' database...</p>
 
 <?php
     $db = simplexml_load_file('../data/database.xml');
@@ -40,7 +40,7 @@
     $maxtsv = 0;
     $maxtbl = 0;
     
-    require "000mysql_connect.php";
+    require "local_mysql_connect.php";
     echo "<p>mySql Connection Opened.</p>";
 
     foreach ($db->row as $row) {
@@ -325,7 +325,7 @@
             }
         }
     }
-    
+    mysqli_close($link);
     echo "<p>Maximum lengths for: <br />";
     echo "Refs: " . $maxref . "<br />";
     echo "Props: " . $maxprop . "<br />";
