@@ -213,24 +213,24 @@ if ( is_array($hikeProposedData) || is_array($hikeActualData) ) {
     }
     $datasect .= "</fieldset>\n";
 }
-        # setup hike page map if newstyle
-        if ($newstyle) {
-            # dynamically created map:
-            $extLoc = strrpos($gpxfile,'.');
-            $gpsvMap = substr($gpxfile,0,$extLoc); # strip file extension
-            # holding place for page's hike map (deleted when page exited)
-            $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
-            if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
-                $mapmsg = "Contact Site Master: could not open tmp map file: " . $tmpMap . ", for writing";
-                die ($mapmsg);
-            }
-            $photos = $page->tsv;
-            $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . 
-                '&gpx=' . $gpxPath;
-            include "../php/makeGpsv.php";
-            fputs($mapHandle,$html);
-            fclose($mapHandle);
-        }
+# setup hike page map if newstyle
+if ($newstyle) {
+    # dynamically created map:
+    $extLoc = strrpos($gpxfile,'.');
+    $gpsvMap = substr($gpxfile,0,$extLoc); # strip file extension
+    # holding place for page's hike map (deleted when page exited)
+    $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
+    if ( ($mapHandle = fopen($tmpMap,"w")) === false) {
+        $mapmsg = "Contact Site Master: could not open tmp map file: " . $tmpMap . ", for writing";
+        die ($mapmsg);
+    }
+    $photos = $page->tsv;
+    $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . 
+        '&gpx=' . $gpxPath;
+    include "../php/makeGpsv.php";
+    fputs($mapHandle,$html);
+    fclose($mapHandle);
+}
 ?>
 <head>
     <title><?php echo $hikeTitle;?></title>
@@ -367,8 +367,7 @@ if ($hikeTips !== '') {
         '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' . 
         htmlspecialchars_decode($hikeTips,ENT_COMPAT) . '</p></div>' . "\n";
 }
-echo "<br />";
-echo $hikeInfo;
+echo '<div id="hikeInfo">' . $hikeInfo . "</div><br />" . PHP_EOL;
 if ($hikeReferences !== '') {
     echo '<fieldset>'."\n";
     echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
