@@ -10,6 +10,7 @@ define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_ur
 define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
 $months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
     "Sep","Oct","Nov","Dec");
+$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
 
 /* 
  * The following function is used to create the html code for the items
@@ -118,7 +119,11 @@ if (isset($building) && $building === true) {
 
 $table = "HIKES";
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
-include "../php/local_get_HIKES_row.php";
+if ($dev) {
+    include "../php/local_get_HIKES_row.php";
+} else {
+    include "../php/000mysql_get_HIKES_row.php";
+}
 if ($gpxfile == '') {
     $newstyle = false;
 } else {

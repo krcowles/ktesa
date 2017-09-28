@@ -325,7 +325,7 @@
             }
         }
     }
-    
+    mysqli_close($link);
     echo "<p>Maximum lengths for: <br />";
     echo "Refs: " . $maxref . "<br />";
     echo "Props: " . $maxprop . "<br />";
