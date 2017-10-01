@@ -29,19 +29,22 @@
         <?php
         $errmsgs = array(
             "Unable to connect to the server's database; this may be a " .
-            "server problem - try again later..."
-            
+            "server problem - try again later...",
+            "The data for this hike could not be accessed."
         );
-        $eno = intval(filter_input(INPUT_GET,'errno'));
-        $ecd = filter_input(INPUT_GET,'errcd');
+        $eno = intval(filter_input(INPUT_GET,'eno',FILTER_SANITIZE_NUMBER_INT));
+        $ecd = filter_input(INPUT_GET,'ecd');
         echo $errmsgs[$eno];
+        if ( mail("krcowles29@gmail.com","user error","Msg No " . $eno . 
+                "; Code: " . $ecd) ) {
+            # CANNOT GET MAIL TO ACTUALLY SEND!!!!!!
+        }
         ?>
     </p>
     <p>Not to worry - we have been notified!</p>
     <p>Please try again at a later date/time. Thanks for your patience!</p>   
 </div>
 
-<script src="../scripts/jquery-1.12.1.js"></script>
 </body>
 
 </html>

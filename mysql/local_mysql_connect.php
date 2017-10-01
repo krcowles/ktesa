@@ -10,15 +10,16 @@ if (!$link) {
     if (Ktesa_Dbug) {
         dbug_print("Could not connect to database - error number: " . $ecode);
     } else {
-        user_error_msg(0,$ecode);
+        user_error_msg($rel_addr,0,$ecode);
     }
-} else { echo "GOOD7"; }
+}
 function dbug_print($msg) {
     if (Ktesa_Dbug) {
         echo $msg;
     }
 }
-function user_error_msg($errcode,$errnum) {
-    header("Location: mysql_error_page.php?errno=0&errcd=" . $ecode);
+function user_error_msg($rel,$errnum,$errcode) {
+    header("Location: "  . $rel . "mysql_error_page.php?eno=" . $errnum .
+            "&ecd=" . $errcode);
     exit();
 }

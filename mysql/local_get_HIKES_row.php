@@ -1,10 +1,14 @@
 <?php
 require "local_mysql_connect.php";
-
 $req = "SELECT * FROM " . $table . " WHERE indxNo = " . $hikeIndexNo;
 $result = mysqli_query($link,$req);
 if (!$result) {
-    die ("Could not SELECT data from " . $table . ":  " . mysqli_err());
+    if (Ktesa_Dbug) {
+        dbug_print('Failed to execute SELECT in get_HIKES_row: ' . 
+                mysqli_error($link));
+    } else {
+        user_error_msg($rel_addr,1,0);
+    }
 }
 $row = mysqli_fetch_assoc($result);
 

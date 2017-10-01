@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en-us">
-
 <?php
 define('References','1');
 define('Proposed','2');
@@ -11,11 +8,11 @@ define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
 $months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
     "Sep","Oct","Nov","Dec");
 $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-
-/* 
- * The following function is used to create the html code for the items
- *  which were retrieved from the database 'refs' tag (aka $obj)
- */
+if ($dev) {
+    $rel_addr = '../mysql/';
+} else {
+    $rel_addr = '../php/';
+}
 function makeHtmlList($type,$array) {
     if ($type === References) {
         $htmlout = '<ul id="refs">';
@@ -94,33 +91,10 @@ function clean($tsvdat) {
     }
     return addslashes($curdat);   
 }
-# FUNCTION END
-
-/*
- * -------------------------  MAIN ROUTINE ------------------------
- */
-
-/* UNTIL BUILDS GET FIXED...
-# slight difference depending on whether coming from a new page create or not
-if (isset($building) && $building === true) {
-    $hikeIndexNo = $hikeRow + 1;
-} else {
-    $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
-    $database = '../data/database.xml';
-    $xml = simplexml_load_file($database);
-    if ($xml === false) {
-        $noload = '<p style="margin-left:16px;color:red;font-size:18px">' .
-                "Could not load database.xml: contact Site Master</p>";
-        die ($noload);
-    }
-}
-# end difference
- */
-
 $table = "HIKES";
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
 if ($dev) {
-    include "../php/local_get_HIKES_row.php";
+    include "../mysql/local_get_HIKES_row.php";
 } else {
     include "../php/000mysql_get_HIKES_row.php";
 }
@@ -237,6 +211,8 @@ if ($newstyle) {
     fclose($mapHandle);
 }
 ?>
+<!DOCTYPE html>
+<html lang="en-us">
 <head>
     <title><?php echo $hikeTitle;?></title>
     <meta charset="utf-8" />
