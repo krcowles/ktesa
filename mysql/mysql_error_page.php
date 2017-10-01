@@ -37,12 +37,16 @@
         echo $errmsgs[$eno];
         if ( mail("krcowles29@gmail.com","user error","Msg No " . $eno . 
                 "; Code: " . $ecd) ) {
-            # CANNOT GET MAIL TO ACTUALLY SEND!!!!!!
+            # This works on 000webhost, but not on local server
+            echo '<p>Not to worry - we have been notified!</p>';
+        } else {
+            echo "<p>Mail did NOT get sent, so please send us an email by using " .
+                    "the link below, and describe the symptoms:<br />";
+            echo '<a href="mailto:krcowles29@gmail.com">Click here!</a></p>';
         }
         ?>
     </p>
-    <p>Not to worry - we have been notified!</p>
-    <p>Please try again at a later date/time. Thanks for your patience!</p>   
+    <p>You may wish to try again at a later date/time. Thanks for your patience!</p>   
 </div>
 
 </body>
