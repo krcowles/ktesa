@@ -2,155 +2,152 @@
 <html>
 
 <head>
-	<title>Tom & Ken's NM Hikes</title>
-	<meta charset="utf-8" />
-	<!-- if search engine keys are desired, use: <meta name="keywords" content="key1, key2, .." -->
-	<meta name="language"
-			content="EN" />
-	<meta name="description"
-			content="Listing of hikes the authors have undertaken in New Mexico" />
-	<meta name="author"
-			content="Tom Sandberg and Ken Cowles" />
-	<meta name="robots"
-			content="nofollow" />
-	<link href="styles/main.css"
-		type="text/css" rel="stylesheet" />
+    <title>Tom & Ken's NM Hikes</title>
+    <meta charset="utf-8" />
+    <!-- if search engine keys are desired, use: <meta name="keywords" content="key1, key2, .." -->
+    <meta name="language" content="EN" />
+    <meta name="description"
+                    content="Listing of hikes the authors have undertaken in New Mexico" />
+    <meta name="author"
+                    content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots"
+                    content="nofollow" />
+    <link href="styles/main.css"
+            type="text/css" rel="stylesheet" />
 </head>
 
 <body>
 
 <div id="container">
-
-	<img id="tompic" src="images/TomAndKenSummit.JPG" alt="Authors on Deception Peak"
-		title="Authors on Deception Peak" />
-	<p id="banner">Welcome to Tom and Ken's <strong>New Mexico Hiking
-	Adventures!</strong>
-	</p>
-	<div id="intro">
-		<p>The intention of this site is to provide you, the viewer, a look at 
-		a variety of hikes, all undertaken by the authors in <em>The Land of 
-		Enchantment</em>. These hikes cover a broad, cross-state array of
-		possibilities, all found in the diverse terrain of New Mexico - from short
-		treks, to longer, uphill/downhill ascents.
-		</p> 
-	</div> <!-- end of intro -->
-	<div id="features">
-		<p>One of the features of this site 
-		is that not all of the hikes listed can be found in popular hiking books, or 
-		even in on-line trail apps. Check out the interactive features:</p>
-	</div> <!-- end of 'features' -->
-	<p id="expect">WHAT YOU WILL SEE:</p>
-	<div id="expl">
-		<p>
-		   Each of the selections below will take you to an interactive
-		   Google map with marker pins denoting locations of the various New Mexico hikes
-		   undertaken by the authors
-		</p>
-		<p>
-			Depending on your selection you will see either a full-page map (only), or
-			a large map with an interactive 'table of hikes' below. Geolocation will
-			allow you to display and update your location on the map.
-		</p>
-		<p id="dbug"></p>
-		<p id="turnon" class="hilites">
-			More detail on site features... (Recommended for first-time users)
-		</p>
-		<form id="mainfrm" target="_blank" action="pages/mapPg.php" method="GET">
-			<div id="settings">
-				<fieldset id="gloc">
-					<legend>Geolocation</legend>
-					<input type="radio" name="geo" value="ON" />ON&nbsp;&nbsp;&nbsp;
-					<input type="radio" name="geo" value="OFF" checked="checked" />OFF
-				</fieldset>
-				<fieldset id="mtype">
-					<legend>Page Type</legend>  
+    <img id="tompic" src="images/TomAndKenSummit.JPG" alt="Authors on Deception Peak"
+        title="Authors on Deception Peak" />
+    <p id="banner">Welcome to Tom and Ken's <strong>New Mexico Hiking
+    Adventures!</strong>
+    </p>
+    <div id="intro">
+        <p>The intention of this site is to provide you, the viewer, a look at 
+        a variety of hikes, all undertaken by the authors in <em>The Land of 
+        Enchantment</em>. These hikes cover a broad, cross-state array of
+        possibilities, all found in the diverse terrain of New Mexico - from short
+        treks, to longer, uphill/downhill ascents.
+        </p> 
+    </div> <!-- end of intro -->
+    <div id="features">
+        <p>One of the features of this site 
+        is that not all of the hikes listed can be found in popular hiking books, or 
+        even in on-line trail apps. Check out the interactive features:</p>
+    </div> <!-- end of 'features' -->
+    <p id="expect">WHAT YOU WILL SEE:</p>
+    <div id="expl">
+        <p>
+           Each of the selections below will take you to an interactive
+           Google map with marker pins denoting locations of the various New Mexico hikes
+           undertaken by the authors
+        </p>
+        <p>
+            Depending on your selection you will see either a full-page map (only), or
+            a large map with an interactive 'table of hikes' below. Geolocation will
+            allow you to display and update your location on the map.
+        </p>
+        <p id="dbug"></p>
+        <p id="turnon" class="hilites">
+                More detail on site features... (Recommended for first-time users)
+        </p>
+        <form id="mainfrm" target="_blank" action="pages/mapPg.php" method="GET">
+            <div id="settings">
+                <fieldset id="gloc">
+                    <legend>Geolocation</legend>
+                    <input type="radio" name="geo" value="ON" />ON&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="geo" value="OFF" checked="checked" />OFF
+                </fieldset>
+                <fieldset id="mtype">
+                    <legend>Page Type</legend>  
                     <input type="radio" name="tbl" value="T" /> Table Only&nbsp;&nbsp;
-					<input type="radio" name="tbl" value="D" checked="checked" /> Map W/ Table&nbsp;&nbsp;
-					<input type="radio" name="tbl" value="M" /> Full Page Map
-				</fieldset>
-				<fieldset id="go">
-					<legend>Submit</legend>
-					<input style="color:DarkGreen;font-size:14px;" 
-						id="exe" type="submit" value="Display Page">
-				</fieldset>
-			</div>
-		</form>
-		<form id="auxfrm" action="#">
-			<p><em id="expOpt">Registered user options:</em> Enter Registration Key to Display &nbsp;&nbsp;
-			<input type="password" name="regkey" size="12" maxlength="6" /></p>
-		</form>
-		<div id="experts">
-			<button id="editor">Edit a Hike Page</button><br />
-			<button id="indxpg">Edit an Index Page</button><br />
-			<button id="creator">Create New Hike or Index Page</button><br />
-			<button id="delpg">Delete a Hike or Index Page</button><br />
-			<button id="hide">Hide Options</button>
-		</div>
-			
-		<div id="more">
-			<p>Map features (both Full-Page and Map-With-Table):</p>
-			<ul class="dashed">
-				<li>Maps are standard Google maps, which allow pan, zoom and full-screen
-					display.</li>
-				<li>Marker pins display "info-windows" when clicked, showing hike
-					details, and containing links to the corresponding website and
-					directions to the location of the hike.</li>
-				<li>When zoomed in sufficiently, tracks indicating the trail or path
-					the authors took will display, with arrows indicating
-					the direction the authors traveled.</li>
-				<li>Yellow marker pins indicate Visitor Center locations for National or
-					State Parks and Monuments, or other public/private information center
-					buildings (e.g. Ghost Ranch). These markers may also contain a list
-					of hikes, when the hikes begin at the center.</li>
-				<li>Blue pins indicate trailheads where multiple hikes begin. When
-					clicking on a blue pin, all hikes are shown with their corresponding
-					links, and one link to the common trailhead.</li>
-				<li>Red pins represent all other hikes, and will show hike stats and
-					trailhead links.</li>
-			</ul>
-			<p>Table features:</p>
-			<ul class="dashed">	
-				<li>The table of hikes is intended to provide a brief summary of hike statistics,
-					and also links to the corresponding website, google directions, or
-					that hike's Flickr album.</li>
-				<li>The table of hikes initially displayed is not sorted in any particular order, but
-					clicking on a column header allows alphabetical (or numerical) sorting.
-					The first click will sort in ascending order, each successive click
-					will reverse the sort order.</li>
-				<li><em id="itals">As you zoom in and/or pan to different locations</em>,
-					the table of hikes below the map will list only those hikes that can 
-					currently be seen on the map. </li>
-				<li>As you move your mouse over different rows, that row will be highlighted
-					for easy reference.</li>
-			</ul>
-			<p id="disclaimers">A number of the
-				hikes occurred before the authors' acquisition of a GPS system, and hence
-				will not have geomaps available to view. In those cases, a static map will
-				be provided.
-				Furthermore, some of the hikes occurred prior to certain environmental changes
-				which have rendered them no longer accessible, or accessible only in modified
-				form. Primarily: </p>
-					<ul id="disasters">
-						<li> Fires: Cerro Grande (Los Alamos, 2000); Los Conchas (Valles Caldera,
-						2011); Gila (2012); Dog Head (Monzano Mtns, 2016)</li>
-						<li> Floods: Bandelier (2011); Rinconada Canyon (2013)</li>
-						<li> Volcanoes & Earthquakes: we hope not!</li>
-					</ul>
-			<div id="linkNote">
-				<em>Note: All of the links on this site (denoted by check-boxes) will open new
-				windows (or tabs)</em>. The corresponding web pages ("Info/Hike Pages") provide sample
-				pictures, trail descriptions, maps or tracks, and links to related materials.
-				To see the photo albums containing the authors' photographs, click the
-				corresponding photo album symbol in the table of hikes, or on the hike page.
-			</div>
-			<p id="turnoff" class="hilites">Less detail...</p>
-		</div>
-	</div>
-	<div id="closer"> If you see something that you'd like
-	to comment on - suggestions, improvements, things not working,
-	etc... <a href="mailto:krcowles29@gmail.com">email us!</a>
-	</div>
+                    <input type="radio" name="tbl" value="D" checked="checked" /> Map W/ Table&nbsp;&nbsp;
+                    <input type="radio" name="tbl" value="M" /> Full Page Map
+                </fieldset>
+                <fieldset id="go">
+                    <legend>Submit</legend>
+                    <input style="color:DarkGreen;font-size:14px;" 
+                        id="exe" type="submit" value="Display Page">
+                </fieldset>
+            </div>
+        </form>
+        <form id="auxfrm" action="#">
+                <p><em id="expOpt">Registered user options:</em> Enter Registration Key to Display &nbsp;&nbsp;
+                <input type="password" name="regkey" size="12" maxlength="6" /></p>
+        </form>
+        <div id="experts">
+                <button id="editor">Edit a Hike Page</button><br />
+                <button id="indxpg">Edit an Index Page</button><br />
+                <button id="creator">Create New Hike or Index Page</button><br />
+                <button id="delpg">Delete a Hike or Index Page</button><br />
+                <button id="hide">Hide Options</button>
+        </div>
 
+        <div id="more">
+            <p>Map features (both Full-Page and Map-With-Table):</p>
+            <ul class="dashed">
+                <li>Maps are standard Google maps, which allow pan, zoom and full-screen
+                        display.</li>
+                <li>Marker pins display "info-windows" when clicked, showing hike
+                        details, and containing links to the corresponding website and
+                        directions to the location of the hike.</li>
+                <li>When zoomed in sufficiently, tracks indicating the trail or path
+                        the authors took will display, with arrows indicating
+                        the direction the authors traveled.</li>
+                <li>Yellow marker pins indicate Visitor Center locations for National or
+                        State Parks and Monuments, or other public/private information center
+                        buildings (e.g. Ghost Ranch). These markers may also contain a list
+                        of hikes, when the hikes begin at the center.</li>
+                <li>Blue pins indicate trailheads where multiple hikes begin. When
+                        clicking on a blue pin, all hikes are shown with their corresponding
+                        links, and one link to the common trailhead.</li>
+                <li>Red pins represent all other hikes, and will show hike stats and
+                        trailhead links.</li>
+            </ul>
+            <p>Table features:</p>
+            <ul class="dashed">	
+                <li>The table of hikes is intended to provide a brief summary of hike statistics,
+                        and also links to the corresponding website, google directions, or
+                        that hike's Flickr album.</li>
+                <li>The table of hikes initially displayed is not sorted in any particular order, but
+                        clicking on a column header allows alphabetical (or numerical) sorting.
+                        The first click will sort in ascending order, each successive click
+                        will reverse the sort order.</li>
+                <li><em id="itals">As you zoom in and/or pan to different locations</em>,
+                        the table of hikes below the map will list only those hikes that can 
+                        currently be seen on the map. </li>
+                <li>As you move your mouse over different rows, that row will be highlighted
+                        for easy reference.</li>
+            </ul>
+            <p id="disclaimers">A number of the
+                hikes occurred before the authors' acquisition of a GPS system, and hence
+                will not have geomaps available to view. In those cases, a static map will
+                be provided.
+                Furthermore, some of the hikes occurred prior to certain environmental changes
+                which have rendered them no longer accessible, or accessible only in modified
+                form. Primarily: </p>
+                <ul id="disasters">
+                    <li> Fires: Cerro Grande (Los Alamos, 2000); Los Conchas (Valles Caldera,
+                    2011); Gila (2012); Dog Head (Monzano Mtns, 2016)</li>
+                    <li> Floods: Bandelier (2011); Rinconada Canyon (2013)</li>
+                    <li> Volcanoes & Earthquakes: we hope not!</li>
+                </ul>
+            <div id="linkNote">
+                <em>Note: All of the links on this site (denoted by check-boxes) will open new
+                windows (or tabs)</em>. The corresponding web pages ("Info/Hike Pages") provide sample
+                pictures, trail descriptions, maps or tracks, and links to related materials.
+                To see the photo albums containing the authors' photographs, click the
+                corresponding photo album symbol in the table of hikes, or on the hike page.
+            </div>
+            <p id="turnoff" class="hilites">Less detail...</p>
+        </div>
+    </div>
+    <div id="closer"> If you see something that you'd like
+    to comment on - suggestions, improvements, things not working,
+    etc... <a href="mailto:krcowles29@gmail.com">email us!</a>
+    </div>
 </div>  <!-- CONTAINER END -->
 <script src="scripts/jquery-1.12.1.js"></script>
 <script src="scripts/main.js"></script>
