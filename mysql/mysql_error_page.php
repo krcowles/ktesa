@@ -30,7 +30,9 @@
         $errmsgs = array(
             "Unable to connect to the server's database; this may be a " .
             "server problem - try again later...",
-            "The data for this hike could not be accessed."
+            "The data for this hike could not be accessed.",
+            "Your user data did not get entered: try again - if problem "
+            . "persists, we will look into it!"
         );
         $eno = intval(filter_input(INPUT_GET,'eno',FILTER_SANITIZE_NUMBER_INT));
         $ecd = filter_input(INPUT_GET,'ecd');

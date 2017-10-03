@@ -16,10 +16,10 @@ $('#auxfrm').submit( function() {
 			var createUrl = 'build/newHike.php';
 			window.open(createUrl, target="_blank");
 		});
-		$('#delpg').on('click', function() {
-			var deleteUrl = 'build/deletePage.php';
-			window.open(deleteUrl, target="_blank");
-		});
+                $('#admin').on('click', function() {
+                    var adminUrl = 'admin/admintools.php';
+                    window.open(adminUrl,target="_blank");
+                });
 		$('#hide').on('click', function() {
 			$("input[type='password']").val('');
 			$('#experts').css('display','none');

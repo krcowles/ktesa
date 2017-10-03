@@ -1,16 +1,18 @@
 <?php
 require "local_mysql_connect.php";
-$query1 = "INSERT INTO USERS (last_name,first_name,passwd,email) " .
-    "VALUES ('Cowles','Ken','000ktesa9','krcowles29@gmail.com');";
-$query2 = "INSERT INTO USERS (last_name,first_name,passwd,email) " .
-    "VALUES ('Sandberg','Tom','000ktesa9','tjsandberg@yahoo.com');";
-$admin1 = mysqli_query($link,$query1);
-if (!$admin1) {
-    echo "No luck KC: did not insert you into USERS....<br />";
-} 
-$admin2 = mysqli_query($link,$query2);
-if (!$admin2) {
-    echo "Try again - Tom did not get inserted into USERS!<br />";
+$a = mysqli_real_escape_string($link,crypt('000ktesa9'));
+$bio = mysqli_real_escape_string($link,"One of the geniuses behind this site :-)");
+$admin = "INSERT INTO USERS (username,passwd,last_name,first_name,email) " .
+    "VALUES ('SiteMaster','{$a}','Master','Site','krcowles29@gmail.com');";
+$tom = "INSERT INTO USERS (username,passwd,last_name,first_name,email,bio) " .
+    "VALUES ('tmptom','{$a}','Sandberg','Tom','tjsandberg@yahoo.com','{$bio}');";
+$ken = "INSERT INTO USERS (username,passwd,last_name,first_name,email,bio) " .
+    "VALUES ('kroc','{$a}','Cowles','Ken','krcowles29@gmail.com','{$bio}');";
+$load_admin = mysqli_query($link,$admin);
+$load_tom = mysqli_query($link,$tom);
+$load_ken = mysqli_query($link,$ken);
+if (!$load_admin || !$load_tom || !$load_ken) {
+    die("Did not load data set for USERS table: " . mysqli_error());
 }
 echo "DONE";
 ?>

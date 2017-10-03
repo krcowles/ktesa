@@ -33,7 +33,7 @@
 </head>
 
 <body>
-    <div id="logo">
+<div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
@@ -49,17 +49,19 @@
     # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
     $tbl = mysqli_query( $link,"CREATE TABLE USERS (
         userid smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        last_name varchar(30) NOT NULL,
-        first_name varchar(20),
-        email varchar(50) NOT NULL,
-        passwd varchar(15) NOT NULL,
+        username varchar(32) NOT NULL,
+        passwd varchar(15) NOT NULL, 
         passwd_expire date,
+        last_name varchar(30) NOT NULL,
+        first_name varchar(20) NOT NULL,
+        email varchar(50) NOT NULL,
         facebook_url varchar(100),
-        twitter_handle varchar(20) );" );
+        twitter_handle varchar(20),
+        bio varchar(500));" );
     if (!$tbl) {
         die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
     } else {
-        echo '<p>HIKES Table created; Definitions are shown in the table below</p>';
+        echo '<p>USERS Table created; Definitions are shown in the table below</p>';
     }
     $req = mysqli_query($link,"SHOW TABLES;");
     if (!$req) {
@@ -71,7 +73,7 @@
     }
     echo "</ul>";
 ?>
-    <p>Description of the HIKES table:</p>
+    <p>Description of the USERS table:</p>
     <table>
         <colgroup>	
             <col style="width:100px">
