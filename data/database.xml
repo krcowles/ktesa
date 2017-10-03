@@ -26264,7 +26264,7 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
     <marker>Cluster</marker>
     <clusterStr/>
     <clusGrp>Q</clusGrp>
-    <logistics></logistics>
+    <logistics/>
     <miles>7.7</miles>
     <feet>1000</feet>
     <difficulty>Easy-Moderate</difficulty>
@@ -26485,7 +26485,7 @@ ascends, and at times is rutted and difficult to secure proper footing. It trave
     <aoimg1/>
     <aoimg2/>
     <mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157686459213233</mpUrl>
-    <spUrl></spUrl>
+    <spUrl/>
     <dirs>https://www.google.com/maps/place/Tree+Springs+Trailhead/@35.1839513,-106.4130963,13.29z/data=!4m5!3m4!1s0x87189911fe481135:0x3847221ed2c4ad71!8m2!3d35.193298!4d-106.40535</dirs>
     <cgName>Tree Spring Group</cgName>
     <tipsTxt>Check the Sandia Ranger Station or facebook for latest info on trail closings. In late August/early September, sections can be closed off due to a feeding bear population, and from winter on, until the snow melts sometime in the Spring.     </tipsTxt>
@@ -26733,5 +26733,39 @@ From Tree Spring, it is a short walk up to the juncture with Oso Corredor, and w
     <refs><ref><rtype>b</rtype><rit1>Sandia+Mountain+Hiking+Guide</rit1><rit2>, by Mike Coltrin</rit2></ref><ref><rtype>a</rtype><rit1>https%3A%2F%2Fwww.alltrails.com%2Ftrail%2Fus%2Fnew-mexico%2Fupper-faulty-and-south-crest-trail-loop</rit1><rit2>AllTrails</rit2></ref><ref><rtype>w</rtype><rit1>https%3A%2F%2Fexplorenm.com%2Fhikes%2FFaultyLoop%2F</rit1><rit2>Explore New Mexico</rit2></ref><ref><rtype>w</rtype><rit1>http%3A%2F%2Fwww.sandiahiking.com%2Ftrailguide.html%23southcrestfaulty</rit1><rit2>Sandia Mountain Hiking Guide: Trails</rit2></ref></refs>
     <dataProp/>
     <dataAct/>
+</row>
+
+<row>
+    <indxNo>143</indxNo>
+    <rlock/>
+    <pgTitle>Fletcher Trail</pgTitle>
+    <locale>Albuquerque</locale>
+    <marker>Cluster</marker>
+    <clusterStr/>
+    <clusGrp>K</clusGrp>
+    <logistics>Out-and-back</logistics>
+    <miles>4.5</miles>
+    <feet>1100</feet>
+    <difficulty>Moderate</difficulty>
+    <facilities>None</facilities>
+    <wow>Sandia Views</wow>
+    <seasons>All</seasons>
+    <expo>Mixed sun/shade</expo>
+    <tsv><picDat><folder>Folder1</folder><title>EarlyViewRincon</title><hpg>Y</hpg><mpg>Y</mpg><desc>Rincon Ridge before the ascent</desc><lat>35.2290694444</lat><lng>-106.481155556</lng><thumb>https://c1.staticflickr.com/5/4502/36771545464_606397199a_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36771545464/in/album-72157685825508012</alblnk><date>2017:10:03 09:35:35</date><mid>https://c1.staticflickr.com/5/4502/36771545464_606397199a_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4502/36771545464_69f479a874_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>ShieldAhead</title><hpg>Y</hpg><mpg>Y</mpg><desc>A view of the shield en route</desc><lat>35.2309222222</lat><lng>-106.479058333</lng><thumb>https://c1.staticflickr.com/5/4469/37480817941_292c6432d7_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/37480817941/in/album-72157685825508012</alblnk><date>2017:10:03 09:42:13</date><mid>https://c1.staticflickr.com/5/4469/37480817941_292c6432d7_n.jpg</mid><imgHt>3264</imgHt><imgWd>2448</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4469/37480817941_9e300e6d95_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>Trailhead</title><hpg>Y</hpg><mpg>Y</mpg><desc>The trail splits from the Piedra Lisa here</desc><lat>35.2312305556</lat><lng>-106.478530556</lng><thumb>https://c1.staticflickr.com/5/4512/36811378533_6ff921bea9_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36811378533/in/album-72157685825508012</alblnk><date>2017:10:03 09:44:03</date><mid>https://c1.staticflickr.com/5/4512/36811378533_6ff921bea9_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4512/36811378533_a3fe027f4d_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>LesTroisSoeurs</title><hpg>Y</hpg><mpg>Y</mpg><desc>Three arbitrarily named landmarks</desc><lat>35.2364805556</lat><lng>-106.473266667</lng><thumb>https://c1.staticflickr.com/5/4447/36811387713_eb18d1c02f_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36811387713/in/album-72157685825508012</alblnk><date>2017:10:03 10:08:44</date><mid>https://c1.staticflickr.com/5/4447/36811387713_eb18d1c02f_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4447/36811387713_e2171ac0c0_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>HigherViewRincon</title><hpg>Y</hpg><mpg>Y</mpg><desc>Further along, a framed view of Rincon</desc><lat>35.2363027778</lat><lng>-106.469933333</lng><thumb>https://c1.staticflickr.com/5/4502/36771561594_d395f2065f_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/36771561594/in/album-72157685825508012</alblnk><date>2017:10:03 10:22:33</date><mid>https://c1.staticflickr.com/5/4502/36771561594_d395f2065f_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4502/36771561594_9dcd6debd4_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>FletchersEnd</title><hpg>Y</hpg><mpg>Y</mpg><desc>The trail ends where the steep scrambling begins</desc><lat>35.2345555556</lat><lng>-106.467741667</lng><thumb>https://c1.staticflickr.com/5/4454/37433222616_4c66b8f532_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/37433222616/in/album-72157685825508012</alblnk><date>2017:10:03 10:32:16</date><mid>https://c1.staticflickr.com/5/4454/37433222616_4c66b8f532_n.jpg</mid><imgHt>3264</imgHt><imgWd>2448</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4454/37433222616_9e7cc32b14_o.jpg</org></picDat><picDat><folder>Folder1</folder><title>PartialProw</title><hpg>Y</hpg><mpg>Y</mpg><desc>A spot to rest in the shade with The Prow</desc><lat>35.2350694444</lat><lng>-106.468719444</lng><thumb>https://c1.staticflickr.com/5/4443/23628760168_69169cdbc8_t.jpg</thumb><alblnk>https://www.flickr.com/photos/139088815@N08/23628760168/in/album-72157685825508012</alblnk><date>2017:10:03 10:49:06</date><mid>https://c1.staticflickr.com/5/4443/23628760168_69169cdbc8_n.jpg</mid><imgHt>2448</imgHt><imgWd>3264</imgWd><iclr>pink</iclr><org>https://c1.staticflickr.com/5/4443/23628760168_dfcc5c7590_o.jpg</org></picDat></tsv>
+    <gpxfile>Fletcher_Trail.GPX</gpxfile>
+    <trkfile>Fletcher_Trail.json</trkfile>
+    <lat>35.2229277882725</lat>
+    <lng>-106.483443500474095</lng>
+    <aoimg1/>
+    <aoimg2/>
+    <mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157685825508012</mpUrl>
+    <spUrl/>
+    <dirs>https://www.google.com/maps/place/Piedra+Lisa-south+Trailhead/@35.2092174,-106.5091207,14.04z/data=!4m5!3m4!1s0x87189c33b662307d:0x92c0ead8cf18c3c4!8m2!3d35.2231347!4d-106.4834646</dirs>
+    <cgName>Piedra Lisa Group</cgName>
+    <tipsTxt>Although this hike is rated "Moderate", much of the trail is easy, but there is one stretch where the slope is steep and the footing is somewhat loose. The author traversed this section two days after some good rain, and the soil was more compact, but drier conditions could present some difficulty. Note: The trail is closed between March 1 and August 15.    </tipsTxt>
+    <hikeInfo>This relatively short trail is accessed from the Piedra Lisa Trail, about 0.8 miles in where the trail dips down into a shallow gulley, the meeting place of a couple of arroyos. Piedra Lisa continues to the left, and Fletcher branches off to the right, soon heading east towards the Sandia's Shield. The views offered by Fletcher Trail are very nice, and the trail ends up approaching "The Prow", a prominent feature viewable at this end of the Sandias. Except for the steep section, the trail is pleasant as it follows the arroyo upstream. There are multiple views of the mountains en route.      </hikeInfo>
+    <refs><ref><rtype>b</rtype><rit1>Sandia+Mountain+Hiking+Guide</rit1><rit2>Mike Coltrin</rit2></ref><ref><rtype>w</rtype><rit1>http%3A%2F%2Fwww.sandiahiking.com%2Ftrailguide.html%23fletcher</rit1><rit2>Sandia Mountain Hiking Guide</rit2></ref></refs>
+    <dataProp><prop/></dataProp>
+    <dataAct><act><albl>GPX:</albl><aurl>../gpx/Fletcher_Trail.GPX</aurl><acot>The Track</acot></act></dataAct>
 </row>
 </rows>
