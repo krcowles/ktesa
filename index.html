@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
 <head>
     <title>Tom & Ken's NM Hikes</title>
     <meta charset="utf-8" />
     <!-- if search engine keys are desired, use: <meta name="keywords" content="key1, key2, .." -->
-    <meta name="description"
-        content="Listing of hikes the authors have undertaken in New Mexico" />
+    <meta name="description" content="KTESA Home Site" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="styles/main.css" type="text/css" rel="stylesheet" />
 </head>
-
 <body>
 
 <div id="container">
@@ -35,18 +33,18 @@
     <p id="expect">WHAT YOU WILL SEE:</p>
     <div id="expl">
         <p>
-           Each of the selections below will take you to an interactive
-           Google map with marker pins denoting locations of the various New Mexico hikes
-           undertaken by the authors
+        Each of the selections below will take you to an interactive
+        Google map with marker pins denoting locations of the various New Mexico hikes
+        undertaken by the authors
         </p>
         <p>
-            Depending on your selection you will see either a full-page map (only), or
-            a large map with an interactive 'table of hikes' below. Geolocation will
-            allow you to display and update your location on the map.
+        Depending on your selection you will see either a full-page map (only), or
+        a large map with an interactive 'table of hikes' below. Geolocation will
+        allow you to display and update your location on the map.
         </p>
         <p id="dbug"></p>
         <p id="turnon" class="hilites">
-                More detail on site features... (Recommended for first-time users)
+            More detail on site features... (Recommended for first-time users)
         </p>
         <form id="mainfrm" target="_blank" action="pages/mapPg.php" method="GET">
             <div id="settings">
@@ -69,15 +67,21 @@
             </div>
         </form>
         <form id="auxfrm" action="#">
-                <p><em id="expOpt">Registered user options:</em> Enter Registration Key to Display &nbsp;&nbsp;
-                <input type="password" name="regkey" size="12" maxlength="6" /></p>
+            <p><em id="expOpt">Registered users can add (and edit)
+                their own hikes...</em><br />
+                Enter User Registration Key&nbsp;&nbsp;
+            <input type="password" name="regkey" size="12" maxlength="10" /><br />
+            OR: <a href="admin/create_user.php" target="_blank">Sign me up!</a></p>
         </form>
-        <div id="experts">
-                <button id="editor">Edit a Hike Page</button><br />
-                <button id="indxpg">Edit an Index Page</button><br />
-                <button id="creator">Create New Hike or Index Page</button><br />
-                <button id="admin">Admin Tools (Site Master Only)</button><br />
-                <button id="hide">Hide Options</button>
+        <div id="regusrs">
+            <button id="editor">Edit a Hike Page</button><br />
+            <button id="creator">Create New Hike or Index Page</button><br />
+            <button class="hide">Hide Options</button>
+        </div>
+        <div id="masters">
+            <button id="indxpg">Edit an Index Page</button><br />
+            <button id="admin">Go to admin tools</button><br />
+            <button class="hide">Hide Options</button>
         </div>
 
         <div id="more">
@@ -143,6 +147,7 @@
     to comment on - suggestions, improvements, things not working,
     etc... <a href="mailto:krcowles29@gmail.com">email us!</a>
     </div>
+
 </div>  <!-- CONTAINER END -->
 <script src="scripts/jquery-1.12.1.js"></script>
 <script src="scripts/main.js"></script>

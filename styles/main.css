@@ -1,144 +1,149 @@
 /* Styles for the New Mexico Hiking Adventures page */
 body {
-	width: 960px;
-	margin-left: auto;
-	margin-right: auto;
-	font-family: Arial, Verdana;
-	background-color: #dfdfdf;
-	border-style: solid;
-	border-width: 2px;
-	border-color: DarkBlue; }
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Arial, Verdana;
+    background-color: #dfdfdf;
+    border-style: solid;
+    border-width: 2px;
+    border-color: DarkBlue; }
 #container {
-	width: 940px;
-	margin-left: auto;
-	margin-right: auto;
-	position: relative; }
+    width: 940px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative; }
 img#tompic {
-	display: block;
-	float: right;
-	margin-left: 10px;
-	margin-right: 7px;
-	margin-top: -6px; }
+    display: block;
+    float: right;
+    margin-left: 10px;
+    margin-right: 7px;
+    margin-top: -6px; }
 #banner {
-	height: 58px;
-	margin-left: 8px;
-	border-style: outset;
-	border-width: 2px;
-	border-color: #d4e8d4;
-	font-style: oblique;
-	background-color: #dff8e3;
-	line-height: 3.0em;
-	text-align: center; }
+    height: 58px;
+    margin-left: 8px;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #d4e8d4;
+    font-style: oblique;
+    background-color: #dff8e3;
+    line-height: 3.0em;
+    text-align: center; }
 #banner:first-letter {
-	background-color: #dff8e3;
-	font-size: 38px;
-	font-style: oblique;
-	font-weight: bold;
-	color: #302dd3; }
+    background-color: #dff8e3;
+    font-size: 38px;
+    font-style: oblique;
+    font-weight: bold;
+    color: #302dd3; }
 #intro {
-	margin-left: 8px; }
+    margin-left: 8px; }
 #features {
-	margin-left: 8px;
-	margin-top: 30px; }
+    margin-left: 8px;
+    margin-top: 30px; }
 #expect {
-	padding-left: 8px;
-	font-weight: bold;
-	text-decoration: underline;
-	color: DarkBlue;
-	font-size: 20px; }
+    padding-left: 8px;
+    font-weight: bold;
+    text-decoration: underline;
+    color: DarkBlue;
+    font-size: 20px; }
 #expl {
-	padding-left: 8px; }
+    padding-left: 8px; }
 #settings {
 	margin-left: auto;
 	margin-right: auto; }
 fieldset {
 	height: 45px; }
 #gloc {
-	width: 130px;
-	display: inline-block; }
+    width: 130px;
+    display: inline-block; }
 #mtype {
-	width: 400px;
-	display: inline-block; }
+    width: 400px;
+    display: inline-block; }
 #go {
-	margin-left: 80px;
-	width: 120px;
-	display: inline-block; }
+    margin-left: 80px;
+    width: 120px;
+    display: inline-block; }
 legend {
-	color: DarkGreen; }	
+    color: DarkGreen; }	
 #exe:hover {
-	cursor: pointer;
-	background-color: #cfe2cf; }
-#experts {
-	display: none; }
+    cursor: pointer;
+    background-color: #cfe2cf; }
+#regusrs {
+    display: none;
+}
+#masters {
+    display: none; }
 #expOpt {
-	color: DarkGreen; }
+    color: DarkGreen;
+    font-size: 18px;
+}
 #editor {
-	color: DarkBlue;
-	font-size: 16px; }
+    color: DarkBlue;
+    font-size: 16px; }
 #creator {
-	color: DarkBlue;
-	font-size: 16px; }
+    color: DarkBlue;
+    font-size: 16px; }
 #indxpg {
-	color: DarkBlue;
-	font-size: 16px; }
+    color: DarkBlue;
+    font-size: 16px; }
 #admin {
-	color: DarkBlue;
-	font-size: 16px; }
-#hide {
-	color: DarkBlue;
-	font-size: 16px; }
+    color: DarkBlue;
+    font-size: 16px; }
+.hide {
+    color: DarkBlue;
+    font-size: 16px; }
 .hilites {
-	font-size: 18px;
-	font-style: italic;
-	color: DarkBlue; }
+    font-size: 18px;
+    font-style: italic;
+    color: DarkBlue; }
 #turnon:hover {
-	color: Brown; }
+    color: Brown; }
 #turnoff:hover {
-	color: Brown; }
+    color: Brown; }
 #more {
-	display: none; }
+    display: none; }
 ul {
-	position: relative;
-	top: -10px; }
+    position: relative;
+    top: -10px; }
 .dashed {
-	list-style-type: disc;
-	list-style-position: inside; }
+    list-style-type: disc;
+    list-style-position: inside; }
 #itals {
-	color: DarkBlue; }
+    color: DarkBlue; }
 #closeNote {
-	color: DarkGreen; }
+    color: DarkGreen; }
 .strtup {
-	width: 140px;
-	height: 40px;
-	font-size: 18px;
-	text-align: center;
-	color: DarkBlue;
-	background-color: white;
-	border-style: solid;
-	border-width: 2px;
-	border-color: black; }
+    width: 140px;
+    height: 40px;
+    font-size: 18px;
+    text-align: center;
+    color: DarkBlue;
+    background-color: white;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black; }
 
 #disclaimers {
-	margin-top: 12px;
-	margin-bottom: 15px;
-	padding: 8px; }
+    margin-top: 12px;
+    margin-bottom: 15px;
+    padding: 8px; }
 #disasters {
-	list-style-type: square;
-	width: 960px;
-	margin-top: 0px;
-	margin-bottom: 20px; }
+    list-style-type: square;
+    width: 960px;
+    margin-top: 0px;
+    margin-bottom: 20px; }
 #linkNote {
-	padding-left: 12px;
-	padding-right: 6px; }
+    padding-left: 12px;
+    padding-right: 6px; }
 #closer {
-	margin-top: 20px;
-	margin-left: 8px;
-	margin-bottom: 20px;
-	height: 32px;
-	line-height: 1.8em;
-	padding: 10px;
-	background-color: #c9d7e8;
-	border-style: outset;
-	border-width: 2px;
-	border-color: #c9d7e8;
-	text-align: center; }
+    margin-top: 20px;
+    margin-left: 8px;
+    margin-bottom: 20px;
+    height: 32px;
+    line-height: 1.8em;
+    padding: 10px;
+    background-color: #c9d7e8;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #c9d7e8;
+    text-align: center; }
