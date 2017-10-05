@@ -68,10 +68,15 @@
         </form>
         <form id="auxfrm" action="#">
             <p><em id="expOpt">Registered users can add (and edit)
-                their own hikes...</em><br />
-                Enter User Registration Key&nbsp;&nbsp;
-            <input type="password" name="regkey" size="12" maxlength="10" /><br />
+            their own hikes...</em><br />
+            User name: &nbsp;&nbsp;
+            <input id="usrid" type="text" size="20" name="nmhid" />&nbsp;&nbsp;
+            Your User Password:&nbsp;&nbsp;
+            <input id="upass" type="password" name="regkey" 
+                   size="12" maxlength="10" /><br />
+            <input id="sub2" type="submit" name="usrauth" value="Log me in!" />
             OR: <a href="admin/create_user.php" target="_blank">Sign me up!</a></p>
+            <p id="loggedin"></p>
         </form>
         <div id="regusrs">
             <button id="editor">Edit a Hike Page</button><br />

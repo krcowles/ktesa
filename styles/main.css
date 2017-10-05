@@ -73,6 +73,9 @@ legend {
 }
 #masters {
     display: none; }
+#sub2 {
+    font-size: 16px;
+}
 #expOpt {
     color: DarkGreen;
     font-size: 18px;

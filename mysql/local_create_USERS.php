@@ -50,7 +50,7 @@
     $tbl = mysqli_query( $link,"CREATE TABLE USERS (
         userid smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
         username varchar(32) NOT NULL,
-        passwd varchar(15) NOT NULL, 
+        passwd varchar(255) NOT NULL, 
         passwd_expire date,
         last_name varchar(30) NOT NULL,
         first_name varchar(20) NOT NULL,
