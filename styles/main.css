@@ -86,6 +86,14 @@ legend {
 #creator {
     color: DarkBlue;
     font-size: 16px; }
+#mstrcreate {
+    color: DarkBlue;
+    font-size: 16px;
+}
+#mstredit {
+    color: DarkBlue;
+    font-size: 16px;
+}
 #indxpg {
     color: DarkBlue;
     font-size: 16px; }
