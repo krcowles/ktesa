@@ -3,7 +3,19 @@ $( function() {  // wait until document is loaded...
 // Globals:
 var usr_type = 'unregistered';
 var ajaxDone = false;
+var valid1 = "Welcome back ";
+var valid2 = "; you are now logged in...";
+var valid;
 
+// on loading the page:
+var prevCookie = getCookie('nmh_id');
+if (prevCookie !== '') {
+    // don't bother to display registration stuff:
+    $('#logins').css('display','none');
+    valid = valid1 + prevCookie + valid2;
+    $('#loggedin').append(valid);
+    user_opts();
+}
 function validateUser(usr_name,usr_pass,setcookie) {
     $.ajax( {
         url: "admin/authenticate.php",
@@ -32,8 +44,7 @@ function validateUser(usr_name,usr_pass,setcookie) {
             clearInterval(ajaxTimer);
             ajaxDone = false;
             if (usr_type === 'qualified') {
-                var valid = 'Welcome back ' + $('#usrid').val() +
-                    "; you are now logged in...";
+                valid = valid1 + $('#userid').val() + valid2;
                 $('#loggedin').append(valid);
                 user_opts();
                 if (setcookie) {
@@ -123,6 +134,10 @@ $('#auxfrm').submit( function(ev) {
             }
         } else {  // cookies are enabled, now check for nmh_id:
             var username = getCookie("nmh_id");
+            /* NOTE: If the 'nmh_id' cookie is set, the user options
+             * display regardless of the username supplied on the form,
+             * and no password is required.
+             */
             if (username === "") {  // no cookie: validation is required...
                 validateUser(uid,upw,true);
                 $('#upass').val('');
