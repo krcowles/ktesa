@@ -334,21 +334,25 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         echo '<option value="r">Related Link</option>' . "\n";
         echo '<option value="n">Text Only - No Link</option>' . "\n";
         echo '</select><br />' . "\n";
+        $decrit1 = urldecode($ritem->rit1->__toString());
         if ($thisref === 'b' || $thisref === 'p') {
-            echo '<label style="text-indent:24px;">Title: </label><textarea style="height:20px;width:320px" name="rit1[]">' .
-                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;';
-            echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
-                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
-               '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
-                    $z . '"><br /><br />' . "\n";
+            echo '<label style="text-indent:24px;">Title: </label>'
+                . '<textarea style="height:20px;width:320px" name="rit1[]">' .
+                $decrit1 . '</textarea>&nbsp;&nbsp;';
+            echo '<label>Author: </label>' 
+                . '<textarea style="height:20px;width:320px" name="rit2[]">' .
+                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;'
+                . '<label>Delete: </label>' .
+                '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
+                $z . '"><br /><br />' . "\n";
         } elseif ($thisref === 'n') {
             echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
-                $ritem->rit1->__toString() . '</textarea><label>Delete: </label>' .
+                $decrit1 . '</textarea><label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
                 $z . '"><br /><br />' . "\n";
         } else {
             echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
-                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
+                $decrit1 . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
                 $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
                 $z . '"><br /><br />' . "\n";
