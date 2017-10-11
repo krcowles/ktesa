@@ -4457,8 +4457,113 @@
 	<wow>Great views</wow>
 	<seasons>All</seasons>
 	<expo>Full sun</expo>
+
 	<tsv>
 		<file>buckman.tsv</file>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>WP_20151203_11_44_35_Pro</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Brenda and Ken on the way up with snowy Sangres behind</desc>
+            <lat>35.8531325</lat>
+            <lng>-106.14713305556</lng>
+            <thumb>https://c1.staticflickr.com/5/4496/36926421634_b40d275cf7_n.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/30474783@N06/36926421634/in/album-72157686947574321</alblnk>
+            <date>2015:12:03 11:44:34</date>
+            <mid>https://c1.staticflickr.com/5/4496/36926421634_b40d275cf7_n.jpg</mid>
+            <imgHt/>
+            <imgWd/>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4496/36926421634_6bc5ac8ea3_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>WP_20151203_12_02_10_Pro</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Ken and Brenda atop Otowi</desc>
+            <lat>35.853979722222</lat>
+            <lng>-106.14761027778</lng>
+            <thumb>https://c1.staticflickr.com/5/4497/23783819818_23aa74c1d7_n.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/30474783@N06/23783819818/in/album-72157686947574321</alblnk>
+            <date>2015:12:03 12:02:10</date>
+            <mid>https://c1.staticflickr.com/5/4497/23783819818_23aa74c1d7_n.jpg</mid>
+            <imgHt/>
+            <imgWd/>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4497/23783819818_332a7b1816_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>WP_20151203_12_12_33_Pro</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Into the blowhole</desc>
+            <lat>35.853730555556</lat>
+            <lng>-106.1474375</lng>
+            <thumb>https://c1.staticflickr.com/5/4490/37378224880_a2a1651147_n.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/30474783@N06/37378224880/in/album-72157686947574321</alblnk>
+            <date>2015:12:03 12:12:32</date>
+            <mid>https://c1.staticflickr.com/5/4490/37378224880_a2a1651147_n.jpg</mid>
+            <imgHt/>
+            <imgWd/>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4490/37378224880_dfaed20e60_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>WP_20151203_12_53_15_Pro</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Brenda on the edge</desc>
+            <lat>35.849321666667</lat>
+            <lng>-106.14696194444</lng>
+            <thumb>https://c1.staticflickr.com/5/4483/37378237190_781b4371e1_n.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/30474783@N06/37378237190/in/album-72157686947574321</alblnk>
+            <date>2015:12:03 12:53:14</date>
+            <mid>https://c1.staticflickr.com/5/4483/37378237190_781b4371e1_n.jpg</mid>
+            <imgHt/>
+            <imgWd/>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4483/37378237190_d57517c6e3_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>IMG_20171008_132119</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>This is where the trail turns up out of the arroyo</desc>
+            <lat>35.838147222222</lat>
+            <lng>-106.14916388889</lng>
+            <thumb>https://c1.staticflickr.com/5/4471/36965641023_581625a981_n.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/30474783@N06/36965641023/in/album-72157686947574321</alblnk>
+            <date>2017:10:08 13:21:21</date>
+            <mid>https://c1.staticflickr.com/5/4471/36965641023_581625a981_n.jpg</mid>
+            <imgHt/>
+            <imgWd/>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4471/36965641023_f9d67a628c_o.jpg</org>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>IMG_20171008_140417</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Bill Diane Brenda on the cliff with Otowi</desc>
+            <lat>35.842841666667</lat>
+            <lng>-106.14905555556</lng>
+            <thumb>https://c1.staticflickr.com/5/4476/37587788956_ce3db47916_n.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/30474783@N06/37587788956/in/album-72157686947574321</alblnk>
+            <date>2017:10:08 14:04:18</date>
+            <mid>https://c1.staticflickr.com/5/4476/37587788956_ce3db47916_n.jpg</mid>
+            <imgHt/>
+            <imgWd/>
+            <iclr>pink</iclr>
+            <org>https://c1.staticflickr.com/5/4476/37587788956_1b6cafd333_o.jpg</org>
+        </picDat>
+
+
 	<picDat>
             <folder>Folder1</folder>
             <title>TomAndOtowi</title>
@@ -4467,7 +4572,7 @@
             <desc>Otowi Peak and Tom</desc>
             <lat>35.84243889</lat>
             <lng>-106.1494667</lng>
-            <thumb>https://c7.staticflickr.com/8/7191/27632884102_456153312b.jpg</thumb>
+            <thumb>https://c7.staticflickr.com/8/7191/27632884102_456153312b_m.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/27632884102/in/photostream/</alblnk>
             <date>2015:11:12 13:21:50</date>
             <mid>https://c7.staticflickr.com/8/7191/27632884102_456153312b_n.jpg</mid>
@@ -4486,7 +4591,7 @@
             <desc>Always a beautiful sight</desc>
             <lat>35.843075</lat>
             <lng>-106.14705</lng>
-            <thumb>https://c2.staticflickr.com/8/7652/27122969953_e78ae38ed3.jpg</thumb>
+            <thumb>https://c2.staticflickr.com/8/7652/27122969953_e78ae38ed3_m.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/27122969953/in/photostream/</alblnk>
             <date>2015:11:12 13:13:24</date>
             <mid>https://c2.staticflickr.com/8/7652/27122969953_e78ae38ed3_n.jpg</mid>
@@ -4505,7 +4610,7 @@
             <desc>Looking into the White Canyon</desc>
             <lat>35.84233889</lat>
             <lng>-106.1495972</lng>
-            <thumb>https://c7.staticflickr.com/8/7304/27632895342_c1e8592867.jpg</thumb>
+            <thumb>https://c7.staticflickr.com/8/7304/27632895342_c1e8592867_m.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/27632895342/in/photostream/</alblnk>
             <date>2015:11:12 13:20:49</date>
             <mid>https://c7.staticflickr.com/8/7304/27632895342_c1e8592867_n.jpg</mid>
@@ -4524,7 +4629,7 @@
             <desc>A preview of the climb</desc>
             <lat>35.83616667</lat>
             <lng>-106.1610028</lng>
-            <thumb>https://c1.staticflickr.com/8/7542/27699697656_f9fc411d0d.jpg</thumb>
+            <thumb>https://c1.staticflickr.com/8/7542/27699697656_f9fc411d0d_m.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/27699697656/in/photostream/</alblnk>
             <date>2015:11:12 11:09:18</date>
             <mid>https://c1.staticflickr.com/8/7542/27699697656_f9fc411d0d_n.jpg</mid>
@@ -4543,7 +4648,7 @@
             <desc>Where the hike ascends the mesa</desc>
             <lat>35.84141667</lat>
             <lng>-106.1491778</lng>
-            <thumb>https://c8.staticflickr.com/8/7345/27658923031_39f307681d.jpg</thumb>
+            <thumb>https://c8.staticflickr.com/8/7345/27658923031_39f307681d_m.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/27658923031/in/photostream/</alblnk>
             <date>2015:11:12 13:59:55</date>
             <mid>https://c8.staticflickr.com/8/7345/27658923031_39f307681d_n.jpg</mid>
@@ -4562,7 +4667,7 @@
             <desc>No trails but great views on the rim</desc>
             <lat>35.84940833</lat>
             <lng>-106.1471111</lng>
-            <thumb>https://c2.staticflickr.com/8/7054/27123003913_ecfdba0a25.jpg</thumb>
+            <thumb>https://c2.staticflickr.com/8/7054/27123003913_ecfdba0a25_m.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/27123003913/in/photostream/</alblnk>
             <date>2015:12:03 12:53:19</date>
             <mid>https://c2.staticflickr.com/8/7054/27123003913_ecfdba0a25_n.jpg</mid>
@@ -4581,7 +4686,7 @@
             <desc>Looking up from the deep arroyo</desc>
             <lat>35.83652222</lat>
             <lng>-106.1547083</lng>
-            <thumb>https://c5.staticflickr.com/8/7429/27632919732_be7cf76991.jpg</thumb>
+            <thumb>https://c5.staticflickr.com/8/7429/27632919732_be7cf76991_m.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/27632919732/in/photostream/</alblnk>
             <date>2015:11:12 11:29:00</date>
             <mid>https://c5.staticflickr.com/8/7429/27632919732_be7cf76991_n.jpg</mid>
@@ -4600,7 +4705,7 @@
 	<aoimg1/>
 	<aoimg2/>
 	<mpUrl>https://www.flickr.com/photos/139088815@N08/albums/72157669889980505</mpUrl>
-	<spUrl></spUrl>
+    <spUrl>https://www.flickr.com/photos/30474783@N06/sets/72157686947574321</spUrl>
 	<dirs>https://www.google.com/maps/place/35%C2%B050'09.0%22N+106%C2%B009'39.7%22W/@35.8352221,-106.1658229,15.5z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.835833!4d-106.161033</dirs>
 	<cgName>Buckman-Rio Grande Group</cgName>
 	
@@ -26753,3 +26858,4 @@ From Tree Spring, it is a short walk up to the juncture with Oso Corredor, and w
     <dataAct><act><albl>GPX:</albl><aurl>../gpx/Fletcher_Trail.GPX</aurl><acot>The Track</acot></act></dataAct>
 </row>
 </rows>
+
