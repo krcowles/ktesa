@@ -4449,10 +4449,10 @@
 	<marker>Cluster</marker>
 	<clusterStr/>
 	<clusGrp>I</clusGrp>
-	<logistics></logistics>
+	<logistics/>
 	<miles>5</miles>
 	<feet>1000</feet>
-	<difficulty></difficulty>
+	<difficulty/>
 	<facilities>None</facilities>
 	<wow>Great views</wow>
 	<seasons>All</seasons>
@@ -26858,4 +26858,3 @@ From Tree Spring, it is a short walk up to the juncture with Oso Corredor, and w
     <dataAct><act><albl>GPX:</albl><aurl>../gpx/Fletcher_Trail.GPX</aurl><acot>The Track</acot></act></dataAct>
 </row>
 </rows>
-
