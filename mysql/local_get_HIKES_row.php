@@ -1,5 +1,5 @@
 <?php
-require "local_mysql_connect.php";
+require_once "local_mysql_connect.php";
 $req = "SELECT * FROM " . $table . " WHERE indxNo = " . $hikeIndexNo;
 $result = mysqli_query($link,$req);
 if (!$result) {
@@ -11,11 +11,8 @@ if (!$result) {
     }
 }
 $row = mysqli_fetch_assoc($result);
-
-# Assign variables for hikePageTemplate.php
 $hikeTitle = $row['pgTitle'];
 $hikeLocale = $row['locale'];
-# Don't need 'marker', 'collection', 'cgroup', or 'cname'
 $hikeType = $row['logistics'];
 $hikeLength = $row['miles'] . " miles";
 $hikeElevation = $row['feet'] . " ft";
@@ -26,7 +23,6 @@ $hikeSeasons = $row['seasons'];
 $hikeExposure = $row['expo'];
 $gpxfile = $row['gpx'];
 $jsonFile = $row['trk'];
-# Don't need lat/lng
 if ($row['aoimg1'] == '') {
     $hikeAddonImg1 = '';
 } else {
@@ -64,8 +60,6 @@ if ($row['tsv'] == '') {
 } else {
     $hikeImages = unserialize($row['tsv']);
 }
-
-mysqli_free_result($row);
-mysqli_close($link);
+mysqli_free_result($result);
 ?>
 

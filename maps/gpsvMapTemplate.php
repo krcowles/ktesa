@@ -7,25 +7,18 @@
      *  2. Full-page map needs standalone link and assumes no prev. stored files:
      *      for this case: map_name="MapLink";
      */
+    $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
     $map = filter_input(INPUT_GET,'map_name');
     if ($map == 'MapLink') {
         /* 
          * This is a full-page map link: the following parameters need to be
          * established prior to 'including' the makeGpsv.php script:
+         *    - $hikeIndexNo (index no for SELECT in mysql database)
          *    - $hikeTitle  (hike name, placed in map)
          *    - $gpxPath    (gpx file path to create the map track)
          */
+        $hikeIndexNo = filter_input(INPUT_GET,'hno');
         $hikeTitle = filter_input(INPUT_GET,'hike');
-        $xmldat = simplexml_load_file('../data/database.xml');
-        if ($xmldat === false) {
-            die ("MAP TEMPLATE COULD NOT LOAD XML DATABASE");
-        }
-        foreach ($xmldat->row as $row) {
-            if ($hikeTitle == $row->pgTitle) {
-                $photos = $row->tsv;
-                break;
-            }
-        }
         $gpxPath = filter_input(INPUT_GET,'gpx');
         include '../php/makeGpsv.php';
         $lines = explode("\n",$html); # $html comes in as a string

@@ -3,7 +3,7 @@
  * REQUIRED INPUTS FOR THIS ROUTINE:  $dev will indicate whether running
  * this script locally (development mode) or remotely on the server.
  * The photo settings for the map will be selected from the mysql db
- * Otherwise $hikeIndexNo, $hikeTitle and $gpxPath should be defined.
+ * In any case $hikeIndexNo, $hikeTitle and $gpxPath should be defined.
  */
 
 # Function to calculate the distance between to lat/lng coordinates
@@ -41,17 +41,14 @@ function distance($lat1, $lon1, $lat2, $lon2) {
     return array ($miles,$rotation);
 }
 # END FUNCTION
-
 # Error message data
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
 $gpxmsg = $intro . 'Could not parse XML in gpx file: ';
-
 # Settings: (subject to change as project evolves)
 $noOfTrks = 1;  # for a single hike page, this is a reasonable constraint, but
 # perhaps other pages will need to set this value
 $tno = 1;
-   
 # Some titles may use quotations - provide for that case:
 $mapTitle = str_replace("'","\\'",$hikeTitle);
 $mapTitle = str_replace('"','\\"',$mapTitle);
@@ -144,14 +141,19 @@ $clon = $west + ($east - $west)/2;
  * Form the photo links from the mysql database:
  */
 if ($dev) {
-    include "local_mysql_connect.php";
+    require_once "../mysql/local_mysql_connect.php";
 } else {
-    include "000mysql_connect.php";
+    require_once "../mysql/000mysql_connect.php";
 }
 $query = "SELECT tsv FROM HIKES WHERE indxNo = " . $hikeIndexNo;
 $result = mysqli_query($link,$query);
 if (!$result) {
-    die ("Could not execute query to extract photo data: " . mysqli_error());
+    if (Ktesa_Dbug) {
+        dbug_print('makeGpsv.php: Failed to extract tsv data from SELECT ' . 
+                mysqli_error($link));
+    } else {
+        user_error_msg($rel_addr,3,0);
+    }
 }
 $row = mysqli_fetch_row($result);
 $photos = unserialize($row[0]);

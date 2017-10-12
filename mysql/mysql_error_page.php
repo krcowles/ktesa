@@ -32,7 +32,9 @@
             "server problem - try again later...",
             "The data for this hike could not be accessed.",
             "Your user data did not get entered: try again - if problem "
-            . "persists, we will look into it!"
+            . "persists, we will look into it!",
+            "The photo data for the map did not get retrieved - we will look " .
+            "into this issue"
         );
         $eno = intval(filter_input(INPUT_GET,'eno',FILTER_SANITIZE_NUMBER_INT));
         $ecd = filter_input(INPUT_GET,'ecd');

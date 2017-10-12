@@ -1,18 +1,4 @@
 <?php
-define('References','1');
-define('Proposed','2');
-define('Actual','3');
-define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false');
-define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
-define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
-$months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
-    "Sep","Oct","Nov","Dec");
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-if ($dev) {
-    $rel_addr = '../mysql/';
-} else {
-    $rel_addr = '../php/';
-}
 function makeHtmlList($type,$array) {
     if ($type === References) {
         $htmlout = '<ul id="refs">';
@@ -55,7 +41,7 @@ function makeHtmlList($type,$array) {
                 $htmlout .= $tag . '<a href="' . $decrit1 . '" target="_blank">' .
                     $refdata[2] . '</a></li>';
             }
-        } // end of foreach loop in references
+        } # end of foreach loop in references
         $htmlout .= '</ul>';
     } elseif ($type === Proposed) {
         $htmlout = '<p id="proptitle">- Proposed Hike Data</p> ' . "\n" .
@@ -74,8 +60,8 @@ function makeHtmlList($type,$array) {
         }
         $htmlout .= "</ul>\n";
     } else {
-        die ("Unknown argument in makeHtmlList, Hike " . 
-                $hikeIndexNo . ': ' . $type);
+        #die ("Unknown argument in makeHtmlList, Hike " . 
+        #        $hikeIndexNo . ': ' . $type);
     }  // end of if tagtype ifs
     return $htmlout;
 } 
@@ -91,13 +77,29 @@ function clean($tsvdat) {
     }
     return addslashes($curdat);   
 }
+ob_start();
+define('References','1');
+define('Proposed','2');
+define('Actual','3');
+define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false');
+define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
+define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
+$months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
+    "Sep","Oct","Nov","Dec");
+$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
+if ($dev) {
+    $rel_addr = '../mysql/';
+} else {
+    $rel_addr = '../php/';
+}
 $table = "HIKES";
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
 if ($dev) {
-    include "../mysql/local_get_HIKES_row.php";
+    require "../mysql/local_get_HIKES_row.php";
 } else {
-    include "../php/000mysql_get_HIKES_row.php";
+    require "../php/000mysql_get_HIKES_row.php";
 }
+ob_flush();
 if ($gpxfile == '') {
     $newstyle = false;
 } else {
@@ -205,7 +207,7 @@ if ($newstyle) {
     }
     $photos = $page->tsv;
     $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . 
-        '&gpx=' . $gpxPath;
+        '&gpx=' . $gpxPath . '&hno=' . $hikeIndexNo;
     include "../php/makeGpsv.php";
     fputs($mapHandle,$html);
     fclose($mapHandle);
