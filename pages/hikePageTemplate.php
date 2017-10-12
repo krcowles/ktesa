@@ -99,7 +99,6 @@ if ($dev) {
 } else {
     require "../php/000mysql_get_HIKES_row.php";
 }
-ob_flush();
 if ($gpxfile == '') {
     $newstyle = false;
 } else {
@@ -209,6 +208,7 @@ if ($newstyle) {
     $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . 
         '&gpx=' . $gpxPath . '&hno=' . $hikeIndexNo;
     include "../php/makeGpsv.php";
+    ob_flush();
     fputs($mapHandle,$html);
     fclose($mapHandle);
 }

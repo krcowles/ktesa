@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*
  * REQUIRED INPUTS FOR THIS ROUTINE:  $dev will indicate whether running
  * this script locally (development mode) or remotely on the server.
