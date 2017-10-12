@@ -65,19 +65,26 @@
                         id="exe" type="submit" value="Display Page">
                 </fieldset>
             </div>
-        </form>
+        </form><br />
         <form id="auxfrm" action="#">
-            <p id="logins"><em id="expOpt">Registered users can add (and edit)
-            their own hikes...</em><br />
-            User name: &nbsp;&nbsp;
-            <input id="usrid" type="text" size="20" name="nmhid" />&nbsp;&nbsp;
-            Your User Password:&nbsp;&nbsp;
-            <input id="upass" type="password" name="regkey" 
-                   size="12" maxlength="10" /><br />
-            <input id="sub2" type="submit" name="usrauth" value="Display Options" />
-            &nbsp;&nbsp;OR:&nbsp;&nbsp;<a href="admin/Registration.html" 
-                target="_blank">Sign me up!</a></p>
-            <p id="loggedin"></p>
+            <div id="logins"><em id="expOpt">
+                Registered users can add (and edit) their own hikes...</em><br />
+                User name: &nbsp;&nbsp;
+                <input id="usrid" type="text" size="20" name="nmhid" />&nbsp;&nbsp;
+                Your User Password:&nbsp;&nbsp;
+                <input id="upass" type="password" name="regkey" 
+                   size="12" maxlength="10" />
+            </div>
+            <p id="loggedin">
+                <input id="sub2" type="submit" name="usrauth" value="Display Options" />
+                <span id="reg">&nbsp;&nbsp;OR:&nbsp;&nbsp;
+                    <a href="admin/Registration.html" target="_blank">Sign me up!</a>
+                </span>
+            </p>
+            <p id="mover" style="display:none;">
+                [ Site Master Entry ]&nbsp;&nbsp;
+                <input id="mstrpass" type="password" name="mover" value="Master Key" />
+            </p>
         </form>
         <div id="regusrs">
             <button id="editor">Edit a Hike Page</button><br />

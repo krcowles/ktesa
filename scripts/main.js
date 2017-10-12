@@ -6,22 +6,34 @@ var ajaxDone = false;
 var valid1 = "Welcome back ";
 var valid2 = "; you are now logged in...";
 var valid;
+var valstat;
+var backdoor = false;
+
+// For cleaning, un-comment as needed:
+setCookie('nmh_mstr','',0);
+//setCookie('nmh_id','',0);
 
 // on loading the page:
-var prevCookie = getCookie('nmh_id');
-if (prevCookie !== '') {
-    // don't bother to display registration stuff:
+var mstrCookie = getCookie('nmh_mstr');
+if (mstrCookie !== "") {
     $('#logins').css('display','none');
-    valid = valid1 + prevCookie + valid2;
-    $('#loggedin').append(valid);
-    user_opts();
+    $('#loggedin').css('display','block');
+    $('#reg').css('display','none');
+    $('#mover').css('display','none');
+}
+var usrCookie = getCookie('nmh_id');
+if (usrCookie !== '') {
+    valid = valid1 + usrCookie + valid2;
+    $('#loggedin').prepend(valid);
+    usr_login_display();
 }
 function validateUser(usr_name,usr_pass,setcookie) {
     $.ajax( {
         url: "admin/authenticate.php",
         data: {'nmhid': usr_name, 'nmpass': usr_pass},
         success: function(srchResults) {
-            console.log(srchResults);
+            valstat = true;
+            //console.log(srchResults);
             var srchStr = srchResults;
             if (srchStr.indexOf('LOCATED') >= 0) {
                 usr_type = 'qualified';
@@ -30,11 +42,15 @@ function validateUser(usr_name,usr_pass,setcookie) {
                     "your registered password;\nPlease try again";
                 alert(msg);
                 $('#upass').val('');
+                valstat = false;
             } 
             else {
                 var msg = "Your registration info cannot be located:\n" +
                     "Please click on the 'Sign me up!' link to register";
                 alert(msg);
+                $('#usrid').val('');
+                $('#upass').val('');
+                valstat = false;
             }
             ajaxDone = true;
         }
@@ -44,9 +60,9 @@ function validateUser(usr_name,usr_pass,setcookie) {
             clearInterval(ajaxTimer);
             ajaxDone = false;
             if (usr_type === 'qualified') {
-                valid = valid1 + $('#userid').val() + valid2;
-                $('#loggedin').append(valid);
-                user_opts();
+                valid = valid1 + $('#usrid').val() + valid2;
+                $('#loggedin').prepend(valid);
+                usr_login_display();
                 if (setcookie) {
                     setCookie('nmh_id',usr_name,365);
                 }
@@ -54,9 +70,14 @@ function validateUser(usr_name,usr_pass,setcookie) {
         }
     }, 100);
 }
-function user_opts() {
+function usr_login_display() {
+    $('#logins').css('display','none');
+    $('#reg').css('display','none');
+    $('#mover').css('display','block');
+    backdoor = true;
+}
+function display_usr_opts() { 
     $('#regusrs').css('display','block');
-    $('#masters').css('display','none');
     $('#creator').on('click', function() {
         var createUrl = 'build/newHike.php';
         window.open(createUrl, target="_blank");
@@ -96,9 +117,14 @@ function getCookie(ckname) {
 $('#auxfrm').submit( function(ev) {
     ev.preventDefault();
     // master key requires no entry of user name:
-    if ( $('#upass').val() === '000ktesa9') {  // master key displays all
+    if ( ($('#upass').val() === '000ktesa9') || 
+            (mstrCookie !== '') || $('#mstrpass').val() === '000ktesa9' ) {  // master key displays all
         $('#regusrs').css('display','none');
         $('#masters').css('display','block');
+        $('#logins').css('display','none');
+        $('#reg').css('display','none');
+        $('#loggedin').css('display','none');
+        $('#mover').css('display','none');
         $('#mstrcreate').on('click', function() {
             var createUrl = 'build/newHike.php';
             window.open(createUrl, target="_blank");
@@ -116,9 +142,17 @@ $('#auxfrm').submit( function(ev) {
             window.open(admintools,"_blank");
         });
         $('.hide').on('click', function() {
-            $("input[type='password']").val('');
+            $('#loggedin').css('display','block');
+            $('#reg').css('display','none');
             $('#masters').css('display','none');
+            if (backdoor) {
+                $('#mover').css('display','block');
+            }
         });
+        if (mstrCookie == '') {
+            setCookie('nmh_mstr','ktesa',365);
+            setCookie('nmh_id','',0); // one user at a time
+        }
     } else {  // not master key
         var uid = $('#usrid').val();
         var upw = $('#upass').val();
@@ -140,14 +174,16 @@ $('#auxfrm').submit( function(ev) {
              */
             if (username === "") {  // no cookie: validation is required...
                 validateUser(uid,upw,true);
-                $('#upass').val('');
+                if (valstat) {
+                    $('#upass').val('');
+                    usr_login_display();
+                } 
             } else {  // valid cookie present: proceed
-                user_opts();
-                // delete cookie during test phase
-                // setCookie('nmh_id','',0);
+                display_usr_opts();
             }
         }
     } // end of else not master key
 });
+
 
 }); // end of page-loading wait statement
