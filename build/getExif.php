@@ -61,9 +61,9 @@ for ($k=$kstart; $k<$pcnt; $k++) {
 		$imgName = substr($exifdata["FileName"],0,$ext);
 		$imgs[$k] = $imgName;
 
-		$imgHt[$k] = $exifdata["Height"];
-		$imgWd[$k] = $exifdata["Width"];
-
+		$imgHt[$k] = $exifdata["ExifImageLength"];
+		$imgWd[$k] = $exifdata["ExifImageWidth"];
+                echo " --Parms:" . $imgHt[$k] . "," . $imgWd[$k];
 		$timeStamp[$k] = $exifdata["DateTimeOriginal"];
 		if ($timeStamp[$k] == '') {
 			echo "WARNING: No date/time data found " . 'for ' . $orgPhoto . '</p>';
