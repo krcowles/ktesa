@@ -63,7 +63,7 @@ for ($k=$kstart; $k<$pcnt; $k++) {
 
 		$imgHt[$k] = $exifdata["ExifImageLength"];
 		$imgWd[$k] = $exifdata["ExifImageWidth"];
-                echo " --Parms:" . $imgHt[$k] . "," . $imgWd[$k];
+                
 		$timeStamp[$k] = $exifdata["DateTimeOriginal"];
 		if ($timeStamp[$k] == '') {
 			echo "WARNING: No date/time data found " . 'for ' . $orgPhoto . '</p>';
