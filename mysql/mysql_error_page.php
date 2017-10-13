@@ -34,7 +34,8 @@
             "Your user data did not get entered: try again - if problem "
             . "persists, we will look into it!",
             "The photo data for the map did not get retrieved - we will look " .
-            "into this issue"
+            "into this issue",
+            "Could not process the table to add a row: we'll look into this"
         );
         $eno = intval(filter_input(INPUT_GET,'eno',FILTER_SANITIZE_NUMBER_INT));
         $ecd = filter_input(INPUT_GET,'ecd');

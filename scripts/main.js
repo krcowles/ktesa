@@ -10,7 +10,7 @@ var valstat;
 var backdoor = false;
 
 // For cleaning, un-comment as needed:
-setCookie('nmh_mstr','',0);
+//setCookie('nmh_mstr','',0);
 //setCookie('nmh_id','',0);
 
 // on loading the page:

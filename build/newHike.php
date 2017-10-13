@@ -1,3 +1,57 @@
+<?php
+$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
+if ($dev) {
+    $rel_addr = '../mysql/';
+    require_once "../mysql/local_mysql_connect.php";
+} else {
+    $rel_addr = '../php/';
+    require_once "../php/000mysql_connect.php";
+}
+$titles = <<<MYSQL_QUERY
+DROP PROCEDURE IF EXISTS GET_TITLES;
+DELIMITER ;;
+        
+CREATE PROCEDURE GET_TITLES()
+BEGIN
+DECLARE n BIGINT DEFAULT 0;
+DECLARE i BIGINT DEFAULT 0;
+DECLARE pt VARCHAR(30);
+SELECT COUNT(*) FROM HIKES INTO n;
+SET i=0;
+WHILE i<n DO 
+  SELECT pgTitle from HIKES into pt;
+  SET i = i + 1;
+END WHILE;
+End;
+;;  
+    
+DELIMITER ;
+        
+CALL GET_TITLES(OUT pt VARCHAR(30));
+MYSQL_QUERY;
+$loop_query = mysqli_query($link,$titles);
+if (!$loop_query) {
+    echo "OUCH";
+}
+while ( $pgTitle = mysqli_fetch_row($loop_query) ) {
+    echo "  -" . $pgTitle[0];
+}
+die ("YAP");
+$query = "SELECT indxNo, pgTitle FROM HIKES ORDER BY indxNo DESC LIMIT 1;";
+$result = mysqli_query($link,$query);
+if (!$result) {
+    if (Ktesa_Dbug) {
+        dbug_print('newHikes.php: Failed to get last row of table ' . 
+                mysqli_error($link));
+    } else {
+        user_error_msg($rel_addr,4,0);
+    }
+}
+$row = mysqli_fetch_assoc($result);
+echo "Last id is :" . $row['indxNo'] . "," . $row['pgTitle'];
+die ("OK");
+?>
+
 <!DOCTYPE html>
 <html lang="en-us">
     <head>
