@@ -4449,13 +4449,13 @@
 	<marker>Cluster</marker>
 	<clusterStr/>
 	<clusGrp>I</clusGrp>
-	<logistics/>
-	<miles>5</miles>
-	<feet>1000</feet>
-	<difficulty/>
-	<facilities>None</facilities>
+	<logistics>Out-and-back</logistics>
+	<miles>5.5</miles>
+	<feet>1100</feet>
+	<difficulty>Moderate</difficulty>
+	<facilities>Restrooms</facilities>
 	<wow>Great views</wow>
-	<seasons>All</seasons>
+	<seasons>Not Summer</seasons>
 	<expo>Full sun</expo>
 	<tsv>
 		<file>buckman.tsv</file>
@@ -4502,7 +4502,7 @@
             <title>IMG_20171008_132119</title>
             <hpg>Y</hpg>
             <mpg>Y</mpg>
-            <desc>This is where the trail turns up out of the arroyo</desc>
+            <desc>Where the trail turns up out of the arroyo</desc>
             <lat>35.838147222222</lat>
             <lng>-106.14916388889</lng>
             <thumb>https://c1.staticflickr.com/5/4471/36965641023_581625a981_n.jpg</thumb>
@@ -4511,7 +4511,7 @@
             <mid>https://c1.staticflickr.com/5/4471/36965641023_581625a981_n.jpg</mid>
             <imgHt>179</imgHt>
             <imgWd>320</imgWd>
-            <iclr>pink</iclr>
+            <iclr>orange</iclr>
             <org>https://c1.staticflickr.com/5/4471/36965641023_f9d67a628c_o.jpg</org>
         </picDat>
         <picDat>
@@ -4538,7 +4538,7 @@
             <title>IMG_20171008_140417</title>
             <hpg>Y</hpg>
             <mpg>Y</mpg>
-            <desc>Bill Diane Brenda on the cliff with Otowi</desc>
+            <desc>Bill Diane Brenda on the cliff with Otowi in the background</desc>
             <lat>35.842841666667</lat>
             <lng>-106.14905555556</lng>
             <thumb>https://c1.staticflickr.com/5/4476/37587788956_ce3db47916_n.jpg</thumb>
@@ -4547,7 +4547,7 @@
             <mid>https://c1.staticflickr.com/5/4476/37587788956_ce3db47916_n.jpg</mid>
             <imgHt>179</imgHt>
             <imgWd>320</imgWd>
-            <iclr>pink</iclr>
+            <iclr>orange</iclr>
             <org>https://c1.staticflickr.com/5/4476/37587788956_1b6cafd333_o.jpg</org>
         </picDat>
 	<picDat>
@@ -4621,13 +4621,13 @@
             <mid>https://c1.staticflickr.com/5/4483/37378237190_781b4371e1_n.jpg</mid>
             <imgHt>179</imgHt>
             <imgWd>320</imgWd>
-            <iclr>pink</iclr>
+            <iclr>orange</iclr>
             <org>https://c1.staticflickr.com/5/4483/37378237190_d57517c6e3_o.jpg</org>
         </picDat>
         <picDat>
             <folder>Folder1</folder>
             <title>MesaEdge</title>
-            <hpg>Y</hpg>
+            <hpg>N</hpg>
             <mpg>Y</mpg>
             <desc>No trails but great views on the rim</desc>
             <lat>35.84940833</lat>
@@ -4648,7 +4648,7 @@
             <title>WP_20151203_11_44_35_Pro</title>
             <hpg>Y</hpg>
             <mpg>Y</mpg>
-            <desc>Brenda and Ken on the way up with snowy Sangres behind</desc>
+            <desc>Brenda and Ken on the final ascent to Otowi with snowy Sangres behind</desc>
             <lat>35.8531325</lat>
             <lng>-106.14713305556</lng>
             <thumb>https://c1.staticflickr.com/5/4496/36926421634_b40d275cf7_n.jpg</thumb>
@@ -4657,7 +4657,7 @@
             <mid>https://c1.staticflickr.com/5/4496/36926421634_b40d275cf7_n.jpg</mid>
             <imgHt>179</imgHt>
             <imgWd>320</imgWd>
-            <iclr>pink</iclr>
+            <iclr>orange</iclr>
             <org>https://c1.staticflickr.com/5/4496/36926421634_6bc5ac8ea3_o.jpg</org>
         </picDat>
         <picDat>
@@ -4674,7 +4674,7 @@
             <mid>https://c1.staticflickr.com/5/4497/23783819818_23aa74c1d7_n.jpg</mid>
             <imgHt>179</imgHt>
             <imgWd>320</imgWd>
-            <iclr>pink</iclr>
+            <iclr>orange</iclr>
             <org>https://c1.staticflickr.com/5/4497/23783819818_332a7b1816_o.jpg</org>
         </picDat>
         <picDat>
@@ -4691,7 +4691,7 @@
             <mid>https://c1.staticflickr.com/5/4490/37378224880_a2a1651147_n.jpg</mid>
             <imgHt>320</imgHt>
             <imgWd>179</imgWd>
-            <iclr>pink</iclr>
+            <iclr>orange</iclr>
             <org>https://c1.staticflickr.com/5/4490/37378224880_dfaed20e60_o.jpg</org>
         </picDat>
         </tsv>
