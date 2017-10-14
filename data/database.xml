@@ -26907,6 +26907,44 @@ From Tree Spring, it is a short walk up to the juncture with Oso Corredor, and w
         </picDat>
         <picDat>
             <folder>Folder1</folder>
+            <title>EndpointView</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>A view from the Diablo Dropoff</desc>
+            <lat>35.8055472222222</lat>
+            <lng>-106.156722222222</lng>
+            <thumb>https://c2.staticflickr.com/6/5771/31337819425_054598a4fd_m.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/31337819425/in/album-72157673267506444</alblnk>
+            <date>2016:11:29 13:03:37</date>
+            <mid>https://c2.staticflickr.com/6/5771/31337819425_054598a4fd_n.jpg</mid>
+            <symbol/>
+            <icon_size/>
+            <iclr>orange</iclr>
+            <imgHt>181</imgHt>
+            <imgWd>320</imgWd>
+            <org/>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
+            <title>DropToDiablo</title>
+            <hpg>Y</hpg>
+            <mpg>Y</mpg>
+            <desc>Is there a way down to Diablo?</desc>
+            <lat>35.8058583333333</lat>
+            <lng>-106.156730555556</lng>
+            <thumb>https://c1.staticflickr.com/6/5638/30969055320_4e3f9b1ca3_m.jpg</thumb>
+            <alblnk>https://www.flickr.com/photos/139088815@N08/30969055320/in/album-72157673267506444</alblnk>
+            <date>2016:11:29 13:00:16</date>
+            <mid>https://c1.staticflickr.com/6/5638/30969055320_4e3f9b1ca3_n.jpg</mid>
+            <symbol/>
+            <icon_size/>
+            <iclr>orange</iclr>
+            <imgHt>320</imgHt>
+            <imgWd>240</imgWd>
+            <org/>
+        </picDat>
+        <picDat>
+            <folder>Folder1</folder>
             <title>IMG_20171010_112224</title>
             <hpg>N</hpg>
             <mpg>N</mpg>
@@ -26967,16 +27005,40 @@ From Tree Spring, it is a short walk up to the juncture with Oso Corredor, and w
     <spUrl></spUrl>
     <dirs>https://www.google.com/maps/place/35%C2%B048'52.0%22N+106%C2%B008'59.9%22W/@35.7899439,-106.1561384,13z?authuser=0&amp;hl=en-US</dirs>
     <cgName>Diablo Canyon Group</cgName>
-    <tipsTxt></tipsTxt>
-    <hikeInfo>Enter the description of the hike here, as it will appear on the completed hike page...        </hikeInfo>
+    <tipsTxt>
+    The parking spot shown shortens the walk to the start of the trail up the mesa. An alternative is to park in the Diablo Canyon lot and enjoy the slightly longer hike through Diablo Canyon itself. Regardless, use the map and gpx file and follow the cairns to find your way up to the mesa top. Some scrambling is required. Then loop south across the mesa for a somewhat challenging descent down a side canyon. The first part of the descent requires about 20 feet of climbing down a sort of rock ladder. After that it's mainly scrambling down bolders and avoiding any muddy spots. Note that either the up or down route could be used to close the loop on the Sagebrush Flats hike (see reference below).
+    </tipsTxt>
+	<hikeInfo>Spectacular views of Diablo Canyon's cliffs and surroundings from the top of the mesas that make up the canyon's west wall. Also 360 views that include the Rio Grande and the Jemez and Sangre de Cristo Mountain ranges. Part of the route up follows what seems to be an old wagon road. See the Old Gate picture below.
+    </hikeInfo>
     <refs>
-        <ref>
-            <rtype>n</rtype>
-            <rit1>No+References+Found</rit1>
-            <rit2/>
-        </ref>
+		<ref>
+			<rtype>w</rtype>
+			<rit1>http://www.blm.gov/nm/st/en/prog/recreation/taos/diablo_canyon_recreation.html</rit1>
+			<rit2>BLM: Diablo Canyon Recreation Area</rit2>
+		</ref>
+		<ref>
+			<rtype>w</rtype>
+			<rit1>https://en.wikipedia.org/wiki/Caja_del_Rio</rit1>
+			<rit2>Wikipedia</rit2>
+		</ref>
+		<ref>
+			<rtype>w</rtype>
+			<rit1>../pages/hikePageTemplate.php?hikeIndx=30</rit1>
+			<rit2>Sagebrush Flats Hike Page</rit2>
+		</ref>
     </refs>
     <dataProp/>
-    <dataAct/>
+    <dataAct>
+		<act>
+			<albl>GPX:</albl>
+			<aurl>../gpx/DiabloWestMesa.gpx</aurl>
+			<acot>Actual hike GPX file</acot>
+		</act>
+		<act>
+			<albl>Related Hike:</albl>
+			<aurl>../pages/hikePageTemplate.php?hikeIndx=30</aurl>
+			<acot>Sagebrush Flats Hike Page</acot>
+		</act>
+	</dataAct>
 </row>
 </rows>
