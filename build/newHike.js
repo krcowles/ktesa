@@ -1,12 +1,22 @@
 $( function() {  // wait until document is loaded...
    
-$('#newname').change(function() {
+function checkName(name) {
     for (var i=0; i<hnames.length; i++) {
-        if (hnames[i] == $(this).val()) {
+        if (hnames[i] == name) {
             alert("Name exists - try another");
-            break;
+            $('#newname').val('');
+            return true;
         }
     }
-}); 
+    return false;
+}
+$('#newbie').submit( function(ev) {
+    if (checkName($('#newname').val()) ) {
+        ev.preventDefault();
+    }
+});
+$('#newname').change( function() {
+    checkName($(this).val()) 
+});
 
 });

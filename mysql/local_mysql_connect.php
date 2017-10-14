@@ -1,5 +1,5 @@
 <?php
-DEFINE("KTESA_DBUG", false,true);
+DEFINE("KTESA_DBUG", true,true);
 DEFINE("HOSTNAME", "127.0.0.1", true);
 DEFINE("USERNAME", "root", true);
 DEFINE("PASSWORD", "root", true);
@@ -8,7 +8,7 @@ $link = mysqli_connect(HostName, UserName, PASSWORD, Database);
 if (!$link) {
     $ecode = mysqli_connect_errno();
     if (Ktesa_Dbug) {
-        dbug_print("Could not connect to database - error number: " . $ecode);
+        dbug_print("connect.php: Could not connect to database - error number: " . $ecode);
     } else {
         user_error_msg($rel_addr,0,$ecode);
     }

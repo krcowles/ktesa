@@ -4,7 +4,7 @@ $req = "SELECT * FROM " . $table . " WHERE indxNo = " . $hikeIndexNo;
 $result = mysqli_query($link,$req);
 if (!$result) {
     if (Ktesa_Dbug) {
-        dbug_print('Failed to execute SELECT in get_HIKES_row: ' . 
+        dbug_print('get_HIKES_row: Failed to execute SELECT in get_HIKES_row: ' . 
                 mysqli_error($link));
     } else {
         user_error_msg($rel_addr,1,0);
