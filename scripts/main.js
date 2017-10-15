@@ -9,13 +9,22 @@ var valid;
 var valstat;
 var backdoor = false;
 
-// For cleaning, un-comment as needed:
+// URL targets: [registered user]
+var editNew = 'build/enterHike.php?usr=';
+var editMy = 'build/hikeEditor.php?usr=';
+var createUrl = 'build/newHike.php';
+// URL targets" [site master]
+var mstrEdit = 'build/hikeEditor.php?usr=mstr';
+var mstrIndx = 'build/indexEditor.php';
+var adminUrl = 'admin/admintools.php';
+// For testing, un-comment as needed:
 //setCookie('nmh_mstr','',0);
 //setCookie('nmh_id','',0);
 
 // on loading the page:
 var mstrCookie = getCookie('nmh_mstr');
 if (mstrCookie !== "") {
+    usr_type = 'mstr'
     $('#logins').css('display','none');
     $('#loggedin').css('display','block');
     $('#reg').css('display','none');
@@ -23,6 +32,7 @@ if (mstrCookie !== "") {
 }
 var usrCookie = getCookie('nmh_id');
 if (usrCookie !== '') {
+    usr_type = usrCookie;
     valid = valid1 + usrCookie + valid2;
     $('#loggedin').prepend(valid);
     usr_login_display();
@@ -78,13 +88,14 @@ function usr_login_display() {
 }
 function display_usr_opts() { 
     $('#regusrs').css('display','block');
-    $('#creator').on('click', function() {
-        var createUrl = 'build/newHike.php';
-        window.open(createUrl, target="_blank");
+    $('#unpub').on('click', function() {  
+        window.open(editNew + usr_type, target="_blank");
     });
-    $('#editor').on('click', function() {
-        var editUrl = 'build/hikeEditor.php';
-        window.open(editUrl, target="_blank");
+    $('#pub').on('click', function() {
+        window.open(editMy + usr_type, target="_blank");
+    });
+    $('#creator').on('click', function() {
+        window.open(createUrl, target="_blank");
     });
     $('.hide').on('click', function() {
         $("input[type='password']").val('');
@@ -125,18 +136,18 @@ $('#auxfrm').submit( function(ev) {
         $('#reg').css('display','none');
         $('#loggedin').css('display','none');
         $('#mover').css('display','none');
-        $('#mstrcreate').on('click', function() {
-            var createUrl = 'build/newHike.php';
-            window.open(createUrl, target="_blank");
+        $('#mstrnew').on('click', function() {
+            window.open(editNew + mstr, target="_blank");
         });
-        $('#mstredit').on('click', function() {
-            var editUrl = 'build/hikeEditor.php';
-            window.open(editUrl, target="_blank");
+        $('#mstold').on('click', function() {
+            window.open(mstrEdit, target="_blank");
         });
         $('#indxpg').on('click', function() {
-            var indxurl = 'build/indexEditor.php';
-            window.open(indxurl, target="_blank");
+            window.open(mstrIndx, target="_blank");
         });  
+        $('#mstrcreate').on('click', function() {
+            window.open(createUrl, target="_blank");
+        });
         $('#admin').on('click', function() {
             var admintools = 'admin/admintools.php';
             window.open(admintools,"_blank");

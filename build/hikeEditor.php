@@ -1,3 +1,6 @@
+<?php
+$etype = filter_input(INPUT_GET,'usr');
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>

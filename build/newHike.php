@@ -77,6 +77,7 @@ $tlist = explode("^",$row[0]);
 array_shift($tlist);
 # convert to javascript array:
 $hnames = json_encode($tlist);
+mysqli_free_result($result);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -86,7 +87,6 @@ $hnames = json_encode($tlist);
         <link href="newHike.css" type="text/css" rel="stylesheet" />
     </head>
     <body>
-
         <div id="logo">
             <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
             <p id="logo_left">Hike New Mexico</p>	

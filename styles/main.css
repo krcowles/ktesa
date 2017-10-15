@@ -76,33 +76,19 @@ legend {
 #sub2 {
     font-size: 16px;
 }
+button {
+    color: DarkBlue;
+    font-size: 16px; }
 #expOpt {
     color: DarkGreen;
     font-size: 18px;
 }
-#editor {
-    color: DarkBlue;
-    font-size: 16px; }
-#creator {
-    color: DarkBlue;
-    font-size: 16px; }
-#mstrcreate {
-    color: DarkBlue;
-    font-size: 16px;
+#usreds {
+    width: 330px;
 }
-#mstredit {
-    color: DarkBlue;
-    font-size: 16px;
+#mstreds {
+    width: 440px;
 }
-#indxpg {
-    color: DarkBlue;
-    font-size: 16px; }
-#admin {
-    color: DarkBlue;
-    font-size: 16px; }
-.hide {
-    color: DarkBlue;
-    font-size: 16px; }
 .hilites {
     font-size: 18px;
     font-style: italic;
