@@ -111,7 +111,7 @@
                 # No Changes Assigned to marker, clusGrp, cgName
             }
             $hType = filter_input(INPUT_POST,'htype');
-            $hikeLine->logistics = $htype;
+            $hikeLine->logistics = $hType;
             $hLgth = filter_input(INPUT_POST,'hlgth');
             $hikeLine->miles = $hLgth;
             $hElev = filter_input(INPUT_POST,'helev');
