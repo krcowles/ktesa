@@ -10,11 +10,11 @@ var valstat;
 var backdoor = false;
 
 // URL targets: [registered user]
-var editNew = 'build/enterHike.php?usr=';
+var editNew = 'build/hikeEditor.php?age=new&usr=';
 var editMy = 'build/hikeEditor.php?usr=';
 var createUrl = 'build/newHike.php';
 // URL targets" [site master]
-var mstrEdit = 'build/hikeEditor.php?usr=mstr';
+var mstrEdit = 'build/hikeEditor.php?age=old&usr=mstr';
 var mstrIndx = 'build/indexEditor.php';
 var adminUrl = 'admin/admintools.php';
 // For testing, un-comment as needed:
@@ -88,7 +88,7 @@ function usr_login_display() {
 }
 function display_usr_opts() { 
     $('#regusrs').css('display','block');
-    $('#unpub').on('click', function() {  
+    $('#unpub').on('click', function() {;
         window.open(editNew + usr_type, target="_blank");
     });
     $('#pub').on('click', function() {
@@ -137,12 +137,12 @@ $('#auxfrm').submit( function(ev) {
         $('#loggedin').css('display','none');
         $('#mover').css('display','none');
         $('#mstrnew').on('click', function() {
-            window.open(editNew + mstr, target="_blank");
+            window.open(editNew + 'mstr', target="_blank");
         });
-        $('#mstold').on('click', function() {
+        $('#mstrold').on('click', function() {
             window.open(mstrEdit, target="_blank");
         });
-        $('#indxpg').on('click', function() {
+        $('#mstrindx').on('click', function() {
             window.open(mstrIndx, target="_blank");
         });  
         $('#mstrcreate').on('click', function() {

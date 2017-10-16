@@ -43,13 +43,14 @@
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the HIKES table in the 'mysql' database...</p>
 <?php
-    include 'local_mysql_connect.php';   # returns $link as connection
+    require '../mysql/local_mysql_connect.php';   # returns $link as connection
     echo "<p>mySql Connection Opened</p>";
 
     # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
     $tbl = mysqli_query( $link,"CREATE TABLE HIKES (
         indxNo smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
         pgTitle varchar(30) NOT NULL,
+        usrid varchar(32) NOT NULL,
         locale varchar(20),
         marker varchar(11),
         collection varchar(15),

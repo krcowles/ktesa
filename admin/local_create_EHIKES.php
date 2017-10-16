@@ -43,7 +43,7 @@
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the USERS table for site administration.</p>
 <?php
-    include 'local_mysql_connect.php';   # returns $link as connection
+    include '../mysql/local_mysql_connect.php';   # returns $link as connection
     echo "<p>mySql Connection Opened</p>";
 
     # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY

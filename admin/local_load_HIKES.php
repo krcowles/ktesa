@@ -40,7 +40,7 @@
     $maxtsv = 0;
     $maxtbl = 0;
     
-    require "local_mysql_connect.php";
+    require "../mysql/local_mysql_connect.php";
     echo "<p>mySql Connection Opened.</p>";
 
     foreach ($db->row as $row) {
@@ -295,7 +295,7 @@
             }
         }
         $SQL_query = "INSERT INTO HIKES " .
-            "( pgTitle,locale,marker," .
+            "( pgTitle,usrid,locale,marker," .
             "collection,cgroup,cname," .
             "logistics,miles,feet," .
             "diff,fac,wow," .
@@ -305,7 +305,7 @@
             "purl2,dirs,tips," .
             "info,refs,props," .
             "acts,tsv  ) " .
-            "VALUES ( '{$htitle}','{$hloc}','{$marker}'," .
+            "VALUES ( '{$htitle}','mstr','{$hloc}','{$marker}'," .
             "'{$coll}','{$clus}','{$grpName}'," .
             "'{$log}','{$dist}','{$elev}'," .
             "'{$diff}','{$facil}','{$wow}'," .

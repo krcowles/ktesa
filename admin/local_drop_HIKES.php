@@ -26,24 +26,23 @@
 
 <?php
 # Error messages:
-$drop_fail = "<p>Could not delete tbl 'HIKES': " . mysqli_error($link) . "</p>";
-$query_fail = "<p>Query did not succeed: SHOW TABLES</p>";
+$drop_fail = "Could not delete tbl 'HIKES': ";
+$query_fail = "SHOW TABLES did not succeed: ";
 
 # Connect:
-include 'local_mysql_connect.php';
+require '../mysql/local_mysql_connect.php';
 
 # Execute the DROP TABLE command:
 echo "<p>Removing any previous instantiation of table 'HIKES':</p>";
 $remtbl = mysqli_query($link,"DROP TABLE HIKES;");
 if (!remtbl) {
-    die ($drop_fail);
+    die ($drop_fail . mysqli_error($link));
 } else {
     echo "<p>HIKES Table Removed; Remaining tables in mysql database:</p>";
 }
-
-$req = mysqli_query($link,"SHOW TABLES");
+$req = mysqli_query($link,"SHOW TABLES;");
 if (!$req) {
-    die ($query_fail);
+    die ($query_fail . mysqli_error($link));
 }
 echo "<ul>\n";
 while ($row = mysqli_fetch_row($req)) {
