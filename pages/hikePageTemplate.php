@@ -160,7 +160,6 @@ if (is_array($hikeAddonImg1)) {
     array_push($aspects,$imgRatio);  
 }
 if (is_array($hikeAddonImg2)) {
-    echo "Think #2 is real..." . $hikeAddonImg2;
     $aoimg2 = '../images/' . $hikeAddonImg2[0];
     array_push($descs,$hikeAddonImg2[0]);
     array_push($alblnks,'');

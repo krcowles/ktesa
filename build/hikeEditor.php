@@ -1,11 +1,17 @@
 <?php
 $usr = filter_input(INPUT_GET,'usr');
 $age = filter_input(INPUT_GET,'age');
+$show = filter_input(INPUT_GET,'show');
+if ($show === 'inx') {
+    $tab = 'Select Index Page to Edit';
+} else {
+    $tab = 'Select Hike to Edit';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>Select Hike To Edit</title>
+    <title><?php echo $tab;?></title>
     <meta charset="utf-8" />
     <meta name="description"
             content="Select hike to edit from table" />
@@ -25,7 +31,7 @@ $age = filter_input(INPUT_GET,'age');
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Select The Hike You Wish To Edit</p>
+<p id="trail"><?php echo $tab;?></p>
 
 <div><p style="text-align:center;">When you click on the "Web Pg" link in the table
     below, you will be presented with an editable version of the hike page.</p>

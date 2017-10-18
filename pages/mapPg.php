@@ -31,13 +31,13 @@ if($tblVar === "T" || $tblVar === "D") {
     if ($tblVar === 'D') {
         $pgDivStrt .= '<div id="map"></div>';
     }
-    $pgDivStrt .= '<p id="dbug"></p>
-    <div id="refTbl">';
+    $pgDivStrt .= '<p id="dbug"></p>' . PHP_EOL . '<div id="refTbl">';
     $pgDivEnd = '</div>';  // end of refTbl
     if ($tblVar === 'D') {
             $pgDivEnd .= '<div id="usrTbl"></div>';
     }
-    $pgDivEnd .= '<div style="margin-top:20px;"><p id="metric" class="dressing">Click here for metric units</p></div>';
+    $pgDivEnd .= '<div style="margin-top:20px;"><p id="metric" ' .
+            'class="dressing">Click here for metric units</p></div>';
 } else {
     $tbls = false;
     /* The full page map also needs a reference table (invisible) from which to derive
@@ -91,6 +91,9 @@ if ($tblVar !== 'T') {
     echo '<div id="newHikeBox">New Hike!<br><em id="winner"></em></div>';
 }
 echo $pgDivStrt;
+$usr = 'mstr';
+$age = 'old';
+$show = 'all';
 require "../php/TblConstructor.php";
 echo $pgDivEnd;
 ?>

@@ -11,11 +11,11 @@ var backdoor = false;
 
 // URL targets: [registered user]
 var editNew = 'build/hikeEditor.php?age=new&usr=';
-var editMy = 'build/hikeEditor.php?usr=';
+var editMy = 'build/hikeEditor.php?age=old&usr=';
 var createUrl = 'build/newHike.php';
 // URL targets" [site master]
-var mstrEdit = 'build/hikeEditor.php?age=old&usr=mstr';
-var mstrIndx = 'build/indexEditor.php';
+var mstrEdit = 'build/hikeEditor.php?age=old&usr=mstr&show=hpg';
+var mstrIndx = 'build/hikeEditor.php?age=old&usr=mstr&show=inx';
 var adminUrl = 'admin/admintools.php';
 // For testing, un-comment as needed:
 //setCookie('nmh_mstr','',0);
@@ -89,10 +89,10 @@ function usr_login_display() {
 function display_usr_opts() { 
     $('#regusrs').css('display','block');
     $('#unpub').on('click', function() {;
-        window.open(editNew + usr_type, target="_blank");
+        window.open(editNew + usr_type + '&show=all', target="_blank");
     });
     $('#pub').on('click', function() {
-        window.open(editMy + usr_type, target="_blank");
+        window.open(editMy + usr_type + '&show=all', target="_blank");
     });
     $('#creator').on('click', function() {
         window.open(createUrl, target="_blank");
@@ -137,7 +137,7 @@ $('#auxfrm').submit( function(ev) {
         $('#loggedin').css('display','none');
         $('#mover').css('display','none');
         $('#mstrnew').on('click', function() {
-            window.open(editNew + 'mstr', target="_blank");
+            window.open(editNew + 'mstr&show=all', target="_blank");
         });
         $('#mstrold').on('click', function() {
             window.open(mstrEdit, target="_blank");
