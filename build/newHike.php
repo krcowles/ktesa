@@ -78,6 +78,7 @@ array_shift($tlist);
 # convert to javascript array:
 $hnames = json_encode($tlist);
 mysqli_free_result($result);
+$usr = filter_input(INPUT_GET,'usr');
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -96,17 +97,18 @@ mysqli_free_result($result);
         <p id="trail">Assign New Hike</p>
 
         <form id="newbie" target="_blank" action="newSave.php" method="GET">
-        <div id="newrow" style="margin-left:16px;font-size:18px;">
-            <p>Begin by Assigning a Hike Name: &nbsp;
-                <input id="newname" type="text" name="new" size="40" required />
-            </p>
-        </div>
-        <div style="margin-left:16px;">
-            To reserve this hike: &nbsp;&nbsp;
-            <input id="saveit" type="submit" name="resrv" value="Reserve This Hike" /><br /><br />
-            <span style="color:brown">You will be able to continue to add hike data to this hike,
-                or proceed at a later date.</span>
-        </div>
+            <input type="hidden" name="usr" value="<?php echo $usr;?>" />
+            <div id="newrow" style="margin-left:16px;font-size:18px;">
+                <p>Begin by Assigning a Hike Name: &nbsp;
+                    <input id="newname" type="text" name="new" size="40" required />
+                </p>
+            </div>
+            <div style="margin-left:16px;">
+                To reserve this hike: &nbsp;&nbsp;
+                <input id="saveit" type="submit" name="resrv" value="Reserve This Hike" /><br /><br />
+                <span style="color:brown">You will be able to continue to add hike data to this hike,
+                    or proceed at a later date.</span>
+            </div>
         </form>
         <script type="text/javascript">
             var hnames = <?php echo $hnames;?>;

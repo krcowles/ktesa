@@ -1,3 +1,6 @@
+<?php
+require 'setenv.php';
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 
@@ -24,6 +27,7 @@
         <p>Use database.xml to populate the HIKES table in the 'mysql' database...</p>
 
 <?php
+    echo "<p>mySql Connection Opened.</p>";
     $db = simplexml_load_file('../data/database.xml');
     if (!$db) {
         $errmsg = '<p style="color:red;font-size:18px;margin-left:16px">' .
@@ -39,10 +43,6 @@
     $maxact = 0;
     $maxtsv = 0;
     $maxtbl = 0;
-    
-    require "../mysql/local_mysql_connect.php";
-    echo "<p>mySql Connection Opened.</p>";
-
     foreach ($db->row as $row) {
         # $htitle is a non-NULL field, no test for existence here:
         $htitle = mysqli_real_escape_string($link,$row->pgTitle);

@@ -1,8 +1,11 @@
+<?php
+require 'setenv.php';
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 
 <head>
-    <title>Create USERS Table</title>
+    <title>Create EHIKES Table</title>
     <meta charset="utf-8" />
     <meta name="description" content="Create the USERS Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
@@ -39,29 +42,21 @@
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Create the USERS Table</p>
+<p id="trail">Create the EHIKES Table</p>
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the USERS table for site administration.</p>
 <?php
-    include 'local_mysql_connect.php';   # returns $link as connection
     echo "<p>mySql Connection Opened</p>";
-
-    # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
-    $tbl = mysqli_query( $link,"CREATE TABLE USERS (
-        userid smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        username varchar(32) NOT NULL,
-        passwd varchar(255) NOT NULL, 
-        passwd_expire date,
-        last_name varchar(30) NOT NULL,
-        first_name varchar(20) NOT NULL,
-        email varchar(50) NOT NULL,
-        facebook_url varchar(100),
-        twitter_handle varchar(20),
-        bio varchar(500));" );
+    $tbl = mysqli_query( $link,"CREATE TABLE EHIKES LIKE HIKES");
     if (!$tbl) {
-        die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
+        die("<p>CREATE EHIKES failed;  Check error code: " . mysqli_error($link) . "</p>");
+    } 
+    $addtype = "ALTER TABLE EHIKES ADD stat VARCHAR(3) AFTER usrid";
+    $addreq = mysqli_query($link,$addtype);
+    if (!$addreq) {
+        die("<p>Failed to add stat column to EHIKES</p>");
     } else {
-        echo '<p>USERS Table created; Definitions are shown in the table below</p>';
+        echo '<p>EHIKES Table created; Definitions are shown in the table below</p>';
     }
     $req = mysqli_query($link,"SHOW TABLES;");
     if (!$req) {
@@ -95,9 +90,9 @@
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link,"DESCRIBE USERS;");
+    $tbl = mysqli_query($link,"DESCRIBE EHIKES;");
     if (!$tbl) {
-        die("<p>DESCRIBE 'test' FAILED: " . mysqli_error($link) . "/p>");
+        die("<p>DESCRIBE 'EHIKES' FAILED: " . mysqli_error($link) . "/p>");
     } 
     $first = true;  
     while ($row = mysqli_fetch_row($tbl)) {

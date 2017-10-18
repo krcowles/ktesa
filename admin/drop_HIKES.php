@@ -1,8 +1,11 @@
+<?php
+require 'setenv.php';
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 
 <head>
-    <title>Delete a Row</title>
+    <title>DROP HIKES</title>
     <meta charset="utf-8" />
     <meta name="description" content="Drop the HIKES Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
@@ -20,34 +23,30 @@
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Delete Row From HIKES Table</p>
+<p id="trail">DROP HIKES Table</p>
 <div style="margin-left:16px;font-size:18px;">
 
 <?php
-# Error message:
-$drop_fail = "<p>Could not delete the specified row: " . mysqli_error($link) . "</p>";
-
-# Get input:
-$rowno = filter_input(INPUT_GET,'indx');
-
-# Connect:
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-if ($dev) {
-    $rel_addr = '../mysql/';
-    require_once "../mysql/local_mysql_connect.php";
-} else {
-    $rel_addr = '../php/';
-    require_once "../php/000mysql_connect.php";
-}
-
+# Error messages:
+$drop_fail = "Could not delete tbl 'HIKES': ";
+$query_fail = "SHOW TABLES did not succeed: ";
 # Execute the DROP TABLE command:
-$remrow = mysqli_query($link,"DELETE FROM HIKES WHERE indxNo = " . $rowno . ";");
-if (!remrow) {
-    die ($drop_fail);
+echo "<p>Removing any previous instantiation of table 'HIKES':</p>";
+$remtbl = mysqli_query($link,"DROP TABLE HIKES;");
+if (!remtbl) {
+    die ($drop_fail . mysqli_error($link));
 } else {
-    echo "<p>Row " . $rowno . " successfully removed; </p>";
+    echo "<p>HIKES Table Removed; Remaining tables in mysql database:</p>";
 }
-
+$req = mysqli_query($link,"SHOW TABLES;");
+if (!$req) {
+    die ($query_fail . mysqli_error($link));
+}
+echo "<ul>\n";
+while ($row = mysqli_fetch_row($req)) {
+    echo "<li>" . $row[0] . "</li>\n";
+}
+echo "</ul>\nDONE";
 mysqli_close($link);
 ?>
     

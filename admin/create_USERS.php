@@ -1,10 +1,13 @@
+<?php
+require 'setenv.php';
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 
 <head>
-    <title>Create HIKES Table</title>
+    <title>Create USERS Table</title>
     <meta charset="utf-8" />
-    <meta name="description" content="Create the HIKES Table" />
+    <meta name="description" content="Create the USERS Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
@@ -33,56 +36,33 @@
 </head>
 
 <body>
-    <div id="logo">
+<div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Create the HIKES Table</p>
+<p id="trail">Create the USERS Table</p>
 <div style="margin-left:16px;font-size:18px;">
-    <p>This script will create the HIKES table in the 'mysql' database...</p>
+    <p>This script will create the USERS table for site administration.</p>
 <?php
-    require '../mysql/local_mysql_connect.php';   # returns $link as connection
     echo "<p>mySql Connection Opened</p>";
-
     # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
-    $tbl = mysqli_query( $link,"CREATE TABLE HIKES (
-        indxNo smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        pgTitle varchar(30) NOT NULL,
-        usrid varchar(32) NOT NULL,
-        locale varchar(20),
-        marker varchar(11),
-        collection varchar(15),
-        cgroup varchar(3),
-        cname varchar(25),
-        logistics varchar(12),
-        miles dec(4,1),
-        feet smallint(5),
-        diff varchar(14),
-        fac varchar(30),
-        wow varchar(50),
-        seasons varchar(12),
-        expo varchar(15),
-        gpx varchar(30),
-        trk varchar(30),
-        lat double(13,10),
-        lng double(13,10),
-        aoimg1 varchar(100),
-        aoimg2 varchar(100),
-        purl1 varchar(200),
-        purl2 varchar(200),
-        dirs varchar(250),
-        tips varchar(500),
-        info varchar(1500),
-        refs varchar(1500),
-        props varchar(500),
-        acts varchar(500),
-        tsv text);" );
+    $tbl = mysqli_query( $link,"CREATE TABLE USERS (
+        userid smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        username varchar(32) NOT NULL,
+        passwd varchar(255) NOT NULL, 
+        passwd_expire date,
+        last_name varchar(30) NOT NULL,
+        first_name varchar(20) NOT NULL,
+        email varchar(50) NOT NULL,
+        facebook_url varchar(100),
+        twitter_handle varchar(20),
+        bio varchar(500));" );
     if (!$tbl) {
         die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
     } else {
-        echo '<p>HIKES Table created; Definitions are shown in the table below</p>';
+        echo '<p>USERS Table created; Definitions are shown in the table below</p>';
     }
     $req = mysqli_query($link,"SHOW TABLES;");
     if (!$req) {
@@ -94,7 +74,7 @@
     }
     echo "</ul>";
 ?>
-    <p>Description of the HIKES table:</p>
+    <p>Description of the USERS table:</p>
     <table>
         <colgroup>	
             <col style="width:100px">
@@ -116,7 +96,7 @@
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link,"DESCRIBE HIKES;");
+    $tbl = mysqli_query($link,"DESCRIBE USERS;");
     if (!$tbl) {
         die("<p>DESCRIBE 'test' FAILED: " . mysqli_error($link) . "/p>");
     } 

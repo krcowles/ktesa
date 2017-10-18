@@ -12,7 +12,7 @@ var backdoor = false;
 // URL targets: [registered user]
 var editNew = 'build/hikeEditor.php?age=new&usr=';
 var editMy = 'build/hikeEditor.php?age=old&usr=';
-var createUrl = 'build/newHike.php';
+var createUrl = 'build/newHike.php?usr=';
 // URL targets" [site master]
 var mstrEdit = 'build/hikeEditor.php?age=old&usr=mstr&show=hpg';
 var mstrIndx = 'build/hikeEditor.php?age=old&usr=mstr&show=inx';
@@ -95,7 +95,7 @@ function display_usr_opts() {
         window.open(editMy + usr_type + '&show=all', target="_blank");
     });
     $('#creator').on('click', function() {
-        window.open(createUrl, target="_blank");
+        window.open(createUrl + usr_type, target="_blank");
     });
     $('.hide').on('click', function() {
         $("input[type='password']").val('');
@@ -146,7 +146,7 @@ $('#auxfrm').submit( function(ev) {
             window.open(mstrIndx, target="_blank");
         });  
         $('#mstrcreate').on('click', function() {
-            window.open(createUrl, target="_blank");
+            window.open(createUrl + 'mstr', target="_blank");
         });
         $('#admin').on('click', function() {
             var admintools = 'admin/admintools.php';

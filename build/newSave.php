@@ -1,5 +1,6 @@
 <?php
 $newHike = filter_input(INPUT_GET,'new');
+$usr = filter_input(INPUT_GET,'usr');
 $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
 if ($dev) {
     $rel_addr = '../mysql/';
@@ -8,7 +9,7 @@ if ($dev) {
     $rel_addr = '../php/';
     require_once "../php/000mysql_connect.php";
 }
-$query = "INSERT INTO HIKES (pgTitle) VALUES ('{$newHike}');";
+$query = "INSERT INTO EHIKES (pgTitle, usrid) VALUES ('{$newHike}','{$usr}');";
 $result = mysqli_query($link,$query);
 if (!$result) {
     if (Ktesa_Dbug) {
@@ -18,7 +19,7 @@ if (!$result) {
         user_error_msg($rel_addr,5,0);
     }
 }
-$lastid = "SELECT indxNo FROM HIKES ORDER BY indxNo DESC LIMIT 1";
+$lastid = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1";
 $getid = mysqli_query($link,$lastid);
 if (!$getid) {
     if (Ktesa_Dbug) {
@@ -28,8 +29,8 @@ if (!$getid) {
         user_error_msg($rel_addr,5,0);
     }
 }
-$lastindx = mysqli_fetch_row($getid);
-die ("OK");
+$lastitem = mysqli_fetch_row($getid);
+$lastindx = $lastitem[0];
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -51,7 +52,7 @@ die ("OK");
         <div style="margin-left:24px">
         <?php
         echo '<h2 style="color:brown">You have successfully created a new '
-            . 'hike for ' . $newHike . " as Hike No. " . $lastindx . "</h2>\n"
+            . 'hike for ' . $newHike . " as Editable Hike No. " . $lastindx . "</h2>\n"
             . "<p>You may edit this hike at any time by returning to the "
             . "home page and selecting 'Edit Hike'</p>\n NOTE: For now, " .
             "please enter the following into the browser url bar (or click): ";

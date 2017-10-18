@@ -1,9 +1,11 @@
-
+<?php
+require 'setenv.php';
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 
 <head>
-    <title>DROP USERS</title>
+    <title>DROP EHIKES</title>
     <meta charset="utf-8" />
     <meta name="description" content="Drop the HIKES Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
@@ -21,24 +23,20 @@
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">DROP USERS Table</p>
+<p id="trail">DROP EHIKES Table</p>
 <div style="margin-left:16px;font-size:18px;">
 
 <?php
 # Error messages:
-$drop_fail = "<p>Could not delete tbl 'USERS': " . mysqli_error($link) . "</p>";
+$drop_fail = "<p>Could not delete tbl 'EHIKES': " . mysqli_error($link) . "</p>";
 $query_fail = "<p>Query did not succeed: SHOW TABLES</p>";
-
-# Connect:
-include 'local_mysql_connect.php';
-
 # Execute the DROP TABLE command:
-echo "<p>Removing any previous instantiation of table 'USERS':</p>";
-$remtbl = mysqli_query($link,"DROP TABLE USERS;");
+echo "<p>Removing any previous instantiation of table 'EHIKES':</p>";
+$remtbl = mysqli_query($link,"DROP TABLE EHIKES;");
 if (!remtbl) {
     die ($drop_fail);
 } else {
-    echo "<p>USERS Table Removed; Remaining tables in mysql database:</p>";
+    echo "<p>EHIKES Table Removed; Remaining tables in mysql database:</p>";
 }
 
 $req = mysqli_query($link,"SHOW TABLES");
