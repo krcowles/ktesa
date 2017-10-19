@@ -10,10 +10,8 @@ require '../admin/setenv.php';
  */
 if ($age === 'new') {
     $table = 'EHIKES';
-    $usrreq = "SELECT COUNT(*),stat FROM EHIKES WHERE usrid = '{$usr}'";
 } elseif ($age === 'old') {
     $table = 'HIKES';
-    $usrreq = "SELECT COUNT(*) FROM HIKES WHERE usrid = '{$usr}'";
 } else {
     die ("Unrecognized age parameter: " . $age);
 }
@@ -35,6 +33,7 @@ if (mysqli_num_rows($getid) === 0) {
 }
 mysqli_free_result($getid);
 # get the count of usr hikes
+$usrreq = "SELECT COUNT(*) FROM " . $table . " WHERE usrid = '{$usr}'";
 $stat = mysqli_query($link,$usrreq);
 if (!$stat) {
     if (Ktesa_Dbug) {
@@ -44,17 +43,34 @@ if (!$stat) {
         user_error_msg($rel_addr,6,0);
     }
 }
-$usr_items = mysqli_fetch_row($stat);
-if (count($usr_items) === 1 ) { // HIKES table
-    $usrcnt = $usr_items[0];
-} else {  // EHIKES table
+if (mysqli_num_rows($stat) === 0) {
+    $usrcnt = 0;
+} else {
+    $usr_items = mysqli_fetch_row($stat);
     $usrcnt = $usr_items[0];
     $status = [];
-    for ($i=1;$i<=$usrcnt;$i++) {
-        array_push($status,$usr_items[$i]);
+    if ($age === 'new') {   # from EHIKES table, need status fields
+        for ($j=1; $j<=$tblcnt; $j++) {
+            $statreq = "SELECT stat,indxNo FROM EHIKES WHERE usrid = '{$usr}'" .
+                " AND indxNo = '{$j}'";
+            $statresp = mysqli_query($link,$statreq);
+            if (!$statresp) {
+                if (Ktesa_Dbug) {
+                    dbug_print('TblConstructor.php: Could not retrieve status fields: ' . 
+                            mysqli_error($link));
+                } else {
+                    user_error_msg($rel_addr,6,0);
+                }
+            }
+            if (mysqli_num_rows($statresp) !== 0) {
+                $sfields = mysqli_fetch_row($statresp);
+                array_push($status,$sfields[0]);
+            }
+        }
     }
-    #print_r($status);
 }
+$javastat = json_encode($status);
+mysqli_free_result($statresp);
 if ($show !== 'all') {
     $url_prefix = '../pages/';
 } else {
@@ -100,13 +116,14 @@ $shadeIcon = '<img class="expShift" src="../images/shady.png" alt="Partial sun/s
     <tbody>
     <!-- ADD HIKE ROWS VIA PHP HERE: -->
 <?php
-if ($usrcnt === 0 || $tblcnt === 0) {
-    echo "PL";
+if ($usrcnt == 0 || $tblcnt == 0) {
     echo "<tr><td>You have no hikes to edit</td></tr>";
 } else {
     for ($i = 1; $i<=$tblcnt; $i++) {
         $query = "SELECT * FROM " . $table . " WHERE indxNo = " . $i;
-        if ($usr === 'mstr' && $show === 'hpg') {
+        if ($usr === 'mstr' && $age === 'new') {
+            $query .= " AND usrid = 'mstr'";
+        } elseif   ($usr === 'mstr' && $show === 'hpg') {
             $query .= " AND marker != 'Visitor Ctr'";
         } elseif ($usr === 'mstr' && $show === 'inx') {
             $query .= " AND marker = 'Visitor Ctr'";

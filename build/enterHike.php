@@ -1,3 +1,8 @@
+<?php
+require '../admin/setenv.php';
+$hip = filter_input(INPUT_GET,'hikeNo');  # hike-in-process
+# This script will always utilize only the EHIKES table
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 
@@ -30,43 +35,74 @@
 <p id="trail">Create A New Page</p>
 
 <?php
-$hip = filter_input(INPUT_GET,'hikeNo');  # hike-in-process
-
-$database = '../data/database.xml';
-$db = simplexml_load_file($database);
-if ($db === false) {
-    $errmsg = '<p style="color:red;font-size:18px;margin-left:16px;">' .
-            'Could not open the xml database: Contact Site Master';
-    die($errmsg);
+/* Collect cluster info from HIKES table: */
+$lastid = "SELECT indxNo FROM HIKES ORDER BY indxNo DESC LIMIT 1";
+$getid = mysqli_query($link,$lastid);
+if (!$getid) {
+    if (Ktesa_Dbug) {
+        dbug_print('enterHike.php: Could not retrieve highest indxNo: ' . 
+                mysqli_error($link));
+    } else {
+        user_error_msg($rel_addr,6,0);
+    }
 }
+$lastindx = mysqli_fetch_row($getid);
+$tblcnt = $lastindx[0];
+mysqli_free_result($getid);
 $vchikes = [];
 $vcnos = [];
 $clhikes = [];
 $clnos = [];
-foreach( $db->row as $row) {
-    if($row->marker == 'Visitor Ctr') {
-        array_push($vchikes,$row->pgTitle);
-        array_push($vcnos,$row->indxNo);
+for ($i=1; $i<=$tblcnt; $i++) {
+    $hquery = "SELECT indxNo,pgTitle,marker,collection,cgroup,cname "
+            ."FROM HIKES WHERE indxNo = '{$i}'";
+    $specdat = mysqli_query($link,$hquery);
+    if (!$specdat) {
+        if (Ktesa_Dbug) {
+            dbug_print('enterHike.php: Could not retrieve vc/cluster info: ' . 
+                    mysqli_error($link));
+        } else {
+            user_error_msg($rel_addr,6,0);
+        }
     }
-    if($row->marker == 'Cluster') {
+    $dat = mysqli_fetch_row($specdat);
+    $indx = $dat[0];
+    $title = $dat[1];
+    $marker = $dat[2];
+    $coll = $dat[3];
+    $clusltr = $dat[4];
+    $clusnme = $dat[5];
+    if($marker == 'Visitor Ctr') {
+        array_push($vchikes,$title);
+        array_push($vcnos,$indx);
+    } elseif ($marker == 'Cluster') {
         $dup = false;
         for ($l=0; $l<count($clhikes); $l++) {
-            # NOTE: algorithm doesn't work without the conversion to string!
-            if ($clhikes[$l] == $row->cgName->__toString()) {
+            if ($clhikes[$l] == $clusnme) {
                 $dup = true;
             }
         }
         if (!$dup) {
-            array_push($clhikes,$row->cgName->__toString());
-            array_push($clnos,$row->clusGrp);
+            array_push($clhikes,$clusnme);
+            array_push($clnos,$clusltr);
         }
     }
-    if($row->indxNo == $hip) {
-        $hiprow = $row;
-    }
 }
+mysqli_free_result($specdat);
 $vccnt = count($vchikes);
 $clcnt = count($clhikes);
+# Get any data recorded so far...
+$query = "SELECT * FROM EHIKES WHERE indxNo = '{$hip}'";
+$result = mysqli_query($link,$query);
+if (!$result) {
+    if (Ktesa_Dbug) {
+        dbug_print("enterHike.php: Could not extract record for {$hip}: " . 
+                mysqli_error($link));
+    } else {
+        user_error_msg($rel_addr,6,0);
+    }
+}
+$entrydat = mysqli_fetch_assoc($result);
 ?>
 <div id="setup">
     <h1>STEP 1: Enter Hike Data</h1>
@@ -82,22 +118,22 @@ $clcnt = count($clhikes);
 <form id="hikeData" target="_blank" onsubmit="page_type(this);" method="POST"
     enctype="multipart/form-data">
 
-    <p id="dbhno" style="display:none"><?php echo $hiprow->indxNo;?></p>
-    <p id="dbhnm" style="display:none"><?php echo $hiprow->pgTitle;?></p>
-    <p id="dbloc" style="display:none"><?php echo $hiprow->locale;?></p>
-    <p id="dblog" style="display:none"><?php echo $hiprow->logistics;?></p>
-    <p id="dbmrk" style="display:none"><?php echo $hiprow->marker;?></p>
-    <p id="dbcst" style="display:none"><?php echo $hiprow->clusterStr;?></p>
-    <p id="dbcgr" style="display:none"><?php echo $hiprow->clusGrp;?></p>
-    <p id="dbdif" style="display:none"><?php echo $hiprow->difficulty;?></p>
-    <p id="dbexp" style="display:none"><?php echo $hiprow->expo;?></p>
+    <p id="dbhno" style="display:none"><?php echo $entrydat['indxNo'];?></p>
+    <p id="dbhnm" style="display:none"><?php echo $entrydat['pgTitle'];?></p>
+    <p id="dbloc" style="display:none"><?php echo $entrydat['locale'];?></p>
+    <p id="dblog" style="display:none"><?php echo $entrydat['logistics'];?></p>
+    <p id="dbmrk" style="display:none"><?php echo $entrydat['marker'];?></p>
+    <p id="dbcst" style="display:none"><?php echo $entrydat['cgroup'];?></p>
+    <p id="dbcgr" style="display:none"><?php echo $entrydat['cname'];?></p>
+    <p id="dbdif" style="display:none"><?php echo $entrydat['diff'];?></p>
+    <p id="dbexp" style="display:none"><?php echo $entrydat['expo'];?></p>
     <input type="hidden" name="hno" value="<?php echo $hip;?>" />
     <fieldset id="basic">
         <legend>Basic Hike Data</legend>
         <label id="pgTitleText" for="htitle">Hike Name (As it will appear 
             in the table):</label> 
         <input id="htitle" type="text" name="hpgTitle" 
-               size="35" value="<?php echo $hiprow->pgTitle;?>" />&nbsp;&nbsp;
+               size="35" value="<?php echo $entrydat['pgTitle'];?>" />&nbsp;&nbsp;
         <label for="area">Locale (Nearest city/landmark):</label>
         <select id="area" name="locale">
         <optgroup label="North/Northeast">
@@ -146,10 +182,10 @@ $clcnt = count($clhikes);
         </select>&nbsp;&nbsp;
         <label class="notVC" for="lgth">Total Length (Miles):</label>
             <input id="lgth" type="text" name="dist" size="6" 
-                   value="<?php echo $hiprow->miles;?>" />
+                   value="<?php echo $entrydat['miles'];?>" />
         <label class="notVC" for="ht">Elevation Change (Feet):</label>
             <input id="ht" type="text" name="elev" size="8"
-                   value="<?php echo $hiprow->feet;?>" />
+                   value="<?php echo $entrydat['feet'];?>" />
         <label class="notVC" for="ease">Relative Difficulty:</label>
         <select id="ease" name="diff">
             <option value="Easy">Easy</option>
@@ -161,14 +197,14 @@ $clcnt = count($clhikes);
         <label class="notVC" id="ifac" for="useful">Facilities Available at Trailhead, 
             if any:</label>
         <input id="useful" type="text" name="fac" size="25" 
-               value="<?php echo $hiprow->facilities;?>" />
+               value="<?php echo $entrydat['fac'];?>" />
         <label class="notVC" id="iwow" for="wow">"Wow" Factor (What makes this hike 
             special):</label> 
         <input id="wow" type="text" name="wow_factor" size="24" 
-               value="<?php echo $hiprow->wow;?>" /><br />
+               value="<?php echo $entrydat['wow'];?>" /><br />
         <label class="notVC" for="times">Seasons</label>
         <input id="times" type="text" name="seas" size="40" 
-               value="<?php echo $hiprow->seasons;?>" /><br />
+               value="<?php echo $entrydat['seasons'];?>" /><br />
     </fieldset>
 
     <fieldset id="exposure">
@@ -346,262 +382,38 @@ $clcnt = count($clhikes);
         <legend>Text Sections</legend>
         <textarea id="usrtips" class="honly" name="tipstxt" rows="10" 
             cols="130"><?php
-                if ($hiprow->tipsTxt == '' ) {
+                if ($entrydat['tips'] == '' ) {
                     echo "[OPTIONAL] Enter 'Tips Text' here";
                 } else {
-                    echo $hiprow->tipsTxt;
+                    echo $entrydat['tips'];
                 } ?>
         </textarea><br />
         <textarea id="usrinfo" name="hiketxt" rows="20" cols="130"><?php
-                if ($hiprow->hikeInfo == '') {
+                if ($entrydat['info'] == '') {
                     echo "Enter the description of the hike here, as it will " .
                         "appear on the completed hike page...";
                 } else {
-                    echo $hiprow->hikeInfo;
+                    echo $entrydat['info'];
                 } ?>
         </textarea>
     </fieldset>
 
     <?php
     # database preloads, if any, for references:
-    echo '<p id="dbrt1" style="display:none">' . $hiprow->refs->ref[0]->rtype . "</p>\n"; 
-    echo '<p id="dbrt2" style="display:none">' . $hiprow->refs->ref[1]->rtype . "</p>\n";  
-    echo '<p id="dbrt3" style="display:none">' . $hiprow->refs->ref[2]->rtype . "</p>\n"; 
-    echo '<p id="dbrt4" style="display:none">' . $hiprow->refs->ref[3]->rtype . "</p>\n";  
-    echo '<p id="dbrt5" style="display:none">' . $hiprow->refs->ref[4]->rtype . "</p>\n";  
-    echo '<p id="dbrt6" style="display:none">' . $hiprow->refs->ref[5]->rtype . "</p>\n";  
+    $ref = unserialize(entrydat['refs']);
+    print_r($ref);
+    echo '<p id="dbrt1" style="display:none">' . $ref[0] . "</p>\n"; 
+    echo '<p id="dbrt2" style="display:none">' . $ref[1] . "</p>\n";  
+    echo '<p id="dbrt3" style="display:none">' . $ref[2] . "</p>\n"; 
+    echo '<p id="dbrt4" style="display:none">' . $ref[3] . "</p>\n";  
+    echo '<p id="dbrt5" style="display:none">' . $ref[4] . "</p>\n";  
+    echo '<p id="dbrt6" style="display:none">' . $ref[5] . "</p>\n";  
     /*
-    echo '<p id="dbrt7" style="display:none">' . $hiprow->ref[6]->rtype . "</p>\n";  
-    echo '<p id="dbrt8" style="display:none">' . $hiprow->ref[7]->rtype . "</p>\n"; 
+    echo '<p id="dbrt7" style="display:none">' . $entrydat['ref[6]['rtype . "</p>\n";  
+    echo '<p id="dbrt8" style="display:none">' . $entrydat['ref[7]['rtype . "</p>\n"; 
      */
     ?>
-    <fieldset id="refdat">
-        <legend>Hike References</legend>
-        <p>Select the type of reference (up to 8) and its accompanying data below:</p>
-        <select id="href1" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
-        </select>
-        Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[0]->rit1;?>" />&nbsp;
-        Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[0]->rit2;?>" /><br />
-        <select id="href2" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
-        </select>
-        Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[1]->rit1;?>" />&nbsp;
-        Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[1]->rit2;?>" /><br />
-        <select id="href3" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
-        </select>
-        Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[2]->rit1;?>" />&nbsp;
-        Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[2]->rit2;?>" /><br />
-        <select id="href4" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
-        </select>
-        Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[3]->rit1;?>" />&nbsp;
-        Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[3]->rit2;?>"/><br />
-        <select id="href5" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
-        </select>
-        Book Title/Link URL:<input id="ritE1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[4]->rit1;?>" />&nbsp;
-        Author/Click-on Text<input id="ritE2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[4]->rit2;?>" /><br />
-        <select id="href6" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
-        </select>
-        Book Title/Link URL:<input id="ritF1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" value="<?php echo $hiprow->refs->ref[5]->rit1;?>" />&nbsp;
-        Author/Click-on Text<input id="ritF2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $hiprow->refs->ref[5]->rit2;?>" /><br />
-        <!--
-        <select id="href7" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
-        </select>
-        Book Title/Link URL:<input id="ritG1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" />&nbsp;
-        Author/Click-on Text<input id="ritG2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
-        <select id="href8" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
-        </select>
-        Book Title/Link URL:<input id="ritH1" type="text" name="rit1[]" size="55" 
-            placeholder="Book Title" />&nbsp;
-        Author/Click-on Text<input id="ritH2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
-        -->
-    </fieldset>
-
-    <div class="honly">
-        <fieldset id="datasect">
-            <legend>GPS Maps &amp; Data</legend>
-            <p>Proposed Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-            Label Text: <input id="lt1" type="text" name="plbl[]" size="12"
-                value="<?php echo $hiprow->dataProp->prop[0]->plbl;?>" /> 
-            Item URL: <input id="ur1" type="text" name="purl[]" size="60"
-                value="<?php echo $hiprow->dataProp->prop[0]->purl;?>" /> 
-            Text to Click On: <input id="ct1" type="text" name="pctxt[]" size="30" 
-                value="<?php echo $hiprow->dataProp->prop[0]->pcot;?>" /><br />
-            Label Text: <input id="lt2" type="text" name="plbl[]" size="12" 
-                value="<?php echo $hiprow->dataProp->prop[1]->plbl;?>" /> 
-            Item URL: <input id="ur2" type="text" name="purl[]" size="60" 
-                value="<?php echo $hiprow->dataProp->prop[1]->purl;?>" />
-            Text to Click On: <input id="ct2" type="text" name="pctxt[]" size="30" 
-                value="<?php echo $hiprow->dataProp->prop[1]->pcot;?>" /><br />
-            Label Text: <input id="lt3" type="text" name="plbl[]" size="12"
-                value="<?php echo $hiprow->dataProp->prop[2]->plbl;?>" /> 
-            Item URL: <input id="ur3" type="text" name="purl[]" size="60" 
-                value="<?php echo $hiprow->dataProp->prop[2]->purl;?>" />
-            Text to Click On: <input id="ct3" type="text" name="pctxt[]" size="30" 
-                value="<?php echo $hiprow->dataProp->prop[2]->pcot;?>" /><br />
-            Label Text: <input id="lt4" type="text" name="plbl[]" size="12" 
-                value="<?php echo $hiprow->dataProp->prop[3]->plbl;?>" /> 
-            Item URL: <input id="ur4" type="text" name="purl[]" size="60" 
-                value="<?php echo $hiprow->dataProp->prop[3]->purl;?>" />
-            Text to Click On: <input id="ct4" type="text" name="pctxt[]" size="30" 
-                value="<?php echo $hiprow->dataProp->prop[3]->pcot;?>" /><br />
-            
-            <p>Actual Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-            Label Text: <input id="lt5" type="text" name="albl[]" size="12" 
-                value="<?php echo $hiprow->dataAct->act[0]->albl;?>" /> 
-            Item URL: <input id="ur5" type="text" name="aurl[]" size="60" 
-                value="<?php echo $hiprow->dataAct->act[0]->aurl;?>" />
-            Text to Click On: <input id="ct5" type="text" name="actxt[]" size="30" 
-                value="<?php echo $hiprow->dataAct->act[0]->acot;?>" /><br />
-            Label Text: <input id="lt6" type="text" name="albl[]" size="12" 
-                value="<?php echo $hiprow->dataAct->act[1]->albl;?>" /> 
-            Item URL: <input id="ur6" type="text" name="aurl[]" size="60" 
-                value="<?php echo $hiprow->dataAct->act[1]->aurl;?>" />
-            Text to Click On: <input id="ct6" type="text" name="actxt[]" size="30" 
-                value="<?php echo $hiprow->dataAct->act[1]->acot;?>" /><br />
-            Label Text: <input id="lt7" type="text" name="albl[]" size="12" 
-                value="<?php echo $hiprow->dataAct->act[2]->albl;?>" /> 
-            Item URL: <input id="ur7" type="text" name="aurl[]" size="60" 
-                value="<?php echo $hiprow->dataAct->act[2]->aurl;?>" />
-            Text to Click On: <input id="ct7" type="text" name="actxt[]" size="30" 
-                value="<?php echo $hiprow->dataAct->act[2]->acot;?>" /><br />
-            Label Text: <input id="lt8" type="text" name="albl[]" size="12" 
-                value="<?php echo $hiprow->dataAct->act[3]->albl;?>" /> 
-            Item URL: <input id="ur8" type="text" name="aurl[]" size="60" 
-                value="<?php echo $hiprow->dataAct->act[3]->aurl;?>"/>
-            Text to Click On: <input id="ct8" type="text" name="actxt[]" size="30" 
-                value="<?php echo $hiprow->dataAct->act[3]->acot;?>"/><br />
-        </fieldset>
-    </div>
-
-    <fieldset id="urls">
-        <legend>Other URL's</legend>
-        <label class="notVC" for="url1">URL for Photo Album Site:</label>
-        <input id="url1" type="text" name="photo1" size="75" 
-               value="<?php echo $hiprow->mpUrl;?>" /><br />
-        <label class="notVC" for="url2">URL for Secondary Photo Album (Tom or Ken):</label>
-        <input id="url2" type="text" name="photo2" size="75" 
-               value="<?php echo $hiprow->spUrl;?>" /><br />
-        <label for="gdir">Google Map Directions:</label> 
-        <input id="gdir" type="text" name="dirs" size="150" 
-               value="<?php echo $hiprow->dirs;?>" />
-    </fieldset>
-
-    <fieldset id="submissions">
-        <input id="val" type="submit" name="valdat" value="Validate Data" />
-        <input id="saver" type="submit" name="saveit" value="Save Data" />
-        <input id="res" type="reset" value="Clear and Restart" />
-
-    </fieldset>
+    
 </form>
 </div>
 

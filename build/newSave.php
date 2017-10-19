@@ -49,12 +49,7 @@ $lastindx = $lastitem[0];
         echo '<h2 style="color:brown">You have successfully created a new '
             . 'hike for ' . $newHike . " as Editable Hike No. " . $lastindx . "</h2>\n"
             . "<p>You may edit this hike at any time by returning to the "
-            . "home page and selecting 'Edit Hike'</p>\n NOTE: For now, " .
-            "please enter the following into the browser url bar (or click): ";
-        echo '<a style="color:darkBlue;text-indent:24px;font-size:18px;" ' .
-                'href="enterHike.php?hikeNo=' . $lastindx .
-                '" target="_blank">' . 'localhost/build/enterHike.php?hikeNo=' . 
-                $lastindx . "</a>";
+            . "home page and selecting 'Edit New/Unpublished Hikes'<br />";
         ?>
         </div>
     </body>
