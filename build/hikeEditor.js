@@ -1,5 +1,20 @@
 $( function () { // when page is loaded...
 
+$('a').on('click', function(e) {
+    e.preventDefault();
+    var $containerCell = $(this).parent();
+    var $containerRow = $containerCell.parent();
+    if ( !$containerRow.hasClass('indxd') ) {
+        var hikeToUse = $containerRow.data('indx');
+        var callPhp = 'editDB.php?hikeNo=' + hikeToUse;
+        window.open(callPhp, target="_blank");
+    } else {
+        var hikeToUse = $containerRow.data('indx');
+        var callPhp = 'editIndx.php?hikeNo=' + hikeToUse;
+        window.open(callPhp, target="_blank");
+    }
+});
+
 // global object used to define how table items get compared in a sort:
 var noPart1;
 var noPart2;

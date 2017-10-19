@@ -36,7 +36,7 @@ if ($show === 'inx') {
 <div><p style="text-align:center;">When you click on the "Web Pg" link in the table
     below, you will be presented with an editable version of the hike page.</p>
 </div>
-
+<p style="display:none"><?php echo $age;?></p>
 <div><br />
 <?php 
     require "../php/TblConstructor.php";

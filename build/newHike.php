@@ -1,12 +1,5 @@
 <?php
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-if ($dev) {
-    $rel_addr = '../mysql/';
-    require_once "../mysql/local_mysql_connect.php";
-} else {
-    $rel_addr = '../php/';
-    require_once "../php/000mysql_connect.php";
-}
+require '../admin/setenv.php';
 if ( !mysqli_query($link,"DROP PROCEDURE IF EXISTS getTitles") ) {
     if (Ktesa_Dbug) {
         dbug_print('newHike.php: Failed to DROP PROCEDURE ' . 

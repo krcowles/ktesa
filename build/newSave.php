@@ -1,15 +1,9 @@
 <?php
+require '../admin/setenv.php';
 $newHike = filter_input(INPUT_GET,'new');
 $usr = filter_input(INPUT_GET,'usr');
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-if ($dev) {
-    $rel_addr = '../mysql/';
-    require_once "../mysql/local_mysql_connect.php";
-} else {
-    $rel_addr = '../php/';
-    require_once "../php/000mysql_connect.php";
-}
-$query = "INSERT INTO EHIKES (pgTitle, usrid) VALUES ('{$newHike}','{$usr}');";
+$query = "INSERT INTO EHIKES (pgTitle, usrid, stat) VALUES " .
+        "('{$newHike}','{$usr}','new');";
 $result = mysqli_query($link,$query);
 if (!$result) {
     if (Ktesa_Dbug) {
@@ -49,6 +43,7 @@ $lastindx = $lastitem[0];
             <img id="tmap" src="../images/trail.png" alt="trail map icon" />
             <p id="logo_right">w/Tom &amp; Ken</p>
         </div>
+        <p id="trail"><?php echo $newHike;?></p>
         <div style="margin-left:24px">
         <?php
         echo '<h2 style="color:brown">You have successfully created a new '
@@ -62,6 +57,5 @@ $lastindx = $lastitem[0];
                 $lastindx . "</a>";
         ?>
         </div>
-        <p id="trail"><?php echo $newHike;?></p>
     </body>
 </html>

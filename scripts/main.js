@@ -2,6 +2,7 @@ $( function() {  // wait until document is loaded...
 
 // Globals:
 var usr_type = 'unregistered';
+var username;
 var ajaxDone = false;
 var valid1 = "Welcome back ";
 var valid2 = "; you are now logged in...";
@@ -9,14 +10,17 @@ var valid;
 var valstat;
 var backdoor = false;
 
-// URL targets: [registered user]
-var editNew = 'build/hikeEditor.php?age=new&usr=';
-var editMy = 'build/hikeEditor.php?age=old&usr=';
+// URL targets: New Page Creation:
 var createUrl = 'build/newHike.php?usr=';
-// URL targets" [site master]
+// URL targets: Edit EHIKES items:
+var editNew = 'build/hikeEditor.php?age=new&usr='; // 'new' => EHIKES
+// URL targets: Edit HIKES items:
+var editPub = 'build/hikeEditor.php?age=old&usr=';  // 'old' => HIKES
 var mstrEdit = 'build/hikeEditor.php?age=old&usr=mstr&show=hpg';
 var mstrIndx = 'build/hikeEditor.php?age=old&usr=mstr&show=inx';
+// URL target for admin tools:
 var adminUrl = 'admin/admintools.php';
+
 // For testing, un-comment as needed:
 //setCookie('nmh_mstr','',0);
 //setCookie('nmh_id','',0);
@@ -54,7 +58,7 @@ function validateUser(usr_name,usr_pass,setcookie) {
                 $('#upass').val('');
                 valstat = false;
             } 
-            else {
+            else { // no such user in USERS table
                 var msg = "Your registration info cannot be located:\n" +
                     "Please click on the 'Sign me up!' link to register";
                 alert(msg);
@@ -89,13 +93,13 @@ function usr_login_display() {
 function display_usr_opts() { 
     $('#regusrs').css('display','block');
     $('#unpub').on('click', function() {;
-        window.open(editNew + usr_type + '&show=all', target="_blank");
+        window.open(editNew + username, target="_blank");
     });
     $('#pub').on('click', function() {
-        window.open(editMy + usr_type + '&show=all', target="_blank");
+        window.open(editPub + username + '&show=hpg', target="_blank");
     });
     $('#creator').on('click', function() {
-        window.open(createUrl + usr_type, target="_blank");
+        window.open(createUrl + username, target="_blank");
     });
     $('.hide').on('click', function() {
         $("input[type='password']").val('');
@@ -167,18 +171,22 @@ $('#auxfrm').submit( function(ev) {
     } else {  // not master key
         var uid = $('#usrid').val();
         var upw = $('#upass').val();
+        // uid will be converted to 'username' on successful validation
         var cookieEnabled = navigator.cookieEnabled;
         // deal with not enabled:
-        if (!cookieEnabled) {  // cant set 'em, so repeat as needed by user
+        if (!cookieEnabled) {  // no cookies means full validation each time
             if (uid == '' && upw !== '000ktesa9') {
                 alert("Please enter a valid user name");
             } else if (upw == '') {
                 alert("Please enter a valid registration key");
-            } else {  // something is there = check it...
+            } else {
                 validateUser(uid,upw,false);
+                if (valstat) {
+                    username = uid;
+                }
             }
         } else {  // cookies are enabled, now check for nmh_id:
-            var username = getCookie("nmh_id");
+            username = getCookie("nmh_id");
             /* NOTE: If the 'nmh_id' cookie is set, the user options
              * display regardless of the username supplied on the form,
              * and no password is required.
@@ -186,6 +194,7 @@ $('#auxfrm').submit( function(ev) {
             if (username === "") {  // no cookie: validation is required...
                 validateUser(uid,upw,true);
                 if (valstat) {
+                    username = uid;
                     $('#upass').val('');
                     usr_login_display();
                 } 

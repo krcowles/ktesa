@@ -9,6 +9,8 @@
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
         body { background-color: #eaeaea; }
+        legend { color: darkgreen;
+                 font-style: italic; }
     </style>
     <link href="admintools.css" type="text/css" rel="stylesheet" />
 <body>
@@ -43,7 +45,11 @@
         <button id="dre">EHIKES Table: Delete Row:</button>
         &nbsp;&nbsp;Row No.&nbsp;&nbsp;<input id="derow" type="text" 
             name="eindx" size="6" /><br />
-    </fieldset> 
+    </fieldset><br />
+    <fieldset>
+        <legend>Page Release</legend>
+        <button id="hrel">Release Page to HIKES</button>
+    </fieldset>
 </div>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="admintools.js"></script>

@@ -1,56 +1,60 @@
 <?php
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-if ($dev) {
-    $rel_addr = '../mysql/';
-    require_once "../mysql/local_mysql_connect.php";
-} else {
-    $rel_addr = '../php/';
-    require_once "../php/000mysql_connect.php";
-}
+require '../admin/setenv.php';
+/*
+ * TblConstructor will be called either by the mapPg or by the hikeEditor
+ * <mapPg expects to display every hike & index page
+ * <hikeEditor> expects to display only the usr hikes and needs to 'know' the
+ *   status of those hikes (e.g. published, new, uploaded, etc)
+ *   hikeEditor may also be called by the site master to edit index pages
+ *   PREDEFINE: $age (new=EHIKES, old=HIKES), $usr
+ */
 if ($age === 'new') {
     $table = 'EHIKES';
-    $getusr = "SELECT COUNT(*) FROM EHIKES WHERE usrid = '" . $usr . "'";
-    $usrhikes = mysqli_query($link,$getusr);
-    if (!$usrhikes) {
-        if (Ktesa_Dbug) {
-            dbug_print('TblConstructor.php: Could not retrieve user hike count: ' . 
-                    mysqli_error($link));
-        } else {
-            user_error_msg($rel_addr,6,0);
-        }
-    }
-    $usrcnt_result = mysqli_fetch_row($usrhikes);
-    $usrcnt = $usrcnt_result[0];
-} elseif ($usr === 'mstr') {
+    $usrreq = "SELECT COUNT(*),stat FROM EHIKES WHERE usrid = '{$usr}'";
+} elseif ($age === 'old') {
     $table = 'HIKES';
-    $lastid = "SELECT indxNo FROM HIKES ORDER BY indxNo DESC LIMIT 1";
-    $getid = mysqli_query($link,$lastid);
-    if (!$getid) {
-        if (Ktesa_Dbug) {
-            dbug_print('TblConstructor.php: Could not retrieve highest indxNo: ' . 
-                    mysqli_error($link));
-        } else {
-            user_error_msg($rel_addr,6,0);
-        }
+    $usrreq = "SELECT COUNT(*) FROM HIKES WHERE usrid = '{$usr}'";
+} else {
+    die ("Unrecognized age parameter: " . $age);
+}
+$lastid = "SELECT indxNo FROM " . $table . " ORDER BY indxNo DESC LIMIT 1";
+$getid = mysqli_query($link,$lastid);
+if (!$getid) {
+    if (Ktesa_Dbug) {
+        dbug_print('TblConstructor.php: Could not retrieve highest indxNo: ' . 
+                mysqli_error($link));
+    } else {
+        user_error_msg($rel_addr,6,0);
     }
+}
+if (mysqli_num_rows($getid) === 0) {
+    $tblcnt = 0;
+} else {
     $lastindx = mysqli_fetch_row($getid);
-    $usrcnt = $lastindx[0];
-} else {  # username
-    $table = 'HIKES';
-    $getusr = "SELECT COUNT(*) FROM HIKES WHERE usrid = " . $usr;
-    $usrhikes = mysqli_query($link,$getusr);
-    if (!$usrhikes) {
-        if (Ktesa_Dbug) {
-            dbug_print('TblConstructor.php: Could not retrieve user hike count: ' . 
-                    mysqli_error($link));
-        } else {
-            user_error_msg($rel_addr,6,0);
-        }
-    }
-    $usrcnt_result = mysqli_fetch_row($usrhikes);
-    $usrcnt = $usrcnt_result[0];
+    $tblcnt = $lastindx[0];
 }
 mysqli_free_result($getid);
+# get the count of usr hikes
+$stat = mysqli_query($link,$usrreq);
+if (!$stat) {
+    if (Ktesa_Dbug) {
+        dbug_print('TblConstructor.php: Could not retrieve user item count: ' . 
+                mysqli_error($link));
+    } else {
+        user_error_msg($rel_addr,6,0);
+    }
+}
+$usr_items = mysqli_fetch_row($stat);
+if (count($usr_items) === 1 ) { // HIKES table
+    $usrcnt = $usr_items[0];
+} else {  // EHIKES table
+    $usrcnt = $usr_items[0];
+    $status = [];
+    for ($i=1;$i<=$usrcnt;$i++) {
+        array_push($status,$usr_items[$i]);
+    }
+    #print_r($status);
+}
 if ($show !== 'all') {
     $url_prefix = '../pages/';
 } else {
@@ -96,11 +100,11 @@ $shadeIcon = '<img class="expShift" src="../images/shady.png" alt="Partial sun/s
     <tbody>
     <!-- ADD HIKE ROWS VIA PHP HERE: -->
 <?php
-if ($usrcnt == 0) {
+if ($usrcnt === 0 || $tblcnt === 0) {
+    echo "PL";
     echo "<tr><td>You have no hikes to edit</td></tr>";
 } else {
-    for ($i = 1; $i<=$usrcnt; $i++) {
-        $display = false;
+    for ($i = 1; $i<=$tblcnt; $i++) {
         $query = "SELECT * FROM " . $table . " WHERE indxNo = " . $i;
         if ($usr === 'mstr' && $show === 'hpg') {
             $query .= " AND marker != 'Visitor Ctr'";
