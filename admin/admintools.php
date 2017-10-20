@@ -7,11 +7,6 @@
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
-    <style type="text/css">
-        body { background-color: #eaeaea; }
-        legend { color: darkgreen;
-                 font-style: italic; }
-    </style>
     <link href="admintools.css" type="text/css" rel="stylesheet" />
 <body>
 <div id="logo">
@@ -24,27 +19,36 @@
 
 <div style="margin-left:24px;" id="tools">
     <fieldset>
-        <legend>DROP TABLES</legend>
-        <button id="du">Drop the USERS Table</button><br />
-        <button id="de">Drop the EHIKES Table</button><br />
-        <button id="dh">Drop the HIKES Table</button><br />
+        <legend>Create/Delete</legend>
+        Table to Delete:&nbsp;&nbsp;
+        <select id="dtbl" name="dropper">
+            <option>EHIKES</option>
+            <option>USERS</option>
+            <option>HIKES</option>
+        </select>&nbsp;&nbsp;
+        <button id="drop">Drop Table</button><br />
+        Table to Create:&nbsp;&nbsp;
+        <select id="ctbl" name="creator">
+            <option>EHIKES</option>
+            <option>USERS</option>
+            <option>HIKES</option>
+        </select>&nbsp;&nbsp;
+        <button id="create">Create Table</button><br />
+        <button id="ia">Insert Admins into USERS</button>
+        &nbsp;(USERS Table must exist)<br />
+        <button id="ldh">Load HIKES from XML</button>
+        &nbsp;(HIKES Table must exist)<br />
     </fieldset><br />
     <fieldset>
-        <legend>CREATE and LOAD TABLES</legend>
-        <button id="cru">Create the USERS Table</button><br />
-        <button id="ia">Insert Admins into USERS</button><br />
-        <button id="cre">Create the EHIKES Table</button><br />
-        <button id="crh">Create the HIKES Table</button><br />
-        <button id="ldh">Load HIKES from XML</button><br />
-    </fieldset><br />
-    <fieldset>
-        <legend>Row deletion</legend>
-        <button id="drh">HIKES Table: DeleteRow</button>
-        &nbsp;&nbsp;Row No.&nbsp;&nbsp;<input id="drow" type="text" 
-            name="indx" size="6" /><br />
-        <button id="dre">EHIKES Table: Delete Row:</button>
-        &nbsp;&nbsp;Row No.&nbsp;&nbsp;<input id="derow" type="text" 
-            name="eindx" size="6" /><br />
+        <legend>Row Manipulation</legend>
+        <select id="rdel" name="creator">
+            <option>EHIKES</option>
+            <option>USERS</option>
+            <option>HIKES</option>
+        </select>&nbsp;&nbsp;
+        Row No.&nbsp;&nbsp;<input id="drow" type="text" 
+            name="indx" size="4" />&nbsp;&nbsp;
+        <button id="rowdel">Delete Row</button>
     </fieldset><br />
     <fieldset>
         <legend>Page Release</legend>

@@ -1,26 +1,44 @@
 <?php
 require 'setenv.php';
-# Error message:
-$drop_fail = "<p>Could not delete the specified row: " . mysqli_error($link) . "</p>";
-# Get input:
 $tbl_type = filter_input(INPUT_GET,'tbl');
 $rowno = filter_input(INPUT_GET,'indx');
 if ($tbl_type === 'h') {
     $table = "HIKES";
 } elseif ($tbl_type === 'e') {
     $table = "EHIKES";
+} elseif ($tbl_type === 'u') {
+    $table = "USERS";
 } else {
     die("No Such Table Type: " . $tbl_type);
 }
-# Execute the DROP TABLE command:
-$remrow = mysqli_query($link,"DELETE FROM " . $table . " WHERE indxNo = " . $rowno . ";");
-if (!remrow) {
-    die ($drop_fail);
-} else {
-    echo "<p>Row " . $rowno . " successfully removed; </p>";
+$lastid = "SELECT indxNo FROM " . $table . " ORDER BY indxNo DESC LIMIT 1";
+$getid = mysqli_query($link,$lastid);
+if (!$getid) {
+    if (Ktesa_Dbug) {
+        dbug_print('delete_tbl_row.php: Could not retrieve highest indxNo: ' . 
+                mysqli_error($link));
+    } else {
+        user_error_msg($rel_addr,6,0);
+    }
 }
-
-mysqli_close($link);
+$lastindx = mysqli_fetch_row($getid);
+$tblcnt = $lastindx[0];
+mysqli_free_result($getid);
+if ($rowno > $tblcnt) {
+    $badrow = true;
+    $toobig = '<p>The specified row is larger than last row of the table; Please ' .
+        'return to admin tools and specify a valid row number';
+} else {
+    $badrow = false;
+    $remrow = mysqli_query($link,"DELETE FROM " . $table . " WHERE indxNo = " . $rowno . ";");
+    if (!remrow) {
+        $drop_fail = "<p>Could not delete the specified row: " . mysqli_error($link) . "</p>";
+        die ($drop_fail);
+    } else {
+        $good =  "<p>Row " . $rowno . " successfully removed; </p>";
+    }
+    mysqli_close($link);
+}
 ?>
  <!DOCTYPE html>
 <html lang="en-us">
@@ -45,7 +63,14 @@ mysqli_close($link);
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail">Delete Row From HIKES Table</p>
-<div style="margin-left:16px;font-size:18px;">   
+<div style="margin-left:16px;font-size:18px;"> 
+<?php
+    if($badrow) {
+        echo $toobig;
+    } else {
+        echo $good;
+    }
+?>
 </div>
 </body>
 </html>

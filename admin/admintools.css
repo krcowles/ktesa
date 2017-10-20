@@ -1,5 +1,17 @@
+body { 
+    background-color: #eaeaea;
+    font-size: 16px;
+}
+legend { 
+    color: darkgreen;
+    font-style: italic;
+}
 #tools {
     margin-left: 24px;
+    font-size: 16px;
+}
+select {
+    height: 24px;
     font-size: 16px;
 }
 button {
