@@ -90,6 +90,9 @@ $usr = filter_input(INPUT_GET,'usr');
         <p id="trail">Assign New Hike</p>
 
         <form id="newbie" target="_blank" action="newSave.php" method="GET">
+            <p style="color:brown;font-size:16px;margin-left:16px;">
+            <strong>NOTE: Hitting the 'Enter' key will not submit the form on this
+                page - you must use the 'Reserve This Hike' button</strong></p>
             <input type="hidden" name="usr" value="<?php echo $usr;?>" />
             <div id="newrow" style="margin-left:16px;font-size:18px;">
                 <p>Begin by Assigning a Hike Name: &nbsp;
@@ -101,6 +104,9 @@ $usr = filter_input(INPUT_GET,'usr');
                 <input id="saveit" type="submit" name="resrv" value="Reserve This Hike" /><br /><br />
                 <span style="color:brown">You will be able to continue to add hike data to this hike,
                     or proceed at a later date.</span>
+            </div>
+            <div id="advise" style="margin-left:16px;color:red;font-size:20px;display:none;">
+                <p>This form has already been submitted and cannot be submitted again</p>
             </div>
         </form>
         <script type="text/javascript">

@@ -399,21 +399,151 @@ $entrydat = mysqli_fetch_assoc($result);
     </fieldset>
 
     <?php
-    # database preloads, if any, for references:
-    $ref = unserialize(entrydat['refs']);
-    print_r($ref);
-    echo '<p id="dbrt1" style="display:none">' . $ref[0] . "</p>\n"; 
-    echo '<p id="dbrt2" style="display:none">' . $ref[1] . "</p>\n";  
-    echo '<p id="dbrt3" style="display:none">' . $ref[2] . "</p>\n"; 
-    echo '<p id="dbrt4" style="display:none">' . $ref[3] . "</p>\n";  
-    echo '<p id="dbrt5" style="display:none">' . $ref[4] . "</p>\n";  
-    echo '<p id="dbrt6" style="display:none">' . $ref[5] . "</p>\n";  
+    # refs is a serialized array of strings (imploded arrays)
+    if ($entrydat['refs'] == '') {
+        for ($z=0; $z<6; $z++) {
+            $rtype[$z] = '';
+            $rit1[$z] = '';
+            $rit2[$z] = '';
+        }
+    } else {
+        $refs = unserialize($entrydat['refs']);
+        for ($y=0; $y<6; $y++) {
+            if ($refs[$y] !== '') {
+                $ref = explode("^",$refs[$y]);
+                $rtype[$y] = $ref[0];
+                $rit1[$y] = $ref[1];
+                $rit2[$y] = $ref[2];
+            } else {
+                $rtype[$y] = '';
+                $rit1[$y] = '';
+                $rit2[$y] = '';
+            }
+        }
+    }
+    echo '<p id="dbrt1" style="display:none">' . $rtype[0] . "</p>\n"; 
+    echo '<p id="dbrt2" style="display:none">' . $rtype[1] . "</p>\n";  
+    echo '<p id="dbrt3" style="display:none">' . $rtype[2] . "</p>\n"; 
+    echo '<p id="dbrt4" style="display:none">' . $rtype[3] . "</p>\n";  
+    echo '<p id="dbrt5" style="display:none">' . $rtype[4] . "</p>\n";  
+    echo '<p id="dbrt6" style="display:none">' . $rtype[5] . "</p>\n";  
     /*
     echo '<p id="dbrt7" style="display:none">' . $entrydat['ref[6]['rtype . "</p>\n";  
     echo '<p id="dbrt8" style="display:none">' . $entrydat['ref[7]['rtype . "</p>\n"; 
      */
     ?>
-    
+    <fieldset id="refdat">
+        <legend>Hike References</legend>
+        <p>Select the type of reference (up to 8) and its accompanying data below:</p>
+        <select id="href1" name="rtype[]">
+            <option value="b" selected="selected">Book</option>
+            <option value="p">Photo Essay</option>
+            <option value="w">Website</option>
+            <option value="a">App</option>
+            <option value="d">Downloadable Doc</option>
+            <option value="l">Blog</option>
+            <option value="o">On-line Map</option>
+            <option value="m">Magazine</option>
+            <option value="s">News Article</option>
+            <option value="g">Meetup Group</option>
+            <option value="r">Related Link</option>
+            <option value="n">Text Only - No Link</option>
+        </select>
+        Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="55" 
+            placeholder="Book Title" value="<?php echo $rit1[0]?>" />&nbsp;
+        Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35" 
+            placeholder=", by Author" value="<?php echo $rit2[0];?>" /><br />
+        <select id="href2" name="rtype[]">
+            <option value="b" selected="selected">Book</option>
+            <option value="p">Photo Essay</option>
+            <option value="w">Website</option>
+            <option value="a">App</option>
+            <option value="d">Downloadable Doc</option>
+            <option value="l">Blog</option>
+            <option value="o">On-line Map</option>
+            <option value="m">Magazine</option>
+            <option value="s">News Article</option>
+            <option value="g">Meetup Group</option>
+            <option value="r">Related Link</option>
+            <option value="n">Text Only - No Link</option>
+        </select>
+        Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" 
+            placeholder="Book Title" value="<?php echo $rit1[1];?>" />&nbsp;
+        Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" 
+            placeholder=", by Author" value="<?php echo $rit2[1];?>" /><br />
+        <select id="href3" name="rtype[]">
+            <option value="b" selected="selected">Book</option>
+            <option value="p">Photo Essay</option>
+            <option value="w">Website</option>
+            <option value="a">App</option>
+            <option value="d">Downloadable Doc</option>
+            <option value="l">Blog</option>
+            <option value="o">On-line Map</option>
+            <option value="m">Magazine</option>
+            <option value="s">News Article</option>
+            <option value="g">Meetup Group</option>
+            <option value="r">Related Link</option>
+            <option value="n">Text Only - No Link</option>
+        </select>
+        Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="55" 
+            placeholder="Book Title" value="<?php echo $rit1[2];?>" />&nbsp;
+        Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35" 
+            placeholder=", by Author" value="<?php echo $rit2[2];?>" /><br />
+        <select id="href4" name="rtype[]">
+            <option value="b" selected="selected">Book</option>
+            <option value="p">Photo Essay</option>
+            <option value="w">Website</option>
+            <option value="a">App</option>
+            <option value="d">Downloadable Doc</option>
+            <option value="l">Blog</option>
+            <option value="o">On-line Map</option>
+            <option value="m">Magazine</option>
+            <option value="s">News Article</option>
+            <option value="g">Meetup Group</option>
+            <option value="r">Related Link</option>
+            <option value="n">Text Only - No Link</option>
+        </select>
+        Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="55" 
+            placeholder="Book Title" value="<?php echo $rit1[3];?>" />&nbsp;
+        Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35" 
+            placeholder=", by Author" value="<?php echo $rit2[3];?>"/><br />
+        <select id="href5" name="rtype[]">
+            <option value="b" selected="selected">Book</option>
+            <option value="p">Photo Essay</option>
+            <option value="w">Website</option>
+            <option value="a">App</option>
+            <option value="d">Downloadable Doc</option>
+            <option value="l">Blog</option>
+            <option value="o">On-line Map</option>
+            <option value="m">Magazine</option>
+            <option value="s">News Article</option>
+            <option value="g">Meetup Group</option>
+            <option value="r">Related Link</option>
+            <option value="n">Text Only - No Link</option>
+        </select>
+        Book Title/Link URL:<input id="ritE1" type="text" name="rit1[]" size="55" 
+            placeholder="Book Title" value="<?php echo $rit1[4];?>" />&nbsp;
+        Author/Click-on Text<input id="ritE2" type="text" name="rit2[]" size="35" 
+            placeholder=", by Author" value="<?php echo $rit2[4];?>" /><br />
+        <select id="href6" name="rtype[]">
+            <option value="b" selected="selected">Book</option>
+            <option value="p">Photo Essay</option>
+            <option value="w">Website</option>
+            <option value="a">App</option>
+            <option value="d">Downloadable Doc</option>
+            <option value="l">Blog</option>
+            <option value="o">On-line Map</option>
+            <option value="m">Magazine</option>
+            <option value="s">News Article</option>
+            <option value="g">Meetup Group</option>
+            <option value="r">Related Link</option>
+            <option value="n">Text Only - No Link</option>
+        </select>
+        Book Title/Link URL:<input id="ritF1" type="text" name="rit1[]" size="55" 
+            placeholder="Book Title" value="<?php echo $rit1[5];?>" />&nbsp;
+        Author/Click-on Text<input id="ritF2" type="text" name="rit2[]" size="35" 
+            placeholder=", by Author" value="<?php echo $rit2[5];?>" /><br />
+        
 </form>
 </div>
 
