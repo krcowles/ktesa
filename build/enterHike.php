@@ -543,7 +543,166 @@ $entrydat = mysqli_fetch_assoc($result);
             placeholder="Book Title" value="<?php echo $rit1[5];?>" />&nbsp;
         Author/Click-on Text<input id="ritF2" type="text" name="rit2[]" size="35" 
             placeholder=", by Author" value="<?php echo $rit2[5];?>" /><br />
-        
+        <!-- ADD LATER IF NEEDED
+        <select id="href7" name="rtype[]">
+            <option value="b" selected="selected">Book</option>
+            <option value="p">Photo Essay</option>
+            <option value="w">Website</option>
+            <option value="a">App</option>
+            <option value="d">Downloadable Doc</option>
+            <option value="l">Blog</option>
+            <option value="o">On-line Map</option>
+            <option value="m">Magazine</option>
+            <option value="s">News Article</option>
+            <option value="g">Meetup Group</option>
+            <option value="r">Related Link</option>
+            <option value="n">Text Only - No Link</option>
+        </select>
+        Book Title/Link URL:<input id="ritG1" type="text" name="rit1[]" size="55" 
+            placeholder="Book Title" />&nbsp;
+        Author/Click-on Text<input id="ritG2" type="text" name="rit2[]" size="35" 
+            placeholder=", by Author" /><br />
+        <select id="href8" name="rtype[]">
+            <option value="b" selected="selected">Book</option>
+            <option value="p">Photo Essay</option>
+            <option value="w">Website</option>
+            <option value="a">App</option>
+            <option value="d">Downloadable Doc</option>
+            <option value="l">Blog</option>
+            <option value="o">On-line Map</option>
+            <option value="m">Magazine</option>
+            <option value="s">News Article</option>
+            <option value="g">Meetup Group</option>
+            <option value="r">Related Link</option>
+            <option value="n">Text Only - No Link</option>
+        </select>
+        Book Title/Link URL:<input id="ritH1" type="text" name="rit1[]" size="55" 
+            placeholder="Book Title" />&nbsp;
+        Author/Click-on Text<input id="ritH2" type="text" name="rit2[]" size="35" 
+            placeholder=", by Author" /><br />
+        -->
+    </fieldset>
+    <?php
+    # props & acts are serialized arrays of strings (imploded arrays)
+    if ($entrydat['props'] == '') {
+        for ($a=0; $a<4; $a++) {
+            $plbl[$a] = '';
+            $purl[$a] = '';
+            $pcot[$a] = '';
+        }
+    } else {
+        $props = unserialize($entrydat['props']);
+        for ($b=0; $b<4; $b++) {
+            if ($props[$b] !== '') {
+                $prop = explode("^",$props[$b]);
+                $plbl[$b] = $prop[0];
+                $purl[$b] = $prop[1];
+                $pcot[$b] = $prop[2];
+            } else {
+                $plbl[$b] = '';
+                $purl[$b] = '';
+                $pcot[$b] = '';
+            }
+        }
+    }
+    if ($entrydat['acts'] == '') {
+        for ($a=0; $a<4; $a++) {
+            $albl[$a] = '';
+            $aurl[$a] = '';
+            $acot[$a] = '';
+        }
+    } else {
+        $acts = unserialize($entrydat['acts']);
+        for ($b=0; $b<4; $b++) {
+            if ($acts[$b] !== '') {
+                $act = explode("^",$acts[$b]);
+                $albl[$b] = $act[0];
+                $aurl[$b] = $act[1];
+                $acot[$b] = $act[2];
+            } else {
+                $albl[$b] = '';
+                $aurl[$b] = '';
+                $acot[$b] = '';
+            }
+        }
+    }
+    ?>
+    <div class="honly">
+        <fieldset id="datasect">
+            <legend>GPS Maps &amp; Data</legend>
+            <p>Proposed Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
+            Label Text: <input id="lt1" type="text" name="plbl[]" size="12"
+                value="<?php echo $plbl[0];?>" /> 
+            Item URL: <input id="ur1" type="text" name="purl[]" size="60"
+                value="<?php echo $purl[0];?>" /> 
+            Text to Click On: <input id="ct1" type="text" name="pctxt[]" size="30" 
+                value="<?php echo $pcot[0];?>" /><br />
+            Label Text: <input id="lt2" type="text" name="plbl[]" size="12" 
+                value="<?php echo $plbl[1];?>" /> 
+            Item URL: <input id="ur2" type="text" name="purl[]" size="60" 
+                value="<?php echo $purl[1];?>" />
+            Text to Click On: <input id="ct2" type="text" name="pctxt[]" size="30" 
+                value="<?php echo $pcot[1];?>" /><br />
+            Label Text: <input id="lt3" type="text" name="plbl[]" size="12"
+                value="<?php echo $plbl[2];?>" /> 
+            Item URL: <input id="ur3" type="text" name="purl[]" size="60" 
+                value="<?php echo $purl[2];?>" />
+            Text to Click On: <input id="ct3" type="text" name="pctxt[]" size="30" 
+                value="<?php echo $pcot[2];?>" /><br />
+            Label Text: <input id="lt4" type="text" name="plbl[]" size="12" 
+                value="<?php echo $plbl[3];?>" /> 
+            Item URL: <input id="ur4" type="text" name="purl[]" size="60" 
+                value="<?php echo $purl[3];?>" />
+            Text to Click On: <input id="ct4" type="text" name="pctxt[]" size="30" 
+                value="<?php echo $pcot[3];?>" /><br />
+    
+            <p>Actual Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
+            Label Text: <input id="lt5" type="text" name="albl[]" size="12" 
+                value="<?php echo $albl[0];?>" /> 
+            Item URL: <input id="ur5" type="text" name="aurl[]" size="60" 
+                value="<?php echo $aurl[0];?>" />
+            Text to Click On: <input id="ct5" type="text" name="actxt[]" size="30" 
+                value="<?php echo $acot[0];?>" /><br />
+            Label Text: <input id="lt6" type="text" name="albl[]" size="12" 
+                value="<?php echo $albl[1];?>" /> 
+            Item URL: <input id="ur6" type="text" name="aurl[]" size="60" 
+                value="<?php echo $aurl[1];?>" />
+            Text to Click On: <input id="ct6" type="text" name="actxt[]" size="30" 
+                value="<?php echo $acot[1];?>" /><br />
+            Label Text: <input id="lt7" type="text" name="albl[]" size="12" 
+                value="<?php echo $albl[2];?>" /> 
+            Item URL: <input id="ur7" type="text" name="aurl[]" size="60" 
+                value="<?php echo $aurl[2];?>" />
+            Text to Click On: <input id="ct7" type="text" name="actxt[]" size="30" 
+                value="<?php echo $acot[2];?>" /><br />
+            Label Text: <input id="lt8" type="text" name="albl[]" size="12" 
+                value="<?php echo $albl[3];?>" /> 
+            Item URL: <input id="ur8" type="text" name="aurl[]" size="60" 
+                value="<?php echo $aurl[3];?>"/>
+            Text to Click On: <input id="ct8" type="text" name="actxt[]" size="30" 
+                value="<?php echo $acot[3];?>"/><br />
+        </fieldset>
+    </div>
+
+    <fieldset id="urls">
+        <legend>Other URL's</legend>
+        <label class="notVC" for="url1">URL for Photo Album Site:</label>
+        <input id="url1" type="text" name="photo1" size="75" 
+               value="<?php echo $hiprow->mpUrl;?>" /><br />
+        <label class="notVC" for="url2">URL for Secondary Photo Album (Tom or Ken):</label>
+        <input id="url2" type="text" name="photo2" size="75" 
+               value="<?php echo $hiprow->spUrl;?>" /><br />
+        <label for="gdir">Google Map Directions:</label> 
+        <input id="gdir" type="text" name="dirs" size="150" 
+               value="<?php echo $hiprow->dirs;?>" />
+    </fieldset>
+
+    <fieldset id="submissions">
+        <input id="val" type="submit" name="valdat" value="Validate Data" />
+        <input id="saver" type="submit" name="saveit" value="Save Data" />
+        <input id="res" type="reset" value="Clear and Restart" />
+
+    </fieldset>
 </form>
 </div>
 
