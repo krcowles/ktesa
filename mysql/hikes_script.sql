@@ -27,10 +27,6 @@ CREATE TABLE HIKES (
         purl1 varchar(200),
         purl2 varchar(200),
         dirs varchar(512),	# changed from 250 because a few of the dir strings are longer
-        tips varchar(500),
-        info varchar(1500),
-        refs varchar(1500),
-        props varchar(500),
-        acts varchar(500),
-        tsv text);
+        tipsTxt varchar(4096),
+        hikeInfo varchar(4096));
 LOAD XML LOCAL INFILE 'data/database.xml' INTO TABLE HIKES;

@@ -303,8 +303,7 @@ require 'setenv.php';
             "trk,lat,lng," .
             "aoimg1,aoimg2,purl1," .
             "purl2,dirs,tips," .
-            "info,refs,props," .
-            "acts,tsv  ) " .
+            "info  ) " .
             "VALUES ( '{$htitle}','mstr','{$hloc}','{$marker}'," .
             "'{$coll}','{$clus}','{$grpName}'," .
             "'{$log}','{$dist}','{$elev}'," .
@@ -313,8 +312,7 @@ require 'setenv.php';
             "'{$trk}','{$lat}','{$lng}'," .
             "'{$ao1}','{$ao2}','{$url1}'," .
             "'{$url2}','{$dirs}','{$tips}'," .
-            "'{$desc}','{$refs}','{$props}'," .
-            "'{$acts}','{$tsv}' );";
+            "'{$desc}' );";
         $req = mysqli_query( $link,$SQL_query );
         if (!$req) {
             die("Failed to add data to HIKES: " . mysqli_error());

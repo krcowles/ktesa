@@ -73,12 +73,8 @@ require 'setenv.php';
         purl1 varchar(200),
         purl2 varchar(200),
         dirs varchar(250),
-        tips varchar(500),
-        info varchar(1500),
-        refs varchar(1500),
-        props varchar(500),
-        acts varchar(500),
-        tsv text);" );
+        tips varchar(4096),
+        info varchar(4096));" );
     if (!$tbl) {
         die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
     } else {
