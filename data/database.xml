@@ -13205,8 +13205,8 @@ Good maps of the area are highly desirable.</tipsTxt>
 	<clusterStr/>
 	<clusGrp/>
 	<logistics>Loop</logistics>
-	<miles>4.5 mile</miles>
-	<feet>500 ft</feet>
+	<miles>4.5</miles>
+	<feet>500</feet>
 	<difficulty>Easy</difficulty>
 	<facilities>Picnic Area</facilities>
 	<wow>Lava features</wow>
@@ -13357,7 +13357,7 @@ Good maps of the area are highly desirable.</tipsTxt>
 	<clusGrp/>
 	<logistics>Out-and-back</logistics>
 	<miles>0.8</miles>
-	<feet>100 ft</feet>
+	<feet>100</feet>
 	<difficulty>Easy</difficulty>
 	<facilities>Visitor Center</facilities>
 	<wow>Ancient ruins</wow>
@@ -13586,8 +13586,8 @@ Good maps of the area are highly desirable.</tipsTxt>
 	<clusterStr/>
 	<clusGrp/>
 	<logistics>Loop</logistics>
-	<miles>1 mile</miles>
-	<feet>50 ft</feet>
+	<miles>1</miles>
+	<feet>50</feet>
 	<difficulty>Easy</difficulty>
 	<facilities>None</facilities>
 	<wow>Huge ruins</wow>
@@ -22060,7 +22060,7 @@ accumulations.</hikeInfo>
             <lng>-106.479125</lng>
             <thumb>https://c1.staticflickr.com/5/4215/34318884444_63cc2b99df_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34318884444/in/album-72157681752411544</alblnk>
-            <date>"2017:06:02 09:38:40"</date>
+            <date>2017:06:02 09:38:40</date>
             <mid>https://c1.staticflickr.com/5/4215/34318884444_63cc2b99df_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22079,7 +22079,7 @@ accumulations.</hikeInfo>
             <lng>-106.480911111</lng>
             <thumb>https://c1.staticflickr.com/5/4232/35124068836_d4ba79a6f5_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/35124068836/in/album-72157681752411544</alblnk>
-            <date>"2017:06:02 09:57:19"</date>
+            <date>2017:06:02 09:57:19</date>
             <mid>https://c1.staticflickr.com/5/4232/35124068836_d4ba79a6f5_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22098,7 +22098,7 @@ accumulations.</hikeInfo>
             <lng>-106.483016667</lng>
             <thumb>https://c1.staticflickr.com/5/4264/34354167523_ace7c3cd8a_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34354167523/in/album-72157681752411544</alblnk>
-            <date>"2017:06:02 10:18:50"</date>
+            <date>2017:06:02 10:18:50</date>
             <mid>https://c1.staticflickr.com/5/4264/34354167523_ace7c3cd8a_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22117,7 +22117,7 @@ accumulations.</hikeInfo>
             <lng>-106.483591667</lng>
             <thumb>https://c1.staticflickr.com/5/4243/35033199531_a31492c9e3_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/35033199531/in/album-72157681752411544</alblnk>
-            <date>"2017:06:02 10:25:48"</date>
+            <date>2017:06:02 10:25:48</date>
             <mid>https://c1.staticflickr.com/5/4243/35033199531_a31492c9e3_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22136,7 +22136,7 @@ accumulations.</hikeInfo>
             <lng>-106.480863889</lng>
             <thumb>https://c1.staticflickr.com/5/4197/35033231331_8739dcf0b7_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/35033231331/in/album-72157681752411544</alblnk>
-            <date>"2017:06:02 10:56:20"</date>
+            <date>2017:06:02 10:56:20</date>
             <mid>https://c1.staticflickr.com/5/4197/35033231331_8739dcf0b7_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22155,7 +22155,7 @@ accumulations.</hikeInfo>
             <lng>-106.471038889</lng>
             <thumb>https://c1.staticflickr.com/5/4220/33956675484_da24f32b0f_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/33956675484/in/album-72157681752411544</alblnk>
-            <date>"2017:05:17 11:01:33"</date>
+            <date>2017:05:17 11:01:33</date>
             <mid>https://c1.staticflickr.com/5/4220/33956675484_da24f32b0f_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22174,7 +22174,7 @@ accumulations.</hikeInfo>
             <lng>-106.470433333</lng>
             <thumb>https://c1.staticflickr.com/5/4282/34354170463_a9cf435c74_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34354170463/in/album-72157681752411544</alblnk>
-            <date>"2017:06:02 11:44:32"</date>
+            <date>2017:06:02 11:44:32</date>
             <mid>https://c1.staticflickr.com/5/4282/34354170463_a9cf435c74_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22193,7 +22193,7 @@ accumulations.</hikeInfo>
             <lng>-106.471916667</lng>
             <thumb>https://c1.staticflickr.com/5/4235/35124056936_900f8205f8_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/35124056936/in/album-72157681752411544</alblnk>
-            <date>"2017:06:02 11:54:49"</date>
+            <date>2017:06:02 11:54:49</date>
             <mid>https://c1.staticflickr.com/5/4235/35124056936_900f8205f8_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22212,7 +22212,7 @@ accumulations.</hikeInfo>
             <lng>-106.471938889</lng>
             <thumb>https://c1.staticflickr.com/5/4208/35033215171_3f62bff6ae_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/35033215171/in/album-72157681752411544</alblnk>
-            <date>"2017:06:02 11:55:21"</date>
+            <date>2017:06:02 11:55:21</date>
             <mid>https://c1.staticflickr.com/5/4208/35033215171_3f62bff6ae_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22231,7 +22231,7 @@ accumulations.</hikeInfo>
             <lng>-106.4757</lng>
             <thumb>https://c1.staticflickr.com/5/4189/33956639464_07e84c1210_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/33956639464/in/album-72157681752411544</alblnk>
-            <date>"2017:05:17 10:12:20"</date>
+            <date>2017:05:17 10:12:20</date>
             <mid>https://c1.staticflickr.com/5/4189/33956639464_07e84c1210_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22315,7 +22315,7 @@ accumulations.</hikeInfo>
             <lng>-106.137522222</lng>
             <thumb>https://c1.staticflickr.com/5/4267/34378006604_1734a308f9_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34378006604/in/album-72157682643420791</alblnk>
-            <date>"2017:06:07 08:02:57"</date>
+            <date>2017:06:07 08:02:57</date>
             <mid>https://c1.staticflickr.com/5/4267/34378006604_1734a308f9_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22334,7 +22334,7 @@ accumulations.</hikeInfo>
             <lng>-106.13275</lng>
             <thumb>https://c1.staticflickr.com/5/4213/34835336790_73391acd3b_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34835336790/in/album-72157682643420791</alblnk>
-            <date>"2017:06:07 08:09:56"</date>
+            <date>2017:06:07 08:09:56</date>
             <mid>https://c1.staticflickr.com/5/4213/34835336790_73391acd3b_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22353,7 +22353,7 @@ accumulations.</hikeInfo>
             <lng>-106.139738889</lng>
             <thumb>https://c1.staticflickr.com/5/4206/34835306550_935c1714d5_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34835306550/in/album-72157682643420791</alblnk>
-            <date>"2017:06:07 08:31:15"</date>
+            <date>2017:06:07 08:31:15</date>
             <mid>https://c1.staticflickr.com/5/4206/34835306550_935c1714d5_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22372,7 +22372,7 @@ accumulations.</hikeInfo>
             <lng>-106.140669444</lng>
             <thumb>https://c1.staticflickr.com/5/4249/34835325490_4a71ff8738_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34835325490/in/album-72157682643420791</alblnk>
-            <date>"2017:06:07 08:51:30"</date>
+            <date>2017:06:07 08:51:30</date>
             <mid>https://c1.staticflickr.com/5/4249/34835325490_4a71ff8738_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22391,7 +22391,7 @@ accumulations.</hikeInfo>
             <lng>-106.141155556</lng>
             <thumb>https://c1.staticflickr.com/5/4269/34835318190_98692dd542_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34835318190/in/album-72157682643420791</alblnk>
-            <date>"2017:06:07 09:01:28"</date>
+            <date>2017:06:07 09:01:28</date>
             <mid>https://c1.staticflickr.com/5/4269/34835318190_98692dd542_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22410,7 +22410,7 @@ accumulations.</hikeInfo>
             <lng>-106.140777778</lng>
             <thumb>https://c1.staticflickr.com/5/4196/35056575712_bbff386936_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/35056575712/in/album-72157682643420791</alblnk>
-            <date>"2017:06:07 09:09:58"</date>
+            <date>2017:06:07 09:09:58</date>
             <mid>https://c1.staticflickr.com/5/4196/35056575712_bbff386936_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22429,7 +22429,7 @@ accumulations.</hikeInfo>
             <lng>-106.141633333</lng>
             <thumb>https://c1.staticflickr.com/5/4245/34378026314_b5dddb44e9_t.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34378026314/in/album-72157682643420791</alblnk>
-            <date>"2017:06:07 09:17:27"</date>
+            <date>2017:06:07 09:17:27</date>
             <mid>https://c1.staticflickr.com/5/4245/34378026314_b5dddb44e9_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22879,7 +22879,7 @@ accumulations.</hikeInfo>
             <lng>-106.449647222</lng>
             <thumb>https://c1.staticflickr.com/5/4290/34653521874_107a60f6aa_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34653521874/in/album-72157682479852684</alblnk>
-            <date>"2017:06:21 10:18:27"</date>
+            <date>2017:06:21 10:18:27</date>
             <mid>https://c1.staticflickr.com/5/4290/34653521874_107a60f6aa_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22898,7 +22898,7 @@ accumulations.</hikeInfo>
             <lng>-106.449516667</lng>
             <thumb>https://c1.staticflickr.com/5/4279/35454947926_9b5b2ef0a5_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/35454947926/in/album-72157682479852684</alblnk>
-            <date>"2017:06:21 10:19:49"</date>
+            <date>2017:06:21 10:19:49</date>
             <mid>https://c1.staticflickr.com/5/4279/35454947926_9b5b2ef0a5_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22917,7 +22917,7 @@ accumulations.</hikeInfo>
             <lng>-106.449469444</lng>
             <thumb>https://c1.staticflickr.com/5/4218/34684611083_457bc92cb6_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34684611083/in/album-72157682479852684</alblnk>
-            <date>"2017:06:21 10:25:51"</date>
+            <date>2017:06:21 10:25:51</date>
             <mid>https://c1.staticflickr.com/5/4218/34684611083_457bc92cb6_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22936,7 +22936,7 @@ accumulations.</hikeInfo>
             <lng>-106.448411111</lng>
             <thumb>https://c1.staticflickr.com/5/4280/35363779081_56f97af5ed_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/35363779081/in/album-72157682479852684</alblnk>
-            <date>"2017:06:21 10:31:30"</date>
+            <date>2017:06:21 10:31:30</date>
             <mid>https://c1.staticflickr.com/5/4280/35363779081_56f97af5ed_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22955,7 +22955,7 @@ accumulations.</hikeInfo>
             <lng>-106.440277778</lng>
             <thumb>https://c1.staticflickr.com/5/4255/34653513424_a0dac05d25_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34653513424/in/album-72157682479852684</alblnk>
-            <date>"2017:06:21 11:06:27"</date>
+            <date>2017:06:21 11:06:27</date>
             <mid>https://c1.staticflickr.com/5/4255/34653513424_a0dac05d25_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22974,7 +22974,7 @@ accumulations.</hikeInfo>
             <lng>-106.441458333</lng>
             <thumb>https://c1.staticflickr.com/5/4212/34684612713_078ec372e0_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34684612713/in/album-72157682479852684</alblnk>
-            <date>"2017:06:21 12:29:50"</date>
+            <date>2017:06:21 12:29:50</date>
             <mid>https://c1.staticflickr.com/5/4212/34684612713_078ec372e0_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -22993,7 +22993,7 @@ accumulations.</hikeInfo>
             <lng>-106.443230556</lng>
             <thumb>https://c1.staticflickr.com/5/4214/34653516134_49230bae0e_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/34653516134/in/album-72157682479852684</alblnk>
-            <date>"2017:06:21 12:34:12"</date>
+            <date>2017:06:21 12:34:12</date>
             <mid>https://c1.staticflickr.com/5/4214/34653516134_49230bae0e_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -23012,7 +23012,7 @@ accumulations.</hikeInfo>
             <lng>-106.448744444</lng>
             <thumb>https://c1.staticflickr.com/5/4237/35363800951_410f770434_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/139088815@N08/35363800951/in/album-72157682479852684</alblnk>
-            <date>"2017:06:21 13:31:46"</date>
+            <date>2017:06:21 13:31:46</date>
             <mid>https://c1.staticflickr.com/5/4237/35363800951_410f770434_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -23096,7 +23096,7 @@ accumulations.</hikeInfo>
             <lng>-105.79149166667</lng>
             <thumb>https://c1.staticflickr.com/8/7564/27605764701_d54b0d9275_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/27605764701/in/album-72157682677610364</alblnk>
-            <date>"2016:06:14 09:19:22"</date>
+            <date>2016:06:14 09:19:22</date>
             <mid>https://c1.staticflickr.com/8/7564/27605764701_d54b0d9275_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -23115,7 +23115,7 @@ accumulations.</hikeInfo>
             <lng>-105.78404444444</lng>
             <thumb>https://c1.staticflickr.com/8/7697/27579459192_917d3cae14_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/27579459192/in/album-72157682677610364</alblnk>
-            <date>"2016:06:14 09:37:53"</date>
+            <date>2016:06:14 09:37:53</date>
             <mid>https://c1.staticflickr.com/8/7697/27579459192_917d3cae14_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -23134,7 +23134,7 @@ accumulations.</hikeInfo>
             <lng>-105.773625</lng>
             <thumb>https://c1.staticflickr.com/8/7585/27789888066_64f7990052_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/27789888066/in/album-72157682677610364</alblnk>
-            <date>"2016:06:21 11:10:52"</date>
+            <date>2016:06:21 11:10:52</date>
             <mid>https://c1.staticflickr.com/8/7585/27789888066_64f7990052_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -23153,7 +23153,7 @@ accumulations.</hikeInfo>
             <lng>-105.77252777778</lng>
             <thumb>https://c1.staticflickr.com/6/5772/30055820194_e32b0e30e4_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/30055820194/in/album-72157682677610364</alblnk>
-            <date>"2016:10:30 12:28:50"</date>
+            <date>2016:10:30 12:28:50</date>
             <mid>https://c1.staticflickr.com/6/5772/30055820194_e32b0e30e4_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -23172,7 +23172,7 @@ accumulations.</hikeInfo>
             <lng>-105.77367777778</lng>
             <thumb>https://c1.staticflickr.com/6/5729/30387332020_05995dcf1a_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/30387332020/in/album-72157682677610364</alblnk>
-            <date>"2016:10:30 13:02:37"</date>
+            <date>2016:10:30 13:02:37</date>
             <mid>https://c1.staticflickr.com/6/5729/30387332020_05995dcf1a_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24076,7 +24076,7 @@ accumulations.</hikeInfo>
             <lng>-105.78040833333</lng>
             <thumb>https://c1.staticflickr.com/5/4260/35715837632_5ba06d3015_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35715837632/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:21:40"</date>
+            <date>2017:07:12 09:21:40</date>
             <mid>https://c1.staticflickr.com/5/4260/35715837632_5ba06d3015_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24095,7 +24095,7 @@ accumulations.</hikeInfo>
             <lng>-105.78040833333</lng>
             <thumb>https://c1.staticflickr.com/5/4289/35075882243_653872fdb8_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075882243/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:21:48"</date>
+            <date>2017:07:12 09:21:48</date>
             <mid>https://c1.staticflickr.com/5/4289/35075882243_653872fdb8_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24114,7 +24114,7 @@ accumulations.</hikeInfo>
             <lng>-105.78362777778</lng>
             <thumb>https://c1.staticflickr.com/5/4215/35715836422_1af0367890_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35715836422/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:23:27"</date>
+            <date>2017:07:12 09:23:27</date>
             <mid>https://c1.staticflickr.com/5/4215/35715836422_1af0367890_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24133,7 +24133,7 @@ accumulations.</hikeInfo>
             <lng>-105.78113611111</lng>
             <thumb>https://c1.staticflickr.com/5/4261/35127437873_fa9ab93af9_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35127437873/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:31:35"</date>
+            <date>2017:07:12 09:31:35</date>
             <mid>https://c1.staticflickr.com/5/4261/35127437873_fa9ab93af9_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24152,7 +24152,7 @@ accumulations.</hikeInfo>
             <lng>-105.77945</lng>
             <thumb>https://c1.staticflickr.com/5/4216/35075881143_4185d6d02d_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075881143/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:34:23"</date>
+            <date>2017:07:12 09:34:23</date>
             <mid>https://c1.staticflickr.com/5/4216/35075881143_4185d6d02d_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24171,7 +24171,7 @@ accumulations.</hikeInfo>
             <lng>-105.77933611111</lng>
             <thumb>https://c1.staticflickr.com/5/4218/35715835452_9f0496d346_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35715835452/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:34:51"</date>
+            <date>2017:07:12 09:34:51</date>
             <mid>https://c1.staticflickr.com/5/4218/35715835452_9f0496d346_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24190,7 +24190,7 @@ accumulations.</hikeInfo>
             <lng>-105.77933888889</lng>
             <thumb>https://c1.staticflickr.com/5/4290/35075879823_eaf1e54d98_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075879823/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:35:31"</date>
+            <date>2017:07:12 09:35:31</date>
             <mid>https://c1.staticflickr.com/5/4290/35075879823_eaf1e54d98_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24209,7 +24209,7 @@ accumulations.</hikeInfo>
             <lng>-105.77936111111</lng>
             <thumb>https://c1.staticflickr.com/5/4278/35715834292_f6b875177f_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35715834292/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:35:55"</date>
+            <date>2017:07:12 09:35:55</date>
             <mid>https://c1.staticflickr.com/5/4278/35715834292_f6b875177f_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24228,7 +24228,7 @@ accumulations.</hikeInfo>
             <lng>-105.77935833333</lng>
             <thumb>https://c1.staticflickr.com/5/4261/35548238850_05958321a7_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35548238850/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:37:10"</date>
+            <date>2017:07:12 09:37:10</date>
             <mid>https://c1.staticflickr.com/5/4261/35548238850_05958321a7_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24247,7 +24247,7 @@ accumulations.</hikeInfo>
             <lng>-105.77807222222</lng>
             <thumb>https://c1.staticflickr.com/5/4258/35844200626_cd15e8306e_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35844200626/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:41:43"</date>
+            <date>2017:07:12 09:41:43</date>
             <mid>https://c1.staticflickr.com/5/4258/35844200626_cd15e8306e_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24266,7 +24266,7 @@ accumulations.</hikeInfo>
             <lng>-105.77072222222</lng>
             <thumb>https://c1.staticflickr.com/5/4329/35096785084_04c23b3e60_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35096785084/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:53:39"</date>
+            <date>2017:07:12 09:53:39</date>
             <mid>https://c1.staticflickr.com/5/4329/35096785084_04c23b3e60_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24285,7 +24285,7 @@ accumulations.</hikeInfo>
             <lng>-105.76982777778</lng>
             <thumb>https://c1.staticflickr.com/5/4296/35075877053_d8b30fdbda_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075877053/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:56:06"</date>
+            <date>2017:07:12 09:56:06</date>
             <mid>https://c1.staticflickr.com/5/4296/35075877053_d8b30fdbda_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24304,7 +24304,7 @@ accumulations.</hikeInfo>
             <lng>-105.76769722222</lng>
             <thumb>https://c1.staticflickr.com/5/4306/35075876373_68280791e8_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075876373/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 09:58:42"</date>
+            <date>2017:07:12 09:58:42</date>
             <mid>https://c1.staticflickr.com/5/4306/35075876373_68280791e8_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24323,7 +24323,7 @@ accumulations.</hikeInfo>
             <lng>-105.76683333333</lng>
             <thumb>https://c1.staticflickr.com/5/4322/35075875943_3485cd5a70_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075875943/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:02:32"</date>
+            <date>2017:07:12 10:02:32</date>
             <mid>https://c1.staticflickr.com/5/4322/35075875943_3485cd5a70_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24342,7 +24342,7 @@ accumulations.</hikeInfo>
             <lng>-105.76535</lng>
             <thumb>https://c1.staticflickr.com/5/4289/35766517472_a6e0378cc1_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35766517472/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:09:01"</date>
+            <date>2017:07:12 10:09:01</date>
             <mid>https://c1.staticflickr.com/5/4289/35766517472_a6e0378cc1_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24361,7 +24361,7 @@ accumulations.</hikeInfo>
             <lng>-105.76071944444</lng>
             <thumb>https://c1.staticflickr.com/5/4212/35075875323_0d1bbaac4d_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075875323/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:30:17"</date>
+            <date>2017:07:12 10:30:17</date>
             <mid>https://c1.staticflickr.com/5/4212/35075875323_0d1bbaac4d_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24380,7 +24380,7 @@ accumulations.</hikeInfo>
             <lng>-105.76077222222</lng>
             <thumb>https://c1.staticflickr.com/5/4306/35766527022_40760c5ecd_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35766527022/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:30:26"</date>
+            <date>2017:07:12 10:30:26</date>
             <mid>https://c1.staticflickr.com/5/4306/35766527022_40760c5ecd_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24399,7 +24399,7 @@ accumulations.</hikeInfo>
             <lng>-105.75993333333</lng>
             <thumb>https://c1.staticflickr.com/5/4209/35075874963_11e65256f7_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075874963/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:34:52"</date>
+            <date>2017:07:12 10:34:52</date>
             <mid>https://c1.staticflickr.com/5/4209/35075874963_11e65256f7_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24418,7 +24418,7 @@ accumulations.</hikeInfo>
             <lng>-105.75655</lng>
             <thumb>https://c1.staticflickr.com/5/4217/35075874473_444e9a0725_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075874473/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:44:22"</date>
+            <date>2017:07:12 10:44:22</date>
             <mid>https://c1.staticflickr.com/5/4217/35075874473_444e9a0725_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24437,7 +24437,7 @@ accumulations.</hikeInfo>
             <lng>-105.75514166667</lng>
             <thumb>https://c1.staticflickr.com/5/4306/35715829542_da843138d8_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35715829542/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:45:50"</date>
+            <date>2017:07:12 10:45:50</date>
             <mid>https://c1.staticflickr.com/5/4306/35715829542_da843138d8_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24456,7 +24456,7 @@ accumulations.</hikeInfo>
             <lng>-105.75360833333</lng>
             <thumb>https://c1.staticflickr.com/5/4213/35936743105_cbf76c0fb2_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35936743105/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:46:06"</date>
+            <date>2017:07:12 10:46:06</date>
             <mid>https://c1.staticflickr.com/5/4213/35936743105_cbf76c0fb2_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24475,7 +24475,7 @@ accumulations.</hikeInfo>
             <lng>-105.75309722222</lng>
             <thumb>https://c1.staticflickr.com/5/4324/35075873183_b24a965390_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35075873183/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:47:26"</date>
+            <date>2017:07:12 10:47:26</date>
             <mid>https://c1.staticflickr.com/5/4324/35075873183_b24a965390_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24494,7 +24494,7 @@ accumulations.</hikeInfo>
             <lng>-105.75441666667</lng>
             <thumb>https://c1.staticflickr.com/5/4211/35895851656_6b890841fe_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35895851656/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 10:47:51"</date>
+            <date>2017:07:12 10:47:51</date>
             <mid>https://c1.staticflickr.com/5/4211/35895851656_6b890841fe_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24513,7 +24513,7 @@ accumulations.</hikeInfo>
             <lng>-105.78381388889</lng>
             <thumb>https://c1.staticflickr.com/5/4209/35715827862_afafe0ebb2_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35715827862/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 12:17:26"</date>
+            <date>2017:07:12 12:17:26</date>
             <mid>https://c1.staticflickr.com/5/4209/35715827862_afafe0ebb2_n.jpg</mid>
             <symbol/>
             <icon_size/>
@@ -24532,7 +24532,7 @@ accumulations.</hikeInfo>
             <lng>-105.78610277778</lng>
             <thumb>https://c1.staticflickr.com/5/4302/35096846314_4cbb728a33_n.jpg</thumb>
             <alblnk>https://www.flickr.com/photos/30474783@N06/35096846314/in/album-72157686336913285</alblnk>
-            <date>"2017:07:12 12:22:32"</date>
+            <date>2017:07:12 12:22:32</date>
             <mid>https://c1.staticflickr.com/5/4302/35096846314_4cbb728a33_n.jpg</mid>
             <symbol/>
             <icon_size/>
