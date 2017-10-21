@@ -22,6 +22,7 @@ require "setenv.php";
 
 <div style="margin-left:24px;" id="tools">
 <?php
+/*
 $query = "LOAD XML LOCAL INFILE '../data/database.xml' INTO TABLE TSV ROWS "
     . "IDENTIFIED BY '<picDat>';";
 $tsv = mysqli_query($link,$query);
@@ -33,10 +34,11 @@ $addcol = mysqli_query($link,$addindx);
 if (!$addcol) {
     die("<p>load_TSV.php: Failed to add indxNo column to TSV</p>");
 } else {
-    echo '<p>EHIKES Table created; Definitions are shown in the table below</p>';
+    echo '<p>TSV Table created</p>';
 }
+ */
 # now add the indxNo info:
-$xml = simplexml_load_file('../database/database.xml');
+$xml = simplexml_load_file('../data/database.xml');
 if (!$xml) {
     $errmsg = '<p style="color:red;font-size:18px;margin-left:16px">' .
         'Failed to load xml database.</p>';
@@ -44,9 +46,28 @@ if (!$xml) {
 } else {
     echo '<p>XML Database successfully opened.</p>';
 }
+$indices = [];
+$indx = 0;
+# NOTE: the loop skips over index pages which have no picDat
 foreach ($xml->row as $row) {
-    if ($row->tsv->picDat->count() !== 0) {
-        
+    $indx++;
+    $rcnt = $row->tsv->picDat->count();
+    if ($rcnt !== 0) {
+        for ($j=0; $j<$rcnt; $j++) {
+            array_push($indices,$indx);
+        }
+    }
+}
+# there should be a one-to-one correspondence based on original load
+for ($k=0; $k<count($indices); $k++) {
+    $tsvrow = $k + 1;
+    $placeIndx = "UPDATE TSV SET indxNo = '{$indices[$k]}' WHERE picIdx = '{$tsvrow}';";
+    $newdat = mysqli_query($link,$placeIndx);
+    if (!$newdat) {
+        die ("load_TSV.php: Failed to update TSV with new indxNo value: " . 
+                mysqli_error() );
+    } else {
+        echo "." . $k . ".";
     }
 }
 ?>
