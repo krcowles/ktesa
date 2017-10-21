@@ -25,6 +25,7 @@
             <option>EHIKES</option>
             <option>USERS</option>
             <option>HIKES</option>
+            <option>TSV</option>
         </select>&nbsp;&nbsp;
         <button id="drop">Drop Table</button><br />
         Table to Create:&nbsp;&nbsp;
@@ -32,6 +33,7 @@
             <option>EHIKES</option>
             <option>USERS</option>
             <option>HIKES</option>
+            <option>TSV</option>
         </select>&nbsp;&nbsp;
         <button id="create">Create Table</button><br />
         <button id="ia">Insert Admins into USERS</button>
@@ -45,6 +47,7 @@
             <option>EHIKES</option>
             <option>USERS</option>
             <option>HIKES</option>
+            <option>TSV</option>
         </select>&nbsp;&nbsp;
         Row No.&nbsp;&nbsp;<input id="drow" type="text" 
             name="indx" size="4" />&nbsp;&nbsp;

@@ -32,6 +32,8 @@ $('#rowdel').on('click', function() {
                 qstr = 'e&indx=' + rno;
             } else if (tbl === 'HIKES') {
                 qstr = 'h&indx=' + rno;
+            } else if (tbl === 'TSV') {
+                qstr = 't&indx=' + rno;
             } else {
                 alert ("Unidentified Table");
             }
