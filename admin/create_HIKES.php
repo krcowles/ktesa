@@ -57,7 +57,7 @@ require 'setenv.php';
         cgroup varchar(3),
         cname varchar(25),
         logistics varchar(12),
-        miles dec(4,1),
+        miles decimal(4,2),
         feet smallint(5),
         diff varchar(14),
         fac varchar(30),
