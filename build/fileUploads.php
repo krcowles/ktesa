@@ -161,7 +161,7 @@ $pfile1 = basename($_FILES['propmap']['name']);
 $pf1Type = $_FILES['propmap']['type'];
 $pf1Stat = $_FILES['propmap']['error'];
 if ( $pfile1 !== '') {
-    $gpsDatFiles = true;
+    $propFiles = true;
     if ($pf1Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($pf1Stat) . '</p>';
         die ($errmsg);
@@ -198,7 +198,7 @@ $pf2Size = filesize($pdatf2);
 $pf2Type = $_FILES['propgpx']['type'];
 $pf2Stat = $_FILES['propgpx']['error'];
 if ( $pfile2 !== '') {
-    $gpsDatFiles = true;
+    $propFiles = true;
     if ($pf2Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($pf2Stat) . '</p>';
         die ($errmsg);
@@ -234,7 +234,7 @@ $afile1 = basename($_FILES['actmap']['name']);
 $af1Type = $_FILES['actmap']['type'];
 $af1Stat = $_FILES['actmap']['error'];
 if ( $afile1 !== '') {
-    $gpsDatFiles = true;
+    $actFiles = true;
     if ($af1Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($af1Stat) . '</p>';
         die ($errmsg);
@@ -270,7 +270,7 @@ $afile2 = basename($_FILES['actgpx']['name']);
 $af2Type = $_FILES['actgpx']['type'];
 $af2Stat = $_FILES['actgpx']['error'];
 if ( $afile2 !== '') {
-    $gpsDatFiles = true;
+    $actFiles = true;
     if ($af2Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($af2Stat) . '</p>';
         die ($errmsg);

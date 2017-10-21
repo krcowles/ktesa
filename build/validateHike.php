@@ -11,6 +11,15 @@
             'Could not load xml database: contact Site Master</p>';
         die ($errmsg);
     }
+    /*
+     * Note: the next few variables are initialized false as 'save' type cannot
+     * save file uploads. If 'validate' type, then fileUploads.php may set them.
+     */
+    $haveGpx = false;
+    $imageFiles = false;
+    $propFiles = false;
+    $actFiles = false;
+    
     $saveType = filter_input(INPUT_POST,'saveit');
     $valType = filter_input(INPUT_POST,'valdat');
     if ( isset($saveType)) {
@@ -114,7 +123,7 @@ $xml->row[$hikeNo]->wow = filter_input(INPUT_POST,'wow_factor');
 $xml->row[$hikeNo]->seasons = filter_input(INPUT_POST,'seas');
 $xml->row[$hikeNo]->expo = filter_input(INPUT_POST,'expos');
 
-if ($haveGpx) {
+if ($haveGpx) { # fileUploads will set true, if 'validate' & gpx file present
     $xml->row[$hikeNo]->gpxfile = $hikeGpx;
     $xml->row[$hikeNo]->trkfile = $trkfile;
     # Extract trailhead lat & lng from gpx file
@@ -139,7 +148,7 @@ if ($haveGpx) {
     $lonlgth = $lonend - $lonloc;
     $xml->row[$hikeNo]->lng = substr($trksubstr,$lonloc,$lonlgth);
 }
-if ($imageFiles) {
+if ($imageFiles) { # fileUploads.php may set true if 'validate' and 1 or 2 present
     if ($hikeOthrImage1 !== '') {
         $xml->row[$hikeNo]->aoimg1 = $hikeOthrImage1;
     }
@@ -195,7 +204,7 @@ if ($noOfRefs === 0) {
     }
 }
 # Proposed and Actual GPS Maps & Data:
-if ($gpsDatFiles) {
+if ($propFiles) { # if 'validate' type & files present, fileUploads.php will set
     # PROPOSED:
     $pcnt = $xml->row[$hikeNo]->dataProp->prop->count();
     for ($j=0; $j<$pcnt; $j++) {
@@ -220,6 +229,8 @@ if ($gpsDatFiles) {
             $newPs = $xml->row[$hikeNo]->dataProp->addChild('prop');
         }
     }
+}
+if ($actFiles) { # if 'validate' type & files present, fileUploads.php will set
     # ACTUAL:
     $acnt = $xml->row[$hikeNo]->dataAct->act->count();
     for ($k=0; $k<$acnt; $k++) {
