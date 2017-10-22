@@ -29,14 +29,7 @@ $tsv = mysqli_query($link,$query);
 if (!$tsv) {
     die ("load_TSV.php: Failed to load TSV table from XML using LOAD");
 }
-$addindx = "ALTER TABLE TSV ADD indxNo SMALLINT AFTER picIdx";
-$addcol = mysqli_query($link,$addindx);
-if (!$addcol) {
-    die("<p>load_TSV.php: Failed to add indxNo column to TSV</p>");
-} else {
-    echo '<p>TSV Table created</p>';
-}
- 
+
 # now add the indxNo info:
 $xml = simplexml_load_file('../data/database.xml');
 if (!$xml) {

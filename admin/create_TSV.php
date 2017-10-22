@@ -51,6 +51,7 @@ echo "<p>mySql Connection Opened</p>";
 $newtsv = <<<tsv
 CREATE TABLE TSV (
 picIdx smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+indxNo smallint,
 folder varchar(30),
 usrid varchar(32),
 title varchar(64),
