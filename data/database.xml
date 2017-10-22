@@ -23806,7 +23806,7 @@ accumulations.</hikeInfo>
 	<dataProp>
 		<prop>
 			<plbl>GPX:</plbl>
-			<purl>../gpx/C:\fakepath\LakePeakSnipped.gpx</purl>
+			<purl>../gpx/LakePeakSnipped.gpx</purl>
 			<pcot>Actual hike GPX file</pcot>
 		</prop>
 	</dataProp>
@@ -27159,6 +27159,6 @@ From Tree Spring, it is a short walk up to the juncture with Oso Corredor, and w
     <hikeInfo>This loop hike begins in the arroyo near the windmill (see book reference, below), and immediately enters a shallow canyon. The canyon walls vary as the hike progresses, and there are many interesting geological features along the way, accented by many color changes and rock sizes. Once the trail departs from the arroyo, the views increase as multi-colored hills become visible. Also, a short distance from the arroyo is an area containing large petrified tree trunk pieces. Petrified wood is scattered along the trail from here. Overall, the trail presents many great views and interesting features.</hikeInfo>
     <refs><ref><rtype>b</rtype><rit1>60+Hikes+Within+60+Miles%3A+Albuquerque</rit1><rit2>, by Stephen Ausherman</rit2></ref><ref><rtype>g</rtype><rit1>https%3A%2F%2Fwww.meetup.com%2Fhiking-204%2Fevents%2F5328661%2F%3F_cookie-check%3DSogG3sQ3Y5fafRm5</rit1><rit2>ABQ Hiking and Outdoor Meetup</rit2></ref></refs>
     <dataProp></dataProp>
-    <dataAct><act><albl>GPX:</albl><aurl>../gpx/C:\fakepath\Ball_Ranch.GPX</aurl><acot>The Track</acot></act></dataAct>
+    <dataAct><act><albl>GPX:</albl><aurl>../gpx/Ball_Ranch.GPX</aurl><acot>The Track</acot></act></dataAct>
 </row>
 </rows>
