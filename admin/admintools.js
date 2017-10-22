@@ -1,5 +1,8 @@
 $(function () { // when page is loaded...
 
+$('#show').on('click', function()  {
+    window.open('show_tables.php',"_blank_");
+});
 $('#create').on('click', function() {
     var ctarg = 'create_' + $('#ctbl').val() + '.php';
     window.open(ctarg,"_blank");
@@ -13,7 +16,10 @@ $('#ia').on('click', function() {
 });
 $('#ldh').on('click', function() {
     window.open('load_HIKES.php',"_blank");
-})
+});
+$('#ldt').on('click', function() {
+    window.open('load_TSV.php',"_blank");
+});
 
 $('#rowdel').on('click', function() {
     var trow = prompt("Are you sure you want to delete this row?","Row " + $('#drow').val());

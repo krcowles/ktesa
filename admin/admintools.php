@@ -20,6 +20,7 @@
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Create/Delete</legend>
+        <button id="show">Show All Tables</button><br />
         Table to Delete:&nbsp;&nbsp;
         <select id="dtbl" name="dropper">
             <option>EHIKES</option>
@@ -40,6 +41,7 @@
         &nbsp;(USERS Table must exist)<br />
         <button id="ldh">Load HIKES from XML</button>
         &nbsp;(HIKES Table must exist)<br />
+        <button id="ldt">Load TSV from XML</button><br />
     </fieldset><br />
     <fieldset>
         <legend>Row Manipulation</legend>
