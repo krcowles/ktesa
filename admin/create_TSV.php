@@ -56,7 +56,7 @@ usrid varchar(32),
 title varchar(64),
 hpg varchar(1),
 mpg varchar(1),
-gpsv_desc varchar(128),  # does not like the keyword desc
+`desc` varchar(128),  # does not like the keyword desc
 lat double(13,10),
 lng double(13,10),
 thumb varchar(256),

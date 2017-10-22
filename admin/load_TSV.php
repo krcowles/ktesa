@@ -22,7 +22,7 @@ require "setenv.php";
 
 <div style="margin-left:24px;" id="tools">
 <?php
-/*
+
 $query = "LOAD XML LOCAL INFILE '../data/database.xml' INTO TABLE TSV ROWS "
     . "IDENTIFIED BY '<picDat>';";
 $tsv = mysqli_query($link,$query);
@@ -36,7 +36,7 @@ if (!$addcol) {
 } else {
     echo '<p>TSV Table created</p>';
 }
- */
+ 
 # now add the indxNo info:
 $xml = simplexml_load_file('../data/database.xml');
 if (!$xml) {
@@ -67,7 +67,8 @@ for ($k=0; $k<count($indices); $k++) {
         die ("load_TSV.php: Failed to update TSV with new indxNo value: " . 
                 mysqli_error() );
     } else {
-        echo "." . $k . ".";
+        echo "." . $k . ".</p>";
+		flush();
     }
 }
 ?>
