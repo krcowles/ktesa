@@ -3,8 +3,6 @@ $( function () { // when page is loaded...
 var msgA;  // generic
 var msgB;
 var msgC;
-var msgD;
-var msgE;
 
 /* Preload the GPS Maps & Data Section with the urls for uploaded files;
  * The user will still be required to fill in the remaining fields for these items:
@@ -13,12 +11,18 @@ var msgE;
  * easily expanded by adding code here (and additional upload elements in the html)
  */
 function preload(targfile,datasect) {
-    var ptype = targfile.val();
-    if ( ptype.indexOf('html') === -1 ) {
-        var fname = '../gpx/' + ptype;
+    var fullPath = targfile.val();
+    var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+    var filename = fullPath.substring(startIndex);
+    if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+        filename = filename.substring(1);
+    }
+    // This provides C:\fakepath as a lead-in: strip off the filename:
+    if ( filename.indexOf('html') === -1 ) {
+        var fname = '../gpx/' + filename;
         $(datasect).val(fname);
     } else {
-        var fname  = '../maps/' + ptype;
+        var fname  = '../maps/' + filename;
         $(datasect).val(fname);
     }
 }
