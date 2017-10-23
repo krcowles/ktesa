@@ -49,7 +49,7 @@ for ($k=$kstart; $k<$pcnt; $k++) {
     }
     fwrite($exifFile,$contents);
     fclose($exifFile);
-    $exifdata = exif_read_data($truncFile, ANY_TAG, EXIF);
+    $exifdata = exif_read_data($truncFile);
     if ($exifdata === false) {
         echo $pstyle . 'WARNING: Could not read exif data for ' . $orgPhoto
             . '<br />Please verify that all album photos contain metadata. '
@@ -57,55 +57,36 @@ for ($k=$kstart; $k<$pcnt; $k++) {
             . 'latitude/longitude/date-stamp data. This implies that such '
             . 'photos will not appear on the hike map.</p>';
     } else {
-        foreach ($exifdata as $key => $section) {
-            foreach ($section as $name => $val) {
-                switch ($key) {
-                    case 'FILE':
-                        if ($name === 'FileName') {
-                            $ext = strrpos($val,".");
-                            $imgName = substr($val,0,$ext);
-                            $imgs[$k] = $imgName;
-                        }
-                        break;
-                    case 'COMPUTED':
-                        if ($name === 'Height') {
-                            $imgHt[$k] = $val;
-                        } elseif ($name === 'Width') {
-                            $imgWd[$k] = $val;
-                        }
-                        break;
-                    case 'IFD0':
-                        if ($name === 'Model') {
-                            $imgPh[$k] = $val; # currently not used
-                        }
-                        break;
-                    case 'EXIF':
-                        if ($name === 'DateTimeOriginal') {
-                            $timeStamp[$k] = $val;
-                            if ($val == '') {
-                                echo "WARNING: No date/time data found " .
-                                    'for ' . $orgPhoto . '</p>';
-                            }
-                        }
-                    case 'GPS':
-                        if ($name === 'GPSLatitude') {
-                            $lats[$k] = mantissa($val);
-                        } elseif ($name === 'GPSLongitude') {
-                            $lngs[$k] = -1 * mantissa($val);
-                        } elseif ($name === 'GPSAltitude') {
-                            $elev[$k] = $val;
-                        } elseif ($name === 'GPSDateStamp') {
-                            $gpds[$k] = $val;
-                        } elseif ($name === 'GPSTimeStamp') {
-                            // array
-                            $gpts[$k] = $val;
-                        }
-                        break;
-                    default:
-                        break;
-                }  // end of switch statement
-            }  // end of foreach $name loop
-        }  // end of foreach $section loop
+		$ext = strrpos($exifdata["FileName"],".");
+		$imgName = substr($exifdata["FileName"],0,$ext);
+		$imgs[$k] = $imgName;
+
+		$imgHt[$k] = $exifdata["ExifImageLength"];
+		$imgWd[$k] = $exifdata["ExifImageWidth"];
+                
+		$timeStamp[$k] = $exifdata["DateTimeOriginal"];
+		if ($timeStamp[$k] == '') {
+			echo "WARNING: No date/time data found " . 'for ' . $orgPhoto . '</p>';
+		}
+
+		if ($exifdata["GPSLatitudeRef"] == 'N') {
+			$lats[$k] = mantissa($exifdata["GPSLatitude"]); # TJS
+		} else {
+			$lats[$k] = -1 * mantissa($exifdata["GPSLatitude"]); # TJS
+		}
+
+		if ($exifdata["GPSLongitudeRef"] == 'E') {
+			$lngs[$k] = mantissa($exifdata["GPSLongitude"]); # TJS
+		} else {
+			$lngs[$k] = -1 * mantissa($exifdata["GPSLongitude"]); # TJS
+		}
+
+		$elev[$k] = $exifdata["GPSAltitude"];
+		$gpds[$k] = $exifdata["GPSDateStamp"];
+
+		// array
+		$gpts[$k] = $exifdata["GPSTimeStamp"];
+
         if ($lats[$k] == 0 || $lngs[$k] == 0) {
             echo $pstyle . "WARNING: No latitude/longitude data obtained for " .
                 $orgPhoto . '</p>';
