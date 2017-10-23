@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<gpx
+version="1.1"
+creator="KML2GPX"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.topografix.com/GPX/1/1"
+xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata>
+<name>Trail 400 - Copper Trailhead Access.kml</name>
+<desc>Trail 400 - Copper Trailhead Access.kml</desc>
+<link href="http://www.garmin.com">
+<text>Garmin International</text>
+</link>
+</metadata>
+<trk>
+<name>Trail 400 - Copper Trailhead Access</name>
+<trkseg>
+<trkpt lat="35.078974" lon="-106.479958">
+<ele>1860.28833</ele>
+</trkpt>
+<trkpt lat="35.078919" lon="-106.479763">
+<ele>1859.807617</ele>
+</trkpt>
+<trkpt lat="35.07894" lon="-106.479823">
+<ele>1858.846436</ele>
+</trkpt>
+<trkpt lat="35.078985" lon="-106.479877">
+<ele>1857.885254</ele>
+</trkpt>
+<trkpt lat="35.079089" lon="-106.480031">
+<ele>1856.923828</ele>
+</trkpt>
+<trkpt lat="35.07924" lon="-106.48024">
+<ele>1857.404541</ele>
+</trkpt>
+<trkpt lat="35.079275" lon="-106.480299">
+<ele>1855.481934</ele>
+</trkpt>
+<trkpt lat="35.079287" lon="-106.480313">
+<ele>1855.962402</ele>
+</trkpt>
+<trkpt lat="35.07931" lon="-106.480364">
+<ele>1854.520508</ele>
+</trkpt>
+<trkpt lat="35.07943" lon="-106.480637">
+<ele>1854.040039</ele>
+</trkpt>
+<trkpt lat="35.079431" lon="-106.480723">
+<ele>1850.675049</ele>
+</trkpt>
+<trkpt lat="35.079427" lon="-106.481027">
+<ele>1847.310547</ele>
+</trkpt>
+<trkpt lat="35.079433" lon="-106.481232">
+<ele>1843.465332</ele>
+</trkpt>
+<trkpt lat="35.079431" lon="-106.481252">
+<ele>1843.465332</ele>
+</trkpt>
+<trkpt lat="35.079402" lon="-106.48152">
+<ele>1841.542725</ele>
+</trkpt>
+<trkpt lat="35.079401" lon="-106.48169">
+<ele>1840.10083</ele>
+</trkpt>
+<trkpt lat="35.079407" lon="-106.481889">
+<ele>1836.736084</ele>
+</trkpt>
+<trkpt lat="35.079408" lon="-106.481908">
+<ele>1837.216797</ele>
+</trkpt>
+<trkpt lat="35.079423" lon="-106.48229">
+<ele>1833.371338</ele>
+</trkpt>
+<trkpt lat="35.079422" lon="-106.482646">
+<ele>1830.968262</ele>
+</trkpt>
+<trkpt lat="35.079412" lon="-106.482848">
+<ele>1832.890625</ele>
+</trkpt>
+<trkpt lat="35.079403" lon="-106.483028">
+<ele>1830.006836</ele>
+</trkpt>
+<trkpt lat="35.07937" lon="-106.483453">
+<ele>1826.642334</ele>
+</trkpt>
+<trkpt lat="35.079295" lon="-106.483815">
+<ele>1824.719727</ele>
+</trkpt>
+<trkpt lat="35.079285" lon="-106.48389">
+<ele>1822.797119</ele>
+</trkpt>
+<trkpt lat="35.079248" lon="-106.484161">
+<ele>1822.316406</ele>
+</trkpt>
+<trkpt lat="35.079253" lon="-106.484431">
+<ele>1820.874512</ele>
+</trkpt>
+<trkpt lat="35.079258" lon="-106.484452">
+<ele>1822.316406</ele>
+</trkpt>
+</trkseg>
+</trk>
+<extensions>
+</extensions>
+</gpx>

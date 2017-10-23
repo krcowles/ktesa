@@ -112,7 +112,6 @@
             }
             $hType = filter_input(INPUT_POST,'htype');
             $hikeLine->logistics = $hType;
-            echo "YAP: " . $hType;
             $hLgth = filter_input(INPUT_POST,'hlgth');
             $hikeLine->miles = $hLgth;
             $hElev = filter_input(INPUT_POST,'helev');

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<gpx
+version="1.1"
+creator="KML2GPX"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.topografix.com/GPX/1/1"
+xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata>
+<name>Juan Tabo Cabin Trail.kml</name>
+<desc>Juan Tabo Cabin Trail.kml</desc>
+<link href="http://www.garmin.com">
+<text>Garmin International</text>
+</link>
+</metadata>
+<trk>
+<name>Juan Tabo Cabin Trail</name>
+<trkseg>
+<trkpt lat="35.202767" lon="-106.503806">
+<ele>1876.150146</ele>
+</trkpt>
+<trkpt lat="35.202769" lon="-106.503801">
+<ele>1876.150146</ele>
+</trkpt>
+<trkpt lat="35.202861" lon="-106.503528">
+<ele>1877.592041</ele>
+</trkpt>
+<trkpt lat="35.202845" lon="-106.503162">
+<ele>1877.111572</ele>
+</trkpt>
+<trkpt lat="35.202843" lon="-106.503114">
+<ele>1877.592041</ele>
+</trkpt>
+<trkpt lat="35.202896" lon="-106.50302">
+<ele>1878.072754</ele>
+</trkpt>
+<trkpt lat="35.203049" lon="-106.502703">
+<ele>1879.033936</ele>
+</trkpt>
+<trkpt lat="35.203203" lon="-106.502389">
+<ele>1880.956787</ele>
+</trkpt>
+<trkpt lat="35.203185" lon="-106.502346">
+<ele>1881.917969</ele>
+</trkpt>
+<trkpt lat="35.203186" lon="-106.502329">
+<ele>1881.917969</ele>
+</trkpt>
+<trkpt lat="35.20322800000001" lon="-106.502164">
+<ele>1882.87915</ele>
+</trkpt>
+<trkpt lat="35.203258" lon="-106.501994">
+<ele>1884.321533</ele>
+</trkpt>
+<trkpt lat="35.203382" lon="-106.501726">
+<ele>1885.282715</ele>
+</trkpt>
+<trkpt lat="35.203518" lon="-106.501472">
+<ele>1886.724609</ele>
+</trkpt>
+<trkpt lat="35.20368" lon="-106.501205">
+<ele>1888.166748</ele>
+</trkpt>
+<trkpt lat="35.203836" lon="-106.501034">
+<ele>1889.12793</ele>
+</trkpt>
+<trkpt lat="35.204017" lon="-106.50081">
+<ele>1890.569824</ele>
+</trkpt>
+<trkpt lat="35.204192" lon="-106.500651">
+<ele>1891.53125</ele>
+</trkpt>
+<trkpt lat="35.204337" lon="-106.500421">
+<ele>1892.973145</ele>
+</trkpt>
+<trkpt lat="35.204451" lon="-106.500145">
+<ele>1894.415039</ele>
+</trkpt>
+<trkpt lat="35.204526" lon="-106.499891">
+<ele>1895.376465</ele>
+</trkpt>
+<trkpt lat="35.204712" lon="-106.499682">
+<ele>1896.818359</ele>
+</trkpt>
+<trkpt lat="35.204908" lon="-106.49939">
+<ele>1897.779785</ele>
+</trkpt>
+<trkpt lat="35.205064" lon="-106.499132">
+<ele>1899.22168</ele>
+</trkpt>
+<trkpt lat="35.205239" lon="-106.498878">
+<ele>1900.663818</ele>
+</trkpt>
+<trkpt lat="35.205427" lon="-106.498598">
+<ele>1902.105713</ele>
+</trkpt>
+<trkpt lat="35.205622" lon="-106.498318">
+<ele>1904.028564</ele>
+</trkpt>
+<trkpt lat="35.205626" lon="-106.4983">
+<ele>1904.028564</ele>
+</trkpt>
+<trkpt lat="35.205696" lon="-106.498049">
+<ele>1904.989746</ele>
+</trkpt>
+<trkpt lat="35.205724" lon="-106.498036">
+<ele>1904.989746</ele>
+</trkpt>
+<trkpt lat="35.205824" lon="-106.497896">
+<ele>1906.431641</ele>
+</trkpt>
+<trkpt lat="35.20586" lon="-106.497738">
+<ele>1907.393066</ele>
+</trkpt>
+<trkpt lat="35.205945" lon="-106.49744">
+<ele>1909.796143</ele>
+</trkpt>
+<trkpt lat="35.205955" lon="-106.497369">
+<ele>1910.757568</ele>
+</trkpt>
+<trkpt lat="35.20598" lon="-106.497278">
+<ele>1911.718994</ele>
+</trkpt>
+<trkpt lat="35.205973" lon="-106.496969">
+<ele>1911.238281</ele>
+</trkpt>
+<trkpt lat="35.205988" lon="-106.496868">
+<ele>1911.238281</ele>
+</trkpt>
+<trkpt lat="35.205998" lon="-106.496822">
+<ele>1912.680176</ele>
+</trkpt>
+<trkpt lat="35.206036" lon="-106.496727">
+<ele>1914.602783</ele>
+</trkpt>
+<trkpt lat="35.206048" lon="-106.496702">
+<ele>1914.602783</ele>
+</trkpt>
+<trkpt lat="35.206047" lon="-106.496702">
+<ele>1914.602783</ele>
+</trkpt>
+<trkpt lat="35.206046" lon="-106.496702">
+<ele>1914.602783</ele>
+</trkpt>
+</trkseg>
+</trk>
+<extensions>
+</extensions>
+</gpx>

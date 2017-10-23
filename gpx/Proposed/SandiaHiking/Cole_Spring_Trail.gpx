@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<gpx
+version="1.1"
+creator="KML2GPX"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://www.topografix.com/GPX/1/1"
+xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata>
+<name>Cole Spring Trail.kml</name>
+<desc>Cole Spring Trail.kml</desc>
+<link href="http://www.garmin.com">
+<text>Garmin International</text>
+</link>
+</metadata>
+<trk>
+<name>Cole Spring Trail</name>
+<trkseg>
+<trkpt lat="35.134312" lon="-106.391239">
+<ele>2303.937012</ele>
+</trkpt>
+<trkpt lat="35.134308" lon="-106.391325">
+<ele>2303.456299</ele>
+</trkpt>
+<trkpt lat="35.134247" lon="-106.391073">
+<ele>2301.533691</ele>
+</trkpt>
+<trkpt lat="35.134164" lon="-106.390881">
+<ele>2299.61084</ele>
+</trkpt>
+<trkpt lat="35.134163" lon="-106.390823">
+<ele>2299.130127</ele>
+</trkpt>
+<trkpt lat="35.134125" lon="-106.390653">
+<ele>2297.20752</ele>
+</trkpt>
+<trkpt lat="35.134101" lon="-106.390498">
+<ele>2296.246338</ele>
+</trkpt>
+<trkpt lat="35.1341" lon="-106.390448">
+<ele>2296.246338</ele>
+</trkpt>
+<trkpt lat="35.1341" lon="-106.390421">
+<ele>2295.765625</ele>
+</trkpt>
+<trkpt lat="35.134196" lon="-106.390287">
+<ele>2295.284912</ele>
+</trkpt>
+<trkpt lat="35.134254" lon="-106.390256">
+<ele>2291.92041</ele>
+</trkpt>
+<trkpt lat="35.134304" lon="-106.390257">
+<ele>2290.478271</ele>
+</trkpt>
+<trkpt lat="35.134389" lon="-106.390229">
+<ele>2288.075195</ele>
+</trkpt>
+<trkpt lat="35.134497" lon="-106.390189">
+<ele>2285.191162</ele>
+</trkpt>
+<trkpt lat="35.134519" lon="-106.390174">
+<ele>2284.22998</ele>
+</trkpt>
+<trkpt lat="35.134609" lon="-106.390141">
+<ele>2281.826416</ele>
+</trkpt>
+<trkpt lat="35.134628" lon="-106.390078">
+<ele>2281.345703</ele>
+</trkpt>
+<trkpt lat="35.134652" lon="-106.390015">
+<ele>2280.384521</ele>
+</trkpt>
+<trkpt lat="35.13467" lon="-106.389983">
+<ele>2278.942383</ele>
+</trkpt>
+<trkpt lat="35.134759" lon="-106.389869">
+<ele>2277.500488</ele>
+</trkpt>
+<trkpt lat="35.134786" lon="-106.389821">
+<ele>2277.02002</ele>
+</trkpt>
+<trkpt lat="35.13477" lon="-106.389777">
+<ele>2273.655273</ele>
+</trkpt>
+<trkpt lat="35.13477" lon="-106.389777">
+<ele>2275.577881</ele>
+</trkpt>
+</trkseg>
+</trk>
+<extensions>
+</extensions>
+</gpx>
