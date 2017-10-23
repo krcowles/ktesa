@@ -1,13 +1,15 @@
 <?php
 require 'setenv.php';
+$table = filter_input(INPUT_GET,'tbl');
+$reftbl = substr($table,1,(strlen($table)-1));
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
 
 <head>
-    <title>Create EREFS Table</title>
+    <title>Create <?php echo $table;?> Table</title>
     <meta charset="utf-8" />
-    <meta name="description" content="Create the EREFS Table" />
+    <meta name="description" content="Create the <?php echo $table;?> Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
@@ -42,15 +44,24 @@ require 'setenv.php';
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Create the EREFS Table</p>
+<p id="trail">Create the <?php echo $table;?> Table</p>
 <div style="margin-left:16px;font-size:18px;">
-    <p>This script will create the EREFS table for site administration.</p>
+    <p>This script will create the <?php echo $table;?> table for site administration.</p>
 <?php
 echo "<p>mySql Connection Opened</p>";
-$tbl = mysqli_query( $link,"CREATE TABLE EREFS LIKE REFS");
+$tbl = mysqli_query( $link,"CREATE TABLE {$table} LIKE {$reftbl}");
 if (!$tbl) {
-    die("<p>CREATE EREFS failed;  Check error code: " . mysqli_error($link) . "</p>");
+    die("<p>CREATE {$table} failed;  Check error code: " . mysqli_error($link) . "</p>");
 } 
+if ($table === 'EHIKES') {
+    $addtype = "ALTER TABLE EHIKES ADD stat VARCHAR(3) AFTER usrid";
+    $addreq = mysqli_query($link,$addtype);
+    if (!$addreq) {
+        die("<p>Failed to add stat column to EHIKES</p>");
+    } else {
+        echo '<p>EHIKES Table created; Definitions are shown in the table below</p>';
+    }
+}
 $req = mysqli_query($link,"SHOW TABLES;");
 if (!$req) {
     die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
@@ -62,7 +73,7 @@ while ($row = mysqli_fetch_row($req)) {
 echo "</ul>";
 $req = mysqli_query($link,"SHOW TABLES;");
 ?>
-    <p>Description of the EREFS table:</p>
+    <p>Description of the EGPSDAT table:</p>
     <table>
         <colgroup>	
             <col style="width:100px">
@@ -84,9 +95,9 @@ $req = mysqli_query($link,"SHOW TABLES;");
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link,"DESCRIBE EREFS;");
+    $tbl = mysqli_query($link,"DESCRIBE {$table};");
     if (!$tbl) {
-        die("<p>DESCRIBE EREFS FAILED: " . mysqli_error($link) . "/p>");
+        die("<p>DESCRIBE {$table} FAILED: " . mysqli_error($link) . "/p>");
     } 
     $first = true;  
     while ($row = mysqli_fetch_row($tbl)) {

@@ -4,7 +4,7 @@ $('#show').on('click', function()  {
     window.open('show_tables.php',"_blank_");
 });
 $('#create').on('click', function() {
-    var ctarg = 'create_' + $('#ctbl').val() + '.php';
+    var ctarg = 'create_E_table.php?tbl=' + $('#ctbl').val();
     window.open(ctarg,"_blank");
 });
 $('#drop').on('click', function() {
