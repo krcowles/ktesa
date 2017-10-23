@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -9,8 +8,6 @@
     <meta name="robots" content="nofollow" />
     <link href="editDB.css" type="text/css" rel="stylesheet" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
-    <script src="../scripts/jquery-1.12.1.js"></script>
-    <script src="picNplace.js"></script>
 </head>
 
 <body>
@@ -18,7 +15,6 @@
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>
-
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
@@ -27,8 +23,6 @@
 <?php
     # Error output styling string:
     $pstyle = '<p style="color:red;font-size:18px;">';
-    # icon showing allowable location to drop a picture
-    $loadIcon = 'insert.png'; 
     
     $xmlDB = simplexml_load_file('../data/database.xml');
     if ($xmlDB === false) {
@@ -37,15 +31,16 @@
     }
     
     $hikeNo = filter_input(INPUT_GET,'hikeNo');
-    # Below: pull out the available cluster groups and establish association
-    # with cluster group name for displaying in drop-down <select>
+    /*
+     *  Below: pull out the available cluster groups and establish association
+     * with cluster group name for displaying in drop-down <select>
+     */
     $groups = [];
     $cnames = [];
-    $clusters = [];
     foreach ($xmlDB->row as $hikeRow) {
         $cgrp = $hikeRow->clusGrp->__toString();
         if ( strlen($cgrp) !== 0) {
-            # no duplicates please (NOTE: array_unique leaves holes)
+            # no duplicates please (NOTE: "array_unique" leaves holes)
             $match = false;
             for ($i=0; $i<count($groups); $i++) {
                 #echo " -Now:" . count($groups);
@@ -58,11 +53,9 @@
                 $grpPopup = $hikeRow->cgName->__toString();
                 array_push($groups,$cgrp);
                 array_push($cnames,$grpPopup);
-                # form an association of group to tooltip:
-                $assoc = $hikeRow->clusGrp . "$" . $grpPopup;
-                array_push($clusters,$assoc);
             }
         }
+        $groupCount = count($cnames);
         if ( $hikeRow->indxNo == $hikeNo) {
             $hikeTitle = $hikeRow->pgTitle->__toString();
             $hikeLocale = $hikeRow->locale->__toString();
@@ -87,16 +80,12 @@
             $hikeTips = $hikeRow->tipsTxt->__toString();
             $hikeDetails = $hikeRow->hikeInfo->__toSTring();
             # the following are needed as xml objects (not strings):
-            $hikePhotos = $hikeRow->content;
-            $hikePLinks = $hikeRow->albLinks;
+            $hikePhotos = $hikeRow->tsv;
             $hikeRefs = $hikeRow->refs;
             $hikeProp = $hikeRow->dataProp;
             $hikeAct = $hikeRow->dataAct;
         }
-    } 
-    $grpCnt = count($groups);
-    $clusStr = implode(";",$clusters);
-    $_SESSION['allClusters'] = $clusStr;
+    }
 ?>
 
 <form target="_blank" action="saveChanges.php" method="POST">
@@ -122,9 +111,10 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	<option value="Santa Fe">Santa Fe</option>
 	<option value="Ojo Caliente">Ojo Caliente</option>
 	<option value="Abiquiu">Abiquiu</option>
+        <option value="Pecos">Pecos</option>
+        <option value="Villanueva">Villanueva</option>
 	<option value="Taos">Taos</option>
-	<option value="Pilar">Pilar</option>
-	<option value="Villanueva">Villanueva</option>
+        <option value="Pilar">Pilar</option>
   <optgroup label="Northwest">
 	<option value="Farmington">Farmington</option>
 	<option value="San Ysidro">San Ysidro</option>
@@ -161,7 +151,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <?php
     echo '<label for="ctip">&nbsp;&nbsp;Cluster: </label>';
     echo '<select id="ctip" name="htool">';
-    for ($i=0; $i<$grpCnt; $i++) {
+    for ($i=0; $i<$groupCount; $i++) {
         echo '<option value="' . $cnames[$i] . '">' . $cnames[$i] . "</option>\n";
     }
     echo "</select>&nbsp;&nbsp;\n" .
@@ -171,13 +161,13 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     '<span id="notclus" style="display:none;">There is no currently ' .
         "assigned cluster for this hike.</span>\n";
 ?>
-<!-- don't think the following is used... -->
-    <input id="mrkrchg" type="hidden" name="chg2clus" value="NO" />
 
 <input id="grpchg" type="hidden" name="chgd" value="NO" />
 
 <p>If you are establishing a new group, select the checkbox: 
     <input id="newg" type="checkbox" name="nxtg" value="NO" />
+    <input id="curcnt" type="hidden" name="grpcnt" value="<?php echo $groupCount;?>" />
+
 </p>
 <p style="margin-top:-10px;margin-left:40px;">and enter the name for the 
     new group here: <input id="newt" type="text" name="newgname" size="50" />
@@ -232,118 +222,82 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <textarea id="ph2" name="purl2"><?php echo $hikeUrl2;?></textarea><br /><br />
 <label for="murl">Map Directions Link (Url): </label>
 <textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
-<div id="getimg">The following images may be re-ordered by using drag &amp; drop. 
-    The drop must occur on any insertion point (purple icon w/down arrow). 
-    The image can be deleted by dropping elsewhere.</div><br /><!-- NOT WORKING: To add 
-    a new image, specify the url in the txt box. The image will appear below. 
-    Then drag the image to the desired location. NOTE: The url must be a 
-    web-based address not a local machine image.<br /><br />
-    <input id="picurl" type="text" size="100" />&nbsp;&nbsp;Check the box to upload: 
-    <input id="loadimg" type="checkbox" name="ldimg" value="NO" /><br /><br />
-</div><br /> 
-<div id="xInsert" style="display:none;"></div>
-<div id="xCap" style="display:none;"></div> -->
-
+<!--
+    This next section is photo editing
+-->
+<div>
+    <p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
+            captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
 <?php
-    echo '<div id="picdiv">' . "\n";
-    $alpha = 30;	# insert-icon size
-    $beta = 10;  # space between images
-    $dragBorder = 8;
-    $rowCnt = 0;
-    $rows = array();        // holds imgs
-    $inserts = array();     // holds insert points (.png)
-    $captions = array();    // holds caption txtareas
-    $insNo = 0;
-    $picNo = 0;
-    $nonCap = 0;
-    foreach ($hikePhotos->picRow as $prow) {
-        $noOfImgs = 0;
-        foreach ($prow->pic as $photo) {
-            $noOfImgs++;
-        }
-        $noOfInserts = $noOfImgs + 1;
-        # consumed by row spacing & insert icons
-        $extraSpace = 2 * $alpha + 10 * ($noOfImgs - 1); 
-        # Photos are scaled down a bit, hopefully to ease manipulation
-        $scale = (900 - $extraSpace)/960;
-        # insert icons:
-        $insRow = '<div id="insRow' . $rowCnt . '" class="ins">' . "\n";
-        $insRow .= '<img id="lead' . $rowCnt . '" style="float:left;" ondrop="drop(event)"' .
-            ' ondragover="allowDrop(event)" height="' . $alpha . '" width="' . 
-            $alpha . '" src="' . $loadIcon . '" alt="drop-point" />' . "\n";
-        $ht = intval($prow->rowHt->__toString());
-        $rowHt = floor($scale * $ht);
-        $nxtIndx = 2;
-        $divMarg = $alpha/2 + $beta/2;
-        $rowHtml = '<div id="row' . $rowCnt . '" class="ImgRow" style="margin-left:' .
-            $divMarg . 'px;clear:both;">' . "\n";
-        $capRow = '<div id="caps' . $rowCnt . '" style="margin-left:' . 
-            $divMarg . 'px;">' . "\n";
-        $capMarg = $alpha;
-        /* 
-         * Process each image in row:
-         */
-        foreach ($prow->pic as $photo) {
-            $hasCap = strlen($photo->picCap) === 0 ? false : true;
-            $strtImgWd = intval($photo->picWdth->__toString());
-            $imgWd = floor($scale * $strtImgWd);
-            $insPos = intval($imgWd + $beta - $alpha);
-            /* Could not find 'f' in database...
-            if ($sym === 'f') {
-                $insPos += $dragBorder;
+    /* 
+     * Create rows showing photos with captions in a textarea box below;
+     * Any changes to the captions will be saved to the database
+     */
+    $rwidth = 940;
+    $nomHt = 240;
+    $curwidth = 0;
+    $rowCnt = 1;
+    $rowHtml = '';
+    $capHtml = '';
+    $delHtml = '';
+    $delrows = [];
+    $picrows = [];
+    $caprows = [];
+    $cnt = 0;
+    $delItem = 0;
+    foreach ($hikePhotos->picDat as $photo) {
+        if ($photo->hpg == 'Y') {
+            # scale photo dims to nomHt
+            $scale = $nomHt/$photo->imgHt;
+            $width = intval($scale * $photo->imgWd);
+            # description w/o date
+            $ecap = $photo->desc;
+            if (substr($ecap,0,1) == '"') {
+                $elgth = strlen($ecap) - 2;
+                $ecap = substr($ecap,1,$elgth);
             }
-            */  
-            $insRow .= '<img style="float:left;margin-left:' . $insPos .
-                'px;" id="ins' . $insNo . '" ondrop="drop(event)" ondragover="allowDrop(event)"' .
-                ' height="' . $alpha . '" width="' . $alpha . '" src="' . $loadIcon . 
-                '" alt="drop-point" />' . "\n";
-            if ($hasCap) {
-                $caption = $photo->picCap->__toString();
-                $rowHtml .= '<img id="pic' . $picNo . '" style="margin-right:' . $beta . 'px;" ' .
-                        'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
-                        '" width="' . $imgWd . '" src="' .
-                        $photo->picSrc . '" alt="' . $caption . '" />' . "\n";
-                # for some reason, textarea px doesn't scale, so:
-                $capWidth = intval($imgWd) - 12;
-                $capRightMarg = $beta - 2;
-                $capRow .= 	'<textarea id="capArea' . $insNo . '" style="height:60px;' .
-                        'margin-right:' . $capRightMarg . 'px;width:' . $capWidth . 'px;">' . $caption .
-                        '</textarea>' . "\n";
-                $picNo++;
-            } else { 
-                    $rowHtml .= '<img id="nocap' . $nonCap . '" style="margin-right:' . $beta . 'px;" ' .
-                            'draggable="true" ondragstart="drag(event)" height="' . $rowHt . 
-                            '" width="' . $imgWd . '" src="' . $rowDat[$nxtIndx+2] . 
-                            '" alt="no Caption" />' . "\n";
-                    $nonCapWidth = intval($imgWd);
-                    $capRow .= '<div id="capArea' . $insNo . '" class="notTA" style="display:' .
-                            'inline-block;margin-right:' . $beta . 'px;text-align:center;height:60px;width:' . 
-                            $nonCapWidth . 'px;border-style:solid;border-width:1px;' . 
-                            'vertical-align:bottom;margin-right:' . $beta . 'px;">NO EDIT</div>' . "\n";
-                    $nonCap++;
-                }
-                $insNo++;
-        }  # end of foreach creating images & inserts in row
-            $rowHtml .= "</div>\n";
-            array_push($rows,$rowHtml);
-            $insRow .= "</div>\n";
-            array_push($inserts,$insRow);
-            $capRow .= "</div>\n";
-            array_push($captions,$capRow);
-            echo '<input id="r' . $rowCnt . '" type="hidden" name="row[]"' . 
-                    ' value="" />' . "\n";
-            $rowCnt++;
-
-    }  # end of foreach row of pix
-    for ($j=0; $j<$rowCnt; $j++) {
-        echo $inserts[$j];
-        echo $rows[$j];
-        echo $captions[$j];
+            $curwidth += $width + 2; # 2px left margin
+            if ($curwidth > $rwidth) {
+                $rowCnt++;
+                array_push($delrows,$delHtml);
+                array_push($picrows,$rowHtml);
+                array_push($caprows,$capHtml);
+                $delHtml = '';
+                $rowHtml = '';
+                $capHtml = '';
+                $curwidth = $width;
+                $cnt = 0;
+            }
+            $rowHtml .= '<img style="margin-left:2px;" height="' . $nomHt . 
+                '" width="' . $width . '" src="' . $photo->mid . 
+                '" alt="' . $ecap . '" />' . "\n";
+            $tawidth = $width - 12;
+            $capHtml .= '<textarea name="ecap[]" style="height:64px;width:' . $tawidth . 
+                    'px">' . $ecap . "</textarea>\n"; 
+            if ($cnt < 1) {
+                $delwidth = $width - 66;
+            } else {
+                $delwidth = $width - 62;
+            }
+            $delHtml .= '<span style="margin-right:' . $delwidth . 'px;">' .
+                '<input type="checkbox" name="delpic[]" value="'
+                    . $delItem . '" />&nbsp;Delete</span>';
+            $delItem++;
+            $cnt++;
+        }  
     }
-    echo '<br />';
-    echo '<p>To add another row, check this box: ' .
-        '<input id="addbox" type="checkbox" name="nocall" /></p>' . "\n";
+    # last row:
+    $rowCnt++;
+    array_push($delrows,$delHtml);
+    array_push($picrows,$rowHtml);
+    array_push($caprows,$capHtml);
+    for ($j=0; $j<$rowCnt; $j++) {
+        echo $delrows[$j] . "<br />";
+        echo $picrows[$j] . "<br />";
+        echo $caprows[$j] . "<br />";
+    }
     echo "</div>\n";
+    
     if ($hikeTips !== '') {
         echo '<p>Tips Text: </p>';
         echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />' . "\n";
@@ -352,19 +306,8 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
            '[NO TIPS FOUND]' . '</textarea><br />' . "\n";
     }
     
-    
-    # construct string array of links for processing via javascript
-    $alblnkCnt = 0;
-    $lnkStr = '';
-    foreach ($hikePLinks->alb as $photolnk) {
-        $lnkStr .= "^" . $photolnk->__toString();
-        $albnkCnt++;
-    }
-    $lnkStr = $albnkCnt . $lnkStr;
 ?>
-<p id="plinks" style="display:none;"><?php echo $lnkStr;?></p>
-<input id="oldlinks" type="hidden" name="orgLinks" value="<?php echo $lnkStr;?>" />
-<input id="elink" type="hidden" name="editedLinks" value="<?php echo $lnkStr;?>" />
+            
 <p>Hike Information:</p>
 <textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $hikeDetails;?></textarea>
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, delete and add a new one)</h3>
@@ -391,21 +334,25 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         echo '<option value="r">Related Link</option>' . "\n";
         echo '<option value="n">Text Only - No Link</option>' . "\n";
         echo '</select><br />' . "\n";
+        $decrit1 = urldecode($ritem->rit1->__toString());
         if ($thisref === 'b' || $thisref === 'p') {
-            echo '<label style="text-indent:24px;">Title: </label><textarea style="height:20px;width:320px" name="rit1[]">' .
-                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;';
-            echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
-                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
-               '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
-                    $z . '"><br /><br />' . "\n";
+            echo '<label style="text-indent:24px;">Title: </label>'
+                . '<textarea style="height:20px;width:320px" name="rit1[]">' .
+                $decrit1 . '</textarea>&nbsp;&nbsp;';
+            echo '<label>Author: </label>' 
+                . '<textarea style="height:20px;width:320px" name="rit2[]">' .
+                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;'
+                . '<label>Delete: </label>' .
+                '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
+                $z . '"><br /><br />' . "\n";
         } elseif ($thisref === 'n') {
             echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
-                $ritem->rit1->__toString() . '</textarea><label>Delete: </label>' .
+                $decrit1 . '</textarea><label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
                 $z . '"><br /><br />' . "\n";
         } else {
             echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
-                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
+                $decrit1 . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
                 $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
                 $z . '"><br /><br />' . "\n";
@@ -413,7 +360,6 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         $z++;
     }
     echo '<p id="refcnt" style="display:none">' . $z . '</p>';
-    echo '<input type="hidden" name = "orgrefs" value="' . $z . '" />';
 ?>
 <p><em style="font-weight:bold;">Add</em> references here:</p>
 <p>Select the type of reference and its accompanying data below:</p>
@@ -452,6 +398,42 @@ Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35"
 Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;
 Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" 
+    placeholder=", by Author Name" /><br /><br />
+<select id="href3" style="height:26px;" name="rtype[]">
+    <option value="b" selected="selected">Book</option>
+    <option value="p">Photo Essay</option>
+    <option value="w">Website</option>
+    <option value="a">App</option>
+    <option value="d">Downloadable Doc</option>
+    <option value="l">Blog</option>
+    <option value="o">On-line Map</option>
+    <option value="m">Magazine</option>
+    <option value="s">News Article</option>
+    <option value="g">Meetup Group</option>
+    <option value="r">Related Link</option>
+    <option value="n">Text Only - No Link</option>
+</select>
+Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="55" 
+    placeholder="Book Title" />&nbsp;
+Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35" 
+    placeholder=", by Author Name" /><br /><br />
+<select id="href4" style="height:26px;" name="rtype[]">
+    <option value="b" selected="selected">Book</option>
+    <option value="p">Photo Essay</option>
+    <option value="w">Website</option>
+    <option value="a">App</option>
+    <option value="d">Downloadable Doc</option>
+    <option value="l">Blog</option>
+    <option value="o">On-line Map</option>
+    <option value="m">Magazine</option>
+    <option value="s">News Article</option>
+    <option value="g">Meetup Group</option>
+    <option value="r">Related Link</option>
+    <option value="n">Text Only - No Link</option>
+</select>
+Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="55" 
+    placeholder="Book Title" />&nbsp;
+Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35" 
     placeholder=", by Author Name" /><br />
 
 <h3>Proposed Data:</h3>
@@ -507,21 +489,18 @@ Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35"
 <br /><br />
 
 <div style="margin-left:8px;">
-<h3>Select an option below to save the edits</h3>
-<p><em>Site Master:</em> Enter Password to Save to Site&nbsp;&nbsp;
-    <input id="master" type="password" name="mpass" size="12" maxlength="10" 
-        title="8-character code required" />&nbsp;&nbsp;&nbsp;&nbsp;
-    <input type="submit" name="savePg" value="Site Master" />
+<h3>Save the changes!</h3>
+<p>
+    <input type="submit" name="savePg" value="Save Edits" />
 </p>
-<p><em>Registered Users:</em> Select button to submit for review&nbsp;&nbsp;
-    <input type="submit" name="savePg" value="Submit for Review" />
-</p>
+
 </div>	
 
 </form>
 
 </div>
 
+<script src="../scripts/jquery-1.12.1.js"></script>
 <script src="editDB.js"></script>
 </body>
 </html>

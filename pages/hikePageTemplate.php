@@ -86,12 +86,7 @@ define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_ur
 define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
 $months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
     "Sep","Oct","Nov","Dec");
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-if ($dev) {
-    $rel_addr = '../mysql/';
-} else {
-    $rel_addr = '../php/';
-}
+require "../admin/setenv.php";
 $table = "HIKES";
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
 if ($dev) {

@@ -1,14 +1,15 @@
 $( function () { // when page is loaded...
 
-/* Each drop-down field parameter is held in a hidden <p> element; the data (text)
-   in that hidden <p> element is the default that should appear in the drop-down box
-   The drop-down style parameters are:
-        - locale
-        - cluster group name
-        - hike type
-        - difficult
-        - exposure
-        - references
+/* Each drop-down field parameter is held in a hidden <p> element;
+ * the data (text) in that hidden <p> element is the default that should 
+ * appear in the drop-down box on page-load;
+ * The drop-down style parameters are:
+ *      - locale
+ *      - cluster group name
+ *      - hike type
+ *      - difficult
+ *      - exposure
+ *      - references
 */
    
 // Locale:
@@ -37,10 +38,9 @@ var mrkr = $('#mrkr').text();
         2. Is a totally new cluster group being assigned?  (#newg) nxtg
            (Whether or not the previous type was cluster, new info will be extracted at server,
             unless "ignore" is checked to restore original state)
-        3. Was marker changed from a non-cluster type to a cluster?  (#mrkrchg) chg2clus
-        4. Was a group different from the original group selected in 
+        3. Was a group different from the original group selected in 
             the drop-down #ctip?  (#grpchg) chgd
-        5. Remove an existing cluster assignment?  (#deassign) rmclus
+        4. Remove an existing cluster assignment?  (#deassign) rmclus
 */
 var fieldflag = false;  // validation: make sure newt gets entered when newg is checked
 // RESTORE INCOMING DEFAULTS:
@@ -53,7 +53,6 @@ $('#ignore').change(function() {
         $('input:checkbox[name=nxtg]').attr('checked',false);
         $('#newg').val("NO");
         $('#newt').val("");
-        $('#mrkrchg').val("NO");
         $('#grpchg').val("NO");
         $('#deassign').val("NO");
         $('input:checkbox[name=rmclus]').attr('checked',false);
@@ -76,7 +75,6 @@ $('#newg').change(function() {
         this.value = "YES";
         if (clusnme == '') {
                 $('#notclus').css('display','none');
-                $('#mrkrchg').val("YES");	
         }
         fieldflag = true;
         $('#grpchg').val("NO");
@@ -85,7 +83,6 @@ $('#newg').change(function() {
         this.value = "NO";
         if (clusnme == '') {
                 $('#notclus').css('display','inline');
-                $('#mrkrchg').val("NO");
                 $('#ctip').val(clusnme);
         }
         $('#newt').val("");
@@ -100,7 +97,6 @@ $('#ctip').change(function() {  // record any changes to the cluster assignment
             /* If marker was not originally a cluster type, prepare to change to cluster group: */
             if (mrkr !== 'Cluster') {
                 window.alert("Marker will be changed to cluster type");
-                $('#mrkrchg').val("YES");
                 $('#notclus').css('display','none');
             } else {  // otherwise, let user know the existing cluster group assignment will change
                 msg = "Cluster type will be changed from " + "\n" + "Original setting of: " + clusnme + "\n";
@@ -128,6 +124,7 @@ var exposure = $('#expo').text();
 $('#sun').val(exposure);
 
 // References section:
+// A: This code refers to existing refs, not new ones...
 var refCnt = parseFloat($('#refcnt').text());
 var refid;
 var rid;
@@ -138,62 +135,14 @@ for (var i=0; i<refCnt; i++) {
     refname = '#ref' + i;
     $(refname).val(rid);
 }
-
-// FOR USE BY picNplace ROUTINE:
-$('#loadimg').change( function(e) {
-    e.preventDefault();
-    var isrc = $('#picurl').val();
-    var newimg = '<img style="margin-right:10px;" id= "newpic" draggable="true" ondragstart="drag(event)" src="' + 
-            isrc + '" alt="image from url" />';
-    $('#getimg').append(newimg);
-    $('img').load( function() {
-        var loadedImg = document.getElementById('newpic');
-        var oldht = loadedImg.height;
-        var oldwd = loadedImg.width;
-        var scale = oldwd/oldht;
-        var newwd = Math.floor(scale * 200);
-        loadedImg.height = 200; // start with reasonably sized image
-        loadedImg.width = newwd;
-    });
-    $(this).attr('checked',false);
-});
-
-$('#addbox').change( function(e) {
-    e.preventDefault();
-    var $currRows = $('div[id^="row"]');
-    var rowno = $currRows.length;
-    var newins = '<div id="insRow' + rowno + '" class="ins">';
-    newins += '<img id="lead' + rowno + '" style="float:left;" ondrop="drop(event)"' +
-            ' ondragover="allowDrop(event)" height="30" width="30" src="insert.png" alt="drop-point" />';
-    newins += '</div>';
-    var olddiv = '#caps' + (rowno - 1);
-    $(newins).insertAfter(olddiv);
-    var newimg = '<div id="row' + rowno + '" class="ImgRow" style="margin-left:20px;clear:both;"></div>';
-    var insdiv = '#insRow' + rowno;
-    $(newimg).insertAfter(insdiv);
-    var newcap = '<div id="caps' + rowno + '" style="margin-left:20px;"></div>';
-    var capdiv = '#row' + rowno;
-    $(newcap).insertAfter(capdiv);
-    $(this).attr('checked',false);
-    // add new row to rows object
-    $rows = null;
-    rowSetup();  // see picNplace.js
-    var newrowid = 'r' + rowno;
-    var photoSect = document.getElementById('picdiv');
-    var addedrow = document.createElement('input');
-    addedrow.setAttribute('id',newrowid);
-    addedrow.setAttribute('type','hidden');
-    addedrow.name = "row[]";
-    photoSect.appendChild(addedrow);
-});
-
+// B: This code refers to the new refs (if any) added by the user
 // placeholder text for reference input boxes (copied from enterHike.js)
 $reftags = $('select[id^="href"]');
 $reftags.each( function() {
     $(this).change( function() {
         var selId = this.id;
-        var elNo = parseInt(selId.substring(4,5));
-        var elStr = "ABCDEFGH".substring(elNo-1,elNo);
+        var elNo = parseInt(selId.substring(4,5)); // NOTE: no more than 10 boxes!
+        var elStr = "ABCDEFGHIJ".substring(elNo-1,elNo);
         var box1 = '#rit' + elStr + '1';
         var box2 = '#rit' + elStr + '2';
         if ($(this).val() === 'b') {

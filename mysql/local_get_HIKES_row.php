@@ -1,5 +1,4 @@
 <?php
-require_once "local_mysql_connect.php";
 $req = "SELECT * FROM " . $table . " WHERE indxNo = " . $hikeIndexNo;
 $result = mysqli_query($link,$req);
 if (!$result) {
@@ -14,6 +13,7 @@ $row = mysqli_fetch_assoc($result);
 $hikeTitle = $row['pgTitle'];
 $hikeLocale = $row['locale'];
 $hikeType = $row['logistics'];
+die("GOT " . $hikeType . "; " . $hikeTitle);
 $hikeLength = $row['miles'] . " miles";
 $hikeElevation = $row['feet'] . " ft";
 $hikeDifficulty = $row['diff'];

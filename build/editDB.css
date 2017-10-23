@@ -90,6 +90,15 @@ input[type=checkbox]
   -o-transform: scale(1.5); /* Opera */
   padding: 10px;
 }
+input[type=submit] {
+    height: 30px;
+    width: 120px;
+    font-size: 16px;
+}
+input[type=submit]:hover {
+    background-color: papayawhip;
+    cursor: pointer;
+}
 .gridbox {
 	float: left;
 	height: 60px;
