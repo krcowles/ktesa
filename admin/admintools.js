@@ -8,7 +8,7 @@ $('#create').on('click', function() {
     window.open(ctarg,"_blank");
 });
 $('#drop').on('click', function() {
-    var dtarg = 'drop_' + $('#dtbl').val() + '.php';
+    var dtarg = 'drop_table.php?tbl=' + $('#dtbl').val();
     window.open(dtarg,"_blank");
 });
 $('#ia').on('click', function() {

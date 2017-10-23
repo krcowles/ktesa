@@ -23,18 +23,28 @@
         <button id="show">Show All Tables</button><br />
         Table to Delete:&nbsp;&nbsp;
         <select id="dtbl" name="dropper">
-            <option>EHIKES</option>
             <option>USERS</option>
+            <option>EHIKES</option>
             <option>HIKES</option>
+            <option>ETSV</option>
             <option>TSV</option>
+            <option>EREFS</option>
+            <option>REFS</option>
+            <option>EGPSDAT</option>
+            <option>GPSDAT</option>
         </select>&nbsp;&nbsp;
         <button id="drop">Drop Table</button><br />
         Table to Create:&nbsp;&nbsp;
         <select id="ctbl" name="creator">
-            <option>EHIKES</option>
             <option>USERS</option>
+            <option>EHIKES</option>
             <option>HIKES</option>
+            <option>ETSV</option>
             <option>TSV</option>
+            <option>EREFS</option>
+            <option>REFS</option>
+            <option>EGPSDAT</option>
+            <option>GPSDAT</option>
         </select>&nbsp;&nbsp;
         <button id="create">Create Table</button><br />
         <button id="ia">Insert Admins into USERS</button>
@@ -46,10 +56,15 @@
     <fieldset>
         <legend>Row Manipulation</legend>
         <select id="rdel" name="creator">
-            <option>EHIKES</option>
             <option>USERS</option>
+            <option>EHIKES</option>
             <option>HIKES</option>
+            <option>ETSV</option>
             <option>TSV</option>
+            <option>EREFS</option>
+            <option>REFS</option>
+            <option>EGPSDAT</option>
+            <option>GPSDAT</option>
         </select>&nbsp;&nbsp;
         Row No.&nbsp;&nbsp;<input id="drow" type="text" 
             name="indx" size="4" />&nbsp;&nbsp;
