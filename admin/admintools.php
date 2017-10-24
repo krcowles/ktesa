@@ -52,6 +52,8 @@
         <button id="ldh">Load HIKES from XML</button>
         &nbsp;(HIKES Table must exist)<br />
         <button id="ldt">Load TSV from XML</button><br />
+        <button id="ldr">Load REFS from XML</button><br />
+        <button id="ldg">Load GPSDAT from XML</button><br />
     </fieldset><br />
     <fieldset>
         <legend>Row Manipulation</legend>

@@ -52,9 +52,9 @@ $newrefs = <<<refs
 CREATE TABLE REFS (
 refId smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
 indxNo smallint,
-refType varchar(30),
-refItem1 varchar(256),
-refItem2 varchar(50) );
+rtype varchar(30),
+rit1 varchar(256),
+rit2 varchar(50) );
 refs;
 $tbl = mysqli_query($link,$newrefs);
 if (!$tbl) {
