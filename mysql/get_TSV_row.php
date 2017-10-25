@@ -19,7 +19,7 @@ $widths = [];
 while ($pics = mysqli_fetch_assoc($result)) {
     if ($pics['hpg'] === 'Y') {
         array_push($descs,$pics['title']);
-        array_push($alblnks,$pics['alblnks']);
+        array_push($alblnks,$pics['alblnk']);
         array_push($piclnks,$pics['mid']);
         $pDesc = $pics['desc'];
         $dateStr = $pics['date'];

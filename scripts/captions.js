@@ -89,10 +89,6 @@ function calcPos() {
         } 
     });
 }
-// enable pointer to indicate 'mouseover-able'
-$photos.each( function() {
-    $(this).css('cursor','pointer');
-});
 // function to popup the description for the picture 'selected'
 function picPop(picTarget) {
     // get the corresponding description
@@ -112,6 +108,10 @@ function picPop(picTarget) {
 function eventSet() {
     // popup a description when mouseover a photo
     $photos.css('z-index','1'); // keep pix in the background
+    // enable pointer to indicate 'mouseover-able'
+    $photos.each( function(indx) {
+        $(this).css('cursor','pointer');
+    });
     $photos.on('mouseover', function(ev) {
         var eventObj = ev.target;
         picSel = eventObj.id;
