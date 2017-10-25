@@ -1,70 +1,4 @@
 <?php
-function makeHtmlList($type,$array) {
-    if ($type === References) {
-        $htmlout = '<ul id="refs">';
-        foreach ($array as $item) {
-            $refdata = explode("^",$item);
-            $tagType = $refdata[0];
-            $decrit1 = urldecode($refdata[1]);
-            if ($tagType === 'b') { 
-                $htmlout .= '<li>Book: <em>' . $decrit1 . '</em>' . 
-                        $refdata[2] . '</li>';
-            } elseif ($tagType === 'p') {
-                $htmlout .= '<li>Photo Essay: <em>' . $decrit1 . '</em>' . 
-                        $refdata[2] . '</li>';
-            } elseif ($tagType === 'n') {
-                $htmlout .= '<li>' . $decrit1 . '</li>';
-            } else {
-                if ($tagType === 'w') {
-                    $tag = '<li>Website: ';
-                } elseif ($tagType === 'a') {
-                    $tag = '<li>App: ';
-                } elseif ($tagType === 'd') {
-                    $tag = '<li>Downloadable Doc: ';
-                } elseif ($tagType === 'h') {
-                    $tag = '<li>';
-                } elseif ($tagType === 'l') {
-                    $tag = '<li>Blog: ';
-                } elseif ($tagType === 'r') {
-                    $tag = '<li>Related Site: ';
-                } elseif ($tagType === 'o') {
-                    $tag = '<li>Map: ';
-                } elseif ($tagType === 'm') {
-                    $tag = '<li>Magazine: ';
-                } elseif ($tagType === 's') {
-                    $tag = '<li>News article: ';
-                } elseif ($tagType === 'g') {
-                    $tag = '<li>Meetup Group: ';
-                } else {
-                    $tag = '<li>Unrecognized reference type: Contact Site Master';
-                }
-                $htmlout .= $tag . '<a href="' . $decrit1 . '" target="_blank">' .
-                    $refdata[2] . '</a></li>';
-            }
-        } # end of foreach loop in references
-        $htmlout .= '</ul>';
-    } elseif ($type === Proposed) {
-        $htmlout = '<p id="proptitle">- Proposed Hike Data</p> ' . "\n" .
-                '<ul id="plinks">' . "\n";
-        foreach ($array as $pdat) {
-            $htmlout .= '<li>' . $pdat[0] . ' <a href="' . $pdat[1] .
-                    '" target="_blank">' . $pdat[2] . "</a></li>\n";
-        }
-        $htmlout .= "</ul>\n";
-    } elseif ($type === Actual) {
-        $htmlout = '<p id="acttitle">- Actual Hike Data</p>' . "\n" .
-                '<ul id="alinks">' . "\n";
-        foreach ($array as $adat) {
-            $htmlout .= '<li>' . $adat[0] . ' <a href="' . $adat[1] .
-                    '" target="_blank">' . $adat[2] . "</a></li>\n";
-        }
-        $htmlout .= "</ul>\n";
-    } else {
-        #die ("Unknown argument in makeHtmlList, Hike " . 
-        #        $hikeIndexNo . ': ' . $type);
-    }  // end of if tagtype ifs
-    return $htmlout;
-} 
 function clean($tsvdat) {
     $curdat = $tsvdat;
     $tsvlgth = strlen($curdat);
@@ -78,14 +12,9 @@ function clean($tsvdat) {
     return addslashes($curdat);   
 }
 ob_start();
-define('References','1');
-define('Proposed','2');
-define('Actual','3');
 define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false');
 define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
 define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
-$months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
-    "Sep","Oct","Nov","Dec");
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
 require "../mysql/get_HIKES_row.php";
 if ($gpxfile == '') {
@@ -97,44 +26,7 @@ if ($gpxfile == '') {
 /* 
  * Form image rows:
  */
-$descs = [];
-$alblnks = [];
-$piclnks = [];
-$captions = [];
-$aspects = [];
-$widths = [];
-/* 
- * Note - some of the imported tsv files have fields enclosed
- * in double quotes, and include a line feed (\n): use function clean() 
- */
-if (is_array($hikeImages)) {
-    foreach ($hikeImages as $img) {
-        $picData = explode("^",$img);
-        if ($picData[2] === 'Y') {
-            $filename = clean($picData[1]);
-            array_push($descs,$filename);
-            array_push($alblnks,$picData[8]);
-            array_push($piclnks,$picData[10]);
-            $pDesc = clean($picData[4]);
-            $dateStr = clean($picData[9]);
-            if ($dateStr == '') {
-                array_push($captions,$pDesc);
-            } else {
-                $year = substr($dateStr,0,4);
-                $month = intval(substr($dateStr,5,2));
-                $day = intval(substr($dateStr,8,2));  # intval strips leading 0
-                $date = $months[$month-1] . ' ' . $day . ', ' . $year .
-                        ': ' . $pDesc;
-                array_push($captions,$date);
-            }
-            $ht = intval($picData[14]);
-            $wd = intval($picData[15]);
-            array_push($widths,$wd);
-            $picRatio = $wd/$ht;
-            array_push($aspects,$picRatio);
-        }
-    }
-}
+require "../mysql/get_TSV_row.php";
 $capCnt = count($descs);
 if (is_array($hikeAddonImg1)) {
     $aoimg1 = '../images/' . $hikeAddonImg1[0];
