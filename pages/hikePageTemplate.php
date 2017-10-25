@@ -164,17 +164,17 @@ if (is_array($hikeAddonImg2)) {
  *  End picture row data prep
  */
 require "../mysql/get_REFS_row.php";
-
+require "../mysql/get_GPSDAT_row.php";
 # there may or may not be any proposed data or actual data to present
-if ( is_array($hikeProposedData) || is_array($hikeActualData) ) {
+if ($pcnt > 0 || $acnt > 0) {
     $fieldsets = true;
     $datasect = "<fieldset>\n" . 
             '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
-    if (is_array($hikeProposedData)) {
-            $datasect .= makeHtmlList(Proposed,$hikeProposedData);
+    if ($pcnt > 0) {
+            $datasect .= $propHtml;
     }
-    if (is_array($hikeActualData)) {
-            $datasect .= makeHtmlList(Actual,$hikeActualData);
+    if ($acnt > 0) {
+            $datasect .= $actHtml;
     }
     $datasect .= "</fieldset>\n";
 }

@@ -42,16 +42,8 @@ $hikeInfo = $row['info'];
 $hikeInfo = preg_replace("/\s/"," ",$hikeInfo);
 
 
-if ($row['props'] == '') {
-    $hikeProposedData = '';
-} else {
-    $hikeProposedData = unserialize($row['props']);
-}
-if ($row['acts'] == '') {
-    $hikeActualData = '';
-} else {
-    $hikeActualData = unserialize($row['acts']);
-}
+
+
 if ($row['tsv'] == '') {
     $hikeImages = '';
 } else {
