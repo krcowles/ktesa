@@ -1,5 +1,6 @@
 <?php
-$req = "SELECT * FROM " . $table . " WHERE indxNo = " . $hikeIndexNo;
+require_once "../mysql/setenv.php";
+$req = "SELECT * FROM HIKES WHERE indxNo = " . $hikeIndexNo;
 $result = mysqli_query($link,$req);
 if (!$result) {
     if (Ktesa_Dbug) {
@@ -39,11 +40,8 @@ $hikeTips = $row['tips'];
 $hikeTips = preg_replace("/\s/"," ",$hikeTips);
 $hikeInfo = $row['info'];
 $hikeInfo = preg_replace("/\s/"," ",$hikeInfo);
-if ($row['refs'] == '') {
-    $hikeRefs = '';
-} else {
-    $hikeRefs = unserialize($row['refs']);
-}
+
+
 if ($row['props'] == '') {
     $hikeProposedData = '';
 } else {
@@ -60,5 +58,3 @@ if ($row['tsv'] == '') {
     $hikeImages = unserialize($row['tsv']);
 }
 mysqli_free_result($result);
-?>
-

@@ -22,7 +22,51 @@ require "setenv.php";
 
 <div style="margin-left:24px;" id="tools">
 <?php
-
+function realType($typeltr) {
+    switch ($typeltr) {
+        case 'b':
+            return 'Book:';
+            break;
+        case 'p':
+            return 'Photo Essay:';
+            break;
+        case 'n':
+            return 'No references found';
+            break;
+        case 'w':
+            return 'Website:';
+            break;
+        case 'h': 
+            return 'Website:';
+            break;
+        case 'a':
+            return 'App:';
+            break;
+        case 'd':
+            return 'Downloadable Doc:';
+            break;
+        case 'l':
+            return 'Blog:';
+            break;
+        case 'r':
+            return 'Related Site:';
+            break;
+        case 'o':
+            return 'Map:';
+            break;
+        case 'm':
+            return 'Magazine:';
+            break;
+        case 's':
+            return 'News Article:';
+            break;
+        case 'g':
+            return 'Meetup Group:';
+            break;
+        default:
+            return "Contact Site Master";
+    }
+}
 $query = "LOAD XML LOCAL INFILE '../data/database.xml' INTO TABLE REFS ROWS "
     . "IDENTIFIED BY '<ref>';";
 $ref = mysqli_query($link,$query);
@@ -39,13 +83,17 @@ if (!$xml) {
     echo '<p>XML Database successfully opened.</p>';
 }
 $indices = [];
+$reftypes = [];
 $indx = 0;
 # NOTE: the loop skips over index pages which have no picDat
 foreach ($xml->row as $row) {
     $indx++;
-    $rcnt = $row->tsv->ref->count();
+    $rcnt = $row->refs->ref->count();
     if ($rcnt !== 0) {
         for ($j=0; $j<$rcnt; $j++) {
+            $rtype = $row->refs->ref[$j]->rtype->__toString();
+            $fulltype = realType($rtype);
+            array_push($reftypes,$fulltype);
             array_push($indices,$indx);
         }
     }
@@ -53,15 +101,24 @@ foreach ($xml->row as $row) {
 # there should be a one-to-one correspondence based on original load
 for ($k=0; $k<count($indices); $k++) {
     $refrow = $k + 1;
-    $placeIndx = "UPDATE REFS SET indxNo = '{$indices[$k]}' WHERE indxNo = '{$refrow}';";
+    $placeIndx = "UPDATE REFS SET indxNo = '{$indices[$k]}' WHERE refId = '{$refrow}';";
     $newdat = mysqli_query($link,$placeIndx);
     if (!$newdat) {
         die ("load_REFS.php: Failed to update REFS with new indxNo value: " . 
                 mysqli_error() );
-    } else {
-        echo "." . $k . ".</p>";
     }
+    $chgtype = "UPDATE REFS SET rtype = '{$reftypes[$k]}' WHERE refId = '{$refrow}';";
+    $newtype = mysqli_query($link,$chgtype);
+    if (!$newtype) {
+        die ("load_REFS.php: Failed to update REFS with new rtype: " . 
+                mysqli_error());
+    }
+    echo "." . $k . ".";
+    flush();
 }
+echo "<br />Data loaded";
+require "ref_scrub.php";
+echo "<br />Data scrubbed";
 ?>
 </div>
 </body>

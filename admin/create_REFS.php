@@ -53,8 +53,8 @@ CREATE TABLE REFS (
 refId smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
 indxNo smallint,
 rtype varchar(30),
-rit1 varchar(256),
-rit2 varchar(50) );
+rit1 varchar(526),
+rit2 varchar(100) );
 refs;
 $tbl = mysqli_query($link,$newrefs);
 if (!$tbl) {

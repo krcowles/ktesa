@@ -86,14 +86,8 @@ define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_ur
 define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
 $months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
     "Sep","Oct","Nov","Dec");
-require "../admin/setenv.php";
-$table = "HIKES";
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
-if ($dev) {
-    require "../mysql/local_get_HIKES_row.php";
-} else {
-    require "../php/000mysql_get_HIKES_row.php";
-}
+require "../mysql/get_HIKES_row.php";
 if ($gpxfile == '') {
     $newstyle = false;
 } else {
@@ -169,11 +163,8 @@ if (is_array($hikeAddonImg2)) {
 /*
  *  End picture row data prep
  */
-if (is_array($hikeRefs)) {  # Should never be an empty string....
-    $hikeReferences = makeHtmlList(References,$hikeRefs);
-} else {
-    $hikeReferences = "<p>ERROR: NO REFERENCES DETECTED</p>";
-}
+require "../mysql/get_REFS_row.php";
+
 # there may or may not be any proposed data or actual data to present
 if ( is_array($hikeProposedData) || is_array($hikeActualData) ) {
     $fieldsets = true;
@@ -345,12 +336,11 @@ if ($hikeTips !== '') {
         htmlspecialchars_decode($hikeTips,ENT_COMPAT) . '</p></div>' . "\n";
 }
 echo '<div id="hikeInfo">' . $hikeInfo . "</div><br />" . PHP_EOL;
-if ($hikeReferences !== '') {
-    echo '<fieldset>'."\n";
-    echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
-    echo htmlspecialchars_decode($hikeReferences,ENT_COMPAT) . "\n";
-    echo '</fieldset>';
-}
+
+echo '<fieldset>'."\n";
+echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
+echo $refHtml;
+echo '</fieldset>';
 
 if ($fieldsets) {
     echo $datasect;
