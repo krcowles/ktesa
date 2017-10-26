@@ -227,7 +227,7 @@ $reftags.each( function() {
                 $(box1).attr('placeholder','Book Title');
             }
             if ($(box2).val() === '') {
-                $(box2).attr('placeholder',', by Author Name');
+                $(box2).attr('placeholder','Author Name');
             }
         } else if ($(this).val() !== 'n') {
             if ($(box1).val() === '') {

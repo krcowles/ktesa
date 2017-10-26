@@ -24,6 +24,7 @@ if ($show === 'inx') {
 
 <body>
 
+    <p id="uid" style="display:none"><?php echo $usr;?></p>
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>

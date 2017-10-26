@@ -1,15 +1,20 @@
 <?php
 require '../admin/setenv.php';
-$hip = filter_input(INPUT_GET,'hikeNo');  # hike-in-process
-# This script will always utilize only the EHIKES table
+$hip = filter_input(INPUT_GET,'hno');  # hike-in-process
+$usr = filter_input(INPUT_GET,'usr');
+if ($usr === 'mstr') {
+    $disp = 'block';
+} else {
+    $disp = 'none';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
 
 <head>
-    <title>Hike or Index Page Creation</title>
+    <title>New Page Edit</title>
     <meta charset="utf-8" />
-    <meta name="description" content="Form for entering new hike data" />
+    <meta name="description" content="Form for updating new hike data" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="enterHike.css" type="text/css" rel="stylesheet" />
@@ -32,10 +37,9 @@ $hip = filter_input(INPUT_GET,'hikeNo');  # hike-in-process
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Create A New Page</p>
+<p id="trail">Edit New Page Data</p>
 
 <?php
-/* Collect cluster info from HIKES table: */
 $lastid = "SELECT indxNo FROM HIKES ORDER BY indxNo DESC LIMIT 1";
 $getid = mysqli_query($link,$lastid);
 if (!$getid) {
@@ -49,6 +53,7 @@ if (!$getid) {
 $lastindx = mysqli_fetch_row($getid);
 $tblcnt = $lastindx[0];
 mysqli_free_result($getid);
+/* Collect cluster info from HIKES table: */
 $vchikes = [];
 $vcnos = [];
 $clhikes = [];
@@ -92,8 +97,12 @@ mysqli_free_result($specdat);
 $vccnt = count($vchikes);
 $clcnt = count($clhikes);
 # Get any data recorded so far...
-$query = "SELECT * FROM EHIKES WHERE indxNo = '{$hip}'";
+$query = "SELECT * FROM EHIKES WHERE indxNo = {$hip}";
 $result = mysqli_query($link,$query);
+if (mysqli_num_rows($result) === 0) {
+    die("<h2>Could not find a hike matching index " . $hip . 
+            ". Contact Site Master");
+}
 if (!$result) {
     if (Ktesa_Dbug) {
         dbug_print("enterHike.php: Could not extract record for {$hip}: " . 
@@ -103,10 +112,11 @@ if (!$result) {
     }
 }
 $entrydat = mysqli_fetch_assoc($result);
+mysqli_free_result($result);
 ?>
-<div id="setup">
+<div id="setup" style="display:<?php echo $disp;?>">
     <h1>STEP 1: Enter Hike Data</h1>
-    <p id="intent">I WANT TO: &nbsp;&nbsp;[data not required are grayed out]</p>
+    <p id="intent">[SITE MASTER:] I WANT TO: &nbsp;&nbsp;[data not required are grayed out]</p>
     <input id="ctr" type="radio" name="pageType" value="vcenter" />
     <label id="VC">CREATE A NEW: Visitor Center/Index Page</label><br />
     <input id="reg" type="radio" name="pageType" value="standard" checked />
@@ -320,8 +330,7 @@ $entrydat = mysqli_fetch_assoc($result);
         <input id="addon1" type="file" name="othr1" /><br />
         <label id="l_add2" class="notVC" for="addon2">Other image (pop-up 
             captions not provided at this time): &nbsp;</label>
-        <input id="addon2" type="file" name="othr2" /><br />
-        
+        <input id="addon2" type="file" name="othr2" /><br />      
     </fieldset>
 
     <fieldset id="latlng">
@@ -400,28 +409,33 @@ $entrydat = mysqli_fetch_assoc($result);
     </fieldset>
 
     <?php
-    # refs is a serialized array of strings (imploded arrays)
-    if ($entrydat['refs'] == '') {
+    $refquery = "SELECT * FROM EREFS WHERE indxNo = '{$hip}';";
+    $refdata = mysqli_query($link,$refquery);
+    if (!$refdata) {
+        die ("enterHike.php: Could not access EREFS table'" . mysqli_error());
+    }
+    $rowcnt = mysqli_num_rows($refdata);
+    if ($rowcnt === 0) {
         for ($z=0; $z<6; $z++) {
             $rtype[$z] = '';
             $rit1[$z] = '';
             $rit2[$z] = '';
         }
     } else {
-        $refs = unserialize($entrydat['refs']);
-        for ($y=0; $y<6; $y++) {
-            if ($refs[$y] !== '') {
-                $ref = explode("^",$refs[$y]);
-                $rtype[$y] = $ref[0];
-                $rit1[$y] = $ref[1];
-                $rit2[$y] = $ref[2];
-            } else {
-                $rtype[$y] = '';
-                $rit1[$y] = '';
-                $rit2[$y] = '';
-            }
+        $rcnt = 0;
+        while($refs = mysqli_fetch_assoc($refdata)) {
+            $rtype[$rcnt] = $refs['rtype'];
+            $rit1[$rcnt] = $refs['rit1'];
+            $rit2[$rcnt] = $refs['rit2'];
+            $rcnt++;
+        }
+        for ($w=$rcnt; $w<6; $w++){
+                $rtype[$w] = '';
+                $rit1[$w] = '';
+                $rit2[$w] = '';
         }
     }
+    mysqli_free_result($refdata);
     echo '<p id="dbrt1" style="display:none">' . $rtype[0] . "</p>\n"; 
     echo '<p id="dbrt2" style="display:none">' . $rtype[1] . "</p>\n";  
     echo '<p id="dbrt3" style="display:none">' . $rtype[2] . "</p>\n"; 
@@ -429,6 +443,7 @@ $entrydat = mysqli_fetch_assoc($result);
     echo '<p id="dbrt5" style="display:none">' . $rtype[4] . "</p>\n";  
     echo '<p id="dbrt6" style="display:none">' . $rtype[5] . "</p>\n";  
     /*
+     * TO INCREASE COUNT:
     echo '<p id="dbrt7" style="display:none">' . $entrydat['ref[6]['rtype . "</p>\n";  
     echo '<p id="dbrt8" style="display:none">' . $entrydat['ref[7]['rtype . "</p>\n"; 
      */
@@ -437,248 +452,261 @@ $entrydat = mysqli_fetch_assoc($result);
         <legend>Hike References</legend>
         <p>Select the type of reference (up to 8) and its accompanying data below:</p>
         <select id="href1" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
+            <option value="Book:" selected="selected">Book</option>
+            <option value="Photo Essay:">Photo Essay</option>
+            <option value="Website:">Website</option>
+            <option value="App:">App</option>
+            <option value="Downloadable Doc:">Downloadable Doc</option>
+            <option value="Blog:">Blog</option>
+            <option value="Map:">Map</option>
+            <option value="Magazine:">Magazine</option>
+            <option value="News Article:">News Article</option>
+            <option value="Meetup Group:">Meetup Group</option>
+            <option value="Related Site:">Related Site</option>
+            <option value="Text">Text (100 char max)</option>
         </select>
-        Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="55" 
+        Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="45" 
             placeholder="Book Title" value="<?php echo $rit1[0]?>" />&nbsp;
-        Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $rit2[0];?>" /><br />
+        Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="30" 
+            placeholder="Author Name" value="<?php echo $rit2[0];?>" /><br />
         <select id="href2" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
+            <option value="Book:" selected="selected">Book</option>
+            <option value="Photo Essay:">Photo Essay</option>
+            <option value="Website:">Website</option>
+            <option value="App:">App</option>
+            <option value="Downloadable Doc:">Downloadable Doc</option>
+            <option value="Blog:">Blog</option>
+            <option value="Map:">Map</option>
+            <option value="Magazine:">Magazine</option>
+            <option value="News Article:">News Article</option>
+            <option value="Meetup Group:">Meetup Group</option>
+            <option value="Related Site:">Related Site</option>
+            <option value="Text">Text (100 char max)</option>
         </select>
-        Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" 
+        Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="45" 
             placeholder="Book Title" value="<?php echo $rit1[1];?>" />&nbsp;
-        Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $rit2[1];?>" /><br />
+        Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="30" 
+            placeholder="Author Name" value="<?php echo $rit2[1];?>" /><br />
         <select id="href3" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
+            <option value="Book:" selected="selected">Book</option>
+            <option value="Photo Essay:">Photo Essay</option>
+            <option value="Website:">Website</option>
+            <option value="App:">App</option>
+            <option value="Downloadable Doc:">Downloadable Doc</option>
+            <option value="Blog:">Blog</option>
+            <option value="Map:">Map</option>
+            <option value="Magazine:">Magazine</option>
+            <option value="News Article:">News Article</option>
+            <option value="Meetup Group:">Meetup Group</option>
+            <option value="Related Site:">Related Site</option>
+            <option value="Text">Text (100 char max)</option>
         </select>
-        Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="55" 
+        Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="45" 
             placeholder="Book Title" value="<?php echo $rit1[2];?>" />&nbsp;
-        Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $rit2[2];?>" /><br />
+        Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="30" 
+            placeholder="Author Name" value="<?php echo $rit2[2];?>" /><br />
         <select id="href4" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
+            <option value="Book:" selected="selected">Book</option>
+            <option value="Photo Essay:">Photo Essay</option>
+            <option value="Website:">Website</option>
+            <option value="App:">App</option>
+            <option value="Downloadable Doc:">Downloadable Doc</option>
+            <option value="Blog:">Blog</option>
+            <option value="Map:">Map</option>
+            <option value="Magazine:">Magazine</option>
+            <option value="News Article:">News Article</option>
+            <option value="Meetup Group:">Meetup Group</option>
+            <option value="Related Site:">Related Site</option>
+            <option value="Text">Text (100 char max)</option>
         </select>
-        Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="55" 
+        Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="45" 
             placeholder="Book Title" value="<?php echo $rit1[3];?>" />&nbsp;
-        Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $rit2[3];?>"/><br />
+        Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="30" 
+            placeholder="Author Name" value="<?php echo $rit2[3];?>"/><br />
         <select id="href5" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
+            <option value="Book:" selected="selected">Book</option>
+            <option value="Photo Essay:">Photo Essay</option>
+            <option value="Website:">Website</option>
+            <option value="App:">App</option>
+            <option value="Downloadable Doc:">Downloadable Doc</option>
+            <option value="Blog:">Blog</option>
+            <option value="Map:">Map</option>
+            <option value="Magazine:">Magazine</option>
+            <option value="News Article:">News Article</option>
+            <option value="Meetup Group:">Meetup Group</option>
+            <option value="Related Site:">Related Site</option>
+            <option value="Text">Text (100 char max)</option>
         </select>
-        Book Title/Link URL:<input id="ritE1" type="text" name="rit1[]" size="55" 
+        Book Title/Link URL:<input id="ritE1" type="text" name="rit1[]" size="45" 
             placeholder="Book Title" value="<?php echo $rit1[4];?>" />&nbsp;
-        Author/Click-on Text<input id="ritE2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $rit2[4];?>" /><br />
+        Author/Click-on Text<input id="ritE2" type="text" name="rit2[]" size="30" 
+            placeholder="Author Name" value="<?php echo $rit2[4];?>" /><br />
         <select id="href6" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
+            <option value="Book:" selected="selected">Book</option>
+            <option value="Photo Essay:">Photo Essay</option>
+            <option value="Website:">Website</option>
+            <option value="App:">App</option>
+            <option value="Downloadable Doc:">Downloadable Doc</option>
+            <option value="Blog:">Blog</option>
+            <option value="Map:">Map</option>
+            <option value="Magazine:">Magazine</option>
+            <option value="News Article:">News Article</option>
+            <option value="Meetup Group:">Meetup Group</option>
+            <option value="Related Site:">Related Site</option>
+            <option value="Text">Text (100 char max)</option>
         </select>
-        Book Title/Link URL:<input id="ritF1" type="text" name="rit1[]" size="55" 
+        Book Title/Link URL:<input id="ritF1" type="text" name="rit1[]" size="45" 
             placeholder="Book Title" value="<?php echo $rit1[5];?>" />&nbsp;
-        Author/Click-on Text<input id="ritF2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" value="<?php echo $rit2[5];?>" /><br />
+        Author/Click-on Text<input id="ritF2" type="text" name="rit2[]" size="30" 
+            placeholder="Author Name" value="<?php echo $rit2[5];?>" /><br />
         <!-- ADD LATER IF NEEDED
         <select id="href7" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
+            <option value="Book:" selected="selected">Book</option>
+            <option value="Photo Essay:">Photo Essay</option>
+            <option value="Website:">Website</option>
+            <option value="App:">App</option>
+            <option value="Downloadable Doc:">Downloadable Doc</option>
+            <option value="Blog:">Blog</option>
+            <option value="Map:">Map</option>
+            <option value="Magazine:">Magazine</option>
+            <option value="News Article:">News Article</option>
+            <option value="Meetup Group:">Meetup Group</option>
+            <option value="Related Site:">Related Site</option>
+            <option value="Text">Text (100 char max)</option>
         </select>
-        Book Title/Link URL:<input id="ritG1" type="text" name="rit1[]" size="55" 
+        Book Title/Link URL:<input id="ritG1" type="text" name="rit1[]" size="45" 
             placeholder="Book Title" />&nbsp;
-        Author/Click-on Text<input id="ritG2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
+        Author/Click-on Text<input id="ritG2" type="text" name="rit2[]" size="30" 
+            placeholder="Author Name" /><br />
         <select id="href8" name="rtype[]">
-            <option value="b" selected="selected">Book</option>
-            <option value="p">Photo Essay</option>
-            <option value="w">Website</option>
-            <option value="a">App</option>
-            <option value="d">Downloadable Doc</option>
-            <option value="l">Blog</option>
-            <option value="o">On-line Map</option>
-            <option value="m">Magazine</option>
-            <option value="s">News Article</option>
-            <option value="g">Meetup Group</option>
-            <option value="r">Related Link</option>
-            <option value="n">Text Only - No Link</option>
+            <option value="Book:" selected="selected">Book</option>
+            <option value="Photo Essay:">Photo Essay</option>
+            <option value="Website:">Website</option>
+            <option value="App:">App</option>
+            <option value="Downloadable Doc:">Downloadable Doc</option>
+            <option value="Blog:">Blog</option>
+            <option value="Map:">Map</option>
+            <option value="Magazine:">Magazine</option>
+            <option value="News Article:">News Article</option>
+            <option value="Meetup Group:">Meetup Group</option>
+            <option value="Related Site:">Related Site</option>
+            <option value="Text">Text (100 char max)</option>
         </select>
-        Book Title/Link URL:<input id="ritH1" type="text" name="rit1[]" size="55" 
+        Book Title/Link URL:<input id="ritH1" type="text" name="rit1[]" size="45" 
             placeholder="Book Title" />&nbsp;
-        Author/Click-on Text<input id="ritH2" type="text" name="rit2[]" size="35" 
-            placeholder=", by Author" /><br />
+        Author/Click-on Text<input id="ritH2" type="text" name="rit2[]" size="30" 
+            placeholder="Author Name" /><br />
         -->
     </fieldset>
     <?php
-    # props & acts are serialized arrays of strings (imploded arrays)
-    if ($entrydat['props'] == '') {
+    # Set proposed data values, if any
+    $pquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'P';";
+    $pdata = mysqli_query($link,$pquery);
+    if (!$pdata) {
+        die ("enterHike.php: Could not access 'P' in GPSDAT table: " . mysqli_error());
+    }
+    $prows = mysqli_num_rows($pdata);
+    if ($prows === 0) {
         for ($a=0; $a<4; $a++) {
             $plbl[$a] = '';
             $purl[$a] = '';
             $pcot[$a] = '';
         }
     } else {
-        $props = unserialize($entrydat['props']);
-        for ($b=0; $b<4; $b++) {
-            if ($props[$b] !== '') {
-                $prop = explode("^",$props[$b]);
-                $plbl[$b] = $prop[0];
-                $purl[$b] = $prop[1];
-                $pcot[$b] = $prop[2];
-            } else {
-                $plbl[$b] = '';
-                $purl[$b] = '';
-                $pcot[$b] = '';
-            }
+        $pcnt = 0;
+        while($props = mysqli_fetch_assoc($pdata)) {
+            $plbl[$pcnt] = $props['label'];
+            $purl[$pcnt] = $props['url'];
+            $pcot[$pcnt] = $props['clickText'];
+            $pcnt++;
         }
+        for ($y=$pcnt; $y<4; $y++){
+                $plbl[$y] = '';
+                $purl[$y] = '';
+                $pcot[$y] = '';
+        } 
     }
-    if ($entrydat['acts'] == '') {
+    mysqli_free_result($pdata);
+    # Set proposed data values, if any
+    $aquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'A';";
+    $adata = mysqli_query($link,$aquery);
+    if (!$adata) {
+        die ("enterHike.php: Could not access 'A' in GPSDAT table: " . mysqli_error());
+    }
+    $arows = mysqli_num_rows($adata);
+    if ($arows === 0) {
         for ($a=0; $a<4; $a++) {
             $albl[$a] = '';
             $aurl[$a] = '';
             $acot[$a] = '';
         }
     } else {
-        $acts = unserialize($entrydat['acts']);
-        for ($b=0; $b<4; $b++) {
-            if ($acts[$b] !== '') {
-                $act = explode("^",$acts[$b]);
-                $albl[$b] = $act[0];
-                $aurl[$b] = $act[1];
-                $acot[$b] = $act[2];
-            } else {
-                $albl[$b] = '';
-                $aurl[$b] = '';
-                $acot[$b] = '';
-            }
+        $acnt = 0;
+        while($acts = mysqli_fetch_assoc($pdata)) {
+            $albl[$acnt] = $acts['label'];
+            $aurl[$acnt] = $acts['url'];
+            $acot[$acnt] = $acts['clickText'];
+            $acnt++;
         }
+        for ($y=$pcnt; $y<4; $y++){
+                $albl[$y] = '';
+                $aurl[$y] = '';
+                $acot[$y] = '';
+        } 
     }
+    mysqli_free_result($adata);
     ?>
     <div class="honly">
         <fieldset id="datasect">
             <legend>GPS Maps &amp; Data</legend>
             <p>Proposed Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-            Label Text: <input id="lt1" type="text" name="plbl[]" size="12"
+            Label Text: <input id="lt1" type="text" name="plbl[]" size="6"
                 value="<?php echo $plbl[0];?>" /> 
-            Item URL: <input id="ur1" type="text" name="purl[]" size="60"
+            Item URL: <input id="ur1" type="text" name="purl[]" size="50"
                 value="<?php echo $purl[0];?>" /> 
             Text to Click On: <input id="ct1" type="text" name="pctxt[]" size="30" 
                 value="<?php echo $pcot[0];?>" /><br />
-            Label Text: <input id="lt2" type="text" name="plbl[]" size="12" 
+            Label Text: <input id="lt2" type="text" name="plbl[]" size="6" 
                 value="<?php echo $plbl[1];?>" /> 
-            Item URL: <input id="ur2" type="text" name="purl[]" size="60" 
+            Item URL: <input id="ur2" type="text" name="purl[]" size="50" 
                 value="<?php echo $purl[1];?>" />
             Text to Click On: <input id="ct2" type="text" name="pctxt[]" size="30" 
                 value="<?php echo $pcot[1];?>" /><br />
-            Label Text: <input id="lt3" type="text" name="plbl[]" size="12"
+            Label Text: <input id="lt3" type="text" name="plbl[]" size="6"
                 value="<?php echo $plbl[2];?>" /> 
-            Item URL: <input id="ur3" type="text" name="purl[]" size="60" 
+            Item URL: <input id="ur3" type="text" name="purl[]" size="50" 
                 value="<?php echo $purl[2];?>" />
             Text to Click On: <input id="ct3" type="text" name="pctxt[]" size="30" 
                 value="<?php echo $pcot[2];?>" /><br />
-            Label Text: <input id="lt4" type="text" name="plbl[]" size="12" 
+            Label Text: <input id="lt4" type="text" name="plbl[]" size="6" 
                 value="<?php echo $plbl[3];?>" /> 
-            Item URL: <input id="ur4" type="text" name="purl[]" size="60" 
+            Item URL: <input id="ur4" type="text" name="purl[]" size="50" 
                 value="<?php echo $purl[3];?>" />
             Text to Click On: <input id="ct4" type="text" name="pctxt[]" size="30" 
                 value="<?php echo $pcot[3];?>" /><br />
     
             <p>Actual Hike Data: Choose up to 4 elements (Maps, GPX/KML Files, etc)</p>
-            Label Text: <input id="lt5" type="text" name="albl[]" size="12" 
+            Label Text: <input id="lt5" type="text" name="albl[]" size="6" 
                 value="<?php echo $albl[0];?>" /> 
-            Item URL: <input id="ur5" type="text" name="aurl[]" size="60" 
+            Item URL: <input id="ur5" type="text" name="aurl[]" size="50" 
                 value="<?php echo $aurl[0];?>" />
             Text to Click On: <input id="ct5" type="text" name="actxt[]" size="30" 
                 value="<?php echo $acot[0];?>" /><br />
-            Label Text: <input id="lt6" type="text" name="albl[]" size="12" 
+            Label Text: <input id="lt6" type="text" name="albl[]" size="6" 
                 value="<?php echo $albl[1];?>" /> 
-            Item URL: <input id="ur6" type="text" name="aurl[]" size="60" 
+            Item URL: <input id="ur6" type="text" name="aurl[]" size="50" 
                 value="<?php echo $aurl[1];?>" />
             Text to Click On: <input id="ct6" type="text" name="actxt[]" size="30" 
                 value="<?php echo $acot[1];?>" /><br />
-            Label Text: <input id="lt7" type="text" name="albl[]" size="12" 
+            Label Text: <input id="lt7" type="text" name="albl[]" size="6" 
                 value="<?php echo $albl[2];?>" /> 
-            Item URL: <input id="ur7" type="text" name="aurl[]" size="60" 
+            Item URL: <input id="ur7" type="text" name="aurl[]" size="50" 
                 value="<?php echo $aurl[2];?>" />
             Text to Click On: <input id="ct7" type="text" name="actxt[]" size="30" 
                 value="<?php echo $acot[2];?>" /><br />
-            Label Text: <input id="lt8" type="text" name="albl[]" size="12" 
+            Label Text: <input id="lt8" type="text" name="albl[]" size="6" 
                 value="<?php echo $albl[3];?>" /> 
-            Item URL: <input id="ur8" type="text" name="aurl[]" size="60" 
+            Item URL: <input id="ur8" type="text" name="aurl[]" size="50" 
                 value="<?php echo $aurl[3];?>"/>
             Text to Click On: <input id="ct8" type="text" name="actxt[]" size="30" 
                 value="<?php echo $acot[3];?>"/><br />
@@ -689,13 +717,13 @@ $entrydat = mysqli_fetch_assoc($result);
         <legend>Other URL's</legend>
         <label class="notVC" for="url1">URL for Photo Album Site:</label>
         <input id="url1" type="text" name="photo1" size="75" 
-               value="<?php echo $hiprow->mpUrl;?>" /><br />
+               value="<?php echo $entrydat['purl1'];?>" /><br />
         <label class="notVC" for="url2">URL for Secondary Photo Album (Tom or Ken):</label>
         <input id="url2" type="text" name="photo2" size="75" 
-               value="<?php echo $hiprow->spUrl;?>" /><br />
+               value="<?php echo $entrydat['purl2'];?>" /><br />
         <label for="gdir">Google Map Directions:</label> 
         <input id="gdir" type="text" name="dirs" size="150" 
-               value="<?php echo $hiprow->dirs;?>" />
+               value="<?php echo $entrydat['dirs'];?>" />
     </fieldset>
 
     <fieldset id="submissions">

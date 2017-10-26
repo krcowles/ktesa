@@ -2,17 +2,18 @@ $( function () { // when page is loaded...
 /*
  * The editor must direct the user to the correct edit tool, depending
  * on the type and state of the item in the table.
- *  1. HIKES table items -- all should pt to either editDB or editIndx
+ *  1. HIKES table items -- all should pt to editDB (or editIndx)
  *  2. EHIKES table items:
  *      a. Status = new; point to enterHike
  *      b. Status = upl; files have been uploaded from enterHike, but no
- *          picture/map choices have been made; point to  ????
+ *          picture/map choices have been made; point to finishPage.php
  *      c. Status = sub; files have been submitted for release to HIKES;
- *          point to editDB or editIndx
+ *          point to editDB (or editIndx)
  */
 var statfields = JSON.parse(status);  // array of status fields from EHIKES
 // If age = new, this array will not be empty...
 var useEditor = 'editDB.php?hikeNo=';
+var uid = $('#uid').text();
 $rows = $('tbody').find('tr');
 $('a').on('click', function(e) {
     e.preventDefault();
@@ -25,9 +26,9 @@ $('a').on('click', function(e) {
                 var eqpos = ptr.indexOf('=') + 1;
                 var hikeNo = ptr.substring(eqpos,ptr.length);
                 if (statfields[indx] === 'new') {
-                    useEditor = 'enterHike.php?&hikeNo=' + hikeNo;
+                    useEditor = 'enterHike.php?&hno=' + hikeNo + '&usr=' + uid;
                 } else if (statfields[indx] === 'upl') {
-                    // don't know yet
+                    useEditor = 'finishPage.php';
                 } else if (statfields[indx] === 'sub') {
                     // no reassignment
                 }
