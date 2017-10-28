@@ -342,8 +342,7 @@ for ($w=0; $w<count($P_urls); $w++) { # this includes all, even empty...
         $noOfProps++;
     }
 }
-echo "<p>Add/chg: " . $noOfProps . "</p>";
-/* also get a count of existing entries in the EREFS table for this hike */
+/* also get a count of existing entries in the EGPSDAT table for this hike */
 $pidreq = "SELECT datId FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND " .
         "datType = 'P';";
 $pidq = mysqli_query($link,$pidreq);
@@ -352,7 +351,6 @@ if (!$pidq) {
             "Proposed Data: " . mysqli_error());
 }
 $prows = mysqli_num_rows($pidq);
-echo "<p>Existing rows: " . $prows . "</p>";
 if ($prows === 0) {
     /* There is no existing Proposed Data in EGPSDAT for this hike; 
      * no UPDATES to be performed. All posted items, if any, will be INSERTED;
@@ -388,7 +386,7 @@ if ($prows === 0) {
     $ups = []; # refIds to be updated 
     # one of three situations can exist, as expressed by the following 'ifs'
     if ($noOfProps > $prows) {
-        # all existing refs will be updated (later), and new ones inserted here:
+        # all existing 'props' will be updated (later), and new ones inserted here:
         for ($a=0; $a<$noOfProps; $a++) {
             if ($a < $prows) {
                 array_push($ups,$expids[$a]);
@@ -449,6 +447,135 @@ if ($prows === 0) {
     }
 }
 mysqli_free_result($pidq);
+/*
+ * Finish with Actual Data - modified version of Proposed Data code
+ */
+$A_lbls = $_POST['albl'];
+$A_urls = $_POST['aurl'];
+$A_cots = $_POST['actxt'];
+$Albls = [];
+$Aurls = [];
+$Acots = [];
+/* get a count of items actually specified: */
+$noOfActs = 0;
+for ($w=0; $w<count($A_urls); $w++) { # this includes all, even empty...
+    /* There may be non-sequential data entered in form by user, 
+     * so form arrays that ARE sequential
+     */
+    if ($A_urls[$w] !== '') {
+        $Albls[$noOfActs] = $A_lbls[$w];
+        $Aurls[$noOfActs] = $A_urls[$w];
+        $Acots[$noOfActs] = $A_cots[$w];
+        $noOfActs++;
+    }
+}
+echo "<p>Add/chg: " . $noOfActs . "</p>";
+/* also get a count of existing entries in the EGPSDAT table for this hike */
+$aidreq = "SELECT datId FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND " .
+        "datType = 'A';";
+$aidq = mysqli_query($link,$aidreq);
+if (!$aidq) {
+    die ("validateHike:php: Failed to extract datId's from EGPSDAT for " .
+            "Actual Data: " . mysqli_error());
+}
+$arows = mysqli_num_rows($aidq);
+echo "<p>Existing rows: " . $arows . "</p>";
+if ($prows === 0) {
+    /* There is no existing Proposed Data in EGPSDAT for this hike; 
+     * no UPDATES to be performed. All posted items, if any, will be INSERTED;
+     * If $noOfProps = 0, nothing will happen.
+     */
+    for ($r=0; $r<$noOfActs; $r++) { # covers the case for $noOfActs = 0
+        $a = mysqli_real_escape_string($link,$Albls[$r]);
+        $b = mysqli_real_escape_string($link,$Aurls[$r]);
+        $c = mysqli_real_escape_string($link,$Acots[$r]);
+        $newareq = "INSERT INTO EGPSDAT (indxNo,datType,label,url," .
+            "clickText) VALUES ('{$hikeNo}','A','{$a}','{$b}','{$c}');";
+        #echo $newpreq;
+        $newas = mysqli_query($link,$newareq);
+        if (!$newas) {
+            die ("validateHike.php: Failed to insert into EGPSDAT Actual " .
+                "Data item {$r} " . mysqli_error());
+        }
+    }
+    mysqli_free_result($newps);
+} else { 
+    /* Some records already exist in the EGPSDAT table for this hike;
+     * Form an array of datId's for this set of existing records
+     * (they may not be sequentially numbered).
+     * 
+     * NOTE: In the case of DELETE, since id's are renumbered automatically,
+     * perform updates PRiOR to DELETE!
+     */
+    $exaids = [];  # the array of datId's for existing records in EGPSDAT
+    while ($exadat = mysqli_fetch_row($aidq)) {
+        array_push($exaids,$exadat[0]);
+    }
+    $deletes = false;
+    $ups = []; # refIds to be updated 
+    # one of three situations can exist, as expressed by the following 'ifs'
+    if ($noOfActs > $arows) {
+        # all existing 'acts' will be updated (later), and new ones inserted here:
+        for ($a=0; $a<$noOfActs; $a++) {
+            if ($a < $arows) {
+                array_push($ups,$exaids[$a]);
+            } else {
+                $x = mysqli_real_escape_string($link,$Albls[$a]);
+                $y = mysqli_real_escape_string($link,$Aurls[$a]);
+                $z = mysqli_real_escape_string($link,$Acots[$a]);
+                $insAreq = "INSERT INTO EGPSDAT (indxNo,datType,label," .
+                    "url,clickText) VALUES ('{$hikeNo}','A','{$x}','{$y}','{$z}');";
+                $insaq = mysqli_query($link,$insAreq);
+                if (!$insaq) {
+                    die ("validateHike.php: Could not INSERT into EGPSDAT for " .
+                        "Actual Data item " . $a . ": " . mysqli_error());
+                }
+            }
+        }
+        mysqli_free_result($insaq);
+    } elseif ($noOfActs < $arows) {
+        # excess rows need to be removed
+        for ($b=0; $b<$arows; $b++) {
+            $deletes = true;
+            $dels = [];
+            if ($b < $noOfActs) {
+                array_push($ups,$exaids[$b]);
+            } else {
+                array_push($dels,$exaids[$b]);
+            }
+        }
+    } else {  # both are equal, all existing get updated
+        for ($c=0; $c<$noOfActs; $c++) {
+            array_push($ups,$exaids[$c]);
+        }
+    }
+    # Now perform the updates: (indxNo & datType are already good for these)
+    for ($d=0; $d<count($ups); $d++) {
+        $i = mysqli_real_escape_string($link,$Albls[$d]);
+        $j = mysqli_real_escape_string($link,$Aurls[$d]);
+        $k = mysqli_real_escape_string($link,$Acots[$d]);
+        $updtareq = "UPDATE EGPSDAT SET label = '{$i}',url = '{$j}'," .
+            "clickText = '{$k}' WHERE datId = {$ups[$d]};";
+        $updta = mysqli_query($link,$updtareq);
+        if (!$updta) {
+            die("validateHike.php: Could not UPDATE EGPSDAT 'A' item " . $d . 
+                ": " . mysqli_error());
+        }
+    }
+    mysqli_free_result($updta);
+    if ($deletes) {
+        for ($k=0; $k<count($dels); $k++) {
+            $delref = "DELETE FROM EGPSDAT WHERE datId = {$dels[$k]};";
+            $remrow = mysqli_query($link,$delref);
+            if (!remrow) {
+                die("validateHike.php: Failed to delete from EGPSDAT: " . 
+                    mysqli_error());
+            }
+        }
+        mysqli_free_result($remrow);
+    }
+}
+mysqli_free_result($aidq);
 
 /*
  * If 'Save', there is no tsv data; nor are there any file uploads.
