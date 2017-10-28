@@ -1,5 +1,5 @@
 <?php 
-$xmlout = [];
+$picdat = [];
 for ($m=0;$m<$pcnt;$m++) {
     $totPhotDat = array(
         "folder" => $folder[$m],
@@ -17,9 +17,9 @@ for ($m=0;$m<$pcnt;$m++) {
         "gpsdate" => $gpds[$m],
         "gpstime" => $gpts[$m]
     ); 
-    array_push($xmlout,$totPhotDat);
+    array_push($picdat,$totPhotDat);
 }
-usort($xmlout,function($a,$b) {
+usort($picdat,function($a,$b) {
     $stampA = $a['taken'];
     $stampB = $b['taken'];
     $timeApos = strpos($stampA," ");

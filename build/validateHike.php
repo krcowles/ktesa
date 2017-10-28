@@ -1,47 +1,41 @@
 <?php
-    $database = '../data/database.xml';
-    $pstyle = '<p style="margin-left:16px;font-size:18px;">';
-    # Process $hikeName to ensure no html special characters will disrupt
-    $hike = filter_input(INPUT_POST,'hpgTitle');
-    $hikeName = htmlspecialchars($hike);
-    $hikeNo = intval(filter_input(INPUT_POST,'hno'));
-    $xml = simplexml_load_file($database);
-    if ($xml === false) {
-        $errmsg = '<p style="margin-left:20px;color:red;font-size:18px;">' .
-            'Could not load xml database: contact Site Master</p>';
-        die ($errmsg);
+require_once "../mysql/setenv.php";
+# Process $hikeName to ensure no html special characters will disrupt
+$hike = filter_input(INPUT_POST,'hpgTitle');
+$hikeNo = intval(filter_input(INPUT_POST,'hno'));
+$uid = filter_input(INPUT_POST,'usr');
+/*
+ * Note: the next four variables are initialized false as 'save' type cannot
+ * save file uploads. If 'validate' type, then fileUploads.php may set them.
+ */
+$haveGpx = false;
+$imageFile1 = false;
+$imageFile2 = false;
+$propFiles = false;
+$actFiles = false;
+#
+$saveType = filter_input(INPUT_POST,'saveit');
+$valType = filter_input(INPUT_POST,'valdat');
+if ( isset($saveType)) {
+    $tabTitle = 'Save Form Data';
+    $logo = 'Save ' . $hikeName;
+    $type = 'Save';
+    $status = "new";
+}
+if ( isset($valType) ) {
+    $tabTitle = 'Validate &amp; Select Images';
+    $logo = 'Validate This Hike!';
+    $type = 'Validate';
+    $status = "upl";
+    $nopics = filter_input(INPUT_POST,'nopix');
+    if ( !isset($nopics) ) {
+        $usetsv = true;
+        require "getPicDat.php"; # fill ETSV table
+
+    } else {
+        $usetsv = false;  # no TSV table entries
     }
-    /*
-     * Note: the next few variables are initialized false as 'save' type cannot
-     * save file uploads. If 'validate' type, then fileUploads.php may set them.
-     */
-    $haveGpx = false;
-    $imageFiles = false;
-    $propFiles = false;
-    $actFiles = false;
-    
-    $saveType = filter_input(INPUT_POST,'saveit');
-    $valType = filter_input(INPUT_POST,'valdat');
-    if ( isset($saveType)) {
-        $tabTitle = 'Save Form Data';
-        $logo = 'Save ' . $hikeName;
-        $type = 'Save';
-    }
-    if ( isset($valType) ) {
-        $tabTitle = 'Validate &amp; Select Images';
-        $logo = 'Validate This Hike!';
-        $type = 'Validate';
-        $nopics = filter_input(INPUT_POST,'nopix');
-        if ( !isset($nopics) ) {
-            $usetsv = true;
-            require "getPicDat.php";
-            
-        } else {
-            $usetsv = false;
-        }
-        $imageFiles = false;  # change if files are encountered
-        $gpsDatFiles = false;  # ditto
-    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -66,22 +60,20 @@
         echo '<div style="margin-left:24px;font-size:18px;">';
         echo '<h2>You have saved the current data on the form</h2>';
         echo '<p >You may continue on that page, or come back later to work '
-            . 'on it:<br />Use: [server]/[project]/build/enterHike.php?hikeNo='
-            . $hikeNo . '</p>';
+            . 'on it by going back to the main page and selecting "Edit ' .
+            'Hikes" (New/Active)</p>';
         echo '<p>Your Hike No is ' . $hikeNo . ', and the hike saved is ' .
-            $hikeName . '</p></div>';
+            $hike . '</p></div>';
         
     } else {
         echo '<form target="_blank" action="displayHikePg.php" method="POST">' . "\n";
         echo "<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>\n";
         echo '<div style="margin-left:24px;font-size:18px;">';
         echo "<h3>Please Note!</h3>\n" . '<p>You have saved new data. '
-                . 'Do not go back to the previous page and repeat this step or '
-                . 'duplicate data will be created.<br />If you wish to stop '
-                . 'here and return later to select photos, please use the'
-                . 'following url:<br />[server]/[project]/build/finishPage.php?'
-                . 'hikeNo=' . $hikeNo . ' after exiting this page (do not select '
-                . 'the "Create Page.." button</p>';
+            . 'Do not go back to the previous page and repeat this step or '
+            . 'duplicate data will be created!<br />If you wish to stop '
+            . 'here and return later to select photos, please return to ' .
+            ' the main page and select "Edit Hikes" (New/Active)';
         require "fileUploads.php";
     }
 ?>  
@@ -90,42 +82,48 @@
 <?php
 /*
  *  hike form entry - both 'save form' and 'validate' need this data
- *  NOTE: $hikeNo already saved previously and should not be over-written
+ *  Prep data with mysqli_real_escape_string()
  */
-# from here on out, $hikeNo is decremented as hikes start at 1, not 0:
-$hikeNo--;
-$xml->row[$hikeNo]->pgTitle = $hikeName;
-$xml->row[$hikeNo]->locale = filter_input(INPUT_POST,'locale');
+$hname = mysqli_real_escape_string($link,$hike);
+$locale = filter_input(INPUT_POST,'locale');
+$loc = mysqli_real_escape_string($link,$locale);
 $marker = filter_input(INPUT_POST,'mstyle');
+# default values, altered depending on marker type
+$coll = '';
+$cg = '';
+$cn = '';
 if ($marker === 'ctrhike') {
-    $xml->row[$hikeNo]->marker = 'At VC';
-    $xml->row[$hikeNo]->clusterStr = filter_input(INPUT_POST,'vchike');
+    $mrkr = "At VC";
+    $coll = filter_input(INPUT_POST,'vchike'); # only a number, no escape needed
 } elseif ($marker === 'cluster') {
-    $xml->row[$hikeNo]->marker = 'Cluster';
-    $belongsTo = filter_input(INPUT_POST,'clusgrp');
-    $xml->row[$hikeNo]->clusGrp = $belongsTo;
-    foreach ($xml->row as $row) {
-        if ($row->clusGrp == $belongsTo) {
-            $cname = $row->cgName->__toString();
-            break;
-        }
-    }
-    $xml->row[$hikeNo]->cgName = $cname;
+    $mrkr = 'Cluster';
+    $cinfo = filter_input(INPUT_POST,'clusgrp');
+    $colon = strpos($cinfo,":");
+    $cg = substr($cinfo,0,$colon); # 1 or more letters, no escape needed
+    $nmlgth = strlen($cinfo) - ($colon + 1);
+    $cname = substr($cinfo,$colon+1,$nmlgth);
+    $cn = mysqli_real_escape_string($link,$cname);
 } elseif ($marker === 'other') {
-    $xml->row[$hikeNo]->marker = 'Normal';
+    $mrkr = 'Normal';
 }
-$xml->row[$hikeNo]->logistics = filter_input(INPUT_POST,'htype');
-$xml->row[$hikeNo]->miles = filter_input(INPUT_POST,'dist');
-$xml->row[$hikeNo]->feet = filter_input(INPUT_POST,'elev');
-$xml->row[$hikeNo]->difficulty = filter_input(INPUT_POST,'diff');
-$xml->row[$hikeNo]->facilities = filter_input(INPUT_POST,'fac');
-$xml->row[$hikeNo]->wow = filter_input(INPUT_POST,'wow_factor');
-$xml->row[$hikeNo]->seasons = filter_input(INPUT_POST,'seas');
-$xml->row[$hikeNo]->expo = filter_input(INPUT_POST,'expos');
+$style = filter_input(INPUT_POST,'htype');
+$logistics = mysqli_real_escape_string($link,$style);
+$distance = filter_input(INPUT_POST,'dist');
+$dist = mysqli_real_escape_string($link,$distance);
+$elevation = filter_input(INPUT_POST,'elev');
+$elev = mysqli_real_escape_string($link,$elevation);
+$difficulty = filter_input(INPUT_POST,'diff');
+$diff = mysqli_real_escape_string($link,$difficulty);
+$facilities = filter_input(INPUT_POST,'fac');
+$fac = mysqli_real_escape_string($link,$facilities);
+$wows = filter_input(INPUT_POST,'wow_factor');
+$wow = mysqli_real_escape_string($link,$wows);
+$seasons = filter_input(INPUT_POST,'seas');
+$seasn = mysqli_real_escape_string($link,$seasons);
+$exposure = filter_input(INPUT_POST,'expos');
+$expo = mysqli_real_escape_string($link,$exposure);
 
 if ($haveGpx) { # fileUploads will set true, if 'validate' & gpx file present
-    $xml->row[$hikeNo]->gpxfile = $hikeGpx;
-    $xml->row[$hikeNo]->trkfile = $trkfile;
     # Extract trailhead lat & lng from gpx file
     $cwd = getcwd();
     $bloc = strpos($cwd,"build");
@@ -142,128 +140,192 @@ if ($haveGpx) { # fileUploads will set true, if 'validate' & gpx file present
     $latloc = strpos($trksubstr,"lat=") + 5;
     $latend = strpos($trksubstr,'" lon=');
     $latlgth = $latend - $latloc;
-    $xml->row[$hikeNo]->lat = substr($trksubstr,$latloc,$latlgth);
+    $lat = substr($trksubstr,$latloc,$latlgth);
     $lonloc = strpos($trksubstr,"lon=") + 5;
     $lonend = strpos($trksubstr,">") - 1;
     $lonlgth = $lonend - $lonloc;
-    $xml->row[$hikeNo]->lng = substr($trksubstr,$lonloc,$lonlgth);
+    $lng = substr($trksubstr,$lonloc,$lonlgth);
 }
-if ($imageFiles) { # fileUploads.php may set true if 'validate' and 1 or 2 present
-    if ($hikeOthrImage1 !== '') {
-        $xml->row[$hikeNo]->aoimg1 = $hikeOthrImage1;
-    }
-    if ($hikeOthrImage2 !== '') {
-        $xml->row[$hikeNo]->aoimg2 = $hikeOthrImage2;
-    }
+if ($imageFile1) { # fileUploads.php may set true if 'validate' and 1 or 2 present
+    $aoimg1 = $hikeOthrImage1;
 }
-$xml->row[$hikeNo]->mpUrl = filter_input(INPUT_POST,'photo1');
-$xml->row[$hikeNo]->spUrl = filter_input(INPUT_POST,'photo2');
-$xml->row[$hikeNo]->dirs = filter_input(INPUT_POST,'dirs');
+if ($imageFile2) {
+    $aoimg2 = $hikeOthrImage2;
+}
+$url1 = filter_input(INPUT_POST,'photo1');
+$purl1 = mysqli_real_escape_string($link,$url1);
+$url2 = filter_input(INPUT_POST,'photo2');
+$purl2 = mysqli_real_escape_string($link,$url2);
+$gdirs = filter_input(INPUT_POST,'dirs');
+$dirs = mysqli_real_escape_string($link,$gdirs);
 $rawtips = filter_input(INPUT_POST,'tipstxt');
 if (substr($rawtips,0,10) !== '[OPTIONAL]') {
-    $xml->row[$hikeNo]->tipsTxt = $rawtips;
-    $tipsTxt = $rawtips;
+    $tips = mysqli_real_escape_string($link,$rawtips);
 } else {
-    $tipsTxt = '';
+    $tips = '';
 }
 $hikeDetails = filter_input(INPUT_POST,'hiketxt');
-$xml->row[$hikeNo]->hikeInfo = $hikeDetails;
-/* If a user saves form more than once, the above data will simply be
- * re-written (along with any updates), but the arrays below use 'addChild'
- * and would duplicate existing data by adding more of the same. The affected
- * items are: References, Proposed Data, and Actual Data. Always 'clear out
- * the old' first...
+$info = mysqli_real_escape_string($link,$hikeDetails);
+# Now the updates (if any) can be stored in the EHIKES database
+$ereq = "UPDATE EHIKES SET pgTitle = '{$hname}',stat = '{$status}'," .
+        "locale = '{$loc}',logistics = '{$logistics}',marker = '{$mrkr}'," .
+        "collection = '{$coll}',cgroup = '{$cg}',cname = '{$cn}'," .
+        "diff = '{$diff}',expo = '{$expo}',miles = '{$dist}',feet = '{$elev}'," .
+        "fac = '{$fac}',wow = '{$wow}', seasons = '{$seasn}'";
+if ($type === 'Validate') {
+    if ($haveGpx) {
+        $ereq .= ",gpx = '{$hikeGpx},trk = '{$trkfile}'";
+    }
+    if ($imageFile1) {
+        $ereq .= ",aoimg1 = '{$hikeOthrImage1}'";
+    }
+    if ($imageFile2) {
+        $ereq .= ",aoimg2 = '{$hikeOthrImage2}'";
+    }
+}
+if ($haveGpx) {
+    $ereq .= ",lat = '{$lat}',lng = '{$lng}'";
+}
+$ereq .= ",purl1 = '{$url1}',purl2 = '{$url2}',dirs = '{$dirs}',tips = '{$tips}'," .
+    "info = '{$info}' WHERE indxNo = '{$hikeNo}';";
+$ehresults = mysqli_query($link,$ereq);
+if (!$ehresults) {
+    die ("validateHike.php: Failed to update EHIKES: " . mysqli_error());
+}
+mysqli_free_result($ehresults);
+
+/*
+ * Next update the EREFS table (a bit lengthy, but necessary to account 
+ * for all cases as expressed by the 'if/elseif/else' statements)
  */
-$rcnt = $xml->row[$hikeNo]->refs->ref->count();
-for ($i=0; $i<$rcnt; $i++) {
-    unset($xml->row[$hikeNo]->refs->ref[0]);
-}
-$hikeRefTypes = $_POST['rtype'];
-$hikeRefItems1 = $_POST['rit1'];
-$hikeRefItems2 = $_POST['rit2'];
+$RTypes = $_POST['rtype'];
+$RItems1 = $_POST['rit1'];
+$RItems2 = $_POST['rit2'];
+$RefTypes = [];
+$RefItems1 = [];
+$RefItems2 = [];
 /* get a count of items actually specified: */
-for ($w=0; $w<count($hikeRefTypes); $w++) {
-    # Imported data references may not have content other than default label
-    if ($hikeRefItems1[$w] == '') {
-        $noOfRefs = $w;
-        break;
+$noOfRefs = 0;
+for ($w=0; $w<count($RTypes); $w++) { # this includes all, even empty...
+    /* Posted data references may not have content other than default label,
+     * so test with RItems1, not RTypes. Also, there may be non-sequential data
+     * entered in form by user, so form arrays that ARE sequential
+     */
+    if ($RItems1[$w] !== '') {
+        $RefTypes[$noOfRefs] = $RTypes[$w];
+        $RefItems1[$noOfRefs] = $RItems1[$w];
+        $RefItems2[$noOfRefs] = $RItems2[$w];
+        $noOfRefs++;
     }
 }
-$newrefs = $xml->row[$hikeNo]->refs->addChild('ref');
-if ($noOfRefs === 0) {
-    $newrefs->addChild('rtype','n');
-    $newrefs->addChild('rit1','No References Found');
-} else {
-    for ($r=0; $r<$noOfRefs; $r++) {
-        $newrefs->addChild('rtype',$hikeRefTypes[$r]);
-        $newrefs->addChild('rit1',urlencode($hikeRefItems1[$r]));
-        $newrefs->addChild('rit2',$hikeRefItems2[$r]);
-        if ($r < $noOfRefs-1) {
-            $newrefs = $xml->row[$hikeNo]->refs->addChild('ref');
+echo "<p>Add/chg: " . $noOfRefs . "</p>";
+/* also get a count of existing entries in the EREFS table for this hike */
+$ecreq = "SELECT refId FROM EREFS WHERE indxNo = '{$hikeNo}';";
+$ecntq = mysqli_query($link,$ecreq);
+if (!$ecntq) {
+    die ("validateHike:php: Failed to extract refId's from EREFS: " . mysqli_error());
+}
+$exrows = mysqli_num_rows($ecntq);
+echo "<p>Existing rows: " . $exrows . "</p>";
+if ($exrows === 0) {
+    /* There are no existing EREFS for this hike; no UPDATES need be performed
+     * All posted items, if any, will be INSERTED;
+     * If $noOfRefs = 0, nothing will happen.
+     */
+    for ($r=0; $r<$noOfRefs; $r++) { # covers the case for noOfRefs = 0
+        $a = mysqli_real_escape_string($link,$RefTypes[$r]);
+        $b = mysqli_real_escape_string($link,$RefItems1[$r]);
+        $c = mysqli_real_escape_string($link,$RefItems2[$r]);
+        $erreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES (" .
+            "'{$hikeNo}','{$a}','{$b}','{$c}');";
+        $newes = mysqli_query($link,$erreq);
+        if (!$newes) {
+            die ("validateHike.php: Failed to insert into EREFS item {$r} " . mysqli_error());
+        }
+    }
+    mysqli_free_result($newes);
+} else { 
+    /* Some records already exist in the EREFS table for this hike;
+     * Form an array of refIds for this set of existing records
+     * (they may not be sequentially numbered).
+     * 
+     * NOTE: In the case of DELETE, since id's are renumbered automatically,
+     * perform updates PRiOR to DELETE!
+     */
+    $exids = [];  # the array of refId's for existing records in EREFS
+    while ($exdat = mysqli_fetch_row($ecntq)) {
+        array_push($exids,$exdat[0]);
+    }
+    $deletes = false;
+    $ups = []; # refIds to be updated 
+    # one of three situations can exist, as expressed by the following 'ifs'
+    if ($noOfRefs > $exrows) {
+        # all existing refs will be updated (later), and new ones inserted here:
+        for ($a=0; $a<$noOfRefs; $a++) {
+            if ($a < $exrows) {
+                array_push($ups,$exids[$a]);
+            } else {
+                $x = mysqli_real_escape_string($link,$RefTypes[$a]);
+                $y = mysqli_real_escape_string($link,$RefItems1[$a]);
+                $z = mysqli_real_escape_string($link,$RefItems2[$a]);
+                $insrefreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) " .
+                    "VALUES ('{$hikeNo}','{$x}','{$y}','{$z}');";
+                $ins = mysqli_query($link,$insrefreq);
+                if (!$ins) {
+                    die ("validateHike.php: Could not INSERT into EREFS: " .
+                        mysqli_error());
+                }
+            }
+        }
+        mysqli_free_result($ins);
+    } elseif ($noOfRefs < $exrows) {
+        # excess rows need to be removed
+        for ($b=0; $b<$exrows; $b++) {
+            $deletes = true;
+            $dels = [];
+            if ($b < $noOfRefs) {
+                array_push($dels,$exids[$b]);
+            } else {
+                array_push($dels,$exids[$b]);
+            }
+        }
+        mysqli_free_result($remrow);
+    } else {  # both are equal, all existing get updated
+        for ($c=0; $c<$noOfRefs; $c++) {
+            array_push($ups,$exids[$c]);
+        }
+    }
+    # Now perform the updates: (indxNo is already good for these)
+    for ($d=0; $d<count($ups); $d++) {
+        $i = mysqli_real_escape_string($link,$RefTypes[$d]);
+        $j = mysqli_real_escape_string($link,$RefItems1[$d]);
+        $k = mysqli_real_escape_string($link,$RefItems2[$d]);
+        $updtreq = "UPDATE EREFS SET rtype = '{$i}',rit1 = '{$j}'," .
+            "rit2 = '{$k}' WHERE refId = {$ups[$d]};";
+        $updt = mysqli_query($link,$updtreq);
+        if (!$updt) {
+            die("validateHike.php: Could not UPDATE EREFS: " . mysqli_error());
+        }
+    }
+    mysqli_free_result($updt);
+    if ($deletes) {
+        $delref = "DELETE FROM EREFS WHERE refId = {$exids[$b]};";
+        $remrow = mysqli_query($link,$delref);
+        if (!remrow) {
+            die("validateHike.php: Failed to delete from EREFS: " . mysqli_error());
         }
     }
 }
-# Proposed and Actual GPS Maps & Data:
-if ($propFiles) { # if 'validate' type & files present, fileUploads.php will set
-    # PROPOSED:
-    $pcnt = $xml->row[$hikeNo]->dataProp->prop->count();
-    for ($j=0; $j<$pcnt; $j++) {
-        unset($xml->row[$hikeNo]->dataProp->prop[0]);
-    }
-    $hikePDatLbls = $_POST['plbl'];
-    $noOfPDats = count($hikePDatLbls);
-    for ($i=0; $i<$noOfPDats; $i++) {
-        if ($hikePDatLbls[$i] == '') {
-                $noOfPDats = $i;
-                break;
-        }
-    }
-    $hikePDatUrls = $_POST['purl'];
-    $hikePDatCTxts = $_POST['pctxt'];
-    $newPs = $xml->row[$hikeNo]->dataProp->addChild('prop');
-    for ($p=0; $p<$noOfPDats; $p++) {
-        $newPs->addChild('plbl',$hikePDatLbls[$p]);
-        $newPs->addChild('purl',$hikePDatUrls[$p]);
-        $newPs->addChild('pcot',$hikePDatCTxts[$p]);
-        if ($p < $noOfPDats-1) {
-            $newPs = $xml->row[$hikeNo]->dataProp->addChild('prop');
-        }
-    }
-}
-if ($actFiles) { # if 'validate' type & files present, fileUploads.php will set
-    # ACTUAL:
-    $acnt = $xml->row[$hikeNo]->dataAct->act->count();
-    for ($k=0; $k<$acnt; $k++) {
-        unset($xml->row[$hikeNo]->dataAct->act[0]);
-    }
-    $hikeADatLbls = $_POST['albl'];
-    $noOfADats = count($hikeADatLbls);
-    for ($j=0; $j<$noOfADats; $j++) {
-        if ($hikeADatLbls[$j] == '') {
-                $noOfADats = $j;
-                break;
-        }
-    }
-    $hikeADatUrls = $_POST['aurl'];
-    $hikeADatCTxts = $_POST['actxt'];
-    $newAs = $xml->row[$hikeNo]->dataAct->addChild('act');
-    for ($q=0; $q<$noOfADats; $q++) {
-        $newAs->addChild('albl',$hikeADatLbls[$q]);
-        $newAs->addChild('aurl',$hikeADatUrls[$q]);
-        $newAs->addChild('acot',$hikeADatCTxts[$q]);
-        if ($q < $noOfADats-1) {
-            $newAs = $xml->row[$hikeNo]->dataAct->addChild('act');
-        }
-    }  
-}
-# Done saving data for database: if 'Save Data', then end here....
-$xml->asXML($database);
+mysqli_free_result($ecntq);
+
+
 /*
  * If 'Save', there is no tsv data; nor are there any file uploads.
  * The remainder of this script displays photos for selection and inclusion
  * on both the hike page and on the GPSV map, and can be skipped in the case
  * of a 'Save'.
  */
+/*
 if ($type === 'Validate') {
     if ($usetsv) {
         $picno = 0;
@@ -324,6 +386,7 @@ if ($type === 'Validate') {
     echo '<input type="hidden" name="hikeno" value="' . $hikeNo . '" />' . "\n";
     echo "</form>\n";
 }
+ */
 ?>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">

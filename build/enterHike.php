@@ -70,13 +70,13 @@ for ($i=1; $i<=$tblcnt; $i++) {
             user_error_msg($rel_addr,6,0);
         }
     }
-    $dat = mysqli_fetch_row($specdat);
-    $indx = $dat[0];
-    $title = $dat[1];
-    $marker = $dat[2];
-    $coll = $dat[3];
-    $clusltr = $dat[4];
-    $clusnme = $dat[5];
+    $dat = mysqli_fetch_assoc($specdat);
+    $indx = $dat['indxNo'];
+    $title = $dat['pgTitle'];
+    $marker = $dat['marker'];
+    $coll = $dat['collection'];
+    $clusltr = $dat['cgroup'];
+    $clusnme = $dat['cname'];
     if($marker == 'Visitor Ctr') {
         array_push($vchikes,$title);
         array_push($vcnos,$indx);
@@ -138,6 +138,7 @@ mysqli_free_result($result);
     <p id="dbdif" style="display:none"><?php echo $entrydat['diff'];?></p>
     <p id="dbexp" style="display:none"><?php echo $entrydat['expo'];?></p>
     <input type="hidden" name="hno" value="<?php echo $hip;?>" />
+    <input type="hidden" name="usr" value="<?php echo $usr;?>" />"
     <fieldset id="basic">
         <legend>Basic Hike Data</legend>
         <label id="pgTitleText" for="htitle">Hike Name (As it will appear 
@@ -377,7 +378,9 @@ mysqli_free_result($result);
                     <select id="nclus" name="clusgrp">
                     <?php
                     for ($j=0;$j<$clcnt;$j++) {
-                        echo '<option value="' . $clnos[$j] . '">' . 
+                        $pass = $clnos[$j] . ":" . $clhikes[$j];
+                        # Database needs both clusletter & clusname
+                        echo '<option value="' . $pass . '">' . 
                                 $clhikes[$j] . "</option>\n";
                     }
                     ?>                  
@@ -450,7 +453,7 @@ mysqli_free_result($result);
     ?>
     <fieldset id="refdat">
         <legend>Hike References</legend>
-        <p>Select the type of reference (up to 8) and its accompanying data below:</p>
+        <p>Select the type of reference (up to 6) and its accompanying data below:</p>
         <select id="href1" name="rtype[]">
             <option value="Book:" selected="selected">Book</option>
             <option value="Photo Essay:">Photo Essay</option>

@@ -2,7 +2,7 @@
 /* 
  * This routine fetches album html from each of the user-specified album
  * links, and parses it for the data needed to create hike page photos with
- * links and captions. 
+ * links and captions. Other scripts are included.
  */
 function getFlickrDat($photomodel,$size) {
     $ltrSize = strlen($size);  # NOTE: at least 1 size is two letters
@@ -44,8 +44,8 @@ $icon_clr = filter_input(INPUT_POST,'icon');
 if ($icon_clr === '') {
     $icon_clr = 'Google default';
 }
-
-$curlids = $_POST['phpcurl'];
+# get any supplied urls and if none, return to user
+$curlids = $_POST['phpcurl']; # array of urls
 $supplied = 0;
 for ($n=0; $n<count($curlids); $n++) {
     if ($curlids[$n] !== '') {
@@ -160,25 +160,31 @@ for ($i=0; $i<$supplied; $i++) {
         }
     }  # end of non-empty curlid
 }  # end of for each album url input box
-# sort the arrays based on timestamp: (all data will end up in $xmlout array
+# sort the arrays based on timestamp:
 include "timeSort.php";
-foreach ($xmlout as $tsvdata) {  # each item is an array of data
-    # NOTE: $hikeNo has not yet been decremented to correlate hike no w/ indx no
-    $newpic = $xml->row[$hikeNo-1]->tsv->addChild('picDat');
-    $newpic->addChild('folder',$tsvdata['folder']);
-    $newpic->addChild('title',htmlspecialchars($tsvdata['pic']));
-    $newpic->addChild('hpg','N');
-    $newpic->addChild('mpg','N');
-    $newpic->addChild('desc',htmlspecialchars($tsvdata['desc']));
-    $newpic->addChild('lat',$tsvdata['lat']);
-    $newpic->addChild('lng',$tsvdata['lng']);
-    $newpic->addChild('thumb',$tsvdata['thumb']);
-    $newpic->addChild('alblnk',$tsvdata['alb']);
-    $newpic->addChild('date',$tsvdata['taken']);
-    $newpic->addChild('mid',$tsvdata['nsize']);
-    $newpic->addChild('imgHt',$tsvdata['pHt']);
-    $newpic->addChild('imgWd',$tsvdata['pWd']);
-    $newpic->addChild('iclr',$icon_clr);
-    $newpic->addChild('org',$tsvdata['org']);
+foreach ($picdat as $ph) {  # each item is an array of data
+    $foldr = mysqli_real_escape_string($link,$ph['folder']);
+    $ttl = mysqli_real_escape_string($link,$ph['pic']);
+    $des = mysqli_real_escape_string($link,$ph['desc']);
+    $lt = mysqli_real_escape_string($link,$ph['lat']);
+    $ln = mysqli_real_escape_string($link,$ph['lng']);
+    $th = mysqli_real_escape_string($link,$ph['thumb']);
+    $al = mysqli_real_escape_string($link,$ph['alb']);
+    $dt = mysqli_real_escape_string($link,$ph['taken']);
+    $sz = mysqli_real_escape_string($link,$ph['nsize']);
+    $ht = mysqli_real_escape_string($link,$ph['pHt']);
+    $wd = mysqli_real_escape_string($link,$ph['pWd']);
+    $ic = mysqli_real_escape_string($link,$icon_clr);
+    $og = mysqli_real_escape_string($link,$ph['org']);
+    $photoQuery = "INSERT INTO ETSV ( indxNo,folder,usrid,title," .
+        "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid," .
+        "imgHt,imgWd,iclr,org ) VALUES ( '{$hikeNo}','{$foldr}'," .
+        "'{$uid}','{$ttl}','N','N','{$des}','{$lt}','{$ln}','{$th}'," .
+        "'{$al}','{$dt}','{$sz}','{$ht}','{$wd}','{$ic}','{$og}' );";
+    $photoResults = mysqli_query($link,$photoQuery);
+    if (!$photoResults) {
+        die ("getPicDat.php: Could not insert data into ETSV: " . mysqli_error());
+    }
 }
+mysqli_free_result($photoResult);
 ?>

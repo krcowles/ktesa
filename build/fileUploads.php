@@ -103,7 +103,7 @@ $hikeOthrImage1 = basename($_FILES['othr1']['name']);
 $othrImg1Type = $_FILES['othr1']['type'];
 $img1Stat = $_FILES['othr1']['error'];
 if ($hikeOthrImage1 !== '') {
-    $imageFiles = true;
+    $imageFile1 = true;
     if ($img1Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($img1Stat) . '</p>';
         die ($errmsg);
@@ -126,7 +126,7 @@ $hikeOthrImage2 = basename($_FILES['othr2']['name']);
 $othrImg2Type = $_FILES['othr2']['type'];
 $img2Stat = $_FILES['othr2']['error'];
 if ($hikeOthrImage2 !== '') {
-    $imageFiles = true;
+    $imageFile2 = true;
     if ($img2Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($img2Stat) . '</p>';
         die ($errmsg);

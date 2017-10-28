@@ -222,14 +222,14 @@ $reftags.each( function() {
         var elStr = "ABCDEFGH".substring(elNo-1,elNo);
         var box1 = '#rit' + elStr + '1';
         var box2 = '#rit' + elStr + '2';
-        if ($(this).val() === 'b') {
+        if ($(this).val() === 'Book:' || $(this).val() === 'Photo Essay:') {
             if ($(box1).val() === '') {
                 $(box1).attr('placeholder','Book Title');
             }
             if ($(box2).val() === '') {
                 $(box2).attr('placeholder','Author Name');
             }
-        } else if ($(this).val() !== 'n') {
+        } else if ($(this).val() !== 'Text') {
             if ($(box1).val() === '') {
                 $(box1).attr('placeholder','URL');
             }

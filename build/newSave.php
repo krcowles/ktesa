@@ -1,5 +1,5 @@
 <?php
-require '../admin/setenv.php';
+require '../mysql/setenv.php';
 $newHike = filter_input(INPUT_GET,'new');
 $usr = filter_input(INPUT_GET,'usr');
 $query = "INSERT INTO EHIKES (pgTitle, usrid, stat) VALUES " .
@@ -13,6 +13,7 @@ if (!$result) {
         user_error_msg($rel_addr,5,0);
     }
 }
+mysqli_free_result($result);
 $lastid = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1";
 $getid = mysqli_query($link,$lastid);
 if (!$getid) {
@@ -25,6 +26,7 @@ if (!$getid) {
 }
 $lastitem = mysqli_fetch_row($getid);
 $lastindx = $lastitem[0];
+mysqli_free_result($getid);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
