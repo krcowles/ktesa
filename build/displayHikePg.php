@@ -1,58 +1,56 @@
 <?php
-# output msg styling (when error encountered)
-$pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
-
+require_once "../mysql/setenv.php";
+$hikeRow = intval(filter_input(INPUT_POST,'hikeno'));
+$usePix = filter_input(INPUT_POST,'usepics');
 # indicator for hikePageTemplate.php
 $building = true;
 $usetsv = false;
-
-$database = '../data/database.xml';
-$xml = simplexml_load_file($database);
-if ($xml === false) {
-    $noload = $pstyle . "Could not load database.xml: contact Site Master</p>";
-    die ($noload);
-}
-# Incoming hike no is already decremented to match indices
-$hikeRow = intval(filter_input(INPUT_POST,'hikeno'));
-
-$usePix = filter_input(INPUT_POST,'usepics');
-
+# output msg styling (when error encountered)
+$pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
 # -------------------------- PIC ROW CONSTRUCTION --------------------------
-
 # Adjust database to register picture choices: hike pg & map
 if ($usePix == 'YES') {
-    $picarray = $_POST['pix'];  # boxes checked for inclusion on hike page
+    $picarray = $_POST['pix'];  # pix checked for inclusion on hike page
     $noOfPix = count($picarray);
-    if ($noOfPix !== 0) {
-        for ($z=0; $z<$noOfPix; $z++) {
-            # change the 'N' to a 'Y' in the database
-            foreach ($xml->row[$hikeRow]->tsv->picDat as $picel) {
-                if ($picel->title == $picarray[$z]) {
-                    $picel->hpg = 'Y';
-                    break;
-                }
+    $maparray = $_POST['mapit']; # pix checked for inclusion on map
+    $noOfMapPix = count($maparray);
+    $getPixReq = "SELECT picIdx,title FROM ETSV WHERE indxNo = '{$hikeRow}';";
+    $getPix = mysqli_query($link,$getPixReq);
+    if (!$getPix) {
+        die("displayHikePg.php: Failed to retrieve picture data for hike " .
+                $hikeRow . " in ETSV: " . mysqli_error($link));
+    }
+    while ($picdata = mysqli_fetch_assoc($getPix)) {
+        $disph = 'N';
+        $dispm = 'N';
+        $thispic = $picdata['title'];
+        # for each title, ascertain hpg, mpg status
+        for ($i=0; $i<$noOfPix; $i++) {
+            if ($thispic == $picarray[$i]) {
+                $disph = 'Y';
+                break;
+            }
+        }
+        for ($j=0; $j<$noOfMapPix; $j++) {
+            if ($thispic == $maparray[$j]) {
+                $dispm = 'Y';
+                break;
+            }
+        }
+        if ($disph === 'Y' || $dispm === 'Y') {
+            $pstatq = "UPDATE ETSV SET hpg = '{$disph}', mpg = '{$dispm}' " .
+                "WHERE picIdx = {$picdata['picIdx']};";
+            $pstat = mysqli_query($link,$pstatq);
+            if (!$pstat) {
+                die("displayHikePg.php: Failed to update TSV pg setting: " .
+                        mysqli_error($link));
             }
         }
     }
-    # retrieve array of photos checked for inclusion on map:
-    $maparray = $_POST['mapit'];
-    $noOfMapPix = count($maparray);
-    if ($noOfMapPix !== 0) {
-        for ($q=0; $q<$noOfMapPix; $q++) {
-            # change the 'N' to a 'Y' in the $photos xml object
-            foreach ($xml->row[$hikeRow]->tsv->picDat as $picel) {
-                if ($picel->title == $maparray[$q]) {
-                    $picel->mpg = 'Y';
-                    break;
-                }
-            }
-        } 
-    }
-    #include 'formPicRows.php';
+    mysqli_free_result($pstat);
 }
 /*
     ------------------------------ PIC ROW CONSTRUCTION -------------------------
 */
-$xml->asXML($database);
 include "../pages/hikePageTemplate.php";
 ?>

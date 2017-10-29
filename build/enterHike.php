@@ -1,5 +1,5 @@
 <?php
-require '../admin/setenv.php';
+require '../mysql/setenv.php';
 $hip = filter_input(INPUT_GET,'hno');  # hike-in-process
 $usr = filter_input(INPUT_GET,'usr');
 if ($usr === 'mstr') {
@@ -128,15 +128,18 @@ mysqli_free_result($result);
 <form id="hikeData" target="_blank" onsubmit="page_type(this);" method="POST"
     enctype="multipart/form-data">
 
-    <p id="dbhno" style="display:none"><?php echo $entrydat['indxNo'];?></p>
-    <p id="dbhnm" style="display:none"><?php echo $entrydat['pgTitle'];?></p>
-    <p id="dbloc" style="display:none"><?php echo $entrydat['locale'];?></p>
-    <p id="dblog" style="display:none"><?php echo $entrydat['logistics'];?></p>
-    <p id="dbmrk" style="display:none"><?php echo $entrydat['marker'];?></p>
-    <p id="dbcst" style="display:none"><?php echo $entrydat['cgroup'];?></p>
-    <p id="dbcgr" style="display:none"><?php echo $entrydat['cname'];?></p>
-    <p id="dbdif" style="display:none"><?php echo $entrydat['diff'];?></p>
-    <p id="dbexp" style="display:none"><?php echo $entrydat['expo'];?></p>
+    <p id="dbhno" style="display:none;"><?php echo $entrydat['indxNo'];?></p>
+    <p id="dbhnm" style="display:none;"><?php echo $entrydat['pgTitle'];?></p>
+    <p id="dbloc" style="display:none;"><?php echo $entrydat['locale'];?></p>
+    <p id="dblog" style="display:none;"><?php echo $entrydat['logistics'];?></p>
+    <p id="dbmrk" style="display:none;"><?php echo $entrydat['marker'];?></p>
+    <p id="dbvch" style="display:none"><?php echo $entrydat['collection'];?></p>
+    <?php $csel = $entrydat['cgroup'] . ':' . $entrydat['cname'];?>
+    <p id="dbcgr" style="display:none;"><?php echo $csel;?></p>
+    <p id="dbdif" style="display:none;"><?php echo $entrydat['diff'];?></p>
+    <p id="dbexp" style="display:none;"><?php echo $entrydat['expo'];?></p>
+    <p id="dbur1" style="display:none;"><?php echo $entrydat['purl1'];?></p>
+    <p id="dbur2" style="display:none;"><?php echo $entrydat['purl2'];?></p>
     <input type="hidden" name="hno" value="<?php echo $hip;?>" />
     <input type="hidden" name="usr" value="<?php echo $usr;?>" />"
     <fieldset id="basic">
@@ -298,32 +301,18 @@ mysqli_free_result($result);
         
         <div class="indxFile">
             OPTIONAL FILES:<br />
-            <em>The following files are to be referenced in the "Proposed" or
-            "Actual" Data Sections of "GPS Maps &amp; Data"</em><br />
-            <label for="pmap">Proposed Data: User File1 (e.g. Map): &nbsp;</label>
-            <input id="pmap" type="file" name="propmap" /> &nbsp;
-            Storage Location: &nbsp;<select name="f1">
-                <option value="maps">Maps</option>
-                <option value="gpx">Gpx</option>
-            </select><br />
-            <label for="pgpx">Proposed Data: User File2 (e.g. GPX): &nbsp;</label>
-            <input id="pgpx" type="file" name="propgpx" /> &nbsp;
-            Storage Location: &nbsp;<select name="f2">
-                <option value="maps">Maps</option>
-                <option value="gpx">Gpx</option>
-            </select><br />
-            <label for="amap">Actual Data: User File1 (e.g. Map): &nbsp;</label>
-            <input id="amap" type="file" name="actmap" /> &nbsp;
-            Storage Location: &nbsp;<select name="f3">
-                <option value="maps">Maps</option>
-                <option value="gpx">Gpx</option>
-            </select><br />
-            <label for="agpx">Actual Data: User File2 (e.g. GPX): &nbsp;</label>
-            <input id="agpx" type="file" name="actgpx" /> &nbsp;
-            Storage Location: &nbsp;<select name="f4">
-                <option value="maps">Maps</option>
-                <option value="gpx">Gpx</option>
-            </select><br />
+            <em style="color:brown;">If you select files (below) to be referenced in the "Proposed" or
+            "Actual" Data Sections of "GPS Maps &amp; Data" on the hike page,
+            they must be of type '.gpx', '.GPX', '.kml', or '.kmz' for track files,
+            or of type '.html' (as with GPSVisualizer files) or '.pdf' for maps</em><br />
+            <label for="pmap">Proposed Data: User File1 (Track/Map): &nbsp;</label>
+            <input id="pmap" type="file" name="propmap" /><br />
+            <label for="pgpx">Proposed Data: User File2 (Track/Map): &nbsp;</label>
+            <input id="pgpx" type="file" name="propgpx" /><br />
+            <label for="amap">Actual Data: User File1 (Track/Map): &nbsp;</label>
+            <input id="amap" type="file" name="actmap" /><br />
+            <label for="agpx">Actual Data: User File2 (Track/Map): &nbsp;</label>
+            <input id="agpx" type="file" name="actgpx" /><br />
             <em>Additional images (not photos from album) may be specified below:</em><br />
         </div>
         <label id="l_add1" for="addon1">Other image (pop-up captions not 
@@ -631,6 +620,7 @@ mysqli_free_result($result);
     }
     mysqli_free_result($pdata);
     # Set proposed data values, if any
+    
     $aquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'A';";
     $adata = mysqli_query($link,$aquery);
     if (!$adata) {
@@ -645,13 +635,14 @@ mysqli_free_result($result);
         }
     } else {
         $acnt = 0;
-        while($acts = mysqli_fetch_assoc($pdata)) {
+        while($acts = mysqli_fetch_assoc($adata)) {
             $albl[$acnt] = $acts['label'];
             $aurl[$acnt] = $acts['url'];
             $acot[$acnt] = $acts['clickText'];
+            echo "Read: " . $albl[$acnt] . "," . $aurl[$acnt] . "," . $acot[$acnt];
             $acnt++;
         }
-        for ($y=$pcnt; $y<4; $y++){
+        for ($y=$acnt; $y<4; $y++){
                 $albl[$y] = '';
                 $aurl[$y] = '';
                 $acot[$y] = '';

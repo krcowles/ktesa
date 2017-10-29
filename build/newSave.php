@@ -49,7 +49,7 @@ mysqli_free_result($getid);
         <div style="margin-left:24px">
         <?php
         echo '<h2 style="color:brown">You have successfully created a new '
-            . 'hike for ' . $newHike . " as Editable Hike No. " . $lastindx . "</h2>\n"
+            . 'hike for ' . $newHike . "</h2>\n"
             . "<p>You may edit this hike at any time by returning to the "
             . "home page and selecting 'Edit New/Unpublished Hikes'<br />";
         ?>

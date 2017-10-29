@@ -1,5 +1,5 @@
 <?php
-require_once "../mysql/local_mysql_connect.php";
+require_once "setenv.php";
 $fname = mysqli_real_escape_string($link,filter_input(INPUT_POST,'firstname'));
 $lname = mysqli_real_escape_string($link,filter_input(INPUT_POST,'lastname'));
 $uname = mysqli_real_escape_string($link,filter_input(INPUT_POST,'usr'));
@@ -34,7 +34,7 @@ $insert = mysqli_query($link,$newuser);
 /*
 if (!insert) {
     if (Ktesa_Dbug) {
-        debug_print("Could not insert new user info: " . mysqli_error());
+        debug_print("Could not insert new user info: " . mysqli_error($link));
     } else {
         user_error_msg('../mysql/',2,0);
     }

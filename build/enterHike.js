@@ -4,12 +4,16 @@ var msgA;  // generic
 var msgB;
 var msgC;
 
+// NOTE: code order is important here, be careful moving things around!!!
+
 /* Preload the GPS Maps & Data Section with the urls for uploaded files;
  * The user will still be required to fill in the remaining fields for these items:
  * note the addition of the 'required' attribute for the uploaded items;
  * Currently, only two items in each section are supported, but this can be
  * easily expanded by adding code here (and additional upload elements in the html)
  */
+// Acceptable track file extensions:
+var goodex = ['gpx', 'GPX', 'kml', 'kmz'];
 function preload(targfile,datasect) {
     var fullPath = targfile.val();
     var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
@@ -18,38 +22,89 @@ function preload(targfile,datasect) {
         filename = filename.substring(1);
     }
     // This provides C:\fakepath as a lead-in: strip off the filename:
-    if ( filename.indexOf('html') === -1 ) {
-        var fname = '../gpx/' + filename;
-        $(datasect).val(fname);
-    } else {
-        var fname  = '../maps/' + filename;
-        $(datasect).val(fname);
-    }
+    if ( filename.indexOf('html') === -1 && filename.indexOf('pdf') === -1 ) {
+        var match = false;
+        for (var k=0; k<goodex.length; k++) {
+            if (filename.indexOf(goodex[k]) !== -1) {
+                match = true;
+                break;
+            }
+        }
+        if (match) {
+            var fname = '../gpx/' + filename;
+            $(datasect).val(fname);
+        } else {
+            alert("File extension not supported");
+            targfile.val('');
+            return 'no';
+        }
+    } else if (filename.indexOf('html') !== -1 || filename.indexOf('pdf') !==1) {
+            var fname  = '../maps/' + filename;
+            $(datasect).val(fname);
+    } 
+    return 'ok';
 }
 $('#pmap').change( function() { 
-    preload($(this),'#ur1');
-    $('#lt1').attr('required',true);
-    $('#ct1').attr('required',true);
+    var extok = preload($(this),'#ur1');
+    if (extok === 'ok') {
+        $('#lt1').attr('required',true);
+        $('#ct1').attr('required',true);
+    } else {
+        $('#lt1').attr('required',false);
+        $('#ct1').attr('required',false);
+    }
 });
 $('#pgpx').change( function() {
-    preload($(this),'#ur2');
-    $('#lt2').attr('required',true);
-    $('#ct2').attr('required',true);
+    var extok = preload($(this),'#ur2');
+    if (extok === 'ok') {
+        $('#lt2').attr('required',true);
+        $('#ct2').attr('required',true);
+    } else {
+        $('#lt2').attr('required',false);
+        $('#ct2').attr('required',false);
+    }
 });
 $('#amap').change( function() {
-    preload($(this),'#ur5');
-    $('#lt5').attr('required',true);
-    $('#ct5').attr('required',true);
+    var extok = preload($(this),'#ur5');
+    if (extok) {
+        $('#lt5').attr('required',true);
+        $('#ct5').attr('required',true);
+    } else {
+        $('#lt5').attr('required',false);
+        $('#ct5').attr('required',false);
+    }
 });
 $('#agpx').change( function() {
-    preload($(this),'#ur6');
-    $('#lt6').attr('required',true);
-    $('#ct6').attr('requried',true);
+    var extok = preload($(this),'#ur6');
+    if (extok === 'ok') {
+        $('#lt6').attr('required',true);
+        $('#ct6').attr('requried',true);
+    } else {
+        $('#lt6').attr('required',false);
+        $('#ct6').attr('requried',false);
+    }
 });
 
 // Start with no display of lat/lng inputs - only used for Index Page Creation
 $('#latlng').css('display','none');
 
+// If database entries are there for photo albums:
+var alb1 = $('#dbur1').text();
+var alb2 = $('#dbur2').text();
+if (alb1 !== '') {
+    $('#curl1').val(alb1);
+    $('#nopics').prop('checked',false);
+}
+if (alb2 !== '') {
+    $('#curl2').val(alb2);
+    $('#nopics').prop('checked',false);
+}
+/* This would give undesirable effect on first-time edit I believe...
+if (alb1 == '' && alb2 == '') {
+    $('#nopics').prop('checked',true);
+    $('#picopt').css('display','none');
+}
+    */
 // When adding photo urls, populate the first two in the 'Other URL's' section
 $('#curl1').change( function() {
     var ph1 = $(this).val();
@@ -159,15 +214,18 @@ $('#ch').prop('checked',false);
 $('#othr').prop('checked',false);
 if (dbmrk == 'At VC') {
     $('#vch').prop('checked',true);
-    var dbcst = $('#dbcst').text();
+    var dbvch = $('#dbvch').text();
     $('#newvch').css('display','block');
-    $('#nvch').val(dbcst);
+    $('#nvch').val(dbvch);
 }
 if (dbmrk == 'Cluster') {
     $('#ch').prop('checked',true);
     var dbcgr = $('#dbcgr').text();
     $('#newcl').css('display','block');
     $('#nclus').val(dbcgr);
+}
+if (dbmrk == 'Normal') {
+    $('#othr').prop('checked',true);
 }
 var dbdif = $('#dbdif').text();  // difficulty
 $('#ease').val(dbdif);

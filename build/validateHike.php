@@ -62,8 +62,7 @@ if ( isset($valType) ) {
         echo '<p >You may continue on that page, or come back later to work '
             . 'on it by going back to the main page and selecting "Edit ' .
             'Hikes" (New/Active)</p>';
-        echo '<p>Your Hike No is ' . $hikeNo . ', and the hike saved is ' .
-            $hike . '</p></div>';
+        echo "<p>Your saved Hike is '" . $hike . "'</p></div>";
         
     } else {
         echo '<form target="_blank" action="displayHikePg.php" method="POST">' . "\n";
@@ -174,7 +173,7 @@ $ereq = "UPDATE EHIKES SET pgTitle = '{$hname}',stat = '{$status}'," .
         "fac = '{$fac}',wow = '{$wow}', seasons = '{$seasn}'";
 if ($type === 'Validate') {
     if ($haveGpx) {
-        $ereq .= ",gpx = '{$hikeGpx},trk = '{$trkfile}'";
+        $ereq .= ",gpx = '{$hikeGpx}',trk = '{$trkfile}'";
     }
     if ($imageFile1) {
         $ereq .= ",aoimg1 = '{$hikeOthrImage1}'";
@@ -469,7 +468,6 @@ for ($w=0; $w<count($A_urls); $w++) { # this includes all, even empty...
         $noOfActs++;
     }
 }
-echo "<p>Add/chg: " . $noOfActs . "</p>";
 /* also get a count of existing entries in the EGPSDAT table for this hike */
 $aidreq = "SELECT datId FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND " .
         "datType = 'A';";
@@ -479,8 +477,7 @@ if (!$aidq) {
             "Actual Data: " . mysqli_error());
 }
 $arows = mysqli_num_rows($aidq);
-echo "<p>Existing rows: " . $arows . "</p>";
-if ($prows === 0) {
+if ($arows === 0) {
     /* There is no existing Proposed Data in EGPSDAT for this hike; 
      * no UPDATES to be performed. All posted items, if any, will be INSERTED;
      * If $noOfProps = 0, nothing will happen.
@@ -583,26 +580,30 @@ mysqli_free_result($aidq);
  * on both the hike page and on the GPSV map, and can be skipped in the case
  * of a 'Save'.
  */
-/*
-if ($type === 'Validate') {
+if ($type === 'Validate') {  # ******** - TURNED OFF RIGHT NOW - ************
     if ($usetsv) {
         $picno = 0;
         $phNames = [];
+        $phDescs = [];
         $phPics = [];
         $phWds = [];
         $rowHt = 220; 
-        foreach ($xml->row[$hikeNo]->tsv->picDat as $imgData) {
-            $phNames[$picno] = $imgData->title;
-            $phPics[$picno] = $imgData->mid;
-            $pHeight = $imgData->imgHt;
-            $aspect = $rowHt/$pHeight;
-            $pWidth = $imgData->imgWd;
-            $phWds[$picno] = floor($aspect * $pWidth);
-            $picno += 1;
+        $picreq = "SELECT * FROM ETSV WHERE indxNo = '{$hikeNo}';";
+        $picq = mysqli_query($link,$picreq);
+        if (!$picq) {
+            die ("validateHike.php: Failed to extract picture data from ETSV: " .
+                mysqli_error());
         }
-        $mdat = $xml->row[$hikeNo]->tsv->asXML();
-        $mdat = preg_replace('/\n/','', $mdat);
-        $mdat = preg_replace('/\t/','', $mdat);
+        while ($pix = mysqli_fetch_assoc($picq)) {
+            $phNames[$picno] = $pix['title'];
+            $phDescs[$picno] = $pix['desc'];
+            $phPics[$picno] = $pix['mid'];
+            $pHeight = $pix['imgHt'];
+            $aspect = $rowHt/$pHeight;
+            $pWidth = $pix['imgWd'];
+            $phWds[$picno] = floor($aspect * $pWidth);
+            $picno ++;
+        }
     }
     echo '<h4 style="text-indent:16px">Please check the boxes corresponding to ' .
         'the pictures you wish to include on the new page:</h4>' . "\n";
@@ -627,8 +628,6 @@ if ($type === 'Validate') {
     }
     echo "</div>\n";
 
-
-
     echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;">' .
         '<input type="submit" value="Create Page w/This Data" /><br /><br />' . "\n";
     echo "</div>\n";
@@ -643,14 +642,31 @@ if ($type === 'Validate') {
     echo '<input type="hidden" name="usepics" value="' . $passtsv . '" />' . "\n";
     echo '<input type="hidden" name="hikeno" value="' . $hikeNo . '" />' . "\n";
     echo "</form>\n";
+    # build js arrays:
+    $jsTitles = '[';
+    for ($n=0; $n<count($phNames); $n++) {
+        if ($n === 0) {
+            $jsTitles .= '"' . $phNames[0] . '"';
+        } else {
+            $jsTitles .= ',"' . $phNames[$n] . '"';
+        }
+    }
+    $jsTitles .= ']';
+    $jsDescs = '[';
+    for ($m=0; $m<count($phDescs); $m++) {
+        if ($m === 0) {
+            $jsDescs .= '"' . $phDescs[0] . '"';
+        } else {
+            $jsDescs .= ',"' . $phDescs[$m] . '"';
+        }
+    }
+    $jsDescs .= ']';
 }
- */
 ?>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">
-    var mouseDat = $.parseXML("<?php echo $mdat;?>");
-    var phTitles = [];
-    var phDescs = [];
+    var phTitles = <?php echo $jsTitles;?>;
+    var phDescs = <?php echo $jsDescs;?>;
 </script>
 <script src="validateHike.js"></script>
 <script src="../scripts/picPops.js"></script>

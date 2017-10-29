@@ -2,20 +2,41 @@
 require 'setenv.php';
 $tbl_type = filter_input(INPUT_GET,'tbl');
 $rowno = filter_input(INPUT_GET,'indx');
-if ($tbl_type === 'h') {
-    $table = "HIKES";
-} elseif ($tbl_type === 'e') {
-    $table = "EHIKES";
-} elseif ($tbl_type === 'u') {
+if ($tbl_type === 'u') {
     $table = "USERS";
+    $idfield = "userid";
+} elseif ($tbl_type === 'eh') {
+    $table = "EHIKES";
+    $idfield = "indxNo";
+} elseif ($tbl_type === 'h') {
+    $table = "HIKES";
+    $idfield = "indxNo";
+} elseif ($tbl_type === 'et') {
+    $table = "ETSV";
+    $idfield = "picIdx";
+} elseif ($tbl_type === 't') {
+    $table = "TSV";
+    $idfield = "picIdx";
+} elseif ($tbl_type === 'er') {
+    $table = "EREFS";
+    $idfield = "refId";
+} elseif ($tbl_type === 'r') {
+    $table = "REFS";
+    $idfield = "refId";
+} elseif ($tbl_type === 'eg') {
+    $table = "EGPSDAT";
+    $idfield = "datId";
+} elseif ($tbl_type === 'g') {
+    $table = "GPSDAT";
+    $idfield = "datId";
 } else {
-    die("No Such Table Type: " . $tbl_type);
+    die ("Unrecognized table type in GET");
 }
-$lastid = "SELECT indxNo FROM " . $table . " ORDER BY indxNo DESC LIMIT 1";
+$lastid = "SELECT {$idfield} FROM {$table} ORDER BY {$idfield} DESC LIMIT 1";
 $getid = mysqli_query($link,$lastid);
 if (!$getid) {
     if (Ktesa_Dbug) {
-        dbug_print('delete_tbl_row.php: Could not retrieve highest indxNo: ' . 
+        dbug_print('delete_tbl_row.php: Could not retrieve highest index: ' . 
                 mysqli_error($link));
     } else {
         user_error_msg($rel_addr,6,0);
@@ -30,13 +51,14 @@ if ($rowno > $tblcnt) {
         'return to admin tools and specify a valid row number';
 } else {
     $badrow = false;
-    $remrow = mysqli_query($link,"DELETE FROM " . $table . " WHERE indxNo = " . $rowno . ";");
-    if (!remrow) {
+$remrow = mysqli_query($link,"DELETE FROM {$table} WHERE {$idfield} = " . $rowno . ";");
+    if (!$remrow) {
         $drop_fail = "<p>Could not delete the specified row: " . mysqli_error($link) . "</p>";
         die ($drop_fail);
     } else {
         $good =  "<p>Row " . $rowno . " successfully removed; </p>";
     }
+    mysqli_free_result($remrow);
     mysqli_close($link);
 }
 ?>

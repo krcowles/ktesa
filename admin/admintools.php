@@ -73,9 +73,18 @@
         <button id="rowdel">Delete Row</button>
     </fieldset><br />
     <fieldset>
-        <legend>Page Release</legend>
-        <button id="hrel">Release Page to HIKES</button>
-    </fieldset>
+        <legend>Hike Release/Delete</legend>
+        FOR HIKE NO:&nbsp;
+            <input id="hdel" type="text" name="delEhike" size="4" />&nbsp;&nbsp;
+            (FROM new/in-edit hikes)&nbsp;
+            <button id="ehdel">Delete Hike</button>&nbsp;(AND accompanying
+            data from associated tables)<br />
+        FOR HIKE NO:&nbsp;
+            <input id="hpub" type="text" name="pubHike" size="4" />&nbsp;&nbsp;
+            (FROM new/in-edit hikes)&nbsp;
+            <button id="pub">Publish</button>&nbsp;<span style="color:brown;">
+                (Not implemented at this time)</span>
+    </fieldset><br />
 </div>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="admintools.js"></script>

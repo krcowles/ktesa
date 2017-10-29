@@ -43,16 +43,38 @@ $('#rowdel').on('click', function() {
             $('#drow').val('');
         } else {
             var tbl = $('#rdel').val();
-            if (tbl === 'USERS') {
-                qstr = 'u&indx=' + rno;
-            } else if (tbl === 'EHIKES') {
-                qstr = 'e&indx=' + rno;
-            } else if (tbl === 'HIKES') {
-                qstr = 'h&indx=' + rno;
-            } else if (tbl === 'TSV') {
-                qstr = 't&indx=' + rno;
-            } else {
-                alert ("Unidentified Table");
+            switch(tbl) {
+                case 'USERS':
+                    qstr = 'u&indx=' + rno;
+                    break;
+                case 'EHIKES':
+                    qstr = 'eh&indx=' + rno;
+                    break;
+                case 'HIKES':
+                    alert("Are you sure you want to delete from HIKES?");
+                    qstr = 'h&indx=' + rno;
+                    break;
+                case 'ETSV':
+                    qstr = 'et&indx=' + rno;
+                    break;
+                case 'TSV':
+                    alert ("Are you sure you want to delete photos for a live hike?");
+                    qstr = 't&indx=' + rno;
+                    break;
+                case 'EREFS':
+                    qstr = 'er&indx=' + rno;
+                    break;
+                case 'REFS':
+                    alert("Are you sure you want to delete refs for a live hike?");
+                    qstr = 'r&indx=' + rno;
+                    break;
+                case 'EGPSDAT':
+                    qstr = 'eg&indx=' + rno;
+                    break;
+                case 'GPSDAT':
+                    alert("Are you sure you want to delete gps data for a live hike?");
+                    qstr = 'g&indx=' + rno;
+                    break;
             }
             var rowtarg = 'delete_tbl_row.php?tbl=' + qstr;
             $('#drow').val('');
@@ -60,6 +82,20 @@ $('#rowdel').on('click', function() {
         }
     } else {
         alert("Nothing deleted");
+    }
+});
+$('#ehdel').on('click', function() {
+    var hrow = prompt("Are you sure you want to delete this hike?","Hike " + 
+        $('#hdel').val());
+    if (hrow !== null) {
+        var hlgth = hrow.length;
+        var hno = hrow.substring(5,hlgth);
+        if (hno == 0) {
+            alert("There is no hike 0; Please specify an existing hike");
+            $('#hdel').val('');
+        } else {
+            window.open('delete_EHIKE.php?drow=' + hno,"_blank");
+        }
     }
 });
 
