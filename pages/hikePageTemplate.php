@@ -15,7 +15,20 @@ ob_start();
 define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false');
 define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
 define('gpsvTemplate','../maps/gpsvMapTemplate.php?map_name=');
-$hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
+if (isset($building) && $building === true) {
+    $hikeIndexNo = $hikeRow;
+    $htable = 'EHIKES';
+    $rtable = 'EREFS';
+    $gtable = 'EGPSDAT';
+    $ttable = 'ETSV';
+    echo $hikeIndexNo;
+} else {
+    $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
+    $htable = 'HIKES';
+    $rtable = 'REFS';
+    $gtable = 'GPSDAT';
+    $ttable = 'TSV';
+}
 require "../mysql/get_HIKES_row.php";
 if ($gpxfile == '') {
     $newstyle = false;

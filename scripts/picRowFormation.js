@@ -1,4 +1,3 @@
-var database = '../data/database.xml';
 var hike = $('#trail').text();
 // Decode array data passed via php:
 var descs = d.split("|");

@@ -1,7 +1,7 @@
 <?php
 require_once "setenv.php";
 # get all data from REFS table for this hike ($hikeIndexNo)
-$query = "SELECT rtype,rit1,rit2 FROM REFS WHERE indxNo = '{$hikeIndexNo}';";
+$query = "SELECT rtype,rit1,rit2 FROM {$rtable} WHERE indxNo = '{$hikeIndexNo}';";
 $result = mysqli_query($link,$query);
 if (!$result) {
     die ("get_REFS_row.php: Unable to extract references from REFS: " .

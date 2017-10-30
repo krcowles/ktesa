@@ -21,7 +21,7 @@ if (pageType == 'Hike') {
     $photos = $('img[id^="pic"]');
     var phTitles = descs.slice();
     var phDescs = capts.slice();
-} else if (pageType == 'Validation') {
+} else if (pageType == 'Validation' || pageType == 'Finish') {
     $photos = $('.allPhotos');
 }
 noOfPix = $photos.length;

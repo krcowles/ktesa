@@ -404,7 +404,7 @@ mysqli_free_result($result);
     $refquery = "SELECT * FROM EREFS WHERE indxNo = '{$hip}';";
     $refdata = mysqli_query($link,$refquery);
     if (!$refdata) {
-        die ("enterHike.php: Could not access EREFS table'" . mysqli_error());
+        die ("enterHike.php: Could not access EREFS table'" . mysqli_error($link));
     }
     $rowcnt = mysqli_num_rows($refdata);
     if ($rowcnt === 0) {
@@ -595,7 +595,7 @@ mysqli_free_result($result);
     $pquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'P';";
     $pdata = mysqli_query($link,$pquery);
     if (!$pdata) {
-        die ("enterHike.php: Could not access 'P' in GPSDAT table: " . mysqli_error());
+        die ("enterHike.php: Could not access 'P' in GPSDAT table: " . mysqli_error($link));
     }
     $prows = mysqli_num_rows($pdata);
     if ($prows === 0) {
@@ -624,7 +624,7 @@ mysqli_free_result($result);
     $aquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'A';";
     $adata = mysqli_query($link,$aquery);
     if (!$adata) {
-        die ("enterHike.php: Could not access 'A' in GPSDAT table: " . mysqli_error());
+        die ("enterHike.php: Could not access 'A' in GPSDAT table: " . mysqli_error($link));
     }
     $arows = mysqli_num_rows($adata);
     if ($arows === 0) {

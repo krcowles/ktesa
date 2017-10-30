@@ -183,7 +183,7 @@ foreach ($picdat as $ph) {  # each item is an array of data
         "'{$al}','{$dt}','{$sz}','{$ht}','{$wd}','{$ic}','{$og}' );";
     $photoResults = mysqli_query($link,$photoQuery);
     if (!$photoResults) {
-        die ("getPicDat.php: Could not insert data into ETSV: " . mysqli_error());
+        die ("getPicDat.php: Could not insert data into ETSV: " . mysqli_error($link));
     }
 }
 mysqli_free_result($photoResult);

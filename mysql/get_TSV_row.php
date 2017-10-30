@@ -2,7 +2,7 @@
 require_once "setenv.php";
 # NOTE: not using 'usrid' yet...
 $query = "SELECT folder,title,hpg,mpg,`desc`,lat,lng,thumb,alblnk,date," .
-        "mid,imgHt,imgWd FROM TSV WHERE indxNo = '{$hikeIndexNo}';";
+        "mid,imgHt,imgWd FROM {$ttable} WHERE indxNo = '{$hikeIndexNo}';";
 $result = mysqli_query($link,$query);
 if (!$result) {
     die ("get_REFS_row.php: Unable to extract references from REFS: " .

@@ -14,6 +14,7 @@ var statfields = JSON.parse(status);  // array of status fields from EHIKES
 // If age = new, this array will not be empty...
 var useEditor = 'editDB.php?hikeNo=';
 var uid = $('#uid').text();
+var umsg;
 $rows = $('tbody').find('tr');
 $('a').on('click', function(e) {
     e.preventDefault();
@@ -26,12 +27,19 @@ $('a').on('click', function(e) {
                 var eqpos = ptr.indexOf('=') + 1;
                 var hikeNo = ptr.substring(eqpos,ptr.length);
                 if (statfields[indx] === 'new') {
+                    umsg = "REMINDER: If you chose files in the 'File Data'" 
+                        + " section:\nthey are not yet saved and you will need " 
+                        + "to re-enter them";
                     useEditor = 'enterHike.php?&hno=' + hikeNo + '&usr=' + uid;
                 } else if (statfields[indx] === 'upl') {
-                    useEditor = 'finishPage.php';
+                    umsg = "REMINDER: You have uploaded files and possibly "
+                        + "photos:\n Select which photos are to be " 
+                        + "displayed on the hike page & map";
+                    useEditor = 'finishPage.php?hno=' + hikeNo;
                 } else if (statfields[indx] === 'sub') {
-                    // no reassignment
+                    useEditor += '?hno=' + hikeNo;
                 }
+                alert(umsg);
                 window.open(useEditor,"_blank");
             }
         });

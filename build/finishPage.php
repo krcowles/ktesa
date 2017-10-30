@@ -1,7 +1,20 @@
+<?php
+require_once "../mysql/setenv.php";
+$hikeNo = filter_input(INPUT_GET,'hno');
+$namereq = "SELECT pgTitle from EHIKES WHERE indxNo = {$hikeNo};";
+$name = mysqli_query($link,$namereq);
+if (!$name) {
+    die("finishPage.php: Failed to retrieve hike name from EHIKES for hike {$hikeNo}: " .
+        mysqli_error($link));
+}
+$nameDat = mysqli_fetch_row($name);
+$hikeName = $nameDat[0];
+
+?>
 <!DOCTYPE html>
 <html lang="en-us">
     <head>
-        <title>TEMPLATE</title>
+        <title>Complete Hike</title>
         <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
         <link href="validateHike.css" type="text/css" rel="stylesheet" />
     </head>
@@ -13,46 +26,45 @@
         <img id="tmap" src="../images/trail.png" alt="trail map icon" />
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
-    <p id="trail">HEADER</p>
-
+    <p id="trail">Complete the Hike Creation Process</p>
+    <p id="ptype" style="display:none">Finish</p>
+    
     <form target="_blank" action="displayHikePg.php" method="POST">
     <div style="margin-left:16px;">
     <?php
-        $valNo = filter_input(INPUT_GET,'hikeNo',FILTER_VALIDATE_INT);
-        $hikeNo = $valNo - 1;
-        $xml = simplexml_load_file('../data/database.xml');
-        if ($xml === false) {
-            $errmsg = '<p style="margin-left:16px;color:red;font-size:18px;">' .
-                'Could not open database: contact Site Master</p>';
-            die($errmsg);
+        $piccntreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
+        $piccnt = mysqli_query($link,$piccntreq);
+        if (!$piccnt) {
+            die("finishPage.php: Failed to get picdat from ETSV for hike {$hikeNo}: " .
+                mysqli_error($link));
         }
-        if ($xml->row[$hikeNo]->tsv->picDat->count() === 0) {
+        if (mysqli_num_rows($piccnt) === 0) {
             $inclPix = 'NO';
         } else {
             # Display photos for selection
             $picno = 0;
             $phNames = [];
+            $phDescs = [];
             $phPics = [];
             $phWds = [];
             $rowHt = 220; 
-            foreach ($xml->row[$hikeNo]->tsv->picDat as $imgData) {
-                $phNames[$picno] = $imgData->title;
-                $phPics[$picno] = $imgData->mid;
-                $pHeight = $imgData->imgHt;
+            while ($pics = mysqli_fetch_assoc($piccnt)) {
+                $phNames[$picno] = $pics['title'];
+                $phDescs[$picno] = $pics['desc'];
+                $phPics[$picno] = $pics['mid'];
+                $pHeight = $pics['imgHt'];
                 $aspect = $rowHt/$pHeight;
-                $pWidth = $imgData->imgWd;
+                $pWidth = $pics['imgWd'];
                 $phWds[$picno] = floor($aspect * $pWidth);
                 $picno += 1;
             }
-            $mdat = $xml->row[$hikeNo]->tsv->asXML();
-            $mdat = preg_replace('/\n/','', $mdat);
-            $mdat = preg_replace('/\t/','', $mdat);
-
+            echo "<h3>Your hike is " . $hikeName . ". When you complete this step, "
+                . "your hike will be submitted for publication</h3>";
             echo '<h4 style="text-indent:16px">Please check the boxes corresponding to ' .
                 'the pictures you wish to include on the new page:</h4>' . "\n";
             echo '<div style="position:relative;top:-14px;margin-left:16px;">' .
                 '<input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;' .
-                'Use All Photos on Hike Page<br />' . "\n";
+                'Use All Photos on Hike Page<br />' . "\n" .
                 '<input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;' .
                 'Use All Photos on Map' . "\n";
             echo "</div>\n";
@@ -77,17 +89,35 @@
 
             echo '<div class="popupCap"></div>' . "\n";
             $inclPix = 'YES';
+            echo '<input type="hidden" name="usepics" value="' . $inclPix . '" />' . "\n";
+            echo '<input type="hidden" name="hikeno" value="' . $hikeNo . '" />' . "\n";
+            # build js arrays:
+            $jsTitles = '[';
+            for ($n=0; $n<count($phNames); $n++) {
+                if ($n === 0) {
+                    $jsTitles .= '"' . $phNames[0] . '"';
+                } else {
+                    $jsTitles .= ',"' . $phNames[$n] . '"';
+                }
+            }
+            $jsTitles .= ']';
+            $jsDescs = '[';
+            for ($m=0; $m<count($phDescs); $m++) {
+                if ($m === 0) {
+                    $jsDescs .= '"' . $phDescs[0] . '"';
+                } else {
+                    $jsDescs .= ',"' . $phDescs[$m] . '"';
+                }
+            }
+            $jsDescs .= ']';
         }
-        echo '<input type="hidden" name="usepics" value="' . $inclPix . '" />' . "\n";
-        echo '<input type="hidden" name="hikeno" value="' . $hikeNo . '" />' . "\n";
     ?>
     </div>
     </form>
     <script src="../scripts/jquery-1.12.1.js"></script>
     <script type="text/javascript">
-        var mouseDat = $.parseXML("<?php echo $mdat;?>");
-        var phTitles = [];
-        var phDescs = [];
+        var phTitles = <?php echo $jsTitles;?>;
+        var phDescs = <?php echo $jsDescs;?>;
     </script>
     <script src="validateHike.js"></script>
     <script src="../scripts/picPops.js"></script>

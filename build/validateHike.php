@@ -189,7 +189,7 @@ $ereq .= ",purl1 = '{$url1}',purl2 = '{$url2}',dirs = '{$dirs}',tips = '{$tips}'
     "info = '{$info}' WHERE indxNo = '{$hikeNo}';";
 $ehresults = mysqli_query($link,$ereq);
 if (!$ehresults) {
-    die ("validateHike.php: Failed to update EHIKES: " . mysqli_error());
+    die ("validateHike.php: Failed to update EHIKES: " . mysqli_error($link));
 }
 mysqli_free_result($ehresults);
 
@@ -221,7 +221,7 @@ for ($w=0; $w<count($RTypes); $w++) { # this includes all, even empty...
 $ecreq = "SELECT refId FROM EREFS WHERE indxNo = '{$hikeNo}';";
 $ecntq = mysqli_query($link,$ecreq);
 if (!$ecntq) {
-    die ("validateHike:php: Failed to extract refId's from EREFS: " . mysqli_error());
+    die ("validateHike:php: Failed to extract refId's from EREFS: " . mysqli_error($link));
 }
 $exrows = mysqli_num_rows($ecntq);
 if ($exrows === 0) {
@@ -237,7 +237,7 @@ if ($exrows === 0) {
             "'{$hikeNo}','{$a}','{$b}','{$c}');";
         $newes = mysqli_query($link,$erreq);
         if (!$newes) {
-            die ("validateHike.php: Failed to insert into EREFS item {$r} " . mysqli_error());
+            die ("validateHike.php: Failed to insert into EREFS item {$r} " . mysqli_error($link));
         }
     }
     mysqli_free_result($newes);
@@ -270,7 +270,7 @@ if ($exrows === 0) {
                 $ins = mysqli_query($link,$insrefreq);
                 if (!$ins) {
                     die ("validateHike.php: Could not INSERT into EREFS: " .
-                        mysqli_error());
+                        mysqli_error($link));
                 }
             }
         }
@@ -301,7 +301,7 @@ if ($exrows === 0) {
             "rit2 = '{$k}' WHERE refId = {$ups[$d]};";
         $updt = mysqli_query($link,$updtreq);
         if (!$updt) {
-            die("validateHike.php: Could not UPDATE EREFS: " . mysqli_error());
+            die("validateHike.php: Could not UPDATE EREFS: " . mysqli_error($link));
         }
     }
     mysqli_free_result($updt);
@@ -310,7 +310,7 @@ if ($exrows === 0) {
             $delref = "DELETE FROM EREFS WHERE refId = {$dels[$k]};";
             $remrow = mysqli_query($link,$delref);
             if (!remrow) {
-                die("validateHike.php: Failed to delete from EREFS: " . mysqli_error());
+                die("validateHike.php: Failed to delete from EREFS: " . mysqli_error($link));
             }
         }
         mysqli_free_result($remrow);
@@ -347,7 +347,7 @@ $pidreq = "SELECT datId FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND " .
 $pidq = mysqli_query($link,$pidreq);
 if (!$pidq) {
     die ("validateHike:php: Failed to extract datId's from EGPSDAT for " .
-            "Proposed Data: " . mysqli_error());
+            "Proposed Data: " . mysqli_error($link));
 }
 $prows = mysqli_num_rows($pidq);
 if ($prows === 0) {
@@ -365,7 +365,7 @@ if ($prows === 0) {
         $newps = mysqli_query($link,$newpreq);
         if (!$newps) {
             die ("validateHike.php: Failed to insert into EGPSDAT Proposed " .
-                "Data item {$r} " . mysqli_error());
+                "Data item {$r} " . mysqli_error($link));
         }
     }
     mysqli_free_result($newps);
@@ -398,7 +398,7 @@ if ($prows === 0) {
                 $insq = mysqli_query($link,$insPreq);
                 if (!$insq) {
                     die ("validateHike.php: Could not INSERT into EGPSDAT for " .
-                        "Proposed Data item " . $a . ": " . mysqli_error());
+                        "Proposed Data item " . $a . ": " . mysqli_error($link));
                 }
             }
         }
@@ -429,7 +429,7 @@ if ($prows === 0) {
         $updtp = mysqli_query($link,$updtpreq);
         if (!$updtp) {
             die("validateHike.php: Could not UPDATE EGPSDAT item " . $d . 
-                ": " . mysqli_error());
+                ": " . mysqli_error($link));
         }
     }
     mysqli_free_result($updtp);
@@ -439,7 +439,7 @@ if ($prows === 0) {
             $remrow = mysqli_query($link,$delref);
             if (!remrow) {
                 die("validateHike.php: Failed to delete from EGPSDAT: " . 
-                    mysqli_error());
+                    mysqli_error($link));
             }
         }
         mysqli_free_result($remrow);
@@ -474,7 +474,7 @@ $aidreq = "SELECT datId FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND " .
 $aidq = mysqli_query($link,$aidreq);
 if (!$aidq) {
     die ("validateHike:php: Failed to extract datId's from EGPSDAT for " .
-            "Actual Data: " . mysqli_error());
+            "Actual Data: " . mysqli_error($link));
 }
 $arows = mysqli_num_rows($aidq);
 if ($arows === 0) {
@@ -492,7 +492,7 @@ if ($arows === 0) {
         $newas = mysqli_query($link,$newareq);
         if (!$newas) {
             die ("validateHike.php: Failed to insert into EGPSDAT Actual " .
-                "Data item {$r} " . mysqli_error());
+                "Data item {$r} " . mysqli_error($link));
         }
     }
     mysqli_free_result($newps);
@@ -525,7 +525,7 @@ if ($arows === 0) {
                 $insaq = mysqli_query($link,$insAreq);
                 if (!$insaq) {
                     die ("validateHike.php: Could not INSERT into EGPSDAT for " .
-                        "Actual Data item " . $a . ": " . mysqli_error());
+                        "Actual Data item " . $a . ": " . mysqli_error($link));
                 }
             }
         }
@@ -556,7 +556,7 @@ if ($arows === 0) {
         $updta = mysqli_query($link,$updtareq);
         if (!$updta) {
             die("validateHike.php: Could not UPDATE EGPSDAT 'A' item " . $d . 
-                ": " . mysqli_error());
+                ": " . mysqli_error($link));
         }
     }
     mysqli_free_result($updta);
@@ -566,7 +566,7 @@ if ($arows === 0) {
             $remrow = mysqli_query($link,$delref);
             if (!remrow) {
                 die("validateHike.php: Failed to delete from EGPSDAT: " . 
-                    mysqli_error());
+                    mysqli_error($link));
             }
         }
         mysqli_free_result($remrow);
@@ -592,7 +592,7 @@ if ($type === 'Validate') {  # ******** - TURNED OFF RIGHT NOW - ************
         $picq = mysqli_query($link,$picreq);
         if (!$picq) {
             die ("validateHike.php: Failed to extract picture data from ETSV: " .
-                mysqli_error());
+                mysqli_error($link));
         }
         while ($pix = mysqli_fetch_assoc($picq)) {
             $phNames[$picno] = $pix['title'];

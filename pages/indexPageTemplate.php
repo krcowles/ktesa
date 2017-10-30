@@ -1,5 +1,5 @@
 <?php
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
+require_once "../mysqli/setenv.php";
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
 $table = "HIKES";
 $query = "SELECT pgTitle,lat,lng,aoimg1,dirs,info,refs,tsv " .
@@ -11,7 +11,7 @@ if ($dev) {
 }
 $request = mysqli_query($link,$query);
 if (!$request) {
-    die ("Unable to get Index Page data: " . $mysqli_error());
+    die ("Unable to get Index Page data: " . $mysqli_error($link));
 }
 $row = mysqli_fetch_assoc($request);
 $indxTitle = $row['pgTitle'];

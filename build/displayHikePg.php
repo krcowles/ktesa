@@ -49,6 +49,14 @@ if ($usePix == 'YES') {
     }
     mysqli_free_result($pstat);
 }
+# Set the status field to "sub" (meaning "submitted" as a complete hike
+$subreq = "UPDATE EHIKES SET stat = 'sub' WHERE indxNo = {$hikeRow};";
+$sub =  mysqli_query($link,$subreq);
+if (!$sub) {
+    die ("displayHikePg.php: Failed to change status field in EHIKES: " .
+        mysqli_error($link));
+}
+mysqli_free_result($sub);
 /*
     ------------------------------ PIC ROW CONSTRUCTION -------------------------
 */
