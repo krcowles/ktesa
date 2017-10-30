@@ -41,7 +41,7 @@ function distance($lat1, $lon1, $lat2, $lon2) {
     return array ($miles,$rotation);
 }
 # END FUNCTION
-# Error message data
+# Error message data, initialization
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
 $gpxmsg = $intro . 'Could not parse XML in gpx file: ';
@@ -52,6 +52,7 @@ $tno = 1;
 # Some titles may use quotations - provide for that case:
 $mapTitle = str_replace("'","\\'",$hikeTitle);
 $mapTitle = str_replace('"','\\"',$mapTitle);
+# START MAIN:
 # Files: GPX track file
 $gpxdat = simplexml_load_file($gpxPath);
 if ($gpxdat === false) {
@@ -145,7 +146,7 @@ if ($dev) {
 } else {
     require_once "../mysql/000mysql_connect.php";
 }
-$query = "SELECT tsv FROM HIKES WHERE indxNo = " . $hikeIndexNo;
+$query = "SELECT * FROM {$ttable} WHERE indxNo = " . $hikeIndexNo;
 $result = mysqli_query($link,$query);
 if (!$result) {
     if (Ktesa_Dbug) {
@@ -155,27 +156,27 @@ if (!$result) {
         user_error_msg($rel_addr,3,0);
     }
 }
-$row = mysqli_fetch_row($result);
-$photos = unserialize($row[0]);
-mysqli_close($link);
 $plnks = [];  # array of photo links
-$defIconColor = 'red';
 $mcnt = 0;
-foreach ($photos as $photo) {
-    $img = explode("^",$photo);
-    if ($img[3] == 'Y') {
-        $procName = preg_replace("/'/","\'",$img[1]);
-        $procName = preg_replace('/"/','\"',$procName);
-        $procDesc = preg_replace("/'/","\'",$img[4]);
-        $procDesc = preg_replace('/"/','\"',$procDesc);
-        $plnk = "GV_Draw_Marker({lat:" . $img[5] . ",lon:" . 
-            $img[6] . ",name:'" . $procName . "',desc:'" . 
-            $procDesc . "',color:'" . $img[13] . "',icon:'" . 
-            $mapicon . "',url:'" . $img[8] . "',thumbnail:'" . 
-            $img[7] . "',folder:'" . $img[0] . "'});";
-        array_push($plnks,$plnk);
-        $mcnt++;
-    }
+while ($row = mysqli_fetch_assoc($result)) {
+        if ($row['mpg'] === 'Y') {
+            $procName = preg_replace("/'/","\'",$row['title']);
+            $procName = preg_replace('/"/','\"',$procName);
+            $procDesc = preg_replace("/'/","\'",$row['desc']);
+            $procDesc = preg_replace('/"/','\"',$procDesc);
+            if ($row['iclr'] == '') {
+                $icon_color = 'red'; # default
+            } else {
+                $icon_color = $row['iclr'];
+            }
+            $plnk = "GV_Draw_Marker({lat:" . $row['lat'] . ",lon:" . 
+                $row['lng'] . ",name:'" . $procName . "',desc:'" . 
+                $procDesc . "',color:'" . $icon_color . "',icon:''" . 
+                ",url:'" . $row['alblnk'] . "',thumbnail:'" . 
+                $row['mid'] . "',folder:'" . $row['folder'] . "'});";
+            array_push($plnks,$plnk);
+            $mcnt++;
+        }
 }
 /*
  * The next section copies the template for GPSV.html into a variable to be

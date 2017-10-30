@@ -45,10 +45,11 @@ if (!$stat) {
 }
 if (mysqli_num_rows($stat) === 0) {
     $usrcnt = 0;
+    $status = '[]';
 } else {
     $usr_items = mysqli_fetch_row($stat);
     $usrcnt = $usr_items[0];
-    $status = [];
+    $status = '[';
     if ($age === 'new') {   # from EHIKES table, need status fields
         for ($j=1; $j<=$tblcnt; $j++) {
             $statreq = "SELECT stat,indxNo FROM EHIKES WHERE usrid = '{$usr}'" .
@@ -64,12 +65,15 @@ if (mysqli_num_rows($stat) === 0) {
             }
             if (mysqli_num_rows($statresp) !== 0) {
                 $sfields = mysqli_fetch_row($statresp);
-                array_push($status,$sfields[0]);
+                $status .= '"' . $sfields[0] . '"';
+                if ($j !== $tblcnt) {
+                    $status .= ',';
+                }
             }
         }
     }
+    $status .= ']';
 }
-$javastat = json_encode($status);
 mysqli_free_result($statresp);
 if ($show !== 'all') {
     $url_prefix = '../pages/';

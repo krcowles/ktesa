@@ -46,7 +46,7 @@ if ($show === 'inx') {
 
 <script type="text/javascript">
     var age = "<?php echo $age;?>";
-    var status = '<?php echo $javastat;?>';
+    var statfields = <?php echo $status;?>;
     var icnt = "<?php echo $usrcnt;?>";
 </script>
 <script src="../scripts/jquery-1.12.1.js"></script>

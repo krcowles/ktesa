@@ -10,7 +10,6 @@ $( function () { // when page is loaded...
  *      c. Status = sub; files have been submitted for release to HIKES;
  *          point to editDB (or editIndx)
  */
-var statfields = JSON.parse(status);  // array of status fields from EHIKES
 // If age = new, this array will not be empty...
 var useEditor = 'editDB.php?hikeNo=';
 var uid = $('#uid').text();
@@ -37,7 +36,9 @@ $('a').on('click', function(e) {
                         + "displayed on the hike page & map";
                     useEditor = 'finishPage.php?hno=' + hikeNo;
                 } else if (statfields[indx] === 'sub') {
-                    useEditor += '?hno=' + hikeNo;
+                    useEditor += '?hno=' + hikeNo + '&tbl=new';
+                    umsg = 'This hike has been submitted for publication.\n' +
+                        'Changes will be incorporated when published';
                 }
                 alert(umsg);
                 window.open(useEditor,"_blank");
