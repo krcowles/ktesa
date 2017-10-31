@@ -1,5 +1,5 @@
 <?php
-require '../admin/setenv.php';
+require '../mysql/setenv.php';
 /*
  * TblConstructor will be called either by the mapPg or by the hikeEditor
  * <mapPg expects to display every hike & index page

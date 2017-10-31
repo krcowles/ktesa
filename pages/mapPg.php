@@ -63,7 +63,7 @@ $mstyle = '<style type="text/css">' . "\n" .
             echo '<link href="../styles/logo.css" type="text/css" ' .
                 'rel="stylesheet" />' . "\n";
         }
-        if($tbls === false) { 
+        if ($tbls === false) { 
             echo $mstyle; }
     ?>
     <link href="../styles/<?php
@@ -91,6 +91,7 @@ if ($tblVar !== 'T') {
     echo '<div id="newHikeBox">New Hike!<br><em id="winner"></em></div>';
 }
 echo $pgDivStrt;
+# required for ALL cases:
 $usr = 'mstr';
 $age = 'old';
 $show = 'all';

@@ -10,9 +10,8 @@ $( function () { // when page is loaded...
  *      c. Status = sub; files have been submitted for release to HIKES;
  *          point to editDB (or editIndx)
  */
-// If age = new, this array will not be empty...
-var useEditor = 'editDB.php?hikeNo=';
 var uid = $('#uid').text();
+var useEditor;
 var umsg;
 $rows = $('tbody').find('tr');
 $('a').on('click', function(e) {
@@ -36,7 +35,8 @@ $('a').on('click', function(e) {
                         + "displayed on the hike page & map";
                     useEditor = 'finishPage.php?hno=' + hikeNo;
                 } else if (statfields[indx] === 'sub') {
-                    useEditor += '?hno=' + hikeNo + '&tbl=new';
+                    useEditor = 'editDB.php?hno=' + hikeNo + 
+                        '&tbl=new&usr=' + uid; 
                     umsg = 'This hike has been submitted for publication.\n' +
                         'Changes will be incorporated when published';
                 }
@@ -44,16 +44,17 @@ $('a').on('click', function(e) {
                 window.open(useEditor,"_blank");
             }
         });
-    } else {
+    } else { // this hike is being pulled from published hikes
         var $containerCell = $(this).parent();
         var $containerRow = $containerCell.parent();
         if ( !$containerRow.hasClass('indxd') ) {
             var hikeToUse = $containerRow.data('indx');
-            var callPhp = 'editDB.php?hikeNo=' + hikeToUse;
+            var callPhp = 'editDB.php?hno=' + hikeToUse + '&tbl=old&usr=' + uid;
             window.open(callPhp, target="_blank");
         } else {
+            //currently, only site master can edit index pages
             var hikeToUse = $containerRow.data('indx');
-            var callPhp = 'editIndx.php?hikeNo=' + hikeToUse;
+            var callPhp = 'editIndx.php?hno=' + hikeToUse + '&tbl=old&usr=mstr';
             window.open(callPhp, target="_blank");
         }
     }

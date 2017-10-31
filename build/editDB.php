@@ -1,4 +1,25 @@
 <!DOCTYPE html>
+<?php
+require_once "../mysql/setenv.php";
+$tbl_type = filter_input(INPUT_GET,'tbl');
+if ($tbl_type === 'new') {
+    $table = 'EHIKES';
+    $ptable = 'ETSV';
+    $gtable = 'EGPSDAT';
+    $rtable = 'EREFS';
+    $hiketype = 'New or In-Edit';
+} else {
+    $table = 'HIKES';
+    $ptable = 'TSV';
+    $gtable = 'GPSDAT';
+    $rtable = 'REFS';
+    $hiketype = 'Published';
+}
+$hikeNo = filter_input(INPUT_GET,'hno');
+$uid = filter_input(INPUT_GET,'usr');
+# Error output styling string:
+$pstyle = '<p style="color:red;font-size:18px;">';
+?>
 <html lang="en-us">
 <head>
     <title>Edit Database</title>
@@ -18,80 +39,79 @@
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Hike Page Editor</p>
+<p id="trail"><?php echo $hiketype;?> Hike Editor</p>
 <div id="main" style="padding:16px;">
 <?php
-    # Error output styling string:
-    $pstyle = '<p style="color:red;font-size:18px;">';
-    
-    $xmlDB = simplexml_load_file('../data/database.xml');
-    if ($xmlDB === false) {
-        $nold = $pstyle . "Cannot load the xml database: contact Site Master;</p>";
-        die ($nold);
-    }
-    
-    $hikeNo = filter_input(INPUT_GET,'hikeNo');
+    echo "<h3>Edits made to this hike will be retained in the New/In-Edit " .
+        "database, and will not show up when displaying published hikes until " .
+        "these edits have been released</h3>";
     /*
      *  Below: pull out the available cluster groups and establish association
      * with cluster group name for displaying in drop-down <select>
      */
     $groups = [];
     $cnames = [];
-    foreach ($xmlDB->row as $hikeRow) {
-        $cgrp = $hikeRow->clusGrp->__toString();
+    $clusterreq = "SELECT cgroup, cname FROM HIKES";
+    $clusterq = mysqli_query($link,$clusterreq);
+    if (!$clusterq) {
+        die("editDB.php: Failed to extract cluster info from HIKES: " .
+            mysqli_error($link));
+    }
+    while ($cluster = mysqli_fetch_assoc($clusterq)) {
+        $cgrp = $cluster['cgroup'];
         if ( strlen($cgrp) !== 0) {
             # no duplicates please (NOTE: "array_unique" leaves holes)
             $match = false;
             for ($i=0; $i<count($groups); $i++) {
-                #echo " -Now:" . count($groups);
                 if ($cgrp == $groups[$i]) {
                     $match = true;
                     break;
                 }  
             }
             if (!$match) {
-                $grpPopup = $hikeRow->cgName->__toString();
                 array_push($groups,$cgrp);
-                array_push($cnames,$grpPopup);
+                array_push($cnames,$cluster['cname']);
             }
         }
-        $groupCount = count($cnames);
-        if ( $hikeRow->indxNo == $hikeNo) {
-            $hikeTitle = $hikeRow->pgTitle->__toString();
-            $hikeLocale = $hikeRow->locale->__toString();
-            $hikeMarker = $hikeRow->marker->__toString();
-            $hikeClusGrp = $hikeRow->clusGrp->__toString();
-            $hikeStyle = $hikeRow->logistics->__toString();
-            $hikeMiles = $hikeRow->miles->__toString();
-            $hikeFeet = $hikeRow->feet->__toString();
-            $hikeDiff = $hikeRow->difficulty->__toString();
-            $hikeFac = $hikeRow->facilities->__toString();
-            $hikeWow = $hikeRow->wow->__toString();
-            $hikeSeasons = $hikeRow->seasons->__toString();
-            $hikeExpos = $hikeRow->expo->__toString();
-            $hikeGpx = $hikeRow->gpxfile->__toString();
-            $hikeTrack = $hikeRow->trkfile->__toString();
-            $hikeLat = $hikeRow->lat->__toString();
-            $hikeLng = $hikeRow->lng->__toString();
-            $hikeUrl1 = $hikeRow->mpUrl->__toString();
-            $hikeUrl2 = $hikeRow->spUrl->__toString();
-            $hikeDirs = $hikeRow->dirs->__toString();
-            $hikeGrpTip = $hikeRow->cgName->__toString();
-            $hikeTips = $hikeRow->tipsTxt->__toString();
-            $hikeDetails = $hikeRow->hikeInfo->__toSTring();
-            # the following are needed as xml objects (not strings):
-            $hikePhotos = $hikeRow->tsv;
-            $hikeRefs = $hikeRow->refs;
-            $hikeProp = $hikeRow->dataProp;
-            $hikeAct = $hikeRow->dataAct;
-        }
     }
+    mysqli_free_result($clusterq);
+    $groupCount = count($cnames);
+    $hikereq = "SELECT * FROM {$table} WHERE indxNo = {$hikeNo};";
+    $hikeq = mysqli_query($link,$hikereq);
+    if (!$hikeq) {
+        die("editDB.php: Failed to extract hike data from {$table}: " .
+            mysqli_error($link));
+    }
+    $hike = mysqli_fetch_assoc($hikeq);
+    $hikeTitle = $hike['pgTitle'];
+    $hikeLocale = $hike['locale'];
+    $hikeMarker = $hike['marker'];
+    $hikeClusGrp = $hike['cgroup'];
+    $hikeGrpTip = $hike['cname'];
+    $hikeStyle = $hike['logistics'];
+    $hikeMiles = $hike['miles'];
+    $hikeFeet = $hike['feet'];
+    $hikeDiff = $hike['diff'];
+    $hikeFac = $hike['fac'];
+    $hikeWow = $hike['wow'];
+    $hikeSeasons = $hike['seasons'];
+    $hikeExpos = $hike['expo'];
+    $hikeGpx = $hike['gpx'];
+    $hikeTrack = $hike['trk'];
+    $hikeLat = $hike['lat'];
+    $hikeLng = $hike['lng'];
+    $hikeUrl1 = $hike['purl1'];
+    $hikeUrl2 = $hike['purl2'];
+    $hikeDirs = $hike['dirs'];
+    $hikeTips = $hike['tips'];
+    $hikeDetails = $hike['info'];
+    mysqli_free_result($hikeq);
 ?>
 
 <form target="_blank" action="saveChanges.php" method="POST">
-<?php
-echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
-?>
+<input type="hidden" name="tbl" value="<?php echo $tbl_type;?>" />
+<input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
+<input type="hidden" name="usr" value="<?php echo $uid;?>" />
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
     the hike: "<?php echo $hikeTitle;?>". If no changes are made you may either 
     exit this page or hit the "sbumit" button.
@@ -143,7 +163,10 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 	<option value="Glenwood">Glenwood</option>
 </select>&nbsp;&nbsp;
 <p id="mrkr" style="display:none"><?php echo $hikeMarker;?></p>
+<input type="hidden" name="pmrkr" value="<?php echo $hikeMarker;?>" />
+<input type="hidden" name="pclus" value="<?php echo $hikeClusGrp;?>" />
 <p id="group" style="display:none"><?php echo $hikeGrpTip;?></p>
+<input type="hidden" name="pcnme" value="<?php echo $hikeGrpTip;?>" />
 <h3>------- Cluster Hike Assignments: (Hikes with overlapping trailheads or in 
     close proximity) -------<br />
 <span style="margin-left:50px;font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
@@ -222,9 +245,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
 <textarea id="ph2" name="purl2"><?php echo $hikeUrl2;?></textarea><br /><br />
 <label for="murl">Map Directions Link (Url): </label>
 <textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
-<!--
-    This next section is photo editing
--->
+<!-- This next section is photo editing-->
 <div>
     <p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
             captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
@@ -245,13 +266,19 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
     $caprows = [];
     $cnt = 0;
     $delItem = 0;
-    foreach ($hikePhotos->picDat as $photo) {
-        if ($photo->hpg == 'Y') {
+    $picreq = "SELECT * FROM {$ptable} WHERE indxNo = '{$hikeNo}';";
+    $pdatq = mysqli_query($link,$picreq);
+    if (!$pdatq) {
+        die("editDB.php: Failed to extract photo data from {$ptable}: " .
+            mysqli_error($link));
+    }
+    while ($photo = mysqli_fetch_assoc($pdatq)) {
+        if ($photo['hpg'] == 'Y') {
             # scale photo dims to nomHt
-            $scale = $nomHt/$photo->imgHt;
-            $width = intval($scale * $photo->imgWd);
+            $scale = $nomHt/$photo['imgHt'];
+            $width = intval($scale * $photo['imgWd']);
             # description w/o date
-            $ecap = $photo->desc;
+            $ecap = $photo['desc'];
             if (substr($ecap,0,1) == '"') {
                 $elgth = strlen($ecap) - 2;
                 $ecap = substr($ecap,1,$elgth);
@@ -269,7 +296,7 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
                 $cnt = 0;
             }
             $rowHtml .= '<img style="margin-left:2px;" height="' . $nomHt . 
-                '" width="' . $width . '" src="' . $photo->mid . 
+                '" width="' . $width . '" src="' . $photo['mid'] . 
                 '" alt="' . $ecap . '" />' . "\n";
             $tawidth = $width - 12;
             $capHtml .= '<textarea name="ecap[]" style="height:64px;width:' . $tawidth . 
@@ -305,18 +332,22 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . 
            '[NO TIPS FOUND]' . '</textarea><br />' . "\n";
     }
-    
-?>
-            
+?>        
 <p>Hike Information:</p>
 <textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $hikeDetails;?></textarea>
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, delete and add a new one)</h3>
 <?php
     $z = 0;  # index for creating unique id's
-    foreach ($hikeRefs->ref as $ritem) {
+    $refreq = "SELECT * FROM {$rtable} WHERE indxNo = '{$hikeNo}';";
+    $refq = mysqli_query($link,$refreq);
+    if (!$refq) {
+        die("editDB.php: Failed to extract references from {$rtable}: " .
+            mysqli_error($link));
+    }
+    while ($ritem = mysqli_fetch_assoc($refq)) {
         $rid = 'rid' . $z;
         $reftype = 'ref' . $z;
-        $thisref = $ritem->rtype->__toString();
+        $thisref = $ritem['rtype'];
         echo '<p id="' . $rid  . '" style="display:none">' . $thisref . "</p>\n";
         echo '<label for="' . $reftype . '">Reference Type: </label>' . "\n";
         echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">' . "\n";
@@ -334,18 +365,18 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         echo '<option value="r">Related Link</option>' . "\n";
         echo '<option value="n">Text Only - No Link</option>' . "\n";
         echo '</select><br />' . "\n";
-        $decrit1 = urldecode($ritem->rit1->__toString());
-        if ($thisref === 'b' || $thisref === 'p') {
+        $decrit1 = $ritem['rit1'];
+        if ($thisref === 'Book:' || $thisref === 'Photo Essay:') {
             echo '<label style="text-indent:24px;">Title: </label>'
                 . '<textarea style="height:20px;width:320px" name="rit1[]">' .
                 $decrit1 . '</textarea>&nbsp;&nbsp;';
             echo '<label>Author: </label>' 
                 . '<textarea style="height:20px;width:320px" name="rit2[]">' .
-                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;'
+                $ritem['rit2'] . '</textarea>&nbsp;&nbsp;'
                 . '<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
                 $z . '"><br /><br />' . "\n";
-        } elseif ($thisref === 'n') {
+        } elseif ($thisref === 'Text') {
             echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
                 $decrit1 . '</textarea><label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
@@ -353,12 +384,13 @@ echo '<input type="hidden" name="hno" value="' . $hikeNo . '" />';
         } else {
             echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
                 $decrit1 . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
-                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+                $ritem['rit2'] . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
                 $z . '"><br /><br />' . "\n";
         }  
         $z++;
     }
+    mysqli_free_result($refq);
     echo '<p id="refcnt" style="display:none">' . $z . '</p>';
 ?>
 <p><em style="font-weight:bold;">Add</em> references here:</p>
@@ -438,21 +470,29 @@ Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35"
 
 <h3>Proposed Data:</h3>
 <?php 
-    if (strlen($hikeProp) !== 0) {
+    $propreq = "SELECT * FROM {$gtable} WHERE indxNo = '{$hikeNo}' AND datType = 'P';";
+    $propq = mysqli_query($link,$propreq);
+    if (!$propq) {
+        die("editDB.php: Failed to extract Proposed Data from {$gtable}: " .
+            mysqli_error($link));
+    }
+    if (mysqli_num_rows($propq) !== 0) {
         $x = 0;
-        foreach ($hikeProp->prop as $pdat) {
+        while ($pdat = mysqli_fetch_assoc($propq)) {
             echo 'Label: <textarea class="tstyle1" name="plabl[]">' . 
-                    $pdat->plbl->__toString() . '</textarea>&nbsp;&nbsp;';
+                    $pdat['label'] . '</textarea>&nbsp;&nbsp;';
             echo 'Url: <textarea class="tstyle2" name="plnk[]">' . 
-                    $pdat->purl->__toString() . '</textarea>&nbsp;&nbsp;';
+                    $pdat['url'] . '</textarea>&nbsp;&nbsp;';
             echo 'Click-on text: <textarea class="tstyle3" name="pctxt[]">' . 
-                    $pdat->pcot->__toString() . '</textarea>&nbsp;&nbsp;'
+                    $pdat['clickText'] . '</textarea>&nbsp;&nbsp;'
                     . '<label>Delete: </label>' .
                     '<input style="height:18px;width:18px;" type="checkbox" '
                     . 'name="delprop[]" value="' . $x . '"><br /><br />';
             $x++;
         }
+        mysqli_free_result($propq);
     }
+    
 ?>
 <p><em style="color:brown;font-weight:bold;">Add</em> Proposed Data:</p>
 <label>Label: </label><input class="tstyle1" name="plabl[]" size="30" />&nbsp;&nbsp;
@@ -464,15 +504,21 @@ Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35"
 
 <h3>Actual Data:</h3>
 <?php
-    if (strlen($hikeAct) !== 0) {
+    $actreq = "SELECT * FROM {$gtable} WHERE indxNo = '{$hikeNo}' AND datType = 'A';";
+    $actq = mysqli_query($link,$actreq);
+    if (!$actq) {
+        die("editDB.php: Failed to extract Actual Data from {$gtable}: " .
+            mysqli_error($link));
+    }
+    if (mysqli_num_rows !== 0) {
         $y = 0;
-        foreach ($hikeAct->act as $adat) {
+        while ($adat = mysqli_fetch_assoc($actq)) {
             echo 'Label: <textarea class="tstyle1" name="alabl[]">' . 
-                    $adat->albl->__toString() . '</textarea>&nbsp;&nbsp;';
+                    $adat['label'] . '</textarea>&nbsp;&nbsp;';
             echo 'Url: <textarea class="tstyle2" name="alnk[]">' . 
-                    $adat->aurl->__toString() . '</textarea>&nbsp;&nbsp;';
+                    $adat['url'] . '</textarea>&nbsp;&nbsp;';
             echo 'Click-on text: <textarea class="tstyle3" name="actxt[]">' . 
-                    $adat->acot->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+                    $adat['clickText'] . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                     '<input style="height:18px;width:18px;" type="checkbox" '
                     . 'name="delact[]" value="' . $y . '"><br /><br />';
             $y++;
@@ -490,10 +536,7 @@ Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35"
 
 <div style="margin-left:8px;">
 <h3>Save the changes!</h3>
-<p>
-    <input type="submit" name="savePg" value="Save Edits" />
-</p>
-
+<p><input type="submit" name="savePg" value="Save Edits" /></p>
 </div>	
 
 </form>
