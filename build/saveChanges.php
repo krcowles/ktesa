@@ -206,7 +206,7 @@ $cgName = filter_input(INPUT_POST,'pcnme');
     }
     include "savePicEdits.php";
     include "saveRefEdits.php";
-    
+    include "saveGPSEdits.php";
 ?>
 <div style="padding:16px;">
 <h2>The changes submitted for <?php echo $hTitle . $msgout;?></h2>

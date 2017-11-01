@@ -1,7 +1,6 @@
 <?php
 if ($tbl_type === 'old') {
     # all REFS data needs to be copied to EREFS
-    # The new hike no ($newno) was established in savePicEdits.php
     $getReq = "SELECT * FROM REFS WHERE indxNo = {$hikeNo};";
     $getq = mysqli_query($link,$getReq);
     if (!$getq) {
@@ -20,6 +19,7 @@ if ($tbl_type === 'old') {
                 mysqli_error($link));
         }
     }
+    mysqli_free_result($refq);
     mysqli_free_result($getq);
     $useNo = $newNo;
 } else {
@@ -27,7 +27,6 @@ if ($tbl_type === 'old') {
 }
 # Delete any refs so marked in editDB.php
 $deletes = $_POST['delref'];
-echo "No of deletes: " . count($deletes);
 if (count($deletes) !== 0) {
     $erefReq = "SELECT refId FROM EREFS WHERE indxNo = {$useNo};";
     $erefq = mysqli_query($link,$erefReq);
