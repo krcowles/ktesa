@@ -1,5 +1,5 @@
 <?php
-require 'setenv.php';
+require_once '../mysql/setenv.php';
 $table = filter_input(INPUT_GET,'tbl');
 $reftbl = substr($table,1,(strlen($table)-1));
 ?>

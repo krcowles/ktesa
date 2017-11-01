@@ -1,5 +1,5 @@
 <?php
-require_once "setenv.php";
+require_once "../mysql/setenv.php";
 $lastid = "SELECT refId FROM REFS ORDER BY refId DESC LIMIT 1";
 $getid = mysqli_query($link,$lastid);
 if (!$getid) {

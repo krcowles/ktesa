@@ -1,5 +1,5 @@
 <?php
-require_once "setenv.php";
+require_once "../mysql/setenv.php";
 $fname = mysqli_real_escape_string($link,filter_input(INPUT_POST,'firstname'));
 $lname = mysqli_real_escape_string($link,filter_input(INPUT_POST,'lastname'));
 $uname = mysqli_real_escape_string($link,filter_input(INPUT_POST,'usr'));

@@ -1,5 +1,5 @@
 <?php
-require "setenv.php";
+require_once "../mysql/setenv.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

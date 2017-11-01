@@ -1,5 +1,5 @@
 <?php
-require 'setenv.php';
+require_once '../mysql/setenv.php';
 $tbl_type = filter_input(INPUT_GET,'tbl');
 $rowno = filter_input(INPUT_GET,'indx');
 if ($tbl_type === 'u') {

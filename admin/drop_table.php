@@ -1,5 +1,5 @@
 <?php
-require 'setenv.php';
+require_once '../mysql/setenv.php';
 $table = filter_input(INPUT_GET,'tbl');
 ?>
 <!DOCTYPE html>

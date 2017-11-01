@@ -1,5 +1,5 @@
 <?php
-require '../admin/setenv.php';
+require '../mysql/setenv.php';
 if ( !mysqli_query($link,"DROP PROCEDURE IF EXISTS getTitles") ) {
     if (Ktesa_Dbug) {
         dbug_print('newHike.php: Failed to DROP PROCEDURE ' . 
