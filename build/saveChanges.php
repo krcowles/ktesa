@@ -215,13 +215,12 @@ $cgName = filter_input(INPUT_POST,'pcnme');
 <?php
 if (!$user) {
     echo '<div data-ptype="hike" data-indxno="' . $hikeNo . '" style="padding:16px;" id="more">';
-    echo '<button style="font-size:16px;color:DarkBlue;" id="same">Re-edit this hike</button><br />';
-    echo '<button style="font-size:16px;color:DarkBlue;" id="diff">Edit a different hike</button><br />';
     echo '<button style="font-size:16px;color:DarkBlue;" id="view">View the Edited Page</button>';
     echo '</div>';
 }
 ?>
-
+<p id="tbl" style="display:none;"><?php echo $tbl_type;?></p>
+<p id="uid" style="display:none;"><?php echo $uid;?></p>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="postEdit.js"></script>
 
