@@ -214,7 +214,7 @@ $cgName = filter_input(INPUT_POST,'pcnme');
 
 <?php
 if (!$user) {
-    echo '<div data-ptype="hike" data-indxno="' . $hikeNo . '" style="padding:16px;" id="more">';
+    echo '<div data-ptype="hike" data-indxno="' . $useNo . '" style="padding:16px;" id="more">';
     echo '<button style="font-size:16px;color:DarkBlue;" id="view">View the Edited Page</button>';
     echo '</div>';
 }

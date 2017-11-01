@@ -1,6 +1,7 @@
 <?php
 require '../mysql/setenv.php';
-$newHike = filter_input(INPUT_GET,'new');
+$new = filter_input(INPUT_GET,'new');
+$newHike = mysqli_real_escape_string($link,$new);
 $usr = filter_input(INPUT_GET,'usr');
 $query = "INSERT INTO EHIKES (pgTitle, usrid, stat) VALUES " .
         "('{$newHike}','{$usr}','new');";
