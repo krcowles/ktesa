@@ -191,7 +191,22 @@ $cgName = filter_input(INPUT_POST,'pcnme');
             mysqli_error($link));
     }
     mysqli_free_result($saveHike);
+    /* if new data was inserted into EHIKES, that indxNo will be needed for
+     * the remaining tables: ETSV, EREFS, and EGPSDAT
+     */
+    if ($tbl_type === 'old') {
+        $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
+        $indxq = mysqli_query($link,$indxReq);
+        if (!$indxq) {
+            die("savePicEdits.php: Did not retrieve new EHIKES indx no: " .
+                mysqli_error($link));
+        }
+        $indxNo = mysqli_fetch_row($indxq);
+        $newNo = $indxNo[0];
+    }
     include "savePicEdits.php";
+    include "saveRefEdits.php";
+    
 ?>
 <div style="padding:16px;">
 <h2>The changes submitted for <?php echo $hTitle . $msgout;?></h2>

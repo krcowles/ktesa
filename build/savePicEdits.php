@@ -7,15 +7,6 @@ $ecapts = $_POST['ecap'];
 # if the edited file was in HIKES, transfer data over to EHIKES:
 if ($tbl_type === 'old') {
     # all TSV data needs to be copied to ETSV
-    # EHIKES was just updated w/pub data; new hike no established: retrieve
-    $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
-    $indxq = mysqli_query($link,$indxReq);
-    if (!$indxq) {
-        die("savePicEdits.php: Did not retrieve new EHIKES indx no: " .
-            mysqli_error($link));
-    }
-    $indxNo = mysqli_fetch_row($indxq);
-    $newNo = $indxNo[0];
     mysqli_free_result($indxq);
     $getReq = "SELECT * FROM TSV WHERE indxNo = {$hikeNo};";
     $getq = mysqli_query($link,$getReq);
