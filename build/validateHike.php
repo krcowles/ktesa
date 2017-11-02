@@ -68,12 +68,24 @@ if ( isset($valType) ) {
         echo '<form target="_blank" action="displayHikePg.php" method="POST">' . "\n";
         echo "<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>\n";
         echo '<div style="margin-left:24px;font-size:18px;">';
-        echo "<h3>Please Note!</h3>\n" . '<p>You have saved new data. '
-            . 'Do not go back to the previous page and repeat this step or '
-            . 'duplicate data will be created!<br />If you wish to stop '
-            . 'here and return later to select photos, please return to ' .
-            ' the main page and select "Edit Hikes" (New/Active)';
+        echo "<h3 style='color:darkBlue;'>Please Note!</h3>\n" . '<p>You have '
+            . 'saved new data. Do not go back to the previous page and repeat '
+            . 'this step or duplicate data will be created!<br />'
+            . 'If it is necessary to "back up" due to an error or omission, '
+            . 'please use the "Un-Validate" button below. This will open the '
+            . 'enterHike form and delete data from uploaded files which would '
+            . 'otherwise be duplicated.<br />';
+        echo '<button id="unval">Un-Validate</button><br /><br />'
+            . 'OTHERWISE: If you wish to stop here and return later to '
+            . 'finish the page, please return to the main page and select '
+            . '"Edit Hikes" (New/Active)<br /><br /><br />';
         require "fileUploads.php";
+        echo '<p id="gfile" style="display:none;">' . $gpxLoc . '</p>';
+        echo '<p id="tfile" style="display:none;">' . $trkLoc . '</p>';
+        echo '<p id="i1file" style="display:none;">' . $img1Loc . '</p>';
+        echo '<p id="i2file" style="display:none;">' . $img2Loc . '</p>';
+        
+        
     }
 ?>  
 <p style="display:none" id="tsvStat"><?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?></p>
