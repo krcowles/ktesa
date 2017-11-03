@@ -47,7 +47,8 @@ foreach ($xml->row as $row) {
             }
             $presult = mysqli_query($link,$preq);
             if (!$presult) {
-                die ("load_GPSDAT.php: failed to load propdat at row {$indx}");
+                die ("load_GPSDAT.php: failed to load propdat at row {$indx}: " .
+                    mysqli_error($link));
             }
     }
     if ($row->dataAct->act->count() !== 0) {
@@ -61,10 +62,11 @@ foreach ($xml->row as $row) {
             $acot = $adat->acot->__toString();
             $cot = mysqli_real_escape_string($link,$acot);
             $areq = "INSERT INTO GPSDAT (indxNo,datType,label,url,clickText) " .
-                "VALUES ('{$indx}','A','{$lbl}','{$aurl}','{$acot}');";
+                "VALUES ('{$indx}','A','{$lbl}','{$aurl}','{$cot}');";
             $aresult = mysqli_query($link,$areq);
             if (!$aresult) {
-                die ("load_GPSDAT.php: failed to load propdat at row {$indx}");
+                die ("load_GPSDAT.php: failed to load actdat at row {$indx}: " .
+                    mysqli_error($link));
             }
         }
     }
