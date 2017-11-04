@@ -84,21 +84,10 @@ $('#rowdel').on('click', function() {
         alert("Nothing deleted");
     }
 });
-$('#ehdel').on('click', function() {
-    var hrow = prompt("Are you sure you want to delete this hike?","Hike " + 
-        $('#hdel').val());
-    if (hrow !== null) {
-        var hlgth = hrow.length;
-        var hno = hrow.substring(5,hlgth);
-        if (hno == 0) {
-            alert("There is no hike 0; Please specify an existing hike");
-            $('#hdel').val('');
-        } else {
-            window.open('delete_EHIKE.php?drow=' + hno,"_blank");
-        }
-    }
-});
 
+$('#pub').on('click', function() {
+    window.open("release.php","_blank");
+})
 });
 
 

@@ -1,12 +1,19 @@
 <?php
 require '../mysql/setenv.php';
 /*
- * TblConstructor will be called either by the mapPg or by the hikeEditor
- * <mapPg expects to display every hike & index page
- * <hikeEditor> expects to display only the usr hikes and needs to 'know' the
- *   status of those hikes (e.g. published, new, uploaded, etc)
- *   hikeEditor may also be called by the site master to edit index pages
- *   PREDEFINE: $age (new=EHIKES, old=HIKES), $usr
+ * TblConstructor can be invoked in three different scenarios:
+ *  1.  By 'mapPg.php' from the main/index page, 
+ *      Here it is used to display ALL hikes and index pages regardless of 
+ *      usrid; or
+ *  2,  By 'hikeEditor.php' from the 'Display Options: Edit Hikes' buttons
+ *      on the main/index page;
+ *      Here it is used to display ONLY hikes which can be edited by the usrid;
+ *        a. Editing of newly created hikes or in-edit hikes;
+ *        b. Editing of a published hike which has not yet been placed in edit mode
+ *  3.  By 'admintools.php' : 'release.php' or 'delete.php';
+ *      Here it is used to list ALL EHIKES (for master) to release or delete:
+ *        a. Release mode sets the weblink to the publish script, 'publishHike.php'
+ *        b. Delete mode sets the weblink to the delete script, 'deleteHike.php'
  */
 if ($age === 'new') {
     $table = 'EHIKES';
@@ -33,7 +40,11 @@ if (mysqli_num_rows($getid) === 0) {
 }
 mysqli_free_result($getid);
 # get the count of usr hikes
-$usrreq = "SELECT COUNT(*) FROM " . $table . " WHERE usrid = '{$usr}'";
+if (isset($reldel) && $reldel === true) {
+    $usrreq = "SELECT COUNT(*) FROM EHIKES";
+} else {
+    $usrreq = "SELECT COUNT(*) FROM " . $table . " WHERE usrid = '{$usr}'";
+}
 $stat = mysqli_query($link,$usrreq);
 if (!$stat) {
     if (Ktesa_Dbug) {
@@ -52,8 +63,12 @@ if (mysqli_num_rows($stat) === 0) {
     $status = '[';
     if ($age === 'new') {   # from EHIKES table, need status fields
         for ($j=1; $j<=$tblcnt; $j++) {
-            $statreq = "SELECT stat,indxNo FROM EHIKES WHERE usrid = '{$usr}'" .
-                " AND indxNo = '{$j}'";
+            if (isset($reldel) && $reldel === true) {
+                $statreq = "SELECT stat,indxNo FROM EHIKES";
+            } else {
+                $statreq = "SELECT stat,indxNo FROM EHIKES WHERE usrid = '{$usr}'" .
+                    " AND indxNo = '{$j}'";
+            }
             $statresp = mysqli_query($link,$statreq);
             if (!$statresp) {
                 if (Ktesa_Dbug) {
@@ -125,7 +140,9 @@ if ($usrcnt == 0 || $tblcnt == 0) {
 } else {
     for ($i = 1; $i<=$tblcnt; $i++) {
         $query = "SELECT * FROM " . $table . " WHERE indxNo = " . $i;
-        if ($usr === 'mstr' && $age === 'new') {
+        if (isset($reldel) && $reldel === true) {
+            # no change to query
+        } elseif ($usr === 'mstr' && $age === 'new') {
             $query .= " AND usrid = 'mstr'";
         } elseif   ($usr === 'mstr' && $show === 'hpg') {
             $query .= " AND marker != 'Visitor Ctr'";
