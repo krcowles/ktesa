@@ -1,6 +1,7 @@
 <?php
 require_once '../mysql/setenv.php';
 $hikeNo = filter_input(INPUT_GET,'hno');
+ob_start();
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -29,6 +30,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
         die("publish.php: EHIKE could not be retrieved: " . mysqli_error($link));
     }
     if (mysqli_num_rows($ehike) === 0) {
+        ob_flush();
         echo "<p style=color:brown>Hike {$hikeNo} has no data!</p>";
     } else {
         $hike = mysqli_fetch_assoc($ehike);
@@ -60,7 +62,30 @@ $hikeNo = filter_input(INPUT_GET,'hno');
         $tp = mysqli_real_escape_string($link,$hike['tips']);
         $in = mysqli_real_escape_string($link,$hike['info']);
         if ($status === 'pub') { # don't add this hike, update it
-            # ****** TEMPORARILY FOR VERIFICATION:
+            # Find the existing hike in HIKES:
+            $findreq = "SELECT indxNo FROM HIKES WHERE pgTitle = '{$pg}';";
+            $getid = mysqli_query($link,$findreq);
+            if (!$getid) {
+                die("publish.php: Failed to get hike name {$pg} from HIKES: " .
+                    mysqli_error($link));
+            }
+            if (mysqli_num_rows($getid) === 0) {
+                
+            } else {
+                $update = "UPDATE HIKES set pgTitle = '{$pg}',usrid = '{$ud}'," .
+                    "locale = '{$lo}',marker = '{$mr}',collection = '{$co}'," .
+                    "cgroup = '{$cg}',cname = '{$cn}',logistics = '{$lg}'," .
+                    "miles = '{$mi}',feet = '{$ft}',diff = '{$df}',fac = '{$fa}'," .
+                    "wow = '{$ww}',seasons = '{$sn}',expo = '{$ex}',gpx = '{$gx}'," .
+                    "trk = '{$tk}',lat = '{$la}',lng = '{$ln}',aoimg1 = '{$a1}'," .
+                    "aoimg2 = '{$a2}',purl1 = '{$p1}',purl2 = '{$p2}'," .
+                    "dirs = '{$dr}',tips = '{$tp}',info = '{$in}' WHERE indxNo = " .
+                    "{$oldHikeNo};";
+            }
+        } elseif ($status === 'new' || $status === 'upl') {
+            echo '<p style="color:brown;">This hike is not ready for publication! ' .
+                'The status field is ' . $status . '</p>';
+        } elseif ($status === 'sub') {
             $addit = "INSERT INTO HIKES (pgTitle,usrid,locale,marker," .
                 "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
                 "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
@@ -68,14 +93,12 @@ $hikeNo = filter_input(INPUT_GET,'hno');
                 "'{$cg}','{$cn}','{$lg}','{$mi}','{$ft}','{$df}','{$fa}'," .
                 "'{$ww}','{$sn}','{$ex}','{$gx}','{$tk}','{$la}','{$ln}'," .
                 "'{$a1}','{$a2}','{$p1}','{$p2}','{$dr}','{$tp}','{$in}');";
-            echo $addit;
-        } elseif ($status === 'new' || $status === 'upl') {
-            echo '<p style="color:brown;">This hike is not ready for publication! ' .
-                'The status field is ' . $status . '</p>';
-        } elseif ($status === 'sub') {
             
         }
+        ob_flush();
     }
+    mysqli_free_result($ehike);
+    
     ?>
     <p>Hike <?php echo $hikeNo;?> Has Been Released to the Main Site and 
         may now be viewed from the main page</p>

@@ -70,7 +70,9 @@
         </select>&nbsp;&nbsp;
         Row No.&nbsp;&nbsp;<input id="drow" type="text" 
             name="indx" size="4" />&nbsp;&nbsp;
-        <button id="rowdel">Delete Row</button>
+        <button id="rowdel">Delete Row</button><br /><br />
+        NOTE: Deleting a row in a table may cause issues if companion tables 
+        are not also updated.
     </fieldset><br />
     <fieldset>
         <legend>Hike Release/Delete</legend>
