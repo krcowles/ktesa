@@ -2,11 +2,6 @@
 $usr = filter_input(INPUT_GET,'usr');
 $age = filter_input(INPUT_GET,'age');
 $show = filter_input(INPUT_GET,'show');
-if ($show === 'inx') {
-    $tab = 'Select Index Page to Edit';
-} else {
-    $tab = 'Select Hike to Edit';
-}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

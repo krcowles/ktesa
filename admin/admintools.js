@@ -87,7 +87,11 @@ $('#rowdel').on('click', function() {
 
 $('#pub').on('click', function() {
     window.open("release.php","_blank");
-})
+});
+$('#ehdel').on('click', function() {
+    window.open("delete.php","_blank");
+});
+
 });
 
 

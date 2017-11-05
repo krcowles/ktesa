@@ -4,92 +4,41 @@ require '../mysql/setenv.php';
  * TblConstructor can be invoked in three different scenarios:
  *  1.  By 'mapPg.php' from the main/index page, 
  *      Here it is used to display ALL hikes and index pages regardless of 
- *      usrid; or
+ *      usrid; [show=all, usr=x, table=HIKES]
  *  2,  By 'hikeEditor.php' from the 'Display Options: Edit Hikes' buttons
  *      on the main/index page;
  *      Here it is used to display ONLY hikes which can be edited by the usrid;
  *        a. Editing of newly created hikes or in-edit hikes;
- *        b. Editing of a published hike which has not yet been placed in edit mode
+ *           [show=usr, usr='usr', table=EHIKES]
+ *        b. Editing of a published hike which is not currently in 
+ *           edit mode [show=usr, table=HIKES: if usr='mstr, show=all]
  *  3.  By 'admintools.php' : 'release.php' or 'delete.php';
  *      Here it is used to list ALL EHIKES (for master) to release or delete:
- *        a. Release mode sets the weblink to the publish script, 'publishHike.php'
- *        b. Delete mode sets the weblink to the delete script, 'deleteHike.php'
+ *      [show=all, usr='mstr', table=EHIKES]
+ *  Each 'calling' script must set the show,usr, and age (table) parameters
+ *  In all cases, the .js will direct the web page link to the proper location.
  */
 if ($age === 'new') {
-    $table = 'EHIKES';
+    $status = '[';  # editing new hikes requires gathering the 'stat' field
+    $query = 'SELECT * FROM EHIKES';
+    if ($show === 'usr') {
+        $query .= " WHERE usrid = '{$usr}'";
+    }
 } elseif ($age === 'old') {
-    $table = 'HIKES';
+    $query = 'SELECT * FROM HIKES';
+    if ($show === 'usr' && $usr !== 'mstr') {
+        $query .= " WHERE usrid = '{$usr}'";
+    }
 } else {
     die ("Unrecognized age parameter: " . $age);
 }
-$lastid = "SELECT indxNo FROM " . $table . " ORDER BY indxNo DESC LIMIT 1";
-$getid = mysqli_query($link,$lastid);
-if (!$getid) {
-    if (Ktesa_Dbug) {
-        dbug_print('TblConstructor.php: Could not retrieve highest indxNo: ' . 
-                mysqli_error($link));
-    } else {
-        user_error_msg($rel_addr,6,0);
-    }
+$query .= ';';
+# Now execute the query:
+$tblquery = mysqli_query($link,$query);
+if (!$tblquery) {
+    die("TblConstructor.php: Failed to select data from table: " . 
+        mysqli_error($link));
 }
-if (mysqli_num_rows($getid) === 0) {
-    $tblcnt = 0;
-} else {
-    $lastindx = mysqli_fetch_row($getid);
-    $tblcnt = $lastindx[0];
-}
-mysqli_free_result($getid);
-# get the count of usr hikes
-if (isset($reldel) && $reldel === true) {
-    $usrreq = "SELECT COUNT(*) FROM EHIKES";
-} else {
-    $usrreq = "SELECT COUNT(*) FROM " . $table . " WHERE usrid = '{$usr}'";
-}
-$stat = mysqli_query($link,$usrreq);
-if (!$stat) {
-    if (Ktesa_Dbug) {
-        dbug_print('TblConstructor.php: Could not retrieve user item count: ' . 
-                mysqli_error($link));
-    } else {
-        user_error_msg($rel_addr,6,0);
-    }
-}
-if (mysqli_num_rows($stat) === 0) {
-    $usrcnt = 0;
-    $status = '[]';
-} else {
-    $usr_items = mysqli_fetch_row($stat);
-    $usrcnt = $usr_items[0];
-    $status = '[';
-    if ($age === 'new') {   # from EHIKES table, need status fields
-        for ($j=1; $j<=$tblcnt; $j++) {
-            if (isset($reldel) && $reldel === true) {
-                $statreq = "SELECT stat,indxNo FROM EHIKES";
-            } else {
-                $statreq = "SELECT stat,indxNo FROM EHIKES WHERE usrid = '{$usr}'" .
-                    " AND indxNo = '{$j}'";
-            }
-            $statresp = mysqli_query($link,$statreq);
-            if (!$statresp) {
-                if (Ktesa_Dbug) {
-                    dbug_print('TblConstructor.php: Could not retrieve status fields: ' . 
-                            mysqli_error($link));
-                } else {
-                    user_error_msg($rel_addr,6,0);
-                }
-            }
-            if (mysqli_num_rows($statresp) !== 0) {
-                $sfields = mysqli_fetch_row($statresp);
-                $status .= '"' . $sfields[0] . '"';
-                if ($j !== $tblcnt) {
-                    $status .= ',';
-                }
-            }
-        }
-    }
-    $status .= ']';
-}
-mysqli_free_result($statresp);
 if ($show !== 'all') {
     $url_prefix = '../pages/';
 } else {
@@ -135,98 +84,82 @@ $shadeIcon = '<img class="expShift" src="../images/shady.png" alt="Partial sun/s
     <tbody>
     <!-- ADD HIKE ROWS VIA PHP HERE: -->
 <?php
-if ($usrcnt == 0 || $tblcnt == 0) {
+if (mysqli_num_rows($tblquery) === 0) {
     echo "<tr><td>You have no hikes to edit</td></tr>";
 } else {
-    for ($i = 1; $i<=$tblcnt; $i++) {
-        $query = "SELECT * FROM " . $table . " WHERE indxNo = " . $i;
-        if (isset($reldel) && $reldel === true) {
-            # no change to query
-        } elseif ($usr === 'mstr' && $age === 'new') {
-            $query .= " AND usrid = 'mstr'";
-        } elseif   ($usr === 'mstr' && $show === 'hpg') {
-            $query .= " AND marker != 'Visitor Ctr'";
-        } elseif ($usr === 'mstr' && $show === 'inx') {
-            $query .= " AND marker = 'Visitor Ctr'";
-        } elseif ($usr === 'mstr' && $show === 'all') {
-            # no change to query
+    while ($row = mysqli_fetch_assoc($tblquery)) {
+        if ($age === 'new') {
+            $status .= '"' . $row['stat'] . '",';
+        }
+        $indx = $row['indxNo'];
+        $hikeLat = $row['lat'];
+        $hikeLon = $row['lng'];
+        $hikeTrk = $row['trk'];
+        $hikeHiddenDat = 'data-indx="' . $i . '" data-lat="' . $hikeLat . 
+            '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '"';
+        $hikeWow = $row['wow'];
+        $hikeLgth = $row['miles'];
+        $hikeElev = $row['feet'];
+        $hikeDiff = $row['diff'];
+        $hikeExposure = $row['expo'];
+        if ($hikeExposure == 'Full sun') {
+            $hikeExpIcon = '<td>' . $sunIcon . '</td>';
+        } elseif ($hikeExposure == 'Mixed sun/shade') {
+            $hikeExpIcon = '<td>' . $partialIcon . '</td>';
         } else {
-            $query .= " AND usrid = '{$usr}'";
+            $hikeExpIcon = '<td>' . $shadeIcon . '</td>';
         }
-        $result = mysqli_query($link,$query);
-        if (!$result) {
-            if (Ktesa_Dbug) {
-                dbug_print('TblConstructor.php: failed to extract row ' . $i . ': ' . 
-                        mysqli_error($link));
-            } 
+        $hikeMainURL = rawurldecode($row['purl1']);
+        $hikePhotoLink = '<td><a href="' . $hikeMainURL . '" target="_blank">' .
+            $picIcon . '</a></td>';
+        $hikeLinkIcon = $webIcon;
+        $hikeMarker = $row['marker'];
+        if ($hikeMarker == 'Visitor Ctr') {
+            echo '<tr class="indxd" ' . $hikeHiddenDat . ' data-org-hikes="' .
+                $row['collection'] . '">';  // Visitor centers id any subhikes
+            $hikeLinkIcon = $indxIcon;
+            $hikeWow = "See Indx";
+            $hikeLgth = "0*";
+            $hikeElev = "0*";
+            $hikeDiff = "See Indx";
+            $hikeExpIcon = '<td>See Indx</td>';
+            $hikePhotoLink = '<td>See Indx</td>';
+        } elseif ($hikeMarker == 'Cluster') {
+            echo '<tr class="clustered" data-cluster="' . $row['cgroup'] . '" ' .
+                $hikeHiddenDat . ' data-tool="' . $row['cname'] . '">';
+        } elseif ($hikeMarker == 'At VC') {
+            echo '<tr class="vchike"  data-vc="' . $row['collection'] . '" '. 
+                $hikeHiddenDat . '>';
+        } else {  // "Normal"
+            echo '<tr class="normal" ' . $hikeHiddenDat . '>';
         }
-        if (mysqli_num_rows($result) !== 0) {
-            $row = mysqli_fetch_assoc($result);
-            $hikeLat = $row['lat'];
-            $hikeLon = $row['lng'];
-            $hikeTrk = $row['trk'];
-            $hikeHiddenDat = 'data-indx="' . $i . '" data-lat="' . $hikeLat . 
-                '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '"';
-            $hikeWow = $row['wow'];
-            $hikeLgth = $row['miles'];
-            $hikeElev = $row['feet'];
-            $hikeDiff = $row['diff'];
-            $hikeExposure = $row['expo'];
-            if ($hikeExposure == 'Full sun') {
-                $hikeExpIcon = '<td>' . $sunIcon . '</td>';
-            } elseif ($hikeExposure == 'Mixed sun/shade') {
-                $hikeExpIcon = '<td>' . $partialIcon . '</td>';
-            } else {
-                $hikeExpIcon = '<td>' . $shadeIcon . '</td>';
-            }
-            $hikeMainURL = rawurldecode($row['purl1']);
-            $hikePhotoLink = '<td><a href="' . $hikeMainURL . '" target="_blank">' .
-                $picIcon . '</a></td>';
-            $hikeLinkIcon = $webIcon;
-            $hikeMarker = $row['marker'];
-            if ($hikeMarker == 'Visitor Ctr') {
-                echo '<tr class="indxd" ' . $hikeHiddenDat . ' data-org-hikes="' .
-                    $row['collection'] . '">';  // Visitor centers id any subhikes
-                $hikeLinkIcon = $indxIcon;
-                $hikeWow = "See Indx";
-                $hikeLgth = "0*";
-                $hikeElev = "0*";
-                $hikeDiff = "See Indx";
-                $hikeExpIcon = '<td>See Indx</td>';
-                $hikePhotoLink = '<td>See Indx</td>';
-            } elseif ($hikeMarker == 'Cluster') {
-                echo '<tr class="clustered" data-cluster="' . $row['cgroup'] . '" ' .
-                    $hikeHiddenDat . ' data-tool="' . $row['cname'] . '">';
-            } elseif ($hikeMarker == 'At VC') {
-                echo '<tr class="vchike"  data-vc="' . $row['collection'] . '" '. 
-                    $hikeHiddenDat . '>';
-            } else {  // "Normal"
-                echo '<tr class="normal" ' . $hikeHiddenDat . '>';
-            }
-            if ($hikeMarker == 'Visitor Ctr') {
-                $hikePage = $url_prefix . 'indexPageTemplate.php?hikeIndx=' . $i;
-            } else {
-                $hikePage = $url_prefix .'hikePageTemplate.php?hikeIndx=' . $i;
-            }
-            $hikeName = $row['pgTitle'];
-            $hikeLocale = $row['locale'];
-            $hikeDirections = $row['dirs'];
-            #print out a row:
-            echo '<td>' . $hikeLocale . '</td>';
-            echo '<td>' . $hikeName . '</td>';
-            echo '<td>' . $hikeWow . '</td>';
-            echo '<td><a href="' . $hikePage . '" target="_blank">' . $hikeLinkIcon . '</a></td>';
-            echo '<td>' . $hikeLgth . ' miles</td>';
-            echo '<td>' . $hikeElev . ' ft</td>';
-            echo '<td>' . $hikeDiff . '</td>';
-            echo $hikeExpIcon;
-            echo '<td style="text-align:center"><a href="' . $hikeDirections . '" target="_blank">' .
-                $dirIcon . '</a></td>';
-            echo $hikePhotoLink;
-            echo '</tr>';
+        if ($hikeMarker == 'Visitor Ctr') {
+            $hikePage = $url_prefix . 'indexPageTemplate.php?hikeIndx=' . $indx;
+        } else {
+            $hikePage = $url_prefix .'hikePageTemplate.php?hikeIndx=' . $indx;
         }
+        $hikeName = $row['pgTitle'];
+        $hikeLocale = $row['locale'];
+        $hikeDirections = $row['dirs'];
+        #print out a row:
+        echo '<td>' . $hikeLocale . '</td>';
+        echo '<td>' . $hikeName . '</td>';
+        echo '<td>' . $hikeWow . '</td>';
+        echo '<td><a href="' . $hikePage . '" target="_blank">' . $hikeLinkIcon . '</a></td>';
+        echo '<td>' . $hikeLgth . ' miles</td>';
+        echo '<td>' . $hikeElev . ' ft</td>';
+        echo '<td>' . $hikeDiff . '</td>';
+        echo $hikeExpIcon;
+        echo '<td style="text-align:center"><a href="' . $hikeDirections . '" target="_blank">' .
+            $dirIcon . '</a></td>';
+        echo $hikePhotoLink;
+        echo '</tr>';
     }
-    mysqli_free_result($result);
+    mysqli_free_result($tblquery);
+    if ($age === 'new') {
+        $status = substr($status,0,strlen($status)-1);
+        $status .= ']';
+    }
 }
 ?>
     </tbody>

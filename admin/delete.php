@@ -1,6 +1,3 @@
-<?php
-require_once '../mysql/setenv.php';
-?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -21,13 +18,13 @@ require_once '../mysql/setenv.php';
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail">List All EHIKES</p>
-<p id="action" style="display:none">Release</p>
+<p id="action" style="display:none">Delete</p>
 <?php
 $usr = 'mstr';
 $age = 'new';
 $show = 'rel';
-$rel = true;
-$del = false;
+$rel = false;
+$del = true;
 require '../php/TblConstructor.php';
 ?>
 <script src="../scripts/jquery-1.12.1.js"></script>
