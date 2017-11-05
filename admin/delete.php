@@ -1,7 +1,11 @@
+<?php
+require_once '../mysql/setenv.php';
+$hikeNo = filter_input(INPUT_GET,'hno');
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>Move Hike from EHIKES</title>
+    <title>Remove Hike from EHIKES</title>
     <meta charset="utf-8" />
     <meta name="description" content="Select hike to release from table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
@@ -17,17 +21,13 @@
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">List All EHIKES</p>
-<p id="action" style="display:none">Delete</p>
+<p id="trail">Remove EHIKE <?php echo $hikeNo;?></p>
+<div style="margin-left:16px;font-size:20px;">
 <?php
-$usr = 'mstr';
-$age = 'new';
-$show = 'rel';
-$rel = false;
-$del = true;
-require '../php/TblConstructor.php';
+    echo '<p style="font-size:24px;color:brown;">UNDER CONSTRUCTION</p>';
 ?>
+    </div>
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src ="release.js"></script>
+<script src ="delete.js"></script>
 </body>
 </html>

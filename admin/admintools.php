@@ -74,14 +74,10 @@
     </fieldset><br />
     <fieldset>
         <legend>Hike Release/Delete</legend>
-        <span style="color:brown;">PUBLISH</span> FROM new/in-edit hikes 
-            (Select from list on next page):&nbsp;
-            <button id="pub">Show List</button>&nbsp;<span style="color:brown;">
-                (Not implemented at this time)</span><br />
-        <span style="color:brown;">DELETE</span>&nbsp;&nbsp;FROM new/in-edit 
-        hikes (Select from list on next page):
-            <button id="ehdel">Show List</button> &nbsp;<span style="color:brown;">
-                (Not implemented at this time)</span><br />
+        Actions available for all EHIKES (Affects all E-Tables):<br />
+        &nbsp;&nbsp;&nbsp;<button id="pub">Publish Hike</button><br/>
+        &nbsp;&nbsp;&nbsp;<button id="ehdel">Remove Hike</button> &nbsp;
+            <span style="color:brown;">(Not implemented at this time)</span><br />
     </fieldset><br />
 </div>
 <script src="../scripts/jquery-1.12.1.js"></script>

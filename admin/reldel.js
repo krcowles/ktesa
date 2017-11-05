@@ -1,11 +1,11 @@
 $(function () { // when page is loaded...
 
-var page = $('#action').text();
+var exe = $('#action').text();
 var linkbase;
-if (page === 'Release') {
+if (exe === 'rel') {
     linkbase = 'publish.php?hno=';
-} else if (page === 'Delete') {
-    linkbase = 'remove.php?hno=';
+} else if (exe === 'del') {
+    linkbase = 'delete.php?hno=';
 }
 $tbl = $('tbody tr');
 $tbl.each( function(indx) {

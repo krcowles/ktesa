@@ -86,10 +86,10 @@ $('#rowdel').on('click', function() {
 });
 
 $('#pub').on('click', function() {
-    window.open("release.php","_blank");
+    window.open("reldel.php?act=rel","_blank");
 });
 $('#ehdel').on('click', function() {
-    window.open("delete.php","_blank");
+    window.open("reldel.php?act=del","_blank");
 });
 
 });

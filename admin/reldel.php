@@ -1,10 +1,16 @@
 <?php
 require_once '../mysql/setenv.php';
+$act = filter_input(INPUT_GET,'act');
+if ($act === 'rel') {
+    $msg = "Publish";
+} elseif ($act === 'del') {
+    $msg = "Remove";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>Move Hike from EHIKES</title>
+    <title><?php echo $msg;?> Hike from EHIKES</title>
     <meta charset="utf-8" />
     <meta name="description" content="Select hike to release from table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
@@ -20,17 +26,15 @@ require_once '../mysql/setenv.php';
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">List All EHIKES</p>
-<p id="action" style="display:none">Release</p>
+<p id="trail">EHIKES Available to <?php echo $msg;?></p>
+<p id="action" style="display:none"><?php echo $act;?></p>
 <?php
 $usr = 'mstr';
 $age = 'new';
-$show = 'rel';
-$rel = true;
-$del = false;
+$show = 'all';
 require '../php/TblConstructor.php';
 ?>
 <script src="../scripts/jquery-1.12.1.js"></script>
-<script src ="release.js"></script>
+<script src ="reldel.js"></script>
 </body>
 </html>

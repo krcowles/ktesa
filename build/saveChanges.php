@@ -2,7 +2,7 @@
 require_once "../mysql/setenv.php";
 $tbl_type = filter_input(INPUT_POST,'tbl');
 if ($tbl_type === 'new') {
-    # Table must be in "sub" state to have editDB called; this won't change
+    # Table must be in "sub" state to have had editDB called; this won't change
     $hStat = 'sub';
 } else {
     # Hike edits are being made on a published hike:
@@ -16,6 +16,12 @@ $uid = filter_input(INPUT_POST,'usr');
 $marker = filter_input(INPUT_POST,'pmrkr');
 $clusGrp = filter_input(INPUT_POST,'pclus');
 $cgName = filter_input(INPUT_POST,'pcnme');
+# Non-edited items need to be saved as well:
+$hikeColl = filter_input(INPUT_POST,'col');
+$gpxfile = filter_input(INPUT_POST,'gpx');
+$trkfile = filter_input(INPUT_POST,'trk');
+$addon1 = filter_input(INPUT_POST,'ao1');
+$addon2 = filter_input(INPUT_POST,'ao2');
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -70,8 +76,10 @@ $cgName = filter_input(INPUT_POST,'pcnme');
     mysqli_free_result($clusq);
     $pg = filter_input(INPUT_POST,'hname');
     $hTitle = mysqli_real_escape_string($link,$pg);
+    $hUser = mysqli_real_escape_string($link,$uid);
     $loc = filter_input(INPUT_POST,'locale');
     $hLoc = mysqli_real_escape_string($link,$loc);
+    $hColl = mysqli_real_escape_string($link,$hikeColl);
     /*  CLUSTER/MARKER ASSIGNMENT PROCESSING:
      *     The order of changes processed are in the following priority:
      *     1. Existing assignment deleted: Marker changes to "Normal"
@@ -142,16 +150,14 @@ $cgName = filter_input(INPUT_POST,'pcnme');
     $hSeas = mysqli_real_escape_string($link,$seas);
     $expo = filter_input(INPUT_POST,'hexp');
     $hExpos = mysqli_real_escape_string($link,$expo);
-    /* NOTE: a means to change gpx file or track file (json) has not yet
-     * been implemented, so these fields remain unmodified
-     */
+    $hGpx = mysqli_real_escape_string($link,$gpxfile);
+    $hTrk = mysqli_real_escape_string($link,$trkfile);
     $lat = filter_input(INPUT_POST,'hlat');
     $hLat = mysqli_real_escape_string($link,$lat);
     $lng = filter_input(INPUT_POST,'hlon');
     $hLon = mysqli_real_escape_string($link,$lng);
-    /* NOTE: a means to change 'additonal (non-photo) images' has not yet
-     * been implemented; these fields remain unmodified
-     */
+    $hAdd1 = mysqli_real_escape_string($link,$addon1);
+    $hAdd2 = mysqli_real_escape_string($link,$addon2);
     $url1 = filter_input(INPUT_POST,'purl1');
     $hPurl1 = mysqli_real_escape_string($link,$url1);
     $url2 = filter_input(INPUT_POST,'purl2');
@@ -177,12 +183,14 @@ $cgName = filter_input(INPUT_POST,'pcnme');
             "purl1 = '{$hPurl1}',purl2 = '{$hPurl2}',dirs = '{$hDirs}'," .
             "tips = '{$hTips}',info = '{$hInfo}' WHERE indxNo = {$hikeNo};";
     } else {  # data will be added to EHIKES table as a new entry w/usr info
-        $saveHikeReq = "INSERT INTO EHIKES (usrid,pgTitle,stat,locale,marker,cgroup," .
-            "cname,logistics,miles,feet,diff,fac,wow,seasons,expo,lat,lng," .
-            "purl1,purl2,dirs,tips,info) VALUES ('{$uid}','{$hTitle}','{$hStat}'," .
-            "'{$hLoc}','{$marker}','{$clusGrp}','{$clName}','{$hType}'," .
-            "'{$hLgth}','{$hElev}','{$hDiff}','{$hFac}','{$hWow}','{$hSeas}'," .
-            "'{$hExpos}','{$hLat}','{$hLon}','{$hPurl1}','{$hPurl2}','{$hDirs}'," .
+        $saveHikeReq = "INSERT INTO EHIKES (pgTitle,usrid,stat,locale,marker," .
+            "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
+            "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
+            "tips,info) VALUES ('{$hTitle}','{$hUser}','{$hStat}'," .
+            "'{$hLoc}','{$marker}','{$hColl}','{$clusGrp}','{$clName}'," .
+            "'{$hType}','{$hLgth}','{$hElev}','{$hDiff}','{$hFac}','{$hWow}'," .
+            "'{$hSeas}','{$hExpos}','{$hGpx}','{$hTrk}','{$hLat}','{$hLon}'," .
+            "'{$hAdd1}','{$hAdd2}','{$hPurl1}','{$hPurl2}','{$hDirs}'," .
             "'{$hTips}','{$hInfo}');";
     }
     $saveHike = mysqli_query($link,$saveHikeReq);
