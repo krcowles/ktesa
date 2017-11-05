@@ -74,16 +74,14 @@
     </fieldset><br />
     <fieldset>
         <legend>Hike Release/Delete</legend>
-        FOR HIKE NO:&nbsp;
-            <input id="hdel" type="text" name="delEhike" size="4" />&nbsp;&nbsp;
-            (FROM new/in-edit hikes)&nbsp;
-            <button id="ehdel">Delete Hike</button>&nbsp;(AND accompanying
-            data from associated tables)<br />
-        FOR HIKE NO:&nbsp;
-            <input id="hpub" type="text" name="pubHike" size="4" />&nbsp;&nbsp;
-            (FROM new/in-edit hikes)&nbsp;
-            <button id="pub">Publish</button>&nbsp;<span style="color:brown;">
-                (Not implemented at this time)</span>
+        <span style="color:brown;">PUBLISH</span> FROM new/in-edit hikes 
+            (Select from list on next page):&nbsp;
+            <button id="pub">Show List</button>&nbsp;<span style="color:brown;">
+                (Not implemented at this time)</span><br />
+        <span style="color:brown;">DELETE</span>&nbsp;&nbsp;FROM new/in-edit 
+        hikes (Select from list on next page):
+            <button id="ehdel">Show List</button> &nbsp;<span style="color:brown;">
+                (Not implemented at this time)</span><br />
     </fieldset><br />
 </div>
 <script src="../scripts/jquery-1.12.1.js"></script>

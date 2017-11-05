@@ -92,7 +92,7 @@ if ($tblVar !== 'T') {
 }
 echo $pgDivStrt;
 # required for ALL cases:
-$usr = 'mstr';
+$usr = 'mstr'; # this is actually a "don't care"
 $age = 'old';
 $show = 'all';
 require "../php/TblConstructor.php";

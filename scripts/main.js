@@ -16,8 +16,7 @@ var createUrl = 'build/newHike.php?usr=';
 var editNew = 'build/hikeEditor.php?age=new&usr='; // 'new' => EHIKES
 // URL targets: Edit HIKES items:
 var editPub = 'build/hikeEditor.php?age=old&usr=';  // 'old' => HIKES
-var mstrEdit = 'build/hikeEditor.php?age=old&usr=mstr&show=hpg';
-var mstrIndx = 'build/hikeEditor.php?age=old&usr=mstr&show=inx';
+var mstrEdit = 'build/hikeEditor.php?age=old&usr=mstr&show=usr';
 // URL target for admin tools:
 var adminUrl = 'admin/admintools.php';
 
@@ -93,10 +92,10 @@ function usr_login_display() {
 function display_usr_opts() { 
     $('#regusrs').css('display','block');
     $('#unpub').on('click', function() {;
-        window.open(editNew + username, target="_blank");
+        window.open(editNew + username + '&show=usr', target="_blank");
     });
     $('#pub').on('click', function() {
-        window.open(editPub + username + '&show=hpg', target="_blank");
+        window.open(editPub + username + '&show=usr', target="_blank");
     });
     $('#creator').on('click', function() {
         window.open(createUrl + username, target="_blank");
@@ -141,13 +140,10 @@ $('#auxfrm').submit( function(ev) {
         $('#loggedin').css('display','none');
         $('#mover').css('display','none');
         $('#mstrnew').on('click', function() {
-            window.open(editNew + 'mstr&show=all', target="_blank");
+            window.open(editNew + 'mstr&show=usr', target="_blank");
         });
         $('#mstrold').on('click', function() {
             window.open(mstrEdit, target="_blank");
-        });
-        $('#mstrindx').on('click', function() {
-            window.open(mstrIndx, target="_blank");
         });  
         $('#mstrcreate').on('click', function() {
             window.open(createUrl + 'mstr', target="_blank");
