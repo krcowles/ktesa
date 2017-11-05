@@ -76,6 +76,9 @@ $pstyle = '<p style="color:red;font-size:18px;">';
     }
     mysqli_free_result($clusterq);
     $groupCount = count($cnames);
+    /*
+     * EXTRACT ALL DATA, saved in saveChanges.php
+     */
     $hikereq = "SELECT * FROM {$table} WHERE indxNo = {$hikeNo};";
     $hikeq = mysqli_query($link,$hikereq);
     if (!$hikeq) {
@@ -83,9 +86,12 @@ $pstyle = '<p style="color:red;font-size:18px;">';
             mysqli_error($link));
     }
     $hike = mysqli_fetch_assoc($hikeq);
+    # Although some fields will not be edited, they are needed for xfr to EHIKES
     $hikeTitle = $hike['pgTitle'];
     $hikeLocale = $hike['locale'];
     $hikeMarker = $hike['marker'];
+    $hikeColl = $hike['collection'];
+    # collection will not be edited
     $hikeClusGrp = $hike['cgroup'];
     $hikeGrpTip = $hike['cname'];
     $hikeStyle = $hike['logistics'];
@@ -98,8 +104,12 @@ $pstyle = '<p style="color:red;font-size:18px;">';
     $hikeExpos = $hike['expo'];
     $hikeGpx = $hike['gpx'];
     $hikeTrack = $hike['trk'];
+    # gpx & trk will not be edited
     $hikeLat = $hike['lat'];
     $hikeLng = $hike['lng'];
+    $hikeAddImg1 = $hike['aoimg1'];
+    $hikeAddImg2 = $hike['aoimg2'];
+    # aoimg1 & aoimg2 will not be edited
     $hikeUrl1 = $hike['purl1'];
     $hikeUrl2 = $hike['purl2'];
     $hikeDirs = $hike['dirs'];
@@ -112,6 +122,11 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <input type="hidden" name="tbl" value="<?php echo $tbl_type;?>" />
 <input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
 <input type="hidden" name="usr" value="<?php echo $uid;?>" />
+<input type="hidden" name="col" value="<?php echo $hikeColl;?>" />
+<input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
+<input type="hidden" name="trk" value="<?php echo $hikeTrack;?>" />
+<input type="hidden" name="ao1" value="<?php echo $hikeAddImg1;?>" />
+<input type="hidden" name="ao2" value="<?php echo $hikeAddImg2;?>" />
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
     the hike: "<?php echo $hikeTitle;?>". If no changes are made you may either 
     exit this page or hit the "sbumit" button.
