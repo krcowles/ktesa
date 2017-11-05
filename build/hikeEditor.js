@@ -9,6 +9,7 @@ $( function () { // when page is loaded...
  *          picture/map choices have been made; point to finishPage.php
  *      c. Status = sub; files have been submitted for release to HIKES;
  *          point to editDB (or editIndx)
+ *      d. Status = pub; files have already appeared on site; use editDB
  */
 var uid = $('#uid').text();
 var useEditor;
@@ -39,6 +40,11 @@ $('a').on('click', function(e) {
                         '&tbl=new&usr=' + uid; 
                     umsg = 'This hike has been submitted for publication.\n' +
                         'Changes will be incorporated when published';
+                } else if (statfields[indx] === 'pub') {
+                    useEditor = 'editDB.php?hno=' + hikeNo + 
+                        '&tbl=new&usr=' + uid;
+                    umsg = 'This hike can be viewed in its original state on ' +
+                        'the main site';
                 }
                 alert(umsg);
                 window.open(useEditor,"_blank");

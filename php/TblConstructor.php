@@ -29,6 +29,7 @@ if ($age === 'new') {
     if ($show === 'usr' && $usr !== 'mstr') {
         $query .= " WHERE usrid = '{$usr}'";
     }
+    $status = '[]';
 } else {
     die ("Unrecognized age parameter: " . $age);
 }
@@ -95,7 +96,7 @@ if (mysqli_num_rows($tblquery) === 0) {
         $hikeLat = $row['lat'];
         $hikeLon = $row['lng'];
         $hikeTrk = $row['trk'];
-        $hikeHiddenDat = 'data-indx="' . $i . '" data-lat="' . $hikeLat . 
+        $hikeHiddenDat = 'data-indx="' . $indx . '" data-lat="' . $hikeLat . 
             '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '"';
         $hikeWow = $row['wow'];
         $hikeLgth = $row['miles'];
