@@ -54,7 +54,7 @@ if (!$tbl) {
     die("<p>CREATE {$table} failed;  Check error code: " . mysqli_error($link) . "</p>");
 } 
 if ($table === 'EHIKES') {
-    $addtype = "ALTER TABLE EHIKES ADD stat VARCHAR(3) AFTER usrid";
+    $addtype = "ALTER TABLE EHIKES ADD stat VARCHAR(10) AFTER usrid";
     $addreq = mysqli_query($link,$addtype);
     if (!$addreq) {
         die("<p>Failed to add stat column to EHIKES</p>");

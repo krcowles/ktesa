@@ -1,14 +1,14 @@
 <?php
 require_once "../mysql/setenv.php";
+$hikeNo = filter_input(INPUT_POST,'hno');
 $tbl_type = filter_input(INPUT_POST,'tbl');
 if ($tbl_type === 'new') {
     # Table must be in "sub" state to have had editDB called; this won't change
     $hStat = 'sub';
 } else {
     # Hike edits are being made on a published hike:
-    $hStat = 'pub';
+    $hStat = 'pub' . $hikeNo;
 }
-$hikeNo = filter_input(INPUT_POST,'hno');
 $uid = filter_input(INPUT_POST,'usr');
 /* Marker, cluster info may have changed during edit
  * If not, previous values must be retained:
