@@ -186,7 +186,7 @@ $addon2 = filter_input(INPUT_POST,'ao2');
         $saveHikeReq = "INSERT INTO EHIKES (pgTitle,usrid,stat,locale,marker," .
             "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
             "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
-            "tips,info) VALUES ('{$hTitle}',{$hUser}','{$hStat}'," .
+            "tips,info) VALUES ('{$hTitle}','{$hUser}','{$hStat}'," .
             "'{$hLoc}','{$marker}','{$hColl}','{$clusGrp}','{$clName}'," .
             "'{$hType}','{$hLgth}','{$hElev}','{$hDiff}','{$hFac}','{$hWow}'," .
             "'{$hSeas}','{$hExpos}','{$hGpx}','{$hTrk}','{$hLat}','{$hLon}'," .
