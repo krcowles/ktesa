@@ -6,7 +6,7 @@
 $ecapts = $_POST['ecap'];
 # if the edited file was in HIKES, transfer data over to EHIKES:
 if ($tbl_type === 'old') {
-    # all TSV data needs to be copied to ETSV
+    # all TSV data needs to be copied to ETSV before updating
     mysqli_free_result($indxq);
     $getReq = "SELECT * FROM TSV WHERE indxNo = {$hikeNo};";
     $getq = mysqli_query($link,$getReq);
@@ -73,6 +73,7 @@ while ($picrow = mysqli_fetch_assoc($photoq)) {
         die("savePicEdits.php: Failed to update caption for id {$thisid}: " .
             mysqli_error($link));
     }
+    
     if ($dels[$delindx] == $dcnt) {
         $noDispReq = "UPDATE ETSV SET hpg = 'N' WHERE picIdx = {$thisid};";
         $noDisp = mysqli_query($link,$noDispReq);
@@ -81,9 +82,6 @@ while ($picrow = mysqli_fetch_assoc($photoq)) {
                 mysqli_error($link));
         }
         $delindx++;
-        if ($delindx >= count($dels)) {
-            break;
-        }
     } 
     $dcnt++;
     $piccnt++;

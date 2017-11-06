@@ -25,22 +25,26 @@ $('a').on('click', function(e) {
                 // extract the hikeNo:
                 var eqpos = ptr.indexOf('=') + 1;
                 var hikeNo = ptr.substring(eqpos,ptr.length);
-                if (statfields[indx] === 'new') {
+                var stat = statfields[indx];
+                if (stat.length > 3) {
+                    stat = stat.substring(0,3);
+                }
+                if (stat === 'new') {
                     umsg = "REMINDER: If you chose files in the 'File Data'" 
                         + " section:\nthey are not yet saved and you will need " 
                         + "to re-enter them";
                     useEditor = 'enterHike.php?&hno=' + hikeNo + '&usr=' + uid;
-                } else if (statfields[indx] === 'upl') {
+                } else if (stat === 'upl') {
                     umsg = "REMINDER: You have uploaded files and possibly "
                         + "photos:\n Select which photos are to be " 
                         + "displayed on the hike page & map";
                     useEditor = 'finishPage.php?hno=' + hikeNo;
-                } else if (statfields[indx] === 'sub') {
+                } else if (stat === 'sub') {
                     useEditor = 'editDB.php?hno=' + hikeNo + 
                         '&tbl=new&usr=' + uid; 
                     umsg = 'This hike has been submitted for publication.\n' +
                         'Changes will be incorporated when published';
-                } else if (statfields[indx] === 'pub') {
+                } else if (stat === 'pub') {
                     useEditor = 'editDB.php?hno=' + hikeNo + 
                         '&tbl=new&usr=' + uid;
                     umsg = 'This hike can be viewed in its original state on ' +
