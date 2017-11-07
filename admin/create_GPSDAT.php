@@ -53,9 +53,9 @@ CREATE TABLE GPSDAT (
 datId smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
 indxNo smallint,
 datType varchar(1),
-label varchar(30),
-url varchar(256),
-clickText varchar(50) );
+label varchar(128),
+url varchar(1024),
+clickText varchar(256) );
 gps;
 $tbl = mysqli_query($link,$newdat);
 if (!$tbl) {

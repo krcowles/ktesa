@@ -50,6 +50,13 @@ foreach ($xml->row as $row) {
                 die ("load_GPSDAT.php: failed to load propdat at row {$indx}: " .
                     mysqli_error($link));
             }
+            $warn = mysqli_query($link,"SHOW WARNINGS;");
+            $notes = mysqli_fetch_row($warn);
+            if (mysqli_num_rows($notes) !== 0) {
+                foreach ($notes as $err) {
+                    echo '<p>' . $err . '</p>';
+                }
+            }
     }
     if ($row->dataAct->act->count() !== 0) {
         foreach ($row->dataAct->act as $adat) {
@@ -67,6 +74,13 @@ foreach ($xml->row as $row) {
             if (!$aresult) {
                 die ("load_GPSDAT.php: failed to load actdat at row {$indx}: " .
                     mysqli_error($link));
+            }
+            $warn = mysqli_query($link,"SHOW WARNINGS;");
+            $notes = mysqli_fetch_row($warn);
+            if (mysqli_num_rows($notes) !== 0) {
+                foreach ($notes as $err) {
+                    echo '<p>' . $err . '</p>';
+                }
             }
         }
     }

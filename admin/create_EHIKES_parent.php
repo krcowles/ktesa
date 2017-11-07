@@ -1,13 +1,13 @@
+
 <?php
 require_once '../mysql/setenv.php';
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
-
 <head>
-    <title>Create TSV Table</title>
+    <title>Create EHIKES Table</title>
     <meta charset="utf-8" />
-    <meta name="description" content="Create the TSV Table" />
+    <meta name="description" content="Create the <?php echo $table;?> Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
@@ -42,38 +42,23 @@ require_once '../mysql/setenv.php';
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">Create the TSV Table</p>
+<p id="trail">Create EHIKES As Parent</p>
 <div style="margin-left:16px;font-size:18px;">
-    <p>This script will create the TSV table for site administration.</p>
+    <p>This script will create the EHIKES table as a parent table for the other
+        'E-tables' (ETSV, EREFS, EGPSDAT) which will reference EHIKES with
+        foreign keys.</p>
 <?php
 echo "<p>mySql Connection Opened</p>";
-# NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
-$newtsv = <<<tsv
-CREATE TABLE TSV (
-picIdx smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-indxNo smallint,
-folder varchar(30),
-usrid varchar(32),
-title varchar(128),
-hpg varchar(1),
-mpg varchar(1),
-`desc` varchar(512),
-lat double(13,10),
-lng double(13,10),
-thumb varchar(1024),
-alblnk varchar(1024),
-date DATETIME,
-mid varchar(1024),
-imgHt smallint,
-imgWd smallint,
-iclr varchar(32),
-org varchar(1024) );
-tsv;
-$tbl = mysqli_query($link,$newtsv);
+$tbl = mysqli_query($link,"CREATE TABLE EHIKES LIKE HIKES");
 if (!$tbl) {
-    die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
+    die("<p>CREATE EHIKES failed: " . mysqli_error($link) . "</p>");
+} 
+$addstatreq = "ALTER TABLE EHIKES ADD stat VARCHAR(10) AFTER usrid";
+$addstat = mysqli_query($link,$addstatreq);
+if (!$addstat) {
+    die("<p>Failed to add stat column to EHIKES: " . mysqli_error($link) . "</p>");
 } else {
-    echo '<p>TSV Table created; Definitions are shown in the table below</p>';
+    echo '<p>EHIKES Table created; Definitions are shown in the table below</p>';
 }
 $req = mysqli_query($link,"SHOW TABLES;");
 if (!$req) {
@@ -84,8 +69,9 @@ while ($row = mysqli_fetch_row($req)) {
     echo "<li>" . $row[0] . "</li>";
 }
 echo "</ul>";
+$req = mysqli_query($link,"SHOW TABLES;");
 ?>
-    <p>Description of the TSV table:</p>
+    <p>Description of the EGPSDAT table:</p>
     <table>
         <colgroup>	
             <col style="width:100px">
@@ -107,19 +93,19 @@ echo "</ul>";
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link,"DESCRIBE TSV;");
-    if (!$tbl) {
-        die("<p>DESCRIBE TSV FAILED: " . mysqli_error($link) . "/p>");
-    } 
-    $first = true;  
-    while ($row = mysqli_fetch_row($tbl)) {
-        echo "<tr>";
-        for ($i=0; $i<count($row); $i++) {
-            echo "<td>" . $row[$i] . "</td>";
-        }
-        echo "</tr>" . PHP_EOL;
+$tbl = mysqli_query($link,"DESCRIBE EHIKES;");
+if (!$tbl) {
+    die("<p>DESCRIBE EHIKES FAILED: " . mysqli_error($link) . "/p>");
+} 
+$first = true;  
+while ($row = mysqli_fetch_row($tbl)) {
+    echo "<tr>";
+    for ($i=0; $i<count($row); $i++) {
+        echo "<td>" . $row[$i] . "</td>";
     }
-    mysqli_close($link);
+    echo "</tr>" . PHP_EOL;
+}
+mysqli_close($link);
 ?>
        </tbody>
     </table>
