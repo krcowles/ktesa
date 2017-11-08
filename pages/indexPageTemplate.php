@@ -1,73 +1,29 @@
 <?php
-require_once "../mysqli/setenv.php";
+require_once "../mysql/setenv.php";
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
 $table = "HIKES";  # may add Edit/Creation EHIKES later...
-$query = "SELECT pgTitle,lat,lng,aoimg1,dirs,info,refs,tsv " .
-        "FROM " . $table . " WHERE indxNo = " . $hikeIndexNo;
-if ($dev) {
-    include "../php/local_mysql_connect.php";
-} else {
-    include "../php/000mysql_connect.php";
-}
+$query = "SELECT pgTitle,lat,lng,aoimg1,dirs,info " .
+        "FROM {$table} WHERE indxNo = '{$hikeIndexNo}';";
 $request = mysqli_query($link,$query);
 if (!$request) {
-    die ("Unable to get Index Page data: " . $mysqli_error($link));
+    die ("indexPageTemplate.php: Unable to get Index Page data: " . 
+        $mysqli_error($link));
 }
 $row = mysqli_fetch_assoc($request);
 $indxTitle = $row['pgTitle'];
+
 $lnkText = str_replace('Index','',$indxTitle);
+
 $parkMap = unserialize($row['aoimg1']);  # array 
 $mapsrc = '../images/' . $parkMap[0];
-# currently loading map without ht/width attributes
+# currently loading map without ht/width attributes, i.e. $parkMap[1] & [2]
 $parkDirs = $row['dirs'];
 $parkInfo = $row['info'];
 # form html for references:
-$parkRefs = unserialize($row['refs']); # array
-$htmlout = '<ul id="refs">';
-foreach ($parkRefs as $pref) {
-    $ritem = explode("^",$pref);
-    $tagType = $ritem[0];
-    $rit = urldecode($ritem[1]);
-    if ($tagType === 'b') { 
-        $htmlout .= '<li>Book: <em>' . $rit . '</em>' . 
-                $ritem[2] . '</li>';
-    } elseif ($tagType === 'p') {
-        $htmlout .= '<li>Photo Essay: <em>' . $rit . 
-                '</em>' . $ritem[2] . '</li>';
-    } elseif ($tagType === 'n') {
-        $htmlout .= '<li>' . $rit . '</li>';
-    } else {
-        if ($tagType === 'w') {
-            $tag = '<li>Website: ';
-        } elseif ($tagType === 'a') {
-            $tag = '<li>App: ';
-        } elseif ($tagType === 'd') {
-            $tag = '<li>Downloadable Doc: ';
-        } elseif ($tagType === 'h') {
-            $tag = '<li>';
-        } elseif ($tagType === 'l') {
-            $tag = '<li>Blog: ';
-        } elseif ($tagType === 'r') {
-            $tag = '<li>Related Site: ';
-        } elseif ($tagType === 'o') {
-            $tag = '<li>Map: ';
-        } elseif ($tagType === 'm') {
-            $tag = '<li>Magazine: ';
-        } elseif ($tagType === 's') {
-            $tag = '<li>News article: ';
-        } elseif ($tagType === 'g') {
-            $tag = '<li>Meetup Group: ';
-        } else {
-            $tag = '<li>CHECK DATABASE: ';
-        }
-        $htmlout .= $tag . '<a href="' . $rit . '" target="_blank">' .
-            $ritem[2] . '</a></li>';
-    }
-} // end of foreach
-$htmlout .= '</ul>' . "\n";
-
+$rtable = 'REFS';
+include '../mysql/get_REFS_row.php';  # $refHtml output
 # INDEX TABLE OF HIKES, if any:
-$indxTbl = 0;  # if no table elements are present, default msg shows
+$tblcnt = 0;  # if no table elements are present, default msg shows
 # table header:
 $tblhtml = '<table id="siteIndx">' . "\n" . '<thead>' . "\n" . '<tr>' . "\n";
 $tblhtml .= '<th class="hdrRow" scope="col">Trail</th>' . "\n";
@@ -77,61 +33,70 @@ $tblhtml .= '<th class="hdrRow" scope="col">Elevation</th>' . "\n";
 $tblhtml .= '<th class="hdrRow" scope="col">Exposure</th>' . "\n";
 $tblhtml .= '<th class="hdrRow" scope="col">Photos</th>'  . "\n";
 $tblhtml .= '</tr>' . "\n" . '</thead>' . "\n" . '<tbody>' . "\n";
-$tblrows = unserialize($row['tsv']);
-foreach ($tblrows as $trow) {
-    $tdat = explode("^",$trow);  
-    # Exposure settings:
-    if ($tdat[5] == 'Sunny') {
-        $exposure = '../images/sun.jpg';
-    } elseif ($tdat[5] == 'Partial') {
-        $exposure = '../images/greenshade.jpg';
-    } elseif ($tdat[5] == 'Shady') {
-        $exposure = '../images/shady.png';
-    } elseif ($tdat[5] == 'X') {
-        $exposure = '';
-    }
-    $hiked = ($tdat[0] == 'Y') ? true : false;
-    if ($hiked) {
-        $tblhtml .= '<tr>' . "\n" . '<td>' . $tdat[1] .
-            '</td>' . "\n";
-        $tblhtml .= '<td><a href="hikePageTemplate.php?hikeIndx=' .
-            $tdat[2] . '" target="_blank">' . "\n" . 
-            '<img class="webShift" src="../images/greencheck.jpg"' .
-            ' alt="website click-on icon" /></a></td>' . "\n";
-        $tblhtml .= '<td>' . $tdat[3] . ' miles</td>' . "\n";
-        $tblhtml .= '<td>' . $tdat[4] . ' ft</td>' . "\n";
-        $tblhtml .= '<td><img class="expShift" src="' .
-            $exposure . '" alt="exposure icon" /></td>' . "\n";
-        $tblhtml .= '<td><a href="' . $tdat[6] .
-            '" target="_blank">' . "\n" . '<img class="flckrShift" ' .
-            'src="../images/album_lnk.png" alt="Photos symbol" />' .
-            '</a></td>' . "\n";
-        $tblhtml .= '</tr>' . "\n";
-    } else {  # not hiked yet
-        $tblhtml .= '<tr>' . "\n" . '<td>' . $tdat[1] . 
-            '</td>' . "\n";
-        $tblhtml .= '<td><img class="webShift" ' .
-            'src="../images/x-box.png" alt="box with x" />' .
-            '</td>' . "\n";
-        $miles = $tdat[3];
-        if (strlen($miles) === 0) {
-            $miles = '?';
+$ipdat = 'IPTBLS';
+$iptblsreq = "SELECT compl,tdname,tdpg,tdmiles,tdft,tdexp,tdalb " .
+    "FROM {$ipdat} WHERE indxNo = '{$hikeIndexNo}';";
+$iptbl = mysqli_query($link,$iptblsreq);
+if (!$iptbl) {
+    die("indexPageTemplate.php: Failed to extract table data from {$ipdat}: " .
+        mysqli_error($link));
+}
+if (mysqli_num_rows($iptbl) !== 0) {
+    $tblcnt = 1;  # non-zero, basically
+    while ($indxTbl = mysqli_fetch_assoc($iptbl)) {
+        # Exposure settings:
+        $expos = $indxTbl['tdexp'];
+        if ($expos == 'Sunny') {
+            $exposure = '../images/sun.jpg';
+        } elseif ($expos == 'Partial') {
+            $exposure = '../images/greenshade.jpg';
+        } elseif ($expos == 'Shady') {
+            $exposure = '../images/shady.png';
+        } elseif ($expos == 'X') {
+            $exposure = '';
         }
-        $tblhtml .= '<td>' . $miles . ' miles</td>' . "\n";
-        $feet = $tdat[4];
-        if (strlen($feet) === 0) {
-            $feet = '?';
+        $hiked = ($indxTbl['compl'] == 'Y') ? true : false;
+        if ($hiked) {
+            $tblhtml .= '<tr>' . "\n" . '<td>' . $indxTbl['tdname'] .
+                '</td>' . "\n";
+            $tblhtml .= '<td><a href="hikePageTemplate.php?hikeIndx=' .
+                $indxTbl['tdpg'] . '" target="_blank">' . "\n" . 
+                '<img class="webShift" src="../images/greencheck.jpg"' .
+                ' alt="website click-on icon" /></a></td>' . "\n";
+            $tblhtml .= '<td>' . $indxTbl['tdmiles'] . ' miles</td>' . "\n";
+            $tblhtml .= '<td>' . $indxTbl['tdft'] . ' ft</td>' . "\n";
+            $tblhtml .= '<td><img class="expShift" src="' .
+                $exposure . '" alt="exposure icon" /></td>' . "\n";
+            $tblhtml .= '<td><a href="' . $indxTbl['tdalb'] .
+                '" target="_blank">' . "\n" . '<img class="flckrShift" ' .
+                'src="../images/album_lnk.png" alt="Photos symbol" />' .
+                '</a></td>' . "\n";
+            $tblhtml .= '</tr>' . "\n";
+        } else {  # not hiked yet
+            $tblhtml .= '<tr>' . "\n" . '<td>' . $indxTbl['tdname'] . 
+                '</td>' . "\n";
+            $tblhtml .= '<td><img class="webShift" ' .
+                'src="../images/x-box.png" alt="box with x" />' .
+                '</td>' . "\n";
+            $miles = $indxTbl['tdmiles'];
+            if (strlen($miles) === 0) {
+                $miles = '?';
+            }
+            $tblhtml .= '<td>' . $miles . ' miles</td>' . "\n";
+            $feet = $indxTbl['tdft'];
+            if (strlen($feet) === 0) {
+                $feet = '?';
+            }
+            $tblhtml .= '<td>' . $feet . ' ft</td>' . "\n";
+            $tblhtml .= '<td class="naShift">N/A</td>' . "\n";
+            $tblhtml .= '<td><img class="flckrShift" ' .
+                'src="../images/x-box.png" alt="box with x" /></td>' . "\n";
+            $tblhtml .= '</tr>' . "\n";
         }
-        $tblhtml .= '<td>' . $feet . ' ft</td>' . "\n";
-        $tblhtml .= '<td class="naShift">N/A</td>' . "\n";
-        $tblhtml .= '<td><img class="flckrShift" ' .
-            'src="../images/x-box.png" alt="box with x" /></td>' . "\n";
-        $tblhtml .= '</tr>' . "\n";
-    }
-    $indxTbl++;
-}  # end of foreach $tdat
-            $tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";    
-mysqli_close($link);
+    }  # end of while (fetch each table row)
+}
+$tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";  
+mysqli_free_result($iptbl);
 ?>
 <!DOCTYPE html>
 <html>
@@ -166,14 +131,14 @@ mysqli_close($link);
 <?php
     echo '<p id="indxContent">' . $parkInfo . '</p>' . "\n";
     echo '<fieldset><legend id="fldrefs">References &amp; Links</legend>';
-    echo $htmlout . '</fieldset>' . "\n";
+    echo $refHtml . '</fieldset>' . "\n";
 ?>
 <div id="hdrContainer">
 <p id="tblHdr">Hiking & Walking Opportunities at <?php echo $lnkText;?>:</p>
 </div>
 <div>
 <?php 
-    if ($indxTbl !== '') {
+    if ($tblcnt !== 0) {
         echo $tblhtml;
     } else {
         echo '<p style="text-align:center;">No hikes yet associated with this park</p>';
