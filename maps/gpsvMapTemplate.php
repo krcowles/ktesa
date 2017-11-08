@@ -20,6 +20,11 @@
         $hikeIndexNo = filter_input(INPUT_GET,'hno');
         $hikeTitle = filter_input(INPUT_GET,'hike');
         $gpxPath = filter_input(INPUT_GET,'gpx');
+		if ($ehikes) {
+		    $ttable = 'ETSV';
+		} else {
+		    $ttable = 'TSV';
+		}
         include '../php/makeGpsv.php';
         $lines = explode("\n",$html); # $html comes in as a string
         foreach ($lines as &$dat) {
