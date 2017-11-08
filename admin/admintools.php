@@ -21,6 +21,8 @@
     <fieldset>
         <legend>Create/Delete</legend>
         <button id="show">Show All Tables</button><br />
+        <button id="drall">Drop All Tables</button>&nbsp;&nbsp;(Retains USERS)<br />
+        <button id="dret">Drop All E-Tables</button><br />
         Table to Delete:&nbsp;&nbsp;
         <select id="dtbl" name="dropper">
             <option>USERS</option>
@@ -28,6 +30,7 @@
             <option>TSV</option>
             <option>REFS</option>
             <option>GPSDAT</option>
+            <option>IPTBLS</option>
             <option>EHIKES</option>
             <option>ETSV</option>
             <option>EREFS</option>
@@ -41,6 +44,7 @@
             <option>TSV</option>
             <option>REFS</option>
             <option>GPSDAT</option>
+            <option>IPTBLS</option>
             <option>EHIKES</option>
             <option>ETSV</option>
             <option>EREFS</option>
@@ -54,6 +58,7 @@
         <button id="ldt">Load TSV from XML</button><br />
         <button id="ldr">Load REFS from XML</button><br />
         <button id="ldg">Load GPSDAT from XML</button><br />
+        <button id="lip">Load IPTBLS from XML</button><br />
     </fieldset><br />
     <fieldset>
         <legend>Row Manipulation</legend>
@@ -63,6 +68,7 @@
             <option>TSV</option>
             <option>REFS</option>
             <option>GPSDAT</option>
+            <option>IPTBLS</option>
             <option>EHIKES</option>
             <option>ETSV</option>
             <option>EREFS</option>

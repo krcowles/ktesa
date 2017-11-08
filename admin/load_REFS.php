@@ -21,6 +21,7 @@ require_once "../mysql/setenv.php";
 <p id="trail">Load REFS Table from XML</p>
 
 <div style="margin-left:24px;" id="tools">
+    <p>Please wait for 'Data Scrubbed' Message to appear</p>
 <?php
 function realType($typeltr) {
     switch ($typeltr) {

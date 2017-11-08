@@ -1,14 +1,24 @@
 <?php
 require_once '../mysql/setenv.php';
-$table = filter_input(INPUT_GET,'tbl');
+$qty = filter_input(INPUT_GET,'no');
+$tblcnt = 9; # currently, the total number of hike tables
+if ($qty === 'all') {
+    $action = 'ALL Tables';
+    $strt = 0;
+} else {
+    $action = 'All E-Tables';
+    $strt = 5;
+}
+$table = array('HIKES','TSV','REFS','GPSDAT','IPTBLS',
+    'ETSV','EREFS','EGPSDAT','EHIKES'); # NOTE: E-tables are order-sensitive
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
 
 <head>
-    <title>DROP <?php echo $table;?></title>
+    <title>DROP <?php echo $action;?></title>
     <meta charset="utf-8" />
-    <meta name="description" content="Drop the specified Table" />
+    <meta name="description" content="Drop the specified Tables" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
@@ -24,20 +34,22 @@ $table = filter_input(INPUT_GET,'tbl');
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">DROP <?php echo $table;?> Table</p>
+<p id="trail">DROP <?php echo $action;?></p>
 <div style="margin-left:16px;font-size:18px;">
 
 <?php
 # Error messages:
-$drop_fail = "<p>Could not delete tbl '{$table}': " . mysqli_error($link) . "</p>";
 $query_fail = "<p>Query did not succeed: SHOW TABLES</p>";
-# Execute the DROP TABLE command:
-echo "<p>Removing any previous instantiation of table '{$table}':</p>";
-$remtbl = mysqli_query($link,"DROP TABLE {$table};");
-if (!remtbl) {
-    die ($drop_fail);
-} else {
-    echo "<p>{$table} Table Removed; Remaining tables in mysql database:</p>";
+# Execute the DROP TABLE command for chosen tables:
+for ($i=$strt; $i<$tblcnt; $i++) {
+    echo "<p>Removing any previous instantiation of table '{$table[$i]}':</p>";
+    $remtbl = mysqli_query($link,"DROP TABLE {$table[$i]};");
+    if (!remtbl) {
+        die ("<p>drop_all_tables.php: Failed to drop {$table[$i]}: " .
+            mysqli_error($link) . "</p>");
+    } else {
+        echo "<p>{$table[$i]} Table Removed</p>";
+    }
 }
 mysqli_free_result($remtbl);
 $req = mysqli_query($link,"SHOW TABLES");
