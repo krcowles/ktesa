@@ -3,7 +3,7 @@ DEFINE("KTESA_DBUG", true,true);
 DEFINE("HOSTNAME", "127.0.0.1", true);
 DEFINE("USERNAME", "root", true);
 DEFINE("PASSWORD", "root", true);
-DEFINE("DATABASE", "mysql", true);
+DEFINE("DATABASE", "nmhikes", true);
 $link = mysqli_connect(HostName, UserName, PASSWORD, Database);
 if (!$link) {
     $ecode = mysqli_connect_errno();
