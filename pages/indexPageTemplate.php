@@ -1,7 +1,7 @@
 <?php
 require_once "../mysqli/setenv.php";
 $hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
-$table = "HIKES";
+$table = "HIKES";  # may add Edit/Creation EHIKES later...
 $query = "SELECT pgTitle,lat,lng,aoimg1,dirs,info,refs,tsv " .
         "FROM " . $table . " WHERE indxNo = " . $hikeIndexNo;
 if ($dev) {

@@ -22,7 +22,7 @@ require_once '../mysql/setenv.php';
         <img id="tmap" src="../images/trail.png" alt="trail map icon" />
        <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
-    <p id="trail">Create A New Page</p>
+    <p id="trail">Load HIKES from XML</p>
     <div style="margin-left:16px;font-size:18px;">
         <p>Use database.xml to populate the HIKES table in the 'mysql' database...</p>
 

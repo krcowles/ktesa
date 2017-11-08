@@ -11,6 +11,9 @@ require_once '../mysql/setenv.php';
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <style type='text/css'>
+        body { background-color: #eaeaea; }
+    </style>
 </head>
 
 <body>

@@ -3,6 +3,12 @@ $(function () { // when page is loaded...
 $('#show').on('click', function()  {
     window.open('show_tables.php',"_blank_");
 });
+$('#drall').on('click', function() {
+    window.open('drop_all_tables.php?no=all',"_blank");
+});
+$('#dret').on('click', function() {
+    window.open('drop_all_tables.php?no=ets',"_blank");
+})
 $('#create').on('click', function() {
     var ctype = $('#ctbl').val(); // the table name to create
     if (ctype.substring(0,1) !== 'E') {
@@ -35,6 +41,9 @@ $('#ldr').on('click', function() {
 $('#ldg').on('click', function() {
     window.open('load_GPSDAT.php',"_blank");
 });
+$('#lip').on('click', function() {
+    window.open('load_IPTBLS.php',"_blank");
+})
 
 $('#rowdel').on('click', function() {
     var trow = prompt("Are you sure you want to delete this row?","Row " + $('#drow').val());
