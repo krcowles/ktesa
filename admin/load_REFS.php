@@ -114,6 +114,13 @@ for ($k=0; $k<count($indices); $k++) {
                 mysqli_error());
     }
     echo "." . $k . ".";
+    $warn = mysqli_query($link,"SHOW WARNINGS;");
+    $notes = mysqli_fetch_row($warn);
+    if (mysqli_num_rows($notes) !== 0) {
+        foreach ($notes as $err) {
+            echo '<p>' . $err . '</p>';
+        }
+    }
     flush();
 }
 echo "<br />Data loaded";

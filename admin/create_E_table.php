@@ -49,19 +49,19 @@ $reftbl = substr($table,1,(strlen($table)-1));
     <p>This script will create the <?php echo $table;?> table for site administration.</p>
 <?php
 echo "<p>mySql Connection Opened</p>";
-$tbl = mysqli_query( $link,"CREATE TABLE {$table} LIKE {$reftbl}");
+$tblreq = "CREATE TABLE {$table} LIKE {$reftbl};";
+$tbl = mysqli_query($link,$tblreq);
 if (!$tbl) {
-    die("<p>CREATE {$table} failed;  Check error code: " . mysqli_error($link) . "</p>");
-} 
-if ($table === 'EHIKES') {
-    $addtype = "ALTER TABLE EHIKES ADD stat VARCHAR(10) AFTER usrid";
-    $addreq = mysqli_query($link,$addtype);
-    if (!$addreq) {
-        die("<p>Failed to add stat column to EHIKES</p>");
-    } else {
-        echo '<p>EHIKES Table created; Definitions are shown in the table below</p>';
-    }
+    die("<p>create_E_table.php: Failed to create {$table}: " . 
+        mysqli_error($link));
 }
+$childreq = "ALTER TABLE {$table} ADD CONSTRAINT {$table}_Constraint " .
+"FOREIGN KEY FK_{$table}(indxNo) REFERENCES EHIKES(indxNo) " .
+"ON DELETE CASCADE ON UPDATE CASCADE;";
+$child = mysqli_query($link,$childreq);
+if (!$child) {
+    die("<p>CREATE {$table} failed: " . mysqli_error($link) . "</p>");
+} 
 $req = mysqli_query($link,"SHOW TABLES;");
 if (!$req) {
     die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");

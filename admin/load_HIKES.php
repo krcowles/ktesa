@@ -37,12 +37,6 @@ require_once '../mysql/setenv.php';
         echo '<p>XML Database successfully opened.</p>';
     }
     # Extract each row's variables and load into mysql HIKES table
-    # NOTE: 'serialize' will have content even when the array is empty.
-    $maxref = 0;
-    $maxprop = 0;
-    $maxact = 0;
-    $maxtsv = 0;
-    $maxtbl = 0;
     foreach ($db->row as $row) {
         # $htitle is a non-NULL field, no test for existence here:
         $htitle = mysqli_real_escape_string($link,$row->pgTitle);
@@ -209,15 +203,15 @@ require_once '../mysql/setenv.php';
                 echo '<br />';
             }
         }
+        $warn = mysqli_query($link,"SHOW WARNINGS;");
+        $notes = mysqli_fetch_row($warn);
+        if (mysqli_num_rows($notes) !== 0) {
+            foreach ($notes as $err) {
+                echo '<p>' . $err . '</p>';
+            }
+        }
     }
     mysqli_close($link);
-    echo "<p>Maximum lengths for: <br />";
-    echo "Refs: " . $maxref . "<br />";
-    echo "Props: " . $maxprop . "<br />";
-    echo "Acts: " . $maxact . "<br />";
-    echo "Tables: " . $maxtbl . "<br />";
-    echo "Pics: " . $maxpic . "</p>";
-    
 ?>
         <p>Done!</p>
     </div>

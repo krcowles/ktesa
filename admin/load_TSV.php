@@ -29,6 +29,13 @@ $tsv = mysqli_query($link,$query);
 if (!$tsv) {
     die ("load_TSV.php: Failed to load TSV table from XML using LOAD");
 }
+$warn = mysqli_query($link,"SHOW WARNINGS;");
+$notes = mysqli_fetch_row($warn);
+if (mysqli_num_rows($notes) !== 0) {
+    foreach ($notes as $err) {
+        echo '<p>' . $err . '</p>';
+    }
+}
 
 # now add the indxNo info:
 $xml = simplexml_load_file('../data/database.xml');
@@ -59,11 +66,9 @@ for ($k=0; $k<count($indices); $k++) {
     if (!$newdat) {
         die ("load_TSV.php: Failed to update TSV with new indxNo value: " . 
                 mysqli_error() );
-    } else {
-        echo "." . $k . ".</p>";
-		flush();
     }
 }
+echo "DONE";
 ?>
 </div>
 </body>
