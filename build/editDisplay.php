@@ -2,7 +2,7 @@
 require_once '../mysql/setenv.php';
 $usr = filter_input(INPUT_GET,'usr');
 $age = 'new';
-$show = 'all';
+$show = 'usr';
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

@@ -51,8 +51,10 @@ mysqli_free_result($getid);
         <?php
         echo '<h2 style="color:brown">You have successfully created a new '
             . 'hike for ' . $newHike . "</h2>\n"
-            . "<p>You may edit this hike at any time by returning to the "
-            . "home page and selecting 'Edit New/Unpublished Hikes'<br />";
+            . "<p style='font-size:22px;'>You may edit this hike at any time by returning to the "
+            . "home page and selecting 'Edit New/Active Hikes',<br />or continue "
+            . "now by clicking <a href='enterHike.php?hno={$lastindx}&usr={$usr}'> "
+            . "Edit This Hike</a><br />";
         ?>
         </div>
     </body>
