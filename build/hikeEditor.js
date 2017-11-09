@@ -17,7 +17,7 @@ var umsg;
 $rows = $('tbody').find('tr');
 $('a').on('click', function(e) {
     e.preventDefault();
-    if (age === 'new') {
+    if (age === 'new') {  // *** THESE HIKES ARE EHIKES ***
         var ptr = $(this).prop('href');
         $rows.each( function(indx) {
             var currptr = $(this).find('a').prop('href');
@@ -26,14 +26,11 @@ $('a').on('click', function(e) {
                 var eqpos = ptr.indexOf('=') + 1;
                 var hikeNo = ptr.substring(eqpos,ptr.length);
                 var stat = statfields[indx];
-                if (stat.length > 3) {
-                    stat = stat.substring(0,3);
-                }
                 if (stat === 'new') {
                     umsg = "REMINDER: If you chose files in the 'File Data'" 
                         + " section:\nthey are not yet saved and you will need " 
                         + "to re-enter them";
-                    useEditor = 'enterHike.php?&hno=' + hikeNo + '&usr=' + uid;
+                    useEditor = 'enterHike.php?hno=' + hikeNo + '&usr=' + uid;
                 } else if (stat === 'upl') {
                     umsg = "REMINDER: You have uploaded files and possibly "
                         + "photos:\n Select which photos are to be " 
@@ -41,12 +38,12 @@ $('a').on('click', function(e) {
                     useEditor = 'finishPage.php?hno=' + hikeNo;
                 } else if (stat === 'sub') {
                     useEditor = 'editDB.php?hno=' + hikeNo + 
-                        '&tbl=new&usr=' + uid; 
+                        '&tbl=new&usr=' + uid + '&stat=' + stat;
                     umsg = 'This hike has been submitted for publication.\n' +
                         'Changes will be incorporated when published';
-                } else if (stat === 'pub') {
+                } else if (stat.substring(0,3) === 'pub') {
                     useEditor = 'editDB.php?hno=' + hikeNo + 
-                        '&tbl=new&usr=' + uid;
+                        '&tbl=new&usr=' + uid + '&stat=' + stat;
                     umsg = 'This hike can be viewed in its original state on ' +
                         'the main site';
                 }
@@ -54,7 +51,7 @@ $('a').on('click', function(e) {
                 window.open(useEditor,"_blank");
             }
         });
-    } else { // this hike is being pulled from published hikes
+    } else { // this hike is being pulled from published HIKES
         var $containerCell = $(this).parent();
         var $containerRow = $containerCell.parent();
         if ( !$containerRow.hasClass('indxd') ) {

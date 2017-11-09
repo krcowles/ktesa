@@ -8,12 +8,14 @@ if ($tbl_type === 'new') {
     $gtable = 'EGPSDAT';
     $rtable = 'EREFS';
     $hiketype = 'New or In-Edit';
+    $status = filter_input(INPUT_GET,'stat');
 } else {
     $table = 'HIKES';
     $ptable = 'TSV';
     $gtable = 'GPSDAT';
     $rtable = 'REFS';
     $hiketype = 'Published';
+    $status = 'none';
 }
 $hikeNo = filter_input(INPUT_GET,'hno');
 $uid = filter_input(INPUT_GET,'usr');
@@ -122,6 +124,7 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <input type="hidden" name="tbl" value="<?php echo $tbl_type;?>" />
 <input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
 <input type="hidden" name="usr" value="<?php echo $uid;?>" />
+<input type="hidden" name="stat" value ="<?php echo $status;?>" />
 <input type="hidden" name="col" value="<?php echo $hikeColl;?>" />
 <input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
 <input type="hidden" name="trk" value="<?php echo $hikeTrack;?>" />

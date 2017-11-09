@@ -2,13 +2,7 @@
 require_once "../mysql/setenv.php";
 $hikeNo = filter_input(INPUT_POST,'hno');
 $tbl_type = filter_input(INPUT_POST,'tbl');
-if ($tbl_type === 'new') {
-    # Table must be in "sub" state to have had editDB called; this won't change
-    $hStat = 'sub';
-} else {
-    # Hike edits are being made on a published hike:
-    $hStat = 'pub' . $hikeNo;
-}
+$hstat = filter_input(INPUT_POST,'stat');
 $uid = filter_input(INPUT_POST,'usr');
 /* Marker, cluster info may have changed during edit
  * If not, previous values must be retained:
@@ -175,7 +169,7 @@ $addon2 = filter_input(INPUT_POST,'ao2');
     $hInfo = mysqli_real_escape_string($link,$info);
     if ($tbl_type === 'new') {  # data will replace existing data
         $saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
-            "stat = '{$hStat}',locale = '{$hLoc}',marker = '{$marker}'," .
+            "stat = '{$hstat}',locale = '{$hLoc}',marker = '{$marker}'," .
             "cgroup = '{$clusGrp}',cname = '{$clName}',logistics = '{$hType}'," .
             "miles = '{$hLgth}', feet = '{$hElev}', diff = '{$hDiff}'," .
             "fac = '{$hFac}',wow = '{$hWow}', seasons = '{$hSeas}'," .
@@ -186,7 +180,7 @@ $addon2 = filter_input(INPUT_POST,'ao2');
         $saveHikeReq = "INSERT INTO EHIKES (pgTitle,usrid,stat,locale,marker," .
             "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
             "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
-            "tips,info) VALUES ('{$hTitle}','{$hUser}','{$hStat}'," .
+            "tips,info) VALUES ('{$hTitle}','{$hUser}','{$hstat}'," .
             "'{$hLoc}','{$marker}','{$hColl}','{$clusGrp}','{$clName}'," .
             "'{$hType}','{$hLgth}','{$hElev}','{$hDiff}','{$hFac}','{$hWow}'," .
             "'{$hSeas}','{$hExpos}','{$hGpx}','{$hTrk}','{$hLat}','{$hLon}'," .

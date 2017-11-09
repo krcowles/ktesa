@@ -35,6 +35,9 @@ $show = 'all';
 require '../php/TblConstructor.php';
 ?>
 <script src="../scripts/jquery-1.12.1.js"></script>
+<script type="text/javascript">
+    var enos = <?php echo $enos;?>;
+</script>
 <script src ="reldel.js"></script>
 </body>
 </html>

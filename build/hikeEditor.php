@@ -27,12 +27,11 @@ $show = filter_input(INPUT_GET,'show');
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail"><?php echo $tab;?></p>
+<p id="trail">Select A Hike To Edit</p>
 
 <div><p style="text-align:center;">When you click on the "Web Pg" link in the table
     below, you will be presented with an editable version of the hike page.</p>
 </div>
-<p style="display:none"><?php echo $age;?></p>
 <div><br />
 <?php 
     require "../php/TblConstructor.php";
@@ -42,7 +41,6 @@ $show = filter_input(INPUT_GET,'show');
 <script type="text/javascript">
     var age = "<?php echo $age;?>";
     var statfields = <?php echo $status;?>;
-    var icnt = "<?php echo $usrcnt;?>";
 </script>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="hikeEditor.js"></script>

@@ -1,5 +1,5 @@
 <?php
-require '../mysql/setenv.php';
+require_once '../mysql/setenv.php';
 /*
  * TblConstructor can be invoked in three different scenarios:
  *  1.  By 'mapPg.php' from the main/index page, 
@@ -20,6 +20,7 @@ require '../mysql/setenv.php';
  */
 if ($age === 'new') {
     $status = '[';  # editing new hikes requires gathering the 'stat' field
+    $enos = '[';    # and their corresponding EHIKES indxNo's
     $query = 'SELECT * FROM EHIKES';
     if ($show === 'usr') {
         $query .= " WHERE usrid = '{$usr}'";
@@ -30,6 +31,7 @@ if ($age === 'new') {
         $query .= " WHERE usrid = '{$usr}'";
     }
     $status = '[]';
+    $enos = '[]';
 } else {
     die ("Unrecognized age parameter: " . $age);
 }
@@ -91,6 +93,7 @@ if (mysqli_num_rows($tblquery) === 0) {
     while ($row = mysqli_fetch_assoc($tblquery)) {
         if ($age === 'new') {
             $status .= '"' . $row['stat'] . '",';
+            $enos .= '"' . $row['indxNo'] . '",';
         }
         $indx = $row['indxNo'];
         $hikeLat = $row['lat'];
@@ -157,9 +160,11 @@ if (mysqli_num_rows($tblquery) === 0) {
         echo '</tr>';
     }
     mysqli_free_result($tblquery);
-    if ($age === 'new') {
+    if ($age === 'new') { # forming javascript array data
         $status = substr($status,0,strlen($status)-1);
         $status .= ']';
+        $enos = substr($enos,0,strlen($enos)-1);
+        $enos .= ']';
     }
 }
 ?>

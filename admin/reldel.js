@@ -9,11 +9,9 @@ if (exe === 'rel') {
 }
 $tbl = $('tbody tr');
 $tbl.each( function(indx) {
-    var hikeNo = indx + 1;
-    var newlink = linkbase + hikeNo;
+    var newlink = linkbase + enos[indx];
     $(this).find('td').eq(3).children().attr('href',newlink);    
 });
-
 
 });
 

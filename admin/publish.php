@@ -1,7 +1,6 @@
 <?php
 require_once '../mysql/setenv.php';
 $hikeNo = filter_input(INPUT_GET,'hno');
-ob_start();
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -30,11 +29,17 @@ ob_start();
         die("publish.php: EHIKE could not be retrieved: " . mysqli_error($link));
     }
     if (mysqli_num_rows($ehike) === 0) {
-        ob_flush();
         echo "<p style=color:brown>Hike {$hikeNo} has no data!</p>";
     } else {
         $hike = mysqli_fetch_assoc($ehike);
-        $status = $hike['stat'];
+        $state = $hike['stat'];
+        $status = substr($state,0,3);
+        if (strlen($state) > 3) {
+            $pubHike = substr($state,3,strlen($state)-3);
+            if ($pubHike <= 0) {
+                die("publish.php: Impossible hikeNo in HIKES");
+            }
+        }
         $pg = mysqli_real_escape_string($link,$hike['pgTitle']);
         $ud = mysqli_real_escape_string($link,$hike['usrid']);
         $lo = mysqli_real_escape_string($link,$hike['locale']);
@@ -62,40 +67,44 @@ ob_start();
         $tp = mysqli_real_escape_string($link,$hike['tips']);
         $in = mysqli_real_escape_string($link,$hike['info']);
         if ($status === 'pub') { # don't add this hike, update it
-            # Find the existing hike in HIKES:
-            $findreq = "SELECT indxNo FROM HIKES WHERE pgTitle = '{$pg}';";
-            $getid = mysqli_query($link,$findreq);
-            if (!$getid) {
-                die("publish.php: Failed to get hike name {$pg} from HIKES: " .
-                    mysqli_error($link));
-            }
-            if (mysqli_num_rows($getid) === 0) {
-                
-            } else {
-                $update = "UPDATE HIKES set pgTitle = '{$pg}',usrid = '{$ud}'," .
-                    "locale = '{$lo}',marker = '{$mr}',collection = '{$co}'," .
-                    "cgroup = '{$cg}',cname = '{$cn}',logistics = '{$lg}'," .
-                    "miles = '{$mi}',feet = '{$ft}',diff = '{$df}',fac = '{$fa}'," .
-                    "wow = '{$ww}',seasons = '{$sn}',expo = '{$ex}',gpx = '{$gx}'," .
-                    "trk = '{$tk}',lat = '{$la}',lng = '{$ln}',aoimg1 = '{$a1}'," .
-                    "aoimg2 = '{$a2}',purl1 = '{$p1}',purl2 = '{$p2}'," .
-                    "dirs = '{$dr}',tips = '{$tp}',info = '{$in}' WHERE indxNo = " .
-                    "{$oldHikeNo};";
-            }
+            $actionreq = "UPDATE HIKES set pgTitle = '{$pg}',usrid = '{$ud}'," .
+                "locale = '{$lo}',marker = '{$mr}',collection = '{$co}'," .
+                "cgroup = '{$cg}',cname = '{$cn}',logistics = '{$lg}'," .
+                "miles = '{$mi}',feet = '{$ft}',diff = '{$df}',fac = '{$fa}'," .
+                "wow = '{$ww}',seasons = '{$sn}',expo = '{$ex}',gpx = '{$gx}'," .
+                "trk = '{$tk}',lat = '{$la}',lng = '{$ln}',aoimg1 = '{$a1}'," .
+                "aoimg2 = '{$a2}',purl1 = '{$p1}',purl2 = '{$p2}'," .
+                "dirs = '{$dr}',tips = '{$tp}',info = '{$in}' WHERE indxNo = " .
+                "{$pubHike};";
         } elseif ($status === 'new' || $status === 'upl') {
             echo '<p style="color:brown;">This hike is not ready for publication! ' .
                 'The status field is ' . $status . '</p>';
         } elseif ($status === 'sub') {
-            $addit = "INSERT INTO HIKES (pgTitle,usrid,locale,marker," .
+            $actionreq = "INSERT INTO HIKES (pgTitle,usrid,locale,marker," .
                 "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
                 "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
                 "tips,info) VALUES ('{$pg}','{$ud}','{$lo}','{$mr}','{$co}'," .
                 "'{$cg}','{$cn}','{$lg}','{$mi}','{$ft}','{$df}','{$fa}'," .
                 "'{$ww}','{$sn}','{$ex}','{$gx}','{$tk}','{$la}','{$ln}'," .
                 "'{$a1}','{$a2}','{$p1}','{$p2}','{$dr}','{$tp}','{$in}');";
-            
         }
-        ob_flush();
+        /*
+        $action = mysqli_query($link,$actionreq);
+        if (!$action) {
+            die("publish.php: Failed to release! : " . mysqli_error($link));
+        }
+        mysqli_free_result($action);
+         * 
+         */
+        # Regardless of state, remove this hike from EHIKES et al
+        $remHikeReq = "DELETE FROM EHIKES WHERE indxNo = {$hikeNo};";
+        $remHike = mysqli_query($link,$remHikeReq);
+        if (!$remHike) {
+            die("publish.php: Failed to remove hike {$hikeNo} from EHIKES: " .
+                mysqli_error($link));
+        }
+        echo "<p>Hike has been removed from the list of New/In-Edit Hikes</p>";
+        mysqli_free_result($remHike);
     }
     mysqli_free_result($ehike);
     
