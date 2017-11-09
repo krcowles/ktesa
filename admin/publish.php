@@ -77,8 +77,8 @@ $hikeNo = filter_input(INPUT_GET,'hno');
                 "dirs = '{$dr}',tips = '{$tp}',info = '{$in}' WHERE indxNo = " .
                 "{$pubHike};";
         } elseif ($status === 'new' || $status === 'upl') {
-            echo '<p style="color:brown;">This hike is not ready for publication! ' .
-                'The status field is ' . $status . '</p>';
+            die('<p style="color:brown;">This hike is not ready for publication! ' .
+                'The status field is ' . $status . '</p>');
         } elseif ($status === 'sub') {
             $actionreq = "INSERT INTO HIKES (pgTitle,usrid,locale,marker," .
                 "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
@@ -88,14 +88,11 @@ $hikeNo = filter_input(INPUT_GET,'hno');
                 "'{$ww}','{$sn}','{$ex}','{$gx}','{$tk}','{$la}','{$ln}'," .
                 "'{$a1}','{$a2}','{$p1}','{$p2}','{$dr}','{$tp}','{$in}');";
         }
-        /*
         $action = mysqli_query($link,$actionreq);
         if (!$action) {
             die("publish.php: Failed to release! : " . mysqli_error($link));
         }
         mysqli_free_result($action);
-         * 
-         */
         # Regardless of state, remove this hike from EHIKES et al
         $remHikeReq = "DELETE FROM EHIKES WHERE indxNo = {$hikeNo};";
         $remHike = mysqli_query($link,$remHikeReq);

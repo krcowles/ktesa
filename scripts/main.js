@@ -17,6 +17,8 @@ var editNew = 'build/hikeEditor.php?age=new&usr='; // 'new' => EHIKES
 // URL targets: Edit HIKES items:
 var editPub = 'build/hikeEditor.php?age=old&usr=';  // 'old' => HIKES
 var mstrEdit = 'build/hikeEditor.php?age=old&usr=mstr&show=usr';
+// URL for displaying hikes-in-edit:
+var dispPg = 'build/editDisplay.php?usr=';
 // URL target for admin tools:
 var adminUrl = 'admin/admintools.php';
 
@@ -97,6 +99,9 @@ function display_usr_opts() {
     $('#pub').on('click', function() {
         window.open(editPub + username + '&show=usr', target="_blank");
     });
+    $('#ude').on('click', function() {
+        window.open(dispPg + username,"_blank");
+    });
     $('#creator').on('click', function() {
         window.open(createUrl + username, target="_blank");
     });
@@ -145,6 +150,9 @@ $('#auxfrm').submit( function(ev) {
         $('#mstrold').on('click', function() {
             window.open(mstrEdit, target="_blank");
         });  
+        $('#mde').on('click', function() {
+            window.open(dispPg + 'mstr',"_blank");
+        })
         $('#mstrcreate').on('click', function() {
             window.open(createUrl + 'mstr', target="_blank");
         });
