@@ -20,7 +20,7 @@
         $hikeIndexNo = filter_input(INPUT_GET,'hno');
         $hikeTitle = filter_input(INPUT_GET,'hike');
         $gpxPath = filter_input(INPUT_GET,'gpx');
-		if ($ehikes) {
+		if (filter_input(INPUT_GET,'tbl') === 'new') {
 		    $ttable = 'ETSV';
 		} else {
 		    $ttable = 'TSV';

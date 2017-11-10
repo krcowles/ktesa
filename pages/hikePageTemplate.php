@@ -32,11 +32,13 @@ if ($ehikes) {
     $rtable = 'EREFS';
     $gtable = 'EGPSDAT';
     $ttable = 'ETSV';
+    $tbl = 'new';
 } else {
     $htable = 'HIKES';
     $rtable = 'REFS';
     $gtable = 'GPSDAT';
     $ttable = 'TSV';
+    $tbl = 'old';
 }
 require "../mysql/get_HIKES_row.php";
 if ($gpxfile == '') {
@@ -105,7 +107,7 @@ if ($newstyle) {
     }
     $photos = $page->tsv;
     $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . 
-        '&gpx=' . $gpxPath . '&hno=' . $hikeIndexNo;
+        '&gpx=' . $gpxPath . '&hno=' . $hikeIndexNo . '&tbl=' . $tbl;
     include "../php/makeGpsv.php";
     #ob_flush();
     fputs($mapHandle,$html);
