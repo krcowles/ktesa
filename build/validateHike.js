@@ -31,5 +31,18 @@ if ( $('#tsvStat').text() === 'NO') {
 } else {
     $('#showpics').css('display','block');
 }
+/*
+$('form').submit( function(ev) {
+    alert("VAL " + $("input[type=submit][clicked=true]").val() );
+    if ( !$("input[type=submit][clicked=true]") ) {
+        ev.preventDefault();
         
+    }
+});
+*/
+$('#unval').on('click', function(ev) {
+    ev.preventDefault();
+    window.open('unvalidate.php',"_blank");
+});
+
 }); // end of page is loaded...
