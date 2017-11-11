@@ -31,18 +31,18 @@ if ( $('#tsvStat').text() === 'NO') {
 } else {
     $('#showpics').css('display','block');
 }
-/*
-$('form').submit( function(ev) {
-    alert("VAL " + $("input[type=submit][clicked=true]").val() );
-    if ( !$("input[type=submit][clicked=true]") ) {
-        ev.preventDefault();
-        
-    }
-});
-*/
+
 $('#unval').on('click', function(ev) {
     ev.preventDefault();
     window.open('unvalidate.php',"_blank");
+});
+
+$('form').submit( function(ev) {
+    var msg = "Have all upload files and photo album links been specified?";
+    var proceed = confirm(msg);
+    if (!proceed) {
+        ev.preventDefault();
+    }
 });
 
 }); // end of page is loaded...

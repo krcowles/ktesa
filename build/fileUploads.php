@@ -1,4 +1,5 @@
 <?php
+$usable = array("gpx","html","kml");
 function uploadErr($errdat) {
     if ($errdat === UPLOAD_ERR_INI_SIZE || $errdat === UPLOAD_ERR_FORM_SIZE) {
         return 'File is too large for upload';
@@ -15,6 +16,37 @@ function uploadErr($errdat) {
     if ($errdat === UPLOAD_ERR_EXTENSION) {
         return 'A PHP extension stopped the upload';
     }
+}
+function fileTypeAndLoc($fname) {
+    global $usable;
+    # get lower case representation of file extension
+    $dot = strpos($fname,".") + 1;
+    $extlgth = strlen($fname) - $dot;
+    $ext = substr($fname,$dot,$extlgth);
+    $fext = strtolower($ext);
+    $checks = count($usable);
+    # see if the extension is "usable" and assign it an appropriate location
+    $uplType = '';
+    for ($i=0; $i<$checks; $i++) {
+        if ($fext === $usable[$i]) {
+            if ($fext === 'html') {
+                $uplType = "/html/";
+                $floc = '../maps/';
+            }
+            elseif ($fext === 'kml') {
+                $uplType === '/vnd.google-earth.kml+xml/';
+                $floc = '../gpx/';
+            } else {
+                $uplType = "/octet-stream/";
+                $floc = '../gpx/';
+            }
+        }
+    }
+    if ($uplType === '') {
+        die ("<p>fileUploads.php: Unaccepted file extension in GPS/Maps Data Section " .
+            "({$fext}): " . mysqli_error($link) . "</p>");
+    }
+    return array($uplType,$floc);
 }
 function dupFileName($oldname) {
     $extpos = strrpos($oldname,".");
@@ -165,17 +197,12 @@ if ( $pfile1 !== '') {
         $errmsg = $pstyle . uploadErr($pf1Stat) . '</p>';
         die ($errmsg);
     }
-    $pf1loc = filter_input(INPUT_POST,'f1');
-    if ($pf1loc === 'maps') {
-        $ftype = "/html/";
-    } else {
-        $ftype = "/octet-stream/";
-    }
+    $ftype = fileTypeAndLoc($pfile1)[0];
     if ( preg_match($ftype,$pf1Type) === 0 ) {
         $msgout = $badType . $pfile1 . ': expected '. $ftype . '</p>';
         die($msgout);
     }
-    $pf1site = '../' . $pf1loc . '/' . $pfile1;  # either ../gpx or ../html
+    $pf1site = fileTypeAndLoc($pfile1)[1] . $pfile1;
     # Check against previously uploaded files
     if ( file_exists($pf1site) ) {
     	echo $norm . $pfile1 . $noup;
@@ -203,17 +230,12 @@ if ( $pfile2 !== '') {
         $errmsg = $pstyle . uploadErr($pf2Stat) . '</p>';
         die ($errmsg);
     }
-    $pf2loc = filter_input(INPUT_POST,'f2');
-    if ($pf2loc === 'maps') {
-        $ftype = "/html/";
-    } else {
-        $ftype = "/octet-stream/";
-    }
+    $ftype = fileTypeAndLoc($pfile2)[0];
     if ( preg_match($ftype,$pf2Type) === 0 ) {
         $msgout = $badType . $pfile2 . ': expected '. $ftype . '</p>';
         die($msgout);
     }
-    $pf2site = '../' . $pf2loc . '/' . $pfile2;  # either ../gpx or ../html
+    $pf2site = fileTypeAndLoc($pfile2)[1] . $pfile2;  # either ../gpx or ../html
     # Check against previously uploaded files
     if ( file_exists($pf2site) ) {
     	echo $norm . $pfile2 . $noup;
@@ -240,17 +262,12 @@ if ( $afile1 !== '') {
         $errmsg = $pstyle . uploadErr($af1Stat) . '</p>';
         die ($errmsg);
     }
-    $af1loc = filter_input(INPUT_POST,'f3');
-    if ($af1loc === 'maps') {
-        $ftype = "/html/";
-    } else {
-        $ftype = "/octet-stream/";
-    }
+    $ftype = fileTypeAndLoc($afile1)[0];
     if ( preg_match($ftype,$af1Type) === 0 ) {
         $msgout = $badType . $afile1 . ': expected '. $ftype . '</p>';
         die($msgout);
     }
-    $af1site = '../' . $af1loc . '/' . $afile1;  # either ../gpx or ../html
+    $af1site = fileTypeAndLoc($afile1)[1] . $afile1;  # either ../gpx or ../html
     # Check against previously uploaded files
     if ( file_exists($af1site) ) {
     	echo $norm . $afile1 . $noup;
@@ -277,17 +294,12 @@ if ( $afile2 !== '') {
         $errmsg = $pstyle . uploadErr($af2Stat) . '</p>';
         die ($errmsg);
     }
-    $af2loc = filter_input(INPUT_POST,'f4');
-    if ($af2loc === 'maps') {
-        $ftype = "/html/";
-    } else {
-        $ftype = "/octet-stream/";
-    }
+    $ftype = fileTypeAndLoc($afile2)[0];
     if ( preg_match($ftype,$af2Type) === 0 ) {
         $msgout = $badType . $afile2 . ': expected '. $ftype . '</p>';
         die($msgout);
     }
-    $af2site = '../' . $af2loc . '/' . $afile2;  # either ../gpx or ../html
+    $af2site = fileTypeAndLoc($afile2)[1] . $afile2;  # either ../gpx or ../html
     # Check against previously uploaded files
     if ( file_exists($af2site) ) {
     	echo $norm . $afile2 . $noup;
