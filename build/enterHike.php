@@ -141,7 +141,7 @@ mysqli_free_result($result);
     <p id="dbur1" style="display:none;"><?php echo $entrydat['purl1'];?></p>
     <p id="dbur2" style="display:none;"><?php echo $entrydat['purl2'];?></p>
     <input type="hidden" name="hno" value="<?php echo $hip;?>" />
-    <input type="hidden" name="usr" value="<?php echo $usr;?>" />"
+    <input type="hidden" name="usr" value="<?php echo $usr;?>" />
     <fieldset id="basic">
         <legend>Basic Hike Data</legend>
         <label id="pgTitleText" for="htitle">Hike Name (As it will appear 
