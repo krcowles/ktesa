@@ -103,7 +103,6 @@ $hikeOthrImage1 = basename($_FILES['othr1']['name']);
 $othrImg1Type = $_FILES['othr1']['type'];
 $img1Stat = $_FILES['othr1']['error'];
 if ($hikeOthrImage1 !== '') {
-    $imageFile1 = true;
     if ($img1Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($img1Stat) . '</p>';
         die ($errmsg);
@@ -120,13 +119,13 @@ if ($hikeOthrImage1 !== '') {
     } else {
         echo $norm . $hikeOthrImage1 . ' Successfully uploaded to site</p>';
     }
+    $imageFile1 = true;
 }
 $othrImg2 = $_FILES['othr2']['tmp_name'];
 $hikeOthrImage2 = basename($_FILES['othr2']['name']);
 $othrImg2Type = $_FILES['othr2']['type'];
 $img2Stat = $_FILES['othr2']['error'];
 if ($hikeOthrImage2 !== '') {
-    $imageFile2 = true;
     if ($img2Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($img2Stat) . '</p>';
         die ($errmsg);
@@ -143,6 +142,7 @@ if ($hikeOthrImage2 !== '') {
     } else {
         echo $norm . $hikeOthrImage2 . ' Successfully uploaded to site</p>';
     }
+    $imageFile2 = true;
 }
 /* GPS MAPS & DATA SECTION: PROPOSED FILE OPS:
  *  There are potentially two sections for user data entry:
@@ -161,7 +161,6 @@ $pfile1 = basename($_FILES['propmap']['name']);
 $pf1Type = $_FILES['propmap']['type'];
 $pf1Stat = $_FILES['propmap']['error'];
 if ( $pfile1 !== '') {
-    $propFiles = true;
     if ($pf1Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($pf1Stat) . '</p>';
         die ($errmsg);
@@ -189,6 +188,8 @@ if ( $pfile1 !== '') {
             echo $norm . $pfile1 . ' Successfully uploaded to site</p>';
         }
     }
+    $propFiles = true;
+    $pf1 = true;  # used in unvalidate to distinguish between file1 & file2
 }
 
 # PROPOSED DATA FILE2
@@ -198,7 +199,6 @@ $pf2Size = filesize($pdatf2);
 $pf2Type = $_FILES['propgpx']['type'];
 $pf2Stat = $_FILES['propgpx']['error'];
 if ( $pfile2 !== '') {
-    $propFiles = true;
     if ($pf2Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($pf2Stat) . '</p>';
         die ($errmsg);
@@ -226,6 +226,8 @@ if ( $pfile2 !== '') {
             echo $norm . $pfile2 . ' Successfully uploaded to site</p>';
         }
     }
+    $propFiles = true;
+    $pf2 = true; # used in unvalidate
 }
 
 # ACTUAL DATA FILE1:
@@ -234,7 +236,6 @@ $afile1 = basename($_FILES['actmap']['name']);
 $af1Type = $_FILES['actmap']['type'];
 $af1Stat = $_FILES['actmap']['error'];
 if ( $afile1 !== '') {
-    $actFiles = true;
     if ($af1Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($af1Stat) . '</p>';
         die ($errmsg);
@@ -262,6 +263,8 @@ if ( $afile1 !== '') {
             echo $norm . $afile1 . ' Successfully uploaded to site</p>';
         }
     }
+    $actFiles = true;
+    $a1f = true; # used in unvalidate
 }
 
 # ACTUAL DATA FILE2
@@ -270,7 +273,6 @@ $afile2 = basename($_FILES['actgpx']['name']);
 $af2Type = $_FILES['actgpx']['type'];
 $af2Stat = $_FILES['actgpx']['error'];
 if ( $afile2 !== '') {
-    $actFiles = true;
     if ($af2Stat !== UPLOAD_ERR_OK) {
         $errmsg = $pstyle . uploadErr($af2Stat) . '</p>';
         die ($errmsg);
@@ -298,5 +300,7 @@ if ( $afile2 !== '') {
             echo $norm . $afile2 . ' Successfully uploaded to site</p>';
         }
     }
+    $actFiles = true;
+    $af2 = true;
 }
 ?>
