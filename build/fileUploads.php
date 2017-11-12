@@ -1,5 +1,13 @@
 <?php
-$usable = array("gpx","html","kml");
+# Define usable file extensions for GPS Maps & Data
+$usable = array("gpx","html","kml");  # Should match array (goodex) in enterHike.js
+# Variables passed to unvalidate to determine whether or not to remove a file:
+# false = file does not already exist on site; true = does exist on site
+$postedpf1 = false;
+$postedpf2 = false;
+$postedaf1 = false;
+$postedaf2 = false;
+
 function uploadErr($errdat) {
     if ($errdat === UPLOAD_ERR_INI_SIZE || $errdat === UPLOAD_ERR_FORM_SIZE) {
         return 'File is too large for upload';
@@ -206,6 +214,7 @@ if ( $pfile1 !== '') {
     # Check against previously uploaded files
     if ( file_exists($pf1site) ) {
     	echo $norm . $pfile1 . $noup;
+        $postedpf1 = true;
     } else {
         if (!move_uploaded_file($pdatf1,$pf1site)) {
             $nomove = $pstyle . "Could not save " . $pfile1 . 
@@ -239,6 +248,7 @@ if ( $pfile2 !== '') {
     # Check against previously uploaded files
     if ( file_exists($pf2site) ) {
     	echo $norm . $pfile2 . $noup;
+        $postedpf2 = true;
     } else {
         if (!move_uploaded_file($pdatf2,$pf2site)) {
             $nomove = $pstyle . "Could not save " . $pfile2 . 
@@ -271,6 +281,7 @@ if ( $afile1 !== '') {
     # Check against previously uploaded files
     if ( file_exists($af1site) ) {
     	echo $norm . $afile1 . $noup;
+        $postedaf1 = true;
     } else {
         if (!move_uploaded_file($adatf1,$af1site)) {
             $nomove = $pstyle . "Could not save " . $afile1 . 
@@ -281,7 +292,7 @@ if ( $afile1 !== '') {
         }
     }
     $actFiles = true;
-    $a1f = true; # used in unvalidate
+    $af1 = true; # used in unvalidate
 }
 
 # ACTUAL DATA FILE2
@@ -303,6 +314,7 @@ if ( $afile2 !== '') {
     # Check against previously uploaded files
     if ( file_exists($af2site) ) {
     	echo $norm . $afile2 . $noup;
+        $postedaf2 = true;
     } else {
         if (!move_uploaded_file($adatf2,$af2site)) {
             $nomove = $pstyle . "Could not save " . $afile2 . 

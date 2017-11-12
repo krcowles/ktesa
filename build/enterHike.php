@@ -639,7 +639,6 @@ mysqli_free_result($result);
             $albl[$acnt] = $acts['label'];
             $aurl[$acnt] = $acts['url'];
             $acot[$acnt] = $acts['clickText'];
-            echo "Read: " . $albl[$acnt] . "," . $aurl[$acnt] . "," . $acot[$acnt];
             $acnt++;
         }
         for ($y=$acnt; $y<4; $y++){

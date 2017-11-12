@@ -13,7 +13,8 @@ var msgC;
  * easily expanded by adding code here (and additional upload elements in the html)
  */
 // Acceptable track file extensions:
-var goodex = ['gpx', 'GPX', 'kml', 'kmz'];
+var goodex = ['gpx', 'GPX', 'kml'];
+// NOTE: This array must match the array ($usable) spec'd in fileUploads.php
 function preload(targfile,datasect) {
     var fullPath = targfile.val();
     var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
@@ -99,12 +100,6 @@ if (alb2 !== '') {
     $('#curl2').val(alb2);
     $('#nopics').prop('checked',false);
 }
-/* This would give undesirable effect on first-time edit I believe...
-if (alb1 == '' && alb2 == '') {
-    $('#nopics').prop('checked',true);
-    $('#picopt').css('display','none');
-}
-    */
 // When adding photo urls, populate the first two in the 'Other URL's' section
 $('#curl1').change( function() {
     var ph1 = $(this).val();
@@ -265,8 +260,6 @@ var dbrt6 = $('#dbrt6').text();
 if (dbrt6 !== '') {
     $('#href6').val(dbrt6);
 }
-// Proposed and Actual GPS Maps & Data:
-
 /*
  * END OF DATA PRELOADING FROM DATABASE
  */
@@ -313,4 +306,11 @@ $('#nopics').on('change', function() {
     }
 });
 
+$('#val').on('click', function(ev) {
+    var msg = "Have all upload files and photo album links (if any) been specified?";
+    var proceed = confirm(msg);
+    if (!proceed) {
+        ev.preventDefault();
+    }
+});
 }); // end of page is loaded...

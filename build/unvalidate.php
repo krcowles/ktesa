@@ -76,7 +76,7 @@ if ($_SESSION['if2']) {
 }
 # If any of the GPS Maps & Data fields failed, delete all w/indxNo = $hikeNo
 $delgps = false;
-if ($_SESSION['pf1']) {
+if ($_SESSION['pf1'] && !$_SESSION['auppf1']) {
     $undos++;
     if (unlink($_SESSION['p1loc']) === false) {
         $err .= "<p>Could not remove Proposed Data File 1</p>";
@@ -84,7 +84,7 @@ if ($_SESSION['pf1']) {
     }
     $delgps = true;
 }
-if ($_SESSION['pf2']) {
+if ($_SESSION['pf2'] && !$_SESSION['auppf2']) {
     $undos++;
     if (unlink($_SESSION['p2loc']) === false) {
         $err .= "<p>Could not remove Proposed Data File 2</p>";
@@ -92,7 +92,7 @@ if ($_SESSION['pf2']) {
     }
     $delgps = true;
 }
-if ($_SESSION['af1']) {
+if ($_SESSION['af1'] && !$_SESSION['aupaf1']) {
     $undos++;
     if (unlink($_SESSION['a1loc']) === false) {
         $err .= "<p>Could not remove Actual Data File 1</p>";
@@ -100,7 +100,7 @@ if ($_SESSION['af1']) {
     }
     $delgps = true;
 }
-if ($_SESSION['af2']) {
+if ($_SESSION['af2'] && !$_SESSION['aupaf2']) {
     $undos++;
     if (unlink($_SESSION['a2loc']) === false) {
         $err .= "<p>Could not remove Actual Data File 2</p>";

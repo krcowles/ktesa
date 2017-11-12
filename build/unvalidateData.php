@@ -21,15 +21,19 @@ $_SESSION['pf1'] = $pf1;
 if ($pf1) {
     $_SESSION['p1loc'] = $pf1site;
 }
+$_SESSION['auppf1'] = $postedpf1;
 $_SESSION['pf2'] = $pf2;
 if ($pf2) {
     $_SESSION['p2loc'] = $pf2site;
 }
+$_SESSION['auppf2'] = $postedpf2;
 $_SESSION['af1'] = $af1;
 if ($af1) {
     $_SESSION['a1loc'] = $af1site;
 }
+$_SESSION['aupaf1'] = $postedaf1;
 $_SESSION['af2'] = $af2;
 if ($af2) {
     $_SESSION['a2loc'] = $af2site;
 }
+$_SESSION['aupaf2'] = $postedaf2;
