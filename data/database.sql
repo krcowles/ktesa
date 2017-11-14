@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 14, 2017 at 03:34 PM
+-- Generation Time: Nov 14, 2017 at 03:44 PM
 -- Server version: 5.7.20-0ubuntu0.16.04.1
 -- PHP Version: 7.0.22-0ubuntu0.16.04.1
 
@@ -19,30 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `nmhikes`
 --
-
-DELIMITER $$
---
--- Procedures
---
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getTitles` (INOUT `title_list` VARCHAR(10000))  BEGIN
-    DECLARE eoloop INTEGER DEFAULT 0;
-    DECLARE pt VARCHAR(30) DEFAULT "";
-    DECLARE pt_cursor CURSOR FOR 
-        SELECT pgTitle FROM HIKES;
-    DECLARE CONTINUE HANDLER
-        FOR NOT FOUND SET eoloop = 1;
-    OPEN pt_cursor;
-    get_pgtitles: LOOP
-        FETCH pt_cursor INTO pt;
-        IF eoloop = 1 THEN
-            CLOSE pt_cursor;
-            LEAVE get_pgtitles;
-        END IF;
-        SET title_list = CONCAT(title_list,"^",pt);
-    END LOOP get_pgtitles;
-END$$
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 
