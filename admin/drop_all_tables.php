@@ -1,7 +1,6 @@
 <?php
 require_once '../mysql/setenv.php';
 $qty = filter_input(INPUT_GET,'no');
-$tblcnt = 9; # currently, the total number of hike tables
 if ($qty === 'all') {
     $action = 'ALL Tables';
     $strt = 0;
@@ -9,8 +8,10 @@ if ($qty === 'all') {
     $action = 'All E-Tables';
     $strt = 5;
 }
-$table = array('HIKES','TSV','REFS','GPSDAT','IPTBLS',
+$table = array('USERS','HIKES','TSV','REFS','GPSDAT','IPTBLS',
     'ETSV','EREFS','EGPSDAT','EHIKES'); # NOTE: E-tables are order-sensitive
+$tblcnt = count($table); # total number of hike tables
+
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

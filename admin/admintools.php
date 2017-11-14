@@ -21,7 +21,7 @@
     <fieldset>
         <legend>Create/Delete</legend>
         <button id="show">Show All Tables</button><br />
-        <button id="drall">Drop All Tables</button>&nbsp;&nbsp;(Retains USERS)<br />
+        <button id="drall">Drop All Tables</button><br />
         <button id="dret">Drop All E-Tables</button><br />
         Table to Delete:&nbsp;&nbsp;
         <select id="dtbl" name="dropper">
