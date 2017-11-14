@@ -33,23 +33,30 @@ for ($k=$kstart; $k<$pcnt; $k++) {
             ' url: ' . $orgPhoto . '</p>';
         die($noread);
     }
-    $fileSize = CHUNK;
+    $truncFile = 'tmp/photo' . $k . '.jpg';
+    $fileSize = 0;
     $contents = '';
-    while ($fileSize < 10 * CHUNK) {
+    while (!feof($photohandle)) {
         $contents .= fread($photoHandle, CHUNK);
         $fileSize += CHUNK;
+        # Write the truncated file to tmp/
+        $exifFile = fopen($truncFile,"w");
+        if ($exifFile === false) {
+            $nowrite = $pstyle . 'Could not open file to write photo' . $k . '</p>';
+            die ($nowrite);
+        }
+        # Write the truncated file to tmp/
+        fwrite($exifFile,$contents);
+        fclose($exifFile);
+        $exifdata = exif_read_data($truncFile);
+        if ($exifdata === false) {
+            continue;   # no exif data yet - go back and read some more
+        } else {
+            break;      # exif data found - exit while
+        }
     }
     fclose($photoHandle);
-    # Write the truncated file to tmp/
-    $truncFile = 'tmp/photo' . $k . '.jpg';
-    $exifFile = fopen($truncFile,"w");
-    if ($exifFile === false) {
-        $nowrite = $pstyle . 'Could not open file to write photo' . $k . '</p>';
-        die ($nowrite);
-    }
-    fwrite($exifFile,$contents);
-    fclose($exifFile);
-    $exifdata = exif_read_data($truncFile);
+
     if ($exifdata === false) {
         echo $pstyle . 'WARNING: Could not read exif data for ' . $orgPhoto
             . '<br />Please verify that all album photos contain metadata. '
