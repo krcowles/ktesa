@@ -2,6 +2,7 @@
 <?php
 require_once "../mysql/setenv.php";
 $tbl_type = filter_input(INPUT_GET,'tbl');
+$hikeNo = filter_input(INPUT_GET,'hno');
 if ($tbl_type === 'new') {
     $table = 'EHIKES';
     $ptable = 'ETSV';
@@ -15,9 +16,8 @@ if ($tbl_type === 'new') {
     $gtable = 'GPSDAT';
     $rtable = 'REFS';
     $hiketype = 'Published';
-    $status = 'none';
+    $status = 'pub' . $hikeNo;
 }
-$hikeNo = filter_input(INPUT_GET,'hno');
 $uid = filter_input(INPUT_GET,'usr');
 # Error output styling string:
 $pstyle = '<p style="color:red;font-size:18px;">';
