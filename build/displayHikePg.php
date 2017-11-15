@@ -57,9 +57,11 @@ if (!$sub) {
         mysqli_error($link));
 }
 mysqli_free_result($sub);
+/*  PENDING NEW PROCESS REVIEW....
 if (!mail('krcowles29@gmail.com','Hike Submitted',$hikeRow)) {
     echo "Failed to send submit message";
 }
+ */
 /*
     ------------------------------ PIC ROW CONSTRUCTION -------------------------
 */
