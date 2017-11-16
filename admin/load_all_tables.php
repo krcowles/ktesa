@@ -36,7 +36,7 @@ foreach ($lines as $line) {
     // If it has a semicolon at the end, it's the end of the query
     if (substr(trim($line), -1, 1) == ';') {
         // look for create and table name
-        $createTbl = strpos($templine,"CREATE TABLE");
+        $createTbl = strpos($templine,"TABLE");
         if ($createTbl !== false) {
             $tblLgth = strpos($templine,'(') - 3 - ($createTbl + 13);
             $tblName = substr($templine,$createTbl+14,$tblLgth);
@@ -50,7 +50,7 @@ foreach ($lines as $line) {
         }
         if ($gottbl) {
             $gottbl = false;
-            echo "<p>Created Table " . $tblName . "</p>";
+            echo "<br>Submitted query " . substr($templine,0,64) . date('l jS \of F Y h:i:s A');
             flush();
         }
         $templine = '';    // Reset temp variable to empty
