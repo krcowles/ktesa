@@ -1,17 +1,4 @@
 <?php
-function clean($tsvdat) {
-    $curdat = $tsvdat;
-    $tsvlgth = strlen($curdat);
-    if (substr($curdat,0,1) === '"') {
-        $tsvlgth -= 2;
-        $curdat = substr($curdat,1,$tsvlgth);
-    }
-    if (substr($curdat,$tsvlgth-2,2) === '\n') {
-        $curdat = substr($curdat,0,$tsvlgth-2);
-    }
-    return addslashes($curdat);   
-}
-# END FUNCTION
 ob_start();
 define('fullMapOpts','&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false');
 define('iframeMapOpts','&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
@@ -105,7 +92,6 @@ if ($newstyle) {
         $mapmsg = "Contact Site Master: could not open tmp map file: " . $tmpMap . ", for writing";
         die ($mapmsg);
     }
-    $photos = $page->tsv;
     $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle . 
         '&gpx=' . $gpxPath . '&hno=' . $hikeIndexNo . '&tbl=' . $tbl;
     include "../php/makeGpsv.php";
