@@ -19,7 +19,20 @@ button {
     font-size: 16px;
     color: darkblue;
 }
-#drow {
-    
+.ind {
+    font-size: 18px;
+    line-height: 1.4em;
 }
-
+#dtbl,#ctbl,#ltbl {
+    position: absolute;
+    left: 170px;
+}
+#drop,#create,#sgls {
+    position: absolute;
+    left: 294px;
+}
+#ni {
+    color: brown;
+    position: absolute;
+    left: 420px;
+}

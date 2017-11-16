@@ -6,9 +6,19 @@ $('#show').on('click', function()  {
 $('#drall').on('click', function() {
     window.open('drop_all_tables.php?no=all',"_blank");
 });
+$('#ldall').on('click', function() {
+    window.open('load_all_tables.php',"_blank");
+});
 $('#dret').on('click', function() {
     window.open('drop_all_tables.php?no=ets',"_blank");
 })
+$('#ldet').on('click', function() {
+    alert("Not yet implemented");
+});
+$('#drop').on('click', function() {
+    var dtarg = 'drop_table.php?tbl=' + $('#dtbl').val();
+    window.open(dtarg,"_blank");
+});
 $('#create').on('click', function() {
     var ctype = $('#ctbl').val(); // the table name to create
     if (ctype.substring(0,1) !== 'E') {
@@ -17,34 +27,17 @@ $('#create').on('click', function() {
         if (ctype === 'EHIKES') {
             var ctarg = 'create_EHIKES_parent.php';
         } else {
-            var ctarg = 'create_E_table.php?tbl=' + ctype;
+            var ctarg = 'create_E_table.php?tbl=' + ctype; // has foreign key defs
         }
     }
     window.open(ctarg,"_blank");
 });
-$('#drop').on('click', function() {
-    var dtarg = 'drop_table.php?tbl=' + $('#dtbl').val();
-    window.open(dtarg,"_blank");
+$('#pub').on('click', function() {
+    window.open("reldel.php?act=rel","_blank");
 });
-$('#ia').on('click', function() {
-    window.open('insert_admins.php',"_blank");
+$('#ehdel').on('click', function() {
+    window.open("reldel.php?act=del","_blank");
 });
-$('#ldh').on('click', function() {
-    window.open('load_HIKES.php',"_blank");
-});
-$('#ldt').on('click', function() {
-    window.open('load_TSV.php',"_blank");
-});
-$('#ldr').on('click', function() {
-    window.open('load_REFS.php',"_blank");
-});
-$('#ldg').on('click', function() {
-    window.open('load_GPSDAT.php',"_blank");
-});
-$('#lip').on('click', function() {
-    window.open('load_IPTBLS.php',"_blank");
-})
-
 $('#rowdel').on('click', function() {
     var trow = prompt("Are you sure you want to delete this row?","Row " + $('#drow').val());
     if (trow !== null) {
@@ -96,13 +89,6 @@ $('#rowdel').on('click', function() {
     } else {
         alert("Nothing deleted");
     }
-});
-
-$('#pub').on('click', function() {
-    window.open("reldel.php?act=rel","_blank");
-});
-$('#ehdel').on('click', function() {
-    window.open("reldel.php?act=del","_blank");
 });
 
 });

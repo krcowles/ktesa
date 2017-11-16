@@ -22,8 +22,13 @@
         <legend>Create/Delete</legend>
         <button id="show">Show All Tables</button><br />
         <button id="drall">Drop All Tables</button><br />
+        <button id="ldall">Load All Tables</button>
+        (NOTE: Tables should be dropped and not created)<br />
         <button id="dret">Drop All E-Tables</button><br />
-        Table to Delete:&nbsp;&nbsp;
+        <button id="ldet">Load All E-Tables</button>
+        <span style="color:brown;">(Not implemented at this time)</span>
+        <p></p>
+        <span class="ind">Table to Delete:</span>
         <select id="dtbl" name="dropper">
             <option>USERS</option>
             <option>HIKES</option>
@@ -35,9 +40,9 @@
             <option>ETSV</option>
             <option>EREFS</option>
             <option>EGPSDAT</option>
-        </select>&nbsp;&nbsp;
+        </select>
         <button id="drop">Drop Table</button><br />
-        Table to Create:&nbsp;&nbsp;
+        <span class="ind">Table to Create:</span>
         <select id="ctbl" name="creator">
             <option>USERS</option>
             <option>HIKES</option>
@@ -49,16 +54,30 @@
             <option>ETSV</option>
             <option>EREFS</option>
             <option>EGPSDAT</option>
-        </select>&nbsp;&nbsp;
+        </select>
         <button id="create">Create Table</button><br />
-        <button id="ia">Insert Admins into USERS</button>
-        &nbsp;(USERS Table must exist)<br />
-        <button id="ldh">Load HIKES from XML</button>
-        &nbsp;(HIKES Table must exist)<br />
-        <button id="ldt">Load TSV from XML</button><br />
-        <button id="ldr">Load REFS from XML</button><br />
-        <button id="ldg">Load GPSDAT from XML</button><br />
-        <button id="lip">Load IPTBLS from XML</button><br />
+        <span class="ind">Table to Load:</span>
+        <select id="ltbl" name="sgl_ld">
+            <option>USERS</option>
+            <option>HIKES</option>
+            <option>TSV</option>
+            <option>REFS</option>
+            <option>GPSDAT</option>
+            <option>IPTBLS</option>
+            <option>EHIKES</option>
+            <option>ETSV</option>
+            <option>EREFS</option>
+            <option>EGPSDAT</option>
+        </select>
+        <button id="sgls">Load Table</button>
+        <span id="ni">(Not implented at this time)</span><br />
+    </fieldset><br />
+    <fieldset>
+        <legend>Hike Release/Delete</legend>
+        Actions available for all EHIKES (Affects all E-Tables):<br />
+        &nbsp;&nbsp;&nbsp;<button id="pub">Publish Hike</button><br/>
+        &nbsp;&nbsp;&nbsp;<button id="ehdel">Remove Hike</button>
+            <span style="color:brown;">(Not implemented at this time)</span><br />
     </fieldset><br />
     <fieldset>
         <legend>Row Manipulation</legend>
@@ -79,13 +98,6 @@
         <button id="rowdel">Delete Row</button><br /><br />
         NOTE: Deleting a row in a table may cause issues if companion tables 
         are not also updated.
-    </fieldset><br />
-    <fieldset>
-        <legend>Hike Release/Delete</legend>
-        Actions available for all EHIKES (Affects all E-Tables):<br />
-        &nbsp;&nbsp;&nbsp;<button id="pub">Publish Hike</button><br/>
-        &nbsp;&nbsp;&nbsp;<button id="ehdel">Remove Hike</button> &nbsp;
-            <span style="color:brown;">(Not implemented at this time)</span><br />
     </fieldset><br />
 </div>
 <script src="../scripts/jquery-1.12.1.js"></script>
