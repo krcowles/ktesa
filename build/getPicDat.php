@@ -176,10 +176,10 @@ foreach ($picdat as $ph) {  # each item is an array of data
     $wd = mysqli_real_escape_string($link,$ph['pWd']);
     $ic = mysqli_real_escape_string($link,$icon_clr);
     $og = mysqli_real_escape_string($link,$ph['org']);
-    $photoQuery = "INSERT INTO ETSV ( indxNo,folder,usrid,title," .
+    $photoQuery = "INSERT INTO ETSV ( indxNo,folder,title," .
         "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid," .
         "imgHt,imgWd,iclr,org ) VALUES ( '{$hikeNo}','{$foldr}'," .
-        "'{$uid}','{$ttl}','N','N','{$des}','{$lt}','{$ln}','{$th}'," .
+        "'{$ttl}','N','N','{$des}','{$lt}','{$ln}','{$th}'," .
         "'{$al}','{$dt}','{$sz}','{$ht}','{$wd}','{$ic}','{$og}' );";
     $photoResults = mysqli_query($link,$photoQuery);
     if (!$photoResults) {

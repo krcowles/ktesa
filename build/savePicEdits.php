@@ -1,6 +1,6 @@
 <?php
 /* To already be defined on entry:
- * $tbl_type; $uid; $hikeNo
+ * $tbl_type; $hikeNo
  */
 # gather up the captions:
 $ecapts = $_POST['ecap'];
@@ -30,9 +30,9 @@ if ($tbl_type === 'old') {
         $pxwd = mysqli_real_escape_string($link,$p['imgWd']);
         $pclr = mysqli_real_escape_string($link,$p['iclr']);
         $porg = mysqli_real_escape_string($link,$p['org']);
-        $addPicReq = "INSERT INTO ETSV (indxNo,folder,usrid,title," .
+        $addPicReq = "INSERT INTO ETSV (indxNo,folder,title," .
             "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd," .
-            "iclr,org) VALUES ('{$newNo}','{$fldr}','{$uid}','{$ttle}'," .
+            "iclr,org) VALUES ('{$newNo}','{$fldr}','{$ttle}'," .
             "'{$phpg}','{$pmpg}','{$pdes}','{$plat}','{$plon}','{$thmb}'," .
             "'{$palb}','{$date}','{$pmid}','{$pxht}','{$pxwd}'," .
             "'{$pclr}','{$porg}');";
