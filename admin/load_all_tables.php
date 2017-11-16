@@ -8,6 +8,11 @@
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
+    <style type="text/css">
+        #progress { width: 420px; height: 36px; background-color: #ace600; }
+        #bar { width: 0px; height: 36px; background-color: #aa0033; }
+    </style>
+    <script src="../scripts/jquery-1.12.1.js"></script>
 <body>
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
@@ -18,6 +23,10 @@
 <p id="trail">Loading Database</p>
 <div style="margin-left:16px;">
 <p>Please wait until the 'DONE' message appears below</p>
+<div id="progress">
+    <div id="bar"></div>
+</div>
+<script src="load_progress.js"></script>
 <?php
 require_once '../mysql/setenv.php';
 // Temporary variable, used to store current query
@@ -26,6 +35,19 @@ $templine = '';
 $lines = file("../data/database.sql");
 // Loop through each line
 $gottbl = false;
+$totalQs = 0;
+// doing this twice, once just to get info for the progress bar:
+foreach ($lines as $line) {
+    // Skip it if it's a comment
+    if (substr($line, 0, 2) == '--' || $line == '') {
+        continue;
+    }
+     if (substr(trim($line), -1, 1) == ';') {
+         $totalQs++;
+     }
+}
+echo "<script type='text/javascript'>var totq = {$totalQs};</script>";
+$qcnt = 0;
 foreach ($lines as $line) {
     // Skip it if it's a comment
     if (substr($line, 0, 2) == '--' || $line == '') {
@@ -34,12 +56,13 @@ foreach ($lines as $line) {
     // Add this line to the current segment
     $templine .= $line;
     // If it has a semicolon at the end, it's the end of the query
+    $qstr = trim($templine);
     if (substr(trim($line), -1, 1) == ';') {
         // look for create and table name
-        $createTbl = strpos($templine,"TABLE");
+        $createTbl = strpos($qstr,"CREATE TABLE");
         if ($createTbl !== false) {
-            $tblLgth = strpos($templine,'(') - 3 - ($createTbl + 13);
-            $tblName = substr($templine,$createTbl+14,$tblLgth);
+            $tblLgth = strpos($qstr,'(') - 3 - ($createTbl + 13);
+            $tblName = substr($qstr,$createTbl+14,$tblLgth);
             $gottbl = true;
         }
         // Perform the query
@@ -48,9 +71,11 @@ foreach ($lines as $line) {
             die ("<p>load_all_tables.php: Failed: " .
                 mysqli_error($link) . "</p>");
         }
+        $qcnt++;
+        echo "<script type='text/javascript'>var qcnt = {$qcnt};</script>";
         if ($gottbl) {
             $gottbl = false;
-            echo "<br>Submitted query " . substr($templine,0,64) . date('l jS \of F Y h:i:s A');
+            echo "<br />Completed " . $tblName . " at: " . date('l jS \of F Y h:i:s A');
             flush();
         }
         $templine = '';    // Reset temp variable to empty
