@@ -66,7 +66,7 @@ foreach ($lines as $line) {
             $gottbl = true;
         }
         // Perform the query
-        $req = mysqli_query($link, $templine);
+        $req = mysqli_query($link, $qstr);
         if (!$req) {
             die ("<p>load_all_tables.php: Failed: " .
                 mysqli_error($link) . "</p>");
@@ -76,6 +76,9 @@ foreach ($lines as $line) {
         if ($gottbl) {
             $gottbl = false;
             echo "<br />Completed " . $tblName . " at: " . date('l jS \of F Y h:i:s A');
+            flush();
+        } else {
+            echo "<br />Completed " . substr($qstr,0,32) . date('l jS \of F Y h:i:s A');
             flush();
         }
         $templine = '';    // Reset temp variable to empty
