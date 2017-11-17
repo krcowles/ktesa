@@ -64,36 +64,40 @@ for ($k=$kstart; $k<$pcnt; $k++) {
             . 'latitude/longitude/date-stamp data. This implies that such '
             . 'photos will not appear on the hike map.</p>';
     } else {
-		$ext = strrpos($exifdata["FileName"],".");
-		$imgName = substr($exifdata["FileName"],0,$ext);
-		$imgs[$k] = $imgName;
+        $ext = strrpos($exifdata["FileName"],".");
+        $imgName = substr($exifdata["FileName"],0,$ext);
+        $imgs[$k] = $imgName;
+        # NOTE: orientations of 3, and 8 are not addressed here
+        $imgHt[$k] = $exifdata["ExifImageLength"];
+        $imgWd[$k] = $exifdata["ExifImageWidth"];
+        $orient = $exifdata["Orientation"];
+        if ($orient == '6') {
+            $tmpval = $imgHt[$k];
+            $imgHt[$k] = $imgWd[$k];
+            $imgWd[$k] = $tmpval;
+        } 
+        $timeStamp[$k] = $exifdata["DateTimeOriginal"];
+        if ($timeStamp[$k] == '') {
+                echo "WARNING: No date/time data found " . 'for ' . $orgPhoto . '</p>';
+        }
 
-		$imgHt[$k] = $exifdata["ExifImageLength"];
-		$imgWd[$k] = $exifdata["ExifImageWidth"];
-                
-		$timeStamp[$k] = $exifdata["DateTimeOriginal"];
-		if ($timeStamp[$k] == '') {
-			echo "WARNING: No date/time data found " . 'for ' . $orgPhoto . '</p>';
-		}
+        if ($exifdata["GPSLatitudeRef"] == 'N') {
+                $lats[$k] = mantissa($exifdata["GPSLatitude"]); # TJS
+        } else {
+                $lats[$k] = -1 * mantissa($exifdata["GPSLatitude"]); # TJS
+        }
 
-		if ($exifdata["GPSLatitudeRef"] == 'N') {
-			$lats[$k] = mantissa($exifdata["GPSLatitude"]); # TJS
-		} else {
-			$lats[$k] = -1 * mantissa($exifdata["GPSLatitude"]); # TJS
-		}
+        if ($exifdata["GPSLongitudeRef"] == 'E') {
+                $lngs[$k] = mantissa($exifdata["GPSLongitude"]); # TJS
+        } else {
+                $lngs[$k] = -1 * mantissa($exifdata["GPSLongitude"]); # TJS
+        }
 
-		if ($exifdata["GPSLongitudeRef"] == 'E') {
-			$lngs[$k] = mantissa($exifdata["GPSLongitude"]); # TJS
-		} else {
-			$lngs[$k] = -1 * mantissa($exifdata["GPSLongitude"]); # TJS
-		}
+        $elev[$k] = $exifdata["GPSAltitude"];
+        $gpds[$k] = $exifdata["GPSDateStamp"];
 
-		$elev[$k] = $exifdata["GPSAltitude"];
-		$gpds[$k] = $exifdata["GPSDateStamp"];
-
-		// array
-		$gpts[$k] = $exifdata["GPSTimeStamp"];
-
+        // array
+        $gpts[$k] = $exifdata["GPSTimeStamp"];
         if ($lats[$k] == 0 || $lngs[$k] == 0) {
             echo $pstyle . "WARNING: No latitude/longitude data obtained for " .
                 $orgPhoto . '</p>';
