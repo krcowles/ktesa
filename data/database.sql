@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 17, 2017 at 06:10 PM
+-- Generation Time: Nov 17, 2017 at 11:39 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.1.8
 
@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 -- Database: `nmhikes`
 --
 
+
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `EGPSDAT`
 --
@@ -32,6 +35,13 @@ CREATE TABLE `EGPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `EGPSDAT`
+--
+
+INSERT INTO `EGPSDAT` (`datId`, `indxNo`, `datType`, `label`, `url`, `clickText`) VALUES
+(1, 2, 'A', 'GPX:', '../gpx/Boundary_Loop.GPX', 'The Track');
 
 -- --------------------------------------------------------
 
@@ -70,6 +80,13 @@ CREATE TABLE `EHIKES` (
   `info` varchar(4096) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `EHIKES`
+--
+
+INSERT INTO `EHIKES` (`indxNo`, `pgTitle`, `usrid`, `stat`, `locale`, `marker`, `collection`, `cgroup`, `cname`, `logistics`, `miles`, `feet`, `diff`, `fac`, `wow`, `seasons`, `expo`, `gpx`, `trk`, `lat`, `lng`, `aoimg1`, `aoimg2`, `purl1`, `purl2`, `dirs`, `tips`, `info`) VALUES
+(2, 'Boundary Loop Trail', 'mstr', 'sub', 'Albuquerque', 'Normal', '', '', '', 'Loop', '3.80', 1000, 'Moderate', 'None', 'Interior Rincon and Sandias', 'Not Summer', 'Full sun', 'Boundary_Loop.GPX', 'Boundary_Loop.json', 35.2024943009, -106.5043653175, NULL, NULL, 'https://www.flickr.com/photos/139088815@N08/albums/72157689963292856', '', 'https://www.google.com/maps/dir//35.20265,-106.5038833/@35.2019097,-106.5085099,15.87z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDEyJzA5LjUiTiAxMDbCsDMwJzE0LjAiVw!3b1!8m2!3d35.20265!4d-106.5038833', '', 'This hike starts across the road from a broad dirt parking area on FR333 just north of the turn-off from Tramway Blvd. The most difficult part is the very beginning - a steep but short stretch to the top of the nearby ridge. After that the trail follows a contour so attentive footing is required for a short distance - not a sheer drop but a rather steep angle. Most of the hike is an easy walk up the arroyo if you take the suggested path and follow the east branch of the loop up. A 5 ft rock wall must be scaled, but it is rather easy to do so with multiple foot- and hand-holds. From here, the views are spectacular. Great interior views of the Rincon Ridge, and some lovely angles on the Sandias. At the northern end, the trail is elevated to the point that a nice vista of Juan Tabo Canyon presents itself (see the Juan Tabo Canyon Hike). Multiple trails crisscross the area providing more great views. The author traversed a couple of these which made the nominal 2.5 mile hike a bit longer.                ');
+
 -- --------------------------------------------------------
 
 --
@@ -83,6 +100,14 @@ CREATE TABLE `EREFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `EREFS`
+--
+
+INSERT INTO `EREFS` (`refId`, `indxNo`, `rtype`, `rit1`, `rit2`) VALUES
+(1, 2, 'Book:', 'Sandia Mountain Hiking Guide', 'Mike Coltrin'),
+(2, 2, 'Website:', 'http://www.sandiahiking.com/trailguide.html#boundaryloop', 'Sandia Mtn Hiking Guide: Trails');
 
 -- --------------------------------------------------------
 
@@ -109,6 +134,23 @@ CREATE TABLE `ETSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ETSV`
+--
+
+INSERT INTO `ETSV` (`picIdx`, `indxNo`, `folder`, `title`, `hpg`, `mpg`, `desc`, `lat`, `lng`, `thumb`, `alblnk`, `date`, `mid`, `imgHt`, `imgWd`, `iclr`, `org`) VALUES
+(24, 2, 'Folder1', 'RidgeView', 'N', 'Y', 'The first ridge climb looks over the starting point', 35.2040583333, -106.5039888890, 'https://c1.staticflickr.com/5/4504/37304494374_2a2d4c322a_t.jpg', 'https://www.flickr.com/photos/139088815@N08/37304494374/in/album-72157689963292856', '2017-10-27 09:46:32', 'https://c1.staticflickr.com/5/4504/37304494374_2a2d4c322a_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4504/37304494374_ccef37e492_o.jpg'),
+(25, 2, 'Folder1', 'TrailDip', 'N', 'N', 'After a trek along the ridge, the trail dips into the canyon', 35.2059777778, -106.5024944440, 'https://c1.staticflickr.com/5/4472/24161930978_6ea235824f_t.jpg', 'https://www.flickr.com/photos/139088815@N08/24161930978/in/album-72157689963292856', '2017-10-27 09:54:01', 'https://c1.staticflickr.com/5/4472/24161930978_6ea235824f_n.jpg', 3264, 2448, 'pink', 'https://c1.staticflickr.com/5/4472/24161930978_60dc118949_o.jpg'),
+(26, 2, 'Folder1', 'BlindArroyo', 'Y', 'Y', 'The only \'scramble\' in the hike is an easy 5 ft rock face', 35.2081972222, -106.5001138890, 'https://c1.staticflickr.com/5/4477/38013473651_8e780a2f76_t.jpg', 'https://www.flickr.com/photos/139088815@N08/38013473651/in/album-72157689963292856', '2017-10-27 10:12:46', 'https://c1.staticflickr.com/5/4477/38013473651_8e780a2f76_n.jpg', 3264, 2448, 'pink', 'https://c1.staticflickr.com/5/4477/38013473651_220af2723a_o.jpg'),
+(27, 2, 'Folder1', 'Rincon', 'Y', 'N', 'From the arroyo, a northward look', 35.2135666667, -106.4984972220, 'https://c1.staticflickr.com/5/4507/37304560654_d43d7657b3_t.jpg', 'https://www.flickr.com/photos/139088815@N08/37304560654/in/album-72157689963292856', '2017-10-27 10:35:23', 'https://c1.staticflickr.com/5/4507/37304560654_d43d7657b3_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4507/37304560654_ed07b28435_o.jpg'),
+(28, 2, 'Folder1', 'JuanTaboCanyon', 'Y', 'Y', 'A glimpse into the explorable canyon', 35.2173722222, -106.4977722220, 'https://c1.staticflickr.com/5/4508/38013534091_a79a74c648_t.jpg', 'https://www.flickr.com/photos/139088815@N08/38013534091/in/album-72157689963292856', '2017-10-27 10:50:12', 'https://c1.staticflickr.com/5/4508/38013534091_a79a74c648_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4508/38013534091_7d9e0b8350_o.jpg'),
+(29, 2, 'Folder1', 'LookingEast', 'Y', 'N', 'A great view from\'ViewPt Hill\'', 35.2169416667, -106.4980083330, 'https://c1.staticflickr.com/5/4453/37960448306_20a93f7d9b_t.jpg', 'https://www.flickr.com/photos/139088815@N08/37960448306/in/album-72157689963292856', '2017-10-27 10:52:39', 'https://c1.staticflickr.com/5/4453/37960448306_20a93f7d9b_n.jpg', 3264, 2448, 'pink', 'https://c1.staticflickr.com/5/4453/37960448306_651bd07704_o.jpg'),
+(30, 2, 'Folder1', 'SandiaTowers', 'Y', 'N', 'One of many fabulous views of the Sandia\'s', 35.2163083333, -106.4997472220, 'https://c1.staticflickr.com/5/4484/24161918868_4f5eb6a4b0_t.jpg', 'https://www.flickr.com/photos/139088815@N08/24161918868/in/album-72157689963292856', '2017-10-27 11:27:34', 'https://c1.staticflickr.com/5/4484/24161918868_4f5eb6a4b0_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4484/24161918868_670a7855b2_o.jpg'),
+(31, 2, 'Folder1', 'ViewPtHill', 'Y', 'N', 'The high point of the hike, looking west', 35.2137111111, -106.5017611110, 'https://c1.staticflickr.com/5/4482/38013525701_e9937a7242_t.jpg', 'https://www.flickr.com/photos/139088815@N08/38013525701/in/album-72157689963292856', '2017-10-27 11:48:05', 'https://c1.staticflickr.com/5/4482/38013525701_e9937a7242_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4482/38013525701_e8f243d24a_o.jpg'),
+(32, 2, 'Folder1', 'LateBloomer', 'Y', 'Y', 'A surprise late in the season', 35.2135000000, -106.5022500000, 'https://c1.staticflickr.com/5/4459/38013503311_89cf22445a_t.jpg', 'https://www.flickr.com/photos/139088815@N08/38013503311/in/album-72157689963292856', '2017-10-27 11:49:38', 'https://c1.staticflickr.com/5/4459/38013503311_89cf22445a_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4459/38013503311_49fe329bba_o.jpg'),
+(33, 2, 'Folder1', 'FullSandia', 'Y', 'Y', 'More views of the Sandia as the trail progresses', 35.2119416667, -106.5041055560, 'https://c1.staticflickr.com/5/4513/24161970948_97d1d90f7b_t.jpg', 'https://www.flickr.com/photos/139088815@N08/24161970948/in/album-72157689963292856', '2017-10-27 11:57:06', 'https://c1.staticflickr.com/5/4513/24161970948_97d1d90f7b_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4513/24161970948_1b13c95c28_o.jpg'),
+(34, 2, 'Folder1', 'ExpansiveView', 'Y', 'Y', 'The ridge trail leads along the contour, and a glimpse ahead', 35.2050250000, -106.5035861110, 'https://c1.staticflickr.com/5/4481/38013550311_aa18c621a6_t.jpg', 'https://www.flickr.com/photos/139088815@N08/38013550311/in/album-72157689963292856', '2017-10-27 12:35:03', 'https://c1.staticflickr.com/5/4481/38013550311_aa18c621a6_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4481/38013550311_b1bcda3c67_o.jpg');
 
 -- --------------------------------------------------------
 
@@ -2414,22 +2456,22 @@ ALTER TABLE `USERS`
 -- AUTO_INCREMENT for table `EGPSDAT`
 --
 ALTER TABLE `EGPSDAT`
-  MODIFY `datId` smallint(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `datId` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `EHIKES`
 --
 ALTER TABLE `EHIKES`
-  MODIFY `indxNo` smallint(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `indxNo` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `EREFS`
 --
 ALTER TABLE `EREFS`
-  MODIFY `refId` smallint(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `refId` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `ETSV`
 --
 ALTER TABLE `ETSV`
-  MODIFY `picIdx` smallint(6) NOT NULL AUTO_INCREMENT;
+  MODIFY `picIdx` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `GPSDAT`
 --
