@@ -10,8 +10,8 @@ if (!$result) {
 $refHtml = '<ul id="refs">';
 while ($row = mysqli_fetch_assoc($result)) {
     $rtype = trim($row['rtype']);
-    if ($rtype === 'No references found') {
-        $refHtml .= "<li>" . $rtype . "</li>";
+    if ($rtype === 'Text:') {
+        $refHtml .= "<li>" . $row['rit1'] . "</li>";
     } else if ($rtype === 'Book:' || $rtype === 'Photo Essay:') {
         $refHtml .= "<li>" . $rtype . " <em>" . $row['rit1'] .
                 "</em>, by " . $row['rit2'] . "</li>";

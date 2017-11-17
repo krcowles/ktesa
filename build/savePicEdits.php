@@ -7,7 +7,6 @@ $ecapts = $_POST['ecap'];
 # if the edited file was in HIKES, transfer data over to EHIKES:
 if ($tbl_type === 'old') {
     # all TSV data needs to be copied to ETSV before updating
-    mysqli_free_result($indxq);
     $getReq = "SELECT * FROM TSV WHERE indxNo = {$hikeNo};";
     $getq = mysqli_query($link,$getReq);
     if (!$getq) {
@@ -48,10 +47,10 @@ if ($tbl_type === 'old') {
 } else { 
     $useNo = $hikeNo; # use given no in upcoming requests
 }
-/* Now, update all displayed photos, marking any which were deleted by
+/* Now, update all displayed photos, marking any which were 'deleted' by
  * setting its corresponding hpg to "N", and updating all captions.
  * (The order of the pics in the table corresponds to the id no's of deletes
- * for all hpg="Y" settings
+ * for all hpg="Y" settings. 
  */
 $photoReq = "SELECT picIdx,hpg,`desc` FROM ETSV WHERE indxNo = '{$useNo}' AND " .
     "hpg = 'Y';";
@@ -73,7 +72,6 @@ while ($picrow = mysqli_fetch_assoc($photoq)) {
         die("savePicEdits.php: Failed to update caption for id {$thisid}: " .
             mysqli_error($link));
     }
-    
     if ($dels[$delindx] == $dcnt) {
         $noDispReq = "UPDATE ETSV SET hpg = 'N' WHERE picIdx = {$thisid};";
         $noDisp = mysqli_query($link,$noDispReq);

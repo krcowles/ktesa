@@ -6,7 +6,7 @@ $show = filter_input(INPUT_GET,'show');
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title><?php echo $tab;?></title>
+    <title>List Editable Hikes</title>
     <meta charset="utf-8" />
     <meta name="description"
             content="Select hike to edit from table" />

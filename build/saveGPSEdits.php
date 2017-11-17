@@ -1,91 +1,107 @@
 <?php
-if ($tbl_type === 'old') {
-    # all GPSDAT data needs to be copied to EGPSDAT, whether 'A' or 'P' type
-    $getpReq = "SELECT * FROM GPSDAT WHERE indxNo = {$hikeNo};";
-    $getpq = mysqli_query($link,$getpReq);
-    if (!$getpq) {
-        die("saveGPSEdits.php: Failed to pull GPSDAT data for move to EGPSDAT: " .
+/* Since GPS Maps & Data may have been marked for deletion in the edit phase,
+ * the approach taken is to simply delete all GPS data, then add back any 
+ * other than those so marked, including any changes made thereto. This then
+ * includes newly added GPS data, so all get INSERTED, and no algorithm is required
+ * to determine which only get updated vs which get added vs which get deleted.
+ */ 
+if ($tbl_type === 'new') {
+    # deletion is not required for 'old' since there aren't any yet in EGPSDAT
+    $delrefsreq = "DELETE FROM EGPSDAT WHERE indxNo = '{$hikeNo}';";
+    $delrefs = mysqli_query($link,$delrefsreq);
+    if (!$delrefs) {
+        die("saveGPSEdits.php: Failed to delete old GPS data for {$hikeNo}: " .
             mysqli_error($link));
     }
-    if (mysqli_num_rows($getpq) !== 0) {
-        while ($gdat = mysqli_fetch_assoc($getpq)) {
-            $dtype = $gdat['datType'];
-            $dlbl = mysqli_real_escape_string($link,$gdat['label']);
-            $durl = mysqli_real_escape_string($link,$gdat['url']);
-            $dcot = mysqli_real_escape_string($link,$gdat['clickText']);
-            $gpsReq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
-                "VALUES ('{$newNo}','{$dtype}','{$dlbl}','{$durl}','{$dcot}');";
-            $gpsq = mysqli_query($link,$gpsReq);
-            if (!$gpsq) {
-                die("saveGPSEdits.php: Failed to add EGPSDAT data for hike {$hikeNo}: " .
-                    mysqli_error($link));
-            }
-        }
-        mysqli_free_result($gpsq);
-    }
-    mysqli_free_result($gpsq);
-    $useNo = $newNo;
+    mysqli_free_result($delrefs);
+    $useIndxNo = $hikeNo;
 } else {
-    $useNo = $hikeNo;
+    $useIndxNo = $newNo;
 }
-# Delete any Proposed or Actual Data so marked in editDB.php
-$delps = $_POST['delprop'];
-$delas = $_POST['delact'];
-if (count($delps) !== 0 || count($delas) !== 0) {
-    $gpsidReq = "SELECT datId,datType FROM EGPSDAT WHERE indxNo = {$useNo};"; # 'P's and 'A's
-    $egpsq = mysqli_query($link,$gpsidReq);
-    if (!$egpsq) {
-        die("saveGPSEdits.php: Failed to extract datIds from EGPSDAT for hike {$useNo}: " .
-            mysqli_error($link));
-    }
-    $pids = [];
-    $aids = [];
-    while ($gpsrow = mysqli_fetch_assoc($egpsq)) {
-        $thisid = $gpsrow['datId'];
-        if ($gpsrow['datType'] === 'P') {
-            array_push($pids,$thisid);
-        } else {
-            array_push($aids,$thisid);
-        }
-    }
-    mysqli_free_result($egpsq);
-    # check for proposed data:
-    if (count($pids) !== 0) {
-        $pindx = 0;
-        $pcnt = 0;
-        while ($pindx < count($delps)) {
-            if ($delps[$pindx] == $pcnt) {
-                # delete this gps ref
-                $delpReq = "DELETE FROM EGPSDAT WHERE datId = {$pids[$pindx]};";
-                $delpq = mysqli_query($link,$delpReq);
-                if (!$delpq) {
-                    die("saveGPSEdits.php: Failed to delete id {$pids[$pindx]}: " .
-                        mysqli_error($link));
-                }
-                $pindx++;
-            } 
-            $pcnt++;
-        }
-        mysqli_free_result($delpq);
-    }  
-    # check for actual data
-    if (count($aids) !== 0) {
-        $aindx = 0;
-        $acnt = 0;
-        while ($aindx < count($delas)) {
-            if ($delas[$aindx] == $acnt) {
-                # delete this gps ref
-                $delaReq = "DELETE FROM EGPSDAT WHERE datId = {$aids[$aindx]};";
-                $delaq = mysqli_query($link,$delaReq);
-                if (!$delpq) {
-                    die("saveGPSEdits.php: Failed to delete id {$aids[$aindx]}: " .
-                        mysqli_error($link));
-                }
-                $aindx++;
-            } 
-            $acnt++;
-        }
-        mysqli_free_result($delaq);
-    }    
+# Now add the newly edited ones back in, sans any deletions
+$plbl = $_POST['plabl'];
+$purl = $_POST['plnk'];
+$pcot = $_POST['pctxt'];
+# NOTE: The following post only collects checked boxes
+$deletes = $_POST['delprop']; # any entries will contain the ref no on editDB.php
+if (count($deletes) > 0) {
+    $chk_del = true;
+} else {
+    $chk_del = false;
 }
-
+$dindx = 0;
+$newcnt = count($plbl);
+/*
+ * NOTE: the only items that have 'delete' boxes are those for which GPS data
+ * already existed in the database, and they are listed before any that might
+ * get added. Therefore, proceeding through the loop, the first ones can be
+ * compared to any corresponding $deletes ref pointer.
+ */
+for ($j=0; $j<$newcnt; $j++) {
+    $addit = true;
+    if ($chk_del) {
+        if ($j === intval($deletes[$dindx])) {
+            $dindx++; # skip this and look for the next;
+            if ($dindx === count($deletes)) {
+                $chk_del = false;
+            }
+            $addit = false;
+        }  
+    } 
+    if ($addit && $plbl[$j] !== '') {
+        $a = mysqli_real_escape_string($link,$plbl[$j]);
+        $b = mysqli_real_escape_string($link,$purl[$j]);
+        $c = mysqli_real_escape_string($link,$pcot[$j]);
+        $addpreq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
+            "VALUES ('{$useIndxNo}','P','{$a}','{$b}','{$c}');";
+        $addp = mysqli_query($link,$addpreq);
+        if (!$addp) {
+            die("saveGPSEdits.php: Failed to insert EGPSDAT data: " . 
+                mysqli_error($link));
+        }
+    }
+}
+mysqli_free_result($addp);
+$albl = $_POST['alabl'];
+$aurl = $_POST['alnk'];
+$acot = $_POST['actxt'];
+# NOTE: The following post only collects checked boxes
+$deletes = $_POST['delact']; # any entries will contain the ref no on editDB.php
+if (count($deletes) > 0) {
+    $chk_del = true;
+} else {
+    $chk_del = false;
+}
+$dindx = 0;
+$newcnt = count($albl);
+/*
+ * NOTE: the only items that have 'delete' boxes are those for which GPS data
+ * already existed in the database, and they are listed before any that might
+ * get added. Therefore, proceeding through the loop, the first ones can be
+ * compared to any corresponding $deletes ref pointer.
+ */
+for ($k=0; $k<$newcnt; $k++) {
+    $addit = true;
+    if ($chk_del) {
+        if ($k === intval($deletes[$dindx])) {
+            $dindx++; # skip this and look for the next;
+            if ($dindx === count($deletes)) {
+                $chk_del = false;
+            }
+            $addit = false;
+        }  
+    } 
+    if ($addit && $albl[$k] !== '') {
+        $a = mysqli_real_escape_string($link,$albl[$k]);
+        $b = mysqli_real_escape_string($link,$aurl[$k]);
+        $c = mysqli_real_escape_string($link,$acot[$k]);
+        $addareq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
+            "VALUES ('{$useIndxNo}','A','{$a}','{$b}','{$c}');";
+        $adda = mysqli_query($link,$addareq);
+        if (!$adda) {
+            die("saveGPSEdits.php: Failed to insert EGPSDAT data: " . 
+                mysqli_error($link));
+        }
+    }
+}
+mysqli_free_result($adda);

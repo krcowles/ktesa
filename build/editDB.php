@@ -369,19 +369,19 @@ $pstyle = '<p style="color:red;font-size:18px;">';
         echo '<p id="' . $rid  . '" style="display:none">' . $thisref . "</p>\n";
         echo '<label for="' . $reftype . '">Reference Type: </label>' . "\n";
         echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">' . "\n";
-        echo '<option value="b" >Book</option>' . "\n";
-        echo '<option value="p">Photo Essay</option>' . "\n";
-        echo '<option value="w">Website</option>' . "\n";
-        echo '<option value="h">Website</option>' . "\n"; # leftover category from index pages
-        echo '<option value="a">App</option>' . "\n";
-        echo '<option value="d">Downloadable Doc</option>' . "\n";
-        echo '<option value="l">Blog</option>' . "\n";
-        echo '<option value="o">On-line Map</option>' . "\n";
-        echo '<option value="m">Magazine</option>' . "\n";
-        echo '<option value="s">News Article</option>' . "\n";
-        echo '<option value="g">Meetup Group</option>' . "\n";
-        echo '<option value="r">Related Link</option>' . "\n";
-        echo '<option value="n">Text Only - No Link</option>' . "\n";
+        echo '<option value="Book:" >Book</option>' . "\n";
+        echo '<option value="Photo Essay:">Photo Essay</option>' . "\n";
+        echo '<option value="Website:">Website</option>' . "\n";
+        echo '<option value="Link:">Website</option>' . "\n"; # leftover category from index pages
+        echo '<option value="App:">App</option>' . "\n";
+        echo '<option value="Downloadable Doc:">Downloadable Doc</option>' . "\n";
+        echo '<option value="Blog:">Blog</option>' . "\n";
+        echo '<option value="On-line Map:">On-line Map</option>' . "\n";
+        echo '<option value="Magazine:">Magazine</option>' . "\n";
+        echo '<option value="News Article:">News Article</option>' . "\n";
+        echo '<option value="Meetup Group:">Meetup Group</option>' . "\n";
+        echo '<option value="Related Link:">Related Link</option>' . "\n";
+        echo '<option value="Text:">Text Only - No Link</option>' . "\n";
         echo '</select><br />' . "\n";
         $decrit1 = $ritem['rit1'];
         if ($thisref === 'Book:' || $thisref === 'Photo Essay:') {
@@ -414,72 +414,72 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <p><em style="font-weight:bold;">Add</em> references here:</p>
 <p>Select the type of reference and its accompanying data below:</p>
 <select id="href1" style="height:26px;" name="rtype[]">
-    <option value="b" selected="selected">Book</option>
-    <option value="p">Photo Essay</option>
-    <option value="w">Website</option>
-    <option value="a">App</option>
-    <option value="d">Downloadable Doc</option>
-    <option value="l">Blog</option>
-    <option value="o">On-line Map</option>
-    <option value="m">Magazine</option>
-    <option value="s">News Article</option>
-    <option value="g">Meetup Group</option>
-    <option value="r">Related Link</option>
-    <option value="n">Text Only - No Link</option>
+    <option value="Book:" selected="selected">Book</option>
+    <option value="Photo Essay:">Photo Essay</option>
+    <option value="Website:">Website</option>
+    <option value="App:">App</option>
+    <option value="Downloadable Doc:">Downloadable Doc</option>
+    <option value="Blog:">Blog</option>
+    <option value="On-line Map:">On-line Map</option>
+    <option value="Magazine:">Magazine</option>
+    <option value="News Article:">News Article</option>
+    <option value="Meetup Group:">Meetup Group</option>
+    <option value="Related Link:">Related Link</option>
+    <option value="Text:">Text Only - No Link</option>
 </select>
 Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;
 Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35" 
     placeholder=", by Author Name" /><br /><br />
 <select id="href2" style="height:26px;" name="rtype[]">
-    <option value="b" selected="selected">Book</option>
-    <option value="p">Photo Essay</option>
-    <option value="w">Website</option>
-    <option value="a">App</option>
-    <option value="d">Downloadable Doc</option>
-    <option value="l">Blog</option>
-    <option value="o">On-line Map</option>
-    <option value="m">Magazine</option>
-    <option value="s">News Article</option>
-    <option value="g">Meetup Group</option>
-    <option value="r">Related Link</option>
-    <option value="n">Text Only - No Link</option>
+    <option value="Book:" selected="selected">Book</option>
+    <option value="Photo Essay:">Photo Essay</option>
+    <option value="Website:">Website</option>
+    <option value="App:">App</option>
+    <option value="Downloadable Doc:">Downloadable Doc</option>
+    <option value="Blog:">Blog</option>
+    <option value="On-line Map:">On-line Map</option>
+    <option value="Magazine:">Magazine</option>
+    <option value="News Article:">News Article</option>
+    <option value="Meetup Group:">Meetup Group</option>
+    <option value="Related Link:">Related Link</option>
+    <option value="Text:">Text Only - No Link</option>
 </select>
 Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;
 Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" 
     placeholder=", by Author Name" /><br /><br />
 <select id="href3" style="height:26px;" name="rtype[]">
-    <option value="b" selected="selected">Book</option>
-    <option value="p">Photo Essay</option>
-    <option value="w">Website</option>
-    <option value="a">App</option>
-    <option value="d">Downloadable Doc</option>
-    <option value="l">Blog</option>
-    <option value="o">On-line Map</option>
-    <option value="m">Magazine</option>
-    <option value="s">News Article</option>
-    <option value="g">Meetup Group</option>
-    <option value="r">Related Link</option>
-    <option value="n">Text Only - No Link</option>
+    <option value="Book:" selected="selected">Book</option>
+    <option value="Photo Essay:">Photo Essay</option>
+    <option value="Website:">Website</option>
+    <option value="App:">App</option>
+    <option value="Downloadable Doc:">Downloadable Doc</option>
+    <option value="Blog:">Blog</option>
+    <option value="On-line Map:">On-line Map</option>
+    <option value="Magazine:">Magazine</option>
+    <option value="News Article:">News Article</option>
+    <option value="Meetup Group:">Meetup Group</option>
+    <option value="Related Link:">Related Link</option>
+    <option value="Text:">Text Only - No Link</option>
 </select>
 Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;
 Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35" 
     placeholder=", by Author Name" /><br /><br />
 <select id="href4" style="height:26px;" name="rtype[]">
-    <option value="b" selected="selected">Book</option>
-    <option value="p">Photo Essay</option>
-    <option value="w">Website</option>
-    <option value="a">App</option>
-    <option value="d">Downloadable Doc</option>
-    <option value="l">Blog</option>
-    <option value="o">On-line Map</option>
-    <option value="m">Magazine</option>
-    <option value="s">News Article</option>
-    <option value="g">Meetup Group</option>
-    <option value="r">Related Link</option>
-    <option value="n">Text Only - No Link</option>
+    <option value="Book:" selected="selected">Book</option>
+    <option value="Photo Essay:">Photo Essay</option>
+    <option value="Website:">Website</option>
+    <option value="App:">App</option>
+    <option value="Downloadable Doc:">Downloadable Doc</option>
+    <option value="Blog:">Blog</option>
+    <option value="On-line Map:">On-line Map</option>
+    <option value="Magazine:">Magazine</option>
+    <option value="News Article:">News Article</option>
+    <option value="Meetup Group:">Meetup Group</option>
+    <option value="Related Link:">Related Link</option>
+    <option value="Text:">Text Only - No Link</option>
 </select>
 Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;

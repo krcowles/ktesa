@@ -1,55 +1,65 @@
 <?php
-if ($tbl_type === 'old') {
-    # all REFS data needs to be copied to EREFS
-    $getReq = "SELECT * FROM REFS WHERE indxNo = {$hikeNo};";
-    $getq = mysqli_query($link,$getReq);
-    if (!$getq) {
-        die("saveRefEdits.php: Failed to pull REFS data for move to EREFS: " .
+/* Since references may have been marked for deletion in the edit phase,
+ * the approach taken is to simply delete all refs, then add back any 
+ * other than those so marked, including any changes made thereto. This then
+ * includes newly added refs, so all get INSERTED, and no algorithm is required
+ * to determine which only get updated vs which get added vs which get deleted.
+ */ 
+if ($tbl_type === 'new') {
+    # deletion is not required for 'old' since there aren't any yet in EREFS
+    $delrefsreq = "DELETE FROM EREFS WHERE indxNo = '{$hikeNo}';";
+    $delrefs = mysqli_query($link,$delrefsreq);
+    if (!$delrefs) {
+        die("saveRefEdits.php: Failed to delete old refs for {$hikeNo}: " .
             mysqli_error($link));
     }
-    while ($r = mysqli_fetch_assoc($getq)) {
-        $rtype = $r['rtype'];
-        $rit1 = mysqli_real_escape_string($link,$r['rit1']);
-        $rit2 = mysqli_real_escape_string($link,$r['rit2']);
-        $refReq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES (" .
-            "'{$newNo}','{$rtype}','{$rit1}','{$rit2}');";
-        $refq = mysqli_query($link,$refReq);
-        if (!$refq) {
-            die("saveRefEdits.php: Failed to add EREFS data for hike {$hikeNo}: " .
+    mysqli_free_result($delrefs);
+    $useIndxNo = $hikeNo;
+} else {
+    $useIndxNo = $newNo;
+}
+# Now add the newly edited ones back in, sans any deletions
+# NOTE: The following posts collect all items, even if empty...
+$ertypes = $_POST['rtype'];  # because there is always a default rtype
+$erit1s = $_POST['rit1'];
+$erit2s = $_POST['rit2'];
+# NOTE: The following post only collects checked boxes
+$deletes = $_POST['delref']; # any entries will contain the ref no on editDB.php
+if (count($deletes) > 0) {
+    $chk_del = true;
+} else {
+    $chk_del = false;
+}
+$dindx = 0;
+$newcnt = count($erit1s);
+/*
+ * NOTE: the only items that have 'delete' boxes are those for which references
+ * already existed in the database, and they are listed before any that might
+ * get added. Therefore, proceeding through the loop, the first ones can be
+ * compared to any corresponding $deletes ref pointer.
+ */
+for ($j=0; $j<$newcnt; $j++) {
+    $addit = true;
+    if ($chk_del) {
+        if ($j === intval($deletes[$dindx])) {
+            $dindx++; # skip this and look for the next;
+            if ($dindx === count($deletes)) {
+                $chk_del = false;
+            }
+            $addit = false;
+        }  
+    } 
+    if ($addit && $erit1s[$j] !== '') {
+        $a = mysqli_real_escape_string($link,$ertypes[$j]);
+        $b = mysqli_real_escape_string($link,$erit1s[$j]);
+        $c = mysqli_real_escape_string($link,$erit2s[$j]);
+        $addrefreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES " .
+            "('{$useIndxNo}','{$a}','{$b}','{$c}');";
+        $addref = mysqli_query($link,$addrefreq);
+        if (!$addref) {
+            die("saveRefEdits.php: Failed to insert EREFS data: " . 
                 mysqli_error($link));
         }
     }
-    mysqli_free_result($refq);
-    mysqli_free_result($getq);
-    $useNo = $newNo;
-} else {
-    $useNo = $hikeNo;
 }
-# Delete any refs so marked in editDB.php
-$deletes = $_POST['delref'];
-if (count($deletes) !== 0) {
-    $erefReq = "SELECT refId FROM EREFS WHERE indxNo = {$useNo};";
-    $erefq = mysqli_query($link,$erefReq);
-    if (!$erefq) {
-        die("saveRefEdits.php: Failed to extract refids from EREFS for hike {$useNo}: " .
-            mysqli_error($link));
-    }
-    $rcnt = 0;
-    $rindx = 0;
-    while ($refrow = mysqli_fetch_row($erefq)) {
-        $thisid = $refrow[0];
-        if ($deletes[$rindx] == $rcnt) {
-            # delete this ref
-            $delReq = "DELETE FROM EREFS WHERE refId = {$thisid};";
-            $delq = mysqli_query($link,$delReq);
-            if (!$delq) {
-                die("saveRefEdits.php: Failed to delete id {$thisid}: " .
-                    mysqli_error($link));
-            }
-            $rindx++;
-        }
-        $rcnt++;
-    }
-    mysqli_free_result($delq);
-    mysqli_free_result($erefq);
-}
+mysqli_free_result($addref);

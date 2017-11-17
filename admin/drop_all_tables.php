@@ -1,13 +1,15 @@
 <?php
 require_once '../mysql/setenv.php';
 $qty = filter_input(INPUT_GET,'no');
+# --------- the following is a terrible way to do this --- change later
 if ($qty === 'all') {
     $action = 'ALL Tables';
     $strt = 0;
 } else {
     $action = 'All E-Tables';
-    $strt = 5;
+    $strt = 6;
 }
+# --------- change the above
 $table = array('USERS','HIKES','TSV','REFS','GPSDAT','IPTBLS',
     'ETSV','EREFS','EGPSDAT','EHIKES'); # NOTE: E-tables are order-sensitive
 $tblcnt = count($table); # total number of hike tables

@@ -200,11 +200,12 @@ $addon2 = filter_input(INPUT_POST,'ao2');
         $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
         $indxq = mysqli_query($link,$indxReq);
         if (!$indxq) {
-            die("savePicEdits.php: Did not retrieve new EHIKES indx no: " .
+            die("saveChanges.php: Did not retrieve new EHIKES indx no: " .
                 mysqli_error($link));
         }
         $indxNo = mysqli_fetch_row($indxq);
         $newNo = $indxNo[0];
+        mysqli_free_result($indxq);
     }
     include "savePicEdits.php";
     include "saveRefEdits.php";
