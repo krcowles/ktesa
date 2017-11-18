@@ -128,7 +128,7 @@ if ($haveGpx) {
     }
     $trkfile = '../json/' . $baseName . ".json";
     $json = true;
-    include "extractGpx.php";
+    include "../php/extractGpx.php";
     $trk = fopen($trkfile,"w");
     $dwnld = fwrite($trk,$jdat);
     if ($dwnld === false) {

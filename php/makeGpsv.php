@@ -66,14 +66,9 @@ if ($gpxdat === false) {
 /*
  *    ---- TRACK DATA ----
  * Getting track data from gpx file and formatting for gpsv:
- */
-$gpxlats = [];
-$gpxlons = [];
-$gpxelev = []; // this will be used for elevation charts on the hike page
-/* 
  * In some cases, e.g. proposed routes, there may be more than one trkseg;
  * While the code does not yet process this case, some hooks are provided
- * to ease the transition: could there also be > 1 trk?
+ * to ease the transition...
  */
 $segcnt = 0;
 $trksPerSeg = [];
@@ -81,21 +76,8 @@ foreach ($gpxdat->trk->trkseg as $trkinfo) {
     $segcnt++;
     array_push($trksPerSeg,$trkinfo->count());
 }
-$plat = 0;
-$plng = 0;
-foreach($gpxdat->trk->trkseg as $trackdat) {
-    foreach ($trackdat->trkpt as $datum) {
-        if ( !($datum['lat'] === $plat && $datum['lon'] === $plng) ) {
-            $plat = $datum['lat'];
-            $plng = $datum['lon'];
-            array_push($gpxlats,(float)$plat);
-            array_push($gpxlons,(float)$plng);
-            $meters = $datum->ele;
-            $feet = round(3.28084 * $meters,1);
-            array_push($gpxelev,$feet);
-        }
-    }
-}
+$json = false;
+include "extractGpx.php";
 #$jsElevation = json_encode($gpxelev); # future use in elevation chart creation?
 $north = $gpxlats[0];
 $south = $north;
