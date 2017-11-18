@@ -121,20 +121,24 @@ if ($hikeGpx !== '') {
 
 /* JSON FILE OPS: */
 if ($haveGpx) {
-    $cwd = getcwd();  # currently in project/build directory...
-    $sitePos = strpos($cwd,"build");
-    $siteLoc = substr($cwd,0,$sitePos);
-    $trkcmd = $siteLoc . 'tools/mktrk.sh -f ' . $siteLoc . 'gpx/' . $hikeGpx . 
-        ' -p ' . $siteLoc . 'json';
-    $json = exec($trkcmd);
-    if ( preg_match("/DONE/",$json) === 1 ) {
-        echo $norm . 'Track file created from GPX and saved</p>';
-    } else {
-        $trkfail =  $pstyle . 'Track file creation from ' . $hikeGpx . ' failed: contact' .
-            'Site Master</p>';
-        die ($trkfail);
+    $gpxdat = simplexml_load_file($gpxLoc);
+    if ($gpxdat === false) {
+        die ($pstyle . "fileUploads.php: Could not load gpx file as simplexml; " .
+            "Please contact Site Master</p>");
     }
-    $trkfile = $baseName . '.json';
+    $trkfile = '../json/' . $baseName . ".json";
+    $json = true;
+    include "extractGpx.php";
+    $trk = fopen($trkfile,"w");
+    $dwnld = fwrite($trk,$jdat);
+    if ($dwnld === false) {
+        $trkfail =  $pstyle . "fileUploads.php: Failed to write out {$trkfile} " .
+            "[length: " . strlen($jdat) . "]; Please contact Site Master</p>";
+        die ($trkfail);   
+    } else {
+        echo $norm . 'Track file created from GPX and saved</p>';
+    }
+    fclose($trk);
 }
 
 # ADDITIONAL IMAGES FILES (IF ANY):
