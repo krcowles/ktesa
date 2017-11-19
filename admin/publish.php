@@ -234,7 +234,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
     mysqli_free_result($ehike);
     
     ?>
-    <p>Hike <?php echo $hikeNo;?> Has Been Released to the Main Site and 
+    <p>E-Hike <?php echo $hikeNo;?> Has Been Released to the Main Site and 
         may now be viewed from the main page</p>
 </div>
 </body>

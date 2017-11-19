@@ -3,7 +3,7 @@ $( function () { // when page is loaded...
 /* Each drop-down field parameter is held in a hidden <p> element;
  * the data (text) in that hidden <p> element is the default that should 
  * appear in the drop-down box on page-load;
- * The drop-down style parameters are:
+ * The drop-down element parameters are:
  *      - locale
  *      - cluster group name
  *      - hike type
@@ -150,7 +150,7 @@ $reftags.each( function() {
                 $(box1).attr('placeholder','Book Title');
             }
             if ($(box2).val() === '') {
-                $(box2).attr('placeholder',', by Author Name');
+                $(box2).attr('placeholder','Author');
             }
         } else if ($(this).val() !== 'n') {
             if ($(box1).val() === '') {
