@@ -60,9 +60,6 @@ function crossHairs() {
 }
 // account for building new page - files not stored in main yet
 var trackfile = $('#chartline').data('gpx');
-if ( trackfile.indexOf('tmp/') === -1 ) {
-    trackfile = '../gpx/' + trackfile;
-}
 var lats = [];
 var lngs = [];
 var elevs = [];  // elevations, in ft.
@@ -157,23 +154,6 @@ var coords = {};  // data points by which to mark the track
 var indxOfPt;
 var prevCHairs = false;
 var imageData;
-/* Test code - filter out duplicate values from GPX file
-var naIndx;
-for (var n=0; n<hikeDat.length; n++) {
-    if (n === 0) {
-        newArray[0] = hikeDat[0];
-        naIndx = 1;
-    } else {
-        if (hikeDat[n].x !== hikeDat[n-1].x) {
-            newArray[naIndx] = hikeDat[n];
-            naIndx++;
-        }
-    }
-}
-msg = "New array length is " + newArray.length;
-//window.alert(msg);
-*/
-
 // render the chart using predefined objects
 var waitForDat = setInterval( function() {
     if (ajaxDone) {
@@ -183,7 +163,6 @@ var waitForDat = setInterval( function() {
         clearInterval(waitForDat);
     }
 }, 200);
-
 function window2canvas(canvas,x,y) {
     /* it is necessary to get bounding rect each time as the user may have
      * scrolled the window down (or resized), and the rect is measured wrt/viewport
