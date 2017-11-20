@@ -72,15 +72,17 @@ while ($picrow = mysqli_fetch_assoc($photoq)) {
         die("savePicEdits.php: Failed to update caption for id {$thisid}: " .
             mysqli_error($link));
     }
-    if ($dels[$delindx] == $dcnt) {
-        $noDispReq = "UPDATE ETSV SET hpg = 'N' WHERE picIdx = {$thisid};";
-        $noDisp = mysqli_query($link,$noDispReq);
-        if (!$noDisp) {
-            die("savePicEdits.php: Failed to 'delete' hpg for id {$thisid}: " .
-                mysqli_error($link));
-        }
-        $delindx++;
-    } 
+    if (count($dels) !== 0) {
+        if ($dels[$delindx] == $dcnt) {
+            $noDispReq = "UPDATE ETSV SET hpg = 'N' WHERE picIdx = {$thisid};";
+            $noDisp = mysqli_query($link,$noDispReq);
+            if (!$noDisp) {
+                die("savePicEdits.php: Failed to 'delete' hpg for id {$thisid}: " .
+                    mysqli_error($link));
+            }
+            $delindx++;
+        } 
+    }
     $dcnt++;
     $piccnt++;
 }
