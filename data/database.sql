@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 19, 2017 at 09:51 PM
+-- Generation Time: Nov 20, 2017 at 02:39 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.1.8
 
@@ -34,6 +34,13 @@ CREATE TABLE `EGPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `EGPSDAT`
+--
+
+INSERT INTO `EGPSDAT` (`datId`, `indxNo`, `datType`, `label`, `url`, `clickText`) VALUES
+(13, 5, 'A', 'GPX File:', '../gpx/Juan_Tabo_Cabin.gpx', 'The Track');
 
 -- --------------------------------------------------------
 
@@ -72,6 +79,13 @@ CREATE TABLE `EHIKES` (
   `info` varchar(4096) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `EHIKES`
+--
+
+INSERT INTO `EHIKES` (`indxNo`, `pgTitle`, `usrid`, `stat`, `locale`, `marker`, `collection`, `cgroup`, `cname`, `logistics`, `miles`, `feet`, `diff`, `fac`, `wow`, `seasons`, `expo`, `gpx`, `trk`, `lat`, `lng`, `aoimg1`, `aoimg2`, `purl1`, `purl2`, `dirs`, `tips`, `info`) VALUES
+(5, 'Juan Tabo Cabin', 'mstr', 'sub', 'Albuquerque', 'Cluster', '', 'S', 'La Cueva Road Group', 'Out-and-back', '1.00', 500, 'Easy', 'None', 'Sandia and Valley Views', 'Not Summer', 'Full sun', 'Juan_Tabo_Cabin.gpx', 'Juan_Tabo_Cabin.json', 35.2027919000, -106.5037662000, NULL, NULL, 'https://www.flickr.com/photos/139088815@N08/albums/72157690676899476', '', 'https://www.google.com/maps/dir//35.20265,-106.5038833/@35.2012093,-106.507998,16.02z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDEyJzA5LjUiTiAxMDbCsDMwJzE0LjAiVw!3b1!8m2!3d35.20265!4d-106.5038833', '', 'This is an easy stroll up an arroyo to the old CCC Headquarters ruins in the foothills of the Sandias. Don\'t be deceived though by the length or ease of the hike - the views are quite rewarding, both coming and going. Towards the cabin (and back) great views of the Sandias present themselves, and on the return trip, the vista of the valley is quite lovely. A low point in the wall surrounding the cabin provides access to the interior of the ruins. Footpaths surrounding the cabin also provide great perspectives. The hike parallels FR 333, and the ruins can be seen from that road. Note - the map and elevation chart show only the route out and omit the track back.  ');
+
 -- --------------------------------------------------------
 
 --
@@ -85,6 +99,13 @@ CREATE TABLE `EREFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `EREFS`
+--
+
+INSERT INTO `EREFS` (`refId`, `indxNo`, `rtype`, `rit1`, `rit2`) VALUES
+(17, 5, 'Book:', 'Sandia Mountain Hiking Guide', 'Mike Coltrin');
 
 -- --------------------------------------------------------
 
@@ -111,6 +132,19 @@ CREATE TABLE `ETSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ETSV`
+--
+
+INSERT INTO `ETSV` (`picIdx`, `indxNo`, `folder`, `title`, `hpg`, `mpg`, `desc`, `lat`, `lng`, `thumb`, `alblnk`, `date`, `mid`, `imgHt`, `imgWd`, `iclr`, `org`) VALUES
+(57, 5, 'Folder1', 'ShieldProwAndNeedle', 'Y', 'Y', 'Some striking perspective on features of the Sandia', 35.2034805556, -106.5013805560, 'https://c1.staticflickr.com/5/4552/24595354358_a811716989_t.jpg', 'https://www.flickr.com/photos/139088815@N08/24595354358/in/album-72157690676899476', '2017-10-29 11:45:04', 'https://c1.staticflickr.com/5/4552/24595354358_a811716989_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4552/24595354358_43cc3ca185_o.jpg'),
+(58, 5, 'Folder1', 'ViewEnRoute', 'Y', 'Y', 'Great Sanida Views abound!', 35.2061944444, -106.4972305560, 'https://c1.staticflickr.com/5/4556/37580262105_2efb1b36c5_t.jpg', 'https://www.flickr.com/photos/139088815@N08/37580262105/in/album-72157690676899476', '2017-10-29 11:55:47', 'https://c1.staticflickr.com/5/4556/37580262105_2efb1b36c5_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4556/37580262105_188c60513c_o.jpg'),
+(59, 5, 'Folder1', 'RearviewCabin', 'Y', 'Y', 'One view of the old CCC Cabin', 35.2059694444, -106.4964611110, 'https://c1.staticflickr.com/5/4562/38411454516_2d95d9fb56_t.jpg', 'https://www.flickr.com/photos/139088815@N08/38411454516/in/album-72157690676899476', '2017-10-29 12:05:49', 'https://c1.staticflickr.com/5/4562/38411454516_2d95d9fb56_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4562/38411454516_a866228008_o.jpg'),
+(60, 5, 'Folder1', 'CabinArchitecture', 'Y', 'N', 'One view of the old CCC Cabin', 35.2059888889, -106.4966194440, 'https://c1.staticflickr.com/5/4535/38435329402_79384527e2_t.jpg', 'https://www.flickr.com/photos/139088815@N08/38435329402/in/album-72157690676899476', '2017-10-29 12:08:44', 'https://c1.staticflickr.com/5/4535/38435329402_79384527e2_n.jpg', 3264, 2448, 'pink', 'https://c1.staticflickr.com/5/4535/38435329402_67370a9425_o.jpg'),
+(61, 5, 'Folder1', 'ValleyView', 'Y', 'Y', 'Beams gone, the architecture remains', 35.2060138889, -106.4978944440, 'https://c1.staticflickr.com/5/4555/38466964641_790779162b_t.jpg', 'https://www.flickr.com/photos/139088815@N08/38466964641/in/album-72157690676899476', '2017-10-29 12:13:04', 'https://c1.staticflickr.com/5/4555/38466964641_790779162b_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4555/38466964641_01834e6379_o.jpg'),
+(62, 5, 'Folder1', 'ChamisaView', 'Y', 'N', 'Looking down towards the ABQ valley', 35.2059666667, -106.4978777780, 'https://c1.staticflickr.com/5/4559/24595363388_81be75fdb4_t.jpg', 'https://www.flickr.com/photos/139088815@N08/24595363388/in/album-72157690676899476', '2017-10-29 12:13:25', 'https://c1.staticflickr.com/5/4559/24595363388_81be75fdb4_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4559/24595363388_b7d66d36bf_o.jpg'),
+(63, 5, 'Folder1', 'GentleTrail', 'Y', 'Y', 'Chamisa lines the trail decorating the vistas', 35.2026666667, -106.5038388890, 'https://c1.staticflickr.com/5/4581/24595391958_7b4c0b02fd_t.jpg', 'https://www.flickr.com/photos/139088815@N08/24595391958/in/album-72157690676899476', '2017-10-29 12:33:55', 'https://c1.staticflickr.com/5/4581/24595391958_7b4c0b02fd_n.jpg', 2448, 3264, 'pink', 'https://c1.staticflickr.com/5/4581/24595391958_8bb9cbc2f2_o.jpg');
 
 -- --------------------------------------------------------
 
@@ -2432,22 +2466,22 @@ ALTER TABLE `USERS`
 -- AUTO_INCREMENT for table `EGPSDAT`
 --
 ALTER TABLE `EGPSDAT`
-  MODIFY `datId` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `datId` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `EHIKES`
 --
 ALTER TABLE `EHIKES`
-  MODIFY `indxNo` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `indxNo` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `EREFS`
 --
 ALTER TABLE `EREFS`
-  MODIFY `refId` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `refId` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `ETSV`
 --
 ALTER TABLE `ETSV`
-  MODIFY `picIdx` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `picIdx` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 --
 -- AUTO_INCREMENT for table `GPSDAT`
 --
