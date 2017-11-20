@@ -126,10 +126,11 @@ if ($haveGpx) {
         die ($pstyle . "fileUploads.php: Could not load gpx file as simplexml; " .
             "Please contact Site Master</p>");
     }
-    $trkfile = '../json/' . $baseName . ".json";
+    $trkfile = $baseName . ".json"; # used by validateHike.php
+    $trkLoc = '../json/' . $trkfile;
     $json = true;
     include "../php/extractGpx.php";
-    $trk = fopen($trkfile,"w");
+    $trk = fopen($trkLoc,"w");
     $dwnld = fwrite($trk,$jdat);
     if ($dwnld === false) {
         $trkfail =  $pstyle . "fileUploads.php: Failed to write out {$trkfile} " .
