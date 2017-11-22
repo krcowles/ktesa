@@ -67,8 +67,8 @@ if (mysqli_num_rows($pix) === 0) {
                 . '" /><br />' . PHP_EOL;
         if ($pgType === 'Edit') {
             $tawd = $phWds[$i] - 12;  # textarea widths don't compute exactly
-            echo '<textarea style="width:' . $tawd . 'px">' . $phDescs[$i] 
-                . "</textarea>";
+            echo '<textarea style="width:' . $tawd . 'px" name="ecap[]">' . 
+                $phDescs[$i] . "</textarea>";
         }
         echo "</div>" . PHP_EOL;
     }
@@ -91,6 +91,10 @@ if (mysqli_num_rows($pix) === 0) {
         }
     }
     $jsDescs .= ']';
+    if ($pgType == 'Validate' || $pgType == 'Finish') {
+        echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;">' .
+        '<input type="submit" value="Create Page w/This Data" /><br /><br />' . "\n";
+    }
 }
 ?>
 </div>
@@ -99,10 +103,9 @@ if (mysqli_num_rows($pix) === 0) {
     var phTitles = <?php echo $jsTitles;?>;
     var phDescs = <?php echo $jsDescs;?>;
 </script>
-<script src="photoSelect.js"></script>
-<script src="../scripts/picPops.js"></script>
+<script src="photoSelect.js" type="text/javascript"></script>
+<script src="../scripts/picPops.js" type="text/javascript"></script>
 <div class="popupCap"></div>
 <?php 
     echo '<input type="hidden" name="usepics" value="' . $inclPix . '" />' . "\n";
     echo '<input type="hidden" name="hikeno" value="' . $hikeNo . '" />' . "\n";
-?>

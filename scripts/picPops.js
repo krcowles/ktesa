@@ -1,3 +1,4 @@
+alert(phTitles);
 var $photos;
 var noOfPix;
 var picSel;
@@ -19,14 +20,14 @@ var sessSupport = window.sessionStorage ? true : false;
 var emode = false; // edit mode requires caption offset
 var pageType = $('#ptype').text();
 var caps = true;
-if (pageType == 'Hike') {
+if (pageType === 'Hike') {
     $photos = $('img[id^="pic"]');
     var phTitles = descs.slice();
     var phDescs = capts.slice();
-} else if (pageType == 'Validate' || pageType == 'Finish' || pageType == 'Edit') {
+} else if (pageType === 'Validate' || pageType == 'Finish' || pageType == 'Edit') {
     $photos = $('.allPhotos');
 }
-if (pageType == 'Edit') { 
+if (pageType === 'Edit') { 
     // the edit page requires caption offset for checkboxes
     emode = true;
     caps = false;
@@ -77,9 +78,9 @@ function executeCaptions() {
         $photos.each( function(j) {
             picPos = $(this).offset();
             if (emode) {
-                capTop[j] = Math.round(picPos.top) + 20 + 'px';
+                capTop[j] = Math.floor(picPos.top) + 20 + 'px';
             } else {
-                capTop[j] = Math.round(picPos.top) + 'px';
+                capTop[j] = Math.floor(picPos.top) + 'px';
             }
             capLeft[j] = Math.round(picPos.left) + 'px';
             if ( sessSupport ) {
@@ -133,4 +134,3 @@ function executeCaptions() {
         calcPos();
     });
 }
-
