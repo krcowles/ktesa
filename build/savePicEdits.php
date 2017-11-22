@@ -1,9 +1,11 @@
 <?php
-/* To already be defined on entry:
- * $tbl_type; $hikeNo
- */
+# The following 2 variables must be defined on entry: $tbl_type; $hikeNo
 # gather up the captions:
 $ecapts = $_POST['ecap'];
+$noOfPix = count($ecapts);
+# capture the states of each for displaying on page or and/or on map
+$displayPg = $_POST['pix'];
+$displayMap = $_POST['mapit'];
 # if the edited file was in HIKES, transfer data over to EHIKES:
 if ($tbl_type === 'old') {
     # all TSV data needs to be copied to ETSV before updating
@@ -52,40 +54,45 @@ if ($tbl_type === 'old') {
  * (The order of the pics in the table corresponds to the id no's of deletes
  * for all hpg="Y" settings. 
  */
-$photoReq = "SELECT picIdx,hpg,`desc` FROM ETSV WHERE indxNo = '{$useNo}' AND " .
-    "hpg = 'Y';";
+$photoReq = "SELECT picIdx,title,hpg,mpg,`desc` FROM ETSV WHERE indxNo = '{$useNo}'";
 $photoq = mysqli_query($link,$photoReq);
 if (!$photoq) {
     die("savePicEdits.php: Failed to extract 'hpg' from ETSV: " .
         mysqli_error($link));
 }
-$dels = $_POST['delpic']; # only passes the CHECKED boxes (these have id#'s)
-$dcnt = 0;
-$delindx = 0;
-$piccnt = 0;
-while ($picrow = mysqli_fetch_assoc($photoq)) {
-    $thisid = $picrow['picIdx'];
-    $newcap = mysqli_real_escape_string($link,$ecapts[$piccnt]);
-    $capReq = "UPDATE ETSV SET `desc` = '{$newcap}' WHERE picIdx = {$thisid};";
-    $capq = mysqli_query($link,$capReq);
-    if (!$capq) {
-        die("savePicEdits.php: Failed to update caption for id {$thisid}: " .
-            mysqli_error($link));
-    }
-    if (count($dels) !== 0) {
-        if ($dels[$delindx] == $dcnt) {
-            $noDispReq = "UPDATE ETSV SET hpg = 'N' WHERE picIdx = {$thisid};";
-            $noDisp = mysqli_query($link,$noDispReq);
-            if (!$noDisp) {
-                die("savePicEdits.php: Failed to 'delete' hpg for id {$thisid}: " .
-                    mysqli_error($link));
-            }
-            $delindx++;
-        } 
-    }
-    $dcnt++;
-    $piccnt++;
+if (count($ecapts) !== mysqli_num_rows($photoq)) {
+    echo '<p style="color:red;font-size:20px;margin-left:16px;">'
+    . "WARNING: Retrieved photo count and no of captions don't match..</p>";
 }
-mysqli_free_result($capq);
-mysqli_free_result($noDisp);
+$p = 0;
+while ($photo = mysqli_fetch_assoc($photoq)) {
+    $thisid = $photo['picIdx'];
+    $thispic = $photo['title'];
+    $newcap = mysqli_real_escape_string($link,$ecapts[$p]);
+    # determine if $thispic has a corresponding checkbox value:
+    # NOTE: If not checked, array will not contain $thispic
+    $disph = 'N';
+    for ($i=0; $i<$noOfPix; $i++) {
+        if ($thispic == $displayPg[$i]) {
+            $disph = 'Y';
+            break;
+        }
+    }
+    $dispm = 'N';
+    for ($j=0; $j<$noOfPix; $j++) {
+        if ($thispic == $displayMap[$j]) {
+            $dispm = 'Y';
+            break;
+        }
+    } 
+    $updtreq = "UPDATE ETSV SET hpg = '{$disph}',mpg = '{$dispm}',"
+        ."`desc` = '{$newcap}' WHERE picIdx = {$thisid};";
+    $update = mysqli_query($link,$updtreq);
+    if (!$update) {
+        die("savePicEdits.php: Failed to update ETSV table for hike {$hikeNo}: "
+            . msyqli_error($link));
+    }
+    $p++;
+}
+mysqli_free_result($update);
 mysqli_free_result($photoq);

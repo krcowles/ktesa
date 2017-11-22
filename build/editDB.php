@@ -264,92 +264,21 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <label for="murl">Map Directions Link (Url): </label>
 <textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
 <!-- This next section is photo editing-->
+<p id="ptype" style="display:none">Edit</p>
 <div>
     <p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
             captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
 <?php
-    /* 
-     * Create rows showing photos with captions in a textarea box below;
-     * Any changes to the captions will be saved to the database
-     */
-    $rwidth = 940;
-    $nomHt = 240;
-    $curwidth = 0;
-    $rowCnt = 1;
-    $rowHtml = '';
-    $capHtml = '';
-    $delHtml = '';
-    $delrows = [];
-    $picrows = [];
-    $caprows = [];
-    $cnt = 0;
-    $delItem = 0;
-    $picreq = "SELECT * FROM {$ptable} WHERE indxNo = '{$hikeNo}';";
-    $pdatq = mysqli_query($link,$picreq);
-    if (!$pdatq) {
-        die("editDB.php: Failed to extract photo data from {$ptable}: " .
-            mysqli_error($link));
-    }
-    while ($photo = mysqli_fetch_assoc($pdatq)) {
-        if ($photo['hpg'] == 'Y') {
-            # scale photo dims to nomHt
-            $scale = $nomHt/$photo['imgHt'];
-            $width = intval($scale * $photo['imgWd']);
-            # description w/o date
-            $ecap = $photo['desc'];
-            if (substr($ecap,0,1) == '"') {
-                $elgth = strlen($ecap) - 2;
-                $ecap = substr($ecap,1,$elgth);
-            }
-            $curwidth += $width + 2; # 2px left margin
-            if ($curwidth > $rwidth) {
-                $rowCnt++;
-                array_push($delrows,$delHtml);
-                array_push($picrows,$rowHtml);
-                array_push($caprows,$capHtml);
-                $delHtml = '';
-                $rowHtml = '';
-                $capHtml = '';
-                $curwidth = $width;
-                $cnt = 0;
-            }
-            $rowHtml .= '<img style="margin-left:2px;" height="' . $nomHt . 
-                '" width="' . $width . '" src="' . $photo['mid'] . 
-                '" alt="' . $ecap . '" />' . "\n";
-            $tawidth = $width - 12;
-            $capHtml .= '<textarea name="ecap[]" style="height:64px;width:' . $tawidth . 
-                    'px">' . $ecap . "</textarea>\n"; 
-            if ($cnt < 1) {
-                $delwidth = $width - 66;
-            } else {
-                $delwidth = $width - 62;
-            }
-            $delHtml .= '<span style="margin-right:' . $delwidth . 'px;">' .
-                '<input type="checkbox" name="delpic[]" value="'
-                    . $delItem . '" />&nbsp;Delete</span>';
-            $delItem++;
-            $cnt++;
-        }  
-    }
-    # last row:
-    $rowCnt++;
-    array_push($delrows,$delHtml);
-    array_push($picrows,$rowHtml);
-    array_push($caprows,$capHtml);
-    for ($j=0; $j<$rowCnt; $j++) {
-        echo $delrows[$j] . "<br />";
-        echo $picrows[$j] . "<br />";
-        echo $caprows[$j] . "<br />";
-    }
-    echo "</div>\n";
-    
-    if ($hikeTips !== '') {
-        echo '<p>Tips Text: </p>';
-        echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />' . "\n";
-    } else {
-        echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . 
-           '[NO TIPS FOUND]' . '</textarea><br />' . "\n";
-    }
+$pgType = 'Edit';
+require "photoSelect.php";
+echo "</div>\n";  
+if ($hikeTips !== '') {
+    echo '<p>Tips Text: </p>';
+    echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />' . "\n";
+} else {
+    echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . 
+       '[NO TIPS FOUND]' . '</textarea><br />' . "\n";
+}
 ?>        
 <p>Hike Information:</p>
 <textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $hikeDetails;?></textarea>
@@ -556,12 +485,10 @@ Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35"
 <h3>Save the changes!</h3>
 <p><input type="submit" name="savePg" value="Save Edits" /></p>
 </div>	
-
 </form>
-
+<div class="popupCap"></div>
 </div>
-
-<script src="../scripts/jquery-1.12.1.js"></script>
+<!-- jQuery script source is included in photoSelect.php -->
 <script src="editDB.js"></script>
 </body>
 </html>
