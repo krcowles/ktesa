@@ -16,14 +16,22 @@ var sessSupport = window.sessionStorage ? true : false;
    User gets a window alert if sessionStorage is not supported and and is advised
    about potential refresh issues */
     
+var emode = false; // edit mode requires caption offset
 var pageType = $('#ptype').text();
+var caps = true;
 if (pageType == 'Hike') {
     $photos = $('img[id^="pic"]');
     var phTitles = descs.slice();
     var phDescs = capts.slice();
-} else if (pageType == 'Validation' || pageType == 'Finish') {
+} else if (pageType == 'Validate' || pageType == 'Finish' || pageType == 'Edit') {
     $photos = $('.allPhotos');
 }
+if (pageType == 'Edit') { 
+    // the edit page requires caption offset for checkboxes
+    emode = true;
+    caps = false;
+}
+
 noOfPix = $photos.length;
 executeCaptions();
 function executeCaptions() {
@@ -68,7 +76,11 @@ function executeCaptions() {
     function calcPos() {
         $photos.each( function(j) {
             picPos = $(this).offset();
-            capTop[j] = Math.round(picPos.top) + 'px';
+            if (emode) {
+                capTop[j] = Math.round(picPos.top) + 20 + 'px';
+            } else {
+                capTop[j] = Math.round(picPos.top) + 'px';
+            }
             capLeft[j] = Math.round(picPos.left) + 'px';
             if ( sessSupport ) {
                 ptop = 'ptop' + j;
@@ -86,8 +98,12 @@ function executeCaptions() {
                 break;
             }
         }
-        htmlDesc = '<p class="capLine">' + photoName + ': ' + '<em>' +
-                phDescs[picNo] + '</em></p>';
+        if (caps) {
+            var htmlDesc = '<p class="capLine">' + photoName +
+                ': ' + '<em>' + phDescs[picNo] + '</em></p>';
+        } else {
+            var htmlDesc = '<p class="capLine">' + photoName + '</p>';
+        }
         $('.popupCap').css('display','block');
         $('.popupCap').css('position','absolute');
         $('.popupCap').css('top',capTop[picNo]);

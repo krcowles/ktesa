@@ -59,7 +59,7 @@ if ( isset($valType) ) {
 	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail"><?php echo $logo;?></p>
-<p id="ptype" style="display:none">Validation</p>
+<p id="ptype" style="display:none">Validate</p>
 
 <?php
     if ($type === 'Save') {
@@ -597,60 +597,12 @@ mysqli_free_result($aidq);
  * on both the hike page and on the GPSV map, and can be skipped in the case
  * of a 'Save'.
  */
-if ($type === 'Validate') {  # ******** - TURNED OFF RIGHT NOW - ************
+if ($type === 'Validate') {
     if ($usetsv) {
-        $picno = 0;
-        $phNames = [];
-        $phDescs = [];
-        $phPics = [];
-        $phWds = [];
-        $rowHt = 220; 
-        $picreq = "SELECT * FROM ETSV WHERE indxNo = '{$hikeNo}';";
-        $picq = mysqli_query($link,$picreq);
-        if (!$picq) {
-            die ("validateHike.php: Failed to extract picture data from ETSV: " .
-                mysqli_error($link));
-        }
-        while ($pix = mysqli_fetch_assoc($picq)) {
-            $phNames[$picno] = $pix['title'];
-            $phDescs[$picno] = $pix['desc'];
-            $phPics[$picno] = $pix['mid'];
-            $pHeight = $pix['imgHt'];
-            $aspect = $rowHt/$pHeight;
-            $pWidth = $pix['imgWd'];
-            $phWds[$picno] = floor($aspect * $pWidth);
-            $picno ++;
-        }
+        $pgType = 'Validate';
+        $ptable = 'ETSV';
+        require "photoSelect.php";
     }
-    echo '<h4 style="text-indent:16px">Please check the boxes corresponding to ' .
-        'the pictures you wish to include on the new page:</h4>' . "\n";
-    echo '<div style="position:relative;top:-14px;margin-left:16px;">' .
-        '<input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;' .
-        'Use All Photos on Hike Page<br />' . "\n" .
-        '<input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;' .
-        'Use All Photos on Map' . "\n";
-    echo "</div>\n";
-    echo '<div style="margin-left:16px;">' . "\n";
-
-    for ($i=0; $i<$picno; $i++) {
-        echo '<div class="selPic" style="width:' . $phWds[$i] . 'px;float:left;'
-                . 'margin-left:2px;margin-right:2px;">';
-        echo '<input class="hpguse" type="checkbox" name="pix[]" value="' .  $phNames[$i] .
-            '" />Display&nbsp;&nbsp;';
-        echo '<input class="mpguse" type="checkbox" name="mapit[]" value="' . $phNames[$i] .
-             '" />Map<br />' . "\n";
-        echo '<img class="allPhotos" height="200px" width="' . $phWds[$i] . 'px" src="' .
-                $phPics[$i] . '" alt="' . $phNames[$i] . '" />' . "\n";
-        echo "</div>\n";
-    }
-    echo "</div>\n";
-
-    echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;">' .
-        '<input type="submit" value="Create Page w/This Data" /><br /><br />' . "\n";
-    echo "</div>\n";
-
-    echo '<div class="popupCap"></div>' . "\n";
-    
     if ($usetsv) {
         $passtsv = "YES";
     } else {
@@ -659,35 +611,10 @@ if ($type === 'Validate') {  # ******** - TURNED OFF RIGHT NOW - ************
     echo '<input type="hidden" name="usepics" value="' . $passtsv . '" />' . "\n";
     echo '<input type="hidden" name="hikeno" value="' . $hikeNo . '" />' . "\n";
     echo "</form>\n";
-    # build js arrays:
-    $jsTitles = '[';
-    for ($n=0; $n<count($phNames); $n++) {
-        if ($n === 0) {
-            $jsTitles .= '"' . $phNames[0] . '"';
-        } else {
-            $jsTitles .= ',"' . $phNames[$n] . '"';
-        }
-    }
-    $jsTitles .= ']';
-    $jsDescs = '[';
-    for ($m=0; $m<count($phDescs); $m++) {
-        if ($m === 0) {
-            $jsDescs .= '"' . $phDescs[0] . '"';
-        } else {
-            $jsDescs .= ',"' . $phDescs[$m] . '"';
-        }
-    }
-    $jsDescs .= ']';
 }
 ?>
-<script src="../scripts/jquery-1.12.1.js"></script>
-<script type="text/javascript">
-    var phTitles = <?php echo $jsTitles;?>;
-    var phDescs = <?php echo $jsDescs;?>;
-</script>
-<script src="validateHike.js"></script>
-<script src="../scripts/picPops.js"></script>
 
+<script src="validateHike.js"></script>
 </body>
 
 </html>
