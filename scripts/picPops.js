@@ -1,4 +1,3 @@
-alert(phTitles);
 var $photos;
 var noOfPix;
 var picSel;
