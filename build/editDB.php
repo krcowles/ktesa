@@ -43,6 +43,9 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 </div>
 <p id="trail"><?php echo $hiketype;?> Hike Editor</p>
 <div id="main" style="padding:16px;">
+    
+    
+    
 <?php
     echo "<h3>Edits made to this hike will be retained in the New/In-Edit " .
         "database, and will not show up when displaying published hikes until " .
@@ -134,6 +137,15 @@ $pstyle = '<p style="color:red;font-size:18px;">';
     the hike: "<?php echo $hikeTitle;?>". If no changes are made you may either 
     exit this page or hit the "sbumit" button.
 </em><br /><br />
+<!-- tabs -->
+<ul class="tab-list">
+    <li class="active"><a class="tab-ctl" href="#tab1">Basic Data</a></li>
+    <li><a class="tab-ctl" href="#tab2">Photo Selection</a></li>
+    <li><a class="tab-ctl" href="#tab3">Descriptive Text</a></li>
+    <li><a class="tab-ctl" href="#tab4">Refs &amp; Links</a></li>
+</ul>
+<hr><br />
+<div id="tab1" class="active tab-panel">
 <label for="hike">Hike Name: </label>
 <textarea id="hike" name="hname"><?php echo $hikeTitle;?>
 </textarea>&nbsp;&nbsp;
@@ -265,23 +277,27 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
 <!-- This next section is photo editing-->
 <p id="ptype" style="display:none">Edit</p>
-<div>
+</div>
+<div id="tab2" class="tab-panel">
     <p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
             captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
 <?php
 $pgType = 'Edit';
 require "photoSelect.php";
-echo "</div>\n";  
+echo "</div>\n";
+echo "<div id='tab3' class='tab-panel'>";  
 if ($hikeTips !== '') {
     echo '<p>Tips Text: </p>';
     echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />' . "\n";
 } else {
     echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . 
-       '[NO TIPS FOUND]' . '</textarea><br />' . "\n";
+       '[NO TIPS FOUND]</textarea><br />' . "\n";
 }
-?>        
+?>  
 <p>Hike Information:</p>
 <textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $hikeDetails;?></textarea>
+</div>
+<div id="tab4" class="tab-panel">
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, delete and add a new one)</h3>
 <?php
     $z = 0;  # index for creating unique id's
@@ -480,14 +496,14 @@ Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35"
 <label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" />
 <br /><br />
-
+</div>
 <div style="margin-left:8px;">
 <h3>Save the changes!</h3>
 <p><input type="submit" name="savePg" value="Save Edits" /></p>
 </div>	
 </form>
-<div class="popupCap"></div>
 </div>
+<div class="popupCap"></div>
 <!-- jQuery script source is included in photoSelect.php -->
 <script src="editDB.js"></script>
 </body>
