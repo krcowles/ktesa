@@ -170,7 +170,66 @@ $reftags.each( function() {
     });
 });
 
-var readit = $('.tab-list');
+var winWidth = $(document).width();
+// NOTE: innerWidth provides the dimension inside the border
+var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
+if (bodySurplus < 24) {
+    bodySurplus = 24;
+}   // var can actually be negative on initial load if frame is smaller than body min-width
+var tablist = $('#t4').offset();
+var down = Math.floor(tablist.top) + $('#t4').height();
+// For reasons not understood, $('#pos').width() gets the incorrect value...
+var gettabprop = $('.tablist').css('width');
+var px = gettabprop.indexOf('px');
+var tabwidth = gettabprop.substring(0,px);
+var listwidth = 4 * tabwidth;
+var linewidth = winWidth - bodySurplus - listwidth - 9; // padding
+//alert("lw:" + linewidth + ", dn:" + down + ", list:" + listwidth);
+$('#line').width(linewidth);
+$(window).resize( function() {
+    winWidth = $(document).width();
+    linewidth = winWidth - bodySurplus - listwidth - 9;
+    $('#line').width(linewidth);
+});
+function highLight() {
+    $('button').on('mouseover', function() {
+        if (!$(this).hasClass('active')) {
+            $(this).css('background-color','blanchedalmond');
+            $(this).css('color','brown');
+        }
+    });
+    $('button').on('mouseout', function() {
+        if (!$(this).hasClass('active')) {
+            $(this).css('background-color','honeydew');
+            $(this).css('color','darkgray');
+        }
+    });
+}
+highLight();
+$('button').on('click', function(ev) {
+    ev.preventDefault();
+    var tid = this.id;
+    $('button').each( function() {
+        if (this.id !== tid) {
+            $(this).css('background-color','honeydew');
+            $(this).css('color','darkgray');
+            if ($(this).hasClass('active')) {
+                var old = this.id;
+                old = '#tab' + old.substring(1,2);
+                $(old).css('display','none');
+                $(this).removeClass('active');
+            }
+        }
+    });
+    $(this).css('background-color','#DADADA');
+    $(this).css('color','black');
+    $(this).addClass('active');
+    var newtid = '#tab' + tid.substring(1,2);
+    $(newtid).css('display','block');
+    highLight();
+});
+
+/*
 $('.tab-list').each( function() {
     var $this = $(this);
     var $tab = $this.find('li.active');
@@ -189,7 +248,7 @@ $('.tab-list').each( function() {
         }
     });
 });
-
+*/
 });  // end of 'page (DOM) loading complete'
 
 

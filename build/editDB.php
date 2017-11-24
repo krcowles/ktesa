@@ -33,8 +33,7 @@ $pstyle = '<p style="color:red;font-size:18px;">';
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
 </head>
 
-<body>
-    
+<body>   
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>
@@ -42,10 +41,7 @@ $pstyle = '<p style="color:red;font-size:18px;">';
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail"><?php echo $hiketype;?> Hike Editor</p>
-<div id="main" style="padding:16px;">
-    
-    
-    
+<div id="main" style="padding:16px;">  
 <?php
     echo "<h3>Edits made to this hike will be retained in the New/In-Edit " .
         "database, and will not show up when displaying published hikes until " .
@@ -136,15 +132,13 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
     the hike: "<?php echo $hikeTitle;?>". If no changes are made you may either 
     exit this page or hit the "sbumit" button.
-</em><br /><br />
+</em><br /><br /><br />
 <!-- tabs -->
-<ul class="tab-list">
-    <li class="active"><a class="tab-ctl" href="#tab1">Basic Data</a></li>
-    <li><a class="tab-ctl" href="#tab2">Photo Selection</a></li>
-    <li><a class="tab-ctl" href="#tab3">Descriptive Text</a></li>
-    <li><a class="tab-ctl" href="#tab4">Refs &amp; Links</a></li>
-</ul>
-<hr><br />
+<button id="t1" class="tablist active">Basic Data</button>
+<button id="t2" class="tablist">Photo Selection</button>
+<button id="t3" class="tablist">Descriptive Text</button>
+<button id="t4" class="tablist">Refs &amp; Links</button>
+<div id="line"></div>
 <div id="tab1" class="active tab-panel">
 <label for="hike">Hike Name: </label>
 <textarea id="hike" name="hname"><?php echo $hikeTitle;?>
