@@ -272,6 +272,7 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <!-- This next section is photo editing-->
 <p id="ptype" style="display:none">Edit</p>
 </div>
+<!--  PHOTO SECTION -->
 <div id="tab2" class="tab-panel">
     <p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
             captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
@@ -279,6 +280,8 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 $pgType = 'Edit';
 require "photoSelect.php";
 echo "</div>\n";
+/* --  END PHOTO SECTION --- */
+
 echo "<div id='tab3' class='tab-panel'>";  
 if ($hikeTips !== '') {
     echo '<p>Tips Text: </p>';

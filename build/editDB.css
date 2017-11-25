@@ -99,14 +99,6 @@ input[type=submit]:hover {
     background-color: papayawhip;
     cursor: pointer;
 }
-.gridbox {
-	float: left;
-	height: 60px;
-	width: 58px;
-	border-style: solid;
-	border-width: 1px;
-	border-color: black;
-}
 .tablist {
     float: left;
     width: 180px;

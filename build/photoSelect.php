@@ -14,7 +14,7 @@ require_once "../mysql/setenv.php";
 <style type="text/css">
     .capLine { margin: 0px;
     font-weight: bold;
-    background-color: #eaeaea; }
+    background-color: #dadada; }
 </style>
 <h4 style="text-indent:16px">Please check the boxes corresponding to
     the pictures you wish to include on the hike page, and those you wish to
@@ -56,8 +56,8 @@ if (mysqli_num_rows($pix) === 0) {
         $picno += 1;
     }
     for ($i=0; $i<$picno; $i++) {
-        echo '<div class="selPic" style="width:' . $phWds[$i] . 'px;float:left;'
-            . 'margin-left:2px;margin-right:2px;">';
+        echo '<div style="width:' . $phWds[$i] . 'px;margin-left:2px;'
+            . 'margin-right:2px;display:inline-block">';
         echo '<input class="hpguse" type="checkbox" name="pix[]" value="'
             . $phNames[$i] . '" />Display&nbsp;&nbsp;';
         echo '<input class="mpguse" type="checkbox" name="mapit[]" value="' 
