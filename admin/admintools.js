@@ -9,6 +9,9 @@ $('#drall').on('click', function() {
 $('#ldall').on('click', function() {
     window.open('load_all_tables.php',"_blank");
 });
+$('#exall').on('click', function() {
+    window.open('export_all_tables.php',"_blank");
+})
 $('#dret').on('click', function() {
     window.open('drop_all_tables.php?no=ets',"_blank");
 })
