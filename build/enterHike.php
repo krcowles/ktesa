@@ -96,23 +96,32 @@ for ($i=1; $i<=$tblcnt; $i++) {
 mysqli_free_result($specdat);
 $vccnt = count($vchikes);
 $clcnt = count($clhikes);
-# Get any data recorded so far...
-$query = "SELECT * FROM EHIKES WHERE indxNo = {$hip}";
-$result = mysqli_query($link,$query);
-if (mysqli_num_rows($result) === 0) {
-    die("<h2>Could not find a hike matching index " . $hip . 
-            ". Contact Site Master");
-}
-if (!$result) {
-    if (Ktesa_Dbug) {
-        dbug_print("enterHike.php: Could not extract record for {$hip}: " . 
-                mysqli_error($link));
-    } else {
-        user_error_msg($rel_addr,6,0);
+# IF $hip = 0,then this is a first-time entry, there is no previously saved data
+if ($hip == '0') {
+    $entrydat = array("indxNo"=>'',"pgTitle"=>'',"locale"=>'',"logistics"=>'',
+        "marker"=>'',"collection"=>'',"cgroup"=>'',"cname"=>'',"diff"=>'',
+        "miles"=>'',"feet"=>'',"expo"=>'',"fac"=>'',"wow"=>'',"seasons"=>'',
+        "lat"=>'',"lng"=>'',"purl1"=>'',"purl2"=>'',"dirs"=>'',"tips"=>'',
+        "info"=>'');
+} else {
+    # Get any data recorded so far...
+    $query = "SELECT * FROM EHIKES WHERE indxNo = {$hip}";
+    $result = mysqli_query($link,$query);
+    if (mysqli_num_rows($result) === 0) {
+        die("<h2>Could not find a hike matching index " . $hip . 
+                ". Contact Site Master");
     }
+    if (!$result) {
+        if (Ktesa_Dbug) {
+            dbug_print("enterHike.php: Could not extract record for {$hip}: " . 
+                    mysqli_error($link));
+        } else {
+            user_error_msg($rel_addr,6,0);
+        }
+    }
+    $entrydat = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
 }
-$entrydat = mysqli_fetch_assoc($result);
-mysqli_free_result($result);
 ?>
 <div id="setup" style="display:<?php echo $disp;?>">
     <h1>STEP 1: Enter Hike Data</h1>
@@ -401,12 +410,16 @@ mysqli_free_result($result);
     </fieldset>
 
     <?php
-    $refquery = "SELECT * FROM EREFS WHERE indxNo = '{$hip}';";
-    $refdata = mysqli_query($link,$refquery);
-    if (!$refdata) {
-        die ("enterHike.php: Could not access EREFS table'" . mysqli_error($link));
+    if ($hip == '0') {
+        $rowcnt = 0;
+    } else {
+        $refquery = "SELECT * FROM EREFS WHERE indxNo = '{$hip}';";
+        $refdata = mysqli_query($link,$refquery);
+        if (!$refdata) {
+            die ("enterHike.php: Could not access EREFS table'" . mysqli_error($link));
+        }
+        $rowcnt = mysqli_num_rows($refdata);
     }
-    $rowcnt = mysqli_num_rows($refdata);
     if ($rowcnt === 0) {
         for ($z=0; $z<6; $z++) {
             $rtype[$z] = '';
@@ -592,12 +605,16 @@ mysqli_free_result($result);
     </fieldset>
     <?php
     # Set proposed data values, if any
-    $pquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'P';";
-    $pdata = mysqli_query($link,$pquery);
-    if (!$pdata) {
-        die ("enterHike.php: Could not access 'P' in GPSDAT table: " . mysqli_error($link));
+    if ($hip == '0') {
+        $prows = 0;
+    } else {
+        $pquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'P';";
+        $pdata = mysqli_query($link,$pquery);
+        if (!$pdata) {
+            die ("enterHike.php: Could not access 'P' in GPSDAT table: " . mysqli_error($link));
+        }
+        $prows = mysqli_num_rows($pdata);
     }
-    $prows = mysqli_num_rows($pdata);
     if ($prows === 0) {
         for ($a=0; $a<4; $a++) {
             $plbl[$a] = '';
@@ -621,12 +638,16 @@ mysqli_free_result($result);
     mysqli_free_result($pdata);
     # Set proposed data values, if any
     
-    $aquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'A';";
-    $adata = mysqli_query($link,$aquery);
-    if (!$adata) {
-        die ("enterHike.php: Could not access 'A' in GPSDAT table: " . mysqli_error($link));
+    if ($hip == '0') {
+        $arows = 0;
+    } else {
+        $aquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'A';";
+        $adata = mysqli_query($link,$aquery);
+        if (!$adata) {
+            die ("enterHike.php: Could not access 'A' in GPSDAT table: " . mysqli_error($link));
+        }
+        $arows = mysqli_num_rows($adata);
     }
-    $arows = mysqli_num_rows($adata);
     if ($arows === 0) {
         for ($a=0; $a<4; $a++) {
             $albl[$a] = '';

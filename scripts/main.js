@@ -11,7 +11,7 @@ var valstat;
 var backdoor = false;
 
 // URL targets: New Page Creation:
-var createUrl = 'build/newHike.php?usr=';
+var createUrl = 'build/enterHike.php?hno=0&usr=';
 // URL targets: Edit EHIKES items:
 var editNew = 'build/hikeEditor.php?age=new&usr='; // 'new' => EHIKES
 // URL targets: Edit HIKES items:
