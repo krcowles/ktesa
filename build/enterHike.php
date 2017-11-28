@@ -1,5 +1,5 @@
 <?php
-require '../mysql/setenv.php';
+require_once '../mysql/setenv.php';
 $hip = filter_input(INPUT_GET,'hno');  # hike-in-process
 $usr = filter_input(INPUT_GET,'usr');
 if ($usr === 'mstr') {
@@ -7,6 +7,7 @@ if ($usr === 'mstr') {
 } else {
     $disp = 'none';
 }
+require 'currentTitles.php'; # list of existing hike page titles
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -19,6 +20,9 @@ if ($usr === 'mstr') {
     <meta name="robots" content="nofollow" />
     <link href="enterHike.css" type="text/css" rel="stylesheet" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript">
+        var hnames = <?php echo $hnames;?>;
+    </script>
 </head>
 
 <body>
@@ -156,7 +160,8 @@ if ($hip == '0') {
         <label id="pgTitleText" for="htitle">Hike Name (As it will appear 
             in the table):</label> 
         <input id="htitle" type="text" name="hpgTitle" 
-               size="35" value="<?php echo $entrydat['pgTitle'];?>" />&nbsp;&nbsp;
+               size="35" value="<?php echo $entrydat['pgTitle'];?>" 
+               required />&nbsp;&nbsp;
         <label for="area">Locale (Nearest city/landmark):</label>
         <select id="area" name="locale">
         <optgroup label="North/Northeast">
@@ -235,11 +240,11 @@ if ($hip == '0') {
         <legend>Exposure Factor</legend>
         <em id="selexp" class="notVC">Select Exposure to Sun: </em>
         <input id="sunny" type="radio" name="expos" value="Full sun" />
-        <label class="notVC" for="sunny">Full Sun</label>
+        <label id="e1" class="notVC" for="sunny">Full Sun</label>
         <input id="shady" type="radio" name="expos" value="Good shade" />
-        <label class="notVC" for="shady">Good Shade</label>
+        <label id="e2" class="notVC" for="shady">Good Shade</label>
         <input id="partly" type="radio" name="expos" value="Mixed sun/shade" />
-        <label class="notVC" for="partly">Mixed Sun &amp; Shade</label>
+        <label id="e3" class="notVC" for="partly">Mixed Sun &amp; Shade</label>
     </fieldset>
 
     <fieldset>
@@ -343,9 +348,9 @@ if ($hip == '0') {
     <fieldset id="marker">
         <legend>Google Maps Marker Style</legend>
         <input id="vc" type="radio" name="mstyle" value="center" />
-        <label for="vc">Visitor Center [New Index Page]</label><br />
+        <label id="m1" for="vc">Visitor Center [New Index Page]</label><br />
         <input id="vch" type="radio" name="mstyle" value="ctrhike" />
-        <label for="vch">Hike At / In Close Proximity To Visitor 
+        <label id="m2" for="vch">Hike At / In Close Proximity To Visitor 
             Center</label><br />
         <span style="color:brown;margin-left:32px;">[NOTE: Visitor Center
                 Page must already exist:</span>&nbsp; if not, save this page, 
@@ -364,7 +369,7 @@ if ($hip == '0') {
                     </select>
                 </div>
         <input id="ch" type="radio" name="mstyle" value="cluster" />
-        <label for="ch">Trailhead Common to Multiple Hikes</label><br />
+        <label id="m3" for="ch">Trailhead Common to Multiple Hikes</label><br />
             <span style="color:brown;margin-left:32px;">[NOTE: Group must already 
             exist in database:</span> &nbsp;if not, save this page, 
                 <span style="text-decoration:underline">exit</span>, and edit 
@@ -386,7 +391,7 @@ if ($hip == '0') {
                 </div>
                     
         <input id="othr" type="radio" name="mstyle" value="other" />
-        <label for="othr">All Others</label><br />
+        <label id="m4" for="othr">All Others</label><br />
     </fieldset>
 
     <fieldset id="txtdat">

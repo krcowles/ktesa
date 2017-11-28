@@ -4,6 +4,80 @@ var msgA;  // generic
 var msgB;
 var msgC;
 
+// Some preliminary handling and validation for first-time entry
+var hike = $('input[name=hno]').val();
+if (hike == 0) {
+    alert("You must at minimum create a name in order to proceed");
+    $('input[name=hpgTitle]').css('background-color','BlanchedAlmond');
+    $('input[name=hpgTitle]').css('border-color','Red');
+    function checkName(name) {
+        for (var i=0; i<hnames.length; i++) {
+            if (hnames[i] == name) {
+                alert("Name exists - try another");
+                $('#htitle').val('');
+                return true;
+            }
+        }
+        $('input[name=hpgTitle]').css('background-color','White');
+        $('input[name=hpgTitle]').css('border-color','Black');
+        $('input[name=hpgTitle]').css('color','Blue');
+        return false;
+    }
+    $('#htitle').change( function() {
+        checkName($(this).val()) 
+    });
+}
+
+// Styling to indicate that a field has been entered:
+$('select').each ( function() {
+    $(this).change( function() {
+        $(this).css('border-color','Black');
+        $(this).css('color','Blue');
+    });
+});
+$('input:not(#htitle').each( function() {
+    $(this).change( function() {
+        if ($(this).val() !=='') {
+            $(this).css('border-color','Black');
+            $(this).css('color','Blue');
+        } else {
+            $(this).css('border','none');
+        }
+    });
+});
+$('textarea').each( function() {
+    $(this).change( function() {
+        $(this).css('border-color','Black');
+        $(this).css('color','Blue');
+    });
+});
+$('input[name=expos]').change( function() {
+    $('#e1').css('color','black');
+    $('#e2').css('color','black');
+    $('#e3').css('color','black');
+    if (this.id === 'sunny') {
+        $('#e1').css('color','Blue');
+    } else if (this.id === 'shady') {
+        $('#e2').css('color','Blue');
+    } else {
+        $('#e3').css('color','Blue');
+    }
+});
+$('input[name=mstyle]').change( function() {
+    $('#m1').css('color','black');
+    $('#m2').css('color','black');
+    $('#m3').css('color','black');
+    $('#m4').css('color','black');
+    if (this.id === 'vc') {
+        $('#m1').css('color','Blue');
+    } else if (this.id === 'vch') {
+        $('#m2').css('color','Blue');
+    } else if (this.id === 'ch') {
+        $('#m3').css('color','Blue');
+    } else {
+        $('#m4').css('color','Blue');
+    }
+});
 // NOTE: code order is important here, be careful moving things around!!!
 
 /* Preload the GPS Maps & Data Section with the urls for uploaded files;
