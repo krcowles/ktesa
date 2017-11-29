@@ -24,6 +24,8 @@
         <button id="drall">Drop All Tables</button><br />
         <button id="ldall">Load All Tables</button>
         (NOTE: Tables should be dropped and not created)<br />
+        <button id="exall">Export All Tables</button>
+        (NOTE: Will download a file which should be renamed appropriately)<br />
         <button id="dret">Drop All E-Tables</button><br />
         <button id="ldet">Load All E-Tables</button>
         <span style="color:brown;">(Not implemented at this time)</span>
