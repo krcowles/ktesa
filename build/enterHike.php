@@ -100,8 +100,7 @@ for ($i=1; $i<=$tblcnt; $i++) {
 mysqli_free_result($specdat);
 $vccnt = count($vchikes);
 $clcnt = count($clhikes);
-# IF $hip = 0,then this is a first-time entry, there is no previously saved data
-if ($hip == '0') {
+if ($hip == '0') {  # in this case, all preloads of fields are empty...
     $entrydat = array("indxNo"=>'',"pgTitle"=>'',"locale"=>'',"logistics"=>'',
         "marker"=>'',"collection"=>'',"cgroup"=>'',"cname"=>'',"diff"=>'',
         "miles"=>'',"feet"=>'',"expo"=>'',"fac"=>'',"wow"=>'',"seasons"=>'',
@@ -138,7 +137,7 @@ if ($hip == '0') {
 </div>
 
 <div id="theForm">
-<form id="hikeData" target="_blank" onsubmit="page_type(this);" method="POST"
+<form id="hikeData" onsubmit="page_type(this);" method="POST"
     enctype="multipart/form-data">
 
     <p id="dbhno" style="display:none;"><?php echo $entrydat['indxNo'];?></p>
