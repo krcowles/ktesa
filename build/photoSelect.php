@@ -42,12 +42,16 @@ if (mysqli_num_rows($pix) === 0) {
     $picno = 0;
     $phNames = []; # filename w/o extension
     $phDescs = []; # caption
+    $hpg = [];  # display on page status
+    $mpg = [];  # display on map status
     $phPics = []; # capture the link for the mid-size version of the photo
     $phWds = []; # width
     $rowHt = 220; # nominal choice for row height in div
     while ($pics = mysqli_fetch_assoc($pix)) {
         $phNames[$picno] = $pics['title'];
         $phDescs[$picno] = $pics['desc'];
+        $hpg[$picno] = $pics['hpg'];
+        $mpg[$picno] = $pics['mpg'];
         $phPics[$picno] = $pics['mid'];
         $pHeight = $pics['imgHt'];
         $aspect = $rowHt/$pHeight;
@@ -58,10 +62,22 @@ if (mysqli_num_rows($pix) === 0) {
     for ($i=0; $i<$picno; $i++) {
         echo '<div class="selPic" style="width:' . $phWds[$i] . 'px;float:left;'
             . 'margin-left:2px;margin-right:2px;">';
-        echo '<input class="hpguse" type="checkbox" name="pix[]" value="'
-            . $phNames[$i] . '" />Display&nbsp;&nbsp;';
-        echo '<input class="mpguse" type="checkbox" name="mapit[]" value="' 
-            . $phNames[$i] . '" />Map<br />' . PHP_EOL;
+        $pgbox = '<input class="hpguse" type="checkbox" name="pix[]" value="'
+            . $phNames[$i];
+        if ($hpg[$i] === 'Y') {
+            $pgbox .= '" checked />Page&nbsp;&nbsp;';
+        } else {
+            $pgbox .= '" />Page&nbsp;&nbsp;';
+        }
+        echo $pgbox;
+        $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" value="' 
+            . $phNames[$i];
+        if ($mpg[$i] === 'Y') {
+            $mpbox .= '" checked />Map<br />' . PHP_EOL;
+        } else {
+            $mpbox .= '" />Map<br />' . PHP_EOL;
+        }
+        echo $mpbox;
         echo '<img class="allPhotos" height="200px" width="' . $phWds[$i]
                 . 'px" src="' . $phPics[$i] . '" alt="' . $phNames[$i] 
                 . '" /><br />' . PHP_EOL;
