@@ -41,7 +41,6 @@ if ($hikeNo == '0') {
     $latest = mysqli_fetch_row($getid);
     $hikeNo = $latest[0];
     mysqli_free_result($getid);
-    die("NEW#: " . $hikeNo . "; " . $newHike);
 }
 /*
  * Note: the next four variables are initialized false as 'save' type cannot
