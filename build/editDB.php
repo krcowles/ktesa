@@ -41,11 +41,14 @@ $pstyle = '<p style="color:red;font-size:18px;">';
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail"><?php echo $hiketype;?> Hike Editor</p>
-<div id="main" style="padding:16px;">  
+<div id="main" style="padding:16px;">
+<h3>Edits made to this hike will be retained in the New/In-Edit database, 
+    and will not show up when displaying published hikes until these edits 
+    have been released</h3>
+<p style="font-size:18px;color:DarkBlue;">Preview page with current edits
+    (i.e. edits already applied):&nbsp;
+    <button id="preview" style="font-size:18px;color:DarkBlue;">Preview</button></p>
 <?php
-    echo "<h3>Edits made to this hike will be retained in the New/In-Edit " .
-        "database, and will not show up when displaying published hikes until " .
-        "these edits have been released</h3>";
     /*
      *  Below: pull out the available cluster groups and establish association
      * with cluster group name for displaying in drop-down <select>
@@ -271,6 +274,10 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
 <!-- This next section is photo editing-->
 <p id="ptype" style="display:none">Edit</p>
+<div style="margin-left:8px;">
+    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
+        <input type="submit" name="savePg" value="Apply" /></p>
+</div>	
 </div>
 <!--  PHOTO SECTION -->
 <div id="tab2" class="tab-panel">
@@ -279,9 +286,15 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <?php
 $pgType = 'Edit';
 require "photoSelect.php";
-echo "</div>\n";
-/* --  END PHOTO SECTION --- */
-
+?>
+<div style="margin-left:8px;">
+    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
+        <input type="submit" name="savePg" value="Apply" /></p>
+</div>
+            
+</div>
+<!--  END PHOTO SECTION -->
+<?php
 echo "<div id='tab3' class='tab-panel'>";  
 if ($hikeTips !== '') {
     echo '<p>Tips Text: </p>';
@@ -293,6 +306,10 @@ if ($hikeTips !== '') {
 ?>  
 <p>Hike Information:</p>
 <textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $hikeDetails;?></textarea>
+<div style="margin-left:8px;">
+    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
+        <input type="submit" name="savePg" value="Apply" /></p>
+</div>	
 </div>
 <div id="tab4" class="tab-panel">
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed, delete and add a new one)</h3>
@@ -493,11 +510,11 @@ Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35"
 <label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" />
 <br /><br />
-</div>
 <div style="margin-left:8px;">
-<h3>Save the changes!</h3>
-<p><input type="submit" name="savePg" value="Save Edits" /></p>
+    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
+        <input type="submit" name="savePg" value="Apply" /></p>
 </div>	
+</div>
 </form>
 </div>
 <div class="popupCap"></div>
