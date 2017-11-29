@@ -21,8 +21,16 @@ if ($tbl_type === 'old') {
         $phpg = mysqli_real_escape_string($link,$p['hpg']);
         $pmpg = mysqli_real_escape_string($link,$p['mpg']);
         $pdes = mysqli_real_escape_string($link,$p['desc']);
-        $plat = mysqli_real_escape_string($link,$p['lat']);
-        $plon = mysqli_real_escape_string($link,$p['lng']);
+        if ($p['lat'] == '') {
+            $plat = 0;
+        } else {
+            $plat = mysqli_real_escape_string($link,$p['lat']);
+        }
+        if ($p['lng'] == '') {
+            $plon = 0;
+        } else {
+            $plon = mysqli_real_escape_string($link,$p['lng']);
+        }
         $thmb = mysqli_real_escape_string($link,$p['thumb']);
         $palb = mysqli_real_escape_string($link,$p['alblnk']);
         $date = mysqli_real_escape_string($link,$p['date']);
@@ -31,12 +39,21 @@ if ($tbl_type === 'old') {
         $pxwd = mysqli_real_escape_string($link,$p['imgWd']);
         $pclr = mysqli_real_escape_string($link,$p['iclr']);
         $porg = mysqli_real_escape_string($link,$p['org']);
-        $addPicReq = "INSERT INTO ETSV (indxNo,folder,title," .
-            "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd," .
-            "iclr,org) VALUES ('{$newNo}','{$fldr}','{$ttle}'," .
-            "'{$phpg}','{$pmpg}','{$pdes}','{$plat}','{$plon}','{$thmb}'," .
-            "'{$palb}','{$date}','{$pmid}','{$pxht}','{$pxwd}'," .
-            "'{$pclr}','{$porg}');";
+        if ($plat === 0 || $plon === 0) {
+            $addPicReq = "INSERT INTO ETSV (indxNo,folder,title," .
+                "hpg,mpg,`desc`,thumb,alblnk,date,mid,imgHt,imgWd," .
+                "iclr,org) VALUES ('{$newNo}','{$fldr}','{$ttle}'," .
+                "'{$phpg}','{$pmpg}','{$pdes}','{$thmb}'," .
+                "'{$palb}','{$date}','{$pmid}','{$pxht}','{$pxwd}'," .
+                "'{$pclr}','{$porg}');";
+        } else {
+            $addPicReq = "INSERT INTO ETSV (indxNo,folder,title," .
+                "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd," .
+                "iclr,org) VALUES ('{$newNo}','{$fldr}','{$ttle}'," .
+                "'{$phpg}','{$pmpg}','{$pdes}','{$plat}','{$plon}','{$thmb}'," .
+                "'{$palb}','{$date}','{$pmid}','{$pxht}','{$pxwd}'," .
+                "'{$pclr}','{$porg}');";
+        }
         $picq = mysqli_query($link,$addPicReq);
         if (!$picq) {
             die("savePicEdits.php: Failed to insert data into ETSV: " .
@@ -60,7 +77,7 @@ if (!$photoq) {
     die("savePicEdits.php: Failed to extract 'hpg' from ETSV: " .
         mysqli_error($link));
 }
-if (count($ecapts) !== mysqli_num_rows($photoq)) {
+if ($noOfPix !== mysqli_num_rows($photoq)) {
     echo '<p style="color:red;font-size:20px;margin-left:16px;">'
     . "WARNING: Retrieved photo count and no of captions don't match..</p>";
 }

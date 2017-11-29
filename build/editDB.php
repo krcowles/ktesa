@@ -109,8 +109,6 @@ $pstyle = '<p style="color:red;font-size:18px;">';
     # gpx & trk will not be edited
     $hikeLat = $hike['lat'];
     $hikeLng = $hike['lng'];
-    $hikeAddImg1 = $hike['aoimg1'];
-    $hikeAddImg2 = $hike['aoimg2'];
     # aoimg1 & aoimg2 will not be edited
     $hikeUrl1 = $hike['purl1'];
     $hikeUrl2 = $hike['purl2'];
@@ -128,8 +126,6 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <input type="hidden" name="col" value="<?php echo $hikeColl;?>" />
 <input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
 <input type="hidden" name="trk" value="<?php echo $hikeTrack;?>" />
-<input type="hidden" name="ao1" value="<?php echo $hikeAddImg1;?>" />
-<input type="hidden" name="ao2" value="<?php echo $hikeAddImg2;?>" />
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
     the hike: "<?php echo $hikeTitle;?>". If no changes are made you may either 
     exit this page or hit the "sbumit" button.
