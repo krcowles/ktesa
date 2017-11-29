@@ -139,9 +139,6 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
 <div id="theForm">
 <form id="hikeData" onsubmit="page_type(this);" method="POST"
     enctype="multipart/form-data">
-
-    <p id="dbhno" style="display:none;"><?php echo $entrydat['indxNo'];?></p>
-    <p id="dbhnm" style="display:none;"><?php echo $entrydat['pgTitle'];?></p>
     <p id="dbloc" style="display:none;"><?php echo $entrydat['locale'];?></p>
     <p id="dblog" style="display:none;"><?php echo $entrydat['logistics'];?></p>
     <p id="dbmrk" style="display:none;"><?php echo $entrydat['marker'];?></p>
@@ -305,7 +302,9 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
                     <option value="tan">Tan</option>
                     <option value="brown">Brown</option>
                     <option value="Google default">Google default</option>
-                </select><br /><br />
+                </select><br />
+                <em style="color:brown">[NOTE: Icon color not saved until 
+                    album is uploaded]</em><br /><br />
             </div>
             <label id="l_gpx" class="notVC" for="gpxfile" style="color:Brown">
                 GPX File: [RECOMMENDED]&nbsp;</label>
