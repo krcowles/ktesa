@@ -2,6 +2,7 @@
 require_once '../mysql/setenv.php';
 $getHike = filter_input(INPUT_GET,'hno');
 $uid = filter_input(INPUT_GET,'usr');
+$status = 'pub' . $getHike;
 /*
  * GET HIKES DATA
  */
@@ -42,7 +43,7 @@ mysqli_free_result($hikeDat);
 # Insert all HIKES data into EHIKES:
 $ehikeDatReq = "INSERT INTO EHIKES (pgTitle,usrid,stat,locale,marker,collection," .
     "cgroup,cname,logistics,miles,feet,diff,fac,wow,seasons,expo,gpx,trk,lat,lng," .
-    "aoimg1,aoimg2,purl1,purl2,dirs,tips,info) VALUES('{$pt}','{$ui}','new'," .
+    "aoimg1,aoimg2,purl1,purl2,dirs,tips,info) VALUES('{$pt}','{$ui}','{$status}'," .
     "'{$lo}','{$mr}','{$co}','{$cg}','{$cn}','{$lg}','{$mi}','{$ft}','{$di}'," .
     "'{$fa}','{$wo}','{$se}','{$xp}','{$gx}','{$tr}','{$lt}','{$ln}','{$a1}'," .
     "'{$a2}','{$p1}','{$p2}','{$dr}','{$tp}','{$io}');";

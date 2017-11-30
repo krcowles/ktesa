@@ -1,23 +1,7 @@
 <!DOCTYPE html>
 <?php
 require_once "../mysql/setenv.php";
-$tbl_type = filter_input(INPUT_GET,'tbl');
 $hikeNo = filter_input(INPUT_GET,'hno');
-if ($tbl_type === 'new') {
-    $table = 'EHIKES';
-    $ptable = 'ETSV';
-    $gtable = 'EGPSDAT';
-    $rtable = 'EREFS';
-    $hiketype = 'New or In-Edit';
-    $status = filter_input(INPUT_GET,'stat');
-} else {
-    $table = 'HIKES';
-    $ptable = 'TSV';
-    $gtable = 'GPSDAT';
-    $rtable = 'REFS';
-    $hiketype = 'Published';
-    $status = 'pub' . $hikeNo;
-}
 $uid = filter_input(INPUT_GET,'usr');
 # Error output styling string:
 $pstyle = '<p style="color:red;font-size:18px;">';
@@ -44,7 +28,7 @@ $pstyle = '<p style="color:red;font-size:18px;">';
 <div id="main" style="padding:16px;">
 <h3>Edits made to this hike will be retained in the New/In-Edit database, 
     and will not show up when displaying published hikes until these edits 
-    have been released</h3>
+    have been formally released</h3>
 <?php
 /*
  *  Below: pull out the available cluster groups and establish association
@@ -80,10 +64,10 @@ $groupCount = count($cnames);
 /*
  * EXTRACT ALL DATA, saved in various tabs
  */
-$hikereq = "SELECT * FROM {$table} WHERE indxNo = {$hikeNo};";
+$hikereq = "SELECT * FROM EHIKES WHERE indxNo = {$hikeNo};";
 $hikeq = mysqli_query($link,$hikereq);
 if (!$hikeq) {
-    die("editDB.php: Failed to extract hike data from {$table}: " .
+    die("editDB.php: Failed to extract hike data from EHIKES: " .
         mysqli_error($link));
 }
 $hike = mysqli_fetch_assoc($hikeq);
@@ -118,6 +102,7 @@ $hikeTips = $hike['tips'];
 $hikeDetails = $hike['info'];
 mysqli_free_result($hikeq);
 ?>
+<p id="hikeNo" style='display:none'><?php echo $hikeNo;?></p>
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
     the hike: "<?php echo $hikeTitle;?>". If no changes are made you may either 
     exit this page or hit the "sbumit" button.
@@ -311,7 +296,8 @@ if ($hikeTips !== '') {
 }
 ?>  
 <p>Hike Information:</p>
-<textarea id="info" name="hinfo" rows="16" cols="130"><?php echo $hikeDetails;?></textarea>
+<textarea id="info" name="hinfo" rows="16" 
+        cols="130"><?php echo $hikeDetails;?></textarea>
 <div style="margin-left:8px;">
     <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
         <input type="submit" name="savePg" value="Apply" /></p>
@@ -327,10 +313,10 @@ if ($hikeTips !== '') {
 <form action="saveTab4.php" method="POST">
 <?php
     $z = 0;  # index for creating unique id's
-    $refreq = "SELECT * FROM {$rtable} WHERE indxNo = '{$hikeNo}';";
+    $refreq = "SELECT * FROM EREFS WHERE indxNo = '{$hikeNo}';";
     $refq = mysqli_query($link,$refreq);
     if (!$refq) {
-        die("editDB.php: Failed to extract references from {$rtable}: " .
+        die("editDB.php: Failed to extract references from EREFS: " .
             mysqli_error($link));
     }
     while ($ritem = mysqli_fetch_assoc($refq)) {
@@ -459,10 +445,10 @@ if ($hikeTips !== '') {
 
     <h3>Proposed Data:</h3>
 <?php 
-    $propreq = "SELECT * FROM {$gtable} WHERE indxNo = '{$hikeNo}' AND datType = 'P';";
+    $propreq = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND datType = 'P';";
     $propq = mysqli_query($link,$propreq);
     if (!$propq) {
-        die("editDB.php: Failed to extract Proposed Data from {$gtable}: " .
+        die("editDB.php: Failed to extract Proposed Data from EGPSDAT: " .
             mysqli_error($link));
     }
     if (mysqli_num_rows($propq) !== 0) {
@@ -493,10 +479,10 @@ if ($hikeTips !== '') {
 
     <h3>Actual Data:</h3>
 <?php
-    $actreq = "SELECT * FROM {$gtable} WHERE indxNo = '{$hikeNo}' AND datType = 'A';";
+    $actreq = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND datType = 'A';";
     $actq = mysqli_query($link,$actreq);
     if (!$actq) {
-        die("editDB.php: Failed to extract Actual Data from {$gtable}: " .
+        die("editDB.php: Failed to extract Actual Data from EGPSDAT: " .
             mysqli_error($link));
     }
     if (mysqli_num_rows !== 0) {

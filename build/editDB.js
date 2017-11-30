@@ -1,6 +1,5 @@
 $( function () { // when page is loaded...
-
-alert("You MUST Apply 'Basic Data' as is \nor with changes before proceeding!");
+    
 /* Each drop-down field parameter is held in a hidden <p> element;
  * the data (text) in that hidden <p> element is the default that should 
  * appear in the drop-down box on page-load;
@@ -12,7 +11,6 @@ alert("You MUST Apply 'Basic Data' as is \nor with changes before proceeding!");
  *      - exposure
  *      - references
 */
-   
 // Locale:
 var sel = $('#locality').text();
 $('#area').val(sel);
@@ -26,6 +24,7 @@ var rule = "The specified new group will be added;" + "\n" +
 	"Current Cluster assignment will be ignored" + "\n" + 
 	"Uncheck box to use currently available groups";
 var clusnme = $('#group').text();  // incoming cluster assignment for hike being edited (may be empty)
+//alert(clusnme);
 $('#ctip').val(clusnme);  // show above in the select box on page load
 if (clusnme == '') {  // no incoming assignment; marker is not cluster type; display info:
 	$('#notclus').css('display','inline');
@@ -207,7 +206,7 @@ function highLight() {
     });
 }
 highLight();
-$('button').on('click', function(ev) {
+$('button:not(#preview)').on('click', function(ev) {
     ev.preventDefault();
     var tid = this.id;
     $('button').each( function() {
@@ -230,26 +229,11 @@ $('button').on('click', function(ev) {
     highLight();
 });
 
-/*
-$('.tab-list').each( function() {
-    var $this = $(this);
-    var $tab = $this.find('li.active');
-    var $link = $tab.find('a');
-    var $panel = $($link.attr('href'));
-    $this.on('click', '.tab-ctl', function(ev) {
-        ev.preventDefault();
-        var $link = $(this);
-        var id = this.hash;
-        if (id && !$link.is('.active')) {
-            $panel.removeClass('active');
-            $tab.removeClass('active');
-            $panel = $(id).addClass('active');
-            $tab = $link.parent().addClass('active');
-            $tab.css('background-color','Bisque');
-        }
-    });
-});
-*/
+$('#preview').on('click', function() {
+    var hno = $('#hikeNo').text();
+    var prevPg = '../pages/hikePageTemplate.php?age=new&hikeIndx=' + hno;
+    window.open(prevPg,"_blank");
+})
 });  // end of 'page (DOM) loading complete'
 
 

@@ -2,10 +2,9 @@
 /* This module produces the html for placing photos with selection boxes.
  * REQUIREMENTS:
  *      1. $hikeNo must be defined in caller's environment (EHIKES or HIKES)
- *      2. $ptable must also be defined in caller's environment (ETSV or TSV)
- *      3. $pgType must be defined by caller to determine whether or not
+ *      2. $pgType must be defined by caller to determine whether or not
  *         to display captions for editing
- *      4. picPops.js is looking for a <p id="ptype"> on the caller's page
+ *      3. picPops.js is looking for a <p id="ptype"> on the caller's page
  *         identifying the page type: Validation, Finish or Edit
  * Place this code inside a <div> element.
  */
@@ -28,7 +27,7 @@ require_once "../mysql/setenv.php";
 </div>
 <div style="margin-left:16px;">
 <?php
-$picreq = "SELECT * FROM {$ptable} WHERE indxNo = {$hikeNo};";
+$picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
 $pix = mysqli_query($link,$picreq);
 if (!$pix) {
     die("photoSelect.php: Failed to get picdat from ETSV for hike {$hikeNo}: " .

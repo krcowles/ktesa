@@ -1,7 +1,6 @@
 <?php
 require_once "../mysql/setenv.php";
 $hikeNo = filter_input(INPUT_POST,'hno');
-$tbl_type = filter_input(INPUT_POST,'tbl');
 $hstat = filter_input(INPUT_POST,'stat');
 $uid = filter_input(INPUT_POST,'usr');
 /* Marker, cluster info may have changed during edit
@@ -48,7 +47,7 @@ $hColl = mysqli_real_escape_string($link,$hikeColl);
 /*  CLUSTER/MARKER ASSIGNMENT PROCESSING:
  *     The order of changes processed are in the following priority:
  *     1. Existing assignment deleted: Marker changes to "Normal"
- *	   2. New Group Assignment
+ *     2. New Group Assignment
  *     3. Group Assignment Changed
  *     4. Nothing Changed
 */
@@ -129,59 +128,22 @@ $url2 = filter_input(INPUT_POST,'purl2');
 $hPurl2 = mysqli_real_escape_string($link,$url2);
 $dirs = filter_input(INPUT_POST,'gdirs');
 $hDirs = mysqli_real_escape_string($link,$dirs);
-$tips = filter_input(INPUT_POST,'tips');
-# revise tips if no tips were added:
-if (substr($tips,0,15) === '[NO TIPS FOUND]') {
-        $hTips = '';
-} else {
-    $hTips = mysqli_real_escape_string($link,$tips);
-}        
-$info = filter_input(INPUT_POST,'hinfo');
-$hInfo = mysqli_real_escape_string($link,$info);
-if ($tbl_type === 'new') {  # data will replace existing data
-    $saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
-        "stat = '{$hstat}',locale = '{$hLoc}',marker = '{$marker}'," .
-        "cgroup = '{$clusGrp}',cname = '{$clName}',logistics = '{$hType}'," .
-        "miles = '{$hLgth}', feet = '{$hElev}', diff = '{$hDiff}'," .
-        "fac = '{$hFac}',wow = '{$hWow}', seasons = '{$hSeas}'," .
-        "expo = '{$hExpos}',lat = '{$hLat}',lng = '{$hLon}'," .
-        "purl1 = '{$hPurl1}',purl2 = '{$hPurl2}',dirs = '{$hDirs}'," .
-        "tips = '{$hTips}',info = '{$hInfo}' WHERE indxNo = {$hikeNo};";
-} else {  # data will be added to EHIKES table as a new entry w/usr info
-    $saveHikeReq = "INSERT INTO EHIKES (pgTitle,usrid,stat,locale,marker," .
-        "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
-        "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
-        "tips,info) VALUES ('{$hTitle}','{$hUser}','{$hstat}'," .
-        "'{$hLoc}','{$marker}','{$hColl}','{$clusGrp}','{$clName}'," .
-        "'{$hType}','{$hLgth}','{$hElev}','{$hDiff}','{$hFac}','{$hWow}'," .
-        "'{$hSeas}','{$hExpos}','{$hGpx}','{$hTrk}','{$hLat}','{$hLon}'," .
-        "'{$hAdd1}','{$hAdd2}','{$hPurl1}','{$hPurl2}','{$hDirs}'," .
-        "'{$hTips}','{$hInfo}');";
-}
+# SAVE THE EDITED DATA IN EHIKES:
+$saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
+    "stat = '{$hstat}',locale = '{$hLoc}',marker = '{$marker}'," .
+    "cgroup = '{$clusGrp}',cname = '{$clName}',logistics = '{$hType}'," .
+    "miles = '{$hLgth}', feet = '{$hElev}', diff = '{$hDiff}'," .
+    "fac = '{$hFac}',wow = '{$hWow}', seasons = '{$hSeas}'," .
+    "expo = '{$hExpos}',lat = '{$hLat}',lng = '{$hLon}'," .
+    "purl1 = '{$hPurl1}',purl2 = '{$hPurl2}',dirs = '{$hDirs}' " .
+    "WHERE indxNo = {$hikeNo};";
+
 $saveHike = mysqli_query($link,$saveHikeReq);
 if (!$saveHike) {
     die("saveChanges.php: Failed to save new data to EHIKES: " . 
         mysqli_error($link));
 }
 mysqli_free_result($saveHike);
-/* if new data was inserted into EHIKES, that indxNo will be needed for
- * the remaining tables: ETSV, EREFS, and EGPSDAT
- */
-if ($tbl_type === 'old') {
-    $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
-    $indxq = mysqli_query($link,$indxReq);
-    if (!$indxq) {
-        die("saveChanges.php: Did not retrieve new EHIKES indx no: " .
-            mysqli_error($link));
-    }
-    $indxNo = mysqli_fetch_row($indxq);
-    $newNo = $indxNo[0];
-    mysqli_free_result($indxq);
-    $useNo = $newNo;
-} else {
-    $useNo = $hikeNo;
-}
-$redirect = "editDB.php?hno={$useno}&tbl={$tbl_type}&usr={$uid}";
-die("Up to redirect of " . $redirect);
+$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
 header("Location: {$redirect}");
 ?>
