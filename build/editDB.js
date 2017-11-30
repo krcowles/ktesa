@@ -1,5 +1,6 @@
 $( function () { // when page is loaded...
 
+alert("You MUST Apply 'Basic Data' as is \nor with changes before proceeding!");
 /* Each drop-down field parameter is held in a hidden <p> element;
  * the data (text) in that hidden <p> element is the default that should 
  * appear in the drop-down box on page-load;
