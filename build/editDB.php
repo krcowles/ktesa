@@ -1,11 +1,17 @@
-<!DOCTYPE html>
 <?php
+session_start();
 require_once "../mysql/setenv.php";
 $hikeNo = filter_input(INPUT_GET,'hno');
 $uid = filter_input(INPUT_GET,'usr');
+if (isset($_SESSION['activeTab'])) {
+    $dispTab = $_SESSION['activeTab'];
+} else {
+    $dispTab = 1;
+}
 # Error output styling string:
 $pstyle = '<p style="color:red;font-size:18px;">';
 ?>
+<!DOCTYPE html>
 <html lang="en-us">
 <head>
     <title>Edit Database</title>
@@ -103,6 +109,7 @@ $hikeDetails = $hike['info'];
 mysqli_free_result($hikeq);
 ?>
 <p id="hikeNo" style='display:none'><?php echo $hikeNo;?></p>
+<p id="entry" style="display:none"><?php echo $dispTab;?></p>
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
     the hike: "<?php echo $hikeTitle;?>". If no changes are made you may either 
     exit this page or hit the "sbumit" button.
@@ -271,9 +278,11 @@ mysqli_free_result($hikeq);
 <p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
         captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
 <form action="saveTab2.php" method="POST">
+    <input type="hidden" name="pno" value="<?php echo $hikeNo;?>" />
+    <input type="hidden" name="pid" value="<?php echo $uid;?>" />
 <?php
-$pgType = 'Edit';
-require "photoSelect.php";
+    $pgType = 'Edit';
+    require "photoSelect.php";
 ?>
 <div style="margin-left:8px;">
     <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
@@ -298,6 +307,8 @@ if ($hikeTips !== '') {
 <p>Hike Information:</p>
 <textarea id="info" name="hinfo" rows="16" 
         cols="130"><?php echo $hikeDetails;?></textarea>
+<input type="hidden" name="dno" value="<?php echo $hikeNo;?>" />
+<input type="hidden" name="did" value="<?php echo $uid;?>" />
 <div style="margin-left:8px;">
     <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
         <input type="submit" name="savePg" value="Apply" /></p>
@@ -311,6 +322,8 @@ if ($hikeTips !== '') {
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed,
     delete and add a new one)</h3>
 <form action="saveTab4.php" method="POST">
+    <input type="hidden" name="rno" value="<?php echo $hikeNo;?>" />
+    <input type="hidden" name="rid" value="<?php echo $uid;?>" />
 <?php
     $z = 0;  # index for creating unique id's
     $refreq = "SELECT * FROM EREFS WHERE indxNo = '{$hikeNo}';";

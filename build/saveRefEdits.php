@@ -5,19 +5,13 @@
  * includes newly added refs, so all get INSERTED, and no algorithm is required
  * to determine which only get updated vs which get added vs which get deleted.
  */ 
-if ($tbl_type === 'new') {
-    # deletion is not required for 'old' since there aren't any yet in EREFS
-    $delrefsreq = "DELETE FROM EREFS WHERE indxNo = '{$hikeNo}';";
-    $delrefs = mysqli_query($link,$delrefsreq);
-    if (!$delrefs) {
-        die("saveRefEdits.php: Failed to delete old refs for {$hikeNo}: " .
-            mysqli_error($link));
-    }
-    mysqli_free_result($delrefs);
-    $useIndxNo = $hikeNo;
-} else {
-    $useIndxNo = $newNo;
+$delrefsreq = "DELETE FROM EREFS WHERE indxNo = '{$hikeNo}';";
+$delrefs = mysqli_query($link,$delrefsreq);
+if (!$delrefs) {
+    die("saveRefEdits.php: Failed to delete old refs for {$hikeNo}: " .
+        mysqli_error($link));
 }
+mysqli_free_result($delrefs);
 # Now add the newly edited ones back in, sans any deletions
 # NOTE: The following posts collect all items, even if empty...
 $ertypes = $_POST['rtype'];  # because there is always a default rtype

@@ -233,7 +233,12 @@ $('#preview').on('click', function() {
     var hno = $('#hikeNo').text();
     var prevPg = '../pages/hikePageTemplate.php?age=new&hikeIndx=' + hno;
     window.open(prevPg,"_blank");
-})
+});
+
+var tab = $('#entry').text();
+var tabon = '#t' + tab;
+$(tabon).trigger('click');
+
 });  // end of 'page (DOM) loading complete'
 
 
