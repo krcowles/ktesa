@@ -97,9 +97,11 @@ if ( isset($valType) ) {
     if ($type === 'Save') {
         echo '<div style="margin-left:24px;font-size:18px;">';
         echo '<h2>You have saved the current data on the form</h2>';
-        echo '<p >You may continue on that page, or come back later to work '
-            . 'on it by going back to the main page and selecting "Edit ' .
-            'Hikes" (New/Active)</p>';
+        echo '<p >You may continue by clicking the link below, or come back ' .
+            'later to work on it by going back to the main page and selecting ' .
+            '"Edit Hikes" (New/Active Edits)</p>';
+        echo '<a href="enterHike.php?hno=' . $hikeNo . '&usr=' . $uid .
+                '">Continue Data Entry</a>';
         echo "<p>Your saved Hike is '" . $hike . "'</p></div>";
         
     } else {
