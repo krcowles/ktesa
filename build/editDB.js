@@ -239,6 +239,14 @@ var tab = $('#entry').text();
 var tabon = '#t' + tab;
 $(tabon).trigger('click');
 
+$('.phurl').each( function() {
+    $(this).change( function() {
+        $(this).css('color','blue');
+        $(this).css('font-weight','bold');
+        $(this).css('border-color','black');
+    });
+});
+
 });  // end of 'page (DOM) loading complete'
 
 

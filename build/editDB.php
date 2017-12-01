@@ -290,31 +290,40 @@ mysqli_free_result($hikeq);
     if ($plnks['purl1'] !== '') {
         echo '<input type="checkbox" name="ps[]" value="1" />&nbsp;';
         echo "Include in upload:&nbsp;&nbsp;";
-        echo '<input type="text" name="lnk1" value="' . $plnks['purl1'] . 
-            '" size="75" /><br />';
+        echo '<input style="border-color:black;color:blue;font-weight:bold;" ' .
+            'class="phurl" type="text" name="lnk1" value="' . $plnks['purl1'] .
+            '" />&nbsp;&nbsp;';
+        echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb1" name="albtype[]">' .
+            '<option value="flckr">Flickr</option>' .
+            '<option value="apple">Apple iCloud</option>' .
+            '<option value="googl">Google</option></select><br />';
     }
     if ($plnks['purl2'] !== '') {
         echo '<input type="checkbox" name="ps[]" value="2" />&nbsp;';
         echo "Include in upload:&nbsp;&nbsp;";
-        echo '<input type="text" name="lnk2" value="' . $plnks['purl2'] . 
-            '" size="75" /><br />';
+        echo '<input class="phurl" type="text" name="lnk2" value="' . 
+            $plnks['purl2'] . '" />&nbsp;&nbsp;';
+        echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb2" name="albtype[]">' .
+            '<option value="flckr">Flickr</option>' .
+            '<option value="apple">Apple iCloud</option>' .
+            '<option value="googl">Google</option></select><br />';
     } 
 ?>
 <input type="checkbox" name="ps[]" value="3" />&nbsp;Include new album: 
-<input type="text" name="lnk3" value="" size="75" />&nbsp;&nbsp;
-Album type:&nbsp;
-<select id="alb3" name="albtype[]">
-    <option value="flckr">Flickr Album</option>
-    <option value="apple">Apple iCloud Album</option>
-    <option value="googl">Google Album</option>
+<input class="phurl" type="text" name="lnk3" value="" size="75" />&nbsp;&nbsp;
+Type:&nbsp;
+<select class="albs" id="alb3" name="albtype[]">
+    <option value="flckr">Flickr</option>
+    <option value="apple">Apple iCloud</option>
+    <option value="googl">Google</option>
 </select><br />
 <input type="checkbox" name="ps[]" value="4" />&nbsp;Include new album:
-<input type="text" name="lnk4" value="" size="75" />&nbsp;&nbsp;
-Album type:&nbsp;
-<select id="alb4" name="albtype[]">
-    <option value="flckr">Flickr Album</option>
-    <option value="apple">Apple iCloud Album</option>
-    <option value="googl">Google Album</option>
+<input class="phurl" type="text" name="lnk4" value="" size="75" />&nbsp;&nbsp;
+Type:&nbsp;
+<select class="albs" id="alb4" name="albtype[]">
+    <option value="flckr">Flickr</option>
+    <option value="apple">Apple iCloud</option>
+    <option value="googl">Google</option>
 </select><br /><br />
 <button id="upld" style="font-size:16px;">
     Upload Albums</button>&nbsp;&nbsp;Review these album photos for possible
