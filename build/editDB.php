@@ -275,6 +275,30 @@ mysqli_free_result($hikeq);
  ********** TAB 2: PHOTO SECTION *********
 -->
 <div id="tab2" class="tab-panel">
+<h3>You may wish to upload more photos to add/modify your page. The currently
+    saved album links are displayed below. You may re-select a currently
+    saved link in order to update your photo list, or you may add up to two
+    more links.</h3>
+<?php
+    $purlsReq = "SELECT purl1,purl2 FROM EHIKES WHERE indxNo = {$hikeNo};";
+    $purls = mysqli_query($link,$purlsReq);
+    if (!$purls) {
+        die("editDB.php: Failed to extract photo album urls for hike {$hikeNo}: " .
+            mysqli_error($link));
+    }
+    $plnks = mysqli_fetch_assoc($purls);
+    $cnt = 0;
+    if ($plnks['purl1'] !== '') {
+        echo '<input type="checkbox" name="ps[]" value="1" checked />&nbsp;&nbsp;';
+        echo '<input type="text" name="" value="" size="75" ';
+        $cnt++;
+    }
+    if ($plnks['purl2'] !== '') {
+        echo '<input type="checkbox" name="ps[]" value="2" checked />';
+        $cnt++;
+    }
+    
+?>
 <p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
         captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
 <form action="saveTab2.php" method="POST">
