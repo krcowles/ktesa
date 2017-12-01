@@ -37,30 +37,41 @@ function mantissa($degrees) {
     $coords += ($mins + $secs / 60) / 60;
     return $coords;
 }
+if ( isset($caller) && $caller === 'newPhotos') {
+    $opt = 'adds';
+} else {
+    $opt = 'validates';
+}
 # output msg styling:
 $pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
 #default icon color:
-$icon_clr = filter_input(INPUT_POST,'icon');
-if ($icon_clr === '') {
-    $icon_clr = 'Google default';
-}
-# get any supplied urls and if none, return to user
-$curlids = $_POST['phpcurl']; # array of urls
 $supplied = 0;
-for ($n=0; $n<count($curlids); $n++) {
-    if ($curlids[$n] !== '') {
-        $supplied++;
+if ($opt === 'adds') {
+    $supplied = count($curlids);
+    $icon_clr = 'Google default';
+    # curlids and albums already defined
+} else {
+    $icon_clr = filter_input(INPUT_POST,'icon');
+    if ($icon_clr === '') {
+        $icon_clr = 'Google default';
     }
+    # get any supplied urls and if none, return to user
+    $curlids = $_POST['phpcurl']; # array of urls
+    for ($n=0; $n<count($curlids); $n++) {
+        if ($curlids[$n] !== '') {
+            $supplied++;
+        }
+    }
+    if ($supplied === 0) {
+        $nourls = $pstyle . 'No urls were specified for photo albums: please go '
+                . 'back and provide one or more legitimate photo album urls, or '
+                . 'select the box for "I do not wish to specify pictures at '
+                . 'this time"</p>';
+        die ($nourls);
+    }
+    # variables used in processing data from albums:
+    $albums = $_POST['albtype'];
 }
-if ($supplied === 0) {
-    $nourls = $pstyle . 'No urls were specified for photo albums: please go '
-            . 'back and provide one or more legitimate photo album urls, or '
-            . 'select the box for "I do not wish to specify pictures at '
-            . 'this time"</p>';
-    die ($nourls);
-}
-# variables used in processing data from albums:
-$albums = $_POST['albtype'];
 $xmlTsvStr = '';
 $pcnt = 0;  # no of photos processed
 # These arrays will be sorted by date/time after all albums have been processed
@@ -162,29 +173,30 @@ for ($i=0; $i<$supplied; $i++) {
 }  # end of for each album url input box
 # sort the arrays based on timestamp:
 include "timeSort.php";
-foreach ($picdat as $ph) {  # each item is an array of data
-    $foldr = mysqli_real_escape_string($link,$ph['folder']);
-    $ttl = mysqli_real_escape_string($link,$ph['pic']);
-    $des = mysqli_real_escape_string($link,$ph['desc']);
-    $lt = mysqli_real_escape_string($link,$ph['lat']);
-    $ln = mysqli_real_escape_string($link,$ph['lng']);
-    $th = mysqli_real_escape_string($link,$ph['thumb']);
-    $al = mysqli_real_escape_string($link,$ph['alb']);
-    $dt = mysqli_real_escape_string($link,$ph['taken']);
-    $sz = mysqli_real_escape_string($link,$ph['nsize']);
-    $ht = mysqli_real_escape_string($link,$ph['pHt']);
-    $wd = mysqli_real_escape_string($link,$ph['pWd']);
-    $ic = mysqli_real_escape_string($link,$icon_clr);
-    $og = mysqli_real_escape_string($link,$ph['org']);
-    $photoQuery = "INSERT INTO ETSV ( indxNo,folder,title," .
-        "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid," .
-        "imgHt,imgWd,iclr,org ) VALUES ( '{$hikeNo}','{$foldr}'," .
-        "'{$ttl}','N','N','{$des}','{$lt}','{$ln}','{$th}'," .
-        "'{$al}','{$dt}','{$sz}','{$ht}','{$wd}','{$ic}','{$og}' );";
-    $photoResults = mysqli_query($link,$photoQuery);
-    if (!$photoResults) {
-        die ("getPicDat.php: Could not insert data into ETSV: " . mysqli_error($link));
+if ($opt === 'validates') {
+    foreach ($picdat as $ph) {  # each item is an array of data
+        $foldr = mysqli_real_escape_string($link,$ph['folder']);
+        $ttl = mysqli_real_escape_string($link,$ph['pic']);
+        $des = mysqli_real_escape_string($link,$ph['desc']);
+        $lt = mysqli_real_escape_string($link,$ph['lat']);
+        $ln = mysqli_real_escape_string($link,$ph['lng']);
+        $th = mysqli_real_escape_string($link,$ph['thumb']);
+        $al = mysqli_real_escape_string($link,$ph['alb']);
+        $dt = mysqli_real_escape_string($link,$ph['taken']);
+        $sz = mysqli_real_escape_string($link,$ph['nsize']);
+        $ht = mysqli_real_escape_string($link,$ph['pHt']);
+        $wd = mysqli_real_escape_string($link,$ph['pWd']);
+        $ic = mysqli_real_escape_string($link,$icon_clr);
+        $og = mysqli_real_escape_string($link,$ph['org']);
+        $photoQuery = "INSERT INTO ETSV ( indxNo,folder,title," .
+            "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid," .
+            "imgHt,imgWd,iclr,org ) VALUES ( '{$hikeNo}','{$foldr}'," .
+            "'{$ttl}','N','N','{$des}','{$lt}','{$ln}','{$th}'," .
+            "'{$al}','{$dt}','{$sz}','{$ht}','{$wd}','{$ic}','{$og}' );";
+        $photoResults = mysqli_query($link,$photoQuery);
+        if (!$photoResults) {
+            die ("getPicDat.php: Could not insert data into ETSV: " . mysqli_error($link));
+        }
     }
+    mysqli_free_result($photoResult);
 }
-mysqli_free_result($photoResult);
-?>

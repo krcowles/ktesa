@@ -246,6 +246,9 @@ $('.phurl').each( function() {
         $(this).css('border-color','black');
     });
 });
+$('#upld').on('click', function() {
+    window.open('newPhotos.php');
+});
 
 });  // end of 'page (DOM) loading complete'
 

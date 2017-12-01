@@ -62,4 +62,3 @@ usort($picdat,function($a,$b) {
     }
     return ($yrA < $yrB) ? -1 : 1;
 });
-?>

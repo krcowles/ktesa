@@ -18,6 +18,12 @@ var sessSupport = window.sessionStorage ? true : false;
     
 var emode = false; // edit mode requires caption offset
 var pageType = $('#ptype').text();
+if (pageType.substring(0,4) === 'Edit' && pageType.length > 4) {
+    pageType = 'Edit';
+    var newUplds = true;
+} else {
+    var newUplds = false;
+}
 var caps = true;
 if (pageType === 'Hike') {
     $photos = $('img[id^="pic"]');
@@ -32,7 +38,7 @@ if (pageType === 'Edit') {
     caps = false;
 }
 // Don't activate executeCaptions until that div is tab-selected:
-if( pageType === 'Edit') {
+if( pageType === 'Edit' && !newUplds) {
     $('#t2').on('click', function(ev) {
         ev.preventDefault();
         $loadWait = setTimeout( function() {

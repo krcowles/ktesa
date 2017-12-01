@@ -9,16 +9,18 @@
  * Place this code inside a <div> element.
  */
 require_once "../mysql/setenv.php";
+$h4txt = "Please check the boxes corresponding to the pictures you wish to " .
+    "include on the hike page, and those you wish to include on the geomap.";
+if ($pgType === 'Edit') {
+    $h4txt .= " NOTE: Checking 'Delete' permanently removes the photo.";
+}
 ?>
 <style type="text/css">
     .capLine { margin: 0px;
     font-weight: bold;
     background-color: #dadada; }
 </style>
-<h4 style="text-indent:16px">Please check the boxes corresponding to
-    the pictures you wish to include on the hike page, and those you wish to
-    include on the geomap. NOTE: Checking 'Delete' permanently removes the photo.
-</h4>
+<h4 style="text-indent:16px"><?php echo $h4txt;?></h4>
 <div style="position:relative;top:-14px;margin-left:16px;">
     <input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;
         Use All Photos on Hike Page<br />

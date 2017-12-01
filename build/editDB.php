@@ -128,7 +128,6 @@ mysqli_free_result($hikeq);
 -->
 <div id="tab1" class="active tab-panel">
 <form action="saveTab1.php" method="POST">
-    <input type="hidden" name="tbl" value="<?php echo $tbl_type;?>" />
     <input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
     <input type="hidden" name="usr" value="<?php echo $uid;?>" />
     <input type="hidden" name="stat" value ="<?php echo $status;?>" />
@@ -279,6 +278,9 @@ mysqli_free_result($hikeq);
     saved album links are displayed below. You may re-select a currently
     saved link in order to update your photo list, and/or you may add up to two
     more links.</h3>
+<form action="newPhotos.php" method="POST">
+    <input type="hidden" name="nno" value="<?php echo $hikeNo;?>" />
+    <input type="hidden" name="nid" value="<?php echo $uid;?>" />
 <?php
     $purlsReq = "SELECT purl1,purl2 FROM EHIKES WHERE indxNo = {$hikeNo};";
     $purls = mysqli_query($link,$purlsReq);
@@ -293,7 +295,7 @@ mysqli_free_result($hikeq);
         echo '<input style="border-color:black;color:blue;font-weight:bold;" ' .
             'class="phurl" type="text" name="lnk1" value="' . $plnks['purl1'] .
             '" />&nbsp;&nbsp;';
-        echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb1" name="albtype[]">' .
+        echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb1" name="alb1">' .
             '<option value="flckr">Flickr</option>' .
             '<option value="apple">Apple iCloud</option>' .
             '<option value="googl">Google</option></select><br />';
@@ -303,7 +305,7 @@ mysqli_free_result($hikeq);
         echo "Include in upload:&nbsp;&nbsp;";
         echo '<input class="phurl" type="text" name="lnk2" value="' . 
             $plnks['purl2'] . '" />&nbsp;&nbsp;';
-        echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb2" name="albtype[]">' .
+        echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb2" name="alb2">' .
             '<option value="flckr">Flickr</option>' .
             '<option value="apple">Apple iCloud</option>' .
             '<option value="googl">Google</option></select><br />';
@@ -312,7 +314,7 @@ mysqli_free_result($hikeq);
 <input type="checkbox" name="ps[]" value="3" />&nbsp;Include new album: 
 <input class="phurl" type="text" name="lnk3" value="" size="75" />&nbsp;&nbsp;
 Type:&nbsp;
-<select class="albs" id="alb3" name="albtype[]">
+<select class="albs" id="alb3" name="alb3">
     <option value="flckr">Flickr</option>
     <option value="apple">Apple iCloud</option>
     <option value="googl">Google</option>
@@ -320,14 +322,15 @@ Type:&nbsp;
 <input type="checkbox" name="ps[]" value="4" />&nbsp;Include new album:
 <input class="phurl" type="text" name="lnk4" value="" size="75" />&nbsp;&nbsp;
 Type:&nbsp;
-<select class="albs" id="alb4" name="albtype[]">
+<select class="albs" id="alb4" name="alb4">
     <option value="flckr">Flickr</option>
     <option value="apple">Apple iCloud</option>
     <option value="googl">Google</option>
 </select><br /><br />
-<button id="upld" style="font-size:16px;">
-    Upload Albums</button>&nbsp;&nbsp;Review these album photos for possible
+<input style="font-size:16px;width:165px;" type="submit" value="Upload Album(s)" />
+    &nbsp;&nbsp;Review these album photos for possible
     inclusion on the edit page...
+</form>
 <p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
         captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
 <form action="saveTab2.php" method="POST">
