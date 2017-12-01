@@ -261,21 +261,21 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
                     <option value="apple">Apple iCloud Album</option>
                     <option value="googl">Google Album</option>
                 </select>&nbsp;&nbsp;Album URL:&nbsp;
-                <input id="curl1" name="phpcurl[]" size="80" /><br />
+                <input id="curl1" type="text" name="phpcurl[]" size="80" /><br />
                 Type of album:&nbsp;
                 <select id="alb2" name="albtype[]">
                     <option value="flckr">Flickr Album</option>
                     <option value="apple">Apple iCloud Album</option>
                     <option value="googl">Google Album</option>
                 </select>&nbsp;&nbsp;Album URL:&nbsp;
-                <input id="curl2" name="phpcurl[]" size="80" /><br />
+                <input id="curl2" type="text" name="phpcurl[]" size="80" /><br />
                 Type of album:&nbsp;
                 <select id="alb3" name="albtype[]">
                     <option value="flckr">Flickr Album</option>
                     <option value="apple">Apple iCloud Album</option>
                     <option value="googl">Google Album</option>
                 </select>&nbsp;&nbsp;Album URL:&nbsp;
-                <input id="curl3" name="phpcurl[]" size="80" /><br />
+                <input id="curl3" type="text" name="phpcurl[]" size="80" /><br />
                 </div><br />
                 
                 Select the color of the icon which will be used to mark photo 

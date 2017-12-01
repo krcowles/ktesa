@@ -292,7 +292,7 @@ if (dbloc !== '') {
 var dblog = $('#dblog').text();  // logistics (type)
 $('#type').val(dblog);
 if (dblog !== '') {
-    stylit($('$type'));
+    stylit($('#type'));
 }
 var dbdif = $('#dbdif').text();  // difficulty
 $('#ease').val(dbdif);
