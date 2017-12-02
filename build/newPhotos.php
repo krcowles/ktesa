@@ -136,12 +136,14 @@ $nodup = mysqli_query($link,"DROP TABLE IF EXISTS tmpPix");
 if (!$nodup) {
     die("newPhotos.php: DROP TABLE IF EXISTS failed: " . mysqli_error($link));
 }
+mysqli_free_result($nodup);
 $tmpReq = "CREATE TABLE tmpPix LIKE TSV;";
 $tmp = mysqli_query($link,$tmpReq);
 if (!$tmp) {
     die("newPhotos.php: Failed to create tmp table for photos uploaded: " .
         mysqli_error($link));
 }
+mysqli_free_result($tmp);
 for ($j=0; $j<$picno; $j++) {
     $fl = mysqli_real_escape_string($link,$folders[$j]);
     $ti = mysqli_real_escape_string($link,$phNames[$j]);
@@ -163,7 +165,7 @@ for ($j=0; $j<$picno; $j++) {
     $addem = mysqli_query($link,$addReq);
     if (!$addem) {
         die("newPhotos.php: Failed to add photos to tmpPix table: " . 
-            msyqli_erro($link));
+            msyqli_error($link));
     }
     mysqli_free_result($addem);
 }
