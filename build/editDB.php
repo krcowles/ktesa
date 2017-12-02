@@ -303,8 +303,9 @@ mysqli_free_result($hikeq);
     if ($plnks['purl2'] !== '') {
         echo '<input type="checkbox" name="ps[]" value="2" />&nbsp;';
         echo "Include in upload:&nbsp;&nbsp;";
-        echo '<input class="phurl" type="text" name="lnk2" value="' . 
-            $plnks['purl2'] . '" />&nbsp;&nbsp;';
+        echo '<input style="border-color:black;color:blue;font-weight:bold;" ' .
+            'class="phurl" type="text" name="lnk2" value="' . $plnks['purl2'] .
+            '" />&nbsp;&nbsp;';
         echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb2" name="alb2">' .
             '<option value="flckr">Flickr</option>' .
             '<option value="apple">Apple iCloud</option>' .
