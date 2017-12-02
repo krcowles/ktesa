@@ -110,6 +110,8 @@ for ($i=0; $i<$picno; $i++) {
         '" /><br />' . PHP_EOL;
     echo "</div>" . PHP_EOL;
 }
+print_r($phDescs);
+print_r($alblinks);
 # create the js arrays to be passed to the accompanying script:
 $jsTitles = '[';
 for ($n=0; $n<count($phNames); $n++) {
@@ -151,7 +153,7 @@ for ($j=0; $j<$picno; $j++) {
     $lt = mysqli_real_escape_string($link,$lats[$j]);
     $ln = mysqli_real_escape_string($link,$lngs[$j]);
     $th = mysqli_real_escape_string($link,$thumbs[$j]);
-    $al = mysqli_real_escape_string($link,$albums[$j]);
+    $al = mysqli_real_escape_string($link,$alblinks[$j]);
     $dt = mysqli_real_escape_string($link,$dates[$j]);
     $md = mysqli_real_escape_string($link,$phPics[$j]);
     $ih = mysqli_real_escape_string($link,$phHts[$j]);
