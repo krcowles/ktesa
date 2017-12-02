@@ -39,15 +39,21 @@ require_once '../mysql/setenv.php';
 $incl = $_POST['ps'];
 $curlids = [];
 $albums = [];
+$lnk1 = '';
+$lnk2 = '';
 $j = 0;
-/* This routine differs slightly from validateHIke in that the photo album
- * links must be checked (checkboxes) in order to upload (user may not want
- * to re-upload original album, for example).
- */
 foreach ($incl as $newalb) {
     $alnk = 'lnk' . $newalb;
     $atype = 'alb' . $newalb;
     $curlids[$j] = filter_input(INPUT_POST,$alnk);
+    if ( (strlen($lnk1) + strlen($curlids[$j])) > 1023 ) {
+        $lnk2 .= "^" . $curlids[$j];
+    } else {
+        $lnk1 .= "^" . $curlids[$j];
+    }
+    if (strlen($lnk2) > 1023) {
+        echo "Exceeded field limit for compounded link...";
+    }
     $albums[$j] = filter_input(INPUT_POST,$atype);
     $j++;
 }
@@ -161,6 +167,10 @@ for ($j=0; $j<$picno; $j++) {
     }
     mysqli_free_result($addem);
 }
+/* UPDATE THE LINKS USED;
+ * Note that if there is a "^" in the entry, all links after that were appended
+ * as a result of an upload. NOT IMPLEMENTED YET...
+ */
 ?>
 <input style="font-size:18px;" type="submit" value="Add Photos" />
 </form>

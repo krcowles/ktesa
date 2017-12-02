@@ -9,6 +9,12 @@ $noOfPix = count($ecapts);
 # capture the states of each for displaying on page or and/or on map
 $displayPg = $_POST['pix'];
 $displayMap = $_POST['mapit'];
+$rems = $_POST['rem'];
+if (isset($rems)) {
+    $noOfRems = count($rems);
+} else {
+    $noOfRems = 0;
+}
 $photoReq = "SELECT picIdx,title,hpg,mpg,`desc` FROM ETSV WHERE indxNo = '{$hikeNo}'";
 $photoq = mysqli_query($link,$photoReq);
 if (!$photoq) {
@@ -40,16 +46,32 @@ while ($photo = mysqli_fetch_assoc($photoq)) {
             $dispm = 'Y';
             break;
         }
-    } 
-    $updtreq = "UPDATE ETSV SET hpg = '{$disph}',mpg = '{$dispm}',"
-        ."`desc` = '{$newcap}' WHERE picIdx = {$thisid};";
-    $update = mysqli_query($link,$updtreq);
-    if (!$update) {
-        die("savePicEdits.php: Failed to update ETSV table for hike {$hikeNo}: "
-            . msyqli_error($link));
+    }
+    $deletePic = false;
+    for ($k=0; $k<$noOfRems; $k++) {
+        if ($rems[$k] === $thispic) {
+            $deletePic = true;
+            break;
+        }
+    }
+    if ($deletePic) {
+        $del = mysqli_query($link,"DELETE FROM ETSV WHERE title = '{$thispic}';");
+        if (!$del) {
+            die("saveTab2.php: Failed to remove photo {$thispic}: " . 
+                mysqli_error($link));
+        }
+    } else {
+        $updtreq = "UPDATE ETSV SET hpg = '{$disph}',mpg = '{$dispm}',"
+            . "`desc` = '{$newcap}' WHERE picIdx = {$thisid};";
+        $update = mysqli_query($link,$updtreq);
+        if (!$update) {
+            die("savePicEdits.php: Failed to update ETSV table for hike {$hikeNo}: "
+                . msyqli_error($link));
+        }
     }
     $p++;
 }
+mysqli_free_result($del);
 mysqli_free_result($update);
 mysqli_free_result($photoq);
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";

@@ -80,7 +80,7 @@ if (mysqli_num_rows($pix) === 0) {
         }
         echo $mpbox;
         if ($pgType === 'Edit') {
-            echo '<input class="delp" type="checkbox" name="erase[]" value="'
+            echo '<input class="delp" type="checkbox" name="rem[]" value="'
                 . $phNames[$i] . '" />Delete<br />';
         }
         echo '<img class="allPhotos" height="200px" width="' . $phWds[$i]
