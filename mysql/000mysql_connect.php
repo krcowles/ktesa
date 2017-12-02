@@ -13,6 +13,9 @@ if (!$link) {
         user_error_msg($rel_addr,0,$ecode);
     }
 }
+
+require_once "../admin/set_sql_mode.php";
+
 function dbug_print($msg) {
     if (Ktesa_Dbug) {
         echo $msg;
