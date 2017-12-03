@@ -24,7 +24,7 @@
 
 <div id="main" style="padding:16px;">
 <?php
-$hikeNo = filter_input(INPUT_POST,'nno');
+$hikeNo = filter_input(INPUT_POST,'nno',FILTER_VALIDATE_INT);
 $usr = filter_input(INPUT_POST,'nid');
 ?>
 <form action="addNewPhotos.php" method="POST">
@@ -110,8 +110,6 @@ for ($i=0; $i<$picno; $i++) {
         '" /><br />' . PHP_EOL;
     echo "</div>" . PHP_EOL;
 }
-print_r($phDescs);
-print_r($alblinks);
 # create the js arrays to be passed to the accompanying script:
 $jsTitles = '[';
 for ($n=0; $n<count($phNames); $n++) {
@@ -150,22 +148,23 @@ for ($j=0; $j<$picno; $j++) {
     $fl = mysqli_real_escape_string($link,$folders[$j]);
     $ti = mysqli_real_escape_string($link,$phNames[$j]);
     $ds = mysqli_real_escape_string($link,$phDescs[$j]);
-    $lt = mysqli_real_escape_string($link,$lats[$j]);
-    $ln = mysqli_real_escape_string($link,$lngs[$j]);
+    $lt = mysqli_real_escape_string($link,floatval($lats[$j]));
+    $ln = mysqli_real_escape_string($link,floatval($lngs[$j]));
     $th = mysqli_real_escape_string($link,$thumbs[$j]);
     $al = mysqli_real_escape_string($link,$alblinks[$j]);
     $dt = mysqli_real_escape_string($link,$dates[$j]);
     $md = mysqli_real_escape_string($link,$phPics[$j]);
-    $ih = mysqli_real_escape_string($link,$phHts[$j]);
-    $iw = mysqli_real_escape_string($link,$pWds[$j]);
+    $ih = mysqli_real_escape_string($link,intval($phHts[$j]));
+    $iw = mysqli_real_escape_string($link,intval($pWds[$j]));
     $ic = mysqli_real_escape_string($link,$icolors[$j]);
     $og = mysqli_real_escape_string($link,$orgs[$j]);
     $addReq = "INSERT INTO tmpPix (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
-        "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) VALUES ('{$hikeNo}'," .
-        "'{$fl}','{$ti}','N','N','{$ds}','{$lt}','{$ln}','{$th}','{$al}'," .
-        "'{$dt}','{$md}','{$ih}','{$iw}','{$ic}','{$og}');";
+        "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) VALUES ({$hikeNo}," .
+        "'{$fl}','{$ti}','N','N','{$ds}',{$lt},{$ln},'{$th}','{$al}'," .
+        "'{$dt}','{$md}',{$ih},{$iw},'{$ic}','{$og}');";
     $addem = mysqli_query($link,$addReq);
     if (!$addem) {
+        echo "YAPPP" . mysqli_error($link);
         die("newPhotos.php: Failed to add photos to tmpPix table: " . 
             msyqli_error($link));
     }
