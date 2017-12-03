@@ -1,5 +1,5 @@
 <?php
-require_once "../mysql/local_mysql_connect.php";
+require_once "../mysql/setenv.php";
 $usrname = trim($_REQUEST['nmhid']);
 $usrpass = trim($_REQUEST['nmpass']);
 $usr_req = sprintf("SELECT username,passwd FROM USERS WHERE username = '%s';",
