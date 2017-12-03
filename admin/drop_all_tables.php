@@ -11,7 +11,7 @@ if ($qty === 'all') {
 }
 # --------- change the above
 $table = array('USERS','HIKES','TSV','REFS','GPSDAT','IPTBLS',
-    'ETSV','EREFS','EGPSDAT','EHIKES'); # NOTE: E-tables are order-sensitive
+    'ETSV','EREFS','EGPSDAT','EHIKES','tmpPix'); # NOTE: E-tables are order-sensitive
 $tblcnt = count($table); # total number of hike tables
 
 ?>

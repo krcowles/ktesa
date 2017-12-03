@@ -29,7 +29,7 @@ var adminUrl = 'admin/admintools.php';
 // on loading the page:
 var mstrCookie = getCookie('nmh_mstr');
 if (mstrCookie !== "") {
-    usr_type = 'mstr'
+    usr_type = 'mstr';
     $('#logins').css('display','none');
     $('#loggedin').css('display','block');
     $('#reg').css('display','none');
@@ -172,6 +172,7 @@ $('#auxfrm').submit( function(ev) {
             setCookie('nmh_mstr','ktesa',365);
             setCookie('nmh_id','',0); // one user at a time
         }
+        usr_type = 'mstr';
     } else {  // not master key
         var uid = $('#usrid').val();
         var upw = $('#upass').val();
