@@ -2350,3 +2350,25 @@ CREATE TABLE `ETSV` (
 
 
 
+
+
+CREATE TABLE `USERS` (
+  `userid` smallint(6) NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) NOT NULL,
+  `passwd` varchar(255) NOT NULL,
+  `passwd_expire` date DEFAULT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `facebook_url` varchar(100) DEFAULT NULL,
+  `twitter_handle` varchar(20) DEFAULT NULL,
+  `bio` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO USERS VALUES
+('1','tom','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Sandberg','Tom','tjsandberg@yahoo.com',NULL,NULL,'One of the geniuses behind this site :-)'),
+('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)');
+
+
