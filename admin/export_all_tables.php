@@ -7,7 +7,8 @@ require_once '../mysql/setenv.php';
     $mysqlHostName      = HOSTNAME;
     $DbName             = DATABASE;
     $backup_name        = "mybackup.sql";
-    $tables             = array("HIKES","GPSDAT","REFS","TSV","IPTBLS","EHIKES","EGPSDAT","EREFS","EIPTBLS","ETSV");
+    $tables             = array("HIKES","GPSDAT","REFS","TSV","IPTBLS","EHIKES",
+        "EGPSDAT","EREFS","EIPTBLS","ETSV","USERS");
 
    //or add 5th parameter(array) of specific tables:    array("mytable1","mytable2","mytable3") for multiple tables
 

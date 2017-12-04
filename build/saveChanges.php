@@ -14,8 +14,6 @@ $cgName = filter_input(INPUT_POST,'pcnme');
 $hikeColl = filter_input(INPUT_POST,'col');
 $gpxfile = filter_input(INPUT_POST,'gpx');
 $trkfile = filter_input(INPUT_POST,'trk');
-$addon1 = filter_input(INPUT_POST,'ao1');
-$addon2 = filter_input(INPUT_POST,'ao2');
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -150,8 +148,6 @@ $addon2 = filter_input(INPUT_POST,'ao2');
     $hLat = mysqli_real_escape_string($link,$lat);
     $lng = filter_input(INPUT_POST,'hlon');
     $hLon = mysqli_real_escape_string($link,$lng);
-    $hAdd1 = mysqli_real_escape_string($link,$addon1);
-    $hAdd2 = mysqli_real_escape_string($link,$addon2);
     $url1 = filter_input(INPUT_POST,'purl1');
     $hPurl1 = mysqli_real_escape_string($link,$url1);
     $url2 = filter_input(INPUT_POST,'purl2');
