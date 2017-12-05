@@ -31,7 +31,7 @@ if ($tbl_type === 'old') {
         $pxwd = mysqli_real_escape_string($link,$p['imgWd']);
         $pclr = mysqli_real_escape_string($link,$p['iclr']);
         $porg = mysqli_real_escape_string($link,$p['org']);
-        $addPicReq = "INSERT INTO ETSV (indxNo,folder,title," .
+        $addPicReq = "INSERT IGNORE INTO ETSV (indxNo,folder,title," .
             "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd," .
             "iclr,org) VALUES ('{$newNo}','{$fldr}','{$ttle}'," .
             "'{$phpg}','{$pmpg}','{$pdes}','{$plat}','{$plon}','{$thmb}'," .
@@ -60,7 +60,7 @@ if (!$photoq) {
     die("savePicEdits.php: Failed to extract 'hpg' from ETSV: " .
         mysqli_error($link));
 }
-if (count($ecapts) !== mysqli_num_rows($photoq)) {
+if ($noOfPix !== mysqli_num_rows($photoq)) {
     echo '<p style="color:red;font-size:20px;margin-left:16px;">'
     . "WARNING: Retrieved photo count and no of captions don't match..</p>";
 }

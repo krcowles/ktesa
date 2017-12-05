@@ -1,5 +1,5 @@
 <?php
-require '../mysql/setenv.php';
+require_once '../mysql/setenv.php';
 $hip = filter_input(INPUT_GET,'hno');  # hike-in-process
 $usr = filter_input(INPUT_GET,'usr');
 if ($usr === 'mstr') {
@@ -7,6 +7,7 @@ if ($usr === 'mstr') {
 } else {
     $disp = 'none';
 }
+require 'currentTitles.php'; # list of existing hike page titles
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -19,6 +20,9 @@ if ($usr === 'mstr') {
     <meta name="robots" content="nofollow" />
     <link href="enterHike.css" type="text/css" rel="stylesheet" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript">
+        var hnames = <?php echo $hnames;?>;
+    </script>
 </head>
 
 <body>
@@ -96,23 +100,31 @@ for ($i=1; $i<=$tblcnt; $i++) {
 mysqli_free_result($specdat);
 $vccnt = count($vchikes);
 $clcnt = count($clhikes);
-# Get any data recorded so far...
-$query = "SELECT * FROM EHIKES WHERE indxNo = {$hip}";
-$result = mysqli_query($link,$query);
-if (mysqli_num_rows($result) === 0) {
-    die("<h2>Could not find a hike matching index " . $hip . 
-            ". Contact Site Master");
-}
-if (!$result) {
-    if (Ktesa_Dbug) {
-        dbug_print("enterHike.php: Could not extract record for {$hip}: " . 
-                mysqli_error($link));
-    } else {
-        user_error_msg($rel_addr,6,0);
+if ($hip == '0') {  # in this case, all preloads of fields are empty...
+    $entrydat = array("indxNo"=>'',"pgTitle"=>'',"locale"=>'',"logistics"=>'',
+        "marker"=>'',"collection"=>'',"cgroup"=>'',"cname"=>'',"diff"=>'',
+        "miles"=>'',"feet"=>'',"expo"=>'',"fac"=>'',"wow"=>'',"seasons"=>'',
+        "lat"=>'',"lng"=>'',"purl1"=>'',"purl2"=>'',"dirs"=>'',"tips"=>'',
+        "info"=>'');
+} else {
+    # Get any data recorded so far...
+    $query = "SELECT * FROM EHIKES WHERE indxNo = {$hip}";
+    $result = mysqli_query($link,$query);
+    if (mysqli_num_rows($result) === 0) {
+        die("<h2>Could not find a hike matching index " . $hip . 
+                ". Contact Site Master");
     }
+    if (!$result) {
+        if (Ktesa_Dbug) {
+            dbug_print("enterHike.php: Could not extract record for {$hip}: " . 
+                    mysqli_error($link));
+        } else {
+            user_error_msg($rel_addr,6,0);
+        }
+    }
+    $entrydat = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
 }
-$entrydat = mysqli_fetch_assoc($result);
-mysqli_free_result($result);
 ?>
 <div id="setup" style="display:<?php echo $disp;?>">
     <h1>STEP 1: Enter Hike Data</h1>
@@ -125,11 +137,8 @@ mysqli_free_result($result);
 </div>
 
 <div id="theForm">
-<form id="hikeData" target="_blank" onsubmit="page_type(this);" method="POST"
+<form id="hikeData" onsubmit="page_type(this);" method="POST"
     enctype="multipart/form-data">
-
-    <p id="dbhno" style="display:none;"><?php echo $entrydat['indxNo'];?></p>
-    <p id="dbhnm" style="display:none;"><?php echo $entrydat['pgTitle'];?></p>
     <p id="dbloc" style="display:none;"><?php echo $entrydat['locale'];?></p>
     <p id="dblog" style="display:none;"><?php echo $entrydat['logistics'];?></p>
     <p id="dbmrk" style="display:none;"><?php echo $entrydat['marker'];?></p>
@@ -147,7 +156,8 @@ mysqli_free_result($result);
         <label id="pgTitleText" for="htitle">Hike Name (As it will appear 
             in the table):</label> 
         <input id="htitle" type="text" name="hpgTitle" 
-               size="35" value="<?php echo $entrydat['pgTitle'];?>" />&nbsp;&nbsp;
+               size="35" value="<?php echo $entrydat['pgTitle'];?>" 
+               required />&nbsp;&nbsp;
         <label for="area">Locale (Nearest city/landmark):</label>
         <select id="area" name="locale">
         <optgroup label="North/Northeast">
@@ -226,11 +236,11 @@ mysqli_free_result($result);
         <legend>Exposure Factor</legend>
         <em id="selexp" class="notVC">Select Exposure to Sun: </em>
         <input id="sunny" type="radio" name="expos" value="Full sun" />
-        <label class="notVC" for="sunny">Full Sun</label>
+        <label id="e1" class="notVC" for="sunny">Full Sun</label>
         <input id="shady" type="radio" name="expos" value="Good shade" />
-        <label class="notVC" for="shady">Good Shade</label>
+        <label id="e2" class="notVC" for="shady">Good Shade</label>
         <input id="partly" type="radio" name="expos" value="Mixed sun/shade" />
-        <label class="notVC" for="partly">Mixed Sun &amp; Shade</label>
+        <label id="e3" class="notVC" for="partly">Mixed Sun &amp; Shade</label>
     </fieldset>
 
     <fieldset>
@@ -251,21 +261,21 @@ mysqli_free_result($result);
                     <option value="apple">Apple iCloud Album</option>
                     <option value="googl">Google Album</option>
                 </select>&nbsp;&nbsp;Album URL:&nbsp;
-                <input id="curl1" name="phpcurl[]" size="80" /><br />
+                <input id="curl1" type="text" name="phpcurl[]" size="80" /><br />
                 Type of album:&nbsp;
                 <select id="alb2" name="albtype[]">
                     <option value="flckr">Flickr Album</option>
                     <option value="apple">Apple iCloud Album</option>
                     <option value="googl">Google Album</option>
                 </select>&nbsp;&nbsp;Album URL:&nbsp;
-                <input id="curl2" name="phpcurl[]" size="80" /><br />
+                <input id="curl2" type="text" name="phpcurl[]" size="80" /><br />
                 Type of album:&nbsp;
                 <select id="alb3" name="albtype[]">
                     <option value="flckr">Flickr Album</option>
                     <option value="apple">Apple iCloud Album</option>
                     <option value="googl">Google Album</option>
                 </select>&nbsp;&nbsp;Album URL:&nbsp;
-                <input id="curl3" name="phpcurl[]" size="80" /><br />
+                <input id="curl3" type="text" name="phpcurl[]" size="80" /><br />
                 </div><br />
                 
                 Select the color of the icon which will be used to mark photo 
@@ -292,7 +302,9 @@ mysqli_free_result($result);
                     <option value="tan">Tan</option>
                     <option value="brown">Brown</option>
                     <option value="Google default">Google default</option>
-                </select><br /><br />
+                </select><br />
+                <em style="color:brown">[NOTE: Icon color not saved until 
+                    album is uploaded]</em><br /><br />
             </div>
             <label id="l_gpx" class="notVC" for="gpxfile" style="color:Brown">
                 GPX File: [RECOMMENDED]&nbsp;</label>
@@ -334,9 +346,9 @@ mysqli_free_result($result);
     <fieldset id="marker">
         <legend>Google Maps Marker Style</legend>
         <input id="vc" type="radio" name="mstyle" value="center" />
-        <label for="vc">Visitor Center [New Index Page]</label><br />
+        <label id="m1" for="vc">Visitor Center [New Index Page]</label><br />
         <input id="vch" type="radio" name="mstyle" value="ctrhike" />
-        <label for="vch">Hike At / In Close Proximity To Visitor 
+        <label id="m2" for="vch">Hike At / In Close Proximity To Visitor 
             Center</label><br />
         <span style="color:brown;margin-left:32px;">[NOTE: Visitor Center
                 Page must already exist:</span>&nbsp; if not, save this page, 
@@ -355,7 +367,7 @@ mysqli_free_result($result);
                     </select>
                 </div>
         <input id="ch" type="radio" name="mstyle" value="cluster" />
-        <label for="ch">Trailhead Common to Multiple Hikes</label><br />
+        <label id="m3" for="ch">Trailhead Common to Multiple Hikes</label><br />
             <span style="color:brown;margin-left:32px;">[NOTE: Group must already 
             exist in database:</span> &nbsp;if not, save this page, 
                 <span style="text-decoration:underline">exit</span>, and edit 
@@ -377,7 +389,7 @@ mysqli_free_result($result);
                 </div>
                     
         <input id="othr" type="radio" name="mstyle" value="other" />
-        <label for="othr">All Others</label><br />
+        <label id="m4" for="othr">All Others</label><br />
     </fieldset>
 
     <fieldset id="txtdat">
@@ -401,12 +413,16 @@ mysqli_free_result($result);
     </fieldset>
 
     <?php
-    $refquery = "SELECT * FROM EREFS WHERE indxNo = '{$hip}';";
-    $refdata = mysqli_query($link,$refquery);
-    if (!$refdata) {
-        die ("enterHike.php: Could not access EREFS table'" . mysqli_error($link));
+    if ($hip == '0') {
+        $rowcnt = 0;
+    } else {
+        $refquery = "SELECT * FROM EREFS WHERE indxNo = '{$hip}';";
+        $refdata = mysqli_query($link,$refquery);
+        if (!$refdata) {
+            die ("enterHike.php: Could not access EREFS table'" . mysqli_error($link));
+        }
+        $rowcnt = mysqli_num_rows($refdata);
     }
-    $rowcnt = mysqli_num_rows($refdata);
     if ($rowcnt === 0) {
         for ($z=0; $z<6; $z++) {
             $rtype[$z] = '';
@@ -592,12 +608,16 @@ mysqli_free_result($result);
     </fieldset>
     <?php
     # Set proposed data values, if any
-    $pquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'P';";
-    $pdata = mysqli_query($link,$pquery);
-    if (!$pdata) {
-        die ("enterHike.php: Could not access 'P' in GPSDAT table: " . mysqli_error($link));
+    if ($hip == '0') {
+        $prows = 0;
+    } else {
+        $pquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'P';";
+        $pdata = mysqli_query($link,$pquery);
+        if (!$pdata) {
+            die ("enterHike.php: Could not access 'P' in GPSDAT table: " . mysqli_error($link));
+        }
+        $prows = mysqli_num_rows($pdata);
     }
-    $prows = mysqli_num_rows($pdata);
     if ($prows === 0) {
         for ($a=0; $a<4; $a++) {
             $plbl[$a] = '';
@@ -621,12 +641,16 @@ mysqli_free_result($result);
     mysqli_free_result($pdata);
     # Set proposed data values, if any
     
-    $aquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'A';";
-    $adata = mysqli_query($link,$aquery);
-    if (!$adata) {
-        die ("enterHike.php: Could not access 'A' in GPSDAT table: " . mysqli_error($link));
+    if ($hip == '0') {
+        $arows = 0;
+    } else {
+        $aquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'A';";
+        $adata = mysqli_query($link,$aquery);
+        if (!$adata) {
+            die ("enterHike.php: Could not access 'A' in GPSDAT table: " . mysqli_error($link));
+        }
+        $arows = mysqli_num_rows($adata);
     }
-    $arows = mysqli_num_rows($adata);
     if ($arows === 0) {
         for ($a=0; $a<4; $a++) {
             $albl[$a] = '';

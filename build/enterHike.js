@@ -4,6 +4,88 @@ var msgA;  // generic
 var msgB;
 var msgC;
 
+// Some preliminary handling and validation for first-time entry
+var hike = $('input[name=hno]').val();
+if (hike == 0) {
+    alert("You must at minimum create a name in order to proceed");
+    $('input[name=hpgTitle]').css('background-color','BlanchedAlmond');
+    $('input[name=hpgTitle]').css('border-color','Red');
+    function checkName(name) {
+        for (var i=0; i<hnames.length; i++) {
+            if (hnames[i] == name) {
+                alert("Name exists - try another");
+                $('#htitle').val('');
+                return true;
+            }
+        }
+        $('input[name=hpgTitle]').css('background-color','White');
+        $('input[name=hpgTitle]').css('border-color','Black');
+        $('input[name=hpgTitle]').css('color','Blue');
+        return false;
+    }
+    $('#htitle').change( function() {
+        checkName($(this).val()) 
+    });
+}
+
+/* Styling to indicate that a field has been entered:
+ * There are two parts: 
+ *    1. Data pre-loaded by php (various places in this file)
+ *    2. Data changed on the form by the user (following)
+ */
+function stylit($item) {
+    $item.css('border-color','Black');
+    $item.css('color','Blue');
+    $item.css('font-weight','bold');
+}
+var $iboxes = $('input[type=text]');   // object used later on
+// New user entries:
+$('select').each ( function() {
+    $(this).change( function() {
+        stylit($(this));
+    });
+});
+$iboxes.each( function() {
+    $(this).change( function() {
+        if ($(this).val() !=='') {
+            stylit($(this));
+        } else {
+            $(this).css('border','none');
+        }
+    });
+});
+$('textarea').each( function() {
+    $(this).change( function() {
+        stylit($(this));
+    });
+});
+$('input[name=expos]').change( function() {
+    $('#e1').css('color','black');
+    $('#e2').css('color','black');
+    $('#e3').css('color','black');
+    if (this.id === 'sunny') {
+        $('#e1').css('color','Blue');
+    } else if (this.id === 'shady') {
+        $('#e2').css('color','Blue');
+    } else {
+        $('#e3').css('color','Blue');
+    }
+});
+$('input[name=mstyle]').change( function() {
+    $('#m1').css('color','black');
+    $('#m2').css('color','black');
+    $('#m3').css('color','black');
+    $('#m4').css('color','black');
+    if (this.id === 'vc') {
+        $('#m1').css('color','Blue');
+    } else if (this.id === 'vch') {
+        $('#m2').css('color','Blue');
+    } else if (this.id === 'ch') {
+        $('#m3').css('color','Blue');
+    } else {
+        $('#m4').css('color','Blue');
+    }
+});
 // NOTE: code order is important here, be careful moving things around!!!
 
 /* Preload the GPS Maps & Data Section with the urls for uploaded files;
@@ -34,6 +116,7 @@ function preload(targfile,datasect) {
         if (match) {
             var fname = '../gpx/' + filename;
             $(datasect).val(fname);
+            stylit($(datasect));
         } else {
             alert("File extension not supported");
             targfile.val('');
@@ -42,6 +125,7 @@ function preload(targfile,datasect) {
     } else if (filename.indexOf('html') !== -1 || filename.indexOf('pdf') !==1) {
             var fname  = '../maps/' + filename;
             $(datasect).val(fname);
+            stylit($(datasect));
     } 
     return 'ok';
 }
@@ -107,6 +191,7 @@ $('#curl1').change( function() {
         $('#url1').val('');
     } else {
         $('#url1').val(ph1);
+        stylit($('#url1'));
     }
 })
 $('#curl2').change( function() {
@@ -115,6 +200,7 @@ $('#curl2').change( function() {
         $('#url2').val('');
     } else {
         $('#url2').val(ph2);
+        stylit($('#url2'));
     }
 })
 
@@ -194,16 +280,42 @@ $(window).resize( function() {
 /* END OF page-creation type */
 
 /* 
- * Load any data from database via php
+ * Load any data from database via php:
+ * The prefix 'db' in var name implies text from a non-displayed <p> element
  */
-var dbhno = $('#dbhno').text();
-var dbhnm = $('#dbhnm').text();
+// SELECTION BOXES:
 var dbloc = $('#dbloc').text();  // locale
-$('#area').val(dbloc);
+$('#area').val(dbloc);  // this may put a blank in the drop-down...
+if (dbloc !== '') {
+    stylit($('#area'));
+}
 var dblog = $('#dblog').text();  // logistics (type)
 $('#type').val(dblog);
+if (dblog !== '') {
+    stylit($('#type'));
+}
+var dbdif = $('#dbdif').text();  // difficulty
+$('#ease').val(dbdif);
+if (dbdif !== '') {
+    stylit($('#ease'));
+}
+// RADIO BUTTONS:
+var dbexp = $('#dbexp').text();  // exposure
+$('#sunny').prop('checked',false);
+$('#partly').prop('checked',false);
+$('#shady').prop('checked',false);
+if(dbexp == 'Full sun') {
+    $('#sunny').prop('checked',true);
+    stylit($('#e1'));
+} else if(dbexp == 'Mixed sun/shade') {
+    $('#partly').prop('checked',true);
+    stylit($('#e3'));
+} else if(dbexp == 'Good shade') {
+    $('#shady').prop('checked',true);
+    stylit($('#e2'));
+}
 var dbmrk = $('#dbmrk').text();  // marker style
-$('#vc').prop('checked',false);
+$('#vc').prop('checked',false); // for index page creation only (ie not here)
 $('#vch').prop('checked',false);
 $('#ch').prop('checked',false);
 $('#othr').prop('checked',false);
@@ -212,53 +324,50 @@ if (dbmrk == 'At VC') {
     var dbvch = $('#dbvch').text();
     $('#newvch').css('display','block');
     $('#nvch').val(dbvch);
+    stylit($('#m2'));
 }
 if (dbmrk == 'Cluster') {
     $('#ch').prop('checked',true);
     var dbcgr = $('#dbcgr').text();
     $('#newcl').css('display','block');
     $('#nclus').val(dbcgr);
+    stylit($('#m3'));
 }
 if (dbmrk == 'Normal') {
     $('#othr').prop('checked',true);
+    stylit($('#m4'));
 }
-var dbdif = $('#dbdif').text();  // difficulty
-$('#ease').val(dbdif);
-var dbexp = $('#dbexp').text();  // exposure
-$('#sunny').prop('checked',false);
-$('#partly').prop('checked',false);
-$('#shady').prop('checked',false);
-if(dbexp == 'Full sun') {
-    $('#sunny').prop('checked',true);
-} else if(dbexp == 'Mixed sun/shade') {
-    $('#partly').prop('checked',true);
-} else if(dbexp == 'Good shade') {
-    $('#shady').prop('checked',true);
-}
+
 // References: (up to 6)
 var dbrt1 = $('#dbrt1').text();
 if (dbrt1 !== '') {
     $('#href1').val(dbrt1);  // there should always be at least one ref...
+    stylit($('#href1'));
 }
 var dbrt2 = $('#dbrt2').text();
 if (dbrt2 !== '') {
     $('#href2').val(dbrt2);
+    stylit($('#href2'));
 }
 var dbrt3 = $('#dbrt3').text();
 if (dbrt3 !== '') {
     $('#href3').val(dbrt3);
+    stylit($('#href3'));
 }
 var dbrt4 = $('#dbrt4').text();
 if (dbrt4 !== '') {
     $('#href4').val(dbrt4);
+    stylit($('#href4'));
 }
 var dbrt5 = $('#dbrt5').text();
 if (dbrt5 !== '') {
     $('#href5').val(dbrt5);
+    stylit($('#href5'));
 }
 var dbrt6 = $('#dbrt6').text();
 if (dbrt6 !== '') {
     $('#href6').val(dbrt6);
+    stylit($('#href6'));
 }
 /*
  * END OF DATA PRELOADING FROM DATABASE
@@ -297,6 +406,8 @@ $reftags.each( function() {
         }
     });
 });
+// refs styling...
+// 
 // Hide or display the part of the form used to enter pictures
 $('#nopics').on('change', function() {
     if ( $(this).prop('checked') === false ) {
@@ -313,4 +424,21 @@ $('#val').on('click', function(ev) {
         ev.preventDefault();
     }
 });
+
+// Additional styling for any php pre-loaded data:
+$iboxes.each( function() {
+    if ($(this).val() !== '') {
+        stylit($(this));
+    }
+});
+var tipval = $('#usrtips').val().substring(0,6);
+if (tipval !== '[OPTIO') {
+    stylit($('#usrtips'));
+}
+var infval = $('#usrinfo').val().substring(0,14);
+if (infval !== 'Enter the desc') {
+    stylit($('#usrinfo'));
+}
+
+
 }); // end of page is loaded...

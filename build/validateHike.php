@@ -10,6 +10,38 @@ require_once "../mysql/setenv.php";
 $hike = filter_input(INPUT_POST,'hpgTitle');
 $hikeNo = intval(filter_input(INPUT_POST,'hno'));
 $uid = filter_input(INPUT_POST,'usr');
+$uid = mysqli_real_escape_string($link,$uid);
+/* If hikeNo = 0, then this is a brand new page, and both the hike and hikeNo
+ * have not yet been saved. Since the user is now saving data, it is time to 
+ * establish these parameters in the database...
+ */
+if ($hikeNo == '0') {
+    $newHike = mysqli_real_escape_string($link,$hike);
+    $newPgReq = "INSERT INTO EHIKES (pgTitle,usrid,stat) VALUES ('{$newHike}'," .
+        "'{$uid}','new');";
+    $newPg = mysqli_query($link,$newPgReq);
+    if (!$newPg) {
+        if (Ktesa_Dbug) {
+            dbug_print('validateHike.php: Could not save new Pg data: ' . 
+                    mysqli_error($link));
+        } else {
+            user_error_msg($rel_addr,5,0);
+        }
+    }
+    $newid = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1";
+    $getid = mysqli_query($link,$newid);
+    if (!$getid) {
+        if (Ktesa_Dbug) {
+            dbug_print('validateHike.php: Could not retrieve highest indxNo: ' . 
+                    mysqli_error($link));
+        } else {
+            user_error_msg($rel_addr,5,0);
+        }
+    }
+    $latest = mysqli_fetch_row($getid);
+    $hikeNo = $latest[0];
+    mysqli_free_result($getid);
+}
 /*
  * Note: the next four variables are initialized false as 'save' type cannot
  * save file uploads. If 'validate' type, then fileUploads.php may set them.
@@ -65,9 +97,11 @@ if ( isset($valType) ) {
     if ($type === 'Save') {
         echo '<div style="margin-left:24px;font-size:18px;">';
         echo '<h2>You have saved the current data on the form</h2>';
-        echo '<p >You may continue on that page, or come back later to work '
-            . 'on it by going back to the main page and selecting "Edit ' .
-            'Hikes" (New/Active)</p>';
+        echo '<p >You may continue by clicking the link below, or come back ' .
+            'later to work on it by going back to the main page and selecting ' .
+            '"Edit Hikes" (New/Active Edits)</p>';
+        echo '<a href="enterHike.php?hno=' . $hikeNo . '&usr=' . $uid .
+                '">Continue Data Entry</a>';
         echo "<p>Your saved Hike is '" . $hike . "'</p></div>";
         
     } else {

@@ -45,8 +45,8 @@ $cnames = [];
 $clusterreq = "SELECT cgroup, cname FROM HIKES";
 $clusterq = mysqli_query($link,$clusterreq);
 if (!$clusterq) {
-    die("editDB.php: Failed to extract cluster info from HIKES: " .
-        mysqli_error($link));
+    die($pstyle . "editDB.php: Failed to extract cluster info from HIKES: " .
+        mysqli_error($link) . "</p>");
 }
 while ($cluster = mysqli_fetch_assoc($clusterq)) {
     $cgrp = $cluster['cgroup'];
@@ -73,46 +73,51 @@ $groupCount = count($cnames);
 $hikereq = "SELECT * FROM EHIKES WHERE indxNo = {$hikeNo};";
 $hikeq = mysqli_query($link,$hikereq);
 if (!$hikeq) {
-    die("editDB.php: Failed to extract hike data from EHIKES: " .
-        mysqli_error($link));
+    die($pstyle . "editDB.php: Failed to extract hike data from EHIKES: " .
+        mysqli_error($link) . "</p>");
 }
 $hike = mysqli_fetch_assoc($hikeq);
-# Although some fields will not be edited, they are needed for xfr to EHIKES
-$hikeTitle = $hike['pgTitle'];
-$hikeLocale = $hike['locale'];
-$hikeMarker = $hike['marker'];
-$hikeColl = $hike['collection'];
+# Although some fields will not be edited, they are needed for xfr into EHIKES
+function fetch($var) {
+    $clean = is_null($var) ? '' : $var;
+    return trim($clean);
+}
+$hikeTitle = trim($hike['pgTitle']);  # this should never be null!if (is_null($hike['locale'])) {
+$hikeLocale = fetch($hike['locale']);
+$hikeMarker = fetch($hike['marker']);  # this also should never be null...
+$hikeColl = fetch($hike['collection']);
 # collection will not be edited
-$hikeClusGrp = $hike['cgroup'];
-$hikeGrpTip = $hike['cname'];
-$hikeStyle = $hike['logistics'];
-$hikeMiles = $hike['miles'];
-$hikeFeet = $hike['feet'];
-$hikeDiff = $hike['diff'];
-$hikeFac = $hike['fac'];
-$hikeWow = $hike['wow'];
-$hikeSeasons = $hike['seasons'];
-$hikeExpos = $hike['expo'];
-$hikeGpx = $hike['gpx'];
-$hikeTrack = $hike['trk'];
+$hikeClusGrp = fetch($hike['cgroup']);
+$hikeGrpTip = fetch($hike['cname']);
+$hikeStyle = fetch($hike['logistics']);
+$hikeMiles = fetch($hike['miles']);
+$hikeFeet = fetch($hike['feet']);
+$hikeDiff = fetch($hike['diff']);
+$hikeFac = fetch($hike['fac']);
+$hikeWow = fetch($hike['wow']);
+$hikeSeasons = fetch($hike['seasons']);
+$hikeExpos = fetch($hike['expo']);
+$hikeGpx = fetch($hike['gpx']);
+$hikeTrack = fetch($hike['trk']);
 # gpx & trk will not be edited
-$hikeLat = $hike['lat'];
-$hikeLng = $hike['lng'];
-$hikeAddImg1 = $hike['aoimg1'];
-$hikeAddImg2 = $hike['aoimg2'];
+$hikeLat = fetch($hike['lat']);
+$hikeLng = fetch($hike['lng']);
+$hikeAddImg1 = fetch($hike['aoimg1']);
+$hikeAddImg2 = fetch($hike['aoimg2']);
 # aoimg1 & aoimg2 will not be edited
-$hikeUrl1 = $hike['purl1'];
-$hikeUrl2 = $hike['purl2'];
-$hikeDirs = $hike['dirs'];
-$hikeTips = $hike['tips'];
-$hikeDetails = $hike['info'];
+$hikeUrl1 = fetch($hike['purl1']);
+$hikeUrl2 = fetch($hike['purl2']);
+$hikeDirs = fetch($hike['dirs']);
+$hikeTips = fetch($hike['tips']);
+$hikeDetails = fetch($hike['info']);
 mysqli_free_result($hikeq);
 ?>
 <p id="hikeNo" style='display:none'><?php echo $hikeNo;?></p>
 <p id="entry" style="display:none"><?php echo $dispTab;?></p>
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
-    the hike: "<?php echo $hikeTitle;?>". If no changes are made you may either 
-    exit this page or hit the "sbumit" button.
+    the hike: "<?php echo $hikeTitle;?>". To save your edits, select the 
+    'Apply' button at the bottom. When you are done applying edits, or if no
+    edits are being made, you may simply exit this page.
 </em><br /><br />
 <p style="font-size:18px;color:Brown;">Preview page with current edits
     (i.e. edits already applied):&nbsp;
@@ -140,8 +145,7 @@ mysqli_free_result($hikeq);
     <label for="hike">Hike Name: </label>
     <textarea id="hike" name="hname"><?php echo $hikeTitle;?>
     </textarea>&nbsp;&nbsp;
-    <p style="display:none;" id="locality"><?php echo $hikeLocale;?>
-    </p>
+    <p style="display:none;" id="locality"><?php echo $hikeLocale;?></p>
     <label for="area">Locale (City/POI): </label>
     <select id="area" name="locale">
       <optgroup label="North/Northeast">
@@ -282,14 +286,7 @@ mysqli_free_result($hikeq);
     <input type="hidden" name="nno" value="<?php echo $hikeNo;?>" />
     <input type="hidden" name="nid" value="<?php echo $uid;?>" />
 <?php
-    $purlsReq = "SELECT purl1,purl2 FROM EHIKES WHERE indxNo = {$hikeNo};";
-    $purls = mysqli_query($link,$purlsReq);
-    if (!$purls) {
-        die("editDB.php: Failed to extract photo album urls for hike {$hikeNo}: " .
-            mysqli_error($link));
-    }
-    $plnks = mysqli_fetch_assoc($purls);
-    if ($plnks['purl1'] !== '') {
+    if ($hikeUrl1 !== '') {
         echo '<input type="checkbox" name="ps[]" value="1" />&nbsp;';
         echo "Include in upload:&nbsp;&nbsp;";
         echo '<input style="border-color:black;color:blue;font-weight:bold;" ' .
@@ -300,7 +297,7 @@ mysqli_free_result($hikeq);
             '<option value="apple">Apple iCloud</option>' .
             '<option value="googl">Google</option></select><br />';
     }
-    if ($plnks['purl2'] !== '') {
+    if ($hikeUrl2 !== '') {
         echo '<input type="checkbox" name="ps[]" value="2" />&nbsp;';
         echo "Include in upload:&nbsp;&nbsp;";
         echo '<input style="border-color:black;color:blue;font-weight:bold;" ' .
