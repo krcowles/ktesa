@@ -36,3 +36,11 @@ button {
     position: absolute;
     left: 420px;
 }
+input[type=submit] {
+    font-size: 18px;
+    color: Brown;
+    cursor: pointer;
+}
+input[type=submit]:hover {
+    background-color: BlanchedAlmond;
+}

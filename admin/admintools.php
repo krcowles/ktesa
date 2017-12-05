@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -18,6 +21,42 @@
 <p id="trail">Site Administration Tools</p>
 
 <div style="margin-left:24px;" id="tools">
+    <fieldset>
+        <legend>Session Settings</legend>
+        <button id="mode">Show/Set SQL Modes</button>
+        <div id="modeopt">
+        <?php
+        echo '<form action="modify_modes.php" method="POST">';
+        if ($_SESSION['sqlmode'] === 'active') {
+            echo '<p id="dstat" style="display:none">Open</p>';
+            $_SESSION['sqlmode'] = 'inactive';
+        } else {
+            echo '<p id="dstat" style="display:none">Closed</p>';
+        }
+        $modes = file('sql_modes.ini',FILE_IGNORE_NEW_LINES);
+        $cbStates = '[';
+        for ($i=0; $i<count($modes); $i++) {
+            $opt = $modes[$i];
+            $val = substr($opt,2,strlen($opt)-2);
+            echo '<input class="cb" type="checkbox" name="ons[]" ' .
+                    'value="' . $val .  '" />';
+            echo '&nbsp;&nbsp;' . $val . '<br />' . PHP_EOL;
+            if (substr($opt,0,1) === 'Y') {
+                $cbStates .= '"Y",';
+            } else {
+                $cbStates .= '"N",';
+            }
+        }
+        $cbStates = substr($cbStates,0,strlen($cbStates)-1);
+        $cbStates .= ']';
+        echo '<br /><input type="submit" value="Apply" />';
+        echo '</form>';
+        ?>
+        </div>
+    </fieldset>
+    <script type="text/javascript">
+        var cbs = <?php echo $cbStates;?>;
+    </script>
     <fieldset>
         <legend>Create/Delete</legend>
         <button id="show">Show All Tables</button><br />
