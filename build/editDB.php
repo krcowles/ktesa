@@ -290,7 +290,7 @@ mysqli_free_result($hikeq);
         echo '<input type="checkbox" name="ps[]" value="1" />&nbsp;';
         echo "Include in upload:&nbsp;&nbsp;";
         echo '<input style="border-color:black;color:blue;font-weight:bold;" ' .
-            'class="phurl" type="text" name="lnk1" value="' . $plnks['purl1'] .
+            'class="phurl" type="text" name="lnk1" value="' . $hikeUrl1 .
             '" />&nbsp;&nbsp;';
         echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb1" name="alb1">' .
             '<option value="flckr">Flickr</option>' .
@@ -301,7 +301,7 @@ mysqli_free_result($hikeq);
         echo '<input type="checkbox" name="ps[]" value="2" />&nbsp;';
         echo "Include in upload:&nbsp;&nbsp;";
         echo '<input style="border-color:black;color:blue;font-weight:bold;" ' .
-            'class="phurl" type="text" name="lnk2" value="' . $plnks['purl2'] .
+            'class="phurl" type="text" name="lnk2" value="' . $hikeUrl2 .
             '" />&nbsp;&nbsp;';
         echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb2" name="alb2">' .
             '<option value="flckr">Flickr</option>' .
@@ -389,7 +389,7 @@ if ($hikeTips !== '') {
     while ($ritem = mysqli_fetch_assoc($refq)) {
         $rid = 'rid' . $z;
         $reftype = 'ref' . $z;
-        $thisref = $ritem['rtype'];
+        $thisref = fetch($ritem['rtype']);
         echo '<p id="' . $rid  . '" style="display:none">' . $thisref . "</p>\n";
         echo '<label for="' . $reftype . '">Reference Type: </label>' . "\n";
         echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">' . "\n";
@@ -407,26 +407,27 @@ if ($hikeTips !== '') {
         echo '<option value="Related Link:">Related Link</option>' . "\n";
         echo '<option value="Text:">Text Only - No Link</option>' . "\n";
         echo '</select><br />' . "\n";
-        $decrit1 = $ritem['rit1'];
+        $rit1 = fetch($ritem['rit1']);
+        $rit2 = fetch($ritem['rit2']);
         if ($thisref === 'Book:' || $thisref === 'Photo Essay:') {
             echo '<label style="text-indent:24px;">Title: </label>'
                 . '<textarea style="height:20px;width:320px" name="rit1[]">' .
-                $decrit1 . '</textarea>&nbsp;&nbsp;';
+                $rit1 . '</textarea>&nbsp;&nbsp;';
             echo '<label>Author: </label>' 
                 . '<textarea style="height:20px;width:320px" name="rit2[]">' .
-                $ritem['rit2'] . '</textarea>&nbsp;&nbsp;'
+                $rit2 . '</textarea>&nbsp;&nbsp;'
                 . '<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
                 $z . '"><br /><br />' . "\n";
         } elseif ($thisref === 'Text') {
             echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
-                $decrit1 . '</textarea><label>Delete: </label>' .
+                $rit1 . '</textarea><label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
                 $z . '"><br /><br />' . "\n";
         } else {
             echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
-                $decrit1 . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
-                $ritem['rit2'] . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+                $rit1 . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
+                $rit2 . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
                 $z . '"><br /><br />' . "\n";
         }  
@@ -521,12 +522,15 @@ if ($hikeTips !== '') {
     if (mysqli_num_rows($propq) !== 0) {
         $x = 0;
         while ($pdat = mysqli_fetch_assoc($propq)) {
+            $pl = fetch($pdat['label']);
+            $pu = fetch($pdat['url']);
+            $pc = fetch($pdat['clickText']);
             echo 'Label: <textarea class="tstyle1" name="plabl[]">' . 
-                    $pdat['label'] . '</textarea>&nbsp;&nbsp;';
+                    $pl . '</textarea>&nbsp;&nbsp;';
             echo 'Url: <textarea class="tstyle2" name="plnk[]">' . 
-                    $pdat['url'] . '</textarea>&nbsp;&nbsp;';
+                    $pu . '</textarea>&nbsp;&nbsp;';
             echo 'Click-on text: <textarea class="tstyle3" name="pctxt[]">' . 
-                    $pdat['clickText'] . '</textarea>&nbsp;&nbsp;'
+                    $pc . '</textarea>&nbsp;&nbsp;'
                     . '<label>Delete: </label>' .
                     '<input style="height:18px;width:18px;" type="checkbox" '
                     . 'name="delprop[]" value="' . $x . '"><br /><br />';
@@ -555,12 +559,15 @@ if ($hikeTips !== '') {
     if (mysqli_num_rows !== 0) {
         $y = 0;
         while ($adat = mysqli_fetch_assoc($actq)) {
+            $al = fetch($adat['label']);
+            $au = fetch($adat['url']);
+            $ac = fetch($adat['clickText']);
             echo 'Label: <textarea class="tstyle1" name="alabl[]">' . 
-                    $adat['label'] . '</textarea>&nbsp;&nbsp;';
+                    $ac . '</textarea>&nbsp;&nbsp;';
             echo 'Url: <textarea class="tstyle2" name="alnk[]">' . 
-                    $adat['url'] . '</textarea>&nbsp;&nbsp;';
+                    $au . '</textarea>&nbsp;&nbsp;';
             echo 'Click-on text: <textarea class="tstyle3" name="actxt[]">' . 
-                    $adat['clickText'] . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+                    $ac . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
                     '<input style="height:18px;width:18px;" type="checkbox" '
                     . 'name="delact[]" value="' . $y . '"><br /><br />';
             $y++;
