@@ -1,9 +1,8 @@
 <?php 
+require_once '../mysql/setenv.php';
 /*
- * REQUIRED INPUTS FOR THIS ROUTINE:  $gpxPath; and $photos, which is an 
- * xml object for the tsv data holding all <picDat> tags in database.xml
+ * REQUIRED INPUTS FOR THIS ROUTINE:  $gpxPath; $hikeNo
  */
-
 # Function to calculate the distance between two lat/lng coordinates
 function distance($lat1, $lon1, $lat2, $lon2) {
     if ($lat1 === $lat2 && $lon1 === $lon2) {
@@ -57,7 +56,6 @@ if ($gpxdat === false) {
     }
     die ($gpxmsg . $filemsg . $close);
 }
-
 /* 
  * GPX FILE NOTES:
  * 1. Metadata in GPX files can vary considerably, including defined namespaces.
@@ -198,23 +196,30 @@ if ($noOfWaypts > 0) {
 $plnks = [];  # array of photo links
 $defIconColor = 'red';
 $mcnt = 0;
-foreach ($photos->picDat as $xmlPhoto) {
-    if ($xmlPhoto->mpg == 'Y') {
-        $procName = preg_replace("/'/","\'",$xmlPhoto->title);
+$picReq = "SELECT folder,title,mpg,`desc`,lat,lng,thumb,alblnk,iclr FROM {$ttable} " .
+        "WHERE indxNo = {$hikeIndexNo};";
+$pic = mysqli_query($link,$picReq);
+if (!$pic) {
+    die("<p>makeGpsv.php: Failed to extract photo data for hike {$hikeIndexNo}: " .
+        mysqli_error($link));
+}
+while( ($photos = mysqli_fetch_assoc($pic)) ) {
+    if ($photos['mpg'] === 'Y') {
+        $procName = preg_replace("/'/","\'",$photos['title']);
         $procName = preg_replace('/"/','\"',$procName);
-        $procDesc = preg_replace("/'/","\'",$xmlPhoto->desc);
+        $procDesc = preg_replace("/'/","\'",$photos['desc']);
         $procDesc = preg_replace('/"/','\"',$procDesc);
-        if (strlen($xmlPhoto->symbol) !== 0) { # waypoint icon
-            $wayptMrkr = $xmlPhoto->symbol;
-            $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
-                $xmlPhoto->lng . ",name:'" . $procName . "',desc:'" . 
-                $procDesc . "',color:'',icon:'" . $wayptMrkr . "'});";
+        # If wypt in ETSV file....
+        if ($photos['alblnk'] == '') { # waypoint icon
+            $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" . 
+                $photos['lng']. ",name:'" . $procName . "',desc:'" . 
+                $procDesc . "',color:'" . $photos['iclr'] . "',icon:''});";
         } else { # photo
-            $plnk = "GV_Draw_Marker({lat:" . $xmlPhoto->lat . ",lon:" . 
-                $xmlPhoto->lng . ",name:'" . $procDesc . 
-                "',desc:'',color:'" . $xmlPhoto->iclr . "',icon:'" . 
-                $mapicon . "',url:'" . $xmlPhoto->alblnk . "',thumbnail:'" . 
-                $xmlPhoto->thumb . "',folder:'" . $xmlPhoto->folder . "'});";
+            $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" . 
+                $photos['lng'] . ",name:'" . $procDesc . 
+                "',desc:'',color:'" . $photos['iclr'] . "',icon:'" . 
+                $mapicon . "',url:'" . $photos['alblnk'] . "',thumbnail:'" . 
+                $photos['thumb'] . "',folder:'" . $photos['folder'] . "'});";
         }
         array_push($plnks,$plnk);
         $mcnt++;
