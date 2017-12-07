@@ -126,10 +126,26 @@ for ($i=0; $i<$supplied; $i++) {
                     $modelInfo = substr($flickrInfo, $pmodels);
                     $titleEnd = strpos($modelInfo, '"');
                     $titles[$pcnt] = substr($modelInfo, 0, $titleEnd);
-                    # if the 'description' field does not exist, use default desc. below:
+                    /* NOTE: The description field may not exist if no description
+                     * was entered in Flickr. If the first (or subsequent image
+                     * PRIOR to the final image in the list) has no decription,
+                     * that must be determined before encountering the next
+                     * "photo-models" section (otherwise, the next or incorrect
+                     * description from a succeeding photo-model is found and 
+                     * falsely extracted). Find the position of that next 
+                     * photo-model then test the $descPos to make sure it 
+                     * occurs (or doesn't occur) prior to that point.
+                     */
+                    # Look ahead to see if there is at least one more model:
+                    $tst4end = strpos($modelInfo,$srchPat);
+                    if ($tst4end === false) {
+                        $modelEnd = strlen($modelInfo);
+                    } else {
+                        $modelEnd = $tst4end;
+                    }
                     $descPos = strpos($modelInfo, '"description":"');
-                    if ($descPos === false) {
-                        $descriptions[$j] = 'Enter description here';
+                    if ($descPos === false || $descPos > $modelEnd) {
+                        $descriptions[$pcnt] = 'Enter description here';
                     } else {
                         $descPos += 15;
                         $descEnd = strpos($modelInfo, '"', $descPos);
