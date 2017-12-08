@@ -152,8 +152,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                 $icon_color = $row['iclr'];
             }
             $plnk = "GV_Draw_Marker({lat:" . $row['lat'] . ",lon:" . 
-                $row['lng'] . ",name:'" . $procName . "',desc:'" . 
-                $procDesc . "',color:'" . $icon_color . "',icon:''" . 
+                $row['lng'] . ",name:'" . $procDesc .
+                "',desc:'',color:'" . $icon_color . "',icon:''" . 
                 ",url:'" . $row['alblnk'] . "',thumbnail:'" . 
                 $row['mid'] . "',folder:'" . $row['folder'] . "'});";
             array_push($plnks,$plnk);
