@@ -2284,9 +2284,11 @@ CREATE TABLE `EHIKES` (
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO EHIKES VALUES
+('1','Canada de la Cueva','mstr','sub','Cerrillos','Normal','','','','Out-and-back','7.80','450','Easy-Moderate','None','Geology in Arroyo','Not Summer','Full sun','Canada_de_la_Cueva.GPX','Canada_de_la_Cueva.json','35.4386154469','-106.0184755269',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157689658210665','https://www.flickr.com/photos/30474783@N06/albums/72157689909068565','https://www.google.com/maps/dir//Ca%C3%B1ada+de+la+Cueva,+New+Mexico+87010/@35.4196475,-106.1374462,12.65z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718f1622ac7881f:0x81de42ed7eb00cba!2m2!1d-106.061133!2d35.4117046',NULL,'This hike had no siginificant elevation changes, and simply followed the arroyo into the Galisteo Basin. Near the end of the hike the land turns into privately held land, but there are no warning signs indicating same. One source showed the hike as a two-car hike, but would require utilizing the private land to accomplish. The arroyo seemed to hold an unending variety of interesting geology - from rocks of all colors and shapes to hills and embankments of varying composition. According to the reference below, it also is the home of a considerable variety of wildlife, but at the time the authors  explored the area, little was to be seen. The hike may be shortened and still provide a fascinating look at the Galisteo basin.');
 
 
 
@@ -2301,9 +2303,11 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO EGPSDAT VALUES
+('1','1','A','GPS File:','../gpx/Canada_de_la_Cueva.GPX','The Track');
 
 
 
@@ -2317,9 +2321,13 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO EREFS VALUES
+('1','1','Book:','60 Hikes Within 60 Miles of Albuquerque','Stephen Ausherman'),
+('2','1','App:','https://www.alltrails.com/trail/us/new-mexico/canada-de-la-cueva','AllTrails'),
+('3','1','Website:','https://www.bivy.com/adventures/us/new%20mexico/canada-de-la-cueva-515002','bivy Adventures');
 
 
 
@@ -2345,9 +2353,31 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO ETSV VALUES
+('1','1','Folder2','IMG_20171115_101250','N','N','Enter description here','35.4386277778','-106.0184305560','https://c1.staticflickr.com/5/4542/37853373054_b5515496d3_t.jpg','https://www.flickr.com/photos/30474783@N06/37853373054/in/album-72157689909068565','2017-11-15 10:12:52','https://c1.staticflickr.com/5/4542/37853373054_b5515496d3_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4542/37853373054_28314041bc_o.jpg'),
+('2','1','Folder1','InTheBeginning','Y','Y','An easy start for an easy, but long, hike','35.4377138889','-106.0184166670','https://c1.staticflickr.com/5/4516/38468164981_5e1727a61b_t.jpg','https://www.flickr.com/photos/139088815@N08/38468164981/in/album-72157689658210665','2017-11-15 10:14:59','https://c1.staticflickr.com/5/4516/38468164981_5e1727a61b_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4516/38468164981_7b80374f17_o.jpg'),
+('3','1','Folder2','IMG_20171115_102505','Y','Y','The trail soon enters a shallow arroyo before intersecting Canada de la Cueva','35.4332138889','-106.0204250000','https://c1.staticflickr.com/5/4560/38513765216_bded5924e8_t.jpg','https://www.flickr.com/photos/30474783@N06/38513765216/in/album-72157689909068565','2017-11-15 10:25:07','https://c1.staticflickr.com/5/4560/38513765216_bded5924e8_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4560/38513765216_8bba54e98b_o.jpg'),
+('4','1','Folder2','IMG_20171115_102846','N','Y','A view of the Canada de la Cueva terrain','35.4319250000','-106.0194750000','https://c1.staticflickr.com/5/4540/24698133358_6e5a797945_t.jpg','https://www.flickr.com/photos/30474783@N06/24698133358/in/album-72157689909068565','2017-11-15 10:28:48','https://c1.staticflickr.com/5/4540/24698133358_6e5a797945_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4540/24698133358_837e6b5898_o.jpg'),
+('5','1','Folder1','LuckyStop','Y','Y','Stopping here revealed some fascinating geology','35.4279055556','-106.0229500000','https://c1.staticflickr.com/5/4531/37753789914_7cb162784c_t.jpg','https://www.flickr.com/photos/139088815@N08/37753789914/in/album-72157689658210665','2017-11-15 10:43:37','https://c1.staticflickr.com/5/4531/37753789914_7cb162784c_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4531/37753789914_8b18cec7c5_o.jpg'),
+('6','1','Folder1','EmbeddedAndEroded','Y','N','There are some unusual rock features along the hike','35.4278250000','-106.0230472220','https://c1.staticflickr.com/5/4543/37753751924_fe73b0b984_t.jpg','https://www.flickr.com/photos/139088815@N08/37753751924/in/album-72157689658210665','2017-11-15 10:45:01','https://c1.staticflickr.com/5/4543/37753751924_fe73b0b984_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4543/37753751924_24cdeb63ca_o.jpg'),
+('7','1','Folder1','ColorGalore','Y','N','Gorgeous multi-colored stone is embedded in the rock','35.4278333333','-106.0231250000','https://c1.staticflickr.com/5/4573/38436529302_d6b1c725ef_t.jpg','https://www.flickr.com/photos/139088815@N08/38436529302/in/album-72157689658210665','2017-11-15 10:45:16','https://c1.staticflickr.com/5/4573/38436529302_d6b1c725ef_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4573/38436529302_a80716d05b_o.jpg'),
+('8','1','Folder2','IMG_20171115_104922','N','N','Enter description here','35.4319250000','-106.0194750000','https://c1.staticflickr.com/5/4547/26793761339_83d00a3835_t.jpg','https://www.flickr.com/photos/30474783@N06/26793761339/in/album-72157689909068565','2017-11-15 10:49:24','https://c1.staticflickr.com/5/4547/26793761339_83d00a3835_n.jpg','2688','1512','pink','https://c1.staticflickr.com/5/4547/26793761339_b06d5da5e7_o.jpg'),
+('9','1','Folder1','UndercutSlab','N','N','Evidence of fast-moving water is everywhere','35.4269416667','-106.0234444440','https://c1.staticflickr.com/5/4558/37753772974_8085c7ff50_t.jpg','https://www.flickr.com/photos/139088815@N08/37753772974/in/album-72157689658210665','2017-11-15 10:49:49','https://c1.staticflickr.com/5/4558/37753772974_8085c7ff50_n.jpg','3264','2448','pink','https://c1.staticflickr.com/5/4558/37753772974_1e2ccfb5fa_o.jpg'),
+('10','1','Folder1','CliffSide','Y','Y','The cliffs appear lovely in the sun','35.4268500000','-106.0248027780','https://c1.staticflickr.com/5/4551/37753820874_2215ce8a4f_t.jpg','https://www.flickr.com/photos/139088815@N08/37753820874/in/album-72157689658210665','2017-11-15 10:53:05','https://c1.staticflickr.com/5/4551/37753820874_2215ce8a4f_n.jpg','3264','2448','pink','https://c1.staticflickr.com/5/4551/37753820874_6ff0db13c7_o.jpg'),
+('11','1','Folder1','ManyFormations','N','N','Besides the arroyo itself, other views prove worthy','35.4194722222','-106.0382000000','https://c1.staticflickr.com/5/4522/37753811484_eb680f38b8_t.jpg','https://www.flickr.com/photos/139088815@N08/37753811484/in/album-72157689658210665','2017-11-15 11:38:01','https://c1.staticflickr.com/5/4522/37753811484_eb680f38b8_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4522/37753811484_306f7e874a_o.jpg'),
+('12','1','Folder1','GoingUp','N','N','The authors decide to go up for a look','35.4202166667','-106.0374055560','https://c1.staticflickr.com/5/4517/38468249081_3ee6ff3326_t.jpg','https://www.flickr.com/photos/139088815@N08/38468249081/in/album-72157689658210665','2017-11-15 11:40:06','https://c1.staticflickr.com/5/4517/38468249081_3ee6ff3326_n.jpg','3264','2448','pink','https://c1.staticflickr.com/5/4517/38468249081_2666d8eb33_o.jpg'),
+('13','1','Folder2','IMG_20171115_114153','Y','Y','The authors ascent this hill for a view','35.4200583333','-106.0374416670','https://c1.staticflickr.com/5/4561/24698145528_6e1091b3cd_t.jpg','https://www.flickr.com/photos/30474783@N06/24698145528/in/album-72157689909068565','2017-11-15 11:41:55','https://c1.staticflickr.com/5/4561/24698145528_6e1091b3cd_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4561/24698145528_c10d8d0ff6_o.jpg'),
+('14','1','Folder2','IMG_20171115_114335','N','N','Enter description here','35.4203277778','-106.0380666670','https://c1.staticflickr.com/5/4580/38570181881_72fea68e49_t.jpg','https://www.flickr.com/photos/30474783@N06/38570181881/in/album-72157689909068565','2017-11-15 11:43:37','https://c1.staticflickr.com/5/4580/38570181881_72fea68e49_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4580/38570181881_67063c8627_o.jpg'),
+('15','1','Folder2','IMG_20171115_114338','N','N','Enter description here','35.4203277778','-106.0380666670','https://c1.staticflickr.com/5/4580/24698156308_d303176166_t.jpg','https://www.flickr.com/photos/30474783@N06/24698156308/in/album-72157689909068565','2017-11-15 11:43:39','https://c1.staticflickr.com/5/4580/24698156308_d303176166_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4580/24698156308_8485745560_o.jpg'),
+('16','1','Folder2','IMG_20171115_114754','N','N','Enter description here','35.4203472222','-106.0387388890','https://c1.staticflickr.com/5/4568/24698166858_5a69d0be81_t.jpg','https://www.flickr.com/photos/30474783@N06/24698166858/in/album-72157689909068565','2017-11-15 11:47:55','https://c1.staticflickr.com/5/4568/24698166858_5a69d0be81_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4568/24698166858_3806abbe4c_o.jpg'),
+('17','1','Folder1','TheRoadAhead','Y','N','From the top, a look down the arroyo','35.4202611111','-106.0381777780','https://c1.staticflickr.com/5/4529/24596572178_de7408dd1f_t.jpg','https://www.flickr.com/photos/139088815@N08/24596572178/in/album-72157689658210665','2017-11-15 11:48:05','https://c1.staticflickr.com/5/4529/24596572178_de7408dd1f_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4529/24596572178_70e1dfef09_o.jpg'),
+('18','1','Folder2','IMG_20171115_115247','N','N','Enter description here','35.4187000000','-106.0398972220','https://c1.staticflickr.com/5/4533/38513789946_a05d05d2ec_t.jpg','https://www.flickr.com/photos/30474783@N06/38513789946/in/album-72157689909068565','2017-11-15 11:52:48','https://c1.staticflickr.com/5/4533/38513789946_a05d05d2ec_n.jpg','2688','1512','pink','https://c1.staticflickr.com/5/4533/38513789946_b42db85e45_o.jpg'),
+('19','1','Folder1','SemiCircleOfStone','Y','Y','Crumbling rock wall appears from the sand','35.4179416667','-106.0412611110','https://c1.staticflickr.com/5/4541/26692525539_03f726dc31_t.jpg','https://www.flickr.com/photos/139088815@N08/26692525539/in/album-72157689658210665','2017-11-15 11:55:28','https://c1.staticflickr.com/5/4541/26692525539_03f726dc31_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4541/26692525539_f451fd2182_o.jpg'),
+('20','1','Folder2','IMG_20171115_121335','N','N','Enter description here','35.4161750000','-106.0486472220','https://c1.staticflickr.com/5/4549/37682069015_f54b3de835_t.jpg','https://www.flickr.com/photos/30474783@N06/37682069015/in/album-72157689909068565','2017-11-15 12:13:36','https://c1.staticflickr.com/5/4549/37682069015_f54b3de835_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4549/37682069015_436b3e42d9_o.jpg'),
+('21','1','Folder1','ErosionChannels','Y','Y','The cliffs and features seem to change the length of the hike','35.4264861111','-106.0250027780','https://c1.staticflickr.com/5/4530/37753798344_05380e382c_t.jpg','https://www.flickr.com/photos/139088815@N08/37753798344/in/album-72157689658210665','2017-11-15 13:18:26','https://c1.staticflickr.com/5/4530/37753798344_05380e382c_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4530/37753798344_3a8a30925a_o.jpg');
 
 
 
