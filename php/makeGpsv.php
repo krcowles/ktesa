@@ -73,6 +73,8 @@ if ($gpxdat === false) {
  *    GPSV data. Each track will be separately written out in the GPSV html 
  *    file with a corresponding track name and color.
  *    If a track name is not specified, one will be supplied by default.
+ * 3. Waypoints are independent of tracks, as are photos. These two are processed
+ *    independently and added to the html output file, where they exist.
  */
 $defClrs = array('red','blue','fuchsia','yellow','green','black','aqua','pink');
 /* original Garmin color extraction:
@@ -168,7 +170,24 @@ for ($i=1; $i<count($gpxlons)-1; $i++) {
 $clat = $south + ($north - $south)/2;
 $clon = $west + ($east - $west)/2;
  #     ---- END OF TRACK DATA ---
-
+/*
+ *   ---- ESTABLISH ANY WAYPOINTS ----
+ * 
+ */
+$noOfWaypts = $gpxdat->wpt->count();
+$waypoints = [];
+if ($noOfWaypts > 0) {
+    foreach($gpxdat->wpt as $waypt) {
+        $wlat = $waypt['lat'];
+        $wlng = $waypt['lon'];
+        $sym = $waypt->sym;
+        $text = $waypt->name;
+        $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng . 
+            ",name:'" . $text . "',desc:'',color:'" . "blue" . 
+            "',icon:'" . $sym . "'});\n";
+        array_push($waypoints,$wlnk);
+    }
+}
 /*
  *   ---- ESTABLISH PHOTO DATA ----
  * Form the photo links from the mysql database
