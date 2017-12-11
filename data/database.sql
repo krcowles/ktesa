@@ -2310,9 +2310,11 @@ CREATE TABLE `EHIKES` (
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO EHIKES VALUES
+('1','Bosque River Loop','mstr','sub','Albuquerque','At VC','99','','','Loop','2.10','50','Easy','Rio Grande Nature Center','Bosque and River Views','Any','Mixed sun/shade','Bosque-River-Loop.GPX','Bosque-River-Loop.json','35.1306509972','-106.6844876390',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157679147304911','','https://www.google.com/maps/dir//Rio+Grande+Nature+Center,+2901+Candelaria+Rd+NW,+Albuquerque,+NM+87107/@35.1283996,-106.6895061,15.09z/data=!4m8!4m7!1m0!1m5!1m1!1s0x872272fb9f976ba3:0xfbb3b856575dcf74!2m2!1d-106.6828715!2d35.1286772','','This is an easy and pleasant stroll through the Bosque at the Rio Grande Nature Center. There is no elevation change to speak of, and there are meandering cross-trails to explore if you are interested. There is a variety of bird life at all times of the year, along with some explanatory signs that highlight the history of the area. One such historical reference explains the \'Jetty Jacks \'visible along segments of the trail. In addition to weaving through stands of old Cottonwoods and Russian Olive trees, the hike also brings you to the edge of the Rio Grande thereby presenting yet another picturesque aspect to the hike. There are numerous wildflowers in the summer season.');
 
 
 
@@ -2327,9 +2329,11 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO EGPSDAT VALUES
+('2','1','A','GPX File:','../gpx/Bosque-River-Loop.GPX','The Track');
 
 
 
@@ -2343,9 +2347,13 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO EREFS VALUES
+('7','1','Book:','Best Hikes Near Albuquerque','JD Tanner and Emily Ressler-Tanner'),
+('8','1','Book:','60 Hikes Within 60 Miles - Albuquerque','Stephen Ausherman'),
+('9','1','App:','https://www.alltrails.com/trail/us/new-mexico/rio-grande-nature-center-trail','AllTrails');
 
 
 
@@ -2371,9 +2379,14 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO ETSV VALUES
+('29','1','Folder1','JettyJacks','Y','Y','Jetty jacks line the start','35.1308900000','-106.6855640000','https://c1.staticflickr.com/1/612/32851161510_5561381b5d_t.jpg','https://www.flickr.com/photos/139088815@N08/32851161510/in/album-72157679147304911','2017-01-04 12:15:32','https://c1.staticflickr.com/1/612/32851161510_5561381b5d_n.jpg','2448','3264','pink','https://c1.staticflickr.com/1/612/32851161510_3c0cd5c5c5_o.jpg'),
+('30','1','Folder1','WinterDenizens','Y','Y','Winter stomping grounds','35.1248666667','-106.6901694440','https://c1.staticflickr.com/4/3884/32851151950_f474d5c1df_t.jpg','https://www.flickr.com/photos/139088815@N08/32851151950/in/album-72157679147304911','2017-01-04 12:33:29','https://c1.staticflickr.com/4/3884/32851151950_f474d5c1df_n.jpg','2448','3264','pink','https://c1.staticflickr.com/4/3884/32851151950_352783cb8e_o.jpg'),
+('31','1','Folder1','WindingRiverTrail','Y','N','Many trails wind along the Rio Grande','35.1248972222','-106.6901555560','https://c1.staticflickr.com/4/3867/32851169030_0c01994b7d_t.jpg','https://www.flickr.com/photos/139088815@N08/32851169030/in/album-72157679147304911','2017-01-04 12:34:51','https://c1.staticflickr.com/4/3867/32851169030_0c01994b7d_n.jpg','3264','2448','pink','https://c1.staticflickr.com/4/3867/32851169030_a3473eaa71_o.jpg'),
+('32','1','Folder1','BosqueView','Y','Y','The bosque with no leaves','35.1278805556','-106.6899111110','https://c1.staticflickr.com/4/3896/32419485463_397f05c9c8_t.jpg','https://www.flickr.com/photos/139088815@N08/32419485463/in/album-72157679147304911','2017-01-04 12:42:45','https://c1.staticflickr.com/4/3896/32419485463_397f05c9c8_n.jpg','2448','3264','pink','https://c1.staticflickr.com/4/3896/32419485463_720eca461f_o.jpg');
 
 
 
