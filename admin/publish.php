@@ -119,8 +119,27 @@ $hikeNo = filter_input(INPUT_GET,'hno');
                         "index page {$co}: " . mysqli_error($link));
                 }
                 mysqli_free_result($updt);
+                # Also need to update the Index Page's collection field to
+                # indicate the new hike (used by javascript for infoWindow)
+                $getColReq = "SELECT collection FROM HIKES WHERE indxNo = {$co};";
+                $getCol = mysqli_query($link,$getColReq);
+                if (!$getCol) {
+                    die("publish.php: Failed to get 'collection' from Index " . 
+                        "Page {$co}: " . mysqli_error($link));
+                }
+                $prev = mysqli_fetch_row($getCol);
+                $oldCol = $prev[0];
+                mysqli_free_result($getCol);
+                $newCol = $oldCol . "." . $indxNo;
+                $colReq = "UPDATE HIKES SET collection = '{$newCol}' WHERE " .
+                    "indxNo = {$co};";
+                $col = mysqli_query($link,$colReq);
+                if (!$col) {
+                    die("publish.php: Failed to update the collection field for " .
+                        "Index Page {$co}: " . mysqli_error($link));
+                }
+                mysqli_free_result($col);
             }
-            
         } else { # this will be the hike being modified, already on the site
             $indxNo = $pubHike;
         }
