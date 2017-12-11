@@ -1,5 +1,19 @@
-$(function () { // when page is loaded...
-
+var disp = $('#dstat').text();
+if (disp === 'Open') {
+    $('#modeopt').css('display','block');
+} else {
+    $('#modeopt').css('display','none');
+}
+var j = 0;
+$('input[type=checkbox]').each( function() {
+    if (cbs[j] === 'Y') {
+        $(this).attr('checked','checked');
+    }
+    j++;
+});
+$('#mode').on('click', function() {
+    $('#modeopt').slideToggle();
+});
 $('#show').on('click', function()  {
     window.open('show_tables.php',"_blank_");
 });
@@ -92,8 +106,6 @@ $('#rowdel').on('click', function() {
     } else {
         alert("Nothing deleted");
     }
-});
-
 });
 
 

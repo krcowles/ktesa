@@ -1,7 +1,12 @@
 <?php
-
-//$qstr = "SET sql_mode = 'ONLY_FULL_GROUP_BY,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'";
-$qstr = "SET sql_mode = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'";
+$qstr = 'SET sql_mode = "';
+$modes = file('sql_modes.ini',FILE_IGNORE_NEW_LINES);
+foreach ($modes as $setting) {
+    if (substr($setting,0,1) == 'Y') {
+        $qstr .= substr($setting,2,strlen($setting)-2) . ",";
+    }
+}
+$qstr = substr($qstr,0,strlen($qstr)-1) . '";';
 $req = mysqli_query($link, $qstr);
 if (!$req) {
     die ("<p>sql_mode.php 1: Failed: " .
@@ -14,9 +19,10 @@ if (!$req) {
     die ("<p>sql_mode.php 2: Failed: " .
         mysqli_error($link) . "</p>");
 }
-//echo "<p>Results from SHOW VARIABLES:<br>";
-//while ($row = mysqli_fetch_row($req)) {
-//    echo "$row[0]: $row[1] <br>";
-//}
-
-//echo ' done <br>';
+/*
+echo "<p>Results from SHOW VARIABLES:<br>";
+while ($row = mysqli_fetch_row($req)) {
+    echo "$row[0]: $row[1] <br>";
+}
+echo ' done <br>';
+*/
