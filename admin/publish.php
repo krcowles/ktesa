@@ -104,6 +104,55 @@ $hikeNo = filter_input(INPUT_GET,'hno');
             }
             $id = mysqli_fetch_row($lastid);
             $indxNo = $id[0];
+            /* NOTE: If this newly submitted hike (not previously published) is
+             * a hike that is of type 'At VC', then the index page table for that
+             * Visitor Center needs to be updated with the newly added hike
+             */
+            if (trim($hike['marker']) === 'At VC') {
+                $sunIcon = '<img class="expShift" src="../images/sun.jpg" alt="Sunny icon" />';
+                $partialIcon = '<img class="expShift" src="../images/greenshade.jpg" alt="Partial shade icon" />';
+                $shadeIcon = '<img class="expShift" src="../images/shady.png" alt="Partial sun/shade icon" />';
+                $newEntry = "<tr>\n<td>{$pg}<\td>\n";
+                $newEntry .= '<td><a href="hikePageTemplate.php?hikeIndx=' . 
+                    $indxNo . '" target="_blank">' . PHP_EOL;
+                $newEntry .= '<img class="webShift" src="../images/greencheck.jpg" ' .
+                    'alt="website click-on icon" /></a></td>' . PHP_EOL;
+                $miles = round($mi,2);
+                $newEntry .= "<td>{$miles} miles</td>\n<td>{$ft} feet</td>\n";
+                if ($ex === 'Full sun') {
+                    $newEntry .= "<td>" . $sunIcon . "</td>\n";
+                } elseif ($ex === 'Good shade') {
+                    $newEntry .= "<td>" . $shadeIcon . "</td>\n";
+                } else {
+                    $newEntry .= "<td>" . $partialIcon . "</td>\n";
+                }
+                $newEntry .= '<td><a href="' . $p1 . 'target="_blank">';
+                $newEntry .= '<img class="flckrShift" src="../images/album_lnk.png" ' .
+                    'alt="Photos symbol" /></a></td>' . "\n</tr>\n";
+                # Get the correct index page:
+                $ixReq = "SELECT aoimg1 FROM HIKES WHERE indxNo = {$co};";
+                $ix = mysqli_query($link,$ixReq);
+                if (!$ix) {
+                    die("publish.php: Failed to extract value for serialized " .
+                        "table from Index Page {$co}: " . mysqli_error($link));
+                }
+                $tbls = mysqli_fetch_row($ix);
+                $oldtbls = unserialize($tbls[0]);
+                $tbl = $oldtbls . $newEntry;
+                mysqli_free_result($ix);
+                echo $tbl;
+                $ixtbl = serialize($tbl);
+                $newtbl = mysqli_real_escape_string($link,$ixtbl);
+                $updtReq = "UPDATE EHIKES SET aoimg1 = '{$newtbl}' WHERE " .
+                    "indxNo = {$co};";
+                $updt = mysqli_query($link,$updtReq);
+                if (!$updt) {
+                    die("publish.php: Failed to update table for index page {$co}: " .
+                        mysqli_error($link));
+                }
+                mysqli_free_result($updt);
+            }
+            
         } else { # this will be the hike being modified, already on the site
             $indxNo = $pubHike;
         }
