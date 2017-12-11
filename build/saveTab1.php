@@ -1,7 +1,8 @@
 <?php
+session_start();
+$_SESSION['activeTab'] = 1;
 require_once "../mysql/setenv.php";
 $hikeNo = filter_input(INPUT_POST,'hno');
-$tbl_type = filter_input(INPUT_POST,'tbl');
 $hstat = filter_input(INPUT_POST,'stat');
 $uid = filter_input(INPUT_POST,'usr');
 /* Marker, cluster info may have changed during edit
@@ -12,33 +13,6 @@ $clusGrp = filter_input(INPUT_POST,'pclus');
 $cgName = filter_input(INPUT_POST,'pcnme');
 # Non-edited items need to be saved as well:
 $hikeColl = filter_input(INPUT_POST,'col');
-$gpxfile = filter_input(INPUT_POST,'gpx');
-$trkfile = filter_input(INPUT_POST,'trk');
-?>
-<!DOCTYPE html>
-<html lang="en-us">
-
-<head>
-    <title>Save Changes to Database</title>
-    <meta charset="utf-8" />
-    <meta name="description"
-            content="Save any hike page changes back to the database" />
-    <meta name="author" content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
-</head>
-
-<body>
-
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
-<p id="trail">Saving Hike Page Edits</p>
-<?php
 # Extract cluster list - and inherent 1 to 1 association with cluster name:
 $groups = [];
 $cnames = [];
@@ -75,7 +49,7 @@ $hColl = mysqli_real_escape_string($link,$hikeColl);
 /*  CLUSTER/MARKER ASSIGNMENT PROCESSING:
  *     The order of changes processed are in the following priority:
  *     1. Existing assignment deleted: Marker changes to "Normal"
- *	   2. New Group Assignment
+ *     2. New Group Assignment
  *     3. Group Assignment Changed
  *     4. Nothing Changed
 */
@@ -156,75 +130,22 @@ $url2 = filter_input(INPUT_POST,'purl2');
 $hPurl2 = mysqli_real_escape_string($link,$url2);
 $dirs = filter_input(INPUT_POST,'gdirs');
 $hDirs = mysqli_real_escape_string($link,$dirs);
-$tips = filter_input(INPUT_POST,'tips');
-# revise tips if no tips were added:
-if (substr($tips,0,15) === '[NO TIPS FOUND]') {
-        $hTips = '';
-} else {
-    $hTips = mysqli_real_escape_string($link,$tips);
-}        
-$info = filter_input(INPUT_POST,'hinfo');
-$hInfo = mysqli_real_escape_string($link,$info);
-if ($tbl_type === 'new') {  # data will replace existing data
-    $saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
-        "stat = '{$hstat}',locale = '{$hLoc}',marker = '{$marker}'," .
-        "cgroup = '{$clusGrp}',cname = '{$clName}',logistics = '{$hType}'," .
-        "miles = '{$hLgth}', feet = '{$hElev}', diff = '{$hDiff}'," .
-        "fac = '{$hFac}',wow = '{$hWow}', seasons = '{$hSeas}'," .
-        "expo = '{$hExpos}',lat = '{$hLat}',lng = '{$hLon}'," .
-        "purl1 = '{$hPurl1}',purl2 = '{$hPurl2}',dirs = '{$hDirs}'," .
-        "tips = '{$hTips}',info = '{$hInfo}' WHERE indxNo = {$hikeNo};";
-} else {  # data will be added to EHIKES table as a new entry w/usr info
-    $saveHikeReq = "INSERT INTO EHIKES (pgTitle,usrid,stat,locale,marker," .
-        "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
-        "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
-        "tips,info) VALUES ('{$hTitle}','{$hUser}','{$hstat}'," .
-        "'{$hLoc}','{$marker}','{$hColl}','{$clusGrp}','{$clName}'," .
-        "'{$hType}','{$hLgth}','{$hElev}','{$hDiff}','{$hFac}','{$hWow}'," .
-        "'{$hSeas}','{$hExpos}','{$hGpx}','{$hTrk}','{$hLat}','{$hLon}'," .
-        "'{$hAdd1}','{$hAdd2}','{$hPurl1}','{$hPurl2}','{$hDirs}'," .
-        "'{$hTips}','{$hInfo}');";
-}
+# SAVE THE EDITED DATA IN EHIKES:
+$saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
+    "stat = '{$hstat}',locale = '{$hLoc}',marker = '{$marker}'," .
+    "cgroup = '{$clusGrp}',cname = '{$clName}',logistics = '{$hType}'," .
+    "miles = '{$hLgth}', feet = '{$hElev}', diff = '{$hDiff}'," .
+    "fac = '{$hFac}',wow = '{$hWow}', seasons = '{$hSeas}'," .
+    "expo = '{$hExpos}',lat = '{$hLat}',lng = '{$hLon}'," .
+    "purl1 = '{$hPurl1}',purl2 = '{$hPurl2}',dirs = '{$hDirs}' " .
+    "WHERE indxNo = {$hikeNo};";
+
 $saveHike = mysqli_query($link,$saveHikeReq);
 if (!$saveHike) {
     die("saveChanges.php: Failed to save new data to EHIKES: " . 
         mysqli_error($link));
 }
 mysqli_free_result($saveHike);
-/* if new data was inserted into EHIKES, that indxNo will be needed for
- * the remaining tables: ETSV, EREFS, and EGPSDAT
- */
-if ($tbl_type === 'old') {
-    $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
-    $indxq = mysqli_query($link,$indxReq);
-    if (!$indxq) {
-        die("saveChanges.php: Did not retrieve new EHIKES indx no: " .
-            mysqli_error($link));
-    }
-    $indxNo = mysqli_fetch_row($indxq);
-    $newNo = $indxNo[0];
-    mysqli_free_result($indxq);
-}
-include "savePicEdits.php";
-include "saveRefEdits.php";
-include "saveGPSEdits.php";
+$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
+header("Location: {$redirect}");
 ?>
-<div style="padding:16px;">
-<h2>The changes submitted for <?php echo $hTitle . $msgout;?></h2>
-</div>
-
-<?php
-if (!$user) {
-    echo '<div data-ptype="hike" data-indxno="' . $useNo . '" style="padding:16px;" id="more">';
-    echo '<button style="font-size:16px;color:DarkBlue;" id="view">View the Edited Page</button>';
-    echo '</div>';
-}
-?>
-<p id="tbl" style="display:none;"><?php echo $tbl_type;?></p>
-<p id="uid" style="display:none;"><?php echo $uid;?></p>
-<script src="../scripts/jquery-1.12.1.js"></script>
-<script src="postEdit.js"></script>
-
-</body>
-
-</html>

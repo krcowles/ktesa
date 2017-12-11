@@ -2,7 +2,8 @@ $( function () { // when page is loaded...
 /*
  * The editor must direct the user to the correct edit tool, depending
  * on the type and state of the item in the table.
- *  1. HIKES table items -- all should pt to editDB (or editIndx)
+ *  1. HIKES table items -- these are all 'published' and need to first be
+ *     transferred 'as is' to the EHIKES et al tables.
  *  2. EHIKES table items:
  *      a. Status = new; point to enterHike
  *      b. Status = upl; files have been uploaded from enterHike, but no
@@ -56,7 +57,7 @@ $('a').on('click', function(e) {
         var $containerRow = $containerCell.parent();
         if ( !$containerRow.hasClass('indxd') ) {
             var hikeToUse = $containerRow.data('indx');
-            var callPhp = 'editDB.php?hno=' + hikeToUse + '&tbl=old&usr=' + uid;
+            var callPhp = 'xfrPub.php?hno=' + hikeToUse + '&usr=' + uid;
             window.open(callPhp, target="_blank");
         } else {
             //currently, only site master can edit index pages

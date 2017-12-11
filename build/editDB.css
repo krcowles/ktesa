@@ -1,86 +1,97 @@
 body {
-	min-width: 960px;
-	font-family: arial, verdana;
-	background-color: #dadada; }
+    min-width: 960px;
+    font-family: arial, verdana;
+    background-color: #dadada; }
 #hike {
-	height: 20px;
-	width: 260px; }
+    height: 20px;
+    width: 260px; }
 #area {
-	height: 34px;
-	width: 120px; }
+    height: 34px;
+    width: 120px; }
 #ctip {
-	height: 34px;
-	width: 220px; }
+    height: 34px;
+    width: 220px; }
 #miles {
-	height: 20px;
-	width: 70px; }
+    height: 20px;
+    width: 70px; }
 #type {
-	height: 34px;
-	width: 130px; }
+    height: 34px;
+    width: 130px; }
 #elev {
-	height: 20px;
-	width: 100px; }
+    height: 20px;
+    width: 100px; }
 #diff {
-	height: 34px;
-	width: 160px; }
+    height: 34px;
+    width: 160px; }
 #fac {
-	height: 20px;
-	width: 200px; }
+    height: 20px;
+    width: 200px; }
 #wow {
-	height: 20px;
-	width: 200px; }
+    height: 20px;
+    width: 200px; }
 #seas {
-	height: 20px;
-	width: 160px; }
+    height: 20px;
+    width: 160px; }
 #sun {
-	height: 34px;
-	width: 150px; }
+    height: 34px;
+    width: 150px; }
 #lat {
-	height: 20px;
-	width: 130px; }
+    height: 20px;
+    width: 130px; }
 #lon {
-	height: 20px;
-	width: 140px; }
+    height: 20px;
+    width: 140px; }
 #ph1 {
-	height: 20px;
-	width: 680px; }
+    height: 20px;
+    width: 680px; }
 #ph2 {
-	height: 20px;
-	width: 680px; }
+    height: 20px;
+    width: 680px; }
 #murl {
-	height: 68px;
-	width: 850px; }
+    height: 68px;
+    width: 850px; }
+.phurl {
+    height: 20px;
+    width: 520px; 
+}
+.albs {
+    position: relative;
+    top: 2px;
+    height: 24px;
+    width: 110px;
+    font-size: 14px;
+}
 .tstyle1 {
-	height: 20px;
-	width: 100px; }
+    height: 20px;
+    width: 100px; }
 .tstyle2 {
-	height: 20px;
-	width: 380px; }
+    height: 20px;
+    width: 380px; }
 .tstyle3 {
-	height: 20px;
-	width: 300px; }
+    height: 20px;
+    width: 300px; }
 textarea {
-	font-family: Tahoma, sans-serif;
-	border-style: solid;
-	border-width: 2px;
-	border-color: DarkGray;
-	padding: 5px;
-	background-color: LavenderBlush; }
+    font-family: Tahoma, sans-serif;
+    border-style: solid;
+    border-width: 2px;
+    border-color: DarkGray;
+    padding: 5px;
+    background-color: LavenderBlush; }
 textarea:focus {
-	background-color: PapayaWhip; }
+    background-color: PapayaWhip; }
 select {
-	position: relative;
-	top: -8px;
-	font-family: Tahoma, sans-serif;
-	font-size: 14px;
-	height: 34px;
-	width: 140px;
-	background-color: LavenderBlush; }
+    position: relative;
+    top: -8px;
+    font-family: Tahoma, sans-serif;
+    font-size: 14px;
+    height: 34px;
+    width: 140px;
+    background-color: LavenderBlush; }
 select:focus {
-	background-color: PapayaWhip; }
+    background-color: PapayaWhip; }
 #go {
-	height: 24px;
-	width: 100px; }
+    height: 24px;
+    width: 100px; }
 input[type=checkbox]
 {
   /* Double-sized Checkboxes  - Browser dependent code */
@@ -99,11 +110,57 @@ input[type=submit]:hover {
     background-color: papayawhip;
     cursor: pointer;
 }
-.gridbox {
-	float: left;
-	height: 60px;
-	width: 58px;
-	border-style: solid;
-	border-width: 1px;
-	border-color: black;
+.tablist {
+    float: left;
+    width: 180px;
+    height: 30px;
+    margin-bottom: 0px;
+    border-style: inset;
+    border-bottom: none;
+    border-width: 2px;
+    border-radius: 12px 12px 0px 0px;
+    font-size: 18px;
+    color: DarkGray;
+    background-color: honeydew;
 }
+.tablist.active {
+    background-color: #dadada;
+    color: brown;
+}
+.tablist:hover {
+    cursor: pointer;
+}
+#line {
+    float: left;
+    width: 60px;
+    height: 30px;
+    margin-bottom: 0px;
+    border: none;
+    border-bottom: solid;
+    border-width: 1px;
+    background-color: #dadada;
+}
+.tab-panel {
+    clear: left;
+    display: none;
+    margin-top: 12px;
+    border-left: solid;
+    border-right: solid;
+    border-bottom: solid;
+    border-width: 1px;
+    padding: 16px;
+}
+.tab-panel.active {
+    display: block;
+}
+.popupCap {
+    margin: 0px;
+    display: none;
+    position: absolute;
+    width: 300px;
+    top: 0px;
+    left: 0px; }
+.capLine {
+    margin: 0px;
+    font-weight: bold;
+    background-color: #eaeaea; }

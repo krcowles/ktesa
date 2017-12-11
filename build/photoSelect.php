@@ -2,24 +2,25 @@
 /* This module produces the html for placing photos with selection boxes.
  * REQUIREMENTS:
  *      1. $hikeNo must be defined in caller's environment (EHIKES or HIKES)
- *      2. $ptable must also be defined in caller's environment (ETSV or TSV)
- *      3. $pgType must be defined by caller to determine whether or not
+ *      2. $pgType must be defined by caller to determine whether or not
  *         to display captions for editing
- *      4. picPops.js is looking for a <p id="ptype"> on the caller's page
+ *      3. picPops.js is looking for a <p id="ptype"> on the caller's page
  *         identifying the page type: Validation, Finish or Edit
  * Place this code inside a <div> element.
  */
 require_once "../mysql/setenv.php";
+$h4txt = "Please check the boxes corresponding to the pictures you wish to " .
+    "include on the hike page, and those you wish to include on the geomap.";
+if ($pgType === 'Edit') {
+    $h4txt .= " NOTE: Checking 'Delete' permanently removes the photo.";
+}
 ?>
 <style type="text/css">
     .capLine { margin: 0px;
     font-weight: bold;
-    background-color: #eaeaea; }
+    background-color: #dadada; }
 </style>
-<h4 style="text-indent:16px">Please check the boxes corresponding to
-    the pictures you wish to include on the hike page, and those you wish to
-    include on the geomap.
-</h4>
+<h4 style="text-indent:16px"><?php echo $h4txt;?></h4>
 <div style="position:relative;top:-14px;margin-left:16px;">
     <input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;
         Use All Photos on Hike Page<br />
@@ -28,7 +29,7 @@ require_once "../mysql/setenv.php";
 </div>
 <div style="margin-left:16px;">
 <?php
-$picreq = "SELECT * FROM {$ptable} WHERE indxNo = {$hikeNo};";
+$picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
 $pix = mysqli_query($link,$picreq);
 if (!$pix) {
     die("photoSelect.php: Failed to get picdat from ETSV for hike {$hikeNo}: " .
@@ -42,8 +43,8 @@ if (mysqli_num_rows($pix) === 0) {
     $picno = 0;
     $phNames = []; # filename w/o extension
     $phDescs = []; # caption
-    $hpg = [];  # display on page status
-    $mpg = [];  # display on map status
+    $hpg = [];
+    $mpg = [];
     $phPics = []; # capture the link for the mid-size version of the photo
     $phWds = []; # width
     $rowHt = 220; # nominal choice for row height in div
@@ -60,8 +61,8 @@ if (mysqli_num_rows($pix) === 0) {
         $picno += 1;
     }
     for ($i=0; $i<$picno; $i++) {
-        echo '<div class="selPic" style="width:' . $phWds[$i] . 'px;float:left;'
-            . 'margin-left:2px;margin-right:2px;">';
+        echo '<div style="width:' . $phWds[$i] . 'px;margin-left:2px;'
+            . 'margin-right:2px;display:inline-block">';
         $pgbox = '<input class="hpguse" type="checkbox" name="pix[]" value="'
             . $phNames[$i];
         if ($hpg[$i] === 'Y') {
@@ -78,6 +79,10 @@ if (mysqli_num_rows($pix) === 0) {
             $mpbox .= '" />Map<br />' . PHP_EOL;
         }
         echo $mpbox;
+        if ($pgType === 'Edit') {
+            echo '<input class="delp" type="checkbox" name="rem[]" value="'
+                . $phNames[$i] . '" />Delete<br />';
+        }
         echo '<img class="allPhotos" height="200px" width="' . $phWds[$i]
                 . 'px" src="' . $phPics[$i] . '" alt="' . $phNames[$i] 
                 . '" /><br />' . PHP_EOL;

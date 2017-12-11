@@ -26,6 +26,7 @@ if (hike == 0) {
     $('#htitle').change( function() {
         checkName($(this).val()) 
     });
+    $('#stat').val('new');
 }
 
 /* Styling to indicate that a field has been entered:

@@ -80,19 +80,22 @@ for ($k=$kstart; $k<$pcnt; $k++) {
         if ($timeStamp[$k] == '') {
                 echo "WARNING: No date/time data found " . 'for ' . $orgPhoto . '</p>';
         }
-
-        if ($exifdata["GPSLatitudeRef"] == 'N') {
-                $lats[$k] = mantissa($exifdata["GPSLatitude"]); # TJS
+        if ( !isset($exifdata["GPSLatitudeRef"]) || !isset($exifdata["GPSLatitude"]) ) {
+            $lats[$k] = 0;
+            $lngs[$k] = 0;
         } else {
-                $lats[$k] = -1 * mantissa($exifdata["GPSLatitude"]); # TJS
-        }
+            if ($exifdata["GPSLatitudeRef"] == 'N') {
+                    $lats[$k] = mantissa($exifdata["GPSLatitude"]); # TJS
+            } else {
+                    $lats[$k] = -1 * mantissa($exifdata["GPSLatitude"]); # TJS
+            }
 
-        if ($exifdata["GPSLongitudeRef"] == 'E') {
-                $lngs[$k] = mantissa($exifdata["GPSLongitude"]); # TJS
-        } else {
-                $lngs[$k] = -1 * mantissa($exifdata["GPSLongitude"]); # TJS
+            if ($exifdata["GPSLongitudeRef"] == 'E') {
+                    $lngs[$k] = mantissa($exifdata["GPSLongitude"]); # TJS
+            } else {
+                    $lngs[$k] = -1 * mantissa($exifdata["GPSLongitude"]); # TJS
+            }
         }
-
         $elev[$k] = $exifdata["GPSAltitude"];
         $gpds[$k] = $exifdata["GPSDateStamp"];
 

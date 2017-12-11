@@ -18,6 +18,12 @@ var sessSupport = window.sessionStorage ? true : false;
     
 var emode = false; // edit mode requires caption offset
 var pageType = $('#ptype').text();
+if (pageType.substring(0,4) === 'Edit' && pageType.length > 4) {
+    pageType = 'Edit';
+    var newUplds = true;
+} else {
+    var newUplds = false;
+}
 var caps = true;
 if (pageType === 'Hike') {
     $photos = $('img[id^="pic"]');
@@ -28,12 +34,22 @@ if (pageType === 'Hike') {
 }
 if (pageType === 'Edit') { 
     // the edit page requires caption offset for checkboxes
-    emode = true;
+    emode = false;
     caps = false;
 }
-
-noOfPix = $photos.length;
-executeCaptions();
+// Don't activate executeCaptions until that div is tab-selected:
+if( pageType === 'Edit' && !newUplds) {
+    $('#t2').on('click', function(ev) {
+        ev.preventDefault();
+        $loadWait = setTimeout( function() {
+            noOfPix = $photos.length;
+            executeCaptions();
+        }, 100); 
+    });  
+} else {
+    noOfPix = $photos.length;
+    executeCaptions();
+}
 function executeCaptions() {
     if ( sessSupport ) {
             var tst = sessionStorage.getItem('prevLoad');

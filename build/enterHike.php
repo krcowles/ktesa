@@ -151,6 +151,7 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
     <p id="dbur2" style="display:none;"><?php echo $entrydat['purl2'];?></p>
     <input type="hidden" name="hno" value="<?php echo $hip;?>" />
     <input type="hidden" name="usr" value="<?php echo $usr;?>" />
+    <input id="stat" type="hidden" name="state" value="std" />
     <fieldset id="basic">
         <legend>Basic Hike Data</legend>
         <label id="pgTitleText" for="htitle">Hike Name (As it will appear 

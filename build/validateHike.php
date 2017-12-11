@@ -11,11 +11,12 @@ $hike = filter_input(INPUT_POST,'hpgTitle');
 $hikeNo = intval(filter_input(INPUT_POST,'hno'));
 $uid = filter_input(INPUT_POST,'usr');
 $uid = mysqli_real_escape_string($link,$uid);
+$status = filter_input(INPUT_POST,'state');
 /* If hikeNo = 0, then this is a brand new page, and both the hike and hikeNo
  * have not yet been saved. Since the user is now saving data, it is time to 
  * establish these parameters in the database...
  */
-if ($hikeNo == '0') {
+if ($status === 'new') {
     $newHike = mysqli_real_escape_string($link,$hike);
     $newPgReq = "INSERT INTO EHIKES (pgTitle,usrid,stat) VALUES ('{$newHike}'," .
         "'{$uid}','new');";
