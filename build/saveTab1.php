@@ -19,7 +19,7 @@ $cnames = [];
 $clusreq = "SELECT cgroup, cname FROM HIKES;";
 $clusq = mysqli_query($link,$clusreq);
 if (!$clusq) {
-    die("saveChanges.php: Failed to get cluster info from HIKES: " .
+    die("saveTab1.php: Failed to get cluster info from HIKES: " .
         mysqli_error($link));
 }
 while ($clusDat = mysqli_fetch_assoc($clusq)) {
@@ -142,7 +142,7 @@ $saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
 
 $saveHike = mysqli_query($link,$saveHikeReq);
 if (!$saveHike) {
-    die("saveChanges.php: Failed to save new data to EHIKES: " . 
+    die("saveTab1.php: Failed to save new data to EHIKES: " . 
         mysqli_error($link));
 }
 mysqli_free_result($saveHike);

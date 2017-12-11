@@ -65,7 +65,7 @@ while ($photo = mysqli_fetch_assoc($photoq)) {
             . "`desc` = '{$newcap}' WHERE picIdx = {$thisid};";
         $update = mysqli_query($link,$updtreq);
         if (!$update) {
-            die("savePicEdits.php: Failed to update ETSV table for hike {$hikeNo}: "
+            die("saveTab2.php: Failed to update ETSV table for hike {$hikeNo}: "
                 . msyqli_error($link));
         }
     }
