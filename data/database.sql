@@ -29,7 +29,7 @@ CREATE TABLE `HIKES` (
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -181,7 +181,8 @@ INSERT INTO HIKES VALUES
 ('145','Ball Ranch','mstr','Golden','Normal',NULL,NULL,NULL,'Loop','5.50','650','Easy-Moderate','None','Colored Hills','Not Summer','Full sun','Ball_Ranch.GPX','Ball_Ranch.json','35.3898331895','-106.3032204290',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157661679047818','https://www.flickr.com/photos/30474783@N06/albums/72157661591623668','https://www.google.com/maps/dir//35.3916667,-106.27/@35.4327041,-106.3364561,12.84z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDIzJzMwLjAiTiAxMDbCsDE2JzEyLjAiVw!3b1!8m2!3d35.3916667!4d-106.27','Entrance to the Trailhead is off of 57A, a gravel road, at a BLM gate which requires a key. The key can be obtained without charge at a BLM office. Once past the gate, the road becomes very difficult and requires a 4-wheel drive with reasonable clearance. The branch off of this road to the windmill at the trailhead may not be traversable, depending on recent weather conditions, but is only about 1/4 mile away and can be easily walked (as the authors did in this case). When following the arroyo, near the canyon\' end is a point of departure which is not obvious. Refer to the marked location on the map. ','This loop hike begins in the arroyo near the windmill (see book reference, below), and immediately enters a shallow canyon. The canyon walls vary as the hike progresses, and there are many interesting geological features along the way, accented by many color changes and rock sizes. Once the trail departs from the arroyo, the views increase as multi-colored hills become visible. Also, a short distance from the arroyo is an area containing large petrified tree trunk pieces. Petrified wood is scattered along the trail from here. Overall, the trail presents many great views and interesting features.'),
 ('146','Boundary Loop Trail','mstr','Albuquerque','Cluster',NULL,'S','La Cueva Road Group','Loop','3.80','1000','Moderate','None','Interior Rincon and Sandias','Not Summer','Full sun','Boundary_Loop.GPX','Boundary_Loop.json','35.2024943009','-106.5043653175',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157689963292856',NULL,'https://www.google.com/maps/dir//35.20265,-106.5038833/@35.2019097,-106.5085099,15.87z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDEyJzA5LjUiTiAxMDbCsDMwJzE0LjAiVw!3b1!8m2!3d35.20265!4d-106.5038833',NULL,'This hike starts across the road from a broad dirt parking area on FR333 just north of the turn-off from Tramway Blvd. The most difficult part is the very beginning - a steep but short stretch to the top of the nearby ridge. After that the trail follows a contour so attentive footing is required for a short distance - not a sheer drop but a rather steep angle. Most of the hike is an easy walk up the arroyo if you take the suggested path and follow the east branch of the loop up. A 5 ft rock wall must be scaled, but it is rather easy to do so with multiple foot- and hand-holds. From here, the views are spectacular. Great interior views of the Rincon Ridge, and some lovely angles on the Sandias. At the northern end, the trail is elevated to the point that a nice vista of Juan Tabo Canyon presents itself (see the Juan Tabo Canyon Hike). Multiple trails crisscross the area providing more great views. The author traversed a couple of these which made the nominal 2.5 mile hike a bit longer.                '),
 ('147','Juan Tabo Cabin','mstr','Albuquerque','Cluster',NULL,'S','La Cueva Road Group','Out-and-back','1.00','500','Easy','None','Sandia and Valley Views','Not Summer','Full sun','Juan_Tabo_Cabin.gpx','Juan_Tabo_Cabin.json','35.2026998000','-106.5038574000',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157690676899476',NULL,'https://www.google.com/maps/dir//35.20265,-106.5038833/@35.1981903,-106.5097481,14.8z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDEyJzA5LjUiTiAxMDbCsDMwJzE0LjAiVw!3b1!8m2!3d35.20265!4d-106.5038833',NULL,'Although this hike is an easy stroll up an arroyo to the old CCC Headquarters ruins, don\'t mistake that for uninteresting! There are multiple wonderful views of the Sandias, and of the valley on the return trip of this out-and-back hike. The cabin itself can actually be seen from the nearby road, FR333 - which leads to the Juan Tabo Picnic Grounds and La Luz Trailhead. The cabin is surrounded by a low stone wall, and a low point in that wall allows close-up access to the interior of the cabin, revealing its architecture. The parking area is shortly after FR333 turns north from Tramway Blvd, and just past the second cattle guard. '),
-('148','Stable Mesa','mstr','Jemez Springs','Normal',NULL,NULL,NULL,'Out-and-back','4.20','950','Moderate','None','Jemez Mtns and Valley','Not Winter','Mixed sun/shade','Stable_Edited.GPX','Stable_Edited.json','35.7917451952','-106.7753870320',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157665831300339','https://www.flickr.com/photos/30474783@N06/sets/72157688924451021/with/24692491998/','https://www.google.com/maps/dir//35.8183333,-106.7880556/@35.7999943,-106.8429912,12.03z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDQ5JzA2LjAiTiAxMDbCsDQ3JzE3LjAiVw!3b1!8m2!3d35.8183333!4d-106.7880556',NULL,'This hike takes you deep into the Jemez territory about 7 miles up FR376, past Gilman Tunnels where the road turns into fairly well-maintained gravel. The starting point begins across the road from the pull-off, which is on the west side of 376 near a bridge over the Guadalupe River. Walking just past the bridge, on the right, the trail starts. The trail begins with a pleasant walk alongside the river and then moves into Ponderosa forest before heading up the mesa. The trail up is somewhat steep and the  gravel is a bit loose, prompting the authors to rename the hike \"Unstable Mesa\". Once on top of the mesa, the views get quite interesting. There are multiple fascinating rock formations along the mesa\'s edge, many with erosion-built holes. From there, a loop can be made back to the point of first ascension. There are remains of a logging camp and pueblo ruins, but the authors did not locate them on this journey. Refer to the referenced book for more details.');
+('148','Stable Mesa','mstr','Jemez Springs','Normal',NULL,NULL,NULL,'Out-and-back','4.20','950','Moderate','None','Jemez Mtns and Valley','Not Winter','Mixed sun/shade','Stable_Edited.GPX','Stable_Edited.json','35.7917451952','-106.7753870320',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157665831300339','https://www.flickr.com/photos/30474783@N06/sets/72157688924451021/with/24692491998/','https://www.google.com/maps/dir//35.8183333,-106.7880556/@35.7999943,-106.8429912,12.03z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDQ5JzA2LjAiTiAxMDbCsDQ3JzE3LjAiVw!3b1!8m2!3d35.8183333!4d-106.7880556',NULL,'This hike takes you deep into the Jemez territory about 7 miles up FR376, past Gilman Tunnels where the road turns into fairly well-maintained gravel. The starting point begins across the road from the pull-off, which is on the west side of 376 near a bridge over the Guadalupe River. Walking just past the bridge, on the right, the trail starts. The trail begins with a pleasant walk alongside the river and then moves into Ponderosa forest before heading up the mesa. The trail up is somewhat steep and the  gravel is a bit loose, prompting the authors to rename the hike \"Unstable Mesa\". Once on top of the mesa, the views get quite interesting. There are multiple fascinating rock formations along the mesa\'s edge, many with erosion-built holes. From there, a loop can be made back to the point of first ascension. There are remains of a logging camp and pueblo ruins, but the authors did not locate them on this journey. Refer to the referenced book for more details.'),
+('149','Canada de la Cueva    ','mstr','Cerrillos','Normal','','','','Out-and-back','7.80','450','Easy-Moderate','None    ','Geology in Arroyo    ','Not Summer  ','Full sun','Canada_de_la_Cueva.GPX','Canada_de_la_Cueva.json','35.4386154469','-106.0184755269','','','https://www.flickr.com/photos/139088815@N08/albums/72157689658210665','https://www.flickr.com/photos/30474783@N06/albums/72157689909068565','https://www.google.com/maps/dir//35.4386549,-106.0184904/@35.5076537,-106.12594,10.88z/data=!4m2!4m1!3e0','','This hike had no siginificant elevation changes, and simply followed the arroyo into the Galisteo Basin. Near the end of the hike the land turns into privately held land, but there are no warning signs indicating same. One source showed the hike as a two-car hike, but would require utilizing the private land to accomplish. The arroyo seemed to hold an unending variety of interesting geology - from rocks of all colors and shapes to hills and embankments of varying composition. According to the reference below, it also is the home of a considerable variety of wildlife, but at the time the authors  explored the area, little was to be seen. The hike may be shortened and still provide a fascinating look at the Galisteo basin.');
 
 
 
@@ -194,7 +195,7 @@ CREATE TABLE `GPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO GPSDAT VALUES
@@ -295,7 +296,8 @@ INSERT INTO GPSDAT VALUES
 ('95','145','A','GPX:','../gpx/Ball_Ranch.GPX','The Track'),
 ('98','146','A','GPX:','../gpx/Boundary_Loop.GPX','The Track'),
 ('99','147','A','GPX File:','../gpx/Juan_Tabo_Cabin.gpx','The Track'),
-('100','148','A','GPX File:','../gpx/Stable_Edited.GPX','The Track');
+('100','148','A','GPX File:','../gpx/Stable_Edited.GPX','The Track'),
+('101','149','A','GPS File:','../gpx/Canada_de_la_Cueva.GPX','The Track');
 
 
 
@@ -307,7 +309,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1036 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1039 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -924,7 +926,10 @@ INSERT INTO REFS VALUES
 ('1032','148','Book:','60 Hikes Within 60 Miles of Albuquerque','Stephen Ausherman'),
 ('1033','148','App:','https://www.alltrails.com/trail/us/new-mexico/stable-mesa','AllTrails.com'),
 ('1034','148','Blog:','https://ondafringe.wordpress.com/2013/06/15/day-hike-stable-mesa-to-kiva-ruins-jemez-mountains-new-mexico-usa/','OnDaFringe'),
-('1035','148','Website:','https://www.trails.com/tcatalog_trail.aspx?trailid=XMR022-043','Trails.com');
+('1035','148','Website:','https://www.trails.com/tcatalog_trail.aspx?trailid=XMR022-043','Trails.com'),
+('1036','149','Book:','60 Hikes Within 60 Miles of Albuquerque','Stephen Ausherman'),
+('1037','149','App:','https://www.alltrails.com/trail/us/new-mexico/canada-de-la-cueva','AllTrails'),
+('1038','149','Website:','https://www.bivy.com/adventures/us/new%20mexico/canada-de-la-cueva-515002','bivy Adventures');
 
 
 
@@ -948,7 +953,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=2126 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2147 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -2194,7 +2199,28 @@ INSERT INTO TSV VALUES
 ('2122','148','Folder2','IMG_20171102_143852','N','N',NULL,'35.7357777778','-106.7645916670','https://c1.staticflickr.com/5/4541/26791663879_1de67017c3_t.jpg','https://www.flickr.com/photos/30474783@N06/26791663879/in/album-72157688924451021','2017-11-02 14:38:53','https://c1.staticflickr.com/5/4541/26791663879_1de67017c3_n.jpg','2688','1512','pink','https://c1.staticflickr.com/5/4541/26791663879_24d772229c_o.jpg'),
 ('2123','148','Folder2','PANO_20171102_144537','N','N',NULL,'35.7304388889','-106.7588138890','https://c1.staticflickr.com/5/4545/38568033971_124534942f_t.jpg','https://www.flickr.com/photos/30474783@N06/38568033971/in/album-72157688924451021','2017-11-02 14:45:57','https://c1.staticflickr.com/5/4545/38568033971_124534942f_n.jpg','0','0','pink','https://c1.staticflickr.com/5/4545/38568033971_9eebd27325_o.jpg'),
 ('2124','148','Folder2','PANO_20171102_144548','N','N',NULL,'35.7303250000','-106.7587888890','https://c1.staticflickr.com/5/4519/38568036981_6bee1cdaca_t.jpg','https://www.flickr.com/photos/30474783@N06/38568036981/in/album-72157688924451021','2017-11-02 14:46:19','https://c1.staticflickr.com/5/4519/38568036981_6bee1cdaca_n.jpg','0','0','pink','https://c1.staticflickr.com/5/4519/38568036981_9029297349_o.jpg'),
-('2125','148','Folder2','PANO_20171102_144635','N','N',NULL,'35.7304200000','-106.7587500000','https://c1.staticflickr.com/5/4516/37679911045_5870ae0834_t.jpg','https://www.flickr.com/photos/30474783@N06/37679911045/in/album-72157688924451021','2017-11-02 14:47:13','https://c1.staticflickr.com/5/4516/37679911045_5870ae0834_n.jpg','0','0','pink','https://c1.staticflickr.com/5/4516/37679911045_2ba29fd525_o.jpg');
+('2125','148','Folder2','PANO_20171102_144635','N','N',NULL,'35.7304200000','-106.7587500000','https://c1.staticflickr.com/5/4516/37679911045_5870ae0834_t.jpg','https://www.flickr.com/photos/30474783@N06/37679911045/in/album-72157688924451021','2017-11-02 14:47:13','https://c1.staticflickr.com/5/4516/37679911045_5870ae0834_n.jpg','0','0','pink','https://c1.staticflickr.com/5/4516/37679911045_2ba29fd525_o.jpg'),
+('2126','149','Folder2','IMG_20171115_101250','N','N','Enter description here','35.4386277778','-106.0184305560','https://c1.staticflickr.com/5/4542/37853373054_b5515496d3_t.jpg','https://www.flickr.com/photos/30474783@N06/37853373054/in/album-72157689909068565','2017-11-15 10:12:52','https://c1.staticflickr.com/5/4542/37853373054_b5515496d3_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4542/37853373054_28314041bc_o.jpg'),
+('2127','149','Folder1','InTheBeginning','Y','Y','An easy start for an easy, but long, hike','35.4377138889','-106.0184166670','https://c1.staticflickr.com/5/4516/38468164981_5e1727a61b_t.jpg','https://www.flickr.com/photos/139088815@N08/38468164981/in/album-72157689658210665','2017-11-15 10:14:59','https://c1.staticflickr.com/5/4516/38468164981_5e1727a61b_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4516/38468164981_7b80374f17_o.jpg'),
+('2128','149','Folder2','IMG_20171115_102505','Y','Y','The trail soon enters a shallow arroyo before intersecting Canada de la Cueva','35.4332138889','-106.0204250000','https://c1.staticflickr.com/5/4560/38513765216_bded5924e8_t.jpg','https://www.flickr.com/photos/30474783@N06/38513765216/in/album-72157689909068565','2017-11-15 10:25:07','https://c1.staticflickr.com/5/4560/38513765216_bded5924e8_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4560/38513765216_8bba54e98b_o.jpg'),
+('2129','149','Folder2','IMG_20171115_102846','N','Y','A view of the Canada de la Cueva terrain','35.4319250000','-106.0194750000','https://c1.staticflickr.com/5/4540/24698133358_6e5a797945_t.jpg','https://www.flickr.com/photos/30474783@N06/24698133358/in/album-72157689909068565','2017-11-15 10:28:48','https://c1.staticflickr.com/5/4540/24698133358_6e5a797945_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4540/24698133358_837e6b5898_o.jpg'),
+('2130','149','Folder1','LuckyStop','Y','Y','Stopping here revealed some fascinating geology','35.4279055556','-106.0229500000','https://c1.staticflickr.com/5/4531/37753789914_7cb162784c_t.jpg','https://www.flickr.com/photos/139088815@N08/37753789914/in/album-72157689658210665','2017-11-15 10:43:37','https://c1.staticflickr.com/5/4531/37753789914_7cb162784c_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4531/37753789914_8b18cec7c5_o.jpg'),
+('2131','149','Folder1','EmbeddedAndEroded','Y','N','There are some unusual rock features along the hike','35.4278250000','-106.0230472220','https://c1.staticflickr.com/5/4543/37753751924_fe73b0b984_t.jpg','https://www.flickr.com/photos/139088815@N08/37753751924/in/album-72157689658210665','2017-11-15 10:45:01','https://c1.staticflickr.com/5/4543/37753751924_fe73b0b984_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4543/37753751924_24cdeb63ca_o.jpg'),
+('2132','149','Folder1','ColorGalore','Y','N','Gorgeous multi-colored stone is embedded in the rock','35.4278333333','-106.0231250000','https://c1.staticflickr.com/5/4573/38436529302_d6b1c725ef_t.jpg','https://www.flickr.com/photos/139088815@N08/38436529302/in/album-72157689658210665','2017-11-15 10:45:16','https://c1.staticflickr.com/5/4573/38436529302_d6b1c725ef_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4573/38436529302_a80716d05b_o.jpg'),
+('2133','149','Folder2','IMG_20171115_104922','N','N','Enter description here','35.4319250000','-106.0194750000','https://c1.staticflickr.com/5/4547/26793761339_83d00a3835_t.jpg','https://www.flickr.com/photos/30474783@N06/26793761339/in/album-72157689909068565','2017-11-15 10:49:24','https://c1.staticflickr.com/5/4547/26793761339_83d00a3835_n.jpg','2688','1512','pink','https://c1.staticflickr.com/5/4547/26793761339_b06d5da5e7_o.jpg'),
+('2134','149','Folder1','UndercutSlab','N','N','Evidence of fast-moving water is everywhere','35.4269416667','-106.0234444440','https://c1.staticflickr.com/5/4558/37753772974_8085c7ff50_t.jpg','https://www.flickr.com/photos/139088815@N08/37753772974/in/album-72157689658210665','2017-11-15 10:49:49','https://c1.staticflickr.com/5/4558/37753772974_8085c7ff50_n.jpg','3264','2448','pink','https://c1.staticflickr.com/5/4558/37753772974_1e2ccfb5fa_o.jpg'),
+('2135','149','Folder1','CliffSide','Y','Y','The cliffs appear lovely in the sun','35.4268500000','-106.0248027780','https://c1.staticflickr.com/5/4551/37753820874_2215ce8a4f_t.jpg','https://www.flickr.com/photos/139088815@N08/37753820874/in/album-72157689658210665','2017-11-15 10:53:05','https://c1.staticflickr.com/5/4551/37753820874_2215ce8a4f_n.jpg','3264','2448','pink','https://c1.staticflickr.com/5/4551/37753820874_6ff0db13c7_o.jpg'),
+('2136','149','Folder1','ManyFormations','N','N','Besides the arroyo itself, other views prove worthy','35.4194722222','-106.0382000000','https://c1.staticflickr.com/5/4522/37753811484_eb680f38b8_t.jpg','https://www.flickr.com/photos/139088815@N08/37753811484/in/album-72157689658210665','2017-11-15 11:38:01','https://c1.staticflickr.com/5/4522/37753811484_eb680f38b8_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4522/37753811484_306f7e874a_o.jpg'),
+('2137','149','Folder1','GoingUp','N','N','The authors decide to go up for a look','35.4202166667','-106.0374055560','https://c1.staticflickr.com/5/4517/38468249081_3ee6ff3326_t.jpg','https://www.flickr.com/photos/139088815@N08/38468249081/in/album-72157689658210665','2017-11-15 11:40:06','https://c1.staticflickr.com/5/4517/38468249081_3ee6ff3326_n.jpg','3264','2448','pink','https://c1.staticflickr.com/5/4517/38468249081_2666d8eb33_o.jpg'),
+('2138','149','Folder2','IMG_20171115_114153','Y','Y','The authors ascent this hill for a view','35.4200583333','-106.0374416670','https://c1.staticflickr.com/5/4561/24698145528_6e1091b3cd_t.jpg','https://www.flickr.com/photos/30474783@N06/24698145528/in/album-72157689909068565','2017-11-15 11:41:55','https://c1.staticflickr.com/5/4561/24698145528_6e1091b3cd_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4561/24698145528_c10d8d0ff6_o.jpg'),
+('2139','149','Folder2','IMG_20171115_114335','N','N','Enter description here','35.4203277778','-106.0380666670','https://c1.staticflickr.com/5/4580/38570181881_72fea68e49_t.jpg','https://www.flickr.com/photos/30474783@N06/38570181881/in/album-72157689909068565','2017-11-15 11:43:37','https://c1.staticflickr.com/5/4580/38570181881_72fea68e49_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4580/38570181881_67063c8627_o.jpg'),
+('2140','149','Folder2','IMG_20171115_114338','N','N','Enter description here','35.4203277778','-106.0380666670','https://c1.staticflickr.com/5/4580/24698156308_d303176166_t.jpg','https://www.flickr.com/photos/30474783@N06/24698156308/in/album-72157689909068565','2017-11-15 11:43:39','https://c1.staticflickr.com/5/4580/24698156308_d303176166_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4580/24698156308_8485745560_o.jpg'),
+('2141','149','Folder2','IMG_20171115_114754','N','N','Enter description here','35.4203472222','-106.0387388890','https://c1.staticflickr.com/5/4568/24698166858_5a69d0be81_t.jpg','https://www.flickr.com/photos/30474783@N06/24698166858/in/album-72157689909068565','2017-11-15 11:47:55','https://c1.staticflickr.com/5/4568/24698166858_5a69d0be81_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4568/24698166858_3806abbe4c_o.jpg'),
+('2142','149','Folder1','TheRoadAhead','Y','N','From the top, a look down the arroyo','35.4202611111','-106.0381777780','https://c1.staticflickr.com/5/4529/24596572178_de7408dd1f_t.jpg','https://www.flickr.com/photos/139088815@N08/24596572178/in/album-72157689658210665','2017-11-15 11:48:05','https://c1.staticflickr.com/5/4529/24596572178_de7408dd1f_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4529/24596572178_70e1dfef09_o.jpg'),
+('2143','149','Folder2','IMG_20171115_115247','N','N','Enter description here','35.4187000000','-106.0398972220','https://c1.staticflickr.com/5/4533/38513789946_a05d05d2ec_t.jpg','https://www.flickr.com/photos/30474783@N06/38513789946/in/album-72157689909068565','2017-11-15 11:52:48','https://c1.staticflickr.com/5/4533/38513789946_a05d05d2ec_n.jpg','2688','1512','pink','https://c1.staticflickr.com/5/4533/38513789946_b42db85e45_o.jpg'),
+('2144','149','Folder1','SemiCircleOfStone','Y','Y','Crumbling rock wall appears from the sand','35.4179416667','-106.0412611110','https://c1.staticflickr.com/5/4541/26692525539_03f726dc31_t.jpg','https://www.flickr.com/photos/139088815@N08/26692525539/in/album-72157689658210665','2017-11-15 11:55:28','https://c1.staticflickr.com/5/4541/26692525539_03f726dc31_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4541/26692525539_f451fd2182_o.jpg'),
+('2145','149','Folder2','IMG_20171115_121335','N','N','Enter description here','35.4161750000','-106.0486472220','https://c1.staticflickr.com/5/4549/37682069015_f54b3de835_t.jpg','https://www.flickr.com/photos/30474783@N06/37682069015/in/album-72157689909068565','2017-11-15 12:13:36','https://c1.staticflickr.com/5/4549/37682069015_f54b3de835_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4549/37682069015_436b3e42d9_o.jpg'),
+('2146','149','Folder1','ErosionChannels','Y','Y','The cliffs and features seem to change the length of the hike','35.4264861111','-106.0250027780','https://c1.staticflickr.com/5/4530/37753798344_05380e382c_t.jpg','https://www.flickr.com/photos/139088815@N08/37753798344/in/album-72157689658210665','2017-11-15 13:18:26','https://c1.staticflickr.com/5/4530/37753798344_05380e382c_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4530/37753798344_3a8a30925a_o.jpg');
 
 
 
@@ -2284,7 +2310,7 @@ CREATE TABLE `EHIKES` (
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
 
@@ -2301,7 +2327,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
 
@@ -2317,7 +2343,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 
 
@@ -2345,7 +2371,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 
 
