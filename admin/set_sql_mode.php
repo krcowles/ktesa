@@ -1,6 +1,9 @@
 <?php
 $qstr = 'SET sql_mode = "';
-$modes = file('sql_modes.ini',FILE_IGNORE_NEW_LINES);
+$callpath = getcwd();
+$subdir = strrpos($callpath,"/") + 1;
+$baseaddr = substr($callpath,0,$subdir) . 'admin/';
+$modes = file($baseaddr . 'sql_modes.ini',FILE_IGNORE_NEW_LINES);
 foreach ($modes as $setting) {
     if (substr($setting,0,1) == 'Y') {
         $qstr .= substr($setting,2,strlen($setting)-2) . ",";
