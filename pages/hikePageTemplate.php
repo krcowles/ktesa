@@ -30,6 +30,7 @@ if ($ehikes) {
 require "../mysql/get_HIKES_row.php";
 if ($gpxfile == '') {
     $newstyle = false;
+    $gpxPath = '';
 } else {
     $newstyle = true;
     $gpxPath = '../gpx/' . $gpxfile;
@@ -131,7 +132,7 @@ if ($newstyle) {
 	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail"><?php echo $hikeTitle;?></p>
-
+<p id="gpx" style="display:none"><?php echo $gpxPath;?></p>
 <?php
  /* There are two page styles from which to choose: 
   *  if there is either no map OR no chart, the "original" style is presented;
@@ -194,9 +195,14 @@ if (!$newstyle) {
             'Exposure Type: <span class=sumClr>' . $hikeExposure . "</span><br />\n" .
             'Seasons : <span class=sumClr>' . $hikeSeasons . "</span><br />\n" .
             '"Wow" Factor: <span class=sumClr>' . $hikeWow . "</span></p>\n";
-        echo '<p id="addtl"><strong>More!</strong></p>' . "\n";        
+        
+        
+        echo '<p id="addtl"><strong>More!</strong></p>' . "\n";  
         echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . 
                 $fpLnk . '" target="_blank">Full Page Map Link</a></p>' ."\n";
+        echo '<p id="track">GPX Track File:<br />';
+        echo '<a id="view" href="' . $gpxPath . '" target="_blank">View</a>&nbsp;&nbsp;';
+        echo '<a id="dwn" href="' . $gpxPath . '" download>Download</a></p>';
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 "\n" . '<p id="alnks"><a href="' . $hikePhotoLink1 . 
                 '" target="_blank">Photo Album Link</a>' . "\n";
