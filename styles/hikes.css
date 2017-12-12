@@ -77,24 +77,12 @@ table td {
 	margin-top: 4px;
         margin-bottom: 6px;
 }
-#track {
+.track {
     text-align: center;
     margin-top: 2px;
 }
-#view {
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
-    padding: 1px 4px 1px 4px;
-}
-#dwn {
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
-    padding: 1px 4px 1px 4px;
-}
 #albums {
-	margin-top: -6px;
+	margin-top: 0px;
 	text-align: center;
 }
 #alnks {

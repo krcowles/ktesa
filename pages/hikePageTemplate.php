@@ -198,11 +198,12 @@ if (!$newstyle) {
         
         
         echo '<p id="addtl"><strong>More!</strong></p>' . "\n";  
-        echo '<p id="mlnk"><a href="../maps/gpsvMapTemplate.php?map_name=' . 
-                $fpLnk . '" target="_blank">Full Page Map Link</a></p>' ."\n";
-        echo '<p id="track">GPX Track File:<br />';
-        echo '<a id="view" href="' . $gpxPath . '" target="_blank">View</a>&nbsp;&nbsp;';
-        echo '<a id="dwn" href="' . $gpxPath . '" download>Download</a></p>';
+        echo '<p id="mlnk">View <a href="../maps/gpsvMapTemplate.php?map_name=' . 
+                $fpLnk . '" target="_blank">Full Page Map</a><br />';
+        echo '<span class="track">View <a id="view" href="' . 
+            $gpxPath . '" target="_blank">GPX File</a></span><br />';
+        echo '<span class="track">Download <a id="dwn" href="' . $gpxPath . 
+                '" download>GPX File</a></span></p>';
         echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 "\n" . '<p id="alnks"><a href="' . $hikePhotoLink1 . 
                 '" target="_blank">Photo Album Link</a>' . "\n";
