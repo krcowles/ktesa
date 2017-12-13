@@ -104,6 +104,42 @@ $hikeNo = filter_input(INPUT_GET,'hno');
             }
             $id = mysqli_fetch_row($lastid);
             $indxNo = $id[0];
+            /* NOTE: If this newly submitted hike (not previously published) is
+             * a hike that is of type 'At VC', then the index page table for that
+             * Visitor Center needs to be updated with the newly added hike:
+             * This is done via the IPTBLS table.
+             */
+            if (trim($hike['marker']) === 'At VC') {
+                $updtReq = "INSERT INTO IPTBLS (indxNo,compl,tdname,tdpg," .
+                    "tdmiles,tdft,tdexp,tdalb) VALUES ('{$co}','Y'," .
+                    "'{$pg}','{$indxNo}','{$mi}','{$ft}','{$ex}','{$p1}');";
+                $updt = mysqli_query($link,$updtReq);
+                if (!$updt) {
+                    die("publish.php: Failed to insert new table entry for " .
+                        "index page {$co}: " . mysqli_error($link));
+                }
+                mysqli_free_result($updt);
+                # Also need to update the Index Page's collection field to
+                # indicate the new hike (used by javascript for infoWindow)
+                $getColReq = "SELECT collection FROM HIKES WHERE indxNo = {$co};";
+                $getCol = mysqli_query($link,$getColReq);
+                if (!$getCol) {
+                    die("publish.php: Failed to get 'collection' from Index " . 
+                        "Page {$co}: " . mysqli_error($link));
+                }
+                $prev = mysqli_fetch_row($getCol);
+                $oldCol = $prev[0];
+                mysqli_free_result($getCol);
+                $newCol = $oldCol . "." . $indxNo;
+                $colReq = "UPDATE HIKES SET collection = '{$newCol}' WHERE " .
+                    "indxNo = {$co};";
+                $col = mysqli_query($link,$colReq);
+                if (!$col) {
+                    die("publish.php: Failed to update the collection field for " .
+                        "Index Page {$co}: " . mysqli_error($link));
+                }
+                mysqli_free_result($col);
+            }
         } else { # this will be the hike being modified, already on the site
             $indxNo = $pubHike;
         }

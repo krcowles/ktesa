@@ -86,7 +86,7 @@ foreach ($picdat as $pics) {
     $phDescs[$picno] = $pics['desc'];
     $lats[$picno] = $pics['lat'];
     $lngs[$picno] = $pics['lng'];
-    $thumbs[$picno] = pics['thumb'];
+    $thumbs[$picno] = $pics['thumb'];
     $alblinks[$picno] = $pics['alb'];
     $dates[$picno] = $pics['taken'];
     $phPics[$picno] = $pics['nsize'];
