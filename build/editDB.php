@@ -82,6 +82,7 @@ function fetch($var) {
     $clean = is_null($var) ? '' : $var;
     return trim($clean);
 }
+$status = trim($hike['stat']);
 $hikeTitle = trim($hike['pgTitle']);  # this should never be null!if (is_null($hike['locale'])) {
 $hikeLocale = fetch($hike['locale']);
 $hikeMarker = fetch($hike['marker']);  # this also should never be null...
