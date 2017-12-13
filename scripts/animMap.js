@@ -8,6 +8,7 @@ var trackClr4 = '#884998';
 var VC_TYPE = 0; 
 var CH_TYPE = 1;
 var NH_TYPE = 2;
+var XH_TYPE = 3;
 
 
 var map;  // needs to be global!
@@ -424,6 +425,7 @@ var trkKeyNo = 0;
 var trkKeyStr;
 var allTheTracks = [];
 var trackColor;
+var i,j,k;
 
 var trackForm = setInterval(startTracks,40);
 function startTracks() {
@@ -463,140 +465,184 @@ function idClusters() {
 }
 // NO GPX files for Visitor Centers, so start with cluster hikes:
 function drawTracks() {
-	var clusGrp;
-	var clusters = idClusters();
-	var trackFile;
-	var cindx;
-	var handle;
-	var hikeId;
-	var colorId;
-	var cGrpNo;
-	for (i=0; i<allCs.length; i++) {
-		cGrpNo = -1;
-		clusGrp = $(allCs[i]).data('cluster');
-		trackFile = $(allCs[i]).data('track');
-		hikeId = $(allCs[i]).data('indx');
-		if (trackFile !== '') {
-			cindx = trackFile.indexOf('.json');
-			handle = trackFile.substring(0,cindx);
-			trkKeyStr = 'trkName' + trkKeyNo;
-			trkObj[trkKeyStr] = handle;
-			trackFile = '../json/' + trackFile;
-			// find the corresponding object
-			for (k=0; k<clusters.length; k++) {
-				if (clusGrp == clusters[k].id) {
-					colorId = clusters[k].color;
-					cGrpNo = k;
-					switch (colorId) {
-						case 1:
-							trackColor = trackClr1;
-							break;
-						case 2:
-							trackColor = trackClr2;
-							break;
-						case 3: 
-							trackColor = trackClr3;
-							break;
-						case 4:
-							trackColor = trackClr4;
-							break;
-						default:
-							trackColor = '#000000';
-							break;
-					}
-					break;
-				}
-			}
-		}	
-		sglTrack(trackFile,CH_TYPE,trackColor,hikeId);
-		if (cGrpNo !== -1) {
-			clusters[cGrpNo].color++;
-		}
-	}  // end of cluster drawing
-	for (j=0; j<allNs.length; j++) {
-		trackFile = $(allNs[j]).data('track');
-		hikeId = $(allNs[j]).data('indx');
-		if (trackFile !== '') {
-			cindx = trackFile.indexOf('.json');
-			handle = trackFile.substring(0,cindx);
-			trkKeyStr = 'trkName' + trkKeyNo;
-			trkObj[trkKeyStr] = handle;
-			trackFile = '../json/' + trackFile;
-		}
-		sglTrack(trackFile,NH_TYPE,trackClr1,hikeId);
-	}
-	// may need one for allXs ????
+    var clusGrp;
+    var clusters = idClusters();
+    var trackFile;
+    var cindx;
+    var handle;
+    var hikeId;
+    var colorId;
+    var cGrpNo;
+    var coll = '';
+    var lastUsed = trackClr1;
+    for (i=0; i<allCs.length; i++) {
+        cGrpNo = -1;
+        clusGrp = $(allCs[i]).data('cluster');
+        trackFile = $(allCs[i]).data('track');
+        hikeId = $(allCs[i]).data('indx');
+        if (trackFile !== '') {
+            cindx = trackFile.indexOf('.json');
+            handle = trackFile.substring(0,cindx);
+            trkKeyStr = 'trkName' + trkKeyNo;
+            trkObj[trkKeyStr] = handle;
+            trackFile = '../json/' + trackFile;
+            // find the corresponding object
+            for (k=0; k<clusters.length; k++) {
+                if (clusGrp == clusters[k].id) {
+                    colorId = clusters[k].color;
+                    cGrpNo = k;
+                    switch (colorId) {
+                        case 1:
+                            trackColor = trackClr1;
+                            break;
+                        case 2:
+                            trackColor = trackClr2;
+                            break;
+                        case 3: 
+                            trackColor = trackClr3;
+                            break;
+                        case 4:
+                            trackColor = trackClr4;
+                            break;
+                        default:
+                            trackColor = '#000000';
+                            break;
+                    }
+                    break;
+                }
+            }
+        }	
+        sglTrack(trackFile,CH_TYPE,trackColor,hikeId);
+        if (cGrpNo !== -1) {
+                clusters[cGrpNo].color++;
+        }
+    }  // end of cluster drawing
+    for (j=0; j<allNs.length; j++) {
+        trackFile = $(allNs[j]).data('track');
+        hikeId = $(allNs[j]).data('indx');
+        if (trackFile !== '') {
+            cindx = trackFile.indexOf('.json');
+            handle = trackFile.substring(0,cindx);
+            trkKeyStr = 'trkName' + trkKeyNo;
+            trkObj[trkKeyStr] = handle;
+            trackFile = '../json/' + trackFile;
+        }
+        sglTrack(trackFile,NH_TYPE,trackClr1,hikeId);
+    }
+    for (k=0; k<allXs.length; k++) {
+        trackFile = $(allXs[k]).data('track');
+        hikeId = $(allXs[k]).data('indx');
+        if (trackFile !== '') {
+            var thiscoll = $(allXs[k]).data('vc');
+            if (thiscoll === coll) {
+                var clrid = parseInt(lastUsed);
+                clrid++;
+                switch (colorId) {
+                    case 2:
+                        lastUsed = trackClr2;
+                        break;
+                    case 3: 
+                        lastUsed = trackClr3;
+                        break;
+                    case 4:
+                        lastUsed = trackClr4;
+                        break;
+                    default:
+                        lastUsed = '#000000';
+                        break;
+                    }
+            } else {
+                coll = thiscoll;
+                lastUsed = trackClr1;
+            }
+            cindx = trackFile.indexOf('.json');
+            handle = trackFile.substring(0,cindx);
+            trkKeyStr = 'trkName' + trkKeyNo;
+            trkObj[trkKeyStr] = handle;
+            trackFile = '../json/' + trackFile;
+        }
+        sglTrack(trackFile,XH_TYPE,lastUsed,hikeId);
+    }
 }  // END FUNCTION DrawTracks
 function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
-	if (trkUrl === '') {
-		return;
-	}
-	$.ajax({
-		dataType: "json",
-		url: trkUrl,
-		success: function(trackDat) {
-			var newTrack = trackDat;
-			var mdiv;
-			var $trkRow;
-			trkKeyStr = 'trk' + trkKeyNo;	
-			trkObj[trkKeyStr] = new google.maps.Polyline({
-				icons: [{
-					icon: mapTick,
-					offset: '0%',
-					repeat: '15%' 
-				}],
-				path: newTrack,
-				geodesic: true,
-				strokeColor: trkColor,
-				strokeOpacity: 1.0,
-				strokeWeight: 3
-			});
-			// when loaded, all tracks are off (not set)
-		    allTheTracks.push(trkKeyStr);
-			// create the mouseover text:
-			if ( trkType === CH_TYPE ) {
-				
-				mdiv = '<div id="iwCH">';
-				$(allCs).each( function() {
-					if ( $(this).data('indx') == hikeNo ) {
-						$trkRow = $(this).find('td');
-						return;
-					}
-				});
-			} else {
-				mdiv = '<div id="iwNH">';
-				$(allNs).each( function() {
-					var hIndx = $(this).data('indx');
-					if ( $(this).data('indx') == hikeNo ) {
-						$trkRow = $(this).find('td');
-						return;
-					}
-				});
-			}
-			var hName = $trkRow.eq(1).text();
-			var hLgth = $trkRow.eq(4).text();
-			var hElev = $trkRow.eq(5).text();
-			var hDiff = $trkRow.eq(6).text();
-			var iwContent = mdiv + hName + '<br />Length: ' +
-				hLgth + '<br />Elev Chg: ' + hElev + '<br />Difficulty: ' + hDiff + '</div>'; 
-			var iw = new google.maps.InfoWindow({
-				content: iwContent
-			});
-			trkObj[trkKeyStr].addListener('mouseover', function(mo) {
-				var trkPtr = mo.latLng;
-				iw.setPosition(trkPtr);
-				iw.open(map);
-			});
-			trkObj[trkKeyStr].addListener('mouseout', function() {
-				iw.close();
-			});
-			trkKeyNo++;
-		},
-		error: function() {
-			msg = '<p>Did not succeed in getting JSON data: ' + trkUrl + '</p>';
-			$('#dbug').append(msg);
-		}
-	});
+    if (trkUrl === '') {
+            return;
+    }
+    $.ajax({
+        dataType: "json",
+        url: trkUrl,
+        success: function(trackDat) {
+            var newTrack = trackDat;
+            var mdiv;
+            var $trkRow;
+            trkKeyStr = 'trk' + trkKeyNo;	
+            trkObj[trkKeyStr] = new google.maps.Polyline({
+                icons: [{
+                        icon: mapTick,
+                        offset: '0%',
+                        repeat: '15%' 
+                }],
+                path: newTrack,
+                geodesic: true,
+                strokeColor: trkColor,
+                strokeOpacity: 1.0,
+                strokeWeight: 3
+            });
+            // when loaded, all tracks are off (not set)
+            allTheTracks.push(trkKeyStr);
+            // create the mouseover text:
+            if ( trkType === CH_TYPE ) {
+                mdiv = '<div id="iwCH">';
+                $(allCs).each( function() {
+                    if ( $(this).data('indx') == hikeNo ) {
+                        $trkRow = $(this).find('td');
+                        return;
+                    }
+                });
+            } else if (trkType === XH_TYPE) {
+                mdiv = '<div id="iwXH">';
+                $(allXs).each( function() {
+                    if ( $(this).data('indx') == hikeNo ) {
+                        $trkRow = $(this).find('td');
+                        return;
+                    }
+                });
+                
+            } else {
+                // must be NH_TYPE: verify types called in drawTracks()
+                mdiv = '<div id="iwNH">';
+                $(allNs).each( function() {
+                    var hIndx = $(this).data('indx');
+                    if ( $(this).data('indx') == hikeNo ) {
+                        $trkRow = $(this).find('td');
+                        return;
+                    }
+                });
+            }
+            var hName = $trkRow.eq(1).text();
+            var hLgth = $trkRow.eq(4).text();
+            var hElev = $trkRow.eq(5).text();
+            var hDiff = $trkRow.eq(6).text();
+            var iwContent = mdiv + hName + '<br />Length: ' +
+                hLgth + '<br />Elev Chg: ' + hElev + '<br />Difficulty: ' + hDiff + '</div>'; 
+            var iw = new google.maps.InfoWindow({
+                content: iwContent
+            });
+            trkObj[trkKeyStr].addListener('mouseover', function(mo) {
+                var trkPtr = mo.latLng;
+                iw.setPosition(trkPtr);
+                iw.open(map);
+            });
+            trkObj[trkKeyStr].addListener('mouseout', function() {
+                iw.close();
+            });
+            trkKeyNo++;
+        },
+        error: function() {
+            msg = '<p>Did not succeed in getting JSON data: ' + trkUrl + '</p>';
+            $('#dbug').append(msg);
+        }
+    });
 } // end of function sglTrack
 // /////////////////////// END OF HIKE TRACK DRAWING /////////////////////
 
