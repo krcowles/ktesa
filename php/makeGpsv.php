@@ -195,7 +195,7 @@ if ($noOfWaypts > 0) {
 $plnks = [];  # array of photo links
 $defIconColor = 'red';
 $mcnt = 0;
-$picReq = "SELECT folder,title,mpg,`desc`,lat,lng,thumb,alblnk,iclr FROM {$ttable} " .
+$picReq = "SELECT folder,title,mpg,`desc`,lat,lng,alblnk,mid,iclr FROM {$ttable} " .
         "WHERE indxNo = {$hikeIndexNo};";
 $pic = mysqli_query($link,$picReq);
 if (!$pic) {
@@ -218,7 +218,7 @@ while( ($photos = mysqli_fetch_assoc($pic)) ) {
                 $photos['lng'] . ",name:'" . $procDesc . 
                 "',desc:'',color:'" . $photos['iclr'] . "',icon:'" . 
                 $mapicon . "',url:'" . $photos['alblnk'] . "',thumbnail:'" . 
-                $photos['thumb'] . "',folder:'" . $photos['folder'] . "'});";
+                $photos['mid'] . "',folder:'" . $photos['folder'] . "'});";
         }
         array_push($plnks,$plnk);
         $mcnt++;
