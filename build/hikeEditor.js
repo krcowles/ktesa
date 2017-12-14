@@ -49,7 +49,8 @@ $('a').on('click', function(e) {
                         'the main site';
                 }
                 alert(umsg);
-                window.open(useEditor,"_blank");
+				window.open(useEditor);
+				window.close();
             }
         });
     } else { // this hike is being pulled from published HIKES
@@ -58,12 +59,14 @@ $('a').on('click', function(e) {
         if ( !$containerRow.hasClass('indxd') ) {
             var hikeToUse = $containerRow.data('indx');
             var callPhp = 'xfrPub.php?hno=' + hikeToUse + '&usr=' + uid;
-            window.open(callPhp, target="_blank");
+			window.open(callPhp);
+			window.close();
         } else {
             //currently, only site master can edit index pages
             var hikeToUse = $containerRow.data('indx');
             var callPhp = 'editIndx.php?hno=' + hikeToUse + '&tbl=old&usr=mstr';
-            window.open(callPhp, target="_blank");
+			window.open(callPhp);
+			window.close();
         }
     }
 });
