@@ -67,7 +67,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
         $tp = mysqli_real_escape_string($link,$hike['tips']);
         $in = mysqli_real_escape_string($link,$hike['info']);
         if ($status === 'pub') { # don't add this hike, update it
-            $actionreq = "UPDATE HIKES SET pgTitle = '{$pg}',usrid = '{$ud}'," .
+            $actionreq = "UPDATE IGNORE HIKES SET pgTitle = '{$pg}',usrid = '{$ud}'," .
                 "locale = '{$lo}',marker = '{$mr}',collection = '{$co}'," .
                 "cgroup = '{$cg}',cname = '{$cn}',logistics = '{$lg}'," .
                 "miles = '{$mi}',feet = '{$ft}',diff = '{$df}',fac = '{$fa}'," .
@@ -80,7 +80,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
             die('<p style="color:brown;">This hike is not ready for publication! ' .
                 'The status field is ' . $status . '</p>');
         } elseif ($status === 'sub') {
-            $actionreq = "INSERT INTO HIKES (pgTitle,usrid,locale,marker," .
+            $actionreq = "INSERT IGNORE INTO HIKES (pgTitle,usrid,locale,marker," .
                 "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
                 "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
                 "tips,info) VALUES ('{$pg}','{$ud}','{$lo}','{$mr}','{$co}'," .

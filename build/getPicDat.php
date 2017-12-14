@@ -145,7 +145,7 @@ for ($i=0; $i<$supplied; $i++) {
                     }
                     $descPos = strpos($modelInfo, '"description":"');
                     if ($descPos === false || $descPos > $modelEnd) {
-                        $descriptions[$pcnt] = 'Enter description here';
+                        $descriptions[$pcnt] = NULL;
                     } else {
                         $descPos += 15;
                         $descEnd = strpos($modelInfo, '"', $descPos);
@@ -187,32 +187,30 @@ for ($i=0; $i<$supplied; $i++) {
         }
     }  # end of non-empty curlid
 }  # end of for each album url input box
+#
 # sort the arrays based on timestamp:
 include "timeSort.php";
 if ($opt === 'validates') {
     foreach ($picdat as $ph) {  # each item is an array of data
-        $foldr = mysqli_real_escape_string($link,$ph['folder']);
-        $ttl = mysqli_real_escape_string($link,$ph['pic']);
-        $des = mysqli_real_escape_string($link,$ph['desc']);
-        $lt = mysqli_real_escape_string($link,$ph['lat']);
-        $ln = mysqli_real_escape_string($link,$ph['lng']);
-        $th = mysqli_real_escape_string($link,$ph['thumb']);
-        $al = mysqli_real_escape_string($link,$ph['alb']);
-        $dt = mysqli_real_escape_string($link,$ph['taken']);
-        $sz = mysqli_real_escape_string($link,$ph['nsize']);
-        $ht = mysqli_real_escape_string($link,$ph['pHt']);
-        $wd = mysqli_real_escape_string($link,$ph['pWd']);
-        $ic = mysqli_real_escape_string($link,$icon_clr);
-        $og = mysqli_real_escape_string($link,$ph['org']);
-        $photoQuery = "INSERT INTO ETSV ( indxNo,folder,title," .
-            "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid," .
-            "imgHt,imgWd,iclr,org ) VALUES ( '{$hikeNo}','{$foldr}'," .
-            "'{$ttl}','N','N','{$des}','{$lt}','{$ln}','{$th}'," .
-            "'{$al}','{$dt}','{$sz}','{$ht}','{$wd}','{$ic}','{$og}' );";
-        $photoResults = mysqli_query($link,$photoQuery);
-        if (!$photoResults) {
-            die ("getPicDat.php: Could not insert data into ETSV: " . mysqli_error($link));
+#       Add new record
+        $newRow = insertDbRow($link,'ETSV',__File__,__LINE__); 
+#
+#       Update fields one by one so that NULLs can be checked
+        updateDbRow($link,'ETSV',$newRow,'indxNo','picIdx',$hikeNo,__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'folder','picIdx',$ph['folder'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'title','picIdx',$ph['pic'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'hpg','picIdx','N',__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'mpg','picIdx','N',__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'`desc`','picIdx',$ph['desc'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'lat','picIdx',$ph['lat'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'lng','picIdx',$ph['lng'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'thumb','picIdx',$ph['thumb'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'alblnk','picIdx',$ph['alb'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'date','picIdx',$ph['taken'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'mid','picIdx',$ph['nsize'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'imgHt','picIdx',$ph['pHt'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'imgWd','picIdx',$ph['pWd'],__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'iclr','picIdx',$icon_clr,__File__,__LINE__);
+        updateDbRow($link,'ETSV',$newRow,'org','picIdx',$ph['org'],__File__,__LINE__);
         }
-    }
-    mysqli_free_result($photoResult);
 }

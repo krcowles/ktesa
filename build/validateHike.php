@@ -17,18 +17,16 @@ $status = filter_input(INPUT_POST,'state');
  * establish these parameters in the database...
  */
 if ($status === 'new') {
+#   Add new record
+#    $newRow = insertDbRow($link,'EHIKES',__File__,__LINE__); 
     $newHike = mysqli_real_escape_string($link,$hike);
-    $newPgReq = "INSERT INTO EHIKES (pgTitle,usrid,stat) VALUES ('{$newHike}'," .
-        "'{$uid}','new');";
-    $newPg = mysqli_query($link,$newPgReq);
-    if (!$newPg) {
-        if (Ktesa_Dbug) {
-            dbug_print('validateHike.php: Could not save new Pg data: ' . 
-                    mysqli_error($link));
-        } else {
-            user_error_msg($rel_addr,5,0);
-        }
-    }
+    $query = "INSERT INTO EHIKES (pgTitle,usrid) VALUES ('{$newHike}','{$uid}');";
+    insertDbRowMulti($link,$query,__File__,__LINE__); 
+#
+#   Update fields one by one so that NULLs can be checked
+    $newRow = getDbRowNum($link,'EHIKES',__File__,__LINE__); 
+    updateDbRow($link,'EHIKES',$newRow,'stat','indxNo','new',__File__,__LINE__);
+#
     $newid = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1";
     $getid = mysqli_query($link,$newid);
     if (!$getid) {
@@ -218,7 +216,7 @@ if (substr($rawtips,0,10) !== '[OPTIONAL]') {
 $hikeDetails = filter_input(INPUT_POST,'hiketxt');
 $info = mysqli_real_escape_string($link,$hikeDetails);
 # Now the updates (if any) can be stored in the EHIKES database
-$ereq = "UPDATE EHIKES SET pgTitle = '{$hname}',stat = '{$status}'," .
+$ereq = "UPDATE IGNORE EHIKES SET pgTitle = '{$hname}',stat = '{$status}'," .
         "locale = '{$loc}',logistics = '{$logistics}',marker = '{$mrkr}'," .
         "collection = '{$coll}',cgroup = '{$cg}',cname = '{$cn}'," .
         "diff = '{$diff}',expo = '{$expo}',miles = '{$dist}',feet = '{$elev}'," .
