@@ -441,5 +441,6 @@ if (infval !== 'Enter the desc') {
     stylit($('#usrinfo'));
 }
 
+$('input[name=hpgTitle]').focus();
 
 }); // end of page is loaded...
