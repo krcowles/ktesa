@@ -10,6 +10,7 @@ if (hike == 0) {
     alert("You must at minimum create a name in order to proceed");
     $('input[name=hpgTitle]').css('background-color','BlanchedAlmond');
     $('input[name=hpgTitle]').css('border-color','Red');
+    $('input[name=hpgTitle]').focus();
     function checkName(name) {
         for (var i=0; i<hnames.length; i++) {
             if (hnames[i] == name) {
@@ -440,7 +441,5 @@ var infval = $('#usrinfo').val().substring(0,14);
 if (infval !== 'Enter the desc') {
     stylit($('#usrinfo'));
 }
-
-$('input[name=hpgTitle]').focus();
 
 }); // end of page is loaded...
