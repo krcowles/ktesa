@@ -2342,8 +2342,6 @@ CREATE TABLE `EGPSDAT` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
-INSERT INTO EGPSDAT VALUES
-('1','1','A','GPX File:','../gpx/Dome_Wilderness.GPX','The Track');
 
 
 
@@ -2357,15 +2355,15 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
-('1','1','Book:','60 Hikes Within 60 Miles: Albuquerque','Stephen Ausherman'),
-('2','1','Book:','50 Hikes in Northern New Mexico','Kai Huschke'),
-('3','1','Website:','http://www.summitpost.org/dome-wilderness/510037','Summit Post'),
-('4','1','App:','https://www.alltrails.com/parks/us/new-mexico/dome-wilderness','AllTrails'),
-('5','1','Website:','https://en.wikipedia.org/wiki/Dome_Wilderness','Wikipedia');
+('6','1','Book:','60 Hikes Within 60 Miles: Albuquerque','Stephen Ausherman'),
+('7','1','Book:','50 Hikes in Northern New Mexico','Kai Huschke'),
+('8','1','Website:','http://www.summitpost.org/dome-wilderness/510037','Summit Post'),
+('9','1','App:','https://www.alltrails.com/parks/us/new-mexico/dome-wilderness','AllTrails'),
+('10','1','Website:','https://en.wikipedia.org/wiki/Dome_Wilderness','Wikipedia');
 
 
 
@@ -2395,18 +2393,18 @@ CREATE TABLE `ETSV` (
 
 
 INSERT INTO ETSV VALUES
-('1','1','Folder1','CochitiGolfCourse','Y','N','A glimpse of Cerro Picacho and St Peters Dome','35.6677027778','-106.3523111110','https://c1.staticflickr.com/5/4575/38842046962_bdf9449482_t.jpg','https://www.flickr.com/photos/139088815@N08/38842046962/in/album-72157688101713282','2017-12-05 10:00:35','https://c1.staticflickr.com/5/4575/38842046962_bdf9449482_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4575/38842046962_a512290185_o.jpg'),
+('1','1','Folder1','CochitiGolfCourse','N','N','A glimpse of Cerro Picacho and St Peters Dome','35.6677027778','-106.3523111110','https://c1.staticflickr.com/5/4575/38842046962_bdf9449482_t.jpg','https://www.flickr.com/photos/139088815@N08/38842046962/in/album-72157688101713282','2017-12-05 10:00:35','https://c1.staticflickr.com/5/4575/38842046962_bdf9449482_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4575/38842046962_a512290185_o.jpg'),
 ('2','1','Folder1','BetterPartOfFR289','N','N','The road in is filled with wonderful vistas','35.6833805556','-106.3657138890','https://c1.staticflickr.com/5/4566/38872355261_a762b23e90_t.jpg','https://www.flickr.com/photos/139088815@N08/38872355261/in/album-72157688101713282','2017-12-05 10:15:20','https://c1.staticflickr.com/5/4566/38872355261_a762b23e90_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4566/38872355261_22b9226753_o.jpg'),
 ('3','1','Folder1','BandelierFormations','N','N','Scenery reminiscent of Bandelier highlights FR289','35.6953500000','-106.3663777780','https://c1.staticflickr.com/5/4561/38872408261_79890ede09_t.jpg','https://www.flickr.com/photos/139088815@N08/38872408261/in/album-72157688101713282','2017-12-05 10:21:02','https://c1.staticflickr.com/5/4561/38872408261_79890ede09_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4561/38872408261_bcd5540128_o.jpg'),
-('4','1','Folder1','ApproachingWilderness','Y','N','FR289 leads into the winding canyon','35.6988611111','-106.3685083330','https://c1.staticflickr.com/5/4543/27095884419_900a9af92e_t.jpg','https://www.flickr.com/photos/139088815@N08/27095884419/in/album-72157688101713282','2017-12-05 10:23:08','https://c1.staticflickr.com/5/4543/27095884419_900a9af92e_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4543/27095884419_ae34a6be7a_o.jpg'),
+('4','1','Folder1','ApproachingWilderness','N','N','FR289 leads into the winding canyon','35.6988611111','-106.3685083330','https://c1.staticflickr.com/5/4543/27095884419_900a9af92e_t.jpg','https://www.flickr.com/photos/139088815@N08/27095884419/in/album-72157688101713282','2017-12-05 10:23:08','https://c1.staticflickr.com/5/4543/27095884419_900a9af92e_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4543/27095884419_ae34a6be7a_o.jpg'),
 ('5','1','Folder3','IMG_20171205_102317','N','N','','35.6988138889','-106.3684694440','https://c1.staticflickr.com/5/4553/23998405407_96ea5f38a9_t.jpg','https://www.flickr.com/photos/30474783@N06/23998405407/in/album-72157661311480577','2017-12-05 10:23:20','https://c1.staticflickr.com/5/4553/23998405407_96ea5f38a9_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4553/23998405407_8ba1a5c8cd_o.jpg'),
 ('6','1','Folder2','DSC00284','N','N','                               ','0.0000000000','0.0000000000','https://c1.staticflickr.com/5/4540/24009553097_72baab324b_t.jpg','https://www.flickr.com/photos/159672980@N03/24009553097/in/album-72157667151848629','2017-12-05 10:23:54','https://c1.staticflickr.com/5/4540/24009553097_72baab324b_n.jpg','3888','5184','pink','https://c1.staticflickr.com/5/4540/24009553097_bbc152dfeb_o.jpg'),
-('7','1','Folder1','TentRockView','Y','N','More reminders of volcanic tuff','35.7017138889','-106.3721861110','https://c1.staticflickr.com/5/4526/25001173128_867303b8c6_t.jpg','https://www.flickr.com/photos/139088815@N08/25001173128/in/album-72157688101713282','2017-12-05 10:26:38','https://c1.staticflickr.com/5/4526/25001173128_867303b8c6_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4526/25001173128_6242fba71d_o.jpg'),
+('7','1','Folder1','TentRockView','N','N','More reminders of volcanic tuff','35.7017138889','-106.3721861110','https://c1.staticflickr.com/5/4526/25001173128_867303b8c6_t.jpg','https://www.flickr.com/photos/139088815@N08/25001173128/in/album-72157688101713282','2017-12-05 10:26:38','https://c1.staticflickr.com/5/4526/25001173128_867303b8c6_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4526/25001173128_6242fba71d_o.jpg'),
 ('8','1','Folder3','IMG_20171205_102644','N','N','','35.7015416667','-106.3721388890','https://c1.staticflickr.com/5/4550/23998408707_3d1afcb946_t.jpg','https://www.flickr.com/photos/30474783@N06/23998408707/in/album-72157661311480577','2017-12-05 10:26:46','https://c1.staticflickr.com/5/4550/23998408707_3d1afcb946_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4550/23998408707_fe1433fe7f_o.jpg'),
 ('9','1','Folder2','DSC00287','N','N','                               ','35.7016513889','-106.3721650000','https://c1.staticflickr.com/5/4534/27098224949_db49b65a51_t.jpg','https://www.flickr.com/photos/159672980@N03/27098224949/in/album-72157667151848629','2017-12-05 10:26:57','https://c1.staticflickr.com/5/4534/27098224949_db49b65a51_n.jpg','3888','5184','pink','https://c1.staticflickr.com/5/4534/27098224949_d689d09e3b_o.jpg'),
 ('10','1','Folder2','DSC00289','N','N','                               ','35.7048813889','-106.3776780560','https://c1.staticflickr.com/5/4578/25003533868_1d4b0cbf2f_t.jpg','https://www.flickr.com/photos/159672980@N03/25003533868/in/album-72157667151848629','2017-12-05 10:30:41','https://c1.staticflickr.com/5/4578/25003533868_1d4b0cbf2f_n.jpg','3888','5184','pink','https://c1.staticflickr.com/5/4578/25003533868_d7c09703ec_o.jpg'),
 ('11','1','Folder3','IMG_20171205_103230','N','N','','35.7063944444','-106.3794722220','https://c1.staticflickr.com/5/4552/23998426087_c36acf16cc_t.jpg','https://www.flickr.com/photos/30474783@N06/23998426087/in/album-72157661311480577','2017-12-05 10:32:32','https://c1.staticflickr.com/5/4552/23998426087_c36acf16cc_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4552/23998426087_9ae95acf6d_o.jpg'),
-('12','1','Folder1','RoadsideBoulderField','Y','N','FR289 holds its own surprises','35.7063444444','-106.3793944440','https://c1.staticflickr.com/5/4562/27095693609_4e790a3f71_t.jpg','https://www.flickr.com/photos/139088815@N08/27095693609/in/album-72157688101713282','2017-12-05 10:33:06','https://c1.staticflickr.com/5/4562/27095693609_4e790a3f71_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4562/27095693609_ef317907e1_o.jpg'),
+('12','1','Folder1','RoadsideBoulderField','N','N','FR289 holds its own surprises','35.7063444444','-106.3793944440','https://c1.staticflickr.com/5/4562/27095693609_4e790a3f71_t.jpg','https://www.flickr.com/photos/139088815@N08/27095693609/in/album-72157688101713282','2017-12-05 10:33:06','https://c1.staticflickr.com/5/4562/27095693609_4e790a3f71_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4562/27095693609_ef317907e1_o.jpg'),
 ('13','1','Folder2','DSC00292','N','N','                               ','35.7064513889','-106.3794680560','https://c1.staticflickr.com/5/4564/25003505558_19f4ed422c_t.jpg','https://www.flickr.com/photos/159672980@N03/25003505558/in/album-72157667151848629','2017-12-05 10:33:28','https://c1.staticflickr.com/5/4564/25003505558_19f4ed422c_n.jpg','3888','5184','pink','https://c1.staticflickr.com/5/4564/25003505558_de8c2ca4a6_o.jpg'),
 ('14','1','Folder3','IMG_20171205_103901','N','N','','35.7083472222','-106.3846944440','https://c1.staticflickr.com/5/4563/37976828265_6ef331e807_t.jpg','https://www.flickr.com/photos/30474783@N06/37976828265/in/album-72157661311480577','2017-12-05 10:39:05','https://c1.staticflickr.com/5/4563/37976828265_6ef331e807_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4563/37976828265_07cae7130e_o.jpg'),
 ('15','1','Folder1','ViewOfSanchezCanyon','Y','N','Color rock walls highlight the canyon','35.7081750000','-106.3846444440','https://c1.staticflickr.com/5/4559/38841985572_2dbc6a53f9_t.jpg','https://www.flickr.com/photos/139088815@N08/38841985572/in/album-72157688101713282','2017-12-05 10:39:43','https://c1.staticflickr.com/5/4559/38841985572_2dbc6a53f9_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4559/38841985572_a731f3dc85_o.jpg'),
