@@ -298,8 +298,7 @@ INSERT INTO GPSDAT VALUES
 ('99','147','A','GPX File:','../gpx/Juan_Tabo_Cabin.gpx','The Track'),
 ('100','148','A','GPX File:','../gpx/Stable_Edited.GPX','The Track'),
 ('101','149','A','GPS File:','../gpx/Canada_de_la_Cueva.GPX','The Track'),
-('102','150','A','GPX File:','../gpx/Bosque-River-Loop.GPX','The Track'),
-('103','125','A','GPX:','../gpx/BlackCanyonComposite.gpx','Actual Hike by Segment in Map');
+('102','150','A','GPX File:','../gpx/Bosque-River-Loop.GPX','The Track');
 
 
 
@@ -958,7 +957,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=2163 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2164 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -2230,13 +2229,13 @@ INSERT INTO TSV VALUES
 ('2153','125','Folder1','IMG_20170130_150733','Y','Y','Jack unconcerned about campground closure','35.7276638889','-105.8392027778','https://c1.staticflickr.com/5/4260/35156621222_a42c57fcae_n.jpg','https://www.flickr.com/photos/30474783@N06/35156621222/in/album-72157664317884224','2017-01-30 15:07:34','https://c1.staticflickr.com/5/4260/35156621222_a42c57fcae_n.jpg','320','179','pink',''),
 ('2154','125','Folder1','WP_20160329_008','Y','Y','Jack and Marta inspect Stonehenge','35.7154244444','-105.8408175000','https://c1.staticflickr.com/2/1711/26107333306_993ef9b7eb_n.jpg','https://www.flickr.com/photos/30474783@N06/26107333306/in/album-72157664317884224','2016-03-29 16:23:56','https://c1.staticflickr.com/2/1711/26107333306_993ef9b7eb_n.jpg','179','320','pink',''),
 ('2155','125','Folder1','IMG_4694_20170613_Ken','Y','Y','Chopper pad with a view','35.7137361111','-105.8415527778','https://c1.staticflickr.com/5/4217/35283372946_bd8e0d94df_n.jpg','https://www.flickr.com/photos/30474783@N06/35283372946/in/album-72157664317884224','2017-06-13 11:36:39','https://c1.staticflickr.com/5/4217/35283372946_bd8e0d94df_n.jpg','240','320','pink',''),
-('2156','125','Folder1','IMG_20170906_113656','Y','Y','Steep trip down','35.7177777778','-105.8316722222','https://c1.staticflickr.com/5/4422/37070355735_a4856e7450_t.jpg','https://www.flickr.com/photos/30474783@N06/37070355735/in/album-72157688683363505','2017-09-06 11:36:58','https://c1.staticflickr.com/5/4422/37070355735_a4856e7450_n.jpg','2688','1512','red','https://c1.staticflickr.com/5/4422/37070355735_fbb781ccb8_o.jpg'),
 ('2157','125','Folder1','BurnArea','N','N','A mix of healthy trees and burned areas','35.7175222222','-105.8302388889','https://c1.staticflickr.com/5/4379/37004166312_1728e6d4e9_t.jpg','https://www.flickr.com/photos/139088815@N08/37004166312/in/album-72157686458615833','2017-09-06 10:38:45','https://c1.staticflickr.com/5/4379/37004166312_1728e6d4e9_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4379/37004166312_7efc21da50_o.jpg'),
 ('2158','125','Folder1','ShortButVerySteep','Y','Y','Looking down to the saddle where this fork begins','35.7179555556','-105.8264305556','https://c1.staticflickr.com/5/4396/36986324876_0fd697706d_t.jpg','https://www.flickr.com/photos/139088815@N08/36986324876/in/album-72157686458615833','2017-09-06 10:49:21','https://c1.staticflickr.com/5/4396/36986324876_0fd697706d_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4396/36986324876_99db0df67f_o.jpg'),
 ('2159','125','Folder1','PineyView','Y','Y','The terrain varies on top','35.7166166667','-105.8233416667','https://c1.staticflickr.com/5/4368/36778414020_82dfdf190b_t.jpg','https://www.flickr.com/photos/139088815@N08/36778414020/in/album-72157686458615833','2017-09-06 11:08:53','https://c1.staticflickr.com/5/4368/36778414020_82dfdf190b_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4368/36778414020_745f69e77a_o.jpg'),
 ('2160','125','Folder1','SurroundingTerrain','N','N','Once on top, the view expands','35.7166666667','-105.8227222222','https://c1.staticflickr.com/5/4378/36339317224_cb96cc48df_t.jpg','https://www.flickr.com/photos/139088815@N08/36339317224/in/album-72157686458615833','2017-09-06 11:12:03','https://c1.staticflickr.com/5/4378/36339317224_cb96cc48df_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4378/36339317224_f524fdb269_o.jpg'),
 ('2161','125','Folder1','SFReservoir','Y','Y','In the valley, the Santa Fe Reservoir','35.7165361111','-105.8224111111','https://c1.staticflickr.com/5/4336/36986317776_a0197aaf43_t.jpg','https://www.flickr.com/photos/139088815@N08/36986317776/in/album-72157686458615833','2017-09-06 11:14:32','https://c1.staticflickr.com/5/4336/36986317776_a0197aaf43_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4336/36986317776_8cecaa33e1_o.jpg'),
-('2162','125','Folder1','Caution','Y','Y','The trail is much steeper than it appears here!','35.7178694444','-105.8310388889','https://c1.staticflickr.com/5/4427/37033886281_b996110329_t.jpg','https://www.flickr.com/photos/139088815@N08/37033886281/in/album-72157686458615833','2017-09-06 11:33:47','https://c1.staticflickr.com/5/4427/37033886281_b996110329_n.jpg','3264','2448','red','https://c1.staticflickr.com/5/4427/37033886281_45d37c9fbc_o.jpg');
+('2162','125','Folder1','Caution','Y','Y','The trail is much steeper than it appears here!','35.7178694444','-105.8310388889','https://c1.staticflickr.com/5/4427/37033886281_b996110329_t.jpg','https://www.flickr.com/photos/139088815@N08/37033886281/in/album-72157686458615833','2017-09-06 11:33:47','https://c1.staticflickr.com/5/4427/37033886281_b996110329_n.jpg','3264','2448','red','https://c1.staticflickr.com/5/4427/37033886281_45d37c9fbc_o.jpg'),
+('2163','125','Folder1','IMG_20170906_113656','Y','Y','Steep trip down','35.7177777778','-105.8316722222','https://c1.staticflickr.com/5/4422/37070355735_a4856e7450_t.jpg','https://www.flickr.com/photos/30474783@N06/37070355735/in/album-72157688683363505','2017-09-06 11:36:58','https://c1.staticflickr.com/5/4422/37070355735_a4856e7450_n.jpg','2688','1512','red','https://c1.staticflickr.com/5/4422/37070355735_fbb781ccb8_o.jpg');
 
 
 
