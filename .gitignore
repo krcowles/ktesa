@@ -1,2 +1,6 @@
 /nbproject/private/
 /php/mysql_error_page.php/nbproject/private/
+composer.json
+composer.lock
+composer.phar
+vendor/
