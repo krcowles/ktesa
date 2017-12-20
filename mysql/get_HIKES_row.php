@@ -1,13 +1,13 @@
 <?php
 require_once "../mysql/setenv.php";
 $req = "SELECT * FROM {$htable} WHERE indxNo = " . $hikeIndexNo;
-$result = mysqli_query($link,$req);
+$result = mysqli_query($link, $req);
 if (!$result) {
     if (Ktesa_Dbug) {
-        dbug_print('get_HIKES_row: Failed to execute SELECT in get_HIKES_row: ' . 
+        dbug_print('get_HIKES_row: Failed to execute SELECT in get_HIKES_row: ' .
                 mysqli_error($link));
     } else {
-        user_error_msg($rel_addr,1,0);
+        user_error_msg($rel_addr, 1, 0);
     }
 }
 $row = mysqli_fetch_assoc($result);
@@ -37,7 +37,7 @@ $hikePhotoLink1 = $row['purl1'];
 $hikePhotoLink2 = $row['purl2'];
 $hikeDirections = $row['dirs'];
 $hikeTips = $row['tips'];
-$hikeTips = preg_replace("/\s/"," ",$hikeTips);
+$hikeTips = preg_replace("/\s/", " ", $hikeTips);
 $hikeInfo = $row['info'];
-$hikeInfo = preg_replace("/\s/"," ",$hikeInfo);
+$hikeInfo = preg_replace("/\s/", " ", $hikeInfo);
 mysqli_free_result($result);

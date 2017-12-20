@@ -33,13 +33,13 @@ if ($age === 'new') {
     $status = '[]';
     $enos = '[]';
 } else {
-    die ("Unrecognized age parameter: " . $age);
+    die("Unrecognized age parameter: " . $age);
 }
 $query .= ';';
 # Now execute the query:
-$tblquery = mysqli_query($link,$query);
+$tblquery = mysqli_query($link, $query);
 if (!$tblquery) {
-    die("TblConstructor.php: Failed to select data from table: " . 
+    die("TblConstructor.php: Failed to select data from table: " .
         mysqli_error($link));
 }
 if ($show !== 'all') {
@@ -99,7 +99,7 @@ if (mysqli_num_rows($tblquery) === 0) {
         $hikeLat = $row['lat'];
         $hikeLon = $row['lng'];
         $hikeTrk = $row['trk'];
-        $hikeHiddenDat = 'data-indx="' . $indx . '" data-lat="' . $hikeLat . 
+        $hikeHiddenDat = 'data-indx="' . $indx . '" data-lat="' . $hikeLat .
             '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '"';
         $hikeWow = $row['wow'];
         $hikeLgth = $row['miles'];
@@ -132,7 +132,7 @@ if (mysqli_num_rows($tblquery) === 0) {
             echo '<tr class="clustered" data-cluster="' . $row['cgroup'] . '" ' .
                 $hikeHiddenDat . ' data-tool="' . $row['cname'] . '">';
         } elseif ($hikeMarker == 'At VC') {
-            echo '<tr class="vchike"  data-vc="' . $row['collection'] . '" '. 
+            echo '<tr class="vchike"  data-vc="' . $row['collection'] . '" '.
                 $hikeHiddenDat . '>';
         } else {  // "Normal"
             echo '<tr class="normal" ' . $hikeHiddenDat . '>';
@@ -161,9 +161,9 @@ if (mysqli_num_rows($tblquery) === 0) {
     }
     mysqli_free_result($tblquery);
     if ($age === 'new') { # forming javascript array data
-        $status = substr($status,0,strlen($status)-1);
+        $status = substr($status, 0, strlen($status)-1);
         $status .= ']';
-        $enos = substr($enos,0,strlen($enos)-1);
+        $enos = substr($enos, 0, strlen($enos)-1);
         $enos .= ']';
     }
 }

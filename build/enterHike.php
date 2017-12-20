@@ -1,7 +1,7 @@
 <?php
 require_once '../mysql/setenv.php';
-$hip = filter_input(INPUT_GET,'hno');  # hike-in-process
-$usr = filter_input(INPUT_GET,'usr');
+$hip = filter_input(INPUT_GET, 'hno');  # hike-in-process
+$usr = filter_input(INPUT_GET, 'usr');
 if ($usr === 'mstr') {
     $disp = 'block';
 } else {
@@ -45,13 +45,13 @@ require 'currentTitles.php'; # list of existing hike page titles
 
 <?php
 $lastid = "SELECT indxNo FROM HIKES ORDER BY indxNo DESC LIMIT 1";
-$getid = mysqli_query($link,$lastid);
+$getid = mysqli_query($link, $lastid);
 if (!$getid) {
     if (Ktesa_Dbug) {
-        dbug_print('enterHike.php: Could not retrieve highest indxNo: ' . 
+        dbug_print('enterHike.php: Could not retrieve highest indxNo: ' .
                 mysqli_error($link));
     } else {
-        user_error_msg($rel_addr,6,0);
+        user_error_msg($rel_addr, 6, 0);
     }
 }
 $lastindx = mysqli_fetch_row($getid);
@@ -65,13 +65,13 @@ $clnos = [];
 for ($i=1; $i<=$tblcnt; $i++) {
     $hquery = "SELECT indxNo,pgTitle,marker,collection,cgroup,cname "
             ."FROM HIKES WHERE indxNo = '{$i}'";
-    $specdat = mysqli_query($link,$hquery);
+    $specdat = mysqli_query($link, $hquery);
     if (!$specdat) {
         if (Ktesa_Dbug) {
-            dbug_print('enterHike.php: Could not retrieve vc/cluster info: ' . 
+            dbug_print('enterHike.php: Could not retrieve vc/cluster info: ' .
                     mysqli_error($link));
         } else {
-            user_error_msg($rel_addr,6,0);
+            user_error_msg($rel_addr, 6, 0);
         }
     }
     $dat = mysqli_fetch_assoc($specdat);
@@ -81,9 +81,9 @@ for ($i=1; $i<=$tblcnt; $i++) {
     $coll = $dat['collection'];
     $clusltr = $dat['cgroup'];
     $clusnme = $dat['cname'];
-    if($marker == 'Visitor Ctr') {
-        array_push($vchikes,$title);
-        array_push($vcnos,$indx);
+    if ($marker == 'Visitor Ctr') {
+        array_push($vchikes, $title);
+        array_push($vcnos, $indx);
     } elseif ($marker == 'Cluster') {
         $dup = false;
         for ($l=0; $l<count($clhikes); $l++) {
@@ -92,8 +92,8 @@ for ($i=1; $i<=$tblcnt; $i++) {
             }
         }
         if (!$dup) {
-            array_push($clhikes,$clusnme);
-            array_push($clnos,$clusltr);
+            array_push($clhikes, $clusnme);
+            array_push($clnos, $clusltr);
         }
     }
 }
@@ -109,17 +109,17 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
 } else {
     # Get any data recorded so far...
     $query = "SELECT * FROM EHIKES WHERE indxNo = {$hip}";
-    $result = mysqli_query($link,$query);
+    $result = mysqli_query($link, $query);
     if (mysqli_num_rows($result) === 0) {
-        die("<h2>Could not find a hike matching index " . $hip . 
+        die("<h2>Could not find a hike matching index " . $hip .
                 ". Contact Site Master");
     }
     if (!$result) {
         if (Ktesa_Dbug) {
-            dbug_print("enterHike.php: Could not extract record for {$hip}: " . 
+            dbug_print("enterHike.php: Could not extract record for {$hip}: " .
                     mysqli_error($link));
         } else {
-            user_error_msg($rel_addr,6,0);
+            user_error_msg($rel_addr, 6, 0);
         }
     }
     $entrydat = mysqli_fetch_assoc($result);
@@ -360,8 +360,8 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
                         associated with this new hike:</em> &nbsp;
                     <select id="nvch" name="vchike">
                     <?php
-                    for ($i=0;$i<$vccnt;$i++) {
-                        echo '<option value="' . $vcnos[$i] . '">' . 
+                    for ($i=0; $i<$vccnt; $i++) {
+                        echo '<option value="' . $vcnos[$i] . '">' .
                                 $vchikes[$i] . "</option>\n";
                     }
                     ?>
@@ -379,10 +379,10 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
                         include this new hike:</em> &nbsp;
                     <select id="nclus" name="clusgrp">
                     <?php
-                    for ($j=0;$j<$clcnt;$j++) {
+                    for ($j=0; $j<$clcnt; $j++) {
                         $pass = $clnos[$j] . ":" . $clhikes[$j];
                         # Database needs both clusletter & clusname
-                        echo '<option value="' . $pass . '">' . 
+                        echo '<option value="' . $pass . '">' .
                                 $clhikes[$j] . "</option>\n";
                     }
                     ?>                  
@@ -397,19 +397,19 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
         <legend>Text Sections</legend>
         <textarea id="usrtips" class="honly" name="tipstxt" rows="10" 
             cols="130"><?php
-                if ($entrydat['tips'] == '' ) {
-                    echo "[OPTIONAL] Enter 'Tips Text' here";
-                } else {
-                    echo $entrydat['tips'];
-                } ?>
+            if ($entrydat['tips'] == '') {
+                echo "[OPTIONAL] Enter 'Tips Text' here";
+            } else {
+                echo $entrydat['tips'];
+            } ?>
         </textarea><br />
         <textarea id="usrinfo" name="hiketxt" rows="20" cols="130"><?php
-                if ($entrydat['info'] == '') {
-                    echo "Enter the description of the hike here, as it will " .
-                        "appear on the completed hike page...";
-                } else {
-                    echo $entrydat['info'];
-                } ?>
+        if ($entrydat['info'] == '') {
+            echo "Enter the description of the hike here, as it will " .
+                "appear on the completed hike page...";
+        } else {
+            echo $entrydat['info'];
+        } ?>
         </textarea>
     </fieldset>
 
@@ -418,9 +418,9 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
         $rowcnt = 0;
     } else {
         $refquery = "SELECT * FROM EREFS WHERE indxNo = '{$hip}';";
-        $refdata = mysqli_query($link,$refquery);
+        $refdata = mysqli_query($link, $refquery);
         if (!$refdata) {
-            die ("enterHike.php: Could not access EREFS table'" . mysqli_error($link));
+            die("enterHike.php: Could not access EREFS table'" . mysqli_error($link));
         }
         $rowcnt = mysqli_num_rows($refdata);
     }
@@ -432,25 +432,25 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
         }
     } else {
         $rcnt = 0;
-        while($refs = mysqli_fetch_assoc($refdata)) {
+        while ($refs = mysqli_fetch_assoc($refdata)) {
             $rtype[$rcnt] = $refs['rtype'];
             $rit1[$rcnt] = $refs['rit1'];
             $rit2[$rcnt] = $refs['rit2'];
             $rcnt++;
         }
-        for ($w=$rcnt; $w<6; $w++){
+        for ($w=$rcnt; $w<6; $w++) {
                 $rtype[$w] = '';
                 $rit1[$w] = '';
                 $rit2[$w] = '';
         }
     }
     mysqli_free_result($refdata);
-    echo '<p id="dbrt1" style="display:none">' . $rtype[0] . "</p>\n"; 
-    echo '<p id="dbrt2" style="display:none">' . $rtype[1] . "</p>\n";  
-    echo '<p id="dbrt3" style="display:none">' . $rtype[2] . "</p>\n"; 
-    echo '<p id="dbrt4" style="display:none">' . $rtype[3] . "</p>\n";  
-    echo '<p id="dbrt5" style="display:none">' . $rtype[4] . "</p>\n";  
-    echo '<p id="dbrt6" style="display:none">' . $rtype[5] . "</p>\n";  
+    echo '<p id="dbrt1" style="display:none">' . $rtype[0] . "</p>\n";
+    echo '<p id="dbrt2" style="display:none">' . $rtype[1] . "</p>\n";
+    echo '<p id="dbrt3" style="display:none">' . $rtype[2] . "</p>\n";
+    echo '<p id="dbrt4" style="display:none">' . $rtype[3] . "</p>\n";
+    echo '<p id="dbrt5" style="display:none">' . $rtype[4] . "</p>\n";
+    echo '<p id="dbrt6" style="display:none">' . $rtype[5] . "</p>\n";
     /*
      * TO INCREASE COUNT:
     echo '<p id="dbrt7" style="display:none">' . $entrydat['ref[6]['rtype . "</p>\n";  
@@ -613,9 +613,9 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
         $prows = 0;
     } else {
         $pquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'P';";
-        $pdata = mysqli_query($link,$pquery);
+        $pdata = mysqli_query($link, $pquery);
         if (!$pdata) {
-            die ("enterHike.php: Could not access 'P' in GPSDAT table: " . mysqli_error($link));
+            die("enterHike.php: Could not access 'P' in GPSDAT table: " . mysqli_error($link));
         }
         $prows = mysqli_num_rows($pdata);
     }
@@ -627,17 +627,17 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
         }
     } else {
         $pcnt = 0;
-        while($props = mysqli_fetch_assoc($pdata)) {
+        while ($props = mysqli_fetch_assoc($pdata)) {
             $plbl[$pcnt] = $props['label'];
             $purl[$pcnt] = $props['url'];
             $pcot[$pcnt] = $props['clickText'];
             $pcnt++;
         }
-        for ($y=$pcnt; $y<4; $y++){
+        for ($y=$pcnt; $y<4; $y++) {
                 $plbl[$y] = '';
                 $purl[$y] = '';
                 $pcot[$y] = '';
-        } 
+        }
     }
     mysqli_free_result($pdata);
     # Set proposed data values, if any
@@ -646,9 +646,9 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
         $arows = 0;
     } else {
         $aquery = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hip}' AND datType = 'A';";
-        $adata = mysqli_query($link,$aquery);
+        $adata = mysqli_query($link, $aquery);
         if (!$adata) {
-            die ("enterHike.php: Could not access 'A' in GPSDAT table: " . mysqli_error($link));
+            die("enterHike.php: Could not access 'A' in GPSDAT table: " . mysqli_error($link));
         }
         $arows = mysqli_num_rows($adata);
     }
@@ -660,17 +660,17 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
         }
     } else {
         $acnt = 0;
-        while($acts = mysqli_fetch_assoc($adata)) {
+        while ($acts = mysqli_fetch_assoc($adata)) {
             $albl[$acnt] = $acts['label'];
             $aurl[$acnt] = $acts['url'];
             $acot[$acnt] = $acts['clickText'];
             $acnt++;
         }
-        for ($y=$acnt; $y<4; $y++){
+        for ($y=$acnt; $y<4; $y++) {
                 $albl[$y] = '';
                 $aurl[$y] = '';
                 $acot[$y] = '';
-        } 
+        }
     }
     mysqli_free_result($adata);
     ?>

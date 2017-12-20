@@ -49,18 +49,18 @@ require_once '../mysql/setenv.php';
         foreign keys.</p>
 <?php
 echo "<p>mySql Connection Opened</p>";
-$tbl = mysqli_query($link,"CREATE TABLE EHIKES LIKE HIKES");
+$tbl = mysqli_query($link, "CREATE TABLE EHIKES LIKE HIKES");
 if (!$tbl) {
     die("<p>CREATE EHIKES failed: " . mysqli_error($link) . "</p>");
-} 
+}
 $addstatreq = "ALTER TABLE EHIKES ADD stat VARCHAR(10) AFTER usrid";
-$addstat = mysqli_query($link,$addstatreq);
+$addstat = mysqli_query($link, $addstatreq);
 if (!$addstat) {
     die("<p>Failed to add stat column to EHIKES: " . mysqli_error($link) . "</p>");
 } else {
     echo '<p>EHIKES Table created; Definitions are shown in the table below</p>';
 }
-$req = mysqli_query($link,"SHOW TABLES;");
+$req = mysqli_query($link, "SHOW TABLES;");
 if (!$req) {
     die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
 }
@@ -69,7 +69,7 @@ while ($row = mysqli_fetch_row($req)) {
     echo "<li>" . $row[0] . "</li>";
 }
 echo "</ul>";
-$req = mysqli_query($link,"SHOW TABLES;");
+$req = mysqli_query($link, "SHOW TABLES;");
 ?>
     <p>Description of the EGPSDAT table:</p>
     <table>
@@ -93,11 +93,11 @@ $req = mysqli_query($link,"SHOW TABLES;");
         </thead>
         <tbody>
 <?php
-$tbl = mysqli_query($link,"DESCRIBE EHIKES;");
+$tbl = mysqli_query($link, "DESCRIBE EHIKES;");
 if (!$tbl) {
     die("<p>DESCRIBE EHIKES FAILED: " . mysqli_error($link) . "/p>");
-} 
-$first = true;  
+}
+$first = true;
 while ($row = mysqli_fetch_row($tbl)) {
     echo "<tr>";
     for ($i=0; $i<count($row); $i++) {

@@ -60,14 +60,14 @@ tdft smallint(5),
 tdexp varchar(15),
 tdalb varchar(1024) );
 ipg;
-$tbl = mysqli_query($link,$newips);
+$tbl = mysqli_query($link, $newips);
 if (!$tbl) {
     die("<p>CREATE IPTBLS TABLE failed: " . mysqli_error($link) . "</p>");
 } else {
     echo '<p>IPTBLS Table created; Definitions are shown in the table below</p>';
 }
 mysqli_free_result($tbl);
-$req = mysqli_query($link,"SHOW TABLES;");
+$req = mysqli_query($link, "SHOW TABLES;");
 if (!$req) {
     die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
 }
@@ -100,18 +100,18 @@ mysqli_free_result($req);
         </thead>
         <tbody>
 <?php
-    $dtbl = mysqli_query($link,"DESCRIBE IPTBLS;");
-    if (!$dtbl) {
-        die("<p>DESCRIBE IPTBLS FAILED: " . mysqli_error($link) . "/p>");
-    } 
-    $first = true;  
-    while ($row = mysqli_fetch_row($dtbl)) {
-        echo "<tr>";
-        for ($i=0; $i<count($row); $i++) {
-            echo "<td>" . $row[$i] . "</td>";
-        }
-        echo "</tr>" . PHP_EOL;
+    $dtbl = mysqli_query($link, "DESCRIBE IPTBLS;");
+if (!$dtbl) {
+    die("<p>DESCRIBE IPTBLS FAILED: " . mysqli_error($link) . "/p>");
+}
+    $first = true;
+while ($row = mysqli_fetch_row($dtbl)) {
+    echo "<tr>";
+    for ($i=0; $i<count($row); $i++) {
+        echo "<td>" . $row[$i] . "</td>";
     }
+    echo "</tr>" . PHP_EOL;
+}
     mysqli_free_result($dtbl);
     mysqli_close($link);
 ?>

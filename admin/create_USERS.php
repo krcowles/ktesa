@@ -48,7 +48,7 @@ require_once '../mysql/setenv.php';
 <?php
     echo "<p>mySql Connection Opened</p>";
     # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
-    $tbl = mysqli_query( $link,"CREATE TABLE USERS (
+    $tbl = mysqli_query($link, "CREATE TABLE USERS (
         userid smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
         username varchar(32) NOT NULL,
         passwd varchar(255) NOT NULL, 
@@ -58,20 +58,20 @@ require_once '../mysql/setenv.php';
         email varchar(50) NOT NULL,
         facebook_url varchar(100),
         twitter_handle varchar(20),
-        bio varchar(500));" );
-    if (!$tbl) {
-        die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
-    } else {
-        echo '<p>USERS Table created; Definitions are shown in the table below</p>';
-    }
-    $req = mysqli_query($link,"SHOW TABLES;");
-    if (!$req) {
-        die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
-    }
+        bio varchar(500));");
+if (!$tbl) {
+    die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
+} else {
+    echo '<p>USERS Table created; Definitions are shown in the table below</p>';
+}
+    $req = mysqli_query($link, "SHOW TABLES;");
+if (!$req) {
+    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
+}
     echo "<p>Results from SHOW TABLES:</p><ul>";
-    while ($row = mysqli_fetch_row($req)) {
-        echo "<li>" . $row[0] . "</li>";
-    }
+while ($row = mysqli_fetch_row($req)) {
+    echo "<li>" . $row[0] . "</li>";
+}
     echo "</ul>";
 ?>
     <p>Description of the USERS table:</p>
@@ -96,18 +96,18 @@ require_once '../mysql/setenv.php';
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link,"DESCRIBE USERS;");
-    if (!$tbl) {
-        die("<p>DESCRIBE 'test' FAILED: " . mysqli_error($link) . "/p>");
-    } 
-    $first = true;  
-    while ($row = mysqli_fetch_row($tbl)) {
-        echo "<tr>";
-        for ($i=0; $i<count($row); $i++) {
-            echo "<td>" . $row[$i] . "</td>";
-        }
-        echo "</tr>" . PHP_EOL;
+    $tbl = mysqli_query($link, "DESCRIBE USERS;");
+if (!$tbl) {
+    die("<p>DESCRIBE 'test' FAILED: " . mysqli_error($link) . "/p>");
+}
+    $first = true;
+while ($row = mysqli_fetch_row($tbl)) {
+    echo "<tr>";
+    for ($i=0; $i<count($row); $i++) {
+        echo "<td>" . $row[$i] . "</td>";
     }
+    echo "</tr>" . PHP_EOL;
+}
     mysqli_close($link);
 ?>
        </tbody>

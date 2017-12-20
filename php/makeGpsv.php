@@ -1,10 +1,11 @@
-<?php 
+<?php
 require_once '../mysql/setenv.php';
 /*
  * REQUIRED INPUTS FOR THIS ROUTINE:  $gpxPath; $hikeNo
  */
 # Function to calculate the distance between two lat/lng coordinates
-function distance($lat1, $lon1, $lat2, $lon2) {
+function distance($lat1, $lon1, $lat2, $lon2)
+{
     if ($lat1 === $lat2 && $lon1 === $lon2) {
         return array (0,0);
     }
@@ -17,7 +18,7 @@ function distance($lat1, $lon1, $lat2, $lon2) {
     $miles = $dist * 60 * 1.1515;
     if (is_nan($miles)) {
         $err = $lat1 . ',' . $lon1 . '; ' . $lat2 . ',' . $lon2;
-        echo $GLOBALS['intro'] . "Mdl: makeGpsv.php/function distance() - Not a number: " 
+        echo $GLOBALS['intro'] . "Mdl: makeGpsv.php/function distance() - Not a number: "
             . $err . "</p>";
     }
     # angles using planar coords: ASSUME a minute/seconds in lat = minute/seconds in lng
@@ -27,14 +28,13 @@ function distance($lat1, $lon1, $lat2, $lon2) {
     $angle = rad2deg($radang);
     // Convert Euclid Angle to GPSV Rotation
     if ($dely >= 0) {
-            if ($delx >= 0) {
-                $rotation = 90.0 - $angle;	// Northeast
-            } else {
-                $rotation = 450.0 - $angle; // Northwest
-            } 
-    }
-    else {
-        $rotation = 90.0 + -$angle;	// South
+        if ($delx >= 0) {
+            $rotation = 90.0 - $angle;  // Northeast
+        } else {
+            $rotation = 450.0 - $angle; // Northwest
+        }
+    } else {
+        $rotation = 90.0 + -$angle;     // South
     }
     $rotation = round($rotation);
     return array ($miles,$rotation);
@@ -54,7 +54,7 @@ if ($gpxdat === false) {
     } else {
         $filemsg = $gpxPath;
     }
-    die ($gpxmsg . $filemsg . $close);
+    die($gpxmsg . $filemsg . $close);
 }
 /* 
  * GPX FILE NOTES:
@@ -99,7 +99,7 @@ for ($k=0; $k<$noOfTrks; $k++) {
     $tno = $k + 1;
     # Form javascript to draw each track:
     $line = "        t = " . $tno . "; trk[t] = {info:[],segments:[]};\n";
-    $line .= "        trk[t].info.name = '" . $gpxdat->trk[$k]->name . "'; trk[t].info.desc = ''; " . 
+    $line .= "        trk[t].info.name = '" . $gpxdat->trk[$k]->name . "'; trk[t].info.desc = ''; " .
         "trk[t].info.clickable = true;\n";
     $line .= "        trk[t].info.color = '" . $colors[$k] . "'; trk[t].info.width = 3; "
         . "trk[t].info.opacity = 0.9; trk[t].info.hidden = false;\n";
@@ -111,23 +111,23 @@ for ($k=0; $k<$noOfTrks; $k++) {
     $tickMrk = 0.30;
     $indx = 0;
     $noOfSegs = $gpxdat->trk[$k]->trkseg->count();
-    for ($j=0; $j<$noOfSegs; $j++ ) {
+    for ($j=0; $j<$noOfSegs; $j++) {
         foreach ($gpxdat->trk[$k]->trkseg[$j]->trkpt as $datum) {
-            if ( !($datum['lat'] == $plat && $datum['lon'] == $plng) ) {
+            if (!($datum['lat'] == $plat && $datum['lon'] == $plng)) {
                 $plat = (float)$datum['lat'];
                 $plng = (float)$datum['lon'];
-                array_push($gpxlats,$plat);
-                array_push($gpxlons,$plng);
+                array_push($gpxlats, $plat);
+                array_push($gpxlons, $plng);
                 $tdat .= $plat . "," . $plng . "],[";
                 if ($indx > 0) {
-                    $parms = distance($gpxlats[$indx-1],$gpxlons[$indx-1],$gpxlats[$indx],$gpxlons[$indx]);
+                    $parms = distance($gpxlats[$indx-1], $gpxlons[$indx-1], $gpxlats[$indx], $gpxlons[$indx]);
                     $hikeLgth += $parms[0];
                     if ($hikeLgth > $tickMrk) {
                         $tick = "GV_Draw_Marker({lat:" . $plat . ",lon:" . $plng .
-                            ",name:'" . $tickMrk . " mi',desc:'',color:trk[" . $tno . 
+                            ",name:'" . $tickMrk . " mi',desc:'',color:trk[" . $tno .
                             "].info.color,icon:'tickmark',type:'tickmark',folder:'" . $track->name .
                             " [tickmarks]',rotation:" . $parms[1] . ",track_number:" . $tno . ",dd:false});";
-                        array_push($ticks,$tick);
+                        array_push($ticks, $tick);
                         $tickMrk += 0.30;
                     }
                     
@@ -140,7 +140,7 @@ for ($k=0; $k<$noOfTrks; $k++) {
         }  # end of processing trkpts in a segment
     } # end for each segment: next esgment...
     # remove last ",[" and end string:
-    $tdat = substr($tdat,0,strlen($tdat)-2);
+    $tdat = substr($tdat, 0, strlen($tdat)-2);
     $line .= $tdat . " ] });\n";
     $line .= "        GV_Draw_Track(t);\n";
     $GPSV_Tracks[$k] = $line;
@@ -177,15 +177,15 @@ $clon = $west + ($east - $west)/2;
 $noOfWaypts = $gpxdat->wpt->count();
 $waypoints = [];
 if ($noOfWaypts > 0) {
-    foreach($gpxdat->wpt as $waypt) {
+    foreach ($gpxdat->wpt as $waypt) {
         $wlat = $waypt['lat'];
         $wlng = $waypt['lon'];
         $sym = $waypt->sym;
         $text = $waypt->name;
-        $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng . 
-            ",name:'" . $text . "',desc:'',color:'" . "blue" . 
+        $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng .
+            ",name:'" . $text . "',desc:'',color:'" . "blue" .
             "',icon:'" . $sym . "'});\n";
-        array_push($waypoints,$wlnk);
+        array_push($waypoints, $wlnk);
     }
 }
 /*
@@ -197,30 +197,30 @@ $defIconColor = 'red';
 $mcnt = 0;
 $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,alblnk,mid,iclr FROM {$ttable} " .
         "WHERE indxNo = {$hikeIndexNo};";
-$pic = mysqli_query($link,$picReq);
+$pic = mysqli_query($link, $picReq);
 if (!$pic) {
     die("<p>makeGpsv.php: Failed to extract photo data for hike {$hikeIndexNo}: " .
         mysqli_error($link));
 }
-while( ($photos = mysqli_fetch_assoc($pic)) ) {
+while (($photos = mysqli_fetch_assoc($pic))) {
     if ($photos['mpg'] === 'Y') {
-        $procName = preg_replace("/'/","\'",$photos['title']);
-        $procName = preg_replace('/"/','\"',$procName);
-        $procDesc = preg_replace("/'/","\'",$photos['desc']);
-        $procDesc = preg_replace('/"/','\"',$procDesc);
+        $procName = preg_replace("/'/", "\'", $photos['title']);
+        $procName = preg_replace('/"/', '\"', $procName);
+        $procDesc = preg_replace("/'/", "\'", $photos['desc']);
+        $procDesc = preg_replace('/"/', '\"', $procDesc);
         # If wypt in ETSV file....
         if ($photos['alblnk'] == '') { # waypoint icon
-            $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" . 
-                $photos['lng']. ",name:'" . $procName . "',desc:'" . 
+            $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
+                $photos['lng']. ",name:'" . $procName . "',desc:'" .
                 $procDesc . "',color:'" . $photos['iclr'] . "',icon:''});";
         } else { # photo
-            $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" . 
-                $photos['lng'] . ",name:'" . $procDesc . 
-                "',desc:'',color:'" . $photos['iclr'] . "',icon:'" . 
-                $mapicon . "',url:'" . $photos['alblnk'] . "',thumbnail:'" . 
+            $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
+                $photos['lng'] . ",name:'" . $procDesc .
+                "',desc:'',color:'" . $photos['iclr'] . "',icon:'" .
+                $mapicon . "',url:'" . $photos['alblnk'] . "',thumbnail:'" .
                 $photos['mid'] . "',folder:'" . $photos['folder'] . "'});";
         }
-        array_push($plnks,$plnk);
+        array_push($plnks, $plnk);
         $mcnt++;
     }
 }
@@ -275,9 +275,9 @@ $html .= '<script type="text/javascript">' . "\n" .
         '</div>' . "\n";
 # begin GPS Visualizer setup script
 $html .= '<!-- begin GPS Visualizer setup script (must come after maps.google.com code) -->' . "\n";
-$html .= '<script type="text/javascript">' . "\n"; 
+$html .= '<script type="text/javascript">' . "\n";
 $html .= '/* Global variables used by the GPS Visualizer functions (20170530080154): */' . "\n";
-$html .= '    gv_options = {};' . "\n";     
+$html .= '    gv_options = {};' . "\n";
 $html .= '// basic map parameters:' . "\n";
 $html .= '    gv_options.center = [' .$clat . ',' . $clon . '];  // [latitude,longitude] - be sure to keep the square brackets' . "\n";
 $html .= "    gv_options.zoom = 'auto';  // higher number means closer view; can also be 'auto' for automatic zoom/center based on map elements" . "\n";
@@ -415,10 +415,10 @@ for ($i=0; $i<$noOfTrks; $i++) {
 $html .= "\n        // List the tracks\n";
 for ($j=1; $j<=$noOfTrks; $j++) {
     $html .= "        t = " . $j . "; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:trk[t].info.desc,color:trk[t].info.color,number:t});" . "\n";
-} 
+}
 $html .= "\n        // Add tick marks\n";
 for ($j=0; $j<count($ticks); $j++) {
-  $html .= '        ' . $ticks[$j] . "\n";
+    $html .= '        ' . $ticks[$j] . "\n";
 }
 $html .= "\n        // Add any waypoints\n";
 for ($n=0; $n<$noOfWaypts; $n++) {
@@ -426,13 +426,12 @@ for ($n=0; $n<$noOfWaypts; $n++) {
 }
 $html .= "\n        // Create photo markers\n";
 for ($z=0; $z<count($plnks); $z++) {
- $html .= '        ' . $plnks[$z] . "\n";
-}   
+    $html .= '        ' . $plnks[$z] . "\n";
+}
 $html .= '        GV_Finish_Map();' . "\n";
 $html .= '    }' . "\n";
 $html .= '    GV_Map(); // execute the above code' . "\n";
 $html .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=auto' . "\n";
-$html .= '</script>' . "\n"; 
+$html .= '</script>' . "\n";
 $html .= '</body>' . "\n";
 $html .= '</html>' . "\n";
-?>

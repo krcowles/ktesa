@@ -16,17 +16,17 @@ if ($_SESSION['tsv']) {
     $undos++;
     # photos need to be deleted from ETSV table for this hike
     $delpixreq = "DELETE FROM ETSV WHERE indxNo = {$hikeNo};";
-    $delpix = mysqli_query($link,$delpixreq);
+    $delpix = mysqli_query($link, $delpixreq);
     if (!$delpix) {
         $errs++;
-        $err .= "<p>Failed to delete photo data from ETSV: " . 
+        $err .= "<p>Failed to delete photo data from ETSV: " .
                 mysqli_error($link) . "</p>";
     }
     $photos = '<p>Photo data has been removed</p>';
     mysqli_free_result($delpix);
 }
 if ($_SESSION['havgpx']) {
-    $undos++;  
+    $undos++;
     if (unlink($_SESSION['gpx']) === false) {
         $err .= "<p>Could not remove {$_SESSION['gpx']}</p>";
         $errs++;
@@ -36,7 +36,7 @@ if ($_SESSION['havgpx']) {
         $errs++;
     }
     $unvgpxreq = "UPDATE EHIKES SET gpx = '', trk = '' WHERE indxNo = {$hikeNo};";
-    $unvgpx = mysqli_query($link,$unvgpxreq);
+    $unvgpx = mysqli_query($link, $unvgpxreq);
     if (!$unvgpx) {
         $err .= "<p>Failed to reset EHIKES gpx & trk fields: " .
                 myswli_error($link) . "</p>";
@@ -45,13 +45,13 @@ if ($_SESSION['havgpx']) {
     mysqli_free_result($unvgpx);
 }
 if ($_SESSION['if1']) {
-    $undos++; 
+    $undos++;
     if (unlink($_SESSION['i1loc']) === false) {
         $err .= "<p>Could not remove {$_SESSION['i1loc']}</p>";
         $errs++;
     }
     $unvim1req = "UPDATE EHIKES SET aoimg1 = '' WHERE indxNo = {$hikeNo};";
-    $unvim1 = mysqli_query($link,$unvim1req);
+    $unvim1 = mysqli_query($link, $unvim1req);
     if (!$unvim1) {
         $err .= "<p>Failed to reset aoimg1 field in EHIKES: " .
             mysqli_error($link) . "</p>";
@@ -66,7 +66,7 @@ if ($_SESSION['if2']) {
         $errs++;
     }
     $unvim2req = "UPDATE EHIKES SET aoimg2 = '' WHERE indxNo = {$hikeNo};";
-    $unvim2 = mysqli_query($link,$unvim1req);
+    $unvim2 = mysqli_query($link, $unvim1req);
     if (!$unvim2) {
         $err .= "<p>Failed to reset aoimg2 field in EHIKES: " .
             mysqli_error($link) . "</p>";
@@ -110,7 +110,7 @@ if ($_SESSION['af2'] && !$_SESSION['aupaf2']) {
 }
 if ($delgps) {
     $unvgpsreq = "DELETE FROM EGPSDAT WHERE indxNo = {$hikeNo};";
-    $unvgps = mysqli_query($link,$unvgpsreq);
+    $unvgps = mysqli_query($link, $unvgpsreq);
     if (!$unvgps) {
         $err .= "<p>Could not remove data from EGPSDAT: " . mysqli_error($link) . "</p>";
         $errs++;
@@ -119,9 +119,9 @@ if ($delgps) {
 }
 if ($undos > 0 && $errs === 0) {
     $updtreq = "UPDATE EHIKES SET stat = 'new' WHERE indxNo = {$hikeNo};";
-    $updt = mysqli_query($link,$updtreq);
-    if(!$updt) {
-        die("unvalidate.php: Could not update stat field in EHIKES: " . 
+    $updt = mysqli_query($link, $updtreq);
+    if (!$updt) {
+        die("unvalidate.php: Could not update stat field in EHIKES: " .
                 mysqli_error($link));
     }
     mysqli_free_result($updt);

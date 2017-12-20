@@ -23,27 +23,27 @@
 <?php
     $database = '../data/database.xml';
     $xmlDat = simplexml_load_file($database);
-    if ($xmlDat === false) {
-        $emsg = '<p style="color:red;font-size:20px;margin-left:16px">' .
-                'Could not load xml database: contact site master</p>';
-        die($emsg);
-    }
+if ($xmlDat === false) {
+    $emsg = '<p style="color:red;font-size:20px;margin-left:16px">' .
+            'Could not load xml database: contact site master</p>';
+    die($emsg);
+}
     echo "LOADED";
     $hikeNo = $_GET['hikeNo'];
     echo "NO " . $hikeNo;
-    foreach( $xmlDat->row as $indxrow) {
-        if ( $indxrow->indxNo == $hikeNo) {
-            $indxName = $indxrow->pgTitle;
-            echo "GOT: " . $indxName;
-            $indxLocale = $indxrow->locale;
-            $indxLat = $indxrow->lat;
-            $indxLng = $indxrow->lng;
-            $indxDirs = $indxrow->dirs;
-            $indxInfo = $indxrow->hikeInfo;
-            $indxRefs = $indxrow->refs;
-            break;
-        }
+foreach ($xmlDat->row as $indxrow) {
+    if ($indxrow->indxNo == $hikeNo) {
+        $indxName = $indxrow->pgTitle;
+        echo "GOT: " . $indxName;
+        $indxLocale = $indxrow->locale;
+        $indxLat = $indxrow->lat;
+        $indxLng = $indxrow->lng;
+        $indxDirs = $indxrow->dirs;
+        $indxInfo = $indxrow->hikeInfo;
+        $indxRefs = $indxrow->refs;
+        break;
     }
+}
 ?>
 <p id="trail"><?php echo $indxName;?></p>
 
@@ -119,55 +119,55 @@ Edit the Park Information as desired:<br />
      * References display
      */
     $noOfRefs = 0;
-    foreach ($indxRefs->ref as $ref) {
-        $noOfRefs++;
-    }
+foreach ($indxRefs->ref as $ref) {
+    $noOfRefs++;
+}
     echo '<p id="refcnt" style="display:none">' . $noOfRefs . '</p>';
     $z = 0;  # index for creating unique id's
-    foreach ($indxRefs->ref as $ritem) {
-        $rid = 'rid' . $z;
-        $reftype = 'ref' . $z;
-        $thisref = $ritem->rtype->__toString();
-        echo '<p id="' . $rid  . '" style="display:none">' . $thisref . "</p>\n";
-        echo '<label for="' . $reftype . '">Reference Type: </label>' . "\n";
-        echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">' . "\n";
-        echo '<option value="b" >Book</option>' . "\n";
-        echo '<option value="p">Photo Essay</option>' . "\n";
-        echo '<option value="w">Website</option>' . "\n";
-        echo '<option value="h">Website</option>' . "\n"; # leftover category from index pages
-        echo '<option value="a">App</option>' . "\n";
-        echo '<option value="d">Downloadable Doc</option>' . "\n";
-        echo '<option value="l">Blog</option>' . "\n";
-        echo '<option value="o">On-line Map</option>' . "\n";
-        echo '<option value="m">Magazine</option>' . "\n";
-        echo '<option value="s">News Article</option>' . "\n";
-        echo '<option value="g">Meetup Group</option>' . "\n";
-        echo '<option value="r">Related Link</option>' . "\n";
-        echo '<option value="n">Text Only - No Link</option>' . "\n";
-        echo '</select><br />' . "\n";
-        if ($thisref === 'b' || $thisref === 'p') {
-            echo '<label style="text-indent:24px;">Title: </label>'
-                . '<textarea style="height:20px;width:320px" name="rit1[]">' .
-                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;';
-            echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
-                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
-               '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
-                    $z . '"><br /><br />' . "\n";
-        } elseif ($thisref === 'n') {
-            echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
-                $ritem->rit1->__toString() . '</textarea><label>Delete: </label>' .
-                '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
+foreach ($indxRefs->ref as $ritem) {
+    $rid = 'rid' . $z;
+    $reftype = 'ref' . $z;
+    $thisref = $ritem->rtype->__toString();
+    echo '<p id="' . $rid  . '" style="display:none">' . $thisref . "</p>\n";
+    echo '<label for="' . $reftype . '">Reference Type: </label>' . "\n";
+    echo '<select id="' . $reftype . '" style="height:26px;width:150px;" name="rtype[]">' . "\n";
+    echo '<option value="b" >Book</option>' . "\n";
+    echo '<option value="p">Photo Essay</option>' . "\n";
+    echo '<option value="w">Website</option>' . "\n";
+    echo '<option value="h">Website</option>' . "\n"; # leftover category from index pages
+    echo '<option value="a">App</option>' . "\n";
+    echo '<option value="d">Downloadable Doc</option>' . "\n";
+    echo '<option value="l">Blog</option>' . "\n";
+    echo '<option value="o">On-line Map</option>' . "\n";
+    echo '<option value="m">Magazine</option>' . "\n";
+    echo '<option value="s">News Article</option>' . "\n";
+    echo '<option value="g">Meetup Group</option>' . "\n";
+    echo '<option value="r">Related Link</option>' . "\n";
+    echo '<option value="n">Text Only - No Link</option>' . "\n";
+    echo '</select><br />' . "\n";
+    if ($thisref === 'b' || $thisref === 'p') {
+        echo '<label style="text-indent:24px;">Title: </label>'
+            . '<textarea style="height:20px;width:320px" name="rit1[]">' .
+            $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;';
+        echo '<label>Author: </label><textarea style="height:20px;width:320px" name="rit2[]">' .
+            $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+           '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
                 $z . '"><br /><br />' . "\n";
-        } else {
-            echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
-                $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;'
-                    . '<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' . 
-                $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
-                '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
-                $z . '"><br /><br />' . "\n";
-        }  
-        $z++;
+    } elseif ($thisref === 'n') {
+        echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
+            $ritem->rit1->__toString() . '</textarea><label>Delete: </label>' .
+            '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
+            $z . '"><br /><br />' . "\n";
+    } else {
+        echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
+            $ritem->rit1->__toString() . '</textarea>&nbsp;&nbsp;'
+                . '<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' .
+            $ritem->rit2->__toString() . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+            '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
+            $z . '"><br /><br />' . "\n";
     }
+    $z++;
+}
     # Table Header setup
     $tblhtml = '<table id="siteIndx">' . "\n" . '<thead>' . "\n" . '<tr>' . "\n";
     $tblhtml .= '<th class="hdrRow" scope="col">Trail</th>' . "\n";
@@ -243,7 +243,7 @@ Author/Click-on Text<input type="text" name="rit2[]" size="35" /><br />
     }  #end of row data-processing loop	
     $tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";
     $indxTbl = $tblhtml;
- */	   
+ */
 ?>	
 <input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
 

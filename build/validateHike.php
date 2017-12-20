@@ -7,11 +7,11 @@ session_start();
  */
 require_once "../mysql/setenv.php";
 # Process $hikeName to ensure no html special characters will disrupt
-$hike = filter_input(INPUT_POST,'hpgTitle');
-$hikeNo = intval(filter_input(INPUT_POST,'hno'));
-$uid = filter_input(INPUT_POST,'usr');
-$uid = mysqli_real_escape_string($link,$uid);
-$status = filter_input(INPUT_POST,'state');
+$hike = filter_input(INPUT_POST, 'hpgTitle');
+$hikeNo = intval(filter_input(INPUT_POST, 'hno'));
+$uid = filter_input(INPUT_POST, 'usr');
+$uid = mysqli_real_escape_string($link, $uid);
+$status = filter_input(INPUT_POST, 'state');
 /* If hikeNo = 0, then this is a brand new page, and both the hike and hikeNo
  * have not yet been saved. Since the user is now saving data, it is time to 
  * establish these parameters in the database...
@@ -19,22 +19,22 @@ $status = filter_input(INPUT_POST,'state');
 if ($status === 'new') {
 #   Add new record
 #    $newRow = insertDbRow($link,'EHIKES',__File__,__LINE__); 
-    $newHike = mysqli_real_escape_string($link,$hike);
+    $newHike = mysqli_real_escape_string($link, $hike);
     $query = "INSERT INTO EHIKES (pgTitle,usrid) VALUES ('{$newHike}','{$uid}');";
-    insertDbRowMulti($link,$query,__File__,__LINE__); 
+    insertDbRowMulti($link, $query, __File__, __LINE__);
 #
 #   Update fields one by one so that NULLs can be checked
-    $newRow = getDbRowNum($link,'EHIKES',__File__,__LINE__); 
-    updateDbRow($link,'EHIKES',$newRow,'stat','indxNo','new',__File__,__LINE__);
+    $newRow = getDbRowNum($link, 'EHIKES', __File__, __LINE__);
+    updateDbRow($link, 'EHIKES', $newRow, 'stat', 'indxNo', 'new', __File__, __LINE__);
 #
     $newid = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1";
-    $getid = mysqli_query($link,$newid);
+    $getid = mysqli_query($link, $newid);
     if (!$getid) {
         if (Ktesa_Dbug) {
-            dbug_print('validateHike.php: Could not retrieve highest indxNo: ' . 
+            dbug_print('validateHike.php: Could not retrieve highest indxNo: ' .
                     mysqli_error($link));
         } else {
-            user_error_msg($rel_addr,5,0);
+            user_error_msg($rel_addr, 5, 0);
         }
     }
     $latest = mysqli_fetch_row($getid);
@@ -51,21 +51,21 @@ $imageFile2 = false;
 $propFiles = false;
 $actFiles = false;
 #
-$saveType = filter_input(INPUT_POST,'saveit');
-$valType = filter_input(INPUT_POST,'valdat');
-if ( isset($saveType)) {
+$saveType = filter_input(INPUT_POST, 'saveit');
+$valType = filter_input(INPUT_POST, 'valdat');
+if (isset($saveType)) {
     $tabTitle = 'Save Form Data';
     $logo = 'Save ' . $hikeName;
     $type = 'Save';
     $status = "new";
 }
-if ( isset($valType) ) {
+if (isset($valType)) {
     $tabTitle = 'Validate &amp; Select Images';
     $logo = 'Validate This Hike!';
     $type = 'Validate';
     $status = "upl";
-    $nopics = filter_input(INPUT_POST,'nopix');
-    if ( !isset($nopics) ) {
+    $nopics = filter_input(INPUT_POST, 'nopix');
+    if (!isset($nopics)) {
         $usetsv = true;
         require "getPicDat.php"; # fill ETSV table
 
@@ -93,107 +93,112 @@ if ( isset($valType) ) {
 <p id="ptype" style="display:none">Validate</p>
 
 <?php
-    if ($type === 'Save') {
-        echo '<div style="margin-left:24px;font-size:18px;">';
-        echo '<h2>You have saved the current data on the form</h2>';
-        echo '<p >You may continue by clicking the link below, or come back ' .
-            'later to work on it by going back to the main page and selecting ' .
-            '"Edit Hikes" (New/Active Edits)</p>';
-        echo '<a href="enterHike.php?hno=' . $hikeNo . '&usr=' . $uid .
-                '">Continue Data Entry</a>';
-        echo "<p>Your saved Hike is '" . $hike . "'</p></div>";
+if ($type === 'Save') {
+    echo '<div style="margin-left:24px;font-size:18px;">';
+    echo '<h2>You have saved the current data on the form</h2>';
+    echo '<p >You may continue by clicking the link below, or come back ' .
+        'later to work on it by going back to the main page and selecting ' .
+        '"Edit Hikes" (New/Active Edits)</p>';
+    echo '<a href="enterHike.php?hno=' . $hikeNo . '&usr=' . $uid .
+            '">Continue Data Entry</a>';
+    echo "<p>Your saved Hike is '" . $hike . "'</p></div>";
         
-    } else {
-        echo '<form id="valsub" target="_blank" action="displayHikePg.php" method="POST">' . "\n";
-        echo "<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>\n";
-        echo '<div style="margin-left:24px;font-size:18px;">';
-        echo "<h3 style='color:darkBlue;'>Please Note!</h3>\n" . '<p>You have '
-            . 'saved new data. Do not go back to the previous page and repeat '
-            . 'this step or duplicate data will be created!<br />'
-            . 'If it is necessary to "back up" due to an error or omission, '
-            . 'please use the "Un-Validate" button below. This will open the '
-            . 'enterHike form and delete data from uploaded files which would '
-            . 'otherwise be duplicated.<br /><br />';
-        echo '<button id="unval">Un-Validate</button><br /><br />'
-            . 'OTHERWISE: If you wish to stop here and return later to '
-            . 'finish the page, please return to the main page and select '
-            . '"Edit Hikes" (New/Active)<br /><br /><br />';
-        require "fileUploads.php";
-        require "unvalidateData.php";
-        echo '<p id="gfile" style="display:none;">' . $gpxLoc . '</p>';
-        echo '<p id="tfile" style="display:none;">' . $trkLoc . '</p>';
-        echo '<p id="i1file" style="display:none;">' . $img1Loc . '</p>';
-        echo '<p id="i2file" style="display:none;">' . $img2Loc . '</p>';
-    }
+} else {
+    echo '<form id="valsub" target="_blank" action="displayHikePg.php" method="POST">' . "\n";
+    echo "<h2>STEP 2: VALIDATE DATA AND SELECT IMAGES</h2>\n";
+    echo '<div style="margin-left:24px;font-size:18px;">';
+    echo "<h3 style='color:darkBlue;'>Please Note!</h3>\n" . '<p>You have '
+        . 'saved new data. Do not go back to the previous page and repeat '
+        . 'this step or duplicate data will be created!<br />'
+        . 'If it is necessary to "back up" due to an error or omission, '
+        . 'please use the "Un-Validate" button below. This will open the '
+        . 'enterHike form and delete data from uploaded files which would '
+        . 'otherwise be duplicated.<br /><br />';
+    echo '<button id="unval">Un-Validate</button><br /><br />'
+        . 'OTHERWISE: If you wish to stop here and return later to '
+        . 'finish the page, please return to the main page and select '
+        . '"Edit Hikes" (New/Active)<br /><br /><br />';
+    require "fileUploads.php";
+    require "unvalidateData.php";
+    echo '<p id="gfile" style="display:none;">' . $gpxLoc . '</p>';
+    echo '<p id="tfile" style="display:none;">' . $trkLoc . '</p>';
+    echo '<p id="i1file" style="display:none;">' . $img1Loc . '</p>';
+    echo '<p id="i2file" style="display:none;">' . $img2Loc . '</p>';
+}
 ?>  
-<p style="display:none" id="tsvStat"><?php if ($usetsv) { echo "YES"; } else { echo "NO"; }?></p>
+<p style="display:none" id="tsvStat"><?php if ($usetsv) {
+    echo "YES";
+
+} else {
+    echo "NO";
+}?></p>
 
 <?php
 /*
  *  hike form entry - both 'save form' and 'validate' need this data
  *  Prep data with mysqli_real_escape_string()
  */
-$hname = mysqli_real_escape_string($link,$hike);
-$locale = filter_input(INPUT_POST,'locale');
-$loc = mysqli_real_escape_string($link,$locale);
-$marker = filter_input(INPUT_POST,'mstyle');
+$hname = mysqli_real_escape_string($link, $hike);
+$locale = filter_input(INPUT_POST, 'locale');
+$loc = mysqli_real_escape_string($link, $locale);
+$marker = filter_input(INPUT_POST, 'mstyle');
 # default values, altered depending on marker type
 $coll = '';
 $cg = '';
 $cn = '';
 if ($marker === 'ctrhike') {
     $mrkr = "At VC";
-    $coll = filter_input(INPUT_POST,'vchike'); # only a number, no escape needed
+    $coll = filter_input(INPUT_POST, 'vchike'); # only a number, no escape needed
 } elseif ($marker === 'cluster') {
     $mrkr = 'Cluster';
-    $cinfo = filter_input(INPUT_POST,'clusgrp');
-    $colon = strpos($cinfo,":");
-    $cg = substr($cinfo,0,$colon); # 1 or more letters, no escape needed
+    $cinfo = filter_input(INPUT_POST, 'clusgrp');
+    $colon = strpos($cinfo, ":");
+    $cg = substr($cinfo, 0, $colon); # 1 or more letters, no escape needed
     $nmlgth = strlen($cinfo) - ($colon + 1);
-    $cname = substr($cinfo,$colon+1,$nmlgth);
-    $cn = mysqli_real_escape_string($link,$cname);
+    $cname = substr($cinfo, $colon+1, $nmlgth);
+    $cn = mysqli_real_escape_string($link, $cname);
 } elseif ($marker === 'other') {
     $mrkr = 'Normal';
 }
-$style = filter_input(INPUT_POST,'htype');
-$logistics = mysqli_real_escape_string($link,$style);
-$distance = filter_input(INPUT_POST,'dist');
-$dist = mysqli_real_escape_string($link,$distance);
-$elevation = filter_input(INPUT_POST,'elev');
-$elev = mysqli_real_escape_string($link,$elevation);
-$difficulty = filter_input(INPUT_POST,'diff');
-$diff = mysqli_real_escape_string($link,$difficulty);
-$facilities = filter_input(INPUT_POST,'fac');
-$fac = mysqli_real_escape_string($link,$facilities);
-$wows = filter_input(INPUT_POST,'wow_factor');
-$wow = mysqli_real_escape_string($link,$wows);
-$seasons = filter_input(INPUT_POST,'seas');
-$seasn = mysqli_real_escape_string($link,$seasons);
-$exposure = filter_input(INPUT_POST,'expos');
-$expo = mysqli_real_escape_string($link,$exposure);
+$style = filter_input(INPUT_POST, 'htype');
+$logistics = mysqli_real_escape_string($link, $style);
+$distance = filter_input(INPUT_POST, 'dist');
+$dist = mysqli_real_escape_string($link, $distance);
+$elevation = filter_input(INPUT_POST, 'elev');
+$elev = mysqli_real_escape_string($link, $elevation);
+$difficulty = filter_input(INPUT_POST, 'diff');
+$diff = mysqli_real_escape_string($link, $difficulty);
+$facilities = filter_input(INPUT_POST, 'fac');
+$fac = mysqli_real_escape_string($link, $facilities);
+$wows = filter_input(INPUT_POST, 'wow_factor');
+$wow = mysqli_real_escape_string($link, $wows);
+$seasons = filter_input(INPUT_POST, 'seas');
+$seasn = mysqli_real_escape_string($link, $seasons);
+$exposure = filter_input(INPUT_POST, 'expos');
+$expo = mysqli_real_escape_string($link, $exposure);
 
 if ($haveGpx) { # fileUploads will set true, if 'validate' & gpx file present
     # Extract trailhead lat & lng from gpx file
     $cwd = getcwd();
-    $bloc = strpos($cwd,"build");
-    $basedir = substr($cwd,0,$bloc);
+    $bloc = strpos($cwd, "build");
+    $basedir = substr($cwd, 0, $bloc);
     $gpxupload = $basedir . 'gpx/' . $hikeGpx;
     $gpxdat = file_get_contents($gpxupload);
     if ($gpxdat === false) {
-        $nord = $pstyle . 'Could not read ' . $hikeGpx . 
+        $nord = $pstyle . 'Could not read ' . $hikeGpx .
             ': contact Site Master</p>';
         die($nord);
     }
-    $trksegloc = strpos($gpxdat,"<trkpt lat=");
-    $trksubstr = substr($gpxdat,$trksegloc,100);
-    $latloc = strpos($trksubstr,"lat=") + 5;
-    $latend = strpos($trksubstr,'" lon=');
+    $trksegloc = strpos($gpxdat, "<trkpt lat=");
+    $trksubstr = substr($gpxdat, $trksegloc, 100);
+    $latloc = strpos($trksubstr, "lat=") + 5;
+    $latend = strpos($trksubstr, '" lon=');
     $latlgth = $latend - $latloc;
-    $lat = substr($trksubstr,$latloc,$latlgth);
-    $lonloc = strpos($trksubstr,"lon=") + 5;
-    $lonend = strpos($trksubstr,">") - 1;
+    $lat = substr($trksubstr, $latloc, $latlgth);
+    $lonloc = strpos($trksubstr, "lon=") + 5;
+    $lonend = strpos($trksubstr, ">") - 1;
     $lonlgth = $lonend - $lonloc;
-    $lng = substr($trksubstr,$lonloc,$lonlgth);
+    $lng = substr($trksubstr, $lonloc, $lonlgth);
 }
 if ($imageFile1) { # fileUploads.php may set true if 'validate' and 1 or 2 present
     $aoimg1 = $hikeOthrImage1;
@@ -201,20 +206,20 @@ if ($imageFile1) { # fileUploads.php may set true if 'validate' and 1 or 2 prese
 if ($imageFile2) {
     $aoimg2 = $hikeOthrImage2;
 }
-$url1 = filter_input(INPUT_POST,'photo1');
-$purl1 = mysqli_real_escape_string($link,$url1);
-$url2 = filter_input(INPUT_POST,'photo2');
-$purl2 = mysqli_real_escape_string($link,$url2);
-$gdirs = filter_input(INPUT_POST,'dirs');
-$dirs = mysqli_real_escape_string($link,$gdirs);
-$rawtips = filter_input(INPUT_POST,'tipstxt');
-if (substr($rawtips,0,10) !== '[OPTIONAL]') {
-    $tips = mysqli_real_escape_string($link,$rawtips);
+$url1 = filter_input(INPUT_POST, 'photo1');
+$purl1 = mysqli_real_escape_string($link, $url1);
+$url2 = filter_input(INPUT_POST, 'photo2');
+$purl2 = mysqli_real_escape_string($link, $url2);
+$gdirs = filter_input(INPUT_POST, 'dirs');
+$dirs = mysqli_real_escape_string($link, $gdirs);
+$rawtips = filter_input(INPUT_POST, 'tipstxt');
+if (substr($rawtips, 0, 10) !== '[OPTIONAL]') {
+    $tips = mysqli_real_escape_string($link, $rawtips);
 } else {
     $tips = '';
 }
-$hikeDetails = filter_input(INPUT_POST,'hiketxt');
-$info = mysqli_real_escape_string($link,$hikeDetails);
+$hikeDetails = filter_input(INPUT_POST, 'hiketxt');
+$info = mysqli_real_escape_string($link, $hikeDetails);
 # Now the updates (if any) can be stored in the EHIKES database
 $ereq = "UPDATE IGNORE EHIKES SET pgTitle = '{$hname}',stat = '{$status}'," .
         "locale = '{$loc}',logistics = '{$logistics}',marker = '{$mrkr}'," .
@@ -237,9 +242,9 @@ if ($haveGpx) {
 }
 $ereq .= ",purl1 = '{$url1}',purl2 = '{$url2}',dirs = '{$dirs}',tips = '{$tips}'," .
     "info = '{$info}' WHERE indxNo = '{$hikeNo}';";
-$ehresults = mysqli_query($link,$ereq);
+$ehresults = mysqli_query($link, $ereq);
 if (!$ehresults) {
-    die ("validateHike.php: Failed to update EHIKES: " . mysqli_error($link));
+    die("validateHike.php: Failed to update EHIKES: " . mysqli_error($link));
 }
 mysqli_free_result($ehresults);
 
@@ -269,9 +274,9 @@ for ($w=0; $w<count($RTypes); $w++) { # this includes all, even empty...
 }
 /* also get a count of existing entries in the EREFS table for this hike */
 $ecreq = "SELECT refId FROM EREFS WHERE indxNo = '{$hikeNo}';";
-$ecntq = mysqli_query($link,$ecreq);
+$ecntq = mysqli_query($link, $ecreq);
 if (!$ecntq) {
-    die ("validateHike:php: Failed to extract refId's from EREFS: " . mysqli_error($link));
+    die("validateHike:php: Failed to extract refId's from EREFS: " . mysqli_error($link));
 }
 $exrows = mysqli_num_rows($ecntq);
 if ($exrows === 0) {
@@ -280,18 +285,18 @@ if ($exrows === 0) {
      * If $noOfRefs = 0, nothing will happen.
      */
     for ($r=0; $r<$noOfRefs; $r++) { # covers the case for noOfRefs = 0
-        $a = mysqli_real_escape_string($link,$RefTypes[$r]);
-        $b = mysqli_real_escape_string($link,$RefItems1[$r]);
-        $c = mysqli_real_escape_string($link,$RefItems2[$r]);
+        $a = mysqli_real_escape_string($link, $RefTypes[$r]);
+        $b = mysqli_real_escape_string($link, $RefItems1[$r]);
+        $c = mysqli_real_escape_string($link, $RefItems2[$r]);
         $erreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES (" .
             "'{$hikeNo}','{$a}','{$b}','{$c}');";
-        $newes = mysqli_query($link,$erreq);
+        $newes = mysqli_query($link, $erreq);
         if (!$newes) {
-            die ("validateHike.php: Failed to insert into EREFS item {$r} " . mysqli_error($link));
+            die("validateHike.php: Failed to insert into EREFS item {$r} " . mysqli_error($link));
         }
     }
     mysqli_free_result($newes);
-} else { 
+} else {
     /* Some records already exist in the EREFS table for this hike;
      * Form an array of refIds for this set of existing records
      * (they may not be sequentially numbered).
@@ -301,25 +306,25 @@ if ($exrows === 0) {
      */
     $exids = [];  # the array of refId's for existing records in EREFS
     while ($exdat = mysqli_fetch_row($ecntq)) {
-        array_push($exids,$exdat[0]);
+        array_push($exids, $exdat[0]);
     }
     $deletes = false;
-    $ups = []; # refIds to be updated 
+    $ups = []; # refIds to be updated
     # one of three situations can exist, as expressed by the following 'ifs'
     if ($noOfRefs > $exrows) {
         # all existing refs will be updated (later), and new ones inserted here:
         for ($a=0; $a<$noOfRefs; $a++) {
             if ($a < $exrows) {
-                array_push($ups,$exids[$a]);
+                array_push($ups, $exids[$a]);
             } else {
-                $x = mysqli_real_escape_string($link,$RefTypes[$a]);
-                $y = mysqli_real_escape_string($link,$RefItems1[$a]);
-                $z = mysqli_real_escape_string($link,$RefItems2[$a]);
+                $x = mysqli_real_escape_string($link, $RefTypes[$a]);
+                $y = mysqli_real_escape_string($link, $RefItems1[$a]);
+                $z = mysqli_real_escape_string($link, $RefItems2[$a]);
                 $insrefreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) " .
                     "VALUES ('{$hikeNo}','{$x}','{$y}','{$z}');";
-                $ins = mysqli_query($link,$insrefreq);
+                $ins = mysqli_query($link, $insrefreq);
                 if (!$ins) {
-                    die ("validateHike.php: Could not INSERT into EREFS: " .
+                    die("validateHike.php: Could not INSERT into EREFS: " .
                         mysqli_error($link));
                 }
             }
@@ -331,25 +336,25 @@ if ($exrows === 0) {
             $deletes = true;
             $dels = [];
             if ($b < $noOfRefs) {
-                array_push($ups,$exids[$b]);
+                array_push($ups, $exids[$b]);
             } else {
-                array_push($dels,$exids[$b]);
+                array_push($dels, $exids[$b]);
             }
         }
         mysqli_free_result($remrow);
     } else {  # both are equal, all existing get updated
         for ($c=0; $c<$noOfRefs; $c++) {
-            array_push($ups,$exids[$c]);
+            array_push($ups, $exids[$c]);
         }
     }
     # Now perform the updates: (indxNo is already good for these)
     for ($d=0; $d<count($ups); $d++) {
-        $i = mysqli_real_escape_string($link,$RefTypes[$d]);
-        $j = mysqli_real_escape_string($link,$RefItems1[$d]);
-        $k = mysqli_real_escape_string($link,$RefItems2[$d]);
+        $i = mysqli_real_escape_string($link, $RefTypes[$d]);
+        $j = mysqli_real_escape_string($link, $RefItems1[$d]);
+        $k = mysqli_real_escape_string($link, $RefItems2[$d]);
         $updtreq = "UPDATE EREFS SET rtype = '{$i}',rit1 = '{$j}'," .
             "rit2 = '{$k}' WHERE refId = {$ups[$d]};";
-        $updt = mysqli_query($link,$updtreq);
+        $updt = mysqli_query($link, $updtreq);
         if (!$updt) {
             die("validateHike.php: Could not UPDATE EREFS: " . mysqli_error($link));
         }
@@ -358,7 +363,7 @@ if ($exrows === 0) {
     if ($deletes) {
         for ($k=0; $k<count($dels); $k++) {
             $delref = "DELETE FROM EREFS WHERE refId = {$dels[$k]};";
-            $remrow = mysqli_query($link,$delref);
+            $remrow = mysqli_query($link, $delref);
             if (!remrow) {
                 die("validateHike.php: Failed to delete from EREFS: " . mysqli_error($link));
             }
@@ -381,7 +386,7 @@ $Pcots = [];
 /* get a count of items actually specified: */
 $noOfProps = 0;
 for ($w=0; $w<count($P_urls); $w++) { # this includes all, even empty...
-    /* There may be non-sequential data entered in form by user, 
+    /* There may be non-sequential data entered in form by user,
      * so form arrays that ARE sequential
      */
     if ($P_urls[$w] !== '') {
@@ -394,32 +399,32 @@ for ($w=0; $w<count($P_urls); $w++) { # this includes all, even empty...
 /* also get a count of existing entries in the EGPSDAT table for this hike */
 $pidreq = "SELECT datId FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND " .
         "datType = 'P';";
-$pidq = mysqli_query($link,$pidreq);
+$pidq = mysqli_query($link, $pidreq);
 if (!$pidq) {
-    die ("validateHike:php: Failed to extract datId's from EGPSDAT for " .
+    die("validateHike:php: Failed to extract datId's from EGPSDAT for " .
             "Proposed Data: " . mysqli_error($link));
 }
 $prows = mysqli_num_rows($pidq);
 if ($prows === 0) {
-    /* There is no existing Proposed Data in EGPSDAT for this hike; 
+    /* There is no existing Proposed Data in EGPSDAT for this hike;
      * no UPDATES to be performed. All posted items, if any, will be INSERTED;
      * If $noOfProps = 0, nothing will happen.
      */
     for ($r=0; $r<$noOfProps; $r++) { # covers the case for $noOfProps = 0
-        $a = mysqli_real_escape_string($link,$Plbls[$r]);
-        $b = mysqli_real_escape_string($link,$Purls[$r]);
-        $c = mysqli_real_escape_string($link,$Pcots[$r]);
+        $a = mysqli_real_escape_string($link, $Plbls[$r]);
+        $b = mysqli_real_escape_string($link, $Purls[$r]);
+        $c = mysqli_real_escape_string($link, $Pcots[$r]);
         $newpreq = "INSERT INTO EGPSDAT (indxNo,datType,label,url," .
             "clickText) VALUES ('{$hikeNo}','P','{$a}','{$b}','{$c}');";
         #echo $newpreq;
-        $newps = mysqli_query($link,$newpreq);
+        $newps = mysqli_query($link, $newpreq);
         if (!$newps) {
-            die ("validateHike.php: Failed to insert into EGPSDAT Proposed " .
+            die("validateHike.php: Failed to insert into EGPSDAT Proposed " .
                 "Data item {$r} " . mysqli_error($link));
         }
     }
     mysqli_free_result($newps);
-} else { 
+} else {
     /* Some records already exist in the EGPSDAT table for this hike;
      * Form an array of datId's for this set of existing records
      * (they may not be sequentially numbered).
@@ -429,25 +434,25 @@ if ($prows === 0) {
      */
     $expids = [];  # the array of datId's for existing records in EGPSDAT
     while ($expdat = mysqli_fetch_row($pidq)) {
-        array_push($expids,$expdat[0]);
+        array_push($expids, $expdat[0]);
     }
     $deletes = false;
-    $ups = []; # refIds to be updated 
+    $ups = []; # refIds to be updated
     # one of three situations can exist, as expressed by the following 'ifs'
     if ($noOfProps > $prows) {
         # all existing 'props' will be updated (later), and new ones inserted here:
         for ($a=0; $a<$noOfProps; $a++) {
             if ($a < $prows) {
-                array_push($ups,$expids[$a]);
+                array_push($ups, $expids[$a]);
             } else {
-                $x = mysqli_real_escape_string($link,$Plbls[$a]);
-                $y = mysqli_real_escape_string($link,$Purls[$a]);
-                $z = mysqli_real_escape_string($link,$Pcots[$a]);
+                $x = mysqli_real_escape_string($link, $Plbls[$a]);
+                $y = mysqli_real_escape_string($link, $Purls[$a]);
+                $z = mysqli_real_escape_string($link, $Pcots[$a]);
                 $insPreq = "INSERT INTO EGPSDAT (indxNo,datType,label," .
                     "url,clickText) VALUES ('{$hikeNo}','P','{$x}','{$y}','{$z}');";
-                $insq = mysqli_query($link,$insPreq);
+                $insq = mysqli_query($link, $insPreq);
                 if (!$insq) {
-                    die ("validateHike.php: Could not INSERT into EGPSDAT for " .
+                    die("validateHike.php: Could not INSERT into EGPSDAT for " .
                         "Proposed Data item " . $a . ": " . mysqli_error($link));
                 }
             }
@@ -459,26 +464,26 @@ if ($prows === 0) {
             $deletes = true;
             $dels = [];
             if ($b < $noOfProps) {
-                array_push($ups,$expids[$b]);
+                array_push($ups, $expids[$b]);
             } else {
-                array_push($dels,$expids[$b]);
+                array_push($dels, $expids[$b]);
             }
         }
     } else {  # both are equal, all existing get updated
         for ($c=0; $c<$noOfProps; $c++) {
-            array_push($ups,$expids[$c]);
+            array_push($ups, $expids[$c]);
         }
     }
     # Now perform the updates: (indxNo & datType are already good for these)
     for ($d=0; $d<count($ups); $d++) {
-        $i = mysqli_real_escape_string($link,$Plbls[$d]);
-        $j = mysqli_real_escape_string($link,$Purls[$d]);
-        $k = mysqli_real_escape_string($link,$Pcots[$d]);
+        $i = mysqli_real_escape_string($link, $Plbls[$d]);
+        $j = mysqli_real_escape_string($link, $Purls[$d]);
+        $k = mysqli_real_escape_string($link, $Pcots[$d]);
         $updtpreq = "UPDATE EGPSDAT SET label = '{$i}',url = '{$j}'," .
             "clickText = '{$k}' WHERE datId = {$ups[$d]};";
-        $updtp = mysqli_query($link,$updtpreq);
+        $updtp = mysqli_query($link, $updtpreq);
         if (!$updtp) {
-            die("validateHike.php: Could not UPDATE EGPSDAT item " . $d . 
+            die("validateHike.php: Could not UPDATE EGPSDAT item " . $d .
                 ": " . mysqli_error($link));
         }
     }
@@ -486,9 +491,9 @@ if ($prows === 0) {
     if ($deletes) {
         for ($k=0; $k<count($dels); $k++) {
             $delref = "DELETE FROM EGPSDAT WHERE datId = {$dels[$k]};";
-            $remrow = mysqli_query($link,$delref);
+            $remrow = mysqli_query($link, $delref);
             if (!remrow) {
-                die("validateHike.php: Failed to delete from EGPSDAT: " . 
+                die("validateHike.php: Failed to delete from EGPSDAT: " .
                     mysqli_error($link));
             }
         }
@@ -508,7 +513,7 @@ $Acots = [];
 /* get a count of items actually specified: */
 $noOfActs = 0;
 for ($w=0; $w<count($A_urls); $w++) { # this includes all, even empty...
-    /* There may be non-sequential data entered in form by user, 
+    /* There may be non-sequential data entered in form by user,
      * so form arrays that ARE sequential
      */
     if ($A_urls[$w] !== '') {
@@ -521,32 +526,32 @@ for ($w=0; $w<count($A_urls); $w++) { # this includes all, even empty...
 /* also get a count of existing entries in the EGPSDAT table for this hike */
 $aidreq = "SELECT datId FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND " .
         "datType = 'A';";
-$aidq = mysqli_query($link,$aidreq);
+$aidq = mysqli_query($link, $aidreq);
 if (!$aidq) {
-    die ("validateHike:php: Failed to extract datId's from EGPSDAT for " .
+    die("validateHike:php: Failed to extract datId's from EGPSDAT for " .
             "Actual Data: " . mysqli_error($link));
 }
 $arows = mysqli_num_rows($aidq);
 if ($arows === 0) {
-    /* There is no existing Proposed Data in EGPSDAT for this hike; 
+    /* There is no existing Proposed Data in EGPSDAT for this hike;
      * no UPDATES to be performed. All posted items, if any, will be INSERTED;
      * If $noOfProps = 0, nothing will happen.
      */
     for ($r=0; $r<$noOfActs; $r++) { # covers the case for $noOfActs = 0
-        $a = mysqli_real_escape_string($link,$Albls[$r]);
-        $b = mysqli_real_escape_string($link,$Aurls[$r]);
-        $c = mysqli_real_escape_string($link,$Acots[$r]);
+        $a = mysqli_real_escape_string($link, $Albls[$r]);
+        $b = mysqli_real_escape_string($link, $Aurls[$r]);
+        $c = mysqli_real_escape_string($link, $Acots[$r]);
         $newareq = "INSERT INTO EGPSDAT (indxNo,datType,label,url," .
             "clickText) VALUES ('{$hikeNo}','A','{$a}','{$b}','{$c}');";
         #echo $newpreq;
-        $newas = mysqli_query($link,$newareq);
+        $newas = mysqli_query($link, $newareq);
         if (!$newas) {
-            die ("validateHike.php: Failed to insert into EGPSDAT Actual " .
+            die("validateHike.php: Failed to insert into EGPSDAT Actual " .
                 "Data item {$r} " . mysqli_error($link));
         }
     }
     mysqli_free_result($newps);
-} else { 
+} else {
     /* Some records already exist in the EGPSDAT table for this hike;
      * Form an array of datId's for this set of existing records
      * (they may not be sequentially numbered).
@@ -556,25 +561,25 @@ if ($arows === 0) {
      */
     $exaids = [];  # the array of datId's for existing records in EGPSDAT
     while ($exadat = mysqli_fetch_row($aidq)) {
-        array_push($exaids,$exadat[0]);
+        array_push($exaids, $exadat[0]);
     }
     $deletes = false;
-    $ups = []; # refIds to be updated 
+    $ups = []; # refIds to be updated
     # one of three situations can exist, as expressed by the following 'ifs'
     if ($noOfActs > $arows) {
         # all existing 'acts' will be updated (later), and new ones inserted here:
         for ($a=0; $a<$noOfActs; $a++) {
             if ($a < $arows) {
-                array_push($ups,$exaids[$a]);
+                array_push($ups, $exaids[$a]);
             } else {
-                $x = mysqli_real_escape_string($link,$Albls[$a]);
-                $y = mysqli_real_escape_string($link,$Aurls[$a]);
-                $z = mysqli_real_escape_string($link,$Acots[$a]);
+                $x = mysqli_real_escape_string($link, $Albls[$a]);
+                $y = mysqli_real_escape_string($link, $Aurls[$a]);
+                $z = mysqli_real_escape_string($link, $Acots[$a]);
                 $insAreq = "INSERT INTO EGPSDAT (indxNo,datType,label," .
                     "url,clickText) VALUES ('{$hikeNo}','A','{$x}','{$y}','{$z}');";
-                $insaq = mysqli_query($link,$insAreq);
+                $insaq = mysqli_query($link, $insAreq);
                 if (!$insaq) {
-                    die ("validateHike.php: Could not INSERT into EGPSDAT for " .
+                    die("validateHike.php: Could not INSERT into EGPSDAT for " .
                         "Actual Data item " . $a . ": " . mysqli_error($link));
                 }
             }
@@ -586,26 +591,26 @@ if ($arows === 0) {
             $deletes = true;
             $dels = [];
             if ($b < $noOfActs) {
-                array_push($ups,$exaids[$b]);
+                array_push($ups, $exaids[$b]);
             } else {
-                array_push($dels,$exaids[$b]);
+                array_push($dels, $exaids[$b]);
             }
         }
     } else {  # both are equal, all existing get updated
         for ($c=0; $c<$noOfActs; $c++) {
-            array_push($ups,$exaids[$c]);
+            array_push($ups, $exaids[$c]);
         }
     }
     # Now perform the updates: (indxNo & datType are already good for these)
     for ($d=0; $d<count($ups); $d++) {
-        $i = mysqli_real_escape_string($link,$Albls[$d]);
-        $j = mysqli_real_escape_string($link,$Aurls[$d]);
-        $k = mysqli_real_escape_string($link,$Acots[$d]);
+        $i = mysqli_real_escape_string($link, $Albls[$d]);
+        $j = mysqli_real_escape_string($link, $Aurls[$d]);
+        $k = mysqli_real_escape_string($link, $Acots[$d]);
         $updtareq = "UPDATE EGPSDAT SET label = '{$i}',url = '{$j}'," .
             "clickText = '{$k}' WHERE datId = {$ups[$d]};";
-        $updta = mysqli_query($link,$updtareq);
+        $updta = mysqli_query($link, $updtareq);
         if (!$updta) {
-            die("validateHike.php: Could not UPDATE EGPSDAT 'A' item " . $d . 
+            die("validateHike.php: Could not UPDATE EGPSDAT 'A' item " . $d .
                 ": " . mysqli_error($link));
         }
     }
@@ -613,9 +618,9 @@ if ($arows === 0) {
     if ($deletes) {
         for ($k=0; $k<count($dels); $k++) {
             $delref = "DELETE FROM EGPSDAT WHERE datId = {$dels[$k]};";
-            $remrow = mysqli_query($link,$delref);
+            $remrow = mysqli_query($link, $delref);
             if (!remrow) {
-                die("validateHike.php: Failed to delete from EGPSDAT: " . 
+                die("validateHike.php: Failed to delete from EGPSDAT: " .
                     mysqli_error($link));
             }
         }

@@ -27,7 +27,7 @@
 </div>
 
 <div><br />
-<?php 
+<?php
     require "../php/TblConstructor.php";
 ?>
 </div>

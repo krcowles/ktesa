@@ -1,6 +1,6 @@
 <?php
 require_once '../mysql/setenv.php';
-$act = filter_input(INPUT_GET,'act');
+$act = filter_input(INPUT_GET, 'act');
 if ($act === 'rel') {
     $msg = "Publish";
 } elseif ($act === 'del') {

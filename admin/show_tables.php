@@ -26,14 +26,14 @@ require_once '../mysql/setenv.php';
 <p id="trail">SHOW Database Tables</p>
 <div style="margin-left:16px;font-size:18px;">
 <?php
-    $req = mysqli_query($link,"SHOW TABLES;");
-    if (!$req) {
-        die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
-    }
+    $req = mysqli_query($link, "SHOW TABLES;");
+if (!$req) {
+    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
+}
     echo "<p>Results from SHOW TABLES:</p><ul>";
-    while ($row = mysqli_fetch_row($req)) {
-        echo "<li>" . $row[0] . "</li>";
-    }
+while ($row = mysqli_fetch_row($req)) {
+    echo "<li>" . $row[0] . "</li>";
+}
     echo "</ul>";
 ?>
     <p>DONE</p>

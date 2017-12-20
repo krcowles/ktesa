@@ -1,6 +1,6 @@
 <?php
 require_once '../mysql/setenv.php';
-$hikeNo = filter_input(INPUT_GET,'hno');
+$hikeNo = filter_input(INPUT_GET, 'hno');
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -24,7 +24,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
 <div style="margin-left:16px;font-size:22px">
     <?php
     $oldquery = "SELECT * FROM EHIKES WHERE indxNo = {$hikeNo};";
-    $ehike = mysqli_query($link,$oldquery);
+    $ehike = mysqli_query($link, $oldquery);
     if (!$ehike) {
         die("publish.php: EHIKE could not be retrieved: " . mysqli_error($link));
     }
@@ -33,39 +33,39 @@ $hikeNo = filter_input(INPUT_GET,'hno');
     } else {
         $hike = mysqli_fetch_assoc($ehike);
         $state = $hike['stat'];
-        $status = substr($state,0,3);
+        $status = substr($state, 0, 3);
         if (strlen($state) > 3) {
-            $pubHike = substr($state,3,strlen($state)-3);
+            $pubHike = substr($state, 3, strlen($state)-3);
             if ($pubHike <= 0) {
                 die("publish.php: Impossible hikeNo in HIKES");
             }
         }
-        $pg = mysqli_real_escape_string($link,$hike['pgTitle']);
-        $ud = mysqli_real_escape_string($link,$hike['usrid']);
-        $lo = mysqli_real_escape_string($link,$hike['locale']);
-        $mr = mysqli_real_escape_string($link,$hike['marker']);
-        $co = mysqli_real_escape_string($link,$hike['collection']);
-        $cg = mysqli_real_escape_string($link,$hike['cgroup']);
-        $cn = mysqli_real_escape_string($link,$hike['cname']);
-        $lg = mysqli_real_escape_string($link,$hike['logistics']);
-        $mi = mysqli_real_escape_string($link,$hike['miles']);
-        $ft = mysqli_real_escape_string($link,$hike['feet']);
-        $df = mysqli_real_escape_string($link,$hike['diff']);
-        $fa = mysqli_real_escape_string($link,$hike['fac']);
-        $ww = mysqli_real_escape_string($link,$hike['wow']);
-        $sn = mysqli_real_escape_string($link,$hike['seasons']);
-        $ex = mysqli_real_escape_string($link,$hike['expo']);
-        $gx = mysqli_real_escape_string($link,$hike['gpx']);
-        $tk = mysqli_real_escape_string($link,$hike['trk']);
-        $la = mysqli_real_escape_string($link,$hike['lat']);
-        $ln = mysqli_real_escape_string($link,$hike['lng']);
-        $a1 = mysqli_real_escape_string($link,$hike['aoimg1']);
-        $a2 = mysqli_real_escape_string($link,$hike['aoimg2']);
-        $p1 = mysqli_real_escape_string($link,$hike['purl1']);
-        $p2 = mysqli_real_escape_string($link,$hike['purl2']);
-        $dr = mysqli_real_escape_string($link,$hike['dirs']);
-        $tp = mysqli_real_escape_string($link,$hike['tips']);
-        $in = mysqli_real_escape_string($link,$hike['info']);
+        $pg = mysqli_real_escape_string($link, $hike['pgTitle']);
+        $ud = mysqli_real_escape_string($link, $hike['usrid']);
+        $lo = mysqli_real_escape_string($link, $hike['locale']);
+        $mr = mysqli_real_escape_string($link, $hike['marker']);
+        $co = mysqli_real_escape_string($link, $hike['collection']);
+        $cg = mysqli_real_escape_string($link, $hike['cgroup']);
+        $cn = mysqli_real_escape_string($link, $hike['cname']);
+        $lg = mysqli_real_escape_string($link, $hike['logistics']);
+        $mi = mysqli_real_escape_string($link, $hike['miles']);
+        $ft = mysqli_real_escape_string($link, $hike['feet']);
+        $df = mysqli_real_escape_string($link, $hike['diff']);
+        $fa = mysqli_real_escape_string($link, $hike['fac']);
+        $ww = mysqli_real_escape_string($link, $hike['wow']);
+        $sn = mysqli_real_escape_string($link, $hike['seasons']);
+        $ex = mysqli_real_escape_string($link, $hike['expo']);
+        $gx = mysqli_real_escape_string($link, $hike['gpx']);
+        $tk = mysqli_real_escape_string($link, $hike['trk']);
+        $la = mysqli_real_escape_string($link, $hike['lat']);
+        $ln = mysqli_real_escape_string($link, $hike['lng']);
+        $a1 = mysqli_real_escape_string($link, $hike['aoimg1']);
+        $a2 = mysqli_real_escape_string($link, $hike['aoimg2']);
+        $p1 = mysqli_real_escape_string($link, $hike['purl1']);
+        $p2 = mysqli_real_escape_string($link, $hike['purl2']);
+        $dr = mysqli_real_escape_string($link, $hike['dirs']);
+        $tp = mysqli_real_escape_string($link, $hike['tips']);
+        $in = mysqli_real_escape_string($link, $hike['info']);
         if ($status === 'pub') { # don't add this hike, update it
             $actionreq = "UPDATE IGNORE HIKES SET pgTitle = '{$pg}',usrid = '{$ud}'," .
                 "locale = '{$lo}',marker = '{$mr}',collection = '{$co}'," .
@@ -88,16 +88,16 @@ $hikeNo = filter_input(INPUT_GET,'hno');
                 "'{$ww}','{$sn}','{$ex}','{$gx}','{$tk}','{$la}','{$ln}'," .
                 "'{$a1}','{$a2}','{$p1}','{$p2}','{$dr}','{$tp}','{$in}');";
         }
-        $action = mysqli_query($link,$actionreq);
+        $action = mysqli_query($link, $actionreq);
         if (!$action) {
-            die("publish.php: Failed to release - HIKES update failed: " . 
+            die("publish.php: Failed to release - HIKES update failed: " .
                 mysqli_error($link));
         }
         mysqli_free_result($action);
         # Assign the hike number for the remaining tables based on status:
         if ($status === 'sub') { # this will be the newly added no.
             $lastidreq = "SELECT indxNo FROM HIKES ORDER BY indxNo DESC LIMIT 1;";
-            $lastid = mysqli_query($link,$lastidreq);
+            $lastid = mysqli_query($link, $lastidreq);
             if (!$lastid) {
                 die("publish.php: Failed to extract added hike number: " .
                     mysqli_error($link));
@@ -113,7 +113,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
                 $updtReq = "INSERT INTO IPTBLS (indxNo,compl,tdname,tdpg," .
                     "tdmiles,tdft,tdexp,tdalb) VALUES ('{$co}','Y'," .
                     "'{$pg}','{$indxNo}','{$mi}','{$ft}','{$ex}','{$p1}');";
-                $updt = mysqli_query($link,$updtReq);
+                $updt = mysqli_query($link, $updtReq);
                 if (!$updt) {
                     die("publish.php: Failed to insert new table entry for " .
                         "index page {$co}: " . mysqli_error($link));
@@ -122,9 +122,9 @@ $hikeNo = filter_input(INPUT_GET,'hno');
                 # Also need to update the Index Page's collection field to
                 # indicate the new hike (used by javascript for infoWindow)
                 $getColReq = "SELECT collection FROM HIKES WHERE indxNo = {$co};";
-                $getCol = mysqli_query($link,$getColReq);
+                $getCol = mysqli_query($link, $getColReq);
                 if (!$getCol) {
-                    die("publish.php: Failed to get 'collection' from Index " . 
+                    die("publish.php: Failed to get 'collection' from Index " .
                         "Page {$co}: " . mysqli_error($link));
                 }
                 $prev = mysqli_fetch_row($getCol);
@@ -133,7 +133,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
                 $newCol = $oldCol . "." . $indxNo;
                 $colReq = "UPDATE HIKES SET collection = '{$newCol}' WHERE " .
                     "indxNo = {$co};";
-                $col = mysqli_query($link,$colReq);
+                $col = mysqli_query($link, $colReq);
                 if (!$col) {
                     die("publish.php: Failed to update the collection field for " .
                         "Index Page {$co}: " . mysqli_error($link));
@@ -143,7 +143,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
         } else { # this will be the hike being modified, already on the site
             $indxNo = $pubHike;
         }
-        /* 
+        /*
          * In the cases of EGPSDAT, EREFS, and ETSV, elements may have been
          * deleted during edit, therefore, remove ALL the old data if the
          * hike was type 'pub'. Insert new data (no UPDATEs, only INSERTs)
@@ -151,7 +151,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
         # ---------------------  GPSDAT -------------------
         if ($status === 'pub') { # eliminate any existing data
             $delreq = "DELETE FROM GPSDAT WHERE indxNo = '{$pubHike}';";
-            $del = mysqli_query($link,$delreq);
+            $del = mysqli_query($link, $delreq);
             if (!$del) {
                 die("publish.php: Failed to delete data from GPSDAT for hike " .
                 "{$pubHike}: " . mysqli_error($link));
@@ -159,19 +159,19 @@ $hikeNo = filter_input(INPUT_GET,'hno');
             mysqli_free_result($del);
         }
         $gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = {$hikeNo};";
-        $gpsdat = mysqli_query($link,$gpsreq);
+        $gpsdat = mysqli_query($link, $gpsreq);
         if (!$gpsdat) {
             die("publish.php: Failed to extract GPS data from EGPSDAT: " .
                 mysqli_error($link));
         }
         while ($ginfo = mysqli_fetch_assoc($gpsdat)) {
-            $dat = mysqli_real_escape_string($link,$ginfo['datType']);
-            $lbl = mysqli_real_escape_string($link,$ginfo['label']);
-            $loc = mysqli_real_escape_string($link,$ginfo['url']);
-            $cot = mysqli_real_escape_string($link,$ginfo['clickText']);
+            $dat = mysqli_real_escape_string($link, $ginfo['datType']);
+            $lbl = mysqli_real_escape_string($link, $ginfo['label']);
+            $loc = mysqli_real_escape_string($link, $ginfo['url']);
+            $cot = mysqli_real_escape_string($link, $ginfo['clickText']);
             $addreq = "INSERT INTO GPSDAT (indxNo,datType,label,url,clickText) " .
                 "VALUES ('{$indxNo}','{$dat}','{$lbl}','{$loc}','{$cot}');";
-            $add = mysqli_query($link,$addreq);
+            $add = mysqli_query($link, $addreq);
             if (!$add) {
                 die("publish.php: Failed to add new GPSDAT for hike {$indxNo}: " .
                     mysqli_error($link));
@@ -182,7 +182,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
         # ---------------------  REFS -------------------
         if ($status === 'pub') {
             $delreq = "DELETE FROM REFS WHERE indxNo = '{$pubHike}';";
-            $del = mysqli_query($link,$delreq);
+            $del = mysqli_query($link, $delreq);
             if (!$del) {
                 die("publish.php: Failed to delete data from REFS for hike " .
                 "{$pubHike}: " . mysqli_error($link));
@@ -190,29 +190,29 @@ $hikeNo = filter_input(INPUT_GET,'hno');
             mysqli_free_result($del);
         }
         $refreq = "SELECT * FROM EREFS WHERE indxNo = {$hikeNo};";
-        $refdat = mysqli_query($link,$refreq);
+        $refdat = mysqli_query($link, $refreq);
         if (!$refdat) {
             die("publish.php: Failed to extract references from EREFS: " .
                 mysqli_error($link));
         }
         while ($ref = mysqli_fetch_assoc($refdat)) {
-            $rt = mysqli_real_escape_string($link,$ref['rtype']);
-            $r1 = mysqli_real_escape_string($link,$ref['rit1']);
-            $r2 = mysqli_real_escape_string($link,$ref['rit2']);
+            $rt = mysqli_real_escape_string($link, $ref['rtype']);
+            $r1 = mysqli_real_escape_string($link, $ref['rit1']);
+            $r2 = mysqli_real_escape_string($link, $ref['rit2']);
             $addrefreq = "INSERT INTO REFS (indxNo,rtype,rit1,rit2) VALUES " .
                 "('{$indxNo}','{$rt}','{$r1}','{$r2}');";
-            $addref = mysqli_query($link,$addrefreq);
+            $addref = mysqli_query($link, $addrefreq);
             if (!$addref) {
                 die("publish.php: Failed to add references for hike {$indxNo}: " .
                     mysqli_error($link));
-            } 
+            }
         }
         mysqli_free_result($addref);
         mysqli_free_result($refdat);
         # ---------------------  TSV -------------------
         if ($status === 'pub') {
             $delreq = "DELETE FROM TSV WHERE indxNo = '{$pubHike}';";
-            $del = mysqli_query($link,$delreq);
+            $del = mysqli_query($link, $delreq);
             if (!$del) {
                 die("publish.php: Failed to delete pics from TSV for hike " .
                 "{$pubHike}: " . mysqli_error($link));
@@ -220,33 +220,33 @@ $hikeNo = filter_input(INPUT_GET,'hno');
             mysqli_free_result($del);
         }
         $picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
-        $picdat = mysqli_query($link,$picreq);
+        $picdat = mysqli_query($link, $picreq);
         if (!$picdat) {
             die("publish.php: Failed to extract pic data from ETSV: " .
                 mysqli_error($link));
-        } 
+        }
         while ($pic = mysqli_fetch_assoc($picdat)) {
-            $f = mysqli_real_escape_string($link,$pic['folder']);
-            $ti = mysqli_real_escape_string($link,$pic['title']);
-            $h = mysqli_real_escape_string($link,$pic['hpg']);
-            $m = mysqli_real_escape_string($link,$pic['mpg']);
-            $de = mysqli_real_escape_string($link,$pic['desc']);
-            $la = mysqli_real_escape_string($link,$pic['lat']);
-            $lo = mysqli_real_escape_string($link,$pic['lng']);
-            $th = mysqli_real_escape_string($link,$pic['thumb']);
-            $al = mysqli_real_escape_string($link,$pic['alblnk']);
-            $dt = mysqli_real_escape_string($link,$pic['date']);
-            $md = mysqli_real_escape_string($link,$pic['mid']);
-            $ht = mysqli_real_escape_string($link,$pic['imgHt']);
-            $wd = mysqli_real_escape_string($link,$pic['imgWd']);
-            $ic = mysqli_real_escape_string($link,$pic['iclr']);
-            $or = mysqli_real_escape_string($link,$pic['org']);
+            $f = mysqli_real_escape_string($link, $pic['folder']);
+            $ti = mysqli_real_escape_string($link, $pic['title']);
+            $h = mysqli_real_escape_string($link, $pic['hpg']);
+            $m = mysqli_real_escape_string($link, $pic['mpg']);
+            $de = mysqli_real_escape_string($link, $pic['desc']);
+            $la = mysqli_real_escape_string($link, $pic['lat']);
+            $lo = mysqli_real_escape_string($link, $pic['lng']);
+            $th = mysqli_real_escape_string($link, $pic['thumb']);
+            $al = mysqli_real_escape_string($link, $pic['alblnk']);
+            $dt = mysqli_real_escape_string($link, $pic['date']);
+            $md = mysqli_real_escape_string($link, $pic['mid']);
+            $ht = mysqli_real_escape_string($link, $pic['imgHt']);
+            $wd = mysqli_real_escape_string($link, $pic['imgWd']);
+            $ic = mysqli_real_escape_string($link, $pic['iclr']);
+            $or = mysqli_real_escape_string($link, $pic['org']);
             $picreq = "INSERT INTO TSV (indxNo,folder,title,hpg,mpg,`desc`," .
                 "lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) VALUES " .
                 "('{$indxNo}','{$f}','{$ti}','{$h}','{$m}','{$de}','{$la}'," .
                 "'{$lo}','{$th}','{$al}','{$dt}','{$md}','{$ht}','{$wd}'," .
                 "'{$ic}','{$or}');";
-            $pics = mysqli_query($link,$picreq);
+            $pics = mysqli_query($link, $picreq);
             if (!$pics) {
                 die("publish.php: Failed to add pic data to TSV for hike " .
                 "{$indxNo}: " . mysqli_error($link));
@@ -259,7 +259,7 @@ $hikeNo = filter_input(INPUT_GET,'hno');
          * Foreign Keys ensures deletion in remaining E-tables
          */
         $remHikeReq = "DELETE FROM EHIKES WHERE indxNo = {$hikeNo};";
-        $remHike = mysqli_query($link,$remHikeReq);
+        $remHike = mysqli_query($link, $remHikeReq);
         if (!$remHike) {
             die("publish.php: Failed to remove hike {$hikeNo} from EHIKES: " .
                 mysqli_error($link));

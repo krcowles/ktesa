@@ -69,13 +69,13 @@ imgWd smallint,
 iclr varchar(32),
 org varchar(1024) );
 tsv;
-$tbl = mysqli_query($link,$newtsv);
+$tbl = mysqli_query($link, $newtsv);
 if (!$tbl) {
     die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
 } else {
     echo '<p>TSV Table created; Definitions are shown in the table below</p>';
 }
-$req = mysqli_query($link,"SHOW TABLES;");
+$req = mysqli_query($link, "SHOW TABLES;");
 if (!$req) {
     die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
 }
@@ -107,18 +107,18 @@ echo "</ul>";
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link,"DESCRIBE TSV;");
-    if (!$tbl) {
-        die("<p>DESCRIBE TSV FAILED: " . mysqli_error($link) . "/p>");
-    } 
-    $first = true;  
-    while ($row = mysqli_fetch_row($tbl)) {
-        echo "<tr>";
-        for ($i=0; $i<count($row); $i++) {
-            echo "<td>" . $row[$i] . "</td>";
-        }
-        echo "</tr>" . PHP_EOL;
+    $tbl = mysqli_query($link, "DESCRIBE TSV;");
+if (!$tbl) {
+    die("<p>DESCRIBE TSV FAILED: " . mysqli_error($link) . "/p>");
+}
+    $first = true;
+while ($row = mysqli_fetch_row($tbl)) {
+    echo "<tr>";
+    for ($i=0; $i<count($row); $i++) {
+        echo "<td>" . $row[$i] . "</td>";
     }
+    echo "</tr>" . PHP_EOL;
+}
     mysqli_close($link);
 ?>
        </tbody>

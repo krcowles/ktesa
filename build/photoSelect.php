@@ -30,7 +30,7 @@ if ($pgType === 'Edit') {
 <div style="margin-left:16px;">
 <?php
 $picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
-$pix = mysqli_query($link,$picreq);
+$pix = mysqli_query($link, $picreq);
 if (!$pix) {
     die("photoSelect.php: Failed to get picdat from ETSV for hike {$hikeNo}: " .
         mysqli_error($link));
@@ -71,7 +71,7 @@ if (mysqli_num_rows($pix) === 0) {
             $pgbox .= '" />Page&nbsp;&nbsp;';
         }
         echo $pgbox;
-        $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" value="' 
+        $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" value="'
             . $phNames[$i];
         if ($mpg[$i] === 'Y') {
             $mpbox .= '" checked />Map<br />' . PHP_EOL;
@@ -84,11 +84,11 @@ if (mysqli_num_rows($pix) === 0) {
                 . $phNames[$i] . '" />Delete<br />';
         }
         echo '<img class="allPhotos" height="200px" width="' . $phWds[$i]
-                . 'px" src="' . $phPics[$i] . '" alt="' . $phNames[$i] 
+                . 'px" src="' . $phPics[$i] . '" alt="' . $phNames[$i]
                 . '" /><br />' . PHP_EOL;
         if ($pgType === 'Edit') {
             $tawd = $phWds[$i] - 12;  # textarea widths don't compute exactly
-            echo '<textarea style="width:' . $tawd . 'px" name="ecap[]">' . 
+            echo '<textarea style="width:' . $tawd . 'px" name="ecap[]">' .
                 $phDescs[$i] . "</textarea>";
         }
         echo "</div>" . PHP_EOL;
@@ -127,6 +127,6 @@ if (mysqli_num_rows($pix) === 0) {
 <script src="photoSelect.js" type="text/javascript"></script>
 <script src="../scripts/picPops.js" type="text/javascript"></script>
 <div class="popupCap"></div>
-<?php 
+<?php
     echo '<input type="hidden" name="usepics" value="' . $inclPix . '" />' . "\n";
     echo '<input type="hidden" name="hikeno" value="' . $hikeNo . '" />' . "\n";

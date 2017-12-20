@@ -1,6 +1,6 @@
 <?php
 require_once '../mysql/setenv.php';
-$hikeNo = filter_input(INPUT_GET,'hno');
+$hikeNo = filter_input(INPUT_GET, 'hno');
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

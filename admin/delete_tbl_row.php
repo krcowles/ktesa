@@ -1,7 +1,7 @@
 <?php
 require_once '../mysql/setenv.php';
-$tbl_type = filter_input(INPUT_GET,'tbl');
-$rowno = filter_input(INPUT_GET,'indx');
+$tbl_type = filter_input(INPUT_GET, 'tbl');
+$rowno = filter_input(INPUT_GET, 'indx');
 if ($tbl_type === 'u') {
     $table = "USERS";
     $idfield = "userid";
@@ -30,16 +30,16 @@ if ($tbl_type === 'u') {
     $table = "GPSDAT";
     $idfield = "datId";
 } else {
-    die ("Unrecognized table type in GET");
+    die("Unrecognized table type in GET");
 }
 $lastid = "SELECT {$idfield} FROM {$table} ORDER BY {$idfield} DESC LIMIT 1";
-$getid = mysqli_query($link,$lastid);
+$getid = mysqli_query($link, $lastid);
 if (!$getid) {
     if (Ktesa_Dbug) {
-        dbug_print('delete_tbl_row.php: Could not retrieve highest index: ' . 
+        dbug_print('delete_tbl_row.php: Could not retrieve highest index: ' .
                 mysqli_error($link));
     } else {
-        user_error_msg($rel_addr,6,0);
+        user_error_msg($rel_addr, 6, 0);
     }
 }
 $lastindx = mysqli_fetch_row($getid);
@@ -51,10 +51,10 @@ if ($rowno > $tblcnt) {
         'return to admin tools and specify a valid row number';
 } else {
     $badrow = false;
-$remrow = mysqli_query($link,"DELETE FROM {$table} WHERE {$idfield} = " . $rowno . ";");
+    $remrow = mysqli_query($link, "DELETE FROM {$table} WHERE {$idfield} = " . $rowno . ";");
     if (!$remrow) {
         $drop_fail = "<p>Could not delete the specified row: " . mysqli_error($link) . "</p>";
-        die ($drop_fail);
+        die($drop_fail);
     } else {
         $good =  "<p>Row " . $rowno . " successfully removed; </p>";
     }
@@ -87,11 +87,11 @@ $remrow = mysqli_query($link,"DELETE FROM {$table} WHERE {$idfield} = " . $rowno
 <p id="trail">Delete Row From HIKES Table</p>
 <div style="margin-left:16px;font-size:18px;"> 
 <?php
-    if($badrow) {
-        echo $toobig;
-    } else {
-        echo $good;
-    }
+if ($badrow) {
+    echo $toobig;
+} else {
+    echo $good;
+}
 ?>
 </div>
 </body>

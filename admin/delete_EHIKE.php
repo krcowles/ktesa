@@ -1,18 +1,18 @@
 <?php
 require_once '../mysql/setenv.php';
-$rowno = filter_input(INPUT_GET,'drow');
+$rowno = filter_input(INPUT_GET, 'drow');
 $lastid = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1";
-$getid = mysqli_query($link,$lastid);
+$getid = mysqli_query($link, $lastid);
 if (!$getid) {
     if (Ktesa_Dbug) {
-        dbug_print('delete_EHIKE.php: Could not retrieve highest indxNo: ' . 
+        dbug_print('delete_EHIKE.php: Could not retrieve highest indxNo: ' .
                 mysqli_error($link));
     } else {
-        user_error_msg($rel_addr,6,0);
+        user_error_msg($rel_addr, 6, 0);
     }
 }
 if (mysqli_num_rows($getid) === 0) {
-    die ("There are no hikes currently listed in EHIKES");
+    die("There are no hikes currently listed in EHIKES");
 }
 $lastindx = mysqli_fetch_row($getid);
 $hikeCnt = $lastindx[0];
@@ -28,7 +28,7 @@ if ($rowno > $hikeCnt) {
      * DELETE HIKE FROM EHIKES....
      */
     $remehq = "DELETE FROM EHIKES WHERE indxNo = {$rowno};";
-    $remeh = mysqli_query($link,$remehq);
+    $remeh = mysqli_query($link, $remehq);
     if (!$remeh) {
         die("delete_EHIKE.php: Failed to delete EHIKES for hike {$rowno}: " .
             mysqli_error($link));
@@ -39,7 +39,7 @@ if ($rowno > $hikeCnt) {
      * DELETE REFS FROM EREFS....
      */
     $remerq = "DELETE FROM EREFS WHERE indxNo = '{$rowno}';";
-    $remer = mysqli_query($link,$remerq);
+    $remer = mysqli_query($link, $remerq);
     if (!$remer) {
         die("delete_EHIKE.php: Failed to remove EREFS for hike {$rowno}: " .
             mysqli_error($link));
@@ -50,7 +50,7 @@ if ($rowno > $hikeCnt) {
      * DELETE FROM EGPSDAT...
      */
     $remegq = "DELETE FROM EGPSDAT WHERE indxNo = '{$rowno}';";
-    $remeg = mysqli_query($link,$remegq);
+    $remeg = mysqli_query($link, $remegq);
     if (!$remeg) {
         die("delete_EHIKE.php: Failed to remove EGPSDAT for hike {$rowno}: " .
             mysqli_error($link));
@@ -61,7 +61,7 @@ if ($rowno > $hikeCnt) {
      * DELETE FROM ETSV...
      */
     $remetq = "DELETE FROM ETSV WHERE indxNo = '{$rowno}';";
-    $remet = mysqli_query($link,$remetq);
+    $remet = mysqli_query($link, $remetq);
     if (!$remet) {
         die("delete_EHIKE.php: Failed to remove ETSV for hike {$rowno}: " .
             mysqli_error($link));
@@ -96,11 +96,11 @@ if ($rowno > $hikeCnt) {
 <p id="trail">Delete Row From HIKES Table</p>
 <div style="margin-left:16px;font-size:18px;"> 
 <?php
-    if($badrow) {
-        echo $toobig;
-    } else {
-        echo $good;
-    }
+if ($badrow) {
+    echo $toobig;
+} else {
+    echo $good;
+}
 ?>
 </div>
 </body>

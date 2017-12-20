@@ -33,21 +33,21 @@ session_start();
         } else {
             echo '<p id="dstat" style="display:none">Closed</p>';
         }
-        $modes = file('sql_modes.ini',FILE_IGNORE_NEW_LINES);
+        $modes = file('sql_modes.ini', FILE_IGNORE_NEW_LINES);
         $cbStates = '[';
         for ($i=0; $i<count($modes); $i++) {
             $opt = $modes[$i];
-            $val = substr($opt,2,strlen($opt)-2);
+            $val = substr($opt, 2, strlen($opt)-2);
             echo '<input class="cb" type="checkbox" name="ons[]" ' .
                     'value="' . $val .  '" />';
             echo '&nbsp;&nbsp;' . $val . '<br />' . PHP_EOL;
-            if (substr($opt,0,1) === 'Y') {
+            if (substr($opt, 0, 1) === 'Y') {
                 $cbStates .= '"Y",';
             } else {
                 $cbStates .= '"N",';
             }
         }
-        $cbStates = substr($cbStates,0,strlen($cbStates)-1);
+        $cbStates = substr($cbStates, 0, strlen($cbStates)-1);
         $cbStates .= ']';
         echo '<br /><input type="submit" value="Apply" />';
         echo '</form>';
