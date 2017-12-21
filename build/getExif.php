@@ -6,7 +6,7 @@
  * the required information in arrays for the calling routine, and then deletes
  * the file. This script does not care which album type has been selected.
  */
-define ("CHUNK",8192);
+define("CHUNK", 8192);
 /*
 function convtTime($GPStime) {
     $hrs = explode("/",$GPStime[0]);
@@ -27,9 +27,9 @@ $kstart = $pcnt - $albOcnt;
 for ($k=$kstart; $k<$pcnt; $k++) {
     # Read the original-sized photo w/metadata
     $orgPhoto = $o[$k];
-    $photoHandle = fopen($orgPhoto,"r");
+    $photoHandle = fopen($orgPhoto, "r");
     if ($photoHandle === false) {
-        $noread = $pstyle . "Failed to open photo" . $k . 
+        $noread = $pstyle . "Failed to open photo" . $k .
             ' url: ' . $orgPhoto . '</p>';
         die($noread);
     }
@@ -40,13 +40,13 @@ for ($k=$kstart; $k<$pcnt; $k++) {
         $contents .= fread($photoHandle, CHUNK);
         $fileSize += CHUNK;
         # Write the truncated file to tmp/
-        $exifFile = fopen($truncFile,"w");
+        $exifFile = fopen($truncFile, "w");
         if ($exifFile === false) {
             $nowrite = $pstyle . 'Could not open file to write photo' . $k . '</p>';
-            die ($nowrite);
+            die($nowrite);
         }
         # Write the truncated file to tmp/
-        fwrite($exifFile,$contents);
+        fwrite($exifFile, $contents);
         fclose($exifFile);
         $exifdata = exif_read_data($truncFile);
         if ($exifdata === false) {
@@ -64,8 +64,8 @@ for ($k=$kstart; $k<$pcnt; $k++) {
             . 'latitude/longitude/date-stamp data. This implies that such '
             . 'photos will not appear on the hike map.</p>';
     } else {
-        $ext = strrpos($exifdata["FileName"],".");
-        $imgName = substr($exifdata["FileName"],0,$ext);
+        $ext = strrpos($exifdata["FileName"], ".");
+        $imgName = substr($exifdata["FileName"], 0, $ext);
         $imgs[$k] = $imgName;
         # NOTE: orientations of 3, and 8 are not addressed here
         $imgHt[$k] = $exifdata["ExifImageLength"];
@@ -75,12 +75,12 @@ for ($k=$kstart; $k<$pcnt; $k++) {
             $tmpval = $imgHt[$k];
             $imgHt[$k] = $imgWd[$k];
             $imgWd[$k] = $tmpval;
-        } 
+        }
         $timeStamp[$k] = $exifdata["DateTimeOriginal"];
         if ($timeStamp[$k] == '') {
                 echo "WARNING: No date/time data found " . 'for ' . $orgPhoto . '</p>';
         }
-        if ( !isset($exifdata["GPSLatitudeRef"]) || !isset($exifdata["GPSLatitude"]) ) {
+        if (!isset($exifdata["GPSLatitudeRef"]) || !isset($exifdata["GPSLatitude"])) {
             $lats[$k] = 0;
             $lngs[$k] = 0;
         } else {
@@ -111,4 +111,3 @@ for ($k=$kstart; $k<$pcnt; $k++) {
                 '</p>';
     }
 }  # end of for each original photo loop
-?>

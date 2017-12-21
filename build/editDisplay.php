@@ -1,6 +1,6 @@
 <?php
 require_once '../mysql/setenv.php';
-$usr = filter_input(INPUT_GET,'usr');
+$usr = filter_input(INPUT_GET, 'usr');
 $age = 'new';
 $show = 'usr';
 ?>

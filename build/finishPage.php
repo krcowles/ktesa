@@ -1,8 +1,8 @@
 <?php
 require_once "../mysql/setenv.php";
-$hikeNo = filter_input(INPUT_GET,'hno');
+$hikeNo = filter_input(INPUT_GET, 'hno');
 $namereq = "SELECT pgTitle from EHIKES WHERE indxNo = {$hikeNo};";
-$name = mysqli_query($link,$namereq);
+$name = mysqli_query($link, $namereq);
 if (!$name) {
     die("finishPage.php: Failed to retrieve hike name from EHIKES for hike {$hikeNo}: " .
         mysqli_error($link));
@@ -11,7 +11,7 @@ $nameDat = mysqli_fetch_row($name);
 $hikeName = $nameDat[0];
 # Determine whether or not there are any images to display:
 $imgReq = "SELECT hpg FROM ETSV WHERE indxNo = {$hikeNo};";
-$imgs = mysqli_query($link,$imgReq);
+$imgs = mysqli_query($link, $imgReq);
 if (!$imgs) {
     die("finishPage.php: Failed to get img count from ETSV for hike {$hikeNo}: " .
         mysqli_error($link));

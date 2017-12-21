@@ -24,8 +24,8 @@
 
 <div id="main" style="padding:16px;">
 <?php
-$hikeNo = filter_input(INPUT_POST,'nno',FILTER_VALIDATE_INT);
-$usr = filter_input(INPUT_POST,'nid');
+$hikeNo = filter_input(INPUT_POST, 'nno', FILTER_VALIDATE_INT);
+$usr = filter_input(INPUT_POST, 'nid');
 ?>
 <form action="addNewPhotos.php" method="POST">
 <input type="hidden" name="xno" value="<?php echo $hikeNo;?>" />
@@ -45,8 +45,8 @@ $j = 0;
 foreach ($incl as $newalb) {
     $alnk = 'lnk' . $newalb;
     $atype = 'alb' . $newalb;
-    $curlids[$j] = filter_input(INPUT_POST,$alnk);
-    if ( (strlen($lnk1) + strlen($curlids[$j])) > 1023 ) {
+    $curlids[$j] = filter_input(INPUT_POST, $alnk);
+    if ((strlen($lnk1) + strlen($curlids[$j])) > 1023) {
         $lnk2 .= "^" . $curlids[$j];
     } else {
         $lnk1 .= "^" . $curlids[$j];
@@ -54,7 +54,7 @@ foreach ($incl as $newalb) {
     if (strlen($lnk2) > 1023) {
         echo "Exceeded field limit for compounded link...";
     }
-    $albums[$j] = filter_input(INPUT_POST,$atype);
+    $albums[$j] = filter_input(INPUT_POST, $atype);
     $j++;
 }
 $caller = "newPhotos";
@@ -105,8 +105,8 @@ for ($i=0; $i<$picno; $i++) {
         . 'margin-right:2px;display:inline-block">';
     echo '<input class="ckbox" type="checkbox" name="incl[]" value="' . $phNames[$i] .'" />';
     echo "&nbsp;&nbsp;Add it";
-    echo '<img class="allPhotos" height="' . $rowHt . 'px" width="' . 
-        $phWds[$i] . 'px" src="' . $phPics[$i] . '" alt="' . $phNames[$i] . 
+    echo '<img class="allPhotos" height="' . $rowHt . 'px" width="' .
+        $phWds[$i] . 'px" src="' . $phPics[$i] . '" alt="' . $phNames[$i] .
         '" /><br />' . PHP_EOL;
     echo "</div>" . PHP_EOL;
 }
@@ -132,40 +132,40 @@ $jsDescs .= ']';
 /* The technique here will be to create a temporary table to store all
  * uploaded pix and then xfr those selected into ETSV on the submitted page
  */
-$nodup = mysqli_query($link,"DROP TABLE IF EXISTS tmpPix");
+$nodup = mysqli_query($link, "DROP TABLE IF EXISTS tmpPix");
 if (!$nodup) {
     die("newPhotos.php: DROP TABLE IF EXISTS failed: " . mysqli_error($link));
 }
 mysqli_free_result($nodup);
 $tmpReq = "CREATE TABLE tmpPix LIKE TSV;";
-$tmp = mysqli_query($link,$tmpReq);
+$tmp = mysqli_query($link, $tmpReq);
 if (!$tmp) {
     die("newPhotos.php: Failed to create tmp table for photos uploaded: " .
         mysqli_error($link));
 }
 mysqli_free_result($tmp);
 for ($j=0; $j<$picno; $j++) {
-    $fl = mysqli_real_escape_string($link,$folders[$j]);
-    $ti = mysqli_real_escape_string($link,$phNames[$j]);
-    $ds = mysqli_real_escape_string($link,$phDescs[$j]);
-    $lt = mysqli_real_escape_string($link,floatval($lats[$j]));
-    $ln = mysqli_real_escape_string($link,floatval($lngs[$j]));
-    $th = mysqli_real_escape_string($link,$thumbs[$j]);
-    $al = mysqli_real_escape_string($link,$alblinks[$j]);
-    $dt = mysqli_real_escape_string($link,$dates[$j]);
-    $md = mysqli_real_escape_string($link,$phPics[$j]);
-    $ih = mysqli_real_escape_string($link,intval($phHts[$j]));
-    $iw = mysqli_real_escape_string($link,intval($pWds[$j]));
-    $ic = mysqli_real_escape_string($link,$icolors[$j]);
-    $og = mysqli_real_escape_string($link,$orgs[$j]);
+    $fl = mysqli_real_escape_string($link, $folders[$j]);
+    $ti = mysqli_real_escape_string($link, $phNames[$j]);
+    $ds = mysqli_real_escape_string($link, $phDescs[$j]);
+    $lt = mysqli_real_escape_string($link, floatval($lats[$j]));
+    $ln = mysqli_real_escape_string($link, floatval($lngs[$j]));
+    $th = mysqli_real_escape_string($link, $thumbs[$j]);
+    $al = mysqli_real_escape_string($link, $alblinks[$j]);
+    $dt = mysqli_real_escape_string($link, $dates[$j]);
+    $md = mysqli_real_escape_string($link, $phPics[$j]);
+    $ih = mysqli_real_escape_string($link, intval($phHts[$j]));
+    $iw = mysqli_real_escape_string($link, intval($pWds[$j]));
+    $ic = mysqli_real_escape_string($link, $icolors[$j]);
+    $og = mysqli_real_escape_string($link, $orgs[$j]);
     $addReq = "INSERT INTO tmpPix (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
         "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) VALUES ({$hikeNo}," .
         "'{$fl}','{$ti}','N','N','{$ds}',{$lt},{$ln},'{$th}','{$al}'," .
         "'{$dt}','{$md}',{$ih},{$iw},'{$ic}','{$og}');";
-    $addem = mysqli_query($link,$addReq);
+    $addem = mysqli_query($link, $addReq);
     if (!$addem) {
         echo "YAPPP" . mysqli_error($link);
-        die("newPhotos.php: Failed to add photos to tmpPix table: " . 
+        die("newPhotos.php: Failed to add photos to tmpPix table: " .
             msyqli_error($link));
     }
     mysqli_free_result($addem);

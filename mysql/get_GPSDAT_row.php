@@ -1,9 +1,9 @@
 <?php
 require_once "setenv.php";
 $query = "SELECT datType,label,url,clickText FROM {$gtable} WHERE indxNo = '{$hikeIndexNo}';";
-$result = mysqli_query($link,$query);
+$result = mysqli_query($link, $query);
 if (!$result) {
-    die ("get_GPSDAT_row.php: Unable to extract references from GPSDAT: " .
+    die("get_GPSDAT_row.php: Unable to extract references from GPSDAT: " .
             mysqli_error());
 }
 $pcnt = 0;

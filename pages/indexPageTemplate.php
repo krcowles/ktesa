@@ -1,20 +1,20 @@
 <?php
 require_once "../mysql/setenv.php";
-$hikeIndexNo = filter_input(INPUT_GET,'hikeIndx');
+$hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
 $table = "HIKES";  # may add Edit/Creation EHIKES later...
 $query = "SELECT pgTitle,lat,lng,aoimg1,dirs,info " .
         "FROM {$table} WHERE indxNo = '{$hikeIndexNo}';";
-$request = mysqli_query($link,$query);
+$request = mysqli_query($link, $query);
 if (!$request) {
-    die ("indexPageTemplate.php: Unable to get Index Page data: " . 
+    die("indexPageTemplate.php: Unable to get Index Page data: " .
         $mysqli_error($link));
 }
 $row = mysqli_fetch_assoc($request);
 $indxTitle = $row['pgTitle'];
 
-$lnkText = str_replace('Index','',$indxTitle);
+$lnkText = str_replace('Index', '', $indxTitle);
 
-$parkMap = unserialize($row['aoimg1']);  # array 
+$parkMap = unserialize($row['aoimg1']);  # array
 $mapsrc = '../images/' . $parkMap[0];
 # currently loading map without ht/width attributes, i.e. $parkMap[1] & [2]
 $parkDirs = $row['dirs'];
@@ -36,7 +36,7 @@ $tblhtml .= '</tr>' . "\n" . '</thead>' . "\n" . '<tbody>' . "\n";
 $ipdat = 'IPTBLS';
 $iptblsreq = "SELECT compl,tdname,tdpg,tdmiles,tdft,tdexp,tdalb " .
     "FROM {$ipdat} WHERE indxNo = '{$hikeIndexNo}';";
-$iptbl = mysqli_query($link,$iptblsreq);
+$iptbl = mysqli_query($link, $iptblsreq);
 if (!$iptbl) {
     die("indexPageTemplate.php: Failed to extract table data from {$ipdat}: " .
         mysqli_error($link));
@@ -60,7 +60,7 @@ if (mysqli_num_rows($iptbl) !== 0) {
             $tblhtml .= '<tr>' . "\n" . '<td>' . $indxTbl['tdname'] .
                 '</td>' . "\n";
             $tblhtml .= '<td><a href="hikePageTemplate.php?hikeIndx=' .
-                $indxTbl['tdpg'] . '" target="_blank">' . "\n" . 
+                $indxTbl['tdpg'] . '" target="_blank">' . "\n" .
                 '<img class="webShift" src="../images/greencheck.jpg"' .
                 ' alt="website click-on icon" /></a></td>' . "\n";
             $tblhtml .= '<td>' . $indxTbl['tdmiles'] . ' miles</td>' . "\n";
@@ -73,7 +73,7 @@ if (mysqli_num_rows($iptbl) !== 0) {
                 '</a></td>' . "\n";
             $tblhtml .= '</tr>' . "\n";
         } else {  # not hiked yet
-            $tblhtml .= '<tr>' . "\n" . '<td>' . $indxTbl['tdname'] . 
+            $tblhtml .= '<tr>' . "\n" . '<td>' . $indxTbl['tdname'] .
                 '</td>' . "\n";
             $tblhtml .= '<td><img class="webShift" ' .
                 'src="../images/x-box.png" alt="box with x" />' .
@@ -95,7 +95,7 @@ if (mysqli_num_rows($iptbl) !== 0) {
         }
     }  # end of while (fetch each table row)
 }
-$tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";  
+$tblhtml .= '</tbody>' . "\n" . '</table>' . "\n";
 mysqli_free_result($iptbl);
 ?>
 <!DOCTYPE html>
@@ -137,13 +137,13 @@ mysqli_free_result($iptbl);
 <p id="tblHdr">Hiking & Walking Opportunities at <?php echo $lnkText;?>:</p>
 </div>
 <div>
-<?php 
-    if ($tblcnt !== 0) {
-        echo $tblhtml;
-    } else {
-        echo '<p style="text-align:center;">No hikes yet associated with this park</p>';
-        echo '<p style="margin-left:16px;">Total no. of hikes read from tblRow: ' . $i . '</p>';
-    }
+<?php
+if ($tblcnt !== 0) {
+    echo $tblhtml;
+} else {
+    echo '<p style="text-align:center;">No hikes yet associated with this park</p>';
+    echo '<p style="margin-left:16px;">Total no. of hikes read from tblRow: ' . $i . '</p>';
+}
 ?>
 </div>
 

@@ -1,7 +1,7 @@
 <?php
 require_once "../mysql/setenv.php";
-$hikeRow = intval(filter_input(INPUT_POST,'hikeno'));
-$usePix = filter_input(INPUT_POST,'usepics');
+$hikeRow = intval(filter_input(INPUT_POST, 'hikeno'));
+$usePix = filter_input(INPUT_POST, 'usepics');
 # indicator for hikePageTemplate.php
 $building = true;
 $usetsv = false;
@@ -15,7 +15,7 @@ if ($usePix == 'YES') {
     $maparray = $_POST['mapit']; # pix checked for inclusion on map
     $noOfMapPix = count($maparray);
     $getPixReq = "SELECT picIdx,title FROM ETSV WHERE indxNo = '{$hikeRow}';";
-    $getPix = mysqli_query($link,$getPixReq);
+    $getPix = mysqli_query($link, $getPixReq);
     if (!$getPix) {
         die("displayHikePg.php: Failed to retrieve picture data for hike " .
                 $hikeRow . " in ETSV: " . mysqli_error($link));
@@ -40,7 +40,7 @@ if ($usePix == 'YES') {
         if ($disph === 'Y' || $dispm === 'Y') {
             $pstatq = "UPDATE ETSV SET hpg = '{$disph}', mpg = '{$dispm}' " .
                 "WHERE picIdx = {$picdata['picIdx']};";
-            $pstat = mysqli_query($link,$pstatq);
+            $pstat = mysqli_query($link, $pstatq);
             if (!$pstat) {
                 die("displayHikePg.php: Failed to update TSV pg setting: " .
                         mysqli_error($link));
@@ -51,9 +51,9 @@ if ($usePix == 'YES') {
 }
 # Set the status field to "sub" (meaning "submitted" as a complete hike
 $subreq = "UPDATE EHIKES SET stat = 'sub' WHERE indxNo = {$hikeRow};";
-$sub =  mysqli_query($link,$subreq);
+$sub =  mysqli_query($link, $subreq);
 if (!$sub) {
-    die ("displayHikePg.php: Failed to change status field in EHIKES: " .
+    die("displayHikePg.php: Failed to change status field in EHIKES: " .
         mysqli_error($link));
 }
 mysqli_free_result($sub);
@@ -66,4 +66,3 @@ if (!mail('krcowles29@gmail.com','Hike Submitted',$hikeRow)) {
     ------------------------------ PIC ROW CONSTRUCTION -------------------------
 */
 include "../pages/hikePageTemplate.php";
-?>

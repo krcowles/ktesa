@@ -3,17 +3,17 @@
 
 <?php
 /* PAGE DISPLAY DEPENDS ON SETTING SELECTED BY USER */
-$geoVar = filter_input(INPUT_GET,"geo");
-$tblVar = filter_input(INPUT_GET,"tbl");
-if($geoVar == "ON") {
+$geoVar = filter_input(INPUT_GET, "geo");
+$tblVar = filter_input(INPUT_GET, "tbl");
+if ($geoVar == "ON") {
     $geoloc = true;
     // $locbox is the map overlay button
     $locBox = '<div id="geoCtrl">Geolocate Me!</div>';
 } else {
     $geoloc = false;
 }
-$pgDivStrt = '';	
-if($tblVar === "T" || $tblVar === "D") {
+$pgDivStrt = '';
+if ($tblVar === "T" || $tblVar === "D") {
     $tbls = true;
     if ($tblVar === 'T') {
         $pgDivStrt .= '<div id="logo">' . "\n" .
@@ -58,22 +58,23 @@ $mstyle = '<style type="text/css">' . "\n" .
         content="Listing of hikes the authors have undertaken in New Mexico" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <?php 
-        if ($tblVar === 'T') {
-            echo '<link href="../styles/logo.css" type="text/css" ' .
-                'rel="stylesheet" />' . "\n";
-        }
-        if ($tbls === false) { 
-            echo $mstyle; }
+    <?php
+    if ($tblVar === 'T') {
+        echo '<link href="../styles/logo.css" type="text/css" ' .
+            'rel="stylesheet" />' . "\n";
+    }
+    if ($tbls === false) {
+        echo $mstyle;
+    }
     ?>
     <link href="../styles/<?php
-        if($tblVar === 'D') {
-                echo 'mapTblPg.css'; 
-        } elseif ($tblVar === 'T') { 
-                echo 'tblPg.css';
-        } else {
-                echo 'mapPg.css';
-        }?>" type="text/css" rel="stylesheet" />
+    if ($tblVar === 'D') {
+            echo 'mapTblPg.css';
+    } elseif ($tblVar === 'T') {
+            echo 'tblPg.css';
+    } else {
+            echo 'mapPg.css';
+    }?>" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery-1.12.1.js"></script>
 </head>
 
@@ -82,7 +83,7 @@ $mstyle = '<style type="text/css">' . "\n" .
 <?php
 if ($tblVar !== 'T') {
     echo '<p id="geoSetting">';
-    if($geoloc === true) {
+    if ($geoloc === true) {
         echo 'ON</p>';
         echo $locBox;
     } else {

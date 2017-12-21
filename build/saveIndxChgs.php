@@ -29,16 +29,16 @@ if ($db === false) {
             'Could not open xml database: contact site master</p>';
     die($emsg);
 }
-$hikeNo = filter_input(INPUT_POST,'hno');
+$hikeNo = filter_input(INPUT_POST, 'hno');
 foreach ($db->row as $hikeLine) {
     if ($hikeLine->indxNo == $hikeNo) {
-        $indxName = filter_input(INPUT_POST,'hname');
+        $indxName = filter_input(INPUT_POST, 'hname');
         $hikeLine->pgTitle = $indxName;
-        $hikeLine->locale = filter_input(INPUT_POST,'locale');
-        $hikeLine->lat = filter_input(INPUT_POST,'hlat');
-        $hikeLine->lng = filter_input(INPUT_POST,'hlon');
-        $hikeLine->dirs = filter_input(INPUT_POST,'gdirs');
-        $hikeLine->hikeInfo = filter_input(INPUT_POST,'info');
+        $hikeLine->locale = filter_input(INPUT_POST, 'locale');
+        $hikeLine->lat = filter_input(INPUT_POST, 'hlat');
+        $hikeLine->lng = filter_input(INPUT_POST, 'hlon');
+        $hikeLine->dirs = filter_input(INPUT_POST, 'gdirs');
+        $hikeLine->hikeInfo = filter_input(INPUT_POST, 'info');
         include "refEdits.php";
         break;
     }
@@ -53,9 +53,9 @@ $lead = '<p style="color:brown;font-size:18px;">' .
 $msgsave = 'have been made to the site</p>';
 $tmpsave = 'are saved temporarily and can be re-edited at any time; ' .
         'To save permanently, re-edit, complete the changes, and submit</p>';
-$submitted = filter_input(INPUT_POST,'savePg');
+$submitted = filter_input(INPUT_POST, 'savePg');
 if ($submitted === 'Site Master') {
-    $passwd = filter_input(INPUT_POST,'mpass');
+    $passwd = filter_input(INPUT_POST, 'mpass');
     if ($passwd !== '000ktesa') {
         die('<p style="color:brown;">Incorrect Password - save not executed</p>');
     }
@@ -64,7 +64,7 @@ if ($submitted === 'Site Master') {
     $db->asXML($database);
     $msgout = $lead . $msgsave;
 } elseif ($submitted === 'Submit for Review') {
-    $msgout = '<p>Your changes for ' . $indxName . 
+    $msgout = '<p>Your changes for ' . $indxName .
             ' have been submitted for review by the site master.</p>';
 } elseif ($submitted === 'Save for Re-edit') {
     $user = false;
@@ -74,7 +74,7 @@ if ($submitted === 'Site Master') {
 } else {
     $emsg = '<p style="color:red;font-size:20px;margin-left:16px;">' .
            'SUBMISSION NOT RECOGNIZED: Contact Site Master</p>';
-    die ($emsg);
+    die($emsg);
 }
 ?>
 <div style="margin-left:16px;">

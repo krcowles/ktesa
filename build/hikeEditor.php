@@ -1,7 +1,7 @@
 <?php
-$usr = filter_input(INPUT_GET,'usr');
-$age = filter_input(INPUT_GET,'age');
-$show = filter_input(INPUT_GET,'show');
+$usr = filter_input(INPUT_GET, 'usr');
+$age = filter_input(INPUT_GET, 'age');
+$show = filter_input(INPUT_GET, 'show');
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -33,7 +33,7 @@ $show = filter_input(INPUT_GET,'show');
     below, you will be presented with an editable version of the hike page.</p>
 </div>
 <div><br />
-<?php 
+<?php
     require "../php/TblConstructor.php";
 ?>
 </div>

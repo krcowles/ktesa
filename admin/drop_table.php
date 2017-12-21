@@ -1,6 +1,6 @@
 <?php
 require_once '../mysql/setenv.php';
-$table = filter_input(INPUT_GET,'tbl');
+$table = filter_input(INPUT_GET, 'tbl');
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -33,16 +33,16 @@ $drop_fail = "<p>Could not delete tbl '{$table}': " . mysqli_error($link) . "</p
 $query_fail = "<p>Query did not succeed: SHOW TABLES</p>";
 # Execute the DROP TABLE command:
 echo "<p>Removing any previous instantiation of table '{$table}':</p>";
-$remtbl = mysqli_query($link,"DROP TABLE {$table};");
+$remtbl = mysqli_query($link, "DROP TABLE {$table};");
 if (!remtbl) {
-    die ($drop_fail);
+    die($drop_fail);
 } else {
     echo "<p>{$table} Table Removed; Remaining tables in mysql database:</p>";
 }
 mysqli_free_result($remtbl);
-$req = mysqli_query($link,"SHOW TABLES");
+$req = mysqli_query($link, "SHOW TABLES");
 if (!$req) {
-    die ($query_fail);
+    die($query_fail);
 }
 echo "<ul>\n";
 while ($row = mysqli_fetch_row($req)) {

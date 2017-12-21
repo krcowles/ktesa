@@ -57,13 +57,13 @@ label varchar(128),
 url varchar(1024),
 clickText varchar(256) );
 gps;
-$tbl = mysqli_query($link,$newdat);
+$tbl = mysqli_query($link, $newdat);
 if (!$tbl) {
     die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
 } else {
     echo '<p>GPSDAT Table created; Definitions are shown in the table below</p>';
 }
-$req = mysqli_query($link,"SHOW TABLES;");
+$req = mysqli_query($link, "SHOW TABLES;");
 if (!$req) {
     die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
 }
@@ -95,18 +95,18 @@ echo "</ul>";
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link,"DESCRIBE GPSDAT;");
-    if (!$tbl) {
-        die("<p>DESCRIBE GPSDAT FAILED: " . mysqli_error($link) . "/p>");
-    } 
-    $first = true;  
-    while ($row = mysqli_fetch_row($tbl)) {
-        echo "<tr>";
-        for ($i=0; $i<count($row); $i++) {
-            echo "<td>" . $row[$i] . "</td>";
-        }
-        echo "</tr>" . PHP_EOL;
+    $tbl = mysqli_query($link, "DESCRIBE GPSDAT;");
+if (!$tbl) {
+    die("<p>DESCRIBE GPSDAT FAILED: " . mysqli_error($link) . "/p>");
+}
+    $first = true;
+while ($row = mysqli_fetch_row($tbl)) {
+    echo "<tr>";
+    for ($i=0; $i<count($row); $i++) {
+        echo "<td>" . $row[$i] . "</td>";
     }
+    echo "</tr>" . PHP_EOL;
+}
     mysqli_close($link);
 ?>
        </tbody>

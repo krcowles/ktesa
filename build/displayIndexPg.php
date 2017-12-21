@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
 
-<?php 
+<?php
 # File Upload Checking & Saving error msgs:
 $fexists1 = '<p style="margin-left:8px;margin-top:-12px;color:brown;"><em>NOTE: ';
 $fexists2 = ' has been previously saved on the server; ' .
@@ -22,7 +22,7 @@ $indxPg = simplexml_load_file($database);
 if ($indxPg === false) {
     $noindxpg = '<p style="color:red;font-size:18px;margin-left:12px>' .
             'Could not load xml database during display Index Page</p>';
-    die ($noindxpg);
+    die($noindxpg);
 }
 foreach ($indxPg->row as $pg) {
     $lastNo = $pg->indxNo;
@@ -30,18 +30,18 @@ foreach ($indxPg->row as $pg) {
 $nxtPg = intval($lastNo->__toString()) + 1;
 $newIndxPg = $indxPg->addChild('row');
 # hike form entry
-$indxTitle = filter_input(INPUT_POST,'hpgTitle');
-$indxLoc = filter_input(INPUT_POST,'locale');
+$indxTitle = filter_input(INPUT_POST, 'hpgTitle');
+$indxLoc = filter_input(INPUT_POST, 'locale');
 # NOTE: No cluster string yet - assigned as hikes are created
-$indxLat = filter_input(INPUT_POST,'lat');
-$indxLng = filter_input(INPUT_POST,'lon');
-$indxDirs = filter_input(INPUT_POST,'dirs');
-$indxInfo = filter_input(INPUT_POST,'hiketxt');
-$newIndxPg->addChild('indxNo',$nxtPg);
-$newIndxPg->addChild('rlock','Create');
-$newIndxPg->addChild('pgTitle',$indxTitle);
-$newIndxPg->addChild('locale',$indxLoc);
-$newIndxPg->addChild('marker','Visitor Ctr');
+$indxLat = filter_input(INPUT_POST, 'lat');
+$indxLng = filter_input(INPUT_POST, 'lon');
+$indxDirs = filter_input(INPUT_POST, 'dirs');
+$indxInfo = filter_input(INPUT_POST, 'hiketxt');
+$newIndxPg->addChild('indxNo', $nxtPg);
+$newIndxPg->addChild('rlock', 'Create');
+$newIndxPg->addChild('pgTitle', $indxTitle);
+$newIndxPg->addChild('locale', $indxLoc);
+$newIndxPg->addChild('marker', 'Visitor Ctr');
 $newIndxPg->addChild('clusterStr');
 $newIndxPg->addChild('clusGrp');
 $newIndxPg->addChild('logistics');
@@ -55,18 +55,18 @@ $newIndxPg->addChild('expo');
 $newIndxPg->addChild('tsv');
 $newIndxPg->addChild('gpxfile');
 $newIndxPg->addChild('trkfile');
-$newIndxPg->addChild('lat',$indxLat);
-$newIndxPg->addChild('lng',$indxLng);
-$newIndxPg->addChild('aoimg1',$parkMapName);
+$newIndxPg->addChild('lat', $indxLat);
+$newIndxPg->addChild('lng', $indxLng);
+$newIndxPg->addChild('aoimg1', $parkMapName);
 $newIndxPg->addChild('aoimg2');
 $newIndxPg->addChild('mpUrl');
 $newIndxPg->addChild('spUrl');
-$newIndxPg->addChild('dirs',$indxDirs);
+$newIndxPg->addChild('dirs', $indxDirs);
 $newIndxPg->addChild('cgName');
 $newIndxPg->addChild('content');
 $newIndxPg->addChild('albLinks');
 $newIndxPg->addChild('tipsTxt');
-$newIndxPg->addChild('hikeInfo',$indxInfo);
+$newIndxPg->addChild('hikeInfo', $indxInfo);
 $indxRefs = $newIndxPg->addChild('refs');
 $newIndxPg->addChild('dataProp');
 $newIndxPg->addChild('dataAct');
@@ -89,40 +89,40 @@ $refLbls = array();
 for ($k=0; $k<$noOfRefs; $k++) {
     switch ($hikeRefTypes[$k]) {
         case 'b':
-            array_push($refLbls,'Book: ');
+            array_push($refLbls, 'Book: ');
             break;
         case 'p':
-            array_push($refLbls,'Photo Essay: ');
+            array_push($refLbls, 'Photo Essay: ');
             break;
         case 'w':
-            array_push($refLbls,'Website: ');
+            array_push($refLbls, 'Website: ');
             break;
         case 'a':
-            array_push($refLbls,'App: ');
+            array_push($refLbls, 'App: ');
             break;
         case 'd':
-            array_push($refLbls,'Downloadable Doc: ');
+            array_push($refLbls, 'Downloadable Doc: ');
             break;
         case 'l':
-            array_push($refLbls,'Blog: ');
+            array_push($refLbls, 'Blog: ');
             break;
         case 'r':
-            array_push($refLbls,'Related Link: ');
+            array_push($refLbls, 'Related Link: ');
             break;
         case 'o':
-            array_push($refLbls,'On-Line Map: ');
+            array_push($refLbls, 'On-Line Map: ');
             break;
         case 'm':
-            array_push($refLbls,'Magazine: ');
+            array_push($refLbls, 'Magazine: ');
             break;
         case 's':
-            array_push($refLbls,'News Article: ');
+            array_push($refLbls, 'News Article: ');
             break;
         case 'g':
-            array_push($refLbls,'Meetup Group: ');
+            array_push($refLbls, 'Meetup Group: ');
             break;
         case 'n':
-            array_push($refLbls,'');
+            array_push($refLbls, '');
             break;
         default:
             echo "Unrecognized reference type passed";
@@ -132,32 +132,32 @@ for ($k=0; $k<$noOfRefs; $k++) {
     a message will appear in this section: No References Found */
  $refhtml = "<fieldset>\n" . '<legend id="fldrefs">References &amp; '
          . 'Links</legend><ul id="refs">' . "\n";
- if ($noOfRefs === 0) {
-     $refhtml .= '<li>No References Found</li>';
- } else {
-     for ($j=0; $j<$noOfRefs; $j++) {
-         $newRefs = $indxRefs->addChild('ref');
-         $newRefs->addChild('rtype',$hikeRefTypes[$j]);
-         if ($hikeRefTypes[$j] === 'n') {
-             # only one item in this list element: the text
-             $refhtml .= '<li>' . $hikeRefItems1[$j] . '</li>';
-         } else {
-             # all other items have two parts + the id label
-             $refhtml .= '<li>' . $refLbls[$j];
-             if ($hikeRefTypes[$j] === 'b' || $hikeRefTypes[$j] === 'p') {
-                 # no links in these
-                 $refhtml .= '<em>' . $hikeRefItems1[$j] . '</em>' . 
-                         $hikeRefItems2[$j] . "</li>\n";
-             } else {
-                 $refhtml .= '<a href="' . $hikeRefItems1[$j] . '" target="_blank">' . 
-                     $hikeRefItems2[$j] . "</a></li>\n";
-             }
-             $newRefs->addChild('rit1',$hikeRefItems1[$j]);
-             $newRefs->addChild('rit2',$hikeRefItems2[$j]);
-         }
-     }  // end of for loop processing
- }  // end of if-else
-$refhtml .= "</ul>\n</fieldset>\n"; 
+if ($noOfRefs === 0) {
+    $refhtml .= '<li>No References Found</li>';
+} else {
+    for ($j=0; $j<$noOfRefs; $j++) {
+        $newRefs = $indxRefs->addChild('ref');
+        $newRefs->addChild('rtype', $hikeRefTypes[$j]);
+        if ($hikeRefTypes[$j] === 'n') {
+            # only one item in this list element: the text
+            $refhtml .= '<li>' . $hikeRefItems1[$j] . '</li>';
+        } else {
+            # all other items have two parts + the id label
+            $refhtml .= '<li>' . $refLbls[$j];
+            if ($hikeRefTypes[$j] === 'b' || $hikeRefTypes[$j] === 'p') {
+                # no links in these
+                $refhtml .= '<em>' . $hikeRefItems1[$j] . '</em>' .
+                        $hikeRefItems2[$j] . "</li>\n";
+            } else {
+                $refhtml .= '<a href="' . $hikeRefItems1[$j] . '" target="_blank">' .
+                    $hikeRefItems2[$j] . "</a></li>\n";
+            }
+            $newRefs->addChild('rit1', $hikeRefItems1[$j]);
+            $newRefs->addChild('rit2', $hikeRefItems2[$j]);
+        }
+    }  // end of for loop processing
+}  // end of if-else
+$refhtml .= "</ul>\n</fieldset>\n";
 ?>
 
 <head>
@@ -181,10 +181,10 @@ $refhtml .= "</ul>\n</fieldset>\n";
 <p id="trail"><?php echo $indxTitle;?></p>
 
 <?php
-    if($parkMapName == '') {
-        $mapMsg = '<p style="color:red;font-size:20px;">Park Map Not Specified</p>';
-        die($mapMsg);
-    } 
+if ($parkMapName == '') {
+    $mapMsg = '<p style="color:red;font-size:20px;">Park Map Not Specified</p>';
+    die($mapMsg);
+}
     $pkmapUpload = $uploads . 'images/' . $parkMapName;
 ?>
 
@@ -205,16 +205,16 @@ $refhtml .= "</ul>\n</fieldset>\n";
 </div>
 <?php
     $siteLoc = '../images/' . $parkMapName;
-    if ( file_exists($siteLoc) ) {
-        echo $fexists1 . $parkMapName . $fexists2 . 
-            '<input id="owpkmap" type="checkbox" name="pkmapchk" />' . $fexists3;
-        $pkmapdup = 'YES';
-    } 
-    if ($parkStat === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($parkMap,$pkmapUpload)) {
-            die("Could not save park map file - contact site master...");
-        }
+if (file_exists($siteLoc)) {
+    echo $fexists1 . $parkMapName . $fexists2 .
+        '<input id="owpkmap" type="checkbox" name="pkmapchk" />' . $fexists3;
+    $pkmapdup = 'YES';
+}
+if ($parkStat === UPLOAD_ERR_OK) {
+    if (!move_uploaded_file($parkMap, $pkmapUpload)) {
+        die("Could not save park map file - contact site master...");
     }
+}
     # Save the locked entry:
     $indxPg->asXML('../data/database.xml');
 ?>

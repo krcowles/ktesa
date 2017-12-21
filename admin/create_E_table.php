@@ -1,7 +1,7 @@
 <?php
 require_once '../mysql/setenv.php';
-$table = filter_input(INPUT_GET,'tbl');
-$reftbl = substr($table,1,(strlen($table)-1));
+$table = filter_input(INPUT_GET, 'tbl');
+$reftbl = substr($table, 1, (strlen($table)-1));
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -50,19 +50,19 @@ $reftbl = substr($table,1,(strlen($table)-1));
 <?php
 echo "<p>mySql Connection Opened</p>";
 $tblreq = "CREATE TABLE {$table} LIKE {$reftbl};";
-$tbl = mysqli_query($link,$tblreq);
+$tbl = mysqli_query($link, $tblreq);
 if (!$tbl) {
-    die("<p>create_E_table.php: Failed to create {$table}: " . 
+    die("<p>create_E_table.php: Failed to create {$table}: " .
         mysqli_error($link));
 }
 $childreq = "ALTER TABLE {$table} ADD CONSTRAINT {$table}_Constraint " .
 "FOREIGN KEY FK_{$table}(indxNo) REFERENCES EHIKES(indxNo) " .
 "ON DELETE CASCADE ON UPDATE CASCADE;";
-$child = mysqli_query($link,$childreq);
+$child = mysqli_query($link, $childreq);
 if (!$child) {
     die("<p>CREATE {$table} failed: " . mysqli_error($link) . "</p>");
-} 
-$req = mysqli_query($link,"SHOW TABLES;");
+}
+$req = mysqli_query($link, "SHOW TABLES;");
 if (!$req) {
     die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
 }
@@ -71,7 +71,7 @@ while ($row = mysqli_fetch_row($req)) {
     echo "<li>" . $row[0] . "</li>";
 }
 echo "</ul>";
-$req = mysqli_query($link,"SHOW TABLES;");
+$req = mysqli_query($link, "SHOW TABLES;");
 ?>
     <p>Description of the EGPSDAT table:</p>
     <table>
@@ -95,18 +95,18 @@ $req = mysqli_query($link,"SHOW TABLES;");
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link,"DESCRIBE {$table};");
-    if (!$tbl) {
-        die("<p>DESCRIBE {$table} FAILED: " . mysqli_error($link) . "/p>");
-    } 
-    $first = true;  
-    while ($row = mysqli_fetch_row($tbl)) {
-        echo "<tr>";
-        for ($i=0; $i<count($row); $i++) {
-            echo "<td>" . $row[$i] . "</td>";
-        }
-        echo "</tr>" . PHP_EOL;
+    $tbl = mysqli_query($link, "DESCRIBE {$table};");
+if (!$tbl) {
+    die("<p>DESCRIBE {$table} FAILED: " . mysqli_error($link) . "/p>");
+}
+    $first = true;
+while ($row = mysqli_fetch_row($tbl)) {
+    echo "<tr>";
+    for ($i=0; $i<count($row); $i++) {
+        echo "<td>" . $row[$i] . "</td>";
     }
+    echo "</tr>" . PHP_EOL;
+}
     mysqli_close($link);
 ?>
        </tbody>

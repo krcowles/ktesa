@@ -42,9 +42,9 @@ foreach ($lines as $line) {
     if (substr($line, 0, 2) == '--' || $line == '') {
         continue;
     }
-     if (substr(trim($line), -1, 1) == ';') {
-         $totalQs++;
-     }
+    if (substr(trim($line), -1, 1) == ';') {
+        $totalQs++;
+    }
 }
 echo "<script type='text/javascript'>var totq = {$totalQs};</script>";
 $qcnt = 0;
@@ -59,16 +59,16 @@ foreach ($lines as $line) {
     $qstr = trim($templine);
     if (substr(trim($line), -1, 1) == ';') {
         // look for create and table name
-        $createTbl = strpos($qstr,"CREATE TABLE");
+        $createTbl = strpos($qstr, "CREATE TABLE");
         if ($createTbl !== false) {
-            $tblLgth = strpos($qstr,'(') - 3 - ($createTbl + 13);
-            $tblName = substr($qstr,$createTbl+14,$tblLgth);
+            $tblLgth = strpos($qstr, '(') - 3 - ($createTbl + 13);
+            $tblName = substr($qstr, $createTbl+14, $tblLgth);
             $gottbl = true;
         }
         // Perform the query
         $req = mysqli_query($link, $qstr);
         if (!$req) {
-            die ("<p>load_all_tables.php: Failed: " .
+            die("<p>load_all_tables.php: Failed: " .
                 mysqli_error($link) . "</p>");
         }
         $qcnt++;
@@ -78,7 +78,7 @@ foreach ($lines as $line) {
             echo "<br />Completed " . $tblName . " at: " . date('l jS \of F Y h:i:s A');
             flush();
         } else {
-            echo "<br />Completed " . substr($qstr,0,32) . date('l jS \of F Y h:i:s A');
+            echo "<br />Completed " . substr($qstr, 0, 32) . date('l jS \of F Y h:i:s A');
             flush();
         }
         $templine = '';    // Reset temp variable to empty

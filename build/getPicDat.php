@@ -4,19 +4,21 @@
  * links, and parses it for the data needed to create hike page photos with
  * links and captions. Other scripts are included.
  */
-function getFlickrDat($photomodel,$size) {
+function getFlickrDat($photomodel, $size)
+{
     $ltrSize = strlen($size);  # NOTE: at least 1 size is two letters
     $offset = 4 + $ltrSize;
     $modelLtr = '"' . $size . '":{';
-    $sizePos = strpos($photomodel,$modelLtr) + $offset;
-    $urlPos = strpos($photomodel, '"url":"',$sizePos) + 7;
+    $sizePos = strpos($photomodel, $modelLtr) + $offset;
+    $urlPos = strpos($photomodel, '"url":"', $sizePos) + 7;
     $urlEnd = strpos($photomodel, '"', $urlPos);
     $urlLgth = $urlEnd - $urlPos;
     $rawurl = substr($photomodel, $urlPos, $urlLgth);
-    $url = 'https:' . preg_replace('/\\\\/','',$rawurl);
+    $url = 'https:' . preg_replace('/\\\\/', '', $rawurl);
     return $url;
 }
-function mantissa($degrees) {
+function mantissa($degrees)
+{
     $coords = 0;
     for ($z = 0; $z < 3; $z++) {
         $div = strpos($degrees[$z], '/');
@@ -37,7 +39,7 @@ function mantissa($degrees) {
     $coords += ($mins + $secs / 60) / 60;
     return $coords;
 }
-if ( isset($caller) && $caller === 'newPhotos') {
+if (isset($caller) && $caller === 'newPhotos') {
     $opt = 'adds';
 } else {
     $opt = 'validates';
@@ -51,7 +53,7 @@ if ($opt === 'adds') {
     $icon_clr = 'Google default';
     # curlids and albums already defined
 } else {
-    $icon_clr = filter_input(INPUT_POST,'icon');
+    $icon_clr = filter_input(INPUT_POST, 'icon');
     if ($icon_clr === '') {
         $icon_clr = 'Google default';
     }
@@ -67,7 +69,7 @@ if ($opt === 'adds') {
                 . 'back and provide one or more legitimate photo album urls, or '
                 . 'select the box for "I do not wish to specify pictures at '
                 . 'this time"</p>';
-        die ($nourls);
+        die($nourls);
     }
     # variables used in processing data from albums:
     $albums = $_POST['albtype'];
@@ -78,7 +80,7 @@ $pcnt = 0;  # no of photos processed
 $folder = [];
 $titles = [];
 $descriptions = [];
-$alinks = [];  
+$alinks = [];
 $o = [];
 $t = [];
 $n = [];
@@ -101,7 +103,7 @@ for ($i=0; $i<$supplied; $i++) {
      */
     
     if ($curlids[$i] !== '') {  # skip empty input-boxes
-        $curlid = filter_var($curlids[$i],FILTER_VALIDATE_URL);
+        $curlid = filter_var($curlids[$i], FILTER_VALIDATE_URL);
         if ($curlid === false) {
             $badurl = $pstyle . 'The value you entered is not a qualified url '
                     . 'address<br />Please go back and re-enter the url with a '
@@ -119,9 +121,9 @@ for ($i=0; $i<$supplied; $i++) {
                 $albEnd = strpos($flickrInfo, '"');
                 $albumId = substr($flickrInfo, 0, $albEnd);
                 $alubmHtml = '';
-                $srchPat = '{"_flickrModelRegistry":"photo-models","title":"';              
+                $srchPat = '{"_flickrModelRegistry":"photo-models","title":"';
                 $pmodels = strpos($flickrInfo, $srchPat) + 48;
-                while ( $pmodels !== false && $pmodels !== 48 ) {
+                while ($pmodels !== false && $pmodels !== 48) {
                     $folder[$pcnt] = 'Folder' . ($i+1);
                     $modelInfo = substr($flickrInfo, $pmodels);
                     $titleEnd = strpos($modelInfo, '"');
@@ -137,7 +139,7 @@ for ($i=0; $i<$supplied; $i++) {
                      * occurs (or doesn't occur) prior to that point.
                      */
                     # Look ahead to see if there is at least one more model:
-                    $tst4end = strpos($modelInfo,$srchPat);
+                    $tst4end = strpos($modelInfo, $srchPat);
                     if ($tst4end === false) {
                         $modelEnd = strlen($modelInfo);
                     } else {
@@ -145,7 +147,7 @@ for ($i=0; $i<$supplied; $i++) {
                     }
                     $descPos = strpos($modelInfo, '"description":"');
                     if ($descPos === false || $descPos > $modelEnd) {
-                        $descriptions[$pcnt] = NULL;
+                        $descriptions[$pcnt] = null;
                     } else {
                         $descPos += 15;
                         $descEnd = strpos($modelInfo, '"', $descPos);
@@ -162,15 +164,15 @@ for ($i=0; $i<$supplied; $i++) {
                     $Nsid = substr($modelInfo, $nsidPos, $nsidLgth);
                     $alinks[$pcnt] = 'https://www.flickr.com/photos/' . $Nsid .
                     '/' . $ownerId . '/in/album-' . $albumId;
-                    $o[$pcnt] = getFlickrDat($modelInfo,'o');
-                    $n[$pcnt] = getFlickrDat($modelInfo,'n');
-                    $t[$pcnt] = getFlickrDat($modelInfo,'t');
+                    $o[$pcnt] = getFlickrDat($modelInfo, 'o');
+                    $n[$pcnt] = getFlickrDat($modelInfo, 'n');
+                    $t[$pcnt] = getFlickrDat($modelInfo, 't');
                     $albOcnt++;
                     $pcnt++;
                     # adjust the search to the next photo-model:
                     $flickrInfo = $modelInfo;
                     $pmodels = strpos($flickrInfo, $srchPat) + 48;
-                }  # end of while loop collecting album data for pics            
+                }  # end of while loop collecting album data for pics
                 # Now capture the exif data for the $o(riginal photos) array
                 include 'getExif.php';
             # APPLE:
@@ -183,7 +185,7 @@ for ($i=0; $i<$supplied; $i++) {
         } else {  # end of getting album html from link
             $noalb = $pstyle . 'Could not extract album html: please verify '
                     . 'that the album link is correct</p>';
-            die ($noalb);
+            die($noalb);
         }
     }  # end of non-empty curlid
 }  # end of for each album url input box
@@ -193,24 +195,24 @@ include "timeSort.php";
 if ($opt === 'validates') {
     foreach ($picdat as $ph) {  # each item is an array of data
 #       Add new record
-        $newRow = insertDbRow($link,'ETSV',__File__,__LINE__); 
+        $newRow = insertDbRow($link, 'ETSV', __File__, __LINE__);
 #
 #       Update fields one by one so that NULLs can be checked
-        updateDbRow($link,'ETSV',$newRow,'indxNo','picIdx',$hikeNo,__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'folder','picIdx',$ph['folder'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'title','picIdx',$ph['pic'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'hpg','picIdx','N',__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'mpg','picIdx','N',__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'`desc`','picIdx',$ph['desc'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'lat','picIdx',$ph['lat'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'lng','picIdx',$ph['lng'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'thumb','picIdx',$ph['thumb'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'alblnk','picIdx',$ph['alb'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'date','picIdx',$ph['taken'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'mid','picIdx',$ph['nsize'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'imgHt','picIdx',$ph['pHt'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'imgWd','picIdx',$ph['pWd'],__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'iclr','picIdx',$icon_clr,__File__,__LINE__);
-        updateDbRow($link,'ETSV',$newRow,'org','picIdx',$ph['org'],__File__,__LINE__);
-        }
+        updateDbRow($link, 'ETSV', $newRow, 'indxNo', 'picIdx', $hikeNo, __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'folder', 'picIdx', $ph['folder'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'title', 'picIdx', $ph['pic'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'hpg', 'picIdx', 'N', __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'mpg', 'picIdx', 'N', __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, '`desc`', 'picIdx', $ph['desc'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'lat', 'picIdx', $ph['lat'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'lng', 'picIdx', $ph['lng'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'thumb', 'picIdx', $ph['thumb'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'alblnk', 'picIdx', $ph['alb'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'date', 'picIdx', $ph['taken'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'mid', 'picIdx', $ph['nsize'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'imgHt', 'picIdx', $ph['pHt'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'imgWd', 'picIdx', $ph['pWd'], __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'iclr', 'picIdx', $icon_clr, __File__, __LINE__);
+        updateDbRow($link, 'ETSV', $newRow, 'org', 'picIdx', $ph['org'], __File__, __LINE__);
+    }
 }

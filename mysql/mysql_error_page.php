@@ -40,10 +40,10 @@
             "failed - we will investigate",
             "Trouble constructing a table of hikes - we will investigate"
         );
-        $eno = intval(filter_input(INPUT_GET,'eno',FILTER_SANITIZE_NUMBER_INT));
-        $ecd = filter_input(INPUT_GET,'ecd');
+        $eno = intval(filter_input(INPUT_GET, 'eno', FILTER_SANITIZE_NUMBER_INT));
+        $ecd = filter_input(INPUT_GET, 'ecd');
         echo $errmsgs[$eno];
-        if ( mail("krcowles29@gmail.com","user error","Msg No " . $eno . 
+        if (mail("krcowles29@gmail.com", "user error", "Msg No " . $eno .
                 "; Code: " . $ecd) ) {
             # This works on 000webhost, but not on local server
             echo '<p>Not to worry - we have been notified!</p>';

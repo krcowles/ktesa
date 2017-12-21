@@ -47,7 +47,7 @@ require_once '../mysql/setenv.php';
     <p>This script will create the HIKES table in the 'mysql' database...</p>
 <?php
     # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
-    $tbl = mysqli_query( $link,"CREATE TABLE HIKES (
+    $tbl = mysqli_query($link, "CREATE TABLE HIKES (
         indxNo smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
         pgTitle varchar(30) NOT NULL,
         usrid varchar(32) NOT NULL,
@@ -74,20 +74,20 @@ require_once '../mysql/setenv.php';
         purl2 varchar(1024),
         dirs varchar(1024),
         tips varchar(4096),
-        info varchar(4096));" );
-    if (!$tbl) {
-        die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
-    } else {
-        echo '<p>HIKES Table created; Definitions are shown in the table below</p>';
-    }
-    $req = mysqli_query($link,"SHOW TABLES;");
-    if (!$req) {
-        die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
-    }
+        info varchar(4096));");
+if (!$tbl) {
+    die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
+} else {
+    echo '<p>HIKES Table created; Definitions are shown in the table below</p>';
+}
+    $req = mysqli_query($link, "SHOW TABLES;");
+if (!$req) {
+    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
+}
     echo "<p>Results from SHOW TABLES:</p><ul>";
-    while ($row = mysqli_fetch_row($req)) {
-        echo "<li>" . $row[0] . "</li>";
-    }
+while ($row = mysqli_fetch_row($req)) {
+    echo "<li>" . $row[0] . "</li>";
+}
     echo "</ul>";
 ?>
     <p>Description of the HIKES table:</p>
@@ -112,18 +112,18 @@ require_once '../mysql/setenv.php';
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link,"DESCRIBE HIKES;");
-    if (!$tbl) {
-        die("<p>DESCRIBE 'test' FAILED: " . mysqli_error($link) . "/p>");
-    } 
-    $first = true;  
-    while ($row = mysqli_fetch_row($tbl)) {
-        echo "<tr>";
-        for ($i=0; $i<count($row); $i++) {
-            echo "<td>" . $row[$i] . "</td>";
-        }
-        echo "</tr>" . PHP_EOL;
+    $tbl = mysqli_query($link, "DESCRIBE HIKES;");
+if (!$tbl) {
+    die("<p>DESCRIBE 'test' FAILED: " . mysqli_error($link) . "/p>");
+}
+    $first = true;
+while ($row = mysqli_fetch_row($tbl)) {
+    echo "<tr>";
+    for ($i=0; $i<count($row); $i++) {
+        echo "<td>" . $row[$i] . "</td>";
     }
+    echo "</tr>" . PHP_EOL;
+}
     mysqli_close($link);
 ?>
        </tbody>
