@@ -1,39 +1,19 @@
 <?php
-/**
- * This is the main routine utilized to display any given hike page.
- * 
- * Depending on the query string ('age'), either the in-edit hikes will be
- * accessed, or the already published hikes. All MySQL tables for
- * in-edit hikes begin with the letter "E". If a page is being created for
- * the first time, the variable $building will be true and the hike index
- * number will be extracted differently.
- * 
- * @package Page_Display
- * @author  Tom Sandberge and Ken Cowles <krcowles29@gmail.com>
- * @license None to date
- * @link    ../php
- */
+// ob_start();
+define('fullMapOpts', '&show_markers_url=true&street_view_url=true&map_type_url=GV_HYBRID&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=true&tracklist_options_enabled=true&dynamicMarker_url=false');
 define('iframeMapOpts', '&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
-/**
- * The variable $hikeIndexNo is established below and is used throughout
- * to locate data corresponding to this unique hike identifier.
- */
+define('gpsvTemplate', '../maps/gpsvMapTemplate.php?map_name=');
 $tbl = filter_input(INPUT_GET, 'age');
-if (isset($tbl) && $tbl === 'new') {
+if (isset($tbl) && $tbl === 'new') {  # req origin: saveChanges.php
     $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
     $ehikes = true;
-} elseif (isset($building) && $building === true) {
+} elseif (isset($building) && $building === true) { # req origin displayHikePg.php
     $hikeIndexNo = $hikeRow;
     $ehikes = true;
-} else {
+} else { #req origin standard tables from main
     $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
     $ehikes = false;
 }
-/**
- * The following variables are used to define the tables to be used
- * in the MySQL queries, based on whether or not in-edit hike data
- * is required.
- */
 if ($ehikes) {
     $htable = 'EHIKES';
     $rtable = 'EREFS';
@@ -47,10 +27,6 @@ if ($ehikes) {
     $ttable = 'TSV';
     $tbl = 'old';
 }
-/**
- * The get_HIKES_row.php utility extracts data from the $htable
- * based on the $hikeIndexNo established above.
- */
 require "../mysql/get_HIKES_row.php";
 if ($gpxfile == '') {
     $newstyle = false;
@@ -59,9 +35,8 @@ if ($gpxfile == '') {
     $newstyle = true;
     $gpxPath = '../gpx/' . $gpxfile;
 }
-/**
- * The get_TSV_row.php utility extracts data about the photos to
- * be displayed on the page.
+/* 
+ * Form image rows:
  */
 require "../mysql/get_TSV_row.php";
 $capCnt = count($descs);
@@ -89,16 +64,12 @@ if (is_array($hikeAddonImg2)) {
     $imgRatio = $wd/$ht;
     array_push($aspects, $imgRatio);
 }
-/**
- * The get_REFS_row.php utility extracts data pertaining to the
- * references to be displayed on the page
+/*
+ *  End picture row data prep
  */
 require "../mysql/get_REFS_row.php";
-/**
- * The get_GPSDAT_row.php utility extracts data pertaining to the
- * GPS Maps & Data to be displayed on the page, if any.
- */
 require "../mysql/get_GPSDAT_row.php";
+# there may or may not be any proposed data or actual data to present
 if ($pcnt > 0 || $acnt > 0) {
     $fieldsets = true;
     $datasect = "<fieldset>\n" .
@@ -111,46 +82,21 @@ if ($pcnt > 0 || $acnt > 0) {
     }
     $datasect .= "</fieldset>\n";
 }
-/**
- * There are two possible types of hike page displays. If the hike page
- * has a map and elevation chart to display, the variable $newstyle is
- * true, and these items are displayed.  Otherwise, a page with a hike
- * summary table is presented with photos and information, but no map or
- * elevation chart ($newstyle is false).
- */
+# setup hike page map if newstyle
 if ($newstyle) {
-    /**
-     * In the case of hike map and elevation chart, in order for the map to be
-     * displayed in an iframe, a file is created and stored in the maps/tmp
-     * sub-directory. The file is deleted upon exiting the page.
-     */
+    # dynamically created map:
     $extLoc = strrpos($gpxfile, '.');
-    $gpsvMap = substr($gpxfile, 0, $extLoc); // strip file extension
-    $tmpMap = "../maps/tmp/{$gpsvMap}.html";
+    $gpsvMap = substr($gpxfile, 0, $extLoc); # strip file extension
+    # holding place for page's hike map (deleted when page exited)
+    $tmpMap = '../maps/tmp/' . $gpsvMap . '.html';
     if (($mapHandle = fopen($tmpMap, "w")) === false) {
-        $mapmsg = "Contact Site Master: could not open tmp map file: " .
-            $tmpMap . ", for writing";
+        $mapmsg = "Contact Site Master: could not open tmp map file: " . $tmpMap . ", for writing";
         die($mapmsg);
     }
-    $fpLnk = "../maps/gpsvMapTemplate.php?map_name=MapLink&hike={$hikeTitle}" .
-        "&gpx={$gpxPath}&hno={$hikeIndexNo}&tbl={$tbl}";
-    $map_opts = [
-        'show_geoloc' => 'false',
-        'zoom' => 'auto',
-        'map_type' => 'ARCGIS_TOPO_WORLD',
-        'street_view'=> 'false',
-        'zoom_control' => 'large',
-        'map_type_control' => 'menu',
-        'center_coordinates' => 'true',
-        'measurement_tools' => 'false',
-        'utilities_menu' => "{ 'maptype':true, 'opacity':true, " .
-            "'measure':true, 'export':true }",
-        'tracklist_options' => 'false',
-        'marker_list_options' => 'false',
-        'show_markers' => 'true',
-        'dynamicMarker' => 'true'  
-    ];
+    $fpLnk = 'MapLink' . fullMapOpts . '&hike=' . $hikeTitle .
+        '&gpx=' . $gpxPath . '&hno=' . $hikeIndexNo . '&tbl=' . $tbl;
     include "../php/makeGpsv.php";
+    #ob_flush();
     fputs($mapHandle, $html);
     fclose($mapHandle);
 }
@@ -174,16 +120,16 @@ if ($newstyle) {
     <?php if ($newstyle) {
         echo '<script type="text/javascript">var iframeWindow;</script>';
         echo '<script src="../scripts/canvas.js"></script>';
-    } ?>
+} ?>
 </head>
 
 <body>
     
 <div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>	
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
+	<img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+	<p id="logo_left">Hike New Mexico</p>	
+	<img id="tmap" src="../images/trail.png" alt="trail map icon" />
+	<p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail"><?php echo $hikeTitle;?></p>
 <p id="gpx" style="display:none"><?php echo $gpxPath;?></p>
@@ -209,61 +155,56 @@ if (!$newstyle) {
     if ($hikePhotoLink2 == '') {
         echo "<th>Photos</th>";
     }
-    echo '<th>By Car</th>' .  PHP_EOL .
-        '</tr>' .  PHP_EOL .
-        '</thead>' .  PHP_EOL .
-        '<tbody>' .  PHP_EOL .
-        '<tr>' .  PHP_EOL .
-        '<td>' . $hikeDifficulty . '</td>' .  PHP_EOL .
-        '<td>' . $hikeLength . '</td>' .  PHP_EOL .
-        '<td>' . $hikeType . '</td>' .  PHP_EOL .
-        '<td>' . $hikeElevation . '</td>' .  PHP_EOL .
-        '<td>' . $hikeExposure . '</td>' .  PHP_EOL .
-        '<td>' . $hikeWow . '</td>' .  PHP_EOL .
-        '<td>' . $hikeFacilities . '</td>' .  PHP_EOL .
-        '<td>' . $hikeSeasons . '</td>' .  PHP_EOL;
+                    echo '<th>By Car</th>' .  PHP_EOL .
+               '</tr>' .  PHP_EOL .
+           '</thead>' .  PHP_EOL .
+           '<tbody>' .  PHP_EOL .
+                '<tr>' .  PHP_EOL .
+                    '<td>' . $hikeDifficulty . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeLength . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeType . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeElevation . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeExposure . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeWow . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeFacilities . '</td>' .  PHP_EOL .
+                    '<td>' . $hikeSeasons . '</td>' .  PHP_EOL;
     if ($hikePhotoLink2 == '') {
         echo '<td><a href="' . $hikePhotoLink1 . '" target="_blank">' .
             '<img style="margin-bottom:0px;border-style:none;"' .
             ' src="../images/album_lnk.png"' .
             ' alt="photo album link icon" /></a></td>';
     }
-    echo '<td><a href="' . $hikeDirections . '" target="_blank">' .
-        '<img style="margin-bottom:0px;padding-bottom:0px;"' .
-        ' src="../images/dirs.png" alt="google driving directions" />' .
-        '</a></td>' .  PHP_EOL .
-        '</tr>' .  PHP_EOL .
-        '</tbody>' .  PHP_EOL .
-        '</table>' .  PHP_EOL .
-        '</div>' .   PHP_EOL ;
-} else { // newstyle has the side panel with map & chart on right
+                    echo '<td><a href="' . $hikeDirections . '" target="_blank">' .
+                        '<img style="margin-bottom:0px;padding-bottom:0px;"' .
+                        ' src="../images/dirs.png" alt="google driving directions" />' .
+                        '</a></td>' .  PHP_EOL .
+                '</tr>' .  PHP_EOL .
+           '</tbody>' .  PHP_EOL .
+       '</table>' .  PHP_EOL .
+    '</div>' .   PHP_EOL ;
+} else { # newstyle has the side panel with map & chart on right
     /* ---------------------------- NEW STYLE -------------------------- */
-    // SIDE PANEL:
-    echo '<div id="sidePanel">' . "\n" .
-        '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
+    # SIDE PANEL:
+    echo '<div id="sidePanel">' . "\n" . '<p id="stats"><strong>Hike Statistics</strong></p>' . "\n";
         echo '<p id="summary">' . "\n" .
-            'Nearby City / Locale: <span class=sumClr>' . $hikeLocale .
-            "</span><br />\n" . 'Hike Difficulty: <span class=sumClr>' .
-            $hikeDifficulty . "</span><br />\n" .
-            'Total Length of Hike: <span class=sumClr>' . $hikeLength .
-            "</span><br />\n" . 'Max to Min Elevation: <span class=sumClr>' .
-            $hikeElevation . "</span><br />\n" . 'Logistics: <span class=sumClr>' .
-            $hikeType . "</span><br />\n" .
-            'Exposure Type: <span class=sumClr>' . $hikeExposure .
-            "</span><br />\n" . 'Seasons : <span class=sumClr>' .
-            $hikeSeasons . "</span><br />\n" .
+            'Nearby City / Locale: <span class=sumClr>' . $hikeLocale . "</span><br />\n" .
+            'Hike Difficulty: <span class=sumClr>' . $hikeDifficulty . "</span><br />\n" .
+            'Total Length of Hike: <span class=sumClr>' . $hikeLength . "</span><br />\n" .
+            'Max to Min Elevation: <span class=sumClr>' . $hikeElevation . "</span><br />\n" .
+            'Logistics: <span class=sumClr>' . $hikeType . "</span><br />\n" .
+            'Exposure Type: <span class=sumClr>' . $hikeExposure . "</span><br />\n" .
+            'Seasons : <span class=sumClr>' . $hikeSeasons . "</span><br />\n" .
             '"Wow" Factor: <span class=sumClr>' . $hikeWow . "</span></p>\n";
         
         
         echo '<p id="addtl"><strong>More!</strong></p>' . "\n";
-        echo '<p id="mlnk">View <a href="' . $fpLnk . '" target="_blank">' .
-            'Full Page Map</a><br />';
+        echo '<p id="mlnk">View <a href="../maps/gpsvMapTemplate.php?map_name=' .
+                $fpLnk . '" target="_blank">Full Page Map</a><br />';
         echo '<span class="track">View <a id="view" href="' .
             $gpxPath . '" target="_blank">GPX File</a></span><br />';
         echo '<span class="track">Download <a id="dwn" href="' . $gpxPath .
                 '" download>GPX File</a></span></p>';
-        echo '<p id="albums">For improved photo viewing,<br />check out ' .
-            'the following album(s):</p>' .
+        echo '<p id="albums">For improved photo viewing,<br />check out the following album(s):</p>' .
                 "\n" . '<p id="alnks"><a href="' . $hikePhotoLink1 .
                 '" target="_blank">Photo Album Link</a>' . "\n";
     if (strlen($hikePhotoLink2) !== 0) {
@@ -275,34 +216,32 @@ if (!$newstyle) {
                 ' to the trailhead:</p>' . "\n";
         echo '<p id="dlnk"><a href="' . $hikeDirections . '" target="_blank">' .
                 'Google Directions</a></p>' . "\n";
-        echo '<p id="scrollmsg">Scroll down to see images, hike description, ' .
-            'reference sources and additonal information as applicable</p>' . "\n";
+        echo '<p id="scrollmsg">Scroll down to see images, hike description, reference sources and ' .
+                'additonal information as applicable</p>' . "\n";
         echo '<p id="closer">If you are having problems with this page, please: ' .
             '<a href="mailto:krcowles29@gmail.com">send us a note!</a></p>' ."\n";
     echo '</div>';
     
-    // MAP AND CHART ON RIGHT:
-    // map:
+    # MAP AND CHART ON RIGHT:
+    # map:
     echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' .
-                $tmpMap . iframeMapOpts . '"></iframe>' . "\n";
-    // elevation chart:
+                $tmpMap . iframeMapOpts . '></iframe>' . "\n";
+    # elevation chart:
     /*
     echo '<script>' . "\n" .
             'var alts = ' . $jsElevation . ';' . "\n" . '</script>' . "\n";
      */
-    echo '<div data-gpx="' . $gpxPath .
-        '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
+    echo '<div data-gpx="' . $gpxPath . '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
 ?>
 <div id="imgArea"></div>
 <?php
-// clear floats when no pics:
+# clear floats when no pics:
 echo '<div style="clear:both;">' . "\n";
 if ($hikeTips !== '') {
-    echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" ' .
-        'alt="special notes icon" /><p id="tipHdr">TRAIL TIPS!</p>' .
-        '<p id="tipNotes">' .
+    echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" alt="special notes icon" />' .
+        '<p id="tipHdr">TRAIL TIPS!</p><p id="tipNotes">' .
         htmlspecialchars_decode($hikeTips, ENT_COMPAT) . '</p></div>' . "\n";
 }
 echo '<div id="hikeInfo">' . $hikeInfo . "</div><br />" . PHP_EOL;

@@ -345,6 +345,10 @@ foreach ($gpsv as $line) {
         $maphtml .= $line . PHP_EOL;
     }
 }
+die("html: " . strlen($maphtml) . " bytes");
+$tmap = fopen("x.html", "w");
+fwrite($tmap,$maphtml);
+fclose($tmap);
 $html .= '<head>' . "\n" .
         '    <title>' . $hikeTitle . '</title>' . "\n" .
         '    <base target="_top">' . "\n" .
