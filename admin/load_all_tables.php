@@ -32,7 +32,13 @@ require_once '../mysql/setenv.php';
 // Temporary variable, used to store current query
 $templine = '';
 // Read in entire file
-$lines = file("../data/database.sql");
+$dbFile = "../data/id140870_hikemaster.sql";
+$lines = file($dbFile);
+if (!$lines) {
+    $thisFile = __FILE__;
+    $thisLine = __LINE__;
+    die("Failure in {$thisFile} line: {$thisLine}: Failed to read database from file: {$dbFile}.");
+}
 // Loop through each line
 $gottbl = false;
 $totalQs = 0;
