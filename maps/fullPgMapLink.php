@@ -23,20 +23,20 @@ if (filter_input(INPUT_GET, 'tbl') === 'new') {
  * The map_opts specify the optional settings for the full-page map.
  */
 $map_opts = [
-    'show_geoloc' => 'false',
+    'show_geoloc' => 'true',
     'zoom' => 'auto',
-    'map_type' => 'ARCGIS_TOPO_WORLD',
-    'street_view'=> 'false',
+    'map_type' => 'GV_HYBRID',
+    'street_view'=> 'true',
     'zoom_control' => 'large',
     'map_type_control' => 'menu',
     'center_coordinates' => 'true',
     'measurement_tools' => 'false',
     'utilities_menu' => "{ 'maptype':true, 'opacity':true, " .
         "'measure':true, 'export':true }",
-    'tracklist_options' => 'false',
-    'marker_list_options' => 'false',
+    'tracklist_options' => 'true',
+    'marker_list_options' => 'true',
     'show_markers' => 'true',
-    'dynamicMarker' => 'true'  
+    'dynamicMarker' => 'false'  
 ];
 /**
  * The primary file used to create a GPSV, with optional settings
