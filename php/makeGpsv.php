@@ -259,8 +259,8 @@ while (($photos = mysqli_fetch_assoc($pic))) {
 /*
  * This section picks up the GPSV map template and provides title and data options
  */
-$template = "GPSVtemplate.html";
-$gpsv = file($template, FILE_IGNORE_NEW_LINES, FILE_SKIP_EMPTY_LINES);
+$template = "../php/GPSV_Template.html";
+$gpsv = file($template, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 $maphtml = '';
 foreach ($gpsv as $line) {
     if (strpos($line, "<title>")) {
@@ -326,28 +326,28 @@ foreach ($gpsv as $line) {
         $maphtml .= $line . PHP_EOL;
     } elseif (strpos($line, "GV_Map();") !== false) {
         if ($map_opts['dynamicMarker'] === 'true') {
-            $maphtml .= "    var mrkrSet = false;" . PHP_EOL .
-                "    var chartMrkr;" . PHP_EOL .
-                "    var imageLoc = '../images/azureMrkr.ico';" . PHP_EOL;
-            $maphtml .= 'function drawMarker( mrkrLoc ) {' . PHP_EOL .
-                '    chartMrkr = new google.maps.Marker({' . PHP_EOL .
-                '    position: mrkrLoc,' . PHP_EOL .
-                '    map: gmap' . PHP_EOL .
-                '});' . PHP_EOL .
-                'mrkrSet = true;' . PHP_EOL . '}' . PHP_EOL;
-            $maphtml .= "// create context for passing iframe variables " .
-                "to parent" . PHP_EOL . 
-                "setTimeout( function() {" . PHP_EOL .
-                "    parent.iframeWindow = window;" . PHP_EOL .
-                "}, 2000 );" . PHP_EOL;
+            $maphtml .= "            var mrkrSet = false;" . PHP_EOL .
+                "            var chartMrkr;" . PHP_EOL .
+                "            var imageLoc = '../images/azureMrkr.ico';" . PHP_EOL;
+            $maphtml .= '            function drawMarker( mrkrLoc ) {' . PHP_EOL .
+                '                chartMrkr = new google.maps.Marker({' . PHP_EOL .
+                '                    position: mrkrLoc,' . PHP_EOL .
+                '                    map: gmap' . PHP_EOL .
+                '                });' . PHP_EOL .
+                '                mrkrSet = true;' . PHP_EOL . 
+                '            }' . PHP_EOL;
+            $maphtml .= "            // create context for passing " .
+                "iframe variables to parent" . PHP_EOL . 
+                "            setTimeout( function() {" . PHP_EOL .
+                "                parent.iframeWindow = window;" . PHP_EOL .
+                "             }, 2000 );" . PHP_EOL;
         }
     } else {
         $maphtml .= $line . PHP_EOL;
     }
 }
-die("html: " . strlen($maphtml) . " bytes");
 $tmap = fopen("x.html", "w");
-fwrite($tmap,$maphtml);
+fwrite($tmap, $maphtml);
 fclose($tmap);
 $html .= '<head>' . "\n" .
         '    <title>' . $hikeTitle . '</title>' . "\n" .
