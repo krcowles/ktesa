@@ -31,7 +31,7 @@ $map_opts = [
     'map_type_control' => 'menu',
     'center_coordinates' => 'true',
     'measurement_tools' => 'false',
-    'utilities_menu' => "{ 'maptype':true, 'opacity':true, " .
+    'utilities_menu' =>  "{ 'maptype':true, 'opacity':true, " .
         "'measure':true, 'export':true }",
     'tracklist_options' => 'true',
     'marker_list_options' => 'true',
