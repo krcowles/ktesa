@@ -13,7 +13,6 @@
  * @license None to date
  * @link    ../php
  */
-define('iframeMapOpts', '&show_markers_url=true&street_view_url=false&map_type_url=ARCGIS_TOPO_WORLD&zoom_url=%27auto%27&zoom_control_url=large&map_type_control_url=menu&utilities_menu=true&center_coordinates=true&show_geoloc=true&marker_list_options_enabled=false&tracklist_options_enabled=false&dynamicMarker_url=true"');
 /**
  * The variable $hikeIndexNo is established below and is used throughout
  * to locate data corresponding to this unique hike identifier.
@@ -132,7 +131,7 @@ if ($newstyle) {
             $tmpMap . ", for writing";
         die($mapmsg);
     }
-    $fpLnk = "../maps/gpsvMapTemplate.php?map_name=MapLink&hike={$hikeTitle}" .
+    $fpLnk = "../maps/fullPgMapLink.php?map_name=MapLink&hike={$hikeTitle}" .
         "&gpx={$gpxPath}&hno={$hikeIndexNo}&tbl={$tbl}";
     $map_opts = [
         'show_geoloc' => 'false',
@@ -151,7 +150,7 @@ if ($newstyle) {
         'dynamicMarker' => 'true'  
     ];
     include "../php/makeGpsv.php";
-    fputs($mapHandle, $html);
+    fputs($mapHandle, $maphtml);
     fclose($mapHandle);
 }
 ?>
@@ -283,8 +282,9 @@ if (!$newstyle) {
     
     // MAP AND CHART ON RIGHT:
     // map:
-    echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' .
-                $tmpMap . iframeMapOpts . '"></iframe>' . "\n";
+    //echo '<iframe id="mapline" src="../maps/gpsvMapTemplate.php?map_name=' .
+    echo '<iframe id="mapline" src="' .
+                $tmpMap . '"></iframe>' . "\n";
     // elevation chart:
     /*
     echo '<script>' . "\n" .

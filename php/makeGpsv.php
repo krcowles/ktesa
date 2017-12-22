@@ -125,15 +125,16 @@ for ($k=0; $k<$noOfTrks; $k++) {
     $plng = 0;
     $tno = $k + 1;
     // Form javascript to draw each track:
-    $line = "        t = " . $tno . "; trk[t] = {info:[],segments:[]};\n";
-    $line .= "        trk[t].info.name = '" . $gpxdat->trk[$k]->name .
+    $line = "                t = " . $tno . "; trk[t] = {info:[],segments:[]};\n";
+    $line .= "                trk[t].info.name = '" . $gpxdat->trk[$k]->name .
         "'; trk[t].info.desc = ''; trk[t].info.clickable = true;\n";
-    $line .= "        trk[t].info.color = '" . $colors[$k] . "'; trk[t].info." .
+    $line .= "                trk[t].info.color = '" .
+        $colors[$k] . "'; trk[t].info." .
         "width = 3; trk[t].info.opacity = 0.9; trk[t].info.hidden = false;\n";
-    $line .= "        trk[t].info.outline_color = 'black'; trk[t].info." .
+    $line .= "                trk[t].info.outline_color = 'black'; trk[t].info." .
         "outline_width = 0; trk[t].info.fill_color = '" . $colors[$k] .
         "'; trk[t].info.fill_opacity = 0;\n";
-    $tdat = "        trk[t].segments.push({ points:[ [";
+    $tdat = "                trk[t].segments.push({ points:[ [";
     // Each track will have separate tick mark sets
     $hikeLgth = 0;
     $tickMrk = 0.30;
@@ -174,7 +175,7 @@ for ($k=0; $k<$noOfTrks; $k++) {
     // remove last ",[" and end string:
     $tdat = substr($tdat, 0, strlen($tdat)-2);
     $line .= $tdat . " ] });\n";
-    $line .= "        GV_Draw_Track(t);\n";
+    $line .= "                GV_Draw_Track(t);\n";
     $GPSV_Tracks[$k] = $line;
 }  // end of for each track
 // Calculate map bounds and center coordiantes
@@ -263,7 +264,7 @@ $template = "../php/GPSV_Template.html";
 $gpsv = file($template, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 $maphtml = '';
 foreach ($gpsv as $line) {
-    if (strpos($line, "<title>")) {
+    if (strpos($line, "<title>") > 0) {
         $maphtml .= '        <title>' . $hikeTitle . '</title>' . PHP_EOL;
     } elseif (strpos($line, '<meta name="geo.postion"')) {
         $maphtml .= '        <meta name="geo.position" content="' . $clat .
@@ -320,11 +321,54 @@ foreach ($gpsv as $line) {
             "{$map_opts['marker_list_options']}; // true|false: enable or " .
             "disable the marker list altogether" . PHP_EOL;
         $maphtml .= $line . PHP_EOL;
-    } elseif (strpos($line, "GV_Draw_Marker") !== false
+    } elseif (strpos($line, "GV_Setup_Map();")) {
+        $maphtml .= $line . PHP_EOL . PHP_EOL;
+        break; // This is the point at which unique track data is required
+    } else {
+        $maphtml .= $line . PHP_EOL;
+    }
+}
+// Add end-of-file unique data
+for ($i=0; $i<$noOfTrks; $i++) {
+    $maphtml .= "                // Track #" . ($i+1) . PHP_EOL;
+    $maphtml .= $GPSV_Tracks[$i];
+}
+$maphtml .= "                // List the tracks" . PHP_EOL;
+for ($j=1; $j<=$noOfTrks; $j++) {
+    $maphtml .= "                t = " . $j .
+        "; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:" .
+        "trk[t].info.desc,color:trk[t].info.color,number:t});" . PHP_EOL;
+}
+$maphtml .= PHP_EOL . "                // Add tick marks" . PHP_EOL;
+for ($j=0; $j<count($ticks); $j++) {
+    $maphtml .= '                ' . $ticks[$j] . PHP_EOL;
+}
+$maphtml .= PHP_EOL . "                // Add any waypoints" . PHP_EOL;
+for ($n=0; $n<$noOfWaypts; $n++) {
+    $maphtml .= '                ' . $waypoints[$n] . PHP_EOL;
+}
+$maphtml .= PHP_EOL . "                // Create photo markers\n";
+for ($z=0; $z<count($plnks); $z++) {
+    $maphtml .= '                ' . $plnks[$z] . PHP_EOL;
+}
+$maphtml .= '        GV_Finish_Map();' . PHP_EOL;
+$maphtml .= '    }' . PHP_EOL;
+$maphtml .= '    GV_Map(); // execute the above code' . PHP_EOL;
+$maphtml .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1' .
+    '&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU' .
+    '&google_street_view=1&google_trk_mouseover=1&tickmark_interval=' .
+    '.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=auto' .
+    PHP_EOL;
+$maphtml .= '</script>' . PHP_EOL;
+$maphtml .= '</body>' . PHP_EOL;
+$maphtml .= '</html>' . PHP_EOL;
+/*
+if (strpos($line, "GV_Draw_Marker") !== false
         && $map_opts['show_markers'] === 'true'
     ) {
         $maphtml .= $line . PHP_EOL;
     } elseif (strpos($line, "GV_Map();") !== false) {
+        $maphtml .= $line . PHP_EOL;
         if ($map_opts['dynamicMarker'] === 'true') {
             $maphtml .= "            var mrkrSet = false;" . PHP_EOL .
                 "            var chartMrkr;" . PHP_EOL .
@@ -342,10 +386,7 @@ foreach ($gpsv as $line) {
                 "                parent.iframeWindow = window;" . PHP_EOL .
                 "             }, 2000 );" . PHP_EOL;
         }
-    } else {
-        $maphtml .= $line . PHP_EOL;
-    }
-}
+/*
 $tmap = fopen("x.html", "w");
 fwrite($tmap, $maphtml);
 fclose($tmap);
@@ -419,8 +460,10 @@ $html .= '<script type="text/javascript">' . "\n" .
 $html .= '<!-- begin GPS Visualizer setup script (must come after ' .
     'maps.google.com code) -->' . "\n";
 $html .= '<script type="text/javascript">' . "\n";
-$html .= '/* Global variables used by the GPS Visualizer functions ' .
-    '(20170530080154): */' . "\n";
+*/
+//$html .= '/* Global variables used by the GPS Visualizer functions ' .
+  //  '(20170530080154): */' . "\n";
+/*
 $html .= '    gv_options = {};' . "\n";
 $html .= '// basic map parameters:' . "\n";
 $html .= '    gv_options.center = [' .$clat . ',' . $clon . '];  // ' .
@@ -718,3 +761,4 @@ $html .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1' .
 $html .= '</script>' . "\n";
 $html .= '</body>' . "\n";
 $html .= '</html>' . "\n";
+*/
