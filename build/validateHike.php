@@ -5,7 +5,8 @@ session_start();
  * the required data to unvalidate.php would be a messy ordeal without 
  * session memory...
  */
-require_once "../mysql/setenv.php";
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 # Process $hikeName to ensure no html special characters will disrupt
 $hike = filter_input(INPUT_POST, 'hpgTitle');
 $hikeNo = intval(filter_input(INPUT_POST, 'hno'));

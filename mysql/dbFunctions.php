@@ -79,3 +79,25 @@ function updateDbRow($link, $table, $row, $field, $indexId, $content, $file, $li
     }
     mysqli_free_result($result);
 }
+function connectToDb($file, $line)
+{
+#    DEFINE("KTESA_DBUG", true, true);
+    $rel_addr = '../mysql/';
+    $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
+    if ($dev) {
+        $link = mysqli_connect("127.0.0.1", "root", "root", "id140870_hikemaster");
+    } else {
+        $link = mysqli_connect("localhost", "id140870_krcowles", "000ktesa9", "id140870_hikemaster");
+    }
+    if (!$link) {
+        $result = mysqli_query($link, $query);
+        if (!$result) {
+            echo 'query: ' . $query . '<br>';
+            die("Function connectToDb failed when called from file {$file}: line: {$line}: "
+            . mysqli_error($link));
+        }
+    }
+    mysqli_free_result($result);
+    require "../admin/set_sql_mode.php";
+    return $link;
+}
