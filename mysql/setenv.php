@@ -1,5 +1,4 @@
 <?php
-require_once "../mysql/dbFunctions.php";
 $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
 if ($dev) {
     $rel_addr = '../mysql/';
