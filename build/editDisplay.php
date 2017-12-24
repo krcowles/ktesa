@@ -1,5 +1,6 @@
 <?php
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 $usr = filter_input(INPUT_GET, 'usr');
 $age = 'new';
 $show = 'usr';

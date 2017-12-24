@@ -1,6 +1,7 @@
 
 <?php
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

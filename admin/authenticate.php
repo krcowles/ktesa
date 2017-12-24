@@ -1,5 +1,6 @@
 <?php
-require_once "../mysql/setenv.php";
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 $usrname = trim($_REQUEST['nmhid']);
 $usrpass = trim($_REQUEST['nmpass']);
 $usr_req = sprintf(

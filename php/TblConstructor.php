@@ -1,5 +1,6 @@
 <?php
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 /*
  * TblConstructor can be invoked in three different scenarios:
  *  1.  By 'mapPg.php' from the main/index page, 

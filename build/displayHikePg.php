@@ -1,5 +1,6 @@
 <?php
-require_once "../mysql/setenv.php";
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 $hikeRow = intval(filter_input(INPUT_POST, 'hikeno'));
 $usePix = filter_input(INPUT_POST, 'usepics');
 # indicator for hikePageTemplate.php

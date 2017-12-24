@@ -1,5 +1,6 @@
 <?php
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 $hip = filter_input(INPUT_GET, 'hno');  # hike-in-process
 $usr = filter_input(INPUT_GET, 'usr');
 if ($usr === 'mstr') {

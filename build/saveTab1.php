@@ -1,7 +1,8 @@
 <?php
 session_start();
 $_SESSION['activeTab'] = 1;
-require_once "../mysql/setenv.php";
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 $hikeNo = filter_input(INPUT_POST, 'hno');
 $hstat = filter_input(INPUT_POST, 'stat');
 $uid = filter_input(INPUT_POST, 'usr');

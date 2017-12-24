@@ -28,7 +28,8 @@
 </div>
 <script src="load_progress.js"></script>
 <?php
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 // Temporary variable, used to store current query
 $templine = '';
 // Read in entire file

@@ -35,7 +35,8 @@ $usr = filter_input(INPUT_POST, 'nid');
         Add all photos to Photo Editor<br />
 </div>
 <?php
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 $incl = $_POST['ps'];
 $curlids = [];
 $albums = [];

@@ -15,12 +15,13 @@
  * @link    ../php
  */
 /**
- * The setenv.php module determines which host is active and establishes
+ * The connectToDb function determines which host is active and establishes
  * a connection to the MySQL database for each case. In additional, some
  * general purpose global functions provide insert/update functionality for
  * the database so as to preserve null fields.
  */
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb($file, $line);
 /**
  * Function to calculate the distance between two lat/lng coordinates.
  * In addition, the 'rotation' angle is calculated which provides the correct
