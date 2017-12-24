@@ -1,4 +1,5 @@
 <?php
+require_once "../mysql/setenv.php";
 function insertDbRow($link, $table, $file, $line)
 {
     $insQuery = "INSERT INTO {$table} () VALUES ();";
@@ -85,9 +86,9 @@ function connectToDb($file, $line)
     $rel_addr = '../mysql/';
     $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
     if ($dev) {
-        $link = mysqli_connect("127.0.0.1", "root", "root", "id140870_hikemaster");
+        $link = mysqli_connect(HOSTNAME_LOC, USERNAME_LOC, PASSWORD_LOC, DATABASE_LOC);
     } else {
-        $link = mysqli_connect("localhost", "id140870_krcowles", "000ktesa9", "id140870_hikemaster");
+        $link = mysqli_connect(HOSTNAME_000, USERNAME_000, PASSWORD_000, DATABASE_000);
     }
     if (!$link) {
         $result = mysqli_query($link, $query);
