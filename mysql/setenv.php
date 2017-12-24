@@ -30,7 +30,7 @@ function insertDbRow($link, $table, $file, $line)
     mysqli_free_result($selResults);
     return $index[0];
 }
-function insertDbRowMulti($link, $query, $file, $line)
+function doQuery($link, $query, $file, $line)
 {
     $results = mysqli_query($link, $query);
     if (!$results) {
@@ -56,6 +56,20 @@ function getDbRowNum($link, $table, $file, $line)
     $newRow = mysqli_fetch_row($results);
     mysqli_free_result($results);
     return $newRow[0];
+}
+#
+function getDbRowCount($link, $query, $file, $line)
+{
+    $results = mysqli_query($link, $query);
+    if (!$results) {
+        die("Function getDbRowCount failed when called " .
+        "from file {$file}: line: {$line} " .
+        "with query : {$query} <br> " .
+        mysqli_error($link));
+    }
+    $rowCount = mysqli_num_rows($results);
+    mysqli_free_result($results);
+    return $rowCount;
 }
 function updateDbRow($link, $table, $row, $field, $indexId, $content, $file, $line)
 {
