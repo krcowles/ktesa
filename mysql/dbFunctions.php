@@ -1,5 +1,4 @@
 <?php
-require_once "../mysql/setenv.php";
 function insertDbRow($link, $table, $file, $line)
 {
     $insQuery = "INSERT INTO {$table} () VALUES ();";
@@ -83,6 +82,7 @@ function updateDbRow($link, $table, $row, $field, $indexId, $content, $file, $li
 function connectToDb($file, $line)
 {
 #    DEFINE("KTESA_DBUG", true, true);
+    require_once "../mysql/setenv.php";
     $rel_addr = '../mysql/';
     $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
     if ($dev) {
