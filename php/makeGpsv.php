@@ -223,38 +223,45 @@ if ($noOfWaypts > 0) {
  *   ---- ESTABLISH PHOTO DATA ----
  * Form the photo links from the mysql database
  */
-$plnks = [];  // array of photo links
-$defIconColor = 'red';
-$mcnt = 0;
-$picReq = "SELECT folder,title,mpg,`desc`,lat,lng,alblnk,mid,iclr FROM {$ttable} " .
-        "WHERE indxNo = {$hikeIndexNo};";
-$pic = mysqli_query($link, $picReq);
-if (!$pic) {
-    die(
-        "<p>makeGpsv.php: Failed to extract photo data for hike {$hikeIndexNo}: " .
-        mysqli_error($link)
-    );
+if ((isset($map_type) && $map_type === 'page') || !isset($map_type)) {
+    $showPhotos = true;
+} else {
+    $showPhotos = false;
 }
-while (($photos = mysqli_fetch_assoc($pic))) {
-    if ($photos['mpg'] === 'Y') {
-        $procName = preg_replace("/'/", "\'", $photos['title']);
-        $procName = preg_replace('/"/', '\"', $procName);
-        $procDesc = preg_replace("/'/", "\'", $photos['desc']);
-        $procDesc = preg_replace('/"/', '\"', $procDesc);
-        // If wypt in ETSV file....
-        if ($photos['alblnk'] == '') { // waypoint icon
-            $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
-                $photos['lng']. ",name:'" . $procName . "',desc:'" .
-                $procDesc . "',color:'" . $photos['iclr'] . "',icon:''});";
-        } else { // photo
-            $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
-                $photos['lng'] . ",name:'" . $procDesc .
-                "',desc:'',color:'" . $photos['iclr'] . "',icon:'" .
-                $mapicon . "',url:'" . $photos['alblnk'] . "',thumbnail:'" .
-                $photos['mid'] . "',folder:'" . $photos['folder'] . "'});";
+$plnks = [];  // array of photo links
+if ($showPhotos) {
+    $defIconColor = 'red';
+    $mcnt = 0;
+    $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,alblnk,mid,iclr FROM {$ttable} " .
+            "WHERE indxNo = {$hikeIndexNo};";
+    $pic = mysqli_query($link, $picReq);
+    if (!$pic) {
+        die(
+            "<p>makeGpsv.php: Failed to extract photo data for hike {$hikeIndexNo}: " .
+            mysqli_error($link)
+        );
+    }
+    while (($photos = mysqli_fetch_assoc($pic))) {
+        if ($photos['mpg'] === 'Y') {
+            $procName = preg_replace("/'/", "\'", $photos['title']);
+            $procName = preg_replace('/"/', '\"', $procName);
+            $procDesc = preg_replace("/'/", "\'", $photos['desc']);
+            $procDesc = preg_replace('/"/', '\"', $procDesc);
+            // If wypt in ETSV file....
+            if ($photos['alblnk'] == '') { // waypoint icon
+                $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
+                    $photos['lng']. ",name:'" . $procName . "',desc:'" .
+                    $procDesc . "',color:'" . $photos['iclr'] . "',icon:''});";
+            } else { // photo
+                $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
+                    $photos['lng'] . ",name:'" . $procDesc .
+                    "',desc:'',color:'" . $photos['iclr'] . "',icon:'" .
+                    $mapicon . "',url:'" . $photos['alblnk'] . "',thumbnail:'" .
+                    $photos['mid'] . "',folder:'" . $photos['folder'] . "'});";
+            }
+            array_push($plnks, $plnk);
+            $mcnt++;
         }
-        array_push($plnks, $plnk);
-        $mcnt++;
     }
 }
 /*

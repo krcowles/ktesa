@@ -192,6 +192,12 @@ iframe {
     margin-bottom: 12px; }
 div em {
     color: DarkGreen; }
+.gpslnks a {
+    margin-top: 4px;
+    border-style: inset;
+    border-width: 2px;
+    padding: 2px;
+}
 #proposed {
     position: relative;
     top: -5px; }
@@ -199,12 +205,12 @@ div em {
     color: DarkGreen; }
 #plinks { 
     position: relative;
-    top: -10px; }
+    top: -24px; }
 #acttitle {
     color: DarkBlue; }
 #alinks {
     position: relative;
-    top: -15px; }
+    top: -24px; }
 #tips {
     text-align: left; }
 #hdesc {

@@ -7,7 +7,7 @@ if (!$result) {
     die("get_REFS_row.php: Unable to extract references from REFS: " .
             mysqli_error());
 }
-$refHtml = '<ul id="refs">';
+$refHtml = '<ul id="refs" style="position:relative;top:-10px;">';
 while ($row = mysqli_fetch_assoc($result)) {
     $rtype = trim($row['rtype']);
     if ($rtype === 'Text:') {

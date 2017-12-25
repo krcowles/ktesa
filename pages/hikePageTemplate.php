@@ -58,6 +58,28 @@ if ($gpxfile == '') {
     $newstyle = true;
     $gpxPath = '../gpx/' . $gpxfile;
 }
+$noOfClus = 0;
+if (isset($hikeGroup)  && $hikeGroup !== '') {
+    $related = trim($row['cgroup']);
+    $query = "SELECT indxNo,pgTitle FROM HIKES WHERE cgroup = '{$related}';";
+    $relquery = mysqli_query($link, $query);
+    if (!$relquery) {
+        die("hikePageTemplate.php: No extaction of cluster group hikes" . mysqli_error($link));
+    }
+    $noOfClus = mysqli_num_rows($relquery);
+    if ($noOfClus > 0) {
+        $relHikes = '<ul id="related">' . PHP_EOL;
+        for ($i=0; $i<$noOfClus; $i++) {
+            $rHike = mysqli_fetch_assoc($relquery);
+            if ($rHike['pgTitle'] !== $hikeTitle) {
+                $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' . $rHike['indxNo'] .
+                    '" target="_blank">' . $rHike['pgTitle'] . '</a></li>' . PHP_EOL;
+            }
+        }
+        $relHikes .= '</ul>' . PHP_EOL;
+    }
+    mysqli_free_result($relquery);
+}
 /**
  * The get_TSV_row.php utility extracts data about the photos to
  * be displayed on the page.
@@ -100,15 +122,20 @@ require "../mysql/get_REFS_row.php";
 require "../mysql/get_GPSDAT_row.php";
 if ($pcnt > 0 || $acnt > 0) {
     $fieldsets = true;
+    $datasect = '';
+    /*
     $datasect = "<fieldset>\n" .
             '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
+    */
     if ($pcnt > 0) {
             $datasect .= $propHtml;
     }
     if ($acnt > 0) {
             $datasect .= $actHtml;
     }
+    /*
     $datasect .= "</fieldset>\n";
+    */
 }
 /**
  * There are two possible types of hike page displays. If the hike page
@@ -131,7 +158,7 @@ if ($newstyle) {
             $tmpMap . ", for writing";
         die($mapmsg);
     }
-    $fpLnk = "../maps/fullPgMapLink.php?map_name=MapLink&hike={$hikeTitle}" .
+    $fpLnk = "../maps/fullPgMapLink.php?maptype=page&hike={$hikeTitle}" .
         "&gpx={$gpxPath}&hno={$hikeIndexNo}&tbl={$tbl}";
     $map_opts = [
         'show_geoloc' => 'false',
@@ -307,29 +334,47 @@ if ($hikeTips !== '') {
 }
 echo '<div id="hikeInfo">' . $hikeInfo . "</div><br />" . PHP_EOL;
 
-echo '<fieldset>'."\n";
-echo '<legend id="fldrefs">References &amp; Links</legend>'."\n";
-echo $refHtml;
-echo '</fieldset>';
 
+/**
+ * New style for presenting 'bottom-of-page' information, including:
+ *  References,
+ *  GPS Maps and Data
+ *  Related hikes
+ *  Other miscellaneous info
+ */
+echo '<fieldset>'. PHP_EOL;
+echo '<legend id="fldrefs">Related Hike Information</legend>' . PHP_EOL;
+echo '<span style="font-weight:bold;">REFERENCES: ' . '</span>' .
+    PHP_EOL . $refHtml . PHP_EOL;
+if ($noOfClus > 0) {
+    echo '<span style="font-weight:bold;">RELATED HIKES</span>' . PHP_EOL;
+    echo $relHikes;
+}
+echo '<span style="font-weight:bold;">GPS DATA: ' . '</span>' .
+    PHP_EOL . $datasect . "<br />" . PHP_EOL;
+echo '</fieldset>';
+/*
 if ($fieldsets) {
     echo $datasect;
 }
 echo '</div>';
+*/
 ?>
 
+<!--
 <p id="ptype" style="display:none">Hike</p>
 <div id="dbug"></div>
 
 <div class="popupCap"></div>
 
-<script type="text/javascript">
+<script type="text/javascript"> -->
     <?php
     /* Oddly, using json_encode on each array resulted in different treatment
      * on the first 3 arrays - e.g. [{"0":item0},{"0":item1} etc.] whereas later
      * items were rendered simply [item0,item1,item2, etc]: Hence the use of 
      * implode encapsulated as string.
      */
+    /*
     echo 'var photocnt = ' . $capCnt . ";\n";
     echo 'var d = "' . implode("|", $descs) . '";' . "\n";
     echo 'var al = "' . implode("|", $alblnks) . '";' . "\n";
@@ -337,6 +382,7 @@ echo '</div>';
     echo 'var c = "' . implode("|", $captions) . '";' . "\n";
     echo 'var as = "' . implode("|", $aspects) . '";' . "\n";
     echo 'var w = "' . implode("|", $widths) . '";' . "\n";
+    */
     ?>
 </script>
 <script src="../scripts/jquery-1.12.1.js"></script>

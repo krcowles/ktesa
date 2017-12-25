@@ -13,6 +13,7 @@ if (!$result) {
 $row = mysqli_fetch_assoc($result);
 $hikeTitle = $row['pgTitle'];
 $hikeLocale = $row['locale'];
+$hikeGroup = $row['cgroup'];
 $hikeType = $row['logistics'];
 $hikeLength = $row['miles'] . " miles";
 $hikeElevation = $row['feet'] . " ft";

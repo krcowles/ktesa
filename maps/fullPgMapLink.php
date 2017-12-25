@@ -9,8 +9,7 @@
  * @license None to date
  * @link    ../maps
  */
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-$map = filter_input(INPUT_GET, 'map_name');
+$map_type = filter_input(INPUT_GET, 'maptype');
 $hikeIndexNo = filter_input(INPUT_GET, 'hno');
 $hikeTitle = filter_input(INPUT_GET, 'hike');
 $gpxPath = filter_input(INPUT_GET, 'gpx');
