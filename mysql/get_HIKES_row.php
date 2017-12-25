@@ -1,6 +1,6 @@
 <?php
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 $req = "SELECT * FROM {$htable} WHERE indxNo = " . $hikeIndexNo;
 $result = mysqli_query($link, $req);
 if (!$result) {

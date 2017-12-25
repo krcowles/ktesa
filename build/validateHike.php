@@ -6,7 +6,7 @@ session_start();
  * session memory...
  */
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 # Process $hikeName to ensure no html special characters will disrupt
 $hike = filter_input(INPUT_POST, 'hpgTitle');
 $hikeNo = intval(filter_input(INPUT_POST, 'hno'));

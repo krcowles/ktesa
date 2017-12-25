@@ -36,7 +36,7 @@ $usr = filter_input(INPUT_POST, 'nid');
 </div>
 <?php
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 $incl = $_POST['ps'];
 $curlids = [];
 $albums = [];

@@ -1,6 +1,6 @@
 <?php
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 $usrname = trim($_REQUEST['nmhid']);
 $usrpass = trim($_REQUEST['nmpass']);
 $usr_req = sprintf(

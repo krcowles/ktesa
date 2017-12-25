@@ -1,6 +1,6 @@
 <?php
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 $rowno = filter_input(INPUT_GET, 'drow');
 $lastid = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1";
 $getid = mysqli_query($link, $lastid);

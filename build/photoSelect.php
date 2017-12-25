@@ -9,7 +9,7 @@
  * Place this code inside a <div> element.
  */
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 $h4txt = "Please check the boxes corresponding to the pictures you wish to " .
     "include on the hike page, and those you wish to include on the geomap.";
 if ($pgType === 'Edit') {

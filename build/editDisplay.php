@@ -1,6 +1,6 @@
 <?php
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 $usr = filter_input(INPUT_GET, 'usr');
 $age = 'new';
 $show = 'usr';

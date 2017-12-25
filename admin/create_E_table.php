@@ -1,6 +1,6 @@
 <?php
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 $table = filter_input(INPUT_GET, 'tbl');
 $reftbl = substr($table, 1, (strlen($table)-1));
 ?>

@@ -1,6 +1,6 @@
 <?php
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 $query = "SELECT datType,label,url,clickText FROM {$gtable} WHERE indxNo = '{$hikeIndexNo}';";
 $result = mysqli_query($link, $query);
 if (!$result) {

@@ -21,7 +21,7 @@
  * the database so as to preserve null fields.
  */
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 /**
  * Function to calculate the distance between two lat/lng coordinates.
  * In addition, the 'rotation' angle is calculated which provides the correct

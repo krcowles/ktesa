@@ -2,7 +2,7 @@
 session_start();
 $_SESSION['activeTab'] = 2;
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb($file, $line);
+$link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'pno');
 $uid = filter_input(INPUT_POST, 'pid');
 $ecapts = $_POST['ecap'];
