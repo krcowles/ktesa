@@ -15,7 +15,7 @@ function insertDbRow($link, $table, $file, $line)
     $selResults = mysqli_query($link, $selQuery);
     $index = mysqli_fetch_row($selResults);
     if (!$selResults) {
-        echo "selQuery: {$insQuery} <br>";
+        echo "selQuery: {$selQuery} <br>";
         die("Function insertDbRow failed to get index from table: {$table} when called from file {$file}: line: {$line}: "
         . mysqli_error($link));
     }
@@ -26,12 +26,12 @@ function doQuery($link, $query, $file, $line)
 {
     $results = mysqli_query($link, $query);
     if (!$results) {
-        die("Function insertDbRowMulti failed when called " .
+        die("Function doQuery failed when called " .
         "from file {$file}: line: {$line} " .
         "with query : {$query} <br> " .
         mysqli_error($link));
     }
-    mysqli_free_result($insResults);
+    mysqli_free_result($results);
 }
 #
 function getDbRowNum($link, $table, $file, $line)
@@ -83,7 +83,6 @@ function connectToDb($file, $line)
 {
 #    DEFINE("KTESA_DBUG", true, true);
     require_once "../mysql/setenv.php";
-    $rel_addr = '../mysql/';
     $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
     if ($dev) {
         $link = mysqli_connect(HOSTNAME_LOC, USERNAME_LOC, PASSWORD_LOC, DATABASE_LOC);
@@ -91,14 +90,9 @@ function connectToDb($file, $line)
         $link = mysqli_connect(HOSTNAME_000, USERNAME_000, PASSWORD_000, DATABASE_000);
     }
     if (!$link) {
-        $result = mysqli_query($link, $query);
-        if (!$result) {
-            echo 'query: ' . $query . '<br>';
-            die("Function connectToDb failed when called from file {$file}: line: {$line}: "
-            . mysqli_error($link));
-        }
+        die("Function connectToDb failed when called from file {$file}: line: {$line}: "
+        . mysqli_connect_error($link));
     }
-    mysqli_free_result($result);
     require "../admin/set_sql_mode.php";
     return $link;
 }
