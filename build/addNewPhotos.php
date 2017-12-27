@@ -1,7 +1,8 @@
 <?php
 session_start();
 $_SESSION['activeTab'] = 2;
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'xno');
 $usr = filter_input(INPUT_POST, 'xid');
 $usepix = $_POST['incl'];

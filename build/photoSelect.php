@@ -8,7 +8,8 @@
  *         identifying the page type: Validation, Finish or Edit
  * Place this code inside a <div> element.
  */
-require_once "../mysql/setenv.php";
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 $h4txt = "Please check the boxes corresponding to the pictures you wish to " .
     "include on the hike page, and those you wish to include on the geomap.";
 if ($pgType === 'Edit') {

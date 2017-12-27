@@ -1,5 +1,6 @@
 <?php
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 $qty = filter_input(INPUT_GET, 'no');
 # --------- the following is a terrible way to do this --- change later
 if ($qty === 'all') {

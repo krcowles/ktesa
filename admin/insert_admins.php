@@ -1,5 +1,6 @@
 <?php
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 $hash = password_hash('000ktesa9', PASSWORD_DEFAULT);
 $a = mysqli_real_escape_string($link, $hash);
 $tpass = password_hash('1234', PASSWORD_DEFAULT);

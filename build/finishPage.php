@@ -1,5 +1,6 @@
 <?php
-require_once "../mysql/setenv.php";
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_GET, 'hno');
 $namereq = "SELECT pgTitle from EHIKES WHERE indxNo = {$hikeNo};";
 $name = mysqli_query($link, $namereq);

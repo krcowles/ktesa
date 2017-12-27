@@ -1,5 +1,6 @@
 <?php
-require_once "../mysql/setenv.php";
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 $fname = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'firstname'));
 $lname = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'lastname'));
 $uname = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'usr'));

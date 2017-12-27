@@ -1,5 +1,6 @@
 <?php
-require_once "setenv.php";
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 # NOTE: not using 'usrid' yet...
 $query = "SELECT folder,title,hpg,mpg,`desc`,lat,lng,thumb,alblnk,date," .
         "mid,imgHt,imgWd FROM {$ttable} WHERE indxNo = '{$hikeIndexNo}';";

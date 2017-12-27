@@ -2,10 +2,19 @@
 require_once '../mysql/setenv.php';
 // Temporary variable, used to store current query
     //ENTER THE RELEVANT INFO BELOW
-    $mysqlUserName      = USERNAME;
-    $mysqlPassword      = PASSWORD;
-    $mysqlHostName      = HOSTNAME;
-    $DbName             = DATABASE;
+$rel_addr = '../mysql/';
+$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
+if ($dev) {
+    $mysqlUserName = USERNAME_LOC;
+    $mysqlPassword = PASSWORD_LOC;
+    $mysqlHostName = HOSTNAME_LOC;
+    $DbName = DATABASE_LOC;
+} else {
+    $mysqlUserName = USERNAME_000;
+    $mysqlPassword = PASSWORD_000;
+    $mysqlHostName = HOSTNAME_000;
+    $DbName = DATABASE_000;
+}
     $backup_name        = "mybackup.sql";
     $tables             = array("HIKES","GPSDAT","REFS","TSV","IPTBLS","EHIKES",
         "EGPSDAT","EREFS","EIPTBLS","ETSV","USERS");

@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once '../mysql/setenv.php';
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 /* Capture and remove any uploaded files and/or photos:
  * If the files had upload errors, were the wrong file type, or coudn't be 
  * moved from the server's tmp directory to the proper site directory, 

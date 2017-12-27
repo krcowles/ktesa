@@ -1,5 +1,6 @@
 <?php
-require_once "../mysql/setenv.php";
+require_once "../mysql/dbFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
 $table = "HIKES";  # may add Edit/Creation EHIKES later...
 $query = "SELECT pgTitle,lat,lng,aoimg1,dirs,info " .
