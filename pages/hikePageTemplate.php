@@ -64,7 +64,10 @@ if (isset($hikeGroup)  && $hikeGroup !== '') {
     $query = "SELECT indxNo,pgTitle FROM HIKES WHERE cgroup = '{$related}';";
     $relquery = mysqli_query($link, $query);
     if (!$relquery) {
-        die("hikePageTemplate.php: No extaction of cluster group hikes" . mysqli_error($link));
+        die(
+            "hikePageTemplate.php: No extaction of cluster group hikes" .
+            mysqli_error($link)
+        );
     }
     $noOfClus = mysqli_num_rows($relquery);
     if ($noOfClus > 0) {
@@ -72,8 +75,9 @@ if (isset($hikeGroup)  && $hikeGroup !== '') {
         for ($i=0; $i<$noOfClus; $i++) {
             $rHike = mysqli_fetch_assoc($relquery);
             if ($rHike['pgTitle'] !== $hikeTitle) {
-                $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' . $rHike['indxNo'] .
-                    '" target="_blank">' . $rHike['pgTitle'] . '</a></li>' . PHP_EOL;
+                $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' .
+                $rHike['indxNo'] . '" target="_blank">' . $rHike['pgTitle'] .
+                '</a></li>' . PHP_EOL;
             }
         }
         $relHikes .= '</ul>' . PHP_EOL;
@@ -121,21 +125,14 @@ require "../mysql/get_REFS_row.php";
  */
 require "../mysql/get_GPSDAT_row.php";
 if ($pcnt > 0 || $acnt > 0) {
-    $fieldsets = true;
+    // $fieldsets = true;
     $datasect = '';
-    /*
-    $datasect = "<fieldset>\n" .
-            '<legend id="flddat">GPS Maps &amp; Data</legend>' . "\n";
-    */
     if ($pcnt > 0) {
             $datasect .= $propHtml;
     }
     if ($acnt > 0) {
             $datasect .= $actHtml;
     }
-    /*
-    $datasect .= "</fieldset>\n";
-    */
 }
 /**
  * There are two possible types of hike page displays. If the hike page
@@ -197,10 +194,12 @@ if ($newstyle) {
     <link href="../styles/hikes.css"
         type="text/css" rel="stylesheet" />
     <script type="text/javascript">var ajaxDone = false;</script>
-    <?php if ($newstyle) {
+    <?php
+    if ($newstyle) {
         echo '<script type="text/javascript">var iframeWindow;</script>';
         echo '<script src="../scripts/canvas.js"></script>';
-    } ?>
+    }
+    ?>
 </head>
 
 <body>
@@ -332,57 +331,50 @@ if ($hikeTips !== '') {
         '<p id="tipNotes">' .
         htmlspecialchars_decode($hikeTips, ENT_COMPAT) . '</p></div>' . "\n";
 }
-echo '<div id="hikeInfo">' . $hikeInfo . "</div><br />" . PHP_EOL;
+echo '<div id="hikeInfo">' . $hikeInfo . "</div></div><br />" . PHP_EOL;
 
 
 /**
  * New style for presenting 'bottom-of-page' information, including:
  *  References,
- *  GPS Maps and Data
  *  Related hikes
+ *  GPS Maps and Data
  *  Other miscellaneous info
  */
+echo '<p style="display:none">' . $pcnt . ',' . $acnt . '</p>' . PHP_EOL;
 echo '<fieldset>'. PHP_EOL;
-echo '<legend id="fldrefs">Related Hike Information</legend>' . PHP_EOL;
-echo '<span style="font-weight:bold;">REFERENCES: ' . '</span>' .
-    PHP_EOL . $refHtml . PHP_EOL;
+echo '<legend id="fldrefs"><em>Related Hike Information</em></legend>' . PHP_EOL;
+echo '<span class="boptag">REFERENCES:</span>' . PHP_EOL;
+echo $refHtml . PHP_EOL;
 if ($noOfClus > 0) {
-    echo '<span style="font-weight:bold;">RELATED HIKES</span>' . PHP_EOL;
+    echo '<span class="boptag">RELATED HIKES</span>' . PHP_EOL;
     echo $relHikes;
 }
-echo '<span style="font-weight:bold;">GPS DATA: ' . '</span>' .
-    PHP_EOL . $datasect . "<br />" . PHP_EOL;
-echo '</fieldset>';
-/*
-if ($fieldsets) {
-    echo $datasect;
+if ($pcnt > 0 || $acnt >0) {
+    echo '<span class="boptag" style="margin-bottom:0px;">GPS DATA: ' . '</span>' .
+        PHP_EOL . $datasect . PHP_EOL;
 }
-echo '</div>';
-*/
+echo '</fieldset>' . PHP_EOL;
 ?>
-
-<!--
 <p id="ptype" style="display:none">Hike</p>
 <div id="dbug"></div>
 
 <div class="popupCap"></div>
 
-<script type="text/javascript"> -->
+<script type="text/javascript">
     <?php
     /* Oddly, using json_encode on each array resulted in different treatment
      * on the first 3 arrays - e.g. [{"0":item0},{"0":item1} etc.] whereas later
      * items were rendered simply [item0,item1,item2, etc]: Hence the use of 
      * implode encapsulated as string.
      */
-    /*
-    echo 'var photocnt = ' . $capCnt . ";\n";
-    echo 'var d = "' . implode("|", $descs) . '";' . "\n";
-    echo 'var al = "' . implode("|", $alblnks) . '";' . "\n";
-    echo 'var p = "' . implode("|", $piclnks) . '";' . "\n";
-    echo 'var c = "' . implode("|", $captions) . '";' . "\n";
-    echo 'var as = "' . implode("|", $aspects) . '";' . "\n";
-    echo 'var w = "' . implode("|", $widths) . '";' . "\n";
-    */
+    echo 'var photocnt = ' . $capCnt . PHP_EOL;
+    echo 'var d = "' . implode("|", $descs) . '";' . PHP_EOL;
+    echo 'var al = "' . implode("|", $alblnks) . '";' . PHP_EOL;
+    echo 'var p = "' . implode("|", $piclnks) . '";' . PHP_EOL;
+    echo 'var c = "' . implode("|", $captions) . '";' . PHP_EOL;
+    echo 'var as = "' . implode("|", $aspects) . '";' . PHP_EOL;
+    echo 'var w = "' . implode("|", $widths) . '";' . PHP_EOL;
     ?>
 </script>
 <script src="../scripts/jquery-1.12.1.js"></script>
@@ -390,7 +382,7 @@ echo '</div>';
 <script src="../scripts/captions.js"></script>
 <script src="../scripts/rowManagement.js"></script>
 <?php if ($newstyle) {
-    echo '<script src="../scripts/dynamicChart.js"></script> ';
+    echo '<script src="../scripts/dynamicChart.js"></script>' . PHP_EOL;
 } ?>
 <script type="text/javascript">
     window.onbeforeunload = deleteTmpMap;
@@ -400,16 +392,12 @@ echo '</div>';
             data: {'file' : "<?php echo $tmpMap;?>" },
             success: function (response) {
                var msg = "Map deleted: " + "<?php echo $tmpMap?>";
-               //window.alert(msg);  debug msg
             },
             error: function () {
                var msg = "Map NOT deleted: " + "<?php echo $tmpMap?>";
-               //window.alert(msg);  debug msg
             }
         });
     }
 </script>
-
 </body>
-
 </html>
