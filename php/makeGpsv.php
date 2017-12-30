@@ -108,7 +108,7 @@ if ($gpxdat === false) {
  * with each unique track. If the number of tracks exceeds the array size, the
  * colors will begin again at the first array element and repeat.
  */
-$defClrs = array('red','blue','fuchsia','yellow','green','black','aqua','pink');
+$defClrs = array('red','blue','aqua','green','fuchsia','pink','orange','black');
 $noOfTrks = $gpxdat->trk->count();
 // assign colors:
 for ($i=0; $i<$noOfTrks; $i++) {
