@@ -115,8 +115,8 @@ if ($noOfGps > 0) {
                 }
                 $mapLink = "../maps/fullPgMapLink.php?maptype=extra&" .
                     "hno={$hikeIndexNo}&hike={$hikeTitle}&gpx={$url}&tbl={$age}";
-                $gpsHtml .= '<li class="gpslnks">' . $row['label'] .
-                    '&nbsp;' . $row['clickText'] . '&nbsp;&nbsp;' . ' <a href="' .
+                $gpsHtml .= '<li class="gpslnks">' . $row['clickText'] .
+                    '&nbsp;&nbsp;' . ' <a href="' .
                     $url . '" download>Download</a>&nbsp;&nbsp;' .'<a href="' .
                     $url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
                     '<a href="' . $mapLink . 
