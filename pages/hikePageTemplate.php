@@ -58,32 +58,6 @@ if ($gpxfile == '') {
     $newstyle = true;
     $gpxPath = '../gpx/' . $gpxfile;
 }
-$noOfClus = 0;
-if (isset($hikeGroup)  && $hikeGroup !== '') {
-    $related = trim($row['cgroup']);
-    $query = "SELECT indxNo,pgTitle FROM HIKES WHERE cgroup = '{$related}';";
-    $relquery = mysqli_query($link, $query);
-    if (!$relquery) {
-        die(
-            "hikePageTemplate.php: No extaction of cluster group hikes" .
-            mysqli_error($link)
-        );
-    }
-    $noOfClus = mysqli_num_rows($relquery);
-    if ($noOfClus > 0) {
-        $relHikes = '<ul id="related">' . PHP_EOL;
-        for ($i=0; $i<$noOfClus; $i++) {
-            $rHike = mysqli_fetch_assoc($relquery);
-            if ($rHike['pgTitle'] !== $hikeTitle) {
-                $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' .
-                $rHike['indxNo'] . '" target="_blank">' . $rHike['pgTitle'] .
-                '</a></li>' . PHP_EOL;
-            }
-        }
-        $relHikes .= '</ul>' . PHP_EOL;
-    }
-    mysqli_free_result($relquery);
-}
 /**
  * The get_TSV_row.php utility extracts data about the photos to
  * be displayed on the page.
@@ -113,26 +87,6 @@ if (is_array($hikeAddonImg2)) {
     array_push($widths, $wd);
     $imgRatio = $wd/$ht;
     array_push($aspects, $imgRatio);
-}
-/**
- * The get_REFS_row.php utility extracts data pertaining to the
- * references to be displayed on the page
- */
-require "../mysql/get_REFS_row.php";
-/**
- * The get_GPSDAT_row.php utility extracts data pertaining to the
- * GPS Maps & Data to be displayed on the page, if any.
- */
-require "../mysql/get_GPSDAT_row.php";
-if ($pcnt > 0 || $acnt > 0) {
-    // $fieldsets = true;
-    $datasect = '';
-    if ($pcnt > 0) {
-            $datasect .= $propHtml;
-    }
-    if ($acnt > 0) {
-            $datasect .= $actHtml;
-    }
 }
 /**
  * There are two possible types of hike page displays. If the hike page
@@ -332,29 +286,10 @@ if ($hikeTips !== '') {
         htmlspecialchars_decode($hikeTips, ENT_COMPAT) . '</p></div>' . "\n";
 }
 echo '<div id="hikeInfo">' . $hikeInfo . "</div></div><br />" . PHP_EOL;
-
-
-/**
- * New style for presenting 'bottom-of-page' information, including:
- *  References,
- *  Related hikes
- *  GPS Maps and Data
- *  Other miscellaneous info
- */
-echo '<p style="display:none">' . $pcnt . ',' . $acnt . '</p>' . PHP_EOL;
-echo '<fieldset>'. PHP_EOL;
-echo '<legend id="fldrefs"><em>Related Hike Information</em></legend>' . PHP_EOL;
-echo '<span class="boptag">REFERENCES:</span>' . PHP_EOL;
-echo $refHtml . PHP_EOL;
-if ($noOfClus > 0) {
-    echo '<span class="boptag">RELATED HIKES</span>' . PHP_EOL;
-    echo $relHikes;
+require 'relatedInfo.php';
+if ($bop !== '') {
+    echo $bop;
 }
-if ($pcnt > 0 || $acnt >0) {
-    echo '<span class="boptag" style="margin-bottom:0px;">GPS DATA: ' . '</span>' .
-        PHP_EOL . $datasect . PHP_EOL;
-}
-echo '</fieldset>' . PHP_EOL;
 ?>
 <p id="ptype" style="display:none">Hike</p>
 <div id="dbug"></div>

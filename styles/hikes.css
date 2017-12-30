@@ -144,6 +144,10 @@ fieldset {
     margin-top: 0px;
     margin-bottom: 8px;
 }
+#gps {
+    margin-top: 0px;
+    margin-bottom: 8px;
+}
 /* image alignment and pop-up caption styles */
 .ImgRow {
     min-width: 960px;
@@ -205,28 +209,6 @@ iframe {
     margin-bottom: 12px; }
 div em {
     color: DarkGreen; }
-#proptitle {
-    color: DarkGreen;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-}
-#plinks { 
-    color: DarkGreen;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-#acttitle {
-    color: DarkBlue;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-}
-#alinks {
-    color: DarkBlue;
-    margin-top: 0px;
-    margin-bottom: 0px;
- }
 #tips {
     text-align: left; }
 #hdesc {
