@@ -131,245 +131,25 @@ mysqli_free_result($hikeq);
 <button id="t3" class="tablist">Descriptive Text</button>
 <button id="t4" class="tablist">Refs &amp; Links</button>
 <div id="line"></div>
-<!---  [NOTE: Each tab is a separate form]
- ********** TAB 1: BASIC DATA *********
--->
 <div id="tab1" class="active tab-panel">
 <form action="saveTab1.php" method="POST">
-    <input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
-    <input type="hidden" name="usr" value="<?php echo $uid;?>" />
-    <input type="hidden" name="stat" value ="<?php echo $status;?>" />
-    <input type="hidden" name="col" value="<?php echo $hikeColl;?>" />
-    <!-- the following are required esp when extracting a published hike -->
-    <input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
-    <input type="hidden" name="trk" value="<?php echo $hikeTrk;?>" />
-    <input type="hidden" name="ao1" value="<?php echo $hikeAddImg1;?>" />
-    <input type="hidden" name="ao2" value="<?php echo $hikeAddImg2;?>" />
-    <label for="hike">Hike Name: </label>
-    <textarea id="hike" name="hname"><?php echo $hikeTitle;?>
-    </textarea>&nbsp;&nbsp;
-    <p style="display:none;" id="locality"><?php echo $hikeLocale;?></p>
-    <label for="area">Locale (City/POI): </label>
-    <select id="area" name="locale">
-      <optgroup label="North/Northeast">
-            <option value="Jemez Springs">Jemez Springs</option>
-            <option value="Valles Caldera">Valles Caldera</option>
-            <option value="Los Alamos">Los Alamos</option>
-            <option value="White Rock">White Rock</option>
-            <option value="Santa Fe">Santa Fe</option>
-            <option value="Ojo Caliente">Ojo Caliente</option>
-            <option value="Abiquiu">Abiquiu</option>
-            <option value="Pecos">Pecos</option>
-            <option value="Villanueva">Villanueva</option>
-            <option value="Taos">Taos</option>
-            <option value="Pilar">Pilar</option>
-      <optgroup label="Northwest">
-            <option value="Farmington">Farmington</option>
-            <option value="San Ysidro">San Ysidro</option>
-            <option value="San Luis">San Luis</option>
-            <option value="Cuba">Cuba</option>
-            <option value="Lybrook">Lybrook</option>
-      <optgroup label="Central NM">
-            <option value="Cerrillos">Cerrillos</option>
-            <option value="Golden">Golden</option>
-            <option value="Albuquerque">Albuquerque</option>
-            <option value="Placitas">Placitas</option>
-            <option value="Corrales">Corrales</option>
-            <option value="Tijeras">Tijeras</option>
-            <option value="Tajique">Tajique</option>
-      <optgroup label="West">
-            <option value="Grants">Grants</option>
-            <option value="Ramah">Ramah</option>
-            <option value="Gallup">Gallup</option>
-      <optgroup label="South Central">
-            <option value="San Acacia">San Acacia</option>
-            <option value="San Antonio">San Antonio</option>
-            <option value="Tularosa">Tularosa</option>
-      <optgroup label="Southwest">
-            <option value="Silver City">Silver City</option>
-            <option value="Pinos Altos">Pinos Altos</option>
-            <option value="Glenwood">Glenwood</option>
-    </select>&nbsp;&nbsp;
-    <p id="mrkr" style="display:none"><?php echo $hikeMarker;?></p>
-    <input type="hidden" name="pmrkr" value="<?php echo $hikeMarker;?>" />
-    <input type="hidden" name="pclus" value="<?php echo $hikeClusGrp;?>" />
-    <p id="group" style="display:none"><?php echo $hikeGrpTip;?></p>
-    <input type="hidden" name="pcnme" value="<?php echo $hikeGrpTip;?>" />
-    <h3>------- Cluster Hike Assignments: (Hikes with overlapping trailheads or in 
-        close proximity) -------<br />
-    <span style="margin-left:50px;font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
-        <input id="ignore" type="checkbox" name="nocare" /></span></h3>
-<?php
-    echo '<label for="ctip">&nbsp;&nbsp;Cluster: </label>';
-    echo '<select id="ctip" name="htool">';
-for ($i=0; $i<$groupCount; $i++) {
-    echo '<option value="' . $cnames[$i] . '">' . $cnames[$i] . "</option>\n";
-}
-    echo "</select>&nbsp;&nbsp;\n" .
-    '<span id="showdel" style="display:none;">You may remove the cluster ' .
-        'assignment by checking here:&nbsp;<input id="deassign" ' .
-        'type="checkbox" name="rmclus" value="NO" /></span>' . "\n" .
-    '<span id="notclus" style="display:none;">There is no currently ' .
-        "assigned cluster for this hike.</span>\n";
-?>
-    <input id="grpchg" type="hidden" name="chgd" value="NO" />
-    <p>If you are establishing a new group, select the checkbox: 
-        <input id="newg" type="checkbox" name="nxtg" value="NO" />
-        <input id="curcnt" type="hidden" name="grpcnt" value="<?php echo $groupCount;?>" />
-    </p>
-    <p style="margin-top:-10px;margin-left:40px;">and enter the name for the 
-        new group here: <input id="newt" type="text" name="newgname" size="50" />
-    </p>
-    <h3>------- End of Cluster Assignments -------</h3>
-    <p id="ctype" style="display:none"><?php echo $hikeStyle;?></p>
-    <label for="type">Hike Type: </label>
-    <select id="type" name="htype">
-        <option value="Loop">Loop</option>
-        <option value="Two-Cars">Two-Cars</option>
-        <option value="Out-and-back">Out-and-back</option>
-    </select>&nbsp;&nbsp;
-    <label for="miles">Round-trip length in miles: </label>
-    <textarea id="miles" name="hlgth"><?php echo $hikeMiles;?>
-    </textarea>&nbsp;&nbsp;
-    <label for="elev">Elevation change in feet: </label>
-    <textarea id="elev" name="helev"><?php echo $hikeFeet;?>
-    </textarea><br /><br />
-    <p id="dif" style="display:none"><?php echo $hikeDiff;?></p>
-    <label for="diff">Level of difficulty: </label>
-    <select id="diff" name="hdiff">
-        <option value="Easy">Easy</option>
-        <option value="Easy-Moderate">Easy-Moderate</option>
-        <option value="Moderate">Moderate</option>
-        <option value="Med-Difficult">Medium-Difficult</option>
-        <option value="Difficult">Difficult</option>
-    </select>
-    <label for="fac">Facilities at the trailhead: </label>
-    <textarea id="fac" name="hfac"><?php echo $hikeFac;?>
-    </textarea><br /><br />
-    <label for="wow">"Wow" Appeal: </label>
-    <textarea id="wow" name="hwow"><?php echo $hikeWow;?>
-    </textarea>&nbsp;&nbsp;
-    <label for="seas">Best Hiking Seasons: </label>
-    <textarea id="seas" name="hsea"><?php echo $hikeSeasons;?>
-    </textarea><br /><br />
-    <p id="expo" style="display:none"><?php echo $hikeExpos;?></p>
-    <label for="sun">Exposure: </label>
-    <select id="sun" name="hexp">
-        <option value="Full sun">Full sun</option>
-        <option value="Mixed sun/shade">Mixed sun/shade</option>
-        <option value="Good shade">Good shade</option>
-    </select>&nbsp;&nbsp;
-    <label for="lat">Trailhead: Latitude </label>
-    <textarea id="lat" name="hlat"><?php echo $hikeLat;?></textarea>&nbsp;&nbsp;
-    <label for="lon">Longitude </label>
-    <textarea id="lon" name="hlon"><?php echo $hikeLng;?></textarea><br />
-    <label for="ph1">Photo URL1 ("Main"): </label>
-    <textarea id="ph1" name="purl1"><?php echo $hikeUrl1;?></textarea><br />
-    <label for="ph2">Photo URL2 ("Additional"): </label>
-    <textarea id="ph2" name="purl2"><?php echo $hikeUrl2;?></textarea><br /><br />
-    <label for="murl">Map Directions Link (Url): </label>
-    <textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
-    <!-- This next section is photo editing-->
-    <p id="ptype" style="display:none">Edit</p>
-    <div style="margin-left:8px;">
-        <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
-            <input type="submit" name="savePg" value="Apply" /></p>
-    </div>
+    <?php
+    require 'tab1display.php';
+    ?>
 </form>
 </div>
-<!--  
- ********** TAB 2: PHOTO SECTION *********
--->
 <div id="tab2" class="tab-panel">
-<h3>You may wish to upload more photos to add to your page. The currently
-    saved album links are displayed below. You may re-select a currently
-    saved link in order to update your photo list, and/or you may add up to two
-    more links.</h3>
 <form action="newPhotos.php" method="POST">
-    <input type="hidden" name="nno" value="<?php echo $hikeNo;?>" />
-    <input type="hidden" name="nid" value="<?php echo $uid;?>" />
-<?php
-if ($hikeUrl1 !== '') {
-    echo '<input type="checkbox" name="ps[]" value="1" />&nbsp;';
-    echo "Include in upload:&nbsp;&nbsp;";
-    echo '<input style="border-color:black;color:blue;font-weight:bold;" ' .
-        'class="phurl" type="text" name="lnk1" value="' . $hikeUrl1 .
-        '" />&nbsp;&nbsp;';
-    echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb1" name="alb1">' .
-        '<option value="flckr">Flickr</option>' .
-        '<option value="apple">Apple iCloud</option>' .
-        '<option value="googl">Google</option></select><br />';
-}
-if ($hikeUrl2 !== '') {
-    echo '<input type="checkbox" name="ps[]" value="2" />&nbsp;';
-    echo "Include in upload:&nbsp;&nbsp;";
-    echo '<input style="border-color:black;color:blue;font-weight:bold;" ' .
-        'class="phurl" type="text" name="lnk2" value="' . $hikeUrl2 .
-        '" />&nbsp;&nbsp;';
-    echo 'Type:&nbsp;&nbsp;<select class="albs" id="alb2" name="alb2">' .
-        '<option value="flckr">Flickr</option>' .
-        '<option value="apple">Apple iCloud</option>' .
-        '<option value="googl">Google</option></select><br />';
-}
-?>
-<input type="checkbox" name="ps[]" value="3" />&nbsp;Include new album: 
-<input class="phurl" type="text" name="lnk3" value="" size="75" />&nbsp;&nbsp;
-Type:&nbsp;
-<select class="albs" id="alb3" name="alb3">
-    <option value="flckr">Flickr</option>
-    <option value="apple">Apple iCloud</option>
-    <option value="googl">Google</option>
-</select><br />
-<input type="checkbox" name="ps[]" value="4" />&nbsp;Include new album:
-<input class="phurl" type="text" name="lnk4" value="" size="75" />&nbsp;&nbsp;
-Type:&nbsp;
-<select class="albs" id="alb4" name="alb4">
-    <option value="flckr">Flickr</option>
-    <option value="apple">Apple iCloud</option>
-    <option value="googl">Google</option>
-</select><br /><br />
-<input style="font-size:16px;width:165px;" type="submit" value="Upload Album(s)" />
-    &nbsp;&nbsp;Review these album photos for possible
-    inclusion on the edit page...
-</form>
-<p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
-        captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
-<form action="saveTab2.php" method="POST">
-    <input type="hidden" name="pno" value="<?php echo $hikeNo;?>" />
-    <input type="hidden" name="pid" value="<?php echo $uid;?>" />
-<?php
-    $pgType = 'Edit';
-    require "photoSelect.php";
-?>
-<div style="margin-left:8px;">
-    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
-        <input type="submit" name="savePg" value="Apply" /></p>
-</div>
+    <?php
+    require 'tab2display.php';
+    ?>
 </form>            
 </div>
-<!--  
- ********** TAB 3: DESCRIPTIVE TEXT *********
--->
 <div id='tab3' class='tab-panel'>
 <form action="saveTab3.php" method="POST">
-<?php
-if ($hikeTips !== '') {
-    echo '<p>Tips Text: </p>';
-    echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />' . "\n";
-} else {
-    echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' .
-       '[NO TIPS FOUND]</textarea><br />' . "\n";
-}
-?>  
-<p>Hike Information:</p>
-<textarea id="info" name="hinfo" rows="16" 
-        cols="130"><?php echo $hikeDetails;?></textarea>
-<input type="hidden" name="dno" value="<?php echo $hikeNo;?>" />
-<input type="hidden" name="did" value="<?php echo $uid;?>" />
-<div style="margin-left:8px;">
-    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
-        <input type="submit" name="savePg" value="Apply" /></p>
-</div>
+    <?php
+    require 'tab3display.php';
+    ?>
 </form>
 </div>
 <!--  
