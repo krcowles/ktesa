@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
 <input type="hidden" name="usr" value="<?php echo $uid;?>" />
 <input type="hidden" name="stat" value ="<?php echo $status;?>" />
@@ -57,8 +60,48 @@
 <input type="hidden" name="pclus" value="<?php echo $hikeClusGrp;?>" />
 <p id="group" style="display:none"><?php echo $hikeGrpTip;?></p>
 <input type="hidden" name="pcnme" value="<?php echo $hikeGrpTip;?>" />
-<h3>------- Cluster Hike Assignments: (Hikes with overlapping trailheads or in 
-    close proximity) -------<br />
+<?php
+// NOTE: This file is included in editDB.php, so MySQL connection exists
+$gpx_req = "SELECT gpx,trk FROM EHIKES WHERE indxNo = {$hikeNo};";
+$gpx_query = mysqli_query($link, $gpx_req);
+if (!$gpx_query) {
+    die(
+        __FILE__ . ": Could not extract gpx file name from EHIKES " .
+        "hike no. {$hikeNo}: " . mysqli_error($link)
+    );
+}
+$gpxdat = mysqli_fetch_row($gpx_query);
+$curr_gpx = $gpxdat[0];
+$curr_trk = $gpxdat[1];
+echo '<input type="hidden" name="mgpx" value="' . $curr_gpx . '" />';
+echo '<input type="hidden" name="mtrk" value="' . $curr_trk . '" />';
+?>
+<h3>Hike Page Map and Track:</h3>
+<?php
+if (isset($_SESSION['uplmsg']) && $_SESSION['uplmsg'] !== '') {
+    echo '<p style="font-size:18px;color:Blue;">The following ' .
+        'action has resulted from your latest "APPLY":</p>';
+    echo $_SESSION['uplmsg'];
+    $_SESSION['uplmsg'] = '';
+}
+?>
+<p><span style="color:brown;">Current Main Hike Track File: </span>
+    <?php
+    if ($curr_gpx == '') {
+        echo '<em>None Specified</em><br />'; 
+    } else {
+        echo "<em>{$curr_gpx}</em>&nbsp;&nbsp;" .
+        '<span style="color:brown;">Check to Delete&nbsp;&nbsp;</span>' .
+        '<input type="checkbox" name="dgpx" /><br />';
+    }
+    ?>
+    [NOTE: If a gpx file exists, and a new one is uploaded without deleting
+    the old one, the new one will be used for display of the hike map and track]
+    <br /><span style="color:brown;">Upload new gpx file:&nbsp;</span>
+    <input type="file" name="newgpx" />
+</p>
+<h3>Cluster Hike Assignments: (Hikes with overlapping trailheads or in 
+    close proximity)<br /><br />
 <span style="margin-left:50px;font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
     <input id="ignore" type="checkbox" name="nocare" /></span></h3>
 <?php
