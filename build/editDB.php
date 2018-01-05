@@ -132,7 +132,7 @@ mysqli_free_result($hikeq);
 <button id="t4" class="tablist">Refs &amp; Links</button>
 <div id="line"></div>
 <div id="tab1" class="active tab-panel">
-<form action="saveTab1.php" method="POST">
+<form action="saveTab1.php" method="POST" enctype="multipart/form-data">
     <?php
     require 'tab1display.php';
     ?>
