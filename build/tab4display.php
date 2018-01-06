@@ -173,7 +173,11 @@ if (mysqli_num_rows($gps) !== 0) {
 <label>Label: </label><input class="tstyle1" name="labl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="lnk[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="ctxt[]" size="30" />
-<br /><br />
+<p style="font-weight:bold;margin-bottom:0px;">Upload New Data File:<br />
+<em style="font-weight:normal;">
+    - Note: A Reference Will Automatically Be Added When Upload Is Complete</em></p><br />
+<label style="color:brown;">Upload New File </label>&nbsp;
+    <input type="file" name="newgps" />
 <div style="margin-left:8px;">
     <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
         <input type="submit" name="savePg" value="Apply" /></p>
