@@ -125,7 +125,7 @@ echo "</select>&nbsp;&nbsp;\n" .
 <p style="margin-top:-10px;margin-left:40px;">and enter the name for the 
     new group here: <input id="newt" type="text" name="newgname" size="50" />
 </p>
-<h3>------- End of Cluster Assignments -------</h3>
+<h3>Other Basic Hike Data</h3>
 <p id="ctype" style="display:none"><?php echo $hikeStyle;?></p>
 <label for="type">Hike Type: </label>
 <select id="type" name="htype">
