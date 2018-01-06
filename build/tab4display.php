@@ -79,7 +79,7 @@ echo '<p id="refcnt" style="display:none">' . $z . '</p>';
 Book Title/Link URL:<input id="ritA1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;
 Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35" 
-    placeholder=", by Author Name" /><br /><br />
+    placeholder="Author Name" /><br /><br />
 <select id="href2" style="height:26px;" name="rtype[]">
     <option value="Book:" selected="selected">Book</option>
     <option value="Photo Essay:">Photo Essay</option>
@@ -97,7 +97,7 @@ Author/Click-on Text<input id="ritA2" type="text" name="rit2[]" size="35"
 Book Title/Link URL:<input id="ritB1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;
 Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35" 
-    placeholder=", by Author Name" /><br /><br />
+    placeholder="Author Name" /><br /><br />
 <select id="href3" style="height:26px;" name="rtype[]">
     <option value="Book:" selected="selected">Book</option>
     <option value="Photo Essay:">Photo Essay</option>
@@ -115,7 +115,7 @@ Author/Click-on Text<input id="ritB2" type="text" name="rit2[]" size="35"
 Book Title/Link URL:<input id="ritC1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;
 Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35" 
-    placeholder=", by Author Name" /><br /><br />
+    placeholder="Author Name" /><br /><br />
 <select id="href4" style="height:26px;" name="rtype[]">
     <option value="Book:" selected="selected">Book</option>
     <option value="Photo Essay:">Photo Essay</option>
@@ -133,78 +133,46 @@ Author/Click-on Text<input id="ritC2" type="text" name="rit2[]" size="35"
 Book Title/Link URL:<input id="ritD1" type="text" name="rit1[]" size="55" 
     placeholder="Book Title" />&nbsp;
 Author/Click-on Text<input id="ritD2" type="text" name="rit2[]" size="35" 
-    placeholder=", by Author Name" /><br />
+    placeholder="Author Name" /><br />
 
-<h3>Proposed Data:</h3>
+<h3>GPS Data:</h3>
 <?php
-    $propreq = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND datType = 'P';";
-    $propq = mysqli_query($link, $propreq);
-if (!$propq) {
-    die("editDB.php: Failed to extract Proposed Data from EGPSDAT: " .
-        mysqli_error($link));
+$gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hikeNo}' " .
+    "AND (datType = 'P' OR datType = 'A');";
+$gps = mysqli_query($link, $gpsreq);
+if (!$gps) {
+    die(
+        "tab4display.php: Failed to extract GPS Data from EGPSDAT: " .
+        mysqli_error($link)
+    );
 }
-if (mysqli_num_rows($propq) !== 0) {
+if (mysqli_num_rows($gps) !== 0) {
     $x = 0;
-    while ($pdat = mysqli_fetch_assoc($propq)) {
-        $pl = fetch($pdat['label']);
-        $pu = fetch($pdat['url']);
-        $pc = fetch($pdat['clickText']);
-        echo 'Label: <textarea class="tstyle1" name="plabl[]">' .
-                $pl . '</textarea>&nbsp;&nbsp;';
-        echo 'Url: <textarea class="tstyle2" name="plnk[]">' .
-                $pu . '</textarea>&nbsp;&nbsp;';
-        echo 'Click-on text: <textarea class="tstyle3" name="pctxt[]">' .
-                $pc . '</textarea>&nbsp;&nbsp;'
+    while ($gpsdat = mysqli_fetch_assoc($gps)) {
+        $pl = fetch($gpsdat['label']);
+        $pu = fetch($gpsdat['url']);
+        $pc = fetch($gpsdat['clickText']);
+        echo 'Label: <textarea class="tstyle1" name="labl[]">' .
+                $pl . '</textarea>&nbsp;&nbsp;' . PHP_EOL;
+        echo 'Url: <textarea class="tstyle2" name="lnk[]">' .
+                $pu . '</textarea>&nbsp;&nbsp;' . PHP_EOL;
+        echo 'Click-on text: <textarea class="tstyle3" name="ctxt[]">' .
+                $pc . '</textarea>&nbsp;&nbsp;' . PHP_EOL
                 . '<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" '
-                . 'name="delprop[]" value="' . $x . '"><br /><br />';
+                . 'name="delgps[]" value="' . $x . '"><br /><br />' . PHP_EOL;
         $x++;
     }
-    mysqli_free_result($propq);
-}
-    
+    mysqli_free_result($gps);
+}   
 ?>
-    <p><em style="color:brown;font-weight:bold;">Add</em> Proposed Data:</p>
-    <label>Label: </label><input class="tstyle1" name="plabl[]" size="30" />&nbsp;&nbsp;
-    <label>Url: </label><input class="tstyle2" name="plnk[]" size="55" />
-    <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="pctxt[]" size="30" /><br />
-    <label>Label: </label><input class="tstyle1" name="plabl[]" size="30" />&nbsp;&nbsp;
-    <label>Url: </label><input class="tstyle2" name="ltxt[]" size="55" />
-    <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="ctxt[]" size="30" />
-
-    <h3>Actual Data:</h3>
-<?php
-    $actreq = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hikeNo}' AND datType = 'A';";
-    $actq = mysqli_query($link, $actreq);
-if (!$actq) {
-    die("editDB.php: Failed to extract Actual Data from EGPSDAT: " .
-        mysqli_error($link));
-}
-if (mysqli_num_rows !== 0) {
-    $y = 0;
-    while ($adat = mysqli_fetch_assoc($actq)) {
-        $al = fetch($adat['label']);
-        $au = fetch($adat['url']);
-        $ac = fetch($adat['clickText']);
-        echo 'Label: <textarea class="tstyle1" name="alabl[]">' .
-                $ac . '</textarea>&nbsp;&nbsp;';
-        echo 'Url: <textarea class="tstyle2" name="alnk[]">' .
-                $au . '</textarea>&nbsp;&nbsp;';
-        echo 'Click-on text: <textarea class="tstyle3" name="actxt[]">' .
-                $ac . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
-                '<input style="height:18px;width:18px;" type="checkbox" '
-                . 'name="delact[]" value="' . $y . '"><br /><br />';
-        $y++;
-    }
-}
-?>
-<p><em style="color:brown;font-weight:bold;">Add</em> Actual Data:</p>
-<label>Label: </label><input class="tstyle1" name="alabl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" /><br />
-<label>Label: </label><input class="tstyle1" name="alabl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input class="tstyle2" name="alnk[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="actxt[]" size="30" />
+<p><em style="color:brown;font-weight:bold;">Add</em> GPS Data:</p>
+<label>Label: </label><input class="tstyle1" name="labl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input class="tstyle2" name="lnk[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="ctxt[]" size="30" /><br />
+<label>Label: </label><input class="tstyle1" name="labl[]" size="30" />&nbsp;&nbsp;
+<label>Url: </label><input class="tstyle2" name="lnk[]" size="55" />
+<label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="ctxt[]" size="30" />
 <br /><br />
 <div style="margin-left:8px;">
     <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;

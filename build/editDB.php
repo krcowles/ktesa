@@ -129,7 +129,7 @@ mysqli_free_result($hikeq);
 <button id="t1" class="tablist active">Basic Data</button>
 <button id="t2" class="tablist">Photo Selection</button>
 <button id="t3" class="tablist">Descriptive Text</button>
-<button id="t4" class="tablist">Refs &amp; Links</button>
+<button id="t4" class="tablist">Related Hike Info</button>
 <div id="line"></div>
 <div id="tab1" class="active tab-panel">
 <form action="saveTab1.php" method="POST" enctype="multipart/form-data">
