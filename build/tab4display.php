@@ -187,7 +187,8 @@ if (isset($_SESSION['gpsmsg']) && $_SESSION['gpsmsg'] !== '') {
 <p style="font-weight:bold;margin-bottom:0px;">Upload New Data File:<br />
 <em style="font-weight:normal;">
     - Note: A Reference Will Automatically Be Added When Upload Is Complete</em></p><br />
-<label style="color:brown;">Upload New File </label>&nbsp;
+<label style="color:brown;">Upload New File
+    &nbsp;(Accepted file types: gpx, html, kml)</label>&nbsp;
     <input type="file" name="newgps" />
 <div style="margin-left:8px;">
     <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
