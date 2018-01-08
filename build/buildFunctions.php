@@ -167,27 +167,27 @@ function fileTypeAndLoc($fname)
     $fext = strtolower($ext);
     $checks = count($usable);
     // see if the extension is "usable" and assign it an appropriate location
-    $uplType = '';
+    $mimeType = '';
     for ($i=0; $i<$checks; $i++) {
         if ($fext === $usable[$i]) {
             if ($fext === 'html') {
-                $uplType = "html";
+                $mimeType = "html";
                 $floc = '../maps/';
             } elseif ($fext === 'kml') {
-                $uplType === 'vnd.google-earth.kml+xml';
+                $mimeType = 'vnd.google-earth.kml+xml';
                 $floc = '../gpx/';
             } else {
-                $uplType = "octet-stream";
+                $mimeType = "octet-stream";
                 $floc = '../gpx/';
             }
         }
     }
-    if ($uplType === '') {
+    if ($mimeType === '') {
         die(
             "buildFunctions.php: Unaccepted file extension in GPS Data Section " .
             "({$fext}): " . mysqli_error($link)
         );
     }
-    return array($floc, $uplType);
+    return array($floc, $mimeType, $fext);
 }
 ?>
