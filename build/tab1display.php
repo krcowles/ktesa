@@ -11,9 +11,8 @@ session_start();
 <input type="hidden" name="ao1" value="<?php echo $hikeAddImg1;?>" />
 <input type="hidden" name="ao2" value="<?php echo $hikeAddImg2;?>" />
 <label for="hike">Hike Name: </label>
-<textarea id="hike" name="hname"><?php echo $hikeTitle;?>
-</textarea>&nbsp;&nbsp;
-<p style="display:none;" id="locality"><?php echo $hikeLocale;?></p>
+<textarea id="hike" name="hname"><?php echo $hikeTitle;?></textarea>
+&nbsp;&nbsp;<p style="display:none;" id="locality"><?php echo $hikeLocale;?></p>
 <label for="area">Locale (City/POI): </label>
 <select id="area" name="locale">
     <optgroup label="North/Northeast">
@@ -134,11 +133,9 @@ echo "</select>&nbsp;&nbsp;\n" .
     <option value="Out-and-back">Out-and-back</option>
 </select>&nbsp;&nbsp;
 <label for="miles">Round-trip length in miles: </label>
-<textarea id="miles" name="hlgth"><?php echo $hikeMiles;?>
-</textarea>&nbsp;&nbsp;
+<textarea id="miles" name="hlgth"><?php echo $hikeMiles;?></textarea>&nbsp;&nbsp;
 <label for="elev">Elevation change in feet: </label>
-<textarea id="elev" name="helev"><?php echo $hikeFeet;?>
-</textarea><br /><br />
+<textarea id="elev" name="helev"><?php echo $hikeFeet;?></textarea><br /><br />
 <p id="dif" style="display:none"><?php echo $hikeDiff;?></p>
 <label for="diff">Level of difficulty: </label>
 <select id="diff" name="hdiff">
@@ -149,14 +146,11 @@ echo "</select>&nbsp;&nbsp;\n" .
     <option value="Difficult">Difficult</option>
 </select>
 <label for="fac">Facilities at the trailhead: </label>
-<textarea id="fac" name="hfac"><?php echo $hikeFac;?>
-</textarea><br /><br />
+<textarea id="fac" name="hfac"><?php echo $hikeFac;?></textarea><br /><br />
 <label for="wow">"Wow" Appeal: </label>
-<textarea id="wow" name="hwow"><?php echo $hikeWow;?>
-</textarea>&nbsp;&nbsp;
+<textarea id="wow" name="hwow"><?php echo $hikeWow;?></textarea>&nbsp;&nbsp;
 <label for="seas">Best Hiking Seasons: </label>
-<textarea id="seas" name="hsea"><?php echo $hikeSeasons;?>
-</textarea><br /><br />
+<textarea id="seas" name="hsea"><?php echo $hikeSeasons;?></textarea><br /><br />
 <p id="expo" style="display:none"><?php echo $hikeExpos;?></p>
 <label for="sun">Exposure: </label>
 <select id="sun" name="hexp">

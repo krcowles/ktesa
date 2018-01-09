@@ -1,10 +1,11 @@
 <?php
 if ($hikeTips !== '') {
     echo '<p>Tips Text: </p>';
-    echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' . $hikeTips . '</textarea><br />' . "\n";
+    echo '<textarea id="ttxt" name="tips" rows="10" 
+        cols="130">' . $hikeTips . '</textarea><br />' . "\n";
 } else {
-    echo '<textarea id="ttxt" name="tips" rows="10" cols="130">' .
-       '[NO TIPS FOUND]</textarea><br />' . "\n";
+    echo '<textarea id="ttxt" name="tips" rows="10" 
+        cols="130">[NO TIPS FOUND]</textarea><br />' . "\n";
 }
 ?>  
 <p>Hike Information:</p>
