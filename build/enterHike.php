@@ -396,22 +396,16 @@ if ($hip == '0') {  # in this case, all preloads of fields are empty...
 
     <fieldset id="txtdat">
         <legend>Text Sections</legend>
-        <textarea id="usrtips" class="honly" name="tipstxt" rows="10" 
-            cols="130"><?php
-            if ($entrydat['tips'] == '') {
-                echo "[OPTIONAL] Enter 'Tips Text' here";
-            } else {
+        <textarea id="usrtips" class="honly" name="tipstxt" rows="10" cols="130" 
+            placeholder="Add any special notes about travel, or the hike here"><?php
+            if ($entrydat['tips'] !== '') {
                 echo $entrydat['tips'];
-            } ?>
-        </textarea><br />
-        <textarea id="usrinfo" name="hiketxt" rows="20" cols="130"><?php
-        if ($entrydat['info'] == '') {
-            echo "Enter the description of the hike here, as it will " .
-                "appear on the completed hike page...";
-        } else {
+            } ?></textarea><br />
+        <textarea id="usrinfo" name="hiketxt" rows="20" cols="130"
+        placeholder="Enter hike description here"><?php
+        if ($entrydat['info'] !== '') {
             echo $entrydat['info'];
-        } ?>
-        </textarea>
+        } ?></textarea>
     </fieldset>
 
     <?php
