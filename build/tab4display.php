@@ -152,6 +152,16 @@ if (mysqli_num_rows($gps) !== 0) {
         $pl = fetch($gpsdat['label']);
         $pu = fetch($gpsdat['url']);
         $pc = fetch($gpsdat['clickText']);
+        $extpos = strrpos($pu, ".") + 1;
+        $exttype = substr($pu, $extpos, strlen($pu)-$extpos);
+        $ext = strtolower($exttype);
+        if ($ext === 'gpx' || $ext === 'kml') {
+            $triple = true;
+        } elseif ($ext === 'html') {
+            $triple = false;
+        } else {
+            die("tab4display.php: Unrecognized file type: {$ext}");
+        }
         echo 'Label: <textarea class="tstyle1" name="labl[]">' .
                 $pl . '</textarea>&nbsp;&nbsp;' . PHP_EOL;
         echo 'Url: <textarea class="tstyle2" name="lnk[]">' .
@@ -160,7 +170,15 @@ if (mysqli_num_rows($gps) !== 0) {
                 $pc . '</textarea>&nbsp;&nbsp;' . PHP_EOL
                 . '<label>Delete: </label>' .
                 '<input style="height:18px;width:18px;" type="checkbox" '
-                . 'name="delgps[]" value="' . $x . '"><br /><br />' . PHP_EOL;
+                . 'name="delgps[]" value="' . $x . '" />' . PHP_EOL;
+        echo '<a href="' . $pu . '" target="_blank">View</a>';
+        echo '&nbsp;&nbsp;<a href="' . $pu . '" download>Download</a>';
+        if ($triple) {
+            $mapLink = "../maps/fullPgMapLink.php?maptype=extra&" .
+                    "hno={$hikeNo}&hike={$hikeTitle}&gpx={$pu}&tbl=new";
+            echo '&nbsp;&nbsp;<a href="' . $mapLink . '" target="_blank">View as Map</a></li>';
+        }
+        echo '<br /><br >' . PHP_EOL;
         $x++;
     }
     mysqli_free_result($gps);
