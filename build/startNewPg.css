@@ -1,0 +1,35 @@
+body {
+    min-width: 960px;
+    font-family: arial, verdana;
+    background-color: #dadada;
+}
+#main {
+    margin-left: 16px;
+}
+form {
+    font-size: 18px;
+}
+.entries {
+    font-weight: bold;
+}
+#newname:hover {
+    background-color: PapayaWhip;
+}
+#vcs {
+    display: none;
+    margin-left: 32px;
+    color: DarkBlue;
+}
+#cls {
+    display: none;
+    margin-left: 32px;
+    color: DarkBlue;
+}
+input[type=submit] {
+    height: 28px;
+    font-size: 16px;
+    font-weight: bold;
+}
+input[type=submit]:hover {
+    background-color: PapayaWhip;
+}
