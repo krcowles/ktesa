@@ -274,11 +274,8 @@ if (!$newstyle) {
         '" id="chartline"><canvas id="grph"></canvas></div>' . "\n";
 }
 /* BOTH PAGE STYLES */
-?>
-<div id="imgArea"></div>
-<?php
 // clear floats when no pics:
-echo '<div style="clear:both;">' . "\n";
+echo '<div style="clear:both;"><br />' . PHP_EOL;
 if ($hikeTips !== '') {
     echo '<div id="trailTips"><img id="tipPic" src="../images/tips.png" ' .
         'alt="special notes icon" /><p id="tipHdr">TRAIL TIPS!</p>' .
@@ -291,6 +288,7 @@ if ($bop !== '') {
     echo $bop;
 }
 ?>
+<div id="imgArea"></div>
 <p id="ptype" style="display:none">Hike</p>
 <div id="dbug"></div>
 

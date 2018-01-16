@@ -34,24 +34,29 @@ while ($ritem = mysqli_fetch_assoc($refq)) {
     $rit1 = fetch($ritem['rit1']);
     $rit2 = fetch($ritem['rit2']);
     if ($thisref === 'Book:' || $thisref === 'Photo Essay:') {
-        echo '<label style="text-indent:24px;">Title: </label>'
-            . '<textarea style="height:20px;width:320px" name="rit1[]">' .
-            $rit1 . '</textarea>&nbsp;&nbsp;';
+        echo '<label style="text-indent:24px;">Title: </label>' .
+            '<textarea style="height:20px;width:320px" ' .
+            ' name="rit1[]">' . $rit1 . '</textarea>&nbsp;&nbsp;';
         echo '<label>Author: </label>'
-            . '<textarea style="height:20px;width:320px" name="rit2[]">' .
-            $rit2 . '</textarea>&nbsp;&nbsp;'
+            . '<textarea style="height:20px;width:320px" ' .
+            'name="rit2[]">' . $rit2 . '</textarea>&nbsp;&nbsp;'
             . '<label>Delete: </label>' .
-            '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="'.
-            $z . '"><br /><br />' . "\n";
+            '<input style="height:18px;width:18px;" type="checkbox" ' .
+            'name="delref[]" value="'. $z . '"><br /><br />' . "\n";
     } elseif ($thisref === 'Text') {
-        echo '<label>Text only item: </label><textarea style="height:20px;width:320px;" name="rit1[]">' .
-            $rit1 . '</textarea><label>Delete: </label>' .
+        echo '<label>Text only item: </label>' .
+            '<textarea style="height:20px;width:320px;" ' .
+            'name="rit1[]">' . $rit1 . '</textarea><label>Delete: </label>' .
             '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
             $z . '"><br /><br />' . "\n";
     } else {
-        echo '<label>Item link: </label><textarea style="height:20px;width:500px;" name="rit1[]">' .
-            $rit1 . '</textarea>&nbsp;&nbsp;<label>Cick text: </label><textarea style="height:20px;width:330px;" name="rit2[]">' .
-            $rit2 . '</textarea>&nbsp;&nbsp;<label>Delete: </label>' .
+        echo '<label>Item link: </label>' .
+            '<textarea style="height:20px;width:500px;" ' .
+            'name="rit1[]">' . $rit1 . '</textarea>&nbsp;&nbsp;' .
+            '<label>Cick text: </label>' .
+            '<textarea style="height:20px;width:330px;" ' .
+            'name="rit2[]">' . $rit2 . '</textarea>&nbsp;&nbsp;' .
+            '<label>Delete: </label>' .
             '<input style="height:18px;width:18px;" type="checkbox" name="delref[]" value="' .
             $z . '"><br /><br />' . "\n";
     }
@@ -152,33 +157,15 @@ if (mysqli_num_rows($gps) !== 0) {
         $pl = fetch($gpsdat['label']);
         $pu = fetch($gpsdat['url']);
         $pc = fetch($gpsdat['clickText']);
-        $extpos = strrpos($pu, ".") + 1;
-        $exttype = substr($pu, $extpos, strlen($pu)-$extpos);
-        $ext = strtolower($exttype);
-        if ($ext === 'gpx' || $ext === 'kml') {
-            $triple = true;
-        } elseif ($ext === 'html') {
-            $triple = false;
-        } else {
-            die("tab4display.php: Unrecognized file type: {$ext}");
-        }
-        echo 'Label: <textarea class="tstyle1" name="labl[]">' .
-                $pl . '</textarea>&nbsp;&nbsp;' . PHP_EOL;
-        echo 'Url: <textarea class="tstyle2" name="lnk[]">' .
-                $pu . '</textarea>&nbsp;&nbsp;' . PHP_EOL;
-        echo 'Click-on text: <textarea class="tstyle3" name="ctxt[]">' .
-                $pc . '</textarea>&nbsp;&nbsp;' . PHP_EOL
-                . '<label>Delete: </label>' .
-                '<input style="height:18px;width:18px;" type="checkbox" '
-                . 'name="delgps[]" value="' . $x . '" />' . PHP_EOL;
-        echo '<a href="' . $pu . '" target="_blank">View</a>';
-        echo '&nbsp;&nbsp;<a href="' . $pu . '" download>Download</a>';
-        if ($triple) {
-            $mapLink = "../maps/fullPgMapLink.php?maptype=extra&" .
-                    "hno={$hikeNo}&hike={$hikeTitle}&gpx={$pu}&tbl=new";
-            echo '&nbsp;&nbsp;<a href="' . $mapLink . '" target="_blank">View as Map</a></li>';
-        }
-        echo '<br /><br >' . PHP_EOL;
+        echo 'Label: <textarea class="tstyle1" ' .
+            'name="labl[]">' .$pl . '</textarea>&nbsp;&nbsp;' . PHP_EOL;
+        echo 'Url: <textarea class="tstyle2" ' .
+            'name="lnk[]">' . $pu . '</textarea>&nbsp;&nbsp;' . PHP_EOL;
+        echo 'Click-on text: <textarea class="tstyle3" ' .
+            'name="ctxt[]">' . $pc . '</textarea>&nbsp;&nbsp;' . PHP_EOL
+            . '<label>Delete: </label>' .
+            '<input style="height:18px;width:18px;" type="checkbox" '
+            . 'name="delgps[]" value="' . $x . '"><br /><br />' . PHP_EOL;
         $x++;
     }
     mysqli_free_result($gps);

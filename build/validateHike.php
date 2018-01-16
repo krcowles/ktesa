@@ -196,11 +196,7 @@ $purl2 = mysqli_real_escape_string($link, $url2);
 $gdirs = filter_input(INPUT_POST, 'dirs');
 $dirs = mysqli_real_escape_string($link, $gdirs);
 $rawtips = filter_input(INPUT_POST, 'tipstxt');
-if (substr($rawtips, 0, 10) !== '[OPTIONAL]') {
-    $tips = mysqli_real_escape_string($link, $rawtips);
-} else {
-    $tips = '';
-}
+$tips = mysqli_real_escape_string($link, $rawtips);
 $hikeDetails = filter_input(INPUT_POST, 'hiketxt');
 $info = mysqli_real_escape_string($link, $hikeDetails);
 # Now the updates (if any) can be stored in the EHIKES database
