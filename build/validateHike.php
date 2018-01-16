@@ -21,7 +21,8 @@ if ($status === 'new') {
 #   Add new record
 #    $newRow = insertDbRow($link,'EHIKES',__File__,__LINE__); 
     $newHike = mysqli_real_escape_string($link, $hike);
-    $query = "INSERT INTO EHIKES (pgTitle,usrid) VALUES ('{$newHike}','{$uid}');";
+    $query = "INSERT INTO EHIKES (pgTitle,usrid,stat) VALUES " .
+        "('{$newHike}','{$uid}','0');";
     doQuery($link, $query, __File__, __LINE__);
 #
 #   Update fields one by one so that NULLs can be checked
