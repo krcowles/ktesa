@@ -70,26 +70,26 @@ mysqli_free_result($addref);
  * includes newly added GPS data, so all get INSERTED, and no algorithm is required
  * to determine which only get updated vs which get added vs which get deleted.
  */
-$delrefsreq = "DELETE FROM EGPSDAT WHERE indxNo = '{$hikeNo}';";
-$delrefs = mysqli_query($link, $delrefsreq);
-if (!$delrefs) {
+$delgpsreq = "DELETE FROM EGPSDAT WHERE indxNo = '{$hikeNo}';";
+$delgps = mysqli_query($link, $delgpsreq);
+if (!$delgps) {
     die("saveTab4.php: Failed to delete old GPS data for {$hikeNo}: " .
         mysqli_error($link));
 }
-mysqli_free_result($delrefs);
+mysqli_free_result($delgps);
 # Now add the newly edited ones back in, sans any deletions
-$plbl = $_POST['plabl'];
-$purl = $_POST['plnk'];
-$pcot = $_POST['pctxt'];
+$lbl = $_POST['labl'];
+$url = $_POST['lnk'];
+$cot = $_POST['ctxt'];
 # NOTE: The following post only collects checked boxes
-$deletes = $_POST['delprop']; # any entries will contain the ref no on editDB.php
+$deletes = $_POST['delgps']; # any entries will contain the ref no on editDB.php
 if (count($deletes) > 0) {
     $chk_del = true;
 } else {
     $chk_del = false;
 }
 $dindx = 0;
-$newcnt = count($plbl);
+$newcnt = count($lbl);
 /*
  * NOTE: the only items that have 'delete' boxes are those for which GPS data
  * already existed in the database, and they are listed before any that might
@@ -107,62 +107,21 @@ for ($j=0; $j<$newcnt; $j++) {
             $addit = false;
         }
     }
-    if ($addit && $plbl[$j] !== '') {
-        $a = mysqli_real_escape_string($link, $plbl[$j]);
-        $b = mysqli_real_escape_string($link, $purl[$j]);
-        $c = mysqli_real_escape_string($link, $pcot[$j]);
-        $addpreq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
+    if ($addit && $lbl[$j] !== '') {
+        $a = mysqli_real_escape_string($link, $lbl[$j]);
+        $b = mysqli_real_escape_string($link, $url[$j]);
+        $c = mysqli_real_escape_string($link, $cot[$j]);
+        // For now, all entries will be marked 'P'
+        $addgpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
             "VALUES ('{$hikeNo}','P','{$a}','{$b}','{$c}');";
-        $addp = mysqli_query($link, $addpreq);
-        if (!$addp) {
+        $addgps = mysqli_query($link, $addgpsreq);
+        if (!$addgps) {
             die("saveTab4.php: Failed to insert EGPSDAT data: " .
                 mysqli_error($link));
         }
     }
 }
-mysqli_free_result($addp);
-$albl = $_POST['alabl'];
-$aurl = $_POST['alnk'];
-$acot = $_POST['actxt'];
-# NOTE: The following post only collects checked boxes
-$deletes = $_POST['delact']; # any entries will contain the ref no on editDB.php
-if (count($deletes) > 0) {
-    $chk_del = true;
-} else {
-    $chk_del = false;
-}
-$dindx = 0;
-$newcnt = count($albl);
-/*
- * NOTE: the only items that have 'delete' boxes are those for which GPS data
- * already existed in the database, and they are listed before any that might
- * get added. Therefore, proceeding through the loop, the first ones can be
- * compared to any corresponding $deletes ref pointer.
- */
-for ($k=0; $k<$newcnt; $k++) {
-    $addit = true;
-    if ($chk_del) {
-        if ($k === intval($deletes[$dindx])) {
-            $dindx++; # skip this and look for the next;
-            if ($dindx === count($deletes)) {
-                $chk_del = false;
-            }
-            $addit = false;
-        }
-    }
-    if ($addit && $albl[$k] !== '') {
-        $a = mysqli_real_escape_string($link, $albl[$k]);
-        $b = mysqli_real_escape_string($link, $aurl[$k]);
-        $c = mysqli_real_escape_string($link, $acot[$k]);
-        $addareq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
-            "VALUES ('{$hikeNo}','A','{$a}','{$b}','{$c}');";
-        $adda = mysqli_query($link, $addareq);
-        if (!$adda) {
-            die("saveTab4.php: Failed to insert EGPSDAT data: " .
-                mysqli_error($link));
-        }
-    }
-}
-mysqli_free_result($adda);
+mysqli_free_result($addgps);
+// return to editor with new data:
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
 header("Location: {$redirect}");

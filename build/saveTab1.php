@@ -2,10 +2,54 @@
 session_start();
 $_SESSION['activeTab'] = 1;
 require_once "../mysql/dbFunctions.php";
+require_once "buildFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'hno');
 $hstat = filter_input(INPUT_POST, 'stat');
 $uid = filter_input(INPUT_POST, 'usr');
+/**
+ * File delete / upload for main gpx file and track
+ */
+$maingpx = filter_input(INPUT_POST, 'mgpx');
+$maintrk = filter_input(INPUT_POST, 'mtrk');
+$delgpx = filter_input(INPUT_POST, 'dgpx');
+$dels = false;
+if (isset($delgpx)) {
+    $delgpx = '../gpx/' . $maingpx;
+    if (!unlink($delgpx)) {
+        die(__FILE__ . ": Did not remove {$delgpx} from site");
+    }
+    $deltrk = '../json/' . $maintrk;
+    if (!unlink($deltrk)) {
+        die(__FILE__ . ": Did not remove {$deltrk} from site");
+    }
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'gpx', 'indxNo', null, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', null, __FILE__, __LINE__
+    );
+    $delmsg = "<p>Deleted files {$maingpx} and {$maintrk} from site</p>";
+    $dels = true;
+}
+$gpxupl = validateUpload("newgpx", "../gpx/", "/octet-stream/");
+$newgpx = $gpxupl[0];
+if ($dels) {
+    $sendBack = $delmsg . $gpxupl[1];
+} else {
+    $sendBack = $gpxupl[1];
+}
+$_SESSION['uplmsg'] = $sendBack;
+if ($newgpx !== 'No file specified') {
+    $trkdat = makeTrackFile($newgpx, "../gpx/");
+    $newtrk = $trkdat[0];
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'gpx', 'indxNo', $newgpx, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', $newtrk, __FILE__, __LINE__
+    );
+}
 /* Marker, cluster info may have changed during edit
  * If not, previous values must be retained:
  */

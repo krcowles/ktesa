@@ -6,11 +6,7 @@ $link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'dno');
 $uid = filter_input(INPUT_POST, 'did');
 $htips = filter_input(INPUT_POST, 'tips');
-if (substr($htips, 0, 15) !== '[NO TIPS FOUND]') {
-    $etips = mysqli_real_escape_string($link, $htips);
-} else {
-    $etips = '';
-}
+$etips = mysqli_real_escape_string($link, $htips);
 $hinfo = filter_input(INPUT_POST, 'hinfo');
 if ($hinfo == '') {
     $einfo = '';

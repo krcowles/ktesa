@@ -210,5 +210,14 @@ $('#auxfrm').submit( function(ev) {
     } // end of else not master key
 });
 
+$('#turnon').on('click', function() {
+    $(this).css('display','none');
+    $('#more').slideToggle();
+});
+
+$('#turnoff').on('click', function() {
+    $('#more').slideToggle();
+    $('#turnon').css('display','block');
+});
 
 }); // end of page-loading wait statement
