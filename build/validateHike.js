@@ -35,6 +35,7 @@ if ( $('#tsvStat').text() === 'NO') {
 $('#unval').on('click', function(ev) {
     ev.preventDefault();
     window.open('unvalidate.php',"_blank");
+    window.close();
 });
 
 }); // end of page is loaded...

@@ -31,7 +31,7 @@ $pstyle = '<p style="color:red;font-size:18px;">';
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail"><?php echo $hiketype;?> Hike Editor</p>
+<p id="trail">Hike Editor</p>
 <div id="main" style="padding:16px;">
 <h3>Edits made to this hike will be retained in the New/In-Edit database, 
     and will not show up when displaying published hikes until these edits 
@@ -84,7 +84,6 @@ function fetch($var)
     $clean = is_null($var) ? '' : $var;
     return trim($clean);
 }
-$status = trim($hike['stat']);
 $hikeTitle = trim($hike['pgTitle']);  # this should never be null!if (is_null($hike['locale'])) {
 $hikeLocale = fetch($hike['locale']);
 $hikeMarker = fetch($hike['marker']);  # this also should never be null...

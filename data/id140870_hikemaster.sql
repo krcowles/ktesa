@@ -228,7 +228,6 @@ INSERT INTO GPSDAT VALUES
 
 
 
-
 CREATE TABLE `REFS` (
   `refId` smallint(6) NOT NULL AUTO_INCREMENT,
   `indxNo` smallint(6) DEFAULT NULL,
@@ -695,7 +694,6 @@ INSERT INTO REFS VALUES
 ('452','102','Book:','60 Hikes Within 60 Miles of Albuquerque',', Stephen Ausherman'),
 ('453','102','Website:','https://www.mtbproject.com/trail/207597/dragons-back','Mountain Bike Site'),
 ('454','103','Text:','No References Found',NULL),
-
 ('459','105','Book:','Sandia Mountain Hiking Guide',', Mike Coltrin'),
 ('460','105','Website:','http://www.explorenm.com/hikes/PiedraLisa/','Explore New Mexico'),
 ('461','105','Website:','http://www.sandiahiking.com/trailguide.html#piedralisasouth','Sandia Mountain Hiking Guide'),
@@ -874,6 +872,7 @@ INSERT INTO REFS VALUES
 ('1057','153','Website:','https://pubs.usgs.gov/sim/3179/montosopeak/SIM3179_pamphlet_508.pdf','USGS Montoso Peak Study'),
 ('1058','153','App:','https://www.trails.com/tcatalog_trail.aspx?trailid=XMR022-031','AllTrails'),
 ('1059','153','Website:','http://www.peakbagger.com/peak.aspx?pid=67114','Peak Bagger');
+
 
 
 
@@ -2295,6 +2294,7 @@ INSERT INTO TSV VALUES
 
 
 
+
 CREATE TABLE `IPTBLS` (
   `ipIndx` smallint(6) NOT NULL AUTO_INCREMENT,
   `indxNo` smallint(6) DEFAULT NULL,
@@ -2355,7 +2355,7 @@ CREATE TABLE `EHIKES` (
   `indxNo` smallint(6) NOT NULL AUTO_INCREMENT,
   `pgTitle` varchar(30) NOT NULL,
   `usrid` varchar(32) NOT NULL,
-  `stat` varchar(10) DEFAULT NULL,
+  `stat` smallint(6) DEFAULT NULL,
   `locale` varchar(20) DEFAULT NULL,
   `marker` varchar(11) DEFAULT NULL,
   `collection` varchar(15) DEFAULT NULL,
@@ -2381,11 +2381,11 @@ CREATE TABLE `EHIKES` (
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
-('4','Juan Tabo Canyon    ','mstr','sub','Albuquerque','Normal','','','','Out-and-back','6.00','650','Easy-Moderate','None    ','Cliff VIews    ','Not summer  ','Full sun','JuanTaboCanyon.gpx','JuanTaboCanyon.json','35.2167850000','-106.4875740000',NULL,NULL,'https://www.flickr.com/photos/159672980@N03/albums/72157666204367189','','https://www.google.com/maps/place/35%C2%B013\'00.3%22N+106%C2%B029\'14.8%22W/@35.21674,-106.48745,17z?authuser=0&hl=en','This hike is out and back with three separate spurs. Stop when you get to the fences and signs, as this hike borders on private property and the Sandia Pueblo. Also remember your voice travels far in these parts - folks on their patios might not want to hear your shouts of praise for the natural wonders.','A great hike for exploring various spurs in and around Juan Tabo Canyon. We liked the southwestern spur the best as it snakes around several huge cliff faces. But the rest of the hike has its charms too, including views up to Rincon Ridge and down into Albuquerque.');
+('1','Juan Tabo Canyon    ','mstr','0','Albuquerque','Normal','','','','Out-and-back','6.00','650','Easy-Moderate','None    ','Cliff VIews    ','Not summer  ','Full sun','JuanTaboCanyon.gpx','JuanTaboCanyon.json','35.2167850000','-106.4875740000',NULL,NULL,'https://www.flickr.com/photos/159672980@N03/albums/72157666204367189','','https://www.google.com/maps/place/35%C2%B013\'00.3%22N+106%C2%B029\'14.8%22W/@35.21674,-106.48745,17z?authuser=0&hl=en','This hike is out and back with three separate spurs. Stop when you get to the fences and signs, as this hike borders on private property and the Sandia Pueblo. Also remember your voice travels far in these parts - folks on their patios might not want to hear your shouts of praise for the natural wonders.','A great hike for exploring various spurs in and around Juan Tabo Canyon. We liked the southwestern spur the best as it snakes around several huge cliff faces. But the rest of the hike has its charms too, including views up to Rincon Ridge and down into Albuquerque.');
 
 
 
@@ -2419,73 +2419,5 @@ CREATE TABLE `EREFS` (
 ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 
-INSERT INTO EREFS VALUES
-('22','4','Book:','60 Hikes Within 60 Miles of Albuquerque','by Stephen Ausherman');
-
-
-
-
-CREATE TABLE `ETSV` (
-  `picIdx` smallint(6) NOT NULL AUTO_INCREMENT,
-  `indxNo` smallint(6) DEFAULT NULL,
-  `folder` varchar(30) DEFAULT NULL,
-  `title` varchar(128) DEFAULT NULL,
-  `hpg` varchar(1) DEFAULT NULL,
-  `mpg` varchar(1) DEFAULT NULL,
-  `desc` varchar(512) DEFAULT NULL,
-  `lat` double(13,10) DEFAULT NULL,
-  `lng` double(13,10) DEFAULT NULL,
-  `thumb` varchar(1024) DEFAULT NULL,
-  `alblnk` varchar(1024) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
-  `mid` varchar(1024) DEFAULT NULL,
-  `imgHt` smallint(6) DEFAULT NULL,
-  `imgWd` smallint(6) DEFAULT NULL,
-  `iclr` varchar(32) DEFAULT NULL,
-  `org` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`picIdx`),
-  KEY `ETSV_Constraint` (`indxNo`),
-  CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO ETSV VALUES
-('107','4','Folder1','DSC00044','Y','Y','Photographer becomes subject','35.2240413889','-106.4906030556','https://c1.staticflickr.com/5/4575/24451210298_e6ac77769b_t.jpg','https://www.flickr.com/photos/159672980@N03/24451210298/in/album-72157666204367189','2017-11-10 10:30:46','https://c1.staticflickr.com/5/4575/24451210298_e6ac77769b_n.jpg','3888','5184','pink','https://c1.staticflickr.com/5/4575/24451210298_904b373e13_o.jpg'),
-('108','4','Folder1','DSC00050','Y','Y','Late bloomers','35.2215880556','-106.4957480556','https://c1.staticflickr.com/5/4577/24451280768_8b89b9efa7_t.jpg','https://www.flickr.com/photos/159672980@N03/24451280768/in/album-72157666204367189','2017-11-10 11:06:08','https://c1.staticflickr.com/5/4577/24451280768_8b89b9efa7_n.jpg','3888','5184','pink','https://c1.staticflickr.com/5/4577/24451280768_902fe09ce7_o.jpg'),
-('109','4','Folder1','IMG_20171110_100305','Y','N','How does this darn camera work?','35.1605694444','-106.4919388889','https://c1.staticflickr.com/5/4582/38538445762_aa1e5cd362_t.jpg','https://www.flickr.com/photos/30474783@N06/38538445762/in/album-72157689909098685','2017-11-10 10:03:07','https://c1.staticflickr.com/5/4582/38538445762_aa1e5cd362_n.jpg','2688','1512','red','https://c1.staticflickr.com/5/4582/38538445762_a47a38aa75_o.jpg'),
-('110','4','Folder1','IMG_20171110_110339','Y','Y','View up towards Sandia Peaks','35.2221944444','-106.4950250000','https://c1.staticflickr.com/5/4559/37853250214_1b4886fa6f_t.jpg','https://www.flickr.com/photos/30474783@N06/37853250214/in/album-72157689909098685','2017-11-10 11:03:41','https://c1.staticflickr.com/5/4559/37853250214_1b4886fa6f_n.jpg','1512','2688','red','https://c1.staticflickr.com/5/4559/37853250214_e7db86a6b3_o.jpg'),
-('111','4','Folder1','IMG_20171110_113129','Y','Y','Cottonwoods and cliffs','35.2184888889','-106.5015972222','https://c1.staticflickr.com/5/4520/38538465752_29717bd74a_t.jpg','https://www.flickr.com/photos/30474783@N06/38538465752/in/album-72157689909098685','2017-11-10 11:31:30','https://c1.staticflickr.com/5/4520/38538465752_29717bd74a_n.jpg','1512','2688','red','https://c1.staticflickr.com/5/4520/38538465752_f8bf221848_o.jpg'),
-('112','4','Folder1','IMG_20171110_114536','Y','Y','Heading up again','35.2176555556','-106.5026194444','https://c1.staticflickr.com/5/4542/38538497352_acfabfd93c_t.jpg','https://www.flickr.com/photos/30474783@N06/38538497352/in/album-72157689909098685','2017-11-10 11:45:38','https://c1.staticflickr.com/5/4542/38538497352_acfabfd93c_n.jpg','1512','2688','red','https://c1.staticflickr.com/5/4542/38538497352_1f62427446_o.jpg'),
-('113','4','Folder1','IMG_20171110_115039','Y','Y','Arroyo wall','35.2165166667','-106.5026750000','https://c1.staticflickr.com/5/4521/24698053848_eab251e1f4_t.jpg','https://www.flickr.com/photos/30474783@N06/24698053848/in/album-72157689909098685','2017-11-10 11:50:40','https://c1.staticflickr.com/5/4521/24698053848_eab251e1f4_n.jpg','2688','1512','red','https://c1.staticflickr.com/5/4521/24698053848_214034efc0_o.jpg'),
-('114','4','Folder1','IMG_20171110_115157','Y','Y','Ken dwarfed','35.2165638889','-106.5022416667','https://c1.staticflickr.com/5/4525/37853331414_8ed6160aea_t.jpg','https://www.flickr.com/photos/30474783@N06/37853331414/in/album-72157689909098685','2017-11-10 11:51:58','https://c1.staticflickr.com/5/4525/37853331414_8ed6160aea_n.jpg','2688','1512','red','https://c1.staticflickr.com/5/4525/37853331414_d5ff0ab7fd_o.jpg'),
-('115','4','Folder1','IMG_20171110_120456','Y','Y','Coyote campfire?','35.2155777778','-106.5030527778','https://c1.staticflickr.com/5/4538/38538513902_96185c8cff_t.jpg','https://www.flickr.com/photos/30474783@N06/38538513902/in/album-72157689909098685','2017-11-10 12:04:58','https://c1.staticflickr.com/5/4538/38538513902_96185c8cff_n.jpg','1512','2688','red','https://c1.staticflickr.com/5/4538/38538513902_6cb26e2511_o.jpg'),
-('116','4','Folder1','IMG_20171110_124022','Y','Y','Wild squash','35.2192833333','-106.5004638889','https://c1.staticflickr.com/5/4549/26793707249_0a971f98b8_t.jpg','https://www.flickr.com/photos/30474783@N06/26793707249/in/album-72157689909098685','2017-11-10 12:40:26','https://c1.staticflickr.com/5/4549/26793707249_0a971f98b8_n.jpg','1512','2688','red','https://c1.staticflickr.com/5/4549/26793707249_0d12489f05_o.jpg'),
-('117','4','Folder1','PANO_20171110_130130','Y','Y','Panorama attempt','35.2272222222','-106.4939416667','https://c1.staticflickr.com/5/4575/37681997575_9fe023e766_t.jpg','https://www.flickr.com/photos/30474783@N06/37681997575/in/album-72157689909098685','2017-11-10 13:02:12','https://c1.staticflickr.com/5/4575/37681997575_9fe023e766_n.jpg','0','0','red','https://c1.staticflickr.com/5/4575/37681997575_654b66e043_o.jpg'),
-('118','4','Folder1','TheHikeBegins','Y','Y','Near the beginning the views are already great','35.2172777778','-106.4882138889','https://c1.staticflickr.com/5/4566/24595928648_d084c06b32_t.jpg','https://www.flickr.com/photos/139088815@N08/24595928648/in/album-72157662703906638','2017-11-10 10:10:10','https://c1.staticflickr.com/5/4566/24595928648_d084c06b32_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4566/24595928648_6207572036_o.jpg'),
-('119','4','Folder1','BandedRock','Y','Y','Finely layered rock reveals geological history','35.2164916667','-106.5021277778','https://c1.staticflickr.com/5/4542/24595818508_3d941ab16a_t.jpg','https://www.flickr.com/photos/139088815@N08/24595818508/in/album-72157662703906638','2017-11-10 11:51:50','https://c1.staticflickr.com/5/4542/24595818508_3d941ab16a_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4542/24595818508_fa8d50c51d_o.jpg'),
-('120','4','Folder1','CanyonTwists','Y','Y','Many twists and turns heading down the canyon','35.2159416667','-106.5024111111','https://c1.staticflickr.com/5/4524/24595980748_2eaf357585_t.jpg','https://www.flickr.com/photos/139088815@N08/24595980748/in/album-72157662703906638','2017-11-10 12:08:21','https://c1.staticflickr.com/5/4524/24595980748_2eaf357585_n.jpg','3264','2448','red','https://c1.staticflickr.com/5/4524/24595980748_11c6f7656d_o.jpg'),
-('121','4','Folder1','NorthEndpoint','Y','Y','The northernmost point affords a great Sandia view','35.2322277778','-106.4906916667','https://c1.staticflickr.com/5/4520/38435921532_ed106e387f_t.jpg','https://www.flickr.com/photos/139088815@N08/38435921532/in/album-72157662703906638','2017-11-10 13:20:02','https://c1.staticflickr.com/5/4520/38435921532_ed106e387f_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4520/38435921532_4a092ae530_o.jpg');
-
-
-
-
-CREATE TABLE `USERS` (
-  `userid` smallint(6) NOT NULL AUTO_INCREMENT,
-  `username` varchar(32) NOT NULL,
-  `passwd` varchar(255) NOT NULL,
-  `passwd_expire` date DEFAULT NULL,
-  `last_name` varchar(30) NOT NULL,
-  `first_name` varchar(20) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `facebook_url` varchar(100) DEFAULT NULL,
-  `twitter_handle` varchar(20) DEFAULT NULL,
-  `bio` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO USERS VALUES
-('1','tom','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Sandberg','Tom','tjsandberg@yahoo.com',NULL,NULL,'One of the geniuses behind this site :-)'),
-('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)');
 
 
