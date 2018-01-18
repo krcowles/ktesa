@@ -1,23 +1,17 @@
 $( function () { // when page is loaded...
 /*
- * The editor must direct the user to the correct edit tool, depending
- * on the type and state of the item in the table.
+ * This script responds based on the current status:
  *  1. HIKES table items -- these are all 'published' and need to first be
- *     transferred 'as is' to the EHIKES et al tables.
- *  2. EHIKES table items:
- *      a. Status = new; point to enterHike
- *      b. Status = upl; files have been uploaded from enterHike, but no
- *          picture/map choices have been made; point to finishPage.php
- *      c. Status = sub; files have been submitted for release to HIKES;
- *          point to editDB (or editIndx)
- *      d. Status = pub; files have already appeared on site; use editDB
+ *     transferred 'as is' to the EHIKES (et al) tables. Then direct the user
+ * 	   to the editDB.php page with the stat field = HIKES indxNo.
+ *  2. EHIKES table items -- these will be directed immediately to editDB.php;
+ *     If the hike was originally published, a reminder will pop up.
  */
 var uid = $('#uid').text();
-var useEditor;
-var umsg;
+var useEditor = 'editDB.php?usr=' + uid + "&hno=";
 $rows = $('tbody').find('tr');
-$('a').on('click', function(e) {
-    e.preventDefault();
+$('a').on('click', function(ev) {
+    ev.preventDefault();
     if (age === 'new') {  // *** THESE HIKES ARE EHIKES ***
         var ptr = $(this).prop('href');
         $rows.each( function(indx) {
@@ -25,30 +19,14 @@ $('a').on('click', function(e) {
             if (currptr == ptr) {
                 // extract the hikeNo:
                 var eqpos = ptr.indexOf('=') + 1;
-                var hikeNo = ptr.substring(eqpos,ptr.length);
+                var hikeNo = ptr.substring(eqpos, ptr.length);
                 var stat = statfields[indx];
-                if (stat === 'new') {
-                    umsg = "REMINDER: If you chose files in the 'File Data'" 
-                        + " section:\nthey are not yet saved and you will need " 
-                        + "to re-enter them";
-                    useEditor = 'enterHike.php?hno=' + hikeNo + '&usr=' + uid;
-                } else if (stat === 'upl') {
-                    umsg = "REMINDER: You have uploaded files and possibly "
-                        + "photos:\n Select which photos are to be " 
-                        + "displayed on the hike page & map";
-                    useEditor = 'finishPage.php?hno=' + hikeNo;
-                } else if (stat === 'sub') {
-                    useEditor = 'editDB.php?hno=' + hikeNo + 
-                        '&tbl=new&usr=' + uid + '&stat=' + stat;
-                    umsg = 'This hike has been submitted for publication.\n' +
-                        'Changes will be incorporated when published';
-                } else if (stat.substring(0,3) === 'pub') {
-                    useEditor = 'editDB.php?hno=' + hikeNo + 
-                        '&tbl=new&usr=' + uid + '&stat=' + stat;
-                    umsg = 'This hike can be viewed in its original state on ' +
+                if (stat !== '0') {
+                    umsg = "This hike can be viewed in \nits original state on " +
                         'the main site';
+					alert(umsg);
                 }
-                alert(umsg);
+				useEditor += hikeNo;
 				window.open(useEditor);
 				window.close();
             }

@@ -21,12 +21,10 @@ if ($status === 'new') {
 #   Add new record
 #    $newRow = insertDbRow($link,'EHIKES',__File__,__LINE__); 
     $newHike = mysqli_real_escape_string($link, $hike);
-    $query = "INSERT INTO EHIKES (pgTitle,usrid) VALUES ('{$newHike}','{$uid}');";
-    doQuery($link, $query, __File__, __LINE__);
-#
-#   Update fields one by one so that NULLs can be checked
-    $hikeNo = getDbRowNum($link, 'EHIKES', __File__, __LINE__);
-    updateDbRow($link, 'EHIKES', $hikeNo, 'stat', 'indxNo', 'new', __File__, __LINE__);
+    $query = "INSERT INTO EHIKES (pgTitle,usrid,stat) VALUES " .
+        "('{$newHike}','{$uid}','0');";
+    doQuery($link, $query, __FILE__, __LINE__);
+    $hikeNo = getDbRowNum($link, 'EHIKES', __FILE__, __LINE__);
 }
 /*
  * Note: the next four variables are initialized false as 'save' type cannot
@@ -44,13 +42,11 @@ if (isset($saveType)) {
     $tabTitle = 'Save Form Data';
     $logo = 'Save ' . $hikeName;
     $type = 'Save';
-    $status = "new";
 }
 if (isset($valType)) {
     $tabTitle = 'Validate &amp; Select Images';
     $logo = 'Validate This Hike!';
     $type = 'Validate';
-    $status = "upl";
     $nopics = filter_input(INPUT_POST, 'nopix');
     if (!isset($nopics)) {
         $usetsv = true;
@@ -204,7 +200,7 @@ $tips = mysqli_real_escape_string($link, $rawtips);
 $hikeDetails = filter_input(INPUT_POST, 'hiketxt');
 $info = mysqli_real_escape_string($link, $hikeDetails);
 # Now the updates (if any) can be stored in the EHIKES database
-$query = "UPDATE IGNORE EHIKES SET pgTitle = '{$hname}',stat = '{$status}'," .
+$query = "UPDATE IGNORE EHIKES SET pgTitle = '{$hname}',stat = '0'," .
         "locale = '{$loc}',logistics = '{$logistics}',marker = '{$mrkr}'," .
         "collection = '{$coll}',cgroup = '{$cg}',cname = '{$cn}'," .
         "diff = '{$diff}',expo = '{$expo}',miles = '{$dist}',feet = '{$elev}'," .
@@ -253,6 +249,7 @@ for ($w=0; $w<count($RTypes); $w++) { # this includes all, even empty...
 }
 /* also get a count of existing entries in the EREFS table for this hike */
 $query = "SELECT refId FROM EREFS WHERE indxNo = '{$hikeNo}';";
+$ecntq = mysqli_query($link, $query) or die (__FILE__ . ": " . mysqli_error($link));
 $exrows = getDbRowCount($link, $query, __File__, __LINE__);
 if ($exrows === 0) {
     /* There are no existing EREFS for this hike; no UPDATES need be performed
@@ -552,7 +549,7 @@ if ($type === 'Validate') {
     echo "</form>\n";
 }
 ?>
-
+<script src="../scripts/jquery-1.12.1.js"></script>
 <script src="validateHike.js"></script>
 </body>
 

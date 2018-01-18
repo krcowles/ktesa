@@ -24,6 +24,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
 <p id="trail">Release EHIKE No. <?php echo $hikeNo;?></p>
 <div style="margin-left:16px;font-size:22px">
     <?php
+    $lastHikeNo = getDbRowNum($link, 'HIKES', __FILE__, __LINE__);
     $oldquery = "SELECT * FROM EHIKES WHERE indxNo = {$hikeNo};";
     $ehike = mysqli_query($link, $oldquery);
     if (!$ehike) {
@@ -33,13 +34,9 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         echo "<p style=color:brown>Hike {$hikeNo} has no data!</p>";
     } else {
         $hike = mysqli_fetch_assoc($ehike);
-        $state = $hike['stat'];
-        $status = substr($state, 0, 3);
-        if (strlen($state) > 3) {
-            $pubHike = substr($state, 3, strlen($state)-3);
-            if ($pubHike <= 0) {
-                die("publish.php: Impossible hikeNo in HIKES");
-            }
+        $status = intval($hike['stat']);
+        if ($status > $lastHikeNo || $status < 0) {
+                die("publish.php: Status out-of-range: {$status}");
         }
         $pg = mysqli_real_escape_string($link, $hike['pgTitle']);
         $ud = mysqli_real_escape_string($link, $hike['usrid']);
@@ -67,7 +64,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $dr = mysqli_real_escape_string($link, $hike['dirs']);
         $tp = mysqli_real_escape_string($link, $hike['tips']);
         $in = mysqli_real_escape_string($link, $hike['info']);
-        if ($status === 'pub') { # don't add this hike, update it
+        if ($status > 0) { # don't add this hike, update it
             $actionreq = "UPDATE IGNORE HIKES SET pgTitle = '{$pg}',usrid = '{$ud}'," .
                 "locale = '{$lo}',marker = '{$mr}',collection = '{$co}'," .
                 "cgroup = '{$cg}',cname = '{$cn}',logistics = '{$lg}'," .
@@ -76,11 +73,8 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 "trk = '{$tk}',lat = '{$la}',lng = '{$ln}',aoimg1 = '{$a1}'," .
                 "aoimg2 = '{$a2}',purl1 = '{$p1}',purl2 = '{$p2}'," .
                 "dirs = '{$dr}',tips = '{$tp}',info = '{$in}' WHERE indxNo = " .
-                "{$pubHike};";
-        } elseif ($status === 'new' || $status === 'upl') {
-            die('<p style="color:brown;">This hike is not ready for publication! ' .
-                'The status field is ' . $status . '</p>');
-        } elseif ($status === 'sub') {
+                "{$status};";
+        } else {
             $actionreq = "INSERT IGNORE INTO HIKES (pgTitle,usrid,locale,marker," .
                 "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
                 "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
@@ -96,15 +90,8 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         }
         mysqli_free_result($action);
         # Assign the hike number for the remaining tables based on status:
-        if ($status === 'sub') { # this will be the newly added no.
-            $lastidreq = "SELECT indxNo FROM HIKES ORDER BY indxNo DESC LIMIT 1;";
-            $lastid = mysqli_query($link, $lastidreq);
-            if (!$lastid) {
-                die("publish.php: Failed to extract added hike number: " .
-                    mysqli_error($link));
-            }
-            $id = mysqli_fetch_row($lastid);
-            $indxNo = $id[0];
+        if ($status === 0) { # this will be the newly added no.
+            $indxNo = $lastHikeNo + 1;
             /* NOTE: If this newly submitted hike (not previously published) is
              * a hike that is of type 'At VC', then the index page table for that
              * Visitor Center needs to be updated with the newly added hike:
@@ -142,7 +129,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 mysqli_free_result($col);
             }
         } else { # this will be the hike being modified, already on the site
-            $indxNo = $pubHike;
+            $indxNo = $status;
         }
         /*
          * In the cases of EGPSDAT, EREFS, and ETSV, elements may have been
@@ -150,12 +137,12 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
          * hike was type 'pub'. Insert new data (no UPDATEs, only INSERTs)
          */
         # ---------------------  GPSDAT -------------------
-        if ($status === 'pub') { # eliminate any existing data
-            $delreq = "DELETE FROM GPSDAT WHERE indxNo = '{$pubHike}';";
+        if ($status > 0) { # eliminate any existing data
+            $delreq = "DELETE FROM GPSDAT WHERE indxNo = '{$status}';";
             $del = mysqli_query($link, $delreq);
             if (!$del) {
                 die("publish.php: Failed to delete data from GPSDAT for hike " .
-                "{$pubHike}: " . mysqli_error($link));
+                "{$status}: " . mysqli_error($link));
             }
             mysqli_free_result($del);
         }
@@ -181,7 +168,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         mysqli_free_result($add);
         mysqli_free_result($gpsdat);
         # ---------------------  REFS -------------------
-        if ($status === 'pub') {
+        if ($status > 0) {
             $delreq = "DELETE FROM REFS WHERE indxNo = '{$pubHike}';";
             $del = mysqli_query($link, $delreq);
             if (!$del) {
@@ -211,7 +198,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         mysqli_free_result($addref);
         mysqli_free_result($refdat);
         # ---------------------  TSV -------------------
-        if ($status === 'pub') {
+        if ($status > 0) {
             $delreq = "DELETE FROM TSV WHERE indxNo = '{$pubHike}';";
             $del = mysqli_query($link, $delreq);
             if (!$del) {

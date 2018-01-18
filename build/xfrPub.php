@@ -6,13 +6,12 @@ $link = connectToDb(__FILE__, __LINE__);
 $getHike = filter_input(INPUT_GET, 'hno');
 $uid = filter_input(INPUT_GET, 'usr');
 $usr = mysqli_real_escape_string($link, $uid);
-$status = 'pub' . $getHike;
 /*
  * GET HIKES DATA
  */
-$xfrReq = "INSERT INTO EHIKES (usrid,stat,pgTitle,locale,marker,collection," .
+$xfrReq = "INSERT INTO EHIKES (usrid,stat,pgTitle,locale,marker,`collection`," .
     "cgroup,cname,logistics,miles,feet,diff,fac,wow,seasons,expo,gpx,trk,lat," .
-    "lng,aoimg1,aoimg2,purl1,purl2,dirs,tips,info) SELECT '{$usr}','{$status}'," .
+    "lng,aoimg1,aoimg2,purl1,purl2,dirs,tips,info) SELECT '{$usr}','{$getHike}'," .
     "pgTitle,locale,marker,collection,cgroup,cname,logistics,miles,feet,diff," .
     "fac,wow,seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs,tips," .
     "info FROM HIKES WHERE indxNo = {$getHike};";

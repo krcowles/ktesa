@@ -3,7 +3,6 @@ session_start();
 ?>
 <input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
 <input type="hidden" name="usr" value="<?php echo $uid;?>" />
-<input type="hidden" name="stat" value ="<?php echo $status;?>" />
 <input type="hidden" name="col" value="<?php echo $hikeColl;?>" />
 <!-- the following are required esp when extracting a published hike -->
 <input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />

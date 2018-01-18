@@ -50,7 +50,7 @@ function validateUpload($name, $fileloc, $mimetype)
             $dupdata = dupFileName($filename);
             $filename = $dupdata[0];
             $saveloc = $fileloc . $filename;
-            $msg .=  $dupdata[1];
+            $msg .=  $dupdata[1] . "<br />";
         }
         if (!move_uploaded_file($tmp_upload, $saveloc)) {
             $nomove = "Could not save {$filename} to site: contact Site Master";
@@ -107,12 +107,8 @@ function dupFileName($oldname)
     $extlgth = strlen($oldname) - $extpos;
     $fext = substr($oldname, $extpos, $extlgth);
     $newname = $fbase . $fext;
-    $fout = 'jkljlkj';
-    /*
-    $fout = '<p style="margin-top:-12px;color:brown;">' .
-        '<em>NOTE: ' . $oldname . ' has been previously saved on the '.
-        'server;</em> A new file name was created: ' . $newname . '</p>';
-    */
+    $fout = 'NOTE: ' . $oldname . ' has been previously saved on the '.
+        'server; A new file name was created: ' . $newname;
     return array($newname, $fout);
 }
 /**
@@ -151,5 +147,47 @@ function makeTrackFile($gpxfile, $gpxpath)
     }
     fclose($trk);
     return array($trkfile, $msg);
+}
+/**
+ * This function is used to check the file extension of an upload and determine
+ * the location on the server for it to reside, based on extension type.
+ * The whitelist for extensions is currently: .gpx (.GPX), .kml, and .html
+ * 
+ * @param string $fname The file name with or with path info
+ * 
+ * @return array $uplType (file mime type) and $floc (site path for storage)
+ */
+function fileTypeAndLoc($fname)
+{
+    $usable = array('gpx', 'kml', 'html');
+    // get lower case representation of file extension
+    $dot = strpos($fname, ".") + 1;
+    $extlgth = strlen($fname) - $dot;
+    $ext = substr($fname, $dot, $extlgth);
+    $fext = strtolower($ext);
+    $checks = count($usable);
+    // see if the extension is "usable" and assign it an appropriate location
+    $mimeType = '';
+    for ($i=0; $i<$checks; $i++) {
+        if ($fext === $usable[$i]) {
+            if ($fext === 'html') {
+                $mimeType = "html";
+                $floc = '../maps/';
+            } elseif ($fext === 'kml') {
+                $mimeType = 'vnd.google-earth.kml+xml';
+                $floc = '../gpx/';
+            } else {
+                $mimeType = "octet-stream";
+                $floc = '../gpx/';
+            }
+        }
+    }
+    if ($mimeType === '') {
+        die(
+            "buildFunctions.php: Unaccepted file extension in GPS Data Section " .
+            "({$fext}): " . mysqli_error($link)
+        );
+    }
+    return array($floc, $mimeType, $fext);
 }
 ?>

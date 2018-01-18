@@ -5,7 +5,6 @@ require_once "../mysql/dbFunctions.php";
 require_once "buildFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'hno');
-$hstat = filter_input(INPUT_POST, 'stat');
 $uid = filter_input(INPUT_POST, 'usr');
 /**
  * File delete / upload for main gpx file and track
@@ -177,7 +176,7 @@ $dirs = filter_input(INPUT_POST, 'gdirs');
 $hDirs = mysqli_real_escape_string($link, $dirs);
 # SAVE THE EDITED DATA IN EHIKES:
 $saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
-    "stat = '{$hstat}',locale = '{$hLoc}',marker = '{$marker}'," .
+    "locale = '{$hLoc}',marker = '{$marker}'," .
     "cgroup = '{$clusGrp}',cname = '{$clName}',logistics = '{$hType}'," .
     "miles = '{$hLgth}', feet = '{$hElev}', diff = '{$hDiff}'," .
     "fac = '{$hFac}',wow = '{$hWow}', seasons = '{$hSeas}'," .

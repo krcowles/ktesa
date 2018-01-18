@@ -119,7 +119,7 @@ if ($delgps) {
     mysqli_free_result($unvgps);
 }
 if ($undos > 0 && $errs === 0) {
-    $updtreq = "UPDATE EHIKES SET stat = 'new' WHERE indxNo = {$hikeNo};";
+    $updtreq = "UPDATE EHIKES SET stat = '0' WHERE indxNo = {$hikeNo};";
     $updt = mysqli_query($link, $updtreq);
     if (!$updt) {
         die("unvalidate.php: Could not update stat field in EHIKES: " .
