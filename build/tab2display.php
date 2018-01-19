@@ -1,5 +1,5 @@
-<h3>You may wish to upload more photos to add to your page. The currently
-    saved album links are displayed below. You may re-select a currently
+<h3>You may wish to upload (more) photos to add to your page. The currently
+    saved album links (if any) are displayed below. You may re-select a currently
     saved link in order to update your photo list, and/or you may add up to two
     more links.</h3>
     <input type="hidden" name="nno" value="<?php echo $hikeNo;?>" />

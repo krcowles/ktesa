@@ -157,15 +157,15 @@ echo "</select>&nbsp;&nbsp;\n" .
     <option value="Mixed sun/shade">Mixed sun/shade</option>
     <option value="Good shade">Good shade</option>
 </select>&nbsp;&nbsp;
+<p>Trailhead Latitude/Longitude is set by the uploaded GPX file.
+    If you wish to edit these regardless, click here: (again to hide) 
+    <input id="showll" type="checkbox" name="latlng" value="nosend" /></p>
+<p id="lldisp" style="display:none">
 <label for="lat">Trailhead: Latitude </label>
 <textarea id="lat" name="hlat"><?php echo $hikeLat;?></textarea>&nbsp;&nbsp;
 <label for="lon">Longitude </label>
-<textarea id="lon" name="hlon"><?php echo $hikeLng;?></textarea><br />
-<label for="ph1">Photo URL1 ("Main"): </label>
-<textarea id="ph1" name="purl1"><?php echo $hikeUrl1;?></textarea><br />
-<label for="ph2">Photo URL2 ("Additional"): </label>
-<textarea id="ph2" name="purl2"><?php echo $hikeUrl2;?></textarea><br /><br />
-<label for="murl">Map Directions Link (Url): </label>
+<textarea id="lon" name="hlon"><?php echo $hikeLng;?></textarea></p>
+<br /><label for="murl">Map Directions Link (Url): </label>
 <textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
 <!-- This next section is photo editing-->
 <p id="ptype" style="display:none">Edit</p>

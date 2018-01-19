@@ -32,10 +32,10 @@ $pstyle = '<p style="color:red;font-size:18px;">';
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail">Hike Editor</p>
-<div id="main" style="padding:16px;">
-<h3>Edits made to this hike will be retained in the New/In-Edit database, 
-    and will not show up when displaying published hikes until these edits 
-    have been formally released</h3>
+<div id="main" style="padding:16px;margin-bottom:0px;">
+<h3 style="margin-top:0px;">Edits made to this hike will be retained
+    in the New/In-Edit database, and will not show up when displaying
+    published hikes until these edits have been formally released</h3>
 <?php
 /*
  *  Below: pull out the available cluster groups and establish association
