@@ -48,7 +48,7 @@ $query_fail = "<p>Query did not succeed: SHOW TABLES</p>";
 for ($i=$strt; $i<$tblcnt; $i++) {
     echo "<p>Removing any previous instantiation of table '{$table[$i]}':</p>";
     $remtbl = mysqli_query($link, "DROP TABLE {$table[$i]};");
-    if (!remtbl) {
+    if (!$remtbl) {
         die("<p>drop_all_tables.php: Failed to drop {$table[$i]}: " .
             mysqli_error($link) . "</p>");
     } else {

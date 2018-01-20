@@ -91,7 +91,6 @@ foreach ($lines as $line) {
         $templine = '';    // Reset temp variable to empty
     }
 }
-mysqli_free_result($req);
 mysqli_close($link);
 ?>
 <p>DONE: Tables imported successfully</p>
