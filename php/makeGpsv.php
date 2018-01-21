@@ -159,7 +159,7 @@ for ($k=0; $k<$noOfTrks; $k++) {
                         $tick = "GV_Draw_Marker({lat:" . $plat . ",lon:" . $plng .
                             ",name:'" . $tickMrk . " mi',desc:'',color:trk[" . $tno .
                             "].info.color,icon:'tickmark',type:'tickmark',folder:'" .
-                            $track->name . " [tickmarks]',rotation:" . $parms[1] .
+                            $gpxdat->trk[$k]->name . " [tickmarks]',rotation:" . $parms[1] .
                             ",track_number:" . $tno . ",dd:false});";
                         array_push($ticks, $tick);
                         $tickMrk += 0.30;
@@ -257,7 +257,7 @@ if ($showPhotos) {
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng'] . ",name:'" . $procDesc .
                     "',desc:'',color:'" . $photos['iclr'] . "',icon:'" .
-                    $mapicon . "',url:'" . $photos['alblnk'] . "',thumbnail:'" .
+                    $defIconColor . "',url:'" . $photos['alblnk'] . "',thumbnail:'" .
                     $photos['mid'] . "',folder:'" . $photos['folder'] . "'});";
             }
             array_push($plnks, $plnk);
