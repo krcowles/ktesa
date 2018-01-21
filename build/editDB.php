@@ -100,7 +100,7 @@ $hikeWow = fetch($hike['wow']);
 $hikeSeasons = fetch($hike['seasons']);
 $hikeExpos = fetch($hike['expo']);
 $hikeGpx = fetch($hike['gpx']);
-$hikeTrack = fetch($hike['trk']);
+$hikeTrk = fetch($hike['trk']);
 # gpx & trk will not be edited
 $hikeLat = fetch($hike['lat']);
 $hikeLng = fetch($hike['lng']);

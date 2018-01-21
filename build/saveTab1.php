@@ -189,6 +189,5 @@ if (!$saveHike) {
     die("saveTab1.php: Failed to save new data to EHIKES: " .
         mysqli_error($link));
 }
-mysqli_free_result($saveHike);
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
 header("Location: {$redirect}");

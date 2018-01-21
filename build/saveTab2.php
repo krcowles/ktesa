@@ -72,8 +72,6 @@ while ($photo = mysqli_fetch_assoc($photoq)) {
     }
     $p++;
 }
-mysqli_free_result($del);
-mysqli_free_result($update);
 mysqli_free_result($photoq);
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
 header("Location: {$redirect}");

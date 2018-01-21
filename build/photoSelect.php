@@ -56,7 +56,12 @@ if (mysqli_num_rows($pix) === 0) {
         $mpg[$picno] = $pics['mpg'];
         $phPics[$picno] = $pics['mid'];
         $pHeight = $pics['imgHt'];
-        $aspect = $rowHt/$pHeight;
+        if ($pHeight > 0) {
+            $aspect = $rowHt/$pHeight;
+        }
+        else {
+            $aspect = 0;
+        }
         $pWidth = $pics['imgWd'];
         $phWds[$picno] = floor($aspect * $pWidth);
         $picno += 1;

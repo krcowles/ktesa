@@ -19,7 +19,6 @@ if (!$delrefs) {
     die("saveTab4.php: Failed to delete old EREFS for {$hikeNo}: " .
         mysqli_error($link));
 }
-mysqli_free_result($delrefs);
 # Now add the newly edited ones back in, sans any deletions
 # NOTE: The following posts collect all items, even if empty...
 $ertypes = $_POST['rtype'];  # because there is always a default rtype
@@ -64,7 +63,6 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
 }
-mysqli_free_result($addref);
 /* Since GPS Maps & Data may have been marked for deletion in the edit phase,
  * the approach taken is to simply delete all GPS data, then add back any 
  * other than those so marked, including any changes made thereto. This then
@@ -77,7 +75,6 @@ if (!$delgps) {
     die("saveTab4.php: Failed to delete old GPS data for {$hikeNo}: " .
         mysqli_error($link));
 }
-mysqli_free_result($delgps);
 # Now add the newly edited ones back in, sans any deletions
 $lbl = $_POST['labl'];
 $url = $_POST['lnk'];
@@ -122,14 +119,12 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
 }
-mysqli_free_result($addgps);
 /**
  * This section handles the upload of a new datafile: gpx or kml or map.
  */
 $gpsupl = basename($_FILES['newgps']['name']);
 if ($gpsupl !== '') {
     $fdata = fileTypeAndLoc($gpsupl);
-}
 switch ($fdata[2]) {
     case 'gpx':
         $newlbl = 'GPX:';
@@ -159,6 +154,7 @@ if ($gpsupl !== '') {
     $_SESSION['gpsmsg'] .= '<br /><em style="color:blue;">' .
         "A default 'Label' and 'Click-on-Text' have been provided above. You may " .
         "change those and 'APPLY'</em>";
+}
 }
 // return to editor with new data:
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
