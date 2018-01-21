@@ -50,5 +50,6 @@ $('#normal').on('change', function() {
         $('#cls').css('display','none');
     }
 });
+$('#newname').focus();
 
 });

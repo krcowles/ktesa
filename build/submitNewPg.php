@@ -18,8 +18,8 @@ $user = filter_input(INPUT_POST, 'uid');
 $newname = filter_input(INPUT_POST, 'newname');
 $pg = mysqli_real_escape_string($link, $newname);
 $mrkr = filter_input(INPUT_POST, 'marker');
-$qfields = "(pgTitle,usrid,";
-$qdata = "('{$pg}','{$user}',";
+$qfields = "(pgTitle,usrid,stat,";
+$qdata = "('{$pg}','{$user}','0',";
 if ($mrkr === 'At VC') {
     $vhike = filter_input(INPUT_POST, 'vchike');
     $qfields .= "collection,";
