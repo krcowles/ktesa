@@ -39,14 +39,25 @@ if ($dels) {
     $sendBack = $gpxupl[1];
 }
 $_SESSION['uplmsg'] = $sendBack;
+$newvals = false;
 if ($newgpx !== 'No file specified') {
     $trkdat = makeTrackFile($newgpx, "../gpx/");
     $newtrk = $trkdat[0];
+    // get trailhead lat/lng
+    $lat = floatval($trkdat[2]);
+    $lng = floatval($trkdat[3]);
+    $newvals = true;
     updateDbRow(
         $link, 'EHIKES', $hikeNo, 'gpx', 'indxNo', $newgpx, __FILE__, __LINE__
     );
     updateDbRow(
         $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', $newtrk, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', $lat, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $lng, __FILE__, __LINE__
     );
 }
 /* Marker, cluster info may have changed during edit
@@ -162,10 +173,22 @@ $expo = filter_input(INPUT_POST, 'hexp');
 $hExpos = mysqli_real_escape_string($link, $expo);
 $hGpx = mysqli_real_escape_string($link, $gpxfile);
 $hTrk = mysqli_real_escape_string($link, $trkfile);
-$lat = filter_input(INPUT_POST, 'hlat');
-$hLat = mysqli_real_escape_string($link, $lat);
-$lng = filter_input(INPUT_POST, 'hlon');
-$hLon = mysqli_real_escape_string($link, $lng);
+$elat = filter_input(INPUT_POST, 'hlat',FILTER_VALIDATE_FLOAT);
+if ($elat) {
+    $hLat = mysqli_real_escape_string($link, $elat);
+} elseif ($newvals) {
+    $hLat = mysqli_real_escape_string($link, $lat);
+} else {
+    $hLat = 0.0000;
+}
+$elng = filter_input(INPUT_POST, 'hlon');
+if ($elng) {
+    $hLon = mysqli_real_escape_string($link, $elng);
+} elseif ($newvals) {
+    $hLon = mysqli_real_escape_string($link, $lng);
+} else {
+    $hLon = 0.0000;
+}
 $hAdd1 = mysqli_real_escape_string($link, $addon1);
 $hAdd2 = mysqli_real_escape_string($link, $addon2);
 $url1 = filter_input(INPUT_POST, 'purl1');
