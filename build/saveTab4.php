@@ -25,7 +25,11 @@ $ertypes = $_POST['rtype'];  # because there is always a default rtype
 $erit1s = $_POST['rit1'];
 $erit2s = $_POST['rit2'];
 # NOTE: The following post only collects checked boxes
-$deletes = $_POST['delref']; # any entries will contain the ref no on editDB.php
+if (isset($_POST['delref'])) {
+    $deletes = $_POST['delref']; # any entries will contain the ref no on editDB.php
+} else {
+    $deletes = [];
+}
 if (count($deletes) > 0) {
     $chk_del = true;
 } else {
@@ -80,7 +84,12 @@ $lbl = $_POST['labl'];
 $url = $_POST['lnk'];
 $cot = $_POST['ctxt'];
 # NOTE: The following post only collects checked boxes
-$deletes = $_POST['delgps']; # any entries will contain the ref no on editDB.php
+if (isset($_POST['delgps'])) {
+    $deletes = $_POST['delgps']; # any entries will contain the ref no on editDB.php
+} else {
+    $deletes = [];
+}
+
 if (count($deletes) > 0) {
     $chk_del = true;
 } else {
