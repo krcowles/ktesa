@@ -138,6 +138,8 @@ if ($gpsupl !== '') {
             $newlbl = "MAP:";
             $newcot = 'Area Map';
             break;
+        default:
+            throw new Exception("Unexpected upload file type.");
     }
     $upload = validateUpload("newgps", $fdata[0], $fdata[1]);
     $_SESSION['gpsmsg'] = $upload[1];

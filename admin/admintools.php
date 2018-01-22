@@ -26,9 +26,8 @@ session_start();
         <button id="mode">Show/Set SQL Modes</button>
         <div id="modeopt">
         <?php
-        $_SESSION['sqlmode'] = 'inactive';
         echo '<form action="modify_modes.php" method="POST">';
-        if ($_SESSION['sqlmode'] === 'active') {
+        if (isset($_SESSION['sqlmode']) && $_SESSION['sqlmode'] === 'active') {
             echo '<p id="dstat" style="display:none">Open</p>';
             $_SESSION['sqlmode'] = 'inactive';
         } else {
