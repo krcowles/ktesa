@@ -160,14 +160,10 @@ $seas = filter_input(INPUT_POST, 'hsea');
 $hSeas = mysqli_real_escape_string($link, $seas);
 $expo = filter_input(INPUT_POST, 'hexp');
 $hExpos = mysqli_real_escape_string($link, $expo);
-$hGpx = mysqli_real_escape_string($link, $gpxfile);
-$hTrk = mysqli_real_escape_string($link, $trkfile);
 $lat = filter_input(INPUT_POST, 'hlat');
 $hLat = mysqli_real_escape_string($link, $lat);
 $lng = filter_input(INPUT_POST, 'hlon');
 $hLon = mysqli_real_escape_string($link, $lng);
-$hAdd1 = mysqli_real_escape_string($link, $addon1);
-$hAdd2 = mysqli_real_escape_string($link, $addon2);
 $url1 = filter_input(INPUT_POST, 'purl1');
 $hPurl1 = mysqli_real_escape_string($link, $url1);
 $url2 = filter_input(INPUT_POST, 'purl2');
@@ -189,6 +185,5 @@ if (!$saveHike) {
     die("saveTab1.php: Failed to save new data to EHIKES: " .
         mysqli_error($link));
 }
-mysqli_free_result($saveHike);
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
 header("Location: {$redirect}");

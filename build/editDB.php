@@ -99,14 +99,8 @@ $hikeFac = fetch($hike['fac']);
 $hikeWow = fetch($hike['wow']);
 $hikeSeasons = fetch($hike['seasons']);
 $hikeExpos = fetch($hike['expo']);
-$hikeGpx = fetch($hike['gpx']);
-$hikeTrack = fetch($hike['trk']);
-# gpx & trk will not be edited
 $hikeLat = fetch($hike['lat']);
 $hikeLng = fetch($hike['lng']);
-$hikeAddImg1 = fetch($hike['aoimg1']);
-$hikeAddImg2 = fetch($hike['aoimg2']);
-# aoimg1 & aoimg2 will not be edited
 $hikeUrl1 = fetch($hike['purl1']);
 $hikeUrl2 = fetch($hike['purl2']);
 $hikeDirs = fetch($hike['dirs']);

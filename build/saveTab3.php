@@ -21,6 +21,5 @@ if (!$updtDesc) {
         mysqli_error($link));
 }
 
-mysqli_free_result($updtDesc);
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
 header("Location: {$redirect}");

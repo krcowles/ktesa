@@ -46,7 +46,7 @@ if (!$tblquery) {
 if ($show !== 'all') {
     $url_prefix = '../pages/';
 } else {
-    $url_preix = '';
+    $url_prefix = '';
 }
 # Icons used for table display:
 $indxIcon = '<img class="webShift" src="../images/indxCheck.png" alt="index checkbox" />';

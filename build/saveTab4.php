@@ -19,17 +19,17 @@ if (!$delrefs) {
     die("saveTab4.php: Failed to delete old EREFS for {$hikeNo}: " .
         mysqli_error($link));
 }
-mysqli_free_result($delrefs);
 # Now add the newly edited ones back in, sans any deletions
 # NOTE: The following posts collect all items, even if empty...
 $ertypes = $_POST['rtype'];  # because there is always a default rtype
 $erit1s = $_POST['rit1'];
 $erit2s = $_POST['rit2'];
-# NOTE: The following post only collects checked boxes
-$deletes = $_POST['delref']; # any entries will contain the ref no on editDB.php
-if (count($deletes) > 0) {
+// determine if any refs were marked for deletion ('delref's)
+if (isset($_POST['delref'])) {
+    $deletes = $_POST['delref']; // any entries will contain the ref# on editDB.php
     $chk_del = true;
 } else {
+    $deletes = [];
     $chk_del = false;
 }
 $dindx = 0;
@@ -64,7 +64,6 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
 }
-mysqli_free_result($addref);
 /* Since GPS Maps & Data may have been marked for deletion in the edit phase,
  * the approach taken is to simply delete all GPS data, then add back any 
  * other than those so marked, including any changes made thereto. This then
@@ -77,16 +76,16 @@ if (!$delgps) {
     die("saveTab4.php: Failed to delete old GPS data for {$hikeNo}: " .
         mysqli_error($link));
 }
-mysqli_free_result($delgps);
 # Now add the newly edited ones back in, sans any deletions
 $lbl = $_POST['labl'];
 $url = $_POST['lnk'];
 $cot = $_POST['ctxt'];
 # NOTE: The following post only collects checked boxes
-$deletes = $_POST['delgps']; # any entries will contain the ref no on editDB.php
-if (count($deletes) > 0) {
+if (isset($_POST['delgps'])) {
+    $deletes = $_POST['delgps']; // any entries will contain the ref# on editDB.php
     $chk_del = true;
 } else {
+    $deletes = [];
     $chk_del = false;
 }
 $dindx = 0;
@@ -122,31 +121,30 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
 }
-mysqli_free_result($addgps);
 /**
  * This section handles the upload of a new datafile: gpx or kml or map.
  */
 $gpsupl = basename($_FILES['newgps']['name']);
 if ($gpsupl !== '') {
     $fdata = fileTypeAndLoc($gpsupl);
-}
-switch ($fdata[2]) {
-    case 'gpx':
-        $newlbl = 'GPX:';
-        $newcot = 'Track File';
-        break;
-    case 'kml':
-        $newlbl = 'KML:';
-        $newcot = "Google Earth File";
-        break;
-    case 'html':
-        $newlbl = "MAP:";
-        $newcot = 'Area Map';
-        break;
-}
-$upload = validateUpload("newgps", $fdata[0], $fdata[1]);
-$_SESSION['gpsmsg'] = $upload[1];
-if ($gpsupl !== '') {
+    switch ($fdata[2]) {
+        case 'gpx':
+            $newlbl = 'GPX:';
+            $newcot = 'Track File';
+            break;
+        case 'kml':
+            $newlbl = 'KML:';
+            $newcot = "Google Earth File";
+            break;
+        case 'html':
+            $newlbl = "MAP:";
+            $newcot = 'Area Map';
+            break;
+        default:
+            throw new Exception("Unexpected upload file type.");
+    }
+    $upload = validateUpload("newgps", $fdata[0], $fdata[1]);
+    $_SESSION['gpsmsg'] = $upload[1];
     $newurl = $fdata[0] . $upload[0];
     $newlnk = mysqli_real_escape_string($link, $newurl);
     $newgpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .

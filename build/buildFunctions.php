@@ -143,7 +143,7 @@ function makeTrackFile($gpxfile, $gpxpath)
             "[length: " . strlen($jdat) . "]; Please contact Site Master";
         die($trkfail);
     } else {
-        $msg = $norm . 'Track file created from GPX and saved</p>';
+        $msg = '<p>Track file created from GPX and saved</p>';
     }
     fclose($trk);
     return array($trkfile, $msg);
