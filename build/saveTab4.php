@@ -24,15 +24,12 @@ if (!$delrefs) {
 $ertypes = $_POST['rtype'];  # because there is always a default rtype
 $erit1s = $_POST['rit1'];
 $erit2s = $_POST['rit2'];
-# NOTE: The following post only collects checked boxes
+// determine if any refs were marked for deletion ('delref's)
 if (isset($_POST['delref'])) {
-    $deletes = $_POST['delref']; # any entries will contain the ref no on editDB.php
-} else {
-    $deletes = [];
-}
-if (count($deletes) > 0) {
+    $deletes = $_POST['delref']; // any entries will contain the ref# on editDB.php
     $chk_del = true;
 } else {
+    $deletes = [];
     $chk_del = false;
 }
 $dindx = 0;
@@ -85,14 +82,10 @@ $url = $_POST['lnk'];
 $cot = $_POST['ctxt'];
 # NOTE: The following post only collects checked boxes
 if (isset($_POST['delgps'])) {
-    $deletes = $_POST['delgps']; # any entries will contain the ref no on editDB.php
-} else {
-    $deletes = [];
-}
-
-if (count($deletes) > 0) {
+    $deletes = $_POST['delgps']; // any entries will contain the ref# on editDB.php
     $chk_del = true;
 } else {
+    $deletes = [];
     $chk_del = false;
 }
 $dindx = 0;
