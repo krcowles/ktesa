@@ -171,13 +171,13 @@ function fileTypeAndLoc($fname)
     for ($i=0; $i<$checks; $i++) {
         if ($fext === $usable[$i]) {
             if ($fext === 'html') {
-                $mimeType = "html";
+                $mimeType = "/html/";
                 $floc = '../maps/';
             } elseif ($fext === 'kml') {
-                $mimeType = 'vnd.google-earth.kml+xml';
+                $mimeType = '/vnd.google-earth.kml+xml/';
                 $floc = '../gpx/';
             } else {
-                $mimeType = "octet-stream";
+                $mimeType = "/octet-stream/";
                 $floc = '../gpx/';
             }
         }
