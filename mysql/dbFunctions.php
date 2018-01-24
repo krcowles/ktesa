@@ -77,7 +77,6 @@ function updateDbRow($link, $table, $row, $field, $indexId, $content, $file, $li
         die("Function updateDbRow failed on table: {$table} when called from file {$file}: line: {$line}: "
         . mysqli_error($link));
     }
-    mysqli_free_result($result);
 }
 function connectToDb($file, $line)
 {
