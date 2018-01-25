@@ -22,7 +22,8 @@ $parkDirs = $row['dirs'];
 $parkInfo = $row['info'];
 # form html for references:
 $rtable = 'REFS';
-include '../mysql/get_REFS_row.php';  # $refHtml output
+$pageType = 'Index';
+include 'relatedInfo.php';  // get the $refHtml output
 # INDEX TABLE OF HIKES, if any:
 $tblcnt = 0;  # if no table elements are present, default msg shows
 # table header:
