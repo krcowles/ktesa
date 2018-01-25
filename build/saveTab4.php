@@ -121,43 +121,6 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
 }
-/**
- * This section handles the upload of a new datafile: gpx or kml or map.
- */
-$gpsupl = basename($_FILES['newgps']['name']);
-if ($gpsupl !== '') {
-    $fdata = fileTypeAndLoc($gpsupl);
-    switch ($fdata[2]) {
-        case 'gpx':
-            $newlbl = 'GPX:';
-            $newcot = 'Track File';
-            break;
-        case 'kml':
-            $newlbl = 'KML:';
-            $newcot = "Google Earth File";
-            break;
-        case 'html':
-            $newlbl = "MAP:";
-            $newcot = 'Area Map';
-            break;
-        default:
-            throw new Exception("Unexpected upload file type.");
-    }
-    $upload = validateUpload("newgps", $fdata[0], $fdata[1]);
-    $_SESSION['gpsmsg'] = $upload[1];
-    $newurl = $fdata[0] . $upload[0];
-    $newlnk = mysqli_real_escape_string($link, $newurl);
-    $newgpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
-        "VALUES ('{$hikeNo}','P','{$newlbl}','{$newlnk}','{$newcot}');";
-    $newgps = mysqli_query($link, $newgpsreq) or 
-        die(
-            "saveTab4.php: Failed to insert new gps file loc for hike {$hikeNo}: " .
-            mysqli_error($link)
-        );
-    $_SESSION['gpsmsg'] .= '<br /><em style="color:blue;">' .
-        "A default 'Label' and 'Click-on-Text' have been provided above. You may " .
-        "change those and 'APPLY'</em>";
-}
 // return to editor with new data:
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
 header("Location: {$redirect}");

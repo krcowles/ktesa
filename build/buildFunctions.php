@@ -168,6 +168,7 @@ function fileTypeAndLoc($fname)
     $checks = count($usable);
     // see if the extension is "usable" and assign it an appropriate location
     $mimeType = '';
+    $ftypeError = '';
     for ($i=0; $i<$checks; $i++) {
         if ($fext === $usable[$i]) {
             if ($fext === 'html') {
@@ -183,11 +184,8 @@ function fileTypeAndLoc($fname)
         }
     }
     if ($mimeType === '') {
-        die(
-            "buildFunctions.php: Unaccepted file extension in GPS Data Section " .
-            "({$fext}): " . mysqli_error($link)
-        );
+        $ftypeError = "Unacceptable file extension";
     }
-    return array($floc, $mimeType, $fext);
+    return array($floc, $mimeType, $fext, $ftypeError);
 }
 ?>
