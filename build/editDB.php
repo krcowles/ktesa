@@ -109,6 +109,7 @@ $hikeFac = fetch($hike['fac']);
 $hikeWow = fetch($hike['wow']);
 $hikeSeasons = fetch($hike['seasons']);
 $hikeExpos = fetch($hike['expo']);
+$hikeGpx = fetch($hike['gpx']);
 $hikeLat = fetch($hike['lat']);
 $hikeLng = fetch($hike['lng']);
 $hikeUrl1 = fetch($hike['purl1']);

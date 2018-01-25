@@ -317,6 +317,7 @@ if ($bop !== '') {
 <?php if ($newstyle) {
     echo '<script src="../scripts/dynamicChart.js"></script>' . PHP_EOL;
 } ?>
+<?php if ($newstyle) : ?>
 <script type="text/javascript">
     window.onbeforeunload = deleteTmpMap;
     function deleteTmpMap() {
@@ -332,5 +333,6 @@ if ($bop !== '') {
         });
     }
 </script>
+<?php endif; ?>
 </body>
 </html>

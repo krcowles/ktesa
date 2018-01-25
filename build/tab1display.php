@@ -3,8 +3,6 @@
 <input type="hidden" name="col" value="<?php echo $hikeColl;?>" />
 <!-- the following are required esp when extracting a published hike -->
 <input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
-<input type="hidden" name="ao1" value="<?php echo $hikeAddImg1;?>" />
-<input type="hidden" name="ao2" value="<?php echo $hikeAddImg2;?>" />
 <label for="hike">Hike Name: </label>
 <textarea id="hike" name="hname"><?php echo $hikeTitle;?></textarea>
 &nbsp;&nbsp;<p style="display:none;" id="locality"><?php echo $hikeLocale;?></p>
