@@ -164,13 +164,12 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         mysqli_free_result($gpsdat);
         # ---------------------  REFS -------------------
         if ($status > 0) {
-            $delreq = "DELETE FROM REFS WHERE indxNo = '{$pubHike}';";
+            $delreq = "DELETE FROM REFS WHERE indxNo = '{$status}';";
             $del = mysqli_query($link, $delreq);
             if (!$del) {
                 die("publish.php: Failed to delete data from REFS for hike " .
-                "{$pubHike}: " . mysqli_error($link));
+                "{$status}: " . mysqli_error($link));
             }
-            mysqli_free_result($del);
         }
         $refreq = "SELECT * FROM EREFS WHERE indxNo = {$hikeNo};";
         $refdat = mysqli_query($link, $refreq);
@@ -193,13 +192,12 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         mysqli_free_result($refdat);
         # ---------------------  TSV -------------------
         if ($status > 0) {
-            $delreq = "DELETE FROM TSV WHERE indxNo = '{$pubHike}';";
+            $delreq = "DELETE FROM TSV WHERE indxNo = '{$status}';";
             $del = mysqli_query($link, $delreq);
             if (!$del) {
                 die("publish.php: Failed to delete pics from TSV for hike " .
-                "{$pubHike}: " . mysqli_error($link));
+                "{$status}: " . mysqli_error($link));
             }
-            mysqli_free_result($del);
         }
         $picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
         $picdat = mysqli_query($link, $picreq);
