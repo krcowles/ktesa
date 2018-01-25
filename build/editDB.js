@@ -176,13 +176,13 @@ var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin +
 if (bodySurplus < 24) {
     bodySurplus = 24;
 }   // var can actually be negative on initial load if frame is smaller than body min-width
-var tablist = $('#t4').offset();
-var down = Math.floor(tablist.top) + $('#t4').height();
+var tablist = $('#t5').offset();
+var down = Math.floor(tablist.top) + $('#t5').height();
 // For reasons not understood, $('#pos').width() gets the incorrect value...
 var gettabprop = $('.tablist').css('width');
 var px = gettabprop.indexOf('px');
 var tabwidth = gettabprop.substring(0,px);
-var listwidth = 4 * tabwidth;
+var listwidth = 5 * tabwidth;
 var linewidth = winWidth - bodySurplus - listwidth - 9; // padding
 //alert("lw:" + linewidth + ", dn:" + down + ", list:" + listwidth);
 $('#line').width(linewidth);

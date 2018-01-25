@@ -1,7 +1,17 @@
 <?php
+/**
+ * The hike page editor is utilized to update information contained
+ * in the database, whether for a new hike or an existing hike.
+ * 
+ * @package Editing
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license None to date
+ * @link    ../docs/
+ */
 session_start();
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
+// import GET parameters
 $hikeNo = filter_input(INPUT_GET, 'hno');
 $uid = filter_input(INPUT_GET, 'usr');
 if (isset($_SESSION['activeTab'])) {
@@ -9,7 +19,7 @@ if (isset($_SESSION['activeTab'])) {
 } else {
     $dispTab = 1;
 }
-# Error output styling string:
+// Error output styling string:
 $pstyle = '<p style="color:red;font-size:18px;">';
 ?>
 <!DOCTYPE html>
@@ -123,6 +133,7 @@ mysqli_free_result($hikeq);
 <button id="t2" class="tablist">Photo Selection</button>
 <button id="t3" class="tablist">Descriptive Text</button>
 <button id="t4" class="tablist">Related Hike Info</button>
+<button id="t5" class="tablist">File Uploads</button>
 <div id="line"></div>
 <div id="tab1" class="active tab-panel">
 <form action="saveTab1.php" method="POST" enctype="multipart/form-data">
@@ -152,8 +163,14 @@ mysqli_free_result($hikeq);
     ?>
 </form>
 </div>
-
+<div id="tab5" class="tab-panel">
+<form action="saveTab5.php" method="POST" enctype="multipart/form-data">
+    <?php
+    require 'tab5display.php';
+    ?>
+</form>
 </div>
+
 <div class="popupCap"></div>
 <!-- jQuery script source is included in photoSelect.php -->
 <script src="editDB.js"></script>
