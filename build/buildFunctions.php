@@ -184,6 +184,7 @@ function fileTypeAndLoc($fname)
         }
     }
     if ($mimeType === '') {
+        $floc = 'NONE';
         $ftypeError = "Unacceptable file extension";
     }
     return array($floc, $mimeType, $fext, $ftypeError);

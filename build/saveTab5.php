@@ -49,15 +49,18 @@ if (isset($delgpx)) {
     $delmsg = "<p>Deleted files {$maingpx} and {$maintrk} from site</p>";
     $dels = true;
 }
-$gpxupl = validateUpload("newgpx", "../gpx/", "/octet-stream/");
-$newgpx = $gpxupl[0];
-if ($dels) {
-    $sendBack = $delmsg . $gpxupl[1];
-} else {
-    $sendBack = $gpxupl[1];
-}
-$_SESSION['uplmsg'] = $sendBack;
-if ($newgpx !== 'No file specified') {
+$_SESSION['uplmsg'] = '';
+$gpxfile = basename($_FILES['newgpx']['name']);
+$gpxtype = fileTypeAndLoc($gpxfile);
+if ($gpxtype[2] === 'gpx') {
+    $gpxupl = validateUpload("newgpx", "../gpx/", "/octet-stream/");
+    $newgpx = $gpxupl[0];
+    if ($dels) {
+        $sendBack = $delmsg . $gpxupl[1];
+    } else {
+        $sendBack = $gpxupl[1];
+    }
+    $_SESSION['uplmsg'] .= $sendBack;
     $trkdat = makeTrackFile($newgpx, "../gpx/");
     $newtrk = $trkdat[0];
     updateDbRow(
@@ -66,6 +69,11 @@ if ($newgpx !== 'No file specified') {
     updateDbRow(
         $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', $newtrk, __FILE__, __LINE__
     );
+} elseif ($gpxfile == '') {
+    $newgpx = 'No file specified';
+} else {
+    $_SESSION['uplmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
+            "File Type NOT .gpx for {$gpxfile}.</p>";
 }
 /**
  * This section handles the upload of new datafiles: gpx or kml or map.
