@@ -78,6 +78,9 @@ foreach ($lines as $line) {
             die("<p>load_all_tables.php: Failed: " .
                 mysqli_error($link) . "</p>");
         }
+        if (!is_bool($req)) {
+        mysqli_free_result($req);
+        }
         $qcnt++;
         echo "<script type='text/javascript'>var qcnt = {$qcnt};</script>";
         if ($gottbl) {
@@ -91,7 +94,6 @@ foreach ($lines as $line) {
         $templine = '';    // Reset temp variable to empty
     }
 }
-mysqli_free_result($req);
 mysqli_close($link);
 ?>
 <p>DONE: Tables imported successfully</p>

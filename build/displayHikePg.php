@@ -48,7 +48,6 @@ if ($usePix == 'YES') {
             }
         }
     }
-    mysqli_free_result($pstat);
 }
 /*  PENDING NEW PROCESS REVIEW....
 if (!mail('krcowles29@gmail.com','Hike Submitted',$hikeRow)) {

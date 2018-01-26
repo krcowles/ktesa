@@ -68,8 +68,8 @@ for ($k=$kstart; $k<$pcnt; $k++) {
         $imgName = substr($exifdata["FileName"], 0, $ext);
         $imgs[$k] = $imgName;
         # NOTE: orientations of 3, and 8 are not addressed here
-        $imgHt[$k] = $exifdata["ExifImageLength"];
-        $imgWd[$k] = $exifdata["ExifImageWidth"];
+        $imgHt[$k] = $exifdata["ImageLength"];
+        $imgWd[$k] = $exifdata["ImageWidth"];
         $orient = $exifdata["Orientation"];
         if ($orient == '6') {
             $tmpval = $imgHt[$k];

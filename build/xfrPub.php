@@ -20,7 +20,6 @@ if (!$xfr) {
     die("xfrPub.php: Failed to move hike data from HIKES to EHIKES for " .
         "Hike No {$gethike}: " . mysqli_error($link));
 }
-mysqli_free_result($xfr);
 # Fetch the new hike no in EHIKES:
 $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
 $indxq = mysqli_query($link, $indxReq);
@@ -43,7 +42,6 @@ if (!$xfrTsv) {
     die("xfrPub.php: Failed to move TSV data into ETSV for hike {$getHike}: " .
         mysqli_error($link));
 }
-mysqli_free_result($xfrTsv);
 /*
  * GET GPSDAT DATA
  */
@@ -54,7 +52,6 @@ $gpsDat = mysqli_query($link, $gpsDatReq);
 if (!$gpsDat) {
     die("xfrPub: Failed to extract GPSDAT for hike {$getHike};");
 }
-mysqli_free_result($gpsDat);
 /*
  * GET REFS DATA
  */
@@ -65,6 +62,5 @@ if (!$refDat) {
     die("xfrPUb.php: Failed to extract REFS data for hke {$getHike}: " .
         mysqli_error($link));
 }
-mysqli_free_result($refDat);
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
 header("Location: {$redirect}");

@@ -143,7 +143,7 @@ function makeTrackFile($gpxfile, $gpxpath)
             "[length: " . strlen($jdat) . "]; Please contact Site Master";
         die($trkfail);
     } else {
-        $msg = $norm . 'Track file created from GPX and saved</p>';
+        $msg = '<p>Track file created from GPX and saved</p>';
     }
     fclose($trk);
     // Beginning pt = trailhead
@@ -181,13 +181,13 @@ function fileTypeAndLoc($fname)
     for ($i=0; $i<$checks; $i++) {
         if ($fext === $usable[$i]) {
             if ($fext === 'html') {
-                $mimeType = "html";
+                $mimeType = "/html/";
                 $floc = '../maps/';
             } elseif ($fext === 'kml') {
-                $mimeType = 'vnd.google-earth.kml+xml';
+                $mimeType = '/vnd.google-earth.kml+xml/';
                 $floc = '../gpx/';
             } else {
-                $mimeType = "octet-stream";
+                $mimeType = "/octet-stream/";
                 $floc = '../gpx/';
             }
         }

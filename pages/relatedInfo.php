@@ -53,6 +53,10 @@ if ($noOfRefs > 0) {
     }
     $refHtml .= "</ul>";
 }
+// exit here if this is for an Index Page:
+if (isset($pageType) && $pageType === 'Index') {
+    return;
+}
 // ---- 2) Related Hikes
 /**
  * If this hike belongs to a cluster, establish 'Related Hikes' by identifying the

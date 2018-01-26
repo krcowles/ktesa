@@ -88,7 +88,6 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             die("publish.php: Failed to release - HIKES update failed: " .
                 mysqli_error($link));
         }
-        mysqli_free_result($action);
         # Assign the hike number for the remaining tables based on status:
         if ($status === 0) { # this will be the newly added no.
             $indxNo = $lastHikeNo + 1;
@@ -106,7 +105,6 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                     die("publish.php: Failed to insert new table entry for " .
                         "index page {$co}: " . mysqli_error($link));
                 }
-                mysqli_free_result($updt);
                 # Also need to update the Index Page's collection field to
                 # indicate the new hike (used by javascript for infoWindow)
                 $getColReq = "SELECT collection FROM HIKES WHERE indxNo = {$co};";
@@ -126,7 +124,6 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                     die("publish.php: Failed to update the collection field for " .
                         "Index Page {$co}: " . mysqli_error($link));
                 }
-                mysqli_free_result($col);
             }
         } else { # this will be the hike being modified, already on the site
             $indxNo = $status;
@@ -144,7 +141,6 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 die("publish.php: Failed to delete data from GPSDAT for hike " .
                 "{$status}: " . mysqli_error($link));
             }
-            mysqli_free_result($del);
         }
         $gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = {$hikeNo};";
         $gpsdat = mysqli_query($link, $gpsreq);
@@ -165,17 +161,15 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                     mysqli_error($link));
             }
         }
-        mysqli_free_result($add);
         mysqli_free_result($gpsdat);
         # ---------------------  REFS -------------------
         if ($status > 0) {
-            $delreq = "DELETE FROM REFS WHERE indxNo = '{$pubHike}';";
+            $delreq = "DELETE FROM REFS WHERE indxNo = '{$status}';";
             $del = mysqli_query($link, $delreq);
             if (!$del) {
                 die("publish.php: Failed to delete data from REFS for hike " .
-                "{$pubHike}: " . mysqli_error($link));
+                "{$status}: " . mysqli_error($link));
             }
-            mysqli_free_result($del);
         }
         $refreq = "SELECT * FROM EREFS WHERE indxNo = {$hikeNo};";
         $refdat = mysqli_query($link, $refreq);
@@ -195,17 +189,15 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                     mysqli_error($link));
             }
         }
-        mysqli_free_result($addref);
         mysqli_free_result($refdat);
         # ---------------------  TSV -------------------
         if ($status > 0) {
-            $delreq = "DELETE FROM TSV WHERE indxNo = '{$pubHike}';";
+            $delreq = "DELETE FROM TSV WHERE indxNo = '{$status}';";
             $del = mysqli_query($link, $delreq);
             if (!$del) {
                 die("publish.php: Failed to delete pics from TSV for hike " .
-                "{$pubHike}: " . mysqli_error($link));
+                "{$status}: " . mysqli_error($link));
             }
-            mysqli_free_result($del);
         }
         $picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
         $picdat = mysqli_query($link, $picreq);
@@ -240,7 +232,6 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 "{$indxNo}: " . mysqli_error($link));
             }
         }
-        mysqli_free_result($pics);
         mysqli_free_result($picdat);
 
         /* Regardless of state, remove this hike from EHIKES et al:
@@ -253,7 +244,6 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 mysqli_error($link));
         }
         echo "<p>Hike has been removed from the list of New/In-Edit Hikes</p>";
-        mysqli_free_result($remHike);
     }
     mysqli_free_result($ehike);
     
