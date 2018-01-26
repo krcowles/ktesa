@@ -152,7 +152,8 @@ if (isset($delClus) && $delClus === 'YES') {
     # No Changes Assigned to marker, clusGrp, cgName
 }
 $clName = mysqli_real_escape_string($link, $cgName);
-/* NOTE: a means to change the 'hike at Visitor Center' location has not
+/**
+ * NOTE: a means to change the 'hike at Visitor Center' location has not
  * yet been implemented, so 'collection' is not modified
  */
 $log = filter_input(INPUT_POST, 'htype');
@@ -173,7 +174,7 @@ $expo = filter_input(INPUT_POST, 'hexp');
 $hExpos = mysqli_real_escape_string($link, $expo);
 $hGpx = mysqli_real_escape_string($link, $gpxfile);
 $hTrk = mysqli_real_escape_string($link, $trkfile);
-$elat = filter_input(INPUT_POST, 'hlat',FILTER_VALIDATE_FLOAT);
+$elat = filter_input(INPUT_POST, 'hlat', FILTER_VALIDATE_FLOAT);
 if ($elat) {
     $hLat = mysqli_real_escape_string($link, $elat);
 } elseif ($newvals) {
@@ -181,7 +182,7 @@ if ($elat) {
 } else {
     $hLat = 0.0000;
 }
-$elng = filter_input(INPUT_POST, 'hlon');
+$elng = filter_input(INPUT_POST, 'hlon', FILTER_VALIDATE_FLOAT);
 if ($elng) {
     $hLon = mysqli_real_escape_string($link, $elng);
 } elseif ($newvals) {
@@ -197,21 +198,51 @@ $url2 = filter_input(INPUT_POST, 'purl2');
 $hPurl2 = mysqli_real_escape_string($link, $url2);
 $dirs = filter_input(INPUT_POST, 'gdirs');
 $hDirs = mysqli_real_escape_string($link, $dirs);
-# SAVE THE EDITED DATA IN EHIKES:
+// The hike data will be updated, first without lat/lng or miles/elev
 $saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
     "locale = '{$hLoc}',marker = '{$marker}'," .
     "cgroup = '{$clusGrp}',cname = '{$clName}',logistics = '{$hType}'," .
-    "miles = '{$hLgth}', feet = '{$hElev}', diff = '{$hDiff}'," .
-    "fac = '{$hFac}',wow = '{$hWow}', seasons = '{$hSeas}'," .
-    "expo = '{$hExpos}',lat = '{$hLat}',lng = '{$hLon}'," .
-    "purl1 = '{$hPurl1}',purl2 = '{$hPurl2}',dirs = '{$hDirs}' " .
-    "WHERE indxNo = {$hikeNo};";
-
-$saveHike = mysqli_query($link, $saveHikeReq);
-if (!$saveHike) {
-    die("saveTab1.php: Failed to save new data to EHIKES: " .
-        mysqli_error($link));
+    "diff = '{$hDiff}',fac = '{$hFac}',wow = '{$hWow}'," .
+    "seasons = '{$hSeas}',expo = '{$hExpos}',purl1 = '{$hPurl1}'," .
+    "purl2 = '{$hPurl2}',dirs = '{$hDirs}' WHERE indxNo = {$hikeNo};";
+$saveHike = mysqli_query($link, $saveHikeReq) or die(
+    __FILE__ . " Line " . __LINE__ . " Failed to save new data to EHIKES: " .
+        mysqli_error($link)
+);
+// Preserve null in miles/elevation when no entry was input
+if ($hLgth == '') {
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'miles', 'indxNo', null, __FILE__, __LINE__
+    );
+} else {
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'miles', 'indxNo', $hLgth, __FILE__, __LINE__
+    );
 }
-mysqli_free_result($saveHike);
+if ($hElev == '') {
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'feet', 'indxNo', null, __FILE__, __LINE__
+    );
+} else {
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'feet', 'indxNo', $hElev, __FILE__, __LINE__
+    );
+}
+// Preserve null in lat/lng when no entry (or bad entry) was input
+if ($hLat === 0.0000 || $hLon === 0.000) {
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', null, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', null, __FILE__, __LINE__
+    );
+} else {
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', $hLat, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $hLon, __FILE__, __LINE__
+    );
+}
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
 header("Location: {$redirect}");
