@@ -66,7 +66,7 @@ require "../mysql/get_TSV_row.php";
 $capCnt = count($descs);
 if (is_array($hikeAddonImg1)) {
     $aoimg1 = '../images/' . $hikeAddonImg1[0];
-    array_push($descs, $hikeAddonImg1);
+    array_push($descs, $hikeAddonImg1[0]);
     array_push($alblnks, '');
     array_push($piclnks, $aoimg1);
     array_push($captions, '');
