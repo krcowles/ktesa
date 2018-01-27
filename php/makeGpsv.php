@@ -230,8 +230,10 @@ if ((isset($map_type) && $map_type === 'page') || !isset($map_type)) {
     $showPhotos = false;
 }
 $plnks = [];  // array of photo links
+$defIconColor = 'red';
 if ($showPhotos) {
-    $defIconColor = 'red';
+    // see GPSVisualizer for complete list of icon styles:
+    $mapicon = 'googlemini';
     $mcnt = 0;
     $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,alblnk,mid,iclr FROM {$ttable} " .
             "WHERE indxNo = {$hikeIndexNo};";
@@ -248,16 +250,21 @@ if ($showPhotos) {
             $procName = preg_replace('/"/', '\"', $procName);
             $procDesc = preg_replace("/'/", "\'", $photos['desc']);
             $procDesc = preg_replace('/"/', '\"', $procDesc);
+            if ($photos['iclr'] !== '') {
+                $iconColor = $photos['iclr'];
+            } else {
+                $iconColor = $defIconColor;
+            }
             // If wypt in ETSV file....
             if ($photos['alblnk'] == '') { // waypoint icon
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng']. ",name:'" . $procName . "',desc:'" .
-                    $procDesc . "',color:'" . $photos['iclr'] . "',icon:''});";
+                    $procDesc . "',color:'" . $iconColor . "',icon:''});";
             } else { // photo
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng'] . ",name:'" . $procDesc .
-                    "',desc:'',color:'" . $photos['iclr'] . "',icon:'" .
-                    $defIconColor . "',url:'" . $photos['alblnk'] . "',thumbnail:'" .
+                    "',desc:'',color:'" . $iconColor . "',icon:'" .
+                    $mapicon . "',url:'" . $photos['alblnk'] . "',thumbnail:'" .
                     $photos['mid'] . "',folder:'" . $photos['folder'] . "'});";
             }
             array_push($plnks, $plnk);
