@@ -249,6 +249,10 @@ $('.phurl').each( function() {
 $('#upld').on('click', function() {
     window.open('newPhotos.php');
 });
+$('#showll').on('click', function() {
+    $('#lldisp').slideToggle();
+    $(this).prop('checked',false);
+});
 
 });  // end of 'page (DOM) loading complete'
 

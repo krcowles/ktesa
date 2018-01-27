@@ -146,7 +146,17 @@ function makeTrackFile($gpxfile, $gpxpath)
         $msg = '<p>Track file created from GPX and saved</p>';
     }
     fclose($trk);
-    return array($trkfile, $msg);
+    // Beginning pt = trailhead
+    $latpos = strpos($jdat, '"lat":') + 6;
+    $latend = strpos($jdat, ',', $latpos);
+    $latlgth = $latend - $latpos;
+    $lat = substr($jdat, $latpos, $latlgth);
+    $lngpos = strpos($jdat, '"lng":') + 6;
+    $lngend = strpos($jdat, '}', $lngpos);
+    $lnglgth = $lngend - $lngpos;
+    $lng = substr($jdat, $lngpos, $lnglgth);
+    
+    return array($trkfile, $msg, $lat, $lng);
 }
 /**
  * This function is used to check the file extension of an upload and determine
