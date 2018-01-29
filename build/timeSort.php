@@ -9,7 +9,7 @@
  * @link    ../docs/
  */
 $picdat = [];
-for ($m=0; $m<$albOcnt; $m++) {
+for ($m=0; $m<$pcnt; $m++) {
     $totPhotDat = array(
         "folder" => $folder[$m],
         "pic" => $titles[$m],

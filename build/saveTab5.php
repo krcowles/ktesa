@@ -5,7 +5,7 @@
  * to create the hike page map and elevation chart), a corresponding
  * track file will also be created. Database tables are updated.
  * 
- * @package Edit
+ * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  * @link    ../docs/
@@ -84,16 +84,16 @@ if ($gpsupl !== '') {
     $gpsok = true;
     $gpstype = fileTypeAndLoc($gpsupl);
     switch ($gpstype[2]) {
-        case 'gpx':
-            $newlbl = 'GPX:';
-            $newcot = 'Track File';
-            break;
-        case 'kml':
-            $newlbl = 'KML:';
-            $newcot = "Google Earth File";
-            break;
-        default:
-            $gpsok = false;
+    case 'gpx':
+        $newlbl = 'GPX:';
+        $newcot = 'Track File';
+        break;
+    case 'kml':
+        $newlbl = 'KML:';
+        $newcot = "Google Earth File";
+        break;
+    default:
+        $gpsok = false;
     }
     if ($gpsok) {
         $upload = validateUpload("newgps", $gpstype[0], $gpstype[1]);
@@ -120,12 +120,12 @@ if ($mapupl !== '') {
     $mapok = true;
     $maptype = fileTypeAndLoc($mapupl);
     switch ($maptype[2]) {
-        case 'html':
-            $newlbl = "MAP:";
-            $newcot = 'Area Map';
-            break;
-        default:
-            $mapok = false;
+    case 'html':
+        $newlbl = "MAP:";
+        $newcot = 'Area Map';
+        break;
+    default:
+        $mapok = false;
     }
     if ($mapok) {
         $upload = validateUpload("newmap", $maptype[0], $maptype[1]);

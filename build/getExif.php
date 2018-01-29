@@ -13,15 +13,6 @@
  */
 define("CHUNK", 8192);
 // original photos assumed to be stored in the $o array in getPicDat.php
-// EXIF data arrays
-$imgs = [];
-$imgHt = [];
-$imgWd = [];
-$timeStamp = [];
-$lats = [];
-$lngs = [];
-$gpds = [];
-$gpts = [];
 // start processing based on album: $pcnt is total, $albOcnt is album only
 $kstart = $pcnt - $albOcnt;
 for ($k=$kstart; $k<$pcnt; $k++) {
@@ -67,8 +58,8 @@ for ($k=$kstart; $k<$pcnt; $k++) {
         $imgName = substr($exifdata["FileName"], 0, $ext);
         $imgs[$k] = $imgName;
         // NOTE: orientations of 3, and 8 are not addressed here
-        $imgHt[$k] = $exifdata["ExifImageLength"];
-        $imgWd[$k] = $exifdata["ExifImageWidth"];
+        $imgHt[$k] = $exifdata["COMPUTED"]['Height'];
+        $imgWd[$k] = $exifdata["COMPUTED"]['Width'];
         $orient = $exifdata["Orientation"];
         if ($orient == '6') {
             $tmpval = $imgHt[$k];

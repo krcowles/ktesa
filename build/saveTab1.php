@@ -1,29 +1,38 @@
 <?php
+/**
+ * This script saves any changes made (or data as is) on tab1 ("Basic Data")
+ * of the hike page Editor. 
+ * 
+ * @package Editiing
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ * @link    ../docs/
+ */
 session_start();
 $_SESSION['activeTab'] = 1;
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'hno');
 $uid = filter_input(INPUT_POST, 'usr');
-/* Marker, cluster info may have changed during edit
+/**
+ *  Marker, cluster info may have changed during edit
  * If not, previous values must be retained:
  */
 $marker = filter_input(INPUT_POST, 'pmrkr');
 $clusGrp = filter_input(INPUT_POST, 'pclus');
 $cgName = filter_input(INPUT_POST, 'pcnme');
-# Extract cluster list - and inherent 1 to 1 association with cluster name:
+// Extract cluster list - and inherent 1 to 1 association with cluster name:
 $groups = [];
 $cnames = [];
 $clusreq = "SELECT cgroup, cname FROM HIKES;";
-$clusq = mysqli_query($link, $clusreq);
-if (!$clusq) {
-    die("saveTab1.php: Failed to get cluster info from HIKES: " .
-        mysqli_error($link));
-}
+$clusq = mysqli_query($link, $clusreq) or die(
+    "saveTab1.php: Failed to get cluster info from HIKES: " .
+    mysqli_error($link)
+);
 while ($clusDat = mysqli_fetch_assoc($clusq)) {
     $cgrp = $clusDat['cgroup'];
     if ($cgrp !== 0) {
-        # no duplicates please (NOTE: "array_unique" leaves holes)
+        // no duplicates please (NOTE: "array_unique" leaves holes)
         $match = false;
         for ($i=0; $i<count($groups); $i++) {
             if ($cgrp == $groups[$i]) {
@@ -43,7 +52,8 @@ $hTitle = mysqli_real_escape_string($link, $pg);
 $hUser = mysqli_real_escape_string($link, $uid);
 $loc = filter_input(INPUT_POST, 'locale');
 $hLoc = mysqli_real_escape_string($link, $loc);
-/*  CLUSTER/MARKER ASSIGNMENT PROCESSING:
+/**
+ *   CLUSTER/MARKER ASSIGNMENT PROCESSING:
  *     The order of changes processed are in the following priority:
  *     1. Existing assignment deleted: Marker changes to "Normal"
  *     2. New Group Assignment
@@ -53,34 +63,34 @@ $hLoc = mysqli_real_escape_string($link, $loc);
 $delClus = filter_input(INPUT_POST, 'rmclus');
 $nextGrp = filter_input(INPUT_POST, 'nxtg');
 $grpChg = filter_input(INPUT_POST, 'chgd');
-# 1.
+// 1.
 if (isset($delClus) && $delClus === 'YES') {
     $marker = 'Normal';
     $clusGrp = '';
     $cgName = '';
-# 2.
+// 2.
 } elseif (isset($nextGrp) && $nextGrp === 'YES') {
     $availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $doubleLtrs = 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ';
-    # add another group of letters later if needed
+    // add another group of letters later if needed
     $nextmem = filter_input(INPUT_POST, 'grpcnt', FILTER_SANITIZE_NUMBER_INT);
-    # group letters are assigned sequentially
+    // group letters are assigned sequentially
     if ($nextmem < 26) {
         $newgrp = substr($availLtrs, $nextmem, 1);
     } else {
-        #assign from doubleLtrs:
+        // assign from doubleLtrs:
         $pos = 2*($nextmem - 26);
         $newgrp = substr($doubleLtrs, $pos, 2);
-    }  # elseif more groups of letters are added later...
+    }  // elseif more groups of letters are added later...
     $marker = 'Cluster';
     $clusGrp = $newgrp;
     $cgName = filter_input(INPUT_POST, 'newgname');
-# 3. (NOTE: marker will be assigned to 'Cluster' regardless of 
-#       whether previously cluster type or not
+// 3. (NOTE: marker will be assigned to 'Cluster' regardless of 
+//       whether previously cluster type or not
 } elseif ($grpChg  === 'YES') {
     $marker = 'Cluster';
     $newname = filter_input(INPUT_POST, 'htool');
-    # get association with group letter
+    // get association with group letter
     for ($i=0; $i<count($cnames); $i++) {
         if ($cnames[$i] == $newname) {
             $newgrp = $groups[$i];
@@ -89,9 +99,9 @@ if (isset($delClus) && $delClus === 'YES') {
     }
     $clusGrp = $newgrp;
     $cgName = $newname;
-# 4.
+// 4.
 } else {
-    # No Changes Assigned to marker, clusGrp, cgName
+    //  No Changes Assigned to marker, clusGrp, cgName
 }
 $clName = mysqli_real_escape_string($link, $cgName);
 /**

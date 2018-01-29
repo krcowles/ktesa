@@ -1,4 +1,13 @@
 <?php
+/**
+ * This routine saves any changes made (or current data) on tab2
+ * ('Photo Selection') and updates the ETSV table.
+ * 
+ * @package Editing
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ * @link    ../docs/
+ */
 session_start();
 $_SESSION['activeTab'] = 2;
 require_once "../mysql/dbFunctions.php";
@@ -37,18 +46,16 @@ if (isset($_POST['rem'])) {
     $rems = [];
     $noOfRems = 0;
 }
-$photoReq = "SELECT picIdx,title,hpg,mpg,`desc` FROM ETSV WHERE indxNo = '{$hikeNo}'";
-$photoq = mysqli_query($link, $photoReq);
-if (!$photoq) {
-    die("saveTab2.php: Failed to extract data from ETSV: " .
-        mysqli_error($link));
-}
+$photoReq = "SELECT picIdx,title,hpg,mpg,`desc` FROM ETSV WHERE " .
+    "indxNo = '{$hikeNo}'";
+$photoq = mysqli_query($link, $photoReq) or die(
+    "saveTab2.php: Failed to extract data from ETSV: " . mysqli_error($link)
+);
 $cnt = mysqli_num_rows($photoq);
 if ($noOfPix !== $cnt) {
     echo '<p style="color:red;font-size:20px;margin-left:16px;">'
     . "WARNING: Retrieved photo count and no of captions don't match..</p>";
 }
-
 $p = 0;
 while ($photo = mysqli_fetch_assoc($photoq)) {
     $thisid = $photo['picIdx'];
@@ -79,17 +86,18 @@ while ($photo = mysqli_fetch_assoc($photoq)) {
     if ($deletePic) {
         $del = mysqli_query($link, "DELETE FROM ETSV WHERE title = '{$thispic}';");
         if (!$del) {
-            die("saveTab2.php: Failed to remove photo {$thispic}: " .
-                mysqli_error($link));
+            die(
+                "saveTab2.php: Failed to remove photo {$thispic}: " .
+                mysqli_error($link)
+            );
         }
     } else {
         $updtreq = "UPDATE ETSV SET hpg = '{$disph}',mpg = '{$dispm}',"
             . "`desc` = '{$newcap}' WHERE picIdx = {$thisid};";
-        $update = mysqli_query($link, $updtreq);
-        if (!$update) {
-            die("saveTab2.php: Failed to update ETSV table for hike {$hikeNo}: "
-                . msyqli_error($link));
-        }
+        $update = mysqli_query($link, $updtreq) or die(
+            "saveTab2.php: Failed to update ETSV table for hike {$hikeNo}: "
+            . msyqli_error($link)
+        );
     }
     $p++;
 }

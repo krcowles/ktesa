@@ -26,10 +26,10 @@ require "dataForEditor.php";
 <h3 style="margin-top:0px;">Edits made to this hike will be retained
     in the New/Active-Edit database, and will not show up when displaying
     published hikes until these edits have been formally released</h3>
-<p id="hikeNo" style='display:none'><?php echo $hikeNo;?></p>
-<p id="entry" style="display:none"><?php echo $dispTab;?></p>
+<p id="hikeNo" style='display:none'><?= $hikeNo;?></p>
+<p id="entry" style="display:none"><?= $dispTab;?></p>
 <em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
-    the hike: "<?php echo $hikeTitle;?>". To save your edits, select the 
+    the hike: "<?= $hikeTitle;?>". To save your edits, select the 
     'Apply' button at the bottom. When you are done applying edits, or if no
     edits are being made, you may simply exit this page.
 </em><br /><br />
