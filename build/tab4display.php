@@ -3,13 +3,12 @@
 <input type="hidden" name="rno" value="<?php echo $hikeNo;?>" />
 <input type="hidden" name="rid" value="<?php echo $uid;?>" />
 <?php
-$z = 0;  # index for creating unique id's
+$z = 0;  // index for creating unique id's
 $refreq = "SELECT * FROM EREFS WHERE indxNo = '{$hikeNo}';";
-$refq = mysqli_query($link, $refreq);
-if (!$refq) {
-    die("editDB.php: Failed to extract references from EREFS: " .
-        mysqli_error($link));
-}
+$refq = mysqli_query($link, $refreq) or die(
+    "editDB.php: Failed to extract references from EREFS: " .
+    mysqli_error($link)
+);
 while ($ritem = mysqli_fetch_assoc($refq)) {
     $rid = 'rid' . $z;
     $reftype = 'ref' . $z;
@@ -20,7 +19,7 @@ while ($ritem = mysqli_fetch_assoc($refq)) {
     echo '<option value="Book:" >Book</option>' . "\n";
     echo '<option value="Photo Essay:">Photo Essay</option>' . "\n";
     echo '<option value="Website:">Website</option>' . "\n";
-    echo '<option value="Link:">Website</option>' . "\n"; # leftover category from index pages
+    echo '<option value="Link:">Website</option>' . "\n"; //leftover category from index pages
     echo '<option value="App:">App</option>' . "\n";
     echo '<option value="Downloadable Doc:">Downloadable Doc</option>' . "\n";
     echo '<option value="Blog:">Blog</option>' . "\n";

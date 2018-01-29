@@ -1,5 +1,6 @@
 <?php
-/* This module produces the html for placing photos with selection boxes.
+/**
+ * This module produces the html for placing photos with selection boxes.
  * REQUIREMENTS:
  *      1. $hikeNo must be defined in caller's environment (EHIKES or HIKES)
  *      2. $pgType must be defined by caller to determine whether or not
@@ -7,6 +8,11 @@
  *      3. picPops.js is looking for a <p id="ptype"> on the caller's page
  *         identifying the page type: Validation, Finish or Edit
  * Place this code inside a <div> element.
+ * 
+ * @package Photos
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ * @link    ../docs/
  */
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
@@ -16,11 +22,10 @@ if (isset($pgType) && $pgType === 'Edit') {
     $h4txt .= " NOTE: Checking 'Delete' permanently removes the photo.";
 }
 $picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
-$pix = mysqli_query($link, $picreq);
-if (!$pix) {
-    die("photoSelect.php: Failed to get picdat from ETSV for hike {$hikeNo}: " .
-        mysqli_error($link));
-}
+$pix = mysqli_query($link, $picreq) or die(
+    "photoSelect.php: Failed to get picdat from ETSV for hike {$hikeNo}: " .
+    mysqli_error($link)
+);
 if (mysqli_num_rows($pix) === 0) {
     $inclPix = 'NO';
     $jsTitles = "''";
@@ -47,13 +52,13 @@ if (mysqli_num_rows($pix) === 0) {
 <?php
 if ($inclPix === 'YES') {
     $picno = 0;
-    $phNames = []; # filename w/o extension
-    $phDescs = []; # caption
+    $phNames = []; // filename w/o extension
+    $phDescs = []; // caption
     $hpg = [];
     $mpg = [];
-    $phPics = []; # capture the link for the mid-size version of the photo
-    $phWds = []; # width
-    $rowHt = 220; # nominal choice for row height in div
+    $phPics = []; // capture the link for the mid-size version of the photo
+    $phWds = []; // width
+    $rowHt = 220; // nominal choice for row height in div
     while ($pics = mysqli_fetch_assoc($pix)) {
         $phNames[$picno] = $pics['title'];
         $phDescs[$picno] = $pics['desc'];
@@ -93,13 +98,13 @@ if ($inclPix === 'YES') {
                 . 'px" src="' . $phPics[$i] . '" alt="' . $phNames[$i]
                 . '" /><br />' . PHP_EOL;
         if ($pgType === 'Edit') {
-            $tawd = $phWds[$i] - 12;  # textarea widths don't compute exactly
+            $tawd = $phWds[$i] - 12;  // textarea widths don't compute exactly
             echo '<textarea style="width:' . $tawd . 'px" name="ecap[]">' .
                 $phDescs[$i] . "</textarea>";
         }
         echo "</div>" . PHP_EOL;
     }
-    # create the js arrays to be passed to the accompanying script:
+    // create the js arrays to be passed to the accompanying script:
     $jsTitles = '[';
     for ($n=0; $n<count($phNames); $n++) {
         if ($n === 0) {
@@ -129,6 +134,5 @@ if ($inclPix === 'YES') {
 <script src="photoSelect.js" type="text/javascript"></script>
 <script src="../scripts/picPops.js" type="text/javascript"></script>
 <div class="popupCap"></div>
-<?php
-    echo '<input type="hidden" name="usepics" value="' . $inclPix . '" />' . "\n";
-    echo '<input type="hidden" name="hikeno" value="' . $hikeNo . '" />' . "\n";
+<input type="hidden" name="usepics" value="<?= $inclPix;?>" />
+<input type="hidden" name="hikeno" value="<?= $hikeNo;?>" />
