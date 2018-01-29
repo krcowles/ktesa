@@ -55,7 +55,6 @@ for ($i=$strt; $i<$tblcnt; $i++) {
         echo "<p>{$table[$i]} Table Removed</p>";
     }
 }
-mysqli_free_result($remtbl);
 $req = mysqli_query($link, "SHOW TABLES");
 if (!$req) {
     die($query_fail);
