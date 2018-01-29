@@ -49,13 +49,12 @@ for ($i=$strt; $i<$tblcnt; $i++) {
     echo "<p>Removing any previous instantiation of table '{$table[$i]}':</p>";
     $remtbl = mysqli_query($link, "DROP TABLE {$table[$i]};");
     if (!$remtbl) {
-        die("<p>drop_all_tables.php: Failed to drop {$table[$i]}: " .
-            mysqli_error($link) . "</p>");
+        echo"<p>drop_all_tables.php: Failed to drop {$table[$i]}: " .
+            mysqli_error($link) . "</p>";
     } else {
         echo "<p>{$table[$i]} Table Removed</p>";
     }
 }
-mysqli_free_result($remtbl);
 $req = mysqli_query($link, "SHOW TABLES");
 if (!$req) {
     die($query_fail);
