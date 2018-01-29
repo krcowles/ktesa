@@ -36,7 +36,7 @@ if (isset($_SESSION['uplmsg']) && $_SESSION['uplmsg'] !== '') {
     $_SESSION['uplmsg'] = '';
 }
 ?>
-<p><span style="color:brown;">Current Main Hike Track File: </span>
+<span style="color:brown;">Current Main Hike Track File: </span>
 <?php
 if ($curr_gpx == '') {
     echo '<em>None Specified</em><br />'; 
@@ -50,7 +50,6 @@ if ($curr_gpx == '') {
     <li><span style="color:brown;">Upload new gpx file:&nbsp;</span>
         <input type="file" name="newgpx" /></li>
 </ul>
-</p>
 <h3>File Upload for 'Related Hike Information' (types .gpx, .kml, .html):</h3>
 <p>Note: These files are generally useful for proposed hike track data
 and/or maps</p>
@@ -65,11 +64,11 @@ if (isset($_SESSION['gpsmsg']) && $_SESSION['gpsmsg'] !== '') {
     $_SESSION['gpsmsg'] = '';
 }
 ?>
-<p style="font-weight:bold;margin-bottom:0px;color:black;">
+<span style="font-weight:bold;margin-bottom:0px;color:black;">
     Upload New Data File:<br />
 <em style="font-weight:normal;">
     - Note: A Reference Will Automatically Be Added When Upload
-    Is Complete</em></p><br />
+    Is Complete</em></span><br />
 <ul style="margin-top:0px;" id="relgpx">
     <li>Track Data Uploads:<br />
         <label style="color:brown;">Upload New File&nbsp;(Accepted file types:

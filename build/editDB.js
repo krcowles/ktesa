@@ -246,9 +246,48 @@ $('.phurl').each( function() {
         $(this).css('border-color','black');
     });
 });
-$('#upld').on('click', function() {
-    window.open('newPhotos.php');
+
+$('#newalbs').on('click', function(ev) {
+    var proceed = true;
+    var allEmpty = true;
+    var albumLinks = $('.phurl');
+    var checkBoxes = $('.uplbox');
+    for (var k=0; k<checkBoxes.length; k++) {      
+        if (checkBoxes[k].checked) {
+            if (albumLinks[k].value == '') {
+                alert("You have checked an album link upload box\n" +
+                    "without specifying an album");
+                proceed = false;
+            } else {
+                allEmpty = false;
+            }
+        }
+        if (albumLinks[k].value !== '') {
+            if (!checkBoxes[k].checked) {
+                alert("You have supplied an album link\n" +
+                    "without checking its corresponding box");
+                proceed = false;
+            } else {
+                allEmpty = false;
+            }
+        }
+    }
+    if (!proceed || allEmpty) {
+        ev.preventDefault();
+        $('#tab2').css('display','block');
+        $('#newalbs').on('mouseover', function() {
+            $(this).css('background-color','papayawhip');
+            $(this).css('color','brown');
+        });
+        $('#newalbs').on('mouseout', function() {
+            $(this).css('background-color', 'honeydew');
+            $(this).css('color', 'black');
+        });
+    } else {
+        $('#part1').submit();
+    }
 });
+
 $('#showll').on('click', function() {
     $('#lldisp').slideToggle();
     $(this).prop('checked',false);

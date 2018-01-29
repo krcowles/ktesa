@@ -199,4 +199,128 @@ function fileTypeAndLoc($fname)
     }
     return array($floc, $mimeType, $fext, $ftypeError);
 }
-?>
+/**
+ * This function extracts existing cluster info and Visitor Center info
+ * from the HIKES table needed to display 'select' drop-down boxes
+ * 
+ * @return array The results of extracting clus & vc data from HIKES
+ */
+function dropdownData()
+{
+    $link = connectToDb(__FILE__, __LINE__);
+    $vchikes = [];
+    $vcnos = [];
+    $clhikes = [];
+    $cldat = [];
+    $hquery = "SELECT indxNo,pgTitle,marker,`collection`,cgroup,cname "
+            ."FROM HIKES;";
+    $specdat = mysqli_query($link, $hquery) or die(
+        'enterHike.php: Could not retrieve vc/cluster info: ' .
+        mysqli_error($link)
+    );
+    while ($select = mysqli_fetch_assoc($specdat)) {
+        $indx = $select['indxNo'];
+        $title = $select['pgTitle'];
+        $marker = $select['marker'];
+        $coll = $select['collection'];
+        $clusltr = $select['cgroup'];
+        $clusnme = $select['cname'];
+        if ($marker == 'Visitor Ctr') {
+            array_push($vchikes, $title);
+            array_push($vcnos, $indx);
+        } elseif ($marker == 'Cluster') {
+            $dup = false;
+            for ($l=0; $l<count($clhikes); $l++) {
+                if ($clhikes[$l] == $clusnme) {
+                    $dup = true;
+                }
+            }
+            if (!$dup) {
+                array_push($clhikes, $clusnme);
+                // Need to include both Cluster Name and Cluster Letter when posting
+                $postCl = $clusltr . ":" . $clusnme;
+                array_push($cldat, $postCl);
+            }
+        }
+    }
+    mysqli_free_result($specdat);
+    return array($clhikes, $cldat, $vchikes, $vcnos);
+}
+/**
+ * A simple function converts null into empty string after reading
+ * a field from the database.
+ * 
+ * @param string $var Incoming database variable to be checked
+ * 
+ * @return string the prepped string
+ */
+function fetch($var)
+{
+    $clean = is_null($var) ? '' : $var;
+    return trim($clean);
+}
+/**
+ * For Flickr Albums ONLY: retrieve photo date from Flickr html based
+ * on Flickr's photomodel javascript object.
+ * 
+ * @param string $photomodel extracted string of javascript object defni
+ * @param string $size       letter representation of stored image size
+ * 
+ * @return string $url Exptracted url for corresponding letter size
+ */
+function getFlickrDat($photomodel, $size)
+{
+    $ltrSize = strlen($size);  // NOTE: at least 1 size is two letters
+    $offset = 4 + $ltrSize;
+    $modelLtr = '"' . $size . '":{';
+    $sizePos = strpos($photomodel, $modelLtr) + $offset;
+    $urlPos = strpos($photomodel, '"url":"', $sizePos) + 7;
+    $urlEnd = strpos($photomodel, '"', $urlPos);
+    $urlLgth = $urlEnd - $urlPos;
+    $rawurl = substr($photomodel, $urlPos, $urlLgth);
+    $url = 'https:' . preg_replace('/\\\\/', '', $rawurl);
+    return $url;
+}
+/**
+ * The latitude and longitude in exif data are given as numeric arrays.
+ * This function forms the float value corresponding to the array.
+ * 
+ * @param array $degrees Exif data for lat or lng in native exif array
+ * 
+ * @return float $coords The array value given as a floating point no.
+ */
+function mantissa($degrees)
+{
+    $coords = 0;
+    for ($z = 0; $z < 3; $z++) {
+        $div = strpos($degrees[$z], '/');
+        $body = substr($degrees[$z], 0, $div);
+        $divisor = substr($degrees[$z], $div + 1);
+        switch ($z) {
+        case 0:
+            $coords = $body / $divisor;
+            break;
+        case 1:
+            $mins = $body / $divisor;
+            break;
+        case 2:
+            $secs = $body / $divisor;
+            break;
+        }
+    }
+    $coords += ($mins + $secs / 60) / 60;
+    return $coords;
+}
+/*
+function convtTime($GPStime) {
+    $hrs = explode("/",$GPStime[0]);
+    $hr = intval($hrs[0]/$hrs[1]);
+    $mins = explode("/",$GPStime[1]);
+    $min = intval($mins[0]/$mins[1]);
+    $secs = explode("/",$GPStime[2]);
+    $sec = intval($secs[0]/$secs[1]);
+    $tstring = $hr . ':' . $min . ":" . $sec;
+    return $tstring;
+}
+ * NOT CURRENTLY USED
+ */

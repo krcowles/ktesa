@@ -1,31 +1,31 @@
 <?php
-/* 
+/**
  * This routine extracts exif data by partially downloading the original 
  * photo - sufficient to contain the exif metadata - and writing the truncated
  * file to a temp directory. It then reads the exif data from that file, stores 
  * the required information in arrays for the calling routine, and then deletes
  * the file. This script does not care which album type has been selected.
+ * 
+ * @package Create
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ * @link    ../docs/
  */
 define("CHUNK", 8192);
-/*
-function convtTime($GPStime) {
-    $hrs = explode("/",$GPStime[0]);
-    $hr = intval($hrs[0]/$hrs[1]);
-    $mins = explode("/",$GPStime[1]);
-    $min = intval($mins[0]/$mins[1]);
-    $secs = explode("/",$GPStime[2]);
-    $sec = intval($secs[0]/$secs[1]);
-    $tstring = $hr . ':' . $min . ":" . $sec;
-    return $tstring;
-}
- * NOT CURRENTLY USED
- */
-
-# original photos assumed to be stored in the $o array
-# start processing based on album:
+// original photos assumed to be stored in the $o array in getPicDat.php
+// EXIF data arrays
+$imgs = [];
+$imgHt = [];
+$imgWd = [];
+$timeStamp = [];
+$lats = [];
+$lngs = [];
+$gpds = [];
+$gpts = [];
+// start processing based on album: $pcnt is total, $albOcnt is album only
 $kstart = $pcnt - $albOcnt;
 for ($k=$kstart; $k<$pcnt; $k++) {
-    # Read the original-sized photo w/metadata
+    // Read the original-sized photo w/metadata
     $orgPhoto = $o[$k];
     $photoHandle = fopen($orgPhoto, "r");
     if ($photoHandle === false) {
@@ -36,27 +36,26 @@ for ($k=$kstart; $k<$pcnt; $k++) {
     $truncFile = 'tmp/photo' . $k . '.jpg';
     $fileSize = 0;
     $contents = '';
-    while (!feof($photohandle)) {
+    while (!feof($photoHandle)) {
         $contents .= fread($photoHandle, CHUNK);
         $fileSize += CHUNK;
-        # Write the truncated file to tmp/
+        // Write the truncated file to tmp/
         $exifFile = fopen($truncFile, "w");
         if ($exifFile === false) {
             $nowrite = $pstyle . 'Could not open file to write photo' . $k . '</p>';
             die($nowrite);
         }
-        # Write the truncated file to tmp/
+        // Write the truncated file to tmp/
         fwrite($exifFile, $contents);
         fclose($exifFile);
         $exifdata = exif_read_data($truncFile);
         if ($exifdata === false) {
-            continue;   # no exif data yet - go back and read some more
+            continue;   // no exif data yet - go back and read some more
         } else {
-            break;      # exif data found - exit while
+            break;      // exif data found - exit while
         }
     }
     fclose($photoHandle);
-
     if ($exifdata === false) {
         echo $pstyle . 'WARNING: Could not read exif data for ' . $orgPhoto
             . '<br />Please verify that all album photos contain metadata. '
@@ -67,9 +66,9 @@ for ($k=$kstart; $k<$pcnt; $k++) {
         $ext = strrpos($exifdata["FileName"], ".");
         $imgName = substr($exifdata["FileName"], 0, $ext);
         $imgs[$k] = $imgName;
-        # NOTE: orientations of 3, and 8 are not addressed here
-        $imgHt[$k] = $exifdata["ImageLength"];
-        $imgWd[$k] = $exifdata["ImageWidth"];
+        // NOTE: orientations of 3, and 8 are not addressed here
+        $imgHt[$k] = $exifdata["ExifImageLength"];
+        $imgWd[$k] = $exifdata["ExifImageWidth"];
         $orient = $exifdata["Orientation"];
         if ($orient == '6') {
             $tmpval = $imgHt[$k];
@@ -78,36 +77,37 @@ for ($k=$kstart; $k<$pcnt; $k++) {
         }
         $timeStamp[$k] = $exifdata["DateTimeOriginal"];
         if ($timeStamp[$k] == '') {
-                echo "WARNING: No date/time data found " . 'for ' . $orgPhoto . '</p>';
+            echo "WARNING: No date/time data found " . 'for ' .
+                $orgPhoto . '</p>';
         }
-        if (!isset($exifdata["GPSLatitudeRef"]) || !isset($exifdata["GPSLatitude"])) {
+        if (!isset($exifdata["GPSLatitudeRef"])
+            || !isset($exifdata["GPSLatitude"])
+        ) {
             $lats[$k] = 0;
             $lngs[$k] = 0;
         } else {
             if ($exifdata["GPSLatitudeRef"] == 'N') {
-                    $lats[$k] = mantissa($exifdata["GPSLatitude"]); # TJS
+                    $lats[$k] = mantissa($exifdata["GPSLatitude"]);
             } else {
-                    $lats[$k] = -1 * mantissa($exifdata["GPSLatitude"]); # TJS
+                    $lats[$k] = -1 * mantissa($exifdata["GPSLatitude"]);
             }
-
             if ($exifdata["GPSLongitudeRef"] == 'E') {
-                    $lngs[$k] = mantissa($exifdata["GPSLongitude"]); # TJS
+                    $lngs[$k] = mantissa($exifdata["GPSLongitude"]);
             } else {
-                    $lngs[$k] = -1 * mantissa($exifdata["GPSLongitude"]); # TJS
+                    $lngs[$k] = -1 * mantissa($exifdata["GPSLongitude"]);
             }
         }
         $elev[$k] = $exifdata["GPSAltitude"];
         $gpds[$k] = $exifdata["GPSDateStamp"];
-
         // array
         $gpts[$k] = $exifdata["GPSTimeStamp"];
         if ($lats[$k] == 0 || $lngs[$k] == 0) {
             echo $pstyle . "WARNING: No latitude/longitude data obtained for " .
                 $orgPhoto . '</p>';
         }
-    }  # end of exifdata found
+    }  // end of exifdata found
     if (!unlink($truncFile)) {
         $nodelete = $pstyle . 'Could not delete temporary file ' . $truncFile .
                 '</p>';
     }
-}  # end of for each original photo loop
+}  // end of for each original photo loop

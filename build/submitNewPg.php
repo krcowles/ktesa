@@ -27,7 +27,7 @@ if ($mrkr === 'At VC') {
 } elseif ($mrkr === 'Cluster') {
     $chike = filter_input(INPUT_POST, 'clus');
     $nmepos = strpos($chike, ":") + 1;
-    $clusName = substr($chike, $nmepos, strlen($chike)-$sep);
+    $clusName = substr($chike, $nmepos, strlen($chike)-$nmepos);
     $clusLtr = substr($chike, 0, $nmepos-1);
     $qfields .= "cgroup,cname,";
     $qdata .= "'{$clusLtr}','{$clusName}',";

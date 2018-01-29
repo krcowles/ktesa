@@ -12,24 +12,9 @@ require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $h4txt = "Please check the boxes corresponding to the pictures you wish to " .
     "include on the hike page, and those you wish to include on the geomap.";
-if ($pgType === 'Edit') {
+if (isset($pgType) && $pgType === 'Edit') {
     $h4txt .= " NOTE: Checking 'Delete' permanently removes the photo.";
 }
-?>
-<style type="text/css">
-    .capLine { margin: 0px;
-    font-weight: bold;
-    background-color: #dadada; }
-</style>
-<h4 style="text-indent:16px"><?php echo $h4txt;?></h4>
-<div style="position:relative;top:-14px;margin-left:16px;">
-    <input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;
-        Use All Photos on Hike Page<br />
-    <input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;
-        Use All Photos on Map
-</div>
-<div style="margin-left:16px;">
-<?php
 $picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
 $pix = mysqli_query($link, $picreq);
 if (!$pix) {
@@ -38,9 +23,29 @@ if (!$pix) {
 }
 if (mysqli_num_rows($pix) === 0) {
     $inclPix = 'NO';
+    $jsTitles = "''";
+    $jsDescs = "''";
 } else {
-    # Display photos for selection
     $inclPix = 'YES';
+}
+?>
+<?php if ($inclPix === 'YES') : ?>
+<style type="text/css">
+    .capLine { margin: 0px;
+    font-weight: bold;
+    background-color: #dadada; }
+</style>
+<h4 style="text-indent:16px"><?= $h4txt;?></h4>
+    <div style="position:relative;top:-14px;margin-left:16px;">
+        <input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;
+            Use All Photos on Hike Page<br />
+        <input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;
+            Use All Photos on Map
+    </div>
+    <div style="margin-left:16px;">
+<?php endif; ?>
+<?php
+if ($inclPix === 'YES') {
     $picno = 0;
     $phNames = []; # filename w/o extension
     $phDescs = []; # caption
@@ -113,13 +118,9 @@ if (mysqli_num_rows($pix) === 0) {
         }
     }
     $jsDescs .= ']';
-    if ($pgType == 'Validate' || $pgType == 'Finish') {
-        echo '<div style="width:200px;position:relative;top:90px;left:20px;float:left;">' .
-        '<input type="submit" value="Create Page w/This Data" /><br /><br />' . "\n";
-    }
+    echo '</div>';
 }
 ?>
-</div>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">
     var phTitles = <?php echo $jsTitles;?>;

@@ -12,8 +12,26 @@
 <body>  
     
 <?php 
-require "selectData.php";
-$usr = filter_input(INPUT_GET,'usr');
+/**
+ * This php block extracts data from the HIKES table needed to display
+ * in the cluster and Visitor Center drop-down boxes when those types
+ * are selected. It is otherwise hidden.
+ * 
+ * @package Creation
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license None to date
+ * @link    ../docs/
+ */
+require_once "../mysql/dbFunctions.php";
+require "buildFunctions.php";
+$usr = filter_input(INPUT_GET, 'usr');
+$selectData = dropdownData();
+$clusHikes = $selectData[0];
+$clcnt = count($clusHikes);
+$clusData = $selectData[1];
+$vcHikes = $selectData[2];
+$vccnt = count($vcHikes);
+$vcIndex = $selectData[3];
 ?>
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
@@ -36,7 +54,7 @@ $usr = filter_input(INPUT_GET,'usr');
             <em id="vcs">Select The Associated Visitor Center:
                 <select id="vcsel" name="vchike">
                     <?php for ($i=0; $i<$vccnt; $i++) :?>
-                    <option value="<?= $vcnos[$i];?>"><?= $vchikes[$i];?></option>
+                    <option value="<?= $vcIndex[$i];?>"><?= $vcHikes[$i];?></option>
                     <?php endfor;?>
                 </select>
             </em>
@@ -46,7 +64,8 @@ $usr = filter_input(INPUT_GET,'usr');
             <em id="cls">Select The Associated Group of Hikes:
                 <select id="clsel" name="clus">
                     <?php for ($j=0; $j<$clcnt; $j++) :?>
-                    <option value="<?= $cldat[$j];?>"><?= $clhikes[$j];?></option>
+                    <option value="<?= $clusData[$j];?>"><?= $clusHikes[$j];?>
+                        </option>
                     <?php endfor;?>
                 </select>
             </em>

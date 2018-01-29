@@ -1,11 +1,11 @@
-<input type="hidden" name="hno" value="<?php echo $hikeNo;?>" />
-<input type="hidden" name="usr" value="<?php echo $uid;?>" />
-<input type="hidden" name="col" value="<?php echo $hikeColl;?>" />
-<!-- the following are required esp when extracting a published hike -->
-<input type="hidden" name="gpx" value="<?php echo $hikeGpx;?>" />
+<input type="hidden" name="hno" value="<?= $hikeNo;?>" />
+<input type="hidden" name="usr" value="<?= $uid;?>" />
+<input type="hidden" name="col" value="<?= $hikeColl;?>" />
+<!-- gpx is required esp when extracting a published hike -->
+<input type="hidden" name="gpx" value="<?= $hikeGpx;?>" />
 <label for="hike">Hike Name: </label>
-<textarea id="hike" name="hname"><?php echo $hikeTitle;?></textarea>
-&nbsp;&nbsp;<p style="display:none;" id="locality"><?php echo $hikeLocale;?></p>
+<textarea id="hike" name="hname"><?= $hikeTitle;?></textarea>
+&nbsp;&nbsp;<p style="display:none;" id="locality"><?= $hikeLocale;?></p>
 <label for="area">Locale (City/POI): </label>
 <select id="area" name="locale">
     <optgroup label="North/Northeast">
@@ -47,38 +47,37 @@
         <option value="Pinos Altos">Pinos Altos</option>
         <option value="Glenwood">Glenwood</option>
 </select>&nbsp;&nbsp;
-<p id="mrkr" style="display:none"><?php echo $hikeMarker;?></p>
-<input type="hidden" name="pmrkr" value="<?php echo $hikeMarker;?>" />
-<input type="hidden" name="pclus" value="<?php echo $hikeClusGrp;?>" />
-<p id="group" style="display:none"><?php echo $hikeGrpTip;?></p>
-<input type="hidden" name="pcnme" value="<?php echo $hikeGrpTip;?>" />
+<p id="mrkr" style="display:none"><?= $hikeMarker;?></p>
+<input type="hidden" name="pmrkr" value="<?=$hikeMarker;?>" />
+<input type="hidden" name="pclus" value="<?= $hikeClusGrp;?>" />
+<p id="group" style="display:none"><?= $hikeGrpTip;?></p>
+<input type="hidden" name="pcnme" value="<?= $hikeGrpTip;?>" />
 <h3>Cluster Hike Assignments: (Hikes with overlapping trailheads or in 
     close proximity)<br /><br />
-<span style="margin-left:50px;font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
+<span style="margin-left:50px;font-size:18px;color:Brown;">
+    Reset Assignments:&nbsp;&nbsp;
     <input id="ignore" type="checkbox" name="nocare" /></span></h3>
-<?php
-echo '<label for="ctip">&nbsp;&nbsp;Cluster: </label>';
-echo '<select id="ctip" name="htool">';
-for ($i=0; $i<$groupCount; $i++) {
-echo '<option value="' . $cnames[$i] . '">' . $cnames[$i] . "</option>\n";
-}
-echo "</select>&nbsp;&nbsp;\n" .
-'<span id="showdel" style="display:none;">You may remove the cluster ' .
-    'assignment by checking here:&nbsp;<input id="deassign" ' .
-    'type="checkbox" name="rmclus" value="NO" /></span>' . "\n" .
-'<span id="notclus" style="display:none;">There is no currently ' .
-    "assigned cluster for this hike.</span>\n";
-?>
+<label for="ctip">&nbsp;&nbsp;Cluster: </label>
+<select id="ctip" name="htool">
+<?php for ($i=0; $i<$groupCount; $i++) : ?>
+    <option value="<?= $cnames[$i]?>"><?= $cnames[$i];?></option>
+<?php endfor; ?>
+</select>&nbsp;&nbsp;
+<span id="showdel" style="display:none;">You may remove the cluster
+    assignment by checking here:&nbsp;<input id="deassign"
+    type="checkbox" name="rmclus" value="NO" /></span>
+<span id="notclus" style="display:none;">There is no currently
+    assigned cluster for this hike.</span>
 <input id="grpchg" type="hidden" name="chgd" value="NO" />
 <p>If you are establishing a new group, select the checkbox: 
     <input id="newg" type="checkbox" name="nxtg" value="NO" />
-    <input id="curcnt" type="hidden" name="grpcnt" value="<?php echo $groupCount;?>" />
+    <input id="curcnt" type="hidden" name="grpcnt" value="<?= $groupCount;?>" />
 </p>
 <p style="margin-top:-10px;margin-left:40px;">and enter the name for the 
     new group here: <input id="newt" type="text" name="newgname" size="50" />
 </p>
 <h3>Other Basic Hike Data</h3>
-<p id="ctype" style="display:none"><?php echo $hikeStyle;?></p>
+<p id="ctype" style="display:none"><?= $hikeStyle;?></p>
 <label for="type">Hike Type: </label>
 <select id="type" name="htype">
     <option value="Loop">Loop</option>
@@ -86,10 +85,10 @@ echo "</select>&nbsp;&nbsp;\n" .
     <option value="Out-and-back">Out-and-back</option>
 </select>&nbsp;&nbsp;
 <label for="miles">Round-trip length in miles: </label>
-<textarea id="miles" name="hlgth"><?php echo $hikeMiles;?></textarea>&nbsp;&nbsp;
+<textarea id="miles" name="hlgth"><?= $hikeMiles;?></textarea>&nbsp;&nbsp;
 <label for="elev">Elevation change in feet: </label>
-<textarea id="elev" name="helev"><?php echo $hikeFeet;?></textarea><br /><br />
-<p id="dif" style="display:none"><?php echo $hikeDiff;?></p>
+<textarea id="elev" name="helev"><?= $hikeFeet;?></textarea><br /><br />
+<p id="dif" style="display:none"><?= $hikeDiff;?></p>
 <label for="diff">Level of difficulty: </label>
 <select id="diff" name="hdiff">
     <option value="Easy">Easy</option>
@@ -99,12 +98,12 @@ echo "</select>&nbsp;&nbsp;\n" .
     <option value="Difficult">Difficult</option>
 </select>
 <label for="fac">Facilities at the trailhead: </label>
-<textarea id="fac" name="hfac"><?php echo $hikeFac;?></textarea><br /><br />
+<textarea id="fac" name="hfac"><?= $hikeFac;?></textarea><br /><br />
 <label for="wow">"Wow" Appeal: </label>
-<textarea id="wow" name="hwow"><?php echo $hikeWow;?></textarea>&nbsp;&nbsp;
+<textarea id="wow" name="hwow"><?= $hikeWow;?></textarea>&nbsp;&nbsp;
 <label for="seas">Best Hiking Seasons: </label>
-<textarea id="seas" name="hsea"><?php echo $hikeSeasons;?></textarea><br /><br />
-<p id="expo" style="display:none"><?php echo $hikeExpos;?></p>
+<textarea id="seas" name="hsea"><?= $hikeSeasons;?></textarea><br /><br />
+<p id="expo" style="display:none"><?= $hikeExpos;?></p>
 <label for="sun">Exposure: </label>
 <select id="sun" name="hexp">
     <option value="Full sun">Full sun</option>
@@ -116,11 +115,11 @@ echo "</select>&nbsp;&nbsp;\n" .
     <input id="showll" type="checkbox" name="latlng" value="nosend" /></p>
 <p id="lldisp" style="display:none">
 <label for="lat">Trailhead: Latitude </label>
-<textarea id="lat" name="hlat"><?php echo $hikeLat;?></textarea>&nbsp;&nbsp;
+<textarea id="lat" name="hlat"><?= $hikeLat;?></textarea>&nbsp;&nbsp;
 <label for="lon">Longitude </label>
-<textarea id="lon" name="hlon"><?php echo $hikeLng;?></textarea></p>
+<textarea id="lon" name="hlon"><?= $hikeLng;?></textarea></p>
 <br /><label for="murl">Map Directions Link (Url): </label>
-<textarea id="murl" name="gdirs"><?php echo $hikeDirs;?></textarea><br /><br />
+<textarea id="murl" name="gdirs"><?= $hikeDirs;?></textarea><br /><br />
 <!-- This next section is photo editing-->
 <p id="ptype" style="display:none">Edit</p>
 <div style="margin-left:8px;">

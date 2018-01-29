@@ -11,8 +11,6 @@ $uid = filter_input(INPUT_POST, 'usr');
 $marker = filter_input(INPUT_POST, 'pmrkr');
 $clusGrp = filter_input(INPUT_POST, 'pclus');
 $cgName = filter_input(INPUT_POST, 'pcnme');
-# Non-edited items need to be saved as well:
-$hikeColl = filter_input(INPUT_POST, 'col');
 # Extract cluster list - and inherent 1 to 1 association with cluster name:
 $groups = [];
 $cnames = [];
@@ -45,7 +43,6 @@ $hTitle = mysqli_real_escape_string($link, $pg);
 $hUser = mysqli_real_escape_string($link, $uid);
 $loc = filter_input(INPUT_POST, 'locale');
 $hLoc = mysqli_real_escape_string($link, $loc);
-$hColl = mysqli_real_escape_string($link, $hikeColl);
 /*  CLUSTER/MARKER ASSIGNMENT PROCESSING:
  *     The order of changes processed are in the following priority:
  *     1. Existing assignment deleted: Marker changes to "Normal"
@@ -117,30 +114,18 @@ $seas = filter_input(INPUT_POST, 'hsea');
 $hSeas = mysqli_real_escape_string($link, $seas);
 $expo = filter_input(INPUT_POST, 'hexp');
 $hExpos = mysqli_real_escape_string($link, $expo);
-$hGpx = mysqli_real_escape_string($link, $gpxfile);
-$hTrk = mysqli_real_escape_string($link, $trkfile);
 $elat = filter_input(INPUT_POST, 'hlat', FILTER_VALIDATE_FLOAT);
 if ($elat) {
     $hLat = mysqli_real_escape_string($link, $elat);
-} elseif ($newvals) {
-    $hLat = mysqli_real_escape_string($link, $lat);
 } else {
     $hLat = 0.0000;
 }
 $elng = filter_input(INPUT_POST, 'hlon', FILTER_VALIDATE_FLOAT);
 if ($elng) {
     $hLon = mysqli_real_escape_string($link, $elng);
-} elseif ($newvals) {
-    $hLon = mysqli_real_escape_string($link, $lng);
 } else {
     $hLon = 0.0000;
 }
-$hAdd1 = mysqli_real_escape_string($link, $addon1);
-$hAdd2 = mysqli_real_escape_string($link, $addon2);
-$url1 = filter_input(INPUT_POST, 'purl1');
-$hPurl1 = mysqli_real_escape_string($link, $url1);
-$url2 = filter_input(INPUT_POST, 'purl2');
-$hPurl2 = mysqli_real_escape_string($link, $url2);
 $dirs = filter_input(INPUT_POST, 'gdirs');
 $hDirs = mysqli_real_escape_string($link, $dirs);
 // The hike data will be updated, first without lat/lng or miles/elev
@@ -148,8 +133,8 @@ $saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
     "locale = '{$hLoc}',marker = '{$marker}'," .
     "cgroup = '{$clusGrp}',cname = '{$clName}',logistics = '{$hType}'," .
     "diff = '{$hDiff}',fac = '{$hFac}',wow = '{$hWow}'," .
-    "seasons = '{$hSeas}',expo = '{$hExpos}',purl1 = '{$hPurl1}'," .
-    "purl2 = '{$hPurl2}',dirs = '{$hDirs}' WHERE indxNo = {$hikeNo};";
+    "seasons = '{$hSeas}',expo = '{$hExpos}',dirs = '{$hDirs}' " .
+    "WHERE indxNo = {$hikeNo};";
 $saveHike = mysqli_query($link, $saveHikeReq) or die(
     __FILE__ . " Line " . __LINE__ . " Failed to save new data to EHIKES: " .
         mysqli_error($link)
