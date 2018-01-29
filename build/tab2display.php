@@ -20,7 +20,7 @@ Type:&nbsp;&nbsp;
 <input class="uplbox" type="checkbox" name="ps[]" value="2" />&nbsp;
     Include in upload:&nbsp;&nbsp;
 <input style="border-color:black;color:blue;font-weight:bold;"
-    class="phurl" type="text" name="lnk2" value="<?= $hikeUrl2;?>" />&nbsp;&nbsp;';
+    class="phurl" type="text" name="lnk2" value="<?= $hikeUrl2;?>" />&nbsp;&nbsp;
 Type:&nbsp;&nbsp;
 <select class="albs" id="alb2" name="alb2">
     <option value="flckr">Flickr</option>

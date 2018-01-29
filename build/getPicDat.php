@@ -20,6 +20,15 @@ $alinks = [];
 $o = [];
 $t = [];
 $n = [];
+// EXIF data arrays
+$imgs = [];
+$imgHt = [];
+$imgWd = [];
+$timeStamp = [];
+$lats = [];
+$lngs = [];
+$gpds = [];
+$gpts = [];
 for ($i=0; $i<$supplied; $i++) {
     /**
      * For each album link, extract the 'orginal' size photo link, and then
