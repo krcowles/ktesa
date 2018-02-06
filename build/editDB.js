@@ -262,7 +262,8 @@ $('#newalbs').on('click', function(ev) {
                 allEmpty = false;
             }
         }
-        if (albumLinks[k].value !== '') {
+        var alb = albumLinks[k]; // to simplify coding the following 'if'
+        if (alb.value !== '' && alb.name !== 'lnk1' && alb.name !== 'lnk2') {
             if (!checkBoxes[k].checked) {
                 alert("You have supplied an album link\n" +
                     "without checking its corresponding box");
