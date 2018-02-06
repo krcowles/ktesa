@@ -84,44 +84,38 @@ if ($dburl[1] === '') {
 }
 require 'getPicDat.php';
 // all photos are now in picdat[], time sorted
+// add other info needed for the server to process the results:
+$passInfo = array(
+    "folder" => 999,
+    "pic" => $hikeNo,
+    "desc" => $usr,
+    "alb" => $includes,
+    "org" => '',
+    "thumb" => '',
+    "nsize" => '',
+    "pHt" => '',
+    "pWd" => '',
+    "taken" => '',
+    "lat" => '',
+    "lng" => '',
+    "gpsdate" => '',
+    "gpstime" => ''
+);
+// some arrays are created to display photos locally with name captions:
 $picno = 0;
-$folders = [];
 $phNames = []; // filename w/o extension, aka 'title'
-$hpg = [];
-$mpg = [];
 $phDescs = []; // caption
-$lats = [];
-$lngs = [];
-$thumbs = [];
-$alblinks = [];
-$dates = [];
 $phPics = []; // capture the link for the mid-size version of the photo
-$phHts = [];
 $phWds = []; // width, but adjusted for row size, so table uses:
-$pWds = [];
-$icolors = [];
-$orgs = [];
 $rowHt = 220; // nominal choice for row height in div
-foreach ($picdat as $pics) {
-    $folders[$picno] = $pics['folder'];
-    $phNames[$picno] = $pics['pic'];
-    $hpg[$picno] = 'N';
-    $mpg[$picno] = 'N';
-    $phDescs[$picno] = $pics['desc'];
-    $lats[$picno] = $pics['lat'];
-    $lngs[$picno] = $pics['lng'];
-    $thumbs[$picno] = $pics['thumb'];
-    $alblinks[$picno] = $pics['alb'];
-    $dates[$picno] = $pics['taken'];
-    $phPics[$picno] = $pics['nsize'];
-    $phHts[$picno] = $pics['pHt'];
+foreach ($picdat as $pics) { 
     $pHeight = $pics['pHt'];
     $aspect = $rowHt/$pHeight;
-    $pWds[$picno] = $pics['pWd'];
     $pWidth = $pics['pWd'];
     $phWds[$picno] = floor($aspect * $pWidth);
-    $icolors[$picno] = 'red';
-    $orgs[$picno] = $pics['org'];
+    $phNames[$picno] = $pics['pic'];
+    $phPics[$picno] = $pics['nsize'];
+    $phDescs[$picno] = $pics['desc'];
     $picno += 1;
 }
 // create the js arrays to be passed to the accompanying script:
@@ -146,6 +140,7 @@ $jsDescs .= ']';
 /* The technique here will be to create a temporary table to store all
  * uploaded pix and then xfr those selected into ETSV on the submitted page
  */
+/*
 $nodup = mysqli_query($link, "DROP TABLE IF EXISTS tmpPix") or die(
     "uploadPhotos.php: DROP TABLE IF EXISTS failed: " . mysqli_error($link)
 );
@@ -177,3 +172,5 @@ for ($j=0; $j<$picno; $j++) {
         msyqli_error($link)
     );
 }
+*/
+
