@@ -1,0 +1,5 @@
+This temporary directory will normally contain no files, but is used
+during photo uploading to store 'partial' files which contain sufficient
+data from which to read exif data. This README file is permanently stored
+so that git will save the directory when empty (if no files are present,
+git ignores a directory).
