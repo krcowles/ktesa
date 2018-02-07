@@ -83,25 +83,9 @@ if ($dburl[1] === '') {
     );
 }
 require 'getPicDat.php';
-// all photos are now in picdat[], time sorted
-// add other info needed for the server to process the results:
-$passInfo = array(
-    "folder" => 999,
-    "pic" => $hikeNo,
-    "desc" => $usr,
-    "alb" => $includes,
-    "org" => '',
-    "thumb" => '',
-    "nsize" => '',
-    "pHt" => '',
-    "pWd" => '',
-    "taken" => '',
-    "lat" => '',
-    "lng" => '',
-    "gpsdate" => '',
-    "gpstime" => ''
-);
-// some arrays are created to display photos locally with name captions:
+// all photos are now in picdat[], time sorted; create javascript var:
+$ajaxArray = json_encode($picdat);
+// some arrays are created below to display photos locally with name captions:
 $picno = 0;
 $phNames = []; // filename w/o extension, aka 'title'
 $phDescs = []; // caption
@@ -137,40 +121,3 @@ for ($m=0; $m<count($phDescs); $m++) {
     }
 }
 $jsDescs .= ']';
-/* The technique here will be to create a temporary table to store all
- * uploaded pix and then xfr those selected into ETSV on the submitted page
- */
-/*
-$nodup = mysqli_query($link, "DROP TABLE IF EXISTS tmpPix") or die(
-    "uploadPhotos.php: DROP TABLE IF EXISTS failed: " . mysqli_error($link)
-);
-$tmpReq = "CREATE TABLE tmpPix LIKE TSV;";
-$tmp = mysqli_query($link, $tmpReq) or die(
-    "uploadPhotos.php: Failed to create tmp table for photos uploaded: " .
-    mysqli_error($link)
-);
-for ($j=0; $j<$picno; $j++) {
-    $fl = mysqli_real_escape_string($link, $folders[$j]);
-    $ti = mysqli_real_escape_string($link, $phNames[$j]);
-    $ds = mysqli_real_escape_string($link, $phDescs[$j]);
-    $lt = mysqli_real_escape_string($link, floatval($lats[$j]));
-    $ln = mysqli_real_escape_string($link, floatval($lngs[$j]));
-    $th = mysqli_real_escape_string($link, $thumbs[$j]);
-    $al = mysqli_real_escape_string($link, $alblinks[$j]);
-    $dt = mysqli_real_escape_string($link, $dates[$j]);
-    $md = mysqli_real_escape_string($link, $phPics[$j]);
-    $ih = mysqli_real_escape_string($link, intval($phHts[$j]));
-    $iw = mysqli_real_escape_string($link, intval($pWds[$j]));
-    $ic = mysqli_real_escape_string($link, $icolors[$j]);
-    $og = mysqli_real_escape_string($link, $orgs[$j]);
-    $addReq = "INSERT INTO tmpPix (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
-        "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) VALUES ({$hikeNo}," .
-        "'{$fl}','{$ti}','N','N','{$ds}',{$lt},{$ln},'{$th}','{$al}'," .
-        "'{$dt}','{$md}',{$ih},{$iw},'{$ic}','{$og}');";
-    $addem = mysqli_query($link, $addReq) or die(
-        "uploadPhotos.php: Failed to add photos to tmpPix table: " .
-        msyqli_error($link)
-    );
-}
-*/
-

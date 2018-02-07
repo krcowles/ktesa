@@ -54,7 +54,7 @@ require "uploadPhotos.php";
         alt="<?= $phNames[$i];?>" /><br />
 </div>
 <?php endfor; ?>
-<input style="font-size:18px;" type="submit" value="Add Photos" />
+<br /><button id="load" style="font-size:18px;">Add Photos</button>
 
 </div>
 <div class="popupCap"></div>
@@ -62,6 +62,9 @@ require "uploadPhotos.php";
 <script type="text/javascript">
     var phTitles = <?= $jsTitles;?>;
     var phDescs = <?= $jsDescs;?>;
+    var saveDat = <?= $ajaxArray;?>;
+    var hikeno = '<?= $hikeNo;?>';
+    var usrid = '<?= $usr;?>';
 </script>
 <script src="newPhotos.js" type="text/javascript"></script>
 <script src="../scripts/picPops.js" type="text/javascript"></script>
