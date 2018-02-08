@@ -236,7 +236,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1066 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1070 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -871,12 +871,14 @@ INSERT INTO REFS VALUES
 ('1057','153','Website: ','https://pubs.usgs.gov/sim/3179/montosopeak/SIM3179_pamphlet_508.pdf','USGS Montoso Peak Study'),
 ('1058','153','App: ','https://www.trails.com/tcatalog_trail.aspx?trailid=XMR022-031','AllTrails'),
 ('1059','153','Website: ','http://www.peakbagger.com/peak.aspx?pid=67114','Peak Bagger'),
-('1060','102','Book: ','60 Hikes Within 60 Miles of Albuquerque',', Stephen Ausherman'),
-('1061','102','Website: ','https://www.mtbproject.com/trail/207597/dragons-back','Mountain Bike Site'),
 ('1062','154','Book:','60 Hikes Within 60 Miles: Albuquerque','Stephen Ausherman'),
 ('1063','154','Website:','https://www.blm.gov/visit/white-ridge-bike-trails','BLM: White Ridge Bike Trails'),
 ('1064','154','Website:','https://www.mtbproject.com/trail/206544/white-ridge-trail-system-main-loop','MTB Project: White Ridge Trail System'),
-('1065','154','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails');
+('1065','154','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails'),
+('1066','102','Book:','60 Hikes Within 60 Miles of Albuquerque','Stephen Ausherman'),
+('1067','102','Website:','https://www.mtbproject.com/trail/207597/dragons-back','MTB Project: Dragon\'s Back Trail'),
+('1068','102','Website:','https://www.blm.gov/visit/white-ridge-bike-trails','BLM: White Ridge Bike Trails'),
+('1069','102','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails');
 
 
 
@@ -900,7 +902,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=2312 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2322 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -2205,8 +2207,7 @@ INSERT INTO TSV VALUES
 ('2210','151','Folder3','IMG_20171205_120230','Y','N','Crazy rock bluffs','35.7248694444','-106.3800416670','https://c1.staticflickr.com/5/4571/23998567827_84fd22fff7_t.jpg','https://www.flickr.com/photos/30474783@N06/23998567827/in/album-72157661311480577','2017-12-05 12:02:31','https://c1.staticflickr.com/5/4571/23998567827_84fd22fff7_n.jpg','2688','1512','pink','https://c1.staticflickr.com/5/4571/23998567827_4fdc668d09_o.jpg'),
 ('2211','151','Folder3','IMG_20171205_120343','N','N','','35.7246833333','-106.3795472220','https://c1.staticflickr.com/5/4567/27086918999_2a3fe52700_t.jpg','https://www.flickr.com/photos/30474783@N06/27086918999/in/album-72157661311480577','2017-12-05 12:03:45','https://c1.staticflickr.com/5/4567/27086918999_2a3fe52700_n.jpg','1512','2688','pink','https://c1.staticflickr.com/5/4567/27086918999_06c444bea2_o.jpg'),
 ('2212','151','Folder1','CowboyScene','Y','Y','Wide open spaces and towering rock makes for cowboy-like scenery','35.7247583333','-106.3790194440','https://c1.staticflickr.com/5/4585/38157100274_7f14c80f8b_t.jpg','https://www.flickr.com/photos/139088815@N08/38157100274/in/album-72157688101713282','2017-12-05 12:03:51','https://c1.staticflickr.com/5/4585/38157100274_7f14c80f8b_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4585/38157100274_8489a0ed4b_o.jpg'),
-('2213','151','Folder1','NEofSanchez','N','N','Emerging from Sanchez Canyon the views continue to fascinate','35.7250138889','-106.3780138890','https://c1.staticflickr.com/5/4582/24007538807_3d41bc533a_t.jpg','https://www.flickr.com/photos/139088815@N08/24007538807/in/album-72157688101713282','2017-12-05 12:11:17','https://c1.staticflickr.com/5/4582/24007538807_3d41bc533a_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4582/24007538807_5409bf8797_o.jpg');
-INSERT INTO TSV VALUES
+('2213','151','Folder1','NEofSanchez','N','N','Emerging from Sanchez Canyon the views continue to fascinate','35.7250138889','-106.3780138890','https://c1.staticflickr.com/5/4582/24007538807_3d41bc533a_t.jpg','https://www.flickr.com/photos/139088815@N08/24007538807/in/album-72157688101713282','2017-12-05 12:11:17','https://c1.staticflickr.com/5/4582/24007538807_3d41bc533a_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4582/24007538807_5409bf8797_o.jpg'),
 ('2214','151','Folder1','TreesAndCliffs','N','N','Rock formations are accentuated by fire-scorched trees','35.7249555556','-106.3771888890','https://c1.staticflickr.com/5/4569/38872435231_586d84a099_t.jpg','https://www.flickr.com/photos/139088815@N08/38872435231/in/album-72157688101713282','2017-12-05 12:14:24','https://c1.staticflickr.com/5/4569/38872435231_586d84a099_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4569/38872435231_aa944c06e1_o.jpg'),
 ('2215','151','Folder2','DSC00333','N','N','','35.7248747222','-106.3773163890','https://c1.staticflickr.com/5/4527/37988101155_acaaeae639_t.jpg','https://www.flickr.com/photos/159672980@N03/37988101155/in/album-72157667151848629','2017-12-05 12:15:26','https://c1.staticflickr.com/5/4527/37988101155_acaaeae639_n.jpg','3888','5184','pink','https://c1.staticflickr.com/5/4527/37988101155_d1dab32d46_o.jpg'),
 ('2216','151','Folder1','ToweringRocks','N','N','Rock columns stand in stark contrast to burned trees','35.7249555556','-106.3772138890','https://c1.staticflickr.com/5/4527/37986000525_d271ae8a79_t.jpg','https://www.flickr.com/photos/139088815@N08/37986000525/in/album-72157688101713282','2017-12-05 12:15:37','https://c1.staticflickr.com/5/4527/37986000525_d271ae8a79_n.jpg','2448','3264','pink','https://c1.staticflickr.com/5/4527/37986000525_0fb65cc653_o.jpg'),
@@ -2284,16 +2285,6 @@ INSERT INTO TSV VALUES
 ('2287','153','Folder2','IMG_20171212_121741','Y','N','The view of of the North Twin from the shorter South Twin','35.7068111111','-106.1648722220','https://c1.staticflickr.com/5/4564/24151854167_9942bb3410_t.jpg','https://www.flickr.com/photos/30474783@N06/24151854167/in/album-72157661542795517','2017-12-12 12:17:42','https://c1.staticflickr.com/5/4564/24151854167_9942bb3410_n.jpg','1512','2688','red','https://c1.staticflickr.com/5/4564/24151854167_b594fd5564_o.jpg'),
 ('2288','153','Folder1','LastHikeView','Y','Y','From the South Twin, looking towards the volcanic features of the previous hike','35.7066638889','-106.1648027780','https://c1.staticflickr.com/5/4690/38434707854_f83ff5abcf_t.jpg','https://www.flickr.com/photos/139088815@N08/38434707854/in/album-72157674263303274','2017-12-12 12:24:36','https://c1.staticflickr.com/5/4690/38434707854_f83ff5abcf_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4690/38434707854_f7698863b6_o.jpg'),
 ('2289','153','Folder1','ColdCattle','Y','N','A frozen lake where cows await drinking water','35.7067444444','-106.1647416670','https://c1.staticflickr.com/5/4590/39112619562_971898516f_t.jpg','https://www.flickr.com/photos/139088815@N08/39112619562/in/album-72157674263303274','2017-12-12 12:41:48','https://c1.staticflickr.com/5/4590/39112619562_971898516f_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4590/39112619562_1181b131e1_o.jpg'),
-('2290','102','Folder1','TomAlongTheDragon','Y','Y','Narrow but traversable','35.5105527778','-106.8479611111','https://c1.staticflickr.com/1/397/31869276934_6b89222e9b_q.jpg','https://www.flickr.com/photos/139088815@N08/31869276934/in/album-72157676308235354','2017-02-01 11:26:33','https://c1.staticflickr.com/1/397/31869276934_6b89222e9b_n.jpg','240','320','orange',''),
-('2291','102','Folder1','PickingTheWayDown','Y','Y','Down to explore the valley','35.5159722222','-106.8496444444','https://c1.staticflickr.com/1/312/31869282594_b7119af964_q.jpg','https://www.flickr.com/photos/139088815@N08/31869282594/in/album-72157676308235354','2017-02-01 12:16:19','https://c1.staticflickr.com/1/312/31869282594_b7119af964_n.jpg','179','320','orange',''),
-('2292','102','Folder1','OffTheGoatTrail','Y','Y','Off the precipitous side-trail and back down to the valley','35.5069500000','-106.8420730000','https://c1.staticflickr.com/1/379/32589464451_e7f6c11dbc_q.jpg','https://www.flickr.com/photos/139088815@N08/32589464451/in/album-72157676308235354','2017-02-01 13:33:58','https://c1.staticflickr.com/1/379/32589464451_e7f6c11dbc_n.jpg','240','320','orange',''),
-('2293','102','Folder1','InTheValley','Y','Y','Flat, expansive, beautiful','35.5123888889','-106.8443666667','https://c1.staticflickr.com/1/293/31899242733_71eee92a2b_q.jpg','https://www.flickr.com/photos/139088815@N08/31899242733/in/album-72157676308235354','2017-02-01 12:41:07','https://c1.staticflickr.com/1/293/31899242733_71eee92a2b_n.jpg','179','320','orange',''),
-('2294','102','Folder1','GreenValley','Y','Y','Odd colors permeate the landscape','35.5189320000','-106.8513210000','https://c1.staticflickr.com/1/732/31869314824_6cf66b834a_q.jpg','https://www.flickr.com/photos/139088815@N08/31869314824/in/album-72157676308235354','2017-02-01 12:09:10','https://c1.staticflickr.com/1/732/31869314824_6cf66b834a_n.jpg','179','320','orange',''),
-('2295','102','Folder1','ColorfulValley','Y','Y','Beautiful reds from the Dragon\'s Back','35.5105361111','-106.8479694444','https://c1.staticflickr.com/1/528/31869319474_0522d46a37_q.jpg','https://www.flickr.com/photos/139088815@N08/31869319474/in/album-72157676308235354','2017-02-01 11:24:52','https://c1.staticflickr.com/1/528/31869319474_0522d46a37_n.jpg','240','320','orange',''),
-('2296','102','Folder1','Cabezon','Y','Y','A view of distant Cabezon Peak','35.5009888889','-106.8406750000','https://c1.staticflickr.com/1/577/32671754906_dfc2b6e5be_q.jpg','https://www.flickr.com/photos/139088815@N08/32671754906/in/album-72157676308235354','2017-02-01 10:49:12','https://c1.staticflickr.com/1/577/32671754906_dfc2b6e5be_n.jpg','240','320','orange',''),
-('2297','102','Folder1','BillTriumphs','Y','Y','Bill leads the (wrong) way','35.5114277778','-106.8432277778','https://c1.staticflickr.com/1/703/32332772380_fcdabf7148_q.jpg','https://www.flickr.com/photos/139088815@N08/32332772380/in/album-72157676308235354','2017-02-01 12:49:50','https://c1.staticflickr.com/1/703/32332772380_fcdabf7148_n.jpg','179','320','orange',''),
-('2298','102','Folder1','BillSearchesEscape','Y','Y','No way to the top and back from here','35.5065888889','-106.8406194444','https://c1.staticflickr.com/1/542/31899298793_22169b13c1_q.jpg','https://www.flickr.com/photos/139088815@N08/31899298793/in/album-72157676308235354','2017-02-01 13:19:22','https://c1.staticflickr.com/1/542/31899298793_22169b13c1_n.jpg','179','320','orange',''),
-('2299','102','Folder1','360Views','Y','Y','A complete view all along the Dragon\'s Back','35.5081416667','-106.8462361111','https://c1.staticflickr.com/1/541/32671767546_07326e4259_q.jpg','https://www.flickr.com/photos/139088815@N08/32671767546/in/album-72157676308235354','2017-02-01 11:15:51','https://c1.staticflickr.com/1/541/32671767546_07326e4259_n.jpg','179','320','orange',''),
 ('2300','154','Folder1','TowardsDragonsBack','Y','Y','The trail split: Dragon\'s Back left, Bike Trails East to the right','35.5031055556','-106.8400944444','https://c1.staticflickr.com/5/4623/39592999432_8478fee0ab_t.jpg','https://www.flickr.com/photos/139088815@N08/39592999432/in/album-72157690464992781','2018-01-02 10:52:54','https://c1.staticflickr.com/5/4623/39592999432_8478fee0ab_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4623/39592999432_3a6800d9df_o.jpg'),
 ('2301','154','Folder1','ColoredSlopes','Y','Y','Surprising colors appear in the hills','35.5071222222','-106.8391416667','https://c1.staticflickr.com/5/4696/24754386487_4d74dbbca8_t.jpg','https://www.flickr.com/photos/139088815@N08/24754386487/in/album-72157690464992781','2018-01-02 11:26:46','https://c1.staticflickr.com/5/4696/24754386487_4d74dbbca8_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4696/24754386487_115ea9815d_o.jpg'),
 ('2302','154','Folder1','NamesakeMesa','Y','Y','A view of White Mesa punctuates the scene','35.5070138889','-106.8374722222','https://c1.staticflickr.com/5/4761/39592996762_e71141b058_t.jpg','https://www.flickr.com/photos/139088815@N08/39592996762/in/album-72157690464992781','2018-01-02 11:33:43','https://c1.staticflickr.com/5/4761/39592996762_e71141b058_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4761/39592996762_51c9769ce9_o.jpg'),
@@ -2305,7 +2296,17 @@ INSERT INTO TSV VALUES
 ('2308','154','Folder1','WindbreakerWall','Y','Y','This natural wall stands out as an unusual trail feature','35.5093111111','-106.8346555556','https://c1.staticflickr.com/5/4632/39593004692_e065af935d_t.jpg','https://www.flickr.com/photos/139088815@N08/39593004692/in/album-72157690464992781','2018-01-02 12:06:48','https://c1.staticflickr.com/5/4632/39593004692_e065af935d_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4632/39593004692_d20bf758c5_o.jpg'),
 ('2309','154','Folder2','IMG_20180102_122410','Y','Y','Colors and texture add to the scenery','35.5129444444','-106.8380194444','https://c1.staticflickr.com/5/4737/25589956788_84d598a729_t.jpg','https://www.flickr.com/photos/30474783@N06/25589956788/in/album-72157691097601614','2018-01-02 12:24:12','https://c1.staticflickr.com/5/4737/25589956788_84d598a729_n.jpg','1512','2688','red','https://c1.staticflickr.com/5/4737/25589956788_e496dda3a8_o.jpg'),
 ('2310','154','Folder1','ValleyOverview','Y','Y','Looking down at a former hike\'s dead end','35.5122916667','-106.8377222222','https://c1.staticflickr.com/5/4724/24754395327_1453066494_t.jpg','https://www.flickr.com/photos/139088815@N08/24754395327/in/album-72157690464992781','2018-01-02 12:28:31','https://c1.staticflickr.com/5/4724/24754395327_1453066494_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4724/24754395327_e17217ae1d_o.jpg'),
-('2311','154','Folder1','Hoodoos','Y','Y','Every angle has it own feature','35.5098500000','-106.8346472222','https://c1.staticflickr.com/5/4660/38726197775_4f87007444_t.jpg','https://www.flickr.com/photos/139088815@N08/38726197775/in/album-72157690464992781','2018-01-02 12:52:08','https://c1.staticflickr.com/5/4660/38726197775_4f87007444_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4660/38726197775_df2f521215_o.jpg');
+('2311','154','Folder1','Hoodoos','Y','Y','Every angle has it own feature','35.5098500000','-106.8346472222','https://c1.staticflickr.com/5/4660/38726197775_4f87007444_t.jpg','https://www.flickr.com/photos/139088815@N08/38726197775/in/album-72157690464992781','2018-01-02 12:52:08','https://c1.staticflickr.com/5/4660/38726197775_4f87007444_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4660/38726197775_df2f521215_o.jpg'),
+('2312','102','Folder1','TomAlongTheDragon','Y','Y','Narrow but traversable','35.5105527778','-106.8479611111','https://c1.staticflickr.com/1/397/31869276934_6b89222e9b_q.jpg','https://www.flickr.com/photos/139088815@N08/31869276934/in/album-72157676308235354','2017-02-01 11:26:33','https://c1.staticflickr.com/1/397/31869276934_6b89222e9b_n.jpg','240','320','orange',''),
+('2313','102','Folder1','PickingTheWayDown','Y','Y','Down to explore the valley','35.5159722222','-106.8496444444','https://c1.staticflickr.com/1/312/31869282594_b7119af964_q.jpg','https://www.flickr.com/photos/139088815@N08/31869282594/in/album-72157676308235354','2017-02-01 12:16:19','https://c1.staticflickr.com/1/312/31869282594_b7119af964_n.jpg','179','320','orange',''),
+('2314','102','Folder1','OffTheGoatTrail','Y','Y','Off the precipitous side-trail and back down to the valley','35.5069500000','-106.8420730000','https://c1.staticflickr.com/1/379/32589464451_e7f6c11dbc_q.jpg','https://www.flickr.com/photos/139088815@N08/32589464451/in/album-72157676308235354','2017-02-01 13:33:58','https://c1.staticflickr.com/1/379/32589464451_e7f6c11dbc_n.jpg','240','320','orange',''),
+('2315','102','Folder1','InTheValley','Y','Y','Flat, expansive, beautiful','35.5123888889','-106.8443666667','https://c1.staticflickr.com/1/293/31899242733_71eee92a2b_q.jpg','https://www.flickr.com/photos/139088815@N08/31899242733/in/album-72157676308235354','2017-02-01 12:41:07','https://c1.staticflickr.com/1/293/31899242733_71eee92a2b_n.jpg','179','320','orange',''),
+('2316','102','Folder1','GreenValley','Y','Y','Odd colors permeate the landscape','35.5189320000','-106.8513210000','https://c1.staticflickr.com/1/732/31869314824_6cf66b834a_q.jpg','https://www.flickr.com/photos/139088815@N08/31869314824/in/album-72157676308235354','2017-02-01 12:09:10','https://c1.staticflickr.com/1/732/31869314824_6cf66b834a_n.jpg','179','320','orange',''),
+('2317','102','Folder1','ColorfulValley','Y','Y','Beautiful reds from the Dragon\'s Back','35.5105361111','-106.8479694444','https://c1.staticflickr.com/1/528/31869319474_0522d46a37_q.jpg','https://www.flickr.com/photos/139088815@N08/31869319474/in/album-72157676308235354','2017-02-01 11:24:52','https://c1.staticflickr.com/1/528/31869319474_0522d46a37_n.jpg','240','320','orange',''),
+('2318','102','Folder1','Cabezon','Y','Y','A view of distant Cabezon Peak','35.5009888889','-106.8406750000','https://c1.staticflickr.com/1/577/32671754906_dfc2b6e5be_q.jpg','https://www.flickr.com/photos/139088815@N08/32671754906/in/album-72157676308235354','2017-02-01 10:49:12','https://c1.staticflickr.com/1/577/32671754906_dfc2b6e5be_n.jpg','240','320','orange',''),
+('2319','102','Folder1','BillTriumphs','Y','Y','Bill leads the (wrong) way','35.5114277778','-106.8432277778','https://c1.staticflickr.com/1/703/32332772380_fcdabf7148_q.jpg','https://www.flickr.com/photos/139088815@N08/32332772380/in/album-72157676308235354','2017-02-01 12:49:50','https://c1.staticflickr.com/1/703/32332772380_fcdabf7148_n.jpg','179','320','orange',''),
+('2320','102','Folder1','BillSearchesEscape','Y','Y','No way to the top and back from here','35.5065888889','-106.8406194444','https://c1.staticflickr.com/1/542/31899298793_22169b13c1_q.jpg','https://www.flickr.com/photos/139088815@N08/31899298793/in/album-72157676308235354','2017-02-01 13:19:22','https://c1.staticflickr.com/1/542/31899298793_22169b13c1_n.jpg','179','320','orange',''),
+('2321','102','Folder1','360Views','Y','Y','A complete view all along the Dragon\'s Back','35.5081416667','-106.8462361111','https://c1.staticflickr.com/1/541/32671767546_07326e4259_q.jpg','https://www.flickr.com/photos/139088815@N08/32671767546/in/album-72157676308235354','2017-02-01 11:15:51','https://c1.staticflickr.com/1/541/32671767546_07326e4259_n.jpg','179','320','orange','');
 
 
 
@@ -2396,11 +2397,11 @@ CREATE TABLE `EHIKES` (
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
-('1','Juan Tabo Canyon','mstr','0','Albuquerque','Normal','','','','Out-and-back','6.00','650','Easy-Moderate','None','Cliff VIews','Not summer','Full sun','JuanTaboCanyon.gpx','JuanTaboCanyon.json','35.2167850000','-106.4875740000',NULL,NULL,'https://www.flickr.com/photos/159672980@N03/albums/72157666204367189','','https://www.google.com/maps/place/35%C2%B013\'00.3%22N+106%C2%B029\'14.8%22W/@35.21674,-106.48745,17z?authuser=0&hl=en','This hike is out and back with three separate spurs. Stop when you get to the fences and signs, as this hike borders on private property and the Sandia Pueblo. Also remember your voice travels far in these parts - folks on their patios might not want to hear your shouts of praise for the natural wonders.','A great hike for exploring various spurs in and around Juan Tabo Canyon. We liked the southwestern spur the best as it snakes around several huge cliff faces. But the rest of the hike has its charms too, including views up to Rincon Ridge and down into Albuquerque.');
+('1','Juan Tabo Canyon','mstr','0','Albuquerque','Normal','','','','Out-and-back','6.00','650','Easy-Moderate','None','Cliff VIews','Not summer','Full sun','JuanTaboCanyon.gpx','JuanTaboCanyon.json','35.2167850000','-106.4875740000',NULL,NULL,'https://www.flickr.com/photos/159672980@N03/albums/72157666204367189',NULL,'https://www.google.com/maps/place/35%C2%B013\'00.3%22N+106%C2%B029\'14.8%22W/@35.21674,-106.48745,17z?authuser=0&hl=en','This hike is out and back with three separate spurs. Stop when you get to the fences and signs, as this hike borders on private property and the Sandia Pueblo. Also remember your voice travels far in these parts - folks on their patios might not want to hear your shouts of praise for the natural wonders.','A great hike for exploring various spurs in and around Juan Tabo Canyon. We liked the southwestern spur the best as it snakes around several huge cliff faces. But the rest of the hike has its charms too, including views up to Rincon Ridge and down into Albuquerque.');
 
 
 
@@ -2431,7 +2432,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -2461,7 +2462,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=164 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=179 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
