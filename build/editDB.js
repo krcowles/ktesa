@@ -135,19 +135,35 @@ for (var i=0; i<refCnt; i++) {
     refname = '#ref' + i;
     $(refname).val(rid);
 }
-// B: This code refers to the new refs (if any) added by the user
-// placeholder text for reference input boxes (copied from enterHike.js)
+// B: This code refers to the new refs (if any) which can be added by the user
+/*
+ * This code detects when the user selects a reference type other than
+ * book/photo essay and displays a different set of boxes with appropriate
+ * placeholder text. 
+ */
 $reftags = $('select[id^="href"]');
 $reftags.each( function() {
     $(this).change( function() {
         var refno = this.id;
         var elementNo = refno.substr(4,1);
-        alert("href" + elementNo);
-        var box1 = '#rit1' + elementNo;
-        var box2 = '#rit2' + elementNo;
+        var bkid = '#bk' + elementNo;
+        var nbkid = '#nbk' + elementNo;
+        var box1 = '#nr1' + elementNo;
+        var box2 = '#nr2' + elementNo;
         if ($(this).val() === 'Book:' || $(this).val() === 'Photo Essay:') {
-            // drop-down
+            $(bkid).css('display','inline');
+            $(nbkid).css('display','none');
+            var ttl = '#bkttl' + elementNo;
+            var auth = '#bkauth' + elementNo;
+            for (var n=0; n<titles.length; n++) {
+                if (titles[n] === $(ttl).val()) {
+                    $(auth).val(authors[n]);
+                    break;
+                }
+            }
         } else if ($(this).val() !== 'Text:') {
+            $(bkid).css('display','none');
+            $(nbkid).css('display','inline');
             if ($(box1).val() === '') {
                 $(box1).attr('placeholder','URL');
             }
@@ -155,6 +171,8 @@ $reftags.each( function() {
                 $(box2).attr('placeholder','Clickable text');
             }
         } else {
+            $(bkid).css('display','none');
+            $(nbkid).css('display','inline');
             if ($(box1).val() === '') {
                 $(box1).attr('placeholder','Enter Text Here');
             } 
@@ -162,6 +180,16 @@ $reftags.each( function() {
                 $(box2).attr('placeholder','THIS BOX IGNORED');
             }
         }
+    });
+});
+var $bktags = $('select[id^="bkttl"]');
+$bktags.each( function() {
+    $(this).on('change', function() {
+        var bkid = this.id;
+        bkid = bkid.substr(bkid.length-1, 1);
+        var authid = '#bkauth' + bkid;
+        var authindx = $(this).val() - 1;
+        $(authid).val(authors[authindx]);
     });
 });
 

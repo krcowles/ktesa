@@ -24,7 +24,32 @@ while ($refs = mysqli_fetch_assoc($refq)) {
     array_push($rit2s, $ritem2);
 }
 mysqli_free_result($refq);
+// Create the book drop-down options:
+$bkReq = "SELECT * FROM BOOKS;";
+$bks = mysqli_query($link, $bkReq) or die(
+    __FILE__ . " " . __LINE__ . "Failed to get book list: " .
+    mysqli_error($link)
+);
+$bkopts = '';  // html for drop-down boxes
+$defauth = ''; // default author when first populating selection boxes
+$titles = '['; // arrays for javascript
+$authors = '[';
+while ($bkitem = mysqli_fetch_assoc($bks)) {
+    $titles .= '"' . $bkitem['title'] . '",';
+    $authors .= '"' . $bkitem['author'] . '",';
+    if ($defauth === '') {
+        $defauth = $bkitem['author'];
+    }
+    $bkopts .= '<option value="' . $bkitem['indxNo'] . '">' . 
+        $bkitem['title'] . '</option>' . PHP_EOL;
+}
+$titles = substr($titles, 0, strlen($titles)-1) . ']';
+$authors = substr($authors, 0, strlen($authors)-1) . ']';
 ?>
+<script type=text/javascript>
+    var titles = <?= $titles;?>;
+    var authors = <?= $authors;?>;
+</script>
 <!-- Pre-populated References -->
 <?php for ($k=0; $k<$noOfRefs; $k++) : ?>
 <p id="rid<?= $k;?>" style="display:none"><?= $rtypes[$k];?></p>
@@ -73,6 +98,8 @@ mysqli_free_result($refq);
 <?php endif; ?>
 <?php endfor; ?>
 <p id="refcnt" style="display:none"><?= $k;?></p>
+
+
 <!-- Unpopulated References -->
 <p><em style="font-weight:bold;">Add</em> references here:</p>
 <p>Select the type of reference and its accompanying data below:</p>
@@ -90,14 +117,23 @@ mysqli_free_result($refq);
     <option value="Meetup Group:">Meetup Group</option>
     <option value="Related Link:">Related Link</option>
     <option value="Text:">Text Only - No Link</option>
-</select>
+</select>&nbsp;&nbsp;&nbsp;
 <span id="bk<?= $j;?>">
-Book Title/Link URL:<input id="rit1<?= $j;?>" type="text" name="rit1[]" size="55" 
-    placeholder="Book Title" />&nbsp;
-Author/Click-on Text<input id="rit2<?= $j;?>" type="text" name="rit2[]" size="35" 
-    placeholder="Author Name" /></span><br /><br />
+<select style="height:26px;width:360px;" id="bkttl<?= $j;?>" class="bksel"
+    name="rit1[]"><?= $bkopts;?>
+</select>&nbsp;&nbsp;&nbsp;
+<input style="height:24px;width:280px;" class="bkauths" type="text"
+    id="bkauth<?= $j;?>" name="rit2[]" value="<?= $defauth;?>" /></span>
+<!-- Invisible unless other than book type is selected: -->
+<span style="display:none;" id="nbk<?= $j;?>">
+<input style="height:24px;width:352px;" type="text" name="rit1[]"
+    id="nr1<?= $j;?>" class="upbox" />&nbsp;&nbsp;&nbsp;
+<input style="height:24px;width:282px;" type="text" name="rit2[]"
+    id="nr2<?= $j;?>" class="upbox" /></span><br />
 <?php endfor; ?>
-<!-- Pre-populated Data -->
+
+
+<!-- Pre-populated GPS Data -->
 <h3>GPS Data:</h3>
 <?php
 $gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hikeNo}' " .
