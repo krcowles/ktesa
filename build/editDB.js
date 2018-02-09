@@ -140,19 +140,14 @@ for (var i=0; i<refCnt; i++) {
 $reftags = $('select[id^="href"]');
 $reftags.each( function() {
     $(this).change( function() {
-        var selId = this.id;
-        var elNo = parseInt(selId.substring(4,5)); // NOTE: no more than 10 boxes!
-        var elStr = "ABCDEFGHIJ".substring(elNo-1,elNo);
-        var box1 = '#rit' + elStr + '1';
-        var box2 = '#rit' + elStr + '2';
-        if ($(this).val() === 'b') {
-            if ($(box1).val() === '') {
-                $(box1).attr('placeholder','Book Title');
-            }
-            if ($(box2).val() === '') {
-                $(box2).attr('placeholder','Author');
-            }
-        } else if ($(this).val() !== 'n') {
+        var refno = this.id;
+        var elementNo = refno.substr(4,1);
+        alert("href" + elementNo);
+        var box1 = '#rit1' + elementNo;
+        var box2 = '#rit2' + elementNo;
+        if ($(this).val() === 'Book:' || $(this).val() === 'Photo Essay:') {
+            // drop-down
+        } else if ($(this).val() !== 'Text:') {
             if ($(box1).val() === '') {
                 $(box1).attr('placeholder','URL');
             }

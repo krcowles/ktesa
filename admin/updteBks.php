@@ -9,9 +9,11 @@
  * @link    ../docs/
  */
 require_once "../mysql/dbFunctions.php";
-$author = filter_input(INPUT_POST, 'author');
-$title = filter_input(INPUT_POST, 'title');
 $link = connectToDb(__FILE__, __LINE);
+$auth = filter_input(INPUT_POST, 'author');
+$author = mysqli_real_escape_string($link, $auth);
+$name = filter_input(INPUT_POST, 'title');
+$title = mysqli_real_escape_string($link, $name);
 $bkReq ="INSERT INTO BOOKS (title,author) VALUES('{$title}','{$author}');";
 $addbk = mysqli_query($link, $bkReq) or die(
     "Failed to add book to BOOKS table: " . mysqli_error($link)
