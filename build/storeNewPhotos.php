@@ -49,5 +49,4 @@ foreach ($saved as $photo) {
         exit;
     }
 }
-mysqli_free_result($add);
 echo "Success";
