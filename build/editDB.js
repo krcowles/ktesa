@@ -124,16 +124,40 @@ var exposure = $('#expo').text();
 $('#sun').val(exposure);
 
 // References section:
-// A: This code refers to existing refs, not new ones...
-var refCnt = parseFloat($('#refcnt').text());
+// A: This code refers to existing refs (in database), not new ones...
+var refCnt = parseInt($('#refcnt').text());
 var refid;
 var rid;
 var refname;
+var rit2;
+var boxid;
+var box;
+// initialize (pre-populate) the boxes:
 for (var i=0; i<refCnt; i++) {
     refid = '#rid' + i;
-    rid = $(refid).text();  // single letter in xml
+    rid = $(refid).text();  // get the rtype for this reference item
+    r1id = '#rit1' + i;
+    rit1 = $(r1id).text();  // get the rit1 for this item (numeric for a book)
+    r2id = '#rit2' + i;
+    rit2 = $(r2id).text();  // get the rit2 for this item
     refname = '#ref' + i;
-    $(refname).val(rid);
+    $(refname).val(rid); // pre-populate reference type drop-down
+    boxid = 'ref' + i;
+    if (rid === 'Book:' || rid === 'Photo Essay:') {
+        indx = parseInt(rit1) - 1;
+        var rsel = '#rttl' + i;                    
+        $(rsel).val(rit1);
+        rit2 = '#rr2' + i;
+        $(rit2).val(authors[indx]); 
+        box = document.getElementById(boxid).disabled = true;
+    } else if (rid === 'Text:') {
+        $(rit2).attr('placeholder','THIS BOX IGNORED');
+        box = document.getElementById(boxid).options[0].disabled = true;
+        box = document.getElementById(boxid).options[1].disabled = true;
+    } else {
+        box = document.getElementById(boxid).options[0].disabled = true;
+        box = document.getElementById(boxid).options[1].disabled = true;
+    }
 }
 // B: This code refers to the new refs (if any) which can be added by the user
 /*

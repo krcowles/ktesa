@@ -51,14 +51,15 @@ $authors = substr($authors, 0, strlen($authors)-1) . ']';
     var authors = <?= $authors;?>;
 </script>
 <!-- Pre-populated References -->
+<p id="refcnt" style="display:none"><?= $noOfRefs;?></p>
 <?php for ($k=0; $k<$noOfRefs; $k++) : ?>
 <p id="rid<?= $k;?>" style="display:none"><?= $rtypes[$k];?></p>
-<label for="ref<?= $k;?>">Reference Type: </label>
+<p id="rit1<?= $k;?>" style="display:none"><?= $rit1s[$k];?></p>
+<p id="rit2<?= $k;?>" style="display:none"><?= $rit2s[$k];?></p>
 <select id="ref<?= $k;?>" style="height:26px;width:150px;" name="rtype[]">
     <option value="Book:" >Book</option>
     <option value="Photo Essay:">Photo Essay</option>
     <option value="Website:">Website</option>
-    <option value="Link:">Website</option>
     <option value="App:">App</option>
     <option value="Downloadable Doc:">Downloadable Doc</option>
     <option value="Blog:">Blog</option>
@@ -68,43 +69,32 @@ $authors = substr($authors, 0, strlen($authors)-1) . ']';
     <option value="Meetup Group:">Meetup Group</option>
     <option value="Related Link:">Related Link</option>
     <option value="Text:">Text Only - No Link</option>
-</select><br />
-<?php if ($thisref === 'Book:' || $thisref === 'Photo Essay:') : ?>
-<label style="text-indent:24px;">Title: </label>
-<textarea style="height:20px;width:320px"
-     name="rit1[]"><?= $rit1s[$k];?></textarea>&nbsp;&nbsp;
-<label>Author: </label>
-<textarea style="height:20px;width:320px"
-    name="rit2[]"><?= $rit2s[$k];?></textarea>&nbsp;&nbsp;
+</select>&nbsp;&nbsp;&nbsp;
+<?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
+<select style="height:26px;width:360px;" id="rttl<?= $k;?>"
+    name="rit1[]"><?= $bkopts;?>
+</select>&nbsp;&nbsp;&nbsp; 
+<input style="height:24px;width:282px;" type="text" name="rit2[]"
+    id="rr2<?= $k;?>" class="upbox" />&nbsp;&nbsp;
 <label>Delete: </label>
 <input style="height:18px;width:18px;" type="checkbox" name="delref[]" 
-    value="<?= $k;?>"><br /><br />
-<?php elseif ($thisref === 'Text') : ?>
-<label>Text only item: </label>
-<textarea style="height:20px;width:320px;" name="rit1[]"><?= $rit1s;?></textarea>
-<label>Delete: </label>
-<input style="height:18px;width:18px;" type="checkbox" name="delref[]"
-    value="<?= $k;?>"><br /><br />
+    value="<?= $k;?>"><br />
 <?php else : ?>
-<label>Item link: </label>
- <textarea style="height:20px;width:500px;"
-    name="rit1[]"><?= $rit1s[$k];?></textarea>&nbsp;&nbsp;
-<label>Cick text: </label>
-<textarea style="height:20px;width:330px;" 
-    name="rit2[]"><?= $rit2s[$k];?></textarea>&nbsp;&nbsp;
+<input style="height:24px;width:352px;" class="upbox"
+    name="rit1[]" value="<?= $rit1s[$k];?>" />&nbsp;&nbsp;&nbsp;
+<input style="height:24px;width:280px;" class="upbox"
+    name="rit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
 <label>Delete: </label>
 <input style="height:18px;width:18px;" type="checkbox" name="delref[]"
-    value="<?= $k;?>" /><br /><br />
+    value="<?= $k;?>" /><br />
 <?php endif; ?>
 <?php endfor; ?>
-<p id="refcnt" style="display:none"><?= $k;?></p>
-
 
 <!-- Unpopulated References -->
 <p><em style="font-weight:bold;">Add</em> references here:</p>
 <p>Select the type of reference and its accompanying data below:</p>
 <?php for($j=1; $j<5; $j++) : ?>
-<select id="href<?= $j;?>" style="height:26px;" name="rtype[]">
+<select id="href<?= $j;?>" style="height:26px;width:150px;" name="rtype[]">
     <option value="Book:" selected="selected">Book</option>
     <option value="Photo Essay:">Photo Essay</option>
     <option value="Website:">Website</option>
@@ -119,7 +109,7 @@ $authors = substr($authors, 0, strlen($authors)-1) . ']';
     <option value="Text:">Text Only - No Link</option>
 </select>&nbsp;&nbsp;&nbsp;
 <span id="bk<?= $j;?>">
-<select style="height:26px;width:360px;" id="bkttl<?= $j;?>" class="bksel"
+<select style="height:26px;width:360px;" id="bkttl<?= $j;?>"
     name="rit1[]"><?= $bkopts;?>
 </select>&nbsp;&nbsp;&nbsp;
 <input style="height:24px;width:280px;" class="bkauths" type="text"
