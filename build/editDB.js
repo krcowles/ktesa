@@ -136,9 +136,9 @@ var box;
 for (var i=0; i<refCnt; i++) {
     refid = '#rid' + i;
     rid = $(refid).text();  // get the rtype for this reference item
-    r1id = '#rit1' + i;
+    r1id = '#r1' + i;
     rit1 = $(r1id).text();  // get the rit1 for this item (numeric for a book)
-    r2id = '#rit2' + i;
+    r2id = '#r2' + i;
     rit2 = $(r2id).text();  // get the rit2 for this item
     refname = '#ref' + i;
     $(refname).val(rid); // pre-populate reference type drop-down
@@ -147,11 +147,16 @@ for (var i=0; i<refCnt; i++) {
         indx = parseInt(rit1) - 1;
         var rsel = '#rttl' + i;                    
         $(rsel).val(rit1);
-        rit2 = '#rr2' + i;
-        $(rit2).val(authors[indx]); 
-        box = document.getElementById(boxid).disabled = true;
+        var r2 = '#rr2' + i;
+        $(r2).val(authors[indx]);
+        box = document.getElementById(boxid);
+        for (var u=2; u<box.options.length; u++) {
+            box.options[u].disabled = true;
+        }
     } else if (rid === 'Text:') {
-        $(rit2).attr('placeholder','THIS BOX IGNORED');
+        var trit2 = '#tr' + i;
+        $(trit2).val('');
+        $(trit2).attr('placeholder','THIS BOX IGNORED');
         box = document.getElementById(boxid).options[0].disabled = true;
         box = document.getElementById(boxid).options[1].disabled = true;
     } else {
@@ -174,6 +179,8 @@ $reftags.each( function() {
         var nbkid = '#nbk' + elementNo;
         var box1 = '#nr1' + elementNo;
         var box2 = '#nr2' + elementNo;
+        var bkbox = '#usebk' + elementNo;
+        var notbk = '#notbk' + elementNo;
         if ($(this).val() === 'Book:' || $(this).val() === 'Photo Essay:') {
             $(bkid).css('display','inline');
             $(nbkid).css('display','none');
@@ -185,6 +192,8 @@ $reftags.each( function() {
                     break;
                 }
             }
+            $(bkbox).val('yes');
+            $(notbk).val('no');
         } else if ($(this).val() !== 'Text:') {
             $(bkid).css('display','none');
             $(nbkid).css('display','inline');
@@ -194,6 +203,8 @@ $reftags.each( function() {
             if ($(box2).val() === '') {
                 $(box2).attr('placeholder','Clickable text');
             }
+            $(bkbox).val('no');
+            $(notbk).val('yes');
         } else {
             $(bkid).css('display','none');
             $(nbkid).css('display','inline');
@@ -203,11 +214,14 @@ $reftags.each( function() {
             if ($(box2).val() === '') {
                 $(box2).attr('placeholder','THIS BOX IGNORED');
             }
+            $(bkbox).val('no');
+            $(notbk).val('yes');
         }
     });
 });
 var $bktags = $('select[id^="bkttl"]');
 $bktags.each( function() {
+    $(this).val(''); // initialize to show no selection:
     $(this).on('change', function() {
         var bkid = this.id;
         bkid = bkid.substr(bkid.length-1, 1);

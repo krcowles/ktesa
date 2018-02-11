@@ -54,9 +54,9 @@ $authors = substr($authors, 0, strlen($authors)-1) . ']';
 <p id="refcnt" style="display:none"><?= $noOfRefs;?></p>
 <?php for ($k=0; $k<$noOfRefs; $k++) : ?>
 <p id="rid<?= $k;?>" style="display:none"><?= $rtypes[$k];?></p>
-<p id="rit1<?= $k;?>" style="display:none"><?= $rit1s[$k];?></p>
-<p id="rit2<?= $k;?>" style="display:none"><?= $rit2s[$k];?></p>
-<select id="ref<?= $k;?>" style="height:26px;width:150px;" name="rtype[]">
+<p id="r1<?= $k;?>" style="display:none"><?= $rit1s[$k];?></p>
+<p id="r2<?= $k;?>" style="display:none"><?= $rit2s[$k];?></p>
+<select id="ref<?= $k;?>" style="height:26px;width:150px;" name="drtype[]">
     <option value="Book:" >Book</option>
     <option value="Photo Essay:">Photo Essay</option>
     <option value="Website:">Website</option>
@@ -72,28 +72,27 @@ $authors = substr($authors, 0, strlen($authors)-1) . ']';
 </select>&nbsp;&nbsp;&nbsp;
 <?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
 <select style="height:26px;width:360px;" id="rttl<?= $k;?>"
-    name="rit1[]"><?= $bkopts;?>
+    name="drit1[]"><?= $bkopts;?>
 </select>&nbsp;&nbsp;&nbsp; 
-<input style="height:24px;width:282px;" type="text" name="rit2[]"
+<input style="height:24px;width:282px;" type="text" name="drit2[]"
     id="rr2<?= $k;?>" class="upbox" />&nbsp;&nbsp;
 <label>Delete: </label>
 <input style="height:18px;width:18px;" type="checkbox" name="delref[]" 
     value="<?= $k;?>"><br />
 <?php else : ?>
 <input style="height:24px;width:352px;" class="upbox"
-    name="rit1[]" value="<?= $rit1s[$k];?>" />&nbsp;&nbsp;&nbsp;
-<input style="height:24px;width:280px;" class="upbox"
-    name="rit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
+    name="drit1[]" value="<?= $rit1s[$k];?>" />&nbsp;&nbsp;&nbsp;
+<input style="height:24px;width:280px;" class="upbox" id="tr<?= $k;?>"
+    name="drit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
 <label>Delete: </label>
 <input style="height:18px;width:18px;" type="checkbox" name="delref[]"
     value="<?= $k;?>" /><br />
 <?php endif; ?>
 <?php endfor; ?>
-
 <!-- Unpopulated References -->
 <p><em style="font-weight:bold;">Add</em> references here:</p>
 <p>Select the type of reference and its accompanying data below:</p>
-<?php for($j=1; $j<5; $j++) : ?>
+<?php for($j=0; $j<4; $j++) : ?>
 <select id="href<?= $j;?>" style="height:26px;width:150px;" name="rtype[]">
     <option value="Book:" selected="selected">Book</option>
     <option value="Photo Essay:">Photo Essay</option>
@@ -108,21 +107,24 @@ $authors = substr($authors, 0, strlen($authors)-1) . ']';
     <option value="Related Link:">Related Link</option>
     <option value="Text:">Text Only - No Link</option>
 </select>&nbsp;&nbsp;&nbsp;
+
 <span id="bk<?= $j;?>">
+<input id="usebk<?= $j;?>" type="hidden" name="usebks[]" value="yes" />
+
 <select style="height:26px;width:360px;" id="bkttl<?= $j;?>"
-    name="rit1[]"><?= $bkopts;?>
+    name="brit1<?= $j;?>"><?= $bkopts;?>
 </select>&nbsp;&nbsp;&nbsp;
 <input style="height:24px;width:280px;" class="bkauths" type="text"
-    id="bkauth<?= $j;?>" name="rit2[]" value="<?= $defauth;?>" /></span>
+    id="bkauth<?= $j;?>" name="brit2<?= $j;?>" value="" /></span>
 <!-- Invisible unless other than book type is selected: -->
 <span style="display:none;" id="nbk<?= $j;?>">
-<input style="height:24px;width:352px;" type="text" name="rit1[]"
-    id="nr1<?= $j;?>" class="upbox" />&nbsp;&nbsp;&nbsp;
-<input style="height:24px;width:282px;" type="text" name="rit2[]"
-    id="nr2<?= $j;?>" class="upbox" /></span><br />
+<input id="notbk<?= $j;?>" type="hidden" name="notbks[]" value="no" />
+
+<input style="height:24px;width:352px;" type="text" name="orit1<?= $j;?>"
+    id="nr1<?= $j;?>" class="upbox" value="" />&nbsp;&nbsp;&nbsp;
+<input style="height:24px;width:282px;" type="text" name="orit2<?= $j;?>"
+    id="nr2<?= $j;?>" class="upbox" value="" /></span><br />
 <?php endfor; ?>
-
-
 <!-- Pre-populated GPS Data -->
 <h3>GPS Data:</h3>
 <?php
