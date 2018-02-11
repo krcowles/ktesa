@@ -19,6 +19,7 @@ $oldReq = "SELECT * FROM REFS;";
 $old = mysqli_query($link, $oldReq) or die(
     "Failed to retrieve old ref data: " . mysqli_error($link)
 );
+//$noOfRefs = mysqli_num_rows($old);
 while ($oldref = mysqli_fetch_assoc($old)) {
     for ($i=0; $i<$noOfBooks; $i++) {
         if ($oldref['rit1'] === trim($titles[$i])) {
@@ -29,18 +30,32 @@ while ($oldref = mysqli_fetch_assoc($old)) {
                 mysqli_error($link)
             );
         }
+        if (substr($oldrefs['rit1'], 0, 8) === '60 Hikes') {
+            $altReq = "UPDATE REFS SET rit1 = '2',rit2 = null WHERE " .
+                "refId = {$oldref['refId']};";
+            $alt = mysqli_query($link, $altReq) or die(
+                "Could not update REFS for refid = {$oldref['refId']} (60 Hikes): " .
+                mysqli_error($link)
+            );
+        }
+        if (trim($oldrefs['rtype']) === 'Photo Essay:') {
+            $essayReq = "UPDATE REFS SET rit1 = '20', rit2 = null WHERE " .
+                "refId = {$oldref['refId']};";
+        }
     }
 }
 mysqli_free_result($old);
 echo "DONE";
-$checkReq = "SELECT * FROM REFS;";
-$checks = mysqli_query($link, $checkReq) or die(
-    "No data from REFS: " . mysqli_error($link)
+$fixedReq = "SELECT * FROM REFS;";
+$fixed = mysqli_query($link, $fixedReq) or die(
+    "Failed to retrieve modified ref data: " . mysqli_error($link)
 );
-while ($item = mysqli_fetch_assoc($checks)) {
-    if ($item['rtype'] === 'Book:' && !is_numeric($item['rit1'])) {
-        echo "ID: " . $item['refId'] . "; " . $item['rit1'];
+while ($updt = mysqli_fetch_assoc($fixed)) {
+    if (trim($updt['rtype']) === "Book:" || trim($updt['rtype']) === "Photo Essay:") {
+        if (!is_numeric($updt['rit1'])) {
+            echo $updt['refId'] . ": " . $updt['rit1'];
+        }
     }
 }
-mysqli_free_result($checks);
-echo "ALL GO";
+myqli_free_result($fixed);
+echo " ...ALL GO";
