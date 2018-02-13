@@ -32,6 +32,9 @@ $delrefs = mysqli_query($link, $delrefsreq) or die(
 $ertypes = $_POST['rtype'];  // because there is always a default rtype
 $erit1s = $_POST['rit1'];
 $erit2s = $_POST['rit2'];
+if (count($ertypes) === 0) {
+    die("YAH");
+}
 // determine if any refs were marked for deletion ('delref's)
 if (isset($_POST['delref'])) {
     $deletes = $_POST['delref']; // any entries will contain the ref# on editDB.php

@@ -36,9 +36,8 @@ if (!$result) {
     );
 }
 $noOfRefs = mysqli_num_rows($result);
+$refHtml = '<ul id="refs" style="position:relative;top:-10px;">';
 if ($noOfRefs > 0) {
-    $refHtml = '<span id="reftag">REFERENCES:</span>';
-    $refHtml = '<ul id="refs" style="position:relative;top:-10px;">';
     while ($row = mysqli_fetch_assoc($result)) {
         $rtype = trim($row['rtype']);
         if ($rtype === 'Text:') {
@@ -51,7 +50,10 @@ if ($noOfRefs > 0) {
                     '" target="_blank">' . $row['rit2'] . '</a></li>' . PHP_EOL;
         }
     }
-    $refHtml .= "</ul>";
+    $refHtml .= "</ul>". PHP_EOL;
+} else {
+    $refHtml .= "<li>No References</li>" . PHP_EOL;
+    $refHtml .= "<ul>" . PHP_EOL;
 }
 // exit here if this is for an Index Page:
 if (isset($pageType) && $pageType === 'Index') {
@@ -142,12 +144,10 @@ mysqli_free_result($result);
  *  Other miscellaneous info
  */
 $bop = '';
-if ($noOfRefs > 0) {
-    $bop .= '<fieldset>'. PHP_EOL .
-        '<legend id="fldrefs"><em>Related Hike Information</em></legend>' . PHP_EOL .
-        '<span class="boptag">REFERENCES:</span>' . PHP_EOL .
-        $refHtml . PHP_EOL;
-}
+$bop .= '<fieldset>'. PHP_EOL .
+    '<legend id="fldrefs"><em>Related Hike Information</em></legend>' . PHP_EOL .
+    '<span class="boptag">REFERENCES:</span>' . PHP_EOL .
+$refHtml . PHP_EOL;
 if ($noOfClus > 0) {
     $bop .= '<span class="boptag">RELATED HIKES</span>' . PHP_EOL .
         $relHikes . PHP_EOL;
