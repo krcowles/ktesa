@@ -156,7 +156,4 @@ if ($noOfGps > 0) {
     $bop .= '<span class="boptag" style="margin-bottom:0px;">GPS DATA: ' .
         '</span>' . PHP_EOL . $gpsHtml . PHP_EOL;
 }
-if ($noOfRefs > 0 || $noOfClus > 0 || $noOfGps > 0) {
-    $bop .= '</fieldset>' . PHP_EOL;
-}
-?>
+$bop .= '</fieldset>' . PHP_EOL;
