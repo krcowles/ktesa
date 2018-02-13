@@ -29,7 +29,7 @@ CREATE TABLE `HIKES` (
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -187,7 +187,8 @@ INSERT INTO HIKES VALUES
 ('151','Dome Wilderness','mstr','Los Alamos','Normal','','','','Out-and-back','5.80','1300','Moderate','None','Wilderness Views','Not Summer','Full sun','Dome_Wilderness.GPX','Dome_Wilderness.json','35.7117262669','-106.3842839096','','','https://www.flickr.com/photos/139088815@N08/albums/72157688101713282','https://www.flickr.com/photos/159672980@N03/albums/72157667151848629','https://www.google.com/maps/dir//35.7116667,-106.3841667/@35.6924128,-106.4039245,13.19z','','Highlights<br>\n\nThe Dome Wilderness Area still shows scars from the Las Conchas fire of 2011 and heavy flooding in 2014. But most of the scars are healing to the point where they mainly accentuate the spectacular views of canyons, mesas, meadows, and the surrounding Jemez mountains. The trail leads down into and back out of canyons and across mesas. About 1.5 miles in, the trail approaches and crosses an 80-foot waterfall. Hikers get to see it from many angles, including straight down from the top.This is a hike that will not be soon forgotten.<br><br>\n\nDriving Tips<br>\n\nAbout 0.9 miles past the Cochiti Golf Club on NM 22, FR289 heads north into the Dome Wilderness - the smallest Wilderness Area in the Southwest at about 5,200 acres. FR289 can be a real challenge, and 4-wheel drive is an absolute must. Early on, in an area that was formerly part of Dixon Orchards, the road dips and follows a stream bed for a short but muddy distance. Check before proceeding here, as summer flooding can make this section of road treacherous. People have gotten stuck. After leaving the stream behind, the road surface can still be rippled and rocky.<br><br>\n\nHiking Tips<br>\n\nThis area is not heavily visited (possibly due in part to road conditions) but the trailhead is clearly marked. After about 2 1/4 miles, the trail splits at a T-junction. See waypoint flag on interactive map. The authors continued straight as described in the book reference below, rather than turning left up the St. Peter\'s Dome Trail.'),
 ('152','La Bajada East','mstr','Santa Fe','Normal','','','','Out-and-back','2.70','500','Easy-Moderate','None','Views','Winter','Full sun','BajadaAgSite.gpx','BajadaAgSite.json','35.5555860000','-106.1967610000','','','https://www.flickr.com/photos/30474783@N06/albums/72157663820381968','https://www.flickr.com/photos/139088815@N08/albums/72157690676862374','https://www.google.com/maps/place/35%C2%B033\'19.7%22N+106%C2%B011\'48.8%22W/@35.55547,-106.19688,17z/data=!3m1!1e3?authuser=0&hl=en','The road to the two parking spots for this hike is severely rutted in places. 4-wheel drive is highly recommended, and a sturdy off-road vehicle might be required after any significant precipitation. Driving in some of these areas is also prohibited without a special permit from the Forest Service. Consult Forest Service signs and paper maps to be sure. Also note this is a two-part hike with a short drive between the two \"trailheads\". The drive shows up on the map as two straight sections making an inverted \"V\".','A scenic two-part hike with gorgeous views and hundreds of years of history to contemplate. The Royal Road (El Camino Real) once followed the Santa Fe River on its way to Santa Fe. Remnants of dwellings from the Tsinat Pueblo and other peoples appear in the valley and on the mesa top. Agricultural improvements also reveal themselves to the trained eye. The Tsinat built miles of one-rock dams on the mesa top. These helped infrequent rains sink into the soil. The Tsinat also built hundreds of knee-high rock pyramids to create microclimates for their corn, squash and beans. More recently, cattlemen have made trail improvements and built fences and wells. It wasn\'t all work, though. The many pottery shards and petroglyphs in the area tell us that the Tsinat and others had time and talent for creating beautiful art.'),
 ('153','Twin Hills Peaks','mstr','Santa Fe','Cluster','','J','Chino Mesa Group','Loop','5.70','900','Moderate','None','Volcanic Features','Not Summer','Full sun','The_Twins.GPX','The_Twins.json','35.7041578300','-106.1193397000','','','https://www.flickr.com/photos/139088815@N08/albums/72157674263303274','https://www.flickr.com/photos/30474783@N06/albums/72157677808580075','https://www.google.com/maps/place/35%C2%B042\'15.4%22N+106%C2%B007\'26.8%22W/@35.6938831,-106.119556,13z','Similar to the other hikes in the Chino Mesa group, this hike is also accessed via the scarcely maintained FR24 off of NM62. Traveling up to the point where the turnoff to Twin Hills occurs can be managed by a standard vehicle, though FR24 can be a bit rough. Once leaving FR24, a four-wheel vehicle with reasonable clearance is definitely required. How far one follows the two-track is up to the driver, but further travel means less hiking up to the Twin Hills.','There are no trails in this area, though the early part of the hike can follow the double-track dirt road towards the hills. There is no trail ascending either of the Twin Hills, so one must choose the least steep and precarious route based on observation. The north hill nonetheless gets steep near the top. On a previous hike to the area, the authors chose to follow the instructions in the book reference below, but on this hike chose to explore the Twins. The views from the top are expansive and one can see a good part of the Chino Mesa and surrounding areas.'),
-('154','White Mesa Bike Trails East','mstr','San Ysidro','Cluster','','T','White Mesa Group','Out-and-back','4.20','1600','Easy-Moderate','None','Ojito Wilderness Area','Not Summer','Full sun','Bike_Trails_East.GPX','Bike_Trails_East.json','0.0000000000','0.0000000000','','','https://www.flickr.com/photos/139088815@N08/albums/72157690464992781','https://www.flickr.com/photos/30474783@N06/albums/72157691097601614','https://www.google.com/maps/dir//White+Mesa+Bike+Trails,+4493+Cabezon+Rd,+Rio+Rancho,+NM+87124/@35.5116879,-106.8660674,12.8z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87228b8ba777132f:0x210ac2b8313d0ff7!2m2!1d-106.8414231!2d35.4984664','Cabezon Road is not necessarily well maintained, and sections can flood out. A four-wheel drive vehicle with some clearance is recommended.','The White Mesa Bike Trails area is a very scenic wilderness area, beginning from the intersection of Dragon\'s Back and the Bike Trails East. A short hike takes you to the top of a gorgeous canyon ridge, where the two trails diverge. Unexpectedly, the Bike Trails East provides a significantly different view than Dragon\'s Back, and is rich with variety. As it meanders along the edge of the canyon, multiple trails provide different views of the canyon. After leaving the canyon edge and following the eastern ridge, new formations appear along with views to the east, including hoodoos and multi-colored hills. While the authors did not choose to \'go the distance\' on this windy day, the hike can easily be extend almost to US550 to the north. ');
+('154','White Mesa Bike Trails East','mstr','San Ysidro','Cluster','','T','White Mesa Group','Out-and-back','4.20','1600','Easy-Moderate','None','Ojito Wilderness Area','Not Summer','Full sun','Bike_Trails_East.GPX','Bike_Trails_East.json','35.4984486569','-106.8414976168','','','https://www.flickr.com/photos/139088815@N08/albums/72157690464992781','https://www.flickr.com/photos/30474783@N06/albums/72157691097601614','https://www.google.com/maps/dir//White+Mesa+Bike+Trails,+4493+Cabezon+Rd,+Rio+Rancho,+NM+87124/@35.5116879,-106.8660674,12.8z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87228b8ba777132f:0x210ac2b8313d0ff7!2m2!1d-106.8414231!2d35.4984664','Cabezon Road is not necessarily well maintained, and sections can flood out. A four-wheel drive vehicle with some clearance is recommended.','The White Mesa Bike Trails area is a very scenic wilderness area, beginning from the intersection of Dragon\'s Back and the Bike Trails East. A short hike takes you to the top of a gorgeous canyon ridge, where the two trails diverge. Unexpectedly, the Bike Trails East provides a significantly different view than Dragon\'s Back, and is rich with variety. As it meanders along the edge of the canyon, multiple trails provide different views of the canyon. After leaving the canyon edge and following the eastern ridge, new formations appear along with views to the east, including hoodoos and multi-colored hills. While the authors did not choose to \'go the distance\' on this windy day, the hike can easily be extend almost to US550 to the north. '),
+('155','Boundary - Juan Tabo Loop','mstr','Albuquerque','Cluster','','S','La Cueva Road Group','Loop','4.60','1500','Moderate','None','Rincon Ridge Views','Not Summer','Full sun','Boundary_Juan_Tabo.GPX','Boundary_Juan_Tabo.json','35.2023997530','-106.5042512398','','','https://www.flickr.com/photos/139088815@N08/albums/72157691826344904','https://www.flickr.com/photos/30474783@N06/albums/72157664988826358','https://www.google.com/maps/dir//35.20265,-106.5038833/@35.2019097,-106.5085099,15.87z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDEyJzA5LjUiTiAxMDbCsDMwJzE0LjAiVw!3b1!8m2!3d35.20265!4d-106.5038833','','The start of this (and related) trail(s) begins across from a dirt parking area about 1/4 north on FR333. The trail immediately ascends a low ridge, and while a bit steep, is relatively short. From there at least two options can be seen. One option immediately climbs  higher on the ridge, while this hike follows a more level route along its contour. The trail soon dips down into a low canyon (Jaral) and follows the arroyo north a short distance. Before long, after a sharp bend, a short scramble (perhaps 5 ft.) is required to continue. At the top of that rock wall more options occur. Continuing up the arroyo leads to a companion hike (Boundary Loop Trail), while this hike ventures up the eastern ridge to explore the great views of the Sandias. This hike requires more ascent/descent than Boundary Loop, but also affords multiple views not provided by that hike. The ridge continues north, and eventually leads down into the valley where it intersects the Juan Tabo Canyon Trail. That trail is also found on this site, and ventures further down the canyon than this hike. Eventually, after finding a way back up the ridge, the trail rejoins the companion Boundary Loop trail where it returns to the trail head, after providing some great views of Juan Tabo Canyon.');
 
 
 
@@ -236,7 +237,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1070 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1072 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -878,7 +879,9 @@ INSERT INTO REFS VALUES
 ('1066','102','Book:','60 Hikes Within 60 Miles of Albuquerque','Stephen Ausherman'),
 ('1067','102','Website:','https://www.mtbproject.com/trail/207597/dragons-back','MTB Project: Dragon\'s Back Trail'),
 ('1068','102','Website:','https://www.blm.gov/visit/white-ridge-bike-trails','BLM: White Ridge Bike Trails'),
-('1069','102','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails');
+('1069','102','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails'),
+('1070','155','Book:','Sandia Mountain Hiking Guide','Mike Coltrin'),
+('1071','155','App:','https://www.alltrails.com/trail/us/new-mexico/boundary-loop','AllTrails');
 
 
 
@@ -902,7 +905,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=2322 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2332 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -2306,7 +2309,17 @@ INSERT INTO TSV VALUES
 ('2318','102','Folder1','Cabezon','Y','Y','A view of distant Cabezon Peak','35.5009888889','-106.8406750000','https://c1.staticflickr.com/1/577/32671754906_dfc2b6e5be_q.jpg','https://www.flickr.com/photos/139088815@N08/32671754906/in/album-72157676308235354','2017-02-01 10:49:12','https://c1.staticflickr.com/1/577/32671754906_dfc2b6e5be_n.jpg','240','320','orange',''),
 ('2319','102','Folder1','BillTriumphs','Y','Y','Bill leads the (wrong) way','35.5114277778','-106.8432277778','https://c1.staticflickr.com/1/703/32332772380_fcdabf7148_q.jpg','https://www.flickr.com/photos/139088815@N08/32332772380/in/album-72157676308235354','2017-02-01 12:49:50','https://c1.staticflickr.com/1/703/32332772380_fcdabf7148_n.jpg','179','320','orange',''),
 ('2320','102','Folder1','BillSearchesEscape','Y','Y','No way to the top and back from here','35.5065888889','-106.8406194444','https://c1.staticflickr.com/1/542/31899298793_22169b13c1_q.jpg','https://www.flickr.com/photos/139088815@N08/31899298793/in/album-72157676308235354','2017-02-01 13:19:22','https://c1.staticflickr.com/1/542/31899298793_22169b13c1_n.jpg','179','320','orange',''),
-('2321','102','Folder1','360Views','Y','Y','A complete view all along the Dragon\'s Back','35.5081416667','-106.8462361111','https://c1.staticflickr.com/1/541/32671767546_07326e4259_q.jpg','https://www.flickr.com/photos/139088815@N08/32671767546/in/album-72157676308235354','2017-02-01 11:15:51','https://c1.staticflickr.com/1/541/32671767546_07326e4259_n.jpg','179','320','orange','');
+('2321','102','Folder1','360Views','Y','Y','A complete view all along the Dragon\'s Back','35.5081416667','-106.8462361111','https://c1.staticflickr.com/1/541/32671767546_07326e4259_q.jpg','https://www.flickr.com/photos/139088815@N08/32671767546/in/album-72157676308235354','2017-02-01 11:15:51','https://c1.staticflickr.com/1/541/32671767546_07326e4259_n.jpg','179','320','orange',''),
+('2322','155','Folder2','IMG_20180123_101959','Y','Y','Bentley surveys the terrain','35.2081333333','-106.5001000000','https://c1.staticflickr.com/5/4749/39151844374_059437b7cf_t.jpg','https://www.flickr.com/photos/30474783@N06/39151844374/in/album-72157664988826358','2018-01-23 10:20:01','https://c1.staticflickr.com/5/4749/39151844374_059437b7cf_n.jpg','1512','2688','','https://c1.staticflickr.com/5/4749/39151844374_1bfb62012b_o.jpg'),
+('2323','155','Folder1','FirstAscent','Y','Y','A pause after the brief but steep ascent from the car','35.2078888889','-106.4989694444','https://c1.staticflickr.com/5/4719/28085181239_f7fa93ba47_t.jpg','https://www.flickr.com/photos/139088815@N08/28085181239/in/album-72157691826344904','2018-01-23 10:26:33','https://c1.staticflickr.com/5/4719/28085181239_f7fa93ba47_n.jpg','2448','3264','','https://c1.staticflickr.com/5/4719/28085181239_e2cb79c4ec_o.jpg'),
+('2324','155','Folder2','IMG_20180123_103810','Y','Y','Bentley approaches another vista','35.2079027778','-106.4989250000','https://c1.staticflickr.com/5/4616/24990988717_d08e370839_t.jpg','https://www.flickr.com/photos/30474783@N06/24990988717/in/album-72157664988826358','2018-01-23 10:38:12','https://c1.staticflickr.com/5/4616/24990988717_d08e370839_n.jpg','1512','2688','','https://c1.staticflickr.com/5/4616/24990988717_4664a8f7a5_o.jpg'),
+('2325','155','Folder1','DistantMtTaylor','Y','Y','A clear day\'s view of Mt Taylor','35.2141888889','-106.4945833333','https://c1.staticflickr.com/5/4702/39154731504_cba48a7ee1_t.jpg','https://www.flickr.com/photos/139088815@N08/39154731504/in/album-72157691826344904','2018-01-23 10:56:11','https://c1.staticflickr.com/5/4702/39154731504_cba48a7ee1_n.jpg','2448','3264','','https://c1.staticflickr.com/5/4702/39154731504_114f2dc010_o.jpg'),
+('2326','155','Folder2','IMG_20180123_111004','Y','N','Looking west from the heights','0.0000000000','0.0000000000','https://c1.staticflickr.com/5/4703/39862150191_fbe2bba06f_t.jpg','https://www.flickr.com/photos/30474783@N06/39862150191/in/album-72157664988826358','2018-01-23 11:10:06','https://c1.staticflickr.com/5/4703/39862150191_fbe2bba06f_n.jpg','1512','2688','','https://c1.staticflickr.com/5/4703/39862150191_bd4f621c31_o.jpg'),
+('2327','155','Folder1','BentleyOnTheTrail','Y','Y','Snow doesn\'t stop Bentley!','35.2184250000','-106.4887861111','https://c1.staticflickr.com/5/4697/28085171819_9ceb590443_t.jpg','https://www.flickr.com/photos/139088815@N08/28085171819/in/album-72157691826344904','2018-01-23 11:21:20','https://c1.staticflickr.com/5/4697/28085171819_9ceb590443_n.jpg','2448','3264','','https://c1.staticflickr.com/5/4697/28085171819_b2e1bb4c40_o.jpg'),
+('2328','155','Folder1','InsideRincon','Y','Y','One of many spectacular views inside the Rincon Ridge','35.2175638889','-106.5001222222','https://c1.staticflickr.com/5/4758/38966032505_086954cb4e_t.jpg','https://www.flickr.com/photos/139088815@N08/38966032505/in/album-72157691826344904','2018-01-23 12:02:25','https://c1.staticflickr.com/5/4758/38966032505_086954cb4e_n.jpg','2448','3264','','https://c1.staticflickr.com/5/4758/38966032505_ae2293feab_o.jpg'),
+('2329','155','Folder2','IMG_20180123_120914','Y','Y','Juan Tabo Canyon, dusted with snow','35.2165166667','-106.5006250000','https://c1.staticflickr.com/5/4761/28082288669_86ff1d1d8a_t.jpg','https://www.flickr.com/photos/30474783@N06/28082288669/in/album-72157664988826358','2018-01-23 12:09:15','https://c1.staticflickr.com/5/4761/28082288669_86ff1d1d8a_n.jpg','1512','2688','','https://c1.staticflickr.com/5/4761/28082288669_a25ce10a06_o.jpg'),
+('2330','155','Folder2','IMG_20180123_120926','N','N','','35.2165166667','-106.5006250000','https://c1.staticflickr.com/5/4649/24991049067_74b901ae61_t.jpg','https://www.flickr.com/photos/30474783@N06/24991049067/in/album-72157664988826358','2018-01-23 12:09:27','https://c1.staticflickr.com/5/4649/24991049067_74b901ae61_n.jpg','1512','2688','','https://c1.staticflickr.com/5/4649/24991049067_6dec8518ac_o.jpg'),
+('2331','155','Folder2','IMG_20180123_121505','Y','Y','Bentley is always waiting for us to catch up!','35.2165166667','-106.5006250000','https://c1.staticflickr.com/5/4666/28082460479_6f463f58b2_t.jpg','https://www.flickr.com/photos/30474783@N06/28082460479/in/album-72157664988826358','2018-01-23 12:15:08','https://c1.staticflickr.com/5/4666/28082460479_6f463f58b2_n.jpg','1512','2688','','https://c1.staticflickr.com/5/4666/28082460479_d2fd5b91c4_o.jpg');
 
 
 
@@ -2397,7 +2410,7 @@ CREATE TABLE `EHIKES` (
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -2416,7 +2429,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -2432,7 +2445,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -2462,7 +2475,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=179 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=147 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
