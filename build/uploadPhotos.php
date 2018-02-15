@@ -27,12 +27,14 @@ foreach ($incl as $newalb) {
     $albums[$j] = filter_input(INPUT_POST, $atype);
     $j++;
 }
+// get a separate copy of $curlids to find any associations with purl1 or purl2
+$arrObj = new ArrayObject($curlids);
+$avail = $arrObj->getArrayCopy();
 $supplied = count($curlids);
-// if album link isn't already stored, save it in EHIKES
 // get current urls in EHIKES and compare to incoming album links
 $lnkReq = "SELECT purl1,purl2 FROM EHIKES WHERE indxNo = {$hikeNo};";
 $lnkQ = mysqli_query($link, $lnkReq) or die(
-    "uploadPhotos.php: Line " . __LINE__ . "Failed to extract photo album " .
+    __FILE__ . ": Line " . __LINE__ . "Failed to extract photo album " .
     "urls from EHIKES for hike {$hikeNo}; " . mysqli_error($link)
 );
 $dburl = [];
@@ -41,25 +43,27 @@ $purls = mysqli_fetch_row($lnkQ);
 for ($a=0; $a<count($purls); $a++) {
     $dburl[$a] = fetch($purls[$a]);
 }
-// IF there is a future desire to delete an existing link, this
-// is the place to code it on uploads:
-// start looking at incoming albums and see if = existing link
-$i = 0;
+mysqli_free_result($lnkQ);
+// IF there is a future desire to delete an existing link, this is the place to code it;
+
+// see if there are already existing links, get a count, and eliminate from the $avail list
+$existing = 0;
 for ($j=0; $j<count($dburl); $j++) {
-    if ($dburl[$j] === '') {
-        $match = false;
-        for ($k=0; $k<count($dburl); $k++) {
-            if ($curlids[$i] == $dburl[$k]) {
-                $match = true;
+    if ($dburl[$j] !== '') { // this purl already has a url in the db
+        $existing++;
+        if (in_array($dburl[$j], $avail)) {
+            $offset = array_search($dburl[$j], $avail);
+            array_splice($avail, $offset, 1);
+        }
+    }
+}
+// fill any empties with what is now available 
+if ($existing < count($dburl)) {
+    for ($k=0; $k<count($dburl); $k++) {
+        if ($dburl[$k] == '') {
+            if (count($avail) > 0) {
+                $dburl[$k] = array_pop($avail);
             }
-        }
-        if (!$match) {
-            // place this $curlids into the empty $dburl
-            $dburl[$j] = $curlids[$i];
-        }
-        $i++;
-        if ($i >= count($curlids)) {
-            break;
         }
     }
 }
