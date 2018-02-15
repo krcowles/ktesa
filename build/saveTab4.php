@@ -112,19 +112,23 @@ for ($s=0; $s<count($usebooks); $s++) {
 // add any new items to EREFS:
 if ($addcnt > 0) {
     for ($m=0; $m<$addcnt; $m++) {
-        $addnewreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES " .
-            "('{$hikeNo}','{$addtypes[$m]}','{$addrit1s[$m]}','{$addrit2s[$m]}');";
-        $addnew = mysqli_query($link, $addnewreq) or die(
-            __FILE__ . " " . __LINE__ . ": Failed to insert EREFS data: " . 
-            mysqli_error($link)
-        );
+        if (trim($addtypes[$m]) === 'Book:') {
+            $addnewreq = "INSERT INTO EREFS (indxNo,rtype,rit1) VALUES " .
+                "('{$hikeNo}','{$addtypes[$m]}','{$addrit1s[$m]}');";
+            $addnew = mysqli_query($link, $addnewreq) or die(
+                __FILE__ . " " . __LINE__ . ": Failed to insert EREFS data: " . 
+                mysqli_error($link)
+            );
+        } else {
+            $addnewreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES " .
+                "('{$hikeNo}','{$addtypes[$m]}','{$addrit1s[$m]}'," .
+                "'{$addrit2s[$m]}');";
+            $addnew = mysqli_query($link, $addnewreq) or die(
+                __FILE__ . " " . __LINE__ . ": Failed to insert EREFS data: " . 
+                mysqli_error($link)
+            );
+        }
     }
-    /*
-    $addnew = mysqli_query($link, $addnewreq) or die(
-        __FILE__ . " " . __LINE__ . ": Failed to insert EREFS data: " . 
-        mysqli_error($link)
-    );
-    */
 }
 /* Since GPS Maps & Data may have been marked for deletion in the edit phase,
  * the approach taken is to simply delete all GPS data, then add back any 
