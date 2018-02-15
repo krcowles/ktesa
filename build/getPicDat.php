@@ -117,8 +117,8 @@ for ($i=0; $i<$supplied; $i++) {
                 // no code at this time
             }
         } else {  // end of getting album html from link
-            $noalb = $pstyle . 'Could not extract album html: please verify '
-                    . 'that the album link is correct</p>';
+            $noalb = $pstyle . 'Could not extract album html from ' . $curlids[$i] .
+                ' please verify ' . 'that the album link is correct</p>';
             die($noalb);
         }
     }  // end of non-empty curlid

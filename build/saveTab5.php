@@ -46,6 +46,12 @@ if (isset($delgpx)) {
     updateDbRow(
         $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', null, __FILE__, __LINE__
     );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', null, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', null, __FILE__, __LINE__
+    );
     $delmsg = "<p>Deleted files {$maingpx} and {$maintrk} from site</p>";
     $dels = true;
 }
@@ -63,11 +69,19 @@ if ($gpxtype[2] === 'gpx') {
     $_SESSION['uplmsg'] .= $sendBack;
     $trkdat = makeTrackFile($newgpx, "../gpx/");
     $newtrk = $trkdat[0];
+    $lat = $trkdat[2];
+    $lng = $trkdat[3];
     updateDbRow(
         $link, 'EHIKES', $hikeNo, 'gpx', 'indxNo', $newgpx, __FILE__, __LINE__
     );
     updateDbRow(
         $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', $newtrk, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', $lat, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $lng, __FILE__, __LINE__
     );
 } elseif ($gpxfile == '') {
     $newgpx = 'No file specified';

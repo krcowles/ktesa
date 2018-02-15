@@ -37,9 +37,6 @@ $usr = filter_input(INPUT_POST, 'nid');
 <p style="display:none;" id="ptype">EditNew</p>
 
 <div id="main" style="padding:16px;">
-<form action="addNewPhotos.php" method="POST">
-<input type="hidden" name="xno" value="<?= $hikeNo;?>" />
-<input type="hidden" name="xid" value="<?= $usr;?>" />
 <div style="position:relative;top:-14px;">
     <input id="addall" type="checkbox" name="allPix" value="useAll" />&nbsp;
         Add all photos to Photo Editor<br />
@@ -50,21 +47,24 @@ require "uploadPhotos.php";
 <?php for ($i=0; $i<$picno; $i++) : ?>
 <div style="width:<?= $phWds[$i];?>px;margin-left:2px;
     margin-right:2px;display:inline-block">
-<input class="ckbox" type="checkbox" name="incl[]"
-    value="<?= $phNames[$i];?>" />&nbsp;&nbsp;Add it
-<img class="allPhotos" height="<?= $rowHt;?>px" 
-    width="<?= $phWds[$i];?>px" src="<?= $phPics[$i];?>" 
-    alt="<?= $phNames[$i];?>" /><br />
+    <input class="ckbox" type="checkbox" name="incl[]"
+        value="<?= $phNames[$i];?>" />&nbsp;&nbsp;Add it
+    <img class="allPhotos" height="<?= $rowHt;?>px" 
+        width="<?= $phWds[$i];?>px" src="<?= $phPics[$i];?>" 
+        alt="<?= $phNames[$i];?>" /><br />
 </div>
 <?php endfor; ?>
-<input style="font-size:18px;" type="submit" value="Add Photos" />
-</form>
+<br /><button id="load" style="font-size:18px;">Add Photos</button>
+
 </div>
 <div class="popupCap"></div>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">
     var phTitles = <?= $jsTitles;?>;
     var phDescs = <?= $jsDescs;?>;
+    var saveDat = <?= $ajaxArray;?>;
+    var hikeno = '<?= $hikeNo;?>';
+    var usrid = '<?= $usr;?>';
 </script>
 <script src="newPhotos.js" type="text/javascript"></script>
 <script src="../scripts/picPops.js" type="text/javascript"></script>
