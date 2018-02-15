@@ -60,7 +60,7 @@ for ($j=0; $j<$newcnt; $j++) {
             $addit = false;
         }
     }
-    if ($addit && $erit1s[$j] !== '') {
+    if ($addit && $drit1s[$j] !== '') {
         $a = mysqli_real_escape_string($link, $drtypes[$j]);
         $b = mysqli_real_escape_string($link, $drit1s[$j]);
         $c = mysqli_real_escape_string($link, $drit2s[$j]);
