@@ -2506,3 +2506,36 @@ INSERT INTO USERS VALUES
 ('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)');
 
 
+
+
+CREATE TABLE `BOOKS` (
+  `indxNo` smallint(6) NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  `author` varchar(200) NOT NULL,
+  PRIMARY KEY (`indxNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO BOOKS VALUES
+('1','Day Hikes In The Santa Fe Area','The Northern New Mexico Group of the Sierra Club'),
+('2','60 Hikes Within 60 Miles - Albuquerque','Stephen Ausherman'),
+('3','Hiking New Mexico','Laurence Parent'),
+('4','El Malpais, Mt. Taylor, and the Zuni Mountains','Sherry Robinson'),
+('5','New Mexico Journey Guide','Jon Kramer & Julie Martinez'),
+('6','100 Hikes In New Mexico','Craig Martin'),
+('7','Sandia Mountain Hiking Guide','Mike Coltrin'),
+('8','Best Hikes Near Albuquerque','J D Tanner and Emily Ressler-Tanner'),
+('9','Santa Fe - Taos Hiking Guide','Bob D\'Antonio'),
+('10','Guide To The Jemez Mountain Trail','Judith Ann Isaacs'),
+('11','Los Alamos Trails','Craig Martin'),
+('12','New Mexico Wilderness Areas','Bob Julyan'),
+('13','Taos Hiking Guide','Cindy Brown'),
+('14','New Mexico\'s Continental Divide Trail','Bob Julyan'),
+('15','50 Hikes In Northern New Mexico','Kai Huschke'),
+('16','New Mexico Waterfalls Handbook','Doug Scott'),
+('17','Hiking New Mexico\'s Gila Wilderness','Bill Cunningham and Polly Burke'),
+('18','Hiking New Mexico\'s Aldo Leopold Wilderness','Bill Cunningham and Polly Burke'),
+('19','Following the Royal Road: A Guide to the Historic Camino Real de Tierra Adentro','Hal E. Jackson'),
+('20','Wonderland: A Photographer\'s Journey Into The Bisti','Eduardo Fuss');
+
+
