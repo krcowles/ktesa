@@ -35,12 +35,11 @@ $query_fail = "<p>Query did not succeed: SHOW TABLES</p>";
 # Execute the DROP TABLE command:
 echo "<p>Removing any previous instantiation of table '{$table}':</p>";
 $remtbl = mysqli_query($link, "DROP TABLE {$table};");
-if (!remtbl) {
+if (!$remtbl) {
     die($drop_fail);
 } else {
     echo "<p>{$table} Table Removed; Remaining tables in mysql database:</p>";
 }
-mysqli_free_result($remtbl);
 $req = mysqli_query($link, "SHOW TABLES");
 if (!$req) {
     die($query_fail);

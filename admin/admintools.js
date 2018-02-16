@@ -55,6 +55,9 @@ $('#pub').on('click', function() {
 $('#ehdel').on('click', function() {
     window.open("reldel.php?act=del","_blank");
 });
+$('#addbk').on('click', function() {
+    window.open("addBook.html", "_blank");
+})
 $('#rowdel').on('click', function() {
     var trow = prompt("Are you sure you want to delete this row?","Row " + $('#drow').val());
     if (trow !== null) {

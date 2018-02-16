@@ -74,6 +74,7 @@ session_start();
             <option>USERS</option>
             <option>HIKES</option>
             <option>TSV</option>
+            <option>BOOKS</option>
             <option>REFS</option>
             <option>GPSDAT</option>
             <option>IPTBLS</option>
@@ -88,6 +89,7 @@ session_start();
             <option>USERS</option>
             <option>HIKES</option>
             <option>TSV</option>
+            <option>BOOKS</options>
             <option>REFS</option>
             <option>GPSDAT</option>
             <option>IPTBLS</option>
@@ -102,6 +104,7 @@ session_start();
             <option>USERS</option>
             <option>HIKES</option>
             <option>TSV</option>
+            <option>BOOKS</option>
             <option>REFS</option>
             <option>GPSDAT</option>
             <option>IPTBLS</option>
@@ -122,10 +125,12 @@ session_start();
     </fieldset><br />
     <fieldset>
         <legend>Row Manipulation</legend>
+        <button id="addbk">Add Book</button><br />
         <select id="rdel" name="creator">
             <option>USERS</option>
             <option>HIKES</option>
             <option>TSV</option>
+            <option>BOOKS</option>
             <option>REFS</option>
             <option>GPSDAT</option>
             <option>IPTBLS</option>

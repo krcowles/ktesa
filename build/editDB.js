@@ -124,49 +124,110 @@ var exposure = $('#expo').text();
 $('#sun').val(exposure);
 
 // References section:
-// A: This code refers to existing refs, not new ones...
-var refCnt = parseFloat($('#refcnt').text());
+// A: This code refers to existing refs (in database), not new ones...
+var refCnt = parseInt($('#refcnt').text());
 var refid;
 var rid;
 var refname;
+var rit2;
+var boxid;
+var box;
+// initialize (pre-populate) the boxes:
 for (var i=0; i<refCnt; i++) {
     refid = '#rid' + i;
-    rid = $(refid).text();  // single letter in xml
+    rid = $(refid).text();  // get the rtype for this reference item
+    r1id = '#r1' + i;
+    rit1 = $(r1id).text();  // get the rit1 for this item (numeric for a book)
+    r2id = '#r2' + i;
+    rit2 = $(r2id).text();  // get the rit2 for this item
     refname = '#ref' + i;
-    $(refname).val(rid);
+    $(refname).val(rid); // pre-populate reference type drop-down
+    boxid = 'ref' + i;
+    if (rid === 'Book:' || rid === 'Photo Essay:') {
+        indx = parseInt(rit1) - 1;
+        var rsel = '#rttl' + i;                    
+        $(rsel).val(rit1);
+        var r2 = '#rr2' + i;
+        $(r2).val(authors[indx]);
+        box = document.getElementById(boxid);
+        for (var u=2; u<box.options.length; u++) {
+            box.options[u].disabled = true;
+        }
+    } else if (rid === 'Text:') {
+        var trit2 = '#tr' + i;
+        $(trit2).val('');
+        $(trit2).attr('placeholder','THIS BOX IGNORED');
+        box = document.getElementById(boxid).options[0].disabled = true;
+        box = document.getElementById(boxid).options[1].disabled = true;
+    } else {
+        box = document.getElementById(boxid).options[0].disabled = true;
+        box = document.getElementById(boxid).options[1].disabled = true;
+    }
 }
-// B: This code refers to the new refs (if any) added by the user
-// placeholder text for reference input boxes (copied from enterHike.js)
+// B: This code refers to the new refs (if any) which can be added by the user
+/*
+ * This code detects when the user selects a reference type other than
+ * book/photo essay and displays a different set of boxes with appropriate
+ * placeholder text. 
+ */
 $reftags = $('select[id^="href"]');
 $reftags.each( function() {
     $(this).change( function() {
-        var selId = this.id;
-        var elNo = parseInt(selId.substring(4,5)); // NOTE: no more than 10 boxes!
-        var elStr = "ABCDEFGHIJ".substring(elNo-1,elNo);
-        var box1 = '#rit' + elStr + '1';
-        var box2 = '#rit' + elStr + '2';
-        if ($(this).val() === 'b') {
-            if ($(box1).val() === '') {
-                $(box1).attr('placeholder','Book Title');
+        var refno = this.id;
+        var elementNo = refno.substr(4,1);
+        var bkid = '#bk' + elementNo;
+        var nbkid = '#nbk' + elementNo;
+        var box1 = '#nr1' + elementNo;
+        var box2 = '#nr2' + elementNo;
+        var bkbox = '#usebk' + elementNo;
+        var notbk = '#notbk' + elementNo;
+        if ($(this).val() === 'Book:' || $(this).val() === 'Photo Essay:') {
+            $(bkid).css('display','inline');
+            $(nbkid).css('display','none');
+            var ttl = '#bkttl' + elementNo;
+            var auth = '#bkauth' + elementNo;
+            for (var n=0; n<titles.length; n++) {
+                if (titles[n] === $(ttl).val()) {
+                    $(auth).val(authors[n]);
+                    break;
+                }
             }
-            if ($(box2).val() === '') {
-                $(box2).attr('placeholder','Author');
-            }
-        } else if ($(this).val() !== 'n') {
+            $(bkbox).val('yes');
+            $(notbk).val('no');
+        } else if ($(this).val() !== 'Text:') {
+            $(bkid).css('display','none');
+            $(nbkid).css('display','inline');
             if ($(box1).val() === '') {
                 $(box1).attr('placeholder','URL');
             }
             if ($(box2).val() === '') {
                 $(box2).attr('placeholder','Clickable text');
             }
+            $(bkbox).val('no');
+            $(notbk).val('yes');
         } else {
+            $(bkid).css('display','none');
+            $(nbkid).css('display','inline');
             if ($(box1).val() === '') {
                 $(box1).attr('placeholder','Enter Text Here');
             } 
             if ($(box2).val() === '') {
                 $(box2).attr('placeholder','THIS BOX IGNORED');
             }
+            $(bkbox).val('no');
+            $(notbk).val('yes');
         }
+    });
+});
+var $bktags = $('select[id^="bkttl"]');
+$bktags.each( function() {
+    $(this).val(''); // initialize to show no selection:
+    $(this).on('change', function() {
+        var bkid = this.id;
+        bkid = bkid.substr(bkid.length-1, 1);
+        var authid = '#bkauth' + bkid;
+        var authindx = $(this).val() - 1;
+        $(authid).val(authors[authindx]);
     });
 });
 

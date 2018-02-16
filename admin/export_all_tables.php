@@ -16,8 +16,8 @@ if ($dev) {
     $DbName = DATABASE_000;
 }
     $backup_name        = "mybackup.sql";
-    $tables             = array("HIKES","GPSDAT","REFS","TSV","IPTBLS","EHIKES",
-        "EGPSDAT","EREFS","EIPTBLS","ETSV","USERS");
+    $tables             = array("HIKES", "GPSDAT", "REFS", "TSV", "IPTBLS", "EHIKES",
+        "EGPSDAT", "EREFS", "EIPTBLS", "ETSV", "USERS", "BOOKS");
 
    //or add 5th parameter(array) of specific tables:    array("mytable1","mytable2","mytable3") for multiple tables
 
