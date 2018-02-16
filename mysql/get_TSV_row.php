@@ -22,7 +22,7 @@ while ($pics = mysqli_fetch_assoc($result)) {
         array_push($descs, $pics['title']);
         array_push($alblnks, $pics['alblnk']);
         array_push($piclnks, $pics['mid']);
-        $pDesc = $pics['desc'];
+        $pDesc = htmlspecialchars($pics['desc']);
         $dateStr = $pics['date'];
         if ($dateStr == '') {
             array_push($captions, $pDesc);
