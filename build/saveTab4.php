@@ -35,10 +35,16 @@ $delrefs = mysqli_query($link, $delrefsreq) or die(
     mysqli_error($link)
 );
 // Now add the newly edited ones back in, sans any deletions
-// NOTE: The following posts collect all items, even if empty...
-$drtypes = $_POST['drtype'];
-$drit1s = $_POST['drit1'];
-$drit2s = $_POST['drit2'];
+// NOTE: The following posts collect all items, even if empty (but not if hidden)
+if (isset($_POST['drtype'])) {
+    $drtypes = $_POST['drtype'];
+}
+if (isset($_POST['drit1'])) {
+    $drit1s = $_POST['drit1'];
+}
+if( isset($_POST['drit2'])) {
+    $drit2s = $_POST['drit2'];
+}
 // determine if any refs were marked for deletion ('delref's)
 if (isset($_POST['delref'])) {
     $deletes = $_POST['delref']; // any entries will contain the ref# on editDB.php
@@ -48,7 +54,11 @@ if (isset($_POST['delref'])) {
     $chk_del = false;
 }
 $dindx = 0;
-$newcnt = count($drit1s);
+if (isset($_POST['drit1'])) {
+    $newcnt = count($drit1s);
+} else {
+    $newcnt = 0;
+}
 for ($j=0; $j<$newcnt; $j++) {
     $addit = true;
     if ($chk_del) {
