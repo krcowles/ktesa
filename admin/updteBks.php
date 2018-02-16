@@ -9,7 +9,7 @@
  * @link    ../docs/
  */
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE);
+$link = connectToDb(__FILE__, __LINE__);
 $auth = filter_input(INPUT_POST, 'author');
 $author = mysqli_real_escape_string($link, $auth);
 $name = filter_input(INPUT_POST, 'title');
