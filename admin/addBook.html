@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Add Book to Table</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Present tools for admin of site" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
+    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="admintools.css" type="text/css" rel="stylesheet" />
+<body>
+<div id="logo">
+    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+    <p id="logo_left">Hike New Mexico</p>	
+    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
+    <p id="logo_right">w/Tom &amp; Ken</p>
+</div>
+<p id="trail">Add Book to BOOKS Table</p>
+
+<div style="margin-left:24px;">
+<p style="font-size:18px;"><strong>Enter the data below for the new
+    book - both fields must be present:</strong></p>
+<form action="updteBks.php" method="POST">
+<fieldset>
+<legend style="fint-size:16px;color:brown;">New Book Data</legend>
+<label style="font-size:18px;">Enter the Author's Name: </label>
+<input style="font-size:14px;" id="auth" type="text" name="author" 
+    size="40" /><br /><br />
+<label style="font-size:18px;">Enter the Book Title: </label>
+<input style="font-size:14px;" id="title" type="text" name="title"
+    size="65" /><br/><br />
+<input type="submit" name="updt" value="Add this book" /><br />
+</fieldset>
+</form>
+</div>
+</body>
+</html>

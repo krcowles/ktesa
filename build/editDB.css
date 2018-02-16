@@ -153,6 +153,22 @@ input[type=submit]:hover {
 .tab-panel.active {
     display: block;
 }
+.bkauths {
+    position: relative;
+    top: -8px;
+    margin-bottom: 6px;
+}
+.nbk {
+    dipslay: none;
+    position: relative;
+    top: -8px;
+    margin-bottom: 6px;
+}
+.upbox {
+    position: relative;
+    top: -8px;
+    margin-bottom: 6px;
+}
 .popupCap {
     margin: 0px;
     display: none;

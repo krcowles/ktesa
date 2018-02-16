@@ -26,15 +26,24 @@
  */
 $link = connectToDb(__FILE__, __LINE__);
 // --- 1) References:
+$bkReq = "SELECT title,author FROM BOOKS;";
+$bks = mysqli_query($link, $bkReq) or die(
+    __FILE__ . " Line " . __LINE__ . "Failed to get books from BOOKS: " .
+    mysqli_error($link)
+);
+$books = [];
+$auths = [];
+while ($bkitem = mysqli_fetch_assoc($bks)) {
+    array_push($books, $bkitem['title']);
+    array_push($auths, $bkitem['author']);
+}
+mysqli_free_result($bks);
 $query = "SELECT rtype,rit1,rit2 FROM {$rtable} WHERE " .
     "indxNo = '{$hikeIndexNo}';";
-$result = mysqli_query($link, $query);
-if (!$result) {
-    die(
-        "get_REFS_row.php: Unable to extract references from REFS: " .
-        mysqli_error()
-    );
-}
+$result = mysqli_query($link, $query) or die(
+    "get_REFS_row.php: Unable to extract references from REFS: " .
+    mysqli_error()
+);
 $noOfRefs = mysqli_num_rows($result);
 $refHtml = '<ul id="refs" style="position:relative;top:-10px;">';
 if ($noOfRefs > 0) {
@@ -43,8 +52,9 @@ if ($noOfRefs > 0) {
         if ($rtype === 'Text:') {
             $refHtml .= "<li>" . $row['rit1'] . "</li>" . PHP_EOL;
         } elseif ($rtype === 'Book:' || $rtype === 'Photo Essay:') {
-            $refHtml .= "<li>" . $rtype . " <em>" . $row['rit1'] .
-                    "</em>, by " . $row['rit2'] . "</li>" . PHP_EOL;
+            $indx = $row['rit1'] -1;
+            $refHtml .= "<li>" . $rtype . " <em>" . $books[$indx] .
+                    "</em>, by " . $auths[$indx] . "</li>" . PHP_EOL;
         } else {
             $refHtml .= "<li>" . $rtype . ' <a href="' . $row['rit1'] .
                     '" target="_blank">' . $row['rit2'] . '</a></li>' . PHP_EOL;
