@@ -30,9 +30,9 @@ echo '<input type="hidden" name="mtrk" value="' . $curr_trk . '" />';
     specify a new file to override the current settings for this hike.</p>
 <?php
 if (isset($_SESSION['uplmsg']) && $_SESSION['uplmsg'] !== '') {
-    echo '<p style="font-size:18px;color:Blue;">The following action has ' .
-        'resulted from your latest "APPLY":</p>';
-    echo $_SESSION['uplmsg'];
+    echo '<p style="font-size:18px;color:darkblue;">The following action has ' .
+        'resulted from your latest "APPLY": ';
+    echo $_SESSION['uplmsg'] . "</p>";
     $_SESSION['uplmsg'] = '';
 }
 ?>
@@ -58,9 +58,9 @@ and/or maps</p>
  * Conditonal message after upload:
  */
 if (isset($_SESSION['gpsmsg']) && $_SESSION['gpsmsg'] !== '') {
-    echo '<p style="font-size:18px;color:Blue;">The following ' .
-        'action has resulted from your latest "APPLY":</p>';
-    echo $_SESSION['gpsmsg'];
+    echo '<p style="font-size:18px;color:darkblue;">The following ' .
+        'action has resulted from your latest "APPLY": ';
+    echo $_SESSION['gpsmsg'] . "</p>";
     $_SESSION['gpsmsg'] = '';
 }
 ?>
