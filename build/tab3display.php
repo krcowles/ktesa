@@ -1,7 +1,6 @@
 <p>Tips Text: </p>
 <textarea id="ttxt" name="tips" rows="10" cols="130"
-    placeholder="Add any special notes about travel,
-        or the hike here"><?php
+    placeholder="Add any special notes about travel, or the hike, here"><?php
         if ($hikeTips !== '') {
             echo $hikeTips;
         }?></textarea><br />

@@ -63,7 +63,7 @@ if ($noOfRefs > 0) {
     $refHtml .= "</ul>". PHP_EOL;
 } else {
     $refHtml .= "<li>No References</li>" . PHP_EOL;
-    $refHtml .= "<ul>" . PHP_EOL;
+    $refHtml .= "</ul>" . PHP_EOL;
 }
 // exit here if this is for an Index Page:
 if (isset($pageType) && $pageType === 'Index') {

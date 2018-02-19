@@ -10,7 +10,8 @@ if (exe === 'rel') {
 $tbl = $('tbody tr');
 $tbl.each( function(indx) {
     var newlink = linkbase + enos[indx];
-    $(this).find('td').eq(3).children().attr('href',newlink);    
+    $(this).find('td').eq(3).children().attr('href',newlink); 
+    $(this).find('td').eq(3).children().attr('target','');   
 });
 
 });
