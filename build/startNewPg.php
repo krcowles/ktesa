@@ -25,13 +25,20 @@
 require_once "../mysql/dbFunctions.php";
 require "buildFunctions.php";
 $usr = filter_input(INPUT_GET, 'usr');
-$selectData = dropdownData();
-$clusHikes = $selectData[0];
+$getClus = dropdownData('allclus');
+$clusHikes = $getClus[0];
 $clcnt = count($clusHikes);
-$clusData = $selectData[1];
-$vcHikes = $selectData[2];
+$clusLtrs = $getClus[1];
+// form combo string to pass to php
+$clusData = [];
+for ($i=0; $i<$clcnt; $i++) {
+    $newgrp = $clusLtrs[$i] . ":" . $clusHikes[$i];
+    array_push($clusData, $newgrp);
+}
+$getVCs = dropdownData('vcs');
+$vcHikes = $getVCs[0];
 $vccnt = count($vcHikes);
-$vcIndex = $selectData[3];
+$vcIndex = $getVCs[1];
 ?>
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
@@ -67,7 +74,9 @@ $vcIndex = $selectData[3];
                     <option value="<?= $clusData[$j];?>"><?= $clusHikes[$j];?>
                         </option>
                     <?php endfor;?>
-                </select>
+                </select><br />
+                [Or, check the box to select a new group on the next page]
+                <input type="checkbox" name="mknewgrp" />
             </em>
         <input id="normal" type="radio" name="marker" value="Normal" />&nbsp;
             All Other Hikes<br /><br />

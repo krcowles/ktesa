@@ -48,6 +48,7 @@
         <option value="Glenwood">Glenwood</option>
 </select>&nbsp;&nbsp;
 <p id="mrkr" style="display:none"><?= $hikeMarker;?></p>
+<p id="greq" style="display:none"><?= $grpReq;?></p>
 <input type="hidden" name="pmrkr" value="<?=$hikeMarker;?>" />
 <input type="hidden" name="pclus" value="<?= $hikeClusGrp;?>" />
 <p id="group" style="display:none"><?= $hikeGrpTip;?></p>
@@ -55,7 +56,7 @@
 <h3>Cluster Hike Assignments: (Hikes with overlapping trailheads or in 
     close proximity)<br /><br />
 <span style="margin-left:50px;font-size:18px;color:Brown;">
-    Reset Assignments:&nbsp;&nbsp;
+Reset Assignments:&nbsp;&nbsp;
     <input id="ignore" type="checkbox" name="nocare" /></span></h3>
 <label for="ctip">&nbsp;&nbsp;Cluster: </label>
 <select id="ctip" name="htool">

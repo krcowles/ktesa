@@ -20,15 +20,9 @@ if (isset($_SESSION['activeTab'])) {
     $dispTab = 1;
 }
 // data for drop-down boxes
-$selectData = dropdownData();
-$groups = $selectData[0];
-$cdata = $selectData[1];
-$cnames = [];
-foreach ($cdata as $cstring) {
-    $separator = strpos($cstring, ":") + 1;
-    $name = substr($cstring, $separator, strlen($cstring)-$separator);
-    array_push($cnames, $name);
-}
+$selectData = dropdownData('allclus');
+$cnames = $selectData[0];
+$groups = $selectData[1];
 $groupCount = count($groups);
 // assign existing hike data
 $hikereq = "SELECT * FROM EHIKES WHERE indxNo = {$hikeNo};";
@@ -43,6 +37,13 @@ $hikeMarker = fetch($hike['marker']);  // this also should never be null...
 $hikeColl = fetch($hike['collection']);
 $hikeClusGrp = fetch($hike['cgroup']);
 $hikeGrpTip = fetch($hike['cname']);
+// Special case: when a new page requests to add a new group, advise the js
+if ($hikeMarker === 'Cluster' && $hikeClusGrp === '') {
+    $hikeMarker = 'Normal';
+    $grpReq = "YES";
+} else {
+    $grpReq = "NO";
+}
 $hikeStyle = fetch($hike['logistics']);
 $hikeMiles = fetch($hike['miles']);
 $hikeFeet = fetch($hike['feet']);

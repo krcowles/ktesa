@@ -33,3 +33,14 @@ input[type=submit] {
 input[type=submit]:hover {
     background-color: PapayaWhip;
 }
+input[type="checkbox"]{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    position: relative;
+    top: 6px;
+    width: 24px; /*Desired width*/
+    height: 24px; /*Desired height*/
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+  }

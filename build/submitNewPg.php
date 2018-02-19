@@ -18,20 +18,22 @@ $user = filter_input(INPUT_POST, 'uid');
 $newname = filter_input(INPUT_POST, 'newname');
 $pg = mysqli_real_escape_string($link, $newname);
 $mrkr = filter_input(INPUT_POST, 'marker');
+$newclus = isset($_POST['mknewgrp']) ? true : false;
 $qfields = "(pgTitle,usrid,stat,";
 $qdata = "('{$pg}','{$user}','0',";
 if ($mrkr === 'At VC') {
     $vhike = filter_input(INPUT_POST, 'vchike');
     $qfields .= "collection,";
     $qdata .= "'{$vhike}',";
-} elseif ($mrkr === 'Cluster') {
+} elseif ($mrkr === 'Cluster' && !$newclus) {
     $chike = filter_input(INPUT_POST, 'clus');
     $nmepos = strpos($chike, ":") + 1;
     $clusName = substr($chike, $nmepos, strlen($chike)-$nmepos);
     $clusLtr = substr($chike, 0, $nmepos-1);
     $qfields .= "cgroup,cname,";
     $qdata .= "'{$clusLtr}','{$clusName}',";
-}
+} 
+// NOTE: if a request for a new group, the signature will be marker = 'Cluster' only;
 $qfields .= "marker)";
 $qdata .= "'{$mrkr}')";
 $link = connectToDb(__FILE__, __LINE__);

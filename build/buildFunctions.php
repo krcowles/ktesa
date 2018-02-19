@@ -194,48 +194,85 @@ function fileTypeAndLoc($fname)
  * This function extracts existing cluster info and Visitor Center info
  * from the HIKES table needed to display 'select' drop-down boxes
  * 
- * @return array The results of extracting clus & vc data from HIKES
+ * @param string $boxtype data to be returned: vc or clus (HIKES or HIKES & EHIKES)
+ * 
+ * @return array depending on $boxType, vc data or cluster data
  */
-function dropdownData()
+function dropdownData($boxtype)
 {
     $link = connectToDb(__FILE__, __LINE__);
-    $vchikes = [];
-    $vcnos = [];
-    $clhikes = [];
-    $cldat = [];
-    $hquery = "SELECT indxNo,pgTitle,marker,`collection`,cgroup,cname "
-            ."FROM HIKES;";
-    $specdat = mysqli_query($link, $hquery) or die(
-        'enterHike.php: Could not retrieve vc/cluster info: ' .
-        mysqli_error($link)
+    $hquery = "SELECT indxNo,pgTitle,marker,`collection`,cgroup,cname FROM HIKES;";
+    $hdat = mysqli_query($link, $hquery) or die(
+        __FILE__ . " Line " . __LINE__ . "Could not retrieve vc/cluster info " .
+        "from HIKES: " . mysqli_error($link)
     );
-    while ($select = mysqli_fetch_assoc($specdat)) {
-        $indx = $select['indxNo'];
-        $title = $select['pgTitle'];
-        $marker = $select['marker'];
-        $coll = $select['collection'];
-        $clusltr = $select['cgroup'];
-        $clusnme = $select['cname'];
-        if ($marker == 'Visitor Ctr') {
-            array_push($vchikes, $title);
-            array_push($vcnos, $indx);
-        } elseif ($marker == 'Cluster') {
-            $dup = false;
-            for ($l=0; $l<count($clhikes); $l++) {
-                if ($clhikes[$l] == $clusnme) {
-                    $dup = true;
-                }
+    if ($boxtype === 'allclus') {
+        $equery = "SELECT marker,cgroup,cname FROM EHIKES;";
+        $edat = mysqli_query($link, $equery) or die(
+            __FILE__ . " Line " . __LINE__ . 
+            ": Could not retrieve EHIKES cluster data" . mysqli_error($link)
+        );
+    }
+    // return data based on $boxType:
+    if ($boxtype === 'vcs') {
+        $vchikes = [];
+        $vcnos = [];
+        $colls = [];
+        while ($vcdata = mysqli_fetch_assoc($hdat)) {
+            $hmarker = $vcdata['marker'];
+            if ($hmarker == 'Visitor Ctr') {
+                $indx = $vcdata['indxNo'];
+                $title = $vcdata['pgTitle'];
+                $coll = $vcdata['collection'];
+                array_push($vcnos, $indx);
+                array_push($vchikes, $title);
+                array_push($colls, $coll);
             }
-            if (!$dup) {
-                array_push($clhikes, $clusnme);
-                // Need to include both Cluster Name and Cluster Letter when posting
-                $postCl = $clusltr . ":" . $clusnme;
-                array_push($cldat, $postCl);
+        }
+        return array($vchikes, $vcnos, $colls);
+    } else {
+        $clhikes = [];
+        $cldat = [];
+        while ($hclus = mysqli_fetch_assoc($hdat)) {
+            $hmarker = $hclus['marker'];
+            if ($hmarker === 'Cluster') {  
+                $clusltr = $hclus['cgroup'];
+                $clusnme = $hclus['cname'];
+                $dup = false;
+                for ($l=0; $l<count($clhikes); $l++) {
+                    if ($clhikes[$l] == $clusnme) {
+                        $dup = true;
+                    }
+                }
+                if (!$dup) {
+                    array_push($clhikes, $clusnme);
+                    array_push($cldat, $clusltr);
+                }
             }
         }
     }
-    mysqli_free_result($specdat);
-    return array($clhikes, $cldat, $vchikes, $vcnos);
+    mysqli_free_result($hdat);
+    if ($boxtype === 'allclus') {
+        while ($eclus = mysqli_fetch_assoc($edat)) {
+            $emarker = $eclus['marker'];
+            if ($emarker === 'Cluster') {
+                $clusltr = $eclus['cgroup'];
+                $clusnme = $eclus['cname'];
+                $dup = false;
+                for ($m=0; $m<count($clhikes); $m++) {
+                    if ($clhikes[$m] == $clusnme) {
+                        $dup = true;
+                    }
+                }
+                if (!$dup) {
+                    array_push($clhikes, $clusnme);
+                    array_push($cldat, $clusltr);
+                }
+            }
+        }
+        mysqli_free_result($edat);
+    }
+    return array($clhikes, $cldat);
 }
 /**
  * A simple function converts null into empty string after reading
