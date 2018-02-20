@@ -6,13 +6,12 @@ $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterat
 // Set the default timezone to use. Available as of PHP 5.1
 //date_default_timezone_set('UTC');
 
-$size = 0;
-// $uploadDate = mktime(7, 17, 55, 2, 20, 2018);
-//$uploadDate = filemtime("../index.html") + 200;
-$inputDate = "02/06/2018 1:30:00";
-$uploadDate = strtotime($inputDate);
+$uploadDate = filemtime("./dummy.txt") + 20; // Upload time plus 20 seconds for unzip
+//$inputDate = "02/06/2018 1:30:00"; // Use these lines to manually enter a date
+//$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
 
-echo $file . " Upload date: " . date(DATE_RFC2822, $uploadDate) . "<br /><br />";
+echo "Upload date: " . date(DATE_RFC2822, $uploadDate) . "<br /><br />";
+echo "Files changed since upload:<br />";
 
 foreach ($iterator as $file) {
     if ($file->isFile()) {
@@ -20,11 +19,10 @@ foreach ($iterator as $file) {
             //$leaf = $iterator->getSubPathName();
             if (substr($iterator->getSubPathName(), 0, 4) !== '.git') {
                 echo $iterator->getSubPathName() . ": " . date(DATE_RFC2822, $file->getMTime()) . "<br>";
-                $size += $file->getSize();
             }
         }
     }
 }
 
-echo "\nTotal file size: ", $size, " bytes\n";
+echo "<br />Done\n";
 ?>
