@@ -879,7 +879,7 @@ INSERT INTO REFS VALUES
 ('1074','120','Website:','https://www.trails.com/tcatalog_trail.aspx?trailid=XMR022-042','Trails.com'),
 ('1075','45','Book: ','7',''),
 ('1076','45','Website: ','http://www.sandiahiking.com/trailguide.html#delagua','Companion Site to Above Guide'),
-('1077','45','Website: ','https://www.trails.com/tcatalog_trail.aspx?trailid=XAM003-002','Trails.com'),
+('1077','45','App: ','https://www.alltrails.com/trail/us/new-mexico/piedra-lisa-trail-135','AllTrails'),
 ('1078','45','Blog: ','https://ondafringe.wordpress.com/2012/05/15/day-hike-north-piedra-lisa-del-agua-loop-sandia-mountains-new-mexico-usa/','On Da Fringe');
 
 
