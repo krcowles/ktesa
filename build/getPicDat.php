@@ -132,5 +132,4 @@ for ($i=0; $i<$supplied; $i++) {
 // sort the arrays based on timestamp:
 require "timeSort.php";
 $picinfo = json_encode($picdat);
-//$picinfo = 'text';
 echo $picinfo;

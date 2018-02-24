@@ -9,8 +9,9 @@ $.ajax({
     dataType: 'text',
     data: ajaxdata,
     success: function(result) {
-        var picdata = result;
-        alert("Result: " + picdata);
+        // result is an array of objects in string form
+        picdata = JSON.parse(result);
+        alert("Result: " + picdata[0]);
         $('#loader').css('display','none');
         $('#main').css('display','block');
     },
