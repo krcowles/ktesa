@@ -2338,6 +2338,8 @@ INSERT INTO TSV VALUES
 ('2370','45','Folder1','IMG_20180119_120634','Y','N','Bentley guides the authors down','35.2701944444','-106.4838805556','https://c1.staticflickr.com/5/4695/25988430538_0c3fc51624_t.jpg','https://www.flickr.com/photos/30474783@N06/25988430538/in/album-72157693690793305','2018-01-19 12:06:37','https://c1.staticflickr.com/5/4695/25988430538_0c3fc51624_n.jpg','1512','2688',NULL,'https://c1.staticflickr.com/5/4695/25988430538_66fee9fa01_o.jpg');
 
 
+
+
 CREATE TABLE `IPTBLS` (
   `ipIndx` smallint(6) NOT NULL AUTO_INCREMENT,
   `indxNo` smallint(6) DEFAULT NULL,
@@ -2424,11 +2426,12 @@ CREATE TABLE `EHIKES` (
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
-('1','Juan Tabo Canyon','mstr','0','Albuquerque','Normal','','','','Out-and-back','6.00','650','Easy-Moderate','None','Cliff VIews','Not summer','Full sun','JuanTaboCanyon.gpx','JuanTaboCanyon.json','35.2167850000','-106.4875740000',NULL,NULL,'https://www.flickr.com/photos/159672980@N03/albums/72157666204367189',NULL,'https://www.google.com/maps/place/35%C2%B013\'00.3%22N+106%C2%B029\'14.8%22W/@35.21674,-106.48745,17z?authuser=0&hl=en','This hike is out and back with three separate spurs. Stop when you get to the fences and signs, as this hike borders on private property and the Sandia Pueblo. Also remember your voice travels far in these parts - folks on their patios might not want to hear your shouts of praise for the natural wonders.','A great hike for exploring various spurs in and around Juan Tabo Canyon. We liked the southwestern spur the best as it snakes around several huge cliff faces. But the rest of the hike has its charms too, including views up to Rincon Ridge and down into Albuquerque.');
+('1','Juan Tabo Canyon','mstr','0','Albuquerque','Normal','','','','Out-and-back','6.00','650','Easy-Moderate','None','Cliff VIews','Not summer','Full sun','JuanTaboCanyon.gpx','JuanTaboCanyon.json','35.2167850000','-106.4875740000',NULL,NULL,'https://www.flickr.com/photos/159672980@N03/albums/72157666204367189',NULL,'https://www.google.com/maps/place/35%C2%B013\'00.3%22N+106%C2%B029\'14.8%22W/@35.21674,-106.48745,17z?authuser=0&hl=en','This hike is out and back with three separate spurs. Stop when you get to the fences and signs, as this hike borders on private property and the Sandia Pueblo. Also remember your voice travels far in these parts - folks on their patios might not want to hear your shouts of praise for the natural wonders.','A great hike for exploring various spurs in and around Juan Tabo Canyon. We liked the southwestern spur the best as it snakes around several huge cliff faces. But the rest of the hike has its charms too, including views up to Rincon Ridge and down into Albuquerque.'),
+('7','Del Agua - Piedra Lisa Loop','mstr','45','Placitas','Normal',NULL,NULL,NULL,'Loop','4.10','1050','Easy-Moderate','None','Sandia views','Not Winter','Mixed sun/shade','PiedraDelAguaLoop.gpx','PiedraDelAguaLoop.json','35.2770000000','-106.4840333000','','','https://www.flickr.com/photos/139088815@N08/albums/72157663779952699','https://www.flickr.com/photos/30474783@N06/albums/72157693690793305','https://www.google.com/maps/place/Piedra+Lisa+North+Trailhead+Parking,+Placitas,+NM/@35.2875541,-106.5018082,13z/data=!4m8!1m2!3m1!2zMzXCsDE2JzM3LjIiTiAxMDbCsDI5JzAyLjUiVw!3m4!1s0x0:0x581950944de90d29!8m2!3d35.2789432!4d-106.4784837','NOTE: The authors inadvertently traversed a now obsolete (and private) section of the trail, located in recently purchased Sandia Pueblo land. When viewing the reference below, \'Actual Hike + New Leg\', as a map, the old trail segment, now off-limits, is displayed in light blue, whereas the correct new route section is displayed in dark blue.','This is a pleasant hike into the foothills of the Sandias and joins the Del Agua trail at its peak. This section of the Piedra Lisa can be taken as an out-and-back hike from the parking area, or as a loop by continuing along the Del Agua trail back to the Piedra Lisa trail head. There are many pleasant views of the valley near Placitas, and of terrain to the north and west. As this trail does not ascend to the crest, it is less demanding, while affording scenery of the Sandia foothills.');
 
 
 
@@ -2443,9 +2446,11 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO EGPSDAT VALUES
+('7','7','P','GPX:','../gpx/PiedraDelAguaCombined.gpx','Actual Hike + New Leg');
 
 
 
@@ -2459,11 +2464,15 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
-('28','1','Book:','2',NULL);
+('28','1','Book:','2',NULL),
+('61','7','Book:','7','Mike Coltrin'),
+('62','7','Website:','http://www.sandiahiking.com/trailguide.html#delagua','Companion Site to Above Guide'),
+('63','7','App:','https://www.alltrails.com/trail/us/new-mexico/piedra-lisa-trail-135','AllTrails'),
+('64','7','Blog:','https://ondafringe.wordpress.com/2012/05/15/day-hike-north-piedra-lisa-del-agua-loop-sandia-mountains-new-mexico-usa/','On Da Fringe');
 
 
 
@@ -2489,7 +2498,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=191 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -2507,7 +2516,20 @@ INSERT INTO ETSV VALUES
 ('118','1','Folder1','TheHikeBegins','Y','Y','Near the beginning the views are already great','35.2172777778','-106.4882138889','https://c1.staticflickr.com/5/4566/24595928648_d084c06b32_t.jpg','https://www.flickr.com/photos/139088815@N08/24595928648/in/album-72157662703906638','2017-11-10 10:10:10','https://c1.staticflickr.com/5/4566/24595928648_d084c06b32_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4566/24595928648_6207572036_o.jpg'),
 ('119','1','Folder1','BandedRock','Y','Y','Finely layered rock reveals geological history','35.2164916667','-106.5021277778','https://c1.staticflickr.com/5/4542/24595818508_3d941ab16a_t.jpg','https://www.flickr.com/photos/139088815@N08/24595818508/in/album-72157662703906638','2017-11-10 11:51:50','https://c1.staticflickr.com/5/4542/24595818508_3d941ab16a_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4542/24595818508_fa8d50c51d_o.jpg'),
 ('120','1','Folder1','CanyonTwists','Y','Y','Many twists and turns heading down the canyon','35.2159416667','-106.5024111111','https://c1.staticflickr.com/5/4524/24595980748_2eaf357585_t.jpg','https://www.flickr.com/photos/139088815@N08/24595980748/in/album-72157662703906638','2017-11-10 12:08:21','https://c1.staticflickr.com/5/4524/24595980748_2eaf357585_n.jpg','3264','2448','red','https://c1.staticflickr.com/5/4524/24595980748_11c6f7656d_o.jpg'),
-('121','1','Folder1','NorthEndpoint','Y','Y','The northernmost point affords a great Sandia view','35.2322277778','-106.4906916667','https://c1.staticflickr.com/5/4520/38435921532_ed106e387f_t.jpg','https://www.flickr.com/photos/139088815@N08/38435921532/in/album-72157662703906638','2017-11-10 13:20:02','https://c1.staticflickr.com/5/4520/38435921532_ed106e387f_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4520/38435921532_4a092ae530_o.jpg');
+('121','1','Folder1','NorthEndpoint','Y','Y','The northernmost point affords a great Sandia view','35.2322277778','-106.4906916667','https://c1.staticflickr.com/5/4520/38435921532_ed106e387f_t.jpg','https://www.flickr.com/photos/139088815@N08/38435921532/in/album-72157662703906638','2017-11-10 13:20:02','https://c1.staticflickr.com/5/4520/38435921532_ed106e387f_n.jpg','2448','3264','red','https://c1.staticflickr.com/5/4520/38435921532_4a092ae530_o.jpg'),
+('191','7','Folder1','AlternateRoutes','Y','Y','Bentley sniffs out possible alternatives','35.2788777778','-106.4783472222','https://c1.staticflickr.com/5/4675/39800327281_053c3686cb_t.jpg','https://www.flickr.com/photos/139088815@N08/39800327281/in/album-72157662834158847','2018-01-19 10:16:13','https://c1.staticflickr.com/5/4675/39800327281_053c3686cb_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4675/39800327281_330437bf9e_o.jpg'),
+('192','7','Folder1','LookingBack','Y','Y','Ascending Piedra Lisa offers a look into the valley','35.2725944444','-106.4740666667','https://c1.staticflickr.com/5/4753/39800315871_15a564f4c1_t.jpg','https://www.flickr.com/photos/139088815@N08/39800315871/in/album-72157662834158847','2018-01-19 10:41:03','https://c1.staticflickr.com/5/4753/39800315871_15a564f4c1_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4753/39800315871_f509230451_o.jpg'),
+('193','7','Folder1','PL_jct','Y','Y','Where Del Agua joins Piedra Lisa','35.2625916667','-106.4678333333','https://c1.staticflickr.com/2/1587/24289739064_f591b04e60_m.jpg','https://www.flickr.com/photos/139088815@N08/24289739064/in/photostream/','2015-09-24 11:27:23','https://c1.staticflickr.com/2/1587/24289739064_f591b04e60_n.jpg','320','240','',''),
+('194','7','Folder1','Bill_enroute','Y','Y','Pause for a view','35.2630916667','-106.4698555556','https://c8.staticflickr.com/2/1479/24291027783_d908aff752_m.jpg','https://www.flickr.com/photos/139088815@N08/24291027783/in/photostream/','2015-09-24 11:34:32','https://c8.staticflickr.com/2/1479/24291027783_d908aff752_n.jpg','320','240','',''),
+('195','7','Folder1','IMG_20180119_114021','Y','Y','Descending this segment requires care.','35.2644222222','-106.4731361111','https://c1.staticflickr.com/5/4649/39151648284_bc5341fe90_t.jpg','https://www.flickr.com/photos/30474783@N06/39151648284/in/album-72157693690793305','2018-01-19 11:40:22','https://c1.staticflickr.com/5/4649/39151648284_bc5341fe90_n.jpg','2688','1512',NULL,'https://c1.staticflickr.com/5/4649/39151648284_d56ec1c94c_o.jpg'),
+('196','7','Folder1','CrazySchist','Y','Y','Contorted designs in the schist indicate a wild past','35.2681305556','-106.4791805556','https://c1.staticflickr.com/5/4753/39800308071_76bf82509f_t.jpg','https://www.flickr.com/photos/139088815@N08/39800308071/in/album-72157662834158847','2018-01-19 11:55:52','https://c1.staticflickr.com/5/4753/39800308071_76bf82509f_n.jpg','3264','2448',NULL,'https://c1.staticflickr.com/5/4753/39800308071_2cfcb731c1_o.jpg'),
+('197','7','Folder1','Northward','Y','Y','North towards Cabezon Peak','35.2700777778','-106.4840000000','https://c1.staticflickr.com/2/1658/24622406560_f2d7414394_m.jpg','https://www.flickr.com/photos/139088815@N08/24622406560/in/photostream/','2015-09-24 12:16:26','https://c1.staticflickr.com/2/1658/24622406560_f2d7414394_n.jpg','240','320','',''),
+('198','7','Folder1','All_on_trail','Y','Y','A level moment','35.2704500000','-106.4830083333','https://c2.staticflickr.com/2/1550/24917919585_dceca0b404_m.jpg','https://www.flickr.com/photos/139088815@N08/24917919585/in/photostream/','2015-09-24 10:21:21','https://c2.staticflickr.com/2/1550/24917919585_dceca0b404_n.jpg','240','320','',''),
+('199','7','Folder1','ViewOnNew','Y','Y','The new section of Del Agua affords a lovely view','35.2707138889','-106.4845111111','https://c1.staticflickr.com/5/4701/28022005349_560c9ba4e4_t.jpg','https://www.flickr.com/photos/139088815@N08/28022005349/in/album-72157662834158847','2018-01-19 12:09:14','https://c1.staticflickr.com/5/4701/28022005349_560c9ba4e4_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4701/28022005349_caf7d45527_o.jpg'),
+('200','7','Folder1','Mesa_View','N','N','View of the mesas looking west','35.2729500000','-106.4852916667','https://c5.staticflickr.com/8/7773/26885317476_2d9f76cd5b_m.jpg','https://www.flickr.com/photos/139088815@N08/26885317476/in/photostream/','2015-09-24 12:30:40','https://c5.staticflickr.com/8/7773/26885317476_2d9f76cd5b_n.jpg','240','320','',''),
+('201','7','Folder1','NewOwner','N','N','The old Del Agua trailhead is no longer accessible','35.2767944444','-106.4842611111','https://c1.staticflickr.com/5/4766/28021997569_a8ff206c40_t.jpg','https://www.flickr.com/photos/139088815@N08/28021997569/in/album-72157662834158847','2018-01-19 12:38:05','https://c1.staticflickr.com/5/4766/28021997569_a8ff206c40_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4766/28021997569_b5d2fd4c50_o.jpg'),
+('202','7','Folder1','TrailHead','Y','Y','Northern Sandias back the trail head','35.2787666667','-106.4786305556','https://c1.staticflickr.com/5/4603/39800299151_f8839347ca_t.jpg','https://www.flickr.com/photos/139088815@N08/39800299151/in/album-72157662834158847','2018-01-19 12:49:16','https://c1.staticflickr.com/5/4603/39800299151_f8839347ca_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4603/39800299151_7bc54ec7a0_o.jpg'),
+('203','7','Folder1','IMG_20180119_120634','Y','N','Bentley guides the authors down','35.2701944444','-106.4838805556','https://c1.staticflickr.com/5/4695/25988430538_0c3fc51624_t.jpg','https://www.flickr.com/photos/30474783@N06/25988430538/in/album-72157693690793305','2018-01-19 12:06:37','https://c1.staticflickr.com/5/4695/25988430538_0c3fc51624_n.jpg','1512','2688',NULL,'https://c1.staticflickr.com/5/4695/25988430538_66fee9fa01_o.jpg');
 
 
 
