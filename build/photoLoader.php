@@ -41,7 +41,7 @@ $usr = filter_input(INPUT_POST, 'nid');
     Please wait while images load...</p>
 <img id="ldgif" src="../images/loader-64x/Preloader_6.gif" alt="Loading Image" />
 </div>
-<!-- This div is displayed when photos are ready -->
+<!-- This div (main) is displayed when photos are ready -->
 <div id="main" style="display:none;padding:16px;">
 <div style="position:relative;top:-14px;">
     <input id="addall" type="checkbox" name="allPix" value="useAll" />&nbsp;
@@ -56,10 +56,12 @@ require 'getLinks.php';
     var cnt = <?= $supplied;?>;
     var pgLinks = <?= $alburls;?>;
     var albTypes = <?= $albtypes;?>;
+    var phTitles = [];
+    var picdata;
+    var hikeno = "<?= $hikeNo;?>";
+    var usrid = "<?= $usr;?>";
 </script>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script src="photoLoader.js"></script>
-<script src="newPhotos.js"></script>
-<script src="../scripts/picPops.js"></script>
 </body>
 </html>
