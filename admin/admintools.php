@@ -33,6 +33,7 @@ session_start();
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Rebase DB</legend>
+        <button id="reload">Reload Database</button>&nbsp;(Drops All Tables and Loads All)<br />
         <button id="drall">Drop All Tables</button><br />
         <button id="ldall">Load All Tables</button>
         (NOTE: Tables must not exist)<br />

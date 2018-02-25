@@ -1,36 +1,33 @@
-var disp = $('#dstat').text();
-if (disp === 'Open') {
-    $('#modeopt').css('display','block');
-} else {
-    $('#modeopt').css('display','none');
-}
-var j = 0;
-$('input[type=checkbox]').each( function() {
-    if (cbs[j] === 'Y') {
-        $(this).attr('checked','checked');
+$('#reload').on('click', function() {
+    if (confirm("Do you really want to drop all tables and reload them?")) {
+        window.open('drop_all_tables.php');
     }
-    j++;
-});
-$('#mode').on('click', function() {
-    $('#modeopt').slideToggle();
-});
-$('#show').on('click', function()  {
-    window.open('show_tables.php',"_blank_");
 });
 $('#drall').on('click', function() {
-    window.open('drop_all_tables.php?no=all',"_blank");
+    if (confirm("Do you really want to drop all tables?")) {
+        window.open('drop_all_tables.php?no=all',"_blank");
+    }
 });
 $('#ldall').on('click', function() {
     window.open('load_all_tables.php',"_blank");
 });
 $('#exall').on('click', function() {
     window.open('export_all_tables.php',"_blank");
-})
-$('#dret').on('click', function() {
-    window.open('drop_all_tables.php?no=ets',"_blank");
-})
-$('#ldet').on('click', function() {
-    alert("Not yet implemented");
+});
+$('#pub').on('click', function() {
+    window.open("reldel.php?act=rel","_blank");
+});
+$('#ehdel').on('click', function() {
+    window.open("reldel.php?act=del","_blank");
+});
+$('#gpxed').on('click', function() {
+    // not yet implemented
+});
+$('#sgltrk').on('click', function() {
+    // not yet implemented
+});
+$('#show').on('click', function()  {
+    window.open('show_tables.php',"_blank_");
 });
 $('#drop').on('click', function() {
     var dtarg = 'drop_table.php?tbl=' + $('#dtbl').val();
@@ -49,11 +46,31 @@ $('#create').on('click', function() {
     }
     window.open(ctarg,"_blank");
 });
-$('#pub').on('click', function() {
-    window.open("reldel.php?act=rel","_blank");
+$('#sgls').on('click', function() {
+    // not yet implemented
 });
-$('#ehdel').on('click', function() {
-    window.open("reldel.php?act=del","_blank");
+$('#dret').on('click', function() {
+    // currently obsolete
+    //window.open('drop_all_tables.php?no=ets',"_blank");
+});
+var disp = $('#dstat').text();
+if (disp === 'Open') {
+    $('#modeopt').css('display','block');
+} else {
+    $('#modeopt').css('display','none');
+}
+var j = 0;
+$('input[type=checkbox]').each( function() {
+    if (cbs[j] === 'Y') {
+        $(this).attr('checked','checked');
+    }
+    j++;
+});
+$('#mode').on('click', function() {
+    $('#modeopt').slideToggle();
+});
+$('#ldet').on('click', function() {
+    alert("Not yet implemented");
 });
 $('#addbk').on('click', function() {
     window.open("addBook.html", "_blank");
@@ -110,5 +127,3 @@ $('#rowdel').on('click', function() {
         alert("Nothing deleted");
     }
 });
-
-
