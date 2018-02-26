@@ -1,4 +1,14 @@
 <?php
+/**
+ * Administration tools for the site masters are included here. These
+ * comprise buttons to carry out certain admin tasks, and are grouped
+ * and ordered based on current usage.
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ * @link    .,/docs/
+ */
 session_start();
 ?>
 <!DOCTYPE html>
@@ -22,8 +32,80 @@ session_start();
 
 <div style="margin-left:24px;" id="tools">
     <fieldset>
-        <legend>Session Settings</legend>
-        <button id="mode">Show/Set SQL Modes</button>
+        <legend>Rebase DB</legend>
+        <button id="reload">Reload Database</button>&nbsp;(Drops All Tables and Loads All)<br />
+        <button id="drall">Drop All Tables</button><br />
+        <button id="ldall">Load All Tables</button>
+        (NOTE: Tables must not exist)<br />
+        <button id="exall">Export All Tables</button>
+        (NOTE: Will download a file)<br />
+    </fieldset><br />
+    <fieldset>
+        <legend>Hike Management</legend>
+        <button id="pub">Publish Hike</button> (Move from EHIKES to HIKES)<br/>
+        <button id="lst">List New Files</button><br />
+        <button id="ehdel">Remove Hike</button>
+            <span style="color:brown;">(Not implemented at this time)</span><br />
+    </fieldset><br />
+    <fieldset>
+        <legend>GPX File Edits</legend>
+        <button id="gpxed">Reverse entire track file</button><br />
+        <button id="sgltrk">Reverse Track No.</button>&nbsp;
+        <select>
+            <option value="1">Trk 1</option>
+            <option value="2">Trk 2</option>
+            <option value="3">Trk 3</option>
+            <option value="4">Trk 4</option>
+            <option value="5">Trk 5</option>
+        </select>
+    </fieldset><br/>
+    <fieldset>
+        <legend>Misc Tools</legend>
+        <button id="show">Show All Tables</button><br />
+        <button id="drop">Drop Table</button>&nbsp;
+        <select id="dtbl" name="dropper">
+            <option>USERS</option>
+            <option>HIKES</option>
+            <option>TSV</option>
+            <option>BOOKS</option>
+            <option>REFS</option>
+            <option>GPSDAT</option>
+            <option>IPTBLS</option>
+            <option>EHIKES</option>
+            <option>ETSV</option>
+            <option>EREFS</option>
+            <option>EGPSDAT</option>
+        </select><br />
+        <button id="create">Create Table</button>
+        <select id="ctbl" name="creator">
+            <option>USERS</option>
+            <option>HIKES</option>
+            <option>TSV</option>
+            <option>BOOKS</options>
+            <option>REFS</option>
+            <option>GPSDAT</option>
+            <option>IPTBLS</option>
+            <option>EHIKES</option>
+            <option>ETSV</option>
+            <option>EREFS</option>
+            <option>EGPSDAT</option>
+        </select><br />
+        <button id="sgls">Load Table</button>&nbsp;
+        <select id="ltbl" name="sgl_ld">
+            <option>USERS</option>
+            <option>HIKES</option>
+            <option>TSV</option>
+            <option>BOOKS</option>
+            <option>REFS</option>
+            <option>GPSDAT</option>
+            <option>IPTBLS</option>
+            <option>EHIKES</option>
+            <option>ETSV</option>
+            <option>EREFS</option>
+            <option>EGPSDAT</option>
+        </select>
+        <span id="ni">&nbsp;(Not implented at this time)</span><br /><br />
+        <button id="mode">Show/Set SQL Modes</button><br />
         <div id="modeopt">
         <?php
         echo '<form action="modify_modes.php" method="POST">';
@@ -53,79 +135,10 @@ session_start();
         echo '</form>';
         ?>
         </div>
-    </fieldset>
-    <script type="text/javascript">
-        var cbs = <?php echo $cbStates;?>;
-    </script>
-    <fieldset>
-        <legend>Create/Delete</legend>
-        <button id="show">Show All Tables</button><br />
-        <button id="drall">Drop All Tables</button><br />
-        <button id="ldall">Load All Tables</button>
-        (NOTE: Tables should be dropped and not created)<br />
-        <button id="exall">Export All Tables</button>
-        (NOTE: Will download a file which should be renamed appropriately)<br />
-        <button id="dret">Drop All E-Tables</button><br />
-        <button id="ldet">Load All E-Tables</button>
-        <span style="color:brown;">(Not implemented at this time)</span>
-        <p></p>
-        <span class="ind">Table to Delete:</span>
-        <select id="dtbl" name="dropper">
-            <option>USERS</option>
-            <option>HIKES</option>
-            <option>TSV</option>
-            <option>BOOKS</option>
-            <option>REFS</option>
-            <option>GPSDAT</option>
-            <option>IPTBLS</option>
-            <option>EHIKES</option>
-            <option>ETSV</option>
-            <option>EREFS</option>
-            <option>EGPSDAT</option>
-        </select>
-        <button id="drop">Drop Table</button><br />
-        <span class="ind">Table to Create:</span>
-        <select id="ctbl" name="creator">
-            <option>USERS</option>
-            <option>HIKES</option>
-            <option>TSV</option>
-            <option>BOOKS</options>
-            <option>REFS</option>
-            <option>GPSDAT</option>
-            <option>IPTBLS</option>
-            <option>EHIKES</option>
-            <option>ETSV</option>
-            <option>EREFS</option>
-            <option>EGPSDAT</option>
-        </select>
-        <button id="create">Create Table</button><br />
-        <span class="ind">Table to Load:</span>
-        <select id="ltbl" name="sgl_ld">
-            <option>USERS</option>
-            <option>HIKES</option>
-            <option>TSV</option>
-            <option>BOOKS</option>
-            <option>REFS</option>
-            <option>GPSDAT</option>
-            <option>IPTBLS</option>
-            <option>EHIKES</option>
-            <option>ETSV</option>
-            <option>EREFS</option>
-            <option>EGPSDAT</option>
-        </select>
-        <button id="sgls">Load Table</button>
-        <span id="ni">(Not implented at this time)</span><br />
-    </fieldset><br />
-    <fieldset>
-        <legend>Hike Release/Delete</legend>
-        Actions available for all EHIKES (Affects all E-Tables):<br />
-        &nbsp;&nbsp;&nbsp;<button id="pub">Publish Hike</button><br/>
-        &nbsp;&nbsp;&nbsp;<button id="ehdel">Remove Hike</button>
-            <span style="color:brown;">(Not implemented at this time)</span><br />
-    </fieldset><br />
-    <fieldset>
-        <legend>Row Manipulation</legend>
-        <button id="addbk">Add Book</button><br />
+        <script type="text/javascript">
+            var cbs = <?php echo $cbStates;?>;
+        </script>
+        <br /><button id="addbk">Add Book</button><br /><br />
         <select id="rdel" name="creator">
             <option>USERS</option>
             <option>HIKES</option>
@@ -140,9 +153,9 @@ session_start();
             <option>EGPSDAT</option>
         </select>&nbsp;&nbsp;
         Row No.&nbsp;&nbsp;<input id="drow" type="text" 
-            name="indx" size="4" />&nbsp;&nbsp;
-        <button id="rowdel">Delete Row</button><br /><br />
-        NOTE: Deleting a row in a table may cause issues if companion tables 
+            name="indx" size="4" />
+        <button id="rowdel">Delete Row</button><br />
+        NOTE: Deleting a row in a table may cause issues if linked tables 
         are not also updated.
     </fieldset><br />
 </div>
