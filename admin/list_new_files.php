@@ -14,7 +14,7 @@ $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterat
 $uploadDate = filemtime("./dummy.txt") + 20; // Upload time plus 20 seconds for unzip
 //$inputDate = "02/06/2018 1:30:00"; // Use these lines to manually enter a date
 //$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
-$udate = date(DATE_RFC2822, $uploadDate0);
+$udate = date(DATE_RFC2822, $uploadDate);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
