@@ -42,9 +42,9 @@ session_start();
     </fieldset><br />
     <fieldset>
         <legend>Hike Management</legend>
-        Actions available for all EHIKES (Affects all E-Tables):<br />
-        &nbsp;&nbsp;&nbsp;<button id="pub">Publish Hike</button><br/>
-        &nbsp;&nbsp;&nbsp;<button id="ehdel">Remove Hike</button>
+        <button id="pub">Publish Hike</button> (Move from EHIKES to HIKES)<br/>
+        <button id="lst">List New Files</button><br />
+        <button id="ehdel">Remove Hike</button>
             <span style="color:brown;">(Not implemented at this time)</span><br />
     </fieldset><br />
     <fieldset>

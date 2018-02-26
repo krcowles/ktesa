@@ -1,21 +1,24 @@
 $('#reload').on('click', function() {
     if (confirm("Do you really want to drop all tables and reload them?")) {
-        window.open('drop_all_tables.php');
+        window.open('drop_all_tables.php', "_blank");
     }
 });
 $('#drall').on('click', function() {
     if (confirm("Do you really want to drop all tables?")) {
-        window.open('drop_all_tables.php?no=all',"_blank");
+        window.open('drop_all_tables.php?no=all', "_blank");
     }
 });
 $('#ldall').on('click', function() {
-    window.open('load_all_tables.php',"_blank");
+    window.open('load_all_tables.php', "_blank");
 });
 $('#exall').on('click', function() {
-    window.open('export_all_tables.php',"_blank");
+    window.open('export_all_tables.php', "_blank");
 });
 $('#pub').on('click', function() {
-    window.open("reldel.php?act=rel","_blank");
+    window.open("reldel.php?act=rel", "_blank");
+});
+$('#lst').on('click', function() {
+    window.open("list_new_files.php", "_blank")
 });
 $('#ehdel').on('click', function() {
     window.open("reldel.php?act=del","_blank");
@@ -27,11 +30,11 @@ $('#sgltrk').on('click', function() {
     // not yet implemented
 });
 $('#show').on('click', function()  {
-    window.open('show_tables.php',"_blank_");
+    window.open('show_tables.php', "_blank_");
 });
 $('#drop').on('click', function() {
     var dtarg = 'drop_table.php?tbl=' + $('#dtbl').val();
-    window.open(dtarg,"_blank");
+    window.open(dtarg, "_blank");
 });
 $('#create').on('click', function() {
     var ctype = $('#ctbl').val(); // the table name to create
@@ -44,7 +47,7 @@ $('#create').on('click', function() {
             var ctarg = 'create_E_table.php?tbl=' + ctype; // has foreign key defs
         }
     }
-    window.open(ctarg,"_blank");
+    window.open(ctarg, "_blank");
 });
 $('#sgls').on('click', function() {
     // not yet implemented
