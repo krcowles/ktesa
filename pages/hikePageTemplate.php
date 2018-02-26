@@ -112,7 +112,7 @@ if ($newstyle) {
     $fpLnk = "../maps/fullPgMapLink.php?maptype=page&hike={$hikeTitle}" .
         "&gpx={$gpxPath}&hno={$hikeIndexNo}&tbl={$tbl}";
     $map_opts = [
-        'show_geoloc' => 'false',
+        'show_geoloc' => 'true',
         'zoom' => 'auto',
         'map_type' => 'ARCGIS_TOPO_WORLD',
         'street_view'=> 'false',
