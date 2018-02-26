@@ -8,7 +8,7 @@ function setChartDims() {
     }
     // calculate space available for canvas:
     var chartWidth = $('body').innerWidth() - bodySurplus;
-    chartWidth *= 0.745;
+    //chartWidth *= 0.745;
     var vpHeight = window.innerHeight;
     var sidePnlPos = $('#sidePanel').offset();
     var sidePnlLoc = parseInt(sidePnlPos.top);
@@ -22,6 +22,8 @@ function setChartDims() {
         canvasEl.height = chartHeight;
     }
     canvasEl.width = chartWidth;
+    $('#sidePanel').css('display','none');
+    $('iframe').width('98%');
 }
 function defineData() {
     // data object for the chart:
