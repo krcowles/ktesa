@@ -71,7 +71,6 @@ for ($i=$strt; $i<$tblcnt; $i++) {
         echo "Table Removed<br />";
     }
 }
-mysqli_free_result($req);
 mysqli_close($link);
 ?>
 <span style="color:brown;">DONE</span>
