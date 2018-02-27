@@ -1,5 +1,3 @@
-$(function () { // when page is loaded...
-
 var passData = [];
 var includes = [];
 // includes member = 0 implies not a selection
@@ -7,7 +5,7 @@ $('.allPhotos').each( function() {
     includes.push(0);
 });
 var noOfPix = includes.length;
-var allpix = saveDat; // array of photo data created by php
+var allpix = picdata; // array of photo data created by php
 if (noOfPix !== allpix.length) {
     alert("Mismatch no of photos from saved data (php)...");
 }
@@ -94,7 +92,3 @@ $('#load').on('click', function() {
         }
     });
 });
-
-});
-
-

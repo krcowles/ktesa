@@ -180,3 +180,8 @@ input[type=submit]:hover {
     margin: 0px;
     font-weight: bold;
     background-color: #eaeaea; }
+#ldgif {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

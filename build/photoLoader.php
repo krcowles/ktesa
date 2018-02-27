@@ -35,38 +35,34 @@ $usr = filter_input(INPUT_POST, 'nid');
 <h3 style="margin-left:16px;">Please check the boxes for the photos you would
     like to include on the photo editor tab. When done, select "Add Photos"</h3>
 <p style="display:none;" id="ptype">EditNew</p>
-
-<div id="main" style="padding:16px;">
+<!-- The next div is displayed only until photo loading has completed  -->
+<div id="loader">
+<p style="text-align:center;font-size:18px;color:darkblue">
+    Please wait while images load...</p>
+<img id="ldgif" src="../images/loader-64x/Preloader_6.gif" alt="Loading Image" />
+</div>
+<!-- This div (main) is displayed when photos are ready -->
+<div id="main" style="display:none;padding:16px;">
 <div style="position:relative;top:-14px;">
     <input id="addall" type="checkbox" name="allPix" value="useAll" />&nbsp;
         Add all photos to Photo Editor<br />
-</div>
 <?php
-require "uploadPhotos.php";
+require 'getLinks.php';
 ?>
-<?php for ($i=0; $i<$picno; $i++) : ?>
-<div style="width:<?= $phWds[$i];?>px;margin-left:2px;
-    margin-right:2px;display:inline-block">
-    <input class="ckbox" type="checkbox" name="incl[]"
-        value="<?= $phNames[$i];?>" />&nbsp;&nbsp;Add it
-    <img class="allPhotos" height="<?= $rowHt;?>px" 
-        width="<?= $phWds[$i];?>px" src="<?= $phPics[$i];?>" 
-        alt="<?= $phNames[$i];?>" /><br />
 </div>
-<?php endfor; ?>
-<br /><button id="load" style="font-size:18px;">Add Photos</button>
-
-</div>
+</div><br /> <!-- main -->
+<button id="load" style="font-size:18px;margin-left:24px;">Add Photos</button>
 <div class="popupCap"></div>
-<script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">
-    var phTitles = <?= $jsTitles;?>;
-    var phDescs = <?= $jsDescs;?>;
-    var saveDat = <?= $ajaxArray;?>;
-    var hikeno = '<?= $hikeNo;?>';
-    var usrid = '<?= $usr;?>';
+    var cnt = <?= $supplied;?>;
+    var pgLinks = <?= $alburls;?>;
+    var albTypes = <?= $albtypes;?>;
+    var phTitles = [];
+    var picdata;
+    var hikeno = "<?= $hikeNo;?>";
+    var usrid = "<?= $usr;?>";
 </script>
-<script src="newPhotos.js" type="text/javascript"></script>
-<script src="../scripts/picPops.js" type="text/javascript"></script>
+<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="photoLoader.js"></script>
 </body>
 </html>
