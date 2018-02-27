@@ -38,8 +38,9 @@ if ($row['aoimg2'] == '') {
 $hikePhotoLink1 = $row['purl1'];
 $hikePhotoLink2 = $row['purl2'];
 $hikeDirections = $row['dirs'];
-$hikeTips = $row['tips'];
-$hikeTips = preg_replace("/\s/", " ", $hikeTips);
-$hikeInfo = $row['info'];
-$hikeInfo = preg_replace("/\s/", " ", $hikeInfo);
+$rawTips = $row['tips'];
+$spaceTips = preg_replace("/\s/", " ", $rawTips);
+$hikeTips = htmlspecialchars_decode($spaceTips, ENT_COMPAT);
+$rawInfo = $row['info'];
+$hikeInfo = preg_replace("/\s/", " ", $rawInfo);
 mysqli_free_result($result);
