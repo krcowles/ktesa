@@ -340,7 +340,7 @@ function mantissa($degrees)
  * combined into one seqment.
  * 
  * @param string $gpxfile      The (full or relative) path to the gpx file
- * @param string $no_of_tracks Create data for number of tracks specified (or all)
+ * @param string $no_of_tracks Return data for number of tracks specified (or all)
  * 
  * @return array $stuff
  */
@@ -389,6 +389,54 @@ function gpxLatLng($gpxfile, $no_of_tracks)
         }
     }
     return array($gpxlats, $gpxlons, $gpxelev);
+}
+/**
+ * Function to calculate the distance between two lat/lng coordinates.
+ * In addition, the 'rotation' angle is calculated which provides the correct
+ * oritentation on the page for key elements, like tick marks on the track.
+ * 
+ * @param float $lat1 starting latitude
+ * @param float $lon1 starting longitude
+ * @param float $lat2 ending latitude
+ * @param float $lon2 ending longitude
+ * 
+ * @return array
+ */
+function distance($lat1, $lon1, $lat2, $lon2)
+{
+    if ($lat1 === $lat2 && $lon1 === $lon2) {
+        return array (0,0);
+    }
+    $radlat1 = deg2rad($lat1);
+    $radlat2 = deg2rad($lat2);
+    $theta = $lon1 - $lon2;
+    $dist = sin($radlat1) * sin($radlat2) +  cos($radlat1) *
+        cos($radlat2) * cos(deg2rad($theta));
+    $dist = acos($dist);
+    $dist = rad2deg($dist);
+    $miles = $dist * 60 * 1.1515;
+    if (is_nan($miles)) {
+        $err = $lat1 . ',' . $lon1 . '; ' . $lat2 . ',' . $lon2;
+        echo $GLOBALS['intro'] .
+            "Mdl: makeGpsv.php/function distance() - Not a number: " . $err . "</p>";
+    }
+    // angles using planar coords: ASSUME a minute/seconds in lat/lng spec
+    $dely = $lat2 - $lat1;
+    $delx = $lon2 - $lon1;
+    $radang = atan2($dely, $delx);
+    $angle = rad2deg($radang);
+    // Convert Euclid Angle to GPSV Rotation
+    if ($dely >= 0) {
+        if ($delx >= 0) {
+            $rotation = 90.0 - $angle;  // Northeast
+        } else {
+            $rotation = 450.0 - $angle; // Northwest
+        }
+    } else {
+        $rotation = 90.0 + -$angle;     // South
+    }
+    $rotation = round($rotation);
+    return array ($miles,$rotation);
 }
 /*
 function convtTime($GPStime) {
