@@ -50,7 +50,8 @@ $usr = filter_input(INPUT_POST, 'nid');
 require 'getLinks.php';
 ?>
 </div>
-</div> <!-- main -->
+</div><br /> <!-- main -->
+<button id="load" style="font-size:18px;margin-left:24px;">Add Photos</button>
 <div class="popupCap"></div>
 <script type="text/javascript">
     var cnt = <?= $supplied;?>;

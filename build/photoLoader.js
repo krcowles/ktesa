@@ -21,10 +21,10 @@ $.ajax({
             pichtml += '<div style="width:' + dispWidth + 'px;margin-left:2px;' +
                 'margin-right:2px;display:inline-block">' + 
                 '<input class="ckbox" type="checkbox" name="incl[]"' +
-                'value="https://c1.staticflickr.com/5/4572/24595961608_7b6ec7b0d6_n.jpg" />&nbsp;&nbsp;Add it' +
+                'value="' + phTitles[i] + '" />&nbsp;&nbsp;Add it' +
                 '<img class="allPhotos" height="220px" ' +
                 'width="' + dispWidth + 'px" src="' + photo.nsize +
-                'alt="' + photo.pic + '" /><br /></div>';
+                '" alt="' + photo.pic + '" /><br /></div>';
         }
         $('#loader').css('display','none');
         $('#main').css('display','block');
