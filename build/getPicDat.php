@@ -9,6 +9,12 @@
  * @license No license to date
  * @link    ../docs/
  */
+require "buildFunctions.php";
+$curldat = filter_input(INPUT_POST, 'albs');
+$typedat = filter_input(INPUT_POST, 'types');
+$supplied = filter_input(INPUT_POST, 'cnt');
+$curlids = json_decode($curldat);
+$albums = json_decode($typedat);
 // output msg styling:
 $pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
 $pcnt = 0;  // no of photos processed
@@ -110,7 +116,7 @@ for ($i=0; $i<$supplied; $i++) {
                     $pmodels = strpos($flickrInfo, $srchPat) + 48;
                 }  // end of while loop collecting album data for pics
                 // Now capture the exif data for the $o(riginal photos) array
-                include 'getExif.php';
+               include 'getExif.php';
             } elseif ($albType === 'apple') {
                 // no code at this time
             } elseif ($albType === 'googl') {
@@ -125,3 +131,5 @@ for ($i=0; $i<$supplied; $i++) {
 }  // end of for each album url input box
 // sort the arrays based on timestamp:
 require "timeSort.php";
+$picinfo = json_encode($picdat);
+echo $picinfo;

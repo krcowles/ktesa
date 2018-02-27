@@ -1,10 +1,9 @@
 <?php
 /**
- * This is the script that extracts photos from specified upload
- * albums, and organizes them to be presented on a new page for
- * the user to select. At this point, the user selections will next
- * appear in the editor, where he/she may specify display of the photo
- * on either the hike page or hike map.
+ * This script will collect the url info from the editor page and prepare it
+ * for consumption by the js ajax request to extract album photo data. If either
+ * of the url fields in the data base is empty, the db may update the field with
+ * the incoming url's.
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -86,42 +85,5 @@ if ($dburl[1] === '') {
         $link, 'EHIKES', $hikeNo, 'purl2', 'indxNo', $dburl[1], __FILE__, __LINE__
     );
 }
-require 'getPicDat.php';
-// all photos are now in picdat[], time sorted; create javascript var:
-$ajaxArray = json_encode($picdat);
-// some arrays are created below to display photos locally with name captions:
-$picno = 0;
-$phNames = []; // filename w/o extension, aka 'title'
-$phDescs = []; // caption
-$phPics = []; // capture the link for the mid-size version of the photo
-$phWds = []; // width, but adjusted for row size, so table uses:
-$rowHt = 220; // nominal choice for row height in div
-foreach ($picdat as $pics) { 
-    $pHeight = $pics['pHt'];
-    $aspect = $rowHt/$pHeight;
-    $pWidth = $pics['pWd'];
-    $phWds[$picno] = floor($aspect * $pWidth);
-    $phNames[$picno] = $pics['pic'];
-    $phPics[$picno] = $pics['nsize'];
-    $phDescs[$picno] = $pics['desc'];
-    $picno += 1;
-}
-// create the js arrays to be passed to the accompanying script:
-$jsTitles = '[';
-for ($n=0; $n<count($phNames); $n++) {
-    if ($n === 0) {
-        $jsTitles .= '"' . $phNames[0] . '"';
-    } else {
-        $jsTitles .= ',"' . $phNames[$n] . '"';
-    }
-}
-$jsTitles .= ']';
-$jsDescs = '[';
-for ($m=0; $m<count($phDescs); $m++) {
-    if ($m === 0) {
-        $jsDescs .= '"' . $phDescs[0] . '"';
-    } else {
-        $jsDescs .= ',"' . $phDescs[$m] . '"';
-    }
-}
-$jsDescs .= ']';
+$alburls = json_encode($curlids);
+$albtypes = json_encode($albums);

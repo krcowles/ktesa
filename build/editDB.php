@@ -52,7 +52,7 @@ require "dataForEditor.php";
 </div>
 
 <div id="tab2" class="tab-panel">
-<form id="part1" action="newPhotos.php" method="POST">
+<form id="part1" action="photoLoader.php" method="POST">
     <?php
     require 'tab2display.php';
     ?>
