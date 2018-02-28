@@ -1,64 +1,5 @@
 $( function() {  // wait until document is loaded...
 
-function setChartDims() {
-    var winWidth = $(window).width();
-    var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
-    if (bodySurplus < 24) {
-        bodySurplus = 24;
-    }
-    // calculate space available for canvas:
-    fullWidth = $('body').innerWidth() - bodySurplus;
-    chartWidth = Math.floor(0.745 * fullWidth);
-    var vpHeight = window.innerHeight;
-    var sidePnlPos = $('#sidePanel').offset();
-    var sidePnlLoc = parseInt(sidePnlPos.top);
-    var usable = vpHeight - sidePnlLoc;
-    chartHeight = Math.floor(0.35 * usable);
-    if (chartHeight < 100) {
-        $('#chartline').height(100);
-        canvasEl.height = 100;
-    } else {
-        $('#chartline').height(chartHeight);
-        canvasEl.height = chartHeight;
-    }
-    canvasEl.width = chartWidth;
-}
-function defineData() {
-    // data object for the chart:
-    var dataDef = { title: "",
-        minY: emin,
-        maxY: emax,
-        xLabel: 'Distance (miles)', 
-        yLabel: 'Elev. (ft)',
-        labelFont: '10pt Arial', 
-        dataPointFont: '8pt Arial',
-        renderTypes: [ChartObj.renderType.lines, ChartObj.renderType.points],
-        dataPoints: rows
-    };
-    return dataDef;
-}
-function crossHairs() {
-    canvasEl.onmousemove = function (e) {
-        var loc = window2canvas(canvasEl, e.clientX, e.clientY);
-        coords = dataReadout(loc);
-        if (!prevCHairs) {
-            imageData = context.getImageData(0,0,canvasEl.width,canvasEl.height);
-            prevCHairs = true;
-        } else {
-            context.putImageData(imageData, 0, 0);
-        }
-        var mapObj = { lat: lats[indxOfPt], lng: lngs[indxOfPt] };
-        drawLine(coords.px,margin.top,coords.px,margin.top+yMax,'Tomato',1);
-        drawLine(margin.left,coords.py,margin.left+xMax,coords.py);
-        infoBox(coords.px,coords.py,coords.x.toFixed(2),coords.y.toFixed(),mapObj);
-    };
-    canvasEl.onmouseout = function (e) {
-        context.putImageData(imageData,0,0);
-        prevCHairs = false;
-        document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
-    }
-}
-// account for building new page - files not stored in main yet
 var trackfile = $('#chartline').data('gpx');
 var lats = [];
 var lngs = [];
@@ -74,29 +15,15 @@ var resizeFlag = true;
 var fullWidth; // page width on load
 var chartHeight; // chart height on load
 var chartWidth; // chart width on load
-/* This section of code reads in the GPX file (ajax) capturing the latitudes
- * and longitudes, calculating the distances between points via fct 'distance',
- * and storing the results in the array 'elevs'.
- */
-function distance(lat1, lon1, lat2, lon2, unit) {
-    if (lat1 === lat2 && lon1 === lon2) { return 0; }
-    var radlat1 = Math.PI * lat1/180;
-    var radlat2 = Math.PI * lat2/180;
-    var theta = lon1-lon2;
-    var radtheta = Math.PI * theta/180;
-    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    dist = Math.acos(dist);
-    dist = dist * 180/Math.PI;
-    dist = dist * 60 * 1.1515;
-    if (unit === "K") { dist = dist * 1.609344; }
-    if (unit === "N") { dist = dist * 0.8684; }  // else result is in miles "M"
-    return dist;
-}
 // locate button with respect to side panel location:
 var pnlWidth = $('#sidePanel').width() + 50;
 pnlWidth += 'px';
 $('#mpgeo').css('left',pnlWidth);
-// load the xml file and create the chart!
+
+/* This section of code reads in the GPX file (ajax) capturing the latitudes
+ * and longitudes, calculating the distances between points via fct 'distance',
+ * and storing the results in the array 'elevs'.
+ */
 $.ajax({
     dataType: "xml",  // xml document object can readily be handled by jQuery
     url: trackfile,
@@ -164,9 +91,7 @@ var imageData;
 // render the chart using predefined objects
 var waitForDat = setInterval( function() {
     if (ajaxDone) {
-        var chartData = defineData();
-        ChartObj.render('grph', chartData);
-        crossHairs();
+        drawChart();
         clearInterval(waitForDat);
     }
 }, 200);
@@ -181,10 +106,7 @@ if (!mobile_browser) {
         $('#chartline').width(fullWidth);
         canvasEl.width = fullWidth;
         // redraw the chart
-        var chartData = defineData();
-        ChartObj.render('grph', chartData);
-        crossHairs();
-        // expand map width
+        drawChart();
         $('iframe').width('98%');
     });
     $('#nogeo').on('click', function() {
@@ -193,15 +115,91 @@ if (!mobile_browser) {
         $('#chartline').width(chartWidth);
         canvasEl.width = chartWidth;
         // redraw the chart
-        var chartData = defineData();
-        ChartObj.render('grph', chartData);
-        crossHairs();
+        drawChart();
         $('iframe').width('74.5%');
         $('#sidePanel').show();
     });
 }
-
-
+/*
+ * FUNCTION DECLARATIONS:
+ */
+function drawChart() {
+    var chartData = defineData();
+    ChartObj.render('grph', chartData);
+    crossHairs();
+}
+function setChartDims() {
+    var winWidth = $(window).width();
+    var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
+    if (bodySurplus < 24) {
+        bodySurplus = 24;
+    }
+    // calculate space available for canvas:
+    fullWidth = $('body').innerWidth() - bodySurplus;
+    chartWidth = Math.floor(0.745 * fullWidth);
+    var vpHeight = window.innerHeight;
+    var sidePnlPos = $('#sidePanel').offset();
+    var sidePnlLoc = parseInt(sidePnlPos.top);
+    var usable = vpHeight - sidePnlLoc;
+    chartHeight = Math.floor(0.35 * usable);
+    if (chartHeight < 100) {
+        $('#chartline').height(100);
+        canvasEl.height = 100;
+    } else {
+        $('#chartline').height(chartHeight);
+        canvasEl.height = chartHeight;
+    }
+    canvasEl.width = chartWidth;
+}
+function defineData() {
+    // data object for the chart:
+    var dataDef = { title: "",
+        minY: emin,
+        maxY: emax,
+        xLabel: 'Distance (miles)', 
+        yLabel: 'Elev. (ft)',
+        labelFont: '10pt Arial', 
+        dataPointFont: '8pt Arial',
+        renderTypes: [ChartObj.renderType.lines, ChartObj.renderType.points],
+        dataPoints: rows
+    };
+    return dataDef;
+}
+function crossHairs() {
+    canvasEl.onmousemove = function (e) {
+        var loc = window2canvas(canvasEl, e.clientX, e.clientY);
+        coords = dataReadout(loc);
+        if (!prevCHairs) {
+            imageData = context.getImageData(0,0,canvasEl.width,canvasEl.height);
+            prevCHairs = true;
+        } else {
+            context.putImageData(imageData, 0, 0);
+        }
+        var mapObj = { lat: lats[indxOfPt], lng: lngs[indxOfPt] };
+        drawLine(coords.px,margin.top,coords.px,margin.top+yMax,'Tomato',1);
+        drawLine(margin.left,coords.py,margin.left+xMax,coords.py);
+        infoBox(coords.px,coords.py,coords.x.toFixed(2),coords.y.toFixed(),mapObj);
+    };
+    canvasEl.onmouseout = function (e) {
+        context.putImageData(imageData,0,0);
+        prevCHairs = false;
+        document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
+    }
+}
+function distance(lat1, lon1, lat2, lon2, unit) {
+    if (lat1 === lat2 && lon1 === lon2) { return 0; }
+    var radlat1 = Math.PI * lat1/180;
+    var radlat2 = Math.PI * lat2/180;
+    var theta = lon1-lon2;
+    var radtheta = Math.PI * theta/180;
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    dist = Math.acos(dist);
+    dist = dist * 180/Math.PI;
+    dist = dist * 60 * 1.1515;
+    if (unit === "K") { dist = dist * 1.609344; }
+    if (unit === "N") { dist = dist * 0.8684; }  // else result is in miles "M"
+    return dist;
+}
 function window2canvas(canvas,x,y) {
     /* it is necessary to get bounding rect each time as the user may have
      * scrolled the window down (or resized), and the rect is measured wrt/viewport
@@ -269,7 +267,7 @@ function findNeighbors(xDataPt) {
         l: lower
     }
 }
-
+// Redraw when there is a window resize
 $(window).resize( function() {
     if (resizeFlag) {
         prevCHairs = false;
