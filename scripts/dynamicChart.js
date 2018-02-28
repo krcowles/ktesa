@@ -7,13 +7,13 @@ function setChartDims() {
         bodySurplus = 24;
     }
     // calculate space available for canvas:
-    var chartWidth = $('body').innerWidth() - bodySurplus;
-    //chartWidth *= 0.745;
+    fullWidth = $('body').innerWidth() - bodySurplus;
+    chartWidth = Math.floor(0.745 * fullWidth);
     var vpHeight = window.innerHeight;
     var sidePnlPos = $('#sidePanel').offset();
     var sidePnlLoc = parseInt(sidePnlPos.top);
     var usable = vpHeight - sidePnlLoc;
-    var chartHeight = Math.floor(0.35 * usable);
+    chartHeight = Math.floor(0.35 * usable);
     if (chartHeight < 100) {
         $('#chartline').height(100);
         canvasEl.height = 100;
@@ -22,8 +22,6 @@ function setChartDims() {
         canvasEl.height = chartHeight;
     }
     canvasEl.width = chartWidth;
-    $('#sidePanel').css('display','none');
-    $('iframe').width('98%');
 }
 function defineData() {
     // data object for the chart:
@@ -73,7 +71,9 @@ var emin;  // minimum value found for evlevatiom
 var msg;
 var ajaxDone = false;
 var resizeFlag = true;
-
+var fullWidth; // page width on load
+var chartHeight; // chart height on load
+var chartWidth; // chart width on load
 /* This section of code reads in the GPX file (ajax) capturing the latitudes
  * and longitudes, calculating the distances between points via fct 'distance',
  * and storing the results in the array 'elevs'.
@@ -91,7 +91,12 @@ function distance(lat1, lon1, lat2, lon2, unit) {
     if (unit === "K") { dist = dist * 1.609344; }
     if (unit === "N") { dist = dist * 0.8684; }  // else result is in miles "M"
     return dist;
-}	
+}
+// locate button with respect to side panel location:
+var pnlWidth = $('#sidePanel').width() + 50;
+pnlWidth += 'px';
+$('#mpgeo').css('left',pnlWidth);
+// load the xml file and create the chart!
 $.ajax({
     dataType: "xml",  // xml document object can readily be handled by jQuery
     url: trackfile,
@@ -165,6 +170,38 @@ var waitForDat = setInterval( function() {
         clearInterval(waitForDat);
     }
 }, 200);
+// Display the button for mobile phones allowing geoloc & hiding of side panel
+var mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
+if (!mobile_browser) {
+    $('#mpgeo').css('display', 'block');
+    $('#mpgeo').on('click', function() {
+        $(this).hide();
+        $('#nogeo').show();
+        $('#sidePanel').css('display', 'none');
+        $('#chartline').width(fullWidth);
+        canvasEl.width = fullWidth;
+        // redraw the chart
+        var chartData = defineData();
+        ChartObj.render('grph', chartData);
+        crossHairs();
+        // expand map width
+        $('iframe').width('98%');
+    });
+    $('#nogeo').on('click', function() {
+        $(this).hide();
+        $('#mpgeo').show();
+        $('#chartline').width(chartWidth);
+        canvasEl.width = chartWidth;
+        // redraw the chart
+        var chartData = defineData();
+        ChartObj.render('grph', chartData);
+        crossHairs();
+        $('iframe').width('74.5%');
+        $('#sidePanel').show();
+    });
+}
+
+
 function window2canvas(canvas,x,y) {
     /* it is necessary to get bounding rect each time as the user may have
      * scrolled the window down (or resized), and the rect is measured wrt/viewport

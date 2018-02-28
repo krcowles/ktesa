@@ -88,6 +88,9 @@ require "hikePageData.php";
 </div>
 <?php else : ?>
 <!--  ---------------------------- NEW STYLE -------------------------- -->
+<!-- For mobile phone: display option to hide Side Panel and add geoloc: -->
+<button id="mpgeo">Add Geolocation</button>
+<button id="nogeo">Remove Gelocation</button>
 <!-- Side Panel: -->
 <div id="sidePanel">
     <p id="stats"><strong>Hike Statistics</strong></p>
