@@ -141,7 +141,7 @@ require "hikePageData.php";
     alt="special notes icon" /><p id="tipHdr">TRAIL TIPS!</p>
     <p id="tipNotes"><?= $hikeTips;?></p></div>
 <?php endif; ?>
-<div id="hikeInfo"><?= $hikeInfo;?>"</div></div><br />
+<div id="hikeInfo"><?= $hikeInfo;?></div></div><br />
 <?php
 require 'relatedInfo.php';
 if ($bop !== '') {
