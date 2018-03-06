@@ -15,6 +15,7 @@ var resizeFlag = true;
 var fullWidth; // page width on load
 var chartHeight; // chart height on load
 var chartWidth; // chart width on load
+var mpnode; // holds mpgeo button when panel hides
 // locate button with respect to side panel location:
 var pnlWidth = $('#sidePanel').width() + 50;
 pnlWidth += 'px';
@@ -95,31 +96,43 @@ var waitForDat = setInterval( function() {
         clearInterval(waitForDat);
     }
 }, 200);
-// Display the button for mobile phones allowing geoloc & hiding of side panel
-var mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
-if (!mobile_browser) {
-    $('#mpgeo').css('display', 'block');
-    $('#mpgeo').on('click', function() {
-        $(this).hide();
-        $('#nogeo').show();
-        $('#sidePanel').css('display', 'none');
-        $('#chartline').width(fullWidth);
-        canvasEl.width = fullWidth;
-        // redraw the chart
-        drawChart();
-        $('iframe').width('98%');
-    });
-    $('#nogeo').on('click', function() {
-        $(this).hide();
-        $('#mpgeo').show();
-        $('#chartline').width(chartWidth);
-        canvasEl.width = chartWidth;
-        // redraw the chart
-        drawChart();
-        $('iframe').width('74.5%');
-        $('#sidePanel').show();
-    });
-}
+// Hide side panel
+$('#hide').on('click', function() {
+    mpnode = $('#mpgeo').detach();
+    $('#sidePanel').css('display', 'none');
+    $('#chartline').width(fullWidth);
+    canvasEl.width = fullWidth;
+    // redraw the chart
+    drawChart();
+    $('iframe').width('98%');
+    $('#unhide').css('display','block');
+    $('iframe').before(mpnode);
+    $('#mpgeo').css('left', '40px');
+});
+$('#unhide').on('click', function() {
+    mpnode = $('#mpgeo').detach();
+    $('#sidePanel').css('display','block');
+    $('#chartline').width(chartWidth);
+    canvasEl.width = chartWidth;
+    $('#chartline').height(chartHeight);
+    canvasEl.height = chartHeight;
+    drawChart();
+    $('iframe').width('74%');
+    $('#unhide').css('display','none');
+    $('#sidePanel').prepend(mpnode);
+    var sploc = $('#sidePanel').width() + 50 + 'px';
+    $('#mpgeo').css('left', sploc);
+});
+// Geo button toggling:
+$('#mpgeo').on('click', function() {
+    var btxt = document.getElementById('mpgeo');
+    var buttontxt = btxt.firstChild.nodeValue;
+    if (buttontxt == 'Add Geolocation') {
+        btxt.firstChild.nodeValue = 'Remove Geolocation';
+    } else {
+        btxt.firstChild.nodeValue = 'Add Geolocation';
+    }
+});
 /*
  * FUNCTION DECLARATIONS:
  */
