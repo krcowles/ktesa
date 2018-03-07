@@ -123,21 +123,14 @@ function makeTrackFile($gpxfile, $gpxpath)
 {
     $ext = strrpos($gpxfile, ".");
     $baseName = substr($gpxfile, 0, $ext);
-    $gpxLoc = $gpxpath . $gpxfile;
-    // Now create the .json track file
-    $gpxdat = simplexml_load_file($gpxLoc);
-    if ($gpxdat === false) {
-        die(
-            "buildFunctions.php: Could not load gpx file as simplexml; " .
-            "Please contact Site Master"
-        );
-    }
     $trkfile = $baseName . ".json";
     $trkLoc = '../json/' . $trkfile;
-    $json = true;
-    include "../php/extractGpx.php"; // creates track file $jdat
+    $gpxLoc = $gpxpath . $gpxfile;
+    $gpxdat = gpxLatLng($gpxLoc, "1");
+    $thlat = $gpxdat[0][0];
+    $thlng = $gpxdat[1][0];
     $trk = fopen($trkLoc, "w");
-    $dwnld = fwrite($trk, $jdat);
+    $dwnld = fwrite($trk, $gpxdat[3]);
     if ($dwnld === false) {
         $trkfail =  "buildFunctions.php: Failed to write out {$trkfile} " .
             "[length: " . strlen($jdat) . "]; Please contact Site Master";
@@ -338,6 +331,112 @@ function mantissa($degrees)
     }
     $coords += ($mins + $secs / 60) / 60;
     return $coords;
+}
+/**
+ * This function extracts the lats, lngs, and elevs from a gpx file,
+ * and returns them as arrays. It also creates a json file for use in javascript,
+ * if and only if a single track is requested from the caller.
+ * NOTE: if there are multiple segments within a track, they are essentially
+ * combined into one seqment.
+ * 
+ * @param string $gpxfile      The (full or relative) path to the gpx file
+ * @param string $no_of_tracks Return data for number of tracks specified (or all)
+ * 
+ * @return array $stuff
+ */
+function gpxLatLng($gpxfile, $no_of_tracks)
+{
+    $gpxlats = [];
+    $gpxlons = [];
+    $gpxelev = [];
+    $plat = 0;
+    $plng = 0;
+    // get file as simple xml
+    $gpxdat = simplexml_load_file($gpxfile);
+    if ($gpxdat === false) {
+        die(
+            __FILE__ . "Line " . __LINE__ . "Could not load gpx file as " .
+            "simplexml; Please contact Site Master"
+        );
+    }
+    if ($no_of_tracks === 'all') {
+        $trkcnt = $gpxdat->trk->count();
+    } else {
+        $trkcnt = intval($no_of_tracks);
+    }
+    for ($i=0; $i<$trkcnt; $i++) {
+        foreach ($gpxdat->trk[$i]->trkseg as $trackdat) {
+            foreach ($trackdat->trkpt as $datum) {
+                if (!( $datum['lat'] === $plat && $datum['lon'] === $plng )) {
+                    $plat = $datum['lat'];
+                    $plng = $datum['lon'];
+                    array_push($gpxlats, (float)$plat);
+                    array_push($gpxlons, (float)$plng);
+                    $meters = $datum->ele;
+                    $feet = round(3.28084 * $meters, 1);
+                    array_push($gpxelev, $feet);
+                }
+            }
+        }
+        if ($trkcnt === 1) {
+            $jdat = '[';   // array of objects
+            for ($n=0; $n<count($gpxlats); $n++) {
+                $jdat .= '{"lat":' . $gpxlats[$n] . ',"lng":' . $gpxlons[$n] . '},';
+            }
+            $jdat = substr($jdat, 0, strlen($jdat)-1);
+            $jdat .= ']';
+            return array($gpxlats, $gpxlons, $gpxelev, $jdat);
+        }
+    }
+    return array($gpxlats, $gpxlons, $gpxelev);
+}
+/**
+ * Function to calculate the distance between two lat/lng coordinates.
+ * In addition, the 'rotation' angle is calculated which provides the correct
+ * oritentation on the page for key elements, like tick marks on the track.
+ * 
+ * @param float $lat1 starting latitude
+ * @param float $lon1 starting longitude
+ * @param float $lat2 ending latitude
+ * @param float $lon2 ending longitude
+ * 
+ * @return array
+ */
+function distance($lat1, $lon1, $lat2, $lon2)
+{
+    if ($lat1 === $lat2 && $lon1 === $lon2) {
+        return array (0,0);
+    }
+    $radlat1 = deg2rad($lat1);
+    $radlat2 = deg2rad($lat2);
+    $theta = $lon1 - $lon2;
+    $dist = sin($radlat1) * sin($radlat2) +  cos($radlat1) *
+        cos($radlat2) * cos(deg2rad($theta));
+    $dist = acos($dist);
+    $dist = rad2deg($dist);
+    $miles = $dist * 60 * 1.1515;
+    if (is_nan($miles)) {
+        $err = $lat1 . ',' . $lon1 . '; ' . $lat2 . ',' . $lon2;
+        echo $GLOBALS['intro'] .
+            "Mdl: makeGpsv.php/function distance() - Not a number: " . $err . "</p>";
+    }
+    // angles using planar coords: ASSUME a minute/seconds in lat/lng spec
+    $dely = $lat2 - $lat1;
+    $delx = $lon2 - $lon1;
+    $radang = atan2($dely, $delx);
+    $angle = rad2deg($radang);
+    // Convert Euclid Angle to GPSV Rotation
+    if ($dely >= 0) {
+        if ($delx >= 0) {
+            $rotation = 90.0 - $angle;  // Northeast
+        } else {
+            $rotation = 450.0 - $angle; // Northwest
+        }
+    } else {
+        $rotation = 90.0 + -$angle;     // South
+    }
+    $rotation = round($rotation);
+    return array ($miles,$rotation);
 }
 /*
 function convtTime($GPStime) {

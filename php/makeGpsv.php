@@ -6,71 +6,18 @@
  * popup photos. This data is formatted according to the GPSVisualizer
  * map construct and stored in the output variable '$html'. 
  * Variables expected to be defined prior to invocation: 
- * string: $gpxPath, relative url to the gpx file;
- * integer: $hikeNo, unique hike id
+ *    string  $gpxPath, relative url to the gpx file;
+ *    integer $hikeNo, unique hike id
  * 
  * @package GPSV_Mapping
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license None at this time
  * @link    ../php
  */
-/**
- * The connectToDb function determines which host is active and establishes
- * a connection to the MySQL database for each case. In additional, some
- * general purpose global functions provide insert/update functionality for
- * the database so as to preserve null fields.
- */
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
-/**
- * Function to calculate the distance between two lat/lng coordinates.
- * In addition, the 'rotation' angle is calculated which provides the correct
- * oritentation on the page for key elements, like tick marks on the track.
- * 
- * @param float $lat1 starting latitude
- * @param float $lon1 starting longitude
- * @param float $lat2 ending latitude
- * @param float $lon2 ending longitude
- * 
- * @return array
- */
-function distance($lat1, $lon1, $lat2, $lon2)
-{
-    if ($lat1 === $lat2 && $lon1 === $lon2) {
-        return array (0,0);
-    }
-    $radlat1 = deg2rad($lat1);
-    $radlat2 = deg2rad($lat2);
-    $theta = $lon1 - $lon2;
-    $dist = sin($radlat1) * sin($radlat2) +  cos($radlat1) *
-        cos($radlat2) * cos(deg2rad($theta));
-    $dist = acos($dist);
-    $dist = rad2deg($dist);
-    $miles = $dist * 60 * 1.1515;
-    if (is_nan($miles)) {
-        $err = $lat1 . ',' . $lon1 . '; ' . $lat2 . ',' . $lon2;
-        echo $GLOBALS['intro'] .
-            "Mdl: makeGpsv.php/function distance() - Not a number: " . $err . "</p>";
-    }
-    // angles using planar coords: ASSUME a minute/seconds in lat/lng spec
-    $dely = $lat2 - $lat1;
-    $delx = $lon2 - $lon1;
-    $radang = atan2($dely, $delx);
-    $angle = rad2deg($radang);
-    // Convert Euclid Angle to GPSV Rotation
-    if ($dely >= 0) {
-        if ($delx >= 0) {
-            $rotation = 90.0 - $angle;  // Northeast
-        } else {
-            $rotation = 450.0 - $angle; // Northwest
-        }
-    } else {
-        $rotation = 90.0 + -$angle;     // South
-    }
-    $rotation = round($rotation);
-    return array ($miles,$rotation);
-}
-// Error message data
+require "../build/buildFunctions.php";
+// Error messaging
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
 $gpxmsg = $intro . 'Mdl: makeGpsv.php - Could not parse XML in gpx file: ';
@@ -79,14 +26,11 @@ $gpxmsg = $intro . 'Mdl: makeGpsv.php - Could not parse XML in gpx file: ';
  * 1. Metadata in GPX files can vary considerably, including defined namespaces.
  *    In some cases (e.g. Garmin), the user may specify track colors. However,
  *    since these are not necessarily compatible with the GPSV map utility, all
- *    files will use the default track colors identified below. Other items,
- *    such as <author> may or may not exist, so this script will attempt to 
- *    minimize the use of supplied metadata.
+ *    files will use the default track colors identified below.
  * 2. Any given track may have one or more track segments. Track segments
  *    are not independently processed here, but are considered inseparable 
  *    parts of a track, and hence all trkpts together (from all segments in 
  *    the track) will be blended into  the corresponding 'parent' track. 
- *    However, there certainly can be more than 1 track per file. 
  *    Each track, regardless of number of segments, will have a unique set of 
  *    GPSV data. Each track will be separately written out in the GPSV html 
  *    file with a corresponding track name and color.
