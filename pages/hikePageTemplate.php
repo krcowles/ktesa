@@ -91,7 +91,6 @@ require "hikePageData.php";
 <!-- Side Panel: -->
 <div id="unhide">></div>
 <div id="sidePanel">
-    <button id="mpgeo">Add Geolocation</button>
     <div id="hide"><</div>
     <p id="stats"><strong>Hike Statistics</strong></p>
     <p id="summary">
