@@ -15,13 +15,10 @@ var resizeFlag = true;
 var fullWidth; // page width on load
 var chartHeight; // chart height on load
 var chartWidth; // chart width on load
-var mpnode; // holds mpgeo button when panel hides
-// locate button with respect to side panel location:
-var pnlWidth = $('#sidePanel').width() + 50;
-pnlWidth += 'px';
-$('#mpgeo').css('left',pnlWidth);
-
-/* This section of code reads in the GPX file (ajax) capturing the latitudes
+var lmarg = $('#sidePanel').css('margin-left');
+var pnlMarg = lmarg.substr(0, lmarg.length-2); // remove 'px' at end
+/* 
+ * This next section of code reads in the GPX file (ajax) capturing the latitudes
  * and longitudes, calculating the distances between points via fct 'distance',
  * and storing the results in the array 'elevs'.
  */
@@ -98,40 +95,24 @@ var waitForDat = setInterval( function() {
 }, 200);
 // Hide side panel
 $('#hide').on('click', function() {
-    mpnode = $('#mpgeo').detach();
     $('#sidePanel').css('display', 'none');
     $('#chartline').width(fullWidth);
     canvasEl.width = fullWidth;
     // redraw the chart
     drawChart();
-    $('iframe').width('98%');
+    $('iframe').width(fullWidth);
     $('#unhide').css('display','block');
-    $('iframe').before(mpnode);
-    $('#mpgeo').css('left', '40px');
 });
 $('#unhide').on('click', function() {
-    mpnode = $('#mpgeo').detach();
     $('#sidePanel').css('display','block');
     $('#chartline').width(chartWidth);
     canvasEl.width = chartWidth;
     $('#chartline').height(chartHeight);
     canvasEl.height = chartHeight;
+    // redraw the chart
     drawChart();
-    $('iframe').width('74%');
+    $('iframe').width(chartWidth);
     $('#unhide').css('display','none');
-    $('#sidePanel').prepend(mpnode);
-    var sploc = $('#sidePanel').width() + 50 + 'px';
-    $('#mpgeo').css('left', sploc);
-});
-// Geo button toggling:
-$('#mpgeo').on('click', function() {
-    var btxt = document.getElementById('mpgeo');
-    var buttontxt = btxt.firstChild.nodeValue;
-    if (buttontxt == 'Add Geolocation') {
-        btxt.firstChild.nodeValue = 'Remove Geolocation';
-    } else {
-        btxt.firstChild.nodeValue = 'Add Geolocation';
-    }
 });
 /*
  * FUNCTION DECLARATIONS:
@@ -142,14 +123,9 @@ function drawChart() {
     crossHairs();
 }
 function setChartDims() {
-    var winWidth = $(window).width();
-    var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
-    if (bodySurplus < 24) {
-        bodySurplus = 24;
-    }
-    // calculate space available for canvas:
-    fullWidth = $('body').innerWidth() - bodySurplus;
-    chartWidth = Math.floor(0.745 * fullWidth);
+    // calculate space available for canvas: (panel width = 23%)
+    fullWidth = $('body').innerWidth();
+    chartWidth = Math.floor(0.77 * fullWidth) - pnlMarg;
     var vpHeight = window.innerHeight;
     var sidePnlPos = $('#sidePanel').offset();
     var sidePnlLoc = parseInt(sidePnlPos.top);
@@ -162,7 +138,9 @@ function setChartDims() {
         $('#chartline').height(chartHeight);
         canvasEl.height = chartHeight;
     }
+    $('#chartline').width(chartWidth);
     canvasEl.width = chartWidth;
+    $('iframe').width(chartWidth);
 }
 function defineData() {
     // data object for the chart:
