@@ -75,7 +75,6 @@ mysqli_close($link);
 ?>
 <span style="color:brown;">DONE</span>
 <?php if ($action == 'Reload Database') : ?>
-<p id="trail">Loading Database</p>
 <div style="margin-left:16px;">
 <p>Please wait until the 'DONE' message appears below</p>
 <div id="progress">
