@@ -39,7 +39,9 @@ for ($k=$kstart; $k<$pcnt; $k++) {
         // Write the truncated file to tmp/
         fwrite($exifFile, $contents);
         fclose($exifFile);
+        error_reporting(E_ALL ^ E_WARNING);
         $exifdata = exif_read_data($truncFile);
+        error_reporting(E_ALL);
         if ($exifdata === false) {
             continue;   // no exif data yet - go back and read some more
         } else {
