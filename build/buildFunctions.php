@@ -455,7 +455,7 @@ function convertRtePts($rtefile)
     $oldroute = $rtefile->asXML();
     $nxt = 0;
     // for all <rte> tags:
-    while ($rteLoc = strpos($oldroute, "<rte>", $nxt)) {
+    while ($rteLoc = strpos($oldroute, "<rte>", $nxt) !== false) {
         // insert <trackseg>; NOTE: intervening lines between <rte> & <rtept>
         $firstRtePt = strpos($oldroute, "<rtept", $rteLoc);
         $remlgth = strlen($oldroute) - $firstRtePt;
