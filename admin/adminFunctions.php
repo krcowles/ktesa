@@ -28,7 +28,7 @@ function reverseTrack($gpxdata, $trkno)
     // Main loop through the gpxdata file looking for designated track
     $newfile = [];
     for ($i=0; $i<$lines; $i++) { // "A" : scan entire file
-        if (strpos($gpxdata[$i], "<trk>")) { // "B" : starting a track?
+        if (strpos($gpxdata[$i], "<trk>") !== FALSE) { // "B" : starting a track?
             if ($trkno === $curr) { // "C" : designated track?
                 // this is the track specified
                 array_push($newfile, $gpxdata[$i]); // save '<trk>'
@@ -36,13 +36,13 @@ function reverseTrack($gpxdata, $trkno)
                 // search for <trkseg>
                 for ($j=$trkStrt; $j<$lines; $j++) { // "D" : look for trkseg...
                     // is this the end of the track?
-                    if (strpos($gpxdata[$j], "</trk>")) { //"E" : end of track?
+                    if (strpos($gpxdata[$j], "</trk>") !== FALSE) { //"E" : end of track?
                         $curr++;
                         break;
                     } else {
                         // may be numerous tags between <trk> and <trkseg>
                         array_push($newfile, $gpxdata[$j]);
-                        if (strpos($gpxdata[$j], "<trkseg>")) { //  "F" : find trkseg
+                        if (strpos($gpxdata[$j], "<trkseg>") !== FALSE) { //  "F" : find trkseg
                             // ASSUMPTION: no intervening tags between <trkseg> and <trkpt>s
                             // trkseg found, process pts to end of track:
                             $ptStrt = $j + 1;
@@ -50,7 +50,7 @@ function reverseTrack($gpxdata, $trkno)
                             for ($k=$ptStrt; $k<$lines; $k++) { // "G" : collect trkpts    
                                 // gather trkpt "sets"
                                 $ptset = [];
-                                if (strpos($gpxdata[$k], "/>")) { // "H" : single or multiple?
+                                if (strpos($gpxdata[$k], "/>") !== FALSE) { // "H" : single or multiple?
                                     // single-line, self-closing
                                     array_push($ptset, $gpxdata[$k]);
                                 } else {
@@ -59,7 +59,7 @@ function reverseTrack($gpxdata, $trkno)
                                     $endpt = false;
                                     for ($set=$setStrt; $set<$lines; $set++) { // "I" :  collect
                                         array_push($ptset, $gpxdata[$set]);
-                                        if (strpos($gpxdata[$set], "</trkpt>")) { // "J" : end?
+                                        if (strpos($gpxdata[$set], "</trkpt>") !== FALSE) { // "J" : end?
                                             $endpt = true;
                                             break;
                                         } // "J" : end if /trkpt
@@ -73,7 +73,7 @@ function reverseTrack($gpxdata, $trkno)
                                     $k = $set;
                                 } // "H" : end if-else capture trkpt data
                                 array_push($ptcoll, $ptset); // look for more
-                                if (strpos($gpxdata[$k+1], "</trkseg>")) { // "L"
+                                if (strpos($gpxdata[$k+1], "</trkseg>") !== FALSE) { // "L"
                                     // Do reverse/write here
                                     $reverse = array_reverse($ptcoll);
                                     for ($r=0; $r<count($reverse); $r++) {

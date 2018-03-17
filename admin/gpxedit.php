@@ -49,7 +49,7 @@ if (!$gpx) {
 }
 $trkcnt = 0;
 foreach ($gpx as $line) {
-    if (strpos($line, "<trk>")) {
+    if (strpos($line, "<trk>") !== FALSE) {
         $trkcnt++;
     }
 }
@@ -65,7 +65,7 @@ if (isset($_POST['gpxall'])) {
     $noWhiteList = preg_replace('/\s+/', '', $revlist);
     $trkels = explode(",", $noWhiteList);
     foreach ($trkels as $member) {
-        if (strpos($member, "-")) {
+        if (strpos($member, "-") !== FALSE) {
             $range = explode("-", $member);
             $start = array_shift($range);
             $end = array_shift($range);
