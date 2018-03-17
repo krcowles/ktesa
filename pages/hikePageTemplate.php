@@ -89,7 +89,9 @@ require "hikePageData.php";
 <?php else : ?>
 <!--  ---------------------------- NEW STYLE -------------------------- -->
 <!-- Side Panel: -->
+<div id="unhide">></div>
 <div id="sidePanel">
+    <div id="hide"><</div>
     <p id="stats"><strong>Hike Statistics</strong></p>
     <p id="summary">
         Nearby City / Locale: <span class=sumClr><?= $hikeLocale;?></span><br />
@@ -112,9 +114,9 @@ require "hikePageData.php";
         the following album(s):
     </p>
     <p id="alnks"><a href="<?= $hikePhotoLink1;?>" target="_blank">Photo Album Link</a>
-<?php if (strlen($hikePhotoLink2) !== 0) : ?>
+    <?php if (strlen($hikePhotoLink2) !== 0) : ?>
         <br /><a href="<?= $hikePhotoLink2;?>" target="_blank">Additional Album Link</a>
-<?php endif; ?>
+    <?php endif; ?>
     </p>
     <p id="directions">The following link provides on-line directions to the trailhead:</p>
     <p id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">

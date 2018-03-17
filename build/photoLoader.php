@@ -44,14 +44,16 @@ $usr = filter_input(INPUT_POST, 'nid');
 <!-- This div (main) is displayed when photos are ready -->
 <div id="main" style="display:none;padding:16px;">
 <div style="position:relative;top:-14px;">
+    <span style="color:brown;font-size:18px">When desired photos have been
+        selected,</span>
+    <button id="load">Add Photos</button><br /><br />
     <input id="addall" type="checkbox" name="allPix" value="useAll" />&nbsp;
-        Add all photos to Photo Editor<br />
+    Add all photos to Photo Editor;
 <?php
 require 'getLinks.php';
 ?>
 </div>
 </div><br /> <!-- main -->
-<button id="load" style="font-size:18px;margin-left:24px;">Add Photos</button>
 <div class="popupCap"></div>
 <script type="text/javascript">
     var cnt = <?= $supplied;?>;

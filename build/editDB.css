@@ -185,3 +185,12 @@ input[type=submit]:hover {
     margin-left: auto;
     margin-right: auto;
 }
+#load {
+    font-size: 18px;
+    margin-left:24px;
+    background-color: #ffe6e9;
+}
+#load:hover {
+    cursor: pointer;
+    background-color: papayawhip;
+}

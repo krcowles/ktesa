@@ -36,10 +36,11 @@ table td {
 /* Side Panel styling, including hikeInfo & refs */
 #sidePanel {
     float: left;
+    padding: 0px;
     margin-top: -12px;
     margin-left: 4px;
     margin-right: 0px;
-    width: 25%;
+    width: 23%;
     min-height: 400px;
     border-style: inset;
     border-width: 2px;
@@ -49,6 +50,34 @@ table td {
     -ms-box-sizing: border-box;
     box-sizing: border-box;
     overflow:scroll;
+}
+#hide {
+    float: right;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 5px;
+    height: 30px;
+    width: 30px;
+    background-color: darkgray;
+}
+#hide:hover {
+    cursor: pointer;
+}
+#unhide {
+    margin-top: 6px;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 5px;
+    height: 30px;
+    width: 30px;
+    background-color: darkgray;
+    display: none;
+    position: absolute;
+    top: 90px;
+    left: 4px;
+}
+#unhide:hover {
+    cursor: pointer;
 }
 #stats {
 	margin-top: 6px;
@@ -163,7 +192,8 @@ img {
     min-width: 960px;
 }
 iframe {
-    border: none; }
+    border: none;
+}
 .popupCap {
     margin: 0px;
     display: none;
@@ -223,5 +253,3 @@ div em {
 	border-width: 2px;
 	border-color: #c9d7e8;
 }
-	
-	
