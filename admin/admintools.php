@@ -49,15 +49,16 @@ session_start();
     </fieldset><br />
     <fieldset>
         <legend>GPX File Edits</legend>
-        <button id="gpxed">Reverse entire track file</button><br />
-        <button id="sgltrk">Reverse Track No.</button>&nbsp;
-        <select>
-            <option value="1">Trk 1</option>
-            <option value="2">Trk 2</option>
-            <option value="3">Trk 3</option>
-            <option value="4">Trk 4</option>
-            <option value="5">Trk 5</option>
-        </select>
+        NOTE: Edited file will be saved on site in gpx directory as "reversed.gpx"<br />
+        <form action="gpxedit.php" method="POST" enctype="multipart/form-data" />
+            <input type="file" id="gpx2edit" name="gpx2edit" /><br />
+            <input class="ged" type="submit" name="gpxall"
+                value="Reverse All Tracks" /><br />
+            <input class="ged" type="submit" name="gpxlst"
+                value="Reverse Track No(s):" />
+            (Single trk#, comma-list, or hyphen-range):&nbsp;
+            <input type="text" id="revlst" name="revlst" size="20" />
+        </form>
     </fieldset><br/>
     <fieldset>
         <legend>Misc Tools</legend>

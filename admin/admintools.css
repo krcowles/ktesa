@@ -25,9 +25,19 @@ button:hover {
 }
 input[type=submit] {
     font-size: 18px;
-    color: Brown;
+    color: DarkBlue;
     cursor: pointer;
 }
 input[type=submit]:hover {
     background-color: BlanchedAlmond;
+}
+input[type=file] {
+    font-size: 18px;
+    color: brown;
+}
+input[type=file]:hover {
+    cursor: pointer;
+}
+.ged {
+    margin-left: 24px;
 }
