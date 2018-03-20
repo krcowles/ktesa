@@ -11,7 +11,9 @@
  * @link    ../docs/
  */
 require "adminFunctions.php";
-// validate file info:
+/**
+ *  Validate the upload
+ */
 $name = "gpx2edit";
 $gpxfile = basename($_FILES[$name]['name']);
 if ($gpxfile !== '') {
@@ -43,17 +45,12 @@ if ($gpxfile !== '') {
     die("No file specified");
 }
 $editfile = $_FILES[$name]['tmp_name'];
-$gpx = file($editfile, FILE_SKIP_EMPTY_LINES);
+$gpx = simplexml_load_file($editfile);
 if (!$gpx) {
-    die("Could not retrieve uploaded gpx file");
+    die("Could not retrieve uploaded gpx file and convert to xml tree");
 }
-$trkcnt = 0;
-foreach ($gpx as $line) {
-    if (strpos($line, "<trk>") !== FALSE) {
-        $trkcnt++;
-    }
-}
-echo "<br />No of tracks is " . $trkcnt . "<br />";
+// END FILE VALIDATION
+$trkcnt = $gpx->trk->count();
 // form array of tracknos
 $tracklist = [];
 if (isset($_POST['gpxall'])) {
@@ -98,11 +95,10 @@ if (isset($_POST['gpxall'])) {
         }
     }
 }
-$newfile = "../gpx/reversed.gpx";
 foreach ($tracklist as $track) {
     $edited = reverseTrack($gpx, $track);
-    file_put_contents($newfile, $edited);
-    $gpx = file($newfile);
+    $edited->asXML("newgpx.gpx");
+    $gpx = $edited;
 }
 ?>
 <!DOCTYPE html>
