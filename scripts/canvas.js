@@ -10,7 +10,7 @@ var chartWidth;
 var chartHeight;
 var data = {};
 var context;
-var chart_ranges = [50,100,200,500,1000,2000,3000,4000];
+var chart_ranges = [50, 100, 200, 500, 1000, 2000, 3000, 4000, 6000];
 var deltaY;
 var median;
 var rgMax;
