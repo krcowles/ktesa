@@ -1,10 +1,21 @@
 <?php
-$file = '../gpsv.gpx';
+$file = '../gpx/BlackCanyonComposite.gpx';
 $xml = simplexml_load_file($file);
-echo $xml->gpx->asXML();
+// start a new file:
+$newgpx = new SimpleXMLElement("<gpx></gpx>");
+// get the "kids"
 $allnodes = $xml->children();
 $out = '';
 foreach ($allnodes as $node) {
-    $out .= $node->asXML();
+   if ($node->getName() === "trk") {
+       $trkchildren = $node->children();
+       foreach ($trkchildren as $childtag) {
+           if ($childtag !== 'trkseg') {
+               $out .= $childtag->asXML();
+           }
+       }
+   } else {
+       $out .= $node->asXML();
+   }
 }
 echo $out;
