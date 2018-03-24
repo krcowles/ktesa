@@ -11,6 +11,7 @@
  * @link    ../docs/
  */
 require "adminFunctions.php";
+$reversedFile = '../gpx/reversed.gpx';
 /**
  *  Validate the upload
  */
@@ -45,13 +46,16 @@ if ($gpxfile !== '') {
     die("No file specified");
 }
 $editfile = $_FILES[$name]['tmp_name'];
-$gpx = simplexml_load_file($editfile);
-if (!$gpx) {
-    die("Could not retrieve uploaded gpx file and convert to xml tree");
+$dom = new DOMDocument();
+$dom->formatOutput = true;
+$dom->load($editfile);
+if (!$dom) {
+    die("Could not retrieve uploaded gpx file and convert to DOM document");
 }
 // END FILE VALIDATION
-$trkcnt = $gpx->trk->count();
-// form array of tracknos
+$tracks = $dom->getElementsByTagName('trk'); // DONMNodeList object
+$trkcnt = $tracks->length;
+// process user input to determine tracks to be iteratively reversed
 $tracklist = [];
 if (isset($_POST['gpxall'])) {
     for ($i=0; $i<$trkcnt; $i++) {
@@ -62,7 +66,7 @@ if (isset($_POST['gpxall'])) {
     $noWhiteList = preg_replace('/\s+/', '', $revlist);
     $trkels = explode(",", $noWhiteList);
     foreach ($trkels as $member) {
-        if (strpos($member, "-") !== FALSE) {
+        if (strpos($member, "-") !== false) {
             $range = explode("-", $member);
             $start = array_shift($range);
             $end = array_shift($range);
@@ -95,10 +99,18 @@ if (isset($_POST['gpxall'])) {
         }
     }
 }
-foreach ($tracklist as $track) {
-    $edited = reverseTrack($gpx, $track);
-    $edited->asXML("newgpx.gpx");
-    $gpx = $edited;
+// Iterate through all selected tracks
+foreach ($tracklist as $trkno) {
+    reverseTrack($tracks, $trkno);
+    file_put_contents($reversedFile, $dom->saveXML());
+    unset($dom);
+    $dom = new DOMDocument();
+    $dom->formatOutput = true;
+    $dom->load($reversedFile);
+    if (!$dom) {
+        die("Failed to reload dom doc with reversed.gpx");
+    }
+    $tracks = $dom->getElementsByTagName('trk'); // DONMNodeList object
 }
 ?>
 <!DOCTYPE html>

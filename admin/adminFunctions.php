@@ -25,44 +25,47 @@ function sxml_append(SimpleXMLElement $to, SimpleXMLElement $from)
     $toDom->appendChild($toDom->ownerDocument->importNode($fromDom, true));
 }
 /**
- * This function accepts a simplexml file and a track number as input.
- * The single track no indicates which track is to have its trkpts reversed.
+ * This function specifies which track, in the list of tracks, to reverse.
  * The function will be called iteratively if multiple tracks are to be
  * reversed. When there are multiple segments within the subject track, 
  * the segments will remain in order, but the data in each segment will be 
  * reversed.
  * 
- * @param string  $sxml  simpleXML tree loaded from  gpx file
- * @param integer $trkno identifies the track number (from 0) to reverse
+ * @param DOMNodeList $trknodes List of track objects from which to select
+ * @param integer     $trkno    identifies the track number (from 0) to reverse
  * 
- * @return simpleXMLElement $modfile  file as simpleXml tree with track reversed.
+ * @return $modfile  xml file with track reversed.
  */
-function reverseTrack($sxml, $trkno)
+function reverseTrack($trknodes, $trkno)
 {
-    // locate the designated track:
-    $track = $sxml->trk[$trkno];
-    // Note that there will likely be intervening tags between <trk>and <trkseg>
-    foreach ($track->children() as $trkseg) {
-        // reverse the contents of each <trkseg>
-        if ($trkseg->getName() === 'trkseg') {
-            $trkpts = [];
-            $ptlist = $trkseg->children(); // assumes all trkseg children are trkpts
-            foreach ($ptlist as $trkpt) {
-                array_push($trkpts, $trkpt);
-            }
-            $rtrkpts = array_reverse($trkpts);
-            // form a simpleXML node from the reversed array
-            $newNode = '<trkseg>' . PHP_EOL;
-            foreach ($rtrkpts as $node) {
-                $newNode .= $node->asXML() . PHP_EOL;
-            }
-            $newNode .= '</trkseg>';
-            $newChild = new SimpleXMLElement($newNode);
-            sxml_append($trkseg, $newChild);
-        }
+    $track = $trknodes->item($trkno);
+    $trkchildren = $track->childNodes; // DOMNodeList
+    // retrieve the child nodes that are <trkseg> nodes and save them in $segNodes
+    $segno = 0;
+    $segNodes = [];
+    /**
+     * Note: cannot add any children inside the loop, because the childNodes list
+     * gets updated instantly, and then the foreach iterates ad infinitum
+     */
+    foreach ($trkchildren as $trkchild) {
+        if ($trkchild->nodeName === 'trkseg') {
+            $segNodes[$segno] = $trkchild;
+            $segno ++;
+        }   
     }
-    echo "New No of Trk Segs: " . $sxml->trk[$trkno]->trkseg->count();
-    return $sxml;
+    $segCnt = count($segNodes);
+    for ($j=0; $j<$segCnt; $j++) {
+        // process each trkseg node separately:
+        $pts = $segNodes[$j]->childNodes;
+        $actualPts = $pts->length - 1; // last child is trkseg's text node
+        $newseg = $track->ownerDocument->createElement('trkseg');
+        $track->appendChild($newseg); // will not append identical children
+        $newseg->setAttribute('id', $j);
+        for ($k=$actualPts; $k>0; $k--) {
+            $next = $newseg->appendChild($pts->item($k));
+        }
+        $remd = $track->removeChild($segNodes[$j]);
+    }
 }
 /**
  * This function supplies a message appropriate to the type of upload
