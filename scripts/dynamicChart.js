@@ -26,7 +26,11 @@ $.ajax({
     dataType: "xml",  // xml document object can readily be handled by jQuery
     url: trackfile,
     success: function(trackDat) {
-        var $trackpts = $("trkpt",trackDat);
+        var $trackpts = $("trkpt", trackDat);
+        if ($trackpts.length === 0) {
+            // try as rtepts instead of trkpts
+            $trackpts = $("rtept", trackDat)
+        }
         var hikelgth = 0;  // distance between pts, in miles
         var dataPtObj;
         $trackpts.each( function() {

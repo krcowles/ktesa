@@ -48,6 +48,13 @@ if ($gpxdat === false) {
     die($gpxmsg . $filemsg . $close);
 }
 /**
+ * In case the file is constructed using 'rtept' tags instead of
+ * 'trkpt' tags, convert to trkpts:
+ */
+if ($gpxdat->rte->count() > 0) {
+    $gpxdat = convertRtePts($gpxdat);
+}
+/**
  * $defClrs is an array which identifies, sequentially, the color to be associated
  * with each unique track. If the number of tracks exceeds the array size, the
  * colors will begin again at the first array element and repeat.

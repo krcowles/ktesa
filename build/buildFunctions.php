@@ -359,6 +359,10 @@ function gpxLatLng($gpxfile, $no_of_tracks)
             "simplexml; Please contact Site Master"
         );
     }
+    // If file happens to contain routes instead of tracks, convert:
+    if ($gpxdat->rte->count() > 0) {
+        $gpxdat = convertRtePts($gpxdat);
+    }
     if ($no_of_tracks === 'all') {
         $trkcnt = $gpxdat->trk->count();
     } else {
@@ -437,6 +441,35 @@ function distance($lat1, $lon1, $lat2, $lon2)
     }
     $rotation = round($rotation);
     return array ($miles,$rotation);
+}
+/**
+ * This module will replace all occurances of <rtept> in a gpx
+ * file with <trkpt> tags.
+ * 
+ * @param string $rtefile simpleXML file object from gpx file
+ * 
+ * @return string $newfile with trkpt tags instead of rtepts
+ */
+function convertRtePts($rtefile)
+{
+    $oldroute = $rtefile->asXML();
+    $nxt = 0;
+    // for all <rte> tags:
+    while ($rteLoc = strpos($oldroute, "<rte>", $nxt) !== false) {
+        // insert <trackseg>; NOTE: intervening lines between <rte> & <rtept>
+        $firstRtePt = strpos($oldroute, "<rtept", $rteLoc);
+        $remlgth = strlen($oldroute) - $firstRtePt;
+        $remndr = substr($oldroute, $firstRtePt, $remlgth);
+        $new = substr($oldroute, 0, $firstRtePt);
+        $new .= "<trkseg>\n\t";
+        $oldroute = $new . $remndr;
+        $nxt = strpos($oldroute, "<trkseg>");
+    }
+    $step1 = str_replace("<rte>", "<trk>", $oldroute);
+    $step2 = str_replace("rtept", "trkpt", $step1);
+    $step3 = str_replace("</rte>", "</trkseg>\n</trk>", $step2);
+    $trkPtFile = simplexml_load_string($step3);
+    return($trkPtFile);
 }
 /*
 function convtTime($GPStime) {
