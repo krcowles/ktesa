@@ -50,7 +50,7 @@ session_start();
     <fieldset>
         <legend>GPX File Edits</legend>
         NOTE: Edited file will be saved on site in gpx directory as "reversed.gpx"<br />
-        <form action="gpxedit.php" method="POST" enctype="multipart/form-data" />
+        <form action="reverseGpx.php" method="POST" enctype="multipart/form-data" />
             <input type="file" id="gpx2edit" name="gpx2edit" /><br />
             <input class="ged" type="submit" name="gpxall"
                 value="Reverse All Tracks" /><br />
