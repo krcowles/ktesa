@@ -23,12 +23,6 @@ $('#lst').on('click', function() {
 $('#ehdel').on('click', function() {
     window.open("reldel.php?act=del","_blank");
 });
-$('#gpxed').on('click', function() {
-    // not yet implemented
-});
-$('#sgltrk').on('click', function() {
-    // not yet implemented
-});
 $('#show').on('click', function()  {
     window.open('show_tables.php', "_blank_");
 });
