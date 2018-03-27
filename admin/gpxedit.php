@@ -102,6 +102,9 @@ if (isset($_POST['gpxall'])) {
 // Iterate through all selected tracks
 foreach ($tracklist as $trkno) {
     reverseTrack($tracks, $trkno);
+    $hold = new DOMDocument();
+    $hold->loadXML($dom->saveXML());
+    
     file_put_contents($reversedFile, $dom->saveXML());
     unset($dom);
     $dom = new DOMDocument();
@@ -135,5 +138,6 @@ foreach ($tracklist as $trkno) {
     <p>DONE!</p>
     <p>File with reversed track(s) is stored on site as ../gpx/reversed.gpx</p>
 </div>
+<script src="../scripts/dwnld.js"></script>
 </body>
 </html>
