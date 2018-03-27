@@ -61,7 +61,7 @@ function download(data, strFileName, strMimeType) {
 		return new B([uia], {type: t});
 	 }
 	  
-	function saver(url, winMode){
+	function saver(url, winMode) {
 		if ('download' in a) { //html5 A[download] 			
 			a.href = url;
 			a.setAttribute("download", fn);

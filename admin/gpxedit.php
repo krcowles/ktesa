@@ -11,7 +11,7 @@
  * @link    ../docs/
  */
 require "adminFunctions.php";
-$reversedFile = '../gpx/reversed.gpx';
+//$reversedFile = '../gpx/reversed.gpx';
 /**
  *  Validate the upload
  */
@@ -102,19 +102,25 @@ if (isset($_POST['gpxall'])) {
 // Iterate through all selected tracks
 foreach ($tracklist as $trkno) {
     reverseTrack($tracks, $trkno);
+    /*
     $hold = new DOMDocument();
     $hold->loadXML($dom->saveXML());
-    
-    file_put_contents($reversedFile, $dom->saveXML());
+    //file_put_contents($reversedFile, $hold->saveXML());
     unset($dom);
     $dom = new DOMDocument();
     $dom->formatOutput = true;
-    $dom->load($reversedFile);
+    $dom->loadXML($hold->saveXML());
     if (!$dom) {
         die("Failed to reload dom doc with reversed.gpx");
     }
+    */
+    unset($tracks);
     $tracks = $dom->getElementsByTagName('trk'); // DONMNodeList object
 }
+$downloadStr = $dom->saveXML();
+// escape quotes for javascript string:
+$jsvar = str_replace("'", "\'", $downloadStr);
+$jsvar = str_replace('"', '\"', $jsvar);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -139,5 +145,9 @@ foreach ($tracklist as $trkno) {
     <p>File with reversed track(s) is stored on site as ../gpx/reversed.gpx</p>
 </div>
 <script src="../scripts/dwnld.js"></script>
+<script type="text/javascript">
+    var filestr = `<?= $jsvar;?>`;
+    download(filestr, 'reversed.gpx', 'application/octet-stream');
+</script>
 </body>
 </html>
