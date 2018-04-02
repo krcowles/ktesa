@@ -47,6 +47,9 @@ $usr = filter_input(INPUT_POST, 'nid');
     <span style="color:brown;font-size:18px">When desired photos have been
         selected,</span>
     <button id="load">Add Photos</button><br /><br />
+    <div id="warns" style="display:none">(The following messages were retrieved
+        while executing the upload:)<br /></div>
+    </div>
     <input id="addall" type="checkbox" name="allPix" value="useAll" />&nbsp;
     Add all photos to Photo Editor;
 <?php
@@ -54,6 +57,7 @@ require 'getLinks.php';
 ?>
 </div>
 </div><br /> <!-- main -->
+<div id="bad"></div>
 <div class="popupCap"></div>
 <script type="text/javascript">
     var cnt = <?= $supplied;?>;

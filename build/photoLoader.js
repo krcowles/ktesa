@@ -1,4 +1,5 @@
 $(function () { // when page is loaded...
+var kill = false; // if true, close this window
 // imported vars from php: cnt (int) pgLinks (json array) albTypes (json array)
 var alinks = JSON.stringify(pgLinks);
 var atypes = JSON.stringify(albTypes);
@@ -9,8 +10,25 @@ $.ajax({
     dataType: 'text',
     data: ajaxdata,
     success: function(result) {
-        // result is an array of objects in string form
-        picdata = JSON.parse(result);
+        /* the expected result is an array of objects in string form,
+         * but it may contain error messages instead, therefore first 
+         * handle errors in script execution, if present
+         */
+        var photoData = result;
+        if (photoData.charAt(0) !== '[') { // this is not an array of objects:
+            var dataStart = photoData.indexOf('[');
+            if (dataStart === -1) { // the result contains no photo data:
+                processError(photoData);
+                return;
+            } else {  // extract the messages + photodata: all msgs are first
+                var othrmsgs = photoData.substr(0,dataStart);
+                $('#warns').css('display','block');
+                $('#warns').append(othrmsgs);
+                var datlgth = photoData.length - dataStart;
+                photoData = photoData.substr(dataStart);
+            }
+        }
+        picdata = JSON.parse(photoData);
         var pichtml = '';
         for (var i=0; i<picdata.length; i++) {
             var photo = picdata[i];
@@ -42,9 +60,14 @@ $.ajax({
         document.getElementById("main").appendChild(picDiv); 
     },
     error: function(jq, errmsg, stat) {
-        var emsg = "Failed to execute getPicDat.php: " + errmsg + "; " + stat;
-        alert(emsg);
+        var emsg = "<p>Failed to execute getPicDat.php: " + errmsg + 
+            "; " + stat + "</p>";
+        processError(emsg);
     }
 });
+function processError(errmsg) {
+    $('#loader').css('display','none');
+    $('#bad').append(errmsg);
+}
 
 });

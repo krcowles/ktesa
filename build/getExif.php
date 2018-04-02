@@ -50,7 +50,8 @@ for ($k=$kstart; $k<$pcnt; $k++) {
     }
     fclose($photoHandle);
     if ($exifdata === false) {
-        echo $pstyle . 'WARNING: Could not read exif data for ' . $orgPhoto
+        echo $pstyle . 'WARNING: Could not read exif data for item ' . $k .
+            ': ' . $orgPhoto
             . '<br />Please verify that all album photos contain metadata. '
             . 'Note that the routine will continue without including '
             . 'latitude/longitude/date-stamp data. This implies that such '
@@ -96,11 +97,12 @@ for ($k=$kstart; $k<$pcnt; $k++) {
         $gpts[$k] = $exifdata["GPSTimeStamp"];
         if ($lats[$k] == 0 || $lngs[$k] == 0) {
             echo $pstyle . "WARNING: No latitude/longitude data obtained for " .
-                $orgPhoto . '</p>';
+                "item " . $k . ": " . $orgPhoto . '</p>';
         }
     }  // end of exifdata found
     if (!unlink($truncFile)) {
         $nodelete = $pstyle . 'Could not delete temporary file ' . $truncFile .
                 '</p>';
+        die($nodelete);
     }
 }  // end of for each original photo loop
