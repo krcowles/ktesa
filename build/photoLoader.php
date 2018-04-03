@@ -57,7 +57,7 @@ require 'getLinks.php';
 ?>
 </div>
 </div><br /> <!-- main -->
-<div id="bad"></div>
+<div id="bad" style="margin-left:24px;"></div>
 <div class="popupCap"></div>
 <script type="text/javascript">
     var cnt = <?= $supplied;?>;
