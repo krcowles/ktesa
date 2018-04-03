@@ -12,8 +12,8 @@
 Type:&nbsp;&nbsp;
 <select class="albs" id="alb1" name="alb1">
     <option value="flckr">Flickr</option>
-    <option value="apple">Apple iCloud</option>
-    <option value="googl">Google</option>
+    <option value="apple" disabled>Apple iCloud</option>
+    <option value="googl" disabled>Google</option>
 </select><br />
 <?php endif; ?>
 <?php if ($hikeUrl2 !== '') : ?>
@@ -24,8 +24,8 @@ Type:&nbsp;&nbsp;
 Type:&nbsp;&nbsp;
 <select class="albs" id="alb2" name="alb2">
     <option value="flckr">Flickr</option>
-    <option value="apple">Apple iCloud</option>
-    <option value="googl">Google</option>
+    <option value="apple" disabled>Apple iCloud</option>
+    <option value="googl" disabled>Google</option>
 </select><br />
 <?php endif; ?>
 <input class="uplbox" type="checkbox" name="ps[]" value="3" />&nbsp;
@@ -34,8 +34,8 @@ Type:&nbsp;&nbsp;
 Type:&nbsp;&nbsp;
 <select class="albs" id="alb3" name="alb3">
     <option value="flckr">Flickr</option>
-    <option value="apple">Apple iCloud</option>
-    <option value="googl">Google</option>
+    <option value="apple" disabled>Apple iCloud</option>
+    <option value="googl" disabled>Google</option>
 </select><br />
 <input class="uplbox" type="checkbox" name="ps[]" value="4" />&nbsp;
     Include new album:
@@ -43,8 +43,8 @@ Type:&nbsp;&nbsp;
 Type:&nbsp;&nbsp;
 <select class="albs" id="alb4" name="alb4">
     <option value="flckr">Flickr</option>
-    <option value="apple">Apple iCloud</option>
-    <option value="googl">Google</option>
+    <option value="apple" disabled>Apple iCloud</option>
+    <option value="googl" disabled>Google</option>
 </select><br /><br />
 <button id="newalbs" style="font-size:16px;width:165px;cursor:pointer;"
     onfocus="color:papayawhip">Upload Albums</button>

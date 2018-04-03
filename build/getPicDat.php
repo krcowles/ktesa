@@ -2,7 +2,10 @@
 /** 
  * This routine fetches album html from each of the user-specified album
  * links, and parses it for the data needed to create a list of photos with
- * links and captions. NOTE: Other scripts are included.
+ * links and captions. Other scripts are included. NOTE: This script is 
+ * invoked as an ajax call from javascript. This means that any echoed output,
+ * including 'die' statements, are sent back to the caller as data, and is 
+ * handled in the calling routine.
  * 
  * @package Create
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -16,7 +19,7 @@ $supplied = filter_input(INPUT_POST, 'cnt');
 $curlids = json_decode($curldat);
 $albums = json_decode($typedat);
 // output msg styling:
-$pstyle = '<p style="margin-left:16px;color:red;font-size:20px;">';
+$pstyle = '<p style="margin-left:16px;color:red;font-size:18px;">';
 $pcnt = 0;  // no of photos processed
 // These arrays will be sorted by date/time after all albums have been processed
 $folder = [];
