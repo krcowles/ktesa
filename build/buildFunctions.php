@@ -243,6 +243,7 @@ function dropdownData($boxtype)
                 }
             }
         }
+        $dbcount = count($cldat);
     }
     mysqli_free_result($hdat);
     if ($boxtype === 'allclus') {
@@ -265,7 +266,7 @@ function dropdownData($boxtype)
         }
         mysqli_free_result($edat);
     }
-    return array($clhikes, $cldat);
+    return array($clhikes, $cldat, $dbcount);
 }
 /**
  * A simple function converts null into empty string after reading

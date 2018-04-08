@@ -12,6 +12,8 @@
 /**
  * Database functions are required
  */
+session_start();
+$_SESSION['activeTab'] = 1;
 require '../mysql/dbFunctions.php';
 $link = connectToDb(__FILE__, __LINE__);
 $user = filter_input(INPUT_POST, 'uid');

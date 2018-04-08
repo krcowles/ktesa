@@ -12,6 +12,7 @@ session_start();
 $_SESSION['activeTab'] = 1;
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
+require_once "buildFunctions.php";
 $hikeNo = filter_input(INPUT_POST, 'hno');
 $uid = filter_input(INPUT_POST, 'usr');
 /**
@@ -19,19 +20,25 @@ $uid = filter_input(INPUT_POST, 'usr');
  * If not, previous values must be retained:
  */
 $marker = filter_input(INPUT_POST, 'pmrkr');
-$clusGrp = filter_input(INPUT_POST, 'pclus');
-$cgName = filter_input(INPUT_POST, 'pcnme');
-// Extract cluster list - and inherent 1 to 1 association with cluster name:
+$clusGrp = filter_input(INPUT_POST, 'pclus'); // current db value
+$cgName = filter_input(INPUT_POST, 'pcnme'); // current db value
+/**
+ * Note: The value obtained from the drop-down will be only the name of the 
+ * cluster group (cname) and not its letter value. Therefore, the letter
+ * values (cgroup) must be extracted and correlation to the names established.
+ * If this is a new group, the group letter has not yet been established.
+ */ 
 $groups = [];
 $cnames = [];
+// First, the HIKES table cluster group info:
 $clusreq = "SELECT cgroup, cname FROM HIKES;";
 $clusq = mysqli_query($link, $clusreq) or die(
-    "saveTab1.php: Failed to get cluster info from HIKES: " .
-    mysqli_error($link)
+    __FILE__ . " Line " . __LINE__ . " Failed to get cluster info from HIKES: "
+    . mysqli_error($link)
 );
 while ($clusDat = mysqli_fetch_assoc($clusq)) {
-    $cgrp = $clusDat['cgroup'];
-    if ($cgrp !== 0) {
+    $cgrp = fetch($clusDat['cgroup']);
+    if ($cgrp !== '') {
         // no duplicates please (NOTE: "array_unique" leaves holes)
         $match = false;
         for ($i=0; $i<count($groups); $i++) {
@@ -42,11 +49,34 @@ while ($clusDat = mysqli_fetch_assoc($clusq)) {
         }
         if (!$match) {
             array_push($groups, $cgrp);
-            array_push($cnames, $clusDat['cname']);
+            array_push($cnames, fetch($clusDat['cname']));
         }
     }
 }
 mysqli_free_result($clusq);
+// Next, the EHIKES cluster group info:
+$eclusreq = "SELECT cgroup, cname FROM EHIKES;";
+$eclusq = mysqli_query($link, $eclusreq) or die(
+    __FILE__ . " Line " . __LINE__ . " Failed to get cluster info from EHIKES: "
+    . mysqli_error($link)
+);
+while ($eclusDat = mysqli_fetch_assoc($eclusq)) {
+    $ecgrp = fetch($eclusDat['cgroup']);
+    if ($ecgrp !== '') { // will also be empty if newgroup specified
+        $match = false;
+        for ($i=0; $i<count($groups); $i++) {
+            if ($ecgrp == $groups[$i]) {
+                $match = true;
+                break;
+            }
+        }
+        if (!$match) {
+            array_push($groups, $ecgrp);
+            array_push($cnames, fetch($eclusDat['cname']));
+        }
+    }
+}
+mysqli_free_result($eclusq);
 $pg = filter_input(INPUT_POST, 'hname');
 $hTitle = mysqli_real_escape_string($link, $pg);
 $hUser = mysqli_real_escape_string($link, $uid);

@@ -24,6 +24,7 @@ $selectData = dropdownData('allclus');
 $cnames = $selectData[0];
 $groups = $selectData[1];
 $groupCount = count($groups);
+$dbCount = $selectData[2];
 // assign existing hike data
 $hikereq = "SELECT * FROM EHIKES WHERE indxNo = {$hikeNo};";
 $hikeq = mysqli_query($link, $hikereq) or die(

@@ -72,7 +72,7 @@ Reset Assignments:&nbsp;&nbsp;
 <input id="grpchg" type="hidden" name="chgd" value="NO" />
 <p>If you are establishing a new group, select the checkbox: 
     <input id="newg" type="checkbox" name="nxtg" value="NO" />
-    <input id="curcnt" type="hidden" name="grpcnt" value="<?= $groupCount;?>" />
+    <input type="hidden" name="grpcnt" value="<?= $dbCount;?>" />
 </p>
 <p style="margin-top:-10px;margin-left:40px;">and enter the name for the 
     new group here: <input id="newt" type="text" name="newgname" size="50" />

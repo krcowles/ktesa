@@ -18,7 +18,7 @@ $('#area').val(sel);
 var mrkr = $('#mrkr').text();
 /* 
  * THE FOLLOWING CODE ADDRESSES EDITS TO CLUSTER ASSIGNMENTS
- *   - Refer to the state machine for behavior assessment
+ *   - Refer to the design documentation for behavior assessment
  */
 var msg;
 var rule = "The specified new group will be added;" + "\n" + 
@@ -26,15 +26,15 @@ var rule = "The specified new group will be added;" + "\n" +
 	"Uncheck box to use currently available groups";
 var clusnme = $('#group').text();  // incoming cluster assgnmnt for edited hike (may be empty)
 $('#ctip').val(clusnme);  // show above in the select box on page load
-if (clusnme == '' && $('#greq').text() === 'NO') {  // no incoming assignment; display info:
-	$('#notclus').css('display','inline');
-} else if ($('#greq').text() === 'YES') {
+if ($('#greq').text() === 'YES') {
     $('#newg').attr('checked', true);
     $('#newg').val("YES");
     $('#newt').focus();
     $('#notclus').css('display','inline');
     alert("Enter your requested new group name in the highlighted text box below;\n" +
         "If you don't want a new group, uncheck the box.");
+} else if (clusnme == '') {  // no incoming assignment; display info:
+	$('#notclus').css('display','inline');
 } else {
 	$('#showdel').css('display','block');
 }
