@@ -170,8 +170,7 @@ if ($bop !== '') {
 <script src="../scripts/dynamicChart.js"></script>
 <?php endif; ?>
 <script type="text/javascript">
-    window.onbeforeunload = deleteTmpMap;
-    function deleteTmpMap() {
+    $(document).ready(function() {
         $.ajax({
             url: '../php/tmpMapDelete.php',
             data: {'file' : "<?php echo $tmpMap;?>" },
@@ -182,7 +181,7 @@ if ($bop !== '') {
                var msg = "Map NOT deleted: " + "<?php echo $tmpMap?>";
             }
         });
-    }
+    });
 </script>
 
 </body>
