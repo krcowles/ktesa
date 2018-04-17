@@ -66,14 +66,15 @@ if (!insert) {
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail">Registration Complete</p>
+<p id="usrid" style="display:none"><?= $uname;?></p>
 <div style="margin-left:24px;">
     <h1>
-        You have successfully registered!
+        < <?= $uname;?> > You have successfully registered!
     </h1> 
     <h3>
         You may now display registered user options on the main page to
         create and edit hikes.<br /><br />You are now logged in and can display
-        user options by entering your user name in the provided field.<br />
+        user options.<br />
         <em id="cookies" style="color:brown;"></em><br />
         Click on the link below:
     </h3>
