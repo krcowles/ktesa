@@ -2,11 +2,11 @@
 /**
  * This file contains function declarations designed to be used
  * by modules in the build directory.
+ * PHP Version 7.0
  * 
  * @package Build_Functions
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
 /**
  * This function validates the upload file and then moves the temporary
@@ -471,6 +471,27 @@ function convertRtePts($rtefile)
     $step3 = str_replace("</rte>", "</trkseg>\n</trk>", $step2);
     $trkPtFile = simplexml_load_string($step3);
     return($trkPtFile);
+}
+/**
+ * This generator extracts and yields elevation, latitude and longitude info 
+ * from the target gpxfile, represented as a simpleXMLElement. 
+ * 
+ * @param simpleXMLElement $gpxobj The name of the object representing the gpx file
+ * @param integer          $trkno  The number of the currently parsing track in gpx
+ * 
+ * @return array $latLngDat
+ */
+function genLatLng($gpxobj, $trkno)
+{
+    foreach ($gpxobj->trk[$trkno]->trkseg as $trackdat) {
+        foreach ($trackdat->trkpt as $geodat) {
+            $meters = floatval($geodat->ele);
+            $geo[0] = floatval($geodat['lat']);
+            $geo[1] = floatval($geodat['lon']);
+            $geo[2] = 3.28084 * $meters; // feet
+            yield $geo;
+        }
+    }
 }
 /*
 function convtTime($GPStime) {

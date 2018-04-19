@@ -2,6 +2,7 @@
 /**
  * This script saves any changes made (or data as is) on tab1 ("Basic Data")
  * of the hike page Editor. 
+ * PHP Version 7.0
  * 
  * @package Editiing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -135,14 +136,80 @@ if (isset($delClus) && $delClus === 'YES') {
 }
 $clName = mysqli_real_escape_string($link, $cgName);
 /**
+ * If the user selected 'Calculate From GPX', then those values will
+ * be used instead of any existing values in the miles and feet fields. 
+ */
+if (isset($_POST['mft'])) {
+    $gfile = "../gpx/" . filter_input(INPUT_POST, 'gpx');
+    $gdat = simplexml_load_file($gfile);
+    if ($gdat === false) {
+        die(__FILE__ . "Line " . __LINE__ . " Failed to open {$gfile}");
+    }
+    if ($gdat->rte->count() > 0) {
+        $gdat = convertRtePts($gdat);
+    }
+    $noOfTrks = $gdat->trk->count();
+    $totalDist = 0;
+    $minElev = 20000;
+    $maxElev = 0;
+    for ($j=0; $j<$noOfTrks; $j++) {
+        $init = true;
+        foreach (genLatLng($gdat, $j) as $geo) {
+            // calculate distance between last pt and this one
+            if ($init) {
+                $prevLat = $geo[0];
+                $prevLng = $geo[1];
+                $init = false;
+            } else {
+                $nxtdist = distance($prevLat, $prevLng, $geo[0], $geo[1]);
+                $totalDist += $nxtdist[0];
+                $prevLat = $geo[0];
+                $prevLng = $geo[1];
+            }
+            // record min/max elevations (note: watch out for elev === 0.0000)
+            if ($geo[2] < $minElev) {
+                if ($geo[2] > 10) {
+                    $minElev = $geo[2];
+                }
+            }
+            if ($geo[2] > $maxElev) {
+                $maxElev = $geo[2];
+            }
+        }
+    }
+    $lgth = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
+    $elev = $maxElev - $minElev;
+    if ($elev < 100) { // round to nearest 10
+        $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
+        $ht = 10 * $adj;
+    } elseif ($elev < 1000) { // 100-999: round to nearest 50
+        $adj = $elev/100;
+        $lead = substr($adj, 0, 1);
+        $n5 = $lead + 0.50;
+        $n2 = $lead + 0.25;
+        if ($adj > $n5) {
+            $adj = $lead + 1;
+        } elseif ($adj >$n2) {
+            $adj = $lead + 0.5;
+        } else {
+            $adj = $lead;
+        }
+        $ht = 100 * $adj;
+    } else { // 1000+: round to nearest 100
+        $adj = round($elev/100, 0, PHP_ROUND_HALF_UP);
+        $ht = 100 * $adj;
+    }
+} else {
+    $lgth = filter_input(INPUT_POST, 'hlgth');
+    $ht = filter_input(INPUT_POST, 'helev');
+}
+/**
  * NOTE: a means to change the 'hike at Visitor Center' location has not
  * yet been implemented, so 'collection' is not modified
  */
 $log = filter_input(INPUT_POST, 'htype');
 $hType = mysqli_real_escape_string($link, $log);
-$lgth = filter_input(INPUT_POST, 'hlgth');
 $hLgth = mysqli_real_escape_string($link, $lgth);
-$ht = filter_input(INPUT_POST, 'helev');
 $hElev = mysqli_real_escape_string($link, $ht);
 $diff = filter_input(INPUT_POST, 'hdiff');
 $hDiff = mysqli_real_escape_string($link, $diff);

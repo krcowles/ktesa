@@ -85,10 +85,6 @@ Reset Assignments:&nbsp;&nbsp;
     <option value="Two-Cars">Two-Cars</option>
     <option value="Out-and-back">Out-and-back</option>
 </select>&nbsp;&nbsp;
-<label for="miles">Round-trip length in miles: </label>
-<textarea id="miles" name="hlgth"><?= $hikeMiles;?></textarea>&nbsp;&nbsp;
-<label for="elev">Elevation change in feet: </label>
-<textarea id="elev" name="helev"><?= $hikeFeet;?></textarea><br /><br />
 <p id="dif" style="display:none"><?= $hikeDiff;?></p>
 <label for="diff">Level of difficulty: </label>
 <select id="diff" name="hdiff">
@@ -97,13 +93,21 @@ Reset Assignments:&nbsp;&nbsp;
     <option value="Moderate">Moderate</option>
     <option value="Med-Difficult">Medium-Difficult</option>
     <option value="Difficult">Difficult</option>
-</select>
+</select><br /><br />
+<input id="mft" type="checkbox" name="mft" />&nbsp;&nbsp;
+    Calculate Miles/Feet From GPX [<em style="color:brown">**NOTE: GPX file
+        must already be uploaded</em>],&nbsp;&nbsp;or Specify/Change below<br />
+<label for="miles">Round-trip length in miles: </label>
+<textarea id="miles" name="hlgth"><?= $hikeMiles;?></textarea>
+<label for="elev">Elevation change in feet: </label>
+<textarea id="elev" name="helev"><?= $hikeFeet;?></textarea><br /><br />
+
 <label for="fac">Facilities at the trailhead: </label>
-<textarea id="fac" name="hfac"><?= $hikeFac;?></textarea><br /><br />
+<textarea id="fac" name="hfac"><?= $hikeFac;?></textarea>&nbsp;&nbsp;
 <label for="wow">"Wow" Appeal: </label>
-<textarea id="wow" name="hwow"><?= $hikeWow;?></textarea>&nbsp;&nbsp;
+<textarea id="wow" name="hwow"><?= $hikeWow;?></textarea><br /><br />
 <label for="seas">Best Hiking Seasons: </label>
-<textarea id="seas" name="hsea"><?= $hikeSeasons;?></textarea><br /><br />
+<textarea id="seas" name="hsea"><?= $hikeSeasons;?></textarea>&nbsp;&nbsp;
 <p id="expo" style="display:none"><?= $hikeExpos;?></p>
 <label for="sun">Exposure: </label>
 <select id="sun" name="hexp">
