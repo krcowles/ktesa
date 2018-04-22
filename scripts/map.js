@@ -51,7 +51,8 @@ if ( mobile_browser ) {
     var clusterIcon = '../images/bluepin.png';
     var hikeIcon = '../images/redpin.png';
 } 
-
+// Set of hike markers (indx is hikeIndex, so starts at 1)
+var allMrkrs = [];
 /* Create the hike arrays to be used in marker and info window creation */
 // get node lists for each marker type:
 var allVs = [];
@@ -111,6 +112,7 @@ function initMap() {
 		var thisVorgs = [];
 		var vlat = parseFloat($(this).data('lat'));
 		var vlon = parseFloat($(this).data('lon'));
+		var hno = parseInt($(this).data('indx'));
 		loc = {lat: vlat, lng: vlon};
 		// identify the originating hikes, as they will not have individual markers...
 		var orgDat = $(this).data('org-hikes');
@@ -133,7 +135,11 @@ function initMap() {
 		var dirLink = $dlink.attr('href');
 		nme = $dataCells.eq(1).text();
 		nme = nme.replace('Index','Visitor Center');
-		AddVCMarker(loc, sym, nme, vpage, dirLink, thisVorgs);
+		if (nme == newHikeName) {
+			latest = hno;
+			newloc = loc;
+		}
+		AddVCMarker(loc, sym, nme, vpage, dirLink, thisVorgs, hno);
 	});
 	// Now, the "clustered" hikes: Add one and only one cluster marker per group
 	sym =clusterIcon;
@@ -155,15 +161,20 @@ function initMap() {
 			// proceed with def's for other arguments
 			var clat = parseFloat($(this).data('lat'));
 			var clon = parseFloat($(this).data('lon'));
-			nme = $(this).data('tool');
 			loc = {lat: clat, lng: clon};
+			var hno = parseInt($(this).data('indx'));
+			nme = $(this).data('tool');
+			if (nme == newHikeName) {
+				latest = hno;
+				newloc = loc;
+			}
 			var hikeId = $(this).data('indx');
 			var $dataCells = $(this).find('td');
 			var $plink = $dataCells.eq(3).find('a');
 			cpage = $plink.attr('href');
 			var $dlink = $dataCells.eq(8).find('a');
 			var dirLink = $dlink.attr('href');
-			AddClusterMarker(loc, sym, nme, cpage, dirLink, chikeArray);
+			AddClusterMarker(loc, sym, nme, cpage, dirLink, chikeArray, hno);
 		}
 	});
 	// Finally, the remaining hike markers
@@ -172,24 +183,29 @@ function initMap() {
 		var nlat = parseFloat($(this).data('lat'));
 		var nlon = parseFloat($(this).data('lon'));
 		loc = {lat: nlat, lng: nlon};
-		var hikeNo = $(this).data('indx');
+		var hno = $(this).data('indx');
 		var $dataCells = $(this).find('td');
 		nme = $dataCells.eq(1).text();
+		if (nme == newHikeName) {
+			latest = hno;
+			newloc = loc;
+		}
 		$plink = $dataCells.eq(3).find('a');
 		npage = $plink.attr('href');
 		$dlink = $dataCells.eq(8).find('a');
 		dirLink = $dlink.attr('href');
-		AddHikeMarker(loc, sym, nme, npage, dirLink, hikeNo);
+		AddHikeMarker(loc, sym, nme, npage, dirLink, hno);
 	});
 	/* the actual functions to create the markers & setup info windows */
 	// Visitor Center Markers:
-	function AddVCMarker(location, iconType, pinName, website, dirs, orgHikes) {
+	function AddVCMarker(location, iconType, pinName, website, dirs, orgHikes, mrkrno) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
+		allMrkrs[mrkrno] = marker;
 		// add info window functionality
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
@@ -217,13 +233,14 @@ function initMap() {
 		});
 	} // end function AddVCMarker
 	// Clustered Trailhead Markers:
-	function AddClusterMarker(location, iconType, pinName, website, dirs, hikes) {
+	function AddClusterMarker(location, iconType, pinName, website, dirs, hikes, mrkrno) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
+		allMrkrs[mrkrno] = marker;
 		// info window content: add in all the hikes for this group
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
@@ -242,13 +259,14 @@ function initMap() {
 			iw.open(map, this);
 		});
 	} // end AddClusterMarker
-	function AddHikeMarker(location, iconType, pinName, website, dirs, hike) {
+	function AddHikeMarker(location, iconType, pinName, website, dirs, hike, mrkrno) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
+		allMrkrs[mrkrno] = marker;
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
 			var iwContent = '<div id="NH">Hike: ' + pinName + '<br />';
@@ -343,6 +361,11 @@ function initMap() {
 			IdTableElements(newBds);
 		});
 	}
+	$('#newhike').on('click', function(ev) {
+		ev.preventDefault();
+		map.setCenter(newloc);
+		map.setZoom(13);
+	})
 	
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
@@ -582,14 +605,12 @@ var geoOptions = { enableHighAccuracy: 'true' };
 if ( turnOnGeo === 'true' ) {
 	var geoTmr = setInterval(turnOnGeoLoc,100);
 }
-
 function turnOnGeoLoc() {
 	if ( mapRdy ) {
 		clearInterval(geoTmr);
 		setupLoc();
 	}
 }
-
 function setupLoc() {
 	if (Modernizr.geolocation) {
 		var myGeoLoc = navigator.geolocation.getCurrentPosition(success, error, geoOptions);
@@ -616,4 +637,3 @@ function setupLoc() {
 	}
 }
 // //////////////////////////////////////////////////////////////
-	

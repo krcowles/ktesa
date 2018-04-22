@@ -4,6 +4,8 @@
  * drop-down is being used.
  * Assume that the last hike in the table is the new hike.
  */ 
+var latest; // this will be the marker number of the latest hike marker
+var newloc; // location of latest pin
 // Determine & set box position:
 var winWidth = $(window).width();
 var mapWidth = $('#map').width();  // same as container size (currently 960)
