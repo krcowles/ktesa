@@ -10,7 +10,6 @@ var CH_TYPE = 1;
 var NH_TYPE = 2;
 var XH_TYPE = 3;
 
-
 var map;  // needs to be global!
 var mapRdy = false; // flag for map initialized & ready to draw tracks
 var mapTick = {   // custom tick-mark symbol for tracks
@@ -53,44 +52,6 @@ if ( mobile_browser ) {
     var hikeIcon = '../images/redpin.png';
 } 
 
-/* Animated "New Hike" Marker:
-    - Place the box on the left-hand side of the map, below the map-style drop-down 
-      far enough down to ensure clearance when drop-down is selected
-    - Assume that the last hike in the table is the new hike */
-// Determine & set box position:
-var winWidth = $(window).width();
-var mapWidth = $('#map').width();  // same as container size (currently 960)
-if (winWidth < mapWidth) {
-    $('#newHikeBox').css('left',12);
-} else {
-    var newHikeBoxLeft = Math.floor( (winWidth - mapWidth)/2 ) + 12;
-    $('#newHikeBox').css('left',newHikeBoxLeft);
-}
-// Determine last hike name & hike type:
-var $hikeRows = $('#refTbl tbody tr');
-var lastHikeIndx = $hikeRows.length - 1; // offset 1 for header row
-var $lastHikeRow = $hikeRows.eq(lastHikeIndx).find('td');
-var newHikeName = $lastHikeRow.eq(1).text();
-if ($hikeRows.eq(lastHikeIndx).hasClass('clustered')) {
-    // in this case, animate the cluster group marker
-    newHikeName = $hikeRows.eq(lastHikeIndx).data('tool');
-}
-if ($hikeRows.eq(lastHikeIndx).hasClass('vchike')) {
-    // animate the marker for the associated visitor center:
-    var vcIndx = $hikeRows.eq(lastHikeIndx).data('vc');
-    $hikeRows.each( function() {
-        if ( $(this).data('indx') == vcIndx ) { 
-            var $indxRow = $(this).find('td');
-            newHikeName = $indxRow.eq(1).text();
-            return;
-        }
-    });
-}
-newHikeName = newHikeName.replace('Index','Visitor Center');
-$('#winner').append(newHikeName);
-$('#winner').css('color','DarkGreen');
-$('#newHikeBox').css('display','block');
-
 /* Create the hike arrays to be used in marker and info window creation */
 // get node lists for each marker type:
 var allVs = [];
@@ -110,16 +71,9 @@ $hikeRows.each( function() {
 	}  // anything not caught in this trap is an anomaly!!
 });
 
-/* INSIDE the initMap function, the map listener is defined, and depending on whether
-   or not there is a table present, a definition is added for "dragend" */
-
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
-// THE MAP CALLBACK FUNCTION:
-
 function initMap() {
-	// NOW TO THE MAP!!
 	var nmCtr = {lat: 34.450, lng: -106.042};
-
 	var mapDiv = document.getElementById('map');
 	map = new google.maps.Map(mapDiv, {
 		center: nmCtr,
@@ -150,9 +104,8 @@ function initMap() {
 	var sym; // type of icon to display for marker
 	var nme; // name of hike (for 'tooltip' type title of marker
 	var clustersUsed = '';
-	var animateMe;
-	
-	// Loop through marker definitions and call marker-creator fcts: 1st, visitor centers:
+	// Loop through marker definitions and call marker-creator fcts: 
+	// 1st, visitor centers:
 	sym = ctrIcon;
 	$(allVs).each( function() {
 		var thisVorgs = [];
@@ -180,8 +133,7 @@ function initMap() {
 		var dirLink = $dlink.attr('href');
 		nme = $dataCells.eq(1).text();
 		nme = nme.replace('Index','Visitor Center');
-		animateMe = nme == newHikeName ? true : false;
-		AddVCMarker(loc, sym, nme, animateMe, vpage, dirLink, thisVorgs);
+		AddVCMarker(loc, sym, nme, vpage, dirLink, thisVorgs);
 	});
 	// Now, the "clustered" hikes: Add one and only one cluster marker per group
 	sym =clusterIcon;
@@ -205,14 +157,13 @@ function initMap() {
 			var clon = parseFloat($(this).data('lon'));
 			nme = $(this).data('tool');
 			loc = {lat: clat, lng: clon};
-			animateMe = nme == newHikeName ? true : false;
 			var hikeId = $(this).data('indx');
 			var $dataCells = $(this).find('td');
 			var $plink = $dataCells.eq(3).find('a');
 			cpage = $plink.attr('href');
 			var $dlink = $dataCells.eq(8).find('a');
 			var dirLink = $dlink.attr('href');
-			AddClusterMarker(loc, sym, nme, animateMe, cpage, dirLink, chikeArray);
+			AddClusterMarker(loc, sym, nme, cpage, dirLink, chikeArray);
 		}
 	});
 	// Finally, the remaining hike markers
@@ -228,26 +179,17 @@ function initMap() {
 		npage = $plink.attr('href');
 		$dlink = $dataCells.eq(8).find('a');
 		dirLink = $dlink.attr('href');
-		animateMe = nme == newHikeName ? true : false;
-		AddHikeMarker(loc, sym, nme, animateMe, npage, dirLink, hikeNo);
+		AddHikeMarker(loc, sym, nme, npage, dirLink, hikeNo);
 	});
-	
 	/* the actual functions to create the markers & setup info windows */
 	// Visitor Center Markers:
-	function AddVCMarker(location, iconType, pinName, bounce, website, dirs, orgHikes) {
+	function AddVCMarker(location, iconType, pinName, website, dirs, orgHikes) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
-		// animated marker if new hike is a visitor center
-		if ( bounce ) {
-			marker.setAnimation(google.maps.Animation.BOUNCE);
-			setTimeout(function(){ 
-				marker.setAnimation(null); 
-				$('#newHikeBox').css('display','none'); }, 6000);
-		}
 		// add info window functionality
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
@@ -275,19 +217,13 @@ function initMap() {
 		});
 	} // end function AddVCMarker
 	// Clustered Trailhead Markers:
-	function AddClusterMarker(location, iconType, pinName, bounce, website, dirs, hikes) {
+	function AddClusterMarker(location, iconType, pinName, website, dirs, hikes) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
-		if ( bounce ) {
-			marker.setAnimation(google.maps.Animation.BOUNCE);
-			setTimeout(function(){ 
-				marker.setAnimation(null); 
-				$('#newHikeBox').css('display','none'); }, 6000);
-		}
 		// info window content: add in all the hikes for this group
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
@@ -306,19 +242,13 @@ function initMap() {
 			iw.open(map, this);
 		});
 	} // end AddClusterMarker
-	function AddHikeMarker(location, iconType, pinName, bounce, website, dirs, hike) {
+	function AddHikeMarker(location, iconType, pinName, website, dirs, hike) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
 		  icon: iconType,
 		  title: pinName
 		});
-		if ( bounce ) {
-			marker.setAnimation(google.maps.Animation.BOUNCE);
-			setTimeout(function(){ 
-				marker.setAnimation(null); 
-				$('#newHikeBox').css('display','none'); }, 6000);
-		}
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
 			var iwContent = '<div id="NH">Hike: ' + pinName + '<br />';
@@ -337,7 +267,6 @@ function initMap() {
 			iw.open(map, this);
 		});
 	}
-	
 	// /////////////////////  CORE HIKE DATA FOR INFO WINDOW //////////////////////
 	function coreHikeData(markerType, hikeNo) {
 		var $hikeData;

@@ -1,3 +1,12 @@
+html, body { 
+	height: 100%; 
+	margin: 0; 
+	padding: 0;
+	font-family: arial, verdana;
+}
+#map {
+	height: 100%;
+}
 #geoCtrl {
 	display: none;
 	position: absolute;
