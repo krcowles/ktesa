@@ -6,7 +6,7 @@ $phar->buildFromDirectory('../');
 $phar->compress(Phar::GZ);
 // Download the zip file
 header("Content-Type: application/x-gtar");
-header("Content-Disposition: attachment; filename='".basename($tmpFilename . '.gz'));
+header("Content-Disposition: attachment; filename=".basename($tmpFilename . '.gz'));
 header("Content-Length: " . filesize($tmpFilename . '.gz'));    
 header("Content-Transfer-Encoding: binary");
 readfile($tmpFilename . '.gz');
