@@ -1,5 +1,11 @@
 <?php
 $tmpFilename = sys_get_temp_dir() . '/archive.tar';
+if (file_exists($tmpFilename)) {
+    unlink($tmpFilename);
+}
+if (file_exists($tmpFilename . '.gz')) {
+    unlink($tmpFilename . '.gz');
+}
 $phar = new PharData($tmpFilename);
 // add all files in the project and then compress it
 $phar->buildFromDirectory('../');
