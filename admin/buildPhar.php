@@ -8,7 +8,8 @@ if (file_exists($tmpFilename . '.gz')) {
 }
 $phar = new PharData($tmpFilename);
 // add all files in the project and then compress it
-$phar->buildFromDirectory('../');
+$phar->buildFromDirectory('../','/^((?!vendor|gpx|build\/tmp|maps\/tmp).)*$/');
+//$phar->buildFromDirectory('../','/^((?!vendor).)*$/');
 $phar->compress(Phar::GZ);
 // Download the zip file
 header("Content-Type: application/x-gtar");
