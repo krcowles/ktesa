@@ -32,26 +32,69 @@ session_start();
 
 <div style="margin-left:24px;" id="tools">
     <fieldset>
-        <legend>Rebase DB</legend>
+        <legend>Overall Site Management</legend>
+        <button id="dwnld">Download Site</button>
+            &nbsp;[Creates zip archive]<br />
+        <form action="upldSite.php" method="POST" target="_blank"
+            enctype="multipart/form-data">
+            <button id="upld">Upload Site</button>&nbsp;&nbsp;
+            <input id="ufile" type="file" name="ufile" />
+                &nbsp;[Creates new directory]<br />
+        </form>
+        <hr />
         <button id="reload">Reload Database</button>&nbsp;
-            (Drops All Tables and Loads All)<br />
+            [Drops All Tables and Loads All Tables]<br />
         <button id="drall">Drop All Tables</button><br />
         <button id="ldall">Load All Tables</button>
-        (NOTE: Tables must not exist)<br />
+            [NOTE: Tables must not exist]<br />
         <button id="exall">Export All Tables</button>
-        (NOTE: Will download a file)<br />
+            [NOTE: Creates .sql file]<br />
+        <hr />
+        <button id="show">Show All Tables</button><br />
+        <button id="mode">Show/Set SQL Modes</button>
+        <!-- div w/form related to Show/Set SQL Modes -->
+        <div id="modeopt">
+        <form action="modify_modes.php" method="POST">
+<?php if (isset($_SESSION['sqlmode']) && $_SESSION['sqlmode'] === 'active') : ?>
+        <p id="dstat" style="display:none">Open</p>
+        <?php
+            $_SESSION['sqlmode'] = 'inactive';
+        ?>
+<?php else : ?>
+        <p id="dstat" style="display:none">Closed</p>
+<?php endif; ?>
+        <?php
+        $modes = file('sql_modes.ini', FILE_IGNORE_NEW_LINES);
+        $cbStates = '[';
+        for ($i=0; $i<count($modes); $i++) {
+            $opt = $modes[$i];
+            $val = substr($opt, 2, strlen($opt)-2);
+            echo '<input class="cb" type="checkbox" name="ons[]" ' .
+                    'value="' . $val .  '" />';
+            echo '&nbsp;&nbsp;' . $val . '<br />' . PHP_EOL;
+            if (substr($opt, 0, 1) === 'Y') {
+                $cbStates .= '"Y",';
+            } else {
+                $cbStates .= '"N",';
+            }
+        }
+        $cbStates = substr($cbStates, 0, strlen($cbStates)-1);
+        $cbStates .= ']';
+        ?>
+        <br /><input type="submit" value="Apply" />
+        </form>
+        </div>
+        <!-- End of Show/Set div w/form -->
     </fieldset><br />
     <fieldset>
         <legend>Hike Management</legend>
         <button id="pub">Publish Hike</button> (Move from EHIKES to HIKES)<br/>
-        <button id="lst">List New Files</button><br />
         <button id="ehdel">Remove Hike</button>
             <span style="color:brown;">(Not implemented at this time)</span><br />
     </fieldset><br />
     <fieldset>
         <legend>GPX File Edits</legend>
-        NOTE: Edited file will be saved on site in gpx directory 
-            as "reversed.gpx"<br />
+        NOTE: Will download a file called "reversed.gpx"<br />
         <form action="reverseGpx.php" method="POST" enctype="multipart/form-data" />
             <input type="file" id="gpx2edit" name="gpx2edit" /><br />
             <input class="ged" type="submit" name="gpxall"
@@ -64,7 +107,6 @@ session_start();
     </fieldset><br/>
     <fieldset>
         <legend>Misc Tools</legend>
-        <button id="show">Show All Tables</button><br />
         <button id="drop">Drop Table</button>&nbsp;
         <select id="dtbl" name="dropper">
             <option>USERS</option>
@@ -107,41 +149,11 @@ session_start();
             <option>EREFS</option>
             <option>EGPSDAT</option>
         </select>
-        <span id="ni">&nbsp;(Not implented at this time)</span><br /><br />
-        <button id="mode">Show/Set SQL Modes</button><br />
-        <div id="modeopt">
-        <?php
-        echo '<form action="modify_modes.php" method="POST">';
-        if (isset($_SESSION['sqlmode']) && $_SESSION['sqlmode'] === 'active') {
-            echo '<p id="dstat" style="display:none">Open</p>';
-            $_SESSION['sqlmode'] = 'inactive';
-        } else {
-            echo '<p id="dstat" style="display:none">Closed</p>';
-        }
-        $modes = file('sql_modes.ini', FILE_IGNORE_NEW_LINES);
-        $cbStates = '[';
-        for ($i=0; $i<count($modes); $i++) {
-            $opt = $modes[$i];
-            $val = substr($opt, 2, strlen($opt)-2);
-            echo '<input class="cb" type="checkbox" name="ons[]" ' .
-                    'value="' . $val .  '" />';
-            echo '&nbsp;&nbsp;' . $val . '<br />' . PHP_EOL;
-            if (substr($opt, 0, 1) === 'Y') {
-                $cbStates .= '"Y",';
-            } else {
-                $cbStates .= '"N",';
-            }
-        }
-        $cbStates = substr($cbStates, 0, strlen($cbStates)-1);
-        $cbStates .= ']';
-        echo '<br /><input type="submit" value="Apply" />';
-        echo '</form>';
-        ?>
-        </div>
+        <span id="ni">&nbsp;(Not implented at this time)</span><br />
         <script type="text/javascript">
             var cbs = <?php echo $cbStates;?>;
         </script>
-        <br /><button id="addbk">Add Book</button><br /><br />
+        <button id="addbk">Add Book</button><br />
         <select id="rdel" name="creator">
             <option>USERS</option>
             <option>HIKES</option>
@@ -157,7 +169,7 @@ session_start();
         </select>&nbsp;&nbsp;
         Row No.&nbsp;&nbsp;<input id="drow" type="text" 
             name="indx" size="4" />
-        <button id="rowdel">Delete Row</button><br />
+        <button id="rowdel">Delete Row</button>
         NOTE: Deleting a row in a table may cause issues if linked tables 
         are not also updated.
     </fieldset><br />
