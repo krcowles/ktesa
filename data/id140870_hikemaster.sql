@@ -1,5 +1,220 @@
 
 
+CREATE TABLE `EHIKES` (
+  `indxNo` smallint(6) NOT NULL AUTO_INCREMENT,
+  `pgTitle` varchar(30) NOT NULL,
+  `usrid` varchar(32) NOT NULL,
+  `stat` smallint(6) DEFAULT NULL,
+  `locale` varchar(20) DEFAULT NULL,
+  `marker` varchar(11) DEFAULT NULL,
+  `collection` varchar(15) DEFAULT NULL,
+  `cgroup` varchar(3) DEFAULT NULL,
+  `cname` varchar(25) DEFAULT NULL,
+  `logistics` varchar(12) DEFAULT NULL,
+  `miles` decimal(4,2) DEFAULT NULL,
+  `feet` smallint(5) DEFAULT NULL,
+  `diff` varchar(14) DEFAULT NULL,
+  `fac` varchar(30) DEFAULT NULL,
+  `wow` varchar(50) DEFAULT NULL,
+  `seasons` varchar(12) DEFAULT NULL,
+  `expo` varchar(15) DEFAULT NULL,
+  `gpx` varchar(1024) DEFAULT NULL,
+  `trk` varchar(1024) DEFAULT NULL,
+  `lat` double(13,10) DEFAULT NULL,
+  `lng` double(13,10) DEFAULT NULL,
+  `aoimg1` varchar(512) DEFAULT NULL,
+  `aoimg2` varchar(512) DEFAULT NULL,
+  `purl1` varchar(1024) DEFAULT NULL,
+  `purl2` varchar(1024) DEFAULT NULL,
+  `dirs` varchar(1024) DEFAULT NULL,
+  `tips` varchar(4096) DEFAULT NULL,
+  `info` varchar(4096) DEFAULT NULL,
+  PRIMARY KEY (`indxNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO EHIKES VALUES
+('21','Quebradas Road Trip','mstr','0','San Antonio','Normal',NULL,'','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','34.1108096670','-106.8717384338',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.');
+
+
+
+
+CREATE TABLE `BOOKS` (
+  `indxNo` smallint(6) NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  `author` varchar(200) NOT NULL,
+  PRIMARY KEY (`indxNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO BOOKS VALUES
+('1','Day Hikes In The Santa Fe Area','The Northern New Mexico Group of the Sierra Club'),
+('2','60 Hikes Within 60 Miles - Albuquerque','Stephen Ausherman'),
+('3','Hiking New Mexico','Laurence Parent'),
+('4','El Malpais, Mt. Taylor, and the Zuni Mountains','Sherry Robinson'),
+('5','New Mexico Journey Guide','Jon Kramer & Julie Martinez'),
+('6','100 Hikes In New Mexico','Craig Martin'),
+('7','Sandia Mountain Hiking Guide','Mike Coltrin'),
+('8','Best Hikes Near Albuquerque','J D Tanner and Emily Ressler-Tanner'),
+('9','Santa Fe - Taos Hiking Guide','Bob D\'Antonio'),
+('10','Guide To The Jemez Mountain Trail','Judith Ann Isaacs'),
+('11','Los Alamos Trails','Craig Martin'),
+('12','New Mexico Wilderness Areas','Bob Julyan'),
+('13','Taos Hiking Guide','Cindy Brown'),
+('14','New Mexico\'s Continental Divide Trail','Bob Julyan'),
+('15','50 Hikes In Northern New Mexico','Kai Huschke'),
+('16','New Mexico Waterfalls Handbook','Doug Scott'),
+('17','Hiking New Mexico\'s Gila Wilderness','Bill Cunningham and Polly Burke'),
+('18','Hiking New Mexico\'s Aldo Leopold Wilderness','Bill Cunningham and Polly Burke'),
+('19','Following the Royal Road: A Guide to the Historic Camino Real de Tierra Adentro','Hal E. Jackson'),
+('20','Wonderland: A Photographer\'s Journey Into The Bisti','Eduardo Fuss');
+
+
+
+
+CREATE TABLE `EGPSDAT` (
+  `datId` smallint(6) NOT NULL AUTO_INCREMENT,
+  `indxNo` smallint(6) DEFAULT NULL,
+  `datType` varchar(1) DEFAULT NULL,
+  `label` varchar(128) DEFAULT NULL,
+  `url` varchar(1024) DEFAULT NULL,
+  `clickText` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`datId`),
+  KEY `EGPSDAT_Constraint` (`indxNo`),
+  CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO EGPSDAT VALUES
+('27','21','P','MAP:','../maps/Stop1.html','Stop1 Hike'),
+('28','21','P','MAP:','../maps/Stop3.html','Stop3 Hike');
+
+
+
+
+CREATE TABLE `EREFS` (
+  `refId` smallint(6) NOT NULL AUTO_INCREMENT,
+  `indxNo` smallint(6) DEFAULT NULL,
+  `rtype` varchar(30) DEFAULT NULL,
+  `rit1` varchar(1024) DEFAULT NULL,
+  `rit2` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`refId`),
+  KEY `EREFS_Constraint` (`indxNo`),
+  CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO EREFS VALUES
+('122','21','Website:','https://geoinfo.nmt.edu/publications/guides/quebradas/','Quebradas Field Guide'),
+('123','21','Website:','https://www.blm.gov/visit/quebradas-backcountry-byway','BLM Site'),
+('124','21','Website:','https://www.newmexico.org/things-to-do/scenic-byways/quebradas-backcountry/','New Mexico Tourism'),
+('125','21','App:','https://www.alltrails.com/trail/us/new-mexico/quebradas-back-country-byway','AllTrails');
+
+
+
+
+CREATE TABLE `ETSV` (
+  `picIdx` smallint(6) NOT NULL AUTO_INCREMENT,
+  `indxNo` smallint(6) DEFAULT NULL,
+  `folder` varchar(30) DEFAULT NULL,
+  `title` varchar(128) DEFAULT NULL,
+  `hpg` varchar(1) DEFAULT NULL,
+  `mpg` varchar(1) DEFAULT NULL,
+  `desc` varchar(512) DEFAULT NULL,
+  `lat` double(13,10) DEFAULT NULL,
+  `lng` double(13,10) DEFAULT NULL,
+  `thumb` varchar(1024) DEFAULT NULL,
+  `alblnk` varchar(1024) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `mid` varchar(1024) DEFAULT NULL,
+  `imgHt` smallint(6) DEFAULT NULL,
+  `imgWd` smallint(6) DEFAULT NULL,
+  `iclr` varchar(32) DEFAULT NULL,
+  `org` varchar(1024) DEFAULT NULL,
+  PRIMARY KEY (`picIdx`),
+  KEY `ETSV_Constraint` (`indxNo`),
+  CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=536 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO ETSV VALUES
+('505','21','Folder1','QuebradasStart','Y','Y','You are entering...','34.1093611111','-106.8619222222','https://c1.staticflickr.com/5/4722/39349952214_d40c853667_t.jpg','https://www.flickr.com/photos/139088815@N08/39349952214/in/album-72157690088502492','2015-03-05 11:40:38','https://c1.staticflickr.com/5/4722/39349952214_d40c853667_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4722/39349952214_84c1300044_o.jpg'),
+('506','21','Folder1','SpringsOverview','Y','Y','A view of the valley at Stop 1','34.1069361111','-106.8243250000','https://c1.staticflickr.com/5/4613/39349684784_c13b9d8595_t.jpg','https://www.flickr.com/photos/139088815@N08/39349684784/in/album-72157690088502492','2015-03-05 11:57:23','https://c1.staticflickr.com/5/4613/39349684784_c13b9d8595_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4613/39349684784_e333166cf9_o.jpg'),
+('507','21','Folder1','HillToppers','Y','Y','Crazy rocks','34.0543055556','-106.7748111111','https://c1.staticflickr.com/5/4651/40049260361_fafc3734d6_t.jpg','https://www.flickr.com/photos/139088815@N08/40049260361/in/album-72157690088502492','2015-03-05 12:24:01','https://c1.staticflickr.com/5/4651/40049260361_fafc3734d6_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4651/40049260361_e426a5f719_o.jpg'),
+('508','21','Folder2','WestView','Y','Y','There is a significant variety of geological features - size, shape, age','34.0503472222','-106.7753305556','https://c1.staticflickr.com/5/4669/26175854908_cc2bfb6207_t.jpg','https://www.flickr.com/photos/139088815@N08/26175854908/in/album-72157669177869019','2015-03-05 12:28:36','https://c1.staticflickr.com/5/4669/26175854908_cc2bfb6207_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4669/26175854908_b29fd5e844_o.jpg'),
+('509','21','Folder2','BandedHills','Y','Y','Rounded, banded hills accentuate the scenery','33.9611166667','-106.7530972222','https://c1.staticflickr.com/5/4619/40016479732_fbf7ce9607_t.jpg','https://www.flickr.com/photos/139088815@N08/40016479732/in/album-72157669177869019','2015-03-05 12:58:13','https://c1.staticflickr.com/5/4619/40016479732_fbf7ce9607_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4619/40016479732_e8c2f96641_o.jpg'),
+('510','21','Folder2','NearingTheEnd','Y','Y','Many features are available right at the roadside','33.9535722222','-106.7255944444','https://c1.staticflickr.com/5/4746/39150732875_07a149b00a_t.jpg','https://www.flickr.com/photos/139088815@N08/39150732875/in/album-72157669177869019','2015-03-05 13:15:27','https://c1.staticflickr.com/5/4746/39150732875_07a149b00a_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4746/39150732875_d31b7d5298_o.jpg'),
+('511','21','Folder1','RockOcean','Y','Y','\'The Wave\'','34.1086888889','-106.8360277778','https://c1.staticflickr.com/5/4724/25177195577_01c98cf1cd_t.jpg','https://www.flickr.com/photos/139088815@N08/25177195577/in/album-72157690088502492','2015-12-06 12:22:03','https://c1.staticflickr.com/5/4724/25177195577_01c98cf1cd_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4724/25177195577_b234683292_o.jpg'),
+('512','21','Folder1','BursumSprings','Y','Y','A hidden spring - starting here and ending shortly downstream','34.1079888889','-106.8213194444','https://c1.staticflickr.com/5/4618/40027824602_5fe8526eb4_t.jpg','https://www.flickr.com/photos/139088815@N08/40027824602/in/album-72157690088502492','2015-12-06 13:11:51','https://c1.staticflickr.com/5/4618/40027824602_5fe8526eb4_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4618/40027824602_02a92ff03f_o.jpg'),
+('513','21','Folder1','KarenScouts','Y','Y','A view of the enclosing rock structure','34.1079416667','-106.8212361111','https://c1.staticflickr.com/5/4750/26187076448_b62e08f8c1_t.jpg','https://www.flickr.com/photos/139088815@N08/26187076448/in/album-72157690088502492','2015-12-06 13:17:08','https://c1.staticflickr.com/5/4750/26187076448_b62e08f8c1_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4750/26187076448_6ced8477ab_o.jpg'),
+('514','21','Folder1','Stop2Canyon','Y','Y','A tempting trail into the unknown','34.1167361111','-106.8092722222','https://c1.staticflickr.com/5/4695/28269929939_d8fb1eb171_t.jpg','https://www.flickr.com/photos/139088815@N08/28269929939/in/album-72157690088502492','2015-12-06 13:36:49','https://c1.staticflickr.com/5/4695/28269929939_d8fb1eb171_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4695/28269929939_89efee46f2_o.jpg'),
+('515','21','Folder1','TiltedRock','Y','Y','Erosion adds a fascinating overlay to some of the features','34.1170694444','-106.8091277778','https://c1.staticflickr.com/5/4606/39338577634_9ccf5b31db_t.jpg','https://www.flickr.com/photos/139088815@N08/39338577634/in/album-72157690088502492','2015-12-06 13:38:19','https://c1.staticflickr.com/5/4606/39338577634_9ccf5b31db_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4606/39338577634_0949c9ea40_o.jpg'),
+('516','21','Folder1','ErosionControl','Y','Y','How far to go at Stop 2?','34.1177027778','-106.8088083333','https://c1.staticflickr.com/5/4703/28269941849_1a5c164d76_t.jpg','https://www.flickr.com/photos/139088815@N08/28269941849/in/album-72157690088502492','2015-12-06 13:42:14','https://c1.staticflickr.com/5/4703/28269941849_1a5c164d76_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4703/28269941849_3b90a71976_o.jpg'),
+('517','21','Folder1','RedAndCream','Y','Y','Contrasting colors intensify the view','34.1158055556','-106.8036333333','https://c1.staticflickr.com/5/4619/39150726535_da5540625a_t.jpg','https://www.flickr.com/photos/139088815@N08/39150726535/in/album-72157690088502492','2015-12-06 13:49:19','https://c1.staticflickr.com/5/4619/39150726535_da5540625a_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4619/39150726535_6c508fa24f_o.jpg'),
+('518','21','Folder1','ShiningRocks','Y','Y','Angular quartz causes a glistening display','34.0758861111','-106.7803805556','https://c1.staticflickr.com/5/4757/39162125495_2dbbbfb33f_t.jpg','https://www.flickr.com/photos/139088815@N08/39162125495/in/album-72157690088502492','2015-12-06 14:01:01','https://c1.staticflickr.com/5/4757/39162125495_2dbbbfb33f_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4757/39162125495_4ac611a375_o.jpg'),
+('519','21','Folder1','BursumArroyo','Y','Y','Limestone beds run downstream','34.0758540000','-106.7812120000','https://c1.staticflickr.com/5/4624/39349960644_9f05515b10_t.jpg','https://www.flickr.com/photos/139088815@N08/39349960644/in/album-72157690088502492','2015-12-06 14:10:00','https://c1.staticflickr.com/5/4624/39349960644_9f05515b10_n.jpg','3264','2448',NULL,'https://c1.staticflickr.com/5/4624/39349960644_c04096f0c6_o.jpg'),
+('520','21','Folder2','TombstoneAlley','Y','Y','Towers of rock guard the view','34.0547861111','-106.7744444444','https://c1.staticflickr.com/5/4710/40028094592_92563017b9_t.jpg','https://www.flickr.com/photos/139088815@N08/40028094592/in/album-72157669177869019','2015-12-06 14:23:23','https://c1.staticflickr.com/5/4710/40028094592_92563017b9_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4710/40028094592_6e6d2c749c_o.jpg'),
+('521','21','Folder2','AlluringCanyon','Y','Y','Roadside arroyos tempt the traveler','34.0547944444','-106.7744222222','https://c1.staticflickr.com/5/4620/25189096867_860a267778_t.jpg','https://www.flickr.com/photos/139088815@N08/25189096867/in/album-72157669177869019','2015-12-06 14:23:49','https://c1.staticflickr.com/5/4620/25189096867_860a267778_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4620/25189096867_b28fbe721c_o.jpg'),
+('522','21','Folder2','ColorBands','Y','Y','Distant hills and mesas contrast the blue skies','34.0510111111','-106.7754583333','https://c1.staticflickr.com/5/4769/25189082567_308fb63894_t.jpg','https://www.flickr.com/photos/139088815@N08/25189082567/in/album-72157669177869019','2015-12-06 14:31:08','https://c1.staticflickr.com/5/4769/25189082567_308fb63894_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4769/25189082567_e86d21aa92_o.jpg'),
+('523','21','Folder2','HighlightedHills','Y','Y','Miles of banding on rock hills cause the traveler to ponder','33.9838527778','-106.7615500000','https://c1.staticflickr.com/5/4658/26187936108_2acca63612_t.jpg','https://www.flickr.com/photos/139088815@N08/26187936108/in/album-72157669177869019','2015-12-06 15:01:46','https://c1.staticflickr.com/5/4658/26187936108_2acca63612_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4658/26187936108_ceef8928eb_o.jpg'),
+('524','21','Folder2','PeekabooHill','Y','Y','Beautiful red hills mark the territory','33.9607416667','-106.7526027778','https://c1.staticflickr.com/5/4653/39162544395_48dde4650f_t.jpg','https://www.flickr.com/photos/139088815@N08/39162544395/in/album-72157669177869019','2015-12-06 15:13:17','https://c1.staticflickr.com/5/4653/39162544395_48dde4650f_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4653/39162544395_bc1abe4409_o.jpg'),
+('525','21','Folder2','InclinedRock','Y','Y','Every view provides different color and perspective','33.9664888889','-106.7424250000','https://c1.staticflickr.com/5/4631/26187924498_673bee9c79_t.jpg','https://www.flickr.com/photos/139088815@N08/26187924498/in/album-72157669177869019','2015-12-06 15:15:33','https://c1.staticflickr.com/5/4631/26187924498_673bee9c79_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4631/26187924498_1de59996ed_o.jpg'),
+('526','21','Folder1','BentleyLeadsTheWay','Y','Y','Heading downhill towards Bursum Springs','34.1074722222','-106.8232500000','https://c1.staticflickr.com/5/4756/40060412461_372e2fe664_t.jpg','https://www.flickr.com/photos/139088815@N08/40060412461/in/album-72157690088502492','2018-01-30 12:16:24','https://c1.staticflickr.com/5/4756/40060412461_372e2fe664_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4756/40060412461_8f188a9a9d_o.jpg'),
+('527','21','Folder1','LookingOut','Y','Y','Spring view','34.1078527778','-106.8213722222','https://c1.staticflickr.com/5/4755/26187065048_a0a11e960d_t.jpg','https://www.flickr.com/photos/139088815@N08/26187065048/in/album-72157690088502492','2018-01-30 12:21:54','https://c1.staticflickr.com/5/4755/26187065048_a0a11e960d_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4755/26187065048_1384af3bd6_o.jpg'),
+('528','21','Folder1','BursumBentley','Y','Y','Amongst the layers of time','34.0776138889','-106.7815555556','https://c1.staticflickr.com/5/4672/39162116295_1e6c329a88_t.jpg','https://www.flickr.com/photos/139088815@N08/39162116295/in/album-72157690088502492','2018-01-30 13:31:56','https://c1.staticflickr.com/5/4672/39162116295_1e6c329a88_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4672/39162116295_60537700a1_o.jpg'),
+('529','21','Folder2','Channels','Y','Y','How do these alternating colors appear in close proximity to each other?','34.0554277778','-106.7747111111','https://c1.staticflickr.com/5/4614/25189088087_5b332e6ec2_t.jpg','https://www.flickr.com/photos/139088815@N08/25189088087/in/album-72157669177869019','2018-01-30 13:44:23','https://c1.staticflickr.com/5/4614/25189088087_5b332e6ec2_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4614/25189088087_d9d52b3406_o.jpg'),
+('530','21','Folder2','RoadsideScenery','Y','Y','360 degrees of mesas and hills','34.0508166667','-106.7756888889','https://c1.staticflickr.com/5/4759/40028621812_884e38d067_t.jpg','https://www.flickr.com/photos/139088815@N08/40028621812/in/album-72157669177869019','2018-01-30 14:06:33','https://c1.staticflickr.com/5/4759/40028621812_884e38d067_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4759/40028621812_0d1783a931_o.jpg'),
+('531','21','Folder2','WierdColorMix','Y','Y','Incredibly soft clay seeps into the red rock','34.0493694444','-106.7784055556','https://c1.staticflickr.com/5/4624/26187918738_ab67e72583_t.jpg','https://www.flickr.com/photos/139088815@N08/26187918738/in/album-72157669177869019','2018-01-30 14:15:18','https://c1.staticflickr.com/5/4624/26187918738_ab67e72583_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4624/26187918738_b46232caf2_o.jpg'),
+('532','21','Folder2','Exploring','Y','Y','An endless arroyo needs to be explored','34.0485805556','-106.7809916667','https://c1.staticflickr.com/5/4603/28281857209_ccb76af42b_t.jpg','https://www.flickr.com/photos/139088815@N08/28281857209/in/album-72157669177869019','2018-01-30 14:28:42','https://c1.staticflickr.com/5/4603/28281857209_ccb76af42b_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4603/28281857209_ceb0ed9c71_o.jpg'),
+('533','21','Folder2','RoadsideArroyo','Y','Y','Visions of winding arroyos disappearing into the hills','34.0319972222','-106.7656861111','https://c1.staticflickr.com/5/4697/39162553505_8bc338c74b_t.jpg','https://www.flickr.com/photos/139088815@N08/39162553505/in/album-72157669177869019','2018-01-30 14:57:27','https://c1.staticflickr.com/5/4697/39162553505_8bc338c74b_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4697/39162553505_4a3e835280_o.jpg'),
+('534','21','Folder2','BeautifulBands','Y','Y','Color banding and scrambled rock appear in many views','33.9840194444','-106.7617027778','https://c1.staticflickr.com/5/4717/26187941618_04db3cc462_t.jpg','https://www.flickr.com/photos/139088815@N08/26187941618/in/album-72157669177869019','2018-01-30 15:14:53','https://c1.staticflickr.com/5/4717/26187941618_04db3cc462_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4717/26187941618_339184d7b7_o.jpg'),
+('535','21','Folder2','FaultsAndFolds','Y','Y','Multiple fault lines here provide a geological story','33.9836416667','-106.7616194444','https://c1.staticflickr.com/5/4704/25189087137_bc4f26c21a_t.jpg','https://www.flickr.com/photos/139088815@N08/25189087137/in/album-72157669177869019','2018-01-30 15:19:52','https://c1.staticflickr.com/5/4704/25189087137_bc4f26c21a_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4704/25189087137_17a079fd72_o.jpg');
+
+
+
+
+CREATE TABLE `GPSDAT` (
+  `datId` smallint(6) NOT NULL AUTO_INCREMENT,
+  `indxNo` smallint(6) DEFAULT NULL,
+  `datType` varchar(1) DEFAULT NULL,
+  `label` varchar(128) DEFAULT NULL,
+  `url` varchar(1024) DEFAULT NULL,
+  `clickText` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`datId`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO GPSDAT VALUES
+('1','28','P','GPX: ','../gpx/AlamoAspenVistaLoopProposed.gpx','Proposed Loop Trail'),
+('2','28','A','Map: ','../maps/AlamoAspenVistaLoopProposedPlusActual.html','Actual Plus Proposed'),
+('3','30','P','KML: ','../gpx/SagebrushFlats.kml','Proposed + Actual Trail with Alternate Driving Routes'),
+('4','89','P','GPX: ','../gpx/SanYsidroProposed.gpx','Proposed Trail'),
+('5','90','P','GPX: ','../gpx/BurntMesaActual.gpx','Actual + Proposed Trail'),
+('6','91','P','GPX: ','../gpx/RioEnMedioLower_FromEveryTrail.gpx','Proposed Trail (from Everytrail.com)'),
+('7','94','P','GPX: ','../gpx/BistiWestProposed.gpx','Proposed Trail'),
+('8','101','P','GPX: ','../gpx/PicachoProposed.gpx','Proposed Hike GPX file'),
+('9','101','A','Earth: ','../gpx/Picacho.kml','ActualHike KML File'),
+('10','110','P','GPX: ','../gpx/DiabloMesaProposedNewWayUp.gpx','Proposed easier way up'),
+('11','111','A','Map: ','../maps/SantaFePetroglyphs_geomap.html','High Return Loop'),
+('12','111','A','Map: ','../maps/LaCieneguilla_geomap.html','Low Return Loop'),
+('13','111','A','GPX: ','../gpx/Santa_Fe_Petroglyphs.gpx','High Return Track File'),
+('14','111','A','GPX: ','../gpx/LaCieneguilla.GPX','Low Return Track File'),
+('15','113','P','GPX: ','../gpx/PlazaBlancaWayTrack_DBDB.gpx','ASCHG Suggested Route'),
+('16','114','A','MAP: ','../maps/Chamisa399Interconnects_map.html','Interconnecting Hikes: Chamisa, Little Tesuque, Trail399'),
+('17','114','A','GPX: ','../gpx/ChamisaTo399.gpx','One way hike Chamisa to Nun\'s Curve via Trail 399'),
+('18','118','P','GPX: ','../gpx/Huertas2.GPX','Proposed Route GPX File'),
+('20','121','P','Web: ','https://eldoradosf.org/Amenities/community-preserve.html','Eldorado at Santa Fe Website'),
+('21','128','P','GPX: ','../gpx/SFBaldyFullLoop.gpx','Proposed hike GPX file'),
+('22','120','P','GPX:','../gpx/PalizaProposedActual.GPX','Proposed + Actual Track Data'),
+('23','45','P','GPX:','../gpx/PiedraDelAguaCombined.gpx','Actual Hike + New Leg'),
+('25','129','P','GPX:','../gpx/LittleTesuqueFalls.gpx','First Try Actual Hike GPX File'),
+('27','156','P','GPX:','../gpx/WaterCanyonSbWithElev.gpx','Proposed Hike Track File'),
+('28','163','P','GPX:','../gpx/PotrilloExtended4.gpx','Tom\'s proposed hike'),
+('29','163','P','GPX:','../gpx/MixedPortrillo.gpx','Ken\'s proposed hike');
+
+
+
+
 CREATE TABLE `HIKES` (
   `indxNo` smallint(6) NOT NULL AUTO_INCREMENT,
   `pgTitle` varchar(30) NOT NULL,
@@ -203,44 +418,58 @@ INSERT INTO HIKES VALUES
 
 
 
-CREATE TABLE `GPSDAT` (
-  `datId` smallint(6) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `IPTBLS` (
+  `ipIndx` smallint(6) NOT NULL AUTO_INCREMENT,
   `indxNo` smallint(6) DEFAULT NULL,
-  `datType` varchar(1) DEFAULT NULL,
-  `label` varchar(128) DEFAULT NULL,
-  `url` varchar(1024) DEFAULT NULL,
-  `clickText` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+  `compl` varchar(1) DEFAULT NULL,
+  `tdname` varchar(30) DEFAULT NULL,
+  `tdpg` varchar(5) DEFAULT NULL,
+  `tdmiles` decimal(4,2) DEFAULT NULL,
+  `tdft` smallint(5) DEFAULT NULL,
+  `tdexp` varchar(15) DEFAULT NULL,
+  `tdalb` varchar(1024) DEFAULT NULL,
+  PRIMARY KEY (`ipIndx`)
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 
-INSERT INTO GPSDAT VALUES
-('1','28','P','GPX: ','../gpx/AlamoAspenVistaLoopProposed.gpx','Proposed Loop Trail'),
-('2','28','A','Map: ','../maps/AlamoAspenVistaLoopProposedPlusActual.html','Actual Plus Proposed'),
-('3','30','P','KML: ','../gpx/SagebrushFlats.kml','Proposed + Actual Trail with Alternate Driving Routes'),
-('4','89','P','GPX: ','../gpx/SanYsidroProposed.gpx','Proposed Trail'),
-('5','90','P','GPX: ','../gpx/BurntMesaActual.gpx','Actual + Proposed Trail'),
-('6','91','P','GPX: ','../gpx/RioEnMedioLower_FromEveryTrail.gpx','Proposed Trail (from Everytrail.com)'),
-('7','94','P','GPX: ','../gpx/BistiWestProposed.gpx','Proposed Trail'),
-('8','101','P','GPX: ','../gpx/PicachoProposed.gpx','Proposed Hike GPX file'),
-('9','101','A','Earth: ','../gpx/Picacho.kml','ActualHike KML File'),
-('10','110','P','GPX: ','../gpx/DiabloMesaProposedNewWayUp.gpx','Proposed easier way up'),
-('11','111','A','Map: ','../maps/SantaFePetroglyphs_geomap.html','High Return Loop'),
-('12','111','A','Map: ','../maps/LaCieneguilla_geomap.html','Low Return Loop'),
-('13','111','A','GPX: ','../gpx/Santa_Fe_Petroglyphs.gpx','High Return Track File'),
-('14','111','A','GPX: ','../gpx/LaCieneguilla.GPX','Low Return Track File'),
-('15','113','P','GPX: ','../gpx/PlazaBlancaWayTrack_DBDB.gpx','ASCHG Suggested Route'),
-('16','114','A','MAP: ','../maps/Chamisa399Interconnects_map.html','Interconnecting Hikes: Chamisa, Little Tesuque, Trail399'),
-('17','114','A','GPX: ','../gpx/ChamisaTo399.gpx','One way hike Chamisa to Nun\'s Curve via Trail 399'),
-('18','118','P','GPX: ','../gpx/Huertas2.GPX','Proposed Route GPX File'),
-('20','121','P','Web: ','https://eldoradosf.org/Amenities/community-preserve.html','Eldorado at Santa Fe Website'),
-('21','128','P','GPX: ','../gpx/SFBaldyFullLoop.gpx','Proposed hike GPX file'),
-('22','120','P','GPX:','../gpx/PalizaProposedActual.GPX','Proposed + Actual Track Data'),
-('23','45','P','GPX:','../gpx/PiedraDelAguaCombined.gpx','Actual Hike + New Leg'),
-('25','129','P','GPX:','../gpx/LittleTesuqueFalls.gpx','First Try Actual Hike GPX File'),
-('27','156','P','GPX:','../gpx/WaterCanyonSbWithElev.gpx','Proposed Hike Track File'),
-('28','163','P','GPX:','../gpx/PotrilloExtended4.gpx','Tom\'s proposed hike'),
-('29','163','P','GPX:','../gpx/MixedPortrillo.gpx','Ken\'s proposed hike');
+INSERT INTO IPTBLS VALUES
+('1','1','Y','Ruins Trail','5','1.20','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669594168785'),
+('2','1','Y','Upper & Lower Falls Trail','6','3.00','300','Partial','https://www.flickr.com/photos/139088815@N08/albums/72157669136001962'),
+('3','1','Y','Frijolito Loop','8','2.50','550','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669635072405'),
+('4','1','Y','Frey Trail','7','3.00','550','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157667010406084'),
+('5','1','N','Tyuonyi Overlook','X','2.20','50','X','X'),
+('6','1','Y','Alcove House','9','1.00','140','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157667002560044'),
+('7','1','Y','Tsankawi Ruins','74','3.00','100','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669593119256'),
+('8','1','Y','Burnt Mesa','90','7.30','450','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157673291961720'),
+('9','1','N','Cerro Grande','X','4.60','1','X','X'),
+('10','1','N','Alamo Boundary','X','2.60','400','X','X'),
+('11','2','Y','Una Vida','82','0.75','100','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157666368675313'),
+('12','2','Y','Hungo Pavi','83','0.25','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668823314186'),
+('13','2','N','Chetro Ketl','X','0.00','0','X','X'),
+('14','2','Y','Pueblo Bonito','84','1.00','50','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668825446256'),
+('15','2','Y','Kin Kletso','11','0.60','0','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668542309892'),
+('16','2','Y','Pueblo Alto','10','5.70','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668935441575'),
+('17','2','N','Casa Chiquita','X','2.00','0','X','X'),
+('18','2','N','Penasco Blanco','X','7.40','0','X','X'),
+('19','2','N','Pueblo del Arroyo','X','0.10','0','X','X'),
+('20','2','N','Tsin Kletsin/Casa Rinconada','X','3.80','0','X','X'),
+('21','3','Y','Big Tubes Area','79','1.50','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157666437314513'),
+('22','3','Y','Ice Cave','80','2.00','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668605933682'),
+('23','3','Y','El Calderon','81','4.50','500','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157666391880544'),
+('24','3','N','Zuni-Acoma Trail','X','8.00','0','X','X'),
+('25','3','N','Nature Trail','X','1.25','0','X','X'),
+('26','3','N','The Narrows','X','7.40','0','X','X'),
+('27','3','N','Lava Falls','X','2.00','0','X','X'),
+('28','3','N','Hole-in-the-Wall','X','7.40','0','X','X'),
+('29','4','Y','Piedras Marcadas','76','2.00','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669829880176'),
+('30','4','Y','Boca Negra: Mesa Point','16','0.25','150','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669925680945'),
+('31','4','Y','Boca Negra: Macaw','18','0.50','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669926951595'),
+('32','4','Y','Boca Negra: Cliff Base','17','1.00','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669833765256'),
+('33','4','Y','Rinconada Canyon','77','2.20','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669380888432'),
+('34','4','Y','ABQ Volcanoes','78','4.00','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668175624985'),
+('35','98','Y','El Morro Trail','47','2.50','300','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669107208625'),
+('36','99','Y','Aldo Leopold','96','2.60','50','Sunny','https://www.flickr.com/photos/139088815@N08/sets/72157675044446662'),
+('37','99','Y','Bosque River Loop','150','2.10','50','Mixed sun/shade','https://www.flickr.com/photos/139088815@N08/albums/72157679147304911');
 
 
 
@@ -2579,202 +2808,6 @@ INSERT INTO TSV VALUES
 
 
 
-CREATE TABLE `IPTBLS` (
-  `ipIndx` smallint(6) NOT NULL AUTO_INCREMENT,
-  `indxNo` smallint(6) DEFAULT NULL,
-  `compl` varchar(1) DEFAULT NULL,
-  `tdname` varchar(30) DEFAULT NULL,
-  `tdpg` varchar(5) DEFAULT NULL,
-  `tdmiles` decimal(4,2) DEFAULT NULL,
-  `tdft` smallint(5) DEFAULT NULL,
-  `tdexp` varchar(15) DEFAULT NULL,
-  `tdalb` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`ipIndx`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO IPTBLS VALUES
-('1','1','Y','Ruins Trail','5','1.20','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669594168785'),
-('2','1','Y','Upper & Lower Falls Trail','6','3.00','300','Partial','https://www.flickr.com/photos/139088815@N08/albums/72157669136001962'),
-('3','1','Y','Frijolito Loop','8','2.50','550','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669635072405'),
-('4','1','Y','Frey Trail','7','3.00','550','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157667010406084'),
-('5','1','N','Tyuonyi Overlook','X','2.20','50','X','X'),
-('6','1','Y','Alcove House','9','1.00','140','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157667002560044'),
-('7','1','Y','Tsankawi Ruins','74','3.00','100','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669593119256'),
-('8','1','Y','Burnt Mesa','90','7.30','450','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157673291961720'),
-('9','1','N','Cerro Grande','X','4.60','1','X','X'),
-('10','1','N','Alamo Boundary','X','2.60','400','X','X'),
-('11','2','Y','Una Vida','82','0.75','100','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157666368675313'),
-('12','2','Y','Hungo Pavi','83','0.25','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668823314186'),
-('13','2','N','Chetro Ketl','X','0.00','0','X','X'),
-('14','2','Y','Pueblo Bonito','84','1.00','50','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668825446256'),
-('15','2','Y','Kin Kletso','11','0.60','0','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668542309892'),
-('16','2','Y','Pueblo Alto','10','5.70','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668935441575'),
-('17','2','N','Casa Chiquita','X','2.00','0','X','X'),
-('18','2','N','Penasco Blanco','X','7.40','0','X','X'),
-('19','2','N','Pueblo del Arroyo','X','0.10','0','X','X'),
-('20','2','N','Tsin Kletsin/Casa Rinconada','X','3.80','0','X','X'),
-('21','3','Y','Big Tubes Area','79','1.50','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157666437314513'),
-('22','3','Y','Ice Cave','80','2.00','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668605933682'),
-('23','3','Y','El Calderon','81','4.50','500','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157666391880544'),
-('24','3','N','Zuni-Acoma Trail','X','8.00','0','X','X'),
-('25','3','N','Nature Trail','X','1.25','0','X','X'),
-('26','3','N','The Narrows','X','7.40','0','X','X'),
-('27','3','N','Lava Falls','X','2.00','0','X','X'),
-('28','3','N','Hole-in-the-Wall','X','7.40','0','X','X'),
-('29','4','Y','Piedras Marcadas','76','2.00','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669829880176'),
-('30','4','Y','Boca Negra: Mesa Point','16','0.25','150','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669925680945'),
-('31','4','Y','Boca Negra: Macaw','18','0.50','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669926951595'),
-('32','4','Y','Boca Negra: Cliff Base','17','1.00','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669833765256'),
-('33','4','Y','Rinconada Canyon','77','2.20','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669380888432'),
-('34','4','Y','ABQ Volcanoes','78','4.00','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668175624985'),
-('35','98','Y','El Morro Trail','47','2.50','300','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669107208625'),
-('36','99','Y','Aldo Leopold','96','2.60','50','Sunny','https://www.flickr.com/photos/139088815@N08/sets/72157675044446662'),
-('37','99','Y','Bosque River Loop','150','2.10','50','Mixed sun/shade','https://www.flickr.com/photos/139088815@N08/albums/72157679147304911');
-
-
-
-
-CREATE TABLE `EHIKES` (
-  `indxNo` smallint(6) NOT NULL AUTO_INCREMENT,
-  `pgTitle` varchar(30) NOT NULL,
-  `usrid` varchar(32) NOT NULL,
-  `stat` smallint(6) DEFAULT NULL,
-  `locale` varchar(20) DEFAULT NULL,
-  `marker` varchar(11) DEFAULT NULL,
-  `collection` varchar(15) DEFAULT NULL,
-  `cgroup` varchar(3) DEFAULT NULL,
-  `cname` varchar(25) DEFAULT NULL,
-  `logistics` varchar(12) DEFAULT NULL,
-  `miles` decimal(4,2) DEFAULT NULL,
-  `feet` smallint(5) DEFAULT NULL,
-  `diff` varchar(14) DEFAULT NULL,
-  `fac` varchar(30) DEFAULT NULL,
-  `wow` varchar(50) DEFAULT NULL,
-  `seasons` varchar(12) DEFAULT NULL,
-  `expo` varchar(15) DEFAULT NULL,
-  `gpx` varchar(1024) DEFAULT NULL,
-  `trk` varchar(1024) DEFAULT NULL,
-  `lat` double(13,10) DEFAULT NULL,
-  `lng` double(13,10) DEFAULT NULL,
-  `aoimg1` varchar(512) DEFAULT NULL,
-  `aoimg2` varchar(512) DEFAULT NULL,
-  `purl1` varchar(1024) DEFAULT NULL,
-  `purl2` varchar(1024) DEFAULT NULL,
-  `dirs` varchar(1024) DEFAULT NULL,
-  `tips` varchar(4096) DEFAULT NULL,
-  `info` varchar(4096) DEFAULT NULL,
-  PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO EHIKES VALUES
-('21','Quebradas Road Trip','mstr','0','San Antonio','Normal',NULL,'','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','34.1108096670','-106.8717384338',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.');
-
-
-
-
-CREATE TABLE `EGPSDAT` (
-  `datId` smallint(6) NOT NULL AUTO_INCREMENT,
-  `indxNo` smallint(6) DEFAULT NULL,
-  `datType` varchar(1) DEFAULT NULL,
-  `label` varchar(128) DEFAULT NULL,
-  `url` varchar(1024) DEFAULT NULL,
-  `clickText` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`datId`),
-  KEY `EGPSDAT_Constraint` (`indxNo`),
-  CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO EGPSDAT VALUES
-('27','21','P','MAP:','../maps/Stop1.html','Stop1 Hike'),
-('28','21','P','MAP:','../maps/Stop3.html','Stop3 Hike');
-
-
-
-
-CREATE TABLE `EREFS` (
-  `refId` smallint(6) NOT NULL AUTO_INCREMENT,
-  `indxNo` smallint(6) DEFAULT NULL,
-  `rtype` varchar(30) DEFAULT NULL,
-  `rit1` varchar(1024) DEFAULT NULL,
-  `rit2` varchar(512) DEFAULT NULL,
-  PRIMARY KEY (`refId`),
-  KEY `EREFS_Constraint` (`indxNo`),
-  CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO EREFS VALUES
-('122','21','Website:','https://geoinfo.nmt.edu/publications/guides/quebradas/','Quebradas Field Guide'),
-('123','21','Website:','https://www.blm.gov/visit/quebradas-backcountry-byway','BLM Site'),
-('124','21','Website:','https://www.newmexico.org/things-to-do/scenic-byways/quebradas-backcountry/','New Mexico Tourism'),
-('125','21','App:','https://www.alltrails.com/trail/us/new-mexico/quebradas-back-country-byway','AllTrails');
-
-
-
-
-CREATE TABLE `ETSV` (
-  `picIdx` smallint(6) NOT NULL AUTO_INCREMENT,
-  `indxNo` smallint(6) DEFAULT NULL,
-  `folder` varchar(30) DEFAULT NULL,
-  `title` varchar(128) DEFAULT NULL,
-  `hpg` varchar(1) DEFAULT NULL,
-  `mpg` varchar(1) DEFAULT NULL,
-  `desc` varchar(512) DEFAULT NULL,
-  `lat` double(13,10) DEFAULT NULL,
-  `lng` double(13,10) DEFAULT NULL,
-  `thumb` varchar(1024) DEFAULT NULL,
-  `alblnk` varchar(1024) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
-  `mid` varchar(1024) DEFAULT NULL,
-  `imgHt` smallint(6) DEFAULT NULL,
-  `imgWd` smallint(6) DEFAULT NULL,
-  `iclr` varchar(32) DEFAULT NULL,
-  `org` varchar(1024) DEFAULT NULL,
-  PRIMARY KEY (`picIdx`),
-  KEY `ETSV_Constraint` (`indxNo`),
-  CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=536 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO ETSV VALUES
-('505','21','Folder1','QuebradasStart','Y','Y','You are entering...','34.1093611111','-106.8619222222','https://c1.staticflickr.com/5/4722/39349952214_d40c853667_t.jpg','https://www.flickr.com/photos/139088815@N08/39349952214/in/album-72157690088502492','2015-03-05 11:40:38','https://c1.staticflickr.com/5/4722/39349952214_d40c853667_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4722/39349952214_84c1300044_o.jpg'),
-('506','21','Folder1','SpringsOverview','Y','Y','A view of the valley at Stop 1','34.1069361111','-106.8243250000','https://c1.staticflickr.com/5/4613/39349684784_c13b9d8595_t.jpg','https://www.flickr.com/photos/139088815@N08/39349684784/in/album-72157690088502492','2015-03-05 11:57:23','https://c1.staticflickr.com/5/4613/39349684784_c13b9d8595_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4613/39349684784_e333166cf9_o.jpg'),
-('507','21','Folder1','HillToppers','Y','Y','Crazy rocks','34.0543055556','-106.7748111111','https://c1.staticflickr.com/5/4651/40049260361_fafc3734d6_t.jpg','https://www.flickr.com/photos/139088815@N08/40049260361/in/album-72157690088502492','2015-03-05 12:24:01','https://c1.staticflickr.com/5/4651/40049260361_fafc3734d6_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4651/40049260361_e426a5f719_o.jpg'),
-('508','21','Folder2','WestView','Y','Y','There is a significant variety of geological features - size, shape, age','34.0503472222','-106.7753305556','https://c1.staticflickr.com/5/4669/26175854908_cc2bfb6207_t.jpg','https://www.flickr.com/photos/139088815@N08/26175854908/in/album-72157669177869019','2015-03-05 12:28:36','https://c1.staticflickr.com/5/4669/26175854908_cc2bfb6207_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4669/26175854908_b29fd5e844_o.jpg'),
-('509','21','Folder2','BandedHills','Y','Y','Rounded, banded hills accentuate the scenery','33.9611166667','-106.7530972222','https://c1.staticflickr.com/5/4619/40016479732_fbf7ce9607_t.jpg','https://www.flickr.com/photos/139088815@N08/40016479732/in/album-72157669177869019','2015-03-05 12:58:13','https://c1.staticflickr.com/5/4619/40016479732_fbf7ce9607_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4619/40016479732_e8c2f96641_o.jpg'),
-('510','21','Folder2','NearingTheEnd','Y','Y','Many features are available right at the roadside','33.9535722222','-106.7255944444','https://c1.staticflickr.com/5/4746/39150732875_07a149b00a_t.jpg','https://www.flickr.com/photos/139088815@N08/39150732875/in/album-72157669177869019','2015-03-05 13:15:27','https://c1.staticflickr.com/5/4746/39150732875_07a149b00a_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4746/39150732875_d31b7d5298_o.jpg'),
-('511','21','Folder1','RockOcean','Y','Y','\'The Wave\'','34.1086888889','-106.8360277778','https://c1.staticflickr.com/5/4724/25177195577_01c98cf1cd_t.jpg','https://www.flickr.com/photos/139088815@N08/25177195577/in/album-72157690088502492','2015-12-06 12:22:03','https://c1.staticflickr.com/5/4724/25177195577_01c98cf1cd_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4724/25177195577_b234683292_o.jpg'),
-('512','21','Folder1','BursumSprings','Y','Y','A hidden spring - starting here and ending shortly downstream','34.1079888889','-106.8213194444','https://c1.staticflickr.com/5/4618/40027824602_5fe8526eb4_t.jpg','https://www.flickr.com/photos/139088815@N08/40027824602/in/album-72157690088502492','2015-12-06 13:11:51','https://c1.staticflickr.com/5/4618/40027824602_5fe8526eb4_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4618/40027824602_02a92ff03f_o.jpg'),
-('513','21','Folder1','KarenScouts','Y','Y','A view of the enclosing rock structure','34.1079416667','-106.8212361111','https://c1.staticflickr.com/5/4750/26187076448_b62e08f8c1_t.jpg','https://www.flickr.com/photos/139088815@N08/26187076448/in/album-72157690088502492','2015-12-06 13:17:08','https://c1.staticflickr.com/5/4750/26187076448_b62e08f8c1_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4750/26187076448_6ced8477ab_o.jpg'),
-('514','21','Folder1','Stop2Canyon','Y','Y','A tempting trail into the unknown','34.1167361111','-106.8092722222','https://c1.staticflickr.com/5/4695/28269929939_d8fb1eb171_t.jpg','https://www.flickr.com/photos/139088815@N08/28269929939/in/album-72157690088502492','2015-12-06 13:36:49','https://c1.staticflickr.com/5/4695/28269929939_d8fb1eb171_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4695/28269929939_89efee46f2_o.jpg'),
-('515','21','Folder1','TiltedRock','Y','Y','Erosion adds a fascinating overlay to some of the features','34.1170694444','-106.8091277778','https://c1.staticflickr.com/5/4606/39338577634_9ccf5b31db_t.jpg','https://www.flickr.com/photos/139088815@N08/39338577634/in/album-72157690088502492','2015-12-06 13:38:19','https://c1.staticflickr.com/5/4606/39338577634_9ccf5b31db_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4606/39338577634_0949c9ea40_o.jpg'),
-('516','21','Folder1','ErosionControl','Y','Y','How far to go at Stop 2?','34.1177027778','-106.8088083333','https://c1.staticflickr.com/5/4703/28269941849_1a5c164d76_t.jpg','https://www.flickr.com/photos/139088815@N08/28269941849/in/album-72157690088502492','2015-12-06 13:42:14','https://c1.staticflickr.com/5/4703/28269941849_1a5c164d76_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4703/28269941849_3b90a71976_o.jpg'),
-('517','21','Folder1','RedAndCream','Y','Y','Contrasting colors intensify the view','34.1158055556','-106.8036333333','https://c1.staticflickr.com/5/4619/39150726535_da5540625a_t.jpg','https://www.flickr.com/photos/139088815@N08/39150726535/in/album-72157690088502492','2015-12-06 13:49:19','https://c1.staticflickr.com/5/4619/39150726535_da5540625a_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4619/39150726535_6c508fa24f_o.jpg'),
-('518','21','Folder1','ShiningRocks','Y','Y','Angular quartz causes a glistening display','34.0758861111','-106.7803805556','https://c1.staticflickr.com/5/4757/39162125495_2dbbbfb33f_t.jpg','https://www.flickr.com/photos/139088815@N08/39162125495/in/album-72157690088502492','2015-12-06 14:01:01','https://c1.staticflickr.com/5/4757/39162125495_2dbbbfb33f_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4757/39162125495_4ac611a375_o.jpg'),
-('519','21','Folder1','BursumArroyo','Y','Y','Limestone beds run downstream','34.0758540000','-106.7812120000','https://c1.staticflickr.com/5/4624/39349960644_9f05515b10_t.jpg','https://www.flickr.com/photos/139088815@N08/39349960644/in/album-72157690088502492','2015-12-06 14:10:00','https://c1.staticflickr.com/5/4624/39349960644_9f05515b10_n.jpg','3264','2448',NULL,'https://c1.staticflickr.com/5/4624/39349960644_c04096f0c6_o.jpg'),
-('520','21','Folder2','TombstoneAlley','Y','Y','Towers of rock guard the view','34.0547861111','-106.7744444444','https://c1.staticflickr.com/5/4710/40028094592_92563017b9_t.jpg','https://www.flickr.com/photos/139088815@N08/40028094592/in/album-72157669177869019','2015-12-06 14:23:23','https://c1.staticflickr.com/5/4710/40028094592_92563017b9_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4710/40028094592_6e6d2c749c_o.jpg'),
-('521','21','Folder2','AlluringCanyon','Y','Y','Roadside arroyos tempt the traveler','34.0547944444','-106.7744222222','https://c1.staticflickr.com/5/4620/25189096867_860a267778_t.jpg','https://www.flickr.com/photos/139088815@N08/25189096867/in/album-72157669177869019','2015-12-06 14:23:49','https://c1.staticflickr.com/5/4620/25189096867_860a267778_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4620/25189096867_b28fbe721c_o.jpg'),
-('522','21','Folder2','ColorBands','Y','Y','Distant hills and mesas contrast the blue skies','34.0510111111','-106.7754583333','https://c1.staticflickr.com/5/4769/25189082567_308fb63894_t.jpg','https://www.flickr.com/photos/139088815@N08/25189082567/in/album-72157669177869019','2015-12-06 14:31:08','https://c1.staticflickr.com/5/4769/25189082567_308fb63894_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4769/25189082567_e86d21aa92_o.jpg'),
-('523','21','Folder2','HighlightedHills','Y','Y','Miles of banding on rock hills cause the traveler to ponder','33.9838527778','-106.7615500000','https://c1.staticflickr.com/5/4658/26187936108_2acca63612_t.jpg','https://www.flickr.com/photos/139088815@N08/26187936108/in/album-72157669177869019','2015-12-06 15:01:46','https://c1.staticflickr.com/5/4658/26187936108_2acca63612_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4658/26187936108_ceef8928eb_o.jpg'),
-('524','21','Folder2','PeekabooHill','Y','Y','Beautiful red hills mark the territory','33.9607416667','-106.7526027778','https://c1.staticflickr.com/5/4653/39162544395_48dde4650f_t.jpg','https://www.flickr.com/photos/139088815@N08/39162544395/in/album-72157669177869019','2015-12-06 15:13:17','https://c1.staticflickr.com/5/4653/39162544395_48dde4650f_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4653/39162544395_bc1abe4409_o.jpg'),
-('525','21','Folder2','InclinedRock','Y','Y','Every view provides different color and perspective','33.9664888889','-106.7424250000','https://c1.staticflickr.com/5/4631/26187924498_673bee9c79_t.jpg','https://www.flickr.com/photos/139088815@N08/26187924498/in/album-72157669177869019','2015-12-06 15:15:33','https://c1.staticflickr.com/5/4631/26187924498_673bee9c79_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4631/26187924498_1de59996ed_o.jpg'),
-('526','21','Folder1','BentleyLeadsTheWay','Y','Y','Heading downhill towards Bursum Springs','34.1074722222','-106.8232500000','https://c1.staticflickr.com/5/4756/40060412461_372e2fe664_t.jpg','https://www.flickr.com/photos/139088815@N08/40060412461/in/album-72157690088502492','2018-01-30 12:16:24','https://c1.staticflickr.com/5/4756/40060412461_372e2fe664_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4756/40060412461_8f188a9a9d_o.jpg'),
-('527','21','Folder1','LookingOut','Y','Y','Spring view','34.1078527778','-106.8213722222','https://c1.staticflickr.com/5/4755/26187065048_a0a11e960d_t.jpg','https://www.flickr.com/photos/139088815@N08/26187065048/in/album-72157690088502492','2018-01-30 12:21:54','https://c1.staticflickr.com/5/4755/26187065048_a0a11e960d_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4755/26187065048_1384af3bd6_o.jpg'),
-('528','21','Folder1','BursumBentley','Y','Y','Amongst the layers of time','34.0776138889','-106.7815555556','https://c1.staticflickr.com/5/4672/39162116295_1e6c329a88_t.jpg','https://www.flickr.com/photos/139088815@N08/39162116295/in/album-72157690088502492','2018-01-30 13:31:56','https://c1.staticflickr.com/5/4672/39162116295_1e6c329a88_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4672/39162116295_60537700a1_o.jpg'),
-('529','21','Folder2','Channels','Y','Y','How do these alternating colors appear in close proximity to each other?','34.0554277778','-106.7747111111','https://c1.staticflickr.com/5/4614/25189088087_5b332e6ec2_t.jpg','https://www.flickr.com/photos/139088815@N08/25189088087/in/album-72157669177869019','2018-01-30 13:44:23','https://c1.staticflickr.com/5/4614/25189088087_5b332e6ec2_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4614/25189088087_d9d52b3406_o.jpg'),
-('530','21','Folder2','RoadsideScenery','Y','Y','360 degrees of mesas and hills','34.0508166667','-106.7756888889','https://c1.staticflickr.com/5/4759/40028621812_884e38d067_t.jpg','https://www.flickr.com/photos/139088815@N08/40028621812/in/album-72157669177869019','2018-01-30 14:06:33','https://c1.staticflickr.com/5/4759/40028621812_884e38d067_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4759/40028621812_0d1783a931_o.jpg'),
-('531','21','Folder2','WierdColorMix','Y','Y','Incredibly soft clay seeps into the red rock','34.0493694444','-106.7784055556','https://c1.staticflickr.com/5/4624/26187918738_ab67e72583_t.jpg','https://www.flickr.com/photos/139088815@N08/26187918738/in/album-72157669177869019','2018-01-30 14:15:18','https://c1.staticflickr.com/5/4624/26187918738_ab67e72583_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4624/26187918738_b46232caf2_o.jpg'),
-('532','21','Folder2','Exploring','Y','Y','An endless arroyo needs to be explored','34.0485805556','-106.7809916667','https://c1.staticflickr.com/5/4603/28281857209_ccb76af42b_t.jpg','https://www.flickr.com/photos/139088815@N08/28281857209/in/album-72157669177869019','2018-01-30 14:28:42','https://c1.staticflickr.com/5/4603/28281857209_ccb76af42b_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4603/28281857209_ceb0ed9c71_o.jpg'),
-('533','21','Folder2','RoadsideArroyo','Y','Y','Visions of winding arroyos disappearing into the hills','34.0319972222','-106.7656861111','https://c1.staticflickr.com/5/4697/39162553505_8bc338c74b_t.jpg','https://www.flickr.com/photos/139088815@N08/39162553505/in/album-72157669177869019','2018-01-30 14:57:27','https://c1.staticflickr.com/5/4697/39162553505_8bc338c74b_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4697/39162553505_4a3e835280_o.jpg'),
-('534','21','Folder2','BeautifulBands','Y','Y','Color banding and scrambled rock appear in many views','33.9840194444','-106.7617027778','https://c1.staticflickr.com/5/4717/26187941618_04db3cc462_t.jpg','https://www.flickr.com/photos/139088815@N08/26187941618/in/album-72157669177869019','2018-01-30 15:14:53','https://c1.staticflickr.com/5/4717/26187941618_04db3cc462_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4717/26187941618_339184d7b7_o.jpg'),
-('535','21','Folder2','FaultsAndFolds','Y','Y','Multiple fault lines here provide a geological story','33.9836416667','-106.7616194444','https://c1.staticflickr.com/5/4704/25189087137_bc4f26c21a_t.jpg','https://www.flickr.com/photos/139088815@N08/25189087137/in/album-72157669177869019','2018-01-30 15:19:52','https://c1.staticflickr.com/5/4704/25189087137_bc4f26c21a_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4704/25189087137_17a079fd72_o.jpg');
-
-
-
-
 CREATE TABLE `USERS` (
   `userid` smallint(6) NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
@@ -2794,38 +2827,5 @@ INSERT INTO USERS VALUES
 ('1','tom','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Sandberg','Tom','tjsandberg@yahoo.com',NULL,NULL,'One of the geniuses behind this site :-)'),
 ('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)'),
 ('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com','','','Just and old dusty traveler');
-
-
-
-
-CREATE TABLE `BOOKS` (
-  `indxNo` smallint(6) NOT NULL AUTO_INCREMENT,
-  `title` varchar(200) NOT NULL,
-  `author` varchar(200) NOT NULL,
-  PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
-
-
-INSERT INTO BOOKS VALUES
-('1','Day Hikes In The Santa Fe Area','The Northern New Mexico Group of the Sierra Club'),
-('2','60 Hikes Within 60 Miles - Albuquerque','Stephen Ausherman'),
-('3','Hiking New Mexico','Laurence Parent'),
-('4','El Malpais, Mt. Taylor, and the Zuni Mountains','Sherry Robinson'),
-('5','New Mexico Journey Guide','Jon Kramer & Julie Martinez'),
-('6','100 Hikes In New Mexico','Craig Martin'),
-('7','Sandia Mountain Hiking Guide','Mike Coltrin'),
-('8','Best Hikes Near Albuquerque','J D Tanner and Emily Ressler-Tanner'),
-('9','Santa Fe - Taos Hiking Guide','Bob D\'Antonio'),
-('10','Guide To The Jemez Mountain Trail','Judith Ann Isaacs'),
-('11','Los Alamos Trails','Craig Martin'),
-('12','New Mexico Wilderness Areas','Bob Julyan'),
-('13','Taos Hiking Guide','Cindy Brown'),
-('14','New Mexico\'s Continental Divide Trail','Bob Julyan'),
-('15','50 Hikes In Northern New Mexico','Kai Huschke'),
-('16','New Mexico Waterfalls Handbook','Doug Scott'),
-('17','Hiking New Mexico\'s Gila Wilderness','Bill Cunningham and Polly Burke'),
-('18','Hiking New Mexico\'s Aldo Leopold Wilderness','Bill Cunningham and Polly Burke'),
-('19','Following the Royal Road: A Guide to the Historic Camino Real de Tierra Adentro','Hal E. Jackson'),
-('20','Wonderland: A Photographer\'s Journey Into The Bisti','Eduardo Fuss');
 
 

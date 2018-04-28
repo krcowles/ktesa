@@ -2,6 +2,7 @@
 /**
  * This script is the essence of the action for loading all tables. It
  * can be called individually, or as a part of the reload action.
+ * PHP Version 7.1
  * 
  * @package Admin
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -16,9 +17,10 @@ $templine = '';
 $dbFile = "../data/id140870_hikemaster.sql";
 $lines = file($dbFile);
 if (!$lines) {
-    $thisFile = __FILE__;
-    $thisLine = __LINE__;
-    die("Failure in {$thisFile} line: {$thisLine}: Failed to read database from file: {$dbFile}.");
+    die(
+        __FILE__ . " Line: " . __LINE__ . 
+        " Failed to read database from file: {$dbFile}."
+    );
 }
 // Loop through each line
 $gottbl = false;
@@ -60,16 +62,18 @@ foreach ($lines as $line) {
             );
         }
         if (!is_bool($req)) {
-        mysqli_free_result($req);
+            mysqli_free_result($req);
         }
         $qcnt++;
         echo "<script type='text/javascript'>var qcnt = {$qcnt};</script>";
         if ($gottbl) {
             $gottbl = false;
-            echo "<br />Completed " . $tblName . " at: " . date('l jS \of F Y h:i:s A');
+            echo "<br />Completed " . $tblName . " at: " . 
+                date('l jS \of F Y h:i:s A');
             flush();
         } else {
-            echo "<br />Completed " . substr($qstr, 0, 32) . date('l jS \of F Y h:i:s A');
+            echo "<br />Completed " . substr($qstr, 0, 32) . 
+                date('l jS \of F Y h:i:s A');
             flush();
         }
         $templine = '';    // Reset temp variable to empty

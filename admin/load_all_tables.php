@@ -28,6 +28,14 @@
 </div>
 <script src="load_progress.js"></script>
 <?php
+/**
+ * The loader.php script performs the actual uploading of the database.sql file.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
 require 'loader.php';
 ?>
 <p>DONE: Tables imported successfully</p>

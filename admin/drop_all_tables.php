@@ -1,35 +1,32 @@
 <?php
 /**
- * This module drops all tables listed in the $table array. Note that there
- * is a sensitivity to order for E-tables, since those have foreign keys.
+ * This module drops all tables listed in the $tables array. That array
+ * is established using the current list of tables in the db, but placing
+ * EHIKES last as it is the parent for multiple foreign keys.
+ * PHP Version 7.1
  * 
  * @package Admin
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
-$table = array('USERS', 'HIKES', 'TSV', 'REFS', 'GPSDAT', 'IPTBLS', 'BOOKS',
-    'ETSV', 'EREFS', 'EGPSDAT', 'EHIKES'); // NOTE: E-tables are order-sensitive
-$tblcnt = count($table); // total number of database tables
-if (isset($_REQUEST['no'])) {
-    $qty = filter_input(INPUT_GET, 'no');
-    if ($qty === 'all') {
-        $action = 'Drop All Tables';
-        $strt = 0;
-    } else {
-        $action = 'Drop All E-Tables';
-        for ($j=0; $j<$tblcnt; $j++) {
-            if (substr($table[$j], 0, 1) == 'E') {
-                $strt = $j;
-                break;
-            }
-        }
+$tables = array();
+$tbl_list = mysqli_query($link, "SHOW TABLES;") or die(
+    __FILE__ . " Line " . __LINE__ . "Failed to get list of tables: "
+    . mysqli_error($link)
+);
+while ($row = mysqli_fetch_row($tbl_list)) {
+    if ($row[0] !== 'EHIKES') {
+        array_push($tables, $row[0]);
     }
+}
+array_push($tables, 'EHIKES');
+$tblcnt = count($tables); // total number of database tables
+if (isset($_REQUEST['no'])) {
+    $action = 'Drop All Tables';
 } else {
-    $action = 'Reload Database';
-    $strt = 0;
+    $action = "Reload Database";
 }
 ?>
 <!DOCTYPE html>
@@ -37,7 +34,8 @@ if (isset($_REQUEST['no'])) {
 <head>
     <title><?= $action;?></title>
     <meta charset="utf-8" />
-    <meta name="description" content="Drop (and Load if reqested) the specified Tables" />
+    <meta name="description"
+        content="Drop (and Load if reqested) the specified Tables" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
@@ -61,11 +59,11 @@ if (isset($_REQUEST['no'])) {
 // Error messages:
 $query_fail = "<p>Query did not succeed: SHOW TABLES</p>";
 // Execute the DROP TABLE command for chosen tables:
-for ($i=$strt; $i<$tblcnt; $i++) {
-    echo "Dropping {$table[$i]}: ... ";
-    $remtbl = mysqli_query($link, "DROP TABLE {$table[$i]};");
+for ($i=0; $i<$tblcnt; $i++) {
+    echo "Dropping {$tables[$i]}: ... ";
+    $remtbl = mysqli_query($link, "DROP TABLE {$tables[$i]};");
     if (!$remtbl) {
-        echo"<p>drop_all_tables.php: Failed to drop {$table[$i]}: " .
+        echo"<p>drop_all_tables.php: Failed to drop {$tables[$i]}: " .
             mysqli_error($link) . "</p>";
     } else {
         echo "Table Removed<br />";
