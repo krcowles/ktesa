@@ -1,29 +1,13 @@
 <?php
 /**
- * This module contains a function (to be moved later) that
- * will reverse the designated track in a gpx file and output
- * a new file. Track numbers begin at 0.
+ * This module contains the functions required to carry out various
+ * admin tasks.
+ * PHP Version 7.1
  * 
  * @package Admin
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
-/**
- * This function will accept two SimpleXML node objects and append
- * one ('from') after the other ('to').
- * 
- * @param SimpleXMLElement $to   The xml node on which $from will be appended
- * @param SimpleXMLElement $from The xml node being appended to $to
- * 
- * @return object xml object with node appended
- */
-function sxml_append(SimpleXMLElement $to, SimpleXMLElement $from)
-{
-    $toDom = dom_import_simplexml($to);
-    $fromDom = dom_import_simplexml($from);
-    $toDom->appendChild($toDom->ownerDocument->importNode($fromDom, true));
-}
 /**
  * This function specifies which track, in the list of tracks, to reverse.
  * The function will be called iteratively if multiple tracks are to be
@@ -92,4 +76,71 @@ function uploadErr($errdat)
     if ($errdat === UPLOAD_ERR_EXTENSION) {
         return 'A PHP extension stopped the upload';
     }
+}
+/**
+ * This function is used in the process of exporting all tables.
+ * 
+ * @param string $host        Specify host to use based on invoker
+ * @param string $user        As above
+ * @param string $pass        As above
+ * @param string $name        As above
+ * @param array  $tables      An array containg table names to export
+ * @param bool   $backup_name Backup name, if used
+ * 
+ * @return null;
+ */
+function exportDatabase(
+    $host, $user, $pass, $name, $tables, $backup_name = false
+) {
+    $mysqli = new mysqli($host, $user, $pass, $name);
+    $mysqli->select_db($name);
+    $mysqli->query("SET NAMES 'utf8'");
+    foreach ($tables as $table) {
+        $result         = $mysqli->query('SELECT * FROM '. $table);
+        $fields_amount  = $result->field_count;
+        $rows_num       = $mysqli->affected_rows;
+        $res            = $mysqli->query('SHOW CREATE TABLE '. $table);
+        $TableMLine     = $res->fetch_row();
+        $content        = (!isset($content) ?  '' : $content) 
+            . "\n\n" . $TableMLine[1].";\n\n";
+        for ($i = 0, $st_counter = 0; $i < $fields_amount; $i++, $st_counter=0) {
+            while ($row = $result->fetch_row()) {
+                //when started (and every after 100 command cycle):
+                if ($st_counter%100 == 0 || $st_counter == 0) {
+                    $content .= "\nINSERT INTO " . $table . " VALUES";
+                }
+                $content .= "\n(";
+                for ($j=0; $j<$fields_amount; $j++) {
+                    if (is_null($row[$j])) {
+                        $content .= "NULL";
+                    } else {
+                        $row[$j] = str_replace("\n", "\\n", addslashes($row[$j]));
+                        if (isset($row[$j])) {
+                            $content .= "'" . $row[$j] . "'" ;
+                        }
+                    }
+                    if ($j<($fields_amount-1)) {
+                        $content.= ',';
+                    }
+                }
+                $content .=")";
+                //every after 100 command cycle [or at last line] 
+                //  ...p.s. but should be inserted 1 cycle eariler
+                if ((($st_counter+1)%100 == 0 && $st_counter != 0) 
+                    || $st_counter+1==$rows_num
+                ) {
+                    $content .= ";";
+                } else {
+                    $content .= ",";
+                }
+                $st_counter = $st_counter + 1;
+            }
+        } $content .= "\n\n\n";
+    }
+    $backup_name = $backup_name ? $backup_name : $name.".sql";
+    header('Content-Type: application/octet-stream');
+    header("Content-Transfer-Encoding: Binary");
+    header("Content-disposition: attachment; filename=\"".$backup_name."\"");
+    echo $content;
+    exit;
 }

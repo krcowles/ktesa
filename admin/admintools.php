@@ -3,11 +3,11 @@
  * Administration tools for the site masters are included here. These
  * comprise buttons to carry out certain admin tasks, and are grouped
  * and ordered based on current usage.
+ * PHP Version 7.1
  * 
  * @package Admin
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    .,/docs/
  */
 session_start();
 ?>
@@ -33,7 +33,8 @@ session_start();
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Rebase DB</legend>
-        <button id="reload">Reload Database</button>&nbsp;(Drops All Tables and Loads All)<br />
+        <button id="reload">Reload Database</button>&nbsp;
+            (Drops All Tables and Loads All)<br />
         <button id="drall">Drop All Tables</button><br />
         <button id="ldall">Load All Tables</button>
         (NOTE: Tables must not exist)<br />
@@ -49,7 +50,8 @@ session_start();
     </fieldset><br />
     <fieldset>
         <legend>GPX File Edits</legend>
-        NOTE: Edited file will be saved on site in gpx directory as "reversed.gpx"<br />
+        NOTE: Edited file will be saved on site in gpx directory 
+            as "reversed.gpx"<br />
         <form action="reverseGpx.php" method="POST" enctype="multipart/form-data" />
             <input type="file" id="gpx2edit" name="gpx2edit" /><br />
             <input class="ged" type="submit" name="gpxall"
