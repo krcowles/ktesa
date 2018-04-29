@@ -35,7 +35,7 @@ session_start();
         <legend>Overall Site Management</legend>
         <form action="upldSite.php" method="POST" target="_blank"
             enctype="multipart/form-data">
-            <button id="upld">Upload Site</button>&nbsp;&nbsp;
+            <button id="upld">Upload</button>&nbsp;&nbsp;
             <input id="ufile" type="file" name="ufile" />
                 &nbsp;[Creates new directory]<br />
         </form>

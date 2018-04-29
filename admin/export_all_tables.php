@@ -10,8 +10,7 @@
  */
 require_once 'adminFunctions.php';
 require_once '../mysql/dbFunctions.php';
-$selection = filter_input(INPUT_GET, 'dwnld');
-$download = $selection === 'Y' ? true : false;
+$download = filter_input(INPUT_GET, 'dwnld');
 // create array of tables to export: 
 //    NOTE: due to foreign keys, EHIKES must be first
 $link = connectToDb(__FILE__, __LINE__);

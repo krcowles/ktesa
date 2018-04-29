@@ -8,7 +8,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$tmpFilename = sys_get_temp_dir() . '/archive.tar';
+$tmpFilename = sys_get_temp_dir() . '/archive.phar';
 if (file_exists($tmpFilename)) {
     unlink($tmpFilename);
 }
@@ -19,7 +19,7 @@ $phar = new PharData($tmpFilename);
 // add all files in the project and then compress it
 $phar->buildFromDirectory('../', '/^((?!vendor|\.git|maps\/tmp).)*$/');
 $phar->compress(Phar::GZ);
-// Download the zip file
+// Download the compressed phar file
 header("Content-Type: application/x-gtar");
 header("Content-Disposition: attachment; filename=".basename($tmpFilename . '.gz'));
 header("Content-Length: " . filesize($tmpFilename . '.gz'));    
@@ -28,4 +28,3 @@ readfile($tmpFilename . '.gz');
 // clean up
 unlink($tmpFilename);
 unlink($tmpFilename . '.gz');
-?>

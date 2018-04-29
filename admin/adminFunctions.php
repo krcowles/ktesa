@@ -23,7 +23,7 @@
 function reverseTrack($trknodes, $trkno)
 {
     $track = $trknodes->item($trkno);
-    $trkchildren = $track->childNodes; // DOMNodeList
+    $trkchildren = $track->childNodes; // DOMNodeList object
     // retrieve the child nodes that are <trkseg> nodes and save them in $segNodes
     $segno = 0;
     $segNodes = [];
@@ -85,7 +85,7 @@ function uploadErr($errdat)
  * @param string $pass        As above
  * @param string $name        As above
  * @param array  $tables      An array containg table names to export
- * @param bool   $dwnld       true if executing from download utility
+ * @param string $dwnld       N->not a download; C->changes only; S->site dwnld
  * @param bool   $backup_name Backup name, if used
  * 
  * @return null;
@@ -139,10 +139,17 @@ function exportDatabase(
         } $content .= "\n\n\n";
     }
     $backup_name = $backup_name ? $backup_name : $name.".sql";
-    if ($dwnld) {
-        $loc = sys_get_temp_dir() . $backup_name;
+    if ($dwnld !== 'N') {
+        // save the new db to the standard data directory
+        $loc = '../data/' . $backup_name;
         file_put_contents($loc, $content);
-        include 'zipArchive.php';
+        if ($dwnld === 'C') {
+            include 'zipArchive.php';
+        } elseif ($dwnld === 'S') {
+            include 'buildPhar.php';
+        } else {
+            die("Unrecognized parameter in query string");
+        }
     } else {
         header('Content-Type: application/octet-stream');
         header("Content-Transfer-Encoding: Binary");

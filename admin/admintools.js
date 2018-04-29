@@ -1,5 +1,8 @@
 $('#chgs').on('click', function() {
-    window.open('export_all_tables.php?dwnld=Y');
+    window.open('export_all_tables.php?dwnld=C');
+});
+$('#site').on('click', function() {
+    window.open('export_all_tables.php?dwnld=S');
 });
 $('#reload').on('click', function() {
     if (confirm("Do you really want to drop all tables and reload them?")) {
@@ -16,6 +19,9 @@ $('#ldall').on('click', function() {
 });
 $('#exall').on('click', function() {
     window.open('export_all_tables.php?dwnld=N', "_blank");
+});
+$('#pinfo').on('click', function() {
+    window.open('phpInfo.php', "_blank");
 });
 $('#pub').on('click', function() {
     window.open("reldel.php?act=rel", "_blank");
