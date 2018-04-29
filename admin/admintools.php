@@ -33,14 +33,18 @@ session_start();
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Overall Site Management</legend>
-        <button id="dwnld">Download Site</button>
-            &nbsp;[Creates zip archive]<br />
         <form action="upldSite.php" method="POST" target="_blank"
             enctype="multipart/form-data">
             <button id="upld">Upload Site</button>&nbsp;&nbsp;
             <input id="ufile" type="file" name="ufile" />
                 &nbsp;[Creates new directory]<br />
         </form>
+        <span style="font-size:20px;color:brown;">
+            Downloads:</span><br />
+        <button id="chgs">Changes Only</button>
+            &nbsp;[Downloads zip file]<br />
+        <button id="site">Entire Site</button>
+            &nbsp;[Downloads compressed archive]
         <hr />
         <button id="reload">Reload Database</button>&nbsp;
             [Drops All Tables and Loads All Tables]<br />
@@ -50,6 +54,7 @@ session_start();
         <button id="exall">Export All Tables</button>
             [NOTE: Creates .sql file]<br />
         <hr />
+        <button id="pinfo">Php Info</button><br />
         <button id="show">Show All Tables</button><br />
         <button id="mode">Show/Set SQL Modes</button>
         <!-- div w/form related to Show/Set SQL Modes -->
