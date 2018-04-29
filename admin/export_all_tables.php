@@ -10,6 +10,8 @@
  */
 require_once 'adminFunctions.php';
 require_once '../mysql/dbFunctions.php';
+$selection = filter_input(INPUT_GET, 'dwnld');
+$download = $selection === 'Y' ? true : false;
 // create array of tables to export: 
 //    NOTE: due to foreign keys, EHIKES must be first
 $link = connectToDb(__FILE__, __LINE__);
@@ -37,6 +39,6 @@ if ($dev) {
 }
 $backup_name = "mybackup.sql";
 exportDatabase(
-    $mysqlHostName, $mysqlUserName, $mysqlPassword, $DbName, 
-    $tables, $backup_name = false
+    $mysqlHostName, $mysqlUserName, $mysqlPassword, $DbName, $tables, 
+    $download, $backup_name = false
 );

@@ -85,12 +85,13 @@ function uploadErr($errdat)
  * @param string $pass        As above
  * @param string $name        As above
  * @param array  $tables      An array containg table names to export
+ * @param bool   $dwnld       true if executing from download utility
  * @param bool   $backup_name Backup name, if used
  * 
  * @return null;
  */
 function exportDatabase(
-    $host, $user, $pass, $name, $tables, $backup_name = false
+    $host, $user, $pass, $name, $tables, $dwnld, $backup_name = false
 ) {
     $mysqli = new mysqli($host, $user, $pass, $name);
     $mysqli->select_db($name);
@@ -138,9 +139,15 @@ function exportDatabase(
         } $content .= "\n\n\n";
     }
     $backup_name = $backup_name ? $backup_name : $name.".sql";
-    header('Content-Type: application/octet-stream');
-    header("Content-Transfer-Encoding: Binary");
-    header("Content-disposition: attachment; filename=\"".$backup_name."\"");
-    echo $content;
-    exit;
+    if ($dwnld) {
+        $loc = sys_get_temp_dir() . $backup_name;
+        file_put_contents($loc, $content);
+        include 'zipArchive.php';
+    } else {
+        header('Content-Type: application/octet-stream');
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=\"".$backup_name."\"");
+        echo $content;
+        exit;
+    }
 }

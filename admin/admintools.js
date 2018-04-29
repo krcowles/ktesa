@@ -1,3 +1,6 @@
+$('#chgs').on('click', function() {
+    window.open('export_all_tables.php?dwnld=Y');
+});
 $('#reload').on('click', function() {
     if (confirm("Do you really want to drop all tables and reload them?")) {
         window.open('drop_all_tables.php', "_blank");
@@ -12,7 +15,7 @@ $('#ldall').on('click', function() {
     window.open('load_all_tables.php', "_blank");
 });
 $('#exall').on('click', function() {
-    window.open('export_all_tables.php', "_blank");
+    window.open('export_all_tables.php?dwnld=N', "_blank");
 });
 $('#pub').on('click', function() {
     window.open("reldel.php?act=rel", "_blank");
