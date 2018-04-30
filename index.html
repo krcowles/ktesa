@@ -105,7 +105,11 @@
                 <button id="mde">Preview In-Edit Hike</button>
             </fieldset><br />
             <button id="mstrcreate">Create New Hike or Index Page</button><br />
-            <button id="admin">Go to admin tools</button><br />
+            <form action="admin/master_verify.php" method="POST">
+                <button id="admin">Go to admin tools</button>
+                Enter master admin password: 
+                <input type="password" name="madmin" />
+            </form><br />
             <button class="hide">Hide Options</button>
         </div>
 

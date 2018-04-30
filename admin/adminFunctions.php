@@ -158,3 +158,24 @@ function exportDatabase(
         exit;
     }
 }
+/**
+ * This function forms a date string which is used in creating and checking
+ * the password expiration date for a user.
+ * 
+ * @return string $newdate The current date string
+ */
+function formDate()
+{
+    $today = getdate();
+    $month = $today['mon'];
+    $day = $today['mday'];
+    if ($month > 6) {
+        $year = $today['year'] + 1;
+        $month -= 6;
+    } else {
+        $year = $today['year'];
+        $month += 6;
+    }
+    $newdate = $year . "-" . $month . "-" . $day;
+    return $newdate;
+}
