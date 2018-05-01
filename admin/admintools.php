@@ -10,6 +10,10 @@
  * @license No license to date
  */
 session_start();
+// Verify master access or die
+if (!(isset($_POST['mchk']) && $_POST['mchk'] == 'go')) {
+    die("Unauthorized entry");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
