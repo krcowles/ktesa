@@ -13,18 +13,19 @@ $upldFile = validateUpload('ufile', $usite, 'nocheck');
 $msg = $upldFile[1] . "<br />Directory location: " . $usite . "<br />";
 // if no upload dir at project level, create one
 if (file_exists('../upload') === false ) {
-    mkdir('../upload', 0666);
+    mkdir('../upload', 0775);
 }
 // extract files to upload dir
 $zfile = $usite . $upldFile[0];
 $zip = new ZipArchive();
 if ($zip->open($zfile) === true) {
-    $zip->extractTo('../upload/');;
+    $zip->extractTo('../upload/');
     $zip->close();
     $msg .= "Successfully extracted files to upload directory";
 } else {
     $msg .= "Failed to extract files";
 }
+unlink($usite . $upldFile[0]);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
