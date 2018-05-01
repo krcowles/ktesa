@@ -10,7 +10,21 @@
 require "../build/buildFunctions.php";
 $usite = sys_get_temp_dir() . '/';
 $upldFile = validateUpload('ufile', $usite, 'nocheck');
-$msg = $upldFile[1] . "<br />Directory location: " . $usite;
+$msg = $upldFile[1] . "<br />Directory location: " . $usite . "<br />";
+// if no upload dir at project level, create one
+if (file_exists('../upload') === false ) {
+    mkdir('../upload', 0666);
+}
+// extract files to upload dir
+$zfile = $usite . $upldFile[0];
+$zip = new ZipArchive();
+if ($zip->open($zfile) === true) {
+    $zip->extractTo('../upload/');;
+    $zip->close();
+    $msg .= "Successfully extracted files to upload directory";
+} else {
+    $msg .= "Failed to extract files";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -30,6 +44,6 @@ $msg = $upldFile[1] . "<br />Directory location: " . $usite;
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail">Upload File to Site</p>
-<p><?= $msg;?></p>
+<p style="margin-left:24px;"><?= $msg;?></p>
 </body>
 </html>
