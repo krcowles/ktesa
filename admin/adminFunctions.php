@@ -141,7 +141,7 @@ function exportDatabase(
     $backup_name = $backup_name ? $backup_name : $name.".sql";
     if ($dwnld !== 'N') {
         // save the new db to the standard data directory
-        $loc = '../data/' . $backup_name;
+        $loc = '../download/' . $backup_name;
         file_put_contents($loc, $content);
         if ($dwnld === 'C') {
             include 'zipArchive.php';
