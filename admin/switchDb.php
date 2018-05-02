@@ -31,6 +31,14 @@ foreach ($currentSetenv as &$line) {
         }
         $line .= "\n";
     }
+    if (strpos($line, 'DATABASE_LOC') > 0) {
+        if ($test) {
+            $line = 'DEFINE("DATABASE_LOC", "id140870_hikemaster", true);';
+        } else {
+            $line = 'DEFINE("DATABASE_LOC", "id140870_nmhikestest", true);';
+        }
+        $line .= "\n";
+    }
 }
 if ($test) {  // if previously test, will now be 'N'orm
     $_SESSION['activeDb'] = 'N';
