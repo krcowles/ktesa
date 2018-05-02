@@ -53,6 +53,17 @@ session_start();
             [NOTE: Tables must not exist]<br />
         <button id="exall">Export All Tables</button>
             [NOTE: Creates .sql file]<br />
+        <button id="swdb">Switch DB's</button>&nbsp;&nbsp;
+            Current database in use:
+        <?php if (isset($_SESSION['activeDb'])) : ?>
+            <?php if ($_SESSION['activeDb'] === 'N') : ?>
+                <span id="real" style="color:blue;">Site</span>
+            <?php else : ?>
+                <span id="test" style="color:red;">Test</span>
+            <?php endif; ?>
+        <?php else : ?>
+            <span id="real" style="color:blue;">Site</span>
+        <?php endif; ?>
         <hr />
         <button id="pinfo">Php Info</button><br />
         <button id="show">Show All Tables</button><br />
