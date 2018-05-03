@@ -9,6 +9,7 @@
  * @license No license to date
  */
 $tmpFilename = sys_get_temp_dir() . '/archive.phar';
+$db = sys_get_temp_dir() . '/id140870_hikemaster.sql';
 if (file_exists($tmpFilename)) {
     unlink($tmpFilename);
 }
@@ -18,6 +19,7 @@ if (file_exists($tmpFilename . '.gz')) {
 $phar = new PharData($tmpFilename);
 // add all files in the project and then compress it
 $phar->buildFromDirectory('../', '/^((?!vendor|\.git|maps\/tmp).)*$/');
+$phar->addFile($db);
 $phar->compress(Phar::GZ);
 // Download the compressed phar file
 header("Content-Type: application/x-gtar");

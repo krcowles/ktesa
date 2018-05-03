@@ -10,6 +10,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+$db = sys_get_temp_dir() . '/id140870_hikemaster.sql';
 $tmpFilename = sys_get_temp_dir() . '/changes.zip';
 if (file_exists($tmpFilename)) {
     unlink($tmpFilename);
@@ -37,6 +38,7 @@ foreach ($iterator as $file) {
         }
     }
 }
+$zip->addFile($db, '../data/id470870_hikemaster.sql');
 $zip->close();
 // Download the zip file
 header("Content-Type: application/x-gzip");
@@ -46,6 +48,7 @@ header("Content-Transfer-Encoding: binary");
 readfile($tmpFilename);
 // clean up
 unlink($tmpFilename);;
+unlink($db);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
