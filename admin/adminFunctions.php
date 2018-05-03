@@ -158,3 +158,59 @@ function exportDatabase(
         exit;
     }
 }
+/**
+ * This function forms a date string which is used in creating and checking
+ * the password expiration date for a user.
+ * 
+ * @return string $newdate The current date string
+ */
+function formDate()
+{
+    $today = getdate();
+    $month = $today['mon'];
+    $day = $today['mday'];
+    if ($month > 6) {
+        $year = $today['year'] + 1;
+        $month -= 6;
+    } else {
+        $year = $today['year'];
+        $month += 6;
+    }
+    $newdate = $year . "-" . $month . "-" . $day;
+    return $newdate;
+}
+/**
+ * This function will verify that the supplied password matches
+ * a Site Master's encoded password
+ * 
+ * @param string $mstrpass The string containing the password to validate
+ * 
+ * @return array  $match true if good/, filename for redirect 
+ */
+function masterVerify($mstrpass)
+{
+    include_once '../mysql/dbFunctions.php';
+    $link = connectToDb(__FILE__, __LINE__);
+    $masters = "SELECT username,passwd,twitter_handle "
+        . "FROM USERS WHERE username = 'tom' OR username = 'kc';";
+    $verify = mysqli_query($link, $masters) or die(
+        "Failed to extract critical data from needed table: " . mysqli_error($link)
+    );
+    $mstr_cnt = mysqli_num_rows($verify);
+    if ($mstr_cnt !== 2) {
+        die("Incorrect number of master entries in USERS");
+    }
+    $match = false;
+    while ($check = mysqli_fetch_assoc($verify)) {
+        if (password_verify($mstrpass, $check['passwd'])) {
+            $match = true;
+            $file = $check['twitter_handle'];
+        }
+    }
+    mysqli_free_result($verify);
+    if ($match) {
+        return array(true, $file);
+    } else {
+        return array(false, '');
+    }
+}

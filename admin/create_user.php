@@ -1,4 +1,15 @@
 <?php
+/**
+ * This script will enter the new user's registration infomation (including
+ * encoded password) into the USERS table. The password has an initial 
+ * expiration date of one year.
+ * PHP Version 7.0
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require_once "adminFunctions.php";
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $fname = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'firstname'));
@@ -15,35 +26,13 @@ if (!$email) {
 $facbk = filter_input(INPUT_POST, 'facebook', FILTER_VALIDATE_URL);
 $twitt = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'twitter'));
 $binfo = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'bio'));
-$today = getdate();
-$month = $today['mon'];
-$day = $today['mday'];
-if ($month > 6) {
-    $year = $today['year'] + 1;
-    $month -= 6;
-} else {
-    $year = $today['year'];
-    $month += 6;
-}
-$exp_date = $year . "-" . $month . "-" . $day;
+$exp_date = formDate();
 $passwd_exp = mysqli_real_escape_string($link, $exp_date);
 $newuser = "INSERT INTO USERS (username,passwd,passwd_expire,last_name," .
         "first_name,email,facebook_url,twitter_handle,bio) " .
     "VALUES ('{$uname}','{$pword}','{$passwd_exp}','{$lname}','{$fname}'," .
             "'{$email}','{$facbk}','{$twitt}','{$binfo}');";
 $insert = mysqli_query($link, $newuser);
-/*
-if (!insert) {
-    if (Ktesa_Dbug) {
-        debug_print("Could not insert new user info: " . mysqli_error($link));
-    } else {
-        user_error_msg('../mysql/',2,0);
-    }
-} else {
-    echo '<p style="display:none;" id="uname">' . $uname . '</p>';
-}
- * 
- */
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
