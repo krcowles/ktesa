@@ -20,6 +20,9 @@ $('#ldall').on('click', function() {
 $('#exall').on('click', function() {
     window.open('export_all_tables.php?dwnld=N', "_blank");
 });
+$('#swdb').on('click', function() {
+    window.open('switchDb.php');
+})
 $('#pinfo').on('click', function() {
     window.open('phpInfo.php', "_blank");
 });

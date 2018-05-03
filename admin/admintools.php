@@ -10,6 +10,9 @@
  * @license No license to date
  */
 session_start();
+$env = file_get_contents('../mysql/setenv.php');
+$tdb = (strpos($env, 'test') > 0) ? true : false;
+echo $env;
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -53,6 +56,13 @@ session_start();
             [NOTE: Tables must not exist]<br />
         <button id="exall">Export All Tables</button>
             [NOTE: Creates .sql file]<br />
+        <button id="swdb">Switch DB's</button>&nbsp;&nbsp;
+            Current database in use:
+        <?php if ($tdb) : ?>
+            <span id="test" style="color:red;">Test</span>
+        <?php else : ?>
+            <span id="real" style="color:blue;">Site</span>
+        <?php endif; ?>
         <hr />
         <button id="pinfo">Php Info</button><br />
         <button id="show">Show All Tables</button><br />
