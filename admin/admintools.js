@@ -22,6 +22,7 @@ $('#exall').on('click', function() {
 });
 $('#swdb').on('click', function() {
     window.open('switchDb.php');
+    window.close();
 })
 $('#pinfo').on('click', function() {
     window.open('phpInfo.php', "_blank");
