@@ -10,6 +10,9 @@
  * @license No license to date
  */
 session_start();
+$env = file_get_contents('../mysql/setenv.php');
+$tdb = (strpos($env, 'test') > 0) ? true : false;
+echo $env;
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -55,12 +58,8 @@ session_start();
             [NOTE: Creates .sql file]<br />
         <button id="swdb">Switch DB's</button>&nbsp;&nbsp;
             Current database in use:
-        <?php if (isset($_SESSION['activeDb'])) : ?>
-            <?php if ($_SESSION['activeDb'] === 'N') : ?>
-                <span id="real" style="color:blue;">Site</span>
-            <?php else : ?>
-                <span id="test" style="color:red;">Test</span>
-            <?php endif; ?>
+        <?php if ($tdb) : ?>
+            <span id="test" style="color:red;">Test</span>
         <?php else : ?>
             <span id="real" style="color:blue;">Site</span>
         <?php endif; ?>
