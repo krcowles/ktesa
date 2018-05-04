@@ -156,12 +156,10 @@ $('#auxfrm').submit( function(ev) {
         $('#mstrcreate').on('click', function() {
             window.open(createUrl + 'mstr', target="_blank");
         });
-        /*
         $('#admin').on('click', function() {
             var admintools = 'admin/admintools.php';
             window.open(admintools,"_blank");
         });
-        */
         $('.hide').on('click', function() {
             $('#loggedin').css('display','block');
             $('#reg').css('display','none');

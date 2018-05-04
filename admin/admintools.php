@@ -13,10 +13,6 @@ session_start();
 $env = file_get_contents('../mysql/setenv.php');
 $tdb = (strpos($env, 'test') > 0) ? true : false;
 echo $env;
-// Verify master access or die
-if (!(isset($_POST['mchk']) && $_POST['mchk'] == 'go')) {
-    die("Unauthorized entry");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
