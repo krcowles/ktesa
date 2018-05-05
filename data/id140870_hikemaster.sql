@@ -459,7 +459,7 @@ INSERT INTO IPTBLS VALUES
 ('17','2','N','Casa Chiquita','X','2.00','0','X','X'),
 ('18','2','N','Penasco Blanco','X','7.40','0','X','X'),
 ('19','2','Y','Wijiji','166','4.20','50','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157693819242451'),
-('20','2','Y','Tsin Kletzin/Casa Rinconada','167','3.80','550','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157694911494014'),
+('20','2','Y','Tsin Kletzin/Casa Rinconada','167','4.60','550','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157694911494014'),
 ('21','3','Y','Big Tubes Area','79','1.50','20','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157666437314513'),
 ('22','3','Y','Ice Cave','80','2.00','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668605933682'),
 ('23','3','Y','El Calderon','81','4.50','500','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157666391880544'),
@@ -476,9 +476,7 @@ INSERT INTO IPTBLS VALUES
 ('34','4','Y','ABQ Volcanoes','78','4.00','200','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157668175624985'),
 ('35','98','Y','El Morro Trail','47','2.50','300','Sunny','https://www.flickr.com/photos/139088815@N08/albums/72157669107208625'),
 ('36','99','Y','Aldo Leopold','96','2.60','50','Sunny','https://www.flickr.com/photos/139088815@N08/sets/72157675044446662'),
-('37','99','Y','Bosque River Loop','150','2.10','50','Mixed sun/shade','https://www.flickr.com/photos/139088815@N08/albums/72157679147304911'),
-('38','2','Y','Wijiji','166','4.20','50','Full sun','https://www.flickr.com/photos/139088815@N08/albums/72157693819242451'),
-('39','2','Y','Tsin Kletsin','167','4.60','550','Full sun','https://www.flickr.com/photos/139088815@N08/albums/72157694911494014');
+('37','99','Y','Bosque River Loop','150','2.10','50','Mixed sun/shade','https://www.flickr.com/photos/139088815@N08/albums/72157679147304911');
 
 
 
