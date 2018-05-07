@@ -10,7 +10,19 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$db = sys_get_temp_dir() . '/id140870_hikemaster.sql';
+$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
+if ($dev) {
+    $mysqlUserName = USERNAME_LOC;
+    $mysqlPassword = PASSWORD_LOC;
+    $mysqlHostName = HOSTNAME_LOC;
+    $DbName = DATABASE_LOC;
+} else {
+    $mysqlUserName = USERNAME_000;
+    $mysqlPassword = PASSWORD_000;
+    $mysqlHostName = HOSTNAME_000;
+    $DbName = DATABASE_000;
+}
+$db = sys_get_temp_dir() . '/' . $DbName . '.sql';
 $tmpFilename = sys_get_temp_dir() . '/changes.zip';
 if (file_exists($tmpFilename)) {
     unlink($tmpFilename);
@@ -38,7 +50,7 @@ foreach ($iterator as $file) {
         }
     }
 }
-$zip->addFile($db, '../data/id470870_hikemaster.sql');
+$zip->addFile($db, '../data/' . $DbName . '.sql');
 $zip->close();
 // Download the zip file
 header("Content-Type: application/x-gzip");
