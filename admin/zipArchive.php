@@ -10,6 +10,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+ignore_user_abort(true);
 $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
 if ($dev) {
     $mysqlUserName = USERNAME_LOC;
@@ -59,6 +60,6 @@ header("Content-Length: " . filesize($tmpFilename));
 header("Content-Transfer-Encoding: binary");
 readfile($tmpFilename);
 // clean up
-unlink($tmpFilename);;
+unlink($tmpFilename);
 unlink($db);
 ?>
