@@ -62,32 +62,3 @@ readfile($tmpFilename);
 unlink($tmpFilename);;
 unlink($db);
 ?>
-<!DOCTYPE html>
-<html lang="en-us">
-<head>
-    <title>Site Admin Tools</title>
-    <meta charset="utf-8" />
-    <meta name="description" content="List new files since last upload" />
-    <meta name="author" content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
-    <link href="admintools.css" type="text/css" rel="stylesheet" />
-<body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>	
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
-<p id="trail">Create Zip Archive</p>
-<div style="margin-left:24px;">
-List of files that have changes and have been zipped:
-<ol>
-<?php foreach($chgList as $fname) : ?>
-<li><?= $fname;?></li>
-<?php endforeach; ?>
-</ol>
-DONE!
-</div>
-</body>
-</html>
