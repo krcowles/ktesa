@@ -46,7 +46,8 @@ $('#addall').on('change', function() {
 });
 var $ckboxes = $('.ckbox');
 $ckboxes.each( function() {
-    $(this).on('click', function() {  
+    $(this).on('click', function() { 
+        $('#addall').prop('checked', false); 
         for (var i=0; i<phTitles.length; i++) {
             if ($(this).val() == phTitles[i]) {
                 if ($(this).prop('checked')) {
@@ -86,6 +87,7 @@ $('#load').on('click', function() {
             } else {
                 alert("Photos not saved: \n" + output);
             }
+            window.close();
         },
         error: function(jq, errmsg, stat) {
             alert("Attempt to save photos failed: " + errmsg + "; " + stat);
