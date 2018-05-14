@@ -33,7 +33,7 @@ if ($act === 'rel') {
 $usr = 'mstr';
 $age = 'new';
 $show = 'all';
-require '../php/TblConstructor.php';
+require '../php/makeTables.php';
 ?>
 <script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">

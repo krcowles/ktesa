@@ -34,7 +34,7 @@ $show = filter_input(INPUT_GET, 'show');
 </div>
 <div><br />
 <?php
-    require "../php/TblConstructor.php";
+    require "../php/makeTables.php";
 ?>
 </div>
 

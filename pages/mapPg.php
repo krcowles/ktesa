@@ -66,7 +66,7 @@ $show = 'all';
     <?php endif; ?>
     <p id="dbug"></p>
     <div id="refTbl">
-    <?php include "../php/TblConstructor.php"; ?>
+    <?php include "../php/makeTables.php"; ?>
     </div>
     <?php if ($tblVar === 'D') : ?>
     <div id="usrTbl"></div>
@@ -76,7 +76,7 @@ $show = 'all';
 <?php else : ?>
     <div id="map" style="width:100%"></div>
     <div id="refTbl">;
-    <?php include "../php/TblConstructor.php"; ?>
+    <?php include "../php/makeTables.php"; ?>
     </div>
 <?php endif; ?>
 <script src="../scripts/modernizr-custom.js"></script>

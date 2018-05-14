@@ -32,7 +32,7 @@ $show = 'usr';
     information contained on the page.
 </h3>
 <?php
-include '../php/TblConstructor.php';
+require '../php/makeTables.php';
 ?>
 </div>
 
