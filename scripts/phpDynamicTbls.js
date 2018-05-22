@@ -140,9 +140,9 @@ function formTbl ( noOfRows, tblRowsArray ) {
 		}
 		$('#metric').text(state); // new data element text
 		$erows.each( function() {
-			// index 4 is column w/distance units (miles/kms)
+			// index 5 is column w/distance units (miles/kms)
 			// ASSUMPTION: always less than 1,000 miles or kms!
-			tmpUnits = $(this).find('td').eq(4).text();
+			tmpUnits = $(this).find('td').eq(5).text();
 			tmpConv = parseFloat(tmpUnits);
 			tmpConv = dist * tmpConv;
 			var indxLoc = tmpUnits.substring(0,2);
@@ -152,9 +152,9 @@ function formTbl ( noOfRows, tblRowsArray ) {
 				tmpUnits = tmpConv.toFixed(1);
 				tmpUnits = tmpUnits + ' ' + newDist;
 			}
-			$(this).find('td').eq(4).text(tmpUnits);
-			// index 5 is column w/elevation units (ft/m)
-			tmpUnits = $(this).find('td').eq(5).text();
+			$(this).find('td').eq(5).text(tmpUnits);
+			// index 6 is column w/elevation units (ft/m)
+			tmpUnits = $(this).find('td').eq(6).text();
 			// need to worry about commas...
 			mindx = tmpUnits.indexOf(',');
 			if ( mindx < 0 ) {
@@ -173,7 +173,7 @@ function formTbl ( noOfRows, tblRowsArray ) {
 				tmpUnits = tmpConv.toFixed(0);
 				tmpUnits = tmpUnits + ' ' + newElev;
 			}
-			$(this).find('td').eq(5).text(tmpUnits);
+			$(this).find('td').eq(6).text(tmpUnits);
 
 		});  // end 'each erow'	
 	}); // end of click on metric

@@ -88,7 +88,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
     <script src="../scripts/phpDynamicTbls.js"></script>
     <?php endif; ?>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry">';
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry">
     </script>
 <?php else : ?>
     <script src="../scripts/tblOnlySort.js"></script>
