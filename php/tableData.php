@@ -33,8 +33,8 @@ $indxIcon
     = '<img class="webShift" src="../images/indxCheck.png" alt="index checkbox" />';
 $webIcon = '<img class="webShift" src="../images/greencheck.jpg" alt="checkbox" />';
 $dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
-$picIcon 
-    = '<img class="flckrShift" src="../images/album_lnk.png" alt="Flickr symbol" />';
+$mapIcon
+    = 'class="gotomap" src="../images/mapit.png" alt="Zoom-to-map symbol" />';
 $sunIcon = '<img class="expShift" src="../images/sun.jpg" alt="Sunny icon" />';
 $partialIcon = '<img class="expShift" src="../images/greenshade.jpg" '
     . 'alt="Partial shade icon" />';
@@ -116,7 +116,7 @@ for ($i=0; $i<$entries; $i++) {
     } else {
         $pgLink[$i] = $url_prefix . 'hikePageTemplate.php?hikeIndx=' . $indx;
     }
-    $mapLink[$i] = $indx;
+    $mapLink[$i] = '<img id="' . $indx . '" ' . $mapIcon;
     $hikeLgth[$i] = $row['miles'];
     $hikeElev[$i] = $row['feet'];
     $hikeDiff[$i] = $row['diff'];

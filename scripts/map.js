@@ -333,29 +333,32 @@ function initMap() {
 	
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	map.addListener('zoom_changed', function() {
-		var curZoom = map.getZoom();
-		if (useTbl) {
-			var perim = String(map.getBounds());
-			IdTableElements(perim);
-		}
-		if ( curZoom > 12 ) {
-			for (var m=0; m<allTheTracks.length; m++) {
-				trkKeyStr = 'trk' + m;
-				//var db = 'trkName' + m;
-				//msg = '<p>Track: ' + trkObj[db] + '</p>';
-				//$('#dbug').append(msg);
-				trkObj[trkKeyStr].setMap(map);
+		var idle = google.maps.event.addListener(map, 'idle', function (e) {
+			var curZoom = map.getZoom();
+			if (typeof(useTbl) !== 'undefined' && useTbl) {
+				var perim = String(map.getBounds());
+				IdTableElements(perim);
 			}
+			if ( curZoom > 12 ) {
+				for (var m=0; m<allTheTracks.length; m++) {
+					trkKeyStr = 'trk' + m;
+					//var db = 'trkName' + m;
+					//msg = '<p>Track: ' + trkObj[db] + '</p>';
+					//$('#dbug').append(msg);
+					trkObj[trkKeyStr].setMap(map);
+				}
 
-		} else {
-			for (var n=0; n<allTheTracks.length; n++) {
-				trkKeyStr = 'trk' + n;
-				trkObj[trkKeyStr].setMap(null);
+			} else {
+				for (var n=0; n<allTheTracks.length; n++) {
+					trkKeyStr = 'trk' + n;
+					trkObj[trkKeyStr].setMap(null);
+				}
 			}
-		}
+			google.maps.event.removeListener(idle);
+		});
 	});
 	
-	if( useTbl) {
+	if (typeof(useTbl) !== 'undefined' && useTbl) {
 		map.addListener('dragend', function() {
 			var newBds = String(map.getBounds());
 			IdTableElements(newBds);
@@ -365,7 +368,7 @@ function initMap() {
 		ev.preventDefault();
 		map.setCenter(newloc);
 		map.setZoom(13);
-	})
+	});
 	
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////

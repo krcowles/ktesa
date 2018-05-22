@@ -17,6 +17,7 @@ $tblVar = filter_input(INPUT_GET, "tbl");
 $usr = 'mstr'; // this is actually a "don't care"
 $age = 'old';
 $show = 'all';
+$includeZoom = ($tblVar === 'D') ? true : false;
 ?> 
 <!DOCTYPE html>
 <html lang="en-us">
@@ -83,7 +84,9 @@ $show = 'all';
 <?php if ($tblVar !== 'T') : ?>
     <script src="../scripts/hikeBox.js"></script>
     <script src="../scripts/map.js"></script>
+    <?php if ($tblVar === 'D') : ?>
     <script src="../scripts/phpDynamicTbls.js"></script>
+    <?php endif; ?>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry">';
     </script>

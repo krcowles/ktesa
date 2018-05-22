@@ -222,3 +222,19 @@ function IdTableElements(boundsStr) {
         formTbl( rowCnt, tblEl );
     }
 } // END: IdTableElements() FUNCTION
+
+// Process events when the 'mapit' icon is clicked:
+$rows = $('#refTbl tbody tr');
+$('.gotomap').each( function() {
+	$(this).css('cursor', 'pointer');
+});
+$(document).on('click', '.gotomap', function(ev) {
+	var hno = parseInt($(this).attr('id')) - 1;
+	$tr = $rows.eq(hno);
+	var hlat = parseFloat($tr.data('lat'));
+	var hlon = parseFloat($tr.data('lon'));
+	var zoomOn = {lat: hlat, lng: hlon};
+	map.setCenter(zoomOn);
+	map.setZoom(13);
+	window.scrollTo(0, 0);
+});
