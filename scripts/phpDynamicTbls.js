@@ -110,6 +110,7 @@ function formTbl ( noOfRows, tblRowsArray ) {
 		}); // end on.click
 	}); // end '.msortable each' loop
 	// ADD METRIC CONVERSION ANEW FOR EACH CREATION OF TABLE:
+	/*
 	$('#metric').on('click', function() {
 		// table locators:
 		var $etable = $('table');
@@ -177,8 +178,75 @@ function formTbl ( noOfRows, tblRowsArray ) {
 
 		});  // end 'each erow'	
 	}); // end of click on metric
+	*/
 }  // end of FORMTBL function
 
+$(document).on('click', '#metric', function() {
+	// table locators:
+	var $etable = $('table');
+	var $etbody = $etable.find('tbody');
+	var $erows = $etbody.find('tr');
+	var state = this.textContent;
+	// conversion variables:
+	var tmpUnits;
+	var tmpConv;
+	var newDist;
+	var newElev;
+	var dist;
+	var elev;
+	// determine which state to convert from
+	var mindx = state.indexOf('metric');
+	if ( mindx < 0 ) { // currently metric; convert TO English
+		newDist = 'miles';
+		newElev = 'ft';
+		state = state.replace('English','metric');
+		dist = 0.6214;
+		elev = 3.278;
+	} else { // currently English; convert TO metric
+		newDist = 'kms';
+		newElev = 'm';
+		state = state.replace('metric','English');
+		dist = 1.61;
+		elev = 0.305;
+	}
+	$('#metric').text(state); // new data element text
+	$erows.each( function() {
+		// index 5 is column w/distance units (miles/kms)
+		// ASSUMPTION: always less than 1,000 miles or kms!
+		tmpUnits = $(this).find('td').eq(5).text();
+		tmpConv = parseFloat(tmpUnits);
+		tmpConv = dist * tmpConv;
+		var indxLoc = tmpUnits.substring(0,2);
+		if ( indxLoc === '0*' ) {
+			tmpUnits = '0* ' + newDist;
+		} else {
+			tmpUnits = tmpConv.toFixed(1);
+			tmpUnits = tmpUnits + ' ' + newDist;
+		}
+		$(this).find('td').eq(5).text(tmpUnits);
+		// index 6 is column w/elevation units (ft/m)
+		tmpUnits = $(this).find('td').eq(6).text();
+		// need to worry about commas...
+		mindx = tmpUnits.indexOf(',');
+		if ( mindx < 0 ) {
+			tmpConv = parseFloat(tmpUnits);
+		} else {
+			noPart1 = parseFloat(tmpUnits);
+			noPart2 = tmpUnits.substring(mindx + 1,mindx + 4);
+			noPart2 = noPart2.valueOf();
+			tmpConv = noPart1 + noPart2;
+		}
+		tmpConv = dist * tmpConv;
+		indxLoc = tmpUnits.substring(0,2);
+		if ( indxLoc === '0*' ) {
+			tmpUnits = '0* ' + newElev;
+		} else {
+			tmpUnits = tmpConv.toFixed(0);
+			tmpUnits = tmpUnits + ' ' + newElev;
+		}
+		$(this).find('td').eq(6).text(tmpUnits);
+	});  // end 'each erow'	
+});
 // Function to find elements within current bounds and display them in a table
 function IdTableElements(boundsStr) {
     // ESTABLISH CURRENT VIEWPORT BOUNDS:
