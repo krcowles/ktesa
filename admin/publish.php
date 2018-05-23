@@ -221,7 +221,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             $wd = mysqli_real_escape_string($link, $pic['imgWd']);
             $ic = mysqli_real_escape_string($link, $pic['iclr']);
             $or = mysqli_real_escape_string($link, $pic['org']);
-            $picreq = "INSERT INTO TSV (indxNo,folder,title,hpg,mpg,`desc`," .
+            $picreq = "INSERT IGNORE INTO TSV (indxNo,folder,title,hpg,mpg,`desc`," .
                 "lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) VALUES " .
                 "('{$indxNo}','{$f}','{$ti}','{$h}','{$m}','{$de}','{$la}'," .
                 "'{$lo}','{$th}','{$al}','{$dt}','{$md}','{$ht}','{$wd}'," .
