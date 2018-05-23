@@ -34,8 +34,7 @@ CREATE TABLE `EHIKES` (
 
 
 INSERT INTO EHIKES VALUES
-('21','Quebradas Road Trip','mstr','0','San Antonio','Normal',NULL,'','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','34.1108096670','-106.8717384338',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.'),
-('28','Tent Rocks','mstr','66','Santa Fe','Normal',NULL,'','','Out-and-back','3.00','650','Easy-Moderate','Picnic Area','Slot canyon!','Any','Full sun','Tent Rocks Trail.gpx','Tent Rocks Trail.json','35.6577700000','-106.4112100000',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157670138528866','https://www.flickr.com/photos/30474783@N06/albums/72157667717373175','https://www.google.com/maps/place/Kasha-Katuwe Tent Rocks National Monument/@35.6332395,-106.4267967,12.45z/data=!4m5!3m4!1s0x87187099ff21bec1:0x28874e911e116d2f!8m2!3d35.662446!4d-106.4146067','','Tent Rocks, or Kasha-Katuwe National   Monument, is one of the most popular hikes in the area, for obvious reasons!   It is one of the few \"slot canyons\" available to hikers and is easily   accessible from both Albuquerque and Santa Fe. Located on the Cochiti Reservation,   it is near the Cochiti Dam, not far from    <a href=\"LaBajada.html\" target=\"_blank\">La Bajada trail</a>. Owing to the steepness   of the canyon walls, it can be dark if attempted early or late in the day. The   trail through the canyon ascends to the top of the mesa when followed to its end,   where beautiful 360-degree panoramas can be seen. A secondary loop trail is available near the canyon entrance: Cave Loop Trail. This trail is relatively easy, shorter, and provides the hiker a view of a cave embedded in the rock wall. Before 2001, Tent Rocks   was a State Monument, and the access road was gravel - subject to flood-out and   closure by the Cochiti Tribal Government. Now it can get somewhat crowded along   the trail, so it is well to plan your visit accordingly. It is currently (2016),   the most-visited park in the state.');
+('21','Quebradas Road Trip','mstr','0','San Antonio','Normal',NULL,'','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','34.1108096670','-106.8717384338',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.');
 
 
 
@@ -109,15 +108,7 @@ INSERT INTO EREFS VALUES
 ('122','21','Website:','https://geoinfo.nmt.edu/publications/guides/quebradas/','Quebradas Field Guide'),
 ('123','21','Website:','https://www.blm.gov/visit/quebradas-backcountry-byway','BLM Site'),
 ('124','21','Website:','https://www.newmexico.org/things-to-do/scenic-byways/quebradas-backcountry/','New Mexico Tourism'),
-('125','21','App:','https://www.alltrails.com/trail/us/new-mexico/quebradas-back-country-byway','AllTrails'),
-('165','28','Book: ','1',NULL),
-('166','28','Book: ','6',NULL),
-('167','28','Book: ','8',NULL),
-('168','28','Book: ','5',NULL),
-('169','28','Website: ','https://www.blm.gov/visit/kktr','BLM: Kasha-Katuwe Tent Rocks'),
-('170','28','Website: ','http://www.americansouthwest.net/new_mexico/kasha-katuwe-tent-rocks/hiking.html','American Southwest'),
-('171','28','Website: ','https://en.wikipedia.org/wiki/Kasha-Katuwe_Tent_Rocks_National_Monument','Wikipedia'),
-('172','28','App: ','http://www.alltrails.com/trail/us/new-mexico/tent-rocks-canyon-trails','AllTrails');
+('125','21','App:','https://www.alltrails.com/trail/us/new-mexico/quebradas-back-country-byway','AllTrails');
 
 
 
@@ -177,21 +168,7 @@ INSERT INTO ETSV VALUES
 ('532','21','Folder2','Exploring','Y','Y','An endless arroyo needs to be explored','34.0485805556','-106.7809916667','https://c1.staticflickr.com/5/4603/28281857209_ccb76af42b_t.jpg','https://www.flickr.com/photos/139088815@N08/28281857209/in/album-72157669177869019','2018-01-30 14:28:42','https://c1.staticflickr.com/5/4603/28281857209_ccb76af42b_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4603/28281857209_ceb0ed9c71_o.jpg'),
 ('533','21','Folder2','RoadsideArroyo','Y','Y','Visions of winding arroyos disappearing into the hills','34.0319972222','-106.7656861111','https://c1.staticflickr.com/5/4697/39162553505_8bc338c74b_t.jpg','https://www.flickr.com/photos/139088815@N08/39162553505/in/album-72157669177869019','2018-01-30 14:57:27','https://c1.staticflickr.com/5/4697/39162553505_8bc338c74b_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4697/39162553505_4a3e835280_o.jpg'),
 ('534','21','Folder2','BeautifulBands','Y','Y','Color banding and scrambled rock appear in many views','33.9840194444','-106.7617027778','https://c1.staticflickr.com/5/4717/26187941618_04db3cc462_t.jpg','https://www.flickr.com/photos/139088815@N08/26187941618/in/album-72157669177869019','2018-01-30 15:14:53','https://c1.staticflickr.com/5/4717/26187941618_04db3cc462_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4717/26187941618_339184d7b7_o.jpg'),
-('535','21','Folder2','FaultsAndFolds','Y','Y','Multiple fault lines here provide a geological story','33.9836416667','-106.7616194444','https://c1.staticflickr.com/5/4704/25189087137_bc4f26c21a_t.jpg','https://www.flickr.com/photos/139088815@N08/25189087137/in/album-72157669177869019','2018-01-30 15:19:52','https://c1.staticflickr.com/5/4704/25189087137_bc4f26c21a_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4704/25189087137_17a079fd72_o.jpg'),
-('667','28','Folder','TrailBelow','Y','N','The canyon and trail from above',NULL,NULL,NULL,'https://www.flickr.com/photos/139088815@N08/27289135033/in/album-72157670138528866','2013-02-13 11:51:47','https://c2.staticflickr.com/8/7743/27289135033_b948ed2aee_n.jpg','240','320',NULL,NULL),
-('668','28',NULL,'TopView','Y','N','View while ascending',NULL,NULL,NULL,'https://www.flickr.com/photos/139088815@N08/27623414810/in/album-72157670138528866','2004-09-23 16:47:30','https://c3.staticflickr.com/8/7331/27623414810_76ce0fa395_n.jpg','240','320',NULL,NULL),
-('669','28',NULL,'ThePathIn','Y','N','The path leads to the interior',NULL,NULL,NULL,'https://www.flickr.com/photos/139088815@N08/27623399010/in/album-72157670138528866','2010-05-12 16:21:10','https://c3.staticflickr.com/8/7468/27623399010_fd09958c3f_n.jpg','320','213',NULL,NULL),
-('670','28',NULL,'TentRocks','Y','N','Classic formations',NULL,NULL,NULL,'https://www.flickr.com/photos/139088815@N08/27825183361/in/album-72157670138528866','2004-09-23 16:30:34','https://c2.staticflickr.com/8/7547/27825183361_a19f30e84f_n.jpg','240','320',NULL,NULL),
-('671','28',NULL,'OddFormation','Y','N','Various suprise formations along the way',NULL,NULL,NULL,'https://www.flickr.com/photos/139088815@N08/27901935455/in/album-72157670138528866','2010-05-12 14:26:34','https://c8.staticflickr.com/8/7434/27901935455_65b33e5d6b_n.jpg','320','213',NULL,NULL),
-('672','28',NULL,'Narrows','Y','N','Tight squeeze makes for a unique hike',NULL,NULL,NULL,'https://www.flickr.com/photos/139088815@N08/27901967275/in/album-72157670138528866','2013-05-02 12:10:53','https://c4.staticflickr.com/8/7635/27901967275_23523c4a8a_n.jpg','320','240',NULL,NULL),
-('673','28',NULL,'MeanderingSlots','Y','N','Winding through the slots, where will you end up?',NULL,NULL,NULL,'https://www.flickr.com/photos/139088815@N08/27623411870/in/album-72157670138528866','2010-05-12 14:17:26','https://c7.staticflickr.com/8/7379/27623411870_7e77d05eb8_n.jpg','320','213',NULL,NULL),
-('674','28',NULL,'LayersOfLayers','Y','N','Layers upon layers of volcanic debris',NULL,NULL,NULL,'https://www.flickr.com/photos/139088815@N08/27289474344/in/album-72157670138528866','2013-02-13 11:11:45','https://c1.staticflickr.com/8/7118/27289474344_818b6c70c2_n.jpg','240','320',NULL,NULL),
-('682','28','Folder1','WP_20160428_003','Y','N','The start','35.6578738889','-106.4113111111','https://c1.staticflickr.com/2/1618/26637095601_aa133e5aed_t.jpg','https://www.flickr.com/photos/30474783@N06/26637095601/in/album-72157667717373175','2016-04-28 11:15:50','https://c1.staticflickr.com/2/1618/26637095601_aa133e5aed_n.jpg','1456','2592',NULL,'https://c1.staticflickr.com/2/1618/26637095601_e936e723d4_o.jpg'),
-('683','28','Folder1','WP_20160428_004','Y','Y','Looking up','35.6613677778','-106.4098036111','https://c1.staticflickr.com/2/1487/26676403886_76c65dd16c_t.jpg','https://www.flickr.com/photos/30474783@N06/26676403886/in/album-72157667717373175','2016-04-28 11:30:15','https://c1.staticflickr.com/2/1487/26676403886_76c65dd16c_n.jpg','1456','2592',NULL,'https://c1.staticflickr.com/2/1487/26676403886_7330b8b3d8_o.jpg'),
-('684','28','Folder1','WP_20160428_018','Y','Y','On the moon','35.6680394444','-106.4078558333','https://c1.staticflickr.com/2/1600/26610161382_a05e3e62a2_t.jpg','https://www.flickr.com/photos/30474783@N06/26610161382/in/album-72157667717373175','2016-04-28 12:19:52','https://c1.staticflickr.com/2/1600/26610161382_a05e3e62a2_n.jpg','1456','2592',NULL,'https://c1.staticflickr.com/2/1600/26610161382_84314afab4_o.jpg'),
-('685','28','Folder1','WP_20160428_019','N','Y','On the moon 2','35.6680925000','-106.4081552778','https://c1.staticflickr.com/2/1571/26099117313_dffeeccf16_t.jpg','https://www.flickr.com/photos/30474783@N06/26099117313/in/album-72157667717373175','2016-04-28 12:21:28','https://c1.staticflickr.com/2/1571/26099117313_dffeeccf16_n.jpg','1456','2592',NULL,'https://c1.staticflickr.com/2/1571/26099117313_3c96b929b8_o.jpg'),
-('686','28','Folder1','WP_20160428_022','Y','Y','The crew below','35.6671433333','-106.4101077778','https://c1.staticflickr.com/2/1481/26096173034_7bc3ca0676_t.jpg','https://www.flickr.com/photos/30474783@N06/26096173034/in/album-72157667717373175','2016-04-28 12:33:53','https://c1.staticflickr.com/2/1481/26096173034_7bc3ca0676_n.jpg','1456','2592',NULL,'https://c1.staticflickr.com/2/1481/26096173034_f67350d0f4_o.jpg'),
-('687','28','Folder1','WP_20160428_024','Y','N','Cactus bloom on top of hoodoo','35.6665330556','-106.4091047222','https://c1.staticflickr.com/2/1442/26610180262_5343e0f59b_t.jpg','https://www.flickr.com/photos/30474783@N06/26610180262/in/album-72157667717373175','2016-04-28 12:38:31','https://c1.staticflickr.com/2/1442/26610180262_5343e0f59b_n.jpg','1456','2592',NULL,'https://c1.staticflickr.com/2/1442/26610180262_6d684c7469_o.jpg');
+('535','21','Folder2','FaultsAndFolds','Y','Y','Multiple fault lines here provide a geological story','33.9836416667','-106.7616194444','https://c1.staticflickr.com/5/4704/25189087137_bc4f26c21a_t.jpg','https://www.flickr.com/photos/139088815@N08/25189087137/in/album-72157669177869019','2018-01-30 15:19:52','https://c1.staticflickr.com/5/4704/25189087137_bc4f26c21a_n.jpg','2448','3264',NULL,'https://c1.staticflickr.com/5/4704/25189087137_17a079fd72_o.jpg');
 
 
 
@@ -513,7 +490,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1172 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1188 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1207,14 +1184,14 @@ INSERT INTO REFS VALUES
 ('1161','172','App:','https://www.alltrails.com/trail/us/new-mexico/cerro-grande-trail','AllTrails'),
 ('1162','172','Website:','https://www.nps.gov/band/planyourvisit/cerro-grande-route.htm','National Park Service'),
 ('1163','172','Website:','http://www.americansouthwest.net/new_mexico/bandelier/cerro-grande-trail.html','American Southwest'),
-('1164','66','Book: ','1',''),
-('1165','66','Book: ','6',''),
-('1166','66','Book: ','8',''),
-('1167','66','Book: ','5',''),
-('1168','66','Website: ','https://www.blm.gov/visit/kktr','BLM: Kasha-Katuwe Tent Rocks'),
-('1169','66','Website: ','http://www.americansouthwest.net/new_mexico/kasha-katuwe-tent-rocks/hiking.html','American Southwest'),
-('1170','66','Website: ','https://en.wikipedia.org/wiki/Kasha-Katuwe_Tent_Rocks_National_Monument','Wikipedia'),
-('1171','66','App: ','http://www.alltrails.com/trail/us/new-mexico/tent-rocks-canyon-trails','AllTrails');
+('1180','66','Book: ','1',''),
+('1181','66','Book: ','6',''),
+('1182','66','Book: ','8',''),
+('1183','66','Book: ','5',''),
+('1184','66','Website: ','https://www.blm.gov/visit/kktr','BLM: Kasha-Katuwe Tent Rocks'),
+('1185','66','Website: ','http://www.americansouthwest.net/new_mexico/kasha-katuwe-tent-rocks/hiking.html','American Southwest'),
+('1186','66','Website: ','https://en.wikipedia.org/wiki/Kasha-Katuwe_Tent_Rocks_National_Monument','Wikipedia'),
+('1187','66','App: ','http://www.alltrails.com/trail/us/new-mexico/tent-rocks-canyon-trails','AllTrails');
 
 
 
@@ -1238,7 +1215,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=2790 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2804 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -2977,7 +2954,21 @@ INSERT INTO TSV VALUES
 ('2786','172','Folder1','SummitViewOfSandia','Y','Y','From the peak of Cerro Grande, the last piece of trail','35.8694194444','-106.4129777778','https://c1.staticflickr.com/1/959/42241042192_269d946467_t.jpg','https://www.flickr.com/photos/139088815@N08/42241042192/in/album-72157695406837431','2018-05-19 11:57:36','https://c1.staticflickr.com/1/959/42241042192_269d946467_n.jpg','2448','3264','','https://c1.staticflickr.com/1/959/42241042192_91db8dd731_o.jpg'),
 ('2787','172','Folder1','LosConchasFireRemains','Y','N','The 2011 devastation marks portions of the landscape','35.8696444444','-106.4128583333','https://c1.staticflickr.com/1/889/41566279234_6cd54b132c_t.jpg','https://www.flickr.com/photos/139088815@N08/41566279234/in/album-72157695406837431','2018-05-19 12:05:15','https://c1.staticflickr.com/1/889/41566279234_6cd54b132c_n.jpg','2448','3264','','https://c1.staticflickr.com/1/889/41566279234_4eae2c3895_o.jpg'),
 ('2788','172','Folder1','DescendingTheGrande','Y','Y','On the way down, it seems like new views','35.8675833333','-106.4132305556','https://c1.staticflickr.com/1/965/28416508888_cce3eef4e5_t.jpg','https://www.flickr.com/photos/139088815@N08/28416508888/in/album-72157695406837431','2018-05-19 12:18:06','https://c1.staticflickr.com/1/965/28416508888_cce3eef4e5_n.jpg','2448','3264','','https://c1.staticflickr.com/1/965/28416508888_4e73063d59_o.jpg'),
-('2789','172','Folder1','PicturesqueTreeFrame','Y','N','The Ponderosas added to the enjoyable environment of the hike','35.8657916667','-106.4143750000','https://c1.staticflickr.com/1/948/42287470881_bdf90dbd25_t.jpg','https://www.flickr.com/photos/139088815@N08/42287470881/in/album-72157695406837431','2018-05-19 12:23:56','https://c1.staticflickr.com/1/948/42287470881_bdf90dbd25_n.jpg','2448','3264','','https://c1.staticflickr.com/1/948/42287470881_0a80fde254_o.jpg');
+('2789','172','Folder1','PicturesqueTreeFrame','Y','N','The Ponderosas added to the enjoyable environment of the hike','35.8657916667','-106.4143750000','https://c1.staticflickr.com/1/948/42287470881_bdf90dbd25_t.jpg','https://www.flickr.com/photos/139088815@N08/42287470881/in/album-72157695406837431','2018-05-19 12:23:56','https://c1.staticflickr.com/1/948/42287470881_bdf90dbd25_n.jpg','2448','3264','','https://c1.staticflickr.com/1/948/42287470881_0a80fde254_o.jpg'),
+('2790','66','Folder','TrailBelow','Y','N','The canyon and trail from above','0.0000000000','0.0000000000','','https://www.flickr.com/photos/139088815@N08/27289135033/in/album-72157670138528866','2013-02-13 11:51:47','https://c2.staticflickr.com/8/7743/27289135033_b948ed2aee_n.jpg','240','320','',''),
+('2791','66','','TopView','Y','N','View while ascending','0.0000000000','0.0000000000','','https://www.flickr.com/photos/139088815@N08/27623414810/in/album-72157670138528866','2004-09-23 16:47:30','https://c3.staticflickr.com/8/7331/27623414810_76ce0fa395_n.jpg','240','320','',''),
+('2792','66','','ThePathIn','Y','N','The path leads to the interior','0.0000000000','0.0000000000','','https://www.flickr.com/photos/139088815@N08/27623399010/in/album-72157670138528866','2010-05-12 16:21:10','https://c3.staticflickr.com/8/7468/27623399010_fd09958c3f_n.jpg','320','213','',''),
+('2793','66','','TentRocks','Y','N','Classic formations','0.0000000000','0.0000000000','','https://www.flickr.com/photos/139088815@N08/27825183361/in/album-72157670138528866','2004-09-23 16:30:34','https://c2.staticflickr.com/8/7547/27825183361_a19f30e84f_n.jpg','240','320','',''),
+('2794','66','','OddFormation','Y','N','Various suprise formations along the way','0.0000000000','0.0000000000','','https://www.flickr.com/photos/139088815@N08/27901935455/in/album-72157670138528866','2010-05-12 14:26:34','https://c8.staticflickr.com/8/7434/27901935455_65b33e5d6b_n.jpg','320','213','',''),
+('2795','66','','Narrows','Y','N','Tight squeeze makes for a unique hike','0.0000000000','0.0000000000','','https://www.flickr.com/photos/139088815@N08/27901967275/in/album-72157670138528866','2013-05-02 12:10:53','https://c4.staticflickr.com/8/7635/27901967275_23523c4a8a_n.jpg','320','240','',''),
+('2796','66','','MeanderingSlots','Y','N','Winding through the slots, where will you end up?','0.0000000000','0.0000000000','','https://www.flickr.com/photos/139088815@N08/27623411870/in/album-72157670138528866','2010-05-12 14:17:26','https://c7.staticflickr.com/8/7379/27623411870_7e77d05eb8_n.jpg','320','213','',''),
+('2797','66','','LayersOfLayers','Y','N','Layers upon layers of volcanic debris','0.0000000000','0.0000000000','','https://www.flickr.com/photos/139088815@N08/27289474344/in/album-72157670138528866','2013-02-13 11:11:45','https://c1.staticflickr.com/8/7118/27289474344_818b6c70c2_n.jpg','240','320','',''),
+('2798','66','Folder1','WP_20160428_003','Y','N','The start','35.6578738889','-106.4113111111','https://c1.staticflickr.com/2/1618/26637095601_aa133e5aed_t.jpg','https://www.flickr.com/photos/30474783@N06/26637095601/in/album-72157667717373175','2016-04-28 11:15:50','https://c1.staticflickr.com/2/1618/26637095601_aa133e5aed_n.jpg','1456','2592','','https://c1.staticflickr.com/2/1618/26637095601_e936e723d4_o.jpg'),
+('2799','66','Folder1','WP_20160428_004','Y','Y','Looking up','35.6613677778','-106.4098036111','https://c1.staticflickr.com/2/1487/26676403886_76c65dd16c_t.jpg','https://www.flickr.com/photos/30474783@N06/26676403886/in/album-72157667717373175','2016-04-28 11:30:15','https://c1.staticflickr.com/2/1487/26676403886_76c65dd16c_n.jpg','1456','2592','','https://c1.staticflickr.com/2/1487/26676403886_7330b8b3d8_o.jpg'),
+('2800','66','Folder1','WP_20160428_018','Y','Y','On the moon','35.6680394444','-106.4078558333','https://c1.staticflickr.com/2/1600/26610161382_a05e3e62a2_t.jpg','https://www.flickr.com/photos/30474783@N06/26610161382/in/album-72157667717373175','2016-04-28 12:19:52','https://c1.staticflickr.com/2/1600/26610161382_a05e3e62a2_n.jpg','1456','2592','','https://c1.staticflickr.com/2/1600/26610161382_84314afab4_o.jpg'),
+('2801','66','Folder1','WP_20160428_019','N','Y','On the moon 2','35.6680925000','-106.4081552778','https://c1.staticflickr.com/2/1571/26099117313_dffeeccf16_t.jpg','https://www.flickr.com/photos/30474783@N06/26099117313/in/album-72157667717373175','2016-04-28 12:21:28','https://c1.staticflickr.com/2/1571/26099117313_dffeeccf16_n.jpg','1456','2592','','https://c1.staticflickr.com/2/1571/26099117313_3c96b929b8_o.jpg'),
+('2802','66','Folder1','WP_20160428_022','Y','Y','The crew below','35.6671433333','-106.4101077778','https://c1.staticflickr.com/2/1481/26096173034_7bc3ca0676_t.jpg','https://www.flickr.com/photos/30474783@N06/26096173034/in/album-72157667717373175','2016-04-28 12:33:53','https://c1.staticflickr.com/2/1481/26096173034_7bc3ca0676_n.jpg','1456','2592','','https://c1.staticflickr.com/2/1481/26096173034_f67350d0f4_o.jpg'),
+('2803','66','Folder1','WP_20160428_024','Y','N','Cactus bloom on top of hoodoo','35.6665330556','-106.4091047222','https://c1.staticflickr.com/2/1442/26610180262_5343e0f59b_t.jpg','https://www.flickr.com/photos/30474783@N06/26610180262/in/album-72157667717373175','2016-04-28 12:38:31','https://c1.staticflickr.com/2/1442/26610180262_5343e0f59b_n.jpg','1456','2592','','https://c1.staticflickr.com/2/1442/26610180262_6d684c7469_o.jpg');
 
 
 
