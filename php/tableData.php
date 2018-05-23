@@ -139,3 +139,7 @@ if ($age === 'new') { // forming javascript array data
     $enos .= ']';
 }
 mysqli_free_result($tblquery);
+if (!isset($includeZoom)) {
+    $includeZoom = false;
+}
+
