@@ -1,4 +1,14 @@
 <?php
+/**
+ * This script will process the admin tools request to either delete a
+ * page from EHIKES, or to publish it to the main site. The outcome is
+ * determined by the query string parameter 'act'
+ * PHP Version 7.0
+ * 
+ * @package Admin_Tools
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $act = filter_input(INPUT_GET, 'act');

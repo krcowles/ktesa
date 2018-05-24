@@ -29,7 +29,7 @@ $show = filter_input(INPUT_GET, 'show');
 </div>
 <p id="trail">Select A Hike To Edit</p>
 
-<div><p style="text-align:center;">When you click on the "Web Pg" link in the table
+<div><p style="text-align:center;">When you click on the hike in the table
     below, you will be presented with an editable version of the hike page.</p>
 </div>
 <div><br />

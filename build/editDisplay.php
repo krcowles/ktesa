@@ -27,7 +27,7 @@ $show = 'usr';
 <p id="trail">Select In-Edit Hike to Display</p>
 <div style="margin-left:16px">
 <h3>
-    Click on the 'Web Pg' link to display the hike in its current state. Note that
+    Click on the hike to display its web page in its current state. Note that
     the displayed format may not be the final format, depending on the amount of 
     information contained on the page.
 </h3>

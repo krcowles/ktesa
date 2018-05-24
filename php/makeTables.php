@@ -13,25 +13,23 @@ require_once "tableData.php";
 <!-- REFERENCE TABLE OF HIKES -->
 <table class="sortable">
     <colgroup>	
-        <col style="width:110px">
-        <col style="width:190px">
-        <col style="width:124px">
-        <col style="width:60px">
+        <col style="width:108px">
+        <col style="width:210px">
+        <col style="width:160px">
         <?php if ($includeZoom) : ?>
         <col style="width:60px">
         <?php endif; ?>
         <col style="width:80px">
-        <col style="width:76px">
+        <col style="width:84px">
         <col style="width:110px">
         <col style="width:86px">
-        <col style="width:58px">
+        <col style="width:64px">
     </colgroup>
     <thead>
         <tr>
             <th class="hdr_row" data-sort="std">Locale</th>
             <th class="hdr_row" data-sort="std">Hike/Trail Name</th>
             <th class="hdr_row" data-sort="std">WOW Factor</th>
-            <th class="hdr_row">Web Pg</th>
             <?php if ($includeZoom) : ?>
             <th class="hdr_row">Mapit</th>
             <?php endif; ?>
@@ -59,11 +57,10 @@ require_once "tableData.php";
     <tr class="normal" <?= $hikeHiddenDat[$j];?>>
     <?php endif; ?>
     <td><?= $hikeLocale[$j];?></td>
-    <td><?= $hikeName[$j];?></td>
 
     <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
+    <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $hikeName[$j];?></a></td>
     <td>See Indx</td>
-    <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $indxIcon;?></a>
     <?php if ($includeZoom) : ?>
     <td style="text-align:center;"><?= $mapLink[$j];?></td>
     <?php endif; ?>
@@ -73,8 +70,8 @@ require_once "tableData.php";
     <td>See Index</td>
     
     <?php else : ?>
+    <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $hikeName[$j];?></a></td>
     <td><?= $hikeWow[$j];?></td>
-    <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $webIcon;?></a>
     <?php if ($includeZoom) : ?>
     <td style="text-align:center;"><?= $mapLink[$j];?></td>
     <?php endif; ?>

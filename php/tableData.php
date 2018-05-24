@@ -1,22 +1,22 @@
 <?php
 /**
  * This script collects the data from the database needed to construct the html 
- * used to display various tables of hikes via 'makeTables.php'.
+ * that is used to display various tables of hikes via 'makeTables.php'.
  * 'makeTables.php' can be invoked in four different scenarios:
- *  1.  By 'mapPg.php' from the main/index page, 
+ *  1.  By 'php/mapPg.php' from the main/index page, 
  *      Here it is used to display ALL hikes and index pages regardless of 
  *      usrid; [show=all, usr=x, table=HIKES (ie age=old)];
- *  2.  By 'hikeEditor.php' from the 'Display Options: Edit Hikes' buttons
+ *  2.  By 'build/hikeEditor.php' from the 'Display Options: Edit Hikes' buttons
  *      on the main/index page;
  *      Here it is used to display ONLY hikes which can be edited by the usrid;
  *        a. Editing of newly created hikes or in-edit hikes;
  *           [show=usr, usr=usr, table=EHIKES (ie age=new)]
  *        b. Editing of a published hike which is not currently in 
  *           edit mode [show=usr, table=HIKES (ie age=old): if usr='mstr, show=all]
- *  3.  By 'editDisplay.php' from the 'Display Options: Preview In-Edit Hike'
+ *  3.  By 'build/editDisplay.php' from the 'Display Options: Preview In-Edit Hike'
  *      on the main/index page; display ONLY hikes which are in-edit by the 
  *      usrid. [show=usr, table=EHIKES (ie age=new)]
- *  4.  By 'admintools.php' : 'reldel.php'
+ *  4.  By 'admin/reldel.php'
  *      Here it is used to list ALL EHIKES (for master) to release or delete:
  *      [show=all, usr='mstr', table=EHIKES (ie age=new)]
  *  Each 'calling' script must set the $show, $usr, and $age (table) parameters;
@@ -29,16 +29,13 @@
  */
 require_once "../mysql/dbFunctions.php";
 // Icons used for table display:
-$indxIcon
-    = '<img class="webShift" src="../images/indxCheck.png" alt="index checkbox" />';
-$webIcon = '<img class="webShift" src="../images/greencheck.jpg" alt="checkbox" />';
-$dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
 $mapIcon
     = 'class="gotomap" src="../images/mapit.png" alt="Zoom-to-map symbol" />';
-$sunIcon = '<img class="expShift" src="../images/sun.jpg" alt="Sunny icon" />';
-$partialIcon = '<img class="expShift" src="../images/greenshade.jpg" '
+$dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
+$sunIcon = '<img class="expShift" src="../images/fullSun.jpg" alt="Sunny icon" />';
+$partialIcon = '<img class="expShift" src="../images/partShade.jpg" '
     . 'alt="Partial shade icon" />';
-$shadeIcon = '<img class="expShift" src="../images/shady.png" '
+$shadeIcon = '<img class="expShift" src="../images/goodShade.jpg" '
     . 'alt="Partial sun/shade icon" />';
 // undisplayed data:
 $hikeHiddenDat = array();
@@ -139,7 +136,7 @@ if ($age === 'new') { // forming javascript array data
     $enos .= ']';
 }
 mysqli_free_result($tblquery);
+// $includeZoom is only defined by the mapPg.php, and true only if 'map + table':
 if (!isset($includeZoom)) {
     $includeZoom = false;
 }
-
