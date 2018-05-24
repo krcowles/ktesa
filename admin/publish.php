@@ -199,40 +199,16 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 "{$status}: " . mysqli_error($link));
             }
         }
-        $picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
-        $picdat = mysqli_query($link, $picreq);
-        if (!$picdat) {
-            die("publish.php: Failed to extract pic data from ETSV: " .
+
+        $xfrTsvReq = "INSERT INTO TSV (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
+            "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) SELECT '{$indxNo}',folder,title," .
+            "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org FROM " .
+            "ETSV WHERE indxNo = {$hikeNo};";
+        $xfrTsv = mysqli_query($link, $xfrTsvReq);
+        if (!$xfrTsv) {
+            die("publish.php: Failed to move ETSV data into TSV for hike {$hikeNo}: " .
                 mysqli_error($link));
         }
-        while ($pic = mysqli_fetch_assoc($picdat)) {
-            $f = mysqli_real_escape_string($link, $pic['folder']);
-            $ti = mysqli_real_escape_string($link, $pic['title']);
-            $h = mysqli_real_escape_string($link, $pic['hpg']);
-            $m = mysqli_real_escape_string($link, $pic['mpg']);
-            $de = mysqli_real_escape_string($link, $pic['desc']);
-            $la = mysqli_real_escape_string($link, $pic['lat']);
-            $lo = mysqli_real_escape_string($link, $pic['lng']);
-            $th = mysqli_real_escape_string($link, $pic['thumb']);
-            $al = mysqli_real_escape_string($link, $pic['alblnk']);
-            $dt = mysqli_real_escape_string($link, $pic['date']);
-            $md = mysqli_real_escape_string($link, $pic['mid']);
-            $ht = mysqli_real_escape_string($link, $pic['imgHt']);
-            $wd = mysqli_real_escape_string($link, $pic['imgWd']);
-            $ic = mysqli_real_escape_string($link, $pic['iclr']);
-            $or = mysqli_real_escape_string($link, $pic['org']);
-            $picreq = "INSERT IGNORE INTO TSV (indxNo,folder,title,hpg,mpg,`desc`," .
-                "lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) VALUES " .
-                "('{$indxNo}','{$f}','{$ti}','{$h}','{$m}','{$de}','{$la}'," .
-                "'{$lo}','{$th}','{$al}','{$dt}','{$md}','{$ht}','{$wd}'," .
-                "'{$ic}','{$or}');";
-            $pics = mysqli_query($link, $picreq);
-            if (!$pics) {
-                die("publish.php: Failed to add pic data to TSV for hike " .
-                "{$indxNo}: " . mysqli_error($link));
-            }
-        }
-        mysqli_free_result($picdat);
 
         /* Regardless of state, remove this hike from EHIKES et al:
          * Foreign Keys ensures deletion in remaining E-tables
