@@ -72,6 +72,18 @@ $('.sortable').each( function() {
 });  // end sortable each loop
 				
 // METRIC CONVERSION BUTTON:
+var lgth_hdr; // column number containing 'Length'
+var elev_hdr; // column number containing 'Elev Chg'
+var $htable = $('table thead');
+var $hdrs = $htable.eq(0).find('th');
+$hdrs.each( function(indx) {
+	if ($(this).text() === 'Length') {
+		lgth_hdr = indx;
+	}
+	if ($(this).text() === 'Elev Chg') {
+		elev_hdr = indx;
+	}
+});
 $('#metric').on('click', function() {
 	// table locators:
 	var $etable = $('table');
@@ -102,9 +114,8 @@ $('#metric').on('click', function() {
 	}
 	$('#metric').text(state); // new data element text
 	$erows.each( function() {
-		// index 4 is column w/distance units (miles/kms)
 		// ASSUMPTION: always less than 1,000 miles or kms!
-		tmpUnits = $(this).find('td').eq(4).text();
+		tmpUnits = $(this).find('td').eq(lgth_hdr).text();
 		tmpConv = parseFloat(tmpUnits);
 		tmpConv = dist * tmpConv;
 		var indxLoc = tmpUnits.substring(0,2);
@@ -114,9 +125,8 @@ $('#metric').on('click', function() {
 			tmpUnits = tmpConv.toFixed(1);
 			tmpUnits = tmpUnits + ' ' + newDist;
 		}
-		$(this).find('td').eq(4).text(tmpUnits);
-		// index 5 is column w/elevation units (ft/m)
-		tmpUnits = $(this).find('td').eq(5).text();
+		$(this).find('td').eq(lgth_hdr).text(tmpUnits);
+		tmpUnits = $(this).find('td').eq(elev_hdr).text();
 		// need to worry about commas...
 		mindx = tmpUnits.indexOf(',');
 		if ( mindx < 0 ) {
@@ -135,7 +145,7 @@ $('#metric').on('click', function() {
 			tmpUnits = tmpConv.toFixed(0);
 			tmpUnits = tmpUnits + ' ' + newElev;
 		}
-		$(this).find('td').eq(5).text(tmpUnits);
+		$(this).find('td').eq(elev_hdr).text(tmpUnits);
 
 	});  // end 'each erow'	
 }); // end of click on metric

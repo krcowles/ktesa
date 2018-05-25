@@ -60,6 +60,7 @@ var allCs = [];
 var allNs = [];
 var allXs = [];  // this array will hold the special-case "At VC" hikes
 // NOTE: "At VC" hikes are ignored for purposes of creating separate markers
+// $hikeRows is defined in hikeBox.js
 $hikeRows.each( function() {
 	if ( $(this).hasClass('indxd') ) {
 		allVs.push(this);
@@ -70,6 +71,31 @@ $hikeRows.each( function() {
 	} else if ( $(this).hasClass('normal') ) {
 		allNs.push(this);
 	}  // anything not caught in this trap is an anomaly!!
+});
+// need column indices from table for certain items:
+var hike_hdr;
+var lgth_hdr;
+var elev_hdr;
+var diff_hdr;
+var dir_hdr;
+var $tblhdrs = $('table thead');
+var $hdrs = $tblhdrs.eq(0).find('th');
+$hdrs.each( function(indx) {
+	if ($(this).text() === 'Hike/Trail Name') {
+		hike_hdr = indx;
+	}
+	if ($(this).text() === 'Length') {
+		lgth_hdr = indx;
+	}
+	if ($(this).text() === 'Elev Chg') {
+		elev_hdr = indx;
+	}
+	if ($(this).text() === 'Difficulty') {
+		diff_hdr = indx;
+	}
+	if ($(this).text() === 'By Car') {
+		dir_hdr = indx;
+	}
 });
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
@@ -129,11 +155,11 @@ function initMap() {
 			}
 		} // if emtpy string, thisVorgs will be an empty array (0 elements)
 		var $dataCells = $(this).find('td');
-		var $link = $dataCells.eq(3).find('a');
+		var $link = $dataCells.eq(hike_hdr).find('a');
 		var vpage = $link.attr('href');
-		var $dlink = $dataCells.eq(8).find('a');
+		var $dlink = $dataCells.eq(dir_hdr).find('a');
 		var dirLink = $dlink.attr('href');
-		nme = $dataCells.eq(1).text();
+		nme = $dataCells.eq(hike_hdr).text();
 		nme = nme.replace('Index','Visitor Center');
 		if (nme == newHikeName) {
 			latest = hno;
@@ -170,9 +196,9 @@ function initMap() {
 			}
 			var hikeId = $(this).data('indx');
 			var $dataCells = $(this).find('td');
-			var $plink = $dataCells.eq(3).find('a');
+			var $plink = $dataCells.eq(hike_hdr).find('a');
 			cpage = $plink.attr('href');
-			var $dlink = $dataCells.eq(8).find('a');
+			var $dlink = $dataCells.eq(dir_hdr).find('a');
 			var dirLink = $dlink.attr('href');
 			AddClusterMarker(loc, sym, nme, cpage, dirLink, chikeArray, hno);
 		}
@@ -185,14 +211,14 @@ function initMap() {
 		loc = {lat: nlat, lng: nlon};
 		var hno = $(this).data('indx');
 		var $dataCells = $(this).find('td');
-		nme = $dataCells.eq(1).text();
+		nme = $dataCells.eq(hike_hdr).text();
 		if (nme == newHikeName) {
 			latest = hno;
 			newloc = loc;
 		}
-		$plink = $dataCells.eq(3).find('a');
+		$plink = $dataCells.eq(hike_hdr).find('a');
 		npage = $plink.attr('href');
-		$dlink = $dataCells.eq(8).find('a');
+		$dlink = $dataCells.eq(dir_hdr).find('a');
 		dirLink = $dlink.attr('href');
 		AddHikeMarker(loc, sym, nme, npage, dirLink, hno);
 	});
@@ -271,12 +297,12 @@ function initMap() {
 			map.setCenter(location);
 			var iwContent = '<div id="NH">Hike: ' + pinName + '<br />';
 			var $nData = coreHikeData(NH_TYPE, hike);
-			iwContent += 'Length: ' + $nData.eq(4).text() + '<br />';
-			iwContent += 'Elevation Change: ' + $nData.eq(5).text() + '<br />';
-			iwContent += 'Difficulty: ' + $nData.eq(6).text() + '<br />';
-			var $plink = $nData.eq(3).find('a');
+			iwContent += 'Length: ' + $nData.eq(lgth_hdr).text() + '<br />';
+			iwContent += 'Elevation Change: ' + $nData.eq(elev_hdr).text() + '<br />';
+			iwContent += 'Difficulty: ' + $nData.eq(diff_hdr).text() + '<br />';
+			var $plink = $nData.eq(hike_hdr).find('a');
 			iwContent += '<a href="' + $plink.attr('href') + '" target="_blank">Website</a><br />';
-			var $dlink = $nData.eq(8).find('a');
+			var $dlink = $nData.eq(dir_hdr).find('a');
 			iwContent += '<a href="' + $dlink.attr('href') + '" target="_blank">Directions</a></div>';
 			var iw = new google.maps.InfoWindow({
 					content: iwContent,
@@ -322,11 +348,11 @@ function initMap() {
 		if (markerType === NH_TYPE) {
 			return $hikeData;
 		}
-		var iwDat = '<br />' + $hikeData.eq(1).text() + '; ';
-		iwDat += 'Lgth: ' + $hikeData.eq(4).text() + '; ';
-		iwDat += 'Elev Chg: ' + $hikeData.eq(5).text() + '; ';
-		iwDat += 'Diff: ' + $hikeData.eq(6).text() + '<br />';
-		var $plink = $hikeData.eq(3).find('a');
+		var iwDat = '<br />' + $hikeData.eq(hike_hdr).text() + '; ';
+		iwDat += 'Lgth: ' + $hikeData.eq(lgth_hdr).text() + '; ';
+		iwDat += 'Elev Chg: ' + $hikeData.eq(elev_hdr).text() + '; ';
+		iwDat += 'Diff: ' + $hikeData.eq(diff_hdr).text() + '<br />';
+		var $plink = $hikeData.eq(hike_hdr).find('a');
 		iwDat += '<a href="' + $plink.attr('href') + '" target="_blank">Website</a>';
 		return iwDat;
 	} // end function coreHikeData
@@ -342,9 +368,6 @@ function initMap() {
 			if ( curZoom > 12 ) {
 				for (var m=0; m<allTheTracks.length; m++) {
 					trkKeyStr = 'trk' + m;
-					//var db = 'trkName' + m;
-					//msg = '<p>Track: ' + trkObj[db] + '</p>';
-					//$('#dbug').append(msg);
 					trkObj[trkKeyStr].setMap(map);
 				}
 
@@ -574,10 +597,10 @@ function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
                     }
                 });
             }
-            var hName = $trkRow.eq(1).text();
-            var hLgth = $trkRow.eq(4).text();
-            var hElev = $trkRow.eq(5).text();
-            var hDiff = $trkRow.eq(6).text();
+            var hName = $trkRow.eq(hike_hdr).text();
+            var hLgth = $trkRow.eq(lgth_hdr).text();
+            var hElev = $trkRow.eq(elev_hdr).text();
+            var hDiff = $trkRow.eq(diff_hdr).text();
             var iwContent = mdiv + hName + '<br />Length: ' +
                 hLgth + '<br />Elev Chg: ' + hElev + '<br />Difficulty: ' + hDiff + '</div>'; 
             var iw = new google.maps.InfoWindow({

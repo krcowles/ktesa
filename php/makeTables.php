@@ -13,8 +13,8 @@ require_once "tableData.php";
 <!-- REFERENCE TABLE OF HIKES -->
 <table class="sortable">
     <colgroup>	
-        <col style="width:108px">
         <col style="width:210px">
+        <col style="width:108px">
         <col style="width:160px">
         <?php if ($includeZoom) : ?>
         <col style="width:60px">
@@ -27,8 +27,8 @@ require_once "tableData.php";
     </colgroup>
     <thead>
         <tr>
-            <th class="hdr_row" data-sort="std">Locale</th>
             <th class="hdr_row" data-sort="std">Hike/Trail Name</th>
+            <th class="hdr_row" data-sort="std">Locale</th>
             <th class="hdr_row" data-sort="std">WOW Factor</th>
             <?php if ($includeZoom) : ?>
             <th class="hdr_row">Mapit</th>
@@ -56,10 +56,10 @@ require_once "tableData.php";
     <?php else : ?>
     <tr class="normal" <?= $hikeHiddenDat[$j];?>>
     <?php endif; ?>
-    <td><?= $hikeLocale[$j];?></td>
 
     <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
     <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $hikeName[$j];?></a></td>
+    <td><?= $hikeLocale[$j];?></td>
     <td>See Indx</td>
     <?php if ($includeZoom) : ?>
     <td style="text-align:center;"><?= $mapLink[$j];?></td>
@@ -71,6 +71,7 @@ require_once "tableData.php";
     
     <?php else : ?>
     <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $hikeName[$j];?></a></td>
+    <td><?= $hikeLocale[$j];?></td>
     <td><?= $hikeWow[$j];?></td>
     <?php if ($includeZoom) : ?>
     <td style="text-align:center;"><?= $mapLink[$j];?></td>

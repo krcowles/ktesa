@@ -20,7 +20,7 @@ if (winWidth < mapWidth) {
 var $hikeRows = $('#refTbl tbody tr');
 var lastHikeIndx = $hikeRows.length - 1; // offset 1 for header row
 var $lastHikeRow = $hikeRows.eq(lastHikeIndx).find('td');
-var newHikeName = $lastHikeRow.eq(1).text();
+var newHikeName = $lastHikeRow.eq(0).text();
 if ($hikeRows.eq(lastHikeIndx).hasClass('clustered')) {
     newHikeName = $hikeRows.eq(lastHikeIndx).data('tool'); // use cluster name
 }
@@ -29,7 +29,7 @@ if ($hikeRows.eq(lastHikeIndx).hasClass('vchike')) {
     $hikeRows.each( function() {
         if ( $(this).data('indx') == vcIndx ) { 
             var $indxRow = $(this).find('td');
-            newHikeName = $indxRow.eq(1).text();
+            newHikeName = $indxRow.eq(0).text();
             return;
         }
     });
