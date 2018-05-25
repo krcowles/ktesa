@@ -122,7 +122,7 @@ mysqli_free_result($iptbl);
 <?php for ($k=0; $k<$item_cnt; $k++) : ?>
     <?php if ($hiked[$k]) : ?>
             <tr>
-                <td><a href="hikePageTemplate.php?indxNo=<?= $tdpg[$k];?>"
+                <td><a href="hikePageTemplate.php?hikeIndx=<?= $tdpg[$k];?>"
                     target="_blank"><?= $tdname[$k];?></a></td>
                 <td><?= $tdmiles[$k];?> miles</td>
                 <td><?= $tdfeet[$k];?> feet</td>
