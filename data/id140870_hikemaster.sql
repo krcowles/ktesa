@@ -44,7 +44,7 @@ CREATE TABLE `BOOKS` (
   `title` varchar(200) NOT NULL,
   `author` varchar(200) NOT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO BOOKS VALUES
@@ -67,7 +67,8 @@ INSERT INTO BOOKS VALUES
 ('17','Hiking New Mexico\'s Gila Wilderness','Bill Cunningham and Polly Burke'),
 ('18','Hiking New Mexico\'s Aldo Leopold Wilderness','Bill Cunningham and Polly Burke'),
 ('19','Following the Royal Road: A Guide to the Historic Camino Real de Tierra Adentro','Hal E. Jackson'),
-('20','Wonderland: A Photographer\'s Journey Into The Bisti','Eduardo Fuss');
+('20','Wonderland: A Photographer\'s Journey Into The Bisti','Eduardo Fuss'),
+('21','60 Short Hikes In The Sandia Foothills','Tamara Massong');
 
 
 
