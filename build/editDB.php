@@ -1,4 +1,17 @@
 <?php
+/**
+ * This module constitutes the framework for editing a hike page.
+ * Each tab within the framework is a module which allows editing
+ * a section of the database and/or uploading of key user files.
+ * A session variable holds the current tab in use so that when the
+ * apply button is clicked, the changes are made and the user is
+ * returned to the same page with the refreshed data.
+ * PHP Version 7.0
+ * 
+ * @package Editing
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
 session_start();
 require "dataForEditor.php";
 ?>
@@ -41,7 +54,6 @@ require "dataForEditor.php";
 <button id="t2" class="tablist">Photo Selection</button>
 <button id="t3" class="tablist">Descriptive Text</button>
 <button id="t4" class="tablist">Related Hike Info</button>
-<button id="t5" class="tablist">File Uploads</button>
 <div id="line"></div>
 <div id="tab1" class="active tab-panel">
 <form action="saveTab1.php" method="POST">
@@ -71,14 +83,6 @@ require "dataForEditor.php";
 <form action="saveTab4.php" method="POST">
     <?php
     require 'tab4display.php';
-    ?>
-</form>
-</div>
-
-<div id="tab5" class="tab-panel">
-<form action="saveTab5.php" method="POST" enctype="multipart/form-data">
-    <?php
-    require 'tab5display.php';
     ?>
 </form>
 </div>

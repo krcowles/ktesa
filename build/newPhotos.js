@@ -83,7 +83,7 @@ $('#load').on('click', function() {
         success: function(result) {
             var output = result;
             if (output == 'Success') {
-                window.open("editDB.php?hno=" + hikeno + "&usr=" + usrid);
+                window.open("editDB.php?tab=2&hno=" + hikeno + "&usr=" + usrid);
             } else {
                 alert("Photos not saved: \n" + output);
             }

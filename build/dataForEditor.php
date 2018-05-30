@@ -1,7 +1,12 @@
 <?php
 /**
- * The hike page editor is utilized to update information contained
- * in the database, whether for a new hike or an existing hike.
+ * The hike page editor allows the user to update information contained
+ * in the database, whether for a new hike or an existing hike. Any changes
+ * made by the user will not become effective until the edited hike is published.
+ * When this module is invoked from the hikeEditor, the tab display setting
+ * will be "1". If the user clicks on 'Apply' for any tab, that same tab will
+ * display again with refreshed data.
+ * PHP Version 7.0
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -11,14 +16,9 @@
 require_once "../mysql/dbFunctions.php";
 require_once "buildFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
-// import GET parameters
 $hikeNo = filter_input(INPUT_GET, 'hno');
 $uid = filter_input(INPUT_GET, 'usr');
-if (isset($_SESSION['activeTab'])) {
-    $dispTab = $_SESSION['activeTab'];
-} else {
-    $dispTab = 1;
-}
+$dispTab = filter_input(INPUT_GET, 'tab');
 // data for drop-down boxes
 $selectData = dropdownData('allclus');
 $cnames = $selectData[0];

@@ -3,6 +3,7 @@
  * This script establishes a new hike in EHIKES with only the data
  * entered in the form on startNewPg.php. The user is then 
  * redirected to the editor (editDB.php).
+ * PHP Version 7.0
  * 
  * @package Page_Creation
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -12,8 +13,6 @@
 /**
  * Database functions are required
  */
-session_start();
-$_SESSION['activeTab'] = 1;
 require '../mysql/dbFunctions.php';
 $link = connectToDb(__FILE__, __LINE__);
 $user = filter_input(INPUT_POST, 'uid');
@@ -44,6 +43,5 @@ $newPg = mysqli_query($link, $query) or die(
     __FILE__ . ": Failed to create new page for {$pg}: " . mysqli_error($link)
 );
 $hikeNo = getDbRowNum($link, 'EHIKES', __FILE__, __LINE__);
-$redirect = "editDB.php?hno=" . $hikeNo . "&usr=" . $user;
+$redirect = "editDB.php?tab=1&hno=" . $hikeNo . "&usr=" . $user;
 header("Location: {$redirect}");
-?>

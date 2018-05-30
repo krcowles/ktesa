@@ -2,14 +2,13 @@
 /**
  * This routine saves any changes made (or current data) on tab2
  * ('Photo Selection') and updates the ETSV table.
+ * PHP Version 7.0
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  * @link    ../docs/
  */
-session_start();
-$_SESSION['activeTab'] = 2;
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'pno');
@@ -102,5 +101,5 @@ while ($photo = mysqli_fetch_assoc($photoq)) {
     $p++;
 }
 mysqli_free_result($photoq);
-$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
+$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=2";
 header("Location: {$redirect}");

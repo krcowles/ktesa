@@ -3,14 +3,12 @@
  * This script accepts data from a javascript ajax POST. The data contains
  * objects defining the photos selected to be added to the editor, and a final
  * object carrying miscellaneous info needed to save the photo data to ETSV.
+ * PHP Version 7.0
  * 
  * @package Editing
  * @author  Tom Sandberge and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
-session_start();
-$_SESSION['activeTab'] = 2;
 require_once "../mysql/dbFunctions.php";
 $items = filter_input(INPUT_POST, 'info');
 $saved = json_decode($items, true);
@@ -39,10 +37,10 @@ foreach ($saved as $photo) {
     $imgHt = mysqli_real_escape_string($link, $photo['pHt']);
     $imgWd = mysqli_real_escape_string($link, $photo['pWd']);
     $org = mysqli_real_escape_string($link, $photo['org']);
-    $addReq = "INSERT INTO ETSV (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
-        "thumb,alblnk,date,mid,imgHt,imgWd,org) VALUES ('{$hikeNo}','{$folder}'," .
-        "'{$title}','N','N','{$desc}',{$lat},{$lng},'{$thumb}','{$alblnk}','{$time}'," .
-        "'{$mid}','{$imgHt}','{$imgWd}','{$org}');";
+    $addReq = "INSERT INTO ETSV (indxNo,folder,title,hpg,mpg,`desc`,lat,lng,"
+        . "thumb,alblnk,date,mid,imgHt,imgWd,org) VALUES ('{$hikeNo}','{$folder}',"
+        . "'{$title}','N','N','{$desc}',{$lat},{$lng},'{$thumb}','{$alblnk}',"
+        . "'{$time}','{$mid}','{$imgHt}','{$imgWd}','{$org}');";
     $add = mysqli_query($link, $addReq);
     if (!$add) {
         echo "Failed to insert photo {$title}: " . mysqli_error($link) . PHP_EOL;

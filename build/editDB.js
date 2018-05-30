@@ -1,5 +1,6 @@
 $( function () { // when page is loaded...
-    
+
+var hike = $('#hikeNo').text();
 /* Each drop-down field parameter is held in a hidden <p> element;
  * the data (text) in that hidden <p> element is the default that should 
  * appear in the drop-down box on page-load;
@@ -7,7 +8,7 @@ $( function () { // when page is loaded...
  *      - locale
  *      - cluster group name
  *      - hike type
- *      - difficult
+ *      - difficulty
  *      - exposure
  *      - references
 */
@@ -237,19 +238,22 @@ $bktags.each( function() {
     });
 });
 
+// The framework/appearance of the edit page:
 var winWidth = $(document).width();
 // NOTE: innerWidth provides the dimension inside the border
 var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
 if (bodySurplus < 24) {
     bodySurplus = 24;
 }   // var can actually be negative on initial load if frame is smaller than body min-width
-var tablist = $('#t5').offset();
-var down = Math.floor(tablist.top) + $('#t5').height();
+var tabCnt = $('.tablist').length;
+var singletab = '#t' + tabCnt;
+var tabpos = $(singletab).offset();
+var down = Math.floor(tabpos.top) + $(singletab).height();
 // For reasons not understood, $('#pos').width() gets the incorrect value...
 var gettabprop = $('.tablist').css('width');
 var px = gettabprop.indexOf('px');
 var tabwidth = gettabprop.substring(0,px);
-var listwidth = 5 * tabwidth;
+var listwidth = tabCnt * tabwidth;
 var linewidth = winWidth - bodySurplus - listwidth - 9; // padding
 //alert("lw:" + linewidth + ", dn:" + down + ", list:" + listwidth);
 $('#line').width(linewidth);
@@ -275,6 +279,7 @@ function highLight() {
 highLight();
 $('button:not(#preview)').on('click', function(ev) {
     ev.preventDefault();
+    nav = true;
     var tid = this.id;
     $('button').each( function() {
         if (this.id !== tid) {
@@ -297,8 +302,8 @@ $('button:not(#preview)').on('click', function(ev) {
 });
 
 $('#preview').on('click', function() {
-    var hno = $('#hikeNo').text();
-    var prevPg = '../pages/hikePageTemplate.php?age=new&hikeIndx=' + hno;
+    nav = true;
+    var prevPg = '../pages/hikePageTemplate.php?age=new&hikeIndx=' + hike;
     window.open(prevPg,"_blank");
 });
 
@@ -315,6 +320,7 @@ $('.phurl').each( function() {
 });
 
 $('#newalbs').on('click', function(ev) {
+    nav = true;
     var proceed = true;
     var allEmpty = true;
     var albumLinks = $('.phurl');
@@ -357,16 +363,9 @@ $('#newalbs').on('click', function(ev) {
 });
 
 $('#showll').on('click', function() {
+    nav = true;
     $('#lldisp').slideToggle();
     $(this).prop('checked',false);
 });
 
 });  // end of 'page (DOM) loading complete'
-
-
-
-
-
-
-
-

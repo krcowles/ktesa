@@ -2,14 +2,13 @@
 /**
  * Any hike tips or information data is saved from tab3 ('Descriptive Text')
  * with this script.
+ * PHP Version 7.0
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  * @link    ../docs/
  */
-session_start();
-$_SESSION['activeTab'] = 3;
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'dno');
@@ -28,5 +27,5 @@ $updtDesc = mysqli_query($link, $updtDescReq) or die(
     "saveTab3.php: Failed to update EHIKES with new tips/info " .
     "for hike {$hikeNo}: " . mysqli_error($link)
 );
-$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
+$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=3";
 header("Location: {$redirect}");

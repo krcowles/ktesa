@@ -1,7 +1,7 @@
 <?php
 /**
  * This script saves any changes made (or data as is) on tab1 ("Basic Data")
- * of the hike page Editor. 
+ * of the hike page Editor, including uploading the main gpx (track) file.
  * PHP Version 7.0
  * 
  * @package Editiing
@@ -9,8 +9,6 @@
  * @license No license to date
  * @link    ../docs/
  */
-session_start();
-$_SESSION['activeTab'] = 1;
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 require_once "buildFunctions.php";
@@ -99,8 +97,8 @@ if (isset($delClus) && $delClus === 'YES') {
     $marker = 'Normal';
     $clusGrp = '';
     $cgName = '';
-// 2.
 } elseif (isset($nextGrp) && $nextGrp === 'YES') {
+    // 2.
     $availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $doubleLtrs = 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ';
     // add another group of letters later if needed
@@ -116,9 +114,9 @@ if (isset($delClus) && $delClus === 'YES') {
     $marker = 'Cluster';
     $clusGrp = $newgrp;
     $cgName = filter_input(INPUT_POST, 'newgname');
-// 3. (NOTE: marker will be assigned to 'Cluster' regardless of 
-//       whether previously cluster type or not
 } elseif ($grpChg  === 'YES') {
+    // 3. (NOTE: marker will be assigned to 'Cluster' regardless of 
+    //       whether previously cluster type or not
     $marker = 'Cluster';
     $newname = filter_input(INPUT_POST, 'htool');
     // get association with group letter
@@ -130,8 +128,8 @@ if (isset($delClus) && $delClus === 'YES') {
     }
     $clusGrp = $newgrp;
     $cgName = $newname;
-// 4.
 } else {
+    // 4.
     //  No Changes Assigned to marker, clusGrp, cgName
 }
 $clName = mysqli_real_escape_string($link, $cgName);
@@ -285,5 +283,5 @@ if ($hLat === 0.0000 || $hLon === 0.000) {
         $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $hLon, __FILE__, __LINE__
     );
 }
-$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
+$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=1";
 header("Location: {$redirect}");

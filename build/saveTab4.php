@@ -1,14 +1,14 @@
 <?php
 /**
- * This file saves data present on tab4 (Related Hike Info).
+ * This file saves data present on tab4 (Related Hike Info), including
+ * uploads of gps file data (gpx or html maps).
+ * PHP Version 7.0
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  * @link    ../docs/
  */
-session_start();
-$_SESSION['activeTab'] = 4;
 require_once "../mysql/dbFunctions.php";
 require 'buildFunctions.php';
 $link = connectToDb(__FILE__, __LINE__);
@@ -42,7 +42,7 @@ if (isset($_POST['drtype'])) {
 if (isset($_POST['drit1'])) {
     $drit1s = $_POST['drit1'];
 }
-if( isset($_POST['drit2'])) {
+if (isset($_POST['drit2'])) {
     $drit2s = $_POST['drit2'];
 }
 // determine if any refs were marked for deletion ('delref's)
@@ -196,5 +196,5 @@ for ($j=0; $j<$newcnt; $j++) {
     }
 }
 // return to editor with new data:
-$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}";
+$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=4";
 header("Location: {$redirect}");
