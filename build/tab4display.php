@@ -1,3 +1,7 @@
+<div style="margin-left:8px;">
+    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
+        <input type="submit" name="savePg" value="Apply" /></p>
+</div>	
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed,
     delete and add a new one)</h3>
 <input type="hidden" name="rno" value="<?php echo $hikeNo;?>" />
@@ -165,8 +169,3 @@ if (mysqli_num_rows($gps) !== 0) {
 <label>Label: </label><input class="tstyle1" name="labl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="lnk[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input class="tstyle3" name="ctxt[]" size="30" />
-
-<div style="margin-left:8px;">
-    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
-        <input type="submit" name="savePg" value="Apply" /></p>
-</div>	

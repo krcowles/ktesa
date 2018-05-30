@@ -53,19 +53,20 @@ Type:&nbsp;&nbsp;
 </form>
 <!-- This concludes the new photo upload form section -->
 <?php if ($hikeUrl1 !== '' || $hikeUrl2 !== '') : ?>
-<p style="color:brown;"><em>Edit captions below each photo as needed. Images with no
-        captions (e.g. maps, imported jpgs, etc.) are not shown.</em></p>
+<p style="color:brown;"><em>Edit captions below each photo as needed
+    and assign display options.</em></p>
 <?php endif; ?>
 <form action="saveTab2.php" method="POST">
     <input type="hidden" name="pno" value="<?php echo $hikeNo;?>" />
     <input type="hidden" name="pid" value="<?php echo $uid;?>" />
+    <div style="margin-left:8px;">
+        <p style="font-size:20px;font-weight:bold;">Apply the
+            Photo Assignments Below&nbsp;
+            <input type="submit" name="savePg" value="Apply" /></p>
+    </div>
 <?php
     $pgType = 'Edit';
     require "photoSelect.php";
 ?>
 <?php if ($hikeUrl1 !== '' || $hikeUrl2 !== '') : ?>
-<div style="margin-left:8px;">
-    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
-        <input type="submit" name="savePg" value="Apply" /></p>
-</div>
 <?php endif; ?>

@@ -1,6 +1,11 @@
 <input type="hidden" name="hno" value="<?= $hikeNo;?>" />
 <input type="hidden" name="usr" value="<?= $uid;?>" />
 <input type="hidden" name="col" value="<?= $hikeColl;?>" />
+<p id="ptype" style="display:none">Edit</p>
+<div style="margin-left:8px;">
+    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
+        <input type="submit" name="savePg" value="Apply" /></p>
+</div>
 <!-- gpx is required esp when extracting a published hike -->
 <input type="hidden" name="gpx" value="<?= $hikeGpx;?>" />
 <label for="hike">Hike Name: </label>
@@ -125,9 +130,3 @@ Reset Assignments:&nbsp;&nbsp;
 <textarea id="lon" name="hlon"><?= $hikeLng;?></textarea></p>
 <br /><label for="murl">Map Directions Link (Url): </label>
 <textarea id="murl" name="gdirs"><?= $hikeDirs;?></textarea><br /><br />
-<!-- This next section is photo editing-->
-<p id="ptype" style="display:none">Edit</p>
-<div style="margin-left:8px;">
-    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
-        <input type="submit" name="savePg" value="Apply" /></p>
-</div>
