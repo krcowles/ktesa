@@ -65,3 +65,61 @@ $hikeDirs = fetch($hike['dirs']);
 $hikeTips = fetch($hike['tips']);
 $hikeDetails = fetch($hike['info']);
 mysqli_free_result($hikeq);
+// References for tab4:
+$refreq = "SELECT * FROM EREFS WHERE indxNo = '{$hikeNo}';";
+$refq = mysqli_query($link, $refreq) or die(
+    "editDB.php: Failed to extract references from EREFS: " .
+    mysqli_error($link)
+);
+$noOfRefs = mysqli_num_rows($refq);
+$rtypes = [];
+$rit1s = [];
+$rit2s = [];
+while ($refs = mysqli_fetch_assoc($refq)) {
+    $reftype = fetch($refs['rtype']);
+    array_push($rtypes, $reftype);
+    $ritem1 = fetch($refs['rit1']);
+    array_push($rit1s, $ritem1);
+    $ritem2 = fetch($refs['rit2']);
+    array_push($rit2s, $ritem2);
+}
+mysqli_free_result($refq);
+// Create the book drop-down options:
+$bkReq = "SELECT * FROM BOOKS;";
+$bks = mysqli_query($link, $bkReq) or die(
+    __FILE__ . " " . __LINE__ . "Failed to get book list: " .
+    mysqli_error($link)
+);
+$bkopts = '';  // html for drop-down boxes
+$defauth = ''; // default author when first populating selection boxes
+$titles = '['; // arrays for javascript
+$authors = '[';
+while ($bkitem = mysqli_fetch_assoc($bks)) {
+    $titles .= '"' . $bkitem['title'] . '",';
+    $authors .= '"' . $bkitem['author'] . '",';
+    if ($defauth === '') {
+        $defauth = $bkitem['author'];
+    }
+    $bkopts .= '<option value="' . $bkitem['indxNo'] . '">' . 
+        $bkitem['title'] . '</option>' . PHP_EOL;
+}
+$titles = substr($titles, 0, strlen($titles)-1) . ']';
+$authors = substr($authors, 0, strlen($authors)-1) . ']';
+// GPS Data for tab 4:
+$gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hikeNo}' " .
+    "AND (datType = 'P' OR datType = 'A');";
+$gps = mysqli_query($link, $gpsreq) or die(
+    __FILE__ . " Line " . __LINE__ . ": Failed to extract GPS Data "
+    . "from EGPSDAT: " . mysqli_error($link)
+);
+$gpsDbCnt = mysqli_num_rows($gps);
+$pl = array();
+$pu = array();
+$pc = array();
+for ($k=0; $k<$gpsDbCnt; $k++) {
+    $gpsdat = mysqli_fetch_assoc($gps);
+    $pl[$k] = fetch($gpsdat['label']);
+    $pu[$k] = fetch($gpsdat['url']);
+    $pc[$k] = fetch($gpsdat['clickText']);
+}
+mysqli_free_result($gps);

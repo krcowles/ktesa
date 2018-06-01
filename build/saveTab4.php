@@ -9,6 +9,7 @@
  * @license No license to date
  * @link    ../docs/
  */
+session_start();
 require_once "../mysql/dbFunctions.php";
 require 'buildFunctions.php';
 $link = connectToDb(__FILE__, __LINE__);
@@ -165,6 +166,74 @@ if (isset($_POST['delgps'])) {
 }
 $dindx = 0;
 $newcnt = count($lbl);
+/**
+ * GPS Data File upload section.
+ */
+$_SESSION['gpsmsg'] = '';
+$gpsupl = basename($_FILES['newgps']['name']);
+if ($gpsupl !== '') {
+    $gpsok = true;
+    $gpstype = fileTypeAndLoc($gpsupl);
+    switch ($gpstype[2]) {
+    case 'gpx':
+        $newlbl = 'GPX:';
+        $newcot = 'Track File';
+        break;
+    case 'kml':
+        $newlbl = 'KML:';
+        $newcot = "Google Earth File";
+        break;
+    default:
+        $gpsok = false;
+    }
+    if ($gpsok) {
+        $upload = validateUpload("newgps", $gpstype[0], $gpstype[1]);
+        $_SESSION['gpsmsg'] .= $upload[1];
+        $newurl = $gpstype[0] . $upload[0];
+        $newlnk = mysqli_real_escape_string($link, $newurl);
+        $newgpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
+            "VALUES ('{$hikeNo}','P','{$newlbl}','{$newlnk}','{$newcot}');";
+        $newgps = mysqli_query($link, $newgpsreq) or die(
+            __FILE__ . " Line " . __LINE__ . ": Failed to insert new gps "
+            . "file loc for hike {$hikeNo}: " . mysqli_error($link)
+        );
+        $_SESSION['gpsmsg'] .= "<br /><em>A default 'Label' and " .
+            "'Click-on-Text' have been provided for {$gpsupl}.</em>";
+    } else {
+        $_SESSION['gpsmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
+            "File Type NOT .gpx or .kml for {$gpsupl}.</p>";
+    }
+}
+$mapupl = basename($_FILES['newmap']['name']);
+if ($mapupl !== '') {
+    $mapok = true;
+    $maptype = fileTypeAndLoc($mapupl);
+    switch ($maptype[2]) {
+    case 'html':
+        $newlbl = "MAP:";
+        $newcot = 'Area Map';
+        break;
+    default:
+        $mapok = false;
+    }
+    if ($mapok) {
+        $upload = validateUpload("newmap", $maptype[0], $maptype[1]);
+        $_SESSION['gpsmsg'] .= $upload[1];
+        $newurl = $maptype[0] . $upload[0];
+        $newlnk = mysqli_real_escape_string($link, $newurl);
+        $newmapreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
+            "VALUES ('{$hikeNo}','P','{$newlbl}','{$newlnk}','{$newcot}');";
+        $newmap = mysqli_query($link, $newmapreq) or die(
+            __FILE__ . " Line " . __LINE__ . ": Failed to insert new gps "
+            . "file loc for hike {$hikeNo}: " . mysqli_error($link)
+        );
+        $_SESSION['gpsmsg'] .= "<br /><em>A default 'Label' and " .
+            "'Click-on-Text' have been provided for {$mapupl}.</em>";
+    } else {
+        $_SESSION['gpsmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
+            "File Type NOT .html for {$mapupl}.</p>";
+    }
+}
 /**
  * NOTE: the only items that have 'delete' boxes are those for which GPS data
  * already existed in the database, and they are listed before any that might
