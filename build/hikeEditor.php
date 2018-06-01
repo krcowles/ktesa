@@ -1,4 +1,14 @@
 <?php
+/**
+ * This script is invoked in multiple scenarios and merely sets the parameters
+ * for a table of hikes to be created by 'makeTables.php'. The parameters are
+ * pulled from the query string.
+ * PHP Version 7.0
+ * 
+ * @package Page_Display
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
 $usr = filter_input(INPUT_GET, 'usr');
 $age = filter_input(INPUT_GET, 'age');
 $show = filter_input(INPUT_GET, 'show');
@@ -14,12 +24,10 @@ $show = filter_input(INPUT_GET, 'show');
     <meta name="robots" content="nofollow" />
     <link href="tables.css" type="text/css" rel="stylesheet" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
-
 </head>
 
 <body>
-
-    <p id="uid" style="display:none"><?php echo $usr;?></p>
+<p id="uid" style="display:none"><?php echo $usr;?></p>
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>

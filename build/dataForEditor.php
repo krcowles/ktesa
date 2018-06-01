@@ -13,6 +13,7 @@
  * @license None to date
  * @link    ../docs/
  */
+session_start();
 require_once "../mysql/dbFunctions.php";
 require_once "buildFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
@@ -54,6 +55,8 @@ $hikeWow = fetch($hike['wow']);
 $hikeSeasons = fetch($hike['seasons']);
 $hikeExpos = fetch($hike['expo']);
 $hikeGpx = fetch($hike['gpx']);
+$curr_gpx = $hikeGpx;
+$curr_trk = fetch($hike['trk']);
 $hikeLat = fetch($hike['lat']);
 $hikeLng = fetch($hike['lng']);
 $hikeUrl1 = fetch($hike['purl1']);

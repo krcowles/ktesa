@@ -1,19 +1,87 @@
 <?php
 /**
  * This script saves any changes made (or data as is) on tab1 ("Basic Data")
- * of the hike page Editor, including uploading the main gpx (track) file.
+ * of the hike page Editor, including uploading of the main gpx (track) file.
+ * If a gpx file already exists, it may be deleted, or otherwise replaced by a
+ * newly specified file via tab 1's browse button.
  * PHP Version 7.0
  * 
- * @package Editiing
+ * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
+session_start();
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
 require_once "buildFunctions.php";
+$link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'hno');
 $uid = filter_input(INPUT_POST, 'usr');
+$maingpx = filter_input(INPUT_POST, 'mgpx');
+$maintrk = filter_input(INPUT_POST, 'mtrk');
+$delgpx = filter_input(INPUT_POST, 'dgpx');
+$_SESSION['uplmsg'] = '';
+/**
+ * This section handles the main gpx file upload/delete
+ */
+$dels = false;
+if (isset($delgpx)) {
+    $delgpx = '../gpx/' . $maingpx;
+    if (!unlink($delgpx)) {
+        die(
+            __FILE__ . " Line " . __LINE__ . 
+            ": Did not remove {$delgpx} from site"
+        );
+    }
+    $deltrk = '../json/' . $maintrk;
+    if (!unlink($deltrk)) {
+        die(
+            __FILE__ . " Line " . __LINE__ .
+            ": Did not remove {$deltrk} from site"
+        );
+    }
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'gpx', 'indxNo', null, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', null, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', null, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', null, __FILE__, __LINE__
+    );
+    $_SESSION['uplmsg']
+        .= "Deleted file {$maingpx} and it's associated track from site; ";
+}
+$gpxfile = basename($_FILES['newgpx']['name']);
+$gpxtype = fileTypeAndLoc($gpxfile);
+if ($gpxtype[2] === 'gpx') {
+    $gpxupl = validateUpload("newgpx", "../gpx/", "/octet-stream/");
+    $newgpx = $gpxupl[0];
+    $_SESSION['uplmsg'] .= $gpxupl[1];
+    $trkdat = makeTrackFile($newgpx, "../gpx/");
+    $newtrk = $trkdat[0];
+    $lat = $trkdat[2];
+    $lng = $trkdat[3];
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'gpx', 'indxNo', $newgpx, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', $newtrk, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', $lat, __FILE__, __LINE__
+    );
+    updateDbRow(
+        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $lng, __FILE__, __LINE__
+    );
+} elseif ($gpxfile == '') {
+    $newgpx = 'No file specified';
+} else {
+    $_SESSION['uplmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
+            "File Type NOT .gpx for {$gpxfile}.</p>";
+}
 /**
  *  Marker, cluster info may have changed during edit
  * If not, previous values must be retained:

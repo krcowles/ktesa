@@ -1,18 +1,16 @@
 <?php
 /**
- * This module constitutes the framework for editing a hike page.
- * Each tab within the framework is a module which allows editing
- * a section of the database and/or uploading of key user files.
- * A session variable holds the current tab in use so that when the
- * apply button is clicked, the changes are made and the user is
- * returned to the same page with the refreshed data.
+ * This module comprises the framework for editing a hike page. Each tab
+ * within the framework is a module which allows editing a section of the 
+ * database and/or uploading of key user files. When the apply button is 
+ * clicked on any tab, the changes are registered, and the user is returned
+ * to the same tab with the refreshed data displayed.
  * PHP Version 7.0
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-session_start();
 require "dataForEditor.php";
 ?>
 <!DOCTYPE html>
@@ -35,17 +33,18 @@ require "dataForEditor.php";
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
 <p id="trail">Hike Editor</p>
-<div id="main" style="padding:16px;margin-bottom:0px;">
-<h3 style="margin-top:0px;">Edits made to this hike will be retained
-    in the New/Active-Edit database, and will not show up when displaying
-    published hikes until these edits have been formally released</h3>
-<p id="hikeNo" style='display:none'><?= $hikeNo;?></p>
+<p id="hikeNo" style="display:none"><?= $hikeNo;?></p>
 <p id="entry" style="display:none"><?= $dispTab;?></p>
-<em style="color:DarkBlue;font-size:18px;">Any changes below will be made for 
-    the hike: "<?= $hikeTitle;?>". To save your edits, select the 
-    'Apply' button at the bottom. When you are done applying edits, or if no
-    edits are being made, you may simply exit this page.
-</em><br /><br />
+
+<div id="main" style="padding:16px;margin-bottom:0px;">
+<h3 style="margin-top:0px;margin-bottom:0px;">
+    <em style="font-style:italic;color:DarkBlue;"><?= $hikeTitle;?></em>: 
+    Changes below will be applied to this hike. To save your edits, 
+    select the 'Apply' button at the top. When you are done applying edits,
+    or if no edits are being made, you may simply exit this page. Note 
+    that the changes, though saved, will not show up on the main site until
+    they have been formally released.
+</h3>
 <p style="font-size:18px;color:Brown;">Preview page with current edits
     (i.e. edits already applied):&nbsp;<button id="preview"
     style="font-size:18px;color:DarkBlue;">Preview</button></p>
@@ -56,7 +55,7 @@ require "dataForEditor.php";
 <button id="t4" class="tablist">Related Hike Info</button>
 <div id="line"></div>
 <div id="tab1" class="active tab-panel">
-<form action="saveTab1.php" method="POST">
+<form action="saveTab1.php" method="POST" enctype="multipart/form-data">
     <?php
     require 'tab1display.php';
     ?>
@@ -80,7 +79,7 @@ require "dataForEditor.php";
 </div>
 
 <div id="tab4" class="tab-panel">
-<form action="saveTab4.php" method="POST">
+<form action="saveTab4.php" method="POST" enctype="multipart/form-data">
     <?php
     require 'tab4display.php';
     ?>
