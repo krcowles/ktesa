@@ -4,7 +4,6 @@
 <input type="hidden" name="col" value="<?= $hikeColl;?>" />
 <input type="hidden" name="mgpx" value="<?= $curr_gpx;?>" />
 <input type="hidden" name="mtrk" value="<?= $curr_trk;?>" />
-<input type="hidden" name="gpx" value="<?= $hikeGpx;?>" />
 <p id="mrkr" style="display:none"><?= $hikeMarker;?></p>
 <p id="greq" style="display:none"><?= $grpReq;?></p>
 <input type="hidden" name="pmrkr" value="<?=$hikeMarker;?>" />

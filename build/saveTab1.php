@@ -20,6 +20,7 @@ $maingpx = filter_input(INPUT_POST, 'mgpx');
 $maintrk = filter_input(INPUT_POST, 'mtrk');
 $delgpx = filter_input(INPUT_POST, 'dgpx');
 $_SESSION['uplmsg'] = '';
+$upld4latlng = false;
 /**
  * This section handles the main gpx file upload/delete
  */
@@ -76,6 +77,7 @@ if ($gpxtype[2] === 'gpx') {
     updateDbRow(
         $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $lng, __FILE__, __LINE__
     );
+    $upld4latlng = true;
 } elseif ($gpxfile == '') {
     $newgpx = 'No file specified';
 } else {
@@ -291,17 +293,19 @@ $seas = filter_input(INPUT_POST, 'hsea');
 $hSeas = mysqli_real_escape_string($link, $seas);
 $expo = filter_input(INPUT_POST, 'hexp');
 $hExpos = mysqli_real_escape_string($link, $expo);
-$elat = filter_input(INPUT_POST, 'hlat', FILTER_VALIDATE_FLOAT);
-if ($elat) {
-    $hLat = mysqli_real_escape_string($link, $elat);
-} else {
-    $hLat = 0.0000;
-}
-$elng = filter_input(INPUT_POST, 'hlon', FILTER_VALIDATE_FLOAT);
-if ($elng) {
-    $hLon = mysqli_real_escape_string($link, $elng);
-} else {
-    $hLon = 0.0000;
+if (!$upld4latlng) {
+    $elat = filter_input(INPUT_POST, 'hlat', FILTER_VALIDATE_FLOAT);
+    if ($elat) {
+        $hLat = mysqli_real_escape_string($link, $elat);
+    } else {
+        $hLat = 0.0000;
+    }
+    $elng = filter_input(INPUT_POST, 'hlon', FILTER_VALIDATE_FLOAT);
+    if ($elng) {
+        $hLon = mysqli_real_escape_string($link, $elng);
+    } else {
+        $hLon = 0.0000;
+    }
 }
 $dirs = filter_input(INPUT_POST, 'gdirs');
 $hDirs = mysqli_real_escape_string($link, $dirs);
@@ -335,21 +339,23 @@ if ($hElev == '') {
         $link, 'EHIKES', $hikeNo, 'feet', 'indxNo', $hElev, __FILE__, __LINE__
     );
 }
-// Preserve null in lat/lng when no entry (or bad entry) was input
-if ($hLat === 0.0000 || $hLon === 0.000) {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', null, __FILE__, __LINE__
-    );
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', null, __FILE__, __LINE__
-    );
-} else {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', $hLat, __FILE__, __LINE__
-    );
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $hLon, __FILE__, __LINE__
-    );
+if (!$upld4latlng) {
+    // Preserve null in lat/lng when no entry (or bad entry) was input
+    if ($hLat === 0.0000 || $hLon === 0.000) {
+        updateDbRow(
+            $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', null, __FILE__, __LINE__
+        );
+        updateDbRow(
+            $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', null, __FILE__, __LINE__
+        );
+    } else {
+        updateDbRow(
+            $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', $hLat, __FILE__, __LINE__
+        );
+        updateDbRow(
+            $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $hLon, __FILE__, __LINE__
+        );
+    }
 }
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=1";
 header("Location: {$redirect}");
