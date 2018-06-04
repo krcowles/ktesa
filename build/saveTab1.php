@@ -208,11 +208,10 @@ $clName = mysqli_real_escape_string($link, $cgName);
  * be used instead of any existing values in the miles and feet fields. 
  */
 if (isset($_POST['mft'])) {
-    $gpxin = filter_input(INPUT_POST, 'gpx');
-    if ($gpxin == '') {
+    if ($maingpx == '') {
         die("No gpx file has been uploaded for this hike");
     }
-    $gfile = "../gpx/" . $gpxin;
+    $gfile = "../gpx/" . $maingpx;
     $gdat = simplexml_load_file($gfile);
     if ($gdat === false) {
         die(__FILE__ . "Line " . __LINE__ . " Failed to open {$gfile}");
