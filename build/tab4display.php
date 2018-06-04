@@ -94,7 +94,7 @@ and/or maps</p>
     <p style="font-size:18px;color:darkblue;">The following action has resulted 
         from your latest "APPLY": <?= $_SESSION['gpsmsg'];?></p>
     <?php $_SESSION['gpsmsg'] = ''; ?>
-<? endif; ?>
+<?php endif; ?>
 <span style="font-weight:bold;margin-bottom:0px;color:black;">
     Upload New Data File:<br />
 <em style="font-weight:normal;">
