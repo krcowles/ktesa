@@ -8,6 +8,7 @@
  * Variables expected to be defined prior to invocation: 
  *    string  $gpxPath, relative url to the gpx file;
  *    integer $hikeNo, unique hike id
+ * PHP Version 7.0
  * 
  * @package GPSV_Mapping
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -191,13 +192,13 @@ if ($showPhotos) {
     // see GPSVisualizer for complete list of icon styles:
     $mapicon = 'googlemini';
     $mcnt = 0;
-    $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,alblnk,mid,iclr FROM {$ttable} " .
-            "WHERE indxNo = {$hikeIndexNo};";
+    $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,alblnk,mid,iclr FROM "
+        . "{$ttable} WHERE indxNo = {$hikeIndexNo};";
     $pic = mysqli_query($link, $picReq);
     if (!$pic) {
         die(
-            "<p>makeGpsv.php: Failed to extract photo data for hike {$hikeIndexNo}: " .
-            mysqli_error($link)
+            "<p>makeGpsv.php: Failed to extract photo data for hike "
+            . "{$hikeIndexNo}: " . mysqli_error($link)
         );
     }
     while (($photos = mysqli_fetch_assoc($pic))) {
