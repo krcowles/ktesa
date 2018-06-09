@@ -185,9 +185,12 @@ function fileTypeAndLoc($fname)
 }
 /**
  * This function extracts existing cluster info and Visitor Center info
- * from the HIKES table needed to display 'select' drop-down boxes
+ * from the HIKES table needed to display 'select' drop-down boxes. Note:
+ * Due to the fact that sorting will place group "AA" after "A" and not 
+ * after "Z", the routine utilizes two sorted cluster arrays then merges them.
  * 
- * @param string $boxtype data to be returned: vc or clus (HIKES or HIKES & EHIKES)
+ * @param string $boxtype data to be returned: 
+ *                        vistor centers ('vcs') or clusters ('cls')
  * 
  * @return array depending on $boxType, vc data or cluster data
  */
@@ -199,13 +202,11 @@ function dropdownData($boxtype)
         __FILE__ . " Line " . __LINE__ . "Could not retrieve vc/cluster info " .
         "from HIKES: " . mysqli_error($link)
     );
-    if ($boxtype === 'allclus') {
-        $equery = "SELECT marker,cgroup,cname FROM EHIKES;";
-        $edat = mysqli_query($link, $equery) or die(
-            __FILE__ . " Line " . __LINE__ . 
-            ": Could not retrieve EHIKES cluster data" . mysqli_error($link)
-        );
-    }
+    $equery = "SELECT marker,cgroup,cname FROM EHIKES;";
+    $edat = mysqli_query($link, $equery) or die(
+        __FILE__ . " Line " . __LINE__ . 
+        ": Could not retrieve EHIKES cluster data" . mysqli_error($link)
+    );
     // return data based on $boxType:
     if ($boxtype === 'vcs') {
         $vchikes = [];
@@ -224,49 +225,84 @@ function dropdownData($boxtype)
         }
         return array($vchikes, $vcnos, $colls);
     } else {
-        $clhikes = [];
-        $cldat = [];
+        $singles = [];
+        $doubles = [];
         while ($hclus = mysqli_fetch_assoc($hdat)) {
             $hmarker = $hclus['marker'];
             if ($hmarker === 'Cluster') {  
                 $clusltr = $hclus['cgroup'];
                 $clusnme = $hclus['cname'];
-                $dup = false;
-                for ($l=0; $l<count($clhikes); $l++) {
-                    if ($clhikes[$l] == $clusnme) {
-                        $dup = true;
+                if (strlen($clusltr) === 1) {
+                    if (!memberPresent($clusnme, $singles)) {
+                        $singles[$clusltr] = $clusnme;
                     }
-                }
-                if (!$dup) {
-                    array_push($clhikes, $clusnme);
-                    array_push($cldat, $clusltr);
+                } elseif (strlen($clusltr) === 2) {
+                    if (!memberPresent($clusnme, $doubles)) {
+                        $doubles[$clusltr] = $clusnme;
+                    }
+                } else {
+                    die(
+                        "Clusters of length " . strlen($clusltr)
+                        . " not supported at this time"
+                    );
                 }
             }
         }
-        $dbcount = count($cldat);
-    }
-    mysqli_free_result($hdat);
-    if ($boxtype === 'allclus') {
         while ($eclus = mysqli_fetch_assoc($edat)) {
             $emarker = $eclus['marker'];
-            if ($emarker === 'Cluster') {
+            // Note: creating new pg MAY result in 'Cluster' with no group...
+            if ($emarker === 'Cluster' && fetch($eclus['cgroup']) !== '') {  
                 $clusltr = $eclus['cgroup'];
                 $clusnme = $eclus['cname'];
-                $dup = false;
-                for ($m=0; $m<count($clhikes); $m++) {
-                    if ($clhikes[$m] == $clusnme) {
-                        $dup = true;
+                if (strlen($clusltr) === 1) {
+                    if (!memberPresent($clusnme, $singles)) {
+                        $singles[$clusltr] = $clusnme;
                     }
-                }
-                if (!$dup) {
-                    array_push($clhikes, $clusnme);
-                    array_push($cldat, $clusltr);
+                } elseif (strlen($clusltr) === 2) {
+                    if (!memberPresent($clusnme, $doubles)) {
+                        $doubles[$clusltr] = $clusnme;
+                    }
+                } else {
+                    die(
+                        "Clusters of length " . strlen($clusltr)
+                        . "not supported at this time"
+                    );
                 }
             }
         }
+        mysqli_free_result($hdat);
         mysqli_free_result($edat);
     }
-    return array($clhikes, $cldat, $dbcount);
+    /**
+     * For debugging, it's easier to understand if keys are sorted;
+     * unfortunately, even with various flags, double letters get sorted by their
+     * first letter, and so must be separated then combined after sorting.
+     */
+    ksort($singles);
+    ksort($doubles);
+    $clusters = array_merge($singles, $doubles);
+    return $clusters;
+}
+/**
+ * This function is used in conjunction with dropdownData() to determine
+ * whether or not a db item is already accounted for in the group of 
+ * uniquely asigned cluster items - an associative array.
+ * 
+ * @param string $test_item  The item to look for in the specified array
+ * @param array  $test_array The array in which to look for the item
+ * 
+ * @return boolean  true if present, false if not
+ */
+function memberPresent($test_item, $test_array)
+{
+    reset($test_array);
+    while ($item = current($test_array)) {
+        if ($item == $test_item) {
+            return true;
+        }
+        next($test_array);
+    }
+    return false;
 }
 /**
  * A simple function converts null into empty string after reading

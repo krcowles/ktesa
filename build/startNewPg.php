@@ -25,10 +25,10 @@
 require_once "../mysql/dbFunctions.php";
 require "buildFunctions.php";
 $usr = filter_input(INPUT_GET, 'usr');
-$getClus = dropdownData('allclus');
-$clusHikes = $getClus[0];
+$getClus = dropdownData('cls');
+$clusHikes = array_values($getClus);
 $clcnt = count($clusHikes);
-$clusLtrs = $getClus[1];
+$clusLtrs = array_keys($getClus);
 // form combo string to pass to php
 $clusData = [];
 for ($i=0; $i<$clcnt; $i++) {

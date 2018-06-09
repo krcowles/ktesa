@@ -136,7 +136,7 @@
 <input id="ignore" type="checkbox" name="nocare" /></span><br /><br />
 <label for="ctip">Cluster: </label>
 <select id="ctip" name="htool">
-<?php for ($i=0; $i<$groupCount; $i++) : ?>
+<?php for ($i=0; $i<count($cnames); $i++) : ?>
     <option value="<?= $cnames[$i]?>"><?= $cnames[$i];?></option>
 <?php endfor; ?>
 </select><span id="showdel" style="display:none;">You may remove the cluster
@@ -147,7 +147,6 @@
 <input id="grpchg" type="hidden" name="chgd" value="NO" />
 <p>If you are establishing a new group, select the checkbox: 
     <input id="newg" type="checkbox" name="nxtg" value="NO" />
-    <input type="hidden" name="grpcnt" value="<?= $dbCount;?>" />
 </p>
 <p style="margin-top:-10px;margin-left:40px;">and enter the name for the 
     new group here: <input id="newt" type="text" name="newgname" size="50" />
