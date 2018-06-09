@@ -77,11 +77,16 @@ for ($k=0; $k<$noOfTrks; $k++) {
     $plat = 0;
     $plng = 0;
     $tno = $k + 1;
-    // NOTE: The authors have seen use of html special characters in the gpx file
-    // The one that causes problems is the char for single quote. If not removed
-    // as either a special character or as an actual single quote, the map will crash
-    $trkname = htmlspecialchars_decode($gpxdat->trk[$k]->name);
-    $trkname = addslashes($trkname);
+    //
+    // We're building a tick-delimited string to pass to GPSV, and since ticks
+    // and other special chars can appear in the track name from the gpx file,
+    // we use the following line to escape them out.
+    $trkname = addslashes($gpxdat->trk[$k]->name);
+    // Note it is still not clear to Tom whether addslashes is the correct
+    // solution. It might be better to escape tick characters only and leave
+    // as is the other characters that addslashes affects. For more info,
+    // see email thread (Historical Hindsight on makeGpsv.php).
+    //
     // Form javascript to draw each track:
     $line = "                t = " . $tno . "; trk[t] = {info:[],segments:[]};\n";
     $line .= "                trk[t].info.name = '" . $trkname .
