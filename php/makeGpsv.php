@@ -76,9 +76,14 @@ for ($k=0; $k<$noOfTrks; $k++) {
     $plat = 0;
     $plng = 0;
     $tno = $k + 1;
+    // NOTE: The authors have seen use of html special characters in the gpx file
+    // The one that causes problems is the char for single quote. If not removed
+    // as either a special character or as an actual single quote, the map will crash
+    $trkname = htmlspecialchars_decode($gpxdat->trk[$k]->name);
+    $trkname = addslashes($trkname);
     // Form javascript to draw each track:
     $line = "                t = " . $tno . "; trk[t] = {info:[],segments:[]};\n";
-    $line .= "                trk[t].info.name = '" . $gpxdat->trk[$k]->name .
+    $line .= "                trk[t].info.name = '" . $trkname .
         "'; trk[t].info.desc = ''; trk[t].info.clickable = true;\n";
     $line .= "                trk[t].info.color = '" .
         $colors[$k] . "'; trk[t].info." .
@@ -110,7 +115,7 @@ for ($k=0; $k<$noOfTrks; $k++) {
                         $tick = "GV_Draw_Marker({lat:" . $plat . ",lon:" . $plng .
                             ",name:'" . $tickMrk . " mi',desc:'',color:trk[" . $tno .
                             "].info.color,icon:'tickmark',type:'tickmark',folder:'" .
-                            $gpxdat->trk[$k]->name . " [tickmarks]',rotation:" . $parms[1] .
+                            $trkname . " [tickmarks]',rotation:" . $parms[1] .
                             ",track_number:" . $tno . ",dd:false});";
                         array_push($ticks, $tick);
                         $tickMrk += 0.30;
