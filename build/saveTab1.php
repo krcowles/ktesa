@@ -91,61 +91,11 @@ if ($gpxtype[2] === 'gpx') {
 $marker = filter_input(INPUT_POST, 'pmrkr');
 $clusGrp = filter_input(INPUT_POST, 'pclus'); // current db value
 $cgName = filter_input(INPUT_POST, 'pcnme'); // current db value
-/**
- * Note: The value obtained from the drop-down will be only the name of the 
- * cluster group (cname) and not its letter value. Therefore, the letter
- * values (cgroup) must be extracted and correlation to the names established.
- * If this is a new group, the group letter has not yet been established.
- */ 
-$groups = [];
-$cnames = [];
-// First, the HIKES table cluster group info:
-$clusreq = "SELECT cgroup, cname FROM HIKES;";
-$clusq = mysqli_query($link, $clusreq) or die(
-    __FILE__ . " Line " . __LINE__ . " Failed to get cluster info from HIKES: "
-    . mysqli_error($link)
-);
-while ($clusDat = mysqli_fetch_assoc($clusq)) {
-    $cgrp = fetch($clusDat['cgroup']);
-    if ($cgrp !== '') {
-        // no duplicates please (NOTE: "array_unique" leaves holes)
-        $match = false;
-        for ($i=0; $i<count($groups); $i++) {
-            if ($cgrp == $groups[$i]) {
-                $match = true;
-                break;
-            }
-        }
-        if (!$match) {
-            array_push($groups, $cgrp);
-            array_push($cnames, fetch($clusDat['cname']));
-        }
-    }
-}
-mysqli_free_result($clusq);
-// Next, the EHIKES cluster group info:
-$eclusreq = "SELECT cgroup, cname FROM EHIKES;";
-$eclusq = mysqli_query($link, $eclusreq) or die(
-    __FILE__ . " Line " . __LINE__ . " Failed to get cluster info from EHIKES: "
-    . mysqli_error($link)
-);
-while ($eclusDat = mysqli_fetch_assoc($eclusq)) {
-    $ecgrp = fetch($eclusDat['cgroup']);
-    if ($ecgrp !== '') { // will also be empty if newgroup specified
-        $match = false;
-        for ($i=0; $i<count($groups); $i++) {
-            if ($ecgrp == $groups[$i]) {
-                $match = true;
-                break;
-            }
-        }
-        if (!$match) {
-            array_push($groups, $ecgrp);
-            array_push($cnames, fetch($eclusDat['cname']));
-        }
-    }
-}
-mysqli_free_result($eclusq);
+// Acquire all cluster assingments, old & new:
+$clusterdata = dropdownData('cls'); 
+$groups = array_keys($clusterdata);
+$cnames = array_values($clusterdata);
+// setup variables for saving to db:
 $pg = filter_input(INPUT_POST, 'hname');
 $hTitle = mysqli_real_escape_string($link, $pg);
 $hUser = mysqli_real_escape_string($link, $uid);
@@ -171,16 +121,27 @@ if (isset($delClus) && $delClus === 'YES') {
     // 2.
     $availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $doubleLtrs = 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ';
-    // add another group of letters later if needed
-    $nextmem = filter_input(INPUT_POST, 'grpcnt', FILTER_SANITIZE_NUMBER_INT);
-    // group letters are assigned sequentially
-    if ($nextmem < 26) {
-        $newgrp = substr($availLtrs, $nextmem, 1);
+    // get the last letter used (NOTE: some may be skipped without effect)
+    $last_assigned = $groups[count($groups)-1];
+    if (strlen($last_assigned) === 1) {
+        if ($last_assigned === 'Z') {
+            $newgrp = "AA";
+        } else {
+            for ($k=0; $k<strlen($availLtrs); $k++) {
+                if ($last_assigned === substr($availLtrs, $k, 1)) {
+                    $newgrp = substr($availLtrs, $k+1, 1);
+                    break;
+                }
+            }
+        }
     } else {
-        // assign from doubleLtrs:
-        $pos = 2*($nextmem - 26);
-        $newgrp = substr($doubleLtrs, $pos, 2);
-    }  // elseif more groups of letters are added later...
+        for ($n=0; $n<strlen($doubleLtrs)/2; $n++) {
+            if ($last_assigned === substr($doubleLtrs, 2*$n, 2)) {
+                $newgrp = substr($doubleLtrs, 2*($n+1), 2);
+                break;
+            }
+        }
+    }
     $marker = 'Cluster';
     $clusGrp = $newgrp;
     $cgName = filter_input(INPUT_POST, 'newgname');
@@ -197,7 +158,7 @@ if (isset($delClus) && $delClus === 'YES') {
         }
     }
     $clusGrp = $newgrp;
-    $cgName = $newname;
+    $cgName = $newname;;
 } else {
     // 4.
     //  No Changes Assigned to marker, clusGrp, cgName

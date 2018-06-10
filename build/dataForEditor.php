@@ -21,11 +21,9 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
 $uid = filter_input(INPUT_GET, 'usr');
 $dispTab = filter_input(INPUT_GET, 'tab');
 // data for drop-down boxes
-$selectData = dropdownData('allclus');
-$cnames = $selectData[0];
-$groups = $selectData[1];
-$groupCount = count($groups);
-$dbCount = $selectData[2];
+$selectData = dropdownData('cls');
+$cnames = array_values($selectData);
+$groups = array_keys($selectData);
 // assign existing hike data
 $hikereq = "SELECT * FROM EHIKES WHERE indxNo = {$hikeNo};";
 $hikeq = mysqli_query($link, $hikereq) or die(
