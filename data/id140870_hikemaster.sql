@@ -35,7 +35,7 @@ CREATE TABLE `EHIKES` (
 
 INSERT INTO EHIKES VALUES
 ('21','Quebradas Road Trip','mstr','0','San Antonio','Normal',NULL,'','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','34.1108096670','-106.8717384338',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.'),
-('33','Faulty Trail','mstr','0','Albuquerque','Normal',NULL,'','','Two-Cars','8.70','900','Med-Difficult','Public Toilet','Walk in the Woods','Not Winter','Mixed sun/shade','Faulty_Trail.GPX','Faulty_Trail.json','35.1830820000','-106.3887280000',NULL,NULL,'https://www.flickr.com/photos/30474783@N06/albums/72157697412485335','https://www.flickr.com/photos/139088815@N08/albums/72157696847165844','https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0859186,-106.3928361,15.71z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956','Faulty Trail has no actual trail head and must be reached by one of six other trails. To hike the length of it, a two-car approach is highly recommend as the trail one-way is over 8 miles. The authors chose Sulphur Canyon Trail as a starting point ending, up at the South Crest Trail Head, but many other trails could serve as well.','Faulty Trail has no major ascents/descents, but lots of smaller ones in its length along the Flatirons Fault. It has a fair amount of shade as it stays hidden in the trees. The drawback to this is that there are not a large number of open vistas, but enough to make the trail worth the effort. The scent of pine through the forests makes for a classical \'walk in the woods\' feel to the hike, and is quite enjoyable. Small portions of the trail can be hiked as a part of other hikes in the Sandias, and autumn decorates the trail with lovely late fall blooms. The Spring time was dry the year this hike was undertaken, so not as many flowers were observed as might usually be the case.'),
+('33','Faulty Trail','mstr','0','Albuquerque','Normal',NULL,'','','Two-Cars','8.80','1300','Med-Difficult','Public Toilet','Walk in the Woods','Not Winter','Mixed sun/shade','Faulty Trail Clean.gpx','Faulty Trail Clean.json','35.1743180000','-106.3787680000',NULL,NULL,'https://www.flickr.com/photos/30474783@N06/albums/72157697412485335','https://www.flickr.com/photos/139088815@N08/albums/72157696847165844','https://www.google.com/maps/dir//35.174366,-106.3787384/Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.1332112,-106.4147531,13z/data=!4m10!4m9!1m0!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956!3e0','Faulty Trail has no actual trail head, so it must be reached via other trails. The map on this page shows a one-way, two-car hike that starts at Sulphur Canyon and ends at the Canyon Estates Trail Head. Various options for exploring portions of the Faulty Trail are available, including out and back hikes from these and other trail heads.','Although the end of the track shown here descends about 1000 feet, Faulty Trail itself rises and falls fairly gently as it proceeds along the Flatirons Fault. The trees provide a good amount of shade, at least until that final descent. Because of the trees, only a few open vistas present themselves. The scent of pine through the forests makes for a classical \'walk in the woods\' feel to the hike, and autumn decorates the trail with lovely late fall blooms. The authors did this hike during a dry Spring, so not as many flowers were out as might usually be the case.'),
 ('34','Hamilton Mesa','mstr','0','','Normal',NULL,'','','Out-and-back','5.80','950','','','','','','HamiltonMesaWayTrack500_MW.gpx','HamiltonMesaWayTrack500_MW.json','35.8403533600','-105.6206865800',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Iron+Gate+Campground/@35.8374332,-105.6348875,15z/data=!4m5!3m4!1s0x0:0x96f360002b26a4b7!8m2!3d35.8399489!4d-105.6203145?hl=en-US','','Test'),
 ('35','Cave Creek','mstr','0','','Normal',NULL,'','','Out-and-back','3.80','1400','','','','','','CaveCreekFromMmhDEM.gpx','CaveCreekFromMmhDEM.json','35.8298527950','-105.6641435620',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Panchuela+Trailhead/@35.820977,-105.6670173,15z/data=!4m5!3m4!1s0x0:0x7834afd22f685bf!8m2!3d35.8305612!4d-105.6648913?hl=en-US',NULL,NULL),
 ('37','Ojo del Orno - North Crest','mstr','0','Albuquerque','Cluster',NULL,'X','Tunnel Spring Group','Out-and-back','6.70','2200','Difficult','Public Toilet','Sandia Crest Views','Not Winter','Mixed sun/shade','OjoOrno.GPX','OjoOrno.json','35.2915223502','-106.4393437933',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157695976512541','https://www.flickr.com/photos/30474783@N06/sets/72157697681978205','https://www.google.com/maps/place/Tunnel+Spring+Trailhead/@35.297648,-106.4477964,15.25z/data=!4m5!3m4!1s0x87189b57ebc0794d:0xbbf1a8184f4dec3c!8m2!3d35.2914204!4d-106.4393922','','Ojo Del Orno begins very near the trail head for Tunnel Spring, branching off to ascend rapidly for one mile through a steep canyon. The trail then rejoins the North Crest Trail, but saves the hiker two miles along that trail for the price of the ascent. One of the positive features of this hike is that there is more time and energy to explore the North Crest Trail, which offers many excellent views and from many different angles. When hiking in hot weather, an early start provides significant shade in the canyon, making the ascent more pleasurable. As the trail approaches the Penasco Blanco Trail juncture, it becomes a bit more overgrown. The hiker can take this trail as far as desired, as the total length of it is 26 miles along the Sandia Crest.'),
@@ -88,7 +88,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EGPSDAT VALUES
@@ -96,8 +96,8 @@ INSERT INTO EGPSDAT VALUES
 ('28','21','P','MAP:','../maps/Stop3.html','Stop3 Hike'),
 ('40','34','P','GPX:','../gpx/Hamilton Mesa Trail.gpx','AllTrails'),
 ('41','35','P','GPX:','../gpx/Cave Creek Trail.gpx','Track File'),
-('43','33','P','GPX','../gpx/FaultyOneWay.gpx','Proposed Track'),
-('45','39','P','GPX:','../gpx/South_Crest_Trail.gpx','South Crest Trail');
+('45','39','P','GPX:','../gpx/South_Crest_Trail.gpx','South Crest Trail'),
+('46','33','P','GPX','../gpx/FaultyOneWay.gpx','Proposed Track');
 
 
 
@@ -111,7 +111,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=225 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -121,13 +121,14 @@ INSERT INTO EREFS VALUES
 ('125','21','App:','https://www.alltrails.com/trail/us/new-mexico/quebradas-back-country-byway','AllTrails'),
 ('205','35','Website:','http://www.mapmyhike.com/us/las-vegas-nm/cave-creek-route-2956720','Map My Hike'),
 ('206','35','Website:','https://www.alltrails.com/trail/us/new-mexico/cave-creek-trail--2','AllTrails'),
-('207','33','Book:','7',NULL),
-('208','33','App:','https://www.alltrails.com/trail/us/new-mexico/faulty-trail','AllTrails.com'),
-('209','33','Website:','https://www.hikingproject.com/trail/7038405/south-faulty-trail','The Hiking Project'),
 ('221','37','Book:','7','Mike Coltrin'),
 ('222','37','Website:','http://www.sandiahiking.com/trailguide.html#tunnelspring','Sandia Mountain Trails'),
 ('223','37','App:','https://www.alltrails.com/explore/recording/sun-03-sep-2017-18-34','AllTrails.com'),
-('224','37','Meetup Group:','https://www.meetup.com/hiking-204/events/221757511/','Albuquerque Hiking and Meetup Group');
+('224','37','Meetup Group:','https://www.meetup.com/hiking-204/events/221757511/','Albuquerque Hiking and Meetup Group'),
+('225','33','Book:','7','Mike Coltrin'),
+('226','33','App:','https://www.alltrails.com/trail/us/new-mexico/faulty-trail','AllTrails.com'),
+('227','33','Website:','https://www.hikingproject.com/trail/7038405/south-faulty-trail','The Hiking Project'),
+('228','33','Website:','http://www.sandiahiking.com/trailguide.html#cienega','Sandia Mountain Hiking Guide');
 
 
 
