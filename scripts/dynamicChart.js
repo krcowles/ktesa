@@ -152,7 +152,7 @@ function defineData() {
         minY: emin,
         maxY: emax,
         xLabel: 'Distance (miles)', 
-        yLabel: 'Elev. (ft)',
+        yLabel: 'Elevation (feet)',
         labelFont: '10pt Arial', 
         dataPointFont: '8pt Arial',
         renderTypes: [ChartObj.renderType.lines, ChartObj.renderType.points],
@@ -215,30 +215,34 @@ function dataReadout(mousePos) {
         var maxMile = rows[lastEl].x;
         var unitsPerPixel = maxMile/xMax;
         var xDat = chartPos * unitsPerPixel;
-        var bounds = findNeighbors(xDat);
-        if (bounds.u === bounds.l) {
-            yDat = rows[bounds.u].y;
-            indxOfPt = bounds.u;
-        } else {
-            var higher = rows[bounds.u].x;
-            var lower = rows[bounds.l].x;
-            var extrap = (xDat - lower)/(higher - lower);
-            if (extrap >= 0.5) {
-                xDat = higher;
+        if (xDat <= maxMile) {
+            var bounds = findNeighbors(xDat);
+            if (bounds.u === bounds.l) {
                 yDat = rows[bounds.u].y;
                 indxOfPt = bounds.u;
             } else {
-                xDat = lower;
-                yDat = rows[bounds.l].y;
-                indxOfPt = bounds.l;
+                var higher = rows[bounds.u].x;
+                var lower = rows[bounds.l].x;
+                var extrap = (xDat - lower)/(higher - lower);
+                if (extrap >= 0.5) {
+                    xDat = higher;
+                    yDat = rows[bounds.u].y;
+                    indxOfPt = bounds.u;
+                } else {
+                    xDat = lower;
+                    yDat = rows[bounds.l].y;
+                    indxOfPt = bounds.l;
+                }
             }
+            return {
+                x: xDat,
+                y: yDat,
+                px: margin.left + pxPerMile * xDat,
+                py: margin.top + (rgMax - yDat) * ratio
+            };
+        } else {
+            return { x: -1, y: -1 };
         }
-        return {
-            x: xDat,
-            y: yDat,
-            px: margin.left + pxPerMile * xDat,
-            py: margin.top + (rgMax - yDat) * ratio
-        };
     } else {
         return { x: -1, y: -1 };
     }    

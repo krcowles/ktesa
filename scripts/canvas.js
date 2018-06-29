@@ -10,7 +10,7 @@ var chartWidth;
 var chartHeight;
 var data = {};
 var context;
-var chart_ranges = [50, 100, 200, 500, 1000, 2000, 3000, 4000, 6000];
+var chart_ranges = [50, 100, 200, 600, 1000, 2000, 3000, 4000, 6000];
 var deltaY;
 var median;
 var rgMax;
@@ -23,7 +23,7 @@ var xshift = 12;
 var yshift = 16;
 // define the main Chart Object Container
 var ChartObj = function() {
-    margin = { top: 20, left: 64, right: 5, bottom: 50 };
+    margin = { top: 20, left: 64, right: 8, bottom: 50 };
     renderType = { lines: 'lines', points: 'points' };
     
     return { renderType: renderType,  // 1st object member is an object
@@ -64,33 +64,30 @@ var getMaxDataYValue = function () {
     };
 var getXInc = function() {
         var lastWP = data.dataPoints.length - 1;
+        var pxPerInc;
         var lastX = parseFloat(data.dataPoints[lastWP].x);
-        var lastX = parseFloat(lastX.toFixed(2));
+        //var lastX = parseFloat(lastX.toFixed(2));
         pxPerMile = xMax/lastX;
         if (lastX <= 2) {
             var incr = 0.1;
-            lastX = lastX.toFixed(1);
         } else if (lastX <= 5) {
             var incr = 0.5;
-            lastX = lastX.toFixed(1);
         } else {
             var incr = 1.0;
-            lastX = lastX.toFixed(1);
         }
+        pxPerInc = incr * pxPerMile;
+        //lastX = parseFloat(lastX.toFixed(1));
         for (var j=0; j<lastWP; j++) {
             if (j * incr > lastX) {
-                var noOfRegIncs = j;
+                var noOfRegIncs = j + 1;
                 break;
             }
         }
-        var lastValDelta = lastX - (noOfRegIncs-1)*incr;
-        var lastValpx = pxPerMile * lastValDelta;
         return {
-            XaxisPx: xMax/noOfRegIncs,  // value in pixels
-            XaxisVal: incr,  // value in miles
-            RegXIncs: noOfRegIncs,
-            LastXInc: lastValpx,
-            LastXVal: lastX
+            XaxisPx:  pxPerInc,  // value in pixels for each incremental x-axis "tick"
+            XaxisVal: incr,  // value in miles for each incremental x-axis "tick"
+            MaxXIncs: noOfRegIncs, // max no of ticks on x-axis for given track
+            LastXVal: lastX  // the last x position value (miles)
         };
     };
 var renderBackground = function () {
@@ -114,9 +111,9 @@ var renderText = function renderText() {
     context.rotate(-Math.PI/2);
     context.font = labelFont;
     // specify position of text placement:
-    tx = -1 * (yMax/2);
+    tx = -1.4 * (yMax/2);
     ty = 20;
-    context.fillStyle = 'DarkGreen';
+    context.fillStyle = 'Blue';
     context.fillText(data.yLabel, tx, ty);
     context.restore();
 };
@@ -131,8 +128,8 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
         }
     }
     ratio = yMax / chart_ranges[chartNo];
-    var gridCtr = chart_ranges[chartNo] / 2
-    var gridSpacing = chart_ranges[chartNo]/noOfGrids;
+    var gridCtr = chart_ranges[chartNo] / 2; // feet in center of grid space
+    var gridSpacing = chart_ranges[chartNo]/noOfGrids; // feet between grids
     var spaceCtr = gridSpacing/2;
     var dfactor = (chart_ranges[chartNo] < 500) ? 10 : 100;
     var adder = (median % dfactor === 0) ? 0 : spaceCtr;
@@ -164,7 +161,7 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
         var txtSize = context.measureText(yVal);
         // position of y axis labels:
         tx = margin.left - ((txtSize.width >= 14)?txtSize.width:10)+ 5;
-        context.fillStyle = 'DarkGreen';
+        context.fillStyle = 'Blue';
         context.fillText(yVal,tx,yPos+4);
     }
     // Want label at y=0 postion too:
@@ -181,43 +178,56 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
      * performed in 'getXInc()'
      */
     var xAxisData = getXInc();
-    var xPos = margin.left;
+    var xPos = margin.left; // "0" origin for x axis, in pixels
     context.fillStyle = 'Blue';
+    var xInc = xAxisData.XaxisVal;  // incremental "tick" miles on X-axis (.1, .5 or 1.0)
+    // place x-axis labels just below x-axis horizontal line, ie.
+    // from the chart top: top y margin + max y val allowed + 16px further down
     var ty = margin.top + yMax + 16;
+    var txt;  // the x-axis tick label
+    var remaining;  // distance remaining to plot after the last x-axis tick mark
+    var hang;  // leftover track after last regular incremental tick
+    var lastTickTxtSize; // px of last regular tick mark label
+    var lastPxTaken; // last regular tick pos + 1/2 label width
     var lastSize;
-    var txt;
-    var xInc = xAxisData.XaxisVal;
-    if (xInc === 0.1) {
-        var single = true;
-    } else {
-        var single = false;
-    }
     context.textAlign = "center";
-    for (var j=0; j<xAxisData.RegXIncs; j++) {
-        //x axis labels
-        txt = j * xInc;
-        // for some reason, there is an occasional digit about 20 decimals out...
-        if (single) {
-            txt = txt.toFixed(1);
-        } else {
-            txt = txt.toFixed(2);
+    // print out regularly spaced x-axis ticks
+    for (var j=0; j<xAxisData.MaxXIncs; j++) { // j=0 prints out origin
+        txt = j * xInc;  // next tick mile
+        remaining = xAxisData.LastXVal - txt; // subtract before string conversion!
+        txt = txt.toFixed(1); // yields string value
+        context.fillText(txt, xPos, ty); // ty is constant here
+        if (remaining >= 0 && remaining < xInc) {
+            // time to quit!
+            break;
         }
-        context.fillText(txt, xPos, ty);
         xPos += xAxisData.XaxisPx;
-        lastSize = context.measureText(txt);
     }
-    xPos -= xAxisData.XaxisPx;  // back up to previous label
-    // one more label:
-    var lastXSize = context.measureText(xAxisData.LastXVal);
-    var minSpace = 4; // set minimum space between prevX and lastX labels
-    if ( (lastSize.width/2 + minSpace + lastXSize.width/2) < xAxisData.LastXInc &&
-            (xAxisData.LastXInc + lastSize.width/2) < xAxisData.XaxisPx ) {
-        xPos += xAxisData.LastXInc;
-        context.fillText(xAxisData.LastXVal,xPos,ty);
-    } else {
-        xPos += xAxisData.XaxisPx;
-        txt = xAxisData.RegXIncs * xAxisData.XaxisVal;
-        context.fillText(txt,xPos,ty);
+    // if there are miles "left over" after the last tick, and "hang" >= 25% of incr
+    hang = remaining/xInc;
+    if (hang >= 0.25) {
+        // print an "end" label (not at the regular interval of xInc) if room exists
+        // check the space left at 70% of remaining
+        var nomLoc = 0.7 * remaining;
+        nomLoc = parseFloat(nomLoc.toFixed(2));  // rd to 100th's
+        var endLabel = parseFloat(txt) + nomLoc;
+        endLabel = xInc > 0.11 ? endLabel.toFixed(1) : endLabel.toFixed(2);
+        /* 
+         * see if there is enough room after last regular tick text:
+         * - the last tick is at xPos
+         * - half the text width extends beyond this limit, as text is centered;
+         * - allow additional 6px of space between labels
+         */
+        lastTickTxtSize = context.measureText(txt).width;
+        lastPxTaken = xPos + lastTickTxtSize/2 + 6;
+        lastSize = context.measureText(endLabel).width;
+        // position of endLabel:
+        var endLoc = parseFloat(endLabel) - parseFloat(txt);
+        endLoc = xPos + (endLoc/xInc)*xAxisData.XaxisPx - lastSize/2;
+        if (endLoc - lastPxTaken > 2) {
+            endLoc += lastSize/2;
+            context.fillText(endLabel, endLoc, ty);
+        }
     }
     //Vertical line
     drawLine(margin.left, margin.top, margin.left, margin.top + yMax, 'black',2);
