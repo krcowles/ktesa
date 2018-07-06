@@ -78,34 +78,36 @@ $distThresh = isset($distThreshParm) ? $distThreshParm : 5.0;
 $maWindow = isset($maWindowParm) ? $maWindowParm : 3;
 
 // Open debug files
-$tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugArray.csv";
-if (file_exists($tmpFilename)) {
-    unlink($tmpFilename);
+$makeGpsvDebug = isset($makeGpsvDebugParm) ? $makeGpsvDebugParm : false;
+if ($makeGpsvDebug) {
+    $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugArray.csv";
+    if (file_exists($tmpFilename)) {
+        unlink($tmpFilename);
+    }
+    if (($debugFileArray = fopen("{$tmpFilename}", "w")) === false) {
+        $dbfMsg = "Could not open {$gpxPath}_DebugArray.csv in file: " . 
+        __File__ . " at line: " . __Line__;
+        die($dbfMsg);
+    }
+    fputs(
+        $debugFileArray, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
+        "eleChg,timeChg,distance,grade,speed" . PHP_EOL
+    );
+    $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugCompute.csv";
+    if (file_exists($tmpFilename)) {
+        unlink($tmpFilename);
+    }
+    if (($debugFileCompute = fopen("{$tmpFilename}", "w")) === false) {
+        $dbfMsg = "Could not open {$gpxPath}_DebugCompute.csv in file: " . 
+        __File__ . " at line: " . __Line__;
+        die($dbfMsg);
+    }
+    fputs(
+        $debugFileCompute,
+        "trk,trkpt,Lat,Lon,EleM,elevChg,dist,eFlg,dFlg,grade,hikeLgth" .
+        ",hikeLgthMiles,pup,pdwn" . PHP_EOL
+    );
 }
-if (($debugFileArray = fopen("{$tmpFilename}", "w")) === false) {
-    $dbfMsg = "Could not open {$gpxPath}_DebugArray.csv in file: " . 
-    __File__ . " at line: " . __Line__;
-    die($dbfMsg);
-}
-fputs(
-    $debugFileArray, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
-    "eleChg,timeChg,distance,grade,speed" . PHP_EOL
-);
-$tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugCompute.csv";
-if (file_exists($tmpFilename)) {
-    unlink($tmpFilename);
-}
-if (($debugFileCompute = fopen("{$tmpFilename}", "w")) === false) {
-    $dbfMsg = "Could not open {$gpxPath}_DebugCompute.csv in file: " . 
-    __File__ . " at line: " . __Line__;
-    die($dbfMsg);
-}
-fputs(
-    $debugFileCompute,
-    "trk,trkpt,Lat,Lon,EleM,elevChg,dist,eFlg,dFlg,grade,hikeLgth" .
-    ",hikeLgthMiles,pup,pdwn" . PHP_EOL
-);
-
 // variables for accumulation calcs
 $pup = (float)0;
 $pdwn = (float)0;
@@ -164,14 +166,23 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
     $speed = [];
 
     // Read data for trk k into arrays and do Level 1 calcs
-    getGpxL1(
-        $gpxdat, $k, $gpxlats, $gpxlons, $gpxeles, $gpxtimes,
-        $eleChg, $distance, $grade, $speed, $debugFileArray
-    );
-    
+    if ($makeGpsvDebug) {
+        getGpxL1(
+            $gpxdat, $k, $gpxlats, $gpxlons, $gpxeles, $gpxtimes,
+            $eleChg, $distance, $grade, $speed, $debugFileArray
+        );
+    } else { // no debug file output unless param is set
+        getGpxL1(
+            $gpxdat, $k, $gpxlats, $gpxlons, $gpxeles, $gpxtimes,
+            $eleChg, $distance, $grade, $speed
+        );
+    }
     // Do moving average smoothing on elevation values
-    $gpxeles = moveAvg($gpxeles, $maWindow, $gpxPath, true);
-
+    if ($makeGpsvDebug) {
+        $gpxeles = moveAvg($gpxeles, $maWindow, $gpxPath, true);
+    } else { // no debug file output unless param is set
+        $gpxeles = moveAvg($gpxeles, $maWindow, $gpxPath, false);
+    }
     // Start computing statistics for trk k
     // Process first trkpt in current trk
     $trkptStrtIdx = 0;
@@ -185,24 +196,36 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
         $tdat .= $gpxlats[0] . "," . $gpxlons[0] . "],[";
 
         // Do debug output
-        fputs(
-            $debugFileCompute, "0,0,{$gpxlats[0]},{$gpxlons[0]},{$gpxeles[0]}"
-            . PHP_EOL
-        );
+        if ($makeGpsvDebug) {
+            fputs(
+                $debugFileCompute, "0,0,{$gpxlats[0]},{$gpxlons[0]},{$gpxeles[0]}"
+                . PHP_EOL
+            );
+        }
     } // end if: Special setup for very first trkpt
 
     // Compute stats and create map data for remaining trkpts in trk k
     for ($m=$trkptStrtIdx; $m<count($gpxlats); $m++) {
 
         //Do distance and elevation calcs for this trkpt
-        $rotation = distElevCalc(
-            $k, $m, $gpxlats, $gpxlons, $gpxeles,
-            $distThresh, $elevThresh,
-            $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
-            $prevLat, $prevLon, $prevEle,
-            $tdat, $debugFileCompute
-        );
+        if ($makeGpsvDebug) {
+            $rotation = distElevCalc(
+                $k, $m, $gpxlats, $gpxlons, $gpxeles,
+                $distThresh, $elevThresh,
+                $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
+                $prevLat, $prevLon, $prevEle,
+                $tdat, $debugFileCompute
+            );
+        } else { // no debug file output unless param is set
+            $rotation = distElevCalc(
+                $k, $m, $gpxlats, $gpxlons, $gpxeles,
+                $distThresh, $elevThresh,
+                $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
+                $prevLat, $prevLon, $prevEle,
+                $tdat
+            );
 
+        }
         // Form javascript track and tickmark data for this trkpt
         $tdat .= $gpxlats[$m] . "," . $gpxlons[$m] . "],[";
         if ($hikeLgthMiles > $tickMrk) {
@@ -236,16 +259,18 @@ $calcMin = round(3.28084 * $pmin, 0);
 $calcDelta = $calcMax - $calcMin;
 
 // Do debug output (summary stats for entire hike)
-fputs(
-    $debugFileCompute,
-    sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
-    ",pmax,{$pmaxFeet}," .
-    ",pmin,{$pminFeet},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
-    "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
-    ",maWindow:{$maWindow}" . PHP_EOL
-);
-fclose($debugFileArray);
-fclose($debugFileCompute);
+if ($makeGpsvDebug) { // only if param is set
+    fputs(
+        $debugFileCompute,
+        sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
+        ",pmax,{$pmaxFeet}," .
+        ",pmin,{$pminFeet},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
+        "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
+        ",maWindow:{$maWindow}" . PHP_EOL
+    );
+    fclose($debugFileArray);
+    fclose($debugFileCompute);
+}
 
 // Calculate map bounds and center coordiantes
 $north = $gpxlats[0];
