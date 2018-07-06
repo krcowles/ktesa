@@ -14,6 +14,9 @@ $tbl = filter_input(INPUT_GET, 'age');
  * to locate data corresponding to this unique hike identifier.
  */
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
+$distThreshParm = filter_input(INPUT_GET, 'distThreshParm');
+$elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm');
+$maWindowParm = filter_input(INPUT_GET, 'maWindowParm');
 $ehikes = (isset($tbl) && $tbl === 'new') ? true : false;
 /**
  * The following variables are used to define the tables to be used
