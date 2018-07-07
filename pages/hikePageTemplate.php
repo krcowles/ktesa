@@ -98,8 +98,10 @@ require "hikePageData.php";
         Hike Difficulty: <span class="sumClr"><?= $hikeDifficulty;?></span><br />
         Total Length of Hike: <span class="sumClr"><?= $hikeLength;?></span><br />
         Max to Min Elevation: <span class="sumClr"><?= $calcDelta;?> ft</span><br />
-        Total Ascent: <span class="sumClr"><?= $pup;?> ft</span><br />
-        Total Descent: <span class="sumClr"><?= $pdwn;?> ft</span><br />
+        <?php if (isset($showAscDsc) && $showAscDsc == true) : ?>
+            Total Ascent: <span class="sumClr"><?= $pup;?> ft</span><br />
+            Total Descent: <span class="sumClr"><?= $pdwn;?> ft</span><br />
+        <?php endif; ?>
         Logistics: <span class="sumClr"><?= $hikeType;?></span><br />
         Exposure Type: <span class="sumClr"><?= $hikeExposure;?></span><br />
         Seasons : <span class="sumClr"><?= $hikeSeasons;?></span><br />

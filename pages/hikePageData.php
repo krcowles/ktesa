@@ -18,6 +18,7 @@ $distThreshParm = filter_input(INPUT_GET, 'distThreshParm');
 $elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm');
 $maWindowParm = filter_input(INPUT_GET, 'maWindowParm');
 $makeGpsvDebugParm = filter_input(INPUT_GET, 'makeGpsvDebugParm');
+$showAscDsc = filter_input(INPUT_GET, 'showAscDsc');
 $ehikes = (isset($tbl) && $tbl === 'new') ? true : false;
 /**
  * The following variables are used to define the tables to be used
