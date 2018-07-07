@@ -10,10 +10,11 @@
  *    integer $hikeNo, unique hike id
  * PHP Version 7.0
  * 
- * @package GPSV_Mapping
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
- * @license None at this time
- * @link    ../php
+ * @category Not_Sure_What
+ * @package  GPSV_Mapping
+ * @author   Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license  None at this time
+ * @link     ../php
  */
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
@@ -70,23 +71,66 @@ for ($i=0; $i<$noOfTrks; $i++) {
 }
 $GPSV_Tracks = [];
 $ticks = [];
-// PROCESS EACH TRACK:
-for ($k=0; $k<$noOfTrks; $k++) {
-    $gpxlats = [];
-    $gpxlons = [];
-    $plat = 0;
-    $plng = 0;
+// threshold in meters to filter out elevation and distance value variation
+// set by default if command line parameter(s) is not given
+$elevThresh = isset($elevThreshParm) ? $elevThreshParm : 1.0;
+$distThresh = isset($distThreshParm) ? $distThreshParm : 5.0;
+$maWindow = isset($maWindowParm) ? $maWindowParm : 3;
+
+// Open debug files
+$makeGpsvDebug = isset($makeGpsvDebugParm) ? $makeGpsvDebugParm : false;
+if ($makeGpsvDebug) {
+    $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugArray.csv";
+    if (file_exists($tmpFilename)) {
+        unlink($tmpFilename);
+    }
+    if (($debugFileArray = fopen("{$tmpFilename}", "w")) === false) {
+        $dbfMsg = "Could not open {$gpxPath}_DebugArray.csv in file: " . 
+        __File__ . " at line: " . __Line__;
+        die($dbfMsg);
+    }
+    fputs(
+        $debugFileArray, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
+        "eleChg,timeChg,distance,grade,speed" . PHP_EOL
+    );
+    $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugCompute.csv";
+    if (file_exists($tmpFilename)) {
+        unlink($tmpFilename);
+    }
+    if (($debugFileCompute = fopen("{$tmpFilename}", "w")) === false) {
+        $dbfMsg = "Could not open {$gpxPath}_DebugCompute.csv in file: " . 
+        __File__ . " at line: " . __Line__;
+        die($dbfMsg);
+    }
+    fputs(
+        $debugFileCompute,
+        "trk,trkpt,Lat,Lon,EleM,elevChg,dist,eFlg,dFlg,grade,hikeLgth" .
+        ",hikeLgthMiles,pup,pdwn" . PHP_EOL
+    );
+}
+// variables for accumulation calcs
+$pup = (float)0;
+$pdwn = (float)0;
+$pmax = (float)0;
+$pmin = (float)50000;
+$hikeLgthTot = (float)0;
+
+for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
+    // html track no
     $tno = $k + 1;
-    //
-    // We're building a tick-delimited string to pass to GPSV, and since ticks
-    // and other special chars can appear in the track name from the gpx file,
-    // we use the following line to escape them out.
+    /**
+    * We're building a tick-delimited string to pass to GPSV, and since ticks
+    * and other special chars can appear in the track name from the gpx file,
+    * we use the following line to escape them out.
+    */
     $trkname = addslashes($gpxdat->trk[$k]->name);
-    // Note it is still not clear to Tom whether addslashes is the correct
-    // solution. It might be better to escape tick characters only and leave
-    // as is the other characters that addslashes affects. For more info,
-    // see email thread (Historical Hindsight on makeGpsv.php).
-    //
+    /**
+    * Note it is still not clear to Tom whether addslashes is the correct
+    * solution. It might be better to escape tick characters only and leave
+    * as is the other characters that addslashes affects. For more info,
+    * see email thread (Historical Hindsight on makeGpsv.php).
+    */
+
     // Form javascript to draw each track:
     $line = "                t = " . $tno . "; trk[t] = {info:[],segments:[]};\n";
     $line .= "                trk[t].info.name = '" . $trkname .
@@ -98,49 +142,136 @@ for ($k=0; $k<$noOfTrks; $k++) {
         "outline_width = 0; trk[t].info.fill_color = '" . $colors[$k] .
         "'; trk[t].info.fill_opacity = 0;\n";
     $tdat = "                trk[t].segments.push({ points:[ [";
+
     // Each track will have separate tick mark sets
-    $hikeLgth = 0;
+    $hikeLgth = (float)0;
     $tickMrk = 0.30;
-    $indx = 0;
-    $noOfSegs = $gpxdat->trk[$k]->trkseg->count();
-    for ($j=0; $j<$noOfSegs; $j++) {
-        foreach ($gpxdat->trk[$k]->trkseg[$j]->trkpt as $datum) {
-            if (!($datum['lat'] == $plat && $datum['lon'] == $plng)) {
-                $plat = (float)$datum['lat'];
-                $plng = (float)$datum['lon'];
-                array_push($gpxlats, $plat);
-                array_push($gpxlons, $plng);
-                $tdat .= $plat . "," . $plng . "],[";
-                if ($indx > 0) {
-                    $parms = distance(
-                        $gpxlats[$indx-1], $gpxlons[$indx-1], $gpxlats[$indx], 
-                        $gpxlons[$indx]
-                    );
-                    $hikeLgth += $parms[0];
-                    if ($hikeLgth > $tickMrk) {
-                        $tick = "GV_Draw_Marker({lat:" . $plat . ",lon:" . $plng .
-                            ",name:'" . $tickMrk . " mi',desc:'',color:trk[" . $tno .
-                            "].info.color,icon:'tickmark',type:'tickmark',folder:'" .
-                            $trkname . " [tickmarks]',rotation:" . $parms[1] .
-                            ",track_number:" . $tno . ",dd:false});";
-                        array_push($ticks, $tick);
-                        $tickMrk += 0.30;
-                    }
-                    
-                } else {
-                    $gpxlats[0] = $plat;
-                    $gpxlngs[0] = $plng;
-                }
-                $indx++;
-            }
-        }  // end of processing trkpts in a segment
-    } // end for each segment: next esgment...
-    // remove last ",[" and end string:
+
+    /**
+     * Get gpx data into individual arrays and do first level
+     * processing.
+     */
+    // Declare arrays - unset first
+    unset(
+        $gpxlats, $gpxlons, $gpxeles, $gpxtimes, $eleChg, $distance,
+        $grade, $speed
+    );
+    $gpxlats = [];
+    $gpxlons = [];
+    $gpxeles = [];
+    $gpxtimes = [];
+    $eleChg = [];
+    $distance = [];
+    $grade = [];
+    $speed = [];
+
+    // Read data for trk k into arrays and do Level 1 calcs
+    if ($makeGpsvDebug) {
+        getGpxL1(
+            $gpxdat, $k, $gpxlats, $gpxlons, $gpxeles, $gpxtimes,
+            $eleChg, $distance, $grade, $speed, $debugFileArray
+        );
+    } else { // no debug file output unless param is set
+        getGpxL1(
+            $gpxdat, $k, $gpxlats, $gpxlons, $gpxeles, $gpxtimes,
+            $eleChg, $distance, $grade, $speed
+        );
+    }
+    // Do moving average smoothing on elevation values
+    if ($makeGpsvDebug) {
+        $gpxeles = moveAvg($gpxeles, $maWindow, $gpxPath, true);
+    } else { // no debug file output unless param is set
+        $gpxeles = moveAvg($gpxeles, $maWindow, $gpxPath, false);
+    }
+    // Start computing statistics for trk k
+    // Process first trkpt in current trk
+    $trkptStrtIdx = 0;
+    if ($k == 0) { // Special setup for very first trkpt
+        $trkptStrtIdx = 1;
+        $prevLat = $gpxlats[0];
+        $prevLon = $gpxlons[0];
+        $prevEle = $gpxeles[0];
+
+        // Create javascript for track data point
+        $tdat .= $gpxlats[0] . "," . $gpxlons[0] . "],[";
+
+        // Do debug output
+        if ($makeGpsvDebug) {
+            fputs(
+                $debugFileCompute, "0,0,{$gpxlats[0]},{$gpxlons[0]},{$gpxeles[0]}"
+                . PHP_EOL
+            );
+        }
+    } // end if: Special setup for very first trkpt
+
+    // Compute stats and create map data for remaining trkpts in trk k
+    for ($m=$trkptStrtIdx; $m<count($gpxlats); $m++) {
+
+        //Do distance and elevation calcs for this trkpt
+        if ($makeGpsvDebug) {
+            $rotation = distElevCalc(
+                $k, $m, $gpxlats, $gpxlons, $gpxeles,
+                $distThresh, $elevThresh,
+                $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
+                $prevLat, $prevLon, $prevEle,
+                $tdat, $debugFileCompute
+            );
+        } else { // no debug file output unless param is set
+            $rotation = distElevCalc(
+                $k, $m, $gpxlats, $gpxlons, $gpxeles,
+                $distThresh, $elevThresh,
+                $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
+                $prevLat, $prevLon, $prevEle,
+                $tdat
+            );
+
+        }
+        // Form javascript track and tickmark data for this trkpt
+        $tdat .= $gpxlats[$m] . "," . $gpxlons[$m] . "],[";
+        if ($hikeLgthMiles > $tickMrk) {
+            $tick
+                = "GV_Draw_Marker({lat:" . $gpxlats[$m] .
+                ",lon:" . $gpxlons[$m] . ",name:'" . $tickMrk .
+                " mi',desc:'',color:trk[" . $tno .
+                "].info.color,icon:'tickmark',type:'tickmark',folder:'" .
+                $trkname . " [tickmarks]',rotation:" . $rotation .
+                ",track_number:" . $tno . ",dd:false});";
+            array_push($ticks, $tick);
+            $tickMrk += 0.30;
+        }
+    }  // end for: Compute stats and create map data for remaining trkpts in trk k
+    $hikeLgthTot += $hikeLgth;
+
+    // Finish javascript for this trk: remove last ",[" and end string:
     $tdat = substr($tdat, 0, strlen($tdat)-2);
     $line .= $tdat . " ] });\n";
     $line .= "                GV_Draw_Track(t);\n";
     $GPSV_Tracks[$k] = $line;
-}  // end of for each track
+}  // end for: PROCESS EACH TRK
+
+// Compute summary statistics
+$pmaxFeet = round($pmax * 3.28084, 2);
+$pminFeet = round($pmin * 3.28084, 2);
+$pup = round(3.28084 * $pup, 0);
+$pdwn = round(3.28084 * $pdwn, 0);
+$calcMax = round(3.28084 * $pmax, 0);
+$calcMin = round(3.28084 * $pmin, 0);
+$calcDelta = $calcMax - $calcMin;
+
+// Do debug output (summary stats for entire hike)
+if ($makeGpsvDebug) { // only if param is set
+    fputs(
+        $debugFileCompute,
+        sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
+        ",pmax,{$pmaxFeet}," .
+        ",pmin,{$pminFeet},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
+        "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
+        ",maWindow:{$maWindow}" . PHP_EOL
+    );
+    fclose($debugFileArray);
+    fclose($debugFileCompute);
+}
+
 // Calculate map bounds and center coordiantes
 $north = $gpxlats[0];
 $south = $north;
@@ -355,4 +486,3 @@ if ($map_opts['dynamicMarker'] === 'true') {
 $maphtml .= '</script>' . PHP_EOL;
 $maphtml .= '</body>' . PHP_EOL;
 $maphtml .= '</html>' . PHP_EOL;  
-?>

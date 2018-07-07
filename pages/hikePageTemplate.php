@@ -94,14 +94,18 @@ require "hikePageData.php";
     <div id="hide"><</div>
     <p id="stats"><strong>Hike Statistics</strong></p>
     <p id="summary">
-        Nearby City / Locale: <span class=sumClr><?= $hikeLocale;?></span><br />
-        Hike Difficulty: <span class=sumClr><?= $hikeDifficulty;?></span><br />
-        Total Length of Hike: <span class=sumClr><?= $hikeLength;?></span><br />
-        Max to Min Elevation: <span class=sumClr><?= $hikeElevation;?></span><br />
-        Logistics: <span class=sumClr><?= $hikeType;?></span><br />
-        Exposure Type: <span class=sumClr><?= $hikeExposure;?></span><br />
-        Seasons : <span class=sumClr><?= $hikeSeasons;?></span><br />
-        "Wow" Factor: <span class=sumClr><?= $hikeWow;?></span>
+        Nearby City / Locale: <span class="sumClr"><?= $hikeLocale;?></span><br />
+        Hike Difficulty: <span class="sumClr"><?= $hikeDifficulty;?></span><br />
+        Total Length of Hike: <span class="sumClr"><?= $hikeLength;?></span><br />
+        Max to Min Elevation: <span class="sumClr"><?= $calcDelta;?> ft</span><br />
+        <?php if (isset($showAscDsc) && $showAscDsc == true) : ?>
+            Total Ascent: <span class="sumClr"><?= $pup;?> ft</span><br />
+            Total Descent: <span class="sumClr"><?= $pdwn;?> ft</span><br />
+        <?php endif; ?>
+        Logistics: <span class="sumClr"><?= $hikeType;?></span><br />
+        Exposure Type: <span class="sumClr"><?= $hikeExposure;?></span><br />
+        Seasons : <span class="sumClr"><?= $hikeSeasons;?></span><br />
+        "Wow" Factor: <span class="sumClr"><?= $hikeWow;?></span>
     </p>
     <p id="addtl"><strong>More!</strong></p>
     <p id="mlnk">View <a href="<?= $fpLnk;?>" target="_blank">Full Page Map</a><br />
