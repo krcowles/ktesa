@@ -455,8 +455,8 @@ function distance($lat1, $lon1, $lat2, $lon2)
         cos($radlat2) * cos(deg2rad($theta));
     $dist = acos($dist);
     $dist = rad2deg($dist);
-    $miles = $dist * 60 * 1.1515;
-    if (is_nan($miles)) {
+    $dist = $dist * 40075000 / 360; // circumference in meters / 360 degrees
+    if (is_nan($dist)) {
         $err = $lat1 . ',' . $lon1 . '; ' . $lat2 . ',' . $lon2;
         echo $GLOBALS['intro'] .
             "Mdl: makeGpsv.php/function distance() - Not a number: " . $err . "</p>";
@@ -477,7 +477,7 @@ function distance($lat1, $lon1, $lat2, $lon2)
         $rotation = 90.0 + -$angle;     // South
     }
     $rotation = round($rotation);
-    return array ($miles,$rotation);
+    return array ($dist,$rotation);
 }
 /**
  * This module will replace all occurances of <rtept> in a gpx
@@ -569,7 +569,8 @@ function getGpxL1(
                 array_push($gpxeles, (float)$datum->ele);
                 array_push($gpxtimes, strtotime($datum->time));
                 $n = count($gpxeles) - 1;
-                // Could add grade and speed here too
+
+                // Null calculations on trkpt 0
                 if ($n == 0) {
                     $eleChg[$n] = null;
                     $timeChg[$n] = null;
@@ -583,7 +584,7 @@ function getGpxL1(
                     $parms = distance(
                         $gpxlats[$n-1], $gpxlons[$n-1], $gpxlats[$n], $gpxlons[$n]
                     );
-                    $distance[$n] = $parms[0] * 1609; // distance in meters;
+                    $distance[$n] = $parms[0]; // distance in meters;
                     $grade[$n] = $distance[$n] == 0 ?
                         (float)0 : $eleChg[$n] / $distance[$n];
                     $speed[$n] = $timeChg[$n] == 0 ?
@@ -615,7 +616,7 @@ function getGpxL1(
 function distElevCalc(
     $k, $m, &$gpxlats, &$gpxlons, &$gpxeles,
     $distThresh, $elevThresh,
-    &$pmax, &$pmin, &$pup, &$pdwn, &$hikeLgth, &$hikeLgthMiles,
+    &$pmax, &$pmin, &$pup, &$pdwn, &$hikeLgth,
     &$prevLat, &$prevLon, &$prevEle,
     &$tdat=null, &$debugFileCompute=null
 ) {
@@ -630,13 +631,12 @@ function distElevCalc(
     $parms = distance(
         $prevLat, $prevLon, $gpxlats[$m], $gpxlons[$m]
     );
-    $dist = $parms[0] * 1609; // distance in meters                
+    $dist = $parms[0]; // distance in meters                
     if ($dist < $distThresh) {  // Skip small distance changes
         $distThreshMet = false;
     } else {
         $distThreshMet = true;
         $hikeLgth += $dist;
-        $hikeLgthMiles = $hikeLgth / 1609;
         $prevLat = $gpxlats[$m];  // update previous element only when used
         $prevLon = $gpxlons[$m];
     }
@@ -679,7 +679,7 @@ function distElevCalc(
             $debugFileCompute,
             sprintf(",%.2f", $grade) .
             sprintf(",%.2f", $hikeLgth) .
-            sprintf(",%.2f", $hikeLgthMiles) .
+            sprintf(",%.2f", $hikeLgth / 1609) .
             sprintf(",%.2f", $pup) .
             sprintf(",%.2f", $pdwn) .
             PHP_EOL

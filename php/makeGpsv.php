@@ -91,7 +91,7 @@ if ($makeGpsvDebug) {
     }
     fputs(
         $debugFileArray, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
-        "eleChg,timeChg,distance,grade,speed" . PHP_EOL
+        "eleChg,timeChg,distance,grade,mph" . PHP_EOL
     );
     $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugCompute.csv";
     if (file_exists($tmpFilename)) {
@@ -145,7 +145,7 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
 
     // Each track will have separate tick mark sets
     $hikeLgth = (float)0;
-    $tickMrk = 0.30;
+    $tickMrk = 0.30 * 1609; // tickmark interval in miles converted to meters
 
     /**
      * Get gpx data into individual arrays and do first level
@@ -212,7 +212,7 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
             $rotation = distElevCalc(
                 $k, $m, $gpxlats, $gpxlons, $gpxeles,
                 $distThresh, $elevThresh,
-                $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
+                $pmax, $pmin, $pup, $pdwn, $hikeLgth,
                 $prevLat, $prevLon, $prevEle,
                 $tdat, $debugFileCompute
             );
@@ -220,7 +220,7 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
             $rotation = distElevCalc(
                 $k, $m, $gpxlats, $gpxlons, $gpxeles,
                 $distThresh, $elevThresh,
-                $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
+                $pmax, $pmin, $pup, $pdwn, $hikeLgth,
                 $prevLat, $prevLon, $prevEle,
                 $tdat
             );
@@ -228,16 +228,16 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
         }
         // Form javascript track and tickmark data for this trkpt
         $tdat .= $gpxlats[$m] . "," . $gpxlons[$m] . "],[";
-        if ($hikeLgthMiles > $tickMrk) {
+        if ($hikeLgth > $tickMrk) {
             $tick
                 = "GV_Draw_Marker({lat:" . $gpxlats[$m] .
-                ",lon:" . $gpxlons[$m] . ",name:'" . $tickMrk .
+                ",lon:" . $gpxlons[$m] . ",name:'" . $tickMrk/1609 .
                 " mi',desc:'',color:trk[" . $tno .
                 "].info.color,icon:'tickmark',type:'tickmark',folder:'" .
                 $trkname . " [tickmarks]',rotation:" . $rotation .
                 ",track_number:" . $tno . ",dd:false});";
             array_push($ticks, $tick);
-            $tickMrk += 0.30;
+            $tickMrk += 0.30 * 1609; // tickmark interval in miles converted to meters
         }
     }  // end for: Compute stats and create map data for remaining trkpts in trk k
     $hikeLgthTot += $hikeLgth;
@@ -249,22 +249,13 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
     $GPSV_Tracks[$k] = $line;
 }  // end for: PROCESS EACH TRK
 
-// Compute summary statistics
-$pmaxFeet = round($pmax * 3.28084, 2);
-$pminFeet = round($pmin * 3.28084, 2);
-$pup = round(3.28084 * $pup, 0);
-$pdwn = round(3.28084 * $pdwn, 0);
-$calcMax = round(3.28084 * $pmax, 0);
-$calcMin = round(3.28084 * $pmin, 0);
-$calcDelta = $calcMax - $calcMin;
-
 // Do debug output (summary stats for entire hike)
 if ($makeGpsvDebug) { // only if param is set
     fputs(
         $debugFileCompute,
         sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
-        ",pmax,{$pmaxFeet}," .
-        ",pmin,{$pminFeet},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
+        ",pmax,{$pmax}," .
+        ",pmin,{$pmin},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
         "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
         ",maWindow:{$maWindow}" . PHP_EOL
     );
