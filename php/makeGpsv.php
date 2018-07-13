@@ -91,7 +91,7 @@ if ($makeGpsvDebug) {
     }
     fputs(
         $debugFileArray, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
-        "eleChg,timeChg,distance,grade,mph" . PHP_EOL
+        "eleChg,timeChg,distance,grade,mph,hypot,hypotmph" . PHP_EOL
     );
     $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugCompute.csv";
     if (file_exists($tmpFilename)) {

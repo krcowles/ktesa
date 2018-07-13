@@ -577,7 +577,9 @@ function getGpxL1(
                     $distance[$n] = null;
                     $grade[$n] = null;
                     $speed[$n] = null;
-                }
+                    $hypot = null; // hypotenuse
+                    $hypotSpeed = null; // speed along hypotenuse
+                                    }
                 if ($n >= 1) {
                     $eleChg[$n] = $gpxeles[$n] - $gpxeles[$n-1];
                     $timeChg[$n] = $gpxtimes[$n] - $gpxtimes[$n-1];
@@ -589,14 +591,21 @@ function getGpxL1(
                         (float)0 : $eleChg[$n] / $distance[$n];
                     $speed[$n] = $timeChg[$n] == 0 ?
                         (float)0 : $distance[$n] / $timeChg[$n];
-                }
+                        $hypot = sqrt($distance[$n]**2 + $eleChg[$n]**2);
+                        $hypotSpeed = $timeChg[$n] == 0 ?
+                            (float)0 : $hypot / $timeChg[$n];
+                                        }
                 if (!is_null($debugFileArray)) {
                     fputs(
                         $debugFileArray,
                         "{$trkIdx},{$trkSegIdx},{$n},{$gpxlats[$n]}," .
                         "{$gpxlons[$n]},{$gpxeles[$n]},{$gpxtimes[$n]}," .
                         "{$eleChg[$n]},{$timeChg[$n]},{$distance[$n]}," .
-                        "{$grade[$n]},{$speed[$n]}" . PHP_EOL
+                        sprintf("%d,", $grade[$n] * 100) .
+                        sprintf("%.2f,", $speed[$n] * 60*60/1609) .
+                        sprintf("%.2f,", $hypot) .
+                        sprintf("%.2f", $hypotSpeed * 60*60/1609) .
+                        PHP_EOL
                     );
                 }
             }
