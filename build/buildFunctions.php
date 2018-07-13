@@ -600,7 +600,8 @@ function getGpxL1(
                         $debugFileArray,
                         "{$trkIdx},{$trkSegIdx},{$n},{$gpxlats[$n]}," .
                         "{$gpxlons[$n]},{$gpxeles[$n]},{$gpxtimes[$n]}," .
-                        "{$eleChg[$n]},{$timeChg[$n]},{$distance[$n]}," .
+                        "{$eleChg[$n]},{$timeChg[$n]}," .
+                        sprintf("%.2f,", $distance[$n]) .
                         sprintf("%d,", $grade[$n] * 100) .
                         sprintf("%.2f,", $speed[$n] * 60*60/1609) .
                         sprintf("%.2f,", $hypot) .
