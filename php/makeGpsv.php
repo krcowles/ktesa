@@ -10,12 +10,11 @@
  *    integer $hikeNo, unique hike id
  * PHP Version 7.0
  * 
- * @category Not_Sure_What
- * @package  GPSV_Mapping
- * @author   Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
- * @license  None at this time
- * @link     ../php
+ * @package GPSV_Mapping
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license None at this time
  */
+require_once "gpxFunctions.php";
 require_once "../mysql/dbFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 require "../build/buildFunctions.php";
@@ -76,38 +75,18 @@ $ticks = [];
 $elevThresh = isset($elevThreshParm) ? $elevThreshParm : 1.0;
 $distThresh = isset($distThreshParm) ? $distThreshParm : 5.0;
 $maWindow = isset($maWindowParm) ? $maWindowParm : 3;
-
-// Open debug files
+// This parameter is established in hikePageData.php based on the query string
 $makeGpsvDebug = isset($makeGpsvDebugParm) ? $makeGpsvDebugParm : false;
+
+// Open debug files with headers, if requested by query string
+$debugFileHandle = null;
+$debugComputeHandle = null;
+$debugMaHandle = null;
 if ($makeGpsvDebug) {
-    $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugArray.csv";
-    if (file_exists($tmpFilename)) {
-        unlink($tmpFilename);
-    }
-    if (($debugFileArray = fopen("{$tmpFilename}", "w")) === false) {
-        $dbfMsg = "Could not open {$gpxPath}_DebugArray.csv in file: " . 
-        __File__ . " at line: " . __Line__;
-        die($dbfMsg);
-    }
-    fputs(
-        $debugFileArray, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
-        "eleChg,timeChg,distance,grade,speed" . PHP_EOL
-    );
-    $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugCompute.csv";
-    if (file_exists($tmpFilename)) {
-        unlink($tmpFilename);
-    }
-    if (($debugFileCompute = fopen("{$tmpFilename}", "w")) === false) {
-        $dbfMsg = "Could not open {$gpxPath}_DebugCompute.csv in file: " . 
-        __File__ . " at line: " . __Line__;
-        die($dbfMsg);
-    }
-    fputs(
-        $debugFileCompute,
-        "trk,trkpt,Lat,Lon,EleM,elevChg,dist,eFlg,dFlg,grade,hikeLgth" .
-        ",hikeLgthMiles,pup,pdwn" . PHP_EOL
-    );
+    $debugFileHandle = gpsvDebugFileArray($gpxPath);
+    $debugComputeHandle = gpsvDebugComputeArray($gpxPath);
 }
+
 // variables for accumulation calcs
 $pup = (float)0;
 $pdwn = (float)0;

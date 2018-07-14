@@ -1,7 +1,8 @@
 <?php
 /**
  * This file contains function declarations designed to be used
- * by modules in the build directory.
+ * by modules in the build directory. At this time, there are also
+ * some instances called by makeGpsv.php.
  * PHP Version 7.0
  * 
  * @package Build_Functions
@@ -697,7 +698,7 @@ function distElevCalc(
  * 
  * @return array $averages  array of moving average results
  */
-function moveAvg($data, $window, $gpxPath, $debug=true)
+function moveAvg($data, $window, $gpxPath, $debug)
 {
     if ($window <= 1) { // just copy if window too small
         for ($i=0; $i< count($data); $i++) {
@@ -715,29 +716,18 @@ function moveAvg($data, $window, $gpxPath, $debug=true)
         die($dbMsg);
     }
     if ($debug) {
-        // Open debug files
-        $tmpFilename = sys_get_temp_dir() . "/" .
-            basename($gpxPath) . "_DebugMa.csv";
-        if (file_exists($tmpFilename)) {
-            unlink($tmpFilename);
-        }
-        if (($debugFileMa = fopen("{$tmpFilename}", "w")) === false) {
-            $dbfMsg = "Could not open {$tmpFilename} in file: " . 
-            __File__ . " at line: " . __Line__;
-            die($dbfMsg);
-        }
-        fputs($debugFileMa, "i,Ele,EleMa,window: {$window}" . PHP_EOL);
+        // Open debug file with headers
+        $maHandle = gpsvDebugMaArray($gpxPath, $window);
     }
- 
+
     $averages = [];
     $windowHalf = ($window - 1) / 2;
     $last_i = count($data);
- 
     // Return first ($window-1)/2 elements unchanged
     for ($i=0; $i<$windowHalf; $i++) {
         $averages[$i] = $data[$i];
         if ($debug) {
-            fputs($debugFileMa, "{$i},{$data[$i]},{$averages[$i]}" . PHP_EOL);
+            fputs($maHandle, "{$i},{$data[$i]},{$averages[$i]}" . PHP_EOL);
         }
     }
     // Create moving average elements
@@ -749,18 +739,18 @@ function moveAvg($data, $window, $gpxPath, $debug=true)
             $averages[$i] = $sum / $window;
         //$sum = $sum - $data[$i-$window] + $data[$i];
         if ($debug) {
-            fputs($debugFileMa, "{$i},{$data[$i]},{$averages[$i]}" . PHP_EOL);
+            fputs($$maHandle, "{$i},{$data[$i]},{$averages[$i]}" . PHP_EOL);
         }
     }
     // Return last ($window-1)/2 elements unchanged
     for ($i=($last_i-$windowHalf); $i<$last_i; $i++) {
         $averages[$i] = $data[$i];
         if ($debug) {
-            fputs($debugFileMa, "{$i},{$data[$i]},{$averages[$i]}" . PHP_EOL);
+            fputs($maHandle, "{$i},{$data[$i]},{$averages[$i]}" . PHP_EOL);
         }
     }
     if ($debug) {
-        fclose($debugFileMa);
+        fclose($maHandle);
     }
-        return $averages;
+    return $averages;
 }
