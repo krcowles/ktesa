@@ -290,10 +290,7 @@ function distElevCalc(
     if (!is_null($debugFileCompute)) {
         fputs(
             $debugFileCompute, 
-            sprintf(
-                "%c,%c,%f,%f,%f", $k, $m, $gpxlats[$m], $gpxlons[$m],
-                $gpxeles[$m]
-            )
+            "{$k},{$m},{$gpxlats[$m]},{$gpxlons[$m]},{$gpxeles[$m]}"
         );
     }
 
@@ -337,11 +334,11 @@ function distElevCalc(
     if (!is_null($debugFileCompute)) {
         fputs($debugFileCompute, sprintf(",%.2f,%.2f", $elevChg, $dist));
         if (!$distThreshMet && !$elevThreshMet ) {
-            fputs($debugFileCompute, sprintf(",%s", ",SBT,SDT"));
+            fputs($debugFileCompute, ",SBT,SDT");
         } elseif (!$distThreshMet && $elevThreshMet ) {
-            fputs($debugFileCompute, sprintf(",%s", "SDT"));
+            fputs($debugFileCompute, ",,SDT");
         } elseif ($distThreshMet && !$elevThreshMet ) {
-            fputs($debugFileCompute, sprintf(",%s", ",SBT,"));
+            fputs($debugFileCompute, ",SBT,");
         } else { 
             fputs($debugFileCompute, ",,");
         }
