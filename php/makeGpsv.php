@@ -62,12 +62,17 @@ if ($gpxdat->rte->count() > 0) {
  */
 $defClrs = array('red','blue','aqua','green','fuchsia','pink','orange','black');
 $noOfTrks = $gpxdat->trk->count();
+
 // assign colors:
 for ($i=0; $i<$noOfTrks; $i++) {
     // use rolling indx, in case more tracks than defaults
     $circ = $i % $noOfTrks;
     $colors[$i] = $defClrs[$circ];
 }
+// For determining map bounds only (may include multiple tracks)
+$allLats = [];
+$allLngs = [];
+// GPSV javascript data
 $GPSV_Tracks = [];
 $ticks = [];
 // threshold in meters to filter out elevation and distance value variation
@@ -76,17 +81,27 @@ $elevThresh = isset($elevThreshParm) ? $elevThreshParm : 1.0;
 $distThresh = isset($distThreshParm) ? $distThreshParm : 5.0;
 $maWindow = isset($maWindowParm) ? $maWindowParm : 3;
 // This parameter is established in hikePageData.php based on the query string
-$makeGpsvDebug = isset($makeGpsvDebugParm) ? $makeGpsvDebugParm : false;
+if (isset($makeGpsvDebugParm)) {
+    $makeGpsvDebug = "true" ? true : false;
+} else {
+    $makeGpsvDebug = false;
+}
 
 // Open debug files with headers, if requested by query string
 $debugFileHandle = null;
 $debugComputeHandle = null;
-$debugMaHandle = null;
 if ($makeGpsvDebug) {
     $debugFileHandle = gpsvDebugFileArray($gpxPath);
     $debugComputeHandle = gpsvDebugComputeArray($gpxPath);
 }
+// calculated stats for all tracks:
+$pup = (float)0;
+$pdwn = (float)0;
+$pmax = (float)0;
+$pmin = (float)50000;
+$hikeLgthTot = (float)0;
 
+// Iterate through all tracks in the gpx file
 for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
     // html track no
     $tno = $k + 1;
@@ -115,20 +130,22 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
         "'; trk[t].info.fill_opacity = 0;\n";
     $tdat = "                trk[t].segments.push({ points:[ [";
 
-    // Each track will have separate tick mark sets
-    $hikeLgth = (float)0;
-    $tickMrk = 0.30;
     /**
      * Get gpx data into individual arrays and do first level
-     * processing. Since this loops through all tracks, just do it once...
+     * processing. Once per track...
      */
-    if ($k = 0) {
-        $calcs = getTotalDistAndElev(
-            $noOfTrks, $gpxdat, $makeGpsvDebug, $debugFileHandle,
-            $debugComputeHandle, $distThresh, $elevThresh, $maWindow, $gpxlats,
-            $gpxlongs, $tdat
-        );
-    }
+    $calcs = getTotalDistAndElev(
+        $k, $trkname, $gpxPath, $gpxdat, $makeGpsvDebug, $debugFileHandle,
+        $debugComputeHandle, $distThresh, $elevThresh, $maWindow, $tdat,
+        $ticks
+    );
+    $hikeLgthTot += $calcs[0];
+    $pmax += $calcs[1];
+    $pmin += $calcs[2];
+    $pup  += $calcs[3];
+    $pdwn += $calcs[4];
+    $allLats = array_merge($allLats, $calcs[5]);
+    $allLngs = array_merge($allLngs, $calcs[6]);
 
     // Finish javascript for this trk: remove last ",[" and end string:
     $tdat = substr($tdat, 0, strlen($tdat)-2);
@@ -138,10 +155,6 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
 }  // end for: PROCESS EACH TRK
 
 // Compute summary statistics
-$pmax = $calcs[1];
-$pmin = $calcs[2];
-$pup =  $calcs[3];
-$pdwn = $calcs[4];
 $pmaxFeet = round($pmax * 3.28084, 2);
 $pminFeet = round($pmin * 3.28084, 2);
 $pup = round(3.28084 * $pup, 0);
@@ -165,25 +178,25 @@ if ($makeGpsvDebug) { // only if param is set
 }
 
 // Calculate map bounds and center coordiantes
-$north = $gpxlats[0];
+$north = $allLats[0];
 $south = $north;
-$east = $gpxlons[0];
+$east = $allLngs[0];
 $west = $east;
-for ($i=1; $i<count($gpxlons)-1; $i++) {
-    if ($gpxlats[$i] > $north) {
-        $north = $gpxlats[$i];
+for ($i=1; $i<count($allLngs)-1; $i++) {
+    if ($allLats[$i] > $north) {
+        $north = $allLats[$i];
     }
-    if ($i === 55) { // arbitrarily chosen #miles in length, limit
-        $msg = "lat: " . $gpxlats[$i] . ', north: ' . $north;
+    if ($i === 55) { // arbitrarily chosen #miles in length as a limit
+        $msg = "lat: " . $allLats[$i] . ', north: ' . $north;
     }
-    if ($gpxlats[$i] < $south) {
-        $south = $gpxlats[$i];
+    if ($allLats[$i] < $south) {
+        $south = $allLats[$i];
     }
-    if ($gpxlons[$i] < $west) {
-        $west = $gpxlons[$i];
+    if ($allLngs[$i] < $west) {
+        $west = $allLngs[$i];
     }
-    if ($gpxlons[$i] > $east) {
-        $east = $gpxlons[$i];
+    if ($allLngs[$i] > $east) {
+        $east = $allLngs[$i];
     }
 }
 $clat = $south + ($north - $south)/2;
