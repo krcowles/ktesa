@@ -112,7 +112,7 @@ function gpsvDebugMaArray($gpxPath, $window)
  */
 function getTrackDistAndElev(
     $trkNo, $trkname, $gpxPath, &$xmldata, $debug, $dbugFile, $dbugCompute,
-    $dThresh, $eThresh, $maWin, &$tdat, &$ticks
+    $dThresh, $eThresh, $maWin, &$tdat=null, &$ticks=null
 ) {
     // variables for each track's calcs
     $hikeLgth = (float)0;

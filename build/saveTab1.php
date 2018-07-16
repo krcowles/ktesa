@@ -13,6 +13,7 @@
 session_start();
 require_once "../mysql/dbFunctions.php";
 require_once "buildFunctions.php";
+require_once "../php/gpxFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'hno');
 $uid = filter_input(INPUT_POST, 'usr');
@@ -185,9 +186,9 @@ if (isset($_POST['mft'])) {
     $noOfTrks = $gpxdat->trk->count();
     // threshold in meters to filter out elevation and distance value variation
     // set by default if command line parameter(s) is not given
-    $elevThresh = isset($elevThreshParm) ? $elevThreshParm : 1.0;
-    $distThresh = isset($distThreshParm) ? $distThreshParm : 5.0;
-    $maWindow = isset($maWindowParm) ? $maWindowParm : 3;
+    $elevThresh = 1.0;
+    $distThresh = 5.0;
+    $maWindow = 3;
 
     // debug arrays stored in system tmp directory:
     $dbugFileHandle = gpsvDebugFileArray($gpxPath);
@@ -199,10 +200,10 @@ if (isset($_POST['mft'])) {
     $pmax = (float)0;
     $pmin = (float)50000;
     $hikeLgthTot = (float)0;
-    for ($k=0; $k<$noOfTracks; $k++) {
+    for ($k=0; $k<$noOfTrks; $k++) {
         $calcs = getTrackDistAndElev(
-            $k, "", $gpxPath, $gpxdat, true, $dbugFileHandle, $dbugComputeHandle,
-            $distThresh, $elevThresh, $maWindow, null, null
+            $k, "", $gpxPath, $gpxdat, true, $dbugFileHandle,
+            $dbugComputeHandle, $distThresh, $elevThresh, $maWindow
         );
         $hikeLgthTot += $calcs[0];
         if ($calcs[1] > $pmax) {
