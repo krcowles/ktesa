@@ -134,14 +134,18 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
      * Get gpx data into individual arrays and do first level
      * processing. Once per track...
      */
-    $calcs = getTotalDistAndElev(
+    $calcs = getTrackDistAndElev(
         $k, $trkname, $gpxPath, $gpxdat, $makeGpsvDebug, $debugFileHandle,
         $debugComputeHandle, $distThresh, $elevThresh, $maWindow, $tdat,
         $ticks
     );
     $hikeLgthTot += $calcs[0];
-    $pmax += $calcs[1];
-    $pmin += $calcs[2];
+    if ($calcs[1] > $pmax) {
+        $pmax = $calcs[1];
+    }
+    if ($calcs[2] < $pmin) {
+        $pmin = $calcs[2];
+    }
     $pup  += $calcs[3];
     $pdwn += $calcs[4];
     $allLats = array_merge($allLats, $calcs[5]);

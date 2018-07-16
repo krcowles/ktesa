@@ -110,7 +110,7 @@ function gpsvDebugMaArray($gpxPath, $window)
  * 
  * @return float           $hikeLgthTot total distance traversed in all tracks
  */
-function getTotalDistAndElev(
+function getTrackDistAndElev(
     $trkNo, $trkname, $gpxPath, &$xmldata, $debug, $dbugFile, $dbugCompute,
     $dThresh, $eThresh, $maWin, &$tdat, &$ticks
 ) {
@@ -186,7 +186,7 @@ function getTotalDistAndElev(
                     $trkname . " [tickmarks]',rotation:" . $rotation .
                     ",track_number:" . $tno . ",dd:false});";
                 array_push($ticks, $tick);
-                $tickMrk += 0.30 * 1609; // tickmark interval in miles converted to meters
+                $tickMrk += 0.30 * 1609; // interval in miles converted to meters
             }
         }
     }  // end for: Compute stats and create map data for remaining trkpts in trk k

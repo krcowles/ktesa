@@ -164,6 +164,8 @@ if (isset($delClus) && $delClus === 'YES') {
     //  No Changes Assigned to marker, clusGrp, cgName
 }
 $clName = mysqli_real_escape_string($link, $cgName);
+
+
 /**
  * If the user selected 'Calculate From GPX', then those values will
  * be used instead of any existing values in the miles and feet fields. 
@@ -181,138 +183,37 @@ if (isset($_POST['mft'])) {
         $gpxdat = convertRtePts($gpxdat);
     }
     $noOfTrks = $gpxdat->trk->count();
-
-
-
-
-
     // threshold in meters to filter out elevation and distance value variation
     // set by default if command line parameter(s) is not given
     $elevThresh = isset($elevThreshParm) ? $elevThreshParm : 1.0;
     $distThresh = isset($distThreshParm) ? $distThreshParm : 5.0;
     $maWindow = isset($maWindowParm) ? $maWindowParm : 3;
 
-    // Open debug files
-    $makeGpsvDebug = isset($makeGpsvDebugParm) ? $makeGpsvDebugParm : false;
-    if ($makeGpsvDebug) {
-        $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugArray.csv";
-        if (file_exists($tmpFilename)) {
-            unlink($tmpFilename);
-        }
-        if (($debugFileArray = fopen("{$tmpFilename}", "w")) === false) {
-            $dbfMsg = "Could not open {$gpxPath}_DebugArray.csv in file: " . 
-            __File__ . " at line: " . __Line__;
-            die($dbfMsg);
-        }
-        fputs(
-            $debugFileArray, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
-            "eleChg,timeChg,distance,grade,speed" . PHP_EOL
-        );
-        $tmpFilename = sys_get_temp_dir() . "/" . basename($gpxPath) . "_DebugCompute.csv";
-        if (file_exists($tmpFilename)) {
-            unlink($tmpFilename);
-        }
-        if (($debugFileCompute = fopen("{$tmpFilename}", "w")) === false) {
-            $dbfMsg = "Could not open {$gpxPath}_DebugCompute.csv in file: " . 
-            __File__ . " at line: " . __Line__;
-            die($dbfMsg);
-        }
-        fputs(
-            $debugFileCompute,
-            "trk,trkpt,Lat,Lon,EleM,elevChg,dist,eFlg,dFlg,grade,hikeLgth" .
-            ",hikeLgthMiles,pup,pdwn" . PHP_EOL
-        );
-    }
-    // variables for accumulation calcs
+    // debug arrays stored in system tmp directory:
+    $dbugFileHandle = gpsvDebugFileArray($gpxPath);
+    $dbugComputeHandle = gpsvDebugComputeArray($gpxPath);
+
+    // calculate stats for all tracks:
     $pup = (float)0;
     $pdwn = (float)0;
     $pmax = (float)0;
     $pmin = (float)50000;
     $hikeLgthTot = (float)0;
-
-    for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
-        $hikeLgth = (float)0;
-
-        /**
-         * Get gpx data into individual arrays and do first level
-         * processing.
-         */
-        // Declare arrays - unset first
-        unset(
-            $gpxlats, $gpxlons, $gpxeles, $gpxtimes, $eleChg, $distance,
-            $grade, $speed
+    for ($k=0; $k<$noOfTracks; $k++) {
+        $calcs = getTrackDistAndElev(
+            $k, "", $gpxPath, $gpxdat, true, $dbugFileHandle, $dbugComputeHandle,
+            $distThresh, $elevThresh, $maWindow, null, null
         );
-        $gpxlats = [];
-        $gpxlons = [];
-        $gpxeles = [];
-        $gpxtimes = [];
-        $eleChg = [];
-        $distance = [];
-        $grade = [];
-        $speed = [];
-
-        // Read data for trk k into arrays and do Level 1 calcs
-        if ($makeGpsvDebug) {
-            getGpxL1(
-                $gpxdat, $k, $gpxlats, $gpxlons, $gpxeles, $gpxtimes,
-                $eleChg, $distance, $grade, $speed, $debugFileArray
-            );
-        } else { // no debug file output unless param is set
-            getGpxL1(
-                $gpxdat, $k, $gpxlats, $gpxlons, $gpxeles, $gpxtimes,
-                $eleChg, $distance, $grade, $speed
-            );
+        $hikeLgthTot += $calcs[0];
+        if ($calcs[1] > $pmax) {
+            $pmax = $calcs[1];
         }
-        // Do moving average smoothing on elevation values
-        if ($makeGpsvDebug) {
-            $gpxeles = moveAvg($gpxeles, $maWindow, $gpxPath, true);
-        } else { // no debug file output unless param is set
-            $gpxeles = moveAvg($gpxeles, $maWindow, $gpxPath, false);
+        if ($calcs[2] < $pmin) {
+            $pmin = $calcs[2];
         }
-        // Start computing statistics for trk k
-        // Process first trkpt in current trk
-        $trkptStrtIdx = 0;
-        if ($k == 0) { // Special setup for very first trkpt
-            $trkptStrtIdx = 1;
-            $prevLat = $gpxlats[0];
-            $prevLon = $gpxlons[0];
-            $prevEle = $gpxeles[0];
-
-            // Do debug output
-            if ($makeGpsvDebug) {
-                fputs(
-                    $debugFileCompute, "0,0,{$gpxlats[0]},{$gpxlons[0]},{$gpxeles[0]}"
-                    . PHP_EOL
-                );
-            }
-        } // end if: Special setup for very first trkpt
-
-        // Compute stats and create map data for remaining trkpts in trk k
-        for ($m=$trkptStrtIdx; $m<count($gpxlats); $m++) {
-
-            //Do distance and elevation calcs for this trkpt
-            if ($makeGpsvDebug) {
-                $rotation = distElevCalc(
-                    $k, $m, $gpxlats, $gpxlons, $gpxeles,
-                    $distThresh, $elevThresh,
-                    $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
-                    $prevLat, $prevLon, $prevEle,
-                    $tdat, $debugFileCompute
-                );
-            } else { // no debug file output unless param is set
-                $rotation = distElevCalc(
-                    $k, $m, $gpxlats, $gpxlons, $gpxeles,
-                    $distThresh, $elevThresh,
-                    $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
-                    $prevLat, $prevLon, $prevEle,
-                    $tdat
-                );
-
-            }
-        }  // end for: Compute stats and create map data for remaining trkpts in trk k
-        $hikeLgthTot += $hikeLgth;
-
-    }  // end for: PROCESS EACH TRK
+        $pup  += $calcs[3];
+        $pdwn += $calcs[4];
+    } // end for: PROCESS EACH TRK
 
     // Compute summary statistics
     $pmaxFeet = round($pmax * 3.28084, 2);
@@ -324,20 +225,16 @@ if (isset($_POST['mft'])) {
     $calcDelta = $calcMax - $calcMin;
 
     // Do debug output (summary stats for entire hike)
-    if ($makeGpsvDebug) { // only if param is set
-        fputs(
-            $debugFileCompute,
-            sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
-            ",pmax,{$pmaxFeet}," .
-            ",pmin,{$pminFeet},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
-            "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
-            ",maWindow:{$maWindow}" . PHP_EOL
-        );
-        fclose($debugFileArray);
-        fclose($debugFileCompute);
-    }
-
-
+    fputs(
+        $dbugComputeHandle,
+        sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
+        ",pmax,{$pmaxFeet}," .
+        ",pmin,{$pminFeet},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
+        "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
+        ",maWindow:{$maWindow}" . PHP_EOL
+    );
+    fclose($dbugFileHandle);
+    fclose($dbugComputeHandle);
 
     $totalDist = $hikeLgthTot / 1609;
     $lgth = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
@@ -366,6 +263,7 @@ if (isset($_POST['mft'])) {
     $lgth = filter_input(INPUT_POST, 'hlgth');
     $ht = filter_input(INPUT_POST, 'helev');
 }
+
 /**
  * NOTE: a means to change the 'hike at Visitor Center' location has not
  * yet been implemented, so 'collection' is not modified
