@@ -158,23 +158,14 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
     $GPSV_Tracks[$k] = $line;
 }  // end for: PROCESS EACH TRK
 
-// Compute summary statistics
-$pmaxFeet = round($pmax * 3.28084, 2);
-$pminFeet = round($pmin * 3.28084, 2);
-$pup = round(3.28084 * $pup, 0);
-$pdwn = round(3.28084 * $pdwn, 0);
-$calcMax = round(3.28084 * $pmax, 0);
-$calcMin = round(3.28084 * $pmin, 0);
-$calcDelta = $calcMax - $calcMin;
-
 // Do debug output (summary stats for entire hike)
 if ($makeGpsvDebug) { // only if param is set
     fputs(
         $debugComputeHandle,
         sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
-        ",pmax,{$pmaxFeet}," .
-        ",pmin,{$pminFeet},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
-        "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
+        ",pmax,{$pmax}," .
+        ",pmin,{$pmin},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
+                "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
         ",maWindow:{$maWindow}" . PHP_EOL
     );
     fclose($debugFileHandle);

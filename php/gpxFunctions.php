@@ -32,7 +32,7 @@ function gpsvDebugFileArray($gpxPath)
     }
     fputs(
         $fileArrayHandle, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
-        "eleChg,timeChg,distance,grade,speed" . PHP_EOL
+        "eleChg,timeChg,distance,grade,mph,hypot,hypotmph" . PHP_EOL
     );
     return $fileArrayHandle;
 }
@@ -170,7 +170,7 @@ function getTrackDistAndElev(
         $rotation = distElevCalc(
             $trkNo, $m, $gpxlats, $gpxlons, $gpxeles,
             $dThresh, $eThresh,
-            $pmax, $pmin, $pup, $pdwn, $hikeLgth, $hikeLgthMiles,
+            $pmax, $pmin, $pup, $pdwn, $hikeLgth,
             $prevLat, $prevLon, $prevEle, $dbugCompute
         );
         // For makeGpsv.php:
@@ -225,13 +225,16 @@ function getGpxL1(
                 array_push($gpxeles, (float)$datum->ele);
                 array_push($gpxtimes, strtotime($datum->time));
                 $n = count($gpxeles) - 1;
-                // Could add grade and speed here too
+
+                // Null calculations on trkpt 0
                 if ($n == 0) {
                     $eleChg[$n] = null;
                     $timeChg[$n] = null;
                     $distance[$n] = null;
                     $grade[$n] = null;
                     $speed[$n] = null;
+                    $hypot = null; // hypotenuse
+                    $hypotSpeed = null; // speed along hypotenuse
                 }
                 if ($n >= 1) {
                     $eleChg[$n] = $gpxeles[$n] - $gpxeles[$n-1];
@@ -239,11 +242,14 @@ function getGpxL1(
                     $parms = distance(
                         $gpxlats[$n-1], $gpxlons[$n-1], $gpxlats[$n], $gpxlons[$n]
                     );
-                    $distance[$n] = $parms[0] * 1609; // distance in meters;
+                    $distance[$n] = $parms[0]; // distance in meters;
                     $grade[$n] = $distance[$n] == 0 ?
                         (float)0 : $eleChg[$n] / $distance[$n];
                     $speed[$n] = $timeChg[$n] == 0 ?
                         (float)0 : $distance[$n] / $timeChg[$n];
+                        $hypot = sqrt($distance[$n]**2 + $eleChg[$n]**2);
+                        $hypotSpeed = $timeChg[$n] == 0 ?
+                            (float)0 : $hypot / $timeChg[$n];
                 }
                 if (!is_null($debugFileArray)) {
                     fputs(
@@ -251,7 +257,11 @@ function getGpxL1(
                         "{$trkIdx},{$trkSegIdx},{$n},{$gpxlats[$n]}," .
                         "{$gpxlons[$n]},{$gpxeles[$n]},{$gpxtimes[$n]}," .
                         "{$eleChg[$n]},{$timeChg[$n]},{$distance[$n]}," .
-                        "{$grade[$n]},{$speed[$n]}" . PHP_EOL
+                        sprintf("%d,", $grade[$n] * 100) .
+                        sprintf("%.2f,", $speed[$n] * 60*60/1609) .
+                        sprintf("%.2f,", $hypot) .
+                        sprintf("%.2f", $hypotSpeed * 60*60/1609) .
+                        PHP_EOL
                     );
                 }
             }
@@ -284,7 +294,7 @@ function getGpxL1(
 function distElevCalc(
     $k, $m, &$gpxlats, &$gpxlons, &$gpxeles,
     $distThresh, $elevThresh,
-    &$pmax, &$pmin, &$pup, &$pdwn, &$hikeLgth, &$hikeLgthMiles,
+    &$pmax, &$pmin, &$pup, &$pdwn, &$hikeLgth,
     &$prevLat, &$prevLon, &$prevEle, $debugFileCompute
 ) {
     if (!is_null($debugFileCompute)) {
@@ -298,13 +308,12 @@ function distElevCalc(
     $parms = distance(
         $prevLat, $prevLon, $gpxlats[$m], $gpxlons[$m]
     );
-    $dist = $parms[0] * 1609; // distance in meters                
+    $dist = $parms[0]; // distance in meters                
     if ($dist < $distThresh) {  // Skip small distance changes
         $distThreshMet = false;
     } else {
         $distThreshMet = true;
         $hikeLgth += $dist;
-        $hikeLgthMiles = $hikeLgth / 1609;
         $prevLat = $gpxlats[$m];  // update previous element only when used
         $prevLon = $gpxlons[$m];
     }
@@ -347,7 +356,7 @@ function distElevCalc(
             $debugFileCompute,
             sprintf(",%.2f", $grade) .
             sprintf(",%.2f", $hikeLgth) .
-            sprintf(",%.2f", $hikeLgthMiles) .
+            sprintf(",%.2f", $hikeLgth / 1609) .
             sprintf(",%.2f", $pup) .
             sprintf(",%.2f", $pdwn) .
             PHP_EOL

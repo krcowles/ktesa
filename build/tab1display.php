@@ -104,7 +104,7 @@
     Calculate Miles/Feet From GPX [<em style="color:brown">**NOTE: GPX file
         must already be uploaded</em>],&nbsp;&nbsp;or Specify/Change below<br />
 <label for="miles">Round-trip length in miles: </label>
-<textarea id="miles" name="hlgth"><?= $hikeMiles;?></textarea>
+<textarea id="miles" name="hlgth"><?= sprintf("%.2f", $hikeMiles);?></textarea>
 <label for="elev">Elevation change in feet: </label>
 <textarea id="elev" name="helev"><?= $hikeFeet;?></textarea><br /><br />
 <label for="pup">Ascent: </label>

@@ -456,8 +456,8 @@ function distance($lat1, $lon1, $lat2, $lon2)
         cos($radlat2) * cos(deg2rad($theta));
     $dist = acos($dist);
     $dist = rad2deg($dist);
-    $miles = $dist * 60 * 1.1515;
-    if (is_nan($miles)) {
+    $dist = $dist * 40075000 / 360; // circumference in meters / 360 degrees
+    if (is_nan($dist)) {
         $err = $lat1 . ',' . $lon1 . '; ' . $lat2 . ',' . $lon2;
         echo $GLOBALS['intro'] .
             "Mdl: makeGpsv.php/function distance() - Not a number: " . $err . "</p>";
@@ -478,7 +478,7 @@ function distance($lat1, $lon1, $lat2, $lon2)
         $rotation = 90.0 + -$angle;     // South
     }
     $rotation = round($rotation);
-    return array ($miles,$rotation);
+    return array ($dist,$rotation);
 }
 /**
  * This module will replace all occurances of <rtept> in a gpx
