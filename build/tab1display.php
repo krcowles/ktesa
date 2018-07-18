@@ -107,8 +107,6 @@
 <textarea id="miles" name="hlgth"><?= sprintf("%.2f", $hikeMiles);?></textarea>
 <label for="elev">Elevation change in feet: </label>
 <textarea id="elev" name="helev"><?= $hikeFeet;?></textarea><br /><br />
-<label for="pup">Ascent: </label>
-<textarea id="pup" name="hpup"><?= $pup;?></textarea><br /><br />
 <label for="fac">Facilities at the trailhead: </label>
 <textarea id="fac" name="hfac"><?= $hikeFac;?></textarea>&nbsp;&nbsp;
 <label for="wow">"Wow" Appeal: </label>
