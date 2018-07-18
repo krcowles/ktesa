@@ -191,8 +191,8 @@ if (isset($_POST['mft'])) {
     $maWindow = 3;
 
     // debug arrays stored in system tmp directory:
-    $dbugFileHandle = gpsvDebugFileArray($gpxPath);
-    $dbugComputeHandle = gpsvDebugComputeArray($gpxPath);
+    $handleDfa = gpsvDebugFileArray($gpxPath);
+    $handleDfc = gpsvDebugComputeArray($gpxPath);
 
     // calculate stats for all tracks:
     $pup = (float)0;
@@ -202,8 +202,8 @@ if (isset($_POST['mft'])) {
     $hikeLgthTot = (float)0;
     for ($k=0; $k<$noOfTrks; $k++) {
         $calcs = getTrackDistAndElev(
-            $k, "", $gpxPath, $gpxdat, true, $dbugFileHandle,
-            $dbugComputeHandle, $distThresh, $elevThresh, $maWindow
+            $k, "", $gpxPath, $gpxdat, true, $handleDfa,
+            $handleDfc, $distThresh, $elevThresh, $maWindow
         );
         $hikeLgthTot += $calcs[0];
         if ($calcs[1] > $pmax) {
@@ -216,30 +216,24 @@ if (isset($_POST['mft'])) {
         $pdwn += $calcs[4];
     } // end for: PROCESS EACH TRK
 
-    // Compute summary statistics
-    $pmaxFeet = round($pmax * 3.28084, 2);
-    $pminFeet = round($pmin * 3.28084, 2);
-    $pup = round(3.28084 * $pup, 0);
-    $pdwn = round(3.28084 * $pdwn, 0);
-    $calcMax = round(3.28084 * $pmax, 0);
-    $calcMin = round(3.28084 * $pmin, 0);
-    $calcDelta = $calcMax - $calcMin;
-
     // Do debug output (summary stats for entire hike)
     fputs(
-        $dbugComputeHandle,
-        sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
-        ",pmax,{$pmaxFeet}," .
-        ",pmin,{$pminFeet},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
+        $handleDfc,
+        sprintf("hikeLgthTot,%.2f mi", $hikeLgthTot / 1609) .
+        sprintf(",pmax %.2fm,%.2fft", $pmax, $pmax * 3.28084) .
+        sprintf(",pmin:%.2fm,%.2fft", $pmin, $pmin * 3.28084) .
+        sprintf(",pup:%.2fm,%.2fft", $pup, $pup * 3.28084) .
+        sprintf(",pdwn:%.2fm,%.2fft", $pdwn, $pdwn * 3.28084) .
+        PHP_EOL .
         "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
         ",maWindow:{$maWindow}" . PHP_EOL
     );
-    fclose($dbugFileHandle);
-    fclose($dbugComputeHandle);
+    fclose($handleDfa);
+    fclose($handleDfc);
 
     $totalDist = $hikeLgthTot / 1609;
     $lgth = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
-    $elev = $calcMax - $calcMin;
+    $elev = ($pmax - $pmin) * 3.28084;
     if ($elev < 100) { // round to nearest 10
         $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
         $ht = 10 * $adj;

@@ -16,7 +16,7 @@
  *
  * @param string $gpxPath relative path to the gpx file being processed
  *  
- * @return resource $fileArrayHandle file pointer to debug file w/headers
+ * @return resource $handleDfa file pointer to debug file w/headers
  */
 function gpsvDebugFileArray($gpxPath)
 {
@@ -25,16 +25,16 @@ function gpsvDebugFileArray($gpxPath)
     if (file_exists($tmpFilename)) {
         unlink($tmpFilename);
     }
-    if (($fileArrayHandle = fopen("{$tmpFilename}", "w")) === false) {
+    if (($handleDfa = fopen("{$tmpFilename}", "w")) === false) {
         $dbfMsg = "Could not open {$gpxPath}_DebugArray.csv in file: " . 
         __File__ . " at line: " . __Line__;
         die($dbfMsg);
     }
     fputs(
-        $fileArrayHandle, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
+        $handleDfa, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
         "eleChg,timeChg,distance,grade,mph,hypot,hypotmph" . PHP_EOL
     );
-    return $fileArrayHandle;
+    return $handleDfa;
 }
 /**
  * This function will output a file, identified with an extension of 
@@ -44,7 +44,7 @@ function gpsvDebugFileArray($gpxPath)
  * 
  * @param string $gpxPath relative path to the gpx file being processed
  * 
- * @return resource $debugComputeArray file pointer to debug file created w/headers
+ * @return resource $handleDfa file pointer to debug file created w/headers
  */
 function gpsvDebugComputeArray($gpxPath)
 {
@@ -53,17 +53,17 @@ function gpsvDebugComputeArray($gpxPath)
     if (file_exists($tmpFilename)) {
         unlink($tmpFilename);
     }
-    if (($debugComputeHandle = fopen("{$tmpFilename}", "w")) === false) {
+    if (($handleDfc = fopen("{$tmpFilename}", "w")) === false) {
         $dbfMsg = "Could not open {$gpxPath}_DebugCompute.csv in file: " . 
         __File__ . " at line: " . __Line__;
         die($dbfMsg);
     }
     fputs(
-        $debugComputeHandle,
+        $handleDfc,
         "trk,trkpt,Lat,Lon,EleM,elevChg,dist,eFlg,dFlg,grade,hikeLgth" .
         ",hikeLgthMiles,pup,pdwn" . PHP_EOL
     );
-    return $debugComputeHandle;
+    return $handleDfc;
 }
 /**
  * This function will output a file, identified with an extension of
@@ -74,7 +74,7 @@ function gpsvDebugComputeArray($gpxPath)
  * @param string  $gpxPath relative path to the gpx file being processed
  * @param integer $window  size of moving average window
  * 
- * @return resource $debugFileMa file ptr to debug file created w/headers populated
+ * @return resource $handleDfm file ptr to debug file created w/headers populated
  */
 function gpsvDebugMaArray($gpxPath, $window) 
 {
@@ -83,13 +83,13 @@ function gpsvDebugMaArray($gpxPath, $window)
     if (file_exists($tmpFilename)) {
         unlink($tmpFilename);
     }
-    if (($debugFileMa = fopen("{$tmpFilename}", "a")) === false) {
+    if (($handleDfm = fopen("{$tmpFilename}", "a")) === false) {
         $dbfMsg = "Could not open {$gpxPath}_DebugMa.csv in file: " . 
         __File__ . " at line: " . __Line__;
         die($dbfMsg);
     }
-    fputs($debugFileMa, "i,Ele,EleMa,window: {$window}" . PHP_EOL);
-    return $debugFileMa;
+    fputs($handleDfm, "i,Ele,EleMa,window: {$window}" . PHP_EOL);
+    return $handleDfm;
 }
 /**
  * This function does the actual distance and elevation calculations using various
@@ -100,8 +100,8 @@ function gpsvDebugMaArray($gpxPath, $window)
  * @param string   $gpxPath     path to gpxfile
  * @param object   $xmldata     gpx file loaded into simpleXml object
  * @param boolean  $debug       T/F use debug files
- * @param resource $dbugFile    file pointer to dbug file array
- * @param resource $dbugCompute file pointer to dbug compute array
+ * @param resource $handleDfa   file pointer to debug file array
+ * @param resource $handleDfc   file pointer to debug compute array
  * @param integer  $dThresh     threshold for filtering distance
  * @param integer  $eThresh     threshold for filtering elevation
  * @param integer  $maWin       window size of moving average
@@ -111,7 +111,7 @@ function gpsvDebugMaArray($gpxPath, $window)
  * @return float           $hikeLgthTot total distance traversed in all tracks
  */
 function getTrackDistAndElev(
-    $trkNo, $trkname, $gpxPath, &$xmldata, $debug, $dbugFile, $dbugCompute,
+    $trkNo, $trkname, $gpxPath, &$xmldata, $debug, $handleDfa, $handleDfc,
     $dThresh, $eThresh, $maWin, &$tdat=null, &$ticks=null
 ) {
     // variables for each track's calcs
@@ -137,10 +137,10 @@ function getTrackDistAndElev(
     $grade = [];
     $speed = [];
     // Read data for trk $trkNo into arrays and do Level 1 calcs
-    // Note: $dbugFile may be passed in as a null, so no effect including here
+    // Note: $handleDfa may be passed in as a null, so no effect including here
     getGpxL1(
         $xmldata, $trkNo, $gpxlats, $gpxlons, $gpxeles, $gpxtimes,
-        $eleChg, $distance, $grade, $speed, $dbugFile
+        $eleChg, $distance, $grade, $speed, $handleDfa
     );
 
     // Do moving average smoothing on elevation values
@@ -157,21 +157,21 @@ function getTrackDistAndElev(
         $tdat .= $gpxlats[0] . "," . $gpxlons[0] . "],[";
     }
     // Conditional debug output
-    if (isset($dbugCompute)) {
+    if (isset($handleDfc)) {
         fputs(
-            $dbugCompute, "0,0,{$gpxlats[0]},{$gpxlons[0]},{$gpxeles[0]}"
+            $handleDfc, "0,0,{$gpxlats[0]},{$gpxlons[0]},{$gpxeles[0]}"
             . PHP_EOL
         );
     }
 
     // Compute stats and create map data for remaining trkpts in $trkNo track
     for ($m=1; $m<count($gpxlats); $m++) {
-        //Do distance and elevation calcs for this trkpt ($dbugCompute may be null)
+        //Do distance and elevation calcs for this trkpt ($handleDfc may be null)
         $rotation = distElevCalc(
             $trkNo, $m, $gpxlats, $gpxlons, $gpxeles,
             $dThresh, $eThresh,
             $pmax, $pmin, $pup, $pdwn, $hikeLgth,
-            $prevLat, $prevLon, $prevEle, $dbugCompute
+            $prevLat, $prevLon, $prevEle, $handleDfc
         );
         // For makeGpsv.php:
         if (isset($tdat)) {
@@ -206,13 +206,13 @@ function getTrackDistAndElev(
  * @param array    $distance       array of caller's distances
  * @param array    $grade          array of caller's grades
  * @param array    $speed          array of caller's speeds
- * @param resource $debugFileArray handle to debug file
+ * @param resource $handleDfa      handle to debug file
  * 
  * @return null
  */
 function getGpxL1(
     &$gpxdat, $trkIdx, &$gpxlats, &$gpxlons, &$gpxeles, &$gpxtimes, 
-    &$eleChg, &$distance, &$grade, &$speed, $debugFileArray=null
+    &$eleChg, &$distance, &$grade, &$speed, $handleDfa=null
 ) {
     $timeChg = [];
     // Get all trkpts for current trk (all trksegs) into array
@@ -251,9 +251,9 @@ function getGpxL1(
                         $hypotSpeed = $timeChg[$n] == 0 ?
                             (float)0 : $hypot / $timeChg[$n];
                 }
-                if (!is_null($debugFileArray)) {
+                if (!is_null($handleDfa)) {
                     fputs(
-                        $debugFileArray,
+                        $handleDfa,
                         "{$trkIdx},{$trkSegIdx},{$n},{$gpxlats[$n]}," .
                         "{$gpxlons[$n]},{$gpxeles[$n]},{$gpxtimes[$n]}," .
                         "{$eleChg[$n]},{$timeChg[$n]},{$distance[$n]}," .

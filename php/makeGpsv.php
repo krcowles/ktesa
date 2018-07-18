@@ -88,11 +88,11 @@ if (isset($makeGpsvDebugParm)) {
 }
 
 // Open debug files with headers, if requested by query string
-$debugFileHandle = null;
-$debugComputeHandle = null;
+$handleDfa = null;
+$handleDfc = null;
 if ($makeGpsvDebug) {
-    $debugFileHandle = gpsvDebugFileArray($gpxPath);
-    $debugComputeHandle = gpsvDebugComputeArray($gpxPath);
+    $handleDfa = gpsvDebugFileArray($gpxPath);
+    $handleDfc = gpsvDebugComputeArray($gpxPath);
 }
 // calculated stats for all tracks:
 $pup = (float)0;
@@ -135,8 +135,8 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
      * processing. Once per track...
      */
     $calcs = getTrackDistAndElev(
-        $k, $trkname, $gpxPath, $gpxdat, $makeGpsvDebug, $debugFileHandle,
-        $debugComputeHandle, $distThresh, $elevThresh, $maWindow, $tdat,
+        $k, $trkname, $gpxPath, $gpxdat, $makeGpsvDebug, $handleDfa,
+        $handleDfc, $distThresh, $elevThresh, $maWindow, $tdat,
         $ticks
     );
     $hikeLgthTot += $calcs[0];
@@ -161,15 +161,18 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
 // Do debug output (summary stats for entire hike)
 if ($makeGpsvDebug) { // only if param is set
     fputs(
-        $debugComputeHandle,
-        sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
-        ",pmax,{$pmax}," .
-        ",pmin,{$pmin},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
-                "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
+        $handleDfc,
+        sprintf("hikeLgthTot,%.2f mi", $hikeLgthTot / 1609) .
+        sprintf(",pmax %.2fm,%.2fft", $pmax, $pmax * 3.28084) .
+        sprintf(",pmin:%.2fm,%.2fft", $pmin, $pmin * 3.28084) .
+        sprintf(",pup:%.2fm,%.2fft", $pup, $pup * 3.28084) .
+        sprintf(",pdwn:%.2fm,%.2fft", $pdwn, $pdwn * 3.28084) .
+        PHP_EOL .
+        "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
         ",maWindow:{$maWindow}" . PHP_EOL
     );
-    fclose($debugFileHandle);
-    fclose($debugComputeHandle);
+    fclose($handleDfa);
+    fclose($handleDfc);
 }
 
 // Calculate map bounds and center coordiantes
