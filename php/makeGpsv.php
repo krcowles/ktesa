@@ -162,10 +162,13 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
 if ($makeGpsvDebug) { // only if param is set
     fputs(
         $handleDfc,
-        sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
-        ",pmax,{$pmax}," .
-        ",pmin,{$pmin},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
-                "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
+        sprintf("hikeLgthTot,%.2f mi", $hikeLgthTot / 1609) .
+        sprintf(",pmax %.2fm,%.2fft", $pmax, $pmax * 3.28084) .
+        sprintf(",pmin:%.2fm,%.2fft", $pmin, $pmin * 3.28084) .
+        sprintf(",pup:%.2fm,%.2fft", $pup, $pup * 3.28084) .
+        sprintf(",pdwn:%.2fm,%.2fft", $pdwn, $pdwn * 3.28084) .
+        PHP_EOL .
+        "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
         ",maWindow:{$maWindow}" . PHP_EOL
     );
     fclose($handleDfa);
