@@ -16,7 +16,7 @@
  *
  * @param string $gpxPath relative path to the gpx file being processed
  *  
- * @return resource $handleDfA file pointer to debug file w/headers
+ * @return resource $handleDfa file pointer to debug file w/headers
  */
 function gpsvDebugFileArray($gpxPath)
 {
@@ -31,10 +31,10 @@ function gpsvDebugFileArray($gpxPath)
         die($dbfMsg);
     }
     fputs(
-        $handleDfA, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
+        $handleDfa, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
         "eleChg,timeChg,distance,grade,mph,hypot,hypotmph" . PHP_EOL
     );
-    return $handleDfA;
+    return $handleDfa;
 }
 /**
  * This function will output a file, identified with an extension of 
