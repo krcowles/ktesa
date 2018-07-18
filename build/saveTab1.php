@@ -13,6 +13,7 @@
 session_start();
 require_once "../mysql/dbFunctions.php";
 require_once "buildFunctions.php";
+require_once "../php/gpxFunctions.php";
 $link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_POST, 'hno');
 $uid = filter_input(INPUT_POST, 'usr');
@@ -164,6 +165,8 @@ if (isset($delClus) && $delClus === 'YES') {
     //  No Changes Assigned to marker, clusGrp, cgName
 }
 $clName = mysqli_real_escape_string($link, $cgName);
+
+
 /**
  * If the user selected 'Calculate From GPX', then those values will
  * be used instead of any existing values in the miles and feet fields. 
@@ -172,45 +175,71 @@ if (isset($_POST['mft'])) {
     if ($maingpx == '') {
         die("No gpx file has been uploaded for this hike");
     }
-    $gfile = "../gpx/" . $maingpx;
-    $gdat = simplexml_load_file($gfile);
-    if ($gdat === false) {
-        die(__FILE__ . "Line " . __LINE__ . " Failed to open {$gfile}");
+    $gpxPath = "../gpx/" . $maingpx;
+    $gpxdat = simplexml_load_file($gpxPath);
+    if ($gpxdat === false) {
+        die(__FILE__ . "Line " . __LINE__ . " Failed to open {$gpxPath}");
     }
-    if ($gdat->rte->count() > 0) {
-        $gdat = convertRtePts($gdat);
+    if ($gpxdat->rte->count() > 0) {
+        $gpxdat = convertRtePts($gpxdat);
     }
-    $noOfTrks = $gdat->trk->count();
-    $totalDist = 0;
-    $minElev = 20000;
-    $maxElev = 0;
-    for ($j=0; $j<$noOfTrks; $j++) {
-        $init = true;
-        foreach (genLatLng($gdat, $j) as $geo) {
-            // calculate distance between last pt and this one
-            if ($init) {
-                $prevLat = $geo[0];
-                $prevLng = $geo[1];
-                $init = false;
-            } else {
-                $nxtdist = distance($prevLat, $prevLng, $geo[0], $geo[1]);
-                $totalDist += $nxtdist[0];
-                $prevLat = $geo[0];
-                $prevLng = $geo[1];
-            }
-            // record min/max elevations (note: watch out for elev === 0.0000)
-            if ($geo[2] < $minElev) {
-                if ($geo[2] > 10) {
-                    $minElev = $geo[2];
-                }
-            }
-            if ($geo[2] > $maxElev) {
-                $maxElev = $geo[2];
-            }
+    $noOfTrks = $gpxdat->trk->count();
+    // threshold in meters to filter out elevation and distance value variation
+    // set by default if command line parameter(s) is not given
+    $elevThresh = 1.0;
+    $distThresh = 5.0;
+    $maWindow = 3;
+
+    // debug arrays stored in system tmp directory:
+    $dbugFileHandle = gpsvDebugFileArray($gpxPath);
+    $dbugComputeHandle = gpsvDebugComputeArray($gpxPath);
+
+    // calculate stats for all tracks:
+    $pup = (float)0;
+    $pdwn = (float)0;
+    $pmax = (float)0;
+    $pmin = (float)50000;
+    $hikeLgthTot = (float)0;
+    for ($k=0; $k<$noOfTrks; $k++) {
+        $calcs = getTrackDistAndElev(
+            $k, "", $gpxPath, $gpxdat, true, $dbugFileHandle,
+            $dbugComputeHandle, $distThresh, $elevThresh, $maWindow
+        );
+        $hikeLgthTot += $calcs[0];
+        if ($calcs[1] > $pmax) {
+            $pmax = $calcs[1];
         }
-    }
+        if ($calcs[2] < $pmin) {
+            $pmin = $calcs[2];
+        }
+        $pup  += $calcs[3];
+        $pdwn += $calcs[4];
+    } // end for: PROCESS EACH TRK
+
+    // Compute summary statistics
+    $pmaxFeet = round($pmax * 3.28084, 2);
+    $pminFeet = round($pmin * 3.28084, 2);
+    $pup = round(3.28084 * $pup, 0);
+    $pdwn = round(3.28084 * $pdwn, 0);
+    $calcMax = round(3.28084 * $pmax, 0);
+    $calcMin = round(3.28084 * $pmin, 0);
+    $calcDelta = $calcMax - $calcMin;
+
+    // Do debug output (summary stats for entire hike)
+    fputs(
+        $dbugComputeHandle,
+        sprintf("hikeLgthTot,%.2f", $hikeLgthTot / 1609) .
+        ",pmax,{$pmaxFeet}," .
+        ",pmin,{$pminFeet},pup,{$pup},pdwn,{$pdwn}". PHP_EOL .
+        "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
+        ",maWindow:{$maWindow}" . PHP_EOL
+    );
+    fclose($dbugFileHandle);
+    fclose($dbugComputeHandle);
+
+    $totalDist = $hikeLgthTot / 1609;
     $lgth = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
-    $elev = $maxElev - $minElev;
+    $elev = $calcMax - $calcMin;
     if ($elev < 100) { // round to nearest 10
         $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
         $ht = 10 * $adj;
@@ -235,6 +264,7 @@ if (isset($_POST['mft'])) {
     $lgth = filter_input(INPUT_POST, 'hlgth');
     $ht = filter_input(INPUT_POST, 'helev');
 }
+
 /**
  * NOTE: a means to change the 'hike at Visitor Center' location has not
  * yet been implemented, so 'collection' is not modified
