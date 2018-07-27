@@ -98,7 +98,7 @@ require "hikePageData.php";
         Hike Difficulty: <span class="sumClr"><?= $hikeDifficulty;?></span><br />
         Total Length of Hike: <span class="sumClr"><?= $hikeLength;?></span><br />
         Max to Min Elevation: <span class="sumClr"><?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
-        <?php if (isset($showAscDsc) && $showAscDsc == true) : ?>
+        <?php if ((isset($showAscDsc) && $showAscDsc == true) || is_numeric($hikeEThresh)) : ?>
         Total Ascent: <span class="sumClr"><?= sprintf("%.0f", $pup * 3.28084);?> ft</span><br />
         Total Descent: <span class="sumClr"><?= sprintf("%.0f", $pdwn * 3.28084);?> ft</span><br />
         <?php endif; ?>

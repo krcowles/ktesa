@@ -75,12 +75,30 @@ $allLngs = [];
 // GPSV javascript data
 $GPSV_Tracks = [];
 $ticks = [];
-// threshold in meters to filter out elevation and distance value variation
-// set by default if command line parameter(s) is not given
-$elevThresh = isset($elevThreshParm) ? $elevThreshParm : 1.0;
-$distThresh = isset($distThreshParm) ? $distThreshParm : 5.0;
-$maWindow = isset($maWindowParm) ? $maWindowParm : 3;
-// This parameter is established in hikePageData.php based on the query string
+
+/**
+ * Set smoothing parameter values per the following hierarchy:
+ *  URL param established in hikePageData.php,
+ *  hike-specific value from database,
+ *  default value defined here.
+*/
+if (isset($elevThreshParm)) { // threshold (meters) for elevation smoothing
+    $elevThresh = $elevThreshParm;
+} else {
+    $elevThresh = is_numeric($hikeEThresh) ? $hikeEThresh : 1;
+}
+if (isset($distThreshParm)) { // threshold (meters) for distance smoothing
+    $distThresh = $distThreshParm;
+} else {
+    $distThresh = is_numeric($hikeDThresh) ? $hikeDThresh : 1;
+}
+if (isset($maWindowParm)) { // moving average window size for elevation smoothing
+    $maWindow = $maWindowParm;
+} else {
+    $maWindow = is_numeric($hikeMaWin) ? $hikeMaWin : 1;
+}
+
+// Set debug output parameter based on the URL param established in hikePageData.php
 if (isset($makeGpsvDebugParm)) {
     $makeGpsvDebug = "true" ? true : false;
 } else {

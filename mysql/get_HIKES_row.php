@@ -43,4 +43,7 @@ $spaceTips = preg_replace("/\s/", " ", $rawTips);
 $hikeTips = htmlspecialchars_decode($spaceTips, ENT_COMPAT);
 $rawInfo = $row['info'];
 $hikeInfo = preg_replace("/\s/", " ", $rawInfo);
+$hikeEThresh = $row['eThresh'];
+$hikeDThresh = $row['dThresh'];
+$hikeMaWin = $row['maWin'];
 mysqli_free_result($result);
