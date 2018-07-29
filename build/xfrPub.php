@@ -21,13 +21,14 @@ $usr = mysqli_real_escape_string($link, $uid);
  */
 $xfrReq = "INSERT INTO EHIKES (usrid,stat,pgTitle,locale,marker,`collection`," .
     "cgroup,cname,logistics,miles,feet,diff,fac,wow,seasons,expo,gpx,trk,lat," .
-    "lng,aoimg1,aoimg2,purl1,purl2,dirs,tips,info) SELECT '{$usr}','{$getHike}'," .
+    "lng,aoimg1,aoimg2,purl1,purl2,dirs,tips,info,eThresh,dThresh,maWin)" .
+    "SELECT '{$usr}','{$getHike}'," .
     "pgTitle,locale,marker,collection,cgroup,cname,logistics,miles,feet,diff," .
     "fac,wow,seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs,tips," .
-    "info FROM HIKES WHERE indxNo = {$getHike};";
+    "info,eThresh,dThresh,maWin FROM HIKES WHERE indxNo = {$getHike};";
 $xfr = mysqli_query($link, $xfrReq) or die(
     __FILE__ . " Line " . __LINE__ . ": Failed to move hike data from HIKES "
-    . "to EHIKES for Hike No {$gethike}: " . mysqli_error($link)
+    . "to EHIKES for Hike No {$getHike}: " . mysqli_error($link)
 );
 // Fetch the new hike no in EHIKES:
 $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";

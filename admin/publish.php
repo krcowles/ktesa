@@ -64,6 +64,9 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $dr = mysqli_real_escape_string($link, $hike['dirs']);
         $tp = mysqli_real_escape_string($link, $hike['tips']);
         $in = mysqli_real_escape_string($link, $hike['info']);
+        $et = mysqli_real_escape_string($link, $hike['eThresh']);
+        $dt = mysqli_real_escape_string($link, $hike['dThresh']);
+        $mw = mysqli_real_escape_string($link, $hike['maWin']);
         if ($status > 0) { # don't add this hike, update it
             $actionreq = "UPDATE IGNORE HIKES SET pgTitle = '{$pg}',usrid = '{$ud}'," .
                 "locale = '{$lo}',marker = '{$mr}',collection = '{$co}'," .
@@ -72,8 +75,9 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 "wow = '{$ww}',seasons = '{$sn}',expo = '{$ex}',gpx = '{$gx}'," .
                 "trk = '{$tk}',lat = '{$la}',lng = '{$ln}',aoimg1 = '{$a1}'," .
                 "aoimg2 = '{$a2}',purl1 = '{$p1}',purl2 = '{$p2}'," .
-                "dirs = '{$dr}',tips = '{$tp}',info = '{$in}' WHERE indxNo = " .
-                "{$status};";
+                "dirs = '{$dr}',tips = '{$tp}',info = '{$in}'," .
+                "eThresh = '{$et}',dThresh = '{$dt}',maWin = '{$mw}'" .
+                "WHERE indxNo = {$status};";
         } else {
             $actionreq = "INSERT IGNORE INTO HIKES (pgTitle,usrid,locale,marker," .
                 "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
@@ -81,7 +85,8 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 "tips,info) VALUES ('{$pg}','{$ud}','{$lo}','{$mr}','{$co}'," .
                 "'{$cg}','{$cn}','{$lg}','{$mi}','{$ft}','{$df}','{$fa}'," .
                 "'{$ww}','{$sn}','{$ex}','{$gx}','{$tk}','{$la}','{$ln}'," .
-                "'{$a1}','{$a2}','{$p1}','{$p2}','{$dr}','{$tp}','{$in}');";
+                "'{$a1}','{$a2}','{$p1}','{$p2}','{$dr}','{$tp}','{$in}'," .
+                "'{$et}','{$dt}','{$mw}');";
         }
         $action = mysqli_query($link, $actionreq);
         if (!$action) {
