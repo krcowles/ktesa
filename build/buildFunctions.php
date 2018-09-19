@@ -23,7 +23,7 @@
  * 
  * @return array $filename, $msg
  */
-function validateUpload($name, $fileloc, $mimetype)
+function validateUpload($name, $fileloc)
 {
     $msg = '';
     $filename = basename($_FILES[$name]['name']);
@@ -39,12 +39,6 @@ function validateUpload($name, $fileloc, $mimetype)
             $odd = "This file may be corrupted. Please correct the " .
                 "file format and re-submit, or contact Site Master.";
             die($odd);
-        }
-        if ($mimetype !== 'nocheck') {
-            if (preg_match($mimetype, $filetype) === 0) {
-                $badmime = $filetype . ": should be '{$mimetype}'";
-                die($badmime);
-            }
         }
         $saveloc = $fileloc . $filename;
         if (file_exists($saveloc)) {

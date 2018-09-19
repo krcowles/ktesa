@@ -59,7 +59,7 @@ if (isset($delgpx)) {
 $gpxfile = basename($_FILES['newgpx']['name']);
 $gpxtype = fileTypeAndLoc($gpxfile);
 if ($gpxtype[2] === 'gpx') {
-    $gpxupl = validateUpload("newgpx", "../gpx/", "/octet-stream/");
+    $gpxupl = validateUpload("newgpx", "../gpx/");
     $newgpx = $gpxupl[0];
     $_SESSION['uplmsg'] .= $gpxupl[1];
     $trkdat = makeTrackFile($newgpx, "../gpx/");

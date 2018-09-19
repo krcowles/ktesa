@@ -187,7 +187,7 @@ if ($gpsupl !== '') {
         $gpsok = false;
     }
     if ($gpsok) {
-        $upload = validateUpload("newgps", $gpstype[0], $gpstype[1]);
+        $upload = validateUpload("newgps", $gpstype[0]);
         $_SESSION['gpsmsg'] .= $upload[1];
         $newurl = $gpstype[0] . $upload[0];
         $newlnk = mysqli_real_escape_string($link, $newurl);
@@ -217,7 +217,7 @@ if ($mapupl !== '') {
         $mapok = false;
     }
     if ($mapok) {
-        $upload = validateUpload("newmap", $maptype[0], $maptype[1]);
+        $upload = validateUpload("newmap", $maptype[0]);
         $_SESSION['gpsmsg'] .= $upload[1];
         $newurl = $maptype[0] . $upload[0];
         $newlnk = mysqli_real_escape_string($link, $newurl);

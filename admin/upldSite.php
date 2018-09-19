@@ -9,7 +9,7 @@
  */
 require "../build/buildFunctions.php";
 $usite = sys_get_temp_dir() . '/';
-$upldFile = validateUpload('ufile', $usite, 'nocheck');
+$upldFile = validateUpload('ufile', $usite);
 $msg = $upldFile[1] . "<br />Directory location: " . $usite . "<br />";
 // if no upload dir at project level, create one
 if (file_exists('../upload') === false ) {
