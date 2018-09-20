@@ -94,6 +94,33 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             die("publish.php: Failed to release - HIKES update failed: " .
                 mysqli_error($link));
         }
+        // Kludge to fix nulls
+        if ($status > 0) {
+            $hikeNumber = $status;
+        }
+        else {
+            $hikeNumber = getDbRowNum($link, 'HIKES', __FILE__, __LINE__);
+        }
+        if (is_null($hike['eThresh'])) {
+            updateDbRow(
+                $link, 'HIKES', $hikeNumber, 'eThresh', 'indxNo', null,
+                __FILE__, __LINE__
+            );
+        }
+        if (is_null($hike['dThresh'])) {
+            updateDbRow(
+                $link, 'HIKES', $hikeNumber, 'dThresh', 'indxNo', null,
+                __FILE__, __LINE__
+            );
+        }
+        if (is_null($hike['maWin'])) {
+            updateDbRow(
+                $link, 'HIKES', $hikeNumber, 'maWin', 'indxNo', null,
+                __FILE__, __LINE__
+            );
+        }
+        // End Kludge
+        
         # Assign the hike number for the remaining tables based on status:
         if ($status === 0) { # this will be the newly added no.
             $indxNo = $lastHikeNo + 1;
