@@ -82,7 +82,8 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             $actionreq = "INSERT IGNORE INTO HIKES (pgTitle,usrid,locale,marker," .
                 "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
                 "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
-                "tips,info) VALUES ('{$pg}','{$ud}','{$lo}','{$mr}','{$co}'," .
+                "tips,info,eThresh,dThresh,maWin) VALUES" .
+                "('{$pg}','{$ud}','{$lo}','{$mr}','{$co}'," .
                 "'{$cg}','{$cn}','{$lg}','{$mi}','{$ft}','{$df}','{$fa}'," .
                 "'{$ww}','{$sn}','{$ex}','{$gx}','{$tk}','{$la}','{$ln}'," .
                 "'{$a1}','{$a2}','{$p1}','{$p2}','{$dr}','{$tp}','{$in}'," .
