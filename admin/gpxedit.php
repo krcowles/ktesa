@@ -36,12 +36,6 @@ if ($gpxfile !== '') {
             "{$ext}; No edits made";
         die($badext);
     }
-    $mimetype = "/octet-stream/";
-    if (preg_match($mimetype, $filetype) === 0) {
-        $badmime = $gpxfile . "has file type: " . $filetype . 
-            ": should be {$mimetype}";
-        die($badmime);
-    }
 } else {
     die("No file specified");
 }
