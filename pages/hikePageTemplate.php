@@ -28,14 +28,60 @@ require "hikePageData.php";
         type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css"
         type="text/css" rel="stylesheet" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    #overlay {
+        position: fixed;
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 2;
+        cursor: pointer;
+    }
+
+    #text{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 50px;
+        color: white;
+        transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+    }
+    </style>
+    </head>
+
     <script type="text/javascript">var ajaxDone = false;</script>
 <?php if ($newstyle) : ?>
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
 <?php endif; ?>
 </head>
-
+     
 <body> 
+
+
+<div id="overlay" onclick="off()">
+  <div id="text">Warning! This is a draft hike page. The authors have not done this hike yet. Click anywhere to remove this warning.</div>
+</div>
+
+<script>
+function on() {
+    document.getElementById("overlay").style.display = "block";
+}
+
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+on();
+</script>
+
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>	
