@@ -24,6 +24,7 @@ require "hikePageData.php";
         content="Tom Sandberg and Ken Cowles" />
     <meta name="robots"
         content="nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../styles/logo.css"
         type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css"
@@ -34,8 +35,21 @@ require "hikePageData.php";
     <script src="../scripts/canvas.js"></script>
 <?php endif; ?>
 </head>
-
+     
 <body> 
+<?php if (strpos($hikeTitle, '[Proposed]') !== false) : ?>
+<script> 
+function off() {
+    document.getElementById("overlay").style.display = "none";
+}
+</script>
+<div id="overlay" onclick="off()">
+    <div id="text">Warning! This is a draft hike page.<br />
+    The authors have not done this hike yet.<br />
+    Click anywhere to remove this warning.</div>
+</div>
+<?php endif; ?>
+
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>	
