@@ -85,17 +85,17 @@ $ticks = [];
 if (isset($elevThreshParm)) { // threshold (meters) for elevation smoothing
     $elevThresh = $elevThreshParm;
 } else {
-    $elevThresh = is_numeric($hikeEThresh) ? $hikeEThresh : 1;
+    $elevThresh = isset($hikeEThresh) ? $hikeEThresh : 1;
 }
 if (isset($distThreshParm)) { // threshold (meters) for distance smoothing
     $distThresh = $distThreshParm;
 } else {
-    $distThresh = is_numeric($hikeDThresh) ? $hikeDThresh : 1;
+    $distThresh = isset($hikeDThresh) ? $hikeDThresh : 1;
 }
 if (isset($maWindowParm)) { // moving average window size for elevation smoothing
     $maWindow = $maWindowParm;
 } else {
-    $maWindow = is_numeric($hikeMaWin) ? $hikeMaWin : 1;
+    $maWindow = isset($hikeMaWin) ? $hikeMaWin : 1;
 }
 
 // Set debug output parameter based on the URL param established in hikePageData.php
