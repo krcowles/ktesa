@@ -38,106 +38,60 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         if ($status > $lastHikeNo || $status < 0) {
                 die("publish.php: Status out-of-range: {$status}");
         }
-        if ($status > 0) { # don't add this hike, update it
-            $actionreq = "
+
+        $query = "SHOW COLUMNS FROM EHIKES;";
+        $result = mysqli_query($link, $query);
+        if (!$result) {
+            die(
+                "publish.php: EHIKE columns could not be retrieved: " .
+                mysqli_error($link) .
+                "Query: {$query}" . 
+                "File: " . __FILE__ . "Line:" . __LINE__
+            );
+        }
+        
+        if (mysqli_num_rows($result) === 0) {
+            echo "<p style=color:brown>SHOW COLUMNS has no data!</p>" . 
+                "File: " . __FILE__ . "Line:" . __LINE__;
+        } else { //Build the query strings for both UPDATE and INSERT case
+            $updateQuery = "
                 UPDATE HIKES
                 INNER JOIN EHIKES ON (EHIKES.indxNo = {$hikeNo})
-                SET
-                    HIKES.pgTitle = EHIKES.pgTitle,
-                    HIKES.usrid = EHIKES.usrid,
-                    HIKES.locale = EHIKES.locale,
-                    HIKES.marker = EHIKES.marker,
-                    HIKES.collection = EHIKES.collection,
-                    HIKES.cgroup = EHIKES.cgroup,
-                    HIKES.cname = EHIKES.cname,
-                    HIKES.logistics = EHIKES.logistics,
-                    HIKES.miles = EHIKES.miles,
-                    HIKES.feet = EHIKES.feet,
-                    HIKES.diff = EHIKES.diff,
-                    HIKES.fac = EHIKES.fac,
-                    HIKES.wow = EHIKES.wow,
-                    HIKES.seasons = EHIKES.seasons,
-                    HIKES.expo = EHIKES.expo,
-                    HIKES.gpx = EHIKES.gpx,
-                    HIKES.trk = EHIKES.trk,
-                    HIKES.lat = EHIKES.lat,
-                    HIKES.lng = EHIKES.lng,
-                    HIKES.aoimg1 = EHIKES.aoimg1,
-                    HIKES.aoimg2 = EHIKES.aoimg2,
-                    HIKES.purl1 = EHIKES.purl1,
-                    HIKES.purl2 = EHIKES.purl2,
-                    HIKES.dirs = EHIKES.dirs,
-                    HIKES.tips = EHIKES.tips,
-                    HIKES.info = EHIKES.info,
-                    HIKES.eThresh = EHIKES.eThresh,
-                    HIKES.dThresh = EHIKES.dThresh,
-                    HIKES.maWin = EHIKES.maWin
-                WHERE HIKES.indxNo = {$status};";
+                SET ";
+            $insertQuery = "INSERT INTO HIKES (";
+            while($column = mysqli_fetch_row($result)) {
+                if (($column[0] !== "indxNo") &&
+                    ($column[0] !== "stat")) {
+                    $updateQuery .= "HIKES.{$column[0]} = EHIKES.{$column[0]}, ";
+                    $insertQuery .= "{$column[0]}, ";
+                }
+            }
+            $updateQuery = rtrim($updateQuery,", "); // remove final comma and space
+            $insertQuery = rtrim($insertQuery,", "); // remove final comma and space
+            $updateQuery .= " WHERE HIKES.indxNo = {$status};";
+            $insertQuery .= ") SELECT ";
+            
+            if (!mysqli_data_seek($result, 0)) {
+                die("Failed seek </br>" . 
+                "File: " . __FILE__ . "Line:" . __LINE__);
+            }
+            while($column = mysqli_fetch_row($result)) {
+                if (($column[0] !== "indxNo") &&
+                    ($column[0] !== "stat")) {
+                    $insertQuery .= "{$column[0]}, ";
+                }
+            }
+            $insertQuery = rtrim($insertQuery,", "); // remove final comma and space
+            $insertQuery .= " FROM EHIKES WHERE indxNo = {$hikeNo};";
+            echo "insertQuery: {$insertQuery}</br>";
+            echo "updateQuery: {$updateQuery}</br>";
+        }
+        mysqli_free_result($result);
+
+        if ($status > 0) { # don't add this hike, update it
+            $actionreq = $updateQuery;
         } else {
-            $actionreq = "
-                INSERT INTO HIKES (
-                    pgTitle,
-                    usrid,
-                    locale,
-                    marker,
-                    collection,
-                    cgroup,
-                    cname,
-                    logistics,
-                    miles,
-                    feet,
-                    diff,
-                    fac,
-                    wow,
-                    seasons,
-                    expo,
-                    gpx,
-                    trk,
-                    lat,
-                    lng,
-                    aoimg1,
-                    aoimg2,
-                    purl1,
-                    purl2,
-                    dirs,
-                    tips,
-                    info,
-                    eThresh,
-                    dThresh,
-                    maWin
-                )
-                SELECT
-                    pgTitle,
-                    usrid,
-                    locale,
-                    marker,
-                    collection,
-                    cgroup,
-                    cname,
-                    logistics,
-                    miles,
-                    feet,
-                    diff,
-                    fac,
-                    wow,
-                    seasons,
-                    expo,
-                    gpx,
-                    trk,
-                    lat,
-                    lng,
-                    aoimg1,
-                    aoimg2,
-                    purl1,
-                    purl2,
-                    dirs,
-                    tips,
-                    info,
-                    eThresh,
-                    dThresh,
-                    maWin
-                FROM EHIKES WHERE indxNo = {$hikeNo};
-            ";
+            $actionreq = $insertQuery;
         }
         $action = mysqli_query($link, $actionreq);
         if (!$action) {
