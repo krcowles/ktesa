@@ -38,88 +38,113 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         if ($status > $lastHikeNo || $status < 0) {
                 die("publish.php: Status out-of-range: {$status}");
         }
-        $pg = mysqli_real_escape_string($link, $hike['pgTitle']);
-        $ud = mysqli_real_escape_string($link, $hike['usrid']);
-        $lo = mysqli_real_escape_string($link, $hike['locale']);
-        $mr = mysqli_real_escape_string($link, $hike['marker']);
-        $co = mysqli_real_escape_string($link, $hike['collection']);
-        $cg = mysqli_real_escape_string($link, $hike['cgroup']);
-        $cn = mysqli_real_escape_string($link, $hike['cname']);
-        $lg = mysqli_real_escape_string($link, $hike['logistics']);
-        $mi = mysqli_real_escape_string($link, $hike['miles']);
-        $ft = mysqli_real_escape_string($link, $hike['feet']);
-        $df = mysqli_real_escape_string($link, $hike['diff']);
-        $fa = mysqli_real_escape_string($link, $hike['fac']);
-        $ww = mysqli_real_escape_string($link, $hike['wow']);
-        $sn = mysqli_real_escape_string($link, $hike['seasons']);
-        $ex = mysqli_real_escape_string($link, $hike['expo']);
-        $gx = mysqli_real_escape_string($link, $hike['gpx']);
-        $tk = mysqli_real_escape_string($link, $hike['trk']);
-        $la = mysqli_real_escape_string($link, $hike['lat']);
-        $ln = mysqli_real_escape_string($link, $hike['lng']);
-        $a1 = mysqli_real_escape_string($link, $hike['aoimg1']);
-        $a2 = mysqli_real_escape_string($link, $hike['aoimg2']);
-        $p1 = mysqli_real_escape_string($link, $hike['purl1']);
-        $p2 = mysqli_real_escape_string($link, $hike['purl2']);
-        $dr = mysqli_real_escape_string($link, $hike['dirs']);
-        $tp = mysqli_real_escape_string($link, $hike['tips']);
-        $in = mysqli_real_escape_string($link, $hike['info']);
-        $et = mysqli_real_escape_string($link, $hike['eThresh']);
-        $dt = mysqli_real_escape_string($link, $hike['dThresh']);
-        $mw = mysqli_real_escape_string($link, $hike['maWin']);
         if ($status > 0) { # don't add this hike, update it
-            $actionreq = "UPDATE IGNORE HIKES SET pgTitle = '{$pg}',usrid = '{$ud}'," .
-                "locale = '{$lo}',marker = '{$mr}',collection = '{$co}'," .
-                "cgroup = '{$cg}',cname = '{$cn}',logistics = '{$lg}'," .
-                "miles = '{$mi}',feet = '{$ft}',diff = '{$df}',fac = '{$fa}'," .
-                "wow = '{$ww}',seasons = '{$sn}',expo = '{$ex}',gpx = '{$gx}'," .
-                "trk = '{$tk}',lat = '{$la}',lng = '{$ln}',aoimg1 = '{$a1}'," .
-                "aoimg2 = '{$a2}',purl1 = '{$p1}',purl2 = '{$p2}'," .
-                "dirs = '{$dr}',tips = '{$tp}',info = '{$in}'," .
-                "eThresh = '{$et}',dThresh = '{$dt}',maWin = '{$mw}'" .
-                "WHERE indxNo = {$status};";
+            $actionreq = "
+                UPDATE HIKES
+                INNER JOIN EHIKES ON (EHIKES.indxNo = {$hikeNo})
+                SET
+                    HIKES.pgTitle = EHIKES.pgTitle,
+                    HIKES.usrid = EHIKES.usrid,
+                    HIKES.locale = EHIKES.locale,
+                    HIKES.marker = EHIKES.marker,
+                    HIKES.collection = EHIKES.collection,
+                    HIKES.cgroup = EHIKES.cgroup,
+                    HIKES.cname = EHIKES.cname,
+                    HIKES.logistics = EHIKES.logistics,
+                    HIKES.miles = EHIKES.miles,
+                    HIKES.feet = EHIKES.feet,
+                    HIKES.diff = EHIKES.diff,
+                    HIKES.fac = EHIKES.fac,
+                    HIKES.wow = EHIKES.wow,
+                    HIKES.seasons = EHIKES.seasons,
+                    HIKES.expo = EHIKES.expo,
+                    HIKES.gpx = EHIKES.gpx,
+                    HIKES.trk = EHIKES.trk,
+                    HIKES.lat = EHIKES.lat,
+                    HIKES.lng = EHIKES.lng,
+                    HIKES.aoimg1 = EHIKES.aoimg1,
+                    HIKES.aoimg2 = EHIKES.aoimg2,
+                    HIKES.purl1 = EHIKES.purl1,
+                    HIKES.purl2 = EHIKES.purl2,
+                    HIKES.dirs = EHIKES.dirs,
+                    HIKES.tips = EHIKES.tips,
+                    HIKES.info = EHIKES.info,
+                    HIKES.eThresh = EHIKES.eThresh,
+                    HIKES.dThresh = EHIKES.dThresh,
+                    HIKES.maWin = EHIKES.maWin
+                WHERE HIKES.indxNo = {$status};";
         } else {
-            $actionreq = "INSERT IGNORE INTO HIKES (pgTitle,usrid,locale,marker," .
-                "collection,cgroup,cname,logistics,miles,feet,diff,fac,wow," .
-                "seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs," .
-                "tips,info,eThresh,dThresh,maWin) VALUES" .
-                "('{$pg}','{$ud}','{$lo}','{$mr}','{$co}'," .
-                "'{$cg}','{$cn}','{$lg}','{$mi}','{$ft}','{$df}','{$fa}'," .
-                "'{$ww}','{$sn}','{$ex}','{$gx}','{$tk}','{$la}','{$ln}'," .
-                "'{$a1}','{$a2}','{$p1}','{$p2}','{$dr}','{$tp}','{$in}'," .
-                "'{$et}','{$dt}','{$mw}');";
+            $actionreq = "
+                INSERT INTO HIKES (
+                    pgTitle,
+                    usrid,
+                    locale,
+                    marker,
+                    collection,
+                    cgroup,
+                    cname,
+                    logistics,
+                    miles,
+                    feet,
+                    diff,
+                    fac,
+                    wow,
+                    seasons,
+                    expo,
+                    gpx,
+                    trk,
+                    lat,
+                    lng,
+                    aoimg1,
+                    aoimg2,
+                    purl1,
+                    purl2,
+                    dirs,
+                    tips,
+                    info,
+                    eThresh,
+                    dThresh,
+                    maWin
+                )
+                SELECT
+                    pgTitle,
+                    usrid,
+                    locale,
+                    marker,
+                    collection,
+                    cgroup,
+                    cname,
+                    logistics,
+                    miles,
+                    feet,
+                    diff,
+                    fac,
+                    wow,
+                    seasons,
+                    expo,
+                    gpx,
+                    trk,
+                    lat,
+                    lng,
+                    aoimg1,
+                    aoimg2,
+                    purl1,
+                    purl2,
+                    dirs,
+                    tips,
+                    info,
+                    eThresh,
+                    dThresh,
+                    maWin
+                FROM EHIKES WHERE indxNo = {$hikeNo};
+            ";
         }
         $action = mysqli_query($link, $actionreq);
         if (!$action) {
             die("publish.php: Failed to release - HIKES update failed: " .
+                "query: {$actionreq} " .
                 mysqli_error($link));
         }
-        // Kludge to fix nulls
-        if ($status > 0) {
-            $hikeNumber = $status;
-        }
-        else {
-            $hikeNumber = getDbRowNum($link, 'HIKES', __FILE__, __LINE__);
-        }
-        if (is_null($hike['eThresh'])) {
-            updateDbRow(
-                $link, 'HIKES', $hikeNumber, 'eThresh', 'indxNo', null,
-                __FILE__, __LINE__
-            );
-        }
-        if (is_null($hike['dThresh'])) {
-            updateDbRow(
-                $link, 'HIKES', $hikeNumber, 'dThresh', 'indxNo', null,
-                __FILE__, __LINE__
-            );
-        }
-        if (is_null($hike['maWin'])) {
-            updateDbRow(
-                $link, 'HIKES', $hikeNumber, 'maWin', 'indxNo', null,
-                __FILE__, __LINE__
-            );
-        }
-        // End Kludge
         
         # Assign the hike number for the remaining tables based on status:
         if ($status === 0) { # this will be the newly added no.
