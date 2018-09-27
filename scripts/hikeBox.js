@@ -17,10 +17,23 @@ if (winWidth < mapWidth) {
     $box.css('left',newHikeBoxLeft);
 }
 // Determine last hike name & hike type:
+var lastHikeIndx;
+var $lastHikeRow;
+var newHikeName;
 var $hikeRows = $('#refTbl tbody tr');
-var lastHikeIndx = $hikeRows.length - 1; // offset 1 for header row
-var $lastHikeRow = $hikeRows.eq(lastHikeIndx).find('td');
-var newHikeName = $lastHikeRow.eq(0).text();
+var tblOffset = 1;  // offset 1 for header row
+while (tblOffset !== $hikeRows.length - 1) {
+    lastHikeIndx = $hikeRows.length - tblOffset;
+    $lastHikeRow = $hikeRows.eq(lastHikeIndx).find('td');
+    newHikeName = $lastHikeRow.eq(0).text();
+    newHikeName = newHikeName.trim();
+    var pat = newHikeName.split("]");
+    if (pat[0] === '[Proposed') {
+        tblOffset += 1;
+    } else {
+        break;
+    }
+}
 if ($hikeRows.eq(lastHikeIndx).hasClass('clustered')) {
     newHikeName = $hikeRows.eq(lastHikeIndx).data('tool'); // use cluster name
 }
