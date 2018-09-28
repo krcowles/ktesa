@@ -7,11 +7,13 @@ body {
 	background-color: #dfdfdf; }
 .container {
 	position: relative; }
+#geoSetting {
+	display: none; }
 #geoCtrl {
 	display: none;
 	position: absolute;
-	top: 70px;
-	left: 120px;
+	top: 140px;
+	left: 52px;
 	width: 140px;
 	height: 40px;
 	padding-left: 16px;
@@ -19,12 +21,24 @@ body {
 	color: DarkGreen;
 	font-weight: bold;
 	font-size: 18px;
-	background-color: white;
+	background-color:  #eff5ef;
 	z-index: 100; }
 #geoCtrl:hover {
 	cursor: pointer;
 	background-color: Brown;
 	color: White; }
+#newHikeBox {
+	display: none;
+	position: absolute;
+	top: 210px;
+	left: 440px;
+	width: 110px;
+	height: 50px;
+	background-color: #D1E5CF;
+	color: Blue;
+	text-align: center;
+	padding-top: 10px;
+	z-index: 100; }
 #map {
 	margin-left: auto;
 	margin-right: auto;
@@ -106,18 +120,3 @@ td {
 	border-width: 3px;
 	border-color: MidnightBlue;
 	cursor: pointer; }
-#geoSetting {
-	display: none; }
-#newHikeBox {
-	display: none;
-	position: absolute;
-	top: 140px;
-	left: 440px;
-	width: 110px;
-	height: 50px;
-	background-color: #D1E5CF;
-	color: Blue;
-	text-align: center;
-	padding-top: 10px;
-	z-index: 100; }
-

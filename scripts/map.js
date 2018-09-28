@@ -24,7 +24,7 @@ var mapTick = {   // custom tick-mark symbol for tracks
 var msg;  // debug message string
 var turnOnGeo = $('#geoSetting').text(); // get the setting from the html, compliments php
 
-if ( turnOnGeo === 'ON' ) {
+if ( turnOnGeo.trim() === 'ON' ) {
     $('#geoCtrl').css('display','block');
     $('#geoCtrl').on('click', setupLoc);
 }
