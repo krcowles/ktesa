@@ -31,7 +31,7 @@ if ( turnOnGeo.trim() === 'ON' ) {
 
 // icons for geolocation:
 var smallGeo = '../images/starget.png';
-var medGeo = '../images/grnTarget.png';
+var medGeo = '../images/purpleTarget.png';
 var lgGeo = '../images/ltarget.png';
 
 var mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
