@@ -63,7 +63,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
         </div>
         <p id="trail">Sortable Table of Hikes</p>
     <?php else : ?>
-        <div id="map"></div>
+        <div id="map" style="width:100%;"></div>
     <?php endif; ?>
     <p id="dbug"></p>
     <div id="refTbl">
@@ -75,7 +75,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
     <div style="margin-top:20px;"><p id="metric" class="dressing">
         Click here for metric units</p></div>
 <?php else : ?>
-    <div id="map" style="width:100%"></div>
+    <div id="map" style="width:100%;"></div>
     <div id="refTbl">;
     <?php include "../php/makeTables.php"; ?>
     </div>
