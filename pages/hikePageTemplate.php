@@ -187,6 +187,7 @@ if ($bop !== '') {
 <?php if ($newstyle) : ?>
 <script src="../scripts/dynamicChart.js"></script>
 <?php endif; ?>
+<?php if (isset($tmpMap)) : ?>
 <script type="text/javascript">
     $(document).ready(function() {
         $.ajax({
@@ -201,6 +202,7 @@ if ($bop !== '') {
         });
     });
 </script>
+<?php endif; ?>
 
 </body>
 </html>
