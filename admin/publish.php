@@ -67,8 +67,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
     }
     if ($status > 0) { // this is an existing hike, UPDATE its record in HIKES
         $query = "
-            UPDATE HIKES
-            INNER JOIN EHIKES ON (EHIKES.indxNo = {$hikeNo})
+            UPDATE HIKES, EHIKES
             SET ";
         while($column = mysqli_fetch_row($result)) {
             if (($column[0] !== "indxNo") &&
@@ -77,7 +76,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             }
         }
         $query = rtrim($query,", "); // remove final comma and space
-        $query .= " WHERE HIKES.indxNo = {$status};";
+        $query .= " WHERE HIKES.indxNo = {$status} AND EHIKES.indxNo = {$hikeNo};";
     }
     else { // this is a new hike, INSERT its record into HIKES
         $query = "INSERT INTO HIKES (";
