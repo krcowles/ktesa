@@ -25,7 +25,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
 <div style="margin-left:16px;font-size:22px">
     <?php
     $lastHikeNo = getDbRowNum($link, 'HIKES', __FILE__, __LINE__);
-    $query = "SELECT * FROM EHIKES WHERE indxNo = {$hikeNo};";
+    $query = "SELECT stat FROM EHIKES WHERE indxNo = {$hikeNo};";
     $result = mysqli_query($link, $query);
     if (!$result) {
         die("EHIKE could not be retrieved: " .
@@ -104,14 +104,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $query .= " FROM EHIKES WHERE indxNo = {$hikeNo};";
     }
 
-    $result = mysqli_query($link, $query);
-    if (!$result) {
-        die("Failed to publish: " .
-            "query: {$query} " .
-            mysqli_error($link) . 
-            "  File: " . __FILE__ . "  Line:" . __LINE__
-        );
-    }
+    doQuery($link, $query, __FILE__, __LINE__);
     
     # Assign the hike number for the remaining tables based on status:
     if ($status === 0) { # this will be the newly added no.
@@ -161,12 +154,8 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
 
     # ---------------------  GPSDAT -------------------
     if ($status > 0) { # eliminate any existing data
-        $delreq = "DELETE FROM GPSDAT WHERE indxNo = '{$status}';";
-        $del = mysqli_query($link, $delreq);
-        if (!$del) {
-            die("publish.php: Failed to delete data from GPSDAT for hike " .
-            "{$status}: " . mysqli_error($link));
-        }
+        $query = "DELETE FROM GPSDAT WHERE indxNo = '{$status}';";
+        doQuery($link, $query, __FILE__, __LINE__);
     }
     $query =
         "INSERT INTO GPSDAT
@@ -174,23 +163,12 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         SELECT
         {$indxNo},datType,label,url,clickText
         FROM EGPSDAT WHERE indxNo = {$hikeNo};";
-    $result = mysqli_query($link, $query);
-    if (!$result) {
-        die("Failed to publish: " .
-            "query: {$query} " .
-            mysqli_error($link) . 
-            "  File: " . __FILE__ . "  Line:" . __LINE__
-        );
-    }
+    doQuery($link, $query, __FILE__, __LINE__);
     
     # ---------------------  REFS -------------------
     if ($status > 0) {
-        $delreq = "DELETE FROM REFS WHERE indxNo = '{$status}';";
-        $del = mysqli_query($link, $delreq);
-        if (!$del) {
-            die("publish.php: Failed to delete data from REFS for hike " .
-            "{$status}: " . mysqli_error($link));
-        }
+        $query = "DELETE FROM REFS WHERE indxNo = '{$status}';";
+        doQuery($link, $query, __FILE__, __LINE__);
     }
     $query =
         "INSERT INTO REFS
@@ -198,23 +176,12 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         SELECT
         {$indxNo},rtype,rit1,rit2
         FROM EREFS WHERE indxNo = {$hikeNo};";
-    $result = mysqli_query($link, $query);
-    if (!$result) {
-        die("Failed to publish: " .
-            "query: {$query} " .
-            mysqli_error($link) . 
-            "  File: " . __FILE__ . "  Line:" . __LINE__
-        );
-    }
+    doQuery($link, $query, __FILE__, __LINE__);
 
     # ---------------------  TSV -------------------
     if ($status > 0) {
-        $delreq = "DELETE FROM TSV WHERE indxNo = '{$status}';";
-        $del = mysqli_query($link, $delreq);
-        if (!$del) {
-            die("publish.php: Failed to delete pics from TSV for hike " .
-            "{$status}: " . mysqli_error($link));
-        }
+        $query = "DELETE FROM TSV WHERE indxNo = '{$status}';";
+        doQuery($link, $query, __FILE__, __LINE__);
     }
     $query =
         "INSERT INTO TSV
@@ -224,24 +191,13 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         {$indxNo},folder,title,hpg,mpg,`desc`,lat,lng,
         thumb,alblnk,date,mid,imgHt,imgWd,iclr,org
         FROM ETSV WHERE indxNo = {$hikeNo};";
-    $result = mysqli_query($link, $query);
-    if (!$result) {
-        die("Failed to publish: " .
-            "query: {$query} " .
-            mysqli_error($link) . 
-            "  File: " . __FILE__ . "  Line:" . __LINE__
-        );
-    }
+    doQuery($link, $query, __FILE__, __LINE__);
 
     /* Regardless of state, remove this hike from EHIKES et al:
      * Foreign Keys ensures deletion in remaining E-tables
      */
-    $remHikeReq = "DELETE FROM EHIKES WHERE indxNo = {$hikeNo};";
-    $remHike = mysqli_query($link, $remHikeReq);
-    if (!$remHike) {
-        die("publish.php: Failed to remove hike {$hikeNo} from EHIKES: " .
-            mysqli_error($link));
-    }
+    $query = "DELETE FROM EHIKES WHERE indxNo = {$hikeNo};";
+    doQuery($link, $query, __FILE__, __LINE__);
     echo "<p>Hike has been removed from the list of New/In-Edit Hikes</p>";
     ?>
     <p>E-Hike <?php echo $hikeNo;?> Has Been Released to the Main Site and 
