@@ -158,6 +158,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
      * deleted during edit, therefore, remove ALL the old data if the
      * hike was type 'pub'. Insert new data (no UPDATEs, only INSERTs)
      */
+
     # ---------------------  GPSDAT -------------------
     if ($status > 0) { # eliminate any existing data
         $delreq = "DELETE FROM GPSDAT WHERE indxNo = '{$status}';";
@@ -167,26 +168,21 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             "{$status}: " . mysqli_error($link));
         }
     }
-    $gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = {$hikeNo};";
-    $gpsdat = mysqli_query($link, $gpsreq);
-    if (!$gpsdat) {
-        die("publish.php: Failed to extract GPS data from EGPSDAT: " .
-            mysqli_error($link));
+    $query =
+        "INSERT INTO GPSDAT
+        (indxNo,datType,label,url,clickText) 
+        SELECT
+        {$indxNo},datType,label,url,clickText
+        FROM EGPSDAT WHERE indxNo = {$hikeNo};";
+    $result = mysqli_query($link, $query);
+    if (!$result) {
+        die("Failed to publish: " .
+            "query: {$query} " .
+            mysqli_error($link) . 
+            "  File: " . __FILE__ . "  Line:" . __LINE__
+        );
     }
-    while ($ginfo = mysqli_fetch_assoc($gpsdat)) {
-        $dat = mysqli_real_escape_string($link, $ginfo['datType']);
-        $lbl = mysqli_real_escape_string($link, $ginfo['label']);
-        $loc = mysqli_real_escape_string($link, $ginfo['url']);
-        $cot = mysqli_real_escape_string($link, $ginfo['clickText']);
-        $addreq = "INSERT INTO GPSDAT (indxNo,datType,label,url,clickText) " .
-            "VALUES ('{$indxNo}','{$dat}','{$lbl}','{$loc}','{$cot}');";
-        $add = mysqli_query($link, $addreq);
-        if (!$add) {
-            die("publish.php: Failed to add new GPSDAT for hike {$indxNo}: " .
-                mysqli_error($link));
-        }
-    }
-    mysqli_free_result($gpsdat);
+    
     # ---------------------  REFS -------------------
     if ($status > 0) {
         $delreq = "DELETE FROM REFS WHERE indxNo = '{$status}';";
@@ -196,25 +192,21 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             "{$status}: " . mysqli_error($link));
         }
     }
-    $refreq = "SELECT * FROM EREFS WHERE indxNo = {$hikeNo};";
-    $refdat = mysqli_query($link, $refreq);
-    if (!$refdat) {
-        die("publish.php: Failed to extract references from EREFS: " .
-            mysqli_error($link));
+    $query =
+        "INSERT INTO REFS
+        (indxNo,rtype,rit1,rit2) 
+        SELECT
+        {$indxNo},rtype,rit1,rit2
+        FROM EREFS WHERE indxNo = {$hikeNo};";
+    $result = mysqli_query($link, $query);
+    if (!$result) {
+        die("Failed to publish: " .
+            "query: {$query} " .
+            mysqli_error($link) . 
+            "  File: " . __FILE__ . "  Line:" . __LINE__
+        );
     }
-    while ($ref = mysqli_fetch_assoc($refdat)) {
-        $rt = mysqli_real_escape_string($link, $ref['rtype']);
-        $r1 = mysqli_real_escape_string($link, $ref['rit1']);
-        $r2 = mysqli_real_escape_string($link, $ref['rit2']);
-        $addrefreq = "INSERT INTO REFS (indxNo,rtype,rit1,rit2) VALUES " .
-            "('{$indxNo}','{$rt}','{$r1}','{$r2}');";
-        $addref = mysqli_query($link, $addrefreq);
-        if (!$addref) {
-            die("publish.php: Failed to add references for hike {$indxNo}: " .
-                mysqli_error($link));
-        }
-    }
-    mysqli_free_result($refdat);
+
     # ---------------------  TSV -------------------
     if ($status > 0) {
         $delreq = "DELETE FROM TSV WHERE indxNo = '{$status}';";
@@ -224,15 +216,21 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             "{$status}: " . mysqli_error($link));
         }
     }
-
-    $xfrTsvReq = "INSERT INTO TSV (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
-        "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) SELECT '{$indxNo}',folder,title," .
-        "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org FROM " .
-        "ETSV WHERE indxNo = {$hikeNo};";
-    $xfrTsv = mysqli_query($link, $xfrTsvReq);
-    if (!$xfrTsv) {
-        die("publish.php: Failed to move ETSV data into TSV for hike {$hikeNo}: " .
-            mysqli_error($link));
+    $query =
+        "INSERT INTO TSV
+        (indxNo,folder,title,hpg,mpg,`desc`,lat,lng,
+        thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) 
+        SELECT
+        {$indxNo},folder,title,hpg,mpg,`desc`,lat,lng,
+        thumb,alblnk,date,mid,imgHt,imgWd,iclr,org
+        FROM ETSV WHERE indxNo = {$hikeNo};";
+    $result = mysqli_query($link, $query);
+    if (!$result) {
+        die("Failed to publish: " .
+            "query: {$query} " .
+            mysqli_error($link) . 
+            "  File: " . __FILE__ . "  Line:" . __LINE__
+        );
     }
 
     /* Regardless of state, remove this hike from EHIKES et al:
