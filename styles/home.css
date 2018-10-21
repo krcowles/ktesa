@@ -89,6 +89,9 @@ legend {
     color: DarkGreen;
     font-size: 18px;
 }
+#logins {
+    margin-left: 8px;
+}
 #loggedin {
     margin-left: 8px;
 }
@@ -104,14 +107,14 @@ legend {
 #regusrs {
     display: none;
 }
-div #masters button, div #regusers button {
+div #masters button, div #regusrs button {
     height: 32px;
     font-size: 16px;
     background-color: #eff5ef;
     margin-left: 6px;
     margin-right: 6px;
 }
-div #regusers button:hover {
+div #regusrs button:hover {
     cursor: pointer;
     color: brown;
     background-color: #d5f8dc;
