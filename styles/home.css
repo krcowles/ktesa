@@ -23,8 +23,9 @@ img#tompic {
     margin-top: -6px;
 }
 #banner {
-    height: 58px;
+    height: 54px;
     margin-left: 8px;
+    margin-bottom: 6px;
     border-style: outset;
     border-width: 2px;
     border-color: #d4e8d4;
@@ -40,51 +41,20 @@ img#tompic {
     font-weight: bold;
     color: #302dd3;
 }
+#choose {
+    margin-bottom: 0px;
+}
 #selections {
     margin: 0px;
     color: brown;
     text-align: center;
     font-size: 26px;
 }
-#intro {
-    margin-left: 8px;
-}
-#features {
-    margin-left: 8px;
-    margin-top: 30px;
-}
-#expect {
-    padding-left: 8px;
-    font-weight: bold;
-    text-decoration: underline;
-    color: DarkBlue;
-    font-size: 20px;
-}
-#expl {
-    padding-left: 8px;
-}
-#intro {
-    margin-left: 8px;
-}
-#features {
-    margin-left: 8px;
-    margin-top: 30px;
-}
-#expect {
-    padding-left: 8px;
-    font-weight: bold;
-    text-decoration: underline;
-    color: DarkBlue;
-    font-size: 20px;
-}
-#expl {
-    padding-left: 8px;
-}
 #settings {
     margin-left: auto;
     margin-right: auto;
 }
-fieldset {
+fieldset#mtype {
     height: 54px;
 }
 legend {
@@ -93,79 +63,103 @@ legend {
 #tbl {
     margin-left: 28px;
 }
-button {
+#tbl,#tnm,#bigm {
     background-color: #eff5ef;
     font-size: 16px;
     width: 160px;
     height: 36px;
 }
-button:hover {
+#tbl:hover, #tnm:hover, #bigm:hover, #sub2:hover {
     cursor: pointer;
     color: brown;
     background-color: #d5f8dc;
 }	
-#regusrs {
-    display: none;
+#intro {
+    margin-left: 8px;
 }
-#masters {
-    display: none;
+#introp {
+    margin-bottom: 0px;
 }
-#sub2 {
-    font-size: 16px;
+#features {
+    clear: right;
+    margin-top: 16px;
+    margin-left: 8px;
 }
 #expOpt {
     color: DarkGreen;
     font-size: 18px;
 }
+#loggedin {
+    margin-left: 8px;
+}
+.boldtxt {
+    font-weight: bold;
+}
+#sub2 {
+    height: 28px;
+    width: 140px;
+    font-size: 16px;
+    font-style: bold;
+}
+#regusrs {
+    display: none;
+}
+div #masters button, div #regusers button {
+    height: 32px;
+    font-size: 16px;
+    background-color: #eff5ef;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+div #regusers button:hover {
+    cursor: pointer;
+    color: brown;
+    background-color: #d5f8dc;
+}
 #usreds {
     width: 560px;
 }
-#mstreds {
-    width: 510px;
+#masters {
+    display: none;
 }
-.hilites {
-    font-size: 18px;
-    font-style: italic;
-    color: DarkBlue; }
-#turnon:hover {
-    color: Brown; }
-#turnoff:hover {
-    color: Brown; }
-#more {
-    display: none; }
-ul {
-    position: relative;
-    top: -10px; }
+#mstreds {
+    width: 540px;
+}
+div #masters button:hover {
+    cursor: pointer;
+    color: brown;
+    background-color: #d5f8dc;
+}
+#expect {
+    padding-left: 8px;
+    font-weight: bold;
+    text-decoration: underline;
+    color: DarkBlue;
+    font-size: 20px;
+}
+#expl {
+    padding-left: 8px;
+}
+.maindisp {
+    color: darkblue;
+}
 .dashed {
     list-style-type: disc;
-    list-style-position: inside; }
+    list-style-position: inside;
+}
 #itals {
-    color: DarkBlue; }
-#closeNote {
-    color: DarkGreen; }
-.strtup {
-    width: 140px;
-    height: 40px;
-    font-size: 18px;
-    text-align: center;
     color: DarkBlue;
-    background-color: white;
-    border-style: solid;
-    border-width: 2px;
-    border-color: black; }
-
+}
 #disclaimers {
     margin-top: 12px;
     margin-bottom: 15px;
-    padding: 8px; }
+}
 #disasters {
     list-style-type: square;
     width: 960px;
     margin-top: 0px;
-    margin-bottom: 20px; }
-#linkNote {
-    padding-left: 12px;
-    padding-right: 6px; }
+    margin-bottom: 20px;
+}
 #closer {
     margin-top: 20px;
     margin-left: 8px;
@@ -177,4 +171,9 @@ ul {
     border-style: outset;
     border-width: 2px;
     border-color: #c9d7e8;
-    text-align: center; }
+    text-align: center;
+}
+ul {
+    position: relative;
+    top: -10px;
+}

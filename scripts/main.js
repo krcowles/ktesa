@@ -210,14 +210,15 @@ $('#auxfrm').submit( function(ev) {
     } // end of else not master key
 });
 
-$('#turnon').on('click', function() {
-    $(this).css('display','none');
-    $('#more').slideToggle();
+// Go to display page buttons:
+$('#tbl').on('click', function() {
+    window.open("../pages/mapPg.php?tbl=T","_blank");
 });
-
-$('#turnoff').on('click', function() {
-    $('#more').slideToggle();
-    $('#turnon').css('display','block');
+$('#tnm').on('click', function() {
+    window.open("../pages/mapPg.php?tbl=D");
+});
+$('#bigm').on('click', function() {
+    window.open("../pages/mapPg.php?tbl=M");
 });
 
 }); // end of page-loading wait statement
