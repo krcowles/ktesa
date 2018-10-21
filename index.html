@@ -7,7 +7,7 @@
     <meta name="description" content="KTESA Home Site" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="styles/main.css" type="text/css" rel="stylesheet" />
+    <link href="styles/home.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 
@@ -17,6 +17,24 @@
     <p id="banner">Welcome to Tom and Ken's <strong>New Mexico Hiking
     Adventures!</strong>
     </p>
+    <div id="choose">
+        <p id="selections">Show me the hikes!</p>
+        <form id="mainfrm" target="_blank" action="pages/mapPg.php" method="GET">
+            <div id="settings">
+                <fieldset id="mtype">
+                    <legend>Page Type</legend> 
+                    <button id="tbl"><strong>Table Only</strong></button>
+                    <button id="tnm"><strong>Map w/Table</strong></button>
+                    <button id="bigm"><strong>Full Page Map</strong></button>
+                    <!--
+                    <input type="radio" name="tbl" value="T" /> Table Only&nbsp;&nbsp;
+                    <input type="radio" name="tbl" value="D" checked="checked" /> Map W/ Table&nbsp;&nbsp;
+                    <input type="radio" name="tbl" value="M" /> Full Page Map
+                    -->
+                </fieldset>
+            </div>
+        </form>
+    </div>
     <div id="intro">
         <p>The intention of this site is to provide you, the viewer, a look at 
         a variety of hikes, all undertaken by the authors in <em>The Land of 
@@ -46,26 +64,7 @@
         <p id="turnon" class="hilites">
             More detail on site features... (Recommended for first-time users)
         </p>
-        <form id="mainfrm" target="_blank" action="pages/mapPg.php" method="GET">
-            <div id="settings">
-                <fieldset id="gloc">
-                    <legend>Geolocation</legend>
-                    <input type="radio" name="geo" value="ON" />ON&nbsp;&nbsp;&nbsp;
-                    <input type="radio" name="geo" value="OFF" checked="checked" />OFF
-                </fieldset>
-                <fieldset id="mtype">
-                    <legend>Page Type</legend>  
-                    <input type="radio" name="tbl" value="T" /> Table Only&nbsp;&nbsp;
-                    <input type="radio" name="tbl" value="D" checked="checked" /> Map W/ Table&nbsp;&nbsp;
-                    <input type="radio" name="tbl" value="M" /> Full Page Map
-                </fieldset>
-                <fieldset id="go">
-                    <legend>Submit</legend>
-                    <input style="color:DarkGreen;font-size:14px;" 
-                        id="exe" type="submit" value="Display Page">
-                </fieldset>
-            </div>
-        </form><br />
+    
         <form id="auxfrm" action="#">
             <div id="logins"><em id="expOpt">
                 Registered users can add (and edit) their own hikes...</em><br />
