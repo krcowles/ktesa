@@ -1,15 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="MyGPSFiles" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <trk>
-    <name>AlamoVistaProposed</name>
-    <desc>Total: 1.6km</desc>
-    <trkseg>
-      <trkpt lat="35.777233" lon="-105.809669"/>
-      <trkpt lat="35.776746" lon="-105.808468"/>
-      <trkpt lat="35.777164" lon="-105.805893"/>
-      <trkpt lat="35.780471" lon="-105.802846"/>
-      <trkpt lat="35.78357" lon="-105.799241"/>
-      <trkpt lat="35.785689" lon="-105.796366"/>
-    </trkseg>
-  </trk>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<gpx version="1.1" creator="GPS Visualizer http://www.gpsvisualizer.com/" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<trk>
+  <name>AlamoVistaProposed</name>
+  <desc>Total: 1.6km</desc>
+  <trkseg>
+    <trkpt lat="35.777233" lon="-105.809669">
+      <ele>3055.722</ele>
+    </trkpt>
+    <trkpt lat="35.776746" lon="-105.808468">
+      <ele>3086.387</ele>
+    </trkpt>
+    <trkpt lat="35.777164" lon="-105.805893">
+      <ele>3149.334</ele>
+    </trkpt>
+    <trkpt lat="35.780471" lon="-105.802846">
+      <ele>3194.831</ele>
+    </trkpt>
+    <trkpt lat="35.78357" lon="-105.799241">
+      <ele>3293.726</ele>
+    </trkpt>
+    <trkpt lat="35.785689" lon="-105.796366">
+      <ele>3406.117</ele>
+    </trkpt>
+  </trkseg>
+</trk>
 </gpx>
