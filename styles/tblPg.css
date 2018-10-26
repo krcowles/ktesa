@@ -3,7 +3,42 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	font-family: arial, verdana;
-	background-color: #dfdfdf; }
+	background-color: #dfdfdf;
+}
+button {
+	font-size: 16px;
+	height: 28px;
+	background-color: honeydew;
+	margin-bottom: 12px;
+}
+button:hover {
+	cursor: pointer;
+	background-color: aliceblue;
+	color: brown;
+}
+#dispopts {
+	display: none;
+}
+.hilite {
+	color: brown;
+	text-decoration: underline;
+}
+.normal {
+	color: black;
+	text-decoration: none;
+}
+.hidden {
+	display: none;
+}
+.inline {
+	display: inline-block;
+}
+select {
+	font-size: 16px;
+}
+#note {
+	color: brown;
+}
 img.webShift {
 	padding-left: 19px; }
 img.flckrShift {
