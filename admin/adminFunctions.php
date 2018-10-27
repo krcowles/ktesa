@@ -113,7 +113,7 @@ function exportDatabase(
                     if (is_null($row[$j])) {
                         $content .= "NULL";
                     } else {
-                        $row[$j] = str_replace("\n", "\\n", addslashes($row[$j]));
+                        $row[$j] = $mysqli->real_escape_string($row[$j]);
                         if (isset($row[$j])) {
                             $content .= "'" . $row[$j] . "'" ;
                         }
