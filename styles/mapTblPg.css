@@ -10,23 +10,11 @@ body {
 #geoSetting {
 	display: none; }
 #geoCtrl {
-	display: none;
 	position: absolute;
-	top: 140px;
-	left: 12px;
-	width: 140px;
-	height: 40px;
-	padding-left: 16px;
-	padding-top: 18px;
-	color: DarkGreen;
-	font-weight: bold;
-	font-size: 18px;
-	background-color:  #eff5ef;
 	z-index: 100; }
 #geoCtrl:hover {
 	cursor: pointer;
-	background-color: Brown;
-	color: White; }
+}
 #newHikeBox {
 	display: none;
 	position: absolute;

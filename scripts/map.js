@@ -22,10 +22,17 @@ var mapTick = {   // custom tick-mark symbol for tracks
 };
 
 var msg;  // debug message string
+var geoleftOffset = 120; // px offset from right edge of window
+var geotopOffset = 100; // px offset from bottom of window
 var turnOnGeo = $('#geoSetting').text(); // get the setting from the html, compliments php
 
 if ( turnOnGeo.trim() === 'ON' ) {
-    $('#geoCtrl').css('display','block');
+	// starting position in window:
+	var winht = $('#map').innerHeight() - geotopOffset;
+	var winwd = $(window).innerWidth() - geoleftOffset;
+	$('#geoCtrl').css('top', winht);
+	$('#geoCtrl').css('left', winwd);
+	// enable click:
     $('#geoCtrl').on('click', setupLoc);
 }
 
@@ -662,4 +669,10 @@ function setupLoc() {
 		window.alert('Geolocation not supported on this browser');
 	}
 }
+$(window).resize( function() {
+	var winht = $('#map').innerHeight() - geotopOffset;
+	var winwd = $(window).innerWidth() - geoleftOffset;
+	$('#geoCtrl').css('top', winht);
+	$('#geoCtrl').css('left', winwd);
+});
 // //////////////////////////////////////////////////////////////
