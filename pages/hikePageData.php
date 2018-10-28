@@ -18,18 +18,17 @@ $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s',HOSTNAME, DATABASE, CHARSET)
 try {
     $pdo = new PDO( $dsn, USERNAME, PASSWORD, $options);
 } catch (\PDOException $e) {
-    throw new \PDOException($e->getMessage(),
-    (int)$e->getCode());
+    throw new \PDOException($e->getMessage(), (int)$e->getCode());
 }
 $tbl = filter_input(INPUT_GET, 'age');
 /**
  * The variable $hikeIndexNo is established below and is used throughout
  * to locate data corresponding to this unique hike identifier.
  */
-$hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
-$distThreshParm = filter_input(INPUT_GET, 'distThreshParm');
-$elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm');
-$maWindowParm = filter_input(INPUT_GET, 'maWindowParm');
+$hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_SANITIZE_NUMBER_INT);
+$distThreshParm = filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT);
+$elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT);
+$maWindowParm = filter_input(INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT);
 $makeGpsvDebugParm = filter_input(INPUT_GET, 'makeGpsvDebugParm');
 $showAscDsc = filter_input(INPUT_GET, 'showAscDsc');
 $ehikes = (isset($tbl) && $tbl === 'new') ? true : false;
@@ -51,16 +50,25 @@ if ($ehikes) {
     $ttable = 'TSV';
     $tbl = 'old';
 }
+// Form the queries for extracting data from HIKES/EHIKES and TSV/ETSV
+$basic = "SELECT * FROM {$htable} WHERE indxNo = :indxNo";
+$basicPDO = $pdo->prepare($basic);
+$photos = "SELECT folder,title,hpg,mpg,`desc`,lat,lng,thumb,alblnk,date," .
+        "mid,imgHt,imgWd FROM {$ttable} WHERE indxNo = :indxNo;";
+$photosPDO = $pdo->prepare($photos);
+// Execute the transactions:
+$pdo->beginTransaction();
+$basicPDO->bindValue(':indxNo', $hikeIndexNo);
+$basicPDO->execute();
+$photosPDO->bindValue("indxNo", $hikeIndexNo);
+$photosPDO->execute();
+$pdo->commit();
 /**
  * This section will extract the data from HIKES/EHIKES table used to fill the
  * basic hike page template.
  */
-$sql = "SELECT * FROM {$htable} WHERE indxNo = :indxNo";
-$pdoStatement = $pdo->prepare($sql);
-$pdoStatement->bindValue(':indxNo', $hikeIndexNo);
-$pdoStatement->execute();
-$results = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-foreach ($results as $row) {
+$basicData = $basicPDO->fetchAll(PDO::FETCH_ASSOC);
+foreach ($basicData as $row) {
     $hikeTitle = $row['pgTitle'];
     $hikeLocale = $row['locale'];
     $hikeGroup = $row['cgroup'];
@@ -107,12 +115,7 @@ if ($gpxfile == '') {
  * This section collects the information from TSV/ETSV table needed
  * to build the picture rows...
  */
-$query = "SELECT folder,title,hpg,mpg,`desc`,lat,lng,thumb,alblnk,date," .
-        "mid,imgHt,imgWd FROM {$ttable} WHERE indxNo = :indxNo;";
-$pdoStatement = $pdo->prepare($query);
-$pdoStatement->bindValue("indxNo", $hikeIndexNo);
-$pdoStatement->execute();
-$results = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+$photosData = $photosPDO->fetchAll(PDO::FETCH_ASSOC);
 $months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
     "Sep","Oct","Nov","Dec");
 $descs = [];
@@ -121,7 +124,7 @@ $piclnks = [];
 $captions = [];
 $aspects = [];
 $widths = [];
-foreach ($results as $pics) {
+foreach ($photosData as $pics) {
     if ($pics['hpg'] === 'Y') {
         array_push($descs, $pics['title']);
         array_push($alblnks, $pics['alblnk']);
