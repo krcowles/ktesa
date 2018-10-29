@@ -212,13 +212,13 @@ $('#auxfrm').submit( function(ev) {
 
 // Go to display page buttons:
 $('#tbl').on('click', function() {
-    window.open("../pages/mapPg.php?tbl=T","_blank");
+    window.open("pages/mapPg.php?tbl=T","_blank");
 });
 $('#tnm').on('click', function() {
-    window.open("../pages/mapPg.php?tbl=D");
+    window.open("pages/mapPg.php?tbl=D");
 });
 $('#bigm').on('click', function() {
-    window.open("../pages/mapPg.php?tbl=M");
+    window.open("pages/mapPg.php?tbl=M");
 });
 
 }); // end of page-loading wait statement
