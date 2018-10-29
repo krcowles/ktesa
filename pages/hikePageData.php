@@ -67,43 +67,41 @@ $pdo->commit();
  * This section will extract the data from HIKES/EHIKES table used to fill the
  * basic hike page template.
  */
-$basicData = $basicPDO->fetchAll(PDO::FETCH_ASSOC);
-foreach ($basicData as $row) {
-    $hikeTitle = $row['pgTitle'];
-    $hikeLocale = $row['locale'];
-    $hikeGroup = $row['cgroup'];
-    $hikeType = $row['logistics'];
-    $hikeLength = $row['miles'] . " miles";
-    $hikeElevation = $row['feet'] . " ft";
-    $hikeDifficulty = $row['diff'];
-    $hikeFacilities = $row['fac'];
-    $hikeWow = $row['wow'];
-    $hikeSeasons = $row['seasons'];
-    $hikeExposure = $row['expo'];
-    $gpxfile = $row['gpx'];
-    $jsonFile = $row['trk'];
-    if ($row['aoimg1'] == '') {
-        $hikeAddonImg1 = '';
-    } else {
-        $hikeAddonImg1 = unserialize($row['aoimg1']);
-    }
-    if ($row['aoimg2'] == '') {
-        $hikeAddonImg2 = '';
-    } else {
-        $hikeAddonImg2 = unserialize($row['aoimg2']);
-    }
-    $hikePhotoLink1 = $row['purl1'];
-    $hikePhotoLink2 = $row['purl2'];
-    $hikeDirections = $row['dirs'];
-    $rawTips = $row['tips'];
-    $spaceTips = preg_replace("/\s/", " ", $rawTips);
-    $hikeTips = htmlspecialchars_decode($spaceTips, ENT_COMPAT);
-    $rawInfo = $row['info'];
-    $hikeInfo = preg_replace("/\s/", " ", $rawInfo);
-    $hikeEThresh = $row['eThresh'];
-    $hikeDThresh = $row['dThresh'];
-    $hikeMaWin = $row['maWin'];
+$row = $basicPDO->fetch(PDO::FETCH_ASSOC);
+$hikeTitle = $row['pgTitle'];
+$hikeLocale = $row['locale'];
+$hikeGroup = $row['cgroup'];
+$hikeType = $row['logistics'];
+$hikeLength = $row['miles'] . " miles";
+$hikeElevation = $row['feet'] . " ft";
+$hikeDifficulty = $row['diff'];
+$hikeFacilities = $row['fac'];
+$hikeWow = $row['wow'];
+$hikeSeasons = $row['seasons'];
+$hikeExposure = $row['expo'];
+$gpxfile = $row['gpx'];
+$jsonFile = $row['trk'];
+if ($row['aoimg1'] == '') {
+    $hikeAddonImg1 = '';
+} else {
+    $hikeAddonImg1 = unserialize($row['aoimg1']);
 }
+if ($row['aoimg2'] == '') {
+    $hikeAddonImg2 = '';
+} else {
+    $hikeAddonImg2 = unserialize($row['aoimg2']);
+}
+$hikePhotoLink1 = $row['purl1'];
+$hikePhotoLink2 = $row['purl2'];
+$hikeDirections = $row['dirs'];
+$rawTips = $row['tips'];
+$spaceTips = preg_replace("/\s/", " ", $rawTips);
+$hikeTips = htmlspecialchars_decode($spaceTips, ENT_COMPAT);
+$rawInfo = $row['info'];
+$hikeInfo = preg_replace("/\s/", " ", $rawInfo);
+$hikeEThresh = $row['eThresh'];
+$hikeDThresh = $row['dThresh'];
+$hikeMaWin = $row['maWin'];
 if ($gpxfile == '') {
     $newstyle = false;
     $gpxPath = '';
