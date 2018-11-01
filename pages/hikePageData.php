@@ -8,18 +8,10 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require_once "../../settings.php";
-$options = array(
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-);
-$dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s',HOSTNAME, DATABASE, CHARSET);
-try {
-    $pdo = new PDO( $dsn, USERNAME, PASSWORD, $options);
-} catch (\PDOException $e) {
-    throw new \PDOException($e->getMessage(), (int)$e->getCode());
-}
+require "../mysql/dbFunctions.php";
+set_exception_handler('default_exceptions');
+$pdo = dbConnect(__FILE__, __LINE__);
+
 $tbl = filter_input(INPUT_GET, 'age');
 /**
  * The variable $hikeIndexNo is established below and is used throughout
