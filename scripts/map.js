@@ -661,7 +661,10 @@ function setupLoc() {
 				anchor: new google.maps.Point(12, 12)
 			});
 			map.setCenter(newWPos);
-			map.setZoom(13);
+			var currzoom = map.getZoom();
+			if (currzoom < 13) {
+				map.setZoom(13);
+			}
 		} // end of watchSuccess function
 		function error(eobj) {
 			msg = '<p>Error in get position call: code ' + eobj.code + '</p>';
