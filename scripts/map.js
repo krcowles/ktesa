@@ -660,6 +660,8 @@ function setupLoc() {
 				origin: new google.maps.Point(0, 0),
 				anchor: new google.maps.Point(12, 12)
 			});
+			map.setCenter(newWpos);
+			map.setZoom(13);
 		} // end of watchSuccess function
 		function error(eobj) {
 			msg = '<p>Error in get position call: code ' + eobj.code + '</p>';
