@@ -660,7 +660,7 @@ function setupLoc() {
 				origin: new google.maps.Point(0, 0),
 				anchor: new google.maps.Point(12, 12)
 			});
-			map.setCenter(newWpos);
+			map.setCenter(newWPos);
 			map.setZoom(13);
 		} // end of watchSuccess function
 		function error(eobj) {
