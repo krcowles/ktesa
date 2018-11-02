@@ -86,11 +86,8 @@ if ($row['aoimg2'] == '') {
 $hikePhotoLink1 = $row['purl1'];
 $hikePhotoLink2 = $row['purl2'];
 $hikeDirections = $row['dirs'];
-$rawTips = $row['tips'];
-$spaceTips = preg_replace("/\s/", " ", $rawTips);
-$hikeTips = htmlspecialchars_decode($spaceTips, ENT_COMPAT);
-$rawInfo = $row['info'];
-$hikeInfo = preg_replace("/\s/", " ", $rawInfo);
+$hikeTips = $row['tips'];
+$hikeInfo = $row['info'];
 $hikeEThresh = $row['eThresh'];
 $hikeDThresh = $row['dThresh'];
 $hikeMaWin = $row['maWin'];
