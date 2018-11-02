@@ -40,7 +40,7 @@ function dbConnect($src_file, $src_line) {
     );
     $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s',HOSTNAME, DATABASE, CHARSET);
     try {
-        $pdo_obj = new PDO( $dsn, 'Clyde', PASSWORD, $options);
+        $pdo_obj = new PDO( $dsn, USERNAME, PASSWORD, $options);
     }
     catch (\PDOException $e) {
         echo "A problem was encountered connecting to the database: " 
