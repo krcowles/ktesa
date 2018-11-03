@@ -10,6 +10,8 @@
  * @license No license to date
  */
 session_start();
+require "../php/global_boot.php";
+
 $env = file_get_contents('../mysql/setenv.php');
 $tdb = (strpos($env, 'test') > 0) ? true : false;
 echo $env;
@@ -36,10 +38,16 @@ echo $env;
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Overall Site Management</legend>
+        Site is currently in
+            <span id="currmode" style="color:brown;"><?= $appMode;?></span> mode.
+        <br />Place site in: 
+        <button id="dev">Development Mode</button>&nbsp;&nbsp;
+        <button id="run">Production Mode</button>
+        <br /><br />
         <form action="upldSite.php" method="POST" target="_blank"
             enctype="multipart/form-data">
+            <input id="ufile" type="file" name="ufile" />&nbsp;&nbsp;
             <button id="upld">Upload</button>&nbsp;&nbsp;
-            <input id="ufile" type="file" name="ufile" />
                 &nbsp;[Creates new directory]<br />
         </form>
         <span style="font-size:20px;color:brown;">

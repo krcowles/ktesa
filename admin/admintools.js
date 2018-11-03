@@ -1,3 +1,40 @@
+var mode_script = "site_mode.php";
+var dev_mode = mode_script + "?mode=development";
+var run_mode = mode_script + "?mode=production";
+$('#dev').on('click', function() {
+    $.ajax({
+        type: "GET",
+        url: dev_mode,
+        dataType: 'text',
+        success: function(result) {
+            if (result.substr(0,3) == "Cou") {
+                alert(result);
+            } else {
+                $('#currmode').text(result);
+            }
+        },
+        error: function(jq, errmsg, stat) {
+            alert("unable to read site mode file: " + errmsg + "; " + stat);
+        }
+    });
+});
+$('#run').on('click', function() {
+    $.ajax({
+        type: "GET",
+        url: run_mode,
+        dataType: 'text',
+        success: function(result) {
+            if (result.substr(0, 3) == "Cou") {
+                alert(result);
+            } else {
+                $('#currmode').text(result);
+            }
+        },
+        error: function(jq, errmsg, stat) {
+            alert("unable to read site mode file: " + errmsg + "; " + stat);
+        }
+    });
+});
 $('#chgs').on('click', function() {
     window.open('export_all_tables.php?dwnld=C');
 });

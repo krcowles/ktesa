@@ -52,32 +52,6 @@ function reverseTrack($trknodes, $trkno)
     }
 }
 /**
- * This function supplies a message appropriate to the type of upload
- * error encountered.
- * 
- * @param integer $errdat The flag supplied by the upload error check
- * 
- * @return string 
- */
-function uploadErr($errdat)
-{
-    if ($errdat === UPLOAD_ERR_INI_SIZE || $errdat === UPLOAD_ERR_FORM_SIZE) {
-        return 'File is too large for upload';
-    }
-    if ($errdat === UPLOAD_ERR_PARTIAL) {
-        return 'The file was only partially uploaded (no further information';
-    }
-    if ($errdat === UPLOAD_ERR_NO_FILE) {
-        return 'The file was not uploaded (no further information';
-    }
-    if ($errdat === UPLOAD_ERR_CANT_WRITE) {
-        return 'Failed to write file to disk';
-    }
-    if ($errdat === UPLOAD_ERR_EXTENSION) {
-        return 'A PHP extension stopped the upload';
-    }
-}
-/**
  * This function is used in the process of exporting all tables.
  * 
  * @param string $host        Specify host to use based on invoker
