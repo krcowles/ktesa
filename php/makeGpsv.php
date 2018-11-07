@@ -125,16 +125,10 @@ for ($k=0; $k<$noOfTrks; $k++) { // PROCESS EACH TRK
     $tno = $k + 1;
     /**
     * We're building a tick-delimited string to pass to GPSV, and since ticks
-    * and other special chars can appear in the track name from the gpx file,
+    * can appear in the track name from the gpx file,
     * we use the following line to escape them out.
     */
-    $trkname = addslashes($gpxdat->trk[$k]->name);
-    /**
-    * Note it is still not clear to Tom whether addslashes is the correct
-    * solution. It might be better to escape tick characters only and leave
-    * as is the other characters that addslashes affects. For more info,
-    * see email thread (Historical Hindsight on makeGpsv.php).
-    */
+    $trkname = str_replace("'", "\'", $gpxdat->trk[$k]->name);
 
     // Form javascript to draw each track:
     $line = "                t = " . $tno . "; trk[t] = {info:[],segments:[]};\n";
@@ -227,7 +221,8 @@ if ($noOfWaypts > 0) {
         $wlat = $waypt['lat'];
         $wlng = $waypt['lon'];
         $sym = $waypt->sym;
-        $text = $waypt->name;
+        //$text = preg_replace("/'/", "\'", $waypt->name);
+        $text = str_replace("'", "\'", $waypt->name);
         $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng .
             ",name:'" . $text . "',desc:'',color:'" . "blue" .
             "',icon:'" . $sym . "'});\n";
