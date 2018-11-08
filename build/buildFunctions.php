@@ -40,6 +40,21 @@ function validateUpload($name, $fileloc)
                 "file format and re-submit, or contact Site Master.";
             die($odd);
         }
+        // Validate against schema, if gpx (XML):
+        $ext = strpos($filename, ".") + 1;
+        $file_ext = substr($filename, $ext, 3);
+        if (strtoLower($file_ext) === 'gpx') {
+            $xml = new DOMDocument;
+            if($xml->load($tmp_upload)) {
+                if(!$xml->schemaValidate("http://www.topografix.com/GPX/1/1/gpx.xsd", 
+                    LIBXML_SCHEMA_CREATE)) {
+                        die("{$filename} could not be validated against the XML gpx " 
+                            . "schema in validateUpload()");
+                }
+            } else {
+                die("Could not load {$filename} as DOMDocument in validateUpload()");
+            }
+        }
         $saveloc = $fileloc . $filename;
         if (file_exists($saveloc)) {
             $dupdata = dupFileName($filename);
