@@ -6,6 +6,12 @@ legend {
     color: darkgreen;
     font-style: italic;
 }
+#sitemode {
+    font-size: 16px;
+}
+#currstate {
+    color: blue;
+}
 #tools {
     margin-left: 24px;
     font-size: 16px;
