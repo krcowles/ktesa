@@ -1,46 +1,120 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="MyGPSFiles" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <trk>
-    <name>NewTrack</name>
-    <desc>Total: 1.3km</desc>
-    <trkseg>
-      <trkpt lat="36.318127" lon="-108.004382"/>
-      <trkpt lat="36.318292" lon="-108.004253"/>
-      <trkpt lat="36.318331" lon="-108.004296"/>
-      <trkpt lat="36.318465" lon="-108.00443"/>
-      <trkpt lat="36.318763" lon="-108.004663"/>
-      <trkpt lat="36.319433" lon="-108.004854"/>
-      <trkpt lat="36.320263" lon="-108.004446"/>
-      <trkpt lat="36.321456" lon="-108.005047"/>
-      <trkpt lat="36.320799" lon="-108.006699"/>
-      <trkpt lat="36.320713" lon="-108.00715"/>
-      <trkpt lat="36.321059" lon="-108.007579"/>
-      <trkpt lat="36.320834" lon="-108.007965"/>
-      <trkpt lat="36.320402" lon="-108.007858"/>
-      <trkpt lat="36.320039" lon="-108.007536"/>
-      <trkpt lat="36.319745" lon="-108.007751"/>
-      <trkpt lat="36.319814" lon="-108.008201"/>
-      <trkpt lat="36.319589" lon="-108.008523"/>
-      <trkpt lat="36.31914" lon="-108.008738"/>
-      <trkpt lat="36.318904" lon="-108.008491"/>
-      <trkpt lat="36.31867" lon="-108.008249"/>
-      <trkpt lat="36.318536" lon="-108.007949"/>
-      <trkpt lat="36.318459" lon="-108.007793"/>
-      <trkpt lat="36.318338" lon="-108.007713"/>
-      <trkpt lat="36.318303" lon="-108.007649"/>
-      <trkpt lat="36.318242" lon="-108.007461"/>
-      <trkpt lat="36.318169" lon="-108.007407"/>
-      <trkpt lat="36.318182" lon="-108.007241"/>
-      <trkpt lat="36.318216" lon="-108.007155"/>
-      <trkpt lat="36.318242" lon="-108.007042"/>
-      <trkpt lat="36.318173" lon="-108.006957"/>
-      <trkpt lat="36.318104" lon="-108.006989"/>
-      <trkpt lat="36.318044" lon="-108.006881"/>
-      <trkpt lat="36.317996" lon="-108.006506"/>
-      <trkpt lat="36.317918" lon="-108.00634"/>
-      <trkpt lat="36.31778" lon="-108.006179"/>
-      <trkpt lat="36.317724" lon="-108.006098"/>
-      <trkpt lat="36.317689" lon="-108.006055"/>
-    </trkseg>
-  </trk>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<gpx version="1.1" creator="GPS Visualizer http://www.gpsvisualizer.com/" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<trk>
+  <name>NewTrack</name>
+  <desc>Total: 1.3km</desc>
+  <trkseg>
+    <trkpt lat="36.318127" lon="-108.004382">
+      <ele>1951.727</ele>
+    </trkpt>
+    <trkpt lat="36.318292" lon="-108.004253">
+      <ele>1952.266</ele>
+    </trkpt>
+    <trkpt lat="36.318331" lon="-108.004296">
+      <ele>1952.278</ele>
+    </trkpt>
+    <trkpt lat="36.318465" lon="-108.00443">
+      <ele>1952.422</ele>
+    </trkpt>
+    <trkpt lat="36.318763" lon="-108.004663">
+      <ele>1953.143</ele>
+    </trkpt>
+    <trkpt lat="36.319433" lon="-108.004854">
+      <ele>1951.197</ele>
+    </trkpt>
+    <trkpt lat="36.320263" lon="-108.004446">
+      <ele>1939.67</ele>
+    </trkpt>
+    <trkpt lat="36.321456" lon="-108.005047">
+      <ele>1938.67</ele>
+    </trkpt>
+    <trkpt lat="36.320799" lon="-108.006699">
+      <ele>1936.666</ele>
+    </trkpt>
+    <trkpt lat="36.320713" lon="-108.00715">
+      <ele>1935.204</ele>
+    </trkpt>
+    <trkpt lat="36.321059" lon="-108.007579">
+      <ele>1934.51</ele>
+    </trkpt>
+    <trkpt lat="36.320834" lon="-108.007965">
+      <ele>1933.341</ele>
+    </trkpt>
+    <trkpt lat="36.320402" lon="-108.007858">
+      <ele>1933.246</ele>
+    </trkpt>
+    <trkpt lat="36.320039" lon="-108.007536">
+      <ele>1932.616</ele>
+    </trkpt>
+    <trkpt lat="36.319745" lon="-108.007751">
+      <ele>1931.724</ele>
+    </trkpt>
+    <trkpt lat="36.319814" lon="-108.008201">
+      <ele>1931.255</ele>
+    </trkpt>
+    <trkpt lat="36.319589" lon="-108.008523">
+      <ele>1932.42</ele>
+    </trkpt>
+    <trkpt lat="36.31914" lon="-108.008738">
+      <ele>1930.462</ele>
+    </trkpt>
+    <trkpt lat="36.318904" lon="-108.008491">
+      <ele>1931.762</ele>
+    </trkpt>
+    <trkpt lat="36.31867" lon="-108.008249">
+      <ele>1933.79</ele>
+    </trkpt>
+    <trkpt lat="36.318536" lon="-108.007949">
+      <ele>1935.95</ele>
+    </trkpt>
+    <trkpt lat="36.318459" lon="-108.007793">
+      <ele>1937.638</ele>
+    </trkpt>
+    <trkpt lat="36.318338" lon="-108.007713">
+      <ele>1938.622</ele>
+    </trkpt>
+    <trkpt lat="36.318303" lon="-108.007649">
+      <ele>1939.053</ele>
+    </trkpt>
+    <trkpt lat="36.318242" lon="-108.007461">
+      <ele>1941.093</ele>
+    </trkpt>
+    <trkpt lat="36.318169" lon="-108.007407">
+      <ele>1942.643</ele>
+    </trkpt>
+    <trkpt lat="36.318182" lon="-108.007241">
+      <ele>1946.295</ele>
+    </trkpt>
+    <trkpt lat="36.318216" lon="-108.007155">
+      <ele>1948.711</ele>
+    </trkpt>
+    <trkpt lat="36.318242" lon="-108.007042">
+      <ele>1950.832</ele>
+    </trkpt>
+    <trkpt lat="36.318173" lon="-108.006957">
+      <ele>1950.827</ele>
+    </trkpt>
+    <trkpt lat="36.318104" lon="-108.006989">
+      <ele>1950.786</ele>
+    </trkpt>
+    <trkpt lat="36.318044" lon="-108.006881">
+      <ele>1950.223</ele>
+    </trkpt>
+    <trkpt lat="36.317996" lon="-108.006506">
+      <ele>1948.952</ele>
+    </trkpt>
+    <trkpt lat="36.317918" lon="-108.00634">
+      <ele>1948.002</ele>
+    </trkpt>
+    <trkpt lat="36.31778" lon="-108.006179">
+      <ele>1946.765</ele>
+    </trkpt>
+    <trkpt lat="36.317724" lon="-108.006098">
+      <ele>1946.257</ele>
+    </trkpt>
+    <trkpt lat="36.317689" lon="-108.006055">
+      <ele>1945.905</ele>
+    </trkpt>
+  </trkseg>
+</trk>
 </gpx>

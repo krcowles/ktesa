@@ -170,5 +170,12 @@ function connectToDb($file, $line)
         );
     }
     include "../admin/set_sql_mode.php";
+    if (!mysqli_set_charset($link, "utf8")) {
+        die(
+            "Function mysqli_set_charset failed when called from file {$file}: " .
+            "line: {$line}: " . mysqli_error($link)
+        );
+    }
+    doQuery($link, 'SET NAMES utf8', __FILE__, __LINE__);
     return $link;
 }

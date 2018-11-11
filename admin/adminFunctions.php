@@ -93,9 +93,7 @@ function uploadErr($errdat)
 function exportDatabase(
     $host, $user, $pass, $name, $tables, $dwnld, $backup_name = false
 ) {
-    $mysqli = new mysqli($host, $user, $pass, $name);
-    $mysqli->select_db($name);
-    $mysqli->query("SET NAMES 'utf8'");
+    $mysqli = connectToDb(__FILE__, __LINE__);
     foreach ($tables as $table) {
         $result         = $mysqli->query('SELECT * FROM '. $table);
         $fields_amount  = $result->field_count;
@@ -115,7 +113,7 @@ function exportDatabase(
                     if (is_null($row[$j])) {
                         $content .= "NULL";
                     } else {
-                        $row[$j] = str_replace("\n", "\\n", addslashes($row[$j]));
+                        $row[$j] = $mysqli->real_escape_string($row[$j]);
                         if (isset($row[$j])) {
                             $content .= "'" . $row[$j] . "'" ;
                         }
