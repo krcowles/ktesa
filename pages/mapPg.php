@@ -28,11 +28,15 @@ $includeZoom = ($tblVar === 'D') ? true : false;
         content="Listing of hikes the authors have undertaken in New Mexico" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
+    <!-- jQuery UI widgets -->
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
 <?php if ($tblVar === 'T') : ?>
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="../styles/tblPg.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/filter.css" type="text/css" rel="stylesheet" />
 <?php elseif ($tblVar === 'D') : ?>
     <link href="../styles/mapTblPg.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/filter.css" type="text/css" rel="stylesheet" />
 <?php else : ?>
     <link href="../styles/mapPg.css" type="text/css" rel="stylesheet" />
 <?php endif; ?>
@@ -50,7 +54,8 @@ $includeZoom = ($tblVar === 'D') ? true : false;
         OFF</p>
     <?php endif; ?>
     <div id="newHikeBox">Latest Hike:<br>
-        <a id="newhike" href="#"><span id="winner"></span></a></div>
+        <a id="newhike" href="#"><span id="winner"></span></a>
+    </div>
 <?php endif; ?>
 <!-- PAGE SETTING -->
 <?php if ($tblVar === 'T' || $tblVar === 'D') : ?>
@@ -62,15 +67,45 @@ $includeZoom = ($tblVar === 'D') ? true : false;
             <p id="logo_right">w/Tom &amp; Ken</p>
         </div>
         <p id="trail">Sortable Table of Hikes</p>
+        <script type="text/javascript">var pg = "tbl";</script>
     <?php else : ?>
         <div id="map" style="width:100%;"></div>
+        <script type="text/javascript">var pg = "map";</script>
     <?php endif; ?>
-    <p id="dbug"></p>
+    <!-- Table Filtering Options: -->
+    <div id="tblfilter">
+        <button id="showfilter"><strong>Show Table Filtering Options</strong></button>
+        <div id="dispopts">
+            <strong style="color:darkblue;">Sort the table of hikes by proximity:</strong><br />
+            Hikes within <input id="spinner" />&nbsp;miles of&nbsp;&nbsp;(Choose either:)
+            <div style="margin-left: 190px;">
+                <label id="loclbl" class="normal">Area:</label>
+                    <input id="loc" type="radio" name="prox" />
+                <div id="selloc" class="hidden">
+                    (Select)&nbsp;<?php include "../build/localeBox.html";?>
+                </div>&nbsp;&nbsp;<span style="color:brown;">OR</span><br />
+                <label id="hikelbl" class="normal">Hike/Trail</label>
+                    <input id="hike" type="radio" name="prox" />
+                <div id="selhike" class="hidden">
+                    <input id="link" type="text" name="link" size="35"
+                        value="...select hike by clicking link in table" />
+                </div>
+            </div>
+            <button id="apply">Apply Filter</button>
+        </div>
+    </div>
+    <p id="filtnote">
+        <strong id="note">NOTE:</strong>
+        All table columns can be sorted alphabetically/numerically by clicking
+        on the column header at the top of the column. Clicking again reverses
+        the sort.
+    </p>
     <div id="refTbl">
     <?php include "../php/makeTables.php"; ?>
     </div>
+    <!-- usrTbl for map+table page only -->
     <?php if ($tblVar === 'D') : ?>
-    <div id="usrTbl"></div>
+        <div id="usrTbl"></div>
     <?php endif; ?>
     <div style="margin-top:20px;"><p id="metric" class="dressing">
         Click here for metric units</p></div>
@@ -81,16 +116,19 @@ $includeZoom = ($tblVar === 'D') ? true : false;
     </div>
 <?php endif; ?>
 <script src="../scripts/modernizr-custom.js"></script>
+<script src="../scripts/jquery-ui.min.js"></script>
 <?php if ($tblVar !== 'T') : ?>
     <script src="../scripts/hikeBox.js"></script>
     <script src="../scripts/map.js"></script>
     <?php if ($tblVar === 'D') : ?>
-    <script src="../scripts/phpDynamicTbls.js"></script>
+        <script src="../scripts/filter.js"></script>
+        <script src="../scripts/phpDynamicTbls.js"></script>
     <?php endif; ?>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry">
     </script>
 <?php else : ?>
+    <script src="../scripts/filter.js"></script>
     <script src="../scripts/tblOnlySort.js"></script>
 <?php endif; ?>
 </body>

@@ -16,9 +16,6 @@ button:hover {
 	background-color: aliceblue;
 	color: brown;
 }
-#dispopts {
-	display: none;
-}
 .hilite {
 	color: brown;
 	text-decoration: underline;
@@ -26,12 +23,6 @@ button:hover {
 .normal {
 	color: black;
 	text-decoration: none;
-}
-.hidden {
-	display: none;
-}
-.inline {
-	display: inline-block;
 }
 select {
 	font-size: 16px;
@@ -90,4 +81,3 @@ td {
 	cursor: pointer; }
 #geoSetting {
 	display: none; }
-

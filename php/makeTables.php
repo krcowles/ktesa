@@ -1,7 +1,9 @@
 <?php
 /**
  * The html for the specified hike table is created here by first collecting the
- * table type and its associated data from the tableData.php script.
+ * table type and its associated data from the tableData.php script. Note that 
+ * the table filtering options are only enabled when this scripts is invoked by
+ * mapPg.php.
  * PHP Version 7.0
  * 
  * @package Hike_Table
@@ -10,32 +12,6 @@
  */
 require_once "tableData.php";
 ?>
-<!-- Table Filtering Options -->
-<div id="tblfilter">
-    <button id="showfilter"><strong>Show Table Filtering Options</strong></button>
-    <div id="dispopts">
-        <strong style="color:darkblue;">Sort the table of hikes by proximity:</strong><br />
-        Hikes within <input id="within" type="text" name="mi" size="4" />&nbsp;miles of&nbsp;&nbsp;
-        <label id="loclbl" class="normal">Area:</label>
-            <input id="loc" type="radio" name="prox" />
-        <div id="selloc" class="hidden">
-            (Select)&nbsp;<?php include "../build/localeBox.html";?>
-        </div>
-        &nbsp;&nbsp;<label id="hikelbl" class="normal">Hike/Trail</label>
-            <input id="hike" type="radio" name="prox" />
-        <div id="selhike" class="hidden">
-            <input id="link" type="text" name="link" size="35"
-                value="...select hike by clicking link in table" />
-        </div>
-        &nbsp;&nbsp;<button id="apply">Apply Filter</button>
-    </div>
-</div>
-<p id="filtnote">
-    <strong id="note">NOTE:</strong>
-    All table columns can be sorted alphabetically/numerically by clicking
-    on the column header at the top of the column. Clicking again reverses
-    the sort.
-</p>
 <!-- REFERENCE TABLE OF HIKES -->
 <table class="sortable">
     <colgroup>	
