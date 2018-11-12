@@ -16,10 +16,6 @@ button:hover {
 	background-color: aliceblue;
 	color: brown;
 }
-.hilite {
-	color: brown;
-	text-decoration: underline;
-}
 select {
 	font-size: 16px;
 }

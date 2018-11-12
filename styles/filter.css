@@ -26,3 +26,7 @@ button:hover {
 .inline {
 	display: inline-block;
 }
+.hilite {
+	color: brown;
+	text-decoration: underline;
+}

@@ -91,7 +91,12 @@ $includeZoom = ($tblVar === 'D') ? true : false;
                         placeholder="...select hike by clicking link in table" />
                 </div>
             </div>
-            <button id="apply">Apply Filter</button>
+            <button id="apply">Apply Filter</button><br />
+            <div id="results" style="display:none;">
+                <button id="redo">Reset Search</button><br />
+                The results of your search appear in the table below:<br />
+                <table id="ftable" class="fsort"><tbody></tbody></table>
+            </div>
         </div>
     </div>
     <p id="filtnote">

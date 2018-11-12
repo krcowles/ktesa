@@ -72,13 +72,23 @@ function filterSetup() {
             ev.preventDefault();
             var thishike = $(this).text();
             $('#link').val(thishike);
+            $('#link').focus();
+            var currpos = $('#link').scrollTop();
+            $(window).scrollTop(currpos - 40);
         }
     });
     // actual filtering of hikes:
     var ajaxdone = false;
     var coords = {};
+    // in case of page refresh:
+    $('#loc').prop('checked', false);
+    $('#hike').prop('checked', false);
+    // when applying the filter:
     $('#apply').on('click', function() {
         var epsilon = $('#spinner').spinner('value');
+        if (!($('#results').css('display') === 'none')) {
+            $('#ftable').html('<tbody></tbody>');
+        }
         if ($('#loc').prop('checked')) {
             var arealoc = $('#area').find(":selected").text();
             if (!ajaxdone) {
@@ -86,6 +96,7 @@ function filterSetup() {
                     if (ajaxdone) {
                         clearInterval(locWait);
                         filterList(epsilon, coords);
+                        ajaxdone = false;
                         return;
                     }
                 }, 10);
@@ -147,16 +158,26 @@ function filterSetup() {
         }
     }
     function filterList(radius, geo) {
-        alert("Hikes within " + radius + " miles of " + geo.lat + ", " + geo.lng);
+        //alert("Hikes within " + radius + " miles of " + geo.lat + ", " + geo.lng);
+        tblHtml = $('.sortable').html();
+        var bdystrt = tblHtml.indexOf('<tbody>');
+        tblHtml = tblHtml.substr(0, bdystrt);
+        $('#ftable').append(tblHtml);
         $tblrows = $('.sortable tbody tr').each( function() {
             var hikelat = $(this).data('lat');
             var hikelng = $(this).data('lon');
             var distance = radialDist(hikelat, hikelng, geo.lat, geo.lng, 'M');
+            
             if (distance <= radius) {
-                var hikename = $(this).find('td').eq(0).text();
-                alert(hikename);
+                //var hikename = $(this).find('td').eq(0).text();
+                //alert(hikename);
+
+                // create clone, else node is removed from big table!
+                var $clone = $(this).clone();
+                $('#ftable tbody').append($clone);
             }
         });
+        $('#results').show();
     }
     function radialDist(lat1, lon1, lat2, lon2, unit) {
         if (lat1 === lat2 && lon1 === lon2) { return 0; }
@@ -172,4 +193,18 @@ function filterSetup() {
         if (unit === "N") { dist = dist * 0.8684; }  // else result is in miles "M"
         return dist;
     }
+    $('#redo').on('click', function() {
+        $('#ftable').html('<tbody></tbody');
+        $('#results').hide();
+        if ($('#loc').prop('checked')) {
+            $('#loc').click();
+            // jQ sees click prop off after above event processing and turns it on, so
+            $('#loc').prop('checked', false);
+        }
+        if ($('#hike').prop('checked')) {
+            $('#hike').click();
+            $('#hike').prop('checked', false);
+            $('#link').val('');
+        }
+    });
 }
