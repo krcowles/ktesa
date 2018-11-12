@@ -88,7 +88,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
                     <input id="hike" type="radio" name="prox" />
                 <div id="selhike" class="hidden">
                     <input id="link" type="text" name="link" size="35"
-                        value="...select hike by clicking link in table" />
+                        placeholder="...select hike by clicking link in table" />
                 </div>
             </div>
             <button id="apply">Apply Filter</button>

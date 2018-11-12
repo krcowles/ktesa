@@ -16,6 +16,10 @@ button:hover {
 	background-color: aliceblue;
 	color: brown;
 }
+.normal {
+	color: black;
+	text-decoration: none;
+}
 .hidden {
 	display: none;
 }
