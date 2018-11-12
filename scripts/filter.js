@@ -74,7 +74,13 @@ function filterSetup() {
             $('#link').val(thishike);
             $('#link').focus();
             var currpos = $('#link').scrollTop();
-            $(window).scrollTop(currpos - 40);
+            // different values for table only and map+table pages:
+            var scrolloff = -40;
+            if (typeof $('#map') !== 'undefined') {
+                var mapoff = $('#map').height();
+                scrolloff += mapoff;
+            }
+            $(window).scrollTop(currpos + scrolloff);
         }
     });
     // actual filtering of hikes:
@@ -136,12 +142,7 @@ function filterSetup() {
         });
     }
     function getHikeCoords(hike) {
-        coords = {lat:35.99998,lng:-106.00001};
-        if (pg === 'tbl') {
-            var $tblrows = $('.sortable tbody tr');
-        } else {
-            var $tblrows = $('.msortable tbody tr');
-        }
+        var $tblrows = $('.sortable tbody tr');
         var coords = {};
         $tblrows.each(function() {
             if ($(this).find('td').eq(0).text() === hike) {
@@ -167,7 +168,6 @@ function filterSetup() {
             var hikelat = $(this).data('lat');
             var hikelng = $(this).data('lon');
             var distance = radialDist(hikelat, hikelng, geo.lat, geo.lng, 'M');
-            
             if (distance <= radius) {
                 //var hikename = $(this).find('td').eq(0).text();
                 //alert(hikename);
