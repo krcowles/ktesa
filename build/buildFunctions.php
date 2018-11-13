@@ -25,6 +25,7 @@
  */
 function validateUpload($name, $fileloc)
 {
+    libxml_use_internal_errors(true);
     $msg = '';
     $filename = basename($_FILES[$name]['name']);
     if ($filename !== '') {
@@ -39,6 +40,33 @@ function validateUpload($name, $fileloc)
             $odd = "This file may be corrupted. Please correct the " .
                 "file format and re-submit, or contact Site Master.";
             die($odd);
+        }
+        // Validate against schema, if gpx (XML):
+        $ext = strpos($filename, ".") + 1;
+        $file_ext = substr($filename, $ext, 3);
+        if (strtoLower($file_ext) === 'gpx') {
+            $xml = new DOMDocument;
+            if(!$xml->load($tmp_upload)) {
+                die(
+                    "{$filename} could not be loaded as a DOMDocument in "
+                    . "validateUpload of buildFunctions.php line " . __LINE__
+                );
+            }
+            if (!$xml->schemaValidate("http://www.topografix.com/GPX/1/1/gpx.xsd", 
+                    LIBXML_SCHEMA_CREATE)) {
+                $error_vals = libxml_get_errors();
+                $err_list = "<ul>";
+                foreach ($error_vals as $err) {
+                    $err_list .= "<li>" . display_xml_error($err, $filename) . "</li>";
+                }
+                $err_list .= "</ul>";
+                die("{$filename} could not be validated against the XML gpx " 
+                    . "schema in validateUpload() " . __FILE__ . " line "
+                    . __LINE__ . "<br />" . $err_list);
+
+            } else {
+                die("validated...");
+            }
         }
         $saveloc = $fileloc . $filename;
         if (file_exists($saveloc)) {
@@ -57,6 +85,37 @@ function validateUpload($name, $fileloc)
         $filename = "No file specified";
     }
     return array($filename, $msg);
+}
+/**
+ * The libxml errors have their own error processing requiring a handler,
+ * specified in this function routine.
+ * 
+ * @param object $error   libxml object when error occurs
+ * @param string $gpxfile name of affected file
+ * 
+ * @return string $return error string to return
+ */
+function display_xml_error($error, $gpxfile) 
+{
+    switch ($error->level) {
+        case LIBXML_ERR_WARNING:
+            $return .= "Warning $error->code: ";
+            break;
+         case LIBXML_ERR_ERROR:
+            $return .= "Error $error->code: ";
+            break;
+        case LIBXML_ERR_FATAL:
+            $return .= "Fatal Error $error->code: ";
+            break;
+        default:
+            $return = "Error level not recognized";
+    }
+    $return .= trim($error->message) . "<br />" .
+        "\n  Line: $error->line" . "\n  Column: $error->column";
+    if ($error->file) {
+        $return .= "\n  File: {$gpxfile}";
+    }
+    return $return;
 }
 /**
  * This function supplies a message appropriate to the type of upload
