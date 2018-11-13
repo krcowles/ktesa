@@ -11,8 +11,7 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-
-$geoVar = filter_input(INPUT_GET, "geo");
+$geoVar = 'ON'; // NOTE: though no longer used, kept for now in case of use later
 $tblVar = filter_input(INPUT_GET, "tbl");
 // T -> Table only; D -> Dual Map + Table; M -> full page map
 // required for ALL cases:
@@ -42,12 +41,12 @@ $includeZoom = ($tblVar === 'D') ? true : false;
 </head>
 
 <body>
-<!-- GEOSETTING -->
+<!-- GEOSETTING (Not currently used) -->
 <?php if ($tblVar !== 'T') : ?>
     <p id="geoSetting">
     <?php if ($geoVar === 'ON') : ?>
         ON</p>
-        <div id="geoCtrl">Geolocate Me!</div>
+        <img id="geoCtrl" src="../images/geoloc.png" />
     <?php else : ?>
         OFF</p>
     <?php endif; ?>
@@ -83,6 +82,11 @@ $includeZoom = ($tblVar === 'D') ? true : false;
     </div>
 <?php endif; ?>
 <script src="../scripts/modernizr-custom.js"></script>
+<?php if ($tblVar === 'D') : ?>
+    <script type="text/javascript">var dual = true;</script>
+<?php else : ?>
+    <script type="text/javascript">var dual = false;</script>
+<?php endif; ?>
 <?php if ($tblVar !== 'T') : ?>
     <script src="../scripts/hikeBox.js"></script>
     <script src="../scripts/map.js"></script>

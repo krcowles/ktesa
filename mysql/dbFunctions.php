@@ -6,8 +6,51 @@
  * @package Database_Acess
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
+/**
+ * This is the default exception handler, when thrown exceptions are not
+ * otherwise caught.
+ * 
+ * @param object $exception 'Throwable' type Exception object
+ */
+function default_exceptions($exception) {
+    echo "The routine has encountered an error: "
+        . $exception->getMessage() . PHP_EOL;
+}
+/**
+ * This function utilizes the PDO database access management class and establishes
+ * the database connection using charset="utf8". It will indicate file and line no.
+ * within the caller's file. Note that without a catch block (or implicit
+ * default exception handler [see above]), the zend engine will terminate the script
+ * (and display a back trace). This website uses only one dsn which is included
+ * within this function.
+ * 
+ * @param string $src_file The source file from which the routine is called
+ * @param string $src_line The line in the caller's source file
+ * 
+ * @return object $pdo PDO class object with connection established
+ */
+function dbConnect($src_file, $src_line) {
+    require_once "../../settings.php";
+    // ERRMODE_EXCEPTION: throws a PDOException, besides setting error code
+    $options = array(
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    );
+    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s',HOSTNAME, DATABASE, CHARSET);
+    try {
+        $pdo_obj = new PDO( $dsn, USERNAME, PASSWORD, $options);
+    }
+    catch (\PDOException $e) {
+        echo "A problem was encountered connecting to the database: " 
+            . $e->getMessage() . " with error code: " . (int)$e->getCode();
+        echo "<br />The caller was " . $src_file . " at line " . $src_line;
+        echo "<br />The error occurred in " . $e->getFile() . " at line " . $e->getLine() . " <br />";
+        throw new Exception("Failure to connect to db");
+    }
+    return $pdo_obj;
+}
 /**
  * This function is intended to insert data into the specified table
  * 

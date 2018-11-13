@@ -1,0 +1,182 @@
+/* Styles for the New Mexico Hiking Adventures page */
+body {
+    width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Arial, Verdana;
+    background-color: #dfdfdf;
+    border-style: solid;
+    border-width: 2px;
+    border-color: DarkBlue;
+}
+#container {
+    width: 940px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+img#tompic {
+    display: block;
+    float: right;
+    margin-left: 10px;
+    margin-right: 7px;
+    margin-top: -6px;
+}
+#banner {
+    height: 54px;
+    margin-left: 8px;
+    margin-bottom: 6px;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #d4e8d4;
+    font-style: oblique;
+    background-color: #dff8e3;
+    line-height: 3.0em;
+    text-align: center;
+}
+#banner:first-letter {
+    background-color: #dff8e3;
+    font-size: 38px;
+    font-style: oblique;
+    font-weight: bold;
+    color: #302dd3;
+}
+#choose {
+    margin-bottom: 0px;
+}
+#selections {
+    margin: 0px;
+    color: darkblue;
+    text-align: center;
+    font-size: 26px;
+}
+#settings {
+    margin-left: auto;
+    margin-right: auto;
+}
+fieldset#mtype {
+    height: 54px;
+}
+legend {
+    color: DarkGreen;
+}
+#tbl {
+    margin-left: 28px;
+}
+#tbl,#tnm,#bigm {
+    background-color: #eff5ef;
+    font-size: 16px;
+    width: 160px;
+    height: 36px;
+}
+#tbl:hover, #tnm:hover, #bigm:hover, #sub2:hover {
+    cursor: pointer;
+    color: brown;
+    background-color: #d5f8dc;
+}	
+#intro {
+    margin-left: 8px;
+}
+#introp {
+    margin-bottom: 0px;
+}
+#features {
+    clear: right;
+    margin-top: 16px;
+    margin-left: 8px;
+}
+#expOpt {
+    color: DarkGreen;
+    font-size: 18px;
+}
+#logins {
+    margin-left: 8px;
+}
+#loggedin {
+    margin-left: 8px;
+}
+.boldtxt {
+    font-weight: bold;
+}
+#sub2 {
+    height: 28px;
+    width: 140px;
+    font-size: 16px;
+    font-style: bold;
+}
+#regusrs {
+    display: none;
+}
+div #masters button, div #regusrs button {
+    height: 32px;
+    font-size: 16px;
+    background-color: #eff5ef;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+div #regusrs button:hover {
+    cursor: pointer;
+    color: brown;
+    background-color: #d5f8dc;
+}
+#usreds {
+    width: 560px;
+}
+#masters {
+    display: none;
+}
+#mstreds {
+    width: 540px;
+}
+div #masters button:hover {
+    cursor: pointer;
+    color: brown;
+    background-color: #d5f8dc;
+}
+#expect {
+    padding-left: 8px;
+    font-weight: bold;
+    text-decoration: underline;
+    color: DarkBlue;
+    font-size: 20px;
+}
+#expl {
+    padding-left: 8px;
+}
+.maindisp {
+    color: darkblue;
+}
+.dashed {
+    list-style-type: disc;
+    list-style-position: inside;
+}
+#itals {
+    color: DarkBlue;
+}
+#disclaimers {
+    margin-top: 12px;
+    margin-bottom: 15px;
+}
+#disasters {
+    list-style-type: square;
+    width: 960px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+#closer {
+    margin-top: 20px;
+    margin-left: 8px;
+    margin-bottom: 20px;
+    height: 32px;
+    line-height: 1.8em;
+    padding: 10px;
+    background-color: #c9d7e8;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #c9d7e8;
+    text-align: center;
+}
+ul {
+    position: relative;
+    top: -10px;
+}
