@@ -10,9 +10,15 @@
  * @license No license to date
  */
 session_start();
+$settings = file_get_contents('../../settings.php', "_self");
+$mode_pos = strpos($settings, "appMode =") + 11;
+$mode = substr($settings, $mode_pos, 3);
+$site_mode = "development";
+if ($mode === "pro") {
+    $site_mode = "production";
+}
 $env = file_get_contents('../mysql/setenv.php');
 $tdb = (strpos($env, 'test') > 0) ? true : false;
-echo $env;
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -36,6 +42,9 @@ echo $env;
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Overall Site Management</legend>
+        <p id="sitemode">The site is currently in
+            <span id="currstate"><?= $site_mode;?></span> mode:&nbsp;&nbsp;
+        <button id="switchstate">Switch Site Mode</button></p>
         <form action="upldSite.php" method="POST" target="_blank"
             enctype="multipart/form-data">
             <button id="upld">Upload</button>&nbsp;&nbsp;

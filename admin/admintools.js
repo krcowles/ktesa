@@ -1,3 +1,8 @@
+var current_state = $('#currstate').text();
+$('#switchstate').on('click', function() {
+    window.open('changeSiteMode.php?mode=' + current_state);
+    window.close();
+});
 $('#chgs').on('click', function() {
     window.open('export_all_tables.php?dwnld=C');
 });
