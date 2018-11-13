@@ -2,21 +2,25 @@
 /**
  * This script provides the data required by hikePageTemplate.php in order
  * to display an individual hike page.
+ * PHP 7.0
  * 
  * @package Display_Page
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
+require "../mysql/dbFunctions.php";
+set_exception_handler('default_exceptions');
+$pdo = dbConnect(__FILE__, __LINE__);
+
 $tbl = filter_input(INPUT_GET, 'age');
 /**
  * The variable $hikeIndexNo is established below and is used throughout
  * to locate data corresponding to this unique hike identifier.
  */
-$hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
-$distThreshParm = filter_input(INPUT_GET, 'distThreshParm');
-$elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm');
-$maWindowParm = filter_input(INPUT_GET, 'maWindowParm');
+$hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_SANITIZE_NUMBER_INT);
+$distThreshParm = filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT);
+$elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT);
+$maWindowParm = filter_input(INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT);
 $makeGpsvDebugParm = filter_input(INPUT_GET, 'makeGpsvDebugParm');
 $showAscDsc = filter_input(INPUT_GET, 'showAscDsc');
 $ehikes = (isset($tbl) && $tbl === 'new') ? true : false;
@@ -38,11 +42,55 @@ if ($ehikes) {
     $ttable = 'TSV';
     $tbl = 'old';
 }
+// Form the queries for extracting data from HIKES/EHIKES and TSV/ETSV
+$basic = "SELECT * FROM {$htable} WHERE indxNo = :indxNo";
+$basicPDO = $pdo->prepare($basic);
+$photos = "SELECT folder,title,hpg,mpg,`desc`,lat,lng,thumb,alblnk,date," .
+        "mid,imgHt,imgWd FROM {$ttable} WHERE indxNo = :indxNo;";
+$photosPDO = $pdo->prepare($photos);
+// Execute the transactions:
+$pdo->beginTransaction();
+$basicPDO->bindValue(':indxNo', $hikeIndexNo);
+$basicPDO->execute();
+$photosPDO->bindValue("indxNo", $hikeIndexNo);
+$photosPDO->execute();
+$pdo->commit();
 /**
- * The get_HIKES_row.php utility extracts data from the $htable
- * based on the $hikeIndexNo established above.
+ * This section will extract the data from HIKES/EHIKES table used to fill the
+ * basic hike page template.
  */
-require "../mysql/get_HIKES_row.php";
+$row = $basicPDO->fetch(PDO::FETCH_ASSOC);
+$hikeTitle = $row['pgTitle'];
+$hikeLocale = $row['locale'];
+$hikeGroup = $row['cgroup'];
+$hikeType = $row['logistics'];
+$hikeLength = $row['miles'] . " miles";
+$hikeElevation = $row['feet'] . " ft";
+$hikeDifficulty = $row['diff'];
+$hikeFacilities = $row['fac'];
+$hikeWow = $row['wow'];
+$hikeSeasons = $row['seasons'];
+$hikeExposure = $row['expo'];
+$gpxfile = $row['gpx'];
+$jsonFile = $row['trk'];
+if ($row['aoimg1'] == '') {
+    $hikeAddonImg1 = '';
+} else {
+    $hikeAddonImg1 = unserialize($row['aoimg1']);
+}
+if ($row['aoimg2'] == '') {
+    $hikeAddonImg2 = '';
+} else {
+    $hikeAddonImg2 = unserialize($row['aoimg2']);
+}
+$hikePhotoLink1 = $row['purl1'];
+$hikePhotoLink2 = $row['purl2'];
+$hikeDirections = $row['dirs'];
+$hikeTips = $row['tips'];
+$hikeInfo = $row['info'];
+$hikeEThresh = $row['eThresh'];
+$hikeDThresh = $row['dThresh'];
+$hikeMaWin = $row['maWin'];
 if ($gpxfile == '') {
     $newstyle = false;
     $gpxPath = '';
@@ -51,10 +99,42 @@ if ($gpxfile == '') {
     $gpxPath = '../gpx/' . $gpxfile;
 }
 /**
- * The get_TSV_row.php utility extracts data about the photos to
- * be displayed on the page.
+ * This section collects the information from TSV/ETSV table needed
+ * to build the picture rows...
  */
-require "../mysql/get_TSV_row.php";
+$photosData = $photosPDO->fetchAll(PDO::FETCH_ASSOC);
+$months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
+    "Sep","Oct","Nov","Dec");
+$descs = [];
+$alblnks = [];
+$piclnks = [];
+$captions = [];
+$aspects = [];
+$widths = [];
+foreach ($photosData as $pics) {
+    if ($pics['hpg'] === 'Y') {
+        array_push($descs, $pics['title']);
+        array_push($alblnks, $pics['alblnk']);
+        array_push($piclnks, $pics['mid']);
+        $pDesc = htmlspecialchars($pics['desc']);
+        $dateStr = $pics['date'];
+        if ($dateStr == '') {
+            array_push($captions, $pDesc);
+        } else {
+            $year = substr($dateStr, 0, 4);
+            $month = intval(substr($dateStr, 5, 2));
+            $day = intval(substr($dateStr, 8, 2));  # intval strips leading 0
+            $date = $months[$month-1] . ' ' . $day . ', ' . $year .
+                    ': ' . $pDesc;
+            array_push($captions, $date);
+        }
+            $ht = intval($pics['imgHt']);
+            $wd = intval($pics['imgWd']);
+            array_push($widths, $wd);
+            $picRatio = $wd/$ht;
+            array_push($aspects, $picRatio);
+    }
+}
 $capCnt = count($descs);
 // if there are additional images (non-captioned), process them here:
 if (is_array($hikeAddonImg1)) {

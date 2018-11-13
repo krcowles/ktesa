@@ -16,138 +16,118 @@
  * @package Display_Page
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../pages
  */
-/**
- * All connections to MySQL are handled by this function
- * 
- * @param string __FILE__ a constant holding file name
- * @param string __LINE__ a constand holding line number in file
- */
-$link = connectToDb(__FILE__, __LINE__);
-// --- 1) References:
-$bkReq = "SELECT title,author FROM BOOKS;";
-$bks = mysqli_query($link, $bkReq) or die(
-    __FILE__ . " Line " . __LINE__ . "Failed to get books from BOOKS: " .
-    mysqli_error($link)
-);
+$rhikes = (isset($hikeGroup)  && $hikeGroup !== '') ? true : false;
+$noOfRelatedHikes = 0;
+// Transactions:
+// books
+$bkReq = 'SELECT title,author FROM BOOKS';
+$bkPDO = $pdo->prepare($bkReq);
+// references
+$refReq = "SELECT rtype,rit1,rit2 FROM {$rtable} WHERE indxNo = :indxNo";
+$refPDO = $pdo->prepare($refReq);
+// gps data
+$gpsReq = "SELECT datType,label,`url`,clickText FROM {$gtable} "
+    . "WHERE indxNo = :indxNo";
+$gpsPDO = $pdo->prepare($gpsReq);
+if ($rhikes) {
+    $clus = trim($hikeGroup);
+    $relatedhikes = "SELECT indxNo,pgTitle FROM HIKES WHERE cgroup = :relhike";
+    $hikesPDO = $pdo->prepare($relatedhikes);
+}
+$pdo->beginTransaction();
+$bkPDO->execute();
+$refPDO->bindValue(":indxNo", $hikeIndexNo);
+$refPDO->execute();
+$gpsPDO->bindValue(":indxNo", $hikeIndexNo);
+$gpsPDO->execute();
+if ($rhikes) {
+    $hikesPDO->bindValue(":relhike", $clus);
+    $hikesPDO->execute();
+}
+$pdo->commit();
+
+// Create arrays correlating books and authors:
 $books = [];
 $auths = [];
-while ($bkitem = mysqli_fetch_assoc($bks)) {
+$bookData = $bkPDO->fetchAll(PDO::FETCH_ASSOC);
+foreach ($bookData as $bkitem) {
     array_push($books, $bkitem['title']);
     array_push($auths, $bkitem['author']);
 }
-mysqli_free_result($bks);
-$query = "SELECT rtype,rit1,rit2 FROM {$rtable} WHERE " .
-    "indxNo = '{$hikeIndexNo}';";
-$result = mysqli_query($link, $query) or die(
-    "get_REFS_row.php: Unable to extract references from REFS: " .
-    mysqli_error()
-);
-$noOfRefs = mysqli_num_rows($result);
+// Now process the remaining 'Related Info' data:
+$referenceData = $refPDO->fetchAll(PDO::FETCH_ASSOC);
+$noOfRefs = 0;
 $refHtml = '<ul id="refs" style="position:relative;top:-10px;">';
-if ($noOfRefs > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $rtype = trim($row['rtype']);
-        if ($rtype === 'Text:') {
-            $refHtml .= "<li>" . $row['rit1'] . "</li>" . PHP_EOL;
-        } elseif ($rtype === 'Book:' || $rtype === 'Photo Essay:') {
-            $indx = $row['rit1'] -1;
-            $refHtml .= "<li>" . $rtype . " <em>" . $books[$indx] .
-                    "</em>, by " . $auths[$indx] . "</li>" . PHP_EOL;
-        } else {
-            $refHtml .= "<li>" . $rtype . ' <a href="' . $row['rit1'] .
-                    '" target="_blank">' . $row['rit2'] . '</a></li>' . PHP_EOL;
-        }
+foreach ($referenceData as $row) {
+    $rtype = trim($row['rtype']);
+    if ($rtype === 'Text:') {
+        $refHtml .= "<li>" . $row['rit1'] . "</li>" . PHP_EOL;
+    } elseif ($rtype === 'Book:' || $rtype === 'Photo Essay:') {
+        $indx = $row['rit1'] -1;
+        $refHtml .= "<li>" . $rtype . " <em>" . $books[$indx] .
+                "</em>, by " . $auths[$indx] . "</li>" . PHP_EOL;
+    } else {
+        $refHtml .= "<li>" . $rtype . ' <a href="' . $row['rit1'] .
+                '" target="_blank">' . $row['rit2'] . '</a></li>' . PHP_EOL;
     }
-    $refHtml .= "</ul>". PHP_EOL;
-} else {
-    $refHtml .= "<li>No References</li>" . PHP_EOL;
-    $refHtml .= "</ul>" . PHP_EOL;
+    $noOfRefs += 1;
 }
+if ($noOfRefs === 0) {
+    $refHtml .= "<li>No References</li>" . PHP_EOL;
+}
+$refHtml .= "</ul>". PHP_EOL;
+
 // exit here if this is for an Index Page:
 if (isset($pageType) && $pageType === 'Index') {
     return;
 }
-// ---- 2) Related Hikes
-/**
- * If this hike belongs to a cluster, establish 'Related Hikes' by identifying the
- * other hikes in this cluster:
- */
-$noOfClus = 0;
-if (isset($hikeGroup)  && $hikeGroup !== '') {
-    $related = trim($hikeGroup);
-    $query = "SELECT indxNo,pgTitle FROM HIKES WHERE cgroup = '{$related}';";
-    $relquery = mysqli_query($link, $query);
-    if (!$relquery) {
-        die(
-            "hikePageTemplate.php: No extaction of cluster group hikes" .
-            mysqli_error($link)
-        );
-    }
-    $noOfClus = mysqli_num_rows($relquery);
-    if ($noOfClus > 0) {
-        $relHikes = '<ul id="related">' . PHP_EOL;
-        for ($i=0; $i<$noOfClus; $i++) {
-            $rHike = mysqli_fetch_assoc($relquery);
-            if ($rHike['pgTitle'] !== $hikeTitle) {
-                $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' .
+
+if ($rhikes) {   
+    $relHikes = '<ul id="related">' . PHP_EOL;
+    while (($rHike = $hikesPDO->fetch(PDO::FETCH_ASSOC)) !== false) {
+        if ($rHike['pgTitle'] !== $hikeTitle) {
+            $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' .
                 $rHike['indxNo'] . '" target="_blank">' . $rHike['pgTitle'] .
                 '</a></li>' . PHP_EOL;
-            }
+            $noOfRelatedHikes += 1;
         }
-        $relHikes .= '</ul>' . PHP_EOL;
     }
-    mysqli_free_result($relquery);
+    $relHikes .= '</ul>' . PHP_EOL;
 }
-// --- 3) GPS Maps and Data
-/**
- * Get any GPS Maps & Data to be displayed on the page. The data type
- * identifier 'P' (proposed data) and 'A' (actual data) are no longer 
- * required by the curent scheme and are ignored.
- */
-$query = "SELECT datType,label,`url`,clickText FROM {$gtable} " .
-    "WHERE indxNo = '{$hikeIndexNo}';";
-$result = mysqli_query($link, $query);
-if (!$result) {
-    die(
-        "get_GPSDAT_row.php: Unable to extract references from GPSDAT: " .
-        mysqli_error()
-    );
-}
-$noOfGps = mysqli_num_rows($result);
-if ($noOfGps > 0) {
-    $gpsHtml = '<ul id="gps">' . PHP_EOL;
-    while ($row = mysqli_fetch_assoc($result)) {
-        if ($row['datType'] === 'P' || $row['datType'] === 'A') {
-            $url = $row['url'];
-            $extpos = strrpos($url, ".") + 1;
-            $ext = strtolower(substr($url, $extpos, 3));
-            if ($ext === 'gpx') {
-                if (substr($gtable, 0, 1) === 'E') {
-                    $age = 'new';
-                } else {
-                    $age = 'old';
-                }
-                $mapLink = "../maps/fullPgMapLink.php?maptype=extra&" .
-                    "hno={$hikeIndexNo}&hike={$hikeTitle}&gpx={$url}&tbl={$age}";
-                $gpsHtml .= '<li class="gpslnks">' . $row['clickText'] .
-                    '&nbsp;&nbsp;' . ' <a href="' .
-                    $url . '" download>Download</a>&nbsp;&nbsp;' .'<a href="' .
-                    $url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
-                    '<a href="' . $mapLink . 
-                    '" target="_blank">View as Map</a></li>' . PHP_EOL;
+
+$noOfGps = 0;
+$gpsHtml = '<ul id="gps">' . PHP_EOL;
+$gpsData = $gpsPDO->fetchAll(PDO::FETCH_ASSOC);
+foreach ($gpsData as $row) {
+    if ($row['datType'] === 'P' || $row['datType'] === 'A') {
+        $url = $row['url'];
+        $extpos = strrpos($url, ".") + 1;
+        $ext = strtolower(substr($url, $extpos, 3));
+        if ($ext === 'gpx') {
+            if (substr($gtable, 0, 1) === 'E') {
+                $age = 'new';
             } else {
-                $gpsHtml .= '<li>' . $row['label'] . '<a href="' . $url .
-                    '" target="_blank">' . $row['clickText'] . '</a></li>' . PHP_EOL;
+                $age = 'old';
             }
-        } 
-    }
-    $gpsHtml .= "</ul>";
+            $mapLink = "../maps/fullPgMapLink.php?maptype=extra&" .
+                "hno={$hikeIndexNo}&hike={$hikeTitle}&gpx={$url}&tbl={$age}";
+            $gpsHtml .= '<li class="gpslnks">' . $row['clickText'] .
+                '&nbsp;&nbsp;' . ' <a href="' .
+                $url . '" download>Download</a>&nbsp;&nbsp;' .'<a href="' .
+                $url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
+                '<a href="' . $mapLink . 
+                '" target="_blank">View as Map</a></li>' . PHP_EOL;
+        } else {
+            $gpsHtml .= '<li>' . $row['label'] . '<a href="' . $url .
+                '" target="_blank">' . $row['clickText'] . '</a></li>' . PHP_EOL;
+        }
+    } 
+    $noOfGps += 1;
 }
-mysqli_free_result($result);
+$gpsHtml .= "</ul>";
 /**
- * New style for presenting 'bottom-of-page' information, including:
+ *  Present 'bottom-of-page' information, including:
  *  References,
  *  Related hikes
  *  GPS Maps and Data
@@ -158,7 +138,7 @@ $bop .= '<fieldset>'. PHP_EOL .
     '<legend id="fldrefs"><em>Related Hike Information</em></legend>' . PHP_EOL .
     '<span class="boptag">REFERENCES:</span>' . PHP_EOL .
 $refHtml . PHP_EOL;
-if ($noOfClus > 0) {
+if ($noOfRelatedHikes > 0) {
     $bop .= '<span class="boptag">RELATED HIKES</span>' . PHP_EOL .
         $relHikes . PHP_EOL;
 }
