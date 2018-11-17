@@ -27,7 +27,8 @@
     <p style="margin:0;font-weight:bold;">We are sorry, but a problem has
         occurred while processing your request.</p>
     <p style="margin:0;text-indent:30px;color:black;">An email has been
-        sent to the web master, and the problem will be investigated promptly.
+        sent to the web master with details, and the problem will be
+        investigated promptly.
     </p>
     <p>You may wish to try again at a later date/time. Thanks for your patience!</p>   
 </div>
