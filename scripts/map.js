@@ -107,6 +107,7 @@ $hdrs.each( function(indx) {
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
+	var clusterMarkerSet = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
 	var mapDiv = document.getElementById('map');
 	map = new google.maps.Map(mapDiv, {
@@ -238,6 +239,7 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
+		clusterMarkerSet.push(marker);
 		allMrkrs[mrkrno] = marker;
 		// add info window functionality
 		marker.addListener( 'click', function() {
@@ -273,6 +275,7 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
+		clusterMarkerSet.push(marker);
 		allMrkrs[mrkrno] = marker;
 		// info window content: add in all the hikes for this group
 		marker.addListener( 'click', function() {
@@ -299,6 +302,7 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
+		clusterMarkerSet.push(marker);
 		allMrkrs[mrkrno] = marker;
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
@@ -364,8 +368,15 @@ function initMap() {
 		return iwDat;
 	} // end function coreHikeData
 
-	var markerCluster = new MarkerClusterer(map, allMrkrs,
-		{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+	// /////////////////////// Marker Grouping /////////////////////////
+	var markerCluster = new MarkerClusterer(map, clusterMarkerSet,
+		{
+			imagePath: '../images/markerclusters/m',
+			gridSize: 50,
+			averageCenter: true,
+			zoomOnClick: false
+		});
+
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	map.addListener('zoom_changed', function() {
 		var idle = google.maps.event.addListener(map, 'idle', function (e) {
