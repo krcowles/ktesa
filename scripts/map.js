@@ -363,7 +363,9 @@ function initMap() {
 		iwDat += '<a href="' + $plink.attr('href') + '" target="_blank">Website</a>';
 		return iwDat;
 	} // end function coreHikeData
-	
+
+	var markerCluster = new MarkerClusterer(map, allMrkrs,
+		{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	map.addListener('zoom_changed', function() {
 		var idle = google.maps.event.addListener(map, 'idle', function (e) {

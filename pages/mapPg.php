@@ -88,6 +88,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
 <?php endif; ?>
 <?php if ($tblVar !== 'T') : ?>
     <script src="../scripts/hikeBox.js"></script>
+    <script src="../scripts/markerclusterer.js"></script>
     <script src="../scripts/map.js"></script>
     <?php if ($tblVar === 'D') : ?>
     <script src="../scripts/phpDynamicTbls.js"></script>
