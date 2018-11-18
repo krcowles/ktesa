@@ -100,9 +100,9 @@ try {
     $pdo = new PDO( $dsn, USERNAME, PASSWORD, $options);
 }
 catch (\PDOException $e) {
-    echo "A problem was encountered connecting to the database: " 
+    $msg = "A problem was encountered connecting to the database: " 
         . $e->getMessage() . " with error code: " . (int)$e->getCode();
-    echo "<br />The caller was " . $src_file . " at line " . $src_line;
-    echo "<br />The error occurred in " . $e->getFile() . " at line " . $e->getLine() . " <br />";
-    throw new Exception("Failure to connect to db");
+    $msg .=  "<br />The error occurred in " . $e->getFile() . " at line " .
+        $e->getLine() . " <br />";
+    throw new Exception($msg);
 }
