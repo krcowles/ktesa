@@ -58,8 +58,6 @@ if ( mobile_browser ) {
     var clusterIcon = '../images/bluepin.png';
     var hikeIcon = '../images/redpin.png';
 } 
-// Set of hike markers (indx is hikeIndex, so starts at 1)
-var allMrkrs = [];
 /* Create the hike arrays to be used in marker and info window creation */
 // get node lists for each marker type:
 var allVs = [];
@@ -240,7 +238,6 @@ function initMap() {
 		  title: pinName
 		});
 		clusterMarkerSet.push(marker);
-		allMrkrs[mrkrno] = marker;
 		// add info window functionality
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
@@ -276,7 +273,6 @@ function initMap() {
 		  title: pinName
 		});
 		clusterMarkerSet.push(marker);
-		allMrkrs[mrkrno] = marker;
 		// info window content: add in all the hikes for this group
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
@@ -303,7 +299,6 @@ function initMap() {
 		  title: pinName
 		});
 		clusterMarkerSet.push(marker);
-		allMrkrs[mrkrno] = marker;
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
 			var iwContent = '<div id="NH">Hike: ' + pinName + '<br />';
