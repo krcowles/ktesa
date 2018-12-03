@@ -299,9 +299,10 @@ foreach ($gpsv as $line) {
     } elseif (strpos($line, "Although GPS Visualizer didn")) {
         $maphtml .= $line . PHP_EOL;
         if ($map_opts['show_geoloc'] === 'true') {
-            $maphtml .= "                <p><a href='javascript:GV_Geolocate(" .
-                "{marker:true,info_window:true})' style='font-size:12px'>" .
-                "Geolocate me!</a></p>" . PHP_EOL;
+            $maphtml .= "                <a href='javascript:GV_Geolocate(" .
+                "{marker:true,info_window:true})' target='_self' " .
+                "style='position:absolute;top:20px;left:42px;z-index:500;'>" .
+                "<img src='../../images/geoloc.png'</a>" . PHP_EOL;
         }
     } elseif (strpos($line, "gv_options.center =")) {
         $maphtml .= '            gv_options.center = [' . $clat . ',' . $clon .
