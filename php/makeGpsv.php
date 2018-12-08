@@ -302,7 +302,7 @@ foreach ($gpsv as $line) {
             $maphtml .= "                <a href='javascript:GV_Geolocate(" .
                 "{marker:true,info_window:true})' target='_self' " .
                 "style='position:absolute;top:20px;left:42px;z-index:500;'>" .
-                "<img src='../../images/geoloc.png'</a>" . PHP_EOL;
+                "<img src='../../images/geoloc.png' /></a>" . PHP_EOL;
         }
     } elseif (strpos($line, "gv_options.center =")) {
         $maphtml .= '            gv_options.center = [' . $clat . ',' . $clon .
