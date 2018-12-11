@@ -64,8 +64,6 @@ function validateUpload($name, $fileloc)
                     . "schema in validateUpload() " . __FILE__ . " line "
                     . __LINE__ . "<br />" . $err_list);
 
-            } else {
-                die("validated...");
             }
         }
         $saveloc = $fileloc . $filename;
