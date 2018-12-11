@@ -10,7 +10,7 @@
   </metadata>
 
   <trk>
-    <name>Actual Hike: Cerrillos Hills Exploratory Trail</name>
+    <name>Cerrillos Canyon Loop</name>
 	<desc>Distance: 5 miles, Elevation Gain: 730 feet</desc>
     <extensions>
       <gpxx:TrackExtension>
@@ -2296,26 +2296,5 @@
       </trkpt>
     </trkseg>
   </trk>
-	<wpt lat="35.4745285" lon="-106.1269641">
-		<name>Grand Central Mountain or Cerro del Oso = Hill of the Bear</name>
-	</wpt>
-	<trk>
-		<name>Proposed Hike Extension to Cerro del Oso</name>
-		<desc>Additional Distance: 1/3 mile, Additional Elevation Gain: 600 feet</desc>
-    <extensions>
-      <gpxx:TrackExtension>
-        <gpxx:DisplayColor>Green</gpxx:DisplayColor>
-      </gpxx:TrackExtension>
-    </extensions>
-		<trkseg>
-			<trkpt lat="35.4711034" lon="-106.1277580"></trkpt>
-			<trkpt lat="35.4712781" lon="-106.1273932"></trkpt>
-			<trkpt lat="35.4718199" lon="-106.1269641"></trkpt>
-			<trkpt lat="35.4726412" lon="-106.1269212"></trkpt>
-			<trkpt lat="35.4733227" lon="-106.1269426"></trkpt>
-			<trkpt lat="35.4741440" lon="-106.1269641"></trkpt>
-			<trkpt lat="35.4744236" lon="-106.1269641"></trkpt>
-		</trkseg>
-	</trk>
 
 </gpx>

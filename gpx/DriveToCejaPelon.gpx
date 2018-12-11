@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<gpx version="1.1" creator="GPS Visualizer http://www.gpsvisualizer.com/" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<trk>
+  <name>CejaPelonDrive</name>
+  <desc>Length: 2.302 km (1.43 mi)</desc>
+  <trkseg>
+    <trkpt lat="35.9569189" lon="-107.2195928">
+      <ele>2109.52</ele>
+    </trkpt>
+    <trkpt lat="35.9672702" lon="-107.2195069">
+      <ele>2115.97</ele>
+    </trkpt>
+    <trkpt lat="35.9674393" lon="-107.2199149">
+      <ele>2113.049</ele>
+    </trkpt>
+    <trkpt lat="35.9675782" lon="-107.2206874">
+      <ele>2108.077</ele>
+    </trkpt>
+    <trkpt lat="35.9679255" lon="-107.2211595">
+      <ele>2104.642</ele>
+    </trkpt>
+    <trkpt lat="35.9687591" lon="-107.2210951">
+      <ele>2105.564</ele>
+    </trkpt>
+    <trkpt lat="35.9696101" lon="-107.2210307">
+      <ele>2104.42</ele>
+    </trkpt>
+    <trkpt lat="35.970079" lon="-107.2212024">
+      <ele>2104.401</ele>
+    </trkpt>
+    <trkpt lat="35.9710341" lon="-107.2218461">
+      <ele>2103.765</ele>
+    </trkpt>
+    <trkpt lat="35.9730485" lon="-107.2227473">
+      <ele>2104.44</ele>
+    </trkpt>
+    <trkpt lat="35.9735695" lon="-107.2227044">
+      <ele>2104.797</ele>
+    </trkpt>
+    <trkpt lat="35.9741599" lon="-107.2222109">
+      <ele>2104.617</ele>
+    </trkpt>
+    <trkpt lat="35.9745072" lon="-107.2221894">
+      <ele>2105.737</ele>
+    </trkpt>
+    <trkpt lat="35.9749066" lon="-107.2225328">
+      <ele>2109.078</ele>
+    </trkpt>
+    <trkpt lat="35.975827" lon="-107.2235627">
+      <ele>2113.289</ele>
+    </trkpt>
+    <trkpt lat="35.9762785" lon="-107.2237344">
+      <ele>2115.051</ele>
+    </trkpt>
+    <trkpt lat="35.9770599" lon="-107.2238631">
+      <ele>2119.354</ele>
+    </trkpt>
+    <trkpt lat="35.9790394" lon="-107.2242279">
+      <ele>2126.27</ele>
+    </trkpt>
+    <trkpt lat="35.9793173" lon="-107.2243137">
+      <ele>2126.946</ele>
+    </trkpt>
+    <trkpt lat="35.9796819" lon="-107.2246571">
+      <ele>2125.619</ele>
+    </trkpt>
+    <trkpt lat="35.9799424" lon="-107.2248716">
+      <ele>2126.794</ele>
+    </trkpt>
+    <trkpt lat="35.9806022" lon="-107.2253652">
+      <ele>2127.336</ele>
+    </trkpt>
+    <trkpt lat="35.9814704" lon="-107.2259874">
+      <ele>2124.275</ele>
+    </trkpt>
+    <trkpt lat="35.9816614" lon="-107.2261162">
+      <ele>2123.743</ele>
+    </trkpt>
+    <trkpt lat="35.9817007" lon="-107.226073">
+      <ele>2123.4</ele>
+    </trkpt>
+    <trkpt lat="35.9829509" lon="-107.2265022">
+      <ele>2116.485</ele>
+    </trkpt>
+    <trkpt lat="35.9846177" lon="-107.2273605">
+      <ele>2111.339</ele>
+    </trkpt>
+    <trkpt lat="35.9853122" lon="-107.2278326">
+      <ele>2109.459</ele>
+    </trkpt>
+    <trkpt lat="35.9860762" lon="-107.2289913">
+      <ele>2105.533</ele>
+    </trkpt>
+    <trkpt lat="35.9870485" lon="-107.2290342">
+      <ele>2104.863</ele>
+    </trkpt>
+    <trkpt lat="35.9888889" lon="-107.2286909">
+      <ele>2108.018</ele>
+    </trkpt>
+    <trkpt lat="35.9903473" lon="-107.2284763">
+      <ele>2115.149</ele>
+    </trkpt>
+    <trkpt lat="35.991389" lon="-107.2285621">
+      <ele>2117.784</ele>
+    </trkpt>
+    <trkpt lat="35.9910071" lon="-107.2300212">
+      <ele>2111.736</ele>
+    </trkpt>
+    <trkpt lat="35.9910071" lon="-107.2312229">
+      <ele>2108.862</ele>
+    </trkpt>
+    <trkpt lat="35.9909376" lon="-107.2329395">
+      <ele>2109.78</ele>
+    </trkpt>
+    <trkpt lat="35.9905904" lon="-107.2346561">
+      <ele>2109.817</ele>
+    </trkpt>
+    <trkpt lat="35.9906598" lon="-107.2379177">
+      <ele>2113.097</ele>
+    </trkpt>
+    <trkpt lat="35.9905904" lon="-107.2398489">
+      <ele>2110.43</ele>
+    </trkpt>
+    <trkpt lat="35.9898612" lon="-107.2406642">
+      <ele>2109.626</ele>
+    </trkpt>
+  </trkseg>
+</trk>
+</gpx>
