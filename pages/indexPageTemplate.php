@@ -9,16 +9,14 @@
  * @license No license to date
  */
 require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+$pdo = dbConnect(__FILE__, __LINE__);
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
-$table = "HIKES";
 $query = "SELECT pgTitle,lat,lng,aoimg1,dirs,info "
-    . "FROM {$table} WHERE indxNo = '{$hikeIndexNo}';";
-$request = mysqli_query($link, $query) or die(
-    __FILE__ . " Line " . __LINE__ . " Unable to get Index Page data: " 
-    . mysqli_error($link)
-);
-$row = mysqli_fetch_assoc($request);
+    . "FROM HIKES WHERE indxNo = :hikeIndexNo;";
+$indxPgData = $pdo->prepare($query);
+$indxPgData->bindValue(':hikeIndexNo', $hikeIndexNo, PDO::PARAM_INT);
+$indxPgData->execute();
+$row = $indxPgData->fetch();
 $indxTitle = $row['pgTitle'];
 $lnkText = str_replace('Index', '', $indxTitle);
 $parkMap = unserialize($row['aoimg1']);
@@ -28,16 +26,16 @@ $parkDirs = $row['dirs'];
 $parkInfo = $row['info'];
 // form html for references:
 $rtable = 'REFS';
+$gtable = 'GPSDAT';
+
 $pageType = 'Index';
 require 'relatedInfo.php';  // get the $refHtml output
 // INDEX TABLE OF HIKES, if any:
 $iptblsreq = "SELECT compl,tdname,tdpg,tdmiles,tdft,tdexp,tdalb " .
-    "FROM IPTBLS WHERE indxNo = '{$hikeIndexNo}';";
-$iptbl = mysqli_query($link, $iptblsreq) or die(
-    __FILE__ . " Line " . __LINE__ . ": Failed to extract table data from"
-    . " IPTBLS: " . mysqli_error($link)
-);
-$item_cnt = mysqli_num_rows($iptbl);
+    "FROM IPTBLS WHERE indxNo = :hikeIndexNo;";
+$iptbl = $pdo->prepare($iptblsreq);
+$iptbl->bindValue(':hikeIndexNo', $hikeIndexNo, PDO::PARAM_INT);
+$iptbl->execute();
 // Collect data for building the table in html
 $hiked = array();
 $tdpg = array();
@@ -46,8 +44,8 @@ $tdname = array();
 $tdmiles = array();
 $tdfeet = array();
 $tdalb = array();
-for ($j=0; $j<$item_cnt; $j++) {
-    $indxTbl = mysqli_fetch_assoc($iptbl);
+$j = 0;
+foreach ($iptbl as $indxTbl) {
     $tdpg[$j] = $indxTbl['tdpg'];
     $hiked[$j] = ($indxTbl['compl'] == 'Y') ? true : false;
     // Exposure settings:
@@ -65,8 +63,9 @@ for ($j=0; $j<$item_cnt; $j++) {
     $tdmiles[$j] = $indxTbl['tdmiles'];
     $tdfeet[$j] = $indxTbl['tdft'];
     $tdalb[$j] = $indxTbl['tdalb'];
+    $j++;
 }
-mysqli_free_result($iptbl);
+$item_cnt = $j;
 ?>
 <!DOCTYPE html>
 <html>
