@@ -196,16 +196,7 @@ function updateDbRow(
 function connectToDb($file, $line)
 {
     include_once "../mysql/setenv.php";
-    $dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-    if ($dev) {
-        $link = mysqli_connect(
-            HOSTNAME_LOC, USERNAME_LOC, PASSWORD_LOC, DATABASE_LOC
-        );
-    } else {
-        $link = mysqli_connect(
-            HOSTNAME_000, USERNAME_000, PASSWORD_000, DATABASE_000
-        );
-    }
+    $link = mysqli_connect(HOSTNAME, USERNAME, PASSWORD, DATABASE);
     if (!$link) {
         die(
             "Function connectToDb failed when called from file {$file}: " .

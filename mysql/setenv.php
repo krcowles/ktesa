@@ -1,14 +1,30 @@
 <?php
-DEFINE("KTESA_DBUG", true, true);
-#
-# Credentiala on local machine
-DEFINE("HOSTNAME_LOC", "127.0.0.1", true);
-DEFINE("USERNAME_LOC", "root", true);
-DEFINE("PASSWORD_LOC", "root", true);
-DEFINE("DATABASE_LOC", "id140870_hikemaster", true);
-#
-# Credentiala on 000webhost
-DEFINE("HOSTNAME_000", "localhost", true);
-DEFINE("USERNAME_000", "id140870_krcowles", true);
-DEFINE("PASSWORD_000", "000ktesa9", true);
-DEFINE("DATABASE_000", "id140870_hikemaster", true);
+/** 
+ * This file is intended to reside in this directory only during the transition
+ * to a more secure location in a new file, 'settings.php'. It will be a virtual
+ * copy of that file until the transition is completed.
+ */
+require "../admin/mode_settings.php";
+DEFINE("PORT", "3306", true);
+DEFINE("CHARSET", "UTF8", true);
+$devhost = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
+if ($devhost) { // LOCAL MACHINE
+    DEFINE("HOSTNAME", "127.0.0.1", true);
+    DEFINE("USERNAME", "root", true);
+    DEFINE("PASSWORD", "root", true);
+    if ($dbState === 'main') {  // main db
+        DEFINE("DATABASE", "id140870_hikemaster", true);
+    } else {  // test db
+        DEFINE("DATABASE", "id140870_nmhikestest", true);
+    }
+} else { // WEB SERVER
+    DEFINE("HOSTNAME", "localhost", true);
+    DEFINE("PASSWORD", "000ktesa9", true);
+    if ($dbState === 'main') {  // main db
+        DEFINE("USERNAME", "id140870_krcowles", true);
+        DEFINE("DATABASE", "id140870_hikemaster", true);
+    } else {  // test db
+        DEFINE("USERNAME", "id140870_krcowlestest", true);
+        DEFINE("DATABASE", "id140870_nmhikestest", true);
+    }
+}

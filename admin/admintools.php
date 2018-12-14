@@ -10,15 +10,7 @@
  * @license No license to date
  */
 session_start();
-$settings = file_get_contents('../../settings.php', "_self");
-$mode_pos = strpos($settings, "appMode =") + 11;
-$mode = substr($settings, $mode_pos, 3);
-$site_mode = "development";
-if ($mode === "pro") {
-    $site_mode = "production";
-}
-$env = file_get_contents('../mysql/setenv.php');
-$tdb = (strpos($env, 'test') > 0) ? true : false;
+require "mode_settings.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -43,7 +35,7 @@ $tdb = (strpos($env, 'test') > 0) ? true : false;
     <fieldset>
         <legend>Overall Site Management</legend>
         <p id="sitemode">The site is currently in
-            <span id="currstate"><?= $site_mode;?></span> mode:&nbsp;&nbsp;
+            <span id="currstate"><?= $appMode;?></span> mode:&nbsp;&nbsp;
         <button id="switchstate">Switch Site Mode</button></p>
         <form action="upldSite.php" method="POST" target="_blank"
             enctype="multipart/form-data">
@@ -67,7 +59,7 @@ $tdb = (strpos($env, 'test') > 0) ? true : false;
             [NOTE: Creates .sql file]<br />
         <button id="swdb">Switch DB's</button>&nbsp;&nbsp;
             Current database in use:
-        <?php if ($tdb) : ?>
+        <?php if ($dbState === 'test') : ?>
             <span id="test" style="color:red;">Test</span>
         <?php else : ?>
             <span id="real" style="color:blue;">Site</span>
