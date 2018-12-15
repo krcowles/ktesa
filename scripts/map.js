@@ -369,7 +369,7 @@ function initMap() {
 			imagePath: '../images/markerclusters/m',
 			gridSize: 50,
 			averageCenter: true,
-			zoomOnClick: false
+			zoomOnClick: true
 		});
 
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
