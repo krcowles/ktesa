@@ -11,19 +11,9 @@
  * @license No license to date
  */
 ignore_user_abort(true);
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-if ($dev) {
-    $mysqlUserName = USERNAME_LOC;
-    $mysqlPassword = PASSWORD_LOC;
-    $mysqlHostName = HOSTNAME_LOC;
-    $DbName = DATABASE_LOC;
-} else {
-    $mysqlUserName = USERNAME_000;
-    $mysqlPassword = PASSWORD_000;
-    $mysqlHostName = HOSTNAME_000;
-    $DbName = DATABASE_000;
-}
-$db = sys_get_temp_dir() . '/' . $DbName . '.sql';
+require "../mysql/setenv.php";
+
+$db = sys_get_temp_dir() . '/' . $DATABASE . '.sql';
 $tmpFilename = sys_get_temp_dir() . '/changes.zip';
 if (file_exists($tmpFilename)) {
     unlink($tmpFilename);
@@ -51,7 +41,7 @@ foreach ($iterator as $file) {
         }
     }
 }
-$zip->addFile($db, '../data/' . $DbName . '.sql');
+$zip->addFile($db, '../data/' . $DATABASE . '.sql');
 $zip->close();
 // Download the zip file
 header("Content-Type: application/x-gzip");

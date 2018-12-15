@@ -28,6 +28,6 @@ while ($row = mysqli_fetch_row($tbl_list)) {
 }
 $backup_name = "mybackup.sql";
 exportDatabase(
-    HOSTNAME, USERNAME, PASSWORD, DATABASE, $tables, 
+    $HOSTNAME, $USERNAME, $PASSWORD, $DATABASE, $tables, 
     $download, $backup_name = false
 );

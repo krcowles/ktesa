@@ -31,16 +31,16 @@ function default_exceptions($exception) {
  * @return object $pdo PDO class object with connection established
  */
 function dbConnect($src_file, $src_line) {
-    require_once "../../settings.php";
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/../settings.php";
     // ERRMODE_EXCEPTION: throws a PDOException, besides setting error code
     $options = array(
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES   => false,
     );
-    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s',HOSTNAME, DATABASE, CHARSET);
+    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s',$HOSTNAME, $DATABASE, $CHARSET);
     try {
-        $pdo_obj = new PDO( $dsn, USERNAME, PASSWORD, $options);
+        $pdo_obj = new PDO( $dsn, $USERNAME, $PASSWORD, $options);
     }
     catch (\PDOException $e) {
         echo "A problem was encountered connecting to the database: " 
@@ -196,7 +196,7 @@ function updateDbRow(
 function connectToDb($file, $line)
 {
     include_once "../mysql/setenv.php";
-    $link = mysqli_connect(HOSTNAME, USERNAME, PASSWORD, DATABASE);
+    $link = mysqli_connect($HOSTNAME, $USERNAME, $PASSWORD, $DATABASE);
     if (!$link) {
         die(
             "Function connectToDb failed when called from file {$file}: " .
