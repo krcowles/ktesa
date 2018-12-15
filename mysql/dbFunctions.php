@@ -31,6 +31,8 @@ function default_exceptions($exception) {
  * @return object $pdo PDO class object with connection established
  */
 function dbConnect($src_file, $src_line) {
+    // establish localized mode settings for the secure settings file:
+    require "../admin/mode_settings.php";  // always relative to the code version
     require_once $_SERVER["DOCUMENT_ROOT"] . "/../settings.php";
     // ERRMODE_EXCEPTION: throws a PDOException, besides setting error code
     $options = array(
