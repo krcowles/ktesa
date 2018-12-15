@@ -197,7 +197,7 @@ function updateDbRow(
  */
 function connectToDb($file, $line)
 {
-    include_once "../mysql/setenv.php";
+    include "../mysql/setenv.php";
     $link = mysqli_connect($HOSTNAME, $USERNAME, $PASSWORD, $DATABASE);
     if (!$link) {
         die(
