@@ -132,6 +132,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
 >>>>>>> master
 <?php if ($tblVar !== 'T') : ?>
     <script src="../scripts/hikeBox.js"></script>
+    <script src="../scripts/markerclusterer.js"></script>
     <script src="../scripts/map.js"></script>
     <?php if ($tblVar === 'D') : ?>
         <script src="../scripts/filter.js"></script>

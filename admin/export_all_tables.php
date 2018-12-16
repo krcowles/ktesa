@@ -10,6 +10,8 @@
  */
 require_once 'adminFunctions.php';
 require_once '../mysql/dbFunctions.php';
+require_once '../mysql/setenv.php';
+
 $download = filter_input(INPUT_GET, 'dwnld');
 // create array of tables to export: 
 //    NOTE: due to foreign keys, EHIKES must be first
@@ -24,20 +26,8 @@ while ($row = mysqli_fetch_row($tbl_list)) {
         array_push($tables, $row[0]);
     }
 }
-$dev = $_SERVER['SERVER_NAME'] == 'localhost' ? true : false;
-if ($dev) {
-    $mysqlUserName = USERNAME_LOC;
-    $mysqlPassword = PASSWORD_LOC;
-    $mysqlHostName = HOSTNAME_LOC;
-    $DbName = DATABASE_LOC;
-} else {
-    $mysqlUserName = USERNAME_000;
-    $mysqlPassword = PASSWORD_000;
-    $mysqlHostName = HOSTNAME_000;
-    $DbName = DATABASE_000;
-}
 $backup_name = "mybackup.sql";
 exportDatabase(
-    $mysqlHostName, $mysqlUserName, $mysqlPassword, $DbName, $tables, 
+    $HOSTNAME, $USERNAME, $PASSWORD, $DATABASE, $tables, 
     $download, $backup_name = false
 );

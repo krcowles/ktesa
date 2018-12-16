@@ -9,36 +9,17 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$setenv = '../mysql/setenv.php';
-$currentSetenv = file($setenv);
-foreach ($currentSetenv as &$line) {
-    if (strpos($line, 'DATABASE_LOC') > 0) {
-        if (strpos($line, 'test')) {
-            $test = true;
-            $line = 'DEFINE("DATABASE_LOC", "id140870_hikemaster", true);';
+$mode_settings = 'mode_settings.php';
+$values = file($mode_settings);
+foreach ($values as &$line) {
+    if (strpos($line, "dbState =") !== false) {
+        if (strpos($line, "test") !== false) {
+            $line =str_replace('test', 'main', $line);
         } else {
-            $test = false;
-            $line = 'DEFINE("DATABASE_LOC", "id140870_nmhikestest", true);';
+            $line = str_replace('main', 'test', $line);
         }
-        $line .= "\n";
-    }
-    if (strpos($line, 'USERNAME_000') > 0) {
-        if ($test) {
-            $line = 'DEFINE("USERNAME_000", "id140870_krcowles", true);';
-        } else {
-            $line = 'DEFINE("USERNAME_000", "id140870_krcowlestest", true);';
-        }
-        $line .= "\n";
-    }
-    if (strpos($line, 'DATABASE_000') > 0) {
-        if ($test) {
-            $line = 'DEFINE("DATABASE_000", "id140870_hikemaster", true);';
-        } else {
-            $line = 'DEFINE("DATABASE_000", "id140870_nmhikestest", true);';
-        }
-        $line .= "\n";
     }
 }
-file_put_contents($setenv, $currentSetenv);
+file_put_contents($mode_settings, $values);
 $redirect = 'admintools.php';
 header("Location: {$redirect}");
