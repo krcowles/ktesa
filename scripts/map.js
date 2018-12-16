@@ -58,8 +58,6 @@ if ( mobile_browser ) {
     var clusterIcon = '../images/bluepin.png';
     var hikeIcon = '../images/redpin.png';
 } 
-// Set of hike markers (indx is hikeIndex, so starts at 1)
-var allMrkrs = [];
 /* Create the hike arrays to be used in marker and info window creation */
 // get node lists for each marker type:
 var allVs = [];
@@ -107,6 +105,7 @@ $hdrs.each( function(indx) {
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
+	var clusterMarkerSet = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
 	var mapDiv = document.getElementById('map');
 	map = new google.maps.Map(mapDiv, {
@@ -238,7 +237,7 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
-		allMrkrs[mrkrno] = marker;
+		clusterMarkerSet.push(marker);
 		// add info window functionality
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
@@ -273,7 +272,7 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
-		allMrkrs[mrkrno] = marker;
+		clusterMarkerSet.push(marker);
 		// info window content: add in all the hikes for this group
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
@@ -299,7 +298,7 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
-		allMrkrs[mrkrno] = marker;
+		clusterMarkerSet.push(marker);
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
 			var iwContent = '<div id="NH">Hike: ' + pinName + '<br />';
@@ -363,7 +362,16 @@ function initMap() {
 		iwDat += '<a href="' + $plink.attr('href') + '" target="_blank">Website</a>';
 		return iwDat;
 	} // end function coreHikeData
-	
+
+	// /////////////////////// Marker Grouping /////////////////////////
+	var markerCluster = new MarkerClusterer(map, clusterMarkerSet,
+		{
+			imagePath: '../images/markerclusters/m',
+			gridSize: 50,
+			averageCenter: true,
+			zoomOnClick: true
+		});
+
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	map.addListener('zoom_changed', function() {
 		var idle = google.maps.event.addListener(map, 'idle', function (e) {
