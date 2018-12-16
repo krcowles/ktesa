@@ -83,7 +83,7 @@ function MarkerClusterer(map, opt_markers, opt_options) {
    */
   this.clusters_ = [];
 
-  this.sizes = [53, 56, 66, 78, 90];
+  this.sizes = [53, 56, 56, 56, 90];
 
   /**
    * @private
@@ -362,12 +362,24 @@ MarkerClusterer.prototype.getMaxZoom = function() {
 MarkerClusterer.prototype.calculator_ = function(markers, numStyles) {
   var index = 0;
   var count = markers.length;
+/*
   var dv = count;
   while (dv !== 0) {
     dv = parseInt(dv / 10, 10);
     index++;
   }
-
+*/
+  if (count < 6) {
+    index = 1;
+  } else if (count < 11) {
+    index = 2;
+  } else if (count < 31) {
+    index = 3;
+  } else if (count < 61) {
+    index = 4;
+  } else {
+    index = 5;
+  }
   index = Math.min(index, numStyles);
   return {
     text: count,
