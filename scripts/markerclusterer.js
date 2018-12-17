@@ -369,17 +369,13 @@ MarkerClusterer.prototype.calculator_ = function(markers, numStyles) {
     index++;
   }
 */
-  if (count < 6) {
+  if (count < 10) {
     index = 1;
-  } else if (count < 11) {
+  } else if (count < 20) {
     index = 2;
-  } else if (count < 31) {
-    index = 3;
-  } else if (count < 61) {
-    index = 4;
   } else {
-    index = 5;
-  }
+    index = 3;
+  } 
   index = Math.min(index, numStyles);
   return {
     text: count,
