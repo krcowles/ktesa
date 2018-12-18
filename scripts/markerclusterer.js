@@ -83,7 +83,7 @@ function MarkerClusterer(map, opt_markers, opt_options) {
    */
   this.clusters_ = [];
 
-  this.sizes = [53, 56, 66, 78, 90];
+  this.sizes = [53, 56, 56, 56, 90];
 
   /**
    * @private
@@ -362,12 +362,20 @@ MarkerClusterer.prototype.getMaxZoom = function() {
 MarkerClusterer.prototype.calculator_ = function(markers, numStyles) {
   var index = 0;
   var count = markers.length;
+/*
   var dv = count;
   while (dv !== 0) {
     dv = parseInt(dv / 10, 10);
     index++;
   }
-
+*/
+  if (count < 10) {
+    index = 1;
+  } else if (count < 20) {
+    index = 2;
+  } else {
+    index = 3;
+  } 
   index = Math.min(index, numStyles);
   return {
     text: count,
@@ -1246,7 +1254,7 @@ ClusterIcon.prototype.createCss = function(pos) {
         this.height_ + 'px; width:' + this.width_ + 'px; text-align:center;');
   }
 
-  var txtColor = this.textColor_ ? this.textColor_ : 'black';
+  var txtColor = this.textColor_ ? this.textColor_ : 'white';
   var txtSize = this.textSize_ ? this.textSize_ : 11;
 
   style.push('cursor:pointer; top:' + pos.y + 'px; left:' +
