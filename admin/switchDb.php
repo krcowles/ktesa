@@ -21,5 +21,9 @@ foreach ($values as &$line) {
     }
 }
 file_put_contents($mode_settings, $values);
+// need to build in a small amount of time to allow file write completion
+while (time() - filemtime($mode_settings) > 1) {
+    usleep(5000);
+}
 $redirect = 'admintools.php';
 header("Location: {$redirect}");
