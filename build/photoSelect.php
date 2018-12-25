@@ -126,7 +126,6 @@ if ($inclPix === 'YES') {
     echo '</div>';
 }
 ?>
-<script src="../scripts/jquery-1.12.1.js"></script>
 <script type="text/javascript">
     var phTitles = <?php echo $jsTitles;?>;
     var phDescs = <?php echo $jsDescs;?>;

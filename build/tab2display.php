@@ -49,9 +49,13 @@ Type:&nbsp;&nbsp;
 <button id="newalbs" style="font-size:16px;width:165px;cursor:pointer;"
     onfocus="color:papayawhip">Upload Albums</button>
     &nbsp;&nbsp;You can review these album photos (if any) after Uploading
-    for inclusion on this edit page...
+    for inclusion on this edit page...<br /><br />
 </form>
+<hr />
 <!-- This concludes the new photo upload form section -->
+<input type="button" name="upld" id="upld" value="Upload photos!" />
+<hr />
+<!-- This concludes the drag-and-drop image section -->
 <?php if ($hikeUrl1 !== '' || $hikeUrl2 !== '') : ?>
 <p style="color:brown;"><em>Edit captions below each photo as needed
     and assign display options.</em></p>
