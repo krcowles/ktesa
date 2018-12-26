@@ -53,9 +53,10 @@ Type:&nbsp;&nbsp;
 </form>
 <hr />
 <!-- This concludes the new photo upload form section -->
-<input type="button" name="upld" id="upld" value="Upload photos!" />
+<p>Upload your photos directly! 
+<input type="button" name="upld" id="upld" value="Go to Upload Pg" /></p>
 <hr />
-<!-- This concludes the drag-and-drop image section -->
+<!-- This concludes the user photo uploader section -->
 <?php if ($hikeUrl1 !== '' || $hikeUrl2 !== '') : ?>
 <p style="color:brown;"><em>Edit captions below each photo as needed
     and assign display options.</em></p>

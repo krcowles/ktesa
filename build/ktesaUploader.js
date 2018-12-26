@@ -1,6 +1,7 @@
+// clear out the input file list with each refresh:
+$('#file').val(null);
 // styling the 'Choose file...' input box and label text:
 var inputs = document.querySelectorAll( '.inputfile' );
-var upldNames = [];
 Array.prototype.forEach.call( inputs, function( input )
 {
 	var label	 = input.nextElementSibling;
@@ -14,24 +15,20 @@ Array.prototype.forEach.call( inputs, function( input )
             fileName = e.target.value.split( '\\' ).pop();
         }
 		if( fileName ) {
-            upldNames.push(fileName);
-			label.querySelector( 'span' ).innerHTML = "&nbsp;&nbsp;" + fileName;
+			label.querySelector( 'span' ).innerHTML = fileName;
         } else {
             label.innerHTML = labelVal;
         }
 	});
 });
 // make sure FormData and FileReader support is in the browser window:
-var fd_support = function() {
-    return 'FormData' in window && 'FileReader' in window;
-}();  // IIFE - true if features are supported
-
+var isAdvancedUpload = 'FormData' in window && 'FileReader' in window;
 // Assuming support, set up drag-n-drop file capture:
 var droppedFiles =false; // global context needed;
 var $form = $('.box');
-if (fd_support) {
-    $form.addClass('supported');
-
+if (isAdvancedUpload) {
+    $form.addClass('has-advanced-upload');
+    $('.box__dragndrop').css('display', 'inline');
     $form.on('drag dragstart dragend dragover dragenter dragleave drop', function(ev) {
         ev.preventDefault();
         ev.stopPropagation();
@@ -55,57 +52,81 @@ if (fd_support) {
                     img.src = usrimg;
                     img.height = 160;
                     var space = document.createTextNode("  ");
-                    document.getElementById('box_dnd').appendChild(img);
-                    document.getElementById('box_dnd').appendChild(space);
+                    document.getElementsByClassName('box__dnd')[0].appendChild(img);
+                    document.getElementsByClassName('box__dnd')[0].appendChild(space);
                 }
                 reader.readAsDataURL(droppedFiles[j]); // start reading the file data.
             }
         }
     });
+} else {
+    alert("No FormData/FileReader support for this browser");
 }
 // form submittal
 $form.on('submit', function(e) {
-    if ($form.hasClass('is-uploading')) {
-        return false;
-    }
+    if ($form.hasClass('is-uploading')) return false;
     $form.addClass('is-uploading').removeClass('is-error');
-  
-    if (fd_support) {
-      e.preventDefault();
-      var ajaxData = new FormData($form.get(0));
-      if (droppedFiles) {
-            $.each( droppedFiles, function(i, file) {
-                ajaxData.append( upldNames[i], file );
-            });
-      }
-      $.ajax({
-        url: $form.attr('action'),
-        type: $form.attr('method'),
-        data: ajaxData,
-        dataType: 'json',
-        cache: false,
-        contentType: false,
-        processData: false,
-        complete: function() {
-          $form.removeClass('is-uploading');
-        },
-        success: function(data) {
-            alert("GOT IT");
-          $form.addClass( data.success == true ? 'is-success' : 'is-error' );
-          if (!data.success) $errorMsg.text(data.error);
-        },
-        error: function() {
-          // Log the error, show an alert, whatever works for you
+    if (isAdvancedUpload) {
+        e.preventDefault();
+        var inputFiles = document.getElementById('file');
+        var fileList = inputFiles.files;
+        var noOfFiles = fileList.length;
+        var addDropped = false;
+        if (noOfFiles == 0) {
+            // any dragged files?
+            if (!droppedFiles) {
+                alert("No files have been chosen or dragged in for upload");
+                $form.removeClass('is-uploading');
+                return;
+            } else {
+                addDropped = true;
+                ajaxData = new FormData();
+            }
+        } else {
+            // retrieve any uploads via "Choose File..." 
+            var ajaxData = new FormData($form.get(0));
+            if (droppedFiles) {
+                addDropped = true;
+            }
         }
-      });
+        if (addDropped) {
+            for (var j=0; j<droppedFiles.length; j++) {
+                ajaxData.append('files[]', droppedFiles[j] );
+            }
+        }
+        $.ajax({
+            url: 'usrPhotos.php',
+            type: 'POST',
+            data: ajaxData,
+            dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
+            complete: function() {
+            $form.removeClass('is-uploading');
+            },
+            success: function(data) {
+                if (data.substring(0,4) !== "Fail") {
+                    $form.addClass('is-success');
+                    alert(data);
+                } else {
+                    $form.addClass('is-error');
+                }
+            },
+            error: function() {
+            // Log the error, show an alert, whatever works for you
+            }
+        });
     } else {
       // ajax for legacy browsers
     }
-});
+  });
+
 $('#clrimgs').on('click', function(ev) {
     ev.preventDefault();
     $imgs = $('img');
     $imgs.each(function() {
         $(this).remove();
     });
+    droppedFiles = false;
 });

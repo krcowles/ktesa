@@ -368,4 +368,8 @@ $('#showll').on('click', function() {
     $(this).prop('checked',false);
 });
 
+$('#upld').on('click', function() {
+    window.open('ktesaUploader.html', "_blank");
+});
+
 });  // end of 'page (DOM) loading complete'
