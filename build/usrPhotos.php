@@ -21,10 +21,13 @@ set_error_handler(function() {
     throw new Exception();
 }, E_WARNING); 
 $exif_results = '';
+$orient = [];
 for ($i=0; $i<$noOfFiles; $i++) {
     $photo = $filedat['tmp_name'][$i];
+    $orient[$i] = false;
     try {
         $exifData = exif_read_data($photo);
+        $orient[$i] = $exifData['Orientation'];
     } catch (Exception $e) {
         $exifData = false;
         $exif_results .= "File " . $filedat['name'][$i] . " has no exif data" . PHP_EOL;
@@ -34,25 +37,24 @@ restore_error_handler();
 // check the GD support in this version of php:
 $GDsupport = gd_info();
 if ($GDsupport['JPEG Support']) {
-    // specify the desired dimensions for storing: phone & orientation dependent?
-    $resizeParms = array('ht' => 640, 'wd' => 360);
+    $zwidth = 640;
     for ($j=0; $j<$noOfFiles; $j++) {
-        /*
         list($width, $height) = getimagesize($filedat['tmp_name'][$j]);
-        $r = $width / $height;
-        if ($resizeParms['wd']/$resizeParms['ht'] > $r) {
-            $newwidth = $resizeParms['ht'] * $r;
-            $newheight = $resizeParms['ht'];
-        } else {
-            $newheight = $resizeParms['wd']/$r;
-            $newwidth = $resizeParms['wd'];
+        $rotate = false;
+        if ($orient[$j] == '6') {
+            $rotate = true;
         }
-        $src = imagecreatefromjpeg($filedat['tmp_name'][$j]);
-        $dst = imagecreatetruecolor($newwidth, $newheight);
-        imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-        file_put_contents('test.jpg', imagewbmp($dst));
-    */
-        store_uploaded_image($filedat['name'][$j], $filedat['tmp_name'][$j], 680, 360);
+        /* Don't believe this to be necessary:
+        else {
+            if ($height > $width) {
+                $rotate = true;
+            }
+        }
+        */
+        $aspect = $height / $width;
+        $zheight = intval($zwidth * $aspect);
+        store_uploaded_image($filedat['name'][$j], $filedat['tmp_name'][$j],
+            $zwidth, $zheight, $rotate);
     }
 }
 if (isset($filedat)) {
@@ -66,11 +68,18 @@ if (isset($filedat)) {
 }
 echo json_encode($msg);
 // TEMPORARY FUNCTION STORAGE FOR TESTING ONLY!!
-function store_uploaded_image($old_fname, $old_file, $new_img_width, $new_img_height) {
+function store_uploaded_image($old_fname, $old_file, $new_img_width,
+        $new_img_height, $rotated) {
     $target_dir = "../tmp/";
     $target_file = $target_dir . $old_fname;
     $image = new \claviska\SimpleImage();
     $image->fromFile($old_file);
+    $image->autoOrient();
+    if ($rotated) {
+        $tmp = $new_img_height;
+        $new_img_height = $new_img_width;
+        $new_img_width = $tmp;
+    }
     $image->resize($new_img_width, $new_img_height);
     $image->toFile($target_file);
     //return name of saved file in case you want to store it in you database or show confirmation message to user
