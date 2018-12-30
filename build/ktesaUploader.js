@@ -1,5 +1,31 @@
 // clear out the input file list with each refresh:
 $('#file').val(null);
+function getExifOrientation(img, divnode, boxnode, aspect) {
+    img.onload = function(e) {
+        var orient = "";
+        EXIF.getData(img, function() {
+            orient = EXIF.getTag(this, "Orientation");
+        });
+        if (orient == '6') {
+            img.style.transform = "rotate(90deg)";
+            /* height/width parms unchanged by rotate, 
+             * so 'width' of rotated img is actually height of img;
+             * This requires adjusting the top margin, since the rotated
+             * image will exceed the target container size
+             */
+            var adj = Math.floor(160/aspect);
+            img.height = adj;
+            var marg = (160 - adj)/2 + "px"; 
+            img.style.margin = marg + " 0px 0px 0px";
+        } else {
+            img.height = 160;
+            img.style.margin = "0px 0px 0px 8px";
+        }
+        divnode.height = 160;
+        divnode.appendChild(img);
+        boxnode.appendChild(divnode);
+    }
+}
 // styling the 'Choose file...' input box and label text:
 var inputs = document.querySelectorAll( '.inputfile' );
 Array.prototype.forEach.call( inputs, function( input )
@@ -46,6 +72,7 @@ if (isAdvancedUpload) {
             if (droppedFiles[j].type.match(/image.*/)) { // skip non-images
                 var reader = new FileReader;
                 reader.onload = function(event) {
+                    var node = document.getElementsByClassName('box__dnd')[0];
                     // create container div (to size if rotated)
                     var container = document.createElement('div');
                     container.style.cssFloat = "left";
@@ -56,31 +83,8 @@ if (isAdvancedUpload) {
                     var ht = img.naturalHeight;
                     var wd = img.naturalWidth;
                     var rat = wd/ht;
-                    var node = document.getElementsByClassName('box__dnd')[0];
                     // if metadata, check orientation
-                    var orient = "";
-                    EXIF.getData(img, function() {
-                        orient = EXIF.getTag(this, "Orientation");
-                    });
-                    if (orient == '6') {
-                        img.style.transform = "rotate(90deg)";
-                        /* height/width parms unchanged by rotate, 
-                         * so 'width' of rotated img is actually height of img;
-                         * This requires adjusting the top margin, since the rotated
-                         * image will exceed the target container size
-                         */
-                        var adj = Math.floor(160/rat);
-                        img.height = adj;
-                        var marg = (160 - adj)/2 + "px"; 
-                        img.style.margin = marg + " 0px 0px 0px";
-                        spacer = false;
-                    } else {
-                        img.height = 160;
-                        img.style.margin = "0px 0px 0px 8px";
-                    }
-                    container.height = 160;
-                    container.appendChild(img);
-                    node.appendChild(container);
+                    getExifOrientation(img, container, node, rat);
                 }
                 reader.readAsDataURL(droppedFiles[j]); // start reading the file data.
             }
