@@ -19,7 +19,7 @@ $noOfFiles = count($filedat['name']);
 // Look for exif data; report if none
 set_error_handler(function() {
     throw new Exception();
-}, E_WARNING); 
+}, E_ALL); 
 $exif_results = '';
 $orient = [];
 for ($i=0; $i<$noOfFiles; $i++) {
@@ -27,10 +27,17 @@ for ($i=0; $i<$noOfFiles; $i++) {
     $orient[$i] = false;
     try {
         $exifData = exif_read_data($photo);
-        $orient[$i] = $exifData['Orientation'];
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         $exifData = false;
         $exif_results .= "File " . $filedat['name'][$i] . " has no exif data" . PHP_EOL;
+    }
+    if ($exifData) {
+        try {
+            $orient[$i] = $exifData['Orientation'];
+        }
+        catch (\Exception $e) {
+            $orient[$i] = false;
+        }
     }
 }
 restore_error_handler();

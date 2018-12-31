@@ -87,3 +87,7 @@ label {
 .box.is-uploading .box__uploading {
     display: block;
 }
+#ldg {
+    color: brown;
+    display: none;
+}
