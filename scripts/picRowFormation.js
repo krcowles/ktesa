@@ -73,13 +73,13 @@ function drawRows(useWidth) {
                         iwidth = Math.floor(scale * widthAtMax[k]);
                         rowHtml += '<img id="pic' + k + '" style="' +
                             styling + '" width="' + iwidth + '" height="' +
-                            rowHt + '" src="' + piclnks[k] + '" alt="' +
+                            rowHt + '" src="' + "/pictures/nsize/" + piclnks[k] + "_n.jpg" + '" alt="' +
                             capts[k] + '" />' + "\n";
                     } else {
                         iwidth = Math.floor(scale * widthAtMax[k]);
                         rowHtml += '<img style="' + styling + '" width="' +
                             iwidth + '" height="' + rowHt + '" src="' +
-                            piclnks[k] + '" alt="Additional non-captioned image" />' + "\n";
+                            "/pictures/nsize/" + piclnks[k] + "_n.jpg" + '" alt="Additional non-captioned image" />' + "\n";
                     }
                 }  // end of for each image -> fit
                 imgStartNo = n+1;
@@ -101,12 +101,12 @@ function drawRows(useWidth) {
                     if (itype[l] === 'photo') {
                         rowHtml += '<img id="pic' + l + '" style="' +
                             styling + '" width="' + widthAtMax[l] + '" height="' +
-                            maxRowHt + '" src="' + piclnks[l] + '" alt="' +
+                            maxRowHt + '" src="' + "/pictures/nsize/" + piclnks[l] + "_n.jpg" + '" alt="' +
                             capts[l] + '" />' + "\n";
                     } else {
                         rowHtml += '<img style="' + styling + '" width="' +
                             widthAtMax[l] + '" height="' + maxRowHt + 
-                            '" src="' + piclnks[l] + 
+                            '" src="' + "/pictures/nsize/" + piclnks[l] + "_n.jpg" + 
                             '" alt="Additional non-captioned image" />' + "\n";
                     }
                 }

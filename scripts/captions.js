@@ -127,7 +127,8 @@ function eventSet() {
     });
     $photos.each( function(indx) {
         $(this).on('click', function() {
-            window.open(alblnks[indx],"_blank");
+            var zpic = "/pictures/zsize/" + piclnks[indx] + "_z.jpg";
+            window.open(zpic,"_blank");
         });
     });
 }
