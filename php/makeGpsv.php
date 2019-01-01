@@ -272,9 +272,10 @@ if ($showPhotos) {
             } else { // photo
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng'] . ",name:'" . $procDesc .
-                    "',desc:'',color:'" . $iconColor . "',icon:'" .
-                    $mapicon . "',url:'" . "/pictures/zsize/" . $photos['mid'] . "_z.jpg" . "',thumbnail:'" .
-                    "/pictures/nsize/" . $photos['mid'] . "_n.jpg" . "',folder:'" . $photos['folder'] . "'});";
+                    "',desc:'',color:'" . $iconColor . "',icon:'" . $mapicon .
+                    "',url:'/pictures/zsize/" . $photos['mid'] . "_z.jpg" .
+                    "',thumbnail:'/pictures/nsize/" . $photos['mid'] . "_n.jpg" .
+                    "',folder:'" . $photos['folder'] . "'});";
             }
             array_push($plnks, $plnk);
             $mcnt++;
