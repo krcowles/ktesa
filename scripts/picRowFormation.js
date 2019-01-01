@@ -79,7 +79,7 @@ function drawRows(useWidth) {
                         iwidth = Math.floor(scale * widthAtMax[k]);
                         rowHtml += '<img style="' + styling + '" width="' +
                             iwidth + '" height="' + rowHt + '" src="' +
-                            "/pictures/nsize/" + piclnks[k] + "_n.jpg" + '" alt="Additional non-captioned image" />' + "\n";
+                            "../images/" + piclnks[k] + '" alt="Additional non-captioned image" />' + "\n";
                     }
                 }  // end of for each image -> fit
                 imgStartNo = n+1;
@@ -106,7 +106,7 @@ function drawRows(useWidth) {
                     } else {
                         rowHtml += '<img style="' + styling + '" width="' +
                             widthAtMax[l] + '" height="' + maxRowHt + 
-                            '" src="' + "/pictures/nsize/" + piclnks[l] + "_n.jpg" + 
+                            '" src="' + "../images/" + piclnks[l] + 
                             '" alt="Additional non-captioned image" />' + "\n";
                     }
                 }
