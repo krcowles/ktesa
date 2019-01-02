@@ -265,16 +265,17 @@ if ($showPhotos) {
                 $iconColor = $defIconColor;
             }
             // If wypt in ETSV file....
-            if ($photos['alblnk'] == '') { // waypoint icon
+            if ($photos['mid'] == '') { // waypoint icon
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng']. ",name:'" . $procName . "',desc:'" .
                     $procDesc . "',color:'" . $iconColor . "',icon:''});";
             } else { // photo
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng'] . ",name:'" . $procDesc .
-                    "',desc:'',color:'" . $iconColor . "',icon:'" .
-                    $mapicon . "',url:'" . $photos['alblnk'] . "',thumbnail:'" .
-                    $photos['mid'] . "',folder:'" . $photos['folder'] . "'});";
+                    "',desc:'',color:'" . $iconColor . "',icon:'" . $mapicon .
+                    "',url:'/pictures/zsize/" . $photos['mid'] . "_z.jpg" .
+                    "',thumbnail:'/pictures/nsize/" . $photos['mid'] . "_n.jpg" .
+                    "',folder:'" . $photos['folder'] . "'});";
             }
             array_push($plnks, $plnk);
             $mcnt++;
