@@ -138,7 +138,7 @@ foreach ($photosData as $pics) {
 $capCnt = count($descs);
 // if there are additional images (non-captioned), process them here:
 if (is_array($hikeAddonImg1)) {
-    $aoimg1 = '../images/' . $hikeAddonImg1[0];
+    $aoimg1 = $hikeAddonImg1[0];
     array_push($descs, $hikeAddonImg1[0]);
     array_push($alblnks, '');
     array_push($piclnks, $aoimg1);
@@ -150,7 +150,7 @@ if (is_array($hikeAddonImg1)) {
     array_push($aspects, $imgRatio);
 }
 if (is_array($hikeAddonImg2)) {
-    $aoimg2 = '../images/' . $hikeAddonImg2[0];
+    $aoimg2 = $hikeAddonImg2[0];
     array_push($descs, $hikeAddonImg2[0]);
     array_push($alblnks, '');
     array_push($piclnks, $aoimg2);
