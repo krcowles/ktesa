@@ -12,8 +12,11 @@
  * otherwise caught.
  * 
  * @param object $exception 'Throwable' type Exception object
+ * 
+ * @return object $pdo_obj The PDO connection object
  */
-function default_exceptions($exception) {
+function default_exceptions($exception)
+{
     echo "The routine has encountered an error: "
         . $exception->getMessage() . PHP_EOL;
 }
@@ -30,7 +33,8 @@ function default_exceptions($exception) {
  * 
  * @return object $pdo PDO class object with connection established
  */
-function dbConnect($src_file, $src_line) {
+function dbConnect($src_file, $src_line)
+{
     // establish localized mode settings for the secure settings file:
     require "../admin/mode_settings.php";  // always relative to the code version
     require_once $_SERVER["DOCUMENT_ROOT"] . "/../settings.php";
@@ -40,9 +44,9 @@ function dbConnect($src_file, $src_line) {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES   => false,
     );
-    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s',$HOSTNAME, $DATABASE, $CHARSET);
+    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s', $HOSTNAME, $DATABASE, $CHARSET);
     try {
-        $pdo_obj = new PDO( $dsn, $USERNAME, $PASSWORD, $options);
+        $pdo_obj = new PDO($dsn, $USERNAME, $PASSWORD, $options);
     }
     catch (\PDOException $e) {
         echo "A problem was encountered connecting to the database: " 

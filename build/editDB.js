@@ -369,7 +369,8 @@ $('#showll').on('click', function() {
 });
 
 $('#upld').on('click', function() {
-    window.open('ktesaUploader.html', "_blank");
+    var uploader = 'ktesaUploader.php?indx=' + hike;
+    window.open(uploader, "_blank");
 });
 
 });  // end of 'page (DOM) loading complete'

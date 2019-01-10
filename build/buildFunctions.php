@@ -3,7 +3,7 @@
  * This file contains function declarations designed to be used
  * by modules in the build directory. At this time, there are also
  * some instances called by makeGpsv.php.
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Build_Functions
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -17,9 +17,8 @@
  * already exists on the site. Other validation checks are performed.
  * NOTE: If the upload is a main site gpx file, makeTrackFile will be called.
  * 
- * @param string $name     <input type="file" name="$name" />
- * @param string $fileloc  The directory location for moving the upload
- * @param string $mimetype The mime type to validate on upload
+ * @param string $name    <input type="file" name="$name" />
+ * @param string $fileloc The directory location for moving the upload
  * 
  * @return array $filename, $msg
  */
@@ -46,23 +45,27 @@ function validateUpload($name, $fileloc)
         $file_ext = substr($filename, $ext, 3);
         if (strtoLower($file_ext) === 'gpx') {
             $xml = new DOMDocument;
-            if(!$xml->load($tmp_upload)) {
+            if (!$xml->load($tmp_upload)) {
                 die(
                     "{$filename} could not be loaded as a DOMDocument in "
                     . "validateUpload of buildFunctions.php line " . __LINE__
                 );
             }
-            if (!$xml->schemaValidate("http://www.topografix.com/GPX/1/1/gpx.xsd", 
-                    LIBXML_SCHEMA_CREATE)) {
+            if (!$xml->schemaValidate(
+                "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
+            )
+            ) {
                 $error_vals = libxml_get_errors();
                 $err_list = "<ul>";
                 foreach ($error_vals as $err) {
-                    $err_list .= "<li>" . display_xml_error($err, $filename) . "</li>";
+                    $err_list .= "<li>" . displayXmlError($err, $filename) . "</li>";
                 }
                 $err_list .= "</ul>";
-                die("{$filename} could not be validated against the XML gpx " 
+                die(
+                    "{$filename} could not be validated against the XML gpx " 
                     . "schema in validateUpload() " . __FILE__ . " line "
-                    . __LINE__ . "<br />" . $err_list);
+                    . __LINE__ . "<br />" . $err_list
+                );
 
             }
         }
@@ -93,20 +96,20 @@ function validateUpload($name, $fileloc)
  * 
  * @return string $return error string to return
  */
-function display_xml_error($error, $gpxfile) 
+function displayXmlError($error, $gpxfile) 
 {
     switch ($error->level) {
-        case LIBXML_ERR_WARNING:
-            $return .= "Warning $error->code: ";
-            break;
-         case LIBXML_ERR_ERROR:
-            $return .= "Error $error->code: ";
-            break;
-        case LIBXML_ERR_FATAL:
-            $return .= "Fatal Error $error->code: ";
-            break;
-        default:
-            $return = "Error level not recognized";
+    case LIBXML_ERR_WARNING:
+        $return .= "Warning $error->code: ";
+        break;
+    case LIBXML_ERR_ERROR:
+        $return .= "Error $error->code: ";
+        break;
+    case LIBXML_ERR_FATAL:
+        $return .= "Fatal Error $error->code: ";
+        break;
+    default:
+        $return = "Error level not recognized";
     }
     $return .= trim($error->message) . "<br />" .
         "\n  Line: $error->line" . "\n  Column: $error->column";
@@ -584,6 +587,40 @@ function genLatLng($gpxobj, $trkno)
             }
         }
     }
+}
+/**
+ * This function will resize an image and store it in the target_dir
+ * as specified by the code and incoming file name.
+ * 
+ * @param string  $targ_fname     Target file name
+ * @param string  $org_file       File contents of original image
+ * @param integer $new_img_width  Resize width of image
+ * @param integer $new_img_height Resize height of image
+ * @param boolean $rotated        Is image rotated? T/F
+ * 
+ * @return string $target_file New resized filepath
+ */
+function storeUploadedImage($targ_fname, $org_file, $new_img_width,
+    $new_img_height, $rotated
+) {
+    $target_dir = "../tmp/";
+    $target_file = $target_dir . $targ_fname;
+    $image = new \claviska\SimpleImage();
+    $image->fromFile($org_file);
+    $image->autoOrient();
+    /*
+     * rotation is already done in caller...
+    if ($rotated) {
+        $tmp = $new_img_height;
+        $new_img_height = $new_img_width;
+        $new_img_width = $tmp;
+    }
+    */
+    $image->resize($new_img_width, $new_img_height);
+    $image->toFile($target_file);
+    // return name of saved file in case you want to store it 
+    // in your database or show confirmation message to user
+    return $target_file;
 }
 /*
 function convtTime($GPStime) {

@@ -1,5 +1,8 @@
 // clear out the input file list with each refresh:
 $('#file').val(null);
+// get the hike no:
+var ehikeIndxNo = $('#ehno').text();
+
 // dropped image handling
 var orient;  // global required
 var droppedImages = []; // array of FileReader objects loaded from dropped imgs
@@ -172,6 +175,7 @@ $form.on('submit', function(e) {
                 ajaxData.append('files[]', submittableImgs[j] );
             }
         }
+        ajaxData.append('indx', ehikeIndxNo);
         $.ajax({
             url: 'usrPhotos.php',
             type: 'POST',

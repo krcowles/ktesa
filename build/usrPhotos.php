@@ -12,25 +12,76 @@
  * @license No license to date
  */
 require "../vendor/autoload.php";
+/** 
+ * THE FOLLOWING REQUIRES WILL BE REPLACED WITH A SINGLE LINE WHEN
+ * 'PDO_complete' is merged:
+ * require "../php/global_boot.php";
+ */
+require "buildFunctions.php";
+require "../mysql/dbFunctions.php";
 
+// POSTED DATA
 $filedat = $_FILES['files'];
 $noOfFiles = count($filedat['name']);
+$indxNo = filter_input(INPUT_POST, 'indx');
+// Size width definitions:
+$n_size = 320;
+$z_size = 640;
 
-// Look for exif data; report if none
-set_error_handler(function() {
-    throw new Exception();
-}, E_ALL); 
-$exif_results = '';
+set_error_handler(
+    function () {
+        throw new Exception();
+    }, E_ALL
+); 
+
+// Arrays for storing data to be placed in to TSV table
+/**
+ * Until adjustments are made for 'title' and 'desc', 'title' will be the 
+ * same as 'mid'
+ */
+$imgName = []; // This corresponds to the 'mid' field photo id
+$imgHt_n = []; // NOTE: nsize is stored in TSV to supply <src> tag attributes
+$imgWd_n = [];
+$imgHt_z = []; // Only needed for z_size file creation
+$imgWd_z = [];
 $orient = [];
+$timestamp = [];
+$lats = [];
+$lngs = [];
+$procs = []; // Boolean array of photos to be processed (some may not)
+// container for exif data results
+$upld_results = '';
+
+// Process files
 for ($i=0; $i<$noOfFiles; $i++) {
     $photo = $filedat['tmp_name'][$i];
-    $orient[$i] = false;
+    $fname = $filedat['name'][$i];
+    if (exif_imagetype($photo) !== IMAGETYPE_JPEG) {
+        $upld_results .= "Image " . $filedat['name'] . 
+            " is not JPEG: No upload will occur." . PHP_EOL;
+        $procs[$i] = false;
+        continue;
+    } else {
+        $procs[$i] = true;
+    }
     try {
         $exifData = exif_read_data($photo);
     } catch (\Exception $e) {
         $exifData = false;
-        $exif_results .= "File " . $filedat['name'][$i] . " has no exif data" . PHP_EOL;
+        $upld_results .= "File " . $fname . " has no exif data" . PHP_EOL;
     }
+    // All photos:
+    $dot = strrpos($fname, ".");
+    $imgName[$i] = substr($fname, 0, $dot);
+    $orient[$i] = false;
+    list($orgWd, $orgHt) = getimagesize($photo);
+    // translate ht/wd into new n-size/z-size dimensions:
+    $aspect = $orgHt/$orgWd;
+    $imgWd_n[$i] = $n_size;
+    $imgHt_n[$i] = intval($n_size * $aspect);
+    $imgWd_z[$i] = $z_size;
+    $imgHt_z[$i] = intval($z_size * $aspect);
+    // Remaining values dependent on presence of exif data
     if ($exifData) {
         try {
             $orient[$i] = $exifData['Orientation'];
@@ -38,57 +89,121 @@ for ($i=0; $i<$noOfFiles; $i++) {
         catch (\Exception $e) {
             $orient[$i] = false;
         }
+        if ($orient[$i] == '6') {
+            $tmpval = $imgHt_n[$i];
+            $imgHt_n[$i] = $imgWd_n[$i];
+            $imgWd_n[$i] = $tmpval;
+            $tmpval = $imgHt_z[$i];
+            $imgHt_z[$i] = $imgWd_z[$i];
+            $imgWd_z[$i] = $tmpval;
+        }
+        if (!isset($exifData['DateTimeOriginal'])) {
+            $timestamp[$i] = 0; // used to determine NULL entry in db
+            $upld_results .= "File " . $fname . " has no date/time data" . PHP_EOL;
+        } else {
+            $timestamp[$i] = $exifData["DateTimeOriginal"];
+            if ($timestamp[$i] == '') {
+                $timestamp[$i] = 0; // used to determine NULL entry in db
+                $upld_results .= "File " . $fname . 
+                    " has no date/time data" . PHP_EOL;
+            }
+        }
+        if (!isset($exifData["GPSLatitudeRef"])
+            || !isset($exifData["GPSLatitude"])
+        ) {
+            // zero values will be used to determine if db NULLs are req'd
+            $lats[$i] = 0;
+            $lngs[$i] = 0;
+            $upld_results .= "No lat/lng data found for " . $fname . PHP_EOL;
+        } else {
+            if ($exifData["GPSLatitudeRef"] == 'N') {
+                $lats[$i] = mantissa($exifData["GPSLatitude"]);
+            } else {
+                $lats[$i] = -1 * mantissa($exifData["GPSLatitude"]);
+            }
+            if ($exifData["GPSLongitudeRef"] == 'E') {
+                $lngs[$i] = mantissa($exifData["GPSLongitude"]);
+            } else {
+                $lngs[$i] = -1 * mantissa($exifData["GPSLongitude"]);
+            }
+        }
+    } else {
+        // Photos without exif data
+        $timestamp[$i] = 0;
+        $lats[$i] = 0;
+        $lngs[$i] = 0;
     }
 }
 restore_error_handler();
+
 // check the GD support in this version of php:
 $GDsupport = gd_info();
 if ($GDsupport['JPEG Support']) {
-    $zwidth = 640;
     for ($j=0; $j<$noOfFiles; $j++) {
-        list($width, $height) = getimagesize($filedat['tmp_name'][$j]);
-        $rotate = false;
-        if ($orient[$j] == '6') {
-            $rotate = true;
-        }
-        /* Don't believe this to be necessary:
-        else {
-            if ($height > $width) {
+        if ($procs[$j]) {
+            $rotate = false;
+            if ($orient[$j] == '6') {
                 $rotate = true;
             }
+            $nfileName = $imgName[$j] . "_n.jpg";
+            $zfileName = $imgName[$j] . "_z.jpg";
+            storeUploadedImage(
+                $nfileName, $filedat['tmp_name'][$j],
+                $imgWd_n[$j], $imgHt_n[$j], $rotate
+            );
+            storeUploadedImage(
+                $zfileName, $filedat['tmp_name'][$j],
+                $imgWd_z[$j], $imgHt_z[$j], $rotate
+            );
         }
-        */
-        $aspect = $height / $width;
-        $zheight = intval($zwidth * $aspect);
-        store_uploaded_image($filedat['name'][$j], $filedat['tmp_name'][$j],
-            $zwidth, $zheight, $rotate);
+    }
+} else {
+    $upld_results .= "There is no support for image resizing;";
+    die(json_encode($upld_results));
+}
+die(json_encode("DONE"));
+/*
+ *  THIS IS THE CODE THAT MAY CHANGE WHEN TSV GETS REDEFINED 
+ *  ALSO: WHEN 'PDO_complete' is merged, the PDO connection will already 
+ *  be in place, hence eliminate the first line of this code
+ */
+/*
+// exif data is stored in arrays, now place in db:
+$pdo = dbConnect(__FILE__, __LINE__);
+// need to loop thru all pix...
+for ($k=0; $k<count($imgName); $k++) {
+    if ($lats[$k] === 0 || $lngs[$k] === 0) {
+        $tsvReq = "INSERT INTO ETSV (indxNo,title,lat,lng,`date`,mid,imgHt,imgWd)
+        VALUES (?,?,NULL,NULL,?,?,?,?);";
+        $vals = [$indxNo, $imgName[$k], $timestamp[$k],
+            $nfile[$k], $imgHt[$k], $imgWd[$k]];
+        $tsv = $pdo->prepare($tsvReq);
+    } else {
+        $tsvReq = "INSERT INTO ETSV (indxNo,title,lat,lng,`date`,mid,imgHt,imgWd)
+        VALUES (?,?,?,?,?,?,?,?);";
+        $vals = [$indxNo, $imgName[$k], $lats[$k], $lngs[$k], $timestamp[$k],
+            $nfile[$k], $imgHt[$k], $imgWd[$k]];
+        $tsv = $pdo->prepare($tsvReq);
+    }
+    try {
+        $tsv->execute($vals);
+    }
+    catch (Exception $e) {
+        $msg = "TSV fail: " . $e->getMessage();
+        die(json_encode($msg));
     }
 }
+
+// return json to ajax caller
 if (isset($filedat)) {
-    if ($exif_results !== '') {
-        $msg = $exif_results;
+    if ($upld_results !== '') {
+        $msg = $upld_results;
     } else {
         $msg = "Retrieved " . $noOfFiles . " files";
     }
 } else {
     $msg = "Failed to upload: Contact site master";
 }
+$msg .= " for hike no " . $indxNo;
 echo json_encode($msg);
-// TEMPORARY FUNCTION STORAGE FOR TESTING ONLY!!
-function store_uploaded_image($old_fname, $old_file, $new_img_width,
-        $new_img_height, $rotated) {
-    $target_dir = "../tmp/";
-    $target_file = $target_dir . $old_fname;
-    $image = new \claviska\SimpleImage();
-    $image->fromFile($old_file);
-    $image->autoOrient();
-    if ($rotated) {
-        $tmp = $new_img_height;
-        $new_img_height = $new_img_width;
-        $new_img_width = $tmp;
-    }
-    $image->resize($new_img_width, $new_img_height);
-    $image->toFile($target_file);
-    //return name of saved file in case you want to store it in you database or show confirmation message to user
-    return $target_file;
-}
+*/

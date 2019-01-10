@@ -1,3 +1,16 @@
+<?php
+/**
+ * This page allows for uploading of images to the site (with subsequent
+ * storage of image data in the ETSV table). Files can be selected via the
+ * upload button, or by dragging and dropping them into the main div.
+ * PHP Version 7.1
+ * 
+ * @package Editing
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+$EHikeNo = filter_input(INPUT_GET, 'indx');
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -18,6 +31,7 @@
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
+<p id="ehno" style="display:none"><?= $EHikeNo;?></p>
 <p id="trail">Upload Your Photos!</p>
 <form class="box" method="post" action="usrPhotos.php" enctype="multipart/form-data">
     <div class="box__input">
