@@ -44,7 +44,6 @@ function reverseTrack($trknodes, $trkno)
         $actualPts = $pts->length - 1; // last child is trkseg's text node
         $newseg = $track->ownerDocument->createElement('trkseg');
         $track->appendChild($newseg); // will not append identical children
-        $newseg->setAttribute('id', $j);
         for ($k=$actualPts; $k>0; $k--) {
             $next = $newseg->appendChild($pts->item($k));
         }
