@@ -2,30 +2,19 @@
 /**
  * Any hike tips or information data is saved from tab3 ('Descriptive Text')
  * with this script.
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+require "../php/global_boot.php";
 $hikeNo = filter_input(INPUT_POST, 'dno');
 $uid = filter_input(INPUT_POST, 'did');
 $htips = filter_input(INPUT_POST, 'tips');
-$etips = mysqli_real_escape_string($link, $htips);
 $hinfo = filter_input(INPUT_POST, 'hinfo');
-if ($hinfo == '') {
-    $einfo = '';
-} else {
-    $einfo = mysqli_real_escape_string($link, $hinfo);
-}
-$updtDescReq = "UPDATE EHIKES SET tips = '{$etips}',info = '{$einfo}' WHERE " .
-    "indxNo = {$hikeNo};";
-$updtDesc = mysqli_query($link, $updtDescReq) or die(
-    "saveTab3.php: Failed to update EHIKES with new tips/info " .
-    "for hike {$hikeNo}: " . mysqli_error($link)
-);
+$updtDescReq = "UPDATE EHIKES SET tips = ?, info = ? WHERE indxNo = ?;";
+$descq = $pdo->prepare($updtDescReq);
+$descq->execute([$htips, $hinfo, $hikeNo]);
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=3";
 header("Location: {$redirect}");

@@ -9,8 +9,6 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
 $act = filter_input(INPUT_GET, 'act');
 if ($act === 'rel') {
     $msg = "Publish";

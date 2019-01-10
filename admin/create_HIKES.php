@@ -1,6 +1,13 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+/**
+ * This script will create an unpopulated HIKES table.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -47,53 +54,59 @@ $link = connectToDb(__FILE__, __LINE__);
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the HIKES table in the 'mysql' database...</p>
 <?php
-    # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
-    $tbl = mysqli_query($link, "CREATE TABLE HIKES (
-        indxNo smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        pgTitle varchar(30) NOT NULL,
-        usrid varchar(32) NOT NULL,
-        locale varchar(20),
-        marker varchar(11),
-        collection varchar(15),
-        cgroup varchar(3),
-        cname varchar(25),
-        logistics varchar(12),
-        miles decimal(4,2),
-        feet smallint(5),
-        diff varchar(14),
-        fac varchar(30),
-        wow varchar(50),
-        seasons varchar(12),
-        expo varchar(15),
-        gpx varchar(1024),
-        trk varchar(1024),
-        lat double(13,10),
-        lng double(13,10),
-        aoimg1 varchar(512),
-        aoimg2 varchar(512),
-        purl1 varchar(1024),
-        purl2 varchar(1024),
-        dirs varchar(1024),
-        tips varchar(4096),
-        info varchar(4096));");
-if (!$tbl) {
-    die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
-} else {
-    echo '<p>HIKES Table created; Definitions are shown in the table below</p>';
-}
-    $req = mysqli_query($link, "SHOW TABLES;");
-if (!$req) {
-    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
-}
-    echo "<p>Results from SHOW TABLES:</p><ul>";
-while ($row = mysqli_fetch_row($req)) {
+$hike_tbl = <<<htbl
+CREATE TABLE HIKES (
+    indxNo smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    pgTitle varchar(30) NOT NULL,
+    usrid varchar(32) NOT NULL,
+    locale varchar(20),
+    marker varchar(11),
+    collection varchar(15),
+    cgroup varchar(3),
+    cname varchar(25),
+    logistics varchar(12),
+    miles decimal(4,2),
+    feet smallint(5),
+    diff varchar(14),
+    fac varchar(30),
+    wow varchar(50),
+    seasons varchar(12),
+    expo varchar(15),
+    gpx varchar(1024),
+    trk varchar(1024),
+    lat double(13,10),
+    lng double(13,10),
+    aoimg1 varchar(512),
+    aoimg2 varchar(512),
+    purl1 varchar(1024),
+    purl2 varchar(1024),
+    dirs varchar(1024),
+    tips varchar(4096),
+    info varchar(4096) );
+htbl;
+$tbls = $pdo->query("SHOW TABLES;");
+$all_tbls = $tbls->fetchAll(PDO::FETCH_BOTH);
+echo "<p>Results from SHOW TABLES:</p><ul>";
+foreach ($all_tbls as $row) {
+    if ($row[0] === "HIKES") {
+        die("You must first drop HIKES");
+    }
     echo "<li>" . $row[0] . "</li>";
 }
-    echo "</ul>";
+echo "</ul>";
+try {
+    $pdo->query($hike_tbl);
+}
+catch (PDOException $e) {
+    pdo_err("CREATE TABLE HIKES", $e);
+}
+echo '<p>HIKES Table created; Definitions are shown in the table below</p>';
+$htbl = $pdo->query("DESCRIBE HIKES;");
+$htbl_struct = $htbl->fetchAll(PDO::FETCH_BOTH);
 ?>
     <p>Description of the HIKES table:</p>
     <table>
-        <colgroup>	
+        <colgroup>
             <col style="width:100px">
             <col style="width:120px">
             <col style="width: 80px">
@@ -113,19 +126,13 @@ while ($row = mysqli_fetch_row($req)) {
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link, "DESCRIBE HIKES;");
-if (!$tbl) {
-    die("<p>DESCRIBE 'test' FAILED: " . mysqli_error($link) . "/p>");
-}
-    $first = true;
-while ($row = mysqli_fetch_row($tbl)) {
+foreach ($htbl_struct as $row) {
     echo "<tr>";
     for ($i=0; $i<count($row); $i++) {
         echo "<td>" . $row[$i] . "</td>";
     }
     echo "</tr>" . PHP_EOL;
 }
-    mysqli_close($link);
 ?>
        </tbody>
     </table>

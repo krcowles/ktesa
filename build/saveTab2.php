@@ -2,22 +2,21 @@
 /**
  * This routine saves any changes made (or current data) on tab2
  * ('Photo Selection') and updates the ETSV table.
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+require "../php/global_boot.php";
+
 $hikeNo = filter_input(INPUT_POST, 'pno');
 $uid = filter_input(INPUT_POST, 'pid');
 /* It is possible that no pictures are present, also that no
  * checkboxes are checked. Therefore, the script tests for these things
  * to prevent undefined vars
  */
-// # captions corresponds to # pictures present
+// # of captions corresponds to # pictures present
 if (isset($_POST['ecap'])) {
     $ecapts = $_POST['ecap'];
     $noOfPix = count($ecapts);
@@ -45,21 +44,19 @@ if (isset($_POST['rem'])) {
     $rems = [];
     $noOfRems = 0;
 }
-$photoReq = "SELECT picIdx,title,hpg,mpg,`desc` FROM ETSV WHERE " .
-    "indxNo = '{$hikeNo}'";
-$photoq = mysqli_query($link, $photoReq) or die(
-    "saveTab2.php: Failed to extract data from ETSV: " . mysqli_error($link)
-);
-$cnt = mysqli_num_rows($photoq);
+$photoReq = "SELECT picIdx,title,hpg,mpg,`desc` FROM ETSV WHERE indxNo = ?;";
+$photoq = $pdo->prepare($photoReq);
+$photoq->execute([$hikeNo]);
+$cnt = $photoq->rowCount();
 if ($noOfPix !== $cnt) {
     echo '<p style="color:red;font-size:20px;margin-left:16px;">'
     . "WARNING: Retrieved photo count and no of captions don't match..</p>";
 }
 $p = 0;
-while ($photo = mysqli_fetch_assoc($photoq)) {
+while ($photo = $photoq->fetch(PDO::FETCH_ASSOC)) {
     $thisid = $photo['picIdx'];
     $thispic = $photo['title'];
-    $newcap = mysqli_real_escape_string($link, $ecapts[$p]);
+    $newcap = $ecapts[$p];
     // look for a matching checkbox then set for display (or map)
     $disph = 'N';
     for ($i=0; $i<count($displayPg); $i++) {
@@ -83,23 +80,15 @@ while ($photo = mysqli_fetch_assoc($photoq)) {
         }
     }
     if ($deletePic) {
-        $del = mysqli_query($link, "DELETE FROM ETSV WHERE title = '{$thispic}';");
-        if (!$del) {
-            die(
-                "saveTab2.php: Failed to remove photo {$thispic}: " .
-                mysqli_error($link)
-            );
-        }
+        $delreq = "DELETE FROM ETSV WHERE title = ?;";
+        $del = $pdo->prepare($delreq);
+        $del->execute([$thispic]);
     } else {
-        $updtreq = "UPDATE ETSV SET hpg = '{$disph}',mpg = '{$dispm}',"
-            . "`desc` = '{$newcap}' WHERE picIdx = {$thisid};";
-        $update = mysqli_query($link, $updtreq) or die(
-            "saveTab2.php: Failed to update ETSV table for hike {$hikeNo}: "
-            . msyqli_error($link)
-        );
+        $updtreq = "UPDATE ETSV SET hpg = ?, mpg = ?, `desc` = ? WHERE picIdx = ?;";
+        $update = $pdo->prepare($updtreq);
+        $update->execute([$disph, $dispm, $newcap, $thisid]);
     }
     $p++;
 }
-mysqli_free_result($photoq);
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=2";
 header("Location: {$redirect}");

@@ -14,10 +14,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license None at this time
  */
-require_once "gpxFunctions.php";
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
-require "../build/buildFunctions.php";
+require_once "gpxFunctions.php"; // no db connections established therein
 // Error messaging
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';
@@ -245,15 +242,12 @@ if ($showPhotos) {
     $mapicon = 'googlemini';
     $mcnt = 0;
     $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,alblnk,mid,iclr FROM "
-        . "{$ttable} WHERE indxNo = {$hikeIndexNo};";
-    $pic = mysqli_query($link, $picReq);
-    if (!$pic) {
-        die(
-            "<p>makeGpsv.php: Failed to extract photo data for hike "
-            . "{$hikeIndexNo}: " . mysqli_error($link)
-        );
-    }
-    while (($photos = mysqli_fetch_assoc($pic))) {
+        . "{$ttable} WHERE indxNo = :hikeIndexNo;";
+    $dbdat = $pdo->prepare($picReq);
+    $dbdat->bindValue(":hikeIndexNo", $hikeIndexNo);
+    $dbdat->execute();
+    $photoDat = $dbdat->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($photoDat as $photos) {
         if ($photos['mpg'] === 'Y') {
             $procName = preg_replace("/'/", "\'", $photos['title']);
             $procName = preg_replace('/"/', '\"', $procName);

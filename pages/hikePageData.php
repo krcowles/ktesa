@@ -1,26 +1,28 @@
 <?php
 /**
  * This script provides the data required by hikePageTemplate.php in order
- * to display an individual hike page.
- * PHP 7.0
+ * to display an individual hike page. The former establishes $pdo.
+ * PHP Version 7.1
  * 
  * @package Display_Page
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require "../mysql/dbFunctions.php";
-set_exception_handler('default_exceptions');
-$pdo = dbConnect(__FILE__, __LINE__);
-
 $tbl = filter_input(INPUT_GET, 'age');
 /**
  * The variable $hikeIndexNo is established below and is used throughout
  * to locate data corresponding to this unique hike identifier.
  */
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_SANITIZE_NUMBER_INT);
-$distThreshParm = filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT);
-$elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT);
-$maWindowParm = filter_input(INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT);
+$distThreshParm = filter_input(
+    INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT
+);
+$elevThreshParm = filter_input(
+    INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT
+);
+$maWindowParm = filter_input(
+    INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT
+);
 $makeGpsvDebugParm = filter_input(INPUT_GET, 'makeGpsvDebugParm');
 $showAscDsc = filter_input(INPUT_GET, 'showAscDsc');
 $ehikes = (isset($tbl) && $tbl === 'new') ? true : false;
@@ -123,7 +125,7 @@ foreach ($photosData as $pics) {
         } else {
             $year = substr($dateStr, 0, 4);
             $month = intval(substr($dateStr, 5, 2));
-            $day = intval(substr($dateStr, 8, 2));  # intval strips leading 0
+            $day = intval(substr($dateStr, 8, 2)); // intval strips leading 0
             $date = $months[$month-1] . ' ' . $day . ', ' . $year .
                     ': ' . $pDesc;
             array_push($captions, $date);
@@ -172,7 +174,7 @@ if ($newstyle) {
     /**
      * In the case of hike map and elevation chart, in order for the map to be
      * displayed in an iframe, a file is created and stored in the maps/tmp
-     * sub-directory. The file is deleted upon exiting the page.
+     * sub-directory. The file is deleted after loading the page.
      */
     $extLoc = strrpos($gpxfile, '.');
     $gpsvMap = substr($gpxfile, 0, $extLoc); // strip file extension

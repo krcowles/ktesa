@@ -16,7 +16,7 @@
 <body>
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>	
+    <p id="logo_left">Hike New Mexico</p>
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
@@ -26,6 +26,7 @@
 <div id="progress">
     <div id="bar"></div>
 </div>
+<p id="done" style="display:none;color:brown;">DONE: Tables imported successfully</p>
 <script src="load_progress.js"></script>
 <?php
 /**
@@ -36,7 +37,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require '../php/global_boot.php';
 require 'loader.php';
 ?>
-<p>DONE: Tables imported successfully</p>
 </div>

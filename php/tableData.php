@@ -27,7 +27,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require_once "../mysql/dbFunctions.php";
+require "../php/global_boot.php";
 // Icons used for table display:
 $mapIcon
     = 'class="gotomap" src="../images/mapit.png" alt="Zoom-to-map symbol" />';
@@ -61,12 +61,12 @@ if ($age === 'new') {
     $enos = '[';    // and their corresponding EHIKES indxNo's
     $query = 'SELECT * FROM EHIKES';
     if ($show === 'usr') {
-        $query .= " WHERE usrid = '{$usr}'";
+        $query .= " WHERE usrid = :user";
     }
 } elseif ($age === 'old') {
     $query = 'SELECT * FROM HIKES';
     if ($show === 'usr' && $usr !== 'mstr') {
-        $query .= " WHERE usrid = '{$usr}'";
+        $query .= " WHERE usrid = :user";
     }
     $status = '[]';
     $enos = '[]';
@@ -74,13 +74,11 @@ if ($age === 'new') {
     die("Unrecognized age parameter: " . $age);
 }
 $query .= ';';
-$link = connectToDb(__FILE__, __LINE__);
 // Now execute the query:
-$tblquery = mysqli_query($link, $query) or die(
-    __FILE__ . " Line " . __LINE__ . " Failed to select data from table: " .
-        mysqli_error($link)
-);
-$entries = mysqli_num_rows($tblquery);
+$tblquery = $pdo->prepare($query);
+$tblquery->bindValue(":user", $usr);
+$tblquery->execute();
+$entries = $tblquery->rowCount();
 // adjust link based on caller location
 if ($show !== 'all') {
     $url_prefix = '../pages/';
@@ -89,7 +87,7 @@ if ($show !== 'all') {
 }
 // assign row data
 for ($i=0; $i<$entries; $i++) {
-    $row = mysqli_fetch_assoc($tblquery);
+    $row = $tblquery->fetch(PDO::FETCH_ASSOC);
     if ($age === 'new') {
         $status .= '"' . $row['stat'] . '",';
         $enos .= '"' . $row['indxNo'] . '",';
@@ -135,7 +133,6 @@ if ($age === 'new') { // forming javascript array data
     $enos = substr($enos, 0, strlen($enos)-1);
     $enos .= ']';
 }
-mysqli_free_result($tblquery);
 // $includeZoom is only defined by the mapPg.php, and true only if 'map + table':
 if (!isset($includeZoom)) {
     $includeZoom = false;

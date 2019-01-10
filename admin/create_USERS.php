@@ -1,6 +1,13 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+/**
+ * This script will create an unpopulated USERS table.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -47,37 +54,42 @@ $link = connectToDb(__FILE__, __LINE__);
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the USERS table for site administration.</p>
 <?php
-    echo "<p>mySql Connection Opened</p>";
-    # NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
-    $tbl = mysqli_query($link, "CREATE TABLE USERS (
-        userid smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-        username varchar(32) NOT NULL,
-        passwd varchar(255) NOT NULL, 
-        passwd_expire date,
-        last_name varchar(30) NOT NULL,
-        first_name varchar(20) NOT NULL,
-        email varchar(50) NOT NULL,
-        facebook_url varchar(100),
-        twitter_handle varchar(20),
-        bio varchar(500));");
-if (!$tbl) {
-    die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
-} else {
-    echo '<p>USERS Table created; Definitions are shown in the table below</p>';
-}
-    $req = mysqli_query($link, "SHOW TABLES;");
-if (!$req) {
-    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
-}
-    echo "<p>Results from SHOW TABLES:</p><ul>";
-while ($row = mysqli_fetch_row($req)) {
+$usrtbl = <<<usrtbl
+CREATE TABLE USERS (
+    userid smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    username varchar(32) NOT NULL,
+    passwd varchar(255) NOT NULL, 
+    passwd_expire date,
+    last_name varchar(30) NOT NULL,
+    first_name varchar(20) NOT NULL,
+    email varchar(50) NOT NULL,
+    facebook_url varchar(100),
+    twitter_handle varchar(20),
+    bio varchar(500) );
+usrtbl;
+$tbls = $pdo->query("SHOW TABLES;");
+$all = $tbls->fetchAll(PDO::FETCH_BOTH);
+echo "<p>Results from SHOW TABLES:</p><ul>";
+foreach ($all as $row) {
+    if ($row[0] === "USERS") {
+        die("You must first DROP USERS");
+    }
     echo "<li>" . $row[0] . "</li>";
 }
-    echo "</ul>";
+echo "</ul>";
+try {
+    $usrtbl = $pdo->query($usrtbl);
+}
+catch (PDOException $e) {
+    pdo_err("CREATE TABLE USERS", $e);
+}
+$utbl = $pdo->query("DESCRIBE USERS;");
+$u_struct = $utbl->fetchAll(PDO::FETCH_BOTH);
+echo '<p>USERS Table created; Definitions are shown in the table below</p>';
 ?>
     <p>Description of the USERS table:</p>
     <table>
-        <colgroup>	
+        <colgroup>
             <col style="width:100px">
             <col style="width:120px">
             <col style="width: 80px">
@@ -97,19 +109,13 @@ while ($row = mysqli_fetch_row($req)) {
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link, "DESCRIBE USERS;");
-if (!$tbl) {
-    die("<p>DESCRIBE 'test' FAILED: " . mysqli_error($link) . "/p>");
-}
-    $first = true;
-while ($row = mysqli_fetch_row($tbl)) {
+foreach ($u_struct as $row) {
     echo "<tr>";
     for ($i=0; $i<count($row); $i++) {
         echo "<td>" . $row[$i] . "</td>";
     }
     echo "</tr>" . PHP_EOL;
 }
-    mysqli_close($link);
 ?>
        </tbody>
     </table>
