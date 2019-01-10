@@ -161,30 +161,44 @@ if ($GDsupport['JPEG Support']) {
     $upld_results .= "There is no support for image resizing;";
     die(json_encode($upld_results));
 }
-die(json_encode("DONE"));
 /*
  *  THIS IS THE CODE THAT MAY CHANGE WHEN TSV GETS REDEFINED 
  *  ALSO: WHEN 'PDO_complete' is merged, the PDO connection will already 
  *  be in place, hence eliminate the first line of this code
  */
-/*
-// exif data is stored in arrays, now place in db:
+// TSV data is stored in arrays, now enter the values in db:
 $pdo = dbConnect(__FILE__, __LINE__);
 // need to loop thru all pix...
 for ($k=0; $k<count($imgName); $k++) {
+    /**
+     * Create VALUES list, adding NULLs where needed:
+     * Always present: indxNo, title, mid, imgHt, imgWd
+     */
+    $valstr = "VALUES (?,?,";
+    $vals = [$indxNo, $imgName[$k]];
+    $vindx = 1; // index of last element in $vals array
     if ($lats[$k] === 0 || $lngs[$k] === 0) {
-        $tsvReq = "INSERT INTO ETSV (indxNo,title,lat,lng,`date`,mid,imgHt,imgWd)
-        VALUES (?,?,NULL,NULL,?,?,?,?);";
-        $vals = [$indxNo, $imgName[$k], $timestamp[$k],
-            $nfile[$k], $imgHt[$k], $imgWd[$k]];
-        $tsv = $pdo->prepare($tsvReq);
+        $valstr .= "NULL,NULL,";
     } else {
-        $tsvReq = "INSERT INTO ETSV (indxNo,title,lat,lng,`date`,mid,imgHt,imgWd)
-        VALUES (?,?,?,?,?,?,?,?);";
-        $vals = [$indxNo, $imgName[$k], $lats[$k], $lngs[$k], $timestamp[$k],
-            $nfile[$k], $imgHt[$k], $imgWd[$k]];
-        $tsv = $pdo->prepare($tsvReq);
+        $valstr .= "?,?,";
+        $vals[2] = $lats[$k];
+        $vals[3] = $lngs[$k];
+        $vindx = 3;
     }
+    if ($timestamp[$k] === 0) {
+        $valstr .= "NULL,";
+    } else {
+        $valstr .= "?,";
+        $vindx++;
+        $vals[$vindx] = $timestamp[$k];
+    }
+    $valstr .= "?,?,?);";
+    $vals[$vindx+1] = $imgName[$k];
+    $vals[$vindx+2] = $imgHt_n[$k];
+    $vals[$vindx+3] = $imgWd_n[$k];
+    $tsvReq = "INSERT INTO ETSV (indxNo,title,lat,lng,`date`,mid,imgHt,imgWd) "
+        . $valstr;
+    $tsv = $pdo->prepare($tsvReq);
     try {
         $tsv->execute($vals);
     }
@@ -199,11 +213,9 @@ if (isset($filedat)) {
     if ($upld_results !== '') {
         $msg = $upld_results;
     } else {
-        $msg = "Retrieved " . $noOfFiles . " files";
+        $msg = "Uploaded " . $noOfFiles . " files";
     }
 } else {
     $msg = "Failed to upload: Contact site master";
 }
-$msg .= " for hike no " . $indxNo;
 echo json_encode($msg);
-*/
