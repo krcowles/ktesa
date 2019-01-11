@@ -91,6 +91,15 @@ function ldNodes(files) {
                 containers[j] = document.createElement('div');
                 containers[j].style.cssFloat = "left";
                 containers[j].appendChild(this);
+                // detect right-click on image:
+                containers[j].addEventListener('contextmenu', function(ev) {
+                    ev.preventDefault();
+                    if (confirm('Do you wish to delete this image?')) {
+                        alert("DELETE");
+                        // find item in PageUploads: delete that and 'this'
+                    }
+                    return false;
+                });
                 loadedImages.push(containers[j]);
                 def.resolve();
             }
@@ -181,34 +190,6 @@ $form.on('submit', function(e) {
         for (var k=0; k<PageUploads.length; k++) {
             ajaxData.append('files[]', PageUploads[k]);
         }
-        /*
-        var inputFiles = document.getElementById('file');
-        var fileList = inputFiles.files;
-        var noOfFiles = fileList.length;
-        var addDropped = false;
-        if (noOfFiles == 0) {
-            // any dragged files?
-            if (!droppedFiles) {
-                alert("No files have been chosen or dragged in for upload");
-                $form.removeClass('is-uploading');
-                return;
-            } else {
-                addDropped = true;
-                ajaxData = new FormData();
-            }
-        } else {
-            // retrieve any uploads via "Choose File..." 
-            var ajaxData = new FormData($form.get(0));
-            if (droppedFiles) {
-                addDropped = true;
-            }
-        }
-        if (addDropped) {
-            for (var j=0; j<submittableImgs.length; j++) {
-                ajaxData.append('files[]', submittableImgs[j] );
-            }
-        }
-        */
         ajaxData.append('indx', ehikeIndxNo);
         $.ajax({
             url: 'usrPhotos.php',
