@@ -46,7 +46,7 @@ $EHikeNo = filter_input(INPUT_GET, 'indx');
         <div id="acts">
             <button class="box__button" type="submit">Upload</button>
             <input id="clrimgs" type="button" value="Clear images" />
-            <span id="ldg">&nbsp;&nbsp;Processing dropped images&hellip; Please wait</span>
+            <span id="ldg">&nbsp;&nbsp;Processing images&hellip; Please wait</span>
             <pre>
             </pre>
         </div>

@@ -1,9 +1,11 @@
-// clear out the input file list with each refresh:
-$('#file').val(null);
+// establish the width of images to be displayed on this page:
+var dwidth = 160;
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
+// the collection of all accumulated images to be uploaded
+var PageUploads = [];
 
-// dropped image handling
+// dropped image defs
 var orient;  // global required
 var droppedImages = []; // array of FileReader objects loaded from dropped imgs
 var loadedImages = [];  // array of DOM nodes containing dropped images
@@ -11,9 +13,30 @@ var imgNo = 0;
 var droppedFiles = false;
 var submittableImgs = []; // FileList of all dropped images, esp when dropped in stages
 var currDropped;  // keep track of above count
+
+// preview any images selected by the "Choose..." button
+$('#file').change(function() {
+    previewImgs(this.files);
+});
+function previewImgs(flist) {
+    $('#ldg').css('display', 'inline');
+    $.when( ldImgs(flist) ).then(function() {
+        $.when( ldNodes(droppedImages) ).then(function() {
+            $('#ldg').css('display', 'none');
+            var dndbox = document.getElementsByClassName('box__dnd');
+            for (var k=0; k<loadedImages.length; k++) {
+                dndbox[0].appendChild(loadedImages[k]);
+            }
+            droppedImages = [];
+            loadedImages = [];
+        });
+    });
+}
+// general purpose functions w/deferred objects (e.g. promises)
 function ldImgs(dimgs) {
     var promises = [];
     for(var i=0; i<dimgs.length; i++) {
+        PageUploads.push(dimgs[i]);
         var reader = new FileReader(),
             d = new $.Deferred();
         promises.push(d);
@@ -55,12 +78,12 @@ function ldNodes(files) {
                     * This requires adjusting the top margin, since the rotated
                     * image will exceed the target container size
                     */
-                    var adj = Math.floor(160/ratio);
+                    var adj = Math.floor(dwidth/ratio);
                     this.height = adj;
-                    var marg = (160 - adj)/2 + "px"; 
+                    var marg = (dwidth - adj)/2 + "px"; 
                     this.style.margin = marg + " 0px 0px 0px";
                 } else {
-                    this.height = 160;
+                    this.height = dwidth;
                     this.style.margin = "0px 0px 0px 8px";
                 }
                 this.alt = "Drop" + imgNo;
@@ -149,6 +172,16 @@ $form.on('submit', function(e) {
     $form.addClass('is-uploading').removeClass('is-error');
     if (isAdvancedUpload) {
         e.preventDefault();
+        if (PageUploads.length === 0) {
+            alert("No files have been chosen or dragged in for upload");
+                $form.removeClass('is-uploading');
+            return;
+        }
+        ajaxData = new FormData();
+        for (var k=0; k<PageUploads.length; k++) {
+            ajaxData.append('files[]', PageUploads[k]);
+        }
+        /*
         var inputFiles = document.getElementById('file');
         var fileList = inputFiles.files;
         var noOfFiles = fileList.length;
@@ -175,6 +208,7 @@ $form.on('submit', function(e) {
                 ajaxData.append('files[]', submittableImgs[j] );
             }
         }
+        */
         ajaxData.append('indx', ehikeIndxNo);
         $.ajax({
             url: 'usrPhotos.php',
@@ -214,4 +248,5 @@ $('#clrimgs').on('click', function(ev) {
     droppedImages = [];
     loadedImages = [];
     submittableImgs = [];
+    PageUploads = [];
 });
