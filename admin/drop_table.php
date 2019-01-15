@@ -1,6 +1,13 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+/**
+ * A simple script to drop the indicated table (only) from the database.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
 $table = filter_input(INPUT_GET, 'tbl');
 ?>
 <!DOCTYPE html>
@@ -29,28 +36,26 @@ $table = filter_input(INPUT_GET, 'tbl');
 <div style="margin-left:16px;font-size:18px;">
 
 <?php
-# Error messages:
-$drop_fail = "<p>Could not delete tbl '{$table}': " . mysqli_error($link) . "</p>";
-$query_fail = "<p>Query did not succeed: SHOW TABLES</p>";
-# Execute the DROP TABLE command:
+if ($table === 'EHIKES') {
+    echo "NOTE: EHIKES cannot be dropped until all other Exx Tables " .
+        "are dropped due to foreign keys";
+}
 echo "<p>Removing any previous instantiation of table '{$table}':</p>";
-$remtbl = mysqli_query($link, "DROP TABLE {$table};");
-if (!$remtbl) {
-    die($drop_fail);
-} else {
-    echo "<p>{$table} Table Removed; Remaining tables in mysql database:</p>";
+ $remtbl = "DROP TABLE {$table};";
+try {
+    $pdo->query($remtbl);
 }
-$req = mysqli_query($link, "SHOW TABLES");
-if (!$req) {
-    die($query_fail);
+catch (PDOException $e) {
+    pdo_err($remtbl, $e);
 }
+
+$remaining = $pdo->query("SHOW TABLES;");
+$tbls = $remaining->fetchAll(PDO::FETCH_BOTH);
 echo "<ul>\n";
-while ($row = mysqli_fetch_row($req)) {
+foreach ($tbls as $row) {
     echo "<li>" . $row[0] . "</li>\n";
 }
-echo "</ul>\nDONE";
-mysqli_free_result($req);
-mysqli_close($link);
+echo "</ul><br />DONE";
 ?>
     
 </div>

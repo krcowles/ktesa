@@ -5,69 +5,56 @@
  * where it can be edited. When edits are complete the administrator
  * can then publish the EHIKE which updates the HIKES db with the 
  * edited data. The user is directed to the editor via editDB.php.
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+require "../php/global_boot.php";
 $getHike = filter_input(INPUT_GET, 'hno');
-$uid = filter_input(INPUT_GET, 'usr');
-$usr = mysqli_real_escape_string($link, $uid);
+$usr = filter_input(INPUT_GET, 'usr');
 /*
  * GET HIKES DATA
  */
 $xfrReq = "INSERT INTO EHIKES (usrid,stat,pgTitle,locale,marker,`collection`," .
     "cgroup,cname,logistics,miles,feet,diff,fac,wow,seasons,expo,gpx,trk,lat," .
     "lng,aoimg1,aoimg2,purl1,purl2,dirs,tips,info,eThresh,dThresh,maWin)" .
-    "SELECT '{$usr}','{$getHike}'," .
+    "SELECT ?,?," .
     "pgTitle,locale,marker,collection,cgroup,cname,logistics,miles,feet,diff," .
     "fac,wow,seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs,tips," .
-    "info,eThresh,dThresh,maWin FROM HIKES WHERE indxNo = {$getHike};";
-$xfr = mysqli_query($link, $xfrReq) or die(
-    __FILE__ . " Line " . __LINE__ . ": Failed to move hike data from HIKES "
-    . "to EHIKES for Hike No {$getHike}: " . mysqli_error($link)
-);
+    "info,eThresh,dThresh,maWin FROM HIKES WHERE indxNo = ?;";
+$query = $pdo->prepare($xfrReq);
+$query->execute([$usr, $getHike, $getHike]);
 // Fetch the new hike no in EHIKES:
 $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
-$indxq = mysqli_query($link, $indxReq) or die(
-    __FILE__ . " Line " . __LINE__ . ": Did not retrieve new EHIKES "
-    . "indx no: " . mysqli_error($link)
-);
-$indxNo = mysqli_fetch_row($indxq);
+$indxq = $pdo->query($indxReq);
+$indxNo = $indxq->fetch(PDO::FETCH_NUM);
 $hikeNo = $indxNo[0];
-mysqli_free_result($indxq);
 /*
  * GET TSV DATA
  */
 $xfrTsvReq = "INSERT INTO ETSV (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
-    "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) SELECT '{$hikeNo}',folder,title," .
+    "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) SELECT ?,folder,title," .
     "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org FROM " .
-    "TSV WHERE indxNo = {$getHike};";
-$xfrTsv = mysqli_query($link, $xfrTsvReq) or die(
-    __FILE__ . " Line " . __LINE__ . ": Failed to move TSV data into ETSV "
-    . "for hike {$getHike}: " . mysqli_error($link)
-);
+    "TSV WHERE indxNo = ?;";
+$tsvq = $pdo->prepare($xfrTsvReq);
+$tsvq->execute([$hikeNo, $getHike]);
 /*
  * GET GPSDAT DATA
  */
 $gpsDatReq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
-    "SELECT '{$hikeNo}',datType,label,url,clickText FROM GPSDAT WHERE " .
-    "indxNo = {$getHike};";
-$gpsDat = mysqli_query($link, $gpsDatReq) or die(
-    __FILE__ . " Line " . __LINE__ . ": Failed to extract GPSDAT for "
-    . "hike {$getHike};" . mysqli_error($link)
-);
+    "SELECT ?,datType,label,url,clickText FROM GPSDAT WHERE " .
+    "indxNo = ?;";
+$gpsq = $pdo->prepare($gpsDatReq);
+$gpsq->execute([$hikeNo, $getHike]);
 /*
  * GET REFS DATA
  */
 $refDatReq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) SELECT " .
-    "'{$hikeNo}',rtype,rit1,rit2 FROM REFS WHERE indxNo = {$getHike};";
-$refDat = mysqli_query($link, $refDatReq) or die(
-    __FILE__ . " Line " . __LINE__ . ": Failed to extract REFS data for "
-    . "hike {$getHike}: " . mysqli_error($link)
-);
-$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=1";
+    "?,rtype,rit1,rit2 FROM REFS WHERE indxNo = ?;";
+$refq = $pdo->prepare($refDatReq);
+$refq->execute([$hikeNo, $getHike]);
+// Back to the editor
+$redirect = "editDB.php?hno={$hikeNo}&usr={$usr}&tab=1";
 header("Location: {$redirect}");

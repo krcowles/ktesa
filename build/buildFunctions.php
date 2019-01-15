@@ -58,7 +58,8 @@ function validateUpload($name, $fileloc)
                 $error_vals = libxml_get_errors();
                 $err_list = "<ul>";
                 foreach ($error_vals as $err) {
-                    $err_list .= "<li>" . displayXmlError($err, $filename) . "</li>";
+                    $err_list .= "<li>" . displayXmlError($err, $filename) .
+                    "</li>";
                 }
                 $err_list .= "</ul>";
                 die(
@@ -244,30 +245,24 @@ function fileTypeAndLoc($fname)
  * Due to the fact that sorting will place group "AA" after "A" and not 
  * after "Z", the routine utilizes two sorted cluster arrays then merges them.
  * 
+ * @param PDO    $pdo     PDO object for db access
  * @param string $boxtype data to be returned: 
  *                        vistor centers ('vcs') or clusters ('cls')
  * 
  * @return array depending on $boxType, vc data or cluster data
  */
-function dropdownData($boxtype)
+function dropdownData($pdo, $boxtype)
 {
-    $link = connectToDb(__FILE__, __LINE__);
     $hquery = "SELECT indxNo,pgTitle,marker,`collection`,cgroup,cname FROM HIKES;";
-    $hdat = mysqli_query($link, $hquery) or die(
-        __FILE__ . " Line " . __LINE__ . "Could not retrieve vc/cluster info " .
-        "from HIKES: " . mysqli_error($link)
-    );
+    $hdat = $pdo->query($hquery);
     $equery = "SELECT marker,cgroup,cname FROM EHIKES;";
-    $edat = mysqli_query($link, $equery) or die(
-        __FILE__ . " Line " . __LINE__ . 
-        ": Could not retrieve EHIKES cluster data" . mysqli_error($link)
-    );
+    $edat = $pdo->query($equery);
     // return data based on $boxType:
     if ($boxtype === 'vcs') {
         $vchikes = [];
         $vcnos = [];
         $colls = [];
-        while ($vcdata = mysqli_fetch_assoc($hdat)) {
+        while ($vcdata = $hdat->fetch(PDO::FETCH_ASSOC)) {
             $hmarker = $vcdata['marker'];
             if ($hmarker == 'Visitor Ctr') {
                 $indx = $vcdata['indxNo'];
@@ -282,7 +277,7 @@ function dropdownData($boxtype)
     } else {
         $singles = [];
         $doubles = [];
-        while ($hclus = mysqli_fetch_assoc($hdat)) {
+        while ($hclus = $hdat->fetch(PDO::FETCH_ASSOC)) {
             $hmarker = $hclus['marker'];
             if ($hmarker === 'Cluster') {  
                 $clusltr = $hclus['cgroup'];
@@ -303,7 +298,7 @@ function dropdownData($boxtype)
                 }
             }
         }
-        while ($eclus = mysqli_fetch_assoc($edat)) {
+        while ($eclus = $edat->fetch(PDO::FETCH_ASSOC)) {
             $emarker = $eclus['marker'];
             // Note: creating new pg MAY result in 'Cluster' with no group...
             if ($emarker === 'Cluster' && fetch($eclus['cgroup']) !== '') {  
@@ -325,8 +320,6 @@ function dropdownData($boxtype)
                 }
             }
         }
-        mysqli_free_result($hdat);
-        mysqli_free_result($edat);
     }
     /**
      * For debugging, it's easier to understand if keys are sorted;

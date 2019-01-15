@@ -2,20 +2,17 @@
 /**
  * This file saves data present on tab4 (Related Hike Info), including
  * uploads of gps file data (gpx or html maps).
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
 session_start();
-require_once "../mysql/dbFunctions.php";
-require 'buildFunctions.php';
-$link = connectToDb(__FILE__, __LINE__);
+require "../php/global_boot.php";
+
 $hikeNo = filter_input(INPUT_POST, 'rno');
-$usr = filter_input(INPUT_POST, 'rid');
-$uid = mysqli_real_escape_string($link, $usr);
+$uid = filter_input(INPUT_POST, 'rid');
 /**
  * There are two sections of 'references': 1) existing in db; 2) new (if any)
  *   1. Those which already exist in the database may have been edited by the
@@ -30,11 +27,9 @@ $uid = mysqli_real_escape_string($link, $usr);
  *      For every rit1 and rit2 there is a corresponding hidden rit1, rit2.
  */
 // 1. Refernces already existing in the database:
-$delrefsreq = "DELETE FROM EREFS WHERE indxNo = '{$hikeNo}';";
-$delrefs = mysqli_query($link, $delrefsreq) or die(
-    "saveTab4.php: Failed to delete old EREFS for {$hikeNo}: " .
-    mysqli_error($link)
-);
+$delrefsreq = "DELETE FROM EREFS WHERE indxNo = ?;";
+$delrefs = $pdo->prepare($delrefsreq);
+$delrefs->execute([$hikeNo]);
 // Now add the newly edited ones back in, sans any deletions
 // NOTE: The following posts collect all items, even if empty (but not if hidden)
 if (isset($_POST['drtype'])) {
@@ -72,15 +67,9 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
     if ($addit && $drit1s[$j] !== '') {
-        $a = mysqli_real_escape_string($link, $drtypes[$j]);
-        $b = mysqli_real_escape_string($link, $drit1s[$j]);
-        $c = mysqli_real_escape_string($link, $drit2s[$j]);
-        $addrefreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES " .
-            "('{$hikeNo}','{$a}','{$b}','{$c}');";
-        $addref = mysqli_query($link, $addrefreq) or die(
-            __FILE__ . " " . __LINE__ . ": Failed to insert EREFS data: " . 
-            mysqli_error($link)
-        );
+        $addrefreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES (?,?,?,?);";
+        $orefs = $pdo->prepare($addrefreq);
+        $orefs->execute([$hikeNo, $drtypes[$j], $drit1s[$j], $drit2s[$j]]);
     }
 }
 // 2. New references added, if any: (displayed items are yes/no)
@@ -102,9 +91,9 @@ for ($s=0; $s<count($usebooks); $s++) {
             // this is a new book or photo essay reference:
             $a = $newtypes[$s]; // no wierd characters here
             array_push($addtypes, $a);
-            $b = mysqli_real_escape_string($link, $_POST[$bkid]);
+            $b = $_POST[$bkid];
             array_push($addrit1s, $b);
-            $c = mysqli_real_escape_string($link, $_POST[$auid]);
+            $c = $_POST[$auid];
             array_push($addrit2s, $c);
             $addcnt++;
         }
@@ -112,9 +101,9 @@ for ($s=0; $s<count($usebooks); $s++) {
         if ($_POST[$o1id] !== '') {
             $a = $newtypes[$s]; // no wierd characters here
             array_push($addtypes, $a);
-            $b = mysqli_real_escape_string($link, $_POST[$o1id]);
+            $b = $_POST[$o1id];
             array_push($addrit1s, $b);
-            $c = mysqli_real_escape_string($link, $_POST[$o2id]);
+            $c = $_POST[$o2id];
             array_push($addrit2s, $c);
             $addcnt++;
         }
@@ -124,20 +113,14 @@ for ($s=0; $s<count($usebooks); $s++) {
 if ($addcnt > 0) {
     for ($m=0; $m<$addcnt; $m++) {
         if (trim($addtypes[$m]) === 'Book:') {
-            $addnewreq = "INSERT INTO EREFS (indxNo,rtype,rit1) VALUES " .
-                "('{$hikeNo}','{$addtypes[$m]}','{$addrit1s[$m]}');";
-            $addnew = mysqli_query($link, $addnewreq) or die(
-                __FILE__ . " " . __LINE__ . ": Failed to insert EREFS data: " . 
-                mysqli_error($link)
-            );
+            $addnewreq = "INSERT INTO EREFS (indxNo,rtype,rit1) VALUES (?,?,?);";
+            $addnew = $pdo->prepare($addnewreq);
+            $addnew->execute([$hikeNo, $addtypes[$m], $addrit1s[$m]]);
         } else {
-            $addnewreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES " .
-                "('{$hikeNo}','{$addtypes[$m]}','{$addrit1s[$m]}'," .
-                "'{$addrit2s[$m]}');";
-            $addnew = mysqli_query($link, $addnewreq) or die(
-                __FILE__ . " " . __LINE__ . ": Failed to insert EREFS data: " . 
-                mysqli_error($link)
-            );
+            $addnewreq 
+                = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES (?,?,?,?)";
+            $addnew = $pdo->prepare($addnewreq);
+            $addnew->execute([$hikeNo, $addtypes[$m], $addrit1s[$m], $addrit2s[$m]]);
         }
     }
 }
@@ -147,11 +130,9 @@ if ($addcnt > 0) {
  * includes newly added GPS data, so all get INSERTED, and no algorithm is required
  * to determine which only get updated vs which get added vs which get deleted.
  */
-$delgpsreq = "DELETE FROM EGPSDAT WHERE indxNo = '{$hikeNo}';";
-$delgps = mysqli_query($link, $delgpsreq) or die(
-    "saveTab4.php: Failed to delete old GPS data for {$hikeNo}: " .
-    mysqli_error($link)
-);
+$delgpsreq = "DELETE FROM EGPSDAT WHERE indxNo = ?;";
+$delgps = $pdo->prepare($delgpsreq);
+$delgps->execute([$hikeNo]);
 // Now add the newly edited ones back in, sans any deletions
 $lbl = $_POST['labl'];
 $url = $_POST['lnk'];
@@ -190,13 +171,10 @@ if ($gpsupl !== '') {
         $upload = validateUpload("newgps", $gpstype[0]);
         $_SESSION['gpsmsg'] .= $upload[1];
         $newurl = $gpstype[0] . $upload[0];
-        $newlnk = mysqli_real_escape_string($link, $newurl);
-        $newgpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
-            "VALUES ('{$hikeNo}','P','{$newlbl}','{$newlnk}','{$newcot}');";
-        $newgps = mysqli_query($link, $newgpsreq) or die(
-            __FILE__ . " Line " . __LINE__ . ": Failed to insert new gps "
-            . "file loc for hike {$hikeNo}: " . mysqli_error($link)
-        );
+        $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
+            "VALUES (?,'P',?,?,?);";
+        $newgps = $pdo->prepare($ngpsreq);
+        $newgps->execute([$hikeNo, $newlbl, $newurl, $newcot]);
         $_SESSION['gpsmsg'] .= "<br /><em>A default 'Label' and " .
             "'Click-on-Text' have been provided for {$gpsupl}.</em>";
     } else {
@@ -220,13 +198,10 @@ if ($mapupl !== '') {
         $upload = validateUpload("newmap", $maptype[0]);
         $_SESSION['gpsmsg'] .= $upload[1];
         $newurl = $maptype[0] . $upload[0];
-        $newlnk = mysqli_real_escape_string($link, $newurl);
         $newmapreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
-            "VALUES ('{$hikeNo}','P','{$newlbl}','{$newlnk}','{$newcot}');";
-        $newmap = mysqli_query($link, $newmapreq) or die(
-            __FILE__ . " Line " . __LINE__ . ": Failed to insert new gps "
-            . "file loc for hike {$hikeNo}: " . mysqli_error($link)
-        );
+            "VALUES (?,'P',?,?,?);";
+        $newmap = $pdo->prepare($newmapreq);
+        $newmap->execute([$hikeNo, $newlbl, $newurl, $newcot]);
         $_SESSION['gpsmsg'] .= "<br /><em>A default 'Label' and " .
             "'Click-on-Text' have been provided for {$mapupl}.</em>";
     } else {
@@ -252,16 +227,11 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
     if ($addit && $url[$j] !== '') {
-        $a = mysqli_real_escape_string($link, $lbl[$j]);
-        $b = mysqli_real_escape_string($link, $url[$j]);
-        $c = mysqli_real_escape_string($link, $cot[$j]);
         // For now, all entries will be marked 'P'
-        $addgpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
-            "VALUES ('{$hikeNo}','P','{$a}','{$b}','{$c}');";
-        $addgps = mysqli_query($link, $addgpsreq) or die(
-            "saveTab4.php: Failed to insert EGPSDAT data: " .
-            mysqli_error($link)
-        );
+        $addgpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
+            "VALUES (?,'P',?,?,?);";
+        $addgps = $pdo->prepare($addgpsreq);
+        $addgps->execute([$hikeNo, $lbl[$j], $url[$j], $cot[$j]]);
     }
 }
 // return to editor with new data:

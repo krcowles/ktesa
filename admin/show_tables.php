@@ -1,6 +1,14 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+/**
+ * A simple script to list all the tables currently residing in the
+ * connected database.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.php>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -26,16 +34,15 @@ $link = connectToDb(__FILE__, __LINE__);
 </div>
 <p id="trail">SHOW Database Tables</p>
 <div style="margin-left:16px;font-size:18px;">
+
 <?php
-    $req = mysqli_query($link, "SHOW TABLES;");
-if (!$req) {
-    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
-}
-    echo "<p>Results from SHOW TABLES:</p><ul>";
-while ($row = mysqli_fetch_row($req)) {
+$data = $pdo->query("SHOW TABLES;");
+$tbls = $data->fetchALL(PDO::FETCH_BOTH);
+echo "<p>Results from SHOW TABLES:</p><ul>";
+foreach ($tbls as $row) {
     echo "<li>" . $row[0] . "</li>";
 }
-    echo "</ul>";
+echo "</ul>";
 ?>
     <p>DONE</p>
 </div>

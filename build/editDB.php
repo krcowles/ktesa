@@ -5,12 +5,13 @@
  * database and/or uploading of key user files. When the apply button is 
  * clicked on any tab, the changes are registered, and the user is returned
  * to the same tab with the refreshed data displayed.
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require "../php/global_boot.php";
 require "dataForEditor.php";
 ?>
 <!DOCTYPE html>

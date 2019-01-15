@@ -1,14 +1,15 @@
-<?php
-/**
- * This file is utilized when the user clicks on the hike page link to display
- * a full-page map, OR when the link is copied into the url without being on
- * the hike page. 
- * 
- * @package GPSV_Mapping
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
- * @license None to date
- * @link    ../maps
- */
+ <?php
+ /**
+  * This file is utilized when the user clicks on the hike page link to display
+  * a full-page map, OR when the link is copied into the url without being on
+  * the hike page. 
+  * PHP Version 7.1
+  * 
+  * @package GPSV_Mapping
+  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+  * @license None to date
+  */
+require "../php/global_boot.php";
 $map_type = filter_input(INPUT_GET, 'maptype');
 $hikeIndexNo = filter_input(INPUT_GET, 'hno');
 $hikeTitle = filter_input(INPUT_GET, 'hike');

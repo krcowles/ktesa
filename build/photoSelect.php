@@ -8,25 +8,21 @@
  *      3. picPops.js is looking for a <p id="ptype"> on the caller's page
  *         identifying the page type: Validation, Finish or Edit
  * Place this code inside a <div> element.
+ * PHP Version 7.1
  * 
  * @package Photos
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
 $h4txt = "Please check the boxes corresponding to the pictures you wish to " .
     "include on the hike page, and those you wish to include on the geomap.";
 if (isset($pgType) && $pgType === 'Edit') {
     $h4txt .= " NOTE: Checking 'Delete' permanently removes the photo.";
 }
-$picreq = "SELECT * FROM ETSV WHERE indxNo = {$hikeNo};";
-$pix = mysqli_query($link, $picreq) or die(
-    "photoSelect.php: Failed to get picdat from ETSV for hike {$hikeNo}: " .
-    mysqli_error($link)
-);
-if (mysqli_num_rows($pix) === 0) {
+$picreq = "SELECT * FROM ETSV WHERE indxNo = :hikeno;";
+$picq = $pdo->prepare($picreq);
+$picq->execute(["hikeno" => $hikeNo]);
+if ($picq->rowCount() === 0) {
     $inclPix = 'NO';
     $jsTitles = "''";
     $jsDescs = "''";
@@ -59,7 +55,7 @@ if ($inclPix === 'YES') {
     $phPics = []; // capture the link for the mid-size version of the photo
     $phWds = []; // width
     $rowHt = 220; // nominal choice for row height in div
-    while ($pics = mysqli_fetch_assoc($pix)) {
+    while ($pics = $picq->fetch(PDO::FETCH_ASSOC)) {
         $phNames[$picno] = $pics['title'];
         $phDescs[$picno] = $pics['desc'];
         $hpg[$picno] = $pics['hpg'];
@@ -95,7 +91,8 @@ if ($inclPix === 'YES') {
                 . $phNames[$i] . '" />Delete<br />';
         }
         echo '<img class="allPhotos" height="200px" width="' . $phWds[$i]
-                . 'px" src="' . $phPics[$i] . '" alt="' . $phNames[$i]
+                . 'px" src="../pictures/nsize/' . $phPics[$i] . "_n.jpg"
+                . '" alt="' . $phNames[$i]
                 . '" /><br />' . PHP_EOL;
         if ($pgType === 'Edit') {
             $tawd = $phWds[$i] - 12;  // textarea widths don't compute exactly

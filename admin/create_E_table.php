@@ -1,6 +1,13 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+/**
+ * This script will create an unpopulated EHIKES table.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
 $table = filter_input(INPUT_GET, 'tbl');
 $reftbl = substr($table, 1, (strlen($table)-1));
 ?>
@@ -49,34 +56,35 @@ $reftbl = substr($table, 1, (strlen($table)-1));
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the <?php echo $table;?> table for site administration.</p>
 <?php
-echo "<p>mySql Connection Opened</p>";
-$tblreq = "CREATE TABLE {$table} LIKE {$reftbl};";
-$tbl = mysqli_query($link, $tblreq);
-if (!$tbl) {
-    die("<p>create_E_table.php: Failed to create {$table}: " .
-        mysqli_error($link));
+$show = $pdo->query("SHOW TABLES;");
+$tbls = $show->fetchAll(PDO::FETCH_BOTH);
+echo "<p>Results from SHOW TABLES:</p><ul>";
+foreach ($tbls as $row) {
+    if ($row[0] === $table) {
+        die("You must first DROP {$table}");
+    }
+    echo "<li>" . $row[0] . "</li>";
+}
+echo "</ul>";
+try {
+    $pdo->query("CREATE TABLE {$table} LIKE {$reftbl};");
+}
+catch (PDOException $e) {
+    pdo_err("CREATE TABLE {$table}", $e);
 }
 $childreq = "ALTER TABLE {$table} ADD CONSTRAINT {$table}_Constraint " .
 "FOREIGN KEY FK_{$table}(indxNo) REFERENCES EHIKES(indxNo) " .
 "ON DELETE CASCADE ON UPDATE CASCADE;";
-$child = mysqli_query($link, $childreq);
-if (!$child) {
-    die("<p>CREATE {$table} failed: " . mysqli_error($link) . "</p>");
+try {
+    $pdo->query($childreq);
 }
-$req = mysqli_query($link, "SHOW TABLES;");
-if (!$req) {
-    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
+catch (PDOException $e) {
+    pdo_err("ALTER TABLE {$table}", $e);
 }
-echo "<p>Results from SHOW TABLES:</p><ul>";
-while ($row = mysqli_fetch_row($req)) {
-    echo "<li>" . $row[0] . "</li>";
-}
-echo "</ul>";
-$req = mysqli_query($link, "SHOW TABLES;");
 ?>
     <p>Description of the EGPSDAT table:</p>
     <table>
-        <colgroup>	
+        <colgroup>
             <col style="width:100px">
             <col style="width:120px">
             <col style="width: 80px">
@@ -96,19 +104,15 @@ $req = mysqli_query($link, "SHOW TABLES;");
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link, "DESCRIBE {$table};");
-if (!$tbl) {
-    die("<p>DESCRIBE {$table} FAILED: " . mysqli_error($link) . "/p>");
-}
-    $first = true;
-while ($row = mysqli_fetch_row($tbl)) {
+$tbl = $pdo->query("DESCRIBE {$table};");
+$tstruct = $tbl->fetchAll(PDO::FETCH_BOTH);
+foreach ($tstruct as $row) {
     echo "<tr>";
     for ($i=0; $i<count($row); $i++) {
         echo "<td>" . $row[$i] . "</td>";
     }
     echo "</tr>" . PHP_EOL;
 }
-    mysqli_close($link);
 ?>
        </tbody>
     </table>
@@ -116,4 +120,3 @@ while ($row = mysqli_fetch_row($tbl)) {
 </div>
 </body>
 </html>
-
