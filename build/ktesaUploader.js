@@ -1,11 +1,11 @@
-// establish the width of images to be displayed on this page:
-var dwidth = 160;
+// establish the height of images to be displayed on each row
+var dheight = 160;
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
 // the collection of all accumulated images to be uploaded
 var PageUploads = [];
 
-// dropped image defs
+// image defs
 var orient;  // global required
 var droppedImages = []; // array of FileReader objects loaded from dropped imgs
 var loadedImages = [];  // array of DOM nodes containing dropped images
@@ -22,17 +22,11 @@ function previewImgs(flist) {
     $('#ldg').css('display', 'inline');
     $.when( ldImgs(flist) ).then(function() {
         $.when( ldNodes(droppedImages) ).then(function() {
-            $('#ldg').css('display', 'none');
-            var dndbox = document.getElementsByClassName('box__dnd');
-            for (var k=0; k<loadedImages.length; k++) {
-                dndbox[0].appendChild(loadedImages[k]);
-            }
-            droppedImages = [];
-            loadedImages = [];
+            dndPlace();
         });
     });
 }
-// general purpose functions w/deferred objects (e.g. promises)
+// general purpose functions w/deferred objects (i.e. jQuery promises)
 function ldImgs(dimgs) {
     var promises = [];
     for(var i=0; i<dimgs.length; i++) {
@@ -41,7 +35,6 @@ function ldImgs(dimgs) {
             d = new $.Deferred();
         promises.push(d);
 
-        // Make sure we "capture" the correct 'd'
         (function(d){
             reader.onload = function (evt) {
                 droppedImages.push(evt.target.result);
@@ -64,33 +57,49 @@ function ldNodes(files) {
 
         (function(def){
             imgs[j].onload = function() {
+                // NOTE: img is not a DOM node: ht/wd do not require "px";
                 var ht = this.naturalHeight;
                 var wd = this.naturalWidth;
                 var ratio = wd/ht;
+                var ibox = document.createElement('DIV');
+                var nme = document.createElement('TEXTAREA');
+                nme.style.height = "20px";
+                nme.style.display = "block";
+                nme.style.margin = "6px 0px 0px 6px";
                 orient = "";
                 EXIF.getData(this, function() {
                     orient = EXIF.getTag(this, "Orientation");
                 });
                 if (orient == '6') {
-                    this.style.transform = "rotate(90deg)";
-                    /* height/width parms unchanged by rotate, 
-                    * so 'width' of rotated img is actually height of img;
-                    * This requires adjusting the top margin, since the rotated
-                    * image will exceed the target container size
-                    */
-                    var adj = Math.floor(dwidth/ratio);
-                    this.height = adj;
-                    var marg = (dwidth - adj)/2 + "px"; 
-                    this.style.margin = marg + " 0px 0px 0px";
+                    // img height/width params don't change when rotated
+                    var scaledHeight = Math.floor(dheight/ratio);
+                    this.width = dheight;
+                    this.height = scaledHeight;
+                    this.style.margin = "0px";
+                    this.style.display = "block";
+                    // rotation + translation (offset due to rotation) is done via class
+                    this.classList.add('rotation');
+                    // things placed in div still behave as tho img is NOT rotated
+                    nme.style.width = (scaledHeight - 4) + "px"; // TA borders
+                    nme.style.transform = "translate(0px, 40px)";
+                    ibox.style.width = (scaledHeight + 16) + "px";
+                    ibox.style.height = (dheight + 30) + "px";
                 } else {
-                    this.height = dwidth;
-                    this.style.margin = "0px 0px 0px 8px";
+                    this.height = dheight;
+                    this.style.margin = "0px 6px";
+                    this.style.display = "block";
+                    ibox.style.height = (dheight + 26) + "px"; // add in TA + space
+                    var scaledWidth = Math.floor(dheight * ratio);
+                    nme.style.width = (scaledWidth - 4) + "px"; // TA borders
+                    ibox.style.width = (scaledWidth + 12) + "px";
                 }
-                this.alt = "Drop" + imgNo;
+                ibox.style.cssFloat = "left";
+                ibox.style.margin = "0px 6px 24px 6px";
+                ibox.appendChild(this);
+                ibox.appendChild(nme);
+                containers[j] = ibox;
+                this.alt = "image" + imgNo;
                 imgNo++;
-                containers[j] = document.createElement('div');
-                containers[j].style.cssFloat = "left";
-                containers[j].appendChild(this);
                 // detect right-click on image:
                 containers[j].addEventListener('contextmenu', function(ev) {
                     ev.preventDefault();
@@ -160,14 +169,7 @@ if (isAdvancedUpload) {
         }
         $.when( ldImgs(droppedFiles) ).then(function() {
             $.when( ldNodes(droppedImages) ).then(function() {
-                $('#ldg').css('display', 'none');
-                var dndbox = document.getElementsByClassName('box__dnd');
-                for (var k=0; k<loadedImages.length; k++) {
-                    dndbox[0].appendChild(loadedImages[k]);
-                }
-                // in case more get dropped later
-                droppedImages = [];
-                loadedImages = [];
+               dndPlace();
             });
         });
     });
@@ -231,3 +233,22 @@ $('#clrimgs').on('click', function(ev) {
     submittableImgs = [];
     PageUploads = [];
 });
+function dndPlace() {
+    $('#ldg').css('display', 'none');
+    var dndbox = document.getElementsByClassName('box__dnd');
+    var dndWidth = parseInt(dndbox[0].style.width);
+    var remainingWidth = dndWidth;
+    for (var k=0; k<loadedImages.length; k++) {
+        var liWidth = parseInt(loadedImages[k].style.width);
+        if (liWidth + 8 > remainingWidth) {
+            var brk = document.createElement("<br />");
+            dndbox[0].appendChild(brk);
+            remainingWidth = dndWidth;
+        }
+        dndbox[0].appendChild(loadedImages[k]);
+        remainingWidth -= liWidth;
+    }
+    droppedImages = [];
+    loadedImages = [];
+}
+

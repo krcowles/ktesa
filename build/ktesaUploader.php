@@ -55,7 +55,6 @@ $EHikeNo = filter_input(INPUT_GET, 'indx');
         <div class="box__error">Error! <span></span>.</div>
     </div>
 </form>
-<div id="test"></div>
 <script src="ktesaUploader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 </body>
