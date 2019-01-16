@@ -17,13 +17,16 @@ require "../vendor/autoload.php";
  * 'PDO_complete' is merged:
  * require "../php/global_boot.php";
  */
-require "buildFunctions.php";
-require "../mysql/dbFunctions.php";
+require "../php/global_boot.php";
 
 // POSTED DATA
 $filedat = $_FILES['files'];
 $noOfFiles = count($filedat['name']);
 $indxNo = filter_input(INPUT_POST, 'indx');
+$namedat = filter_input(INPUT_POST, 'namestr');
+$descdat = filter_input(INPUT_POST, 'descstr');
+$picnames = json_decode($namedat);
+$picdescs = json_decode($descdat);
 // Size width definitions:
 $n_size = 320;
 $z_size = 640;
@@ -167,23 +170,34 @@ if ($GDsupport['JPEG Support']) {
  *  be in place, hence eliminate the first line of this code
  */
 // TSV data is stored in arrays, now enter the values in db:
-$pdo = dbConnect(__FILE__, __LINE__);
-// need to loop thru all pix...
 for ($k=0; $k<count($imgName); $k++) {
     /**
      * Create VALUES list, adding NULLs where needed:
      * Always present: indxNo, title, mid, imgHt, imgWd
      */
-    $valstr = "VALUES (?,?,";
-    $vals = [$indxNo, $imgName[$k]];
+    $valstr = "VALUES (?,?,"; // indxNo, title fields
+    if ($picnames[$k] == "") {
+        $vals = [$indxNo, $imgName[$k]];
+    } else {
+        $vals = [$indxNo, $picnames[$k]];
+    }
     $vindx = 1; // index of last element in $vals array
+    if ($picdescs[$k] == "") {
+        $valstr .= "NULL,"; // desc field
+    } else {
+        $valstr .= "?,";
+        $vindx++;
+        $vals[$vindx] = $picdescs[$k];
+    }
     if ($lats[$k] === 0 || $lngs[$k] === 0) {
         $valstr .= "NULL,NULL,";
     } else {
         $valstr .= "?,?,";
-        $vals[2] = $lats[$k];
-        $vals[3] = $lngs[$k];
-        $vindx = 3;
+        $vindx++;
+        $vals[$vindx] = $lats[$k];
+        $vindx++;
+        $vals[$vindx] = $lngs[$k];
+
     }
     if ($timestamp[$k] === 0) {
         $valstr .= "NULL,";
@@ -196,8 +210,9 @@ for ($k=0; $k<count($imgName); $k++) {
     $vals[$vindx+1] = $imgName[$k];
     $vals[$vindx+2] = $imgHt_n[$k];
     $vals[$vindx+3] = $imgWd_n[$k];
-    $tsvReq = "INSERT INTO ETSV (indxNo,title,lat,lng,`date`,mid,imgHt,imgWd) "
-        . $valstr;
+    $tsvReq
+        = "INSERT INTO ETSV (indxNo,title,`desc`,lat,lng,`date`,mid,imgHt,imgWd) "
+            . $valstr;
     $tsv = $pdo->prepare($tsvReq);
     try {
         $tsv->execute($vals);

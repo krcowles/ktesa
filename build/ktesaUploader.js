@@ -1,7 +1,9 @@
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
-// the collection of all accumulated images to be uploaded
-var PageUploads = [];
+// the collection of all accumulated items to be uploaded
+var imageUploads = [];
+var nameUploads = [];
+var descUploads = [];
 /**
  * While the following items can be changed, changing the image height (iheight)
  * will required adjustment of the 'rotation' class parameters in css.
@@ -39,7 +41,7 @@ function previewImgs(flist) {
 function ldImgs(dimgs) {
     var promises = [];
     for(var i=0; i<dimgs.length; i++) {
-        PageUploads.push(dimgs[i]);
+        imageUploads.push(dimgs[i]);
         var reader = new FileReader(),
             d = new $.Deferred();
         promises.push(d);
@@ -79,12 +81,14 @@ function ldNodes(files) {
                 nme.style.display = "block";
                 nme.style.margin = "6px 0px";
                 nme.placeholder = "Picture name";
+                nme.classList.add('nmeVal');
                 // textarea for picture 'description'
                 var des = document.createElement('TEXTAREA');
                 des.style.height = dheight + "px";
                 des.style.display = "block";
                 des.style.margin = "0px";
                 des.placeholder = "Picture description";
+                des.classList.add('desVal');
                 orient = "";
                 EXIF.getData(this, function() {
                     orient = EXIF.getTag(this, "Orientation");
@@ -159,7 +163,7 @@ function ldNodes(files) {
                     ev.preventDefault();
                     if (confirm('Do you wish to delete this image?')) {
                         alert("DELETE");
-                        // find item in PageUploads: delete that and 'this'
+                        // find item in imageUploads: delete that and 'this'
                     }
                     return false;
                 });
@@ -237,15 +241,25 @@ $form.on('submit', function(e) {
     $form.addClass('is-uploading').removeClass('is-error');
     if (isAdvancedUpload) {
         e.preventDefault();
-        if (PageUploads.length === 0) {
+        if (imageUploads.length === 0) {
             alert("No files have been chosen or dragged in for upload");
                 $form.removeClass('is-uploading');
             return;
         }
         ajaxData = new FormData();
-        for (var k=0; k<PageUploads.length; k++) {
-            ajaxData.append('files[]', PageUploads[k]);
+        for (var k=0; k<imageUploads.length; k++) {
+            ajaxData.append('files[]', imageUploads[k]);
         }
+        $('.nmeVal').each(function() {
+            nameUploads.push($(this).val());
+        });
+        var names = JSON.stringify(nameUploads);
+        ajaxData.append('namestr', names);
+        $('.desVal').each(function() {
+            descUploads.push($(this).val());
+        });
+        var descs = JSON.stringify(descUploads);
+        ajaxData.append('descstr', descs);
         ajaxData.append('indx', ehikeIndxNo);
         $.ajax({
             url: 'usrPhotos.php',
@@ -285,7 +299,7 @@ $('#clrimgs').on('click', function(ev) {
     droppedImages = [];
     loadedImages = [];
     submittableImgs = [];
-    PageUploads = [];
+    imageUploads = [];
 });
 function dndPlace() {
     $('#ldg').css('display', 'none');
