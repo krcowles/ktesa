@@ -75,6 +75,7 @@ function ldNodes(files) {
                 var ibox = document.createElement('DIV');
                 // create the div holding textarea boxes
                 var tbox = document.createElement('DIV');
+                tbox.classList.add('txtdata');
                 // textarea for picture 'name'
                 var nme = document.createElement('TEXTAREA');
                 nme.style.height = nheight + "px";
@@ -291,10 +292,13 @@ $form.on('submit', function(e) {
 
 $('#clrimgs').on('click', function(ev) {
     ev.preventDefault();
-    $imgs = $('img');
+    $('img').remove();
+    /*
     $imgs.each(function() {
         $(this).remove();
     });
+    */
+    $('.txtdata').remove();
     droppedFiles = false;
     droppedImages = [];
     loadedImages = [];
