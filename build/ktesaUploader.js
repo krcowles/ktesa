@@ -1,10 +1,14 @@
-// establish the height of images to be displayed on each row
-var dheight = 160;
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
 // the collection of all accumulated images to be uploaded
 var PageUploads = [];
-
+/**
+ * While the following items can be changed, changing the image height (iheight)
+ * will required adjustment of the 'rotation' class parameters in css.
+ */
+var iheight = 160; // image height in rows
+var nheight = 20;  // height of 'name' box
+var dheight = 44;  // height of 'description' box
 // image defs
 var orient;  // global required
 var droppedImages = []; // array of FileReader objects loaded from dropped imgs
@@ -13,6 +17,11 @@ var imgNo = 0;
 var droppedFiles = false;
 var submittableImgs = []; // FileList of all dropped images, esp when dropped in stages
 var currDropped;  // keep track of above count
+// track available space in current row for placement of next image
+var form = document.getElementsByClassName('box');
+var dndbox = document.getElementsByClassName('box__dnd');
+var dndWidth = form[0].clientWidth;
+remainingWidth = dndWidth;
 
 // preview any images selected by the "Choose..." button
 $('#file').change(function() {
@@ -47,7 +56,7 @@ function ldImgs(dimgs) {
 }
 function ldNodes(files) {
     var promises = [];
-    var containers = []; // DOM nodes containing images
+    var containers = []; // DOM nodes containing images & textareas
     var imgs = [];
     for (var j=0; j<files.length; j++) {
         // create image node:
@@ -62,41 +71,86 @@ function ldNodes(files) {
                 var wd = this.naturalWidth;
                 var ratio = wd/ht;
                 var ibox = document.createElement('DIV');
+                // create the div holding textarea boxes
+                var tbox = document.createElement('DIV');
+                // textarea for picture 'name'
                 var nme = document.createElement('TEXTAREA');
-                nme.style.height = "20px";
+                nme.style.height = nheight + "px";
                 nme.style.display = "block";
-                nme.style.margin = "6px 0px 0px 6px";
+                nme.style.margin = "6px 0px";
+                nme.placeholder = "Picture name";
+                // textarea for picture 'description'
+                var des = document.createElement('TEXTAREA');
+                des.style.height = dheight + "px";
+                des.style.display = "block";
+                des.style.margin = "0px";
+                des.placeholder = "Picture description";
                 orient = "";
                 EXIF.getData(this, function() {
                     orient = EXIF.getTag(this, "Orientation");
                 });
                 if (orient == '6') {
-                    // img height/width params don't change when rotated
-                    var scaledHeight = Math.floor(dheight/ratio);
-                    this.width = dheight;
+                    // NOTE: image height/width parameters DO NOT CHANGE WHEN ROTATED
+                    var scaledHeight = Math.floor(iheight/ratio);
+                    this.width = iheight;
                     this.height = scaledHeight;
                     this.style.margin = "0px";
                     this.style.display = "block";
-                    // rotation + translation (offset due to rotation) is done via class
+                    /**
+                     * When rotating the image about it's center, the old 'width'
+                     * becomes the new 'height'. The DOM behaves as if the image
+                     * was NOT rotated, so the rotated image overflows it's old height 
+                     * boundary on each end by (Iwd - Iht)/2. Similarly, the old
+                     * 'height' is the new 'width', and there is empty space on
+                     * each side corresponding to (Iwd - Iht)/2. In order to place
+                     * the top left corner of the rotatated image where the original
+                     * top left corner of the image was, it is necessary to 'translate'
+                     * the (x,y) coordinates of the center by (Iwd - Iht)/2. It is
+                     * also necessary to adjust the height/width of the container div
+                     * to correspond to the newly dimensioned (rotated) image. If 
+                     * the div is wider than the rotated image, to center the image
+                     * in the div, translation of (Dwd - Iht)/2 is necessary instead
+                     * of (Iwd - Iht)/2. Since the rotation reverses the x/y axes,
+                     * items being rotated must be translated as if (y, x). Rotation and
+                     * translation for the image are done in the css class 'rotation'. 
+                     */
                     this.classList.add('rotation');
-                    // things placed in div still behave as tho img is NOT rotated
-                    nme.style.width = (scaledHeight - 4) + "px"; // TA borders
-                    nme.style.transform = "translate(0px, 40px)";
+                    // place the textarea boxes in tbox:
+                    nme.style.width = (scaledHeight - 4) + "px"; // 4 for TA borders
+                    des.style.width = (scaledHeight - 4) + "px";
+                    tbox.style.width = scaledHeight + "px";
+                    tbox.appendChild(nme);
+                    tbox.appendChild(des);
+                    tbox.style.margin = "0px 0px 0px 6px";
+                    // items placed below the image act as if image is NOT rotated
+                    tbox.style.transform = "translate(0px, 40px)";
+                    // fix the image container
                     ibox.style.width = (scaledHeight + 16) + "px";
-                    ibox.style.height = (dheight + 30) + "px";
+                    var accumht = iheight + (nheight + 4 + 12) + (dheight + 4) + "px";
+                    ibox.style.height = accumht;
                 } else {
-                    this.height = dheight;
+                    var scaledWidth = Math.floor(iheight * ratio);
+                    this.height = iheight;
                     this.style.margin = "0px 6px";
                     this.style.display = "block";
-                    ibox.style.height = (dheight + 26) + "px"; // add in TA + space
-                    var scaledWidth = Math.floor(dheight * ratio);
-                    nme.style.width = (scaledWidth - 4) + "px"; // TA borders
+                    nme.style.width = (scaledWidth - 4) + "px"; // subtract TA borders
+                    des.style.width = (scaledWidth - 4) + "px";
+                    tbox.style.width = scaledWidth + "px";
+                    tbox.appendChild(nme);
+                    tbox.appendChild(des);
+                    /**
+                     * Each textarea has 2px of border, top & bottom, ie 4px total
+                     * There is a margin (6px) on the top & bottom of the name textarea,
+                     * for 12px total, no margin on the description ta:
+                     */
+                    var accumht = iheight + (nheight + 4 + 12) + dheight + "px"; 
+                    ibox.style.height = accumht;
                     ibox.style.width = (scaledWidth + 12) + "px";
                 }
                 ibox.style.cssFloat = "left";
                 ibox.style.margin = "0px 6px 24px 6px";
                 ibox.appendChild(this);
-                ibox.appendChild(nme);
+                ibox.appendChild(tbox);
                 containers[j] = ibox;
                 this.alt = "image" + imgNo;
                 imgNo++;
@@ -235,13 +289,10 @@ $('#clrimgs').on('click', function(ev) {
 });
 function dndPlace() {
     $('#ldg').css('display', 'none');
-    var dndbox = document.getElementsByClassName('box__dnd');
-    var dndWidth = parseInt(dndbox[0].style.width);
-    var remainingWidth = dndWidth;
     for (var k=0; k<loadedImages.length; k++) {
         var liWidth = parseInt(loadedImages[k].style.width);
         if (liWidth + 8 > remainingWidth) {
-            var brk = document.createElement("<br />");
+            var brk = document.createElement("BR");
             dndbox[0].appendChild(brk);
             remainingWidth = dndWidth;
         }
