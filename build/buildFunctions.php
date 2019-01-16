@@ -594,21 +594,17 @@ function genLatLng($gpxobj, $trkno)
  * @return string $target_file New resized filepath
  */
 function storeUploadedImage($targ_fname, $org_file, $new_img_width,
-    $new_img_height, $rotated
+    $new_img_height, $rotated, $size
 ) {
-    $target_dir = "../tmp/";
+    if ($size === "n") {
+        $target_dir = "../pictures/nsize/";
+    } else {
+        $target_dir = "../pictures/zsize/";
+    }
     $target_file = $target_dir . $targ_fname;
     $image = new \claviska\SimpleImage();
     $image->fromFile($org_file);
     $image->autoOrient();
-    /*
-     * rotation is already done in caller...
-    if ($rotated) {
-        $tmp = $new_img_height;
-        $new_img_height = $new_img_width;
-        $new_img_width = $tmp;
-    }
-    */
     $image->resize($new_img_width, $new_img_height);
     $image->toFile($target_file);
     // return name of saved file in case you want to store it 

@@ -150,13 +150,15 @@ if ($GDsupport['JPEG Support']) {
             }
             $nfileName = $imgName[$j] . "_n.jpg";
             $zfileName = $imgName[$j] . "_z.jpg";
+            $size = "n";
             storeUploadedImage(
                 $nfileName, $filedat['tmp_name'][$j],
-                $imgWd_n[$j], $imgHt_n[$j], $rotate
+                $imgWd_n[$j], $imgHt_n[$j], $rotate, $size
             );
+            $size = "z";
             storeUploadedImage(
                 $zfileName, $filedat['tmp_name'][$j],
-                $imgWd_z[$j], $imgHt_z[$j], $rotate
+                $imgWd_z[$j], $imgHt_z[$j], $rotate, $size
             );
         }
     }

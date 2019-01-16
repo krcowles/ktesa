@@ -271,7 +271,7 @@ $form.on('submit', function(e) {
             contentType: false,
             processData: false,
             complete: function() {
-            $form.removeClass('is-uploading');
+                $form.removeClass('is-uploading');
             },
             success: function(data) {
                 if (data.substring(0,4) !== "Fail") {
@@ -280,9 +280,17 @@ $form.on('submit', function(e) {
                 } else {
                     $form.addClass('is-error');
                 }
+                // clean up everything
+                droppedFiles = false;
+                droppedImages = [];
+                loadedImages = [];
+                submittableImgs = [];
+                imageUploads = [];
+                nameUploads = [];
+                descUploads = [];
             },
             error: function() {
-            // Log the error, show an alert, whatever works for you
+                // Log the error, show an alert, whatever works for you
             }
         });
     } else {
