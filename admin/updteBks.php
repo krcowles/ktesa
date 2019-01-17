@@ -1,23 +1,26 @@
 <?php
 /**
  * This script inserts a new book entered on the form "addBook.html" into
- * the BOOKS table in MySQL
+ * the BOOKS table in MySQL.
+ * PHP Version 7.1
  * 
  * @package ADMIN
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
-$auth = filter_input(INPUT_POST, 'author');
-$author = mysqli_real_escape_string($link, $auth);
-$name = filter_input(INPUT_POST, 'title');
-$title = mysqli_real_escape_string($link, $name);
-$bkReq ="INSERT INTO BOOKS (title,author) VALUES('{$title}','{$author}');";
-$addbk = mysqli_query($link, $bkReq) or die(
-    "Failed to add book to BOOKS table: " . mysqli_error($link)
-);
+require_once "../php/global_boot.php";
+$author = filter_input(INPUT_POST, 'author');
+$title = filter_input(INPUT_POST, 'title');
+$bkReq ="INSERT INTO BOOKS (title,author) VALUES(:title,:author);";
+$addbk = $pdo->prepare($bkReq);
+$addbk->bindValue(":title", $title);
+$addbk->bindValue(":author", $author);
+try {
+    $addbk->execute();
+}
+catch (PDOException $e) {
+    pdo_err("INSERT INTO BOOKS", $e);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -32,7 +35,7 @@ $addbk = mysqli_query($link, $bkReq) or die(
 <body>
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>	
+    <p id="logo_left">Hike New Mexico</p>
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>

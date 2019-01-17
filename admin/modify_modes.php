@@ -1,4 +1,13 @@
 <?php
+/**
+ * This module reads the mysql settings contained in sql_modes.ini
+ * and writes the selected settings back out. 
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberge and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
 session_start();
 $old = file('sql_modes.ini', FILE_IGNORE_NEW_LINES);
 $curr_ons = $_POST['ons'];

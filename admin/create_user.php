@@ -1,20 +1,17 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
-$fname = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'firstname'));
-$lname = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'lastname'));
-$uname = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'usr'));
+/**
+ * This script will update the USERS table with the form information 
+ * entered by the new user on Registration.html.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
+$uname = filter_input(INPUT_POST, 'usr');
 $tpass = filter_input(INPUT_POST, 'password');
-$pword = mysqli_real_escape_string($link, password_hash($tpass, PASSWORD_DEFAULT));
-$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-if (!$email) {
-    echo "Invalid email address - please go back to the Registration Page";
-} else {
-    $email = mysqli_real_escape_string($link, $email);
-}
-$facbk = filter_input(INPUT_POST, 'facebook', FILTER_VALIDATE_URL);
-$twitt = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'twitter'));
-$binfo = mysqli_real_escape_string($link, filter_input(INPUT_POST, 'bio'));
+$pword = password_hash($tpass, PASSWORD_DEFAULT);
 $today = getdate();
 $month = $today['mon'];
 $day = $today['mday'];
@@ -26,24 +23,55 @@ if ($month > 6) {
     $month += 6;
 }
 $exp_date = $year . "-" . $month . "-" . $day;
-$passwd_exp = mysqli_real_escape_string($link, $exp_date);
-$newuser = "INSERT INTO USERS (username,passwd,passwd_expire,last_name," .
-        "first_name,email,facebook_url,twitter_handle,bio) " .
-    "VALUES ('{$uname}','{$pword}','{$passwd_exp}','{$lname}','{$fname}'," .
-            "'{$email}','{$facbk}','{$twitt}','{$binfo}');";
-$insert = mysqli_query($link, $newuser);
-/*
-if (!insert) {
-    if (Ktesa_Dbug) {
-        debug_print("Could not insert new user info: " . mysqli_error($link));
-    } else {
-        user_error_msg('../mysql/',2,0);
-    }
-} else {
-    echo '<p style="display:none;" id="uname">' . $uname . '</p>';
+$lname = filter_input(INPUT_POST, 'lastname');
+$fname = filter_input(INPUT_POST, 'firstname');
+$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+if (!$email) {
+    echo "Invalid email address - please go back to the Registration Page";
+} 
+$facbk = filter_input(INPUT_POST, 'facebook', FILTER_VALIDATE_URL);
+$twitt = filter_input(INPUT_POST, 'twitter');
+$binfo = filter_input(INPUT_POST, 'bio');
+$newuser = "INSERT INTO USERS (
+    username,
+    passwd,
+    passwd_expire,
+    last_name,
+    first_name,
+    email,
+    facebook_url,
+    twitter_handle,
+    bio
+    ) VALUES (
+        :uname,
+        :passwd,
+        :pass_exp,
+        :lastnme,
+        :firstnme,
+        :email,
+        :fbk,
+        :twit,
+        :bio
+    );";
+$user = $pdo->prepare($newuser);
+try {
+    $user->execute(
+        array(
+            ":uname" =>  $uname,
+            ":passwd" => $pword,
+            ":pass_exp" => $exp_date,
+            ":lastnme" => $lname,
+            ":firstnme" => $fname,
+            ":email" => $email,
+            ":fbk" => $facbk,
+            ":twit" => $twitt,
+            ":bio" => $binfo
+            )
+    );
 }
- * 
- */
+catch (PDOException $e) {
+    pdo_err("INSERT INTO USERS", $e);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

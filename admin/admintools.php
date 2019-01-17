@@ -23,9 +23,8 @@ require "mode_settings.php";
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>	
+<div id="logo"><img id="hikers" src="../images/hikers.png" alt="hikers icon" />
+    <p id="logo_left">Hike New Mexico</p>
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
@@ -41,7 +40,7 @@ require "mode_settings.php";
             enctype="multipart/form-data">
             <button id="upld">Upload</button>&nbsp;&nbsp;
             <input id="ufile" type="file" name="ufile" />
-                &nbsp;[Creates new directory]<br />
+                &nbsp;[Uploads Zip File and Extracts to 'upload' directory]<br />
         </form>
         <span style="font-size:20px;color:brown;">
             Downloads:</span><br />

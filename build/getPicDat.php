@@ -6,13 +6,14 @@
  * invoked as an ajax call from javascript. This means that any echoed output,
  * including 'die' statements, are sent back to the caller as data, and is 
  * handled in the calling routine.
+ * PHP Version 7.1
  * 
  * @package Create
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
-require "buildFunctions.php";
+require "../php/global_boot.php";
+
 $curldat = filter_input(INPUT_POST, 'albs');
 $typedat = filter_input(INPUT_POST, 'types');
 $supplied = filter_input(INPUT_POST, 'cnt');

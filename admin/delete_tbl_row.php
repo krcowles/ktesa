@@ -1,6 +1,13 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+/**
+ * This script will delete a single row in the selected table.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
 $tbl_type = filter_input(INPUT_GET, 'tbl');
 $rowno = filter_input(INPUT_GET, 'indx');
 if ($tbl_type === 'u') {
@@ -31,36 +38,35 @@ if ($tbl_type === 'u') {
     $table = "GPSDAT";
     $idfield = "datId";
 } else {
-    die("Unrecognized table type in GET");
+    die("Not supported for DELETE ROW at this time");
 }
 $lastid = "SELECT {$idfield} FROM {$table} ORDER BY {$idfield} DESC LIMIT 1";
-$getid = mysqli_query($link, $lastid);
-if (!$getid) {
-    if (Ktesa_Dbug) {
-        dbug_print('delete_tbl_row.php: Could not retrieve highest index: ' .
-                mysqli_error($link));
-    } else {
-        user_error_msg($rel_addr, 6, 0);
-    }
+try {
+    $cnt = $pdo->query($lastid);
 }
-$lastindx = mysqli_fetch_row($getid);
-$tblcnt = $lastindx[0];
-mysqli_free_result($getid);
+catch (PDOException $e) {
+    pdo_err("SELECT ... ORDER BY", $e);
+}
+$iddat = $cnt->fetch(PDO::FETCH_BOTH);
+$tblcnt = $iddat[0];
+if ($tblcnt === null) {
+    die("There are no rows to delete in this table");
+}
 if ($rowno > $tblcnt) {
     $badrow = true;
     $toobig = '<p>The specified row is larger than last row of the table; Please ' .
         'return to admin tools and specify a valid row number';
 } else {
     $badrow = false;
-    $remrow = mysqli_query($link, "DELETE FROM {$table} WHERE {$idfield} = " . $rowno . ";");
-    if (!$remrow) {
-        $drop_fail = "<p>Could not delete the specified row: " . mysqli_error($link) . "</p>";
-        die($drop_fail);
-    } else {
-        $good =  "<p>Row " . $rowno . " successfully removed; </p>";
+    $remreq = "DELETE FROM {$table} WHERE {$idfield} = " . $rowno . ";";
+    try {
+        $pdo->query($remreq);
     }
-    mysqli_free_result($remrow);
-    mysqli_close($link);
+    catch (PDOException $e) {
+        pdo_err("DELETE FROM ... WHERE", $e);
+    }
+
+    $good = "<p>Row " . $rowno . " successfully removed; </p>";
 }
 ?>
  <!DOCTYPE html>
@@ -87,13 +93,11 @@ if ($rowno > $tblcnt) {
 </div>
 <p id="trail">Delete Row From HIKES Table</p>
 <div style="margin-left:16px;font-size:18px;"> 
-<?php
-if ($badrow) {
-    echo $toobig;
-} else {
-    echo $good;
-}
-?>
+<?php if ($badrow) : ?>
+    <p><?= $toobig;?></p>
+<?php else : ?>
+    <p><?= $good;?></p>
+<?php endif; ?>
 </div>
 </body>
 </html>

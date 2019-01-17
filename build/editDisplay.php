@@ -1,6 +1,12 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+/**
+ * This script will create a table of hikes available for editing
+ * PHP Version 7.1
+ * 
+ * @package Edit
+ * @author  Tom Sanderg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
 $usr = filter_input(INPUT_GET, 'usr');
 $age = 'new';
 $show = 'usr';

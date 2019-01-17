@@ -1,7 +1,13 @@
-
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+/**
+ * This script will create an unpopulated EHIKES table.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -49,32 +55,32 @@ $link = connectToDb(__FILE__, __LINE__);
         'E-tables' (ETSV, EREFS, EGPSDAT) which will reference EHIKES with
         foreign keys.</p>
 <?php
-echo "<p>mySql Connection Opened</p>";
-$tbl = mysqli_query($link, "CREATE TABLE EHIKES LIKE HIKES");
-if (!$tbl) {
-    die("<p>CREATE EHIKES failed: " . mysqli_error($link) . "</p>");
-}
-$addstatreq = "ALTER TABLE EHIKES ADD stat VARCHAR(10) AFTER usrid";
-$addstat = mysqli_query($link, $addstatreq);
-if (!$addstat) {
-    die("<p>Failed to add stat column to EHIKES: " . mysqli_error($link) . "</p>");
-} else {
-    echo '<p>EHIKES Table created; Definitions are shown in the table below</p>';
-}
-$req = mysqli_query($link, "SHOW TABLES;");
-if (!$req) {
-    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
-}
+$show = $pdo->query("SHOW TABLES;");
+$tbls = $show->fetchAll(PDO::FETCH_BOTH);
 echo "<p>Results from SHOW TABLES:</p><ul>";
-while ($row = mysqli_fetch_row($req)) {
+foreach ($tbls as $row) {
+    if ($row[0] === "EHIKES") {
+        die("You must first DROP EHIKES");
+    }
     echo "<li>" . $row[0] . "</li>";
 }
 echo "</ul>";
-$req = mysqli_query($link, "SHOW TABLES;");
+try {
+    $pdo->query("CREATE TABLE EHIKES LIKE HIKES");
+}
+catch (PDOException $e) {
+    pdo_err("CREATE TABLE EHIKES", $e);
+}
+try {
+    $pdo->query("ALTER TABLE EHIKES ADD stat VARCHAR(10) AFTER usrid;");
+}
+catch (PDOException $e) {
+    pdo_err("ALTER TABLE EHIKES", $e);
+}
 ?>
     <p>Description of the EGPSDAT table:</p>
     <table>
-        <colgroup>	
+        <colgroup>
             <col style="width:100px">
             <col style="width:120px">
             <col style="width: 80px">
@@ -94,19 +100,16 @@ $req = mysqli_query($link, "SHOW TABLES;");
         </thead>
         <tbody>
 <?php
-$tbl = mysqli_query($link, "DESCRIBE EHIKES;");
-if (!$tbl) {
-    die("<p>DESCRIBE EHIKES FAILED: " . mysqli_error($link) . "/p>");
-}
-$first = true;
-while ($row = mysqli_fetch_row($tbl)) {
+echo '<p>EHIKES Table created; Definitions are shown in the table below</p>';
+$eh_struct = $pdo->query("DESCRIBE EHIKES;");
+$struct = $eh_struct->fetchAll(PDO::FETCH_BOTH);
+foreach ($struct as $row) {
     echo "<tr>";
     for ($i=0; $i<count($row); $i++) {
         echo "<td>" . $row[$i] . "</td>";
     }
     echo "</tr>" . PHP_EOL;
 }
-mysqli_close($link);
 ?>
        </tbody>
     </table>
@@ -114,4 +117,3 @@ mysqli_close($link);
 </div>
 </body>
 </html>
-

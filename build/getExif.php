@@ -5,11 +5,11 @@
  * file to a temp directory. It then reads the exif data from that file, stores 
  * the required information in arrays for the calling routine, and then deletes
  * the file. This script does not care which album type has been selected.
+ * PHP Version 7.1
  * 
  * @package Create
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
 define("CHUNK", 8192);
 // original photos assumed to be stored in the $o array in getPicDat.php

@@ -2,11 +2,11 @@
 /**
  * This file creates the $picdat array from which photos will be
  * presented on the page for display. The array is then time-sorted
+ * PHP Version 7.1
  * 
  * @package Edit
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
 $picdat = [];
 for ($m=0; $m<$pcnt; $m++) {

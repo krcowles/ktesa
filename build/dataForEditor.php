@@ -6,31 +6,32 @@
  * When this module is invoked from the hikeEditor, the tab display setting
  * will be "1". If the user clicks on 'Apply' for any tab, that same tab will
  * display again with refreshed data.
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license None to date
- * @link    ../docs/
  */
 session_start();
-require_once "../mysql/dbFunctions.php";
-require_once "buildFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
 $hikeNo = filter_input(INPUT_GET, 'hno');
 $uid = filter_input(INPUT_GET, 'usr');
 $dispTab = filter_input(INPUT_GET, 'tab');
 // data for drop-down boxes
-$selectData = dropdownData('cls');
+$selectData = dropdownData($pdo, 'cls');
 $cnames = array_values($selectData);
 $groups = array_keys($selectData);
 // assign existing hike data
-$hikereq = "SELECT * FROM EHIKES WHERE indxNo = {$hikeNo};";
-$hikeq = mysqli_query($link, $hikereq) or die(
-    __FILE__ . " Line " . __LINE__ . 
-    "Failed to extract hike data from EHIKES: " . mysqli_error($link)
-);
-$hike = mysqli_fetch_assoc($hikeq);
+$hikereq = "SELECT * FROM EHIKES WHERE indxNo = :hikeno;";
+$hikeq = $pdo->prepare($hikereq);
+$retrieved = $hikeq->execute(["hikeno" => $hikeNo]);
+if ($retrieved === false) {
+    die(
+        "Hike {$hikeNo} Not Found in EHIKES; File " . __FILE__ . 
+        " line no. " . __LINE__
+    );
+}
+// there will be only one row...
+$hike = $hikeq->fetch(PDO::FETCH_ASSOC);
 $hikeTitle = trim($hike['pgTitle']);  // this should never be null
 $hikeLocale = fetch($hike['locale']);
 $hikeMarker = fetch($hike['marker']);  // this also should never be null...
@@ -62,37 +63,32 @@ $hikeUrl2 = fetch($hike['purl2']);
 $hikeDirs = fetch($hike['dirs']);
 $hikeTips = fetch($hike['tips']);
 $hikeDetails = fetch($hike['info']);
-mysqli_free_result($hikeq);
 // References for tab4:
-$refreq = "SELECT * FROM EREFS WHERE indxNo = '{$hikeNo}';";
-$refq = mysqli_query($link, $refreq) or die(
-    "editDB.php: Failed to extract references from EREFS: " .
-    mysqli_error($link)
-);
-$noOfRefs = mysqli_num_rows($refq);
+$refreq = "SELECT * FROM EREFS WHERE indxNo = :hikeno;";
+$refq = $pdo->prepare($refreq);
+$refq->execute(["hikeno" => $hikeNo]);
+$noOfRefs = $refq->rowCount(); // needed for tab4display.php
+$refs = $refq->fetchALL(PDO::FETCH_ASSOC);
 $rtypes = [];
 $rit1s = [];
 $rit2s = [];
-while ($refs = mysqli_fetch_assoc($refq)) {
-    $reftype = fetch($refs['rtype']);
+foreach ($refs as $ref) {
+    $reftype = fetch($ref['rtype']);
     array_push($rtypes, $reftype);
-    $ritem1 = fetch($refs['rit1']);
+    $ritem1 = fetch($ref['rit1']);
     array_push($rit1s, $ritem1);
-    $ritem2 = fetch($refs['rit2']);
+    $ritem2 = fetch($ref['rit2']);
     array_push($rit2s, $ritem2);
 }
-mysqli_free_result($refq);
 // Create the book drop-down options:
 $bkReq = "SELECT * FROM BOOKS;";
-$bks = mysqli_query($link, $bkReq) or die(
-    __FILE__ . " " . __LINE__ . "Failed to get book list: " .
-    mysqli_error($link)
-);
+$bkdat = $pdo->query($bkReq);
+$bks = $bkdat->fetchALL(PDO::FETCH_ASSOC);
 $bkopts = '';  // html for drop-down boxes
 $defauth = ''; // default author when first populating selection boxes
 $titles = '['; // arrays for javascript
 $authors = '[';
-while ($bkitem = mysqli_fetch_assoc($bks)) {
+foreach ($bks as $bkitem) {
     $titles .= '"' . $bkitem['title'] . '",';
     $authors .= '"' . $bkitem['author'] . '",';
     if ($defauth === '') {
@@ -104,20 +100,17 @@ while ($bkitem = mysqli_fetch_assoc($bks)) {
 $titles = substr($titles, 0, strlen($titles)-1) . ']';
 $authors = substr($authors, 0, strlen($authors)-1) . ']';
 // GPS Data for tab 4:
-$gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = '{$hikeNo}' " .
+$gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = :hikeno " .
     "AND (datType = 'P' OR datType = 'A');";
-$gps = mysqli_query($link, $gpsreq) or die(
-    __FILE__ . " Line " . __LINE__ . ": Failed to extract GPS Data "
-    . "from EGPSDAT: " . mysqli_error($link)
-);
-$gpsDbCnt = mysqli_num_rows($gps);
+$gpsq = $pdo->prepare($gpsreq);
+$gpsq->execute(["hikeno" => $hikeNo]);
+$gpsDbCnt = $gpsq->rowCount(); // needed for tab4display.php
 $pl = array();
 $pu = array();
 $pc = array();
-for ($k=0; $k<$gpsDbCnt; $k++) {
-    $gpsdat = mysqli_fetch_assoc($gps);
-    $pl[$k] = fetch($gpsdat['label']);
-    $pu[$k] = fetch($gpsdat['url']);
-    $pc[$k] = fetch($gpsdat['clickText']);
+for ($j=0; $j<$gpsDbCnt; $j++) {
+    $gpsdat = $gpsq->fetch(PDO::FETCH_ASSOC);
+    $pl[$j] = fetch($gpsdat['label']);
+    $pu[$j] = fetch($gpsdat['url']);
+    $pc[$j] = fetch($gpsdat['clickText']);
 }
-mysqli_free_result($gps);
