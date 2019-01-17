@@ -3,7 +3,7 @@
  * This file contains function declarations designed to be used
  * by modules in the build directory. At this time, there are also
  * some instances called by makeGpsv.php.
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Build_Functions
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -17,9 +17,8 @@
  * already exists on the site. Other validation checks are performed.
  * NOTE: If the upload is a main site gpx file, makeTrackFile will be called.
  * 
- * @param string $name     <input type="file" name="$name" />
- * @param string $fileloc  The directory location for moving the upload
- * @param string $mimetype The mime type to validate on upload
+ * @param string $name    <input type="file" name="$name" />
+ * @param string $fileloc The directory location for moving the upload
  * 
  * @return array $filename, $msg
  */
@@ -46,23 +45,28 @@ function validateUpload($name, $fileloc)
         $file_ext = substr($filename, $ext, 3);
         if (strtoLower($file_ext) === 'gpx') {
             $xml = new DOMDocument;
-            if(!$xml->load($tmp_upload)) {
+            if (!$xml->load($tmp_upload)) {
                 die(
                     "{$filename} could not be loaded as a DOMDocument in "
                     . "validateUpload of buildFunctions.php line " . __LINE__
                 );
             }
-            if (!$xml->schemaValidate("http://www.topografix.com/GPX/1/1/gpx.xsd", 
-                    LIBXML_SCHEMA_CREATE)) {
+            if (!$xml->schemaValidate(
+                "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
+            )
+            ) {
                 $error_vals = libxml_get_errors();
                 $err_list = "<ul>";
                 foreach ($error_vals as $err) {
-                    $err_list .= "<li>" . display_xml_error($err, $filename) . "</li>";
+                    $err_list .= "<li>" . displayXmlError($err, $filename) .
+                    "</li>";
                 }
                 $err_list .= "</ul>";
-                die("{$filename} could not be validated against the XML gpx " 
+                die(
+                    "{$filename} could not be validated against the XML gpx " 
                     . "schema in validateUpload() " . __FILE__ . " line "
-                    . __LINE__ . "<br />" . $err_list);
+                    . __LINE__ . "<br />" . $err_list
+                );
 
             }
         }
@@ -93,20 +97,20 @@ function validateUpload($name, $fileloc)
  * 
  * @return string $return error string to return
  */
-function display_xml_error($error, $gpxfile) 
+function displayXmlError($error, $gpxfile) 
 {
     switch ($error->level) {
-        case LIBXML_ERR_WARNING:
-            $return .= "Warning $error->code: ";
-            break;
-         case LIBXML_ERR_ERROR:
-            $return .= "Error $error->code: ";
-            break;
-        case LIBXML_ERR_FATAL:
-            $return .= "Fatal Error $error->code: ";
-            break;
-        default:
-            $return = "Error level not recognized";
+    case LIBXML_ERR_WARNING:
+        $return .= "Warning $error->code: ";
+        break;
+    case LIBXML_ERR_ERROR:
+        $return .= "Error $error->code: ";
+        break;
+    case LIBXML_ERR_FATAL:
+        $return .= "Fatal Error $error->code: ";
+        break;
+    default:
+        $return = "Error level not recognized";
     }
     $return .= trim($error->message) . "<br />" .
         "\n  Line: $error->line" . "\n  Column: $error->column";
@@ -241,30 +245,24 @@ function fileTypeAndLoc($fname)
  * Due to the fact that sorting will place group "AA" after "A" and not 
  * after "Z", the routine utilizes two sorted cluster arrays then merges them.
  * 
+ * @param PDO    $pdo     PDO object for db access
  * @param string $boxtype data to be returned: 
  *                        vistor centers ('vcs') or clusters ('cls')
  * 
  * @return array depending on $boxType, vc data or cluster data
  */
-function dropdownData($boxtype)
+function dropdownData($pdo, $boxtype)
 {
-    $link = connectToDb(__FILE__, __LINE__);
     $hquery = "SELECT indxNo,pgTitle,marker,`collection`,cgroup,cname FROM HIKES;";
-    $hdat = mysqli_query($link, $hquery) or die(
-        __FILE__ . " Line " . __LINE__ . "Could not retrieve vc/cluster info " .
-        "from HIKES: " . mysqli_error($link)
-    );
+    $hdat = $pdo->query($hquery);
     $equery = "SELECT marker,cgroup,cname FROM EHIKES;";
-    $edat = mysqli_query($link, $equery) or die(
-        __FILE__ . " Line " . __LINE__ . 
-        ": Could not retrieve EHIKES cluster data" . mysqli_error($link)
-    );
+    $edat = $pdo->query($equery);
     // return data based on $boxType:
     if ($boxtype === 'vcs') {
         $vchikes = [];
         $vcnos = [];
         $colls = [];
-        while ($vcdata = mysqli_fetch_assoc($hdat)) {
+        while ($vcdata = $hdat->fetch(PDO::FETCH_ASSOC)) {
             $hmarker = $vcdata['marker'];
             if ($hmarker == 'Visitor Ctr') {
                 $indx = $vcdata['indxNo'];
@@ -279,7 +277,7 @@ function dropdownData($boxtype)
     } else {
         $singles = [];
         $doubles = [];
-        while ($hclus = mysqli_fetch_assoc($hdat)) {
+        while ($hclus = $hdat->fetch(PDO::FETCH_ASSOC)) {
             $hmarker = $hclus['marker'];
             if ($hmarker === 'Cluster') {  
                 $clusltr = $hclus['cgroup'];
@@ -300,7 +298,7 @@ function dropdownData($boxtype)
                 }
             }
         }
-        while ($eclus = mysqli_fetch_assoc($edat)) {
+        while ($eclus = $edat->fetch(PDO::FETCH_ASSOC)) {
             $emarker = $eclus['marker'];
             // Note: creating new pg MAY result in 'Cluster' with no group...
             if ($emarker === 'Cluster' && fetch($eclus['cgroup']) !== '') {  
@@ -322,8 +320,6 @@ function dropdownData($boxtype)
                 }
             }
         }
-        mysqli_free_result($hdat);
-        mysqli_free_result($edat);
     }
     /**
      * For debugging, it's easier to understand if keys are sorted;

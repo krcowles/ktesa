@@ -7,6 +7,10 @@ $.ajax({
     dataType: 'JSON',
     success: function(titles) {
         titleList = titles;
+    },
+    error: function(jqXHR, exception) {
+        // error can occur when nothing is returned...
+        alert("An error occured in the AJAX routine\n" + jqXHR.responseText);
     }
 });
 

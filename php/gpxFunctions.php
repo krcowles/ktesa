@@ -95,18 +95,18 @@ function gpsvDebugMaArray($gpxPath, $window)
  * This function does the actual distance and elevation calculations using various
  * data filtering/smoothing methodologies. Called once for each track.
  * 
- * @param integer  $trkNo       track no. being 
- * @param string   $trkname     name of current track
- * @param string   $gpxPath     path to gpxfile
- * @param object   $xmldata     gpx file loaded into simpleXml object
- * @param boolean  $debug       T/F use debug files
- * @param resource $handleDfa   file pointer to debug file array
- * @param resource $handleDfc   file pointer to debug compute array
- * @param integer  $dThresh     threshold for filtering distance
- * @param integer  $eThresh     threshold for filtering elevation
- * @param integer  $maWin       window size of moving average
- * @param string   $tdat        GPSV track data js string
- * @param array    $ticks       GPSV array of ticks
+ * @param integer  $trkNo     track no. being 
+ * @param string   $trkname   name of current track
+ * @param string   $gpxPath   path to gpxfile
+ * @param object   $xmldata   gpx file loaded into simpleXml object
+ * @param boolean  $debug     T/F use debug files
+ * @param resource $handleDfa file pointer to debug file array
+ * @param resource $handleDfc file pointer to debug compute array
+ * @param integer  $dThresh   threshold for filtering distance
+ * @param integer  $eThresh   threshold for filtering elevation
+ * @param integer  $maWin     window size of moving average
+ * @param string   $tdat      GPSV track data js string
+ * @param array    $ticks     GPSV array of ticks
  * 
  * @return float           $hikeLgthTot total distance traversed in all tracks
  */
@@ -196,17 +196,17 @@ function getTrackDistAndElev(
 /**
  * Function to do first level import of one trk from a gpx file.
  * 
- * @param object   $gpxdat         xml data from gpx file
- * @param integer  $trkIdx         track id
- * @param array    $gpxlats        caller's array of latitude points
- * @param array    $gpxlons        caller's array of longitude points
- * @param array    $gpxeles        caller's array of 
- * @param array    $gpxtimes       array of caller's timestamps
- * @param array    $eleChg         array of caller's elev changes
- * @param array    $distance       array of caller's distances
- * @param array    $grade          array of caller's grades
- * @param array    $speed          array of caller's speeds
- * @param resource $handleDfa      handle to debug file
+ * @param object   $gpxdat    xml data from gpx file
+ * @param integer  $trkIdx    track id
+ * @param array    $gpxlats   caller's array of latitude points
+ * @param array    $gpxlons   caller's array of longitude points
+ * @param array    $gpxeles   caller's array of 
+ * @param array    $gpxtimes  array of caller's timestamps
+ * @param array    $eleChg    array of caller's elev changes
+ * @param array    $distance  array of caller's distances
+ * @param array    $grade     array of caller's grades
+ * @param array    $speed     array of caller's speeds
+ * @param resource $handleDfa handle to debug file
  * 
  * @return null
  */
@@ -283,7 +283,6 @@ function getGpxL1(
  * @param float    $pup              accumulated ascent
  * @param float    $pdwn             accumulated descent
  * @param float    $hikeLgth         track length in meters
- * @param float    $hikeLgthMiles    length in miles
  * @param float    $prevLat          previous trkpt latitude
  * @param float    $prevLon          previous trkpt longitude
  * @param float    $prevEle          previous trkpt elevation

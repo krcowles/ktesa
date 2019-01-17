@@ -1,14 +1,13 @@
 <?php
 /**
- * This file will create a BOOKS table (without data).
+ * This script will create an unpopulated BOOKS table.
+ * PHP Version 7.1
  * 
- * @package ADMIN
+ * @package Admin
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+require "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -55,33 +54,32 @@ $link = connectToDb(__FILE__, __LINE__);
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the BOOKS table in the 'mysql' database...</p>
 <?php
-$tbl = mysqli_query(
-    $link, "CREATE TABLE BOOKS (
-    indxNo smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    title varchar(200) NOT NULL,
-    author varchar(200) NOT NULL);"
-);
-if (!$tbl) {
-    die(
-        "<p>CREATE TABLE failed;  Check error code: " .
-        mysqli_error($link) . "</p>"
-    );
-} else {
-    echo '<p>BOOKS Table created; Definitions are shown in the table below</p>';
-}
-$req = mysqli_query($link, "SHOW TABLES;");
-if (!$req) {
-    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
-}
 echo "<p>Results from SHOW TABLES:</p><ul>";
-while ($row = mysqli_fetch_row($req)) {
+$req = $pdo->query("SHOW TABLES;");
+$tbls = $req->fetchAll(PDO::FETCH_BOTH);
+foreach ($tbls as $row) {
+    if ($row[0] === "BOOKS") {
+        die("You must first DROP BOOKS");
+    }
     echo "<li>" . $row[0] . "</li>";
 }
 echo "</ul>";
+try {
+    $tbl = $pdo->query(
+        "CREATE TABLE BOOKS (
+        indxNo smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        title varchar(200) NOT NULL,
+        author varchar(200) NOT NULL);"
+    );
+}
+catch (PDOException $e) {
+    pdo_err("CREATE TABLE BOOKS", $e);
+}
+echo '<p>BOOKS Table created; Definitions are shown in the table below</p>';
 ?>
     <p>Description of the HIKES table:</p>
     <table>
-        <colgroup>	
+        <colgroup>
             <col style="width:100px">
             <col style="width:120px">
             <col style="width: 80px">
@@ -101,19 +99,15 @@ echo "</ul>";
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link, "DESCRIBE BOOKS;");
-if (!$tbl) {
-    die("<p>DESCRIBE 'test' FAILED: " . mysqli_error($link) . "/p>");
-}
-    $first = true;
-while ($row = mysqli_fetch_row($tbl)) {
+$bks_struct = $pdo->query("DESCRIBE BOOKS;");
+$struct = $bks_struct->fetchAll(PDO::FETCH_BOTH);
+foreach ($struct as $row) {
     echo "<tr>";
     for ($i=0; $i<count($row); $i++) {
         echo "<td>" . $row[$i] . "</td>";
     }
     echo "</tr>" . PHP_EOL;
 }
-    mysqli_close($link);
 ?>
        </tbody>
     </table>

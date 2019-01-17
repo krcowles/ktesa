@@ -60,7 +60,7 @@ function validateUser(usr_name,usr_pass,setcookie) {
                 valstat = false;
             } 
             else { // no such user in USERS table
-                var msg = "Your registration info cannot be located:\n" +
+                var msg = "Your registration info cannot be uniquely located:\n" +
                     "Please click on the 'Sign me up!' link to register";
                 alert(msg);
                 $('#usrid').val('');

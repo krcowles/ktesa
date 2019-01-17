@@ -1,16 +1,16 @@
 <?php
 /**
  * This is the main routine utilized to display any given hike page.
- * 
  * Depending on the query string ('age'), either the in-edit hikes will be
  * accessed, or the already published hikes. All MySQL tables for
  * in-edit hikes begin with the letter "E".
+ * PHP Version 7.1
  * 
  * @package Page_Display
  * @author  Tom Sandberge and Ken Cowles <krcowles29@gmail.com>
  * @license None to date
- * @link    ../docs/
  */
+require "../php/global_boot.php";
 require "hikePageData.php";
 ?>
 <!DOCTYPE html>
@@ -52,7 +52,7 @@ function off() {
 
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>	
+    <p id="logo_left">Hike New Mexico</p>
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
@@ -72,9 +72,9 @@ function off() {
                 <th>Wow Factor</th>
                 <th>Facilities</th>
                 <th>Seasons</th>
-<?php if ($hikePhotoLink2 == '') : ?>
+    <?php if ($hikePhotoLink2 == '') : ?>
                 <th>Photos</th>
-<?php endif; ?>
+    <?php endif; ?>
                 <th>By Car</th>
             </tr>
         </thead>
@@ -88,14 +88,17 @@ function off() {
                 <td><?= $hikeWow;?></td>
                 <td><?= $hikeFacilities;?></td>
                 <td><?= $hikeSeasons;?></td>
-<?php if ($hikePhotoLink2 == '') : ?>
+    <?php if ($hikePhotoLink2 == '') : ?>
                 <td><a href="<?= $hikePhotoLink1;?>" target="_blank">
                     <img style="margin-bottom:0px;border-style:none;"
-                    src="../images/album_lnk.png" alt="photo album link icon" /></a></td>
-<?php endif; ?>
+                    src="../images/album_lnk.png" alt="photo album link icon" />
+                        </a></td>
+    <?php endif; ?>
                 <td><a href="<?= $hikeDirections;?>" target="_blank">
                     <img style="margin-bottom:0px;padding-bottom:0px;"
-                    src="../images/dirs.png" alt="google driving directions" /></a></td>
+                    src="../images/dirs.png" alt="google driving directions" />
+                    </a>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -111,11 +114,15 @@ function off() {
         Nearby City / Locale: <span class="sumClr"><?= $hikeLocale;?></span><br />
         Hike Difficulty: <span class="sumClr"><?= $hikeDifficulty;?></span><br />
         Total Length of Hike: <span class="sumClr"><?= $hikeLength;?></span><br />
-        Max to Min Elevation: <span class="sumClr"><?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
-        <?php if ((isset($showAscDsc) && $showAscDsc == true) || is_numeric($hikeEThresh)) : ?>
-        Total Ascent: <span class="sumClr"><?= sprintf("%.0f", $pup * 3.28084);?> ft</span><br />
-        Total Descent: <span class="sumClr"><?= sprintf("%.0f", $pdwn * 3.28084);?> ft</span><br />
-        <?php endif; ?>
+        Max to Min Elevation: <span class="sumClr">
+            <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
+    <?php if ((isset($showAscDsc) && $showAscDsc == true) 
+        || is_numeric($hikeEThresh)) : ?>
+        Total Ascent: <span class="sumClr">
+            <?= sprintf("%.0f", $pup * 3.28084);?> ft</span><br />
+        Total Descent: <span class="sumClr">
+            <?= sprintf("%.0f", $pdwn * 3.28084);?> ft</span><br />
+    <?php endif; ?>
         Logistics: <span class="sumClr"><?= $hikeType;?></span><br />
         Exposure Type: <span class="sumClr"><?= $hikeExposure;?></span><br />
         Seasons : <span class="sumClr"><?= $hikeSeasons;?></span><br />
@@ -131,12 +138,15 @@ function off() {
     <p id="albums">For improved photo viewing,<br />check out
         the following album(s):
     </p>
-    <p id="alnks"><a href="<?= $hikePhotoLink1;?>" target="_blank">Photo Album Link</a>
+    <p id="alnks"><a href="<?= $hikePhotoLink1;?>"
+        target="_blank">Photo Album Link</a>
     <?php if (strlen($hikePhotoLink2) !== 0) : ?>
-        <br /><a href="<?= $hikePhotoLink2;?>" target="_blank">Additional Album Link</a>
+        <br /><a href="<?= $hikePhotoLink2;?>"
+            target="_blank">Additional Album Link</a>
     <?php endif; ?>
     </p>
-    <p id="directions">The following link provides on-line directions to the trailhead:</p>
+    <p id="directions">The following link provides on-line directions to
+        the trailhead:</p>
     <p id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">
         Google Directions</a>
     </p>

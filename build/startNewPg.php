@@ -16,16 +16,15 @@
  * This php block extracts data from the HIKES table needed to display
  * in the cluster and Visitor Center drop-down boxes when those types
  * are selected. It is otherwise hidden.
+ * PHP Version 7.1
  * 
  * @package Creation
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license None to date
- * @link    ../docs/
  */
-require_once "../mysql/dbFunctions.php";
-require "buildFunctions.php";
+require "../php/global_boot.php";
 $usr = filter_input(INPUT_GET, 'usr');
-$getClus = dropdownData('cls');
+$getClus = dropdownData($pdo, 'cls');
 $clusHikes = array_values($getClus);
 $clcnt = count($clusHikes);
 $clusLtrs = array_keys($getClus);
@@ -35,7 +34,7 @@ for ($i=0; $i<$clcnt; $i++) {
     $newgrp = $clusLtrs[$i] . ":" . $clusHikes[$i];
     array_push($clusData, $newgrp);
 }
-$getVCs = dropdownData('vcs');
+$getVCs = dropdownData($pdo, 'vcs');
 $vcHikes = $getVCs[0];
 $vccnt = count($vcHikes);
 $vcIndex = $getVCs[1];
