@@ -4,19 +4,19 @@
  * of the hike page Editor, including uploading of the main gpx (track) file.
  * If a gpx file already exists, it may be deleted, or otherwise replaced by a
  * newly specified file via tab 1's browse button.
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();
-require_once "../mysql/dbFunctions.php";
-require_once "buildFunctions.php";
+require "../php/global_boot.php";
 require_once "../php/gpxFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+$saves = []; // placeholders for pdo query
 $hikeNo = filter_input(INPUT_POST, 'hno');
-$uid = filter_input(INPUT_POST, 'usr');
+$saves['hikeno'] = $hikeNo;
+$hUser = filter_input(INPUT_POST, 'usr');
 $maingpx = filter_input(INPUT_POST, 'mgpx');
 $maintrk = filter_input(INPUT_POST, 'mtrk');
 $delgpx = filter_input(INPUT_POST, 'dgpx');
@@ -25,7 +25,6 @@ $upld4latlng = false;
 /**
  * This section handles the main gpx file upload/delete
  */
-$dels = false;
 if (isset($delgpx)) {
     $delgpx = '../gpx/' . $maingpx;
     if (!unlink($delgpx)) {
@@ -41,18 +40,10 @@ if (isset($delgpx)) {
             ": Did not remove {$deltrk} from site"
         );
     }
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'gpx', 'indxNo', null, __FILE__, __LINE__
-    );
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', null, __FILE__, __LINE__
-    );
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', null, __FILE__, __LINE__
-    );
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', null, __FILE__, __LINE__
-    );
+    $udgpxreq = "UPDATE EHIKES SET gpx = NULL, trk = NULL, lat = NULL, lng = NULL " .
+        "WHERE indxNo = ?;";
+    $udgpx = $pdo->prepare($udgpxreq);
+    $udgpx->execute([$hikeNo]);
     $_SESSION['uplmsg']
         .= "Deleted file {$maingpx} and it's associated track from site; ";
 }
@@ -66,18 +57,11 @@ if ($gpxtype[2] === 'gpx') {
     $newtrk = $trkdat[0];
     $lat = $trkdat[2];
     $lng = $trkdat[3];
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'gpx', 'indxNo', $newgpx, __FILE__, __LINE__
-    );
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'trk', 'indxNo', $newtrk, __FILE__, __LINE__
-    );
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', $lat, __FILE__, __LINE__
-    );
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $lng, __FILE__, __LINE__
-    );
+    $newgpxq = "UPDATE EHIKES " .
+        "SET gpx = ?, trk = ?, lat = ?, lng = ? " .
+        "WHERE indxNo = ?;";
+    $ngpx = $pdo->prepare($newgpxq);
+    $ngpx->execute([$newgpx, $newtrk, $lat, $lng, $hikeNo]);
     $upld4latlng = true;
 } elseif ($gpxfile == '') {
     $newgpx = 'No file specified';
@@ -93,15 +77,9 @@ $marker = filter_input(INPUT_POST, 'pmrkr');
 $clusGrp = filter_input(INPUT_POST, 'pclus'); // current db value
 $cgName = filter_input(INPUT_POST, 'pcnme'); // current db value
 // Acquire all cluster assingments, old & new:
-$clusterdata = dropdownData('cls'); 
+$clusterdata = dropdownData($pdo, 'cls'); 
 $groups = array_keys($clusterdata);
 $cnames = array_values($clusterdata);
-// setup variables for saving to db:
-$pg = filter_input(INPUT_POST, 'hname');
-$hTitle = mysqli_real_escape_string($link, $pg);
-$hUser = mysqli_real_escape_string($link, $uid);
-$loc = filter_input(INPUT_POST, 'locale');
-$hLoc = mysqli_real_escape_string($link, $loc);
 /**
  *   CLUSTER/MARKER ASSIGNMENT PROCESSING:
  *     The order of changes processed are in the following priority:
@@ -164,9 +142,11 @@ if (isset($delClus) && $delClus === 'YES') {
     // 4.
     //  No Changes Assigned to marker, clusGrp, cgName
 }
-$clName = mysqli_real_escape_string($link, $cgName);
-
-
+// setup variables for saving to db:
+$saves['hName'] = filter_input(INPUT_POST, 'hname');
+$saves['hLoc'] = filter_input(INPUT_POST, 'locale');
+$saves['hGrp'] = $clusGrp;
+$saves['cNme'] = $cgName;
 /**
  * If the user selected 'Calculate From GPX', then those values will
  * be used instead of any existing values in the miles and feet fields. 
@@ -263,83 +243,68 @@ if (isset($_POST['mft'])) {
  * NOTE: a means to change the 'hike at Visitor Center' location has not
  * yet been implemented, so 'collection' is not modified
  */
-$log = filter_input(INPUT_POST, 'htype');
-$hType = mysqli_real_escape_string($link, $log);
-$hLgth = mysqli_real_escape_string($link, $lgth);
-$hElev = mysqli_real_escape_string($link, $ht);
-$diff = filter_input(INPUT_POST, 'hdiff');
-$hDiff = mysqli_real_escape_string($link, $diff);
-$fac = filter_input(INPUT_POST, 'hfac');
-$hFac = mysqli_real_escape_string($link, $fac);
-$wow = filter_input(INPUT_POST, 'hwow');
-$hWow = mysqli_real_escape_string($link, $wow);
-$seas = filter_input(INPUT_POST, 'hsea');
-$hSeas = mysqli_real_escape_string($link, $seas);
-$expo = filter_input(INPUT_POST, 'hexp');
-$hExpos = mysqli_real_escape_string($link, $expo);
+$saves['hMrkr'] = $marker;
+$saves['hType'] = filter_input(INPUT_POST, 'htype');
+$saves['hDiff'] = filter_input(INPUT_POST, 'hdiff');
+$saves['hFac'] = filter_input(INPUT_POST, 'hfac');
+$saves['hWow'] = filter_input(INPUT_POST, 'hwow');
+$saves['hSeas'] = filter_input(INPUT_POST, 'hsea');
+$saves['hExpo'] = filter_input(INPUT_POST, 'hexp');
+$hLgth = $lgth;
+$hElev = $ht;
 if (!$upld4latlng) {
     $elat = filter_input(INPUT_POST, 'hlat', FILTER_VALIDATE_FLOAT);
     if ($elat) {
-        $hLat = mysqli_real_escape_string($link, $elat);
+        $hLat = $elat;
     } else {
         $hLat = 0.0000;
     }
     $elng = filter_input(INPUT_POST, 'hlon', FILTER_VALIDATE_FLOAT);
     if ($elng) {
-        $hLon = mysqli_real_escape_string($link, $elng);
+        $hLon = $elng;
     } else {
         $hLon = 0.0000;
     }
 }
-$dirs = filter_input(INPUT_POST, 'gdirs');
-$hDirs = mysqli_real_escape_string($link, $dirs);
+$saves['hDirs'] = filter_input(INPUT_POST, 'gdirs');
 // The hike data will be updated, first without lat/lng or miles/elev
-$saveHikeReq = "UPDATE EHIKES SET pgTitle = '{$hTitle}'," .
-    "locale = '{$hLoc}',marker = '{$marker}'," .
-    "cgroup = '{$clusGrp}',cname = '{$clName}',logistics = '{$hType}'," .
-    "diff = '{$hDiff}',fac = '{$hFac}',wow = '{$hWow}'," .
-    "seasons = '{$hSeas}',expo = '{$hExpos}',dirs = '{$hDirs}' " .
-    "WHERE indxNo = {$hikeNo};";
-$saveHike = mysqli_query($link, $saveHikeReq) or die(
-    __FILE__ . " Line " . __LINE__ . " Failed to save new data to EHIKES: " .
-        mysqli_error($link)
-);
+$svreq = "UPDATE EHIKES " .
+    "SET pgTitle = :hName, locale = :hLoc, marker = :hMrkr, " .
+    "cgroup = :hGrp, cname = :cNme, logistics = :hType, diff = :hDiff, " .
+    "fac = :hFac, wow = :hWow, seasons = :hSeas, expo = :hExpo, dirs = :hDirs" .
+    " WHERE indxNo = :hikeno";
+$t1 = $pdo->prepare($svreq);
+$t1->execute($saves);
 // Preserve null in miles/elevation when no entry was input
 if ($hLgth == '') {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'miles', 'indxNo', null, __FILE__, __LINE__
-    );
+    $lgthReq = "UPDATE EHIKES SET miles = NULL WHERE indxNo = ?;";
+    $milesq = $pdo->prepare($lgthReq);
+    $milesq->execute([$hikeNo]);
 } else {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'miles', 'indxNo', $hLgth, __FILE__, __LINE__
-    );
+    $lgthReq = "UPDATE EHIKES SET miles = ? WHERE indxNo = ?;";
+    $milesq = $pdo->prepare($lgthReq);
+    $milesq->execute([$hLgth, $hikeNo]);
 }
 if ($hElev == '') {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'feet', 'indxNo', null, __FILE__, __LINE__
-    );
+    $eleReq = "UPDATE EHIKES SET feet = NULL WHERE indxNo = ?;";
+    $elevq = $pdo->prepare($eleReq);
+    $elevq->execute([$hikeNo]);
 } else {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'feet', 'indxNo', $hElev, __FILE__, __LINE__
-    );
+    $eleReq = "UPDATE EHIKES SET feet = ? WHERE indxNo = ?;";
+    $elevq = $pdo->prepare($eleReq);
+    $elevq->execute([$hElev, $hikeNo]);
 }
 if (!$upld4latlng) {
     // Preserve null in lat/lng when no entry (or bad entry) was input
     if ($hLat === 0.0000 || $hLon === 0.000) {
-        updateDbRow(
-            $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', null, __FILE__, __LINE__
-        );
-        updateDbRow(
-            $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', null, __FILE__, __LINE__
-        );
+        $latlng = "UPDATE EHIKES SET lat = NULL, lng = NULL WHERE indxNo = ?;";
+        $llq = $pdo->prepare($latlng);
+        $llq->execute([$hikeNo]);
     } else {
-        updateDbRow(
-            $link, 'EHIKES', $hikeNo, 'lat', 'indxNo', $hLat, __FILE__, __LINE__
-        );
-        updateDbRow(
-            $link, 'EHIKES', $hikeNo, 'lng', 'indxNo', $hLon, __FILE__, __LINE__
-        );
+        $latlng = "UPDATE EHIKES SET lat = ?, lng = ? WHERE indxNo = ?;";
+        $llq = $pdo->prepare($latlng);
+        $llq->execute([$hLat, $hLon, $hikeNo]);
     }
 }
-$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=1";
+$redirect = "editDB.php?hno={$hikeNo}&usr={$hUser}&tab=1";
 header("Location: {$redirect}");

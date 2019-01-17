@@ -3,13 +3,14 @@
  * This script creates the displayed 'Index' page showing a map to the
  * Visitor Center, and any hikes available from the center (or associated
  * with it).
+ * PHP Version 7.1
  * 
  * @package Index_Display
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require_once "../mysql/dbFunctions.php";
-$pdo = dbConnect(__FILE__, __LINE__);
+require "../php/global_boot.php";
+
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
 $query = "SELECT pgTitle,lat,lng,aoimg1,dirs,info "
     . "FROM HIKES WHERE indxNo = :hikeIndexNo;";
@@ -118,8 +119,8 @@ $item_cnt = $j;
         </tr>
     </thead>
     <tbody>
-<?php for ($k=0; $k<$item_cnt; $k++) : ?>
-    <?php if ($hiked[$k]) : ?>
+    <?php for ($k=0; $k<$item_cnt; $k++) : ?>
+        <?php if ($hiked[$k]) : ?>
             <tr>
                 <td><a href="hikePageTemplate.php?hikeIndx=<?= $tdpg[$k];?>"
                     target="_blank"><?= $tdname[$k];?></a></td>
@@ -140,7 +141,7 @@ $item_cnt = $j;
                 <td style="text-align:center;">N/A</td>
             </tr>
     <?php endif; ?>
-<?php endfor; ?>
+    <?php endfor; ?>
     </tbody>
 </table>
 <?php else : ?>

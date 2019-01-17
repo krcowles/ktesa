@@ -2,13 +2,16 @@
 /**
  * This is the script that will display photos which may be selected
  * for inclusion in the editor. Once in the editor, the user can
- * decide where to include the photo (e.g. hike page, hike map).
+ * decide where to include the photo (e.g. hike page, hike map). Any
+ * existing album links are extracted via getLinks.php, required below.
+ * PHP Version 7.1
  * 
  * @package Create
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
+require "../php/global_boot.php";
+
 $hikeNo = filter_input(INPUT_POST, 'nno', FILTER_VALIDATE_INT);
 $usr = filter_input(INPUT_POST, 'nid');
 ?>

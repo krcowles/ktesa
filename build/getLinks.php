@@ -4,15 +4,12 @@
  * for consumption by the js ajax request to extract album photo data. If either
  * of the url fields in the data base is empty, the db may update the field with
  * the incoming url's.
+ * PHP Version 7.1
  * 
  * @package Editing
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
-require_once "../mysql/dbFunctions.php";
-require_once "buildFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
 $incl = $_POST['ps'];
 $curlids = [];
 $albums = [];
@@ -31,21 +28,21 @@ $arrObj = new ArrayObject($curlids);
 $avail = $arrObj->getArrayCopy();
 $supplied = count($curlids);
 // get current urls in EHIKES and compare to incoming album links
-$lnkReq = "SELECT purl1,purl2 FROM EHIKES WHERE indxNo = {$hikeNo};";
-$lnkQ = mysqli_query($link, $lnkReq) or die(
-    __FILE__ . ": Line " . __LINE__ . "Failed to extract photo album " .
-    "urls from EHIKES for hike {$hikeNo}; " . mysqli_error($link)
-);
+$lnkReq = "SELECT purl1,purl2 FROM EHIKES WHERE indxNo = ?;";
+$linkQ = $pdo->prepare($lnkReq);
+$linkQ->execute([$hikeNo]);
 $dburl = [];
 // get empty strings if fields are null
-$purls = mysqli_fetch_row($lnkQ);
-for ($a=0; $a<count($purls); $a++) {
+$purls = $linkQ->fetch(PDO::FETCH_ASSOC);
+for ($a=0; $a<2; $a++) {
     $dburl[$a] = fetch($purls[$a]);
 }
-mysqli_free_result($lnkQ);
-// IF there is a future desire to delete an existing link, this is the place to code it;
-
-// see if there are already existing links, get a count, and eliminate from the $avail list
+/**
+ * IF there is a future desire to delete an existing link, 
+ * this is the place to code it;
+ * see if there are already existing links, get a count, and eliminate
+ * from the $avail list;
+ */
 $existing = 0;
 for ($j=0; $j<count($dburl); $j++) {
     if ($dburl[$j] !== '') { // this purl already has a url in the db
@@ -68,22 +65,22 @@ if ($existing < count($dburl)) {
 }
 // update database values:
 if ($dburl[0] === '') {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'purl1', 'indxNo', null, __FILE__, __LINE__
-    );
+    $u1req = "UPDATE EHIKES SET purl1 = NULL WHERE indxNo = ?;";
+    $u1 = $pdo->prepare($u1req);
+    $u1->execute([$hikeNo]);
 } else {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'purl1', 'indxNo', $dburl[0], __FILE__, __LINE__
-    );
+    $u1req = "UPDATE EHIKES SET purl1 = ? WHERE indxNo = ?;";
+    $u1 = $pdo->prepare($u1req);
+    $u1->execute([$dburl[0], $hikeNo]);
 }
 if ($dburl[1] === '') {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'purl2', 'indxNo', null, __FILE__, __LINE__
-    );
+    $u2req = "UPDATE EHIKES SET purl2 = NULL WHERE indxNo = ?;";
+    $u2 = $pdo->prepare($u2req);
+    $u2->execute([$hikeNo]);
 } else {
-    updateDbRow(
-        $link, 'EHIKES', $hikeNo, 'purl2', 'indxNo', $dburl[1], __FILE__, __LINE__
-    );
+    $u2req = "UPDATE EHIKES SET purl2 = ? WHERE indxNo = ?;";
+    $u2 = $pdo->prepare($u2req);
+    $u2->execute([$dburl[1], $hikeNo]);
 }
 $alburls = json_encode($curlids);
 $albtypes = json_encode($albums);

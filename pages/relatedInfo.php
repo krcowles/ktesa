@@ -12,6 +12,7 @@
  *   $hikeGroup set by get_HIKES_row.php and holds the value in 'cgroup'
  *   $rtable either EREFS or REFS 
  *   $gtable either GPSDAT or EGPSDAT
+ * PHP Version 7.1
  * 
  * @package Display_Page
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>

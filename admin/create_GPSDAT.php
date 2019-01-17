@@ -1,6 +1,13 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+/**
+ * This script will create an unpopulated GPSDAT table.
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -47,8 +54,6 @@ $link = connectToDb(__FILE__, __LINE__);
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the GPSDAT table for site administration.</p>
 <?php
-echo "<p>mySql Connection Opened</p>";
-# NOTE: AUTO_INCREMENT seems to have conditional requirements surrounding it, esp PRIMARY KEY
 $newdat = <<<gps
 CREATE TABLE GPSDAT (
 datId smallint NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -58,25 +63,27 @@ label varchar(128),
 url varchar(1024),
 clickText varchar(256) );
 gps;
-$tbl = mysqli_query($link, $newdat);
-if (!$tbl) {
-    die("<p>CREATE TABLE failed;  Check error code: " . mysqli_error($link) . "</p>");
-} else {
-    echo '<p>GPSDAT Table created; Definitions are shown in the table below</p>';
-}
-$req = mysqli_query($link, "SHOW TABLES;");
-if (!$req) {
-    die("<p>SHOW TABLES request failed: " . mysqli_error($link) . "</p>");
-}
+$tbldat = $pdo->query("SHOW TABLES;");
+$tbls = $tbldat->fetchAll(PDO::FETCH_BOTH);
 echo "<p>Results from SHOW TABLES:</p><ul>";
-while ($row = mysqli_fetch_row($req)) {
+foreach ($tbls as $row) {
+    if ($row[0] === "GPSDAT") {
+        die("You must first DROP the existing GPSDAT table");
+    }
     echo "<li>" . $row[0] . "</li>";
 }
 echo "</ul>";
+try {
+    $gpsdat = $pdo->query($newdat);
+}
+catch (PDOException $e) {
+    pdo_err("CREATE TABLE GPSDAT", $e);
+}
+echo '<p>GPSDAT Table created; Definitions are shown in the table below</p>';
 ?>
-    <p>Description of the REFS table:</p>
+    <p>Description of the GPSDAT table:</p>
     <table>
-        <colgroup>	
+        <colgroup>
             <col style="width:100px">
             <col style="width:120px">
             <col style="width: 80px">
@@ -96,19 +103,15 @@ echo "</ul>";
         </thead>
         <tbody>
 <?php
-    $tbl = mysqli_query($link, "DESCRIBE GPSDAT;");
-if (!$tbl) {
-    die("<p>DESCRIBE GPSDAT FAILED: " . mysqli_error($link) . "/p>");
-}
-    $first = true;
-while ($row = mysqli_fetch_row($tbl)) {
+$gps_struct = $pdo->query("DESCRIBE GPSDAT;");
+$struct = $gps_struct->fetchAll(PDO::FETCH_BOTH);
+foreach ($struct as $row) {
     echo "<tr>";
     for ($i=0; $i<count($row); $i++) {
         echo "<td>" . $row[$i] . "</td>";
     }
     echo "</tr>" . PHP_EOL;
 }
-    mysqli_close($link);
 ?>
        </tbody>
     </table>
@@ -116,4 +119,3 @@ while ($row = mysqli_fetch_row($tbl)) {
 </div>
 </body>
 </html>
-

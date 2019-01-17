@@ -30,7 +30,7 @@
     <option value="Related Link:">Related Link</option>
     <option value="Text:">Text Only - No Link</option>
 </select>&nbsp;&nbsp;&nbsp;
-<?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
+    <?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
 <select style="height:26px;width:360px;" id="rttl<?= $k;?>"
     name="drit1[]"><?= $bkopts;?>
 </select>&nbsp;&nbsp;&nbsp; 

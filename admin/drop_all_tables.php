@@ -1,22 +1,22 @@
 <?php
 /**
- * This module drops all tables listed in the $tables array. That array
- * is established using the current list of tables in the db, but placing
- * EHIKES last as it is the parent for multiple foreign keys.
+ * This module performs one of two actions based on the query string.
+ * If the query string contains the variable "no", then all tables are
+ * dropped and the program is exited. If the variable is not set, then
+ * the module will first drop all tables and then reload them.
+ * The EHIKES table is placed last in the drop list as it is the parent
+ * for multiple foreign keys.
  * PHP Version 7.1
  * 
  * @package Admin
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+require "../php/global_boot.php";
 $tables = array();
-$tbl_list = mysqli_query($link, "SHOW TABLES;") or die(
-    __FILE__ . " Line " . __LINE__ . "Failed to get list of tables: "
-    . mysqli_error($link)
-);
-while ($row = mysqli_fetch_row($tbl_list)) {
+$data = $pdo->query("SHOW TABLES");
+$tbl_list = $data->fetchALL(PDO::FETCH_NUM);
+foreach ($tbl_list as $row) {
     if ($row[0] !== 'EHIKES') {
         array_push($tables, $row[0]);
     }
@@ -56,32 +56,24 @@ if (isset($_REQUEST['no'])) {
 <p id="trail"><?= $action;?></p>
 <div style="margin-left:16px;font-size:18px;">
 <?php
-// Error messages:
-$query_fail = "<p>Query did not succeed: SHOW TABLES</p>";
-// Execute the DROP TABLE command for chosen tables:
+// Execute the DROP TABLE command for each table:
 for ($i=0; $i<$tblcnt; $i++) {
     echo "Dropping {$tables[$i]}: ... ";
-    $remtbl = mysqli_query($link, "DROP TABLE {$tables[$i]};");
-    if (!$remtbl) {
-        echo"<p>drop_all_tables.php: Failed to drop {$tables[$i]}: " .
-            mysqli_error($link) . "</p>";
-    } else {
-        echo "Table Removed<br />";
-    }
+    $remtbl = $pdo->query("DROP TABLE {$tables[$i]};");
+    echo "Table Removed<br />";
 }
-mysqli_close($link);
 ?>
-<span style="color:brown;">DONE</span>
 <?php if ($action == 'Reload Database') : ?>
 <div style="margin-left:16px;">
 <p>Please wait until the 'DONE' message appears below</p>
 <div id="progress">
     <div id="bar"></div>
 </div>
+<p id="done" style="display:none;color:brown;">DONE: Tables imported successfully</p>
 <script src="load_progress.js"></script>
-<?php
+    <?php
     include 'loader.php';
-?>
+    ?>
 <p>DONE: Tables imported successfully</p>
 </div>
 <?php endif; ?>

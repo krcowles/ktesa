@@ -52,11 +52,14 @@ function reverseTrack($trknodes, $trkno)
     }
 }
 /**
- * This function is used in the process of exporting all tables.
- * 
- * @param string $host        Specify host to use based on invoker
- * @param string $user        As above
- * @param string $pass        As above
+ * This function is used in the process of exporting all tables. Note that
+ * the pdo is used to gather info, but mysqli is used to create a string value
+ * for writing out to the exported database file. Since this is a file write,
+ * pdo is not required. For backwards compatibility, mysqli is used for this.
+ * This also leaves the db as a sql-compatible file if used by the CLI.
+ *
+ * @param object $pdo         caller's PDO connection object
+ * @param object $mysqli      caller's mysqli db connection link
  * @param string $name        As above
  * @param array  $tables      An array containg table names to export
  * @param string $dwnld       N->not a download; C->changes only; S->site dwnld
@@ -64,51 +67,51 @@ function reverseTrack($trknodes, $trkno)
  * 
  * @return null;
  */
-function exportDatabase(
-    $host, $user, $pass, $name, $tables, $dwnld, $backup_name = false
-) {
-    $mysqli = connectToDb(__FILE__, __LINE__);
+function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = false)
+{
     foreach ($tables as $table) {
-        $result         = $mysqli->query('SELECT * FROM '. $table);
-        $fields_amount  = $result->field_count;
-        $rows_num       = $mysqli->affected_rows;
-        $res            = $mysqli->query('SHOW CREATE TABLE '. $table);
-        $TableMLine     = $res->fetch_row();
+        $tbl_data       = $pdo->query("SELECT * FROM {$table}");
+        $tbl_fields     = $tbl_data->columnCount();
+        $rows_num       = $tbl_data->rowCount();
+        $rows           = $tbl_data->fetchAll(PDO::FETCH_NUM);
+        // the essence of the CREATE TABLE statement: (tblCreate[1])
+        $tblCreate      = $pdo->query('SHOW CREATE TABLE '. $table);
+        $showCreate     = $tblCreate->fetch(PDO::FETCH_NUM);
         $content        = (!isset($content) ?  '' : $content) 
-            . "\n\n" . $TableMLine[1].";\n\n";
-        for ($i = 0, $st_counter = 0; $i < $fields_amount; $i++, $st_counter=0) {
-            while ($row = $result->fetch_row()) {
-                //when started (and every after 100 command cycle):
-                if ($st_counter%100 == 0 || $st_counter == 0) {
-                    $content .= "\nINSERT INTO " . $table . " VALUES";
-                }
-                $content .= "\n(";
-                for ($j=0; $j<$fields_amount; $j++) {
-                    if (is_null($row[$j])) {
-                        $content .= "NULL";
-                    } else {
-                        $row[$j] = $mysqli->real_escape_string($row[$j]);
-                        if (isset($row[$j])) {
-                            $content .= "'" . $row[$j] . "'" ;
-                        }
-                    }
-                    if ($j<($fields_amount-1)) {
-                        $content.= ',';
-                    }
-                }
-                $content .=")";
-                //every after 100 command cycle [or at last line] 
-                //  ...p.s. but should be inserted 1 cycle eariler
-                if ((($st_counter+1)%100 == 0 && $st_counter != 0) 
-                    || $st_counter+1==$rows_num
-                ) {
-                    $content .= ";";
-                } else {
-                    $content .= ",";
-                }
-                $st_counter = $st_counter + 1;
+            . "\n\n" . $showCreate[1].";\n\n";
+        $st_counter = 0;
+        foreach ($rows as $row) {
+            //when started (and every after 100 command cycle):
+            if ($st_counter%100 == 0 || $st_counter == 0) {
+                $content .= "\nINSERT INTO " . $table . " VALUES";
             }
-        } $content .= "\n\n\n";
+            $content .= "\n(";
+            for ($j=0; $j<$tbl_fields; $j++) {
+                if (is_null($row[$j])) {
+                    $content .= "NULL";
+                } else {
+                    $row[$j] = $mysqli->real_escape_string($row[$j]);
+                    if (isset($row[$j])) {
+                        $content .= "'" . $row[$j] . "'" ;
+                    }
+                }
+                if ($j<($tbl_fields-1)) {
+                    $content.= ',';
+                }
+            }
+            $content .=")";
+            //every after 100 command cycle [or at last line] 
+            //  ...p.s. but should be inserted 1 cycle eariler
+            if ((($st_counter+1)%100 == 0 && $st_counter != 0) 
+                || $st_counter+1==$rows_num
+            ) {
+                $content .= ";";
+            } else {
+                $content .= ",";
+            }
+            $st_counter = $st_counter + 1;
+        }
+        $content .= "\n\n\n";
     }
     $backup_name = $backup_name ? $backup_name : $name.".sql";
     if ($dwnld !== 'N') {
