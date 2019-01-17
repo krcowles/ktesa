@@ -280,14 +280,7 @@ $form.on('submit', function(e) {
                 } else {
                     $form.addClass('is-error');
                 }
-                // clean up everything
-                droppedFiles = false;
-                droppedImages = [];
-                loadedImages = [];
-                submittableImgs = [];
-                imageUploads = [];
-                nameUploads = [];
-                descUploads = [];
+                cleanup();
             },
             error: function() {
                 // Log the error, show an alert, whatever works for you
@@ -301,11 +294,7 @@ $form.on('submit', function(e) {
 $('#clrimgs').on('click', function(ev) {
     ev.preventDefault();
     $('img').remove();
-    /*
-    $imgs.each(function() {
-        $(this).remove();
-    });
-    */
+    $('.uploaded').remove();
     $('.txtdata').remove();
     droppedFiles = false;
     droppedImages = [];
@@ -327,5 +316,27 @@ function dndPlace() {
     }
     droppedImages = [];
     loadedImages = [];
+}
+function cleanup() {
+    droppedFiles = false;
+    droppedImages = [];
+    loadedImages = [];
+    submittableImgs = [];
+    imageUploads = [];
+    nameUploads = [];
+    descUploads = [];
+    $('img').each(function() {
+        var pos = $(this).offset();
+        var ptop = pos.top;
+        var plft = pos.left;
+        var occ = document.createElement('P');
+        occ.style.backgroundColor = "darkgray";
+        occ.classList.add('uploaded');
+        var otxt = document.createTextNode("UPLOADED");
+        occ.appendChild(otxt);
+        occ.style.top = (ptop + 12) + "px";
+        occ.style.left = (plft + 12) + "px";
+        $(this).before($(occ));
+    });
 }
 

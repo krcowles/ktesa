@@ -94,3 +94,10 @@ label {
 .rotation {
     transform: rotate(90deg) translate(20px, 12px);
 }
+.uploaded {
+    color: red;
+    font-weight: bold;
+    background-color: gray;
+    z-index: 1000;
+    position: absolute;
+}
