@@ -4,8 +4,7 @@ body {
     background-color: #dadada;
 }
 .box {
-    padding: 8px;
-    padding-left: 12px;
+    width: 96%;
 }
 .box__input {
     display: flex;
@@ -54,9 +53,8 @@ label {
     background-color: linen;
     border-width: 3px;
     border-style: outset;
-    height: 600px;
-    overflow: auto;
-    width: 90%;
+    width: 95%;
+    min-height: 800px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -81,11 +79,13 @@ label {
 .box.is-dragover {
     background-color: grey;
 }
+/* NONE is not a property...
 .box.is-uploading .box__input {
     visibility: none;
 }
+*/
 .box.is-uploading .box__uploading {
-    display: block;
+    display: inline;
 }
 #ldg {
     color: brown;
@@ -97,7 +97,38 @@ label {
 .uploaded {
     color: red;
     font-weight: bold;
-    background-color: gray;
+    background-color: cornsilk;
     z-index: 1000;
     position: absolute;
+    padding: 3px 6px 1px 6px;
+}
+progress {
+    background-color: lightgray;
+    border: 0;
+    height: 20px;
+    border-radius: 8px;
+}
+progress::-webkit-progress-bar {
+    background-color: lightgray;
+    border: 0;
+    height: 20px;
+    border-radius: 8px;
+}
+progress::-webkit-progress-value {
+    background-color: darkblue;
+}
+progress::-moz-progress-bar {
+    background-color: darkgreen;
+    border: 0;
+    height: 20px;
+    border-radius: 8px;
+}
+#resize {
+    display: none;
+    color: brown;
+}
+/* Container of floating elements - to resolve height=0 problem */
+.img-row {
+    overflow: auto;
+    width: 100%;
 }

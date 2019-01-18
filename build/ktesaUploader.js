@@ -1,3 +1,6 @@
+/**
+ * Initialization:
+ */
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
 // the collection of all accumulated items to be uploaded
@@ -8,40 +11,55 @@ var descUploads = [];
  * While the following items can be changed, changing the image height (iheight)
  * will required adjustment of the 'rotation' class parameters in css.
  */
-var iheight = 160; // image height in rows
+var iheight = 160; // image height on page
 var nheight = 20;  // height of 'name' box
 var dheight = 44;  // height of 'description' box
+// where to place images
+var dndbox = document.getElementsByClassName('box__dnd'); // [0] is box__dnd
 // image defs
-var orient;  // global required
-var droppedImages = []; // array of FileReader objects loaded from dropped imgs
-var loadedImages = [];  // array of DOM nodes containing dropped images
-var imgNo = 0;
+var orient;  // photo exif orientation data: global required
+var droppedImages = []; // array of FileReader objects loaded from drop/selection
+var loadedImages = [];  // array of DOM nodes containing dropped/selected images
+var imgNo = 0; // used for 'alt' descripton of <img> tags
+var imgSizes = [];
+// specific to dropped files
 var droppedFiles = false;
 var submittableImgs = []; // FileList of all dropped images, esp when dropped in stages
 var currDropped;  // keep track of above count
 // track available space in current row for placement of next image
-var form = document.getElementsByClassName('box');
-var dndbox = document.getElementsByClassName('box__dnd');
-var dndWidth = form[0].clientWidth;
+var row = false;
+var frm = document.getElementsByClassName('box');
+var dndWidth = frm[0].clientWidth;
 remainingWidth = dndWidth;
+// upload progress
+var $progressBar = $('#prog');
+$progressBar.css('display', 'none');
+var upldProg = 0;
+var upldCnt = 0;
 
-// preview any images selected by the "Choose..." button
-$('#file').change(function() {
-    previewImgs(this.files);
+$('#clrimgs').on('click', function(ev) {
+    ev.preventDefault();
+    $('.img-row').remove();
+    droppedFiles = false;
+    droppedImages = [];
+    loadedImages = [];
+    submittableImgs = [];
+    imgSizes = [];
+    imageUploads = [];
+    nameUploads = [];
+    descUploads = [];
+    upldCnt = 0;
+    remainingWidth = dndWidth;
+    imgNo = 0;
+    row = false;
 });
-function previewImgs(flist) {
-    $('#ldg').css('display', 'inline');
-    $.when( ldImgs(flist) ).then(function() {
-        $.when( ldNodes(droppedImages) ).then(function() {
-            dndPlace();
-        });
-    });
-}
+
 // general purpose functions w/deferred objects (i.e. jQuery promises)
 function ldImgs(dimgs) {
     var promises = [];
     for(var i=0; i<dimgs.length; i++) {
         imageUploads.push(dimgs[i]);
+        imgSizes.push(dimgs[i].size);
         var reader = new FileReader(),
             d = new $.Deferred();
         promises.push(d);
@@ -80,14 +98,14 @@ function ldNodes(files) {
                 var nme = document.createElement('TEXTAREA');
                 nme.style.height = nheight + "px";
                 nme.style.display = "block";
-                nme.style.margin = "6px 0px";
+                
                 nme.placeholder = "Picture name";
                 nme.classList.add('nmeVal');
                 // textarea for picture 'description'
                 var des = document.createElement('TEXTAREA');
                 des.style.height = dheight + "px";
                 des.style.display = "block";
-                des.style.margin = "0px";
+                
                 des.placeholder = "Picture description";
                 des.classList.add('desVal');
                 orient = "";
@@ -122,7 +140,9 @@ function ldNodes(files) {
                     this.classList.add('rotation');
                     // place the textarea boxes in tbox:
                     nme.style.width = (scaledHeight - 4) + "px"; // 4 for TA borders
+                    nme.style.margin = "6px 0px 6px 2px";
                     des.style.width = (scaledHeight - 4) + "px";
+                    des.style.margin = "0px 0px 0px 2px";
                     tbox.style.width = scaledHeight + "px";
                     tbox.appendChild(nme);
                     tbox.appendChild(des);
@@ -139,7 +159,9 @@ function ldNodes(files) {
                     this.style.margin = "0px 6px";
                     this.style.display = "block";
                     nme.style.width = (scaledWidth - 4) + "px"; // subtract TA borders
+                    nme.style.margin = "6px 0px 6px 6px";
                     des.style.width = (scaledWidth - 4) + "px";
+                    des.style.margin = "0px 0px 0px 6px";
                     tbox.style.width = scaledWidth + "px";
                     tbox.appendChild(nme);
                     tbox.appendChild(des);
@@ -152,13 +174,13 @@ function ldNodes(files) {
                     ibox.style.height = accumht;
                     ibox.style.width = (scaledWidth + 12) + "px";
                 }
+                this.alt = "image" + imgNo++;
+                ibox.classList.add('imgbox');
                 ibox.style.cssFloat = "left";
                 ibox.style.margin = "0px 6px 24px 6px";
                 ibox.appendChild(this);
                 ibox.appendChild(tbox);
                 containers[j] = ibox;
-                this.alt = "image" + imgNo;
-                imgNo++;
                 // detect right-click on image:
                 containers[j].addEventListener('contextmenu', function(ev) {
                     ev.preventDefault();
@@ -199,6 +221,50 @@ Array.prototype.forEach.call( inputs, function( input )
 	});
 });
 
+// preview any images selected by the "Choose..." button
+$('#file').change(function() {
+    previewImgs(this.files);
+});
+
+function previewImgs(flist) {
+    $('#ldg').css('display', 'inline');
+    $.when( ldImgs(flist) ).then(function() {
+        $.when( ldNodes(droppedImages) ).then(function() {
+            dndPlace();
+        });
+    });
+}
+// when files are dropped, or chosen by button,  place them on the page
+function dndPlace() {
+    $('#ldg').css('display', 'none');
+    if (!row) {
+        row = document.createElement('DIV');
+        row.classList.add('img-row');
+        row.style.display = "block";
+    }
+    // need to account for margins/padding et al
+    for (var k=0; k<loadedImages.length; k++) {
+        var liWidth = parseInt(loadedImages[k].style.width);
+        var lmarg = parseInt(loadedImages[k].style.marginLeft);
+        var rmarg = parseInt(loadedImages[k].style.marginRight);
+        var totwd = liWidth + lmarg + rmarg;
+        if (totwd + 8 > remainingWidth) { // 8 is an arbitrary 'safety' margin
+            dndbox[0].appendChild(row);
+            row = document.createElement('DIV');
+            row.classList.add('img-row');
+            row.style.display = "block";
+            row.style.clear = "both";
+            row.appendChild(loadedImages[k]);
+            remainingWidth = dndWidth;
+        } else {
+            row.appendChild(loadedImages[k]);
+            remainingWidth -= totwd;
+        }
+    }
+    dndbox[0].appendChild(row);
+    droppedImages = [];
+    loadedImages = [];
+}
 // make sure FormData and FileReader support is in the browser window:
 var isAdvancedUpload = 'FormData' in window && 'FileReader' in window;
 // Assuming support, set up drag-n-drop file capture:
@@ -240,103 +306,122 @@ if (isAdvancedUpload) {
 $form.on('submit', function(e) {
     if ($form.hasClass('is-uploading')) return false;
     $form.addClass('is-uploading').removeClass('is-error');
+    $progressBar.css('display', 'inline');
+    $progressBar.val(0);
     if (isAdvancedUpload) {
         e.preventDefault();
-        if (imageUploads.length === 0) {
+        var uplds = imageUploads.length;
+        if (uplds === 0) {
             alert("No files have been chosen or dragged in for upload");
                 $form.removeClass('is-uploading');
             return;
         }
-        ajaxData = new FormData();
-        for (var k=0; k<imageUploads.length; k++) {
-            ajaxData.append('files[]', imageUploads[k]);
-        }
+        var progPerUpld = 100/uplds;
         $('.nmeVal').each(function() {
             nameUploads.push($(this).val());
         });
-        var names = JSON.stringify(nameUploads);
-        ajaxData.append('namestr', names);
         $('.desVal').each(function() {
             descUploads.push($(this).val());
         });
-        var descs = JSON.stringify(descUploads);
-        ajaxData.append('descstr', descs);
-        ajaxData.append('indx', ehikeIndxNo);
-        $.ajax({
-            url: 'usrPhotos.php',
-            type: 'POST',
-            data: ajaxData,
-            dataType: 'json',
-            cache: false,
-            contentType: false,
-            processData: false,
-            complete: function() {
-                $form.removeClass('is-uploading');
-            },
-            success: function(data) {
-                if (data.substring(0,4) !== "Fail") {
-                    $form.addClass('is-success');
-                    alert(data);
-                } else {
-                    $form.addClass('is-error');
-                }
-                cleanup();
-            },
-            error: function() {
-                // Log the error, show an alert, whatever works for you
+        // upload images one at a time; turn off 'is-uploading' when completed
+        for (var u=0; u<uplds; u++) {
+            if (imgSizes[u] > 1000000) {
+                $('#resize').css('display', 'inline');
+                resizeImage(imageUploads[u]).done(function() {
+                    $('#resize').css('display', 'none');
+                    upldCnt++;
+                    if (upldCnt == uplds) {
+                        $form.removeClass('is-uploading');
+                        cleanup();
+                    }
+                });
             }
-        });
+            postImg(
+                imageUploads[u], nameUploads[u], descUploads[u], ehikeIndxNo, progPerUpld
+            ).done(function() {
+                upldCnt++;
+                if (upldCnt == uplds) {
+                    $form.removeClass('is-uploading');
+                    cleanup();
+                }
+            });
+        }
     } else {
       // ajax for legacy browsers
     }
   });
 
-$('#clrimgs').on('click', function(ev) {
-    ev.preventDefault();
-    $('img').remove();
-    $('.uploaded').remove();
-    $('.txtdata').remove();
-    droppedFiles = false;
-    droppedImages = [];
-    loadedImages = [];
-    submittableImgs = [];
-    imageUploads = [];
-});
-function dndPlace() {
-    $('#ldg').css('display', 'none');
-    for (var k=0; k<loadedImages.length; k++) {
-        var liWidth = parseInt(loadedImages[k].style.width);
-        if (liWidth + 8 > remainingWidth) {
-            var brk = document.createElement("BR");
-            dndbox[0].appendChild(brk);
-            remainingWidth = dndWidth;
+function resizeImage(img) {
+    data = new FormData();
+    data.append('img', img);
+    return $.ajax({
+        url: 'resize.php',
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+            alert("OK");
+        },
+        error: function(jqXHR, status, error) {
+            var msg = "Error occurred during ajax:\nktesaUploader.js line 354\n" 
+                + "Actual response: " + jqXHR.responseText + ";\n" + status +
+                ": Error is: " + error ;
+            alert(msg);
         }
-        dndbox[0].appendChild(loadedImages[k]);
-        remainingWidth -= liWidth;
-    }
-    droppedImages = [];
-    loadedImages = [];
+    });
+}
+function postImg(ifile, nme, des, hikeno, proginc) {
+    ajaxData = new FormData();
+    ajaxData.append('img', ifile);
+    var picname = JSON.stringify(nme);
+    ajaxData.append('pnme', picname);
+    var picdesc = JSON.stringify(des);
+    ajaxData.append('pdes', picdesc);
+    ajaxData.append('indx', hikeno);
+    return $.ajax({
+        url: 'test.php',
+        type: 'POST',
+        data: ajaxData,
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+            var bar = $progressBar.val();
+            bar += proginc;
+            $progressBar.val(bar);
+        },
+        error: function(jqXHR, status, error) {
+            var msg = "Error occurred during ajax:\nktesaUploader.js line 381\n" 
+                + "Actual response: " + jqXHR.responseText + ";\n" + status +
+                ": Error is: " + error;
+            alert(msg);
+        }
+    });
 }
 function cleanup() {
     droppedFiles = false;
     droppedImages = [];
     loadedImages = [];
     submittableImgs = [];
+    imgSizes = [];
     imageUploads = [];
     nameUploads = [];
     descUploads = [];
-    $('img').each(function() {
+    upldCnt = 0;
+    $('img:not(#hikers, #tmap)').each(function() {
         var pos = $(this).offset();
         var ptop = pos.top;
         var plft = pos.left;
-        var occ = document.createElement('P');
-        occ.style.backgroundColor = "darkgray";
-        occ.classList.add('uploaded');
-        var otxt = document.createTextNode("UPLOADED");
-        occ.appendChild(otxt);
-        occ.style.top = (ptop + 12) + "px";
-        occ.style.left = (plft + 12) + "px";
-        $(this).before($(occ));
+        var saved = document.createElement('P');
+        saved.classList.add('uploaded');
+        var stxt = document.createTextNode("UPLOADED");
+        saved.appendChild(stxt);
+        saved.style.top = (ptop + 12) + "px";
+        saved.style.left = (plft + 12) + "px";
+        $(this).before($(saved));
     });
 }
-
