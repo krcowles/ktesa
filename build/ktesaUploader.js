@@ -40,6 +40,7 @@ var upldProg = 0;
 var upldCnt = 0;
 var nxtUpld = 0;
 var upldMsg = '';
+var $iflbl = $('label span');
 
 // styling the 'Choose file...' input box and label text:
 var inputs = document.querySelectorAll( '.inputfile' );
@@ -70,6 +71,7 @@ $('#clrimgs').on('click', function(ev) {
     remainingWidth = dndWidth;
     imgNo = 0;
     row = false;
+    $iflbl.html("&nbsp;&nbsp;Choose one or more photos&hellip;");
     // Tried multiple methods to reset the input file, but they didn't work
 });
 
