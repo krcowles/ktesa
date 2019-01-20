@@ -21,7 +21,9 @@ var orient;  // photo exif orientation data: global required
 var droppedImages = []; // array of FileReader objects loaded from drop/selection
 var loadedImages = [];  // array of DOM nodes containing dropped/selected images
 var imgNo = 0; // used for 'alt' descripton of <img> tags
+// track sizes to determine if too large to post
 var imgSizes = [];
+var imgNames = [];
 // specific to dropped files
 var droppedFiles = false;
 var submittableImgs = []; // FileList of all dropped images, esp when dropped in stages
@@ -36,30 +38,48 @@ var $progressBar = $('#prog');
 $progressBar.css('display', 'none');
 var upldProg = 0;
 var upldCnt = 0;
+var nxtUpld = 0;
+var upldMsg = '';
+
+// styling the 'Choose file...' input box and label text:
+var inputs = document.querySelectorAll( '.inputfile' );
+Array.prototype.forEach.call( inputs, function( input )
+{
+	var label	 = input.nextElementSibling;
+	var labelVal = label.innerHtml;
+	input.addEventListener( 'change', function( e )
+	{
+		var fileName = '';
+		if( this.files && this.files.length > 1 ) {
+			fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+        } else {
+            fileName = e.target.value.split( '\\' ).pop();
+        }
+		if( fileName ) {
+			label.querySelector( 'span' ).innerHTML = fileName;
+        } else {
+            label.innerHTML = labelVal;
+        }
+	});
+});
 
 $('#clrimgs').on('click', function(ev) {
     ev.preventDefault();
     $('.img-row').remove();
-    droppedFiles = false;
-    droppedImages = [];
-    loadedImages = [];
-    submittableImgs = [];
-    imgSizes = [];
-    imageUploads = [];
-    nameUploads = [];
-    descUploads = [];
-    upldCnt = 0;
+    resets();
     remainingWidth = dndWidth;
     imgNo = 0;
     row = false;
+    // Tried multiple methods to reset the input file, but they didn't work
 });
 
-// general purpose functions w/deferred objects (i.e. jQuery promises)
+// general purpose functions w/deferred objects
 function ldImgs(dimgs) {
     var promises = [];
     for(var i=0; i<dimgs.length; i++) {
         imageUploads.push(dimgs[i]);
-        imgSizes.push(dimgs[i].size);
+        imgSizes[i] = dimgs[i].size;
+        imgNames[i] = dimgs[i].name;
         var reader = new FileReader(),
             d = new $.Deferred();
         promises.push(d);
@@ -198,28 +218,38 @@ function ldNodes(files) {
     }
     return $.when.apply($, promises);            
 }
-
-// styling the 'Choose file...' input box and label text:
-var inputs = document.querySelectorAll( '.inputfile' );
-Array.prototype.forEach.call( inputs, function( input )
-{
-	var label	 = input.nextElementSibling;
-	var labelVal = label.innerHtml;
-	input.addEventListener( 'change', function( e )
-	{
-		var fileName = '';
-		if( this.files && this.files.length > 1 ) {
-			fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+function sizeCheck() {
+    var promises = [];
+    for (var j=0; j<droppedImages.length; j++) {
+        var rdef = new $.Deferred();
+        promises.push(rdef);
+        // set up resolver:
+        if (imgSizes[j] < 8000000) { // limit found in php log error
+            rdef.resolve();
         } else {
-            fileName = e.target.value.split( '\\' ).pop();
+            /**
+             * From StackOVerflow:
+             * https://stackoverflow.com/questions/42092640/
+             *      javascript-how-to-reduce-image-to-specific-file-size
+             * "As far as i'm concerned, there is no way to reduce the filesize
+             * of an image on the client side using javascript."
+             * 
+             * NOTE: using ajax to send the file to php where it CAN be 
+             * reduced won't work, since the whole point was to reduce the
+             * filesize PRIOR to using ajax during uploads, hence exceeding
+             * transfer limit specified in the PHP error log:
+             *      ... exceeds the limit of 8388608 bytes ...
+             * The HTTP spec does not specify a limit, so it may be server
+             * dependent.
+             */  
+            alert("File " + imgNames[j] + " too big to upload: [" +
+                imgSizes[j] + "bytes]\n" +
+                "You must reduce it first to under 8MB, then reload");
+            rdef.reject();
         }
-		if( fileName ) {
-			label.querySelector( 'span' ).innerHTML = fileName;
-        } else {
-            label.innerHTML = labelVal;
-        }
-	});
-});
+    }
+    return $.when.apply($, promises); // apply 'promises' array to jQuery
+}
 
 // preview any images selected by the "Choose..." button
 $('#file').change(function() {
@@ -230,7 +260,9 @@ function previewImgs(flist) {
     $('#ldg').css('display', 'inline');
     $.when( ldImgs(flist) ).then(function() {
         $.when( ldNodes(droppedImages) ).then(function() {
-            dndPlace();
+            $.when( sizeCheck() ). then(function() {
+                dndPlace();
+            });
         });
     });
 }
@@ -294,7 +326,9 @@ if (isAdvancedUpload) {
         }
         $.when( ldImgs(droppedFiles) ).then(function() {
             $.when( ldNodes(droppedImages) ).then(function() {
-               dndPlace();
+                $.when( sizeCheck() ). then(function() {
+                    dndPlace();
+                });
             });
         });
     });
@@ -324,65 +358,41 @@ $form.on('submit', function(e) {
             descUploads.push($(this).val());
         });
         // upload images one at a time; turn off 'is-uploading' when completed
-        for (var u=0; u<uplds; u++) {
-            if (imgSizes[u] > 1000000) {
-                $('#resize').css('display', 'inline');
-                resizeImage(imageUploads[u]).done(function() {
-                    $('#resize').css('display', 'none');
-                    upldCnt++;
-                    if (upldCnt == uplds) {
-                        $form.removeClass('is-uploading');
-                        cleanup();
-                    }
-                });
-            }
-            postImg(
-                imageUploads[u], nameUploads[u], descUploads[u], ehikeIndxNo, progPerUpld
-            ).done(function() {
-                upldCnt++;
-                if (upldCnt == uplds) {
-                    $form.removeClass('is-uploading');
-                    cleanup();
-                }
-            });
-        }
+        sequentialUploader(
+            imageUploads[nxtUpld], nameUploads[nxtUpld], 
+            descUploads[nxtUpld], ehikeIndxNo, progPerUpld, uplds
+        );
     } else {
-      // ajax for legacy browsers
+      // ajax for legacy browsers e.g.
+      // xhr = new XMLHttpRequest(); ...
     }
   });
 
-function resizeImage(img) {
-    data = new FormData();
-    data.append('img', img);
-    return $.ajax({
-        url: 'resize.php',
-        type: 'POST',
-        data: data,
-        dataType: 'json',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(data) {
-            alert("OK");
-        },
-        error: function(jqXHR, status, error) {
-            var msg = "Error occurred during ajax:\nktesaUploader.js line 354\n" 
-                + "Actual response: " + jqXHR.responseText + ";\n" + status +
-                ": Error is: " + error ;
-            alert(msg);
+function sequentialUploader(imgfile, picname, picdesc, hikeno, barinc, noOfImgs) {
+    postImg(imgfile, picname, picdesc, hikeno, barinc).then(function() {
+        nxtUpld++;
+        if (nxtUpld == noOfImgs) {
+            $form.removeClass('is-uploading');
+            cleanup();
+        } else {
+            sequentialUploader(
+                imageUploads[nxtUpld], nameUploads[nxtUpld], descUploads[nxtUpld],
+                hikeno, barinc, noOfImgs
+            )
         }
     });
 }
 function postImg(ifile, nme, des, hikeno, proginc) {
+    var def = new $.Deferred();
     ajaxData = new FormData();
-    ajaxData.append('img', ifile);
+    ajaxData.append('file', ifile);
     var picname = JSON.stringify(nme);
-    ajaxData.append('pnme', picname);
+    ajaxData.append('namestr', picname);
     var picdesc = JSON.stringify(des);
-    ajaxData.append('pdes', picdesc);
+    ajaxData.append('descstr', picdesc);
     ajaxData.append('indx', hikeno);
-    return $.ajax({
-        url: 'test.php',
+    $.ajax({
+        url: 'usrPhotos.php',
         type: 'POST',
         data: ajaxData,
         dataType: 'json',
@@ -390,19 +400,42 @@ function postImg(ifile, nme, des, hikeno, proginc) {
         contentType: false,
         processData: false,
         success: function(data) {
+            upldMsg += data;
             var bar = $progressBar.val();
             bar += proginc;
             $progressBar.val(bar);
+            def.resolve();
         },
         error: function(jqXHR, status, error) {
-            var msg = "Error occurred during ajax:\nktesaUploader.js line 381\n" 
+            var msg = "Error occurred during ajax:\nktesaUploader.js line 392\n" 
                 + "Actual response: " + jqXHR.responseText + ";\n" + status +
                 ": Error is: " + error;
             alert(msg);
+            def.reject();
         }
     });
+    return def.promise();
 }
 function cleanup() {
+    resets();
+    $('img:not(#hikers, #tmap)').each(function() {
+        if (!$(this).hasClass('uploaded')) {
+            var pos = $(this).offset();
+            var ptop = pos.top;
+            var plft = pos.left;
+            var saved = document.createElement('P');
+            saved.classList.add('uploaded');
+            var stxt = document.createTextNode("UPLOADED");
+            saved.appendChild(stxt);
+            saved.style.top = (ptop + 12) + "px";
+            saved.style.left = (plft + 12) + "px";
+            $(this).before($(saved));
+        }
+    });
+    alert(upldMsg);
+    upldMsg = '';
+}
+function resets() {
     droppedFiles = false;
     droppedImages = [];
     loadedImages = [];
@@ -412,16 +445,5 @@ function cleanup() {
     nameUploads = [];
     descUploads = [];
     upldCnt = 0;
-    $('img:not(#hikers, #tmap)').each(function() {
-        var pos = $(this).offset();
-        var ptop = pos.top;
-        var plft = pos.left;
-        var saved = document.createElement('P');
-        saved.classList.add('uploaded');
-        var stxt = document.createTextNode("UPLOADED");
-        saved.appendChild(stxt);
-        saved.style.top = (ptop + 12) + "px";
-        saved.style.left = (plft + 12) + "px";
-        $(this).before($(saved));
-    });
+    nxtUpld = 0;
 }

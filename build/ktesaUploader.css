@@ -127,7 +127,10 @@ progress::-moz-progress-bar {
     display: none;
     color: brown;
 }
-/* Container of floating elements - to resolve height=0 problem */
+#lstup {
+    display: none;
+}
+/* Container of float elements - to resolve height=0 problem */
 .img-row {
     overflow: auto;
     width: 100%;
