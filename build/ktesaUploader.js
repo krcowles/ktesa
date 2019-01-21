@@ -1,3 +1,6 @@
+// close the parent (tab2 of editDB) so that when returning, the page is refreshed
+window.opener.close();
+
 /**
  * Initialization:
  */
@@ -449,3 +452,9 @@ function resets() {
     upldCnt = 0;
     nxtUpld = 0;
 }
+$('#ret').on('click', function(ev) {
+    ev.preventDefault();
+    var user = $('#eusr').text();
+    var newed = "editDB.php?hno=" + ehikeIndxNo + "&usr=" + user + "&tab=2";
+    window.open(newed, "_self");
+});

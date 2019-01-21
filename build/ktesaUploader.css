@@ -45,7 +45,7 @@ label {
 .box__dnd {
     margin-top: 24px;
 }
-.box__dragndrop, .box__uploading, .box__success, .box__error {
+.box__dragndrop, .box__uploading {
     display: none;
 }
 .box.has-advanced-upload {
@@ -66,12 +66,12 @@ label {
     background-color: blanchedalmond;
     color: brown;
 }
-#clrimgs {
+#clrimgs, #ret {
     font-size: 18px;
     color: brown;
     background-color: blanchedalmond;
 }
-.box__button:hover, #clrimgs:hover {
+.box__button:hover, #clrimgs:hover, #ret:hover {
     cursor: pointer;
     background-color: honeydew;
     color: darkgreen;

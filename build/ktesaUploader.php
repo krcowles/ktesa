@@ -10,6 +10,7 @@
  * @license No license to date
  */
 $EHikeNo = filter_input(INPUT_GET, 'indx');
+$Euser = filter_input(INPUT_GET, 'usr');
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -31,7 +32,8 @@ $EHikeNo = filter_input(INPUT_GET, 'indx');
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="ehno" style="display:none"><?= $EHikeNo;?></p>
+<p id="ehno" style="display:none;"><?= $EHikeNo;?></p>
+<p id="eusr" style="display:none;"><?= $Euser;?></p>
 <p id="trail">Upload Your Photos!</p>
 <form class="box" method="post" action="usrPhotos.php" enctype="multipart/form-data">
     <div class="box__input">
@@ -47,6 +49,7 @@ $EHikeNo = filter_input(INPUT_GET, 'indx');
         <div id="acts">
             <button class="box__button" type="submit">Upload</button>
             <input id="clrimgs" type="button" value="Clear images" />
+            <button id="ret">Back To Editor</button>
             <span id="ldg">&nbsp;&nbsp;Processing images&hellip; Please wait</span>
             <span class="box__uploading">
                 &nbsp;&nbsp;<progress id="prog" max="100" value="0"></progress>
@@ -56,8 +59,6 @@ $EHikeNo = filter_input(INPUT_GET, 'indx');
             <pre>
             </pre>
         </div>
-        <div class="box__success">Done!</div>
-        <div class="box__error">Error Encountered!</div>
     </div>
 </form>
 <script src="ktesaUploader.js"></script>
