@@ -43,7 +43,7 @@ var upldProg = 0;
 var upldCnt = 0;
 var nxtUpld = 0;
 var upldMsg = '';
-var $iflbl = $('label span');
+var $iflbl = $('label span'); // where the input file selection box text is held
 
 // styling the 'Choose file...' input box and label text:
 var inputs = document.querySelectorAll( '.inputfile' );
@@ -344,7 +344,7 @@ if (isAdvancedUpload) {
 // form submittal
 $form.on('submit', function(e) {
     if ($form.hasClass('is-uploading')) return false;
-    $form.addClass('is-uploading').removeClass('is-error');
+    $form.addClass('is-uploading');
     $progressBar.css('display', 'inline');
     $progressBar.val(0);
     if (isAdvancedUpload) {

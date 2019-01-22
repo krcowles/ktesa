@@ -1,10 +1,10 @@
 <?php
 /**
  * This script is called via ajax from the ktesaUploader.js module.
- * One or more files will be POSTed from the form. This data will be used
- * to construct the images required for storage on the site and
- * corresponding data will be entered into the database. The files will
- * be checked for exif metadata.
+ * One photo file will be POSTed from the form, accompanied by a photo
+ * name and description, and the corresponding EHIKES hike number.
+ * This data will be used to construct the images required for storage on
+ * the site and corresponding data will be entered into the database.
  * PHP Version 7.1
  * 
  * @package Uploading
@@ -12,11 +12,6 @@
  * @license No license to date
  */
 require "../vendor/autoload.php";
-/** 
- * THE FOLLOWING REQUIRES WILL BE REPLACED WITH A SINGLE LINE WHEN
- * 'PDO_complete' is merged:
- * require "../php/global_boot.php";
- */
 require "../php/global_boot.php";
 
 // POSTED DATA
