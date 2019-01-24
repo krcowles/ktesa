@@ -379,8 +379,7 @@ $maphtml .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1' .
     PHP_EOL;    //$maphtml .= $line . PHP_EOL;
 if ($map_opts['dynamicMarker'] === 'true') {
     $maphtml .= PHP_EOL . "            var mrkrSet = false;" . PHP_EOL .
-        "            var chartMrkr;" . PHP_EOL .
-        "            var imageLoc = '../images/azureMrkr.ico';" . PHP_EOL;
+        "            var chartMrkr;" . PHP_EOL;
     $maphtml .= '            function drawMarker( mrkrLoc ) {' . PHP_EOL .
         '                chartMrkr = new google.maps.Marker({' . PHP_EOL .
         '                    position: mrkrLoc,' . PHP_EOL .
@@ -388,11 +387,13 @@ if ($map_opts['dynamicMarker'] === 'true') {
         '                });' . PHP_EOL .
         '                mrkrSet = true;' . PHP_EOL . 
         '            }' . PHP_EOL;
-    $maphtml .= "            // create context for passing " .
-        "iframe variables to parent" . PHP_EOL . 
-        "            setTimeout( function() {" . PHP_EOL .
+    $maphtml .= "            // detect map is done loading to advise " .
+        "parent of iframe" . PHP_EOL . 
+        "            google.maps.event.addListenerOnce(gmap, 'idle', " .
+        "function(){" . PHP_EOL .
         "                parent.iframeWindow = window;" . PHP_EOL .
-        "             }, 2000 );" . PHP_EOL;
+        "                mapdone.resolve();" . PHP_EOL .
+        "            });" . PHP_EOL;
 }
 $maphtml .= '</script>' . PHP_EOL;
 $maphtml .= '</body>' . PHP_EOL;

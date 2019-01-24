@@ -25,9 +25,7 @@ var coords = {};  // data points by which to mark the track
 var indxOfPt;
 var prevCHairs = false;
 var imageData;
-$.when( getGpxData() ).then(function() {
-    drawChart();
-});
+$.when( getGpxData() ).then(drawChart);
 function getGpxData() {
     /**
      * This function reads in the GPX file capturing the latitudes
@@ -127,9 +125,11 @@ $('#unhide').on('click', function() {
  * FUNCTION DECLARATIONS:
  */
 function drawChart() {
+    var mapstat = document.getElementById('mapline').contentWindow.mapdone;
     var chartData = defineData();
     ChartObj.render('grph', chartData);
-    crossHairs();
+    // don't link to iframe map until it is done loading:
+    $.when( mapstat ).then(crossHairs);
 }
 function setChartDims() {
     // calculate space available for canvas: (panel width = 23%)
@@ -175,10 +175,12 @@ function crossHairs() {
         } else {
             context.putImageData(imageData, 0, 0);
         }
-        var mapObj = { lat: lats[indxOfPt], lng: lngs[indxOfPt] };
         drawLine(coords.px,margin.top,coords.px,margin.top+yMax,'Tomato',1);
         drawLine(margin.left,coords.py,margin.left+xMax,coords.py);
-        infoBox(coords.px,coords.py,coords.x.toFixed(2),coords.y.toFixed(),mapObj);
+        if (coords.x !== -1) {
+            var mapObj = { lat: lats[indxOfPt], lng: lngs[indxOfPt] };
+            infoBox(coords.px,coords.py,coords.x.toFixed(2),coords.y.toFixed(),mapObj);
+        }
     };
     canvasEl.onmouseout = function (e) {
         context.putImageData(imageData,0,0);
