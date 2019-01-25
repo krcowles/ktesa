@@ -47,6 +47,29 @@ if ($picq->rowCount() === 0) {
 <?php endif; ?>
 <?php
 if ($inclPix === 'YES') {
+    /**
+     * The location of the 'pictures' directory is needed in order to 
+     * specify <img> src attribute. The issue is that the src attribute
+     * can only have a relative path or absolute path. To provide the
+     * correct relative path, the 'pictures' directory needs to be
+     * located, which resides at "DOCUMENT_ROOT". Unfortunately, the 
+     * $_SERVER[] for that var specifies the server's absolute path,
+     * e.g. on the MacOS, the DOCUMENT_ROOT includes "/Users/... etc."
+     * This would look like a relative path to the img tag, having a
+     * location of "root"/Users/..., which doesn't exist. Therefore, it
+     * is necessary to extract the correct relative path to the pictures
+     * directory from wherever this code is invoked. 
+     */
+    $picpath = "";
+    // iteratively look for the pictures directory from here, and form
+    // the appropriate path:
+    $current = getcwd();
+    while (!in_array('pictures', scandir($current))) {
+        $picpath .= "../";
+        chdir('..');
+        $current = getcwd();
+    }
+    $picpath .= "pictures/nsize/";
     $picno = 0;
     $phNames = []; // filename w/o extension
     $phDescs = []; // caption
@@ -91,7 +114,7 @@ if ($inclPix === 'YES') {
                 . $phNames[$i] . '" />Delete<br />';
         }
         echo '<img class="allPhotos" height="200px" width="' . $phWds[$i]
-                . 'px" src="../pictures/nsize/' . $phPics[$i] . "_n.jpg"
+                . 'px" src="' . $picpath . $phPics[$i] . "_n.jpg"
                 . '" alt="' . $phNames[$i]
                 . '" /><br />' . PHP_EOL;
         if ($pgType === 'Edit') {
