@@ -7,6 +7,8 @@
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 		<meta name="geo.position" content="35.5554998; -106.2029837" />
 		<meta name="ICBM" content="35.5554998, -106.2029837" />
+		<!-- in order to create deferred object to pass to iframe parent: -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
 	<body style="margin:0px;">
 		<script type="text/javascript">
@@ -16,6 +18,7 @@
 			document.writeln('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language='+(self.language_code?self.language_code:'')+'&amp;key='+(self.google_api_key?self.google_api_key:'')+'"><'+'/script>');
 			
 			thunderforest_api_key = ''; // To display OpenStreetMap tiles from ThunderForest, you need a key (http://www.thunderforest.com/docs/apikeys/)
+			var mapdone = new $.Deferred();  // asynchonous event for iframe-parent comms
 		</script>
 		
 		<!--
