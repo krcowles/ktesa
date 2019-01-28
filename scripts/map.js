@@ -11,7 +11,6 @@ var NH_TYPE = 2;
 var XH_TYPE = 3;
 
 var map;  // needs to be global!
-var mapRdy = false; // flag for map initialized & ready to draw tracks
 var mapTick = {   // custom tick-mark symbol for tracks
     path: 'M 0,0 -5,11 0,8 5,11 Z',
     fillcolor: 'Red',
@@ -104,6 +103,7 @@ $hdrs.each( function(indx) {
 });
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
+var mapdone = new $.Deferred();
 function initMap() {
 	var clusterMarkerSet = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
@@ -130,7 +130,7 @@ function initMap() {
 		rotateControl: false,
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
-	mapRdy = true;
+	mapdone.resolve();
 
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
 	var loc; // google lat/lng object
@@ -407,8 +407,7 @@ function initMap() {
 		map.setCenter(newloc);
 		map.setZoom(13);
 	});
-	
-}  // end of initMap()
+	}  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
@@ -419,14 +418,9 @@ var trkKeyStr;
 var allTheTracks = [];
 var trackColor;
 var i,j,k;
+var geoOptions = { enableHighAccuracy: 'true' };
 
-var trackForm = setInterval(startTracks,40);
-function startTracks() {
-	if ( mapRdy ) {
-		clearInterval(trackForm);
-		drawTracks();
-	}
-}
+$.when( mapdone ).then(drawTracks, setupLoc )
 
 function ClusterGroups( clusId ) {
 	this.id = clusId;
@@ -641,17 +635,6 @@ function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
 
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
-var geoOptions = { enableHighAccuracy: 'true' };
-
-if ( turnOnGeo === 'true' ) {
-	var geoTmr = setInterval(turnOnGeoLoc,100);
-}
-function turnOnGeoLoc() {
-	if ( mapRdy ) {
-		clearInterval(geoTmr);
-		setupLoc();
-	}
-}
 function setupLoc() {
 	if (Modernizr.geolocation) {
 		var myGeoLoc = navigator.geolocation.getCurrentPosition(success, error, geoOptions);
@@ -682,6 +665,7 @@ function setupLoc() {
 		window.alert('Geolocation not supported on this browser');
 	}
 }
+
 $(window).resize( function() {
 	var winht = $('#map').innerHeight() - geotopOffset;
 	var winwd = $(window).innerWidth() - geoleftOffset;
