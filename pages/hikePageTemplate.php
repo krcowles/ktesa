@@ -29,7 +29,6 @@ require "hikePageData.php";
         type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css"
         type="text/css" rel="stylesheet" />
-    <script type="text/javascript">var ajaxDone = false;</script>
 <?php if ($newstyle) : ?>
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
