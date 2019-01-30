@@ -126,13 +126,25 @@ if ($GDsupport['JPEG Support']) {
         $nfileName = $imgName . "_n.jpg";
         $zfileName = $imgName . "_z.jpg";
         $size = "n";
-        storeUploadedImage(
-            $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
-        );
+        try {
+            storeUploadedImage(
+                $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
+            );
+        }
+        catch (Exception $e) {
+            $msg = "No n-size image write: " . $e->getMessage();
+            die(json_encode($msg));
+        }
         $size = "z";
-        storeUploadedImage(
-            $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
-        );
+        try {
+            storeUploadedImage(
+                $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
+            );
+        }
+        catch (Exception $e) {
+            $msg = "No z-size image write: " . $e->getMessage();
+            die(json_encode($msg));
+        }
     }
 } else {
     $upld_results .= "There is no support for image resizing;";

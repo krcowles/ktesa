@@ -590,16 +590,29 @@ function genLatLng($gpxobj, $trkno)
  * @param integer $new_img_width  Resize width of image
  * @param integer $new_img_height Resize height of image
  * @param boolean $rotated        Is image rotated? T/F
+ * @param string  $size           n-size or z-size character
  * 
  * @return string $target_file New resized filepath
  */
 function storeUploadedImage($targ_fname, $org_file, $new_img_width,
     $new_img_height, $rotated, $size
 ) {
+    // find the location of the 'pictures' dir in server:
+    $picpath = "";
+    $current = getcwd();
+    $startdir = $current;
+    while (!in_array('pictures', scandir($current))) {
+        $picpath .= "../";
+        chdir('..');
+        $current = getcwd();
+    }
+    $picpath .= "pictures/";
+    // return to starting point:
+    chdir($startdir);
     if ($size === "n") {
-        $target_dir = "../pictures/nsize/";
+        $target_dir = $picpath . "nsize/";
     } else {
-        $target_dir = "../pictures/zsize/";
+        $target_dir = $picpath . "zsize/";
     }
     $target_file = $target_dir . $targ_fname;
     $image = new \claviska\SimpleImage();
