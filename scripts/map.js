@@ -11,6 +11,9 @@ var NH_TYPE = 2;
 var XH_TYPE = 3;
 
 var map;  // needs to be global!
+// Google's hidden inner div when clicking on full screen mode
+var $fullScreenDiv;
+var $map = $('#map'); 
 var mapTick = {   // custom tick-mark symbol for tracks
     path: 'M 0,0 -5,11 0,8 5,11 Z',
     fillcolor: 'Red',
@@ -107,8 +110,8 @@ var mapdone = new $.Deferred();
 function initMap() {
 	var clusterMarkerSet = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
-	var mapDiv = document.getElementById('map');
-	map = new google.maps.Map(mapDiv, {
+	//var mapDiv = document.getElementById('map');
+	map = new google.maps.Map($map.get(0), {
 		center: nmCtr,
 		zoom: 7,
 		// optional settings:
@@ -407,7 +410,7 @@ function initMap() {
 		map.setCenter(newloc);
 		map.setZoom(13);
 	});
-	}  // end of initMap()
+}  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
@@ -420,7 +423,10 @@ var trackColor;
 var i,j,k;
 var geoOptions = { enableHighAccuracy: 'true' };
 
-$.when( mapdone ).then(drawTracks, setupLoc )
+// deferred wait for map to get initialized
+$.when( mapdone ).then(drawTracks).then(function() {
+	$fullScreenDiv = $map.children('div:first');
+});
 
 function ClusterGroups( clusId ) {
 	this.id = clusId;
@@ -594,7 +600,6 @@ function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
                         return;
                     }
                 });
-                
             } else {
                 // must be NH_TYPE: verify types called in drawTracks()
                 mdiv = '<div id="iwNH">';
@@ -633,7 +638,6 @@ function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
 } // end of function sglTrack
 // /////////////////////// END OF HIKE TRACK DRAWING /////////////////////
 
-
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
 function setupLoc() {
 	if (Modernizr.geolocation) {
@@ -666,10 +670,30 @@ function setupLoc() {
 	}
 }
 
+// //////////////////////  MAP FULL SCREEN DETECT  //////////////////////
+$(document).bind(
+	'webkitfullscreenchange mozfullscreenchange fullscreenchange',
+	function() {
+		var isFullScreen = document.fullScreen ||
+			document.mozFullScreen ||
+			document.webkitIsFullScreen;
+		if (isFullScreen) {
+			console.log('fullScreen!');
+			var $gicon = $('#geoCtrl').detach();
+			var $nhbox = $('#newHikeBox').detach()
+			$gicon.appendTo($fullScreenDiv);
+			$nhbox.appendTo($fullScreenDiv);
+		} else {
+			console.log('NO fullScreen!');
+		}
+});
+
+// //////////////////////  WINDOW RESIZE EVENT  //////////////////////
 $(window).resize( function() {
 	var winht = $('#map').innerHeight() - geotopOffset;
 	var winwd = $(window).innerWidth() - geoleftOffset;
 	$('#geoCtrl').css('top', winht);
 	$('#geoCtrl').css('left', winwd);
 });
+
 // //////////////////////////////////////////////////////////////
