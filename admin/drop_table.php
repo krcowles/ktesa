@@ -46,7 +46,7 @@ try {
     $pdo->query($remtbl);
 }
 catch (PDOException $e) {
-    pdo_err($remtbl, $e);
+    pdoErr($remtbl, $e);
 }
 
 $remaining = $pdo->query("SHOW TABLES;");

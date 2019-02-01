@@ -69,13 +69,13 @@ try {
     $pdo->query("CREATE TABLE EHIKES LIKE HIKES");
 }
 catch (PDOException $e) {
-    pdo_err("CREATE TABLE EHIKES", $e);
+    pdoErr("CREATE TABLE EHIKES", $e);
 }
 try {
     $pdo->query("ALTER TABLE EHIKES ADD stat VARCHAR(10) AFTER usrid;");
 }
 catch (PDOException $e) {
-    pdo_err("ALTER TABLE EHIKES", $e);
+    pdoErr("ALTER TABLE EHIKES", $e);
 }
 ?>
     <p>Description of the EGPSDAT table:</p>

@@ -38,7 +38,7 @@ try {
     $pdo = new PDO($dsn, $USERNAME, $PASSWORD, $options);
 }
 catch (\PDOException $e) {
-    pdo_err("connect to database", $e);
+    pdoErr("connect to database", $e);
 }
 error_reporting(2147483647); // PHP site recommends for future expansion of E_ALL
 if ($appMode === 'production') {

@@ -38,7 +38,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $lasthike = $pdo->query($last);
     }
     catch (PDOException $e) {
-        pdo_err("SELECT ... ORDER BY 1", $e);
+        pdoErr("SELECT ... ORDER BY 1", $e);
     }
     $item = $lasthike->fetch(PDO::FETCH_BOTH);
     $lastHikeNo = $item[0];
@@ -50,7 +50,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $ehk->execute();
     }
     catch (PDOException $e) {
-        pdo_err("SELECT * FROM EHIKES", $e);
+        pdoErr("SELECT * FROM EHIKES", $e);
     }
     $ehike = $ehk->fetch(PDO::FETCH_ASSOC);
     if ($ehike === null) {
@@ -111,7 +111,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $updte->execute();
     }
     catch (PDOException $e) {
-        pdo_err($cmd, $e);
+        pdoErr($cmd, $e);
     }
     // Assign the hike number for the remaining tables based on status:
     if ($status === 0) { // this will be the newly added no.
@@ -137,7 +137,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 $iptbl->execute();
             }
             catch (PDOException $e) {
-                pdo_err("INSERT INTO IPTBLS", $e);
+                pdoErr("INSERT INTO IPTBLS", $e);
             }
             // Now update the Index Page's 'collection' field (in HIKES)
             // ti add the new hike to it's current collection
@@ -148,7 +148,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 $indxPtr->execute();
             }
             catch (PDOException $e) {
-                pdo_err("SELECT `collection` FROM HIKES", $e);
+                pdoErr("SELECT `collection` FROM HIKES", $e);
             }
             $ipg = $indxPtr->fetch(PDO::FETCH_BOTH);
             $oldCol = fetch($ipg[0]);
@@ -166,7 +166,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
                 $updtcol->execute();
             }
             catch (PDOException $e) {
-                pdo_err("UPDATE HIKES SET `collection`", $e);
+                pdoErr("UPDATE HIKES SET `collection`", $e);
             }
         }
     } else { // this will be the hike being modified, already on the site
@@ -186,7 +186,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             $pubdat->execute();
         }
         catch (PDOException $e) {
-            pdo_err("DELETE FROM GPSDAT", $e);
+            pdoErr("DELETE FROM GPSDAT", $e);
         }
     }
     // insert new data whether old or new hike
@@ -201,7 +201,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $insgps->execute();
     }
     catch (PDOException $e) {
-        pdo_err("INSERT INTO GPSDAT", $e);
+        pdoErr("INSERT INTO GPSDAT", $e);
     }
     // ---------------------  REFS -------------------
     if ($status > 0) { // eliminate any existing data
@@ -221,7 +221,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $insref->execute();
     }
     catch (PDOException $e) {
-        pdo_err("INSERT INTO REFS", $e);
+        pdoErr("INSERT INTO REFS", $e);
     }
     // ---------------------  TSV -------------------
     if ($status > 0) { // eliminate any existing data
@@ -232,7 +232,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
             $deltsv->execute();
         }
         catch (PDOException $e) {
-            pdo_err("DELETE FROM TSV", $e);
+            pdoErr("DELETE FROM TSV", $e);
         }
     }
     // insert new data whether old or new hike
@@ -251,7 +251,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $instsv->execute();
     }
     catch (PDOException $e) {
-        pdo_err("INSERT INTO TSV", $e);
+        pdoErr("INSERT INTO TSV", $e);
     }
     /* Regardless of state, remove this hike from EHIKES et al:
      * Foreign Keys ensures deletion in remaining E-tables
@@ -263,7 +263,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
         $dele->execute();
     }
     catch (PDOException $e) {
-        pdo_err("DELETE FROM EHIKES", $e);
+        pdoErr("DELETE FROM EHIKES", $e);
     }
     echo "<p>Hike has been removed from the list of New/In-Edit Hikes</p>";
     ?>

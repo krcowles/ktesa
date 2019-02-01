@@ -70,7 +70,7 @@ try {
     $pdo->query("CREATE TABLE {$table} LIKE {$reftbl};");
 }
 catch (PDOException $e) {
-    pdo_err("CREATE TABLE {$table}", $e);
+    pdoErr("CREATE TABLE {$table}", $e);
 }
 $childreq = "ALTER TABLE {$table} ADD CONSTRAINT {$table}_Constraint " .
 "FOREIGN KEY FK_{$table}(indxNo) REFERENCES EHIKES(indxNo) " .
@@ -79,7 +79,7 @@ try {
     $pdo->query($childreq);
 }
 catch (PDOException $e) {
-    pdo_err("ALTER TABLE {$table}", $e);
+    pdoErr("ALTER TABLE {$table}", $e);
 }
 ?>
     <p>Description of the EGPSDAT table:</p>

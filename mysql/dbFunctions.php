@@ -29,7 +29,7 @@ function defaultExceptions($exception)
  * 
  * @return null
  */
-function pdo_err($cmd, $pdoe)
+function pdoErr($cmd, $pdoe)
 {
     $msg = "A problem was encountered with the {$cmd} command: " .
         "<br />The error message: " . $pdoe->getMessage() . 

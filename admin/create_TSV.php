@@ -112,7 +112,7 @@ try {
     $pdo->query($newtsv);
 }
 catch (PDOException $e) {
-    pdo_err("CREATE TABLE TSV", $e);
+    pdoErr("CREATE TABLE TSV", $e);
 }
 $tsv_struct = $pdo->query("DESCRIBE TSV");
 $struct = $tsv_struct->fetchAll(PDO::FETCH_BOTH);

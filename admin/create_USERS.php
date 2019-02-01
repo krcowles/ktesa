@@ -81,7 +81,7 @@ try {
     $usrtbl = $pdo->query($usrtbl);
 }
 catch (PDOException $e) {
-    pdo_err("CREATE TABLE USERS", $e);
+    pdoErr("CREATE TABLE USERS", $e);
 }
 $utbl = $pdo->query("DESCRIBE USERS;");
 $u_struct = $utbl->fetchAll(PDO::FETCH_BOTH);

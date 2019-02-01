@@ -98,7 +98,7 @@ try {
     $pdo->query($hike_tbl);
 }
 catch (PDOException $e) {
-    pdo_err("CREATE TABLE HIKES", $e);
+    pdoErr("CREATE TABLE HIKES", $e);
 }
 echo '<p>HIKES Table created; Definitions are shown in the table below</p>';
 $htbl = $pdo->query("DESCRIBE HIKES;");

@@ -80,7 +80,7 @@ try {
     $iptbl = $pdo->query($newips);
 }
 catch (PDOException $e) {
-    pdo_err("CREATE TABLE IPTBLS", $e);
+    pdoErr("CREATE TABLE IPTBLS", $e);
 }
 $iptbl_struct = $pdo->query("DESCRIBE IPTBLS");
 $struct = $iptbl_struct->fetchAll(PDO::FETCH_BOTH);

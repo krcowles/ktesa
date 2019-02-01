@@ -45,7 +45,7 @@ try {
     $cnt = $pdo->query($lastid);
 }
 catch (PDOException $e) {
-    pdo_err("SELECT ... ORDER BY", $e);
+    pdoErr("SELECT ... ORDER BY", $e);
 }
 $iddat = $cnt->fetch(PDO::FETCH_BOTH);
 $tblcnt = $iddat[0];
@@ -63,7 +63,7 @@ if ($rowno > $tblcnt) {
         $pdo->query($remreq);
     }
     catch (PDOException $e) {
-        pdo_err("DELETE FROM ... WHERE", $e);
+        pdoErr("DELETE FROM ... WHERE", $e);
     }
 
     $good = "<p>Row " . $rowno . " successfully removed; </p>";

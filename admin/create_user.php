@@ -70,7 +70,7 @@ try {
     );
 }
 catch (PDOException $e) {
-    pdo_err("INSERT INTO USERS", $e);
+    pdoErr("INSERT INTO USERS", $e);
 }
 ?>
 <!DOCTYPE html>

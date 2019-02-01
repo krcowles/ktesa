@@ -77,7 +77,7 @@ try {
     $gpsdat = $pdo->query($newdat);
 }
 catch (PDOException $e) {
-    pdo_err("CREATE TABLE GPSDAT", $e);
+    pdoErr("CREATE TABLE GPSDAT", $e);
 }
 echo '<p>GPSDAT Table created; Definitions are shown in the table below</p>';
 ?>

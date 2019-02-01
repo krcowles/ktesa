@@ -73,7 +73,7 @@ try {
     );
 }
 catch (PDOException $e) {
-    pdo_err("CREATE TABLE BOOKS", $e);
+    pdoErr("CREATE TABLE BOOKS", $e);
 }
 echo '<p>BOOKS Table created; Definitions are shown in the table below</p>';
 ?>

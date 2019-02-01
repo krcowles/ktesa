@@ -19,7 +19,7 @@ try {
     $addbk->execute();
 }
 catch (PDOException $e) {
-    pdo_err("INSERT INTO BOOKS", $e);
+    pdoErr("INSERT INTO BOOKS", $e);
 }
 ?>
 <!DOCTYPE html>

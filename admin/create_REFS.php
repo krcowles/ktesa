@@ -99,7 +99,7 @@ try {
     $mktbl = $pdo->query($newrefs);
 }
 catch (PDOException $e) {
-    pdo_err("CREATE TABLE REFS", $e);
+    pdoErr("CREATE TABLE REFS", $e);
 }
 $refreq = $pdo->query("DESCRIBE REFS;");
 $refs = $refreq->fetchAll(PDO::FETCH_BOTH);
