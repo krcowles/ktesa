@@ -67,6 +67,46 @@ function ktesaExceptions($exception)
     errorPage();
 } 
 /**
+ * This is a custom handler to catch the ugly parse/compile errors et al
+ * that don't otherwise get caught in error handlers or in whoops.
+ * 
+ * @return null
+ */
+function shutdownHandler() //will be called when php script ends.
+{
+    $lasterror = error_get_last();
+    switch ($lasterror['type'])
+    {
+    case E_ERROR:
+    case E_CORE_ERROR:
+    case E_COMPILE_ERROR:
+    case E_USER_ERROR:
+    case E_RECOVERABLE_ERROR:
+    case E_CORE_WARNING:
+    case E_COMPILE_WARNING:
+    case E_PARSE:
+        $error = "[SHUTDOWN] lvl:" . $lasterror['type'] .
+            " | msg:" . $lasterror['message'] . " | file:" .
+            $lasterror['file'] . " | ln:" . $lasterror['line'];
+        shutdownError($error, "fatal");
+    }
+}
+/**
+ * This function is called by the shutdown handler and receives 
+ * a custom constructed error message from it. It is constructed
+ * as a general-purpose call which could receive non-fatal errors.
+ * 
+ * @param string $errmsg the message about the fatal error
+ * @param string $errlvl the level of the error
+ * 
+ * @return null
+ */
+function shutdownError($errmsg, $errlvl) 
+{
+    error_log($errmsg);
+    errorPage();
+}
+/**
  * This is the user-friendly error page presented to the user
  * 
  * @return null

@@ -16,26 +16,28 @@ require "../vendor/autoload.php"; // CHECK OTHER FILES FOR REPEAT!!
 require "../admin/mode_settings.php"; // Capture this code version's settings
 $settings = $_SERVER["DOCUMENT_ROOT"] . "/../settings.php";
 require $settings;
+require "../admin/set_sql_mode.php";
 // Function definitions:
 require "../admin/adminFunctions.php";
-require "../admin/set_sql_mode.php";
 require "../build/buildFunctions.php";
 require "errFunctions.php";
 
 // PHP site recommends following value for future expansion of E_ALL
-error_reporting(-1);  // 2147483647 is also suggested on PHP site
+error_reporting(-1);  // 2147483647 is also suggested on PHP site, both work
 if ($appMode === 'production') {
     ini_set('log_errors', 1); // (this may be the default anyway)
     ini_set('error_log', '../ktesa.log');
     // UNCAUGHT error/exception handling:
     set_error_handler('ktesaErrors'); // errors not using Throwable interface
     set_exception_handler('ktesaExceptions'); // uncaught exceptions (no try/ctach)
+    // A method for fatal errors that handlers don't catch
+    register_shutdown_function("shutdownHandler");
 } else { // development
     /**
      * In this mode, no error_log is specified, so syslog could be used;
      * However, with whoops, there is no syslog, thus the following three
      * statements are not needed.
-     * Use them when whoops is not available.
+     * Use them if/when whoops is not available.
      */
     //ini_set('display_errors', "1"); // default is off i.e. 'production'
     //ini_set('display_startup_errors', 1);  // should never be 'on' in production
@@ -46,6 +48,7 @@ if ($appMode === 'production') {
     $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
     $whoops->register();
 }
+
 // Establish session database connection
 $options = array(
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
