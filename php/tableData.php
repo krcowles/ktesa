@@ -27,7 +27,6 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require "../php/global_boot.php";
 // Icons used for table display:
 $mapIcon
     = 'class="gotomap" src="../images/mapit.png" alt="Zoom-to-map symbol" />';

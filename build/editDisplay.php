@@ -7,6 +7,7 @@
  * @author  Tom Sanderg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require "../php/global_boot.php";
 $usr = filter_input(INPUT_GET, 'usr');
 $age = 'new';
 $show = 'usr';

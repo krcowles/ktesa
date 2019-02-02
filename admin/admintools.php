@@ -11,7 +11,6 @@
  */
 session_start();
 require "../php/global_boot.php";
-require "mode_settings.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
