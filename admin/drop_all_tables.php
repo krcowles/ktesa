@@ -55,25 +55,24 @@ if (isset($_REQUEST['no'])) {
 </div>
 <p id="trail"><?= $action;?></p>
 <div style="margin-left:16px;font-size:18px;">
-<?php
-// Execute the DROP TABLE command for each table:
-for ($i=0; $i<$tblcnt; $i++) {
-    echo "Dropping {$tables[$i]}: ... ";
-    $remtbl = $pdo->query("DROP TABLE {$tables[$i]};");
-    echo "Table Removed<br />";
-}
-?>
 <?php if ($action == 'Reload Database') : ?>
 <div style="margin-left:16px;">
 <p>Please wait until the 'DONE' message appears below</p>
+    <?php
+    // Execute the DROP TABLE command for each table:
+    for ($i=0; $i<$tblcnt; $i++) {
+        echo "Dropping {$tables[$i]}: ... ";
+        $pdo->query("DROP TABLE {$tables[$i]};");
+        echo "Table Removed<br />";
+    }
+    ?>
+    <br />
 <div id="progress">
     <div id="bar"></div>
 </div>
 <p id="done" style="display:none;color:brown;">DONE: Tables imported successfully</p>
 <script src="load_progress.js"></script>
-    <?php
-    include 'loader.php';
-    ?>
+    <?php include 'loader.php'; ?>
 <p>DONE: Tables imported successfully</p>
 </div>
 <?php endif; ?>

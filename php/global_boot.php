@@ -59,12 +59,7 @@ $options = array(
 $dsn = sprintf(
     'mysql:host=%s;dbname=%s;charset=%s', $HOSTNAME, $DATABASE, $CHARSET
 );
-try {
-    $pdo = new PDO($dsn, $USERNAME, $PASSWORD, $options);
-}
-catch (\PDOException $e) {
-    pdoErr("connect to database", $e);
-}
+$pdo = new PDO($dsn, $USERNAME, $PASSWORD, $options);
 /**
  * The following tests were used as a means to verify some of the
  * error and exception handling. In some cases, the tests utilize 

@@ -8,7 +8,25 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+
 $table = filter_input(INPUT_GET, 'tbl');
+$list = showTables($pdo, '');
+$show = $list[0];
+// is table already dropped?
+if (!in_array($table, $show)) {
+    throw new Exception("{$table} has already been dropped");
+}
+// foreign key dependencies?
+$ehike = ($table === "EHIKES" ? true : false);
+if ($ehike && (in_array("EGPSDAT", $show) || in_array("EREFS", $show) 
+    || in_array("ETSV", $show))
+) {
+    $msg = "You cannot drop EHIKES until all other E-tables are dropped";
+    throw new Exception($msg);
+}
+$pdo->query("DROP TABLE {$table}");
+$list = showTables($pdo, '');
+$show = $list[0];
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -34,30 +52,14 @@ $table = filter_input(INPUT_GET, 'tbl');
 </div>
 <p id="trail">DROP <?php echo $table;?> Table</p>
 <div style="margin-left:16px;font-size:18px;">
-
-<?php
-if ($table === 'EHIKES') {
-    echo "NOTE: EHIKES cannot be dropped until all other Exx Tables " .
-        "are dropped due to foreign keys";
-}
-echo "<p>Removing any previous instantiation of table '{$table}':</p>";
- $remtbl = "DROP TABLE {$table};";
-try {
-    $pdo->query($remtbl);
-}
-catch (PDOException $e) {
-    pdoErr($remtbl, $e);
-}
-
-$remaining = $pdo->query("SHOW TABLES;");
-$tbls = $remaining->fetchAll(PDO::FETCH_BOTH);
-echo "<ul>\n";
-foreach ($tbls as $row) {
-    echo "<li>" . $row[0] . "</li>\n";
-}
-echo "</ul><br />DONE";
-?>
-    
+    <p>Removing any previous instantiation of table <?= $table;?></p>
+    <ul>
+    <?php for ($i=0; $i<count($show); $i++) : ?>
+        <li><?= $show[$i];?></li>
+    <?php endfor; ?>
+    </ul>
+    <p>DONE</p>
 </div>
+
 </body>
 </html>

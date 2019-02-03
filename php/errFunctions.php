@@ -8,24 +8,6 @@
  * @license No license to date
  */
 /**
- * This function will print out the PDO Exception encountered, 
- * including where it occurred.
- * 
- * @param string       $cmd  The command attempted by the PDO
- * @param PDOException $pdoe The exception object invoked
- * 
- * @return null
- */
-function pdoErr($cmd, $pdoe)
-{
-    $msg = "A problem was encountered with the {$cmd} command: " .
-        "<br />The error message: " . $pdoe->getMessage() . 
-        "; resulted in  code " . (int)$pdoe->getCode() .
-        "<br />The error occurred in " . $pdoe->getFile() . 
-        " at line " . $pdoe->getLine(); 
-    throw new Exception($msg);
-}
-/**
  * This function establishes production mode error handling, which
  * will present a user-friendly error page. Uncaught errors will be
  * logged to ktesa.log, and an email sent to site masters.
