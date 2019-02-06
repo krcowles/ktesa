@@ -13,14 +13,14 @@
  * @license No license to date
  */
 $root = $_SERVER['DOCUMENT_ROOT'];
-require $root . "/vendor/autoload.php";
-require $root . "/admin/mode_settings.php"; // Capture this code version's settings
+require "../vendor/autoload.php";
+require "../admin/mode_settings.php"; // Capture this code version's settings
 require $root . "/../settings.php";
-require $root . "/admin/set_sql_mode.php";
+require "../admin/set_sql_mode.php";
 // Function definitions:
-require $root . "/admin/adminFunctions.php";
-require $root . "/build/buildFunctions.php";
-require $root . "/php/errFunctions.php";
+require "../admin/adminFunctions.php";
+require "../build/buildFunctions.php";
+require "../php/errFunctions.php";
 
 // PHP site recommends following value for future expansion of E_ALL
 error_reporting(-1);  // 2147483647 is also suggested on PHP site, both work
