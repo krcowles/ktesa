@@ -10,6 +10,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowle29@gmail.com>
  * @license No license to date
  */
+require "../php/global_boot.php";
 $geoVar = 'ON'; // NOTE: though no longer used, kept for now in case of use later
 $tblVar = filter_input(INPUT_GET, "tbl");
 // T -> Table only; D -> Dual Map + Table; M -> full page map

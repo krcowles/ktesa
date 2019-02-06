@@ -9,12 +9,17 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require "../php/global_boot.php";
+
 $act = filter_input(INPUT_GET, 'act');
 if ($act === 'rel') {
     $msg = "Publish";
 } elseif ($act === 'del') {
     $msg = "Remove";
 }
+$usr = 'mstr';
+$age = 'new';
+$show = 'all';
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -38,9 +43,6 @@ if ($act === 'rel') {
 <p id="trail">EHIKES Available to <?php echo $msg;?></p>
 <p id="action" style="display:none"><?php echo $act;?></p>
 <?php
-$usr = 'mstr';
-$age = 'new';
-$show = 'all';
 require '../php/makeTables.php';
 ?>
 <script src="../scripts/jquery-1.12.1.js"></script>

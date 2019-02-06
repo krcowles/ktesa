@@ -10,7 +10,7 @@
  * @license No license to date
  */
 session_start();
-require "mode_settings.php";
+require "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -38,6 +38,7 @@ require "mode_settings.php";
         <button id="switchstate">Switch Site Mode</button></p>
         <form action="upldSite.php" method="POST" target="_blank"
             enctype="multipart/form-data">
+            <input id="ufile" type="file" name="ufile" />&nbsp;&nbsp;
             <button id="upld">Upload</button>&nbsp;&nbsp;
             <input id="ufile" type="file" name="ufile" />
                 &nbsp;[Uploads Zip File and Extracts to 'upload' directory]<br />

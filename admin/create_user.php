@@ -54,24 +54,19 @@ $newuser = "INSERT INTO USERS (
         :bio
     );";
 $user = $pdo->prepare($newuser);
-try {
-    $user->execute(
-        array(
-            ":uname" =>  $uname,
-            ":passwd" => $pword,
-            ":pass_exp" => $exp_date,
-            ":lastnme" => $lname,
-            ":firstnme" => $fname,
-            ":email" => $email,
-            ":fbk" => $facbk,
-            ":twit" => $twitt,
-            ":bio" => $binfo
-            )
-    );
-}
-catch (PDOException $e) {
-    pdo_err("INSERT INTO USERS", $e);
-}
+$user->execute(
+    array(
+        ":uname" =>  $uname,
+        ":passwd" => $pword,
+        ":pass_exp" => $exp_date,
+        ":lastnme" => $lname,
+        ":firstnme" => $fname,
+        ":email" => $email,
+        ":fbk" => $facbk,
+        ":twit" => $twitt,
+        ":bio" => $binfo
+        )
+);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

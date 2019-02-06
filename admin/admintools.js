@@ -50,15 +50,7 @@ $('#drop').on('click', function() {
 });
 $('#create').on('click', function() {
     var ctype = $('#ctbl').val(); // the table name to create
-    if (ctype.substring(0,1) !== 'E') {
-        var ctarg = 'create_' + ctype + '.php';
-    } else { // this is an E-Table
-        if (ctype === 'EHIKES') {
-            var ctarg = 'create_EHIKES_parent.php';
-        } else {
-            var ctarg = 'create_E_table.php?tbl=' + ctype; // has foreign key defs
-        }
-    }
+    ctarg = "create_table.php?tbl=" + ctype;
     window.open(ctarg, "_blank");
 });
 $('#sgls').on('click', function() {

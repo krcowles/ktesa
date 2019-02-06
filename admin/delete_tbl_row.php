@@ -41,13 +41,8 @@ if ($tbl_type === 'u') {
     die("Not supported for DELETE ROW at this time");
 }
 $lastid = "SELECT {$idfield} FROM {$table} ORDER BY {$idfield} DESC LIMIT 1";
-try {
-    $cnt = $pdo->query($lastid);
-}
-catch (PDOException $e) {
-    pdo_err("SELECT ... ORDER BY", $e);
-}
-$iddat = $cnt->fetch(PDO::FETCH_BOTH);
+$last = $pdo->query($lastid);
+$iddat = $last->fetch(PDO::FETCH_NUM);
 $tblcnt = $iddat[0];
 if ($tblcnt === null) {
     die("There are no rows to delete in this table");
@@ -59,13 +54,7 @@ if ($rowno > $tblcnt) {
 } else {
     $badrow = false;
     $remreq = "DELETE FROM {$table} WHERE {$idfield} = " . $rowno . ";";
-    try {
-        $pdo->query($remreq);
-    }
-    catch (PDOException $e) {
-        pdo_err("DELETE FROM ... WHERE", $e);
-    }
-
+    $pdo->query($remreq);
     $good = "<p>Row " . $rowno . " successfully removed; </p>";
 }
 ?>
