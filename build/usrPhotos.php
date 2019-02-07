@@ -18,6 +18,11 @@ require "../php/global_boot.php";
 $filedat = $_FILES['file'];
 $photo = $filedat['tmp_name'];
 $fname = $filedat['name'];
+$fstat = $filedat['error'];
+if ($fstat !== UPLOAD_ERR_OK) {
+    $msg = uploadErr($fstat);
+    die(json_encode($msg));
+}
 $indxNo = filter_input(INPUT_POST, 'indx');
 $namedat = filter_input(INPUT_POST, 'namestr');
 $descdat = filter_input(INPUT_POST, 'descstr');
