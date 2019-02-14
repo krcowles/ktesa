@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-us">
-<head>
-    <title>Start A New Page</title>
-    <meta charset="utf-8" />
-    <meta name="description" content="Begin New Page" />
-    <meta name="author" content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
-    <link href="startNewPg.css" type="text/css" rel="stylesheet" />
-</head>
-<body>  
-    
-<?php 
+<?php
 /**
  * This php block extracts data from the HIKES table needed to display
  * in the cluster and Visitor Center drop-down boxes when those types
@@ -39,6 +26,18 @@ $vcHikes = $getVCs[0];
 $vccnt = count($vcHikes);
 $vcIndex = $getVCs[1];
 ?>
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Start A New Page</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Begin New Page" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
+    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="startNewPg.css" type="text/css" rel="stylesheet" />
+</head>
+<body>  
 <div id="logo">
     <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>

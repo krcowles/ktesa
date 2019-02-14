@@ -368,4 +368,10 @@ $('#showll').on('click', function() {
     $(this).prop('checked',false);
 });
 
+$('#upld').on('click', function() {
+    var user = $('input[name=nid]').val();
+    var uploader = 'ktesaUploader.php?indx=' + hike + "&usr=" + user;
+    window.open(uploader, "_blank");
+});
+
 });  // end of 'page (DOM) loading complete'

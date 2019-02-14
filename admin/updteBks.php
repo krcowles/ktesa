@@ -15,12 +15,7 @@ $bkReq ="INSERT INTO BOOKS (title,author) VALUES(:title,:author);";
 $addbk = $pdo->prepare($bkReq);
 $addbk->bindValue(":title", $title);
 $addbk->bindValue(":author", $author);
-try {
-    $addbk->execute();
-}
-catch (PDOException $e) {
-    pdo_err("INSERT INTO BOOKS", $e);
-}
+$addbk->execute();
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

@@ -24,6 +24,7 @@ require "dataForEditor.php";
     <meta name="robots" content="nofollow" />
     <link href="editDB.css" type="text/css" rel="stylesheet" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
 </head>
 
 <body>   
@@ -89,7 +90,6 @@ require "dataForEditor.php";
 
 </div> <!-- MAIN -->
 <div class="popupCap"></div>
-<!-- jQuery script source is included in photoSelect.php -->
 <script src="editDB.js"></script>
 </body>
 </html>

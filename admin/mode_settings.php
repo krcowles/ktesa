@@ -15,5 +15,5 @@
  * @license No license to date
  */
 $dbState = 'main';
-$appMode = 'production';
+$appMode = 'development';
  

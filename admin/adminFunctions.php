@@ -133,3 +133,56 @@ function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = fa
         exit;
     }
 }
+/**
+ * This function will create an array of all the tables currently
+ * residing in the database. That table can then be used by the caller
+ * to display the results. In the specific case where a table is
+ * specified for creation (show tables precedes this), then an
+ * error message is constructed noting that the tables already 
+ * exists. Otherwise, this argument will be an empty string.
+ * 
+ * @param object $pdo   The database connection
+ * @param string $table A table specified for creation
+ * 
+ * @return array
+ */
+function showTables($pdo, $table) 
+{
+    $tbl_list = [];
+    $errmsg = '';
+    $req = $pdo->query("SHOW TABLES;");
+    $tables = $req->fetchALL(PDO::FETCH_NUM);
+    foreach ($tables as $row) {
+        if ($row[0] === $table) {
+            $errmsg .= "You must first DROP {$table}";
+        } else {
+            array_push($tbl_list, $row[0]); 
+        }
+    }
+    return array($tbl_list, $errmsg);
+}
+/**
+ * This function will list the contents (fields) of the specified
+ * table. An array will be constructed whose elements are each
+ * an array of cells to appear in the displayed table.
+ * 
+ * @param object $pdo   the database connection
+ * @param string $table the table to be described
+ * 
+ * @return array
+ */
+function describeTable($pdo, $table) 
+{
+    $rows = [];
+    $cells = [];
+    $desc = $pdo->query("DESCRIBE {$table};");
+    $list = $desc->fetchALL(PDO::FETCH_NUM);
+    foreach ($list as $row) {
+        for ($i=0; $i<count($row); $i++) {
+            array_push($cells, $row[$i]);
+        }
+        array_push($rows, $cells);
+        $cells = [];
+    }
+    return $rows;
+}

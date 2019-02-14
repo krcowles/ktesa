@@ -2,6 +2,7 @@
     saved album links (if any) are displayed below. You may re-select a currently
     saved link in order to update your photo list, and/or you may add up to two
     more links.</h3>
+<p id="upldindx" style="display:none"><?= $hikeNo;?></p>
 <input type="hidden" name="nno" value="<?= $hikeNo;?>" />
 <input type="hidden" name="nid" value="<?= $uid;?>" />
 <?php if ($hikeUrl1 !== '') : ?>
@@ -49,9 +50,14 @@ Type:&nbsp;&nbsp;
 <button id="newalbs" style="font-size:16px;width:165px;cursor:pointer;"
     onfocus="color:papayawhip">Upload Albums</button>
     &nbsp;&nbsp;You can review these album photos (if any) after Uploading
-    for inclusion on this edit page...
+    for inclusion on this edit page...<br /><br />
 </form>
+<hr />
 <!-- This concludes the new photo upload form section -->
+<h3>Upload your photos directly! 
+<input type="button" name="upld" id="upld" value="Go to Upload Pg" /></h3>
+<hr />
+<!-- This concludes the user photo uploader section -->
 <?php if ($hikeUrl1 !== '' || $hikeUrl2 !== '') : ?>
 <p style="color:brown;"><em>Edit captions below each photo as needed
     and assign display options.</em></p>

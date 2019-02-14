@@ -9,6 +9,8 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+$list = showTables($pdo, '');
+$show = $list[0];
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -32,19 +34,16 @@ require "../php/global_boot.php";
     <img id="tmap" src="../images/trail.png" alt="trail map icon" />
     <p id="logo_right">w/Tom &amp; Ken</p>
 </div>
-<p id="trail">SHOW Database Tables</p>
-<div style="margin-left:16px;font-size:18px;">
-
-<?php
-$data = $pdo->query("SHOW TABLES;");
-$tbls = $data->fetchALL(PDO::FETCH_BOTH);
-echo "<p>Results from SHOW TABLES:</p><ul>";
-foreach ($tbls as $row) {
-    echo "<li>" . $row[0] . "</li>";
-}
-echo "</ul>";
-?>
+    <p id="trail">SHOW Database Tables</p>
+    <div style="margin-left:16px;font-size:18px;">
+    <p>Results from SHOW TABLES:</p>
+    <ul>
+    <?php for ($i=0; $i<count($show); $i++) : ?>
+        <li><?=$show[$i];?></li>
+    <?php endfor; ?>
+    </ul>
     <p>DONE</p>
 </div>
+
 </body>
 </html>
