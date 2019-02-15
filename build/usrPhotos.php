@@ -11,7 +11,6 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require "../vendor/autoload.php";
 require "../php/global_boot.php";
 
 // POSTED DATA
@@ -23,6 +22,7 @@ if ($fstat !== UPLOAD_ERR_OK) {
     $msg = uploadErr($fstat);
     die(json_encode($msg));
 }
+$orgname = filter_input(INPUT_POST, 'fname');
 $indxNo = filter_input(INPUT_POST, 'indx');
 $namedat = filter_input(INPUT_POST, 'namestr');
 $descdat = filter_input(INPUT_POST, 'descstr');
