@@ -26,6 +26,10 @@ var row = false;
 var frm = document.getElementsByClassName('box');
 var dndWidth = frm[0].clientWidth;
 var remainingWidth = dndWidth;
+// upload arrays
+var uloads = [];
+var nmebox = [];
+var desbox = [];
 // upload progress
 var $progressBar = $('#prog');
 $progressBar.css('display', 'none');
@@ -74,7 +78,7 @@ function ldImgs(imgs) {
         var deferred = new $.Deferred();
         promises.push(deferred);
 
-        (function(d, nme, fsize) {
+        (function(d, ifile) {
             reader.onload = function (evt) {
                 var result = evt.target.result;
                 /**
@@ -84,12 +88,15 @@ function ldImgs(imgs) {
                  * in the DOM. 'upldNo' is the array index, which will be
                  * unique, even for duplicate filenames.
                  */
-                var imgObj = {indx: upldNo++, fname: nme, size: fsize, data: result};
+                var nme = ifile.name;
+                var fsize = ifile.size;
+                var imgObj = {indx: upldNo, fname: nme, size: fsize, data: result};
                 FR_Images.push(imgObj);  // used for loading DOM, then reset
-                uploads.push(imgObj);    // accumulated for form submit
+                var upldObj = {indx: upldNo++, ifile};
+                uploads.push(upldObj);   // accumulated for form submit
                 d.resolve();
             }
-        }(deferred, imgs[i].name, imgs[i].size));
+        }(deferred, imgs[i]));
 
         reader.readAsDataURL(imgs[i]);
     }
@@ -299,9 +306,9 @@ function dndPlace() {
         }
     }
     dndbox[0].appendChild(row);
-    FR_Images = [];
-    droppedFiles = [];
-    loadedImages = [];
+    FR_Images = [];     // browse button selections
+    droppedFiles = [];  // dragged-n-dropped selections
+    loadedImages = [];  // DOM nodes
 }
 // make sure FormData and FileReader support is in the browser window:
 var isAdvancedUpload = 'FormData' in window && 'FileReader' in window;
@@ -351,22 +358,17 @@ $form.on('submit', function(e) {
             return;
         }
         var progPerUpld = 100/uplds;
-        var uloads = [];
-        var unames = [];
-        var nmebox = [];
-        var desbox = [];
         // parameters to pass - associate upload (indx) with name/desc box
         for (var n=0; n<uploads.length; n++) {
-            uloads[n] = uploads[n]['data'];
-            unames[n] = uploads[n]['fname'];
+            uloads[n] = uploads[n]['ifile'];  // file data (includes name, size)
             var indx = uploads[n]['indx'];
             nmebox[n] = $('#name' + indx).val();
             desbox[n] = $('#desc' + indx).val();
         }
         // upload images one at a time; turn off 'is-uploading' when completed
         sequentialUploader(
-            uloads[nxtUpld], unames[nxtUpld], nmebox[nxtUpld], 
-            desbox[nxtUpld], ehikeIndxNo, progPerUpld, uplds
+            uloads[nxtUpld], nmebox[nxtUpld], desbox[nxtUpld], 
+            ehikeIndxNo, progPerUpld, uplds
         );
     } else {
       // ajax for legacy browsers e.g.
@@ -374,26 +376,24 @@ $form.on('submit', function(e) {
     }
   });
 
-function sequentialUploader(imgfile, ifilename, picname, picdesc, hikeno, barinc, noOfImgs) {
-    postImg(imgfile, ifilename, picname, picdesc, hikeno, barinc).then(function() {
+function sequentialUploader(imgfile, picname, picdesc, hikeno, barinc, noOfImgs) {
+    postImg(imgfile, picname, picdesc, hikeno, barinc).then(function() {
         nxtUpld++;
         if (nxtUpld == noOfImgs) {
             $form.removeClass('is-uploading');
             cleanup();
         } else {
             sequentialUploader(
-                uloads[nxtUpld], unames[nxtUpld], nmebox[nxtUpld], 
-                desbox[nxtUpld], hikeno, barinc, noOfImgs
+                uloads[nxtUpld], nmebox[nxtUpld], desbox[nxtUpld], 
+                hikeno, barinc, noOfImgs
             )
         }
     });
 }
-function postImg(ifile, ifnme, nme, des, hikeno, proginc) {
+function postImg(ifile, nme, des, hikeno, proginc) {
     var def = new $.Deferred();
     ajaxData = new FormData();
     ajaxData.append('file', ifile);
-    var fname = JSON.stringify(ifnme);
-    ajaxData.append('fname', fname);
     var picname = JSON.stringify(nme);
     ajaxData.append('namestr', picname);
     var picdesc = JSON.stringify(des);
@@ -442,6 +442,9 @@ function cleanup() {
     });
     alert(upldMsg);
     upldMsg = '';
+    uloads = [];
+    nmebox = [];
+    desbox = [];
 }
 function resets() {
     droppedFiles = false;
