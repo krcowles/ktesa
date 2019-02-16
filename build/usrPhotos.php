@@ -57,7 +57,7 @@ try {
 }
 $dot = strrpos($fname, ".");
 $imgName = substr($fname, 0, $dot);
-$orient = false;
+$orient = false;  // required in case no exif data
 list($orgWd, $orgHt) = getimagesize($photo);
 // translate ht/wd into new n-size/z-size dimensions:
 $aspect = $orgHt/$orgWd;
@@ -67,10 +67,9 @@ $imgWd_z = $z_size;
 $imgHt_z = intval($z_size * $aspect);
 // Remaining values dependent on presence of exif data
 if ($exifData) {
-    try {
+    if (isset($exifData['Orientation'])) {
         $orient = $exifData['Orientation'];
-    }
-    catch (\Exception $e) {
+    } else {
         $orient = false;
     }
     if ($orient == '6') {
@@ -82,12 +81,12 @@ if ($exifData) {
         $imgWd_z = $tmpval;
     }
     if (!isset($exifData['DateTimeOriginal'])) {
-        $timestamp = 0; // used to determine NULL entry in db
+        $timestamp = null;
         $upld_results .= "File " . $fname . " has no date/time data" . PHP_EOL;
     } else {
         $timestamp = $exifData["DateTimeOriginal"];
         if ($timestamp == '') {
-            $timestamp = 0; // used to determine NULL entry in db
+            $timestamp = null;
             $upld_results .= "File " . $fname . 
                 " has no date/time data" . PHP_EOL;
         }
@@ -95,9 +94,8 @@ if ($exifData) {
     if (!isset($exifData["GPSLatitudeRef"])
         || !isset($exifData["GPSLatitude"])
     ) {
-        // zero values will be used to determine if db NULLs are req'd
-        $lats = 0;
-        $lngs = 0;
+        $lats = null;
+        $lngs = null;
         $upld_results .= "No lat/lng data found for " . $fname . PHP_EOL;
     } else {
         if ($exifData["GPSLatitudeRef"] == 'N') {
@@ -113,9 +111,9 @@ if ($exifData) {
     }
 } else {
     // Photos without exif data
-    $timestamp = 0;
-    $lats = 0;
-    $lngs = 0;
+    $timestamp = null;
+    $lats = null;
+    $lngs = null;
 }
 
 restore_error_handler();
@@ -131,25 +129,13 @@ if ($GDsupport['JPEG Support']) {
         $nfileName = $imgName . "_n.jpg";
         $zfileName = $imgName . "_z.jpg";
         $size = "n";
-        try {
-            storeUploadedImage(
-                $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
-            );
-        }
-        catch (Exception $e) {
-            $msg = "No n-size image write: " . $e->getMessage();
-            die(json_encode($msg));
-        }
+        storeUploadedImage(
+            $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
+        );
         $size = "z";
-        try {
-            storeUploadedImage(
-                $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
-            );
-        }
-        catch (Exception $e) {
-            $msg = "No z-size image write: " . $e->getMessage();
-            die(json_encode($msg));
-        }
+        storeUploadedImage(
+            $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
+        );
     }
 } else {
     $upld_results .= "There is no support for image resizing;";
@@ -180,7 +166,7 @@ if ($picdescs == "") {
     $vindx++;
     $vals[$vindx] = $picdescs;
 }
-if ($lats === 0 || $lngs === 0) {
+if (is_null($lats) || is_null($lngs)) {
     $valstr .= "NULL,NULL,";
 } else {
     $valstr .= "?,?,";
@@ -190,7 +176,7 @@ if ($lats === 0 || $lngs === 0) {
     $vals[$vindx] = $lngs;
 
 }
-if ($timestamp === 0) {
+if (is_null($timestamp)) {
     $valstr .= "NULL,";
 } else {
     $valstr .= "?,";
@@ -205,13 +191,7 @@ $tsvReq
     = "INSERT INTO ETSV (indxNo,title,`desc`,lat,lng,`date`,mid,imgHt,imgWd) "
         . $valstr;
 $tsv = $pdo->prepare($tsvReq);
-try {
-    $tsv->execute($vals);
-}
-catch (Exception $e) {
-    $msg = "TSV fail: " . $e->getMessage();
-    die(json_encode($msg));
-}
+$tsv->execute($vals);
 
 // return json to ajax caller
 if (isset($filedat)) {
