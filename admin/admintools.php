@@ -47,7 +47,9 @@ require "../php/global_boot.php";
         <button id="chgs">Changes Only</button>
             &nbsp;[Downloads zip file]<br />
         <button id="site">Entire Site</button>
-            &nbsp;[Downloads compressed archive]
+            &nbsp;[Downloads compressed archive]<br />
+        <span style="font-size:20px;color:brown;">Listings:</span><br />
+        <button id="lst">List New Files</button>&nbsp;&nbsp;[Since last upload]
         <hr />
         <button id="reload">Reload Database</button>&nbsp;
             [Drops All Tables and Loads All Tables]<br />

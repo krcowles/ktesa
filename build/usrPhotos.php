@@ -24,9 +24,7 @@ if ($fstat !== UPLOAD_ERR_OK) {
 }
 $orgname = filter_input(INPUT_POST, 'fname');
 $indxNo = filter_input(INPUT_POST, 'indx');
-$namedat = filter_input(INPUT_POST, 'namestr');
 $descdat = filter_input(INPUT_POST, 'descstr');
-$picnames = json_decode($namedat);
 $picdescs = json_decode($descdat);
 // Size width definitions:
 $n_size = 320;
@@ -153,11 +151,7 @@ if ($GDsupport['JPEG Support']) {
  * Always present: indxNo, title, mid, imgHt, imgWd
  */
 $valstr = "VALUES (?,?,"; // indxNo, title fields
-if ($picnames == "") {
-    $vals = [$indxNo, $imgName];
-} else {
-    $vals = [$indxNo, $picnames];
-}
+$vals = [$indxNo, $imgName];
 $vindx = 1; // index of last element in $vals array
 if ($picdescs == "") {
     $valstr .= "NULL,"; // desc field
