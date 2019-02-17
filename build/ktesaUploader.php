@@ -50,7 +50,7 @@ $Euser = filter_input(INPUT_GET, 'usr');
             <button class="box__button" type="submit">Upload</button>
             <input id="clrimgs" type="button" value="Clear images" />
             <button id="ret">Back To Editor</button>
-            <span id="ldg">&nbsp;&nbsp;Processing images&hellip; Please wait</span>
+            <span id="ldg" class="blink">&nbsp;&nbsp;Processing images&hellip; Please wait</span>
             <span class="box__uploading">
                 &nbsp;&nbsp;<progress id="prog" max="100" value="0"></progress>
                 &nbsp;&nbsp;Uploading&hellip;
