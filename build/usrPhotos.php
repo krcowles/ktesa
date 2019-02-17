@@ -22,6 +22,7 @@ if ($fstat !== UPLOAD_ERR_OK) {
     $msg = uploadErr($fstat);
     die(json_encode($msg));
 }
+$orgname = filter_input(INPUT_POST, 'fname');
 $indxNo = filter_input(INPUT_POST, 'indx');
 $namedat = filter_input(INPUT_POST, 'namestr');
 $descdat = filter_input(INPUT_POST, 'descstr');
