@@ -79,11 +79,6 @@ label {
 .box.is-dragover {
     background-color: grey;
 }
-/* NONE is not a property...
-.box.is-uploading .box__input {
-    visibility: none;
-}
-*/
 .box.is-uploading .box__uploading {
     display: inline;
 }
