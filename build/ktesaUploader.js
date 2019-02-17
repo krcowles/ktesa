@@ -1,5 +1,5 @@
 // close the parent (tab2 of editDB) so that when returning, the page is refreshed
-//window.opener.close();
+window.opener.close();
 
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
@@ -125,14 +125,8 @@ function ldNodes(fr_objs) {
                 // create the div holding textarea boxes
                 var tbox = document.createElement('DIV');
                 tbox.classList.add('txtdata');
-                // textarea for picture 'name'
-                var nme = document.createElement('TEXTAREA');
-                nme.style.height = nheight + "px";
-                nme.style.display = "block";
-                
-                nme.placeholder = "Picture name";
-                nme.classList.add('nmeVal');
-                nme.id = 'name' + itemno;
+                // textarea for picture 'name' - ELIMINATED
+              
                 // textarea for picture 'description'
                 var des = document.createElement('TEXTAREA');
                 des.style.height = dheight + "px";
@@ -172,12 +166,12 @@ function ldNodes(fr_objs) {
                      */
                     this.classList.add('rotation');
                     // place the textarea boxes in tbox:
-                    nme.style.width = (scaledHeight - 4) + "px"; // 4 for TA borders
-                    nme.style.margin = "6px 0px 6px 2px";
+                    //nme.style.width = (scaledHeight - 4) + "px"; // 4 for TA borders
+                    //nme.style.margin = "6px 0px 6px 2px";
                     des.style.width = (scaledHeight - 4) + "px";
-                    des.style.margin = "0px 0px 0px 2px";
+                    des.style.margin = "4px 0px 0px 2px";
                     tbox.style.width = scaledHeight + "px";
-                    tbox.appendChild(nme);
+                    //tbox.appendChild(nme);
                     tbox.appendChild(des);
                     tbox.style.margin = "0px 0px 0px 6px";
                     // items placed below the image act as if image is NOT rotated
@@ -191,12 +185,12 @@ function ldNodes(fr_objs) {
                     this.height = iheight;
                     this.style.margin = "0px 6px";
                     this.style.display = "block";
-                    nme.style.width = (scaledWidth - 4) + "px"; // subtract TA borders
-                    nme.style.margin = "6px 0px 6px 6px";
+                    //nme.style.width = (scaledWidth - 4) + "px"; // subtract TA borders
+                    //nme.style.margin = "6px 0px 6px 6px";
                     des.style.width = (scaledWidth - 4) + "px";
-                    des.style.margin = "0px 0px 0px 6px";
+                    des.style.margin = "4px 0px 0px 6px";
                     tbox.style.width = scaledWidth + "px";
-                    tbox.appendChild(nme);
+                    //tbox.appendChild(nme);
                     tbox.appendChild(des);
                     /**
                      * Each textarea has 2px of border, top & bottom, ie 4px total
@@ -362,7 +356,7 @@ $form.on('submit', function(e) {
         for (var n=0; n<uploads.length; n++) {
             uloads[n] = uploads[n]['ifile'];  // file data (includes name, size)
             var indx = uploads[n]['indx'];
-            nmebox[n] = $('#name' + indx).val();
+            //nmebox[n] = $('#name' + indx).val();
             desbox[n] = $('#desc' + indx).val();
         }
         // upload images one at a time; turn off 'is-uploading' when completed
@@ -394,8 +388,6 @@ function postImg(ifile, nme, des, hikeno, proginc) {
     var def = new $.Deferred();
     ajaxData = new FormData();
     ajaxData.append('file', ifile);
-    var picname = JSON.stringify(nme);
-    ajaxData.append('namestr', picname);
     var picdesc = JSON.stringify(des);
     ajaxData.append('descstr', picdesc);
     ajaxData.append('indx', hikeno);
