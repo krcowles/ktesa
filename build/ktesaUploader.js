@@ -1,5 +1,5 @@
 // close the parent (tab2 of editDB) so that when returning, the page is refreshed
-//window.opener.close();
+window.opener.close();
 
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
