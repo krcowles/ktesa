@@ -78,6 +78,7 @@ if ($inclPix === 'YES') {
     $phPics = []; // capture the link for the mid-size version of the photo
     $phWds = []; // width
     $rowHt = 220; // nominal choice for row height in div
+    $maxOccupy = 940;
     while ($pics = $picq->fetch(PDO::FETCH_ASSOC)) {
         $phNames[$picno] = $pics['title'];
         $phDescs[$picno] = $pics['desc'];
@@ -91,8 +92,15 @@ if ($inclPix === 'YES') {
         $picno += 1;
     }
     for ($i=0; $i<$picno; $i++) {
-        echo '<div style="width:' . $phWds[$i] . 'px;margin-left:2px;'
-            . 'margin-right:2px;display:inline-block">';
+        if ($phWds[$i] > $maxOccupy) {
+            $aspect = $rowHt/$phWds[$i];
+            $newht = floor($maxOccupy * $aspect);
+            echo '<div style="width:' . $maxOccupy . 'px;margin-left:2px;'
+                . 'margin-right:2px;display:inline-block;">';
+        } else {
+            echo '<div style="width:' . $phWds[$i] . 'px;margin-left:2px;'
+                . 'margin-right:2px;display:inline-block;">';
+        }
         $pgbox = '<input class="hpguse" type="checkbox" name="pix[]" value="'
             . $phNames[$i];
         if ($hpg[$i] === 'Y') {
@@ -113,12 +121,22 @@ if ($inclPix === 'YES') {
             echo '<input class="delp" type="checkbox" name="rem[]" value="'
                 . $phNames[$i] . '" />Delete<br />';
         }
-        echo '<img class="allPhotos" height="200px" width="' . $phWds[$i]
+        if ($phWds[$i] > $maxOccupy) {
+            echo '<img class="allPhotos" height="' . $newht . 'px" width="' 
+            . $maxOccupy . 'px" src="' . $picpath . $phPics[$i] . "_n.jpg"
+            . '" alt="' . $phNames[$i] . '" /><br />' . PHP_EOL;
+        } else {
+            echo '<img class="allPhotos" height="200px" width="' . $phWds[$i]
                 . 'px" src="' . $picpath . $phPics[$i] . "_n.jpg"
                 . '" alt="' . $phNames[$i]
                 . '" /><br />' . PHP_EOL;
+        }
         if ($pgType === 'Edit') {
-            $tawd = $phWds[$i] - 12;  // textarea widths don't compute exactly
+            if ($phWds[$i] > $maxOccupy) {
+                $tawd = $maxOccupy - 12; // textarea widths don't compute exactly
+            } else {
+                $tawd = $phWds[$i] - 12; 
+            } 
             echo '<textarea style="width:' . $tawd . 'px" name="ecap[]">' .
                 $phDescs[$i] . "</textarea>";
         }
