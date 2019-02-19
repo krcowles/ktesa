@@ -50,20 +50,15 @@ $Euser = filter_input(INPUT_GET, 'usr');
             <button class="box__button" type="submit">Upload</button>
             <input id="clrimgs" type="button" value="Clear images" />
             <button id="ret">Back To Editor</button>
-            <span id="ldg" class="blink">&nbsp;&nbsp;Processing images&hellip; Please wait</span>
-            <span class="box__uploading">
-                &nbsp;&nbsp;<progress id="prog" max="100" value="0"></progress>
-                &nbsp;&nbsp;Uploading&hellip;
+            <span id="ldg" class="blink">&nbsp;&nbsp;Processing images&hellip;
+                Please wait</span>
+            <span class="box__uploading">Upload in progress&hellip;
+                Please wait</span>
             </span>
             <pre>
             </pre>
         </div>
     </div>
-    <svg width="32" height="32" viewBox="0 0 32 32" style=transform:rotate(-90deg);"">
-    <circle cx="16" cy="16" r="14" fill="none" stroke="#fcbcb5" stroke-width="4" />
-    <circle id="mtr" cx="16" cy="16" r="14" fill="none" stroke="#f73722" stroke-width="4"
-        stroke-dasharray="87.964" stroke-dashoffset="35.186" stroke-linecap="round" />
-    </svg>
 </form>
 <script src="ktesaUploader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>

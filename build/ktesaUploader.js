@@ -30,10 +30,6 @@ var remainingWidth = dndWidth;
 var uloads = [];
 var nmebox = [];
 var desbox = [];
-// upload progress
-var $progressBar = $('#prog');
-$progressBar.css('display', 'none');
-var upldProg = 0;
 var upldCnt = 0;
 var nxtUpld = 0;
 var upldMsg = '';
@@ -125,16 +121,48 @@ function ldNodes(fr_objs) {
                 // create the div holding textarea boxes
                 var tbox = document.createElement('DIV');
                 tbox.classList.add('txtdata');
-                // textarea for picture 'name' - ELIMINATED
-              
+
                 // textarea for picture 'description'
                 var des = document.createElement('TEXTAREA');
                 des.style.height = dheight + "px";
                 des.style.display = "block";
-                
                 des.placeholder = "Picture description";
                 des.classList.add('desVal');
                 des.id = 'desc' + itemno;
+
+                // circular progress meter
+                var xmlns = "http://www.w3.org/2000/svg";
+                var circmtr = document.createElement('DIV');
+                circmtr.style.textAlign = "center";
+                circmtr.style.margin = "4px 0px 0px 0px";
+                var svg = document.createElementNS (xmlns, "svg");
+                svg.setAttribute("viewBox", "0 0 32 32");
+                svg.setAttribute("width", '32');
+                svg.setAttribute("height", '32');
+                svg.setAttribute('style', 'transform:rotate(-90deg)')
+                // background circle
+                var circle = document.createElementNS(xmlns, 'circle');
+                circle.setAttribute('cx', '16');
+                circle.setAttribute('cy', '16');
+                circle.setAttribute('r', '14');
+                circle.setAttribute('fill', 'none');
+                circle.setAttribute('stroke', '#fcbcb5');
+                circle.setAttribute('stroke-width', '4');
+                // foreground progress circle
+                var prog = document.createElementNS(xmlns, 'circle');
+                prog.id = "mtr";
+                prog.setAttribute('cx', '16');
+                prog.setAttribute('cy', '16');
+                prog.setAttribute('r', '14');
+                prog.setAttribute('fill', 'none');
+                prog.setAttribute('stroke', '#f73722');
+                prog.setAttribute('stroke-width', '4');
+                prog.setAttribute('stroke-dasharray', '87.964');
+                prog.setAttribute('stroke-dashoffset', '35.186');
+                svg.appendChild(circle);
+                svg.appendChild(prog);
+                circmtr.appendChild(svg);
+
                 orient = "";
                 EXIF.getData(this, function() {
                     orient = EXIF.getTag(this, "Orientation");
@@ -171,8 +199,8 @@ function ldNodes(fr_objs) {
                     des.style.width = (scaledHeight - 4) + "px";
                     des.style.margin = "4px 0px 0px 2px";
                     tbox.style.width = scaledHeight + "px";
-                    //tbox.appendChild(nme);
                     tbox.appendChild(des);
+                    tbox.appendChild(circmtr);
                     tbox.style.margin = "0px 0px 0px 6px";
                     // items placed below the image act as if image is NOT rotated
                     tbox.style.transform = "translate(0px, 40px)";
@@ -190,8 +218,8 @@ function ldNodes(fr_objs) {
                     des.style.width = (scaledWidth - 4) + "px";
                     des.style.margin = "4px 0px 0px 6px";
                     tbox.style.width = scaledWidth + "px";
-                    //tbox.appendChild(nme);
                     tbox.appendChild(des);
+                    tbox.appendChild(circmtr);
                     /**
                      * Each textarea has 2px of border, top & bottom, ie 4px total
                      * There is a margin (6px) on the top & bottom of the name textarea,
@@ -341,8 +369,6 @@ if (isAdvancedUpload) {
 $form.on('submit', function(e) {
     if ($form.hasClass('is-uploading')) return false;
     $form.addClass('is-uploading');
-    $progressBar.css('display', 'inline');
-    $progressBar.val(0);
     if (isAdvancedUpload) {
         e.preventDefault();
         var uplds = uploads.length;
@@ -351,7 +377,6 @@ $form.on('submit', function(e) {
                 $form.removeClass('is-uploading');
             return;
         }
-        var progPerUpld = 100/uplds;
         // parameters to pass - associate upload (indx) with name/desc box
         for (var n=0; n<uploads.length; n++) {
             uloads[n] = uploads[n]['ifile'];  // file data (includes name, size)
@@ -362,7 +387,7 @@ $form.on('submit', function(e) {
         // upload images one at a time; turn off 'is-uploading' when completed
         sequentialUploader(
             uloads[nxtUpld], nmebox[nxtUpld], desbox[nxtUpld], 
-            ehikeIndxNo, progPerUpld, uplds
+            ehikeIndxNo, uplds
         );
     } else {
       // ajax for legacy browsers e.g.
@@ -370,8 +395,8 @@ $form.on('submit', function(e) {
     }
   });
 
-function sequentialUploader(imgfile, picname, picdesc, hikeno, barinc, noOfImgs) {
-    postImg(imgfile, picname, picdesc, hikeno, barinc).then(function() {
+function sequentialUploader(imgfile, picname, picdesc, hikeno, noOfImgs) {
+    postImg(imgfile, picdesc, hikeno).then(function() {
         nxtUpld++;
         if (nxtUpld == noOfImgs) {
             $form.removeClass('is-uploading');
@@ -379,12 +404,12 @@ function sequentialUploader(imgfile, picname, picdesc, hikeno, barinc, noOfImgs)
         } else {
             sequentialUploader(
                 uloads[nxtUpld], nmebox[nxtUpld], desbox[nxtUpld], 
-                hikeno, barinc, noOfImgs
+                hikeno, noOfImgs
             )
         }
     });
 }
-function postImg(ifile, nme, des, hikeno, proginc) {
+function postImg(ifile, des, hikeno) {
     var def = new $.Deferred();
     ajaxData = new FormData();
     ajaxData.append('file', ifile);
@@ -401,9 +426,6 @@ function postImg(ifile, nme, des, hikeno, proginc) {
         processData: false,
         success: function(data) {
             upldMsg += data;
-            var bar = $progressBar.val();
-            bar += proginc;
-            $progressBar.val(bar);
             def.resolve();
         },
         error: function(jqXHR, status, error) {
