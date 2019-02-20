@@ -37,9 +37,9 @@ for ($j=0; $j<count($emids); $j++) {
 for ($k=0; $k<count($mids); $k++) {
     if (!is_numeric($mids[$k])) {
         $oldN = $picdir . "nsize/" . $mids[$k] . "_n.jpg";
-        $newN = $picdir . "nsize/" . $picId . "_n.jpg";
+        $newN = $picdir . "nsize/" . $mids[$k] . "_" . $picId . "_n.jpg";
         $oldZ = $picdir . "zsize/" . $mids[$k] . "_z.jpg";
-        $newZ = $picdir . "zsize/" . $picId . "_z.jpg";
+        $newZ = $picdir . "zsize/" . $mids[$k] . "_"  . $picId . "_z.jpg";
         $cmd = "rename('" . $oldN . "', '" . $newN . "');\n";
         $cmd .= "rename('" . $oldZ . "', '" . $newZ . "');\n";
         file_put_contents("fileRenameCmds.php", $cmd, FILE_APPEND);
@@ -48,7 +48,7 @@ for ($k=0; $k<count($mids); $k++) {
         $replace->execute([$picId++, $mids[$k]]);
     }
     // eliminate the following if when running the whole table, or set=count($mids)
-    if ($k > 2) {
+    if ($k > 6) {
         echo "Test DONE";
         exit;
     }
