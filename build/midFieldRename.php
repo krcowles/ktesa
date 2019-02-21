@@ -43,23 +43,29 @@ for ($k=0; $k<count($mids); $k++) {
         $cmd = "rename('" . $oldN . "', '" . $newN . "');\n";
         $cmd .= "rename('" . $oldZ . "', '" . $newZ . "');\n";
         file_put_contents("fileRenameCmds.php", $cmd, FILE_APPEND);
+        $midval = $mids[$k] . "_" . $picId++;
         $newmid = "UPDATE TSV SET mid = ? WHERE mid = ?;";
         $replace = $pdo->prepare($newmid);
-        $replace->execute([$picId++, $mids[$k]]);
+        $replace->execute([$midval, $mids[$k]]);
     }
-    // eliminate the following if when running the whole table, or set=count($mids)
-    if ($k > 6) {
-        echo "Test DONE";
+    if ($k > 3) {
+        echo "DONE";
         exit;
     }
 }
 for ($l=0; $l<count($emids); $l++) {
     if (!is_numeric($emids[$l])) {
-        $cmd = "rename(" . $emids[$l] . ", " . $picId . ");";
+        $oldN = $picdir . "nsize/" . $emids[$l] . "_n.jpg";
+        $newN = $picdir . "nsize/" . $emids[$l] . "_" . $picId . "_n.jpg";
+        $oldZ = $picdir . "zsize/" . $emids[$l] . "_z.jpg";
+        $newZ = $picdir . "zsize/" . $emids[$l] . "_"  . $picId . "_z.jpg";
+        $cmd = "rename('" . $oldN . "', '" . $newN . "');\n";
+        $cmd .= "rename('" . $oldZ . "', '" . $newZ . "');\n";
         file_put_contents("fileRenameCmds.php", $cmd, FILE_APPEND);
+        $midval = $emids[$l] . "_" . $picId++;
         $newmid = "UPDATE ETSV SET mid = ? WHERE mid = ?;";
         $replace = $pdo->prepare($newmid);
-        $replace->execute([$picId++, $emids[$l]]);
+        $replace->execute([$midval, $emids[$l]]);
     }
 }
 echo "Iteration Complete";
