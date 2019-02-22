@@ -31,10 +31,6 @@ foreach ($mids as $key => $mid) {
     $cmd = "rename('" . $oldN . "', '" . $newN . "');\n";
     $cmd .= "rename('" . $oldZ . "', '" . $newZ . "');\n";
     file_put_contents("fileRenameCmds.php", $cmd, FILE_APPEND);
-    $midval = $mid . "_" . $key;
-    $newmid = "UPDATE TSV SET mid = ? WHERE mid = ?;";
-    $replace = $pdo->prepare($newmid);
-    $replace->execute([$midval, $mid]);
     $testLim++;
     if ($testLim === 3) {
         echo "DONE";
@@ -52,9 +48,5 @@ foreach ($emids as $key => $emid) {
         $cmd = "rename('" . $oldN . "', '" . $newN . "');\n";
         $cmd .= "rename('" . $oldZ . "', '" . $newZ . "');\n";
         file_put_contents("fileRenameCmds.php", $cmd, FILE_APPEND);
-        $midval = $emid . "_" . $key;
-        $newmid = "UPDATE ETSV SET mid = ? WHERE mid = ?;";
-        $replace = $pdo->prepare($newmid);
-        $replace->execute([$midval, $emid]);
 }
 echo "Iteration Complete";
