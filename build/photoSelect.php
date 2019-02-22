@@ -84,7 +84,7 @@ if ($inclPix === 'YES') {
         $phDescs[$picno] = $pics['desc'];
         $hpg[$picno] = $pics['hpg'];
         $mpg[$picno] = $pics['mpg'];
-        $phPics[$picno] = $pics['mid'];
+        $phPics[$picno] = $pics['mid'] . "_" . $pics['thumb'];
         $pHeight = $pics['imgHt'];
         $aspect = $rowHt/$pHeight;
         $pWidth = $pics['imgWd'];

@@ -117,7 +117,8 @@ foreach ($photosData as $pics) {
     if ($pics['hpg'] === 'Y') {
         array_push($descs, $pics['title']);
         array_push($alblnks, $pics['alblnk']);
-        array_push($piclnks, $pics['mid']);
+        $fbase = $pics['mid'] . "_" . $pics['thumb'];
+        array_push($piclnks, $fbase);
         $pDesc = htmlspecialchars($pics['desc']);
         $dateStr = $pics['date'];
         if ($dateStr == '') {
