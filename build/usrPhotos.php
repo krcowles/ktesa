@@ -113,7 +113,15 @@ if ($exifData) {
 
 restore_error_handler();
 
-// Need to set ETSV data and extract picId in order to provide correct filenames for images
+// determine next 'thumb' value for new entry
+$tval = "SELECT thumb FROM TSV ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
+$tresult = $pdo->query($tval);
+$tmax = $tresult->fetch(PDO::FETCH_NUM);
+$eval = "SELECT thumb FROM ETSV ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
+$eresult = $pdo->query($eval);
+$emax = $eresult->fetch(PDO::FETCH_NUM);
+$max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
+$newthumb = (int)$max + 1;
 /**
  * Create VALUES list, adding NULLs where needed:
  * Always present: indxNo, title, mid, imgHt, imgWd
@@ -138,6 +146,9 @@ if (is_null($lats) || is_null($lngs)) {
     $vals[$vindx] = $lngs;
 
 }
+$valstr .= "?,";
+$vindx++;
+$vals[$vindx] = $newthumb;
 if (is_null($timestamp)) {
     $valstr .= "NULL,";
 } else {
@@ -150,25 +161,10 @@ $vals[$vindx+1] = $imgName;
 $vals[$vindx+2] = $imgHt_n;
 $vals[$vindx+3] = $imgWd_n;
 $tsvReq
-    = "INSERT INTO ETSV (indxNo,title,`desc`,lat,lng,`date`,mid,imgHt,imgWd) "
+    = "INSERT INTO ETSV (indxNo,title,`desc`,lat,lng,thumb,`date`,mid,imgHt,imgWd) "
         . $valstr;
 $tsv = $pdo->prepare($tsvReq);
 $tsv->execute($vals);
-// need the last inserted 'thumb' value
-$lastId = $pdo->query("SELECT LAST_INSERT_ID();");
-$picIdx = $lastId->fetch(PDO::FETCH_NUM);  // 'picIdx' for last ETSV insert
-// determine next 'thumb' value for new entry
-$tval = "SELECT thumb FROM TSV ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
-$tresult = $pdo->query($tval);
-$tmax = $tresult->fetch(PDO::FETCH_NUM);
-$eval = "SELECT thumb FROM ETSV ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
-$eresult = $pdo->query($eval);
-$emax = $eresult->fetch(PDO::FETCH_NUM);
-$max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
-$newthumb = (int)$max + 1;
-// set 'thumb' value in last insert
-$setThumb = "UPDATE ETSV Set thumb = ? WHERE picIdx = ?;";
-$pdo->prepare($setThumb)->execute([$newthumb, $picIdx[0]]);
 
 // check the GD support in this version of php:
 $gd = false;
@@ -193,14 +189,6 @@ if ($GDsupport['JPEG Support']) {
     $upld_results .= "There is no support for image resizing;";
     die(json_encode($upld_results));
 }
-
-/*
- *  THIS IS THE CODE THAT MAY CHANGE WHEN TSV GETS REDEFINED 
- *  ALSO: WHEN 'PDO_complete' is merged, the PDO connection will already 
- *  be in place, hence eliminate the first line of this code
- */
-
-
 
 // return json to ajax caller
 if (isset($filedat)) {
