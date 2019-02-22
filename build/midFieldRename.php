@@ -18,54 +18,43 @@
  * Since a test will be done on a few files to verify the process, there 
  * may already be an integer assigned, so utilize that; else start with 1.
  */
-$picId = 1;
-$tsv = "SELECT mid FROM TSV;";
-$mids = $pdo->query($tsv)->fetchAll(PDO::FETCH_COLUMN);
-for ($i=0; $i<count($mids); $i++) {
-    if (is_numeric($mids[$i]) && $mids[$i] >= $picId) {
-        $picId = $mids[$i] + 1;
-    }
-}
-$etsv = "SELECT mid FROM ETSV;";
-$emids = $pdo->query($etsv)->fetchAll(PDO::FETCH_COLUMN);
-for ($j=0; $j<count($emids); $j++) {
-    if (is_numeric($emids[$j]) && $emids[$j] >= $picId) {
-        $picId = $emids[$j] + 1;
-    }
-}
-// iterate: replace the 'mid' value with unique integer and form the rename commands:
-for ($k=0; $k<count($mids); $k++) {
-    if (!is_numeric($mids[$k])) {
-        $oldN = $picdir . "nsize/" . $mids[$k] . "_n.jpg";
-        $newN = $picdir . "nsize/" . $mids[$k] . "_" . $picId . "_n.jpg";
-        $oldZ = $picdir . "zsize/" . $mids[$k] . "_z.jpg";
-        $newZ = $picdir . "zsize/" . $mids[$k] . "_"  . $picId . "_z.jpg";
-        $cmd = "rename('" . $oldN . "', '" . $newN . "');\n";
-        $cmd .= "rename('" . $oldZ . "', '" . $newZ . "');\n";
-        file_put_contents("fileRenameCmds.php", $cmd, FILE_APPEND);
-        $midval = $mids[$k] . "_" . $picId++;
-        $newmid = "UPDATE TSV SET mid = ? WHERE mid = ?;";
-        $replace = $pdo->prepare($newmid);
-        $replace->execute([$midval, $mids[$k]]);
-    }
-    if ($k > 3) {
+$tsv = "SELECT thumb,mid FROM TSV;";
+$mids = $pdo->query($tsv)->fetchAll(PDO::FETCH_KEY_PAIR);
+
+$testLim = 0;
+// iterate: update the 'mid' value with 'thumb' and form the rename commands:
+foreach ($mids as $key => $mid) {
+    $oldN = $picdir . "nsize/" . $mid . "_n.jpg";
+    $newN = $picdir . "nsize/" . $mid . "_" . $key . "_n.jpg";
+    $oldZ = $picdir . "zsize/" . $mid . "_z.jpg";
+    $newZ = $picdir . "zsize/" . $mid . "_" . $key . "_z.jpg";
+    $cmd = "rename('" . $oldN . "', '" . $newN . "');\n";
+    $cmd .= "rename('" . $oldZ . "', '" . $newZ . "');\n";
+    file_put_contents("fileRenameCmds.php", $cmd, FILE_APPEND);
+    $midval = $mid . "_" . $key;
+    $newmid = "UPDATE TSV SET mid = ? WHERE mid = ?;";
+    $replace = $pdo->prepare($newmid);
+    $replace->execute([$midval, $mid]);
+    $testLim++;
+    if ($testLim === 3) {
         echo "DONE";
         exit;
     }
 }
-for ($l=0; $l<count($emids); $l++) {
-    if (!is_numeric($emids[$l])) {
-        $oldN = $picdir . "nsize/" . $emids[$l] . "_n.jpg";
-        $newN = $picdir . "nsize/" . $emids[$l] . "_" . $picId . "_n.jpg";
-        $oldZ = $picdir . "zsize/" . $emids[$l] . "_z.jpg";
-        $newZ = $picdir . "zsize/" . $emids[$l] . "_"  . $picId . "_z.jpg";
+
+$etsv = "SELECT thumb,mid FROM ETSV;";
+$emids = $pdo->query($etsv)->fetchAll(PDO::FETCH_KEY_PAIR);
+foreach ($emids as $key => $emid) {
+        $oldN = $picdir . "nsize/" . $emid . "_n.jpg";
+        $newN = $picdir . "nsize/" . $emid . "_" . $key . "_n.jpg";
+        $oldZ = $picdir . "zsize/" . $emid . "_z.jpg";
+        $newZ = $picdir . "zsize/" . $emid . "_"  . $key . "_z.jpg";
         $cmd = "rename('" . $oldN . "', '" . $newN . "');\n";
         $cmd .= "rename('" . $oldZ . "', '" . $newZ . "');\n";
         file_put_contents("fileRenameCmds.php", $cmd, FILE_APPEND);
-        $midval = $emids[$l] . "_" . $picId++;
+        $midval = $emid . "_" . $key;
         $newmid = "UPDATE ETSV SET mid = ? WHERE mid = ?;";
         $replace = $pdo->prepare($newmid);
-        $replace->execute([$midval, $emids[$l]]);
-    }
+        $replace->execute([$midval, $emid]);
 }
 echo "Iteration Complete";
