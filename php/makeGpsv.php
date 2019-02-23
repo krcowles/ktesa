@@ -241,7 +241,7 @@ if ($showPhotos) {
     // see GPSVisualizer for complete list of icon styles:
     $mapicon = 'googlemini';
     $mcnt = 0;
-    $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,alblnk,mid,iclr FROM "
+    $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,thumb,alblnk,mid,iclr FROM "
         . "{$ttable} WHERE indxNo = :hikeIndexNo;";
     $dbdat = $pdo->prepare($picReq);
     $dbdat->bindValue(":hikeIndexNo", $hikeIndexNo);
@@ -267,8 +267,8 @@ if ($showPhotos) {
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng'] . ",name:'" . $procDesc .
                     "',desc:'',color:'" . $iconColor . "',icon:'" . $mapicon .
-                    "',url:'/pictures/zsize/" . $photos['mid'] . "_z.jpg" .
-                    "',thumbnail:'/pictures/nsize/" . $photos['mid'] . "_n.jpg" .
+                    "',url:'/pictures/zsize/" . $photos['mid'] . "_" . $photos['thumb'] . "_z.jpg" .
+                    "',thumbnail:'/pictures/nsize/" . $photos['mid'] . "_" . $photos['thumb'] . "_n.jpg" .
                     "',folder:'" . $photos['folder'] . "'});";
             }
             array_push($plnks, $plnk);
