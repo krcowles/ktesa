@@ -267,8 +267,9 @@ if ($showPhotos) {
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng'] . ",name:'" . $procDesc .
                     "',desc:'',color:'" . $iconColor . "',icon:'" . $mapicon .
-                    "',url:'/pictures/zsize/" . $photos['mid'] . "_" . $photos['thumb'] . "_z.jpg" .
-                    "',thumbnail:'/pictures/nsize/" . $photos['mid'] . "_" . $photos['thumb'] . "_n.jpg" .
+                    "',url:'/pictures/zsize/" . $photos['mid'] . "_" . 
+                    $photos['thumb'] . "_z.jpg" . "',thumbnail:'/pictures/nsize/" . 
+                    $photos['mid'] . "_" . $photos['thumb'] . "_n.jpg" .
                     "',folder:'" . $photos['folder'] . "'});";
             }
             array_push($plnks, $plnk);

@@ -21,7 +21,6 @@
 $tsv = "SELECT thumb,mid FROM TSV;";
 $mids = $pdo->query($tsv)->fetchAll(PDO::FETCH_KEY_PAIR);
 
-$testLim = 0;
 // iterate: update the 'mid' value with 'thumb' and form the rename commands:
 foreach ($mids as $key => $mid) {
     $oldN = $picdir . "nsize/" . $mid . "_n.jpg";
@@ -31,11 +30,6 @@ foreach ($mids as $key => $mid) {
     $cmd = "rename('" . $oldN . "', '" . $newN . "');\n";
     $cmd .= "rename('" . $oldZ . "', '" . $newZ . "');\n";
     file_put_contents("fileRenameCmds.php", $cmd, FILE_APPEND);
-    $testLim++;
-    if ($testLim === 3) {
-        echo "DONE";
-        exit;
-    }
 }
 
 $etsv = "SELECT thumb,mid FROM ETSV;";

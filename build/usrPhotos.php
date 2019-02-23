@@ -175,8 +175,8 @@ if ($GDsupport['JPEG Support']) {
     if ($orient == '6') {
         $rotate = true;
     }
-    $nfileName = $imgName . "_n.jpg";
-    $zfileName = $imgName . "_z.jpg";
+    $nfileName = $imgName . "_" . $newthumb . "_n.jpg";
+    $zfileName = $imgName . "_" . $newthumb . "_z.jpg";
     $size = "n";
     storeUploadedImage(
         $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
