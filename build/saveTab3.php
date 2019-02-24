@@ -13,8 +13,22 @@ $hikeNo = filter_input(INPUT_POST, 'dno');
 $uid = filter_input(INPUT_POST, 'did');
 $htips = filter_input(INPUT_POST, 'tips');
 $hinfo = filter_input(INPUT_POST, 'hinfo');
-$updtDescReq = "UPDATE EHIKES SET tips = ?, info = ? WHERE indxNo = ?;";
+$vals = [];
+if (is_null($htips)) {
+    $valstr = 'tips = NULL, ';
+} else {
+    $valstr = 'tips = ?, ';
+    $vals[0] = $htips;
+}
+if (is_null($hinfo)) {
+    $valstr .= "info = NULL ";
+} else {
+    $valstr = 'info = ? ';
+    array_push($vals, $hinfo);
+}
+array_push($vals, $hikeNo);
+$updtDescReq = "UPDATE EHIKES SET " . $valstr . "WHERE indxNo = ?;";
 $descq = $pdo->prepare($updtDescReq);
-$descq->execute([$htips, $hinfo, $hikeNo]);
+$descq->execute($vals);
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=3";
 header("Location: {$redirect}");
