@@ -14,16 +14,16 @@ $uid = filter_input(INPUT_POST, 'did');
 $htips = filter_input(INPUT_POST, 'tips');
 $hinfo = filter_input(INPUT_POST, 'hinfo');
 $vals = [];
-if (is_null($htips)) {
+if ($htips === '') {
     $valstr = 'tips = NULL, ';
 } else {
     $valstr = 'tips = ?, ';
     $vals[0] = $htips;
 }
-if (is_null($hinfo)) {
+if ($hinfo === '') {
     $valstr .= "info = NULL ";
 } else {
-    $valstr = 'info = ? ';
+    $valstr .= 'info = ? ';
     array_push($vals, $hinfo);
 }
 array_push($vals, $hikeNo);
