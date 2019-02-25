@@ -3,10 +3,9 @@
  * This module produces the html for placing photos with selection boxes.
  * REQUIREMENTS:
  *      1. $hikeNo must be defined in caller's environment (EHIKES or HIKES)
- *      2. $pgType must be defined by caller to determine whether or not
- *         to display captions for editing
- *      3. picPops.js is looking for a <p id="ptype"> on the caller's page
- *         identifying the page type: Validation, Finish or Edit
+ *      2. picPops.js is looking for a <p id="ptype"> on the caller's page
+ *         identifying the page type: Edit (This may 
+ *         be related to Flickr uploads; not currently required)
  * Place this code inside a <div> element.
  * PHP Version 7.1
  * 
@@ -16,9 +15,6 @@
  */
 $h4txt = "Please check the boxes corresponding to the pictures you wish to " .
     "include on the hike page, and those you wish to include on the geomap.";
-if (isset($pgType) && $pgType === 'Edit') {
-    $h4txt .= " NOTE: Checking 'Delete' permanently removes the photo.";
-}
 $picreq = "SELECT * FROM ETSV WHERE indxNo = :hikeno;";
 $picq = $pdo->prepare($picreq);
 $picq->execute(["hikeno" => $hikeNo]);
@@ -117,10 +113,8 @@ if ($inclPix === 'YES') {
             $mpbox .= '" />Map<br />' . PHP_EOL;
         }
         echo $mpbox;
-        if ($pgType === 'Edit') {
-            echo '<input class="delp" type="checkbox" name="rem[]" value="'
-                . $phNames[$i] . '" />Delete<br />';
-        }
+        echo '<input class="delp" type="checkbox" name="rem[]" value="'
+            . $phNames[$i] . '" />Delete<br />';
         if ($phWds[$i] > $maxOccupy) {
             echo '<img class="allPhotos" height="' . $newht . 'px" width="' 
             . $maxOccupy . 'px" src="' . $picpath . $phPics[$i] . "_n.jpg"
@@ -131,15 +125,13 @@ if ($inclPix === 'YES') {
                 . '" alt="' . $phNames[$i]
                 . '" /><br />' . PHP_EOL;
         }
-        if ($pgType === 'Edit') {
-            if ($phWds[$i] > $maxOccupy) {
-                $tawd = $maxOccupy - 12; // textarea widths don't compute exactly
-            } else {
-                $tawd = $phWds[$i] - 12; 
-            } 
-            echo '<textarea style="width:' . $tawd . 'px" name="ecap[]">' .
-                $phDescs[$i] . "</textarea>";
-        }
+        if ($phWds[$i] > $maxOccupy) {
+            $tawd = $maxOccupy - 12; // textarea widths don't compute exactly
+        } else {
+            $tawd = $phWds[$i] - 12; 
+        } 
+        echo '<textarea style="width:' . $tawd . 'px" name="ecap[]">' .
+            $phDescs[$i] . "</textarea>";
         echo "</div>" . PHP_EOL;
     }
     // create the js arrays to be passed to the accompanying script:
