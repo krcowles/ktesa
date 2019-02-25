@@ -2,7 +2,7 @@
 /**
  * This script is called via ajax from the ktesaUploader.js module.
  * One photo file will be POSTed from the form, accompanied by a photo
- * name and description, and the corresponding EHIKES hike number.
+ * description, and the corresponding EHIKES hike number.
  * This data will be used to construct the images required for storage on
  * the site and corresponding data will be entered into the database.
  * PHP Version 7.1
@@ -22,10 +22,9 @@ if ($fstat !== UPLOAD_ERR_OK) {
     $msg = uploadErr($fstat);
     die(json_encode($msg));
 }
-$orgname = filter_input(INPUT_POST, 'fname');
 $indxNo = filter_input(INPUT_POST, 'indx');
 $descdat = filter_input(INPUT_POST, 'descstr');
-$picdescs = json_decode($descdat);
+$picdesc = json_decode($descdat);
 // Size width definitions:
 $n_size = 320;
 $z_size = 640;
@@ -43,9 +42,7 @@ $upld_results = '';
 if (exif_imagetype($photo) !== IMAGETYPE_JPEG) {
     $upld_results .= "Image " . $fname . 
         " is not JPEG: No upload will occur." . PHP_EOL;
-    $process = false;
-} else {
-    $process = true;
+    die(json_encode($upld_results));
 }
 try {
     $exifData = exif_read_data($photo);
@@ -116,36 +113,15 @@ if ($exifData) {
 
 restore_error_handler();
 
-// check the GD support in this version of php:
-$GDsupport = gd_info();
-if ($GDsupport['JPEG Support']) {
-    if ($process) {
-        $rotate = false;
-        if ($orient == '6') {
-            $rotate = true;
-        }
-        $nfileName = $imgName . "_n.jpg";
-        $zfileName = $imgName . "_z.jpg";
-        $size = "n";
-        storeUploadedImage(
-            $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
-        );
-        $size = "z";
-        storeUploadedImage(
-            $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
-        );
-    }
-} else {
-    $upld_results .= "There is no support for image resizing;";
-    die(json_encode($upld_results));
-}
-
-/*
- *  THIS IS THE CODE THAT MAY CHANGE WHEN TSV GETS REDEFINED 
- *  ALSO: WHEN 'PDO_complete' is merged, the PDO connection will already 
- *  be in place, hence eliminate the first line of this code
- */
-
+// determine next 'thumb' value for new entry
+$tval = "SELECT thumb FROM TSV ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
+$tresult = $pdo->query($tval);
+$tmax = $tresult->fetch(PDO::FETCH_NUM);
+$eval = "SELECT thumb FROM ETSV ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
+$eresult = $pdo->query($eval);
+$emax = $eresult->fetch(PDO::FETCH_NUM);
+$max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
+$newthumb = (int)$max + 1;
 /**
  * Create VALUES list, adding NULLs where needed:
  * Always present: indxNo, title, mid, imgHt, imgWd
@@ -153,12 +129,12 @@ if ($GDsupport['JPEG Support']) {
 $valstr = "VALUES (?,?,"; // indxNo, title fields
 $vals = [$indxNo, $imgName];
 $vindx = 1; // index of last element in $vals array
-if ($picdescs == "") {
+if ($picdesc == "") {
     $valstr .= "NULL,"; // desc field
 } else {
     $valstr .= "?,";
     $vindx++;
-    $vals[$vindx] = $picdescs;
+    $vals[$vindx] = $picdesc;
 }
 if (is_null($lats) || is_null($lngs)) {
     $valstr .= "NULL,NULL,";
@@ -170,6 +146,9 @@ if (is_null($lats) || is_null($lngs)) {
     $vals[$vindx] = $lngs;
 
 }
+$valstr .= "?,";
+$vindx++;
+$vals[$vindx] = $newthumb;
 if (is_null($timestamp)) {
     $valstr .= "NULL,";
 } else {
@@ -182,10 +161,34 @@ $vals[$vindx+1] = $imgName;
 $vals[$vindx+2] = $imgHt_n;
 $vals[$vindx+3] = $imgWd_n;
 $tsvReq
-    = "INSERT INTO ETSV (indxNo,title,`desc`,lat,lng,`date`,mid,imgHt,imgWd) "
+    = "INSERT INTO ETSV (indxNo,title,`desc`,lat,lng,thumb,`date`,mid,imgHt,imgWd) "
         . $valstr;
 $tsv = $pdo->prepare($tsvReq);
 $tsv->execute($vals);
+
+// check the GD support in this version of php:
+$gd = false;
+$GDsupport = gd_info();
+if ($GDsupport['JPEG Support']) {
+    $gd = true;
+    $rotate = false;
+    if ($orient == '6') {
+        $rotate = true;
+    }
+    $nfileName = $imgName . "_" . $newthumb . "_n.jpg";
+    $zfileName = $imgName . "_" . $newthumb . "_z.jpg";
+    $size = "n";
+    storeUploadedImage(
+        $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
+    );
+    $size = "z";
+    storeUploadedImage(
+        $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
+    );
+} else {
+    $upld_results .= "There is no support for image resizing;";
+    die(json_encode($upld_results));
+}
 
 // return json to ajax caller
 if (isset($filedat)) {

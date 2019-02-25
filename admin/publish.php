@@ -145,6 +145,7 @@ if ($status > 0) { // eliminate any existing data
     $dquery = "DELETE FROM REFS WHERE indxNo = :indxNo;";
     $delref = $pdo->prepare($dquery);
     $delref->bindValue(":indxNo", $indxNo);
+    $delref->execute();
 }
 // insert new data whether old or new hike
 $query

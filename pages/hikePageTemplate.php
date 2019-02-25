@@ -162,7 +162,7 @@ function off() {
 <?php endif; ?>
 <!-- BOTH STYLES: -->
 <div style="clear:both;"><br />
-<?php if ($hikeTips !== '') : ?>
+<?php if (!is_null($hikeTips)) : ?>
 <div id="trailTips"><img id="tipPic" src="../images/tips.png"
     alt="special notes icon" /><p id="tipHdr">TRAIL TIPS!</p>
     <p id="tipNotes"><?= $hikeTips;?></p></div>
