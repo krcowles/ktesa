@@ -80,11 +80,20 @@ if ($inclPix === 'YES') {
         $phDescs[$picno] = $pics['desc'];
         $hpg[$picno] = $pics['hpg'];
         $mpg[$picno] = $pics['mpg'];
-        $phPics[$picno] = $pics['mid'] . "_" . $pics['thumb'];
-        $pHeight = $pics['imgHt'];
-        $aspect = $rowHt/$pHeight;
-        $pWidth = $pics['imgWd'];
-        $phWds[$picno] = floor($aspect * $pWidth);
+        if ($pics['mid']) {  // Picture
+            $phPics[$picno] = $pics['mid'] . "_" . $pics['thumb'];
+            $pHeight = $pics['imgHt'];
+            $aspect = $rowHt/$pHeight;
+            $pWidth = $pics['imgWd'];
+            $phWds[$picno] = floor($aspect * $pWidth);
+        }
+        else {  // Waypoint
+            $phPics[$picno] = "waypoint";
+            $pHeight = 220;
+            $aspect = $rowHt/$pHeight;
+            $pWidth = 220;
+            $phWds[$picno] = floor($aspect * $pWidth);
+        }
         $picno += 1;
     }
     for ($i=0; $i<$picno; $i++) {
