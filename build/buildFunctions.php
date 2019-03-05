@@ -33,12 +33,12 @@ function validateUpload($name, $fileloc)
         $filestat = $_FILES[$name]['error'];
         if ($filestat !== UPLOAD_ERR_OK) {
             $badupld = "Failed to upload {$name}: " . uploadErr($filestat);
-            die($badupld);
+            throw new Exception($badupld);
         }
         if (substr_count($filename, ".") !== 1) {
             $odd = "This file may be corrupted. Please correct the " .
                 "file format and re-submit, or contact Site Master.";
-            die($odd);
+            throw new Exception($odd);
         }
         // Validate against schema, if gpx (XML):
         $ext = strpos($filename, ".") + 1;
@@ -46,7 +46,7 @@ function validateUpload($name, $fileloc)
         if (strtoLower($file_ext) === 'gpx') {
             $xml = new DOMDocument;
             if (!$xml->load($tmp_upload)) {
-                die(
+                throw new Exception(
                     "{$filename} could not be loaded as a DOMDocument in "
                     . "validateUpload of buildFunctions.php line " . __LINE__
                 );
@@ -62,7 +62,7 @@ function validateUpload($name, $fileloc)
                     "</li>";
                 }
                 $err_list .= "</ul>";
-                die(
+                throw new Exception(
                     "{$filename} could not be validated against the XML gpx " 
                     . "schema in validateUpload() " . __FILE__ . " line "
                     . __LINE__ . "<br />" . $err_list
@@ -79,7 +79,7 @@ function validateUpload($name, $fileloc)
         }
         if (!move_uploaded_file($tmp_upload, $saveloc)) {
             $nomove = "Could not save {$filename} to site: contact Site Master";
-            die($nomove);
+            throw new Exception($nomove);
         } else {
             $msg .= "'{$filename}' Successfully uploaded to site";
         }
@@ -190,7 +190,7 @@ function makeTrackFile($gpxfile, $gpxpath)
     if ($dwnld === false) {
         $trkfail =  "buildFunctions.php: Failed to write out {$trkfile} " .
             "[length: " . strlen($jdat) . "]; Please contact Site Master";
-        die($trkfail);
+        throw new Exception($trkfail);
     } else {
         $msg = '<p>Track file created from GPX and saved</p>';
     }
@@ -291,7 +291,7 @@ function dropdownData($pdo, $boxtype)
                         $doubles[$clusltr] = $clusnme;
                     }
                 } else {
-                    die(
+                    throw new Exception(
                         "Clusters of length " . strlen($clusltr)
                         . " not supported at this time"
                     );
@@ -313,7 +313,7 @@ function dropdownData($pdo, $boxtype)
                         $doubles[$clusltr] = $clusnme;
                     }
                 } else {
-                    die(
+                    throw new Exception(
                         "Clusters of length " . strlen($clusltr)
                         . "not supported at this time"
                     );
@@ -439,7 +439,7 @@ function gpxLatLng($gpxfile, $no_of_tracks)
     // get file as simple xml
     $gpxdat = simplexml_load_file($gpxfile);
     if ($gpxdat === false) {
-        die(
+        throw new Exception(
             __FILE__ . "Line " . __LINE__ . "Could not load gpx file as " .
             "simplexml; Please contact Site Master"
         );

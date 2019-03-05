@@ -5,6 +5,7 @@
  * description, and the corresponding EHIKES hike number.
  * This data will be used to construct the images required for storage on
  * the site and corresponding data will be entered into the database.
+ * Note: 'die' statements are pushed back to the ajax caller.
  * PHP Version 7.1
  * 
  * @package Uploading

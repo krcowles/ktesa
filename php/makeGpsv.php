@@ -43,7 +43,7 @@ if ($gpxdat === false) {
     } else {
         $filemsg = $gpxPath;
     }
-    die($gpxmsg . $filemsg . $close);
+    throw new Exception($gpxmsg . $filemsg . $close);
 }
 /**
  * In case the file is constructed using 'rtept' tags instead of

@@ -18,7 +18,7 @@ if (is_null($curr_ons)) {
 }
 $modePtr = fopen("sql_modes.ini", "w");
 if ($modePtr === false) {
-    die("<p>Could not open modes file for writing</p>");
+    throw new Exception("<p>Could not open modes file for writing</p>");
 }
 foreach ($old as $opt) {
     $opt = substr($opt, 2, strlen($opt)-2);
