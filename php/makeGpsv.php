@@ -259,7 +259,7 @@ if ($showPhotos) {
                 $iconColor = $defIconColor;
             }
             // If wypt in ETSV file....
-            if ($photos['mid'] == '') { // waypoint icon
+            if (empty($photos['mid'])) { // waypoint icon
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng']. ",name:'" . $procName . "',desc:'" .
                     $procDesc . "',color:'" . $iconColor . "',icon:''});";
