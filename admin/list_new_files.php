@@ -14,17 +14,31 @@ $tmpPix = sys_get_temp_dir() . '/newPix.zip';
 if (file_exists($tmpPix)) {
     unlink($tmpPix);
 }
+// before changing directory:
+$uploadDate = filemtime("./dummy.txt") + 20; // Upload time plus 20 seconds for unzip
+//$inputDate = "02/20/2019 1:30:00"; // Use these lines to manually enter a date
+//$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
+$udate = date(DATE_RFC2822, $uploadDate);
+// get location of pictures directory before proceeding
+$current = getcwd();
+$ups = 0;
+// find level at which pictures directory resides
+while (!in_array('pictures', scandir($current))) {
+    chdir('..');
+    $current = getcwd();
+    $ups++;
+    if ($ups > 10) { 
+        throw new Exception("Can't find pictures directory!");
+    }
+}
+
 $dir_iterator = new RecursiveDirectoryIterator(
-    "../", RecursiveDirectoryIterator::SKIP_DOTS
+    ".", RecursiveDirectoryIterator::SKIP_DOTS
 );
 $iterator = new RecursiveIteratorIterator(
     $dir_iterator, RecursiveIteratorIterator::SELF_FIRST
 );
 // could use CHILD_FIRST if you so wish
-$uploadDate = filemtime("./dummy.txt") + 20; // Upload time plus 20 seconds for unzip
-//$inputDate = "02/20/2019 1:30:00"; // Use these lines to manually enter a date
-//$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
-$udate = date(DATE_RFC2822, $uploadDate);
 $items = [];
 //echo "Upload date: " . date(DATE_RFC2822, $uploadDate) . "<br /><br />";
 //echo "Files changed since upload:<br />";
@@ -46,12 +60,6 @@ if ($request === 'pictures') {
     $stat = $zip->open($tmpPix, ZipArchive::CREATE);
     if ($stat !== true) {
         throw new Exception("ZipArchive Error: " . $stat);
-    }
-    $current = getcwd();
-    // find level at which pictures directory resides
-    while (!in_array('pictures', scandir($current))) {
-        chdir('..');
-        $current = getcwd();
     }
     foreach ($items as $newpic) {
         if (strpos($newpic, 'pictures/') !== false 
