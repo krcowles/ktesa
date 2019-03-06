@@ -32,7 +32,7 @@ foreach ($iterator as $file) {
     if ($file->isFile()) {
         if ($file->getMTime() > $uploadDate) {
             $leaf = $iterator->getSubPathName();
-            if (substr($leaf, 0, 4) !== '.git') {
+            if (substr($leaf, 0, 4) !== '.git' && $leaf !== '.DS_Store') {
                 if ($request === 'files') {
                     $leaf .= ": " . date(DATE_RFC2822, $file->getMTime());
                 } 
