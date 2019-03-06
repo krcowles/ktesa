@@ -108,10 +108,13 @@ input[type=submit] {
     height: 30px;
     width: 120px;
     font-size: 16px;
+    background-color: honeydew;
 }
 input[type=submit]:hover {
     background-color: papayawhip;
     cursor: pointer;
+    color: brown;
+    font-weight: bold;
 }
 input[type=button]:hover {
     background-color: papayawhip;
@@ -202,13 +205,15 @@ input[type=button]:hover {
     background-color: papayawhip;
 }
 #upld {
+    height: 32px;
+    width: 114px;
     font-size: 16px;
     margin-left: 8px;
     background-color: honeydew;
-    color: darkgray;
 }
 #upld:hover {
     cursor: pointer;
     background-color: papayawhip;
     color: brown;
+    font-weight: bold;
 }

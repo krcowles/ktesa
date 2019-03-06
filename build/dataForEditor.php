@@ -61,7 +61,7 @@ $hikeLng = fetch($hike['lng']);
 $hikeUrl1 = fetch($hike['purl1']);
 $hikeUrl2 = fetch($hike['purl2']);
 $hikeDirs = fetch($hike['dirs']);
-$hikeTips = fetch($hike['tips']);
+$hikeTips = $hike['tips'];
 $hikeDetails = fetch($hike['info']);
 // References for tab4:
 $refreq = "SELECT * FROM EREFS WHERE indxNo = :hikeno;";
