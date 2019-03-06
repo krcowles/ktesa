@@ -12,6 +12,12 @@ require "../php/global_boot.php";
 
 $hikeNo = filter_input(INPUT_POST, 'pno');
 $uid = filter_input(INPUT_POST, 'pid');
+// waypoint data, if present:
+$wids = $_POST['wids'];  // picIdx for waypoint
+$wdes = $_POST['wdes'];
+$wsym = $_POST['wsym'];
+$wlat = $_POST['wlat'];
+$wlng = $_POST['wlng'];
 /* It is possible that no pictures are present, also that no
  * checkboxes are checked. Therefore, the script tests for these things
  * to prevent undefined vars
@@ -47,48 +53,53 @@ if (isset($_POST['rem'])) {
 $photoReq = "SELECT picIdx,title,hpg,mpg,`desc` FROM ETSV WHERE indxNo = ?;";
 $photoq = $pdo->prepare($photoReq);
 $photoq->execute([$hikeNo]);
-$cnt = $photoq->rowCount();
-if ($noOfPix !== $cnt) {
-    echo '<p style="color:red;font-size:20px;margin-left:16px;">'
-    . "WARNING: Retrieved photo count and no of captions don't match..</p>";
-}
 $p = 0;
 while ($photo = $photoq->fetch(PDO::FETCH_ASSOC)) {
-    $thisid = $photo['picIdx'];
-    $thispic = $photo['title'];
-    $newcap = $ecapts[$p];
-    // look for a matching checkbox then set for display (or map)
-    $disph = 'N';
-    for ($i=0; $i<count($displayPg); $i++) {
-        if ($thispic == $displayPg[$i]) {
-            $disph = 'Y';
-            break;
+    if (!empty($photo['imgHt'])) {
+        $thisid = $photo['picIdx'];
+        $thispic = $photo['title'];
+        $newcap = $ecapts[$p];
+        // look for a matching checkbox then set for display (or map)
+        $disph = 'N';
+        for ($i=0; $i<count($displayPg); $i++) {
+            if ($thispic == $displayPg[$i]) {
+                $disph = 'Y';
+                break;
+            }
         }
-    }
-    $dispm = 'N';
-    for ($j=0; $j<count($displayMap); $j++) {
-        if ($thispic == $displayMap[$j]) {
-            $dispm = 'Y';
-            break;
+        $dispm = 'N';
+        for ($j=0; $j<count($displayMap); $j++) {
+            if ($thispic == $displayMap[$j]) {
+                $dispm = 'Y';
+                break;
+            }
         }
-    }
-    $deletePic = false;
-    for ($k=0; $k<$noOfRems; $k++) {
-        if ($rems[$k] === $thispic) {
-            $deletePic = true;
-            break;
+        $deletePic = false;
+        for ($k=0; $k<$noOfRems; $k++) {
+            if ($rems[$k] === $thispic) {
+                $deletePic = true;
+                break;
+            }
         }
+        if ($deletePic) {
+            $delreq = "DELETE FROM ETSV WHERE title = ?;";
+            $del = $pdo->prepare($delreq);
+            $del->execute([$thispic]);
+        } else {
+            $updtreq = "UPDATE ETSV SET hpg = ?, mpg = ?, `desc` = ? WHERE picIdx = ?;";
+            $update = $pdo->prepare($updtreq);
+            $update->execute([$disph, $dispm, $newcap, $thisid]);
+        }
+        $p++;
     }
-    if ($deletePic) {
-        $delreq = "DELETE FROM ETSV WHERE title = ?;";
-        $del = $pdo->prepare($delreq);
-        $del->execute([$thispic]);
-    } else {
-        $updtreq = "UPDATE ETSV SET hpg = ?, mpg = ?, `desc` = ? WHERE picIdx = ?;";
-        $update = $pdo->prepare($updtreq);
-        $update->execute([$disph, $dispm, $newcap, $thisid]);
+}
+if (isset($wids)) {
+    for ($k=0; $k<count($wids); $k++) {
+        $wayptquery = "UPDATE ETSV SET title = ?, lat = ?, lng = ?, iclr = ?
+            WHERE picIdx = ?;";
+        $waypt = $pdo->prepare($wayptquery);
+        $waypt->execute([$wdes[$k], $wlat[$k], $wlng[$k], $wsym[$k], $wids[$k]]);
     }
-    $p++;
 }
 $redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=2";
 header("Location: {$redirect}");

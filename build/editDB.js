@@ -374,4 +374,18 @@ $('#upld').on('click', function() {
     window.open(uploader, "_blank");
 });
 
+// new:
+var wicons = $('[id^="wicn"]');
+var wddbox = $('[id^="selicon"]');
+if (wicons.length > 0) {
+    ivals = [];
+    var x =0;
+    wicons.each(function() {
+        ivals[x++] = $(this).text();
+    });
+    wddbox.each(function(indx) {
+        $(this).val(ivals[indx]);
+    });
+}
+
 });  // end of 'page (DOM) loading complete'
