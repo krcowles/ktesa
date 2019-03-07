@@ -416,9 +416,19 @@ function postImg(ifile, des, hikeno) {
     var picdesc = JSON.stringify(des);
     ajaxData.append('descstr', picdesc);
     ajaxData.append('indx', hikeno);
-    var mdate = new Date();
-    timers = "Start: " + mdate + " ";
     $.ajax({
+        xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.addEventListener("progress", function(evt) {
+               if (evt.lengthComputable) {
+                   var percentComplete = evt.loaded / evt.total;
+                   var meter = (1 - percentComplete) * 87;
+                   $('#mtr')[0].setAttribute('stroke-dashoffset', meter)
+               }
+           }, false);
+    
+           return xhr;
+        },
         url: 'usrPhotos.php',
         type: 'POST',
         data: ajaxData,
@@ -427,9 +437,7 @@ function postImg(ifile, des, hikeno) {
         contentType: false,
         processData: false,
         success: function(data) {
-            var adate = new Date();
-            timers += "Success: " + adate;
-            $('body').append(data);
+            //$('body').append(data);
             def.resolve();
         },
         error: function(jqXHR, status, error) {
@@ -459,7 +467,6 @@ function cleanup() {
         }
     });
     //alert(upldMsg);
-    alert(timers);
     upldMsg = '';
     uloads = [];
     nmebox = [];
