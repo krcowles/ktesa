@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=565 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=576 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -267,7 +267,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=195 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -465,7 +465,8 @@ INSERT INTO HIKES VALUES
 ('191','Gold Dust Trail','mstr','Glenwood','Cluster',NULL,'JJ','Catwalks Group','Out-and-back','2.60','400','Moderate','None','High view of Whitewater Canyon','Not Winter','Full sun','GoldDust.GPX','GoldDust.json','33.3761976287','-108.843736388',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//33.3761976,-108.8436867/@33.3636519,-108.8829602,13.04z','Park on a gravel pull-out off of NM 159 (Bursum Road) just north of Glenwood. The pullout is unmarked, about 3 miles from US180. Proceed to the end, where there is a trail marker.','This hike takes you several hundred feet above and parallel to the Catwalks Recreation Area. Although a bit far to see the Catwalks easily, the views are quite nice, with glimpses of Whitewater Canyon. The hike actually joins up with the old extension of the Catwalks Trail (flooded out in 2013), but due to blustery, cold temperatures with oncoming rain/sleet clouds, the author turned around once reaching a Whitewater tributary.',NULL,NULL,NULL),
 ('192','City of Rocks','mstr','Silver City','Normal',NULL,'','','Loop','6.10','500','Easy-Moderate','Visitor Center/Camping','Unusual Eroded Rock','Not summer','Full sun','city-of-rocks.gpx','city-of-rocks.json','32.588131','-107.973922',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//City+of+Rocks+State+Park,+327+New+Mexico+61,+Faywood,+NM+88034/@32.545153,-108.0461403,12.11z/data=!4m8!4m7!1m0!1m5!1m1!1s0x86df2c14e0694c67:0xf313973338a97daf!2m2!1d-107.9756273!2d32.5896405',NULL,'A very unusual section of eroded volcanic ash in the midst of the high desert plains about 30 minutes southeast of Silver City. You won\'t find anything like it elsewhere! There are multiple short loop hikes or simply traverse the area at will from the Visitor Center around the camping loop drive. It is a state park with hours are posted. Note: the author did not traverse the loop due to weather conditions, and the track file was downloaded from REI\'s \'The Hiking Project\'.',NULL,NULL,NULL),
 ('193','Querencia Arroyo','mstr','San Ysidro','Normal',NULL,'','','Out-and-back','1.10','300','Med-Difficult','None','Wilderness views','Not Summer','Full sun','Querencia.GPX','Querencia.json','35.5024414603','-106.8689451646',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B030\'08.8%22N+106%C2%B052\'08.2%22W/@35.5005737,-106.8698507,3569m/data=!3m1!1e3!4m5!3m4!1s0x0:0x0!8m2!3d35.5024415!4d-106.8689452','The access to this location is off-road with poorly maintained road conditions. It will require 4-wheel/all-wheel drive with good ground clearance. There are no markers for the location, so utilize the gps location indicated on the driving directions.','While there are more spectacular areas in the Ojito Wilderness, this hike nonetheless offers an interesting vantage point. There is a short but steep climb, almost a scramble, to get to the mesa top where the arroyo is located. Along the route are very nice views of the surrounding area. At the top, near the dirt road, are some unmarked ancient ruins. Although the book reference indicates a route, there is no trail and the author decided against attempting the loop. In addition, the author appears to have found a higher starting point for the ascent. For those more adventurous, utilize the provided reference.',NULL,NULL,NULL),
-('194','Emery - Bear Canyon','mstr','Albuquerque','Cluster',NULL,'II','Michael Emery Group','Loop','3.00','400','Easy','None','Arroyo and Sandia Views','Not Summer','Full sun','Emery-BearCanyon.GPX','Emery-BearCanyon.json','35.1458918117','-106.482262155',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Michael+Emery+Trailhead,+High+Desert+St,+Albuquerque,+NM+87111/@35.1377149,-106.5028257,14.14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189f0b45d7713b:0xa5dd80d463752610!2m2!1d-106.4824107!2d35.1459308',NULL,'This is a relatively easy hike starting from the Michael Emery parking area (misnamed by local signs, the trail is actually Michial Emery). The views heading towards the mountains are quite lovely, especially, as can be seen, in snowier weather. A small portion of the trail circumvents some housing, but otherwise offers a pleasant and relatively solitary experience. This loop heads close to Tramway Blvd, though a bit below it, and leads back to the parking area. ',NULL,NULL,NULL);
+('194','Emery - Bear Canyon','mstr','Albuquerque','Cluster',NULL,'II','Michael Emery Group','Loop','3.00','400','Easy','None','Arroyo and Sandia Views','Not Summer','Full sun','Emery-BearCanyon.GPX','Emery-BearCanyon.json','35.1458918117','-106.482262155',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Michael+Emery+Trailhead,+High+Desert+St,+Albuquerque,+NM+87111/@35.1377149,-106.5028257,14.14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189f0b45d7713b:0xa5dd80d463752610!2m2!1d-106.4824107!2d35.1459308',NULL,'This is a relatively easy hike starting from the Michael Emery parking area (misnamed by local signs, the trail is actually Michial Emery). The views heading towards the mountains are quite lovely, especially, as can be seen, in snowier weather. A small portion of the trail circumvents some housing, but otherwise offers a pleasant and relatively solitary experience. This loop heads close to Tramway Blvd, though a bit below it, and leads back to the parking area. ',NULL,NULL,NULL),
+('195','Tramway-230-505 Loop','mstr','Albuquerque','Cluster',NULL,'X','Tramway Group','Loop','5.40','400','Moderate','Tram Visitor Center','Views of Sandia Range','Not Summer','Full sun','Tram-505-230_Loop.GPX','Tram-505-230_Loop.json','35.1903482527','-106.4799116179',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Sandia+Peak+Tramway,+30+Tramway+Rd+NE,+Albuquerque,+NM+87122/@35.1877122,-106.4974688,14.64z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189e8cfbdf7855:0xdee0b10202a6352b!2m2!1d-106.4795935!2d35.1906969','Note: There are two separate entrances to the Domingo Baca Trail from Trail 230: one north, one south. To find the \'Unnamed Trail\' in this hike, use the north entrance.','The hike begins in the southeast corner of the Lower Tram parking area. It is about a 1/4 mile steep hike up to the water tanks, and after that, more moderate ups and downs as you proceed along the foothills. The trail follows the reasonably well-marked Trail 365 markers, and to gain a bit more scenery and exercise, veers west onto a spur. The spur loops towards a residential area, then returns to rejoin 365. Proceeding along 365, the hike assumes an easterly direction on Trail 230. There is a boundary fence where Trail 230 begins the Domingo Baca trail, and a sharp left takes you onto an unnamed trail. This trail parallels 365 close to the mountain\'s base and eventually rejoins near the water tanks. There are a great variety of views to enhance your experience.',NULL,NULL,NULL);
 
 
 
@@ -533,7 +534,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1411 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1412 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1306,7 +1307,8 @@ INSERT INTO REFS VALUES
 ('1407','194','App:','https://www.alltrails.com/trail/us/new-mexico/bear-canyon-open-space-loop','AllTrails.com'),
 ('1408','190','Book:','21','Tamara Massong'),
 ('1409','190','App:','https://www.alltrails.com/trail/us/new-mexico/michial-m-emery-and-trail-305-loop','AllTrails.com'),
-('1410','190','Website:','https://www.mtbproject.com/trail/7007599/michael-emery-trail','MBT Project (REI)');
+('1410','190','Website:','https://www.mtbproject.com/trail/7007599/michael-emery-trail','MBT Project (REI)'),
+('1411','195','Book:','21',NULL);
 
 
 
@@ -1330,7 +1332,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=3890 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3901 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3444,7 +3446,19 @@ INSERT INTO TSV VALUES
 ('3886','190',NULL,'IMG_0698','Y','Y','Tom and Bentley pose for a great vista of snowy Sandia','35.146725','-106.467788889','2046',NULL,'2019-01-31 14:35:58','IMG_0698','240','320',NULL,NULL),
 ('3887','190',NULL,'IMG_0699','Y','Y','Rock decorations - not always natural!','35.1479333333','-106.461691667','2047',NULL,'2019-01-31 14:48:21','IMG_0699','240','320',NULL,NULL),
 ('3888','190',NULL,'IMG_0700','Y','Y','More trail views','35.1572444444','-106.465447222','2048',NULL,'2019-01-31 15:17:46','IMG_0700','320','240',NULL,NULL),
-('3889','190',NULL,'IMG_20190131_151846439','Y','Y','Ken at one of the many junctions','35.157583','-106.465226972','2049',NULL,'2019-01-31 15:18:47','IMG_20190131_151846439','180','320',NULL,NULL);
+('3889','190',NULL,'IMG_20190131_151846439','Y','Y','Ken at one of the many junctions','35.157583','-106.465226972','2049',NULL,'2019-01-31 15:18:47','IMG_20190131_151846439','180','320',NULL,NULL),
+('3890','195',NULL,'IMG_0861','Y','Y','Wilderness boundary','35.1828194444','-106.4742666667','2139',NULL,'2019-02-26 13:29:16','IMG_0861','240','320',NULL,NULL),
+('3891','195',NULL,'IMG_0858','Y','Y','Unnamed trail begins here with a sharp left','35.1769222222','-106.4696805556','2140',NULL,'2019-02-26 13:11:03','IMG_0858','240','320',NULL,NULL),
+('3892','195',NULL,'IMG_0848','Y','Y','Trail view of Tower 1','35.1893277778','-106.4774472222','2141',NULL,'2019-02-26 11:54:46','IMG_0848','240','320',NULL,NULL),
+('3893','195',NULL,'IMG_0849','Y','Y','West to Mt Taylor','35.1875722222','-106.4774083333','2142',NULL,'2019-02-26 11:59:41','IMG_0849','240','320',NULL,NULL),
+('3894','195',NULL,'IMG_0855','Y','Y','The spur rejoins Trail 365','35.1809472222','-106.4744944444','2143',NULL,'2019-02-26 12:31:19','IMG_0855','240','320',NULL,NULL),
+('3895','195',NULL,'IMG_0853','Y','Y','Looking back from the western spur','35.18005','-106.4801027778','2144',NULL,'2019-02-26 12:21:01','IMG_0853','240','320',NULL,NULL),
+('3896','195',NULL,'IMG_0860','Y','Y','A rocky view from the Unnamed Trail','35.179','-106.473175','2145',NULL,'2019-02-26 13:21:18','IMG_0860','240','320',NULL,NULL),
+('3897','195',NULL,'IMG_0859','Y','Y','Smooth round boulders abound','35.1776388889','-106.4724055556','2146',NULL,'2019-02-26 13:16:57','IMG_0859','240','320',NULL,NULL),
+('3898','195',NULL,'IMG_0856','Y','Y','Trail 230 departs from Trail 365','35.1760333333','-106.4775083333','2147',NULL,'2019-02-26 12:56:49','IMG_0856','240','320',NULL,NULL);
+INSERT INTO TSV VALUES
+('3899','195',NULL,'IMG_0851','Y','Y','A snowy view to the southeast','35.1840333333','-106.4767444444','2148',NULL,'2019-02-26 12:09:30','IMG_0851','240','320',NULL,NULL),
+('3900','195',NULL,'IMG_0866','Y','Y','Tom and Bentley and Mt Taylor','35.1693416667','-106.4667888889','2149',NULL,'2019-03-05 11:39:55','IMG_0866','240','320',NULL,NULL);
 
 
 
