@@ -28,6 +28,9 @@ $picdesc = json_decode($descdat);
 // Size width definitions:
 $n_size = 320;
 $z_size = 640;
+// first byte;
+echo '<script type="text/javascript">var finpart = 1;</script>';  
+flush();
 
 set_error_handler(
     function () {
@@ -42,7 +45,9 @@ $upld_results = '';
 if (exif_imagetype($photo) !== IMAGETYPE_JPEG) {
     $upld_results .= "Image " . $fname . 
         " is not JPEG: No upload will occur." . PHP_EOL;
-    die(json_encode($upld_results));
+    file_put_contents('photoStat.txt', $upld_results);
+    restore_error_handler();
+    exit();
 }
 try {
     $exifData = exif_read_data($photo);
@@ -112,6 +117,8 @@ if ($exifData) {
 }
 
 restore_error_handler();
+// 2nd check point
+echo '<script type="text/javascript">var finpart = 2;</script>'; 
 
 // determine next 'thumb' value for new entry
 $tval = "SELECT thumb FROM TSV ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
@@ -122,6 +129,8 @@ $eresult = $pdo->query($eval);
 $emax = $eresult->fetch(PDO::FETCH_NUM);
 $max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
 $newthumb = (int)$max + 1;
+// 3rd check point
+echo '<script type="text/javascript">var finpart = 3;</script>'; 
 /**
  * Create VALUES list, adding NULLs where needed:
  * Always present: indxNo, title, mid, imgHt, imgWd
@@ -181,15 +190,19 @@ if ($GDsupport['JPEG Support']) {
     storeUploadedImage(
         $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
     );
+    // 4th check point
+    //echo "D";
     $size = "z";
     storeUploadedImage(
         $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
     );
 } else {
     $upld_results .= "There is no support for image resizing;";
-    die(json_encode($upld_results));
+    file_put_contents('photoStat.txt', $upld_results);
+    exit();
 }
-
+// last check point
+//echo "E";
 // return json to ajax caller
 if (isset($filedat)) {
     if ($upld_results !== '') {
@@ -199,5 +212,6 @@ if (isset($filedat)) {
     }
 } else {
     $msg = "Failed to upload: Contact site master" . PHP_EOL;
+    exit();
 }
-echo json_encode($msg);
+file_put_contents('photoStat.txt', $msg);

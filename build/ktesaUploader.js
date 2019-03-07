@@ -1,6 +1,6 @@
 // close the parent (tab2 of editDB) so that when returning, the page is refreshed
 window.opener.close();
-
+var timers;
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
 var FR_Images = []; // FileReader objects to be loaded into DOM
@@ -158,7 +158,7 @@ function ldNodes(fr_objs) {
                 prog.setAttribute('stroke', '#f73722');
                 prog.setAttribute('stroke-width', '4');
                 prog.setAttribute('stroke-dasharray', '87.964');
-                prog.setAttribute('stroke-dashoffset', '35.186');
+                prog.setAttribute('stroke-dashoffset', '87.964');
                 svg.appendChild(circle);
                 svg.appendChild(prog);
                 circmtr.appendChild(svg);
@@ -416,16 +416,20 @@ function postImg(ifile, des, hikeno) {
     var picdesc = JSON.stringify(des);
     ajaxData.append('descstr', picdesc);
     ajaxData.append('indx', hikeno);
+    var mdate = new Date();
+    timers = "Start: " + mdate + " ";
     $.ajax({
         url: 'usrPhotos.php',
         type: 'POST',
         data: ajaxData,
-        dataType: 'json',
+        dataType: 'html',
         cache: false,
         contentType: false,
         processData: false,
         success: function(data) {
-            upldMsg += data;
+            var adate = new Date();
+            timers += "Success: " + adate;
+            $('body').append(data);
             def.resolve();
         },
         error: function(jqXHR, status, error) {
@@ -454,7 +458,8 @@ function cleanup() {
             $(this).before($(saved));
         }
     });
-    alert(upldMsg);
+    //alert(upldMsg);
+    alert(timers);
     upldMsg = '';
     uloads = [];
     nmebox = [];

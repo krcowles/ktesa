@@ -61,6 +61,7 @@ $Euser = filter_input(INPUT_GET, 'usr');
     </div>
 </form>
 <script src="ktesaUploader.js"></script>
+<script src="meterReader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
 </body>
 </html>
