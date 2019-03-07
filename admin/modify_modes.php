@@ -9,6 +9,7 @@
  * @license No license to date
  */
 session_start();
+require '../php/global_boot.php';
 $old = file('sql_modes.ini', FILE_IGNORE_NEW_LINES);
 $curr_ons = $_POST['ons'];
 if (is_null($curr_ons)) {

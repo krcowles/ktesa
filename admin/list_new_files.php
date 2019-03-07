@@ -8,6 +8,7 @@
  * @license No license to date
  * @link    ../docs/
  */
+require '../php/global_boot.php';
 $dir_iterator = new RecursiveDirectoryIterator("../", RecursiveDirectoryIterator::SKIP_DOTS);
 $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
 // could use CHILD_FIRST if you so wish
