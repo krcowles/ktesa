@@ -28,14 +28,14 @@ $upld4latlng = false;
 if (isset($delgpx)) {
     $delgpx = '../gpx/' . $maingpx;
     if (!unlink($delgpx)) {
-        die(
+        throw new Exception(
             __FILE__ . " Line " . __LINE__ . 
             ": Did not remove {$delgpx} from site"
         );
     }
     $deltrk = '../json/' . $maintrk;
     if (!unlink($deltrk)) {
-        die(
+        throw new Exception(
             __FILE__ . " Line " . __LINE__ .
             ": Did not remove {$deltrk} from site"
         );
@@ -153,12 +153,12 @@ $saves['cNme'] = $cgName;
  */
 if (isset($_POST['mft'])) {
     if ($maingpx == '') {
-        die("No gpx file has been uploaded for this hike");
+        throw new Exception("No gpx file has been uploaded for this hike");
     }
     $gpxPath = "../gpx/" . $maingpx;
     $gpxdat = simplexml_load_file($gpxPath);
     if ($gpxdat === false) {
-        die(__FILE__ . "Line " . __LINE__ . " Failed to open {$gpxPath}");
+        throw new Exception(__FILE__ . "Line " . __LINE__ . " Failed to open {$gpxPath}");
     }
     if ($gpxdat->rte->count() > 0) {
         $gpxdat = convertRtePts($gpxdat);

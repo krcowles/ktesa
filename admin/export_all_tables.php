@@ -28,13 +28,13 @@ $backup_name = "mybackup.sql";
 // mysqli prep:
 $link =  mysqli_connect($HOSTNAME, $USERNAME, $PASSWORD, $DATABASE);
 if (!$link) {
-    die(
+    throw new Exception(
         "Could not connect to the database using mysqli: File " .
         __FILE__ . "at line " . __LINE__
     );
 }
 if (!mysqli_set_charset($link, "utf8")) {
-    die(
+    throw new Exeption(
         "Function mysqli_set_charset failed when called from file " .
         __FILE__ . " line " . mysqli_error($link)
     );

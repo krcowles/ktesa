@@ -183,7 +183,7 @@ if ($newstyle) {
     if (($mapHandle = fopen($tmpMap, "w")) === false) {
         $mapmsg = "Contact Site Master: could not open tmp map file: " .
             $tmpMap . ", for writing";
-        die($mapmsg);
+        throw new Exception($mapmsg);
     }
     $fpLnk = "../maps/fullPgMapLink.php?maptype=page&hike={$hikeTitle}" .
         "&gpx={$gpxPath}&hno={$hikeIndexNo}&tbl={$tbl}";

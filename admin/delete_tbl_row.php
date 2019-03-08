@@ -38,14 +38,14 @@ if ($tbl_type === 'u') {
     $table = "GPSDAT";
     $idfield = "datId";
 } else {
-    die("Not supported for DELETE ROW at this time");
+    throw new Exception("Not supported for DELETE ROW at this time");
 }
 $lastid = "SELECT {$idfield} FROM {$table} ORDER BY {$idfield} DESC LIMIT 1";
 $last = $pdo->query($lastid);
 $iddat = $last->fetch(PDO::FETCH_NUM);
 $tblcnt = $iddat[0];
 if ($tblcnt === null) {
-    die("There are no rows to delete in this table");
+    throw new Exception("There are no rows to delete in this table");
 }
 if ($rowno > $tblcnt) {
     $badrow = true;
