@@ -15,6 +15,10 @@ if (file_exists($tmpPix)) {
     unlink($tmpPix);
 }
 // before changing directory:
+require '../php/global_boot.php';
+$dir_iterator = new RecursiveDirectoryIterator("../", RecursiveDirectoryIterator::SKIP_DOTS);
+$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+// could use CHILD_FIRST if you so wish
 $uploadDate = filemtime("./dummy.txt") + 20; // Upload time plus 20 seconds for unzip
 //$inputDate = "02/20/2019 1:30:00"; // Use these lines to manually enter a date
 //$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
