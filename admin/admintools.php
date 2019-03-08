@@ -48,6 +48,8 @@ require "../php/global_boot.php";
             &nbsp;[Downloads zip file]<br />
         <button id="site">Entire Site</button>
             &nbsp;[Downloads compressed archive]<br />
+        <button id="npix">New Pictures</button>
+            &nbsp;[Downloads newly uploaded pictures]<br />
         <span style="font-size:20px;color:brown;">Listings:</span><br />
         <button id="lst">List New Files</button>&nbsp;&nbsp;[Since last upload]
         <hr />
