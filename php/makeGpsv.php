@@ -209,7 +209,7 @@ for ($i=1; $i<count($allLngs)-1; $i++) {
 $clat = $south + ($north - $south)/2;
 $clon = $west + ($east - $west)/2;
 /*
- *   ---- ESTABLISH ANY WAYPOINTS ----
+ *   ---- ESTABLISH ANY WAYPOINTS IN gpx FILE ----
  */
 $noOfWaypts = $gpxdat->wpt->count();
 $waypoints = [];
@@ -260,9 +260,18 @@ if ($showPhotos) {
             }
             // If wypt in ETSV file....
             if (empty($photos['mid'])) { // waypoint icon
+                // determine icon color and style (clumsy for now, but works)
+                $colortxt = $iconColor;
+                $iconStyle = $iconColor;
+                if (strpos($colortxt, "Blue") || strpos($colortxt, "Trail Head")) {
+                    $iconColor = 'Blue';
+                } elseif (strpos($iconColor, "Green")) {
+                    $iconColor = 'Green';
+                } 
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng']. ",name:'" . $procName . "',desc:'" .
-                    $procDesc . "',color:'" . $iconColor . "',icon:''});";
+                    $procDesc . "',color:'" . $iconColor . 
+                        "',icon:'" . $iconStyle . "'});";
             } else { // photo
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng'] . ",name:'" . $procDesc .
