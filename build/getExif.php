@@ -22,7 +22,7 @@ for ($k=$kstart; $k<$pcnt; $k++) {
     if ($photoHandle === false) {
         $noread = $pstyle . "Failed to open photo" . $k .
             ' url: ' . $orgPhoto . '</p>';
-        die($noread);
+        throw new Exception($noread);
     }
     $truncFile = 'tmp/photo' . $k . '.jpg';
     $fileSize = 0;
@@ -34,7 +34,7 @@ for ($k=$kstart; $k<$pcnt; $k++) {
         $exifFile = fopen($truncFile, "w");
         if ($exifFile === false) {
             $nowrite = $pstyle . 'Could not open file to write photo' . $k . '</p>';
-            die($nowrite);
+            throw new Exception($nowrite);
         }
         // Write the truncated file to tmp/
         fwrite($exifFile, $contents);
@@ -103,6 +103,6 @@ for ($k=$kstart; $k<$pcnt; $k++) {
     if (!unlink($truncFile)) {
         $nodelete = $pstyle . 'Could not delete temporary file ' . $truncFile .
                 '</p>';
-        die($nodelete);
+        throw new Exception($nodelete);
     }
 }  // end of for each original photo loop

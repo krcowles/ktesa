@@ -9,6 +9,9 @@ $('#chgs').on('click', function() {
 $('#site').on('click', function() {
     window.open('export_all_tables.php?dwnld=S');
 });
+$('#npix').on('click', function() {
+    window.open('list_new_files.php?request=pictures');
+});
 $('#reload').on('click', function() {
     if (confirm("Do you really want to drop all tables and reload them?")) {
         window.open('drop_all_tables.php', "_blank");
@@ -36,7 +39,7 @@ $('#pub').on('click', function() {
     window.open("reldel.php?act=rel", "_blank");
 });
 $('#lst').on('click', function() {
-    window.open("list_new_files.php", "_blank")
+    window.open("list_new_files.php?request=files", "_blank")
 });
 $('#ehdel').on('click', function() {
     window.open("reldel.php?act=del","_blank");

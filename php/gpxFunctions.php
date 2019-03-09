@@ -28,7 +28,7 @@ function gpsvDebugFileArray($gpxPath)
     if (($handleDfa = fopen("{$tmpFilename}", "w")) === false) {
         $dbfMsg = "Could not open {$gpxPath}_DebugArray.csv in file: " . 
         __File__ . " at line: " . __Line__;
-        die($dbfMsg);
+        throw new Exception($dbfMsg);
     }
     fputs(
         $handleDfa, "trk,seg,n,Lat,Lon,EleM,gpxtimes," .
@@ -56,7 +56,7 @@ function gpsvDebugComputeArray($gpxPath)
     if (($handleDfc = fopen("{$tmpFilename}", "w")) === false) {
         $dbfMsg = "Could not open {$gpxPath}_DebugCompute.csv in file: " . 
         __File__ . " at line: " . __Line__;
-        die($dbfMsg);
+        throw new Exception($dbfMsg);
     }
     fputs(
         $handleDfc,
@@ -86,7 +86,7 @@ function gpsvDebugMaArray($gpxPath, $window)
     if (($handleDfm = fopen("{$tmpFilename}", "a")) === false) {
         $dbfMsg = "Could not open {$gpxPath}_DebugMa.csv in file: " . 
         __File__ . " at line: " . __Line__;
-        die($dbfMsg);
+        throw new Exception($dbfMsg);
     }
     fputs($handleDfm, "i,Ele,EleMa,window: {$window}" . PHP_EOL);
     return $handleDfm;
@@ -383,12 +383,12 @@ function moveAvg($data, $window, $gpxPath, $debug)
     if (count($data)<=$window) {
         $dbMsg = "Not enough data to process in file: " . 
         __File__ . " at line: " . __Line__;
-        die($dbMsg);
+        throw new Exception($dbMsg);
     }
     if ($window%2 <> 1) {
         $dbMsg = "Window value  {$window} not odd" . 
         __File__ . " at line: " . __Line__;
-        die($dbMsg);
+        throw new Exception($dbMsg);
     }
     if ($debug) {
         // Open debug file with headers

@@ -21,29 +21,29 @@ if ($gpxfile !== '') {
     $filestat = $_FILES[$name]['error'];
     if ($filestat !== UPLOAD_ERR_OK) {
         $badupld = "Failed to upload {$gpxfile}: " . uploadErr($filestat);
-        die($badupld);
+        throw new Exception($badupld);
     }
     if (substr_count($gpxfile, ".") !== 1) {
         $odd = "This file may be corrupted. Please correct the " .
             "file format and re-submit, or contact Site Master.";
-        die($odd);
+        throw new Exception($odd);
     }
     $dot = strrpos($gpxfile, ".") + 1;
     $ext = strtolower(substr($gpxfile, $dot, 3));
     if ($ext !== 'gpx') {
         $badext = "This file appears to have an incompatible extension type, " .
             "{$ext}; No edits made";
-        die($badext);
+        throw new Exception($badext);
     }
 } else {
-    die("No file specified");
+    throw new Exception("No file specified");
 }
 $editfile = $_FILES[$name]['tmp_name'];
 $dom = new DOMDocument();
 $dom->formatOutput = true;
 $dom->load($editfile);
 if (!$dom) {
-    die("Could not retrieve uploaded gpx file and convert to DOM document");
+    throw new Exception("Could not retrieve uploaded gpx file and convert to DOM document");
 }
 // END FILE VALIDATION
 $tracks = $dom->getElementsByTagName('trk'); // DONMNodeList object
@@ -64,14 +64,14 @@ if (isset($_POST['gpxall'])) {
             $start = array_shift($range);
             $end = array_shift($range);
             if (!is_numeric($start) || !is_numeric($end)) {
-                die("Bad range, non-numeric element: " . $start . "-" . $end);
+                throw new Exception("Bad range, non-numeric element: " . $start . "-" . $end);
             }
             if ($start >= $end) {
-                die("Range limits are incorrect: " . $start . "-" . $end);
+                throw new Exception("Range limits are incorrect: " . $start . "-" . $end);
             }
             for ($j=$start; $j<$end; $j++) {
                 if ($j > $trkcnt) {
-                    die(
+                    throw new Exception(
                         "Range exceeded number of tracks in file: " .
                         $start . "-" . $end . " > " . $trkcnt
                     );
@@ -80,10 +80,10 @@ if (isset($_POST['gpxall'])) {
             }
         } else {
             if (!is_numeric($member)) {
-                die("Found non-number item in range: " . $member);
+                throw new Exception("Found non-number item in range: " . $member);
             }
             if ($member > $trkcnt) {
-                die(
+                throw new Exception(
                     "Track number exceeded number of tracks in file: " .
                     $member . " > " . $trkcnt
                 );

@@ -27,7 +27,7 @@ if (file_exists($tmpFilename)) {
 if (($debugFile = fopen("{$tmpFilename}", "w")) === false) {
     $dbfMsg = "Could not open {$tmpFilename} in file: " . 
     __File__ . " at line: " . __Line__;
-    die($dbfMsg);
+    throw new Exception($dbfMsg);
 }
 fputs($debugFile, "name,length,MaxEl,MinEl,ElChg,Asc,Dsc,maW,dTh,eTh" . PHP_EOL);
 
@@ -55,7 +55,7 @@ foreach ($iterator as $file) { // each gpx file
         } else {
             $filemsg = $gpxPath;
         }
-        die($gpxmsg . $filemsg . $close);
+        throw new Exception($gpxmsg . $filemsg . $close);
     }
 
     /**

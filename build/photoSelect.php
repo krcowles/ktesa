@@ -65,8 +65,16 @@ if ($inclPix === 'YES') {
         chdir('..');
         $current = getcwd();
     }
+    $wayPointCount = 0;
+    $wids = [];
+    $wdes = [];
+    $wlat = [];
+    $wlng = [];
+    $wicn = [];
+    $picCount = 0;
     $picpath .= "pictures/nsize/";
     $picno = 0;
+    $tsvId = [];
     $phNames = []; // filename w/o extension
     $phDescs = []; // caption
     $hpg = [];
@@ -80,14 +88,26 @@ if ($inclPix === 'YES') {
         $phDescs[$picno] = $pics['desc'];
         $hpg[$picno] = $pics['hpg'];
         $mpg[$picno] = $pics['mpg'];
-        $phPics[$picno] = $pics['mid'] . "_" . $pics['thumb'];
-        $pHeight = $pics['imgHt'];
-        $aspect = $rowHt/$pHeight;
-        $pWidth = $pics['imgWd'];
-        $phWds[$picno] = floor($aspect * $pWidth);
-        $picno += 1;
+        $wlat[$picno] = $pics['lat'];
+        $wlng[$picno] = $pics['lng'];
+        $wicn[$picno] = $pics['iclr'];
+        if ($pics['mid']) {  // Picture
+            $phPics[$picno] = $pics['mid'] . "_" . $pics['thumb'];
+            $pHeight = $pics['imgHt'];
+            $aspect = $rowHt/$pHeight;
+            $pWidth = $pics['imgWd'];
+            $phWds[$picno] = floor($aspect * $pWidth);
+            $picCount++;
+        } else {  // Waypoint
+            $wids[$wayPointCount] = $pics['picIdx'];
+            $wdes[$wayPointCount] = $phNames[$picno];
+            $waylat[$wayPointCount] = $wlat[$picno];
+            $waylng[$wayPointCount] = $wlng[$picno];
+            $wicon[$wayPointCount++] = $wicn[$picno];
+        }
+        $picno++;
     }
-    for ($i=0; $i<$picno; $i++) {
+    for ($i=0; $i<$picCount; $i++) {
         if ($phWds[$i] > $maxOccupy) {
             $aspect = $rowHt/$phWds[$i];
             $newht = floor($maxOccupy * $aspect);

@@ -25,7 +25,7 @@ $hikereq = "SELECT * FROM EHIKES WHERE indxNo = :hikeno;";
 $hikeq = $pdo->prepare($hikereq);
 $retrieved = $hikeq->execute(["hikeno" => $hikeNo]);
 if ($retrieved === false) {
-    die(
+    throw new Exception(
         "Hike {$hikeNo} Not Found in EHIKES; File " . __FILE__ . 
         " line no. " . __LINE__
     );
