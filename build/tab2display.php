@@ -25,6 +25,7 @@
             <br /><br />
             Waypoint icon:
             <select id="selicon<?= $i;?>" name="wsym[]">
+                <option value="googlemini">[Default] Google</option>
                 <option value="Flag, Red">Red Flag</option>
                 <option value="Flag, Blue">Blue Flag</option>
                 <option value="Flag, Green">Green Flag</option>

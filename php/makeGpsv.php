@@ -237,9 +237,10 @@ if ((isset($map_type) && $map_type === 'page') || !isset($map_type)) {
 }
 $plnks = [];  // array of photo links
 $defIconColor = 'red';
+$defIconStyle = 'googlemini';
 if ($showPhotos) {
     // see GPSVisualizer for complete list of icon styles:
-    $mapicon = 'googlemini';
+    $mapicon = $defIconStyle;
     $mcnt = 0;
     $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,thumb,alblnk,mid,iclr FROM "
         . "{$ttable} WHERE indxNo = :hikeIndexNo;";
@@ -253,21 +254,28 @@ if ($showPhotos) {
             $procName = preg_replace('/"/', '\"', $procName);
             $procDesc = preg_replace("/'/", "\'", $photos['desc']);
             $procDesc = preg_replace('/"/', '\"', $procDesc);
-            if ($photos['iclr'] !== '') {
-                $iconColor = $photos['iclr'];
-            } else {
+            if (empty($photos['iclr'])) {
                 $iconColor = $defIconColor;
+            } else {
+                $iconColor = $photos['iclr'];
             }
-            // If wypt in ETSV file....
+            // If wypt in E/TSV file....
             if (empty($photos['mid'])) { // waypoint icon
                 // determine icon color and style (clumsy for now, but works)
-                $colortxt = $iconColor;
-                $iconStyle = $iconColor;
+                if (empty($photos['iclr'])) {
+                    $colortxt = $defIconColor;
+                    $iconStyle = $defIconStyle;
+                } else {
+                    $colortxt = $iconColor;
+                    $iconStyle = $iconColor;
+                }
                 if (strpos($colortxt, "Blue") || strpos($colortxt, "Trail Head")) {
                     $iconColor = 'Blue';
                 } elseif (strpos($iconColor, "Green")) {
                     $iconColor = 'Green';
-                } 
+                } else {
+                    $iconColor = 'Red';
+                }
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
                     $photos['lng']. ",name:'" . $procName . "',desc:'" .
                     $procDesc . "',color:'" . $iconColor . 
