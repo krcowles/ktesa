@@ -374,4 +374,24 @@ $('#upld').on('click', function() {
     window.open(uploader, "_blank");
 });
 
+// new:
+var wicons = $('[id^="wicn"]');
+var wddbox = $('[id^="selicon"]');
+var allIcons = ['googlemini', 'Flag, Red', 'Flag, Blue', 'Flag, Green', 
+    'Trail Head', 'Triangle, Red'];
+if (wicons.length > 0) {
+    ivals = [];
+    var x =0;
+    wicons.each(function() {
+        if ($(this).text() == '' || !allIcons.includes($(this).text())) {
+            ivals[x++] = 'googlemini';
+        } else {
+            ivals[x++] = $(this).text();
+        }
+    });
+    wddbox.each(function(indx) {
+        $(this).val(ivals[indx]);
+    });
+}
+
 });  // end of 'page (DOM) loading complete'

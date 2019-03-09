@@ -13,7 +13,7 @@
 $dbFile = "../data/id140870_hikemaster.sql";
 $lines = file($dbFile);
 if (!$lines) {
-    die(
+    throw new Exception(
         __FILE__ . " Line: " . __LINE__ . 
         " Failed to read database from file: {$dbFile}."
     );
@@ -58,7 +58,7 @@ for ($i=0; $i<$line_cnt; $i++) {
         $qcnt++;
         $i--;
     } else {
-        die("Unrecognized table entry at db line " . $i . "<br />" . $lines[$i]);
+        throw new Exception("Unrecognized table entry at db line " . $i . "<br />" . $lines[$i]);
     }
     if (!$msg_out) {
         echo "<script type='text/javascript'>var qcnt = {$qcnt};</script>";

@@ -123,7 +123,7 @@ function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = fa
         } elseif ($dwnld === 'S') {
             include 'buildPhar.php';
         } else {
-            die("Unrecognized parameter in query string");
+            throw new Exception("Unrecognized parameter in query string");
         }
     } else {
         header('Content-Type: application/octet-stream');

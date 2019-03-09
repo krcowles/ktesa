@@ -70,7 +70,7 @@ if ($age === 'new') {
     $status = '[]';
     $enos = '[]';
 } else {
-    die("Unrecognized age parameter: " . $age);
+    throw new Exception("Unrecognized age parameter: " . $age);
 }
 $query .= ';';
 // Now execute the query:

@@ -9,6 +9,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require '../php/global_boot.php';
 $mode_settings = 'mode_settings.php';
 $values = file($mode_settings);
 foreach ($values as &$line) {
