@@ -42,6 +42,7 @@ if ($picq->rowCount() === 0) {
     <div style="margin-left:16px;">
 <?php endif; ?>
 <?php
+$wayPointCount = 0;
 if ($inclPix === 'YES') {
     /**
      * The location of the 'pictures' directory is needed in order to 
@@ -65,7 +66,6 @@ if ($inclPix === 'YES') {
         chdir('..');
         $current = getcwd();
     }
-    $wayPointCount = 0;
     $wids = [];
     $wdes = [];
     $wlat = [];
