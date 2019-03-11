@@ -369,7 +369,7 @@ $('#showll').on('click', function() {
 });
 
 $('#upld').on('click', function() {
-    var user = $('input[name=nid]').val();
+    var user = $('input[name=pid]').val();
     var uploader = 'ktesaUploader.php?indx=' + hike + "&usr=" + user;
     window.open(uploader, "_blank");
 });

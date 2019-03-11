@@ -170,10 +170,6 @@ if (isset($_POST['mft'])) {
     $distThresh = 5.0;
     $maWindow = 3;
 
-    // debug arrays stored in system tmp directory:
-    $handleDfa = gpsvDebugFileArray($gpxPath);
-    $handleDfc = gpsvDebugComputeArray($gpxPath);
-
     // calculate stats for all tracks:
     $pup = (float)0;
     $pdwn = (float)0;
@@ -182,8 +178,8 @@ if (isset($_POST['mft'])) {
     $hikeLgthTot = (float)0;
     for ($k=0; $k<$noOfTrks; $k++) {
         $calcs = getTrackDistAndElev(
-            $k, "", $gpxPath, $gpxdat, true, $handleDfa,
-            $handleDfc, $distThresh, $elevThresh, $maWindow
+            $k, "", $gpxPath, $gpxdat, false, null,
+            null, $distThresh, $elevThresh, $maWindow
         );
         $hikeLgthTot += $calcs[0];
         if ($calcs[1] > $pmax) {
@@ -195,21 +191,6 @@ if (isset($_POST['mft'])) {
         $pup  += $calcs[3];
         $pdwn += $calcs[4];
     } // end for: PROCESS EACH TRK
-
-    // Do debug output (summary stats for entire hike)
-    fputs(
-        $handleDfc,
-        sprintf("hikeLgthTot,%.2f mi", $hikeLgthTot / 1609) .
-        sprintf(",pmax %.2fm,%.2fft", $pmax, $pmax * 3.28084) .
-        sprintf(",pmin:%.2fm,%.2fft", $pmin, $pmin * 3.28084) .
-        sprintf(",pup:%.2fm,%.2fft", $pup, $pup * 3.28084) .
-        sprintf(",pdwn:%.2fm,%.2fft", $pdwn, $pdwn * 3.28084) .
-        PHP_EOL .
-        "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
-        ",maWindow:{$maWindow}" . PHP_EOL
-    );
-    fclose($handleDfa);
-    fclose($handleDfc);
 
     $totalDist = $hikeLgthTot / 1609;
     $lgth = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
