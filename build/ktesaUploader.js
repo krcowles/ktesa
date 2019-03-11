@@ -32,7 +32,6 @@ var nmebox = [];
 var desbox = [];
 var upldCnt = 0;
 var nxtUpld = 0;
-var upldMsg = '';
 var $iflbl = $('label span'); // where the input file selection box text is held
 
 // styling the 'Choose file...' input box and label text:
@@ -461,24 +460,22 @@ function cleanup() {
             $(this).before($(saved));
         }
     });
-    //alert(upldMsg);
-    upldMsg = '';
+    $.ajax({
+        method: 'GET',
+        url: 'statusReader.php',
+        dataType: 'text',
+        success: function(data) {
+            alert(data);
+        },
+        error: function(jqXHR, errmsg, httpErr) {
+            var msg = "Error encountered in retrieving the status text file: " +
+                "\nLine 463 in ktesaUploader.js; \nerror found: " +
+                errmsg + " " + httpErr;
+        }
+    });
     uloads = [];
     nmebox = [];
     desbox = [];
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file);
-    rawFile.onreadystatechange = function () {
-            if(rawFile.readyState === 4)
-            {
-                if(rawFile.status === 200 || rawFile.status == 0)
-                {
-                    var allText = rawFile.responseText;
-                    alert(allText);
-                }
-            }
-        rawFile.send(null);
-    }
 }
 function resets() {
     droppedFiles = false;
