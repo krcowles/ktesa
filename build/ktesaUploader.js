@@ -1,6 +1,6 @@
 // close the parent (tab2 of editDB) so that when returning, the page is refreshed
 window.opener.close();
-var timers;
+var $cmeter; // circular meter object
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
 var FR_Images = []; // FileReader objects to be loaded into DOM
@@ -150,12 +150,12 @@ function ldNodes(fr_objs) {
                 circle.setAttribute('stroke-width', '4');
                 // foreground progress circle
                 var prog = document.createElementNS(xmlns, 'circle');
-                prog.id = "mtr";
+                prog.id = "mtr" + itemno;
                 prog.setAttribute('cx', '16');
                 prog.setAttribute('cy', '16');
                 prog.setAttribute('r', '14');
                 prog.setAttribute('fill', 'none');
-                prog.setAttribute('stroke', '#f73722');
+                prog.setAttribute('stroke', 'brown'); // #f73722
                 prog.setAttribute('stroke-width', '4');
                 prog.setAttribute('stroke-dasharray', '87.964');
                 prog.setAttribute('stroke-dashoffset', '87.964');
@@ -416,38 +416,33 @@ function postImg(ifile, des, hikeno) {
     var picdesc = JSON.stringify(des);
     ajaxData.append('descstr', picdesc);
     ajaxData.append('indx', hikeno);
-    $.ajax({
-        xhr: function() {
-            var xhr = new window.XMLHttpRequest();
-            xhr.addEventListener("progress", function(evt) {
-               if (evt.lengthComputable) {
-                   var percentComplete = evt.loaded / evt.total;
-                   var meter = (1 - percentComplete) * 87;
-                   $('#mtr')[0].setAttribute('stroke-dashoffset', meter)
-               }
-           }, false);
-    
-           return xhr;
-        },
-        url: 'usrPhotos.php',
-        type: 'POST',
-        data: ajaxData,
-        dataType: 'html',
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function(data) {
-            //$('body').append(data);
-            def.resolve();
-        },
-        error: function(jqXHR, status, error) {
-            var msg = "Error occurred during ajax:\nktesaUploader.js line 392\n" 
-                + "Actual response: " + jqXHR.responseText + ";\n" + status +
-                ": Error is: " + error;
-            alert(msg);
+    $cmeter = $('#mtr' + nxtUpld);
+    var bytes = 0;
+    var completion;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", 'usrPhotos.php');
+    xhr.onprogress = function() {
+        if (xhr.responseText.indexOf('X') !== -1) {
             def.reject();
         }
-    });
+        bytes++;
+        completion = (1 - bytes/5) * 87.964;
+        $cmeter[0].setAttribute('stroke-dashoffset', completion);
+    };
+    xhr.send(ajaxData);
+    xhr.onload = function() {
+        if (this.status !== 200) {
+            alert("The server returned error " + this.status);
+            def.reject();
+        } else {
+            $cmeter[0].setAttribute('stroke-dashoffset', '0');
+            def.resolve();
+        }
+    }
+    xhr.onerror = function() {
+        alert("The request failed for item " + nxtUpld);
+        def.reject();
+    }
     return def.promise();
 }
 function cleanup() {
@@ -471,6 +466,19 @@ function cleanup() {
     uloads = [];
     nmebox = [];
     desbox = [];
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file);
+    rawFile.onreadystatechange = function () {
+            if(rawFile.readyState === 4)
+            {
+                if(rawFile.status === 200 || rawFile.status == 0)
+                {
+                    var allText = rawFile.responseText;
+                    alert(allText);
+                }
+            }
+        rawFile.send(null);
+    }
 }
 function resets() {
     droppedFiles = false;

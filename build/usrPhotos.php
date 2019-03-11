@@ -14,14 +14,16 @@
  */
 require "../php/global_boot.php";
 
+header("Content=Length", 5); // Normally, five checkpoints expected
 // POSTED DATA
 $filedat = $_FILES['file'];
 $photo = $filedat['tmp_name'];
 $fname = $filedat['name'];
 $fstat = $filedat['error'];
 if ($fstat !== UPLOAD_ERR_OK) {
-    $msg = uploadErr($fstat);
-    die(json_encode($msg));
+    $msg = uploadErr($fstat) . ": File " . $fname;
+    file_put_contents('photoStat.txt', $msg, FILE_APPEND);
+    die('X');  // X tells ajax of processing error, check photoStat.txt
 }
 $indxNo = filter_input(INPUT_POST, 'indx');
 $descdat = filter_input(INPUT_POST, 'descstr');
@@ -30,7 +32,7 @@ $picdesc = json_decode($descdat);
 $n_size = 320;
 $z_size = 640;
 // first byte;
-echo '<script type="text/javascript">var finpart = 1;</script>';  
+echo 'A';
 flush();
 
 set_error_handler(
@@ -46,9 +48,9 @@ $upld_results = '';
 if (exif_imagetype($photo) !== IMAGETYPE_JPEG) {
     $upld_results .= "Image " . $fname . 
         " is not JPEG: No upload will occur." . PHP_EOL;
-    file_put_contents('photoStat.txt', $upld_results);
+    file_put_contents('photoStat.txt', $upld_results, FILE_APPEND);
     restore_error_handler();
-    exit();
+    die('X');
 }
 try {
     $exifData = exif_read_data($photo);
@@ -119,7 +121,8 @@ if ($exifData) {
 
 restore_error_handler();
 // 2nd check point
-echo '<script type="text/javascript">var finpart = 2;</script>'; 
+echo 'B';
+flush();
 
 // determine next 'thumb' value for new entry
 $tval = "SELECT thumb FROM TSV ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
@@ -131,7 +134,8 @@ $emax = $eresult->fetch(PDO::FETCH_NUM);
 $max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
 $newthumb = (int)$max + 1;
 // 3rd check point
-echo '<script type="text/javascript">var finpart = 3;</script>'; 
+echo 'C';
+flush();
 /**
  * Create VALUES list, adding NULLs where needed:
  * Always present: indxNo, title, mid, imgHt, imgWd
@@ -192,7 +196,8 @@ if ($GDsupport['JPEG Support']) {
         $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
     );
     // 4th check point
-    //echo "D";
+    echo 'D';
+    flush();
     $size = "z";
     storeUploadedImage(
         $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
@@ -200,11 +205,10 @@ if ($GDsupport['JPEG Support']) {
 } else {
     $upld_results .= "There is no support for image resizing;";
     file_put_contents('photoStat.txt', $upld_results);
-    exit();
+    die('X');
 }
 // last check point
-//echo "E";
-// return json to ajax caller
+flush();
 if (isset($filedat)) {
     if ($upld_results !== '') {
         $msg = $upld_results;
@@ -213,6 +217,6 @@ if (isset($filedat)) {
     }
 } else {
     $msg = "Failed to upload: Contact site master" . PHP_EOL;
-    exit();
+    die('X');
 }
-file_put_contents('photoStat.txt', $msg);
+file_put_contents('photoStat.txt', $msg, FILE_APPEND);
