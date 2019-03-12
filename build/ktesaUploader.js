@@ -1,6 +1,8 @@
 // close the parent (tab2 of editDB) so that when returning, the page is refreshed
 window.opener.close();
+
 var $cmeter; // circular meter object
+var cmtrIds = []; // each meter has a unique id required during submit
 // get the hike no:
 var ehikeIndxNo = $('#ehno').text();
 var FR_Images = []; // FileReader objects to be loaded into DOM
@@ -15,9 +17,7 @@ var nheight = 20;  // height of 'name' box
 var dheight = 44;  // height of 'description' box
 // where to place images
 var dndbox = document.getElementsByClassName('box__dnd');
-// specific to dropped files
-var droppedFiles = false;
-var droppedImages = []; // array of input files dropped by user
+var droppedFiles = false; // if files are dropped, this holds the list
 // image defs
 var orient;  // photo exif orientation data: global required
 var loadedImages = [];  // array of DOM nodes containing dropped/selected images
@@ -27,9 +27,8 @@ var frm = document.getElementsByClassName('box');
 var dndWidth = frm[0].clientWidth;
 var remainingWidth = dndWidth;
 // upload arrays
-var uloads = [];
-var nmebox = [];
-var desbox = [];
+var uloads = [];  // array of actual files to be uploaded
+var desbox = [];  // array of image descriptions accompanying above files
 var upldCnt = 0;
 var nxtUpld = 0;
 var $iflbl = $('label span'); // where the input file selection box text is held
@@ -60,6 +59,7 @@ $('#clrimgs').on('click', function(ev) {
     ev.preventDefault();
     $('.img-row').remove();
     resets();
+    upldNo = 0;  // this is the only place this var should be reset
     remainingWidth = dndWidth;
     row = false;
     $iflbl.html("&nbsp;&nbsp;Choose one or more photos&hellip;");
@@ -84,6 +84,17 @@ function ldImgs(imgs) {
                  * unique, even for duplicate filenames.
                  */
                 var nme = ifile.name;
+                // test the extension - only jpg files allowed at this time
+                var lastdot = nme.lastIndexOf('.');
+                // if no extension, file type will be tested during upload
+                if (lastdot !== -1) {
+                    var ext = nme.slice(lastdot+1);
+                    // Note: if no dot, ext would return entire filename
+                    if (ext.toLowerCase() !== 'jpg') {
+                        alert("Extension type " + ext + " not supported at this time");
+                        return;
+                    }
+                }
                 var fsize = ifile.size;
                 var imgObj = {indx: upldNo, fname: nme, size: fsize, data: result};
                 FR_Images.push(imgObj);  // used for loading DOM, then reset
@@ -95,7 +106,7 @@ function ldImgs(imgs) {
 
         reader.readAsDataURL(imgs[i]);
     }
-    return $.when.apply($, promises); // apply 'promises' array to jQuery
+    return $.when.apply($, promises); // return when promises fulfilled
 }
 function ldNodes(fr_objs) {
     var promises = [];
@@ -104,7 +115,7 @@ function ldNodes(fr_objs) {
     for (var j=0; j<fr_objs.length; j++) {
         // create image node:
         imgs[j] = document.createElement('img');
-        // identify the index in the uploads array for this file
+        // identify the index in the FileReader object for this file
         var imgid = fr_objs[j]['indx'];
         var def = new $.Deferred();
         promises.push(def);
@@ -119,14 +130,11 @@ function ldNodes(fr_objs) {
                 ibox.id = 'div' + itemno;
                 // create the div holding textarea boxes
                 var tbox = document.createElement('DIV');
-                tbox.classList.add('txtdata');
-
                 // textarea for picture 'description'
                 var des = document.createElement('TEXTAREA');
                 des.style.height = dheight + "px";
                 des.style.display = "block";
                 des.placeholder = "Picture description";
-                des.classList.add('desVal');
                 des.id = 'desc' + itemno;
 
                 // circular progress meter
@@ -270,7 +278,7 @@ function sizeCheck() {
              * 
              * NOTE: using ajax to send the file to php where it CAN be 
              * reduced won't work, since the whole point was to reduce the
-             * filesize PRIOR to using ajax during uploads, hence exceeding
+             * filesize PRIOR to using ajax during upload, hence exceeding
              * transfer limit specified in the PHP error log:
              *      ... exceeds the limit of 8388608 bytes ...
              * The HTTP spec does not specify a limit, so it may be server
@@ -380,13 +388,12 @@ $form.on('submit', function(e) {
         for (var n=0; n<uploads.length; n++) {
             uloads[n] = uploads[n]['ifile'];  // file data (includes name, size)
             var indx = uploads[n]['indx'];
-            //nmebox[n] = $('#name' + indx).val();
             desbox[n] = $('#desc' + indx).val();
+            cmtrIds[n] = '#mtr' + indx;
         }
         // upload images one at a time; turn off 'is-uploading' when completed
         sequentialUploader(
-            uloads[nxtUpld], nmebox[nxtUpld], desbox[nxtUpld], 
-            ehikeIndxNo, uplds
+            uloads[nxtUpld], desbox[nxtUpld], cmtrIds[nxtUpld], ehikeIndxNo, uplds
         );
     } else {
       // ajax for legacy browsers e.g.
@@ -394,28 +401,27 @@ $form.on('submit', function(e) {
     }
   });
 
-function sequentialUploader(imgfile, picname, picdesc, hikeno, noOfImgs) {
-    postImg(imgfile, picdesc, hikeno).then(function() {
+function sequentialUploader(imgfile, picdesc, cmtr, hikeno, noOfImgs) {
+    postImg(imgfile, picdesc, hikeno, cmtr).then(function() {
         nxtUpld++;
         if (nxtUpld == noOfImgs) {
             $form.removeClass('is-uploading');
             cleanup();
         } else {
             sequentialUploader(
-                uloads[nxtUpld], nmebox[nxtUpld], desbox[nxtUpld], 
-                hikeno, noOfImgs
+                uloads[nxtUpld], desbox[nxtUpld], cmtrIds[nxtUpld], hikeno, noOfImgs
             )
         }
     });
 }
-function postImg(ifile, des, hikeno) {
+function postImg(ifile, des, hikeno, mtrid) {
     var def = new $.Deferred();
     ajaxData = new FormData();
     ajaxData.append('file', ifile);
     var picdesc = JSON.stringify(des);
     ajaxData.append('descstr', picdesc);
     ajaxData.append('indx', hikeno);
-    $cmeter = $('#mtr' + nxtUpld);
+    $cmeter = $(mtrid);
     var bytes = 0;
     var completion;
     var xhr = new XMLHttpRequest();
@@ -431,7 +437,7 @@ function postImg(ifile, des, hikeno) {
     xhr.send(ajaxData);
     xhr.onload = function() {
         if (this.status !== 200) {
-            alert("The server returned error " + this.status);
+            alert("The server returned status " + this.status);
             def.reject();
         } else {
             $cmeter[0].setAttribute('stroke-dashoffset', '0');
@@ -469,19 +475,16 @@ function cleanup() {
         },
         error: function(jqXHR, errmsg, httpErr) {
             var msg = "Error encountered in retrieving the status text file: " +
-                "\nLine 463 in ktesaUploader.js; \nerror found: " +
+                "\nLine 467 in ktesaUploader.js; \nerror found: " +
                 errmsg + " " + httpErr;
         }
     });
     uloads = [];
-    nmebox = [];
     desbox = [];
 }
 function resets() {
     droppedFiles = false;
     uploads = [];
-    droppedImages = [];
-    upldNo = 0;
     upldCnt = 0;
     nxtUpld = 0;
 }

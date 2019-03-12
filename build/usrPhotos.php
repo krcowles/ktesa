@@ -15,6 +15,9 @@
 require "../php/global_boot.php";
 
 header("Content=Length", 5); // Normally, five checkpoints expected
+echo 'A'; // first byte returned to caller
+flush();
+
 // POSTED DATA
 $filedat = $_FILES['file'];
 $photo = $filedat['tmp_name'];
@@ -31,16 +34,11 @@ $picdesc = json_decode($descdat);
 // Size width definitions:
 $n_size = 320;
 $z_size = 640;
-// first byte;
-echo 'A';
-flush();
-
 set_error_handler(
     function () {
         throw new Exception();
     }, E_ALL
 ); 
-
 // container for exif data results
 $upld_results = '';
 
@@ -208,6 +206,7 @@ if ($GDsupport['JPEG Support']) {
     die('X');
 }
 // last check point
+echo 'E';
 flush();
 if (isset($filedat)) {
     if ($upld_results !== '') {
