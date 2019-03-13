@@ -13,11 +13,11 @@ require "../php/global_boot.php";
 $hikeNo = filter_input(INPUT_POST, 'pno');
 $uid = filter_input(INPUT_POST, 'pid');
 // waypoint data, if present:
-$wids = $_POST['wids'];  // picIdx for waypoint
-$wdes = $_POST['wdes'];
-$wsym = $_POST['wsym'];
-$wlat = $_POST['wlat'];
-$wlng = $_POST['wlng'];
+$wids = isset($_POST['wids']) ? $_POST['wids'] : null;  // picIdx for waypoint
+$wdes = isset($_POST['wsym']) ? $_POST['wdes'] : null;
+$wsym = isset($_POST['wsym']) ? $_POST['wsym'] : null;
+$wlat = isset($_POST['wlat']) ? $_POST['wlat'] : null;
+$wlng = isset($_POST['wlng']) ? $_POST['wlng'] : null;
 /* It is possible that no pictures are present, also that no
  * checkboxes are checked. Therefore, the script tests for these things
  * to prevent undefined vars
@@ -50,7 +50,7 @@ if (isset($_POST['rem'])) {
     $rems = [];
     $noOfRems = 0;
 }
-$photoReq = "SELECT picIdx,title,hpg,mpg,`desc` FROM ETSV WHERE indxNo = ?;";
+$photoReq = "SELECT * FROM ETSV WHERE indxNo = ?;";
 $photoq = $pdo->prepare($photoReq);
 $photoq->execute([$hikeNo]);
 $p = 0;
