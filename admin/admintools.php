@@ -68,6 +68,8 @@ require "../php/global_boot.php";
             <span id="real" style="color:blue;">Site</span>
         <?php endif; ?>
         <hr />
+        <button id="cleanPix">Cleanup Pictures</button>
+            &nbsp;&nbsp;[removes photos not related to hikes]<br />
         <button id="pinfo">Php Info</button><br />
         <button id="show">Show All Tables</button><br />
         <button id="mode">Show/Set SQL Modes</button>

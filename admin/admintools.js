@@ -31,7 +31,10 @@ $('#exall').on('click', function() {
 $('#swdb').on('click', function() {
     window.open('switchDb.php');
     window.close();
-})
+});
+$('#cleanPix').on('click', function() {
+    window.open('cleanPix.php', "_blank");
+});
 $('#pinfo').on('click', function() {
     window.open('phpInfo.php', "_blank");
 });
