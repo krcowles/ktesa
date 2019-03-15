@@ -33,7 +33,7 @@ if (isset($checkboxes)) {
     foreach ($checkboxes as $deletion) {
         if (strpos($deletion, "_n") !== false) {
             $file = 'pictures/nsize/' . $deletion;
-        } else if (strpos($deletion) !== false) {
+        } else if (strpos($deletion, "_z") !== false) {
             $file = 'pictures/zsize/' . $deletion;
         } else {
             $msg .= "Unrecognized file type: " . $deletion . "<br />";
