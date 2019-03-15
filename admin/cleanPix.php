@@ -67,13 +67,17 @@ if ($photo_array[0] == '.DS_Store') {  // MacOS
 }
 foreach ($photo_array as $filename) {
     if (!in_array($filename, $nsize_in_table)) {
-        array_push($nsize_candidates, $filename);
         // does this file base_name appear with a different thumb?
+        $mismatch = false;
         foreach ($base_names as $mid) {
             if (strpos($filename, $mid) !== false) {
                 // it must have a different thumb value...
+                $mismatch = true;
                 array_push($thumb_mismatch, $filename);
             }
+        }
+        if (!$mismatch) {
+            array_push($nsize_candidates, $filename);
         }
     }
 }
@@ -85,12 +89,16 @@ if ($photo_array[0] == '.DS_Store') {  // MacOS
 }
 foreach ($photo_array as $filename) {
     if (!in_array($filename, $zsize_in_table)) {
-        array_push($zsize_candidates, $filename);
+        $mismatch = false;
         // does this file base_name appear with a different thumb?
         foreach ($base_names as $mid) {
             if (strpos($filename, $mid) !== false) {
+                $mismatch = true;
                 array_push($thumb_mismatch, $filename);
             }
+        }
+        if (!$mismatch) {
+            array_push($zsize_candidates, $filename);
         }
     }
 }
@@ -141,7 +149,7 @@ $i = 0; // index for checkboxes
     <ul>
 <?php foreach($thumb_mismatch as $wrong_key) : ?>
     <li><input id="chkbox<?= $i++;?>" type="checkbox" name="checkboxes[]"
-        value="<?= $wrong_key;?>" /><?= $wrong_key;?>"</li>
+        value="<?= $wrong_key;?>" /><?= $wrong_key;?></li>
 <?php endforeach; ?>
     </ul>
     <input type="hidden" name="total" value="<?= $i;?>" />
