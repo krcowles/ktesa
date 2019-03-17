@@ -8,19 +8,19 @@ ul {
 #main {
     margin-left: 24px;
 }
-#submit {
+input[type=submit] {
     font-size: 16px;
     height: 28px;
     width: 220px;
     background-color: blanchedalmond;
 }
-#submit:hover {
+input[type=submit]:hover, #shell:hover {
     background-color: honeydew;
     cursor: pointer;
     color: brown;
     font-weight: bold;
 }
-#head {
+.head {
     color: brown;
     font-size: 18px;
 }

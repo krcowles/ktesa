@@ -13,7 +13,9 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-
+$action = filter_input(INPUT_POST, 'submit');  // remove files or create shell?
+$shell = false; // unless proven otherwise...
+$shell_file = "pictures/cleanpix.sh";
 // find level at which pictures directory resides
 $current = getcwd();
 $ups = 0;
@@ -25,26 +27,55 @@ while (!in_array('pictures', scandir($current))) {
         throw new Exception("Can't find pictures directory!");
     }
 }
+if (strpos($action, "Create") !== false) {
+    $shell = true;
+    $handle = fopen($shell_file, "w"); // this writes over any existing
+    $bash_start = "#!/bin/bash\n" . "# Version 1.0\n";
+    fwrite($handle, $bash_start);
+    fclose($handle);
+    $script = fopen($shell_file, "a"); // now append to this new file
+}
 $checkboxes = isset($_POST['checkboxes']) ? $_POST['checkboxes'] : null;
 $deleted = [];
 $failures = [];
 $msg = '';
 if (isset($checkboxes)) {
     foreach ($checkboxes as $deletion) {
+        $thisfile = true;
         if (strpos($deletion, "_n") !== false) {
+            $nfile = true;
             $file = 'pictures/nsize/' . $deletion;
         } else if (strpos($deletion, "_z") !== false) {
+            $nfile = false;
             $file = 'pictures/zsize/' . $deletion;
         } else {
+            $file = 'nofile';
+            $thisfile = false;
             $msg .= "Unrecognized file type: " . $deletion . "<br />";
         }
-        if (empty($msg)) {
-            if (unlink($file)) {
+        if ($thisfile) {
+            if ($shell) {
+                // append the remove command
+                if ($nfile) {
+                    $cmd = "rm nsize/" . $deletion . "\n";
+                } else {
+                    $cmd = "rm zsize/" . $deletion . "\n";
+                }
+                fwrite($script, $cmd);
                 array_push($deleted, $file);
             } else {
-                array_push($failures, $file);
+                if (file_exists($file)) {
+                    array_push($deleted, $file);
+                    unlink($file);
+                } else {
+                    array_push($failures, $file);
+                }
             }
         }
+    }
+    if ($shell) {
+        fclose($script);
+        chmod($shell_file, 0755);
     }
 } else {
     $msg = "No Pictures were selected for deletion";
@@ -68,12 +99,17 @@ if (isset($checkboxes)) {
 <p id="trail">Photos Deleted</p>
 </div>
 <div style="margin-left:24px;">
-<?php if (strpos($msg, "No pictures" !== false)) : ?>
+<?php if (strpos($msg, "No pictures")) : ?>
     <?= $msg;?>
 <?php else : ?>
     <span style="color:brown;font-size:18px;">
-        The following (<?= count($deleted);?>) photo(s) were deleted from 
-        pictures (exceptions noted):</span>
+        The following (<?= count($deleted);?>) photo(s) were 
+        <?php if ($shell) : ?>
+            entered into the executable shell script 'cleanpix.sh'
+            in pictures/;</span>
+        <?php else : ?>
+            deleted from pictures/ (exceptions noted):</span>
+        <?php endif; ?>
     <ul style="list-style-type:square;">
         <?php for ($j=0; $j<count($deleted); $j++) : ?>
             <li><?= $deleted[$j];?></li>
@@ -88,6 +124,9 @@ if (isset($checkboxes)) {
             <li><?= $failures[$k];?></li>
         <?php endfor; ?>
         </ul>
+    <?php endif; ?>
+    <?php if (!empty($msg)) : ?>
+    <br /><?= $msg;?>
     <?php endif; ?>
 <?php endif; ?>
 </body>
