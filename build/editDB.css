@@ -98,6 +98,7 @@ select:focus {
 input[type=checkbox]
 {
   /* Double-sized Checkboxes  - Browser dependent code */
+  transform: scale(1.5);
   -ms-transform: scale(1.5); /* IE */
   -moz-transform: scale(1.5); /* FF */
   -webkit-transform: scale(1.5); /* Safari and Chrome */
@@ -169,7 +170,7 @@ input[type=button]:hover {
     margin-bottom: 6px;
 }
 .nbk {
-    dipslay: none;
+    display: none;
     position: relative;
     top: -8px;
     margin-bottom: 6px;
