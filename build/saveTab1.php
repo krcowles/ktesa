@@ -3,7 +3,8 @@
  * This script saves any changes made (or data as is) on tab1 ("Basic Data")
  * of the hike page Editor, including uploading of the main gpx (track) file.
  * If a gpx file already exists, it may be deleted, or otherwise replaced by a
- * newly specified file via tab 1's browse button.
+ * newly specified file via tab 1's browse button. It is invoked when the user
+ * submits the data via the 'Apply' button on tab1.
  * PHP Version 7.1
  * 
  * @package Editing
@@ -17,13 +18,13 @@ $saves = []; // placeholders for pdo query
 $hikeNo = filter_input(INPUT_POST, 'hno');
 $saves['hikeno'] = $hikeNo;
 $hUser = filter_input(INPUT_POST, 'usr');
-$maingpx = filter_input(INPUT_POST, 'mgpx');
-$maintrk = filter_input(INPUT_POST, 'mtrk');
-$delgpx = filter_input(INPUT_POST, 'dgpx');
-$_SESSION['uplmsg'] = '';
-$upld4latlng = false;
+$maingpx = filter_input(INPUT_POST, 'mgpx'); // may be empty
+$maintrk = filter_input(INPUT_POST, 'mtrk'); // may be empty
+$delgpx = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
+$_SESSION['uplmsg'] = ''; // return status to user on tab1
 /**
- * This section handles the main gpx file upload/delete
+ * This section handles the main gpx file upload/delete.
+ * Note: the delete checkbox does not appear if main gpx file is not specified
  */
 if (isset($delgpx)) {
     $delgpx = '../gpx/' . $maingpx;
@@ -40,34 +41,38 @@ if (isset($delgpx)) {
             ": Did not remove {$deltrk} from site"
         );
     }
-    $udgpxreq = "UPDATE EHIKES SET gpx = NULL, trk = NULL, lat = NULL, lng = NULL " .
-        "WHERE indxNo = ?;";
+    $maingpx = '';
+    $udgpxreq = "UPDATE EHIKES SET 
+        gpx = NULL, trk = NULL, 
+        lat = NULL, lng = NULL,
+        miles = NULL, feet = NULL 
+        WHERE indxNo = ?;";
     $udgpx = $pdo->prepare($udgpxreq);
     $udgpx->execute([$hikeNo]);
     $_SESSION['uplmsg']
         .= "Deleted file {$maingpx} and it's associated track from site; ";
 }
 $gpxfile = basename($_FILES['newgpx']['name']);
-$gpxtype = fileTypeAndLoc($gpxfile);
-if ($gpxtype[2] === 'gpx') {
-    $gpxupl = validateUpload("newgpx", "../gpx/");
-    $newgpx = $gpxupl[0];
-    $_SESSION['uplmsg'] .= $gpxupl[1];
-    $trkdat = makeTrackFile($newgpx, "../gpx/");
-    $newtrk = $trkdat[0];
-    $lat = $trkdat[2];
-    $lng = $trkdat[3];
-    $newgpxq = "UPDATE EHIKES " .
-        "SET gpx = ?, trk = ?, lat = ?, lng = ? " .
-        "WHERE indxNo = ?;";
-    $ngpx = $pdo->prepare($newgpxq);
-    $ngpx->execute([$newgpx, $newtrk, $lat, $lng, $hikeNo]);
-    $upld4latlng = true;
-} elseif ($gpxfile == '') {
-    $newgpx = 'No file specified';
-} else {
-    $_SESSION['uplmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
-            "File Type NOT .gpx for {$gpxfile}.</p>";
+if (!empty($gpxfile)) {  // No new upload
+    $gpxtype = fileTypeAndLoc($gpxfile);
+    if ($gpxtype[2] === 'gpx') {
+        $gpxupl = validateUpload("newgpx", "../gpx/");
+        $newgpx = $gpxupl[0];
+        $_SESSION['uplmsg'] .= $gpxupl[1];
+        $trkdat = makeTrackFile($newgpx, "../gpx/");
+        $newtrk = $trkdat[0];
+        $lat = $trkdat[2];
+        $lng = $trkdat[3];
+        $newgpxq = "UPDATE EHIKES " .
+            "SET gpx = ?, trk = ?, lat = ?, lng = ? " .
+            "WHERE indxNo = ?;";
+        $ngpx = $pdo->prepare($newgpxq);
+        $ngpx->execute([$newgpx, $newtrk, $lat, $lng, $hikeNo]);
+        $maingpx = $newgpx;
+    } else {
+        $_SESSION['uplmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
+                "File Type NOT .gpx for {$gpxfile}.</p>";
+    }
 }
 /**
  *  Marker, cluster info may have changed during edit
@@ -152,72 +157,81 @@ $saves['cNme'] = $cgName;
  * be used instead of any existing values in the miles and feet fields. 
  */
 if (isset($_POST['mft'])) {
-    if ($maingpx == '') {
-        throw new Exception("No gpx file has been uploaded for this hike");
-    }
-    $gpxPath = "../gpx/" . $maingpx;
-    $gpxdat = simplexml_load_file($gpxPath);
-    if ($gpxdat === false) {
-        throw new Exception(__FILE__ . "Line " . __LINE__ . " Failed to open {$gpxPath}");
-    }
-    if ($gpxdat->rte->count() > 0) {
-        $gpxdat = convertRtePts($gpxdat);
-    }
-    $noOfTrks = $gpxdat->trk->count();
-    // threshold in meters to filter out elevation and distance value variation
-    // set by default if command line parameter(s) is not given
-    $elevThresh = 1.0;
-    $distThresh = 5.0;
-    $maWindow = 3;
+    if (empty($maingpx)) {
+        $_SESSION['uplmsg'] .= "<br />No gpx file has been uploaded for this hike; " 
+            . "Miles/Feet Calculations cannot be performed";
+        $lgth = '';
+        $ht = '';
+    } else {
+        $gpxPath = "../gpx/" . $maingpx;
+        $gpxdat = simplexml_load_file($gpxPath);
+        if ($gpxdat === false) {
+            throw new Exception(__FILE__ . "Line " . __LINE__ . " Failed to open {$gpxPath}");
+        }
+        if ($gpxdat->rte->count() > 0) {
+            $gpxdat = convertRtePts($gpxdat);
+        }
+        $noOfTrks = $gpxdat->trk->count();
+        // threshold in meters to filter out elevation and distance value variation
+        // set by default if command line parameter(s) is not given
+        $elevThresh = 1.0;
+        $distThresh = 5.0;
+        $maWindow = 3;
 
-    // calculate stats for all tracks:
-    $pup = (float)0;
-    $pdwn = (float)0;
-    $pmax = (float)0;
-    $pmin = (float)50000;
-    $hikeLgthTot = (float)0;
-    for ($k=0; $k<$noOfTrks; $k++) {
-        $calcs = getTrackDistAndElev(
-            $k, "", $gpxPath, $gpxdat, false, null,
-            null, $distThresh, $elevThresh, $maWindow
-        );
-        $hikeLgthTot += $calcs[0];
-        if ($calcs[1] > $pmax) {
-            $pmax = $calcs[1];
-        }
-        if ($calcs[2] < $pmin) {
-            $pmin = $calcs[2];
-        }
-        $pup  += $calcs[3];
-        $pdwn += $calcs[4];
-    } // end for: PROCESS EACH TRK
+        // calculate stats for all tracks:
+        $pup = (float)0;
+        $pdwn = (float)0;
+        $pmax = (float)0;
+        $pmin = (float)50000;
+        $hikeLgthTot = (float)0;
+        for ($k=0; $k<$noOfTrks; $k++) {
+            $calcs = getTrackDistAndElev(
+                $k, "", $gpxPath, $gpxdat, false, null,
+                null, $distThresh, $elevThresh, $maWindow
+            );
+            $hikeLgthTot += $calcs[0];
+            if ($calcs[1] > $pmax) {
+                $pmax = $calcs[1];
+            }
+            if ($calcs[2] < $pmin) {
+                $pmin = $calcs[2];
+            }
+            $pup  += $calcs[3];
+            $pdwn += $calcs[4];
+        } // end for: PROCESS EACH TRK
 
-    $totalDist = $hikeLgthTot / 1609;
-    $lgth = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
-    $elev = ($pmax - $pmin) * 3.28084;
-    if ($elev < 100) { // round to nearest 10
-        $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
-        $ht = 10 * $adj;
-    } elseif ($elev < 1000) { // 100-999: round to nearest 50
-        $adj = $elev/100;
-        $lead = substr($adj, 0, 1);
-        $n5 = $lead + 0.50;
-        $n2 = $lead + 0.25;
-        if ($adj > $n5) {
-            $adj = $lead + 1;
-        } elseif ($adj >$n2) {
-            $adj = $lead + 0.5;
-        } else {
-            $adj = $lead;
+        $totalDist = $hikeLgthTot / 1609;
+        $lgth = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
+        $elev = ($pmax - $pmin) * 3.28084;
+        if ($elev < 100) { // round to nearest 10
+            $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
+            $ht = 10 * $adj;
+        } elseif ($elev < 1000) { // 100-999: round to nearest 50
+            $adj = $elev/100;
+            $lead = substr($adj, 0, 1);
+            $n5 = $lead + 0.50;
+            $n2 = $lead + 0.25;
+            if ($adj > $n5) {
+                $adj = $lead + 1;
+            } elseif ($adj >$n2) {
+                $adj = $lead + 0.5;
+            } else {
+                $adj = $lead;
+            }
+            $ht = 100 * $adj;
+        } else { // 1000+: round to nearest 100
+            $adj = round($elev/100, 0, PHP_ROUND_HALF_UP);
+            $ht = 100 * $adj;
         }
-        $ht = 100 * $adj;
-    } else { // 1000+: round to nearest 100
-        $adj = round($elev/100, 0, PHP_ROUND_HALF_UP);
-        $ht = 100 * $adj;
     }
 } else {
-    $lgth = filter_input(INPUT_POST, 'hlgth');
-    $ht = filter_input(INPUT_POST, 'helev');
+    if (empty($maingpx)) {
+        $lgth = '';
+        $ht = '';
+    } else {
+        $lgth = filter_input(INPUT_POST, 'hlgth');
+        $ht = filter_input(INPUT_POST, 'helev');
+    }
 }
 
 /**
@@ -233,7 +247,7 @@ $saves['hSeas'] = filter_input(INPUT_POST, 'hsea');
 $saves['hExpo'] = filter_input(INPUT_POST, 'hexp');
 $hLgth = $lgth;
 $hElev = $ht;
-if (!$upld4latlng) {
+if (!empty($maingpx)) {
     $elat = filter_input(INPUT_POST, 'hlat', FILTER_VALIDATE_FLOAT);
     if ($elat) {
         $hLat = $elat;
@@ -275,7 +289,7 @@ if ($hElev == '') {
     $elevq = $pdo->prepare($eleReq);
     $elevq->execute([$hElev, $hikeNo]);
 }
-if (!$upld4latlng) {
+if (!empty($maingpx)) {
     // Preserve null in lat/lng when no entry (or bad entry) was input
     if ($hLat === 0.0000 || $hLon === 0.000) {
         $latlng = "UPDATE EHIKES SET lat = NULL, lng = NULL WHERE indxNo = ?;";
