@@ -101,8 +101,7 @@
     <option value="Difficult">Difficult</option>
 </select><br /><br />
 <input id="mft" type="checkbox" name="mft" />&nbsp;&nbsp;
-    Calculate Miles/Feet From GPX [<em style="color:brown">**NOTE: GPX file
-        must already be uploaded</em>],&nbsp;&nbsp;or Specify/Change below<br />
+    Calculate Miles/Feet From GPX,&nbsp;&nbsp;or Specify/Change below<br />
 <label for="miles">Round-trip length in miles: </label>
 <textarea id="miles" name="hlgth"><?= sprintf("%.2f", $hikeMiles);?></textarea>
 <label for="elev">Elevation change in feet: </label>
