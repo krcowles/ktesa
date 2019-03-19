@@ -13,57 +13,69 @@
  * @license None to date
  */
 session_start();
-$hikeNo = filter_input(INPUT_GET, 'hno');
-$uid = filter_input(INPUT_GET, 'usr');
-$dispTab = filter_input(INPUT_GET, 'tab');
+
+// query string data:
+$hikeNo = filter_input(INPUT_GET, 'hno'); // all tabs
+$usr = filter_input(INPUT_GET, 'usr');
+$tab = filter_input(INPUT_GET, 'tab');
 // data for drop-down boxes
 $selectData = dropdownData($pdo, 'cls');
 $cnames = array_values($selectData);
 $groups = array_keys($selectData);
-// assign existing hike data
+/**
+ * There are currently four tabs requiring data: each tab's needs are 
+ * highlighted with comment blocks.
+ * Tab1: [data contained in EHIKES table]
+ */
 $hikereq = "SELECT * FROM EHIKES WHERE indxNo = :hikeno;";
 $hikeq = $pdo->prepare($hikereq);
-$retrieved = $hikeq->execute(["hikeno" => $hikeNo]);
-if ($retrieved === false) {
+if ($hikeq->execute(["hikeno" => $hikeNo]) === false) {
     throw new Exception(
         "Hike {$hikeNo} Not Found in EHIKES; File " . __FILE__ . 
         " line no. " . __LINE__
     );
 }
-// there will be only one row...
 $hike = $hikeq->fetch(PDO::FETCH_ASSOC);
-$hikeTitle = trim($hike['pgTitle']);  // this should never be null
-$hikeLocale = fetch($hike['locale']);
-$hikeMarker = fetch($hike['marker']);  // this also should never be null...
-$hikeColl = fetch($hike['collection']);
-$hikeClusGrp = fetch($hike['cgroup']);
-$hikeGrpTip = fetch($hike['cname']);
+$pgTitle = trim($hike['pgTitle']);  // this should never be null
+$locale = fetch($hike['locale']);
+$marker = fetch($hike['marker']);  // this also should never be null...
+$collection = fetch($hike['collection']);
+$cgroup = fetch($hike['cgroup']);
+$cname = fetch($hike['cname']);
 // Special case: when a new page requests to add a new group, advise the js
-if ($hikeMarker === 'Cluster' && $hikeClusGrp === '') {
-    $hikeMarker = 'Normal';
+if ($marker === 'Cluster' && $cgroup === '') {
+    $marker = 'Normal';
     $grpReq = "YES";
 } else {
     $grpReq = "NO";
 }
-$hikeStyle = fetch($hike['logistics']);
-$hikeMiles = fetch($hike['miles']);
-$hikeFeet = fetch($hike['feet']);
-$hikeDiff = fetch($hike['diff']);
-$hikeFac = fetch($hike['fac']);
-$hikeWow = fetch($hike['wow']);
-$hikeSeasons = fetch($hike['seasons']);
-$hikeExpos = fetch($hike['expo']);
-$hikeGpx = fetch($hike['gpx']);
-$curr_gpx = $hikeGpx;
+$logistics = fetch($hike['logistics']);
+$miles = fetch($hike['miles']);
+$feet = fetch($hike['feet']);
+$diff = fetch($hike['diff']);
+$fac = fetch($hike['fac']);
+$wow = fetch($hike['wow']);
+$seasons = fetch($hike['seasons']);
+$expo = fetch($hike['expo']);
+$curr_gpx = fetch($hike['gpx']);
 $curr_trk = fetch($hike['trk']);
-$hikeLat = fetch($hike['lat']);
-$hikeLng = fetch($hike['lng']);
-$hikeUrl1 = fetch($hike['purl1']);
-$hikeUrl2 = fetch($hike['purl2']);
-$hikeDirs = fetch($hike['dirs']);
-$hikeTips = $hike['tips'];
-$hikeDetails = fetch($hike['info']);
-// References for tab4:
+$lat = fetch($hike['lat']);
+$lng = fetch($hike['lng']);
+//$purl1 = fetch($hike['purl1']);  // not currently editable
+//$purl2 = fetch($hike['purl2']);  // not currently editable
+$dirs = fetch($hike['dirs']);
+/**
+ * Tab2: [photo displays (already uploaded)]
+ */
+require "photoSelect.php";
+/**
+ * Tab 3: [hike tips and hike descripton]
+ */
+$tips = fetch($hike['tips']);
+$info = fetch($hike['info']);
+/**
+ * Tab 4: [References and GPS data]
+ */
 $refreq = "SELECT * FROM EREFS WHERE indxNo = :hikeno;";
 $refq = $pdo->prepare($refreq);
 $refq->execute(["hikeno" => $hikeNo]);
