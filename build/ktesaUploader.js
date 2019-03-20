@@ -417,23 +417,20 @@ function sequentialUploader(imgfile, picdesc, cmtr, hikeno, noOfImgs) {
 function postImg(ifile, des, hikeno, mtrid) {
     var def = new $.Deferred();
     ajaxData = new FormData();
-    ajaxData.append('file', ifile);
+    ajaxData.append('file', ifile);       // key 'file' is 4 bytes
     var picdesc = JSON.stringify(des);
-    ajaxData.append('descstr', picdesc);
-    ajaxData.append('indx', hikeno);
+    ajaxData.append('descstr', picdesc);  // key 'descstr' is 7 bytes
+    ajaxData.append('indx', hikeno);      // key 'indx' is 4 bytes
     $cmeter = $(mtrid);
-    var bytes = 0;
-    var completion;
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", 'usrPhotos.php');
-    xhr.onprogress = function() {
-        if (xhr.responseText.indexOf('X') !== -1) {
-            def.reject();
+    xhr.upload.addEventListener("progress", function(evt) {
+        var percent = 1 - evt.loaded/evt.total;
+        if (percent > .1) {
+            var prog = percent * 87.964;
+            $cmeter[0].setAttribute('stroke-dashoffset', prog);
         }
-        bytes++;
-        completion = (1 - bytes/5) * 87.964;
-        $cmeter[0].setAttribute('stroke-dashoffset', completion);
-    };
+    }, false);
+    xhr.open("POST", 'usrPhotos.php');
     xhr.send(ajaxData);
     xhr.onload = function() {
         if (this.status !== 200) {
