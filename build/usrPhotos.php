@@ -13,7 +13,7 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-
+header("Content=Length", 4); // Nominally, 4 checkpoints expected
 // POSTED DATA
 $filedat = $_FILES['file'];
 $photo = $filedat['tmp_name'];
@@ -30,6 +30,7 @@ $picdesc = json_decode($descdat);
 // Size width definitions:
 $n_size = 320;
 $z_size = 640;
+// required to prevent crash when no exif data is present
 set_error_handler(
     function () {
         throw new Exception();
@@ -112,7 +113,11 @@ if ($exifData) {
     $lats = null;
     $lngs = null;
 }
+
 restore_error_handler();
+// 2nd check point
+echo 'B';
+flush();
 
 // determine next 'thumb' value for new entry
 $tval = "SELECT thumb FROM TSV ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
@@ -123,6 +128,9 @@ $eresult = $pdo->query($eval);
 $emax = $eresult->fetch(PDO::FETCH_NUM);
 $max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
 $newthumb = (int)$max + 1;
+// 3rd check point
+echo 'C';
+flush();
 /**
  * Create VALUES list, adding NULLs where needed:
  * Always present: indxNo, title, mid, imgHt, imgWd
@@ -182,6 +190,9 @@ if ($GDsupport['JPEG Support']) {
     storeUploadedImage(
         $nfileName, $photo, $imgWd_n, $imgHt_n, $rotate, $size
     );
+    // 4th check point
+    echo 'D';
+    flush();
     $size = "z";
     storeUploadedImage(
         $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
@@ -191,6 +202,9 @@ if ($GDsupport['JPEG Support']) {
     file_put_contents('photoStat.txt', $upld_results);
     die('X');
 }
+// last check point
+echo 'E';
+flush();
 if (isset($filedat)) {
     if ($upld_results !== '') {
         $msg = $upld_results;

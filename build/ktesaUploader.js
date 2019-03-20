@@ -423,6 +423,7 @@ function postImg(ifile, des, hikeno, mtrid) {
     ajaxData.append('indx', hikeno);      // key 'indx' is 4 bytes
     $cmeter = $(mtrid);
     var xhr = new XMLHttpRequest();
+    // file upload progress
     xhr.upload.addEventListener("progress", function(evt) {
         var percent = 1 - evt.loaded/evt.total;
         if (percent > .1) {
@@ -430,6 +431,18 @@ function postImg(ifile, des, hikeno, mtrid) {
             $cmeter[0].setAttribute('stroke-dashoffset', prog);
         }
     }, false);
+    // script execution progress
+    var bytes = 0;
+    var completion;
+    xhr.onprogress = function() {
+        if (xhr.responseText.indexOf('X') !== -1) {
+            def.reject();
+        }
+        bytes++;
+        completion = (1 - bytes/4) * 8.8;
+        $cmeter[0].setAttribute('stroke-dashoffset', completion);
+    };
+    // proceed with post
     xhr.open("POST", 'usrPhotos.php');
     xhr.send(ajaxData);
     xhr.onload = function() {
