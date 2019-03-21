@@ -3,7 +3,9 @@
  * This page sets up the format for the user-selected page display type.
  * If the page is "Table Only", no map is required or shown. If the
  * page is "Full Map", no table is displayed. For "Map + Table", the
- * display will present both.
+ * display will present both. The $includeZoom variable, if true, will add
+ * the 'map it' symbol to the table, which, when the user clicks it, will
+ * cause the map to center and zoom on the selected hike.
  * PHP Version 7.1
  * 
  * @package Display_Page
@@ -11,11 +13,10 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-$geoVar = 'ON'; // NOTE: though no longer used, kept for now in case of use later
+// T -> Table only; D -> Dual Map + Table; M -> full page map;
 $tblVar = filter_input(INPUT_GET, "tbl");
-// T -> Table only; D -> Dual Map + Table; M -> full page map
-// required for ALL cases:
-$usr = 'mstr'; // this is actually a "don't care"
+// the following are required for ALL options:
+$usr = 'mstr'; // this is actually a "don't care", but needs to be specified
 $age = 'old';
 $show = 'all';
 $includeZoom = ($tblVar === 'D') ? true : false;
@@ -29,7 +30,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
         content="Listing of hikes the authors have undertaken in New Mexico" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <!-- jQuery UI widgets -->
+    <!-- jQuery UI widgets styles -->
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
 <?php if ($tblVar === 'T') : ?>
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
@@ -45,20 +46,15 @@ $includeZoom = ($tblVar === 'D') ? true : false;
 </head>
 
 <body>
-<!-- GEOSETTING (Not currently used) -->
+<!-- Geosetting and New Hike Box -->
 <?php if ($tblVar !== 'T') : ?>
-    <p id="geoSetting">
-    <?php if ($geoVar === 'ON') : ?>
-        ON</p>
-        <img id="geoCtrl" src="../images/geoloc.png" />
-    <?php else : ?>
-        OFF</p>
-    <?php endif; ?>
+    <p id="geoSetting">ON</p>
+    <img id="geoCtrl" src="../images/geoloc.png" />
     <div id="newHikeBox">Latest Hike:<br>
         <a id="newhike" href="#"><span id="winner"></span></a>
     </div>
 <?php endif; ?>
-<!-- PAGE SETTING -->
+<!-- Page Type Settings -->
 <?php if ($tblVar === 'T' || $tblVar === 'D') : ?>
     <?php if ($tblVar === 'T') : ?>
         <div id="logo">
@@ -75,18 +71,19 @@ $includeZoom = ($tblVar === 'D') ? true : false;
     <?php endif; ?>
     <!-- Table Filtering Options: -->
     <div id="tblfilter">
-        <button id="showfilter"><strong>Show Table Filtering Options</strong></button>
+        <button id="showfilter"><strong>Show/Hide Table Filtering</strong></button>
         <div id="dispopts">
-            <strong style="color:darkblue;">Sort the table of hikes by proximity:</strong><br />
-            Hikes within <input id="spinner" />&nbsp;miles of&nbsp;&nbsp;(Choose either:)
+            <strong style="color:darkblue;">
+                Sort the table of hikes by proximity:</strong><br />Hikes within 
+            <input id="spinner" />&nbsp;miles of&nbsp;&nbsp;(Choose either:)
             <div style="margin-left: 190px;">
                 <label id="loclbl" class="normal">Area:</label>
-                    <input id="loc" type="radio" name="prox" />
+                <input id="loc" type="radio" name="prox" />
                 <div id="selloc" class="hidden">
                     (Select)&nbsp;<?php include "../build/localeBox.html";?>
                 </div>&nbsp;&nbsp;<span style="color:brown;">OR</span><br />
                 <label id="hikelbl" class="normal">Hike/Trail</label>
-                    <input id="hike" type="radio" name="prox" />
+                <input id="hike" type="radio" name="prox" />
                 <div id="selhike" class="hidden">
                     <input id="link" type="text" name="link" size="35"
                         placeholder="...select hike by clicking link in table" />
@@ -122,15 +119,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
     </div>
 <?php endif; ?>
 <script src="../scripts/modernizr-custom.js"></script>
-<<<<<<< HEAD
 <script src="../scripts/jquery-ui.min.js"></script>
-=======
-<?php if ($tblVar === 'D') : ?>
-    <script type="text/javascript">var dual = true;</script>
-<?php else : ?>
-    <script type="text/javascript">var dual = false;</script>
-<?php endif; ?>
->>>>>>> master
 <?php if ($tblVar !== 'T') : ?>
     <script src="../scripts/hikeBox.js"></script>
     <script src="../scripts/markerclusterer.js"></script>

@@ -4,7 +4,7 @@
  * table type and its associated data from the tableData.php script. Note that 
  * the table filtering options are only enabled when this scripts is invoked by
  * mapPg.php.
- * PHP Version 7.0
+ * PHP Version 7.1
  * 
  * @package Hike_Table
  * @author  Tom Sandberg nd Ken Cowles <krcowles29@gmail.com>
@@ -14,7 +14,7 @@ require_once "tableData.php";
 ?>
 <!-- REFERENCE TABLE OF HIKES -->
 <table class="sortable">
-    <colgroup>	
+    <colgroup>
         <col style="width:210px">
         <col style="width:108px">
         <col style="width:160px">
@@ -47,25 +47,25 @@ require_once "tableData.php";
     <tr><td>You have no hikes to edit</td></tr>
 <?php else : ?>
     <?php for ($j=0; $j<$entries; $j++) : ?>
-    <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
-    <tr class="indxd" <?= $hikeHiddenDat[$j];?> 
-        data-org-hikes="<?= $hikeColl[$j];?>">
-    <?php elseif ($hikeMarker[$j] === 'Cluster') : ?>
-    <tr class="clustered" data-cluster="<?= $hikeGroup[$j];?>"
-        <?= $hikeHiddenDat[$j];?> data-tool="<?= $groupName[$j];?>">
-    <?php elseif ($hikeMarker[$j] === 'At VC') : ?>
-    <tr class="vchike"  data-vc="<?= $hikeColl[$j];?>" <?= $hikeHiddenDat[$j];?>>
-    <?php else : ?>
-    <tr class="normal" <?= $hikeHiddenDat[$j];?>>
-    <?php endif; ?>
-
-    <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
-    <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $hikeName[$j];?></a></td>
-    <td><?= $hikeLocale[$j];?></td>
-    <td>See Indx</td>
-    <?php if ($includeZoom) : ?>
-    <td style="text-align:center;"><?= $mapLink[$j];?></td>
-    <?php endif; ?>
+        <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
+        <tr class="indxd" <?= $hikeHiddenDat[$j];?> 
+            data-org-hikes="<?= $hikeColl[$j];?>">
+        <?php elseif ($hikeMarker[$j] === 'Cluster') : ?>
+        <tr class="clustered" data-cluster="<?= $hikeGroup[$j];?>"
+            <?= $hikeHiddenDat[$j];?> data-tool="<?= $groupName[$j];?>">
+        <?php elseif ($hikeMarker[$j] === 'At VC') : ?>
+        <tr class="vchike"  data-vc="<?= $hikeColl[$j];?>" <?= $hikeHiddenDat[$j];?>>
+        <?php else : ?>
+        <tr class="normal" <?= $hikeHiddenDat[$j];?>>
+        <?php endif; ?>
+        <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
+        <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $hikeName[$j];?>
+            </a></td>
+        <td><?= $hikeLocale[$j];?></td>
+        <td>See Indx</td>
+            <?php if ($includeZoom) : ?>
+            <td style="text-align:center;"><?= $mapLink[$j];?></td>
+            <?php endif; ?>
     <td>0* miles</td>
     <td>0* ft</td>
     <td>See Index</td>
@@ -75,9 +75,9 @@ require_once "tableData.php";
     <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $hikeName[$j];?></a></td>
     <td><?= $hikeLocale[$j];?></td>
     <td><?= $hikeWow[$j];?></td>
-    <?php if ($includeZoom) : ?>
-    <td style="text-align:center;"><?= $mapLink[$j];?></td>
-    <?php endif; ?>
+        <?php if ($includeZoom) : ?>
+        <td style="text-align:center;"><?= $mapLink[$j];?></td>
+        <?php endif; ?>
     <td><?= $hikeLgth[$j];?> miles</td>
     <td><?= $hikeElev[$j];?> ft</td>
     <td><?= $hikeDiff[$j];?></td>
