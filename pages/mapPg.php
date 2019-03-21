@@ -86,25 +86,27 @@ $includeZoom = ($tblVar === 'D') ? true : false;
             <div id="selhike" class="hidden">
                 <input id="link" type="text" name="link" size="35"
                     placeholder="...select hike by clicking link in table" />
-            </div><br />
+            </div><br /><br />
+            <button id="apply">Apply Filter</button><br />
             <strong class="blue">Then sort the table:</strong><br />By&nbsp;&nbsp;
             <select id="sort1">
                 <option value="No Sort">Do Not Sort</option>
+                <option value="WOW Factor">WOW Factor</option>
                 <option value="Length">Length</option>
-                <option value="Elevation">Elevation</option>
+                <option value="Elev Chg">Elev Chg</option>
                 <option value="Difficulty">Difficulty</option>
                 <option value="Exposure">Exposure</option>
-                <option value="Wow Factor">Wow Factor</option>
+                
             </select>&nbsp;&nbsp;Then by: 
             <select id="sort2">
                 <option value="No Sort">Do Not Sort</option>
+                <option value="WOW Factor">WOW Factor</option>
                 <option value="Length">Length</option>
-                <option value="Elevation">Elevation</option>
+                <option value="Elev Chg">Elev Chg</option>
                 <option value="Difficulty">Difficulty</option>
                 <option value="Exposure">Exposure</option>
-                <option value="Wow Factor">Wow Factor</option>
-            </select><br /><br />
-            <button id="apply">Apply Filter</button><br />
+            </select>&nbsp;&nbsp;
+            <button id="sort">Sort</button><br /><br />
             <div id="results" style="display:none;">
                 <button id="redo">Reset Search</button><br />
                 The results of your search appear in the table below:<br />
@@ -143,6 +145,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
     <?php if ($tblVar === 'D') : ?>
         <script src="../scripts/filter.js"></script>
         <script src="../scripts/phpDynamicTbls.js"></script>
+        <script src="../scripts/multi-sort.js"></script>
     <?php endif; ?>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry">
@@ -150,6 +153,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
 <?php else : ?>
     <script src="../scripts/filter.js"></script>
     <script src="../scripts/tblOnlySort.js"></script>
+    <script src="../scripts/multi-sort.js"></script>
 <?php endif; ?>
 </body>
 </html>

@@ -18,6 +18,7 @@ button:hover {
 	cursor: pointer;
 	background-color: aliceblue;
 	color: brown;
+	font-weight: bold;
 }
 .normal {
 	color: black;

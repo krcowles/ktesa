@@ -1,7 +1,3 @@
-$( function() {  // wait until document is loaded...
-
-filterSetup();
-
 // global object used to define how table items get compared in a sort:
 var noPart1;
 var noPart2;
@@ -36,6 +32,10 @@ var compare = {
 		return a - b;
 	} 
 };  // end of COMPARE object
+
+$( function() {  // wait until document is loaded...
+
+filterSetup();
 
 $('.sortable').each( function() {
 	var $table = $(this);
