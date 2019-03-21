@@ -69,26 +69,41 @@ $includeZoom = ($tblVar === 'D') ? true : false;
         <div id="map" style="width:100%;"></div>
         <script type="text/javascript">var pg = "map";</script>
     <?php endif; ?>
-    <!-- Table Filtering Options: -->
+    <!--Sub-table Filtering and SortingOptions: -->
     <div id="tblfilter">
         <button id="showfilter"><strong>Show/Hide Table Filtering</strong></button>
         <div id="dispopts">
-            <strong style="color:darkblue;">
-                Sort the table of hikes by proximity:</strong><br />Hikes within 
+            <strong class="blue">Sort the table of hikes by proximity:</strong><br />
+            Hikes within 
             <input id="spinner" />&nbsp;miles of&nbsp;&nbsp;(Choose either:)
-            <div style="margin-left: 190px;">
-                <label id="loclbl" class="normal">Area:</label>
-                <input id="loc" type="radio" name="prox" />
-                <div id="selloc" class="hidden">
-                    (Select)&nbsp;<?php include "../build/localeBox.html";?>
-                </div>&nbsp;&nbsp;<span style="color:brown;">OR</span><br />
-                <label id="hikelbl" class="normal">Hike/Trail</label>
-                <input id="hike" type="radio" name="prox" />
-                <div id="selhike" class="hidden">
-                    <input id="link" type="text" name="link" size="35"
-                        placeholder="...select hike by clicking link in table" />
-                </div>
-            </div>
+            <input id="loc" type="radio" name="prox" />
+            <label id="loclbl" class="normal">Area:</label>
+            <div id="selloc" class="hidden">
+                (Select)&nbsp;<?php include "../build/localeBox.html";?>
+            </div>&nbsp;&nbsp;<span style="color:brown;">OR</span>
+            <input id="hike" type="radio" name="prox" />
+            <label id="hikelbl" class="normal">Hike/Trail</label>
+            <div id="selhike" class="hidden">
+                <input id="link" type="text" name="link" size="35"
+                    placeholder="...select hike by clicking link in table" />
+            </div><br />
+            <strong class="blue">Then sort the table:</strong><br />By&nbsp;&nbsp;
+            <select id="sort1">
+                <option value="No Sort">Do Not Sort</option>
+                <option value="Length">Length</option>
+                <option value="Elevation">Elevation</option>
+                <option value="Difficulty">Difficulty</option>
+                <option value="Exposure">Exposure</option>
+                <option value="Wow Factor">Wow Factor</option>
+            </select>&nbsp;&nbsp;Then by: 
+            <select id="sort2">
+                <option value="No Sort">Do Not Sort</option>
+                <option value="Length">Length</option>
+                <option value="Elevation">Elevation</option>
+                <option value="Difficulty">Difficulty</option>
+                <option value="Exposure">Exposure</option>
+                <option value="Wow Factor">Wow Factor</option>
+            </select><br /><br />
             <button id="apply">Apply Filter</button><br />
             <div id="results" style="display:none;">
                 <button id="redo">Reset Search</button><br />
@@ -97,6 +112,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
             </div>
         </div>
     </div>
+    <!-- End of sub-table filter/sort -->
     <p id="filtnote">
         <strong id="note">NOTE:</strong>
         All table columns can be sorted alphabetically/numerically by clicking

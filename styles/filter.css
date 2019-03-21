@@ -5,6 +5,9 @@
 #dispopts {
 	display: none;
 }
+#opts {
+	display: inline-block;
+}
 button {
 	font-size: 16px;
 	height: 28px;
@@ -29,4 +32,10 @@ button:hover {
 .hilite {
 	color: brown;
 	text-decoration: underline;
+}
+.blue {
+	color: darkblue;
+}
+select {
+	font-size: 16px;
 }
