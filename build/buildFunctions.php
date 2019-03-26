@@ -48,7 +48,7 @@ function validateUpload($name, $fileloc)
             if (!$xml->load($tmp_upload)) {
                 throw new Exception(
                     "{$filename} could not be loaded as a DOMDocument in "
-                    . "validateUpload of buildFunctions.php line " . __LINE__
+                    . "validateUpload of buildFunctions.php"
                 );
             }
             if (!$xml->schemaValidate(
@@ -64,8 +64,7 @@ function validateUpload($name, $fileloc)
                 $err_list .= "</ul>";
                 throw new Exception(
                     "{$filename} could not be validated against the XML gpx " 
-                    . "schema in validateUpload() " . __FILE__ . " line "
-                    . __LINE__ . "<br />" . $err_list
+                    . "schema in validateUpload()<br />" . $err_list
                 );
 
             }
@@ -99,6 +98,7 @@ function validateUpload($name, $fileloc)
  */
 function displayXmlError($error, $gpxfile) 
 {
+    $return = '';
     switch ($error->level) {
     case LIBXML_ERR_WARNING:
         $return .= "Warning $error->code: ";
