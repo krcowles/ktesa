@@ -52,10 +52,11 @@ $vcIndex = $getVCs[1];
         <span class="entries">
             Please Enter A Unique Name For This Hike</span>&nbsp;&nbsp;
         <input id="newname" type="text" name="newname" size="30"
-            required="required" /><br />
+            maxlength="30" required="required" />
+            &nbsp;&nbsp;<span class="brown">[30 Characters Max]</span><br />
         <span class="entries">Please Select a Hike Type Below:</span><br />
         <input id="atvc" type="radio" name="marker" value="At VC" />&nbsp;
-            A Hike That Begins In Close Prosimity to a Visitor Center<br />
+            A Hike That Begins In Close Proximity to a Visitor Center<br />
             <em id="vcs">Select The Associated Visitor Center:
                 <select id="vcsel" name="vchike">
                     <?php for ($i=0; $i<$vccnt; $i++) :?>

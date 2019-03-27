@@ -301,7 +301,7 @@ function dropdownData($pdo, $boxtype)
         while ($eclus = $edat->fetch(PDO::FETCH_ASSOC)) {
             $emarker = $eclus['marker'];
             // Note: creating new pg MAY result in 'Cluster' with no group...
-            if ($emarker === 'Cluster' && fetch($eclus['cgroup']) !== '') {  
+            if ($emarker === 'Cluster' && !empty($eclus['cgroup'])) {  
                 $clusltr = $eclus['cgroup'];
                 $clusnme = $eclus['cname'];
                 if (strlen($clusltr) === 1) {
@@ -351,19 +351,6 @@ function memberPresent($test_item, $test_array)
         next($test_array);
     }
     return false;
-}
-/**
- * A simple function converts null into empty string after reading
- * a field from the database.
- * 
- * @param string $var Incoming database variable to be checked
- * 
- * @return string the prepped string
- */
-function fetch($var)
-{
-    $clean = is_null($var) ? '' : $var;
-    return trim($clean);
 }
 /**
  * For Flickr Albums ONLY: retrieve photo date from Flickr html based

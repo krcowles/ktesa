@@ -14,10 +14,10 @@
 session_start();
 require "../php/global_boot.php";
 require_once "../php/gpxFunctions.php";
-$saves = []; // placeholders for pdo query
-$hikeNo = filter_input(INPUT_POST, 'hno');
-$saves['hikeno'] = $hikeNo;
-$hUser = filter_input(INPUT_POST, 'usr');
+$hikeNo = filter_input(INPUT_POST, 'hikeNo');
+$pdoBindings = [];
+$pdoBindings['hikeNo'] = $hikeNo;
+$usr = filter_input(INPUT_POST, 'usr');
 $maingpx = filter_input(INPUT_POST, 'mgpx'); // may be empty
 $maintrk = filter_input(INPUT_POST, 'mtrk'); // may be empty
 $delgpx = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
@@ -29,17 +29,11 @@ $_SESSION['uplmsg'] = ''; // return status to user on tab1
 if (isset($delgpx)) {
     $delgpx = '../gpx/' . $maingpx;
     if (!unlink($delgpx)) {
-        throw new Exception(
-            __FILE__ . " Line " . __LINE__ . 
-            ": Did not remove {$delgpx} from site"
-        );
+        throw new Exception("Could not remove {$delgpx} from site");
     }
     $deltrk = '../json/' . $maintrk;
     if (!unlink($deltrk)) {
-        throw new Exception(
-            __FILE__ . " Line " . __LINE__ .
-            ": Did not remove {$deltrk} from site"
-        );
+        throw new Exception("Could not remove {$deltrk} from site");
     }
     $maingpx = '';
     $udgpxreq = "UPDATE EHIKES SET 
@@ -53,7 +47,7 @@ if (isset($delgpx)) {
         .= "Deleted file {$maingpx} and it's associated track from site; ";
 }
 $gpxfile = basename($_FILES['newgpx']['name']);
-if (!empty($gpxfile)) {  // No new upload
+if (!empty($gpxfile)) {  // new upload
     $gpxtype = fileTypeAndLoc($gpxfile);
     if ($gpxtype[2] === 'gpx') {
         $gpxupl = validateUpload("newgpx", "../gpx/");
@@ -78,9 +72,9 @@ if (!empty($gpxfile)) {  // No new upload
  *  Marker, cluster info may have changed during edit
  * If not, previous values must be retained:
  */
-$marker = filter_input(INPUT_POST, 'pmrkr');
-$clusGrp = filter_input(INPUT_POST, 'pclus'); // current db value
-$cgName = filter_input(INPUT_POST, 'pcnme'); // current db value
+$marker = filter_input(INPUT_POST, 'marker');
+$cgroup = filter_input(INPUT_POST, 'cgroup'); // current db value
+$cname = filter_input(INPUT_POST, 'cname'); // current db value
 // Acquire all cluster assingments, old & new:
 $clusterdata = dropdownData($pdo, 'cls'); 
 $groups = array_keys($clusterdata);
@@ -93,15 +87,15 @@ $cnames = array_values($clusterdata);
  *     3. Group Assignment Changed
  *     4. Nothing Changed
 */
-$delClus = filter_input(INPUT_POST, 'rmclus');
-$nextGrp = filter_input(INPUT_POST, 'nxtg');
-$grpChg = filter_input(INPUT_POST, 'chgd');
+$rmClus = filter_input(INPUT_POST, 'rmClus');
+$nxtGrp = filter_input(INPUT_POST, 'nxtGrp');
+$grpChg = filter_input(INPUT_POST, 'grpChg');
 // 1.
-if (isset($delClus) && $delClus === 'YES') {
+if (isset($rmClus) && $rmClus === 'YES') {
     $marker = 'Normal';
-    $clusGrp = '';
-    $cgName = '';
-} elseif (isset($nextGrp) && $nextGrp === 'YES') {
+    $cgroup = '';
+    $cname = '';
+} elseif (isset($nxtGrp) && $nxtGrp === 'YES') {
     // 2.
     $availLtrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $doubleLtrs = 'AABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ';
@@ -127,13 +121,13 @@ if (isset($delClus) && $delClus === 'YES') {
         }
     }
     $marker = 'Cluster';
-    $clusGrp = $newgrp;
-    $cgName = filter_input(INPUT_POST, 'newgname');
+    $cgroup = $newgrp;
+    $cname = filter_input(INPUT_POST, 'newgname');
 } elseif ($grpChg  === 'YES') {
     // 3. (NOTE: marker will be assigned to 'Cluster' regardless of 
     //       whether previously cluster type or not
     $marker = 'Cluster';
-    $newname = filter_input(INPUT_POST, 'htool');
+    $newname = filter_input(INPUT_POST, 'newcname');
     // get association with group letter
     for ($i=0; $i<count($cnames); $i++) {
         if ($cnames[$i] == $newname) {
@@ -141,17 +135,17 @@ if (isset($delClus) && $delClus === 'YES') {
             break;
         }
     }
-    $clusGrp = $newgrp;
-    $cgName = $newname;;
+    $cgroup = $newgrp;
+    $cname = $newname;;
 } else {
     // 4.
     //  No Changes Assigned to marker, clusGrp, cgName
 }
 // setup variables for saving to db:
-$saves['hName'] = filter_input(INPUT_POST, 'hname');
-$saves['hLoc'] = filter_input(INPUT_POST, 'locale');
-$saves['hGrp'] = $clusGrp;
-$saves['cNme'] = $cgName;
+$pdoBindings['pgTitle'] = filter_input(INPUT_POST, 'pgTitle');
+$pdoBindings['locale'] = filter_input(INPUT_POST, 'locale');
+$pdoBindings['cgroup'] = $cgroup;
+$pdoBindings['cname'] = $cname;
 /**
  * If the user selected 'Calculate From GPX', then those values will
  * be used instead of any existing values in the miles and feet fields. 
@@ -166,7 +160,7 @@ if (isset($_POST['mft'])) {
         $gpxPath = "../gpx/" . $maingpx;
         $gpxdat = simplexml_load_file($gpxPath);
         if ($gpxdat === false) {
-            throw new Exception(__FILE__ . "Line " . __LINE__ . " Failed to open {$gpxPath}");
+            throw new Exception("Failed to open {$gpxPath}");
         }
         if ($gpxdat->rte->count() > 0) {
             $gpxdat = convertRtePts($gpxdat);
@@ -229,8 +223,8 @@ if (isset($_POST['mft'])) {
         $lgth = '';
         $ht = '';
     } else {
-        $lgth = filter_input(INPUT_POST, 'hlgth');
-        $ht = filter_input(INPUT_POST, 'helev');
+        $lgth = filter_input(INPUT_POST, 'miles');
+        $ht = filter_input(INPUT_POST, 'feet');
     }
 }
 
@@ -238,38 +232,42 @@ if (isset($_POST['mft'])) {
  * NOTE: a means to change the 'hike at Visitor Center' location has not
  * yet been implemented, so 'collection' is not modified
  */
-$saves['hMrkr'] = $marker;
-$saves['hType'] = filter_input(INPUT_POST, 'htype');
-$saves['hDiff'] = filter_input(INPUT_POST, 'hdiff');
-$saves['hFac'] = filter_input(INPUT_POST, 'hfac');
-$saves['hWow'] = filter_input(INPUT_POST, 'hwow');
-$saves['hSeas'] = filter_input(INPUT_POST, 'hsea');
-$saves['hExpo'] = filter_input(INPUT_POST, 'hexp');
+$pdoBindings['marker'] = $marker;
+$pdoBindings['logistics'] = filter_input(INPUT_POST, 'logistics');
+$pdoBindings['diff'] = filter_input(INPUT_POST, 'diff');
+$pdoBindings['fac'] = filter_input(INPUT_POST, 'fac');
+$pdoBindings['wow'] = filter_input(INPUT_POST, 'wow');
+$pdoBindings['seasons'] = filter_input(INPUT_POST, 'seasons');
+$pdoBindings['expo'] = filter_input(INPUT_POST, 'expo');
 $hLgth = $lgth;
 $hElev = $ht;
 if (!empty($maingpx)) {
-    $elat = filter_input(INPUT_POST, 'hlat', FILTER_VALIDATE_FLOAT);
+    $elat = filter_input(INPUT_POST, 'lat', FILTER_VALIDATE_FLOAT);
     if ($elat) {
         $hLat = $elat;
     } else {
         $hLat = 0.0000;
     }
-    $elng = filter_input(INPUT_POST, 'hlon', FILTER_VALIDATE_FLOAT);
+    $elng = filter_input(INPUT_POST, 'lng', FILTER_VALIDATE_FLOAT);
     if ($elng) {
         $hLon = $elng;
     } else {
         $hLon = 0.0000;
     }
 }
-$saves['hDirs'] = filter_input(INPUT_POST, 'gdirs');
+$dirs = filter_input(INPUT_POST, 'dirs', FILTER_VALIDATE_URL);
+if (!$dirs) {
+    $dirs = "--- INVALID URL DETECTED ---";
+}
+$pdoBindings['dirs'] = $dirs;
 // The hike data will be updated, first without lat/lng or miles/elev
 $svreq = "UPDATE EHIKES " .
-    "SET pgTitle = :hName, locale = :hLoc, marker = :hMrkr, " .
-    "cgroup = :hGrp, cname = :cNme, logistics = :hType, diff = :hDiff, " .
-    "fac = :hFac, wow = :hWow, seasons = :hSeas, expo = :hExpo, dirs = :hDirs" .
-    " WHERE indxNo = :hikeno";
+    "SET pgTitle = :pgTitle, locale = :locale, marker = :marker, " .
+    "cgroup = :cgroup, cname = :cname, logistics = :logistics, diff = :diff, " .
+    "fac = :fac, wow = :wow, seasons = :seasons, expo = :expo, dirs = :dirs" .
+    " WHERE indxNo = :hikeNo";
 $t1 = $pdo->prepare($svreq);
-$t1->execute($saves);
+$t1->execute($pdoBindings);
 // Preserve null in miles/elevation when no entry was input
 if ($hLgth == '') {
     $lgthReq = "UPDATE EHIKES SET miles = NULL WHERE indxNo = ?;";
@@ -301,5 +299,5 @@ if (!empty($maingpx)) {
         $llq->execute([$hLat, $hLon, $hikeNo]);
     }
 }
-$redirect = "editDB.php?hno={$hikeNo}&usr={$hUser}&tab=1";
+$redirect = "editDB.php?hno={$hikeNo}&usr={$usr}&tab=1";
 header("Location: {$redirect}");
