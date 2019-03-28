@@ -56,15 +56,15 @@ function validateUpload($name, $fileloc)
             )
             ) {
                 $error_vals = libxml_get_errors();
-                $err_list = "<ul>";
+                $err_list = "";
                 foreach ($error_vals as $err) {
-                    $err_list .= "<li>" . displayXmlError($err, $filename) .
-                    "</li>";
+                    $err_list .= displayXmlError($err, $filename) . PHP_EOL;
                 }
-                $err_list .= "</ul>";
+                $err_list .= PHP_EOL . PHP_EOL;
                 throw new Exception(
                     "{$filename} could not be validated against the XML gpx " 
-                    . "schema in validateUpload()<br />" . $err_list
+                    . "schema in validateUpload():" . PHP_EOL .
+                    $err_list
                 );
 
             }
@@ -112,10 +112,10 @@ function displayXmlError($error, $gpxfile)
     default:
         $return = "Error level not recognized";
     }
-    $return .= trim($error->message) . "<br />" .
-        "\n  Line: $error->line" . "\n  Column: $error->column";
+    $return .= trim($error->message) . PHP_EOL . "Line: $error->line" . 
+        PHP_EOL . "Column: $error->column";
     if ($error->file) {
-        $return .= "\n  File: {$gpxfile}";
+        $return .= PHP_EOL .  "File: {$gpxfile}";
     }
     return $return;
 }
