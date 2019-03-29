@@ -1,10 +1,12 @@
 <?php
 /**
  * This script saves any changes made (or data as is) on tab1 ("Basic Data")
- * of the hike page Editor, including uploading of the main gpx (track) file.
- * If a gpx file already exists, it may be deleted, or otherwise replaced by a
- * newly specified file via tab 1's browse button. It is invoked when the user
- * submits the data via the 'Apply' button on tab1.
+ * of the hike page Editor, including uploading/deleting of the main gpx file
+ * (track file). If a gpx file already exists, it may be deleted, or otherwise
+ * replaced by a newly specified file via tab 1's browse button. When a new
+ * gpx file is uploaded without deleting the previous file (if any), the
+ * previous file is not deleted. This script is invoked when the user submits
+ * the data via the 'Apply' button on tab1.
  * PHP Version 7.1
  * 
  * @package Editing
@@ -17,15 +19,23 @@ require_once "../php/gpxFunctions.php";
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
 $pdoBindings = [];
 $pdoBindings['hikeNo'] = $hikeNo;
-$usr = filter_input(INPUT_POST, 'usr');
-$maingpx = filter_input(INPUT_POST, 'mgpx'); // may be empty
-$maintrk = filter_input(INPUT_POST, 'mtrk'); // may be empty
-$delgpx = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
+$usr      = filter_input(INPUT_POST, 'usr');
+$maingpx  = filter_input(INPUT_POST, 'mgpx'); // may be empty
+$maintrk  = filter_input(INPUT_POST, 'mtrk'); // may be empty
+$delgpx   = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
+$usrmiles = filter_input(INPUT_POST, 'usrmiles');  // registers user changes
+$usrfeet  = filter_input(INPUT_POST, 'usrfeet');   // registers user changes
 $_SESSION['uplmsg'] = ''; // return status to user on tab1
 /**
- * This section handles the main gpx file upload/delete.
- * Note: the delete checkbox does not appear if main gpx file is not specified
+ * This section handles the main gpx file delete and new gpx file upload.
+ * Miles/ft entries are not automatically overwritten when gpx file is deleted
+ * or new one is uploaded, unless the user checks the 'Calculate Miles/Feet' 
+ * checkbox. Lat/lngs are always updated when a new file is deleted or uploaded.
+ * Note: the delete gpx checkbox does not appear if a main gpx file is not
+ * specified
  */
+$mftNulls = false; 
+$deletedLatLng = false;
 if (isset($delgpx)) {
     $delgpx = '../gpx/' . $maingpx;
     if (!unlink($delgpx)) {
@@ -45,6 +55,22 @@ if (isset($delgpx)) {
     $udgpx->execute([$hikeNo]);
     $_SESSION['uplmsg']
         .= "Deleted file {$maingpx} and it's associated track from site; ";
+    if ($usrmiles === "NO" && $usrfeet === "NO") { // don't overwrite user changes
+        $miles = '';
+        $feet  = '';
+        $mftNulls = true;
+    }
+    $lat = '';
+    $lng = '';
+    $deletedLatLng = true;
+}
+if (!$mftNulls) { // get POSTED miles/feet if not nulled above
+    $miles = filter_input(INPUT_POST, 'miles');
+    $feet  = filter_input(INPUT_POST, 'feet');
+}
+if (!$deletedLatLng) {
+    $lat = filter_input(INPUT_POST, 'lat');
+    $lng = filter_input(INPUT_POST, 'lng');
 }
 $gpxfile = basename($_FILES['newgpx']['name']);
 if (!empty($gpxfile)) {  // new upload
@@ -68,6 +94,78 @@ if (!empty($gpxfile)) {  // new upload
                 "File Type NOT .gpx for {$gpxfile}.</p>";
     }
 }
+/**
+ * If the user selected 'Calculate From GPX', then those values will
+ * be used instead of any existing values in the miles and feet fields. 
+ */
+if (isset($_POST['mft'])) {
+    if (empty($maingpx)) {
+        $_SESSION['uplmsg'] .= "<br />No gpx file has been uploaded for this hike; " 
+            . "Miles/Feet Calculations cannot be performed";
+        // miles/feet remain as previously defined
+    } else {
+        $gpxPath = "../gpx/" . $maingpx;
+        $gpxdat = simplexml_load_file($gpxPath);
+        if ($gpxdat === false) {
+            throw new Exception("Failed to open {$gpxPath}");
+        }
+        if ($gpxdat->rte->count() > 0) {
+            $gpxdat = convertRtePts($gpxdat);
+        }
+        $noOfTrks = $gpxdat->trk->count();
+        // threshold in meters to filter out elevation and distance value variation
+        // set by default if command line parameter(s) is not given
+        $elevThresh = 1.0;
+        $distThresh = 5.0;
+        $maWindow = 3;
+
+        // calculate stats for all tracks:
+        $pup = (float)0;
+        $pdwn = (float)0;
+        $pmax = (float)0;
+        $pmin = (float)50000;
+        $hikeLgthTot = (float)0;
+        for ($k=0; $k<$noOfTrks; $k++) {
+            $calcs = getTrackDistAndElev(
+                $k, "", $gpxPath, $gpxdat, false, null,
+                null, $distThresh, $elevThresh, $maWindow
+            );
+            $hikeLgthTot += $calcs[0];
+            if ($calcs[1] > $pmax) {
+                $pmax = $calcs[1];
+            }
+            if ($calcs[2] < $pmin) {
+                $pmin = $calcs[2];
+            }
+            $pup  += $calcs[3];
+            $pdwn += $calcs[4];
+        } // end for: PROCESS EACH TRK
+
+        $totalDist = $hikeLgthTot / 1609;
+        $miles = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
+        $elev = ($pmax - $pmin) * 3.28084;
+        if ($elev < 100) { // round to nearest 10
+            $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
+            $feet = 10 * $adj;
+        } elseif ($elev < 1000) { // 100-999: round to nearest 50
+            $adj = $elev/100;
+            $lead = substr($adj, 0, 1);
+            $n5 = $lead + 0.50;
+            $n2 = $lead + 0.25;
+            if ($adj > $n5) {
+                $adj = $lead + 1;
+            } elseif ($adj >$n2) {
+                $adj = $lead + 0.5;
+            } else {
+                $adj = $lead;
+            }
+            $feet = 100 * $adj;
+        } else { // 1000+: round to nearest 100
+            $adj = round($elev/100, 0, PHP_ROUND_HALF_UP);
+            $feet = 100 * $adj;
+        }
+    }
+} 
 /**
  *  Marker, cluster info may have changed during edit
  * If not, previous values must be retained:
@@ -147,88 +245,6 @@ $pdoBindings['locale'] = filter_input(INPUT_POST, 'locale');
 $pdoBindings['cgroup'] = $cgroup;
 $pdoBindings['cname'] = $cname;
 /**
- * If the user selected 'Calculate From GPX', then those values will
- * be used instead of any existing values in the miles and feet fields. 
- */
-if (isset($_POST['mft'])) {
-    if (empty($maingpx)) {
-        $_SESSION['uplmsg'] .= "<br />No gpx file has been uploaded for this hike; " 
-            . "Miles/Feet Calculations cannot be performed";
-        $lgth = '';
-        $ht = '';
-    } else {
-        $gpxPath = "../gpx/" . $maingpx;
-        $gpxdat = simplexml_load_file($gpxPath);
-        if ($gpxdat === false) {
-            throw new Exception("Failed to open {$gpxPath}");
-        }
-        if ($gpxdat->rte->count() > 0) {
-            $gpxdat = convertRtePts($gpxdat);
-        }
-        $noOfTrks = $gpxdat->trk->count();
-        // threshold in meters to filter out elevation and distance value variation
-        // set by default if command line parameter(s) is not given
-        $elevThresh = 1.0;
-        $distThresh = 5.0;
-        $maWindow = 3;
-
-        // calculate stats for all tracks:
-        $pup = (float)0;
-        $pdwn = (float)0;
-        $pmax = (float)0;
-        $pmin = (float)50000;
-        $hikeLgthTot = (float)0;
-        for ($k=0; $k<$noOfTrks; $k++) {
-            $calcs = getTrackDistAndElev(
-                $k, "", $gpxPath, $gpxdat, false, null,
-                null, $distThresh, $elevThresh, $maWindow
-            );
-            $hikeLgthTot += $calcs[0];
-            if ($calcs[1] > $pmax) {
-                $pmax = $calcs[1];
-            }
-            if ($calcs[2] < $pmin) {
-                $pmin = $calcs[2];
-            }
-            $pup  += $calcs[3];
-            $pdwn += $calcs[4];
-        } // end for: PROCESS EACH TRK
-
-        $totalDist = $hikeLgthTot / 1609;
-        $lgth = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
-        $elev = ($pmax - $pmin) * 3.28084;
-        if ($elev < 100) { // round to nearest 10
-            $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
-            $ht = 10 * $adj;
-        } elseif ($elev < 1000) { // 100-999: round to nearest 50
-            $adj = $elev/100;
-            $lead = substr($adj, 0, 1);
-            $n5 = $lead + 0.50;
-            $n2 = $lead + 0.25;
-            if ($adj > $n5) {
-                $adj = $lead + 1;
-            } elseif ($adj >$n2) {
-                $adj = $lead + 0.5;
-            } else {
-                $adj = $lead;
-            }
-            $ht = 100 * $adj;
-        } else { // 1000+: round to nearest 100
-            $adj = round($elev/100, 0, PHP_ROUND_HALF_UP);
-            $ht = 100 * $adj;
-        }
-    }
-} else {
-    if (empty($maingpx)) {
-        $lgth = '';
-        $ht = '';
-    } else {
-        $lgth = filter_input(INPUT_POST, 'miles');
-        $ht = filter_input(INPUT_POST, 'feet');
-    }
-}
-
-/**
  * NOTE: a means to change the 'hike at Visitor Center' location has not
  * yet been implemented, so 'collection' is not modified
  */
@@ -239,28 +255,15 @@ $pdoBindings['fac'] = filter_input(INPUT_POST, 'fac');
 $pdoBindings['wow'] = filter_input(INPUT_POST, 'wow');
 $pdoBindings['seasons'] = filter_input(INPUT_POST, 'seasons');
 $pdoBindings['expo'] = filter_input(INPUT_POST, 'expo');
-$hLgth = $lgth;
-$hElev = $ht;
-if (!empty($maingpx)) {
-    $elat = filter_input(INPUT_POST, 'lat', FILTER_VALIDATE_FLOAT);
-    if ($elat) {
-        $hLat = $elat;
-    } else {
-        $hLat = 0.0000;
-    }
-    $elng = filter_input(INPUT_POST, 'lng', FILTER_VALIDATE_FLOAT);
-    if ($elng) {
-        $hLon = $elng;
-    } else {
-        $hLon = 0.0000;
-    }
-}
+
 $dirs = filter_input(INPUT_POST, 'dirs', FILTER_VALIDATE_URL);
 if (!$dirs) {
     $dirs = "--- INVALID URL DETECTED ---";
 }
 $pdoBindings['dirs'] = $dirs;
-// The hike data will be updated, first without lat/lng or miles/elev
+/**
+ * The following code updates the database with info gathered above
+ */
 $svreq = "UPDATE EHIKES " .
     "SET pgTitle = :pgTitle, locale = :locale, marker = :marker, " .
     "cgroup = :cgroup, cname = :cname, logistics = :logistics, diff = :diff, " .
@@ -268,36 +271,42 @@ $svreq = "UPDATE EHIKES " .
     " WHERE indxNo = :hikeNo";
 $t1 = $pdo->prepare($svreq);
 $t1->execute($pdoBindings);
-// Preserve null in miles/elevation when no entry was input
-if ($hLgth == '') {
-    $lgthReq = "UPDATE EHIKES SET miles = NULL WHERE indxNo = ?;";
-    $milesq = $pdo->prepare($lgthReq);
-    $milesq->execute([$hikeNo]);
+// Preserve NULLs in miles/feet when entry is empty
+$milesFeet = [];
+$mfquery = "UPDATE EHIKES SET miles = ";
+if (empty($miles)) {
+    $mfquery .= "NULL, feet = ";
 } else {
-    $lgthReq = "UPDATE EHIKES SET miles = ? WHERE indxNo = ?;";
-    $milesq = $pdo->prepare($lgthReq);
-    $milesq->execute([$hLgth, $hikeNo]);
+    $mfquery .= "?, feet = ";
+    $milesFeet[0] = $miles;
 }
-if ($hElev == '') {
-    $eleReq = "UPDATE EHIKES SET feet = NULL WHERE indxNo = ?;";
-    $elevq = $pdo->prepare($eleReq);
-    $elevq->execute([$hikeNo]);
+if (empty($feet)) {
+    $mfquery .= "NULL ";
 } else {
-    $eleReq = "UPDATE EHIKES SET feet = ? WHERE indxNo = ?;";
-    $elevq = $pdo->prepare($eleReq);
-    $elevq->execute([$hElev, $hikeNo]);
+    $mfquery .= "? ";
+    array_push($milesFeet, $feet);
 }
-if (!empty($maingpx)) {
-    // Preserve null in lat/lng when no entry (or bad entry) was input
-    if ($hLat === 0.0000 || $hLon === 0.000) {
-        $latlng = "UPDATE EHIKES SET lat = NULL, lng = NULL WHERE indxNo = ?;";
-        $llq = $pdo->prepare($latlng);
-        $llq->execute([$hikeNo]);
-    } else {
-        $latlng = "UPDATE EHIKES SET lat = ?, lng = ? WHERE indxNo = ?;";
-        $llq = $pdo->prepare($latlng);
-        $llq->execute([$hLat, $hLon, $hikeNo]);
-    }
+$mfquery .= "WHERE indxNo = ?;";
+array_push($milesFeet, $hikeNo);
+$pdo->prepare($mfquery)->execute($milesFeet);
+// preserve NULLs in lat/lng when empty
+$data = [];
+$latlng = "UPDATE EHIKES SET lat = ";
+if (empty($lat)) {
+    $latlng .= "NULL, lng = ";
+} else {
+    $latlng .= "?, lng =  ";
+    $data[0] = $lat;
 }
-$redirect = "editDB.php?hno={$hikeNo}&usr={$usr}&tab=1";
+if (empty($lng)) {
+    $latlng .= "NULL ";
+} else {
+    $latlng .= "? ";
+    array_push($data, $lng);
+}
+$latlng .= "WHERE indxNo = ?;";
+array_push($data, $hikeNo);
+$pdo->prepare($latlng)->execute($data);
+
+$redirect = "editDB.php?hikeNo={$hikeNo}&usr={$usr}&tab=1";
 header("Location: {$redirect}");

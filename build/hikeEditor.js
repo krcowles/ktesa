@@ -8,7 +8,7 @@ $( function () { // when page is loaded...
  *     If the hike was originally published, a reminder will pop up.
  */
 var uid = $('#uid').text();
-var useEditor = 'editDB.php?tab=1&usr=' + uid + "&hno=";
+var useEditor = 'editDB.php?tab=1&usr=' + uid + "&hikeNo=";
 $rows = $('tbody').find('tr');
 $('a').on('click', function(ev) {
     ev.preventDefault();
@@ -36,13 +36,13 @@ $('a').on('click', function(ev) {
         var $containerRow = $containerCell.parent();
         if ( !$containerRow.hasClass('indxd') ) {
             var hikeToUse = $containerRow.data('indx');
-            var callPhp = 'xfrPub.php?hno=' + hikeToUse + '&usr=' + uid;
+            var callPhp = 'xfrPub.php?hikeNo=' + hikeToUse + '&usr=' + uid;
 			window.open(callPhp);
 			window.close();
         } else {
             //currently, only site master can edit index pages
             var hikeToUse = $containerRow.data('indx');
-			var callPhp = 'editIndx.php?hno=' + hikeToUse 
+			var callPhp = 'editIndx.php?hikeNo=' + hikeToUse 
 				+ '&tbl=old&usr=mstr&tab=1';
 			window.open(callPhp);
 			window.close();

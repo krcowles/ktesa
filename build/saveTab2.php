@@ -10,8 +10,8 @@
  */
 require "../php/global_boot.php";
 
-$hikeNo = filter_input(INPUT_POST, 'pno');
-$uid = filter_input(INPUT_POST, 'pid');
+$hikeNo = filter_input(INPUT_POST, 'hikeNo');
+$usr = filter_input(INPUT_POST, 'usr');
 // waypoint data, if present:
 $wids = isset($_POST['wids']) ? $_POST['wids'] : null;  // picIdx for waypoint
 $wdes = isset($_POST['wsym']) ? $_POST['wdes'] : null;
@@ -101,5 +101,5 @@ if (isset($wids)) {
         $waypt->execute([$wdes[$k], $wlat[$k], $wlng[$k], $wsym[$k], $wids[$k]]);
     }
 }
-$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=2";
+$redirect = "editDB.php?hikeNo={$hikeNo}&usr={$usr}&tab=2";
 header("Location: {$redirect}");

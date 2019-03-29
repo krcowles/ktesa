@@ -39,9 +39,9 @@
     <li><span class="brown">Upload new gpx file:&nbsp;</span>
         <input type="file" name="newgpx" /></li>
 </ul>
-<!-- Begin basic data presentation -->
 <h3>Data Related to This Hike:</h3>
 
+<!-- Begin basic data presentation -->
 <label for="hike">Hike Name: <span class="brown">[30 Characters Max]</span></label>
 <textarea id="hike" name="pgTitle" maxlength="30"><?= $pgTitle;?></textarea>&nbsp;&nbsp;
     <p style="display:none;" id="locality"><?= $locale;?></p>
@@ -109,11 +109,13 @@
     <span class="brown">[Number less than 100, up to two decimal places]&nbsp;</span>
 </label>
 <textarea id="miles" name="miles"><?= $miles;?></textarea><br />
+<input type="hidden" name="usrmiles" value="NO" />
 
 <label for="elev">Elevation change in feet:
     <span class="brown">[Integer value up to five digits]&nbsp;</span>
 </label>
 <textarea id="elev" name="feet" maxlength="30"><?= $feet;?></textarea><br /><br />
+<input type="hidden" name="usrfeet" value="NO" />
 
 <label for="fac">Facilities at the trailhead:
     <span class="brown">[30 Characters Max]</span>

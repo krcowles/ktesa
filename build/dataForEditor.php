@@ -15,7 +15,7 @@
 session_start();  // saves number of current tab displayed & upload msgs
 
 // query string data:
-$hikeNo = filter_input(INPUT_GET, 'hno'); // all tabs
+$hikeNo = filter_input(INPUT_GET, 'hikeNo'); // all tabs
 $usr = filter_input(INPUT_GET, 'usr');
 $tab = filter_input(INPUT_GET, 'tab');
 // data for drop-down boxes

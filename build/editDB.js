@@ -372,8 +372,9 @@ $bktags.each( function() {
  * empty string, after which the user may 'Apply' as is, or change the data.
  */
 
- var submit = true;  // until invalid data is entered...
+ var submit = true;  // unless invalid data is entered...
 // miles: numeric, and up to two decimal points
+var orgmiles = $('#miles').val(); // original value loaded
 $('#miles').on('change', function() {
     var warn = "Please enter a number less than 100 for 'miles'\nwith up to 2 decimal places";
     var milesEntry = $('#miles').val();
@@ -384,28 +385,31 @@ $('#miles').on('change', function() {
         if (regexp.test(milesString)) {
             if (Math.abs(milesEntry) > 99.99) {
                 alert(warn);
-                $('#miles').val("");
+                $('#miles').val(orgmiles);
                 submit = false;
             } else {
+                $('input[name=usrmiles]').val("YES");
                 submit = true;
             }
         } else {
             var strlen = milesEntry.length;
             if (milesString.indexOf('.') !== -1 && milesString.indexOf('.') !== strlen -1) {
                     alert(warn);
-                    $('#miles').val("");
+                    $('#miles').val(orgmiles);
                     submit = false;
             } else {
+                $('input[name=usrmiles]').val("YES");
                 submit = true;
             }
         }
     } else {
         alert(warn);
-        $('#miles').val("");
+        $('#miles').val(orgmiles);
         submit = false;
     }
 });
 // elevation: up to five digits, integer
+var orgelev = $('#elev').val();  // original value loaded
 $('#elev').on('change', function() {
     var feet = Number($('#elev').val());
     alarm = "Only integers less than 100,000 are allowed for 'Elevation Change'";
@@ -413,14 +417,15 @@ $('#elev').on('change', function() {
         if (Number.isInteger(feet)) {
             if (Math.abs(feet) > 99999) {
                 alert(alarm);
-                $('#elev').val("");
+                $('#elev').val(orgelev);
                 submit = false;
             } else {
+                $('input[name=usrfeet]').val("YES");
                 submit = true;
             }
         } else {
             alert(alarm);
-            $('#elev').val("");
+            $('#elev').val(orgelev);
             submit = false;
         }
     }
@@ -434,6 +439,7 @@ $('input[type=file]').on('change', function() {
     }
 });
 // lat: float (13.10)
+var orglat = $('#lat').val();  // original value loaded
 $('#lat').on('change', function() {
     var lat = Number($(this).val());
     var notlat = "The value entered does not conform to a lat/lng";
@@ -442,44 +448,45 @@ $('#lat').on('change', function() {
         if (decimal.test(lat)) {
             if (Math.abs(lat) > 180) {
                 alert(notlat);
-                $(this).val("");
+                $(this).val(orglat);
                 submit = false;
             } else {
                 submit = true;
             }
         } else {
             alert(notlat);
-            $(this).val("");
+            $(this).val(orglat);
             submit = false;
         }
     } else {
         alert(notlat);
-        $(this).val("");
+        $(this).val(orglat);
         submit = false;
     }
 });
 // lng: float (13.10)
+var orglng = $('#lon').val();  // original value loaded
 $('#lon').on('change', function() {
     var lng = Number($(this).val());
     var notlng = "The value entered does not conform to a lat/lng";
-    if ($.isNumeric(lat)) {
+    if ($.isNumeric()) {
         decimal = /^[-+]?[0-9]+\.[0-9]+$/; 
-        if (decimal.test(lat)) {
-            if (Math.abs(lat) > 180) {
+        if (decimal.test(lng)) {
+            if (Math.abs(lng) > 180) {
                 alert(notlng);
-                $(this).val("");
+                $(this).val(orglng);
                 submit = false;
             } else {
                 submit = true;
             }
         } else {
             alert(notlng);
-            $(this).val("");
+            $(this).val(orglng);
             submit = false;
         }
     } else {
         alert(notlng);
-        $(this).val("");
+        $(this).val(orglng);
         submit = false;
     }
 });

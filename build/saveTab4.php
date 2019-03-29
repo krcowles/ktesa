@@ -12,7 +12,7 @@ session_start();
 require "../php/global_boot.php";
 
 $hikeNo = filter_input(INPUT_POST, 'rno');
-$uid = filter_input(INPUT_POST, 'rid');
+$usr = filter_input(INPUT_POST, 'rid');
 /**
  * There are two sections of 'references': 1) existing in db; 2) new (if any)
  *   1. Those which already exist in the database may have been edited by the
@@ -235,5 +235,5 @@ for ($j=0; $j<$newcnt; $j++) {
     }
 }
 // return to editor with new data:
-$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=4";
+$redirect = "editDB.php?hikeNo={$hikeNo}&usr={$usr}&tab=4";
 header("Location: {$redirect}");
