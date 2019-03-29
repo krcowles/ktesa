@@ -106,7 +106,7 @@
 <input id="mft" type="checkbox" name="mft" />&nbsp;&nbsp;
     Calculate Miles/Feet From GPX,&nbsp;&nbsp;or Specify/Change below:<br />
 <label for="miles">Round-trip length in miles:
-    <span class="brown">[Number less than 100, up to two decimal places]&nbsp;</span>
+    <span class="brown">[Number less than 100, and a max of two decimal places]&nbsp;</span>
 </label>
 <textarea id="miles" name="miles"><?= $miles;?></textarea><br />
 <input type="hidden" name="usrmiles" value="NO" />

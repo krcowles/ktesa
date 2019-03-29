@@ -376,7 +376,8 @@ $bktags.each( function() {
 // miles: numeric, and up to two decimal points
 var orgmiles = $('#miles').val(); // original value loaded
 $('#miles').on('change', function() {
-    var warn = "Please enter a number less than 100 for 'miles'\nwith up to 2 decimal places";
+    var warn = "Please enter a number less than 100 for 'miles'\n" +
+        "with a maximum of 2 decimal places";
     var milesEntry = $('#miles').val();
     if ($.isNumeric(milesEntry)) {
         milesEntry = Number(milesEntry); // textareas are strings

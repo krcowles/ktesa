@@ -132,8 +132,8 @@ if ($inclPix === 'YES') {
         } else {
             $tawd = $phWds[$i] - 12; 
         } 
-        $html .= '<textarea style="width:' . $tawd . 'px" name="ecap[]">' .
-            $phDescs[$i] . "</textarea>";
+        $html .= '<textarea class="capts" style="width:' . $tawd .
+            'px" name="ecap[]" maxlength="512">' . $phDescs[$i] . "</textarea>";
         $html .= "</div>" . PHP_EOL;
     }
     // create the js arrays to be passed to the accompanying script:
