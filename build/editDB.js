@@ -487,7 +487,7 @@ var orglng = $('#lon').val();  // original value loaded
 $('#lon').on('change', function() {
     var lng = Number($(this).val());
     var notlng = "The value entered does not conform to a lat/lng";
-    if ($.isNumeric()) {
+    if ($.isNumeric(lng)) {
         decimal = /^[-+]?[0-9]+\.[0-9]+$/; 
         if (decimal.test(lng)) {
             if (Math.abs(lng) > 180) {
