@@ -43,7 +43,8 @@
 
 <!-- Begin basic data presentation -->
 <label for="hike">Hike Name: <span class="brown">[30 Characters Max]</span></label>
-<textarea id="hike" name="pgTitle" maxlength="30"><?= $pgTitle;?></textarea>&nbsp;&nbsp;
+<textarea id="hike" name="pgTitle"
+        maxlength="30"><?= $pgTitle;?></textarea>&nbsp;&nbsp;
     <p style="display:none;" id="locality"><?= $locale;?></p>
     <label for="area">Locale (City/POI): </label>
     <select id="area" name="locale">
@@ -106,7 +107,8 @@
 <input id="mft" type="checkbox" name="mft" />&nbsp;&nbsp;
     Calculate Miles/Feet From GPX,&nbsp;&nbsp;or Specify/Change below:<br />
 <label for="miles">Round-trip length in miles:
-    <span class="brown">[Number less than 100, and a max of two decimal places]&nbsp;</span>
+    <span class="brown">[Number less than 100, and a max of two
+        decimal places]&nbsp;</span>
 </label>
 <textarea id="miles" name="miles"><?= $miles;?></textarea><br />
 <input type="hidden" name="usrmiles" value="NO" />

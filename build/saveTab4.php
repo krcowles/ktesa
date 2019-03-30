@@ -11,8 +11,8 @@
 session_start();
 require "../php/global_boot.php";
 
-$hikeNo = filter_input(INPUT_POST, 'rno');
-$usr = filter_input(INPUT_POST, 'rid');
+$hikeNo = filter_input(INPUT_POST, 'hikeNo');
+$usr = filter_input(INPUT_POST, 'usr');
 /**
  * There are two sections of 'references': 1) existing in db; 2) new (if any)
  *   1. Those which already exist in the database may have been edited by the
@@ -101,9 +101,14 @@ for ($s=0; $s<count($usebooks); $s++) {
         if ($_POST[$o1id] !== '') {
             $a = $newtypes[$s]; // no wierd characters here
             array_push($addtypes, $a);
-            $b = $_POST[$o1id];
+            $b = filter_var($_POST[$o1id], FILTER_VALIDATE_URL);
+            if ($b === false) {
+                $_SESSION['riturl'] = "The URL you entered is not valid";
+                $b = " --- INVALID URL ---";
+            }
             array_push($addrit1s, $b);
             $c = $_POST[$o2id];
+
             array_push($addrit2s, $c);
             $addcnt++;
         }
@@ -227,11 +232,17 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
     if ($addit && $url[$j] !== '') {
+        $gpsdatUrl = filter_var($url[$j], FILTER_VALIDATE_URL);
+        if ($gpsdatUrl === false) {
+            $gpsdatUrl = "--- INVALID URL ---";
+            $_SESSION['gpsmsg'] .= '<br /><span style="color:darkblue">' .
+                'You have entered an invalid URL</span>';
+        }
         // For now, all entries will be marked 'P'
         $addgpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
             "VALUES (?,'P',?,?,?);";
         $addgps = $pdo->prepare($addgpsreq);
-        $addgps->execute([$hikeNo, $lbl[$j], $url[$j], $cot[$j]]);
+        $addgps->execute([$hikeNo, $lbl[$j], $gpsdatUrl, $cot[$j]]);
     }
 }
 // return to editor with new data:

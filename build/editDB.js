@@ -351,6 +351,23 @@ $reftags.each( function() {
         }
     });
 });
+// validate length of URL's and click-on text
+$('input[id^=nr1]').each(function() {
+    $(this).on('change', function() {
+        if($(this).val().length > 1024) {
+            alert("This URL exceeds the max length of 1024 characters");
+            $(this).val("");
+        }
+    });
+});
+$('input[id^=nr2]').each(function() {
+    $(this).on('change', function() {
+        if ($(this).val().length > 512) {
+            alert("The maximum no of characters allowed in this field is 512");
+            $(this).val("");
+        }
+    });
+});
 var $bktags = $('select[id^="bkttl"]');
 $bktags.each( function() {
     $(this).val(''); // initialize to show no selection:
@@ -371,8 +388,8 @@ $bktags.each( function() {
  * data, form submission is halted. The subject field is converted to an
  * empty string, after which the user may 'Apply' as is, or change the data.
  */
+ var submit = true;  // unless invalid data is entered... (may prevent submit)
 
- var submit = true;  // unless invalid data is entered...
 // miles: numeric, and up to two decimal points
 var orgmiles = $('#miles').val(); // original value loaded
 $('#miles').on('change', function() {
@@ -431,7 +448,7 @@ $('#elev').on('change', function() {
         }
     }
 });
-// gpx: file name length 1024
+// gpx: file name length 1024; NOTE: This also covers GPS Data uploads
 $('input[type=file]').on('change', function() {
     var newname = this.files[0].name;
     if (newname.length > 1024) {
@@ -491,7 +508,37 @@ $('#lon').on('change', function() {
         submit = false;
     }
 });
+// GPS Data: 
+// label
+$('input[name^=labl]').each(function() {
+    $(this).on('change', function() {
+        if ($(this).val().length > 128) {
+            alert("Only 128 characters are allowed");
+            $(this).val("");
+            submit = false;
+        }
+    });
+});
+// url length
+$('input[name^=lnk]').each(function() {
+    $(this).on('change', function() {
+        if ($(this).val().length > 1024) {
+            alert("Only 1024 characters are allowed");
+            submit = false;
+        }
+    });
+});
+// click-on-text length
+$('input[name^=ctxt]').each(function() {
+    $(this).on('change', function() {
+        if ($(this).val().length > 256) {
+            alert("Only 256 characters are allowed");
+            submit = false;
+        }
+    });
+});
 
+// Form submission if 'submit' is still true
 $('input[name=savePg]').on('click', function(evt) {
     if (submit) {
         // make sure that a new group name has been specified if the checkbox is checked

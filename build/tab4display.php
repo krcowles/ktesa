@@ -1,17 +1,21 @@
 <div style="margin-left:8px;">
     <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
     <input type="submit" name="savePg" value="Apply" /></p>
-</div>	
+</div>
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed,
     delete and add a new one)</h3>
-<input type="hidden" name="rno" value="<?= $hikeNo;?>" />
-<input type="hidden" name="rid" value="<?= $usr;?>" />
+<input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
+<input type="hidden" name="usr" value="<?= $usr;?>" />
 <script type=text/javascript>
     var titles = <?= $titles;?>;
     var authors = <?= $authors;?>;
 </script>
 <!-- Pre-populated References -->
 <p id="refcnt" style="display:none"><?= $noOfRefs;?></p>
+<?php if (isset($_SESSION['riturl']) && $_SESSION['riturl'] !== '') {
+    echo '<p style="color:brown;">' . $_SESSION['riturl'] . '</p>';
+    $_SESSION['riturl'] = '';
+} ?>
 <?php for ($k=0; $k<$noOfRefs; $k++) : ?>
 <p id="rid<?= $k;?>" style="display:none"><?= $rtypes[$k];?></p>
 <p id="r1<?= $k;?>" style="display:none"><?= $rit1s[$k];?></p>
@@ -120,7 +124,10 @@ and/or maps</p>
         name="delgps[]" value="<?= $n;?>$x"><br /><br />
 <?php endfor; ?>
 <!-- Unpopulated Data -->
-<p><em style="color:brown;font-weight:bold;">Add</em> GPS Data:</p>
+<p><em style="color:brown;font-weight:bold;">Add</em> GPS Data:<br />
+<span style="color:brown">NOTE: Max character lengths are: Label - 128;
+    URL - 1024; Click-test - 256</span></p>
+
 <label>Label: </label><input class="tstyle1" name="labl[]" size="30" />&nbsp;&nbsp;
 <label>Url: </label><input class="tstyle2" name="lnk[]" size="55" />
 <label style="text-indent:30px">Click-on text: </label><input

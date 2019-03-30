@@ -87,12 +87,9 @@ $rtypes = [];
 $rit1s = [];
 $rit2s = [];
 foreach ($refs as $ref) {
-    $reftype = $ref['rtype'];
-    array_push($rtypes, $reftype);
-    $ritem1 = $ref['rit1'];
-    array_push($rit1s, $ritem1);
-    $ritem2 = $ref['rit2'];
-    array_push($rit2s, $ritem2);
+    array_push($rtypes, $ref['rtype']);
+    array_push($rit1s, $ref['rit1']);
+    array_push($rit2s, $ref['rit2']);
 }
 // Create the book drop-down options:
 $bkReq = "SELECT * FROM BOOKS;";
