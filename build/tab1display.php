@@ -1,16 +1,16 @@
 <!-- Hidden inputs and data required by saveTab1.php & edit.js routines -->
 <input type="hidden" name="hno" value="<?= $hikeNo;?>" />
-<input type="hidden" name="usr" value="<?= $uid;?>" />
-<input type="hidden" name="col" value="<?= $hikeColl;?>" />
+<input type="hidden" name="usr" value="<?= $usr;?>" />
+<input type="hidden" name="col" value="<?= $collection;?>" />
 <input type="hidden" name="mgpx" value="<?= $curr_gpx;?>" />
 <input type="hidden" name="mtrk" value="<?= $curr_trk;?>" />
-<p id="mrkr" style="display:none"><?= $hikeMarker;?></p>
+<p id="mrkr" style="display:none"><?= $marker;?></p>
 <p id="greq" style="display:none"><?= $grpReq;?></p>
-<input type="hidden" name="pmrkr" value="<?=$hikeMarker;?>" />
-<input type="hidden" name="pclus" value="<?= $hikeClusGrp;?>" />
-<p id="group" style="display:none"><?= $hikeGrpTip;?></p>
-<input type="hidden" name="pcnme" value="<?= $hikeGrpTip;?>" />
-<p id="ctype" style="display:none"><?= $hikeStyle;?></p>
+<input type="hidden" name="pmrkr" value="<?=$marker;?>" />
+<input type="hidden" name="pclus" value="<?= $cgroup;?>" />
+<p id="group" style="display:none"><?= $cname;?></p>
+<input type="hidden" name="pcnme" value="<?= $cname;?>" />
+<p id="ctype" style="display:none"><?= $logistics;?></p>
 <p id="ptype" style="display:none">Edit</p>
 <div style="margin-left:8px;">
     <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
@@ -42,17 +42,56 @@
 <!-- Begin basic data presentation -->
 <h3>Data Related to This Hike:</h3>
 <label for="hike">Hike Name: </label>
-<textarea id="hike" name="hname"><?= $hikeTitle;?></textarea>
-&nbsp;&nbsp;<p style="display:none;" id="locality"><?= $hikeLocale;?></p>
-<?php require "localeBox.html"; ?>
-<br /><br />
+<textarea id="hike" name="hname"><?= $pgTitle;?></textarea>
+&nbsp;&nbsp;<p style="display:none;" id="locality"><?= $locale;?></p>
+<label for="area">Locale (City/POI): </label>
+<select id="area" name="locale">
+    <optgroup label="North/Northeast">
+        <option value="Jemez Springs">Jemez Springs</option>
+        <option value="Valles Caldera">Valles Caldera</option>
+        <option value="Los Alamos">Los Alamos</option>
+        <option value="White Rock">White Rock</option>
+        <option value="Santa Fe">Santa Fe</option>
+        <option value="Ojo Caliente">Ojo Caliente</option>
+        <option value="Abiquiu">Abiquiu</option>
+        <option value="Pecos">Pecos</option>
+        <option value="Villanueva">Villanueva</option>
+        <option value="Taos">Taos</option>
+        <option value="Pilar">Pilar</option>
+    <optgroup label="Northwest">
+        <option value="Farmington">Farmington</option>
+        <option value="San Ysidro">San Ysidro</option>
+        <option value="San Luis">San Luis</option>
+        <option value="Cuba">Cuba</option>
+        <option value="Lybrook">Lybrook</option>
+    <optgroup label="Central NM">
+        <option value="Cerrillos">Cerrillos</option>
+        <option value="Golden">Golden</option>
+        <option value="Albuquerque">Albuquerque</option>
+        <option value="Placitas">Placitas</option>
+        <option value="Corrales">Corrales</option>
+        <option value="Tijeras">Tijeras</option>
+        <option value="Tajique">Tajique</option>
+    <optgroup label="West">
+        <option value="Grants">Grants</option>
+        <option value="Ramah">Ramah</option>
+        <option value="Gallup">Gallup</option>
+    <optgroup label="South Central">
+        <option value="San Acacia">San Acacia</option>
+        <option value="San Antonio">San Antonio</option>
+        <option value="Tularosa">Tularosa</option>
+    <optgroup label="Southwest">
+        <option value="Silver City">Silver City</option>
+        <option value="Pinos Altos">Pinos Altos</option>
+        <option value="Glenwood">Glenwood</option>
+</select><br /><br />
 <label for="type">Hike Type: </label>
 <select id="type" name="htype">
     <option value="Loop">Loop</option>
     <option value="Two-Cars">Two-Cars</option>
     <option value="Out-and-back">Out-and-back</option>
 </select>&nbsp;&nbsp;
-<p id="dif" style="display:none"><?= $hikeDiff;?></p>
+<p id="dif" style="display:none"><?= $diff;?></p>
 <label for="diff">Level of difficulty: </label>
 <select id="diff" name="hdiff">
     <option value="Easy">Easy</option>
@@ -64,16 +103,16 @@
 <input id="mft" type="checkbox" name="mft" />&nbsp;&nbsp;
     Calculate Miles/Feet From GPX,&nbsp;&nbsp;or Specify/Change below<br />
 <label for="miles">Round-trip length in miles: </label>
-<textarea id="miles" name="hlgth"><?= sprintf("%.2f", $hikeMiles);?></textarea>
+<textarea id="miles" name="hlgth"><?= sprintf("%.2f", $miles);?></textarea>
 <label for="elev">Elevation change in feet: </label>
-<textarea id="elev" name="helev"><?= $hikeFeet;?></textarea><br /><br />
+<textarea id="elev" name="helev"><?= $feet;?></textarea><br /><br />
 <label for="fac">Facilities at the trailhead: </label>
-<textarea id="fac" name="hfac"><?= $hikeFac;?></textarea>&nbsp;&nbsp;
+<textarea id="fac" name="hfac"><?= $fac;?></textarea>&nbsp;&nbsp;
 <label for="wow">"Wow" Appeal: </label>
-<textarea id="wow" name="hwow"><?= $hikeWow;?></textarea><br /><br />
+<textarea id="wow" name="hwow"><?= $wow;?></textarea><br /><br />
 <label for="seas">Best Hiking Seasons: </label>
-<textarea id="seas" name="hsea"><?= $hikeSeasons;?></textarea>&nbsp;&nbsp;
-<p id="expo" style="display:none"><?= $hikeExpos;?></p>
+<textarea id="seas" name="hsea"><?= $seasons;?></textarea>&nbsp;&nbsp;
+<p id="expo" style="display:none"><?= $expo;?></p>
 <label for="sun">Exposure: </label>
 <select id="sun" name="hexp">
     <option value="Full sun">Full sun</option>
@@ -85,11 +124,11 @@
     <input id="showll" type="checkbox" name="latlng" value="nosend" /></p>
 <p id="lldisp" style="display:none">
 <label for="lat">Trailhead: Latitude </label>
-<textarea id="lat" name="hlat"><?= $hikeLat;?></textarea>&nbsp;&nbsp;
+<textarea id="lat" name="hlat"><?= $lat;?></textarea>&nbsp;&nbsp;
 <label for="lon">Longitude </label>
-<textarea id="lon" name="hlon"><?= $hikeLng;?></textarea></p>
+<textarea id="lon" name="hlon"><?= $lng;?></textarea></p>
 <br /><label for="murl">Map Directions Link (Url): </label>
-<textarea id="murl" name="gdirs"><?= $hikeDirs;?></textarea>
+<textarea id="murl" name="gdirs"><?= $dirs;?></textarea>
 <h3 style="margin-bottom:12px;">Cluster Hike Assignments:
     (Hikes with overlapping trailheads or in close proximity)</h3>
 <span style="font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;

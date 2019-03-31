@@ -220,8 +220,9 @@ if ($noOfWaypts > 0) {
         $sym = $waypt->sym;
         //$text = preg_replace("/'/", "\'", $waypt->name);
         $text = str_replace("'", "\'", $waypt->name);
+        $desc = str_replace("'", "\'", $waypt->desc);
         $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng .
-            ",name:'" . $text . "',desc:'',color:'" . "blue" .
+            ",name:'" . $text . "',desc:'" . $desc . "',color:'" . "blue" .
             "',icon:'" . $sym . "'});\n";
         array_push($waypoints, $wlnk);
     }
