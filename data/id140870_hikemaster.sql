@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -86,7 +86,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EGPSDAT VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=150 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=576 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=605 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -185,7 +185,7 @@ CREATE TABLE `GPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO GPSDAT VALUES
@@ -230,7 +230,8 @@ INSERT INTO GPSDAT VALUES
 ('54','30','P','GPX:','../gpx/SagebrushOptions.gpx','Alternate Trail and Driving Routes'),
 ('55','106','P','GPX:','../gpx/Cerro_Columbo_Explore.GPX','Not Recommended: Exploratory Route'),
 ('56','190','P','GPX:','../gpx/EmeryShortNorth.GPX','Shorter Loop - West'),
-('57','190','P','GPX:','../gpx/Emery-Short-Loop.GPX','Shorter Loop - East');
+('57','190','P','GPX:','../gpx/Emery-Short-Loop.GPX','Shorter Loop - East'),
+('59','146','P','GPX:','../gpx/Boundary_Composite.GPX','Alternate Loop');
 
 
 
@@ -267,7 +268,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -417,7 +418,7 @@ INSERT INTO HIKES VALUES
 ('143','Fletcher Trail','mstr','Albuquerque','Cluster',NULL,'K','Piedra Lisa Group','Out-and-back','4.50','1049','Moderate','None','Sandia Views','All','Mixed sun/shade','Fletcher_Trail.GPX','Fletcher_Trail.json','35.2229277883','-106.4834435',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157685825508012',NULL,'https://www.google.com/maps/place/Piedra Lisa-south Trailhead/@35.2092174,-106.5091207,14.04z/data=!4m5!3m4!1s0x87189c33b662307d:0x92c0ead8cf18c3c4!8m2!3d35.2231347!4d-106.4834646','Although this hike is rated \"Moderate\", much of the trail is easy, but there is one stretch where the slope is steep and the footing is somewhat loose. The author traversed this section two days after some good rain, and the soil was more compact, but drier conditions could present some difficulty. Note: The trail is closed between March 1 and August 15.','This relatively short trail is accessed from the Piedra Lisa Trail, about 0.8 miles in where the trail dips down into a shallow gulley, the meeting place of a couple of arroyos. Piedra Lisa continues to the left, and Fletcher branches off to the right, soon heading east towards the Sandia\'s Shield. The views offered by Fletcher Trail are very nice, and the trail ends up approaching \"The Prow\", a prominent feature viewable at this end of the Sandias. Except for the steep section, the trail is pleasant as it follows the arroyo upstream. There are multiple views of the mountains en route.',NULL,NULL,NULL),
 ('144','Diablo West Mesa','mstr','Santa Fe','Cluster',NULL,'L','Diablo Canyon Group','Loop','2.50','551','Med-Difficult','None','Views','Not Summer','Full sun','DiabloWestMesa.gpx','DiabloWestMesa.json','35.814283','-106.150079',NULL,NULL,'https://www.flickr.com/photos/30474783@N06/albums/72157687758648164',NULL,'https://www.google.com/maps/place/35%C2%B048\'52.0%22N+106%C2%B008\'59.9%22W/@35.7899439,-106.1561384,12z?authuser=0&hl=en-US',' The parking spot shown shortens the walk to the start of the trail up the mesa. An alternative is to park in the Diablo Canyon lot and enjoy the slightly longer hike through Diablo Canyon itself. Regardless, use the map and gpx file and follow the cairns to find your way up to the mesa top. Some scrambling is required. Then loop south across the mesa for a somewhat challenging descent down a side canyon. The first part of the descent requires about 20 feet of climbing down a sort of rock ladder. After that it\'s mainly scrambling down bolders and avoiding any muddy spots. Note that either the up or down route could be used to close the loop on the Sagebrush Flats hike (see reference below).','Spectacular views of Diablo Canyon\'s cliffs and surroundings from the top of the mesas that make up the canyon\'s west wall. Also 360 views that include the Rio Grande and the Jemez and Sangre de Cristo Mountain ranges. Part of the route up follows what seems to be an old wagon road. See the Old Gate picture below.',NULL,NULL,NULL),
 ('145','Ball Ranch','mstr','Golden','Normal',NULL,NULL,NULL,'Loop','5.50','415','Easy-Moderate','None','Colored Hills','Not Summer','Full sun','Ball_Ranch.GPX','Ball_Ranch.json','35.3898331895','-106.303220429',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157661679047818','https://www.flickr.com/photos/30474783@N06/albums/72157661591623668','https://www.google.com/maps/dir//35.3916667,-106.27/@35.4327041,-106.3364561,12.84z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDIzJzMwLjAiTiAxMDbCsDE2JzEyLjAiVw!3b1!8m2!3d35.3916667!4d-106.27','Entrance to the Trailhead is off of 57A, a gravel road, at a BLM gate which requires a key. The key can be obtained without charge at a BLM office. Once past the gate, the road becomes very difficult and requires a 4-wheel drive with reasonable clearance. The branch off of this road to the windmill at the trailhead may not be traversable, depending on recent weather conditions, but is only about 1/4 mile away and can be easily walked (as the authors did in this case). When following the arroyo, near the canyon\' end is a point of departure which is not obvious. Refer to the marked location on the map.','This loop hike begins in the arroyo near the windmill (see book reference, below), and immediately enters a shallow canyon. The canyon walls vary as the hike progresses, and there are many interesting geological features along the way, accented by many color changes and rock sizes. Once the trail departs from the arroyo, the views increase as multi-colored hills become visible. Also, a short distance from the arroyo is an area containing large petrified tree trunk pieces. Petrified wood is scattered along the trail from here. Overall, the trail presents many great views and interesting features.',NULL,NULL,NULL),
-('146','Boundary Loop Trail','mstr','Albuquerque','Cluster',NULL,'S','La Cueva Road Group','Loop','3.80','607','Moderate','None','Interior Rincon and Sandias','Not Summer','Full sun','Boundary_Loop.GPX','Boundary_Loop.json','35.2024943009','-106.504365318',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157689963292856',NULL,'https://www.google.com/maps/dir//35.20265,-106.5038833/@35.2019097,-106.5085099,15.87z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDEyJzA5LjUiTiAxMDbCsDMwJzE0LjAiVw!3b1!8m2!3d35.20265!4d-106.5038833',NULL,'This hike starts across the road from a broad dirt parking area on FR333 just north of the turn-off from Tramway Blvd. The most difficult part is the very beginning - a steep but short stretch to the top of the nearby ridge. After that the trail follows a contour so attentive footing is required for a short distance - not a sheer drop but a rather steep angle. Most of the hike is an easy walk up the arroyo if you take the suggested path and follow the east branch of the loop up. A 5 ft rock wall must be scaled, but it is rather easy to do so with multiple foot- and hand-holds. From here, the views are spectacular. Great interior views of the Rincon Ridge, and some lovely angles on the Sandias. At the northern end, the trail is elevated to the point that a nice vista of Juan Tabo Canyon presents itself (see the Juan Tabo Canyon Hike). Multiple trails crisscross the area providing more great views. The author traversed a couple of these which made the nominal 2.5 mile hike a bit longer.',NULL,NULL,NULL),
+('146','Boundary Loop Trail','mstr','Albuquerque','Cluster',NULL,'S','La Cueva Road Group','Loop','3.80','607','Moderate','None','Interior Rincon and Sandias','Not Summer','Full sun','Boundary_Loop.GPX','Boundary_Loop.json','35.2024943009','-106.504365318',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157689963292856',NULL,'https://www.google.com/maps/dir//35.20265,-106.5038833/@35.2019097,-106.5085099,15.87z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDEyJzA5LjUiTiAxMDbCsDMwJzE0LjAiVw!3b1!8m2!3d35.20265!4d-106.5038833',NULL,'This hike starts across the road from a broad dirt parking area on FR333 just north of the turn-off from Tramway Blvd. The most difficult part is the very beginning - a steep but short stretch to the top of the nearby ridge. After that the trail follows a contour so attentive footing is required for a short distance - not a sheer drop but a rather steep angle. Most of the hike is an easy walk up the arroyo if you take the suggested path and follow the east branch of the loop up. A 5 ft rock wall must be scaled, but it is rather easy to do so with multiple foot- and hand-holds. From here, the views are spectacular. Great interior views of the Rincon Ridge, and some lovely vistas of the Sandias. At the northern end, the trail is elevated to the point that a nice view of Juan Tabo Canyon presents itself (see the Juan Tabo Canyon Hike). Multiple trails crisscross the area providing more great views. The author traversed a couple of these, which made the nominal 2.5 mile hike a bit longer. Additionally, for a more demanding hike, see the track for an \'alternate\' route supplied in the GPS Data section below. The alternate loop hike, which has some very challenging steep slopes, is shown in red on its map, and the subject hike is shown in blue. Note that there are additional access points which are a bit less strenuous than the main trailhead. The red photo markers correspond to pictures taken on the alternate, higher elevation route.',NULL,NULL,NULL),
 ('147','Juan Tabo Cabin','mstr','Albuquerque','Cluster',NULL,'S','La Cueva Road Group','Out-and-back','1.00','170','Easy','None','Sandia and Valley Views','Not Summer','Full sun','Juan_Tabo_Cabin.gpx','Juan_Tabo_Cabin.json','35.2026998','-106.5038574',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157690676899476',NULL,'https://www.google.com/maps/dir//35.20265,-106.5038833/@35.1981903,-106.5097481,14.8z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDEyJzA5LjUiTiAxMDbCsDMwJzE0LjAiVw!3b1!8m2!3d35.20265!4d-106.5038833',NULL,'Although this hike is an easy stroll up an arroyo to the old CCC Headquarters ruins, don\'t mistake that for uninteresting! There are multiple wonderful views of the Sandias, and of the valley on the return trip of this out-and-back hike. The cabin itself can actually be seen from the nearby road, FR333 - which leads to the Juan Tabo Picnic Grounds and La Luz Trailhead. The cabin is surrounded by a low stone wall, and a low point in that wall allows close-up access to the interior of the cabin, revealing its architecture. The parking area is shortly after FR333 turns north from Tramway Blvd, and just past the second cattle guard.',NULL,NULL,NULL),
 ('148','Stable Mesa','mstr','Jemez Springs','Normal',NULL,NULL,NULL,'Out-and-back','4.20','714','Moderate','None','Jemez Mtns and Valley','Not Winter','Mixed sun/shade','Stable_Edited.GPX','Stable_Edited.json','35.7917451952','-106.775387032',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157665831300339','https://www.flickr.com/photos/30474783@N06/sets/72157688924451021/with/24692491998/','https://www.google.com/maps/dir//35.8183333,-106.7880556/@35.7999943,-106.8429912,12.03z/data=!4m8!1m7!3m6!1s0x0:0x0!2zMzXCsDQ5JzA2LjAiTiAxMDbCsDQ3JzE3LjAiVw!3b1!8m2!3d35.8183333!4d-106.7880556',NULL,'This hike takes you deep into the Jemez territory about 7 miles up FR376, past Gilman Tunnels where the road turns into fairly well-maintained gravel. The starting point begins across the road from the pull-off, which is on the west side of 376 near a bridge over the Guadalupe River. Walking just past the bridge, on the right, the trail starts. The trail begins with a pleasant walk alongside the river and then moves into Ponderosa forest before heading up the mesa. The trail up is somewhat steep and the gravel is a bit loose, prompting the authors to rename the hike \"Unstable Mesa\". Once on top of the mesa, the views get quite interesting. There are multiple fascinating rock formations along the mesa\'s edge, many with erosion-built holes. From there, a loop can be made back to the point of first ascension. There are remains of a logging camp and pueblo ruins, but the authors did not locate them on this journey. Refer to the referenced book for more details.',NULL,NULL,NULL),
 ('149','Canada de la Cueva','mstr','Cerrillos','Normal','','','','Out-and-back','7.80','323','Easy-Moderate','None','Geology in Arroyo','Not Summer','Full sun','Canada_de_la_Cueva.GPX','Canada_de_la_Cueva.json','35.4386154469','-106.018475527','','','https://www.flickr.com/photos/139088815@N08/albums/72157689658210665','https://www.flickr.com/photos/30474783@N06/albums/72157689909068565','https://www.google.com/maps/dir//35.4386549,-106.0184904/@35.5076537,-106.12594,10.88z/data=!4m2!4m1!3e0',NULL,'This hike had no siginificant elevation changes, and simply followed the arroyo into the Galisteo Basin. Near the end of the hike the land turns into privately held land, but there are no warning signs indicating same. One source showed the hike as a two-car hike, but would require utilizing the private land to accomplish. The arroyo seemed to hold an unending variety of interesting geology - from rocks of all colors and shapes to hills and embankments of varying composition. According to the reference below, it also is the home of a considerable variety of wildlife, but at the time the authors explored the area, little was to be seen. The hike may be shortened and still provide a fascinating look at the Galisteo basin.',NULL,NULL,NULL),
@@ -466,7 +467,8 @@ INSERT INTO HIKES VALUES
 ('192','City of Rocks','mstr','Silver City','Normal',NULL,'','','Loop','6.10','500','Easy-Moderate','Visitor Center/Camping','Unusual Eroded Rock','Not summer','Full sun','city-of-rocks.gpx','city-of-rocks.json','32.588131','-107.973922',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//City+of+Rocks+State+Park,+327+New+Mexico+61,+Faywood,+NM+88034/@32.545153,-108.0461403,12.11z/data=!4m8!4m7!1m0!1m5!1m1!1s0x86df2c14e0694c67:0xf313973338a97daf!2m2!1d-107.9756273!2d32.5896405',NULL,'A very unusual section of eroded volcanic ash in the midst of the high desert plains about 30 minutes southeast of Silver City. You won\'t find anything like it elsewhere! There are multiple short loop hikes or simply traverse the area at will from the Visitor Center around the camping loop drive. It is a state park with hours are posted. Note: the author did not traverse the loop due to weather conditions, and the track file was downloaded from REI\'s \'The Hiking Project\'.',NULL,NULL,NULL),
 ('193','Querencia Arroyo','mstr','San Ysidro','Normal',NULL,'','','Out-and-back','1.10','300','Med-Difficult','None','Wilderness views','Not Summer','Full sun','Querencia.GPX','Querencia.json','35.5024414603','-106.8689451646',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B030\'08.8%22N+106%C2%B052\'08.2%22W/@35.5005737,-106.8698507,3569m/data=!3m1!1e3!4m5!3m4!1s0x0:0x0!8m2!3d35.5024415!4d-106.8689452','The access to this location is off-road with poorly maintained road conditions. It will require 4-wheel/all-wheel drive with good ground clearance. There are no markers for the location, so utilize the gps location indicated on the driving directions.','While there are more spectacular areas in the Ojito Wilderness, this hike nonetheless offers an interesting vantage point. There is a short but steep climb, almost a scramble, to get to the mesa top where the arroyo is located. Along the route are very nice views of the surrounding area. At the top, near the dirt road, are some unmarked ancient ruins. Although the book reference indicates a route, there is no trail and the author decided against attempting the loop. In addition, the author appears to have found a higher starting point for the ascent. For those more adventurous, utilize the provided reference.',NULL,NULL,NULL),
 ('194','Emery - Bear Canyon','mstr','Albuquerque','Cluster',NULL,'II','Michael Emery Group','Loop','3.00','400','Easy','None','Arroyo and Sandia Views','Not Summer','Full sun','Emery-BearCanyon.GPX','Emery-BearCanyon.json','35.1458918117','-106.482262155',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Michael+Emery+Trailhead,+High+Desert+St,+Albuquerque,+NM+87111/@35.1377149,-106.5028257,14.14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189f0b45d7713b:0xa5dd80d463752610!2m2!1d-106.4824107!2d35.1459308',NULL,'This is a relatively easy hike starting from the Michael Emery parking area (misnamed by local signs, the trail is actually Michial Emery). The views heading towards the mountains are quite lovely, especially, as can be seen, in snowier weather. A small portion of the trail circumvents some housing, but otherwise offers a pleasant and relatively solitary experience. This loop heads close to Tramway Blvd, though a bit below it, and leads back to the parking area. ',NULL,NULL,NULL),
-('195','Tramway-230-505 Loop','mstr','Albuquerque','Cluster',NULL,'X','Tramway Group','Loop','5.40','400','Moderate','Tram Visitor Center','Views of Sandia Range','Not Summer','Full sun','Tram-505-230_Loop.GPX','Tram-505-230_Loop.json','35.1903482527','-106.4799116179',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Sandia+Peak+Tramway,+30+Tramway+Rd+NE,+Albuquerque,+NM+87122/@35.1877122,-106.4974688,14.64z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189e8cfbdf7855:0xdee0b10202a6352b!2m2!1d-106.4795935!2d35.1906969','Note: There are two separate entrances to the Domingo Baca Trail from Trail 230: one north, one south. To find the \'Unnamed Trail\' in this hike, use the north entrance.','The hike begins in the southeast corner of the Lower Tram parking area. It is about a 1/4 mile steep hike up to the water tanks, and after that, more moderate ups and downs as you proceed along the foothills. The trail follows the reasonably well-marked Trail 365 markers, and to gain a bit more scenery and exercise, veers west onto a spur. The spur loops towards a residential area, then returns to rejoin 365. Proceeding along 365, the hike assumes an easterly direction on Trail 230. There is a boundary fence where Trail 230 begins the Domingo Baca trail, and a sharp left takes you onto an unnamed trail. This trail parallels 365 close to the mountain\'s base and eventually rejoins near the water tanks. There are a great variety of views to enhance your experience.',NULL,NULL,NULL);
+('195','Tramway-230-505 Loop','mstr','Albuquerque','Cluster',NULL,'X','Tramway Group','Loop','5.40','400','Moderate','Tram Visitor Center','Views of Sandia Range','Not Summer','Full sun','Tram-505-230_Loop.GPX','Tram-505-230_Loop.json','35.1903482527','-106.4799116179',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Sandia+Peak+Tramway,+30+Tramway+Rd+NE,+Albuquerque,+NM+87122/@35.1877122,-106.4974688,14.64z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189e8cfbdf7855:0xdee0b10202a6352b!2m2!1d-106.4795935!2d35.1906969','Note: There are two separate entrances to the Domingo Baca Trail from Trail 230: one north, one south. To find the \'Unnamed Trail\' in this hike, use the north entrance.','The hike begins in the southeast corner of the Lower Tram parking area. It is about a 1/4 mile steep hike up to the water tanks, and after that, more moderate ups and downs as you proceed along the foothills. The trail follows the reasonably well-marked Trail 365 markers, and to gain a bit more scenery and exercise, veers west onto a spur. The spur loops towards a residential area, then returns to rejoin 365. Proceeding along 365, the hike assumes an easterly direction on Trail 230. There is a boundary fence where Trail 230 begins the Domingo Baca trail, and a sharp left takes you onto an unnamed trail. This trail parallels 365 close to the mountain\'s base and eventually rejoins near the water tanks. There are a great variety of views to enhance your experience.',NULL,NULL,NULL),
+('196','Gallegos Boundary Loop','mstr','Albuquerque','Cluster',NULL,'B','Gallegos Park Group','Loop','6.00','400','Easy-Moderate','Park Facilities','Variety of Sandia views','Not summer','Full sun','Gallegos-Boundary-Loop.GPX','Gallegos-Boundary-Loop.json','35.165545363','-106.4733732305',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Elena+Gallegos+Open+Space/@35.1608159,-106.4904377,14.47z/data=!4m5!3m4!1s0x87189f1edab675c3:0x7e38ccf27392893e!8m2!3d35.1617782!4d-106.4736878',NULL,'Elena Gallegos Open Space is a lovely introduction to the Sandia foothills, and provides a variety of different viewpoints. Hikes of various lengths can be assembled from the parking areas, of which there are two. This hike begins at the \'Cottonwood\' parking area which is gained by going around the entrance station and following the \'Kiwanis\' sign. This hike essentially follows the boundary of the open space, completing a nice loop that offers different perspectives of the Sandias. The hike starts by taking a short section of Trail 230A to Trail 365, the foothills trail. After crossing the entrance road and proceeding south a distance, the hike veers left on Trail 305, which eventually merges with Trail 341. Following 341, a distance after crossing the Pino Trail, take Trail 230 north towards Domingo Baca. Follow 230 as it loops back west to join Trail 365, which returns to the parking lot.',NULL,NULL,NULL);
 
 
 
@@ -534,7 +536,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1412 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1418 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1020,9 +1022,6 @@ INSERT INTO REFS VALUES
 ('604','144','Website: ','../pages/hikePageTemplate.php?hikeIndx=30','Sagebrush Flats Hike Page'),
 ('605','145','Book: ','2',NULL),
 ('606','145','Meetup Group: ','https://www.meetup.com/hiking-204/events/5328661/?_cookie-check=SogG3sQ3Y5fafRm5','ABQ Hiking and Outdoor Meetup'),
-('1028','146','Book: ','7',NULL),
-('1029','146','Website: ','http://www.sandiahiking.com/trailguide.html#boundaryloop','Sandia Mtn Hiking Guide: Trails'),
-('1030','146','Book: ','8',NULL),
 ('1031','147','Book: ','7',NULL),
 ('1032','148','Book: ','2',NULL),
 ('1033','148','App: ','https://www.alltrails.com/trail/us/new-mexico/stable-mesa','AllTrails.com'),
@@ -1041,11 +1040,11 @@ INSERT INTO REFS VALUES
 ('1046','151','App: ','https://www.alltrails.com/parks/us/new-mexico/dome-wilderness','AllTrails'),
 ('1047','151','Website: ','https://en.wikipedia.org/wiki/Dome_Wilderness','Wikipedia'),
 ('1052','104','Book: ','2',NULL),
-('1053','104','Website: ','https://pubs.usgs.gov/sim/3179/montosopeak/SIM3179_pamphlet_508.pdf','USGS Montoso Peak Study');
-INSERT INTO REFS VALUES
+('1053','104','Website: ','https://pubs.usgs.gov/sim/3179/montosopeak/SIM3179_pamphlet_508.pdf','USGS Montoso Peak Study'),
 ('1054','104','App: ','https://www.trails.com/tcatalog_trail.aspx?trailid=XMR022-031','AllTrails'),
 ('1055','104','Website: ','http://www.peakbagger.com/peak.aspx?pid=67114','Peak Bagger'),
-('1056','153','Book: ','2',NULL),
+('1056','153','Book: ','2',NULL);
+INSERT INTO REFS VALUES
 ('1057','153','Website: ','https://pubs.usgs.gov/sim/3179/montosopeak/SIM3179_pamphlet_508.pdf','USGS Montoso Peak Study'),
 ('1058','153','App: ','https://www.trails.com/tcatalog_trail.aspx?trailid=XMR022-031','AllTrails'),
 ('1059','153','Website: ','http://www.peakbagger.com/peak.aspx?pid=67114','Peak Bagger'),
@@ -1142,11 +1141,11 @@ INSERT INTO REFS VALUES
 ('1188','74','Book: ','1',''),
 ('1189','74','Book: ','3',''),
 ('1190','74','Website: ','https://www.nps.gov/band/planyourvisit/tsankawi.htm','National Park Service: Tsankawi'),
-('1191','74','Website: ','http://www.americansouthwest.net/new_mexico/bandelier/tsankawi-trail.html','American Southwest');
-INSERT INTO REFS VALUES
+('1191','74','Website: ','http://www.americansouthwest.net/new_mexico/bandelier/tsankawi-trail.html','American Southwest'),
 ('1192','74','Website: ','https://en.wikipedia.org/wiki/Tsankawi','Wikipedia'),
 ('1193','74','App: ','http://www.alltrails.com/trail/us/new-mexico/tsankawi-ruin','AllTrails'),
-('1201','164','Book:','7','Mike Coltrin'),
+('1201','164','Book:','7','Mike Coltrin');
+INSERT INTO REFS VALUES
 ('1202','164','Book:','1','The Northern New Mexico Group of the Sierra Club'),
 ('1203','164','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64240','Forest Service'),
 ('1204','164','Blog:','https://ondafringe.wordpress.com/2015/04/15/day-hike-tunnel-spring-sandia-mountains-placitas-new-mexico-usa/','On Da Fringe'),
@@ -1243,11 +1242,11 @@ INSERT INTO REFS VALUES
 ('1314','187','Book:','6','Craig Martin'),
 ('1315','187','Book:','9','Bob D\'Antonio'),
 ('1316','187','Book:','13','Cindy Brown'),
-('1317','187','Book:','15','Kai Huschke');
-INSERT INTO REFS VALUES
+('1317','187','Book:','15','Kai Huschke'),
 ('1318','187','News Article:','http://www.santafenewmexican.com/sports/outdoors-hiking-new-mexico-s-highest-peak-wheeler-peak/article_887d32f0-7af4-5658-a99b-35b4397f6a51.html','Santa Fe New Mexican article'),
 ('1319','72','Book: ','9',''),
-('1320','72','Book: ','13',''),
+('1320','72','Book: ','13','');
+INSERT INTO REFS VALUES
 ('1321','72','Book: ','6',''),
 ('1322','72','Book: ','3',''),
 ('1323','72','Website: ','http://www.fs.usda.gov/recarea/willamette/recreation/wateractivities/recarea/?recid=4634&actid=51','Forest Service: Willamette National Forest'),
@@ -1308,7 +1307,13 @@ INSERT INTO REFS VALUES
 ('1408','190','Book:','21','Tamara Massong'),
 ('1409','190','App:','https://www.alltrails.com/trail/us/new-mexico/michial-m-emery-and-trail-305-loop','AllTrails.com'),
 ('1410','190','Website:','https://www.mtbproject.com/trail/7007599/michael-emery-trail','MBT Project (REI)'),
-('1411','195','Book:','21',NULL);
+('1411','195','Book:','21',NULL),
+('1412','196','Website:','https://www.cabq.gov/parksandrecreation/open-space/lands/elena-gallegos-open-space','Elena Gallegos Open Space'),
+('1413','196','On-line Map:','https://www.cabq.gov/parksandrecreation/documents/foothills_brochure_elena_2018-update.pdf','Map of Trails'),
+('1414','196','Book:','21',NULL),
+('1415','146','Book:','7','Mike Coltrin'),
+('1416','146','Website:','http://www.sandiahiking.com/trailguide.html#boundaryloop','Sandia Mtn Hiking Guide: Trails'),
+('1417','146','Book:','8','J D Tanner and Emily Ressler-Tanner');
 
 
 
@@ -1332,7 +1337,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=3901 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3947 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -2225,17 +2230,6 @@ INSERT INTO TSV VALUES
 ('1173','145','Folder2','IMG_20171017_122817','Y','Y','Looming Sandia','35.390725','-106.313288889','893','72157661591623668','2017-10-17 12:28:18','37503451510_b9eaf98e0f','1512','2688','pink',NULL),
 ('1174','145','Folder1','SandiaView','N','N','A glimpse of the Sandia from the valley','35.3901472222','-106.312438889','894','72157661679047818','2017-10-17 12:30:32','37556865780_ebb5a2b2c1','2448','3264','pink',NULL),
 ('1175','145','Folder2','IMG_20171017_130045','Y','Y','Waypoint - the drop gate','35.38967','-106.30193','895','72157661591623668','2017-10-17 13:00:48','37729974942_533ec0cf8f','1512','2688','pink',NULL),
-('2070','146','Folder1','RidgeView','N','Y','The first ridge climb looks over the starting point','35.2040583333','-106.503988889','896','72157689963292856','2017-10-27 09:46:32','37304494374_2a2d4c322a','2448','3264','pink',NULL),
-('2071','146','Folder1','TrailDip','N','N','After a trek along the ridge, the trail dips into the canyon','35.2059777778','-106.502494444','897','72157689963292856','2017-10-27 09:54:01','24161930978_6ea235824f','3264','2448','pink',NULL),
-('2072','146','Folder1','BlindArroyo','N','Y','The only \'scramble\' in the hike is an easy 5 ft rock face','35.2081972222','-106.500113889','898','72157689963292856','2017-10-27 10:12:46','38013473651_8e780a2f76','3264','2448','pink',NULL),
-('2073','146','Folder1','Rincon','N','N','From the arroyo, a northward look','35.2135666667','-106.498497222','899','72157689963292856','2017-10-27 10:35:23','37304560654_d43d7657b3','2448','3264','pink',NULL),
-('2074','146','Folder1','JuanTaboCanyon','Y','Y','A glimpse into the explorable canyon','35.2173722222','-106.497772222','900','72157689963292856','2017-10-27 10:50:12','38013534091_a79a74c648','2448','3264','pink',NULL),
-('2075','146','Folder1','LookingEast','Y','N','A great view from\'ViewPt Hill\'','35.2169416667','-106.498008333','901','72157689963292856','2017-10-27 10:52:39','37960448306_20a93f7d9b','3264','2448','pink',NULL),
-('2076','146','Folder1','SandiaTowers','Y','N','One of many fabulous views of the Sandia\'s','35.2163083333','-106.499747222','902','72157689963292856','2017-10-27 11:27:34','24161918868_4f5eb6a4b0','2448','3264','pink',NULL),
-('2077','146','Folder1','ViewPtHill','Y','N','The high point of the hike, looking west','35.2137111111','-106.501761111','903','72157689963292856','2017-10-27 11:48:05','38013525701_e9937a7242','2448','3264','pink',NULL),
-('2078','146','Folder1','LateBloomer','Y','Y','A surprise late in the season','35.2135','-106.50225','904','72157689963292856','2017-10-27 11:49:38','38013503311_89cf22445a','2448','3264','pink',NULL),
-('2079','146','Folder1','FullSandia','Y','Y','More views of the Sandia as the trail progresses','35.2119416667','-106.504105556','905','72157689963292856','2017-10-27 11:57:06','24161970948_97d1d90f7b','2448','3264','pink',NULL),
-('2080','146','Folder1','ExpansiveView','Y','Y','The ridge trail leads along the contour, and a glimpse ahead','35.205025','-106.503586111','906','72157689963292856','2017-10-27 12:35:03','38013550311_aa18c621a6','2448','3264','pink',NULL),
 ('2081','147','Folder1','ShieldProwAndNeedle','Y','Y','Some striking perspective on features of the Sandia','35.2034805556','-106.501380556','907','72157690676899476','2017-10-29 11:45:04','24595354358_a811716989','2448','3264','pink',NULL),
 ('2082','147','Folder1','ViewEnRoute','N','N','Great Sanida Views abound!','35.2061944444','-106.497230556','908','72157690676899476','2017-10-29 11:55:47','37580262105_2efb1b36c5','2448','3264','pink',NULL),
 ('2083','147','Folder1','RearviewCabin','Y','N','One view of the old CCC Cabin','35.2059694444','-106.496461111','909','72157690676899476','2017-10-29 12:05:49','38411454516_2d95d9fb56','2448','3264','pink',NULL),
@@ -2243,8 +2237,7 @@ INSERT INTO TSV VALUES
 ('2085','147','Folder1','ValleyView','Y','Y','Looking down towards the ABQ valley','35.2060138889','-106.497894444','911','72157690676899476','2017-10-29 12:13:04','38466964641_790779162b','2448','3264','pink',NULL),
 ('2086','147','Folder1','ChamisaView','Y','N','Chamisa lines the trail decorating the vistas','35.2059666667','-106.497877778','912','72157690676899476','2017-10-29 12:13:25','24595363388_81be75fdb4','2448','3264','pink',NULL),
 ('2087','147','Folder1','GentleTrail','Y','Y','The trail is easy and short','35.2026666667','-106.503838889','913','72157690676899476','2017-10-29 12:33:55','24595391958_7b4c0b02fd','2448','3264','pink',NULL),
-('2088','148','Folder2','IMG_20171102_095124','N','N',NULL,NULL,NULL,'914','72157688924451021','2017-11-02 09:51:26','37676614915_32dfa14446','1512','2688','pink',NULL);
-INSERT INTO TSV VALUES
+('2088','148','Folder2','IMG_20171102_095124','N','N',NULL,NULL,NULL,'914','72157688924451021','2017-11-02 09:51:26','37676614915_32dfa14446','1512','2688','pink',NULL),
 ('2089','148','Folder2','IMG_20171102_095144','N','N',NULL,'35.7326833333','-106.764616667','915','72157688924451021','2017-11-02 09:51:45','37847703664_7721f5d035','1512','2688','pink',NULL),
 ('2090','148','Folder2','IMG_20171102_095323','N','N',NULL,'35.7354805556','-106.765197222','916','72157688924451021','2017-11-02 09:53:25','24692491998_627fabe941','1512','2688','pink',NULL),
 ('2091','148','Folder2','IMG_20171102_095345','N','N',NULL,'35.7349111111','-106.764647222','917','72157688924451021','2017-11-02 09:53:46','38564628191_30906e23c5','2688','1512','pink',NULL),
@@ -2255,7 +2248,8 @@ INSERT INTO TSV VALUES
 ('2096','148','Folder1','NearTheTrailhead','N','N','Much of the trail is relatively easy','35.8161194444','-106.785483333','922','72157665831300339','2017-11-02 10:24:29','24293049148_98f8e0e6f7','2448','3264','pink',NULL),
 ('2097','148','Folder2','IMG_20171102_105325','N','N',NULL,'35.8053805556','-106.780986111','923','72157688924451021','2017-11-02 10:53:25','38564706891_4c125ffce1','1512','2688','pink',NULL),
 ('2098','148','Folder2','IMG_20171102_105348','Y','Y','In the trees','35.8053944444','-106.781063889','924','72157688924451021','2017-11-02 10:53:48','38533155422_19f769a743','1512','2688','pink',NULL),
-('2099','148','Folder2','IMG_20171102_105955','N','N',NULL,NULL,NULL,'925','72157688924451021','2017-11-02 10:59:57','37847807404_dee12a50bc','1512','2688','pink',NULL),
+('2099','148','Folder2','IMG_20171102_105955','N','N',NULL,NULL,NULL,'925','72157688924451021','2017-11-02 10:59:57','37847807404_dee12a50bc','1512','2688','pink',NULL);
+INSERT INTO TSV VALUES
 ('2100','148','Folder2','IMG_20171102_110120','Y','Y','Nice view on the way up','35.8019027778','-106.779686111','926','72157688924451021','2017-11-02 11:01:20','38564722181_27f2dcc203','1512','2688','pink',NULL),
 ('2101','148','Folder1','InTheJemez','N','N','An early view from Stable Mesa','35.7933194444','-106.778205556','927','72157665831300339','2017-11-02 11:22:50','38145001211_15c1639101','2448','3264','pink',NULL),
 ('2102','148','Folder2','IMG_20171102_112619','N','N',NULL,'35.7989972222','-106.777680556','928','72157688924451021','2017-11-02 11:26:19','24692598888_87711516c1','1512','2688','pink',NULL),
@@ -2344,8 +2338,7 @@ INSERT INTO TSV VALUES
 ('2189','151','Folder3','IMG_20171205_111215','N','N','','35.7165444444','-106.382405556','1011','72157661311480577','2017-12-05 11:12:16','24991438608_89225ee146','1512','2688','pink',NULL),
 ('2190','151','Folder1','TomOnTheTrail','Y','Y','Tom heads into the wilderness','35.718125','-106.378661111','1012','72157688101713282','2017-12-05 11:17:50','38872481291_715b8f1bd2','2448','3264','pink',NULL),
 ('2191','151','Folder1','FireRemnants','Y','N','Las Conchas Fire left its mark','35.7181888889','-106.378655556','1013','72157688101713282','2017-12-05 11:17:57','25000983598_89f807ded3','2448','3264','pink',NULL),
-('2192','151','Folder1','BoulderDecorations','Y','Y','The trail improves along the way','35.7190083333','-106.378638889','1014','72157688101713282','2017-12-05 11:21:30','25000992808_c045229dc3','3264','2448','pink',NULL);
-INSERT INTO TSV VALUES
+('2192','151','Folder1','BoulderDecorations','Y','Y','The trail improves along the way','35.7190083333','-106.378638889','1014','72157688101713282','2017-12-05 11:21:30','25000992808_c045229dc3','3264','2448','pink',NULL),
 ('2193','151','Folder1','BeautySurrounds','N','N','360-degrees of wilderness views','35.7195194444','-106.379027778','1015','72157688101713282','2017-12-05 11:24:09','25001031368_be4d0b029f','2448','3264','pink',NULL),
 ('2194','151','Folder2','DSC00306','N','N','Expansive view coming up from the falls','35.719575','-106.379058056','1016','72157667151848629','2017-12-05 11:24:33','38874749141_39370275f9','3888','5184','pink',NULL),
 ('2195','151','Folder3','IMG_20171205_112730','N','N','','35.7200333333','-106.379877778','1017','72157661311480577','2017-12-05 11:27:31','37976880455_67579022b2','2688','1512','pink',NULL),
@@ -2356,7 +2349,8 @@ INSERT INTO TSV VALUES
 ('2200','151','Folder1','CathedralView','Y','N','A grand view across Sanchez Canyon','35.7237916667','-106.3806','1022','72157688101713282','2017-12-05 11:41:18','38157311914_80a1c7befe','2448','3264','pink',NULL),
 ('2201','151','Folder1','SanchezFloor','Y','Y','Steep walls of rock accentuate the canyon','35.7237777778','-106.380591667','1023','72157688101713282','2017-12-05 11:41:37','27095876499_fa1d617b3c','2448','3264','pink',NULL),
 ('2202','151','Folder3','IMG_20171205_114346','N','N','','35.7239083333','-106.380733333','1024','72157661311480577','2017-12-05 11:43:48','38863334981_914373f070','1512','2688','pink',NULL),
-('2203','151','Folder1','FramingBill','Y','Y','Bill enjoys capturing the views','35.7237972222','-106.3806','1025','72157688101713282','2017-12-05 11:44:16','27095686449_158c7aab52','2448','3264','pink',NULL),
+('2203','151','Folder1','FramingBill','Y','Y','Bill enjoys capturing the views','35.7237972222','-106.3806','1025','72157688101713282','2017-12-05 11:44:16','27095686449_158c7aab52','2448','3264','pink',NULL);
+INSERT INTO TSV VALUES
 ('2204','151','Folder3','IMG_20171205_114742','Y','N','Precipices offer the best views','35.7239861111','-106.380694444','1026','72157661311480577','2017-12-05 11:47:44','23998530797_264703fd1a','2688','1512','pink',NULL),
 ('2205','151','Folder3','IMG_20171205_114824','N','N','','35.7239944444','-106.380694444','1027','72157661311480577','2017-12-05 11:48:25','38832858772_b1422b9b0d','2688','1512','pink',NULL),
 ('2206','151','Folder3','IMG_20171205_114850','N','N','','35.7240138889','-106.380694444','1028','72157661311480577','2017-12-05 11:48:51','27086896569_953956b380','2688','1512','pink',NULL),
@@ -2445,8 +2439,7 @@ INSERT INTO TSV VALUES
 ('2335','120','Folder1','HoodooAdmirer','Y','Y','Bill\'s appreciation begins to grow','35.72505','-106.62055','1111','72157680666183383','2017-05-12 11:53:29','33811308993_abc7c167f7','240','320','pink',NULL),
 ('2336','120','Folder1','KensClimb','N','N','Topping the hill, the \'holey\' rock full of swallows','35.72534167','-106.6210944','1112','72157680666183383','2017-05-12 11:55:57','34490781091_7e4d63ed71','320','240','pink',NULL),
 ('2337','120','Folder1','GoblinModel','Y','N','Paget highlights the scenery','35.72540556','-106.6211306','1113','72157680666183383','2017-05-12 11:56:39','34235423640_051577c75e','320','240','pink',NULL),
-('2338','120','Folder1','HoodooHts','Y','Y','Looking back over the route up','35.72568611','-106.6208639','1114','72157680666183383','2017-05-12 12:00:12','34235409230_a540889a59','320','240','pink',NULL);
-INSERT INTO TSV VALUES
+('2338','120','Folder1','HoodooHts','Y','Y','Looking back over the route up','35.72568611','-106.6208639','1114','72157680666183383','2017-05-12 12:00:12','34235409230_a540889a59','320','240','pink',NULL),
 ('2339','120','Folder1','HoodooHindsight','Y','Y','Looking back on the beautiful sight of hoodoos','35.72515','-106.6207056','1115','72157680666183383','2017-05-12 12:06:39','33811359953_168c422d25','320','240','pink',NULL),
 ('2340','120','Folder1','ResidentGoblin','Y','N','A member of the goblin family','35.72454167','-106.6202167','1116','72157680666183383','2017-05-12 12:12:44','34490804551_67baf13c7a','320','240','pink',NULL),
 ('2341','120','Folder1','Mushroom','Y','Y','Mushroom rock with a hard hat','35.72583889','-106.6179889','1117','72157680666183383','2017-05-12 12:23:16','33811343863_acf7fd88dc','240','320','pink',NULL),
@@ -2457,7 +2450,8 @@ INSERT INTO TSV VALUES
 ('2347','120','Folder1','TomAndTheTwins','Y','Y','Tom clowns in front of the twins','35.7239888889','-106.620736111','1123','72157680666183383','2017-11-28 10:52:03','39865388131_69c9df6e4a','2448','3264','',NULL),
 ('2348','120','Folder1','TheWaves','Y','N','A different, smoother set of shapes','35.7247111111','-106.620483333','1124','72157680666183383','2017-11-28 11:07:52','28085626399_6cc3b1a985','2448','3264','',NULL),
 ('2349','120','Folder2','IMG_20171128_110810','Y','N','One of the massive structures as you ascend into the goblins','35.7250555556','-106.620619444','1125','72157690299339355','2017-11-28 11:08:12','37995660304_b869cecca2','1512','2688','',NULL),
-('2350','120','Folder1','HoldingUpTheSky','Y','N','Pillars against the blue','35.7249305556','-106.620788889','1126','72157680666183383','2017-11-28 11:09:22','39155061634_d32b40b99a','2448','3264','',NULL),
+('2350','120','Folder1','HoldingUpTheSky','Y','N','Pillars against the blue','35.7249305556','-106.620788889','1126','72157680666183383','2017-11-28 11:09:22','39155061634_d32b40b99a','2448','3264','',NULL);
+INSERT INTO TSV VALUES
 ('2351','120','Folder1','TentCity','Y','N','Oddball formations abound','35.7252527778','-106.6211','1127','72157680666183383','2017-11-28 11:13:49','39155067444_a34d2a9004','2448','3264','',NULL),
 ('2352','120','Folder2','IMG_20171128_112755','Y','Y','Odd shapes, besides goblins, can be seen throughout the area','35.7256777778','-106.621755556','1128','72157690299339355','2017-11-28 11:27:56','37825415795_080184c339','1512','2688','',NULL),
 ('2353','120','Folder2','IMG_20171128_115508','Y','Y','A great view of the valley from above','35.7272472222','-106.620244444','1129','72157690299339355','2017-11-28 11:55:08','24840404168_e207dbd5da','1512','2688','',NULL),
@@ -2546,8 +2540,7 @@ INSERT INTO TSV VALUES
 ('2509','160','Folder1','UnmarkedAdventure','Y','Y','From the end of the marked trail begins a new adventure','35.1117944444','-106.483361111','1213','72157691795765612','2018-03-02 10:40:37','26139871187_a9d16f20f6','2448','3264','',NULL),
 ('2510','160','Folder1','BetweenScambles','Y','Y','In between scrambles, the arroyo is pleasant and easy','35.1124888889','-106.481688889','1214','72157691795765612','2018-03-02 10:56:50','40968759672_11f8a14b5d','2448','3264','',NULL),
 ('2511','160','Folder1','ScramblingOpportunities','Y','Y','Multiple scramble opportunities up the arroyo','35.1129388889','-106.480688889','1215','72157691795765612','2018-03-02 10:59:31','40301503484_e870f517b1','2448','3264','',NULL),
-('2512','160','Folder1','FinalFrontier','Y','Y','Author\'s final scramble, denied','35.1125416667','-106.476836111','1216','72157691795765612','2018-03-02 11:13:34','41010684511_6f3c9c8aeb','3264','2448','',NULL);
-INSERT INTO TSV VALUES
+('2512','160','Folder1','FinalFrontier','Y','Y','Author\'s final scramble, denied','35.1125416667','-106.476836111','1216','72157691795765612','2018-03-02 11:13:34','41010684511_6f3c9c8aeb','3264','2448','',NULL),
 ('2513','160','Folder1','HigherDiversion','Y','Y','Looking back down the canyon','35.1140333333','-106.481980556','1217','72157691795765612','2018-03-02 11:38:15','39201671670_9b68d469ef','2448','3264','',NULL),
 ('2514','160','Folder1','RinconGlimpse','Y','Y','Higher up, the edge of Rincon Ridge is seen','35.1140333333','-106.481980556','1218','72157691795765612','2018-03-02 11:38:25','39201666960_bac649e16d','2448','3264','',NULL),
 ('2515','160','Folder1','OnEqualFooting','Y','Y','The final approach to the top','35.1116833333','-106.484086111','1219','72157691795765612','2018-03-02 12:03:47','40301678514_825c033939','3264','2448','',NULL),
@@ -2558,7 +2551,8 @@ INSERT INTO TSV VALUES
 ('2520','161','Folder1','SouthMountain','Y','Y','A view of South Mountain from the trail','35.1603277778','-106.467841667','1224','72157694132110704','2018-03-03 13:28:37','41006469961_57b0dbd7ab','2448','3264','',NULL),
 ('2521','161','Folder1','ArroyoView','Y','Y','Tempting pathways to the unknown','35.16005','-106.4664','1225','72157694132110704','2018-03-03 13:31:20','26135611127_31578d5a4b','2448','3264','',NULL),
 ('2522','161','Folder1','EnjoyingTheSurrounds','Y','Y','Much of the hike is pleasant and gradual','35.1658666667','-106.456741667','1226','72157694132110704','2018-03-03 14:14:04','26135606187_ecb6cbd1fc','2448','3264','',NULL),
-('2523','161','Folder1','HoodooFriends','Y','Y','Interesting shapes line the trail','35.16845','-106.458152778','1227','72157694132110704','2018-03-03 14:23:14','41006454581_aaa523467f','2448','3264','',NULL),
+('2523','161','Folder1','HoodooFriends','Y','Y','Interesting shapes line the trail','35.16845','-106.458152778','1227','72157694132110704','2018-03-03 14:23:14','41006454581_aaa523467f','2448','3264','',NULL);
+INSERT INTO TSV VALUES
 ('2524','161','Folder1','RockyCrags','Y','Y','The north is punctuated by craggy rock','35.1702111111','-106.465888889','1228','72157694132110704','2018-03-03 14:38:55','41006452561_a08caa6d05','2448','3264','',NULL),
 ('2525','162','Folder2','IMG_20180313_103440','Y','Y','The trail system starts here','35.7917','-106.246341667','1229','72157691408562162','2018-03-13 10:34:42','26926362738_91f8527368','1512','2688','',NULL),
 ('2526','162','Folder2','IMG_20180313_104433','Y','Y','Why the roads have \'Fork\' in their names','35.7885805556','-106.241413889','1230','72157691408562162','2018-03-13 10:44:35','40754239322_79cf488a0c','1512','2688','',NULL),
@@ -2647,8 +2641,7 @@ INSERT INTO TSV VALUES
 ('2609','163','Folder1','PotrilloCanyon','Y','Y','Namesake Canyon from the end point','35.7916027778','-106.212294444','1313','72157693292510481','2018-03-29 11:22:21','40409852474_9be57eaa09','2448','3264','',NULL),
 ('2610','163','Folder1','PotrilloOverlook','N','N','From the trail end, a view of the valley','35.7905361111','-106.211577778','1314','72157693292510481','2018-03-29 11:30:03','40409821454_7fdb58b51f','2448','3264','',NULL),
 ('2611','163','Folder1','GrandioseRio','N','N','Fantastic views of the Rio Grande valley','35.789425','-106.210486111','1315','72157693292510481','2018-03-29 11:30:32','39311639680_ec79a34b7a','2448','3264','',NULL),
-('2612','163','Folder1','RockLiner','Y','Y','Reminders of geological features','35.8004388889','-106.223733333','1316','72157693292510481','2018-03-29 12:13:04','39311650900_ec20e78a8a','2448','3264','',NULL);
-INSERT INTO TSV VALUES
+('2612','163','Folder1','RockLiner','Y','Y','Reminders of geological features','35.8004388889','-106.223733333','1316','72157693292510481','2018-03-29 12:13:04','39311650900_ec20e78a8a','2448','3264','',NULL),
 ('2613','163','Folder1','WaterCanyon','Y','Y','Namesake canyon from a previous hike (Water Canyon)','35.8023916667','-106.233094444','1317','72157693292510481','2018-03-29 12:42:23','40409843794_fda89276c5','2448','3264','',NULL),
 ('2614','163','Folder1','MtBaldy','Y','Y','Mt Baldy highlights the scenery','35.8047166667','-106.232055556','1318','72157693292510481','2018-03-29 12:51:27','41120413411_29e5b21b31','2448','3264','',NULL),
 ('2615','163','Folder1','BushwhackShortcut','N','N','A little shortcut back to the car','35.8073111111','-106.2305','1319','72157693292510481','2018-03-29 12:57:14','41120410471_c2fc3d4ac3','2448','3264','',NULL),
@@ -2659,7 +2652,8 @@ INSERT INTO TSV VALUES
 ('2644','123','Folder1','OldLaLuz','Y','Y','Looking up the Od La Luz trail','35.2143138889','-106.480863889','1324','72157681752411544','2017-06-02 10:56:20','35033231331_8739dcf0b7','179','320','pink',NULL),
 ('2645','123','Folder1','PaintbrushView','Y','Y','Spring offers a colorful accent','35.2119138889','-106.471038889','1325','72157681752411544','2017-05-17 11:01:33','33956675484_da24f32b0f','240','320','pink',NULL),
 ('2646','123','Folder1','LaLuzJct','Y','Y','Where old and new (La Luz) meet','35.2122916667','-106.470433333','1326','72157681752411544','2017-06-02 11:44:32','34354170463_a9cf435c74','179','320','pink',NULL),
-('2647','123','Folder1','RinconView','Y','Y','Looking north at the Rincon Valley','35.2107166667','-106.471916667','1327','72157681752411544','2017-06-02 11:54:49','35124056936_900f8205f8','179','320','pink',NULL),
+('2647','123','Folder1','RinconView','Y','Y','Looking north at the Rincon Valley','35.2107166667','-106.471916667','1327','72157681752411544','2017-06-02 11:54:49','35124056936_900f8205f8','179','320','pink',NULL);
+INSERT INTO TSV VALUES
 ('2648','123','Folder1','LaCuevaBase','Y','Y','A view into the steep canyon La Cueva','35.2108083333','-106.471938889','1328','72157681752411544','2017-06-02 11:55:21','35033215171_3f62bff6ae','320','179','pink',NULL),
 ('2649','123','Folder1','TheSplit','Y','Y','Point of diversion from the \'New\' La Luz','35.2136','-106.4757','1329','72157681752411544','2017-05-17 10:12:20','33956639464_07e84c1210','240','320','pink',NULL),
 ('2650','165','Folder1','TowerStart','N','Y','Adjacent to the parking lot, a well-marked starting point','35.1918194444','-106.479111111','1330','72157665478651657','2018-04-06 10:44:33','40570222064_f7df231b1e','3264','2448','',NULL),
@@ -2748,8 +2742,7 @@ INSERT INTO TSV VALUES
 ('2766','170','Folder1','DistantSandia','Y','N','In the haze, the Sandias highlight the horizon','35.7331055556','-105.869958333','1413','72157694959597701','2018-05-08 12:55:33','40231406820_61d0b6bb5c','2448','3264','',NULL),
 ('2767','170','Folder1','ChicomaProfile','Y','N','A look at distant Chicoma Peak','35.7332166667','-105.875794444','1414','72157694959597701','2018-05-08 13:03:48','27168869967_6a1bcc8d3d','2448','3264','',NULL),
 ('2768','170','Folder1','JemezWest','Y','N','A glimpse towards the Jemez','35.7075888889','-105.952447222','1415','72157694959597701','2018-05-08 13:11:19','41318875764_9c1aed412b','2448','3264','',NULL),
-('2769','170','Folder1','SangreFoothills','Y','Y','From Saddleback, many excellent views are available','35.7327388889','-105.876738889','1416','72157694959597701','2018-05-08 13:12:18','41318864924_c5dec93f8f','2448','3264','',NULL);
-INSERT INTO TSV VALUES
+('2769','170','Folder1','SangreFoothills','Y','Y','From Saddleback, many excellent views are available','35.7327388889','-105.876738889','1416','72157694959597701','2018-05-08 13:12:18','41318864924_c5dec93f8f','2448','3264','',NULL),
 ('2780','172','Folder1','TrailHeadStart','Y','Y','From Highway 4, the trail begins modestly up','35.848125','-106.421958333','1417','72157695406837431','2018-05-19 10:25:04','28414564678_a3776a3077','2448','3264','',NULL),
 ('2781','172','Folder1','GoldenLupine','Y','N','Spring wildflowers beautify the trail','35.8508333333','-106.418708333','1418','72157695406837431','2018-05-19 10:31:23','42287485271_8667670b5b','2448','3264','',NULL),
 ('2782','172','Folder1','PreBearEncounter','Y','Y','Before ascending far, a brown bear came crashing down then veered off','35.8545333333','-106.4159','1419','72157695406837431','2018-05-19 10:41:15','42241036912_c78a6c41cd','2448','3264','',NULL),
@@ -2760,7 +2753,8 @@ INSERT INTO TSV VALUES
 ('2787','172','Folder1','LosConchasFireRemains','Y','N','The 2011 devastation marks portions of the landscape','35.8696444444','-106.412858333','1424','72157695406837431','2018-05-19 12:05:15','41566279234_6cd54b132c','2448','3264','',NULL),
 ('2788','172','Folder1','DescendingTheGrande','Y','Y','On the way down, it seems like new views','35.8675833333','-106.413230556','1425','72157695406837431','2018-05-19 12:18:06','28416508888_cce3eef4e5','2448','3264','',NULL),
 ('2789','172','Folder1','PicturesqueTreeFrame','Y','N','The Ponderosas added to the enjoyable environment of the hike','35.8657916667','-106.414375','1426','72157695406837431','2018-05-19 12:23:56','42287470881_bdf90dbd25','2448','3264','',NULL),
-('2790','66','Folder','TrailBelow','Y','N','The canyon and trail from above',NULL,NULL,'1427','72157670138528866','2013-02-13 11:51:47','27289135033_b948ed2aee','240','320','',NULL),
+('2790','66','Folder','TrailBelow','Y','N','The canyon and trail from above',NULL,NULL,'1427','72157670138528866','2013-02-13 11:51:47','27289135033_b948ed2aee','240','320','',NULL);
+INSERT INTO TSV VALUES
 ('2791','66','','TopView','Y','N','View while ascending',NULL,NULL,'1428','72157670138528866','2004-09-23 16:47:30','27623414810_76ce0fa395','240','320','',NULL),
 ('2792','66','','ThePathIn','Y','N','The path leads to the interior',NULL,NULL,'1429','72157670138528866','2010-05-12 16:21:10','27623399010_fd09958c3f','320','213','',NULL),
 ('2793','66','','TentRocks','Y','N','Classic formations',NULL,NULL,'1430','72157670138528866','2004-09-23 16:30:34','27825183361_a19f30e84f','240','320','',NULL),
@@ -2849,8 +2843,7 @@ INSERT INTO TSV VALUES
 ('2929','175','Folder1','Uplifting','Y','Y','Blue skies highlight the open run','35.1973305556','-106.426994444','1513','72157697944235855','2018-06-12 10:22:00','41874163435_6d03d107dd','2448','3264',NULL,NULL),
 ('2930','175','Folder1','SummerColor','Y','Y','Wallflowers and penstemmon add color to the dusty trail','35.2060305556','-106.432288889','1514','72157697944235855','2018-06-12 10:45:41','42725082802_d3403f60a1','3264','2448',NULL,NULL),
 ('2931','175','Folder1','IMG_20180612_074423529','Y','Y','Bentley is anxious to press on','35.2091899722','-106.435212','1515','72157692779076640','2018-06-12 07:44:24','42878227702_77a59879c0','2268','4032',NULL,NULL),
-('2932','175','Folder1','IMG_20180612_080755940_HDR','N','N','','35.1992619722','-106.428112972','1516','72157692779076640','2018-06-12 08:07:59','42878230442_b2dddcaf59','4032','2268',NULL,NULL);
-INSERT INTO TSV VALUES
+('2932','175','Folder1','IMG_20180612_080755940_HDR','N','N','','35.1992619722','-106.428112972','1516','72157692779076640','2018-06-12 08:07:59','42878230442_b2dddcaf59','4032','2268',NULL,NULL),
 ('2933','175','Folder1','IMG_20180612_084340316','N','N','','35.1862169722','-106.421941','1517','72157692779076640','2018-06-12 08:43:44','29054604488_2ea4bd869b','4032','2268',NULL,NULL),
 ('2934','175','Folder1','IMG_20180612_085406492','N','N','','35.187142','-106.420884972','1518','72157692779076640','2018-06-12 08:54:11','28058042747_a6c3c82e57','2268','4032',NULL,NULL),
 ('2935','175','Folder1','IMG_20180612_104447395_HDR','N','N','','35.2059909722','-106.432365','1519','72157692779076640','2018-06-12 10:44:51','42878238312_6f16c7cc70','2268','4032',NULL,NULL),
@@ -2861,7 +2854,8 @@ INSERT INTO TSV VALUES
 ('2944','171','Folder1','ThroughTheTrees','Y','Y','While mostly shaded, occasional glimpses east and north enhanced the view','35.2384388889','-106.436980556','1524','72157669276710418','2018-05-17 11:05:11','27417696807_ee60539b69','2448','3264','',NULL),
 ('2945','171','Folder1','HighOnSandia','Y','Y','A sense of high altitude on the Osha Loop trail','35.2450833333','-106.4497','1525','72157669276710418','2018-05-17 12:35:50','42287132021_19e402fe9f','2448','3264','',NULL),
 ('2946','171','Folder1','SanPedrosVista','Y','N','From high on Osha Loop, grand views of the San Pedro and Ortiz','35.2446361111','-106.449813889','1526','72157669276710418','2018-05-17 12:39:01','27417707037_d99c899d88','2448','3264','',NULL),
-('2947','171','Folder1','SandiaIris','Y','N','One of the early Spring bloomers','35.2437694444','-106.449722222','1527','72157669276710418','2018-05-17 12:42:28','41565996874_e032341d9f','2448','3264','',NULL),
+('2947','171','Folder1','SandiaIris','Y','N','One of the early Spring bloomers','35.2437694444','-106.449722222','1527','72157669276710418','2018-05-17 12:42:28','41565996874_e032341d9f','2448','3264','',NULL);
+INSERT INTO TSV VALUES
 ('2948','171','Folder1','BillAndNewAspens','Y','Y','Numerous young aspens were marking the Spring transition','35.2382055556','-106.446341667','1528','72157669276710418','2018-05-17 12:54:55','41565975054_6f286bce14','2448','3264','',NULL),
 ('2949','171','Folder1','SandiaCrest','Y','N','Looking out from the Crest','35.2098972222','-106.449463889','1529','72157669276710418','2018-05-17 14:23:30','42287142361_31e3ecedb1','2448','3264','',NULL),
 ('2955','176','Folder1','ParallelToTrail','Y','Y','Bill treks from St John\'s to the trail head','35.6697972222','-105.903733333','1530','72157668545977127','2018-06-26 07:41:20','42335130774_cb301d8b52','3264','2448',NULL,NULL),
@@ -2950,8 +2944,7 @@ INSERT INTO TSV VALUES
 ('3135','179','Folder1','IMG_20180717_114215069','Y','N','','35.8970619722','-105.583399','1613','72157693392902520','2018-07-17 11:42:15','43432383282_84a192be89','2268','4032',NULL,NULL),
 ('3136','179','Folder1','IMG_20180717_114317008','Y','Y','','35.8970819722','-105.583415','1614','72157693392902520','2018-07-17 11:43:17','42764198304_1e1b172c91','1836','3264',NULL,NULL),
 ('3137','179','Folder2','TruchasTrio','Y','Y','The trail brings us amazingly closer to the Truchas ','35.8970861111','-105.58345','1615','72157698762191184','2018-07-17 11:43:28','43441631802_d987ab2448','2448','3264',NULL,NULL),
-('3138','179','Folder2','FromHamilton','Y','Y','A view south from the summit','35.8967333333','-105.586288889','1616','72157698762191184','2018-07-17 11:47:39','42772871434_9dd7fd0fe1','2448','3264',NULL,NULL);
-INSERT INTO TSV VALUES
+('3138','179','Folder2','FromHamilton','Y','Y','A view south from the summit','35.8967333333','-105.586288889','1616','72157698762191184','2018-07-17 11:47:39','42772871434_9dd7fd0fe1','2448','3264',NULL,NULL),
 ('3166','180','Folder1','PecosHillside','Y','Y','Long views of the interior are afforded along the way','35.8359222222','-105.667205556','1617','72157693637900310','2018-07-24 08:55:41','28743730837_6b15016bdb','2448','3264',NULL,NULL),
 ('3167','180','Folder2','IMG_20180724_090257156_HDR','Y','Y','Bentley scouts the signpost','35.8392189722','-105.670356972','1618','72157699428873965','2018-07-24 09:02:59','29749472768_57c1e4a13c','4032','2268',NULL,NULL),
 ('3168','180','Folder2','IMG_20180724_090832695_HDR','N','N','','35.84194','-105.672916972','1619','72157699428873965','2018-07-24 09:08:35','43619312401_a58d46ceef','2268','4032',NULL,NULL),
@@ -2962,7 +2955,8 @@ INSERT INTO TSV VALUES
 ('3173','180','Folder2','IMG_20180724_104122132_HDR','N','Y','Cave Creek Trails joins Skyline Trail','35.8608789722','-105.710749','1624','72157699428873965','2018-07-24 10:41:25','43571660802_8db90ec000','2268','4032',NULL,NULL),
 ('3174','180','Folder1','EndOfCaveCr','Y','N','Cave Creek Trail ends at Skyline Trail','35.8610194444','-105.7109','1625','72157693637900310','2018-07-24 10:41:41','28743754357_4cde87981a','3264','2448',NULL,NULL),
 ('3175','180','Folder1','AtSkyline','Y','Y','Cave Creek is shallow but clear at the Skyline Trail juncture','35.8610166667','-105.710838889','1626','72157693637900310','2018-07-24 10:42:57','41823651250_3c96192946','3264','2448',NULL,NULL),
-('3176','180','Folder1','CaveApproach','Y','N','The first view of the caves, not visible from the trail','35.8498416667','-105.689697222','1627','72157693637900310','2018-07-24 11:36:22','43630677401_5cb687da0c','2448','3264',NULL,NULL),
+('3176','180','Folder1','CaveApproach','Y','N','The first view of the caves, not visible from the trail','35.8498416667','-105.689697222','1627','72157693637900310','2018-07-24 11:36:22','43630677401_5cb687da0c','2448','3264',NULL,NULL);
+INSERT INTO TSV VALUES
 ('3177','180','Folder2','IMG_20180724_113703486','Y','N','The creek goes underground','35.849659','-105.689393972','1628','72157699428873965','2018-07-24 11:37:03','41811160830_1abd4b87b8','4032','2268',NULL,NULL),
 ('3178','180','Folder2','IMG_20180724_113809363','N','N','','35.8496889722','-105.689479','1629','72157699428873965','2018-07-24 11:38:10','29749523918_b1b67452ca','4032','2268',NULL,NULL),
 ('3179','180','Folder1','CaveGuts','Y','N','The cave interior interconnects with other tunnels','35.8497583333','-105.689544444','1630','72157693637900310','2018-07-24 11:38:26','42914353584_b39f48e445','3264','2448',NULL,NULL),
@@ -3051,8 +3045,7 @@ INSERT INTO TSV VALUES
 ('3277','181','Folder1','TrailDecorators','Y','Y','Beauty can be found almost anywhere','35.2001194444','-106.483794444','1713','72157673705784488','2018-09-19 10:42:12','44130177544_942e6b1f5c','3264','2448',NULL,NULL),
 ('3278','181','Folder1','Singleton','Y','Y','A solo trail enhancer','35.1995277778','-106.484841667','1714','72157673705784488','2018-09-19 10:44:17','43039940400_10cdff613b','3264','2448',NULL,NULL),
 ('3279','181','Folder1','TrailEnd','Y','Y','A gorgeous view of the Sandias from the parking area ','35.1970833333','-106.490586111','1715','72157673705784488','2018-09-19 10:54:38','44851134561_c929a91acb','2448','3264',NULL,NULL),
-('3285','182','Folder2','UnusualResident','Y','N','A first time viewing of this variety for the authors','35.6026583333','-105.769341667','1716','72157685926061803','2017-08-25 08:00:46','36083933794_23d3030723','3264','2448',NULL,NULL);
-INSERT INTO TSV VALUES
+('3285','182','Folder2','UnusualResident','Y','N','A first time viewing of this variety for the authors','35.6026583333','-105.769341667','1716','72157685926061803','2017-08-25 08:00:46','36083933794_23d3030723','3264','2448',NULL,NULL),
 ('3286','182','Folder1','IMG_20170825_080459','Y','Y','Options at the trailhead','35.6027722222','-105.769119444','1717','72157688072275945','2017-08-25 08:05:00','36631093892_0dea358748','1512','2688',NULL,NULL),
 ('3287','182','Folder1','IMG_20170825_081004','Y','Y','Odd paintball area','35.6044555556','-105.769322222','1718','72157688072275945','2017-08-25 08:10:06','36754274996_8cb458343a','1512','2688',NULL,NULL),
 ('3288','182','Folder2','BrainSizedShroom','N','N','An unexpected and unusual find','35.6067972222','-105.768622222','1719','72157685926061803','2017-08-25 08:16:09','36110153023_3efcdef698','2448','3264',NULL,NULL),
@@ -3063,7 +3056,8 @@ INSERT INTO TSV VALUES
 ('3293','182','Folder2','SecondaryTransportation','Y','Y','Occupied by ghosts?','35.6383222222','-105.781180556','1724','72157685926061803','2017-08-25 09:33:43','36110157433_f74f5fd33a','2448','3264',NULL,NULL),
 ('3294','182','Folder1','IMG_20170825_094553','Y','Y','Hotel?','35.6401305556','-105.780941667','1725','72157688072275945','2017-08-25 09:45:56','36631036662_caffa2dcd4','1512','2688',NULL,NULL),
 ('3295','182','Folder2','GhostTown?','Y','Y','Apparently, not much left to see','35.6428833333','-105.779638889','1726','72157685926061803','2017-08-25 09:47:31','36521811280_2682277265','2448','3264',NULL,NULL),
-('3296','182','Folder2','OnTheTrail','Y','Y','The trail has an easy ascent and offers shade','35.6342583333','-105.779327778','1727','72157685926061803','2017-08-25 10:29:32','36778391961_5f329c0802','3264','2448',NULL,NULL),
+('3296','182','Folder2','OnTheTrail','Y','Y','The trail has an easy ascent and offers shade','35.6342583333','-105.779327778','1727','72157685926061803','2017-08-25 10:29:32','36778391961_5f329c0802','3264','2448',NULL,NULL);
+INSERT INTO TSV VALUES
 ('3297','182','Folder1','IMG_20170825_103236','Y','Y','A shelter','35.6330416667','-105.778813889','1728','72157688072275945','2017-08-25 10:32:37','36754222156_a16c6b701e','1512','2688',NULL,NULL),
 ('3300','183','Folder1','IMG_20170825_113701','Y','Y','To remember the parking area','35.5987583333','-105.774361111','1729','72157688072275945','2017-08-25 11:37:02','36801682425_0a74fc4bdf','1512','2688',NULL,NULL),
 ('3301','128','Folder1','IMG_20160614_091921','N','N','Jack on the long traverse','35.8100138889','-105.791491667','1730','72157682677610364','2016-06-14 09:19:22','27605764701_d54b0d9275','320','179','pink',NULL),
@@ -3152,8 +3146,7 @@ INSERT INTO TSV VALUES
 ('3411','72','Folder1','TrailSummit','N','N','Top of the trail','0','0','1813','72157668795870731','2006-09-10 13:52:35','27398890825_571c58b64e','1536','2048',NULL,NULL),
 ('3412','72','Folder1','MtnPeaks','Y','N','View from Williams Lake','0','0','1814','72157668795870731','2006-09-10 13:57:47','27300765932_beaf051db5','2048','1536',NULL,NULL),
 ('3413','72','Folder1','LakeView','Y','N','Williams Lake','0','0','1815','72157668795870731','2006-09-10 14:19:41','27123201700_b1ec474fd8','1536','2048',NULL,NULL),
-('3414','72','Folder1','Feeder','Y','N','Springs empty into Williams Lake','0','0','1816','72157668795870731','2006-09-10 14:30:32','26790910434_8211dcdf88','2048','1536',NULL,NULL);
-INSERT INTO TSV VALUES
+('3414','72','Folder1','Feeder','Y','N','Springs empty into Williams Lake','0','0','1816','72157668795870731','2006-09-10 14:30:32','26790910434_8211dcdf88','2048','1536',NULL,NULL),
 ('3415','188','Folder2','IMG_20181002_093341018_HDR','Y','Y','Warnings near the start','35.2297709722','-106.481054','1817','72157701765561814','2018-10-02 09:33:45','45013321052_00d74971d6','2268','4032',NULL,NULL),
 ('3416','188','Folder2','IMG_20181002_093558529','Y','Y','Entering the Forest','35.230594','-106.47968','1818','72157701765561814','2018-10-02 09:35:59','44150328295_b8cd42124f','2268','4032',NULL,NULL),
 ('3417','188','Folder2','IMG_20181002_094042370_HDR','Y','Y','On the way up','35.2306049722','-106.478408','1819','72157701765561814','2018-10-02 09:40:45','31188290038_0606963bf7','2268','4032',NULL,NULL),
@@ -3164,7 +3157,8 @@ INSERT INTO TSV VALUES
 ('3422','188','Folder2','IMG_20181002_105557578_HDR','Y','Y','Approaching the Prow','35.232593','-106.468709','1824','72157701765561814','2018-10-02 10:56:00','31188297838_f0537f4382','2268','4032',NULL,NULL),
 ('3423','188','Folder1','OnTheTrail','Y','N','Ascending Movie Trail','35.2321666667','-106.467666667','1825','72157671906132357','2018-10-02 11:03:00','44341289514_5237580630','2448','3264',NULL,NULL),
 ('3424','188','Folder2','IMG_20181002_110326622_HDR','Y','Y','About as far as a dog - or human - can go','35.2320679722','-106.467636972','1826','72157701765561814','2018-10-02 11:03:28','45061131021_e42151d9a8','4032','2268',NULL,NULL),
-('3425','188','Folder2','IMG_20181002_110611808_HDR','Y','Y','Bennie surveys the Rincon Ridge','35.2320279722','-106.467657','1827','72157701765561814','2018-10-02 11:06:15','45013352082_58c81165f2','2268','4032',NULL,NULL),
+('3425','188','Folder2','IMG_20181002_110611808_HDR','Y','Y','Bennie surveys the Rincon Ridge','35.2320279722','-106.467657','1827','72157701765561814','2018-10-02 11:06:15','45013352082_58c81165f2','2268','4032',NULL,NULL);
+INSERT INTO TSV VALUES
 ('3426','188','Folder2','IMG_20181002_110847652_HDR','Y','Y','A last look up','35.23228','-106.468033','1828','72157701765561814','2018-10-02 11:08:50','45013355482_0226d9f054','2268','4032',NULL,NULL),
 ('3427','188','Folder2','IMG_20181002_114431205','Y','Y','You can see forever from here','35.231268','-106.473935972','1829','72157701765561814','2018-10-02 11:44:31','45013360822_b4afa0e043','4032','2268',NULL,NULL),
 ('3428','188','Folder2','IMG_20181002_120206848_HDR','Y','Y','Some treacherous spots on the descent','35.230201','-106.476158972','1830','72157701765561814','2018-10-02 12:02:10','44150360145_628bbd9dd4','4032','2268',NULL,NULL),
@@ -3253,8 +3247,7 @@ INSERT INTO TSV VALUES
 ('3554','168','Folder1','IMG_20180424_123002310_HDR','Y','Y','Ken takes refuge by a petrified trunk','35.990594','-107.206282','1913','72157690628082970','2018-04-24 12:30:05','27840914968_228d8ae3a9','2268','4032','',NULL),
 ('3555','168','Folder2','ScatteredRock','Y','Y','Red rock coats many hills','35.9904583333','-107.208113889','1914','72157694315592641','2018-04-24 12:32:39','41694094531_3ed6e2cb5b','2448','3264','',NULL),
 ('3556','168','Folder2','ContrastHoodoos','Y','Y','Color contrasts adorn much of the area','35.9885305556','-107.208938889','1915','72157694315592641','2018-04-24 12:38:33','41694080931_80fec0b0d0','2448','3264','',NULL),
-('3557','168','Folder2','TheCastle','Y','Y','Territorial landmark - visible from the beginning','35.9883333333','-107.208808333','1916','72157694315592641','2018-04-24 12:39:14','39887227670_d59d09e0be','2448','3264','',NULL);
-INSERT INTO TSV VALUES
+('3557','168','Folder2','TheCastle','Y','Y','Territorial landmark - visible from the beginning','35.9883333333','-107.208808333','1916','72157694315592641','2018-04-24 12:39:14','39887227670_d59d09e0be','2448','3264','',NULL),
 ('3558','168','Folder2','HoodooDance','Y','Y','Small hoodoos add intrigue to the smooth rock','35.9870611111','-107.207558333','1917','72157694315592641','2018-04-24 12:44:39','40975968084_63783f3f24','2448','3264','',NULL),
 ('3559','168','Folder2','ScallopedEdges','Y','Y','Interesting scalloped edges line the low hill','35.98695','-107.205969444','1918','72157694315592641','2018-04-24 12:57:20','40795308965_8121c5a238','2448','3264','',NULL),
 ('3560','168','Folder1','IMG_20180424_130020293','N','N','','35.9868919722','-107.205929972','1919','72157690628082970','2018-04-24 13:00:20','40991483654_0d5cc468dd','1836','3264','',NULL),
@@ -3265,7 +3258,8 @@ INSERT INTO TSV VALUES
 ('3565','168','Folder1','IMG_20180424_135321904_HDR','Y','Y','So many odd formations','35.994475','-107.206496972','1924','72157690628082970','2018-04-24 13:53:24','41669688112_07f2dbb9d9','2268','4032','',NULL),
 ('3566','168','Folder2','LizardArt','Y','Y','Natures own artwork','35.9945416667','-107.206405556','1925','72157694315592641','2018-04-24 13:53:46','41655601742_6ed32d46d0','2448','3264','',NULL),
 ('3567','168','Folder2','FaultyTower','Y','N','Huge rock supported by mud','35.9937333333','-107.206741667','1926','72157694315592641','2018-04-24 13:55:45','39887304330_b18338a788','3264','2448','',NULL),
-('3568','168','Folder2','Ducks','Y','Y','A duck and baby?','35.9934916667','-107.207016667','1927','72157694315592641','2018-04-24 13:57:08','39887285890_e0495eecf3','2448','3264','',NULL),
+('3568','168','Folder2','Ducks','Y','Y','A duck and baby?','35.9934916667','-107.207016667','1927','72157694315592641','2018-04-24 13:57:08','39887285890_e0495eecf3','2448','3264','',NULL);
+INSERT INTO TSV VALUES
 ('3569','168','Folder1','IMG_20180424_140126208_HDR','Y','Y','Ken in a stand of petrified wood','35.9927539722','-107.209036972','1928','72157690628082970','2018-04-24 14:01:29','41709448041_5c39cec12a','2268','4032','',NULL),
 ('3570','168','Folder2','Grasslands','Y','Y','A rare appearance of grass in the area','35.9921833333','-107.209983333','1929','72157694315592641','2018-04-24 14:03:26','41655543242_85d9c432b7','2448','3264','',NULL),
 ('3571','168','Folder2','Return','Y','Y','The road back','35.9852527778','-107.214744444','1930','72157694315592641','2018-04-24 14:23:31','27825424788_bd81fc2840','2448','3264','',NULL),
@@ -3354,8 +3348,7 @@ INSERT INTO TSV VALUES
 ('3710','100','Folder1','SnowyPeaks','Y','Y','Surrounded by snowy peaks','35.264575','-106.330877778','2013','72157675695922643','2017-01-18 10:37:48','31561945914_151726773d','179','320','orange',NULL),
 ('3711','100','Folder1','RockSworl','Y','Y','Crazy distorted rock adds to the interesting scene','35.2638166667','-106.324377778','2014','72157675695922643','2017-01-18 13:19:28','31561962064_f9d5ec006b','320','240','orange',NULL),
 ('3712','100','Folder1','RedClayTrail','Y','Y','The trail weaves in and around streambeds','35.2630472222','-106.325172222','2015','72157675695922643','2017-01-18 13:16:37','31561968144_44518c8759','179','320','orange',NULL),
-('3713','100','Folder1','OpenSpace','Y','Y','Early views on the trail offer promise','35.2634027778','-106.322058333','2016','72157675695922643','2017-01-18 11:59:55','31561974004_e2608fb225','179','320','orange',NULL);
-INSERT INTO TSV VALUES
+('3713','100','Folder1','OpenSpace','Y','Y','Early views on the trail offer promise','35.2634027778','-106.322058333','2016','72157675695922643','2017-01-18 11:59:55','31561974004_e2608fb225','179','320','orange',NULL),
 ('3714','100','Folder1','JacksEmpire','Y','Y','Jack find the best viewpoints','35.2637944444','-106.324319444','2017','72157675695922643','2017-01-18 12:10:36','31593305033_a441168b97','179','320','orange',NULL),
 ('3715','100','Folder1','JackBreak','Y','Y','Arroyos criss-cross the area','35.2623833333','-106.327744444','2018','72157675695922643','2017-01-18 12:06:07','32284019321_f81a9cd230','179','320','orange',NULL),
 ('3716','100','Folder1','InterestingGeology','Y','Y','Multi-colored and crumbly layered rocks add to the beauty','35.2632944444','-106.325972222','2019','72157675695922643','2017-01-18 11:15:14','32254295872_85a80e5222','179','320','orange',NULL),
@@ -3366,7 +3359,8 @@ INSERT INTO TSV VALUES
 ('3721','100','Folder1','SpilledRocks','Y','N','In the distance ,white covered rocks dot the landscape','35.2583555556','-106.315727778','2024','72157675695922643','2018-12-11 11:47:41','45393277695_86d77cea32','2448','3264',NULL,NULL),
 ('3722','100','Folder1','HilltopTom','Y','Y','Tom and Bentley mark the nearby rise','35.256625','-106.317466667','2025','72157675695922643','2018-12-11 11:56:12','31366949717_a16f82e1f1','2448','3264',NULL,NULL),
 ('3725','121','Folder1','IMG_20170521_115647','Y','N','Great trail signs throughout','35.536880375','-105.884229125','2026','72157681262491952','2017-05-21 11:56:48','34420381150_202db145c0','320','179','teal',NULL),
-('3726','121','Folder1','IMG_20170521_115826','N','N','Trail overview sign','35.5375938667','-105.883456733','2027','72157681262491952','2017-05-21 11:58:27','34644035762_8a23086e96','320','179','teal',NULL),
+('3726','121','Folder1','IMG_20170521_115826','N','N','Trail overview sign','35.5375938667','-105.883456733','2027','72157681262491952','2017-05-21 11:58:27','34644035762_8a23086e96','320','179','teal',NULL);
+INSERT INTO TSV VALUES
 ('3727','121','Folder1','IMG_20170521_120213','N','Y','Junction 1A','35.5391515833','-105.882795083','2028','72157681262491952','2017-05-21 12:02:14','34644024962_7eec764378','320','179','teal',NULL),
 ('3728','121','Folder1','IMG_20170521_121826','Y','Y','Views improve on the way up','35.5438221453','-105.879745481','2029','72157681262491952','2017-05-21 12:18:27','34673818871_6447d4f53e','179','320','teal',NULL),
 ('3729','121','Folder1','IMG_20170521_123334','Y','Y','The Queen at the top','35.5449694202','-105.878231328','2030','72157681262491952','2017-05-21 12:33:35','34420355910_121dc60d44','179','320','teal',NULL),
@@ -3455,10 +3449,35 @@ INSERT INTO TSV VALUES
 ('3895','195',NULL,'IMG_0853','Y','Y','Looking back from the western spur','35.18005','-106.4801027778','2144',NULL,'2019-02-26 12:21:01','IMG_0853','240','320',NULL,NULL),
 ('3896','195',NULL,'IMG_0860','Y','Y','A rocky view from the Unnamed Trail','35.179','-106.473175','2145',NULL,'2019-02-26 13:21:18','IMG_0860','240','320',NULL,NULL),
 ('3897','195',NULL,'IMG_0859','Y','Y','Smooth round boulders abound','35.1776388889','-106.4724055556','2146',NULL,'2019-02-26 13:16:57','IMG_0859','240','320',NULL,NULL),
-('3898','195',NULL,'IMG_0856','Y','Y','Trail 230 departs from Trail 365','35.1760333333','-106.4775083333','2147',NULL,'2019-02-26 12:56:49','IMG_0856','240','320',NULL,NULL);
-INSERT INTO TSV VALUES
+('3898','195',NULL,'IMG_0856','Y','Y','Trail 230 departs from Trail 365','35.1760333333','-106.4775083333','2147',NULL,'2019-02-26 12:56:49','IMG_0856','240','320',NULL,NULL),
 ('3899','195',NULL,'IMG_0851','Y','Y','A snowy view to the southeast','35.1840333333','-106.4767444444','2148',NULL,'2019-02-26 12:09:30','IMG_0851','240','320',NULL,NULL),
-('3900','195',NULL,'IMG_0866','Y','Y','Tom and Bentley and Mt Taylor','35.1693416667','-106.4667888889','2149',NULL,'2019-03-05 11:39:55','IMG_0866','240','320',NULL,NULL);
+('3900','195',NULL,'IMG_0866','Y','Y','Tom and Bentley and Mt Taylor','35.1693416667','-106.4667888889','2149',NULL,'2019-03-05 11:39:55','IMG_0866','240','320',NULL,NULL),
+('3901','196',NULL,'IMG_0880','Y','Y','Looking west from the trail','35.1699222222','-106.4623333333','2150',NULL,'2019-03-10 15:24:56','IMG_0880','240','320',NULL,NULL),
+('3902','196',NULL,'IMG_0879','Y','Y','Scenery changes at the north end of Trail 341','35.16835','-106.4582222222','2151',NULL,'2019-03-10 15:17:49','IMG_0879','240','320',NULL,NULL),
+('3903','196',NULL,'IMG_0875','Y','Y','A peek of the Rincon Ridge','35.1544694444','-106.4691305556','2152',NULL,'2019-03-10 14:41:18','IMG_0875','240','320',NULL,NULL),
+('3904','196',NULL,'IMG_0873','Y','N','Open space view of the Sandia','35.1536222222','-106.4713666667','2153',NULL,'2019-03-10 14:34:08','IMG_0873','240','320',NULL,NULL),
+('3905','196',NULL,'IMG_0870','Y','Y','Pleasant stops en route','35.1642833333','-106.4746166667','2154',NULL,'2019-03-10 14:10:50','IMG_0870','320','240',NULL,NULL),
+('3906','196',NULL,'IMG_0881','Y','Y','More mountain views','35.1702527778','-106.4651416667','2155',NULL,'2019-03-10 15:28:48','IMG_0881','240','320',NULL,NULL),
+('3907','196',NULL,'IMG_0902','Y','Y','At trail 305 heading east','35.1535555556','-106.4714972222','2156',NULL,'2019-03-19 10:46:36','IMG_0902','240','320',NULL,NULL),
+('3908','196',NULL,'IMG_0882','Y','Y','The southern Domingo Baca entrance','35.171025','-106.4668666667','2157',NULL,'2019-03-10 15:31:58','IMG_0882','240','320',NULL,NULL),
+('3909','196',NULL,'IMG_0884','Y','Y','Northern Domingo Baca entrance','35.17685','-106.4696805556','2158',NULL,'2019-03-10 15:46:40','IMG_0884','240','320',NULL,NULL);
+INSERT INTO TSV VALUES
+('3916','146','Folder1','RidgeView','N','Y','The first ridge climb looks over the starting point','35.2040583333','-106.503988889','896','72157689963292856','2017-10-27 09:46:32','37304494374_2a2d4c322a','2448','3264','pink',NULL),
+('3917','146','Folder1','TrailDip','Y','Y','After a trek along the ridge, the trail dips into the canyon','35.2059777778','-106.502494444','897','72157689963292856','2017-10-27 09:54:01','24161930978_6ea235824f','3264','2448','pink',NULL),
+('3918','146','Folder1','BlindArroyo','N','Y','The only \'scramble\' in the hike is an easy 5 ft rock face','35.2081972222','-106.500113889','898','72157689963292856','2017-10-27 10:12:46','38013473651_8e780a2f76','3264','2448','pink',NULL),
+('3919','146','Folder1','Rincon','N','N','From the arroyo, a northward look','35.2135666667','-106.498497222','899','72157689963292856','2017-10-27 10:35:23','37304560654_d43d7657b3','2448','3264','pink',NULL),
+('3920','146','Folder1','JuanTaboCanyon','Y','N','A glimpse into the explorable canyon','35.2173722222','-106.497772222','900','72157689963292856','2017-10-27 10:50:12','38013534091_a79a74c648','2448','3264','pink',NULL),
+('3921','146','Folder1','LookingEast','Y','N','A great view from\'ViewPt Hill\'','35.2169416667','-106.498008333','901','72157689963292856','2017-10-27 10:52:39','37960448306_20a93f7d9b','3264','2448','pink',NULL),
+('3922','146','Folder1','SandiaTowers','Y','N','One of many fabulous views of the Sandia\'s','35.2163083333','-106.499747222','902','72157689963292856','2017-10-27 11:27:34','24161918868_4f5eb6a4b0','2448','3264','pink',NULL),
+('3923','146','Folder1','ViewPtHill','Y','N','The high point of the hike, looking west','35.2137111111','-106.501761111','903','72157689963292856','2017-10-27 11:48:05','38013525701_e9937a7242','2448','3264','pink',NULL),
+('3924','146','Folder1','LateBloomer','N','N','A surprise late in the season','35.2135','-106.50225','904','72157689963292856','2017-10-27 11:49:38','38013503311_89cf22445a','2448','3264','pink',NULL),
+('3925','146','Folder1','FullSandia','Y','Y','More views of the Sandia as the trail progresses','35.2119416667','-106.504105556','905','72157689963292856','2017-10-27 11:57:06','24161970948_97d1d90f7b','2448','3264','pink',NULL),
+('3926','146','Folder1','ExpansiveView','Y','Y','The ridge trail leads along the contour, and a glimpse ahead','35.205025','-106.503586111','906','72157689963292856','2017-10-27 12:35:03','38013550311_aa18c621a6','2448','3264','pink',NULL),
+('3927','146',NULL,'IMG_0894','N','N','','35.2154388889','-106.4946361111','2159',NULL,'2019-03-17 14:27:27','IMG_0894','240','320',NULL,NULL),
+('3928','146',NULL,'IMG_0897','Y','Y','Juan Tabo Canyon viewpoint','35.2168305556','-106.4988027778','2160',NULL,'2019-03-17 14:47:02','IMG_0897','240','320',NULL,NULL),
+('3929','146',NULL,'IMG_0900','Y','Y','The foreground ridge defines the higher elevation trail','35.2141111111','-106.4994055556','2161',NULL,'2019-03-17 14:54:38','IMG_0900','240','320',NULL,NULL),
+('3930','146',NULL,'IMG_0896','Y','Y','Ascend/descend with care! This section is steep and has loose footing','35.2174416667','-106.4978416667','2162',NULL,'2019-03-17 14:44:50','IMG_0896','240','320',NULL,NULL),
+('3931','146',NULL,'IMG_0597','Y','Y','A rather difficult descent','35.2078861111','-106.4991527778','2163',NULL,'2018-11-16 14:49:58','IMG_0597','240','320',NULL,NULL);
 
 
 
