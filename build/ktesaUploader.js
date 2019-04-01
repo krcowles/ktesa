@@ -1,6 +1,8 @@
 // close the parent (tab2 of editDB) so that when returning, the page is refreshed
 window.opener.close();
 
+var $progressBar = $('#progbar');
+var progPerUpld;
 var $cmeter; // circular meter object
 var cmtrIds = []; // each meter has a unique id required during submit
 // get the hike no:
@@ -384,6 +386,9 @@ $form.on('submit', function(e) {
                 $form.removeClass('is-uploading');
             return;
         }
+        $('#filecnt').text("0/" + uplds);
+        progPerUpld = 100/uplds;
+        $progressBar.val(0)
         // parameters to pass - associate upload (indx) with name/desc box
         for (var n=0; n<uploads.length; n++) {
             uloads[n] = uploads[n]['ifile'];  // file data (includes name, size)
@@ -404,6 +409,9 @@ $form.on('submit', function(e) {
 function sequentialUploader(imgfile, picdesc, cmtr, hikeno, noOfImgs) {
     postImg(imgfile, picdesc, hikeno, cmtr).then(function() {
         nxtUpld++;
+        var newcnt = nxtUpld + "/" + noOfImgs;
+        $('#filecnt').text(newcnt);
+        $progressBar.val(progPerUpld * nxtUpld);
         if (nxtUpld == noOfImgs) {
             $form.removeClass('is-uploading');
             cleanup();

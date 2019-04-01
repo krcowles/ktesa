@@ -54,8 +54,9 @@ $Euser = filter_input(INPUT_GET, 'usr');
             <button id="ret">Back To Editor</button>
             <span id="ldg" class="blink">&nbsp;&nbsp;Processing images&hellip;
                 Please wait</span>
-            <span class="box__uploading">Upload in progress&hellip;
-                Please wait</span>
+            <span class="box__uploading">
+                &nbsp;&nbsp;Files: <span id="filecnt">0</span>
+                <progress id="progbar" max="100" value="0"></progress>&nbsp;&nbsp;Uploading&hellip;
             </span>
             <pre>
             </pre>
