@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=605 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=626 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -268,7 +268,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -468,7 +468,9 @@ INSERT INTO HIKES VALUES
 ('193','Querencia Arroyo','mstr','San Ysidro','Normal',NULL,'','','Out-and-back','1.10','300','Med-Difficult','None','Wilderness views','Not Summer','Full sun','Querencia.GPX','Querencia.json','35.5024414603','-106.8689451646',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B030\'08.8%22N+106%C2%B052\'08.2%22W/@35.5005737,-106.8698507,3569m/data=!3m1!1e3!4m5!3m4!1s0x0:0x0!8m2!3d35.5024415!4d-106.8689452','The access to this location is off-road with poorly maintained road conditions. It will require 4-wheel/all-wheel drive with good ground clearance. There are no markers for the location, so utilize the gps location indicated on the driving directions.','While there are more spectacular areas in the Ojito Wilderness, this hike nonetheless offers an interesting vantage point. There is a short but steep climb, almost a scramble, to get to the mesa top where the arroyo is located. Along the route are very nice views of the surrounding area. At the top, near the dirt road, are some unmarked ancient ruins. Although the book reference indicates a route, there is no trail and the author decided against attempting the loop. In addition, the author appears to have found a higher starting point for the ascent. For those more adventurous, utilize the provided reference.',NULL,NULL,NULL),
 ('194','Emery - Bear Canyon','mstr','Albuquerque','Cluster',NULL,'II','Michael Emery Group','Loop','3.00','400','Easy','None','Arroyo and Sandia Views','Not Summer','Full sun','Emery-BearCanyon.GPX','Emery-BearCanyon.json','35.1458918117','-106.482262155',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Michael+Emery+Trailhead,+High+Desert+St,+Albuquerque,+NM+87111/@35.1377149,-106.5028257,14.14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189f0b45d7713b:0xa5dd80d463752610!2m2!1d-106.4824107!2d35.1459308',NULL,'This is a relatively easy hike starting from the Michael Emery parking area (misnamed by local signs, the trail is actually Michial Emery). The views heading towards the mountains are quite lovely, especially, as can be seen, in snowier weather. A small portion of the trail circumvents some housing, but otherwise offers a pleasant and relatively solitary experience. This loop heads close to Tramway Blvd, though a bit below it, and leads back to the parking area. ',NULL,NULL,NULL),
 ('195','Tramway-230-505 Loop','mstr','Albuquerque','Cluster',NULL,'X','Tramway Group','Loop','5.40','400','Moderate','Tram Visitor Center','Views of Sandia Range','Not Summer','Full sun','Tram-505-230_Loop.GPX','Tram-505-230_Loop.json','35.1903482527','-106.4799116179',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Sandia+Peak+Tramway,+30+Tramway+Rd+NE,+Albuquerque,+NM+87122/@35.1877122,-106.4974688,14.64z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189e8cfbdf7855:0xdee0b10202a6352b!2m2!1d-106.4795935!2d35.1906969','Note: There are two separate entrances to the Domingo Baca Trail from Trail 230: one north, one south. To find the \'Unnamed Trail\' in this hike, use the north entrance.','The hike begins in the southeast corner of the Lower Tram parking area. It is about a 1/4 mile steep hike up to the water tanks, and after that, more moderate ups and downs as you proceed along the foothills. The trail follows the reasonably well-marked Trail 365 markers, and to gain a bit more scenery and exercise, veers west onto a spur. The spur loops towards a residential area, then returns to rejoin 365. Proceeding along 365, the hike assumes an easterly direction on Trail 230. There is a boundary fence where Trail 230 begins the Domingo Baca trail, and a sharp left takes you onto an unnamed trail. This trail parallels 365 close to the mountain\'s base and eventually rejoins near the water tanks. There are a great variety of views to enhance your experience.',NULL,NULL,NULL),
-('196','Gallegos Boundary Loop','mstr','Albuquerque','Cluster',NULL,'B','Gallegos Park Group','Loop','6.00','400','Easy-Moderate','Park Facilities','Variety of Sandia views','Not summer','Full sun','Gallegos-Boundary-Loop.GPX','Gallegos-Boundary-Loop.json','35.165545363','-106.4733732305',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Elena+Gallegos+Open+Space/@35.1608159,-106.4904377,14.47z/data=!4m5!3m4!1s0x87189f1edab675c3:0x7e38ccf27392893e!8m2!3d35.1617782!4d-106.4736878',NULL,'Elena Gallegos Open Space is a lovely introduction to the Sandia foothills, and provides a variety of different viewpoints. Hikes of various lengths can be assembled from the parking areas, of which there are two. This hike begins at the \'Cottonwood\' parking area which is gained by going around the entrance station and following the \'Kiwanis\' sign. This hike essentially follows the boundary of the open space, completing a nice loop that offers different perspectives of the Sandias. The hike starts by taking a short section of Trail 230A to Trail 365, the foothills trail. After crossing the entrance road and proceeding south a distance, the hike veers left on Trail 305, which eventually merges with Trail 341. Following 341, a distance after crossing the Pino Trail, take Trail 230 north towards Domingo Baca. Follow 230 as it loops back west to join Trail 365, which returns to the parking lot.',NULL,NULL,NULL);
+('196','Gallegos Boundary Loop','mstr','Albuquerque','Cluster',NULL,'B','Gallegos Park Group','Loop','6.00','400','Easy-Moderate','Park Facilities','Variety of Sandia views','Not summer','Full sun','Gallegos-Boundary-Loop.GPX','Gallegos-Boundary-Loop.json','35.165545363','-106.4733732305',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Elena+Gallegos+Open+Space/@35.1608159,-106.4904377,14.47z/data=!4m5!3m4!1s0x87189f1edab675c3:0x7e38ccf27392893e!8m2!3d35.1617782!4d-106.4736878',NULL,'Elena Gallegos Open Space is a lovely introduction to the Sandia foothills, and provides a variety of different viewpoints. Hikes of various lengths can be assembled from the parking areas, of which there are two. This hike begins at the \'Cottonwood\' parking area which is gained by going around the entrance station and following the \'Kiwanis\' sign. This hike essentially follows the boundary of the open space, completing a nice loop that offers different perspectives of the Sandias. The hike starts by taking a short section of Trail 230A to Trail 365, the foothills trail. After crossing the entrance road and proceeding south a distance, the hike veers left on Trail 305, which eventually merges with Trail 341. Following 341, a distance after crossing the Pino Trail, take Trail 230 north towards Domingo Baca. Follow 230 as it loops back west to join Trail 365, which returns to the parking lot.',NULL,NULL,NULL),
+('197','Hawk Watch Trail','mstr','Albuquerque','Cluster',NULL,'KK','Three Gun Springs Group','Out-and-back','3.50','1400','Med-Difficult','None','Interior Sandia Views','Not Summer','Full sun','HawksWatchTrail.GPX','HawksWatchTrail.json','35.076372223','-106.444250392',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Three+Guns+Trailhead/@35.097322,-106.5480615,11.53z/data=!4m5!3m4!1s0x8718a17cda821e47:0x4689e3d1eef39baf!8m2!3d35.0764161!4d-106.4441074',NULL,'This hike provides some very lovely views of the Sandia Mountain interior at its southern-most point. It begins by traversing a short section of the Three Gun Spring trail from its trail head. Turn onto Hawk Watch at the sign (noted by a blue flag on the map). After a short section of relatively easy trail, it becomes somewhat steep. On this hike, the author did not realize where the actual \'Hawk Watch\' point was and continued past it and up the trail towards the South Crest Trail - until it became a bit too steep for a solo hike. On the return, it became apparent that the Hawk Watch area was near a post where the trail split (see photos below). Hawk Watch was a point where volunteers came to trap, band, and count hawks, falcons and eagles during their migration times, and offers nice vistas of the area.',NULL,NULL,NULL),
+('198','Three Gun - Embudo','mstr','Albuquerque','Cluster',NULL,'KK','Three Gun Springs Group','Two-Cars','5.80','1700','Moderate','None','Variety of views in the Sandias','Not Summer','Full sun','Three_Gun_Embudo.GPX','Three_Gun_Embudo.json','35.076372223','-106.444250397',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Three+Guns+Trailhead/@35.0697257,-106.4583411,14.33z/data=!4m5!3m4!1s0x8718a17cda821e47:0x4689e3d1eef39baf!8m2!3d35.0764161!4d-106.4441074','Use caution on sections of the trail that are steep with loose gravel. There are more of these locations coming down Embudo than going up Three Guns Springs Trail. Note: This is one-way hike using a car at each end: <a href=\"https://www.google.com/maps/dir//Embudo+Trailhead,+Albuquerque,+NM/Three+Guns+Trailhead,+19+Tres+Pistolas+Trail+NE,+Albuquerque,+NM+87123/@35.1478856,-106.5519581,12z/data=!4m15!4m14!1m0!1m5!1m1!1s0x8718a1b694ad67ed:0x56ee309f85278023!2m2!1d-106.4802475!2d35.0992012!1m5!1m1!1s0x8718a17cda821e47:0x4689e3d1eef39baf!2m2!1d-106.4441074!2d35.0764161!3e0\" target=\"_blank\">use this link for parking directions</a>','This is a unique hike in that two sides of the lower Sandias come into view. From Three Gun Springs, the hiker is presented with gorgeous views of the southern end of the Sandias. As the trail is traversed, the Manzanitas and Manzanos come into view with the increase of altitude. At the junction with Embudo, there are sweeping views south and west. Proceeding down Embudo, Embudo Canyon appears with views west towards Albuquerque. Note that this hike utilized the \'Horse Bypass\' route, designated on the map with blue flags. This bypass avoids the somewhat puzzling rock scrambles required on the main Embudo Trail.',NULL,NULL,NULL);
 
 
 
@@ -536,7 +538,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1418 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1423 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1313,7 +1315,12 @@ INSERT INTO REFS VALUES
 ('1414','196','Book:','21',NULL),
 ('1415','146','Book:','7','Mike Coltrin'),
 ('1416','146','Website:','http://www.sandiahiking.com/trailguide.html#boundaryloop','Sandia Mtn Hiking Guide: Trails'),
-('1417','146','Book:','8','J D Tanner and Emily Ressler-Tanner');
+('1417','146','Book:','8','J D Tanner and Emily Ressler-Tanner'),
+('1418','197','Book:','7',NULL),
+('1419','197','App:','https://www.alltrails.com/trail/us/new-mexico/hawkwatch-trail','AllTrails.com'),
+('1420','197','Website:','https://www.fs.usda.gov/recarea/cibola/null/recarea/?recid=64572&actid=50','Forest Service'),
+('1421','197','Website:','https://www.trails.com/us/nm/albuquerque/cibola-national-forest-hawk-watch-trail-215','Trails.com'),
+('1422','198','Book:','2',NULL);
 
 
 
@@ -1337,7 +1344,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=3947 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3968 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3477,7 +3484,28 @@ INSERT INTO TSV VALUES
 ('3928','146',NULL,'IMG_0897','Y','Y','Juan Tabo Canyon viewpoint','35.2168305556','-106.4988027778','2160',NULL,'2019-03-17 14:47:02','IMG_0897','240','320',NULL,NULL),
 ('3929','146',NULL,'IMG_0900','Y','Y','The foreground ridge defines the higher elevation trail','35.2141111111','-106.4994055556','2161',NULL,'2019-03-17 14:54:38','IMG_0900','240','320',NULL,NULL),
 ('3930','146',NULL,'IMG_0896','Y','Y','Ascend/descend with care! This section is steep and has loose footing','35.2174416667','-106.4978416667','2162',NULL,'2019-03-17 14:44:50','IMG_0896','240','320',NULL,NULL),
-('3931','146',NULL,'IMG_0597','Y','Y','A rather difficult descent','35.2078861111','-106.4991527778','2163',NULL,'2018-11-16 14:49:58','IMG_0597','240','320',NULL,NULL);
+('3931','146',NULL,'IMG_0597','Y','Y','A rather difficult descent','35.2078861111','-106.4991527778','2163',NULL,'2018-11-16 14:49:58','IMG_0597','240','320',NULL,NULL),
+('3947','197',NULL,'IMG_0911','Y','Y','Looking down into the canyon','35.0835277778','-106.4376222222','2164',NULL,'2019-03-24 12:13:20','IMG_0911','240','320',NULL,NULL),
+('3948','197',NULL,'IMG_0921','Y','Y','The Post marks the spot','35.0872611111','-106.4324027778','2165',NULL,'2019-03-24 12:59:44','IMG_0921','240','320',NULL,NULL),
+('3949','197',NULL,'IMG_0908','Y','Y','On Three Gun Spring Trail','35.0782861111','-106.4445944444','2166',NULL,'2019-03-24 11:54:55','IMG_0908','240','320',NULL,NULL),
+('3950','197',NULL,'IMG_0917','Y','Y','Across the way','35.0870861111','-106.4325333333','2167',NULL,'2019-03-24 12:40:07','IMG_0917','240','320',NULL,NULL),
+('3951','197',NULL,'IMG_0910','Y','Y','Beautiful vistas abound','35.0838916667','-106.4404055556','2168',NULL,'2019-03-24 12:07:30','IMG_0910','240','320',NULL,NULL),
+('3952','197',NULL,'IMG_0915','Y','Y','The trail turns left here','35.0862416667','-106.4344777778','2169',NULL,'2019-03-24 12:30:44','IMG_0915','240','320',NULL,NULL),
+('3953','197',NULL,'IMG_0906','Y','Y','Along the western side','35.0766861111','-106.4444416667','2170',NULL,'2019-03-24 11:49:48','IMG_0906','240','320',NULL,NULL),
+('3954','198',NULL,'Watts3','Y','Y','Scenic view from the interior','35.0795597222','-106.4444797222','2171',NULL,'2019-03-28 09:02:32','Watts3','240','320',NULL,NULL),
+('3955','198',NULL,'Watts2','Y','Y','Near Hawks Watch turnoff','35.0825597222','-106.443565','2172',NULL,'2019-03-28 09:09:20','Watts2','240','320',NULL,NULL),
+('3956','198',NULL,'Watts1','Y','N','In the beginning ...',NULL,NULL,'2173',NULL,'2019-03-28 08:58:59','Watts1','240','320',NULL,NULL),
+('3957','198',NULL,'IMG_0956','Y','Y','Great views appear regardless of distance traveled','35.0995138889','-106.4414583333','2174',NULL,'2019-03-28 11:02:34','IMG_0956','240','320',NULL,NULL),
+('3958','198',NULL,'Watts4','Y','N','Near the top, an overlook presents itself',NULL,NULL,'2175',NULL,'2019-03-28 10:05:32','Watts4','240','320',NULL,NULL),
+('3959','198',NULL,'IMG_0960','Y','Y','Bill heads up with Manzanitas and Manzanos in background','35.1010472222','-106.4412','2176',NULL,'2019-03-28 11:12:32','IMG_0960','320','240',NULL,NULL),
+('3960','198',NULL,'IMG_0951','Y','Y','Looking back on Three Guns trail','35.096725','-106.4405277778','2177',NULL,'2019-03-28 10:42:38','IMG_0951','240','320',NULL,NULL),
+('3961','198',NULL,'Watts5','Y','N','View coming down Embudo','35.1016547222','-106.4447497222','2178',NULL,'2019-03-28 10:44:34','Watts5','240','320',NULL,NULL),
+('3962','198',NULL,'IMG_0973','Y','Y','An elevated view of Embudo Canyon','35.1018138889','-106.4445333333','2179',NULL,'2019-03-28 11:44:54','IMG_0973','240','320',NULL,NULL),
+('3963','198',NULL,'Watts6','Y','Y','Interesting formations accent the trail','35.100705','-106.4462513889','2180',NULL,'2019-03-28 10:54:58','Watts6','240','320',NULL,NULL),
+('3964','198',NULL,'IMG_0980','Y','Y','Looking down on Embudo from the Horse Bypass','35.0958888889','-106.4629972222','2181',NULL,'2019-03-28 12:49:10','IMG_0980','240','320',NULL,NULL),
+('3965','198',NULL,'IMG_0979','Y','N','Looking up Embudo Canyon','35.0958444444','-106.4625472222','2182',NULL,'2019-03-28 12:47:32','IMG_0979','320','240',NULL,NULL),
+('3966','198',NULL,'IMG_20190328_112443756_HDR','Y','N','Ken & Bill - not on the same page','35.1034666667','-106.4425361111','2183',NULL,'2019-03-28 11:24:47','IMG_20190328_112443756_HDR','180','320',NULL,NULL),
+('3967','198',NULL,'IMG_20190328_104121936_HDR','Y','N','Beautiful Cholla in the sun','35.096584','-106.44055','2184',NULL,'2019-03-28 10:41:25','IMG_20190328_104121936_HDR','320','180',NULL,NULL);
 
 
 
