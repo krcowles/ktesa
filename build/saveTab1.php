@@ -21,6 +21,7 @@ $hUser = filter_input(INPUT_POST, 'usr');
 $maingpx = filter_input(INPUT_POST, 'mgpx'); // may be empty
 $maintrk = filter_input(INPUT_POST, 'mtrk'); // may be empty
 $delgpx = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
+$latLngSet = false;
 $_SESSION['uplmsg'] = ''; // return status to user on tab1
 /**
  * This section handles the main gpx file upload/delete.
@@ -49,6 +50,9 @@ if (isset($delgpx)) {
         WHERE indxNo = ?;";
     $udgpx = $pdo->prepare($udgpxreq);
     $udgpx->execute([$hikeNo]);
+    $latLngSet = true;
+    $lat = '';
+    $lng = '';
     $_SESSION['uplmsg']
         .= "Deleted file {$maingpx} and it's associated track from site; ";
 }
@@ -69,6 +73,7 @@ if (!empty($gpxfile)) {  // No new upload
         $ngpx = $pdo->prepare($newgpxq);
         $ngpx->execute([$newgpx, $newtrk, $lat, $lng, $hikeNo]);
         $maingpx = $newgpx;
+        $latLngSet = true;
     } else {
         $_SESSION['uplmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
                 "File Type NOT .gpx for {$gpxfile}.</p>";
@@ -247,19 +252,18 @@ $saves['hSeas'] = filter_input(INPUT_POST, 'hsea');
 $saves['hExpo'] = filter_input(INPUT_POST, 'hexp');
 $hLgth = $lgth;
 $hElev = $ht;
-if (!empty($maingpx)) {
-    $elat = filter_input(INPUT_POST, 'hlat', FILTER_VALIDATE_FLOAT);
-    if ($elat) {
-        $hLat = $elat;
-    } else {
-        $hLat = 0.0000;
+if (!$latLngSet) {
+    $hLat = filter_input(INPUT_POST, 'hlat', FILTER_VALIDATE_FLOAT);
+    if (!$hLat) {
+        $hLat = '';
     }
-    $elng = filter_input(INPUT_POST, 'hlon', FILTER_VALIDATE_FLOAT);
-    if ($elng) {
-        $hLon = $elng;
-    } else {
-        $hLon = 0.0000;
+    $hLon = filter_input(INPUT_POST, 'hlon', FILTER_VALIDATE_FLOAT);
+    if (!$hLon) {
+        $hLon = '';
     }
+} else {
+    $hLat = $lat;
+    $hLon = $lng;
 }
 $saves['hDirs'] = filter_input(INPUT_POST, 'gdirs');
 // The hike data will be updated, first without lat/lng or miles/elev
@@ -289,17 +293,16 @@ if ($hElev == '') {
     $elevq = $pdo->prepare($eleReq);
     $elevq->execute([$hElev, $hikeNo]);
 }
-if (!empty($maingpx)) {
-    // Preserve null in lat/lng when no entry (or bad entry) was input
-    if ($hLat === 0.0000 || $hLon === 0.000) {
-        $latlng = "UPDATE EHIKES SET lat = NULL, lng = NULL WHERE indxNo = ?;";
-        $llq = $pdo->prepare($latlng);
-        $llq->execute([$hikeNo]);
-    } else {
-        $latlng = "UPDATE EHIKES SET lat = ?, lng = ? WHERE indxNo = ?;";
-        $llq = $pdo->prepare($latlng);
-        $llq->execute([$hLat, $hLon, $hikeNo]);
-    }
+// Preserve null in lat/lng when no entry (or bad entry) was input
+if (empty($hLat) || empty($hLon)) {
+    $latlng = "UPDATE EHIKES SET lat = NULL, lng = NULL WHERE indxNo = ?;";
+    $llq = $pdo->prepare($latlng);
+    $llq->execute([$hikeNo]);
+} else {
+    $latlng = "UPDATE EHIKES SET lat = ?, lng = ? WHERE indxNo = ?;";
+    $llq = $pdo->prepare($latlng);
+    $llq->execute([$hLat, $hLon, $hikeNo]);
 }
+
 $redirect = "editDB.php?hno={$hikeNo}&usr={$hUser}&tab=1";
 header("Location: {$redirect}");
