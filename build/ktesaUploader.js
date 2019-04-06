@@ -1,15 +1,17 @@
 // close the parent (tab2 of editDB) so that when returning, the page is refreshed
 window.opener.close();
 
+var ehikeIndxNo = $('#ehno').text(); // get the hike no:
+
+// meters and progress bar
 var $progressBar = $('#progbar');
 var progPerUpld;
 var $cmeter; // circular meter object
 var cmtrIds = []; // each meter has a unique id required during submit
-// get the hike no:
-var ehikeIndxNo = $('#ehno').text();
+// objects during display/previewing of images on page
 var FR_Images = []; // FileReader objects to be loaded into DOM
 var uploads = [];   // accumulated objects to be uploaded
-var upldNo = 0;
+var upldNo = 0;     // unique id for each image displayed
 /**
  * While the following items can be changed, changing the image height (iheight)
  * will required adjustment of the 'rotation' class parameters in css.
@@ -31,6 +33,7 @@ var remainingWidth = dndWidth;
 // upload arrays
 var uloads = [];  // array of actual files to be uploaded
 var desbox = [];  // array of image descriptions accompanying above files
+var imgIds = [];  // array of image id's for uploads
 var upldCnt = 0;
 var nxtUpld = 0;
 var $iflbl = $('label span'); // where the input file selection box text is held
@@ -238,6 +241,7 @@ function ldNodes(fr_objs) {
                     ibox.style.height = accumht;
                     ibox.style.width = (scaledWidth + 12) + "px";
                 }
+                this.id = "imgId" + itemno;
                 this.alt = "image" + itemno;
                 ibox.classList.add('imgbox');
                 ibox.style.cssFloat = "left";
@@ -395,10 +399,12 @@ $form.on('submit', function(e) {
             var indx = uploads[n]['indx'];
             desbox[n] = $('#desc' + indx).val();
             cmtrIds[n] = '#mtr' + indx;
+            imgIds[n] = '#imgId' + indx;
+
         }
         // upload images one at a time; turn off 'is-uploading' when completed
-        sequentialUploader(
-            uloads[nxtUpld], desbox[nxtUpld], cmtrIds[nxtUpld], ehikeIndxNo, uplds
+        postImg(
+            imgIds[nxtUpld], uloads[nxtUpld], desbox[nxtUpld], cmtrIds[nxtUpld], ehikeIndxNo, uplds
         );
     } else {
       // ajax for legacy browsers e.g.
@@ -406,24 +412,26 @@ $form.on('submit', function(e) {
     }
   });
 
-function sequentialUploader(imgfile, picdesc, cmtr, hikeno, noOfImgs) {
-    postImg(imgfile, picdesc, hikeno, cmtr).then(function() {
-        nxtUpld++;
-        var newcnt = nxtUpld + "/" + noOfImgs;
-        $('#filecnt').text(newcnt);
-        $progressBar.val(progPerUpld * nxtUpld);
-        if (nxtUpld == noOfImgs) {
-            $form.removeClass('is-uploading');
-            cleanup();
-        } else {
-            sequentialUploader(
-                uloads[nxtUpld], desbox[nxtUpld], cmtrIds[nxtUpld], hikeno, noOfImgs
-            )
-        }
-    });
+function advanceUpload(imageId, hikeno, imgCnt, success) {
+    // mark this img with success or failure to upload
+    if (!success) {
+        $(imageId).addClass('notUploaded');
+    }
+    nxtUpld++;
+    var newcnt = nxtUpld + "/" + imgCnt;
+    $('#filecnt').text(newcnt);
+    $progressBar.val(progPerUpld * nxtUpld);
+    if (nxtUpld == imgCnt) {
+        $form.removeClass('is-uploading');
+        cleanup();
+    } else {
+        postImg(
+            imgIds[nxtUpld], uloads[nxtUpld], desbox[nxtUpld], cmtrIds[nxtUpld], hikeno, imgCnt
+        )
+    }
 }
-function postImg(ifile, des, hikeno, mtrid) {
-    var def = new $.Deferred();
+function postImg(imgid, ifile, des, mtrid, hikeno, imgcnt) {
+    //var def = new $.Deferred();
     ajaxData = new FormData();
     ajaxData.append('file', ifile);       // key 'file' is 4 bytes
     var picdesc = JSON.stringify(des);
@@ -444,7 +452,9 @@ function postImg(ifile, des, hikeno, mtrid) {
     var completion;
     xhr.onprogress = function() {
         if (xhr.responseText.indexOf('X') !== -1) {
-            def.reject();
+            //def.reject();
+            advanceUpload(imgid, hikeno, imgcnt, false);
+            return;
         }
         bytes++;
         completion = (1 - bytes/4) * 8.8;
@@ -456,22 +466,28 @@ function postImg(ifile, des, hikeno, mtrid) {
     xhr.onload = function() {
         if (this.status !== 200) {
             alert("The server returned status " + this.status);
-            def.reject();
+            //def.reject();
+            advanceUpload(imgid, hikeno, imgcnt, false);
+            return;
         } else {
             $cmeter[0].setAttribute('stroke-dashoffset', '0');
-            def.resolve();
+            //def.resolve();
+            advanceUpload(imgid, hikeno, imgcnt, true);
+            return;
         }
     }
     xhr.onerror = function() {
         alert("The request failed for item " + nxtUpld);
-        def.reject();
+        //def.reject();
+        advanceUpload(imgid, hikeno, imgcnt, false);
+        return;
     }
-    return def.promise();
+    //return def.promise();
 }
 function cleanup() {
     resets();
     $('img:not(#hikers, #tmap)').each(function() {
-        if (!$(this).hasClass('uploaded')) {
+        if (!$(this).hasClass('uploaded') && !$(this).hasClass('notUploaded')) {
             var pos = $(this).offset();
             var ptop = pos.top;
             var plft = pos.left;

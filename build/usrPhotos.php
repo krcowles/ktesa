@@ -13,7 +13,7 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-header("Content=Length", 4); // Nominally, 4 checkpoints expected
+header("Content=Length", 5); // Nominally, 5 checkpoints expected
 // POSTED DATA
 $filedat = $_FILES['file'];
 $photo = $filedat['tmp_name'];
