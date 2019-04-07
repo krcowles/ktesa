@@ -446,7 +446,12 @@ $('#elev').on('change', function() {
             $('#elev').val(orgelev);
             submit = false;
         }
+    } else {
+        alert(alarm);
+        $('#elev').val(orgelev);
+        submit = false;
     }
+
 });
 // gpx: file name length 1024; NOTE: This also covers GPS Data uploads
 $('input[type=file]').on('change', function() {
