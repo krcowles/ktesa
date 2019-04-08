@@ -153,7 +153,8 @@
 <br /><label for="murl">Map Directions Link (Url):
     <span class="brown">[1024 Characters Max]</span>
 </label>
-<textarea id="murl" name="dirs" maxlength="1024"><?= $dirs;?></textarea>
+<textarea id="murl" class="blink" name="dirs"
+    maxlength="1024"><?= $dirs;?></textarea>
 
 <h3 style="margin-bottom:12px;">Cluster Hike Assignments:
     (Hikes with overlapping trailheads or in close proximity)</h3>

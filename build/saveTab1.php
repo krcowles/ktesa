@@ -257,8 +257,10 @@ $pdoBindings['seasons'] = filter_input(INPUT_POST, 'seasons');
 $pdoBindings['expo'] = filter_input(INPUT_POST, 'expo');
 
 $dirs = filter_input(INPUT_POST, 'dirs', FILTER_VALIDATE_URL);
-if (!$dirs) {
-    $dirs = "--- INVALID URL DETECTED ---";
+if (!empty($dirs)) {
+    if (!$dirs && !empty($dirs)) {
+        $dirs = "--- INVALID URL DETECTED ---";
+    }
 }
 $pdoBindings['dirs'] = $dirs;
 /**
