@@ -256,9 +256,13 @@ $pdoBindings['wow'] = filter_input(INPUT_POST, 'wow');
 $pdoBindings['seasons'] = filter_input(INPUT_POST, 'seasons');
 $pdoBindings['expo'] = filter_input(INPUT_POST, 'expo');
 
-$dirs = filter_input(INPUT_POST, 'dirs', FILTER_VALIDATE_URL);
-if (!empty($dirs)) {
-    if (!$dirs && !empty($dirs)) {
+// get an unfiltered input first to check for empty string:
+$rawdir = filter_input(INPUT_POST, 'dirs');
+if (empty($rawdir)) {
+    $dirs = '';
+} else {
+    $dirs = filter_input(INPUT_POST, 'dirs', FILTER_VALIDATE_URL);
+    if ($dirs === false) {
         $dirs = "--- INVALID URL DETECTED ---";
     }
 }

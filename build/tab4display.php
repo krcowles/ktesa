@@ -102,8 +102,8 @@ and/or maps</p>
 <span style="font-weight:bold;margin-bottom:0px;color:black;">
     Upload New Data File:<br />
 <em style="font-weight:normal;">
-    - Note: An Editable Reference Will Automatically Be Added Below After
-    'APPLY' Is Performed</em></span><br />
+    - Note: You will be able to specify the click-text after the 'Apply'
+    Is Performed</em></span><br />
 <ul style="margin-top:0px;" id="relgpx">
     <li>Track Data Uploads:<br />
         <label style="color:brown;">Upload New File&nbsp;(Accepted file types:
@@ -114,25 +114,12 @@ and/or maps</p>
 </ul>
 <!-- Pre-populated GPS Data -->
 <?php for ($n=0; $n<$gpsDbCnt; $n++) : ?>
-    Label: <textarea class="tstyle1" name="labl[]"><?= $pl[$n];?></textarea>
-    &nbsp;&nbsp;Url: <textarea class="tstyle2" 
-        name="lnk[]"><?= $pu[$n];?></textarea>
-    &nbsp;&nbsp;Click-on text: <textarea class="tstyle3" 
-        name="ctxt[]"><?= $pc[$n];?></textarea>&nbsp;&nbsp;
-    <label>Delete: </label>
+    Specify click-text here: <textarea class="tstyle2"
+        name="clickText[]"><?= $clickText[$n];?></textarea>
+    <input type="hidden" name="datId[]" value="<?= $datId[$n];?>" />
+    &nbsp;&nbsp;
+    <label>Delete Reference ? </label>
     <input style="height:18px;width:18px;" type="checkbox"
-        name="delgps[]" value="<?= $n;?>$x"><br /><br />
+        name="delgps[]" value="<?= $datId[$n];?>$x" />
+    &nbsp;&nbsp;For File: <span style="color:brown;"><?= $fname[$n];?></span><br /><br />
 <?php endfor; ?>
-<!-- Unpopulated Data -->
-<p><em style="color:brown;font-weight:bold;">Add</em> GPS Data:<br />
-<span style="color:brown">NOTE: Max character lengths are: Label - 128;
-    URL - 1024; Click-test - 256</span></p>
-
-<label>Label: </label><input class="tstyle1" name="labl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input class="tstyle2" name="lnk[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input
-    class="tstyle3" name="ctxt[]" size="30" /><br />
-<label>Label: </label><input class="tstyle1" name="labl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input class="tstyle2" name="lnk[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input
-    class="tstyle3" name="ctxt[]" size="30" />

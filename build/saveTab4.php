@@ -129,30 +129,11 @@ if ($addcnt > 0) {
         }
     }
 }
-/* Since GPS Maps & Data may have been marked for deletion in the edit phase,
- * the approach taken is to simply delete all GPS data, then add back any 
- * other than those so marked, including any changes made thereto. This then
- * includes newly added GPS data, so all get INSERTED, and no algorithm is required
- * to determine which only get updated vs which get added vs which get deleted.
- */
-$delgpsreq = "DELETE FROM EGPSDAT WHERE indxNo = ?;";
-$delgps = $pdo->prepare($delgpsreq);
-$delgps->execute([$hikeNo]);
-// Now add the newly edited ones back in, sans any deletions
-$lbl = $_POST['labl'];
-$url = $_POST['lnk'];
-$cot = $_POST['ctxt'];
-// NOTE: The following post only collects checked boxes
-if (isset($_POST['delgps'])) {
-    $deletes = $_POST['delgps']; // any entries will contain the ref# on editDB.php
-    $chk_del = true;
-} else {
-    $deletes = [];
-    $chk_del = false;
-}
-$dindx = 0;
-$newcnt = count($lbl);
-/**
+/*
+ * Beyond uploading new GPS Data files, the only user editing permitted is
+ * on the click-text for a file. If the click-text is marked for deletion,
+ * the GPS Data reference, in its entirety, will be deleted.
+ *
  * GPS Data File upload section.
  */
 $_SESSION['gpsmsg'] = '';
@@ -163,7 +144,7 @@ if ($gpsupl !== '') {
     switch ($gpstype[2]) {
     case 'gpx':
         $newlbl = 'GPX:';
-        $newcot = 'Track File';
+        $newcot = 'GPX Track File';
         break;
     case 'kml':
         $newlbl = 'KML:';
@@ -180,8 +161,6 @@ if ($gpsupl !== '') {
             "VALUES (?,'P',?,?,?);";
         $newgps = $pdo->prepare($ngpsreq);
         $newgps->execute([$hikeNo, $newlbl, $newurl, $newcot]);
-        $_SESSION['gpsmsg'] .= "<br /><em>A default 'Label' and " .
-            "'Click-on-Text' have been provided for {$gpsupl}.</em>";
     } else {
         $_SESSION['gpsmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
             "File Type NOT .gpx or .kml for {$gpsupl}.</p>";
@@ -194,7 +173,7 @@ if ($mapupl !== '') {
     switch ($maptype[2]) {
     case 'html':
         $newlbl = "MAP:";
-        $newcot = 'Area Map';
+        $newcot = 'Map';
         break;
     default:
         $mapok = false;
@@ -207,8 +186,6 @@ if ($mapupl !== '') {
             "VALUES (?,'P',?,?,?);";
         $newmap = $pdo->prepare($newmapreq);
         $newmap->execute([$hikeNo, $newlbl, $newurl, $newcot]);
-        $_SESSION['gpsmsg'] .= "<br /><em>A default 'Label' and " .
-            "'Click-on-Text' have been provided for {$mapupl}.</em>";
     } else {
         $_SESSION['gpsmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
             "File Type NOT .html for {$mapupl}.</p>";
@@ -216,33 +193,39 @@ if ($mapupl !== '') {
 }
 /**
  * NOTE: the only items that have 'delete' boxes are those for which GPS data
- * already existed in the database, and they are listed before any that might
- * get added. Therefore, proceeding through the loop, the first ones can be
- * compared to any corresponding $deletes ref pointer.
+ * already existed in the database. Those checkboxes will have values of
+ * 0..$newcnt.
  */
-for ($j=0; $j<$newcnt; $j++) {
-    $addit = true;
-    if ($chk_del) {
-        if ($j === intval($deletes[$dindx])) {
-            $dindx++; // skip this and look for the next;
-            if ($dindx === count($deletes)) {
+// Pick up any changes to click-text
+$clickText = isset($_POST['clickText']) ? $_POST['clickText'] : [];
+$datId = $_POST['datId'];
+if (isset($_POST['delgps'])) {
+    $deletes = $_POST['delgps']; // any entries will contain datId of the corresponding text
+    $chk_del = true;
+} else {
+    $deletes = [];
+    $chk_del = false;
+}
+$datacnt = empty($clickText) ? 0 : count($clickText);
+$cb_indx = 0;
+for ($j=0; $j<$datacnt; $j++) {
+    $update = true;
+    if ($chk_del) {  // delete checkboxes exist
+        if ($datId[$j] == $deletes[$cb_indx]) {
+            $delgpsreq = "DELETE FROM EGPSDAT WHERE datId = ?;";
+            $delgps = $pdo->prepare($delgpsreq);
+            $delgps->execute([$datId[$j]]);
+            $cb_indx++; // advance to next delete checkbox, if there is one
+            $update = false;
+            if ($cb_indx >= count($deletes)) {
                 $chk_del = false;
             }
-            $addit = false;
         }
     }
-    if ($addit && $url[$j] !== '') {
-        $gpsdatUrl = filter_var($url[$j], FILTER_VALIDATE_URL);
-        if ($gpsdatUrl === false) {
-            $gpsdatUrl = "--- INVALID URL ---";
-            $_SESSION['gpsmsg'] .= '<br /><span style="color:darkblue">' .
-                'You have entered an invalid URL</span>';
-        }
-        // For now, all entries will be marked 'P'
-        $addgpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
-            "VALUES (?,'P',?,?,?);";
+    if ($update) {
+        $addgpsreq = "UPDATE EGPSDAT SET clickText = ? WHERE datID = ?;";
         $addgps = $pdo->prepare($addgpsreq);
-        $addgps->execute([$hikeNo, $lbl[$j], $gpsdatUrl, $cot[$j]]);
+        $addgps->execute([$clickText[$j], $datId[$j]]);
     }
 }
 // return to editor with new data:

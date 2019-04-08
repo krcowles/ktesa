@@ -116,12 +116,18 @@ $gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = :hikeno " .
 $gpsq = $pdo->prepare($gpsreq);
 $gpsq->execute(["hikeno" => $hikeNo]);
 $gpsDbCnt = $gpsq->rowCount(); // needed for tab4display.php
-$pl = array();
-$pu = array();
-$pc = array();
+$label = [];
+$url = [];
+$clickText = [];
+$datId = [];
 for ($j=0; $j<$gpsDbCnt; $j++) {
     $gpsdat = $gpsq->fetch(PDO::FETCH_ASSOC);
-    $pl[$j] = $gpsdat['label'];
-    $pu[$j] = $gpsdat['url'];
-    $pc[$j] = $gpsdat['clickText'];
+    $datId[$j] = $gpsdat['datId'];
+    $url[$j] = $gpsdat['url'];
+    $clickText[$j] = $gpsdat['clickText'];
+    if ((strpos($url[$j], 'Map') !== false) || (strpos($url[$j], 'MAP') !== false)) {
+        $fname[$j] = substr($url[$j], 8);
+    } else {
+        $fname[$j] = substr($url[$j], 7);
+    }
 }
