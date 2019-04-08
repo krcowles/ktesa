@@ -120,6 +120,6 @@ and/or maps</p>
     &nbsp;&nbsp;
     <label>Delete Reference ? </label>
     <input style="height:18px;width:18px;" type="checkbox"
-        name="delgps[]" value="<?= $datId[$n];?>$x" />
+        name="delgps[]" value="<?= $datId[$n];?>" />
     &nbsp;&nbsp;For File: <span style="color:brown;"><?= $fname[$n];?></span><br /><br />
 <?php endfor; ?>

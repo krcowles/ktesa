@@ -198,7 +198,7 @@ if ($mapupl !== '') {
  */
 // Pick up any changes to click-text
 $clickText = isset($_POST['clickText']) ? $_POST['clickText'] : [];
-$datId = $_POST['datId'];
+$datId = isset($_POST['datId']) ? $_POST['datId'] : [];
 if (isset($_POST['delgps'])) {
     $deletes = $_POST['delgps']; // any entries will contain datId of the corresponding text
     $chk_del = true;
