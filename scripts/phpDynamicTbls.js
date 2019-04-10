@@ -204,9 +204,11 @@ function IdTableElements(boundsStr) {
     var hikeSet = new Array();
     var tblEl = new Array(); // holds the index into the row number array: tblRows
     var pinLat;
-    var pinLng;
-    // REMOVE previous table:
-    $('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
+	// REMOVE previous items:
+	if ($('#nohikes').length) {
+		$('#nohikes').remove();
+	}
+	$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
     /* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
     var n = 0;
     var rowCnt = 0;
@@ -223,8 +225,9 @@ function IdTableElements(boundsStr) {
         }	
     }
     if ( rowCnt === 0 ) {
-        msg = '<p>NO hikes in this area</p>';;
-        $('#usrTbl').append(msg);
+		msg = '<p id="nohikes" style="color:brown;margin-left:24px;">NO hikes in this area</p>';
+		$('#usrTbl').after(msg);
+        formTbl( 0, tblEl );
     } else {
         formTbl( rowCnt, tblEl );
     }
