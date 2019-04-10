@@ -26,7 +26,7 @@ $usr = filter_input(INPUT_POST, 'usr');
  *      which are visible, as those represent ones that may have been added.
  *      For every rit1 and rit2 there is a corresponding hidden rit1, rit2.
  */
-// 1. Refernces already existing in the database:
+// 1. References already existing in the database:
 $delrefsreq = "DELETE FROM EREFS WHERE indxNo = ?;";
 $delrefs = $pdo->prepare($delrefsreq);
 $delrefs->execute([$hikeNo]);
@@ -67,9 +67,13 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
     if ($addit && $drit1s[$j] !== '') {
+        $rit1 = filter_var($drit1s[$j], FILTER_VALIDATE_URL);
+        if (empty($rit1) || $rit1 === false) {
+            $rit1 = " --- INVALID URL DETECTED ---";
+        }
         $addrefreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES (?,?,?,?);";
         $orefs = $pdo->prepare($addrefreq);
-        $orefs->execute([$hikeNo, $drtypes[$j], $drit1s[$j], $drit2s[$j]]);
+        $orefs->execute([$hikeNo, $drtypes[$j], $rit1, $drit2s[$j]]);
     }
 }
 // 2. New references added, if any: (displayed items are yes/no)

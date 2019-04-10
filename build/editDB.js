@@ -71,9 +71,11 @@ $(tabon).trigger('click');
 
 // Look for 'bad URLs' to highlight immediately after saveTabX.php
 var blinkerObject = { blinkHandle: {} };
-function activateBlink(elemId) {
+function activateBlink(elemId, tab) {
     document.getElementById(elemId).focus();
-    window.scrollTo(0, document.body.scrollHeight);
+    if (tab == '1') {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
     var $elem = $('#' + elemId);
     var blinker = 'blink' + elemId;
     blinkerObject[blinker] = setInterval(function() {
@@ -90,12 +92,12 @@ function activateBlink(elemId) {
     });
 }
 if (tab == '1' && $('#murl').val().trim() == '--- INVALID URL DETECTED ---') {
-    activateBlink('murl');
+    activateBlink('murl',tab);
 }
 if (tab == '4') {
     $('.urlbox').each(function() {
         if ($(this).val().trim() == '--- INVALID URL DETECTED ---') {
-            activateBlink($(this).attr('id'));
+            activateBlink($(this).attr('id'), tab);
         }
     });
 }
