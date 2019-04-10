@@ -31,14 +31,14 @@ $delrefsreq = "DELETE FROM EREFS WHERE indxNo = ?;";
 $delrefs = $pdo->prepare($delrefsreq);
 $delrefs->execute([$hikeNo]);
 // Now add the newly edited ones back in, sans any deletions
-// NOTE: The following posts collect all items, even if empty (but not if hidden)
+// NOTE: The following posts collect all items, even if empty (but NOT if hidden)
 if (isset($_POST['drtype'])) {
-    $drtypes = $_POST['drtype'];
+    $drtypes = $_POST['drtype'];  // reference type from select drop-down
 }
-if (isset($_POST['drit1'])) {
+if (isset($_POST['drit1'])) {  // item1 : either book no. or url
     $drit1s = $_POST['drit1'];
 }
-if (isset($_POST['drit2'])) {
+if (isset($_POST['drit2'])) {  // item2 : either author or text
     $drit2s = $_POST['drit2'];
 }
 // determine if any refs were marked for deletion ('delref's)
@@ -66,10 +66,14 @@ for ($j=0; $j<$newcnt; $j++) {
             $addit = false;
         }
     }
-    if ($addit && $drit1s[$j] !== '') {
-        $rit1 = filter_var($drit1s[$j], FILTER_VALIDATE_URL);
-        if (empty($rit1) || $rit1 === false) {
-            $rit1 = " --- INVALID URL DETECTED ---";
+    if ($addit && !empty($drit1s[$j])) {
+        if ($drtypes[$j] !== 'Book:' && $drtypes[$j] !== 'Photo Essay:') {
+            $rit1 = filter_var($drit1s[$j], FILTER_VALIDATE_URL);
+            if (empty($rit1) || $rit1 === false) {
+                $rit1 = " --- INVALID URL DETECTED ---";
+            }
+        } else {
+            $rit1 = $drit1s[$j];  // constrained text, no filter required
         }
         $addrefreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES (?,?,?,?);";
         $orefs = $pdo->prepare($addrefreq);

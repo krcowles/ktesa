@@ -291,42 +291,48 @@ $('#deassign').change(function() {
 // References section:
 // A: This code refers to existing refs (in database), not new ones...
 var refCnt = parseInt($('#refcnt').text());
-var refid;
-var rid;
-var refname;
+var item0;  // <p> element containing text = rtype
+var rtype;
+var item1;  // <p> element containing text = rit1
+var rit1;
+var item2;  // <p> element containing text = rit2
 var rit2;
+var selbox; // <select> element holding reference type selection
 var boxid;
 var box;
 // initialize (pre-populate) the boxes:
 for (var i=0; i<refCnt; i++) {
-    refid = '#rid' + i;
-    rid = $(refid).text();  // get the rtype for this reference item
-    r1id = '#r1' + i;
-    rit1 = $(r1id).text();  // get the rit1 for this item (numeric for a book)
-    r2id = '#r2' + i;
-    rit2 = $(r2id).text();  // get the rit2 for this item
-    refname = '#ref' + i;
-    $(refname).val(rid); // pre-populate reference type drop-down
-    boxid = 'ref' + i;
-    if (rid === 'Book:' || rid === 'Photo Essay:') {
+    item0 = '#rtype' + i;
+    rtype = $(item0).text();  // get the rtype for this reference item
+    item1 = '#rit1' + i;
+    rit1 = $(item1).text();  // get the rit1 for this item (numeric for a book)
+    item2 = '#rit2' + i;
+    rit2 = $(item2).text();  // get the rit2 for this item
+    selbox = '#sel' + i;
+    $(selbox).val(rtype); // pre-populate reference type drop-down
+    boxid = 'sel' + i;
+    if (rtype === 'Book:' || rtype === 'Photo Essay:') {
         indx = parseInt(rit1) - 1;
-        var rsel = '#rttl' + i;                    
-        $(rsel).val(rit1);
-        var r2 = '#rr2' + i;
-        $(r2).val(authors[indx]);
+        var bkname = '#bkname' + i;  // <select> element for all book names                 
+        $(bkname).val(rit1);  // this will be a number corresponding to an array indx
+        var auth = '#auth' + i;
+        $(auth).val(authors[indx]);  // get the name from the array
         box = document.getElementById(boxid);
+        // disable non-book entries
         for (var u=2; u<box.options.length; u++) {
             box.options[u].disabled = true;
         }
-    } else if (rid === 'Text:') {
-        var trit2 = '#tr' + i;
-        $(trit2).val('');
-        $(trit2).attr('placeholder','THIS BOX IGNORED');
-        box = document.getElementById(boxid).options[0].disabled = true;
-        box = document.getElementById(boxid).options[1].disabled = true;
+    } else if (rtype === 'Text:') {
+        var url = '#url' + i;
+        $(url).val('');
+        $(url).attr('placeholder','THIS BOX IGNORED');
+        // disable book type entries
+        document.getElementById(boxid).options[0].disabled = true;
+        document.getElementById(boxid).options[1].disabled = true;
     } else {
-        box = document.getElementById(boxid).options[0].disabled = true;
-        box = document.getElementById(boxid).options[1].disabled = true;
+        // disable book type entries
+        document.getElementById(boxid).options[0].disabled = true;
+        document.getElementById(boxid).options[1].disabled = true;
     }
 }
 // B: This code refers to the new refs (if any) which can be added by the user

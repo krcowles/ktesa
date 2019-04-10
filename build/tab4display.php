@@ -17,10 +17,10 @@
     $_SESSION['riturl'] = '';
 } ?>
 <?php for ($k=0; $k<$noOfRefs; $k++) : ?>
-<p id="rid<?= $k;?>" style="display:none"><?= $rtypes[$k];?></p>
-<p id="r1<?= $k;?>" style="display:none"><?= $rit1s[$k];?></p>
-<p id="r2<?= $k;?>" style="display:none"><?= $rit2s[$k];?></p>
-<select id="ref<?= $k;?>" style="height:26px;width:150px;" name="drtype[]">
+<p id="rtype<?= $k;?>" style="display:none"><?= $rtypes[$k];?></p>
+<p id="rit1<?= $k;?>" style="display:none"><?= $rit1s[$k];?></p>
+<p id="rit2<?= $k;?>" style="display:none"><?= $rit2s[$k];?></p>
+<select id="sel<?= $k;?>" style="height:26px;width:150px;" name="drtype[]">
     <option value="Book:" >Book</option>
     <option value="Photo Essay:">Photo Essay</option>
     <option value="Website:">Website</option>
@@ -35,18 +35,18 @@
     <option value="Text:">Text Only - No Link</option>
 </select>&nbsp;&nbsp;&nbsp;
 <?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
-    <select style="height:26px;width:360px;" id="rttl<?= $k;?>"
+    <select id="bkname<?= $k;?>" style="height:26px;width:360px;"
         name="drit1[]"><?= $bkopts;?>
     </select>&nbsp;&nbsp;&nbsp; 
-    <input style="height:24px;width:282px;" type="text" name="drit2[]"
-        id="rr2<?= $k;?>" class="upbox" />&nbsp;&nbsp;
+    <input  id="auth<?= $k;?>" style="height:24px;width:282px;" type="text"
+        name="drit2[]" class="upbox" />&nbsp;&nbsp;
     <label>Delete: </label>
     <input style="height:18px;width:18px;" type="checkbox" name="delref[]" 
         value="<?= $k;?>"><br />
 <?php else : ?>
-    <input style="height:24px;width:352px;" class="upbox urlbox" id="url<?= $k;?>"
+    <input id="url<?= $k;?>" style="height:24px;width:352px;" class="upbox urlbox"
         name="drit1[]" value="<?= $rit1s[$k];?>" />&nbsp;&nbsp;&nbsp;
-    <input style="height:24px;width:280px;" class="upbox" id="tr<?= $k;?>"
+    <input id="txt<?= $k;?>" style="height:24px;width:280px;" class="upbox"
         name="drit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
     <label>Delete: </label>
     <input style="height:18px;width:18px;" type="checkbox" name="delref[]"
