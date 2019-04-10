@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=634 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=646 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -268,7 +268,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -471,7 +471,8 @@ INSERT INTO HIKES VALUES
 ('196','Gallegos Boundary Loop','mstr','Albuquerque','Cluster',NULL,'B','Gallegos Park Group','Loop','6.00','400','Easy-Moderate','Park Facilities','Variety of Sandia views','Not summer','Full sun','Gallegos-Boundary-Loop.GPX','Gallegos-Boundary-Loop.json','35.165545363','-106.4733732305',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Elena+Gallegos+Open+Space/@35.1608159,-106.4904377,14.47z/data=!4m5!3m4!1s0x87189f1edab675c3:0x7e38ccf27392893e!8m2!3d35.1617782!4d-106.4736878',NULL,'Elena Gallegos Open Space is a lovely introduction to the Sandia foothills, and provides a variety of different viewpoints. Hikes of various lengths can be assembled from the parking areas, of which there are two. This hike begins at the \'Cottonwood\' parking area which is gained by going around the entrance station and following the \'Kiwanis\' sign. This hike essentially follows the boundary of the open space, completing a nice loop that offers different perspectives of the Sandias. The hike starts by taking a short section of Trail 230A to Trail 365, the foothills trail. After crossing the entrance road and proceeding south a distance, the hike veers left on Trail 305, which eventually merges with Trail 341. Following 341, a distance after crossing the Pino Trail, take Trail 230 north towards Domingo Baca. Follow 230 as it loops back west to join Trail 365, which returns to the parking lot.',NULL,NULL,NULL),
 ('197','Hawk Watch Trail','mstr','Albuquerque','Cluster',NULL,'KK','Three Gun Springs Group','Out-and-back','3.50','1400','Med-Difficult','None','Interior Sandia Views','Not Summer','Full sun','HawksWatchTrail.GPX','HawksWatchTrail.json','35.076372223','-106.444250392',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Three+Guns+Trailhead/@35.097322,-106.5480615,11.53z/data=!4m5!3m4!1s0x8718a17cda821e47:0x4689e3d1eef39baf!8m2!3d35.0764161!4d-106.4441074',NULL,'This hike provides some very lovely views of the Sandia Mountain interior at its southern-most point. It begins by traversing a short section of the Three Gun Spring trail from its trail head. Turn onto Hawk Watch at the sign (noted by a blue flag on the map). After a short section of relatively easy trail, it becomes somewhat steep. On this hike, the author did not realize where the actual \'Hawk Watch\' point was and continued past it and up the trail towards the South Crest Trail - until it became a bit too steep for a solo hike. On the return, it became apparent that the Hawk Watch area was near a post where the trail split (see photos below). Hawk Watch was a point where volunteers came to trap, band, and count hawks, falcons and eagles during their migration times, and offers nice vistas of the area.',NULL,NULL,NULL),
 ('198','Three Gun - Embudo','mstr','Albuquerque','Cluster',NULL,'KK','Three Gun Springs Group','Two-Cars','5.80','1700','Moderate','None','Variety of views in the Sandias','Not Summer','Full sun','Three_Gun_Embudo.GPX','Three_Gun_Embudo.json','35.076372223','-106.444250397',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Three+Guns+Trailhead/@35.0697257,-106.4583411,14.33z/data=!4m5!3m4!1s0x8718a17cda821e47:0x4689e3d1eef39baf!8m2!3d35.0764161!4d-106.4441074','Use caution on sections of the trail that are steep with loose gravel. There are more of these locations coming down Embudo than going up Three Guns Springs Trail. Note: This is one-way hike using a car at each end: <a href=\"https://www.google.com/maps/dir//Embudo+Trailhead,+Albuquerque,+NM/Three+Guns+Trailhead,+19+Tres+Pistolas+Trail+NE,+Albuquerque,+NM+87123/@35.1478856,-106.5519581,12z/data=!4m15!4m14!1m0!1m5!1m1!1s0x8718a1b694ad67ed:0x56ee309f85278023!2m2!1d-106.4802475!2d35.0992012!1m5!1m1!1s0x8718a17cda821e47:0x4689e3d1eef39baf!2m2!1d-106.4441074!2d35.0764161!3e0\" target=\"_blank\">use this link for parking directions</a>','This is a unique hike in that two sides of the lower Sandias come into view. From Three Gun Springs, the hiker is presented with gorgeous views of the southern end of the Sandias. As the trail is traversed, the Manzanitas and Manzanos come into view with the increase of altitude. At the junction with Embudo, there are sweeping views south and west. Proceeding down Embudo, Embudo Canyon appears with views west towards Albuquerque. Note that this hike utilized the \'Horse Bypass\' route, designated on the map with blue flags. This bypass avoids the somewhat puzzling rock scrambles required on the main Embudo Trail.',NULL,NULL,NULL),
-('199','Ortiz Mountain','mstr','Santa Fe','Normal',NULL,'','','Loop','2.50','550','Moderate','None','360 Degree Views','Not Summer','Full sun','Ortiz_Mtn.GPX','Ortiz_Mtn.json','35.7441770565','-106.159265013',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B044\'39.0%22N+106%C2%B009\'33.4%22W/@35.7141631,-106.1468401,13z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7441771!4d-106.159265','The Forest Road FR24 requires 4-wheel drive with sufficient ground clearance. It is rarely maintained and is in poor condition in many spots. ','The authors decided to climb Ortiz Mountain basically on a whim - there are no specified trails to the top, nor are there any online or book references. After a rough ride on FR24, a dirt two-track was spotted heading towards the area with a small corral and water tank. As this is primarily open space, parking is wide open, and a lonely tree providing some shade was chosen. The two track continued basically parallel to the mountain, heading east towards the lower end of its ridge. This is where the track was abandoned and a beeline to the top was made. Along the way, and at the top, fabulous 360-degree views of the area were available: the Sandias, Sangre de Cristos, Jemez, and surrounding territories were visible. On the way down, another two-track was discovered, leading back to the original track taken.',NULL,NULL,NULL);
+('199','Ortiz Mountain','mstr','Santa Fe','Normal',NULL,'','','Loop','2.50','550','Moderate','None','360 Degree Views','Not Summer','Full sun','Ortiz_Mtn.GPX','Ortiz_Mtn.json','35.7441770565','-106.159265013',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B044\'39.0%22N+106%C2%B009\'33.4%22W/@35.7141631,-106.1468401,13z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7441771!4d-106.159265','The Forest Road FR24 requires 4-wheel drive with sufficient ground clearance. It is rarely maintained and is in poor condition in many spots. ','The authors decided to climb Ortiz Mountain basically on a whim - there are no specified trails to the top, nor are there any online or book references. After a rough ride on FR24, a dirt two-track was spotted heading towards the area with a small corral and water tank. As this is primarily open space, parking is wide open, and a lonely tree providing some shade was chosen. The two track continued basically parallel to the mountain, heading east towards the lower end of its ridge. This is where the track was abandoned and a beeline to the top was made. Along the way, and at the top, fabulous 360-degree views of the area were available: the Sandias, Sangre de Cristos, Jemez, and surrounding territories were visible. On the way down, another two-track was discovered, leading back to the original track taken.',NULL,NULL,NULL),
+('200','Eye of the Sandias','mstr','Albuquerque','Normal',NULL,'','','Loop','4.40','1300','Med-Difficult','None','Landmark Eye','Not Summer','Full sun','Eye_of_Sandias.GPX','Eye_of_Sandias.json','35.0792529155','-106.4846551884',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Copper+Trailhead,+15000+Copper+Ave+NE,+Albuquerque,+NM+87123/@35.0767228,-106.5021208,14.57z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a100f58ea4d7:0xd5c6832ce12b202c!2m2!1d-106.4846929!2d35.0791997','There are numerous steep sections of trail, sometimes with loose gravel - use caution. Park in the small lot at the end of Copper Ave, or in the street nearby if filled.','This trail winds through \'mounds\' and foothills at the south west end of the Sandias, always ascending toward the landmark \'Eye\'. The scenery is quite different between the north and south ends of the mountains, so each has it own flavor. A distinguishing feature here are the so-called mounds: large piles of cone-shaped rock. The first, U-Mound, is near the trailhead. A second, Hillsdale, is situated at the south end of this hike\'s loop. The trail quickly proceeds up into the foothills after skirting U-Mound. Sections of the trail can be quite steep with loose footing, so please use caution. There are multiple criss-crossing trails in the area, and the one that forms this hike is unnamed - it is best to use a gps tracker to ensure you are following the correct trail. ',NULL,NULL,NULL);
 
 
 
@@ -539,7 +540,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1423 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1428 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1321,7 +1322,12 @@ INSERT INTO REFS VALUES
 ('1419','197','App:','https://www.alltrails.com/trail/us/new-mexico/hawkwatch-trail','AllTrails.com'),
 ('1420','197','Website:','https://www.fs.usda.gov/recarea/cibola/null/recarea/?recid=64572&actid=50','Forest Service'),
 ('1421','197','Website:','https://www.trails.com/us/nm/albuquerque/cibola-national-forest-hawk-watch-trail-215','Trails.com'),
-('1422','198','Book:','2',NULL);
+('1422','198','Book:','2',NULL),
+('1423','200','Book:','7','Mike Coltrin'),
+('1424','200','Book:','2','Stephen Ausherman'),
+('1425','200','App:','https://www.alltrails.com/trail/us/new-mexico/eye-of-the-sandias-loop-trail','Alltrails.com'),
+('1426','200','Website:','https://www.summitpost.org/eye-of-the-sandias-trail/415176','SummitPost'),
+('1427','200','Blog:','http://hikeyhikey.blogspot.com/2013/03/hiking-albuquerques-southern-sandia.html','Hikey Hikey');
 
 
 
@@ -1345,7 +1351,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=3976 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3988 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3514,7 +3520,19 @@ INSERT INTO TSV VALUES
 ('3972','199',NULL,'IMG_1037','Y','Y','In spite of the cloudy day, great Sangre views','35.7488722222','-106.1488027778','2189',NULL,'2019-04-02 11:11:31','IMG_1037','240','320',NULL,NULL),
 ('3973','199',NULL,'IMG_1035','Y','Y','Bushwhacking to the top','35.7481305556','-106.1470194444','2190',NULL,'2019-04-02 10:58:53','IMG_1035','240','320',NULL,NULL),
 ('3974','199',NULL,'IMG_20190402_101909743_HDR','Y','N','Free Range Ben!','35.7441919722','-106.1593','2191',NULL,'2019-04-02 10:19:13','IMG_20190402_101909743_HDR','180','320',NULL,NULL),
-('3975','199',NULL,'IMG_20190402_111208429_HDR','Y','N','Ben at the top of Ortiz Mtn','35.748902','-106.1490649722','2192',NULL,'2019-04-02 11:12:10','IMG_20190402_111208429_HDR','180','320',NULL,NULL);
+('3975','199',NULL,'IMG_20190402_111208429_HDR','Y','N','Ben at the top of Ortiz Mtn','35.748902','-106.1490649722','2192',NULL,'2019-04-02 11:12:10','IMG_20190402_111208429_HDR','180','320',NULL,NULL),
+('3976','200',NULL,'IMG_1072','Y','Y','The Landmark \'Eye\'','35.0762361111','-106.4665666667','2193',NULL,'2019-04-07 11:41:52','IMG_1072','240','320',NULL,NULL),
+('3977','200',NULL,'IMG_1080','Y','Y','A view of the Manzanitas on the descent','35.0724805556','-106.4742194444','2194',NULL,'2019-04-07 12:11:54','IMG_1080','240','320',NULL,NULL),
+('3978','200',NULL,'IMG_1084','Y','Y','Looking into the valley at multiple trails','35.0711416667','-106.4824222222','2195',NULL,'2019-04-07 12:49:06','IMG_1084','240','320',NULL,NULL),
+('3979','200',NULL,'IMG_1058','Y','Y','Going deeper into the foothills','35.0781166667','-106.4763722222','2196',NULL,'2019-04-07 10:54:54','IMG_1058','240','320',NULL,NULL),
+('3980','200',NULL,'IMG_1057','Y','Y','The Copper Ave terminus and parking area','35.0788111111','-106.4776833333','2197',NULL,'2019-04-07 10:51:10','IMG_1057','240','320',NULL,NULL),
+('3981','200',NULL,'IMG_1042','Y','Y','U-Mound at the trailhead','35.0792055556','-106.484375','2198',NULL,'2019-04-07 10:18:00','IMG_1042','240','320',NULL,NULL),
+('3982','200',NULL,'IMG_1075','Y','N','A respite near the eye','35.0762416667','-106.4663694444','2199',NULL,'2019-04-07 11:45:28','IMG_1075','240','320',NULL,NULL),
+('3983','200',NULL,'IMG_1063','Y','Y','A high point view en route','35.0767944444','-106.4728','2200',NULL,'2019-04-07 11:15:56','IMG_1063','320','320',NULL,NULL),
+('3984','200',NULL,'IMG_1052','Y','Y','Near the summit of U-Mound','35.0811','-106.4805361111','2201',NULL,'2019-04-07 10:39:41','IMG_1052','240','320',NULL,NULL),
+('3985','200',NULL,'IMG_1077','Y','Y','Smooth rock and Mt Taylor in the distance','35.0735027778','-106.4726333333','2202',NULL,'2019-04-07 12:06:51','IMG_1077','240','320',NULL,NULL),
+('3986','200',NULL,'IMG_1067','Y','Y','There are multiple outcroppings for views','35.0728027778','-106.4695583333','2203',NULL,'2019-04-07 11:29:00','IMG_1067','240','320',NULL,NULL),
+('3987','200',NULL,'IMG_1078','Y','Y','Another view south','35.0733694444','-106.4735944444','2204',NULL,'2019-04-07 12:08:52','IMG_1078','240','320',NULL,NULL);
 
 
 
