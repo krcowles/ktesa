@@ -34,23 +34,23 @@
     <option value="Related Link:">Related Link</option>
     <option value="Text:">Text Only - No Link</option>
 </select>&nbsp;&nbsp;&nbsp;
-    <?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
-<select style="height:26px;width:360px;" id="rttl<?= $k;?>"
-    name="drit1[]"><?= $bkopts;?>
-</select>&nbsp;&nbsp;&nbsp; 
-<input style="height:24px;width:282px;" type="text" name="drit2[]"
-    id="rr2<?= $k;?>" class="upbox" />&nbsp;&nbsp;
-<label>Delete: </label>
-<input style="height:18px;width:18px;" type="checkbox" name="delref[]" 
-    value="<?= $k;?>"><br />
+<?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
+    <select style="height:26px;width:360px;" id="rttl<?= $k;?>"
+        name="drit1[]"><?= $bkopts;?>
+    </select>&nbsp;&nbsp;&nbsp; 
+    <input style="height:24px;width:282px;" type="text" name="drit2[]"
+        id="rr2<?= $k;?>" class="upbox" />&nbsp;&nbsp;
+    <label>Delete: </label>
+    <input style="height:18px;width:18px;" type="checkbox" name="delref[]" 
+        value="<?= $k;?>"><br />
 <?php else : ?>
-<input style="height:24px;width:352px;" class="upbox"
-    name="drit1[]" value="<?= $rit1s[$k];?>" />&nbsp;&nbsp;&nbsp;
-<input style="height:24px;width:280px;" class="upbox" id="tr<?= $k;?>"
-    name="drit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
-<label>Delete: </label>
-<input style="height:18px;width:18px;" type="checkbox" name="delref[]"
-    value="<?= $k;?>" /><br />
+    <input style="height:24px;width:352px;" class="upbox urlbox" id="url<?= $k;?>"
+        name="drit1[]" value="<?= $rit1s[$k];?>" />&nbsp;&nbsp;&nbsp;
+    <input style="height:24px;width:280px;" class="upbox" id="tr<?= $k;?>"
+        name="drit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
+    <label>Delete: </label>
+    <input style="height:18px;width:18px;" type="checkbox" name="delref[]"
+        value="<?= $k;?>" /><br />
 <?php endif; ?>
 <?php endfor; ?>
 <!-- Unpopulated References -->

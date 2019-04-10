@@ -70,26 +70,34 @@ var tabon = '#t' + tab;
 $(tabon).trigger('click');
 
 // Look for 'bad URLs' to highlight immediately after saveTabX.php
-var blinker;
+var blinkerObject = { blinkHandle: {} };
 function activateBlink(elemId) {
     document.getElementById(elemId).focus();
     window.scrollTo(0, document.body.scrollHeight);
     var $elem = $('#' + elemId);
-    blinker = setInterval(function() {
+    var blinker = 'blink' + elemId;
+    blinkerObject[blinker] = setInterval(function() {
         if ($elem.css('visibility') == 'hidden') {
             $elem.css('visibility', 'visible');
         } else {
             $elem.css('visibility', 'hidden');
         }    
     }, 500);
-    alert("Please correct the URL or leave blank");
+    //alert("Please correct the URL or leave blank");
     $elem.on('mouseover', function() {
-        clearInterval(blinker);
+        clearInterval(blinkerObject[blinker]);
         $elem.css('visibility', 'visible');
     });
 }
 if (tab == '1' && $('#murl').val().trim() == '--- INVALID URL DETECTED ---') {
     activateBlink('murl');
+}
+if (tab == '4') {
+    $('.urlbox').each(function() {
+        if ($(this).val().trim() == '--- INVALID URL DETECTED ---') {
+            activateBlink($(this).attr('id'));
+        }
+    });
 }
 
 // Preview edit page button

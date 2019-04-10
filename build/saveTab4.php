@@ -74,42 +74,39 @@ for ($j=0; $j<$newcnt; $j++) {
 }
 // 2. New references added, if any: (displayed items are yes/no)
 $newtypes = $_POST['rtype'];
-$usebooks = $_POST['usebks'];
-$useothrs = $_POST['notbks'];
+$usebooks = $_POST['usebks']; // value="yes" means book;
+$useothrs = $_POST['notbks']; // value="no"  means URL
 $addcnt = 0;
 $addtypes = [];
 $addrit1s = [];
 $addrit2s = [];
 for ($s=0; $s<count($usebooks); $s++) {
-    $bkid = 'brit1' . $s;
-    $auid = 'brit2' . $s;
-    $o1id = 'orit1' . $s;
-    $o2id = 'orit2' . $s;
+    $bkid = 'brit1' . $s;  // input contains book name
+    $auid = 'brit2' . $s;  // input contains book author
+    $o1id = 'orit1' . $s;  // input contains URL
+    $o2id = 'orit2' . $s;  // input contains clickText
     if ($usebooks[$s] === 'yes' && $useothrs[$s] === 'no') {
         $auth = filter_input(INPUT_POST, $auid);
         if ($_POST[$auid] !== '') {
             // this is a new book or photo essay reference:
-            $a = $newtypes[$s]; // no wierd characters here
-            array_push($addtypes, $a);
-            $b = $_POST[$bkid];
-            array_push($addrit1s, $b);
-            $c = $_POST[$auid];
-            array_push($addrit2s, $c);
+            array_push($addtypes, $newtypes[$s]);
+            $bkname = filter_input(INPUT_POST, $bkid);
+            array_push($addrit1s, $bkname);
+            $bkauth = filter_input(INPUT_POST, $auid);
+            array_push($addrit2s, $bkauth);
             $addcnt++;
         }
     } elseif ($usebooks[$s] === 'no' && $useothrs[$s] === 'yes') {
-        if ($_POST[$o1id] !== '') {
-            $a = $newtypes[$s]; // no wierd characters here
-            array_push($addtypes, $a);
-            $b = filter_var($_POST[$o1id], FILTER_VALIDATE_URL);
-            if ($b === false) {
+        if ($_POST[$o1id] !== '') {  // This is the url
+            array_push($addtypes, $newtypes[$s]);
+            $url = filter_var($_POST[$o1id], FILTER_VALIDATE_URL);
+            if ($url === false) {
                 $_SESSION['riturl'] = "The URL you entered is not valid";
-                $b = " --- INVALID URL ---";
+                $url = " --- INVALID URL DETECTED ---";
             }
-            array_push($addrit1s, $b);
-            $c = $_POST[$o2id];
-
-            array_push($addrit2s, $c);
+            array_push($addrit1s, $url);
+            $ctxt = filter_var($_POST[$o2id]);
+            array_push($addrit2s, $ctxt);
             $addcnt++;
         }
     }
