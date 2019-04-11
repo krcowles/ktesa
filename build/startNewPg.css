@@ -42,3 +42,7 @@ input[type="checkbox"]{
     height: 24px;
     cursor: pointer;
   }
+  span.brown {
+      color:brown;
+  }
+  

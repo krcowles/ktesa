@@ -74,31 +74,37 @@ $('#clrimgs').on('click', function(ev) {
 function ldImgs(imgs) {
     var promises = [];
     for(var i=0; i<imgs.length; i++) {
-        var reader = new FileReader();
-        var deferred = new $.Deferred();
-        promises.push(deferred);
+        if (imgs[i].name.length > 1024) {
+            alert("Please rename this file such that the name is\n" +
+                "less than 1024 characters (including file extension\n" +
+                "This file will not be displayed...");
+        } else {
+            var reader = new FileReader();
+            var deferred = new $.Deferred();
+            promises.push(deferred);
 
-        (function(d, ifile) {
-            reader.onload = function (evt) {
-                var result = evt.target.result;
-                /**
-                 * There's no way to predict the order the files will
-                 * actually be loaded, so the array index in 'uploads' is used
-                 * to identify the item and associate it with name/desc boxes
-                 * in the DOM. 'upldNo' is the array index, which will be
-                 * unique, even for duplicate filenames.
-                 */
-                var nme = ifile.name;
-                var fsize = ifile.size;
-                var imgObj = {indx: upldNo, fname: nme, size: fsize, data: result};
-                FR_Images.push(imgObj);  // used for loading DOM, then reset
-                var upldObj = {indx: upldNo++, ifile};
-                uploads.push(upldObj);   // accumulated for form submit
-                d.resolve();
-            }
-        }(deferred, imgs[i]));
+            (function(d, ifile) {
+                reader.onload = function (evt) {
+                    var result = evt.target.result;
+                    /**
+                     * There's no way to predict the order the files will
+                     * actually be loaded, so the array index in 'uploads' is used
+                     * to identify the item and associate it with name/desc boxes
+                     * in the DOM. 'upldNo' is the array index, which will be
+                     * unique, even for duplicate filenames.
+                     */
+                    var nme = ifile.name;
+                    var fsize = ifile.size;
+                    var imgObj = {indx: upldNo, fname: nme, size: fsize, data: result};
+                    FR_Images.push(imgObj);  // used for loading DOM, then reset
+                    var upldObj = {indx: upldNo++, ifile};
+                    uploads.push(upldObj);   // accumulated for form submit
+                    d.resolve();
+                }
+            }(deferred, imgs[i]));
 
-        reader.readAsDataURL(imgs[i]);
+            reader.readAsDataURL(imgs[i]);
+        }
     }
     return $.when.apply($, promises); // apply 'promises' array to jQuery
 }
@@ -131,8 +137,8 @@ function ldNodes(fr_objs) {
                 var des = document.createElement('TEXTAREA');
                 des.style.height = dheight + "px";
                 des.style.display = "block";
-                
                 des.placeholder = "Picture description";
+                des.maxlength = 512;
                 des.classList.add('desVal');
                 des.id = 'desc' + itemno;
                 orient = "";

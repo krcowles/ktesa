@@ -1,22 +1,26 @@
 <div style="margin-left:8px;">
     <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
     <input type="submit" name="savePg" value="Apply" /></p>
-</div>	
+</div>
 <h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed,
     delete and add a new one)</h3>
-<input type="hidden" name="rno" value="<?= $hikeNo;?>" />
-<input type="hidden" name="rid" value="<?= $usr;?>" />
+<input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
+<input type="hidden" name="usr" value="<?= $usr;?>" />
 <script type=text/javascript>
     var titles = <?= $titles;?>;
     var authors = <?= $authors;?>;
 </script>
 <!-- Pre-populated References -->
 <p id="refcnt" style="display:none"><?= $noOfRefs;?></p>
+<?php if (isset($_SESSION['riturl']) && $_SESSION['riturl'] !== '') {
+    echo '<p style="color:brown;">' . $_SESSION['riturl'] . '</p>';
+    $_SESSION['riturl'] = '';
+} ?>
 <?php for ($k=0; $k<$noOfRefs; $k++) : ?>
-<p id="rid<?= $k;?>" style="display:none"><?= $rtypes[$k];?></p>
-<p id="r1<?= $k;?>" style="display:none"><?= $rit1s[$k];?></p>
-<p id="r2<?= $k;?>" style="display:none"><?= $rit2s[$k];?></p>
-<select id="ref<?= $k;?>" style="height:26px;width:150px;" name="drtype[]">
+<p id="rtype<?= $k;?>" style="display:none"><?= $rtypes[$k];?></p>
+<p id="rit1<?= $k;?>" style="display:none"><?= $rit1s[$k];?></p>
+<p id="rit2<?= $k;?>" style="display:none"><?= $rit2s[$k];?></p>
+<select id="sel<?= $k;?>" style="height:26px;width:150px;" name="drtype[]">
     <option value="Book:" >Book</option>
     <option value="Photo Essay:">Photo Essay</option>
     <option value="Website:">Website</option>
@@ -30,23 +34,23 @@
     <option value="Related Link:">Related Link</option>
     <option value="Text:">Text Only - No Link</option>
 </select>&nbsp;&nbsp;&nbsp;
-    <?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
-<select style="height:26px;width:360px;" id="rttl<?= $k;?>"
-    name="drit1[]"><?= $bkopts;?>
-</select>&nbsp;&nbsp;&nbsp; 
-<input style="height:24px;width:282px;" type="text" name="drit2[]"
-    id="rr2<?= $k;?>" class="upbox" />&nbsp;&nbsp;
-<label>Delete: </label>
-<input style="height:18px;width:18px;" type="checkbox" name="delref[]" 
-    value="<?= $k;?>"><br />
+<?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
+    <select id="bkname<?= $k;?>" style="height:26px;width:360px;"
+        name="drit1[]"><?= $bkopts;?>
+    </select>&nbsp;&nbsp;&nbsp; 
+    <input  id="auth<?= $k;?>" style="height:24px;width:282px;" type="text"
+        name="drit2[]" class="upbox" />&nbsp;&nbsp;
+    <label>Delete: </label>
+    <input style="height:18px;width:18px;" type="checkbox" name="delref[]" 
+        value="<?= $k;?>"><br />
 <?php else : ?>
-<input style="height:24px;width:352px;" class="upbox"
-    name="drit1[]" value="<?= $rit1s[$k];?>" />&nbsp;&nbsp;&nbsp;
-<input style="height:24px;width:280px;" class="upbox" id="tr<?= $k;?>"
-    name="drit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
-<label>Delete: </label>
-<input style="height:18px;width:18px;" type="checkbox" name="delref[]"
-    value="<?= $k;?>" /><br />
+    <input id="url<?= $k;?>" style="height:24px;width:352px;" class="upbox urlbox"
+        name="drit1[]" value="<?= $rit1s[$k];?>" />&nbsp;&nbsp;&nbsp;
+    <input id="txt<?= $k;?>" style="height:24px;width:280px;" class="upbox"
+        name="drit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
+    <label>Delete: </label>
+    <input style="height:18px;width:18px;" type="checkbox" name="delref[]"
+        value="<?= $k;?>" /><br />
 <?php endif; ?>
 <?php endfor; ?>
 <!-- Unpopulated References -->
@@ -98,8 +102,8 @@ and/or maps</p>
 <span style="font-weight:bold;margin-bottom:0px;color:black;">
     Upload New Data File:<br />
 <em style="font-weight:normal;">
-    - Note: An Editable Reference Will Automatically Be Added Below After
-    'APPLY' Is Performed</em></span><br />
+    - Note: You will be able to specify the click-text after the 'Apply'
+    Is Performed</em></span><br />
 <ul style="margin-top:0px;" id="relgpx">
     <li>Track Data Uploads:<br />
         <label style="color:brown;">Upload New File&nbsp;(Accepted file types:
@@ -110,22 +114,12 @@ and/or maps</p>
 </ul>
 <!-- Pre-populated GPS Data -->
 <?php for ($n=0; $n<$gpsDbCnt; $n++) : ?>
-    Label: <textarea class="tstyle1" name="labl[]"><?= $pl[$n];?></textarea>
-    &nbsp;&nbsp;Url: <textarea class="tstyle2" 
-        name="lnk[]"><?= $pu[$n];?></textarea>
-    &nbsp;&nbsp;Click-on text: <textarea class="tstyle3" 
-        name="ctxt[]"><?= $pc[$n];?></textarea>&nbsp;&nbsp;
-    <label>Delete: </label>
+    Specify click-text here: <textarea class="tstyle2"
+        name="clickText[]"><?= $clickText[$n];?></textarea>
+    <input type="hidden" name="datId[]" value="<?= $datId[$n];?>" />
+    &nbsp;&nbsp;
+    <label>Delete Reference ? </label>
     <input style="height:18px;width:18px;" type="checkbox"
-        name="delgps[]" value="<?= $n;?>$x"><br /><br />
+        name="delgps[]" value="<?= $datId[$n];?>" />
+    &nbsp;&nbsp;For File: <span style="color:brown;"><?= $fname[$n];?></span><br /><br />
 <?php endfor; ?>
-<!-- Unpopulated Data -->
-<p><em style="color:brown;font-weight:bold;">Add</em> GPS Data:</p>
-<label>Label: </label><input class="tstyle1" name="labl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input class="tstyle2" name="lnk[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input
-    class="tstyle3" name="ctxt[]" size="30" /><br />
-<label>Label: </label><input class="tstyle1" name="labl[]" size="30" />&nbsp;&nbsp;
-<label>Url: </label><input class="tstyle2" name="lnk[]" size="55" />
-<label style="text-indent:30px">Click-on text: </label><input
-    class="tstyle3" name="ctxt[]" size="30" />

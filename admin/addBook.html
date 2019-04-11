@@ -23,12 +23,12 @@
 <form action="updteBks.php" method="POST">
 <fieldset>
 <legend style="fint-size:16px;color:brown;">New Book Data</legend>
-<label style="font-size:18px;">Enter the Author's Name: </label>
+<label style="font-size:18px;">Enter the Author's Name: [200 Characters Max]</label>
 <input style="font-size:14px;" id="auth" type="text" name="author" 
-    size="40" /><br /><br />
-<label style="font-size:18px;">Enter the Book Title: </label>
+    size="40" maxlength="200" /><br /><br />
+<label style="font-size:18px;">Enter the Book Title: [200 Characters Max</label>
 <input style="font-size:14px;" id="title" type="text" name="title"
-    size="65" /><br/><br />
+    size="65" maxlength="200" /><br/><br />
 <input type="submit" name="updt" value="Add this book" /><br />
 </fieldset>
 </form>

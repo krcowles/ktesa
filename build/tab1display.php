@@ -1,15 +1,15 @@
-<!-- Hidden inputs and data required by saveTab1.php & edit.js routines -->
-<input type="hidden" name="hno" value="<?= $hikeNo;?>" />
+<!-- Hidden inputs required by saveTab1.php, non-displayed <p>'s' by editDB.js -->
+<input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
 <input type="hidden" name="usr" value="<?= $usr;?>" />
-<input type="hidden" name="col" value="<?= $collection;?>" />
+<input type="hidden" name="colllection" value="<?= $collection;?>" />
 <input type="hidden" name="mgpx" value="<?= $curr_gpx;?>" />
 <input type="hidden" name="mtrk" value="<?= $curr_trk;?>" />
-<p id="mrkr" style="display:none"><?= $marker;?></p>
+<p id="marker" style="display:none"><?= $marker;?></p>
 <p id="greq" style="display:none"><?= $grpReq;?></p>
-<input type="hidden" name="pmrkr" value="<?=$marker;?>" />
-<input type="hidden" name="pclus" value="<?= $cgroup;?>" />
+<input type="hidden" name="marker" value="<?=$marker;?>" />
+<input type="hidden" name="cgroup" value="<?= $cgroup;?>" />
 <p id="group" style="display:none"><?= $cname;?></p>
-<input type="hidden" name="pcnme" value="<?= $cname;?>" />
+<input type="hidden" name="cname" value="<?= $cname;?>" />
 <p id="ctype" style="display:none"><?= $logistics;?></p>
 <p id="ptype" style="display:none">Edit</p>
 <div style="margin-left:8px;">
@@ -26,26 +26,28 @@
     from your latest "APPLY": <?= $_SESSION['uplmsg'];?></p>
     <?php $_SESSION['uplmsg'] = ''; ?>
 <?php endif; ?>
-<span style="color:brown;">Current Main Hike Track File: </span>
-<?php if ($curr_gpx == '') : ?>
+<span class="brown">Current Main Hike Track File: </span>
+<?php if (empty($curr_gpx)) : ?>
 <em>None Specified</em><br />
 <?php  else : ?>
 <em><?= $curr_gpx;?></em>
 &nbsp;&nbsp;&nbsp;&nbsp;
-<span style="color:brown;">Check to Delete&nbsp;&nbsp;</span>
+<span class="brown">Check to Delete&nbsp;&nbsp;</span>
 <input type="checkbox" name="dgpx" /><br />
 <?php endif; ?>
 <ul>
-    <li><span style="color:brown;">Upload new gpx file:&nbsp;</span>
+    <li><span class="brown">Upload new gpx file:&nbsp;</span>
         <input type="file" name="newgpx" /></li>
 </ul>
-<!-- Begin basic data presentation -->
 <h3>Data Related to This Hike:</h3>
-<label for="hike">Hike Name: </label>
-<textarea id="hike" name="hname"><?= $pgTitle;?></textarea>
-&nbsp;&nbsp;<p style="display:none;" id="locality"><?= $locale;?></p>
-<label for="area">Locale (City/POI): </label>
-<select id="area" name="locale">
+
+<!-- Begin basic data presentation -->
+<label for="hike">Hike Name: <span class="brown">[30 Characters Max]</span></label>
+<textarea id="hike" name="pgTitle"
+        maxlength="30"><?= $pgTitle;?></textarea>&nbsp;&nbsp;
+    <p style="display:none;" id="locality"><?= $locale;?></p>
+    <label for="area">Locale (City/POI): </label>
+    <select id="area" name="locale">
     <optgroup label="North/Northeast">
         <option value="Jemez Springs">Jemez Springs</option>
         <option value="Valles Caldera">Valles Caldera</option>
@@ -85,68 +87,95 @@
         <option value="Pinos Altos">Pinos Altos</option>
         <option value="Glenwood">Glenwood</option>
 </select><br /><br />
+
 <label for="type">Hike Type: </label>
-<select id="type" name="htype">
+<select id="type" name="logistics">
     <option value="Loop">Loop</option>
     <option value="Two-Cars">Two-Cars</option>
     <option value="Out-and-back">Out-and-back</option>
-</select>&nbsp;&nbsp;
+</select>&nbsp;&nbsp;&nbsp;&nbsp;
 <p id="dif" style="display:none"><?= $diff;?></p>
 <label for="diff">Level of difficulty: </label>
-<select id="diff" name="hdiff">
+<select id="diff" name="diff">
     <option value="Easy">Easy</option>
     <option value="Easy-Moderate">Easy-Moderate</option>
     <option value="Moderate">Moderate</option>
     <option value="Med-Difficult">Medium-Difficult</option>
     <option value="Difficult">Difficult</option>
 </select><br /><br />
+
 <input id="mft" type="checkbox" name="mft" />&nbsp;&nbsp;
-    Calculate Miles/Feet From GPX,&nbsp;&nbsp;or Specify/Change below<br />
-<label for="miles">Round-trip length in miles: </label>
-<textarea id="miles" name="hlgth"><?= sprintf("%.2f", $miles);?></textarea>
-<label for="elev">Elevation change in feet: </label>
-<textarea id="elev" name="helev"><?= $feet;?></textarea><br /><br />
-<label for="fac">Facilities at the trailhead: </label>
-<textarea id="fac" name="hfac"><?= $fac;?></textarea>&nbsp;&nbsp;
-<label for="wow">"Wow" Appeal: </label>
-<textarea id="wow" name="hwow"><?= $wow;?></textarea><br /><br />
-<label for="seas">Best Hiking Seasons: </label>
-<textarea id="seas" name="hsea"><?= $seasons;?></textarea>&nbsp;&nbsp;
-<p id="expo" style="display:none"><?= $expo;?></p>
+    Calculate Miles/Feet From GPX,&nbsp;&nbsp;or Specify/Change below:<br />
+<label for="miles">Round-trip length in miles:
+    <span class="brown">[Number less than 100, and a max of two
+        decimal places]&nbsp;</span>
+</label>
+<textarea id="miles" name="miles"><?= $miles;?></textarea><br />
+<input type="hidden" name="usrmiles" value="NO" />
+
+<label for="elev">Elevation change in feet:
+    <span class="brown">[Integer value up to five digits]&nbsp;</span>
+</label>
+<textarea id="elev" name="feet" maxlength="30"><?= $feet;?></textarea><br /><br />
+<input type="hidden" name="usrfeet" value="NO" />
+
+<label for="fac">Facilities at the trailhead:
+    <span class="brown">[30 Characters Max]</span>
+</label>
+<textarea id="fac" name="fac" maxlength="30"><?= $fac;?></textarea><br /><br />
+
+<label for="wow">"Wow" Appeal:
+    <span class="brown">[50 Characters Max]</span>
+</label>
+<textarea id="wow" name="wow" maxlength="50"><?= $wow;?></textarea><br /><br />
+
+<label for="seas">Best Hiking Seasons:
+    <span class="brown">[12 Characters Max]</span>
+</label>
+<textarea id="seas" name="seasons" maxlength="12"><?= $seasons;?></textarea>
+&nbsp;&nbsp;&nbsp;&nbsp;<p id="expo" style="display:none"><?= $expo;?></p>
 <label for="sun">Exposure: </label>
-<select id="sun" name="hexp">
+<select id="sun" name="expo">
     <option value="Full sun">Full sun</option>
     <option value="Mixed sun/shade">Mixed sun/shade</option>
     <option value="Good shade">Good shade</option>
 </select>&nbsp;&nbsp;
+
 <p>Trailhead Latitude/Longitude is set by the uploaded GPX file.
-    If you wish to edit these regardless, click here: (again to hide) 
+    If you wish to manually enter/edit these, click here: (again to hide) 
     <input id="showll" type="checkbox" name="latlng" value="nosend" /></p>
 <p id="lldisp" style="display:none">
 <label for="lat">Trailhead: Latitude </label>
-<textarea id="lat" name="hlat"><?= $lat;?></textarea>&nbsp;&nbsp;
+<textarea id="lat" name="lat"><?= $lat;?></textarea>&nbsp;&nbsp;
 <label for="lon">Longitude </label>
-<textarea id="lon" name="hlon"><?= $lng;?></textarea></p>
-<br /><label for="murl">Map Directions Link (Url): </label>
-<textarea id="murl" name="gdirs"><?= $dirs;?></textarea>
+<textarea id="lon" name="lng"><?= $lng;?></textarea></p>
+
+<br /><label for="murl">Map Directions Link (Url):
+    <span class="brown">[1024 Characters Max]</span>
+</label>
+<textarea id="murl" class="blink" name="dirs"
+    maxlength="1024"><?= $dirs;?></textarea>
+
 <h3 style="margin-bottom:12px;">Cluster Hike Assignments:
     (Hikes with overlapping trailheads or in close proximity)</h3>
 <span style="font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
 <input id="ignore" type="checkbox" name="nocare" /></span><br /><br />
 <label for="ctip">Cluster: </label>
-<select id="ctip" name="htool">
+<select id="ctip" name="newcname">
 <?php for ($i=0; $i<count($cnames); $i++) : ?>
     <option value="<?= $cnames[$i]?>"><?= $cnames[$i];?></option>
 <?php endfor; ?>
 </select><span id="showdel" style="display:none;">You may remove the cluster
     assignment by checking here:&nbsp;<input id="deassign"
-    type="checkbox" name="rmclus" value="NO" /></span>
+    type="checkbox" name="rmClus" value="NO" /></span>
 <span id="notclus" style="display:none;">There is no currently
     assigned cluster for this hike.</span>
-<input id="grpchg" type="hidden" name="chgd" value="NO" />
+<input id="grpChg" type="hidden" name="grpChg" value="NO" />
 <p>If you are establishing a new group, select the checkbox: 
-    <input id="newg" type="checkbox" name="nxtg" value="NO" />
+    <input id="newg" type="checkbox" name="nxtGrp" value="NO" />
 </p>
 <p style="margin-top:-10px;margin-left:40px;">and enter the name for the 
-    new group here: <input id="newt" type="text" name="newgname" size="50" />
+    new group here: <input id="newt" type="text" name="newgname" size="25"
+        maxlength="25" />
+    &nbsp;&nbsp;<span class="brown">[25 Characters Max]</span>
 </p>

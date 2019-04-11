@@ -12,7 +12,7 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-$getHike = filter_input(INPUT_GET, 'hno');
+$getHike = filter_input(INPUT_GET, 'hikeNo');
 $usr = filter_input(INPUT_GET, 'usr');
 /*
  * GET HIKES DATA
@@ -56,5 +56,5 @@ $refDatReq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) SELECT " .
 $refq = $pdo->prepare($refDatReq);
 $refq->execute([$hikeNo, $getHike]);
 // Back to the editor
-$redirect = "editDB.php?hno={$hikeNo}&usr={$usr}&tab=1";
+$redirect = "editDB.php?hikeNo={$hikeNo}&usr={$usr}&tab=1";
 header("Location: {$redirect}");

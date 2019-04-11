@@ -1,7 +1,166 @@
 $( function () { // when page is loaded...
 
+/**
+ * The framework/appearance of the edit page and buttons
+ */
+var winWidth = $(document).width();
+// NOTE: innerWidth provides the dimension inside the border
+var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
+if (bodySurplus < 24) {
+    bodySurplus = 24;
+}   // var can actually be negative on initial load if frame is smaller than body min-width
+var tabCnt = $('.tablist').length;
+var singletab = '#t' + tabCnt;
+var tabpos = $(singletab).offset();
+// For reasons not understood, $('#pos').width() gets the incorrect value...
+var gettabprop = $('.tablist').css('width');
+var px = gettabprop.indexOf('px');
+var tabwidth = gettabprop.substring(0,px);
+var listwidth = tabCnt * tabwidth;
+var linewidth = winWidth - bodySurplus - listwidth - 9; // padding
+$('#line').width(linewidth);
+$(window).resize( function() {
+    winWidth = $(document).width();
+    linewidth = winWidth - bodySurplus - listwidth - 9;
+    $('#line').width(linewidth);
+});
+// To define button appearance
+function highLight() {
+    $('button').on('mouseover', function() {
+        if (!$(this).hasClass('active')) {
+            $(this).css('background-color','blanchedalmond');
+            $(this).css('color','brown');
+        }
+    });
+    $('button').on('mouseout', function() {
+        if (!$(this).hasClass('active')) {
+            $(this).css('background-color','honeydew');
+            $(this).css('color','darkgray');
+        }
+    });
+}
+highLight();
+// tab buttons:
+$('button:not(#preview)').on('click', function(ev) {
+    ev.preventDefault();
+    var tid = this.id;
+    $('button').each( function() {
+        if (this.id !== tid) {
+            $(this).css('background-color','honeydew');
+            $(this).css('color','darkgray');
+            if ($(this).hasClass('active')) {
+                var old = this.id;
+                old = '#tab' + old.substring(1,2);
+                $(old).css('display','none');
+                $(this).removeClass('active');
+            }
+        }
+    });
+    $(this).css('background-color','#DADADA');
+    $(this).css('color','black');
+    $(this).addClass('active');
+    var newtid = '#tab' + tid.substring(1,2);
+    $(newtid).css('display','block');
+    highLight();
+});
+
+// place correct tab in foreground
+var tab = $('#entry').text();
+var tabon = '#t' + tab;
+$(tabon).trigger('click');
+
+// Look for 'bad URLs' to highlight immediately after saveTabX.php
+var blinkerObject = { blinkHandle: {} };
+function activateBlink(elemId, tab) {
+    document.getElementById(elemId).focus();
+    if (tab == '1') {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+    var $elem = $('#' + elemId);
+    var blinker = 'blink' + elemId;
+    blinkerObject[blinker] = setInterval(function() {
+        if ($elem.css('visibility') == 'hidden') {
+            $elem.css('visibility', 'visible');
+        } else {
+            $elem.css('visibility', 'hidden');
+        }    
+    }, 500);
+    //alert("Please correct the URL or leave blank");
+    $elem.on('mouseover', function() {
+        clearInterval(blinkerObject[blinker]);
+        $elem.css('visibility', 'visible');
+    });
+}
+if (tab == '1' && $('#murl').val().trim() == '--- INVALID URL DETECTED ---') {
+    activateBlink('murl',tab);
+}
+if (tab == '4') {
+    $('.urlbox').each(function() {
+        if ($(this).val().trim() == '--- INVALID URL DETECTED ---') {
+            activateBlink($(this).attr('id'), tab);
+        }
+    });
+}
+
+// Preview edit page button
 var hike = $('#hikeNo').text();
-/* Each drop-down field parameter is held in a hidden <p> element;
+$('#preview').on('click', function() {
+    var prevPg = '../pages/hikePageTemplate.php?age=new&hikeIndx=' + hike;
+    window.open(prevPg,"_blank");
+});
+
+// show/hide lat lng data entries
+$('#showll').on('click', function() {
+    $('#lldisp').slideToggle();
+    $(this).prop('checked',false);
+});
+
+// open the photo uploader page (tab2)
+$('#upld').on('click', function() {
+    var user = $('input[name=pid]').val();
+    var uploader = 'ktesaUploader.php?indx=' + hike + "&usr=" + user;
+    window.open(uploader, "_blank");
+});
+
+// Pressing 'Return' while in textarea only adds newline chars, therefore:
+window.onkeydown = function(event) {
+    if(event.keyCode == 13) {
+        if(event.preventDefault) event.preventDefault();
+        return false; // Just a workaround for old browsers
+    }
+}
+
+// for editing icons, when present in the database
+var wicons = $('[id^="wicn"]');
+var wddbox = $('[id^="selicon"]');
+var allIcons = ['googlemini', 'Flag, Red', 'Flag, Blue', 'Flag, Green', 
+    'Trail Head', 'Triangle, Red'];
+if (wicons.length > 0) {
+    ivals = [];
+    var x =0;
+    wicons.each(function() {
+        if ($(this).text() == '' || !allIcons.includes($(this).text())) {
+            ivals[x++] = 'googlemini';
+        } else {
+            ivals[x++] = $(this).text();
+        }
+    });
+    wddbox.each(function(indx) {
+        $(this).val(ivals[indx]);
+    });
+}
+
+/**
+ * The remaining script handles several features of the editor:
+ *  1. Initialization of text and numeric fields based on db entries
+ *  2. Registering changes in html elements that the server will utilize
+ *  3. Validating data to match assigned database data types.
+ * All of the cluster and references actions are grouped together as
+ * noted by commments; otherwise code is segmented per the list.
+ */
+/**
+ *              ----------- INITIALIZATION -----------
+ * Each drop-down field parameter is held in a hidden <p> element;
  * the data (text) in that hidden <p> element is the default that should 
  * appear in the drop-down box on page-load;
  * The drop-down element parameters are:
@@ -11,13 +170,22 @@ var hike = $('#hikeNo').text();
  *      - difficulty
  *      - exposure
  *      - references
+ * Each is treated, with identifiers, below:
 */
 // Locale:
 var sel = $('#locality').text();
 $('#area').val(sel);
-// Marker is hike type (At VC, Cluster, Other)
-var mrkr = $('#mrkr').text();
-/* 
+// Hike type:
+var htype = $('#ctype').text();
+$('#type').val(htype);
+// Difficulty:
+var diffic = $('#dif').text();
+$('#diff').val(diffic);
+// Exposure:
+var exposure = $('#expo').text();
+$('#sun').val(exposure);
+// Clusters
+/**
  * THE FOLLOWING CODE ADDRESSES EDITS TO CLUSTER ASSIGNMENTS
  *   - Refer to the design documentation for behavior assessment
  */
@@ -39,18 +207,19 @@ if ($('#greq').text() === 'YES') {
 } else {
 	$('#showdel').css('display','block');
 }
-/* To correctly process changes involving cluster types, the following state information
-   needs to be passed to the server:
-        1. Restore original assignments?  ignore
-        2. Is a totally new cluster group being assigned?  (#newg) nxtg
-           (Whether or not the previous type was cluster, new info will be extracted at server,
-            unless "ignore" is checked to restore original state)
-        3. Was a group different from the original group selected in 
-            the drop-down #ctip?  (#grpchg) chgd
-        4. Remove an existing cluster assignment?  (#deassign) rmclus
-*/
-var fieldflag = false;  // validation: make sure newt gets entered when newg is checked
-// RESTORE INCOMING DEFAULTS:
+/**
+ * To correctly process changes involving cluster types, the following state information
+ * needs to be passed to the server:
+ *   1. Restore original assignments?  (#ignore)
+ *   2. Is a totally new cluster group being assigned?  (#newg)
+ *      (Whether or not the previous type was cluster, new info will
+ *      be extracted at server, unless "ignore" is checked to restore 
+ *      original state)
+ *   3. Was a group different from the original group selected in 
+ *      the drop-down #ctip?  (#grpChg)
+ *   4. Remove an existing cluster assignment?  (#deassign)
+ */
+// 1. Restore original assignments
 $('#ignore').change(function() {
     if (this.checked) {
         $('#ctip').val(clusnme);
@@ -60,23 +229,14 @@ $('#ignore').change(function() {
         $('input:checkbox[name=nxtg]').attr('checked',false);
         $('#newg').val("NO");
         $('#newt').val("");
-        $('#grpchg').val("NO");
+        $('#grpChg').val("NO");
         $('#deassign').val("NO");
         $('input:checkbox[name=rmclus]').attr('checked',false);
-        fieldflag = false;
         window.alert("Original state restored" + "\n" + "No edits at this time to clusters");
         this.checked = false;
     }
 });
-// TELL SERVER TO REMOVE THE CLUSTER ASSIGNMENT AND CHANGE MARKER TO NORMAL
-$('#deassign').change(function() {
-    if (this.checked) {
-        $('#deassign').val("YES");
-    } else {
-        $('#deassign').val("NO");
-    }
-});
-// ASSIGN BRAND NEW GROUP:
+// 2. Assign new cluster group
 $('#newg').change(function() {
     if (this.checked) {
         this.value = "YES";
@@ -84,7 +244,7 @@ $('#newg').change(function() {
                 $('#notclus').css('display','none');
         }
         fieldflag = true;
-        $('#grpchg').val("NO");
+        $('#grpChg').val("NO");
         window.alert(rule);
     } else {  // newg is unchecked
         this.value = "NO";
@@ -97,12 +257,13 @@ $('#newg').change(function() {
     }
     $('#ctip').val(clusnme); // go back to original group assignment
 });
-// GROUP ASSIGNMENT DROP_DOWN VALUE IS CHANGED:
+// 3. Different group selected
+var marker = $('#marker').text(); // Marker is hike type (At VC, Cluster, Other)
 $('#ctip').change(function() {  // record any changes to the cluster assignment
     if ( $('#newg').val() === 'NO' ) {
         if (this.value !== clusnme) {
             /* If marker was not originally a cluster type, prepare to change to cluster group: */
-            if (mrkr !== 'Cluster') {
+            if (marker !== 'Cluster') {
                 window.alert("Marker will be changed to cluster type");
                 $('#notclus').css('display','none');
             } else {  // otherwise, let user know the existing cluster group assignment will change
@@ -110,65 +271,68 @@ $('#ctip').change(function() {  // record any changes to the cluster assignment
                 msg += "To: " + $('#ctip').val();
                 window.alert(msg);
             }
-            $('#grpchg').val("YES");
+            $('#grpChg').val("YES");
         } 
     } else {  // when/if the box gets unchecked, the ctip val will be restored to original state;
-        // deactivate grpchg to align with restored original cluster assignment
-        $('#grpchg').val("NO");
+        // deactivate grpChg to align with restored original cluster assignment
+        $('#grpChg').val("NO");
         window.alert("Changes ignored while New Group Box is checked");
     }
 });
-// --------- end of cluster processing
-
-// Hike type:
-var htype = $('#ctype').text();
-$('#type').val(htype);
-// Difficulty:
-var diffic = $('#dif').text();
-$('#diff').val(diffic);
-// Exposure:
-var exposure = $('#expo').text();
-$('#sun').val(exposure);
-
+// 4. Remove an existing cluster assignment
+$('#deassign').change(function() {
+    if (this.checked) {
+        $('#deassign').val("YES");
+    } else {
+        $('#deassign').val("NO");
+    }
+});
+// End of cluster processing
 // References section:
 // A: This code refers to existing refs (in database), not new ones...
 var refCnt = parseInt($('#refcnt').text());
-var refid;
-var rid;
-var refname;
+var item0;  // <p> element containing text = rtype
+var rtype;
+var item1;  // <p> element containing text = rit1
+var rit1;
+var item2;  // <p> element containing text = rit2
 var rit2;
+var selbox; // <select> element holding reference type selection
 var boxid;
 var box;
 // initialize (pre-populate) the boxes:
 for (var i=0; i<refCnt; i++) {
-    refid = '#rid' + i;
-    rid = $(refid).text();  // get the rtype for this reference item
-    r1id = '#r1' + i;
-    rit1 = $(r1id).text();  // get the rit1 for this item (numeric for a book)
-    r2id = '#r2' + i;
-    rit2 = $(r2id).text();  // get the rit2 for this item
-    refname = '#ref' + i;
-    $(refname).val(rid); // pre-populate reference type drop-down
-    boxid = 'ref' + i;
-    if (rid === 'Book:' || rid === 'Photo Essay:') {
+    item0 = '#rtype' + i;
+    rtype = $(item0).text();  // get the rtype for this reference item
+    item1 = '#rit1' + i;
+    rit1 = $(item1).text();  // get the rit1 for this item (numeric for a book)
+    item2 = '#rit2' + i;
+    rit2 = $(item2).text();  // get the rit2 for this item
+    selbox = '#sel' + i;
+    $(selbox).val(rtype); // pre-populate reference type drop-down
+    boxid = 'sel' + i;
+    if (rtype === 'Book:' || rtype === 'Photo Essay:') {
         indx = parseInt(rit1) - 1;
-        var rsel = '#rttl' + i;                    
-        $(rsel).val(rit1);
-        var r2 = '#rr2' + i;
-        $(r2).val(authors[indx]);
+        var bkname = '#bkname' + i;  // <select> element for all book names                 
+        $(bkname).val(rit1);  // this will be a number corresponding to an array indx
+        var auth = '#auth' + i;
+        $(auth).val(authors[indx]);  // get the name from the array
         box = document.getElementById(boxid);
+        // disable non-book entries
         for (var u=2; u<box.options.length; u++) {
             box.options[u].disabled = true;
         }
-    } else if (rid === 'Text:') {
-        var trit2 = '#tr' + i;
-        $(trit2).val('');
-        $(trit2).attr('placeholder','THIS BOX IGNORED');
-        box = document.getElementById(boxid).options[0].disabled = true;
-        box = document.getElementById(boxid).options[1].disabled = true;
+    } else if (rtype === 'Text:') {
+        var url = '#url' + i;
+        $(url).val('');
+        $(url).attr('placeholder','THIS BOX IGNORED');
+        // disable book type entries
+        document.getElementById(boxid).options[0].disabled = true;
+        document.getElementById(boxid).options[1].disabled = true;
     } else {
-        box = document.getElementById(boxid).options[0].disabled = true;
-        box = document.getElementById(boxid).options[1].disabled = true;
+        // disable book type entries
+        document.getElementById(boxid).options[0].disabled = true;
+        document.getElementById(boxid).options[1].disabled = true;
     }
 }
 // B: This code refers to the new refs (if any) which can be added by the user
@@ -226,6 +390,23 @@ $reftags.each( function() {
         }
     });
 });
+// validate length of URL's and click-on text
+$('input[id^=nr1]').each(function() {
+    $(this).on('change', function() {
+        if($(this).val().length > 1024) {
+            alert("This URL exceeds the max length of 1024 characters");
+            $(this).val("");
+        }
+    });
+});
+$('input[id^=nr2]').each(function() {
+    $(this).on('change', function() {
+        if ($(this).val().length > 512) {
+            alert("The maximum no of characters allowed in this field is 512");
+            $(this).val("");
+        }
+    });
+});
 var $bktags = $('select[id^="bkttl"]');
 $bktags.each( function() {
     $(this).val(''); // initialize to show no selection:
@@ -238,160 +419,189 @@ $bktags.each( function() {
     });
 });
 
-// The framework/appearance of the edit page:
-var winWidth = $(document).width();
-// NOTE: innerWidth provides the dimension inside the border
-var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
-if (bodySurplus < 24) {
-    bodySurplus = 24;
-}   // var can actually be negative on initial load if frame is smaller than body min-width
-var tabCnt = $('.tablist').length;
-var singletab = '#t' + tabCnt;
-var tabpos = $(singletab).offset();
-var down = Math.floor(tabpos.top) + $(singletab).height();
-// For reasons not understood, $('#pos').width() gets the incorrect value...
-var gettabprop = $('.tablist').css('width');
-var px = gettabprop.indexOf('px');
-var tabwidth = gettabprop.substring(0,px);
-var listwidth = tabCnt * tabwidth;
-var linewidth = winWidth - bodySurplus - listwidth - 9; // padding
-//alert("lw:" + linewidth + ", dn:" + down + ", list:" + listwidth);
-$('#line').width(linewidth);
-$(window).resize( function() {
-    winWidth = $(document).width();
-    linewidth = winWidth - bodySurplus - listwidth - 9;
-    $('#line').width(linewidth);
-});
-function highLight() {
-    $('button').on('mouseover', function() {
-        if (!$(this).hasClass('active')) {
-            $(this).css('background-color','blanchedalmond');
-            $(this).css('color','brown');
-        }
-    });
-    $('button').on('mouseout', function() {
-        if (!$(this).hasClass('active')) {
-            $(this).css('background-color','honeydew');
-            $(this).css('color','darkgray');
-        }
-    });
-}
-highLight();
-$('button:not(#preview)').on('click', function(ev) {
-    ev.preventDefault();
-    nav = true;
-    var tid = this.id;
-    $('button').each( function() {
-        if (this.id !== tid) {
-            $(this).css('background-color','honeydew');
-            $(this).css('color','darkgray');
-            if ($(this).hasClass('active')) {
-                var old = this.id;
-                old = '#tab' + old.substring(1,2);
-                $(old).css('display','none');
-                $(this).removeClass('active');
-            }
-        }
-    });
-    $(this).css('background-color','#DADADA');
-    $(this).css('color','black');
-    $(this).addClass('active');
-    var newtid = '#tab' + tid.substring(1,2);
-    $(newtid).css('display','block');
-    highLight();
-});
+/**
+ * Database data validation: does item conform to database data type?
+ * Note: there is no 'range' validation for numbers, neither is there a
+ * test to see if < 0, etc. The only qualification is conformity to db spec.
+ * In addition, if a user clicks 'Apply' while the user is entering invalid
+ * data, form submission is halted. The subject field is converted to an
+ * empty string, after which the user may 'Apply' as is, or change the data.
+ */
+ var submit = true;  // unless invalid data is entered... (may prevent submit)
 
-$('#preview').on('click', function() {
-    nav = true;
-    var prevPg = '../pages/hikePageTemplate.php?age=new&hikeIndx=' + hike;
-    window.open(prevPg,"_blank");
-});
-
-var tab = $('#entry').text();
-var tabon = '#t' + tab;
-$(tabon).trigger('click');
-
-$('.phurl').each( function() {
-    $(this).change( function() {
-        $(this).css('color','blue');
-        $(this).css('font-weight','bold');
-        $(this).css('border-color','black');
-    });
-});
-
-$('#newalbs').on('click', function(ev) {
-    nav = true;
-    var proceed = true;
-    var allEmpty = true;
-    var albumLinks = $('.phurl');
-    var checkBoxes = $('.uplbox');
-    for (var k=0; k<checkBoxes.length; k++) {      
-        if (checkBoxes[k].checked) {
-            if (albumLinks[k].value == '') {
-                alert("You have checked an album link upload box\n" +
-                    "without specifying an album");
-                proceed = false;
+// miles: numeric, and up to two decimal points
+var orgmiles = $('#miles').val(); // original value loaded
+$('#miles').on('change', function() {
+    var warn = "Please enter a number less than 100 for 'miles'\n" +
+        "with a maximum of 2 decimal places";
+    var milesEntry = $('#miles').val();
+    if ($.isNumeric(milesEntry)) {
+        milesEntry = Number(milesEntry); // textareas are strings
+        var milesString = milesEntry.toString();
+        var regexp = /^\d+(\.\d{1,2})?$/;
+        if (regexp.test(milesString)) {
+            if (Math.abs(milesEntry) > 99.99) {
+                alert(warn);
+                $('#miles').val(orgmiles);
+                submit = false;
             } else {
-                allEmpty = false;
+                $('input[name=usrmiles]').val("YES");
+                submit = true;
             }
-        }
-        var alb = albumLinks[k]; // to simplify coding the following 'if'
-        if (alb.value !== '' && alb.name !== 'lnk1' && alb.name !== 'lnk2') {
-            if (!checkBoxes[k].checked) {
-                alert("You have supplied an album link\n" +
-                    "without checking its corresponding box");
-                proceed = false;
-            } else {
-                allEmpty = false;
-            }
-        }
-    }
-    if (!proceed || allEmpty) {
-        ev.preventDefault();
-        $('#tab2').css('display','block');
-        $('#newalbs').on('mouseover', function() {
-            $(this).css('background-color','papayawhip');
-            $(this).css('color','brown');
-        });
-        $('#newalbs').on('mouseout', function() {
-            $(this).css('background-color', 'honeydew');
-            $(this).css('color', 'black');
-        });
-    } else {
-        $('#part1').submit();
-    }
-});
-
-$('#showll').on('click', function() {
-    nav = true;
-    $('#lldisp').slideToggle();
-    $(this).prop('checked',false);
-});
-
-$('#upld').on('click', function() {
-    var user = $('input[name=pid]').val();
-    var uploader = 'ktesaUploader.php?indx=' + hike + "&usr=" + user;
-    window.open(uploader, "_blank");
-});
-
-// new:
-var wicons = $('[id^="wicn"]');
-var wddbox = $('[id^="selicon"]');
-var allIcons = ['googlemini', 'Flag, Red', 'Flag, Blue', 'Flag, Green', 
-    'Trail Head', 'Triangle, Red'];
-if (wicons.length > 0) {
-    ivals = [];
-    var x =0;
-    wicons.each(function() {
-        if ($(this).text() == '' || !allIcons.includes($(this).text())) {
-            ivals[x++] = 'googlemini';
         } else {
-            ivals[x++] = $(this).text();
+            var strlen = milesEntry.length;
+            if (milesString.indexOf('.') !== -1 && milesString.indexOf('.') !== strlen -1) {
+                    alert(warn);
+                    $('#miles').val(orgmiles);
+                    submit = false;
+            } else {
+                $('input[name=usrmiles]').val("YES");
+                submit = true;
+            }
+        }
+    } else {
+        alert(warn);
+        $('#miles').val(orgmiles);
+        submit = false;
+    }
+});
+// elevation: up to five digits, integer
+var orgelev = $('#elev').val();  // original value loaded
+$('#elev').on('change', function() {
+    var feet = Number($('#elev').val());
+    alarm = "Only integers less than 100,000 are allowed for 'Elevation Change'";
+    if ($.isNumeric(feet)) {
+        if (Number.isInteger(feet)) {
+            if (Math.abs(feet) > 99999) {
+                alert(alarm);
+                $('#elev').val(orgelev);
+                submit = false;
+            } else {
+                $('input[name=usrfeet]').val("YES");
+                submit = true;
+            }
+        } else {
+            alert(alarm);
+            $('#elev').val(orgelev);
+            submit = false;
+        }
+    } else {
+        alert(alarm);
+        $('#elev').val(orgelev);
+        submit = false;
+    }
+
+});
+// gpx: file name length 1024; NOTE: This also covers GPS Data uploads
+$('input[type=file]').on('change', function() {
+    var newname = this.files[0].name;
+    if (newname.length > 1024) {
+        alert("Only 1024 Characters are allowed for file names");
+        this.value = null;
+    }
+});
+// lat: float (13.10)
+var orglat = $('#lat').val();  // original value loaded
+$('#lat').on('change', function() {
+    var lat = Number($(this).val());
+    var notlat = "The value entered does not conform to a lat/lng";
+    if ($.isNumeric(lat)) {
+        decimal = /^[-+]?[0-9]+\.[0-9]+$/; 
+        if (decimal.test(lat)) {
+            if (Math.abs(lat) > 180) {
+                alert(notlat);
+                $(this).val(orglat);
+                submit = false;
+            } else {
+                submit = true;
+            }
+        } else {
+            alert(notlat);
+            $(this).val(orglat);
+            submit = false;
+        }
+    } else {
+        alert(notlat);
+        $(this).val(orglat);
+        submit = false;
+    }
+});
+// lng: float (13.10)
+var orglng = $('#lon').val();  // original value loaded
+$('#lon').on('change', function() {
+    var lng = Number($(this).val());
+    var notlng = "The value entered does not conform to a lat/lng";
+    if ($.isNumeric(lng)) {
+        decimal = /^[-+]?[0-9]+\.[0-9]+$/; 
+        if (decimal.test(lng)) {
+            if (Math.abs(lng) > 180) {
+                alert(notlng);
+                $(this).val(orglng);
+                submit = false;
+            } else {
+                submit = true;
+            }
+        } else {
+            alert(notlng);
+            $(this).val(orglng);
+            submit = false;
+        }
+    } else {
+        alert(notlng);
+        $(this).val(orglng);
+        submit = false;
+    }
+});
+// GPS Data: 
+// label
+$('input[name^=labl]').each(function() {
+    $(this).on('change', function() {
+        if ($(this).val().length > 128) {
+            alert("Only 128 characters are allowed");
+            $(this).val("");
+            submit = false;
         }
     });
-    wddbox.each(function(indx) {
-        $(this).val(ivals[indx]);
+});
+// url length
+$('input[name^=lnk]').each(function() {
+    $(this).on('change', function() {
+        if ($(this).val().length > 1024) {
+            alert("Only 1024 characters are allowed");
+            submit = false;
+        }
     });
-}
+});
+// click-on-text length
+$('input[name^=ctxt]').each(function() {
+    $(this).on('change', function() {
+        if ($(this).val().length > 256) {
+            alert("Only 256 characters are allowed");
+            submit = false;
+        }
+    });
+});
+
+// Form submission if 'submit' is still true
+$('input[name=savePg]').on('click', function(evt) {
+    if (submit) {
+        // make sure that a new group name has been specified if the checkbox is checked
+        if ($('#newg').prop('checked')) {
+            if ($('#newt').val() == '') {
+                evt.preventDefault();
+                alert("No new cluster name has been specified:\n" +
+                    "please enter a name or uncheck the 'new nMW' checkbox");
+            } else {
+                if ($('#newt').val().length > 25) {  // db limit
+                    evt.preventDefault();
+                    alert("Only 25 characters allowed");
+                }
+            }
+        }
+    } else {
+        submit = true;
+        return false;
+    }
+});
 
 });  // end of 'page (DOM) loading complete'

@@ -4,8 +4,8 @@
 <hr />
 <p style="color:brown;"><em>Edit captions below each photo as needed
     and assign display options.</em></p>
-<input type="hidden" name="pno" value="<?= $hikeNo;?>" />
-<input type="hidden" name="pid" value="<?= $usr;?>" />
+<input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
+<input type="hidden" name="usr" value="<?= $usr;?>" />
 <div style="margin-left:8px;">
         <input type="submit" name="savePg" value="Apply" /></p>
 </div>
