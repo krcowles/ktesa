@@ -8,8 +8,32 @@ var spinner = $('#spinner').spinner({
 spinner.spinner("value", 5);
 
 // Used for both table only and map+table pages
+function displayAreaFilter() {
+    $('#selloc').removeClass('hidden');
+    $('#selloc').addClass('inline');
+    $('#loclbl').removeClass('normal');
+    $('#loclbl').addClass('hilite');
+}
+function hideAreaFilter() {
+    $('#selloc').removeClass('inline');
+    $('#selloc').addClass('hidden');
+    $('#loclbl').removeClass('hilite');
+    $('#loclbl').addClass('normal');
+}
+function displayHikeFilter() {
+    $('#selhike').removeClass('hidden');
+    $('#selhike').addClass('inline');
+    $('#hikelbl').removeClass('normal');
+    $('#hikelbl').addClass('hilite');
+}
+function hideHikeFilter() {
+    $('#selhike').removeClass('inline');
+    $('#selhike').addClass('hidden');
+    $('#hikelbl').removeClass('hilite');
+    $('#hikelbl').addClass('normal');
+}
 function filterSetup() {
-    // positioning:
+    // positioning: (tables are different widths on these pages)
     var winwidth = $(window).innerWidth();
     if (pg === 'tbl') {
         var tblwidth = $('.sortable').width();
@@ -27,43 +51,25 @@ function filterSetup() {
     });
     $('#loc').on('click', function() {
         if ($('#selloc').hasClass('hidden')) {
-            $('#selloc').removeClass('hidden');
-            $('#selloc').addClass('inline');
-            $('#loclbl').removeClass('normal');
-            $('#loclbl').addClass('hilite');
+            displayAreaFilter();
         } else {
-            $('#selloc').removeClass('inline');
-            $('#selloc').addClass('hidden');
-            $('#loclbl').removeClass('hilite');
-            $('#loclbl').addClass('normal');
+            hideAreaFilter();
             $(this).prop('checked', false);
         }
-        $('#hike').prop('checked', false);
         if ($('#selhike').hasClass('inline')) {
-            $('#selhike').removeClass('inline');
-            $('#selhike').addClass('hidden');
-            $('#hikelbl').removeClass('hilite');
-            $('#hikelbl').addClass('normal');
+            hideHikeFilter();
         }
+        $('#hike').prop('checked', false);
     });
     $('#hike').on('click', function() {
         if ($('#selhike').hasClass('hidden')) {
-            $('#selhike').removeClass('hidden');
-            $('#selhike').addClass('inline');
-            $('#hikelbl').removeClass('normal');
-            $('#hikelbl').addClass('hilite');
+            displayHikeFilter();
         } else {
-            $('#selhike').removeClass('inline');
-            $('#selhike').addClass('hidden');
-            $('#hikelbl').removeClass('hilite');
-            $('#hikelbl').addClass('normal');
+            hideHikeFilter();
             $(this).prop('checked', false);
         }
         if ($('#selloc').hasClass('inline')) {
-            $('#selloc').removeClass('inline');
-            $('#selloc').addClass('hidden');
-            $('#loclbl').removeClass('hilite');
-            $('#loclbl').addClass('normal');
+            hideAreaFilter();
         }
         $('#loc').prop('checked', false);
     });
@@ -83,12 +89,11 @@ function filterSetup() {
             $(window).scrollTop(currpos + scrolloff);
         }
     });
-    // actual filtering of hikes:
-    var ajaxdone = false;
-    var coords = {};
+    var coords = {}; // coordinates of location from which to calculate radius
     // in case of page refresh:
     $('#loc').prop('checked', false);
     $('#hike').prop('checked', false);
+
     // when applying the filter:
     $('#apply').on('click', function() {
         var epsilon = $('#spinner').spinner('value');
@@ -96,18 +101,28 @@ function filterSetup() {
             $('#ftable').html('<tbody></tbody>');
         }
         if ($('#loc').prop('checked')) {
-            var arealoc = $('#area').find(":selected").text();
-            if (!ajaxdone) {
-                var locWait = setInterval( function() {
-                    if (ajaxdone) {
-                        clearInterval(locWait);
-                        filterList(epsilon, coords);
-                        ajaxdone = false;
-                        return;
+            var area = $('#area').find(":selected").text();
+            var areaCoords = $.get({ // returns array of location centers on success
+                url:      '../json/areas.json',
+                dataType: 'json'
+            });
+            areaCoords.done(function(json_data) {
+                var areaLocCenters = json_data.areas;
+                for (var j=0; j<areaLocCenters.length; j++) {
+                    if (areaLocCenters[j].loc == area) {
+                        coords = {
+                            "lat": areaLocCenters[j].lat, 
+                            "lng": areaLocCenters[j].lng
+                        };
+                        break;
                     }
-                }, 10);
-            }
-            getAreaCoords(arealoc);
+                }
+            });
+            areaCoords.fail(function() {
+                alert("Unable to retrieve areas.json in json directory");
+                return false;
+            });
+            filterList(epsilon, coords);
         } else if ($('#hike').prop('checked')) {
             var hikeloc = $('#link').val().trim();
             if (hikeloc !== '') {
@@ -122,25 +137,6 @@ function filterSetup() {
             return;
         }
     });
-    function getAreaCoords(area) {
-        $.ajax( {
-            url: '../json/areas.json',
-            dataType: 'json',
-            success: function(json_dat) {
-                var all_locs = json_dat.areas;
-                for (var j=0; j<all_locs.length; j++) {
-                    if (all_locs[j].loc == area) {
-                        coords = {"lat": all_locs[j].lat, "lng": all_locs[j].lng};
-                        break;
-                    }
-                }
-                ajaxdone = true;
-            },
-            error: function() {
-                alert("Unable to retrieve areas.json in json directory");
-            }
-        });
-    }
     function getHikeCoords(hike) {
         var $tblrows = $('.sortable tbody tr');
         var coords = {};
