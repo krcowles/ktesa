@@ -102,27 +102,27 @@ function filterSetup() {
         }
         if ($('#loc').prop('checked')) {
             var area = $('#area').find(":selected").text();
-            var areaCoords = $.get({ // returns array of location centers on success
+            $.ajax({ // returns array of location centers on success
                 url:      '../json/areas.json',
-                dataType: 'json'
-            });
-            areaCoords.done(function(json_data) {
-                var areaLocCenters = json_data.areas;
-                for (var j=0; j<areaLocCenters.length; j++) {
-                    if (areaLocCenters[j].loc == area) {
-                        coords = {
-                            "lat": areaLocCenters[j].lat, 
-                            "lng": areaLocCenters[j].lng
-                        };
-                        break;
+                dataType: 'json',
+                success: function(json_data) {
+                    var areaLocCenters = json_data.areas;
+                    for (var j=0; j<areaLocCenters.length; j++) {
+                        if (areaLocCenters[j].loc == area) {
+                            coords = {
+                                "lat": areaLocCenters[j].lat, 
+                                "lng": areaLocCenters[j].lng
+                            };
+                            break;
+                        }
                     }
+                    filterList(epsilon, coords);
+                },
+                error: function() {
+                    alert("Unable to retrieve areas.json in json directory");
+                    return false;
                 }
             });
-            areaCoords.fail(function() {
-                alert("Unable to retrieve areas.json in json directory");
-                return false;
-            });
-            filterList(epsilon, coords);
         } else if ($('#hike').prop('checked')) {
             var hikeloc = $('#link').val().trim();
             if (hikeloc !== '') {
