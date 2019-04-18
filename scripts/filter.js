@@ -6,6 +6,7 @@ var spinner = $('#spinner').spinner({
     value: 5
 });
 spinner.spinner("value", 5);
+var hikePgClick = true;
 
 // Used for both table only and map+table pages
 function displayAreaFilter() {
@@ -31,6 +32,24 @@ function hideHikeFilter() {
     $('#selhike').addClass('hidden');
     $('#hikelbl').removeClass('hilite');
     $('#hikelbl').addClass('normal');
+}
+function hikeSelect() {
+    $('a').on('click', function(ev) {
+        if ($('#hike').prop('checked')) {
+            ev.preventDefault();
+            var thishike = $(this).text();
+            $('#link').val(thishike);
+            $('#link').focus();
+            var currpos = $('#link').scrollTop();
+            // different values for table only and map+table pages:
+            var scrolloff = -40;
+            if (typeof $('#map') !== 'undefined') {
+                var mapoff = $('#map').height();
+                scrolloff += mapoff;
+            }
+            $(window).scrollTop(currpos + scrolloff);
+        }
+    });
 }
 function filterSetup() {
     // positioning: (tables are different widths on these pages)
@@ -58,37 +77,26 @@ function filterSetup() {
         }
         if ($('#selhike').hasClass('inline')) {
             hideHikeFilter();
+            $('a').off('click');
         }
         $('#hike').prop('checked', false);
     });
     $('#hike').on('click', function() {
         if ($('#selhike').hasClass('hidden')) {
             displayHikeFilter();
+            hikeSelect();
         } else {
             hideHikeFilter();
             $(this).prop('checked', false);
+            $('a').off('click');
         }
         if ($('#selloc').hasClass('inline')) {
             hideAreaFilter();
         }
         $('#loc').prop('checked', false);
     });
-    $('a').on('click', function(ev) {
-        if ($('#hike').prop('checked')) {
-            ev.preventDefault();
-            var thishike = $(this).text();
-            $('#link').val(thishike);
-            $('#link').focus();
-            var currpos = $('#link').scrollTop();
-            // different values for table only and map+table pages:
-            var scrolloff = -40;
-            if (typeof $('#map') !== 'undefined') {
-                var mapoff = $('#map').height();
-                scrolloff += mapoff;
-            }
-            $(window).scrollTop(currpos + scrolloff);
-        }
-    });
+    
+    
     var coords = {}; // coordinates of location from which to calculate radius
     // in case of page refresh:
     $('#loc').prop('checked', false);
@@ -123,11 +131,15 @@ function filterSetup() {
                     return false;
                 }
             });
+            if (!hikePgClick) {  // restore normal hike page clicking
+                $('a').off('click');
+            }
         } else if ($('#hike').prop('checked')) {
             var hikeloc = $('#link').val().trim();
             if (hikeloc !== '') {
                 coords = getHikeCoords(hikeloc);
                 filterList(epsilon, coords);
+                $('a').off('click');
             } else {
                 alert("You have not selected a hike");
                 return;
