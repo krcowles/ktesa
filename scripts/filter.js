@@ -34,6 +34,7 @@ function hideHikeFilter() {
     $('#hikelbl').addClass('normal');
 }
 function hikeSelect() {
+    hikePgClick = false;
     $('a').on('click', function(ev) {
         if ($('#hike').prop('checked')) {
             ev.preventDefault();
@@ -78,6 +79,7 @@ function filterSetup() {
         if ($('#selhike').hasClass('inline')) {
             hideHikeFilter();
             $('a').off('click');
+            hikePgClick = true;
         }
         $('#hike').prop('checked', false);
     });
@@ -89,6 +91,7 @@ function filterSetup() {
             hideHikeFilter();
             $(this).prop('checked', false);
             $('a').off('click');
+            hikePgClick = true;
         }
         if ($('#selloc').hasClass('inline')) {
             hideAreaFilter();
@@ -140,6 +143,7 @@ function filterSetup() {
                 coords = getHikeCoords(hikeloc);
                 filterList(epsilon, coords);
                 $('a').off('click');
+                hikePgClick = true;
             } else {
                 alert("You have not selected a hike");
                 return;
