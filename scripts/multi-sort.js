@@ -71,6 +71,10 @@ $('#sort').on('click', function() {
         } else {
             a = $(a).find('td').eq(indx).text();
             b = $(b).find('td').eq(indx).text();
+            if (level1 === "Length" || level1 === "Elev Chg") {
+                a = parseFloat(a);
+                b = parseFloat(b);
+            }
         }
         return compare[compareType](a, b);
     });
@@ -98,6 +102,10 @@ $('#sort').on('click', function() {
                 } else {
                     a = $(a).find('td').eq(tdno).text();
                     b = $(b).find('td').eq(tdno).text();
+                    if (level2 === 'Length' || level2 === 'Elev Chg') {
+                        a = parseFloat(a);
+                        b = parseFloat(b);
+                    }
                 }
                 return compare[compareType](a, b);
             });
@@ -126,23 +134,25 @@ $('#sort').on('click', function() {
         // get the first level1 key value to compare against
         var $sortCell = $(rows[0]).find('td').eq(lastkey).children();
         if (icon) {
+            $sortCell = $(rows[0]).find('td').eq(lastkey).children();
             exposure = $sortCell[0].src;
             lastKey1Val = iconType(exposure);
         } else {
+            $sortCell = $(rows[0]).find('td').eq(lastkey);
             lastKey1Val = $sortCell.text();
         }
         for (var k=0; k<rows.length; k++) { // form a subset of rows which have level1 key values in common
             // need to know if this is the last row
             lastrow = (k === rows.length -1) ? true : false;
             // what is this row's key1 value?
-            $sortCell = $(rows[k]).find('td').eq(lastkey).children();
             if (icon) {
-                exposure = $sortCell[0].src;
+                $sortCell = $(rows[k]).find('td').eq(lastkey).children();
+                exposure = $sortCell[k].src;
                 key1val = iconType(exposure);
             } else {
+                $sortCell = $(rows[k]).find('td').eq(lastkey);
                 key1val = $sortCell.text();
             }
-
             // is this a new set of key1 values?
             if (lastKey1Val !== key1val) {
                 // sort the current subset and append to level2rows
