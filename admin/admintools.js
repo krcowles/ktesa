@@ -1,8 +1,5 @@
 var current_state = $('#currstate').text();
 
-if (typeof(nopix) !== 'undefined') {
-    alert(nopix);
-}
 $('#switchstate').on('click', function() {
     window.open('changeSiteMode.php?mode=' + current_state);
     window.close();
@@ -104,6 +101,9 @@ $('input[type=checkbox]').each( function() {
 $('#mode').on('click', function() {
     $('#modeopt').slideToggle();
 });
+if (typeof(nopix) !== 'undefined') {
+    alert(nopix);
+}
 $('#ldet').on('click', function() {
     alert("Not yet implemented");
 });
