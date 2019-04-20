@@ -1,8 +1,3 @@
-/* Table sorting for the table-only page is different than the others
-   as there is one table only, the refTbl. In phpDynamicTbls.js, the sortable
-   usrTbl script is applied to a table constructed based on the map viewport. */
-$( function() {  // wait until document is loaded...
-
 // global object used to define how table items get compared in a sort:
 var noPart1;
 var noPart2;
@@ -37,6 +32,10 @@ var compare = {
 		return a - b;
 	} 
 };  // end of COMPARE object
+
+$( function() {  // wait until document is loaded...
+
+filterSetup();
 
 $('.sortable').each( function() {
 	var $table = $(this);
