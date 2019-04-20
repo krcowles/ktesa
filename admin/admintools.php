@@ -30,6 +30,11 @@ require "../php/global_boot.php";
 </div>
 <p id="trail">Site Administration Tools</p>
 
+<?php if (isset($_SESSION['nopix']) && !empty($_SESSION['nopix'])) : ?>
+    <script type="text/javascript">var nopix = "<?= $_SESSION['nopix'];?>";</script>
+    <?php $_SESSION['nopix'] = ''; ?>
+<?php endif; ?>
+
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Overall Site Management</legend>
@@ -49,7 +54,10 @@ require "../php/global_boot.php";
         <button id="site">Entire Site</button>
             &nbsp;[Downloads compressed archive]<br />
         <button id="npix">New Pictures</button>
-            &nbsp;[Downloads newly uploaded pictures]<br />
+            &nbsp;[Downloads new pictures since last Site upload]<br />
+        <button id="rel2pic">Pictures newer than: </button>&nbsp;&nbsp;
+            Select a file from the 'pictures' directory &nbsp;&nbsp;
+            <input id="cmppic" type="file" /><br />
         <span style="font-size:20px;color:brown;">Listings:</span><br />
         <button id="lst">List New Files</button>&nbsp;&nbsp;[Since last upload]
         <hr />
