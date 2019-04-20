@@ -10,6 +10,7 @@
  * @link    ../docs/
  */
 $request = filter_input(INPUT_GET, 'request');  // either 'files' or 'pictures'
+$dtFile = filter_input(INPUT_GET, 'dtFile');  // either 'files' or 'pictures'
 $tmpPix = sys_get_temp_dir() . '/newPix.zip';
 if (file_exists($tmpPix)) {
     unlink($tmpPix);
@@ -19,12 +20,11 @@ require '../php/global_boot.php';
 $dir_iterator = new RecursiveDirectoryIterator("../", RecursiveDirectoryIterator::SKIP_DOTS);
 $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
 // could use CHILD_FIRST if you so wish
-$uploadDate = filemtime("./dummy.txt") + 20; // Upload time plus 20 seconds for unzip
 //$inputDate = "02/20/2019 1:30:00"; // Use these lines to manually enter a date
 //$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
-$udate = date(DATE_RFC2822, $uploadDate);
 // get location of pictures directory before proceeding
 $current = getcwd();
+$adminDir = $current;
 $ups = 0;
 // find level at which pictures directory resides
 while (!in_array('pictures', scandir($current))) {
@@ -35,6 +35,14 @@ while (!in_array('pictures', scandir($current))) {
         throw new Exception("Can't find pictures directory!");
     }
 }
+if (!$dtFile) {
+    $uploadDate = filemtime("{$adminDir}/dummy.txt") + 20; // Upload time plus 20 seconds for unzip
+    }
+else
+    {
+    $uploadDate = filemtime("./{$dtFile}"); // Use the date/time from the file given as a param
+    }
+$udate = date(DATE_RFC2822, $uploadDate);
 
 $dir_iterator = new RecursiveDirectoryIterator(
     ".", RecursiveDirectoryIterator::SKIP_DOTS
