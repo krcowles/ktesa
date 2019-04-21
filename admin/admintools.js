@@ -1,4 +1,5 @@
 var current_state = $('#currstate').text();
+
 $('#switchstate').on('click', function() {
     window.open('changeSiteMode.php?mode=' + current_state);
     window.close();
@@ -11,6 +12,24 @@ $('#site').on('click', function() {
 });
 $('#npix').on('click', function() {
     window.open('list_new_files.php?request=pictures');
+});
+var picfile = ''
+$('#cmppic').on('change', function(ev) {
+    picfile = ev.target.files[0].name;
+});
+$('#rel2pic').on('click', function() {
+    if (picfile === '') {
+        alert("No image has been selected");
+    } else {
+        var extPos = picfile.lastIndexOf(".");
+        var sizedir = picfile.substring(extPos - 1, extPos);
+        if (sizedir === 'n') {
+            var picloc = "pictures/nsize/" + picfile;
+        } else {
+            var picloc = "pictures/zsize/" + picfile;
+        }
+        window.open("list_new_files.php?request=pictures&dtFile=" + picloc);
+    }
 });
 $('#reload').on('click', function() {
     if (confirm("Do you really want to drop all tables and reload them?")) {
@@ -82,6 +101,9 @@ $('input[type=checkbox]').each( function() {
 $('#mode').on('click', function() {
     $('#modeopt').slideToggle();
 });
+if (typeof(nopix) !== 'undefined') {
+    alert(nopix);
+}
 $('#ldet').on('click', function() {
     alert("Not yet implemented");
 });
