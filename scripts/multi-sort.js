@@ -132,7 +132,7 @@ $('#sort').on('click', function() {
         var lastKey1Val;
         var exposure;
         // get the first level1 key value to compare against
-        var $sortCell = $(rows[0]).find('td').eq(lastkey).children();
+        var $sortCell;
         if (icon) {
             $sortCell = $(rows[0]).find('td').eq(lastkey).children();
             exposure = $sortCell[0].src;
@@ -147,7 +147,7 @@ $('#sort').on('click', function() {
             // what is this row's key1 value?
             if (icon) {
                 $sortCell = $(rows[k]).find('td').eq(lastkey).children();
-                exposure = $sortCell[k].src;
+                exposure = $sortCell[0].src;
                 key1val = iconType(exposure);
             } else {
                 $sortCell = $(rows[k]).find('td').eq(lastkey);
