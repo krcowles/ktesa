@@ -1,5 +1,6 @@
-var current_state = $('#currstate').text();
+$( function() {  // wait until document is loaded...
 
+var current_state = $('#currstate').text();
 $('#switchstate').on('click', function() {
     window.open('changeSiteMode.php?mode=' + current_state);
     window.close();
@@ -11,7 +12,7 @@ $('#site').on('click', function() {
     window.open('export_all_tables.php?dwnld=S');
 });
 $('#npix').on('click', function() {
-    window.open('list_new_files.php?request=pictures');
+    window.open('list_new_files.php?request=pictures', "_self");
 });
 var picfile = ''
 $('#cmppic').on('change', function(ev) {
@@ -28,7 +29,7 @@ $('#rel2pic').on('click', function() {
         } else {
             var picloc = "pictures/zsize/" + picfile;
         }
-        window.open("list_new_files.php?request=pictures&dtFile=" + picloc);
+        window.open("list_new_files.php?request=pictures&dtFile=" + picloc, "_self");
     }
 });
 $('#reload').on('click', function() {
@@ -161,4 +162,6 @@ $('#rowdel').on('click', function() {
     } else {
         alert("Nothing deleted");
     }
+});
+
 });
