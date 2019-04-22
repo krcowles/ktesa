@@ -62,12 +62,20 @@ $('#sort').on('click', function() {
     // level 1 sort:
     rows.sort(function(a, b) {
         if (icon) {
-            var imga = $(a).find('td').eq(indx).children();
-            var imgb = $(b).find('td').eq(indx).children();
-            var srca = $(imga[0]).attr('src');
-            var srcb = $(imgb[0]).attr('src');
-            a = iconType(srca);
-            b = iconType(srcb);
+            if ($(a).hasClass('indxd')) {
+                a = 'Indx Page';
+            } else {
+                var imga = $(a).find('td').eq(indx).children();
+                var srca = $(imga[0]).attr('src');
+                a = iconType(srca);
+            }
+            if ($(b).hasClass('indxd')) {
+                b = 'Indx Page';
+            } else {
+                var imgb = $(b).find('td').eq(indx).children();
+                var srcb = $(imgb[0]).attr('src');
+                b = iconType(srcb);
+            }
         } else {
             a = $(a).find('td').eq(indx).text();
             b = $(b).find('td').eq(indx).text();
@@ -93,12 +101,20 @@ $('#sort').on('click', function() {
         function l2sort(l2array, tdno) {
             l2array.sort(function(a, b) {
                 if (key2 === 'Exposure') {
-                    var imga = $(a).find('td').eq(tdno).children();
-                    var imgb = $(b).find('td').eq(tdno).children();
-                    var srca = $(imga[0]).attr('src');
-                    var srcb = $(imgb[0]).attr('src');
-                    a = iconType(srca);
-                    b = iconType(srcb);
+                    if ($(a).hasClass('indxd')) {
+                        a = 'Indx Page';
+                    } else {
+                        var imga = $(a).find('td').eq(tdno).children();
+                        var srca = $(imga[0]).attr('src');
+                        a = iconType(srca);
+                    }
+                    if ($(b).hasClass('indxd')) {
+                        b = 'Indx Page';
+                    } else {
+                        var imgb = $(b).find('td').eq(tdno).children();
+                        var srcb = $(imgb[0]).attr('src');
+                        b = iconType(srcb);
+                    } 
                 } else {
                     a = $(a).find('td').eq(tdno).text();
                     b = $(b).find('td').eq(tdno).text();
@@ -134,9 +150,13 @@ $('#sort').on('click', function() {
         // get the first level1 key value to compare against
         var $sortCell;
         if (icon) {
-            $sortCell = $(rows[0]).find('td').eq(lastkey).children();
-            exposure = $sortCell[0].src;
-            lastKey1Val = iconType(exposure);
+            if ($(rows[0]).hasClass('indxd')) {
+                lastKey1Val = 'Indx Page';
+            } else {
+                $sortCell = $(rows[0]).find('td').eq(lastkey).children();
+                exposure = $sortCell[0].src;
+                lastKey1Val = iconType(exposure);
+            }
         } else {
             $sortCell = $(rows[0]).find('td').eq(lastkey);
             lastKey1Val = $sortCell.text();
@@ -146,9 +166,13 @@ $('#sort').on('click', function() {
             lastrow = (k === rows.length -1) ? true : false;
             // what is this row's key1 value?
             if (icon) {
-                $sortCell = $(rows[k]).find('td').eq(lastkey).children();
-                exposure = $sortCell[0].src;
-                key1val = iconType(exposure);
+                if ($(rows[k]).hasClass('indxd')) {
+                    key1val = 'Indx Page';
+                } else {
+                    $sortCell = $(rows[k]).find('td').eq(lastkey).children();
+                    exposure = $sortCell[0].src;
+                    key1val = iconType(exposure);
+                }
             } else {
                 $sortCell = $(rows[k]).find('td').eq(lastkey);
                 key1val = $sortCell.text();
@@ -174,4 +198,5 @@ $('#sort').on('click', function() {
         rows = level2rows.slice(0);
     }
     $tbody.append(rows);
+    icon = false;  // for additional sorts...
 });
