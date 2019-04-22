@@ -36,6 +36,8 @@
 	$.validator.passwordRating = function(password, username) {
 		if (!password || password.length < 8)
 			return rating(0, "too-short");
+		if (password.length > 255)
+			return rating(0, "password exceeds 255 characters");
 		if (username && password.toLowerCase().match(username.toLowerCase()))
 			return rating(0, "similar-to-username");
 		if (SAME.test(password))

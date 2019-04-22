@@ -74,9 +74,14 @@ $('#clrimgs').on('click', function(ev) {
 function ldImgs(imgs) {
     var promises = [];
     for(var i=0; i<imgs.length; i++) {
-        var reader = new FileReader();
-        var deferred = new $.Deferred();
-        promises.push(deferred);
+        if (imgs[i].name.length > 1024) {
+            alert("Please rename this file such that the name is\n" +
+                "less than 1024 characters (including file extension\n" +
+                "This file will not be displayed...");
+        } else {
+            var reader = new FileReader();
+            var deferred = new $.Deferred();
+            promises.push(deferred);
 
         (function(d, ifile) {
             reader.onload = function (evt) {
@@ -109,7 +114,8 @@ function ldImgs(imgs) {
             }
         }(deferred, imgs[i]));
 
-        reader.readAsDataURL(imgs[i]);
+            reader.readAsDataURL(imgs[i]);
+        }
     }
     return $.when.apply($, promises); // return when promises fulfilled
 }
@@ -140,6 +146,8 @@ function ldNodes(fr_objs) {
                 des.style.height = dheight + "px";
                 des.style.display = "block";
                 des.placeholder = "Picture description";
+                des.maxlength = 512;
+                des.classList.add('desVal');
                 des.id = 'desc' + itemno;
 
                 // circular progress meter

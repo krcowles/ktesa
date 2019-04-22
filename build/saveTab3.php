@@ -10,7 +10,7 @@
  */
 require "../php/global_boot.php";
 $hikeNo = filter_input(INPUT_POST, 'dno');
-$uid = filter_input(INPUT_POST, 'did');
+$usr = filter_input(INPUT_POST, 'did');
 $htips = filter_input(INPUT_POST, 'tips');
 $hinfo = filter_input(INPUT_POST, 'hinfo');
 $vals = [];
@@ -30,5 +30,5 @@ array_push($vals, $hikeNo);
 $updtDescReq = "UPDATE EHIKES SET " . $valstr . "WHERE indxNo = ?;";
 $descq = $pdo->prepare($updtDescReq);
 $descq->execute($vals);
-$redirect = "editDB.php?hno={$hikeNo}&usr={$uid}&tab=3";
+$redirect = "editDB.php?hikeNo={$hikeNo}&usr={$usr}&tab=3";
 header("Location: {$redirect}");

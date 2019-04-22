@@ -4,7 +4,7 @@ body {
     background-color: #dadada; }
 #hike {
     height: 20px;
-    width: 260px; }
+    width: 200px; }
 #area {
     height: 34px;
     width: 120px; }
@@ -31,10 +31,10 @@ body {
     width: 200px; }
 #wow {
     height: 20px;
-    width: 200px; }
+    width: 320px; }
 #seas {
     height: 20px;
-    width: 160px; }
+    width: 100px; }
 #sun {
     height: 34px;
     width: 150px; }
@@ -75,6 +75,7 @@ body {
     width: 200px; }
 textarea {
     font-family: Tahoma, sans-serif;
+    font-size: 14px;
     border-style: solid;
     border-width: 2px;
     border-color: DarkGray;
@@ -217,4 +218,7 @@ input[type=button]:hover {
     background-color: papayawhip;
     color: brown;
     font-weight: bold;
+}
+span.brown {
+    color: brown;
 }

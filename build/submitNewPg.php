@@ -10,13 +10,13 @@
  * @license No license to date
  */
 require '../php/global_boot.php';
-$user = filter_input(INPUT_POST, 'uid');
+$usr = filter_input(INPUT_POST, 'uid');
 $pg = filter_input(INPUT_POST, 'newname');
 $mrkr = filter_input(INPUT_POST, 'marker');
 $newclus = isset($_POST['mknewgrp']) ? true : false;
 // Form query based on marker type
 $qfields = "(pgTitle,usrid,stat,";
-$qdata = array($pg, $user, "0");
+$qdata = array($pg, $usr, "0");
 $vals = "(?,?,?";
 if ($mrkr === 'At VC') {
     $vhike = filter_input(INPUT_POST, 'vchike');
@@ -42,5 +42,5 @@ $newpg->execute($qdata);
 $last = $pdo->query("SELECT * FROM EHIKES ORDER BY 1 DESC LIMIT 1;");
 $rowdat = $last->fetch(PDO::FETCH_NUM);
 $hikeNo = $rowdat[0];
-$redirect = "editDB.php?tab=1&hno=" . $hikeNo . "&usr=" . $user;
+$redirect = "editDB.php?tab=1&hikeNo=" . $hikeNo . "&usr=" . $usr;
 header("Location: {$redirect}");

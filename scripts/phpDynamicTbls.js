@@ -1,8 +1,11 @@
 /* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
-	
+
 //global vars:
 var tblHtml; // this will hold an html "wrapper" for rows id'd for inclusion by the viewport
 var endTbl;  // the closing part of the wrapper
+// relocate the filter and notes from refTbl, and place after usrTbl is formed
+var tblnotes = $('#filtnote').detach();
+var filter = $('#tblfilter').detach();
 
 // global object used to define how table items get compared in a sort:
 var noPart1;
@@ -58,6 +61,10 @@ if ( useTbl ) {
     }
     formTbl( iCnt, fullTbl ); // form the usrTbl - variably sized later
 }
+// usrTbl now exists:
+$('#usrTbl').before(filter);
+$('#usrTbl').before(tblnotes);
+filterSetup();
 
 // Create the html for the viewport table, using the rows identified in "tblRowsArray"
 //   arg of the function below   
@@ -204,9 +211,11 @@ function IdTableElements(boundsStr) {
     var hikeSet = new Array();
     var tblEl = new Array(); // holds the index into the row number array: tblRows
     var pinLat;
-    var pinLng;
-    // REMOVE previous table:
-    $('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
+	// REMOVE previous items:
+	if ($('#nohikes').length) {
+		$('#nohikes').remove();
+	}
+	$('div #usrTbl').replaceWith('<div id="usrTbl"></div>');
     /* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
     var n = 0;
     var rowCnt = 0;
@@ -223,8 +232,9 @@ function IdTableElements(boundsStr) {
         }	
     }
     if ( rowCnt === 0 ) {
-        msg = '<p>NO hikes in this area</p>';;
-        $('#usrTbl').append(msg);
+		msg = '<p id="nohikes" style="color:brown;margin-left:24px;">NO hikes in this area</p>';
+		$('#usrTbl').after(msg);
+        formTbl( 0, tblEl );
     } else {
         formTbl( rowCnt, tblEl );
     }

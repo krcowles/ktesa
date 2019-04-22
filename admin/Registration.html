@@ -55,15 +55,15 @@
 <form id="registration" target="_blank" action="create_user.php" method="POST">
     <fieldset>
         <legend>Required Information</legend>
-        <label for="firstname">First Name: </label>
+        <label for="firstname">First Name: [Max 20 Characters]</label>
         <input type="text" name="firstname" size="30" 
-               class="required" value="" /><br />
-        <label for="lastname">Last Name: </label>
+               class="required" maxlength="20" value="" /><br />
+        <label for="lastname">Last Name: [Max 30 Characters]</label>
         <input type="text" name="lastname" size="40" 
-               class="required" value="" /><br />
-        <label for="usr">Supply a User Name: </label>
-        <input type="text" name="usr" size="20" 
-               class="required" value="" /><br /><br />
+               class="required" maxlength="30" value="" /><br />
+        <label for="usr">Supply a User Name: [Max 32 Characters]</label>
+        <input type="text" name="usr" size="30" 
+               class="required" maxlength="32" value="" /><br /><br />
         <p id="pnote">Note: Passwords must be at least 8 characters long and 
             should contain a mix of characters (alpha, numeric, special).</p>
         <label for="password">Enter a password: </label>
@@ -87,12 +87,13 @@
     </fieldset>
     <fieldset>
         <legend>Optional</legend>
-        <label for="facebook">Facebook URL: </label>
-        <input type="text" name="facebook" size="50" class="url" /><br />
-        <label for="twitter">Twitter Handle: </label>
-        <input type="text" name="twitter" size="20" /><br />
-        <label for="bio">Anything you would like us to know about you?</label><br />
-        <textarea name="bio" cols="80" rows="10"></textarea>
+        <label for="facebook">Facebook URL: [Max 100 Characters]</label>
+        <input type="text" name="facebook" size="50" 
+            maxlength="100" class="url" /><br />
+        <label for="twitter">Twitter Handle: [Max 20 Characters]</label>
+        <input type="text" name="twitter" size="20" maxlength="20" /><br />
+        <label for="bio">Anything you would like us to know about you? [Max 500 Characters]</label><br />
+        <textarea name="bio" cols="80" rows="10" maxlength="500"></textarea>
     </fieldset><br />
     <input id="setuser" type="submit" value="Submit My Info" /><br />
     <input type="reset" value="Clear all fields" /><br /><br />

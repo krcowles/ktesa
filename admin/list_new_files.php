@@ -9,22 +9,28 @@
  * @license No license to date
  * @link    ../docs/
  */
+session_start();
 $request = filter_input(INPUT_GET, 'request');  // either 'files' or 'pictures'
+$dtFile = filter_input(INPUT_GET, 'dtFile');  // filepath for comparison picture
 $tmpPix = sys_get_temp_dir() . '/newPix.zip';
 if (file_exists($tmpPix)) {
     unlink($tmpPix);
 }
 // before changing directory:
 require '../php/global_boot.php';
-$dir_iterator = new RecursiveDirectoryIterator("../", RecursiveDirectoryIterator::SKIP_DOTS);
-$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+$dir_iterator = new RecursiveDirectoryIterator(
+    "../", RecursiveDirectoryIterator::SKIP_DOTS
+);
+$iterator = new RecursiveIteratorIterator(
+    $dir_iterator, RecursiveIteratorIterator::SELF_FIRST
+);
 // could use CHILD_FIRST if you so wish
-$uploadDate = filemtime("./dummy.txt") + 20; // Upload time plus 20 seconds for unzip
 //$inputDate = "02/20/2019 1:30:00"; // Use these lines to manually enter a date
 //$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
-$udate = date(DATE_RFC2822, $uploadDate);
-// get location of pictures directory before proceeding
+// save current directory location, prior to changing to find 'pictures'
 $current = getcwd();
+$adminDir = $current;
+// get location of pictures directory
 $ups = 0;
 // find level at which pictures directory resides
 while (!in_array('pictures', scandir($current))) {
@@ -35,6 +41,14 @@ while (!in_array('pictures', scandir($current))) {
         throw new Exception("Can't find pictures directory!");
     }
 }
+if (!$dtFile) {
+    // Upload time plus 20 seconds for unzip
+    $uploadDate = filemtime("{$adminDir}/dummy.txt") + 20;
+} else {
+    // Use the date/time from the file given as a param
+    $uploadDate = filemtime("./{$dtFile}");
+}
+$udate = date(DATE_RFC2822, $uploadDate);
 
 $dir_iterator = new RecursiveDirectoryIterator(
     ".", RecursiveDirectoryIterator::SKIP_DOTS
@@ -65,19 +79,26 @@ if ($request === 'pictures') {
     if ($stat !== true) {
         throw new Exception("ZipArchive Error: " . $stat);
     }
+    $iter = 0;  // need to know if there are no pix
     foreach ($items as $newpic) {
         if (strpos($newpic, 'pictures/') !== false 
             && strpos($newpic, 'DS_Store') === false
         ) {
             $zip->addFile($newpic);
+            $iter++;
         }
     }
     $zip->close();
-    header('Content-Type: application/octet-stream');
-    header("Content-Transfer-Encoding: Binary");
-    header("Content-disposition: attachment; filename=newPix.zip");
-    readfile($tmpPix);
-    exit();
+    if ($iter === 0) {
+        $_SESSION['nopix'] = "No new pictures to download";
+        header("Location: admintools.php");
+    } else {
+        header('Content-Type: application/octet-stream');
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=newPix.zip");
+        readfile($tmpPix);
+        exit();
+    }
 }
 ?>
 <!DOCTYPE html>

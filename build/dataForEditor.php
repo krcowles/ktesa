@@ -12,14 +12,14 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
-session_start();
+session_start();  // saves number of current tab displayed & upload msgs
 
 // query string data:
-$hikeNo = filter_input(INPUT_GET, 'hno'); // all tabs
+$hikeNo = filter_input(INPUT_GET, 'hikeNo'); // all tabs
 $usr = filter_input(INPUT_GET, 'usr');
 $tab = filter_input(INPUT_GET, 'tab');
 // data for drop-down boxes
-$selectData = dropdownData($pdo, 'cls');
+$selectData = dropdownData($pdo, 'cls');  // buildFunctions.php
 $cnames = array_values($selectData);
 $groups = array_keys($selectData);
 /**
@@ -30,40 +30,42 @@ $groups = array_keys($selectData);
 $hikereq = "SELECT * FROM EHIKES WHERE indxNo = :hikeno;";
 $hikeq = $pdo->prepare($hikereq);
 if ($hikeq->execute(["hikeno" => $hikeNo]) === false) {
-    throw new Exception(
-        "Hike {$hikeNo} Not Found in EHIKES; File " . __FILE__ . 
-        " line no. " . __LINE__
-    );
+    throw new Exception("Hike {$hikeNo} Not Found in EHIKES");
 }
 $hike = $hikeq->fetch(PDO::FETCH_ASSOC);
-$pgTitle = trim($hike['pgTitle']);  // this should never be null
-$locale = fetch($hike['locale']);
-$marker = fetch($hike['marker']);  // this also should never be null...
-$collection = fetch($hike['collection']);
-$cgroup = fetch($hike['cgroup']);
-$cname = fetch($hike['cname']);
+$pgTitle = trim($hike['pgTitle']);  // this item should never be null
+$locale = $hike['locale'];
+$marker = $hike['marker'];          // this also should never be null
+$collection = $hike['collection'];
+$cgroup = $hike['cgroup'];
+$cname = $hike['cname'];
 // Special case: when a new page requests to add a new group, advise the js
-if ($marker === 'Cluster' && $cgroup === '') {
+if ($marker === 'Cluster' && empty($cgroup)) {
     $marker = 'Normal';
     $grpReq = "YES";
 } else {
     $grpReq = "NO";
 }
-$logistics = fetch($hike['logistics']);
-$miles = fetch($hike['miles']);
-$feet = fetch($hike['feet']);
-$diff = fetch($hike['diff']);
-$fac = fetch($hike['fac']);
-$wow = fetch($hike['wow']);
-$seasons = fetch($hike['seasons']);
-$expo = fetch($hike['expo']);
-$curr_gpx = fetch($hike['gpx']);
-$curr_trk = fetch($hike['trk']);
-$lat = fetch($hike['lat']);
-$lng = fetch($hike['lng']);
-//$purl1 = fetch($hike['purl1']);  // not currently editable
-//$purl2 = fetch($hike['purl2']);  // not currently editable
-$dirs = fetch($hike['dirs']);
+$logistics = $hike['logistics'];
+$miles = $hike['miles'];
+if (empty($miles)) {
+    $miles = '';
+} else {
+    $miles = sprintf("%.2f", $miles);
+}
+$feet = $hike['feet'];
+$diff = $hike['diff'];
+$fac = $hike['fac'];
+$wow = $hike['wow'];
+$seasons = $hike['seasons'];
+$expo = $hike['expo'];
+$curr_gpx = $hike['gpx'];
+$curr_trk = $hike['trk'];
+$lat = $hike['lat'];
+$lng = $hike['lng'];
+//$purl1 = $hike['purl1'];  // not currently editable
+//$purl2 = $hike['purl2'];  // not currently editable
+$dirs = $hike['dirs'];
 /**
  * Tab2: [photo displays (already uploaded)]
  */
@@ -71,8 +73,8 @@ require "photoSelect.php";
 /**
  * Tab 3: [hike tips and hike descripton]
  */
-$tips = fetch($hike['tips']);
-$info = fetch($hike['info']);
+$tips = $hike['tips'];
+$info = $hike['info'];
 /**
  * Tab 4: [References and GPS data]
  */
@@ -85,12 +87,9 @@ $rtypes = [];
 $rit1s = [];
 $rit2s = [];
 foreach ($refs as $ref) {
-    $reftype = fetch($ref['rtype']);
-    array_push($rtypes, $reftype);
-    $ritem1 = fetch($ref['rit1']);
-    array_push($rit1s, $ritem1);
-    $ritem2 = fetch($ref['rit2']);
-    array_push($rit2s, $ritem2);
+    array_push($rtypes, $ref['rtype']);
+    array_push($rit1s, $ref['rit1']);
+    array_push($rit2s, $ref['rit2']);
 }
 // Create the book drop-down options:
 $bkReq = "SELECT * FROM BOOKS;";
@@ -117,12 +116,18 @@ $gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = :hikeno " .
 $gpsq = $pdo->prepare($gpsreq);
 $gpsq->execute(["hikeno" => $hikeNo]);
 $gpsDbCnt = $gpsq->rowCount(); // needed for tab4display.php
-$pl = array();
-$pu = array();
-$pc = array();
+$label = [];
+$url = [];
+$clickText = [];
+$datId = [];
 for ($j=0; $j<$gpsDbCnt; $j++) {
     $gpsdat = $gpsq->fetch(PDO::FETCH_ASSOC);
-    $pl[$j] = fetch($gpsdat['label']);
-    $pu[$j] = fetch($gpsdat['url']);
-    $pc[$j] = fetch($gpsdat['clickText']);
+    $datId[$j] = $gpsdat['datId'];
+    $url[$j] = $gpsdat['url'];
+    $clickText[$j] = $gpsdat['clickText'];
+    if ((strpos($url[$j], 'Map') !== false) || (strpos($url[$j], 'MAP') !== false)) {
+        $fname[$j] = substr($url[$j], 8);
+    } else {
+        $fname[$j] = substr($url[$j], 7);
+    }
 }
