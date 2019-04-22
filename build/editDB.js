@@ -117,7 +117,7 @@ $('#showll').on('click', function() {
 
 // open the photo uploader page (tab2)
 $('#upld').on('click', function() {
-    var user = $('input[name=pid]').val();
+    var user = $('input[name=usr]').val();
     var uploader = 'ktesaUploader.php?indx=' + hike + "&usr=" + user;
     window.open(uploader, "_blank");
 });

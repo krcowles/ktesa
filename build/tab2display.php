@@ -1,6 +1,6 @@
 <hr />
 <p style="color:brown;">Upload your photos (you will be directed to a new page)</p> 
-<input type="button" name="upld" id="upld" value="Upload" /></h3>
+<input type="button" name="upld" id="upld" value="Upload" /></p>
 <hr />
 <p style="color:brown;"><em>Edit captions below each photo as needed
     and assign display options.</em></p>
@@ -23,13 +23,12 @@
             Use All Photos on Map
     </div>
     <div style="margin-left:16px;">
-<?= $html;?>
-
-<?php if ($wayPointCount > 0) : ?>
+    <?= $html;?>
+    <?php if ($wayPointCount > 0) : ?>
     <!-- when waypoints are present: -->
     <hr />
     <p style="color:brown;">The following waypoints are available for edit</p>
-    <?php for ($i=0; $i<$wayPointCount; $i++) : ?>
+        <?php for ($i=0; $i<$wayPointCount; $i++) : ?>
         <div id="wpts">
             <input type="hidden" name="wids[]" value="<?= $wids[$i];?>" />
             <p id="wicn<?= $i;?>" style="display:none;"><?= $wicon[$i];?></p>
@@ -54,10 +53,9 @@
                 name="wlng[]"><?=$waylng[$i];?></textarea>
             <br /><br />
         </div>
-    <?php endfor; ?>
-<!-- end waypoint editing -->
-<?php endif; ?>
-
+        <?php endfor; ?>
+    <!-- end waypoint editing -->
+    <?php endif; ?>
 <?php endif; ?>
 <script type="text/javascript">
     var phTitles = <?php echo $jsTitles;?>;

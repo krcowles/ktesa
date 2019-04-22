@@ -533,6 +533,6 @@ function resets() {
 $('#ret').on('click', function(ev) {
     ev.preventDefault();
     var user = $('#eusr').text();
-    var newed = "editDB.php?hno=" + ehikeIndxNo + "&usr=" + user + "&tab=2";
+    var newed = "editDB.php?hikeNo=" + ehikeIndxNo + "&usr=" + user + "&tab=2";
     window.open(newed, "_self");
 });
