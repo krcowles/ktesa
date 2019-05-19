@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -109,7 +109,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=219 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -142,7 +142,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=702 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=717 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -355,7 +355,7 @@ INSERT INTO HIKES VALUES
 ('76','Piedras Marcadas','mstr','Albuquerque','Normal',NULL,NULL,NULL,'Out-and-back','2.00','20','Easy','None','Petroglyphs','Any','Full sun',NULL,NULL,'35.188867','-106.686269','a:3:{i:0;s:19:\"PiedrasMarcadas.jpg\";i:1;s:3:\"260\";i:2;s:3:\"363\";}',NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669829880176',NULL,'https://www.google.com/maps/place/Piedras Marcadas Park and Basin Parking, Albuquerque, NM 87120/@35.1766944,-106.6770491,15.56z/data=!4m5!3m4!1s0x872273d35034ea89:0x4d90adb325dc1e0b!8m2!3d35.1764993!4d-106.6756472',NULL,'Piedras Marcadas (\"Marked Rocks\") is the northernmost site along the roughly 17-mile edge of lava flow just northwest of Albuquerque, forming a significant part of the Petroglyphs National Monument. The trail has the most of the three sites in terms of petroglyph density, and is located close to a residential area. Once on the trail, however, the area feels much more remote as the homes and businesses fade into the distance. The petroglyphs, formed by scratching the surface of the hard black coating covering the lava boulders, are estimated to be 400-700 years old. The newer formed glyphs are brighter, as the older ones continue to accumulate new coatings from the constant weathering.',NULL,NULL,NULL),
 ('77','Rinconada Canyon','mstr','Albuquerque','Normal',NULL,NULL,NULL,'Loop','2.20','20','Easy','None','Glyphs & view','Any','Full sun',NULL,NULL,'35.126851','-106.724635','a:3:{i:0;s:16:\"RinconadaMap.jpg\";i:1;s:3:\"260\";i:2;s:3:\"477\";}',NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669380888432',NULL,'https://www.google.com/maps/dir//St Josephs Ave, Albuquerque, NM 87120/@35.1300681,-106.7271982,15.38z/data=!4m16!1m7!3m6!1s0x87226d7def9cdd71:0x4c503e9585baa79!2sSt Josephs Ave, Albuquerque, NM 87120!3b1!8m2!3d35.1266213!4d-106.7241505!4m7!1m0!1m5!1m1!1s0x87226d7def9cdd71:0x4c503e9585baa79!2m2!1d-106.7241505!2d35.1266213',NULL,'Rinconada Canyon is just south of the Visitor Center of the Petroglyphs National Monument. It is probably the longest trek with fewer specimens to view than the others (in terms of density, or number of petroglyphs per unit distance). Another issue for that site is that it was flooded out in 2013 and the trail is still under re-construction. There are nonetheless interesting viewing opportunities. The trail is still under construction (2016) with areas \"roped off\" with cable, which does not allow for close-up viewing.',NULL,NULL,NULL),
 ('78','ABQ Volcanoes','mstr','Albuquerque','Normal',NULL,NULL,NULL,'Out-and-back','4.00','198','Moderate','Outdoor John','Geology/views','Not Summer','Full sun','ABQ_Volcanoes.GPX','volc.json','35.13075','-106.7802667','a:3:{i:0;s:14:\"VolcanoMap.jpg\";i:1;s:3:\"583\";i:2;s:3:\"570\";}',NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157668175624985',NULL,'https://www.google.com/maps/place/Volcanoes National Monument Parking/@35.1295156,-106.8018404,13.57z/data=!4m5!3m4!1s0x87226c50c8714d49:0x883cb08312344f62!8m2!3d35.130656!4d-106.7804253',NULL,'The West Mesa Volcanoes, or Albuquerque Volcanoes, form a landmark visible from all of Albuquerque on the western horizon. They are known as \"fissure\" volcanoes - a somewhat rare type occurring where magma surfaced along a fault line. They are geologically \"young\", perhaps about 150,000 years old. The three main cones are known locally as the \"Three Sisters\", and are aligned north to south along with two other smaller cones on the north end - Bond and Butte. The trails are wide and easy to traverse, with a climb up to the peak of each. From the parking lot to the first volcano, JA Cone, it is about a quarter-mile trek, with about three-quarters of a mile between each of the next two.',NULL,NULL,NULL),
-('79','Big Tubes Area','mstr','Grants','Normal',NULL,'','','Out-and-back',NULL,NULL,'Easy-Moderate','None','Massive lava','Not Winter','Full sun','Tubes_Edited.GPX','Tubes_Edited.json','34.9446839746','-108.1069675181',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157666437314513',NULL,'https://www.google.com/maps/dir//34.944733,-108.106983/@34.9548476,-108.1359078,14.1z','To get to the Big Tubes area, a four-wheel drive is recommended, as the road (between gradings) can be quite rough. It is impassable in wet or snowy weather. While CR 42 is in relatively good shape, roads diverging from it can be pitted, deeply rutted and otherwise tricky. In addition, extra care is required navigating the tubes area. A GPS device is highly recommended - and without it, do not deviate from the path marked by cairns. People have entered and not returned from the lava fields. The cairns, consisting of the same lava materials as the lava field, are sometimes not so easy to locate.','The Big Tubes area is loaded with collapsed lava tubes, caves and lava bridges, but the walk/hike is arduous owing to the sharp, angular lava field. Once inside, the landscape looks virtually the same in every direction. Although large cairns of lava rock are piled high to mark the way, if you diverge from the trail, it is very easy to get lost. There is no cell service in the location, it is exposed to full sun all day, and numerous flies and other insects are present. The collapsed lava tubes are quite large and extensive in the area, and the resulting bridges are intriguing, though hard to photograph due to the shadows and contrast in the area on a sunny day. Caving permits (free) are required for any cave exploration, though the cave entrances are not considered a spelunking activity, and can present fascinating views into the tubes. This truly is a one-of-a-kind experience!',NULL,NULL,NULL),
+('79','Big Tubes Area','mstr','Grants','Normal',NULL,'','','Out-and-back','1.80','100','Easy-Moderate','None','Massive lava','Not Winter','Full sun','Tubes_Edited.GPX','Tubes_Edited.json','34.9446839746','-108.1069675181',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157666437314513',NULL,'https://www.google.com/maps/dir//34.944733,-108.106983/@34.9548476,-108.1359078,14.1z','To get to the Big Tubes area, a four-wheel drive is recommended, as the road (between gradings) can be quite rough. It is impassable in wet or snowy weather. While CR 42 is in relatively good shape, roads diverging from it can be pitted, deeply rutted and otherwise tricky. In addition, extra care is required navigating the tubes area. A GPS device is highly recommended - and without it, do not deviate from the path marked by cairns. People have entered and not returned from the lava fields. The cairns, consisting of the same lava materials as the lava field, are sometimes not so easy to locate.','The Big Tubes area is loaded with collapsed lava tubes, caves and lava bridges, but the walk/hike is arduous owing to the sharp, angular lava field. Once inside, the landscape looks virtually the same in every direction. Although large cairns of lava rock are piled high to mark the way, if you diverge from the trail, it is very easy to get lost. There is no cell service in the location, it is exposed to full sun all day, and numerous flies and other insects are present. The collapsed lava tubes are quite large and extensive in the area, and the resulting bridges are intriguing, though hard to photograph due to the shadows and contrast in the area on a sunny day. Caving permits (free) are required for any cave exploration, though the cave entrances are not considered a spelunking activity, and can present fascinating views into the tubes. This truly is a one-of-a-kind experience!',NULL,NULL,NULL),
 ('80','Ice Cave','mstr','Grants','Normal',NULL,NULL,NULL,'Out-and-back','2.00','200','Easy','Visitor Center','Fascinating','Not Winter','Full sun',NULL,NULL,'34.99311','-108.080084',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157668605933682',NULL,'https://www.google.com/maps/place/Ice Caves/@34.9957653,-108.0961469,14.27z/data=!4m5!3m4!1s0x8724764068f2ef7d:0x3969cc1468076f2d!8m2!3d34.9932388!4d-108.0807326',NULL,'The Bandera Ice Cave is located just off of Highway 53, about 24 miles south of the I-40 exit, and is not part of the National Monument - it is privately owned, and a fee is paid to visit the cave. The trail is only about a mile or so, and proceeds up part of the Bandera Lava Flow and then to the ice cave, where legend has it that it was used for many years by locals to cool and preserve food stuffs. Access to the cave is provided by a staircase which descends and cools as one proceeds. The Bandera Crater is the largest crater of the El Malpais area, and is one of the youngest - worth a visit.',NULL,NULL,NULL),
 ('81','El Calderon','mstr','Grants','Normal',NULL,NULL,NULL,'Loop','4.50','378','Easy','Picnic Area','Lava features','Not Winter','Full sun','ElCalderon.GPX','cald.json','34.9698','-108.00325',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157666391880544',NULL,'https://www.google.com/maps/place/El Calderon/@34.9626138,-108.0347575,12.88z/data=!4m5!3m4!1s0x87238a46a9ca084f:0xe1411fc30513063e!8m2!3d34.9586528!4d-108.0178379',NULL,'El Calderon is a hike that overlaps part of the Continental Divide Trail, and provides opportunities to view some interesting lava features close up. There are not only collapsed tubes and sinks, but also the El Calderon volcano as well, to which the trail provides access. The features appear somewhat suddenly in what appears to be an open grassy, wooded plain.',NULL,NULL,NULL),
 ('82','Una Vida','mstr','Lybrook','At VC','2',NULL,NULL,'Out-and-back','0.80','100','Easy','Visitor Center','Ancient ruins','Any','Full sun',NULL,NULL,'336.064977','-107.969867','a:3:{i:0;s:14:\"UnaVidaMap.jpg\";i:1;s:3:\"347\";i:2;s:3:\"498\";}',NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157666368675313',NULL,'https://www.google.com/maps/dir//Chaco Canyon, New Mexico/@36.055624,-107.9938402,12z/data=!4m16!1m7!3m6!1s0x873ca8da58ec928b:0xe9f1727039c6bed6!2sChaco Canyon!3b1!8m2!3d36.060293!4d-107.967008!4m7!1m0!1m5!1m1!1s0x873ca8da58ec928b:0xe9f1727039c6bed6!2m2!1d-107.967008!2d36.060293',NULL,'Una Vida is the first site/ruins encountered when entering the park. It is accessed directly behind the Visitor Center. The round trip walk through the site is only about 0.5 miles, but if you are also walking up the somewhat steep hill to see the petroglyphs there, another 0.25 miles is added to the total. Una Vida is still partially unexcavated, and constitutes one of the over 150 \"Great House\" ruins in the area (the San Juan Basin). Located prominently on a hillside, archeologists now believe that the location was specifically set to impress those approaching the Chaco Canyon complex. It is also one of the earliest Great Houses, believed to have been constructed around 850 AD.',NULL,NULL,NULL),
@@ -550,7 +550,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1453 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1457 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1332,12 +1332,6 @@ INSERT INTO REFS VALUES
 ('1426','200','Website:','https://www.summitpost.org/eye-of-the-sandias-trail/415176','SummitPost'),
 ('1427','200','Blog:','http://hikeyhikey.blogspot.com/2013/03/hiking-albuquerques-southern-sandia.html','Hikey Hikey'),
 ('1428','201','Book:','21','Tamara Massong'),
-('1429','79','Book:','5','Jon Kramer & Julie Martinez'),
-('1430','79','Book:','6','Craig Martin'),
-('1431','79','Book:','3','Laurence Parent'),
-('1432','79','Website:','http://www.americansouthwest.net/new_mexico/el_malpais_lavabeds/big-tubes.html','American Southwest'),
-('1433','79','App:','https://www.alltrails.com/trail/us/new-mexico/big-tubes-trail','AllTrails.com'),
-('1434','79','Website:','https://explorenm.com/hikes/BigTubes/','Explore New Mexico'),
 ('1435','202','Book:','2',NULL),
 ('1436','202','Book:','3',NULL),
 ('1437','202','App:','https://www.alltrails.com/trail/us/new-mexico/sandstone-bluffs-trail','AllTrails.com'),
@@ -1352,7 +1346,13 @@ INSERT INTO REFS VALUES
 ('1447','204','App:','https://www.alltrails.com/trail/us/new-mexico/narrows-rim-trail','AllTrails.com'),
 ('1448','204','Website:','https://www.blm.gov/sites/blm.gov/files/NM_ELMA_Narrows%20Rim_09.pdf','BLM Brochure'),
 ('1449','204','Blog:','https://www.onlyinyourstate.com/new-mexico/best-nm-hike-youve-never-done/','Only In Your State'),
-('1450','204','Website:','https://fourcornersgeotourism.com/content/blm-el-malpais-nca-narrows-rim-trail/fca8be7e74fc3839fcf5','National Geographic');
+('1450','204','Website:','https://fourcornersgeotourism.com/content/blm-el-malpais-nca-narrows-rim-trail/fca8be7e74fc3839fcf5','National Geographic'),
+('1451','79','Book:','5','Jon Kramer & Julie Martinez'),
+('1452','79','Book:','6','Craig Martin'),
+('1453','79','Book:','3','Laurence Parent'),
+('1454','79','Website:','http://www.americansouthwest.net/new_mexico/el_malpais_lavabeds/big-tubes.html','American Southwest'),
+('1455','79','App:','https://www.alltrails.com/trail/us/new-mexico/big-tubes-trail','AllTrails.com'),
+('1456','79','Website:','https://explorenm.com/hikes/BigTubes/','Explore New Mexico');
 
 
 
@@ -1376,7 +1376,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4042 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4056 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3563,20 +3563,6 @@ INSERT INTO TSV VALUES
 ('3994','201',NULL,'IMG_1114','Y','Y','Early view of U-Mound from the trailhead','35.0642194444','-106.4830388889','2211',NULL,'2019-04-15 12:00:19','IMG_1114','240','320',NULL,NULL),
 ('3995','201',NULL,'IMG_1116','N','N','On the north end of U-Mound, looking north','35.0637583333','-106.4818333333','2212',NULL,'2019-04-15 12:03:12','IMG_1116','240','320',NULL,NULL),
 ('3996','201',NULL,'IMG_1117','Y','Y','Early view of U-Mound from the trailhead','35.0643527778','-106.4813388889','2213',NULL,'2019-04-15 12:05:12','IMG_1117','320','240',NULL,NULL),
-('3997','79',NULL,'IMG_20190506_114633620_HDR','Y','Y','A not-so-obvious point of descent into Big Skylight Cave','34.94559','-108.101303','2214',NULL,'2019-05-06 11:46:38','IMG_20190506_114633620_HDR','180','320',NULL,NULL),
-('3998','79',NULL,'IMG_1220','Y','N','The \"trail\" down is narrow but passable',NULL,NULL,'2215',NULL,'2019-05-06 11:39:44','IMG_1220','240','320',NULL,NULL),
-('3999','79',NULL,'IMG_1208','Y','N','Big Skylight is truly big, with huge vaulted ceiling',NULL,NULL,'2216',NULL,'2019-05-06 11:15:45','IMG_1208','240','320',NULL,NULL),
-('4000','79',NULL,'IMG_1216','Y','N','Smooth, ribbed curving tunnel walls inside',NULL,NULL,'2217',NULL,'2019-05-06 11:26:33','IMG_1216','240','320',NULL,NULL),
-('4001','79',NULL,'IMG_1214','Y','N','A not-so-obvious point of descent into Big Skylight Cave',NULL,NULL,'2218',NULL,'2019-05-06 11:25:42','IMG_1214','426','320',NULL,NULL),
-('4002','79',NULL,'IMG_1118','Y','N','The way down is narrow but passable',NULL,NULL,'2219',NULL,NULL,'IMG_1118','240','320',NULL,NULL),
-('4003','79',NULL,'IMG_2601','Y','Y','Proof that cactus can grow anywhere...','34.9451611111','-108.1027833333','2220',NULL,'2016-05-23 13:17:40','IMG_2601','240','320',NULL,NULL),
-('4004','79',NULL,'IMG_1227','Y','Y','The \"Four Windows\" cave mouth','34.9456138889','-108.0989083333','2221',NULL,'2019-05-06 12:02:25','IMG_1227','240','320',NULL,NULL),
-('4005','79',NULL,'IMG_1230','Y','Y','One of the \"Four Windows\"','34.9459444444','-108.0989138889','2222',NULL,'2019-05-06 12:06:12','IMG_1230','240','320',NULL,NULL),
-('4006','79',NULL,'IMG_1229','Y','Y','An additional window into \"Four Windows\"','34.9460333333','-108.0989305556','2223',NULL,'2019-05-06 12:04:38','IMG_1229','240','320',NULL,NULL),
-('4007','79',NULL,'IMG_1231','Y','Y','Two eyes of the \"Four Windows\" ceiling','34.9461055556','-108.0990444444','2224',NULL,'2019-05-06 12:07:37','IMG_1231','240','320',NULL,NULL),
-('4008','79',NULL,'IMG_20190506_115437381_HDR','Y','Y','In the \"Caterpillar Collapse\" region','34.946539','-108.1008719722','2225',NULL,'2019-05-06 11:54:40','IMG_20190506_115437381_HDR','180','320',NULL,NULL),
-('4009','79',NULL,'IMG_1239','Y','Y','A pause in the \"Seven Bridges\" area','34.9425722222','-108.0979305556','2226',NULL,'2019-05-06 12:28:03','IMG_1239','240','320',NULL,NULL),
-('4010','79',NULL,'IMG_1203','Y','Y','The trail begins in the open and disappears into the lava','34.9445583333','-108.1068722222','2227',NULL,'2019-05-06 10:48:14','IMG_1203','240','320',NULL,NULL),
 ('4011','202',NULL,'IMG_1177','Y','N','Pools of water can accumulate on the bluffs providing a scenic twist','34.9453333333','-107.838','2245',NULL,'2013-08-01 11:17:50','IMG_1177','240','320',NULL,NULL),
 ('4012','202',NULL,'IMG_1183','Y','Y','The line of the bluffs extends within walking distance of the parking area','34.9455','-107.8381666667','2246',NULL,'2013-08-01 11:21:39','IMG_1183','240','320',NULL,NULL),
 ('4013','202',NULL,'IMG_1191','Y','Y','A \"stand-alone\" bluff ','34.9459222222','-107.8380277778','2247',NULL,'2015-09-12 16:19:07','IMG_1191','240','320',NULL,NULL),
@@ -3600,9 +3586,23 @@ INSERT INTO TSV VALUES
 ('4037','204',NULL,'IMG_1254','Y','Y','Great views of the lava field are seen with the Narrows sandstone in relief','34.842975','-107.91745','2239',NULL,'2019-05-06 17:55:26','IMG_1254','240','320',NULL,NULL),
 ('4038','204',NULL,'IMG_20190506_151930489_HDR','Y','Y','The lava appears to go on forever!','34.842986','-107.9172379722','2240',NULL,'2019-05-06 15:19:34','IMG_20190506_151930489_HDR','180','320',NULL,NULL),
 ('4039','204',NULL,'IMG_1249','Y','Y','Along the Rim Trail','34.8536833333','-107.91075','2242',NULL,'2019-05-06 15:42:48','IMG_1249','320','240',NULL,NULL),
-('4040','204',NULL,'IMG_1251','Y','Y','Tom stands above the lava field','34.8731638889','-107.8998861111','2243',NULL,'2019-05-06 16:21:25','IMG_1251','240','320',NULL,NULL);
+('4040','204',NULL,'IMG_1251','Y','Y','Tom stands above the lava field','34.8731638889','-107.8998861111','2243',NULL,'2019-05-06 16:21:25','IMG_1251','240','320',NULL,NULL),
+('4041','204',NULL,'IMG_1252','Y','Y','A view of Ventana Arch at the terminus','34.8739388889','-107.8950805556','2244',NULL,'2019-05-06 16:30:54','IMG_1252','240','320',NULL,NULL),
+('4042','79',NULL,'IMG_20190506_114633620_HDR','Y','Y','A not-so-obvious point of descent into Big Skylight Cave','34.94559','-108.101303','2214',NULL,'2019-05-06 11:46:38','IMG_20190506_114633620_HDR','180','320',NULL,NULL),
+('4043','79',NULL,'IMG_1220','Y','N','The \"trail\" down is narrow but passable',NULL,NULL,'2215',NULL,'2019-05-06 11:39:44','IMG_1220','240','320',NULL,NULL),
+('4044','79',NULL,'IMG_1208','Y','N','Big Skylight is truly big, with huge vaulted ceiling',NULL,NULL,'2216',NULL,'2019-05-06 11:15:45','IMG_1208','240','320',NULL,NULL),
+('4045','79',NULL,'IMG_1216','Y','N','Smooth, ribbed curving tunnel walls inside',NULL,NULL,'2217',NULL,'2019-05-06 11:26:33','IMG_1216','240','320',NULL,NULL),
+('4046','79',NULL,'IMG_1214','Y','N','A not-so-obvious point of descent into Big Skylight Cave',NULL,NULL,'2218',NULL,'2019-05-06 11:25:42','IMG_1214','426','320',NULL,NULL),
+('4047','79',NULL,'IMG_1118','Y','N','The way down is narrow but passable',NULL,NULL,'2219',NULL,NULL,'IMG_1118','240','320',NULL,NULL),
+('4048','79',NULL,'IMG_2601','Y','Y','Proof that cactus can grow anywhere...','34.9451611111','-108.1027833333','2220',NULL,'2016-05-23 13:17:40','IMG_2601','240','320',NULL,NULL),
+('4049','79',NULL,'IMG_1227','Y','Y','The \"Four Windows\" cave mouth','34.9456138889','-108.0989083333','2221',NULL,'2019-05-06 12:02:25','IMG_1227','240','320',NULL,NULL),
+('4050','79',NULL,'IMG_1230','Y','Y','One of the \"Four Windows\"','34.9459444444','-108.0989138889','2222',NULL,'2019-05-06 12:06:12','IMG_1230','240','320',NULL,NULL),
+('4051','79',NULL,'IMG_1229','Y','Y','An additional window into \"Four Windows\"','34.9460333333','-108.0989305556','2223',NULL,'2019-05-06 12:04:38','IMG_1229','240','320',NULL,NULL),
+('4052','79',NULL,'IMG_1231','Y','Y','Two eyes of the \"Four Windows\" ceiling','34.9461055556','-108.0990444444','2224',NULL,'2019-05-06 12:07:37','IMG_1231','240','320',NULL,NULL),
+('4053','79',NULL,'IMG_20190506_115437381_HDR','Y','Y','In the \"Caterpillar Collapse\" region','34.946539','-108.1008719722','2225',NULL,'2019-05-06 11:54:40','IMG_20190506_115437381_HDR','180','320',NULL,NULL),
+('4054','79',NULL,'IMG_1239','Y','Y','A pause in the \"Seven Bridges\" area','34.9425722222','-108.0979305556','2226',NULL,'2019-05-06 12:28:03','IMG_1239','240','320',NULL,NULL);
 INSERT INTO TSV VALUES
-('4041','204',NULL,'IMG_1252','Y','Y','A view of Ventana Arch at the terminus','34.8739388889','-107.8950805556','2244',NULL,'2019-05-06 16:30:54','IMG_1252','240','320',NULL,NULL);
+('4055','79',NULL,'IMG_1203','Y','Y','The trail begins in the open and disappears into the lava','34.9445583333','-108.1068722222','2227',NULL,'2019-05-06 10:48:14','IMG_1203','240','320',NULL,NULL);
 
 
 
