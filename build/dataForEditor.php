@@ -66,15 +66,44 @@ $lng = $hike['lng'];
 //$purl1 = $hike['purl1'];  // not currently editable
 //$purl2 = $hike['purl2'];  // not currently editable
 $dirs = $hike['dirs'];
+
 /**
- * Tab2: [photo displays (already uploaded)]
+ * Tab2: [photo displays (already uploaded) and any waypoints]
  */
 require "photoSelect.php";
+/**
+ * If the current gpx file has embedded waypoints, they are captured here
+ * and will be presented in tab2 for editing, along with any waypoints 
+ * associated with the page that are contained in the database (see 
+ * photoSelect.php, which extract db wpts from the ETSV table while gathering
+ * photo data). After 'Apply, waypoints embedded in the gpx file remain
+ * embedded there; waypoints present in the database will remain there.
+ */
+$gpxloc = '../gpx/' . $curr_gpx;
+$gpxWptCount = 0;
+// NOTE: 'file_exists' treats an empty dir as existing: [../gpx/ returns 'true']
+if (!empty($curr_gpx) && file_exists($gpxloc)) {
+    $rawgpx = simplexml_load_file($gpxloc);
+    $gpxWptCount = $rawgpx->wpt->count();
+    $gpxWptDes = [];
+    $gpxWptLat = [];
+    $gpxWptLng = [];
+    $gpxWptIcn = [];
+    for ($j=0; $j<$gpxWptCount; $j++) {
+        $gpxWptDes[$j] = $rawgpx->wpt[$j]->name;
+        $gpxWptLat[$j] = $rawgpx->wpt[$j]['lat'];
+        $gpxWptLng[$j] = $rawgpx->wpt[$j]['lon'];
+        $gpxWptIcn[$j] = $rawgpx->wpt[$j]->sym;
+    }
+}
+require "wayPointEdits.php";
+
 /**
  * Tab 3: [hike tips and hike descripton]
  */
 $tips = $hike['tips'];
 $info = $hike['info'];
+
 /**
  * Tab 4: [References and GPS data]
  */

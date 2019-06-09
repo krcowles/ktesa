@@ -73,6 +73,10 @@ body {
 .tstyle3 {
     height: 20px;
     width: 200px; }
+.tstyle4 {
+    height: 20px;
+    width: 160px;
+}
 textarea {
     font-family: Tahoma, sans-serif;
     font-size: 14px;
