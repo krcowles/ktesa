@@ -24,12 +24,11 @@
             Use All Photos on Map
     </div>
 <div style="margin-left:16px;">
+    <!-- </div> contained in $html -->
     <?= $html;?>
-</div>
 <?php endif; ?>
 
 <hr />
-<h3>Waypoint Editor</h3>
 <?= $wptedits;?>
 
 <script type="text/javascript">
