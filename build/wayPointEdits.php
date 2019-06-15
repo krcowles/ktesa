@@ -9,6 +9,32 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+/**
+ * If the current gpx file has embedded waypoints, they are captured here
+ * and will be presented in tab2 for editing, along with any waypoints 
+ * associated with the page that are contained in the database (see 
+ * photoSelect.php, which extract db wpts from the ETSV table while gathering
+ * photo data). After 'Apply, waypoints embedded in the gpx file remain
+ * embedded there; waypoints present in the database will remain there.
+ */
+$gpxloc = '../gpx/' . $curr_gpx;
+$gpxWptCount = 0;
+// NOTE: 'file_exists' treats an empty dir as existing: [../gpx/ returns 'true']
+if (!empty($curr_gpx) && file_exists($gpxloc)) {
+    $rawgpx = simplexml_load_file($gpxloc);
+    $gpxWptCount = $rawgpx->wpt->count();
+    $gpxWptDes = [];
+    $gpxWptLat = [];
+    $gpxWptLng = [];
+    $gpxWptIcn = [];
+    for ($j=0; $j<$gpxWptCount; $j++) {
+        $gpxWptDes[$j] = $rawgpx->wpt[$j]->name;
+        $gpxWptLat[$j] = $rawgpx->wpt[$j]['lat'];
+        $gpxWptLng[$j] = $rawgpx->wpt[$j]['lon'];
+        $gpxWptIcn[$j] = $rawgpx->wpt[$j]->sym;
+    }
+}
+
 $wptedits = '';
 
 // Header when no waypoints exist yet:
@@ -48,6 +74,7 @@ $icons = <<<WPTICONS
     <option value="Triangle, Yellow">Yellow Triangle</option>
 </select>
 WPTICONS;
+
 // Three possible states:
 // 1.
 if ($gpxWptCount === 0 && $wayPointCount === 0) { 
@@ -143,6 +170,8 @@ if ($wayPointCount > 0) {
         $wptedits .= '<textarea class="tstyle4 coords" '
             . 'name="dlng[]">' . $wlng[$n] . '</textarea>'
             . '<br /><br />' . PHP_EOL;
+        $wptedits .= '<input type="hidden" name="didx[]" value="'
+            . $wids[$n] . '" />';
     }
     $wptedits .= '</div>';
 

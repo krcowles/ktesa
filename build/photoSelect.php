@@ -20,6 +20,7 @@ if ($picq->rowCount() === 0) {
     $jsDescs = "''";
 } else {
     $inclPix = 'YES';
+    // NOTE: this will also be yes when there are no pics but there are waypoints
 }
 $wayPointCount = 0;
 $picCount = 0;
@@ -49,11 +50,11 @@ if ($inclPix === 'YES') {
         chdir('..');
         $current = getcwd();
     }
-    $wids = [];
-    $wdes = [];
+    $wids = [];  // 'picIdx' of waypoint
+    $wdes = [];  // 'title'
     $wlat = [];
     $wlng = [];
-    $wicn = [];
+    $wicn = []; // 'iclr' = icon symbol
     $picpath .= "pictures/nsize/";
     $picno = 0;
     $wptno = 0;
