@@ -569,6 +569,30 @@ function genLatLng($gpxobj, $trkno)
     }
 }
 /**
+ * This function will insert a new simpleXMLElement after a specified node.
+ * See https://stackoverflow.com/questions/3361036/php-simplexml-insert-node-at-certain-position
+ * 
+ * @param simpleXMLElement $insert node which is to be inserted
+ * @param simpleXMLElement $target node after which $insert will be placed
+ * 
+ * @return DOMNode original parent node
+ */
+function simplexmlInsertAfter(SimpleXMLElement $insert, SimpleXMLElement $target)
+{
+    $domTarg = dom_import_simplexml($target);
+    $domIns = $domTarg->ownerDocument->importNode(
+        dom_import_simplexml($insert), true
+    );
+    return $domTarg->parentNode->insertBefore($domIns, $domTarg);
+    /*
+    if ($domTarg->nextSibling) {
+        return $domTarg->parentNode->insertBefore($domIns, $domTarg);
+    } else {
+        return $domTarg->parentNode->appendChild($domIns);
+    }
+    */
+}
+/**
  * This function will resize an image and store it in the target_dir
  * as specified by the code and incoming file name.
  * 

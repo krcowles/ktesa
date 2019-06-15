@@ -28,6 +28,7 @@
     <?= $html;?>
 <?php endif; ?>
 
+<input type="hidden" name="track" value="<?= $curr_gpx;?>" />
 <hr />
 <?= $wptedits;?>
 

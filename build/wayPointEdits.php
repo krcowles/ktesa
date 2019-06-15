@@ -48,6 +48,8 @@ $icons = <<<WPTICONS
     <option value="Triangle, Yellow">Yellow Triangle</option>
 </select>
 WPTICONS;
+// Three possible states:
+// 1.
 if ($gpxWptCount === 0 && $wayPointCount === 0) { 
     $wptedits .= $noPrevious . PHP_EOL;
     $wptedits .= $wptDescriptions . PHP_EOL;
@@ -67,6 +69,7 @@ if ($gpxWptCount === 0 && $wayPointCount === 0) {
     }
     $wptedits .= '</div>' . PHP_EOL;
 }
+// 2.
 if ($gpxWptCount > 0) {
     $wptedits .= $gpxWpts . PHP_EOL;
     $wptedits .= $wptDescriptions . PHP_EOL;
@@ -84,8 +87,8 @@ if ($gpxWptCount > 0) {
         $wptedits .= '<select id="selgicon' . $m . '" name="gsym[]">' . PHP_EOL;
         $wptedits .= $icons . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;Remove this waypoint:'
-            . '<input id="delg' . $m . '" type="checkbox" '
-            . 'name="delg[]" value="g' . $m . '" /><br />' . PHP_EOL;
+            . '<input id="gdel' . $m . '" type="checkbox" '
+            . 'name="gdel[]" value="g' . $m . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
         $wptedits .= '<textarea class="tstyle4 coords" '
             . 'name="glat[]">' . $gpxWptLat[$m] . '</textarea>'
@@ -113,6 +116,7 @@ if ($gpxWptCount > 0) {
             . '<br /><br />' . PHP_EOL;
     }
 }
+// 3.
 if ($wayPointCount > 0) {
     $wptedits .= $dbWpts . PHP_EOL;
     $wptedits .= $wptDescriptions . PHP_EOL;
@@ -130,8 +134,8 @@ if ($wayPointCount > 0) {
         $wptedits .= '<select id="seldicon' . $n . '" name="dsym[]">' . PHP_EOL;
         $wptedits .= $icons . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;Remove this waypoint:'
-            . '<input id="deld' . $n . '" type="checkbox" '
-            . 'name="deld[]" vale="d' . $n . '" /><br />' . PHP_EOL;
+            . '<input id="ddel' . $n . '" type="checkbox" '
+            . 'name="ddel[]" value="d' . $n . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
         $wptedits .= '<textarea class="tstyle4 coords" '
             . 'name="dlat[]">' . $wlat[$n] . '</textarea>'
@@ -141,6 +145,7 @@ if ($wayPointCount > 0) {
             . '<br /><br />' . PHP_EOL;
     }
     $wptedits .= '</div>';
+
     $wptedits .= '<p style="color:brown;">You may add the following waypoints '
         . '<strong>to the database</strong></p>' . PHP_EOL;
     for ($i=0; $i<2; $i++) {
