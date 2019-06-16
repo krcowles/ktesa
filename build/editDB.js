@@ -130,26 +130,6 @@ window.onkeydown = function(event) {
     }
 }
 
-// for editing icons, when present in the database
-var wicons = $('[id^="wicn"]');
-var wddbox = $('[id^="selicon"]');
-var allIcons = ['googlemini', 'Flag, Red', 'Flag, Blue', 'Flag, Green', 
-    'Trail Head', 'Triangle, Red'];
-if (wicons.length > 0) {
-    ivals = [];
-    var x =0;
-    wicons.each(function() {
-        if ($(this).text() == '' || !allIcons.includes($(this).text())) {
-            ivals[x++] = 'googlemini';
-        } else {
-            ivals[x++] = $(this).text();
-        }
-    });
-    wddbox.each(function(indx) {
-        $(this).val(ivals[indx]);
-    });
-}
-
 /**
  * The remaining script handles several features of the editor:
  *  1. Initialization of text and numeric fields based on db entries
@@ -170,6 +150,7 @@ if (wicons.length > 0) {
  *      - difficulty
  *      - exposure
  *      - references
+ *      - waypoint icons
  * Each is treated, with identifiers, below:
 */
 // Locale:
@@ -184,6 +165,27 @@ $('#diff').val(diffic);
 // Exposure:
 var exposure = $('#expo').text();
 $('#sun').val(exposure);
+// Waypoint icons when present in the gpx file:
+var $gicons = $('[id^="gicn"]');
+var $gbox   = $('[id^="selgicon"]');
+$gbox.each(function(indx) {
+    if ($gicons[indx].innerText == '') {
+        $(this).val('googlemini');
+    } else {
+        $(this).val($gicons[indx].innerText);
+    }
+});
+// Waypoint icons when present in the database
+var $wicons = $('[id^="dicn"]');
+var $wbox   = $('[id^="seldicon"]');
+$wbox.each(function(indx) {
+    if ($wicons[indx].innerText == '') {
+        $(this).val('googlemini');
+    } else {
+        $(this).val($wicons[indx].innerText);
+    }
+});
+
 // Clusters
 /**
  * THE FOLLOWING CODE ADDRESSES EDITS TO CLUSTER ASSIGNMENTS

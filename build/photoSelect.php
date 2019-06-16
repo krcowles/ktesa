@@ -20,8 +20,10 @@ if ($picq->rowCount() === 0) {
     $jsDescs = "''";
 } else {
     $inclPix = 'YES';
+    // NOTE: this will also be yes when there are no pics but there are waypoints
 }
 $wayPointCount = 0;
+$picCount = 0;
 if ($inclPix === 'YES') {
     $h4txt = "Please check the boxes corresponding to the pictures you wish to " .
     "include on the hike page, and those you wish to include on the geomap.";
@@ -43,19 +45,20 @@ if ($inclPix === 'YES') {
     // iteratively look for the pictures directory from here, and form
     // the appropriate path:
     $current = getcwd();
+    $prev = $current;
     while (!in_array('pictures', scandir($current))) {
         $picpath .= "../";
         chdir('..');
         $current = getcwd();
     }
-    $wids = [];
-    $wdes = [];
+    $wids = [];  // 'picIdx' of waypoint
+    $wdes = [];  // 'title'
     $wlat = [];
     $wlng = [];
-    $wicn = [];
-    $picCount = 0;
+    $wicn = []; // 'iclr' = icon symbol
     $picpath .= "pictures/nsize/";
     $picno = 0;
+    $wptno = 0;
     $tsvId = [];
     $phNames = []; // filename w/o extension
     $phDescs = []; // caption
@@ -66,29 +69,26 @@ if ($inclPix === 'YES') {
     $rowHt = 220; // nominal choice for row height in div
     $maxOccupy = 940;
     while ($pics = $picq->fetch(PDO::FETCH_ASSOC)) {
-        $phNames[$picno] = $pics['title'];
-        $phDescs[$picno] = $pics['desc'];
-        $hpg[$picno] = $pics['hpg'];
-        $mpg[$picno] = $pics['mpg'];
-        $wlat[$picno] = $pics['lat'];
-        $wlng[$picno] = $pics['lng'];
-        $wicn[$picno] = $pics['iclr'];
         if ($pics['mid']) {  // Picture
+            $phNames[$picno] = $pics['title'];
+            $phDescs[$picno] = $pics['desc'];
+            $hpg[$picno] = $pics['hpg'];
+            $mpg[$picno] = $pics['mpg'];
             $phPics[$picno] = $pics['mid'] . "_" . $pics['thumb'];
             $pHeight = $pics['imgHt'];
             $aspect = $rowHt/$pHeight;
             $pWidth = $pics['imgWd'];
-            $phWds[$picno] = floor($aspect * $pWidth);
-            $picCount++;
+            $phWds[$picno++] = floor($aspect * $pWidth);
         } else {  // Waypoint
-            $wids[$wayPointCount] = $pics['picIdx'];
-            $wdes[$wayPointCount] = $phNames[$picno];
-            $waylat[$wayPointCount] = $wlat[$picno];
-            $waylng[$wayPointCount] = $wlng[$picno];
-            $wicon[$wayPointCount++] = $wicn[$picno];
+            $wids[$wptno] = $pics['picIdx'];
+            $wdes[$wptno] = $pics['title'];
+            $wlat[$wptno] = $pics['lat'];
+            $wlng[$wptno] = $pics['lng'];
+            $wicn[$wptno++] = $pics['iclr'];
         }
-        $picno++;
     }
+    $picCount = $picno;
+    $wayPointCount = $wptno;
     for ($i=0; $i<$picCount; $i++) {
         if ($phWds[$i] > $maxOccupy) {
             $aspect = $rowHt/$phWds[$i];
@@ -156,4 +156,5 @@ if ($inclPix === 'YES') {
     }
     $jsDescs .= ']';
     $html .= '</div>';
+    chdir($prev);
 }

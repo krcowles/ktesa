@@ -9,15 +9,8 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
 $usr = filter_input(INPUT_POST, 'usr');
-// waypoint data, if present:
-$wids = isset($_POST['wids']) ? $_POST['wids'] : null;  // picIdx for waypoint
-$wdes = isset($_POST['wsym']) ? $_POST['wdes'] : null;
-$wsym = isset($_POST['wsym']) ? $_POST['wsym'] : null;
-$wlat = isset($_POST['wlat']) ? $_POST['wlat'] : null;
-$wlng = isset($_POST['wlng']) ? $_POST['wlng'] : null;
 /* It is possible that no pictures are present, also that no
  * checkboxes are checked. Therefore, the script tests for these things
  * to prevent undefined vars
@@ -86,20 +79,16 @@ while ($photo = $photoq->fetch(PDO::FETCH_ASSOC)) {
             $del = $pdo->prepare($delreq);
             $del->execute([$thispic]);
         } else {
-            $updtreq = "UPDATE ETSV SET hpg = ?, mpg = ?, `desc` = ? WHERE picIdx = ?;";
+            $updtreq = "UPDATE ETSV SET hpg = ?, mpg = ?, `desc` = ? "
+                . "WHERE picIdx = ?;";
             $update = $pdo->prepare($updtreq);
             $update->execute([$disph, $dispm, $newcap, $thisid]);
         }
         $p++;
     }
 }
-if (isset($wids)) {
-    for ($k=0; $k<count($wids); $k++) {
-        $wayptquery = "UPDATE ETSV SET title = ?, lat = ?, lng = ?, iclr = ?
-            WHERE picIdx = ?;";
-        $waypt = $pdo->prepare($wayptquery);
-        $waypt->execute([$wdes[$k], $wlat[$k], $wlng[$k], $wsym[$k], $wids[$k]]);
-    }
-}
+// enter/save waypoints
+require "waypointSave.php";
+
 $redirect = "editDB.php?hikeNo={$hikeNo}&usr={$usr}&tab=2";
 header("Location: {$redirect}");

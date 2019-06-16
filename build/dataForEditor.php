@@ -25,6 +25,7 @@ $groups = array_keys($selectData);
 /**
  * There are currently four tabs requiring data: each tab's needs are 
  * highlighted with comment blocks.
+ * 
  * Tab1: [data contained in EHIKES table]
  */
 $hikereq = "SELECT * FROM EHIKES WHERE indxNo = :hikeno;";
@@ -66,15 +67,19 @@ $lng = $hike['lng'];
 //$purl1 = $hike['purl1'];  // not currently editable
 //$purl2 = $hike['purl2'];  // not currently editable
 $dirs = $hike['dirs'];
+
 /**
- * Tab2: [photo displays (already uploaded)]
+ * Tab2: [photo displays (already uploaded) and any waypoints]
  */
 require "photoSelect.php";
+require "wayPointEdits.php";
+
 /**
  * Tab 3: [hike tips and hike descripton]
  */
 $tips = $hike['tips'];
 $info = $hike['info'];
+
 /**
  * Tab 4: [References and GPS data]
  */
