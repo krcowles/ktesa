@@ -45,6 +45,7 @@ if ($inclPix === 'YES') {
     // iteratively look for the pictures directory from here, and form
     // the appropriate path:
     $current = getcwd();
+    $prev = $current;
     while (!in_array('pictures', scandir($current))) {
         $picpath .= "../";
         chdir('..');
@@ -155,4 +156,5 @@ if ($inclPix === 'YES') {
     }
     $jsDescs .= ']';
     $html .= '</div>';
+    chdir($prev);
 }
