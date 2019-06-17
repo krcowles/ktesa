@@ -52,6 +52,20 @@ $('#swdb').on('click', function() {
     window.open('switchDb.php');
     window.close();
 });
+$('#commit').on('click', function() {
+    $.ajax({
+        url: 'commit_number.txt',
+        dataType: 'text',
+        success: function(resp) {
+            alert("The current commit number\nassociated" +
+                " with this site is:\n\n\t" + resp);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("The following error resulted in admintools.js:\n" 
+                + "Error: " + textStatus + ": " + errorThrown);
+        }
+    });
+});
 $('#cleanPix').on('click', function() {
     window.open('cleanPix.php', "_blank");
 });

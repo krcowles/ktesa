@@ -61,6 +61,7 @@ require "../php/global_boot.php";
         <span style="font-size:20px;color:brown;">Listings:</span><br />
         <button id="lst">List New Files</button>&nbsp;&nbsp;[Since last upload]
         <hr />
+        <p>Database Management Tools:</p>
         <button id="reload">Reload Database</button>&nbsp;
             [Drops All Tables and Loads All Tables]<br />
         <button id="drall">Drop All Tables</button><br />
@@ -68,6 +69,7 @@ require "../php/global_boot.php";
             [NOTE: Tables must not exist]<br />
         <button id="exall">Export All Tables</button>
             [NOTE: Creates .sql file]<br />
+        <button id="show">Show All Tables</button><br />
         <button id="swdb">Switch DB's</button>&nbsp;&nbsp;
             Current database in use:
         <?php if ($dbState === 'test') : ?>
@@ -76,10 +78,11 @@ require "../php/global_boot.php";
             <span id="real" style="color:blue;">Site</span>
         <?php endif; ?>
         <hr />
+        <p>Miscellaneous Tools:</p>
+        <button id="commit">Display Commit</button>&nbsp;&nbsp;[for this site]<br />
         <button id="cleanPix">Cleanup Pictures</button>
             &nbsp;&nbsp;[removes photos not related to hikes]<br />
         <button id="pinfo">Php Info</button><br />
-        <button id="show">Show All Tables</button><br />
         <button id="mode">Show/Set SQL Modes</button>
         <!-- div w/form related to Show/Set SQL Modes -->
         <div id="modeopt">
@@ -135,7 +138,7 @@ require "../php/global_boot.php";
         </form>
     </fieldset><br/>
     <fieldset>
-        <legend>Misc Tools</legend>
+        <legend>Least Used</legend>
         <button id="drop">Drop Table</button>&nbsp;
         <select id="dtbl" name="dropper">
             <option>USERS</option>
