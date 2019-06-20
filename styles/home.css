@@ -180,3 +180,17 @@ ul {
     position: relative;
     top: -10px;
 }
+.twisty-right {
+    width: 0; 
+    height: 0; 
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 7px solid blue;
+}
+.twisty-down {
+    width: 0; 
+    height: 0; 
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid darkgray;
+}
