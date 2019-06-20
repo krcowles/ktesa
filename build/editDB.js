@@ -21,13 +21,20 @@ var linewidth = winWidth - bodySurplus - listwidth - 9; // padding
 $('#line').width(linewidth);
 // 'Apply' buttons: positions on page
 var $apply = $('div[id^="d"]'); // the divs holding the input 'Apply' button
-var atxt = $('#atxt').offset();
+var apwd = $('#ap1').width();
 var aht = $('#atxt').height();
 var awd = $('#atxt').width();
-var apwd = $('#ap1').width();
-var centerMarg  = (awd - apwd)/2 - 4; // 4: allow for right margin
-var btop = atxt.top + aht + 6; // 6 for spacing
-var blft = atxt.left + centerMarg;
+var centerMarg;
+var btop;
+var blft;
+function positionApply() {
+    var atxt = $('#atxt').offset();  // dynamic w/resizing
+    centerMarg  = (awd - apwd)/2 - 4; // 4: allow for right margin
+    btop = atxt.top + aht + 6; // 6 for spacing
+    blft = atxt.left + centerMarg;
+}
+positionApply();
+
 var applyPos = [];
 $apply.each(function(indx) {
     var $inp = $(this).children().eq(0);
@@ -39,6 +46,9 @@ $(window).resize( function() {
     winWidth = $(document).width();
     linewidth = winWidth - bodySurplus - listwidth - 9;
     $('#line').width(linewidth);
+    positionApply();
+    var divid = '#d' + lastA;
+    $(divid).offset({top: btop, left: blft});
 });
 // To define button appearance
 function highLight() {
