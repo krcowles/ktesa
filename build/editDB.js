@@ -19,6 +19,22 @@ var tabwidth = gettabprop.substring(0,px);
 var listwidth = tabCnt * tabwidth;
 var linewidth = winWidth - bodySurplus - listwidth - 9; // padding
 $('#line').width(linewidth);
+// 'Apply' buttons: positions on page
+var $apply = $('div[id^="d"]'); // the divs holding the input 'Apply' button
+var atxt = $('#atxt').offset();
+var aht = $('#atxt').height();
+var awd = $('#atxt').width();
+var apwd = $('#ap1').width();
+var centerMarg  = (awd - apwd)/2 - 4; // 4: allow for right margin
+var btop = atxt.top + aht + 6; // 6 for spacing
+var blft = atxt.left + centerMarg;
+var applyPos = [];
+$apply.each(function(indx) {
+    var $inp = $(this).children().eq(0);
+    applyPos[indx] = $inp.detach();
+    // NOTE: apparently, removing the contents renders the div "display:none"
+});
+// when window is resized:
 $(window).resize( function() {
     winWidth = $(document).width();
     linewidth = winWidth - bodySurplus - listwidth - 9;
@@ -41,7 +57,7 @@ function highLight() {
 }
 highLight();
 // tab buttons:
-$('button:not(#preview)').on('click', function(ev) {
+$('button:not(#preview, #upld)').on('click', function(ev) {
     ev.preventDefault();
     var tid = this.id;
     $('button').each( function() {
@@ -62,12 +78,28 @@ $('button:not(#preview)').on('click', function(ev) {
     var newtid = '#tab' + tid.substring(1,2);
     $(newtid).css('display','block');
     highLight();
+    if (tid.substr(0, 1) === 't') {
+        var oldid = '#ap' + lastA;
+        $(oldid).remove();
+        lastA = tid.substr(1, 1);
+        var newid = '#d' + lastA;
+        $(newid).prepend(applyPos[lastA - 1]); // use index number, not tab no.
+        $(newid).show();
+        $(newid).offset({top: btop, left: blft});
+    }
 });
 
-// place correct tab in foreground
+// place correct tab (and apply button) in foreground - on page load only
 var tab = $('#entry').text();
+//var tab = 3;
 var tabon = '#t' + tab;
 $(tabon).trigger('click');
+var applyAdd = '#d' + tab;
+var posNo = tab - 1; // index number, not tab number
+$(applyAdd).prepend(applyPos[posNo]);
+$(applyAdd).show();
+$(applyAdd).offset({top: btop, left: blft});
+var lastA = tab;
 
 // Look for 'bad URLs' to highlight immediately after saveTabX.php
 var blinkerObject = { blinkHandle: {} };

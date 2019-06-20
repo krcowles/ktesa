@@ -1,8 +1,8 @@
-<div style="margin-left:8px;">
-    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
-        <input type="submit" name="savePg" value="Apply" /></p>
+<div id="d3">
+        <input id="ap3" type="submit" name="savePg" value="Apply" />
 </div>
-<p style="color:darkblue;font-size:16px;">All inputs limited to 4096 Characters</p>
+<p class="up" style="color:darkblue;font-size:16px;">
+        All inputs limited to 4096 Characters</p>
 <p>Tips Text: </p>
 <textarea id="ttxt" name="tips" rows="10" cols="130" maxlength="4096"
     placeholder="Add any special notes about travel, or the hike, here"><?php

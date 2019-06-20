@@ -1,9 +1,8 @@
-<div style="margin-left:8px;">
-    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
-    <input type="submit" name="savePg" value="Apply" /></p>
+<div id="d4">
+    <input id="ap4" type="submit" name="savePg" value="Apply" />
 </div>
-<h3>Hike Reference Sources: (NOTE: Book type cannot be changed - if needed,
-    delete and add a new one)</h3>
+<h3 class="up">Hike Reference Sources: (NOTE: Book type cannot be 
+    changed - if needed, delete and add a new one)</h3>
 <input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
 <input type="hidden" name="usr" value="<?= $usr;?>" />
 <script type=text/javascript>
@@ -34,24 +33,25 @@
     <option value="Related Link:">Related Link</option>
     <option value="Text:">Text Only - No Link</option>
 </select>&nbsp;&nbsp;&nbsp;
-<?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
-    <select id="bkname<?= $k;?>" style="height:26px;width:360px;"
-        name="drit1[]"><?= $bkopts;?>
-    </select>&nbsp;&nbsp;&nbsp; 
-    <input  id="auth<?= $k;?>" style="height:24px;width:282px;" type="text"
-        name="drit2[]" class="upbox" />&nbsp;&nbsp;
-    <label>Delete: </label>
-    <input style="height:18px;width:18px;" type="checkbox" name="delref[]" 
-        value="<?= $k;?>"><br />
-<?php else : ?>
-    <input id="url<?= $k;?>" style="height:24px;width:352px;" class="upbox urlbox"
-        name="drit1[]" value="<?= $rit1s[$k];?>" />&nbsp;&nbsp;&nbsp;
-    <input id="txt<?= $k;?>" style="height:24px;width:280px;" class="upbox"
-        name="drit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
-    <label>Delete: </label>
-    <input style="height:18px;width:18px;" type="checkbox" name="delref[]"
-        value="<?= $k;?>" /><br />
-<?php endif; ?>
+    <?php if ($rtypes[$k] === 'Book:' || $rtypes[$k] === 'Photo Essay:') : ?>
+        <select id="bkname<?= $k;?>" style="height:26px;width:360px;"
+            name="drit1[]"><?= $bkopts;?>
+        </select>&nbsp;&nbsp;&nbsp; 
+        <input  id="auth<?= $k;?>" style="height:24px;width:282px;" type="text"
+            name="drit2[]" class="upbox" />&nbsp;&nbsp;
+        <label>Delete: </label>
+        <input style="height:18px;width:18px;" type="checkbox" name="delref[]" 
+            value="<?= $k;?>"><br />
+    <?php else : ?>
+        <input id="url<?= $k;?>" style="height:24px;width:352px;"
+            class="upbox urlbox" name="drit1[]" value="<?= $rit1s[$k];?>" />
+            &nbsp;&nbsp;&nbsp;
+        <input id="txt<?= $k;?>" style="height:24px;width:280px;" class="upbox"
+            name="drit2[]" value="<?= $rit2s[$k];?>" />&nbsp;&nbsp;
+        <label>Delete: </label>
+        <input style="height:18px;width:18px;" type="checkbox" name="delref[]"
+            value="<?= $k;?>" /><br />
+    <?php endif; ?>
 <?php endfor; ?>
 <!-- Unpopulated References -->
 <p><em style="font-weight:bold;">Add</em> references here:</p>
@@ -121,5 +121,6 @@ and/or maps</p>
     <label>Delete Reference ? </label>
     <input style="height:18px;width:18px;" type="checkbox"
         name="delgps[]" value="<?= $datId[$n];?>" />
-    &nbsp;&nbsp;For File: <span style="color:brown;"><?= $fname[$n];?></span><br /><br />
+    &nbsp;&nbsp;For File: <span 
+        style="color:brown;"><?= $fname[$n];?></span><br /><br />
 <?php endfor; ?>

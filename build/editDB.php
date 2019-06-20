@@ -49,7 +49,8 @@ require "dataForEditor.php";
 </h3>
 <p style="font-size:18px;color:Brown;">Preview page with current edits
     (i.e. edits already applied):&nbsp;<button id="preview"
-    style="font-size:18px;color:DarkBlue;">Preview</button></p>
+    style="font-size:18px;color:DarkBlue;">Preview</button>
+    <span id="atxt">Apply the Edits</span></p>
 <!-- tabs -->
 <button id="t1" class="tablist active">Basic Data</button>
 <button id="t2" class="tablist">Photo Selection</button>

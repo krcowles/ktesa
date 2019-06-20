@@ -1,13 +1,17 @@
 <hr />
 <p style="color:brown;">Upload your photos (you will be directed to a new page)</p> 
-<input type="button" name="upld" id="upld" value="Upload" /></p>
+<input type="button" name="upld" id="upld" value="Upload" />
+
 <hr />
 <p style="color:brown;"><em>Edit captions below each photo as needed
-    and assign display options.</em></p>
+    and assign display options.</em>&nbsp;&nbsp;&nbsp;
+    <a id="wlnk" href="#wloc">Go To</a>&nbsp;Waypoint Editor
+</p>
 <input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
 <input type="hidden" name="usr" value="<?= $usr;?>" />
-<div style="margin-left:8px;">
-        <input type="submit" name="savePg" value="Apply" /></p>
+
+<div id="d2">
+    <input id="ap2" type="submit" name="savePg" value="Apply" />
 </div>
 <?php if ($inclPix === 'YES') : ?>
 <style type="text/css">
@@ -30,6 +34,7 @@
 
 <input type="hidden" name="track" value="<?= $curr_gpx;?>" />
 <hr />
+<div id="wloc"></div>
 <?= $wptedits;?>
 
 <script type="text/javascript">

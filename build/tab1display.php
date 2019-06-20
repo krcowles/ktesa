@@ -12,12 +12,12 @@
 <input type="hidden" name="cname" value="<?= $cname;?>" />
 <p id="ctype" style="display:none"><?= $logistics;?></p>
 <p id="ptype" style="display:none">Edit</p>
-<div style="margin-left:8px;">
-    <p style="font-size:20px;font-weight:bold;">Apply the Edits&nbsp;
-        <input type="submit" name="savePg" value="Apply" /></p>
+
+<div id="d1">
+    <input id="ap1" type="submit" name="savePg" value="Apply" />
 </div>
 <!-- File upload area for main gpx file -->
-<h3>File Upload for Hike Page Map and Track: (.gpx file)</h3>
+<h3 class="up">File Upload for Hike Page Map and Track: (.gpx file)</h3>
 <p><em style="text-decoration:underline;">Warning:</em> If you delete an
     existing gpx file, published hikes may be affected; you may simply
     specify a new file to override the current settings for this hike.</p>

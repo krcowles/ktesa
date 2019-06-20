@@ -122,6 +122,26 @@ input[type=submit]:hover {
     color: brown;
     font-weight: bold;
 }
+div[id^="d"] {
+    position: fixed;
+}
+#atxt {
+    font-size: 20px;
+    font-weight: bold;
+    float: right;
+    margin-right: 16px;
+}
+.up {
+    position: relative;
+    top: -12px;
+}
+#wlnk {
+    padding: 2px;
+    font-size: 12px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: darkBlue;
+}
 input[type=button]:hover {
     background-color: papayawhip;
     cursor: pointer;
