@@ -27,6 +27,12 @@ var awd = $('#atxt').width();
 var centerMarg;
 var btop;
 var blft;
+var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+$(window).scroll(function() {
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+});
 function positionApply() {
     var atxt = $('#atxt').offset();  // dynamic w/resizing
     centerMarg  = (awd - apwd)/2 - 4; // 4: allow for right margin
@@ -48,7 +54,8 @@ $(window).resize( function() {
     $('#line').width(linewidth);
     positionApply();
     var divid = '#d' + lastA;
-    $(divid).offset({top: btop, left: blft});
+    var scrollPos = btop + scrollTop;
+    $(divid).offset({top: scrollPos, left: blft});
 });
 // To define button appearance
 function highLight() {
@@ -87,6 +94,7 @@ $('button:not(#preview, #upld)').on('click', function(ev) {
     $(this).addClass('active');
     var newtid = '#tab' + tid.substring(1,2);
     $(newtid).css('display','block');
+    document.documentElement.scrollTop = document.body.scrollTop = 0;
     highLight();
     if (tid.substr(0, 1) === 't') {
         var oldid = '#ap' + lastA;
