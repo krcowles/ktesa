@@ -144,7 +144,29 @@ div #masters button:hover {
     padding-left: 8px;
 }
 .maindisp {
+    cursor: pointer;
     color: darkblue;
+}
+#mapfeat {
+    position: relative;
+    top: -4px;
+}
+#mul {
+    display: none;
+}
+#tblfeat {
+    position: relative;
+    top: -4px;
+}
+#tul {
+    display: none;
+}
+#hikefeat {
+    position: relative;
+    top: -4px;
+}
+#hul {
+    display: none;
 }
 .dashed {
     list-style-type: disc;
@@ -181,16 +203,18 @@ ul {
     top: -10px;
 }
 .twisty-right {
+    float: left;
     width: 0; 
-    height: 0; 
-    border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
-    border-left: 7px solid blue;
+    max-height: 6px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid darkblue;
 }
 .twisty-down {
+    float: left;
     width: 0; 
-    height: 0; 
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 7px solid darkgray;
+    max-height: 6px; 
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgb(38, 201, 23);
 }
