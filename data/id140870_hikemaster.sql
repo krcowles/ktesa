@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=254 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=756 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=767 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -185,7 +185,7 @@ CREATE TABLE `GPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO GPSDAT VALUES
@@ -233,7 +233,8 @@ INSERT INTO GPSDAT VALUES
 ('57','190','P','GPX:','../gpx/Emery-Short-Loop.GPX','Shorter Loop - East'),
 ('59','146','P','GPX:','../gpx/Boundary_Composite.GPX','Alternate Loop'),
 ('60','201','P','GPX:','../gpx/4_Mound_Elev.gpx','Proposed route extracted from Book reference'),
-('61','205','P','GPX:','../gpx/AtalayaLoopProposed.gpx','Alternate Route - Skip Picacho');
+('61','205','P','GPX:','../gpx/AtalayaLoopProposed.gpx','Alternate Route - Skip Picacho'),
+('62','211','P','GPX:','../gpx/LasVacasDEM.gpx','Longer Proposed Loop');
 
 
 
@@ -270,7 +271,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -483,9 +484,9 @@ INSERT INTO HIKES VALUES
 ('205','[Proposed]Atalaya Picacho Loop','mstr','Santa Fe','Cluster',NULL,'AA','Atalaya Group','Loop','5.10','1600','Med-Difficult','','','',NULL,'AtalayaPicachoProposed.gpx','AtalayaPicachoProposed.json','35.670277','-105.900641',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Atalaya+-+Upper+Trailhead+(recgovnpsdata),+Santa+Fe,+NM+87505/@35.6625051,-105.9324271,13.81z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718510b3b76eee9:0x46aed0d056701831!2m2!1d-105.9005356!2d35.6700591',NULL,NULL,NULL,NULL,NULL),
 ('206','[Proposed] Banco Bonitio','mstr','Valles Caldera','Normal',NULL,'','','Loop','15.70','600',NULL,'','','',NULL,'BancoBonitoDEM.gpx','BancoBonitoDEM.json','35.8408103','-106.6159956',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B050\'26.9%22N+106%C2%B036\'59.2%22W/@35.8469609,-106.633311,13.48z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8407929!4d-106.6164569',NULL,NULL,NULL,NULL,NULL),
 ('207','[Proposed] Holiday Mesa','mstr','Jemez Springs','Normal',NULL,'','',NULL,'4.40','1100',NULL,'','','',NULL,'HolidayMesaDEM.gpx','HolidayMesaDEM.json','35.7660435','-106.7887875',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B045\'57.8%22N+106%C2%B047\'19.6%22W/@35.7285415,-106.8337945,12.08z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7660435!4d-106.7887875',NULL,NULL,NULL,NULL,NULL),
-('208','[Proposed] Las Vacas','mstr','Cuba','Normal',NULL,'','','Loop','10.40','950',NULL,'','','',NULL,'LasVacasDEM.gpx','LasVacasDEM.json','36.0282983','-106.8481261',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/San+Gregorio+Lake+Trail/@36.0038584,-106.985757,11.82z/data=!4m5!3m4!1s0x8722b43f35343453:0x467993526db92c7f!8m2!3d36.0282082!4d-106.8473196',NULL,NULL,NULL,NULL,NULL),
 ('209','[Proposed] Extended Deadman','mstr','San Luis','Normal',NULL,'','','Loop','4.80','400',NULL,'','','',NULL,'DeadmanPeaksDEM.gpx','DeadmanPeaksDEM.json','35.7452845','-107.0749054',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B044\'43.0%22N+107%C2%B004\'29.7%22W/@35.6931631,-107.1527349,11.15z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7452845!4d-107.0749054',NULL,NULL,NULL,NULL,NULL),
-('210','Tecolote Trail','mstr','Tijeras','Normal',NULL,'','','Out-and-back','2.40','200','Easy','None','360-degree views and wildflowers','Not Winter','Full sun','Tecolote.GPX','Tecolote.json','35.2004585043','-106.4053533319',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Tecolote+Trailhead/@35.1785435,-106.4245462,12.83z/data=!4m5!3m4!1s0x871899729e78e387:0xcbecf0c04e989431!8m2!3d35.2005476!4d-106.4051009','At the time of this hike, the parking area was closed and some logging/maintenance was in progress at the trail head. Nonetheless, the trail itself was open.','This relatively easy trail is a pleasant surprise along the Crest Highway. The elevation change is gradual, and the views are plentiful along the way. At the end, a short 1/4-mile loop provides a 360-degree look at the surroundings. Wildflowers of various types adorned the trail, adding to the enjoyment of the hike. From this trail the parts of the east side of the Sandia are visible, and then later, the San Pedros and Ortiz Mountains come into view. ',NULL,NULL,NULL);
+('210','Tecolote Trail','mstr','Tijeras','Normal',NULL,'','','Out-and-back','2.40','200','Easy','None','360-degree views and wildflowers','Not Winter','Full sun','Tecolote.GPX','Tecolote.json','35.2004585043','-106.4053533319',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Tecolote+Trailhead/@35.1785435,-106.4245462,12.83z/data=!4m5!3m4!1s0x871899729e78e387:0xcbecf0c04e989431!8m2!3d35.2005476!4d-106.4051009','At the time of this hike, the parking area was closed and some logging/maintenance was in progress at the trail head. Nonetheless, the trail itself was open.','This relatively easy trail is a pleasant surprise along the Crest Highway. The elevation change is gradual, and the views are plentiful along the way. At the end, a short 1/4-mile loop provides a 360-degree look at the surroundings. Wildflowers of various types adorned the trail, adding to the enjoyment of the hike. From this trail the parts of the east side of the Sandia are visible, and then later, the San Pedros and Ortiz Mountains come into view. ',NULL,NULL,NULL),
+('211','Las Vacas Trail / San Gregorio','mstr','Cuba','Normal',NULL,'','','Out-and-back','7.90','1000','Moderate','None (Nearby Campground)','Wilderness forest and running creeks','Not Winter','Mixed sun/shade','LasVacas.gpx','LasVacas.json','36.028372','-106.848131',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//San+Gregorio+Lake+Trail,+La+Jara,+NM+87027/@36.0076946,-106.9429406,12.37z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8722b43f35343453:0x467993526db92c7f!2m2!1d-106.8473196!2d36.0282082','Note: there are multiple water crossings, most with reasonable log or stone provisions, but some require extra care. There are also segments that can be muddy (mostly near the lake), so avoid hiking after significant rains.','This is an excellent forest wilderness experience, complete with high altitude forests, flowers, and running streams. The trail is generally an easy slope uphill, and runs through woodlands and meadows, sometimes nearing Clear Creek. The authors did not traverse the entire length of Las Vacas, making for a reasonable day-hike. It is located in San Pedro Parks National Wilderness, a part of Santa Fe National Forest lands. ',NULL,NULL,NULL);
 
 
 
@@ -553,7 +554,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1477 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1481 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1359,7 +1360,11 @@ INSERT INTO REFS VALUES
 ('1473','76','App: ','http://www.alltrails.com/trail/us/new-mexico/petroglyph-national-monument-piedras-marcadas-canyon','AllTrails'),
 ('1474','210','Book:','7',NULL),
 ('1475','210','App:','https://www.alltrails.com/trail/us/new-mexico/tecolote-trail','AllTrails.com'),
-('1476','210','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64604','Forest Service');
+('1476','210','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64604','Forest Service'),
+('1477','211','Book:','15',NULL),
+('1478','211','Website:','https://www.fs.usda.gov/recarea/santafe/recarea/?recid=75562','US Forest Service'),
+('1479','211','Website:','https://www.trails.com/us/nm/santa-fe-national-forest/las-vacas-trail-51','Trails.com'),
+('1480','211','Blog:','https://manninglewisstudios.wordpress.com/tag/las-vacas-trail/','Paula\'s Blog');
 
 
 
@@ -1383,7 +1388,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4101 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4112 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3631,7 +3636,18 @@ INSERT INTO TSV VALUES
 ('4091','210',NULL,'IMG_1566','Y','Y','More from the 360-degree loop','35.194375','-106.3954472222','2272',NULL,'2019-06-11 11:43:31','IMG_1566','240','320',NULL,NULL),
 ('4092','210',NULL,'IMG_1553','Y','Y','Looking across at the Sandia','35.2003444444','-106.4010472222','2273',NULL,'2019-06-11 11:15:00','IMG_1553','240','320',NULL,NULL),
 ('4093','210',NULL,'IMG_1550','Y','N','Wallflowers on the trail','35.2007638889','-106.4039916667','2274',NULL,'2019-06-11 10:57:41','IMG_1550','240','320',NULL,NULL),
-('4094','210',NULL,'IMG_1557','Y','Y','A view of the Crest Highway','35.1946666667','-106.3963777778','2275',NULL,'2019-06-11 11:34:04','IMG_1557','240','320',NULL,NULL);
+('4094','210',NULL,'IMG_1557','Y','Y','A view of the Crest Highway','35.1946666667','-106.3963777778','2275',NULL,'2019-06-11 11:34:04','IMG_1557','240','320',NULL,NULL),
+('4101','211',NULL,'IMG_1611','Y','Y','Tom pauses on the trail with Ben','36.0574805556','-106.8489694444','2276',NULL,'2019-06-18 11:17:27','IMG_1611','320','240',NULL,NULL),
+('4102','211',NULL,'IMG_1605','Y','Y','Looking across San Gregorio Lake','36.0387111111','-106.8470166667','2277',NULL,'2019-06-18 10:25:21','IMG_1605','240','320',NULL,NULL),
+('4103','211',NULL,'IMG_20190618_130046089_HDR','Y','Y','From the far end of San Gregorio Lake','36.041549','-106.846299','2278',NULL,'2019-06-18 13:00:48','IMG_20190618_130046089_HDR','180','320',NULL,NULL),
+('4104','211',NULL,'IMG_1613','Y','Y','Beautiful cascades highlight the trail','36.0579388889','-106.8489611111','2279',NULL,'2019-06-18 11:18:52','IMG_1613','240','320',NULL,NULL),
+('4105','211',NULL,'IMG_20190618_111913615_HDR','Y','N','Bennie considers the options','36.0578939722','-106.849085','2280',NULL,'2019-06-18 11:19:16','IMG_20190618_111913615_HDR','320','180',NULL,NULL),
+('4106','211',NULL,'IMG_1616','Y','Y','A slight bit of snow in mid-June','36.0587055556','-106.8487777778','2281',NULL,'2019-06-18 11:21:51','IMG_1616','320','240',NULL,NULL),
+('4107','211',NULL,'IMG_20190618_112622257_HDR','Y','Y','The point of departure on Las Vacas for Upper Clear Creek','36.060507','-106.8484839722','2282',NULL,'2019-06-18 11:26:24','IMG_20190618_112622257_HDR','180','320',NULL,NULL),
+('4108','211',NULL,'IMG_1620','Y','Y','One of the gorgeous meadows','36.061','-106.847725','2283',NULL,'2019-06-18 11:28:57','IMG_1620','240','320',NULL,NULL),
+('4109','211',NULL,'IMG_1622','Y','Y','Ben couldn\'t be happier!','36.0647805556','-106.8455277778','2284',NULL,'2019-06-18 11:36:44','IMG_1622','240','320',NULL,NULL),
+('4110','211',NULL,'IMG_1610','Y','Y','About to enter more spruce, fir and aspen','36.0559277778','-106.8482194444','2285',NULL,'2019-06-18 11:14:12','IMG_1610','240','320',NULL,NULL),
+('4111','211',NULL,'IMG_20190618_125249470_HDR','Y','Y','Beautiful fields of Iris abound','36.045036','-106.8468969722','2286',NULL,'2019-06-18 12:52:53','IMG_20190618_125249470_HDR','180','320',NULL,NULL);
 
 
 
