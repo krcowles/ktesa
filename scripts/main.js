@@ -210,6 +210,33 @@ $('#auxfrm').submit( function(ev) {
     } // end of else not master key
 });
 
+// twisty control for showing explanatory text sections
+function toggleTwisty(tid, ttxt, dashed) {
+    var feature = $('#' + ttxt);
+    var twisty  = $('#' + tid);
+    var list = $('#' + dashed);
+    if (twisty.hasClass('twisty-right')) {
+        twisty.removeClass('twisty-right');
+        twisty.addClass('twisty-down');
+        feature.css('top', '-6px');
+    } else {
+        twisty.removeClass('twisty-down');
+        twisty.addClass('twisty-right');
+        feature.css('top', '-4px');
+    }
+    list.slideToggle();
+}
+$('#mapfeat').on('click', function() {
+    toggleTwisty('m', 'mapfeat', 'mul');
+});
+$('#tblfeat').on('click', function() {
+    toggleTwisty('t', 'tblfeat', 'tul');
+});
+$('#hikefeat').on('click', function() {
+    toggleTwisty('h', 'hikefeat', 'hul');
+});
+
+
 // Go to display page buttons:
 $('#tbl').on('click', function() {
     window.open("pages/mapPg.php?tbl=T","_blank");
