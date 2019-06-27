@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=254 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=264 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=767 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=791 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -271,7 +271,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -486,7 +486,10 @@ INSERT INTO HIKES VALUES
 ('207','[Proposed] Holiday Mesa','mstr','Jemez Springs','Normal',NULL,'','',NULL,'4.40','1100',NULL,'','','',NULL,'HolidayMesaDEM.gpx','HolidayMesaDEM.json','35.7660435','-106.7887875',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B045\'57.8%22N+106%C2%B047\'19.6%22W/@35.7285415,-106.8337945,12.08z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7660435!4d-106.7887875',NULL,NULL,NULL,NULL,NULL),
 ('209','[Proposed] Extended Deadman','mstr','San Luis','Normal',NULL,'','','Loop','4.80','400',NULL,'','','',NULL,'DeadmanPeaksDEM.gpx','DeadmanPeaksDEM.json','35.7452845','-107.0749054',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B044\'43.0%22N+107%C2%B004\'29.7%22W/@35.6931631,-107.1527349,11.15z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7452845!4d-107.0749054',NULL,NULL,NULL,NULL,NULL),
 ('210','Tecolote Trail','mstr','Tijeras','Normal',NULL,'','','Out-and-back','2.40','200','Easy','None','360-degree views and wildflowers','Not Winter','Full sun','Tecolote.GPX','Tecolote.json','35.2004585043','-106.405353332',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Tecolote+Trailhead/@35.1785435,-106.4245462,12.83z/data=!4m5!3m4!1s0x871899729e78e387:0xcbecf0c04e989431!8m2!3d35.2005476!4d-106.4051009','At the time of this hike, the parking area was closed and some logging/maintenance was in progress at the trail head. Nonetheless, the trail itself was open.','This relatively easy trail is a pleasant surprise along the Crest Highway. The elevation change is gradual, and the views are plentiful along the way. At the end, a short 1/4-mile loop provides a 360-degree look at the surroundings. Wildflowers of various types adorned the trail, adding to the enjoyment of the hike. From this trail the parts of the east side of the Sandia are visible, and then later, the San Pedros and Ortiz Mountains come into view. ',NULL,NULL,NULL),
-('211','Las Vacas Trail / San Gregorio','mstr','Cuba','Normal',NULL,'','','Out-and-back','7.90','1000','Moderate','None (Nearby Campground)','Wilderness forest and running creeks','Not Winter','Mixed sun/shade','Las_Vacas.GPX','Las_Vacas.json','36.028372','-106.848131',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//San+Gregorio+Lake+Trail,+La+Jara,+NM+87027/@36.0076946,-106.9429406,12.37z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8722b43f35343453:0x467993526db92c7f!2m2!1d-106.8473196!2d36.0282082','Note: there are multiple water crossings, most with reasonable log or stone provisions, but some require extra care. There are also segments that can be muddy (mostly near the lake), so avoid hiking after significant rains.','This is an excellent forest wilderness experience, complete with high altitude forests, flowers, and running streams. The trail is generally an easy slope uphill, and runs through woodlands and meadows, sometimes nearing Clear Creek. The authors did not traverse the entire length of Las Vacas, making for a reasonable day-hike. It is located in San Pedro Parks National Wilderness, a part of Santa Fe National Forest lands. ',NULL,NULL,NULL);
+('211','Las Vacas Trail / San Gregorio','mstr','Cuba','Normal',NULL,'','','Out-and-back','7.90','1000','Moderate','None (Nearby Campground)','Wilderness forest and running creeks','Not Winter','Mixed sun/shade','Las_Vacas.GPX','Las_Vacas.json','36.028372','-106.848131',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//San+Gregorio+Lake+Trail,+La+Jara,+NM+87027/@36.0076946,-106.9429406,12.37z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8722b43f35343453:0x467993526db92c7f!2m2!1d-106.8473196!2d36.0282082','Note: there are multiple water crossings, most with reasonable log or stone provisions, but some require extra care. There are also segments that can be muddy (mostly near the lake), so avoid hiking after significant rains.','This is an excellent forest wilderness experience, complete with high altitude forests, flowers, and running streams. The trail is generally an easy slope uphill, and runs through woodlands and meadows, sometimes nearing Clear Creek. The authors did not traverse the entire length of Las Vacas, making for a reasonable day-hike. It is located in San Pedro Parks National Wilderness, a part of Santa Fe National Forest lands. ',NULL,NULL,NULL),
+('212','Capulin Peak','mstr','Tijeras','Normal',NULL,'','','Out-and-back','2.10','200','Easy-Moderate','Picnic Facilities','Great Sandia views and points north/east','Not Winter','Mixed sun/shade','Capulin_Peak.GPX','Capulin_Peak.json','35.2159465849','-106.4152824506',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'57.4%22N+106%C2%B024\'55.0%22W/@35.1937507,-106.4435951,12.56z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.2159466!4d-106.4152825','This trail begins in the parking area to the immediate right of the entrance into the \'Capulin Snowplay Area\'. At the northeast corner is a one-lane road, closed off, with a sign \"Foot Traffic Welcome\". Note that there is no signage for this hike - and multiple forks occur. Refer to the green flags on the map for the correct route. The trailhead actually occurs at the end of the one-lane road, and is a small trail leading into the grass.','This is a short and easy hike to a very lovely area where there are multiple views of the Sandias and points north and east. After reaching the summit of Capulin Peak, keep going - the trail continues downward a short distance to a wonderful overlook with a huge vista. And, of course, depending on the season, you will be welcomed by multiple gorgeous blooming flowers!',NULL,NULL,NULL),
+('213','Survey Trail','mstr','Tijeras','Cluster',NULL,'MM','Ellis Group','Out-and-back','5.90','550','Moderate','Outdoor Facilities','A high altitude stroll in the woods','Not Winter','Good shade','Survey_Trail.GPX','Survey_Trail.json','35.2084293589','-106.441028472',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.1879854,-106.4490001,12.58z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090142!4d-106.4410765','To get to Survey Trail, park in the Ellis Trailhead Parking Lot and proceed south on the large Forest Road. A short distance up you will most likely first see the Kiwani Meadows trail marker. Back up a few yards to see the Switchback Trail 271 sign and follow that. Later on, near Highway 536, that trail will split with a clear marker to Survey Trail.','This hike provides great shade, but only a few glimpses to the east. It is nevertheless a great high altitude hike. It later intersects the 10K Trail, providing options for a 2-car hike, or, alternately, a short jog up to the Crest Trail. It is also possible to cut over (some bushwhacking may be involved) and form a loop, returning via Ellis Trail. The Survey Trail dead-ends at the Osha Loop trail.',NULL,NULL,NULL),
+('214','Crest Trail - Kiwanis Cabin','mstr','Tijeras','Cluster',NULL,'MM','Ellis Group','Loop','6.60','600','Moderate','Pubic Restrooms','The Cabin and views from the North Peak','Not Winter','Good shade','Kiwani_North_Peak.GPX','Kiwani_North_Peak.json','35.2083071508','-106.4410039131',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.2063369,-106.4420975,14.31z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090142!4d-106.4410765','This hike was created by the author to form a loop from multiple trail segments, and has no book or web references. Nonetheless, some references to the trail highlights are included. There are multiple unmarked forks and some unclear signage. The map has flags at trail forks - green for \'keep left\', red for \'keep right\'. Exercise caution in the Sandia wilderness - on this hike, a bear with two cubs was spotted but presented no apparent threat.','The self-created hike, formed by connecting multiple trail segments, was designed to take the hiker first to the Kiwanis Cabin on the edge of the Sandia, and then along the Crest Trail, past the Sandia North Peak. This hike continued to the endpoint of the 10K Trail. Following the crest, there are multiple great views looking over the valley, presenting various rock faces and features, and of course, a sprinkling of wildflowers.',NULL,NULL,NULL);
 
 
 
@@ -554,7 +557,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1481 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1497 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1365,6 +1368,17 @@ INSERT INTO REFS VALUES
 ('1478','211','Website:','https://www.fs.usda.gov/recarea/santafe/recarea/?recid=75562','US Forest Service'),
 ('1479','211','Website:','https://www.trails.com/us/nm/santa-fe-national-forest/las-vacas-trail-51','Trails.com'),
 ('1480','211','Blog:','https://manninglewisstudios.wordpress.com/tag/las-vacas-trail/','Paula\'s Blog');
+INSERT INTO REFS VALUES
+('1481','212','Book:','7',NULL),
+('1482','212','App:','https://www.alltrails.com/trail/us/new-mexico/capulin-peak-trail-354','AllTrails.com'),
+('1483','212','Website:','https://www.summitpost.org/capulin-peak-trail/505849','Summit Post'),
+('1484','212','Website:','https://www.fs.usda.gov/recarea/santafe/recreation/recarea/?recid=75766','Forest Service'),
+('1488','213','Book:','7',NULL),
+('1489','213','App:','https://www.alltrails.com/trail/us/new-mexico/survey-and-ellis-trail-loop','AllTrails.com'),
+('1490','213','Website:','https://www.fs.usda.gov/recarea/cibola/recreation/hiking/recarea/?recid=82159&actid=50','Forest Service'),
+('1491','213','Blog:','https://www.dogofthedesert.net/north-crest-trail/','Dog of the Desert'),
+('1495','214','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64314','Forest Service - Kiwanis Cabin'),
+('1496','214','Website:','https://www.smithsonianmag.com/photocontest/detail/mobile/kiwanis-cabin-atop-sandia-crest-new-mexico-1/','Smithsonian Magazine');
 
 
 
@@ -1388,7 +1402,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4112 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4144 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3647,7 +3661,31 @@ INSERT INTO TSV VALUES
 ('4108','211',NULL,'IMG_1620','Y','Y','One of the gorgeous meadows','36.061','-106.847725','2283',NULL,'2019-06-18 11:28:57','IMG_1620','240','320',NULL,NULL),
 ('4109','211',NULL,'IMG_1622','Y','Y','Ben couldn\'t be happier!','36.0647805556','-106.845527778','2284',NULL,'2019-06-18 11:36:44','IMG_1622','240','320',NULL,NULL),
 ('4110','211',NULL,'IMG_1610','Y','Y','About to enter more spruce, fir and aspen','36.0559277778','-106.848219444','2285',NULL,'2019-06-18 11:14:12','IMG_1610','240','320',NULL,NULL),
-('4111','211',NULL,'IMG_20190618_125249470_HDR','Y','Y','Beautiful fields of Iris abound','36.045036','-106.846896972','2286',NULL,'2019-06-18 12:52:53','IMG_20190618_125249470_HDR','180','320',NULL,NULL);
+('4111','211',NULL,'IMG_20190618_125249470_HDR','Y','Y','Beautiful fields of Iris abound','36.045036','-106.846896972','2286',NULL,'2019-06-18 12:52:53','IMG_20190618_125249470_HDR','180','320',NULL,NULL),
+('4112','212',NULL,'IMG_1639','Y','Y','Capulin clearing with a view','35.2188444444','-106.40905','2287',NULL,'2019-06-23 09:58:24','IMG_1639','240','320',NULL,NULL),
+('4113','212',NULL,'IMG_1636','Y','Y','The one-lane road leads to the trailhead','35.2166888889','-106.4153833333','2288',NULL,'2019-06-23 09:36:07','IMG_1636','320','240',NULL,NULL),
+('4114','212',NULL,'IMG_1650','Y','N','A grassy meadow en route','35.2181083333','-106.41455','2289',NULL,'2019-06-23 10:35:22','IMG_1650','240','320',NULL,NULL),
+('4115','212',NULL,'IMG_1635','Y','Y','Beautiful penstemmon adorn the parking area','35.2160027778','-106.4153833333','2290',NULL,'2019-06-23 09:34:00','IMG_1635','240','320',NULL,NULL),
+('4116','212',NULL,'IMG_1643','Y','Y','Looking into the canyon from the overlook','35.2221861111','-106.4072722222','2291',NULL,'2019-06-23 10:13:41','IMG_1643','240','320',NULL,NULL),
+('4117','212',NULL,'IMG_1646','Y','Y','The peak behind the overlook','35.221925','-106.4071111111','2292',NULL,'2019-06-23 10:15:33','IMG_1646','240','320',NULL,NULL),
+('4118','212',NULL,'IMG_1642','Y','Y','Views of the Ortiz and distant Sangre de Cristos','35.22115','-106.4077222222','2293',NULL,'2019-06-23 10:11:42','IMG_1642','240','320',NULL,NULL),
+('4119','212',NULL,'IMG_1647','Y','N','Another canyon view','35.2220777778','-106.4073777778','2294',NULL,'2019-06-23 10:16:31','IMG_1647','240','320',NULL,NULL),
+('4127','213',NULL,'IMG_1652','Y','N','Wrong way! Backup 10 yards','35.2072638889','-106.4405444444','2295',NULL,'2019-06-23 11:06:23','IMG_1652','320','240',NULL,NULL),
+('4128','213',NULL,'IMG_1660','Y','Y','A view of the Ortiz through one of few clearings','35.2413888889','-106.4496833333','2296',NULL,'2019-06-23 12:23:26','IMG_1660','240','320',NULL,NULL),
+('4129','213',NULL,'IMG_1653','Y','Y','The correct trail - within feet of Kiwani Meadows','35.2073527778','-106.440675','2297',NULL,'2019-06-23 11:12:07','IMG_1653','320','240',NULL,NULL),
+('4130','213',NULL,'IMG_1655','Y','Y','This is the sign posted at Highway 536','35.21005','-106.4446333333','2298',NULL,'2019-06-23 11:20:15','IMG_1655','240','320',NULL,NULL),
+('4131','213',NULL,'IMG_1661','Y','Y','The end of the trail at Osha Loop','35.2422472222','-106.4502944444','2299',NULL,'2019-06-23 12:25:42','IMG_1661','320','240',NULL,NULL),
+('4132','213',NULL,'IMG_1656','N','Y','One of the few sunny spots','35.2142861111','-106.4472111111','2300',NULL,'2019-06-23 11:28:36','IMG_1656','320','240',NULL,NULL),
+('4134','214',NULL,'IMG_1679','Y','Y','Kiwani Cabin Trail','35.2045861111','-106.4407361111','2301',NULL,'2019-06-26 09:52:21','IMG_1679','320','240',NULL,NULL),
+('4135','214',NULL,'IMG_1680','Y','Y','Great views approaching the cabin','35.2038222222','-106.4414888889','2302',NULL,'2019-06-26 09:54:22','IMG_1680','240','320',NULL,NULL),
+('4136','214',NULL,'IMG_1682','Y','Y','Appoaching Kiwani Cabin','35.2034027778','-106.4426805556','2303',NULL,'2019-06-26 09:57:33','IMG_1682','240','320',NULL,NULL),
+('4137','214',NULL,'IMG_1683','Y','N','On the edge of nowhere','35.2033888889','-106.4429388889','2304',NULL,'2019-06-26 09:58:14','IMG_1683','240','320',NULL,NULL),
+('4138','214',NULL,'IMG_1687','Y','N','View from inside the cabin','35.2033472222','-106.4433055556','2305',NULL,'2019-06-26 09:59:51','IMG_1687','240','320',NULL,NULL),
+('4139','214',NULL,'IMG_1690','Y','Y','Looking north from the cabin','35.2039611111','-106.4437472222','2306',NULL,'2019-06-26 10:01:49','IMG_1690','320','240',NULL,NULL),
+('4140','214',NULL,'IMG_1695','Y','Y','Burned section along Crest Trail','35.2239138889','-106.4518138889','2307',NULL,'2019-06-26 10:51:55','IMG_1695','240','320',NULL,NULL),
+('4141','214',NULL,'IMG_1696','Y','Y','Approaching a lookout point','35.2245416667','-106.4526138889','2308',NULL,'2019-06-26 10:54:02','IMG_1696','240','320',NULL,NULL),
+('4142','214',NULL,'IMG_1699','Y','Y','One fabulous view from the lookout','35.2263027778','-106.4538027778','2309',NULL,'2019-06-26 10:58:00','IMG_1699','240','320',NULL,NULL),
+('4143','214',NULL,'IMG_1703','Y','Y','Where the 10K meets','35.2377388889','-106.4497305556','2310',NULL,'2019-06-26 11:22:55','IMG_1703','320','240',NULL,NULL);
 
 
 
