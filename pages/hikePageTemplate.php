@@ -116,7 +116,8 @@ function off() {
         Max to Min Elevation: <span class="sumClr">
             <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
     <?php if ((isset($showAscDsc) && $showAscDsc == true) 
-        || is_numeric($hikeEThresh)) : ?>
+    || is_numeric($hikeEThresh)
+    ) : ?>
         Total Ascent: <span class="sumClr">
             <?= sprintf("%.0f", $pup * 3.28084);?> ft</span><br />
         Total Descent: <span class="sumClr">
@@ -134,16 +135,7 @@ function off() {
         <span class="track">Download <a id="dwn" href="<?= $gpxPath;?>"
                 download>GPX File</a></span>
     </p>
-    <p id="albums">For improved photo viewing,<br />check out
-        the following album(s):
-    </p>
-    <p id="alnks"><a href="<?= $hikePhotoLink1;?>"
-        target="_blank">Photo Album Link</a>
-    <?php if (strlen($hikePhotoLink2) !== 0) : ?>
-        <br /><a href="<?= $hikePhotoLink2;?>"
-            target="_blank">Additional Album Link</a>
-    <?php endif; ?>
-    </p>
+    <?= $photoAlbum;?>
     <p id="directions">The following link provides on-line directions to
         the trailhead:</p>
     <p id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">
