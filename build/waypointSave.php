@@ -37,7 +37,8 @@ if (!empty($_POST['ndes'])) {
             $dblng[$dbcnt++]  = $newlng[$i];
         }
     }
-    $query = "INSERT INTO ETSV (indxNo,title,lat,lng,iclr) VALUES (?,?,?,?,? );";
+    $query = "INSERT INTO ETSV (indxNo,title,mpg,lat,lng,iclr) "
+        . "VALUES (?,?,'Y',?,?,? );";
     for ($j=0; $j<$dbcnt; $j++) {
         $newentry = $pdo->prepare($query);
         $newentry->execute(
@@ -172,7 +173,8 @@ if (!empty($_POST['ddes'])) {
             array_push($nlng, $newdblng[$p]);
         }
     }
-    $dbquery = "INSERT INTO ETSV (indxNo, title,lat,lng,iclr) VALUES (?,?,?,?,? );";
+    $dbquery = "INSERT INTO ETSV (indxNo,title,mpg,lat,lng,iclr) "
+        . "VALUES (?,?,'Y',?,?,? );";
     for ($q=0; $q<count($ndes); $q++) {
         $db = $pdo->prepare($dbquery);
         $db->execute(

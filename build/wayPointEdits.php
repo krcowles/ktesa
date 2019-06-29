@@ -147,7 +147,7 @@ if ($gpxWptCount > 0) {
 if ($wayPointCount > 0) {
     $wptedits .= $dbWpts . PHP_EOL;
     $wptedits .= $wptDescriptions . PHP_EOL;
-    $wptedits .= '<div id="dpts">' . PHP_EOL;
+    $wptedits .= '<div id="wpts">' . PHP_EOL;
     for ($n=0; $n<$wayPointCount; $n++) {
         // for initialization of drop-down box
         $wptedits .= '<p id="dicn' . $n . '" style="display:none;">'
