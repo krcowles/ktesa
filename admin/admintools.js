@@ -14,7 +14,7 @@ $('#site').on('click', function() {
 $('#npix').on('click', function() {
     window.open('list_new_files.php?request=pictures', "_self");
 });
-var picfile = ''
+var picfile = '';
 $('#cmppic').on('change', function(ev) {
     picfile = ev.target.files[0].name;
 });
@@ -51,6 +51,21 @@ $('#exall').on('click', function() {
 $('#swdb').on('click', function() {
     window.open('switchDb.php');
     window.close();
+});
+$('#emode').on('click', function() {
+    var butnTxt = $('#emode').text();
+    $.ajax({
+        url: 'siteEdit.php',
+        data: {button: butnTxt},
+        dataType: "text",
+        success: function(resp) {
+            $('#emode').text(resp);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("Edit mode change script failed: " +
+                textStatus + ": " + errorThrown);
+        }
+    });
 });
 $('#commit').on('click', function() {
     $.ajax({
@@ -178,4 +193,4 @@ $('#rowdel').on('click', function() {
     }
 });
 
-});
+});  // end of doc loaded
