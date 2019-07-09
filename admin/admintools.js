@@ -14,22 +14,34 @@ $('#site').on('click', function() {
 $('#npix').on('click', function() {
     window.open('list_new_files.php?request=pictures', "_self");
 });
-var picfile = ''
+var picfile = '';
+var pselLoc = $('#psel').offset();
+var dselLoc = $('#dsel').offset();
+var dselCoord = {top: dselLoc.top, left: pselLoc.left};
+$('#dsel').offset(dselCoord);
 $('#cmppic').on('change', function(ev) {
     picfile = ev.target.files[0].name;
 });
 $('#rel2pic').on('click', function() {
-    if (picfile === '') {
-        alert("No image has been selected");
+    picloc = '';
+    var dateSelected = $('#datepicker').val();
+    //var dateSelected = $('#datepicker').datepicker("getDate");
+    //$.datepicker.formatDate('yy-mm-dd', dateSelected);
+    //dateSelected = dateSelected.toString();
+    if (picfile === '' && dateSelected === '') {
+        alert("No image or date has been selected");
     } else {
-        var extPos = picfile.lastIndexOf(".");
-        var sizedir = picfile.substring(extPos - 1, extPos);
-        if (sizedir === 'n') {
-            var picloc = "pictures/nsize/" + picfile;
-        } else {
-            var picloc = "pictures/zsize/" + picfile;
-        }
-        window.open("list_new_files.php?request=pictures&dtFile=" + picloc, "_self");
+        if (picfile !== '') {
+            var extPos = picfile.lastIndexOf(".");
+            var sizedir = picfile.substring(extPos - 1, extPos);
+            if (sizedir === 'n') {
+                var picloc = "pictures/nsize/" + picfile;
+            } else {
+                var picloc = "pictures/zsize/" + picfile;
+            }
+        } 
+        window.open("list_new_files.php?request=pictures&dtFile=" + picloc +
+            "&dtTime=" + dateSelected, "_self");
     }
 });
 $('#reload').on('click', function() {

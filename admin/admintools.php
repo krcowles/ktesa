@@ -22,6 +22,19 @@ require "../php/global_boot.php";
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            //$( "#datepicker" ).datepicker();
+            $( "#datepicker" ).datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        });
+    </script>
+</head>
 <body>
 <div id="logo"><img id="hikers" src="../images/hikers.png" alt="hikers icon" />
     <p id="logo_left">Hike New Mexico</p>
@@ -56,8 +69,11 @@ require "../php/global_boot.php";
         <button id="npix">New Pictures</button>
             &nbsp;[Downloads new pictures since last Site upload]<br />
         <button id="rel2pic">Pictures newer than: </button>&nbsp;&nbsp;
-            Select a file from the 'pictures' directory &nbsp;&nbsp;
-            <input id="cmppic" type="file" /><br />
+            <span id="psel">Select a file from the 'pictures' directory</span>
+                &nbsp;&nbsp;<input id="cmppic" type="file" /><br />
+            <span id="dsel">OR specify calendar date&nbsp;&nbsp;
+            <input style="font-size:12px;width:90px;"
+                id="datepicker" type="text" name="datepicker" /></span><br />
         <span style="font-size:20px;color:brown;">Listings:</span><br />
         <button id="lst">List New Files</button>&nbsp;&nbsp;[Since last upload]
         <hr />
@@ -206,7 +222,6 @@ require "../php/global_boot.php";
         are not also updated.
     </fieldset><br />
 </div>
-<script src="../scripts/jquery-1.12.1.js"></script>
 <script src="admintools.js"></script>
 </body>
 </html>

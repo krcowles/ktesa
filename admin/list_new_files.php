@@ -1,7 +1,15 @@
 <?php
 /**
- * This module will recursively scan the project directory and identify any
- * files, based on timestamp, that are newer than the last upload.
+ * This module serves several purposes:
+ *  1. List all the files that are new since the last upload (based on 
+ *     timestamp), and present that list on a page;
+ *  2. Download all pictures that have been added since the last upload
+ *     (based on timestamp);
+ *  3. Download all pictures that are newer than:
+ *      a. A picture file selected *locally* from the 'pictures' directory
+ *      b. A user-selected calendar date
+ * In all cases, the code will recursively scan the project directory and
+ * identify the desired items.
  * PHP Version 7.0
  * 
  * @package Admin
@@ -10,23 +18,25 @@
  * @link    ../docs/
  */
 session_start();
+require '../php/global_boot.php';
 $request = filter_input(INPUT_GET, 'request');  // either 'files' or 'pictures'
 $dtFile = filter_input(INPUT_GET, 'dtFile');  // filepath for comparison picture
+$dtTime = filter_input(INPUT_GET, 'dtTime');  // time for locating new pictures
+$newerThan = (isset($dtFile) || isset($dtTime)) ? true : false;
 $tmpPix = sys_get_temp_dir() . '/newPix.zip';
 if (file_exists($tmpPix)) {
     unlink($tmpPix);
 }
-// before changing directory:
-require '../php/global_boot.php';
+
 $dir_iterator = new RecursiveDirectoryIterator(
     "../", RecursiveDirectoryIterator::SKIP_DOTS
 );
 $iterator = new RecursiveIteratorIterator(
     $dir_iterator, RecursiveIteratorIterator::SELF_FIRST
 );
-// could use CHILD_FIRST if you so wish
 //$inputDate = "02/20/2019 1:30:00"; // Use these lines to manually enter a date
 //$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
+
 // save current directory location, prior to changing to find 'pictures'
 $current = getcwd();
 $adminDir = $current;
@@ -41,12 +51,16 @@ while (!in_array('pictures', scandir($current))) {
         throw new Exception("Can't find pictures directory!");
     }
 }
-if (!$dtFile) {
+if (!$newerThan) {
     // Upload time plus 20 seconds for unzip
     $uploadDate = filemtime("{$adminDir}/dummy.txt") + 20;
 } else {
-    // Use the date/time from the file given as a param
-    $uploadDate = filemtime("./{$dtFile}");
+    // Use the date/time from the query string parameters
+    if (isset($dtFile) && $dtFile !== '') {
+        $uploadDate = filemtime("./{$dtFile}");
+    } else {
+        $uploadDate = strtotime($dtTime);
+    }
 }
 $udate = date(DATE_RFC2822, $uploadDate);
 
