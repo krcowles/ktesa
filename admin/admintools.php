@@ -56,12 +56,12 @@ require "../php/global_boot.php";
         <button id="switchstate">Switch Site Mode</button></p>
         <form action="upldSite.php" method="POST" target="_blank"
             enctype="multipart/form-data">
+            Upload:<br />
             <button id="upld">Upload</button>&nbsp;&nbsp;
             <input id="ufile" type="file" name="ufile" />
                 &nbsp;[Uploads Zip File and Extracts to 'upload' directory]<br />
         </form>
-        <span style="font-size:20px;color:brown;">
-            Downloads:</span><br />
+        Downloads:<br />
         <button id="chgs">Changes Only</button>
             &nbsp;[Downloads zip file]<br />
         <button id="site">Entire Site</button>
@@ -95,7 +95,14 @@ require "../php/global_boot.php";
         <?php endif; ?>
         <hr />
         <p>Miscellaneous Tools:</p>
-        <button id="commit">Display Commit</button>&nbsp;&nbsp;[for this site]<br />
+        <?php
+        if ($editing === 'yes') {
+            $allow = "Editing Allowed";
+        } else {
+            $allow = "No Editing Mode";
+        }
+        ?>
+        <button id="emode"><?= $allow;?></button> [Click to change modes]<br />
         <button id="cleanPix">Cleanup Pictures</button>
             &nbsp;&nbsp;[removes photos not related to hikes]<br />
         <button id="pinfo">Php Info</button><br />
@@ -129,6 +136,9 @@ require "../php/global_boot.php";
         $cbStates = substr($cbStates, 0, strlen($cbStates)-1);
         $cbStates .= ']';
         ?>
+        <script type="text/javascript">
+            var cbs = <?php echo $cbStates;?>;
+        </script>
         <br /><input type="submit" value="Apply" />
         </form>
         </div>
@@ -154,7 +164,8 @@ require "../php/global_boot.php";
         </form>
     </fieldset><br/>
     <fieldset>
-        <legend>Least Used</legend>
+        <legend>Seldom Used Tools</legend>
+        <button id="addbk">Add Book</button><br />
         <button id="drop">Drop Table</button>&nbsp;
         <select id="dtbl" name="dropper">
             <option>USERS</option>
@@ -174,7 +185,7 @@ require "../php/global_boot.php";
             <option>USERS</option>
             <option>HIKES</option>
             <option>TSV</option>
-            <option>BOOKS</options>
+            <option>BOOKS</option>
             <option>REFS</option>
             <option>GPSDAT</option>
             <option>IPTBLS</option>
@@ -183,43 +194,6 @@ require "../php/global_boot.php";
             <option>EREFS</option>
             <option>EGPSDAT</option>
         </select><br />
-        <button id="sgls">Load Table</button>&nbsp;
-        <select id="ltbl" name="sgl_ld">
-            <option>USERS</option>
-            <option>HIKES</option>
-            <option>TSV</option>
-            <option>BOOKS</option>
-            <option>REFS</option>
-            <option>GPSDAT</option>
-            <option>IPTBLS</option>
-            <option>EHIKES</option>
-            <option>ETSV</option>
-            <option>EREFS</option>
-            <option>EGPSDAT</option>
-        </select>
-        <span id="ni">&nbsp;(Not implented at this time)</span><br />
-        <script type="text/javascript">
-            var cbs = <?php echo $cbStates;?>;
-        </script>
-        <button id="addbk">Add Book</button><br />
-        <select id="rdel" name="creator">
-            <option>USERS</option>
-            <option>HIKES</option>
-            <option>TSV</option>
-            <option>BOOKS</option>
-            <option>REFS</option>
-            <option>GPSDAT</option>
-            <option>IPTBLS</option>
-            <option>EHIKES</option>
-            <option>ETSV</option>
-            <option>EREFS</option>
-            <option>EGPSDAT</option>
-        </select>&nbsp;&nbsp;
-        Row No.&nbsp;&nbsp;<input id="drow" type="text" 
-            name="indx" size="4" />
-        <button id="rowdel">Delete Row</button>
-        NOTE: Deleting a row in a table may cause issues if linked tables 
-        are not also updated.
     </fieldset><br />
 </div>
 <script src="admintools.js"></script>
