@@ -25,9 +25,6 @@ $('#cmppic').on('change', function(ev) {
 $('#rel2pic').on('click', function() {
     picloc = '';
     var dateSelected = $('#datepicker').val();
-    //var dateSelected = $('#datepicker').datepicker("getDate");
-    //$.datepicker.formatDate('yy-mm-dd', dateSelected);
-    //dateSelected = dateSelected.toString();
     if (picfile === '' && dateSelected === '') {
         alert("No image or date has been selected");
     } else {
@@ -39,7 +36,9 @@ $('#rel2pic').on('click', function() {
             } else {
                 var picloc = "pictures/zsize/" + picfile;
             }
-        } 
+            $('#cmppic').val(null);
+        }
+        $('#datepicker').val('');
         window.open("list_new_files.php?request=pictures&dtFile=" + picloc +
             "&dtTime=" + dateSelected, "_self");
     }
