@@ -37,6 +37,7 @@ $('#rel2pic').on('click', function() {
                 var picloc = "pictures/zsize/" + picfile;
             }
             $('#cmppic').val(null);
+            picfile = '';
         }
         $('#datepicker').val('');
         window.open("list_new_files.php?request=pictures&dtFile=" + picloc +
