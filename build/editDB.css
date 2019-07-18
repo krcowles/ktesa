@@ -1,7 +1,8 @@
 body {
     min-width: 960px;
     font-family: arial, verdana;
-    background-color: #dadada; }
+    background-color: #dadada;
+    margin: 0px; }
 #hike {
     height: 20px;
     width: 200px; }

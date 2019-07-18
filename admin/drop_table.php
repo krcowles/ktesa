@@ -32,25 +32,23 @@ $show = $list[0];
 <html lang="en-us">
 
 <head>
-    <title>DROP <?php echo $table;?></title>
+    <title>DROP <?= $table;?></title>
     <meta charset="utf-8" />
     <meta name="description" content="Drop the specified Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
-        body {background-color: #eaeaea;}
+        body {
+            background-color: #eaeaea;
+            margin: 0px;
+        }
     </style>
 </head>
 
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
-<p id="trail">DROP <?php echo $table;?> Table</p>
+<?php require "../pages/pageTop.html"; ?>
+<p id="trail">DROP <?= $table;?> Table</p>
 <div style="margin-left:16px;font-size:18px;">
     <p>Removing any previous instantiation of table <?= $table;?></p>
     <ul>

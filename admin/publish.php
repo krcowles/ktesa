@@ -197,12 +197,7 @@ $msgout .= "<p>Hike has been removed from the list of New/In-Edit Hikes</p>";
     <link href="admintools.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Release EHIKE No. <?php echo $hikeNo;?></p>
 <div style="margin-left:16px;font-size:22px">
     <?= $msgout;?>

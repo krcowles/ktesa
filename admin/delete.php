@@ -1,6 +1,5 @@
 <?php
-require_once "../mysql/dbFunctions.php";
-$link = connectToDb(__FILE__, __LINE__);
+
 $hikeNo = filter_input(INPUT_GET, 'hno');
 ?>
 <!DOCTYPE html>
@@ -16,13 +15,8 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
 </head>
 
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
-<p id="trail">Remove EHIKE <?php echo $hikeNo;?></p>
+<?php require "../pages/pageTop.html"; ?>
+<p id="trail">Remove EHIKE <?= $hikeNo;?></p>
 <div style="margin-left:16px;font-size:20px;">
 <?php
     echo '<p style="font-size:24px;color:brown;">UNDER CONSTRUCTION</p>';

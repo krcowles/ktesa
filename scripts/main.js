@@ -23,8 +23,8 @@ var dispPg = 'build/editDisplay.php?usr=';
 var adminUrl = 'admin/admintools.php';
 
 // For testing, un-comment as needed:
-//setCookie('nmh_mstr','',0);
-//setCookie('nmh_id','',0);
+setCookie('nmh_mstr','',0);
+setCookie('nmh_id','',0);
 
 // on loading the page:
 var mstrCookie = getCookie('nmh_mstr');

@@ -1,4 +1,6 @@
-body { background-color: #eaeaea;
+body { 
+    background-color: #eaeaea;
+    margin: 0px;
 }
 table {
     border-collapse: collapse;

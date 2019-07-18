@@ -57,14 +57,9 @@ $includeZoom = ($tblVar === 'D') ? true : false;
 <!-- Page Type Settings -->
 <?php if ($tblVar === 'T' || $tblVar === 'D') : ?>
     <?php if ($tblVar === 'T') : ?>
-        <div id="logo">
-            <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-            <p id="logo_left">Hike New Mexico</p>
-            <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-            <p id="logo_right">w/Tom &amp; Ken</p>
-        </div>
-        <p id="trail">Sortable Table of Hikes</p>
-        <script type="text/javascript">var pg = "tbl";</script>
+    <?php include "pageTop.html"; ?>
+    <p id="trail">Sortable Table of Hikes</p>
+    <script type="text/javascript">var pg = "tbl";</script>
     <?php else : ?>
         <div id="map" style="width:100%;"></div>
         <script type="text/javascript">var pg = "map";</script>

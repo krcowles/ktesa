@@ -1,7 +1,6 @@
 /* Styles for the New Mexico Hiking Adventures page */
 body {
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0px;
     font-family: arial, verdana;
     background-color: #dfdfdf; }
 .container {

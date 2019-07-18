@@ -71,7 +71,7 @@ $item_cnt = $j;
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo $indxTitle;?></title>
+    <title><?= $indxTitle;?></title>
     <meta charset="utf-8" />
     <meta name="language"
                     content="EN" />
@@ -86,13 +86,7 @@ $item_cnt = $j;
 </head>
 
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "pageTop.html"; ?>
 <p id="trail"><?php echo $indxTitle;?></p>
 
 <img class="mainPic" src="<?php echo $mapsrc;?>" alt="Park Service Map" />
