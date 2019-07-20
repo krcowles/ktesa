@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=281 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=840 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=858 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -271,7 +271,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=216 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -490,7 +490,8 @@ INSERT INTO HIKES VALUES
 ('212','Capulin Peak','mstr','Tijeras','Normal',NULL,'','','Out-and-back','2.10','200','Easy-Moderate','Picnic Facilities','Great Sandia views and points north/east','Not Winter','Mixed sun/shade','Capulin_Peak.GPX','Capulin_Peak.json','35.2159465849','-106.4152824506',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'57.4%22N+106%C2%B024\'55.0%22W/@35.1937507,-106.4435951,12.56z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.2159466!4d-106.4152825','This trail begins in the parking area to the immediate right of the entrance into the \'Capulin Snowplay Area\'. At the northeast corner is a one-lane road, closed off, with a sign \"Foot Traffic Welcome\". Note that there is no signage for this hike - and multiple forks occur. Refer to the green flags on the map for the correct route. The trailhead actually occurs at the end of the one-lane road, and is a small trail leading into the grass.','This is a short and easy hike to a very lovely area where there are multiple views of the Sandias and points north and east. After reaching the summit of Capulin Peak, keep going - the trail continues downward a short distance to a wonderful overlook with a huge vista. And, of course, depending on the season, you will be welcomed by multiple gorgeous blooming flowers!',NULL,NULL,NULL),
 ('213','Survey Trail','mstr','Tijeras','Cluster',NULL,'MM','Ellis Group','Out-and-back','5.90','550','Moderate','Outdoor Facilities','A high altitude stroll in the woods','Not Winter','Good shade','Survey_Trail.GPX','Survey_Trail.json','35.2084293589','-106.441028472',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.1879854,-106.4490001,12.58z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090142!4d-106.4410765','To get to Survey Trail, park in the Ellis Trailhead Parking Lot and proceed south on the large Forest Road. A short distance up you will most likely first see the Kiwani Meadows trail marker. Back up a few yards to see the Switchback Trail 271 sign and follow that. Later on, near Highway 536, that trail will split with a clear marker to Survey Trail.','This hike provides great shade, but only a few glimpses to the east. It is nevertheless a great high altitude hike. It later intersects the 10K Trail, providing options for a 2-car hike, or, alternately, a short jog up to the Crest Trail. It is also possible to cut over (some bushwhacking may be involved) and form a loop, returning via Ellis Trail. The Survey Trail dead-ends at the Osha Loop trail.',NULL,NULL,NULL),
 ('214','Crest Trail - Kiwanis Cabin','mstr','Tijeras','Cluster',NULL,'MM','Ellis Group','Loop','6.60','600','Moderate','Pubic Restrooms','The Cabin and views from the North Peak','Not Winter','Good shade','Kiwani_North_Peak.GPX','Kiwani_North_Peak.json','35.2083071508','-106.4410039131',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.2063369,-106.4420975,14.31z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090142!4d-106.4410765','This hike was created by the author to form a loop from multiple trail segments, and has no book or web references. Nonetheless, some references to the trail highlights are included. There are multiple unmarked forks and some unclear signage. The map has flags at trail forks - green for \'keep left\', red for \'keep right\'. Exercise caution in the Sandia wilderness - on this hike, a bear with two cubs was spotted but presented no apparent threat.','The self-created hike, formed by connecting multiple trail segments, was designed to take the hiker first to the Kiwanis Cabin on the edge of the Sandia, and then along the Crest Trail, past the Sandia North Peak. This hike continued to the endpoint of the 10K Trail. Following the crest, there are multiple great views looking over the valley, presenting various rock faces and features, and of course, a sprinkling of wildflowers.',NULL,NULL,NULL),
-('215','Palomas Peak via Faulty Trail','mstr','Placitas','Cluster',NULL,'NN','Sandia Cave Group','Out-and-back','7.50','1400','Med-Difficult','None','Multiple Interior Views of Sandias','Not Winter','Mixed sun/shade','Mystery-Palomas.GPX','Mystery-Palomas.json','35.2501596697','-106.4099899493',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Sandia+Man+Cave/@35.263693,-106.4483208,12.67z/data=!4m5!3m4!1s0x87189ba59d32c875:0x80265dcf8bdb5b41!8m2!3d35.2550155!4d-106.405993','When NM 165 turns to a dirt road (approx. 2-1/2 miles before the Sandia Cave parking), it is generally not well-maintained and requires 4-wheel drive and reasonable ground clearance. On the trail, there is a prodigious amount of scrub oak overgrowth much of the way, causing the trail to sometimes seem to disappear. For this reason, it is recommended to wear long pants for wading through the brush. The trail does not appear to be maintained and, though mostly well-defined, assumes only a fair condition at points. Proceeding up the Palomas Cliffs trail can be somewhat steep, and along the cliff\'s lower ledge, the trail is uneven, occasionally requiring light scrambling.','This hike begins by following the Sandia Cave trail for about 20-30 meters, where the \'North Mystery Trail\' (aka Faulty Trail) turns sharply right. A short distance in, note that there is another sharp turn to the right (see the map\'s red flag). The trail may appear to go straight at that point, but soon disappears. There are multiple views en route, including interior views of the Sandias, points north and east as well, such as the San Pedro and Ortiz ranges. The Palomas Cliffs portion of the hike also provides nice interior views and an up-close view of the ledges.',NULL,NULL,NULL);
+('215','Palomas Peak via Faulty Trail','mstr','Placitas','Cluster',NULL,'NN','Sandia Cave Group','Out-and-back','7.50','1400','Med-Difficult','None','Multiple Interior Views of Sandias','Not Winter','Mixed sun/shade','Mystery-Palomas.GPX','Mystery-Palomas.json','35.2501596697','-106.4099899493',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Sandia+Man+Cave/@35.263693,-106.4483208,12.67z/data=!4m5!3m4!1s0x87189ba59d32c875:0x80265dcf8bdb5b41!8m2!3d35.2550155!4d-106.405993','When NM 165 turns to a dirt road (approx. 2-1/2 miles before the Sandia Cave parking), it is generally not well-maintained and requires 4-wheel drive and reasonable ground clearance. On the trail, there is a prodigious amount of scrub oak overgrowth much of the way, causing the trail to sometimes seem to disappear. For this reason, it is recommended to wear long pants for wading through the brush. The trail does not appear to be maintained and, though mostly well-defined, assumes only a fair condition at points. Proceeding up the Palomas Cliffs trail can be somewhat steep, and along the cliff\'s lower ledge, the trail is uneven, occasionally requiring light scrambling.','This hike begins by following the Sandia Cave trail for about 20-30 meters, where the \'North Mystery Trail\' (aka Faulty Trail) turns sharply right. A short distance in, note that there is another sharp turn to the right (see the map\'s red flag). The trail may appear to go straight at that point, but soon disappears. There are multiple views en route, including interior views of the Sandias, points north and east as well, such as the San Pedro and Ortiz ranges. The Palomas Cliffs portion of the hike also provides nice interior views and an up-close view of the ledges.',NULL,NULL,NULL),
+('216','Faulty-Canoncito-Barts Loop','mstr','Tijeras','Cluster',NULL,'P','Sulpher Canyon Group','Out-and-back','11.70','1800','Difficult','Picnic Facilities & Toilet','Views from Faulty Trail and the Crest','Not Winter','Mixed sun/shade','Faulty-Canoncita-Barts.GPX','Faulty-Canoncita-Barts.json','35.1743507199','-106.3788598962',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Sulphur+Spring/@35.1692391,-106.3840069,14z/data=!4m5!3m4!1s0x8718984f214630a9:0x7dfded4983f33916!8m2!3d35.1730997!4d-106.3769686','Note that trail access is no longer available from the highway near Cole Spring - you must access Canoncito and Bart\'s from Faulty Trail (see latest edition of Sandia Hiking Guide, March 2019). Carry plenty of water - it\'s a long and demanding hike. Although the trail is somewhat maintained, the author encountered numerous downed trees, requiring an occasional by-pass. ','This hike covers a lot of territory, beginning with the interesting Faulty Trail near Sulphur Springs, off Highway 536 (The Crest Highway). From there, heading south, multiple trail junctions occur: Cienega Horse ByPass, Cienega, Armijo, then finally Canoncito, the first target of this hike. Canoncito is not well-traveled, and goes up rapidly and relentlessly to the South Crest Trail. From there, a short hike south on the Crest Trail takes you to Bart\'s Trail, which heads back down the mountain to Faulty Trail. Bart\'s Trail may be somewhat steeper, but both trails ascend/descend at a demanding pace. The Crest Trail offers the best views of all the trails, while the other trails have occasional \"sneak-peeks\" out to the east. ',NULL,NULL,NULL);
 
 
 
@@ -558,7 +559,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1514 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1521 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1382,7 +1383,13 @@ INSERT INTO REFS VALUES
 ('1508','105','Website: ','http://www.explorenm.com/hikes/PiedraLisa/','Explore New Mexico'),
 ('1509','105','Website: ','http://www.sandiahiking.com/trailguide.html#piedralisasouth','Sandia Mountain Hiking Guide'),
 ('1510','105','App: ','http://www.alltrails.com/trail/us/new-mexico/piedra-lisa-trail-135','AllTrails'),
-('1511','105','Website: ','http://www.summitpost.org/piedra-lisa-trail-no-135-south-trailh/166172','SummitPost');
+('1511','105','Website: ','http://www.summitpost.org/piedra-lisa-trail-no-135-south-trailh/166172','SummitPost'),
+('1514','216','Book:','7','Mike Coltrin'),
+('1515','216','Website:','https://www.fs.usda.gov/recarea/cibola/recreation/recarea/?recid=64538&actid=104','Forest Service - Canoncito'),
+('1516','216','App:','https://www.alltrails.com/trail/us/new-mexico/canoncito-trail-150-via-cienega-trail-148-and-faulty-trail-195','AllTrails.com - Canoncito'),
+('1517','216','Website:','https://www.fs.usda.gov/recarea/cibola/recreation/hiking/recarea/?recid=64534&actid=50','Forest Service - Bart\'s'),
+('1518','216','App:','https://www.alltrails.com/trail/us/new-mexico/faulty-barts-and-south-crest-trails-loop','AllTrails.com - Bart\'s'),
+('1519','216','Website:','https://www.fs.usda.gov/recarea/cibola/recreation/recarea/?recid=64566&actid=50','Forest Service - Faulty');
 
 
 
@@ -1406,7 +1413,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4188 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4219 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3708,7 +3715,25 @@ INSERT INTO TSV VALUES
 ('4182','105',NULL,'IMG_1775','Y','Y','The antenna farm is visible from here','35.2387888889','-106.4773416667','2326',NULL,'2019-07-09 09:33:45','IMG_1775','320','240',NULL,NULL),
 ('4183','105',NULL,'IMG_1771','Y','Y','Along the west spur trail','35.2471083333','-106.4789361111','2327',NULL,'2019-07-09 09:00:22','IMG_1771','240','320',NULL,NULL),
 ('4184','105',NULL,'IMG_1772','Y','N','One of many rewarding views','35.2468083333','-106.4782194444','2328',NULL,'2019-07-09 09:02:56','IMG_1772','240','320',NULL,NULL),
-('4185','105',NULL,'IMG_1770','Y','N','Another view of the rocky peaks at the top','35.2461444444','-106.4777444444','2329',NULL,'2019-07-09 08:56:55','IMG_1770','240','320',NULL,NULL);
+('4185','105',NULL,'IMG_1770','Y','N','Another view of the rocky peaks at the top','35.2461444444','-106.4777444444','2329',NULL,'2019-07-09 08:56:55','IMG_1770','240','320',NULL,NULL),
+('4188','216',NULL,'IMG_1786','Y','Y','Faulty Trail soon ascends to a better height for views','35.1684833333','-106.3877555556','2330',NULL,'2019-07-17 07:59:59','IMG_1786','240','320',NULL,NULL),
+('4189','216',NULL,'IMG_1793','Y','Y','An odd forest denizen','35.1543','-106.3890694444','2331',NULL,'2019-07-17 08:40:34','IMG_1793','320','240',NULL,NULL),
+('4190','216',NULL,'IMG_1789','Y','Y','Dead tree piles assembled for unkown reasons','35.1674055556','-106.388175','2332',NULL,'2019-07-17 08:05:11','IMG_1789','240','320',NULL,NULL),
+('4191','216',NULL,'IMG_1792','Y','Y','One of the mysterious \"Medallion Trees\" occurring thougout the Sandias','35.155875','-106.3896111111','2333',NULL,'2019-07-17 08:36:28','IMG_1792','240','320',NULL,NULL),
+('4192','216',NULL,'IMG_1813','Y','N','A \"Thong Tree\' allegedly formed by early natives using leather thongs','35.1446194444','-106.3709111111','2334',NULL,'2019-07-17 12:18:19','IMG_1813','240','320',NULL,NULL),
+('4193','216',NULL,'IMG_1800','Y','Y','A long and relentless trek up Canoncito towards the South Crest Trail','35.1515111111','-106.4117361111','2335',NULL,'2019-07-17 10:11:20','IMG_1800','240','320',NULL,NULL),
+('4194','216',NULL,'IMG_1809','Y','Y','Summer flowers accentuate the trail','35.1443055556','-106.4116361111','2336',NULL,'2019-07-17 10:54:17','IMG_1809','240','320',NULL,NULL),
+('4195','216',NULL,'IMG_1802','Y','N','Canoncito\'s destination','35.1535444444','-106.4146277778','2337',NULL,'2019-07-17 10:23:22','IMG_1802','320','240',NULL,NULL),
+('4196','216',NULL,'IMG_1803','Y','Y','A view of the crest from the Crest Trail','35.1534277778','-106.4147861111','2338',NULL,'2019-07-17 10:29:55','IMG_1803','320','240',NULL,NULL),
+('4197','216',NULL,'IMG_1805','Y','Y','Views along the Crest trail','35.1518083333','-106.415025','2339',NULL,'2019-07-17 10:34:47','IMG_1805','240','320',NULL,NULL),
+('4198','216',NULL,'IMG_1804','Y','Y','Looking north on South Crest Trail','35.1525083333','-106.4149388889','2340',NULL,'2019-07-17 10:33:21','IMG_1804','240','320',NULL,NULL),
+('4199','216',NULL,'IMG_1808','Y','Y','Point of departure for Bart\'s trail','35.1437722222','-106.4140083333','2341',NULL,'2019-07-17 10:49:26','IMG_1808','320','240',NULL,NULL),
+('4200','216',NULL,'IMG_1810','Y','Y','An open view heading down Bart\'s','35.14455','-106.4103916667','2342',NULL,'2019-07-17 10:56:34','IMG_1810','240','320',NULL,NULL),
+('4201','216',NULL,'Sulphur Springs Jct',NULL,'Y',NULL,'35.1729','-106.38726111',NULL,NULL,NULL,NULL,NULL,NULL,'Triangle, Yellow',NULL),
+('4202','216',NULL,'Cienega Horse Bypass Jct',NULL,'Y',NULL,'35.17154722','-106.38578056',NULL,NULL,NULL,NULL,NULL,NULL,'Triangle, Yellow',NULL),
+('4203','216',NULL,'Cienega Jct',NULL,'Y',NULL,'35.16798056','-106.38973888',NULL,NULL,NULL,NULL,NULL,NULL,'Triangle, Yellow',NULL),
+('4204','216',NULL,'Armijo Jct',NULL,'Y',NULL,'35.15561944','-106.38878611',NULL,NULL,NULL,NULL,NULL,NULL,'Triangle, Yellow',NULL),
+('4205','216',NULL,'Canoncito Jct',NULL,'Y',NULL,'35.14686667','-106.38874722',NULL,NULL,NULL,NULL,NULL,NULL,'Triangle, Yellow',NULL);
 
 
 
