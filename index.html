@@ -25,11 +25,6 @@
                 <button id="tbl"><strong>Table Only</strong></button>
                 <button id="tnm"><strong>Map w/Table</strong></button>
                 <button id="bigm"><strong>Full Page Map</strong></button>
-                <!--
-                <input type="radio" name="tbl" value="T" /> Table Only&nbsp;&nbsp;
-                <input type="radio" name="tbl" value="D" checked="checked" /> Map W/ Table&nbsp;&nbsp;
-                <input type="radio" name="tbl" value="M" /> Full Page Map
-                -->
             </fieldset>
         </div>
     </div>
@@ -40,13 +35,13 @@
         possibilities, all found in the diverse terrain of New Mexico - from short
         treks, to longer, uphill/downhill ascents.
         </p> 
-    </div> <!-- end of intro -->
+    </div>
     <div id="features">
         One of the features of this site 
         is that not all of the hikes listed can be found in popular hiking books, or 
         even in on-line trail apps. Check out "What You Will See" below.
-    </div> <!-- end of 'features' -->
-    <form id="auxfrm" action="#">
+    </div>
+    <form id="users" action="admin/signin.php">
         <div id="logins"><em id="expOpt">
             <br />
             Registered users can add (and edit) their own hikes...</em><br />
@@ -54,7 +49,8 @@
             <input id="usrid" type="text" size="20" name="nmhid" />&nbsp;&nbsp;
             Your User Password:&nbsp;&nbsp;
             <input id="upass" type="password" name="regkey" 
-                size="20" />
+                size="20" />&nbsp;&nbsp;
+            <button id="enter">Login</button>
         </div>
         <p id="loggedin">
             <input id="sub2" class="boldtxt"

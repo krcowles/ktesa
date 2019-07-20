@@ -4,12 +4,11 @@ $( function() {  // wait until document is loaded...
 var usr_type = 'unregistered';
 var username;
 var ajaxDone = false;
-var valid1 = "Welcome back ";
+var valid1 = "Welcome ";
 var valid2 = "; you are now logged in...";
 var valid;
 var valstat;
-var backdoor = false;
-
+var backdoor = false;  // admin entry on user page if ever needed for help
 // URL targets: New Page Creation:
 var createUrl = 'build/startNewPg.php?usr=';
 // URL targets: Edit EHIKES items:
@@ -22,9 +21,33 @@ var dispPg = 'build/editDisplay.php?usr=';
 // URL target for admin tools:
 var adminUrl = 'admin/admintools.php';
 
+/**
+ * User logins (no cookie present/cookies disabled, or non-registered user)
+ */
+$('#users').submit( function() {
+    // ensure all login data is present
+    var uid = $('#usrid').val();
+    var pwd = $('#upass').val();
+    if (uid == '' && pwd == '') {
+        alert("You must supply a registered username and password");
+        return false;
+    }
+    if (uid == '') {
+        alert("You must supply a registered username");
+        return false;
+    }
+    if (pwd == '') {
+        alert("You must supply a valid password");
+        return false;
+    }
+    // otherwise form submit
+});
+
+
+
 // For testing, un-comment as needed:
-//setCookie('nmh_mstr','',0);
-//setCookie('nmh_id','',0);
+setCookie('nmh_mstr','',0);
+setCookie('nmh_id','',0);
 
 // on loading the page:
 var mstrCookie = getCookie('nmh_mstr');
@@ -133,7 +156,24 @@ function getCookie(ckname) {
     return "";
 }
 
-$('#auxfrm').submit( function(ev) {
+/*
+$('#users').submit( function(ev) {
+    // ensure all login data is present
+    var uid = $('#usrid').val();
+    var pwd = $('#upass').val();
+    if (uid == '' && pwd == '') {
+        alert("You must supply a registered username and password");
+        return false;
+    }
+    if (uid == '') {
+        alert("You must supply a registered username");
+        return false;
+    }
+    if (pwd == '') {
+        alert("You must supply a valid password");
+        return false;
+    }
+
     ev.preventDefault();
     // master key requires no entry of user name:
     if ( ($('#upass').val() === '000ktesa9') || 
@@ -192,10 +232,12 @@ $('#auxfrm').submit( function(ev) {
             }
         } else {  // cookies are enabled, now check for nmh_id:
             username = getCookie("nmh_id");
+*/
             /* NOTE: If the 'nmh_id' cookie is set, the user options
              * display regardless of the username supplied on the form,
              * and no password is required.
              */
+/*
             if (username === "") {  // no cookie: validation is required...
                 validateUser(uid,upw,true);
                 if (valstat) {
@@ -209,8 +251,11 @@ $('#auxfrm').submit( function(ev) {
         }
     } // end of else not master key
 });
+*/
 
-// twisty control for showing explanatory text sections
+/**
+ * This section manages the 'twisty' text on the bottom of the page
+ */
 function toggleTwisty(tid, ttxt, dashed) {
     var feature = $('#' + ttxt);
     var twisty  = $('#' + tid);

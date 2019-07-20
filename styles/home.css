@@ -69,7 +69,13 @@ legend {
     width: 160px;
     height: 36px;
 }
-#tbl:hover, #tnm:hover, #bigm:hover, #sub2:hover {
+#enter {
+    background-color: #eff5ef;
+    font-size: 16px;
+    width: 80px;
+    height: 28px;
+}
+#tbl:hover, #tnm:hover, #bigm:hover, #sub2:hover, #enter:hover {
     cursor: pointer;
     color: brown;
     background-color: #d5f8dc;
