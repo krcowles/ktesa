@@ -78,16 +78,14 @@ $user->execute(
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
-        body { background-color: #eaeaea; }
+        body {
+            background-color: #eaeaea;
+            margin: 0px;
+         }
     </style>
 </head>
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Registration Complete</p>
 <p id="usrid" style="display:none"><?= $uname;?></p>
 <div style="margin-left:24px;">

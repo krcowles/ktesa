@@ -34,12 +34,7 @@ $show = 'all';
 </head>
 
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">EHIKES Available to <?php echo $msg;?></p>
 <p id="action" style="display:none"><?php echo $act;?></p>
 <?php

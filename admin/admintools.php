@@ -28,7 +28,6 @@ require "../php/global_boot.php";
     <script src="../scripts/jquery-ui.min.js"></script>
     <script type="text/javascript">
         $(function() {
-            //$( "#datepicker" ).datepicker();
             $( "#datepicker" ).datepicker({
                 dateFormat: "yy-mm-dd"
             });
@@ -36,11 +35,7 @@ require "../php/global_boot.php";
     </script>
 </head>
 <body>
-<div id="logo"><img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Site Administration Tools</p>
 
 <?php if (isset($_SESSION['nopix']) && !empty($_SESSION['nopix'])) : ?>

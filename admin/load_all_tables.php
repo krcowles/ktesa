@@ -14,12 +14,7 @@
     </style>
     <script src="../scripts/jquery-1.12.1.js"></script>
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Loading Database</p>
 <div style="margin-left:16px;">
 <p>Please wait until the 'DONE' message appears below</p>

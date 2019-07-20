@@ -8,23 +8,28 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-$usite = sys_get_temp_dir() . '/';
-$upldFile = validateUpload('ufile', $usite);
-// if no upload dir at project level, create one
-if (file_exists('../upload') === false ) {
-    mkdir('../upload', 0775);
-}
-// extract files to upload dir
-$zfile = $usite . $upldFile[0];
-$zip = new ZipArchive();
-if ($zip->open($zfile) === true) {
-    $zip->extractTo('../upload/');
-    $zip->close();
-    $msg .= "Successfully extracted files to upload directory";
+$msg = '';
+if ($_FILES['ufile']['name'] == '') {
+    $msg .= "No file was selected for upload";
 } else {
-    $msg .= "Failed to extract files";
+    $usite = sys_get_temp_dir() . '/';
+    $upldFile = validateUpload('ufile', $usite);
+    // if no upload dir at project level, create one
+    if (file_exists('../upload') === false ) {
+        mkdir('../upload', 0775);
+    }
+    // extract files to upload dir
+    $zfile = $usite . $upldFile[0];
+    $zip = new ZipArchive();
+    if ($zip->open($zfile) === true) {
+        $zip->extractTo('../upload/');
+        $zip->close();
+        $msg .= "Successfully extracted files to upload directory";
+    } else {
+        $msg .= "Failed to extract files";
+    }
+    unlink($usite . $upldFile[0]);
 }
-unlink($usite . $upldFile[0]);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -37,12 +42,7 @@ unlink($usite . $upldFile[0]);
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Upload File to Site</p>
 <p style="margin-left:24px;"><?= $msg;?></p>
 </body>

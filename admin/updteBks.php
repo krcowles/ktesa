@@ -1,6 +1,6 @@
 <?php
 /**
- * This script inserts a new book entered on the form "addBook.html" into
+ * This script inserts a new book entered on the form "addBook.php" into
  * the BOOKS table in MySQL.
  * PHP Version 7.1
  * 

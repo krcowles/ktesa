@@ -123,10 +123,6 @@ $('#create').on('click', function() {
 $('#sgls').on('click', function() {
     // not yet implemented
 });
-$('#dret').on('click', function() {
-    // currently obsolete
-    //window.open('drop_all_tables.php?no=ets',"_blank");
-});
 var disp = $('#dstat').text();
 if (disp === 'Open') {
     $('#modeopt').css('display','block');
@@ -150,59 +146,7 @@ $('#ldet').on('click', function() {
     alert("Not yet implemented");
 });
 $('#addbk').on('click', function() {
-    window.open("addBook.html", "_blank");
+    window.open("addBook.php", "_blank");
 })
-$('#rowdel').on('click', function() {
-    var trow = prompt("Are you sure you want to delete this row?","Row " + $('#drow').val());
-    if (trow !== null) {
-        var qstr;
-        var plgth = trow.length;
-        var rno = trow.substring(4,plgth);
-        if (rno == 0) {
-            alert("There is no row 0; Please specify an existing row");
-            $('#drow').val('');
-        } else {
-            var tbl = $('#rdel').val();
-            switch(tbl) {
-                case 'USERS':
-                    qstr = 'u&indx=' + rno;
-                    break;
-                case 'EHIKES':
-                    qstr = 'eh&indx=' + rno;
-                    break;
-                case 'HIKES':
-                    alert("Are you sure you want to delete from HIKES?");
-                    qstr = 'h&indx=' + rno;
-                    break;
-                case 'ETSV':
-                    qstr = 'et&indx=' + rno;
-                    break;
-                case 'TSV':
-                    alert ("Are you sure you want to delete photos for a live hike?");
-                    qstr = 't&indx=' + rno;
-                    break;
-                case 'EREFS':
-                    qstr = 'er&indx=' + rno;
-                    break;
-                case 'REFS':
-                    alert("Are you sure you want to delete refs for a live hike?");
-                    qstr = 'r&indx=' + rno;
-                    break;
-                case 'EGPSDAT':
-                    qstr = 'eg&indx=' + rno;
-                    break;
-                case 'GPSDAT':
-                    alert("Are you sure you want to delete gps data for a live hike?");
-                    qstr = 'g&indx=' + rno;
-                    break;
-            }
-            var rowtarg = 'delete_tbl_row.php?tbl=' + qstr;
-            $('#drow').val('');
-            window.open(rowtarg,"_target");
-        }
-    } else {
-        alert("Nothing deleted");
-    }
-});
 
 });  // end of doc loaded

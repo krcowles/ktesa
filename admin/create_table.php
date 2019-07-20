@@ -164,12 +164,7 @@ $tbldat = describeTable($pdo, $table);
 </head>
 
 <body>
-    <div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Create the <?= $table;?> Table</p>
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the <?= $table;?> table in the database...</p>

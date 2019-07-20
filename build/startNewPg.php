@@ -38,12 +38,7 @@ $vcIndex = $getVCs[1];
     <link href="startNewPg.css" type="text/css" rel="stylesheet" />
 </head>
 <body>  
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">New Hike Page</p>
 <div id="main">
     <h2 style="color:DarkBlue;">Begin Your Journey Here!</h2>

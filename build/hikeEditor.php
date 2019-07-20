@@ -29,13 +29,7 @@ $show = filter_input(INPUT_GET, 'show');
 
 <body>
 <p id="uid" style="display:none"><?php echo $usr;?></p>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Select A Hike To Edit</p>
 
 <div><p style="text-align:center;">When you click on the hike in the table

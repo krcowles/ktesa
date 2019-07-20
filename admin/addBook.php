@@ -1,3 +1,14 @@
+<?php
+/**
+ * This module present the admin with a form allowing addition of a book
+ * to the database table "BOOKS"
+ * PHP Version 7.1
+ * 
+ * @package Admin
+ * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -9,12 +20,7 @@
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>	
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Add Book to BOOKS Table</p>
 
 <div style="margin-left:24px;">

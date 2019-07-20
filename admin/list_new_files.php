@@ -114,6 +114,7 @@ if ($request === 'pictures') {
         exit();
     }
 }
+chdir($adminDir);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -127,12 +128,7 @@ if ($request === 'pictures') {
     <link href="admintools.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">List New Files Since Last Upload</p>
 <div style="margin-left:24px;">
 <p style="font-size:16px;">Upload date: <?= $udate;?></p>

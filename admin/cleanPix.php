@@ -50,6 +50,7 @@ foreach ($in_edit_pix as $photo) {
 
 // find level at which pictures directory resides
 $current = getcwd();
+$startDir = $current;
 $ups = 0;
 while (!in_array('pictures', scandir($current))) {
     chdir('..');
@@ -128,6 +129,7 @@ foreach ($photo_array as $filename) {
     }
 }
 $i = 0; // index for checkboxes
+chdir($startDir);
 // list the findings and provide a means for deletion via html 'form'
 ?>
 <!DOCTYPE html>
@@ -141,10 +143,7 @@ $i = 0; // index for checkboxes
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="cleanPix.css" type="text/css" rel="stylesheet" />
 <body>
-<div id="logo"><img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Photo Cleanup Utility</p>
 </div>
 <div id="main">

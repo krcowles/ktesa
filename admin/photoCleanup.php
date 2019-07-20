@@ -18,6 +18,7 @@ $shell = false; // unless proven otherwise...
 $shell_file = "pictures/cleanpix.sh";
 // find level at which pictures directory resides
 $current = getcwd();
+$adminDir = $current;
 $ups = 0;
 while (!in_array('pictures', scandir($current))) {
     chdir('..');
@@ -80,6 +81,7 @@ if (isset($checkboxes)) {
 } else {
     $msg = "No Pictures were selected for deletion";
 }
+chdir($adminDir);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -92,10 +94,7 @@ if (isset($checkboxes)) {
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="cleanPix.css" type="text/css" rel="stylesheet" />
 <body>
-<div id="logo"><img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail">Photos Deleted</p>
 </div>
 <div style="margin-left:24px;">

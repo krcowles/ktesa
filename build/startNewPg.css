@@ -2,6 +2,7 @@ body {
     min-width: 960px;
     font-family: arial, verdana;
     background-color: #dadada;
+    margin: 0px;
 }
 #main {
     margin-left: 16px;

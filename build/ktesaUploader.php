@@ -26,12 +26,7 @@ $Euser = filter_input(INPUT_GET, 'usr');
 </head>
 
 <body>   
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="ehno" style="display:none;"><?= $EHikeNo;?></p>
 <p id="eusr" style="display:none;"><?= $Euser;?></p>
 <p id="trail">Upload Your Photos!</p>
@@ -56,7 +51,8 @@ $Euser = filter_input(INPUT_GET, 'usr');
                 Please wait</span>
             <span class="box__uploading">
                 &nbsp;&nbsp;Files: <span id="filecnt">0</span>
-                <progress id="progbar" max="100" value="0"></progress>&nbsp;&nbsp;Uploading&hellip;
+                <progress id="progbar" max="100" value="0"></progress>
+                &nbsp;&nbsp;Uploading&hellip;
             </span>
             <pre>
             </pre>

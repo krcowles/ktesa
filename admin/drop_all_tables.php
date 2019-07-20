@@ -40,32 +40,29 @@ if (isset($_REQUEST['no'])) {
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
-        body {background-color: #eaeaea;}
+        body {
+            background-color: #eaeaea;
+            margin: 0px;}
         #progress { width: 420px; height: 36px; background-color: #ace600; }
         #bar { width: 0px; height: 36px; background-color: #aa0033; }
     </style>
     <script src="../scripts/jquery-1.12.1.js"></script>
 </head>
 <body>
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php require "../pages/pageTop.html"; ?>
 <p id="trail"><?= $action;?></p>
 <div style="margin-left:16px;font-size:18px;">
+<?php
+// Execute the DROP TABLE command for each table:
+for ($i=0; $i<$tblcnt; $i++) {
+    echo "Dropping {$tables[$i]}: ... ";
+    $pdo->query("DROP TABLE {$tables[$i]};");
+    echo "Table Removed<br />";
+}
+?>
 <?php if ($action == 'Reload Database') : ?>
 <div style="margin-left:16px;">
 <p>Please wait until the 'DONE' message appears below</p>
-    <?php
-    // Execute the DROP TABLE command for each table:
-    for ($i=0; $i<$tblcnt; $i++) {
-        echo "Dropping {$tables[$i]}: ... ";
-        $pdo->query("DROP TABLE {$tables[$i]};");
-        echo "Table Removed<br />";
-    }
-    ?>
     <br />
 <div id="progress">
     <div id="bar"></div>

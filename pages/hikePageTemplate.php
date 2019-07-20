@@ -49,12 +49,7 @@ function off() {
 </div>
 <?php endif; ?>
 
-<div id="logo">
-    <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
-    <p id="logo_left">Hike New Mexico</p>
-    <img id="tmap" src="../images/trail.png" alt="trail map icon" />
-    <p id="logo_right">w/Tom &amp; Ken</p>
-</div>
+<?php include "pageTop.html"; ?>
 <p id="trail"><?php echo $hikeTitle;?></p>
 <p id="gpx" style="display:none"><?php echo $gpxPath;?></p>
 <!-- ---------------------------- OLD STYLE -------------------------- -->
