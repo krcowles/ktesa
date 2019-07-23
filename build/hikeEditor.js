@@ -10,7 +10,7 @@ $( function () { // when page is loaded...
 var uid = $('#uid').text();
 var useEditor = 'editDB.php?tab=1&usr=' + uid + "&hikeNo=";
 $rows = $('tbody').find('tr');
-$('a').on('click', function(ev) {
+$('a:not(.navs)').on('click', function(ev) {
     ev.preventDefault();
     if (age === 'new') {  // *** THESE HIKES ARE EHIKES ***
         var ptr = $(this).prop('href');
