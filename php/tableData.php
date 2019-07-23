@@ -127,9 +127,13 @@ for ($i=0; $i<$entries; $i++) {
     $hikeAlbum[$i] = $row['purl1'];
 }
 if ($age === 'new') { // forming javascript array data
-    $status = substr($status, 0, strlen($status)-1);
+    if (strlen($status) !== 1) {
+        $status = substr($status, 0, strlen($status)-1);
+    }
     $status .= ']';
-    $enos = substr($enos, 0, strlen($enos)-1);
+    if (strlen($enos) !== 1) {
+        $enos = substr($enos, 0, strlen($enos)-1);
+    }
     $enos .= ']';
 }
 // $includeZoom is only defined by the mapPg.php, and true only if 'map + table':
