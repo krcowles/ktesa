@@ -22,8 +22,8 @@
     -ms-box-sizing: border-box;
     box-sizing: border-box;
     color: white;
-    column-count: 4;
-    column-width: 200px;
+    column-count: 5;
+    column-width: 160px;
 }
 #lnks {
     position: absolute;

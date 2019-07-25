@@ -69,17 +69,11 @@ legend {
     width: 160px;
     height: 36px;
 }
-#enter {
-    background-color: #eff5ef;
-    font-size: 16px;
-    width: 80px;
-    height: 28px;
-}
-#tbl:hover, #tnm:hover, #bigm:hover, #sub2:hover, #enter:hover {
+#tbl:hover, #tnm:hover, #bigm:hover {
     cursor: pointer;
     color: brown;
     background-color: #d5f8dc;
-}	
+}
 #intro {
     margin-left: 8px;
 }
@@ -91,27 +85,44 @@ legend {
     margin-top: 16px;
     margin-left: 8px;
 }
+#logins {
+    margin-left: 8px;
+}
 #expOpt {
     color: DarkGreen;
     font-size: 18px;
 }
-#logins {
-    margin-left: 8px;
+#enter {
+    background-color: #eff5ef;
+    font-size: 16px;
+    width: 80px;
+    height: 28px;
 }
-#loggedin {
-    margin-left: 8px;
+.brown {
+    color: brown;
 }
-.boldtxt {
-    font-weight: bold;
-}
-#sub2 {
+#opts {
     height: 28px;
     width: 140px;
     font-size: 16px;
     font-style: bold;
 }
-#regusrs {
+#opts:hover, #enter:hover {
+    cursor: pointer;
+    color: brown;
+    background-color: #d5f8dc;
+}
+.boldtxt {
+    font-weight: bold;
+}
+#regusrs, #regusr, #masters, #master {
     display: none;
+}
+#mstrbtns {
+    width: 796px;
+}
+#usrbtns {
+    width: 700px;
 }
 div #masters button, div #regusrs button {
     height: 32px;
@@ -120,21 +131,7 @@ div #masters button, div #regusrs button {
     margin-left: 6px;
     margin-right: 6px;
 }
-div #regusrs button:hover {
-    cursor: pointer;
-    color: brown;
-    background-color: #d5f8dc;
-}
-#usreds {
-    width: 560px;
-}
-#masters {
-    display: none;
-}
-#mstreds {
-    width: 540px;
-}
-div #masters button:hover {
+div #regusrs button:hover, div #masters button:hover {
     cursor: pointer;
     color: brown;
     background-color: #d5f8dc;

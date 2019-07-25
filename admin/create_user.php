@@ -9,9 +9,9 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-$uname = filter_input(INPUT_POST, 'usr');
-$tpass = filter_input(INPUT_POST, 'password');
-$pword = password_hash($tpass, PASSWORD_DEFAULT);
+$username = filter_input(INPUT_POST, 'username');
+$user_pass = filter_input(INPUT_POST, 'password');
+$password = password_hash($user_pass, PASSWORD_DEFAULT);
 $today = getdate();
 $month = $today['mon'];
 $day = $today['mday'];
@@ -23,15 +23,15 @@ if ($month > 6) {
     $month += 6;
 }
 $exp_date = $year . "-" . $month . "-" . $day;
-$lname = filter_input(INPUT_POST, 'lastname');
-$fname = filter_input(INPUT_POST, 'firstname');
+$lastname = filter_input(INPUT_POST, 'lastname');
+$firstname = filter_input(INPUT_POST, 'firstname');
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 if (!$email) {
     echo "Invalid email address - please go back to the Registration Page";
 } 
-$facbk = filter_input(INPUT_POST, 'facebook', FILTER_VALIDATE_URL);
-$twitt = filter_input(INPUT_POST, 'twitter');
-$binfo = filter_input(INPUT_POST, 'bio');
+$facebook = filter_input(INPUT_POST, 'facebook', FILTER_VALIDATE_URL);
+$twitter = filter_input(INPUT_POST, 'twitter');
+$bio = filter_input(INPUT_POST, 'bio');
 $newuser = "INSERT INTO USERS (
     username,
     passwd,
@@ -41,8 +41,8 @@ $newuser = "INSERT INTO USERS (
     email,
     facebook_url,
     twitter_handle,
-    bio
-    ) VALUES (
+    bio)
+    VALUES (
         :uname,
         :passwd,
         :pass_exp,
@@ -56,54 +56,19 @@ $newuser = "INSERT INTO USERS (
 $user = $pdo->prepare($newuser);
 $user->execute(
     array(
-        ":uname" =>  $uname,
-        ":passwd" => $pword,
+        ":uname" =>  $username,
+        ":passwd" => $password,
         ":pass_exp" => $exp_date,
-        ":lastnme" => $lname,
-        ":firstnme" => $fname,
+        ":lastnme" => $lastname,
+        ":firstnme" => $firstname,
         ":email" => $email,
-        ":fbk" => $facbk,
-        ":twit" => $twitt,
-        ":bio" => $binfo
+        ":fbk" => $facebook,
+        ":twit" => $twitter,
+        ":bio" => $bio
         )
 );
-?>
-<!DOCTYPE html>
-<html lang="en-us">
-<head>
-    <title>Successful Registration</title>
-    <meta charset="utf-8" />
-    <meta name="description" content="Successful Registration" />
-    <meta name="author" content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
-    <style type="text/css">
-        body {
-            background-color: #eaeaea;
-            margin: 0px;
-         }
-    </style>
-</head>
-<body>
-<?php require "../pages/pageTop.html"; ?>
-<p id="trail">Registration Complete</p>
-<p id="usrid" style="display:none"><?= $uname;?></p>
-<div style="margin-left:24px;">
-    <h1>
-        < <?= $uname;?> > You have successfully registered!
-    </h1> 
-    <h3>
-        You may now display registered user options on the main page to
-        create and edit hikes.<br /><br />You are now logged in and can display
-        user options.<br />
-        <em id="cookies" style="color:brown;"></em><br />
-        Click on the link below:
-    </h3>
-    <p style="font-size:18px;color:brown;">
-        <a href="../index.html">Main Page Link</a><br />
-    </p>
-</div>
-<script src="../scripts/jquery-1.12.1.js"></script>
-<script src="cookie_check.js"></script>
-</body>
-</html>
+// always try to set a user cookie:
+$days = 1; // Number of days before cookie expires
+$expire = time()+60*60*24*$days;
+setcookie("nmh_id", $username, $expire, "/");
+echo "DONE";

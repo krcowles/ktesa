@@ -9,8 +9,8 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-$usrname = trim($_REQUEST['nmhid']);
-$usrpass = trim($_REQUEST['nmpass']);
+$usrname = trim($_REQUEST['usr_name']);
+$usrpass = trim($_REQUEST['usr_pass']);
 $usr_req = "SELECT username,passwd FROM USERS WHERE username = :usr;";
 $auth = $pdo->prepare($usr_req);
 $auth->bindValue(":usr", $usrname);
