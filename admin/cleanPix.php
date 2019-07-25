@@ -143,7 +143,7 @@ chdir($startDir);
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="cleanPix.css" type="text/css" rel="stylesheet" />
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">Photo Cleanup Utility</p>
 </div>
 <div id="main">

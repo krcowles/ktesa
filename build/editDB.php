@@ -28,7 +28,7 @@ require "dataForEditor.php";
 </head>
 
 <body>   
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">Hike Editor</p>
 <p id="hikeNo" style="display:none"><?= $hikeNo;?></p>
 <p id="entry" style="display:none"><?= $tab;?></p>

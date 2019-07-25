@@ -34,7 +34,7 @@ $show = 'all';
 </head>
 
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">EHIKES Available to <?php echo $msg;?></p>
 <p id="action" style="display:none"><?php echo $act;?></p>
 <?php

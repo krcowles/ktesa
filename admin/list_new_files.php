@@ -128,7 +128,7 @@ chdir($adminDir);
     <link href="admintools.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">List New Files Since Last Upload</p>
 <div style="margin-left:24px;">
 <p style="font-size:16px;">Upload date: <?= $udate;?></p>

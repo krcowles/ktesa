@@ -40,7 +40,7 @@
 </head>
 
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">New User Registration</p>
 
 <div id="container">

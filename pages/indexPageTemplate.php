@@ -86,7 +86,7 @@ $item_cnt = $j;
 </head>
 
 <body>
-<?php require "pageTop.html"; ?>
+<?php require "pageTop.php"; ?>
 <p id="trail"><?php echo $indxTitle;?></p>
 
 <img class="mainPic" src="<?php echo $mapsrc;?>" alt="Park Service Map" />

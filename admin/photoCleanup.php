@@ -94,7 +94,7 @@ chdir($adminDir);
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
     <link href="cleanPix.css" type="text/css" rel="stylesheet" />
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">Photos Deleted</p>
 </div>
 <div style="margin-left:24px;">

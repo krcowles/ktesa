@@ -15,7 +15,7 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
 </head>
 
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">Remove EHIKE <?= $hikeNo;?></p>
 <div style="margin-left:16px;font-size:20px;">
 <?php

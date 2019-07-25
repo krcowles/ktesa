@@ -29,7 +29,7 @@ $show = filter_input(INPUT_GET, 'show');
 
 <body>
 <p id="uid" style="display:none"><?php echo $usr;?></p>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">Select A Hike To Edit</p>
 
 <div><p style="text-align:center;">When you click on the hike in the table

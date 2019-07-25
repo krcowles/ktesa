@@ -14,7 +14,7 @@
     </style>
     <script src="../scripts/jquery-1.12.1.js"></script>
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">Loading Database</p>
 <div style="margin-left:16px;">
 <p>Please wait until the 'DONE' message appears below</p>

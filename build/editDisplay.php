@@ -25,7 +25,7 @@ $show = 'usr';
 </head>
 
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">Select In-Edit Hike to Display</p>
 <div style="margin-left:16px">
 <h3>

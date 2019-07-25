@@ -49,7 +49,7 @@ if (isset($_REQUEST['no'])) {
     <script src="../scripts/jquery-1.12.1.js"></script>
 </head>
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail"><?= $action;?></p>
 <div style="margin-left:16px;font-size:18px;">
 <?php

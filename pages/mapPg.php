@@ -57,7 +57,7 @@ $includeZoom = ($tblVar === 'D') ? true : false;
 <!-- Page Type Settings -->
 <?php if ($tblVar === 'T' || $tblVar === 'D') : ?>
     <?php if ($tblVar === 'T') : ?>
-    <?php include "pageTop.html"; ?>
+    <?php include "pageTop.php"; ?>
     <p id="trail">Sortable Table of Hikes</p>
     <script type="text/javascript">var pg = "tbl";</script>
     <?php else : ?>

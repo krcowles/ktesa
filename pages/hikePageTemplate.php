@@ -49,7 +49,7 @@ function off() {
 </div>
 <?php endif; ?>
 
-<?php include "pageTop.html"; ?>
+<?php include "pageTop.php"; ?>
 <p id="trail"><?php echo $hikeTitle;?></p>
 <p id="gpx" style="display:none"><?php echo $gpxPath;?></p>
 <!-- ---------------------------- OLD STYLE -------------------------- -->

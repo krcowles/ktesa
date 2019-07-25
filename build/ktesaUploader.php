@@ -26,7 +26,7 @@ $Euser = filter_input(INPUT_GET, 'usr');
 </head>
 
 <body>   
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="ehno" style="display:none;"><?= $EHikeNo;?></p>
 <p id="eusr" style="display:none;"><?= $Euser;?></p>
 <p id="trail">Upload Your Photos!</p>

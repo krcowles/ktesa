@@ -164,7 +164,7 @@ $tbldat = describeTable($pdo, $table);
 </head>
 
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">Create the <?= $table;?> Table</p>
 <div style="margin-left:16px;font-size:18px;">
     <p>This script will create the <?= $table;?> table in the database...</p>

@@ -30,7 +30,7 @@ $show = $list[0];
 </head>
 
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
     <p id="trail">SHOW Database Tables</p>
     <div style="margin-left:16px;font-size:18px;">
     <p>Results from SHOW TABLES:</p>

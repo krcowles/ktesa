@@ -38,7 +38,7 @@ $vcIndex = $getVCs[1];
     <link href="startNewPg.css" type="text/css" rel="stylesheet" />
 </head>
 <body>  
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">New Hike Page</p>
 <div id="main">
     <h2 style="color:DarkBlue;">Begin Your Journey Here!</h2>

@@ -35,7 +35,7 @@ require "../php/global_boot.php";
     </script>
 </head>
 <body>
-<?php require "../pages/pageTop.html"; ?>
+<?php require "../pages/pageTop.php"; ?>
 <p id="trail">Site Administration Tools</p>
 
 <?php if (isset($_SESSION['nopix']) && !empty($_SESSION['nopix'])) : ?>
