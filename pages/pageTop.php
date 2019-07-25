@@ -45,8 +45,9 @@ $logout =  (isset($_COOKIE['nmh_mstr']) || isset($_COOKIE['nmh_id'])) ? true : f
                     var xhr = new XMLHttpRequest();
                     xhr.open('GET', '../php/logout.php');
                     xhr.onload = function() {
-                        alert(xhr.responseText);
+                        alert("You are now logged out");
                         window.open('../index.php', '_self');
+                        //document.getElementById('logout').style.display = 'none;'
                     }
                     xhr.send();
                 }

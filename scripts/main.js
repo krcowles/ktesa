@@ -1,3 +1,42 @@
+/**
+ * The technique used to determine when a cookie gets set is to compare the
+ * length of the cookie string to what it was on page load. There are no
+ * methods associated with cookies for detecting the setting of (or deletion
+ * of) a cookie. Since a user may leave the page, acquire another cookie,
+ * and then return to this page, a means is provided to re-calculate the
+ * cookie length in that case. The following cross-browser technique is utilized:
+ * https://howchoo.com/g/mdg5otdhmzk/determine-if-a-tab-has-focus-in-javascript
+ * Note that this cannot be placed inside 'document ready'.
+ */
+var hidden, visibilityChange, state;
+var allcookies = decodeURIComponent(document.cookie);
+var prevLgth = allcookies.length;
+// Set the name of the hidden property and the change event for visibility
+if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
+    hidden = "hidden";
+    visibilityChange = "visibilitychange";
+    state = "visibilityState";
+} else if (typeof document.mozHidden !== "undefined") {
+    hidden = "mozHidden";
+    visibilityChange = "mozvisibilitychange";
+    state = "mozVisibilityState";
+} else if (typeof document.msHidden !== "undefined") {
+    hidden = "msHidden";
+    visibilityChange = "msvisibilitychange";
+    state = "msVisibilityState";
+} else if (typeof document.webkitHidden !== "undefined") {
+    hidden = "webkitHidden";
+    visibilityChange = "webkitvisibilitychange";
+    state = "webkitVisibilityState";
+}
+document.addEventListener(visibilityChange, function() {
+    if (document[state] == 'visible') {
+        // to test: alert("You're back!");
+        allcookies = decodeURIComponent(document.cookie);
+        prevLgth = allcookies.length;
+    }
+});
+
 $( function() {  // wait until document is loaded...
 
 // registered user
@@ -18,17 +57,10 @@ var cookies = navigator.cookieEnabled ? true : false;
 if (!cookies) {
     alert("Cookies appear to be disabled:\n" +
         "You will not be able to see the 'User Options' unless:\n" +
-        "1. You log in as a registered user;\n" +
-        "2. Register via the 'Sign Me Up! link;\n" +
+        "1. You log in as a registered user; or\n" +
+        "2. Register via the 'Sign Me Up! link; or\n" +
         "3. Enable cookies for future visits");
 }
-// If a user (or admin) is currently logged in, show 'Log Me Out' link
-if ($('#registered_user').length || $('#master').length) {
-    $('#logout').show();
-} else {
-    $('#logout').hide();
-}
-
 /**
  * User logins (no cookie present/cookies disabled;
  * 
@@ -57,19 +89,31 @@ $('#users').submit( function(evt) {
         alert("You must supply a valid password");
         return;
     }
-    $.when( validateUser(uid, pwd, true) ).then(function() {
+    validateUser(uid, pwd);
+    /*
+    $.when( validateUser(uid, pwd) ).then(function() {
+        alert("What");
         window.open('index.php', '_self');
     });
+    */
 });
 function validateUser(usr_name, usr_pass) {
-    var deferred = new $.Deferred();
     $.ajax( {
         url: "admin/authenticate.php",
+        method: "POST",
         data: {'usr_name': usr_name, 'usr_pass': usr_pass},
+        dataType: "text",
         success: function(srchResults) {
             var srchStr = srchResults;
             if (srchStr.indexOf('LOCATED') >= 0) {
-                usr_type = 'qualified';
+                // ensure the cookie got set before proceeding
+                var cookieset = setInterval(function() {
+                    var newLgth = decodeURIComponent(document.cookie).length;
+                    if (newLgth > prevLgth) {
+                        clearInterval(cookieset);
+                        window.open('index.php', '_self');
+                    }
+                }, 20);
             } else if (srchStr.indexOf('BADPASSWD') >= 0) {
                 var msg = "The password you entered does not match " +
                     "your registered password;\nPlease try again";
@@ -82,14 +126,11 @@ function validateUser(usr_name, usr_pass) {
                 alert(msg);
                 $('#usrid').val('');
                 $('#upass').val('');
-                valstat = false;
             }
-            deferred.resolve();
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert("Error encountered in validation: " +
                 textStatus + "; Error: " + errorThrown);
-            deferred.reject();
         }
     });
 }

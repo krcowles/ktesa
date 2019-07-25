@@ -7,6 +7,6 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-setcookie('nmh_mstr', '', time()-60*60*24);
-setcookie('nmh_id', '', time()-60*60*24);
+setcookie('nmh_mstr', '', 0, '/');
+setcookie('nmh_id', '', 0, '/');
 echo "Done";
