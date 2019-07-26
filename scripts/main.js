@@ -1,4 +1,4 @@
-/**
+/*
  * The technique used to determine when a cookie gets set is to compare the
  * length of the cookie string to what it was on page load. There are no
  * methods associated with cookies for detecting the setting of (or deletion
@@ -61,6 +61,31 @@ if (!cookies) {
         "2. Register via the 'Sign Me Up! link; or\n" +
         "3. Enable cookies for future visits");
 }
+function renewPassword(user, update, status) {
+    if (update === 'renew') {
+        /*
+        $.ajax({
+            url: 'php/renew.php',
+            method: "POST",
+            data: {'user': user},
+            dataType: "text",
+            success: function(status) {
+                var result = status;
+                alert("Result: " + result);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("Error renewing: " + textStatus + ", Error: " + errorThrown);
+            }
+        });
+        */
+       window.open('php/renew.php?user=' + user, '_self');
+    } else {
+        // if still valid, refresh will display login, otherwise do nothing
+        if (status === 'valid') {
+            window.open('index.php', '_self');
+        }
+    }
+}
 /**
  * User logins (no cookie present/cookies disabled;
  * 
@@ -90,12 +115,6 @@ $('#users').submit( function(evt) {
         return;
     }
     validateUser(uid, pwd);
-    /*
-    $.when( validateUser(uid, pwd) ).then(function() {
-        alert("What");
-        window.open('index.php', '_self');
-    });
-    */
 });
 function validateUser(usr_name, usr_pass) {
     $.ajax( {
@@ -104,23 +123,40 @@ function validateUser(usr_name, usr_pass) {
         data: {'usr_name': usr_name, 'usr_pass': usr_pass},
         dataType: "text",
         success: function(srchResults) {
-            var srchStr = srchResults;
-            if (srchStr.indexOf('LOCATED') >= 0) {
+            var status = srchResults;
+            if (status.indexOf('LOCATED') >= 0) {
                 // ensure the cookie got set before proceeding
+                // NOTE: All of a sudden, cookie.document returns empty!!!
                 var cookieset = setInterval(function() {
                     var newLgth = decodeURIComponent(document.cookie).length;
-                    if (newLgth > prevLgth) {
+                    if (newLgth > prevLgth || (newLgth === 0 && prevLgth ===0)) {
                         clearInterval(cookieset);
                         window.open('index.php', '_self');
                     }
                 }, 20);
-            } else if (srchStr.indexOf('BADPASSWD') >= 0) {
+            } else if (status.indexOf('RENEW') >=0) {
+                // in this case, the old cookie has been set pending renewal
+                var renew = confirm("Your password is about to expire\n" + 
+                    "Would you like to renew?");
+                if (renew) {
+                    renewPassword(usr_name, 'renew', 'valid');
+                } else {
+                    renewPassword(usr_name, 'norenew', 'valid');
+                }
+            } else if (status.indexOf('EXPIRED') >= 0) {
+                var renew = confirm("Your password has expired\n" +
+                    "Would you like to renew?");
+                if (renew) {
+                    renewPassword(usr_name, 'renew', 'expired');
+                } else {
+                    renewPassword(usr_name, 'norenew', 'expired');
+                }
+            } else if (status.indexOf('BADPASSWD') >= 0) {
                 var msg = "The password you entered does not match " +
                     "your registered password;\nPlease try again";
                 alert(msg);
                 $('#upass').val('');
-            } 
-            else { // no such user in USERS table
+            } else { // no such user in USERS table
                 var msg = "Your registration info cannot be uniquely located:\n" +
                     "Please click on the 'Sign me up!' link to register";
                 alert(msg);

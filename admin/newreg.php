@@ -19,8 +19,9 @@
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
-    <link href="Registration.css" type="text/css" rel="stylesheet" />
+    <link href="registration.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
+        body { margin: 0px; }
         #formsubmit {
             width: 190px;
             height: 28px;

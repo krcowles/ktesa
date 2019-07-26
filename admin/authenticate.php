@@ -9,6 +9,7 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 $data = $_REQUEST;
 $usrname = filter_input(INPUT_POST, 'usr_name');
 $usrpass = filter_input(INPUT_POST, 'usr_pass');
@@ -22,11 +23,25 @@ if ($rowcnt === 1) {  // located single instance of user
     $user_dat = $auth->fetch(PDO::FETCH_ASSOC);
     if (password_verify($usrpass, $user_dat['passwd'])) {  // user data correct
         if ($admin) {
-            $adminExpire = time() + 10*60*60*24*365;  // 10 yrs
+            $adminExpire = time() + 10 * UX_DAY * 365;  // 10 yrs
             setcookie('nmh_mstr', 'mstr', $adminExpire, "/");
         } else {
-            $usrExpire = time() + 60*60*24*365; // 1 yr
-            setcookie('nmh_id', $usrname, $usrExpire, "/");
+            $expiration = $user_dat['passwd_expire'];
+            $american = str_replace("-", "/", $expiration);
+            $expdate = strtotime($american);
+            if ($expdate <= time()) {
+                echo "EXPIRED";
+                exit;
+            } else {
+                $days = floor(($expdate - time())/UX_DAY);
+                if ($days <= 5) {
+                    // set current cookie pending renewal
+                    setcookie('nmh_id', $usrname, $expdate, "/");
+                    echo "RENEW";
+                    exit;
+                }
+            }
+            setcookie('nmh_id', $usrname, $expdate, "/");
         }
         echo "LOCATED";
         exit;

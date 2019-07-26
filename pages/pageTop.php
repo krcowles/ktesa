@@ -47,12 +47,21 @@ $logout =  (isset($_COOKIE['nmh_mstr']) || isset($_COOKIE['nmh_id'])) ? true : f
                     xhr.onload = function() {
                         alert("You are now logged out");
                         window.open('../index.php', '_self');
-                        //document.getElementById('logout').style.display = 'none;'
                     }
                     xhr.send();
                 }
             );
         });
+        var navlnks = document.getElementsByClassName('navs');
+        var loc = location.pathname;
+        if (loc.includes('admin/') || loc.includes('build/')
+                || loc.includes('php/')) {
+            for (var i=1; i<4; i++) {
+                var ref = navlnks[i].getAttribute('href');
+                ref = '../pages/' + ref;
+                navlnks[i].setAttribute('href', ref);
+            }
+        }
     </script>
     <?php endif; ?>
 </div>
