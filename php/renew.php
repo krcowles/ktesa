@@ -54,7 +54,8 @@ $id = $userdata['userid'];
 
 <div id="container">
 <p>Please update your password, and any other data at this time</p>
-<form id="form" method="POST" action="../admin/user_update.php">
+<form id="form" method="POST" action="../admin/create_user.php">
+<input type="hidden" name="submitter" value="renew" />
 <fieldset>
     <legend>Password Information</legend>
     <p id="pnote">Note: Passwords must be at least 8 characters long and 
@@ -102,10 +103,10 @@ $id = $userdata['userid'];
     <textarea name="bio" cols="80" rows="10" 
         maxlength="500"><?= $userdata['bio'];?></textarea>
 </fieldset><br />
-<button id="formsubmit">Submit My Info</button>
+<button id="formsubmit">Submit My Updates</button>
 </form>
 </div>   <!-- end of container -->
 
-<script src="../admin/registration.js"></script>
+<script src="renew.js"></script>
 </body>
 </html>

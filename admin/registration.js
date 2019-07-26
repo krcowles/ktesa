@@ -56,6 +56,7 @@ function validateEmail(subjectEmail){
     ajaxData.append('facebook',  $('input[name=facebook]').val());
     ajaxData.append('twitter',   $('input[name=twitter]').val());
     ajaxData.append('bio',       $('textarea[name=bio]').val());
+    ajaxData.append('submitter',    'create');
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'create_user.php');
     xhr.onload = function() {

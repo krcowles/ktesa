@@ -85,7 +85,8 @@ $logout = ($master || $regusr) ? true : false;
 
     <?php if ($regusr) : ?>
         <p id="registered_user" style="display:none;"><?= $uname;?></p>
-        <p class="brown">Welcome <?= $uname;?>, You are logged in</p>
+        <p class="brown">Welcome <?= $uname;?>, You are logged in
+        &nbsp;&nbsp;[<a id="logout" href=# target="_self">Log Me Out!</a>]</p>
         <p><button id="opts" class="boldtxt">User Options</button></p>
         <div id="regusrs">
             <p id="regusr">REGUSR</p>

@@ -61,23 +61,17 @@ if (!cookies) {
         "2. Register via the 'Sign Me Up! link; or\n" +
         "3. Enable cookies for future visits");
 }
+// logout out on main page only
+$('#logout').on('click', function(evt) {
+    evt.preventDefault();
+    $.get('../php/logout.php', function() {
+        alert("You are logged out");
+        window.open("index.php", "_self");
+    });
+});
+// for renewing password/cookie
 function renewPassword(user, update, status) {
     if (update === 'renew') {
-        /*
-        $.ajax({
-            url: 'php/renew.php',
-            method: "POST",
-            data: {'user': user},
-            dataType: "text",
-            success: function(status) {
-                var result = status;
-                alert("Result: " + result);
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                alert("Error renewing: " + textStatus + ", Error: " + errorThrown);
-            }
-        });
-        */
        window.open('php/renew.php?user=' + user, '_self');
     } else {
         // if still valid, refresh will display login, otherwise do nothing
