@@ -62,13 +62,15 @@ if (!cookies) {
         "3. Enable cookies for future visits");
 }
 // logout out on main page only
-$('#logout').on('click', function(evt) {
-    evt.preventDefault();
-    $.get('../php/logout.php', function() {
-        alert("You are logged out");
-        window.open("index.php", "_self");
+if ($('#logout').length) {
+    $('#logout').on('click', function(evt) {
+        evt.preventDefault();
+        $.get('../php/logout.php', function() {
+            alert("You are logged out");
+            window.open("index.php", "_self");
+        });
     });
-});
+}
 // for renewing password/cookie
 function renewPassword(user, update, status) {
     if (update === 'renew') {
@@ -119,15 +121,12 @@ function validateUser(usr_name, usr_pass) {
         success: function(srchResults) {
             var status = srchResults;
             if (status.indexOf('LOCATED') >= 0) {
-                // ensure the cookie got set before proceeding
-                // NOTE: All of a sudden, cookie.document returns empty!!!
-                var cookieset = setInterval(function() {
-                    var newLgth = decodeURIComponent(document.cookie).length;
-                    if (newLgth > prevLgth || (newLgth === 0 && prevLgth ===0)) {
-                        clearInterval(cookieset);
-                        window.open('index.php', '_self');
-                    }
-                }, 20);
+                // document.cookie returning 0: abandoned cookie set approach
+                if (!cookies) {
+                    window.open('index.php?usr=' + usr_name, '_self');
+                } else {
+                    window.open('index.php', '_self');
+                }
             } else if (status.indexOf('RENEW') >=0) {
                 // in this case, the old cookie has been set pending renewal
                 var renew = confirm("Your password is about to expire\n" + 
@@ -169,9 +168,7 @@ $('#opts').on('click', function() {
         display_usr_opts();
     } else if ($('#master').length) {
         display_mstr_opts();
-    } else {
-        alert("You must be logged in to view User Options");
-    }
+    } 
 });
 function openPage(which, who) {
     var pg = 'php/opener.php?page=' + which + '&user=' + who;

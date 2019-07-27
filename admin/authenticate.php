@@ -44,12 +44,9 @@ if ($rowcnt === 1) {  // located single instance of user
             setcookie('nmh_id', $usrname, $expdate, "/");
         }
         echo "LOCATED";
-        exit;
     } else {  // user exists, but password doesn't match:
         echo "BADPASSWD" . $usrpass . ";" . $user_dat['passwd'];
-        exit;
     }
 } else {  // not in USER table (or multiple entries for same user)
     echo "FAIL";
-    exit;
 }

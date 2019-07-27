@@ -3,7 +3,8 @@ $(function () { // when page is loaded...
 var cookies = navigator.cookieEnabled ? true : false;
 if (!cookies) {
     alert("Cookies are currently disabled on this machine\n" +
-        "After registering, you must fully login in each time you visit");
+        "Please remember your user name and password\n" +
+        "as you must fully login in each time you visit");
 }
 $('#form').validate({
     rules: {
@@ -47,10 +48,11 @@ function validateEmail(subjectEmail){
             alert("All required inputs must be supplied");
             return;
     }
+    var usr = $('input[name=username]').val();
     var ajaxData = new FormData();
     ajaxData.append('firstname', $('input[name=firstname]').val());
     ajaxData.append('lastname',  $('input[name=lastname]').val());
-    ajaxData.append('username',  $('input[name=username]').val());
+    ajaxData.append('username',  usr);
     ajaxData.append('password',  $('input[name=password]').val());
     ajaxData.append('email',     $('input[name=email]').val());
     ajaxData.append('facebook',  $('input[name=facebook]').val());
@@ -67,7 +69,7 @@ function validateEmail(subjectEmail){
                     "Server returned status " + this.status);
             }
         }
-        window.open('../index.php', '_self');
+        window.open('../index.php?usr=' + usr, '_self');
     }
     xhr.onerror = function() {
         alert("The request failed: registration did not occur\n" +

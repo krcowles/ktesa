@@ -8,13 +8,22 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$master = isset($_COOKIE['nmh_mstr']) ? true : false;
-$regusr = isset($_COOKIE['nmh_id'])   ? true : false;
-if ($regusr) {
-    $uname = $_COOKIE['nmh_id'];
-}
-if ($master) {
-    $regusr = false;  // only one login allowed at a time!
+if (isset($_GET['usr'])) {
+    $user = filter_input(INPUT_GET, 'usr');
+    if ($user === 'tom' || $user === 'kc') {
+        $master = true;
+        $regusr = false;
+    } else {
+        $master = false;
+        $regusr = true;
+        $uname = $user;
+    }
+} else {
+    $master = isset($_COOKIE['nmh_mstr']) ? true : false;
+    $regusr = isset($_COOKIE['nmh_id'])   ? true : false;
+    if (!$master && $regusr) {
+        $uname = $_COOKIE['nmh_id'];
+    }
 }
 $logout = ($master || $regusr) ? true : false;
 // note: cookies may be disabled; if so, js will advise the user
@@ -100,7 +109,8 @@ $logout = ($master || $regusr) ? true : false;
             <button id="hide">Hide Options</button>
         </div>
     <?php elseif ($master) : ?>
-        <p><button id="opts" class="boldtxt">User Options</button></p>
+        <p><button id="opts" class="boldtxt">User Options</button>
+        &nbsp;&nbsp;<a id="logout" href=# target="_self">Log Out</a></p>
         <div id="masters">
             <p id="master">master</p>
             <fieldset id="mstrbtns">
