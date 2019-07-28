@@ -65,7 +65,7 @@ if (!cookies) {
 if ($('#logout').length) {
     $('#logout').on('click', function(evt) {
         evt.preventDefault();
-        $.get('../php/logout.php', function() {
+        $.get('php/logout.php', function() {
             alert("You are logged out");
             window.open("index.php", "_self");
         });
