@@ -3,21 +3,11 @@ $( function () { // when page is loaded...
 /**
  * The framework/appearance of the edit page and buttons
  */
-var winWidth = $(document).width();
-// NOTE: innerWidth provides the dimension inside the border
-var bodySurplus = winWidth - $('body').innerWidth(); // Default browser margin + body border width:
-if (bodySurplus < 24) {
-    bodySurplus = 24;
-}   // var can actually be negative on initial load if frame is smaller than body min-width
 var tabCnt = $('.tablist').length;
-var singletab = '#t' + tabCnt;
-var tabpos = $(singletab).offset();
-// For reasons not understood, $('#pos').width() gets the incorrect value...
-var gettabprop = $('.tablist').css('width');
-var px = gettabprop.indexOf('px');
-var tabwidth = gettabprop.substring(0,px);
-var listwidth = tabCnt * tabwidth;
-var linewidth = winWidth - bodySurplus - listwidth - 9; // padding
+// all tabs must be (and are currently) same width
+var tabWidth = $('#t1').css('width'); // seems to include padding & margin!
+var listwidth = tabCnt * parseInt(tabWidth); // fixed (no change w/resize)
+var linewidth = $('#main').width() - listwidth;
 $('#line').width(linewidth);
 // 'Apply' buttons: positions on page
 var $apply = $('div[id^="d"]'); // the divs holding the input 'Apply' button
@@ -49,8 +39,7 @@ $apply.each(function(indx) {
 });
 // when window is resized:
 $(window).resize( function() {
-    winWidth = $(document).width();
-    linewidth = winWidth - bodySurplus - listwidth - 9;
+    linewidth = $('#main').width() - listwidth;
     $('#line').width(linewidth);
     positionApply();
     var divid = '#d' + lastA;
