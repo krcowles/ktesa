@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -86,7 +86,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EGPSDAT VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=297 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=308 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=868 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=884 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -185,7 +185,7 @@ CREATE TABLE `GPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO GPSDAT VALUES
@@ -234,7 +234,8 @@ INSERT INTO GPSDAT VALUES
 ('59','146','P','GPX:','../gpx/Boundary_Composite.GPX','Alternate Loop'),
 ('60','201','P','GPX:','../gpx/4_Mound_Elev.gpx','Proposed route extracted from Book reference'),
 ('61','205','P','GPX:','../gpx/AtalayaLoopProposed.gpx','Alternate Route - Skip Picacho'),
-('62','211','P','GPX:','../gpx/LasVacasDEM.gpx','Longer Proposed Loop');
+('62','211','P','GPX:','../gpx/LasVacasDEM.gpx','Longer Proposed Loop'),
+('64','218','P','GPX:','../gpx/SantaFeLakeClipped.gpx','Shorter route from Ski Santa Fe parking lot');
 
 
 
@@ -271,7 +272,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=218 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -492,7 +493,11 @@ INSERT INTO HIKES VALUES
 ('214','Crest Trail - Kiwanis Cabin','mstr','Tijeras','Cluster',NULL,'MM','Ellis Group','Loop','6.60','600','Moderate','Pubic Restrooms','The Cabin and views from the North Peak','Not Winter','Good shade','Kiwani_North_Peak.GPX','Kiwani_North_Peak.json','35.2083071508','-106.4410039131',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.2063369,-106.4420975,14.31z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090142!4d-106.4410765','This hike was created by the author to form a loop from multiple trail segments, and has no book or web references. Nonetheless, some references to the trail highlights are included. There are multiple unmarked forks and some unclear signage. The map has flags at trail forks - green for \'keep left\', red for \'keep right\'. Exercise caution in the Sandia wilderness - on this hike, a bear with two cubs was spotted but presented no apparent threat.','The self-created hike, formed by connecting multiple trail segments, was designed to take the hiker first to the Kiwanis Cabin on the edge of the Sandia, and then along the Crest Trail, past the Sandia North Peak. This hike continued to the endpoint of the 10K Trail. Following the crest, there are multiple great views looking over the valley, presenting various rock faces and features, and of course, a sprinkling of wildflowers.',NULL,NULL,NULL),
 ('215','Palomas Peak via Faulty Trail','mstr','Placitas','Cluster',NULL,'NN','Sandia Cave Group','Out-and-back','7.50','1400','Med-Difficult','None','Multiple Interior Views of Sandias','Not Winter','Mixed sun/shade','Mystery-Palomas.GPX','Mystery-Palomas.json','35.2501596697','-106.4099899493',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Sandia+Man+Cave/@35.263693,-106.4483208,12.67z/data=!4m5!3m4!1s0x87189ba59d32c875:0x80265dcf8bdb5b41!8m2!3d35.2550155!4d-106.405993','When NM 165 turns to a dirt road (approx. 2-1/2 miles before the Sandia Cave parking), it is generally not well-maintained and requires 4-wheel drive and reasonable ground clearance. On the trail, there is a prodigious amount of scrub oak overgrowth much of the way, causing the trail to sometimes seem to disappear. For this reason, it is recommended to wear long pants for wading through the brush. The trail does not appear to be maintained and, though mostly well-defined, assumes only a fair condition at points. Proceeding up the Palomas Cliffs trail can be somewhat steep, and along the cliff\'s lower ledge, the trail is uneven, occasionally requiring light scrambling.','This hike begins by following the Sandia Cave trail for about 20-30 meters, where the \'North Mystery Trail\' (aka Faulty Trail) turns sharply right. A short distance in, note that there is another sharp turn to the right (see the map\'s red flag). The trail may appear to go straight at that point, but soon disappears. There are multiple views en route, including interior views of the Sandias, points north and east as well, such as the San Pedro and Ortiz ranges. The Palomas Cliffs portion of the hike also provides nice interior views and an up-close view of the ledges.',NULL,NULL,NULL),
 ('216','Faulty-Canoncito-Barts Loop','mstr','Tijeras','Cluster',NULL,'P','Sulphur Canyon Group','Out-and-back','11.70','1800','Difficult','Picnic Facilities & Toilet','Views from Faulty Trail and the Crest','Not Winter','Mixed sun/shade','Faulty-Canoncita-Barts.GPX','Faulty-Canoncita-Barts.json','35.1743507199','-106.3788598962',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Sulphur+Spring/@35.1692391,-106.3840069,14z/data=!4m5!3m4!1s0x8718984f214630a9:0x7dfded4983f33916!8m2!3d35.1730997!4d-106.3769686','Note that trail access is no longer available from the highway near Cole Spring - you must access Canoncito and Bart\'s from Faulty Trail (see latest edition of Sandia Hiking Guide, March 2019). Carry plenty of water - it\'s a long and demanding hike. Although the trail is somewhat maintained, the author encountered numerous downed trees, requiring an occasional by-pass. ','This hike covers a lot of territory, beginning with the interesting Faulty Trail near Sulphur Springs, off Highway 536 (The Crest Highway). From there, heading south, multiple trail junctions occur: Cienega Horse ByPass, Cienega, Armijo, then finally Canoncito, the first target of this hike. Canoncito is not well-traveled, and goes up rapidly and relentlessly to the South Crest Trail. From there, a short hike south on the Crest Trail takes you to Bart\'s Trail, which heads back down the mountain to Faulty Trail. Bart\'s Trail may be somewhat steeper, but both trails ascend/descend at a demanding pace. The Crest Trail offers the best views of all the trails, while the other trails have occasional \"sneak-peeks\" out to the east. ',NULL,NULL,NULL),
-('217','Dockwiller Trail','mstr','Pecos','Cluster',NULL,'EE','Cowles Group','Out-and-back',NULL,NULL,'Med-Difficult','Campground Facilities','Wildflowers Galore','Not Winter','Mixed sun/shade','Dockwiller_Trail.GPX','Dockwiller_Trail.json','35.8298600558','-105.664135851',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Panchuela+Trailhead/@35.820977,-105.6670173,15z/data=!4m5!3m4!1s0x0:0x7834afd22f685bf!8m2!3d35.8305612!4d-105.6648913?hl=en-US','Depending on where you look, this trail is called Dockwiller, Dockweiler, or Trail 259. We intended to follow the track given in the AllTrails reference below, but we found that to be longer than advertised so we turned back early. We also found that both the topo maps and the AllTrails track for this trail are not so accurate. Luckily, the trail on the ground is easy to follow. If you use a GPS device, we recommend using the GPX file on this page which tracks the actual trail pretty closely.','This hike is basically a long uphill trek to the high point. While there are not many views of the Pecos region and the mountains and valleys, the wildflowers are exceptional - dozens of varieties of flowers which change with elevation: nodding onion, flax, mountain rose, bluebells, harebells, scarlet gilia, red penstemon, Indian paintbrush, sneezeweed, yarrow, aster, daisies, New Mexico primrose, and many many more! In addition, the trail meanders through lovely wooded sections, including fir and aspen groves.',NULL,NULL,NULL);
+('217','Dockwiller Trail','mstr','Pecos','Cluster',NULL,'EE','Cowles Group','Out-and-back',NULL,NULL,'Med-Difficult','Campground Facilities','Wildflowers Galore','Not Winter','Mixed sun/shade','Dockwiller_Trail.GPX','Dockwiller_Trail.json','35.8298600558','-105.664135851',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Panchuela+Trailhead/@35.820977,-105.6670173,15z/data=!4m5!3m4!1s0x0:0x7834afd22f685bf!8m2!3d35.8305612!4d-105.6648913?hl=en-US','Depending on where you look, this trail is called Dockwiller, Dockweiler, or Trail 259. We intended to follow the track given in the AllTrails reference below, but we found that to be longer than advertised so we turned back early. We also found that both the topo maps and the AllTrails track for this trail are not so accurate. Luckily, the trail on the ground is easy to follow. If you use a GPS device, we recommend using the GPX file on this page which tracks the actual trail pretty closely.','This hike is basically a long uphill trek to the high point. While there are not many views of the Pecos region and the mountains and valleys, the wildflowers are exceptional - dozens of varieties of flowers which change with elevation: nodding onion, flax, mountain rose, bluebells, harebells, scarlet gilia, red penstemon, Indian paintbrush, sneezeweed, yarrow, aster, daisies, New Mexico primrose, and many many more! In addition, the trail meanders through lovely wooded sections, including fir and aspen groves.',NULL,NULL,NULL),
+('218','Santa Fe Lake Loop','mstr','Santa Fe','Cluster',NULL,'H','Aspen Vista Group','Loop','5.40','1900','Difficult','Campground Facilities','Beautiful Views and Clear Mountain Lake','Not Winter','Mixed sun/shade','SFLakeEdited.GPX','SFLakeEdited.json','35.7771414891','-105.8106052503',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Aspen+Vista+Picnic+Ground/@35.7694064,-105.8270396,14.18z/data=!4m5!3m4!1s0x87184ce6a3c7f4d9:0xe45f794f0417c87b!8m2!3d35.7772181!4d-105.8109596',NULL,'This hike is a long steep uphill climb to the top of the Ski Area (towers) then down a short steep trail to the lake. For the ascent, the authors chose the Aspen Vista Forest Road from the parking lot, and then proceeded up Big Tesuque Trail. (Note: for a less lengthy hike with a bit less elevation change, start from the Ski Santa Fe parking lot - see the GPS Data listed below). The scenery, once you emerge from the wooded portions of Big Tesuque, is spectacular. The year the authors took this hike, the wildflowers were prolific and variegated. Santa Fe Lake can only be seen from the highest point at the summit of the ski area, and not even as you descend towards it. The return trip overlaps with the Alamo Vista Trail, entering beautiful Aspen groves and occasional meadows. Although a difficult hike, it is visually rewarding.',NULL,NULL,NULL),
+('219','[Proposed] Sawyer Mesa','mstr','Valles Caldera','Normal',NULL,'','','Out-and-back','5.40','900','Easy-Moderate','','','','Full sun','SawyersMesaDEM.gpx','SawyersMesaDEM.json','35.8253816','-106.4443016',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B049\'31.4%22N+106%C2%B026\'39.5%22W/@35.8338348,-106.4750472,13.31z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8253816!4d-106.4443016',NULL,'This trail can be shorter than indicated and still hit some of the highlights: a knife edge at Obsidian Ridge, with views of the Pajarito Plateau.',NULL,NULL,NULL),
+('220','[Proposed] St Peters Dome','mstr','Valles Caldera','Normal',NULL,'','','Out-and-back','4.40','700','Moderate','','','','Full sun','PetersDomeDEM.gpx','PetersDomeDEM.json','35.7736871','-106.4183164',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B046\'25.3%22N+106%C2%B025\'05.9%22W/@35.7957752,-106.4368688,12.65z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7736871!4d-106.4183164',NULL,'360-degree views from St Peter\'s Dome',NULL,NULL,NULL),
+('221','[Proposed] Canon de Valle','mstr','Los Alamos','Normal',NULL,'','','Out-and-back','5.60','1800','Moderate','','','',NULL,'CanonValleDEM.gpx','CanonValleDEM.json','35.8527983','-106.3537744',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B051\'10.1%22N+106%C2%B021\'13.6%22W/@35.8551629,-106.372533,13.88z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8527983!4d-106.3537744',NULL,'The book reference indicates a turn-around at the Valles Caldera boundary',NULL,NULL,NULL);
 
 
 
@@ -560,7 +565,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1528 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1534 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1394,7 +1399,13 @@ INSERT INTO REFS VALUES
 ('1521','217','App:','https://www.alltrails.com/trail/us/new-mexico/dockweiler-trail','AllTrails'),
 ('1522','217','Website:','https://www.fs.usda.gov/recarea/santafe/recarea/?recid=75866','US Forest Service'),
 ('1523','217','Book:','9',NULL),
-('1524','217','Book:','1',NULL);
+('1524','217','Book:','1',NULL),
+('1528','218','Website:','https://www.alltrails.com/trail/us/new-mexico/santa-fe-lake-trail','AllTrails.com'),
+('1529','219','Book:','11',NULL),
+('1530','220','Book:','11',NULL),
+('1531','221','Book:','11',NULL),
+('1532','221','App:','https://www.alltrails.com/explore/trail/us/new-mexico/canon-de-valle-trail?ref=sidebar-view-full-map','AllTrails.com'),
+('1533','221','Website:','https://www.hikingproject.com/trail/7005540/canon-de-valle-trail','REI Hiking Project');
 
 
 
@@ -1418,7 +1429,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4234 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4250 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3749,7 +3760,23 @@ INSERT INTO TSV VALUES
 ('4225','217',NULL,'IMG_1849','Y','Y','Several aspen groves are encountered','35.8489611111','-105.6624916667','2349',NULL,'2019-07-30 09:57:10','IMG_1849','426','320',NULL,NULL),
 ('4226','217',NULL,'IMG_1833','Y','Y','Every size and shape of wildflower appear','35.8356888889','-105.6670138889','2350',NULL,'2019-07-30 08:47:25','IMG_1833','240','320',NULL,NULL),
 ('4227','217',NULL,'IMG_1860','Y','N','Prolific Sneezeweed','35.8690388889','-105.6581583333','2351',NULL,'2019-07-30 10:53:08','IMG_1860','240','320',NULL,NULL),
-('4228','217',NULL,'IMG_20190730_105314558_HDR','Y','Y','Flowered meadow at 10,000 ft','35.869052','-105.6581879722','2352',NULL,'2019-07-30 10:53:19','IMG_20190730_105314558_HDR','180','320',NULL,NULL);
+('4228','217',NULL,'IMG_20190730_105314558_HDR','Y','Y','Flowered meadow at 10,000 ft','35.869052','-105.6581879722','2352',NULL,'2019-07-30 10:53:19','IMG_20190730_105314558_HDR','180','320',NULL,NULL),
+('4234','218',NULL,'IMG_1882','Y','Y','Nodding onion','35.7746361111','-105.8060222222','2353',NULL,'2019-08-07 08:22:59','IMG_1882','320','240',NULL,NULL),
+('4235','218',NULL,'IMG_1883','Y','Y','Scarlet Gilia','35.7762444444','-105.8043666667','2354',NULL,'2019-08-07 08:26:48','IMG_1883','320','240',NULL,NULL),
+('4236','218',NULL,'IMG_1888','Y','Y','One of many lovely cascades','35.7809916667','-105.7943333333','2355',NULL,'2019-08-07 08:58:05','IMG_1888','320','240',NULL,NULL),
+('4237','218',NULL,'IMG_1892','Y','Y','Various mushrooms appeared along the trail','35.7835583333','-105.7913194444','2356',NULL,'2019-08-07 09:19:19','IMG_1892','240','320',NULL,NULL),
+('4238','218',NULL,'WhipplesPenstemon','Y','Y','Whipple\'s Penstemon','35.7853611111','-105.7886416667','2357',NULL,'2019-08-07 09:42:15','WhipplesPenstemon','320','240',NULL,NULL),
+('4239','218',NULL,'IMG_1895','Y','N','Emerging from the woods along Big Tesuque trail','35.7198416667','-105.8832027778','2358',NULL,'2019-08-07 09:27:58','IMG_1895','240','320',NULL,NULL),
+('4240','218',NULL,'IMG_1899','Y','Y','Ascending the final feet towards the summit of the ski area','35.7852833333','-105.7874916667','2359',NULL,'2019-08-07 09:49:46','IMG_1899','240','320',NULL,NULL),
+('4241','218',NULL,'IMG_1900','Y','Y','View from the Forest Road at the top','35.7865638889','-105.78495','2360',NULL,'2019-08-07 10:02:09','IMG_1900','240','320',NULL,NULL),
+('4242','218',NULL,'IMG_1907','Y','N','The place where the Lake Trail diverges from Skyline','35.7887305556','-105.781175','2361',NULL,'2019-08-07 10:52:39','IMG_1907','320','240',NULL,NULL),
+('4243','218',NULL,'IMG_20190807_102432698_HDR','Y','Y','The beautiful, isolated, Santa Fe Lake','35.788654','-105.779487','2362',NULL,'2019-08-07 10:24:36','IMG_20190807_102432698_HDR','180','320',NULL,NULL),
+('4244','218',NULL,'IMG_20190807_103005135_HDR','Y','N','Ben enjoys a dip after the long hike','35.788656','-105.779262','2363',NULL,'2019-08-07 10:30:09','IMG_20190807_103005135_HDR','180','320',NULL,NULL),
+('4245','218',NULL,'IMG_1908','Y','Y','Coming to the lower ski lift','35.7863527778','-105.7888111111','2364',NULL,'2019-08-07 11:12:53','IMG_1908','240','320',NULL,NULL),
+('4246','218',NULL,'IMG_1909','Y','Y','The lower ski lift','35.7858472222','-105.7893138889','2365',NULL,'2019-08-07 11:25:57','IMG_1909','240','320',NULL,NULL),
+('4247','218',NULL,'IMG_1910','Y','Y','View from Alamo Vista Trail','35.7857583333','-105.7968611111','2366',NULL,'2019-08-07 11:28:38','IMG_1910','240','320',NULL,NULL),
+('4248','218',NULL,'IMG_1912','Y','N','A lovely view from Alamo Vista Trail',NULL,NULL,'2367',NULL,'2019-08-07 12:04:26','IMG_1912','240','320',NULL,NULL),
+('4249','218',NULL,'IMG_1914','Y','Y','One of several beautiful Aspen groves','35.7780277778','-105.8052305556','2368',NULL,'2019-08-07 12:07:02','IMG_1914','320','240',NULL,NULL);
 
 
 
