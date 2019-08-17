@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=308 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=884 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=908 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -272,7 +272,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -497,7 +497,8 @@ INSERT INTO HIKES VALUES
 ('218','Santa Fe Lake Loop','mstr','Santa Fe','Cluster',NULL,'H','Aspen Vista Group','Loop','5.40','1900','Difficult','Campground Facilities','Beautiful Views and Clear Mountain Lake','Not Winter','Mixed sun/shade','SFLakeEdited.GPX','SFLakeEdited.json','35.7771414891','-105.8106052503',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Aspen+Vista+Picnic+Ground/@35.7694064,-105.8270396,14.18z/data=!4m5!3m4!1s0x87184ce6a3c7f4d9:0xe45f794f0417c87b!8m2!3d35.7772181!4d-105.8109596',NULL,'This hike is a long steep uphill climb to the top of the Ski Area (towers) then down a short steep trail to the lake. For the ascent, the authors chose the Aspen Vista Forest Road from the parking lot, and then proceeded up Big Tesuque Trail. (Note: for a less lengthy hike with a bit less elevation change, start from the Ski Santa Fe parking lot - see the GPS Data listed below). The scenery, once you emerge from the wooded portions of Big Tesuque, is spectacular. The year the authors took this hike, the wildflowers were prolific and variegated. Santa Fe Lake can only be seen from the highest point at the summit of the ski area, and not even as you descend towards it. The return trip overlaps with the Alamo Vista Trail, entering beautiful Aspen groves and occasional meadows. Although a difficult hike, it is visually rewarding.',NULL,NULL,NULL),
 ('219','[Proposed] Sawyer Mesa','mstr','Valles Caldera','Normal',NULL,'','','Out-and-back','5.40','900','Easy-Moderate','','','','Full sun','SawyersMesaDEM.gpx','SawyersMesaDEM.json','35.8253816','-106.4443016',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B049\'31.4%22N+106%C2%B026\'39.5%22W/@35.8338348,-106.4750472,13.31z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8253816!4d-106.4443016',NULL,'This trail can be shorter than indicated and still hit some of the highlights: a knife edge at Obsidian Ridge, with views of the Pajarito Plateau.',NULL,NULL,NULL),
 ('220','[Proposed] St Peters Dome','mstr','Valles Caldera','Normal',NULL,'','','Out-and-back','4.40','700','Moderate','','','','Full sun','PetersDomeDEM.gpx','PetersDomeDEM.json','35.7736871','-106.4183164',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B046\'25.3%22N+106%C2%B025\'05.9%22W/@35.7957752,-106.4368688,12.65z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7736871!4d-106.4183164',NULL,'360-degree views from St Peter\'s Dome',NULL,NULL,NULL),
-('221','[Proposed] Canon de Valle','mstr','Los Alamos','Normal',NULL,'','','Out-and-back','5.60','1800','Moderate','','','',NULL,'CanonValleDEM.gpx','CanonValleDEM.json','35.8527983','-106.3537744',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B051\'10.1%22N+106%C2%B021\'13.6%22W/@35.8551629,-106.372533,13.88z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8527983!4d-106.3537744',NULL,'The book reference indicates a turn-around at the Valles Caldera boundary',NULL,NULL,NULL);
+('221','Canon de Valle','mstr','Los Alamos','Normal',NULL,'','','Out-and-back','6.30','1300','Moderate','None','Summer wildflower extravaganza','Not Winter','Mixed sun/shade','Canon_de_Valle.GPX','Canon_de_Valle.json','35.8525846526','-106.3543470204',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B051\'10.1%22N+106%C2%B021\'13.6%22W/@35.8551629,-106.372533,13.88z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8527983!4d-106.3537744','Although the hike is rated \"Mixed sun/shade\", there is not much shade due to the extensive burn damage along the canyon walls.','This hike proceeds along a relatively easy grade up into one of Pajarito\'s major canyons to the Valles Caldera boundary. The authors turned around at this point to return to the trailhead. There was an exceptional display of wildflowers this year (2019), due to the heavy winter snows and good spring and summer rains. Furthermore, there were some varieties not seen much on other hikes - large stands of Lamb\'s Ear, Bee Balm, and other unidentified varieties, along with prolific communities of more commonly seen harebells, scarlet Gilia, red penstemon, black-eyed susans, daisies and asters, and many more. It is a relatively easy walk and well worth the beauty. ',NULL,NULL,NULL),
+('222','Ojo Caliente Trails Loop','mstr','Ojo Caliente','Normal',NULL,'','','Loop','8.90','400','Easy-Moderate','Ojo Caliente Spa','Foothills and Potsherds','All','Full sun','Ojo_Caliente.GPX','Ojo_Caliente.json','36.305086473','-106.0526289325',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ojo+Caliente+Mineral+Springs+Resort+%26+Spa/@36.3014539,-106.0653403,13.94z/data=!4m8!3m7!1s0x87178ebb50dbd379:0x5ecf24677e52fcea!5m2!4m1!1i2!8m2!3d36.3043312!4d-106.0522699','Joseph\'s Mine is not marked, and the wide dirt road traverses briefly alongside it then proceeds on. At a nearby split (see red flag on map), an arrow points to the right seeming to indicate that the mine is in that direction. If you reach this split you have passed the mine. The other road goes uphill and into the foothills to an unknown location.','There are 5 hiking trails at the Ojo Caliente Resort. As none of these were long, the author blended them into one loop hike. All of the hikes, except for Joseph\'s Mine, are loop trails, and any, including Joseph\'s Mine, can be taken separately for a shorter hike from the Spa. The P\'osi Ruins are unexcavated and the contours of the land suggest where the pueblo buildings were. Expect to see, however, numerous potsherds in the ruins area. There are also some nice views of Rio Ojo Caliente, and the Spa from the P\'osi Trail. The Rincon trail is a lovely trek towards Cerro Colarado and the surrounding hills, with beautiful vistas en route. Joseph\'s mine is an old abandoned mica mine, and parts of the trail around it are loaded with reflective mica pieces. The Tewa Trail returns downhill along an arroyo and lovely canyon to the river, where the Bosque River Trail may be used to return to the spa. ',NULL,NULL,NULL);
 
 
 
@@ -565,7 +566,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1534 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1541 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1403,9 +1404,13 @@ INSERT INTO REFS VALUES
 ('1528','218','Website:','https://www.alltrails.com/trail/us/new-mexico/santa-fe-lake-trail','AllTrails.com'),
 ('1529','219','Book:','11',NULL),
 ('1530','220','Book:','11',NULL),
-('1531','221','Book:','11',NULL),
-('1532','221','App:','https://www.alltrails.com/explore/trail/us/new-mexico/canon-de-valle-trail?ref=sidebar-view-full-map','AllTrails.com'),
-('1533','221','Website:','https://www.hikingproject.com/trail/7005540/canon-de-valle-trail','REI Hiking Project');
+('1534','222','Website:','https://www.alltrails.com/trail/us/new-mexico/tewa-trail','Tewa Trail'),
+('1535','222','Website:','https://www.alltrails.com/trail/us/new-mexico/josephs-mine-trail','Joseph\'s Mine Trail'),
+('1536','222','Website:','https://www.alltrails.com/trail/us/new-mexico/rincon-trail','Rincon Trail'),
+('1537','222','Website:','https://ojocaliente.ojospa.com/','Ojo Caliente Spa'),
+('1538','221','Book:','11',NULL),
+('1539','221','App:','https://www.alltrails.com/explore/trail/us/new-mexico/canon-de-valle-trail?ref=sidebar-view-full-map','AllTrails.com'),
+('1540','221','Website:','https://www.hikingproject.com/trail/7005540/canon-de-valle-trail','REI Hiking Project');
 
 
 
@@ -1429,7 +1434,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4250 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4274 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3776,7 +3781,31 @@ INSERT INTO TSV VALUES
 ('4246','218',NULL,'IMG_1909','Y','Y','The lower ski lift','35.7858472222','-105.7893138889','2365',NULL,'2019-08-07 11:25:57','IMG_1909','240','320',NULL,NULL),
 ('4247','218',NULL,'IMG_1910','Y','Y','View from Alamo Vista Trail','35.7857583333','-105.7968611111','2366',NULL,'2019-08-07 11:28:38','IMG_1910','240','320',NULL,NULL),
 ('4248','218',NULL,'IMG_1912','Y','N','A lovely view from Alamo Vista Trail',NULL,NULL,'2367',NULL,'2019-08-07 12:04:26','IMG_1912','240','320',NULL,NULL),
-('4249','218',NULL,'IMG_1914','Y','Y','One of several beautiful Aspen groves','35.7780277778','-105.8052305556','2368',NULL,'2019-08-07 12:07:02','IMG_1914','320','240',NULL,NULL);
+('4249','218',NULL,'IMG_1914','Y','Y','One of several beautiful Aspen groves','35.7780277778','-105.8052305556','2368',NULL,'2019-08-07 12:07:02','IMG_1914','320','240',NULL,NULL),
+('4250','222',NULL,'IMG_1919','Y','Y','Junction between P\'osi Trail and Rincon Connector','36.3057583333','-106.0561611111','2369',NULL,'2019-08-13 07:06:32','IMG_1919','240','320',NULL,NULL),
+('4251','222',NULL,'IMG_1921','Y','Y','BLM boundaries surrounding the ruins','36.3033833333','-106.0567694444','2370',NULL,'2019-08-13 07:12:19','IMG_1921','240','320',NULL,NULL),
+('4252','222',NULL,'IMG_1925','Y','Y','One of many collections of potsherds in the ruins area','36.29885','-106.0561527778','2371',NULL,'2019-08-13 07:27:46','IMG_1925','240','320',NULL,NULL),
+('4253','222',NULL,'IMG_1935','Y','Y','Along the Rincon - into the hills','36.3075972222','-106.0680472222','2372',NULL,'2019-08-13 08:05:01','IMG_1935','240','320',NULL,NULL),
+('4254','222',NULL,'IMG_1940','Y','Y','A look west from the Rincon trail','36.3097638889','-106.0694972222','2373',NULL,'2019-08-13 08:10:46','IMG_1940','240','320',NULL,NULL),
+('4255','222',NULL,'IMG_1942','Y','Y','Looking back at the colorful hills on the Rincon','36.3123805556','-106.0678027778','2374',NULL,'2019-08-13 08:21:58','IMG_1942','240','320',NULL,NULL),
+('4256','222',NULL,'IMG_1944','Y','Y','A stand of snakeweed in the sun','36.3135444444','-106.0626833333','2375',NULL,'2019-08-13 08:30:16','IMG_1944','320','240',NULL,NULL),
+('4257','222',NULL,'IMG_2151','Y','Y','The wide road leading into the hills and Joseph\'s mine','36.3102222222','-106.0529777778','2376',NULL,'2013-11-10 12:30:08','IMG_2151','240','320',NULL,NULL),
+('4258','222',NULL,'IMG_1952','Y','Y','Joseph\'s Mine','36.3272138889','-106.0545972222','2377',NULL,'2019-08-13 09:22:04','IMG_1952','240','320',NULL,NULL),
+('4259','222',NULL,'IMG_1954','Y','Y','Descending into the canyon on the Tewa Trail','36.3158222222','-106.0483472222','2378',NULL,'2019-08-13 10:24:42','IMG_1954','240','320',NULL,NULL),
+('4260','222',NULL,'IMG_1955','Y','Y','Arroyo on Tewa Trail','36.3148694444','-106.0459583333','2379',NULL,'2019-08-13 10:28:03','IMG_1955','426','320',NULL,NULL),
+('4261','222',NULL,'IMG_1957','Y','Y','The footbridge to the Bosque River Trail','36.3132444444','-106.0448388889','2380',NULL,'2019-08-13 10:32:00','IMG_1957','240','320',NULL,NULL),
+('4262','221',NULL,'IMG_1979','Y','Y','The lower end shows much of the fire damage','35.8519166667','-106.3567111111','2381',NULL,'2019-08-16 10:13:31','IMG_1979','240','320',NULL,NULL),
+('4263','221',NULL,'IMG_1981','Y','Y','Fireweed legend - taller plants mean deeper winter snow','35.8516972222','-106.3623805556','2382',NULL,'2019-08-16 10:22:13','IMG_1981','320','240',NULL,NULL),
+('4264','221',NULL,'IMG_1984','Y','Y','A \"colony\" of bee balm','35.8539666667','-106.3672111111','2383',NULL,'2019-08-16 10:31:39','IMG_1984','240','320',NULL,NULL),
+('4265','221',NULL,'IMG_1986','Y','N','Tall stands of lamb\'s ear appeared on the trail','35.854','-106.3672944444','2384',NULL,'2019-08-16 10:32:15','IMG_1986','320','240',NULL,NULL),
+('4266','221',NULL,'IMG_20190816_102354097_HDR','Y','Y','Where the trail meets the perimeter trail','35.851795','-106.363443','2385',NULL,'2019-08-16 10:24:04','IMG_20190816_102354097_HDR','180','320',NULL,NULL),
+('4267','221',NULL,'IMG_1987','Y','Y','Red penstemon and scarlet gilia dot the trail','35.8550833333','-106.3704138889','2386',NULL,'2019-08-16 10:38:05','IMG_1987','320','240',NULL,NULL),
+('4268','221',NULL,'IMG_1992','Y','N','Purple asters dominate the meadows',NULL,NULL,'2387',NULL,'2019-08-16 11:26:55','IMG_1992','240','320',NULL,NULL),
+('4269','221',NULL,'IMG_1993','Y','Y','Bright yellows accentuate the other colors','35.8700361111','-106.3982861111','2388',NULL,'2019-08-16 11:45:00','IMG_1993','320','240',NULL,NULL),
+('4270','221',NULL,'IMG_1998','Y','Y','Communities of harebell hide in the grass','35.8692555556','-106.3966916667','2389',NULL,'2019-08-16 12:08:26','IMG_1998','320','240',NULL,NULL),
+('4271','221',NULL,'IMG_20190816_113054317','Y','Y','Charred remains serve as a reminder','35.8673629722','-106.392763','2390',NULL,'2019-08-16 11:30:56','IMG_20190816_113054317','180','320',NULL,NULL),
+('4272','221',NULL,'IMG_2001','Y','Y','Looking back toward the Rockies','35.8519583333','-106.3603055556','2391',NULL,'2019-08-16 13:05:22','IMG_2001','240','320',NULL,NULL),
+('4273','221',NULL,'IMG_20190816_114851661','Y','Y','The Valles Caldera boundary line','35.8706809722','-106.399336','2392',NULL,'2019-08-16 11:48:56','IMG_20190816_114851661','180','320',NULL,NULL);
 
 
 
