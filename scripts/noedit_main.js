@@ -1,230 +1,275 @@
+/*
+ * The technique used to determine when a cookie gets set is to compare the
+ * length of the cookie string to what it was on page load. There are no
+ * methods associated with cookies for detecting the setting of (or deletion
+ * of) a cookie. Since a user may leave the page, acquire another cookie,
+ * and then return to this page, a means is provided to re-calculate the
+ * cookie length in that case. The following cross-browser technique is utilized:
+ * https://howchoo.com/g/mdg5otdhmzk/determine-if-a-tab-has-focus-in-javascript
+ * Note that this cannot be placed inside 'document ready'.
+ */
+var hidden, visibilityChange, state;
+var allcookies = decodeURIComponent(document.cookie);
+var prevLgth = allcookies.length;
+// Set the name of the hidden property and the change event for visibility
+if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
+    hidden = "hidden";
+    visibilityChange = "visibilitychange";
+    state = "visibilityState";
+} else if (typeof document.mozHidden !== "undefined") {
+    hidden = "mozHidden";
+    visibilityChange = "mozvisibilitychange";
+    state = "mozVisibilityState";
+} else if (typeof document.msHidden !== "undefined") {
+    hidden = "msHidden";
+    visibilityChange = "msvisibilitychange";
+    state = "msVisibilityState";
+} else if (typeof document.webkitHidden !== "undefined") {
+    hidden = "webkitHidden";
+    visibilityChange = "webkitvisibilitychange";
+    state = "webkitVisibilityState";
+}
+document.addEventListener(visibilityChange, function() {
+    if (document[state] == 'visible') {
+        // to test: alert("You're back!");
+        allcookies = decodeURIComponent(document.cookie);
+        prevLgth = allcookies.length;
+    }
+});
+
 $( function() {  // wait until document is loaded...
 
-// Globals:
-var usr_type = 'unregistered';
-var username;
-var ajaxDone = false;
-var valid1 = "Welcome back ";
-var valid2 = "; you are now logged in...";
-var valid;
-var valstat;
-var backdoor = false;
+// registered user
+var registered_user = $('#registered_user').text();
+var createPage    = 0;
+var editPage      = 1;
+var publishedPage = 2;
+var displayEdits  = 3;
+// admin
+var adminCreate   = 10;
+var adminEdit     = 11;
+var adminPubl     = 12;
+var adminDisplay  = 13;
+var admin         = 14;
 
-// URL targets: New Page Creation:
-var createUrl = 'build/startNewPg.php?usr=';
-// URL targets: Edit EHIKES items:
-var editNew = 'build/hikeEditor.php?age=new&usr='; // 'new' => EHIKES
-// URL targets: Edit HIKES items:
-var editPub = 'build/hikeEditor.php?age=old&usr=';  // 'old' => HIKES
-var mstrEdit = 'build/hikeEditor.php?age=old&usr=mstr&show=usr';
-// URL for displaying hikes-in-edit:
-var dispPg = 'build/editDisplay.php?usr=';
-// URL target for admin tools:
-var adminUrl = 'admin/admintools.php';
-
-// For testing, un-comment as needed:
-//setCookie('nmh_mstr','',0);
-//setCookie('nmh_id','',0);
-
-// on loading the page:
-var mstrCookie = getCookie('nmh_mstr');
-if (mstrCookie !== "") {
-    usr_type = 'mstr';
-    $('#logins').css('display','none');
-    $('#loggedin').css('display','block');
-    $('#reg').css('display','none');
-    $('#mover').css('display','none');
+// are cookies enabled on this browser?
+var cookies = navigator.cookieEnabled ? true : false;
+if (!cookies) {
+    alert("Cookies appear to be disabled:\n" +
+        "You will not be able to see the 'User Options' unless:\n" +
+        "1. You log in as a registered user; or\n" +
+        "2. Register via the 'Sign Me Up! link; or\n" +
+        "3. Enable cookies for future visits");
 }
-var usrCookie = getCookie('nmh_id');
-if (usrCookie !== '') {
-    usr_type = usrCookie;
-    valid = valid1 + usrCookie + valid2;
-    $('#loggedin').prepend(valid);
-    usr_login_display();
+// logout out on main page only
+if ($('#logout').length) {
+    $('#logout').on('click', function(evt) {
+        evt.preventDefault();
+        $.get('php/logout.php', function() {
+            alert("You are logged out");
+            window.open("index.php", "_self");
+        });
+    });
 }
-function validateUser(usr_name,usr_pass,setcookie) {
+// for renewing password/cookie
+function renewPassword(user, update, status) {
+    if (update === 'renew') {
+       window.open('php/renew.php?user=' + user, '_self');
+    } else {
+        // if still valid, refresh will display login, otherwise do nothing
+        if (status === 'valid') {
+            window.open('index.php', '_self');
+        }
+    }
+}
+/**
+ * User logins (no cookie present/cookies disabled;
+ * 
+ * After verifying that entries have been made in the 'User Name' and
+ * 'User Password' input boxes, the 'validateUser()' function is called
+ * to see if the entered data matches an existing user registration.
+ * If the data does not match, or if the user exists but the password
+ * entered does not match, a message is displayed to the user. 
+ * If the user has made valid entries, the page displays a 'Welcome' 
+ * message and enables the 'User Options' button.
+ */
+$('#users').submit( function(evt) {
+    evt.preventDefault();
+    // ensure all login data is present
+    var uid = $('#usrid').val();
+    var pwd = $('#upass').val();
+    if (uid == '' && pwd == '') {
+        alert("You must supply a registered registered_user and password");
+        return;
+    }
+    if (uid == '') {
+        alert("You must supply a registered registered_user");
+        return;
+    }
+    if (pwd == '') {
+        alert("You must supply a valid password");
+        return;
+    }
+    validateUser(uid, pwd);
+});
+function validateUser(usr_name, usr_pass) {
     $.ajax( {
         url: "admin/authenticate.php",
-        data: {'nmhid': usr_name, 'nmpass': usr_pass},
+        method: "POST",
+        data: {'usr_name': usr_name, 'usr_pass': usr_pass},
+        dataType: "text",
         success: function(srchResults) {
-            valstat = true;
-            //console.log(srchResults);
-            var srchStr = srchResults;
-            if (srchStr.indexOf('LOCATED') >= 0) {
-                usr_type = 'qualified';
-            } else if (srchStr.indexOf('BADPASSWD') >= 0) {
-                var msg = "The key you entered does not match " +
+            var status = srchResults;
+            if (status.indexOf('LOCATED') >= 0) {
+                // document.cookie returning 0: abandoned cookie set approach
+                if (!cookies) {
+                    window.open('index.php?usr=' + usr_name, '_self');
+                } else {
+                    window.open('index.php', '_self');
+                }
+            } else if (status.indexOf('RENEW') >=0) {
+                // in this case, the old cookie has been set pending renewal
+                var renew = confirm("Your password is about to expire\n" + 
+                    "Would you like to renew?");
+                if (renew) {
+                    renewPassword(usr_name, 'renew', 'valid');
+                } else {
+                    renewPassword(usr_name, 'norenew', 'valid');
+                }
+            } else if (status.indexOf('EXPIRED') >= 0) {
+                var renew = confirm("Your password has expired\n" +
+                    "Would you like to renew?");
+                if (renew) {
+                    renewPassword(usr_name, 'renew', 'expired');
+                } else {
+                    renewPassword(usr_name, 'norenew', 'expired');
+                }
+            } else if (status.indexOf('BADPASSWD') >= 0) {
+                var msg = "The password you entered does not match " +
                     "your registered password;\nPlease try again";
                 alert(msg);
                 $('#upass').val('');
-                valstat = false;
-            } 
-            else { // no such user in USERS table
+            } else { // no such user in USERS table
                 var msg = "Your registration info cannot be uniquely located:\n" +
                     "Please click on the 'Sign me up!' link to register";
                 alert(msg);
                 $('#usrid').val('');
                 $('#upass').val('');
-                valstat = false;
             }
-            ajaxDone = true;
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert("Error encountered in validation: " +
+                textStatus + "; Error: " + errorThrown);
         }
     });
-    var ajaxTimer = setInterval( function() {
-        if (ajaxDone) {
-            clearInterval(ajaxTimer);
-            ajaxDone = false;
-            if (usr_type === 'qualified') {
-                valid = valid1 + $('#usrid').val() + valid2;
-                $('#loggedin').prepend(valid);
-                usr_login_display();
-                if (setcookie) {
-                    setCookie('nmh_id',usr_name,365);
-                }
+}
+$('#opts').on('click', function() {
+    if ($('#regusr').length) {
+        display_usr_opts();
+    } else if ($('#master').length) {
+        display_mstr_opts();
+    } 
+});
+function openPage(which, who) {
+    var pg = 'php/opener.php?page=' + which + '&user=' + who;
+    $.ajax(pg,
+        {
+            method: 'GET',
+            dataType: 'html',
+            success: function(results) {
+                $('#addon').after(results);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("Could not open page: " + textStatus + "; Error " + errorThrown);
             }
         }
-    }, 100);
-}
-function usr_login_display() {
-    $('#logins').css('display','none');
-    $('#reg').css('display','none');
-    $('#mover').css('display','block');
-    backdoor = true;
+    );
 }
 function display_usr_opts() { 
     $('#regusrs').css('display','block');
-    $('#unpub').on('click', function() {;
-        alert("No editing allowed at this time");
-        //window.open(editNew + username + '&show=usr', target="_blank");
-    });
-    $('#pub').on('click', function() {
-        alert("No editing allowed at this time");
-        //window.open(editPub + username + '&show=usr', target="_blank");
-    });
-    $('#ude').on('click', function() {
-        window.open(dispPg + username,"_blank");
-    });
+    // user buttons:
     $('#creator').on('click', function() {
+        //openPage(createPage, registered_user);
         alert("No editing allowed at this time");
-        //window.open(createUrl + username, target="_blank");
     });
-    $('.hide').on('click', function() {
-        $("input[type='password']").val('');
+    $('#active').on('click', function() {
+        //openPage(editPage, registered_user);
+        alert("No editing allowed at this time");
+    });
+    $('#usrpub').on('click', function() {
+        //openPage(publishedPage, registered_user);
+        alert("No editing allowed at this time");
+    });
+    $('#usrdisplay').on('click', function() {
+        openPage(displayEdits, registered_user);
+    });
+    $('#hide').on('click', function() {
         $('#regusrs').css('display','none');
     });
 }
-// Set up cookies:
-function setCookie(ckname,ckvalue,expdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (expdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
-    document.cookie = ckname + "=" + ckvalue + ";" + expires + ";path=/";
-}
-function getCookie(ckname) {
-    var name = ckname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
+function display_mstr_opts() {
+    $('#masters').css('display','block');
+    // admin buttons
+    $('#mstrcreate').on('click', function() {
+        //openPage(adminCreate, 'keyed');
+        alert("No editing allowed at this time");
+    });
+    $('#mstrnew').on('click', function() {
+        //openPage(adminEdit, 'keyed');
+        alert("No editing allowed at this time");
+    });
+    $('#mstrold').on('click', function() {
+        //openPage(adminPubl, 'keyed');
+        alert("No editing allowed at this time");
+    });  
+    $('#mstrdisplay').on('click', function() {
+        openPage(adminDisplay, 'keyed');
+    })
+    $('#admin').on('click', function() {
+        openPage(admin, 'keyed');
+    });
+    $('#hide').on('click', function() {
+        $('#masters').css('display','none');
+    });
 }
 
-$('#auxfrm').submit( function(ev) {
-    ev.preventDefault();
-    // master key requires no entry of user name:
-    if ( ($('#upass').val() === '000ktesa9') || 
-            (mstrCookie !== '') || $('#mstrpass').val() === '000ktesa9' ) {  // master key displays all
-        $('#regusrs').css('display','none');
-        $('#masters').css('display','block');
-        $('#logins').css('display','none');
-        $('#reg').css('display','none');
-        $('#loggedin').css('display','none');
-        $('#mover').css('display','none');
-        $('#mstrnew').on('click', function() {
-            alert("No editing allowed at this time");
-            //window.open(editNew + 'mstr&show=usr', target="_blank");
-        });
-        $('#mstrold').on('click', function() {
-            alert("No editing allowed at this time");
-            //window.open(mstrEdit, target="_blank");
-        });  
-        $('#mde').on('click', function() {
-            window.open(dispPg + 'mstr',"_blank");
-        })
-        $('#mstrcreate').on('click', function() {
-            alert("No editing allowed at this time");
-            //window.open(createUrl + 'mstr', target="_blank");
-        });
-        $('#admin').on('click', function() {
-            var admintools = 'admin/admintools.php';
-            window.open(admintools,"_blank");
-        });
-        $('.hide').on('click', function() {
-            $('#loggedin').css('display','block');
-            $('#reg').css('display','none');
-            $('#masters').css('display','none');
-            if (backdoor) {
-                $('#mover').css('display','block');
-            }
-        });
-        if (mstrCookie == '') {
-            setCookie('nmh_mstr','ktesa',365);
-            setCookie('nmh_id','',0); // one user at a time
-        }
-        usr_type = 'mstr';
-    } else {  // not master key
-        var uid = $('#usrid').val();
-        var upw = $('#upass').val();
-        // uid will be converted to 'username' on successful validation
-        var cookieEnabled = navigator.cookieEnabled;
-        // deal with not enabled:
-        if (!cookieEnabled) {  // no cookies means full validation each time
-            if (uid == '' && upw !== '000ktesa9') {
-                alert("Please enter a valid user name");
-            } else if (upw == '') {
-                alert("Please enter a valid registration key");
-            } else {
-                validateUser(uid,upw,false);
-                if (valstat) {
-                    username = uid;
-                }
-            }
-        } else {  // cookies are enabled, now check for nmh_id:
-            username = getCookie("nmh_id");
-            /* NOTE: If the 'nmh_id' cookie is set, the user options
-             * display regardless of the username supplied on the form,
-             * and no password is required.
-             */
-            if (username === "") {  // no cookie: validation is required...
-                validateUser(uid,upw,true);
-                if (valstat) {
-                    username = uid;
-                    $('#upass').val('');
-                    usr_login_display();
-                } 
-            } else {  // valid cookie present: proceed
-                display_usr_opts();
-            }
-        }
-    } // end of else not master key
+/**
+ * This section manages the 'twisty' text on the bottom of the page
+ */
+function toggleTwisty(tid, ttxt, dashed) {
+    var feature = $('#' + ttxt);
+    var twisty  = $('#' + tid);
+    var list = $('#' + dashed);
+    if (twisty.hasClass('twisty-right')) {
+        twisty.removeClass('twisty-right');
+        twisty.addClass('twisty-down');
+        feature.css('top', '-6px');
+    } else {
+        twisty.removeClass('twisty-down');
+        twisty.addClass('twisty-right');
+        feature.css('top', '-4px');
+    }
+    list.slideToggle();
+}
+$('#mapfeat').on('click', function() {
+    toggleTwisty('m', 'mapfeat', 'mul');
+});
+$('#tblfeat').on('click', function() {
+    toggleTwisty('t', 'tblfeat', 'tul');
+});
+$('#hikefeat').on('click', function() {
+    toggleTwisty('h', 'hikefeat', 'hul');
 });
 
-// Go to display page buttons:
+// Go to ktesa sites:
 $('#tbl').on('click', function() {
-    window.open("pages/mapPg.php?tbl=T","_blank");
+    window.open("pages/mapPg.php?tbl=T", "_self");
 });
 $('#tnm').on('click', function() {
-    window.open("pages/mapPg.php?tbl=D");
+    window.open("pages/mapPg.php?tbl=D", "_self");
 });
 $('#bigm').on('click', function() {
-    window.open("pages/mapPg.php?tbl=M");
+    window.open("pages/mapPg.php?tbl=M", "_self");
 });
 
 }); // end of page-loading wait statement

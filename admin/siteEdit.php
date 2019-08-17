@@ -12,13 +12,13 @@ require "../php/global_boot.php";
 
 $current = filter_input(INPUT_GET, 'button');
 $modeSettings = 'mode_settings.php';
-$homePg = '../index.html';
-$indexHtml = file_get_contents($homePg);
+$homePg = '../index.php';
+$pageContent = file_get_contents($homePg);
 
 if (strpos($current, 'Editing Allowed') !== false) {
     $noedit = str_replace(
         '<script src="scripts/main.js"',
-        '<script src="scripts/noedit_main.js"', $indexHtml
+        '<script src="scripts/noedit_main.js"', $pageContent
     );
     file_put_contents($homePg, $noedit);
     $modes = file_get_contents($modeSettings);
@@ -28,7 +28,7 @@ if (strpos($current, 'Editing Allowed') !== false) {
 } else {
     $edit = str_replace(
         '<script src="scripts/noedit_main.js"',
-        '<script src="scripts/main.js"', $indexHtml
+        '<script src="scripts/main.js"', $pageContent
     );
     file_put_contents($homePg, $edit);
     $modes = file_get_contents($modeSettings);
