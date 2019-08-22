@@ -9,6 +9,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 $usr = filter_input(INPUT_GET, 'usr');
 $age = filter_input(INPUT_GET, 'age');
@@ -23,14 +24,18 @@ $show = filter_input(INPUT_GET, 'show');
             content="Select hike to edit from table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="tables.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
 <p id="uid" style="display:none"><?php echo $usr;?></p>
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Select A Hike To Edit</p>
+<p id="page_id" style="display:none">Build</p>
 
 <div><p style="text-align:center;">When you click on the hike in the table
     below, you will be presented with an editable version of the hike page.</p>
@@ -45,7 +50,8 @@ $show = filter_input(INPUT_GET, 'show');
     var age = "<?php echo $age;?>";
     var statfields = <?php echo $status;?>;
 </script>
-<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/menus.js"></script>
 <script src="hikeEditor.js"></script>
+
 </body>
 </html>

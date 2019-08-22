@@ -22,14 +22,17 @@ require "dataForEditor.php";
     <meta name="description" content="Edit the selected hike" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="editDB.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>   
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Hike Editor</p>
+<p id="page_id" style="display:none">Build</p>
 <p id="hikeNo" style="display:none"><?= $hikeNo;?></p>
 <p id="entry" style="display:none"><?= $tab;?></p>
 
@@ -86,6 +89,8 @@ require "dataForEditor.php";
 
 </div> <!-- MAIN -->
 <div class="popupCap"></div>
+<script src="../scripts/menus.js"></script>
 <script src="editDB.js"></script>
+
 </body>
 </html>

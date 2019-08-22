@@ -12,7 +12,9 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
+
 $action = filter_input(INPUT_POST, 'submit');  // remove files or create shell?
 $shell = false; // unless proven otherwise...
 $shell_file = "pictures/cleanpix.sh";
@@ -91,11 +93,16 @@ chdir($adminDir);
     <meta name="description" content="Check for extraneous photos" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="cleanPix.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 <body>
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Photos Deleted</p>
+<p id="page_id" style="display:none">Admin</p>
+
 </div>
 <div style="margin-left:24px;">
 <?php if (strpos($msg, "No pictures")) : ?>
@@ -128,5 +135,7 @@ chdir($adminDir);
     <br /><?= $msg;?>
     <?php endif; ?>
 <?php endif; ?>
+<script src="../scripts/menus.js"></script>
+
 </body>
 </html>

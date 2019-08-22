@@ -124,12 +124,17 @@ chdir($adminDir);
     <meta name="description" content="List new <?= $request;?> since last upload" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 <body>
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">List New Files Since Last Upload</p>
+<p id="page_id" style="display:none">Admin</p>
+
 <div style="margin-left:24px;">
 <p style="font-size:16px;">Upload date: <?= $udate;?></p>
 <p style="font-size:16px;color:brown;">Files changed since upload:</p>
@@ -138,5 +143,7 @@ chdir($adminDir);
 <?php endforeach; ?>
 <p style="font-size:18px;color:brown;">DONE</p>
 </div>
+<script src="../scripts/menus.js"></script>
+
 </body>
 </html>

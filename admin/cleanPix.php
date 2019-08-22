@@ -14,6 +14,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 
 $published_query = "SELECT picIdx,thumb,mid FROM TSV;";
@@ -140,11 +141,16 @@ chdir($startDir);
     <meta name="description" content="Check for extraneous photos" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="cleanPix.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 <body>
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Photo Cleanup Utility</p>
+<p id="page_id" style="display:none">Admin</p>
+
 </div>
 <div id="main">
 <form id="form" action="photoCleanup.php" method="POST" />
@@ -199,7 +205,7 @@ chdir($startDir);
     </ul>
 <?php endif; ?>
 </div>
-<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/menus.js"></script>
 <script src="cleanPix.js"></script>
 
 </body>

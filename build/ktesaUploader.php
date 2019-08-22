@@ -9,6 +9,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 $EHikeNo = filter_input(INPUT_GET, 'indx');
 $Euser = filter_input(INPUT_GET, 'usr');
 ?>
@@ -20,16 +21,20 @@ $Euser = filter_input(INPUT_GET, 'usr');
     <meta name="description" content="Upload user's photos" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="ktesaUploader.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>   
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="ehno" style="display:none;"><?= $EHikeNo;?></p>
 <p id="eusr" style="display:none;"><?= $Euser;?></p>
 <p id="trail">Upload Your Photos!</p>
+<p id="page_id" style="display:none">Build</p>
+
 <form class="box" method="post" action="usrPhotos.php" enctype="multipart/form-data">
     <div class="box__input">
         <input type="file" name="files[]" id="file" class="inputfile"
@@ -59,7 +64,9 @@ $Euser = filter_input(INPUT_GET, 'usr');
         </div>
     </div>
 </form>
+<script src="../scripts/menus.js"></script>
 <script src="ktesaUploader.js"></script>
 <script src="exifReader.js"></script>
+
 </body>
 </html>

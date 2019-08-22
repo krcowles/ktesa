@@ -64,5 +64,5 @@ setcookie("nmh_id", $username, $expire, "/");
 if ($submitter == 'create') {
     echo "DONE";
 } else {
-    header("Location: ../index.php");
+    header("Location: ../index.html");
 }

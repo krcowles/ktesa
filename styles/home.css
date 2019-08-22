@@ -1,223 +1,123 @@
 /* Styles for the New Mexico Hiking Adventures page */
 body {
-    width: 960px;
-    margin-left: auto;
-    margin-right: auto;
-    font-family: Arial, Verdana;
-    background-color: #dfdfdf;
-    border-style: solid;
-    border-width: 2px;
-    border-color: DarkBlue;
+	min-width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0px;
+	font-family: arial, verdana;
+	background-color: #dfdfdf; }
+#logo {
+	margin-bottom: 0px;
 }
-#container {
-    width: 940px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
+#geoSetting {
+	display: none; }
+#geoCtrl {
+	position: absolute;
+	z-index: 100; }
+#geoCtrl:hover {
+	cursor: pointer;
 }
-img#tompic {
-    display: block;
-    float: right;
-    margin-left: 10px;
-    margin-right: 7px;
-    margin-top: -6px;
+#newHikeBox {
+	display: none;
+	position: absolute;
+	top: 240px;
+	left: 440px;
+	width: 110px;
+	height: 50px;
+	background-color: #D1E5CF;
+	color: Blue;
+	text-align: center;
+	padding-top: 10px;
+	z-index: 100; }
+#map {
+	margin-bottom: 16px;
+    width: 100%;
+    height: 700px;
+    z-index: 1; }
+#iwVC {
+	background-color: #f0f0f0;
+	color: Brown;
+	padding: 8px;
+	margin: 3px; }
+#iwCH {
+	background-color: #f0f0f0;
+	color: DarkBlue;
+	padding: 8px;
+	margin: 3px; }
+#iwNH {
+	background-color: #f0f0f0;
+	color: DarkBlue;
+	padding: 8px;
+	margin: 3px; }
+#iwXH {
+	background-color: #f0f0f0;
+	color: DarkBlue;
+	padding: 8px;
+	margin: 3px; }
+#viewmore {
+	font-size: 20px;
+	color: brown;
+	text-align: center;
+	position: relative;
+	top: -6px;
 }
-#banner {
-    height: 54px;
-    margin-left: 8px;
-    margin-bottom: 6px;
-    border-style: outset;
-    border-width: 2px;
-    border-color: #d4e8d4;
-    font-style: oblique;
-    background-color: #dff8e3;
-    line-height: 3.0em;
-    text-align: center;
+img.webShift {
+	padding-left: 19px; }
+img.flckrShift {
+	padding-left: 15px; }
+img.expShift {
+	padding-left: 24px; }
+div #usrTbl table {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 30px; }
+#refTbl {
+	display: none; }
+/* table dressing */
+#tbl_container {
+	margin-right: 16px;
+	margin-left: 16px;
 }
-#banner:first-letter {
-    background-color: #dff8e3;
-    font-size: 38px;
-    font-style: oblique;
-    font-weight: bold;
-    color: #302dd3;
-}
-#choose {
-    margin-bottom: 0px;
-}
-#selections {
-    margin: 0px;
-    color: darkblue;
-    text-align: center;
-    font-size: 26px;
-}
-#settings {
-    margin-left: auto;
-    margin-right: auto;
-}
-fieldset#mtype {
-    height: 54px;
-}
-legend {
-    color: DarkGreen;
-}
-#tbl {
-    margin-left: 28px;
-}
-#tbl,#tnm,#bigm {
-    background-color: #eff5ef;
-    font-size: 16px;
-    width: 160px;
-    height: 36px;
-}
-#tbl:hover, #tnm:hover, #bigm:hover {
-    cursor: pointer;
-    color: brown;
-    background-color: #d5f8dc;
-}
-#intro {
-    margin-left: 8px;
-}
-#introp {
-    margin-bottom: 0px;
-}
-#features {
-    clear: right;
-    margin-top: 16px;
-    margin-left: 8px;
-}
-#logins {
-    margin-left: 8px;
-}
-#expOpt {
-    color: DarkGreen;
-    font-size: 18px;
-}
-#enter {
-    background-color: #eff5ef;
-    font-size: 16px;
-    width: 80px;
-    height: 28px;
-}
-.brown {
-    color: brown;
-}
-#opts {
-    height: 28px;
-    width: 140px;
-    font-size: 16px;
-    font-style: bold;
-}
-#opts:hover, #enter:hover {
-    cursor: pointer;
-    color: brown;
-    background-color: #d5f8dc;
-}
-.boldtxt {
-    font-weight: bold;
-}
-#regusrs, #regusr, #masters, #master {
-    display: none;
-}
-#mstrbtns {
-    width: 796px;
-}
-#usrbtns {
-    width: 700px;
-}
-div #masters button, div #regusrs button {
-    height: 32px;
-    font-size: 16px;
-    background-color: #eff5ef;
-    margin-left: 6px;
-    margin-right: 6px;
-}
-div #regusrs button:hover, div #masters button:hover {
-    cursor: pointer;
-    color: brown;
-    background-color: #d5f8dc;
-}
-#expect {
-    padding-left: 8px;
-    font-weight: bold;
-    text-decoration: underline;
-    color: DarkBlue;
-    font-size: 20px;
-}
-#expl {
-    padding-left: 8px;
-}
-.maindisp {
-    cursor: pointer;
-    color: darkblue;
-}
-#mapfeat {
-    position: relative;
-    top: -4px;
-}
-#mul {
-    display: none;
-}
-#tblfeat {
-    position: relative;
-    top: -4px;
-}
-#tul {
-    display: none;
-}
-#hikefeat {
-    position: relative;
-    top: -4px;
-}
-#hul {
-    display: none;
-}
-.dashed {
-    list-style-type: disc;
-    list-style-position: inside;
-}
-#itals {
-    color: DarkBlue;
-}
-#disclaimers {
-    margin-top: 12px;
-    margin-bottom: 15px;
-}
-#disasters {
-    list-style-type: square;
-    width: 960px;
-    margin-top: 0px;
-    margin-bottom: 20px;
-}
-#closer {
-    margin-top: 20px;
-    margin-left: 8px;
-    margin-bottom: 20px;
-    height: 32px;
-    line-height: 1.8em;
-    padding: 10px;
-    background-color: #c9d7e8;
-    border-style: outset;
-    border-width: 2px;
-    border-color: #c9d7e8;
-    text-align: center;
-}
-ul {
-    position: relative;
-    top: -10px;
-}
-.twisty-right {
-    float: left;
-    width: 0; 
-    max-height: 6px;
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-left: 6px solid darkblue;
-}
-.twisty-down {
-    float: left;
-    width: 0; 
-    max-height: 6px; 
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
-    border-top: 6px solid rgb(38, 201, 23);
-}
+table:not(#loginTbl) {
+	font-size: 14px;
+	text-align: left;
+	margin-top: 5px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #ffffdf;
+	border-style: groove;
+	border-width: 4px;
+	border-color: goldenRod; }
+th {
+	text-align: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-style: outset;
+	border-width: 2px;
+	border-color: peru; }
+tr:hover {
+	background-color: BlanchedAlmond; }
+td {
+	vertical-align: top;
+	padding-left: 5px;
+	padding-right: 5px; }
+.hdr_row {
+	background-color: bisque; }
+.hdr_row:hover {
+	cursor: pointer;
+	background-color: Brown;
+	color: White; }
+.indxd {
+	color: brown; }
+#metric {
+	text-align: left;
+	width: 190px;
+	margin-left: 8px;
+	margin-top: -10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	color: MidnightBlue;
+	border-style: inset;
+	border-width: 3px;
+	border-color: MidnightBlue;
+	cursor: pointer; }

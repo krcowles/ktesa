@@ -9,6 +9,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx');
@@ -73,21 +74,21 @@ $item_cnt = $j;
 <head>
     <title><?= $indxTitle;?></title>
     <meta charset="utf-8" />
-    <meta name="language"
-                    content="EN" />
-    <meta name="description"
-            content="Details about the {$hikeTitle} hike" />
-    <meta name="author"
-            content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots"
-            content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <meta name="language" content="EN" />
+    <meta name="description" content="Details about the {$hikeTitle} hike" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="../styles/subindx.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
-<?php require "pageTop.php"; ?>
+<?php require "ktesaPanel.php"; ?>
 <p id="trail"><?php echo $indxTitle;?></p>
+<p id="page_id" style="display:none">Index</p>
 
 <img class="mainPic" src="<?php echo $mapsrc;?>" alt="Park Service Map" />
 <p id="dirs"><a href="<?php echo $parkDirs;?>" target="_blank">
@@ -144,7 +145,7 @@ $item_cnt = $j;
         tblRow: <?= $i;?></p>
 <?php endif; ?>
 </div>
-<script src="../scripts/jquery-1.12.1.js"></script>
-</body>
+<script src="../scripts/menus.js"></script>
 
+</body>
 </html>

@@ -10,29 +10,31 @@
  * @author  Tom Sandberge and Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
+session_start();
 require "../php/global_boot.php";
 require "hikePageData.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title><?php echo $hikeTitle;?></title>
+    <title><?= $hikeTitle;?></title>
     <meta charset="utf-8" />
     <meta name="description"
-        content="Details about the {$hikeTitle} hike" />
+        content="Details about the <?= $hikeTitle;?> hike" />
     <meta name="author"
         content="Tom Sandberg and Ken Cowles" />
     <meta name="robots"
         content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="../styles/logo.css"
-        type="text/css" rel="stylesheet" />
-    <link href="../styles/hikes.css"
-        type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
 <?php if ($newstyle) : ?>
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
 <?php endif; ?>
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
      
 <body> 
@@ -49,9 +51,11 @@ function off() {
 </div>
 <?php endif; ?>
 
-<?php include "pageTop.php"; ?>
-<p id="trail"><?php echo $hikeTitle;?></p>
-<p id="gpx" style="display:none"><?php echo $gpxPath;?></p>
+<?php require "ktesaPanel.php"; ?>
+<p id="trail"><?= $hikeTitle;?></p>
+<p id="page_id" style="display:none">Page</p>
+<p id="gpx" style="display:none"><?= $gpxPath;?></p>
+
 <!-- ---------------------------- OLD STYLE -------------------------- -->
 <?php if (!$newstyle) : ?>
 <div id="hikeSummary">
@@ -139,7 +143,7 @@ function off() {
     <p id="scrollmsg">Scroll down to see images, hike description,
         reference sources and additonal information as applicable
     </p>
-    <p id="closer">If you are having problems with this page, please: 
+    <p id="problems">If you are having problems with this page, please: 
         <a href="mailto:krcowles29@gmail.com">send us a note!</a>
     </p>
 </div>
@@ -176,7 +180,7 @@ if ($bop !== '') {
     var as = "<?= implode("|", $aspects);?>";
     var w = "<?= implode("|", $widths);?>";
 </script>
-<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/menus.js"></script>
 <script src="../scripts/picRowFormation.js"></script>
 <script src="../scripts/captions.js"></script>
 <script src="../scripts/rowManagement.js"></script>
@@ -184,20 +188,20 @@ if ($bop !== '') {
 <script src="../scripts/dynamicChart.js"></script>
 <?php endif; ?>
 <?php if (isset($tmpMap)) : ?>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $.ajax({
-            url: '../php/tmpMapDelete.php',
-            data: {'file' : "<?php echo $tmpMap;?>" },
-            success: function (response) {
-               var msg = "Map deleted: " + "<?php echo $tmpMap?>";
-            },
-            error: function () {
-               var msg = "Map NOT deleted: " + "<?php echo $tmpMap?>";
-            }
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.ajax({
+                url: '../php/tmpMapDelete.php',
+                data: {'file' : "<?php echo $tmpMap;?>" },
+                success: function (response) {
+                var msg = "Map deleted: " + "<?php echo $tmpMap?>";
+                },
+                error: function () {
+                var msg = "Map NOT deleted: " + "<?php echo $tmpMap?>";
+                }
+            });
         });
-    });
-</script>
+    </script>
 <?php endif; ?>
 
 </body>

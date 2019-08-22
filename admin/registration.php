@@ -9,6 +9,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -18,7 +19,8 @@
     <meta name="description" content="New user sign-up" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="registration.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
         body { margin: 0px; }
@@ -36,13 +38,15 @@
         }
     </style>
     <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
     <script src="../scripts/jquery.validate.min.js"></script>
     <script src="../scripts/jquery.validate.password.js"></script>
 </head>
 
 <body>
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">New User Registration</p>
+<p id="page_id" style="display:none">Reg</p>
 
 <div id="container">
 <h2>
@@ -99,7 +103,8 @@
 <button id="formsubmit">Submit My Info</button>
 </form>
 </div>   <!-- end of container -->
-
+<script src="../scripts/menus.js"></script>
 <script src="registration.js"></script>
+
 </body>
 </html>

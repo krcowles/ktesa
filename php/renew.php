@@ -8,6 +8,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 $user  = filter_input(INPUT_GET, 'user');
 $here = getcwd();
@@ -26,7 +27,8 @@ $id = $userdata['userid'];
     <meta name="description" content="User update password et al" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="../admin/registration.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
         body { margin: 0px;}
@@ -44,13 +46,15 @@ $id = $userdata['userid'];
         }
     </style>
     <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
     <script src="../scripts/jquery.validate.min.js"></script>
     <script src="../scripts/jquery.validate.password.js"></script>
 </head>
 
 <body>
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">New User Registration</p>
+<p id="page_id" style="display:none">Admin</p>
 
 <div id="container">
 <p>Please update your password, and any other data at this time</p>
@@ -106,7 +110,7 @@ $id = $userdata['userid'];
 <button id="formsubmit">Submit My Updates</button>
 </form>
 </div>   <!-- end of container -->
-
+<script src="../scripts/menus.js"></script>
 <script src="renew.js"></script>
 </body>
 </html>

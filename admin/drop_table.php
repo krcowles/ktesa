@@ -7,6 +7,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 
 $table = filter_input(INPUT_GET, 'tbl');
@@ -37,18 +38,23 @@ $show = $list[0];
     <meta name="description" content="Drop the specified Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
         body {
             background-color: #eaeaea;
             margin: 0px;
         }
     </style>
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">DROP <?= $table;?> Table</p>
+<p id="page_id" style="display:none">Admin</p>
+
 <div style="margin-left:16px;font-size:18px;">
     <p>Removing any previous instantiation of table <?= $table;?></p>
     <ul>
@@ -58,6 +64,7 @@ $show = $list[0];
     </ul>
     <p>DONE</p>
 </div>
+<script src="../scripts/menus.js"></script>
 
 </body>
 </html>

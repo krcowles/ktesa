@@ -1,0 +1,146 @@
+#panel {
+    display: inline-block;
+    width: 100%;
+}
+/* Navigation Bar (see also styles/jquery-ui.css) */
+#navbar {
+    background-color: darkslategray;
+    height: 30px;
+}
+#allMenus {
+    z-index: 1000;
+    margin: 0;
+    height: 30px;
+}
+.menu-main {
+    display: inline-block;
+    margin-left: 40px;
+    margin-right: 8px;
+    height: 30px;
+}
+.menu-item {
+    display: inline-block;
+    color: blanchedalmond;
+    height: 30px;
+}
+.menu-text {
+    position: relative;
+    top: 5px;
+}
+.menu-open {
+    display: inline-block;
+    position: relative;
+    top: 8px;
+    left: 8px;
+    margin-right: 8px;
+    width: 0;
+    max-height: 8px;
+    border-top: 8px    solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid blanchedalmond;
+}
+.menu-close {
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    left: 2px;
+    width: 0;
+    max-height: 8px;
+    border-left: 8px  solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid orange;
+}
+.menu-default {
+    display: none;
+}
+.menu-active {
+    display: block;
+    position: absolute;
+    top: 60px;
+    z-index: 1000;
+    font-size: 12px;
+}
+.menus {
+    position: relative;
+    top: -8px;
+}
+.subs {
+    width: 160px;
+}
+/* Logo */
+#logo {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 52px;
+    margin-bottom: 16px;
+    margin-right: 12px;
+    background-color: #ffe866;
+    z-index: 1;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box; }
+#pattern {
+    background-image: url("../images/southwest_pattern.png");
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    margin-top: 2px;
+    padding: 0px;
+    height: 16px;
+}
+#hikers {
+    float: left;
+    margin-left: 12px;
+    margin-top: 4px;
+    z-index:100; }
+#tmap {
+    float: right;
+    margin-right: 6px;
+    margin-top: 4px;
+    z-index: 100; }
+#logo_left {
+    float: left;
+    margin-left: 12px;
+    margin-top: 8px;
+    color: darkslategray;
+    z-index:5; }
+#logo_right {
+    float: right;
+    margin-right: 12px;
+    margin-top: 10px;
+    color: darkslategray;
+    z-index:5; }
+#trail {
+    position: absolute;
+    top: 33px;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    color: darkslategray;
+    z-index: 100; }
+#homeLabel {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-size: 20px;
+    color: darkslategray;
+    z-index: 100;
+}
+#login_result {
+    display: none;
+}
+#usr_login {
+    display: none;
+}
+#ifadmin {
+    display: none;
+}
+#enter, #canceler {
+    background-color: #eff5ef;
+    font-size: 16px;
+    width: 80px;
+    height: 28px;
+}

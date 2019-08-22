@@ -9,22 +9,38 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require "../admin/mode_settings.php";
 $page = filter_input(INPUT_GET, 'page');
 $user = filter_input(INPUT_GET, 'user');
-if ($page > 9) {
-    $user = 'mstr';
-}
 $script = "<script type='text/javascript'>window.open('";
 $close  = "', target='_self');</script>";
-if ($page == '0' || $page == '10') {
-    $script .= "build/startNewPg.php?usr=" . $user . $close;
-} elseif ($page == '1' || $page == '11') {
-    $script .= "build/hikeEditor.php?age=new&usr=" . $user . "&show=usr" . $close;
-} elseif ($page == '2' || $page == '12') {
-    $script .= "build/hikeEditor.php?age=old&usr=" . $user . "&show=usr" . $close;
-} elseif ($page == '3' || $page == '13') {
-    $script .= "build/editDisplay.php?usr=" . $user . $close;
-} elseif ($page == '14') {
-    $script .= "admin/admintools.php" . $close;
+$noedit = "<script type='text/javascript'>alert('No editing allowed');</script>";
+
+if ($page === 'admin' && $user = 'mstr') {
+    $script .= "../admin/admintools.php" . $close;
+} elseif ($page === 'viewPubs') {
+    $script .= "../build/viewPubs.php?usr=" . $user . $close;
+} elseif ($page === 'new') {
+    if ($editing === 'yes') {
+        $script .= "../build/startNewPg.php?usr=" . $user . $close;
+    } else {
+        $script = $noedit;
+    }
+} elseif ($page === 'existing') {
+    if ($editing === 'yes') {
+        $script .= "../build/hikeEditor.php?age=new&usr=" . $user . "&show=usr" . $close;
+    } else {
+        $script = $noedit;
+    }
+} elseif ($page === 'published') {
+    if ($editing === 'yes') {
+        $script .= "../build/hikeEditor.php?age=old&usr=" . $user . "&show=usr" . $close;
+    } else {
+        $script = $noedit;
+    }
+} elseif ($page === 'viewEdits') {
+    $script .= "../build/editDisplay.php?usr=" . $user . $close;
+} elseif ($page === 'register') {
+    $script .= "../admin/registration.php" . $close;
 }
 echo $script;

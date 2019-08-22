@@ -1,9 +1,7 @@
 <?php
 /**
  * The html for the specified hike table is created here by first collecting the
- * table type and its associated data from the tableData.php script. Note that 
- * the table filtering options are only enabled when this scripts is invoked by
- * mapPg.php.
+ * table type and its associated data from the tableData.php script. 
  * PHP Version 7.1
  * 
  * @package Hike_Table

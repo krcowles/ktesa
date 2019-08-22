@@ -9,6 +9,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 
 $act = filter_input(INPUT_GET, 'act');
@@ -29,21 +30,26 @@ $show = 'all';
     <meta name="description" content="Select hike to release from table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="../build/tables.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
-<?php require "../pages/pageTop.php"; ?>
-<p id="trail">EHIKES Available to <?php echo $msg;?></p>
-<p id="action" style="display:none"><?php echo $act;?></p>
+<?php require "../pages/ktesaPanel.php"; ?>
+<p id="trail">EHIKES Available to <?= $msg;?></p>
+<p id="page_id" style="display:none">Admin</p>
+<p id="action" style="display:none"><?= $act;?></p>
 <?php
 require '../php/makeTables.php';
 ?>
-<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/menus.js"></script>
 <script type="text/javascript">
-    var enos = <?php echo $enos;?>;
+    var enos = <?= $enos;?>;
 </script>
 <script src ="reldel.js"></script>
+
 </body>
 </html>

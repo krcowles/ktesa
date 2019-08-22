@@ -27,7 +27,7 @@ img.flckrShift {
 	padding-left: 15px; }
 img.expShift {
 	padding-left: 24px; }
-table {
+table:not(#loginTbl) {
         margin-left: auto;
         margin-right: auto;
 	font-size: 14px;

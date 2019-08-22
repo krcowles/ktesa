@@ -1,6 +1,14 @@
-/* -------- THIS SCRIPT EXECUTES DYNAMIC TABLE SIZING WHEN TABLES ARE PRESENT -------- */	
-
 //global vars:
+function fitMapDiv() {
+	var portHeight = $(window).height(); // no scroll bar if present
+	var panelHeight = $('#panel').height();
+	// to show a bit of the table:
+	var mapDivEnd = portHeight - panelHeight - 60 + 12;
+	// set the map height:
+	$('#map').height(mapDivEnd);
+}
+fitMapDiv(); // also called by map.js
+
 var tblHtml; // this will hold an html "wrapper" for rows id'd for inclusion by the viewport
 var endTbl;  // the closing part of the wrapper
 // relocate the filter and notes from refTbl, and place after usrTbl is formed

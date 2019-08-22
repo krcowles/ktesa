@@ -20,12 +20,12 @@ require "../php/global_boot.php";
     <meta name="description" content="Present tools for admin of site" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
     <link rel="stylesheet"
         href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="../scripts/jquery-1.12.1.js"></script>
-    <script src="../scripts/jquery-ui.min.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
     <script type="text/javascript">
         $(function() {
             $( "#datepicker" ).datepicker({
@@ -35,8 +35,9 @@ require "../php/global_boot.php";
     </script>
 </head>
 <body>
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Site Administration Tools</p>
+<p id="page_id" style="display:none">Admin</p>
 
 <?php if (isset($_SESSION['nopix']) && !empty($_SESSION['nopix'])) : ?>
     <script type="text/javascript">var nopix = "<?= $_SESSION['nopix'];?>";</script>
@@ -98,7 +99,6 @@ require "../php/global_boot.php";
         }
         ?>
         <button id="emode"><?= $allow;?></button> [Click to change modes]<br />
-        <button id="commit">Display Commit</button>&nbsp;&nbsp;[for this site]<br />
         <button id="cleanPix">Cleanup Pictures</button>
             &nbsp;&nbsp;[removes photos not related to hikes]<br />
         <button id="pinfo">Php Info</button><br />
@@ -192,6 +192,7 @@ require "../php/global_boot.php";
         </select><br />
     </fieldset><br />
 </div>
+<script src="../scripts/menus.js"></script>
 <script src="admintools.js"></script>
 </body>
 </html>

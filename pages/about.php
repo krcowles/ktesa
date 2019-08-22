@@ -8,25 +8,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-if (isset($_GET['usr'])) {
-    $user = filter_input(INPUT_GET, 'usr');
-    if ($user === 'tom' || $user === 'kc') {
-        $master = true;
-        $regusr = false;
-    } else {
-        $master = false;
-        $regusr = true;
-        $uname = $user;
-    }
-} else {
-    $master = isset($_COOKIE['nmh_mstr']) ? true : false;
-    $regusr = isset($_COOKIE['nmh_id'])   ? true : false;
-    if (!$master && $regusr) {
-        $uname = $_COOKIE['nmh_id'];
-    }
-}
-$logout = ($master || $regusr) ? true : false;
-// note: cookies may be disabled; if so, js will advise the user
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -38,27 +20,23 @@ $logout = ($master || $regusr) ? true : false;
     <meta name="description" content="KTESA Home Site" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="styles/home.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/about.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 <body>
+<?php require "ktesaPanel.php"; ?>
+<p id="homeLabel">About This Site</p>
+<p id="page_id" style="display:none">About</p>
 
 <div id="container">
-    <img id="tompic" src="images/TomAndKenSummit.JPG" alt="Authors on Deception Peak"
+    <img id="tompic" src="../images/TomAndKenSummit.JPG" alt="Authors on Deception Peak"
         title="Authors on Deception Peak" />
     <p id="banner">Welcome to Tom and Ken's <strong>New Mexico Hiking
-    Adventures!</strong>
+        Adventures!</strong>
     </p>
-    <div id="choose">
-        <p id="selections">Show me the hikes!</p>
-        <div id="settings">
-            <fieldset id="mtype">
-                <legend>Page Type</legend> 
-                <button id="tbl"><strong>Table Only</strong></button>
-                <button id="tnm"><strong>Map w/Table</strong></button>
-                <button id="bigm"><strong>Full Page Map</strong></button>
-            </fieldset>
-        </div>
-    </div>
     <div id="intro">
         <p id="introp">The intention of this site is to provide you, the viewer,
         a look at a variety of hikes, all undertaken by the authors in 
@@ -66,66 +44,12 @@ $logout = ($master || $regusr) ? true : false;
         array of possibilities, all found in the diverse terrain of New Mexico -
         from short treks, to longer, uphill/downhill ascents.
         </p> 
+        <p id="features">
+            One of the features of this site 
+            is that not all of the hikes listed can be found in popular hiking books,
+            or even in on-line trail apps. Check out "What You Will See" below.
+        </p>
     </div>
-    <div id="features">
-        One of the features of this site 
-        is that not all of the hikes listed can be found in popular hiking books, or 
-        even in on-line trail apps. Check out "What You Will See" below.
-    </div>
-
-    <?php if (!$regusr && !$master) : ?>
-        <form id="users" action="#">
-            <div id="logins"><em id="expOpt"><br />
-                Registered users can add (and edit)
-                    their own hikes&hellip;</em><br />
-                User name: &nbsp;&nbsp;
-                <input id="usrid" type="text" size="20" name="nmhid" />&nbsp;&nbsp;
-                Your User Password:&nbsp;&nbsp;
-                <input id="upass" type="password" name="regkey" 
-                    size="20" />&nbsp;&nbsp;
-                <button id="enter">Login</button><br />
-                <span id="reg">OR:&nbsp;&nbsp;
-                    <a id="rlnk" href="admin/registration.php"
-                        target="_self">Sign me up!</a>
-                </span>
-            </div>
-        </form>
-    <?php endif; ?>
-
-    <?php if ($regusr) : ?>
-        <p id="registered_user" style="display:none;"><?= $uname;?></p>
-        <p class="brown">Welcome <?= $uname;?>, You are logged in
-        &nbsp;&nbsp;[<a id="logout" href=# target="_self">Log Me Out!</a>]</p>
-        <p><button id="opts" class="boldtxt">User Options</button></p>
-        <div id="regusrs">
-            <p id="regusr">REGUSR</p>
-            <fieldset id="usrbtns">
-                <legend>Edit Your Hikes</legend>
-                <button id="creator">Create New Hike</button>
-                <button id="active">New/Active Edits</button>
-                <button id="usrpub">Your Published Hikes</button>
-                <button id="usrdisplay">Preview Hikes-in-Edit</button>
-            </fieldset><br />
-            <button id="hide">Hide Options</button>
-        </div>
-    <?php elseif ($master) : ?>
-        <p><button id="opts" class="boldtxt">User Options</button>
-        &nbsp;&nbsp;<a id="logout" href=# target="_self">Log Out</a></p>
-        <div id="masters">
-            <p id="master">master</p>
-            <fieldset id="mstrbtns">
-                <legend>Edit Hikes</legend>
-                <button id="mstrcreate"><strong>Create New Hike 
-                    Page</strong></button>
-                <button id="mstrnew"><strong>Edit New/Active Hike</strong></button>
-                <button id="mstrold"><strong>Edit Published Hike</strong></button>
-                <button id="mstrdisplay">
-                    <strong>Preview In-Edit Hikes</strong></button>
-            </fieldset><br />
-            <button id="admin"><strong>Go to admin tools</strong></button>
-            <button id="hide"><strong>Hide Options</strong></button>
-        </div>
-    <?php endif; ?>
     <p id="expect">WHAT YOU WILL SEE:</p>
     <div id="expl">
         <p>
@@ -220,13 +144,12 @@ $logout = ($master || $regusr) ? true : false;
             <li> Volcanoes & Earthquakes: we hope not!</li>
         </ul>
     </div>
-    <div id="closer"> If you see something that you'd like
+    <div id="caveat"> If you see something that you'd like
         to comment on - suggestions, improvements, things not working,
         etc... <a href="mailto:krcowles29@gmail.com">email us!</a>
     </div>
 </div>  <!-- CONTAINER END -->
 <div id="addon"></div>
-<script src="scripts/jquery-1.12.1.js"></script>
-<script src="scripts/main.js"></script>
-
+<script src="../scripts/main.js"></script>
+<script src="../scripts/menus.js"></script>
 </html>

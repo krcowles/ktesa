@@ -9,6 +9,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
+session_start();
 require "../php/global_boot.php";
 $usr = filter_input(INPUT_GET, 'usr');
 $getClus = dropdownData($pdo, 'cls');
@@ -34,12 +35,17 @@ $vcIndex = $getVCs[1];
     <meta name="description" content="Begin New Page" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/logo.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="startNewPg.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 <body>  
-<?php require "../pages/pageTop.php"; ?>
+<?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">New Hike Page</p>
+<p id="page_id" style="display:none">Build</p>
+
 <div id="main">
     <h2 style="color:DarkBlue;">Begin Your Journey Here!</h2>
     <h3><em>This page must be completed in order to proceed:</em></h3>
@@ -83,7 +89,8 @@ $vcIndex = $getVCs[1];
     </form>
 </div>
 
-<script src="../scripts/jquery-1.12.1.js"></script>
+<script src="../scripts/menus.js"></script>
 <script src="startNewPg.js"></script>
+
 </body>
 </html>

@@ -3,7 +3,7 @@
  * This script collects the data from the database needed to construct the html 
  * that is used to display various tables of hikes via 'makeTables.php'.
  * 'makeTables.php' can be invoked in four different scenarios:
- *  1.  By 'php/mapPg.php' from the main/index page, 
+ *  1.  By 'php/home.php' from the main/index page, 
  *      Here it is used to display ALL hikes and index pages regardless of 
  *      usrid; [show=all, usr=x, table=HIKES (ie age=old)];
  *  2.  By 'build/hikeEditor.php' from the 'Display Options: Edit Hikes' buttons
