@@ -99,6 +99,7 @@ require "../php/global_boot.php";
         }
         ?>
         <button id="emode"><?= $allow;?></button> [Click to change modes]<br />
+        <button id="commit">Display Commit</button>&nbsp;&nbsp;[for this site]<br />
         <button id="cleanPix">Cleanup Pictures</button>
             &nbsp;&nbsp;[removes photos not related to hikes]<br />
         <button id="pinfo">Php Info</button><br />
