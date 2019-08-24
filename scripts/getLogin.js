@@ -1,44 +1,36 @@
-/*
- * The technique used to determine when a cookie gets set is to compare the
- * length of the cookie string to what it was on page load. There are no
- * methods associated with cookies for detecting the setting of (or deletion
- * of) a cookie. Since a user may leave the page, acquire another cookie,
- * and then return to this page, a means is provided to re-calculate the
- * cookie length in that case. The following cross-browser technique is utilized:
- * https://howchoo.com/g/mdg5otdhmzk/determine-if-a-tab-has-focus-in-javascript
- * Note that this cannot be placed inside 'document ready'.
- */
-var hidden, visibilityChange, state;
-var allcookies = decodeURIComponent(document.cookie);
-var prevLgth = allcookies.length;
-// Set the name of the hidden property and the change event for visibility
-if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
-    hidden = "hidden";
-    visibilityChange = "visibilitychange";
-    state = "visibilityState";
-} else if (typeof document.mozHidden !== "undefined") {
-    hidden = "mozHidden";
-    visibilityChange = "mozvisibilitychange";
-    state = "mozVisibilityState";
-} else if (typeof document.msHidden !== "undefined") {
-    hidden = "msHidden";
-    visibilityChange = "msvisibilitychange";
-    state = "msVisibilityState";
-} else if (typeof document.webkitHidden !== "undefined") {
-    hidden = "webkitHidden";
-    visibilityChange = "webkitvisibilitychange";
-    state = "webkitVisibilityState";
-}
-document.addEventListener(visibilityChange, function() {
-    if (document[state] == 'visible') {
-        allcookies = decodeURIComponent(document.cookie);
-        prevLgth = allcookies.length;
-    }
-});
 // are cookies enabled on this browser?
 var cookies = navigator.cookieEnabled ? true : false;
-var cookie_state = cookies ? 'ON' : 'OFF';
 var login_name = document.getElementById('login_result').textContent;
+// if a login_name appears, cookies are already enabled:
+var user_cookie_state = document.getElementById('cookieStatus').textContent;
+// only do this process on the entry page, not follow-ups!
+var firstPass = window.sessionStorage.getItem('inproc');
+// If not yet set, result will be 'object'
+if (typeof firstPass === 'object') {
+    window.sessionStorage.setItem('inproc', '1');
+    if (user_cookie_state === 'NONE') {
+        alert("No user registration has been located for " + login_name);
+    } else if (user_cookie_state === 'EXPIRED') {
+        var ans = confirm("Your password has expired\n" + 
+            "Would you like to renew?");
+        if (ans) {
+            renewPassword(login_name, 'renew', 'expired');
+        } else {
+            renewPassword(login_name, 'norenew', 'expired');
+        }
+    } else if (user_cookie_state === 'RENEW') {
+        var ans = confirm("Your password is about to expire\n" + 
+            "Would you like to renew?");
+        if (ans) {
+            renewPassword(login_name, 'renew', 'valid');
+        } else {
+            renewPassword(login_name, 'norenew', 'valid');
+        }
+    } else if (user_cookie_state === 'MULTIPLE') {
+        alert("There are multiple accounts associated with " + login_name +
+            "\nPlease contact the site master");
+    }
+}
 if (login_name !== 'none') {
     loggedInItems();
     if (login_name === 'mstr') {
@@ -78,15 +70,13 @@ function notLoggedInItems() {
 }
 function adminLoggedIn() {
     $('#ifadmin').css('display', 'block');
-    return;
 }
 // login authentication
 function validateUser(usr_name, usr_pass) {
     $.ajax( {
         url: "../admin/authenticate.php",
         method: "POST",
-        data: {'usr_name': usr_name, 'usr_pass': usr_pass,
-            'browser_cookies': cookie_state},
+        data: {'usr_name': usr_name, 'usr_pass': usr_pass},
         dataType: "text",
         success: function(srchResults) {
             var status = srchResults;
@@ -134,17 +124,15 @@ function validateUser(usr_name, usr_pass) {
                 textStatus + "; Error: " + errorThrown);
         }
     });
-    return;
 }
 // for renewing password/cookie
 function renewPassword(user, update, status) {
     if (update === 'renew') {
-       window.open('php/renew.php?user=' + user, '_self');
+       window.open('../php/renew.php?user=' + user, '_self');
     } else {
         // if still valid, refresh will display login, otherwise do nothing
         if (status === 'valid') {
-            window.open('index.php', '_self');
+            window.open('../index.html', '_self');
         }
     }
-    return;
 }

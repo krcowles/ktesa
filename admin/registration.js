@@ -69,7 +69,7 @@ function validateEmail(subjectEmail){
                     "Server returned status " + this.status);
             }
         }
-        window.open('../index.php?usr=' + usr, '_self');
+        window.open('../index.html?usr=' + usr, '_self');
     }
     xhr.onerror = function() {
         alert("The request failed: registration did not occur\n" +

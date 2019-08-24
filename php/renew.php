@@ -33,7 +33,7 @@ $id = $userdata['userid'];
     <style type="text/css">
         body { margin: 0px;}
         #formsubmit {
-            width: 190px;
+            width: 230px;
             height: 28px;
             font-size: 18px;
             color: brown;

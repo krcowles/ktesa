@@ -15,8 +15,6 @@ require "../php/global_boot.php";
 define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 $usrname = filter_input(INPUT_POST, 'usr_name');
 $usrpass = filter_input(INPUT_POST, 'usr_pass');
-$browser_cookies = filter_input(INPUT_POST, 'browser_cookies');
-$cookies = ($browser_cookies === 'ON') ? true : false;
 $admin = ($usrname === 'tom' || $usrname === 'kc') ? true : false;
 $usr_req = "SELECT username,passwd,passwd_expire FROM USERS WHERE username = :usr;";
 $auth = $pdo->prepare($usr_req);
@@ -28,11 +26,7 @@ if ($rowcnt === 1) {  // located single instance of user
     if (password_verify($usrpass, $user_dat['passwd'])) {  // user data correct
         if ($admin) {
             $adminExpire = time() + 10 * UX_DAY * 365;  // 10 yrs
-            if ($cookies) {
-                setcookie('nmh_mstr', 'mstr', $adminExpire, "/");
-            } else {
-                $_SESSION['loggedin'] = 'mstr';
-            }
+            setcookie('nmh_mstr', 'mstr', $adminExpire, "/");
             echo "ADMIN";
             exit;
         } else {
@@ -51,11 +45,7 @@ if ($rowcnt === 1) {  // located single instance of user
                     exit;
                 }
             }
-            if ($cookies) {
-                setcookie('nmh_id', $usrname, $expdate, "/");
-            } else {
-                $_SESSION['loggedin'] = $usrname;
-            }
+            setcookie('nmh_id', $usrname, $expdate, "/");
         }
         echo "LOCATED";
     } else {  // user exists, but password doesn't match:

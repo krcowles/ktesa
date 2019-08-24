@@ -91,6 +91,7 @@ require "getLogin.php";
     </div>
 </div>
 <p id="login_result"><?= $uname;?></p>
+<p id="cookieStatus"><?= $cstat;?></p>
 <div id="usr_login">
     <table id="loginTbl">
         <tbody>

@@ -4,7 +4,7 @@ $(function() {   // document ready function
  * Menu operation
  */
 var menuWidth = ['140', '180', '140', '140']; // calculate these later...
-var subWidth = ['140']; // ditto
+var subWidth = ['140']; // ditto: unused as there is only one sub-menu
 var $mainMenus = $('.menu-main');
 var navPos = $('#navbar').offset();
 var navBottom = navPos.top + $('#navbar').height() + 5 + 'px';
@@ -78,7 +78,7 @@ function gotoPage(content) {
                     alert("You are logged out");
                     notLoggedInItems();
                     $('#ifadmin').css('display', 'none');
-                    return;
+                    window.open('../index.html', '_self');
                 }
             });
             break;

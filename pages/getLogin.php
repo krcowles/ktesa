@@ -15,15 +15,36 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
+
 $master = isset($_COOKIE['nmh_mstr']) ? true : false;
 $regusr = isset($_COOKIE['nmh_id'])   ? true : false;
 $uname = 'none';
-if (!$master && $regusr) {
+$cstat = 'OK'; // changed below based on user cookie expiration data
+if ($regusr) {
     $uname = $_COOKIE['nmh_id'];
+    $expirationReq = "SELECT passwd_expire FROM USERS WHERE username = ?;";
+    $userExpire = $pdo->prepare($expirationReq);
+    $userExpire->execute([$uname]);
+    $rowcnt = $userExpire->rowCount();
+    if ($rowcnt === 0) {
+        $cstat = 'NONE';
+    } elseif ($rowcnt === 1) {
+        $fetched = $userExpire->fetch(PDO::FETCH_ASSOC);
+        $expDate = $fetched['passwd_expire'];
+        $american = str_replace("-", "/", $expDate);
+        $orgDate = strtotime($american);
+        if ($orgDate <= time()) {
+            $cstat = 'EXPIRED';
+        } else {
+            $days = floor(($orgDate - time())/UX_DAY);
+            if ($days <= 5) {
+                $cstat = 'RENEW';
+            }
+        }
+    } else {
+        $cstat = 'MULTIPLE';
+    }
 } elseif ($master) {
     $uname = 'mstr';
-} else {
-    if (array_key_exists('loggedin', $_SESSION)) {
-        $uname = $_SESSION['loggedin'];
-    }
 }

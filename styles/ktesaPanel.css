@@ -132,6 +132,9 @@
 #login_result {
     display: none;
 }
+#cookieStatus {
+    display: none;
+}
 #usr_login {
     display: none;
 }

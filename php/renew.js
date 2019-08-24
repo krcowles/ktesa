@@ -1,5 +1,5 @@
 $(function() {
-    
+  
 $('#form').validate({
     rules: {
         password: {
