@@ -87,6 +87,7 @@ function validateUser(usr_name, usr_pass) {
             } else if (status.indexOf('LOCATED') >= 0) {
                 loggedInItems();
                 alert("You are logged in");
+                window.open(window.location.href, '_self');
             } else if (status.indexOf('RENEW') >=0) {
                 // in this case, the old cookie has been set pending renewal
                 var renew = confirm("Your password is about to expire\n" + 
