@@ -84,6 +84,7 @@ function validateUser(usr_name, usr_pass) {
                 loggedInItems();
                 adminLoggedIn();
                 alert("Admin logged in");
+                window.open(window.location.href, '_self');
             } else if (status.indexOf('LOCATED') >= 0) {
                 loggedInItems();
                 alert("You are logged in");
