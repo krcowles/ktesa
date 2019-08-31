@@ -3,13 +3,11 @@ var cookies = navigator.cookieEnabled ? true : false;
 var login_name = document.getElementById('login_result').textContent;
 // if a login_name appears, cookies are already enabled:
 var user_cookie_state = document.getElementById('cookieStatus').textContent;
-// only do this process on the entry page, not follow-ups!
-var firstPass = window.sessionStorage.getItem('inproc');
-// If not yet set, result will be 'object'
-if (typeof firstPass === 'object') {
-    window.sessionStorage.setItem('inproc', '1');
+// defaults to 'OK' unless a registered user is logged in
+if (cookies) {
     if (user_cookie_state === 'NONE') {
         alert("No user registration has been located for " + login_name);
+        login_name = 'none';
     } else if (user_cookie_state === 'EXPIRED') {
         var ans = confirm("Your password has expired\n" + 
             "Would you like to renew?");
@@ -17,6 +15,7 @@ if (typeof firstPass === 'object') {
             renewPassword(login_name, 'renew', 'expired');
         } else {
             renewPassword(login_name, 'norenew', 'expired');
+            login_name = 'none';
         }
     } else if (user_cookie_state === 'RENEW') {
         var ans = confirm("Your password is about to expire\n" + 
@@ -29,23 +28,24 @@ if (typeof firstPass === 'object') {
     } else if (user_cookie_state === 'MULTIPLE') {
         alert("There are multiple accounts associated with " + login_name +
             "\nPlease contact the site master");
+        login_name = 'none';
     }
+} else {  // cookies disabled
+    alert("Cookies are disabled on this browser:\n" +
+        "You will not be able create/edit hikes unless:\n" +
+        "   1. If a registered user, login via the 'Log in' menu item;\n" +
+        "      IF you login on this page, you will need to re-login on " + 
+        "every new page you visit;\n" +
+        "   2. Register via the 'Become a member' menu item; or\n" +
+        "   3. Enable cookies for future visits;\n");
+    notLoggedInItems();
 }
 if (login_name !== 'none') {
     loggedInItems();
     if (login_name === 'mstr') {
         adminLoggedIn();
     }
-} else {
-    if (!cookies) {
-        alert("Cookies appear to be disabled:\n" +
-            "You will not be able create/edit hikes unless:\n" +
-            "1. If a registered user, login via the 'Log in' menu item;\n" +
-            "2. Else, register via the 'Become a member' menu item; or\n" +
-            "3. Enable cookies for future visits");
-    }
-    notLoggedInItems();
-}
+} 
 function loggedInItems() {
     $('#lin').addClass('ui-state-disabled');
     $('#lout').removeClass('ui-state-disabled');
