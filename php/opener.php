@@ -41,6 +41,6 @@ if ($page === 'admin' && $user = 'mstr') {
 } elseif ($page === 'viewEdits') {
     $script .= "../build/editDisplay.php?usr=" . $user . $close;
 } elseif ($page === 'register') {
-    $script .= "../admin/registration.php" . $close;
+    $script .= "../accounts/registration.php" . $close;
 }
 echo $script;

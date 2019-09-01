@@ -73,7 +73,7 @@ function gotoPage(content) {
             return; 
         case 'Log out':
             $.get({
-                url: '../php/logout.php',
+                url: '../accounts/logout.php',
                 success: function() {
                     alert("You are logged out");
                     notLoggedInItems();

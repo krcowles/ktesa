@@ -29,7 +29,7 @@ $id = $userdata['userid'];
     <meta name="robots" content="nofollow" />
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
-    <link href="../admin/registration.css" type="text/css" rel="stylesheet" />
+    <link href="../accounts/registration.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
         body { margin: 0px;}
         #formsubmit {
@@ -58,7 +58,7 @@ $id = $userdata['userid'];
 
 <div id="container">
 <p>Please update your password, and any other data at this time</p>
-<form id="form" method="POST" action="../admin/create_user.php">
+<form id="form" method="POST" action="create_user.php">
 <input type="hidden" name="submitter" value="renew" />
 <fieldset>
     <legend>Password Information</legend>

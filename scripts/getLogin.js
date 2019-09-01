@@ -74,7 +74,7 @@ function adminLoggedIn() {
 // login authentication
 function validateUser(usr_name, usr_pass) {
     $.ajax( {
-        url: "../admin/authenticate.php",
+        url: "../accounts/authenticate.php",
         method: "POST",
         data: {'usr_name': usr_name, 'usr_pass': usr_pass},
         dataType: "text",
@@ -130,7 +130,7 @@ function validateUser(usr_name, usr_pass) {
 // for renewing password/cookie
 function renewPassword(user, update, status) {
     if (update === 'renew') {
-       window.open('../php/renew.php?user=' + user, '_self');
+       window.open('../accounts/renew.php?user=' + user, '_self');
     } else {
         // if still valid, refresh will display login, otherwise do nothing
         if (status === 'valid') {

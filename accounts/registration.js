@@ -1,11 +1,5 @@
 $(function () { // when page is loaded...
 
-var cookies = navigator.cookieEnabled ? true : false;
-if (!cookies) {
-    alert("Cookies are currently disabled on this machine\n" +
-        "Please remember your user name and password\n" +
-        "as you must fully login in each time you visit");
-}
 $('#form').validate({
     rules: {
         password: {
