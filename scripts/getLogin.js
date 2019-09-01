@@ -32,12 +32,8 @@ if (cookies) {
     }
 } else {  // cookies disabled
     alert("Cookies are disabled on this browser:\n" +
-        "You will not be able create/edit hikes unless:\n" +
-        "   1. If a registered user, login via the 'Log in' menu item;\n" +
-        "      IF you login on this page, you will need to re-login on " + 
-        "every new page you visit;\n" +
-        "   2. Register via the 'Become a member' menu item; or\n" +
-        "   3. Enable cookies for future visits;\n");
+        "You will not be able login and edit/create your hikes\n" +
+        "Please enable cookies to overcome this limitation");
     notLoggedInItems();
 }
 if (login_name !== 'none') {
