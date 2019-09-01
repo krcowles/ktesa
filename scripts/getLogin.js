@@ -32,11 +32,14 @@ if (cookies) {
     }
 } else {  // cookies disabled
     alert("Cookies are disabled on this browser:\n" +
-        "You will not be able login and edit/create your hikes\n" +
+        "You will not be able login and edit/create your hikes.\n" +
         "Please enable cookies to overcome this limitation");
     notLoggedInItems();
+    $('#lin').addClass('ui-state-disabled');
 }
-if (login_name !== 'none') {
+if (login_name === 'none') {
+    notLoggedInItems();
+} else {
     loggedInItems();
     if (login_name === 'mstr') {
         adminLoggedIn();
