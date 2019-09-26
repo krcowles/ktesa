@@ -44,9 +44,25 @@ $('#rel2pic').on('click', function() {
             "&dtTime=" + dateSelected, "_self");
     }
 });
+function retrieveDwnldCookie(dcname) {
+    var parts = document.cookie.split(dcname + "=");
+    if (parts.length == 2) {
+        return parts.pop().split(";").shift();
+    }
+}
 $('#reload').on('click', function() {
     if (confirm("Do you really want to drop all tables and reload them?")) {
-        window.open('drop_all_tables.php', "_blank");
+        window.open('export_all_tables.php?dwnld=N', "_blank");
+        var dwnldResult;
+        var downloadTimer = setInterval(function() {
+            dwnldResult = retrieveDwnldCookie('DownloadDisplayed');
+            if (dwnldResult === '1234') {
+                clearInterval(downloadTimer);
+                if (confirm("Proceed with reload?")) {
+                    window.open('drop_all_tables.php', "_blank");
+                }
+            }
+        }, 750);
     }
 });
 $('#drall').on('click', function() {
