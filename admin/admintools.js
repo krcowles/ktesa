@@ -52,17 +52,21 @@ function retrieveDwnldCookie(dcname) {
 }
 $('#reload').on('click', function() {
     if (confirm("Do you really want to drop all tables and reload them?")) {
-        window.open('export_all_tables.php?dwnld=N', "_blank");
-        var dwnldResult;
-        var downloadTimer = setInterval(function() {
-            dwnldResult = retrieveDwnldCookie('DownloadDisplayed');
-            if (dwnldResult === '1234') {
-                clearInterval(downloadTimer);
-                if (confirm("Proceed with reload?")) {
-                    window.open('drop_all_tables.php', "_blank");
+        //if (hostIs !== 'localhost') {
+            window.open('export_all_tables.php?dwnld=N', "_blank");
+            var dwnldResult;
+            var downloadTimer = setInterval(function() {
+                dwnldResult = retrieveDwnldCookie('DownloadDisplayed');
+                if (dwnldResult === '1234') {
+                    clearInterval(downloadTimer);
+                    if (confirm("Proceed with reload?")) {
+                        window.open('drop_all_tables.php', "_blank");
+                    }
                 }
-            }
-        }, 750);
+            }, 1000)
+        //} else {
+        //    window.open('drop_all_tables.php', "_blank");
+        //}
     }
 });
 $('#drall').on('click', function() {
