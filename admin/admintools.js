@@ -52,7 +52,7 @@ function retrieveDwnldCookie(dcname) {
 }
 $('#reload').on('click', function() {
     if (confirm("Do you really want to drop all tables and reload them?")) {
-        //if (hostIs !== 'localhost') {
+        if (hostIs !== 'localhost') {
             window.open('export_all_tables.php?dwnld=N', "_blank");
             var dwnldResult;
             var downloadTimer = setInterval(function() {
@@ -64,9 +64,9 @@ $('#reload').on('click', function() {
                     }
                 }
             }, 1000)
-        //} else {
-        //    window.open('drop_all_tables.php', "_blank");
-        //}
+        } else {
+            window.open('drop_all_tables.php', "_blank");
+        }
     }
 });
 $('#drall').on('click', function() {
