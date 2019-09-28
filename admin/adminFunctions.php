@@ -126,6 +126,7 @@ function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = fa
             throw new Exception("Unrecognized parameter in query string");
         }
     } else {
+        setcookie("DownloadDisplayed", "1234", time() + 60);
         header('Content-Type: application/octet-stream');
         header("Content-Transfer-Encoding: Binary");
         header("Content-disposition: attachment; filename=\"".$backup_name."\"");
