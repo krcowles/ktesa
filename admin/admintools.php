@@ -32,6 +32,7 @@ require "../php/global_boot.php";
                 dateFormat: "yy-mm-dd"
             });
         });
+        var hostIs = "<?= $_SERVER['SERVER_NAME'];?>";
     </script>
 </head>
 <body>
