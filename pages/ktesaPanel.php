@@ -12,7 +12,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require "getLogin.php";
+require "../accounts/getLogin.php";
 ?>
 <div id="panel">
     <!-- Navigation Bar -->
@@ -111,5 +111,5 @@ require "getLogin.php";
     </table>
     <button id="enter">Login</button><br />
 </div>
-<script src="../scripts/getLogin.js"></script>
+<script src="../accounts/getLogin.js"></script>
 <script src="../scripts/modal_setup.js"></script>
