@@ -10,6 +10,7 @@
  * @license No license to date
  */
 session_start();
+require_once "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
