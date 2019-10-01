@@ -30,25 +30,29 @@ if (cookies) {
             "\nPlease contact the site master");
         login_name = 'none';
     }
+    if (login_name === 'none') {
+        notLoggedInItems();
+        $('#ifadmin').css('display', 'none');
+    } else {
+        loggedInItems();
+        if (login_name === 'mstr') {
+            adminLoggedIn();
+        }
+    } 
 } else {  // cookies disabled
     alert("Cookies are disabled on this browser:\n" +
-        "You will not be able login and edit/create your hikes.\n" +
+        "You will not be able login, register, or edit/create hikes.\n" +
         "Please enable cookies to overcome this limitation");
     notLoggedInItems();
     $('#lin').addClass('ui-state-disabled');
+    $('#join').addClass('ui-state-disabled');
+    $('#ifadmin').css('display', 'none');
 }
-if (login_name === 'none') {
-    notLoggedInItems();
-} else {
-    loggedInItems();
-    if (login_name === 'mstr') {
-        adminLoggedIn();
-    }
-} 
 function loggedInItems() {
     $('#lin').addClass('ui-state-disabled');
     $('#lout').removeClass('ui-state-disabled');
     //$('#pubs').removeClass('ui-state-disabled'); -- removed for now
+    $('#yours').removeClass('ui-state-disabled');
     $('#viewEds').removeClass('ui-state-disabled');
     $('#newPg').removeClass('ui-state-disabled');
     $('#edits').removeClass('ui-state-disabled');
@@ -60,6 +64,7 @@ function notLoggedInItems() {
     $('#lin').removeClass('ui-state-disabled');
     $('#lout').addClass('ui-state-disabled');
     //$('#pubs').addClass('ui-state-disabled'); -- removed for now
+    $('#yours').addClass('ui-state-disabled');
     $('#viewEds').addClass('ui-state-disabled');
     $('#newPg').addClass('ui-state-disabled');
     $('#edits').addClass('ui-state-disabled');

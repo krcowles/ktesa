@@ -28,7 +28,7 @@ require "../accounts/getLogin.php";
                         <li><div id="home">Home</div></li>
                         <li><div id="table">Table Only</div></li>
                         <li id="ifadmin"><div id="atools">Admintools</div></li>
-                        <li><div>Your Hikes</div>
+                        <li><div id="yours">Your Hikes</div>
                             <ul class="subs">
                                 <!--
                                 <li><div id="pubs">View Published Hikes</div></li>
