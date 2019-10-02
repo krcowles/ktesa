@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=322 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=365 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=926 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1032 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -185,7 +185,7 @@ CREATE TABLE `GPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO GPSDAT VALUES
@@ -235,7 +235,8 @@ INSERT INTO GPSDAT VALUES
 ('60','201','P','GPX:','../gpx/4_Mound_Elev.gpx','Proposed route extracted from Book reference'),
 ('61','205','P','GPX:','../gpx/AtalayaLoopProposed.gpx','Alternate Route - Skip Picacho'),
 ('62','211','P','GPX:','../gpx/LasVacasDEM.gpx','Longer Proposed Loop'),
-('64','218','P','GPX:','../gpx/SantaFeLakeClipped.gpx','Shorter route from Ski Santa Fe parking lot');
+('64','218','P','GPX:','../gpx/SantaFeLakeClipped.gpx','Shorter route from Ski Santa Fe parking lot'),
+('65','226','P','GPX:','../gpx/WhiteMesaAlt.gpx','Segment from Dragons Back (Not Recommended)');
 
 
 
@@ -272,7 +273,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -489,7 +490,7 @@ INSERT INTO HIKES VALUES
 ('211','Las Vacas Trail / San Gregorio','mstr','Cuba','Normal',NULL,'','','Out-and-back','7.90','1000','Moderate','None (Nearby Campground)','Wilderness forest and running creeks','Not Winter','Mixed sun/shade','Las_Vacas.GPX','Las_Vacas.json','36.028372','-106.848131',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//San+Gregorio+Lake+Trail,+La+Jara,+NM+87027/@36.0076946,-106.9429406,12.37z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8722b43f35343453:0x467993526db92c7f!2m2!1d-106.8473196!2d36.0282082','Note: there are multiple water crossings, most with reasonable log or stone provisions, but some require extra care. There are also segments that can be muddy (mostly near the lake), so avoid hiking after significant rains.','This is an excellent forest wilderness experience, complete with high altitude forests, flowers, and running streams. The trail is generally an easy slope uphill, and runs through woodlands and meadows, sometimes nearing Clear Creek. The authors did not traverse the entire length of Las Vacas, making for a reasonable day-hike. It is located in San Pedro Parks National Wilderness, a part of Santa Fe National Forest lands. ',NULL,NULL,NULL),
 ('212','Capulin Peak','mstr','Tijeras','Normal',NULL,'','','Out-and-back','2.10','200','Easy-Moderate','Picnic Facilities','Great Sandia views and points north/east','Not Winter','Mixed sun/shade','Capulin_Peak.GPX','Capulin_Peak.json','35.2159465849','-106.4152824506',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'57.4%22N+106%C2%B024\'55.0%22W/@35.1937507,-106.4435951,12.56z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.2159466!4d-106.4152825','This trail begins in the parking area to the immediate right of the entrance into the \'Capulin Snowplay Area\'. At the northeast corner is a one-lane road, closed off, with a sign \"Foot Traffic Welcome\". Note that there is no signage for this hike - and multiple forks occur. Refer to the green flags on the map for the correct route. The trailhead actually occurs at the end of the one-lane road, and is a small trail leading into the grass.','This is a short and easy hike to a very lovely area where there are multiple views of the Sandias and points north and east. After reaching the summit of Capulin Peak, keep going - the trail continues downward a short distance to a wonderful overlook with a huge vista. And, of course, depending on the season, you will be welcomed by multiple gorgeous blooming flowers!',NULL,NULL,NULL),
 ('213','Survey Trail','mstr','Tijeras','Cluster',NULL,'MM','Ellis Group','Out-and-back','5.90','550','Moderate','Outdoor Facilities','A high altitude stroll in the woods','Not Winter','Good shade','Survey_Trail.GPX','Survey_Trail.json','35.2084293589','-106.441028472',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.1879854,-106.4490001,12.58z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090142!4d-106.4410765','To get to Survey Trail, park in the Ellis Trailhead Parking Lot and proceed south on the large Forest Road. A short distance up you will most likely first see the Kiwani Meadows trail marker. Back up a few yards to see the Switchback Trail 271 sign and follow that. Later on, near Highway 536, that trail will split with a clear marker to Survey Trail.','This hike provides great shade, but only a few glimpses to the east. It is nevertheless a great high altitude hike. It later intersects the 10K Trail, providing options for a 2-car hike, or, alternately, a short jog up to the Crest Trail. It is also possible to cut over (some bushwhacking may be involved) and form a loop, returning via Ellis Trail. The Survey Trail dead-ends at the Osha Loop trail.',NULL,NULL,NULL),
-('214','Crest Trail - Kiwanis Cabin','mstr','Tijeras','Cluster',NULL,'MM','Ellis Group','Loop','6.60','600','Moderate','Pubic Restrooms','The Cabin and views from the North Peak','Not Winter','Good shade','Kiwani_North_Peak.GPX','Kiwani_North_Peak.json','35.2083071508','-106.4410039131',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.2063369,-106.4420975,14.31z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090142!4d-106.4410765','This hike was created by the author to form a loop from multiple trail segments, and has no book or web references. Nonetheless, some references to the trail highlights are included. There are multiple unmarked forks and some unclear signage. The map has flags at trail forks - green for \'keep left\', red for \'keep right\'. Exercise caution in the Sandia wilderness - on this hike, a bear with two cubs was spotted but presented no apparent threat.','The self-created hike, formed by connecting multiple trail segments, was designed to take the hiker first to the Kiwanis Cabin on the edge of the Sandia, and then along the Crest Trail, past the Sandia North Peak. This hike continued to the endpoint of the 10K Trail. Following the crest, there are multiple great views looking over the valley, presenting various rock faces and features, and of course, a sprinkling of wildflowers.',NULL,NULL,NULL),
+('214','Kiwanis Cabin Loop','mstr','Tijeras','Cluster',NULL,'MM','Ellis Group','Loop','2.70','350','Easy-Moderate','Pubic Restrooms','Superb Views from Kiwanis Cabin','Not Winter','Good shade','Kiwani.gpx','Kiwani.json','35.2083071508','-106.4410039131',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.2063369,-106.4420975,14.31z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090142!4d-106.4410765','The map displays flags at trail forks - green for \'keep left\', red for \'keep right\'.','The self-created hike, formed by connecting trail segments, was designed to take the hiker to the Kiwanis Cabin on the edge of the Sandia from the Ellis Trailhead. Other access routes to the Cabin are also available. The highlight of the hike is the wonderful views available from the Cabin. ',NULL,NULL,NULL),
 ('215','Palomas Peak via Faulty Trail','mstr','Placitas','Cluster',NULL,'NN','Sandia Cave Group','Out-and-back','7.50','1400','Med-Difficult','None','Multiple Interior Views of Sandias','Not Winter','Mixed sun/shade','Mystery-Palomas.GPX','Mystery-Palomas.json','35.2501596697','-106.4099899493',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Sandia+Man+Cave/@35.263693,-106.4483208,12.67z/data=!4m5!3m4!1s0x87189ba59d32c875:0x80265dcf8bdb5b41!8m2!3d35.2550155!4d-106.405993','When NM 165 turns to a dirt road (approx. 2-1/2 miles before the Sandia Cave parking), it is generally not well-maintained and requires 4-wheel drive and reasonable ground clearance. On the trail, there is a prodigious amount of scrub oak overgrowth much of the way, causing the trail to sometimes seem to disappear. For this reason, it is recommended to wear long pants for wading through the brush. The trail does not appear to be maintained and, though mostly well-defined, assumes only a fair condition at points. Proceeding up the Palomas Cliffs trail can be somewhat steep, and along the cliff\'s lower ledge, the trail is uneven, occasionally requiring light scrambling.','This hike begins by following the Sandia Cave trail for about 20-30 meters, where the \'North Mystery Trail\' (aka Faulty Trail) turns sharply right. A short distance in, note that there is another sharp turn to the right (see the map\'s red flag). The trail may appear to go straight at that point, but soon disappears. There are multiple views en route, including interior views of the Sandias, points north and east as well, such as the San Pedro and Ortiz ranges. The Palomas Cliffs portion of the hike also provides nice interior views and an up-close view of the ledges.',NULL,NULL,NULL),
 ('216','Faulty-Canoncito-Barts Loop','mstr','Tijeras','Cluster',NULL,'P','Sulphur Canyon Group','Out-and-back','11.70','1800','Difficult','Picnic Facilities & Toilet','Views from Faulty Trail and the Crest','Not Winter','Mixed sun/shade','Faulty-Canoncita-Barts.GPX','Faulty-Canoncita-Barts.json','35.1743507199','-106.3788598962',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Sulphur+Spring/@35.1692391,-106.3840069,14z/data=!4m5!3m4!1s0x8718984f214630a9:0x7dfded4983f33916!8m2!3d35.1730997!4d-106.3769686','Note that trail access is no longer available from the highway near Cole Spring - you must access Canoncito and Bart\'s from Faulty Trail (see latest edition of Sandia Hiking Guide, March 2019). Carry plenty of water - it\'s a long and demanding hike. Although the trail is somewhat maintained, the author encountered numerous downed trees, requiring an occasional by-pass. ','This hike covers a lot of territory, beginning with the interesting Faulty Trail near Sulphur Springs, off Highway 536 (The Crest Highway). From there, heading south, multiple trail junctions occur: Cienega Horse ByPass, Cienega, Armijo, then finally Canoncito, the first target of this hike. Canoncito is not well-traveled, and goes up rapidly and relentlessly to the South Crest Trail. From there, a short hike south on the Crest Trail takes you to Bart\'s Trail, which heads back down the mountain to Faulty Trail. Bart\'s Trail may be somewhat steeper, but both trails ascend/descend at a demanding pace. The Crest Trail offers the best views of all the trails, while the other trails have occasional \"sneak-peeks\" out to the east. ',NULL,NULL,NULL),
 ('217','Dockwiller Trail','mstr','Pecos','Cluster',NULL,'EE','Cowles Group','Out-and-back',NULL,NULL,'Med-Difficult','Campground Facilities','Wildflowers Galore','Not Winter','Mixed sun/shade','Dockwiller_Trail.GPX','Dockwiller_Trail.json','35.8298600558','-105.664135851',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Panchuela+Trailhead/@35.820977,-105.6670173,15z/data=!4m5!3m4!1s0x0:0x7834afd22f685bf!8m2!3d35.8305612!4d-105.6648913?hl=en-US','Depending on where you look, this trail is called Dockwiller, Dockweiler, or Trail 259. We intended to follow the track given in the AllTrails reference below, but we found that to be longer than advertised so we turned back early. We also found that both the topo maps and the AllTrails track for this trail are not so accurate. Luckily, the trail on the ground is easy to follow. If you use a GPS device, we recommend using the GPX file on this page which tracks the actual trail pretty closely.','This hike is basically a long uphill trek to the high point. While there are not many views of the Pecos region and the mountains and valleys, the wildflowers are exceptional - dozens of varieties of flowers which change with elevation: nodding onion, flax, mountain rose, bluebells, harebells, scarlet gilia, red penstemon, Indian paintbrush, sneezeweed, yarrow, aster, daisies, New Mexico primrose, and many many more! In addition, the trail meanders through lovely wooded sections, including fir and aspen groves.',NULL,NULL,NULL),
@@ -497,7 +498,13 @@ INSERT INTO HIKES VALUES
 ('219','[Proposed] Sawyer Mesa','mstr','Valles Caldera','Normal',NULL,'','','Out-and-back','5.40','900','Easy-Moderate','','','','Full sun','SawyersMesaDEM.gpx','SawyersMesaDEM.json','35.8253816','-106.4443016',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B049\'31.4%22N+106%C2%B026\'39.5%22W/@35.8338348,-106.4750472,13.31z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8253816!4d-106.4443016',NULL,'This trail can be shorter than indicated and still hit some of the highlights: a knife edge at Obsidian Ridge, with views of the Pajarito Plateau.',NULL,NULL,NULL),
 ('220','[Proposed] St Peters Dome','mstr','Valles Caldera','Normal',NULL,'','','Out-and-back','4.40','700','Moderate','','','','Full sun','PetersDomeDEM.gpx','PetersDomeDEM.json','35.7736871','-106.4183164',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B046\'25.3%22N+106%C2%B025\'05.9%22W/@35.7957752,-106.4368688,12.65z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7736871!4d-106.4183164',NULL,'360-degree views from St Peter\'s Dome',NULL,NULL,NULL),
 ('221','Canon de Valle','mstr','Los Alamos','Normal',NULL,'','','Out-and-back','6.30','1300','Moderate','None','Summer wildflower extravaganza','Not Winter','Mixed sun/shade','Canon_de_Valle.GPX','Canon_de_Valle.json','35.8525846526','-106.3543470204',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B051\'10.1%22N+106%C2%B021\'13.6%22W/@35.8551629,-106.372533,13.88z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8527983!4d-106.3537744','Although the hike is rated \"Mixed sun/shade\", there is not much shade due to the extensive burn damage along the canyon walls.','This hike proceeds along a relatively easy grade up into one of Pajarito\'s major canyons to the Valles Caldera boundary. The authors turned around at this point to return to the trailhead. There was an exceptional display of wildflowers this year (2019), due to the heavy winter snows and good spring and summer rains. Furthermore, there were some varieties not seen much on other hikes - large stands of Lamb\'s Ear, Bee Balm, and other unidentified varieties, along with prolific communities of more commonly seen harebells, scarlet Gilia, red penstemon, black-eyed susans, daisies and asters, and many more. It is a relatively easy walk and well worth the beauty. ',NULL,NULL,NULL),
-('222','Ojo Caliente Trails Loop','mstr','Ojo Caliente','Normal',NULL,'','','Loop','8.90','400','Easy-Moderate','Ojo Caliente Spa','Foothills and Potsherds','All','Full sun','Ojo_Caliente.GPX','Ojo_Caliente.json','36.305086473','-106.0526289325',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ojo+Caliente+Mineral+Springs+Resort+%26+Spa/@36.3014539,-106.0653403,13.94z/data=!4m8!3m7!1s0x87178ebb50dbd379:0x5ecf24677e52fcea!5m2!4m1!1i2!8m2!3d36.3043312!4d-106.0522699','Joseph\'s Mine is not marked, and the wide dirt road traverses briefly alongside it then proceeds on. At a nearby split (see red flag on map), an arrow points to the right seeming to indicate that the mine is in that direction. If you reach this split you have passed the mine. The other road goes uphill and into the foothills to an unknown location.','There are 5 hiking trails at the Ojo Caliente Resort. As none of these were long, the author blended them into one loop hike. All of the hikes, except for Joseph\'s Mine, are loop trails, and any, including Joseph\'s Mine, can be taken separately for a shorter hike from the Spa. The P\'osi Ruins are unexcavated and the contours of the land suggest where the pueblo buildings were. Expect to see, however, numerous potsherds in the ruins area. There are also some nice views of Rio Ojo Caliente, and the Spa from the P\'osi Trail. The Rincon trail is a lovely trek towards Cerro Colarado and the surrounding hills, with beautiful vistas en route. Joseph\'s mine is an old abandoned mica mine, and parts of the trail around it are loaded with reflective mica pieces. The Tewa Trail returns downhill along an arroyo and lovely canyon to the river, where the Bosque River Trail may be used to return to the spa. ',NULL,NULL,NULL);
+('222','Ojo Caliente Trails Loop','mstr','Ojo Caliente','Normal',NULL,'','','Loop','8.90','400','Easy-Moderate','Ojo Caliente Spa','Foothills and Potsherds','All','Full sun','Ojo_Caliente.GPX','Ojo_Caliente.json','36.305086473','-106.0526289325',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ojo+Caliente+Mineral+Springs+Resort+%26+Spa/@36.3014539,-106.0653403,13.94z/data=!4m8!3m7!1s0x87178ebb50dbd379:0x5ecf24677e52fcea!5m2!4m1!1i2!8m2!3d36.3043312!4d-106.0522699','Joseph\'s Mine is not marked, and the wide dirt road traverses briefly alongside it then proceeds on. At a nearby split (see red flag on map), an arrow points to the right seeming to indicate that the mine is in that direction. If you reach this split you have passed the mine. The other road goes uphill and into the foothills to an unknown location.','There are 5 hiking trails at the Ojo Caliente Resort. As none of these were long, the author blended them into one loop hike. All of the hikes, except for Joseph\'s Mine, are loop trails, and any, including Joseph\'s Mine, can be taken separately for a shorter hike from the Spa. The P\'osi Ruins are unexcavated and the contours of the land suggest where the pueblo buildings were. Expect to see, however, numerous potsherds in the ruins area. There are also some nice views of Rio Ojo Caliente, and the Spa from the P\'osi Trail. The Rincon trail is a lovely trek towards Cerro Colarado and the surrounding hills, with beautiful vistas en route. Joseph\'s mine is an old abandoned mica mine, and parts of the trail around it are loaded with reflective mica pieces. The Tewa Trail returns downhill along an arroyo and lovely canyon to the river, where the Bosque River Trail may be used to return to the spa. ',NULL,NULL,NULL),
+('223','St Peter\'s Dome','mstr','Valles Caldera','Normal',NULL,'','','Out-and-back','9.10','700','Easy-Moderate','None','Excellent 360-Degree Views','Spring/Fall','Full sun','StPetersDome.GPX','StPetersDome.json',NULL,NULL,NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B046\'24.7%22N+106%C2%B025\'04.7%22W/@35.7986798,-106.4720645,12.45z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7735205!4d-106.4179606','The two-track road (FR142) heading east from FR289 becomes progressively more rutted and rocky as you proceed. About a quarter mile from the summit, a steel gate prevents vehicles from ascending to the top. If you wish to drive partway on this road to reduce the overall hike length, be advised that a high-clearance all-wheel drive vehicle is required, and that numerous road hazards may block your path. Also, there are very few places to park your vehicle, and even fewer places to turn around.','This hike follows a two-track gravel road (FR142) that begins at FR289 and ends at the top of St. Peter\'s Dome. This is in an isolated area in the midst of the Jemez Mountains, with both the drive in and the hike itself presenting wonderful vistas. St Peter\'s Dome offers spectacular 360-degree views and for this reason was chosen by the Forest Service for a Lookout Tower, which is now boarded up. The grades are mostly gentle with each switchback revealing new vistas, especially of the nearby Jemez Mountains. This is a hike not to miss!',NULL,NULL,NULL),
+('224','Ellis - Del Agua Overlook','mstr','Tijeras','Cluster',NULL,'MM','Ellis Group','Out-and-back','8.00','600','Moderate','Public Toilet','Views from the Sandia Crest','Not Winter','Good shade','EllisDelAgua.GPX','EllisDelAgua.json',NULL,NULL,NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.1780292,-106.4495083,12.49z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090201!4d-106.4410768','Be mindful that bears have been seen on this trail. Also note that a \'shortcut\' back to the Switchback Trail is shown on the return route. This is very steep, though short, and is not generally recommended. The author used this to avoid the parking lot at the crest.','This hike begins from the Ellis Trailhead, but it could just as easily begin from the parking lot at the end of NM536 for a shorter hike. The main attraction is the views from the Crest Trail en route. It is well shaded otherwise for most of the hike. The map shows blue flags at points where a side trail to an unnamed overlook can be taken. The photos include views from that point, and it is worth the small amount of extra effort. Another branch is shown proceeding to the North Peak. This trail is somewhat long and occasionally steep, and the views at the peak are partially blocked by trees making this route less desirable. The Del Agua Overlook provides the most expansive views. ',NULL,NULL,NULL),
+('225','Abrigo','mstr','Valles Caldera','Normal',NULL,'','','Loop','7.10','750','Moderate','Visitor Center','Grand views of the Valles Caldera Interior','Not Winter','Full sun','Abrigo.GPX','Abrigo.json',NULL,NULL,NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//35.9151741,-106.493919/@35.8789837,-106.5166135,11.8z','This hike is in the Valles Caldera, and the visitor must register at the Valles Caldera Visitor Center. A limited number of vehicles are permitted per day, so arrive reasonably early to ensure access. ','This hike, while moderate in length, has generally easy grades. It ascends at first and thereby allows great views of the Valles Caldera. As it circumnavigates the Cerro del Abrigo, it provides a wonderful opportunity to see different sections of the Caldera. This hike is great for the views and the solitude. ',NULL,NULL,NULL),
+('226','White Mesa Bike Trails Loop','mstr','San Ysidro','Cluster','','T','White Mesa Group','Loop','8.30','500','Moderate','None','Unexpected geological features and views','Not Summer','Full sun','White_Mesa_Loop.GPX','White_Mesa_Loop.json','35.4984486569','-106.841497617','','','https://www.flickr.com/photos/139088815@N08/albums/72157690464992781','https://www.flickr.com/photos/30474783@N06/albums/72157691097601614','https://www.google.com/maps/dir//White+Mesa+Bike+Trails,+4493+Cabezon+Rd,+Rio+Rancho,+NM+87124/@35.5116879,-106.8660674,12.8z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87228b8ba777132f:0x210ac2b8313d0ff7!2m2!1d-106.8414231!2d35.4984664','Cabezon Road is not necessarily well maintained, and sections can flood out. A four-wheel drive vehicle with some clearance is recommended.','The White Mesa Bike Trails area is a very scenic wilderness area, beginning from the intersection of Dragon\'s Back and the Bike Trails East. A short hike takes you to the top of a gorgeous canyon ridge, where the two trails diverge. Unexpectedly, the Bike Trails East provides a significantly different view than Dragon\'s Back, and is rich with variety. This hike begins the loop in that direction. As it meanders along the edge of the canyon, the hike provides views to the east, including hoodoos and multi-colored hills, as well as across the green valley to Dragon\'s Back. The eastern trail eventually ends by rounding the terminus of the Dragon\'s Back to form the loop back. The map includes some pictures from a previous hike down from Dragon\'s Back - see the Alternate View in the GPS Data section. It is rather steep and parts of the trail are precarious - it is not recommended.',NULL,NULL,NULL),
+('227','Mesa de Cuba - 2014 Hike','mstr','Cuba','Normal',NULL,'','','Out-and-back','1.60','40','Easy','None','Badlands geology - hoodoos and hills','Not Winter','Full sun','Mesa2014DEM.gpx','Mesa2014DEM.json','35.9851774','-107.0378745',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157667761292860',NULL,'https://www.google.com/maps/place/35%C2%B059\'56.3%22N+107%C2%B002\'28.4%22W/@35.9859943,-107.0592881,12z','The road north from NM 197 is a poorly maintained dirt road and requires all-wheel drive with good clearance. Do not attempt this road if weather conditions do not permit - the road can get muddy and flooding can occur.','The map shown in the photo section (taken from New Mexico Magazine, Nov. 2013) depicts the five major badland areas near Cuba. Mesa de Cuba is the first area encountered of the five when traveling west on NM 197 from US 550. Parking is basically wherever you wish to begin your adventure. The entire Mesa de Cuba area is full of hoodoos, odd-colored hills and petrified wood, and many hiking possibilities exist - none have trails. This hike was chosen being near the dirt road, having an odd rock formation, and easy access. The hike constituted a simple walk around the multi-colored hills, exploring hoodoos and washes. Each turn seemed to present more interesting features. Note that the map track shown is a partial hand-drawn version of the hike, as the author had no GPS system at the time. The hike actually continues down the wash.',NULL,NULL,NULL),
+('228','Mesa de Cuba - 2019 Hike','mstr','Cuba','Normal',NULL,'','','Loop','2.60','250','Easy-Moderate','None','Badlands geology and ridgetop views','Not Winter','Full sun','MesaDeCuba.GPX','MesaDeCuba.json','35.9989060275','-107.0638055541',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B059\'56.3%22N+107%C2%B002\'28.4%22W/@35.9859943,-107.0592881,12z','The road north from NM 197 is a poorly maintained dirt road and requires all-wheel drive with good clearance. Do not attempt this road if weather conditions do not permit - the road can get muddy and flooding can occur.','The map shown in the photo section (taken from New Mexico Magazine, Nov. 2013) depicts the five major badland areas near Cuba. Mesa de Cuba is the first area encountered of the five when traveling west on NM 197 from US 550. Parking is basically wherever you wish to begin your adventure. This particular hike was chosen by whim. The entire Mesa de Cuba area is full of hoodoos, odd-colored hills and petrified wood, and many hiking possibilities exist - none have trails. This hike skirted a short mesa and presented interesting geological features along the way. The authors back-tracked at one point to follow a ridge line up the initial mesa. That mesa offered some great views in every direction, along with huge petrified wood sections and wild colored sandstones.',NULL,NULL,NULL);
 
 
 
@@ -565,7 +572,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1548 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1580 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1369,16 +1376,14 @@ INSERT INTO REFS VALUES
 ('1489','213','App:','https://www.alltrails.com/trail/us/new-mexico/survey-and-ellis-trail-loop','AllTrails.com'),
 ('1490','213','Website:','https://www.fs.usda.gov/recarea/cibola/recreation/hiking/recarea/?recid=82159&actid=50','Forest Service'),
 ('1491','213','Blog:','https://www.dogofthedesert.net/north-crest-trail/','Dog of the Desert'),
-('1495','214','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64314','Forest Service - Kiwanis Cabin'),
-('1496','214','Website:','https://www.smithsonianmag.com/photocontest/detail/mobile/kiwanis-cabin-atop-sandia-crest-new-mexico-1/','Smithsonian Magazine'),
 ('1497','133','Book: ','7',NULL),
 ('1498','133','App: ','https://www.alltrails.com/trail/us/new-mexico/sandia-cave-trail','AllTrails'),
 ('1499','133','Website: ','https://en.wikipedia.org/wiki/Sandia_Cave','Wikipedia'),
 ('1500','133','Website: ','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=71221','Forest Service'),
-('1504','215','Book:','7',NULL);
-INSERT INTO REFS VALUES
+('1504','215','Book:','7',NULL),
 ('1505','215','App:','https://www.alltrails.com/trail/us/new-mexico/palomas-peak-via-faulty-trail','AllTrails.com'),
-('1506','215','Website:','https://www.summitpost.org/palomas-peak/432791','Summit Post'),
+('1506','215','Website:','https://www.summitpost.org/palomas-peak/432791','Summit Post');
+INSERT INTO REFS VALUES
 ('1507','105','Book: ','7',NULL),
 ('1508','105','Website: ','http://www.explorenm.com/hikes/PiedraLisa/','Explore New Mexico'),
 ('1509','105','Website: ','http://www.sandiahiking.com/trailguide.html#piedralisasouth','Sandia Mountain Hiking Guide'),
@@ -1407,7 +1412,33 @@ INSERT INTO REFS VALUES
 ('1541','172','Book:','1',''),
 ('1542','172','App:','https://www.alltrails.com/trail/us/new-mexico/cerro-grande-trail','AllTrails'),
 ('1543','172','Website:','https://www.nps.gov/band/planyourvisit/cerro-grande-route.htm','National Park Service'),
-('1544','172','Website:','http://www.americansouthwest.net/new_mexico/bandelier/cerro-grande-trail.html','American Southwest');
+('1544','172','Website:','http://www.americansouthwest.net/new_mexico/bandelier/cerro-grande-trail.html','American Southwest'),
+('1548','223','Website:','https://www.trailforks.com/trails/st-peter-s-dome-road/','Trailforks'),
+('1549','223','Website:','https://www.summitpost.org/saint-peters-dome/470058','Summit Post'),
+('1550','223','Website:','https://www.fs.usda.gov/recarea/santafe/recarea/?recid=75828','US Forest Service - Description of alternate route'),
+('1551','214','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64314','Forest Service - Kiwanis Cabin'),
+('1552','214','Website:','https://www.smithsonianmag.com/photocontest/detail/mobile/kiwanis-cabin-atop-sandia-crest-new-mexico-1/','Smithsonian Magazine'),
+('1554','224','Blog:','https://ondafringe.wordpress.com/2012/06/26/day-hike-north-crest-trail-to-del-agua-canyon-overlook-sandia-mountains-albuquerque-new-mexico-usa/','On Da Fringe'),
+('1555','224','Website:','http://friendsofthesandias.org/fosmwordpress/recreation/hiking/','Friends of the Sandia'),
+('1556','224','Book:','2',NULL),
+('1557','225','App:','https://www.alltrails.com/trail/us/new-mexico/abrigo-trail','AllTrails.com'),
+('1558','225','Website:','https://naturalatlas.com/trailheads/abrigo-2077251','Natural Atlas'),
+('1559','226','Book:','2',NULL),
+('1560','226','Website:','https://www.blm.gov/visit/white-ridge-bike-trails','BLM: White Ridge Bike Trails'),
+('1561','226','Website:','https://www.mtbproject.com/trail/206544/white-ridge-trail-system-main-loop','MTB Project: White Ridge Trail System'),
+('1562','226','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails'),
+('1566','227','Magazine: ','http://www.nmmagazine.com/article/?aid=83869#.V9Ll0LVzabM','New Mexico, March 2003, January 2007, andNovember 2013: \"Badlands Walkabout'),
+('1567','227','Website: ','http://www.nmmagazine.com/article/?aid=83869#.V9Ll0LVzabM','New Mexico Magazine (Link to 2013 article)'),
+('1568','227','Map: ','http://www.americansouthwest.net/new_mexico/san-juan-basin/map.html','American Southwest'),
+('1569','227','Website: ','http://foxdreams.com/2012/02/19/the-story-of-new-mexico-the-mesa-de-cuba-badlands/','Fox Dreams'),
+('1570','227','Blog: ','http://www.kahunaburger.com/2005/02/01/petrified-wood-at-mesa-de-cuba-nm/','kahunaburger'),
+('1571','227','News Article: ','http://www.ladailypost.com/content/explore-mesa-de-cuba-badlands-peec','Los Alamos Daily Post'),
+('1573','228','Magazine: ','http://www.nmmagazine.com/article/?aid=83869#.V9Ll0LVzabM','New Mexico, March 2003, January 2007, andNovember 2013: \"Badlands Walkabout'),
+('1574','228','Website: ','http://www.nmmagazine.com/article/?aid=83869#.V9Ll0LVzabM','New Mexico Magazine (Link to 2013 article)'),
+('1575','228','Map: ','http://www.americansouthwest.net/new_mexico/san-juan-basin/map.html','American Southwest'),
+('1576','228','Website: ','http://foxdreams.com/2012/02/19/the-story-of-new-mexico-the-mesa-de-cuba-badlands/','Fox Dreams'),
+('1577','228','Blog: ','http://www.kahunaburger.com/2005/02/01/petrified-wood-at-mesa-de-cuba-nm/','kahunaburger'),
+('1578','228','News Article: ','http://www.ladailypost.com/content/explore-mesa-de-cuba-badlands-peec','Los Alamos Daily Post');
 
 
 
@@ -1431,7 +1462,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4289 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4392 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3669,16 +3700,6 @@ INSERT INTO TSV VALUES
 ('4130','213',NULL,'IMG_1655','Y','Y','This is the sign posted at Highway 536','35.21005','-106.4446333333','2298',NULL,'2019-06-23 11:20:15','IMG_1655','240','320',NULL,NULL),
 ('4131','213',NULL,'IMG_1661','Y','Y','The end of the trail at Osha Loop','35.2422472222','-106.4502944444','2299',NULL,'2019-06-23 12:25:42','IMG_1661','320','240',NULL,NULL),
 ('4132','213',NULL,'IMG_1656','N','Y','One of the few sunny spots','35.2142861111','-106.4472111111','2300',NULL,'2019-06-23 11:28:36','IMG_1656','320','240',NULL,NULL),
-('4134','214',NULL,'IMG_1679','Y','Y','Kiwani Cabin Trail','35.2045861111','-106.4407361111','2301',NULL,'2019-06-26 09:52:21','IMG_1679','320','240',NULL,NULL),
-('4135','214',NULL,'IMG_1680','Y','Y','Great views approaching the cabin','35.2038222222','-106.4414888889','2302',NULL,'2019-06-26 09:54:22','IMG_1680','240','320',NULL,NULL),
-('4136','214',NULL,'IMG_1682','Y','Y','Appoaching Kiwani Cabin','35.2034027778','-106.4426805556','2303',NULL,'2019-06-26 09:57:33','IMG_1682','240','320',NULL,NULL),
-('4137','214',NULL,'IMG_1683','Y','N','On the edge of nowhere','35.2033888889','-106.4429388889','2304',NULL,'2019-06-26 09:58:14','IMG_1683','240','320',NULL,NULL),
-('4138','214',NULL,'IMG_1687','Y','N','View from inside the cabin','35.2033472222','-106.4433055556','2305',NULL,'2019-06-26 09:59:51','IMG_1687','240','320',NULL,NULL),
-('4139','214',NULL,'IMG_1690','Y','Y','Looking north from the cabin','35.2039611111','-106.4437472222','2306',NULL,'2019-06-26 10:01:49','IMG_1690','320','240',NULL,NULL),
-('4140','214',NULL,'IMG_1695','Y','Y','Burned section along Crest Trail','35.2239138889','-106.4518138889','2307',NULL,'2019-06-26 10:51:55','IMG_1695','240','320',NULL,NULL),
-('4141','214',NULL,'IMG_1696','Y','Y','Approaching a lookout point','35.2245416667','-106.4526138889','2308',NULL,'2019-06-26 10:54:02','IMG_1696','240','320',NULL,NULL),
-('4142','214',NULL,'IMG_1699','Y','Y','One fabulous view from the lookout','35.2263027778','-106.4538027778','2309',NULL,'2019-06-26 10:58:00','IMG_1699','240','320',NULL,NULL),
-('4143','214',NULL,'IMG_1703','Y','Y','Where the 10K meets','35.2377388889','-106.4497305556','2310',NULL,'2019-06-26 11:22:55','IMG_1703','320','240',NULL,NULL),
 ('4144','133',NULL,'Trailhead','Y','Y','An ample parking area and an easy-to-follow trail','35.2502583333','-106.409788889','718','72157683357066722','2017-07-23 10:21:28','35982252761_b62912a2ca','2448','3264','pink',NULL),
 ('4145','133',NULL,'CaveTrail','Y','Y','An easy incline up the trail','35.2521055556','-106.407761111','719','72157683357066722','2017-07-23 10:27:29','35982116301_99ffaf09a5','2448','3264','pink',NULL),
 ('4146','133',NULL,'EntranceStructure','N','N','The spiral staircase can be seen from a distance','35.2525222222','-106.406891667','720','72157683357066722','2017-07-23 10:30:38','35946805962_b4a6af55b1','2448','3264','pink',NULL),
@@ -3756,8 +3777,7 @@ INSERT INTO TSV VALUES
 ('4242','218',NULL,'IMG_1907','Y','N','The place where the Lake Trail diverges from Skyline','35.7887305556','-105.781175','2361',NULL,'2019-08-07 10:52:39','IMG_1907','320','240',NULL,NULL),
 ('4243','218',NULL,'IMG_20190807_102432698_HDR','Y','Y','The beautiful, isolated, Santa Fe Lake','35.788654','-105.779487','2362',NULL,'2019-08-07 10:24:36','IMG_20190807_102432698_HDR','180','320',NULL,NULL),
 ('4244','218',NULL,'IMG_20190807_103005135_HDR','Y','N','Ben enjoys a dip after the long hike','35.788656','-105.779262','2363',NULL,'2019-08-07 10:30:09','IMG_20190807_103005135_HDR','180','320',NULL,NULL),
-('4245','218',NULL,'IMG_1908','Y','Y','Coming to the lower ski lift','35.7863527778','-105.7888111111','2364',NULL,'2019-08-07 11:12:53','IMG_1908','240','320',NULL,NULL);
-INSERT INTO TSV VALUES
+('4245','218',NULL,'IMG_1908','Y','Y','Coming to the lower ski lift','35.7863527778','-105.7888111111','2364',NULL,'2019-08-07 11:12:53','IMG_1908','240','320',NULL,NULL),
 ('4246','218',NULL,'IMG_1909','Y','Y','The lower ski lift','35.7858472222','-105.7893138889','2365',NULL,'2019-08-07 11:25:57','IMG_1909','240','320',NULL,NULL),
 ('4247','218',NULL,'IMG_1910','Y','Y','View from Alamo Vista Trail','35.7857583333','-105.7968611111','2366',NULL,'2019-08-07 11:28:38','IMG_1910','240','320',NULL,NULL),
 ('4248','218',NULL,'IMG_1912','Y','N','A lovely view from Alamo Vista Trail',NULL,NULL,'2367',NULL,'2019-08-07 12:04:26','IMG_1912','240','320',NULL,NULL),
@@ -3767,7 +3787,8 @@ INSERT INTO TSV VALUES
 ('4252','222',NULL,'IMG_1925','Y','Y','One of many collections of potsherds in the ruins area','36.29885','-106.0561527778','2371',NULL,'2019-08-13 07:27:46','IMG_1925','240','320',NULL,NULL),
 ('4253','222',NULL,'IMG_1935','Y','Y','Along the Rincon - into the hills','36.3075972222','-106.0680472222','2372',NULL,'2019-08-13 08:05:01','IMG_1935','240','320',NULL,NULL),
 ('4254','222',NULL,'IMG_1940','Y','Y','A look west from the Rincon trail','36.3097638889','-106.0694972222','2373',NULL,'2019-08-13 08:10:46','IMG_1940','240','320',NULL,NULL),
-('4255','222',NULL,'IMG_1942','Y','Y','Looking back at the colorful hills on the Rincon','36.3123805556','-106.0678027778','2374',NULL,'2019-08-13 08:21:58','IMG_1942','240','320',NULL,NULL),
+('4255','222',NULL,'IMG_1942','Y','Y','Looking back at the colorful hills on the Rincon','36.3123805556','-106.0678027778','2374',NULL,'2019-08-13 08:21:58','IMG_1942','240','320',NULL,NULL);
+INSERT INTO TSV VALUES
 ('4256','222',NULL,'IMG_1944','Y','Y','A stand of snakeweed in the sun','36.3135444444','-106.0626833333','2375',NULL,'2019-08-13 08:30:16','IMG_1944','320','240',NULL,NULL),
 ('4257','222',NULL,'IMG_2151','Y','Y','The wide road leading into the hills and Joseph\'s mine','36.3102222222','-106.0529777778','2376',NULL,'2013-11-10 12:30:08','IMG_2151','240','320',NULL,NULL),
 ('4258','222',NULL,'IMG_1952','Y','Y','Joseph\'s Mine','36.3272138889','-106.0545972222','2377',NULL,'2019-08-13 09:22:04','IMG_1952','240','320',NULL,NULL),
@@ -3798,7 +3819,95 @@ INSERT INTO TSV VALUES
 ('4283','172','Folder1','PicturesqueTreeFrame','Y','N','The Ponderosas added to the enjoyable environment of the hike','35.8657916667','-106.414375','1426','72157695406837431','2018-05-19 12:23:56','42287470881_bdf90dbd25','2448','3264','',NULL),
 ('4284','172',NULL,'IMG_20190827_121325916','Y','N','Map at trailhead shows several more hikes to try','35.8472879722','-106.421771','2393',NULL,'2019-08-27 12:13:26','IMG_20190827_121325916','180','320',NULL,NULL),
 ('4285','172',NULL,'IMG_20190827_113555578_HDR','Y','Y','Tall summer grasses frame the walk down','35.864553','-106.417629','2394',NULL,'2019-08-27 11:36:00','IMG_20190827_113555578_HDR','180','320',NULL,NULL),
-('4286','172',NULL,'IMG_20190827_094306778_HDR','Y','Y','Tall grasses and tall trees on the way up','35.8498069722','-106.4206839722','2395',NULL,'2019-08-27 09:43:09','IMG_20190827_094306778_HDR','180','320',NULL,NULL);
+('4286','172',NULL,'IMG_20190827_094306778_HDR','Y','Y','Tall grasses and tall trees on the way up','35.8498069722','-106.4206839722','2395',NULL,'2019-08-27 09:43:09','IMG_20190827_094306778_HDR','180','320',NULL,NULL),
+('4289','223',NULL,'IMG_20190924_131312221_HDR','Y','Y','A view of the Fire Tower on the Dome','35.762835','-106.376951','2396',NULL,'2019-09-24 13:13:15','IMG_20190924_131312221_HDR','180','320',NULL,NULL),
+('4290','223',NULL,'IMG_20190924_101211835_HDR','Y','Y','Looking towards the Sangre de Cristos','35.771129','-106.415389','2397',NULL,'2019-09-24 10:12:18','IMG_20190924_101211835_HDR','180','320',NULL,NULL),
+('4291','223',NULL,'IMG_2334','Y','Y','A grand view towards the Jemez','35.7588361111','-106.3713222222','2398',NULL,'2019-09-24 11:47:37','IMG_2334','240','320',NULL,NULL),
+('4292','223',NULL,'IMG_2348','Y','Y','The road ahead before it gets rocky and rutted','35.772566667','-106.406633333','2399',NULL,'2019-09-24 14:05:33','IMG_2348','240','320',NULL,NULL),
+('4293','223',NULL,'IMG_2324','Y','Y','Deep canyons permeate the area','35.7699194444','-106.3986138889','2401',NULL,'2019-09-24 10:33:32','IMG_2324','240','320',NULL,NULL),
+('4294','223',NULL,'IMG_2323','Y','Y','One way to cool off!','35.7718555556','-106.404975','2402',NULL,'2019-09-24 10:25:27','IMG_2323','240','320',NULL,NULL),
+('4295','223',NULL,'IMG_2332','Y','Y','Another expansive view of the Jemez','35.7598416667','-106.3727194444','2403',NULL,'2019-09-24 11:44:01','IMG_2332','240','320',NULL,NULL),
+('4296','223',NULL,'IMG_20190924_122244992_HDR','Y','Y','Looking towards Cochiti Dam','35.7573069722','-106.371313','2404',NULL,'2019-09-24 12:22:48','IMG_20190924_122244992_HDR','180','320',NULL,NULL),
+('4297','223',NULL,'IMG_2344','Y','Y','The final ascent','35.7568444444','-106.3706805556','2405',NULL,'2019-09-24 12:10:06','IMG_2344','240','320',NULL,NULL),
+('4298','223',NULL,'IMG_2346','Y','N','Looking back at the road in ','35.7824888889','-106.4021305556','2406',NULL,'2019-09-24 12:14:51','IMG_2346','240','320',NULL,NULL),
+('4299','214',NULL,'IMG_1679','Y','Y','Kiwanis Cabin Trail','35.2045861111','-106.4407361111','2301',NULL,'2019-06-26 09:52:21','IMG_1679','320','240',NULL,NULL),
+('4300','214',NULL,'IMG_1680','Y','Y','Great views approaching the cabin','35.2038222222','-106.4414888889','2302',NULL,'2019-06-26 09:54:22','IMG_1680','240','320',NULL,NULL),
+('4301','214',NULL,'IMG_1682','Y','Y','Appoaching Kiwanis Cabin','35.2034027778','-106.4426805556','2303',NULL,'2019-06-26 09:57:33','IMG_1682','240','320',NULL,NULL),
+('4302','214',NULL,'IMG_1683','Y','N','On the edge of nowhere','35.2033888889','-106.4429388889','2304',NULL,'2019-06-26 09:58:14','IMG_1683','240','320',NULL,NULL),
+('4303','214',NULL,'IMG_1687','Y','N','View from inside the cabin','35.2033472222','-106.4433055556','2305',NULL,'2019-06-26 09:59:51','IMG_1687','240','320',NULL,NULL),
+('4304','214',NULL,'IMG_1690','Y','Y','Looking north from the cabin','35.2039611111','-106.4437472222','2306',NULL,'2019-06-26 10:01:49','IMG_1690','320','240',NULL,NULL),
+('4305','214',NULL,'IMG_1688 (1)','Y','Y','One of the many spectacular views','35.203475','-106.4433972222','2427',NULL,'2019-06-26 10:00:38','IMG_1688 (1)','240','320',NULL,NULL),
+('4306','224',NULL,'IMG_1695','Y','Y','Burned section along Crest Trail','35.2239138889','-106.4518138889','2307',NULL,'2019-06-26 10:51:55','IMG_1695','240','320',NULL,NULL),
+('4307','224',NULL,'IMG_1696','Y','Y','Approaching the unnamed lookout point','35.2245416667','-106.4526138889','2308',NULL,'2019-06-26 10:54:02','IMG_1696','240','320',NULL,NULL),
+('4308','224',NULL,'IMG_1699','Y','Y','A great view from the unnamed lookout','35.2263027778','-106.4538027778','2309',NULL,'2019-06-26 10:58:00','IMG_1699','240','320',NULL,NULL),
+('4309','224',NULL,'IMG_1703','Y','Y','Where the 10K meets','35.2377388889','-106.4497305556','2310',NULL,'2019-06-26 11:22:55','IMG_1703','320','240',NULL,NULL),
+('4310','224',NULL,'IMG_2315','Y','Y','A view looking north','35.2377694444','-106.4497916667','2420',NULL,'2019-09-22 11:44:30','IMG_2315','240','320',NULL,NULL),
+('4311','224',NULL,'IMG_2317','Y','Y','The banded layers of rock are prominent in this view','35.2279444444','-106.451875','2421',NULL,'2019-09-22 12:06:58','IMG_2317','240','320',NULL,NULL),
+('4312','224',NULL,'IMG_2314','Y','Y','Looking out over the Del Agua Canyon','35.2377694444','-106.4497916667','2422',NULL,'2019-09-22 11:44:24','IMG_2314','240','320',NULL,NULL),
+('4313','224',NULL,'IMG_2316','Y','Y','Looking South from Del Agua','35.2379944444','-106.4499583333','2424',NULL,'2019-09-22 11:46:21','IMG_2316','240','320',NULL,NULL),
+('4314','224',NULL,'IMG_2308','Y','Y','The jagged outline of the west face of the Sandia is seen near North Peak','35.23425','-106.4550694444','2425',NULL,'2019-09-22 11:16:00','IMG_2308','240','320',NULL,NULL),
+('4315','224',NULL,'IMG_2312','Y','Y','The point on the North Crest where the 10K Trail joins in','35.2377361111','-106.4496916667','2426',NULL,'2019-09-22 11:43:22','IMG_2312','240','320',NULL,NULL),
+('4316','225',NULL,'IMG_2049','Y','Y','An unusually rocky hill appears at the back of Cerro del Abrigo','35.9384305556','-106.4805833333','2413',NULL,'2019-09-06 11:15:03','IMG_2049','240','320',NULL,NULL),
+('4317','225',NULL,'IMG_2043','Y','Y','Bill proceeds up the easy grade','35.9353027778','-106.4664694444','2414',NULL,'2019-09-06 10:46:06','IMG_2043','240','320',NULL,NULL),
+('4318','225',NULL,'IMG_2034','Y','Y','A great deal of the Las Conchas fire aftereffects remain','35.9199222222','-106.4935388889','2415',NULL,'2019-09-06 09:42:49','IMG_2034','240','320',NULL,NULL),
+('4319','225',NULL,'IMG_2033','Y','Y','The trail begins a short hike from the road','35.9169472222','-106.4912555556','2416',NULL,'2019-09-06 09:33:07','IMG_2033','240','320',NULL,NULL),
+('4320','225',NULL,'IMG_2039','Y','Y','The views of the Caldera improve with altitude','35.9230638889','-106.4820333333','2417',NULL,'2019-09-06 10:08:50','IMG_2039','240','320',NULL,NULL),
+('4321','225',NULL,'IMG_2044','Y','Y','This section displays good regrowth after the fire','35.9369777778','-106.4665305556','2418',NULL,'2019-09-06 10:48:49','IMG_2044','240','320',NULL,NULL),
+('4322','225',NULL,'IMG_2038','Y','Y','An earlier view of the interior','35.9233194444','-106.4844194444','2419',NULL,'2019-09-06 10:04:45','IMG_2038','240','320',NULL,NULL),
+('4323','226','Folder1','TowardsDragonsBack','Y','Y','The trail split: Dragon\'s Back left, Bike Trails East to the right','35.5031055556','-106.840094444','1076','72157690464992781','2018-01-02 10:52:54','39592999432_8478fee0ab','2448','3264','red',NULL),
+('4324','226','Folder1','ColoredSlopes','Y','Y','Surprising colors appear in the hills','35.5071222222','-106.839141667','1077','72157690464992781','2018-01-02 11:26:46','24754386487_4d74dbbca8','2448','3264','red',NULL),
+('4325','226','Folder1','NamesakeMesa','Y','Y','A view of White Mesa punctuates the scene','35.5070138889','-106.837472222','1078','72157690464992781','2018-01-02 11:33:43','39592996762_e71141b058','2448','3264','red',NULL),
+('4326','226','Folder1','Towards550','Y','N','A long look ahead to the east','35.507175','-106.837394444','1079','72157690464992781','2018-01-02 11:36:26','38726200645_54208983ce','2448','3264','red',NULL),
+('4327','226','Folder1','ConvolutedValley','Y','N','Shallow canyons present bumpy terrain','35.5062972222','-106.834891667','1080','72157690464992781','2018-01-02 11:54:42','39593008342_b297fb3135','2448','3264','red',NULL),
+('4328','226','Folder1','CrustyWalls','Y','N','Angled rock protects the hillside','35.50735','-106.834511111','1081','72157690464992781','2018-01-02 11:59:48','24754398997_eb7ca4d4e2','2448','3264','red',NULL),
+('4329','226','Folder1','RedValley','Y','Y','A hidden canyon comes into view','35.5077638889','-106.834633333','1082','72157690464992781','2018-01-02 12:01:21','24754377177_72ca9e84d5','2448','3264','red',NULL),
+('4330','226','Folder1','AlongTheTrail','Y','N','Each trail segment seems to have another spectacle to behold.','35.5084194444','-106.834494444','1083','72157690464992781','2018-01-02 12:03:35','27845265979_d4703d249b','2448','3264','red',NULL),
+('4331','226','Folder1','WindbreakerWall','Y','Y','This natural wall stands out as an unusual trail feature','35.5093111111','-106.834655556','1084','72157690464992781','2018-01-02 12:06:48','39593004692_e065af935d','2448','3264','red',NULL),
+('4332','226','Folder2','IMG_20180102_122410','Y','Y','Colors and texture add to the scenery','35.5129444444','-106.838019444','1085','72157691097601614','2018-01-02 12:24:12','25589956788_84d598a729','1512','2688','red',NULL),
+('4333','226','Folder1','ValleyOverview','Y','N','Looking down at a former hike\'s dead end','35.5122916667','-106.837722222','1086','72157690464992781','2018-01-02 12:28:31','24754395327_1453066494','2448','3264','red',NULL),
+('4334','226','Folder1','Hoodoos','Y','N','Every angle has it own feature','35.50985','-106.834647222','1087','72157690464992781','2018-01-02 12:52:08','38726197775_4f87007444','2448','3264','red',NULL),
+('4335','226',NULL,'IMG_2284','Y','N','Mineral springs appear unexpectedly','35.5262944444','-106.846175','2407',NULL,'2019-09-20 11:05:55','IMG_2284','240','320',NULL,NULL),
+('4336','226',NULL,'IMG_2281','Y','Y','Crazy banding and cross-bedding','35.506825','-106.8345555556','2408',NULL,'2019-09-20 10:19:21','IMG_2281','240','320',NULL,NULL),
+('4337','226',NULL,'IMG_2285','Y','Y','This large cavern has water at the bottom','35.525775','-106.8466944444','2409',NULL,'2019-09-20 11:07:21','IMG_2285','240','320',NULL,NULL),
+('4338','226',NULL,'IMG_2286','Y','Y','A smaller cavern','35.529125','-106.8468472222','2410',NULL,'2019-09-20 11:13:41','IMG_2286','426','320',NULL,NULL),
+('4339','226',NULL,'IMG_2287','Y','Y','Bentley explores the odd smelling water','35.5309138889','-106.8474666667','2411',NULL,'2019-09-20 11:17:32','IMG_2287','240','320',NULL,NULL),
+('4340','226',NULL,'IMG_2291','Y','Y','Looking along Dragon\'s Back on the return','35.5396833333','-106.8520444444','2412',NULL,'2019-09-20 12:05:27','IMG_2291','240','320',NULL,NULL),
+('4341','226','Folder1','TomAlongTheDragon','Y','Y','Narrow but traversable','35.5105527778','-106.847961111','1088','72157676308235354','2017-02-01 11:26:33','31869276934_6b89222e9b','240','320','orange',NULL),
+('4342','226','Folder1','PickingTheWayDown','Y','Y','Down to explore the valley','35.5159722222','-106.849644444','1089','72157676308235354','2017-02-01 12:16:19','31869282594_b7119af964','179','320','orange',NULL),
+('4343','226','Folder1','OffTheGoatTrail','Y','Y','Off the precipitous side-trail and back down to the valley','35.50695','-106.842073','1090','72157676308235354','2017-02-01 13:33:58','32589464451_e7f6c11dbc','240','320','orange',NULL),
+('4344','226','Folder1','InTheValley','Y','Y','Flat, expansive, beautiful','35.5123888889','-106.844366667','1091','72157676308235354','2017-02-01 12:41:07','31899242733_71eee92a2b','179','320','orange',NULL),
+('4345','226','Folder1','GreenValley','Y','Y','Odd colors permeate the landscape','35.518932','-106.851321','1092','72157676308235354','2017-02-01 12:09:10','31869314824_6cf66b834a','179','320','orange',NULL),
+('4346','226','Folder1','ColorfulValley','Y','Y','Beautiful reds from the Dragon\'s Back','35.5105361111','-106.847969444','1093','72157676308235354','2017-02-01 11:24:52','31869319474_0522d46a37','240','320','orange',NULL),
+('4347','226','Folder1','BillTriumphs','Y','Y','Bill leads the (wrong) way','35.5114277778','-106.843227778','1095','72157676308235354','2017-02-01 12:49:50','32332772380_fcdabf7148','179','320','orange',NULL),
+('4348','226','Folder1','BillSearchesEscape','Y','Y','No way to the top and back from here','35.5065888889','-106.840619444','1096','72157676308235354','2017-02-01 13:19:22','31899298793_22169b13c1','179','320','orange',NULL),
+('4349','226','Folder1','360Views','Y','Y','A complete view all along the Dragon\'s Back','35.5081416667','-106.846236111','1097','72157676308235354','2017-02-01 11:15:51','32671767546_07326e4259','179','320','orange',NULL),
+('4354','227','Folder','NMBlueSky','Y','N','Dark blue skies against hoodoos',NULL,NULL,'272','72157667761292860','2014-08-14 13:36:22','26448818263_ea948b2878','320','214',NULL,NULL),
+('4355','227',NULL,'InTheBeginning','Y','N','Near the access point',NULL,NULL,'273','72157667761292860','2014-08-14 13:31:11','26448831993_68a1891a34','214','320',NULL,NULL),
+('4356','227',NULL,'IndianPaintbrush','Y','N','Other beauty in the desert',NULL,NULL,'274','72157667761292860','2014-08-14 14:20:50','26984058161_a02e753fed','320','214',NULL,NULL),
+('4357','227',NULL,'HoodooHill','Y','N','Closeup wherever you want',NULL,NULL,'275','72157667761292860','2014-08-14 14:08:44','26984065531_41bbb38cfe','214','320',NULL,NULL),
+('4358','227',NULL,'HikersView','Y','N','It keeps going!',NULL,NULL,'276','72157667761292860','2014-08-14 14:25:15','26958123752_917edc4c55','214','320',NULL,NULL),
+('4359','227',NULL,'AlongTheWash','Y','N','The Green and the Gray',NULL,NULL,'277','72157667761292860','2014-08-14 14:11:32','26958128782_1f88782bff','214','320',NULL,NULL),
+('4360','227',NULL,'SJBmap','Y','N','Photo from New Mexico Magazine showing 5 Cuba Badlands',NULL,NULL,'2440',NULL,NULL,'SJBmap','120','320',NULL,NULL),
+('4361','228','Folder','NMBlueSky','N','N','Dark blue skies against hoodoos',NULL,NULL,'272','72157667761292860','2014-08-14 13:36:22','26448818263_ea948b2878','320','214',NULL,NULL);
+INSERT INTO TSV VALUES
+('4362','228',NULL,'InTheBeginning','N','N','Near the access point',NULL,NULL,'273','72157667761292860','2014-08-14 13:31:11','26448831993_68a1891a34','214','320',NULL,NULL),
+('4363','228',NULL,'IndianPaintbrush','N','N','Other beauty in the desert',NULL,NULL,'274','72157667761292860','2014-08-14 14:20:50','26984058161_a02e753fed','320','214',NULL,NULL),
+('4364','228',NULL,'HoodooHill','N','N','Closeup wherever you want',NULL,NULL,'275','72157667761292860','2014-08-14 14:08:44','26984065531_41bbb38cfe','214','320',NULL,NULL),
+('4365','228',NULL,'HikersView','N','N','It keeps going!',NULL,NULL,'276','72157667761292860','2014-08-14 14:25:15','26958123752_917edc4c55','214','320',NULL,NULL),
+('4366','228',NULL,'AlongTheWash','N','N','The Green and the Gray',NULL,NULL,'277','72157667761292860','2014-08-14 14:11:32','26958128782_1f88782bff','214','320',NULL,NULL),
+('4367','228',NULL,'48805859746_1b2586f0ba_o','N','Y','Multi-colored hills attract the eye','36.0003030556','-107.0626130556','2428',NULL,'2019-09-27 09:44:52','48805859746_1b2586f0ba_o','240','320',NULL,NULL),
+('4368','228',NULL,'IMG_2358','Y','Y','Unusual formations appear along the way','36.0022722222','-107.0622333333','2429',NULL,'2019-09-27 10:51:43','IMG_2358','240','320',NULL,NULL),
+('4369','228',NULL,'48805992807_3b4336cff7_o','Y','Y','Rock towers dominate the skyline','36.0014447222','-107.0619047222','2430',NULL,'2019-09-27 09:49:25','48805992807_3b4336cff7_o','240','320',NULL,NULL),
+('4370','228',NULL,'IMG_2361','Y','Y','Oddly colored boulders dot the landscape','36.00245','-107.0620277778','2431',NULL,'2019-09-27 10:56:01','IMG_2361','320','240',NULL,NULL),
+('4371','228',NULL,'IMG_2356','Y','Y','Views of upcoming colors and features','36.0011416667','-107.0617222222','2432',NULL,'2019-09-27 10:48:20','IMG_2356','240','320',NULL,NULL),
+('4372','228',NULL,'48805973602_4b3baec6c8_o','Y','Y','Cat woman?','36.007195','-107.0585980556','2433',NULL,'2019-09-27 10:29:23','48805973602_4b3baec6c8_o','240','320',NULL,NULL),
+('4373','228',NULL,'48805812811_38011f6864_o','Y','Y','A marker for the ridge route','36.0020413889','-107.0630630556','2434',NULL,'2019-09-27 11:27:17','48805812811_38011f6864_o','240','320',NULL,NULL),
+('4374','228',NULL,'48805474233_62d4a055e6_o','Y','Y','Tom explores the view','36.0006663889','-107.06409','2435',NULL,'2019-09-27 11:15:14','48805474233_62d4a055e6_o','240','320',NULL,NULL),
+('4375','228',NULL,'IMG_2380','Y','Y','An oddly colored hill presents itself from above','36.0007888889','-107.0634083333','2436',NULL,'2019-09-27 12:17:47','IMG_2380','240','320',NULL,NULL),
+('4376','228',NULL,'48805464923_4d2de6d6e6_o','Y','Y','A look over the terrain','36.0013297222','-107.0633230556','2437',NULL,'2019-09-27 11:21:44','48805464923_4d2de6d6e6_o','240','320',NULL,NULL),
+('4377','228',NULL,'IMG_2372','Y','Y','A gorgeous view from the ridge','36.003875','-107.0646138889','2438',NULL,'2019-09-27 11:53:30','IMG_2372','240','320',NULL,NULL),
+('4378','228',NULL,'IMG_2383 (1)','Y','N','Alternate location','35.9847638889','-107.0375138889','2439',NULL,'2019-09-27 12:59:04','IMG_2383 (1)','240','320',NULL,NULL),
+('4379','228',NULL,'SJBmap','Y','N','Photo from New Mexico Magazine showing 5 Cuba Badlands',NULL,NULL,'2440',NULL,NULL,'SJBmap','120','320',NULL,NULL);
 
 
 
@@ -3815,12 +3924,13 @@ CREATE TABLE `USERS` (
   `twitter_handle` varchar(20) DEFAULT NULL,
   `bio` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO USERS VALUES
 ('1','tom','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Sandberg','Tom','tjsandberg@yahoo.com',NULL,NULL,'One of the geniuses behind this site :-)'),
 ('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)'),
-('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com','','','Just and old dusty traveler');
+('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com','','','Just and old dusty traveler'),
+('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu','','','');
 
 
