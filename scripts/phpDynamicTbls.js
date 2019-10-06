@@ -50,11 +50,15 @@ var compare = {
     } 
 };  // end of COMPARE object
 
+var refColGroup = $('#refTbl table:first-child').html();
+var refHeaders  = $('#refTbl table > thead').html();
 var refRows; // needs to be global to effect dynamic table construction & sorts
 var useTbl = $('title').text() == 'Hike Map' ? false : true;
 if ( useTbl ) {
     /* INITIAL PAGE LOAD OF USER TABLE */
-    tblHtml = '<table class="msortable">';
+	tblHtml = '<table class="msortable">';
+	tblHtml += refColGroup;
+	tblHtml += "\n<thead>\n" + refHeaders + "\n</thead>";
     tblHtml += $('table').html();
     var indx = tblHtml.indexOf('<tbody') + 7;
     tblHtml = tblHtml.substring(0,indx);  // strip off the main body (after colgrp & hdr)
