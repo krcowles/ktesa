@@ -9,6 +9,17 @@ body {
 #logo {
 	margin-bottom: 0px;
 }
+#searchbar {
+	border-radius: 8px;
+	border-width: 2px;
+	border-color: darkslategray;
+	padding-left: 6px;
+	height: 32px;
+	position: absolute;
+	top: 91px;
+	left: 140px;
+	z-index: 200;
+}
 #geoSetting {
 	display: none; }
 #geoCtrl {
