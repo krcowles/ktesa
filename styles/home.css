@@ -9,6 +9,23 @@ body {
 #logo {
 	margin-bottom: 0px;
 }
+<<<<<<< Updated upstream
+=======
+#searchbar {
+	border-radius: 8px;
+	border-width: 1px;
+	border-color: darkslategray;
+	padding-left: 6px;
+	height: 34px;
+	position: absolute;
+	top: 91px;
+	left: 140px;
+	z-index: 200;
+}
+#srchmodal {
+	display: none;
+}
+>>>>>>> Stashed changes
 #geoSetting {
 	display: none; }
 #geoCtrl {
@@ -121,3 +138,13 @@ td {
 	border-width: 3px;
 	border-color: MidnightBlue;
 	cursor: pointer; }
+.radiotxt {
+	font-size: 16px;
+}
+input[class=modopts]:hover {
+	cursor: pointer;
+}
+#hpg {
+	text-decoration: none;
+	color: black;
+}

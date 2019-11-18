@@ -1,4 +1,40 @@
-// jQuery UI widget:
+/**
+ * jQuery UI widgets:
+ */ 
+// the main page search bar:
+var findhike = '';
+$('#searchbar').autocomplete({ // initializer
+    source: hikelist,
+    select: function( event, ui ) {}  // select callback specified
+});
+$("#searchbar").on("autocompleteselect", function(event, ui) {
+    var itemChosen = ui.item.value;
+    // find the hike and zoom in...
+    $('table tbody tr').each(function() {
+        if ($(this).children().eq(0).children().eq(0).text() == itemChosen) {
+            var lat = parseFloat($(this).data('lat'));
+            var lng = parseFloat($(this).data('lon'));
+            var srchloc = {lat: lat, lng: lng};
+            var hikepage = $(this).children().eq(0).children().eq(0).attr('href');
+            var $opts = $('#srch').detach();
+            var def = new $.Deferred();
+            modal.open({
+                id: 'srchopt',
+                height: '76px',
+                width: '210px',
+                content: $opts,
+                loc: srchloc,
+                page: hikepage,
+                deferred: def
+            });
+           $.when( def ).then(function() {
+               $('#modals').append($opts);
+           })
+            return false; // as this will happen for each table...
+        }
+    });
+});
+// filter 'miles' spinner:
 var spinner = $('#spinner').spinner({
     min: 1,
     max: 50,

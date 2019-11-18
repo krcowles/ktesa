@@ -109,17 +109,29 @@ $includeZoom = true;
     Click here for metric units</p>
 </div>
 </div>
+<div id="modals">
+    <div id="srch">
+        <input id="opt1" type="radio" name="opts" class="modopts" />&nbsp;&nbsp;
+            <span class="radiotxt">Show location on map</span><br />
+        <input id="opt2" type="radio" name="opts" class="modopts" />&nbsp;&nbsp;
+            <span class="radiotxt anchorstyle"><a id="hpg" href="#" target="_self">
+                Go to hike web page</a></span><br />
+        <div id="neither"></div>
+    </div>
+</div>
 
-<script src="../scripts/modernizr-custom.js"></script>
-<script src="../scripts/menus.js"></script>
-<script src="../scripts/hikeBox.js"></script>
-<script src="../scripts/markerclusterer.js"></script>
-<script src="../scripts/filter.js"></script>
-<script src="../scripts/phpDynamicTbls.js"></script>
-<script src="../scripts/multi-sort.js"></script>
-<script src="../scripts/map.js"></script>
+<script src="../scripts/modernizr-custom.js" type="text/javascript"></script>
+<script src="../scripts/menus.js" type="text/javascript"></script>
+<script src="../scripts/hikeBox.js" type="text/javascript"></script>
+<script src="../scripts/markerclusterer.js" type="text/javascript"></script>
+<script src="../scripts/filter.js" type="text/javascript"></script>
+<script src="../scripts/phpDynamicTbls.js" type="text/javascript"></script>
+<script src="../scripts/multi-sort.js" type="text/javascript"></script>
+<script src="../scripts/map.js" type="text/javascript"></script>
+<script src="../scripts/modal_setup.js" type="text/javascript"></script>
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry"
+    type="text/javascript">
 </script>
 </body>
 </html>
