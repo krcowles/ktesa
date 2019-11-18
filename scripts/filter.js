@@ -29,7 +29,7 @@ $("#searchbar").on("autocompleteselect", function(event, ui) {
             });
            $.when( def ).then(function() {
                $('#modals').append($opts);
-           })
+           });
             return false; // as this will happen for each table...
         }
     });

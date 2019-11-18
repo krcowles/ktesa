@@ -9,7 +9,6 @@
  * @author  Tom Sandberg and Ken Cowles <krcowle29@gmail.com>
  * @license No license to date
  */
-session_start(); // required by ktesaPanel.php
 require "../php/global_boot.php";
 // the following are required for ALL options (used by makeTables.php)
 $usr = 'mstr'; // this is actually a "don't care", but needs to be specified
@@ -32,22 +31,39 @@ $includeZoom = true;
     <link href="../styles/filter.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery-1.12.1.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
+
     <!-- Used by scripts/filter.js depending on whether table page or map page -->
-    <script type="text/javascript">var pg = "map";</script>
+    <?php
+        require "alphabeticHikes.php";
+    ?>
+    <script type="text/javascript">
+        var pg = "map";
+        var hikelist = <?= $hikelist;?>;
+    </script>
 </head>
 
 <body>
-<p id="geoSetting">ON</p>
-<img id="geoCtrl" src="../images/geoloc.png" />
-<div id="newHikeBox">Latest Hike:<br>
-    <a id="newhike" href="#"><span id="winner"></span></a>
-</div>
+
 <?php require "ktesaPanel.php"; ?>
 <p id="trail">Welcome!</p>
 <p id="page_id" style="display:none;">Home</p>
 
 <div id="map" style="width:100%;"></div>
 <p id="viewmore">&lt;&lt;  Scroll Down for the sortable 'Table of Hikes' &gt;&gt;</p>
+
+<!-- GPS Position Location -->
+<p id="geoSetting">ON</p>
+<img id="geoCtrl" src="../images/geoloc.png" />
+
+<!-- Latest Hike Box -->
+<div id="newHikeBox">Latest Hike:<br>
+    <a id="newhike" href="#"><span id="winner"></span></a>
+</div>
+
+<!-- search bar and hike names from php -->
+<div class="ui-widget">
+    <input id="searchbar" placeholder="Search for a hike" />
+</div>
 
 <div id="tbl_container">
 <div id="tblfilter">

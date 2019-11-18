@@ -9,8 +9,6 @@ body {
 #logo {
 	margin-bottom: 0px;
 }
-<<<<<<< Updated upstream
-=======
 #searchbar {
 	border-radius: 8px;
 	border-width: 1px;
@@ -25,7 +23,6 @@ body {
 #srchmodal {
 	display: none;
 }
->>>>>>> Stashed changes
 #geoSetting {
 	display: none; }
 #geoCtrl {
