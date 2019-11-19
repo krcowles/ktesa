@@ -67,16 +67,18 @@ var modal = (function() {
             border: '1px solid',
             padding: '8px'
         }).appendTo('body');
+        $modal.css('background-color', 'white');
         $modal.css('z-index', '200');
         $('#neither').append($close);
         $close.css('background-color', 'white');
         $close.css('color', 'black');
         $close.css('border-radius', '6px');
-        $close.css('left', '60px');
+        $close.css('left', '42px');
         $close.css('top', '8px');
         var newlnk = '../pages/' + pg;
-        $('#hpg').attr('href', newlnk);
-        $('#opt1').change(function() {
+        $('#hikepg').attr('href', newlnk);
+        $('#jslnk').on('click', function(ev) {
+            ev.preventDefault();
             map.setCenter(coords);
             map.setZoom(13);
             $.each(locaters, function(indx, value) {

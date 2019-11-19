@@ -21,7 +21,7 @@ $("#searchbar").on("autocompleteselect", function(event, ui) {
             modal.open({
                 id: 'srchopt',
                 height: '76px',
-                width: '210px',
+                width: '164px',
                 content: $opts,
                 hike: itemChosen,
                 loc: srchloc,

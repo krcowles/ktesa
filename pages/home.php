@@ -127,12 +127,9 @@ $includeZoom = true;
 </div>
 <div id="modals">
     <div id="srch">
-        <input id="opt1" type="radio" name="opts" class="modopts" />&nbsp;&nbsp;
-            <span class="radiotxt">Show location on map</span><br />
-        <input id="opt2" type="radio" name="opts" class="modopts" />&nbsp;&nbsp;
-            <span class="radiotxt anchorstyle"><a id="hpg" href="#" target="_self">
-                Go to hike web page</a></span><br />
-        <div id="neither"></div>
+        <a id="jslnk" href="#">Show location on map</a><br />
+        <a id="hikepg" href="#" target="_self">Go to hike web page</a><br />
+        <div id="closeit"></div>
     </div>
 </div>
 

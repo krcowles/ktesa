@@ -134,14 +134,5 @@ td {
 	border-style: inset;
 	border-width: 3px;
 	border-color: MidnightBlue;
-	cursor: pointer; }
-.radiotxt {
-	font-size: 16px;
-}
-input[class=modopts]:hover {
 	cursor: pointer;
-}
-#hpg {
-	text-decoration: none;
-	color: black;
 }
