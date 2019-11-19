@@ -57,7 +57,7 @@ var modal = (function() {
         });
     }
     // Search bar options
-    function searchbar(optht, optwd, def, coords, pg) {
+    function searchbar(optht, optwd, def, coords, pg, hike) {
         $modal.css({
             position: 'absolute',
             top: '91px',
@@ -79,6 +79,15 @@ var modal = (function() {
         $('#opt1').change(function() {
             map.setCenter(coords);
             map.setZoom(13);
+            $.each(locaters, function(indx, value) {
+                // for VC markers:
+                if (value.hikeid.includes('Visitor Center')) {
+                    value.hikeid = value.hikeid.replace('Visitor Center', 'Index');
+                }
+                if (value.hikeid == hike) {
+                    google.maps.event.trigger(value.pin, 'click');
+                }
+            });
             def.resolve();
             modal.close();
         });
@@ -107,7 +116,7 @@ var modal = (function() {
                 loginModal();
             } else if (settings.id === 'srchopt') {
                 searchbar(settings.height, settings.width, settings.deferred,
-                    settings.loc, settings.page);
+                    settings.loc, settings.page, settings.hike);
             } else {
                 $modal.css({
                     width: settings.width || auto,

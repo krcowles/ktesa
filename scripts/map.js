@@ -23,7 +23,6 @@ var mapTick = {   // custom tick-mark symbol for tracks
     strokeWeight: 2
 };
 
-var msg;  // debug message string
 function locateGeoSym() {
 	var geoleftOffset = 120; // px offset from right edge of window
 	var geotopOffset = $('#panel').height() - $('#geoCtrl').height(); // px offset from bottom of map div
@@ -102,6 +101,7 @@ $hdrs.each( function(indx) {
 		dir_hdr = indx;
 	}
 });
+var locaters = [];
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 var mapdone = new $.Deferred();
@@ -178,17 +178,22 @@ function initMap() {
 	sym =clusterIcon;
 	$(allCs).each( function() {
 		var chikeArray;
+		var csrchArray;
 		var clusterGrp = $(this).data('cluster'); // must be a single char
 		var cindx;
+		var cnme;
 		if ( clustersUsed.indexOf(clusterGrp) === -1 ) { // skip over other members in group
 			// a new group has been encountered
 			chikeArray = [];
+			csrchArray = [];
 			clustersUsed += clusterGrp; // update "Used"
-			// collect the indices for all hikes in this group
+			// collect the indices (and names) for all hikes in this group
 			for (n=0; n<allCs.length; n++) {
 				if ($(allCs[n]).data('cluster') == clusterGrp) {
 					cindx = $(allCs[n]).data('indx');
 					chikeArray.push(cindx);
+					cnme = $(allCs[n]).children().eq(hike_hdr).children().eq(0).text();
+					csrchArray.push(cnme);
 				}
 			}
 			// proceed with def's for other arguments
@@ -207,7 +212,7 @@ function initMap() {
 			cpage = $plink.attr('href');
 			var $dlink = $dataCells.eq(dir_hdr).find('a');
 			var dirLink = $dlink.attr('href');
-			AddClusterMarker(loc, sym, nme, cpage, dirLink, chikeArray, hno);
+			AddClusterMarker(loc, sym, nme, cpage, dirLink, chikeArray, hno, csrchArray);
 		}
 	});
 	// Finally, the remaining hike markers
@@ -238,6 +243,8 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
+		var srchmrkr = {hikeid: pinName, pin: marker};
+		locaters.push(srchmrkr);
 		clusterMarkerSet.push(marker);
 		// add info window functionality
 		marker.addListener( 'click', function() {
@@ -264,9 +271,12 @@ function initMap() {
 			});
 			iw.open(map, this);
 		});
+		var srchmrkr = {hikeid: pinName.trim(), pin: marker};
+		locaters.push(srchmrkr);
 	} // end function AddVCMarker
 	// Clustered Trailhead Markers:
-	function AddClusterMarker(location, iconType, pinName, website, dirs, hikes, mrkrno) {
+	function AddClusterMarker(location, iconType, pinName, website, dirs, 
+		hikes, mrkrno, nmeArray) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
@@ -291,6 +301,12 @@ function initMap() {
 			});
 			iw.open(map, this);
 		});
+		clusterMarkerSet.push(marker);
+		// for each marker in the cluster, assoc. with a hike for searching
+		$.each(nmeArray, function(indx, hname) {
+			var srchmrkr = {hikeid: hname, pin: marker};
+			locaters.push(srchmrkr);
+		});
 	} // end AddClusterMarker
 	function AddHikeMarker(location, iconType, pinName, website, dirs, hike, mrkrno) {
 		var marker = new google.maps.Marker({
@@ -299,7 +315,6 @@ function initMap() {
 		  icon: iconType,
 		  title: pinName
 		});
-		clusterMarkerSet.push(marker);
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
 			var iwContent = '<div id="NH">Hike: ' + pinName + '<br />';
@@ -317,6 +332,9 @@ function initMap() {
 			});
 			iw.open(map, this);
 		});
+		var srchmrkr = {hikeid: pinName, pin: marker};
+		locaters.push(srchmrkr);
+		clusterMarkerSet.push(marker);
 	}
 	// /////////////////////  CORE HIKE DATA FOR INFO WINDOW //////////////////////
 	function coreHikeData(markerType, hikeNo) {

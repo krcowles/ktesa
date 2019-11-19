@@ -11,7 +11,7 @@ $("#searchbar").on("autocompleteselect", function(event, ui) {
     var itemChosen = ui.item.value;
     // find the hike and zoom in...
     $('table tbody tr').each(function() {
-        if ($(this).children().eq(0).children().eq(0).text() == itemChosen) {
+        if ($(this).children().eq(0).children().eq(0).text().trim() == itemChosen) {
             var lat = parseFloat($(this).data('lat'));
             var lng = parseFloat($(this).data('lon'));
             var srchloc = {lat: lat, lng: lng};
@@ -23,6 +23,7 @@ $("#searchbar").on("autocompleteselect", function(event, ui) {
                 height: '76px',
                 width: '210px',
                 content: $opts,
+                hike: itemChosen,
                 loc: srchloc,
                 page: hikepage,
                 deferred: def
