@@ -10,6 +10,8 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+require "alphabeticHikes.php";
+
 // the following are required for ALL options (used by makeTables.php)
 $usr = 'mstr'; // this is actually a "don't care", but needs to be specified
 $age = 'old';
@@ -33,12 +35,8 @@ $includeZoom = true;
     <script src="../scripts/jquery-ui.js"></script>
 
     <!-- Used by scripts/filter.js depending on whether table page or map page -->
-    <?php
-        require "alphabeticHikes.php";
-    ?>
     <script type="text/javascript">
         var pg = "map";
-        var hikelist = <?= $hikelist;?>;
     </script>
 </head>
 
@@ -55,15 +53,9 @@ $includeZoom = true;
 <p id="geoSetting">ON</p>
 <img id="geoCtrl" src="../images/geoloc.png" />
 
-<!-- Latest Hike Box -->
-<div id="newHikeBox">Latest Hike:<br>
-    <a id="newhike" href="#"><span id="winner"></span></a>
-</div>
-
 <!-- search bar and hike names from php -->
-<div class="ui-widget">
-    <input id="searchbar" placeholder="Search for a hike" />
-</div>
+<input id="searchbar" placeholder="Search for a hike" list="hikelist" />
+<?= $datalist; ?>
 
 <div id="tbl_container">
 <div id="tblfilter">

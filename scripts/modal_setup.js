@@ -61,7 +61,7 @@ var modal = (function() {
         $modal.css({
             position: 'absolute',
             top: '91px',
-            left: '330px',
+            left: '360px',
             width: optwd,
             height: optht,
             border: '1px solid',

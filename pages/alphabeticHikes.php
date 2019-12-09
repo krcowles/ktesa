@@ -12,7 +12,11 @@ $allHikes = $pdo->query("SELECT pgTitle FROM HIKES")->fetchAll(PDO::FETCH_COLUMN
 if (!sort($allHikes)) {
     throw new Exception("Could not sort list of hikes");
 }
-$hikelist = json_encode($allHikes);
+$datalist = '<datalist id="hikelist">';
+foreach ($allHikes as $hike) {
+    $datalist .= '<option value="' . $hike . '">';
+}
+$datalist .= '</datalist>';
 // create select box options
 /*
 $AtoC = '';
