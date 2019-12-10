@@ -14,22 +14,17 @@ $('#searchbar').on('input', function(ev) {
                 var lat = parseFloat($(this).data('lat'));
                 var lng = parseFloat($(this).data('lon'));
                 var srchloc = {lat: lat, lng: lng};
-                var hikepage = $(this).children().eq(0).children().eq(0).attr('href');
-                var $opts = $('#srch').detach();
-                var def = new $.Deferred();
-                modal.open({
-                    id: 'srchopt',
-                    height: '76px',
-                    width: '164px',
-                    content: $opts,
-                    hike: val,
-                    loc: srchloc,
-                    page: hikepage,
-                    deferred: def
+                map.setCenter(srchloc);
+                map.setZoom(13);
+                $.each(locaters, function(indx, value) {
+                    // for VC markers:
+                    if (value.hikeid.includes('Visitor Center')) {
+                        value.hikeid = value.hikeid.replace('Visitor Center', 'Index');
+                    }
+                    if (value.hikeid == val) {
+                        google.maps.event.trigger(value.pin, 'click');
+                    }
                 });
-            $.when( def ).then(function() {
-                $('#modals').append($opts);
-            });
                 return false; // as this will happen for each table...
             }
         });

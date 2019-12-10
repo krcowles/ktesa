@@ -421,11 +421,6 @@ function initMap() {
 			IdTableElements(newBds);
 		});
 	}
-	$('#newhike').on('click', function(ev) {
-		ev.preventDefault();
-		map.setCenter(newloc);
-		map.setZoom(13);
-	});
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
