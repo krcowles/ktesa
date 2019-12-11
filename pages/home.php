@@ -46,16 +46,20 @@ $includeZoom = true;
 <p id="trail">Welcome!</p>
 <p id="page_id" style="display:none;">Home</p>
 
-<div id="map" style="width:100%;"></div>
-<p id="viewmore">&lt;&lt;  Scroll Down for the sortable 'Table of Hikes' &gt;&gt;</p>
+<div id="map"></div>
 
 <!-- GPS Position Location -->
 <p id="geoSetting">ON</p>
 <img id="geoCtrl" src="../images/geoloc.png" />
 
-<!-- search bar and hike names from php -->
 <input id="searchbar" placeholder="Search for a hike" list="hikelist" />
 <?= $datalist; ?>
+
+<div id="sideTable">
+</div>
+<div id="maplegend">
+</div>
+
 
 <div id="tbl_container">
 <div id="tblfilter">
@@ -117,22 +121,15 @@ $includeZoom = true;
     Click here for metric units</p>
 </div>
 </div>
-<div id="modals">
-    <div id="srch">
-        <a id="jslnk" href="#">Show location on map</a><br />
-        <a id="hikepg" href="#" target="_self">Go to hike web page</a><br />
-        <div id="closeit"></div>
-    </div>
-</div>
 
 <script src="../scripts/modernizr-custom.js" type="text/javascript"></script>
 <script src="../scripts/menus.js" type="text/javascript"></script>
 <script src="../scripts/hikeBox.js" type="text/javascript"></script>
 <script src="../scripts/markerclusterer.js" type="text/javascript"></script>
 <script src="../scripts/filter.js" type="text/javascript"></script>
-<script src="../scripts/phpDynamicTbls.js" type="text/javascript"></script>
 <script src="../scripts/multi-sort.js" type="text/javascript"></script>
 <script src="../scripts/map.js" type="text/javascript"></script>
+<script src="../scripts/sideTables.js" type="text/javascript"></script>
 <script src="../scripts/modal_setup.js" type="text/javascript"></script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry"

@@ -56,51 +56,6 @@ var modal = (function() {
             modal.close();
         });
     }
-    // Search bar options
-    function searchbar(optht, optwd, def, coords, pg, hike) {
-        $modal.css({
-            position: 'absolute',
-            top: '91px',
-            left: '360px',
-            width: optwd,
-            height: optht,
-            border: '1px solid',
-            padding: '8px'
-        }).appendTo('body');
-        $modal.css('background-color', 'white');
-        $modal.css('z-index', '200');
-        $('#neither').append($close);
-        $close.css('background-color', 'white');
-        $close.css('color', 'black');
-        $close.css('border-radius', '6px');
-        $close.css('left', '42px');
-        $close.css('top', '8px');
-        var newlnk = '../pages/' + pg;
-        $('#hikepg').attr('href', newlnk);
-        $('#jslnk').on('click', function(ev) {
-            ev.preventDefault();
-            map.setCenter(coords);
-            map.setZoom(13);
-            $.each(locaters, function(indx, value) {
-                // for VC markers:
-                if (value.hikeid.includes('Visitor Center')) {
-                    value.hikeid = value.hikeid.replace('Visitor Center', 'Index');
-                }
-                if (value.hikeid == hike) {
-                    google.maps.event.trigger(value.pin, 'click');
-                }
-            });
-            def.resolve();
-            modal.close();
-        });
-        $('#opt2').change(function() {
-            $('#hpg')[0].click();
-            def.resolve();
-        });
-        $close.on('click', function() {
-            modal.close();
-        });
-    }
 
     // public
     return {   // returns object methods:

@@ -13,7 +13,11 @@ var XH_TYPE = 3;
 var map;  // needs to be global!
 // Google's hidden inner div when clicking on full screen mode
 var $fullScreenDiv;
-var $map = $('#map'); 
+var $map = $('#map');
+// Maximize map height & side table div
+var mapht = $(window).height() - $('#panel').height();
+$map.css('height', mapht + 'px');
+$('#sideTable').css('height', mapht + 'px');
 var mapTick = {   // custom tick-mark symbol for tracks
     path: 'M 0,0 -5,11 0,8 5,11 Z',
     fillcolor: 'Red',
@@ -24,13 +28,10 @@ var mapTick = {   // custom tick-mark symbol for tracks
 };
 
 function locateGeoSym() {
-	var geoleftOffset = 120; // px offset from right edge of window
-	var geotopOffset = $('#panel').height() - $('#geoCtrl').height(); // px offset from bottom of map div
-	// starting position in window:
-	var winht = ($('#map').height() - geotopOffset) + 'px';
-	var winwd = ($(window).innerWidth() - geoleftOffset) + 'px';
+	var winht = $('#panel').height() + mapht - 100;
+	var mapwd = $('#map').width() - 120;
 	$('#geoCtrl').css('top', winht);
-	$('#geoCtrl').css('left', winwd);
+	$('#geoCtrl').css('left', mapwd);
 }
 locateGeoSym();
 $('#geoCtrl').on('click', setupLoc);
@@ -64,8 +65,8 @@ var allCs = [];
 var allNs = [];
 var allXs = [];  // this array will hold the special-case "At VC" hikes
 // NOTE: "At VC" hikes are ignored for purposes of creating separate markers
-// $hikeRows is defined in hikeBox.js
-$hikeRows.each( function() {
+
+$('#refTbl tbody tr').each( function() {
 	if ( $(this).hasClass('indxd') ) {
 		allVs.push(this);
 	} else if ( $(this).hasClass('clustered') ) {
@@ -101,7 +102,7 @@ $hdrs.each( function(indx) {
 		dir_hdr = indx;
 	}
 });
-var locaters = [];
+var locaters = []; // global used to popup info window on map when hike is searched
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 var mapdone = new $.Deferred();
@@ -168,10 +169,6 @@ function initMap() {
 		var dirLink = $dlink.attr('href');
 		nme = $dataCells.eq(hike_hdr).text();
 		nme = nme.replace('Index','Visitor Center');
-		if (nme == newHikeName) {
-			latest = hno;
-			newloc = loc;
-		}
 		AddVCMarker(loc, sym, nme, vpage, dirLink, thisVorgs, hno);
 	});
 	// Now, the "clustered" hikes: Add one and only one cluster marker per group
@@ -202,10 +199,6 @@ function initMap() {
 			loc = {lat: clat, lng: clon};
 			var hno = parseInt($(this).data('indx'));
 			nme = $(this).data('tool');
-			if (nme == newHikeName) {
-				latest = hno;
-				newloc = loc;
-			}
 			var hikeId = $(this).data('indx');
 			var $dataCells = $(this).find('td');
 			var $plink = $dataCells.eq(hike_hdr).find('a');
@@ -224,10 +217,6 @@ function initMap() {
 		var hno = $(this).data('indx');
 		var $dataCells = $(this).find('td');
 		nme = $dataCells.eq(hike_hdr).text();
-		if (nme == newHikeName) {
-			latest = hno;
-			newloc = loc;
-		}
 		$plink = $dataCells.eq(hike_hdr).find('a');
 		npage = $plink.attr('href');
 		$dlink = $dataCells.eq(dir_hdr).find('a');
@@ -395,32 +384,28 @@ function initMap() {
 	map.addListener('zoom_changed', function() {
 		var idle = google.maps.event.addListener(map, 'idle', function (e) {
 			var curZoom = map.getZoom();
-			if (typeof(useTbl) !== 'undefined' && useTbl) {
-				var perim = String(map.getBounds());
-				IdTableElements(perim);
-			}
+			var perim = String(map.getBounds());
 			if ( curZoom > 12 ) {
 				for (var m=0; m<allTheTracks.length; m++) {
 					trkKeyStr = 'trk' + m;
 					trkObj[trkKeyStr].setMap(map);
 				}
-
 			} else {
 				for (var n=0; n<allTheTracks.length; n++) {
 					trkKeyStr = 'trk' + n;
 					trkObj[trkKeyStr].setMap(null);
 				}
 			}
+			IdTableElements(perim);
 			google.maps.event.removeListener(idle);
 		});
 	});
 	
-	if (typeof(useTbl) !== 'undefined' && useTbl) {
-		map.addListener('dragend', function() {
-			var newBds = String(map.getBounds());
-			IdTableElements(newBds);
-		});
-	}
+	map.addListener('dragend', function() {
+		var newBds = String(map.getBounds());
+		IdTableElements(newBds);
+	});
+
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
@@ -701,7 +686,9 @@ $(document).bind(
 
 // //////////////////////  WINDOW RESIZE EVENT  //////////////////////
 $(window).resize(function() {
-	fitMapDiv();
+	mapht = $(window).height() - $('#panel').height();
+	$('#map').css('height', mapht + 'px');
+	$('#sideTable').css('height', mapht + 'px');
 	locateGeoSym();
 });
 
