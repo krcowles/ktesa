@@ -98,8 +98,9 @@ function IdTableElements(boundsStr) {
     });
     if ( rowCnt === 0 ) {
         $('#sideTable').empty();
-        msg = "NO hikes in this area";
-        alert(msg);
+        var nohikes = '<p style="padding-left:12px;font-size:18px;">' +
+            'There are no hikes in the viewing area</p>';
+        $('#sideTable').html(nohikes);
     } else {
         formTbl(subtbl);
     }
