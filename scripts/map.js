@@ -252,7 +252,7 @@ function initMap() {
 			//iwContent += '<br /><a href="' + dirs + '" target="_blank">Directions</a></div>';
 			var iw = new google.maps.InfoWindow({
 					content: iwContent,
-					maxWidth: 400
+					maxWidth: 600
 			});
 			iw.open(map, this);
 		});
