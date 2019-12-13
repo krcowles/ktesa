@@ -146,7 +146,6 @@ function initMap() {
 		var thisVorgs = [];
 		var vlat = parseFloat($(this).data('lat'));
 		var vlon = parseFloat($(this).data('lon'));
-		var hno = parseInt($(this).data('indx'));
 		loc = {lat: vlat, lng: vlon};
 		// identify the originating hikes, as they will not have individual markers...
 		var orgDat = $(this).data('org-hikes');
@@ -169,14 +168,14 @@ function initMap() {
 		var dirLink = $dlink.attr('href');
 		nme = $dataCells.eq(hike_hdr).text();
 		nme = nme.replace('Index','Visitor Center');
-		AddVCMarker(loc, sym, nme, vpage, dirLink, thisVorgs, hno);
+		AddVCMarker(loc, sym, nme, vpage, dirLink, thisVorgs);
 	});
 	// Now, the "clustered" hikes: Add one and only one cluster marker per group
 	sym =clusterIcon;
 	$(allCs).each( function() {
 		var chikeArray;
 		var csrchArray;
-		var clusterGrp = $(this).data('cluster'); // must be a single char
+		var clusterGrp = $(this).data('cluster');
 		var cindx;
 		var cnme;
 		if ( clustersUsed.indexOf(clusterGrp) === -1 ) { // skip over other members in group
@@ -199,13 +198,11 @@ function initMap() {
 			loc = {lat: clat, lng: clon};
 			var hno = parseInt($(this).data('indx'));
 			nme = $(this).data('tool');
-			var hikeId = $(this).data('indx');
 			var $dataCells = $(this).find('td');
 			var $plink = $dataCells.eq(hike_hdr).find('a');
-			cpage = $plink.attr('href');
 			var $dlink = $dataCells.eq(dir_hdr).find('a');
 			var dirLink = $dlink.attr('href');
-			AddClusterMarker(loc, sym, nme, cpage, dirLink, chikeArray, hno, csrchArray);
+			AddClusterMarker(loc, sym, nme, chikeArray, csrchArray, dirLink);
 		}
 	});
 	// Finally, the remaining hike markers
@@ -225,7 +222,7 @@ function initMap() {
 	});
 	/* the actual functions to create the markers & setup info windows */
 	// Visitor Center Markers:
-	function AddVCMarker(location, iconType, pinName, website, dirs, orgHikes, mrkrno) {
+	function AddVCMarker(location, iconType, pinName, website, dirs, orgHikes) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
@@ -239,10 +236,9 @@ function initMap() {
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
 			var iwContent;
-			vLine1 = '<div id="iwVC">' + pinName;
-			vLine2 = '<a href="' + website + 
-					'" target="_blank">Park Information and Hike Index</a>';  // web link
-			iwContent = vLine1 + '<br />' + vLine2;
+			vLine1 = '<div id="iwVC"><a href="' + website + 
+					'" target="_blank">' + pinName + '</a>';
+			iwContent = vLine1;
 			if (orgHikes.length > 0) { // orgHikes is an array parameter passed in
 				vLine3 = '<em>Hikes Originating from Visitor Center</em>';
 				if(orgHikes.length === 1) {
@@ -253,7 +249,7 @@ function initMap() {
 					iwContent += coreHikeData(VC_TYPE, orgHikes[v]);
 				}
 			}
-			iwContent += '<br /><a href="' + dirs + '" target="_blank">Directions</a></div>';
+			//iwContent += '<br /><a href="' + dirs + '" target="_blank">Directions</a></div>';
 			var iw = new google.maps.InfoWindow({
 					content: iwContent,
 					maxWidth: 400
@@ -264,8 +260,7 @@ function initMap() {
 		locaters.push(srchmrkr);
 	} // end function AddVCMarker
 	// Clustered Trailhead Markers:
-	function AddClusterMarker(location, iconType, pinName, website, dirs, 
-		hikes, mrkrno, nmeArray) {
+	function AddClusterMarker(location, iconType, pinName, hikes, nmeArray, dirs) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
@@ -277,13 +272,12 @@ function initMap() {
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
 			var iwContent;
-			var cline1 = '<div id="iwCH">' + pinName + '<br />';
-			var cline2 = '<em>Hikes in this area</em>';
-			iwContent = cline1 + cline2;
+			var cline1 = '<div id="iwCH">' + pinName;
+			iwContent = cline1;
 			for (m=0; m<hikes.length; m++) {
 				iwContent += coreHikeData(CH_TYPE, hikes[m]);
 			}
-			//iwContent += '<br /><a href="' + dirs + '" target="_blank">Directions</a></div>';
+			iwContent += '<br /><a href="' + dirs + '" target="_blank">Directions</a></div>';
 			var iw = new google.maps.InfoWindow({
 					content: iwContent,
 					maxWidth: 600
@@ -306,13 +300,11 @@ function initMap() {
 		});
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
-			var iwContent = '<div id="NH">Hike: ' + pinName + '<br />';
 			var $nData = coreHikeData(NH_TYPE, hike);
+			var iwContent = '<div id="iwNH">' + $nData.eq(hike_hdr).html() + '<br />';
 			iwContent += 'Length: ' + $nData.eq(lgth_hdr).text() + '<br />';
 			iwContent += 'Elevation Change: ' + $nData.eq(elev_hdr).text() + '<br />';
 			iwContent += 'Difficulty: ' + $nData.eq(diff_hdr).text() + '<br />';
-			var $plink = $nData.eq(hike_hdr).find('a');
-			iwContent += '<a href="' + $plink.attr('href') + '" target="_blank">Website</a><br />';
 			var $dlink = $nData.eq(dir_hdr).find('a');
 			iwContent += '<a href="' + $dlink.attr('href') + '" target="_blank">Directions</a></div>';
 			var iw = new google.maps.InfoWindow({
@@ -362,12 +354,10 @@ function initMap() {
 		if (markerType === NH_TYPE) {
 			return $hikeData;
 		}
-		var iwDat = '<br />' + $hikeData.eq(hike_hdr).text() + '; ';
-		iwDat += 'Lgth: ' + $hikeData.eq(lgth_hdr).text() + '; ';
+		var iwDat = '<br />' + $hikeData.eq(hike_hdr).html();
+		iwDat += ' Lgth: ' + $hikeData.eq(lgth_hdr).text() + '; ';
 		iwDat += 'Elev Chg: ' + $hikeData.eq(elev_hdr).text() + '; ';
-		iwDat += 'Diff: ' + $hikeData.eq(diff_hdr).text() + '<br />';
-		var $plink = $hikeData.eq(hike_hdr).find('a');
-		iwDat += '<a href="' + $plink.attr('href') + '" target="_blank">Website</a>';
+		iwDat += 'Diff: ' + $hikeData.eq(diff_hdr).text();
 		return iwDat;
 	} // end function coreHikeData
 
