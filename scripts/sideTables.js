@@ -97,6 +97,7 @@ function IdTableElements(boundsStr) {
         }
     });
     if ( rowCnt === 0 ) {
+        $('#sideTable').empty();
         msg = "NO hikes in this area";
         alert(msg);
     } else {
