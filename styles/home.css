@@ -44,6 +44,35 @@ body {
     height: 720px;
 	z-index: 1;
 }
+#legend {
+	position: absolute;
+}
+#maplegend {
+	background-color: floralwhite;
+	width: 380px;
+	border: 2px solid black;
+	display: none;
+	position: absolute;
+	z-index: 2000;
+}
+#maplegend ul li {
+	padding-right: 6px;
+}
+#header {
+	width: 100%;
+	background-color: #ffeecc;
+	font-size: 20px;
+	text-align: center;
+	padding-bottom: 2px;
+	border-bottom: 2px solid black;
+}
+#can {
+	float: right;
+	height: 100%;
+	padding: 0px 8px 2px 8px;
+	font-weight: bold;
+	border-left: 2px solid black;
+}
 #iwVC {
 	background-color: #f0f0f0;
 	color: Black;
