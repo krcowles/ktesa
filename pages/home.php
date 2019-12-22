@@ -60,20 +60,19 @@ $includeZoom = true;
     <div id="header">Drag Here<div id="can">X</div></div>
     <ul id="mapsyms">
         <li><img src="../images/markerclusters/m1.png" alt="Cluster Marker" 
-            width="32" />
-            &nbsp;&nbsp;Click on any color cluster group (or zoom in) to
+            width="32" />Click on any color cluster group (or zoom in) to
             expand the hikes</li>
         <li><img src="../images/bluepin.png" alt="Blue Pin" height="32" />
-            &nbsp;&nbsp; Click this pin to show multiple hikes with 
+            Click this pin to show multiple hikes with 
             trailheads in close proximity</li>
         <li><img src="../images/redpin.png" alt="Red Pin" height="32" />
-            &nbsp;&nbsp;Click this pin to show a single hike at this 
+            Click this pin to show a single hike at this 
             location</li>
         <li><img src="../images/yellow.png" alt="Yellow Pin" height="32" />
-            &nbsp;&nbsp;Click this pin to see the hikes associated with a 
+            Click this pin to see the hikes associated with a 
             Visitor's Center</li>
         <li><img src="../images/geoloc.png" alt="Geolocation Symbol"
-            height="32" />&nbsp;&nbsp;&nbsp;Click this symbol to locate your
+            height="32" />Click this symbol to locate your
             current position on the map</li>
     </ul>
 </div>

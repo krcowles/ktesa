@@ -55,8 +55,19 @@ body {
 	position: absolute;
 	z-index: 2000;
 }
-#maplegend ul li {
+#maplegend ul {
+	list-style: none;
+	list-style-position: outside;
+	padding-left: 6px;
+}
+li img {
+	float: left;
+	margin-right: 4px;
+}
+li {
+	padding-left: 6px;
 	padding-right: 6px;
+	margin-bottom: 4px;
 }
 #header {
 	width: 100%;
