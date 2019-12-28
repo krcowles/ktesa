@@ -26,19 +26,18 @@ $usr = filter_input(INPUT_POST, 'usr');
  *      which are visible, as those represent ones that may have been added.
  *      For every rit1 and rit2 there is a corresponding hidden rit1, rit2.
  */
-// 1. References already existing in the database:
+// Delete all References already existing in the database:
 $delrefsreq = "DELETE FROM EREFS WHERE indxNo = ?;";
 $delrefs = $pdo->prepare($delrefsreq);
 $delrefs->execute([$hikeNo]);
-// Now add the newly edited ones back in, sans any deletions
-// NOTE: The following posts collect all items, even if empty (but NOT if hidden)
+// 1. Now add the newly edited ones back in (if any), sans any deletions
 if (isset($_POST['drtype'])) {
     $drtypes = $_POST['drtype'];  // reference type from select drop-down
 }
-if (isset($_POST['drit1'])) {  // item1 : either book no. or url
+if (isset($_POST['drit1'])) {  // item1 : either book name or url
     $drit1s = $_POST['drit1'];
 }
-if (isset($_POST['drit2'])) {  // item2 : either author or text
+if (isset($_POST['drit2'])) {  // item2 : either author or click-text
     $drit2s = $_POST['drit2'];
 }
 // determine if any refs were marked for deletion ('delref's)

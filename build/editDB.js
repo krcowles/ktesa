@@ -344,20 +344,20 @@ var box;
 // initialize (pre-populate) the boxes:
 for (var i=0; i<refCnt; i++) {
     item0 = '#rtype' + i;
-    rtype = $(item0).text();  // get the rtype for this reference item
+    rtype = $(item0).text().trim();  // get the rtype for this reference item
     item1 = '#rit1' + i;
-    rit1 = $(item1).text();  // get the rit1 for this item (numeric for a book)
+    rit1 = $(item1).text().trim();  // get the rit1 for this item (numeric for a book)
     item2 = '#rit2' + i;
-    rit2 = $(item2).text();  // get the rit2 for this item
+    rit2 = $(item2).text().trim();  // get the rit2 for this item
     selbox = '#sel' + i;
     $(selbox).val(rtype); // pre-populate reference type drop-down
     boxid = 'sel' + i;
     if (rtype === 'Book:' || rtype === 'Photo Essay:') {
         indx = parseInt(rit1) - 1;
-        var bkname = '#bkname' + i;  // <select> element for all book names                 
-        $(bkname).val(rit1);  // this will be a number corresponding to an array indx
+        var bkname = '#bkname' + i;  // input box id for book name                
+        $(bkname).val(rit1);
         var auth = '#auth' + i;
-        $(auth).val(authors[indx]);  // get the name from the array
+        $(auth).attr('value', authors[indx]);  // get the name from the array
         box = document.getElementById(boxid);
         // disable non-book entries
         for (var u=2; u<box.options.length; u++) {
@@ -376,6 +376,19 @@ for (var i=0; i<refCnt; i++) {
         document.getElementById(boxid).options[1].disabled = true;
     }
 }
+// user can change book selection:
+var $bksels = $('select[id^=bkname]');
+// jQuery doesn't always allow .on('change') for $('select[attr=xyz]'), so:
+$bksels.each(function() {
+    var ino = this.id;
+    var bksel = '#' + ino + ' option:selected';
+    var inpid = '#auth' + ino.substr(6);
+    $(this).on('change', function() {
+        var newbk = parseInt($(bksel).val()) - 1;
+        var newauth = authors[newbk];
+        $(inpid).attr('value', newauth);
+    });
+});
 // B: This code refers to the new refs (if any) which can be added by the user
 /*
  * This code detects when the user selects a reference type other than

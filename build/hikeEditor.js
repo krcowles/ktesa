@@ -10,43 +10,37 @@ $( function () { // when page is loaded...
 var uid = $('#uid').text();
 var useEditor = 'editDB.php?tab=1&usr=' + uid + "&hikeNo=";
 $rows = $('tbody').find('tr');
-$('a:not(.navs)').on('click', function(ev) {
-    ev.preventDefault();
-    if (age === 'new') {  // *** THESE HIKES ARE EHIKES ***
-        var ptr = $(this).prop('href');
-        $rows.each( function(indx) {
-            var currptr = $(this).find('a').prop('href');
-            if (currptr == ptr) {
-                // extract the hikeNo:
-                var eqpos = ptr.indexOf('=') + 1;
-                var hikeNo = ptr.substring(eqpos, ptr.length);
-                var stat = statfields[indx];
-                if (stat !== '0') {
-                    umsg = "This hike can be viewed in \nits original state on " +
-                        'the main site';
-					alert(umsg);
-                }
-				useEditor += hikeNo;
-				window.open(useEditor);
-				window.close();
-            }
-        });
-    } else { // this hike is being pulled from published HIKES
-        var $containerCell = $(this).parent();
-        var $containerRow = $containerCell.parent();
-        if ( !$containerRow.hasClass('indxd') ) {
-            var hikeToUse = $containerRow.data('indx');
-            var callPhp = 'xfrPub.php?hikeNo=' + hikeToUse + '&usr=' + uid;
-			window.open(callPhp);
-			window.close();
-        } else {
-            //currently, only site master can edit index pages
-            var hikeToUse = $containerRow.data('indx');
-			var callPhp = 'editIndx.php?hikeNo=' + hikeToUse 
-				+ '&tbl=old&usr=mstr&tab=1';
-			window.open(callPhp);
-			window.close();
-        }
+$('a:not(.navs)').each(function(i) {
+	// *** THESE HIKES ARE EHIKES ***
+	var ptr = $(this).prop('href');
+    if (age === 'new') {
+		// find the hiken no:
+		if (ptr.indexOf('hikeIndx') !== -1) {
+			var hikeloc = ptr.indexOf('hikeIndx=') + 9;
+			var hikeno = ptr.substr(hikeloc);
+			var editlnk = useEditor + hikeno;
+			$(this).attr('href', editlnk);
+			$(this).attr('target', '_self');
+		}
+	// *** THESE HIKES ARE PUBLSIHED ***
+    } else {
+		if (ptr.indexOf('hikeIndx') !== -1) {
+			// need to differentiate between index and hike pages:
+			var $containerRow = $(this).parent().parent();
+			if ( !$containerRow.hasClass('indxd') ) {
+				var hikeToUse = $containerRow.data('indx');
+				var callPhp = 'xfrPub.php?hikeNo=' + hikeToUse + '&usr=' + uid;
+				$(this).attr('href', callPhp);
+				$(this).attr('target', '_self');
+			} else {
+				// there is currently no ability to edit index pages
+				$containerRow.find('td').css('background-color', 'lightgray');
+				$(this).on('click', function(ev) {
+					ev.preventDefault();
+					alert("Index pages/Visitor Centers cannot be edited");
+				});
+			}
+		}
     }
 });
 
