@@ -13,27 +13,13 @@ var modal = (function() {
         modal.close();
     });
 
-    // private functions 
-    // login box
-    function loginModal() {
+    // private functions: (currently only one)
+    // login box:
+    function loginModal(setwidth) {
         /**
-         * This modal needs a high z-index;
-         * In order to set it with javascript,
-         * 'position' must be either
-         * absolute, relative, or fixed
+         * This modal needs a high z-index; In order to set it with javascript,
+         * 'position' must be either absolute, relative, or fixed
          */
-        var modalTop  = $('#navbar').height() + 'px';
-        var vpWidth   = $('#navbar').width();
-        var modalLeft = parseInt(vpWidth/2 - parseInt(settings.width)/2) + 'px';
-        $modal.css({
-            position: 'absolute',
-            top: modalTop,
-            left: modalLeft,
-            width: settings.width || auto,
-            height: settings.height || auto,
-            border: '2px solid',
-            padding: '8px'
-        }).appendTo('body');
         $('#enter').after($close);
         $close.css('left', '128px');
         $modal.css('z-index', '10000');
@@ -55,9 +41,12 @@ var modal = (function() {
             validateUser(uid, pwd);
             modal.close();
         });
+        $close.on('click', function() {
+            modal.close();
+        });
     }
 
-    // public
+    // public:
     return {   // returns object methods:
         center: function() {
             var top = Math.max($window.height() - $modal.outerHeight(), 0) / 2;
@@ -69,11 +58,21 @@ var modal = (function() {
         },
         open: function(settings) {
             $content.empty().append(settings.content.html());
+            var modalTop  = $('#navbar').height() + 'px';
+            var vpWidth   = $('#navbar').width();
+            var logwd = parseInt(settings.width)/2;
+            var modalLeft = parseInt(vpWidth/2 - logwd) + 'px';
+            $modal.css({
+                position: 'absolute',
+                top: modalTop,
+                left: modalLeft,
+                width: settings.width || auto,
+                height: settings.height || auto,
+                border: '2px solid',
+                padding: '8px'
+            }).appendTo('body');
             if (settings.id === 'logins') {
                 loginModal();
-            } else if (settings.id === 'srchopt') {
-                searchbar(settings.height, settings.width, settings.deferred,
-                    settings.loc, settings.page, settings.hike);
             } else {
                 $modal.css({
                     width: settings.width || auto,
