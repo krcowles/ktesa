@@ -9,8 +9,8 @@
  * This file is to be included on the hikePageTemplate.php and
  * expects definition of the following variables:
  *   $hikeIndexNo is the hike number in either EHIKES or HIKES
- *   $hikeGroup set by get_HIKES_row.php and holds the value in 'cgroup'
- *   $rtable either EREFS or REFS 
+ *   $hikeGroup defined in hikePageData.php (for hikePageTemplate.php)
+ *   $rtable = either EREFS or REFS 
  *   $gtable either GPSDAT or EGPSDAT
  * PHP Version 7.1
  * 
