@@ -195,7 +195,7 @@ function initMap() {
 	var loc; // google lat/lng object
 	var sym; // type of icon to display for marker
 	var nme; // name of hike (for 'tooltip' type title of marker
-	var clustersUsed = '';
+	var clustersUsed = [];
 	// Loop through marker definitions and call marker-creator fcts: 
 	// 1st, visitor centers:
 	sym = ctrIcon;
@@ -235,11 +235,11 @@ function initMap() {
 		var clusterGrp = $(this).data('cluster');
 		var cindx;
 		var cnme;
-		if ( clustersUsed.indexOf(clusterGrp) === -1 ) { // skip over other members in group
+		if ( !clustersUsed.includes(clusterGrp) ) { // skip over other members in group
 			// a new group has been encountered
 			chikeArray = [];
 			csrchArray = [];
-			clustersUsed += clusterGrp; // update "Used"
+			clustersUsed.push(clusterGrp);
 			// collect the indices (and names) for all hikes in this group
 			for (n=0; n<allCs.length; n++) {
 				if ($(allCs[n]).data('cluster') == clusterGrp) {
