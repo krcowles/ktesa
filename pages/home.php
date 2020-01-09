@@ -143,7 +143,6 @@ $includeZoom = true;
 
 <script src="../scripts/modernizr-custom.js" type="text/javascript"></script>
 <script src="../scripts/menus.js" type="text/javascript"></script>
-<script src="../scripts/hikeBox.js" type="text/javascript"></script>
 <script src="../scripts/markerclusterer.js" type="text/javascript"></script>
 <script src="../scripts/filter.js" type="text/javascript"></script>
 <script src="../scripts/multi-sort.js" type="text/javascript"></script>
