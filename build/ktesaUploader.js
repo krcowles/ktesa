@@ -510,15 +510,26 @@ function cleanup() {
     });
     $.ajax({
         method: 'GET',
-        url: 'statusReader.php',
+        url: 'photoStat.txt',
         dataType: 'text',
         success: function(data) {
             alert(data);
+            $.ajax({
+                method: 'GET',
+                url: 'deleteStatus.php',
+                error: function(jqXHR, textStatus, errorThrown) {
+                    var servertxt = jqXHR.responseText;
+                    var prodmsg = "Error encountered in ajax call line 517\n" +
+                        "Error: " + errorThrown + "; " + textStatus;
+                    alert(prodmsg);
+                }
+            });
         },
         error: function(jqXHR, errmsg, httpErr) {
-            var msg = "Error encountered in retrieving the status text file: " +
-                "\nLine 467 in ktesaUploader.js; \nerror found: " +
-                errmsg + " " + httpErr;
+            var msg = "Error encountered in retrieving photoStat.txt file:\n" +
+                "ajax call: line 511 in ktesaUploader.js; error found: " +
+                errmsg + "; " + httpErr;
+            alert(msg);
         }
     });
     uloads = [];
