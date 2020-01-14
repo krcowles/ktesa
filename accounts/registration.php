@@ -104,6 +104,7 @@ require_once "../php/global_boot.php";
 <button id="formsubmit">Submit My Info</button>
 </form>
 </div>   <!-- end of container -->
+<script src="../scripts/ajax_error_fct.js" type="text/javascript"></script>
 <script src="../scripts/menus.js"></script>
 <script src="registration.js"></script>
 

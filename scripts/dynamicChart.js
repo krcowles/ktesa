@@ -5,12 +5,8 @@ var lats = [];
 var lngs = [];
 var elevs = [];  // elevations, in ft.
 var rows = [];
-var xval;
-var yval;
 var emax;  // maximum value found for elevation
 var emin;  // minimum value found for evlevatiom
-var msg;
-var ajaxDone = false;
 var resizeFlag = true;
 var fullWidth; // page width on load
 var chartHeight; // chart height on load
@@ -91,11 +87,13 @@ function getGpxData() {
             emin *= 100;
             deferred.resolve();
         },
-        error: function() {
-            msg = 'Could not extract XML data from ' + trackfile + 
-                '; Error reported from dynamicChart.js ajax call line 40';
-            alert(msg);
+        error: function(jqXHR, textStatus, errorThrown) {
+            var msg = "Ajax call in dynamicChart.js line 38 has failed " +
+                "with error code: " + errorThrown + 
+                "Could not extract XML data from " + trackfile + 
+                "\nSystem error message: " + textStatus;
             deferred.reject();
+           alert(msg);
         }
     });
     return deferred.promise();

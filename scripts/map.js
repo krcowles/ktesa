@@ -673,7 +673,7 @@ function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
             });
             trkKeyNo++;
         },
-        error: function() {
+        error: function(jqXHR, textStatus, errorThrown) {
             msg = '<p>Did not succeed in getting JSON data: ' + trkUrl + '</p>';
             $('#dbug').append(msg);
         }

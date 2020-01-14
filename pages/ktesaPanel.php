@@ -111,5 +111,6 @@ require "../accounts/getLogin.php";
     </table>
     <button id="enter">Login</button><br />
 </div>
+<script src="../scripts/ajax_error_fct.js" type="text/javascript"></script>
 <script src="../accounts/getLogin.js"></script>
 <script src="../scripts/modal_setup.js"></script>

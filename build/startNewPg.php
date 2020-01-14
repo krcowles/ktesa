@@ -89,6 +89,7 @@ $vcIndex = $getVCs[1];
     </form>
 </div>
 
+<script src="../scripts/ajax_error_fct.js" type="text/javascript"></script>
 <script src="../scripts/menus.js"></script>
 <script src="startNewPg.js"></script>
 

@@ -140,6 +140,7 @@ $includeZoom = true;
     Click here for metric units</p>
 </div>
 </div>
+<div id="debug"></div>
 
 <script src="../scripts/modernizr-custom.js" type="text/javascript"></script>
 <script src="../scripts/menus.js" type="text/javascript"></script>

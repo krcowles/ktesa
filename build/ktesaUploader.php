@@ -64,6 +64,7 @@ $Euser = filter_input(INPUT_GET, 'usr');
         </div>
     </div>
 </form>
+<script src="../scripts/ajax_error_fct.js"></script>
 <script src="../scripts/menus.js"></script>
 <script src="ktesaUploader.js"></script>
 <script src="exifReader.js"></script>

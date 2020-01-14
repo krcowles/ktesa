@@ -460,8 +460,12 @@ function postImg(imgid, ifile, des, mtrid, hikeno, imgcnt) {
     var completion;
     xhr.onprogress = function() {
         if (xhr.responseText.indexOf('X') !== -1) {
-            //def.reject();
             advanceUpload(imgid, hikeno, imgcnt, false);
+            return;
+        }
+        if (xhr.responseText.indexOf('Whoops') !== -1) {
+            var prodmsg = "Whoops invoked";
+            customAlert(xhr.responseText, prodmsg);
             return;
         }
         bytes++;
@@ -472,25 +476,28 @@ function postImg(imgid, ifile, des, mtrid, hikeno, imgcnt) {
     xhr.open("POST", 'usrPhotos.php');
     xhr.send(ajaxData);
     xhr.onload = function() {
+        var serverResponse = this.response;
+        if (serverResponse.indexOf('Whoops') !== -1) {
+            var prodmsg = "Whoops invoked on ajax call";
+            customAlert(serverResponse, prodmsg);
+            return;
+        }
         if (this.status !== 200) {
-            alert("The server returned status " + this.status);
-            //def.reject();
+            alert("The server returned status " + this.status +
+                ifile.name + " did not upload");
             advanceUpload(imgid, hikeno, imgcnt, false);
             return;
         } else {
             $cmeter[0].setAttribute('stroke-dashoffset', '0');
-            //def.resolve();
             advanceUpload(imgid, hikeno, imgcnt, true);
             return;
         }
     }
     xhr.onerror = function() {
         alert("The request failed for item " + nxtUpld);
-        //def.reject();
         advanceUpload(imgid, hikeno, imgcnt, false);
         return;
     }
-    //return def.promise();
 }
 function cleanup() {
     resets();
@@ -508,6 +515,7 @@ function cleanup() {
             $(this).before($(saved));
         }
     });
+    
     $.ajax({
         method: 'GET',
         url: 'photoStat.txt',

@@ -57,8 +57,15 @@ function validateEmail(subjectEmail){
     xhr.open('POST', 'create_user.php');
     xhr.onload = function() {
         if (this.status !== 200) {
-            if (this.response !== 'DONE') {
-                alert("The registration did not occur\n\n" +
+            var serverResponse = this.response;
+            if (serverResponse.indexOf('Whoops') !== -1) {
+                var prodmsg = "Site is in production mode; ajax responded " +
+                    "with Whoops page";
+                customAlert(serverResponse, prodmsg);
+                return;
+            }
+            if (serverResponse !== 'DONE') {
+                alert("The registration did not occur\n" +
                     "The following unexpected result occurred:\n" +
                     "Server returned status " + this.status);
             }
@@ -67,13 +74,9 @@ function validateEmail(subjectEmail){
     }
     xhr.onerror = function() {
         alert("The request failed: registration did not occur\n" +
-            "Contact the site master or try again.");
+            "Server may be down. Contact the site master or try again.");
     }
     xhr.send(ajaxData);
 });
 
 });  // end page loaded
-
-// jQuery method to submit form asynch then close this window
-//$.post($('#registration').attr('action'),
-//$('#registration').serializeArray());

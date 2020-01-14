@@ -94,8 +94,10 @@ $('#emode').on('click', function() {
             $('#emode').text(resp);
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            alert("Edit mode change script failed: " +
-                textStatus + ": " + errorThrown);
+            var prodmsg = "Ajax call in admintools.js line 89 has failed " +
+                "with error code: " + errorThrown + "\nSystem error message: "
+                + textStatus;
+            customAlert(jqXHR.responseText, prodmsg);
         }
     });
 });
@@ -108,8 +110,10 @@ $('#commit').on('click', function() {
                 " with this site is:\n\n\t" + resp);
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            alert("The following error resulted in admintools.js:\n" 
-                + "Error: " + textStatus + ": " + errorThrown);
+            var msg = "Ajax call in admintools.js line 105 has failed " +
+                "with error code: " + errorThrown + "\nSystem error message: "
+                + textStatus;
+            alert(msg);
         }
     });
 });

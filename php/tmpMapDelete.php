@@ -8,6 +8,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require "../php/global_boot.php";
 $tmpFile = filter_input(INPUT_GET, 'file');
 if (file_exists($tmpFile)) {
     unlink($tmpFile);

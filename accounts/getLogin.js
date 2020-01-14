@@ -29,16 +29,17 @@ if (cookies) {
         alert("There are multiple accounts associated with " + login_name +
             "\nPlease contact the site master");
         login_name = 'none';
-    }
-    if (login_name === 'none') {
-        notLoggedInItems();
-        $('#ifadmin').css('display', 'none');
-    } else {
-        loggedInItems();
-        if (login_name === 'mstr') {
-            adminLoggedIn();
+    } else if (user_cookie_state === 'OK') {
+        if (login_name === 'none') {
+            notLoggedInItems();
+            $('#ifadmin').css('display', 'none');
+        } else {
+            loggedInItems();
+            if (login_name === 'mstr') {
+                adminLoggedIn();
+            }
         }
-    } 
+    }
 } else {  // cookies disabled
     alert("Cookies are disabled on this browser:\n" +
         "You will not be able login, register, or edit/create hikes.\n" +
@@ -126,8 +127,10 @@ function validateUser(usr_name, usr_pass) {
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            alert("Error encountered in validation: " +
-                textStatus + "; Error: " + errorThrown);
+            var prodmsg = "Ajax call in getLogin.js line 80 has failed " +
+                "with error code: " + errorThrown + "\nSystem error message: "
+                + textStatus;
+            customAlert(jqXHR.responseText, prodmsg);
         }
     });
 }

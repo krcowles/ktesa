@@ -8,9 +8,12 @@ $.ajax({
     success: function(titles) {
         titleList = titles;
     },
-    error: function(jqXHR, exception) {
+    error: function(jqXHR, textStatus, errorThrown) {
         // error can occur when nothing is returned...
-        alert("An error occured in the AJAX routine\n" + jqXHR.responseText);
+        var prodmsg = "Ajax call in startNewPg.js line 4 has failed " +
+            "with error code: " + errorThrown + "\nSystem error message: "
+            + textStatus;
+        customAlert(jqXHR.responseText, prodmsg);
     }
 });
 
