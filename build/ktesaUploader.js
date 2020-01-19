@@ -100,7 +100,7 @@ function ldImgs(imgs) {
                 if (lastdot !== -1) {
                     var ext = nme.slice(lastdot+1);
                     // Note: if no dot, ext would return entire filename
-                    if (ext.toLowerCase() !== 'jpg') {
+                    if (ext.toLowerCase() !== 'jpg' && ext.toLowerCase() !== 'jpeg') {
                         alert("Extension type " + ext + " not supported at this time");
                         return;
                     }
