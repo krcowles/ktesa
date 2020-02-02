@@ -118,7 +118,13 @@ function executeCaptions() {
             var htmlDesc = '<p class="capLine">' + photoName +
                 ': ' + '<em>' + phDescs[picNo] + '</em></p>';
         } else {
-            var htmlDesc = '<p class="capLine">' + photoName + '</p>';
+            var htmlDesc = '<p class="capLine">' + photoName;
+            if (phMaps[picNo] == 0) {
+                htmlDesc += '<br /><span style="color:brown">No Location Data: ' +
+                    'Photo Cannot Be Mapped</span></p>';
+            } else {
+                htmlDesc += '</p>';
+            }
         }
         $('.popupCap').css('display','block');
         $('.popupCap').css('position','absolute');

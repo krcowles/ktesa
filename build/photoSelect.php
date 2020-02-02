@@ -66,10 +66,11 @@ if ($inclPix === 'YES') {
     $mpg = [];
     $phPics = []; // capture the link for the mid-size version of the photo
     $phWds = []; // width
+    $pMap = [];  // status of 'Map It' checkbox
     $rowHt = 220; // nominal choice for row height in div
     $maxOccupy = 940;
     while ($pics = $picq->fetch(PDO::FETCH_ASSOC)) {
-        if ($pics['mid']) {  // Picture
+        if (!empty($pics['mid'])) {  // Picture
             $phNames[$picno] = $pics['title'];
             $phDescs[$picno] = $pics['desc'];
             $hpg[$picno] = $pics['hpg'];
@@ -78,6 +79,10 @@ if ($inclPix === 'YES') {
             $pHeight = $pics['imgHt'];
             $aspect = $rowHt/$pHeight;
             $pWidth = $pics['imgWd'];
+            $pMap[$picno] = true;
+            if (empty($pics['lat']) || empty($pics['lng'])) {
+                $pMap[$picno] = false;
+            }
             $phWds[$picno++] = floor($aspect * $pWidth);
         } else {  // Waypoint
             $wids[$wptno] = $pics['picIdx'];
@@ -107,12 +112,19 @@ if ($inclPix === 'YES') {
             $pgbox .= '" />Page&nbsp;&nbsp;';
         }
         $html .= $pgbox;
-        $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" value="'
-            . $phNames[$i];
-        if ($mpg[$i] === 'Y') {
-            $mpbox .= '" checked />Map<br />' . PHP_EOL;
+        // don't allow mapping for pix w/no lat/lng:
+        if ($pMap[$i]) {
+            $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" value="'
+                . $phNames[$i];
+            if ($mpg[$i] === 'Y') {
+                $mpbox .= '" checked />Map<br />' . PHP_EOL;
+            } else {
+                $mpbox .= '" />Map<br />' . PHP_EOL;
+            }
         } else {
-            $mpbox .= '" />Map<br />' . PHP_EOL;
+            $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" '
+                . 'value="NO" onclick="return false;" disabled="disabled" ' .
+                '/><span style="color:gray">Map</span><br />';
         }
         $html .= $mpbox;
         $html .= '<input class="delp" type="checkbox" name="rem[]" value="'
@@ -155,6 +167,23 @@ if ($inclPix === 'YES') {
         }
     }
     $jsDescs .= ']';
+    $jsMaps = '[';
+    for ($p=0; $p<count($pMap); $p++) {
+        if ($pMap[$p]) {
+            if ($p === 0) {
+                $jsMaps .= '1';
+            } else {
+                $jsMaps .= ',1';
+            }
+        } else {
+            if ($p === 0) {
+                $jsMaps .= '0';
+            } else {
+                $jsMaps .= ",0";
+            }
+        }
+    }
+    $jsMaps .= ']';
     $html .= '</div>';
     chdir($prev);
 }

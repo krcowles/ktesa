@@ -40,6 +40,7 @@
 <script type="text/javascript">
     var phTitles = <?php echo $jsTitles;?>;
     var phDescs = <?php echo $jsDescs;?>;
+    var phMaps = <?php echo $jsMaps;?>;
 </script>
 <script src="photoSelect.js" type="text/javascript"></script>
 <script src="../scripts/picPops.js" type="text/javascript"></script>
