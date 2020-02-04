@@ -155,3 +155,28 @@ function executeCaptions() {
         calcPos();
     });
 }
+// display message when mouseover on disabled map
+var $mapmsg = $('<p id="nmp">No Location Data:<br />Photo Cannot Be Displayed on Map</p>');
+$mapmsg.css({
+    position: 'absolute',
+    color: 'brown'
+});
+//var $mapbtns = $('input[type=checkbox]:disabled');
+var $nomap = $('.nomap');
+$nomap.each(function() {
+    $(this).on('mouseover', function() {
+        $(this).css('cursor', 'pointer');
+        var loc = $(this).offset();
+        $mapmsg.css({
+            top: loc.top - 20,
+            left: loc.left + 60
+        });
+        $(this).after($mapmsg);
+        return;
+    });
+    $(this).on('mouseout', function() {
+        var mout = $('#nmp');
+        mout.remove();
+        return;
+    });  
+});

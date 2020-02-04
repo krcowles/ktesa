@@ -122,9 +122,9 @@ if ($inclPix === 'YES') {
                 $mpbox .= '" />Map<br />' . PHP_EOL;
             }
         } else {
-            $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" '
+            $mpbox = '<span class="nomap"><input class="mpguse" type="checkbox" name="mapit[]" '
                 . 'value="NO" onclick="return false;" disabled="disabled" ' .
-                '/><span style="color:gray">Map</span><br />';
+                '/><span style="color:gray">Map</span><br /></span>';
         }
         $html .= $mpbox;
         $html .= '<input class="delp" type="checkbox" name="rem[]" value="'
