@@ -18,6 +18,7 @@ if ($picq->rowCount() === 0) {
     $inclPix = 'NO';
     $jsTitles = "''";
     $jsDescs = "''";
+    $jsMaps = "''";
 } else {
     $inclPix = 'YES';
     // NOTE: this will also be yes when there are no pics but there are waypoints
