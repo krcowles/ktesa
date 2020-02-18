@@ -94,10 +94,9 @@ $('#emode').on('click', function() {
             $('#emode').text(resp);
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            var prodmsg = "Ajax call in admintools.js line 89 has failed " +
-                "with error code: " + errorThrown + "\nSystem error message: "
-                + textStatus;
-            customAlert(jqXHR.responseText, prodmsg);
+            var newDoc = document.open();
+		    newDoc.write(jqXHR.responseText);
+		    newDoc.close();
         }
     });
 });

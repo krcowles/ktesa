@@ -61,8 +61,4 @@ if ($submitter == 'create') {
 $days = 365; // Number of days before cookie expires
 $expire = time()+60*60*24*$days;
 setcookie("nmh_id", $username, $expire, "/");
-if ($submitter == 'create') {
-    echo "DONE";
-} else {
-    header("Location: ../index.html");
-}
+header("Location: ../index.html");

@@ -55,7 +55,7 @@ require_once "../php/global_boot.php";
 </h2>
 <p>Please fill out the form below, making sure to supply at least the "required"
     information.</p>
-<form id="form" method="POST" action="#">
+<form method="POST" action="create_user.php">
 <fieldset>
     <legend>Required Information</legend>
     <label for="firstname">First Name: [Max 20 Characters]</label>
@@ -101,10 +101,10 @@ require_once "../php/global_boot.php";
         [Max 500 Characters]</label><br />
     <textarea name="bio" cols="80" rows="10" maxlength="500"></textarea>
 </fieldset><br />
-<button id="formsubmit">Submit My Info</button>
+<input type="hidden" name="submitter" value="create" />
+<button id="formsubmit" type="submit">Submit My Info</button>
 </form>
 </div>   <!-- end of container -->
-<script src="../scripts/ajax_error_fct.js" type="text/javascript"></script>
 <script src="../scripts/menus.js"></script>
 <script src="registration.js"></script>
 

@@ -30,9 +30,7 @@ function validateEmail(subjectEmail){
          alert("This does not appear to be a valid email: please re-enter");
      }
  });
- $('#form').on('submit', function(evt) {
-     evt.preventDefault();
-    // below is necessary as window.close precludes html validation
+ $('form').on('submit', function() {
     if ($('input[name=firstname]').val() == ''
         || $('input[name=lastname]').val() == ''
         || $('input[name=username]').val() == ''
@@ -40,43 +38,8 @@ function validateEmail(subjectEmail){
         || $('#confirm_password').val() == ''
         || $('#email').val() == '') {
             alert("All required inputs must be supplied");
-            return;
+            return false;
     }
-    var usr = $('input[name=username]').val();
-    var ajaxData = new FormData();
-    ajaxData.append('firstname', $('input[name=firstname]').val());
-    ajaxData.append('lastname',  $('input[name=lastname]').val());
-    ajaxData.append('username',  usr);
-    ajaxData.append('password',  $('input[name=password]').val());
-    ajaxData.append('email',     $('input[name=email]').val());
-    ajaxData.append('facebook',  $('input[name=facebook]').val());
-    ajaxData.append('twitter',   $('input[name=twitter]').val());
-    ajaxData.append('bio',       $('textarea[name=bio]').val());
-    ajaxData.append('submitter',    'create');
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'create_user.php');
-    xhr.onload = function() {
-        if (this.status !== 200) {
-            var serverResponse = this.response;
-            if (serverResponse.indexOf('Whoops') !== -1) {
-                var prodmsg = "Site is in production mode; ajax responded " +
-                    "with Whoops page";
-                customAlert(serverResponse, prodmsg);
-                return;
-            }
-            if (serverResponse !== 'DONE') {
-                alert("The registration did not occur\n" +
-                    "The following unexpected result occurred:\n" +
-                    "Server returned status " + this.status);
-            }
-        }
-        window.open('../index.html?usr=' + usr, '_self');
-    }
-    xhr.onerror = function() {
-        alert("The request failed: registration did not occur\n" +
-            "Server may be down. Contact the site master or try again.");
-    }
-    xhr.send(ajaxData);
 });
 
 });  // end page loaded

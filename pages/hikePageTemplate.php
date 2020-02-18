@@ -180,7 +180,6 @@ if ($bop !== '') {
     var as = "<?= implode("|", $aspects);?>";
     var w = "<?= implode("|", $widths);?>";
 </script>
-<script src="../scripts/ajax_error_fct.js" type="text/javascript"></script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/picRowFormation.js"></script>
 <script src="../scripts/captions.js"></script>
@@ -199,12 +198,9 @@ if ($bop !== '') {
                     // message not sent to user
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    var prodmsg = "Ajax call in hikePageTemplate.php " +
-                        "line 194 has failed " +
-                        "with error code: " + errorThrown + 
-                        "\nSystem error message: " + textStatus +
-                         "\n<?= $tmpMap?> NOT deleted";
-                    customAlert(jqXHR.responseText, prodmsg);
+                    var newDoc = document.open();
+                    newDoc.write(jqXHR.responseText);
+                    newDoc.close();
                 }
             });
         });

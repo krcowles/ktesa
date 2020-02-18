@@ -194,7 +194,6 @@ require "../php/global_boot.php";
         </select><br />
     </fieldset><br />
 </div>
-<script src="../scripts/ajax_error_fct.js" type="text/javascript"></script>
 <script src="../scripts/menus.js" type="text/javascript"></script>
 <script src="admintools.js" type="text/javascript"></script>
 </body>

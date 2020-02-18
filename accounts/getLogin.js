@@ -127,10 +127,9 @@ function validateUser(usr_name, usr_pass) {
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            var prodmsg = "Ajax call in getLogin.js line 80 has failed " +
-                "with error code: " + errorThrown + "\nSystem error message: "
-                + textStatus;
-            customAlert(jqXHR.responseText, prodmsg);
+            var newDoc = document.open();
+            newDoc.write(jqXHR.responseText);
+            newDoc.close();         
         }
     });
 }
