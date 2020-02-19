@@ -1,16 +1,11 @@
-// TRACK COLORS 
-var lineColor = '#2974EB';  // apparently a google api function also assigns to this name
-var trackClr1 = '#FF0000';
-var trackClr2 = '#0000FF';
-var trackClr3 = '#F88C00';
-var trackClr4 = '#884998';
-// constants for readability during marker creation
-var VC_TYPE = 0; 
-var CH_TYPE = 1;
-var NH_TYPE = 2;
-var XH_TYPE = 3;
+// Hike Track Colors: red, blue, orange, purple, black, yellow
+var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00']
 
-var map;  // needs to be global!
+// need to be global:
+var map;
+var allTheTracks = [];
+var tracksDone = false;
+
 // Google's hidden inner div when clicking on full screen mode
 var $fullScreenDiv;
 var $map = $('#map');
@@ -53,10 +48,10 @@ if ( mobile_browser ) {
     $('#iwCH').css('font-size','400%');
     $('#iwOH').css('font-size','400%');
 } else {
-    var geoIcon = medGeo;
+    //var geoIcon = medGeo;
     var ctrIcon = '../images/yellow.png';
     var clusterIcon = '../images/bluepin.png';
-    var hikeIcon = '../images/redpin.png';
+	var hikeIcon = '../images/redpin.png';
 } 
 
 // place legend link on map (w/draggable header);
@@ -115,50 +110,15 @@ $('#can').on('click', function(ev) {
 	$('#maplegend').css('display', 'none');
 });
 
-/* Create the hike arrays to be used in marker and info window creation */
-// get node lists for each marker type:
-var allVs = [];
-var allCs = [];
-var allNs = [];
-var allXs = [];  // this array will hold the special-case "At VC" hikes
-// NOTE: "At VC" hikes are ignored for purposes of creating separate markers
-
-$('#refTbl tbody tr').each( function() {
-	if ( $(this).hasClass('indxd') ) {
-		allVs.push(this);
-	} else if ( $(this).hasClass('clustered') ) {
-		allCs.push(this);
-	} else if ( $(this).hasClass('vchike') ) {
-		allXs.push(this);
-	} else if ( $(this).hasClass('normal') ) {
-		allNs.push(this);
-	}  // anything not caught in this trap is an anomaly!!
-});
-// need column indices from table for certain items:
-var hike_hdr;
-var lgth_hdr;
-var elev_hdr;
-var diff_hdr;
-var dir_hdr;
-var $tblhdrs = $('table thead');
-var $hdrs = $tblhdrs.eq(0).find('th');
-$hdrs.each( function(indx) {
-	if ($(this).text() === 'Hike/Trail Name') {
-		hike_hdr = indx;
-	}
-	if ($(this).text() === 'Length') {
-		lgth_hdr = indx;
-	}
-	if ($(this).text() === 'Elev Chg') {
-		elev_hdr = indx;
-	}
-	if ($(this).text() === 'Difficulty') {
-		diff_hdr = indx;
-	}
-	if ($(this).text() === 'By Car') {
-		dir_hdr = indx;
-	}
-});
+/**
+ * Use the arrays passed in to the home page by php: one for each type 
+ * of marker to be displayed (Visitor Ctr, Clustered, Normal):
+ * 		VC Array: Visitor Center pages
+ * 		CL Array: Clustered hike pages
+ * 		NM Array: Normal hike pages
+ * And one for creating tracks:
+ * 		tracks Array: ordered list of json file names
+ */
 var locaters = []; // global used to popup info window on map when hike is searched
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
@@ -192,94 +152,19 @@ function initMap() {
 	mapdone.resolve();
 
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
-	var loc; // google lat/lng object
-	var sym; // type of icon to display for marker
-	var nme; // name of hike (for 'tooltip' type title of marker
-	var clustersUsed = [];
-	// Loop through marker definitions and call marker-creator fcts: 
-	// 1st, visitor centers:
-	sym = ctrIcon;
-	$(allVs).each( function() {
-		var thisVorgs = [];
-		var vlat = parseFloat($(this).data('lat'));
-		var vlon = parseFloat($(this).data('lon'));
-		loc = {lat: vlat, lng: vlon};
-		// identify the originating hikes, as they will not have individual markers...
-		var orgDat = $(this).data('org-hikes');
-		// orgDat looks like a string to the debugger, but not the browser! so:
-		var orgHikes = String(orgDat);
-		if (orgHikes !== '') {
-			if (orgHikes.indexOf(".") === -1) { // no "." means only one hike is listed
-				thisVorgs.push(orgHikes);
-			} else {
-				var orgHikeArray = orgHikes.split("."); // for multiple hike listings
-				for (j=0; j<orgHikeArray.length; j++) {
-					thisVorgs.push(orgHikeArray[j]);
-				}
-			}
-		} // if emtpy string, thisVorgs will be an empty array (0 elements)
-		var $dataCells = $(this).find('td');
-		var $link = $dataCells.eq(hike_hdr).find('a');
-		var vpage = $link.attr('href');
-		var $dlink = $dataCells.eq(dir_hdr).find('a');
-		var dirLink = $dlink.attr('href');
-		nme = $dataCells.eq(hike_hdr).text();
-		nme = nme.replace('Index','Visitor Center');
-		AddVCMarker(loc, sym, nme, vpage, dirLink, thisVorgs);
+	VC.forEach(function(vcobj) {
+		AddVCMarker(vcobj.loc, ctrIcon, vcobj.name, vcobj.indx, vcobj.hikes);
 	});
-	// Now, the "clustered" hikes: Add one and only one cluster marker per group
-	sym =clusterIcon;
-	$(allCs).each( function() {
-		var chikeArray;
-		var csrchArray;
-		var clusterGrp = $(this).data('cluster');
-		var cindx;
-		var cnme;
-		if ( !clustersUsed.includes(clusterGrp) ) { // skip over other members in group
-			// a new group has been encountered
-			chikeArray = [];
-			csrchArray = [];
-			clustersUsed.push(clusterGrp);
-			// collect the indices (and names) for all hikes in this group
-			for (n=0; n<allCs.length; n++) {
-				if ($(allCs[n]).data('cluster') == clusterGrp) {
-					cindx = $(allCs[n]).data('indx');
-					chikeArray.push(cindx);
-					cnme = $(allCs[n]).children().eq(hike_hdr).children().eq(0).text();
-					csrchArray.push(cnme);
-				}
-			}
-			// proceed with def's for other arguments
-			var clat = parseFloat($(this).data('lat'));
-			var clon = parseFloat($(this).data('lon'));
-			loc = {lat: clat, lng: clon};
-			var hno = parseInt($(this).data('indx'));
-			nme = $(this).data('tool');
-			var $dataCells = $(this).find('td');
-			var $plink = $dataCells.eq(hike_hdr).find('a');
-			var $dlink = $dataCells.eq(dir_hdr).find('a');
-			var dirLink = $dlink.attr('href');
-			AddClusterMarker(loc, sym, nme, chikeArray, csrchArray, dirLink);
-		}
+	CL.forEach(function(clobj) {
+		AddClusterMarker(clobj.loc, clusterIcon, clobj.group, clobj.hikes);
 	});
-	// Finally, the remaining hike markers
-	sym = hikeIcon;
-	$(allNs).each( function() { // by def, no vchikes here
-		var nlat = parseFloat($(this).data('lat'));
-		var nlon = parseFloat($(this).data('lon'));
-		loc = {lat: nlat, lng: nlon};
-		var hno = $(this).data('indx');
-		var $dataCells = $(this).find('td');
-		nme = $dataCells.eq(hike_hdr).text();
-		$plink = $dataCells.eq(hike_hdr).find('a');
-		npage = $plink.attr('href');
-		$dlink = $dataCells.eq(dir_hdr).find('a');
-		dirLink = $dlink.attr('href');
-		AddHikeMarker(loc, sym, nme, npage, dirLink, hno);
+	NM.forEach(function(nmobj) {
+		AddHikeMarker(hikeIcon, nmobj);
 	});
-	/* the actual functions to create the markers & setup info windows */
+
+
 	// Visitor Center Markers:
-	function AddVCMarker(location, iconType, pinName, website, dirs, orgHikes) {
+	function AddVCMarker(location, iconType, pinName, hikeindx, hikeobj) {
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
@@ -292,131 +177,89 @@ function initMap() {
 		// add info window functionality
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
-			var iwContent;
-			vLine1 = '<div id="iwVC"><a href="' + website + 
-					'" target="_blank">' + pinName + '</a>';
-			iwContent = vLine1;
-			if (orgHikes.length > 0) { // orgHikes is an array parameter passed in
+			var website = '<a href="indexPageTemplate.php?hikeIndx=' + hikeindx +
+				'">' + pinName + '</a>';
+			iwContent = '<div id="iwVC">' + website;
+			if (hikeobj.length > 0) { // array of associated hikes
 				vLine3 = '<em>Hikes Originating from Visitor Center</em>';
-				if(orgHikes.length === 1) {
+				if(hikeobj.length === 1) {
 					vLine3 = vLine3.replace('Hikes','Hike');
 				}
 				iwContent += '<br />' + vLine3;
-				for (v=0; v<orgHikes.length; v++) {
-					iwContent += coreHikeData(VC_TYPE, orgHikes[v]);
-				}
+				hikeobj.forEach(function(hike) {
+					iwContent += 
+						'<br /><a href="hikePageTemplate.php?hikeIndx=' +
+						hike.indx + '">' + hike.name + '</a>';
+					iwContent += ' Lgth: ' + hike.lgth + ' miles; Elev Chg: ';
+					iwContent += hike.elev + ' ft; Diff: ' + hike.diff;
+				});
 			}
-			//iwContent += '<br /><a href="' + dirs + '" target="_blank">Directions</a></div>';
 			var iw = new google.maps.InfoWindow({
 					content: iwContent,
 					maxWidth: 600
 			});
 			iw.open(map, this);
 		});
-		var srchmrkr = {hikeid: pinName.trim(), pin: marker};
-		locaters.push(srchmrkr);
-	} // end function AddVCMarker
-	// Clustered Trailhead Markers:
-	function AddClusterMarker(location, iconType, pinName, hikes, nmeArray, dirs) {
+		// add in locaters for the hikes associated with VC's:
+		
+	}
+
+	// Clustered Markers:
+	function AddClusterMarker(location, iconType, group, clhikes) {
 		var marker = new google.maps.Marker({
-		  position: location,
-		  map: map,
-		  icon: iconType,
-		  title: pinName
+			position: location,
+			map: map,
+			icon: iconType,
+			title: group
 		});
+		var srchmrkr = {hikeid: group, pin: marker};
+		locaters.push(srchmrkr);
 		clusterMarkerSet.push(marker);
 		// info window content: add in all the hikes for this group
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
-			var iwContent;
-			var cline1 = '<div id="iwCH">' + pinName;
-			iwContent = cline1;
-			for (m=0; m<hikes.length; m++) {
-				iwContent += coreHikeData(CH_TYPE, hikes[m]);
-			}
-			iwContent += '<br /><a href="' + dirs + '" target="_blank">Directions</a></div>';
+			var iwContent = '<div id="iwCH">' + group;
+			clhikes.forEach(function(clobj) {
+				iwContent += '<br /><a href="hikePageTemplate.php?hikeIndx=' +
+					clobj.indx + '">' + clobj.name + '</a>';
+				iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' + 
+					clobj.elev + ' ft; Diff: ' + clobj.diff;
+			});
 			var iw = new google.maps.InfoWindow({
 					content: iwContent,
 					maxWidth: 600
 			});
 			iw.open(map, this);
 		});
-		clusterMarkerSet.push(marker);
-		// for each marker in the cluster, assoc. with a hike for searching
-		$.each(nmeArray, function(indx, hname) {
-			var srchmrkr = {hikeid: hname, pin: marker};
-			locaters.push(srchmrkr);
-		});
-	} // end AddClusterMarker
-	function AddHikeMarker(location, iconType, pinName, website, dirs, hike, mrkrno) {
+	}
+
+	// Normal Hike Markers
+	function AddHikeMarker(iconType, hikeobj) {
 		var marker = new google.maps.Marker({
-		  position: location,
+		  position: hikeobj.loc,
 		  map: map,
 		  icon: iconType,
-		  title: pinName
+		  title: hikeobj.name
 		});
 		marker.addListener( 'click', function() {
-			map.setCenter(location);
-			var $nData = coreHikeData(NH_TYPE, hike);
-			var iwContent = '<div id="iwNH">' + $nData.eq(hike_hdr).html() + '<br />';
-			iwContent += 'Length: ' + $nData.eq(lgth_hdr).text() + '<br />';
-			iwContent += 'Elevation Change: ' + $nData.eq(elev_hdr).text() + '<br />';
-			iwContent += 'Difficulty: ' + $nData.eq(diff_hdr).text() + '<br />';
-			var $dlink = $nData.eq(dir_hdr).find('a');
-			iwContent += '<a href="' + $dlink.attr('href') + '" target="_blank">Directions</a></div>';
+			map.setCenter(hikeobj.loc);
+			var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
+				+ hikeobj.indx + '">' + hikeobj.name + '</a><br />';
+			iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
+			iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
+			iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
+			iwContent += '<a href="' + hikeobj.dir + '">Directions</a></div>';
 			var iw = new google.maps.InfoWindow({
 					content: iwContent,
 					maxWidth: 400
 			});
 			iw.open(map, this);
 		});
-		var srchmrkr = {hikeid: pinName, pin: marker};
+		var srchmrkr = {hikeid: hikeobj.name, pin: marker};
 		locaters.push(srchmrkr);
 		clusterMarkerSet.push(marker);
 	}
-	// /////////////////////  CORE HIKE DATA FOR INFO WINDOW //////////////////////
-	function coreHikeData(markerType, hikeNo) {
-		var $hikeData;
-		var hikeLocated = false;
-		if (markerType === VC_TYPE) {
-			$(allXs).each( function() {
-				if ( $(this).data('indx') == hikeNo ) {
-					hikeLocated = true;
-					$hikeData = $(this).find('td');
-					return true;
-				}
-			});
-		}
-		if (markerType === NH_TYPE) {
-			$(allNs).each( function() {
-				if ( $(this).data('indx') == hikeNo ) {
-					hikeLocated = true;
-					$hikeData = $(this).find('td');
-					return true;
-				}
-			});
-		}
-		if (markerType === CH_TYPE) {
-			$(allCs).each( function() {
-				if ( $(this).data('indx') == hikeNo ) {
-					hikeLocated = true;
-					$hikeData = $(this).find('td');
-					return true;
-				}
-			});
-		}
-		if ( !hikeLocated ) {
-			window.alert('Could not find hike in index table!')
-		}
-		if (markerType === NH_TYPE) {
-			return $hikeData;
-		}
-		var iwDat = '<br />' + $hikeData.eq(hike_hdr).html();
-		iwDat += ' Lgth: ' + $hikeData.eq(lgth_hdr).text() + '; ';
-		iwDat += 'Elev Chg: ' + $hikeData.eq(elev_hdr).text() + '; ';
-		iwDat += 'Diff: ' + $hikeData.eq(diff_hdr).text();
-		return iwDat;
-	} // end function coreHikeData
+
 
 	// /////////////////////// Marker Grouping /////////////////////////
 	var markerCluster = new MarkerClusterer(map, clusterMarkerSet,
@@ -452,17 +295,45 @@ function initMap() {
 		var newBds = String(map.getBounds());
 		IdTableElements(newBds);
 	});
-
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
+
+// collect mouseover data for tracks
+var trackdat = [];
+for (let i=0; i<tracks.length; i++) {
+	trackdat[i] = '';
+}
+VC.forEach(function(vc) {
+	vc.hikes.forEach(function(hobj) {
+		if (tracks[hobj.indx] !== '') {
+			trackdat[hobj.indx] = '<div id="iwXH">' + hobj.name + '<br />Length: ' +
+				hobj.lgth + ' miles<br />Elev Chg: ' + hobj.elev +
+				'<br />Difficulty: ' + hobj.diff + '</div>';
+		}
+	});
+});
+CL.forEach(function(clus) {
+	clus.hikes.forEach(function(hobj) {
+		if (tracks[hobj.indx] !== '') {
+			trackdat[hobj.indx] = '<div id="iwCH">' + hobj.name + '<br />Length: ' +
+				hobj.lgth + ' miles<br />Elev Chg: ' + hobj.elev +
+				'<br />Difficulty: ' + hobj.diff + '</div>';
+		}
+	});
+});
+NM.forEach(function(hobj) {
+	if (tracks[hobj.indx] !== '') {
+		trackdat[hobj.indx] = '<div id="iwNH">' + hobj.name + '<br />Length: ' +
+			hobj.lgth + ' miles<br />Elev Chg: ' + hobj.elev +
+			'<br />Difficulty: ' + hobj.diff + '</div>';
+	}
+});
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 var trackFile; // name of the JSON file to be read in
 var trkObj = { trk0: {}, trkName0: 'name' };
 var trkKeyNo = 0;
 var trkKeyStr;
-var allTheTracks = [];
-var trackColor;
 var i,j,k;
 var geoOptions = { enableHighAccuracy: 'true' };
 
@@ -471,214 +342,73 @@ $.when( mapdone ).then(drawTracks).then(function() {
 	$fullScreenDiv = $map.children('div:first');
 });
 
-function ClusterGroups( clusId ) {
-	this.id = clusId;
-	this.cnt = 1;
-	this.color = 1;
-}
-function idClusters() {
-	var cId;
-	var cObj;
-	var csUsed = '';
-	var cTracks = [];
-	for (j=0; j<allCs.length; j++) {
-		cId = $(allCs[j]).data('cluster');
-		if (csUsed.indexOf(cId) == -1) {
-			// new group
-			cObj = new ClusterGroups(cId);
-			cTracks.push(cObj);
-		} else {
-			// this group already exists
-			for (k=0; k<cTracks.length; k++) {
-				if (cTracks[k].id == cId) {
-					cTracks[k].cnt++;
-					break;
-				}
-			}
-		}
-	}  // end of for loop
-	return cTracks;
-}
-// NO GPX files for Visitor Centers, so start with cluster hikes:
 function drawTracks() {
-    var clusGrp;
-    var clusters = idClusters();
-    var trackFile;
-    var cindx;
-    var handle;
-    var hikeId;
-    var colorId;
-    var cGrpNo;
-    var coll = '';
-    var lastUsed = trackClr1;
-    for (i=0; i<allCs.length; i++) {
-        cGrpNo = -1;
-        clusGrp = $(allCs[i]).data('cluster');
-        trackFile = $(allCs[i]).data('track');
-        hikeId = $(allCs[i]).data('indx');
-        if (trackFile !== '') {
-            cindx = trackFile.indexOf('.json');
-            handle = trackFile.substring(0,cindx);
-            trkKeyStr = 'trkName' + trkKeyNo;
-            trkObj[trkKeyStr] = handle;
-            trackFile = '../json/' + trackFile;
-            // find the corresponding object
-            for (k=0; k<clusters.length; k++) {
-                if (clusGrp == clusters[k].id) {
-                    colorId = clusters[k].color;
-                    cGrpNo = k;
-                    switch (colorId) {
-                        case 1:
-                            trackColor = trackClr1;
-                            break;
-                        case 2:
-                            trackColor = trackClr2;
-                            break;
-                        case 3: 
-                            trackColor = trackClr3;
-                            break;
-                        case 4:
-                            trackColor = trackClr4;
-                            break;
-                        default:
-                            trackColor = '#000000';
-                            break;
-                    }
-                    break;
-                }
-            }
-        }	
-        sglTrack(trackFile,CH_TYPE,trackColor,hikeId);
-        if (cGrpNo !== -1) {
-                clusters[cGrpNo].color++;
-        }
-    }  // end of cluster drawing
-    for (j=0; j<allNs.length; j++) {
-        trackFile = $(allNs[j]).data('track');
-        hikeId = $(allNs[j]).data('indx');
-        if (trackFile !== '') {
-            cindx = trackFile.indexOf('.json');
-            handle = trackFile.substring(0,cindx);
-            trkKeyStr = 'trkName' + trkKeyNo;
-            trkObj[trkKeyStr] = handle;
-            trackFile = '../json/' + trackFile;
-        }
-        sglTrack(trackFile,NH_TYPE,trackClr1,hikeId);
-    }
-    for (k=0; k<allXs.length; k++) {
-        trackFile = $(allXs[k]).data('track');
-        hikeId = $(allXs[k]).data('indx');
-        if (trackFile !== '') {
-            var thiscoll = $(allXs[k]).data('vc');
-            if (thiscoll === coll) {
-                var clrid = parseInt(lastUsed);
-                clrid++;
-                switch (colorId) {
-                    case 2:
-                        lastUsed = trackClr2;
-                        break;
-                    case 3: 
-                        lastUsed = trackClr3;
-                        break;
-                    case 4:
-                        lastUsed = trackClr4;
-                        break;
-                    default:
-                        lastUsed = '#000000';
-                        break;
-                    }
-            } else {
-                coll = thiscoll;
-                lastUsed = trackClr1;
-            }
-            cindx = trackFile.indexOf('.json');
-            handle = trackFile.substring(0,cindx);
-            trkKeyStr = 'trkName' + trkKeyNo;
-            trkObj[trkKeyStr] = handle;
-            trackFile = '../json/' + trackFile;
-        }
-        sglTrack(trackFile,XH_TYPE,lastUsed,hikeId);
-    }
-}  // END FUNCTION DrawTracks
-function sglTrack(trkUrl,trkType,trkColor,hikeNo) {
-    if (trkUrl === '') {
-            return;
-    }
-    $.ajax({
-        dataType: "json",
-        url: trkUrl,
-        success: function(trackDat) {
-            var newTrack = trackDat;
-            var mdiv;
-            var $trkRow;
-            trkKeyStr = 'trk' + trkKeyNo;	
-            trkObj[trkKeyStr] = new google.maps.Polyline({
-                icons: [{
-                        icon: mapTick,
-                        offset: '0%',
-                        repeat: '15%' 
-                }],
-                path: newTrack,
-                geodesic: true,
-                strokeColor: trkColor,
-                strokeOpacity: 1.0,
-                strokeWeight: 3
-            });
-            // when loaded, all tracks are off (not set)
-            allTheTracks.push(trkKeyStr);
-            // create the mouseover text:
-            if ( trkType === CH_TYPE ) {
-                mdiv = '<div id="iwCH">';
-                $(allCs).each( function() {
-                    if ( $(this).data('indx') == hikeNo ) {
-                        $trkRow = $(this).find('td');
-                        return;
-                    }
-                });
-            } else if (trkType === XH_TYPE) {
-                mdiv = '<div id="iwXH">';
-                $(allXs).each( function() {
-                    if ( $(this).data('indx') == hikeNo ) {
-                        $trkRow = $(this).find('td');
-                        return;
-                    }
-                });
-            } else {
-                // must be NH_TYPE: verify types called in drawTracks()
-                mdiv = '<div id="iwNH">';
-                $(allNs).each( function() {
-                    var hIndx = $(this).data('indx');
-                    if ( $(this).data('indx') == hikeNo ) {
-                        $trkRow = $(this).find('td');
-                        return;
-                    }
-                });
-            }
-            var hName = $trkRow.eq(hike_hdr).text();
-            var hLgth = $trkRow.eq(lgth_hdr).text();
-            var hElev = $trkRow.eq(elev_hdr).text();
-            var hDiff = $trkRow.eq(diff_hdr).text();
-            var iwContent = mdiv + hName + '<br />Length: ' +
-                hLgth + '<br />Elev Chg: ' + hElev + '<br />Difficulty: ' + hDiff + '</div>'; 
-            var iw = new google.maps.InfoWindow({
-                content: iwContent
-            });
-            trkObj[trkKeyStr].addListener('mouseover', function(mo) {
-                var trkPtr = mo.latLng;
-                iw.setPosition(trkPtr);
-                iw.open(map);
-            });
-            trkObj[trkKeyStr].addListener('mouseout', function() {
-                iw.close();
-            });
-            trkKeyNo++;
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            msg = '<p>Did not succeed in getting JSON data: ' + trkUrl + '</p>';
-            $('#dbug').append(msg);
-        }
-    });
-} // end of function sglTrack
+	var color;
+	// Clusters first, as they require multiple colors
+	CL.forEach(function(clobj) {
+		color = 0;
+		clobj.hikes.forEach(function(hikeobj) {
+			// hike indx nos. start at 1, arrays start at 0, so:
+			if (tracks[hikeobj.indx] !== '') {
+				var trkfile = '../json/' + tracks[hikeobj.indx];
+				drawTrack(trkfile, colors[color], hikeobj.indx);
+				// empty corresponding indx in array so that it won't get drawn again
+				tracks[hikeobj.indx] = '';
+				color++;
+				if (color > 5) { color = 0; } // only 6 colors for now
+			}
+		});
+	});
+	color = colors[0];
+	tracks.forEach(function(fname, indx) {
+		if (fname !== '') {
+			var trkfile = '../json/' + fname;
+			drawTrack(trkfile, color, indx);
+		}
+	});
+	tracksDone = true;
+}
+function drawTrack(jsonfile, color, ptr) {
+	$.ajax({
+		dataType: "json",
+		url: jsonfile,
+		success: function(trackDat) {
+			trkKeyStr = 'trk' + trkKeyNo;	
+			trkObj[trkKeyStr] = new google.maps.Polyline({
+				icons: [{
+						icon: mapTick,
+						offset: '0%',
+						repeat: '15%' 
+				}],
+				path: trackDat,
+				geodesic: true,
+				strokeColor: color,
+				strokeOpacity: 1.0,
+				strokeWeight: 3
+			});
+			//trkObj[trkKeyStr].setMap(map);
+			// when loaded, all tracks are off (not set)
+			allTheTracks.push(trkKeyStr);
+			// create the mouseover text:
+			var iw = new google.maps.InfoWindow({
+				content: trackdat[ptr]
+			});
+			trkObj[trkKeyStr].addListener('mouseover', function(mo) {
+				var trkPtr = mo.latLng;
+				iw.setPosition(trkPtr);
+				iw.open(map);
+			});
+			trkObj[trkKeyStr].addListener('mouseout', function() {
+				iw.close();
+			});
+			trkKeyNo++;
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			msg = 'Did not succeed in getting JSON data: ' + jsonfile;
+			alert("Indx " + ptr);
+		}
+	});
+} // end drawTrack
 // /////////////////////// END OF HIKE TRACK DRAWING /////////////////////
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////

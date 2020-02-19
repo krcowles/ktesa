@@ -106,7 +106,7 @@ require "../accounts/getLogin.php";
                 <td>
                     <input id="upass" type="password" name="password" size="20" />
                 </td>
-            <tr>
+            </tr>
         </tbody>
     </table>
     <button id="enter">Login</button><br />
