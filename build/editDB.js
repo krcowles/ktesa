@@ -158,7 +158,7 @@ $('#showll').on('click', function() {
 $('#upld').on('click', function() {
     var user = $('input[name=usr]').val();
     var uploader = 'ktesaUploader.php?indx=' + hike + "&usr=" + user;
-    window.open(uploader, "_blank");
+    window.open(uploader, "_self");
 });
 
 // Pressing 'Return' while in textarea only adds newline chars, therefore:

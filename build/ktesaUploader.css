@@ -90,11 +90,11 @@ label {
 .rotation {
     transform: rotate(90deg) translate(20px, 12px);
 }
-.uploaded {
+.uploaded, .uploadFail {
     color: red;
     font-weight: bold;
     background-color: cornsilk;
-    z-index: 1000;
+    z-index: 10000;
     position: absolute;
     padding: 3px 6px 1px 6px;
 }
