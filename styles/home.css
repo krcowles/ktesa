@@ -144,11 +144,13 @@ li {
 	padding-left: 6px;
 	float: left;
 }
-.tlnk {
+a:link {
 	position: relative;
 	top: 2px;
 	padding-left:6px;
 	font-size: 18px;
+	color: blue;
+	text-decoration: underline;
 }
 .subtxt {
 	padding-left: 6px;
