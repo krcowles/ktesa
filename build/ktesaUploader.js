@@ -40,7 +40,6 @@ var imgIds = [];  // array of image id's for uploads
 var upldCnt = 0;
 var nxtUpld = 0;
 var $iflbl = $('label span'); // where the input file selection box text is held
-var testcnt = 0; // debug var
 
 // styling the 'Choose file...' input box and label text:
 var inputs = document.querySelectorAll( '.inputfile' );
@@ -591,9 +590,6 @@ function postImg(imgid, ifile, des, mtrid, hikeno, uldno, imgcnt) {
                 var newDoc = document.open();
                 newDoc.write(jqXHR.responseText);
 		        newDoc.close();
-            },
-            success: function() {
-                test++;
             }
             // success function not needed: advanceUpload already called
         });
