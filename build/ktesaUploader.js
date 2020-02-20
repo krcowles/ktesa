@@ -160,6 +160,10 @@ const filechecks = (candidates) => {
                 continue;
             }
         }
+        if (file.size >= 8000000) {
+            alert("This file is too large for upload - please resize it to less than 8Mbytes");
+            continue;
+        }
         // check the internal magic numbers for type jpeg
         var filereader = new FileReader();
         var magicdef = new $.Deferred();
@@ -212,7 +216,7 @@ const ldImgs = (imgs) => {
                  */
                 var imgObj = {indx: upldNo, fname: ifile.name, size: ifile.size, data: result};
                 FR_Images.push(imgObj);  // used for loading DOM, then reset
-                var upldObj = {indx: upldNo++, ifile};
+                var upldObj = {indx: upldNo++, ifile}; // ifile is already key-value pair
                 uploads.push(upldObj);   // accumulated for form submit
                 d.resolve();
             }
@@ -230,7 +234,6 @@ const ldNodes = (fr_objs) => {
     var promises = [];
     var containers = []; // DOM nodes containing images & textareas
     var imgs = [];
-    var uploadable;
     // IN ORDER OF fr_objs...
     for (var j=0; j<fr_objs.length; j++) {
         // create image node:
@@ -241,7 +244,7 @@ const ldNodes = (fr_objs) => {
         var def = new $.Deferred();
         promises.push(def);
 
-        (function(def, itemno, imgname, arrindx){
+        (function(def, itemno, imgname){
             imgs[j].onload = function() {
                 var usable = true;
                 EXIF.getData(this, function() {
@@ -294,7 +297,8 @@ const ldNodes = (fr_objs) => {
                     }
                     exifdat = {origHt: origHt, origWd: origWd, orient: orient,
                         fname: imgname, lat: plat, lng: plng, date: pdate};
-                    ajaxExif[arrindx] = exifdat;
+                    // for every item in 'uploads', there is an upldNo id:
+                    ajaxExif.push(exifdat);
                     if (usable) {
                         if (!mappable) {
                             alert( imgname + " has no location data - it can be uploaded,\n" +
@@ -303,8 +307,14 @@ const ldNodes = (fr_objs) => {
                     } else {
                         alert(imgname + " is unusable and cannot be uploaded");
                         // remove bad image instances in arrays
-                        uploads.splice(arrindx, 1);
-                        ajaxExif.splice(arrindx, 1);
+                        var deleteIndx;
+                        uploads.forEach(function(upld_obj, i) {
+                            if (upld_obj.indx == itemno) {
+                                deleteIndx = i;
+                            }
+                        });
+                        uploads.splice(deleteIndx, 1);
+                        ajaxExif.pop();
                         upldNo--;
                     }
                 });
@@ -441,7 +451,7 @@ const ldNodes = (fr_objs) => {
                 }
                 def.resolve();
             }
-        }(def, imgid, picname, j));
+        }(def, imgid, picname));
         imgs[j].src = fr_objs[j]['data'];
     }
     return $.when.apply($, promises);            
