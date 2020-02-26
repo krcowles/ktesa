@@ -21,27 +21,60 @@ ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;
 require "../php/global_boot.php";
 // Note that this establishes the database credentials
 
+/*
 $tbl = $pdo->prepare(
-    "
+    "ALTER TABLE HIKES
+    (ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
+    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;)
     ALTER TABLE EHIKES
-    ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
-    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;
-    ALTER TABLE HIKES
-    ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
-    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;
+    (ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
+    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;)
     ALTER TABLE TSV
-    ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
-    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;
+    (ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
+    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;)
     ALTER TABLE ETSV
+    (ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
+    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;)
+    "
+);
+die;
+*/
+
+// Add integer columns
+$tbl = $pdo->prepare(
+    "ALTER TABLE HIKES
     ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
-    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;
-"
+    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;"
 );
 if ($tbl->execute() === false) {
     throw new Exception("Query failed");
 }
-die;
+$tbl = $pdo->prepare(
+    "ALTER TABLE EHIKES
+    ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
+    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
+$tbl = $pdo->prepare(
+    "ALTER TABLE TSV
+    ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
+    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
+$tbl = $pdo->prepare(
+    "ALTER TABLE ETSV
+    ADD COLUMN latInt int(10) DEFAULT NULL AFTER lat,
+    ADD COLUMN lngInt int(10) DEFAULT NULL AFTER lng;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
 
+// Convert float to int
 $tbl = $pdo->prepare("SELECT * FROM HIKES");
 if ($tbl->execute() === false) {
     throw new Exception("Query failed");
@@ -124,4 +157,70 @@ foreach ($tblData as $tblDataItem) {
     . "WHERE picIdx = ?;";
     $update = $pdo->prepare($updtreq);
     $update->execute([$latInt, $lngInt, $picIdx]);
+}
+
+// Drop float columns
+$tbl = $pdo->prepare(
+    "ALTER TABLE HIKES
+    DROP COLUMN lat,
+    CHANGE `latInt` `lat` int(10) DEFAULT NULL;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
+$tbl = $pdo->prepare(
+    "ALTER TABLE HIKES
+    DROP COLUMN lng,
+    CHANGE `lngInt` `lng` int(10) DEFAULT NULL;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
+$tbl = $pdo->prepare(
+    "ALTER TABLE EHIKES
+    DROP COLUMN lat,
+    CHANGE `latInt` `lat` int(10) DEFAULT NULL;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
+$tbl = $pdo->prepare(
+    "ALTER TABLE EHIKES
+    DROP COLUMN lng,
+    CHANGE `lngInt` `lng` int(10) DEFAULT NULL;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
+$tbl = $pdo->prepare(
+    "ALTER TABLE TSV
+    DROP COLUMN lat,
+    CHANGE `latInt` `lat` int(10) DEFAULT NULL;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
+$tbl = $pdo->prepare(
+    "ALTER TABLE TSV
+    DROP COLUMN lng,
+    CHANGE `lngInt` `lng` int(10) DEFAULT NULL;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
+$tbl = $pdo->prepare(
+    "ALTER TABLE ETSV
+    DROP COLUMN lat,
+    CHANGE `latInt` `lat` int(10) DEFAULT NULL;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
+}
+$tbl = $pdo->prepare(
+    "ALTER TABLE ETSV
+    DROP COLUMN lng,
+    CHANGE `lngInt` `lng` int(10) DEFAULT NULL;"
+);
+if ($tbl->execute() === false) {
+    throw new Exception("Query failed");
 }
