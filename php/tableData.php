@@ -92,8 +92,8 @@ for ($i=0; $i<$entries; $i++) {
         $enos .= '"' . $row['indxNo'] . '",';
     }
     $indx = $row['indxNo'];
-    $hikeLat = $row['lat'];
-    $hikeLon = $row['lng'];
+    $hikeLat = $row['lat']/LOC_SCALE;
+    $hikeLon = $row['lng']/LOC_SCALE;
     $hikeTrk = $row['trk'];
     $hikeHiddenDat[$i] = 'data-indx="' . $indx . '" data-lat="' . $hikeLat .
         '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '"';

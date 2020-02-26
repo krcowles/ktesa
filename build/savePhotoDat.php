@@ -50,9 +50,9 @@ if (!$photoLat || !$photoLng) {
 } else {
     $valstr .= "?,?,";
     $vindx++;
-    $vals[$vindx] = $photoLat;
+    $vals[$vindx] = (int) ((float) $photoLat * LOC_SCALE);
     $vindx++;
-    $vals[$vindx] = $photoLng;
+    $vals[$vindx] = (int) ((float) $photoLng * LOC_SCALE);
 }
 $valstr .= "?,";
 $vindx++;

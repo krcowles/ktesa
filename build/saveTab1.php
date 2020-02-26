@@ -72,8 +72,8 @@ if (!$mftNulls) { // get POSTED miles/feet if not nulled above
     $feet  = filter_input(INPUT_POST, 'feet');
 }
 if (!$deletedLatLng) {
-    $lat = filter_input(INPUT_POST, 'lat');
-    $lng = filter_input(INPUT_POST, 'lng');
+    $lat = (int) ((float)(filter_input(INPUT_POST, 'lat')) * LOC_SCALE);
+    $lng = (int) ((float)(filter_input(INPUT_POST, 'lng')) * LOC_SCALE);
 }
 $gpxfile = basename($_FILES['newgpx']['name']);
 if (!empty($gpxfile)) {  // new upload
@@ -84,8 +84,8 @@ if (!empty($gpxfile)) {  // new upload
         $_SESSION['uplmsg'] .= $gpxupl[1];
         $trkdat = makeTrackFile($newgpx, "../gpx/");
         $newtrk = $trkdat[0];
-        $lat = $trkdat[2];
-        $lng = $trkdat[3];
+        $lat = (int) ((float)($trkdat[2]) * LOC_SCALE);
+        $lng = (int) ((float)($trkdat[3]) * LOC_SCALE);
         $newgpxq = "UPDATE EHIKES " .
             "SET gpx = ?, trk = ?, lat = ?, lng = ? " .
             "WHERE indxNo = ?;";

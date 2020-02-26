@@ -47,7 +47,7 @@ if ($ehikes) {
 // Form the queries for extracting data from HIKES/EHIKES and TSV/ETSV
 $basic = "SELECT * FROM {$htable} WHERE indxNo = :indxNo";
 $basicPDO = $pdo->prepare($basic);
-$photos = "SELECT folder,title,hpg,mpg,`desc`,lat,lng,thumb,alblnk,date," .
+$photos = "SELECT folder,title,hpg,mpg,`desc`,thumb,alblnk,date," .
         "mid,imgHt,imgWd FROM {$ttable} WHERE indxNo = :indxNo;";
 $photosPDO = $pdo->prepare($photos);
 // Execute the transactions:

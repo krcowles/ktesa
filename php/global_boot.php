@@ -12,6 +12,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+define("LOC_SCALE", 10**7); // scaling factor for lat and lng as stored in db
 $root = $_SERVER['DOCUMENT_ROOT'];
 require "../vendor/autoload.php";
 require "../admin/mode_settings.php"; // Capture this code version's settings

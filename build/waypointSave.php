@@ -33,8 +33,8 @@ if (!empty($_POST['ndes'])) {
             // add this waypoint to the database array
             $dbdesc[$dbcnt]   = $newdesc[$i];
             $dbicon[$dbcnt]   = $newicon[$i];
-            $dblat[$dbcnt]    = $newlat[$i];
-            $dblng[$dbcnt++]  = $newlng[$i];
+            $dblat[$dbcnt]    = (int) ((float) $newlat[$i] * LOC_SCALE);
+            $dblng[$dbcnt++]  = (int) ((float) $newlng[$i] * LOC_SCALE);
         }
     }
     $query = "INSERT INTO ETSV (indxNo,title,mpg,lat,lng,iclr) "
@@ -150,8 +150,8 @@ if (!empty($_POST['ddes'])) {
         } else {
             array_push($des, $chgdesc[$n]);
             array_push($icn, $chgicon[$n]);
-            array_push($lat, $chglat[$n]);
-            array_push($lng, $chglng[$n]);
+            array_push($lat, (int) ((float) $chglat[$n] * LOC_SCALE));
+            array_push($lng, (int) ((float) $chglng[$n] * LOC_SCALE));
             array_push($idx, $chgidx[$n]);
         }
     }
@@ -169,8 +169,8 @@ if (!empty($_POST['ddes'])) {
         ) {
             array_push($ndes, $newdbdesc[$p]);
             array_push($nicn, $newdbicon[$p]);
-            array_push($nlat, $newdblat[$p]);
-            array_push($nlng, $newdblng[$p]);
+            array_push($nlat, (int) ((float) $newdblat[$p] * LOC_SCALE));
+            array_push($nlng, (int) ((float) $newdblng[$p] * LOC_SCALE));
         }
     }
     $dbquery = "INSERT INTO ETSV (indxNo,title,mpg,lat,lng,iclr) "

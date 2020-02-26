@@ -277,13 +277,13 @@ if ($showPhotos) {
                 } else {
                     $iconColor = 'Red';
                 }
-                $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
-                    $photos['lng']. ",name:'" . $procName . "',desc:'" .
+                $plnk = "GV_Draw_Marker({lat:" . $photos['lat']/LOC_SCALE . ",lon:" .
+                    $photos['lng']/LOC_SCALE . ",name:'" . $procName . "',desc:'" .
                     $procDesc . "',color:'" . $iconColor . 
                         "',icon:'" . $iconStyle . "'});";
             } else { // photo
-                $plnk = "GV_Draw_Marker({lat:" . $photos['lat'] . ",lon:" .
-                    $photos['lng'] . ",name:'" . $procDesc .
+                $plnk = "GV_Draw_Marker({lat:" . $photos['lat']/LOC_SCALE . ",lon:" .
+                    $photos['lng']/LOC_SCALE . ",name:'" . $procDesc .
                     "',desc:'',color:'" . $iconColor . "',icon:'" . $mapicon .
                     "',url:'/pictures/zsize/" . $photos['mid'] . "_" . 
                     $photos['thumb'] . "_z.jpg" . "',thumbnail:'/pictures/nsize/" . 

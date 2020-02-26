@@ -41,14 +41,16 @@ $vcno = 0;
 foreach ($vcs as $vc) {
     $atvcs = explode(".", $vc['collection']);
     $leader = '{name:"' . $vc['pgTitle'] . '",indx:' . $vc['indxNo'] .
-        ',loc:{lat:' . $vc['lat'] . ',lng:' . $vc['lng'] . '},hikes:[';
+        ',loc:{lat:' . $vc['lat']/LOC_SCALE . ',lng:' .
+        $vc['lng']/LOC_SCALE . '},hikes:[';
     foreach ($vchikes as $atvc) {
         if (in_array($atvc['indxNo'], $atvcs)) {
             // add this hike objext to current $leader
             $hobj = '{name:"' . $atvc['pgTitle'] . '",indx:' . $atvc['indxNo'] .
                 ',lgth:' . $atvc['miles'] . ',elev:' . $atvc['feet'] .
-                ',diff:"' . $atvc['diff'] . '",lat:' . $atvc['lat'] . ',lng:' .
-                $atvc['lng'] . '}';
+                ',diff:"' . $atvc['diff'] . '",lat:' .
+                $atvc['lat']/LOC_SCALE . ',lng:' .
+                $atvc['lng']/LOC_SCALE . '}';
             array_push($hikeobj, $hobj);
             array_push($allHikeIndices, $atvc['indxNo']);
             $loc = '{type:"vc",group:' . $vcno . '}';
@@ -77,7 +79,8 @@ for ($j=0; $j<count($clusters); $j++) {
     if (!in_array($clusters[$j]['cgroup'], $enrolled)) {
         array_push($enrolled, $clusters[$j]['cgroup']); // $id-th item
         $lead = '{group:"' . $clusters[$j]['cname'] . '",loc:{lat:' .
-            $clusters[$j]['lat'] . ',lng:' . $clusters[$j]['lng'] . '},hikes:[';
+            $clusters[$j]['lat']/LOC_SCALE .
+            ',lng:' . $clusters[$j]['lng']/LOC_SCALE . '},hikes:[';
         array_push($leaders, $lead);
     }
 }
@@ -86,7 +89,8 @@ for ($k=0; $k<count($clusters); $k++) {
     $hobj = '{name:"' . $clusters[$k]['pgTitle'] . '",indx:' .
         $clusters[$k]['indxNo'] . ',lgth:' . $clusters[$k]['miles'] .',elev:' .
         $clusters[$k]['feet'] . ',diff:"' . $clusters[$k]['diff'] . 
-        '",lat:' . $clusters[$k]['lat'] . ',lng:' . $clusters[$k]['lng'] . '}';
+        '",lat:' . $clusters[$k]['lat']/LOC_SCALE . ',lng:' .
+        $clusters[$k]['lng']/LOC_SCALE . '}';
     $clus = $clusters[$k]['cgroup'];
     $prefix = array_search($clus, $enrolled);
     $hobj = $prefix . ":" . $hobj;
@@ -128,7 +132,8 @@ foreach ($hikes as $hike) {
     $loc = '{type:"nm",group:' . $nmindx++ . '}';
     array_push($locaters, $loc);
     $hike = '{name:"' . $hike['pgTitle'] . '",indx:' . $hike['indxNo'] .
-        ',loc:{lat:' . $hike['lat'] . ',lng:' . $hike['lng'] . '},lgth:' .
+        ',loc:{lat:' . $hike['lat']/LOC_SCALE . ',lng:' .
+        $hike['lng']/LOC_SCALE . '},lgth:' .
         $hike['miles'] . ',elev:' . $hike['feet'] . ',diff:"' . $hike['diff'] .
         '",dir:"' . $hike['dirs'] . '"}';
     array_push($hikeobj, $hike);
