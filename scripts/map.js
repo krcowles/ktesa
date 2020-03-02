@@ -344,13 +344,27 @@ $.when( mapdone ).then(drawTracks).then(function() {
 
 function drawTracks() {
 	var color;
+	// Any VC hikes w/tracks:
+	VC.forEach(function(vcobj) {
+		color = 0;
+		vcobj.hikes.forEach(function(hikeobj) {
+			if (tracks[hikeobj.indx] !== '') {
+				let trkfile = '../json/' + tracks[hikeobj.indx];
+				drawTrack(trkfile, colors[color], hikeobj.indx);
+				// empty corresponding indx in array so that it won't get drawn agai
+				tracks[hikeobj.indx] = '';
+				color++;
+				if (color > 5) { color = 0 }
+			}
+		});
+	});
 	// Clusters first, as they require multiple colors
 	CL.forEach(function(clobj) {
 		color = 0;
 		clobj.hikes.forEach(function(hikeobj) {
 			// hike indx nos. start at 1, arrays start at 0, so:
 			if (tracks[hikeobj.indx] !== '') {
-				var trkfile = '../json/' + tracks[hikeobj.indx];
+				let trkfile = '../json/' + tracks[hikeobj.indx];
 				drawTrack(trkfile, colors[color], hikeobj.indx);
 				// empty corresponding indx in array so that it won't get drawn again
 				tracks[hikeobj.indx] = '';
@@ -386,7 +400,6 @@ function drawTrack(jsonfile, color, ptr) {
 				strokeOpacity: 1.0,
 				strokeWeight: 3
 			});
-			//trkObj[trkKeyStr].setMap(map);
 			// when loaded, all tracks are off (not set)
 			allTheTracks.push(trkKeyStr);
 			// create the mouseover text:
@@ -404,8 +417,8 @@ function drawTrack(jsonfile, color, ptr) {
 			trkKeyNo++;
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			msg = 'Did not succeed in getting JSON data: ' + jsonfile;
-			alert("Indx " + ptr);
+			msg = 'Did not succeed in getting JSON data: ' + jsonfile + " hike " + ptr;
+			alert(msg);
 		}
 	});
 } // end drawTrack
