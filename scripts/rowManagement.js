@@ -67,14 +67,9 @@ $(window).resize( function() {
     winWidth = $(window).width();
     winrat = winWidth/zoomMax;
     var runSizer = false;
-    if (usePixelRatio) {
-            if (resizeFlag === false && window.devicePixelRatio === 1) {
-                    runSizer = true;
-            }
-    } else {
-            if (resizeFlag === false && (winrat > 0.95 && winrat < 1.05)) {
-                    runSizer = true; 
-            }
+    // var pxrat = window.devicePixelRatio; This can change over time!!
+    if (resizeFlag === false) {
+        runSizer = true;
     }
     if (runSizer) {
             resizeFlag = true;
