@@ -36,24 +36,6 @@ var smallGeo = '../images/starget.png';
 var medGeo = '../images/purpleTarget.png';
 var lgGeo = '../images/ltarget.png';
 
-var mobile_browser = (navigator.userAgent.match(/\b(Android|Blackberry|IEMobile|iPhone|iPad|iPod|Opera Mini|webOS)\b/i) || (screen && screen.width && screen.height && (screen.width <= 480 || screen.height <= 480))) ? true : false;
-// icons depend on whether mobile or not (size factor for visibility)
-// also text size for pop-ups - which doesn't seem to work!
-if ( mobile_browser ) {
-    var geoIcon = lgGeo;
-    var ctrIcon = '../images/yellow64.png';
-    var clusterIcon = '../images/blue64.png';
-    var hikeIcon = '../images/pink64.png';
-    $('#iwVC').css('font-size','400%');
-    $('#iwCH').css('font-size','400%');
-    $('#iwOH').css('font-size','400%');
-} else {
-    //var geoIcon = medGeo;
-    var ctrIcon = '../images/yellow.png';
-    var clusterIcon = '../images/bluepin.png';
-	var hikeIcon = '../images/redpin.png';
-} 
-
 // place legend link on map (w/draggable header);
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -120,6 +102,10 @@ $('#can').on('click', function(ev) {
  * 		tracks Array: ordered list of json file names
  */
 var locaters = []; // global used to popup info window on map when hike is searched
+const getIcon = (no_of_hikes) => {
+	let icon = "../images/pins/hike" + no_of_hikes + ".png";
+	return icon;
+};
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 var mapdone = new $.Deferred();
@@ -153,30 +139,37 @@ function initMap() {
 
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
 	VC.forEach(function(vcobj) {
-		AddVCMarker(vcobj.loc, ctrIcon, vcobj.name, vcobj.indx, vcobj.hikes);
+		AddVCMarker(vcobj.loc, vcobj.name, vcobj.indx, vcobj.hikes);
 	});
 	CL.forEach(function(clobj) {
-		AddClusterMarker(clobj.loc, clusterIcon, clobj.group, clobj.hikes);
+		AddClusterMarker(clobj.loc, clobj.group, clobj.hikes);
 	});
 	NM.forEach(function(nmobj) {
-		AddHikeMarker(hikeIcon, nmobj);
+		AddHikeMarker(nmobj);
 	});
 
 
 	// Visitor Center Markers:
-	function AddVCMarker(location, iconType, pinName, hikeindx, hikeobj) {
+	function AddVCMarker(location, pinName, hikeindx, hikeobj) {
+		let hikecnt = hikeobj.length;
+		let vcicon = getIcon(hikecnt);
+		if (vcicon < 1) {
+			return;
+		}
 		var marker = new google.maps.Marker({
 		  position: location,
 		  map: map,
-		  icon: iconType,
+		  icon: vcicon,
 		  title: pinName
 		});
+
 		var srchmrkr = {hikeid: pinName, pin: marker};
 		locaters.push(srchmrkr);
 		clusterMarkerSet.push(marker);
 		// add info window functionality
 		marker.addListener( 'click', function() {
 			map.setCenter(location);
+			map.setZoom(13);
 			var website = '<a href="indexPageTemplate.php?hikeIndx=' + hikeindx +
 				'">' + pinName + '</a>';
 			iwContent = '<div id="iwVC">' + website;
@@ -200,16 +193,16 @@ function initMap() {
 			});
 			iw.open(map, this);
 		});
-		// add in locaters for the hikes associated with VC's:
-		
 	}
 
 	// Clustered Markers:
-	function AddClusterMarker(location, iconType, group, clhikes) {
+	function AddClusterMarker(location, group, clhikes) {
+		let hikecnt = clhikes.length;
+		let clicon = getIcon(hikecnt);
 		var marker = new google.maps.Marker({
 			position: location,
 			map: map,
-			icon: iconType,
+			icon: clicon,
 			title: group
 		});
 		var srchmrkr = {hikeid: group, pin: marker};
@@ -217,6 +210,7 @@ function initMap() {
 		clusterMarkerSet.push(marker);
 		// info window content: add in all the hikes for this group
 		marker.addListener( 'click', function() {
+			map.setZoom(13);
 			map.setCenter(location);
 			var iwContent = '<div id="iwCH">' + group;
 			clhikes.forEach(function(clobj) {
@@ -234,15 +228,17 @@ function initMap() {
 	}
 
 	// Normal Hike Markers
-	function AddHikeMarker(iconType, hikeobj) {
+	function AddHikeMarker(hikeobj) {
+		let nmicon = getIcon(1);
 		var marker = new google.maps.Marker({
 		  position: hikeobj.loc,
 		  map: map,
-		  icon: iconType,
+		  icon: nmicon,
 		  title: hikeobj.name
 		});
 		marker.addListener( 'click', function() {
 			map.setCenter(hikeobj.loc);
+			map.setZoom(13);
 			var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
 				+ hikeobj.indx + '">' + hikeobj.name + '</a><br />';
 			iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
@@ -344,27 +340,13 @@ $.when( mapdone ).then(drawTracks).then(function() {
 
 function drawTracks() {
 	var color;
-	// Any VC hikes w/tracks:
-	VC.forEach(function(vcobj) {
-		color = 0;
-		vcobj.hikes.forEach(function(hikeobj) {
-			if (tracks[hikeobj.indx] !== '') {
-				let trkfile = '../json/' + tracks[hikeobj.indx];
-				drawTrack(trkfile, colors[color], hikeobj.indx);
-				// empty corresponding indx in array so that it won't get drawn agai
-				tracks[hikeobj.indx] = '';
-				color++;
-				if (color > 5) { color = 0 }
-			}
-		});
-	});
 	// Clusters first, as they require multiple colors
 	CL.forEach(function(clobj) {
 		color = 0;
 		clobj.hikes.forEach(function(hikeobj) {
 			// hike indx nos. start at 1, arrays start at 0, so:
 			if (tracks[hikeobj.indx] !== '') {
-				let trkfile = '../json/' + tracks[hikeobj.indx];
+				var trkfile = '../json/' + tracks[hikeobj.indx];
 				drawTrack(trkfile, colors[color], hikeobj.indx);
 				// empty corresponding indx in array so that it won't get drawn again
 				tracks[hikeobj.indx] = '';
@@ -400,6 +382,7 @@ function drawTrack(jsonfile, color, ptr) {
 				strokeOpacity: 1.0,
 				strokeWeight: 3
 			});
+			//trkObj[trkKeyStr].setMap(map);
 			// when loaded, all tracks are off (not set)
 			allTheTracks.push(trkKeyStr);
 			// create the mouseover text:
@@ -417,8 +400,8 @@ function drawTrack(jsonfile, color, ptr) {
 			trkKeyNo++;
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			msg = 'Did not succeed in getting JSON data: ' + jsonfile + " hike " + ptr;
-			alert(msg);
+			msg = 'Did not succeed in getting JSON data: ' + jsonfile;
+			alert("Indx " + ptr);
 		}
 	});
 } // end drawTrack
