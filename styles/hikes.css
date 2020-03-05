@@ -1,7 +1,9 @@
 html {
     height: 100%;
     margin: 0;
-    padding: 0; }
+    padding: 0;
+    overflow-x: hidden;
+ }
 body {
     min-width: 960px;
     height: 100%;
