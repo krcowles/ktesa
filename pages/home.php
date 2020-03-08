@@ -43,7 +43,6 @@ require "alphabeticHikes.php";
 <input id="searchbar" placeholder="Search for a hike" list="hikelist" />
 <?= $datalist; ?>
 
-<a id="legend" href="#">Map Legend</a>
 <div id="maplegend">
     <div id="header">Drag Here<div id="can">X</div></div>
     <ul id="mapsyms">
