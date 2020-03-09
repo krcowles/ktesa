@@ -362,13 +362,16 @@ MarkerClusterer.prototype.getMaxZoom = function() {
 MarkerClusterer.prototype.calculator_ = function(markers, numStyles) {
   var index = 0;
   var count = markers.length;
-/*
-  var dv = count;
-  while (dv !== 0) {
-    dv = parseInt(dv / 10, 10);
-    index++;
-  }
-*/
+  // ktesa code
+  var adder = 0;
+  markers.forEach(function(ktesa_marker) {
+    let hikeNoPos = ktesa_marker.icon.indexOf('hike') + 4;
+    let ktesa_count = ktesa_marker.icon.substr(hikeNoPos, 1);
+    if (ktesa_count > 1) {
+      adder += (ktesa_count - 1);
+    }
+  });
+  //
   if (count < 10) {
     index = 1;
   } else if (count < 20) {
@@ -376,6 +379,7 @@ MarkerClusterer.prototype.calculator_ = function(markers, numStyles) {
   } else {
     index = 3;
   } 
+  count += adder;  // ktesa adjustment
   index = Math.min(index, numStyles);
   return {
     text: count,
