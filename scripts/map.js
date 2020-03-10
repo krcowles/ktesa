@@ -206,6 +206,7 @@ function initMap() {
 		{
 			imagePath: '../images/markerclusters/m',
 			gridSize: 50,
+			maxZoom: 12,
 			averageCenter: true,
 			zoomOnClick: true
 		});
