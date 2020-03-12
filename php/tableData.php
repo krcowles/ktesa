@@ -60,7 +60,9 @@ if ($age === 'new') {
     $enos = '[';    // and their corresponding EHIKES indxNo's
     $query = 'SELECT * FROM EHIKES';
     if ($show === 'usr') {
-        $query .= " WHERE usrid = :user";
+        if ($usr !== 'mstr') {
+            $query .= " WHERE usrid = :user";
+        }
     }
 } elseif ($age === 'old') {
     $query = 'SELECT * FROM HIKES';
