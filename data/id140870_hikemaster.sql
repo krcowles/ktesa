@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=422 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=423 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1176 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1182 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -275,7 +275,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=237 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -511,7 +511,8 @@ INSERT INTO HIKES VALUES
 ('232','Trail 302','mstr','Santa Fe','Cluster',NULL,'J','Chino Mesa Group','Out-and-back','2.40','1000','Moderate','None','Excellent vistas of the Rio Grande valley','Spring/Fall','Full sun','PinabeteCanyon.gpx','PinabeteCanyon.json','357743460','-1061944940',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//35.775412,-106.193567/@35.7058852,-106.2181235,11.3z','The road to the indicated parking area is poor and definitely requires a good clearance, all-wheel drive vehicle. There are some challenging traverses across rocky areas and arroyos. The trail itself (going down) requires care in managing the loose rock.','This trail is indicated on some maps as Trail 302 (e.g. USGS CalTopo), and apparently is not maintained and is very infrequently used. Nonetheless, it offers excellent views of the Rio Grande river valley, and descends from the mesa down to its banks, about 1,000 ft. With virtually no foot traffic in the area, the trip to the river is quiet and the shore is serene. The trail leads to an unmarked rapids, and it is not difficult to traverse the banks to explore.',NULL,NULL,NULL),
 ('233','Piedra Lisa Ridge','mstr','Albuquerque','Cluster',NULL,'O','South Sandia Group','Loop','3.60','1400','Difficult','None','Sandia Foothills Views ','Any','Full sun','PiedraLisaRidge.GPX','PiedraLisaRidge.json','351049761','-1064884209',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Menaul+Trailhead/@35.104996,-106.4958416,15.9z/data=!4m5!3m4!1s0x8718a034dab42bbd:0x40a3abaa3a778be3!8m2!3d35.1050306!4d-106.4885542','This hike has some very steep sections, sometimes covered with loose gravel - exercise caution.','This hike starts out casually from the Menaul Trailhead, but soon takes a steep ascent up the Piedra Lisa Ridge. The Yellow Flag indicates an alternate route uphill, previously taken by the author, but which requires more scrambling and is steeper, and leading to the same path. The Red Flags indicates a straighter section of trail to the objective, which the author missed. The endpoint of this hike can be extended uphill to the overlook indicated by a Yellow Triangle. At this point, you will be traversing the Whitewash Trail. The downhill descent was also very steep in sections, eventually leading to the Embudo Canyon area and Trail 401. ',NULL,NULL,NULL),
 ('234','Piedra Lisa Falls Loop','mstr','Albuquerque','Cluster',NULL,'PP','Piedra Lisa Canyon Group','Loop','3.10','1000','Difficult','None','Views from Sandia Foothills','Not Winter','Full sun','PL_Falls_Loop.GPX','PL_Falls_Loop.json','351124235','-1064882992',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Piedra+Lisa+Canyon+Trail/@35.1102418,-106.4966122,15.98z/data=!4m5!3m4!1s0x8718a033bfd778ab:0x894f8abb02d5b38c!8m2!3d35.1121769!4d-106.4881556','Portions of the trail above the falls can be very steep and some require scrambling. This can be very difficult when ice is present, so exercise caution.','This unique hike takes you away from the popular falls area and onto a much less-trafficked route. There are interesting rock formations and lovely views west and north from the trail. Proceed carefully above the falls, as some scrambling is required.',NULL,NULL,NULL),
-('235','Sun-Moon Loop','mstr','Santa Fe','Cluster',NULL,'AA','Atalaya Group','Loop','2.90','750','Difficult','None','Sangre de Cristo Views','Not Winter','Mixed sun/shade','Sun_Moon_Loop.GPX','Sun_Moon_Loop.json','356674964','-1059134606',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Atalaya+-+Lower+Trailhead/@35.6664782,-105.920609,15.01z/data=!4m5!3m4!1s0x8718510ec7276b45:0x3b1a66f08bdcb4f2!8m2!3d35.6684845!4d-105.9120558','The trail up Moon Mountain is not maintained, but one of several cut by previous hikers. It can be very steep and require scrambling at points. Avoid this route when icy.','This hike offers a double-ascent with great views of the Santa Fe Valley and points north. Although steep in places, it makes for a great loop hike and ascends Sun Mountain from a different route than the classic Sun Mountain hike off of Santa Fe Trail. As with other trails in populated areas, there can be many confusing cross trails and alternates, so plan your route well.',NULL,NULL,NULL);
+('235','Sun-Moon Loop','mstr','Santa Fe','Cluster',NULL,'AA','Atalaya Group','Loop','2.90','750','Difficult','None','Sangre de Cristo Views','Not Winter','Mixed sun/shade','Sun_Moon_Loop.GPX','Sun_Moon_Loop.json','356674964','-1059134606',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Atalaya+-+Lower+Trailhead/@35.6664782,-105.920609,15.01z/data=!4m5!3m4!1s0x8718510ec7276b45:0x3b1a66f08bdcb4f2!8m2!3d35.6684845!4d-105.9120558','The trail up Moon Mountain is not maintained, but one of several cut by previous hikers. It can be very steep and require scrambling at points. Avoid this route when icy.','This hike offers a double-ascent with great views of the Santa Fe Valley and points north. Although steep in places, it makes for a great loop hike and ascends Sun Mountain from a different route than the classic Sun Mountain hike off of Santa Fe Trail. As with other trails in populated areas, there can be many confusing cross trails and alternates, so plan your route well.',NULL,NULL,NULL),
+('236','Embudito South Ridge','mstr','Albuquerque','Normal',NULL,'','','Out-and-back','3.50','1800','Difficult','None','Views of Canyon and northern Sandias','Not Winter','Full sun','Embudito-South.GPX','Embudito-South.json','351361816','-1064819572',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Embudito+Trailhead,+Trailhead+Rd+NE,+Albuquerque,+NM+87111/@35.1372569,-106.4985709,15.15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189f774aeae439:0x830c2fa9ca25ef9!2m2!1d-106.4819952!2d35.1360355','Some sections of this trail are quite steep and may require some scrambling. Due to a cobweb of trails in the area, finding the trail can be challenging. ','This hike proceeds away from the popular Embudito Trail [Trail #192] and up into the south ridge of the canyon. From there, unique views of the canyon, along with views of the northern Sandias are afforded. Exercise care, as portions of the trail can be quite steep. The author scouted the first part of this trail (up to the green flag), and the rest is \'estimated\' based on \'best guess\' looking at aerial views. The blue flag marks the approximate location of \'Boulder Cave\' (see the book reference).',NULL,NULL,NULL);
 
 
 
@@ -579,7 +580,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1606 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1607 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1457,7 +1458,8 @@ INSERT INTO REFS VALUES
 ('1602','190','App:','https://www.alltrails.com/trail/us/new-mexico/michial-m-emery-and-trail-305-loop','AllTrails.com'),
 ('1603','190','Website:','https://www.mtbproject.com/trail/7007599/michael-emery-trail','MBT Project (REI)'),
 ('1604','234','Book:','21',NULL),
-('1605','235','Book:','1',NULL);
+('1605','235','Book:','1',NULL),
+('1606','236','Book:','21',NULL);
 
 
 
@@ -1481,7 +1483,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4529 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4536 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4014,7 +4016,13 @@ INSERT INTO TSV VALUES
 ('4525','235',NULL,'IMG_2816','Y','Y','From the saddle towards Aspen Peak','356575861','-1059089888','2521',NULL,'2020-03-04 11:13:43','IMG_2816','2448','3264',NULL,NULL),
 ('4526','235',NULL,'IMG_2817','Y','Y','A view from the summit of Moon Mountain','356553916','-1059073499','2522',NULL,'2020-03-04 11:38:25','IMG_2817','2448','3264',NULL,NULL),
 ('4527','235',NULL,'IMG_2818','Y','N','South towards the Sandias','356555583','-1059073777','2523',NULL,'2020-03-04 11:39:35','IMG_2818','2448','3264',NULL,NULL),
-('4528','235',NULL,'IMG_20200304_102716582_HDR','Y','Y','Looking north from the trail','356648550','-1059112879','2524',NULL,'2020-03-04 10:27:21','IMG_20200304_102716582_HDR','2268','4032',NULL,NULL);
+('4528','235',NULL,'IMG_20200304_102716582_HDR','Y','Y','Looking north from the trail','356648550','-1059112879','2524',NULL,'2020-03-04 10:27:21','IMG_20200304_102716582_HDR','2268','4032',NULL,NULL),
+('4529','236',NULL,'IMG_2822','Y','Y','Early view towards the parking area','351347472','-1064774388','2525',NULL,'2020-03-12 11:21:37','IMG_2822','2448','3264',NULL,NULL),
+('4530','236',NULL,'IMG_2823','Y','Y','Looking north into the canyon and towards Rincon Ridge','351342722','-1064777666','2526',NULL,'2020-03-12 11:24:54','IMG_2823','2448','3264',NULL,NULL),
+('4531','236',NULL,'IMG_2824','Y','Y','Many interesting rock formations along the way','351332861','-1064773111','2527',NULL,'2020-03-12 11:32:06','IMG_2824','2448','3264',NULL,NULL),
+('4532','236',NULL,'IMG_2825','Y','N','A higher view north','351190722','-1064933916','2528',NULL,'2020-03-12 11:40:03','IMG_2825','2448','3264',NULL,NULL),
+('4533','236',NULL,'IMG_2828','Y','Y','Looking back','351305000','-1064732361','2529',NULL,'2020-03-12 11:48:43','IMG_2828','2448','3264',NULL,NULL),
+('4534','236',NULL,'IMG_2829','Y','Y','Approaching the turn-around point','351302027','-1064723500','2530',NULL,'2020-03-12 11:53:27','IMG_2829','2448','3264',NULL,NULL);
 
 
 
