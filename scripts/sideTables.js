@@ -158,7 +158,7 @@ function formTbl(indxArray) {
     $('#sideTable').empty();
     $.each(indxArray, function(i, obj) {
         var tbl = tblItemHtml;
-        var lnk = '<a href="hikePagseTemplate.php?hikeIndx=' + obj.indx + 
+        var lnk = '<a href="hikePageTemplate.php?hikeIndx=' + obj.indx + 
             '">' + obj.name + '</a>';
         tbl += lnk;
         tbl += '<img style="position:relative;left:20px;top:6px;" class="zoomers" ' +
