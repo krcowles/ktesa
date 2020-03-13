@@ -127,16 +127,19 @@ li {
 	border-width: 1px;
 	float: left;
 }
-.tip {
+.tip, .zpop {
 	display: none;
-	width: 120px;
+	width: 126px;
 	background-color: black;
 	color: #fff;
 	text-align: center;
-	padding: 5px 0;
+	padding: 5px 2px;
 	border-radius: 6px;
 	position: absolute;
   	z-index: 2;
+}
+.zpop {
+	width: 104px;
 }
 .like {
 	cursor: pointer;
