@@ -86,9 +86,10 @@ function infoWin(hike, loc) {
     map.setZoom(13);
     $.each(locaters, function(indx, value) {
         if (value.hikeid == hike) {
-            if (!openedInfoWins.includes(hike)) {
+            let thismarker = value.pin;
+            if (thismarker.clicked === false) {
+                // clicking will set marker.clicked = true
                 google.maps.event.trigger(value.pin, 'click');
-                openedInfoWins.push(hike);
             } else {
                 map.setCenter(loc);
             }
@@ -96,7 +97,7 @@ function infoWin(hike, loc) {
         }
     });
 };
-var openedInfoWins = [];
+
 /**
  * The side table includes all hikes on page load; on pan/zoom it will include only those
  * hikes within the map bounds. In the following code, the variables 'allHikes' and 
