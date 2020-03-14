@@ -35,14 +35,14 @@ function popupHikeName(hikename) {
     VC.forEach(function(ctr) {
         // is this a visitor center?
         if (ctr.name == hikename) {
-            infoWin(ctr.name);
+            infoWin(ctr.name, ctr.loc);
             found = true;
             return;
         } else {
             // is it one of the VC's hikes?
             ctr.hikes.forEach(function(atvc) {
                 if (atvc.name == hikename) {
-                    infoWin(ctr.name);
+                    infoWin(ctr.name, ctr.loc);
                     found = true;
                     return;
                 }
@@ -53,7 +53,7 @@ function popupHikeName(hikename) {
         CL.forEach(function(clus) {
             clus.hikes.forEach(function(hike) {
                 if (hike.name == hikename) {
-                    infoWin(clus.group);
+                    infoWin(clus.group, clus.loc);
                     found = true;
                     return;
                 }
@@ -62,6 +62,7 @@ function popupHikeName(hikename) {
         if (!found) {
             NM.forEach(function(hike) {
                 if (hike.name == hikename) {
+                    let loc = {lat: hike.lat, lng: hike.lng};
                     infoWin(hike.name);
                     found = true;
                     return;
@@ -80,17 +81,22 @@ function popupHikeName(hikename) {
  * @param {string} hike The name of the hike whose infoWindow will be clicked
  * @returns {null}
  */
-function infoWin(hike) {
+function infoWin(hike, loc) {
     // find the marker associated with the input parameters and popup its info window
     map.setZoom(13);
     $.each(locaters, function(indx, value) {
         if (value.hikeid == hike) {
-            google.maps.event.trigger(value.pin, 'click');
+            if (!openedInfoWins.includes(hike)) {
+                google.maps.event.trigger(value.pin, 'click');
+                openedInfoWins.push(hike);
+            } else {
+                map.setCenter(loc);
+            }
             return;
         }
     });
 };
-
+var openedInfoWins = [];
 /**
  * The side table includes all hikes on page load; on pan/zoom it will include only those
  * hikes within the map bounds. In the following code, the variables 'allHikes' and 
