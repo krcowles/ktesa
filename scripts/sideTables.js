@@ -62,8 +62,7 @@ function popupHikeName(hikename) {
         if (!found) {
             NM.forEach(function(hike) {
                 if (hike.name == hikename) {
-                    let loc = {lat: hike.lat, lng: hike.lng};
-                    infoWin(hike.name);
+                    infoWin(hike.name, hike.loc);
                     found = true;
                     return;
                 }
