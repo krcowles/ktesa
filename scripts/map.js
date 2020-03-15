@@ -360,8 +360,9 @@ function drawTrack(jsonfile, color, ptr) {
 			trkKeyNo++;
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			msg = 'Did not succeed in getting JSON data: ' + jsonfile;
-			alert("Indx " + ptr);
+			msg = 'Did not succeed in getting JSON data: ' + 
+				jsonfile + '\n[Hike #' + ptr + ']';
+			alert(msg);
 		}
 	});
 } // end drawTrack
