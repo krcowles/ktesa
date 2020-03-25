@@ -4046,6 +4046,9 @@ INSERT INTO USERS VALUES
 ('1','tom','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Sandberg','Tom','tjsandberg@yahoo.com',NULL,NULL,'One of the geniuses behind this site :-)'),
 ('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)'),
 ('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com','','','Just and old dusty traveler'),
-('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu','','','');
+('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu','','',''),
+('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com','','',''),
+('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com','','','Standard user account established by admin');
+
 
 
