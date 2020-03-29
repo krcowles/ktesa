@@ -190,7 +190,8 @@ function filterSetup() {
         var $tblrows = $('.sortable tbody tr');
         var coords = {};
         $tblrows.each(function() {
-            if ($(this).find('td').eq(0).text() === hike) {
+            let hikeLinkText = $(this).find('td').eq(0).children().eq(0).text();
+            if (hikeLinkText === hike) {
                 var hlat = $(this).data('lat');
                 var hlon = $(this).data('lon');
                 coords = {lat: hlat, lng: hlon};
@@ -204,7 +205,6 @@ function filterSetup() {
         }
     }
     function filterList(radius, geo) {
-        //alert("Hikes within " + radius + " miles of " + geo.lat + ", " + geo.lng);
         tblHtml = $('.sortable').html();
         var bdystrt = tblHtml.indexOf('<tbody>');
         tblHtml = tblHtml.substr(0, bdystrt);

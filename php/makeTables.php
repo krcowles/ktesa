@@ -51,8 +51,8 @@ require_once "tableData.php";
         <tr class="normal" <?= $hikeHiddenDat[$j];?>>
         <?php endif; ?>
         <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
-        <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $hikeName[$j];?>
-            </a></td>
+        <td><a href="<?= $pgLink[$j];?>"
+            target="_blank"><?= $hikeName[$j];?></a></td>
         <td><?= $hikeLocale[$j];?></td>
         <td>See Indx</td>
         <td>0* miles</td>
@@ -60,8 +60,8 @@ require_once "tableData.php";
         <td>See Index</td>
         <td>See Index</td>
     <?php else : ?>
-        <td><a href="<?= $pgLink[$j];?>" target="_blank">
-            <?= $hikeName[$j];?></a></td>
+        <td><a href="<?= $pgLink[$j];?>"
+            target="_blank"><?= $hikeName[$j];?></a></td>
         <td><?= $hikeLocale[$j];?></td>
         <td><?= $hikeWow[$j];?></td>
         <td><?= $hikeLgth[$j];?> miles</td>

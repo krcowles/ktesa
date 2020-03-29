@@ -61,7 +61,11 @@ if (isset($_REQUEST['no'])) {
 // Execute the DROP TABLE command for each table:
 for ($i=0; $i<$tblcnt; $i++) {
     echo "Dropping {$tables[$i]}: ... ";
+    try {
     $pdo->query("DROP TABLE {$tables[$i]};");
+    } catch (PDOException $pdoe) {
+        // do nothing
+    }
     echo "Table Removed<br />";
 }
 ?>
