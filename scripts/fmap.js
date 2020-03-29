@@ -8,8 +8,22 @@ var $fullScreenDiv;
 var $map = $('#map');
 // Maximize map height & side table div
 var mapht = $(window).height() - $('#panel').height();
-$map.css('height', mapht + 'px');
-$('#sideTable').css('height', mapht + 'px');
+
+/**
+ * This function is called initially, and again when resizing the window;
+ * Because the map, adjustWidth and sideTable divs are floats, height
+ * needs to be specified for the divs to be visible.
+ * 
+ * @return {null}
+ */
+const initDivParms = () => {
+	mapht = $(window).height() - $('#panel').height();
+	$map.css('height', mapht + 'px');
+	$('#adjustWidth').css('height', mapht + 'px');
+	$('#sideTable').css('height', mapht + 'px');
+}
+initDivParms();
+
 var mapTick = {   // custom tick-mark symbol for tracks
     path: 'M 0,0 -5,11 0,8 5,11 Z',
     fillcolor: 'Red',
@@ -43,6 +57,7 @@ const getIcon = (no_of_hikes) => {
 var mapdone = new $.Deferred();
 function initMap() {
 	google.maps.Marker.prototype.clicked = false;  // used in sideTables.js
+	var clustererMarkerSet = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
 	map = new google.maps.Map($map.get(0), {
 		center: nmCtr,
@@ -84,6 +99,7 @@ function initMap() {
 		marker.clicked = false;
 		let srchmrkr = {hikeid: hikeobj.name, pin: marker};
 		locaters.push(srchmrkr);
+		clustererMarkerSet.push(marker);
 
 		// infoWin content: add data for this hike
 		var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
@@ -106,6 +122,17 @@ function initMap() {
 			marker.clicked = true;
 		});
 	}
+
+
+	// /////////////////////// Marker Grouping /////////////////////////
+	var markerCluster = new MarkerClusterer(map, clustererMarkerSet,
+		{
+			imagePath: '../images/markerclusters/m',
+			gridSize: 50,
+			maxZoom: 12,
+			averageCenter: true,
+			zoomOnClick: true
+		});
 
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	map.addListener('zoom_changed', function() {
@@ -265,9 +292,13 @@ $(document).bind(
 
 // //////////////////////  WINDOW RESIZE EVENT  //////////////////////
 $(window).resize(function() {
-	mapht = $(window).height() - $('#panel').height();
-	$('#map').css('height', mapht + 'px');
-	$('#sideTable').css('height', mapht + 'px');
+	let newWinWidth = window.innerWidth;
+	let mapWidth = Math.round(0.72 * newWinWidth);
+	let tblWidth = newWinWidth - (mapWidth + 3); // 3px = adjustWidth
+	initDivParms();
+	$map.css('width', mapWidth + 'px');
+	$('#sideTable').css('width', tblWidth + 'px');
 	locateGeoSym();
+	positionFavTooltips();
 });
 // //////////////////////////////////////////////////////////////
