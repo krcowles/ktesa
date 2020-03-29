@@ -36,36 +36,15 @@ require "alphabeticHikes.php";
 
 <div id="map"></div>
 
-<!-- GPS Position Location -->
+<div id="adjustWidth" class="custom"></div>
+<div id="sideTable">
+</div>
+
 <p id="geoSetting">ON</p>
 <img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />
 
 <input id="searchbar" placeholder="Search for a hike" list="hikelist" />
 <?= $datalist; ?>
-
-<div id="maplegend">
-    <div id="header">Drag Here<div id="can">X</div></div>
-    <ul id="mapsyms">
-        <li><img src="../images/markerclusters/m1.png" alt="Cluster Marker" 
-            width="32" />Click on any color cluster group (or zoom in) to
-            expand the hikes</li>
-        <li><img src="../images/bluepin.png" alt="Blue Pin" height="32" />
-            Click this pin to show multiple hikes with 
-            trailheads in close proximity</li>
-        <li><img src="../images/redpin.png" alt="Red Pin" height="32" />
-            Click this pin to show a single hike at this 
-            location</li>
-        <li><img src="../images/yellow.png" alt="Yellow Pin" height="32" />
-            Click this pin to see the hikes associated with a 
-            Visitor's Center</li>
-        <li><img src="../images/geoloc.png" alt="Geolocation Symbol"
-            height="32" />Click this symbol to locate your
-            current position on the map</li>
-    </ul>
-</div>
-
-<div id="sideTable">
-</div>
 
 <?php
 require "../php/mapJsData.php";

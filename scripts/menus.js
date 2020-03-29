@@ -21,6 +21,9 @@ switch(page_type.trim()) {
     case "Home":
         $('#home').prepend(icon);
         break;
+    case "Favorites":
+        $('#yours').prepend(icon);
+        break;
     case "About":
         $('#about').prepend(icon);
         break;
@@ -50,8 +53,9 @@ function gotoPage(content) {
             page = 'viewPubs';
             // no script yet
             break;
-        case 'View In-Edit Hikes':
-            page = 'viewEdits';
+        case 'Show Favorites':
+            let favpg = '../pages/favTable.php?usr=' + userid;
+            window.open(favpg, '_self');
             break;
         case 'Create New Hike':
             page = 'new';

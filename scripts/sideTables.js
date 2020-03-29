@@ -3,7 +3,7 @@
  *       a search bar capability synchronized to the side table.
  * @author Tom Sandberg
  * @author Ken Cowles
- * @version 2.0 [Introduces 'zoom to hike' in map for side table items]
+ * @version 3.0 [Adds favorites functionality]
  */
 
 /**
@@ -146,13 +146,47 @@ function idHike(indx, obj) {
 }
 
 /**
+ * Get the current list of user's favorites. Note that a deferred object is
+ * defined so that the list can be retrieved prior to invoking the side table.
+ */ 
+var listdone = new $.Deferred();
+var favlist = [];
+var ftbl = '../pages/getFavorites.php';
+var fdat = {userid: userid};  // userid specified in getLogin.js
+$.ajax({
+    url: ftbl,
+    method: 'post',
+    data: fdat,
+    dataType: 'text',
+    success: function(flist) {
+        favlist = JSON.parse(flist);
+        listdone.resolve();
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        var newDoc = document.open();
+        newDoc.write(jqXHR.responseText);
+        newDoc.close();
+    }
+});
+
+/**
  * The html 'wrapper' for each item included in the side table
  */
 var tblItemHtml;
+// one tableItem div for each side table hike
 tblItemHtml = '<div class="tableItem"><div class="tip">Add to Favorites</div>';
-//tblItemHtml += '<img class="like" src="../images/like.png" alt="favorites icon" />';
+// the div holding the favorites icon and the zoom-to-map icon
+tblItemHtml += '<div class="icons">';
+tblItemHtml += '<img class="like" src="../images/favoritesYellow.png" alt="favorites icon" />';
+tblItemHtml += '<br /><img class="zoomers" src="../images/mapZoom.png" alt="zoom symbol" />';
+tblItemHtml += '<span class="zpop">Zoom to Hike</span>';
+tblItemHtml += '</div>';
+// the div holding the hike-specific data
 tblItemHtml += '<div class="content">';
-formTbl(sideTbl); // initial page load
+$.when(listdone).then(function() {
+    formTbl(sideTbl); // initial page load
+});
+
 
 /**
  * The DOM elements for the side table are created and attached in this function
@@ -162,24 +196,123 @@ formTbl(sideTbl); // initial page load
  */
 function formTbl(indxArray) {
     $('#sideTable').empty();
-    $.each(indxArray, function(i, obj) {
-        var tbl = tblItemHtml;
-        var lnk = '<a href="hikePageTemplate.php?hikeIndx=' + obj.indx + 
-            '">' + obj.name + '</a>';
-        tbl += lnk;
-        tbl += '<img style="position:relative;left:20px;top:6px;" class="zoomers" ' +
-            'src="../images/mapZoom.png" alt="zoom symbol" />';
-        tbl += '<span class="zpop">Zoom to Hike</span>';
-        tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
-            + obj.lgth + ' miles';
-        tbl += '</span><br /><span class="subtxt">Elev Change: ';
-        tbl += obj.elev + ' feet</span><p id="sidelat" style="display:none">';
-        tbl += obj.lat  + '</p><p id="sidelng" style="display:none">';
-        tbl += obj.lng + '</p></div></div>';
-        $('#sideTable').append(tbl);
+    if (allHikes.length === 0) {
+        let no_table = '<div class="tableItem" style="text-align:center;font-size:' +
+            '20px;color:brown;padding-top:32px;">No favorites selected</div>';
+        $('#sideTable').append(no_table);
+    } else {
+        $.each(indxArray, function(i, obj) {
+            let hno = parseInt(obj.indx);
+            var tbl;
+            if (favlist.includes(hno)) {
+                tbl = tblItemHtml.replace('Yellow', 'Red');
+            } else {
+                tbl = tblItemHtml;
+            }   
+            let lnk = '<a href="hikePageTemplate.php?hikeIndx=' + obj.indx + 
+                '">' + obj.name + '</a>';
+            tbl += lnk;
+            tbl += '<span class="zpop">Zoom to Hike</span>';
+            tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
+                + obj.lgth + ' miles';
+            tbl += '</span><br /><span class="subtxt">Elev Change: ';
+            tbl += obj.elev + ' feet</span><p id="sidelat" style="display:none">';
+            tbl += obj.lat  + '</p><p id="sidelng" style="display:none">';
+            tbl += obj.lng + '</p></div></div>';
+            $('#sideTable').append(tbl);
+        });
+        enableFavorites();
+        enableZoom();
+        return;
+    }
+}
+
+/**
+ * This function will track events on the favorites icons
+ * 
+ * @returns {null} Favorites' text change in the DOM & event setting takes place in this function
+ */
+function enableFavorites() {
+    positionFavTooltips();
+    $('.like').each(function() {
+        $(this).unbind('click').bind('click', function() {
+            // get this div's hikeno
+            let href = $(this).parent().next().children().eq(0).attr('href');
+            let digitpos = href.indexOf('=') + 1;
+            var hikeno = href.substr(digitpos);
+            var ajaxdata = {id: userid, no: hikeno};
+            var isrc = $(this).attr('src');
+            var newsrc;
+            if (isrc.indexOf('Yellow') !== -1) { // currently a not favorite
+                ajaxdata.action = 'add';
+                newsrc = isrc.replace('Yellow', 'Red');
+                var $txtspan = $(this).parent().prev();
+                $txtspan.text('Unmark');
+                $.ajax({
+                    url: "markFavorites.php",
+                    method: "post",
+                    data: ajaxdata,
+                    dataType: "text",
+                    success: function() {
+                        favlist.push(parseInt(hikeno));
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        var newDoc = document.open("text/html", "replace");
+                        newDoc.write(jqXHR.responseText);
+                        newDoc.close();
+                    }
+                });
+            } else { // currently a favorite
+                ajaxdata.action = 'delete';
+                newsrc = isrc.replace('Red', 'Yellow');
+                var $txtspan = $(this).parent().prev();
+                $txtspan.text('Add to Favorites');
+                $.ajax({
+                    url: "markFavorites.php",
+                    method: "post",
+                    data: ajaxdata,
+                    dataType: "text",
+                    success: function(json_results) {
+                        let key = favlist.indexOf(parseInt(hikeno));
+                        favlist.splice(key, 1); 
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        var newDoc = document.open("text/html", "replace");
+                        newDoc.write(jqXHR.responseText);
+                        newDoc.close();
+                    }
+                });
+            }
+            $(this).attr('src', newsrc);
+        });
     });
-    enableZoom();
     return;
+};
+
+/**
+ * This function is required in order to reposition the like popups after
+ * resizing
+ * 
+ * @return {null}
+ */
+function positionFavTooltips() {
+    $('.like').each(function() {
+        var pos = $(this).offset();
+        var $txtspan = $(this).parent().parent().children().eq(0); // div holding tooltip
+        if (this.src.indexOf('Yellow') === -1) {
+            $txtspan[0].innerHTML = 'Unmark Favorite';
+        }
+        $(this).on('mouseover', function() {
+            var left = pos.left - 128 + 'px'; // width of tip is 120px
+            var top = pos.top + 'px';
+            $txtspan[0].style.top = top;
+            $txtspan[0].style.left = left;
+            $txtspan[0].style.display = 'block';
+        });
+        $(this).on('mouseout', function() {
+            $txtspan[0].style.display = 'none';
+        });
+    });
 }
 
 /**
@@ -193,13 +326,13 @@ function enableZoom() {
     $mags.each(function() {
         $(this).css('cursor', 'pointer');
         $(this).on('click', function() {
-            let hikename = $(this).prev().text();
+            let hikename = $(this).parent().next().children().eq(0).text();
             popupHikeName(hikename);
         });
         $(this).on('mouseover', function() {
             let zpos = $(this).offset();
-            let hpos = zpos.left - 42;
-            let vpos = zpos.top + 24;
+            let hpos = zpos.left - 108;
+            let vpos = zpos.top;
             $(this).next().css('left', hpos);
             $(this).next().css('top', vpos);
             $(this).next().css('display', 'block');
@@ -272,4 +405,45 @@ const IdTableElements = (boundsStr) => {
     } else {
         formTbl(hikearr);
     }
+}
+
+var grabber = document.getElementById('adjustWidth');
+grabber.addEventListener('mousedown', changeWidth, false);
+/**
+ * Function to change div widths when mousedown on 'grabber' (#adjustWidth)
+ * Thie function adds a mousemove listener to track the mouse location
+ * 
+ * @param {DOMevent} ev The DOM event associated with mousedown
+ * @return {null}
+ */
+function changeWidth(ev) {
+    ev.preventDefault(); // prevents selecting other elements while mousedown
+    document.addEventListener('mousemove', widthSizer, false);
+}
+
+/**
+ * The function is called by the mousemove event listener. It is necessary
+ * not to use anonymous functions here as those listeners cannot be removed.
+ * When the mouse moves, a listener is add to detect when the mouse is released.
+ * 
+ * @param {DOMevent} evt 
+ * @return {null}
+ */
+function widthSizer(evt) {
+    document.addEventListener('mouseup', stopMoving, false);
+    let viewport = window.innerWidth;
+    let sideWidth = viewport - evt.clientX - 3;
+    $('#map').width(evt.clientX);
+    $('#sideTable').width(sideWidth);
+    positionFavTooltips();
+    locateGeoSym();
+}
+
+/**
+ * This function removes both the mousemove listener and the mouseup listener
+ * so that widthSizer ceases to function, and the mousdedown can be re-invoked
+ */
+function stopMoving() {
+    document.removeEventListener('mousemove', widthSizer, false);
+    document.removeEventListener('mouseup', stopMoving, false);
 }

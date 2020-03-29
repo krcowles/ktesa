@@ -16,9 +16,6 @@ require_once "tableData.php";
         <col style="width:210px">
         <col style="width:108px">
         <col style="width:160px">
-        <?php if ($includeZoom) : ?>
-        <col style="width:60px">
-        <?php endif; ?>
         <col style="width:80px">
         <col style="width:84px">
         <col style="width:110px">
@@ -30,9 +27,6 @@ require_once "tableData.php";
             <th class="hdr_row" data-sort="std">Hike/Trail Name</th>
             <th class="hdr_row" data-sort="std">Locale</th>
             <th class="hdr_row" data-sort="std">WOW Factor</th>
-            <?php if ($includeZoom) : ?>
-            <th class="hdr_row">Mapit</th>
-            <?php endif; ?>
             <th class="hdr_row" data-sort="lan">Length</th>
             <th class="hdr_row" data-sort="lan">Elev Chg</th>
             <th class="hdr_row" data-sort="std">Difficulty</th>
@@ -61,25 +55,19 @@ require_once "tableData.php";
             </a></td>
         <td><?= $hikeLocale[$j];?></td>
         <td>See Indx</td>
-            <?php if ($includeZoom) : ?>
-            <td style="text-align:center;"><?= $mapLink[$j];?></td>
-            <?php endif; ?>
-    <td>0* miles</td>
-    <td>0* ft</td>
-    <td>See Index</td>
-    <td>See Index</td>
-    
+        <td>0* miles</td>
+        <td>0* ft</td>
+        <td>See Index</td>
+        <td>See Index</td>
     <?php else : ?>
-    <td><a href="<?= $pgLink[$j];?>" target="_blank"><?= $hikeName[$j];?></a></td>
-    <td><?= $hikeLocale[$j];?></td>
-    <td><?= $hikeWow[$j];?></td>
-        <?php if ($includeZoom) : ?>
-        <td style="text-align:center;"><?= $mapLink[$j];?></td>
-        <?php endif; ?>
-    <td><?= $hikeLgth[$j];?> miles</td>
-    <td><?= $hikeElev[$j];?> ft</td>
-    <td><?= $hikeDiff[$j];?></td>
-    <td><?= $hikeExpIcon[$j];?></td>
+        <td><a href="<?= $pgLink[$j];?>" target="_blank">
+            <?= $hikeName[$j];?></a></td>
+        <td><?= $hikeLocale[$j];?></td>
+        <td><?= $hikeWow[$j];?></td>
+        <td><?= $hikeLgth[$j];?> miles</td>
+        <td><?= $hikeElev[$j];?> ft</td>
+        <td><?= $hikeDiff[$j];?></td>
+        <td><?= $hikeExpIcon[$j];?></td>
     <?php endif; ?>
     <td style="text-align:center"><a href="<?= $hikeDirections[$j];?>"
         target="_blank"><?= $dirIcon;?></a></td></tr>

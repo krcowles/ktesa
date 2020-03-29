@@ -41,8 +41,7 @@ $vcno = 0;
 foreach ($vcs as $vc) {
     $atvcs = explode(".", $vc['collection']);
     $leader = '{name:"' . $vc['pgTitle'] . '",indx:' . $vc['indxNo'] .
-        ',loc:{lat:' . $vc['lat']/LOC_SCALE . ',lng:' .
-        $vc['lng']/LOC_SCALE . '},hikes:[';
+        ',loc:{lat:' . $vc['lat']/LOC_SCALE . ',lng:' . $vc['lng']/LOC_SCALE . '},hikes:[';
     foreach ($vchikes as $atvc) {
         if (in_array($atvc['indxNo'], $atvcs)) {
             // add this hike objext to current $leader

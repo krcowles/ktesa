@@ -5,7 +5,6 @@
  * and a ktesa logo div, which contains a pattern bar (div) and the text
  * and images for the logo. The menus have some variable content controlled
  * by php and javascript: e.g. icon showing which page is currently active;
- * disabled log out when not logged in, etc.
  * PHP Version 7.1
  * 
  * @package Main
@@ -28,13 +27,13 @@ require "../accounts/getLogin.php";
                         <li><div id="home">Home</div></li>
                         <li><div id="table">Table Only</div></li>
                         <li id="ifadmin"><div id="atools">Admintools</div></li>
-                        <li><div id="yours">Your Hikes</div>
+                        <li><div id="yours">Show Favorites</div>
+                        <!--
                             <ul class="subs">
-                                <!--
-                                <li><div id="pubs">View Published Hikes</div></li>
-                                -->
                                 <li><div id="viewEds">View In-Edit Hikes</div></li>
+                                <li><div id="showFavs">Show Favorites</div></li>
                             </ul>
+                        -->
                         </li>
                     </ul>
                 </div>
@@ -92,6 +91,7 @@ require "../accounts/getLogin.php";
 </div>
 <p id="login_result"><?= $uname;?></p>
 <p id="cookieStatus"><?= $cstat;?></p>
+<p id="userid"><?= $uid;?></p>
 <div id="usr_login">
     <table id="loginTbl">
         <tbody>

@@ -2,26 +2,26 @@
 /**
  * This script collects the data from the database needed to construct the html 
  * that is used to display various tables of hikes via 'makeTables.php'.
- * 'makeTables.php' can be invoked in four different scenarios:
- *  1.  By 'php/home.php' from the main/index page, 
+ * The 'makeTables.php' script can be invoked in three different scenarios:
+ *  1.  By 'pages/tableOnly.php' ['Explore->Table Only]
  *      Here it is used to display ALL hikes and index pages regardless of 
  *      usrid; [show=all, usr=x, table=HIKES (ie age=old)];
- *  2.  By 'build/hikeEditor.php' from the 'Display Options: Edit Hikes' buttons
- *      on the main/index page;
+ *  2.  By 'build/hikeEditor.php' [Contribute->...]
  *      Here it is used to display ONLY hikes which can be edited by the usrid;
- *        a. Editing of newly created hikes or in-edit hikes;
+ *        a. Editing of newly created hikes or already in-edit hikes;
+ *           [...Continue Editing Your Hike]
  *           [show=usr, usr=usr, table=EHIKES (ie age=new)]
- *        b. Editing of a published hike which is not currently in 
- *           edit mode [show=usr, table=HIKES (ie age=old): if usr='mstr, show=all]
- *  3.  By 'build/editDisplay.php' from the 'Display Options: Preview In-Edit Hike'
- *      on the main/index page; display ONLY hikes which are in-edit by the 
- *      usrid. [show=usr, table=EHIKES (ie age=new)]
- *  4.  By 'admin/reldel.php'
+ *           NOTE: The admin can see all hikes in edit.
+ *        b. Editing of a published hike which (not currently in edit mode)
+ *           [...Edit Your Published Hike]
+ *           NOTE: The admin can edit any published hike.
+ *           [show=usr, table=HIKES (ie age=old): if usr='mstr, show=all]      
+ *  3.  By 'admin/reldel.php'
  *      Here it is used to list ALL EHIKES (for master) to release or delete:
  *      [show=all, usr='mstr', table=EHIKES (ie age=new)]
  *  Each 'calling' script must set the $show, $usr, and $age (table) parameters;
  *  In all cases, the .js will direct the web page link to the proper location.
- *  PHP Version 7.0
+ *  PHP Version 7.1
  * 
  * @package Hike_Table
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
@@ -137,8 +137,4 @@ if ($age === 'new') { // forming javascript array data
         $enos = substr($enos, 0, strlen($enos)-1);
     }
     $enos .= ']';
-}
-// $includeZoom is only defined by the mapPg.php, and true only if 'map + table':
-if (!isset($includeZoom)) {
-    $includeZoom = false;
 }

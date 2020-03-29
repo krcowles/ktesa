@@ -38,8 +38,6 @@ if ($page === 'admin' && $user = 'mstr') {
     } else {
         $script = $noedit;
     }
-} elseif ($page === 'viewEdits') {
-    $script .= "../build/editDisplay.php?usr=" . $user . $close;
 } elseif ($page === 'register') {
     $script .= "../accounts/registration.php" . $close;
 }

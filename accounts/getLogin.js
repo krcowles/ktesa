@@ -1,6 +1,7 @@
 // are cookies enabled on this browser?
 var cookies = navigator.cookieEnabled ? true : false;
 var login_name = document.getElementById('login_result').textContent;
+var userid = document.getElementById('userid').textContent;
 // if a login_name appears, cookies are already enabled:
 var user_cookie_state = document.getElementById('cookieStatus').textContent;
 // defaults to 'OK' unless a registered user is logged in
@@ -60,6 +61,7 @@ function loggedInItems() {
     $('#epubs').removeClass('ui-state-disabled');
     //$('#pubReq').removeClass('ui-state-disabled'); -- removed for now
     $('#join').addClass('ui-state-disabled');
+   
 }
 function notLoggedInItems() {
     $('#lin').removeClass('ui-state-disabled');

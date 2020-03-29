@@ -20,10 +20,12 @@ $tables = array('EHIKES');
 $data = $pdo->query("SHOW TABLES;");
 $tbls_list = $data->fetchALL(PDO::FETCH_BOTH);
 foreach ($tbls_list as $row) {
-    if ($row[0] !== 'EHIKES') {
+    if (($row[0] !== 'EHIKES') && ($row[0] !== 'FAVORITES')) {
         array_push($tables, $row[0]);
     }
 }
+array_push($tables, 'FAVORITES'); // due to foreign keys, FAVORITES must be last
+
 $backup_name = "mybackup.sql";
 // mysqli prep:
 $link =  mysqli_connect($HOSTNAME, $USERNAME, $PASSWORD, $DATABASE);

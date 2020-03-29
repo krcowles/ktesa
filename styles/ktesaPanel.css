@@ -129,16 +129,7 @@
     color: darkslategray;
     z-index: 100;
 }
-#login_result {
-    display: none;
-}
-#cookieStatus {
-    display: none;
-}
-#usr_login {
-    display: none;
-}
-#ifadmin {
+#login_result, #cookieStatus, #userid, #usr_login, #ifadmin {
     display: none;
 }
 #enter, #canceler {
