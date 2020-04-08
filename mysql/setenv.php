@@ -19,12 +19,12 @@ if ($devhost) { // LOCAL MACHINE
     }
 } else { // WEB SERVER
     $HOSTNAME = "localhost";
-    $PASSWORD = "000ktesa9";
+    $PASSWORD = "xxxxx"; // to be manually edited on each machine
     if ($dbState === 'main') {  // main db
-        $USERNAME = "id140870_krcowles";
-        $DATABASE = "id140870_hikemaster";
+        $USERNAME = "nmhikesc_dbUser";
+        $DATABASE = "nmhikesc_main";
     } else {  // test db
-        $USERNAME = "id140870_krcowlestest";
-        $DATABASE = "id140870_nmhikestest";
+        $USERNAME = "nmhikesc_dbUser";
+        $DATABASE = "nmhikesc_test";
     }
 }
