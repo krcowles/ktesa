@@ -88,8 +88,8 @@ if ($inclPix === 'YES') {
         } else {  // Waypoint
             $wids[$wptno] = $pics['picIdx'];
             $wdes[$wptno] = $pics['title'];
-            $wlat[$wptno] = $pics['lat'];
-            $wlng[$wptno] = $pics['lng'];
+            $wlat[$wptno] = $pics['lat']/LOC_SCALE;
+            $wlng[$wptno] = $pics['lng']/LOC_SCALE;
             $wicn[$wptno++] = $pics['iclr'];
         }
     }
