@@ -57,7 +57,7 @@ if ($inclPix === 'YES') {
     $wlat = [];
     $wlng = [];
     $wicn = []; // 'iclr' = icon symbol
-    $picpath .= "pictures/nsize/";
+    $picpath .= "pictures/zsize/";
     $picno = 0;
     $wptno = 0;
     $tsvId = [];
@@ -132,11 +132,11 @@ if ($inclPix === 'YES') {
             . $phNames[$i] . '" />Delete<br />';
         if ($phWds[$i] > $maxOccupy) {
             $html .= '<img class="allPhotos" height="' . $newht . 'px" width="' 
-            . $maxOccupy . 'px" src="' . $picpath . $phPics[$i] . "_n.jpg"
+            . $maxOccupy . 'px" src="' . $picpath . $phPics[$i] . "_z.jpg"
             . '" alt="' . $phNames[$i] . '" /><br />' . PHP_EOL;
         } else {
             $html .= '<img class="allPhotos" height="200px" width="' . $phWds[$i]
-                . 'px" src="' . $picpath . $phPics[$i] . "_n.jpg"
+                . 'px" src="' . $picpath . $phPics[$i] . "_z.jpg"
                 . '" alt="' . $phNames[$i]
                 . '" /><br />' . PHP_EOL;
         }

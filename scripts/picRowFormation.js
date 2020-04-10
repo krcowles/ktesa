@@ -35,9 +35,6 @@ function drawRows(useWidth) {
         var rowHtml = '';
         var styling;
         var iwidth;
-        var imgRows = [];   // holds each row's html
-        var noProcessed = 0;
-        var startIndx = 0;
         var rowComplete = false;
         var itype = [];
         // row width calculation will include 1px between each image
@@ -73,7 +70,7 @@ function drawRows(useWidth) {
                         iwidth = Math.floor(scale * widthAtMax[k]);
                         rowHtml += '<img id="pic' + k + '" style="' +
                             styling + '" width="' + iwidth + '" height="' +
-                            rowHt + '" src="' + "/pictures/nsize/" + piclnks[k] + "_n.jpg" + '" alt="' +
+                            rowHt + '" src="' + "/pictures/zsize/" + piclnks[k] + "_z.jpg" + '" alt="' +
                             capts[k] + '" />' + "\n";
                     } else {
                         iwidth = Math.floor(scale * widthAtMax[k]);
@@ -101,7 +98,7 @@ function drawRows(useWidth) {
                     if (itype[l] === 'photo') {
                         rowHtml += '<img id="pic' + l + '" style="' +
                             styling + '" width="' + widthAtMax[l] + '" height="' +
-                            maxRowHt + '" src="' + "/pictures/nsize/" + piclnks[l] + "_n.jpg" + '" alt="' +
+                            maxRowHt + '" src="' + "/pictures/zsize/" + piclnks[l] + "_z.jpg" + '" alt="' +
                             capts[l] + '" />' + "\n";
                     } else {
                         rowHtml += '<img style="' + styling + '" width="' +
