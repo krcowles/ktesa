@@ -286,8 +286,9 @@ if ($showPhotos) {
                     $photos['lng']/LOC_SCALE . ",name:'" . $procDesc .
                     "',desc:'',color:'" . $iconColor . "',icon:'" . $mapicon .
                     "',url:'/pictures/zsize/" . $photos['mid'] . "_" . 
-                    $photos['thumb'] . "_z.jpg" . "',thumbnail:'/pictures/nsize/" . 
-                    $photos['mid'] . "_" . $photos['thumb'] . "_n.jpg" .
+                    $photos['thumb'] . "_z.jpg" . "',thumbnail:'/pictures/zsize/" . 
+                    $photos['mid'] . "_" . $photos['thumb'] . "_z.jpg" .
+                    "',thumbnail_width:'300" . 
                     "',folder:'" . $photos['folder'] . "'});";
             }
             array_push($plnks, $plnk);
