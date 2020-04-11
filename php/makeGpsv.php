@@ -243,8 +243,7 @@ if ($showPhotos) {
     // see GPSVisualizer for complete list of icon styles:
     $mapicon = $defIconStyle;
     $mcnt = 0;
-    $picReq = "SELECT folder,title,mpg,`desc`,lat,lng,thumb,alblnk,mid,iclr FROM "
-        . "{$ttable} WHERE indxNo = :hikeIndexNo;";
+    $picReq = "SELECT * FROM {$ttable} WHERE indxNo = :hikeIndexNo;";
     $dbdat = $pdo->prepare($picReq);
     $dbdat->bindValue(":hikeIndexNo", $hikeIndexNo);
     $dbdat->execute();
@@ -282,13 +281,16 @@ if ($showPhotos) {
                     $procDesc . "',color:'" . $iconColor . 
                         "',icon:'" . $iconStyle . "'});";
             } else { // photo
+                $aspect = $photos['imgWd']/$photos['imgHt'];
+                $thumb_nom = 300;
+                $thumb_width = $aspect < 1 ? $aspect * $thumb_nom : $thumb_nom;
                 $plnk = "GV_Draw_Marker({lat:" . $photos['lat']/LOC_SCALE . ",lon:" .
                     $photos['lng']/LOC_SCALE . ",name:'" . $procDesc .
                     "',desc:'',color:'" . $iconColor . "',icon:'" . $mapicon .
                     "',url:'/pictures/zsize/" . $photos['mid'] . "_" . 
                     $photos['thumb'] . "_z.jpg" . "',thumbnail:'/pictures/zsize/" . 
                     $photos['mid'] . "_" . $photos['thumb'] . "_z.jpg" .
-                    "',thumbnail_width:'300" . 
+                    "',thumbnail_width:'" . $thumb_width . 
                     "',folder:'" . $photos['folder'] . "'});";
             }
             array_push($plnks, $plnk);
