@@ -27,7 +27,7 @@ $wayPointCount = 0;
 $picCount = 0;
 if ($inclPix === 'YES') {
     $h4txt = "Please check the boxes corresponding to the pictures you wish to " .
-    "include on the hike page, and those you wish to include on the geomap.";
+    "include on the hike page, and those you wish to include on the geomap.<br />";
     $html = $h4txt;
     /**
      * The location of the 'pictures' directory is needed in order to 
