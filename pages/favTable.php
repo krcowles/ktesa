@@ -86,7 +86,6 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
     var locations = <?= $jsLocs;?>;
     var tracks = <?= $jsTracks;?>;
 </script>
-<script src="../scripts/modernizr-custom.js"></script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/fmap.js"></script>
 <script src="../scripts/sideTables.js"></script>

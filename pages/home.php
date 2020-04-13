@@ -58,7 +58,6 @@ var tracks = <?= $jsTracks;?>;
 var allHikes = <?= $jsIndx;?>;
 var locations = <?= $jsLocs;?>;
 </script>
-<script src="../scripts/modernizr-custom.js"></script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/markerclusterer.js"></script>
 <script src="../scripts/map.js"></script>
