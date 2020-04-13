@@ -1,15 +1,13 @@
 <?php
 /**
- * This script extracts the picture filenames from both TSV and ETSV
- * and then compares them to the files currently residing in 'pictures'
- * for both nsize and zsize photos. The subsequent html will list the 
- * candidates for deletion, and if the admin wishes to then remove 
- * those extraneous files, he may do so by checking the boxes provided,
- * and then selecting the 'Remove' button
+ * This script is called when the admin selects (submits) either:
+ * "Delete Selected Photo" or "Create Shell to Delete". Any items
+ * whose checkbox is checked will be removed.
  * PHP Version 7.1
  * 
  * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();
@@ -44,35 +42,18 @@ $failures = [];
 $msg = '';
 if (isset($checkboxes)) {
     foreach ($checkboxes as $deletion) {
-        $thisfile = true;
-        if (strpos($deletion, "_n") !== false) {
-            $nfile = true;
-            $file = 'pictures/nsize/' . $deletion;
-        } else if (strpos($deletion, "_z") !== false) {
-            $nfile = false;
-            $file = 'pictures/zsize/' . $deletion;
+        $file = 'pictures/zsize/' . $deletion;
+        if ($shell) {
+            // append the remove command
+            $cmd = "rm zsize/" . $deletion . "\n";
+            fwrite($script, $cmd);
+            array_push($deleted, $file);
         } else {
-            $file = 'nofile';
-            $thisfile = false;
-            $msg .= "Unrecognized file type: " . $deletion . "<br />";
-        }
-        if ($thisfile) {
-            if ($shell) {
-                // append the remove command
-                if ($nfile) {
-                    $cmd = "rm nsize/" . $deletion . "\n";
-                } else {
-                    $cmd = "rm zsize/" . $deletion . "\n";
-                }
-                fwrite($script, $cmd);
+            if (file_exists($file)) {
                 array_push($deleted, $file);
+                unlink($file);
             } else {
-                if (file_exists($file)) {
-                    array_push($deleted, $file);
-                    unlink($file);
-                } else {
-                    array_push($failures, $file);
-                }
+                array_push($failures, $file);
             }
         }
     }

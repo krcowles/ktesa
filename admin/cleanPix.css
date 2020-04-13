@@ -26,6 +26,7 @@ input[type=submit]:hover, #shell:hover {
     font-size: 18px;
 }
 .types {
+    margin-left: 24px;
     color: darkblue;
     font-size: 18px;
 }

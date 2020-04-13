@@ -2,7 +2,7 @@
 /**
  * This script extracts the picture filenames from both TSV and ETSV
  * and then compares them to the files currently residing in 'pictures'
- * for both nsize and zsize photos. The subsequent html will list the 
+ * for zsize photos. The subsequent html will list the 
  * candidates for deletion, and if the admin wishes to then remove 
  * those extraneous files, he may do so by checking the boxes provided,
  * and then selecting the 'Remove' button. In addition, those same tables
@@ -11,7 +11,8 @@
  * PHP Version 7.1
  * 
  * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();
@@ -24,16 +25,13 @@ $in_edit_pix     = $pdo->query($in_edit_query);
 
 // arrays for deletion candidates
 $base_names     = [];  // used to look for filenames w/differing thumb values
-$nsize_in_table = [];
 $zsize_in_table = [];
 $table_entry_id = [];
 
 foreach ($published_pix as $photo) {
     if (!empty($photo['mid'])) {  // no waypoints please
         array_push($base_names, $photo['mid']);
-        $nid = $photo['mid'] . "_" . $photo['thumb'] . "_n.jpg";
         $zid = $photo['mid'] . "_" . $photo['thumb'] . "_z.jpg";
-        array_push($nsize_in_table, $nid);
         array_push($zsize_in_table, $zid);
         array_push($table_entry_id, "TSV-" . $photo['picIdx']);
     }
@@ -41,9 +39,7 @@ foreach ($published_pix as $photo) {
 foreach ($in_edit_pix as $photo) {
     if (!empty($photo['mid'])) {
         array_push($base_names, $photo['mid']);
-        $nid = $photo['mid'] . "_" . $photo['thumb'] . "_n.jpg";
         $zid = $photo['mid'] . "_" . $photo['thumb'] . "_z.jpg";
-        array_push($nsize_in_table, $nid);
         array_push($zsize_in_table, $zid);
         array_push($table_entry_id, "ETSV-" . $photo['picIdx']);
     }
@@ -63,41 +59,9 @@ while (!in_array('pictures', scandir($current))) {
 }
 
 // validate file existence and capture no-shows in tables
-$nsize_candidates = [];
 $zsize_candidates = [];
 $thumb_mismatch   = [];
-$nsize_noshows    = [];
 $zsize_noshows    = [];
-$photo_array      = scandir('pictures/nsize');
-array_shift($photo_array);  // eliminate '.'
-array_shift($photo_array);  // eliminate '..'
-if ($photo_array[0] == '.DS_Store') {  // MacOS 
-    array_shift($photo_array);
-}
-// are any table entries NOT represented in the nsize file list?
-for ($n=0; $n<count($nsize_in_table); $n++) {
-    if (!in_array($nsize_in_table[$n], $photo_array)) {
-        $report = "[" . $table_entry_id[$n] . "] " . $nsize_in_table[$n];
-        array_push($nsize_noshows, $report);
-    }
-}
-// conversely, are any files not found in the table entries?
-foreach ($photo_array as $filename) {
-    if (!in_array($filename, $nsize_in_table)) {
-        // does this file base_name appear with a different thumb?
-        $mismatch = false;
-        foreach ($base_names as $mid) {
-            if (strpos($filename, $mid) !== false) {
-                // it must have a different thumb value...
-                $mismatch = true;
-                array_push($thumb_mismatch, $filename);
-            }
-        }
-        if (!$mismatch) {
-            array_push($nsize_candidates, $filename);
-        }
-    }
-}
 
 // repeat for zsize:
 $photo_array      = scandir('pictures/zsize');
@@ -162,41 +126,26 @@ chdir($startDir);
     <input type="submit" name="submit" value="Create Shell to Delete" />&nbsp;&nbsp;
         Script will reside in 'pictures' directory and should be invoked there
     <input type="hidden" name="action" value="unlink" />
-    <p class="head">The following items were found to have no matching entries
-        in the database</p>
-    <span class="types">N-size photos:</span><br />
-    <ul>
-<?php foreach($nsize_candidates as $nsize) : ?>
-    <li><input id="chkbox<?= $i++;?>" type="checkbox" name="checkboxes[]" 
-        value="<?= $nsize;?>" /><?= $nsize;?></li>
-<?php endforeach; ?>
-    </ul>
+    <p class="head">The following directory items were found to have no matching
+        entries in the database:</p>
     <span class="types">Z-size photos:</span><br />
     <ul>
 <?php foreach($zsize_candidates as $zsize) : ?>
     <li><input id="chkbox<?= $i++;?>" type="checkbox" name="checkboxes[]"
-        value="<?= $zsize;?>" /><?= $zsize;?></li>
+        value="<?= $zsize;?>" />&nbsp;&nbsp;<?= $zsize;?></li>
 <?php endforeach; ?>
     </ul>
-    <span class="types">Photos having a matching base name but different
-        key value:</span><br />
+    <span class="types">Photos having a matching base name only, but 'thumb'
+        is incorrect:</span><br />
     <ul>
 <?php foreach($thumb_mismatch as $wrong_key) : ?>
     <li><input id="chkbox<?= $i++;?>" type="checkbox" name="checkboxes[]"
-        value="<?= $wrong_key;?>" /><?= $wrong_key;?></li>
+        value="<?= $wrong_key;?>" />&nbsp;&nbsp;<?= $wrong_key;?></li>
 <?php endforeach; ?>
     </ul>
     <input type="hidden" name="total" value="<?= $i;?>" />
 </form>
-<p class="head">N-Size Having no matching File</p>
-<?php if (count($nsize_noshows) > 0) : ?>
-    <ul>
-    <?php for($i=0; $i<count($nsize_noshows); $i++) : ?>
-    <li><?=$nsize_noshows[$i];?></li>
-    <?php endfor; ?>
-    </ul>
-<?php endif; ?>
-<p class="head">Z-Size Having no matching File</p>
+<p class="head">A zsize filename is in the database, but no file exists:</p>
 <?php if (count($zsize_noshows) > 0) : ?>
     <ul>
     <?php for ($j=0; $j<count($zsize_noshows); $j++) : ?>
