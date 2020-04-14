@@ -243,7 +243,8 @@ function drawTrack(jsonfile, color, ptr) {
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
 function setupLoc() {
-	if (Modernizr.geolocation) {
+	if (navigator.geolocation) {
+		var obj = navigator
 		var myGeoLoc = navigator.geolocation.getCurrentPosition(success, error, geoOptions);
 		function success(pos) {
 			var geoPos = pos.coords;

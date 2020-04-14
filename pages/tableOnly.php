@@ -97,7 +97,6 @@ $includeZoom = false;
 <div style="margin-top:20px;"><p id="metric" class="dressing">
         Click here for metric units</p>
 </div>
-<script src="../scripts/modernizr-custom.js"></script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/filter.js"></script>
 <script src="../scripts/tblOnlySort.js"></script>

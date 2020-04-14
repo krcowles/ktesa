@@ -134,42 +134,12 @@ $('#ehdel').on('click', function() {
 $('#show').on('click', function()  {
     window.open('show_tables.php', "_blank_");
 });
-$('#drop').on('click', function() {
-    var dtarg = 'drop_table.php?tbl=' + $('#dtbl').val();
-    window.open(dtarg, "_blank");
-});
-$('#create').on('click', function() {
-    var ctype = $('#ctbl').val(); // the table name to create
-    ctarg = "create_table.php?tbl=" + ctype;
-    window.open(ctarg, "_blank");
-});
-$('#sgls').on('click', function() {
-    // not yet implemented
-});
-var disp = $('#dstat').text();
-if (disp === 'Open') {
-    $('#modeopt').css('display','block');
-} else {
-    $('#modeopt').css('display','none');
-}
-var j = 0;
-$('input[type=checkbox]').each( function() {
-    if (cbs[j] === 'Y') {
-        $(this).attr('checked','checked');
-    }
-    j++;
-});
-$('#mode').on('click', function() {
-    $('#modeopt').slideToggle();
-});
 if (typeof(nopix) !== 'undefined') {
     alert(nopix);
 }
-$('#ldet').on('click', function() {
-    alert("Not yet implemented");
-});
 $('#addbk').on('click', function() {
     window.open("addBook.php", "_blank");
-})
+});
 
 });  // end of doc loaded
+git

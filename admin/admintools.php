@@ -104,43 +104,7 @@ require "../php/global_boot.php";
         <button id="cleanPix">Cleanup Pictures</button>
             &nbsp;&nbsp;[removes photos not related to hikes]<br />
         <button id="pinfo">Php Info</button><br />
-        <button id="mode">Show/Set SQL Modes</button>
-        <!-- div w/form related to Show/Set SQL Modes -->
-        <div id="modeopt">
-        <form action="modify_modes.php" method="POST">
-<?php if (isset($_SESSION['sqlmode']) && $_SESSION['sqlmode'] === 'active') : ?>
-        <p id="dstat" style="display:none">Open</p>
-        <?php
-            $_SESSION['sqlmode'] = 'inactive';
-        ?>
-<?php else : ?>
-        <p id="dstat" style="display:none">Closed</p>
-<?php endif; ?>
-        <?php
-        $modes = file('sql_modes.ini', FILE_IGNORE_NEW_LINES);
-        $cbStates = '[';
-        for ($i=0; $i<count($modes); $i++) {
-            $opt = $modes[$i];
-            $val = substr($opt, 2, strlen($opt)-2);
-            echo '<input class="cb" type="checkbox" name="ons[]" ' .
-                    'value="' . $val .  '" />';
-            echo '&nbsp;&nbsp;' . $val . '<br />' . PHP_EOL;
-            if (substr($opt, 0, 1) === 'Y') {
-                $cbStates .= '"Y",';
-            } else {
-                $cbStates .= '"N",';
-            }
-        }
-        $cbStates = substr($cbStates, 0, strlen($cbStates)-1);
-        $cbStates .= ']';
-        ?>
-        <script type="text/javascript">
-            var cbs = <?php echo $cbStates;?>;
-        </script>
-        <br /><input type="submit" value="Apply" />
-        </form>
-        </div>
-        <!-- End of Show/Set div w/form -->
+        <button id="addbk">Add Book</button><br />
     </fieldset><br />
     <fieldset>
         <legend>Hike Management</legend>
@@ -161,38 +125,6 @@ require "../php/global_boot.php";
             <input type="text" id="revlst" name="revlst" size="20" />
         </form>
     </fieldset><br/>
-    <fieldset>
-        <legend>Seldom Used Tools</legend>
-        <button id="addbk">Add Book</button><br />
-        <button id="drop">Drop Table</button>&nbsp;
-        <select id="dtbl" name="dropper">
-            <option>USERS</option>
-            <option>HIKES</option>
-            <option>TSV</option>
-            <option>BOOKS</option>
-            <option>REFS</option>
-            <option>GPSDAT</option>
-            <option>IPTBLS</option>
-            <option>EHIKES</option>
-            <option>ETSV</option>
-            <option>EREFS</option>
-            <option>EGPSDAT</option>
-        </select><br />
-        <button id="create">Create Table</button>
-        <select id="ctbl" name="creator">
-            <option>USERS</option>
-            <option>HIKES</option>
-            <option>TSV</option>
-            <option>BOOKS</option>
-            <option>REFS</option>
-            <option>GPSDAT</option>
-            <option>IPTBLS</option>
-            <option>EHIKES</option>
-            <option>ETSV</option>
-            <option>EREFS</option>
-            <option>EGPSDAT</option>
-        </select><br />
-    </fieldset><br />
 </div>
 <script src="../scripts/menus.js" type="text/javascript"></script>
 <script src="admintools.js" type="text/javascript"></script>
