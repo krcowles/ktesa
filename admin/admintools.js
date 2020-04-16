@@ -29,13 +29,7 @@ $('#rel2pic').on('click', function() {
         alert("No image or date has been selected");
     } else {
         if (picfile !== '') {
-            var extPos = picfile.lastIndexOf(".");
-            var sizedir = picfile.substring(extPos - 1, extPos);
-            if (sizedir === 'n') {
-                var picloc = "pictures/nsize/" + picfile;
-            } else {
-                var picloc = "pictures/zsize/" + picfile;
-            }
+            var picloc = "pictures/zsize/" + picfile;
             $('#cmppic').val(null);
             picfile = '';
         }
