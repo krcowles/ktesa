@@ -95,7 +95,7 @@ if ($request === 'pictures') {
     }
     $iter = 0;  // need to know if there are no pix
     foreach ($items as $newpic) {
-        if (strpos($newpic, 'pictures/') !== false 
+        if (strpos($newpic, 'pictures/zsize') !== false 
             && strpos($newpic, 'DS_Store') === false
         ) {
             $zip->addFile($newpic);
