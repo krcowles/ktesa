@@ -346,12 +346,21 @@ function enableZoom() {
 /**
  * A function to find elements within current map bounds and display them in
  * the side table. This is invoked by either a pan or a zoom on the map (see
- * map.js for listeners)
+ * map.js for listeners).
+ * This function also returns a set of hikenumbers for making tracks when the map
+ * zoom >= 13. Clusters are 'segregated' so that the entire set of hikes in the
+ * cluster can be drawn, each with a unique color.
  * 
  * @param {string} boundsStr The string from google maps holding the new map bounds
- * @returns {null}
+ * @param {boolean} zoom Indicates whether or not map is zoomed > 12.
+ * @returns {array}  if map zoom > 12, arrays of hike numbers (and their
+ *                   corresponding info window text) within bounds: clusters return
+ *                   only the index number into the CL array.
  */
-const IdTableElements = (boundsStr) => {
+const IdTableElements = (boundsStr, zoom) => {
+    var clusters = [];       // cluster objects for track-drawing, no single hike nos
+    var singles = [];        // single hike nos only, no cluster hike nos
+    var hikeInfoWins = [];   // info window content for singles
     // ESTABLISH CURRENT VIEWPORT BOUNDS:
     var beginA = boundsStr.indexOf('((') + 2;
     var leftParm = boundsStr.substring(beginA,boundsStr.length);
@@ -374,16 +383,29 @@ const IdTableElements = (boundsStr) => {
                 let hikeobj = locations[hikeindx];
                 let data = idHike(allHikes[hikeindx], hikeobj);
                 hikearr.push(data);
+                if (zoom) {
+                    let hikeno = data.indx;
+                    singles.push(hikeno);
+                    let vciw = '<div id="iwXH">' + hike.name + '<br />Length: ' +
+                        hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
+                        '<br />Difficulty: ' + hike.diff + '</div>';
+                    hikeInfoWins.push(vciw);
+                }
             }
         });
     });
-    CL.forEach(function(clus) {
+    CL.forEach(function(clus, clindx) {
+        var pushed = false;
         clus.hikes.forEach(function(hike) {
             if (hike.lng <= east && hike.lng >= west && hike.lat <= north && hike.lat >= south) {
-                let hikeindx = allHikes.indexOf(hike.indx);
+                let hikeindx = allHikes.indexOf(hike.indx);   
                 let hikeobj = locations[hikeindx];
                 let data = idHike(allHikes[hikeindx], hikeobj);
                 hikearr.push(data);
+                if (zoom) {
+                    clusters.push(clindx);
+                    pushed = true; // ony once per cluster object
+                }
             }
         });
     });
@@ -395,6 +417,14 @@ const IdTableElements = (boundsStr) => {
             let hikeobj = locations[hikeindx];
             let data = idHike(allHikes[hikeindx], hikeobj);
             hikearr.push(data);
+            if (zoom) {
+                let hikeno = data.indx;
+                singles.push(hikeno);
+                let nmiw = '<div id="iwNH">' + hike.name + '<br />Length: ' +
+                    hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
+                    '<br />Difficulty: ' + hike.diff + '</div>';
+                hikeInfoWins.push(nmiw);
+            }
         }
     });
     if ( hikearr.length === 0 ) {
@@ -405,6 +435,8 @@ const IdTableElements = (boundsStr) => {
     } else {
         formTbl(hikearr);
     }
+    return new Array(singles, hikeInfoWins, clusters);
+ 
 }
 
 var grabber = document.getElementById('adjustWidth');
