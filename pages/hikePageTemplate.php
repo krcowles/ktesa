@@ -33,7 +33,7 @@ require "hikePageData.php";
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
 <?php endif; ?>
-    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>
      

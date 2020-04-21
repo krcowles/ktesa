@@ -29,7 +29,7 @@ $show = $list[0];
             background-color: #eaeaea;
             margin: 0px; }
     </style>
-    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>
 

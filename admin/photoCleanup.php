@@ -77,7 +77,7 @@ chdir($adminDir);
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="cleanPix.css" type="text/css" rel="stylesheet" />
-    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 <body>
 <?php require "../pages/ktesaPanel.php"; ?>

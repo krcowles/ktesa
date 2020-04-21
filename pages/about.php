@@ -23,7 +23,7 @@ require "../php/global_boot.php";
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="../styles/about.css" type="text/css" rel="stylesheet" />
-    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>
 <body>

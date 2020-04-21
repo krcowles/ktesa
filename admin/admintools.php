@@ -24,7 +24,7 @@ require "../php/global_boot.php";
     <link href="admintools.css" type="text/css" rel="stylesheet" />
     <link rel="stylesheet"
         href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
     <script type="text/javascript">
         $(function() {

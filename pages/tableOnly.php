@@ -28,7 +28,7 @@ $includeZoom = false;
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="../styles/tblPg.css" type="text/css" rel="stylesheet" />
     <link href="../styles/filter.css" type="text/css" rel="stylesheet" />
-    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
     <script type="text/javascript">var pg = "tbl";</script> 
 </head>

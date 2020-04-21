@@ -48,7 +48,7 @@ if (isset($_REQUEST['no'])) {
         #progress { width: 420px; height: 36px; background-color: #ace600; }
         #bar { width: 0px; height: 36px; background-color: #aa0033; }
     </style>
-    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>
 <body>

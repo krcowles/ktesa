@@ -45,7 +45,7 @@ $id = $userdata['userid'];
             font-weight: bold;
         }
     </style>
-    <script src="../scripts/jquery-1.12.1.js"></script>
+    <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
     <script src="../scripts/jquery.validate.min.js"></script>
     <script src="../scripts/jquery.validate.password.js"></script>
