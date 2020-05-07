@@ -23,14 +23,16 @@ $imgName = substr($fname, 0, $dot);
 $orient    = filter_input(INPUT_POST, 'orient', FILTER_VALIDATE_INT);
 $orgHeight = filter_input(INPUT_POST, 'origHt', FILTER_VALIDATE_INT);
 $orgWidth  = filter_input(INPUT_POST, 'origWd', FILTER_VALIDATE_INT);
-$n_size = 320;
 $z_size = 640;
 // translate ht/wd into new n-size/z-size dimensions:
 $aspect = $orgHeight/$orgWidth;
-$imgWd_z = $z_size;
-$imgHt_z = intval($z_size * $aspect);
-// Size width definition:
-$z_size = 640;
+if ($orient == 1 || $orient == 3) {
+    $imgWd_z = $z_size;
+    $imgHt_z = intval($z_size * $aspect);
+} elseif ($orient == 6 || $orient == 8) {
+    $imgWd_z = intval($z_size * $aspect);
+    $imgHt_z = $z_size;
+}
 
 // determine next 'thumb' value for new entry
 $tval = "SELECT `thumb` FROM `TSV` ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
@@ -41,14 +43,8 @@ $eresult = $pdo->query($eval);
 $emax = $eresult->fetch(PDO::FETCH_NUM);
 $max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
 $newthumb = (int)$max + 1;
-
-$rotate = false;
-if ($orient == '6') {
-    $rotate = true;
-}
 $zfileName = $imgName . "_" . $newthumb . "_z.jpg";
-$size = "z";
 storeUploadedImage(
-    $zfileName, $photo, $imgWd_z, $imgHt_z, $rotate, $size
+    $zfileName, $photo, $imgWd_z, $imgHt_z
 );
 echo $newthumb;

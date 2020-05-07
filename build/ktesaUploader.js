@@ -327,13 +327,13 @@ const ldNodes = (fr_objs) => {
                     ibox.id = 'div' + itemno;
                     // create the div holding textarea boxes
                     var tbox = document.createElement('DIV');
-                    // textarea for picture 'description'
+                    // will hold text for description + circle meter
                     var des = document.createElement('TEXTAREA');
                     des.style.height = dheight + "px";
                     des.style.display = "block";
                     des.placeholder = "Picture description";
                     des.maxlength = 512;
-                    des.classList.add('desVal');
+                    //des.classList.add('desVal');
                     des.id = 'desc' + itemno;
 
                     // circular progress meter
@@ -368,7 +368,8 @@ const ldNodes = (fr_objs) => {
                     svg.appendChild(circle);
                     svg.appendChild(prog);
                     circmtr.appendChild(svg);
-                    if (orient == '6') {
+                    if (orient == '6' || orient == '8') {
+                        let rotation = orient == '6' ? 'rotate90' : 'rotate270';
                         // NOTE: image height/width parameters DO NOT CHANGE WHEN ROTATED
                         var scaledHeight = Math.floor(iheight/ratio);
                         this.width = iheight;
@@ -393,7 +394,7 @@ const ldNodes = (fr_objs) => {
                          * items being rotated must be translated as if (y, x). Rotation and
                          * translation for the image are done in the css class 'rotation'. 
                          */
-                        this.classList.add('rotation');
+                        this.classList.add(rotation);
                         // place the textarea boxes in tbox:
                         //nme.style.width = (scaledHeight - 4) + "px"; // 4 for TA borders
                         //nme.style.margin = "6px 0px 6px 2px";
@@ -410,6 +411,9 @@ const ldNodes = (fr_objs) => {
                         var accumht = iheight + (nheight + 4 + 12) + (dheight + 4) + "px";
                         ibox.style.height = accumht;
                     } else {
+                        if (orient == '3') {
+                            this.classList.add("rotate180");
+                        }
                         var scaledWidth = Math.floor(iheight * ratio);
                         this.height = iheight;
                         this.style.margin = "0px 6px";
