@@ -33,11 +33,12 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
-('21','Quebradas Road Trip','mstr','0','San Antonio','Normal',NULL,'','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.',NULL,NULL,NULL);
+('21','Quebradas Road Trip','mstr','0','San Antonio','Normal',NULL,'','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.',NULL,NULL,NULL),
+('89','Domingo Baca Outwash Loop','mstr','0','Albuquerque','Cluster',NULL,'B','Gallegos Park Group','Loop','5.30','800','Moderate','Park Facilities','Views of both Sandias and ABQ','Not Summer','Full sun','DomingoOutwashLoop.GPX','DomingoOutwashLoop.json','351657833','-1064734806',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Elena+Gallegos+Open+Space/@35.1560987,-106.4976399,14z/data=!4m5!3m4!1s0x87189f1edab675c3:0x7e38ccf27392893e!8m2!3d35.1617782!4d-106.4736878',NULL,'This loop traces the outlines of the Domingo Baca Canyon outwash and travels up to its spring. There are many diverse views along the way, and following the Domingo Baca trail a short distance brings you into a shaded area by the creek. To extend the hike, follow the Domingo Baca trail further east into the Sandias. For a shorter hike, omit the trail up and complete the loop at the juncture between the north and south Domingo Baca trail entrances (blue flag on map).',NULL,NULL,NULL);
 
 
 
@@ -105,14 +106,15 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=423 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=424 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
 ('122','21','Website:','https://geoinfo.nmt.edu/publications/guides/quebradas/','Quebradas Field Guide'),
 ('123','21','Website:','https://www.blm.gov/visit/quebradas-backcountry-byway','BLM Site'),
 ('124','21','Website:','https://www.newmexico.org/things-to-do/scenic-byways/quebradas-backcountry/','New Mexico Tourism'),
-('125','21','App:','https://www.alltrails.com/trail/us/new-mexico/quebradas-back-country-byway','AllTrails');
+('125','21','App:','https://www.alltrails.com/trail/us/new-mexico/quebradas-back-country-byway','AllTrails'),
+('423','89','Book:','21',NULL);
 
 
 
@@ -138,7 +140,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1182 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1193 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -172,7 +174,16 @@ INSERT INTO ETSV VALUES
 ('532','21','Folder2','Exploring','Y','Y','An endless arroyo needs to be explored','340485805','-1067809916','2113','72157669177869019','2018-01-30 14:28:42','28281857209_ccb76af42b','2448','3264',NULL,NULL),
 ('533','21','Folder2','RoadsideArroyo','Y','Y','Visions of winding arroyos disappearing into the hills','340319972','-1067656861','2114','72157669177869019','2018-01-30 14:57:27','39162553505_8bc338c74b','2448','3264',NULL,NULL),
 ('534','21','Folder2','BeautifulBands','Y','Y','Color banding and scrambled rock appear in many views','339840194','-1067617027','2115','72157669177869019','2018-01-30 15:14:53','26187941618_04db3cc462','2448','3264',NULL,NULL),
-('535','21','Folder2','FaultsAndFolds','Y','Y','Multiple fault lines here provide a geological story','339836416','-1067616194','2116','72157669177869019','2018-01-30 15:19:52','25189087137_bc4f26c21a','2448','3264',NULL,NULL);
+('535','21','Folder2','FaultsAndFolds','Y','Y','Multiple fault lines here provide a geological story','339836416','-1067616194','2116','72157669177869019','2018-01-30 15:19:52','25189087137_bc4f26c21a','2448','3264',NULL,NULL),
+('1182','89',NULL,'Trail Juncture',NULL,'Y',NULL,'351781833','-1064663659',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('1185','89',NULL,'IMG_2935','Y','Y','Towards ABQ from the canyon','351835444','-1064593194','2531',NULL,'2020-05-05 10:34:58','IMG_2935','3024','4032',NULL,NULL),
+('1186','89',NULL,'IMG_2934','Y','Y','Up the Domingo Baca ','351818888','-1064599750','2532',NULL,'2020-05-05 10:25:04','IMG_2934','4032','3024',NULL,NULL),
+('1187','89',NULL,'IMG_2926','Y','Y','Stone ruins on Domingo Baca','351801222','-1064619833','2533',NULL,'2020-05-05 10:08:04','IMG_2926','4032','3024',NULL,NULL),
+('1188','89',NULL,'IMG_2924','Y','Y','Wild iris grace the trail','351799305','-1064621500','2534',NULL,'2020-05-05 10:07:09','IMG_2924','4032','3024',NULL,NULL),
+('1189','89',NULL,'IMG_2922','Y','Y','Rocky Moutain','351780305','-1064676222','2535',NULL,'2020-05-05 09:55:35','IMG_2922','3024','4032',NULL,NULL),
+('1190','89',NULL,'IMG_2914','Y','Y','Loop beginnings','351658777','-1064734416','2536',NULL,'2020-05-05 08:40:39','IMG_2914','3024','4032',NULL,NULL),
+('1191','89',NULL,'IMG_2915','Y','Y','Smooth boulders dot the trail','351693388','-1064744111','2537',NULL,'2020-05-05 08:53:54','IMG_2915','3024','4032',NULL,NULL),
+('1192','89',NULL,'IMG_2916','Y','Y','More spring surprises','351755750','-1064766083','2538',NULL,'2020-05-05 09:09:49','IMG_2916','3024','4032',NULL,NULL);
 
 
 
@@ -4039,7 +4050,7 @@ CREATE TABLE `USERS` (
   `twitter_handle` varchar(20) DEFAULT NULL,
   `bio` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO USERS VALUES
