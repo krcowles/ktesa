@@ -37,8 +37,7 @@ CREATE TABLE `EHIKES` (
 
 
 INSERT INTO EHIKES VALUES
-('21','Quebradas Road Trip','mstr','0','San Antonio','Normal',NULL,'','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.',NULL,NULL,NULL),
-('89','Domingo Baca Outwash Loop','mstr','0','Albuquerque','Cluster',NULL,'B','Gallegos Park Group','Loop','5.30','800','Moderate','Park Facilities','Views of both Sandias and ABQ','Not Summer','Full sun','DomingoOutwashLoop.GPX','DomingoOutwashLoop.json','351657833','-1064734806',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Elena+Gallegos+Open+Space/@35.1560987,-106.4976399,14z/data=!4m5!3m4!1s0x87189f1edab675c3:0x7e38ccf27392893e!8m2!3d35.1617782!4d-106.4736878',NULL,'This loop traces the outlines of the Domingo Baca Canyon outwash and travels up to its spring. There are many diverse views along the way, and following the Domingo Baca trail a short distance brings you into a shaded area by the creek. To extend the hike, follow the Domingo Baca trail further east into the Sandias. For a shorter hike, omit the trail up and complete the loop at the juncture between the north and south Domingo Baca trail entrances (blue flag on map).',NULL,NULL,NULL);
+('21','Quebradas Road Trip','mstr','0','San Antonio','Normal',NULL,'','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384',NULL,NULL,'https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.',NULL,NULL,NULL);
 
 
 
@@ -113,8 +112,7 @@ INSERT INTO EREFS VALUES
 ('122','21','Website:','https://geoinfo.nmt.edu/publications/guides/quebradas/','Quebradas Field Guide'),
 ('123','21','Website:','https://www.blm.gov/visit/quebradas-backcountry-byway','BLM Site'),
 ('124','21','Website:','https://www.newmexico.org/things-to-do/scenic-byways/quebradas-backcountry/','New Mexico Tourism'),
-('125','21','App:','https://www.alltrails.com/trail/us/new-mexico/quebradas-back-country-byway','AllTrails'),
-('423','89','Book:','21',NULL);
+('125','21','App:','https://www.alltrails.com/trail/us/new-mexico/quebradas-back-country-byway','AllTrails');
 
 
 
@@ -174,16 +172,7 @@ INSERT INTO ETSV VALUES
 ('532','21','Folder2','Exploring','Y','Y','An endless arroyo needs to be explored','340485805','-1067809916','2113','72157669177869019','2018-01-30 14:28:42','28281857209_ccb76af42b','2448','3264',NULL,NULL),
 ('533','21','Folder2','RoadsideArroyo','Y','Y','Visions of winding arroyos disappearing into the hills','340319972','-1067656861','2114','72157669177869019','2018-01-30 14:57:27','39162553505_8bc338c74b','2448','3264',NULL,NULL),
 ('534','21','Folder2','BeautifulBands','Y','Y','Color banding and scrambled rock appear in many views','339840194','-1067617027','2115','72157669177869019','2018-01-30 15:14:53','26187941618_04db3cc462','2448','3264',NULL,NULL),
-('535','21','Folder2','FaultsAndFolds','Y','Y','Multiple fault lines here provide a geological story','339836416','-1067616194','2116','72157669177869019','2018-01-30 15:19:52','25189087137_bc4f26c21a','2448','3264',NULL,NULL),
-('1182','89',NULL,'Trail Juncture',NULL,'Y',NULL,'351781833','-1064663659',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
-('1185','89',NULL,'IMG_2935','Y','Y','Towards ABQ from the canyon','351835444','-1064593194','2531',NULL,'2020-05-05 10:34:58','IMG_2935','3024','4032',NULL,NULL),
-('1186','89',NULL,'IMG_2934','Y','Y','Up the Domingo Baca ','351818888','-1064599750','2532',NULL,'2020-05-05 10:25:04','IMG_2934','4032','3024',NULL,NULL),
-('1187','89',NULL,'IMG_2926','Y','Y','Stone ruins on Domingo Baca','351801222','-1064619833','2533',NULL,'2020-05-05 10:08:04','IMG_2926','4032','3024',NULL,NULL),
-('1188','89',NULL,'IMG_2924','Y','Y','Wild iris grace the trail','351799305','-1064621500','2534',NULL,'2020-05-05 10:07:09','IMG_2924','4032','3024',NULL,NULL),
-('1189','89',NULL,'IMG_2922','Y','Y','Rocky Moutain','351780305','-1064676222','2535',NULL,'2020-05-05 09:55:35','IMG_2922','3024','4032',NULL,NULL),
-('1190','89',NULL,'IMG_2914','Y','Y','Loop beginnings','351658777','-1064734416','2536',NULL,'2020-05-05 08:40:39','IMG_2914','3024','4032',NULL,NULL),
-('1191','89',NULL,'IMG_2915','Y','Y','Smooth boulders dot the trail','351693388','-1064744111','2537',NULL,'2020-05-05 08:53:54','IMG_2915','3024','4032',NULL,NULL),
-('1192','89',NULL,'IMG_2916','Y','Y','More spring surprises','351755750','-1064766083','2538',NULL,'2020-05-05 09:09:49','IMG_2916','3024','4032',NULL,NULL);
+('535','21','Folder2','FaultsAndFolds','Y','Y','Multiple fault lines here provide a geological story','339836416','-1067616194','2116','72157669177869019','2018-01-30 15:19:52','25189087137_bc4f26c21a','2448','3264',NULL,NULL);
 
 
 
@@ -286,7 +275,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=237 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=238 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -523,7 +512,8 @@ INSERT INTO HIKES VALUES
 ('233','Piedra Lisa Ridge','mstr','Albuquerque','Cluster',NULL,'O','South Sandia Group','Loop','3.60','1400','Difficult','None','Sandia Foothills Views ','Any','Full sun','PiedraLisaRidge.GPX','PiedraLisaRidge.json','351049761','-1064884209',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Menaul+Trailhead/@35.104996,-106.4958416,15.9z/data=!4m5!3m4!1s0x8718a034dab42bbd:0x40a3abaa3a778be3!8m2!3d35.1050306!4d-106.4885542','This hike has some very steep sections, sometimes covered with loose gravel - exercise caution.','This hike starts out casually from the Menaul Trailhead, but soon takes a steep ascent up the Piedra Lisa Ridge. The Yellow Flag indicates an alternate route uphill, previously taken by the author, but which requires more scrambling and is steeper, and leading to the same path. The Red Flags indicates a straighter section of trail to the objective, which the author missed. The endpoint of this hike can be extended uphill to the overlook indicated by a Yellow Triangle. At this point, you will be traversing the Whitewash Trail. The downhill descent was also very steep in sections, eventually leading to the Embudo Canyon area and Trail 401. ',NULL,NULL,NULL),
 ('234','Piedra Lisa Falls Loop','mstr','Albuquerque','Cluster',NULL,'PP','Piedra Lisa Canyon Group','Loop','3.10','1000','Difficult','None','Views from Sandia Foothills','Not Winter','Full sun','PL_Falls_Loop.GPX','PL_Falls_Loop.json','351124235','-1064882992',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Piedra+Lisa+Canyon+Trail/@35.1102418,-106.4966122,15.98z/data=!4m5!3m4!1s0x8718a033bfd778ab:0x894f8abb02d5b38c!8m2!3d35.1121769!4d-106.4881556','Portions of the trail above the falls can be very steep and some require scrambling. This can be very difficult when ice is present, so exercise caution.','This unique hike takes you away from the popular falls area and onto a much less-trafficked route. There are interesting rock formations and lovely views west and north from the trail. Proceed carefully above the falls, as some scrambling is required.',NULL,NULL,NULL),
 ('235','Sun-Moon Loop','mstr','Santa Fe','Cluster',NULL,'AA','Atalaya Group','Loop','2.90','750','Difficult','None','Sangre de Cristo Views','Not Winter','Mixed sun/shade','Sun_Moon_Loop.GPX','Sun_Moon_Loop.json','356674964','-1059134606',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Atalaya+-+Lower+Trailhead/@35.6664782,-105.920609,15.01z/data=!4m5!3m4!1s0x8718510ec7276b45:0x3b1a66f08bdcb4f2!8m2!3d35.6684845!4d-105.9120558','The trail up Moon Mountain is not maintained, but one of several cut by previous hikers. It can be very steep and require scrambling at points. Avoid this route when icy.','This hike offers a double-ascent with great views of the Santa Fe Valley and points north. Although steep in places, it makes for a great loop hike and ascends Sun Mountain from a different route than the classic Sun Mountain hike off of Santa Fe Trail. As with other trails in populated areas, there can be many confusing cross trails and alternates, so plan your route well.',NULL,NULL,NULL),
-('236','Embudito South Ridge','mstr','Albuquerque','Normal',NULL,'','','Out-and-back','3.50','1800','Difficult','None','Views of Canyon and northern Sandias','Not Winter','Full sun','Embudito-South.GPX','Embudito-South.json','351361816','-1064819572',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Embudito+Trailhead,+Trailhead+Rd+NE,+Albuquerque,+NM+87111/@35.1372569,-106.4985709,15.15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189f774aeae439:0x830c2fa9ca25ef9!2m2!1d-106.4819952!2d35.1360355','Some sections of this trail are quite steep and may require some scrambling. Due to a cobweb of trails in the area, finding the trail can be challenging. ','This hike proceeds away from the popular Embudito Trail [Trail #192] and up into the south ridge of the canyon. From there, unique views of the canyon, along with views of the northern Sandias are afforded. Exercise care, as portions of the trail can be quite steep. The author scouted the first part of this trail (up to the green flag), and the rest is \'estimated\' based on \'best guess\' looking at aerial views. The blue flag marks the approximate location of \'Boulder Cave\' (see the book reference).',NULL,NULL,NULL);
+('236','Embudito South Ridge','mstr','Albuquerque','Normal',NULL,'','','Out-and-back','3.50','1800','Difficult','None','Views of Canyon and northern Sandias','Not Winter','Full sun','Embudito-South.GPX','Embudito-South.json','351361816','-1064819572',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Embudito+Trailhead,+Trailhead+Rd+NE,+Albuquerque,+NM+87111/@35.1372569,-106.4985709,15.15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189f774aeae439:0x830c2fa9ca25ef9!2m2!1d-106.4819952!2d35.1360355','Some sections of this trail are quite steep and may require some scrambling. Due to a cobweb of trails in the area, finding the trail can be challenging. ','This hike proceeds away from the popular Embudito Trail [Trail #192] and up into the south ridge of the canyon. From there, unique views of the canyon, along with views of the northern Sandias are afforded. Exercise care, as portions of the trail can be quite steep. The author scouted the first part of this trail (up to the green flag), and the rest is \'estimated\' based on \'best guess\' looking at aerial views. The blue flag marks the approximate location of \'Boulder Cave\' (see the book reference).',NULL,NULL,NULL),
+('237','Domingo Baca Outwash Loop','mstr','Albuquerque','Cluster',NULL,'B','Gallegos Park Group','Loop','5.30','800','Moderate','Park Facilities','Views of both Sandias and ABQ','Not Summer','Full sun','DomingoOutwashLoop.GPX','DomingoOutwashLoop.json','351657833','-1064734806',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Elena+Gallegos+Open+Space/@35.1560987,-106.4976399,14z/data=!4m5!3m4!1s0x87189f1edab675c3:0x7e38ccf27392893e!8m2!3d35.1617782!4d-106.4736878',NULL,'This loop traces the outlines of the Domingo Baca Canyon outwash and travels up to its spring. There are many diverse views along the way, and following the Domingo Baca trail a short distance brings you into a shaded area by the creek. To extend the hike, follow the Domingo Baca trail further east into the Sandias. For a shorter hike, omit the trail up and complete the loop at the juncture between the north and south Domingo Baca trail entrances (blue flag on map).',NULL,NULL,NULL);
 
 
 
@@ -591,7 +581,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1607 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1608 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1470,7 +1460,8 @@ INSERT INTO REFS VALUES
 ('1603','190','Website:','https://www.mtbproject.com/trail/7007599/michael-emery-trail','MBT Project (REI)'),
 ('1604','234','Book:','21',NULL),
 ('1605','235','Book:','1',NULL),
-('1606','236','Book:','21',NULL);
+('1606','236','Book:','21',NULL),
+('1607','237','Book:','21',NULL);
 
 
 
@@ -1494,7 +1485,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4536 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4551 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4033,7 +4024,16 @@ INSERT INTO TSV VALUES
 ('4531','236',NULL,'IMG_2824','Y','Y','Many interesting rock formations along the way','351332861','-1064773111','2527',NULL,'2020-03-12 11:32:06','IMG_2824','2448','3264',NULL,NULL),
 ('4532','236',NULL,'IMG_2825','Y','N','A higher view north','351190722','-1064933916','2528',NULL,'2020-03-12 11:40:03','IMG_2825','2448','3264',NULL,NULL),
 ('4533','236',NULL,'IMG_2828','Y','Y','Looking back','351305000','-1064732361','2529',NULL,'2020-03-12 11:48:43','IMG_2828','2448','3264',NULL,NULL),
-('4534','236',NULL,'IMG_2829','Y','Y','Approaching the turn-around point','351302027','-1064723500','2530',NULL,'2020-03-12 11:53:27','IMG_2829','2448','3264',NULL,NULL);
+('4534','236',NULL,'IMG_2829','Y','Y','Approaching the turn-around point','351302027','-1064723500','2530',NULL,'2020-03-12 11:53:27','IMG_2829','2448','3264',NULL,NULL),
+('4536','237',NULL,'Trail Juncture',NULL,'Y',NULL,'351781833','-1064663659',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('4537','237',NULL,'IMG_2935','Y','Y','Towards ABQ from the canyon','351835444','-1064593194','2531',NULL,'2020-05-05 10:34:58','IMG_2935','3024','4032',NULL,NULL),
+('4538','237',NULL,'IMG_2934','Y','Y','Up the Domingo Baca ','351818888','-1064599750','2532',NULL,'2020-05-05 10:25:04','IMG_2934','4032','3024',NULL,NULL),
+('4539','237',NULL,'IMG_2926','Y','Y','Stone ruins on Domingo Baca','351801222','-1064619833','2533',NULL,'2020-05-05 10:08:04','IMG_2926','4032','3024',NULL,NULL),
+('4540','237',NULL,'IMG_2924','Y','Y','Wild iris grace the trail','351799305','-1064621500','2534',NULL,'2020-05-05 10:07:09','IMG_2924','4032','3024',NULL,NULL),
+('4541','237',NULL,'IMG_2922','Y','Y','Rocky Moutain','351780305','-1064676222','2535',NULL,'2020-05-05 09:55:35','IMG_2922','3024','4032',NULL,NULL),
+('4542','237',NULL,'IMG_2914','Y','Y','Loop beginnings','351658777','-1064734416','2536',NULL,'2020-05-05 08:40:39','IMG_2914','3024','4032',NULL,NULL),
+('4543','237',NULL,'IMG_2915','Y','Y','Smooth boulders dot the trail','351693388','-1064744111','2537',NULL,'2020-05-05 08:53:54','IMG_2915','3024','4032',NULL,NULL),
+('4544','237',NULL,'IMG_2916','Y','Y','More spring surprises','351755750','-1064766083','2538',NULL,'2020-05-05 09:09:49','IMG_2916','3024','4032',NULL,NULL);
 
 
 
