@@ -13,6 +13,7 @@ require_once "tableData.php";
 <!-- REFERENCE TABLE OF HIKES -->
 <table class="sortable">
     <colgroup>
+        <col style="width:30px">
         <col style="width:210px">
         <col style="width:108px">
         <col style="width:160px">
@@ -24,6 +25,7 @@ require_once "tableData.php";
     </colgroup>
     <thead>
         <tr>
+            <th class="hdr_row">Use</th>
             <th class="hdr_row" data-sort="std">Hike/Trail Name</th>
             <th class="hdr_row" data-sort="std">Locale</th>
             <th class="hdr_row" data-sort="std">WOW Factor</th>
@@ -51,6 +53,7 @@ require_once "tableData.php";
         <tr class="normal" <?= $hikeHiddenDat[$j];?>>
         <?php endif; ?>
         <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
+        <td></td>
         <td><a href="<?= $pgLink[$j];?>"
             target="_blank"><?= $hikeName[$j];?></a></td>
         <td><?= $hikeLocale[$j];?></td>
@@ -60,6 +63,7 @@ require_once "tableData.php";
         <td>See Index</td>
         <td>See Index</td>
     <?php else : ?>
+        <td data-track="<?= $hikeGpx[$j];?>"><input type="checkbox" /></td>
         <td><a href="<?= $pgLink[$j];?>"
             target="_blank"><?= $hikeName[$j];?></a></td>
         <td><?= $hikeLocale[$j];?></td>

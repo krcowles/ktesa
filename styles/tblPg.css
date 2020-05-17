@@ -21,6 +21,13 @@ select {
 #note {
 	color: brown;
 }
+input[type=checkbox] {
+	-ms-transform: scale(1.5); /* IE */
+	-moz-transform: scale(1.5); /* FF */
+	-webkit-transform: scale(1.5); /* Safari and Chrome */
+	-o-transform: scale(1.5); /* Opera */
+	transform: scale(1.5);
+}
 img.webShift {
 	padding-left: 19px; }
 img.flckrShift {
@@ -72,3 +79,16 @@ td {
 	cursor: pointer; }
 #geoSetting {
 	display: none; }
+#map {
+	position: fixed;
+	background-color: #6D3C17;
+	color: white;
+}
+#map:hover {
+	background-color: moccasin;
+	color: black;
+}
+#mapnote {
+	position: relative;
+	margin-top: 8px;
+}

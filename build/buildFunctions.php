@@ -600,11 +600,14 @@ function simplexmlInsertAfter(SimpleXMLElement $insert, SimpleXMLElement $target
  * @param string  $org_file       File contents of original image
  * @param integer $new_img_width  Resize width of image
  * @param integer $new_img_height Resize height of image
+ * @param boolean $rotated        Is image rotated? T/F
+ * @param string  $size           n-size or z-size character
  * 
  * @return string $target_file New resized filepath
  */
-function storeUploadedImage($targ_fname, $org_file, $new_img_width, $new_img_height)
-{
+function storeUploadedImage($targ_fname, $org_file, $new_img_width,
+    $new_img_height, $rotated, $size
+) {
     // find the location of the 'pictures' dir in server:
     $picpath = "";
     $current = getcwd();
@@ -617,7 +620,11 @@ function storeUploadedImage($targ_fname, $org_file, $new_img_width, $new_img_hei
     $picpath .= "pictures/";
     // return to starting point:
     chdir($startdir);
-    $target_dir = $picpath . "zsize/";
+    if ($size === "n") {
+        $target_dir = $picpath . "nsize/";
+    } else {
+        $target_dir = $picpath . "zsize/";
+    }
     $target_file = $target_dir . $targ_fname;
     $image = new \claviska\SimpleImage();
     $image->fromFile($org_file);

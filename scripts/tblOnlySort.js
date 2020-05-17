@@ -149,4 +149,11 @@ $('#metric').on('click', function() {
 	});  // end 'each erow'	
 }); // end of click on metric
 
+// Delete checkboxes for cases with no gpx file
+$('input[type=checkbox]').each(function() {
+	if($(this).parent().data('track') == '') {
+		$(this).remove();
+	}
+});
+
 }); // end of page-loading wait statement

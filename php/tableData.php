@@ -54,6 +54,7 @@ $hikeDiff = array();
 $hikeExpIcon = array();
 $hikeDirections = array();
 $hikeAlbum = array();
+$hikeGpx = array();
 // formulate the database query based on predefined variables:
 if ($age === 'new') {
     $status = '[';  // editing new hikes requires gathering the 'stat' field
@@ -127,6 +128,7 @@ for ($i=0; $i<$entries; $i++) {
         //$hikeLinkIcon = $webIcon;
     $hikeDirections[$i] = $row['dirs'];
     $hikeAlbum[$i] = $row['purl1'];
+    $hikeGpx[$i] = $row['gpx'];
 }
 if ($age === 'new') { // forming javascript array data
     if (strlen($status) !== 1) {

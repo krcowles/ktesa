@@ -248,6 +248,16 @@ const ldNodes = (fr_objs) => {
             imgs[j].onload = function() {
                 var usable = true;
                 EXIF.getData(this, function() {
+                    //let alldat = EXIF.getAllTags(this); debug
+                    /**
+                     * Exif data is extracted in order to supply information
+                     * to the database. Size is set by the php program which
+                     * resizes the image for the 'nsize' and 'zsize' dirs. If
+                     * no lat/lng, user is notified, but image is uploadable.
+                     * If no time data, time is set to NULL in db. If no height,
+                     * width or orientation, user is notified that image is not
+                     * usable and can not be uploaded.
+                     */
                     let mappable = true;
                     let exifht = typeof EXIF.getTag(this, 'PixelYDimension');
                     if (exifht !== 'undefined') {
@@ -317,13 +327,13 @@ const ldNodes = (fr_objs) => {
                     ibox.id = 'div' + itemno;
                     // create the div holding textarea boxes
                     var tbox = document.createElement('DIV');
-                    // will hold text for description + circle meter
+                    // textarea for picture 'description'
                     var des = document.createElement('TEXTAREA');
                     des.style.height = dheight + "px";
                     des.style.display = "block";
                     des.placeholder = "Picture description";
                     des.maxlength = 512;
-                    //des.classList.add('desVal');
+                    des.classList.add('desVal');
                     des.id = 'desc' + itemno;
 
                     // circular progress meter
@@ -358,23 +368,13 @@ const ldNodes = (fr_objs) => {
                     svg.appendChild(circle);
                     svg.appendChild(prog);
                     circmtr.appendChild(svg);
-                    if (orient == '6' || orient == '8') {
+                    if (orient == '6') {
                         // NOTE: image height/width parameters DO NOT CHANGE WHEN ROTATED
                         var scaledHeight = Math.floor(iheight/ratio);
-                        this.width = iheight;  // this is constant
-                        this.height = scaledHeight;  // this varies w/image aspect ratios
+                        this.width = iheight;
+                        this.height = scaledHeight;
                         this.style.margin = "0px";
                         this.style.display = "block";
-                        let offset = Math.round((iheight - scaledHeight)/2);
-                        if (orient == '8') {
-                            rotation = offset > 20 ? "arotate270" : "irotate270";
-                            tboxoff  = offset > 20 ? "translate(0px, 70px)" :
-                                "translate(0px, 40px)";
-                        } else {
-                            rotation = offset > 20 ? "arotate90" : "irotate90";
-                            tboxoff  = offset > 20 ? "translate(0px, 70px)" :
-                                "translate(0px, 40px)";
-                        }
                         /**
                          * When rotating the image about it's center, the old 'width'
                          * becomes the new 'height'. The DOM behaves as if the image
@@ -390,33 +390,26 @@ const ldNodes = (fr_objs) => {
                          * the div is wider than the rotated image, to center the image
                          * in the div, translation of (Dwd - Iht)/2 is necessary instead
                          * of (Iwd - Iht)/2. Since the rotation reverses the x/y axes,
-                         * items being rotated must be translated as if (y, x). If you
-                         * attempt to use js transform for rotating then again for 
-                         * translating the x/y origin, the second cmd overrides the first;
-                         * therefore, a combined CSS class is used to do both. There
-                         * are currently 2 camera styles, so classes exist for both.
+                         * items being rotated must be translated as if (y, x). Rotation and
+                         * translation for the image are done in the css class 'rotation'. 
                          */
-                        this.classList.add(rotation);
-                        // place the description (des) node and circle meter (circmtr) node
+                        this.classList.add('rotation');
+                        // place the textarea boxes in tbox:
+                        //nme.style.width = (scaledHeight - 4) + "px"; // 4 for TA borders
+                        //nme.style.margin = "6px 0px 6px 2px";
                         des.style.width = (scaledHeight - 4) + "px";
                         des.style.margin = "4px 0px 0px 2px";
                         tbox.style.width = scaledHeight + "px";
                         tbox.appendChild(des);
                         tbox.appendChild(circmtr);
                         tbox.style.margin = "0px 0px 0px 6px";
-
-
-
                         // items placed below the image act as if image is NOT rotated
-                        tbox.style.transform = tboxoff;
+                        tbox.style.transform = "translate(0px, 40px)";
                         // fix the image container
                         ibox.style.width = (scaledHeight + 16) + "px";
                         var accumht = iheight + (nheight + 4 + 12) + (dheight + 4) + "px";
                         ibox.style.height = accumht;
                     } else {
-                        if (orient == '3') {
-                            this.classList.add("rotate180");
-                        }
                         var scaledWidth = Math.floor(iheight * ratio);
                         this.height = iheight;
                         this.style.margin = "0px 6px";

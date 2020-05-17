@@ -87,20 +87,8 @@ label {
     color: brown;
     display: none;
 }
-.irotate90 {
+.rotation {
     transform: rotate(90deg) translate(20px, 12px);
-}
-.irotate270 {
-    transform: rotate(270deg) translate(-20px, -12px);
-}
-.arotate90 {
-    transform: rotate(90deg) translate(34px, 26px);
-}
-.arotate270 {
-    transform: rotate(270deg) translate(-34px, -26px);
-}
-.rotate180 {
-    transform: rotate(180deg);
 }
 .uploaded, .uploadFail {
     color: red;

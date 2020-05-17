@@ -1,37 +1,10 @@
-// the main page search bar:
-$('#searchbar').val('');
-$('#searchbar').on('input', function(ev) {
-    var $input = $(this),
-       val = $input.val();
-       list = $input.attr('list'),
-       match = $('#'+list + ' option').filter(function() {
-           return ($(this).val() === val);
-       });
-    if(match.length > 0) {
-        // find the hike and zoom in...
-        $('table tbody tr').each(function() {
-            if ($(this).children().eq(0).children().eq(0).text().trim() == val) {
-                var lat = parseFloat($(this).data('lat'));
-                var lng = parseFloat($(this).data('lon'));
-                var srchloc = {lat: lat, lng: lng};
-                map.setCenter(srchloc);
-                map.setZoom(13);
-                $.each(locaters, function(indx, value) {
-                    // for VC markers:
-                    if (value.hikeid.includes('Visitor Center')) {
-                        value.hikeid = value.hikeid.replace('Visitor Center', 'Index');
-                    }
-                    if (value.hikeid == val) {
-                        google.maps.event.trigger(value.pin, 'click');
-                    }
-                });
-                return false; // as this will happen for each table...
-            }
-        });
-    } // do nothing if not a match
-});
-
-// filter 'miles' spinner:
+/**
+ * @fileoverview This module setups & executes the filtering capability
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ */
+var mapHikes = []; // required by map-drawing code
+// the filter 'miles' spinner:
 var spinner = $('#spinner').spinner({
     min: 1,
     max: 50,
@@ -40,32 +13,80 @@ var spinner = $('#spinner').spinner({
 });
 spinner.spinner("value", 5);
 var hikePgClick = true;
+positionMain();
 
-// Used for both table only and map+table pages
+/**
+ * This function will place position elements on the page on page
+ * load and during window resize
+ * @return {null}
+ */
+function positionMain() {
+    let winwidth = $(window).innerWidth();
+    let tblwidth = $('.sortable').width();
+    let margs = Math.floor((winwidth - tblwidth)/2) + "px";
+    $('#tblfilter').css('margin-left', margs);
+    $('#tblfilter').css('margin-right', margs);
+    $('#filtnote').css('margin-left', margs);
+    $('#filtnote').css('margin-right', margs);
+    $('#mapnote').css('margin-left', margs);
+    let btnwidth = $('#map').width();
+    let delta =Math.floor(parseInt(margs) - btnwidth) - 24;
+    $('#map').css('left', delta);
+    return;
+}
+/**
+ * This function displays the 'area' html with select box when the 'loc'
+ * radio button is clicked.
+ * @return {null}
+ */
 function displayAreaFilter() {
     $('#selloc').removeClass('hidden');
     $('#selloc').addClass('inline');
     $('#loclbl').removeClass('normal');
     $('#loclbl').addClass('hilite');
+    return;
 }
+/**
+ * This function hides the 'area' html (including radio button & select box)
+ * @return {null}
+ */
 function hideAreaFilter() {
     $('#selloc').removeClass('inline');
     $('#selloc').addClass('hidden');
     $('#loclbl').removeClass('hilite');
     $('#loclbl').addClass('normal');
+    return;
 }
+/**
+ * This function displays the 'hike' html with input box when the 'hike'
+ * radio button is clicked
+ * @return {null}
+ */
 function displayHikeFilter() {
     $('#selhike').removeClass('hidden');
     $('#selhike').addClass('inline');
     $('#hikelbl').removeClass('normal');
     $('#hikelbl').addClass('hilite');
+    return;
 }
+/** 
+ * This function hides the 'hike' html & input box
+ * @return {null}
+ */
 function hideHikeFilter() {
     $('#selhike').removeClass('inline');
     $('#selhike').addClass('hidden');
     $('#hikelbl').removeClass('hilite');
     $('#hikelbl').addClass('normal');
+    return;
 }
+/**
+ * This function will execute when the user selects a hike link from the table.
+ * If 'hikePgClick' is true, the link will operate from the as expected
+ * i.e. it will go to the hike page. When 'hikePgClic' is false, the link
+ * will place the hike name into the filter's hike html box for use in filtering.
+ * @return {null}
+ */
 function hikeSelect() {
     hikePgClick = false;
     $('a').on('click', function(ev) {
@@ -85,19 +106,15 @@ function hikeSelect() {
         }
     });
 }
+
+/**
+ * This function establishes the location of filter options and their
+ * execution capability.
+ * @return {null}
+ */
 function filterSetup() {
-    // positioning: (tables are different widths on these pages)
-    var winwidth = $(window).innerWidth();
-    if (pg === 'tbl') {
-        var tblwidth = $('.sortable').width();
-    } else {
-        var tblwidth = $('.msortable').width();
-    }
-    var margs = Math.floor((winwidth - tblwidth)/2) + "px";
-    $('#tblfilter').css('margin-left', margs);
-    $('#tblfilter').css('margin-right', margs);
-    $('#filtnote').css('margin-left', margs);
-    $('#filtnote').css('margin-right', margs);
+    setupCheckboxes();
+    
     // displaying of features:
     $('#showfilter').on('click', function() {
         $('#dispopts').toggle();
@@ -131,7 +148,6 @@ function filterSetup() {
         }
         $('#loc').prop('checked', false);
     });
-    
     
     var coords = {}; // coordinates of location from which to calculate radius
     // in case of page refresh:
@@ -186,11 +202,17 @@ function filterSetup() {
             return;
         }
     });
+    /**
+     * This function extracts latitude/longitude form the table for the
+     * target hike name.
+     * @param {string} hike name of the target hike 
+     * @return {object} the latitude/longitude found
+     */
     function getHikeCoords(hike) {
         var $tblrows = $('.sortable tbody tr');
         var coords = {};
         $tblrows.each(function() {
-            let hikeLinkText = $(this).find('td').eq(0).children().eq(0).text();
+            let hikeLinkText = $(this).find('td').eq(1).children().eq(0).text();
             if (hikeLinkText === hike) {
                 var hlat = $(this).data('lat');
                 var hlon = $(this).data('lon');
@@ -204,6 +226,14 @@ function filterSetup() {
             return coords;
         }
     }
+    /**
+     * This function creates the rows for the results table based on the 
+     * filter parameters (radius from center pt, center pt). After creating
+     * the table, it displays the results
+     * @param {number} radius the radius of the search
+     * @param {object} geo The center point latitude/longitude
+     * @return {null}
+     */
     function filterList(radius, geo) {
         tblHtml = $('.sortable').html();
         var bdystrt = tblHtml.indexOf('<tbody>');
@@ -223,7 +253,19 @@ function filterSetup() {
             }
         });
         $('#results').show();
+        setupCheckboxes();
+        $('#refTbl').hide();
+        return;
     }
+    /**
+     * This function will return the radial distance between two lat/lngs
+     * @param {number} lat1 first latitude
+     * @param {number} lon1 first longitude
+     * @param {number} lat2 second latitude
+     * @param {number} lon2 second longitude
+     * @param {string} unit which units to use: miles or kilometers
+     * @return {number} the radial distance in the selected units
+     */
     function radialDist(lat1, lon1, lat2, lon2, unit) {
         if (lat1 === lat2 && lon1 === lon2) { return 0; }
         var radlat1 = Math.PI * lat1/180;
@@ -251,5 +293,40 @@ function filterSetup() {
             $('#hike').prop('checked', false);
             $('#link').val('');
         }
+        $('#refTbl').show();
     });
 }
+
+/**
+ * This function collects all the checkboxes (esp required after presenting a new
+ * table of results). Each checkbox will add to or delete from the global var
+ * mapHikes. That var is used to determine which hikes to draw on a single map.
+ * @return {null}
+ */
+function setupCheckboxes() {
+    $('input[type=checkbox]').on('change', function() {
+        let gpx = $(this).parent().data('track');
+        if($(this).is(':checked')) {
+            mapHikes.push(gpx);
+        } else {
+            if (mapHikes.length > 0) {
+                let indx = mapHikes.indexOf(gpx);
+                if (indx > -1) {
+                    mapHikes.splice(indx, 1);
+                }
+            }
+        }
+    });
+}
+
+// draw the map
+$('#map').on('click', function() {
+	var query = '';
+	mapHikes.forEach(function(track) {
+		query += "m[]=" + track + "&";
+	});
+	query = query.substring(0, query.length-1);
+	window.open("../php/multiMap.php?" + query);
+});
+
+$(window).resize(positionMain);

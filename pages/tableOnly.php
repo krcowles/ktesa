@@ -30,7 +30,6 @@ $includeZoom = false;
     <link href="../styles/filter.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
-    <script type="text/javascript">var pg = "tbl";</script> 
 </head>
 
 <body>
@@ -38,9 +37,14 @@ $includeZoom = false;
 <p id="trail">Sortable Table of Hikes</p>
 <p id="page_id" style="display:none">Table</p>
 
+
+<p id="mapnote"><button id="map">Draw Map</button>
+    Draw multiple hikes on a single map by selecting available checkboxes, and
+    then click "Draw Map".
+</p>
 <!--Sub-table Filtering and SortingOptions: -->
 <div id="tblfilter">
-    <button id="showfilter"><strong>Show/Hide Table Filtering</strong></button>
+    <button id="showfilter">Show/Hide</button> Table Filtering
     <div id="dispopts">
         <strong class="blue">Sort the table of hikes by proximity:</strong><br />
         Hikes within 
@@ -87,9 +91,7 @@ $includeZoom = false;
 <!-- End of sub-table filter/sort -->
 <p id="filtnote">
     <strong id="note">NOTE:</strong>
-    All table columns can be sorted alphabetically/numerically by clicking
-    on the column header at the top of the column. Clicking again reverses
-    the sort.
+    Click on any hike column to sort; again to reverse.<br />
 </p>
 <div id="refTbl">
     <?php require "../php/makeTables.php"; ?>
