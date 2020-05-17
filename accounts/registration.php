@@ -9,7 +9,6 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-session_start();
 require_once "../php/global_boot.php";
 ?>
 <!DOCTYPE html>

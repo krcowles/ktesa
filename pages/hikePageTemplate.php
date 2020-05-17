@@ -10,7 +10,6 @@
  * @author  Tom Sandberge and Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
-session_start();
 require "../php/global_boot.php";
 require "hikePageData.php";
 ?>
