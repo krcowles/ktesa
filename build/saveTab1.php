@@ -131,7 +131,7 @@ if (isset($_POST['mft'])) {
         $hikeLgthTot = (float)0;
         for ($k=0; $k<$noOfTrks; $k++) {
             $calcs = getTrackDistAndElev(
-                $k, "", $gpxPath, $gpxdat, false, null,
+                0, $k, "", $gpxPath, $gpxdat, false, null,
                 null, $distThresh, $elevThresh, $maWindow
             );
             $hikeLgthTot += $calcs[0];
