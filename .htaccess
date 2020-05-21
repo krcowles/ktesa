@@ -1,0 +1,14 @@
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^nmhikes\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.nmhikes\.com$
+RewriteRule ^/?$ "https\:\/\/www\.nmhikes\.com\/" [R=301,L]
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^nmhikes\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.nmhikes\.com$
+RewriteRule ^pages\/?$ "https\:\/\/www\.nmhikes\.com\/pages" [R=301,L]
+php_value memory_limit 20M
+php_value post_max_size 50M
+php_value upload_max_filesize 20M
