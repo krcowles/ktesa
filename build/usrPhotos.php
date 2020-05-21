@@ -16,7 +16,7 @@ $fname = $filedat['name'];
 $photo = $filedat['tmp_name'];
 $fstat = $filedat['error'];
 if ($fstat !== UPLOAD_ERR_OK) {
-    echo "Error: " . uploadErr($fstat) . ": File " . $fname;
+    throw new Exception("Error: " . uploadErr($fstat) . ": File " . $fname);
 }
 $dot = strrpos($fname, ".");
 $imgName = substr($fname, 0, $dot);
