@@ -21,7 +21,13 @@ $photoLng  = filter_input(INPUT_POST, 'lng', FILTER_VALIDATE_FLOAT);
 $photoDate = filter_input(INPUT_POST, 'date');
 $orgHeight = filter_input(INPUT_POST, 'origHt', FILTER_VALIDATE_INT);
 $orgWidth  = filter_input(INPUT_POST, 'origWd', FILTER_VALIDATE_INT);
+$orient    = filter_input(INPUT_POST, 'orient');
 $newThumb  = filter_input(INPUT_POST, 'thumb');
+if ($orient == '6' || $orient == '8') {
+    $tmp = $orgHeight;
+    $orgHeight = $orgWidth;
+    $orgWidth  = $tmp;
+}
 // prep data:
 $picDesc   = json_decode($descstr);
 $dot = strrpos($fname, ".");
