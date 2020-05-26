@@ -189,8 +189,8 @@ if ($newstyle) {
      * sub-directory. The file is deleted after loading the page.
      */
     $extLoc = strrpos($gpxfile, '.');
-    $gpsvMap = substr($gpxfile, 0, $extLoc); // strip file extension
-    $tmpMap = "../maps/tmp/{$gpsvMap}.html";
+    $gpsvMap = substr($gpxfile, 0, $extLoc) . "-"; // strip file extension
+    $tmpMap = "../maps/tmp/" . $gpsvMap . ".php";
     if (($mapHandle = fopen($tmpMap, "w")) === false) {
         $mapmsg = "Contact Site Master: could not open tmp map file: " .
             $tmpMap . ", for writing";
@@ -215,6 +215,8 @@ if ($newstyle) {
         'dynamicMarker' => 'true'  
     ];
     include "../php/makeGpsv.php";
-    fputs($mapHandle, $maphtml);
+    // this is the html for the map: precede it with cache-control:
+    $php  = "<?php header('Cache-Control: max-age=0'); ?>" . $maphtml;
+    fputs($mapHandle, $php);
     fclose($mapHandle);
 }
