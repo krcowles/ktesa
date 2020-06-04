@@ -146,6 +146,10 @@ function off() {
         <a href="mailto:krcowles29@gmail.com">send us a note!</a>
     </p>
 </div>
+<?php for ($k=0; $k<count($gpxfiles); $k++) : ?>
+    <!-- get all gpxfiles retrieved by hikePageData.php -->
+    <p style="display:none" id="chartfile<?=$k;?>"><?=$gpxfiles[$k];?></p>
+<?php endfor; ?>
 <!-- Map & Chart on right adjacent to side panel: -->
 <iframe id="mapline" src="<?=  $tmpMap;?>"></iframe>
 <div data-gpx="<?= $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
@@ -171,6 +175,9 @@ if ($bop !== '') {
 <div class="popupCap"></div>
 
 <script type="text/javascript">
+    <?php if (isset($hikeFiles)) : ?>
+        var hikeFiles = <?= $hikeFiles;?>;
+    <?php endif; ?>
     var photocnt = <?= $capCnt;?>;
     var d = "<?= implode("|", $descs);?>";
     var al = "<?= implode("|", $alblnks);?>";
@@ -184,6 +191,7 @@ if ($bop !== '') {
 <script src="../scripts/captions.js"></script>
 <script src="../scripts/rowManagement.js"></script>
 <?php if ($newstyle) : ?>
+<script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>
 <?php endif; ?>
 <?php if (isset($tmpMap)) : ?>

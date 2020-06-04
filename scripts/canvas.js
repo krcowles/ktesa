@@ -41,13 +41,15 @@ var ChartObj = function() {
             xMax = chartWidth - (margin.left + margin.right);
             yMax = chartHeight - (margin.top + margin.bottom);
             context = canvas.getContext("2d");
-            renderChart();
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            let chartTitle = "Track: " + data.title;
+            renderChart(chartTitle);
         }
     };
 } ();
-var renderChart = function () {
+var renderChart = function (title) {
     renderBackground();
-    renderText();
+    renderText(title);
     renderLinesAndLabels();
 
     //render data based upon type of renderType(s) that client supplies
@@ -95,9 +97,14 @@ var renderBackground = function () {
     context.fillRect(margin.left, margin.top, xMax, yMax);
     
 };
-var renderText = function renderText() {
+var renderText = function renderText(title) {
     var labelFont = (data.labelFont != null) ? data.labelFont : '10pt Arial';
     context.font = labelFont;
+    context.textAlign = "left";
+    var titleTop = chartHeight - 6;
+    context.fillStyle = "Brown";
+    context.fillText(title, margin.left, titleTop);
+
     context.textAlign = "center";
     //X-axis text
     var txtSize = context.measureText(data.xLabel);

@@ -1,110 +1,18 @@
-$( function() {  // wait until document is loaded...
-
-var trackfile = $('#chartline').data('gpx');
-var lats = [];
-var lngs = [];
-var elevs = [];  // elevations, in ft.
-var rows = [];
-var emax;  // maximum value found for elevation
-var emin;  // minimum value found for evlevatiom
+/**
+ * @fileoverview This file supplies functions and variables to draw
+ * an elevation profile on the page with a given gpx track name.
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ */
 var resizeFlag = true;
-var fullWidth; // page width on load
-var chartHeight; // chart height on load
-var chartWidth; // chart width on load
-var lmarg = $('#sidePanel').css('margin-left');
-var pnlMarg = lmarg.substr(0, lmarg.length-2); // remove 'px' at end
-
-/* This section of code renders the graph itself 'when' data is acquired */
-var canvasEl = document.getElementById('grph');
-setChartDims();
-var coords = {};  // data points by which to mark the track
-var indxOfPt;
-var prevCHairs = false;
-var imageData;
-$.when( getGpxData() ).then(drawChart);
-function getGpxData() {
-    /**
-     * This function reads in the GPX file capturing the latitudes
-     * and longitudes, calculating the distances between points 
-     * via fct 'distance', and storing the results in the array 'elevs'.
-     * It returns a promise to the caller which can be used to trigger
-     * the drawChart() activity.
-     */
-    var deferred = new $.Deferred();
-    $.ajax({
-        dataType: "xml",  // xml document object can readily be handled by jQuery
-        url: trackfile,
-        success: function(trackDat) {
-            var $trackpts = $("trkpt", trackDat);
-            if ($trackpts.length === 0) {
-                // try as rtepts instead of trkpts
-                $trackpts = $("rtept", trackDat)
-            }
-            var hikelgth = 0;  // distance between pts, in miles
-            var dataPtObj;
-            $trackpts.each( function() {
-                var tag = parseFloat($(this).attr('lat'));
-                lats.push(tag);
-                tag =parseFloat( $(this).attr('lon'));
-                lngs.push(tag);
-                //var $ele = $(this).children().eq(0);
-                var $ele = $(this).find('ele').text();
-                if ( $ele.length ) { 
-                    tag = parseFloat($ele) * 3.2808;
-                    elevs.push(tag);
-                } else {   // some GPX files contain trkpts w/no ele tag
-                    // remove entries for trkpts that have no elevation:
-                    lats.pop();
-                    lngs.pop();
-                }
-            });
-            // form the array of datapoint objects for the chart:
-            rows[0] = { x: 0, y: elevs[0] };
-            emax = 0;
-            emin = 20000;
-            for (var i=0; i<lats.length-1; i++) {
-                hikelgth += distance(lats[i],lngs[i],lats[i+1],lngs[i+1],"M");
-                if (elevs[i+1] > emax) { emax = elevs[i+1]; }
-                if (elevs[i+1] < emin) { emin = elevs[i+1]; }
-                dataPtObj = { x: hikelgth, y: elevs[i+1] };
-                rows.push(dataPtObj);
-            }
-            // set y axis range values:
-            // NOTE: this algorithm works for elevs above 1,000ft (untested below that)
-            var Cmin = Math.floor(emin/100);
-            var Cmax = Math.ceil(emax/100);
-            if ( (emin - 100 * Cmin) < 40 ) {
-                emin = Cmin - 0.5;
-            } else {
-                emin = Cmin;
-            }
-            if ( (100 * Cmax - emax) < 40 ) {
-                emax = Cmax + 0.5;
-            } else {
-                emax = Cmax;
-            }
-            emax *= 100;
-            emin *= 100;
-            deferred.resolve();
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            var msg = "Ajax call in dynamicChart.js line 38 has failed " +
-                "with error code: " + errorThrown + 
-                "Could not extract XML data from " + trackfile + 
-                "\nSystem error message: " + textStatus;
-            deferred.reject();
-           alert(msg);
-        }
-    });
-    return deferred.promise();
-}
-// Hide side panel
+var trackNumber;   // global used in hide/unhide & window.resize
+// Hide/unhide side panel (changes width of elevation profile chart)
 $('#hide').on('click', function() {
     $('#sidePanel').css('display', 'none');
     $('#chartline').width(fullWidth);
     canvasEl.width = fullWidth;
     // redraw the chart
-    drawChart();
+    drawChart(trackNumber);
     $('iframe').width(fullWidth);
     $('#unhide').css('display','block');
 });
@@ -115,20 +23,105 @@ $('#unhide').on('click', function() {
     $('#chartline').height(chartHeight);
     canvasEl.height = chartHeight;
     // redraw the chart
-    drawChart();
+    drawChart(trackNumber);
     $('iframe').width(chartWidth);
     $('#unhide').css('display','none');
 });
-/*
- * FUNCTION DECLARATIONS:
+
+/**
+ * ----- GPSV iframe:
+ * The following code addresses tracklist checkboxes in the iframe map
  */
-function drawChart() {
-    var mapstat = document.getElementById('mapline').contentWindow.mapdone;
-    var chartData = defineData();
-    ChartObj.render('grph', chartData);
-    // don't link to iframe map until it is done loading:
-    $.when( mapstat ).then(crossHairs);
+var trackNames = [];
+var checkboxes = [];
+var box_states = [];
+var lastTrack = 0; // indx in box_states
+/**
+ * This function turns on the topmost checked tracklist box. If all boxes
+ * are unchecked, the last box checked remains displayed in elevation chart.
+ * 
+ * @param {array} cbarray The set of neighboring checkboxes in the tracklist
+ * @return {null}
+ */
+const plotTopMost = () => {
+    for (let n=0; n<box_states.length; n++) {
+        if (box_states[n] === 1) {
+            lastTrack = n;
+            break;
+        }
+    }
+    // find index in preloaded tracks:
+    trackNumber = gpsvTracks.indexOf(trackNames[lastTrack]);
+    canvasEl.onmousemove = null;
+    drawChart(trackNumber);    
 }
+// one-time tracklist setup when iframe is loaded:
+var mapdiv = document.getElementById('mapline');
+mapdiv.onload = function() {
+    setTimeout(function() {
+        let tracklist_class = 'gv_tracklist_item';
+        // get HTMLCollection of tracks in tracklist
+        let gvTracks = mapdiv.contentWindow.document.getElementsByClassName(tracklist_class);
+        for (let j=0; j<gvTracks.length; j++) {
+            let $tbl = $(gvTracks[j].firstChild);
+            let $tblrow = $tbl.find('tr'); // should only be one row;
+            let $items = $tblrow.find('td');
+            // $items[0] is the checkbox; $items[1] contains the track name
+            let trackName = $items[1].firstChild.innerText;
+            trackNames.push(trackName);
+            let checkbox = $items[0].firstChild;
+            let $checkbox = $(checkbox);
+            checkboxes.push($checkbox);
+            if (j>0) {
+                box_states[j] = 0;
+                // on page load, all boxes are checked: leave top box on only
+                $checkbox.click();
+            } else {
+                box_states[0] = 1;
+            }
+        }
+        // click behaviors:
+        checkboxes.forEach(function(box, indx) {
+            box.on('click', function() {
+                // validate checkbox states
+                if (box.is(":checked")) {
+                    for (let k=0; k<box_states.length; k++) {
+                        if (k === indx) {
+                            box_states[k] = 1;
+                            break;
+                        }
+                    }
+                } else {
+                    box_states[indx] = 0;
+                }
+                plotTopMost();
+            });
+        });
+        $.when(allTracks).then(function() {
+            trackNumber = gpsvTracks.indexOf(trackNames[0]);
+            drawChart(trackNumber);
+        });
+    }, 200);
+}
+
+// global charting vars
+var canvasEl = document.getElementById('grph');
+var coords = {};  // x,y location of mouse in chart
+var indxOfPt;
+var prevCHairs = false;
+
+// vars for setting chart dimension;
+var fullWidth;
+var chartHeight;
+var chartWidth;
+var lmarg = $('#sidePanel').css('margin-left');
+var pnlMarg = lmarg.substr(0, lmarg.length-2); // remove 'px' at end
+setChartDims();
+
+/**
+ * This function establishes the chart dimensions on the page
+ * @return {null}
+ */
 function setChartDims() {
     // calculate space available for canvas: (panel width = 23%)
     fullWidth = $('body').innerWidth();
@@ -148,25 +141,50 @@ function setChartDims() {
     $('#chartline').width(chartWidth);
     canvasEl.width = chartWidth;
     $('iframe').width(chartWidth);
+    return;
 }
-function defineData() {
+
+/**
+ * This function will draw the selected elevation profile in the canvas element
+ * @param {number} trackNo integer representing track item in gpsv tracklist
+ * @return {null}
+ */
+function drawChart(trackNo) {
+    var chartData = defineData(trackNo);
+    ChartObj.render('grph', chartData);
+    crossHairs(trackNo);
+    return;
+}
+/**
+ * The data being sent to the ChartObj is supplied here
+ * @param {number} track integer representing track item in gpxv tracklist
+ * @return {object}
+ */
+function defineData(track) {
     // data object for the chart:
-    var dataDef = { title: "",
-        minY: emin,
-        maxY: emax,
+    var dataDef = {
+        title: gpsvTracks[track],
+        minY: trkMins[track],
+        maxY: trkMaxs[track],
         xLabel: 'Distance (miles)', 
         yLabel: 'Elevation (feet)',
         labelFont: '10pt Arial', 
         dataPointFont: '8pt Arial',
         renderTypes: [ChartObj.renderType.lines, ChartObj.renderType.points],
-        dataPoints: rows
+        dataPoints: trkRows[track]
     };
     return dataDef;
 }
-function crossHairs() {
+/**
+ * This function sets up or hides the crosshairs when the mouse is in bounds
+ * of the elevation profile chart
+ * @return {null}
+ */
+function crossHairs(trackno) {
+    var imageData = {};
     canvasEl.onmousemove = function (e) {
         var loc = window2canvas(canvasEl, e.clientX, e.clientY);
-        coords = dataReadout(loc);
+        coords = dataReadout(loc, trackno);
         if (!prevCHairs) {
             imageData = context.getImageData(0,0,canvasEl.width,canvasEl.height);
             prevCHairs = true;
@@ -176,7 +194,10 @@ function crossHairs() {
         drawLine(coords.px,margin.top,coords.px,margin.top+yMax,'Tomato',1);
         drawLine(margin.left,coords.py,margin.left+xMax,coords.py);
         if (coords.x !== -1) {
-            var mapObj = { lat: lats[indxOfPt], lng: lngs[indxOfPt] };
+            var mapObj = { 
+                lat: trkLats[trackno][indxOfPt],
+                lng: trkLngs[trackno][indxOfPt]
+            };
             infoBox(coords.px,coords.py,coords.x.toFixed(2),coords.y.toFixed(),mapObj);
         }
     };
@@ -185,21 +206,16 @@ function crossHairs() {
         prevCHairs = false;
         document.getElementById('mapline').contentWindow.chartMrkr.setMap(null);
     }
+    return;
 }
-function distance(lat1, lon1, lat2, lon2, unit) {
-    if (lat1 === lat2 && lon1 === lon2) { return 0; }
-    var radlat1 = Math.PI * lat1/180;
-    var radlat2 = Math.PI * lat2/180;
-    var theta = lon1-lon2;
-    var radtheta = Math.PI * theta/180;
-    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    dist = Math.acos(dist);
-    dist = dist * 180/Math.PI;
-    dist = dist * 60 * 1.1515;
-    if (unit === "K") { dist = dist * 1.609344; }
-    if (unit === "N") { dist = dist * 0.8684; }  // else result is in miles "M"
-    return dist;
-}
+
+/**
+ * Translate the mouse coords into canvas coords
+ * @param {object} canvas 
+ * @param {number} x mouse position x
+ * @param {number} y mouse position y
+ * @return {object}
+ */
 function window2canvas(canvas,x,y) {
     /* it is necessary to get bounding rect each time as the user may have
      * scrolled the window down (or resized), and the rect is measured wrt/viewport
@@ -210,32 +226,37 @@ function window2canvas(canvas,x,y) {
         y: y - container.top * (canvas.height / container.height)
     };   
 }
-function dataReadout(mousePos) {
+/**
+ * From the canvas x,y (translated by window2canvas), where to draw crosshairs
+ * @param {object} mousePos 
+ * @return {object}
+ */
+function dataReadout(mousePos, trackno) {
     var xDat = 0;
     var yDat = 0;
     if (mousePos.x > margin.left) {
         var chartPos = mousePos.x - margin.left;
         var chartY = mousePos.y - margin.top;
-        var lastEl = rows.length - 1;
-        var maxMile = rows[lastEl].x;
+        var lastEl = trkRows[trackno].length - 1;
+        var maxMile = trkRows[trackno][lastEl].x;
         var unitsPerPixel = maxMile/xMax;
         var xDat = chartPos * unitsPerPixel;
         if (xDat <= maxMile) {
-            var bounds = findNeighbors(xDat);
+            var bounds = findNeighbors(xDat, trackno);
             if (bounds.u === bounds.l) {
-                yDat = rows[bounds.u].y;
+                yDat = trkRows[trackno][bounds.u].y;
                 indxOfPt = bounds.u;
             } else {
-                var higher = rows[bounds.u].x;
-                var lower = rows[bounds.l].x;
+                var higher = trkRows[trackno][bounds.u].x;
+                var lower = trkRows[trackno][bounds.l].x;
                 var extrap = (xDat - lower)/(higher - lower);
                 if (extrap >= 0.5) {
                     xDat = higher;
-                    yDat = rows[bounds.u].y;
+                    yDat = trkRows[trackno][bounds.u].y;
                     indxOfPt = bounds.u;
                 } else {
                     xDat = lower;
-                    yDat = rows[bounds.l].y;
+                    yDat = trkRows[trackno][bounds.l].y;
                     indxOfPt = bounds.l;
                 }
             }
@@ -252,14 +273,19 @@ function dataReadout(mousePos) {
         return { x: -1, y: -1 };
     }    
 }
-function findNeighbors(xDataPt) {
-    for (var k=0; k<rows.length; k++) {
-        if (rows[k].x === xDataPt) {
+/**
+ * Get upper/lower locs of point
+ * @param {number} xDataPt 
+ * @return {object}
+ */
+function findNeighbors(xDataPt, trackno) {
+    for (var k=0; k<trkRows[trackno].length; k++) {
+        if (trkRows[trackno][k].x === xDataPt) {
             upper = k;
             lower = k;
             break;
         } else {
-            if (xDataPt < rows[k].x) {
+            if (xDataPt < trkRows[trackno][k].x) {
                 var upper = k;
                 var lower = k-1;
                 break;
@@ -271,7 +297,11 @@ function findNeighbors(xDataPt) {
         l: lower
     }
 }
-// Redraw when there is a window resize
+
+/**
+ * Redraw when there is a window resize
+ * @return {null}
+ */
 $(window).resize( function() {
     if (resizeFlag) {
         prevCHairs = false;
@@ -279,14 +309,10 @@ $(window).resize( function() {
         setTimeout( function() {
             canvasEl.onmousemove = null;
             setChartDims();
-            var chartData = defineData();
+            var chartData = defineData(trackNumber);
             ChartObj.render('grph', chartData);
-            crossHairs();
+            crossHairs(trackNumber);
             resizeFlag = true; 
-            //var msg = 'New width: ' + canvasEl.width + ', height: ' + canvasEl.height;
-            //window.alert(msg);
         }, 300);      
     }  
 });
-
-}); // end of page-loading wait statement

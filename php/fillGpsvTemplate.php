@@ -97,14 +97,16 @@ for ($j=1; $j<=$noOfTrks; $j++) {
         "trk[t].info.desc,color:trk[t].info.color,number:t});" . PHP_EOL;
 }
 $maphtml .= PHP_EOL . "                // Add tick marks" . PHP_EOL;
-for ($j=0; $j<count($ticks); $j++) {
-    $maphtml .= '                ' . $ticks[$j] . PHP_EOL;
+for ($j=0; $j<count($trackTicks); $j++) {
+    for ($k=0; $k<count($trackTicks[$j]); $k++) {
+        $maphtml .= '                ' . $trackTicks[$j][$k] . PHP_EOL;
+    }
 }
 $maphtml .= PHP_EOL . "                // Add any waypoints" . PHP_EOL;
 for ($n=0; $n<$noOfWaypts; $n++) {
     $maphtml .= '                ' . $waypoints[$n] . PHP_EOL;
 }
-if (isset($showPhotos) && $showPhotos) {
+if (!$tblOnly) {
     $maphtml .= PHP_EOL . "                // Create photo markers\n";
     for ($z=0; $z<count($plnks); $z++) {
         $maphtml .= '                ' . $plnks[$z] . PHP_EOL;

@@ -95,8 +95,8 @@ function gpsvDebugMaArray($gpxPath, $window)
  * This function does the actual distance and elevation calculations using various
  * data filtering/smoothing methodologies. Called once for each track.
  * 
- * @param integer  $currFile  file number of multiple files
- * @param integer  $trkNo     track no. within the current file
+ * @param integer  $seqTrkNo  Sequential number based on no. of files
+ * @param integer  $trkNo     trackno within the current gpx file
  * @param string   $trkname   name of current track
  * @param string   $gpxPath   path to gpxfile
  * @param object   $xmldata   gpx file loaded into simpleXml object
@@ -112,8 +112,8 @@ function gpsvDebugMaArray($gpxPath, $window)
  * @return float           $hikeLgthTot total distance traversed in all tracks
  */
 function getTrackDistAndElev(
-    $currFile, $trkNo, $trkname, $gpxPath, &$xmldata, $debug, $handleDfa, $handleDfc,
-    $dThresh, $eThresh, $maWin, &$tdat=null, &$ticks=null
+    $seqTrkNo, $trkNo, $trkname, $gpxPath, &$xmldata, $debug, $handleDfa,
+    $handleDfc, $dThresh, $eThresh, $maWin, &$tdat=null, &$ticks=null
 ) {
     // variables for each track's calcs
     $hikeLgth = (float)0;
@@ -181,11 +181,11 @@ function getTrackDistAndElev(
                 $tick
                     = "GV_Draw_Marker({lat:" . $gpxlats[$m] . ",lon:" . $gpxlons[$m]
                         . ",alt:" . $gpxeles[$m] . ",name:'" . $tickMrk/1609 . " mi'"
-                        . ",desc:trk[" . $currFile . "].info.name,color:trk["
-                        . $currFile . "]"
+                        . ",desc:trk[" . $seqTrkNo . "].info.name,color:trk["
+                        . $seqTrkNo . "]"
                         . ".info.color,icon:'tickmark',type:'tickmark',folder:'"
                         . $trkname . " [tickmarks]',rotation:" . $rotation
-                        . ",track_number:" . $currFile . ",dd:false});";
+                        . ",track_number:" . $seqTrkNo . ",dd:false});";
                 array_push($ticks, $tick);
                 $tickMrk += 0.30 * 1609; // interval in miles converted to meters
             }

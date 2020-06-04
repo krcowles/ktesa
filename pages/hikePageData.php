@@ -1,36 +1,23 @@
 <?php
 /**
  * This script provides the data required by hikePageTemplate.php in order
- * to display an individual hike page. The former establishes $pdo.
- * PHP Version 7.1
+ * to display an individual hike page. The hike data may come from either
+ * the released HIKES table, or those in-edit (EHIKES);
+ * PHP Version 7.4
  * 
- * @package Display_Page
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 $tbl = filter_input(INPUT_GET, 'age');
-/**
- * The variable $hikeIndexNo is established below and is used throughout
- * to locate data corresponding to this unique hike identifier.
- */
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_SANITIZE_NUMBER_INT);
-$distThreshParm = filter_input(
-    INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT
-);
-$elevThreshParm = filter_input(
-    INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT
-);
-$maWindowParm = filter_input(
-    INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT
-);
+$distThreshParm = filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT);
+$elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT);
+$maWindowParm = filter_input(INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT);
 $makeGpsvDebugParm = filter_input(INPUT_GET, 'makeGpsvDebugParm');
 $showAscDsc = filter_input(INPUT_GET, 'showAscDsc');
 $ehikes = (isset($tbl) && $tbl === 'new') ? true : false;
-/**
- * The following variables are used to define the tables to be used
- * in the MySQL queries, based on whether or not in-edit hike data
- * is required.
- */
 if ($ehikes) {
     $htable = 'EHIKES';
     $rtable = 'EREFS';
@@ -44,6 +31,7 @@ if ($ehikes) {
     $ttable = 'TSV';
     $tbl = 'old';
 }
+$hikepage = true;
 // Form the queries for extracting data from HIKES/EHIKES and TSV/ETSV
 $basic = "SELECT * FROM {$htable} WHERE indxNo = :indxNo";
 $basicPDO = $pdo->prepare($basic);
@@ -73,7 +61,23 @@ $hikeFacilities = $row['fac'];
 $hikeWow = $row['wow'];
 $hikeSeasons = $row['seasons'];
 $hikeExposure = $row['expo'];
-$gpxfile = $row['gpx'];
+// There may be multiple gpx files in the 'gpx' field
+$files = []; // required by multiMap.php
+$allgpx = $row['gpx'];
+if (!empty($allgpx)) {
+    $newstyle = true;
+    $gpxfiles = explode(",", $allgpx);
+    $gpxfile = $gpxfiles[0];
+    $gpxPath = '../gpx/' . $gpxfile;
+    for ($j=0; $j<count($gpxfiles); $j++) {
+        array_push($files, $gpxfiles[$j]);
+    }
+} else {
+    $newstyle = false;
+    $gpxfile = '';
+    $gpxPath = '';
+    $gpxfiles = [];
+}
 $jsonFile = $row['trk'];
 if ($row['aoimg1'] == '') {
     $hikeAddonImg1 = '';
@@ -104,13 +108,6 @@ $hikeInfo = $row['info'];
 $hikeEThresh = $row['eThresh'];
 $hikeDThresh = $row['dThresh'];
 $hikeMaWin = $row['maWin'];
-if ($gpxfile == '') {
-    $newstyle = false;
-    $gpxPath = '';
-} else {
-    $newstyle = true;
-    $gpxPath = '../gpx/' . $gpxfile;
-}
 /**
  * This section collects the information from TSV/ETSV table needed
  * to build the picture rows...
@@ -196,8 +193,8 @@ if ($newstyle) {
             $tmpMap . ", for writing";
         throw new Exception($mapmsg);
     }
-    $fpLnk = "../maps/fullPgMapLink.php?maptype=page&hike={$hikeTitle}" .
-        "&gpx={$gpxPath}&hno={$hikeIndexNo}&tbl={$tbl}";
+    $fpLnk = "../maps/fullPgMapLink.php?hike={$hikeTitle}" .
+        "&gpx={$gpxfile}&hno={$hikeIndexNo}&tbl={$tbl}";
     $map_opts = [
         'show_geoloc' => 'true',
         'zoom' => 'auto',
@@ -209,12 +206,50 @@ if ($newstyle) {
         'measurement_tools' => 'false',
         'utilities_menu' => "{ 'maptype':true, 'opacity':true, " .
             "'measure':true, 'export':true }",
-        'tracklist_options' => 'false',
+        'tracklist_options' => 'true',
         'marker_list_options' => 'false',
         'show_markers' => 'true',
         'dynamicMarker' => 'true'  
     ];
-    include "../php/makeGpsv.php";
+    /**
+     * Set smoothing parameter values per the following hierarchy:
+     *  from query string
+     *  hike-specific value from database,
+     *  default value defined here.
+    */
+    if (isset($elevThreshParm)) { // threshold (meters) for elevation smoothing
+        $elevThresh = $elevThreshParm;
+    } else {
+        $elevThresh = isset($hikeEThresh) ? $hikeEThresh : 1;
+    }
+    if (isset($distThreshParm)) { // threshold (meters) for distance smoothing
+        $distThresh = $distThreshParm;
+    } else {
+        $distThresh = isset($hikeDThresh) ? $hikeDThresh : 1;
+    }
+    if (isset($maWindowParm)) { // moving average window size for elevation smoothing
+        $maWindow = $maWindowParm;
+    } else {
+        $maWindow = isset($hikeMaWin) ? $hikeMaWin : 1;
+    }
+
+    // Set debug output parameter based on the URL param established in hikePageData.php
+    if (isset($makeGpsvDebugParm)) {
+        $makeGpsvDebug = "true" ? true : false;
+    } else {
+        $makeGpsvDebug = false;
+    }
+
+    // Open debug files with headers, if requested by query string
+    $handleDfa = null;
+    $handleDfc = null;
+    if ($makeGpsvDebug) {
+        $handleDfa = gpsvDebugFileArray($gpxPath);
+        $handleDfc = gpsvDebugComputeArray($gpxPath);
+    }
+    
+    include '../php/multiMap.php';
+  
     // this is the html for the map: precede it with cache-control:
     $php  = "<?php header('Cache-Control: max-age=0'); ?>" . $maphtml;
     fputs($mapHandle, $php);
