@@ -1,13 +1,8 @@
 // need to be global:
 var map;
-var allTheTracks = [];
-var tracksDone = false;
-
-// Google's hidden inner div when clicking on full screen mode
-var $fullScreenDiv;
+var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00']
+var $fullScreenDiv; // for google maps full screen mode
 var $map = $('#map');
-// Maximize map height & side table div
-var mapht = $(window).height() - $('#panel').height();
 
 /**
  * This function is called initially, and again when resizing the window;
@@ -133,55 +128,32 @@ function initMap() {
 			averageCenter: true,
 			zoomOnClick: true
 		});
-
-	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
-	map.addListener('zoom_changed', function() {
-		var idle = google.maps.event.addListener(map, 'idle', function (e) {
-			var curZoom = map.getZoom();
-			var perim = String(map.getBounds());
-			if ( curZoom > 12 ) {
-				for (var m=0; m<allTheTracks.length; m++) {
-					trkKeyStr = 'trk' + m;
-					trkObj[trkKeyStr].setMap(map);
-				}
-			} else {
-				for (var n=0; n<allTheTracks.length; n++) {
-					trkKeyStr = 'trk' + n;
-					trkObj[trkKeyStr].setMap(null);
-				}
-			}
-			//IdTableElements(perim);
-			google.maps.event.removeListener(idle);
-		});
-	});
-	
-	map.addListener('dragend', function() {
-		var newBds = String(map.getBounds());
-		IdTableElements(newBds);
-	});
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
-// collect mouseover data for tracks
+// collect mouseover data for tracks; initialize arrow holding info
 var trackdat = [];
 for (let i=0; i<tracks.length; i++) {
 	trackdat[i] = '';
 }
-NM.forEach(function(hobj) {
-	if (tracks[hobj.indx] !== '') {
-		trackdat[hobj.indx] = '<div id="iwNH">' + hobj.name + '<br />Length: ' +
-			hobj.lgth + ' miles<br />Elev Chg: ' + hobj.elev +
-			'<br />Difficulty: ' + hobj.diff + '</div>';
-	}
+NM.forEach(function(hobj, indx) {
+	trackdat[indx] = '<div id="iwNH">' + hobj.name + '<br />Length: ' +
+		hobj.lgth + ' miles<br />Elev Chg: ' + hobj.elev +
+		'<br />Difficulty: ' + hobj.diff + '</div>';
 });
 
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 var trackFile; // name of the JSON file to be read in
-var trkObj = { trk0: {}, trkName0: 'name' };
-var trkKeyNo = 0;
-var trkKeyStr;
-var i,j,k;
 var geoOptions = { enableHighAccuracy: 'true' };
+/**
+ * This function will turn on tracks after tracks have been drawn;
+ */
+const enableTracks = () => {
+	for (var m=0; m<allTheTracks.length; m++) {
+		trkKeyStr = 'trk' + m;
+		trkObj[trkKeyStr].setMap(map);
+	}
+}
 
 // deferred wait for map to get initialized
 $.when( mapdone ).then(drawTracks).then(function() {
@@ -189,22 +161,23 @@ $.when( mapdone ).then(drawTracks).then(function() {
 });
 
 function drawTracks() {
-	let color = '#FF0000'
+	let trkcolor = 0;
 	tracks.forEach(function(fname, indx) {
 		if (fname !== '') {
 			var trkfile = '../json/' + fname;
-			drawTrack(trkfile, color, indx);
+			drawTrack(trkfile, colors[trkcolor++], indx);
+			if (trkcolor >= colors.length) {
+				trkcolor = 0; // rollover colors when tracks exceeds colors size
+			}
 		}
 	});
-	tracksDone = true;
 }
 function drawTrack(jsonfile, color, ptr) {
 	$.ajax({
 		dataType: "json",
 		url: jsonfile,
 		success: function(trackDat) {
-			trkKeyStr = 'trk' + trkKeyNo;	
-			trkObj[trkKeyStr] = new google.maps.Polyline({
+			let track = new google.maps.Polyline({
 				icons: [{
 						icon: mapTick,
 						offset: '0%',
@@ -216,22 +189,19 @@ function drawTrack(jsonfile, color, ptr) {
 				strokeOpacity: 1.0,
 				strokeWeight: 3
 			});
-			//trkObj[trkKeyStr].setMap(map);
-			// when loaded, all tracks are off (not set)
-			allTheTracks.push(trkKeyStr);
+			track.setMap(map);
 			// create the mouseover text:
 			var iw = new google.maps.InfoWindow({
 				content: trackdat[ptr]
 			});
-			trkObj[trkKeyStr].addListener('mouseover', function(mo) {
+			track.addListener('mouseover', function(mo) {
 				var trkPtr = mo.latLng;
 				iw.setPosition(trkPtr);
 				iw.open(map);
 			});
-			trkObj[trkKeyStr].addListener('mouseout', function() {
+			track.addListener('mouseout', function() {
 				iw.close();
 			});
-			trkKeyNo++;
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			msg = 'Did not succeed in getting JSON data: ' + jsonfile;
