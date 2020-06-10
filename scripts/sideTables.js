@@ -202,9 +202,9 @@ function formTbl(indxArray) {
         $('#sideTable').append(no_table);
     } else {
         $.each(indxArray, function(i, obj) {
-            let hno = parseInt(obj.indx);
+            let hno = obj.indx;
             var tbl;
-            if (favlist.includes(hno)) {
+            if (favlist.includes(hno) || favlist.includes(hno.toString())) {
                 tbl = tblItemHtml.replace('Yellow', 'Red');
             } else {
                 tbl = tblItemHtml;
@@ -212,7 +212,6 @@ function formTbl(indxArray) {
             let lnk = '<a href="hikePageTemplate.php?hikeIndx=' + obj.indx + 
                 '">' + obj.name + '</a>';
             tbl += lnk;
-            tbl += '<span class="zpop">Zoom to Hike</span>';
             tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
                 + obj.lgth + ' miles';
             tbl += '</span><br /><span class="subtxt">Elev Change: ';
@@ -297,14 +296,14 @@ function enableFavorites() {
  */
 function positionFavTooltips() {
     $('.like').each(function() {
-        var pos = $(this).offset();
         var $txtspan = $(this).parent().parent().children().eq(0); // div holding tooltip
         if (this.src.indexOf('Yellow') === -1) {
             $txtspan[0].innerHTML = 'Unmark Favorite';
         }
         $(this).on('mouseover', function() {
-            var left = pos.left - 128 + 'px'; // width of tip is 120px
-            var top = pos.top + 'px';
+            let pos = $(this).offset();
+            let left = pos.left - 128 + 'px'; // width of tip is 120px
+            let top = pos.top + 'px';
             $txtspan[0].style.top = top;
             $txtspan[0].style.left = left;
             $txtspan[0].style.display = 'block';
