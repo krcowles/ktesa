@@ -20,6 +20,7 @@ if ($act === 'rel') {
 $usr = 'mstr';
 $age = 'new';
 $show = 'all';
+$pageType = "Publish";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

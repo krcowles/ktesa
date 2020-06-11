@@ -13,7 +13,7 @@ require "../php/global_boot.php";
 $usr = 'mstr'; // this is actually a "don't care", but needs to be specified
 $age = 'old';
 $show = 'all';
-$includeZoom = false;
+$pageType = 'FullTable';
 ?> 
 <!DOCTYPE html>
 <html lang="en-us">

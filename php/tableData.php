@@ -19,12 +19,14 @@
  *  3.  By 'admin/reldel.php'
  *      Here it is used to list ALL EHIKES (for master) to release or delete:
  *      [show=all, usr='mstr', table=EHIKES (ie age=new)]
- *  Each 'calling' script must set the $show, $usr, and $age (table) parameters;
- *  In all cases, the .js will direct the web page link to the proper location.
- *  PHP Version 7.1
+ *  Each 'calling' script must set the $show, $usr, $age (table), and $pageType
+ *  parameters; In all cases, the .js will direct the web page link to the proper
+ * location.
+ *  PHP Version 7.4
  * 
- * @package Hike_Table
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 // Icons used for table display:

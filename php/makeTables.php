@@ -1,7 +1,10 @@
 <?php
 /**
  * The html for the specified hike table is created here by first collecting the
- * table type and its associated data from the tableData.php script. 
+ * table type and its associated data from the tableData.php script. Note that 
+ * the Table Only page uses checkboxes for each hike (w/gpx) whereas the
+ * hike editor does not. This necissitated an identifier, $pageType, which
+ * must be defined by the caller.
  * PHP Version 7.1
  * 
  * @package Hike_Table
@@ -9,11 +12,14 @@
  * @license No license to date
  */
 require_once "tableData.php";
+$cbox = $pageType == 'FullTable' ? true : false;
 ?>
 <!-- REFERENCE TABLE OF HIKES -->
 <table class="sortable">
     <colgroup>
+        <?php if ($cbox) : ?>
         <col style="width:30px">
+        <?php endif; ?>
         <col style="width:210px">
         <col style="width:108px">
         <col style="width:160px">
@@ -25,7 +31,9 @@ require_once "tableData.php";
     </colgroup>
     <thead>
         <tr>
+            <?php if ($cbox) : ?>
             <th class="hdr_row">Use</th>
+            <?php endif; ?>
             <th class="hdr_row" data-sort="std">Hike/Trail Name</th>
             <th class="hdr_row" data-sort="std">Locale</th>
             <th class="hdr_row" data-sort="std">WOW Factor</th>
@@ -53,7 +61,9 @@ require_once "tableData.php";
         <tr class="normal" <?= $hikeHiddenDat[$j];?>>
         <?php endif; ?>
         <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
+        <?php if ($cbox) : ?>
         <td></td>
+        <?php endif; ?>
         <td><a href="<?= $pgLink[$j];?>"
             target="_blank"><?= $hikeName[$j];?></a></td>
         <td><?= $hikeLocale[$j];?></td>
@@ -63,7 +73,9 @@ require_once "tableData.php";
         <td>See Index</td>
         <td>See Index</td>
     <?php else : ?>
+        <?php if ($cbox) : ?>
         <td data-track="<?= $hikeGpx[$j];?>"><input type="checkbox" /></td>
+        <?php endif; ?>
         <td><a href="<?= $pgLink[$j];?>"
             target="_blank"><?= $hikeName[$j];?></a></td>
         <td><?= $hikeLocale[$j];?></td>

@@ -13,6 +13,7 @@ require "../php/global_boot.php";
 $usr = filter_input(INPUT_GET, 'usr');
 $age = filter_input(INPUT_GET, 'age');
 $show = filter_input(INPUT_GET, 'show');
+$pageType = 'Editor';
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
