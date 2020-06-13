@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -105,7 +105,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -138,7 +138,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=550 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=574 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -275,7 +275,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=243 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -516,7 +516,8 @@ INSERT INTO HIKES VALUES
 ('237','Domingo Baca Outwash Loop','mstr','Albuquerque','Cluster',NULL,'B','Gallegos Park Group','Loop','5.30','800','Moderate','Park Facilities','Views of both Sandias and ABQ','Not Summer','Full sun','DomingoOutwashLoop.GPX','DomingoOutwashLoop.json','351657833','-1064734806',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Elena+Gallegos+Open+Space/@35.1560987,-106.4976399,14z/data=!4m5!3m4!1s0x87189f1edab675c3:0x7e38ccf27392893e!8m2!3d35.1617782!4d-106.4736878',NULL,'This loop traces the outlines of the Domingo Baca Canyon outwash and travels up to its spring. There are many diverse views along the way, and following the Domingo Baca trail a short distance brings you into a shaded area by the creek. To extend the hike, follow the Domingo Baca trail further east into the Sandias. For a shorter hike, omit the trail up and complete the loop at the juncture between the north and south Domingo Baca trail entrances (blue flag on map).',NULL,NULL,NULL),
 ('238','Emery Overlook Loop','mstr','Albuquerque','Cluster',NULL,'II','Michael Emery Group','Loop','4.10','900','Med-Difficult','None','Emery Canyon views','Not Winter','Full sun','Emery_Overlook.gpx','Emery_Overlook.json','351461517','-1064825930',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Michael+Emery+Trail/@35.1454838,-106.4938568,15.86z/data=!4m5!3m4!1s0x87189f0b45d7713b:0xa5dd80d463752610!8m2!3d35.1459308!4d-106.4824107','Parts of the trail can be quite steep with loose gravel - exercise caution. Also, the area is heavily crisscrossed with unmarked trails, so it is advisable to plan your route to avoid unwanted diversions.','This trail affords a higher view of Emery Canyon by ascending into the foothills at the east end. While there are some steep sections, the views afforded make the trip worth the effort. The trail actually continues beyond the point shown on the map, but the author elected to turn around at that point - the trail appeared to continue higher with more steep sections.',NULL,NULL,NULL),
 ('239','[Proposed] 10K-South Crest','mstr',NULL,'Cluster',NULL,'Z','10K Trail Group',NULL,'3.90','800',NULL,'','','',NULL,'S_10K_Crest.gpx','S_10K_Crest.json','352092658','-1064353859',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'33.6%22N+106%C2%B026\'08.5%22W/@35.2084784,-106.4514085,14z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.20932!4d-106.43568?hl=en',NULL,NULL,NULL,NULL,NULL),
-('240','[Proposed] N Piedra Lisa','mstr',NULL,'Cluster',NULL,'RR','NPL Group',NULL,'3.60','2100',NULL,'','','',NULL,'North_PL_DEM.gpx','North_PL_DEM.json','352787681','-1064786178',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Piedra+Lisa+North+Trailhead+Parking,+Placitas,+NM/@35.2942397,-106.5252984,14z/data=!4m5!3m4!1s0x0:0x581950944de90d29!8m2!3d35.2789454!4d-106.47848?hl=en-US',NULL,NULL,NULL,NULL,NULL);
+('241','Kiwani Cabin - 10K Loop','krcowles','Albuquerque','Cluster',NULL,'Z','10K Trail Group','Loop','5.20','650','Moderate','Public Toilet','Excellent views from the Sandia Crest','Not Winter','Good shade','Kiwani_10K_Loop.GPX','Kiwani_10K_Loop.json','352092390','-1064355979',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/10k+Trailhead/@35.2094662,-106.4468217,13.61z/data=!4m5!3m4!1s0x871899547518ac1f:0x91a6c70fb22660bf!8m2!3d35.210746!4d-106.436264',NULL,'The hike starts at 10,000 feet and proceeds upwards to the Crest and Kiwanis Cabin, affording fabulous views. While the area around the cabin (which has been rebuilt multiple times) is sunny and expansive, most of the hike is pleasantly shady. This hike forms a loop and includes less-well-traveled trail segments (none of the references follow this trail) making for a unique adventure. The trail segments are identified on the map with blue flags.',NULL,NULL,NULL),
+('242','North Piedra Lisa','krcowles','Placitas','Cluster',NULL,'RR','NPL Group','Out-and-back','7.30','2200','Difficult','None','Interior views of the North Sandias','Not Winter','Good shade','Piedra_Lisa_North.GPX','Piedra_Lisa_North.json','352790090','-1064784959',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Piedra+Lisa+North+Trailhead+Parking,+Placitas,+NM/@35.2924023,-106.4973361,13.95z/data=!4m5!3m4!1s0x87189cdc85e72ac1:0x581950944de90d29!8m2!3d35.2789454!4d-106.47848',NULL,'This hike is a relentless uphill trek from the foothills near Placitas to the summit of the Piedra Lisa trail. Be prepared with sturdy shoes and plenty of water. The grade is generally not gentle, and often the footing is loose with rock and gravel. Along the way, there are multiple excellent views looking in almost any direction: from the rugged interior of the Sandias to the valley below. This hike could also be made a two-car hike, as the North Piedra Lisa trail continues south to the South Piedra Lisa trail head near the La Luz trail (see References AllTrails and ExploreNM links). This option is actually shorter than the out-and-back hike shown here.',NULL,NULL,NULL);
 
 
 
@@ -584,7 +585,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1628 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1638 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1465,7 +1466,14 @@ INSERT INTO REFS VALUES
 ('1622','13','Website: ','http://www.sandiahiking.com/trailguide.html#domingobaca','Accessory to Sandia Hiking Guide'),
 ('1623','13','Website: ','http://www.hikingproject.com/trail/7006997','The Hiking Project'),
 ('1624','13','Website: ','http://www.summitpost.org/domingo-baca-and-twa-canyon/590602','Summit Post'),
-('1625','13','App: ','http://www.alltrails.com/trail/us/new-mexico/domingo-baca-trail-230','AllTrails');
+('1625','13','App: ','http://www.alltrails.com/trail/us/new-mexico/domingo-baca-trail-230','AllTrails'),
+('1628','241','App:','https://www.alltrails.com/trail/us/new-mexico/kiwanis-cabin-via-south-crest-trail','AllTrails.com'),
+('1629','241','Website:','https://www.hikingproject.com/photo/7004174/view-of-kiwanis-cabin-on-sandia-peak','Hiking Project'),
+('1630','241','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64314','US Forest Service'),
+('1631','242','Book:','7',NULL),
+('1632','242','Book:','2',NULL),
+('1633','242','App:','https://www.alltrails.com/trail/us/new-mexico/piedra-lisa-trail-to-state-route-333-d','AllTrails'),
+('1634','242','Website:','https://www.explorenm.com/hikes/PiedraLisa/','ExploreNM');
 
 
 
@@ -1489,7 +1497,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4628 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4650 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4058,7 +4066,28 @@ INSERT INTO TSV VALUES
 ('4621','13',NULL,'IMG_3022','Y','Y','A view near the creek','351829527','-1064554750','2555',NULL,'2020-05-28 10:10:27','IMG_3022','4032','3024',NULL,NULL),
 ('4622','13',NULL,'IMG_3030','Y','Y','Wreckage appears in multiple locations','351951222','-1064425888','2556',NULL,'2020-05-28 11:35:30','IMG_3030','3024','4032',NULL,NULL),
 ('4623','13',NULL,'IMG_3033','Y','Y','The rugged Sandia interior','351923972','-1064435722','2557',NULL,'2020-05-28 11:56:08','IMG_3033','3024','4032',NULL,NULL),
-('4624','13',NULL,'IMG_3036','Y','Y','Heading towards the creek','351789750','-1064638888','2558',NULL,'2020-05-28 13:01:46','IMG_3036','4032','3024',NULL,NULL);
+('4624','13',NULL,'IMG_3036','Y','Y','Heading towards the creek','351789750','-1064638888','2558',NULL,'2020-05-28 13:01:46','IMG_3036','4032','3024',NULL,NULL),
+('4628','241',NULL,'IMG_3039','Y','Y','A bit on the edge - a grand view from the Crest','352033583','-1064432138','2559',NULL,'2020-06-03 10:34:21','IMG_3039','3024','4032',NULL,NULL),
+('4629','241',NULL,'IMG_20200603_103545820','Y','Y','Looking out from the cabin','352033369','-1064431660','2560',NULL,'2020-06-03 10:35:44','IMG_20200603_103545820','2268','4032',NULL,NULL),
+('4630','241',NULL,'IMG_3042','Y','N','Looking west to Mt Taylor','352033000','-1064432972','2561',NULL,'2020-06-03 10:36:18','IMG_3042','3024','4032',NULL,NULL),
+('4631','241',NULL,'IMG_3046','Y','Y','The cabin seen from the higher bluff','352055277','-1064454499','2564',NULL,'2020-06-03 11:08:21','IMG_3046','3024','4032',NULL,NULL),
+('4632','241',NULL,'IMG_3045','Y','N','A higher bluff near the cabin','352035361','-1064434500','2565',NULL,'2020-06-03 10:37:34','IMG_3045','3024','4032',NULL,NULL),
+('4633','241',NULL,'IMG_20200603_111007774_HDR','Y','Y','Wind effects on the Crest','352052789','-1064451899','2566',NULL,'2020-06-03 11:10:11','IMG_20200603_111007774_HDR','2268','4032',NULL,NULL),
+('4634','241',NULL,'Challenge Trail',NULL,'Y',NULL,'352088166','-1064354166',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('4635','241',NULL,'Switchback Trail',NULL,'Y',NULL,'352082166','-1064414833',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('4636','241',NULL,'Kiwani Meadow Rd',NULL,'Y',NULL,'352087833','-1064474333',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('4637','241',NULL,'Sandia Crest Trail',NULL,'Y',NULL,'352046000','-1064407166',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('4638','241',NULL,'Gravel Pit Trail',NULL,'Y',NULL,'352052333','-1064408666',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('4639','241',NULL,'King of Mtn Trail',NULL,'Y',NULL,'351971833','-1064341166',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('4640','241',NULL,'Unamed Loopback',NULL,'Y',NULL,'352000333','-1064342999',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('4641','241',NULL,'Kiwanis Cabin Trail',NULL,'Y',NULL,'352039333','-1064419500',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
+('4642','241',NULL,'WallFlower','Y','Y','Wallflower','352051694','-1064337611','2573',NULL,'2020-06-03 12:19:30','WallFlower','4032','3024',NULL,NULL),
+('4643','242',NULL,'IMG_20200609_130316978_HDR','Y','Y','Apache Plume highlights the trail into the canyon','352777249','-1064769450','2567',NULL,'2020-06-09 13:03:22','IMG_20200609_130316978_HDR','2268','4032',NULL,NULL),
+('4644','242',NULL,'IMG_3067','Y','Y','Placitas is soon left behind','352544944','-1064714444','2568',NULL,'2020-06-09 12:00:54','IMG_3067','3024','4032',NULL,NULL),
+('4645','242',NULL,'IMG_3054','Y','Y','Tom takes in a view of Sandia\'s interior','352653833','-1064693000','2569',NULL,'2020-06-09 10:01:39','IMG_3054','2880','3840',NULL,NULL),
+('4646','242',NULL,'IMG_3064','Y','Y','Numerous views are presented along the way','352607694','-1064692305','2570',NULL,'2020-06-09 10:15:40','IMG_3064','3024','4032',NULL,NULL),
+('4647','242',NULL,'IMG_3066','Y','Y','From the Piedra Lisa summit','352445499','-1064750666','2571',NULL,'2020-06-09 11:25:17','IMG_3066','3024','4032',NULL,NULL),
+('4648','242',NULL,'PiedraLisa','Y','Y','Green Alpine View','352514583','-1064735111','2572',NULL,'2020-06-09 10:54:44','PiedraLisa','4032','3024',NULL,NULL);
 
 
 
@@ -4075,7 +4104,7 @@ CREATE TABLE `USERS` (
   `twitter_handle` varchar(20) DEFAULT NULL,
   `bio` varchar(500) DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO USERS VALUES
@@ -4084,7 +4113,8 @@ INSERT INTO USERS VALUES
 ('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com','','','Just and old dusty traveler'),
 ('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu','','',''),
 ('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com','','',''),
-('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com','','','Standard user account established by admin');
+('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com','','','Standard user account established by admin'),
+('7','krcowles','$2y$10$41ii5EQfTU8Gme913fUuXuBpUUkFn76/F0PrkNaUUC0tn/uWOOa1m','2020-12-10','Cowles','Ken','krcowles29@gmail.com','','','');
 
 
 
