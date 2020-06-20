@@ -25,7 +25,19 @@ $tblOnly = isset($hikeIndexNo) ? false : true;
 
 // tblOnly files are input via query string, $map_opts are included below:
 if ($tblOnly) {
-    $files = $_GET['m'];
+    $query_files = $_GET['m'];
+    $files = [];
+    for ($j=0; $j<count($query_files); $j++) {
+        // If > 1 file listed in a single "m[]" parameter, get extra files
+        if (strpos($query_files[$j], ",") !== false) {
+            $merged = explode(",", $query_files[$j]);
+            foreach ($merged as $new) {
+                array_push($files, $new);
+            }
+        } else {
+            array_push($files, $query_files[$j]);
+        }
+    }
     $map_opts = [
         'show_geoloc' => 'false',
         'zoom' => 'auto',
