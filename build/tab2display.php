@@ -1,6 +1,6 @@
 <hr />
 <p style="color:brown;">Upload your photos (you will be directed to a new page)</p> 
-<input type="button" name="upld" id="upld" value="Upload" />
+<input type="button" name="upld" id="upld" value="Add Photos" />
 
 <hr />
 <p style="color:brown;"><em>Edit captions below each photo as needed

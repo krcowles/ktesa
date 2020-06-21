@@ -1,85 +1,111 @@
 /**
- * The following globals are established for displaying images on the browser,
- * and displaying upload progress using the various means provided: an upload
- * bar giving overall progress, and upload 'dials' for each image.
+ * @fileoverview This is a standalone utility that will preview selected
+ * images (input select or drag-and-drop) on the page, having stored a
+ * resized image on the server. The user may select desired images to be
+ * saved and used by the editor.
+ * @author Tom Sandberg
+ * @author Ken Cowles
  */
-var ehikeIndxNo = $('#ehno').text(); // get the hike no for uploading 
-// meters and progress bar
-var $progressBar = $('#progbar');
-var progPerUpld;
-var $cmeter; // circular meter object
-var cmtrIds = []; // each meter has a unique id required during submit
-// objects during display/previewing of images on page
-var validated = []; // files passing the filechecks function
-var FR_Images = []; // FileReader objects to be loaded into DOM
-var uploads = [];   // accumulated objects to be uploaded
-var upldNo = 0;     // unique id for each image displayed
-/**
- * While the following items can be changed, changing the image height (iheight)
- * will required adjustment of the 'rotation' class parameters in css.
- */
-var iheight = 160; // image height on page
-var nheight = 20;  // height of 'name' box
-var dheight = 44;  // height of 'description' box
-// where to place images
-var dndbox = document.getElementsByClassName('box__dnd');
-var droppedFiles = false; // if files are dropped, this holds the list
-// image properties (all global)
-var orient; // photo exif orientation data
-var ajaxExif = []; // holds photos' exif data for storing in the db
-var loadedImages = [];  // array of DOM nodes containing dropped/selected images
-// track available space in current row for placement of next image
-var row = false;
-var frm = document.getElementsByClassName('box');
-var dndWidth = frm[0].clientWidth;
-var remainingWidth = dndWidth;
-// upload arrays
-var uloads = [];  // array of actual files to be uploaded
-var desbox = [];  // array of image descriptions accompanying above files
-var imgIds = [];  // array of image id's for uploads
-var upldCnt = 0;
-var nxtUpld = 0;
-var $iflbl = $('label span'); // where the input file selection box text is held
 
-// styling the 'Choose file...' input box and label text:
-var inputs = document.querySelectorAll( '.inputfile' );
+// admin and server defined constants
+const MAX_UPLOAD_SIZE = 20000000; // no longer required
+const Z_WIDTH = 640;
+const Z_HEIGHT = 480;
+const DISPLAY_HEIGHT = Z_HEIGHT/2;
+// globals
+var ehikeIndxNo = $('#ehno').text(); // get the associated hike no
+var droppedFiles = false; 
+var validated = [];
+var FR_Images = []; // FileReader objects
+var imgNo = 0;      // unique id for each validated image
+var ajaxExif = [];  // holds photos exif data for storing in the db
 
 /**
- * The entire process begins with either a file select (from the "Choose..." input)
- * or by dragging and dropping one or more images onto the page. Either of these
- * actions will instantly result in a series of processes to properly display the
- * photo(s) on the page and establish the parameters needed for uploading. First,
- * the images ('File' objects in javascript, created either from the input file list,
- * or from the dataTransfer event in drag-n-drop) are "loaded" into javascript via
- * the 'ldImgs' function. When completed (deferred objects used), the function
- * 'ldNodes' is called. The ldImgs function creates FileReader objects used as input
- * to the ldNodes function. The ldNodes function establishes a progress dial for
- * each photo to be uploaded, rotates the image if needed, and otherwise prepares
- * the image(s) for display on the page. After ldNodes successfully completes (again,
- * using deferred objects), the 'dndPlace' function is invoked which situates the
- * uploaded images on the page. The upload process is separately described below.
- * Post upload functions can also be invoked: clear images, return to editor, etc.
+ * Whenever a page load completes, re-initialization of arrays and text
+ * should take place
+ * 
+ * @return {null}
  */
-// preview any images selected by the "Choose..." button
-$('#file').change(function() {
-    previewImgs(this.files);
-});
-const previewImgs = (flist) => {
-    $('#ldg').css('display', 'inline');
-    $.when( filechecks(flist) ).then(function() {
-        $.when( ldImgs(validated) ).then(function() {
-            $.when( ldNodes(FR_Images) ).then(function() {
-                dndPlace();
-            });
+const resetImageLoads = () => {
+    $('#ldg').css('display', 'none');
+    droppedFiles = false;
+    validated = [];
+    FR_Images = [];
+    positionIcons();
+    enableIcons();
+    return;
+};
+
+/**
+ * This routine places the icons appropriately in the left corner of the photo
+ * 
+ * @return {null}
+ */
+function positionIcons() {
+    $('.dels').each(function() {
+        let img = '#img' + this.id.substr(3);
+        let imgpos = $(img).offset();
+        let icon_left = imgpos.left + 12;
+        let icon_top  = imgpos.top  + 12;
+        $(this).css({
+            top:  icon_top,
+            left: icon_left,
         });
     });
+    return;
 }
-// basic drag and drop...
-// make sure FormData and FileReader support is in the browser window:
+
+/**
+ * This function enables icons for display on mouseover, and also on click
+ * for photo deletion (and its accompanying icon)
+ * 
+ * @return {null}
+ */
+function enableIcons() {
+    $('.not-saved').each(function() {
+        let icon = '#del' + this.id.substr(3);
+        let $img = $(this);
+        let iname = this.src;
+        let data = {iname: iname};
+        $(this).on('mouseover', function() {
+            $(icon).css('display', 'block');
+        });
+        $(this).on('mouseout', function() {
+            $(icon).css('display', 'none');
+        });
+        $(icon).off('click');
+        $(icon).on('click', function(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            $.ajax({
+                url: 'deletePhoto.php',
+                method: 'post',
+                data: data,
+                success: function() {
+                    let x = 1;
+                },
+                error: function(jqXHR) {
+                    var newDoc = document.open();
+                    newDoc.write(jqXHR.responseText);
+                    newDoc.close();
+                }
+            });
+            $(icon).remove();
+            $img.remove();
+            positionIcons();
+            return;
+        });
+    });
+    return;
+}
+
+/**
+ * The following code sets up the drag-and-drop area, and establishes
+ * classes for CSS
+ */
+// test browser's feature support
 var isAdvancedUpload = 'FormData' in window && 'FileReader' in window;
-// Assuming support, set up drag-n-drop file capture:
 var $form = $('.box');
-// if it is...
 if (isAdvancedUpload) {
     $form.addClass('has-advanced-upload');
     $('.box__dragndrop').css('display', 'inline');
@@ -99,7 +125,7 @@ if (isAdvancedUpload) {
         $.when( filechecks(droppedFiles) ).then(function() {
             $.when( ldImgs(validated) ).then(function() {
                 $.when( ldNodes(FR_Images) ).then(function() {
-                    dndPlace();
+                    resetImageLoads();
                 });
             });
         });
@@ -108,7 +134,39 @@ if (isAdvancedUpload) {
     alert("Dropping of images not supported for this browser.");
 }
 
-// functions for file checking (magic numbers)
+$('#file').change(function() {
+    previewImgs(this.files);
+});
+
+/**
+ * This is the function which consecutively calls routines to:
+ *  - validate the files as jpg/jpeg (and other tests);
+ *  - load validated image files into file reader objects;
+ *  - resize the images and store them on the site;
+ *  - display the images on the page.
+ *
+ * @param {FileList} flist 
+ * @return {null}
+ */
+const previewImgs = (flist) => {
+    $('#ldg').css('display', 'inline');
+    $.when( filechecks(flist) ).then(function() {
+        $.when( ldImgs(validated) ).then(function() {
+            $.when( ldNodes(FR_Images) ).then(function() {
+                resetImageLoads();
+            });
+        });
+    });
+    return;
+}
+
+/**
+ * This function verifies that the magic number does in fact indicate jpeg file
+ * It is called by the filechecks() function.
+ * 
+ * @param {object} magic  The magic number object in the file
+ * @return {boolean} True/False for jpeg file type
+ */
 const render = (magic) => {
     if (magic.binaryFileType !== 'image/jpeg') {
         return false;
@@ -121,6 +179,12 @@ const render = (magic) => {
         return true;
     }
 }
+/**
+ * This function accepts the hex string retrieved as the file's magic number
+ * 
+ * @param {string} signature renders the binaryFileType from the magic number
+ * @return {string} magic number's mime type
+ */
 const getMimetype = (signature) => {
     switch (signature) {
         case '89504E47':
@@ -139,6 +203,17 @@ const getMimetype = (signature) => {
             return 'Unknown filetype'
     }
 }
+/**
+ * This function validates features about the input file:
+ *    1. Filename length < 1024 bytes
+ *    2. File extension is jpg or jpeg
+ *    3. File size is less than current acceptable upload limit (no longer needed)
+ *    4. File magic numbers agree on file mime type
+ * All files passing the above test are pushed in to the 'validated' array of files
+ * 
+ * @param {FileList} candidates 
+ * @return {array} An array of deferred objects (promises) pending resolution
+ */
 const filechecks = (candidates) => {
     var promises = [];
     for (let j=0; j<candidates.length; j++) {
@@ -160,8 +235,8 @@ const filechecks = (candidates) => {
                 continue;
             }
         }
-        if (file.size >= 8000000) {
-            alert("This file is too large for upload - please resize it to less than 8Mbytes");
+        if (file.size >= MAX_UPLOAD_SIZE) {
+            alert("This file is too large for upload - please resize it to less than 20Mbytes");
             continue;
         }
         // check the internal magic numbers for type jpeg
@@ -197,8 +272,16 @@ const filechecks = (candidates) => {
     }
     return $.when.apply($, promises); // return when promises fulfilled
 }
-// functions to load images, if successful place on DOM and display
+
+/**
+ * This function takes the 'validated' array of files and loads them into
+ * FileReader objects. FileReader objects are pushed onto the FR_Images array
+ * 
+ * @param {FileList} imgs The FileList from input selection or drag-and-drop
+ * @return {array} An array of deferred objects (promises) pending resoultion
+ */
 const ldImgs = (imgs) => {
+    // Begin image loading
     var promises = [];
     for(var i=0; i<imgs.length; i++) {
         var reader = new FileReader();
@@ -208,16 +291,10 @@ const ldImgs = (imgs) => {
             reader.onload = function (evt) {
                 var result = evt.target.result;
                 /**
-                 * There's no way to predict the order the files will
-                 * actually be loaded, so the array index in 'uploads' is used
-                 * to identify the item and associate it with name/desc boxes
-                 * in the DOM. 'upldNo' is the array index, which will be
-                 * unique, even for duplicate filenames.
+                 * There's no way to predict the order the files will be loaded
                  */
-                var imgObj = {indx: upldNo, fname: ifile.name, size: ifile.size, data: result};
-                FR_Images.push(imgObj);  // used for loading DOM, then reset
-                var upldObj = {indx: upldNo++, ifile}; // ifile is already key-value pair
-                uploads.push(upldObj);   // accumulated for form submit
+                var imgObj = {indx: imgNo++, fname: ifile.name, size: ifile.size, data: result};
+                FR_Images.push(imgObj);  // used for loading DOM, then rese
                 d.resolve();
             }
             reader.onerror = function() {
@@ -230,12 +307,60 @@ const ldImgs = (imgs) => {
     }
     return $.when.apply($, promises); // return when promises fulfilled
 }
+
+/**
+ * This function will convert the EXIF array lat/lng into single values;
+ * Invoked by the ldNodes() function
+ * 
+ * @param {array} exifArray Obtained from exifReader.js
+ * @return {number} or {null}
+ */
+const extractLatLng = (exifArray) => {
+    if (exifArray.length !== 3) {
+        return null;
+    }
+    let coord = exifArray[0] + (exifArray[1] + exifArray[2]/60)/60;
+    return coord;
+}
+/**
+ * This function converts a dataURI from a canvas element to a Blob, 
+ * which can then be appended to a FormData object for ajax.
+ * 
+ * @param {dataURI} dataURI 
+ * @return {Blob} Input argument processed as Blob
+ */
+function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(dataURI.split(',')[1]);
+    } else {
+        byteString = unescape(dataURI.split(',')[1]);
+    }
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    var bb = new Blob([ia], {"type": mimeString});
+    return bb;
+}
+/**
+ * This function takes the FileReader objects and reduces their 
+ * corresponding image sizes to a z-size image, temporarily stored
+ * until 'saved' by the user. After resizing and storing, the image
+ * is placed on the page.
+ * 
+ * @param {array} fr_objs FileReader objects to be resized
+ * @return {null}
+ */
 const ldNodes = (fr_objs) => {
+    var noOfImgs = fr_objs.length;
     var promises = [];
-    var containers = []; // DOM nodes containing images & textareas
     var imgs = [];
-    // IN ORDER OF fr_objs...
-    for (var j=0; j<fr_objs.length; j++) {
+    for (var j=0; j<noOfImgs; j++) {
         // create image node:
         imgs[j] = document.createElement('img');
         // identify the index in the FileReader object for this file
@@ -244,19 +369,15 @@ const ldNodes = (fr_objs) => {
         var def = new $.Deferred();
         promises.push(def);
 
-        (function(def, itemno, imgname){
-            imgs[j].onload = function() {
+        (function(def, itemno, imgname, data){
+            imgs[j].onload = function(e) {
                 var usable = true;
                 EXIF.getData(this, function() {
-                    //let alldat = EXIF.getAllTags(this); debug
                     /**
                      * Exif data is extracted in order to supply information
-                     * to the database. Size is set by the php program which
-                     * resizes the image for the 'nsize' and 'zsize' dirs. If
-                     * no lat/lng, user is notified, but image is uploadable.
-                     * If no time data, time is set to NULL in db. If no height,
-                     * width or orientation, user is notified that image is not
-                     * usable and can not be uploaded.
+                     * to the database. If no lat/lng, user is notified, but
+                     * image is uploaded. If no height or width data, user is
+                     * notified that image is not usable and can not be uploaded.
                      */
                     let mappable = true;
                     let exifht = typeof EXIF.getTag(this, 'PixelYDimension');
@@ -281,6 +402,7 @@ const ldNodes = (fr_objs) => {
                     }
                     if (typeof EXIF.getTag(this, "GPSLongitude") !== 'undefined') {
                         var plng = extractLatLng(EXIF.getTag(this, "GPSLongitude"));
+                        if (plng > 0) plng = -1 * plng;
                     } else {
                         var plng = null;
                         mappable = false;
@@ -290,15 +412,8 @@ const ldNodes = (fr_objs) => {
                     } else {
                         var pdate = null;
                     }
-                    if (typeof EXIF.getTag(this, "Orientation") !== 'undefined') {
-                        orient = EXIF.getTag(this, "Orientation");
-                    } else {
-                        orient = '1'; // some legitimate images do not specify orientation
-                    }
-                    exifdat = {origHt: origHt, origWd: origWd, orient: orient,
+                    exifdat = {ehike: ehikeIndxNo, imght: origHt, imgwd: origWd,
                         fname: imgname, lat: plat, lng: plng, date: pdate};
-                    // for every item in 'uploads', there is an upldNo id:
-                    ajaxExif.push(exifdat);
                     if (usable) {
                         if (!mappable) {
                             alert( imgname + " has no location data - it can be uploaded,\n" +
@@ -306,389 +421,110 @@ const ldNodes = (fr_objs) => {
                         }
                     } else {
                         alert(imgname + " is unusable and cannot be uploaded");
-                        // remove bad image instances in arrays
-                        var deleteIndx;
-                        uploads.forEach(function(upld_obj, i) {
-                            if (upld_obj.indx == itemno) {
-                                deleteIndx = i;
-                            }
-                        });
-                        uploads.splice(deleteIndx, 1);
-                        ajaxExif.pop();
-                        upldNo--;
+                        $('#ldg').css('display', 'none');
+                        return;
                     }
+                    ajaxExif[itemno] = exifdat;
                 });
-                if(usable) {
-                    // NOTE: img is not a DOM node: ht/wd do not require "px";
-                    var ht = this.naturalHeight;
-                    var wd = this.naturalWidth;
-                    var ratio = wd/ht;
-                    var ibox = document.createElement('DIV');
-                    ibox.id = 'div' + itemno;
-                    // create the div holding textarea boxes
-                    var tbox = document.createElement('DIV');
-                    // will hold text for description + circle meter
-                    var des = document.createElement('TEXTAREA');
-                    des.style.height = dheight + "px";
-                    des.style.display = "block";
-                    des.placeholder = "Picture description";
-                    des.maxlength = 512;
-                    //des.classList.add('desVal');
-                    des.id = 'desc' + itemno;
-
-                    // circular progress meter
-                    var xmlns = "http://www.w3.org/2000/svg";
-                    var circmtr = document.createElement('DIV');
-                    circmtr.style.textAlign = "center";
-                    circmtr.style.margin = "4px 0px 0px 0px";
-                    var svg = document.createElementNS (xmlns, "svg");
-                    svg.setAttribute("viewBox", "0 0 32 32");
-                    svg.setAttribute("width", '32');
-                    svg.setAttribute("height", '32');
-                    svg.setAttribute('style', 'transform:rotate(-90deg)')
-                    // background circle
-                    var circle = document.createElementNS(xmlns, 'circle');
-                    circle.setAttribute('cx', '16');
-                    circle.setAttribute('cy', '16');
-                    circle.setAttribute('r', '14');
-                    circle.setAttribute('fill', 'none');
-                    circle.setAttribute('stroke', '#fcbcb5');
-                    circle.setAttribute('stroke-width', '4');
-                    // foreground progress circle
-                    var prog = document.createElementNS(xmlns, 'circle');
-                    prog.id = "mtr" + itemno;
-                    prog.setAttribute('cx', '16');
-                    prog.setAttribute('cy', '16');
-                    prog.setAttribute('r', '14');
-                    prog.setAttribute('fill', 'none');
-                    prog.setAttribute('stroke', 'brown'); // #f73722
-                    prog.setAttribute('stroke-width', '4');
-                    prog.setAttribute('stroke-dasharray', '87.964');
-                    prog.setAttribute('stroke-dashoffset', '87.964');
-                    svg.appendChild(circle);
-                    svg.appendChild(prog);
-                    circmtr.appendChild(svg);
-                    if (orient == '6' || orient == '8') {
-                        let rotation = orient == '6' ? 'rotate90' : 'rotate270';
-                        // NOTE: image height/width parameters DO NOT CHANGE WHEN ROTATED
-                        var scaledHeight = Math.floor(iheight/ratio);
-                        this.width = iheight;
-                        this.height = scaledHeight;
-                        this.style.margin = "0px";
-                        this.style.display = "block";
-                        /**
-                         * When rotating the image about it's center, the old 'width'
-                         * becomes the new 'height'. The DOM behaves as if the image
-                         * was NOT rotated, so the rotated image overflows it's old height 
-                         * boundary on each end by (Iwd - Iht)/2. Similarly, the old
-                         * 'height' is the new 'width', and there is empty space on
-                         * each side corresponding to (Iwd - Iht)/2. In order to place
-                         * the top left corner of the rotatated image where the original
-                         * top left corner of the image was, it is necessary to 'translate'
-                         * the (x,y) coordinates of the center by (Iwd - Iht)/2. It is
-                         * also necessary to adjust the height/width of the container div
-                         * to correspond to the newly dimensioned (rotated) image. If 
-                         * the div is wider than the rotated image, to center the image
-                         * in the div, translation of (Dwd - Iht)/2 is necessary instead
-                         * of (Iwd - Iht)/2. Since the rotation reverses the x/y axes,
-                         * items being rotated must be translated as if (y, x). Rotation and
-                         * translation for the image are done in the css class 'rotation'. 
-                         */
-                        this.classList.add(rotation);
-                        // place the textarea boxes in tbox:
-                        //nme.style.width = (scaledHeight - 4) + "px"; // 4 for TA borders
-                        //nme.style.margin = "6px 0px 6px 2px";
-                        des.style.width = (scaledHeight - 4) + "px";
-                        des.style.margin = "4px 0px 0px 2px";
-                        tbox.style.width = scaledHeight + "px";
-                        tbox.appendChild(des);
-                        tbox.appendChild(circmtr);
-                        tbox.style.margin = "0px 0px 0px 6px";
-                        // items placed below the image act as if image is NOT rotated
-                        tbox.style.transform = "translate(0px, 40px)";
-                        // fix the image container
-                        ibox.style.width = (scaledHeight + 16) + "px";
-                        var accumht = iheight + (nheight + 4 + 12) + (dheight + 4) + "px";
-                        ibox.style.height = accumht;
+                if (usable) {
+                    // create a DOM element in which to place the image
+                    var img = document.createElement("img");
+                    img.src = data;
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    // establish dimensions based on landscape/portrait
+                    var width = img.width;
+                    var height = img.height;
+                    if (width > height) {
+                            height *= Z_WIDTH / width;
+                            width = Z_WIDTH;
                     } else {
-                        if (orient == '3') {
-                            this.classList.add("rotate180");
-                        }
-                        var scaledWidth = Math.floor(iheight * ratio);
-                        this.height = iheight;
-                        this.style.margin = "0px 6px";
-                        this.style.display = "block";
-                        //nme.style.width = (scaledWidth - 4) + "px"; // subtract TA borders
-                        //nme.style.margin = "6px 0px 6px 6px";
-                        des.style.width = (scaledWidth - 4) + "px";
-                        des.style.margin = "4px 0px 0px 6px";
-                        tbox.style.width = scaledWidth + "px";
-                        tbox.appendChild(des);
-                        tbox.appendChild(circmtr);
-                        /**
-                         * Each textarea has 2px of border, top & bottom, ie 4px total
-                         * There is a margin (6px) on the top & bottom of the name textarea,
-                         * for 12px total, no margin on the description ta:
-                         */
-                        var accumht = iheight + (nheight + 4 + 12) + dheight + "px"; 
-                        ibox.style.height = accumht;
-                        ibox.style.width = (scaledWidth + 12) + "px";
+                            width *= Z_WIDTH / height;
+                            height = Z_WIDTH;
                     }
-                    this.id = "imgId" + itemno;
-                    this.alt = "image" + itemno;
-                    ibox.classList.add('imgbox');
-                    ibox.style.cssFloat = "left";
-                    ibox.style.margin = "0px 6px 24px 6px";
-                    ibox.appendChild(this);
-                    ibox.appendChild(tbox);
-                    containers[j] = ibox;
-                    // detect right-click on image:
-                    containers[j].addEventListener('contextmenu', function(ev) {
-                        ev.preventDefault();
-                        if (confirm('Do you wish to delete this image?')) {
-                            alert("DELETE");
-                            // find item in imageUploads: delete that and 'this'
+                    canvas.width = width;
+                    canvas.height = height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    // the resized image:
+                    var dataurl = canvas.toDataURL('image/jpeg', 0.6);
+                    var blob = dataURItoBlob(dataurl);
+                    var formDat = new FormData();
+                    formDat.append("file", blob);
+                    formDat.append("fname", imgname);
+                    var store_def = new $.Deferred();
+                    $.ajax({
+                        url: 'zstore.php',
+                        method: 'post',
+                        data: formDat,
+                        dataType: 'json',
+                        processData: false,
+                        contentType: false,
+                        success: function(picinfo) {
+                            ajaxExif[itemno].imgwd = picinfo[0];
+                            ajaxExif[itemno].imght = picinfo[1];
+                            let upld_src = picinfo[4] + picinfo[2];
+                            ajaxExif[itemno].thumb = picinfo[3];
+                            let src_id = 'img' + itemno;
+                            let pgimg = '<div class="image-container">' +
+                                '<img id="' + src_id + '" class="not-saved" src="'
+                                    + upld_src + '" height="' + DISPLAY_HEIGHT +
+                                    '" alt="image to upload" /><img id="del' + itemno
+                                    + '" class="dels" src="../images/deleteIcon.png" />';
+                                '</div>';
+                            $('#image-row').append(pgimg);
+                            let tsv_def = new $.Deferred();
+                            updateTSV(ajaxExif[itemno], tsv_def);
+                            $.when(tsv_def).then(function() {
+                                def.resolve();
+                            });
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            var newDoc = document.open();
+                            newDoc.write(jqXHR.responseText);
+                            newDoc.close();
+                            def.reject();
                         }
-                        return false;
                     });
-                    loadedImages.push(containers[j]);
                 }
-                def.resolve();
             }
-        }(def, imgid, picname));
+        }(def, imgid, picname, fr_objs[j]['data']));
         imgs[j].src = fr_objs[j]['data'];
     }
     return $.when.apply($, promises);            
 }
 
-// when files are dropped, or chosen by button,  place them on the page
-function dndPlace() {
-    $('#ldg').css('display', 'none');
-    if (!row) {
-        row = document.createElement('DIV');
-        row.classList.add('img-row');
-        row.style.display = "block";
-    }
-    // need to account for margins/padding et al
-    for (var k=0; k<loadedImages.length; k++) {
-        var liWidth = parseInt(loadedImages[k].style.width);
-        var lmarg = parseInt(loadedImages[k].style.marginLeft);
-        var rmarg = parseInt(loadedImages[k].style.marginRight);
-        var totwd = liWidth + lmarg + rmarg;
-        if (totwd + 8 > remainingWidth) { // 8 is an arbitrary 'safety' margin
-            dndbox[0].appendChild(row);
-            row = document.createElement('DIV');
-            row.classList.add('img-row');
-            row.style.display = "block";
-            row.style.clear = "both";
-            row.appendChild(loadedImages[k]);
-            remainingWidth = dndWidth;
-        } else {
-            row.appendChild(loadedImages[k]);
-            remainingWidth -= totwd;
-        }
-    }
-    dndbox[0].appendChild(row);
-    validated = [];
-    FR_Images = [];     // browse button selections
-    droppedFiles = [];  // dragged-n-dropped selections
-    loadedImages = [];  // DOM nodes
-}
-
 /**
- * This code is actually what uploads, and tracks progress of each photo uploaded.
- * The uploads occur one at a time, so the function is recursive to an extent.
- * The uploading function is 'postImg'. This function relies on a standard
- * XHttpRequest in order to track upload progress and display it on the dial and
- * progress bar. When uploading for an image has completed, the code progresses
- * to the 'advanceUpload' function, which will mark the uploaded image as 'Uploaded'
- * and re-invoke the postImg file for the remaining photos. If the final photo
- * has been uploaded, the 'cleanup' fuction is invoked to complete the process
- * and re-initialize the variables needed for additional photos, if the user
- * so chooses. This function also displays the 'results' of the upload(s) in an
- * alert box.
+ * This function ajaxes the TSV data and stores it in the table
+ * 
+ * @param {object} tsvdat Object containing all TSV data needed
+ * @param {Deferred} def  Triggers resolution of a deferred in caller
+ * @return {null}
  */
-$form.on('submit', function(e) {
-    if ($form.hasClass('is-uploading')) return false;
-    $form.addClass('is-uploading');
-    if (isAdvancedUpload) {
-        e.preventDefault();
-        var uplds = uploads.length;
-        if (uplds === 0) {
-            alert("No files have been chosen or dragged in for upload");
-                $form.removeClass('is-uploading');
-            return;
-        }
-        $('#filecnt').text("0/" + uplds);
-        progPerUpld = 100/uplds;
-        $progressBar.val(0)
-        // parameters to pass - associate upload (indx) with name/desc box
-        for (var n=0; n<uploads.length; n++) {
-            uloads[n] = uploads[n]['ifile'];  // file data (includes name, size)
-            var indx = uploads[n]['indx'];
-            desbox[n] = $('#desc' + indx).val();
-            cmtrIds[n] = '#mtr' + indx;
-            imgIds[n] = '#imgId' + indx;
-
-        }
-        // upload images one at a time; turn off 'is-uploading' when completed
-        postImg(
-            imgIds[nxtUpld], uloads[nxtUpld], desbox[nxtUpld], cmtrIds[nxtUpld],
-                ehikeIndxNo, nxtUpld, uplds
-        );
-    } else {
-      // ajax for legacy browsers e.g.
-      // xhr = new XMLHttpRequest(); ...
-    }
-  });
-
-function postImg(imgid, ifile, des, mtrid, hikeno, uldno, imgcnt) {
-    // First, upload the image
-    var uldefer = new $.Deferred();
-    var dbdat = ajaxExif[uldno]; // exif data obtained in ldNodes()
-    var picdesc = JSON.stringify(des);
-    dbdat.indxNo = hikeno;
-    dbdat.descstr = picdesc;
-    ajaxData = new FormData();
-    ajaxData.append('file', ifile);
-    ajaxData.append('orient', dbdat.orient);
-    ajaxData.append('origHt', dbdat.origHt);
-    ajaxData.append('origWd', dbdat.origWd);
-    $cmeter = $(mtrid);
-    var xhr = new XMLHttpRequest();
-    xhr.upload.addEventListener("progress", function(evt) {
-        var percent = 1 - evt.loaded/evt.total;
-        if (percent > .1) {
-            var prog = percent * 99.99;
-            $cmeter[0].setAttribute('stroke-dashoffset', prog);
-        }
-    }, false);
-    // proceed with post
-    xhr.open("POST", 'usrPhotos.php');
-    xhr.send(ajaxData);
-    xhr.onload = function() {
-        var serverResponse = this.response;
-        if (this.status !== 200) {  // e.g. 404, 500, etc.
+function updateTSV(tsvdat, def) {
+    $.ajax({
+        url: 'saveImage.php',
+        method: 'post', 
+        data: tsvdat,
+        success: function() {
+            def.resolve();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
             var newDoc = document.open();
-		    newDoc.write(serverResponse);
-		    newDoc.close();
-            uldefer.reject();
-            return;
-        } else {
-            $cmeter[0].setAttribute('stroke-dashoffset', '0');
-            if (serverResponse.indexOf('Error:') !== -1) {
-                alert("Image not uploaded:\n" + serverResponse);
-                advanceUpload(imgid, hikeno, imgcnt, false);
-                uldefer.reject();
-            } else {
-                dbdat.thumb = serverResponse;
-                uldefer.resolve();
-                advanceUpload(imgid, hikeno, imgcnt, true);
-            }
-            return;
-        }
-    }
-    xhr.onerror = function() {
-        // in developer mode, Whoops takes over and the following doesn't execute
-        alert("The request failed for item " + nxtUpld);
-        uldefer.fail();
-        advanceUpload(imgid, hikeno, imgcnt, false);
-        return;
-    }
-    $.when( uldefer ).then(function() { // only happens on xhr success
-        $.ajax({
-            url: 'savePhotoDat.php',
-            method: "POST",
-            data: dbdat,
-            error: function(jqXHR, textStatus, errorThrown) {
-                var newDoc = document.open();
-                newDoc.write(jqXHR.responseText);
-		        newDoc.close();
-            }
-            // success function not needed: advanceUpload already called
-        });
-    });
-}
-function advanceUpload(imageId, hikeno, imgCnt, success) {
-    // mark this img with success or failure to upload
-    if (!success) {
-        $(imageId).addClass('notUploaded');
-    }
-    nxtUpld++;
-    var newcnt = nxtUpld + "/" + imgCnt;
-    $('#filecnt').text(newcnt);
-    $progressBar.val(progPerUpld * nxtUpld);
-    if (nxtUpld == imgCnt) {
-        $form.removeClass('is-uploading');
-        cleanup();
-    } else {
-        postImg(
-            imgIds[nxtUpld], uloads[nxtUpld], desbox[nxtUpld], cmtrIds[nxtUpld], 
-            hikeno, nxtUpld, imgCnt
-        )
-    }
-}
-function cleanup() {
-    resets();
-    $('img:not(#hikers, #tmap)').each(function() {
-        if (!$(this).hasClass('uploaded') && !$(this).hasClass('notUploaded')) {
-            var pos = $(this).offset();
-            var saved = document.createElement('p');
-            saved.classList.add('uploaded');
-            var txt = document.createTextNode("UPLOADED");
-            saved.appendChild(txt);
-            saved.style.top = (pos.top + 12) + "px";
-            saved.style.left = (pos.left + 12) + "px";
-            $(this).before($(saved));
-        } else if ($(this).hasClass('notUploaded')) {
-            var pos = $(this).offset();
-            var notsaved = document.createElement('p');
-            notsaved.classList.add('uploadFail');
-            var txt = document.createTextNode("NOT UPLOADED");
-            notsaved.appendChild(txt);
-            notsaved.style.top = (pos.top + 12)  + "px";
-            notsaved.style.left = (pos.left) + 12 + "px";
-            $(this).before($(notsaved));
+            newDoc.write(jqXHR.responseText);
+            newDoc.close();
         }
     });
-    uloads = [];
-    desbox = [];
-}
-function resets() {
-    droppedFiles = false;
-    uploads = [];
-    upldCnt = 0;
-    nxtUpld = 0;
+    return;
 }
 
 /**
- * Miscellaneous functions:
+ * Form submission simply returns to the editor
  */
-
-// The user may elect to 'clear out' existing photos, whether uploaded or not
-$('#clrimgs').on('click', function(ev) {
-    ev.preventDefault();
-    $('.img-row').remove();
-    resets();
-    upldNo = 0;  // this is the only place this var should be reset
-    remainingWidth = dndWidth;
-    row = false;
-    $iflbl.html("&nbsp;&nbsp;Choose one or more photos&hellip;");
-});
-
-// This button allows the user to return to the photo editor, with any new photos
-$('#ret').on('click', function(ev) {
+$('#save').on('click', function(ev) {
     ev.preventDefault();
     var user = $('#eusr').text();
     var newed = "editDB.php?hikeNo=" + ehikeIndxNo + "&usr=" + user + "&tab=2";
-    window.open(newed, "_self");
+        window.open(newed, "_self");
 });
-
-// Convert EXIF array value into single value (for lat, lng)
-const extractLatLng = (exifArray) => {
-    if (exifArray.length !== 3) {
-        return null;
-    }
-    let coord = exifArray[0] + (exifArray[1] + exifArray[2]/60)/60;
-    return coord;
-}
