@@ -92,6 +92,7 @@ require "../accounts/getLogin.php";
 <p id="login_result"><?= $uname;?></p>
 <p id="cookieStatus"><?= $cstat;?></p>
 <p id="userid"><?= $uid;?></p>
+<!-- Modal Windows HTML -->
 <div id="usr_login">
     <table id="loginTbl">
         <tbody>
@@ -107,8 +108,12 @@ require "../accounts/getLogin.php";
                     <input id="upass" type="password" name="password" size="20" />
                 </td>
             </tr>
+            <tr>
+                <td ><a id="pwlnk" href="#">Forget Password?</a></td>
+                <td></td>
+            </tr>
         </tbody>
-    </table>
+    </table><br />
     <button id="enter">Login</button><br />
 </div>
 <script src="../accounts/getLogin.js"></script>

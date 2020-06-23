@@ -137,4 +137,10 @@
     font-size: 16px;
     width: 80px;
     height: 28px;
+    position: relative;
+    top: -6px;
+    left: 6px;
+}
+#pwlnk {
+    font-size: 16px;
 }

@@ -21,8 +21,32 @@ var modal = (function() {
          * 'position' must be either absolute, relative, or fixed
          */
         $('#enter').after($close);
-        $close.css('left', '128px');
+        $close.css('left', '134px');
         $modal.css('z-index', '10000');
+        $('#pwlnk').on('click', function(ev) {
+            let email = window.prompt("Enter your account's email address");
+            let data = {email: email};
+            $.ajax({
+                url: '../accounts/resetPassword.php',
+                method: 'post',
+                data: data,
+                dataType: 'text',
+                success: function(result) {
+                    if (result === "OK") {
+                        alert("You will receive an email with a link to reset");
+                    } else if (result === "BADEMAIL") {
+                        alert("The address is not a valid email address");
+                    } else if (result === "NOTFOUND") {
+                        alert("Your email does not appear in our database");
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    let newDoc = document.open();
+                    newDoc.write(jqXHR.responseText);
+                    newDoc.close();
+                }
+            });
+        });
         $('#enter').on('click', function() {
             var pwd = $('#upass').val();
             var uid = $('#usrid').val();
