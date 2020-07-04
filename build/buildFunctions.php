@@ -240,118 +240,26 @@ function fileTypeAndLoc($fname)
     return array($floc, $mimeType, $fext, $ftypeError);
 }
 /**
- * This function extracts existing cluster info and Visitor Center info
- * from the HIKES table needed to display 'select' drop-down boxes. Note:
- * Due to the fact that sorting will place group "AA" after "A" and not 
- * after "Z", the routine utilizes two sorted cluster arrays then merges them.
+ * This function extracts existing cluster info from the CLUSTERS table
+ * needed to display the 'select' drop-down boxes for the editor.
  * 
- * @param PDO    $pdo     PDO object for db access
- * @param string $boxtype data to be returned: 
- *                        vistor centers ('vcs') or clusters ('cls')
- * 
- * @return array depending on $boxType, vc data or cluster data
+ * @param PDO $pdo PDO object for db access
+ *
+ * @return $select html text for a select box containing clusters
  */
-function dropdownData($pdo, $boxtype)
+function getClusters($pdo)
 {
-    $hquery = "SELECT indxNo,pgTitle,marker,`collection`,cgroup,cname FROM HIKES;";
-    $hdat = $pdo->query($hquery);
-    $equery = "SELECT marker,cgroup,cname FROM EHIKES;";
-    $edat = $pdo->query($equery);
-    // return data based on $boxType:
-    if ($boxtype === 'vcs') {
-        $vchikes = [];
-        $vcnos = [];
-        $colls = [];
-        while ($vcdata = $hdat->fetch(PDO::FETCH_ASSOC)) {
-            $hmarker = $vcdata['marker'];
-            if ($hmarker == 'Visitor Ctr') {
-                $indx = $vcdata['indxNo'];
-                $title = $vcdata['pgTitle'];
-                $coll = $vcdata['collection'];
-                array_push($vcnos, $indx);
-                array_push($vchikes, $title);
-                array_push($colls, $coll);
-            }
-        }
-        return array($vchikes, $vcnos, $colls);
-    } else {
-        $singles = [];
-        $doubles = [];
-        while ($hclus = $hdat->fetch(PDO::FETCH_ASSOC)) {
-            $hmarker = $hclus['marker'];
-            if ($hmarker === 'Cluster') {  
-                $clusltr = $hclus['cgroup'];
-                $clusnme = $hclus['cname'];
-                if (strlen($clusltr) === 1) {
-                    if (!memberPresent($clusnme, $singles)) {
-                        $singles[$clusltr] = $clusnme;
-                    }
-                } elseif (strlen($clusltr) === 2) {
-                    if (!memberPresent($clusnme, $doubles)) {
-                        $doubles[$clusltr] = $clusnme;
-                    }
-                } else {
-                    throw new Exception(
-                        "Clusters of length " . strlen($clusltr)
-                        . " not supported at this time"
-                    );
-                }
-            }
-        }
-        while ($eclus = $edat->fetch(PDO::FETCH_ASSOC)) {
-            $emarker = $eclus['marker'];
-            // Note: creating new pg MAY result in 'Cluster' with no group...
-            if ($emarker === 'Cluster' && !empty($eclus['cgroup'])) {  
-                $clusltr = $eclus['cgroup'];
-                $clusnme = $eclus['cname'];
-                if (strlen($clusltr) === 1) {
-                    if (!memberPresent($clusnme, $singles)) {
-                        $singles[$clusltr] = $clusnme;
-                    }
-                } elseif (strlen($clusltr) === 2) {
-                    if (!memberPresent($clusnme, $doubles)) {
-                        $doubles[$clusltr] = $clusnme;
-                    }
-                } else {
-                    throw new Exception(
-                        "Clusters of length " . strlen($clusltr)
-                        . "not supported at this time"
-                    );
-                }
-            }
-        }
+    $select = '<select id="clusters" name="clusters">' . PHP_EOL;
+    $clus_req = "SELECT `group` FROM `CLUSTERS`;";
+    $clusters = $pdo->query($clus_req)->fetchAll(PDO::FETCH_COLUMN);
+    foreach ($clusters as $cluster) {
+        $select .= '<option value="' . $cluster . '">' . $cluster .
+            '</option>' . PHP_EOL;
     }
-    /**
-     * For debugging, it's easier to understand if keys are sorted;
-     * unfortunately, even with various flags, double letters get sorted by their
-     * first letter, and so must be separated then combined after sorting.
-     */
-    ksort($singles);
-    ksort($doubles);
-    $clusters = array_merge($singles, $doubles);
-    return $clusters;
+    $select .= '</select>' . PHP_EOL;
+    return $select;
 }
-/**
- * This function is used in conjunction with dropdownData() to determine
- * whether or not a db item is already accounted for in the group of 
- * uniquely asigned cluster items - an associative array.
- * 
- * @param string $test_item  The item to look for in the specified array
- * @param array  $test_array The array in which to look for the item
- * 
- * @return boolean  true if present, false if not
- */
-function memberPresent($test_item, $test_array)
-{
-    reset($test_array);
-    while ($item = current($test_array)) {
-        if ($item == $test_item) {
-            return true;
-        }
-        next($test_array);
-    }
-    return false;
-}
+
 /**
  * For Flickr Albums ONLY: retrieve photo date from Flickr html based
  * on Flickr's photomodel javascript object.

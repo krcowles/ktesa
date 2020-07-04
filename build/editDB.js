@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This script handles all four tabs - presentation and data
+ * validation, also initialization of settings for <select> boxes, etc.
+ * 
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ */
 $( function () { // when page is loaded...
 
 /**
@@ -23,11 +30,17 @@ $(window).scroll(function() {
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 });
+/**
+ * This places the 'Apply' button appropriately
+ * 
+ * @return {null}
+ */
 function positionApply() {
     var atxt = $('#atxt').offset();  // dynamic w/resizing
     centerMarg  = (awd - apwd)/2 - 4; // 4: allow for right margin
     btop = atxt.top + aht + 6; // 6 for spacing
     blft = atxt.left + centerMarg;
+    return;
 }
 positionApply();
 
@@ -35,7 +48,6 @@ var applyPos = [];
 $apply.each(function(indx) {
     var $inp = $(this).children().eq(0);
     applyPos[indx] = $inp.detach();
-    // NOTE: apparently, removing the contents renders the div "display:none"
 });
 // when window is resized:
 $(window).resize( function() {
@@ -95,10 +107,8 @@ $('button:not(#preview, #upld)').on('click', function(ev) {
         $(newid).offset({top: btop, left: blft});
     }
 });
-
 // place correct tab (and apply button) in foreground - on page load only
 var tab = $('#entry').text();
-//var tab = 3;
 var tabon = '#t' + tab;
 $(tabon).trigger('click');
 var applyAdd = '#d' + tab;
@@ -108,8 +118,21 @@ $(applyAdd).show();
 $(applyAdd).offset({top: btop, left: blft});
 var lastA = tab;
 
+/**
+ * This section does data validation for the 'directions' URL and highlights
+ * the textarea, with focus, if the URL failed validation.
+ */
+
 // Look for 'bad URLs' to highlight immediately after saveTabX.php
 var blinkerObject = { blinkHandle: {} };
+/**
+ * This function cause an element to 'blink'
+ * 
+ * @param {string} elemId 
+ * @param {string} tab 
+ * 
+ * @return {null}
+ */
 function activateBlink(elemId, tab) {
     document.getElementById(elemId).focus();
     if (tab == '1') {
@@ -129,6 +152,7 @@ function activateBlink(elemId, tab) {
         clearInterval(blinkerObject[blinker]);
         $elem.css('visibility', 'visible');
     });
+    return;
 }
 if (tab == '1' && $('#murl').val().trim() == '--- INVALID URL DETECTED ---') {
     activateBlink('murl',tab);
@@ -225,110 +249,98 @@ $wbox.each(function(indx) {
     }
 });
 
-// Clusters
 /**
- * THE FOLLOWING CODE ADDRESSES EDITS TO CLUSTER ASSIGNMENTS
- *   - Refer to the design documentation for behavior assessment
+ * To correctly save changes involving cluster types, the following
+ * state information needs to be passed to the server:
+ *   1. Is a totally new cluster group being assigned?  (#newg)
+ *      Whether or not the previous type was cluster, the new
+ *      group will be saved
+ *   2. Remove an existing cluster assignment?  (#deassign)
  */
 var msg;
 var rule = "The specified new group will be added;" + "\n" + 
-	"Current Cluster assignment will be ignored" + "\n" + 
-	"Uncheck box to use currently available groups";
-var clusnme = $('#group').text();  // incoming cluster assgnmnt for edited hike (may be empty)
-$('#ctip').val(clusnme);  // show above in the select box on page load
-if ($('#greq').text() === 'YES') {
+	"Any current Cluster assignment will be ignored" + "\n" + 
+    "Uncheck the box to use currently available groups";
+var orignme = $('#group').text();
+// clusnme will be updated depending on user state selected
+var clusnme = orignme; 
+$('#clusters').val(orignme);  // show above in the select box on page load
+
+// If a new hike page was created and  asking to define a new cluster:
+if ($('#newclus').text() === 'Yes') {
     $('#newg').attr('checked', true);
     $('#newg').val("YES");
     $('#newt').focus();
+    $('#newt').css('border', '2px solid red');
+    $('#newt').on('change', function() {
+        $(this).css('border', 'none');
+    });
     $('#notclus').css('display','inline');
+    window.scrollTo(0, document.body.scrollHeight);
     alert("Enter your requested new group name in the highlighted text box below;\n" +
         "If you don't want a new group, uncheck the box.");
-} else if (clusnme == '') {  // no incoming assignment; display info:
+} else if (clusnme == '') {  // no incoming assignment:
 	$('#notclus').css('display','inline');
 } else {
 	$('#showdel').css('display','block');
 }
-/**
- * To correctly process changes involving cluster types, the following state information
- * needs to be passed to the server:
- *   1. Restore original assignments?  (#ignore)
- *   2. Is a totally new cluster group being assigned?  (#newg)
- *      (Whether or not the previous type was cluster, new info will
- *      be extracted at server, unless "ignore" is checked to restore 
- *      original state)
- *   3. Was a group different from the original group selected in 
- *      the drop-down #ctip?  (#grpChg)
- *   4. Remove an existing cluster assignment?  (#deassign)
- */
-// 1. Restore original assignments
-$('#ignore').change(function() {
+
+// Reset: Restore original assignments 
+$('#resetclus').change(function() {
     if (this.checked) {
-        $('#ctip').val(clusnme);
+        $('#clusters').val(orignme);
+        clusnme = orignme;
         if (clusnme == '') {
             $('#notclus').css('display','inline');
         }
         $('input:checkbox[name=nxtg]').attr('checked',false);
         $('#newg').val("NO");
         $('#newt').val("");
-        $('#grpChg').val("NO");
         $('#deassign').val("NO");
         $('input:checkbox[name=rmclus]').attr('checked',false);
         window.alert("Original state restored" + "\n" + "No edits at this time to clusters");
         this.checked = false;
     }
 });
-// 2. Assign new cluster group
+// Assign a new group:
 $('#newg').change(function() {
     if (this.checked) {
         this.value = "YES";
-        if (clusnme == '') {
-                $('#notclus').css('display','none');
-        }
         fieldflag = true;
-        $('#grpChg').val("NO");
         window.alert(rule);
     } else {  // newg is unchecked
         this.value = "NO";
-        if (clusnme == '') {
-                $('#notclus').css('display','inline');
-                $('#ctip').val(clusnme);
-        }
         $('#newt').val("");
         fieldflag = false;				
     }
-    $('#ctip').val(clusnme); // go back to original group assignment
 });
-// 3. Different group selected
-var marker = $('#marker').text(); // Marker is hike type (At VC, Cluster, Other)
-$('#ctip').change(function() {  // record any changes to the cluster assignment
+// Change Cluster selection:
+$('#clusters').change(function() {
     if ( $('#newg').val() === 'NO' ) {
         if (this.value !== clusnme) {
-            /* If marker was not originally a cluster type, prepare to change to cluster group: */
-            if (marker !== 'Cluster') {
-                window.alert("Marker will be changed to cluster type");
-                $('#notclus').css('display','none');
-            } else {  // otherwise, let user know the existing cluster group assignment will change
-                msg = "Cluster type will be changed from " + "\n" + "Original setting of: " + clusnme + "\n";
-                msg += "To: " + $('#ctip').val();
-                window.alert(msg);
-            }
-            $('#grpChg').val("YES");
-        } 
-    } else {  // when/if the box gets unchecked, the ctip val will be restored to original state;
-        // deactivate grpChg to align with restored original cluster assignment
-        $('#grpChg').val("NO");
+            // let user know the existing cluster group assignment will change
+            msg = "Cluster type will be changed from " + "\n" + "Original setting of: "
+                    + clusnme + "\n";
+            msg += "To: " + $('#clusters').val();
+            window.alert(msg);
+        }
+    } else {
         window.alert("Changes ignored while New Group Box is checked");
     }
+    clusnme = $(this).val();
 });
-// 4. Remove an existing cluster assignment
+// Remove an existing cluster assignment:
 $('#deassign').change(function() {
     if (this.checked) {
         $('#deassign').val("YES");
+        $('#clusters').val('');
     } else {
         $('#deassign').val("NO");
+        $('#clusters').val(clusnme);
     }
 });
 // End of cluster processing
+
 // References section:
 // A: This code refers to existing refs (in database), not new ones...
 var refCnt = parseInt($('#refcnt').text());

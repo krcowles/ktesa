@@ -98,67 +98,15 @@ function initMap() {
 	mapdone.resolve();
 
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
-	VC.forEach(function(vcobj) {
-		AddVCMarker(vcobj.loc, vcobj.name, vcobj.indx, vcobj.hikes);
-	});
 	CL.forEach(function(clobj) {
-		AddClusterMarker(clobj.loc, clobj.group, clobj.hikes);
+		AddClusterMarker(clobj.loc, clobj.group, clobj.hikes, clobj.page);
 	});
 	NM.forEach(function(nmobj) {
 		AddHikeMarker(nmobj);
 	});
 
-
-	// Visitor Center Markers:
-	function AddVCMarker(location, pinName, hikeindx, hikeobj) {
-		let hikecnt = hikeobj.length;
-		let vcicon = getIcon(hikecnt);
-		let marker = new google.maps.Marker({
-		  position: location,
-		  map: map,
-		  icon: vcicon,
-		  title: pinName
-		});
-		marker.clicked = false; // not autoset by prototype
-		let srchmrkr = {hikeid: pinName, pin: marker};
-		locaters.push(srchmrkr);
-		clustererMarkerSet.push(marker);
-		
-		// infoWindow content: add in all the hikes for this VC
-		let website = '<a href="indexPageTemplate.php?hikeIndx=' + hikeindx +
-			'">' + pinName + '</a>';
-		iwContent = '<div id="iwVC">' + website;
-		if (hikeobj.length > 0) { // array of associated hikes
-			vLine3 = '<em>Hikes Originating from Visitor Center</em>';
-			if(hikeobj.length === 1) {
-				vLine3 = vLine3.replace('Hikes','Hike');
-			}
-			iwContent += '<br />' + vLine3;
-			hikeobj.forEach(function(hike) {
-				iwContent += 
-					'<br /><a href="hikePageTemplate.php?hikeIndx=' +
-					hike.indx + '">' + hike.name + '</a>';
-				iwContent += ' Lgth: ' + hike.lgth + ' miles; Elev Chg: ';
-				iwContent += hike.elev + ' ft; Diff: ' + hike.diff;
-			});
-		}
-		let iw = new google.maps.InfoWindow({
-				content: iwContent,
-				maxWidth: 600
-		});
-		iw.addListener('closeclick', function() {
-			marker.clicked = false;
-		});
-		marker.addListener( 'click', function() {
-			map.setCenter(location);
-			map.setZoom(13);
-			iw.open(map, this);
-			marker.clicked = true;
-		});
-	}
-
-	// Clustered Markers:
-	function AddClusterMarker(location, group, clhikes) {
+	// Cluster Markers:
+	function AddClusterMarker(location, group, clhikes, page) {
 		let hikecnt = clhikes.length;
 		let clicon = getIcon(hikecnt);
 		let marker = new google.maps.Marker({
@@ -173,6 +121,10 @@ function initMap() {
 		clustererMarkerSet.push(marker);
 
 		// infoWindow content: add in all the hikes for this group
+		if (page !== '') {
+			group = '<a href="indexPageTemplate.php?hikeIndx=' + page +
+				'">' + group + '</a>';
+		}
 		let iwContent = '<div id="iwCH">' + group;
 		clhikes.forEach(function(clobj) {
 			iwContent += '<br /><a href="hikePageTemplate.php?hikeIndx=' +
