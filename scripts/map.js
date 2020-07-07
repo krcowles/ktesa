@@ -121,7 +121,7 @@ function initMap() {
 		clustererMarkerSet.push(marker);
 
 		// infoWindow content: add in all the hikes for this group
-		if (page !== '') {
+		if (page !== 0) {
 			group = '<a href="indexPageTemplate.php?hikeIndx=' + page +
 				'">' + group + '</a>';
 		}
