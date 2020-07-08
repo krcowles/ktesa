@@ -1,11 +1,11 @@
 <?php
 /**
- * This is the home page for the site. It utilizes php cookies, hence the 
- * .php extension instead of .html
- * PHP Version 7.1
+ * This page will give the user an overview of site features
+ * PHP Version 7.4
  * 
- * @package Home
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 require "../php/global_boot.php";
@@ -17,7 +17,7 @@ require "../php/global_boot.php";
     <meta charset="utf-8" />
     <!-- if search engine keys are desired, 
         use: <meta name="keywords" content="key1, key2, .." -->
-    <meta name="description" content="KTESA Home Site" />
+    <meta name="description" content="'About' Page" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
@@ -28,11 +28,11 @@ require "../php/global_boot.php";
 </head>
 <body>
 <?php require "ktesaPanel.php"; ?>
-<p id="homeLabel">About This Site</p>
 <p id="page_id" style="display:none">About</p>
 
-<div id="container">
-    <img id="tompic" src="../images/TomAndKenSummit.JPG" alt="Authors on Deception Peak"
+<div>
+    <img id="tompic" src="../images/TomAndKenSummit.JPG"
+        alt="Authors on Deception Peak"
         title="Authors on Deception Peak" />
     <p id="banner">Welcome to Tom and Ken's <strong>New Mexico Hiking
         Adventures!</strong>
@@ -47,68 +47,70 @@ require "../php/global_boot.php";
         <p id="features">
             One of the features of this site 
             is that not all of the hikes listed can be found in popular hiking books,
-            or even in on-line trail apps. Check out "What You Will See" below.
+            or even in on-line trail apps. Check out "What You Will See" below. Other
+            features are described below.
         </p>
     </div>
     <p id="expect">WHAT YOU WILL SEE:</p>
     <div id="expl">
         <p>
-        Depending on your selection above, you will see either: a simple interactive
-        'table of hikes', a large map with an interactive 'table of hikes' below it,
-        or a full-page map (only). The maps include marker pins identifying the
-        locations of the available hikes. More details about the maps, tables, and
-        hike pages follow.
+        The home page for this site displays a large map with 'cluster' markers
+        indicating the number of trails to be found in that area. Clicking on a
+        cluster will zoom in on the map and decompose the cluster markers until
+        they appear as non-reducible (purple) markers. The page also shows a side
+        table of all hikes appearing in the viewable portion of the map. You may
+        zoom in on any given hike, mark it as a favorite, or go directly to the
+        hike page. You may change the table's width by dragging it's left edge.
+        </p>
+        
+        <p>There are several menu options at the top of each page allowing you
+        to view other portions of the site: a 'Table Only' page, described below;
+        a 'Show Favorites' page, which will show on a map all hikes in your list
+        of favorites, along with their hike tracks; or, if you have registered on
+        this site (no cost or obligations), you may create and/or edit any hike
+        you have created.
         </p>
         <div id="m" class="twisty-right"></div>
-        <p id="mapfeat" class="maindisp">&nbsp;Map features
-            (both Full-Page and Map-With-Table):</p>
+        <p id="mapfeat" class="maindisp">&nbsp;Home Page Map Features
+            
         <ul id="mul" class="dashed">
             <li>Maps are standard Google maps, which allow pan, zoom and full-screen
                     display.
             </li>
-            <li>Marker pins display "info-windows" when clicked, showing hike
-                    details, and containing links to the corresponding website and
-                    directions to the location of the hike.
+            <li>Marker pins (purple) display "info-windows" when clicked, showing
+                    hike details, and containing links to the corresponding website
+                    and Google directions to the location of the hike's trail head.
             </li>
             <li>When zoomed in sufficiently, tracks indicating the trail or path
                     the authors took will display, with arrows indicating
                     the direction the authors traveled.
             </li>
-            <li>Yellow pins indicate Visitor Center locations for National or
-                    State Parks and Monuments, or other public/private information
-                    center buildings (e.g. Ghost Ranch). These markers may also
-                    contain a list of hikes, when the hikes begin at the center.
-            </li>
-            <li>Blue pins indicate trailheads in close proximity to each other. When
-                    clicking on a blue pin, all hikes are shown with their
-                    corresponding links, and one link to the most common trailhead.
-            </li>
-            <li>Red pins represent all other hikes, and will show hike stats and
-                    site links.
-            </li>
         </ul>
         <div id="t" class="twisty-right"></div>
-        <p id="tblfeat" class="maindisp">&nbsp;Table features:</p>
+        <p id="tblfeat" class="maindisp">&nbsp;Table Only Features:</p>
         <ul id = 'tul' class="dashed">
             <li>The table of hikes is intended to provide a brief summary of hike
-                statistics, and also links to the corresponding website, google
-                directions, or that hike's Flickr album.
+                statistics, and also links to the corresponding hike page, as well
+                as Google driving directions.
             </li>
             <li>The table of hikes initially displayed is not sorted in any
                 particular order, but clicking on a column header allows alphabetical
                 (or numerical) sorting. The first click will sort in ascending order,
                 each successive click will reverse the sort order.
             </li>
-            <li><em id="itals">As you zoom in and/or pan to different locations</em>,
-                the table of hikes below the map will list only those hikes that
-                can currently be seen on the map.
-            </li>
             <li>As you move your mouse over different rows, that row will be
                 highlighted for easy reference.
             </li>
+            <li> By checking hike boxes, you can then 'Draw' (button) a map
+                which includes only the checked boxes.
+            </li>
+            <li>You can filter the table of hikes by radial distance from either
+                a location (in the drop-down box), or a specific hike. The resulting
+                table may then be sorted according to hike details provided.
+            </li>
         </ul>
         <div id="h" class="twisty-right"></div>
-        <p id="hikefeat" class="maindisp">&nbsp;Hike pages:</p>
+        <p id="hikefeat" class="maindisp">&nbsp;Hike Pages:</p>
         <ul id='hul' class="dashed"</ul>
             <li>The hikes pages include a local map showing the hike track
                 (where available), and an interactive elevation chart, showing
@@ -122,14 +124,12 @@ require "../php/global_boot.php";
             </li>
             <li>Note: to allow for a wider view of the map and elevation chart, the
                 sidebar of statistics can be hidden (by clicking on the box with
-                the "<" symbol). To see the photo albums containing the authors'
-                photographs, click the corresponding photo album symbol in the table
-                of hikes, or on the hike page.
+                the "<" symbol). 
+            </li>
+            <li>The hike 'gpx' files may be downloaded, or you may view a 
+                full page version of the hike track & photos.
             </li>
         </ul>
-        <p id="linkNote">
-            <em>Note: All of the links in the table (underlined hike or trail name)
-            will open new windows (or tabs)</em>.
         </p>
         <p id="disclaimers">A number of the
             hikes occurred before the authors' acquisition of a GPS system, and
@@ -148,8 +148,8 @@ require "../php/global_boot.php";
         to comment on - suggestions, improvements, things not working,
         etc... <a href="mailto:krcowles29@gmail.com">email us!</a>
     </div>
-</div>  <!-- CONTAINER END -->
+</div>
 <div id="addon"></div>
-<script src="../scripts/main.js"></script>
+<script src="../scripts/about.js"></script>
 <script src="../scripts/menus.js"></script>
 </html>
