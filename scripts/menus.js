@@ -72,7 +72,7 @@ function gotoPage(content) {
             break;
         case 'Log in':
             modal.open(
-                {content: login_content, height: '120px', width: '300px',
+                {content: login_content, height: '156px', width: '316px',
                     id: 'logins'}
             );
             return; 
