@@ -43,43 +43,42 @@ if (isset($_POST['rem'])) {
     $rems = [];
     $noOfRems = 0;
 }
-$photoReq = "SELECT * FROM ETSV WHERE indxNo = ?;";
+$photoReq = "SELECT * FROM `ETSV` WHERE `indxNo` = ?;";
 $photoq = $pdo->prepare($photoReq);
 $photoq->execute([$hikeNo]);
 $p = 0;
 while ($photo = $photoq->fetch(PDO::FETCH_ASSOC)) {
-    if (!empty($photo['imgHt'])) {
-        $thisid = $photo['picIdx'];
-        $thispic = $photo['title'];
+    if (!empty($photo['imgHt'])) {  // waypoints have empty imgHt
+        $thisid = (string) $photo['picIdx'];
         $newcap = $ecapts[$p];
         // look for a matching checkbox then set for display (or map)
         $disph = 'N';
         for ($i=0; $i<count($displayPg); $i++) {
-            if ($thispic == $displayPg[$i]) {
+            if ($thisid == $displayPg[$i]) {
                 $disph = 'Y';
                 break;
             }
         }
         $dispm = 'N';
         for ($j=0; $j<count($displayMap); $j++) {
-            if ($thispic == $displayMap[$j]) {
+            if ($thisid == $displayMap[$j]) {
                 $dispm = 'Y';
                 break;
             }
         }
         $deletePic = false;
         for ($k=0; $k<$noOfRems; $k++) {
-            if ($rems[$k] === $thispic) {
+            if ($rems[$k] === $thisid) {
                 $deletePic = true;
                 break;
             }
         }
         if ($deletePic) {
-            $delreq = "DELETE FROM ETSV WHERE title = ?;";
+            $delreq = "DELETE FROM `ETSV` WHERE `picIdx` = ?;";
             $del = $pdo->prepare($delreq);
-            $del->execute([$thispic]);
+            $del->execute([$thisid]);
         } else {
-            $updtreq = "UPDATE ETSV SET hpg = ?, mpg = ?, `desc` = ? "
+            $updtreq = "UPDATE `ETSV` SET `hpg` = ?, `mpg` = ?, `desc` = ? "
                 . "WHERE picIdx = ?;";
             $update = $pdo->prepare($updtreq);
             $update->execute([$disph, $dispm, $newcap, $thisid]);

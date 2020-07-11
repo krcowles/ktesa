@@ -3,6 +3,7 @@ body {
     font-family: arial, verdana;
     background-color: #dadada;
     margin: 0px; }
+/* tab1 items */
 #hike {
     height: 20px;
     width: 200px; }
@@ -114,41 +115,18 @@ input[type=checkbox]
   -o-transform: scale(1.5); /* Opera */
   padding: 10px;
 }
-input[type=submit] {
-    height: 30px;
-    width: 120px;
-    font-size: 16px;
-    background-color: honeydew;
-}
-input[type=submit]:hover {
-    background-color: papayawhip;
-    cursor: pointer;
-    color: brown;
-    font-weight: bold;
-}
 div[id^="d"] {
     position: fixed;
 }
 #atxt {
     font-size: 20px;
-    font-weight: bold;
     float: right;
     margin-right: 16px;
+    color: black;
 }
 .up {
     position: relative;
     top: -12px;
-}
-#wlnk {
-    padding: 2px;
-    font-size: 12px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: darkBlue;
-}
-input[type=button]:hover {
-    background-color: papayawhip;
-    cursor: pointer;
 }
 .tablist {
     float: left;
@@ -161,11 +139,11 @@ input[type=button]:hover {
     border-radius: 12px 12px 0px 0px;
     font-size: 18px;
     color: DarkGray;
-    background-color: honeydew;
+    background-color: cornsilk;
 }
 .tablist.active {
     background-color: #dadada;
-    color: brown;
+    color: black;
 }
 .tablist:hover {
     cursor: pointer;
@@ -193,6 +171,55 @@ input[type=button]:hover {
 .tab-panel.active {
     display: block;
 }
+/* tab2 items */
+#userupld {
+    font-weight: bold;
+    font-size: 18px;
+}
+#nophotos {
+    font-style: italic;
+    color: brown;
+}
+.flex-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.inputfile + label {
+    margin-left: 16px;
+    font-size: 18px;
+    background-color: #6D3C17;
+    color: white;
+    display: inline-block;
+    cursor: pointer;
+    padding: 6px;
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+    
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: cornsilk;
+    color: black;
+}
+#ldg {
+    color: brown;
+    display: none;
+    font-weight: bold;
+}
+.box.is-dragover {
+    background-color: grey;
+}
+/* tab4 items */
 .bkauths {
     position: relative;
     top: -8px;
@@ -234,19 +261,59 @@ input[type=button]:hover {
     cursor: pointer;
     background-color: papayawhip;
 }
-#upld {
-    height: 32px;
-    width: 114px;
-    font-size: 16px;
-    margin-left: 8px;
-    background-color: honeydew;
-}
-#upld:hover {
-    cursor: pointer;
-    background-color: papayawhip;
-    color: brown;
-    font-weight: bold;
-}
 span.brown {
     color: brown;
+}
+/* Button styling  [input type=submit looks like button] */
+button:not(.tablist) {
+	border-width: 1px;
+    border-radius: 4px;
+	background-color: #6D3C17;
+    color: white;
+    font-size: 14px;
+    height: 24px;
+}
+button:not(.tablist):hover {
+	background-color: cornsilk;
+	color: black;
+}
+input[type=submit] {
+    border-width: 1px;
+    border-radius: 4px;
+    height: 30px;
+    width: 120px;
+    font-size: 16px;
+    background-color: #6D3C17;
+    color: white;
+}
+input[type=submit]:hover {
+    background-color: cornsilk;
+    cursor: pointer;
+    color: black;
+}
+#wypts {
+    height: 28px;
+    font-size: 16px;
+    margin-left: 12px;
+}
+#preview {
+    font-size: 18px;
+    height: 28px;
+}
+.like-button {
+    display: inline-block;
+    font-size: 18px;
+    text-decoration: none;
+    padding-top: 3px;
+    width: 176px;
+    height: 24px;
+    background: #6D3C17;
+    text-align: center;
+    color: white;
+    margin-left: 24px;
+}
+.like-button:hover {
+    background-color: cornsilk;
+    cursor: pointer;
+    color: black;
 }
