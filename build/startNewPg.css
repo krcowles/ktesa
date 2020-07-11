@@ -16,11 +16,6 @@ form {
 #newname:hover {
     background-color: PapayaWhip;
 }
-#vcs {
-    display: none;
-    margin-left: 32px;
-    color: DarkBlue;
-}
 #cls {
     display: none;
     margin-left: 32px;
@@ -42,8 +37,16 @@ input[type="checkbox"]{
     width: 24px;
     height: 24px;
     cursor: pointer;
-  }
-  span.brown {
-      color:brown;
-  }
-  
+}
+span.brown {
+    color:brown;
+}
+#clusters {
+    -webkit-appearance: menulist-button;
+    height: 28px;
+    font-size: 16px;
+}
+#newname {
+    height: 18px;
+    font-size: 16px;
+}

@@ -6,6 +6,10 @@
  * @version 3.0 [Adds favorites functionality]
  */
 
+// Items in the db that are not actual hikes (formerly Visitor Centers, now Clusters)
+const VisitorCenters = ['Bandelier Index', 'Chaco Index', 'El Malpais Index',
+    'Petroglyphs Index', 'El Morro Index', 'Rio Grande Nature Center Index'];
+
 /**
  * Searchbar Functionality (html datalist element)
  */
@@ -31,46 +35,34 @@ $('#searchbar').on('input', function(ev) {
  */
 function popupHikeName(hikename) {
     var found = false;
-    // Is this hike associated with a Visitor Center?
-    VC.forEach(function(ctr) {
-        // is this a visitor center?
-        if (ctr.name == hikename) {
-            infoWin(ctr.name, ctr.loc);
+    for (let i=0; i<CL.length; i++) {
+        if (VisitorCenters.includes(hikename)) {
+            let indx = VisitorCenters.indexOf(hikename);
+            infoWin(CL[indx].group, CL[indx].loc);
             found = true;
-            return;
-        } else {
-            // is it one of the VC's hikes?
-            ctr.hikes.forEach(function(atvc) {
-                if (atvc.name == hikename) {
-                    infoWin(ctr.name, ctr.loc);
-                    found = true;
-                    return;
-                }
-            });
         }
-    });
+        for (let j=0; j<CL[i].hikes.length; j++) {
+            if (CL[i].hikes[j].name == hikename) {
+                infoWin(CL[i].group, CL[i].loc);
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            break;
+        }
+    }
     if (!found) {
-        CL.forEach(function(clus) {
-            clus.hikes.forEach(function(hike) {
-                if (hike.name == hikename) {
-                    infoWin(clus.group, clus.loc);
-                    found = true;
-                    return;
-                }
-            });
-        });
-        if (!found) {
-            NM.forEach(function(hike) {
-                if (hike.name == hikename) {
-                    infoWin(hike.name, hike.loc);
-                    found = true;
-                    return;
-                }
-            });
+        for (let k=0; k<NM.length; k++) {
+            if (NM[k].name == hikename) {
+                infoWin(NM[k].name, NM[k].loc);
+                found = true;
+                break;
+            }
         }
-        if (!found) {
-            alert("This hike cannot be located in the list of hikes");
-        }
+    }
+    if (!found) {
+        alert("This hike cannot be located in the list of hikes");
     }
 }
 
@@ -103,8 +95,8 @@ function infoWin(hike, loc) {
  * 'locations' are declared on home.php (and created by mapJsData.php):
  * allHikes:  an array of every hike in the database;
  * locations: a one-to-one correspondence to allHikes; an array of objects containing
- * the object type of the hike (VC, CL, or NM) and its index in that array.
- * [VC, CL, NM are all arrays]
+ * the object type of the hike (CL, or NM) and its index in that array.
+ * [CL, NM are arrays]
  */
 var sideTbl = new Array();
 for ( var i=0; i<allHikes.length; i++ ) {
@@ -123,15 +115,7 @@ for ( var i=0; i<allHikes.length; i++ ) {
  * @returns {object}     The desired hike object
  */
 function idHike(indx, obj) {
-    if (obj.type === 'vc') {
-        let vcobj = VC[obj.group];
-        let vchikes = vcobj.hikes;
-        for (let k=0; k<vchikes.length; k++) {
-            if (vchikes[k].indx === indx) {         
-                return vchikes[k];
-            }
-        }
-    } else if (obj.type === 'cl') {
+    if (obj.type === 'cl') {
         let clobj = CL[obj.group];
         let clhikes = clobj.hikes;
         for (let m=0; m<clhikes.length; m++) {
@@ -375,28 +359,12 @@ const IdTableElements = (boundsStr, zoom) => {
     var east = parseFloat(eastStr);
     /* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
     var hikearr = [];
-    VC.forEach(function(ctr) {
-        ctr.hikes.forEach(function(hike) {
-            if (hike.lng <= east && hike.lng >= west && hike.lat <= north && hike.lat >= south) {
-                let hikeindx = allHikes.indexOf(hike.indx);
-                let hikeobj = locations[hikeindx];
-                let data = idHike(allHikes[hikeindx], hikeobj);
-                hikearr.push(data);
-                if (zoom) {
-                    let hikeno = data.indx;
-                    singles.push(hikeno);
-                    let vciw = '<div id="iwXH">' + hike.name + '<br />Length: ' +
-                        hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
-                        '<br />Difficulty: ' + hike.diff + '</div>';
-                    hikeInfoWins.push(vciw);
-                }
-            }
-        });
-    });
     CL.forEach(function(clus, clindx) {
         var pushed = false;
         clus.hikes.forEach(function(hike) {
-            if (hike.lng <= east && hike.lng >= west && hike.lat <= north && hike.lat >= south) {
+            let lat = hike.loc.lat;
+            let lng = hike.loc.lng;
+            if (lng <= east && lng >= west && lat <= north && lat >= south) {
                 let hikeindx = allHikes.indexOf(hike.indx);   
                 let hikeobj = locations[hikeindx];
                 let data = idHike(allHikes[hikeindx], hikeobj);

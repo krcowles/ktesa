@@ -50,13 +50,13 @@ require "alphabeticHikes.php";
 require "../php/mapJsData.php";
 ?>
 <script>
-// data required for map and side tables
-var VC = <?= $jsVCs;?>;
-var CL = <?= $jsClusters;?>;
-var NM = <?= $jsHikes;?>;
+// data required for map and side tables (from mapJsData.php)
+var CL = <?= $jsClusters;?>;    // cluster hikes
+var NM = <?= $jsHikes;?>;       // normal hikes
 var tracks = <?= $jsTracks;?>;
 var allHikes = <?= $jsIndx;?>;
 var locations = <?= $jsLocs;?>;
+var pages = <?= $jsPages;?>;    // page indxNo for non-hikes
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/markerclusterer.js"></script>

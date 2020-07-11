@@ -2,142 +2,137 @@
 /**
  * This file creates the javascript objects required to load the home page map,
  * create markers and tracks, and set up side tables. Note: JSON objects
- * will have no white space.
- * PHP Version 7.1
+ * will have no white space. 'Clusters' are not hikes, just markers, so those
+ * objects will have a different composition than 'Normal' (non-cluster) hikes.
+ * PHP Version 7.4
  * 
- * @package Map
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require_once "global_boot.php";
+
 /**
- * 'Side tables' needs to know which hike object to use for a given hike no,
- * hence for every hike index encountered ($allHikeIndices) there is a 
- * corresponding $locater indicating group and object within the group. 
+ * 'Side tables' needs to know which hike object type to use for a given hike
+ * no., hence for every hike no. encountered ($allHikeIndices) there is a
+ * corresponding $locater indicating object type, and object no. within that type. 
  */
 $allHikeIndices = [];
 $locaters = [];
+// These hikes were previously listed as 'Normal' and are now clustered
+$moved = array(76, 77, 79, 80, 81, 83, 84, 202, 204);
 
 /**
- * Form array of Visitor Center objects
+ * Retrieve cluster & hike data from db
  */
-$vcrequest = "SELECT `indxNo`,`pgTitle`,`marker`,`collection`,`miles`,`feet`," .
-    "`diff`,`lat`,`lng`,`dirs` FROM `HIKES` WHERE marker='Visitor Ctr' " .
-    "OR marker='At VC';";
-$vcinfo = $pdo->query($vcrequest);
-$vcdata = $vcinfo->fetchAll(PDO::FETCH_ASSOC);
-$vcs = [];
-$vchikes = [];
-foreach ($vcdata as $item) {
-    if ($item['marker'] == 'Visitor Ctr') {
-        array_push($vcs, $item);
-    } else {
-        array_push($vchikes, $item);
+$clusters = $pdo->query("SELECT * FROM `CLUSTERS`;")->fetchAll(PDO::FETCH_ASSOC);
+$clushike_req = "SELECT `indxNo`,`cluster` FROM `CLUSHIKES`;";
+$clushikes 
+    = $pdo->query($clushike_req)->fetchAll(PDO::FETCH_ASSOC);
+$hike_req = "SELECT `pgTitle`,`indxNo`,`miles`,`feet`,`diff`,`lat`,`lng`," .
+    "`dirs` FROM `HIKES`;";
+$hikes = $pdo->query($hike_req)->fetchAll(PDO::FETCH_ASSOC);
+
+/**
+ * Retrieve the highest indxNo in HIKES for sizing the $hikePairings array:
+ */ 
+$indxNo_req = "SELECT `indxNo` FROM `HIKES` ORDER BY 1 DESC LIMIT 1;";
+$last = $pdo->query($indxNo_req);
+$lastno = $last->fetch(PDO::FETCH_ASSOC);
+$pairingLim = $lastno['indxNo'] + 1;
+$hikePairings = []; // initialize: each key has an associated array
+for ($i=0; $i<$pairingLim; $i++) {
+    $hikePairings[$i] = [];
+}
+
+$normalObjs  = [];
+$clusterObjs = [];
+
+/**
+ * A typical cluster object makeup:
+ * {group:"Bandelier Index",loc:{lat:35.779039,lng:-106.270788},page:1,hikes:[
+ *      (see hike objects)
+ * ]}
+ */
+$pages = [];
+for ($j=0; $j<count($clusters); $j++) {
+    $partial = '{group:"' . $clusters[$j]['group'] . '",loc:{lat:' .
+        $clusters[$j]['lat']/LOC_SCALE  . ',lng:' . $clusters[$j]['lng']/LOC_SCALE .
+        '},page:' . $clusters[$j]['page'] . ',hikes:[';
+    $clusterObjs[$clusters[$j]['clusid']] = $partial;
+    if (!empty($clusters[$j]['page'])) {
+        array_push($pages, $clusters[$j]['page']);
     }
 }
-$vcobj = [];
-$hikeobj = [];
-$vcno = 0;
-foreach ($vcs as $vc) {
-    $atvcs = explode(".", $vc['collection']);
-    $leader = '{name:"' . $vc['pgTitle'] . '",indx:' . $vc['indxNo'] .
-        ',loc:{lat:' . $vc['lat']/LOC_SCALE . ',lng:' . $vc['lng']/LOC_SCALE . '},hikes:[';
-    foreach ($vchikes as $atvc) {
-        if (in_array($atvc['indxNo'], $atvcs)) {
-            // add this hike objext to current $leader
-            $hobj = '{name:"' . $atvc['pgTitle'] . '",indx:' . $atvc['indxNo'] .
-                ',lgth:' . $atvc['miles'] . ',elev:' . $atvc['feet'] .
-                ',diff:"' . $atvc['diff'] . '",lat:' .
-                $atvc['lat']/LOC_SCALE . ',lng:' .
-                $atvc['lng']/LOC_SCALE . '}';
-            array_push($hikeobj, $hobj);
-            array_push($allHikeIndices, $atvc['indxNo']);
-            $loc = '{type:"vc",group:' . $vcno . '}';
-            array_push($locaters, $loc);
+
+/**
+ * Some indxNo's may have > 1 clusid's: assemble array associating indxNo
+ * with one..many clusters (an array itself)
+ */
+foreach ($clushikes as $entry) {
+    array_push($hikePairings[$entry['indxNo']], $entry['cluster']);
+}
+
+/**
+ * Walk through the all the hikes and assign cluster objects;
+ * Some hikes may be in more than one cluster, so find frequency 
+ * per hike indxNo
+ */
+$nmindx = 0;
+foreach ($hikes as $hike) {
+    $hikeno = $hike['indxNo'];
+    if ($hikeno > 4 && $hikeno !== 98 && $hikeno !== 99) { // no former VC's
+        array_push($allHikeIndices, $hikeno);
+        // PROPOSED HIKES may not have all the data:
+        if (strpos($hike['pgTitle'], '[Proposed]') !== false) {
+            $hike['miles'] = empty($hike['miles']) ? 0 : $hike['miles'];
+            $hike['feet']  = empty($hike['feet'])  ? 0 : $hike['feet'];
+            $hike['diff']  = empty($hike['diff'])  ? "Unrated" : $hike['diff'];
+        }
+        $pairing = $hikePairings[$hike['indxNo']];  // this is an array
+        if (count($pairing) > 0) { 
+            // ---- this is a 'Cluster' hike ----
+            $repeats = 0; // there can be more than one cluster per hike
+            foreach ($pairing as $clusterid) {
+                // only one locater can be used per hike
+                if ($repeats === 0) {
+                    // NOTE: $clusterObjs array starts at indx 0, so decrement id
+                    $locater = '{type:"cl",group:' . ($clusterid-1) . '}';
+                    array_push($locaters, $locater);
+                    $repeats++;
+                }
+                // form the cluster's hike object
+                $chikeObj = '{name:"' . $hike['pgTitle']. '",indx:' .
+                    $hike['indxNo'] . ',lgth:' . $hike['miles'] . ',elev:' .
+                    $hike['feet'] . ',diff:"' . $hike['diff'] . '",loc:{lat:' .
+                    $hike['lat']/LOC_SCALE . ',lng:' . $hike['lng']/LOC_SCALE . '}}';
+                if (substr($clusterObjs[$clusterid], -1) == '}') {
+                    $clusterObjs[$clusterid] .= ',' . $chikeObj;
+                } else {
+                    $clusterObjs[$clusterid] .= $chikeObj;
+                }
+            }      
+        } else {
+            $locater = '{type:"nm",group:' . $nmindx++ . '}';
+            array_push($locaters, $locater);
+            $hikeObj = '{name:"' . $hike['pgTitle'] . '",indx:' .
+                $hike['indxNo'] . ',loc:{lat:' . $hike['lat']/LOC_SCALE .
+                ',lng:' . $hike['lng']/LOC_SCALE . '},lgth:' .
+                $hike['miles'] . ',elev:' . $hike['feet'] . ',diff:"' .
+                $hike['diff'] . '",dirs:"' . $hike['dirs'] . '"}';
+            array_push($normalObjs, $hikeObj);
         }
     }
-    $leader .= implode(",", $hikeobj) . ']}';
-    $hikeobj = [];
-    array_push($vcobj, $leader);
-    $vcno++;
 }
-$jsVCs = '[' . implode(",", $vcobj) . ']';
 
-/**
- * Form array of Cluster objects
- */
-$clusterdat = "SELECT `indxNo`,`pgTitle`,`cgroup`,`cname`,`miles`,`feet`,`diff`," .
-    "`lat`,`lng` FROM `HIKES` WHERE marker='Cluster';";
-$clusterRequest = $pdo->query($clusterdat);
-$clusters = $clusterRequest->fetchAll(PDO::FETCH_ASSOC);
-$enrolled = [];
-$leaders  = [];
-$hikeobj  = [];
-// form main objects for clusters (w/o hikes)
-for ($j=0; $j<count($clusters); $j++) {
-    if (!in_array($clusters[$j]['cgroup'], $enrolled)) {
-        array_push($enrolled, $clusters[$j]['cgroup']); // $id-th item
-        $lead = '{group:"' . $clusters[$j]['cname'] . '",loc:{lat:' .
-            $clusters[$j]['lat']/LOC_SCALE .
-            ',lng:' . $clusters[$j]['lng']/LOC_SCALE . '},hikes:[';
-        array_push($leaders, $lead);
-    }
-}
-// form hike objects belonging to each cluster object
-for ($k=0; $k<count($clusters); $k++) {
-    $hobj = '{name:"' . $clusters[$k]['pgTitle'] . '",indx:' .
-        $clusters[$k]['indxNo'] . ',lgth:' . $clusters[$k]['miles'] .',elev:' .
-        $clusters[$k]['feet'] . ',diff:"' . $clusters[$k]['diff'] . 
-        '",lat:' . $clusters[$k]['lat']/LOC_SCALE . ',lng:' .
-        $clusters[$k]['lng']/LOC_SCALE . '}';
-    $clus = $clusters[$k]['cgroup'];
-    $prefix = array_search($clus, $enrolled);
-    $hobj = $prefix . ":" . $hobj;
-    array_push($hikeobj, $hobj);
-    array_push($allHikeIndices, $clusters[$k]['indxNo']);
-}
-// glue the hike objects into the cluster objects for single array of objects
-$firsts = [];
-for ($i=0; $i<count($hikeobj); $i++) {
-    $idpos = strpos($hikeobj[$i], ":");
-    $idno = substr($hikeobj[$i], 0, $idpos);
-    if (!in_array($idno, $firsts)) {
-        array_push($firsts, $idno);
-    } else {
-        $leaders[$idno] .= ",";
-    }
-    $loc = '{type:"cl",group:' . $idno . '}';
-    array_push($locaters, $loc);
-    $leaders[$idno] .= substr($hikeobj[$i], $idpos+1);
-}
 // properly terminate each cluster object
-foreach ($leaders as &$cobj) {
+foreach ($clusterObjs as &$cobj) {
     $cobj .= ']}';
 }
 // form single js variable;
-$jsClusters = '[' . implode(",", $leaders) . ']';
-
-/**
- * Form individual ('Normal') hike array
- */
-$hikeobj = [];
-$hikedata = "SELECT `pgTitle`,`indxNo`,`miles`,`feet`,`diff`,`lat`,`lng`,`dirs` " .
-    "FROM `HIKES` WHERE marker='Normal';";
-$hikesreq = $pdo->query($hikedata);
-$hikes = $hikesreq->fetchAll(PDO::FETCH_ASSOC);
-$nmindx = 0;
-foreach ($hikes as $hike) {
-    array_push($allHikeIndices, $hike['indxNo']);
-    $loc = '{type:"nm",group:' . $nmindx++ . '}';
-    array_push($locaters, $loc);
-    $hike = '{name:"' . $hike['pgTitle'] . '",indx:' . $hike['indxNo'] .
-        ',loc:{lat:' . $hike['lat']/LOC_SCALE . ',lng:' .
-        $hike['lng']/LOC_SCALE . '},lgth:' .
-        $hike['miles'] . ',elev:' . $hike['feet'] . ',diff:"' . $hike['diff'] .
-        '",dir:"' . $hike['dirs'] . '"}';
-    array_push($hikeobj, $hike);
-}
-$jsHikes = '[' . implode(",", $hikeobj) . ']';
+$jsClusters = '[' . implode(",", $clusterObjs) . ']';
+$jsHikes    = '[' . implode(",", $normalObjs) . ']';
+$jsPages    = '[' . implode(",", $pages) . ']';
 
 /**
  * Form array of json file names

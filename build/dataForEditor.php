@@ -2,32 +2,36 @@
 /**
  * The hike page editor allows the user to update information contained
  * in the database, whether for a new hike or an existing hike. Any changes
- * made by the user will not become effective until the edited hike is published.
- * When this module is invoked from the hikeEditor, the tab display setting
- * will be "1". If the user clicks on 'Apply' for any tab, that same tab will
- * display again with refreshed data.
- * PHP Version 7.1
+ * made by the user will not become permanently effective until the edited
+ * hike is published. When this module is invoked from the hikeEditor, the
+ * tab display setting will be "1". If the user clicks on 'Apply' for any tab,
+ * that same tab will display again with refreshed data.
+ * PHP Version 7.4
  * 
- * @package Editing
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
-session_start();  // saves number of current tab displayed & upload msgs
+session_start();  // new page info & upload msgs
 
 // query string data:
-$hikeNo = filter_input(INPUT_GET, 'hikeNo'); // all tabs
-$usr = filter_input(INPUT_GET, 'usr');
-$tab = filter_input(INPUT_GET, 'tab');
-// data for drop-down boxes
-$selectData = dropdownData($pdo, 'cls');  // buildFunctions.php
-$cnames = array_values($selectData);
-$groups = array_keys($selectData);
+$hikeNo = filter_input(INPUT_GET, 'hikeNo');
+$usr    = filter_input(INPUT_GET, 'usr');
+$tab    = filter_input(INPUT_GET, 'tab');
+$newclus = 'No';
+if (isset($_SESSION['newcluster'])) {
+    $newclus = $_SESSION['newcluster'];
+    unset($_SESSION['newcluster']);
+}
+
 /**
  * There are currently four tabs requiring data: each tab's needs are 
  * highlighted with comment blocks.
  * 
  * Tab1: [data contained in EHIKES table]
  */
+$clusters = getClusters($pdo);
 $hikereq = "SELECT * FROM EHIKES WHERE indxNo = :hikeno;";
 $hikeq = $pdo->prepare($hikereq);
 if ($hikeq->execute(["hikeno" => $hikeNo]) === false) {
@@ -36,17 +40,7 @@ if ($hikeq->execute(["hikeno" => $hikeNo]) === false) {
 $hike = $hikeq->fetch(PDO::FETCH_ASSOC);
 $pgTitle = trim($hike['pgTitle']);  // this item should never be null
 $locale = $hike['locale'];
-$marker = $hike['marker'];          // this also should never be null
-$collection = $hike['collection'];
-$cgroup = $hike['cgroup'];
 $cname = $hike['cname'];
-// Special case: when a new page requests to add a new group, advise the js
-if ($marker === 'Cluster' && empty($cgroup)) {
-    $marker = 'Normal';
-    $grpReq = "YES";
-} else {
-    $grpReq = "NO";
-}
 $logistics = $hike['logistics'];
 $miles = $hike['miles'];
 if (empty($miles)) {
@@ -60,12 +54,10 @@ $fac = $hike['fac'];
 $wow = $hike['wow'];
 $seasons = $hike['seasons'];
 $expo = $hike['expo'];
-$curr_gpx = $hike['gpx'];
+$curr_gpx = $hike['gpx'];  // can contain more than one filename, comma-separated
 $curr_trk = $hike['trk'];
 $lat = $hike['lat'] / LOC_SCALE;
 $lng = $hike['lng'] / LOC_SCALE;
-//$purl1 = $hike['purl1'];  // not currently editable
-//$purl2 = $hike['purl2'];  // not currently editable
 $dirs = $hike['dirs'];
 
 /**

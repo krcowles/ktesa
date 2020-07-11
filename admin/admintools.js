@@ -1,5 +1,26 @@
 $( function() {  // wait until document is loaded...
 
+
+/** 
+ * TEMPORARY
+ */
+$('#ldclus').on('click', function() {
+    window.open('createClusters.php', "_self");
+});
+$('#pop').on('click', function() {
+    window.open('populate_Clusters.php', "_self");
+});
+$('#dropclus').on('click', function() {
+    window.open('dropClusters.php', "_self");
+});
+/*
+$('#updte').on('click', function() {
+    window.open('updateHikesTable.php', "_self");
+});
+*/
+
+
+
 var current_state = $('#currstate').text();
 $('#switchstate').on('click', function() {
     window.open('changeSiteMode.php?mode=' + current_state);

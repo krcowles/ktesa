@@ -1,15 +1,22 @@
-<!-- Hidden inputs required by saveTab1.php, non-displayed <p>'s' by editDB.js -->
+<?php
+/**
+ * This is the html for tab1 in the editor 
+ * PHP Version 7.4
+ * 
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+?>
+<!-- Hidden inputs required by saveTab1.php,  & non-displayed <p>'s' by editDB.js -->
 <input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
 <input type="hidden" name="usr" value="<?= $usr;?>" />
-<input type="hidden" name="colllection" value="<?= $collection;?>" />
 <input type="hidden" name="mgpx" value="<?= $curr_gpx;?>" />
 <input type="hidden" name="mtrk" value="<?= $curr_trk;?>" />
-<p id="marker" style="display:none"><?= $marker;?></p>
-<p id="greq" style="display:none"><?= $grpReq;?></p>
-<input type="hidden" name="marker" value="<?=$marker;?>" />
-<input type="hidden" name="cgroup" value="<?= $cgroup;?>" />
-<p id="group" style="display:none"><?= $cname;?></p>
+<p id="group" style="display:none;"><?= $cname;?></p>
 <input type="hidden" name="cname" value="<?= $cname;?>" />
+<p id="newclus" style="display:none;"><?= $newclus;?></p>
 <p id="ctype" style="display:none"><?= $logistics;?></p>
 <p id="ptype" style="display:none">Edit</p>
 
@@ -156,21 +163,19 @@
 <textarea id="murl" class="blink" name="dirs"
     maxlength="1024"><?= $dirs;?></textarea>
 
+
+
+
 <h3 style="margin-bottom:12px;">Cluster Hike Assignments:
     (Hikes with overlapping trailheads or in close proximity)</h3>
 <span style="font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
-<input id="ignore" type="checkbox" name="nocare" /></span><br /><br />
-<label for="ctip">Cluster: </label>
-<select id="ctip" name="newcname">
-<?php for ($i=0; $i<count($cnames); $i++) : ?>
-    <option value="<?= $cnames[$i]?>"><?= $cnames[$i];?></option>
-<?php endfor; ?>
-</select><span id="showdel" style="display:none;">You may remove the cluster
+<input id="resetclus" type="checkbox" name="nocare" /></span><br /><br />
+<label for="clusters">Cluster: </label><?= $clusters;?>&nbsp;&nbsp;<span
+    id="showdel" style="display:none;">You may remove the cluster
     assignment by checking here:&nbsp;<input id="deassign"
     type="checkbox" name="rmClus" value="NO" /></span>
-<span id="notclus" style="display:none;">There is no currently
-    assigned cluster for this hike.</span>
-<input id="grpChg" type="hidden" name="grpChg" value="NO" />
+    <span id="notclus" style="display:none;">There is no currently
+        assigned cluster for this hike.</span>
 <p>If you are establishing a new group, select the checkbox: 
     <input id="newg" type="checkbox" name="nxtGrp" value="NO" />
 </p>
