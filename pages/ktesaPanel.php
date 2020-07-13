@@ -122,7 +122,7 @@ require "../accounts/getLogin.php";
             <tr id="resetrow">
                 <td colspan="2"><input id="resetpass" class="bordered" type="text"
                     value="" /></td>
-                <td class="centerbtn"><button id="sendemail">Send email</button></td>
+                <td><button id="sendemail">Send email</button></td>
             </tr>
         </tbody>
     </table><br />

@@ -17,14 +17,14 @@ LNK;
 
 $email = filter_input(INPUT_GET, 'email', FILTER_VALIDATE_EMAIL);
 if ($email === false) {
-    echo "BADEMAIL";
+    echo "The email {$email} is not valid";
 } else {
     $register_req = "SELECT `username` FROM `USERS` WHERE `email` = :email;";
     $register = $pdo->prepare($register_req);
     $register->execute(["email" => $email]);
     $status = $register->fetch(PDO::FETCH_ASSOC);
-    if ($status->rowCount() === 0) {
-        echo "NOTFOUND: " . rawurlencode($email);
+    if ($status === false) {
+        echo "Your email {$email} was not located in our database";
     } else { 
         $name = $status['username'];
         $to  = $email;
@@ -39,5 +39,3 @@ if ($email === false) {
     }
 
 }
-
-

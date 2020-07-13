@@ -10,7 +10,6 @@
  */
 require "../php/global_boot.php";
 $user  = filter_input(INPUT_GET, 'user');
-$here = getcwd();
 
 $usr_req = "SELECT * FROM USERS WHERE username = :usr;";
 $dbdata = $pdo->prepare($usr_req);

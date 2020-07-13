@@ -23,29 +23,39 @@ var modal = (function() {
         $('#enter').after($close);
         $close.css('left', '134px');
         $modal.css('z-index', '10000');
-        $('#pwlnk').on('click', function(ev) {
-            let email = window.prompt("Enter your account's email address");
-            let data = {email: email};
-            $.ajax({
-                url: '../accounts/resetPassword.php',
-                method: 'post',
-                data: data,
-                dataType: 'text',
-                success: function(result) {
-                    if (result === "OK") {
-                        alert("You will receive an email with a link to reset");
-                    } else if (result === "BADEMAIL") {
-                        alert("The address is not a valid email address");
-                    } else if (result === "NOTFOUND") {
-                        alert("Your email does not appear in our database");
+        $('#sendemail').on('click', function() {
+            let email = $('#resetpass').val();
+            if (email == '') {
+                alert("No email address has been entered");
+                return;
+            }
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                let data = {email: email};
+                $.ajax({
+                    url: '../accounts/resetMail.php',
+                    data: data,
+                    dataType: 'text',
+                    method: "post",
+                    success: function(result) {
+                        if (result === 'OK') {
+                            alert("An email has been sent - these sometimes " +
+                                "take awhile");
+                        } else {
+                            alert("The following error was received:\n" +
+                                result);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        var newDoc = document.open();
+                        newDoc.write(jqXHR.responseText);
+                        newDoc.close();
                     }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    let newDoc = document.open();
-                    newDoc.write(jqXHR.responseText);
-                    newDoc.close();
-                }
-            });
+                });
+            } else {
+                alert("Not a valid email address");
+                return;
+            }
+
         });
         $('#enter').on('click', function() {
             var pwd = $('#upass').val();
