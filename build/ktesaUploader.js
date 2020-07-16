@@ -194,7 +194,7 @@ const filechecks = (candidates) => {
             filereader.readAsArrayBuffer(blob);
         }(magicdef, file));
     }
-    return $.when.apply($, promises); // return when promises fulfilled
+    return $.when.apply($, promises); // return a variable set of promises
 }
 
 /**
@@ -229,7 +229,7 @@ const ldImgs = (imgs) => {
         }(deferred, imgs[i]));
         reader.readAsDataURL(imgs[i]);
     }
-    return $.when.apply($, promises); // return when promises fulfilled
+    return $.when.apply($, promises); // return a variable set of promises
 }
 
 /**

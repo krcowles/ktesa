@@ -3,7 +3,7 @@
  *       a search bar capability synchronized to the side table.
  * @author Tom Sandberg
  * @author Ken Cowles
- * @version 3.0 [Adds favorites functionality]
+ * @version 4.0 Adds track highlighting
  */
 
 // Items in the db that are not actual hikes (formerly Visitor Centers, now Clusters)
@@ -36,13 +36,16 @@ $('#searchbar').on('input', function(ev) {
 function popupHikeName(hikename) {
     var found = false;
     for (let i=0; i<CL.length; i++) {
-        if (VisitorCenters.includes(hikename)) {
+        if (VisitorCenters.includes(hikename)) { // VC's are now clusters
             let indx = VisitorCenters.indexOf(hikename);
+            // there is a correspondence between VisitorCenters' index in CL index
+            hilite_obj = {obj: CL[indx].hikes, type: 'cl'};
             infoWin(CL[indx].group, CL[indx].loc);
             found = true;
         }
         for (let j=0; j<CL[i].hikes.length; j++) {
             if (CL[i].hikes[j].name == hikename) {
+                hilite_obj = {obj: CL[i].hikes[j], type: 'nm'};
                 infoWin(CL[i].group, CL[i].loc);
                 found = true;
                 break;
@@ -55,6 +58,7 @@ function popupHikeName(hikename) {
     if (!found) {
         for (let k=0; k<NM.length; k++) {
             if (NM[k].name == hikename) {
+                hilite_obj = {obj: NM[k], type: 'nm'};
                 infoWin(NM[k].name, NM[k].loc);
                 found = true;
                 break;
@@ -63,6 +67,7 @@ function popupHikeName(hikename) {
     }
     if (!found) {
         alert("This hike cannot be located in the list of hikes");
+        infoWin_zoom = false;
     }
 }
 
@@ -74,21 +79,89 @@ function popupHikeName(hikename) {
  */
 function infoWin(hike, loc) {
     // find the marker associated with the input parameters and popup its info window
-    map.setZoom(13);
-    $.each(locaters, function(indx, value) {
-        if (value.hikeid == hike) {
-            let thismarker = value.pin;
+    // clicking marker sets zoom
+    for (let k=0; k<locaters.length; k++) {
+        if (locaters[k].hikeid == hike) {
+            let thismarker = locaters[k].pin;
             if (thismarker.clicked === false) {
-                // clicking will set marker.clicked = true
-                google.maps.event.trigger(value.pin, 'click');
+                // clicking will set (prototype) marker.clicked = true
+                marker_click = true; // the global in map zoom test
+                google.maps.event.trigger(locaters[k].pin, 'click');
             } else {
                 map.setCenter(loc);
             }
-            return;
+            break;
         }
-    });
-};
+    }
+    return;
+}
 
+/**
+ * This function emphasizes the hike track(s) that have been zoomed to;
+ * NOTE: A javascript anomaly - passing in a single object in an array
+ * results in the function receiving the object, but not as an array.
+ * Hence a 'type' identifier is used here
+ * 
+ * @param {array} tracks The array of objects whose tracks wil be emphasized 
+ * @param {string} type The identifier for single or multiple objects
+ * 
+ * @return {null}
+ */
+function highlightTracks() {
+    if (!$.isEmptyObject(hilite_obj)) {
+        if (hilite_obj.type === 'cl') { // object is an array of objects
+            let cluster = hilite_obj.obj;
+            cluster.forEach(function(track) {
+                let polyno = track.indx;
+                for (let k=0; k<drawnTracks.length; k++) {
+                    if (drawnTracks[k].hike == polyno) {
+                        let polyline = drawnTracks[k].track;
+                        polyline.setOptions({
+                            strokeWeight: 4,
+                            strokeColor: '#FFFF00',
+                            strokeOpacity: 1,
+                            zIndex: 10
+                        });
+                        hilited.push(polyline);
+                        break;
+                    }
+                }
+            });
+        } else { // mrkr === 'nm'; object is a single object
+            let polyno = hilite_obj.obj.indx;
+            for (let k=0; k<drawnTracks.length; k++) {
+                if (drawnTracks[k].hike == polyno) {
+                    let polyline = drawnTracks[k].track;
+                    polyline.setOptions({
+                        strokeWeight: 4,
+                        strokeColor: '#FFFF00',
+                        strokeOpacity: 1,
+                        zIndex: 10
+                    });
+                    hilited.push(polyline);
+                    break;
+                }
+            }
+        }
+        hilite_obj = {};
+    }
+}
+
+/**
+ * Undo any previous track highlighting
+ * 
+ * @return {null}
+ */
+function restoreTracks() {
+    for (let n=0; n<hilited.length; n++) {
+        hilited[n].setOptions({
+            strokeOpacity: 0.60,
+            strokeWeight: 3,
+            zIndex: 1
+        });
+    }
+    return;
+}
 /**
  * The side table includes all hikes on page load; on pan/zoom it will include only those
  * hikes within the map bounds. In the following code, the variables 'allHikes' and 
@@ -341,9 +414,9 @@ function enableZoom() {
  *                   only the index number into the CL array.
  */
 const IdTableElements = (boundsStr, zoom) => {
-    var clusters = [];       // cluster objects for track-drawing, no single hike nos
-    var singles = [];        // single hike nos only, no cluster hike nos
-    var hikeInfoWins = [];   // info window content for singles
+    var singles = [];        // individual hike nos
+    var trackColors = [];    // for clusters, tracks get unique colors
+    var hikeInfoWins = [];   // info window content for each hikeno in singles
     // ESTABLISH CURRENT VIEWPORT BOUNDS:
     var beginA = boundsStr.indexOf('((') + 2;
     var leftParm = boundsStr.substring(beginA,boundsStr.length);
@@ -359,8 +432,9 @@ const IdTableElements = (boundsStr, zoom) => {
     var east = parseFloat(eastStr);
     /* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
     var hikearr = [];
+    var max_color = colors.length - 1;
     CL.forEach(function(clus, clindx) {
-        var pushed = false;
+        var color = 0;
         clus.hikes.forEach(function(hike) {
             let lat = hike.loc.lat;
             let lng = hike.loc.lng;
@@ -370,8 +444,15 @@ const IdTableElements = (boundsStr, zoom) => {
                 let data = idHike(allHikes[hikeindx], hikeobj);
                 hikearr.push(data);
                 if (zoom) {
-                    clusters.push(clindx);
-                    pushed = true; // ony once per cluster object
+                    let cliw = '<div id="iwCH">' + hike.name + '<br />Length: ' +
+                        hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
+                        '<br />Difficulty: ' + hike.diff + '</div>';
+                    singles.push(hike.indx);
+                    hikeInfoWins.push(cliw);
+                    trackColors.push(colors[color++]);
+                    if (color > max_color) { // rotate through colors
+                        color = 0;
+                    }
                 }
             }
         });
@@ -385,12 +466,12 @@ const IdTableElements = (boundsStr, zoom) => {
             let data = idHike(allHikes[hikeindx], hikeobj);
             hikearr.push(data);
             if (zoom) {
-                let hikeno = data.indx;
-                singles.push(hikeno);
                 let nmiw = '<div id="iwNH">' + hike.name + '<br />Length: ' +
                     hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
                     '<br />Difficulty: ' + hike.diff + '</div>';
+                singles.push(hike.indx);
                 hikeInfoWins.push(nmiw);
+                trackColors.push(colors[0]);
             }
         }
     });
@@ -402,7 +483,7 @@ const IdTableElements = (boundsStr, zoom) => {
     } else {
         formTbl(hikearr);
     }
-    return new Array(singles, hikeInfoWins, clusters);
+    return new Array(singles, hikeInfoWins, trackColors);
  
 }
 
