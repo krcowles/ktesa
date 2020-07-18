@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" creator="AllTrails.com" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <link href="http://www.alltrails.com">
+      <text>AllTrails, LLC</text>
+    </link>
+    <bounds minlat="36.04985" minlon="-107.93097" maxlat="36.05039" maxlon="-107.92923"/>
+  </metadata>
+  <trk>
+    <name>Hungo Pavi</name>
+    <src>AllTrails</src>
+    <trkseg>
+      <trkpt lat="36.04993" lon="-107.93097">
+        <ele>1878.0</ele>
+      </trkpt>
+      <trkpt lat="36.04992" lon="-107.93097">
+        <ele>1878.0</ele>
+      </trkpt>
+      <trkpt lat="36.04986" lon="-107.93081">
+        <ele>1878.0</ele>
+      </trkpt>
+      <trkpt lat="36.04998" lon="-107.93066">
+        <ele>1878.0</ele>
+      </trkpt>
+      <trkpt lat="36.05015" lon="-107.93051">
+        <ele>1880.92</ele>
+      </trkpt>
+      <trkpt lat="36.05018" lon="-107.93049">
+        <ele>1881.64</ele>
+      </trkpt>
+      <trkpt lat="36.05018" lon="-107.93046">
+        <ele>1882.01</ele>
+      </trkpt>
+      <trkpt lat="36.05024" lon="-107.93046">
+        <ele>1882.64</ele>
+      </trkpt>
+      <trkpt lat="36.05033" lon="-107.93045">
+        <ele>1883.14</ele>
+      </trkpt>
+      <trkpt lat="36.05039" lon="-107.93041">
+        <ele>1883.78</ele>
+      </trkpt>
+      <trkpt lat="36.05037" lon="-107.92937">
+        <ele>1886.99</ele>
+      </trkpt>
+      <trkpt lat="36.05036" lon="-107.9293">
+        <ele>1887.27</ele>
+      </trkpt>
+      <trkpt lat="36.05031" lon="-107.92925">
+        <ele>1886.01</ele>
+      </trkpt>
+      <trkpt lat="36.05026" lon="-107.92924">
+        <ele>1885.0</ele>
+      </trkpt>
+      <trkpt lat="36.05016" lon="-107.92925">
+        <ele>1885.0</ele>
+      </trkpt>
+      <trkpt lat="36.05011" lon="-107.92923">
+        <ele>1885.0</ele>
+      </trkpt>
+      <trkpt lat="36.05005" lon="-107.92924">
+        <ele>1885.0</ele>
+      </trkpt>
+      <trkpt lat="36.04999" lon="-107.92927">
+        <ele>1884.79</ele>
+      </trkpt>
+      <trkpt lat="36.04995" lon="-107.92933">
+        <ele>1884.11</ele>
+      </trkpt>
+      <trkpt lat="36.04993" lon="-107.9294">
+        <ele>1884.0</ele>
+      </trkpt>
+      <trkpt lat="36.04995" lon="-107.92949">
+        <ele>1884.0</ele>
+      </trkpt>
+      <trkpt lat="36.05001" lon="-107.92949">
+        <ele>1884.0</ele>
+      </trkpt>
+      <trkpt lat="36.05009" lon="-107.92954">
+        <ele>1884.0</ele>
+      </trkpt>
+      <trkpt lat="36.05011" lon="-107.92961">
+        <ele>1884.0</ele>
+      </trkpt>
+      <trkpt lat="36.05014" lon="-107.92966">
+        <ele>1884.0</ele>
+      </trkpt>
+      <trkpt lat="36.05015" lon="-107.92972">
+        <ele>1884.0</ele>
+      </trkpt>
+      <trkpt lat="36.05016" lon="-107.92993">
+        <ele>1884.0</ele>
+      </trkpt>
+      <trkpt lat="36.05017" lon="-107.93">
+        <ele>1884.0</ele>
+      </trkpt>
+      <trkpt lat="36.05015" lon="-107.93008">
+        <ele>1884.54</ele>
+      </trkpt>
+      <trkpt lat="36.05011" lon="-107.93012">
+        <ele>1884.43</ele>
+      </trkpt>
+      <trkpt lat="36.05005" lon="-107.93019">
+        <ele>1885.0</ele>
+      </trkpt>
+      <trkpt lat="36.05" lon="-107.93025">
+        <ele>1885.0</ele>
+      </trkpt>
+      <trkpt lat="36.04998" lon="-107.93046">
+        <ele>1879.88</ele>
+      </trkpt>
+      <trkpt lat="36.04998" lon="-107.93058">
+        <ele>1878.74</ele>
+      </trkpt>
+      <trkpt lat="36.04998" lon="-107.93066">
+        <ele>1878.0</ele>
+      </trkpt>
+      <trkpt lat="36.04985" lon="-107.93081">
+        <ele>1878.0</ele>
+      </trkpt>
+      <trkpt lat="36.04993" lon="-107.93097">
+        <ele>1878.0</ele>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>

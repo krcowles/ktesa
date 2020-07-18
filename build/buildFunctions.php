@@ -536,6 +536,26 @@ function storeUploadedImage($targ_fname, $org_file, $new_img_width, $new_img_hei
     // in your database or show confirmation message to user
     return $target_file;
 }
+/**
+ * Find the location of the 'pictures' directory on the site (it will be situated
+ * differently for a test site, for example)
+ * 
+ * @return string $picdir Relative path to the pictures directory
+ */
+function getPicturesDirectory()
+{
+    $picdir = "";
+    $current = getcwd();
+    $prev = $current;
+    while (!in_array('pictures', scandir($current))) {
+        $picdir .= "../";
+        chdir('..');
+        $current = getcwd();
+    }
+    chdir($prev);
+    $picdir .= 'pictures/zsize/';
+    return $picdir;
+}
 /*
 function convtTime($GPStime) {
     $hrs = explode("/",$GPStime[0]);

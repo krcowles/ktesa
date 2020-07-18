@@ -1,5 +1,5 @@
-// Hike Track Colors: red, blue, orange, purple, black, yellow
-var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00']
+// Hike Track Colors: red, blue, orange, purple, black
+var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000']
 var geoOptions = { enableHighAccuracy: 'true' };
 
 // need to be global:
@@ -9,9 +9,12 @@ var $map = $('#map');
 var mapht;
 // track vars
 var drawnHikes = [];     // hike numbers which have had tracks created
-var drawnTracks = [];    // track objects for drawnHikes
+var drawnTracks = [];    // array of objects: {hike:hikeno , track:polyline}
 var drawnClusters = [];  // clusters which have had all hikes drawn
-
+// globals to register when a zoom needs to call highlightTrack
+var marker_click = false;
+var hilite_obj = {};     // global object holding hike object & marker type
+var hilited = [];
 /**
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
@@ -140,10 +143,12 @@ function initMap() {
 			marker.clicked = false;
 		});
 		marker.addListener( 'click', function() {
+			marker_click = true;   // global
+			//hilite_obj = {obj: clhikes, type: 'cl'};
 			map.setZoom(13);
 			map.setCenter(location);
 			iw.open(map, this);
-			marker.clicked = true;
+			marker.clicked = true; // marker prototype property
 		});
 	}
 
@@ -176,10 +181,12 @@ function initMap() {
 			marker.clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			map.setCenter(hikeobj.loc);
+			marker_click = true;   // global
+			//hilite_obj = {obj: hikeobj, type: 'nm'};
 			map.setZoom(13);
+			map.setCenter(hikeobj.loc);
 			iw.open(map, this);
-			marker.clicked = true;
+			marker.clicked = true; // marker prototype property
 		});
 	}
 
@@ -202,12 +209,25 @@ function initMap() {
 			var perim = String(map.getBounds());
 			if ( curZoom > 12 ) {
 				zoomTracks = true;
-			} 
+			}
 			var zoomedHikes = IdTableElements(perim, zoomTracks);
 			if (zoomTracks && zoomedHikes.length > 0) {
-				zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2]);
+				$.when(
+					zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2])
+				).then(function() {
+					// if zoom caused by clicking a marker (or search, side-table zoom)
+					if (marker_click) {
+						marker_click = false;
+						if (hilited.length > 0) {
+							restoreTracks();
+						}
+						highlightTracks();
+					}
+					google.maps.event.removeListener(idle);
+				});
+			} else {
+				google.maps.event.removeListener(idle);
 			}
-			google.maps.event.removeListener(idle);
 		});
 	});
 	
@@ -223,35 +243,36 @@ function initMap() {
 			zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2]);
 		}
 	});
-}  // end of initMap()
+}
 // ////////////////////// END OF MAP INITIALIZATION  ///////////////////////
 
 // ///////////////////////////  TRACK DRAWING  /////////////////////////////
 /**
- * This file will create tracks for the input array of hike objects. If a track has
- * already been created, it will not be created again.
+ * This file will create tracks for the input arrays of hike objects and clusters.
+ * If a track has already been created, it will not be created again.
  * 
  * @param {array} hikenos The array of hike numbers within zoomed map bounds
- * @return {null}
+ * @param {array} infoWins The array of infoWins corresponding to hikenos
+ * 
+ * @return {array} promises (deferred objects)
  */
-function zoom_track(hikenos, infoWins, clusters) {
-	for (let i=0; i<hikenos.length; i++) {
+function zoom_track(hikenos, infoWins, trackcolors) {
+	var promises = [];
+	for (let i=0,j=0; i<hikenos.length; i++,j++) {
 		if (!drawnHikes.includes(hikenos[i])) {
 			if (tracks[hikenos[i]] !== '') {
+				let sgldef = new $.Deferred();
+				promises.push(sgldef);
 				let trackfile = '../json/' + tracks[hikenos[i]];
-				let sgltrack = drawTrack(trackfile, infoWins[i], colors[0]);
 				drawnHikes.push(hikenos[i]);
-				let newtrack = {hike: hikenos[i], track: sgltrack};
-				drawnTracks.push(newtrack);
+				if (j === trackcolors.length) {
+					j = 0;  // rollover colors when # of tracks > # of colors
+				}
+				drawTrack(trackfile, infoWins[i], trackcolors[j], hikenos[i], sgldef);
 			}
 		}
 	}
-	for (let j=0; j<clusters.length; j++) {
-		if (!drawnClusters.includes(clusters[j])) {
-			drawClusters(clusters[j]);
-			drawnClusters.push(clusters[j]);
-		}
-	}
+	return $.when.apply($, promises);
 }
 
 /**
@@ -259,8 +280,8 @@ function zoom_track(hikenos, infoWins, clusters) {
  * @param {string} json_filename: the name associated with the track file
  * @return {null}
  */
-function drawTrack(json_filename, info_win, color) {
-	var sgltrack;
+function drawTrack(json_filename, info_win, color, hikeno, deferred) {
+	let sgltrack;
 	$.ajax({
 		dataType: "json",
 		url: json_filename,
@@ -274,12 +295,13 @@ function drawTrack(json_filename, info_win, color) {
 				path: trackDat,
 				geodesic: true,
 				strokeColor: color,
-				strokeOpacity: 1.0,
-				strokeWeight: 3
+				strokeOpacity: .6,
+				strokeWeight: 3,
+				zIndex: 1
 			});
 			sgltrack.setMap(map);
 			// create the mouseover text:
-			var iw = new google.maps.InfoWindow({
+			let iw = new google.maps.InfoWindow({
 				content: info_win
 			});
 			sgltrack.addListener('mouseover', function(mo) {
@@ -290,37 +312,20 @@ function drawTrack(json_filename, info_win, color) {
 			sgltrack.addListener('mouseout', function() {
 				iw.close();
 			});
+			let newtrack = {hike: hikeno, track: sgltrack};
+			drawnTracks.push(newtrack);
+			deferred.resolve();
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			msg = 'Did not succeed in getting JSON data: ' + 
 				json_filename;
 			alert(msg);
-			sgltrack = '';
+			deferred.reject();
 		}
 	});
-	return sgltrack;
+	return;
 }
 
-/**
- * This function draws all tracks for the incoming cluster object's hike object
- * 
- * @param {object} cluster_hikes The cluster object's hike object
- * @return {null}
- */
-function drawClusters(cluster_index) {
-	color = 0;
-	hikesobj = CL[cluster_index].hikes;
-	hikesobj.forEach(function(hikeobj) {
-		if (tracks[hikeobj.indx] !== '') {
-			var trkfile = '../json/' + tracks[hikeobj.indx];
-			let iw = '<div id="iwCH">' + hikeobj.name + '<br />Length: ' +
-				hikeobj.lgth + ' miles<br />Elev Chg: ' + hikeobj.elev +
-				'<br />Difficulty: ' + hikeobj.diff + '</div>';
-			drawTrack(trkfile, iw, colors[color++]);
-			if (color > colors.length) { color = 0; } // recylce colors when large
-		}
-	});
-}
 // /////////////////////////  END TRACK DRAWING  ///////////////////////////
 
 // //////////////////////////  GEOLOCATION CODE ////////////////////////////

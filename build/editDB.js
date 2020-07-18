@@ -58,30 +58,12 @@ $(window).resize( function() {
     var scrollPos = btop + scrollTop;
     $(divid).offset({top: scrollPos, left: blft});
 });
-// To define button appearance
-function highLight() {
-    $('button').on('mouseover', function() {
-        if (!$(this).hasClass('active')) {
-            $(this).css('background-color','blanchedalmond');
-            $(this).css('color','brown');
-        }
-    });
-    $('button').on('mouseout', function() {
-        if (!$(this).hasClass('active')) {
-            $(this).css('background-color','honeydew');
-            $(this).css('color','darkgray');
-        }
-    });
-}
-highLight();
 // tab buttons:
-$('button:not(#preview, #upld)').on('click', function(ev) {
+$('button[id^=t]').on('click', function(ev) {
     ev.preventDefault();
     var tid = this.id;
     $('button').each( function() {
         if (this.id !== tid) {
-            $(this).css('background-color','honeydew');
-            $(this).css('color','darkgray');
             if ($(this).hasClass('active')) {
                 var old = this.id;
                 old = '#tab' + old.substring(1,2);
@@ -90,13 +72,10 @@ $('button:not(#preview, #upld)').on('click', function(ev) {
             }
         }
     });
-    $(this).css('background-color','#DADADA');
-    $(this).css('color','black');
     $(this).addClass('active');
     var newtid = '#tab' + tid.substring(1,2);
     $(newtid).css('display','block');
     document.documentElement.scrollTop = document.body.scrollTop = 0;
-    highLight();
     if (tid.substr(0, 1) === 't') {
         var oldid = '#ap' + lastA;
         $(oldid).remove();

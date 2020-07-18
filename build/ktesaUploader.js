@@ -1,8 +1,7 @@
 /**
  * @fileoverview This is a standalone utility that will preview selected
  * images (input select or drag-and-drop) on the page, having stored a
- * resized image on the server. The user may select desired images to be
- * saved and used by the editor.
+ * resized image on the server. They will be added to the editor photo gallery.
  * @author Tom Sandberg
  * @author Ken Cowles
  */
@@ -11,93 +10,20 @@
 const MAX_UPLOAD_SIZE = 20000000; // no longer required
 const Z_WIDTH = 640;
 const Z_HEIGHT = 480;
-const DISPLAY_HEIGHT = Z_HEIGHT/2;
+const DISPLAY_HEIGHT = 220;
 // globals
 var ehikeIndxNo = $('#ehno').text(); // get the associated hike no
 var droppedFiles = false; 
 var validated = [];
 var FR_Images = []; // FileReader objects
 var imgNo = 0;      // unique id for each validated image
-var ajaxExif = [];  // holds photos exif data for storing in the db
 
 /**
- * Whenever a page load completes, re-initialization of arrays and text
- * should take place
- * 
- * @return {null}
+ * After every upload of one or more images, the editor is refreshed
+ * with the following data
  */
-const resetImageLoads = () => {
-    $('#ldg').css('display', 'none');
-    droppedFiles = false;
-    validated = [];
-    FR_Images = [];
-    positionIcons();
-    enableIcons();
-    return;
-};
-
-/**
- * This routine places the icons appropriately in the left corner of the photo
- * 
- * @return {null}
- */
-function positionIcons() {
-    $('.dels').each(function() {
-        let img = '#img' + this.id.substr(3);
-        let imgpos = $(img).offset();
-        let icon_left = imgpos.left + 12;
-        let icon_top  = imgpos.top  + 12;
-        $(this).css({
-            top:  icon_top,
-            left: icon_left,
-        });
-    });
-    return;
-}
-
-/**
- * This function enables icons for display on mouseover, and also on click
- * for photo deletion (and its accompanying icon)
- * 
- * @return {null}
- */
-function enableIcons() {
-    $('.not-saved').each(function() {
-        let icon = '#del' + this.id.substr(3);
-        let $img = $(this);
-        let iname = this.src;
-        let data = {iname: iname};
-        $(this).on('mouseover', function() {
-            $(icon).css('display', 'block');
-        });
-        $(this).on('mouseout', function() {
-            $(icon).css('display', 'none');
-        });
-        $(icon).off('click');
-        $(icon).on('click', function(ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            $.ajax({
-                url: 'deletePhoto.php',
-                method: 'post',
-                data: data,
-                success: function() {
-                    let x = 1;
-                },
-                error: function(jqXHR) {
-                    var newDoc = document.open();
-                    newDoc.write(jqXHR.responseText);
-                    newDoc.close();
-                }
-            });
-            $(icon).remove();
-            $img.remove();
-            positionIcons();
-            return;
-        });
-    });
-    return;
-}
+var user = $('#eusr').text();
+var newed = "editDB.php?hikeNo=" + ehikeIndxNo + "&usr=" + user + "&tab=2";
 
 /**
  * The following code sets up the drag-and-drop area, and establishes
@@ -107,8 +33,6 @@ function enableIcons() {
 var isAdvancedUpload = 'FormData' in window && 'FileReader' in window;
 var $form = $('.box');
 if (isAdvancedUpload) {
-    $form.addClass('has-advanced-upload');
-    $('.box__dragndrop').css('display', 'inline');
     $form.on('drag dragstart dragend dragover dragenter dragleave drop', function(ev) {
         ev.preventDefault();
         ev.stopPropagation();
@@ -125,7 +49,7 @@ if (isAdvancedUpload) {
         $.when( filechecks(droppedFiles) ).then(function() {
             $.when( ldImgs(validated) ).then(function() {
                 $.when( ldNodes(FR_Images) ).then(function() {
-                    resetImageLoads();
+                    window.open(newed, "_self");
                 });
             });
         });
@@ -153,7 +77,7 @@ const previewImgs = (flist) => {
     $.when( filechecks(flist) ).then(function() {
         $.when( ldImgs(validated) ).then(function() {
             $.when( ldNodes(FR_Images) ).then(function() {
-                resetImageLoads();
+                window.open(newed, "_self");
             });
         });
     });
@@ -270,7 +194,7 @@ const filechecks = (candidates) => {
             filereader.readAsArrayBuffer(blob);
         }(magicdef, file));
     }
-    return $.when.apply($, promises); // return when promises fulfilled
+    return $.when.apply($, promises); // return a variable set of promises
 }
 
 /**
@@ -305,7 +229,7 @@ const ldImgs = (imgs) => {
         }(deferred, imgs[i]));
         reader.readAsDataURL(imgs[i]);
     }
-    return $.when.apply($, promises); // return when promises fulfilled
+    return $.when.apply($, promises); // return a variable set of promises
 }
 
 /**
@@ -369,17 +293,21 @@ const ldNodes = (fr_objs) => {
         var def = new $.Deferred();
         promises.push(def);
 
-        (function(def, itemno, imgname, data){
+        (function(def, imgname, data){
             imgs[j].onload = function(e) {
                 var usable = true;
+                var exifdat;
+                var mappable = true;
                 EXIF.getData(this, function() {
                     /**
                      * Exif data is extracted in order to supply information
                      * to the database. If no lat/lng, user is notified, but
                      * image is uploaded. If no height or width data, user is
                      * notified that image is not usable and can not be uploaded.
+                     * 
+                     * NOTE: If you try to pass a null via ajax, it will be seen
+                     * as a STRING "null"! Hence, no lat/lng/date's = 0;
                      */
-                    let mappable = true;
                     let exifht = typeof EXIF.getTag(this, 'PixelYDimension');
                     if (exifht !== 'undefined') {
                         var origHt = EXIF.getTag(this, 'PixelYDimension');
@@ -397,34 +325,28 @@ const ldNodes = (fr_objs) => {
                     if (typeof EXIF.getTag(this, "GPSLatitude") !== 'undefined') {
                         var plat = extractLatLng(EXIF.getTag(this, "GPSLatitude"));
                     } else {
-                        var plat = null;
+                        var plat = 0;
                         mappable = false;
                     }
                     if (typeof EXIF.getTag(this, "GPSLongitude") !== 'undefined') {
                         var plng = extractLatLng(EXIF.getTag(this, "GPSLongitude"));
                         if (plng > 0) plng = -1 * plng;
                     } else {
-                        var plng = null;
+                        var plng = 0;
                         mappable = false;
                     }
                      if (typeof EXIF.getTag(this, "DateTimeOriginal") !== 'undefined') {
                         var pdate = EXIF.getTag(this, "DateTimeOriginal");
                     } else {
-                        var pdate = null;
+                        var pdate = 0;
                     }
-                    exifdat = {ehike: ehikeIndxNo, imght: origHt, imgwd: origWd,
-                        fname: imgname, lat: plat, lng: plng, date: pdate};
-                    if (usable) {
-                        if (!mappable) {
-                            alert( imgname + " has no location data - it can be uploaded,\n" +
-                                "but cannot be attached to the hike map");
-                        }
-                    } else {
+                    exifdat = {ehike: ehikeIndxNo, fname: imgname, 
+                            lat: plat, lng: plng, date: pdate};
+                    if (!usable) {
                         alert(imgname + " is unusable and cannot be uploaded");
                         $('#ldg').css('display', 'none');
                         return;
                     }
-                    ajaxExif[itemno] = exifdat;
                 });
                 if (usable) {
                     // create a DOM element in which to place the image
@@ -450,35 +372,31 @@ const ldNodes = (fr_objs) => {
                     // the resized image:
                     var dataurl = canvas.toDataURL('image/jpeg', 0.6);
                     var blob = dataURItoBlob(dataurl);
+                    // prepare ajax data
                     var formDat = new FormData();
                     formDat.append("file", blob);
                     formDat.append("fname", imgname);
-                    var store_def = new $.Deferred();
+                    formDat.append("ehike", exifdat.ehike);
+                    formDat.append("fname", exifdat.fname);
+                    formDat.append("imght", height);
+                    formDat.append("imgwd", width);
+                    formDat.append("lat", exifdat.lat);
+                    formDat.append("lng", exifdat.lng);
+                    formDat.append("date", exifdat.date);
+                    formDat.append("mappable", mappable)
                     $.ajax({
-                        url: 'zstore.php',
+                        url: 'saveImage.php',
                         method: 'post',
                         data: formDat,
-                        dataType: 'json',
                         processData: false,
                         contentType: false,
-                        success: function(picinfo) {
-                            ajaxExif[itemno].imgwd = picinfo[0];
-                            ajaxExif[itemno].imght = picinfo[1];
-                            let upld_src = picinfo[4] + picinfo[2];
-                            ajaxExif[itemno].thumb = picinfo[3];
-                            let src_id = 'img' + itemno;
-                            let pgimg = '<div class="image-container">' +
-                                '<img id="' + src_id + '" class="not-saved" src="'
-                                    + upld_src + '" height="' + DISPLAY_HEIGHT +
-                                    '" alt="image to upload" /><img id="del' + itemno
-                                    + '" class="dels" src="../images/deleteIcon.png" />';
-                                '</div>';
-                            $('#image-row').append(pgimg);
-                            let tsv_def = new $.Deferred();
-                            updateTSV(ajaxExif[itemno], tsv_def);
-                            $.when(tsv_def).then(function() {
-                                def.resolve();
-                            });
+                        success: function(mapping) {
+                            if (mapping === 'NO') {
+                                alert( imgname + " has no location data - " +
+                                    "it was uploaded,\nbut cannot be attached " +
+                                    "to the hike map");
+                            }
+                            def.resolve();
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
                             var newDoc = document.open();
@@ -489,42 +407,8 @@ const ldNodes = (fr_objs) => {
                     });
                 }
             }
-        }(def, imgid, picname, fr_objs[j]['data']));
+        }(def, picname, fr_objs[j]['data']));
         imgs[j].src = fr_objs[j]['data'];
     }
     return $.when.apply($, promises);            
 }
-
-/**
- * This function ajaxes the TSV data and stores it in the table
- * 
- * @param {object} tsvdat Object containing all TSV data needed
- * @param {Deferred} def  Triggers resolution of a deferred in caller
- * @return {null}
- */
-function updateTSV(tsvdat, def) {
-    $.ajax({
-        url: 'saveImage.php',
-        method: 'post', 
-        data: tsvdat,
-        success: function() {
-            def.resolve();
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            var newDoc = document.open();
-            newDoc.write(jqXHR.responseText);
-            newDoc.close();
-        }
-    });
-    return;
-}
-
-/**
- * Form submission simply returns to the editor
- */
-$('#save').on('click', function(ev) {
-    ev.preventDefault();
-    var user = $('#eusr').text();
-    var newed = "editDB.php?hikeNo=" + ehikeIndxNo + "&usr=" + user + "&tab=2";
-        window.open(newed, "_self");
-});

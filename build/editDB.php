@@ -23,8 +23,8 @@ require "dataForEditor.php";
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="editDB.css" type="text/css" rel="stylesheet" />
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <link href="editDB.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>
@@ -45,45 +45,35 @@ require "dataForEditor.php";
     that the changes, though saved, will not show up on the main site until
     they have been formally released.
 </h3>
-<p style="font-size:18px;color:Brown;">Preview page with current edits
-    (i.e. edits already applied):&nbsp;<button id="preview"
-    style="font-size:18px;color:DarkBlue;">Preview</button>
-    <span id="atxt">Apply the Edits</span></p>
+<p style="font-size:18px;">Preview page with applied edits:&nbsp;
+    <button id="preview">Preview</button><span id="atxt">Apply the Edits</span>
+</p>
 <!-- tabs -->
 <button id="t1" class="tablist active">Basic Data</button>
 <button id="t2" class="tablist">Photo Selection</button>
 <button id="t3" class="tablist">Descriptive Text</button>
 <button id="t4" class="tablist">Related Hike Info</button>
 <div id="line"></div>
+
 <div id="tab1" class="active tab-panel">
 <form action="saveTab1.php" method="POST" enctype="multipart/form-data">
-    <?php
-    require 'tab1display.php';
-    ?>
+    <?php require 'tab1display.php';?>
 </form>
 </div>
 
 <div id="tab2" class="tab-panel">
-<form action="saveTab2.php" method="POST">
-    <?php
-    require 'tab2display.php';
-    ?>
-</form>      
+    <?php require 'tab2display.php';?>
 </div>
 
 <div id='tab3' class='tab-panel'>
 <form action="saveTab3.php" method="POST">
-    <?php
-    require 'tab3display.php';
-    ?>
+    <?php require 'tab3display.php';?>
 </form>
 </div>
 
 <div id="tab4" class="tab-panel">
 <form action="saveTab4.php" method="POST" enctype="multipart/form-data">
-    <?php
-    require 'tab4display.php';
-    ?>
+    <?php require 'tab4display.php';?>
 </form>
 </div>
 
@@ -91,6 +81,8 @@ require "dataForEditor.php";
 <div class="popupCap"></div>
 <script src="../scripts/menus.js"></script>
 <script src="editDB.js"></script>
+<script src="ktesaUploader.js"></script>
+<script src="exifReader.js"></script>
 
 </body>
 </html>
