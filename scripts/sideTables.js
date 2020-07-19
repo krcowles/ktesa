@@ -84,6 +84,7 @@ function infoWin(hike, loc) {
         if (locaters[k].hikeid == hike) {
             let thismarker = locaters[k].pin;
             if (thismarker.clicked === false) {
+                zoomLevel = map.getZoom();
                 // clicking will set (prototype) marker.clicked = true
                 marker_click = true; // the global in map zoom test
                 google.maps.event.trigger(locaters[k].pin, 'click');
