@@ -14,8 +14,9 @@ if (descs[0] !== '') {
 // photocnt passed via php - shows how many of above have captions
 
 // NOMINAL INITIAL SETTINGS:
-var maxRowHt = 260;	
-var rowWidth = 946;  // see note at end of module; if 950, imgs may wrap
+const pageMargin = 36;
+const maxRowHt   = 260;	
+const rowWidth   = 946;  // see note at end of module; if 950, imgs may wrap
 
 function drawRows(useWidth) {
     if (itemcnt !== 0) {
