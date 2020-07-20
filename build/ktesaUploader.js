@@ -45,10 +45,12 @@ if (isAdvancedUpload) {
     })
     .on('drop', function(e) {
         $('#ldg').css('display', 'inline');
+        $('#preload').css('display', 'inline-block');
         droppedFiles = e.originalEvent.dataTransfer.files;
         $.when( filechecks(droppedFiles) ).then(function() {
             $.when( ldImgs(validated) ).then(function() {
                 $.when( ldNodes(FR_Images) ).then(function() {
+                    alert("Check");
                     window.open(newed, "_self");
                 });
             });
@@ -74,6 +76,7 @@ $('#file').change(function() {
  */
 const previewImgs = (flist) => {
     $('#ldg').css('display', 'inline');
+    $('#preload').css('display', 'inline-block');
     $.when( filechecks(flist) ).then(function() {
         $.when( ldImgs(validated) ).then(function() {
             $.when( ldNodes(FR_Images) ).then(function() {
@@ -344,7 +347,8 @@ const ldNodes = (fr_objs) => {
                             lat: plat, lng: plng, date: pdate};
                     if (!usable) {
                         alert(imgname + " is unusable and cannot be uploaded");
-                        $('#ldg').css('display', 'none');
+                        //$('#ldg').css('display', 'none');
+                        //$('#preload').css('display', 'none');
                         return;
                     }
                 });

@@ -26,7 +26,8 @@
     </label>
 </span><br />
 <p id="ldg">Processing images&hellip;Please wait
-</p>
+</p><div id="preload"><img src="../images/loader-64x/Preloader_4.gif"
+    alt="Loading image" /></div>
 <p>
     <em>Edit captions below each photo as needed and assign display options.</em>
 </p>

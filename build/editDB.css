@@ -219,6 +219,12 @@ div[id^="d"] {
 .box.is-dragover {
     background-color: grey;
 }
+#preload {
+    display: none;
+    position: relative;
+    top: 32px;
+    left: 320px;
+}
 /* tab4 items */
 .bkauths {
     position: relative;
