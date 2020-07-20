@@ -47,20 +47,23 @@ require "../php/global_boot.php";
         <p id="features">
             One of the features of this site 
             is that not all of the hikes listed can be found in popular hiking books,
-            or even in on-line trail apps. Check out "What You Will See" below. Other
-            features are described below.
+            or even in on-line trail apps. Check out "What You Will See" below.
         </p>
     </div>
     <p id="expect">WHAT YOU WILL SEE:</p>
     <div id="expl">
         <p>
         The home page for this site displays a large map with 'cluster' markers
-        indicating the number of trails to be found in that area. Clicking on a
-        cluster will zoom in on the map and decompose the cluster markers until
-        they appear as non-reducible (purple) markers. The page also shows a side
-        table of all hikes appearing in the viewable portion of the map. You may
-        zoom in on any given hike, mark it as a favorite, or go directly to the
-        hike page. You may change the table's width by dragging it's left edge.
+        indicating the number of hikes to be found in that area. Clicking on a
+        cluster marker will zoom in on the map and decompose the cluster markers
+        into groups of smaller clusters, until they appear as non-reducible (purple)
+        markers. When a purple marker is displayed, it cannot be further decomposed,
+        and will indicate the actual number of hikes in that location. CLicking on a
+        purple marker will display an information window about the hike(s). The home
+        page also shows a side table of all hikes appearing in the viewable portion
+        of the map. You may zoom in on any given hike, mark it as a favorite, or go
+        directly to the hike page. You may change the table's width by dragging it's
+        left edge.
         </p>
         
         <p>There are several menu options at the top of each page allowing you
@@ -83,7 +86,8 @@ require "../php/global_boot.php";
             </li>
             <li>When zoomed in sufficiently, tracks indicating the trail or path
                     the authors took will display, with arrows indicating
-                    the direction the authors traveled.
+                    the direction the authors traveled. Mousing over a track will
+                    also display an info-window with a link to the hike page.
             </li>
         </ul>
         <div id="t" class="twisty-right"></div>
@@ -113,14 +117,15 @@ require "../php/global_boot.php";
         <p id="hikefeat" class="maindisp">&nbsp;Hike Pages:</p>
         <ul id='hul' class="dashed"</ul>
             <li>The hikes pages include a local map showing the hike track
-                (where available), and an interactive elevation chart, showing
-                the elevation along the track.
+                and an interactive elevation chart, showing the elevation at any
+                point along the track.
             </li>
             <li>As you cursor along the chart, the corresponding hike location
                 shows up on the local map.
             </li>
             <li>Each page also includes trail descriptions,
-                links to related materials, and sample photos taken on the hike.
+                links to related materials, and sample photos taken on the hike,
+                as well as other nearby hikes, and ocassionaly alternate routes.
             </li>
             <li>Note: to allow for a wider view of the map and elevation chart, the
                 sidebar of statistics can be hidden (by clicking on the box with
