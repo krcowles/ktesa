@@ -92,23 +92,40 @@ require "../accounts/getLogin.php";
 <p id="login_result"><?= $uname;?></p>
 <p id="cookieStatus"><?= $cstat;?></p>
 <p id="userid"><?= $uid;?></p>
+<!-- Modal Windows HTML -->
 <div id="usr_login">
     <table id="loginTbl">
+        <colgroup>
+            <col style="width:124px">
+            <col style="width:24px">
+            <col style="width:168px">
+    </colgroup>
         <tbody>
             <tr>
                 <td>User name:</td>
-                <td>
-                    <input id="usrid" type="text" size="20" name="name" />
+                <td colspan="2">
+                    <input id="usrid" class="bordered" type="text" size="20"
+                        name="name" />
                 </td>
             </tr>
             <tr>
                 <td>User Password:</td>
-                <td>
-                    <input id="upass" type="password" name="password" size="20" />
+                <td colspan="2">
+                    <input id="upass" class="bordered" type="password"
+                        name="password" size="20" />
                 </td>
             </tr>
+            <tr>
+                <td colspan="2"><span id="pwlnk">Forgot Password?</span></td>
+                <td>Enter email to reset</td>
+            </tr>
+            <tr id="resetrow">
+                <td colspan="2"><input id="resetpass" class="bordered" type="text"
+                    value="" /></td>
+                <td><button id="sendemail">Send email</button></td>
+            </tr>
         </tbody>
-    </table>
+    </table><br />
     <button id="enter">Login</button><br />
 </div>
 <script src="../accounts/getLogin.js"></script>

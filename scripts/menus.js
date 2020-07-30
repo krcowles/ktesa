@@ -72,7 +72,8 @@ function gotoPage(content) {
             break;
         case 'Log in':
             modal.open(
-                {content: login_content, height: '86px', width: '290px', id: 'logins'}
+                {content: login_content, height: '156px', width: '316px',
+                    id: 'logins'}
             );
             return; 
         case 'Log out':
