@@ -16,7 +16,7 @@ if (descs[0] !== '') {
 // NOMINAL INITIAL SETTINGS:
 const pageMargin = 36;
 const maxRowHt   = 260;	
-const rowWidth   = 946;  // see note at end of module; if 950, imgs may wrap
+const rowWidth   = 940;  // see note at end of module; if 950, imgs may wrap
 
 function drawRows(useWidth) {
     if (itemcnt !== 0) {
