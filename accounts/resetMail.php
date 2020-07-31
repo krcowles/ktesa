@@ -15,7 +15,7 @@ $msg = <<<LNK
 <p><a href="https://nmhikes.com/accounts/renew.php?user=
 LNK;
 
-$email = filter_input(INPUT_GET, 'email', FILTER_VALIDATE_EMAIL);
+$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 if ($email === false) {
     echo "The email {$email} is not valid";
 } else {
