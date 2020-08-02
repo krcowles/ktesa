@@ -11,8 +11,9 @@
 require "../php/global_boot.php";
 
 $msg = <<<LNK
-<h2>Your request to reset your nmhikes.com password was received</h2>
-<p><a href="https://nmhikes.com/accounts/renew.php?user=
+<h2>Do not reply to this message</h2>
+<h3>Your request to reset your nmhikes.com password was received<br />
+<a href="https://nmhikes.com/accounts/renew.php?user=
 LNK;
 
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
@@ -29,9 +30,8 @@ if ($email === false) {
         $name = $status['username'];
         $to  = $email;
         $subject = 'Password Reset for NM Hikes';
-        $message = $msg . $name . '">Click here to reset</a></p>';
-        $headers = 'From: The nmhikes.com admin team' . "\r\n";
-        $headers .= 'MIME-Version: 1.0' . "\r\n";
+        $message = $msg . $name . '">Click here to reset</a></h3>';
+        $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
         // Mail it
         mail($to, $subject, $message, $headers);
