@@ -189,7 +189,9 @@ if ($newstyle) {
      */
     $extLoc = strrpos($gpxfile, '.');
     $gpsvMap = substr($gpxfile, 0, $extLoc); // strip file extension
-    $tmpMap = "../maps/tmp/" . $uname . "_" . $gpsvMap . "_" . time() . ".php";
+    $date = date_create();
+    $date_str = date_format($date, 'YmdHisu');
+    $tmpMap = "../maps/tmp/" . $uname . "_" . $gpsvMap . "_" . $date_str . ".php";
     if (($mapHandle = fopen($tmpMap, "w")) === false) {
         $mapmsg = "Contact Site Master: could not open tmp map file: " .
             $tmpMap . ", for writing";
