@@ -10,6 +10,8 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require_once "../accounts/getLogin.php";
+
 $tbl = filter_input(INPUT_GET, 'age');
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_SANITIZE_NUMBER_INT);
 $distThreshParm = filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT);
@@ -186,8 +188,8 @@ if ($newstyle) {
      * sub-directory. The file is deleted after loading the page.
      */
     $extLoc = strrpos($gpxfile, '.');
-    $gpsvMap = substr($gpxfile, 0, $extLoc) . "-"; // strip file extension
-    $tmpMap = "../maps/tmp/" . $gpsvMap . ".php";
+    $gpsvMap = substr($gpxfile, 0, $extLoc); // strip file extension
+    $tmpMap = "../maps/tmp/" . $uname . "_" . $gpsvMap . "_" . time() . ".php";
     if (($mapHandle = fopen($tmpMap, "w")) === false) {
         $mapmsg = "Contact Site Master: could not open tmp map file: " .
             $tmpMap . ", for writing";
