@@ -198,7 +198,6 @@ if ($bop !== '') {
 <?php endif; ?>
 <?php if (isset($tmpMap)) : ?>
     <script type="text/javascript">
-    /*
         $(document).ready(function() {
             $.ajax({
                 url: '../php/tmpMapDelete.php',
@@ -214,7 +213,6 @@ if ($bop !== '') {
                 }
             });
         });
-        */
     </script>
 <?php endif; ?>
 
