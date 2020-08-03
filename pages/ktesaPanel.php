@@ -11,7 +11,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require "../accounts/getLogin.php";
+require_once "../accounts/getLogin.php";
 ?>
 <div id="panel">
     <!-- Navigation Bar -->

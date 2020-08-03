@@ -12,6 +12,8 @@
  */
 require "../php/global_boot.php";
 require "hikePageData.php";
+require_once "../accounts/getLogin.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -50,7 +52,7 @@ function off() {
 </div>
 <?php endif; ?>
 
-<?php require "ktesaPanel.php"; ?>
+<?php require "ktesaPanel.php";?>
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="page_id" style="display:none">Page</p>
 <p id="gpx" style="display:none"><?= $gpxPath;?></p>
@@ -196,6 +198,7 @@ if ($bop !== '') {
 <?php endif; ?>
 <?php if (isset($tmpMap)) : ?>
     <script type="text/javascript">
+    /*
         $(document).ready(function() {
             $.ajax({
                 url: '../php/tmpMapDelete.php',
@@ -211,6 +214,7 @@ if ($bop !== '') {
                 }
             });
         });
+        */
     </script>
 <?php endif; ?>
 
