@@ -15,6 +15,7 @@ var drawnClusters = [];  // clusters which have had all hikes drawn
 var marker_click = false;
 var hilite_obj = {};     // global object holding hike object & marker type
 var hilited = [];
+var zoomLevel;
 /**
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
@@ -144,8 +145,9 @@ function initMap() {
 		});
 		marker.addListener( 'click', function() {
 			marker_click = true;   // global
-			//hilite_obj = {obj: clhikes, type: 'cl'};
-			map.setZoom(13);
+			if (zoomLevel < 13) {
+				map.setZoom(13);
+			}
 			map.setCenter(location);
 			iw.open(map, this);
 			marker.clicked = true; // marker prototype property
@@ -182,8 +184,9 @@ function initMap() {
 		});
 		marker.addListener( 'click', function() {
 			marker_click = true;   // global
-			//hilite_obj = {obj: hikeobj, type: 'nm'};
-			map.setZoom(13);
+			if (zoomLevel < 13) {
+				map.setZoom(13);
+			}
 			map.setCenter(hikeobj.loc);
 			iw.open(map, this);
 			marker.clicked = true; // marker prototype property
