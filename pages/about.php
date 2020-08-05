@@ -58,7 +58,7 @@ require "../php/global_boot.php";
         cluster marker will zoom in on the map and decompose the cluster markers
         into groups of smaller clusters, until they appear as non-reducible (purple)
         markers. When a purple marker is displayed, it cannot be further decomposed,
-        and will indicate the actual number of hikes in that location. CLicking on a
+        and will indicate the actual number of hikes in that location. Clicking on a
         purple marker will display an information window about the hike(s). The home
         page also shows a side table of all hikes appearing in the viewable portion
         of the map. You may zoom in on any given hike, mark it as a favorite, or go
