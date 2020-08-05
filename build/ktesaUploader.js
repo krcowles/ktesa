@@ -287,6 +287,7 @@ const ldNodes = (fr_objs) => {
     var noOfImgs = fr_objs.length;
     var promises = [];
     var imgs = [];
+    var loaded_imgs = 0;  // track actual count, as .onload is asynchronous
     for (var j=0; j<noOfImgs; j++) {
         // create image node:
         imgs[j] = document.createElement('img');
@@ -298,6 +299,7 @@ const ldNodes = (fr_objs) => {
 
         (function(def, imgname, data){
             imgs[j].onload = function(e) {
+                loaded_imgs++;
                 var usable = true;
                 var exifdat;
                 var mappable = true;
@@ -347,8 +349,6 @@ const ldNodes = (fr_objs) => {
                             lat: plat, lng: plng, date: pdate};
                     if (!usable) {
                         alert(imgname + " is unusable and cannot be uploaded");
-                        //$('#ldg').css('display', 'none');
-                        //$('#preload').css('display', 'none');
                         return;
                     }
                 });
@@ -409,6 +409,9 @@ const ldNodes = (fr_objs) => {
                             def.reject();
                         }
                     });
+                } else if (loaded_imgs === noOfImgs) {
+                    $('#ldg').css('display', 'none');
+                    $('#preload').css('display', 'none');
                 }
             }
         }(def, picname, fr_objs[j]['data']));
