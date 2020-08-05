@@ -1,20 +1,11 @@
 /* Styles for the New Mexico Hiking Adventures page */
 body {
-    width: 960px;
-    margin-left: auto;
-    margin-right: auto;
     margin-top: 0;
     font-family: Arial, Verdana;
     background-color: #dfdfdf;
     border-style: solid;
     border-width: 2px;
     border-color: DarkBlue;
-}
-#container {
-    width: 940px;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
 }
 img#tompic {
     display: block;

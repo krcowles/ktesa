@@ -1,15 +1,9 @@
+/**
+ * @fileoverview A simple page explaining the site's features
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ */
 $( function() {  // wait until document is loaded...
-
-// ktesaPanel adjustments for unique page constraints of home page:
-function centerLabel() {
-    var bodyLoc  = $('body').offset();
-    var txtLeft = bodyLoc.left + 415 + 'px';
-    var txtTop  = bodyLoc.top + 33 + 'px';
-    $('#homeLabel').css('left', txtLeft);
-    $('#homeLabel').css('top', txtTop);
-}
-centerLabel();
-$(window).resize(centerLabel);
 
 /**
  * This section manages the 'twisty' text on the bottom of the page
