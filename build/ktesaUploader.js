@@ -345,11 +345,9 @@ const ldNodes = (fr_objs) => {
                     } else {
                         var pdate = 0;
                     }
-                    exifdat = {ehike: ehikeIndxNo, fname: imgname, 
+                    if (usable) {
+                        exifdat = {ehike: ehikeIndxNo, fname: imgname, 
                             lat: plat, lng: plng, date: pdate};
-                    if (!usable) {
-                        alert(imgname + " is unusable and cannot be uploaded");
-                        return;
                     }
                 });
                 if (usable) {
@@ -409,9 +407,9 @@ const ldNodes = (fr_objs) => {
                             def.reject();
                         }
                     });
-                } else if (loaded_imgs === noOfImgs) {
-                    $('#ldg').css('display', 'none');
-                    $('#preload').css('display', 'none');
+                } else {
+                    alert(imgname + " is unusable and cannot be uploaded");
+                    def.resolve();
                 }
             }
         }(def, picname, fr_objs[j]['data']));
