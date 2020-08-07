@@ -1,0 +1,41 @@
+<?php
+/**
+ * This script sends the user a link to reset his/her password
+ * PHP Version 7.4
+ * 
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+require "../php/global_boot.php";
+
+$msg = <<<LNK
+<h2>Do not reply to this message</h2>
+<h3>Your request to reset your nmhikes.com password was received<br />
+<a href="https://nmhikes.com/accounts/renew.php?user=
+LNK;
+
+$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+if ($email === false) {
+    echo "The email {$email} is not valid";
+} else {
+    $register_req = "SELECT `username` FROM `USERS` WHERE `email` = :email;";
+    $register = $pdo->prepare($register_req);
+    $register->execute(["email" => $email]);
+    $status = $register->fetch(PDO::FETCH_ASSOC);
+    if ($status === false) {
+        echo "Your email {$email} was not located in our database";
+    } else { 
+        $name = $status['username'];
+        $to  = $email;
+        $subject = 'Password Reset for NM Hikes';
+        $message = $msg . $name . '">Click here to reset</a></h3>';
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+        // Mail it
+        mail($to, $subject, $message, $headers);
+        echo "OK";
+    }
+
+}

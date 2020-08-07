@@ -5,7 +5,7 @@ var unProcSpace = 0;  // used to detect multiple small incremental growth in res
 var prevWidth = winWidth; // last established window size (recalculated during resize event)
 var tooLittle = 8;  // don't grow images if re-size only increased width by this amount or less
 var initLoad = true;
-var initSize = winWidth - 24;
+var initSize = winWidth - pageMargin;
 if (initSize > 946) { // redraw rows
     sizeProcessor();
 } else {
@@ -68,7 +68,7 @@ function sizeProcessor() {
     eventSet();
 }
 function imageSizer() {
-    var picRowWidth = winWidth - 24;
+    var picRowWidth = winWidth - pageMargin;
     if (initLoad) {  // initial page width larger than 946
         drawRows(picRowWidth);
     } else {  // normal resize event

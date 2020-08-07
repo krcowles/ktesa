@@ -84,6 +84,7 @@ function infoWin(hike, loc) {
         if (locaters[k].hikeid == hike) {
             let thismarker = locaters[k].pin;
             if (thismarker.clicked === false) {
+                zoomLevel = map.getZoom();
                 // clicking will set (prototype) marker.clicked = true
                 marker_click = true; // the global in map zoom test
                 google.maps.event.trigger(locaters[k].pin, 'click');
@@ -444,7 +445,8 @@ const IdTableElements = (boundsStr, zoom) => {
                 let data = idHike(allHikes[hikeindx], hikeobj);
                 hikearr.push(data);
                 if (zoom) {
-                    let cliw = '<div id="iwCH">' + hike.name + '<br />Length: ' +
+                    let cliw = '<div id="iwCH"><a href="hikePageTemplate.php?hikeIndx=' + 
+                        hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
                         hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
                         '<br />Difficulty: ' + hike.diff + '</div>';
                     singles.push(hike.indx);
@@ -466,7 +468,8 @@ const IdTableElements = (boundsStr, zoom) => {
             let data = idHike(allHikes[hikeindx], hikeobj);
             hikearr.push(data);
             if (zoom) {
-                let nmiw = '<div id="iwNH">' + hike.name + '<br />Length: ' +
+                let nmiw = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx=' +
+                    hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
                     hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
                     '<br />Difficulty: ' + hike.diff + '</div>';
                 singles.push(hike.indx);

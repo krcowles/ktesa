@@ -10,7 +10,6 @@
  */
 require "../php/global_boot.php";
 $user  = filter_input(INPUT_GET, 'user');
-$here = getcwd();
 
 $usr_req = "SELECT * FROM USERS WHERE username = :usr;";
 $dbdata = $pdo->prepare($usr_req);
@@ -52,7 +51,7 @@ $id = $userdata['userid'];
 
 <body>
 <?php require "../pages/ktesaPanel.php"; ?>
-<p id="trail">New User Registration</p>
+<p id="trail">Renew/Reset Registration</p>
 <p id="page_id" style="display:none">Admin</p>
 
 <div id="container">

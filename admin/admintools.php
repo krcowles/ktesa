@@ -22,8 +22,7 @@ require "../php/global_boot.php";
     <meta name="robots" content="nofollow" />
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
-    <link rel="stylesheet"
-        href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="../styles/jquery-ui.css">
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
     <script type="text/javascript">
