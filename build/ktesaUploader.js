@@ -50,7 +50,6 @@ if (isAdvancedUpload) {
         $.when( filechecks(droppedFiles) ).then(function() {
             $.when( ldImgs(validated) ).then(function() {
                 $.when( ldNodes(FR_Images) ).then(function() {
-                    alert("Check");
                     window.open(newed, "_self");
                 });
             });
