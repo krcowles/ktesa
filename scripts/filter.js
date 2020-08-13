@@ -321,6 +321,10 @@ function setupCheckboxes() {
 
 // draw the map
 $('#map').on('click', function() {
+    if (mapHikes.length === 0) {
+        alert("No hike checkboxes have been checked");
+        return;
+    }
 	var query = '';
 	mapHikes.forEach(function(track) {
 		query += "m[]=" + track + "&";
