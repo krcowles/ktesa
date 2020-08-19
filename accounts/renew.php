@@ -14,6 +14,19 @@ $user  = filter_input(INPUT_GET, 'user');
 if (empty($user)) {
     throw new Exception("No user name received");
 }
+// temporarily extend expiration to prevent infinite loop
+$currentDate = date('Y-m-d');
+$parms = explode("-", $currentDate);
+if ($parms[1] === '12') {
+    $parms[0] += 1;
+    $parms[2] = 30;
+} else {
+    $parms[1] += 1;
+}
+$extended = implode("-", $parms);
+$timeReq = "UPDATE `USERS` SET `passwd_expire` = '{$extended}' " .
+    "WHERE `username` = '{$user}';";  
+$update = $pdo->query($timeReq);
 $usr_req = "SELECT `username`, `userid`  FROM USERS WHERE " .
     "`username` = :usr;";
 $dbdata = $pdo->prepare($usr_req);
