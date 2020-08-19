@@ -210,11 +210,9 @@ function idHike(indx, obj) {
 var listdone = new $.Deferred();
 var favlist = [];
 var ftbl = '../pages/getFavorites.php';
-var fdat = {userid: userid};  // userid specified in getLogin.js
 $.ajax({
     url: ftbl,
-    method: 'post',
-    data: fdat,
+    method: 'get',
     dataType: 'text',
     success: function(flist) {
         favlist = JSON.parse(flist);
@@ -297,7 +295,7 @@ function enableFavorites() {
             let href = $(this).parent().next().children().eq(0).attr('href');
             let digitpos = href.indexOf('=') + 1;
             var hikeno = href.substr(digitpos);
-            var ajaxdata = {id: userid, no: hikeno};
+            var ajaxdata = {no: hikeno};
             var isrc = $(this).attr('src');
             var newsrc;
             if (isrc.indexOf('Yellow') !== -1) { // currently a not favorite

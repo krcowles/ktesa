@@ -1,8 +1,13 @@
-$(function() {   // document ready function
-
 /**
- * Menu operation
+ * @fileoverview This script controls actions of the jQuery-UI-based menu
+ * 
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ * 
+ * @version 2.0 Redesigned login for security improvement
  */
+$(function() {  // document ready function
+
 var menuWidth = ['140', '180', '140', '140']; // calculate these later...
 var subWidth = ['140']; // ditto: unused as there is only one sub-menu
 var $mainMenus = $('.menu-main');
@@ -11,34 +16,39 @@ var navBottom = navPos.top + $('#navbar').height() + 5 + 'px';
 // usr_login div hidden during page load to prevent display when alerts appear
 $('#usr_login').css('display', 'block');
 var login_content = $('#usr_login').detach();
+var support = $('#feedback').detach();
 // page_type allows setting of icon in the menu
 var page_type = $('#page_id').text();
 var icon = '<span class="ui-icon ui-icon-circle-arrow-e"></span>';
-switch(page_type.trim()) {
+switch(page_type.trim()) { // only on actual pages...
+    case "Home":
+        $('#home').prepend(icon);
+        break;
     case "Table":
         $('#table').prepend(icon);
         break;
-    case "Home":
-        $('#home').prepend(icon);
+    case "Admin":
+        $('#atools').prepend(icon);
         break;
     case "Favorites":
         $('#yours').prepend(icon);
         break;
+    case "Create":
+        $('#newpg').prepend(icon);
+        break;
+    case "Edit":
+        $('#editor').prepend(icon);
+        break;
+    case "EditPub":
+        $('#pubtbl').prepend(icon);
     case "About":
         $('#about').prepend(icon);
-        break;
-    case "Reg":
-        $('#member').prepend(icon);
-        break;
-    case "Admin":
-        $('#atools').prepend(icon);
         break;
     default:
 }
 function gotoPage(content) {
     // match up text with page
     var page;
-    var usr = login_name;
     switch (content.trim()) {
         case 'Home':
             window.open('../index.html', '_self');
@@ -54,7 +64,7 @@ function gotoPage(content) {
             // no script yet
             break;
         case 'Show Favorites':
-            let favpg = '../pages/favTable.php?usr=' + userid;
+            let favpg = '../pages/favTable.php';
             window.open(favpg, '_self');
             break;
         case 'Create New Hike':
@@ -93,12 +103,18 @@ function gotoPage(content) {
         case 'About this site':
             window.open('../pages/about.php', '_self');
             break;
+        case 'Contact us':
+            modal.open(
+                {content: support, height: '140px', width: '240px',
+                    id: 'contact'}
+            );
+            break;
         default:
             alert(content);
     }
     if (typeof page !== 'undefined') {
         $.get({
-            url: '../php/opener.php?page=' + page + '&user=' + usr,
+            url: '../php/opener.php?page=' + page,
             dataType: "html",
             success: function(redir) {
                 $('#login_result').after(redir);

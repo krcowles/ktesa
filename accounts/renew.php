@@ -1,7 +1,10 @@
 <?php
 /**
- * This script will allow the user to renew his/her password if he/she
- * has opted to do so.
+ * This script will allow the user to renew his/her password.
+ * The only way to get here is via the login process which examines
+ * the user's expiration date and redirects here if it has
+ * expired (or is about to expire) and the user has confirmed he/she
+ * wishes to renew.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -10,40 +13,14 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-$user  = filter_input(INPUT_GET, 'user');
-if (empty($user)) {
-    throw new Exception("No user name received");
-}
-// temporarily extend expiration to prevent infinite loop
-$currentDate = date('Y-m-d');
-$parms = explode("-", $currentDate);
-if ($parms[1] === '12') {
-    $parms[0] += 1;
-    $parms[2] = 30;
-} else {
-    $parms[1] += 1;
-}
-$extended = implode("-", $parms);
-$timeReq = "UPDATE `USERS` SET `passwd_expire` = '{$extended}' " .
-    "WHERE `username` = '{$user}';";  
-$update = $pdo->query($timeReq);
-$usr_req = "SELECT `username`, `userid`  FROM USERS WHERE " .
-    "`username` = :usr;";
-$dbdata = $pdo->prepare($usr_req);
-$dbdata->execute(['usr' => $user]);
-$userdata = $dbdata->fetch(PDO::FETCH_ASSOC);
-if ($userdata === false) {
-    throw new Exeption("User {$user} not located");
-}
-$username = $userdata['username'];
-$userid = $userdata['userid']; // Not yet used
+
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
     <title>Password Renewal</title>
     <meta charset="utf-8" />
-    <meta name="description" content="User update password et al" />
+    <meta name="description" content="User password update form" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
@@ -55,7 +32,7 @@ $userid = $userdata['userid']; // Not yet used
 
 <body>
 <?php require "../pages/ktesaPanel.php"; ?>
-<p id="trail">Renew/Reset Registration</p>
+<p id="trail">Renew Password</p>
 <p id="page_id" style="display:none">Admin</p>
 
 <div id="container">

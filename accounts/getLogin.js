@@ -1,14 +1,21 @@
-// are cookies enabled on this browser?
+/**
+ * @fileoverview This script gets info provided by getLogin.php
+ * [located on ktesaPanel.php] and utilizes it to enable/disable
+ * menu options. It also provides user authentication on login, 
+ * with expired/renew password capability.
+ * 
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ */
 var cookies = navigator.cookieEnabled ? true : false;
 var login_name = document.getElementById('login_result').textContent;
 var userid = document.getElementById('userid').textContent;
-// if a login_name appears, cookies are already enabled:
 var user_cookie_state = document.getElementById('cookieStatus').textContent;
-// defaults to 'OK' unless a registered user is logged in
 if (cookies) {
     if (user_cookie_state === 'NONE') {
         alert("No user registration has been located for " + login_name);
         login_name = 'none';
+        notLoggedInItems();
     } else if (user_cookie_state === 'EXPIRED') {
         var ans = confirm("Your password has expired\n" + 
             "Would you like to renew?");
@@ -55,7 +62,7 @@ function loggedInItems() {
     $('#lout').removeClass('ui-state-disabled');
     //$('#pubs').removeClass('ui-state-disabled'); -- removed for now
     $('#yours').removeClass('ui-state-disabled');
-    $('#viewEds').removeClass('ui-state-disabled');
+    //$('#viewEds').removeClass('ui-state-disabled'); -- removed for now
     $('#newPg').removeClass('ui-state-disabled');
     $('#edits').removeClass('ui-state-disabled');
     $('#epubs').removeClass('ui-state-disabled');
@@ -68,7 +75,7 @@ function notLoggedInItems() {
     $('#lout').addClass('ui-state-disabled');
     //$('#pubs').addClass('ui-state-disabled'); -- removed for now
     $('#yours').addClass('ui-state-disabled');
-    $('#viewEds').addClass('ui-state-disabled');
+    //$('#viewEds').addClass('ui-state-disabled'); -- removed for now
     $('#newPg').addClass('ui-state-disabled');
     $('#edits').addClass('ui-state-disabled');
     $('#epubs').addClass('ui-state-disabled');
@@ -87,16 +94,16 @@ function validateUser(usr_name, usr_pass) {
         dataType: "text",
         success: function(srchResults) {
             var status = srchResults;
-            if (status.indexOf('ADMIN') >= 0) {
+            if (status.indexOf('ADMIN') !== -1) {
                 loggedInItems();
                 adminLoggedIn();
                 alert("Admin logged in");
                 window.location.reload(true);
-            } else if (status.indexOf('LOCATED') >= 0) {
+            } else if (status.indexOf('LOCATED') !== -1) {
                 loggedInItems();
                 alert("You are logged in");
                 window.location.reload(true);
-            } else if (status.indexOf('RENEW') >=0) {
+            } else if (status.indexOf('RENEW') !== -1) {
                 // in this case, the old cookie has been set pending renewal
                 var renew = confirm("Your password is about to expire\n" + 
                     "Would you like to renew?");
@@ -105,7 +112,7 @@ function validateUser(usr_name, usr_pass) {
                 } else {
                     renewPassword(usr_name, 'norenew', 'valid');
                 }
-            } else if (status.indexOf('EXPIRED') >= 0) {
+            } else if (status.indexOf('EXPIRED') !== -1) {
                 var renew = confirm("Your password has expired\n" +
                     "Would you like to renew?");
                 if (renew) {
@@ -113,7 +120,7 @@ function validateUser(usr_name, usr_pass) {
                 } else {
                     renewPassword(usr_name, 'norenew', 'expired');
                 }
-            } else if (status.indexOf('BADPASSWD') >= 0) {
+            } else if (status.indexOf('BADPASSWD') !== -1) {
                 var msg = "The password you entered does not match " +
                     "your registered password;\nPlease try again";
                 alert(msg);

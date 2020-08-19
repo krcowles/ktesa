@@ -1,3 +1,4 @@
+@import "../styles/buttons.css"; 
 #panel {
     display: inline-block;
     width: 100%;
@@ -129,7 +130,9 @@
     color: darkslategray;
     z-index: 100;
 }
-#login_result, #cookieStatus, #userid, #usr_login, #ifadmin {
+/* Modal windows or other items not turned on when page loads */
+#banner, #cookieStatus, #admin, #usr_login, #cookie_banner,
+#ifadmin, #feedback {
     display: none;
 }
 #usrid, #upass {
@@ -137,9 +140,6 @@
     width: 98%;
 }
 #enter, #canceler {
-    background-color: #6D3C17;
-	color: white;
-    font-size: 16px;
     width: 80px;
     height: 28px;
     position: relative;
@@ -159,16 +159,7 @@
 }
 #sendemail {
     float: left;
-    background-color: #6D3C17;
-	color: white;
-    height: 28px;
-    font-size: 16px;
     margin-left: 18px;
-}
-#enter:hover, #canceler:hover, #sendemail:hover {
-    cursor: pointer;
-    background-color: moccasin;
-	color: black;
 }
 .bordered {
     border-style: solid;
@@ -179,3 +170,4 @@
     display: block;
     margin-left: 18px;
 }
+

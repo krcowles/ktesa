@@ -2,12 +2,12 @@
 /**
  * This script authenticates the username/password combo entered by
  * the user when submitting a login requiest. The information is 
- * compared to entries in the USERS table. If the user's browser cookies
- * are turned off, then the script allows login via php session variables.
- * PHP Version 7.1
+ * compared to entries in the USERS table.
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 require "../php/global_boot.php";
@@ -15,8 +15,11 @@ require "../php/global_boot.php";
 define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 $usrname = filter_input(INPUT_POST, 'usr_name');
 $usrpass = filter_input(INPUT_POST, 'usr_pass');
-$admin = ($usrname === 'tom' || $usrname === 'kc') ? true : false;
-$usr_req = "SELECT username,passwd,passwd_expire FROM USERS WHERE username = :usr;";
+$mstr1 = ($usrname === 'tom') ? true : false;
+$mstr2 = ($usrname === 'kc')  ? true : false;
+
+$usr_req = "SELECT `userid`,`passwd`,`passwd_expire` " .
+    " FROM `USERS` WHERE `username` = :usr;";
 $auth = $pdo->prepare($usr_req);
 $auth->bindValue(":usr", $usrname);
 $auth->execute();
@@ -24,13 +27,23 @@ $rowcnt = $auth->rowCount();
 if ($rowcnt === 1) {  // located single instance of user
     $user_dat = $auth->fetch(PDO::FETCH_ASSOC);
     if (password_verify($usrpass, $user_dat['passwd'])) {  // user data correct
-        if ($admin) {
+        if ($mstr1 || $mstr2) {
+            $_SESSION['username'] = 'mstr';
+            $_SESSION['userid'] = $mstr1 ? '1' : '2';
+            $_SESSION['expire'] = "2050-12-31";
             $adminExpire = time() + 10 * UX_DAY * 365;  // 10 yrs
-            setcookie('nmh_mstr', 'mstr', $adminExpire, "/");
+            if ($mstr1) {
+                setcookie('nmh_mstr', 'mstr', $adminExpire, "/");
+            } else {
+                setcookie('nmh_mstr', 'mstr2', $adminExpire, "/");
+            }
             echo "ADMIN";
             exit;
         } else {
             $expiration = $user_dat['passwd_expire'];
+            $_SESSION['username'] = $usrname;
+            $_SESSION['userid'] = $user_dat['userid'];
+            $_SESSION['expire'] = $expiration;
             $american = str_replace("-", "/", $expiration);
             $expdate = strtotime($american);
             if ($expdate <= time()) {

@@ -1,53 +1,77 @@
 <?php
 /**
- * This script is used by the ktesaPanel to determine whether or not
- * a user is logged in, and if so, to get the user id. The user id is
- * utilized to enable menu settings (via javascript/getLogins.js), and
- * to direct the user to the correct pages for his/her hikes for editing.
- * If there are cookies on the client's browser for this site (ktesa),
- * then they are used. If there are no cookies for this site, or if the
- * client has cookies turned off, the script will look for login via a
- * php session ($_SESSION). If not logged in via the session, the $uname
- * is set to 'none' to advise the javascript.
- * PHP Version 7.1
+ * This script checks for any incoming cookies. Presence of a
+ * cookie indicates prior opt-in for cookie use. If no cookie
+ * is detected, the cookie banner will display and the user
+ * may opt-in or opt-out. Opting out prevents cookies from 
+ * being sent to the visitor's browser. Note: having a separate
+ * admin ('master') cookie allows admins to have both an admin
+ * account and a user account (to verify user functionality).
+ * PHP Version 7.4
  * 
- * @package Display
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 
 $master = isset($_COOKIE['nmh_mstr']) ? true : false;
 $regusr = isset($_COOKIE['nmh_id'])   ? true : false;
-$uname = 'none';
-$uid = '0';
-$cstat = 'OK'; // changed below based on user cookie expiration data
-if ($regusr) {
-    $uname = $_COOKIE['nmh_id'];
-    $expirationReq = "SELECT `userid`,`passwd_expire` FROM `USERS` WHERE username = ?;";
-    $userExpire = $pdo->prepare($expirationReq);
-    $userExpire->execute([$uname]);
-    $rowcnt = $userExpire->rowCount();
-    if ($rowcnt === 0) {
-        $cstat = 'NONE';
-    } elseif ($rowcnt === 1) {
-        $fetched = $userExpire->fetch(PDO::FETCH_ASSOC);
-        $uid = $fetched['userid'];
-        $expDate = $fetched['passwd_expire'];
-        $american = str_replace("-", "/", $expDate);
-        $orgDate = strtotime($american);
-        if ($orgDate <= time()) {
-            $cstat = 'EXPIRED';
-        } else {
-            $days = floor(($orgDate - time())/UX_DAY);
-            if ($days <= 5) {
-                $cstat = 'RENEW';
+$banner = ($master || $regusr) ? "no" : "yes";
+$cookie_state = "OK";  // may change depending on user verification
+$admin = false;
+
+// Some test cases have resulted in 'partial logins':
+if (!isset($_SESSION['username']) || !isset($_SESSION['userid']) 
+    || !isset($_SESSION['expire'])
+) {
+     unset($_SESSION['username']);
+     unset($_SESSION['userid']);
+     unset($_SESSION['expire']);   
+}
+
+if ($banner === 'no' && !isset($_SESSION['username'])) {  // user previously opted in
+    if ($regusr) {
+        $username = $_COOKIE['nmh_id'];
+        $expirationReq = "SELECT `userid`,`passwd_expire` FROM " .
+            "`USERS` WHERE username = ?;";
+        $userExpire = $pdo->prepare($expirationReq);
+        $userExpire->execute([$username]);
+        $rowcnt = $userExpire->rowCount();
+        if ($rowcnt === 0) {
+            $cookie_state = 'NONE'; // no user matching this cookie
+        } elseif ($rowcnt === 1) {
+            $expire_data = $userExpire->fetch(PDO::FETCH_ASSOC);
+            $userid = $expire_data['userid'];
+            $expDate = $expire_data['passwd_expire'];
+            // protected login credentials:
+            $_SESSION['username'] = $username;
+            $_SESSION['userid'] = $userid;
+            $_SESSION['expire'] = $expDate;
+            $american = str_replace("-", "/", $expDate);
+            $orgDate = strtotime($american);
+            if ($orgDate <= time()) {
+                $cstat = 'EXPIRED';
+            } else {
+                $days = floor(($orgDate - time())/UX_DAY);
+                if ($days <= 5) {
+                    $cstat = 'RENEW';
+                }
             }
+        } else {
+            $cstat = "MULTIPLE"; // for testing only; no longer possible
         }
-    } else {
-        $cstat = 'MULTIPLE';
+    } elseif ($master) {
+        $_SESSION['username'] = 'mstr';
+        if ($_COOKIE['nmh_mstr'] === 'mstr2') {
+            $_SESSION['userid'] = '2';
+        } else {
+            $_SESSION['userid'] = '1';
+        }
+        $_SESSION['expire'] = "2050-12-31";
+        $admin = true;
     }
-} elseif ($master) {
-    $uname = 'mstr';
-    $uid = '1';
+} elseif ($_SESSION['username'] === 'mstr') {
+    $admin = true;
 }

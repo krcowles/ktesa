@@ -9,6 +9,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowle29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 require "alphabeticHikes.php";
 ?> 

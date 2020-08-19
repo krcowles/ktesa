@@ -5,10 +5,11 @@
  * and a ktesa logo div, which contains a pattern bar (div) and the text
  * and images for the logo. The menus have some variable content controlled
  * by php and javascript: e.g. icon showing which page is currently active;
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Main
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 require_once "../accounts/getLogin.php";
@@ -75,6 +76,7 @@ require_once "../accounts/getLogin.php";
                 <div id="menu-help" class="menu-default">
                 <ul class="menus">
                     <li><div id="about">About this site</div></li>
+                    <li><div id="contact">Contact us</div></li>
                 </ul>
                 </div>
             </li>
@@ -89,15 +91,27 @@ require_once "../accounts/getLogin.php";
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
 </div>
-<p id="login_result"><?= $uname;?></p>
-<p id="cookieStatus"><?= $cstat;?></p>
-<p id="userid"><?= $uid;?></p>
+<p id="banner"><?= $banner;?></p>
+<p id="cookieStatus"><?= $cookie_state;?></p>
+<?php if ($admin) : ?>
+<p id="admin">admin</p>
+<?php endif; ?>
+<div id="cookie_banner">
+    <h2>This site uses cookies to save member usernames</h2>
+    <p>If you become a registered user, you can accept cookies
+    for automatic login, or reject cookies. If you reject cookies,
+    no cookie data will be collected.
+    </p>
+    <button id="accept">Accept</button>
+    <button id="reject">Reject</button>
+</div>
+
 <!-- Modal Windows HTML -->
 <div id="usr_login">
     <table id="loginTbl">
         <colgroup>
             <col style="width:124px">
-            <col style="width:24px">
+            <col style="width:24px">    
             <col style="width:168px">
     </colgroup>
         <tbody>
@@ -128,5 +142,12 @@ require_once "../accounts/getLogin.php";
     </table><br />
     <button id="enter">Login</button><br />
 </div>
-<script src="../accounts/getLogin.js"></script>
+<div id="feedback">
+    Please type your feedback or question here:<br />
+    <textarea id="fdbk"></textarea><br />
+    <button id="submit">Submit</button>
+</div>
+
+<script src="../scripts/menuControl.js"></script>
+<script src="../scripts/validateUser.js"></script>
 <script src="../scripts/modal_setup.js"></script>
