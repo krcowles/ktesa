@@ -1,0 +1,48 @@
+body {
+    margin: 0px;
+    font-family: arial, verdana;
+    background-color: #dfdfdf;
+}
+#container {
+    margin-left: 100px;
+    font-size: 22px;
+}
+.space {
+    min-width: 16px;
+}
+input[name=password], input[name=confirm] {
+    height: 32px;
+    width: 180px;
+    font-size: 18px;
+    border-radius: 8px;
+    background-color: ghostwhite;
+}
+input[name=password]:focus, input[name=confirm]:focus  {
+    outline: none;
+    border-color: navy;
+    border-width: 2px;
+    border-style: solid;
+    transition: border-color 1.5s;
+}
+#ckbox {
+    transform: scale(1.6);
+    -ms-transform: scale(1.6); /* IE */
+    -moz-transform: scale(1.6); /* FF */
+    -webkit-transform: scale(1.6); /* Safari and Chrome */
+    -o-transform: scale(1.6); /* Opera */
+    padding: 10px;
+}
+button {
+    font-size: 20px;
+    width: 132px;
+	height: 38px;
+    background-color: #6D3C17;
+    color: white;
+    margin-bottom: 12px;
+    border-radius: 8px;
+}
+button:hover {
+	cursor: pointer;
+	background-color: moccasin;
+	color: black;
+}
