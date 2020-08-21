@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -81,7 +81,7 @@ CREATE TABLE `CLUSHIKES` (
   `indxNo` smallint(6) NOT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -239,7 +239,9 @@ INSERT INTO CLUSHIKES VALUES
 ('151','239','43'),
 ('152','241','16'),
 ('153','243','43'),
-('154','244','21');
+('154','244','21'),
+('155','246','48'),
+('156','247','48');
 
 
 
@@ -251,11 +253,11 @@ CREATE TABLE `CLUSTERS` (
   `lng` int(10) DEFAULT NULL,
   `page` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`clusid`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSTERS VALUES
-('1','Bandelier Index','357790390','-1062707880','1'),
+('1','Bandelier Index','358473238','-1064217416','1'),
 ('2','Chaco Index','360302500','-1079108000','2'),
 ('3','El Malpais Index','349704070','-1078101520','3'),
 ('4','Petroglyphs Index','351386440','-1067111960','4'),
@@ -301,7 +303,8 @@ INSERT INTO CLUSTERS VALUES
 ('44','Michael Emery Group','351462347','-1064825834','0'),
 ('45','Three Gun Springs Group','350763722','-1064442503','0'),
 ('46','Copper Ave Group','350792529','-1064846551','0'),
-('47','Ellis Group','352084293','-1064410284','0');
+('47','Ellis Group','352084293','-1064410284','0'),
+('48','Cerro Grande Group','358474890','-1064217706','0');
 
 
 
@@ -316,7 +319,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EGPSDAT VALUES
@@ -335,7 +338,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -368,7 +371,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=595 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=547 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -506,7 +509,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=246 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=248 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -748,7 +751,9 @@ INSERT INTO HIKES VALUES
 ('242','Holy Ghost Creek','mstr','Pecos','Normal',NULL,'','','Out-and-back','8.30','1700','Med-Difficult','Multiple Public Toilets','Interior views and wildflowers','Not Winter','Good shade','Holy Ghost.GPX','Holy Ghost.json','357678999','-1056978580',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B046\'04.3%22N+105%C2%B041\'52.2%22W/@35.7678743,-105.7022127,16z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.76787!4d-105.69783',NULL,'While most of the hike is in the woods, there are many pleasant views along the way. These include glimpses of the mountains, groves of aspen and spruce, and beautiful wildflowers dotting the trail. There are two possible routes up, as seen by the small loop at the south end of the trail. The westernmost travels through Holy Ghost Camp, while the other winds up into the hills. To shorten the hike, drive up into the camping area - this will save about a mile round trip when hiking up Holy Ghost Creek. The latter part of the trail is rather steep until the Winsor Trail is reached. ',NULL,NULL,NULL),
 ('243','Kiwani Cabin - 10K Loop','krcowles','Albuquerque','Cluster',NULL,'Z','10K Trail Group','Loop','5.20','650','Moderate','Public Toilet','Excellent views from the Sandia Crest','Not Winter','Good shade','Kiwani_10K_Loop.GPX','Kiwani_10K_Loop.json','352092390','-1064355979',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/10k+Trailhead/@35.2094662,-106.4468217,13.61z/data=!4m5!3m4!1s0x871899547518ac1f:0x91a6c70fb22660bf!8m2!3d35.210746!4d-106.436264',NULL,'The hike starts at 10,000 feet and proceeds upwards to the Crest and Kiwanis Cabin, affording fabulous views. While the area around the cabin (which has been rebuilt multiple times) is sunny and expansive, most of the hike is pleasantly shady. This hike forms a loop and includes less-well-traveled trail segments (none of the references follow this trail) making for a unique adventure. The trail segments are identified on the map with blue flags.',NULL,NULL,NULL),
 ('244','North Piedra Lisa','krcowles','Placitas','Cluster',NULL,'RR','NPL Group','Out-and-back','7.30','2200','Difficult','None','Interior views of the North Sandias','Not Winter','Good shade','Piedra_Lisa_North.GPX','Piedra_Lisa_North.json','352790090','-1064784959',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Piedra+Lisa+North+Trailhead+Parking,+Placitas,+NM/@35.2924023,-106.4973361,13.95z/data=!4m5!3m4!1s0x87189cdc85e72ac1:0x581950944de90d29!8m2!3d35.2789454!4d-106.47848',NULL,'This hike is a relentless uphill trek from the foothills near Placitas to the summit of the Piedra Lisa trail. Be prepared with sturdy shoes and plenty of water. The grade is generally not gentle, and often the footing is loose with rock and gravel. Along the way, there are multiple excellent views looking in almost any direction: from the rugged interior of the Sandias to the valley below. This hike could also be made a two-car hike, as the North Piedra Lisa trail continues south to the South Piedra Lisa trail head near the La Luz trail (see References AllTrails and ExploreNM links). This option is actually shorter than the out-and-back hike shown here.',NULL,NULL,NULL),
-('245','Challenge Trail','mstr','Tijeras',NULL,NULL,NULL,NULL,'Out-and-back','8.90','1900','Moderate','None (Ski Lodge Closed)','Views, especially near the trail summit','Not winter','Good shade','Challenge.GPX','Challenge.json','352071805','-1064126030',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'25.9%22N+106%C2%B024\'45.4%22W/@35.2078634,-106.4153436,15.55z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.2071805!4d-106.412603',NULL,'During hiking season, there is a small lot on the south side of 536 with trail access up to the Ski Lodge. The Challenge trail begins just past the lodge. This trail gets very little traffic - in fact, the author did not encounter a single person the entire time. Since the trail roughly parallels the road, the grades are easy or moderate the entire distance. For a more quiet and enjoyable hike, avoid the weekends, as there is considerably more road noise then.',NULL,NULL,NULL);
+('245','Challenge Trail','mstr','Tijeras',NULL,NULL,NULL,NULL,'Out-and-back','8.90','1900','Moderate','None (Ski Lodge Closed)','Views, especially near the trail summit','Not winter','Good shade','Challenge.GPX','Challenge.json','352071805','-1064126030',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'25.9%22N+106%C2%B024\'45.4%22W/@35.2078634,-106.4153436,15.55z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.2071805!4d-106.412603',NULL,'During hiking season, there is a small lot on the south side of 536 with trail access up to the Ski Lodge. The Challenge trail begins just past the lodge. This trail gets very little traffic - in fact, the author did not encounter a single person the entire time. Since the trail roughly parallels the road, the grades are easy or moderate the entire distance. For a more quiet and enjoyable hike, avoid the weekends, as there is considerably more road noise then.',NULL,NULL,NULL),
+('246','Orange Trail (Bandelier)','mstr','Valles Caldera',NULL,NULL,NULL,'Cerro Grande Group','Out-and-back','4.90','200','Easy-Moderate','None','Views of Bandelier Wilderness/Sawyer Mesa','Any','Mixed sun/shade','Orange_Trail.GPX','Orange_Trail.json','358473238','-1064217416',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Cerro+Grande+Route/@35.8470776,-106.4289533,15.33z/data=!4m8!1m2!2m1!1sCerro+Grande+Route,+New+Mexico!3m4!1s0x0:0x6649607b52c63ead!8m2!3d35.8477729!4d-106.4220373',NULL,'This trail begins at the opposite side of the road from the Cerro Grande trail and parking area. It is an easy hike, sometimes in the shade, and sunny near the south end. Though it is seen on maps as the \'Orange Trail\', it is also called \'Sawyer Mesa Trail\', not to be confused with another Sawyer Mesa hike on this site. This hike wanders through the northern end of the mesa. The trail is extremely well marked, even though the trail itself can be spotty at times. Lettered markers appear at trail junctions. It traverses parts of the area that was burned during the Las Conchas fire in 2011, but young aspen are already gaining height. Near the south end of the mesa, some views are available, looking southward towards Frijoles Canyon. Otherwise it is a pleasant stroll through the Ponderosa. It becomes a well-marked ski/snowshoe trail in the winter.',NULL,NULL,NULL),
+('247','Blue Trail (Bandelier)','mstr','Valles Caldera',NULL,NULL,NULL,'Cerro Grande Group','Out-and-back','2.00','150','Easy','None','Overlook of Frijoles Canyon at end','Any','Full sun','Blue_Trail.GPX','Blue_Trail.json','358474890','-1064217706',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Cerro+Grande+Route/@35.8470776,-106.4289533,15.33z/data=!4m8!1m2!2m1!1sCerro+Grande+Route,+New+Mexico!3m4!1s0x0:0x6649607b52c63ead!8m2!3d35.8477729!4d-106.4220373',NULL,'This easy hike begins across the road from the Cerro Grande parking lot. It is actually marked as a ski trail, but makes for a pleasant hike to an overlook of Frijoles Canyon north of the main Bandelier Visitor Area. There is some shade available, but generally not on the trail itself. This is an easy hike, suitable for a family outing. The trail extends along a narrow finger mesa to the overlook. The tree at the end provides some shade and the flat rocks make for an area to sit and enjoy.',NULL,NULL,NULL);
 
 
 
@@ -814,7 +819,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1667 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1666 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1736,7 +1741,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4739 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4746 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4350,7 +4355,18 @@ INSERT INTO TSV VALUES
 ('4728','245',NULL,'IMG_3194','Y','Y','A colony of Aspen en route','352062444','-1064349444','2592',NULL,'2020-08-01 09:12:30','IMG_3194','640','480',NULL,NULL),
 ('4729','245',NULL,'IMG_3195','Y','Y','Beautiful vista near the top','352073167','-1064346389','2593',NULL,'2020-08-01 09:42:17','IMG_3195','480','640',NULL,NULL),
 ('4730','245',NULL,'IMG_3199','Y','N','North from the Lodge','352079111','-1064138194','2594',NULL,'2020-08-01 11:23:02','IMG_3199','480','640',NULL,NULL),
-('4731','245',NULL,'IMG_3198','Y','Y','This tree had fallen between the ascent and descent!','352094583','-1064246667','2595',NULL,'2020-08-01 10:23:50','IMG_3198','480','640',NULL,NULL);
+('4731','245',NULL,'IMG_3198','Y','Y','This tree had fallen between the ascent and descent!','352094583','-1064246667','2595',NULL,'2020-08-01 10:23:50','IMG_3198','480','640',NULL,NULL),
+('4732','246',NULL,'IMG_3259','Y','Y','Trail so-named after orange signs','358464611','-1064226694','2596',NULL,'2020-08-18 08:58:24','IMG_3259','640','480',NULL,NULL),
+('4733','246',NULL,'IMG_3261','Y','N','Entering the mesa and burned areas','358412667','-1064257056','2597',NULL,'2020-08-18 09:11:12','IMG_3261','480','640',NULL,NULL),
+('4734','246',NULL,'IMG_3260','Y','Y','Untouched Ponderosa','358424750','-1064264833','2598',NULL,'2020-08-18 09:08:32','IMG_3260','480','640',NULL,NULL),
+('4735','246',NULL,'IMG_3269','Y','Y','A clearing to view southward','358284028','-1064205083','2599',NULL,'2020-08-18 09:55:49','IMG_3269','480','640',NULL,NULL),
+('4736','246',NULL,'IMG_3262','Y','Y','Example of burned sections','358400611','-1064267278','2600',NULL,'2020-08-18 09:14:18','IMG_3262','480','640',NULL,NULL),
+('4737','246',NULL,'IMG_3263','Y','Y','Post-burn aspen regeneration','358389083','-1064274222','2601',NULL,'2020-08-18 09:16:37','IMG_3263','480','640',NULL,NULL),
+('4738','246',NULL,'IMG_3270','Y','Y','Southeast into Frijoles Canyon','358291333','-1064212500','2602',NULL,'2020-08-18 09:58:32','IMG_3270','480','640',NULL,NULL),
+('4739','247',NULL,'IMG_3279','Y','Y','Trail marker near the trail head','358468667','-1064215389','2603',NULL,'2020-08-18 12:03:38','IMG_3279','480','640',NULL,NULL),
+('4740','247',NULL,'IMG_3275','Y','Y','Looking south into Frijoles Canyon','358356556','-1064163500','2604',NULL,'2020-08-18 11:25:54','IMG_3275','480','640',NULL,NULL),
+('4741','247',NULL,'IMG_3277','Y','N','A view turning north from the end','358357194','-1064165722','2605',NULL,'2020-08-18 11:26:54','IMG_3277','480','640',NULL,NULL),
+('4742','247',NULL,'IMG_3274','Y','Y','Another view into Frijoles Canyon','358358944','-1064169167','2606',NULL,'2020-08-18 11:24:13','IMG_3274','480','640',NULL,NULL);
 
 
 
