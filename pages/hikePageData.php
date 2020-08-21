@@ -54,7 +54,8 @@ $pdo->commit();
 $row = $basicPDO->fetch(PDO::FETCH_ASSOC);
 $hikeTitle = $row['pgTitle'];
 $hikeLocale = $row['locale'];
-$hikeGroup = $row['cgroup'];
+$hikeGroup = $row['cgroup']; // now obsolete
+$hikeCluster = $row['cname'];
 $hikeType = $row['logistics'];
 $hikeLength = $row['miles'] . " miles";
 $hikeElevation = $row['feet'] . " ft";

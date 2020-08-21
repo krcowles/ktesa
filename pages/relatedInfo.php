@@ -9,16 +9,17 @@
  * This file is to be included on the hikePageTemplate.php and
  * expects definition of the following variables:
  *   $hikeIndexNo is the hike number in either EHIKES or HIKES
- *   $hikeGroup defined in hikePageData.php (for hikePageTemplate.php)
+ *   $hikeCluster defined in hikePageData.php (for hikePageTemplate.php)
  *   $rtable = either EREFS or REFS 
  *   $gtable either GPSDAT or EGPSDAT
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Display_Page
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$rhikes = (isset($hikeGroup)  && $hikeGroup !== '') ? true : false;
+$rhikes = (isset($hikeCluster)  && $hikeCluster !== '') ? true : false;
 $noOfRelatedHikes = 0;
 // Transactions:
 // books
@@ -32,8 +33,7 @@ $gpsReq = "SELECT datType,label,`url`,clickText FROM {$gtable} "
     . "WHERE indxNo = :indxNo";
 $gpsPDO = $pdo->prepare($gpsReq);
 if ($rhikes) {
-    $clus = trim($hikeGroup);
-    $relatedhikes = "SELECT indxNo,pgTitle FROM HIKES WHERE cgroup = :relhike";
+    $relatedhikes = "SELECT indxNo,pgTitle FROM HIKES WHERE cname = :relhike";
     $hikesPDO = $pdo->prepare($relatedhikes);
 }
 $pdo->beginTransaction();
@@ -43,7 +43,7 @@ $refPDO->execute();
 $gpsPDO->bindValue(":indxNo", $hikeIndexNo);
 $gpsPDO->execute();
 if ($rhikes) {
-    $hikesPDO->bindValue(":relhike", $clus);
+    $hikesPDO->bindValue(":relhike", $hikeCluster);
     $hikesPDO->execute();
 }
 $pdo->commit();
