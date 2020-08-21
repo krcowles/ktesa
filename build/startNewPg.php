@@ -12,7 +12,6 @@ require "../php/global_boot.php";
 
 $usr = filter_input(INPUT_GET, 'usr');
 $clusterSelect = getClusters($pdo);
-$x = 1;
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

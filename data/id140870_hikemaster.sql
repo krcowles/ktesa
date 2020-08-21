@@ -81,7 +81,7 @@ CREATE TABLE `CLUSHIKES` (
   `indxNo` smallint(6) NOT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -241,7 +241,8 @@ INSERT INTO CLUSHIKES VALUES
 ('153','243','43'),
 ('154','244','21'),
 ('155','246','48'),
-('156','247','48');
+('156','247','48'),
+('157','172','48');
 
 
 
@@ -257,7 +258,7 @@ CREATE TABLE `CLUSTERS` (
 
 
 INSERT INTO CLUSTERS VALUES
-('1','Bandelier Index','358473238','-1064217416','1'),
+('1','Bandelier Index','357790390','-1062707880','1'),
 ('2','Chaco Index','360302500','-1079108000','2'),
 ('3','El Malpais Index','349704070','-1078101520','3'),
 ('4','Petroglyphs Index','351386440','-1067111960','4'),

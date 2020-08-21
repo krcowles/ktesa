@@ -16,13 +16,15 @@ require '../php/global_boot.php';
 $usr     = filter_input(INPUT_POST, 'uid');
 $pgTitle = filter_input(INPUT_POST, 'newname');
 $type    = filter_input(INPUT_POST, 'type');
-$cname   = $type === 'Cluster' ? filter_input(INPUT_POST, 'clusters') : '';
 $_SESSION['newcluster'] = isset($_POST['mknewgrp']) ? 'Yes' : 'No';
+$cname   = ($type === 'Cluster' && $_SESSION['newcluster'] === 'No')
+    ? filter_input(INPUT_POST, 'clusters') : '';
 
 $query = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`,`cname`) VALUES " .
     "(?,?,'0',?)";
 $newpg = $pdo->prepare($query);
 $newpg->execute([$pgTitle, $usr, $cname]);
+
 $last = $pdo->query("SELECT * FROM `EHIKES` ORDER BY 1 DESC LIMIT 1;");
 $rowdat = $last->fetch(PDO::FETCH_NUM);
 $hikeNo = $rowdat[0];
