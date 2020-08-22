@@ -12,8 +12,8 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
-
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -39,7 +39,7 @@ require "../php/global_boot.php";
     <h3>Please enter and confirm a new password:</h3>
     <form id="form" method="POST" action="create_user.php">
         <input type="hidden" name="submitter"  value="renew" />
-        <input type="hidden" name="username" value="<?=$username;?>" />
+        <input type="hidden" name="username" value="<?= $_SESSION['username'];?>" />
         <table>
             <tbody>
                 <tr>

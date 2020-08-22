@@ -7,10 +7,12 @@
  * 
  * @version 2.0 Redesigned login for security improvement
  */
-function validateUser() {
+function validateUser(user, password) {
+    ajaxdata = {usr_name: user, usr_pass: password};
     $.ajax( {
         url: "../accounts/authenticate.php",
-        method: "GET",
+        method: "post",
+        data: ajaxdata,
         dataType: "text",
         success: function(srchResults) {
             var status = srchResults;

@@ -9,6 +9,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No Liscense to date
  */
+session_start();
 require "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
@@ -34,6 +35,7 @@ require "../php/global_boot.php";
 <div id="container">
     <form id="form" action="create_user.php" method="post">
         <input type="hidden" name="submitter" value="create" />
+        <input id="usrchoice" type="hidden" name="cookies" value="nochoice" />
         <div id="registration">
             <p>Sign up for free access to nmhikes.com!</p>
             <p id="sub">Create and edit your own hikes</p>
@@ -72,6 +74,18 @@ require "../php/global_boot.php";
             <div id="submit">Submit</div>
         </div>
     </form>
+</div>
+
+<div id="cookie_banner">
+    <h3>This site uses cookies to save member usernames</h3>
+    <p>Accepting cookies allows automatic login. If you reject cookies,
+    no cookie data will be collected, and you must login each visit.
+    <br />You may change your decision later via the Help menu.
+    </p>
+    <div id="cbuttons">
+        <button id="accept">Accept</button>
+        <button id="reject">Reject</button>
+    </div>
 </div>
 
 <script src="../scripts/menus.js"></script>

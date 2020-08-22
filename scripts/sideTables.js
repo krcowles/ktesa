@@ -215,7 +215,11 @@ $.ajax({
     method: 'get',
     dataType: 'text',
     success: function(flist) {
-        favlist = JSON.parse(flist);
+        if (flist == '') {
+            favlist = [];
+        } else {
+            favlist = JSON.parse(flist);
+        }
         listdone.resolve();
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -308,8 +312,13 @@ function enableFavorites() {
                     method: "post",
                     data: ajaxdata,
                     dataType: "text",
-                    success: function() {
-                        favlist.push(parseInt(hikeno));
+                    success: function(results) {
+                        if (results === "OK") {
+                            favlist.push(parseInt(hikeno));
+                        } else {
+                            alert("You must be a registered user\n" +
+                                "in order to save Favorites");
+                        }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         var newDoc = document.open("text/html", "replace");

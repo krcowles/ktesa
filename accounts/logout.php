@@ -16,5 +16,7 @@ setcookie('nmh_id', '', 0, '/');
 unset($_SESSION['username']);
 unset($_SESSION['userid']);
 unset($_SESSION['expire']);
+unset($_SESSION['cookies']);
+unset($_SESSION['cookie_state']);
 
 echo "Done";

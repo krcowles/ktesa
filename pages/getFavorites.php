@@ -11,8 +11,12 @@
 session_start();
 require "../php/global_boot.php";
 
-$favreq = "SELECT `hikeNo` FROM `FAVORITES` WHERE `userid` = :userid;";
-$usrfavs = $pdo->prepare($favreq);
-$usrfavs->execute(["userid" => $_SESSION['userid']]);
-$favs = $usrfavs->fetchAll(PDO::FETCH_COLUMN);
-echo json_encode($favs);
+if (isset($_SESSION['userid'])) {
+    $favreq = "SELECT `hikeNo` FROM `FAVORITES` WHERE `userid` = :userid;";
+    $usrfavs = $pdo->prepare($favreq);
+    $usrfavs->execute(["userid" => $_SESSION['userid']]);
+    $favs = $usrfavs->fetchAll(PDO::FETCH_COLUMN);
+    echo json_encode($favs);
+} else {
+    echo '';
+}

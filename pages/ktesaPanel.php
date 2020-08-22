@@ -28,14 +28,7 @@ require_once "../accounts/getLogin.php";
                         <li><div id="home">Home</div></li>
                         <li><div id="table">Table Only</div></li>
                         <li id="ifadmin"><div id="atools">Admintools</div></li>
-                        <li><div id="yours">Show Favorites</div>
-                        <!--
-                            <ul class="subs">
-                                <li><div id="viewEds">View In-Edit Hikes</div></li>
-                                <li><div id="showFavs">Show Favorites</div></li>
-                            </ul>
-                        -->
-                        </li>
+                        <li><div id="yours">Show Favorites</div></li>
                     </ul>
                 </div>
             </li>
@@ -76,7 +69,9 @@ require_once "../accounts/getLogin.php";
                 <div id="menu-help" class="menu-default">
                 <ul class="menus">
                     <li><div id="about">About this site</div></li>
-                    <li><div id="contact">Contact us</div></li>
+                    <li id="ifuser"><div id="ctoggle">Reject Cookies</div></li>
+                    <!--
+                    <li><div id="contact">Contact us</div></li> -->
                 </ul>
                 </div>
             </li>
@@ -91,20 +86,15 @@ require_once "../accounts/getLogin.php";
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
 </div>
-<p id="banner"><?= $banner;?></p>
-<p id="cookieStatus"><?= $cookie_state;?></p>
+<p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
+
 <?php if ($admin) : ?>
 <p id="admin">admin</p>
 <?php endif; ?>
-<div id="cookie_banner">
-    <h2>This site uses cookies to save member usernames</h2>
-    <p>If you become a registered user, you can accept cookies
-    for automatic login, or reject cookies. If you reject cookies,
-    no cookie data will be collected.
-    </p>
-    <button id="accept">Accept</button>
-    <button id="reject">Reject</button>
-</div>
+
+<?php if (isset($_SESSION['cookies'])) : ?>
+<p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
+<?php endif; ?>
 
 <!-- Modal Windows HTML -->
 <div id="usr_login">
@@ -144,10 +134,11 @@ require_once "../accounts/getLogin.php";
 </div>
 <div id="feedback">
     Please type your feedback or question here:<br />
-    <textarea id="fdbk"></textarea><br />
-    <button id="submit">Submit</button>
+    <textarea id="fdbk" rows="6"></textarea><br />
+    <p><button id="submit">Submit</button></p>
 </div>
 
+<script src="../scripts/modal_setup.js"></script>
 <script src="../scripts/menuControl.js"></script>
 <script src="../scripts/validateUser.js"></script>
-<script src="../scripts/modal_setup.js"></script>
+

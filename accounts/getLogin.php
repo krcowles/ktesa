@@ -1,12 +1,12 @@
 <?php
 /**
- * This script checks for any incoming cookies. Presence of a
- * cookie indicates prior opt-in for cookie use. If no cookie
- * is detected, the cookie banner will display and the user
- * may opt-in or opt-out. Opting out prevents cookies from 
- * being sent to the visitor's browser. Note: having a separate
- * admin ('master') cookie allows admins to have both an admin
- * account and a user account (to verify user functionality).
+ * This script checks for any incoming site cookies. If cookies are
+ * present, and the user has not already logged in, login credentials
+ * are set up if the user has registered. If the user is already logged
+ * in, essentially nothing else occurs.
+ * Note: having a separate admin ('master') cookie allows admins
+ * to have both an admin account and a user account to verify user
+ * functionality.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -18,51 +18,62 @@ define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 
 $master = isset($_COOKIE['nmh_mstr']) ? true : false;
 $regusr = isset($_COOKIE['nmh_id'])   ? true : false;
-$banner = ($master || $regusr) ? "no" : "yes";
-$cookie_state = "OK";  // may change depending on user verification
+$cookie_state = "NOLOGIN";  // default
 $admin = false;
 
 // Some test cases have resulted in 'partial logins':
 if (!isset($_SESSION['username']) || !isset($_SESSION['userid']) 
-    || !isset($_SESSION['expire'])
+    || !isset($_SESSION['expire']) || !isset($_SESSION['cookies'])
+    || !isset($_SESSION['cookie_state'])
 ) {
      unset($_SESSION['username']);
      unset($_SESSION['userid']);
-     unset($_SESSION['expire']);   
+     unset($_SESSION['expire']); 
+     unset($_SESSION['cookies']);
+     unset($_SESSION['cookie_state']);
 }
 
-if ($banner === 'no' && !isset($_SESSION['username'])) {  // user previously opted in
+if (!isset($_SESSION['username'])) { // NO LOGIN YET
     if ($regusr) {
         $username = $_COOKIE['nmh_id'];
-        $expirationReq = "SELECT `userid`,`passwd_expire` FROM " .
+        // check cookie choice and password expiration
+        $userDataReq = "SELECT `userid`,`passwd_expire`,`facebook_url` FROM " .
             "`USERS` WHERE username = ?;";
-        $userExpire = $pdo->prepare($expirationReq);
-        $userExpire->execute([$username]);
-        $rowcnt = $userExpire->rowCount();
+        $userData = $pdo->prepare($userDataReq);
+        $userData->execute([$username]);
+        $rowcnt = $userData->rowCount();
         if ($rowcnt === 0) {
             $cookie_state = 'NONE'; // no user matching this cookie
         } elseif ($rowcnt === 1) {
-            $expire_data = $userExpire->fetch(PDO::FETCH_ASSOC);
-            $userid = $expire_data['userid'];
-            $expDate = $expire_data['passwd_expire'];
+            $cookie_state = "OK";
+            $user_info = $userData->fetch(PDO::FETCH_ASSOC);
+            $userid = $user_info['userid'];
+            $expDate = $user_info['passwd_expire'];
+            $cookies = $user_info['facebook_url'];
+            $choice = 'reject';  // default if no user selection 
+            if (!empty($cookies)) {
+                $choice = $cookies;
+            }
             // protected login credentials:
             $_SESSION['username'] = $username;
             $_SESSION['userid'] = $userid;
             $_SESSION['expire'] = $expDate;
+            $_SESSION['cookies'] = $choice;
             $american = str_replace("-", "/", $expDate);
             $orgDate = strtotime($american);
             if ($orgDate <= time()) {
-                $cstat = 'EXPIRED';
+                $cookie_state = 'EXPIRED';
             } else {
                 $days = floor(($orgDate - time())/UX_DAY);
                 if ($days <= 5) {
-                    $cstat = 'RENEW';
+                    $cookie_state = 'RENEW';
                 }
             }
         } else {
-            $cstat = "MULTIPLE"; // for testing only; no longer possible
+            $cookie_state = "MULTIPLE"; // for testing only; no longer possible
         }
     } elseif ($master) {
+        $cookie_state = "OK";
         $_SESSION['username'] = 'mstr';
         if ($_COOKIE['nmh_mstr'] === 'mstr2') {
             $_SESSION['userid'] = '2';
@@ -70,8 +81,15 @@ if ($banner === 'no' && !isset($_SESSION['username'])) {  // user previously opt
             $_SESSION['userid'] = '1';
         }
         $_SESSION['expire'] = "2050-12-31";
+        $_SESSION['cookies'] = "accept";
+        $admin = true;
+    } else {
+        // STILL NOT LOGGED IN: No credentials are set
+        $cookie_state = "NOLOGIN";  // repeat as documentation...
+    }
+    $_SESSION['cookie_state'] = $cookie_state;
+} else { // LOGGED IN: (User data in $_SESSION vars): $_SESSION['username'] is true
+    if ($_SESSION['username'] === 'mstr') {
         $admin = true;
     }
-} elseif ($_SESSION['username'] === 'mstr') {
-    $admin = true;
 }

@@ -14,23 +14,29 @@ require "../php/global_boot.php";
 
 $action = filter_input(INPUT_POST, 'action');
 $hikeno = filter_input(INPUT_POST, 'no');
-$userid = $_SESSION['userid'];
+$userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : false;
 
-if ($action === 'add') {
-    $addfav = "INSERT INTO `FAVORITES` (`userid`, `hikeNo`) VALUES " .
-        "(:uid, :hike);";
-    $add = $pdo->prepare($addfav);
-    try {
-        $add->execute(["uid" => $userid, "hike" => $hikeno]);
-    }
-    catch (Exception $e) {
-        if ($e->getCode() <> 23000) { // Ignore duplicate detect exception
-            throw $e;  // Send all others to standard exception handler
+if ($userid) {
+    if ($action === 'add') {
+        $addfav = "INSERT INTO `FAVORITES` (`userid`, `hikeNo`) VALUES " .
+            "(:uid, :hike);";
+        $add = $pdo->prepare($addfav);
+        try {
+            $add->execute(["uid" => $userid, "hike" => $hikeno]);
         }
+        catch (Exception $e) {
+            if ($e->getCode() <> 23000) { // Ignore duplicate detect exception
+                throw $e;  // Send all others to standard exception handler
+            }
+        }
+        echo "OK";
+    } else {
+        $remfav = "DELETE FROM `FAVORITES` WHERE `userid` = :uid " .
+            "AND `hikeNo` = :hike;";
+        $rem = $pdo->prepare($remfav);
+        $rem->execute(["uid" => $userid, "hike" => $hikeno]);
+        echo "OK";
     }
 } else {
-    $remfav = "DELETE FROM `FAVORITES` WHERE `userid` = :uid " .
-        "AND `hikeNo` = :hike;";
-    $rem = $pdo->prepare($remfav);
-    $rem->execute(["uid" => $userid, "hike" => $hikeno]);
+    echo "NOLOGIN";
 }

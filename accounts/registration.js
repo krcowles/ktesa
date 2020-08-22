@@ -1,18 +1,28 @@
 /**
  * @fileoverview Visually, this script positions the login boxes on the page
  * and toggles password visibility. Functionally, it verifies that all
- * fields in the form have been entered
+ * fields in the form have been entered, and registers the member's cookie choice.
  * 
  * @author Tom Sandberg
  * @author Ken Cowles
  */
 $(function() {   // document ready function
-// position the registration box on the page
-let regbox_left = window.innerWidth/2 - 200;
-$('#registration').offset({
-    top: 200,
-    left: regbox_left
-});
+
+/**
+ * position the registration box on the page
+ * 
+ * @return {null}
+ */ 
+function setbox() {
+    let regbox_center = Math.floor($('#registration').width()/2);
+    let regbox_left = window.innerWidth/2 - regbox_center; // 280 = regbox/2 width
+    $('#registration').offset({
+        top: 200,
+        left: regbox_left
+    });
+}
+setbox();
+$(window).resize(setbox);
 
 // toggle visibility of password:
 var cbox = document.getElementsByName('password');
@@ -25,6 +35,17 @@ $('#cb').on('click', function() {
         cbox[0].type = "password";
     }
 });
+
+// registrant's cookie choice:
+$('#accept').on('click', function() {
+    $('#cookie_banner').hide(); 
+    $('#usrchoice').val("accept");
+});
+$('#reject').on('click', function() {
+    $('#cookie_banner').hide();
+    $('#usrchoice').val("reject");
+});
+
 
 // validation
 var proceed = true;

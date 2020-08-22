@@ -104,10 +104,39 @@ function gotoPage(content) {
             window.open('../pages/about.php', '_self');
             break;
         case 'Contact us':
+            // code ready, but holding off for now
+            /*
             modal.open(
-                {content: support, height: '140px', width: '240px',
+                {content: support, height: '150px', width: '340px',
                     id: 'contact'}
             );
+            */
+            break;
+        case 'Accept Cookies':
+            $.ajax({
+                url: '../accounts/member_cookies.php?choice=accept',
+                method: 'get',
+                dataType: 'html',
+                success: function() {
+
+                },
+                error: function() {
+
+                }
+            });
+            break;
+        case 'Reject Cookies':
+            $.ajax({
+                url: '../accounts/member_cookies.php?choice=reject',
+                method: 'get',
+                dataType: 'html',
+                success: function() {
+
+                },
+                error: function() {
+
+                }
+            });
             break;
         default:
             alert(content);
@@ -117,7 +146,7 @@ function gotoPage(content) {
             url: '../php/opener.php?page=' + page,
             dataType: "html",
             success: function(redir) {
-                $('#login_result').after(redir);
+                $('body').after(redir);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 var msg = 'Error encountered: ' + textStatus + 

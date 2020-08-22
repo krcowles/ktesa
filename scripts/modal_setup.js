@@ -9,7 +9,7 @@
  * @version 2.0 Redesigned login for security improvement
  */
 var modal = (function() {
-    // modal object def is local/private to "modal"
+    // modal object def is local (private) to "modal"
     var $window = $(window);
     var $modal = $('<div class="modal" style="background-color:ivory;"/>'); 
     var $content = $('<div class="modal-content"/>');
@@ -17,7 +17,7 @@ var modal = (function() {
 
     $modal.append($content);
     $modal.append($close);
-    $close.on('click', function(e) {
+    $('body').on('click', '#canceler', function(e) {
         e.preventDefault();
         modal.close();
     });
@@ -45,8 +45,10 @@ var modal = (function() {
                 width: settings.width || auto,
                 height: settings.height || auto,
                 border: '2px solid',
-                padding: '8px'
+                padding: '8px',
+                textAlign: 'left'
             }).appendTo('body');
+            
             if (settings.id === 'logins') {
                 loginModal();
             } else if (settings.id === 'contact') {
@@ -69,7 +71,7 @@ var modal = (function() {
         }
     };
 
-    // private functions:
+    //  ------------------  private functions:  ------------------
     /**
      * This function allows a user to login or refresh password
      * 
@@ -147,9 +149,31 @@ var modal = (function() {
      */
     function contactAdmins() {
         $('#submit').after($close);
-        $close.css('left', '134px');
+        $close.css({
+            'top': '1',
+            'float': 'right',
+            'margin-right': '6px'
+        });
+        $close.css('top', '1px');
         $modal.css('z-index', '10000');
+        $('#submit').on('click', function() {
+            var ta = $('#fdbk').val();
+            for (let i=0; i< 2; i++) {
+                let ajaxdata = {admin: i, feedback: ta};
+                $.ajax({
+                    url: '../admin/support.php',
+                    method: 'post',
+                    data: ajaxdata,
+                    success: function() {
+                        alert("Email sent");
+                    },
+                    error: function() {
+                        alert("Error encountered: not sent");
+                    }
+                });
+            }
+            modal.close();
+        });
     }
-
 
 }());  // modal is an IIFE

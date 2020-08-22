@@ -6,47 +6,48 @@
  * @author Tom Sandberg
  * @author Ken Cowles
  * 
- * @version 2.0 Redesigned login for security improvement
+ * @version 2.0 Redesigned login for security improvement (script formerly
+ * called getLogin.js)
  */
 var cookies = navigator.cookieEnabled ? true : false;
-var user_cookie_state = document.getElementById('cookieStatus').innerText;
-var banner = document.getElementById('banner').innerText;
+var user_cookie_state = document.getElementById('cookie_state').innerText;
 if (cookies) {
-    if (banner === 'no') {
-        if (user_cookie_state === 'NONE') {
-            alert("No user registration was located");
-            notLoggedInItems();
-        } else if (user_cookie_state === 'EXPIRED') {
-            var ans = confirm("Your password has expired\n" + 
-                "Would you like to renew?");
-            if (ans) {
-                renewPassword('renew', 'expired');
-            } else {
-                renewPassword('norenew', 'expired');
-            }
-        } else if (user_cookie_state === 'RENEW') {
-            var ans = confirm("Your password is about to expire\n" + 
-                "Would you like to renew?");
-            if (ans) {
-                renewPassword('renew', 'valid');
-            } else {
-                renewPassword('norenew', 'valid');
-            }
-        } else if (user_cookie_state === 'MULTIPLE') {
-            alert("Multiple accounts are registered for this cookie\n" +
-                "\nPlease contact the site master");
-            notLoggedInItems();
-        } else if (user_cookie_state === 'OK') {
-            loggedInItems();
-            if ($('#admin').text() === "admin") {
-                adminLoggedIn();
-            }
-        }
-    } else {
-        // show banner
+    if (user_cookie_state === 'NOLOGIN') {
         notLoggedInItems();
+    } else if (user_cookie_state === 'NONE') {
+        alert("No user registration was located");
+        notLoggedInItems();
+    } else if (user_cookie_state === 'EXPIRED') {
+        var ans = confirm("Your password has expired\n" + 
+            "Would you like to renew?");
+        if (ans) {
+            renewPassword('renew', 'expired');
+        } else {
+            renewPassword('norenew', 'expired');
+        }
+    } else if (user_cookie_state === 'RENEW') {
+        var ans = confirm("Your password is about to expire\n" + 
+            "Would you like to renew?");
+        if (ans) {
+            renewPassword('renew', 'valid');
+        } else {
+            renewPassword('norenew', 'valid');
+        }
+    } else if (user_cookie_state === 'MULTIPLE') {
+        alert("Multiple accounts are registered for this cookie\n" +
+            "\nPlease contact the site master");
+        notLoggedInItems();
+    } else if (user_cookie_state === 'OK') {
+        loggedInItems();
+        if ($('#admin').text() === "admin") {
+            adminLoggedIn();
+        } 
+        if ($('#cookies_choice').text() === 'accept'){
+            $('#ctoggle').text("Reject Cookies");
+        } else if ($('#cookies_choice').text() === 'reject') {
+            $('#ctoggle').text("Accept Cookies");
+        }
     }
-
 } else { // cookies disabled
     alert("Cookies are disabled on this browser:\n" +
         "You will not be able login, register, or edit/create hikes.\n" +
@@ -93,6 +94,7 @@ function renewPassword(renew, status) {
  * @return {null}
  */
 function loggedInItems() {
+    $('#ifuser').css('display', 'block');
     $('#lin').addClass('ui-state-disabled');
     $('#lout').removeClass('ui-state-disabled');
     //$('#pubs').removeClass('ui-state-disabled'); -- removed for now
@@ -111,6 +113,7 @@ function loggedInItems() {
  * @return {null}
  */
 function notLoggedInItems() {
+    $('#ifuser').css('display', 'none');
     $('#lin').removeClass('ui-state-disabled');
     $('#lout').addClass('ui-state-disabled');
     //$('#pubs').addClass('ui-state-disabled'); -- removed for now

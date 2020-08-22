@@ -1,4 +1,3 @@
-@import "../styles/buttons.css"; 
 #panel {
     display: inline-block;
     width: 100%;
@@ -131,8 +130,7 @@
     z-index: 100;
 }
 /* Modal windows or other items not turned on when page loads */
-#banner, #cookieStatus, #admin, #usr_login, #cookie_banner,
-#ifadmin, #feedback {
+#cookie_state, #cookies_choice, #admin, #usr_login, #ifadmin, #feedback {
     display: none;
 }
 #usrid, #upass {
@@ -170,4 +168,8 @@
     display: block;
     margin-left: 18px;
 }
-
+#fdbk {
+    position: relative;
+    top: 6px;
+    width: 99%;
+}
