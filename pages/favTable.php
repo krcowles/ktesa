@@ -2,18 +2,20 @@
 /**
  * This page displays a map showing only the user's favorites, and markers 
  * on the map for each favorite.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Home
- * @author  Tom Sandberg and Ken Cowles <krcowle29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
-$uid = filter_input(INPUT_GET, 'usr');
+$userid = $_SESSION['userid'];
 
 $favreq = "SELECT `hikeNo` FROM `FAVORITES` WHERE `userid` = :uid;";
 $usrfavs = $pdo->prepare($favreq);
-$usrfavs->execute(["uid" => $uid]);
+$usrfavs->execute(["uid" => $userid]);
 $favarray = $usrfavs->fetchAll(PDO::FETCH_COLUMN);
 /**
  * Get hike data for each favorite (this should be a rather small list!);

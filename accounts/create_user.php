@@ -65,6 +65,6 @@ if ($submitter == 'create') {
 if ($_SESSION['cookies'] === 'accept') {
     $days = 365; // Number of days before cookie expires
     $expire = time()+60*60*24*$days;
-    setcookie("nmh_id", $username, $expire, "/");
+    setcookie("nmh_id", $username, $expire, "/", "", true, true);
 }
 header("Location: ../index.html");

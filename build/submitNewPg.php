@@ -13,7 +13,8 @@
 session_start();
 require '../php/global_boot.php';
 
-$usr     = filter_input(INPUT_POST, 'uid');
+$userid = $_SESSION['userid'];
+
 $pgTitle = filter_input(INPUT_POST, 'newname');
 $type    = filter_input(INPUT_POST, 'type');
 $_SESSION['newcluster'] = isset($_POST['mknewgrp']) ? 'Yes' : 'No';
@@ -23,11 +24,11 @@ $cname   = ($type === 'Cluster' && $_SESSION['newcluster'] === 'No')
 $query = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`,`cname`) VALUES " .
     "(?,?,'0',?)";
 $newpg = $pdo->prepare($query);
-$newpg->execute([$pgTitle, $usr, $cname]);
+$newpg->execute([$pgTitle, $userid, $cname]);
 
 $last = $pdo->query("SELECT * FROM `EHIKES` ORDER BY 1 DESC LIMIT 1;");
 $rowdat = $last->fetch(PDO::FETCH_NUM);
 $hikeNo = $rowdat[0];
-$redirect = "editDB.php?tab=1&hikeNo=" . $hikeNo . "&usr=" . $usr;
+$redirect = "editDB.php?tab=1&hikeNo=" . $hikeNo;
 
 header("Location: {$redirect}");

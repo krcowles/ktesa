@@ -11,9 +11,10 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 $getHike = filter_input(INPUT_GET, 'hikeNo');
-$usr = filter_input(INPUT_GET, 'usr');
+$userid = $_SESSION['userid'];
 /*
  * GET HIKES DATA
  */
@@ -25,7 +26,7 @@ $xfrReq = "INSERT INTO EHIKES (usrid,stat,pgTitle,locale,marker,`collection`," .
     "fac,wow,seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs,tips," .
     "info,eThresh,dThresh,maWin FROM HIKES WHERE indxNo = ?;";
 $query = $pdo->prepare($xfrReq);
-$query->execute([$usr, $getHike, $getHike]);
+$query->execute([$userid, $getHike, $getHike]);
 // Fetch the new hike no in EHIKES:
 $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
 $indxq = $pdo->query($indxReq);
@@ -56,5 +57,5 @@ $refDatReq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) SELECT " .
 $refq = $pdo->prepare($refDatReq);
 $refq->execute([$hikeNo, $getHike]);
 // Back to the editor
-$redirect = "editDB.php?hikeNo={$hikeNo}&usr={$usr}&tab=1";
+$redirect = "editDB.php?tab=1&hikeNo={$hikeNo}";
 header("Location: {$redirect}");

@@ -13,11 +13,9 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
-session_start();  // new page info & upload msgs
 
 // query string data:
 $hikeNo = filter_input(INPUT_GET, 'hikeNo');
-$usr    = filter_input(INPUT_GET, 'usr');
 $tab    = filter_input(INPUT_GET, 'tab');
 $newclus = 'No';
 if (isset($_SESSION['newcluster'])) {

@@ -113,31 +113,39 @@ function gotoPage(content) {
             */
             break;
         case 'Accept Cookies':
+            let accept = {choice: 'accept'};
             $.ajax({
-                url: '../accounts/member_cookies.php?choice=accept',
-                method: 'get',
-                dataType: 'html',
+                url: '../accounts/member_cookies.php',
+                method: 'post',
+                dataType: 'text',
+                data: accept,
                 success: function() {
-
+                    window.location.reload();
                 },
-                error: function() {
-
+                error: function(jqXHR, textStatus, errorThrown) {
+                    var newDoc = document.open();
+                    newDoc.write(jqXHR.responseText);
+                    newDoc.close();
                 }
             });
-            break;
+            return;
         case 'Reject Cookies':
+            let reject = {choice: 'reject'};
             $.ajax({
-                url: '../accounts/member_cookies.php?choice=reject',
-                method: 'get',
-                dataType: 'html',
+                url: '../accounts/member_cookies.php',
+                method: 'post',
+                dataType: 'text',
+                data: reject,
                 success: function() {
-
+                    window.location.reload();
                 },
-                error: function() {
-
+                error: function(jqXHR, textStatus, errorThrown) {
+                    var newDoc = document.open();
+                    newDoc.write(jqXHR.responseText);
+                    newDoc.close();
                 }
             });
-            break;
+            return;
         default:
             alert(content);
     }
@@ -149,9 +157,9 @@ function gotoPage(content) {
                 $('body').after(redir);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                var msg = 'Error encountered: ' + textStatus + 
-                    '; Error code: ' + errorThrown;
-                alert(msg);
+                var newDoc = document.open();
+                newDoc.write(jqXHR.responseText);
+                newDoc.close();
             }
         });
     }

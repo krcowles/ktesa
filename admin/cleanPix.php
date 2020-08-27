@@ -8,13 +8,14 @@
  * and then selecting the 'Remove' button. In addition, those same tables
  * are compared to the filelist to see if any of the table entries do not
  * have matching files.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
+ * @package Ktesa
  * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 
 $published_query = "SELECT picIdx,thumb,mid FROM TSV;";

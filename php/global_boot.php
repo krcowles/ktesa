@@ -6,10 +6,11 @@
  * error reporting and logging options, whether in development or 
  * production mode. This file also establishes the PDO object for
  * the session ($pdo).
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Global_Boot
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 define("LOC_SCALE", 10**7); // scaling factor for lat and lng as stored in db
@@ -61,47 +62,3 @@ $dsn = sprintf(
     'mysql:host=%s;dbname=%s;charset=%s', $HOSTNAME, $DATABASE, $CHARSET
 );
 $pdo = new PDO($dsn, $USERNAME, $PASSWORD, $options);
-/**
- * The following tests were used as a means to verify some of the
- * error and exception handling. In some cases, the tests utilize 
- * scenarios unlikely to occur, but nonetheless validate the function.
- * The site initially should be set to 'development' for these tests.
- * To test the collection of info in the ktesa.log, and to generate 
- * the user-friendly error page, set the site to 'production'.
- * When testing, remember that only the first un-commented error will 
- * trip, so comment out any code preceding the desired test.
- * 
- * NOTE: Whoops does not invoke for CAUGHT errors/exceptions
- * 
- * try/catch: in production mode, errors and warnings are not caught, 
- * and the catch block will not execute, but the errors will still be
- * logged. Only 'throwable' objects can be caught.
- * See documentation on Google Drive for more detail.
- */
-
-/*
-$var = 1;
-try {
-    fopen("blah"); // WARNING (caught in dev mode only)
-    //$var->method(); // ERROR OBJECT THROWN (but uses 'Throwable')
-    //$x = 1/0; // WARNING (caught in dev mode only)
-    //trigger_error("triggered"); // Error, NO ERROR OBJECT (caught in dev mode only)
-    //throw new Error("new type error"); // ERROR OBJECT THROWN (uses Throwable)
-    //throw new Exception("Yay!");
-    //$x = $y*fred; // Error (caught in dev mode)
-}
-catch (Throwable $t) {
-    // Because it now implements the Throwable interface:
-    $message = "Here's the data: ";
-    $message .= "In " . $t->getFile() . " at line " . $t->getLine() .
-        " error code " . $t->getCode() . " with message:<br />" .
-        $t->getMessage() . "; TRACE INFO:<br />" . $t->getTraceAsString();
-    die($message);
-}
-*/
-// UNCAUGHT - invokes whoops in dev mode
-//fopen("fred");
-//$var->method();
-//$x = 1/0;
-//trigger_error("triggered for whoops");
-//throw new Error("whoops-catchable error");

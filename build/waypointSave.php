@@ -4,10 +4,11 @@
  * either the database, or the gpx file, depending on where the waypoints
  * are found. If there are no waypoints yet, the new ones will be entered 
  * into the database.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Editing
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 // waypoint data, if present in database

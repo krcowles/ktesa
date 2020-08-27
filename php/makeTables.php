@@ -5,10 +5,11 @@
  * the Table Only page uses checkboxes for each hike (w/gpx) whereas the
  * hike editor does not. This necissitated an identifier, $pageType, which
  * must be defined by the caller.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Hike_Table
- * @author  Tom Sandberg nd Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 require_once "tableData.php";

@@ -2,8 +2,9 @@
 /**
  * This script checks for any incoming site cookies. If cookies are
  * present, and the user has not already logged in, login credentials
- * are set up if the user has registered. If the user is already logged
- * in, essentially nothing else occurs.
+ * are set up for this member. If the user is already logged
+ * in, essentially nothing else occurs. Session_start must reside on
+ * the page from which this routine is being called.
  * Note: having a separate admin ('master') cookie allows admins
  * to have both an admin account and a user account to verify user
  * functionality.
@@ -50,7 +51,7 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
             $userid = $user_info['userid'];
             $expDate = $user_info['passwd_expire'];
             $cookies = $user_info['facebook_url'];
-            $choice = 'reject';  // default if no user selection 
+            $choice = 'reject';  // default if no user selection recorded
             if (!empty($cookies)) {
                 $choice = $cookies;
             }
@@ -74,11 +75,14 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
         }
     } elseif ($master) {
         $cookie_state = "OK";
-        $_SESSION['username'] = 'mstr';
-        if ($_COOKIE['nmh_mstr'] === 'mstr2') {
-            $_SESSION['userid'] = '2';
-        } else {
+        $cookieval = 'mstr';
+        if ($_COOKIE['nmh_mstr'] === 'mstr') {
             $_SESSION['userid'] = '1';
+            $_SESSION['username'] = 'tom';
+        } elseif ($_COOKIE['nmh_mstr'] === 'mstr2') {
+            $_SESSION['userid'] = '2';
+            $_SESSION['username'] = 'kc';
+            $cookieval = 'mstr2';
         }
         $_SESSION['expire'] = "2050-12-31";
         $_SESSION['cookies'] = "accept";
@@ -88,8 +92,9 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
         $cookie_state = "NOLOGIN";  // repeat as documentation...
     }
     $_SESSION['cookie_state'] = $cookie_state;
-} else { // LOGGED IN: (User data in $_SESSION vars): $_SESSION['username'] is true
-    if ($_SESSION['username'] === 'mstr') {
+} else {
+    // LOGGED IN: (User data is in $_SESSION vars);
+    if ($_SESSION['userid'] == '1'  || $_SESSION['userid'] == '2') {
         $admin = true;
     }
 }

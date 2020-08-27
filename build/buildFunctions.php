@@ -3,10 +3,11 @@
  * This file contains function declarations designed to be used
  * by modules in the build directory. At this time, there are also
  * some instances called by makeGpsv.php.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Build_Functions
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 /**

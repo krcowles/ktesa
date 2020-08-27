@@ -10,12 +10,12 @@
  *      b. A user-selected calendar date
  * In all cases, the code will recursively scan the project directory and
  * identify the desired items.
- * PHP Version 7.0
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- * @link    ../docs/
  */
 session_start();
 require '../php/global_boot.php';

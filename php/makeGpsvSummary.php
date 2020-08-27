@@ -5,13 +5,12 @@
  * Variables expected to be defined prior to invocation: 
  *    string  $gpxPath, relative url to the gpx file;
  *    integer $hikeNo, unique hike id
- * PHP Version 7.0
+ * PHP Version 7.4
  * 
- * @category Not_Sure_What
- * @package  GPSV_Mapping
- * @author   Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
- * @license  None at this time
- * @link     ../php
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
  */
 require "../build/buildFunctions.php";
 // Error messaging

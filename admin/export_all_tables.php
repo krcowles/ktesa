@@ -5,10 +5,11 @@
  * adminFunctions.php module: the export utilizes both $pdo for
  * accessing the current db, and mysqli for formulating the .sql
  * file's string contents. 
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 require "../php/global_boot.php";

@@ -4,12 +4,14 @@
  * for files that have changed since the last time stamp (when
  * dummy.txt was uploaded). Those files are then added to a zip
  * archive and downloaded.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 ignore_user_abort(true);
 require "../mysql/setenv.php";
 

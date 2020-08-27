@@ -11,6 +11,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 
 $hikeNo = filter_input(INPUT_GET, 'hno');

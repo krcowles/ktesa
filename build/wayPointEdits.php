@@ -3,10 +3,11 @@
  * This file constructs the html for editing waypoints based on 
  * which, if any, waypoints may exist either in the gpx file or in 
  * the database
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Editing
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 /**

@@ -2,10 +2,11 @@
 /**
  * This script will change the mode of the site between production
  * and development, and redirect back to the admintools page.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 require '../php/global_boot.php';

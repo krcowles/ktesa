@@ -6,12 +6,14 @@
  * the module will first drop all tables and then reload them.
  * The EHIKES table is placed last in the drop list as it is the parent
  * for multiple foreign keys.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 $tables = array();
 $data = $pdo->query("SHOW TABLES");

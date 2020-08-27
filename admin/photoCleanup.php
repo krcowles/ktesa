@@ -3,13 +3,14 @@
  * This script is called when the admin selects (submits) either:
  * "Delete Selected Photo" or "Create Shell to Delete". Any items
  * whose checkbox is checked will be removed.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
+ * @package Ktesa
  * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 
 $action = filter_input(INPUT_POST, 'submit');  // remove files or create shell?

@@ -10,7 +10,7 @@
  */
 require "../php/global_boot.php";
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
-$usr = filter_input(INPUT_POST, 'usr');
+
 /* It is possible that no pictures are present, also that no
  * checkboxes are checked. Therefore, the script tests for these things
  * to prevent undefined vars
@@ -89,5 +89,5 @@ while ($photo = $photoq->fetch(PDO::FETCH_ASSOC)) {
 // enter/save waypoints
 require "waypointSave.php";
 
-$redirect = "editDB.php?hikeNo={$hikeNo}&usr={$usr}&tab=2";
+$redirect = "editDB.php?tab=2&hikeNo={$hikeNo}";
 header("Location: {$redirect}");

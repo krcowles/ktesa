@@ -13,4 +13,3 @@
 <textarea id="info" name="hinfo" rows="16"  maxlength="4096" 
         cols="130"><?= $info;?></textarea>
 <input type="hidden" name="dno" value="<?= $hikeNo;?>" />
-<input type="hidden" name="did" value="<?= $usr;?>" />

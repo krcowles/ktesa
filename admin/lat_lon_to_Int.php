@@ -1,13 +1,12 @@
 <?php
 /** 
  * This script converts lat/lon data from float to int 
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @category None
- * @package  Admin
- * @author   Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
- * @license  No license to date
- * @link     None
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
  */
 
 /*

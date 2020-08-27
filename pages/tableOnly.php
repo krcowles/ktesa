@@ -10,7 +10,6 @@
 session_start();
 require "../php/global_boot.php";
 // required by makeTables.php
-$usr = 'mstr'; // this is actually a "don't care", but needs to be specified
 $age = 'old';
 $show = 'all';
 $pageType = 'FullTable';

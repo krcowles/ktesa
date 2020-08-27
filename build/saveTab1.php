@@ -21,7 +21,6 @@ require_once "../php/gpxFunctions.php";
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
 $pdoBindings = [];
 $pdoBindings['hikeNo'] = $hikeNo;
-$usr      = filter_input(INPUT_POST, 'usr');
 $maingpx  = filter_input(INPUT_POST, 'mgpx'); // may be empty
 $maintrk  = filter_input(INPUT_POST, 'mtrk'); // may be empty
 $delgpx   = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
@@ -291,5 +290,5 @@ $latlng .= "WHERE indxNo = ?;";
 array_push($data, $hikeNo);
 $pdo->prepare($latlng)->execute($data);
 
-$redirect = "editDB.php?hikeNo={$hikeNo}&usr={$usr}&tab=1";
+$redirect = "editDB.php?tab=1&hikeNo={$hikeNo}";
 header("Location: {$redirect}");

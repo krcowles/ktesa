@@ -1,10 +1,11 @@
 <?php
 /**
  * This module contains error handling functions defined for the project.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Error_Handling
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 /**

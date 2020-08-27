@@ -2,12 +2,14 @@
 /**
  * This module present the admin with a form allowing addition of a book
  * to the database table "BOOKS"
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

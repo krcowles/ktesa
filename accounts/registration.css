@@ -81,7 +81,7 @@ input:focus {
     font-size: 18px;
     color: #b47b31;
 }
-input[type=password] {
+input[type=password]:not('#upass') {
     background-color: ghostwhite;
     position: relative;
     left: -20px;

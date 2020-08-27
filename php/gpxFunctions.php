@@ -2,11 +2,12 @@
 /**
  * This module contains functions used both during build and when creating
  * GPSV maps.
- * PHP Version 1.1
+ * PHP Version 7.4
  * 
- * @package GPSV_Mapping
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
- * @license No License to date
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
  */
 /**
  * This function will output a file, identified with an extension of

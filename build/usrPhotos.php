@@ -3,10 +3,11 @@
  * This script is called via ajax from the ktesaUploader.js module.
  * One photo file will be POSTed from the form. It will be resized and stored
  * in the pictures directory (nsize, zsize).
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Uploading
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 require "../php/global_boot.php";

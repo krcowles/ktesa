@@ -1,6 +1,8 @@
 <?php
 /**
- * Save the user's choice to accept cookies.
+ * Save the user's new choice to accept/reject cookies.
+ * NOTE: The menu option to change cookie choice only appears for
+ * logged-in members.
  * PHP Version 7.4
  *
  * @package Ktesa
@@ -9,15 +11,12 @@
  * @license No license to date
  */
 session_start();
+require "../php/global_boot.php";
 
-if (isset($_SESSION['username'])) {
-    $useCookieReq = "UPDATE `USERS` SET `opt` = 'Y' WHERE `username` = :uname;";
-    $useCookie = $pdo->prepare($useCookieReq);
-    $useCookie->execute(["uname" => $_SESSION['username']]);
-    echo "SAVED";
-} else {
-    // what to do when a non-user (or not-logged-in user) accepts?
-    echo '<script type="text/javascript">alert("No cookies are saved until ' .
-        '"you become a member\nIf you are a member, you must login to save ' .
-        'your choice")</script>';
-}
+$choice  = filter_input(INPUT_POST, 'choice');
+
+$useCookieReq = "UPDATE `USERS` SET `facebook_url` = :choice WHERE " .
+    "`username` = :uname;";
+$useCookie = $pdo->prepare($useCookieReq);
+$useCookie->execute(["uname" => $_SESSION['username'], "choice" => $choice]);
+$_SESSION['cookies'] = $choice;

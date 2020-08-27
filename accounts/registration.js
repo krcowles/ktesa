@@ -121,6 +121,12 @@ $('#submit').on('click', function() {
         proceed = validemail();
     }
     if (proceed) {
+        if ($('#cookie_banner').css('display') !== 'none') {
+            proceed = false;
+            alert("Please accept or reject cookis");
+        };
+    }
+    if (proceed) {
         let asynch = $.Deferred();
         uniqueuser(asynch);
         $.when(asynch).then(function() {

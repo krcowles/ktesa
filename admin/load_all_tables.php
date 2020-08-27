@@ -1,12 +1,14 @@
 <?php
 /**
  * The loader.php script performs the actual uploading of the database.sql file.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require '../php/global_boot.php';
 ?>
 <!DOCTYPE html>

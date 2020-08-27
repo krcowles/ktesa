@@ -7,8 +7,7 @@ $( function () { // when page is loaded...
  *  2. EHIKES table items -- these will be directed immediately to editDB.php;
  *     If the hike was originally published, a reminder will pop up.
  */
-var uid = $('#uid').text();
-var useEditor = 'editDB.php?tab=1&usr=' + uid + "&hikeNo=";
+var useEditor = 'editDB.php?tab=1&hikeNo=';
 $rows = $('tbody').find('tr');
 $('a:not(.navs)').each(function(i) {
 	// *** THESE HIKES ARE EHIKES ***
@@ -29,7 +28,7 @@ $('a:not(.navs)').each(function(i) {
 			var $containerRow = $(this).parent().parent();
 			if ( !$containerRow.hasClass('indxd') ) {
 				var hikeToUse = $containerRow.data('indx');
-				var callPhp = 'xfrPub.php?hikeNo=' + hikeToUse + '&usr=' + uid;
+				var callPhp = 'xfrPub.php?hikeNo=' + hikeToUse;
 				$(this).attr('href', callPhp);
 				$(this).attr('target', '_self');
 			} else {

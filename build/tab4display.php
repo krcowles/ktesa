@@ -4,7 +4,6 @@
 <h3 class="up">Hike Reference Sources: (NOTE: Book type cannot be 
     changed - if needed, delete and add a new one)</h3>
 <input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
-<input type="hidden" name="usr" value="<?= $usr;?>" />
 <script type=text/javascript>
     var titles = <?= $titles;?>;
     var authors = <?= $authors;?>;

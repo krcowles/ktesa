@@ -2,17 +2,22 @@
 /**
  * This script is invoked in multiple scenarios and merely sets the parameters
  * for a table of hikes to be created by 'makeTables.php'. The parameters are
- * pulled from the query string.
- * PHP Version 7.0
+ * pulled from the query string or $_SESSION user credentials
+ * PHP Version 7.4
  * 
- * @package Page_Display
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
-$usr = filter_input(INPUT_GET, 'usr');
+$userid = $_SESSION['userid'];
 $age = filter_input(INPUT_GET, 'age');
 $show = filter_input(INPUT_GET, 'show');
+if ($userid == 1 || $userid == 2) {
+    $show = 'all';
+}
 $pageType = 'Editor';
 ?>
 <!DOCTYPE html>
@@ -32,7 +37,7 @@ $pageType = 'Editor';
 </head>
 
 <body>
-<p id="uid" style="display:none"><?php echo $usr;?></p>
+
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Select A Hike To Edit</p>
 <p id="page_id" style="display:none">Build</p>
@@ -41,14 +46,14 @@ $pageType = 'Editor';
     below, you will be presented with an editable version of the hike page.</p>
 </div>
 <div><br />
-<?php
-    require "../php/makeTables.php";
-?>
+
+<?php require "../php/makeTables.php"; ?>
+
 </div>
 
 <script type="text/javascript">
-    var age = "<?php echo $age;?>";
-    var statfields = <?php echo $status;?>;
+    var age = "<?= $age;?>";
+    var statfields = <?= $status;?>;
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="hikeEditor.js"></script>

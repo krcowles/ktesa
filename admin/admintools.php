@@ -3,10 +3,11 @@
  * Administration tools for the site masters are included here. These
  * comprise buttons to carry out certain admin tasks, and are grouped
  * and ordered based on current usage.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();

@@ -14,7 +14,6 @@
     href="#wloc">Manage Waypoints</a></span>
 <hr />
 <p id="ehno" style="display:none;"><?= $hikeNo;?></p>
-<p id="eusr" style="display:none;"><?= $usr;?></p>
 
 <form class="box" action="saveTab2.php" method="POST">
 <span id="userupld">Add Photos using drag-and-drop onto the page, or select:</span>
@@ -32,7 +31,6 @@
     <em>Edit captions below each photo as needed and assign display options.</em>
 </p>
 <input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
-<input type="hidden" name="usr" value="<?= $usr;?>" />
 
 <div id="d2">
     <input id="ap2" type="submit" name="savePg" value="Apply" />

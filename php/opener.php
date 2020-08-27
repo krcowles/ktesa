@@ -10,15 +10,21 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require "../admin/mode_settings.php";
-$page = filter_input(INPUT_GET, 'page');
-$user = $_SESSION['username'];
+session_start();
+require "../php/global_boot.php";
+
+$page   = filter_input(INPUT_GET, 'page');
+$login  = isset($_SESSION['userid']) ? $_SESSION['userid'] : false;
 $script = "<script type='text/javascript'>window.open('";
 $close  = "', target='_self');</script>";
 $noedit = "<script type='text/javascript'>alert('No editing allowed');</script>";
 
-if ($page === 'admin' && $user = 'mstr') {
-    $script .= "../admin/admintools.php" . $close;
+if ($page === 'admin' && $login) {
+    if ($login == '1' || $login == '2') {
+        $script .= "../admin/admintools.php" . $close;
+    } else {
+        $script = '';
+    }
 } elseif ($page === 'viewPubs') { // not implemented yet
     $script .= "../build/viewPubs.php" . $close;
 } elseif ($page === 'new') {

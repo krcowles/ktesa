@@ -2,10 +2,11 @@
 /**
  * Create a compressed archive for automatically downloading to 
  * the browser. 
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 $tmpFilename = sys_get_temp_dir() . '/archive.phar';

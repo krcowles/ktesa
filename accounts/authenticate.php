@@ -1,8 +1,8 @@
 <?php
 /**
- * This script authenticates the username/password combo entered by
- * the user when submitting a login requiest. The information is 
- * compared to entries in the USERS table.
+ * This script may be called either as a result of page load (getLogin.php)
+ * or via the validateUser function (ajax). The latter requires query string
+ * parameters to define user.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -10,40 +10,43 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
-
 define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
-$usrname = filter_input(INPUT_POST, 'usr_name');
-$usrpass = filter_input(INPUT_POST, 'usr_pass');
-$mstr1 = ($usrname === 'tom') ? true : false;
-$mstr2 = ($usrname === 'kc')  ? true : false;
 
-$usr_req = "SELECT `userid`,`passwd`,`passwd_expire` " .
+$username = isset($_POST['usr_name']) ?
+    filter_input(INPUT_POST, 'usr_name') : $_SESSION['username'];
+$userpass = isset($_POST['usr_pass']) ? filter_input(INPUT_POST, 'usr_pass') : false;
+
+// retrieve required user data
+$usr_req = "SELECT `userid`,`passwd`,`passwd_expire`,`facebook_url`" .
     " FROM `USERS` WHERE `username` = :usr;";
 $auth = $pdo->prepare($usr_req);
-$auth->bindValue(":usr", $usrname);
-$auth->execute();
+$auth->execute(["usr" => $username]);
 $rowcnt = $auth->rowCount();
 if ($rowcnt === 1) {  // located single instance of user
     $user_dat = $auth->fetch(PDO::FETCH_ASSOC);
-    if (password_verify($usrpass, $user_dat['passwd'])) {  // user data correct
-        if ($mstr1 || $mstr2) {
-            $_SESSION['username'] = 'mstr';
-            $_SESSION['userid'] = $mstr1 ? '1' : '2';
+    if (password_verify($userpass, $user_dat['passwd'])) {  // user data correct
+        if ($username == 'kc' || $username == 'tom') {
+            $_SESSION['username'] = $username;
+            $_SESSION['userid'] = $user_dat['userid'];
             $_SESSION['expire'] = "2050-12-31";
+            $_SESSION['cookie_state'] = "OK";
+            $_SESSION['cookies'] = 'accept';
             $adminExpire = time() + 10 * UX_DAY * 365;  // 10 yrs
-            if ($mstr1) {
-                setcookie('nmh_mstr', 'mstr', $adminExpire, "/");
-            } else {
-                setcookie('nmh_mstr', 'mstr2', $adminExpire, "/");
-            }
+            $admin_cookie = $user_dat['userid'] == 1 ? 'mstr' : 'mstr2';
+            setcookie(
+                'nmh_mstr', $admin_cookie, $adminExpire, "/", "", true, true
+            );
             echo "ADMIN";
             exit;
         } else {
             $expiration = $user_dat['passwd_expire'];
-            $_SESSION['username'] = $usrname;
+            $_SESSION['username'] = $username;
             $_SESSION['userid'] = $user_dat['userid'];
             $_SESSION['expire'] = $expiration;
+            $_SESSION['cookie_state'] = "OK";
+            $_SESSION['cookies'] = $user_dat['facebook_url'];
             $american = str_replace("-", "/", $expiration);
             $expdate = strtotime($american);
             if ($expdate <= time()) {
@@ -52,17 +55,25 @@ if ($rowcnt === 1) {  // located single instance of user
             } else {
                 $days = floor(($expdate - time())/UX_DAY);
                 if ($days <= 5) {
-                    // set current cookie pending renewal
-                    setcookie('nmh_id', $usrname, $expdate, "/");
+                    if ($user_dat['facebook_url'] === 'accept') {
+                        // set current cookie pending renewal
+                        setcookie(
+                            "nmh_id", $username, $expdate, "/", "", true, true
+                        );
+                    }
                     echo "RENEW";
                     exit;
                 }
             }
-            setcookie('nmh_id', $usrname, $expdate, "/");
+            if ($user_dat['facebook_url'] === 'accept') {
+                setcookie(
+                    "nmh_id", $username, $expdate, "/", "", true, true
+                );
+            }
         }
         echo "LOCATED";
     } else {  // user exists, but password doesn't match:
-        echo "BADPASSWD" . $usrpass . ";" . $user_dat['passwd'];
+        echo "BADPASSWD" . $userpass . ";" . $user_dat['passwd'];
     }
 } else {  // not in USER table (or multiple entries for same user)
     echo "FAIL";

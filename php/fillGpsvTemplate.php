@@ -10,7 +10,7 @@
  *  $map_opts  set of options for map creation
  *  $noOfTrks  total tracks to be displayed
  * 
- * PHP Version 7.3
+ * PHP Version 7.4
  * 
  * @package Ktesa
  * @author  Tom Sandberg <tjsandberg@yahoo.com>

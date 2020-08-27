@@ -1,10 +1,11 @@
 <?php
 /**
  * This module provides an alphabetized list of hikes from the HIKES table
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Home
- * @author  Tom Sandberg and Ken Cowles <krcowle29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 $allHikes = $pdo->query("SELECT pgTitle FROM HIKES")->fetchAll(PDO::FETCH_COLUMN);

@@ -87,13 +87,12 @@ require_once "../accounts/getLogin.php";
     </div>
 </div>
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
+<?php if (isset($_SESSION['cookies'])) : ?>
+<p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
+<?php endif; ?>
 
 <?php if ($admin) : ?>
 <p id="admin">admin</p>
-<?php endif; ?>
-
-<?php if (isset($_SESSION['cookies'])) : ?>
-<p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
 <?php endif; ?>
 
 <!-- Modal Windows HTML -->

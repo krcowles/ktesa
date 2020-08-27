@@ -8,10 +8,11 @@
  *   1. dbState: 'test' or 'main', defining which db will be connected
  *   2. appMode: 'development' or 'production', defining the error methodology
  *   3. editing: 'yes' or 'no', depending on whether this site allows hke edits
- * PHP Version 7.1
+ * PHP Version 7.4
  *
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 $dbState = 'main';

@@ -1,12 +1,14 @@
 <?php
 /**
  * This script uploads the selected file to the system's temp dir.
- * PHP Version 7.0
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 $msg = '';
 if ($_FILES['ufile']['name'] == '') {

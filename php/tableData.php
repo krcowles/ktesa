@@ -4,25 +4,28 @@
  * that is used to display various tables of hikes via 'makeTables.php'.
  * The 'makeTables.php' script can be invoked in three different scenarios:
  *  1.  By 'pages/tableOnly.php' ['Explore->Table Only]
+ *      $pageType = 'FullTable'
  *      Here it is used to display ALL hikes and index pages regardless of 
- *      usrid; [show=all, usr=x, table=HIKES (ie age=old)];
+ *      userid; [show=all, table=HIKES (ie age=old)];
  *  2.  By 'build/hikeEditor.php' [Contribute->...]
- *      Here it is used to display ONLY hikes which can be edited by the usrid;
+ *      Here it is used to display ONLY hikes which can be edited by the userid;
+ *      $pageType = 'Editor'
  *        a. Editing of newly created hikes or already in-edit hikes;
  *           [...Continue Editing Your Hike]
- *           [show=usr, usr=usr, table=EHIKES (ie age=new)]
- *           NOTE: The admin can see all hikes in edit.
+ *           [show=usr, table=EHIKES (ie age=new)];
+ *           NOTE: The admin can see all hikes in edit (modified to show=all)
  *        b. Editing of a published hike which (not currently in edit mode)
  *           [...Edit Your Published Hike]
  *           NOTE: The admin can edit any published hike.
- *           [show=usr, table=HIKES (ie age=old): if usr='mstr, show=all]      
+ *           [show=usr, table=HIKES (ie age=old): show=all for admin]      
  *  3.  By 'admin/reldel.php'
+ *      $pageType = 'Publish'
  *      Here it is used to list ALL EHIKES (for master) to release or delete:
- *      [show=all, usr='mstr', table=EHIKES (ie age=new)]
- *  Each 'calling' script must set the $show, $usr, $age (table), and $pageType
+ *      [show=all, table=EHIKES (ie age=new)]
+ *  Each 'calling' script must set the $show, $age (table), and $pageType
  *  parameters; In all cases, the .js will direct the web page link to the proper
  * location.
- *  PHP Version 7.4
+ * PHP Version 7.4
  * 
  * @package Ktesa
  * @author  Tom Sandberg <tjsandberg@yahoo.com>
@@ -38,6 +41,9 @@ $partialIcon = '<img class="expShift" src="../images/partShade.jpg" '
     . 'alt="Partial shade icon" />';
 $shadeIcon = '<img class="expShift" src="../images/goodShade.jpg" '
     . 'alt="Partial sun/shade icon" />';
+if ($show !== 'all') {
+    $userid = $_SESSION['userid'];
+}
 // undisplayed data:
 $hikeHiddenDat = array();
 $hikeMarker = array();
@@ -61,16 +67,14 @@ $hikeGpx = array();
 if ($age === 'new') {
     $status = '[';  // editing new hikes requires gathering the 'stat' field
     $enos = '[';    // and their corresponding EHIKES indxNo's
-    $query = 'SELECT * FROM EHIKES';
+    $query = 'SELECT * FROM `EHIKES`';
     if ($show === 'usr') {
-        if ($usr !== 'mstr') {
-            $query .= " WHERE usrid = :user";
-        }
+        $query .= " WHERE `usrid` = :userid";
     }
 } elseif ($age === 'old') {
     $query = 'SELECT * FROM HIKES';
-    if ($show === 'usr' && $usr !== 'mstr') {
-        $query .= " WHERE usrid = :user";
+    if ($show === 'usr') {
+        $query .= " WHERE usrid = :userid";
     }
     $status = '[]';
     $enos = '[]';
@@ -79,9 +83,13 @@ if ($age === 'new') {
 }
 $query .= ';';
 // Now execute the query:
-$tblquery = $pdo->prepare($query);
-$tblquery->bindValue(":user", $usr);
-$tblquery->execute();
+if ($show === 'all') {
+    $tblquery = $pdo->query($query);
+} else {
+    $tblquery = $pdo->prepare($query);
+    $tblquery->bindValue("userid", $userid);
+    $tblquery->execute();
+}
 $entries = $tblquery->rowCount();
 // adjust link based on caller location
 if ($show !== 'all') {

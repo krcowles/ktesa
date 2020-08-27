@@ -3,12 +3,14 @@
  * This script will process the admin tools request to either delete a
  * page from EHIKES, or to publish it to the main site. The outcome is
  * determined by the query string parameter 'act'
- * PHP Version 7.0
+ * PHP Version 7.4
  * 
- * @package Admin_Tools
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 
 $act = filter_input(INPUT_GET, 'act');

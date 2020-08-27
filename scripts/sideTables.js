@@ -302,11 +302,10 @@ function enableFavorites() {
             var ajaxdata = {no: hikeno};
             var isrc = $(this).attr('src');
             var newsrc;
+            var $tooltip = $(this).parent().prev();
+            var $that = $(this);
             if (isrc.indexOf('Yellow') !== -1) { // currently a not favorite
                 ajaxdata.action = 'add';
-                newsrc = isrc.replace('Yellow', 'Red');
-                var $txtspan = $(this).parent().prev();
-                $txtspan.text('Unmark');
                 $.ajax({
                     url: "markFavorites.php",
                     method: "post",
@@ -315,6 +314,9 @@ function enableFavorites() {
                     success: function(results) {
                         if (results === "OK") {
                             favlist.push(parseInt(hikeno));
+                            newsrc = isrc.replace('Yellow', 'Red');
+                            $tooltip.text('Unmark');
+                            $that.attr('src', newsrc);
                         } else {
                             alert("You must be a registered user\n" +
                                 "in order to save Favorites");
@@ -328,17 +330,22 @@ function enableFavorites() {
                 });
             } else { // currently a favorite
                 ajaxdata.action = 'delete';
-                newsrc = isrc.replace('Red', 'Yellow');
-                var $txtspan = $(this).parent().prev();
-                $txtspan.text('Add to Favorites');
                 $.ajax({
                     url: "markFavorites.php",
                     method: "post",
                     data: ajaxdata,
                     dataType: "text",
-                    success: function(json_results) {
-                        let key = favlist.indexOf(parseInt(hikeno));
-                        favlist.splice(key, 1); 
+                    success: function(results) {
+                        if (results === 'OK') {
+                            let key = favlist.indexOf(parseInt(hikeno));
+                            favlist.splice(key, 1);
+                            newsrc = isrc.replace('Red', 'Yellow');
+                            $tooltip.text('Add to Favorites');
+                            $that.attr('src', newsrc);
+                        } else {
+                            alert("You must be a registered user\n" +
+                                "in order to save Favorites");
+                        }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         var newDoc = document.open("text/html", "replace");
@@ -347,7 +354,6 @@ function enableFavorites() {
                     }
                 });
             }
-            $(this).attr('src', newsrc);
         });
     });
     return;

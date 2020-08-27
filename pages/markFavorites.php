@@ -14,9 +14,8 @@ require "../php/global_boot.php";
 
 $action = filter_input(INPUT_POST, 'action');
 $hikeno = filter_input(INPUT_POST, 'no');
-$userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : false;
-
-if ($userid) {
+if (isset($_SESSION['userid'])) {
+    $userid = $_SESSION['userid'];
     if ($action === 'add') {
         $addfav = "INSERT INTO `FAVORITES` (`userid`, `hikeNo`) VALUES " .
             "(:uid, :hike);";

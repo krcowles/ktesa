@@ -8,9 +8,9 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
+session_start();
 require "../php/global_boot.php";
 
-$usr = filter_input(INPUT_GET, 'usr');
 $clusterSelect = getClusters($pdo);
 ?>
 <!DOCTYPE html>
@@ -58,7 +58,6 @@ $clusterSelect = getClusters($pdo);
             you may continue to enter data, or simply return later and select
             "Edit Hikes: New/Active Edits" from the main page.
         </h4>
-        <input type="hidden" name="uid" value="<?= $usr;?>" />
         <input type="submit" name="newpg" value="Submit This Page" />
     </form>
 </div>

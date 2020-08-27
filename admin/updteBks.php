@@ -2,12 +2,14 @@
 /**
  * This script inserts a new book entered on the form "addBook.php" into
  * the BOOKS table in MySQL.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package ADMIN
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require_once "../php/global_boot.php";
 $author = filter_input(INPUT_POST, 'author');
 $title = filter_input(INPUT_POST, 'title');

@@ -2,10 +2,11 @@
 /**
  * This module changes the state between 'Editing Allowed' and 'No Edites Allowed'
  * for the site on which it is invoked (e.g. test site, main site, etc)
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Admin
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 require "../php/global_boot.php";
