@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -339,7 +339,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -372,7 +372,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=547 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=552 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -717,7 +717,7 @@ INSERT INTO HIKES VALUES
 ('204','The Narrows Rim Trail','mstr','Grants','Normal',NULL,'','','Out-and-back','7.60','400','Easy-Moderate','Picnic Area','Elevated views of the lava field, and Ventana Arch','Not Winter','Full sun','Narrows_Rim_Trail.GPX','Narrows_Rim_Trail.json','348365005','-1079118301',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//34.836500510573387,+-107.911830106750131/@35.0027321,-107.9762896,11z/data=!4m6!4m5!1m0!1m3!2m2!1d-107.9118301!2d34.8365005',NULL,'This is a relatively easy hike, though it can get a bit \'long-in-the-tooth\' as the trail doesn\'t offer a wide variety of differing views. The views that are available are nonetheless excellent. And the end of the trail, you can sit and look across the valley to the Ventana Arch, which is also accessible for viewing from the road below. Park in the Narrows Picnic Area, south of the Ventana Arch for access to the Narrows Rim. Since the trail rides on top of the mesa, great views extend in almost every direction. ',NULL,NULL,NULL);
 INSERT INTO HIKES VALUES
 ('205','Atalaya Picacho Loop','mstr','Santa Fe','Cluster',NULL,'AA','Atalaya Group','Loop','5.10','1600','Med-Difficult','None','Views','Spring/Fall','Mixed sun/shade','AtalayaPicachoProposed.gpx','AtalayaPicachoProposed.json','356702770','-1059006409',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Atalaya+-+Upper+Trailhead+(recgovnpsdata),+Santa+Fe,+NM+87505/@35.6625051,-105.9324271,13.81z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718510b3b76eee9:0x46aed0d056701831!2m2!1d-105.9005356!2d35.6700591','Parking can be a problem - two small lots at the Atalaya Upper Trailhead.','This combo hike makes for a nice extension to the regular Atalaya hike. There are nice views from both peaks. Although there is some shade, parts of the trail can be sunny and warm.',NULL,NULL,NULL),
-('206','[Proposed] Banco Bonitio','mstr','Valles Caldera','Normal',NULL,'','','Loop','15.70','600',NULL,'','','',NULL,'BancoBonitoDEM.gpx','BancoBonitoDEM.json','358408103','-1066159956',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B050\'26.9%22N+106%C2%B036\'59.2%22W/@35.8469609,-106.633311,13.48z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8407929!4d-106.6164569',NULL,NULL,NULL,NULL,NULL),
+('206','Banco Bonito Outer Loop','mstr','Valles Caldera','Normal',NULL,'',NULL,'Loop','10.80','600','Moderate','None','Open Forest, Meadow, and Solitude','Not winter','Mixed sun/shade','Banco_Bonito.GPX','Banco_Bonito.json','358394823','-1066174161',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B050\'22.1%22N+106%C2%B037\'02.7%22W/@35.838567,-106.6443628,13.31z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8394823!4d-106.6174162',NULL,'Although the entrance has been closed to vehicles for some time, there is a spring-clip pedestrian entrance at the gate. This hike follows old logging roads through a now unused section of the Valles Caldera. The roads are typically marked with signs such as VC07, VC02, etc. Shorter loops are possible by cutting through north-south roads illustrated by markers on the map - but study these carefully before attempting: the roads almost disappear at times. The trail slowly rises up to the large open meadow at the east end of Banco Bonito. Here you can cut north and cross the western edge (VC0701), or take the much longer loop behind, down, and across the western side of the meadow, re-ascending to meet the main trail. Most of the trail is very pleasant \'open forest\' of Ponderosa, Aspen and Spruce, spaced widely apart as if in a former meadow. This trail is very infrequently used, and the roads are beginning to re-integrate with the forest. If following the suggested route, there is a \'tricky\' section at the point marked \"Duke Trail\" (see photos). There is no apparent trail here, but you must nonetheless cut south through the forest floor a short distance in order to finally see the two-track heading up the hill.<br />The name of this location derives from the geological phenomenon known as the Banco Bonito Volcanic Flow, consisting largely of rhyolite. Obsidian was also seen on the trail.',NULL,NULL,NULL),
 ('207','[Proposed] Holiday Mesa','mstr','Jemez Springs','Normal',NULL,'','',NULL,'4.40','1100',NULL,'','','',NULL,'HolidayMesaDEM.gpx','HolidayMesaDEM.json','357660435','-1067887875',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B045\'57.8%22N+106%C2%B047\'19.6%22W/@35.7285415,-106.8337945,12.08z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7660435!4d-106.7887875',NULL,NULL,NULL,NULL,NULL),
 ('209','[Proposed] Extended Deadman','mstr','San Luis','Cluster',NULL,'QQ','Deadman Group','Loop','4.80','400',NULL,'','','',NULL,'DeadmanPeaksDEM.gpx','DeadmanPeaksDEM.json','357452844','-1070749054',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B044\'43.0%22N+107%C2%B004\'29.7%22W/@35.6931631,-107.1527349,11.15z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7452845!4d-107.0749054',NULL,NULL,NULL,NULL,NULL),
 ('210','Tecolote Trail','mstr','Tijeras','Normal',NULL,'','','Out-and-back','2.40','200','Easy','None','360-degree views and wildflowers','Not Winter','Full sun','Tecolote.GPX','Tecolote.json','352004585','-1064053533',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Tecolote+Trailhead/@35.1785435,-106.4245462,12.83z/data=!4m5!3m4!1s0x871899729e78e387:0xcbecf0c04e989431!8m2!3d35.2005476!4d-106.4051009','At the time of this hike, the parking area was closed and some logging/maintenance was in progress at the trail head. Nonetheless, the trail itself was open.','This relatively easy trail is a pleasant surprise along the Crest Highway. The elevation change is gradual, and the views are plentiful along the way. At the end, a short 1/4-mile loop provides a 360-degree look at the surroundings. Wildflowers of various types adorned the trail, adding to the enjoyment of the hike. From this trail the parts of the east side of the Sandia are visible, and then later, the San Pedros and Ortiz Mountains come into view. ',NULL,NULL,NULL),
@@ -820,7 +820,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1666 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1667 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1718,7 +1718,8 @@ INSERT INTO REFS VALUES
 ('1659','164','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64240','Forest Service'),
 ('1660','164','Blog:','https://ondafringe.wordpress.com/2015/04/15/day-hike-tunnel-spring-sandia-mountains-placitas-new-mexico-usa/','On Da Fringe'),
 ('1664','245','Book:','7',NULL),
-('1665','245','Website:','https://www.mtbproject.com/trail/7047838/challenge-trail-233','MTB Project');
+('1665','245','Website:','https://www.mtbproject.com/trail/7047838/challenge-trail-233','MTB Project'),
+('1666','206','On-line Map:','https://mapcarta.com/23262506','Area Map');
 
 
 
@@ -1742,7 +1743,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4746 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4774 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4367,7 +4368,24 @@ INSERT INTO TSV VALUES
 ('4739','247',NULL,'IMG_3279','Y','Y','Trail marker near the trail head','358468667','-1064215389','2603',NULL,'2020-08-18 12:03:38','IMG_3279','480','640',NULL,NULL),
 ('4740','247',NULL,'IMG_3275','Y','Y','Looking south into Frijoles Canyon','358356556','-1064163500','2604',NULL,'2020-08-18 11:25:54','IMG_3275','480','640',NULL,NULL),
 ('4741','247',NULL,'IMG_3277','Y','N','A view turning north from the end','358357194','-1064165722','2605',NULL,'2020-08-18 11:26:54','IMG_3277','480','640',NULL,NULL),
-('4742','247',NULL,'IMG_3274','Y','Y','Another view into Frijoles Canyon','358358944','-1064169167','2606',NULL,'2020-08-18 11:24:13','IMG_3274','480','640',NULL,NULL);
+('4742','247',NULL,'IMG_3274','Y','Y','Another view into Frijoles Canyon','358358944','-1064169167','2606',NULL,'2020-08-18 11:24:13','IMG_3274','480','640',NULL,NULL),
+('4743','206',NULL,'IMG_3298','Y','Y','Fork at the meadow - VC01 left, VC02 right','358359083','-1065671472','2607',NULL,'2020-08-25 10:07:24','IMG_3298','480','640',NULL,NULL),
+('4744','206',NULL,'IMG_3293','Y','Y','Example of open forest along the trail','358322722','-1065882333','2608',NULL,'2020-08-25 09:32:26','IMG_3293','480','640',NULL,NULL),
+('4745','206',NULL,'IMG_3288','Y','Y','A clump of Ponderosa at the trail head','358390778','-1066159056','2609',NULL,'2020-08-25 08:46:33','IMG_3288','480','640',NULL,NULL);
+INSERT INTO TSV VALUES
+('4746','206',NULL,'IMG_3295','Y','Y','Smoke from Santa Fe partially obscures this southerly view','358345611','-1065825889','2610',NULL,'2020-08-25 09:42:36','IMG_3295','480','640',NULL,NULL),
+('4747','206',NULL,'IMG_3292','Y','Y','A patch of mullein','358319972','-1065901111','2611',NULL,'2020-08-25 09:28:02','IMG_3292','480','640',NULL,NULL),
+('4748','206',NULL,'IMG_3304','Y','Y','The \'mini\' Valle Grande at the east end of the loop','358369111','-1065520167','2612',NULL,'2020-08-25 11:06:16','IMG_3304','480','640',NULL,NULL),
+('4749','206',NULL,'IMG_3303','Y','Y','Behind and down from the meadow','358348111','-1065516667','2613',NULL,'2020-08-25 11:02:03','IMG_3303','640','480',NULL,NULL),
+('4750','206',NULL,'IMG_3301','Y','Y','These mysterious pyramids have also been seen on the Armijo Trail in the Sandias','358302000','-1065477222','2614',NULL,'2020-08-25 10:43:56','IMG_3301','480','640',NULL,NULL),
+('4751','206',NULL,'IMG_3306','Y','Y','An example of \'selective\' burning from the Las Conchas fire','358387139','-1065532444','2615',NULL,'2020-08-25 11:09:57','IMG_3306','480','640',NULL,NULL),
+('4752','206',NULL,'IMG_3310','Y','Y','A look towards Redondo Peak','358424722','-1065598611','2616',NULL,'2020-08-25 11:26:23','IMG_3310','480','640',NULL,NULL),
+('4753','206',NULL,'IMG_3311','Y','Y','Clouds begin to form -  potential rain ahead!','358491083','-1065693278','2617',NULL,'2020-08-25 11:45:00','IMG_3311','480','640',NULL,NULL),
+('4754','206',NULL,'IMG_3312','Y','Y','Don\'t miss this important turnoff! Head south into the woods to find the two-track','358506889','-1065874167','2618',NULL,'2020-08-25 12:07:56','IMG_3312','480','640',NULL,NULL),
+('4755','206',NULL,'Short Cut VC0703',NULL,'Y',NULL,'358369551','-1066104139',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
+('4756','206',NULL,'Short Cut VC0702',NULL,'Y',NULL,'358361300','-1066056200',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
+('4757','206',NULL,'Short Cut 4',NULL,'Y',NULL,'358366600','-1065748799',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
+('4758','206',NULL,'Short Cut 3',NULL,'Y',NULL,'358331100','-1065931400',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL);
 
 
 
@@ -4409,5 +4427,7 @@ CREATE TABLE `FAVORITES` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+INSERT INTO FAVORITES VALUES
+('1','5');
 
 
