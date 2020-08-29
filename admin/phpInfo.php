@@ -8,6 +8,7 @@
  * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require "../php/global_boot.php";
 phpinfo();
 // Show just the module information:
 // phpinfo(8) yields identical results.
