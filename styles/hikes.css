@@ -11,7 +11,7 @@ body {
     padding: 0px; 
     font-family: Arial, Verdana;
     background-color: #eaeaea; }
-table {
+table:not('#loginTbl') {
     margin-top: 8px;
     margin-bottom: 20px;
     margin-left: auto;
@@ -20,14 +20,14 @@ table {
     border-width: 3px;
     border-color: DarkBlue;
     background-color: #EDF2F7; }
-table th {
+table:not('#loginTbl') th {
     text-align: center;
     padding-left: 5px;
     padding-right: 5px;
     border-style: solid;
     border-width: 2px;
     border-color: DarkBlue; }
-table td {
+table:not('#loginTbl') td {
     text-align: center;
     vertical-align: middle;
     padding: 5px; 
@@ -190,7 +190,7 @@ fieldset {
 img {
     display: inline-block;
     margin-bottom: 0px; }
-#imgArea {;
+#imgArea {
     min-width: 960px;
 }
 iframe {

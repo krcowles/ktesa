@@ -21,15 +21,6 @@ select {
     height: 24px;
     font-size: 16px;
 }
-button {
-    height: 24px;
-    font-size: 16px;
-    color: darkblue;
-}
-button:hover {
-    cursor: pointer;
-    background-color: blanchedalmond;
-}
 input[type=submit] {
     font-size: 18px;
     color: DarkBlue;

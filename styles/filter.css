@@ -8,19 +8,6 @@
 #opts {
 	display: inline-block;
 }
-button {
-	font-size: 16px;
-	height: 28px;
-	background-color: #6D3C17;
-	margin-bottom: 12px;
-	color: white;
-}
-button:hover {
-	cursor: pointer;
-	background-color: moccasin;
-	color:black;
-	font-weight: normal;
-}
 .normal {
 	color: black;
 	text-decoration: none;

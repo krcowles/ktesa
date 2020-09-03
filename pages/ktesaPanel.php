@@ -102,7 +102,7 @@ require_once "../accounts/getLogin.php";
             <col style="width:124px">
             <col style="width:24px">    
             <col style="width:168px">
-    </colgroup>
+        </colgroup>
         <tbody>
             <tr>
                 <td>User name:</td>
