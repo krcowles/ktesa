@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -339,7 +339,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -372,7 +372,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=552 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=565 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -718,7 +718,7 @@ INSERT INTO HIKES VALUES
 INSERT INTO HIKES VALUES
 ('205','Atalaya Picacho Loop','mstr','Santa Fe','Cluster',NULL,'AA','Atalaya Group','Loop','5.10','1600','Med-Difficult','None','Views','Spring/Fall','Mixed sun/shade','AtalayaPicachoProposed.gpx','AtalayaPicachoProposed.json','356702770','-1059006409',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Atalaya+-+Upper+Trailhead+(recgovnpsdata),+Santa+Fe,+NM+87505/@35.6625051,-105.9324271,13.81z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718510b3b76eee9:0x46aed0d056701831!2m2!1d-105.9005356!2d35.6700591','Parking can be a problem - two small lots at the Atalaya Upper Trailhead.','This combo hike makes for a nice extension to the regular Atalaya hike. There are nice views from both peaks. Although there is some shade, parts of the trail can be sunny and warm.',NULL,NULL,NULL),
 ('206','Banco Bonito Outer Loop','mstr','Valles Caldera','Normal',NULL,'',NULL,'Loop','10.80','600','Moderate','None','Open Forest, Meadow, and Solitude','Not winter','Mixed sun/shade','Banco_Bonito.GPX','Banco_Bonito.json','358394823','-1066174161',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B050\'22.1%22N+106%C2%B037\'02.7%22W/@35.838567,-106.6443628,13.31z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8394823!4d-106.6174162',NULL,'Although the entrance has been closed to vehicles for some time, there is a spring-clip pedestrian entrance at the gate. This hike follows old logging roads through a now unused section of the Valles Caldera. The roads are typically marked with signs such as VC07, VC02, etc. Shorter loops are possible by cutting through north-south roads illustrated by markers on the map - but study these carefully before attempting: the roads almost disappear at times. The trail slowly rises up to the large open meadow at the east end of Banco Bonito. Here you can cut north and cross the western edge (VC0701), or take the much longer loop behind, down, and across the western side of the meadow, re-ascending to meet the main trail. Most of the trail is very pleasant \'open forest\' of Ponderosa, Aspen and Spruce, spaced widely apart as if in a former meadow. This trail is very infrequently used, and the roads are beginning to re-integrate with the forest. If following the suggested route, there is a \'tricky\' section at the point marked \"Duke Trail\" (see photos). There is no apparent trail here, but you must nonetheless cut south through the forest floor a short distance in order to finally see the two-track heading up the hill.<br />The name of this location derives from the geological phenomenon known as the Banco Bonito Volcanic Flow, consisting largely of rhyolite. Obsidian was also seen on the trail.',NULL,NULL,NULL),
-('207','[Proposed] Holiday Mesa','mstr','Jemez Springs','Normal',NULL,'','',NULL,'4.40','1100',NULL,'','','',NULL,'HolidayMesaDEM.gpx','HolidayMesaDEM.json','357660435','-1067887875',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B045\'57.8%22N+106%C2%B047\'19.6%22W/@35.7285415,-106.8337945,12.08z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7660435!4d-106.7887875',NULL,NULL,NULL,NULL,NULL),
+('207','Holiday Mesa','mstr','Jemez Springs','Normal',NULL,'',NULL,'Out-and-back','8.90','1000','Moderate','','','Not winter','Mixed sun/shade','Holiday_Mesa.GPX','Holiday_Mesa.json','357660518','-1067887718',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B045\'57.8%22N+106%C2%B047\'19.6%22W/@35.7285415,-106.8337945,12.08z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7660435!4d-106.7887875','Depending on recent weather patterns, the Guadalupe River can be difficult to cross. It is a good idea to bring footwear suited for a water crossing.','This somewhat remote area follows old logging trails up to the top of Holiday Mesa. While there is a somewhat long stretch uphill, it is primarily of moderate grade. Once at the top, and through a vehicle gate with hiker access, the hike is mostly on level ground. Following the two-track dirt trails shown will lead you to a nearby unexcavated Pueblo ruins. There is no trail leading from the two-track, and you must scale a low hill by finding relatively easy access, in order to find the ruins. Unless you know where to look, it is recommended you have GPS coordinates or some reliable means to get there. The ruins are barely visible, but can be envisioned by scanning the mounds and stones which outline the existence of buried structures. Pottery sherds are visible in various locations.',NULL,NULL,NULL),
 ('209','[Proposed] Extended Deadman','mstr','San Luis','Cluster',NULL,'QQ','Deadman Group','Loop','4.80','400',NULL,'','','',NULL,'DeadmanPeaksDEM.gpx','DeadmanPeaksDEM.json','357452844','-1070749054',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B044\'43.0%22N+107%C2%B004\'29.7%22W/@35.6931631,-107.1527349,11.15z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7452845!4d-107.0749054',NULL,NULL,NULL,NULL,NULL),
 ('210','Tecolote Trail','mstr','Tijeras','Normal',NULL,'','','Out-and-back','2.40','200','Easy','None','360-degree views and wildflowers','Not Winter','Full sun','Tecolote.GPX','Tecolote.json','352004585','-1064053533',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Tecolote+Trailhead/@35.1785435,-106.4245462,12.83z/data=!4m5!3m4!1s0x871899729e78e387:0xcbecf0c04e989431!8m2!3d35.2005476!4d-106.4051009','At the time of this hike, the parking area was closed and some logging/maintenance was in progress at the trail head. Nonetheless, the trail itself was open.','This relatively easy trail is a pleasant surprise along the Crest Highway. The elevation change is gradual, and the views are plentiful along the way. At the end, a short 1/4-mile loop provides a 360-degree look at the surroundings. Wildflowers of various types adorned the trail, adding to the enjoyment of the hike. From this trail the parts of the east side of the Sandia are visible, and then later, the San Pedros and Ortiz Mountains come into view. ',NULL,NULL,NULL),
 ('211','Las Vacas Trail / San Gregorio','mstr','Cuba','Normal',NULL,'','','Out-and-back','7.90','1000','Moderate','None (Nearby Campground)','Wilderness forest and running creeks','Not Winter','Mixed sun/shade','Las_Vacas.GPX','Las_Vacas.json','360283720','-1068481310',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//San+Gregorio+Lake+Trail,+La+Jara,+NM+87027/@36.0076946,-106.9429406,12.37z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8722b43f35343453:0x467993526db92c7f!2m2!1d-106.8473196!2d36.0282082','Note: there are multiple water crossings, most with reasonable log or stone provisions, but some require extra care. There are also segments that can be muddy (mostly near the lake), so avoid hiking after significant rains.','This is an excellent forest wilderness experience, complete with high altitude forests, flowers, and running streams. The trail is generally an easy slope uphill, and runs through woodlands and meadows, sometimes nearing Clear Creek. The authors did not traverse the entire length of Las Vacas, making for a reasonable day-hike. It is located in San Pedro Parks National Wilderness, a part of Santa Fe National Forest lands. ',NULL,NULL,NULL),
@@ -820,7 +820,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1667 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1668 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1719,7 +1719,8 @@ INSERT INTO REFS VALUES
 ('1660','164','Blog:','https://ondafringe.wordpress.com/2015/04/15/day-hike-tunnel-spring-sandia-mountains-placitas-new-mexico-usa/','On Da Fringe'),
 ('1664','245','Book:','7',NULL),
 ('1665','245','Website:','https://www.mtbproject.com/trail/7047838/challenge-trail-233','MTB Project'),
-('1666','206','On-line Map:','https://mapcarta.com/23262506','Area Map');
+('1666','206','On-line Map:','https://mapcarta.com/23262506','Area Map'),
+('1667','207','Book:','2',NULL);
 
 
 
@@ -4385,7 +4386,20 @@ INSERT INTO TSV VALUES
 ('4755','206',NULL,'Short Cut VC0703',NULL,'Y',NULL,'358369551','-1066104139',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
 ('4756','206',NULL,'Short Cut VC0702',NULL,'Y',NULL,'358361300','-1066056200',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
 ('4757','206',NULL,'Short Cut 4',NULL,'Y',NULL,'358366600','-1065748799',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
-('4758','206',NULL,'Short Cut 3',NULL,'Y',NULL,'358331100','-1065931400',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL);
+('4758','206',NULL,'Short Cut 3',NULL,'Y',NULL,'358331100','-1065931400',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
+('4759','207',NULL,'IMG_3346','Y','Y','Guadalupe River crossing','357695528','-1067888333','2619',NULL,'2020-09-02 12:51:04','IMG_3346','640','480',NULL,NULL),
+('4760','207',NULL,'IMG_3319','Y','Y','Heading up the trail','357678611','-1067804028','2620',NULL,'2020-09-02 09:20:22','IMG_3319','640','480',NULL,NULL),
+('4761','207',NULL,'IMG_3342','Y','Y','Views of the canyon near the top','357646972','-1067783361','2621',NULL,'2020-09-02 11:58:26','IMG_3342','480','640',NULL,NULL),
+('4762','207',NULL,'IMG_3345','Y','Y','Looking back after a short uphill','357696389','-1067864917','2622',NULL,'2020-09-02 12:46:35','IMG_3345','480','640',NULL,NULL),
+('4763','207',NULL,'IMG_3321','Y','Y','In some places, trees partially obstruct the view','357661639','-1067791583','2623',NULL,'2020-09-02 09:31:01','IMG_3321','480','640',NULL,NULL),
+('4764','207',NULL,'IMG_3330','Y','Y','New Mexico blue skies','357626583','-1067712694','2624',NULL,'2020-09-02 10:05:49','IMG_3330','640','480',NULL,NULL),
+('4765','207',NULL,'IMG_3340','Y','Y','A vehicle gate, but hiker accessible','357639833','-1067783278','2625',NULL,'2020-09-02 11:55:17','IMG_3340','480','640',NULL,NULL),
+('4766','207',NULL,'IMG_3320','Y','Y','Some typical open forest along the way','357657806','-1067802361','2626',NULL,'2020-09-02 09:28:29','IMG_3320','480','640',NULL,NULL),
+('4767','207',NULL,'IMG_3339','Y','Y','A genuine deer trail','357640306','-1067666028','2627',NULL,'2020-09-02 11:32:06','IMG_3339','640','480',NULL,NULL),
+('4768','207',NULL,'IMG_3338','Y','N','Looking southeast from the ruins','357602972','-1067543333','2628',NULL,'2020-09-02 10:51:56','IMG_3338','480','640',NULL,NULL),
+('4769','207',NULL,'IMG_3333','Y','Y','Unexcavated ruins are sometimes barely visible','357603194','-1067546611','2629',NULL,'2020-09-02 10:46:48','IMG_3333','480','640',NULL,NULL),
+('4770','207',NULL,'IMG_3332','Y','N','Remnants of a bygone era','357603028','-1067549056','2630',NULL,'2020-09-02 10:45:57','IMG_3332','480','640',NULL,NULL),
+('4771','207',NULL,'IMG_3331','Y','N','A faint footpath in the ruins','357603111','-1067550500','2631',NULL,'2020-09-02 10:45:18','IMG_3331','480','640',NULL,NULL);
 
 
 
@@ -4406,8 +4420,8 @@ CREATE TABLE `USERS` (
 
 
 INSERT INTO USERS VALUES
-('1','tom','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Sandberg','Tom','tjsandberg@yahoo.com',NULL,NULL,'One of the geniuses behind this site :-)'),
-('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.',NULL,'Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)'),
+('1','tom','$2y$10$5OrycGl5nQK3D6c31bAdNuNjarxQXPqe2P5.LjDfPEtnNuboKmG0K','2020-10-01','Sandberg','Tom','tjsandberg@yahoo.com',NULL,NULL,'One of the geniuses behind this site :-)'),
+('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)'),
 ('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com','','','Just and old dusty traveler'),
 ('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu','','',''),
 ('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com','','',''),
