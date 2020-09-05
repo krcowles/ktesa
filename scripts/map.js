@@ -174,7 +174,7 @@ function initMap() {
 		iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
 		iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
 		iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
-		iwContent += '<a href="' + hikeobj.dir + '">Directions</a></div>';
+		iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
 		var iw = new google.maps.InfoWindow({
 				content: iwContent,
 				maxWidth: 400
