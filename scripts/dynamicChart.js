@@ -67,7 +67,7 @@ mapdiv.onload = function() {
             let $tblrow = $tbl.find('tr'); // should only be one row;
             let $items = $tblrow.find('td');
             // $items[0] is the checkbox; $items[1] contains the track name
-            let trackName = $items[1].firstChild.innerText;
+            let trackName = $items[1].firstChild.innerHTML;
             trackNames.push(trackName);
             let checkbox = $items[0].firstChild;
             let $checkbox = $(checkbox);
