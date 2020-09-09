@@ -9,3 +9,7 @@ RewriteRule ^(.*)$ https://nmhikes.com%{REQUEST_URI} [R,L]
 php_value memory_limit 20M
 php_value post_max_size 50M
 php_value upload_max_filesize 20M
+php_value xdebug.remote_enable 1
+php_value xdebug.remote_connect_back 1
+# php_value xdebug.remote_autostart 1
+# php_value xdebug.remote_host 71.195.249.255
