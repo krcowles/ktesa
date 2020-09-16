@@ -205,7 +205,7 @@ function drawTrack(jsonfile, color, ptr) {
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			msg = 'Did not succeed in getting JSON data: ' + jsonfile;
-			alert("Indx " + ptr);
+			alert(msg);
 		}
 	});
 } // end drawTrack
