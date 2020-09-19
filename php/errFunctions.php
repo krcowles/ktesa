@@ -98,6 +98,11 @@ function shutdownError($errmsg, $errlvl)
  */
 function errorPage()
 {
-    $user_error_page = "../php/user_error_page.php";
-    header("Location: {$user_error_page}");
+    // Cleanup all other output buffers before sending our output:
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+    http_response_code(500);
+    include "../php/user_error_page.php"; // send user error page
+    exit(-1);
 }

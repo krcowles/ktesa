@@ -24,6 +24,8 @@ require "../admin/adminFunctions.php";
 require "../build/buildFunctions.php";
 require "../php/errFunctions.php";
 
+ob_start(); // start output buffering so we can avoid "headers already sent" errors
+
 // PHP site recommends following value for future expansion of E_ALL
 error_reporting(-1);  // 2147483647 is also suggested on PHP site, both work
 if ($appMode === 'production') {

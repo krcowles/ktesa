@@ -91,7 +91,7 @@ require_once "../accounts/getLogin.php";
 <p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
 <?php endif; ?>
 
-<?php if ($admin) : ?>
+<?php if (isset($admin) && $admin) : ?>
 <p id="admin">admin</p>
 <?php endif; ?>
 

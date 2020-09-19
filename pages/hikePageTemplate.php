@@ -13,7 +13,6 @@
 session_start();
 require "../php/global_boot.php";
 require "hikePageData.php";
-//require_once "../accounts/getLogin.php";
 
 ?>
 <!DOCTYPE html>
