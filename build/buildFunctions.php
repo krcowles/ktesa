@@ -397,14 +397,13 @@ function distance($lat1, $lon1, $lat2, $lon2)
     $theta = $lon1 - $lon2;
     $dist = sin($radlat1) * sin($radlat2) +  cos($radlat1) *
         cos($radlat2) * cos(deg2rad($theta));
-    $dist = acos($dist);
+
+    // avoid rounding error causing acos to return nan. See:
+    // https://stackoverflow.com/questions/37184259/acos1-returns-nan-in-some-conditions
+    $dist = acos(min(max($dist, -1.0), 1.0));
+
     $dist = rad2deg($dist);
     $dist = $dist * 40075000 / 360; // circumference in meters / 360 degrees
-    if (is_nan($dist)) {
-        $err = $lat1 . ',' . $lon1 . '; ' . $lat2 . ',' . $lon2;
-        echo $GLOBALS['intro'] .
-            "Mdl: makeGpsv.php/function distance() - Not a number: " . $err . "</p>";
-    }
     // angles using planar coords: ASSUME a minute/seconds in lat/lng spec
     $dely = $lat2 - $lat1;
     $delx = $lon2 - $lon1;
