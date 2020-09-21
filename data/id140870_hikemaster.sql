@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -339,7 +339,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -372,7 +372,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=572 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=579 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -510,7 +510,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=249 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -755,7 +755,8 @@ INSERT INTO HIKES VALUES
 ('245','Challenge Trail','mstr','Tijeras',NULL,NULL,NULL,NULL,'Out-and-back','8.90','1900','Moderate','None (Ski Lodge Closed)','Views, especially near the trail summit','Not winter','Good shade','Challenge.GPX','Challenge.json','352071805','-1064126030',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'25.9%22N+106%C2%B024\'45.4%22W/@35.2078634,-106.4153436,15.55z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.2071805!4d-106.412603',NULL,'During hiking season, there is a small lot on the south side of 536 with trail access up to the Ski Lodge. The Challenge trail begins just past the lodge. This trail gets very little traffic - in fact, the author did not encounter a single person the entire time. Since the trail roughly parallels the road, the grades are easy or moderate the entire distance. For a more quiet and enjoyable hike, avoid the weekends, as there is considerably more road noise then.',NULL,NULL,NULL),
 ('246','Orange Trail (Bandelier)','mstr','Valles Caldera',NULL,NULL,NULL,'Cerro Grande Group','Out-and-back','4.90','200','Easy-Moderate','None','Views of Bandelier Wilderness/Sawyer Mesa','Any','Mixed sun/shade','Orange_Trail.GPX','Orange_Trail.json','358473238','-1064217416',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Cerro+Grande+Route/@35.8470776,-106.4289533,15.33z/data=!4m8!1m2!2m1!1sCerro+Grande+Route,+New+Mexico!3m4!1s0x0:0x6649607b52c63ead!8m2!3d35.8477729!4d-106.4220373',NULL,'This trail begins at the opposite side of the road from the Cerro Grande trail and parking area. It is an easy hike, sometimes in the shade, and sunny near the south end. Though it is seen on maps as the \'Orange Trail\', it is also called \'Sawyer Mesa Trail\', not to be confused with another Sawyer Mesa hike on this site. This hike wanders through the northern end of the mesa. The trail is extremely well marked, even though the trail itself can be spotty at times. Lettered markers appear at trail junctions. It traverses parts of the area that was burned during the Las Conchas fire in 2011, but young aspen are already gaining height. Near the south end of the mesa, some views are available, looking southward towards Frijoles Canyon. Otherwise it is a pleasant stroll through the Ponderosa. It becomes a well-marked ski/snowshoe trail in the winter.',NULL,NULL,NULL),
 ('247','Blue Trail (Bandelier)','mstr','Valles Caldera',NULL,NULL,NULL,'Cerro Grande Group','Out-and-back','2.00','150','Easy','None','Overlook of Frijoles Canyon at end','Any','Full sun','Blue_Trail.GPX','Blue_Trail.json','358474890','-1064217706',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Cerro+Grande+Route/@35.8470776,-106.4289533,15.33z/data=!4m8!1m2!2m1!1sCerro+Grande+Route,+New+Mexico!3m4!1s0x0:0x6649607b52c63ead!8m2!3d35.8477729!4d-106.4220373',NULL,'This easy hike begins across the road from the Cerro Grande parking lot. It is actually marked as a ski trail, but makes for a pleasant hike to an overlook of Frijoles Canyon north of the main Bandelier Visitor Area. There is some shade available, but generally not on the trail itself. This is an easy hike, suitable for a family outing. The trail extends along a narrow finger mesa to the overlook. The tree at the end provides some shade and the flat rocks make for an area to sit and enjoy.',NULL,NULL,NULL),
-('248','David Canyon','1','Tijeras',NULL,NULL,NULL,NULL,'Loop','6.80','550','Easy-Moderate','None','Open Ponderosa Forest w/Views','Not Winter','Mixed sun/shade','David_Canyon.GPX','David_Canyon.json','349840092','-1063498679',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Mars+Court+Trailhead,+Tijeras,+NM+87059/@34.9843143,-106.3514344,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a54daea6d5d1:0x1c2171fd84bf2aab!2m2!1d-106.349758!2d34.983951',NULL,'This canyon offers an off-the-beaten-path walk through the Ponderosa pines populating the Manzanitas range, with glimpses in all directions. The grades are easy to moderate, originally designed for mountain biking. The Mars Court parking area is well off of NM337 and provides a bit more solitude than hikes directly on that route. As you progress down into the shallow canyon, you can catch glimpses of the Manzanos \'Dog Head\' peaks. The west side of the loop borders Kirkland Air Force land, and signs are conspicuously posted. ',NULL,NULL,NULL);
+('248','David Canyon','1','Tijeras',NULL,NULL,NULL,NULL,'Loop','6.80','550','Easy-Moderate','None','Open Ponderosa Forest w/Views','Not Winter','Mixed sun/shade','David_Canyon.GPX','David_Canyon.json','349840092','-1063498679',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Mars+Court+Trailhead,+Tijeras,+NM+87059/@34.9843143,-106.3514344,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a54daea6d5d1:0x1c2171fd84bf2aab!2m2!1d-106.349758!2d34.983951',NULL,'This canyon offers an off-the-beaten-path walk through the Ponderosa pines populating the Manzanitas range, with glimpses in all directions. The grades are easy to moderate, originally designed for mountain biking. The Mars Court parking area is well off of NM337 and provides a bit more solitude than hikes directly on that route. As you progress down into the shallow canyon, you can catch glimpses of the Manzanos \'Dog Head\' peaks. The west side of the loop borders Kirkland Air Force land, and signs are conspicuously posted. ',NULL,NULL,NULL),
+('249','Pine Flats Double Loop','1','Tijeras',NULL,NULL,NULL,NULL,'Loop','7.40','400','Easy-Moderate','Picnic Grounds w/Toilet','Pine-scented trails','Not Winter','Mixed sun/shade','Pine_Flats.GPX','Pine_Flats.json','350133201','-1063358566',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//PINE+FLAT+PICNIC+AREA,+11776+NM-337,+Tijeras,+NM+87059/@35.0139847,-106.3447847,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718bad79c669eeb:0xb583d998c25c3386!2m2!1d-106.3355556!2d35.0133333',NULL,'The trails accessible from the Pine Flats Picnic Area are generally populated by cyclists. There are numerous interconnecting trails, so a hike of varying lengths can easily be constructed, as the author did with this hike. The grades are virtually all easy as they take you through various sections of Ponderosa, Gamble Oak, and Cedar. On this journey, during the week, the author encountered 5 cyclists on the trail, and otherwise enjoyed a pleasant degree of solitude. Most of the hike is in the shade of the forest, and though not many long views are available, the fresh air and pine scent add to the enjoyment of the hike.',NULL,NULL,NULL);
 
 
 
@@ -821,7 +822,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1671 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1674 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1723,7 +1724,9 @@ INSERT INTO REFS VALUES
 ('1666','206','On-line Map:','https://mapcarta.com/23262506','Area Map'),
 ('1667','207','Book:','2',NULL),
 ('1668','248','Book:','2',NULL),
-('1669','248','Website:','https://www.hikingproject.com/directory/8015740/manzanita-mountains-trail-system','Manzanitas Trail System');
+('1669','248','Website:','https://www.hikingproject.com/directory/8015740/manzanita-mountains-trail-system','Manzanitas Trail System'),
+('1671','249','Book:','2',NULL),
+('1672','249','Website:','https://www.mtbproject.com/directory/8015740/manzanita-mountains-trail-system','Manazanita Mountains Trail System');
 
 
 
@@ -1747,7 +1750,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4781 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4788 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4409,7 +4412,14 @@ INSERT INTO TSV VALUES
 ('4777','248',NULL,'IMG_3381','Y','Y','Diversity: Alligator Juniper, Cedar, Pondrosa','349750944','-1063513639','2635',NULL,'2020-09-14 09:25:42','IMG_3381','640','480',NULL,NULL),
 ('4778','248',NULL,'IMG_3383','Y','N','Looking north from the floor of the canyon','349637417','-1063586806','2636',NULL,'2020-09-14 10:06:27','IMG_3383','480','640',NULL,NULL),
 ('4779','248',NULL,'IMG_3388','Y','Y','Looking west from the loop\'s west side','349621583','-1063656389','2637',NULL,'2020-09-14 10:35:00','IMG_3388','480','640',NULL,NULL),
-('4780','248',NULL,'IMG_3389','Y','Y','A smooth trail most of the way','349668361','-1063666083','2638',NULL,'2020-09-14 10:44:58','IMG_3389','480','640',NULL,NULL);
+('4780','248',NULL,'IMG_3389','Y','Y','A smooth trail most of the way','349668361','-1063666083','2638',NULL,'2020-09-14 10:44:58','IMG_3389','480','640',NULL,NULL),
+('4781','249',NULL,'IMG_3396','Y','Y','Entering the forest from the picnic area','350108750','-1063352194','2639',NULL,'2020-09-21 08:58:58','IMG_3396','640','480',NULL,NULL),
+('4782','249',NULL,'IMG_3399','Y','Y','A wooded stretch in Pine Loop','350077444','-1063303444','2640',NULL,'2020-09-21 09:11:05','IMG_3399','640','480',NULL,NULL),
+('4783','249',NULL,'IMG_3401','Y','Y','A sign among the Gamble Oaks','350081167','-1063248222','2641',NULL,'2020-09-21 09:48:41','IMG_3401','480','640',NULL,NULL),
+('4784','249',NULL,'IMG_3408','Y','Y','A peek at the eastern side of the Sandias','350066250','-1063210444','2642',NULL,'2020-09-21 11:28:07','IMG_3408','480','640',NULL,NULL),
+('4785','249',NULL,'IMG_3404','Y','N','More Sandia view','350065028','-1063213417','2643',NULL,'2020-09-21 10:03:47','IMG_3404','480','640',NULL,NULL),
+('4786','249',NULL,'IMG_3407','Y','Y','An open meadow for lunch','350019528','-1063092583','2644',NULL,'2020-09-21 10:45:05','IMG_3407','480','640',NULL,NULL),
+('4787','249',NULL,'IMG_3405','Y','Y','Easy trails permeate the area','350071639','-1063198694','2645',NULL,'2020-09-21 10:06:14','IMG_3405','480','640',NULL,NULL);
 
 
 
