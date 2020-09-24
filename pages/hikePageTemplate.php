@@ -197,25 +197,6 @@ if ($bop !== '') {
 <script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>
 <?php endif; ?>
-<?php if (isset($tmpMap)) : ?>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $.ajax({
-                url: '../php/tmpMapDelete.php',
-                data: {'file' : "<?php echo $tmpMap;?>" },
-                success: function (response) {
-                    var msg = "Map deleted: " + "<?php echo $tmpMap?>";
-                    // message not sent to user
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    var newDoc = document.open();
-                    newDoc.write(jqXHR.responseText);
-                    newDoc.close();
-                }
-            });
-        });
-    </script>
-<?php endif; ?>
 
 </body>
 </html>

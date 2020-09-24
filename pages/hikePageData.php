@@ -12,6 +12,25 @@
  */
 require_once "../accounts/getLogin.php";
 
+// Delete all tmp map files older than threshold
+$time = time() - 45; // seconds ago
+$dir_iterator = new RecursiveDirectoryIterator(
+    "../maps/tmp", RecursiveDirectoryIterator::SKIP_DOTS
+);
+$iterator = new RecursiveIteratorIterator(
+    $dir_iterator, RecursiveIteratorIterator::SELF_FIRST
+);
+foreach ($iterator as $file) {
+    if ($file->isFile()) {
+        if ($file->getMTime() < $time) {
+            $leaf = $iterator->getSubPathName();
+            if ($leaf !== 'README') {
+                unlink("../maps/tmp/" . $leaf);
+            }
+        }
+    }
+}
+
 $tbl = filter_input(INPUT_GET, 'age');
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_SANITIZE_NUMBER_INT);
 $distThreshParm = filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT);
