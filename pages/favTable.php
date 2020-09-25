@@ -92,7 +92,6 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 <script src="../scripts/fmap.js"></script>
 <script src="../scripts/sideTables.js"></script>
 <script src="../scripts/modal_setup.js"></script>
-<script src="../scripts/favTable.js"></script>
 <script src="../scripts/markerclusterer.js"></script>
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry">

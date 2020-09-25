@@ -1,8 +1,19 @@
-// need to be global:
+/**
+ * @fileoverview Set up a full page map showing the Favorites selected
+ * by the user
+ * 
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ * @version 
+ */
 var map;
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00']
 var $fullScreenDiv; // for google maps full screen mode
 var $map = $('#map');
+var maxlat = 0;    // north
+var maxlng = -180; // east
+var minlat = 90;   // south
+var minlng = 0;    // west
 
 /**
  * This function is called initially, and again when resizing the window;
@@ -28,11 +39,17 @@ var mapTick = {   // custom tick-mark symbol for tracks
     strokeWeight: 2
 };
 
+/**
+ * This function simply locates the geolocation symbol on the page
+ * 
+ * @return {null}
+ */
 function locateGeoSym() {
 	var winht = $('#panel').height() + mapht - 100;
 	var mapwd = $('#map').width() - 120;
 	$('#geoCtrl').css('top', winht);
 	$('#geoCtrl').css('left', mapwd);
+	return;
 }
 locateGeoSym();
 $('#geoCtrl').on('click', setupLoc);
@@ -43,6 +60,13 @@ var medGeo = '../images/purpleTarget.png';
 var lgGeo = '../images/ltarget.png';
 
 var locaters = []; // global used to popup info window on map when hike is searched
+/**
+ * This function returns the correct icon for the map based on no. of hikes
+ * 
+ * @param {number} no_of_hikes 
+ * 
+ * @return {string}
+ */
 const getIcon = (no_of_hikes) => {
 	let icon = "../images/pins/hike" + no_of_hikes + ".png";
 	return icon;
@@ -50,6 +74,11 @@ const getIcon = (no_of_hikes) => {
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 var mapdone = new $.Deferred();
+/**
+ * The google maps callback function to initialize the map
+ * 
+ * @return {null}
+ */
 function initMap() {
 	google.maps.Marker.prototype.clicked = false;  // used in sideTables.js
 	var clustererMarkerSet = [];
@@ -82,7 +111,14 @@ function initMap() {
 	NM.forEach(function(nmobj) {
 		AddHikeMarker(nmobj);
 	});
-	// Normal Hike Markers
+	/**
+	 * The only hikes on the favorites pages are 'normal' hikes, i.e.
+	 * not clusters.
+	 * 
+	 * @param {object} hikeobj The hike object from mapJsData.php
+	 * 
+	 * @return {null}
+	 */
 	function AddHikeMarker(hikeobj) {
 		let nmicon = getIcon(1);
 		var marker = new google.maps.Marker({
@@ -116,6 +152,7 @@ function initMap() {
 			iw.open(map, this);
 			marker.clicked = true;
 		});
+		return;
 	}
 
 
@@ -127,7 +164,8 @@ function initMap() {
 			maxZoom: 12,
 			averageCenter: true,
 			zoomOnClick: true
-		});
+	});
+	return;
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
@@ -147,12 +185,15 @@ var trackFile; // name of the JSON file to be read in
 var geoOptions = { enableHighAccuracy: 'true' };
 /**
  * This function will turn on tracks after tracks have been drawn;
+ * 
+ * @return {null}
  */
 const enableTracks = () => {
 	for (var m=0; m<allTheTracks.length; m++) {
 		trkKeyStr = 'trk' + m;
 		trkObj[trkKeyStr].setMap(map);
 	}
+	return;
 }
 
 // deferred wait for map to get initialized
@@ -160,19 +201,46 @@ $.when( mapdone ).then(drawTracks).then(function() {
 	$fullScreenDiv = $map.children('div:first');
 });
 
+/**
+ * Draw tracks for each of the favorites
+ * 
+ * @return {null}
+ */
 function drawTracks() {
 	let trkcolor = 0;
+	var promises = [];
 	tracks.forEach(function(fname, indx) {
 		if (fname !== '') {
-			var trkfile = '../json/' + fname;
-			drawTrack(trkfile, colors[trkcolor++], indx);
+			let trackdef = $.Deferred();
+			promises.push(trackdef);
+			let trkfile = '../json/' + fname;
+			drawTrack(trkfile, colors[trkcolor++], indx, trackdef);
 			if (trkcolor >= colors.length) {
 				trkcolor = 0; // rollover colors when tracks exceeds colors size
 			}
 		}
 	});
+	$.when.apply($, promises).then(function() {
+		if (allHikes.length === 1) {
+			map.setCenter(NM[0].loc);
+            map.setZoom(13);
+		} else if (allHikes.length > 1) {
+			let bounds = {north: maxlat, south: minlat, east: maxlng, west: minlng};
+			map.fitBounds(bounds);
+		}
+	});
 }
-function drawTrack(jsonfile, color, ptr) {
+
+/**
+ * This function draws one track
+ * 
+ * @param {string} jsonfile 
+ * @param {string} color 
+ * @param {number} ptr 
+ * 
+ * @return {null}
+ */
+function drawTrack(jsonfile, color, ptr, def) {
 	$.ajax({
 		dataType: "json",
 		url: jsonfile,
@@ -202,16 +270,40 @@ function drawTrack(jsonfile, color, ptr) {
 			track.addListener('mouseout', function() {
 				iw.close();
 			});
+			// establish map boundaries
+			trackDat.forEach(function(latlngpair) {
+				if (latlngpair.lat > maxlat) {
+					maxlat = latlngpair.lat;
+				}
+				if (latlngpair.lat < minlat) {
+					minlat = latlngpair.lat;
+				}
+				if (latlngpair.lng <  minlng) {
+					minlng = latlngpair.lng;
+				}
+				if (latlngpair.lng > maxlng) {
+					maxlng = latlngpair.lng;
+				}
+			});
+			def.resolve();
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			msg = 'Did not succeed in getting JSON data: ' + jsonfile;
+			msg = 'Did not succeed in getting JSON data: ' + jsonfile +
+				"\nError: " + textStatus;
 			alert(msg);
+			def.reject();
 		}
 	});
+	return;
 } // end drawTrack
 // /////////////////////// END OF HIKE TRACK DRAWING /////////////////////
 
 // ////////////////////////////  GEOLOCATION CODE //////////////////////////
+/**
+ * Locate the user on the map
+ * 
+ * @return {null}
+ */
 function setupLoc() {
 	if (navigator.geolocation) {
 		var obj = navigator
