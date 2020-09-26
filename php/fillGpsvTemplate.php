@@ -138,6 +138,11 @@ if ($map_opts['dynamicMarker'] === 'true') {
         "                mapdone.resolve();" . PHP_EOL .
         "            });" . PHP_EOL;
 }
+// use fitbounds to autosize
+$maphtml .= "let bounds = {north: {$north}, south: {$south}, east: {$east}, " .
+    "west: {$west}};" . PHP_EOL;
+$maphtml .= "gmap.fitBounds(bounds);";
+        
 $maphtml .= '</script>' . PHP_EOL;
 $maphtml .= '</body>' . PHP_EOL;
 $maphtml .= '</html>' . PHP_EOL;  
