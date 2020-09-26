@@ -82,7 +82,7 @@ function gotoPage(content) {
             break;
         case 'Log in':
             modal.open(
-                {content: login_content, height: '156px', width: '316px',
+                {content: login_content, height: '196px', width: '316px',
                     id: 'logins'}
             );
             return; 
@@ -99,6 +99,9 @@ function gotoPage(content) {
             break;
         case 'Become a Member':
             page = 'register';
+            break;
+        case 'Change Password':
+            window.open('../accounts/renew.php?chg=y', '_blank');
             break;
         case 'About this site':
             window.open('../pages/about.php', '_self');

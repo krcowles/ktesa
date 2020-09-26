@@ -141,6 +141,8 @@
 #enter, #canceler {
     width: 80px;
     height: 28px;
+}
+#canceler {
     position: relative;
     top: -6px;
     left: 6px;

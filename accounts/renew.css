@@ -1,23 +1,38 @@
+@import "../styles/buttons.css"; 
 body {
     margin: 0px;
     font-family: arial, verdana;
-    background-color: #dfdfdf;
+    background-image: url('./tapia.jpg');
+    background-size: cover;
+    overflow-x: hidden;
 }
 #container {
-    margin-left: 100px;
-    font-size: 22px;
+    position: fixed;
+    top: 160px;
+    width: 640px;
+    height: 300px;
+    padding-top: 20px;
+    background-color: #fcf4e8;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 20px;
+    color: #b47b31;
 }
 .space {
     min-width: 16px;
 }
-input[name=password], input[name=confirm] {
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+input[name=password], input[name=confirm], input[name=oldpass] {
     height: 32px;
     width: 180px;
     font-size: 18px;
     border-radius: 8px;
     background-color: ghostwhite;
 }
-input[name=password]:focus, input[name=confirm]:focus  {
+input[name=password]:focus, input[name=confirm]:focus, input[name=oldpass]:focus  {
     outline: none;
     border-color: navy;
     border-width: 2px;
@@ -32,17 +47,28 @@ input[name=password]:focus, input[name=confirm]:focus  {
     -o-transform: scale(1.6); /* Opera */
     padding: 10px;
 }
-button {
-    font-size: 20px;
-    width: 132px;
-	height: 38px;
-    background-color: #6D3C17;
-    color: white;
-    margin-bottom: 12px;
-    border-radius: 8px;
+#cookie_banner {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    z-index: 9999;
+    background-color: floralwhite;
 }
-button:hover {
-	cursor: pointer;
-	background-color: moccasin;
-	color: black;
+#cookie_banner h3, #cookie_banner p {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+#cbuttons {
+    margin-bottom: 12px;
+}
+#accept {
+    position: relative;
+    left: -16px;
+}
+#reject {
+    margin-left: 40px;
 }

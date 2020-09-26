@@ -58,6 +58,7 @@ require_once "../accounts/getLogin.php";
                         <li><div id="lin">Log in</div></li>
                         <li><div id="lout">Log out</div></li>
                         <li><div id="join">Become a Member</div></li>
+                        <li><div id="chgpass">Change Password</div></li>
                     </ul>
                 </div>
             </li>
@@ -119,6 +120,15 @@ require_once "../accounts/getLogin.php";
                 </td>
             </tr>
             <tr>
+                <td><button id="enter" 
+                    style="display:block;margin:auto;">Login</button>
+                <td></td>
+                <td id="replace">CANCEL</td>
+            </tr>
+            <tr style="visibility:hidden">
+                <td>Line Break</td>
+            </tr>
+            <tr>
                 <td colspan="2"><span id="pwlnk">Forgot Password?</span></td>
                 <td>Enter email to reset</td>
             </tr>
@@ -129,7 +139,7 @@ require_once "../accounts/getLogin.php";
             </tr>
         </tbody>
     </table><br />
-    <button id="enter">Login</button><br />
+    <br />
 </div>
 <div id="feedback">
     Please type your feedback or question here:<br />

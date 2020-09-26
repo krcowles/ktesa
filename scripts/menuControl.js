@@ -114,6 +114,7 @@ function loggedInItems() {
     $('#epubs').removeClass('ui-state-disabled');
     //$('#pubReq').removeClass('ui-state-disabled'); -- removed for now
     $('#join').addClass('ui-state-disabled');
+    $('#chgpass').removeClass('ui-state-disabled');
     return;
 }
 /**
@@ -133,6 +134,7 @@ function notLoggedInItems() {
     $('#epubs').addClass('ui-state-disabled');
     //$('#pubReq').addClass('ui-state-disabled'); -- removed for now
     $('#join').removeClass('ui-state-disabled');
+    $('#chgpass').addClass('ui-state-disabled');
     return;
 }
 /**

@@ -14,10 +14,11 @@ var modal = (function() {
     var $modal = $('<div class="modal" style="background-color:ivory;"/>'); 
     var $content = $('<div class="modal-content"/>');
     var $close = $('<button id="canceler" style="position:relative;">Cancel</button>');
+    var $tdclose = $('<td><button id="tdcancel" style="display:block;margin:auto;">Cancel</button></td>');
 
     $modal.append($content);
     $modal.append($close);
-    $('body').on('click', '#canceler', function(e) {
+    $('body').on('click', '.canceler', function(e) {
         e.preventDefault();
         modal.close();
     });
@@ -46,10 +47,12 @@ var modal = (function() {
                 height: settings.height || auto,
                 border: '2px solid',
                 padding: '8px',
-                textAlign: 'left'
+                textAlign: 'left',
+                zIndex: '1000'
             }).appendTo('body');
             
             if (settings.id === 'logins') {
+                $modal.children().eq(1).remove('#canceler');
                 loginModal();
             } else if (settings.id === 'contact') {
                 contactAdmins();
@@ -82,9 +85,11 @@ var modal = (function() {
          * This modal needs a high z-index; In order to set it with javascript,
          * 'position' must be either absolute, relative, or fixed
          */
-        $('#enter').after($close);
-        $close.css('left', '134px');
-        $modal.css('z-index', '10000');
+        $('#loginTbl tr').eq(0).css('height', '36px');
+        $('#loginTbl tr').eq(1).css('height', '36px');
+        $('#loginTbl tr').eq(2).css('height', '36px');
+        $('#loginTbl tr').eq(3).css('height', '8px');
+        $('#replace').replaceWith($tdclose);
         $('#sendemail').on('click', function() {
             let email = $('#resetpass').val();
             if (email == '') {
@@ -102,6 +107,7 @@ var modal = (function() {
                         if (result === 'OK') {
                             alert("An email has been sent - these sometimes " +
                                 "take awhile");
+                            modal.close();
                         } else {
                             alert("The following error was received:\n" +
                                 result);
@@ -137,7 +143,7 @@ var modal = (function() {
             validateUser(uid, pwd);
             modal.close();
         });
-        $close.on('click', function() {
+        $tdclose.on('click', function() {
             modal.close();
         });
     }
@@ -155,7 +161,6 @@ var modal = (function() {
             'margin-right': '6px'
         });
         $close.css('top', '1px');
-        $modal.css('z-index', '10000');
         $('#submit').on('click', function() {
             var ta = $('#fdbk').val();
             for (let i=0; i< 2; i++) {

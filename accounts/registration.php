@@ -43,31 +43,36 @@ require "../php/global_boot.php";
                 <div class="pseudo-legend">First Name</div>
                 <div id="line1" class="lines"></div>
                 <input id="fname" class="signup" type="text"
-                    placeholder="First Name" name="firstname" />
+                    placeholder="First Name" name="firstname"
+                    autocomplete="given-name" />
             </div>
             <div class="user-input">
                 <div class="pseudo-legend">Last Name</div>
                 <div id="line2" class="lines"></div>
                 <input id="lname" class="signup" type="text"
-                    placeholder="Last Name" name="lastname" />
+                    placeholder="Last Name" name="lastname"
+                    autocomplete="family-name" />
             </div><br />
             <div class="user-input leftmost">
                 <div class="pseudo-legend">Username</div>
                 <div id="line3" class="lines"></div>
                 <input id="uname" class="signup" type="text"
-                    placeholder="User Name" name="username" />
+                    placeholder="User Name" name="username"
+                    autocomplete="username" />
             </div>
             <div class="user-input">
                 <div class="pseudo-legend">Email</div>
                 <div id="line4" class="lines"></div>
                 <input id="email" class="signup" type="email"
-                    placeholder="Email" name="email" />
+                    placeholder="Email" name="email"
+                    autocomplete="email" />
             </div><br />
             <div class="user-input">
                 <div class="pseudo-legend">Password</div>
                 <div id="line5" class="lines"></div>
                 <input id="pword" class="signup" type="password"
-                    placeholder="Password" name="password" />
+                    placeholder="Password" name="password"
+                    autocomplete="new-password" />
                 <span id="showit">&nbsp;&nbsp;Show password:<input id="cb"
                     type="checkbox" /></span>
             </div>
