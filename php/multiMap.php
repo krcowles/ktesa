@@ -76,6 +76,9 @@ $trackTicks  = []; // each member is an array of ticks for a track
 foreach ($files as $gpx) {
     $gpxPath = '../gpx/' . $gpx;
     $gpxdat  = simplexml_load_file($gpxPath);
+    if ($gpxdat->rte->count() > 0) {
+        $gpxdat = convertRtePts($gpxdat);
+    }
     $noOfFileTrks = $gpxdat->trk->count();
     
     // calculated stats for all tracks within the file
