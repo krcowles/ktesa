@@ -142,7 +142,29 @@ if ($map_opts['dynamicMarker'] === 'true') {
 $maphtml .= "let bounds = {north: {$north}, south: {$south}, east: {$east}, " .
     "west: {$west}};" . PHP_EOL;
 $maphtml .= "gmap.fitBounds(bounds);";
-        
+
+/**
+ * This is the new js to delete the map as soon as it's loaded
+ */
+$maphtml .= '(function() {' . PHP_EOL;  // doc ready - pure js, no jQuery
+$maphtml .= 'var xhr = new XMLHttpRequest();' . PHP_EOL;
+$maphtml .= 'xhr.onreadystatechange = function() {' . PHP_EOL;
+
+$maphtml .= '  if (this.readyState == 4 && this.status == 200) {' . PHP_EOL;
+$maphtml .= '    var msg = "Map deleted: ' . $tmpMap . '";' . PHP_EOL;
+$maphtml .= '  } else if (this.status == 500) {' . PHP_EOL;
+$maphtml .= "    var newDoc = document.open();" . PHP_EOL;
+$maphtml .= "    newDoc.write(xhr.responseText);" . PHP_EOL;
+$maphtml .= "    newDoc.close();" . PHP_EOL;
+$maphtml .= "  }" . PHP_EOL;
+
+$maphtml .= '};' . PHP_EOL;
+$maphtml .= 'xhr.open("get", "../../php/tmpMapDelete.php?file=' . 
+    $tmpMap . '");' . PHP_EOL;
+$maphtml .= 'xhr.send();' . PHP_EOL;
+
+$maphtml .= '})();' . PHP_EOL;
+
 $maphtml .= '</script>' . PHP_EOL;
 $maphtml .= '</body>' . PHP_EOL;
 $maphtml .= '</html>' . PHP_EOL;  
