@@ -9,7 +9,7 @@
     <bounds minlat="35.68638" minlon="-105.89724" maxlat="35.6907" maxlon="-105.89"/>
   </metadata>
   <rte>
-    <name><![CDATA[]]></name>
+    <name>Santa Fe Canyon</name>
     <desc><![CDATA[]]></desc>
     <src>AllTrails</src>
     <rtept lat="35.68644" lon="-105.89558">

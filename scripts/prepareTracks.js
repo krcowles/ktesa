@@ -28,6 +28,7 @@ $.when.apply($, promises).then(function() {
     // may not be in the same order as the gpsv tracklist box
     allTracks.resolve();
 });
+
 /**
  * This function retrieves the gps data from 'hikeTrack' and stores key
  * data for chart-drawing. Data is stored in the above global arrays.
@@ -38,15 +39,25 @@ function getTrackData(promise) {
         dataType: "xml",
         url: hikeTrack,
         success: function(gpsdata) {
-            // process track by track (may be multiple tracks)
-            $(gpsdata).find('trk').each(function() {
+            var gpxtype = 'trk';
+            var pts = 'trkpt';
+            if ($(gpsdata).find('trk').length === 0) {
+                if ($(gpsdata).find('rte').length ===0) {
+                    alert("No, or unrecognizable, track data in gpx");
+                    return;
+                }
+                gpxtype = 'rte';
+                pts = 'rtept';
+            }
+            // process track/route by track/route (may be multiple tracks)
+            $(gpsdata).find(gpxtype).each(function() {
                 let lats = [];
                 let lngs = [];
                 let elevs = [];
                 let rows = [];
                 gpsvTracks.push($(this).find('name').text());
                 var hikelgth = 0;
-                $(this).find('trkpt').each(function() {
+                $(this).find(pts).each(function() {
                     let tag = parseFloat($(this).attr('lat'));
                     lats.push(tag);
                     tag =parseFloat( $(this).attr('lon'));
