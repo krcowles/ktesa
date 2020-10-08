@@ -14,10 +14,16 @@
  * @license No license to date
  */
 define("LOC_SCALE", 10**7); // scaling factor for lat and lng as stored in db
-$root = $_SERVER['DOCUMENT_ROOT'];
+
+// Locate site-specific private directories
+$documentRoot = $_SERVER['DOCUMENT_ROOT'];
+$thisSiteRoot = dirname(__FILE__, 2);
+$sitePrivateDir = dirname($documentRoot, 1) . "/ktprivate";
+$thisSitePrivateDir = $sitePrivateDir . "/" . basename($thisSiteRoot);
+
 require "../vendor/autoload.php";
 require "../admin/mode_settings.php"; // Capture this code version's settings
-require $root . "/../settings.php";
+require $documentRoot . "/../settings.php";
 require "../admin/set_sql_mode.php";
 // Function definitions:
 require "../admin/adminFunctions.php";
@@ -30,7 +36,7 @@ ob_start(); // start output buffering so we can avoid "headers already sent" err
 error_reporting(-1);  // 2147483647 is also suggested on PHP site, both work
 if ($appMode === 'production') {
     ini_set('log_errors', 1); // (this may be the default anyway)
-    ini_set('error_log', '../ktesa.log');
+    ini_set('error_log', $thisSitePrivateDir . '/ktesa.log');
     // UNCAUGHT error/exception handling:
     set_error_handler('ktesaErrors'); // errors not using Throwable interface
     set_exception_handler('ktesaExceptions'); // uncaught exceptions (no try/ctach)
