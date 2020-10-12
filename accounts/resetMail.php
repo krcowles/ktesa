@@ -10,13 +10,26 @@
  */
 require "../php/global_boot.php";
 
+$site_loc = '';
+// find this site's location for <a> element
+$org_dir = getcwd();
+chdir('..'); // start at current site's root
+// repeat until $documentRoot is reached
+$site_dir = getcwd();
+while (basename($site_dir) !== basename($documentRoot)) {
+    $site_loc = basename($site_dir) . '/' . $site_loc;
+    chdir('..');
+    $site_dir = getcwd();
+}
+chdir($org_dir);
+
+$href = '<br /><br /><a href="https://nmhikes.com/' . $site_loc .
+    'accounts/renew.php?code=';
 $msg = <<<LNK
 <h2>Do not reply to this message</h2>
 <h3>Your request to reset your nmhikes.com password was received<br />
 Your temporary password is: 
 LNK;
-$link = '<br /><a href="https://nmhikes.com/accounts/renew.php?code=';
-
 
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 if ($email === false) {
@@ -37,7 +50,8 @@ if ($email === false) {
         $savecode->execute([$hash, $name]);
         $to  = $email;
         $subject = 'Password Reset for NM Hikes';
-        $message = $msg . $tmp_pass . $link . $tmp_pass . '">Click here to reset</a></h3>';
+        $message = $msg . $tmp_pass . $href . $tmp_pass .
+            '">Click here to reset</a></h3>';
         $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
         // Mail it
