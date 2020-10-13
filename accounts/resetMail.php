@@ -10,21 +10,9 @@
  */
 require "../php/global_boot.php";
 
-$site_loc = '';
-// find this site's location for <a> element
-$org_dir = getcwd();
-chdir('..'); // start at current site's root
-// repeat until $documentRoot is reached
-$site_dir = getcwd();
-while (basename($site_dir) !== basename($documentRoot)) {
-    $site_loc = basename($site_dir) . '/' . $site_loc;
-    chdir('..');
-    $site_dir = getcwd();
-}
-chdir($org_dir);
-
-$href = '<br /><br /><a href="https://nmhikes.com/' . $site_loc .
-    'accounts/renew.php?code=';
+// Create the reset password link for use in the email message
+$href = '<br /><br /><a href="' . $thisSiteUrl .
+    '/accounts/renew.php?code=';
 $msg = <<<LNK
 <h2>Do not reply to this message</h2>
 <h3>Your request to reset your nmhikes.com password was received<br />

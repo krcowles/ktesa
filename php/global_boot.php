@@ -20,6 +20,13 @@ $documentRoot = $_SERVER['DOCUMENT_ROOT'];
 $thisSiteRoot = dirname(__FILE__, 2);
 $sitePrivateDir = dirname($documentRoot, 1) . "/ktprivate";
 $thisSitePrivateDir = $sitePrivateDir . "/" . basename($thisSiteRoot);
+$siteUrl = (empty($_SERVER['HTTPS']) ? "http://" : "https://") .
+    $_SERVER['SERVER_NAME'];
+if (strlen($thisSiteRoot) > strlen($documentRoot)) { // test site?
+    $thisSiteUrl = $siteUrl . "/" . basename($thisSiteRoot);
+} else {
+    $thisSiteUrl = $siteUrl;
+}
 
 require "../vendor/autoload.php";
 require "../admin/mode_settings.php"; // Capture this code version's settings
