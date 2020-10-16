@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -339,7 +339,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -372,7 +372,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=579 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=591 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -510,7 +510,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=250 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -756,7 +756,8 @@ INSERT INTO HIKES VALUES
 ('246','Orange Trail (Bandelier)','mstr','Valles Caldera',NULL,NULL,NULL,'Cerro Grande Group','Out-and-back','4.90','200','Easy-Moderate','None','Views of Bandelier Wilderness/Sawyer Mesa','Any','Mixed sun/shade','Orange_Trail.GPX','Orange_Trail.json','358473238','-1064217416',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Cerro+Grande+Route/@35.8470776,-106.4289533,15.33z/data=!4m8!1m2!2m1!1sCerro+Grande+Route,+New+Mexico!3m4!1s0x0:0x6649607b52c63ead!8m2!3d35.8477729!4d-106.4220373',NULL,'This trail begins at the opposite side of the road from the Cerro Grande trail and parking area. It is an easy hike, sometimes in the shade, and sunny near the south end. Though it is seen on maps as the \'Orange Trail\', it is also called \'Sawyer Mesa Trail\', not to be confused with another Sawyer Mesa hike on this site. This hike wanders through the northern end of the mesa. The trail is extremely well marked, even though the trail itself can be spotty at times. Lettered markers appear at trail junctions. It traverses parts of the area that was burned during the Las Conchas fire in 2011, but young aspen are already gaining height. Near the south end of the mesa, some views are available, looking southward towards Frijoles Canyon. Otherwise it is a pleasant stroll through the Ponderosa. It becomes a well-marked ski/snowshoe trail in the winter.',NULL,NULL,NULL),
 ('247','Blue Trail (Bandelier)','mstr','Valles Caldera',NULL,NULL,NULL,'Cerro Grande Group','Out-and-back','2.00','150','Easy','None','Overlook of Frijoles Canyon at end','Any','Full sun','Blue_Trail.GPX','Blue_Trail.json','358474890','-1064217706',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Cerro+Grande+Route/@35.8470776,-106.4289533,15.33z/data=!4m8!1m2!2m1!1sCerro+Grande+Route,+New+Mexico!3m4!1s0x0:0x6649607b52c63ead!8m2!3d35.8477729!4d-106.4220373',NULL,'This easy hike begins across the road from the Cerro Grande parking lot. It is actually marked as a ski trail, but makes for a pleasant hike to an overlook of Frijoles Canyon north of the main Bandelier Visitor Area. There is some shade available, but generally not on the trail itself. This is an easy hike, suitable for a family outing. The trail extends along a narrow finger mesa to the overlook. The tree at the end provides some shade and the flat rocks make for an area to sit and enjoy.',NULL,NULL,NULL),
 ('248','David Canyon','1','Tijeras',NULL,NULL,NULL,NULL,'Loop','6.80','550','Easy-Moderate','None','Open Ponderosa Forest w/Views','Not Winter','Mixed sun/shade','David_Canyon.GPX','David_Canyon.json','349840092','-1063498679',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Mars+Court+Trailhead,+Tijeras,+NM+87059/@34.9843143,-106.3514344,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a54daea6d5d1:0x1c2171fd84bf2aab!2m2!1d-106.349758!2d34.983951',NULL,'This canyon offers an off-the-beaten-path walk through the Ponderosa pines populating the Manzanitas range, with glimpses in all directions. The grades are easy to moderate, originally designed for mountain biking. The Mars Court parking area is well off of NM337 and provides a bit more solitude than hikes directly on that route. As you progress down into the shallow canyon, you can catch glimpses of the Manzanos \'Dog Head\' peaks. The west side of the loop borders Kirkland Air Force land, and signs are conspicuously posted. ',NULL,NULL,NULL),
-('249','Pine Flats Double Loop','1','Tijeras',NULL,NULL,NULL,NULL,'Loop','7.40','400','Easy-Moderate','Picnic Grounds w/Toilet','Pine-scented trails','Not Winter','Mixed sun/shade','Pine_Flats.GPX','Pine_Flats.json','350133201','-1063358566',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//PINE+FLAT+PICNIC+AREA,+11776+NM-337,+Tijeras,+NM+87059/@35.0139847,-106.3447847,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718bad79c669eeb:0xb583d998c25c3386!2m2!1d-106.3355556!2d35.0133333',NULL,'The trails accessible from the Pine Flats Picnic Area are generally populated by cyclists. There are numerous interconnecting trails, so a hike of varying lengths can easily be constructed, as the author did with this hike. The grades are virtually all easy as they take you through various sections of Ponderosa, Gamble Oak, and Cedar. On this journey, during the week, the author encountered 5 cyclists on the trail, and otherwise enjoyed a pleasant degree of solitude. Most of the hike is in the shade of the forest, and though not many long views are available, the fresh air and pine scent add to the enjoyment of the hike.',NULL,NULL,NULL);
+('249','Pine Flats Double Loop','1','Tijeras',NULL,NULL,NULL,NULL,'Loop','7.40','400','Easy-Moderate','Picnic Grounds w/Toilet','Pine-scented trails','Not Winter','Mixed sun/shade','Pine_Flats.GPX','Pine_Flats.json','350133201','-1063358566',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//PINE+FLAT+PICNIC+AREA,+11776+NM-337,+Tijeras,+NM+87059/@35.0139847,-106.3447847,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718bad79c669eeb:0xb583d998c25c3386!2m2!1d-106.3355556!2d35.0133333',NULL,'The trails accessible from the Pine Flats Picnic Area are generally populated by cyclists. There are numerous interconnecting trails, so a hike of varying lengths can easily be constructed, as the author did with this hike. The grades are virtually all easy as they take you through various sections of Ponderosa, Gamble Oak, and Cedar. On this journey, during the week, the author encountered 5 cyclists on the trail, and otherwise enjoyed a pleasant degree of solitude. Most of the hike is in the shade of the forest, and though not many long views are available, the fresh air and pine scent add to the enjoyment of the hike.',NULL,NULL,NULL),
+('250','Mesa de los Datiles','2','Jemez Springs',NULL,NULL,NULL,NULL,'Out-and-back','7.20','1200','Med-Difficult','','Great views of the Jemez Mesas','Not Winter','Full sun','mesa_datiles.gpx','mesa_datiles.json','357050460','-1067280380',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//35.7050461,-106.7280381/@35.6907847,-106.7503985,13.98z','This hike requires a degree of rock scrambling, varying from easy to more difficult. It is recommended that you bring gloves suitable for scaling boulders.','While not an \'official\' trail, this hike leads you into the interior of the Jemez mesas by following an arroyo uphill. The arroyo presents a number of obstacles requiring scrambling up boulders, and sometimes overhanging bushes. Eventually the arroyo terminates at a box canyon, and you must scale a gravelly slope to reach an area where you can proceed to another arroyo. Given the numerous challenges on the trail, the author did not complete the hike to the Datiles Mesa. On the accompanying map you will see where the author turned around. Click on the \'Proposed\' track in the upper right corner of the map to see the remaining route. To complete the hike, another climb uphill is required to get to the mesa overlook, which undoubtedly has great views.',NULL,NULL,NULL);
 
 
 
@@ -822,7 +823,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1674 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1677 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1726,7 +1727,10 @@ INSERT INTO REFS VALUES
 ('1668','248','Book:','2',NULL),
 ('1669','248','Website:','https://www.hikingproject.com/directory/8015740/manzanita-mountains-trail-system','Manzanitas Trail System'),
 ('1671','249','Book:','2',NULL),
-('1672','249','Website:','https://www.mtbproject.com/directory/8015740/manzanita-mountains-trail-system','Manazanita Mountains Trail System');
+('1672','249','Website:','https://www.mtbproject.com/directory/8015740/manzanita-mountains-trail-system','Manazanita Mountains Trail System'),
+('1674','250','App:','https://www.alltrails.com/trail/us/new-mexico/mesa-de-los-datiles','AllTrails'),
+('1675','250','Website:','https://www.mountainzone.com/mountains/new-mexico/sandoval-nm/summits/mesa-de-los-datiles/','Mesa de los Datiles in Sandoval County'),
+('1676','250','Website:','https://mapcarta.com/23274380','MapCarta.com');
 
 
 
@@ -1750,7 +1754,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4788 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4803 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4419,7 +4423,19 @@ INSERT INTO TSV VALUES
 ('4784','249',NULL,'IMG_3408','Y','Y','A peek at the eastern side of the Sandias','350066250','-1063210444','2642',NULL,'2020-09-21 11:28:07','IMG_3408','480','640',NULL,NULL),
 ('4785','249',NULL,'IMG_3404','Y','N','More Sandia view','350065028','-1063213417','2643',NULL,'2020-09-21 10:03:47','IMG_3404','480','640',NULL,NULL),
 ('4786','249',NULL,'IMG_3407','Y','Y','An open meadow for lunch','350019528','-1063092583','2644',NULL,'2020-09-21 10:45:05','IMG_3407','480','640',NULL,NULL),
-('4787','249',NULL,'IMG_3405','Y','Y','Easy trails permeate the area','350071639','-1063198694','2645',NULL,'2020-09-21 10:06:14','IMG_3405','480','640',NULL,NULL);
+('4787','249',NULL,'IMG_3405','Y','Y','Easy trails permeate the area','350071639','-1063198694','2645',NULL,'2020-09-21 10:06:14','IMG_3405','480','640',NULL,NULL),
+('4788','250',NULL,'IMG_3427','Y','N','Autumn view at off-road parking area','357051417','-1067283083','2646',NULL,'2020-10-13 09:50:47','IMG_3427','480','640',NULL,NULL),
+('4789','250',NULL,'IMG_3428','Y','Y','The \'trail head\'','357051250','-1067279750','2647',NULL,'2020-10-13 09:52:40','IMG_3428','640','480',NULL,NULL),
+('4790','250',NULL,'IMG_3430','Y','Y','Beautiful rock wall with a view','357046167','-1067270361','2648',NULL,'2020-10-13 09:56:54','IMG_3430','480','640',NULL,NULL),
+('4791','250',NULL,'IMG_3432','Y','Y','Many interesting formations await the hiker','357047111','-1067262500','2649',NULL,'2020-10-13 09:59:10','IMG_3432','480','640',NULL,NULL),
+('4792','250',NULL,'IMG_3433','Y','Y','An overhang with rock \'conference area\' below','357049111','-1067225944','2650',NULL,'2020-10-13 10:09:19','IMG_3433','480','640',NULL,NULL),
+('4793','250',NULL,'IMG_3435','Y','Y','A milder section of the arroyo','357045444','-1067199944','2651',NULL,'2020-10-13 10:17:55','IMG_3435','640','480',NULL,NULL),
+('4794','250',NULL,'IMG_3437','Y','N','Red rock is a characteristic of the Jemez','357013028','-1067142944','2652',NULL,'2020-10-13 10:45:20','IMG_3437','480','640',NULL,NULL),
+('4795','250',NULL,'IMG_3440','Y','Y','Occasionally, a cairn appears','357011917','-1067141639','2653',NULL,'2020-10-13 10:50:18','IMG_3440','640','480',NULL,NULL),
+('4796','250',NULL,'IMG_3449','Y','Y','A view looking out from the high point of the author\'s trip','357008750','-1067125028','2654',NULL,'2020-10-13 12:10:57','IMG_3449','480','640',NULL,NULL),
+('4797','250',NULL,'IMG_3443','Y','Y','Fascinating banded rock while descending into an arroyo','357006389','-1067143639','2655',NULL,'2020-10-13 10:58:48','IMG_3443','480','640',NULL,NULL),
+('4798','250',NULL,'IMG_3450','Y','N','Blue skies and red rock provide a stark contrast','357049000','-1067260500','2656',NULL,'2020-10-13 13:33:50','IMG_3450','480','640',NULL,NULL),
+('4799','250',NULL,'IMG_3446','Y','Y','Looking back from the last arroyo','356990139','-1067118750','2657',NULL,'2020-10-13 11:29:26','IMG_3446','480','640',NULL,NULL);
 
 
 
@@ -4440,7 +4456,7 @@ CREATE TABLE `USERS` (
 
 
 INSERT INTO USERS VALUES
-('1','tom','$2y$10$5OrycGl5nQK3D6c31bAdNuNjarxQXPqe2P5.LjDfPEtnNuboKmG0K','2020-10-01','Sandberg','Tom','tjsandberg@yahoo.com',NULL,NULL,'One of the geniuses behind this site :-)'),
+('1','tom','$2y$10$iWf2kXMtdwZLDotS0db.HO0uLZPq.j570nswnMqlAzzaaGmBxyIBW','2021-10-13','Sandberg','Tom','tjsandberg@yahoo.com','accept',NULL,'One of the geniuses behind this site :-)'),
 ('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)'),
 ('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com','','','Just and old dusty traveler'),
 ('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu','','',''),
