@@ -73,16 +73,6 @@ require "../php/global_boot.php";
                 id="datepicker" type="text" name="datepicker" /></span><br />
         <span style="font-size:20px;color:brown;">Listings:</span><br />
         <button id="lst">List New Files</button>&nbsp;&nbsp;[Since last upload]
-        <hr />
-
-        TEMP:<br />
-        <button id="ldclus">Create Clusters</button><br />
-        <button id="pop">Populate Clusters</button><br />
-        <button id="updte" style="background-color:lightgray">Update HIKES</button><br />
-        <button id="dropclus">Drop Clusters</button><br />
-       
-
-        <hr />
         <p>Database Management Tools:</p>
         <button id="reload">Reload Database</button>&nbsp;
             [Drops All Tables and Loads All Tables]<br />
