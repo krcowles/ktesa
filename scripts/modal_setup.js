@@ -90,7 +90,8 @@ var modal = (function() {
         $('#loginTbl tr').eq(2).css('height', '36px');
         $('#loginTbl tr').eq(3).css('height', '8px');
         $('#replace').replaceWith($tdclose);
-        $('#sendemail').on('click', function() {
+        $('#sendemail').on('click', function(ev) {
+            ev.preventDefault();
             let email = $('#resetpass').val();
             if (email == '') {
                 alert("No email address has been entered");
@@ -125,7 +126,8 @@ var modal = (function() {
             }
 
         });
-        $('#enter').on('click', function() {
+        $('#enter').on('click', function(ev) {
+            ev.preventDefault();
             var pwd = $('#upass').val();
             var uid = $('#usrid').val();
             if (uid == '' && pwd == '') {
@@ -143,7 +145,8 @@ var modal = (function() {
             validateUser(uid, pwd);
             modal.close();
         });
-        $tdclose.on('click', function() {
+        $tdclose.on('click', function(ev) {
+            ev.preventDefault();
             modal.close();
         });
     }

@@ -98,6 +98,7 @@ require_once "../accounts/getLogin.php";
 
 <!-- Modal Windows HTML -->
 <div id="usr_login">
+    <form id="loginForm" action="#" method="post">
     <table id="loginTbl">
         <colgroup>
             <col style="width:124px">
@@ -109,14 +110,14 @@ require_once "../accounts/getLogin.php";
                 <td>User name:</td>
                 <td colspan="2">
                     <input id="usrid" class="bordered" type="text" size="20"
-                        name="name" />
+                        name="name" autocomplete="username" />
                 </td>
             </tr>
             <tr>
                 <td>User Password:</td>
                 <td colspan="2">
                     <input id="upass" class="bordered" type="password"
-                        name="password" size="20" />
+                        name="password" size="20" autocomplete="password" />
                 </td>
             </tr>
             <tr>
@@ -140,6 +141,7 @@ require_once "../accounts/getLogin.php";
         </tbody>
     </table><br />
     <br />
+    </form>
 </div>
 <div id="feedback">
     Please type your feedback or question here:<br />
