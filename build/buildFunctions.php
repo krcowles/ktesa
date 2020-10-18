@@ -25,7 +25,6 @@
  */
 function validateUpload($name, $fileloc)
 {
-    libxml_use_internal_errors(true);
     $msg = '';
     $filename = basename($_FILES[$name]['name']);
     if ($filename !== '') {

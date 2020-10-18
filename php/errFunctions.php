@@ -26,7 +26,7 @@ function ktesaErrors($errno, $errstr, $errfile, $errline)
         "\nError no. {$errno}: {$errstr}\n";
     error_log($message);
     // send email to site master
-    errorPage();
+    errorPage($errstr);
 }
 /**
  * This is the production mode exception handler, also presenting 
@@ -96,7 +96,7 @@ function shutdownError($errmsg, $errlvl)
  * 
  * @return null
  */
-function errorPage()
+function errorPage($message="")
 {
     // Cleanup all other output buffers before sending our output:
     while (ob_get_level() > 0) {
@@ -104,5 +104,6 @@ function errorPage()
     }
     http_response_code(500);
     include "../php/user_error_page.php"; // send user error page
+    echo htmlentities($message);
     exit(-1);
 }
