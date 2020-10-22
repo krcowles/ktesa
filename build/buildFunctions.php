@@ -25,7 +25,6 @@
  */
 function validateUpload($name, $fileloc)
 {
-    libxml_use_internal_errors(true);
     $msg = '';
     $filename = basename($_FILES[$name]['name']);
     if ($filename !== '') {
@@ -45,16 +44,13 @@ function validateUpload($name, $fileloc)
         $ext = strpos($filename, ".") + 1;
         $file_ext = substr($filename, $ext, 3);
         if (strtoLower($file_ext) === 'gpx') {
-            $xml = new DOMDocument;
-            if (!$xml->load($tmp_upload)) {
-                displayGpxUserAlert($filename);
+            libxml_use_internal_errors(true);
+            validateGpxFile($tmp_upload, $filename);
+            if (isset($_SESSION['usr_alert'])) {
                 return;
             }
-            if (!$xml->schemaValidate(
-                "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
-            )
-            ) {
-                displayGpxUserAlert($filename);
+            validateGpxSchema($tmp_upload, $filename);
+            if (isset($_SESSION['usr_alert'])) {
                 return;
             }
         }
@@ -75,6 +71,47 @@ function validateUpload($name, $fileloc)
         $filename = "No file specified";
     }
     return array($filename, $msg);
+}
+/**
+ * This function will validate the basic file formatting for a (gpx) file.
+ * If an error occurred, $_SESSION['usr_alert'] will be defined, otherwise not
+ * 
+ * @param string $file     The path to the file to be validated
+ * @param string $filename The name of the file
+ * 
+ * @return null;
+ */
+function validateGpxFile($file, $filename)
+{
+    $dom = new DOMDocument;
+    if (!$dom->load($file)) {
+        displayGpxUserAlert($filename);
+    }
+    return;
+}
+/**
+ * This function validates the file against the gpx schema.
+ * ----- ASSUMTPTION -----
+ * DOMDocument load has already been done and will not generate and error 
+ * when reloaded.
+ * If a schema error occurred, $_SESSION['usr_alert'] will be defined, otherwise not
+ * 
+ * @param file   $file     The path to the file whose schema is to be validated
+ * @param string $filename The filename of the above
+ * 
+ * @return null;
+ */
+function validateGpxSchema($file, $filename)
+{
+    $dom = new DOMDocument;
+    $dom->load($file);
+    if (!$dom->schemaValidate(
+        "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
+    )
+    ) {
+        displayGpxUserAlert($filename);
+    }
+    return;
 }
 /**
  * Display a message for the user about the gpx file failure encountered

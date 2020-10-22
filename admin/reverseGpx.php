@@ -13,6 +13,8 @@
  */
 session_start();
 require "../php/global_boot.php";
+
+$adminpg = '../admin/admintools.php';
 /**
  *  Validate the upload
  */
@@ -43,21 +45,18 @@ if ($gpxfile !== '') {
 $editfile = $_FILES[$name]['tmp_name'];
 libxml_use_internal_errors(true);
 $adminpg = "../admin/admintools.php";
+validateGpxFile($editfile, $gpxfile);
+if (isset($_SESSION['usr_alert'])) {
+    header("Location: " . $adminpg);
+    exit;
+}
+validateGpxSchema($editfile, $gpxfile);
+if (isset($_SESSION['usr_alert'])) {
+    header("Location: " . $adminpg);
+    exit;
+}
 $dom = new DOMDocument();
 $dom->formatOutput = true;
-if (!$dom->load($editfile)) {
-    displayGpxUserAlert($gpxfile);
-    header("Location: {$adminpg}");
-    exit;
-}
-if (!$dom->schemaValidate(
-    "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
-)
-) {
-    displayGpxUserAlert($gpxfile);
-    header("Location: {$adminpg}");
-    exit;
-}
 
 // END FILE VALIDATION
 $tracks = $dom->getElementsByTagName('trk'); // DONMNodeList object
