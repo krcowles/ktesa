@@ -12,6 +12,11 @@
  */
 session_start();
 require "../php/global_boot.php";
+$admin_alert = '';
+if (isset($_SESSION['usr_alert'])) {
+    $admin_alert = $_SESSION['usr_alert'];
+    unset($_SESSION['usr_alert']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -124,6 +129,7 @@ require "../php/global_boot.php";
             <input type="text" id="revlst" name="revlst" size="20" />
         </form>
     </fieldset><br/>
+    <p id="admin_alert" style="display:none;"><?=$admin_alert;?></p>
 </div>
 <script src="../scripts/menus.js" type="text/javascript"></script>
 <script src="admintools.js" type="text/javascript"></script>

@@ -134,5 +134,9 @@ if (typeof(nopix) !== 'undefined') {
 $('#addbk').on('click', function() {
     window.open("addBook.php", "_blank");
 });
+let admin_alert = $('#admin_alert').text();
+if (admin_alert !== '') {
+    alert(admin_alert);
+}
 
 });  // end of doc loaded

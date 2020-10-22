@@ -47,27 +47,15 @@ function validateUpload($name, $fileloc)
         if (strtoLower($file_ext) === 'gpx') {
             $xml = new DOMDocument;
             if (!$xml->load($tmp_upload)) {
-                throw new Exception(
-                    "{$filename} could not be loaded as a DOMDocument in "
-                    . "validateUpload of buildFunctions.php"
-                );
+                displayGpxUserAlert($filename);
+                return;
             }
             if (!$xml->schemaValidate(
                 "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
             )
             ) {
-                $error_vals = libxml_get_errors();
-                $err_list = "";
-                foreach ($error_vals as $err) {
-                    $err_list .= displayXmlError($err, $filename) . PHP_EOL;
-                }
-                $err_list .= PHP_EOL . PHP_EOL;
-                throw new Exception(
-                    "{$filename} could not be validated against the XML gpx " 
-                    . "schema in validateUpload():" . PHP_EOL .
-                    $err_list
-                );
-
+                displayGpxUserAlert($filename);
+                return;
             }
         }
         $saveloc = $fileloc . $filename;
@@ -89,15 +77,28 @@ function validateUpload($name, $fileloc)
     return array($filename, $msg);
 }
 /**
+ * Display a message for the user about the gpx file failure encountered
+ * 
+ * @param string $filename The gpx file containing the error
+ * 
+ * @return null
+ */
+function displayGpxUserAlert($filename)
+{
+    $err_array = libxml_get_errors();
+    $usr_msg = "There is an error in {$filename}:\n" .
+        displayXmlError($err_array[0]);
+    $_SESSION['usr_alert'] = $usr_msg;
+}
+/**
  * The libxml errors have their own error processing requiring a handler,
  * specified in this function routine.
  * 
- * @param object $error   libxml object when error occurs
- * @param string $gpxfile name of affected file
+ * @param object $error libxml object when error occurs
  * 
  * @return string $return error string to return
  */
-function displayXmlError($error, $gpxfile) 
+function displayXmlError($error) 
 {
     $return = '';
     switch ($error->level) {
@@ -113,11 +114,8 @@ function displayXmlError($error, $gpxfile)
     default:
         $return = "Error level not recognized";
     }
-    $return .= trim($error->message) . PHP_EOL . "Line: $error->line" . 
-        PHP_EOL . "Column: $error->column";
-    if ($error->file) {
-        $return .= PHP_EOL .  "File: {$gpxfile}";
-    }
+    $return .= trim($error->message) .  " Line: $error->line" .
+        ", Column: $error->column";
     return $return;
 }
 /**

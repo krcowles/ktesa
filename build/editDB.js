@@ -151,6 +151,12 @@ $('#preview').on('click', function() {
     window.open(prevPg,"_blank");
 });
 
+// If there is a user alert to show, set the message text:
+let usr_alert = $('#usr_alert').text();
+if (usr_alert !== '') {
+    alert(usr_alert);
+}
+
 // show/hide lat lng data entries
 $('#showll').on('click', function() {
     $('#lldisp').slideToggle();

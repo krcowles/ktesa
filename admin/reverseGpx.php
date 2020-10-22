@@ -11,6 +11,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
 /**
  *  Validate the upload
@@ -40,12 +41,24 @@ if ($gpxfile !== '') {
     throw new Exception("No file specified");
 }
 $editfile = $_FILES[$name]['tmp_name'];
+libxml_use_internal_errors(true);
+$adminpg = "../admin/admintools.php";
 $dom = new DOMDocument();
 $dom->formatOutput = true;
-$dom->load($editfile);
-if (!$dom) {
-    throw new Exception("Could not retrieve uploaded gpx file and convert to DOM document");
+if (!$dom->load($editfile)) {
+    displayGpxUserAlert($gpxfile);
+    header("Location: {$adminpg}");
+    exit;
 }
+if (!$dom->schemaValidate(
+    "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
+)
+) {
+    displayGpxUserAlert($gpxfile);
+    header("Location: {$adminpg}");
+    exit;
+}
+
 // END FILE VALIDATION
 $tracks = $dom->getElementsByTagName('trk'); // DONMNodeList object
 $trkcnt = $tracks->length;

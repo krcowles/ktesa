@@ -56,7 +56,12 @@ $curr_gpx = $hike['gpx'];  // can contain more than one filename, comma-separate
 $curr_trk = $hike['trk'];
 $lat = $hike['lat'] / LOC_SCALE;
 $lng = $hike['lng'] / LOC_SCALE;
-$dirs = $hike['dirs'];
+$dirs = $hike['dirs']; 
+$usr_alert = '';
+if (isset($_SESSION['usr_alert'])) {
+    $usr_alert = $_SESSION['usr_alert'];
+    unset($_SESSION['usr_alert']);
+}
 
 /**
  * Tab2: [photo displays (already uploaded) and any waypoints]

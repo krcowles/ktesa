@@ -19,6 +19,8 @@ require "../php/global_boot.php";
 require_once "../php/gpxFunctions.php";
 
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
+$redirect = "editDB.php?tab=1&hikeNo={$hikeNo}";
+
 $pdoBindings = [];
 $pdoBindings['hikeNo'] = $hikeNo;
 $maingpx  = filter_input(INPUT_POST, 'mgpx'); // may be empty
@@ -94,6 +96,10 @@ if (!empty($gpxfile)) {  // new upload
     $gpxtype = fileTypeAndLoc($gpxfile);
     if ($gpxtype[2] === 'gpx') {
         $gpxupl = validateUpload("newgpx", "../gpx/");
+        if (isset($_SESSION['usr_alert'])) {
+            header("Location: {$redirect}");
+            exit;
+        }
         $newgpx = $gpxupl[0];
         $_SESSION['uplmsg'] .= $gpxupl[1];
         $trkdat = makeTrackFile($newgpx, "../gpx/");
@@ -290,5 +296,4 @@ $latlng .= "WHERE indxNo = ?;";
 array_push($data, $hikeNo);
 $pdo->prepare($latlng)->execute($data);
 
-$redirect = "editDB.php?tab=1&hikeNo={$hikeNo}";
 header("Location: {$redirect}");
