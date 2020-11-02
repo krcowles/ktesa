@@ -72,21 +72,23 @@ function popupHikeName(hikename) {
 }
 
 /**
- * This function will click the argument's infoWindow
+ * This function will click the subject hike's marker, which will pop up
+ * the marker's info window (see map.js). If the marker was previously clicked,
+ * then the map re-centers at the marker
  * 
  * @param {string} hike The name of the hike whose infoWindow will be clicked
  * @returns {null}
  */
 function infoWin(hike, loc) {
-    // find the marker associated with the input parameters and popup its info window
-    // clicking marker sets zoom
+    // highlight track for either searchbar or zoom-to icon:
+    applyHighlighting = true;
+    // find the marker associated with the input parameters and pop up its info window
     for (let k=0; k<locaters.length; k++) {
         if (locaters[k].hikeid == hike) {
             let thismarker = locaters[k].pin;
             if (thismarker.clicked === false) {
                 zoomLevel = map.getZoom();
                 // clicking will set (prototype) marker.clicked = true
-                marker_click = true; // the global in map zoom test
                 google.maps.event.trigger(locaters[k].pin, 'click');
             } else {
                 map.setCenter(loc);
@@ -98,7 +100,9 @@ function infoWin(hike, loc) {
 }
 
 /**
- * This function emphasizes the hike track(s) that have been zoomed to;
+ * This function emphasizes the hike track(s) when the user searches for
+ * a hike with the search bar, or zooms to it via the zoom icon in the 
+ * side table. If the track has not been drawn yet, it is drawn.
  * NOTE: A javascript anomaly - passing in a single object in an array
  * results in the function receiving the object, but not as an array.
  * Hence a 'type' identifier is used here
@@ -111,6 +115,7 @@ function infoWin(hike, loc) {
 function highlightTracks() {
     if (!$.isEmptyObject(hilite_obj)) {
         if (hilite_obj.type === 'cl') { // object is an array of objects
+            // wait for tracks to be drawn, if not already...
             let cluster = hilite_obj.obj;
             cluster.forEach(function(track) {
                 let polyno = track.indx;
@@ -129,6 +134,7 @@ function highlightTracks() {
                 }
             });
         } else { // mrkr === 'nm'; object is a single object
+            // wait for tracks to be drawn, if not already...
             let polyno = hilite_obj.obj.indx;
             for (let k=0; k<drawnTracks.length; k++) {
                 if (drawnTracks[k].hike == polyno) {

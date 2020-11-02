@@ -10,13 +10,14 @@ var mapht;
 // track vars
 var drawnHikes = [];     // hike numbers which have had tracks created
 var drawnTracks = [];    // array of objects: {hike:hikeno , track:polyline}
-var drawnClusters = [];  // clusters which have had all hikes drawn
 // globals to register when a zoom needs to call highlightTrack
-var marker_click = false;
+var applyHighlighting = false;
 var hilite_obj = {};     // global object holding hike object & marker type
 var hilited = [];
 var zoomLevel;
-/**
+var zoomdone;
+var panning = false;
+/** 
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
  * needs to be specified for the divs to be visible.
@@ -144,7 +145,6 @@ function initMap() {
 			marker.clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			marker_click = true;   // global
 			if (zoomLevel < 13) {
 				map.setZoom(13);
 			}
@@ -183,7 +183,6 @@ function initMap() {
 			marker.clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			marker_click = true;   // global
 			if (zoomLevel < 13) {
 				map.setZoom(13);
 			}
@@ -207,6 +206,7 @@ function initMap() {
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	map.addListener('zoom_changed', function() {
 		var zoomTracks = false;
+		zoomdone = $.Deferred();
 		var idle = google.maps.event.addListener(map, 'idle', function (e) {
 			var curZoom = map.getZoom();
 			var perim = String(map.getBounds());
@@ -218,15 +218,8 @@ function initMap() {
 				$.when(
 					zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2])
 				).then(function() {
-					// if zoom caused by clicking a marker (or search, side-table zoom)
-					if (marker_click) {
-						marker_click = false;
-						if (hilited.length > 0) {
-							restoreTracks();
-						}
-						highlightTracks();
-					}
 					google.maps.event.removeListener(idle);
+					zoomdone.resolve();
 				});
 			} else {
 				google.maps.event.removeListener(idle);
@@ -234,7 +227,12 @@ function initMap() {
 		});
 	});
 	
+	map.addListener('dragstart', function() {
+		panning = true;
+	});
+
 	map.addListener('dragend', function() {
+		// no highlighting is required during pan
 		var curr_zoom = map.getZoom();
 		let zoomTracks = true;
 		if (curr_zoom < 13) {
@@ -244,6 +242,20 @@ function initMap() {
 		var zoomedHikes = IdTableElements(newBds, zoomTracks);
 		if (zoomTracks && zoomedHikes.length > 0) {
 			zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2]);
+		}
+		panning = false;
+	});
+
+	map.addListener('center_changed', function() {
+		if (!panning) {
+			$.when(zoomdone).then(function() {
+				if (applyHighlighting) {
+					restoreTracks();
+					highlightTracks();
+				}
+			});
+		} else {
+			panning = false;
 		}
 	});
 }
