@@ -119,7 +119,8 @@ if (isset($_SESSION['usr_alert'])) {
     <fieldset>
         <legend>GPX File Edits</legend>
         NOTE: Will download a file called "reversed.gpx"<br />
-        <form action="reverseGpx.php" method="POST" enctype="multipart/form-data" />
+        <form action="reverseGpx.php" method="POST" enctype="multipart/form-data"
+            onsubmit="return checkSize(20*1024*1024)">
             <input type="file" id="gpx2edit" name="gpx2edit" /><br />
             <input class="ged" type="submit" name="gpxall"
                 value="Reverse All Tracks" /><br />
@@ -131,6 +132,24 @@ if (isset($_SESSION['usr_alert'])) {
     </fieldset><br/>
     <p id="admin_alert" style="display:none;"><?=$admin_alert;?></p>
 </div>
+<script type="text/javascript">
+function checkSize(max_size)
+{
+    var input = document.getElementById("gpx2edit");
+    // check for browser support (may need to be modified)
+    if(input.files && input.files.length == 1)
+    {           
+        if (input.files[0].size > max_size) 
+        {
+            alert("Error: The file is too large.\n" +
+                "The size must be less than " + (max_size/1024/1024) + " MB.");
+            return false;
+        }
+    }
+
+    return true;
+}
+</script>
 <script src="../scripts/menus.js" type="text/javascript"></script>
 <script src="admintools.js" type="text/javascript"></script>
 </body>
