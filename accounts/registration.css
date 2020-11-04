@@ -76,7 +76,8 @@ input:focus {
 }
 #showit {
     position: relative;
-    margin-left: 100px;
+    display: inline-block;
+    width: 201px;
     z-index: 200;
     font-size: 18px;
     color: #b47b31;
@@ -84,7 +85,6 @@ input:focus {
 input[type=password]:not('#upass') {
     background-color: ghostwhite;
     position: relative;
-    left: -20px;
 }
 #cb {
   transform: scale(1.4);

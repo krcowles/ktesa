@@ -1,3 +1,4 @@
+"use strict"
 /**
  * @fileoverview Visually, this script positions the login boxes on the page
  * and toggles password visibility. Functionally, it verifies that all
@@ -46,100 +47,108 @@ $('#reject').on('click', function() {
     $('#usrchoice').val("reject");
 });
 
-
-// validation
-var proceed = true;
-/**
- * Ensure the user name has no embedded spaces
- * @return {boolean}
- */
-const nospaces = () => {
-    if ($('#uname').val().indexOf(' ') === -1) {
-        return true;
-    } else {
-        alert("No spaces in user name please");
-        $('#uname').focus();
-        return false;
-    }
-};
-/**
- * Make sure email is valid (otherwise blank in USERS table)
- * @return {boolean}
- */
-const validemail = () => {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test($('#email').val())) {
-        return true;
-    } else {
-        alert("You have entered an invalid email address");
-        $('#email').focus();
-        return false;
-    }
-};
-/**
- * Make sure user name is unique
- * @return {boolean}
- */
-const uniqueuser = (deferred) => {
-    let data = $('#uname').val();
-    let ajaxdata = {username: data};
-    $.ajax({
-        url: 'getUsers.php',
-        data: ajaxdata,
-        method: 'post',
-        success: function(unique) {
-            if (unique === "NO") {
-                proceed = true;
-            } else {
-                proceed = false;
-                alert("This user name is already taken");
+// NOTE: email validation performed by HTML5, and again by server
+    /**
+     * For username problems, notify user immediately
+     */
+    var outstanding_issue = false;
+    // no spaces in user name:
+    var nonamespaces = true;
+    /**
+     * Ensure the user name has no embedded spaces
+     * @return {null}
+     */
+    var spacesInName = function () {
+        var uname = $('#uname').val();
+        if (uname.indexOf(' ') !== -1) {
+            alert("No spaces in user name please");
+            $('#uname').focus();
+            $('#uname').css('color', 'red');
+            nonamespaces = false;
+            outstanding_issue = true;
+        }
+        else {
+            if (goodname) {
+                outstanding_issue = false;
             }
-            deferred.resolve();
-        },
-        
-        error: function (jqXHR, textStatus, errorThrown) {
-            deferred.reject();
-            var newDoc = document.open();
-            newDoc.write(jqXHR.responseText);
-            newDoc.close();
         }
-    });
-};
-// input fields: no blanks; no username spaces; valid email address
-$('#submit').on('click', function() {
-    let msgs = 0;
-    $('.signup').each(function() {
-        if ($(this).val() == '' && msgs === 0) {
-            proceed = false;
-            alert("Please complete all entries");
-            msgs++;
-        }
-    });
-    if (proceed) {
-        proceed = nospaces();
-    }
-    if (proceed) {
-        proceed = validemail();
-    }
-    if (proceed) {
-        if ($('#cookie_banner').css('display') !== 'none') {
-            proceed = false;
-            alert("Please accept or reject cookis");
-        };
-    }
-    if (proceed) {
-        let asynch = $.Deferred();
-        uniqueuser(asynch);
-        $.when(asynch).then(function() {
-            if (proceed) {
-                $('#form').submit();
-            } else {
-                proceed = true;
+        return;
+    };
+    // unique user name:
+    var goodname = true;
+    var uniqueness = $.Deferred();
+    /**
+     * Make sure user name is unique;
+     * NOTE: TypeScript won't allow a function's return value to be boolean! "you
+     * must return a value": hence the return values specified below
+     *
+     * @return {boolean}
+     */
+    var uniqueuser = function () {
+        var data = $('#uname').val();
+        var ajaxdata = { username: data };
+        var current_users = '../accounts/getUsers.php';
+        $.ajax(current_users, {
+            data: ajaxdata,
+            method: 'post',
+            success: function (match) {
+                if (match === "NO") {
+                    goodname = true;
+                }
+                else {
+                    goodname = false;
+                }
+                uniqueness.resolve();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                uniqueness.reject();
+                var newDoc = document.open();
+                newDoc.write(jqXHR.responseText);
+                newDoc.close();
             }
         });
-    } else {
-        proceed = true;
-    }
-    return;
-});
+    };
+    $('#uname').on('change', function () {
+        spacesInName();
+        if (nonamespaces) {
+            uniqueuser();
+            $.when(uniqueness).then(function () {
+                if (!goodname) {
+                    alert("This user name is already taken");
+                    $('#uname').css('color', 'red');
+                    outstanding_issue = true;
+                }
+                else {
+                    if (nonamespaces) {
+                        outstanding_issue = false;
+                    }
+                }
+                uniqueness = $.Deferred(); // re-establish for next event
+            });
+        }
+    });
+    $('#uname').on('focus', function () {
+        $(this).css('color', 'black');
+    });
+    // input fields: no blanks; no username spaces; valid email address
+    $("form").submit(function () {
+        if (outstanding_issue) {
+            alert("Please correct item(s) in red before submitting");
+            return false;
+        }
+        var allinputs = document.getElementsByClassName('signup');
+        for (var i = 0; i < allinputs.length; i++) {
+            var inputbox = allinputs[i];
+            if (inputbox.value == '') {
+                alert("Please complete all entries");
+                return false;
+            }
+        }
+        if ($('#cookie_banner').css('display') !== 'none') {
+            alert("Please accept or reject cookis");
+            return false;
+        }
+        ;
+    });
 
 });
