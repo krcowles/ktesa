@@ -47,11 +47,6 @@ function drawRows(useWidth) {
             }
             currWidth += widthAtMax[n]; // place next pic in row
             leftMostImg = false;
-            if (n < photocnt) {
-                itype[n] = "photo";  // popups need to know if captioned
-            } else {
-                itype[n] = "image";  // no popup
-            }
             // when currWidth exceeds useWidth, then force fit to useWidth
             if (currWidth >= useWidth) { 
                 // this row is now filled
@@ -67,18 +62,12 @@ function drawRows(useWidth) {
                     } else {
                         styling = 'margin-left:1px;';
                     }
-                    if (itype[k] === "photo") {
-                        iwidth = Math.floor(scale * widthAtMax[k]);
-                        rowHtml += '<img id="pic' + k + '" style="' +
-                            styling + '" width="' + iwidth + '" height="' +
-                            rowHt + '" src="' + "/pictures/zsize/" + piclnks[k] + "_z.jpg" + '" alt="' +
-                            capts[k] + '" />' + "\n";
-                    } else {
-                        iwidth = Math.floor(scale * widthAtMax[k]);
-                        rowHtml += '<img style="' + styling + '" width="' +
-                            iwidth + '" height="' + rowHt + '" src="' +
-                            "../images/" + piclnks[k] + '" alt="Additional non-captioned image" />' + "\n";
-                    }
+                    iwidth = Math.floor(scale * widthAtMax[k]);
+                    rowHtml += '<img id="pic' + k + '" style="' +
+                        styling + '" width="' + iwidth + '" height="' +
+                        rowHt + '" src="' + "/pictures/zsize/" + piclnks[k] + "_z.jpg" + '" alt="' +
+                        capts[k] + '" />' + "\n";
+
                 }  // end of for each image -> fit
                 imgStartNo = n+1;
                 rowNo++;
@@ -96,17 +85,10 @@ function drawRows(useWidth) {
                     } else {
                         styling = 'margin-left:1px;';
                     }
-                    if (itype[l] === 'photo') {
-                        rowHtml += '<img id="pic' + l + '" style="' +
-                            styling + '" width="' + widthAtMax[l] + '" height="' +
-                            maxRowHt + '" src="' + "/pictures/zsize/" + piclnks[l] + "_z.jpg" + '" alt="' +
-                            capts[l] + '" />' + "\n";
-                    } else {
-                        rowHtml += '<img style="' + styling + '" width="' +
-                            widthAtMax[l] + '" height="' + maxRowHt + 
-                            '" src="' + "../images/" + piclnks[l] + 
-                            '" alt="Additional non-captioned image" />' + "\n";
-                    }
+                    rowHtml += '<img id="pic' + l + '" style="' +
+                        styling + '" width="' + widthAtMax[l] + '" height="' +
+                        maxRowHt + '" src="' + "/pictures/zsize/" + piclnks[l] + "_z.jpg" + '" alt="' +
+                        capts[l] + '" />' + "\n";
                 }
                 rowHtml += "</div>\n";
             }

@@ -33,8 +33,12 @@ foreach ($iterator as $file) {
 
 $tbl = filter_input(INPUT_GET, 'age');
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_SANITIZE_NUMBER_INT);
-$distThreshParm = filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT);
-$elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT);
+$distThreshParm = filter_input(
+    INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT
+);
+$elevThreshParm = filter_input(
+    INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT
+);
 $maWindowParm = filter_input(INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT);
 $makeGpsvDebugParm = filter_input(INPUT_GET, 'makeGpsvDebugParm');
 $showAscDsc = filter_input(INPUT_GET, 'showAscDsc');
@@ -101,16 +105,6 @@ if (!empty($allgpx)) {
     $gpxfiles = [];
 }
 $jsonFile = $row['trk'];
-if ($row['aoimg1'] == '') {
-    $hikeAddonImg1 = '';
-} else {
-    $hikeAddonImg1 = unserialize($row['aoimg1']);
-}
-if ($row['aoimg2'] == '') {
-    $hikeAddonImg2 = '';
-} else {
-    $hikeAddonImg2 = unserialize($row['aoimg2']);
-}
 $hikePhotoLink1 = $row['purl1'];
 $hikePhotoLink2 = $row['purl2'];
 $photoAlbum = '<br />';
@@ -169,31 +163,7 @@ foreach ($photosData as $pics) {
     }
 }
 $capCnt = count($descs);
-// if there are additional images (non-captioned), process them here:
-if (is_array($hikeAddonImg1)) {
-    $aoimg1 = $hikeAddonImg1[0];
-    array_push($descs, $hikeAddonImg1[0]);
-    array_push($alblnks, '');
-    array_push($piclnks, $aoimg1);
-    array_push($captions, '');
-    $ht = $hikeAddonImg1[1];
-    $wd = $hikeAddonImg1[2];
-    array_push($widths, $wd);
-    $imgRatio = $wd/$ht;
-    array_push($aspects, $imgRatio);
-}
-if (is_array($hikeAddonImg2)) {
-    $aoimg2 = $hikeAddonImg2[0];
-    array_push($descs, $hikeAddonImg2[0]);
-    array_push($alblnks, '');
-    array_push($piclnks, $aoimg2);
-    array_push($captions, '');
-    $ht = $hikeAddonImg2[1];
-    $wd = $hikeAddonImg2[2];
-    array_push($widths, $wd);
-    $imgRatio = $wd/$ht;
-    array_push($aspects, $imgRatio);
-}
+
 /**
  * There are two possible types of hike page displays. If the hike page
  * has a map and elevation chart to display, the variable $newstyle is

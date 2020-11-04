@@ -20,10 +20,10 @@ $userid = $_SESSION['userid'];
  */
 $xfrReq = "INSERT INTO EHIKES (usrid,stat,pgTitle,locale,marker,`collection`," .
     "cgroup,cname,logistics,miles,feet,diff,fac,wow,seasons,expo,gpx,trk,lat," .
-    "lng,aoimg1,aoimg2,purl1,purl2,dirs,tips,info,eThresh,dThresh,maWin)" .
+    "lng,purl1,purl2,dirs,tips,info,eThresh,dThresh,maWin)" .
     "SELECT ?,?," .
     "pgTitle,locale,marker,collection,cgroup,cname,logistics,miles,feet,diff," .
-    "fac,wow,seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs,tips," .
+    "fac,wow,seasons,expo,gpx,trk,lat,lng,purl1,purl2,dirs,tips," .
     "info,eThresh,dThresh,maWin FROM HIKES WHERE indxNo = ?;";
 $query = $pdo->prepare($xfrReq);
 $query->execute([$userid, $getHike, $getHike]);
