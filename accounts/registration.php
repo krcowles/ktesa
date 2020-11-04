@@ -77,7 +77,7 @@ require "../php/global_boot.php";
             </div>
             <span id="showit">&nbsp;&nbsp;Show password:<input id="cb"
                     type="checkbox" /></span>
-            <div id="submit">Submit</div>    
+            <button id="submit">Submit</button>    
         </div>
     </form>
 </div>
