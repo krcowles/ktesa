@@ -18,7 +18,8 @@ var pxPerMile;
 // INFO BOX VARS (CONSTANTS)
 var xwidth = 72;
 var ywidth = 40;
-var tipPt;  // when to shift infobox from left side to right side of crosshairs
+var tipPt;   // when to shift infobox from left side to right side of crosshairs
+var vertTip; // when to shift infobox from over to under crosshairs
 var xshift = 12; 
 var yshift = 16;
 // define the main Chart Object Container
@@ -31,6 +32,7 @@ var ChartObj = function() {
             data = dataObj;
             deltaY = data.maxY - data.minY;
             median = data.minY + deltaY/2;
+            vertTip = data.minY + .78 * deltaY;
             maxYValue = data.maxY;
             var lastEl = data.dataPoints.length - 1;
             maxXValue = data.dataPoints[lastEl].x;
@@ -256,6 +258,7 @@ var infoBox = function infoBox(xloc,yloc,xval,yval,mapLink) {
     }
     document.getElementById('mapline').contentWindow.drawMarker(mapLink);
     var miles = xval + ' miles';
+    var hflip = yval > vertTip ? true : false;
     yval = Thousands(yval);
     var feet = yval + ' ft';
     if (xval > tipPt) {
@@ -263,7 +266,11 @@ var infoBox = function infoBox(xloc,yloc,xval,yval,mapLink) {
     } else {
         xloc += xshift;
     }
-    yloc -= (ywidth + yshift);
+    if (hflip) {
+        yloc += yshift;
+    } else {
+        yloc -= (ywidth + yshift);
+    }
     context.fillStyle = 'HoneyDew';
     context.fillRect(xloc,yloc,xwidth,ywidth);
     context.strokeStyle = 'DarkGray';
