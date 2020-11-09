@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -339,7 +339,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -372,7 +372,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=591 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=536 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -510,7 +510,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=252 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -757,7 +757,8 @@ INSERT INTO HIKES VALUES
 ('247','Blue Trail (Bandelier)','mstr','Valles Caldera',NULL,NULL,NULL,'Cerro Grande Group','Out-and-back','2.00','150','Easy','None','Overlook of Frijoles Canyon at end','Any','Full sun','Blue_Trail.GPX','Blue_Trail.json','358474890','-1064217706',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/Cerro+Grande+Route/@35.8470776,-106.4289533,15.33z/data=!4m8!1m2!2m1!1sCerro+Grande+Route,+New+Mexico!3m4!1s0x0:0x6649607b52c63ead!8m2!3d35.8477729!4d-106.4220373',NULL,'This easy hike begins across the road from the Cerro Grande parking lot. It is actually marked as a ski trail, but makes for a pleasant hike to an overlook of Frijoles Canyon north of the main Bandelier Visitor Area. There is some shade available, but generally not on the trail itself. This is an easy hike, suitable for a family outing. The trail extends along a narrow finger mesa to the overlook. The tree at the end provides some shade and the flat rocks make for an area to sit and enjoy.',NULL,NULL,NULL),
 ('248','David Canyon','1','Tijeras',NULL,NULL,NULL,NULL,'Loop','6.80','550','Easy-Moderate','None','Open Ponderosa Forest w/Views','Not Winter','Mixed sun/shade','David_Canyon.GPX','David_Canyon.json','349840092','-1063498679',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Mars+Court+Trailhead,+Tijeras,+NM+87059/@34.9843143,-106.3514344,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a54daea6d5d1:0x1c2171fd84bf2aab!2m2!1d-106.349758!2d34.983951',NULL,'This canyon offers an off-the-beaten-path walk through the Ponderosa pines populating the Manzanitas range, with glimpses in all directions. The grades are easy to moderate, originally designed for mountain biking. The Mars Court parking area is well off of NM337 and provides a bit more solitude than hikes directly on that route. As you progress down into the shallow canyon, you can catch glimpses of the Manzanos \'Dog Head\' peaks. The west side of the loop borders Kirkland Air Force land, and signs are conspicuously posted. ',NULL,NULL,NULL),
 ('249','Pine Flats Double Loop','1','Tijeras',NULL,NULL,NULL,NULL,'Loop','7.40','400','Easy-Moderate','Picnic Grounds w/Toilet','Pine-scented trails','Not Winter','Mixed sun/shade','Pine_Flats.GPX','Pine_Flats.json','350133201','-1063358566',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//PINE+FLAT+PICNIC+AREA,+11776+NM-337,+Tijeras,+NM+87059/@35.0139847,-106.3447847,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718bad79c669eeb:0xb583d998c25c3386!2m2!1d-106.3355556!2d35.0133333',NULL,'The trails accessible from the Pine Flats Picnic Area are generally populated by cyclists. There are numerous interconnecting trails, so a hike of varying lengths can easily be constructed, as the author did with this hike. The grades are virtually all easy as they take you through various sections of Ponderosa, Gamble Oak, and Cedar. On this journey, during the week, the author encountered 5 cyclists on the trail, and otherwise enjoyed a pleasant degree of solitude. Most of the hike is in the shade of the forest, and though not many long views are available, the fresh air and pine scent add to the enjoyment of the hike.',NULL,NULL,NULL),
-('250','Mesa de los Datiles','2','Jemez Springs',NULL,NULL,NULL,NULL,'Out-and-back','7.20','1200','Med-Difficult','','Great views of the Jemez Mesas','Not Winter','Full sun','mesa_datiles.gpx','mesa_datiles.json','357050460','-1067280380',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//35.7050461,-106.7280381/@35.6907847,-106.7503985,13.98z','This hike requires a degree of rock scrambling, varying from easy to more difficult. It is recommended that you bring gloves suitable for scaling boulders.','While not an \'official\' trail, this hike leads you into the interior of the Jemez mesas by following an arroyo uphill. The arroyo presents a number of obstacles requiring scrambling up boulders, and sometimes overhanging bushes. Eventually the arroyo terminates at a box canyon, and you must scale a gravelly slope to reach an area where you can proceed to another arroyo. Given the numerous challenges on the trail, the author did not complete the hike to the Datiles Mesa. On the accompanying map you will see where the author turned around. Click on the \'Proposed\' track in the upper right corner of the map to see the remaining route. To complete the hike, another climb uphill is required to get to the mesa overlook, which undoubtedly has great views.',NULL,NULL,NULL);
+('250','Mesa de los Datiles','2','Jemez Springs',NULL,NULL,NULL,NULL,'Out-and-back','7.20','1200','Med-Difficult','','Great views of the Jemez Mesas','Not Winter','Full sun','mesa_datiles.gpx','mesa_datiles.json','357050460','-1067280380',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//35.7050461,-106.7280381/@35.6907847,-106.7503985,13.98z','This hike requires a degree of rock scrambling, varying from easy to more difficult. It is recommended that you bring gloves suitable for scaling boulders.','While not an \'official\' trail, this hike leads you into the interior of the Jemez mesas by following an arroyo uphill. The arroyo presents a number of obstacles requiring scrambling up boulders, and sometimes overhanging bushes. Eventually the arroyo terminates at a box canyon, and you must scale a gravelly slope to reach an area where you can proceed to another arroyo. Given the numerous challenges on the trail, the author did not complete the hike to the Datiles Mesa. On the accompanying map you will see where the author turned around. Click on the \'Proposed\' track in the upper right corner of the map to see the remaining route. To complete the hike, another climb uphill is required to get to the mesa overlook, which undoubtedly has great views.',NULL,NULL,NULL),
+('251','Alamo Boundary - Coyote Call','2','Valles Caldera',NULL,NULL,NULL,NULL,'Loop','4.80','400','Easy-Moderate','None','Views of the Valles Caldera','Any','Mixed sun/shade','Alamo_Boundary.GPX','Alamo_Boundary.json','358335263','-1064435629',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B050\'00.7%22N+106%C2%B026\'36.8%22W/@35.8277985,-106.4787043,13.51z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8335263!4d-106.4435629','Although the trail can be used in all seasons, be aware that heavy snows may prevent driving access to the trail head in the winter.','This hike is an easy ascent up from Forest Road 289 to a saddle where the trail intersects the Coyote Call trail. The latter offers great views of the Valle Grande - the large open meadow in the Valles Caldera where the Visitor Center is located, and where elk can sometimes be seen. The hike also progresses from a severe burn area of the Las Conchas Fire in Bandelier Natl Monument, into a section where aspen are repopulating the terrain (Valles Caldera Natl Park).',NULL,NULL,NULL);
 
 
 
@@ -823,7 +824,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1677 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1680 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1730,7 +1731,10 @@ INSERT INTO REFS VALUES
 ('1672','249','Website:','https://www.mtbproject.com/directory/8015740/manzanita-mountains-trail-system','Manazanita Mountains Trail System'),
 ('1674','250','App:','https://www.alltrails.com/trail/us/new-mexico/mesa-de-los-datiles','AllTrails'),
 ('1675','250','Website:','https://www.mountainzone.com/mountains/new-mexico/sandoval-nm/summits/mesa-de-los-datiles/','Mesa de los Datiles in Sandoval County'),
-('1676','250','Website:','https://mapcarta.com/23274380','MapCarta.com');
+('1676','250','Website:','https://mapcarta.com/23274380','MapCarta.com'),
+('1677','251','Website:','https://www.nps.gov/band/alamocoyote.htm','NPS: Alamo Boundary to Coyote Call'),
+('1678','251','App:','https://www.alltrails.com/trail/us/new-mexico/alamo-boundary-trail','AllTrails.com'),
+('1679','251','Website:','http://trailmob.com/trail/alamo-boundary-trail','TrailMob');
 
 
 
@@ -1754,7 +1758,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4803 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4815 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4435,7 +4439,19 @@ INSERT INTO TSV VALUES
 ('4796','250',NULL,'IMG_3449','Y','Y','A view looking out from the high point of the author\'s trip','357008750','-1067125028','2654',NULL,'2020-10-13 12:10:57','IMG_3449','480','640',NULL,NULL),
 ('4797','250',NULL,'IMG_3443','Y','Y','Fascinating banded rock while descending into an arroyo','357006389','-1067143639','2655',NULL,'2020-10-13 10:58:48','IMG_3443','480','640',NULL,NULL),
 ('4798','250',NULL,'IMG_3450','Y','N','Blue skies and red rock provide a stark contrast','357049000','-1067260500','2656',NULL,'2020-10-13 13:33:50','IMG_3450','480','640',NULL,NULL),
-('4799','250',NULL,'IMG_3446','Y','Y','Looking back from the last arroyo','356990139','-1067118750','2657',NULL,'2020-10-13 11:29:26','IMG_3446','480','640',NULL,NULL);
+('4799','250',NULL,'IMG_3446','Y','Y','Looking back from the last arroyo','356990139','-1067118750','2657',NULL,'2020-10-13 11:29:26','IMG_3446','480','640',NULL,NULL),
+('4803','251',NULL,'IMG_3478','Y','Y','Cresting the saddle into Valles Caldera National Park','358467167','-1064480361','2658',NULL,'2020-11-05 10:36:05','IMG_3478','480','640',NULL,NULL),
+('4804','251',NULL,'IMG_3473','Y','Y','A typical burn area in Bandelier National Monument','358368528','-1064467000','2659',NULL,'2020-11-05 10:19:09','IMG_3473','480','640',NULL,NULL),
+('4805','251',NULL,'IMG_3476','Y','Y','Ascending the saddle from Bandelier','358429806','-1064484333','2660',NULL,'2020-11-05 10:29:27','IMG_3476','640','480',NULL,NULL),
+('4806','251',NULL,'IMG_3472','Y','Y','At the trail head','358335278','-1064435056','2661',NULL,'2020-11-05 10:06:06','IMG_3472','480','640',NULL,NULL),
+('4807','251',NULL,'IMG_3482','Y','Y','The distant Visitor Center of the Valles Caldera','358497556','-1064596472','2662',NULL,'2020-11-05 10:57:15','IMG_3482','480','640',NULL,NULL),
+('4808','251',NULL,'IMG_3479','Y','Y','View descending the Coyote Call trail','358474056','-1064479306','2663',NULL,'2020-11-05 10:37:32','IMG_3479','480','640',NULL,NULL),
+('4809','251',NULL,'IMG_3480','Y','Y','Remnants from an October storm','358494222','-1064501500','2664',NULL,'2020-11-05 10:43:52','IMG_3480','640','480',NULL,NULL),
+('4810','251',NULL,'IMG_3483','Y','Y','Looking towards Scooter Peak','358471861','-1064654472','2665',NULL,'2020-11-05 11:07:09','IMG_3483','480','640',NULL,NULL),
+('4811','251',NULL,'IMG_3487','Y','Y','An internal access road in the Valle Grande','358490500','-1064537111','2666',NULL,'2020-11-05 11:35:13','IMG_3487','640','480',NULL,NULL),
+('4812','251',NULL,'IMG_3484','Y','Y','A full view of the La Jara mound near the Visitor Center in Valle Grande','358453472','-1064658056','2667',NULL,'2020-11-05 11:10:44','IMG_3484','480','640',NULL,NULL),
+('4813','251',NULL,'IMG_3485','Y','Y','The western end of Coyote Call','358432611','-1064649111','2668',NULL,'2020-11-05 11:15:15','IMG_3485','480','640',NULL,NULL),
+('4814','251',NULL,'IMG_3486','Y','Y','The junction with Rabbit Ridge Trail','358432917','-1064640667','2669',NULL,'2020-11-05 11:17:01','IMG_3486','480','640',NULL,NULL);
 
 
 
