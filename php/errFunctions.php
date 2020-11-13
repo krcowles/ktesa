@@ -24,6 +24,7 @@ function ktesaErrors($errno, $errstr, $errfile, $errline)
 {
     $message = "An error occurred in {$errfile} on line {$errline}. " .
         "\nError no. {$errno}: {$errstr}\n";
+    $message .= (new Exception)->getTraceAsString();
     error_log($message);
     // send email to site master
     errorPage();
