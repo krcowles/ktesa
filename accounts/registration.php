@@ -67,16 +67,17 @@ require "../php/global_boot.php";
                     placeholder="Email" name="email"
                     autocomplete="email" />
             </div><br />
-            <div class="user-input">
+
+            <div class="user-input leftmost">
                 <div class="pseudo-legend">Password</div>
                 <div id="line5" class="lines"></div>
                 <input id="pword" class="signup" type="password"
                     placeholder="Password" name="password"
                     autocomplete="new-password" />
-                <span id="showit">&nbsp;&nbsp;Show password:<input id="cb"
-                    type="checkbox" /></span>
             </div>
-            <div id="submit">Submit</div>
+            <span id="showit">&nbsp;&nbsp;Show password:<input id="cb"
+                    type="checkbox" /></span>
+            <button id="submit">Submit</button>    
         </div>
     </form>
 </div>
