@@ -10,6 +10,8 @@
  * @license No license to date
  */
 require '../php/global_boot.php';
+verifyAccess('ajax');
+
 $pdo->exec("DROP PROCEDURE IF EXISTS `getTitles`");
 $titles = <<<Proc
 CREATE PROCEDURE getTitles(INOUT title_list VARCHAR(10000))

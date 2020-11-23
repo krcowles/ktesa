@@ -11,6 +11,7 @@
  */
 session_start();
 require "../php/global_boot.php";
+verifyAccess('ajax');
 
 $action = filter_input(INPUT_POST, 'action');
 $hikeno = filter_input(INPUT_POST, 'no');

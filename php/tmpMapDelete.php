@@ -10,7 +10,10 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+verifyAccess('get');
+
 $tmpFile = filter_input(INPUT_GET, 'file');
-if (file_exists($tmpFile)) {
-    unlink($tmpFile);
+$file = $documentRoot . '/maps/tmp/' . $tmpFile . '.php';
+if (file_exists($file)) {
+    unlink($file);
 }

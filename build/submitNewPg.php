@@ -12,6 +12,7 @@
  */
 session_start();
 require '../php/global_boot.php';
+verifyAccess('post');
 
 $userid = $_SESSION['userid'];
 

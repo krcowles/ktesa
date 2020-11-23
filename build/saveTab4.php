@@ -10,6 +10,7 @@
  */
 session_start();
 require "../php/global_boot.php";
+verifyAccess('post');
 
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
 /**

@@ -11,6 +11,8 @@
  */
 session_start();
 require "../php/global_boot.php";
+verifyAccess('post');
+
 $submitter = isset($_POST['submitter']) ?
     filter_input(INPUT_POST, 'submitter') : false;
 if (!$submitter) {
@@ -56,7 +58,7 @@ if ($submitter == 'create') {
     $_SESSION['expire']   = $exp_date;
     $_SESSION['cookies']  = $cookies;
     $_SESSION['cookie_state'] = "OK";
-} else {
+} elseif ($submitter == 'change') {
     // Current member: change password
     $oldpass = filter_input(INPUT_POST, 'oldpass');
     if (empty($username)) { 
