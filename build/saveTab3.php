@@ -10,6 +10,8 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+verifyAccess('post');
+
 $hikeNo = filter_input(INPUT_POST, 'dno');
 $htips = filter_input(INPUT_POST, 'tips');
 $hinfo = filter_input(INPUT_POST, 'hinfo');

@@ -22,8 +22,7 @@ var imgNo = 0;      // unique id for each validated image
  * After every upload of one or more images, the editor is refreshed
  * with the following data
  */
-var user = $('#eusr').text();
-var newed = "editDB.php?hikeNo=" + ehikeIndxNo + "&usr=" + user + "&tab=2";
+var newed = "editDB.php?hikeNo=" + ehikeIndxNo + "&tab=2";
 
 /**
  * The following code sets up the drag-and-drop area, and establishes

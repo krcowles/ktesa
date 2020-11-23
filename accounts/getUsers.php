@@ -9,6 +9,7 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+verifyAccess('ajax');
 
 $name = filter_input(INPUT_POST, 'username');
 // Get current list of usernames:

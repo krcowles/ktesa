@@ -12,6 +12,7 @@
  */
 session_start();
 require "../php/global_boot.php";
+verifyAccess('ajax');
 
 $page   = filter_input(INPUT_GET, 'page');
 $login  = isset($_SESSION['userid']) ? $_SESSION['userid'] : false;

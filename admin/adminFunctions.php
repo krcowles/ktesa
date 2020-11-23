@@ -10,6 +10,41 @@
  * @license No license to date
  */
 /**
+ * This function is invoked to ensure that the proper method was invoked,
+ * and a result of an attempt to run the script as intended.
+ * 
+ * @param string $method The type of method being invoked by the caler
+ * 
+ * @return null;
+ */
+function verifyAccess($method)
+{
+    $msg = "Access denied to this script";
+    if ($method === 'ajax') {
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) 
+            && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'
+        ) {
+            return;
+        } else {
+            die($msg);
+        }
+    }
+    if ($method === 'post') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            return;
+        } else {
+            die($msg);
+        }
+    }
+    if ($method === "GET") {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            return;
+        } else {
+            die($msg);
+        }
+    }
+}
+/**
  * This function specifies which track, in the list of tracks, to reverse.
  * The function will be called iteratively if multiple tracks are to be
  * reversed. When there are multiple segments within the subject track, 

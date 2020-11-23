@@ -12,6 +12,7 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+verifyAccess('ajax');
 
 $blob  = $_FILES['file']['tmp_name'];
 $ehike = filter_input(INPUT_POST, 'ehike');

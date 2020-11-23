@@ -10,6 +10,7 @@
  */
 require "../php/global_boot.php";
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
+verifyAccess('post');
 
 /* It is possible that no pictures are present, also that no
  * checkboxes are checked. Therefore, the script tests for these things

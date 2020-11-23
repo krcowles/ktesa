@@ -12,6 +12,7 @@
  */
 session_start();
 require "../php/global_boot.php";
+verifyAccess('ajax');
 define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 
 $username = isset($_POST['usr_name']) ?

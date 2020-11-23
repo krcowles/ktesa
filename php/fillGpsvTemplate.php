@@ -147,10 +147,12 @@ $maphtml .= "gmap.fitBounds(bounds);";
  * This is the new js to delete the map as soon as it's loaded
  */
 if (isset($tmpMap)) {
+    $mapfile = basename($tmpMap);
+    $basemap = strlen($mapfile) - 4;
+    $getfile = substr($mapfile, 0, $basemap);
     $maphtml .= '(function() {' . PHP_EOL;  // doc ready - pure js, no jQuery
     $maphtml .= 'var xhr = new XMLHttpRequest();' . PHP_EOL;
     $maphtml .= 'xhr.onreadystatechange = function() {' . PHP_EOL;
-
     $maphtml .= '  if (this.readyState == 4 && this.status == 200) {' . PHP_EOL;
     $maphtml .= '    var msg = "Map deleted: ' . $tmpMap . '";' . PHP_EOL;
     $maphtml .= '  } else if (this.status == 500) {' . PHP_EOL;
@@ -161,7 +163,7 @@ if (isset($tmpMap)) {
 
     $maphtml .= '};' . PHP_EOL;
     $maphtml .= 'xhr.open("get", "../../php/tmpMapDelete.php?file=' . 
-        $tmpMap . '");' . PHP_EOL;
+        $getfile . '");' . PHP_EOL;
     $maphtml .= 'xhr.send();' . PHP_EOL;
 
     $maphtml .= '})();' . PHP_EOL;

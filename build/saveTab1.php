@@ -17,6 +17,7 @@
 session_start();
 require "../php/global_boot.php";
 require_once "../php/gpxFunctions.php";
+verifyAccess('post');
 
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
 $redirect = "editDB.php?tab=1&hikeNo={$hikeNo}";
