@@ -7,7 +7,9 @@
 var resizeFlag = true;
 var trackNumber;   // global used in hide/unhide & window.resize
 // Hide/unhide side panel (changes width of elevation profile chart)
+var orgWidth;
 $('#hide').on('click', function() {
+    orgWidth = canvasEl.width;
     $('#sidePanel').css('display', 'none');
     $('#chartline').width(fullWidth);
     canvasEl.width = fullWidth;
@@ -18,13 +20,13 @@ $('#hide').on('click', function() {
 });
 $('#unhide').on('click', function() {
     $('#sidePanel').css('display','block');
-    $('#chartline').width(chartWidth);
-    canvasEl.width = chartWidth;
+    $('#chartline').width(orgWidth);
+    canvasEl.width = orgWidth;
     $('#chartline').height(chartHeight);
     canvasEl.height = chartHeight;
     // redraw the chart
     drawChart(trackNumber);
-    $('iframe').width(chartWidth);
+    $('iframe').width(orgWidth);
     $('#unhide').css('display','none');
 });
 
