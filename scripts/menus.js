@@ -1,3 +1,4 @@
+"use strict"
 /**
  * @fileoverview This script controls actions of the jQuery-UI-based menu
  * 
@@ -8,14 +9,13 @@
  */
 $(function() {  // document ready function
 
-var menuWidth = ['140', '180', '140', '140']; // calculate these later...
+var menuWidth = ['140', '180', '150', '140']; // calculate these later...
 var subWidth = ['140']; // ditto: unused as there is only one sub-menu
 var $mainMenus = $('.menu-main');
 var navPos = $('#navbar').offset();
 var navBottom = navPos.top + $('#navbar').height() + 5 + 'px';
 // usr_login div hidden during page load to prevent display when alerts appear
 $('#usr_login').css('display', 'block');
-var login_content = $('#usr_login').detach();
 var support = $('#feedback').detach();
 // page_type allows setting of icon in the menu
 var page_type = $('#page_id').text();
@@ -81,10 +81,31 @@ function gotoPage(content) {
             // no script yet
             break;
         case 'Log in':
-            modal.open(
-                {content: login_content, height: '196px', width: '316px',
-                    id: 'logins'}
-            );
+            if (user_cookie_state === 'EXPIRED') {
+                var renew = confirm("Your password has expired\n" +
+                    "Would you like to renew?");
+                if (renew) {
+                    renewPassword('renew');
+                } else {
+                    renewPassword('norenew');
+                }
+            } else if (user_cookie_state === 'RENEW') {
+                var renew = confirm("Your password is about to expire\n" + 
+                    "Would you like to renew?");
+                if (renew) {
+                    renewPassword('renew');
+                } else {
+                    renewPassword('norenew');
+                }
+            } else {
+                // state = OK || NOLOGIN || NONE || MULTIPLE
+                if (user_cookie_state === 'NONE' || user_cookie_state === 'MULTIPLE') {
+                    alert("You cannot be logged in at this time");
+                    return;
+                } else { // NOLOGIN => cookies off, or no cookie (e.g. rejected)
+                    window.open('../accounts/unifiedLogin.php?form=log', '_blank');
+                }
+            }
             return; 
         case 'Log out':
             $.get({
@@ -97,14 +118,18 @@ function gotoPage(content) {
                 }
             });
             break;
+        case 'Change Password':   
+        case 'Forgot Password':
+            modal.open(
+                {content: lost_password, height: '140px', width: '240px',
+                id: 'resetpass'}
+            );
+            return;
         case 'Become a Member':
-            page = 'register';
-            break;
-        case 'Change Password':
-            window.open('../accounts/renew.php?chg=y', '_blank');
-            break;
+            window.open('../accounts/unifiedLogin.php?form=reg', '_blank');
+            return;
         case 'About this site':
-            window.open('../pages/about.php', '_self');
+            window.open('../pages/about.php', '_blank');
             break;
         case 'Contact us':
             // code ready, but holding off for now

@@ -1,3 +1,4 @@
+"use strict"
 /**
  * @fileoverview This module contains the modal object definition (private)
  * and private functions providing modal functionaliry for the type of 
@@ -14,11 +15,10 @@ var modal = (function() {
     var $modal = $('<div class="modal" style="background-color:ivory;"/>'); 
     var $content = $('<div class="modal-content"/>');
     var $close = $('<button id="canceler" style="position:relative;">Cancel</button>');
-    var $tdclose = $('<td><button id="tdcancel" style="display:block;margin:auto;">Cancel</button></td>');
 
     $modal.append($content);
     $modal.append($close);
-    $('body').on('click', '.canceler', function(e) {
+    $('body').on('click', '#canceler', function(e) {
         e.preventDefault();
         modal.close();
     });
@@ -51,10 +51,12 @@ var modal = (function() {
                 zIndex: '1000'
             }).appendTo('body');
             
-            if (settings.id === 'logins') {
-                $modal.children().eq(1).remove('#canceler');
-                loginModal();
-            } else if (settings.id === 'contact') {
+            if (settings.id === 'resetpass') {
+                passwd_reset('reset');
+            } else if (settings.id === 'renewpass') {
+                passwd_reset('renew');
+            }
+            else if (settings.id === 'contact') {
                 contactAdmins();
             } else { // default (not used)
                 $modal.css({
@@ -80,75 +82,50 @@ var modal = (function() {
      * 
      * @return {null}
      */
-    function loginModal() {
-        /**
-         * This modal needs a high z-index; In order to set it with javascript,
-         * 'position' must be either absolute, relative, or fixed
-         */
-        $('#loginTbl tr').eq(0).css('height', '36px');
-        $('#loginTbl tr').eq(1).css('height', '36px');
-        $('#loginTbl tr').eq(2).css('height', '36px');
-        $('#loginTbl tr').eq(3).css('height', '8px');
-        $('#replace').replaceWith($tdclose);
-        $('#sendemail').on('click', function(ev) {
+    function passwd_reset(type) {
+        $('#sendmail').after($close);
+        $close.css({
+            'float': 'right',
+            'margin-right': '6px'
+        });
+        $('#emailform').on('submit', function(ev) {
             ev.preventDefault();
-            let email = $('#resetpass').val();
-            if (email == '') {
-                alert("No email address has been entered");
-                return;
-            }
-            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-                let data = {email: email};
-                $.ajax({
-                    url: '../accounts/resetMail.php',
-                    data: data,
-                    dataType: 'text',
-                    method: "post",
-                    success: function(result) {
-                        if (result === 'OK') {
-                            alert("An email has been sent - these sometimes " +
-                                "take awhile");
-                            modal.close();
-                        } else {
-                            alert("The following error was received:\n" +
-                                result);
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        var newDoc = document.open();
-                        newDoc.write(jqXHR.responseText);
-                        newDoc.close();
+            let email = $('#femail').val(); 
+            let data = {form: 'req', email: email};
+            $.ajax({
+                url: '../accounts/resetMail.php',
+                data: data,
+                dataType: 'text',
+                method: 'post',
+                success: function(result) {
+                    if (result === 'OK') {
+                        alert("An email has been sent: these sometimes " +
+                            "take awhile\nYou are logged out and can log in" +
+                            " again\nwhen your email is received");
+                        $.get({
+                            url: '../accounts/logout.php',
+                            success: function() {
+                                if (type === 'reset') {
+                                    window.open('../index.html', '_self');
+                                } else {
+                                    window.open('', 'homePage', '');
+                                    window.close();
+                                }
+                            }
+                        });
+                        modal.close();
+                    } else {
+                        alert(result);
                     }
-                });
-            } else {
-                alert("Not a valid email address");
-                return;
-            }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    var newDoc = document.open();
+                    newDoc.write(jqXHR.responseText);
+                    newDoc.close();
+                }
+            });
+        });
 
-        });
-        $('#enter').on('click', function(ev) {
-            ev.preventDefault();
-            var pwd = $('#upass').val();
-            var uid = $('#usrid').val();
-            if (uid == '' && pwd == '') {
-                alert("You must supply a registered user name and password");
-                return;
-            }
-            if (uid == '') {
-                alert("You must supply a registered user name");
-                return;
-            }
-            if (pwd == '') {
-                alert("You must supply a valid password");
-                return;
-            } 
-            validateUser(uid, pwd);
-            modal.close();
-        });
-        $tdclose.on('click', function(ev) {
-            ev.preventDefault();
-            modal.close();
-        });
     }
     /**
      * This presents a means by which a visitor can pose questions

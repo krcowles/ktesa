@@ -11,24 +11,11 @@
  */
 session_start();
 require "../php/global_boot.php";
-verifyAccess('post');
+verifyAccess('ajax');
 
-$submitter = isset($_POST['submitter']) ?
-    filter_input(INPUT_POST, 'submitter') : false;
-if (!$submitter) {
-    throw new Exception("No submitter received in create_user.php");
-}
+$submitter = filter_input(INPUT_POST, 'submitter');
 $cookies   = filter_input(INPUT_POST, 'cookies');
-$user_pass = filter_input(INPUT_POST, 'password');
-$password  = password_hash($user_pass, PASSWORD_DEFAULT);
-$username  = filter_input(INPUT_POST, 'username');
-$lastname 
-    = isset($_POST['lastname']) ? filter_input(INPUT_POST, 'lastname') : false;
-$firstname
-    = isset($_POST['firstname']) ? filter_input(INPUT_POST, 'firstname') : false;
-$email
-    = isset($_POST['email']) ?
-    filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL) : false;
+
 $today = getdate();
 $year = $today['year'] + 1;
 $month = $today['mon'];
@@ -37,61 +24,65 @@ $exp_date = $year . "-" . $month . "-" . $day;
 
 if ($submitter == 'create') {
     // New member:
-    $cookies = $cookies === 'nochoice' ? 'reject' : $cookies;
-    $newuser = "INSERT INTO `USERS` (" .
-        "username,passwd,passwd_expire,last_name,first_name,email,facebook_url) " .
-        "VALUES (:uname,:passwd,:pass_exp,:lastnme,:firstnme,:email,:cookies);";
+    $firstname = filter_input(INPUT_POST, 'firstname');
+    $lastname  = filter_input(INPUT_POST, 'lastname');
+    $username  = filter_input(INPUT_POST, 'username');
+    $cookies   = $cookies === 'nochoice' ? 'reject' : $cookies;
+    $email     = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $newuser   = "INSERT INTO `USERS` (" .
+        "username,last_name,first_name,email,facebook_url) " .
+        "VALUES (:uname,:lastname,:firstname,:email,:cookies);";
     $user = $pdo->prepare($newuser);
     $user->execute(
         array(
-            ":uname" =>  $username, ":passwd" => $password,
-            ":pass_exp" => $exp_date, ":lastnme" => $lastname, 
-            ":firstnme" => $firstname, ":email" => $email,
+            ":uname" =>  $username,
+            ":lastname" => $lastname,
+            ":firstname" => $firstname, 
+            ":email" => $email,
             ":cookies" => $cookies
         )
     );
-    // get uid from updated table:
-    $newidReq = "SELECT `userid` FROM `USERS` ORDER BY 1 DESC LIMIT 1;";
-    $newid = $pdo->query($newidReq)->fetch(PDO::FETCH_ASSOC);
-    $_SESSION['username'] = $username;
-    $_SESSION['userid']   = $newid['userid'];
-    $_SESSION['expire']   = $exp_date;
-    $_SESSION['cookies']  = $cookies;
-    $_SESSION['cookie_state'] = "OK";
+    if (!$user) {
+        echo "FAIL";
+    } else {
+        echo "OK";
+    }
+    exit;
 } elseif ($submitter == 'change') {
-    // Current member: change password
-    $oldpass = filter_input(INPUT_POST, 'oldpass');
-    if (empty($username)) { 
-        // 'Forgot Password' scenario - no login credentials yet
+    $code = filter_input(INPUT_POST, 'code');
+    $user_pass = filter_input(INPUT_POST, 'password');
+    $password  = password_hash($user_pass, PASSWORD_DEFAULT);
+    if (!empty($code)) { // when $code == '', the user is already logged in
         $getUserReq = "SELECT * FROM `USERS`;";
         $users = $pdo->query($getUserReq)->fetchAll(PDO::FETCH_ASSOC);
+        $match = false;
         foreach ($users as $user) {
-            if (password_verify($oldpass, $user['passwd'])) { 
-                $username = $user['username'];
-                $_SESSION['username'] = $username;
+            if (password_verify($code, $user['passwd'])) { 
+                $_SESSION['username'] = $user['username'];
                 $_SESSION['userid']   = $user['userid'];
+                $_SESSION['expire']   = $exp_date;
                 $_SESSION['cookies']  = $cookies;
                 $_SESSION['cookie_state'] = "OK";
+                $match = true;
                 break;
             }
         }
-        if (empty($username)) {
-            throw new Exception("The entered One-Time Code was not located in create_user.php");
+        if (!$match) {
+            echo "NOCODE";
+            exit;
         }
-        
-    }
-    $_SESSION['expire'] = $exp_date;
+    }  // session variables already exist for logged in renewer
     $updateuser = "UPDATE `USERS` SET `passwd`=?, `passwd_expire`=?, " .
         "`facebook_url`=? WHERE `username`=?;";
     $update = $pdo->prepare($updateuser);
     $update->execute(
-        array($password, $exp_date, $cookies, $username)
+        array($password, $exp_date, $cookies, $_SESSION['username'])
     );
 }
 // set cookie if user has accepted cookie use
 if ($_SESSION['cookies'] === 'accept') {
     $days = 365; // Number of days before cookie expires
     $expire = time()+60*60*24*$days;
-    setcookie("nmh_id", $username, $expire, "/", "", true, true);
+    setcookie("nmh_id", $_SESSION['username'], $expire, "/", "", true, true);
 }
-header("Location: ../index.html");
+echo "OK";

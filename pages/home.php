@@ -58,6 +58,7 @@ var tracks = <?= $jsTracks;?>;
 var allHikes = <?= $jsIndx;?>;
 var locations = <?= $jsLocs;?>;
 var pages = <?= $jsPages;?>;    // page indxNo for non-hikes
+window.name = "homePage";
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/markerclusterer.js"></script>

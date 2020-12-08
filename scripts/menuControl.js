@@ -1,3 +1,4 @@
+"use strict"
 /**
  * @fileoverview This script gets info provided by getLogin.php
  * [located on ktesaPanel.php] and utilizes it to enable/disable
@@ -9,41 +10,40 @@
  * @version 2.0 Redesigned login for security improvement (script formerly
  * called getLogin.js)
  */
+var lost_password = $('#email_password').detach();
 var cookies = navigator.cookieEnabled ? true : false;
 var user_cookie_state = document.getElementById('cookie_state').innerText;
-if (cookies) {
-    // Always check this tag to place the correct menu text in 'Help' when user logged in
-    let uchoice = document.getElementById('cookies_choice');
-    if (typeof uchoice !== 'undefined' && uchoice !== null) {
-        if ($('#cookies_choice').text() === 'accept'){
-            $('#ctoggle').text("Reject Cookies");
-        } else if ($('#cookies_choice').text() === 'reject') {
-            $('#ctoggle').text("Accept Cookies");
-        }
+
+// Always check this tag to place the correct menu text in 'Help' when user logged in
+let uchoice = document.getElementById('cookies_choice');
+if (typeof uchoice !== 'undefined' && uchoice !== null) {
+    if ($('#cookies_choice').text() === 'accept') {
+        $('#ctoggle').text("Reject Cookies");
+    } else if ($('#cookies_choice').text() === 'reject') {
+        $('#ctoggle').text("Accept Cookies");
     }
+}
+
+// check to see if cookies are enabled for the browser
+if(cookies) {
     // Now examine the cookie_state:
     if (user_cookie_state === 'NOLOGIN') {
-        notLoggedInItems();
+        notLoggedInItems(); // cookies off or rejected
     } else if (user_cookie_state === 'NONE') {
         alert("No user registration was located");
         notLoggedInItems();
     } else if (user_cookie_state === 'EXPIRED') {
-        var ans = confirm("Your password has expired\n" + 
-            "Would you like to renew?");
-        if (ans) {
-            renewPassword('renew', 'expired');
-        } else {
-            renewPassword('norenew', 'expired');
-        }
+        alert("Your password has expired; Use 'Log in' to renew:\n" +
+            "You are not currently logged in");
+        // destroy user cookie to prevent repeat messaging for other pages
+        $.get('../accounts/logout.php');
+        notLoggedInItems();
     } else if (user_cookie_state === 'RENEW') {
-        loggedInItems();
-        var ans = confirm("Your password is about to expire\n" + 
-            "Would you like to renew?");
-        if (ans) {
-            renewPassword('renew', 'valid');
-        } else {
-            renewPassword('norenew', 'valid');
-        }
+        alert("Your password will expire soon; Use 'Log in' to renew:\n" +
+            "You are not currently logged in");
+        // destroy user cookie to prevent repeat messaging for other pages
+        $.get('../accounts/logout.php');
+        notLoggedInItems();
     } else if (user_cookie_state === 'MULTIPLE') {
         alert("Multiple accounts are registered for this cookie\n" +
             "\nPlease contact the site master");
@@ -54,16 +54,19 @@ if (cookies) {
             adminLoggedIn();
         } 
     }
-} else { // cookies disabled
+}
+else { // cookies disabled
     let msg = "Cookies are disabled on this browser:\n" +
-        "You will not be able to login, register, or edit/create hikes.\n" +
-        "Please enable cookies to overcome this limitation"
+        "You will not be able to register or login\n" +
+        "until cookies are enabled";
     alert(msg);
     notLoggedInItems();
     $('#lin').addClass('ui-state-disabled');
     $('#join').addClass('ui-state-disabled');
+    $('#forgot').addClass('ui-state-disabled');
     $('#ifadmin').css('display', 'none');
 }
+
 /**
  * IF a user cookie has either expired or is up for renewal,
  * he/she is provided the option to update the password,
@@ -75,23 +78,21 @@ if (cookies) {
  * 
  * @return {null}
  */
-function renewPassword(renew, status) {
-    if (renew === 'renew') { // complete login w/ new credentials
-        window.open('../accounts/renew.php', '_self');
-        return;
-    } 
-    if (status === 'valid') {
-        // for this session only, temporarily extend 'expire' to prevent 'renew'
-        // popups when accessing other site pages
-        $.get('../accounts/tempExpire.php');
-    } else {  // 'expired' 
+function renewPassword(renew) {
+    if (renew === 'renew') { // send email to reset password
+        modal.open(
+            {content: lost_password, height: '140px', width: '240px',
+            id: 'renewpass'}
+        );
+    } else {
+        // When a user does not renew membership,
+        // his/her login info is removed from the USERS table 
         $.get({
-            url: '../accounts/logout.php',
+            url: '../accounts/logout.php?expire=Y',
             success: function() {
-                alert("You are logged out");
-                notLoggedInItems();
-                $('#ifadmin').css('display', 'none');
-                window.open('../index.html', '_self');
+                alert("You are permanently logged out\n" +
+                    "To rejoin, select 'Become a member' from the menu");
+                window.open("../index.html", "_self");
             }
         });
     }
@@ -113,6 +114,7 @@ function loggedInItems() {
     $('#edits').removeClass('ui-state-disabled');
     $('#epubs').removeClass('ui-state-disabled');
     //$('#pubReq').removeClass('ui-state-disabled'); -- removed for now
+    $('#forgot').addClass('ui-state-disabled');
     $('#join').addClass('ui-state-disabled');
     $('#chgpass').removeClass('ui-state-disabled');
     return;
@@ -135,6 +137,7 @@ function notLoggedInItems() {
     //$('#pubReq').addClass('ui-state-disabled'); -- removed for now
     $('#join').removeClass('ui-state-disabled');
     $('#chgpass').addClass('ui-state-disabled');
+    $('#forgot').removeClass('ui-state-disabled');
     return;
 }
 /**

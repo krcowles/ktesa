@@ -9,15 +9,26 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+$type = filter_input(INPUT_POST, 'form');
 
-// Create the reset password link for use in the email message
+$usermsg = "<h2>Do not reply to this message</h2>";
+if ($type === 'reg') {
+    $usermsg .= "<h3>Your registration request has been received<br />";
+    $userclose = "to complete your registration and sign in</h3>";
+    $subj = "Registration for NM Hikes";
+} elseif ($type === 'req') {
+    $usermsg .= "<h3>Your request to change/reset your nmhikes.com password " .
+        "was received<br />";
+    $userclose = "to reset your password</h3>";
+    $subj = "Password Reset for NM Hikes";
+
+}
+$usermsg .= "Your one-time password is: ";
+
+// Create the one-time code link for use in the email message
 $href = '<br /><br /><a href="' . $thisSiteUrl .
-    '/accounts/renew.php?code=';
-$msg = <<<LNK
-<h2>Do not reply to this message</h2>
-<h3>Your request to reset your nmhikes.com password was received<br />
-Your temporary password is: 
-LNK;
+    '/accounts/unifiedLogin.php?form=renew&code=';
+
 
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 if ($email === false) {
@@ -28,7 +39,7 @@ if ($email === false) {
     $register->execute(["email" => $email]);
     $status = $register->fetch(PDO::FETCH_ASSOC);
     if ($status === false) {
-        echo "Your email {$email} was not located in our database";
+        echo "Your email '{$email}' was not located in our database";
     } else { 
         $name = $status['username'];
         $tmp_pass = bin2hex(random_bytes(5)); // 10 hex characters
@@ -37,9 +48,9 @@ if ($email === false) {
         $savecode = $pdo->prepare($savecodeReq);
         $savecode->execute([$hash, $name]);
         $to  = $email;
-        $subject = 'Password Reset for NM Hikes';
-        $message = $msg . $tmp_pass . $href . $tmp_pass .
-            '">Click here to reset</a></h3>';
+        $subject = $subj;
+        $message = $usermsg . $tmp_pass . $href . $tmp_pass .
+            '">Click here </a>' . $userclose;
         $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
         // Mail it

@@ -10,7 +10,14 @@
  * @license No license to date
  */
 session_start();
+require "../php/global_boot.php";
 
+if (isset($_GET['expire']) && $_GET['expire'] === 'Y') {
+    $removeReq = "DELETE FROM `USERS` WHERE `username`=?;";
+    $remove = $pdo->prepare($removeReq);
+    $remove->execute([$_SESSION['cancel']]);
+    unset($_SESSION['cancel']);
+}
 setcookie('nmh_mstr', '', 0, '/');
 setcookie('nmh_id', '', 0, '/');
 unset($_SESSION['username']);

@@ -1,9 +1,9 @@
 @import "../styles/buttons.css";
+/* Navigation Bar (see also styles/jquery-ui.css) */
 #panel {
     display: inline-block;
     width: 100%;
 }
-/* Navigation Bar (see also styles/jquery-ui.css) */
 #navbar {
     background-color: darkslategray;
     height: 30px;
@@ -130,13 +130,9 @@
     color: darkslategray;
     z-index: 100;
 }
-/* Modal windows or other items not turned on when page loads */
-#cookie_state, #cookies_choice, #admin, #usr_login, #ifadmin, #feedback {
+/* Hidden elements and Modal windows: not turned on when page loads */
+#cookie_state, #cookies_choice, #admin, #email_password, #ifadmin, #feedback {
     display: none;
-}
-#usrid, #upass {
-    height: 20px;
-    width: 98%;
 }
 #enter, #canceler {
     width: 80px;
@@ -144,19 +140,20 @@
 }
 #canceler {
     position: relative;
-    top: -6px;
-    left: 6px;
-}
-#pwlnk {
-    font-size: 16px;
-    color: brown;
 }
 #resetrow {
     height: 28px;
 }
-#resetpass {
-    height: 20px;
-    width: 98%;
+#maildata {
+    margin-top: 6px;
+    margin-bottom: 8px;
+}
+#femail {
+    margin-top: 6px;
+    border-radius: 4px;
+    height: 22px;
+    width: 96%;
+    font-size: 14px;
 }
 #sendemail {
     float: left;

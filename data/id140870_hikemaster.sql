@@ -4478,7 +4478,7 @@ INSERT INTO TSV VALUES
 CREATE TABLE `USERS` (
   `userid` smallint(6) NOT NULL AUTO_INCREMENT,
   `username` varchar(32) NOT NULL,
-  `passwd` varchar(255) NOT NULL,
+  `passwd` varchar(255) DEFAULT NULL,
   `passwd_expire` date DEFAULT NULL,
   `last_name` varchar(30) NOT NULL,
   `first_name` varchar(20) NOT NULL,

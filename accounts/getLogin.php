@@ -22,7 +22,7 @@ $regusr = isset($_COOKIE['nmh_id'])   ? true : false;
 $cookie_state = "NOLOGIN";  // default
 $admin = false;
 
-// Some test cases have resulted in 'partial logins':
+// Some test cases have 'partial logins':
 if (!isset($_SESSION['username']) || !isset($_SESSION['userid']) 
     || !isset($_SESSION['expire']) || !isset($_SESSION['cookies'])
     || !isset($_SESSION['cookie_state'])
@@ -55,20 +55,25 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
             if (!empty($cookies)) {
                 $choice = $cookies;
             }
-            // protected login credentials:
-            $_SESSION['username'] = $username;
-            $_SESSION['userid'] = $userid;
-            $_SESSION['expire'] = $expDate;
-            $_SESSION['cookies'] = $choice;
             $american = str_replace("-", "/", $expDate);
             $orgDate = strtotime($american);
             if ($orgDate <= time()) {
                 $cookie_state = 'EXPIRED';
+                $_SESSION['cancel'] = $username;
             } else {
                 $days = floor(($orgDate - time())/UX_DAY);
                 if ($days <= 5) {
                     $cookie_state = 'RENEW';
+                    $_SESSION['cancel'] = $username;
                 }
+            }
+            // Note: user not logged in if RENEW/EXPIRED
+            if ($cookie_state === 'OK') {
+                // protected login credentials:
+                $_SESSION['username'] = $username;
+                $_SESSION['userid'] = $userid;
+                $_SESSION['expire'] = $expDate;
+                $_SESSION['cookies'] = $choice;
             }
         } else {
             $cookie_state = "MULTIPLE"; // for testing only; no longer possible

@@ -1,15 +1,26 @@
+"use strict"
 /**
- * @fileoverview This is the function which invokes an ajax call
- * to the authenticate.php script in an effort to validate login;
- * When logged in, reload to rerun getLogin.php 
+ * @fileoverview This function invokes an ajax call to the
+ * authenticate.php script in an effort to validate membership.
+ * NOTE: This function is only invoked via unifiedLogin.js (log),
+ * and if the home page was opened first.
  * 
  * @author Tom Sandberg
  * @author Ken Cowles
  * 
- * @version 2.0 Redesigned login for security improvement
+ * @version 3.0 Modified for stand-alone login page (previously modal)
+ */
+/**
+ * The authenticating function: renew/expire needed in cases where either
+ * cookies are off or there is no browser cookie (e.g. cookies rejected)
+ * 
+ * @param {string} user User's username
+ * @param {string} password User's password
+ * 
+ * @return {null}
  */
 function validateUser(user, password) {
-    ajaxdata = {usr_name: user, usr_pass: password};
+    let ajaxdata = {usr_name: user, usr_pass: password};
     $.ajax( {
         url: "../accounts/authenticate.php",
         method: "post",
@@ -18,43 +29,36 @@ function validateUser(user, password) {
         success: function(srchResults) {
             var status = srchResults;
             if (status.indexOf('ADMIN') !== -1) {
-                loggedInItems();
-                adminLoggedIn();
                 alert("Admin logged in");
-                window.location.reload();
+                window.open('../index.html', '_self');
             } else if (status.indexOf('LOCATED') !== -1) {
-                loggedInItems();
-                alert("You are logged in");
-                window.location.reload();
+                alert("You are now logged in");
+                window.open('../index.html', '_self');
             } else if (status.indexOf('RENEW') !== -1) {
-                loggedInItems();
-                // in this case, the old cookie has been set pending renewal
                 var renew = confirm("Your password is about to expire\n" + 
                     "Would you like to renew?");
                 if (renew) {
-                    renewPassword('renew', 'valid');
+                    renewPassword('renew');
                 } else {
-                    renewPassword('norenew', 'valid');
+                    renewPassword('norenew');
                 }
             } else if (status.indexOf('EXPIRED') !== -1) {
                 var renew = confirm("Your password has expired\n" +
                     "Would you like to renew?");
                 if (renew) {
-                    renewPassword('renew', 'expired');
+                    renewPassword('renew');
                 } else {
-                    renewPassword('norenew', 'expired');
+                    renewPassword('norenew');
                 }
             } else if (status.indexOf('BADPASSWD') !== -1) {
                 var msg = "The password you entered does not match " +
                     "your registered password;\nPlease try again";
                 alert(msg);
-                $('#upass').val('');
-            } else { // no such user in USERS table
+                $('#password').val('');
+            } else { // "FAIL": no such user (or multiple) in USERS table
                 var msg = "Your registration info cannot be uniquely located:\n" +
                     "Please click on the 'Sign me up!' link to register";
                 alert(msg);
-                $('#usrid').val('');
-                $('#upass').val('');
             }
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -63,4 +67,5 @@ function validateUser(user, password) {
             newDoc.close();         
         }
     });
+    return;
 }

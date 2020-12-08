@@ -57,8 +57,9 @@ require_once "../accounts/getLogin.php";
                     <ul class="menus">
                         <li><div id="lin">Log in</div></li>
                         <li><div id="lout">Log out</div></li>
-                        <li><div id="join">Become a Member</div></li>
                         <li><div id="chgpass">Change Password</div></li>
+                        <li><div id="forgot">Forgot Password</div></li>
+                        <li><div id="join">Become a Member</div></li>
                     </ul>
                 </div>
             </li>
@@ -97,50 +98,15 @@ require_once "../accounts/getLogin.php";
 <?php endif; ?>
 
 <!-- Modal Windows HTML -->
-<div id="usr_login">
-    <form id="loginForm" action="#" method="post">
-    <table id="loginTbl">
-        <colgroup>
-            <col style="width:124px">
-            <col style="width:24px">    
-            <col style="width:168px">
-        </colgroup>
-        <tbody>
-            <tr>
-                <td>User name:</td>
-                <td colspan="2">
-                    <input id="usrid" class="bordered" type="text" size="20"
-                        name="name" autocomplete="username" />
-                </td>
-            </tr>
-            <tr>
-                <td>User Password:</td>
-                <td colspan="2">
-                    <input id="upass" class="bordered" type="password"
-                        name="password" size="20" autocomplete="password" />
-                </td>
-            </tr>
-            <tr>
-                <td><button id="enter" 
-                    style="display:block;margin:auto;">Login</button>
-                <td></td>
-                <td id="replace">CANCEL</td>
-            </tr>
-            <tr style="visibility:hidden">
-                <td>Line Break</td>
-            </tr>
-            <tr>
-                <td colspan="2"><span id="pwlnk">Forgot Password?</span></td>
-                <td>Enter email to reset</td>
-            </tr>
-            <tr id="resetrow">
-                <td colspan="2"><input id="resetpass" class="bordered" type="text"
-                    value="" /></td>
-                <td><button id="sendemail">Send email</button></td>
-            </tr>
-        </tbody>
-    </table><br />
-    <br />
+<div id="email_password">
+    You will be assigned a temporary login:<br />
+    <form id="emailform" action="#" method="post">
+        <div id="maildata">
+            <span id="mailtxt">Please enter your email address</span><br />
+            <input id="femail" type="email" name="femail" required /><br />
+        </div>
+        <button id="sendmail">Send email</button>
+        <br />
     </form>
 </div>
 <div id="feedback">

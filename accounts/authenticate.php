@@ -1,8 +1,8 @@
 <?php
 /**
- * This script may be called either as a result of page load (getLogin.php)
- * or via the validateUser function (ajax). The latter requires query string
- * parameters to define user.
+ * This script is invoked as an ajax call to validate membership
+ * for the username and password supplied: invoked via validateUser.js,
+ * whenever the user selects 'Members->Log in'.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -71,8 +71,8 @@ if ($rowcnt === 1) {  // located single instance of user
                     "nmh_id", $username, $expdate, "/", "", true, true
                 );
             }
+            echo "LOCATED";
         }
-        echo "LOCATED";
     } else {  // user exists, but password doesn't match:
         echo "BADPASSWD" . $userpass . ";" . $user_dat['passwd'];
     }
