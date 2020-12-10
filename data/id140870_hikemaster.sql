@@ -33,7 +33,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -81,7 +81,7 @@ CREATE TABLE `CLUSHIKES` (
   `indxNo` smallint(6) NOT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -243,7 +243,8 @@ INSERT INTO CLUSHIKES VALUES
 ('155','246','48'),
 ('156','247','48'),
 ('157','172','48'),
-('158','252','45');
+('158','252','45'),
+('159','253','7');
 
 
 
@@ -265,7 +266,7 @@ INSERT INTO CLUSTERS VALUES
 ('4','Petroglyphs Index','351386440','-1067111960','4'),
 ('5','El Morro Index','350396360','-1083450810','98'),
 ('6','Rio Grande Nature Center Index','351286816','-1066850602','99'),
-('7','Gallegos Park Group','351632500','-1064700670','0'),
+('7','Gallegos Park Group','351657692','-1064734422','0'),
 ('8','Manzanitas Mtn Group','350465620','-1063830880','0'),
 ('9','Big Tesuque Group','357695080','-1058091550','0'),
 ('10','Santa Fe Ski Area Group','357958450','-1058046050','0'),
@@ -373,7 +374,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=563 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=570 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -511,7 +512,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=253 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=254 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -760,7 +761,8 @@ INSERT INTO HIKES VALUES
 ('249','Pine Flats Double Loop','1','Tijeras',NULL,NULL,NULL,NULL,'Loop','7.40','400','Easy-Moderate','Picnic Grounds w/Toilet','Pine-scented trails','Not Winter','Mixed sun/shade','Pine_Flats.GPX','Pine_Flats.json','350133201','-1063358566',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//PINE+FLAT+PICNIC+AREA,+11776+NM-337,+Tijeras,+NM+87059/@35.0139847,-106.3447847,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718bad79c669eeb:0xb583d998c25c3386!2m2!1d-106.3355556!2d35.0133333',NULL,'The trails accessible from the Pine Flats Picnic Area are generally populated by cyclists. There are numerous interconnecting trails, so a hike of varying lengths can easily be constructed, as the author did with this hike. The grades are virtually all easy as they take you through various sections of Ponderosa, Gamble Oak, and Cedar. On this journey, during the week, the author encountered 5 cyclists on the trail, and otherwise enjoyed a pleasant degree of solitude. Most of the hike is in the shade of the forest, and though not many long views are available, the fresh air and pine scent add to the enjoyment of the hike.',NULL,NULL,NULL),
 ('250','Mesa de los Datiles','2','Jemez Springs',NULL,NULL,NULL,NULL,'Out-and-back','7.20','1200','Med-Difficult','','Great views of the Jemez Mesas','Not Winter','Full sun','mesa_datiles.gpx','mesa_datiles.json','357050460','-1067280380',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//35.7050461,-106.7280381/@35.6907847,-106.7503985,13.98z','This hike requires a degree of rock scrambling, varying from easy to more difficult. It is recommended that you bring gloves suitable for scaling boulders.','While not an \'official\' trail, this hike leads you into the interior of the Jemez mesas by following an arroyo uphill. The arroyo presents a number of obstacles requiring scrambling up boulders, and sometimes overhanging bushes. Eventually the arroyo terminates at a box canyon, and you must scale a gravelly slope to reach an area where you can proceed to another arroyo. Given the numerous challenges on the trail, the author did not complete the hike to the Datiles Mesa. On the accompanying map you will see where the author turned around. Click on the \'Proposed\' track in the upper right corner of the map to see the remaining route. To complete the hike, another climb uphill is required to get to the mesa overlook, which undoubtedly has great views.',NULL,NULL,NULL),
 ('251','Alamo Boundary - Coyote Call','2','Valles Caldera',NULL,NULL,NULL,NULL,'Loop','4.80','400','Easy-Moderate','None','Views of the Valles Caldera','Any','Mixed sun/shade','Alamo_Boundary.GPX','Alamo_Boundary.json','358335263','-1064435629',NULL,NULL,NULL,NULL,'https://www.google.com/maps/place/35%C2%B050\'00.7%22N+106%C2%B026\'36.8%22W/@35.8277985,-106.4787043,13.51z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8335263!4d-106.4435629','Although the trail can be used in all seasons, be aware that heavy snows may prevent driving access to the trail head in the winter.','This hike is an easy ascent up from Forest Road 289 to a saddle where the trail intersects the Coyote Call trail. The latter offers great views of the Valle Grande - the large open meadow in the Valles Caldera where the Visitor Center is located, and where elk can sometimes be seen. The hike also progresses from a severe burn area of the Las Conchas Fire in Bandelier Natl Monument, into a section where aspen are repopulating the terrain (Valles Caldera Natl Park).',NULL,NULL,NULL),
-('252','Three Gun - Oso Pass','2','Albuquerque',NULL,NULL,NULL,'Three Gun Springs Group','Out-and-back','7.70','2100','Med-Difficult','None','Canyon Views','Not Winter','Mixed sun/shade','Three_Gun_Spring.GPX','Three_Gun_Spring.json','350764463','-1064441734',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Three+Guns+Trailhead,+19+Tres+Pistolas+Trail+NE,+Albuquerque,+NM+87123/@35.0649298,-106.4604222,14.33z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a17cda821e47:0x4689e3d1eef39baf!2m2!1d-106.4441074!2d35.0764161',NULL,'This is a lovely hike into Tijeras Canyon at the south end of the Sandias. It begins with a sunny, exposed, mostly moderate climb upward towards the foothills. The trail becomes steeper at this point, and slowly begins to acquire some shade as elevation is gained. From the Embudo Trail junction and beyond, the trail becomes quite well shaded. This hike offers great views in almost every direction, as the trail often changes direction once you pass the Embudo marker. Scenic vistas appear periodically, as well as views of the Sandia interior. The trail ends at \'Oso Pass\', where four trails converge, affording the opportunity to extend the hike. The trail can be used in the winter, but generally only up to the Embudo trail junction.',NULL,NULL,NULL);
+('252','Three Gun - Oso Pass','2','Albuquerque',NULL,NULL,NULL,'Three Gun Springs Group','Out-and-back','7.70','2100','Med-Difficult','None','Canyon Views','Not Winter','Mixed sun/shade','Three_Gun_Spring.GPX','Three_Gun_Spring.json','350764463','-1064441734',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//Three+Guns+Trailhead,+19+Tres+Pistolas+Trail+NE,+Albuquerque,+NM+87123/@35.0649298,-106.4604222,14.33z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a17cda821e47:0x4689e3d1eef39baf!2m2!1d-106.4441074!2d35.0764161',NULL,'This is a lovely hike into Tijeras Canyon at the south end of the Sandias. It begins with a sunny, exposed, mostly moderate climb upward towards the foothills. The trail becomes steeper at this point, and slowly begins to acquire some shade as elevation is gained. From the Embudo Trail junction and beyond, the trail becomes quite well shaded. This hike offers great views in almost every direction, as the trail often changes direction once you pass the Embudo marker. Scenic vistas appear periodically, as well as views of the Sandia interior. The trail ends at \'Oso Pass\', where four trails converge, affording the opportunity to extend the hike. The trail can be used in the winter, but generally only up to the Embudo trail junction.',NULL,NULL,NULL),
+('253','Gallegos - No Name Loop','2','Albuquerque',NULL,NULL,NULL,'Gallegos Park Group','Loop','7.00','1100','Moderate','Picnic Area w/Toilets','Sandia Interior','Not Winter','Full sun','Gallegos_NoName.GPX','Gallegos_NoName.json','351657692','-1064734421',NULL,NULL,NULL,NULL,'https://www.google.com/maps/dir//35.1657778,-106.4734444/@35.1589435,-106.491118,15z','Although no closure signs were posted at the point of departure to the NoName Trail, the first 200-300 ft had \'nature litter\' typical of that used to indicate a closed area. The beginning of the NoName Trail appeared clear and open with no postings.','This hike is a nice departure from the somewhat busy trails of Gallegos Open Space. In order to avoid a large number of bikers, it is best to go during the week. Once at the point of departure to the NoName segment of the trail, there appeared to be no other hikers or bikers, and hence pleasant solitude, along with great views. That section of trail ascends quickly into the foothills interior providing some unique perspectives to the hiker. While the path is clear and easy to follow, it is nonetheless recommended that you use a GPS tracking device or app, as the return trip seems somehow less obvious! ',NULL,NULL,NULL);
 
 
 
@@ -1765,7 +1767,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4845 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4852 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4470,7 +4472,14 @@ INSERT INTO TSV VALUES
 ('4838','252',NULL,'IMG_3518','Y','Y','Dubbed \'Deadfall Underpass\' by the author','351116111','-1064409722','2678',NULL,'2020-11-19 11:11:43','IMG_3518','640','480',NULL,NULL),
 ('4839','252',NULL,'IMG_3522','Y','Y','A hazy day looking south','351138278','-1064442750','2679',NULL,'2020-11-19 12:14:06','IMG_3522','480','640',NULL,NULL),
 ('4840','252',NULL,'IMG_3520','Y','Y','Massive formations jut out from the Sandia','351169917','-1064431750','2680',NULL,'2020-11-19 11:35:19','IMG_3520','480','640',NULL,NULL),
-('4841','252',NULL,'IMG_3521','Y','Y','The Embudito juncture and trail marker','351177000','-1064431306','2681',NULL,'2020-11-19 11:37:12','IMG_3521','480','640',NULL,NULL);
+('4841','252',NULL,'IMG_3521','Y','Y','The Embudito juncture and trail marker','351177000','-1064431306','2681',NULL,'2020-11-19 11:37:12','IMG_3521','480','640',NULL,NULL),
+('4845','253',NULL,'IMG_3558','Y','Y','Looking east into the Sandias','351716167','-1064485389','2682',NULL,'2020-12-04 11:56:13','IMG_3558','480','640',NULL,NULL),
+('4846','253',NULL,'IMG_3566','Y','Y','A view to the southwest from the trail','351744694','-1064437472','2683',NULL,'2020-12-04 12:26:58','IMG_3566','480','640',NULL,NULL),
+('4847','253',NULL,'IMG_3560','Y','Y','Sandia granite boulders frame the mountain','351727917','-1064452889','2684',NULL,'2020-12-04 12:04:06','IMG_3560','480','640',NULL,NULL),
+('4848','253',NULL,'IMG_3561','Y','Y','A glimpse towards the peaks from the snowy trail','351733472','-1064447250','2685',NULL,'2020-12-04 12:07:15','IMG_3561','480','640',NULL,NULL),
+('4849','253',NULL,'IMG_3571','Y','Y','A clear view of Mount Taylor to the west from Pino Trail','351647222','-1064584889','2686',NULL,'2020-12-04 13:13:05','IMG_3571','480','640',NULL,NULL),
+('4850','253',NULL,'IMG_3568','Y','Y','Open Space - Wilderness boundary: hikers have kept it open','351680944','-1064557278','2687',NULL,'2020-12-04 13:01:49','IMG_3568','480','640',NULL,NULL),
+('4851','253',NULL,'IMG_3569','Y','Y','The NoName trail begins','351672667','-1064582583','2688',NULL,'2020-12-04 13:05:55','IMG_3569','640','480',NULL,NULL);
 
 
 
@@ -4491,7 +4500,7 @@ CREATE TABLE `USERS` (
 
 
 INSERT INTO USERS VALUES
-('1','tom','$2y$10$iWf2kXMtdwZLDotS0db.HO0uLZPq.j570nswnMqlAzzaaGmBxyIBW','2021-10-13','Sandberg','Tom','tjsandberg@yahoo.com','accept',NULL,'One of the geniuses behind this site :-)'),
+('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2021-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept',NULL,'One of the geniuses behind this site :-)'),
 ('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)'),
 ('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com','','','Just and old dusty traveler'),
 ('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu','','',''),

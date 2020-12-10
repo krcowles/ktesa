@@ -80,7 +80,7 @@ foreach ($clushikes as $entry) {
  */
 $nmindx = 0;
 foreach ($hikes as $hike) {
-    $hikeno = $hike['indxNo'];
+    $hikeno = (int) $hike['indxNo'];
     if ($hikeno > 4 && $hikeno !== 98 && $hikeno !== 99) { // no former VC's
         array_push($allHikeIndices, $hikeno);
         // PROPOSED HIKES may not have all the data:
