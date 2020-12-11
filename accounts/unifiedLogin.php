@@ -51,7 +51,9 @@ if ($form === 'reg') {
         <input type="hidden" name="submitter" value="create" />
         <input id="usrchoice" type="hidden" name="cookies" value="nochoice" />
             <p>Sign up for free access to nmhikes.com!</p>
-            <p id="sub">Create and edit your own hikes</p>
+            <p id="sub">Create and edit your own hikes<br />
+            <a id="policylnk" href="#">Privacy Policy</a>
+            </p>
             <div>
                 <div class="pseudo-legend">First Name</div>
                 <div id="line1" class="lines"></div>
@@ -79,8 +81,10 @@ if ($form === 'reg') {
                 <input id="email" class="signup" type="email"
                     required placeholder="Email" name="email"
                     autocomplete="email" />
-            </div><br />
-            <button id="submit">Submit</button>    
+            </div>
+            <div>
+                <button id="submit">Submit</button>
+            </div> 
     </form>
 <?php elseif ($form === 'renew') : ?>
     <h3>Please enter and confirm a new password:</h3>

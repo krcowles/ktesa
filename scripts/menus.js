@@ -174,6 +174,10 @@ function gotoPage(content) {
                 }
             });
             return;
+        case 'Privacy Policy':
+            let policy = '../php/postPDF.php?doc=../accounts/PrivacyPolicy.pdf';
+            window.open(policy, '_blank');
+            return;
         default:
             alert(content);
     }

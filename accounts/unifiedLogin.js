@@ -24,7 +24,7 @@ $('#reject').on('click', function() {
 });
 
 
-var reg = {top: 48, height: 580, width: 460};
+var reg = {top: 48, height: 570, width: 460};
 var log = {top: 80, height: 300, width: 500};
 var ren = {top: 80, height: 420, width: 560};
 
@@ -40,6 +40,10 @@ switch (formtype) {
             top: reg.top,
             height: reg.height,
             width: reg.width
+        });
+        $('#policylnk').on('click', function() {
+            let plnk = '../php/postPDF.php?doc=../accounts/PrivacyPolicy.pdf';
+            window.open(plnk, '_blank');
         });
         // NOTE: email validation is performed by HTML5, and again by server
         /**

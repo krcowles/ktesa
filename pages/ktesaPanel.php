@@ -72,6 +72,7 @@ require_once "../accounts/getLogin.php";
                 <ul class="menus">
                     <li><div id="about">About this site</div></li>
                     <li id="ifuser"><div id="ctoggle">Reject Cookies</div></li>
+                    <li id="policy"><div id="privacy">Privacy Policy</div></li>
                     <!--
                     <li><div id="contact">Contact us</div></li> -->
                 </ul>
