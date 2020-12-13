@@ -57,19 +57,15 @@ $curr_trk = $hike['trk'];
 $lat = $hike['lat'] / LOC_SCALE;
 $lng = $hike['lng'] / LOC_SCALE;
 $dirs = $hike['dirs']; 
-$usr_alert = '';
-if (isset($_SESSION['usr_alert'])) {
-    $usr_alert = $_SESSION['usr_alert'];
-    unset($_SESSION['usr_alert']);
+$user_alert = '';
+if (isset($_SESSION['user_alert']) && !empty($_SESSION['user_alert'])) {
+    $user_alert = $_SESSION['user_alert'];
+    $_SESSION['user_alert'] == '';
 }
 
 /**
  * Tab2: [photo displays (already uploaded) and any waypoints]
  */
-$svg = "M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 " .
-    "2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2." .
-    "6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 " .
-    "1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z";
 require "photoSelect.php";
 require "wayPointEdits.php";
 
@@ -129,7 +125,7 @@ for ($j=0; $j<$gpsDbCnt; $j++) {
     $datId[$j] = $gpsdat['datId'];
     $url[$j] = $gpsdat['url'];
     $clickText[$j] = $gpsdat['clickText'];
-    if ((strpos($url[$j], 'Map') !== false) || (strpos($url[$j], 'MAP') !== false)) {
+    if ($gpsdat['label'] !== 'GPX:') {
         $fname[$j] = substr($url[$j], 8);
     } else {
         $fname[$j] = substr($url[$j], 7);

@@ -13,53 +13,19 @@
  */
 session_start();
 require "../php/global_boot.php";
-/**
- *  Validate the upload
- */
-$name = "gpx2edit";
-$gpxfile = basename($_FILES[$name]['name']);
-if ($gpxfile !== '') {
-    $filetype = $_FILES[$name]['type'];
-    $filestat = $_FILES[$name]['error'];
-    if ($filestat !== UPLOAD_ERR_OK) {
-        $badupld = "Failed to upload {$gpxfile}: " . uploadErr($filestat);
-        throw new Exception($badupld);
-    }
-    if (substr_count($gpxfile, ".") !== 1) {
-        $odd = "This file may be corrupted. Please correct the " .
-            "file format and re-submit, or contact Site Master.";
-        throw new Exception($odd);
-    }
-    $dot = strrpos($gpxfile, ".") + 1;
-    $ext = strtolower(substr($gpxfile, $dot, 3));
-    if ($ext !== 'gpx') {
-        $badext = "This file appears to have an incompatible extension type, " .
-            "{$ext}; No edits made";
-        throw new Exception($badext);
-    }
-} else {
-    throw new Exception("No file specified");
+
+$upload = validateUpload("gpx2edit", true);
+if ($upload['file'] == '') {
+    $_SESSION['user_alert'] = "No file specified";
+} elseif ($upload['type'] !== 'gpx') {
+    $_SESSION['user_alert'] = "Incorrect file type";
 }
-$editfile = $_FILES[$name]['tmp_name'];
-libxml_use_internal_errors(true);
-$adminpg = "../admin/admintools.php";
+if (!empty($_SESSION['user_alert'])) {
+    header("Location: admintools.php");
+    exit;
+}
 $dom = new DOMDocument();
 $dom->formatOutput = true;
-if (!$dom->load($editfile)) {
-    displayGpxUserAlert($gpxfile);
-    header("Location: {$adminpg}");
-    exit;
-}
-if (!$dom->schemaValidate(
-    "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
-)
-) {
-    displayGpxUserAlert($gpxfile);
-    header("Location: {$adminpg}");
-    exit;
-}
-
-// END FILE VALIDATION
 $tracks = $dom->getElementsByTagName('trk'); // DONMNodeList object
 $trkcnt = $tracks->length;
 // process user input to determine tracks to be iteratively reversed

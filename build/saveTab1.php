@@ -1,12 +1,11 @@
 <?php
 /**
- * This script saves any changes made (or data as is) on tab1 ("Basic Data")
- * of the hike page Editor, including uploading/deleting of the main gpx file
- * (track file). If a gpx file already exists, it may be deleted, or otherwise
- * replaced by a newly specified file via tab 1's browse button. When a new
- * gpx file is uploaded without deleting the previous file (if any), the
- * previous file is not deleted. This script is invoked when the user submits
- * the data via the 'Apply' button on tab1.
+ * This script saves data present on tab1 ("Basic Data") of the hike page Editor,
+ * including uploading/deleting of the main gpx file (track file). If a gpx file
+ * already exists, it may be deleted, or otherwise replaced by a newly specified
+ * file via tab 1's browse button. When a new gpx file is uploaded without deleting
+ * the previous file (if any), the previous file is not deleted. This script is
+ * invoked when the user submits the data via the 'Apply' button on tab1.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -17,7 +16,6 @@
 session_start();
 require "../php/global_boot.php";
 require_once "../php/gpxFunctions.php";
-verifyAccess('post');
 
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
 $redirect = "editDB.php?tab=1&hikeNo={$hikeNo}";
@@ -92,30 +90,41 @@ if (!$deletedLatLng) {
         '' : (int) ((float)(filter_input(INPUT_POST, 'lng')) * LOC_SCALE);
     
 }
+// IF a gpx file was uploaded:
 $gpxfile = basename($_FILES['newgpx']['name']);
 if (!empty($gpxfile)) {  // new upload
-    $gpxtype = fileTypeAndLoc($gpxfile);
-    if ($gpxtype[2] === 'gpx') {
-        $gpxupl = validateUpload("newgpx", "../gpx/");
-        if (isset($_SESSION['usr_alert'])) {
-            header("Location: {$redirect}");
-            exit;
+    $uploadResult = validateUpload('newgpx', true, true); // array
+    if (empty($_SESSION['user_alert'])) {
+        if ($uploadResult['type'] === 'gpx') {
+            $saveloc = '../gpx/' . $uploadResult['file'];
+            if (file_exists($saveloc)) {
+                $barefile = pathinfo($path, PATHINFO_FILENAME);
+                $newfile = $barefile . '_DOC.gpx';
+                $saveloc = '../gpx/' . $filename;
+                $_SESSION['uplmsg'] .= "NOTE: {$gpxfile} already exists; " .
+                "The file was saved with a new name: " . $newfile;
+            }
+            if (!move_uploaded_file($uploadResult['loc'], $saveloc)) {
+                $nomove = "Could not save {$filename} to site: contact Site Master";
+                throw new Exception($nomove);
+            } else {
+                $_SESSION['uplmsg'].= "{$gpxfile} was successfully uploaded";
+            }
+            $trkdat = makeTrackFile($saveloc);
+            $newtrk = $trkdat[0];
+            $lat = (int) ((float)($trkdat[1]) * LOC_SCALE);
+            $lng = (int) ((float)($trkdat[2]) * LOC_SCALE);
+            $newgpxq = "UPDATE EHIKES " .
+                "SET gpx = ?, trk = ?, lat = ?, lng = ? WHERE indxNo = ?;";
+            $ngpx = $pdo->prepare($newgpxq);
+            $ngpx->execute([$uploadResult['file'], $newtrk, $lat, $lng, $hikeNo]);
+            $maingpx = $uploadResult['file'];
+        } else {
+            $_SESSION['user_alert'] = "{$gpxfile} is not a gpx file";
+            $_SESSION['uplmsg'] .= "<span style='color:red;'>{$gpxfile} NOT UPLOADED</span>";
         }
-        $newgpx = $gpxupl[0];
-        $_SESSION['uplmsg'] .= $gpxupl[1];
-        $trkdat = makeTrackFile($newgpx, "../gpx/");
-        $newtrk = $trkdat[0];
-        $lat = (int) ((float)($trkdat[2]) * LOC_SCALE);
-        $lng = (int) ((float)($trkdat[3]) * LOC_SCALE);
-        $newgpxq = "UPDATE EHIKES " .
-            "SET gpx = ?, trk = ?, lat = ?, lng = ? " .
-            "WHERE indxNo = ?;";
-        $ngpx = $pdo->prepare($newgpxq);
-        $ngpx->execute([$newgpx, $newtrk, $lat, $lng, $hikeNo]);
-        $maingpx = $newgpx;
     } else {
-        $_SESSION['uplmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
-                "File Type NOT .gpx for {$gpxfile}.</p>";
+        $_SESSION['uplmsg'] .= "<span style='color:red;'>{$gpxfile} NOT UPLOADED</span>";
     }
 }
 /**

@@ -10,7 +10,6 @@
  */
 session_start();
 require "../php/global_boot.php";
-verifyAccess('post');
 
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
 /**
@@ -138,63 +137,50 @@ if ($addcnt > 0) {
  * on the click-text for a file. If the click-text is marked for deletion,
  * the GPS Data reference, in its entirety, will be deleted.
  *
- * GPS Data File upload section.
+ * GPS Data File upload section. May be a gpx or kml file, or an html map file
  */
 $_SESSION['gpsmsg'] = '';
-$gpsupl = basename($_FILES['newgps']['name']);
-if ($gpsupl !== '') {
-    $gpsok = true;
-    $gpstype = fileTypeAndLoc($gpsupl);
-    switch ($gpstype[2]) {
-    case 'gpx':
-        $newlbl = 'GPX:';
-        $newcot = 'GPX Track File';
-        break;
-    case 'kml':
-        $newlbl = 'KML:';
-        $newcot = "Google Earth File";
-        break;
-    default:
-        $gpsok = false;
-    }
-    if ($gpsok) {
-        $upload = validateUpload("newgps", $gpstype[0]);
-        $_SESSION['gpsmsg'] .= $upload[1];
-        $newurl = $gpstype[0] . $upload[0];
-        $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
-            "VALUES (?,'P',?,?,?);";
-        $newgps = $pdo->prepare($ngpsreq);
-        $newgps->execute([$hikeNo, $newlbl, $newurl, $newcot]);
+$gpsfile  = validateUpload('newgps', true);
+$badgpx = false;
+if (!empty($gpsfile['file'])) {
+    if (empty($_SESSION['user_alert'])) {
+        if ($gpsfile['type'] === 'gpx' || $gpsfile['type'] === 'kml') {
+            $newurl = '../gpx/' . $gpsfile['file'];
+            $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
+            "VALUES (?,'P','GPX:',?,'GPX Track File');";
+            $newgps = $pdo->prepare($ngpsreq);
+            $newgps->execute([$hikeNo, $newurl]);
+            $_SESSION['gpsmsg'] .= "{$gpsfile['file']} was successfully uploaded";
+        } else {
+            $badgpx = true;
+            $_SESSION['user_alert'] = "Unacceptable file type: {$gpsfile['file']}";
+            $_SESSION['gpsmsg'] .= "<span style='color:red;'>{$gpsfile['file']} NOT UPLOADED</span>";
+        }
     } else {
-        $_SESSION['gpsmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
-            "File Type NOT .gpx or .kml for {$gpsupl}.</p>";
+        $badgpx = true;
+        $_SESSION['gpsmsg'] .= "<span style='color:red;'>{$gpsfile['file']} NOT UPLOADED</span>";
     }
 }
-$mapupl = basename($_FILES['newmap']['name']);
-if ($mapupl !== '') {
-    $mapok = true;
-    $maptype = fileTypeAndLoc($mapupl);
-    switch ($maptype[2]) {
-    case 'html':
-        $newlbl = "MAP:";
-        $newcot = 'Map';
-        break;
-    default:
-        $mapok = false;
-    }
-    if ($mapok) {
-        $upload = validateUpload("newmap", $maptype[0]);
-        $_SESSION['gpsmsg'] .= $upload[1];
-        $newurl = $maptype[0] . $upload[0];
-        $newmapreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
-            "VALUES (?,'P',?,?,?);";
-        $newmap = $pdo->prepare($newmapreq);
-        $newmap->execute([$hikeNo, $newlbl, $newurl, $newcot]);
+$htmlfile = validateUpload('newmap', false);
+if (!empty($htmlfile['file'])) {
+    if ($htmlfile['type'] === 'html') {
+        if (empty($_SESSION['user_alert'])
+            || (!empty($_SESSION['user_alert']) && $badgpx)
+        ) {
+            $newurl = '../maps/' . $htmlfile['file'];
+            $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
+            "VALUES (?,'P','MAP:',?,'Map File');";
+            $newgps = $pdo->prepare($ngpsreq);
+            $newgps->execute([$hikeNo, $newurl]);
+            $_SESSION['gpsmsg'] .= " {$htmlfile['file']} was successfully uploaded" ;
+        } else {
+            $_SESSION['gpsmsg'] .= " <span style='color:red;'>{$htmlfile['file']} NOT UPLOADED</span>";
+        } 
     } else {
-        $_SESSION['gpsmsg'] .= '<p style="color:red;">FILE NOT UPLOADED: ' .
-            "File Type NOT .html for {$mapupl}.</p>";
+        $_SESSION['user_alert'] .= " Unacceptable file type: {$htmlfile['file']}";
+        $_SESSION['gpsmsg'] .= " <span style='color:red;'>{$htmlfile['file']} NOT UPLOADED</span>";
     }
-}
+}  
 /**
  * NOTE: the only items that have 'delete' boxes are those for which GPS data
  * already existed in the database. Those checkboxes will have values of

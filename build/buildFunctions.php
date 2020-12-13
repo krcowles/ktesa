@@ -1,7 +1,7 @@
 <?php
 /**
  * This file contains function declarations designed to be used
- * by modules in the build directory. At this time, there are also
+ * by modules performing page editing. At this time, there are also
  * some instances called by makeGpsv.php.
  * PHP Version 7.4
  * 
@@ -10,71 +10,126 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+libxml_use_internal_errors(true);
 /**
- * This function validates the upload file and then moves the temporary
- * copy of the file stored in the server, to the site directory. In the
- * process, it calls the function uploadErr() if an error occurs during
- * upload, and dupFileName() if it finds that a file of the same name
- * already exists on the site. Other validation checks are performed.
- * NOTE: If the upload is a main site gpx file, makeTrackFile will be called.
+ * This function validates the uploaded file against currently allowed types.
+ * Errors encountered are communicated via session variable 'user_alert'.
  * 
- * @param string $name    <input type="file" name="$name" />
- * @param string $fileloc The directory location for moving the upload
+ * @param string  $name <input type="file" name="$name" />
+ * @param boolean $init Reset alerts if true, Accumulate if false
+ * @param boolean $elev Test for elevation data if true, ignore otherwise
  * 
- * @return array $filename, $msg
+ * @return array The client filename that was uploaded & server location
  */
-function validateUpload($name, $fileloc)
+function validateUpload($name, $init, $elev=false)
 {
-    libxml_use_internal_errors(true);
-    $msg = '';
+    $_SESSION['user_alert'] = $init ? '' : $_SESSION['user_alert'];
     $filename = basename($_FILES[$name]['name']);
-    if ($filename !== '') {
+    $uploadType = 'none';
+    if (!empty($filename)) {
         $tmp_upload = $_FILES[$name]['tmp_name'];    
-        $filetype = $_FILES[$name]['type'];
         $filestat = $_FILES[$name]['error'];
         if ($filestat !== UPLOAD_ERR_OK) {
-            $badupld = "Failed to upload {$name}: " . uploadErr($filestat);
-            throw new Exception($badupld);
-        }
-        if (substr_count($filename, ".") !== 1) {
-            $odd = "This file may be corrupted. Please correct the " .
-                "file format and re-submit, or contact Site Master.";
-            throw new Exception($odd);
-        }
-        // Validate against schema, if gpx (XML):
-        $ext = strpos($filename, ".") + 1;
-        $file_ext = substr($filename, $ext, 3);
-        if (strtoLower($file_ext) === 'gpx') {
-            $xml = new DOMDocument;
-            if (!$xml->load($tmp_upload)) {
-                displayGpxUserAlert($filename);
-                return;
-            }
-            if (!$xml->schemaValidate(
-                "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
-            )
-            ) {
-                displayGpxUserAlert($filename);
-                return;
-            }
-        }
-        $saveloc = $fileloc . $filename;
-        if (file_exists($saveloc)) {
-            $dupdata = dupFileName($filename);
-            $filename = $dupdata[0];
-            $saveloc = $fileloc . $filename;
-            $msg .=  $dupdata[1] . "<br />";
-        }
-        if (!move_uploaded_file($tmp_upload, $saveloc)) {
-            $nomove = "Could not save {$filename} to site: contact Site Master";
-            throw new Exception($nomove);
+            $_SESSION['user_alert'] .= " Server error: Failed to upload {$filename}: " .
+                uploadErr($filestat);
         } else {
-            $msg .= "'{$filename}' Successfully uploaded to site";
+            $filetype = $_FILES[$name]['type'];
+            $uploadType = validateType($filetype);
+            if ($uploadType === 'unknown') {
+                $_SESSION['user_alert'] .= " Incorrect file type for upload; ";
+            } elseif ($uploadType === 'gpx') {
+                validateGpx($tmp_upload, $filename, $elev);
+            }
         }
     } else {
-        $filename = "No file specified";
+        $tmp_upload = '';
     }
-    return array($filename, $msg);
+    return array("file" => $filename, "type" => $uploadType, "loc" => $tmp_upload);
+}
+/**
+ * This function supplies a message appropriate to the type of upload
+ * error encountered.
+ * 
+ * @param integer $errdat The flag supplied by the upload error check
+ * 
+ * @return string 
+ */
+function uploadErr($errdat)
+{
+    if ($errdat === UPLOAD_ERR_INI_SIZE || $errdat === UPLOAD_ERR_FORM_SIZE) {
+        return 'File is too large for upload';
+    }
+    if ($errdat === UPLOAD_ERR_PARTIAL) {
+        return 'The file was only partially uploaded (no further information';
+    }
+    if ($errdat === UPLOAD_ERR_NO_FILE) {
+        return 'The file was not uploaded (no further information';
+    }
+    if ($errdat === UPLOAD_ERR_CANT_WRITE) {
+        return 'Failed to write file to disk';
+    }
+    if ($errdat === UPLOAD_ERR_EXTENSION) {
+        return 'A PHP extension stopped the upload';
+    }
+}
+/**
+ * This function attempts to qualify the mime type against the whitelist:
+ * The whitelist for extensions is currently: .gpx (.GPX), .kml, and .html
+ * Unfortunately, octet-stream applies to many file types, but non-gpx will
+ * fail later on when gpx validation occurs.
+ * 
+ * @param string $filetype $_FILES['type'] value from upload
+ * 
+ * @return string $uplType (file mime type) and $floc (site path for storage)
+ */
+function validateType($filetype)
+{
+    switch ($filetype) {
+    case "application/octet-stream":
+        $usertype = 'gpx';
+        break;
+    case "text/html":
+        $usertype = 'html';
+        break;
+    case "application/vnd.google-earth.kml+xml": // add Google Earth - KML  ??
+        $usertype = 'kml';
+        break;
+    default;
+        $usertype = 'unknown';
+    }
+    return $usertype;
+}
+/**
+ * This function will validate the basic file formatting for a (gpx) file.
+ * If an error occurred, $_SESSION['user_alert'] will retain error.
+ * 
+ * @param string  $file     The path to the file to be validated
+ * @param string  $filename The name of the file
+ * @param boolean $etest    Test for elevation data if true
+ * 
+ * @return null;
+ */
+function validateGpx($file, $filename, $etest)
+{
+    $dom = new DOMDocument;
+    if (!$dom->load($file)) {
+        displayGpxUserAlert($filename);
+        return;
+    }
+    if (!$dom->schemaValidate(
+        "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
+    )
+    ) {
+        displayGpxUserAlert($filename);
+        return;
+    }
+    if ($etest) {
+        $elevs = $dom->getElementsByTagName('ele');
+        if ($elevs->length === 0) {
+            $_SESSION['user_alert'] .= " {$filename} cannot be used without elevation data";
+        }
+    }
+    return;
 }
 /**
  * Display a message for the user about the gpx file failure encountered
@@ -88,7 +143,8 @@ function displayGpxUserAlert($filename)
     $err_array = libxml_get_errors();
     $usr_msg = "There is an error in {$filename}:\n" .
         displayXmlError($err_array[0]);
-    $_SESSION['usr_alert'] = $usr_msg;
+    $_SESSION['user_alert'] .= $usr_msg;
+    return;
 }
 /**
  * The libxml errors have their own error processing requiring a handler,
@@ -118,125 +174,34 @@ function displayXmlError($error)
         ", Column: $error->column";
     return $return;
 }
+
 /**
- * This function supplies a message appropriate to the type of upload
- * error encountered.
+ * This function will create a JSON track file from the specified gpx.
  * 
- * @param integer $errdat The flag supplied by the upload error check
+ * @param string $gpxfile The filepath for the file to be converted.
  * 
- * @return string 
+ * @return array JSON file made from target gpx file, lat & lng of 
+ * track starting point
  */
-function uploadErr($errdat)
+function makeTrackFile($gpxfile) 
 {
-    if ($errdat === UPLOAD_ERR_INI_SIZE || $errdat === UPLOAD_ERR_FORM_SIZE) {
-        return 'File is too large for upload';
-    }
-    if ($errdat === UPLOAD_ERR_PARTIAL) {
-        return 'The file was only partially uploaded (no further information';
-    }
-    if ($errdat === UPLOAD_ERR_NO_FILE) {
-        return 'The file was not uploaded (no further information';
-    }
-    if ($errdat === UPLOAD_ERR_CANT_WRITE) {
-        return 'Failed to write file to disk';
-    }
-    if ($errdat === UPLOAD_ERR_EXTENSION) {
-        return 'A PHP extension stopped the upload';
-    }
-}
-/**
- * When it has been determined that a file already exists on the
- * site in the destination directory, the string _DUP is attached
- * and the file is uploaded. The user will be notified when this
- * occurs.
- * 
- * @param string $oldname The filename which currently exists on site
- * 
- * @return array The new filename and msg to user that a dup was found
- */
-function dupFileName($oldname)
-{
-    $extpos = strrpos($oldname, ".");
-    $fbase = substr($oldname, 0, $extpos) . '_DUP.';
-    $extpos++;
-    $extlgth = strlen($oldname) - $extpos;
-    $fext = substr($oldname, $extpos, $extlgth);
-    $newname = $fbase . $fext;
-    $fout = 'NOTE: ' . $oldname . ' has been previously saved on the '.
-        'server; A new file name was created: ' . $newname;
-    return array($newname, $fout);
-}
-/**
- * This function will create a .json track file from the specified gpx.
- * 
- * @param string $gpxfile The file to be converted to a .json file
- * @param string $gpxpath The path to the gpx file
- * 
- * @return array $trkfile (new .json file), $msg (output message if desired)
- */
-function makeTrackFile($gpxfile, $gpxpath) 
-{
-    $ext = strrpos($gpxfile, ".");
-    $baseName = substr($gpxfile, 0, $ext);
-    $trkfile = $baseName . ".json";
-    $trkLoc = '../json/' . $trkfile;
-    $gpxLoc = $gpxpath . $gpxfile;
-    $gpxdat = gpxLatLng($gpxLoc, "1");
-    $thlat = $gpxdat[0][0];
-    $thlng = $gpxdat[1][0];
-    $trk = fopen($trkLoc, "w");
+    $basename = basename($gpxfile);
+    $ext = strrpos($basename, ".");
+    $base = substr($basename, 0, $ext);
+    $trkfile = $base . ".json";
+    $trkloc = '../json/' . $trkfile;
+    $gpxdat = gpxLatLng($gpxfile, "1");
+    $trklat = $gpxdat[0][0];
+    $trklng = $gpxdat[1][0];
+    $trk = fopen($trkloc, "w");
     $dwnld = fwrite($trk, $gpxdat[3]);
     if ($dwnld === false) {
         $trkfail =  "buildFunctions.php: Failed to write out {$trkfile} " .
             "[length: " . strlen($jdat) . "]; Please contact Site Master";
         throw new Exception($trkfail);
-    } else {
-        $msg = '<p>Track file created from GPX and saved</p>';
-    }
+    } 
     fclose($trk);
-    
-    return array($trkfile, $msg, $thlat, $thlng);
-}
-/**
- * This function is used to check the file extension of an upload and determine
- * the location on the server for it to reside, based on extension type.
- * The whitelist for extensions is currently: .gpx (.GPX), .kml, and .html
- * 
- * @param string $fname The file name with or with path info
- * 
- * @return array $uplType (file mime type) and $floc (site path for storage)
- */
-function fileTypeAndLoc($fname)
-{
-    $usable = array('gpx', 'kml', 'html');
-    // get lower case representation of file extension
-    $dot = strpos($fname, ".") + 1;
-    $extlgth = strlen($fname) - $dot;
-    $ext = substr($fname, $dot, $extlgth);
-    $fext = strtolower($ext);
-    $checks = count($usable);
-    // see if the extension is "usable" and assign it an appropriate location
-    $mimeType = '';
-    $ftypeError = '';
-    for ($i=0; $i<$checks; $i++) {
-        if ($fext === $usable[$i]) {
-            if ($fext === 'html') {
-                $mimeType = "/html/";
-                $floc = '../maps/';
-            } elseif ($fext === 'kml') {
-                $mimeType = '/vnd.google-earth.kml+xml/';
-                $floc = '../gpx/';
-            } else {
-                $mimeType = "/octet-stream/";
-                $floc = '../gpx/';
-            }
-        }
-    }
-    if ($mimeType === '') {
-        $floc = 'NONE';
-        $ftypeError = "Unacceptable file extension";
-    }
-    return array($floc, $mimeType, $fext, $ftypeError);
+    return array($trkfile, $trklat, $trklng);
 }
 /**
  * This function extracts existing cluster info from the CLUSTERS table
@@ -321,7 +286,7 @@ function mantissa($degrees)
  * @param string $gpxfile      The (full or relative) path to the gpx file
  * @param string $no_of_tracks Return data for number of tracks specified (or all)
  * 
- * @return array $stuff
+ * @return array $track_data
  */
 function gpxLatLng($gpxfile, $no_of_tracks)
 {

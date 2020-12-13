@@ -96,6 +96,7 @@
 <?php endfor; ?>
 
 <h3>GPS Data:</h3>
+<p id="ua4" class="user_alert" style="display:none;"><?=$user_alert;?></p>
 <h3>File Upload for 'Related Hike Information' (types .gpx, .kml, .html):</h3>
 <p>Note: These files are generally useful for proposed hike track data
 and/or maps</p>

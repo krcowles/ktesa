@@ -87,7 +87,7 @@ $('button[id^=t]').on('click', function(ev) {
     }
 });
 // place correct tab (and apply button) in foreground - on page load only
-var tab = $('#entry').text();
+var tab = $('#entry').text(); // tab # is saved in editDB.php
 var tabon = '#t' + tab;
 $(tabon).trigger('click');
 var applyAdd = '#d' + tab;
@@ -96,6 +96,18 @@ $(applyAdd).prepend(applyPos[posNo]);
 $(applyAdd).show();
 $(applyAdd).offset({top: btop, left: blft});
 var lastA = tab;
+
+// If there is a user alert to show, set the message text:
+var user_alert = '';
+if (tab == '1' && $('#ua1').text() !== '') {
+    user_alert = $('#ua1').text();
+} else if (tab == '4' && $('#ua4').text() !== '') {
+    user_alert = $('#ua4').text();
+}
+if (user_alert !== '') {
+    alert(user_alert);
+    $.get('resetAlerts.php');
+}
 
 /**
  * This section does data validation for the 'directions' URL and highlights
@@ -150,12 +162,6 @@ $('#preview').on('click', function() {
     var prevPg = '../pages/hikePageTemplate.php?age=new&hikeIndx=' + hike;
     window.open(prevPg,"_blank");
 });
-
-// If there is a user alert to show, set the message text:
-let usr_alert = $('#usr_alert').text();
-if (usr_alert !== '') {
-    alert(usr_alert);
-}
 
 // show/hide lat lng data entries
 $('#showll').on('click', function() {

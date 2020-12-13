@@ -18,7 +18,7 @@
 <p id="newclus" style="display:none;"><?= $newclus;?></p>
 <p id="ctype" style="display:none"><?= $logistics;?></p>
 <p id="ptype" style="display:none">Edit</p>
-<p id="usr_alert" style="display:none"><?=$usr_alert;?></p>
+<p id="ua1" class="user_alert" style="display:none"><?=$user_alert;?></p>
 
 <div id="d1">
     <input id="ap1" type="submit" name="savePg" value="Apply" />
