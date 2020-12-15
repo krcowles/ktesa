@@ -23,6 +23,8 @@ $maphtml = '';
 foreach ($gpsv as $line) {
     if (strpos($line, "<title>") > 0) {
         $maphtml .= '        <title>' . $hikeTitle . '</title>' . PHP_EOL;
+    } elseif (strpos($line, 'API_KEY_HERE')) {
+        $maphtml .= '            google_api_key = "' . API_KEY . '";' . PHP_EOL;
     } elseif (strpos($line, '<meta name="geo.postion"')) {
         $maphtml .= '        <meta name="geo.position" content="' . $clat .
             ', ' . $clon . '" />' . PHP_EOL;
@@ -116,7 +118,7 @@ $maphtml .= PHP_EOL . '                GV_Finish_Map();' . PHP_EOL;
 $maphtml .= '            }' . PHP_EOL;
 $maphtml .= PHP_EOL . '            GV_Map(); // execute the above code' . PHP_EOL;
 $maphtml .= '       // http://www.gpsvisualizer.com/map_input?allow_export=1' .
-    '&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU' .
+    '&form=google&google_api_key=yourkey' .
     '&google_street_view=1&google_trk_mouseover=1&tickmark_interval=' .
     '.3%20mi&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=auto' .
     PHP_EOL;    //$maphtml .= $line . PHP_EOL;

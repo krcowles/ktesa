@@ -64,8 +64,6 @@ window.name = "homePage";
 <script src="../scripts/markerclusterer.js"></script>
 <script src="../scripts/map.js"></script>
 <script src="../scripts/sideTables.js"></script>
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&callback=initMap&v=3&libraries=geometry">
-</script>
+<script async defer src="<?=Google_Map;?>"></script>
 </body>
 </html>
