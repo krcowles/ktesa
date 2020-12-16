@@ -3,12 +3,38 @@ body {
     font-size: 16px;
     margin: 0px;
 }
+button {
+    margin-bottom: 4px;
+    border-width: 1px;
+}
 legend { 
     color: darkgreen;
     font-style: italic;
+    font-size: 18px;
 }
-#sitemode {
-    font-size: 16px;
+.cats {
+    font-size: 18px;
+    color: brown;
+}
+#switchstate, #lst, #swdb {
+    margin-bottom: 12px;
+}
+#switchstate, #upld, #chgs, #site, #npix, #rel2pic, #lst, #reload,
+#drall, #ldall, #exall, #show, #swdb, #editmode, #commit, #cleanPix,
+#pinfo, #addbk, #pub, #ehdel, #revall, #revsgl {
+    color: black;
+    background-color: ghostwhite;
+}
+#switchstate:hover, #upld:hover, #chgs:hover, #site:hover, #npix:hover,
+#rel2pic:hover, #lst:hover, #reload:hover, #drall:hover, #ldall:hover,
+#exall:hover, #show:hover, #swdb:hover, #editmode:hover, #commit:hover,
+#cleanPix:hover, #pinfo:hover, #addbk:hover, #pub:hover, #ehdel:hover,
+#revall:hover, #revsgl:hover {
+    color: white;
+    background-color: saddlebrown;
+}
+#sitemode, #currstate, #emode, #cdb {
+    font-size: 18px;
 }
 #currstate {
     color: blue;
@@ -21,21 +47,21 @@ select {
     height: 24px;
     font-size: 16px;
 }
-input[type=submit] {
-    font-size: 18px;
-    color: DarkBlue;
-    cursor: pointer;
+#datepicker, #revlist {
+    height: 18px;
+    border-radius: 4px;
+    font-size: 14px;
+    padding-left: 4px;
 }
-input[type=submit]:hover {
-    background-color: BlanchedAlmond;
+#revresult, label  {
+    font-size: 18px;
 }
 input[type=file] {
     font-size: 18px;
-    color: brown;
 }
 input[type=file]:hover {
     cursor: pointer;
 }
-.ged {
-    margin-left: 24px;
+#filebrowse {
+    margin-bottom: 6px;
 }

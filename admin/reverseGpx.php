@@ -13,6 +13,8 @@
  */
 session_start();
 require "../php/global_boot.php";
+$revtype = filter_input(INPUT_POST, 'revtype');
+$revlist = filter_input(INPUT_POST, 'revlist');
 
 $upload = validateUpload("gpx2edit", true);
 if ($upload['file'] == '') {
@@ -21,21 +23,21 @@ if ($upload['file'] == '') {
     $_SESSION['user_alert'] = "Incorrect file type";
 }
 if (!empty($_SESSION['user_alert'])) {
-    header("Location: admintools.php");
+    header("Location: admintools.php", true);
     exit;
 }
 $dom = new DOMDocument();
 $dom->formatOutput = true;
+$dom->load($upload['loc']);
 $tracks = $dom->getElementsByTagName('trk'); // DONMNodeList object
 $trkcnt = $tracks->length;
 // process user input to determine tracks to be iteratively reversed
 $tracklist = [];
-if (isset($_POST['gpxall'])) {
+if ($revtype === 'gpxall') {
     for ($i=0; $i<$trkcnt; $i++) {
         $tracklist[$i] = $i;
     }
-} elseif (isset($_POST['gpxlst'])) {
-    $revlist = filter_input(INPUT_POST, 'revlst');
+} elseif ($revtype === 'gpxsgl') {
     $noWhiteList = preg_replace('/\s+/', '', $revlist);
     $trkels = explode(",", $noWhiteList);
     foreach ($trkels as $member) {

@@ -13,9 +13,9 @@
 session_start();
 require "../php/global_boot.php";
 $admin_alert = '';
-if (isset($_SESSION['usr_alert'])) {
-    $admin_alert = $_SESSION['usr_alert'];
-    unset($_SESSION['usr_alert']);
+if (isset($_SESSION['user_alert'])) {
+    $admin_alert = $_SESSION['user_alert'];
+    unset($_SESSION['user_alert']);
 }
 ?>
 <!DOCTYPE html>
@@ -53,9 +53,10 @@ if (isset($_SESSION['usr_alert'])) {
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Overall Site Management</legend>
-        <p id="sitemode">The site is currently in
-            <span id="currstate"><?= $appMode;?></span> mode:&nbsp;&nbsp;
-        <button id="switchstate">Switch Site Mode</button></p>
+        <button id="switchstate">Switch Site Mode</button>&nbsp;&nbsp;
+        <span id="sitemode">The site is currently in
+            <span id="currstate"><?= $appMode;?></span> mode:</span><br />
+        <!-- CURRENTLY NOT USED
         <form action="upldSite.php" method="POST" target="_blank"
             enctype="multipart/form-data">
             Upload:<br />
@@ -63,11 +64,14 @@ if (isset($_SESSION['usr_alert'])) {
             <input id="ufile" type="file" name="ufile" />
                 &nbsp;[Uploads Zip File and Extracts to 'upload' directory]<br />
         </form>
-        Downloads:<br />
+        -->
+        <span class="cats">Downloads:</span><br />
         <button id="chgs">Changes Only</button>
             &nbsp;[Downloads zip file]<br />
+        <!-- CURRENTLY NOT USED
         <button id="site">Entire Site</button>
             &nbsp;[Downloads compressed archive]<br />
+        -->
         <button id="npix">New Pictures</button>
             &nbsp;[Downloads new pictures since last Site upload]<br />
         <button id="rel2pic">Pictures newer than: </button>&nbsp;&nbsp;
@@ -76,9 +80,10 @@ if (isset($_SESSION['usr_alert'])) {
             <span id="dsel">OR specify calendar date&nbsp;&nbsp;
             <input style="font-size:12px;width:90px;"
                 id="datepicker" type="text" name="datepicker" /></span><br />
-        <span style="font-size:20px;color:brown;">Listings:</span><br />
-        <button id="lst">List New Files</button>&nbsp;&nbsp;[Since last upload]
-        <p>Database Management Tools:</p>
+        <span class="cats">Listings:</span><br />
+        <button id="lst">List New Files</button>
+            &nbsp;&nbsp;[Since last upload]<br />
+        <span id="mgmt" class="cats">Database Management Tools:</span><br />
         <button id="reload">Reload Database</button>&nbsp;
             [Drops All Tables and Loads All Tables]<br />
         <button id="drall">Drop All Tables</button><br />
@@ -88,14 +93,14 @@ if (isset($_SESSION['usr_alert'])) {
             [NOTE: Creates .sql file]<br />
         <button id="show">Show All Tables</button><br />
         <button id="swdb">Switch DB's</button>&nbsp;&nbsp;
-            Current database in use:
+            <span id="cdb">Current database in use:
         <?php if ($dbState === 'test') : ?>
             <span id="test" style="color:red;">Test</span>
         <?php else : ?>
             <span id="real" style="color:blue;">Site</span>
         <?php endif; ?>
-        <hr />
-        <p>Miscellaneous Tools:</p>
+            </span><br />
+        <span class="cats">Miscellaneous Tools:</span><br />
         <?php
         if ($editing === 'yes') {
             $allow = "Editing Allowed";
@@ -103,7 +108,8 @@ if (isset($_SESSION['usr_alert'])) {
             $allow = "No Editing Mode";
         }
         ?>
-        <button id="emode"><?= $allow;?></button> [Click to change modes]<br />
+        <button id="editmode" >Change Edit Mode</button>&nbsp;&nbsp;
+            <span id="emode" style="color:blue;"><?=$allow;?></span><br />
         <button id="commit">Display Commit</button>&nbsp;&nbsp;[for this site]<br />
         <button id="cleanPix">Cleanup Pictures</button>
             &nbsp;&nbsp;[removes photos not related to hikes]<br />
@@ -118,15 +124,19 @@ if (isset($_SESSION['usr_alert'])) {
     </fieldset><br />
     <fieldset>
         <legend>GPX File Edits</legend>
-        NOTE: Will download a file called "reversed.gpx"<br />
-        <form action="reverseGpx.php" method="POST" enctype="multipart/form-data" />
-            <input type="file" id="gpx2edit" name="gpx2edit" /><br />
-            <input class="ged" type="submit" name="gpxall"
-                value="Reverse All Tracks" /><br />
-            <input class="ged" type="submit" name="gpxlst"
-                value="Reverse Track No(s):" />
+        <form id="revgpx" action="reverseGpx.php" method="POST"
+            enctype="multipart/form-data" />
+            <span id="revresult">NOTE: This will download a file
+                        called "reversed.gpx"</span>
+            <div id="filebrowse">
+                <label for="gpx2edit">Upload GPX File:</label>
+                <input type="file" name="gpx2edit" />
+            </div>
+            <button id="revall">Reverse All Tracks</button><br />
+            <button id="revsgl">Reverse Only Track(s)</button>
+            <input type="hidden" name="revtype" value="" /> 
             (Single trk#, comma-list, or hyphen-range):&nbsp;
-            <input type="text" id="revlst" name="revlst" size="20" />
+            <input id="revlist" type="text" name="revlist" size="20" />
         </form>
     </fieldset><br/>
     <p id="admin_alert" style="display:none;"><?=$admin_alert;?></p>

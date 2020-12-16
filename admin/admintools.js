@@ -78,11 +78,11 @@ $('#swdb').on('click', function() {
     window.open('switchDb.php');
     window.close();
 });
-$('#emode').on('click', function() {
-    var butnTxt = $('#emode').text();
+$('#editmode').on('click', function() {
+    var emode = $('#emode').text();
     $.ajax({
         url: 'siteEdit.php',
-        data: {button: butnTxt},
+        data: {button: emode},
         dataType: "text",
         success: function(resp) {
             $('#emode').text(resp);
@@ -133,6 +133,16 @@ if (typeof(nopix) !== 'undefined') {
 }
 $('#addbk').on('click', function() {
     window.open("addBook.php", "_blank");
+});
+$('#revall').on('click', function(ev) {
+    ev.preventDefault();
+    $('input[name=revtype]').val("gpxall");
+    $('#revgpx').trigger('submit');
+});
+$('#revsgl').on('click', function(ev) {
+    ev.preventDefault();
+    $('input[name=revtype]').val("gpxsgl");
+    $('#revgpx').trigger('submit');
 });
 let admin_alert = $('#admin_alert').text();
 if (admin_alert !== '') {
