@@ -1,3 +1,4 @@
+"use strict"
 /**
  * @file This file creates and places the html for the side table, as well as providing
  *       a search bar capability synchronized to the side table.
@@ -5,10 +6,6 @@
  * @author Ken Cowles
  * @version 4.0 Adds track highlighting
  */
-
-// Items in the db that are not actual hikes (formerly Visitor Centers, now Clusters)
-const VisitorCenters = ['Bandelier Index', 'Chaco Index', 'El Malpais Index',
-    'Petroglyphs Index', 'El Morro Index', 'Rio Grande Nature Center Index'];
 
 /**
  * Searchbar Functionality (html datalist element)
@@ -35,24 +32,21 @@ $('#searchbar').on('input', function(ev) {
  */
 function popupHikeName(hikename) {
     var found = false;
-    for (let i=0; i<CL.length; i++) {
-        if (VisitorCenters.includes(hikename)) { // VC's are now clusters
-            let indx = VisitorCenters.indexOf(hikename);
-            // there is a correspondence between VisitorCenters' index in CL index
+    if (pgnames.includes(hikename)) { // These are 'Cluster Pages', not hikes
+            let indx = pgnames.indexOf(hikename);
             hilite_obj = {obj: CL[indx].hikes, type: 'cl'};
             infoWin(CL[indx].group, CL[indx].loc);
             found = true;
-        }
-        for (let j=0; j<CL[i].hikes.length; j++) {
-            if (CL[i].hikes[j].name == hikename) {
-                hilite_obj = {obj: CL[i].hikes[j], type: 'nm'};
-                infoWin(CL[i].group, CL[i].loc);
-                found = true;
-                break;
+    } else {
+        for (let i=0; i<CL.length; i++) {
+            for (let j=0; j<CL[i].hikes.length; j++) {
+                if (CL[i].hikes[j].name == hikename) {
+                    hilite_obj = {obj: CL[i].hikes[j], type: 'nm'};
+                    infoWin(CL[i].group, CL[i].loc);
+                    found = true;
+                    break;
+                }
             }
-        }
-        if (found) {
-            break;
         }
     }
     if (!found) {
@@ -455,6 +449,10 @@ const IdTableElements = (boundsStr, zoom) => {
     var max_color = colors.length - 1;
     CL.forEach(function(clus, clindx) {
         var color = 0;
+        var link = "hikePageTemplate.php?hikeIndx=";
+        if (parseInt(clus.page) !== 0) { // then this is a 'Cluster Page'
+            link = "hikePageTemplate.php?clus=y&hikeIndx=";
+        }
         clus.hikes.forEach(function(hike) {
             let lat = hike.loc.lat;
             let lng = hike.loc.lng;
@@ -464,8 +462,8 @@ const IdTableElements = (boundsStr, zoom) => {
                 let data = idHike(allHikes[hikeindx], hikeobj);
                 hikearr.push(data);
                 if (zoom) {
-                    let cliw = '<div id="iwCH"><a href="hikePageTemplate.php?hikeIndx=' + 
-                        hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
+                    let cliw = '<div id="iwCH"><a href="' + link + hike.indx + 
+                        '" target="_blank">' + hike.name + '</a><br />Length: ' +
                         hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
                         '<br />Difficulty: ' + hike.diff + '</div>';
                     singles.push(hike.indx);

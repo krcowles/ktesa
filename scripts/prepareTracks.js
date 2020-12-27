@@ -1,14 +1,16 @@
+"use strict"
 /**
  * @fileoverview This file will assemble track data for all tracks. The
  * track data is used to draw a given track's elevation chart.
- * Note: the var 'hikeFiles' is supplied via php in hikePageTemplate.php
+ * Note: the var 'hikeFiles', a list of the page's gpx files, is supplied
+ * via php in hikePageTemplate.php
  * 
  * @author Tom Sandberg
  * @author Ken Cowles
  */
 var hikeTrack; // variable used in getTrackData() ajax
 var allTracks  = $.Deferred(); // when done, draw chart
-var promises   = [];
+var promises   = []; // collection of promises
 // The following have a one-to-one correspondence for track drawing:
 var gpsvTracks = []; // track names appearing in GPSV tracklist box
 var trkLats = []; // array of track's latitudes
@@ -24,8 +26,8 @@ for (let i=0; i<hikeFiles.length; i++) {
     getTrackData(trackDef);
 }
 $.when.apply($, promises).then(function() {
-    // Note: due to asynchronous loading, 'gpsvTracks' and associated data
-    // may not be in the same order as the gpsv tracklist box
+    // Note: due to asynchronous loading, gpsvtracks and associated data
+    // may not be in the same order as the gpsv map's tracklist box
     allTracks.resolve();
 });
 

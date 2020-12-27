@@ -147,30 +147,6 @@ foreach ($files as $gpx) {
         fclose($handleDfa);
         fclose($handleDfc);
     }
-    // Calculate map bounds and center coordiantes
-    $north = $allLats[0];
-    $south = $north;
-    $east = $allLngs[0];
-    $west = $east;
-    for ($i=1; $i<count($allLngs)-1; $i++) {
-        if ($allLats[$i] > $north) {
-            $north = $allLats[$i];
-        }
-        if ($i === 55) { // arbitrarily chosen #miles in length as a limit
-            $msg = "lat: " . $allLats[$i] . ', north: ' . $north;
-        }
-        if ($allLats[$i] < $south) {
-            $south = $allLats[$i];
-        }
-        if ($allLngs[$i] < $west) {
-            $west = $allLngs[$i];
-        }
-        if ($allLngs[$i] > $east) {
-            $east = $allLngs[$i];
-        }
-    }
-    $clat = $south + ($north - $south)/2;
-    $clon = $west + ($east - $west)/2;
     /**
      *   ---- ESTABLISH ANY WAYPOINTS IN GPX FILE ----
      */

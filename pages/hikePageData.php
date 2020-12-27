@@ -10,7 +10,6 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require_once "../accounts/getLogin.php";
 
 // Delete all tmp map files older than threshold
 $time = time() - 45; // seconds ago
@@ -33,27 +32,35 @@ foreach ($iterator as $file) {
 
 $tbl = filter_input(INPUT_GET, 'age');
 $hikeIndexNo = filter_input(INPUT_GET, 'hikeIndx', FILTER_SANITIZE_NUMBER_INT);
-$distThreshParm = filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT);
-$elevThreshParm = filter_input(INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT);
-$maWindowParm = filter_input(INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT);
-$makeGpsvDebugParm = filter_input(INPUT_GET, 'makeGpsvDebugParm');
-$showAscDsc = filter_input(INPUT_GET, 'showAscDsc');
+$clusterPage = isset($_GET['clus']) && $_GET['clus'] === 'y' ? true : false;
+// optional ascent/descent parameters
+$distThreshParm = isset($_GET['distThreshParm']) ?
+    filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT) : false;
+$elevThreshParm = isset($_GET['elevThreshParm']) ?
+    filter_input(INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT) : false;
+$maWindowParm = isset($_GET['maWindowParm']) ?
+    filter_input(INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT) : false;
+$makeGpsvDebugParm = isset($_GET['makeGpxvDebug']) ?
+    filter_input(INPUT_GET, 'makeGpsvDebugParm') : false;
+$showAscDsc = isset($_GET['showAscDsc']) ?
+    filter_input(INPUT_GET, 'showAscDsc') : false;
+
+// assign tables based on whether published or in-edit
 $ehikes = (isset($tbl) && $tbl === 'new') ? true : false;
 if ($ehikes) {
     $htable = 'EHIKES';
     $rtable = 'EREFS';
     $gtable = 'EGPSDAT';
     $ttable = 'ETSV';
-    $tbl = 'new';
+    $tbl    = 'new';
 } else {
     $htable = 'HIKES';
     $rtable = 'REFS';
     $gtable = 'GPSDAT';
     $ttable = 'TSV';
-    $tbl = 'old';
+    $tbl    = 'old';
 }
 $hikepage = true;
-// Form the queries for extracting data from HIKES/EHIKES and TSV/ETSV
 $basic = "SELECT * FROM {$htable} WHERE indxNo = :indxNo";
 $basicPDO = $pdo->prepare($basic);
 $photos = "SELECT folder,title,hpg,mpg,`desc`,thumb,alblnk,date," .
@@ -71,46 +78,32 @@ $pdo->commit();
  * basic hike page template.
  */
 $row = $basicPDO->fetch(PDO::FETCH_ASSOC);
-$hikeTitle = $row['pgTitle'];
-$hikeLocale = $row['locale'];
-$hikeGroup = $row['cgroup']; // now obsolete
-$hikeCluster = $row['cname'];
-$hikeType = $row['logistics'];
-$hikeLength = $row['miles'] . " miles";
-$hikeElevation = $row['feet'] . " ft";
+$hikeTitle      = $row['pgTitle'];
+$hikeLocale     = $row['locale'];
+$hikeType       = $row['logistics'];
+$hikeLength     = $row['miles'] . " miles";
+$hikeElevation  = $row['feet'] . " ft";
 $hikeDifficulty = $row['diff'];
 $hikeFacilities = $row['fac'];
-$hikeWow = $row['wow'];
-$hikeSeasons = $row['seasons'];
-$hikeExposure = $row['expo'];
+$hikeWow        = $row['wow'];
+$hikeSeasons    = $row['seasons'];
+$hikeExposure   = $row['expo'];
+
 // There may be multiple gpx files in the 'gpx' field
 $files = []; // required by multiMap.php
 $allgpx = $row['gpx'];
 if (!empty($allgpx)) {
-    $newstyle = true;
-    $gpxfiles = explode(",", $allgpx);
-    $gpxfile = $gpxfiles[0];
-    $gpxPath = '../gpx/' . $gpxfile;
-    for ($j=0; $j<count($gpxfiles); $j++) {
-        array_push($files, $gpxfiles[$j]);
-    }
+    $newstyle = true; 
+    $files    = explode(",", $allgpx);
+    $gpxfile  = $files[0];
+    $gpxPath  = '../gpx/' . $gpxfile;
 } else {
     $newstyle = false;
-    $gpxfile = '';
-    $gpxPath = '';
-    $gpxfiles = [];
+    $gpxfile  = '';
+    $gpxPath  = '';
 }
 $jsonFile = $row['trk'];
-if ($row['aoimg1'] == '') {
-    $hikeAddonImg1 = '';
-} else {
-    $hikeAddonImg1 = unserialize($row['aoimg1']);
-}
-if ($row['aoimg2'] == '') {
-    $hikeAddonImg2 = '';
-} else {
-    $hikeAddonImg2 = unserialize($row['aoimg2']);
-}
+// Pages with old Flickr photos
 $hikePhotoLink1 = $row['purl1'];
 $hikePhotoLink2 = $row['purl2'];
 $photoAlbum = '<br />';
@@ -125,11 +118,62 @@ if (!empty($row['purl1'])) {
     }
 }
 $hikeDirections = $row['dirs'];
-$hikeTips = $row['tips'];
-$hikeInfo = $row['info'];
-$hikeEThresh = $row['eThresh'];
-$hikeDThresh = $row['dThresh'];
-$hikeMaWin = $row['maWin'];
+$hikeTips       = $row['tips'];
+$hikeInfo       = $row['info'];
+$hikeEThresh    = $row['eThresh'];
+$hikeDThresh    = $row['dThresh'];
+$hikeMaWin      = $row['maWin'];
+$displayAscDsc  = ($showAscDsc == true) || is_numeric($hikeEThresh) ? true : false;
+
+/**
+ * For Cluster Pages only: find all the hikes in this cluster and extract the
+ * data required to display each hike's corresponding info in the side panel.
+ * Also, since there are no gpx files listed in HIKES for a Cluster Page, the
+ * $files array (used in multiMap.php) is populated here for map creation.
+ * Note that the GPSV map 'tracklist' displays the track NAME found in the gpx
+ * file, not the gpx file name. For that reason, a javascript object is formed
+ * which correlates track name with gpx file. Thus, when a track is chosen
+ * for display on the map, its corresponding gpx file data will populate the
+ * side panel.
+ */
+$clus = $clusterPage ? 'yes' : 'no'; // hidden <p> element indicates cluster page
+if ($clusterPage) {
+    $newstyle = true;
+    $clusidReq = "SELECT `clusid` FROM `CLUSTERS` WHERE `page`=?;";
+    $clusid = $pdo->prepare($clusidReq);
+    $clusid->execute([$hikeIndexNo]);
+    $cid = $clusid->fetch(PDO::FETCH_ASSOC);
+    $chikesReq = "SELECT `indxNo` FROM `CLUSHIKES` WHERE `cluster`=?;";
+    $chikes = $pdo->prepare($chikesReq);
+    $chikes->execute([$cid['clusid']]);
+    $clushikes = $chikes->fetchAll(PDO::FETCH_COLUMN); // the hikes assoc. w/cluster
+    $hike_data = [];
+    foreach ($clushikes as $hike) {
+        // Get the side panel data for this $hike ('indxNo')
+        $hikeReq = "SELECT `logistics`,`miles`,`feet`,`diff`,`wow`," .
+            "`seasons`,`expo`,`gpx` FROM `HIKES` WHERE `indxNo`=?;";
+        $hikedat = $pdo->prepare($hikeReq);
+        $hikedat->execute([$hike]);
+        $sidepnl = $hikedat->fetch(PDO::FETCH_ASSOC);
+        $gpxfnames = array_pop($sidepnl);
+        // there may be multiple files associated with this hike
+        $filelist = explode(",", $gpxfnames);
+        // associate each trackname in any file with its corresponding gpx file
+        foreach ($filelist as $gpx) {
+            array_push($files, $gpx);
+            $contents = simplexml_load_file("../gpx/" . $gpx);
+            // there may be more than one track in a file (e.g. Black Canyon)
+            $noOfTrks = $contents->trk->count();
+            for ($j=0; $j<$noOfTrks; $j++) {
+                $tname = $contents->trk[$j]->name->__toString();
+                $trkrel = array($tname => $sidepnl);
+                $hike_data += $trkrel;  // "+" is union operator for arrays
+            }
+        }
+    }
+    $sidePanelData = json_encode($hike_data);
+}
+require "relatedInfo.php";
 /**
  * This section collects the information from TSV/ETSV table needed
  * to build the picture rows...
@@ -169,31 +213,6 @@ foreach ($photosData as $pics) {
     }
 }
 $capCnt = count($descs);
-// if there are additional images (non-captioned), process them here:
-if (is_array($hikeAddonImg1)) {
-    $aoimg1 = $hikeAddonImg1[0];
-    array_push($descs, $hikeAddonImg1[0]);
-    array_push($alblnks, '');
-    array_push($piclnks, $aoimg1);
-    array_push($captions, '');
-    $ht = $hikeAddonImg1[1];
-    $wd = $hikeAddonImg1[2];
-    array_push($widths, $wd);
-    $imgRatio = $wd/$ht;
-    array_push($aspects, $imgRatio);
-}
-if (is_array($hikeAddonImg2)) {
-    $aoimg2 = $hikeAddonImg2[0];
-    array_push($descs, $hikeAddonImg2[0]);
-    array_push($alblnks, '');
-    array_push($piclnks, $aoimg2);
-    array_push($captions, '');
-    $ht = $hikeAddonImg2[1];
-    $wd = $hikeAddonImg2[2];
-    array_push($widths, $wd);
-    $imgRatio = $wd/$ht;
-    array_push($aspects, $imgRatio);
-}
 /**
  * There are two possible types of hike page displays. If the hike page
  * has a map and elevation chart to display, the variable $newstyle is
@@ -218,7 +237,16 @@ if ($newstyle) {
         throw new Exception($mapmsg);
     }
     $fpLnk = "../maps/fullPgMapLink.php?hike={$hikeTitle}" .
-        "&gpx={$gpxfile}&hno={$hikeIndexNo}&tbl={$tbl}";
+        "&hno={$hikeIndexNo}&tbl={$tbl}";
+    if ($clusterPage) {
+        $fpLnk .= "&clus=y";
+        foreach ($files as $gpx) {
+            $fpLnk .= "&gpx[]={$gpx}";
+        }
+    } else {
+        $fpLnk .= "&gpx={$gpxfile}";
+    }
+        
     $map_opts = [
         'show_geoloc' => 'true',
         'zoom' => 'auto',
@@ -241,25 +269,23 @@ if ($newstyle) {
      *  hike-specific value from database,
      *  default value defined here.
     */
-    if (isset($elevThreshParm)) { // threshold (meters) for elevation smoothing
+    if ($elevThreshParm) { // threshold (meters) for elevation smoothing
         $elevThresh = $elevThreshParm;
     } else {
         $elevThresh = isset($hikeEThresh) ? $hikeEThresh : 1;
     }
-    if (isset($distThreshParm)) { // threshold (meters) for distance smoothing
+    if ($distThreshParm) { // threshold (meters) for distance smoothing
         $distThresh = $distThreshParm;
     } else {
         $distThresh = isset($hikeDThresh) ? $hikeDThresh : 1;
     }
-    if (isset($maWindowParm)) { // moving average window size for elevation smoothing
+    if ($maWindowParm) { // moving average window size for elevation smoothing
         $maWindow = $maWindowParm;
     } else {
         $maWindow = isset($hikeMaWin) ? $hikeMaWin : 1;
     }
-
-    // Set debug output parameter based on the URL param established in hikePageData.php
-    if (isset($makeGpsvDebugParm)) {
-        $makeGpsvDebug = "true" ? true : false;
+    if ($makeGpsvDebugParm) {
+        $makeGpsvDebug = $makeGpsvDebug === "true" ? true : false;
     } else {
         $makeGpsvDebug = false;
     }

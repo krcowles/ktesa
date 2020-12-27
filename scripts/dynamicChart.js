@@ -1,11 +1,15 @@
+"use strict"
 /**
  * @fileoverview This file supplies functions and variables to draw
  * an elevation profile on the page with a given gpx track name.
  * @author Tom Sandberg
  * @author Ken Cowles
+ * 
+ * @version 3.0 Added Cluster Page compatibility
  */
+var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var resizeFlag = true;
-var trackNumber;   // global used in hide/unhide & window.resize
+var trackNumber;   // global used to identify current active track (topmost in tracklist)
 // Hide/unhide side panel (changes width of elevation profile chart)
 var orgWidth;
 $('#hide').on('click', function() {
@@ -15,6 +19,7 @@ $('#hide').on('click', function() {
     canvasEl.width = fullWidth;
     // redraw the chart
     drawChart(trackNumber);
+
     $('iframe').width(fullWidth);
     $('#unhide').css('display','block');
 });
@@ -38,11 +43,27 @@ var trackNames = [];
 var checkboxes = [];
 var box_states = [];
 var lastTrack = 0; // indx in box_states
+
+/**
+ * Once a track is identified for display, show that gpx file's data in the
+ * side panel.
+ * 
+ * @return {null}
+ */
+const displayTrackSidePanel = (trkname) => {
+    let data = panelData[trkname];
+    $('#hdiff').text(data["diff"]);
+    $('#hlgth').text(data["miles"]);
+    $('#hmmx').text(data["feet"]);
+    $('#hlog').text(data["logistics"]);
+    $('#hexp').text(data["expo"]);
+    $('#hseas').text(data["seasons"]);
+    $('#hwow').text(data["wow"]);
+}
 /**
  * This function turns on the topmost checked tracklist box. If all boxes
  * are unchecked, the last box checked remains displayed in elevation chart.
  * 
- * @param {array} cbarray The set of neighboring checkboxes in the tracklist
  * @return {null}
  */
 const plotTopMost = () => {
@@ -55,7 +76,7 @@ const plotTopMost = () => {
     // find index in preloaded tracks:
     trackNumber = gpsvTracks.indexOf(trackNames[lastTrack]);
     canvasEl.onmousemove = null;
-    drawChart(trackNumber);    
+    drawChart(trackNumber);
 }
 // one-time tracklist setup when iframe is loaded:
 var mapdiv = document.getElementById('mapline');
@@ -74,12 +95,19 @@ mapdiv.onload = function() {
             let checkbox = $items[0].firstChild;
             let $checkbox = $(checkbox);
             checkboxes.push($checkbox);
-            if (j>0) {
-                box_states[j] = 0;
-                // on page load, all boxes are checked: leave top box on only
-                $checkbox.click();
+            // initialize box_states array (tracks 'checkbox checked' T/F)
+            if (cluspage) {
+                for (let k=0; k<checkboxes.length; k++) {
+                    box_states[k] = 1;
+                }
             } else {
-                box_states[0] = 1;
+                if (j>0) {
+                    box_states[j] = 0;
+                    // on page load, all boxes are checked: leave top box on only
+                    $checkbox.trigger('click');
+                } else {
+                    box_states[0] = 1;
+                }
             }
         }
         // click behaviors:
@@ -155,6 +183,9 @@ function drawChart(trackNo) {
     var chartData = defineData(trackNo);
     ChartObj.render('grph', chartData);
     crossHairs(trackNo);
+    if (cluspage) {
+        displayTrackSidePanel(trackNames[trackNo]);
+    }
     return;
 }
 /**
@@ -183,7 +214,8 @@ function defineData(track) {
  * @return {null}
  */
 function crossHairs(trackno) {
-    var imageData = {};
+    // onmouseout needs to have initialized ImageData() interface object:
+    var imageData = new ImageData(10, 10);
     canvasEl.onmousemove = function (e) {
         var loc = window2canvas(canvasEl, e.clientX, e.clientY);
         coords = dataReadout(loc, trackno);

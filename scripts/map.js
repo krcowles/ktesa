@@ -1,3 +1,15 @@
+"use strict"
+/**
+ * @fileoverview This routine initializes the google map to view the state
+ * of New Mexico, places markers on hike locations, and clusters the markers
+ * together displaying the number of markers in the group. It also draws hike
+ * tracks when zoomed in, and then also when panned.
+ * 
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ * 
+ * @version 3.0 Added Cluster Page compatibility (removes indexPageTemplate links)
+ */
 // Hike Track Colors: red, blue, orange, purple, black
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000']
 var geoOptions = { enableHighAccuracy: 'true' };
@@ -124,16 +136,18 @@ function initMap() {
 		let srchmrkr = {hikeid: group, pin: marker};
 		locaters.push(srchmrkr);
 		clustererMarkerSet.push(marker);
-
-		// infoWindow content: add in all the hikes for this group
+		
+		let iwContent = '<div id="iwCH">';
 		if (page !== 0) {
-			group = '<a href="indexPageTemplate.php?hikeIndx=' + page +
-				'">' + group + '</a>';
+			let link = "hikePageTemplate.php?clus=y&hikeIndx=";	
+			iwContent += '<br /><a href="' + link + page + '">' + group + '</a>';
+		} else {
+			iwContent += '<br />' + group;
 		}
-		let iwContent = '<div id="iwCH">' + group;
+		let link = "hikePageTemplate.php?hikeIndx=";
 		clhikes.forEach(function(clobj) {
-			iwContent += '<br /><a href="hikePageTemplate.php?hikeIndx=' +
-				clobj.indx + '">' + clobj.name + '</a>';
+			iwContent += '<br /><a href="' + link + clobj.indx + '">' +
+				clobj.name + '</a>';
 			iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' + 
 				clobj.elev + ' ft; Diff: ' + clobj.diff;
 		});

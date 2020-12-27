@@ -55,6 +55,7 @@ $clusterObjs = [];
  * ]}
  */
 $pages = [];
+$pageNames= [];
 for ($j=0; $j<count($clusters); $j++) {
     $partial = '{group:"' . $clusters[$j]['group'] . '",loc:{lat:' .
         $clusters[$j]['lat']/LOC_SCALE  . ',lng:' . $clusters[$j]['lng']/LOC_SCALE .
@@ -62,6 +63,7 @@ for ($j=0; $j<count($clusters); $j++) {
     $clusterObjs[$clusters[$j]['clusid']] = $partial;
     if (!empty($clusters[$j]['page'])) {
         array_push($pages, $clusters[$j]['page']);
+        array_push($pageNames, '"' . $clusters[$j]['group'] . '"');
     }
 }
 
@@ -80,9 +82,8 @@ foreach ($clushikes as $entry) {
  */
 $nmindx = 0;
 foreach ($hikes as $hike) {
-    $hikeno = (int) $hike['indxNo'];
-    if ($hikeno > 4 && $hikeno !== 98 && $hikeno !== 99) { // no former VC's
-        array_push($allHikeIndices, $hikeno);
+    if (!in_array($hike['indxNo'], $pages)) { // no 'Cluster Pages'
+        array_push($allHikeIndices, $hike['indxNo']);
         // PROPOSED HIKES may not have all the data:
         if (strpos($hike['pgTitle'], '[Proposed]') !== false) {
             $hike['miles'] = empty($hike['miles']) ? 0 : $hike['miles'];
@@ -133,6 +134,7 @@ foreach ($clusterObjs as &$cobj) {
 $jsClusters = '[' . implode(",", $clusterObjs) . ']';
 $jsHikes    = '[' . implode(",", $normalObjs) . ']';
 $jsPages    = '[' . implode(",", $pages) . ']';
+$jsPageNames  = '[' . implode(",", $pageNames) . ']';
 
 /**
  * Form array of json file names
@@ -156,3 +158,4 @@ $jsTracks = '[' . implode(",", $trackArray) . ']';
 $jsIndx = '[' . implode(",", $allHikeIndices) . ']';
 // Object location for each index
 $jsLocs = '[' . implode(",", $locaters) . ']';
+// Items which are not hikes but Cluster Pages:

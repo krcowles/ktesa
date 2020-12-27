@@ -53,6 +53,10 @@ table:not('#loginTbl') td {
     box-sizing: border-box;
     overflow:scroll;
 }
+#enotes {
+    padding-left: 6px;
+    padding-right: 6px;
+}
 #hide {
     float: right;
     font-size: 20px;
@@ -81,12 +85,16 @@ table:not('#loginTbl') td {
 #unhide:hover {
     cursor: pointer;
 }
-#stats {
+#stats, #crefs {
 	margin-top: 6px;
 	margin-bottom: 0px;
 	text-align: center;
 	color: Brown;
 	font-size: 20px;
+}
+#crefs {
+    margin-left: auto;
+    margin-right: auto;
 }
 #summary {
 	margin-top: -8px;
@@ -132,6 +140,15 @@ table:not('#loginTbl') td {
 	padding-left: 10px;
 	padding-right: 10px;
 }
+#cdesc {
+    text-align: center;
+}
+#trknote {
+    padding: 0px 8px 0px 8px;
+}
+#top {
+    font-style: italic;
+}
 iframe {
 	float: left;
 	margin-top: -12px;
@@ -170,6 +187,7 @@ fieldset {
 #refs {
     margin-top: 12px;
     margin-bottom: 0px;
+    padding-right: 10px;
 }
 #related {
     margin-top: 0px;

@@ -33,7 +33,7 @@ table:not(#loginTbl) {
 	border-style: groove;
 	border-width: 4px;
 	border-color: goldenRod; }
-th:not('#loginTbl') {
+th:not(#loginTbl) {
 	text-align: center;
 	padding-left: 5px;
 	padding-right: 5px;

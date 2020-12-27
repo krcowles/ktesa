@@ -13,9 +13,14 @@ require "../php/global_boot.php";
 
 $hikeIndexNo = filter_input(INPUT_GET, 'hno');
 $hikeTitle   = filter_input(INPUT_GET, 'hike');
-$gpx         = filter_input(INPUT_GET, 'gpx');
 $ttable      = filter_input(INPUT_GET, 'tbl') === 'new' ? "ETSV" : "TSV";
-$files = [$gpx];
+if (isset($_GET['clus']) && $_GET['clus'] === 'y') {
+    $files = $_GET['gpx'];
+} else {
+    $gpx   = filter_input(INPUT_GET, 'gpx');
+    $files = [$gpx];
+}
+
 // required by multiMap.php
 $makeGpsvDebug = false;
 $handleDfa  = null;

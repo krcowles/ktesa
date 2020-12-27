@@ -20,12 +20,9 @@ require "hikePageData.php";
 <head>
     <title><?= $hikeTitle;?></title>
     <meta charset="utf-8" />
-    <meta name="description"
-        content="Details about the <?= $hikeTitle;?> hike" />
-    <meta name="author"
-        content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots"
-        content="nofollow" />
+    <meta name="description" content="Details about the <?= $hikeTitle;?> hike" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
@@ -55,7 +52,8 @@ function off() {
 <?php require "ktesaPanel.php";?>
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="page_id" style="display:none">Page</p>
-<p id="gpx" style="display:none"><?= $gpxPath;?></p>
+<p id="gpx" style="display:none"><?=$gpxPath;?></p>
+<p id="cpg" style="display:none"><?=$clus;?></p>
 
 <!-- ---------------------------- OLD STYLE -------------------------- -->
 <?php if (!$newstyle) : ?>
@@ -108,50 +106,74 @@ function off() {
 <div id="unhide">></div>
 <div id="sidePanel">
     <div id="hide"><</div>
-    <p id="stats"><strong>Hike Statistics</strong></p>
-    <p id="summary">
-        Nearby City / Locale: <span class="sumClr"><?= $hikeLocale;?></span><br />
-        Hike Difficulty: <span class="sumClr"><?= $hikeDifficulty;?></span><br />
-        Total Length of Hike: <span class="sumClr"><?= $hikeLength;?></span><br />
-        Max to Min Elevation: <span class="sumClr">
-            <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
-    <?php if ((isset($showAscDsc) && $showAscDsc == true) 
-    || is_numeric($hikeEThresh)
-    ) : ?>
-        Total Ascent: <span class="sumClr">
-            <?= sprintf("%.0f", $pup * 3.28084);?> ft</span><br />
-        Total Descent: <span class="sumClr">
-            <?= sprintf("%.0f", $pdwn * 3.28084);?> ft</span><br />
-    <?php endif; ?>
-        Logistics: <span class="sumClr"><?= $hikeType;?></span><br />
-        Exposure Type: <span class="sumClr"><?= $hikeExposure;?></span><br />
-        Seasons : <span class="sumClr"><?= $hikeSeasons;?></span><br />
-        "Wow" Factor: <span class="sumClr"><?= $hikeWow;?></span>
-    </p>
-    <p id="addtl"><strong>More!</strong></p>
-    <p id="mlnk">View <a href="<?= $fpLnk;?>" target="_blank">Full Page Map</a><br />
-        <span class="track">View <a id="view" href="<?= $gpxPath;?>"
-            target="_blank">GPX File</a></span><br />
-        <span class="track">Download <a id="dwn" href="<?= $gpxPath;?>"
-                download>GPX File</a></span>
-    </p>
-    <?= $photoAlbum;?>
-    <p id="directions">The following link provides on-line directions to
-        the trailhead:</p>
-    <p id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">
-        Google Directions</a>
-    </p>
-    <p id="scrollmsg">Scroll down to see images, hike description,
-        reference sources and additonal information as applicable
-    </p>
-    <p id="problems">If you are having problems with this page, please: 
-        <a href="mailto:krcowles29@gmail.com">send us a note!</a>
-    </p>
+        <p id="stats">Hike Statistics</p>
+        <p id="summary">
+            Nearby City / Locale: <span class="sumClr">
+                <?= $hikeLocale;?></span><br />
+            Hike Difficulty: <span id="hdiff" class="sumClr">
+                <?= $hikeDifficulty;?></span><br />
+            Total Length of Hike: <span id="hlgth" class="sumClr">
+                <?= $hikeLength;?></span><br />
+            Max to Min Elevation: <span id="hmmx" class="sumClr">
+                <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
+        <?php if ($displayAscDsc) : ?>
+            Total Ascent: <span class="sumClr">
+                <?= sprintf("%.0f", $pup * 3.28084);?> ft</span><br />
+            Total Descent: <span class="sumClr">
+                <?= sprintf("%.0f", $pdwn * 3.28084);?> ft</span><br />
+        <?php endif; ?>
+            Logistics: <span id="hlog" class="sumClr"><?= $hikeType;?></span><br />
+            Exposure Type: <span id="hexp" 
+                class="sumClr"><?= $hikeExposure;?></span><br />
+            Seasons : <span id="hseas" class="sumClr">
+                <?= $hikeSeasons;?></span><br />
+            "Wow" Factor: <span id="hwow" class="sumClr"><?= $hikeWow;?></span>
+        </p>
+        <?php if (!$clusterPage) : ?>
+            <p id="addtl"><strong>More!</strong></p>
+            <p id="mlnk">View <a href="<?= $fpLnk;?>"
+                target="_blank">Full Page Map</a><br />
+                <span class="track">View <a id="view" href="<?= $gpxPath;?>"
+                    target="_blank">GPX File</a></span><br />
+                <span class="track">Download <a id="dwn" href="<?= $gpxPath;?>"
+                        download>GPX File</a></span>
+            </p>
+            <?= $photoAlbum;?>
+            <p id="directions">The following link provides on-line directions to
+                the trailhead:</p>
+            <p id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">
+                Google Directions</a>
+            </p>
+            <p id="scrollmsg">Scroll down to see images, hike description,
+                reference sources and additonal information as applicable
+            </p>
+            <p id="problems">If you are having problems with this page, please: 
+                <a href="mailto:krcowles29@gmail.com">send us a note!</a>
+            </p>
+        <?php else : ?>
+            <?php include "relatedInfo.php"; ?>
+            <p id="mlnk">View <a href="<?= $fpLnk;?>" target="_blank">
+                Full Page Map</a></p><br />
+            <p id="directions">The following link provides on-line directions to
+                the area:</p>
+            <p id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">
+                Google Directions</a>
+            </p>
+            <p id="cdesc"><a href="#hikeInfo">
+                Area Description & Links</a> Below</p>
+            <div><div id="crefs">For photos and more:</div>
+                <fieldset>
+                <legend>See pages:</legend>
+                <?=$relHikes;?>
+                </fieldset>
+            </div>
+            <div id="trknote">NOTE: The <span id="top">topmost</span> checked
+                item in the 'Tracks' box (in the upper right-hand corner of the
+                map) will display its elevation chart and hike data.
+                Uncheck boxes to see other items.
+            </div>
+        <?php endif; ?>
 </div>
-<?php for ($k=0; $k<count($gpxfiles); $k++) : ?>
-    <!-- get all gpxfiles retrieved by hikePageData.php -->
-    <p style="display:none" id="chartfile<?=$k;?>"><?=$gpxfiles[$k];?></p>
-<?php endfor; ?>
 <!-- Map & Chart on right adjacent to side panel: -->
 <iframe id="mapline" src="<?=  $tmpMap;?>"></iframe>
 <div data-gpx="<?= $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
@@ -164,12 +186,9 @@ function off() {
     <p id="tipNotes"><?= $hikeTips;?></p></div>
 <?php endif; ?>
 <div id="hikeInfo"><?= $hikeInfo;?></div></div><br />
-<?php
-require 'relatedInfo.php';
-if ($bop !== '') {
-    echo $bop;
-}
-?>
+
+<?=$bop;?>
+
 <div id="imgArea"></div>
 <p id="ptype" style="display:none">Hike</p>
 <div id="dbug"></div>
@@ -177,16 +196,17 @@ if ($bop !== '') {
 <div class="popupCap"></div>
 
 <script type="text/javascript">
-    <?php if (isset($hikeFiles)) : ?>
-        var hikeFiles = <?= $hikeFiles;?>;
+    <?php if (isset($sidePanelData)) : ?>
+    var panelData = <?=$sidePanelData;?>;
     <?php endif; ?>
-    var photocnt = <?= $capCnt;?>;
-    var d = "<?= implode("|", $descs);?>";
-    var al = "<?= implode("|", $alblnks);?>";
-    var p = "<?= implode("|", $piclnks);?>";
-    var c = "<?= implode("|", $captions);?>";
-    var as = "<?= implode("|", $aspects);?>";
-    var w = "<?= implode("|", $widths);?>";
+    var hikeFiles = <?=$hikeFiles;?>;
+    var photocnt  = <?=$capCnt;?>;
+    var d  = "<?=implode("|", $descs);?>";
+    var al = "<?=implode("|", $alblnks);?>";
+    var p  = "<?=implode("|", $piclnks);?>";
+    var c  = "<?=implode("|", $captions);?>";
+    var as = "<?=implode("|", $aspects);?>";
+    var w  = "<?=implode("|", $widths);?>";
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/picRowFormation.js"></script>

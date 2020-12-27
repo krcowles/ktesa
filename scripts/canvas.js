@@ -1,3 +1,15 @@
+"use strict"
+/**
+ * @fileoverview This script implements the 'ChartObj' which returns the 'render'
+ * function. That function creates the elevation chart for the html canvas element.
+ * The companion routine, dynamicChart.js, defines the data for the chart and invokes
+ * the render function to draw it on the canvas.
+ * 
+ * @author Tom Sandberg
+ * @author KenCowles
+ * 
+ * @version 1.0
+ */
 // define some globals for the functions below:
 var margin = {};
 var renderType = {};
@@ -158,7 +170,7 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
     for (var i=0; i<noOfGrids; i++) {
         yPos += (i === 0) ? margin.top : yInc;
         // gradient applied to y grid points
-        grad = context.createLinearGradient(lgx,yPos,lgx,yPos+yInc);
+        let grad = context.createLinearGradient(lgx,yPos,lgx,yPos+yInc);
         grad.addColorStop(0,"#dfecdf");
         grad.addColorStop(1,"White");
         context.fillStyle = grad;

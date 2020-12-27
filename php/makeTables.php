@@ -50,44 +50,21 @@ $cbox = $pageType == 'FullTable' ? true : false;
     <tr><td>You have no hikes to edit</td></tr>
 <?php else : ?>
     <?php for ($j=0; $j<$entries; $j++) : ?>
-        <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
-        <tr class="indxd" <?= $hikeHiddenDat[$j];?> 
-            data-org-hikes="<?= $hikeColl[$j];?>">
-        <?php elseif ($hikeMarker[$j] === 'Cluster') : ?>
-        <tr class="clustered" data-cluster="<?= $hikeGroup[$j];?>"
-            <?= $hikeHiddenDat[$j];?> data-tool="<?= $groupName[$j];?>">
-        <?php elseif ($hikeMarker[$j] === 'At VC') : ?>
-        <tr class="vchike"  data-vc="<?= $hikeColl[$j];?>" <?= $hikeHiddenDat[$j];?>>
-        <?php else : ?>
-        <tr class="normal" <?= $hikeHiddenDat[$j];?>>
-        <?php endif; ?>
-        <?php if ($hikeMarker[$j] === 'Visitor Ctr') : ?>
-        <?php if ($cbox) : ?>
-        <td></td>
-        <?php endif; ?>
-        <td><a href="<?= $pgLink[$j];?>"
-            target="_blank"><?= $hikeName[$j];?></a></td>
-        <td><?= $hikeLocale[$j];?></td>
-        <td>See Indx</td>
-        <td>0* miles</td>
-        <td>0* ft</td>
-        <td>See Index</td>
-        <td>See Index</td>
-    <?php else : ?>
-        <?php if ($cbox) : ?>
-        <td data-track="<?= $hikeGpx[$j];?>"><input type="checkbox" /></td>
-        <?php endif; ?>
-        <td><a href="<?= $pgLink[$j];?>"
-            target="_blank"><?= $hikeName[$j];?></a></td>
-        <td><?= $hikeLocale[$j];?></td>
-        <td><?= $hikeWow[$j];?></td>
-        <td><?= $hikeLgth[$j];?> miles</td>
-        <td><?= $hikeElev[$j];?> ft</td>
-        <td><?= $hikeDiff[$j];?></td>
-        <td><?= $hikeExpIcon[$j];?></td>
-    <?php endif; ?>
-    <td style="text-align:center"><a href="<?= $hikeDirections[$j];?>"
-        target="_blank"><?= $dirIcon;?></a></td></tr>
+        <tr <?= $hikeHiddenDat[$j];?>>
+            <?php if ($cbox) : ?>
+            <td data-track="<?= $hikeGpx[$j];?>"><input type="checkbox" /></td>
+            <?php endif; ?>
+            <td><a href="<?= $pgLink[$j];?>"
+                target="_blank"><?= $hikeName[$j];?></a></td>
+            <td><?= $hikeLocale[$j];?></td>
+            <td><?= $hikeWow[$j];?></td>
+            <td><?= $hikeLgth[$j];?> miles</td>
+            <td><?= $hikeElev[$j];?> ft</td>
+            <td><?= $hikeDiff[$j];?></td>
+            <td><?= $hikeExpIcon[$j];?></td>
+            <td style="text-align:center"><a href="<?= $hikeDirections[$j];?>"
+                target="_blank"><?= $dirIcon;?></a></td
+        </tr>
     <?php endfor; ?>
 <?php endif; ?>
     </tbody>

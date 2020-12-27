@@ -52,12 +52,13 @@ require "../php/mapJsData.php";
 ?>
 <script>
 // data required for map and side tables (from mapJsData.php)
-var CL = <?= $jsClusters;?>;    // cluster hikes
-var NM = <?= $jsHikes;?>;       // normal hikes
-var tracks = <?= $jsTracks;?>;
-var allHikes = <?= $jsIndx;?>;
-var locations = <?= $jsLocs;?>;
-var pages = <?= $jsPages;?>;    // page indxNo for non-hikes
+var CL = <?=$jsClusters;?>;    // cluster hikes
+var NM = <?=$jsHikes;?>;       // normal hikes
+var tracks = <?=$jsTracks;?>;
+var allHikes = <?=$jsIndx;?>;
+var locations = <?=$jsLocs;?>;
+var pages = <?=$jsPages;?>;    // page indxNo for non-hikes
+var pgnames = <?=$jsPageNames;?>;
 window.name = "homePage";
 </script>
 <script src="../scripts/menus.js"></script>

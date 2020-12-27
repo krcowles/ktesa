@@ -30,8 +30,8 @@ function validateUpload($name, $init, $elev=false)
         $tmp_upload = $_FILES[$name]['tmp_name'];    
         $filestat = $_FILES[$name]['error'];
         if ($filestat !== UPLOAD_ERR_OK) {
-            $_SESSION['user_alert'] .= " Server error: Failed to upload {$filename}: " .
-                uploadErr($filestat);
+            $_SESSION['user_alert'] .= " Server error: Failed to upload " .
+                "{$filename}: " . uploadErr($filestat);
         } else {
             $filetype = $_FILES[$name]['type'];
             $uploadType = validateType($filetype);
@@ -126,7 +126,8 @@ function validateGpx($file, $filename, $etest)
     if ($etest) {
         $elevs = $dom->getElementsByTagName('ele');
         if ($elevs->length === 0) {
-            $_SESSION['user_alert'] .= " {$filename} cannot be used without elevation data";
+            $_SESSION['user_alert'] .= " {$filename} cannot be used without " .
+                "elevation data";
         }
     }
     return;

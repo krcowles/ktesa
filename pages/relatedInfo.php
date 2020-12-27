@@ -9,7 +9,6 @@
  * This file is to be included on the hikePageTemplate.php and
  * expects definition of the following variables:
  *   $hikeIndexNo is the hike number in either EHIKES or HIKES
- *   $hikeCluster defined in hikePageData.php (for hikePageTemplate.php)
  *   $rtable = either EREFS or REFS 
  *   $gtable either GPSDAT or EGPSDAT
  * PHP Version 7.4
@@ -19,9 +18,49 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$rhikes = (isset($hikeCluster)  && $hikeCluster !== '') ? true : false;
 $noOfRelatedHikes = 0;
-// Transactions:
+$relHikes = '';
+$clusterId = false;
+/**
+ * The page will list 'Related Hikes' if it is either a Cluster Page
+ * (has a 'page' entry in CLUSTERS), or is a hike in a cluster group (has an
+ * entry in CLUSHIKES)
+ */
+// Cluster Page?
+$clusIdReq = "SELECT `clusid` FROM `CLUSTERS` WHERE `group`=?;";
+$clusId = $pdo->prepare($clusIdReq);
+$clusId->execute([$hikeTitle]);
+if (($clus_id = $clusId->fetch(PDO::FETCH_ASSOC)) !== false) {
+    $clusterId = $clus_id['clusid'];
+}
+// Member of a Cluster Group?
+$clusMemReq = "SELECT `cluster` FROM `CLUSHIKES` WHERE `indxNo`=?;";
+$clusMem = $pdo->prepare($clusMemReq);
+$clusMem->execute([$hikeIndexNo]);
+if (($clus_id = $clusMem->fetch(PDO::FETCH_ASSOC)) !== false) {
+    $clusterId = $clus_id['cluster'];
+}
+// Get related hikes if one of the above is true
+if ($clusterId) {
+    $relatedReq = "SELECT `indxNo` FROM `CLUSHIKES` WHERE `cluster`=?;";
+    $related = $pdo->prepare($relatedReq);
+    $related->execute([$clusterId]);
+    $noOfRelatedHikes = $related->rowCount();
+    $groupHikes = $related->fetchAll(PDO::FETCH_COLUMN);
+    $relHikes = '<ul id="related">' . PHP_EOL;
+    foreach ($groupHikes as $hike) {
+        if ($hike !== (int) $hikeIndexNo) {
+            $hikeReq = "SELECT `pgTitle` FROM `HIKES` WHERE `indxNo`=?;";
+            $pageTitle = $pdo->prepare($hikeReq);
+            $pageTitle->execute([$hike]);
+            $pg = $pageTitle->fetch(PDO::FETCH_ASSOC);
+            $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' . $hike .
+                '" target="_blank">' . $pg['pgTitle'] . '</a></li>' . PHP_EOL; 
+        } 
+    }
+    $relHikes .= '</ul>' . PHP_EOL;
+}
+
 // books
 $bkReq = 'SELECT title,author FROM BOOKS';
 $bkPDO = $pdo->prepare($bkReq);
@@ -32,20 +71,12 @@ $refPDO = $pdo->prepare($refReq);
 $gpsReq = "SELECT datType,label,`url`,clickText FROM {$gtable} "
     . "WHERE indxNo = :indxNo";
 $gpsPDO = $pdo->prepare($gpsReq);
-if ($rhikes) {
-    $relatedhikes = "SELECT indxNo,pgTitle FROM HIKES WHERE cname = :relhike";
-    $hikesPDO = $pdo->prepare($relatedhikes);
-}
 $pdo->beginTransaction();
 $bkPDO->execute();
 $refPDO->bindValue(":indxNo", $hikeIndexNo);
 $refPDO->execute();
 $gpsPDO->bindValue(":indxNo", $hikeIndexNo);
 $gpsPDO->execute();
-if ($rhikes) {
-    $hikesPDO->bindValue(":relhike", $hikeCluster);
-    $hikesPDO->execute();
-}
 $pdo->commit();
 
 // Create arrays correlating books and authors:
@@ -78,24 +109,6 @@ if ($noOfRefs === 0) {
     $refHtml .= "<li>No References</li>" . PHP_EOL;
 }
 $refHtml .= "</ul>". PHP_EOL;
-
-// exit here if this is for an Index Page:
-if (isset($pageType) && $pageType === 'Index') {
-    return;
-}
-
-if ($rhikes) {   
-    $relHikes = '<ul id="related">' . PHP_EOL;
-    while (($rHike = $hikesPDO->fetch(PDO::FETCH_ASSOC)) !== false) {
-        if ($rHike['pgTitle'] !== $hikeTitle) {
-            $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' .
-                $rHike['indxNo'] . '" target="_blank">' . $rHike['pgTitle'] .
-                '</a></li>' . PHP_EOL;
-            $noOfRelatedHikes += 1;
-        }
-    }
-    $relHikes .= '</ul>' . PHP_EOL;
-}
 
 $noOfGps = 0;
 $gpsHtml = '<ul id="gps">' . PHP_EOL;
@@ -139,7 +152,7 @@ $bop .= '<fieldset>'. PHP_EOL .
     '<legend id="fldrefs"><em>Related Hike Information</em></legend>' . PHP_EOL .
     '<span class="boptag">REFERENCES:</span>' . PHP_EOL .
 $refHtml . PHP_EOL;
-if ($noOfRelatedHikes > 0) {
+if (!$clusterPage && $noOfRelatedHikes > 0) {
     $bop .= '<span class="boptag">RELATED HIKES</span>' . PHP_EOL .
         $relHikes . PHP_EOL;
 }

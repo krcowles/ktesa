@@ -44,13 +44,13 @@ $shadeIcon = '<img class="expShift" src="../images/goodShade.jpg" '
 if ($show !== 'all') {
     $userid = $_SESSION['userid'];
 }
-// undisplayed data:
+// Get Cluster Data:
+$clusReq = "SELECT `group`,`page` FROM `CLUSTERS`";
+$clusters = $pdo->query($clusReq)->fetchAll(PDO::FETCH_KEY_PAIR);
+
+// HTML data- attributes, not visible to user
 $hikeHiddenDat = array();
-$hikeMarker = array();
-$hikeColl = array();
-$hikeGroup = array();
 // displayed data:
-$groupName = array();
 $hikeLocale = array();
 $hikeName = array();
 $hikeWow = array(); 
@@ -92,10 +92,9 @@ if ($show === 'all') {
 }
 $entries = $tblquery->rowCount();
 // adjust link based on caller location
+$url_prefix = '';
 if ($show !== 'all') {
     $url_prefix = '../pages/';
-} else {
-    $url_prefix = '';
 }
 // assign row data
 for ($i=0; $i<$entries; $i++) {
@@ -104,26 +103,25 @@ for ($i=0; $i<$entries; $i++) {
         $status .= '"' . $row['stat'] . '",';
         $enos .= '"' . $row['indxNo'] . '",';
     }
-    $indx = $row['indxNo'];
+    $indx    = $row['indxNo'];
     $hikeLat = $row['lat']/LOC_SCALE;
     $hikeLon = $row['lng']/LOC_SCALE;
     $hikeTrk = $row['trk'];
+    // HTML data- attributes (not visible to user)
     $hikeHiddenDat[$i] = 'data-indx="' . $indx . '" data-lat="' . $hikeLat .
         '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '"';
-    $hikeMarker[$i] = $row['marker'];
-    $hikeColl[$i] = $row['collection'];
-    $hikeGroup[$i] = $row['cgroup'];
-    $groupName[$i] = $row['cname'];
-    $hikeLocale[$i]= $row['locale'];
-    $hikeName[$i] = $row['pgTitle'];
-    $hikeWow[$i] = $row['wow'];
-    // link to page depends on marker type:
-    if ($hikeMarker[$i] === 'Visitor Ctr') {
-        $pgLink[$i] = $url_prefix . 'indexPageTemplate.php?hikeIndx=' . $indx;
-    } else {
-        $pgLink[$i] = $url_prefix . 'hikePageTemplate.php?hikeIndx=' . $indx;
+
+    $hikeLocale[$i] = $row['locale'];
+    $hikeWow[$i]    = $row['wow'];
+    $hikeName[$i]   = $row['pgTitle'];
+    $clusPg = array_key_exists($hikeName[$i], $clusters) ?
+        $clusters[$hikeName[$i]] : false;
+    $pgLink[$i] = $url_prefix . 'hikePageTemplate.php?hikeIndx=' . $indx;
+    // Include additional query string parm if 'Cluster Page':
+    if ($clusPg) {
+        $pgLink[$i] .= '&clus=y';
     }
-    $mapLink[$i] = '<img id="' . $indx . '" ' . $mapIcon;
+    $mapLink[$i]  = '<img id="' . $indx . '" ' . $mapIcon;
     $hikeLgth[$i] = $row['miles'];
     $hikeElev[$i] = $row['feet'];
     $hikeDiff[$i] = $row['diff'];
