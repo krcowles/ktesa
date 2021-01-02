@@ -8,9 +8,10 @@
  * 4) and any other links or data desired (to be defined).
  * This file is to be included on the hikePageTemplate.php and
  * expects definition of the following variables:
- *   $hikeIndexNo is the hike number in either EHIKES or HIKES
+ *   $hikeIndexNo = the hike number in either EHIKES or HIKES
  *   $rtable = either EREFS or REFS 
- *   $gtable either GPSDAT or EGPSDAT
+ *   $gtable = either GPSDAT or EGPSDAT
+ *   $row = the fetched EHIKE row data if in-edit hike
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -24,25 +25,36 @@ $clusterId = false;
 /**
  * The page will list 'Related Hikes' if it is either a Cluster Page
  * (has a 'page' entry in CLUSTERS), or is a hike in a cluster group (has an
- * entry in CLUSHIKES)
+ * entry in CLUSHIKES).
  */
-// Cluster Page?
-$clusIdReq = "SELECT `clusid` FROM `CLUSTERS` WHERE `group`=?;";
-$clusId = $pdo->prepare($clusIdReq);
-$clusId->execute([$hikeTitle]);
-if (($clus_id = $clusId->fetch(PDO::FETCH_ASSOC)) !== false) {
-    $clusterId = $clus_id['clusid'];
-}
-// Member of a Cluster Group?
-$clusMemReq = "SELECT `cluster` FROM `CLUSHIKES` WHERE `indxNo`=?;";
-$clusMem = $pdo->prepare($clusMemReq);
-$clusMem->execute([$hikeIndexNo]);
-if (($clus_id = $clusMem->fetch(PDO::FETCH_ASSOC)) !== false) {
-    $clusterId = $clus_id['cluster'];
+if ($clusterPage) { // may be published or in-edit
+    $clusterId = $cpdata['clusid'];
+} else {
+    if ($tbl === 'new') { // this is a hike in-edit
+        if (!empty($hikeGroup)) { // if it is a cluster hike:
+            $clusMemReq = "SELECT `clusid` FROM `CLUSTERS` WHERE `group`=?;";
+            $clusMem = $pdo->prepare($clusMemReq);
+            $clusMem->execute([$hikeGroup]);
+            $clus_id = $clusMem->fetch(PDO::FETCH_ASSOC);
+            if ($clus_id !== false) {
+                $clusterId = $clus_id['clusid'];
+            }
+        }
+    } else { // this $hikeIndexNo is for a published hike (use pub only)
+        $clusMemReq = "SELECT `cluster` FROM `CLUSHIKES` WHERE `pub`='Y' " .
+            "AND `indxNo`=?;";
+        $clusMem = $pdo->prepare($clusMemReq);
+        $clusMem->execute([$hikeIndexNo]);
+        $clus_id = $clusMem->fetch(PDO::FETCH_ASSOC);
+        if ($clus_id !== false) {
+            $clusterId = $clus_id['cluster'];
+        }
+    }
 }
 // Get related hikes if one of the above is true
 if ($clusterId) {
-    $relatedReq = "SELECT `indxNo` FROM `CLUSHIKES` WHERE `cluster`=?;";
+    $relatedReq = "SELECT `indxNo` FROM `CLUSHIKES` WHERE `pub`='Y' " .
+        "AND `cluster`=?;";
     $related = $pdo->prepare($relatedReq);
     $related->execute([$clusterId]);
     $noOfRelatedHikes = $related->rowCount();
@@ -147,8 +159,7 @@ $gpsHtml .= "</ul>";
  *  GPS Maps and Data
  *  Other miscellaneous info
  */
-$bop = '';
-$bop .= '<fieldset>'. PHP_EOL .
+$bop = '<fieldset>'. PHP_EOL .
     '<legend id="fldrefs"><em>Related Hike Information</em></legend>' . PHP_EOL .
     '<span class="boptag">REFERENCES:</span>' . PHP_EOL .
 $refHtml . PHP_EOL;

@@ -118,8 +118,8 @@ if (isset($_SESSION['user_alert'])) {
     </fieldset><br />
     <fieldset>
         <legend>Hike Management</legend>
-        <button id="pub">Publish Hike</button> (Move from EHIKES to HIKES)<br/>
-        <button id="ehdel">Remove Hike</button>
+        <button id="pub">Publish Page</button> (Move from EHIKES to HIKES)<br/>
+        <button id="ehdel">Remove Page</button>
             <span style="color:brown;">(Not implemented at this time)</span><br />
     </fieldset><br />
     <fieldset>

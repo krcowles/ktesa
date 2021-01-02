@@ -26,6 +26,7 @@ require "dataForEditor.php";
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="editDB.css" type="text/css" rel="stylesheet" />
+    <link href="refs.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>

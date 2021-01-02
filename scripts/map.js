@@ -138,7 +138,7 @@ function initMap() {
 		clustererMarkerSet.push(marker);
 		
 		let iwContent = '<div id="iwCH">';
-		if (page !== 0) {
+		if (page > 0) {
 			let link = "hikePageTemplate.php?clus=y&hikeIndx=";	
 			iwContent += '<br /><a href="' + link + page + '">' + group + '</a>';
 		} else {

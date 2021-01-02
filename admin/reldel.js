@@ -1,3 +1,14 @@
+"use strict"
+/**
+ * @fileoverview Adjust links in the table of hikes to point to the appropriate page.
+ * Note that cluster pages will have an added 'clus=y' in the query string. The 'del',
+ * or delete hike function is not yet implemented.
+ * 
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ * 
+ * @version 2.0 Accommodate Cluster Pages
+ */
 $(function () { // when page is loaded...
 
 var exe = $('#action').text();
@@ -16,8 +27,12 @@ $hdr.each( function(indx) {
     }
 });
 $tbl.each( function(indx) {
-
-    var newlink = linkbase + enos[indx];
+    let newlink = linkbase + enos[indx];
+    let lnk = $(this).find('td').eq(hikeCol).children().attr('href');
+    if (lnk.indexOf('clus=y') !== -1) {
+        // this is a cluster page
+        newlink += "&clus=y";
+    } 
     $(this).find('td').eq(hikeCol).children().attr('href',newlink); 
     $(this).find('td').eq(hikeCol).children().attr('target','');   
 });

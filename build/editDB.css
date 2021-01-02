@@ -92,28 +92,30 @@ textarea {
     background-color: LavenderBlush; }
 textarea:focus {
     background-color: PapayaWhip; }
-select {
-    position: relative;
-    top: -8px;
-    font-family: Tahoma, sans-serif;
-    font-size: 14px;
-    height: 34px;
-    width: 140px;
-    background-color: LavenderBlush; }
-select:focus {
-    background-color: PapayaWhip; }
 #go {
     height: 24px;
     width: 100px; }
 input[type=checkbox]
 {
-  /* Double-sized Checkboxes  - Browser dependent code */
-  transform: scale(1.5);
-  -ms-transform: scale(1.5); /* IE */
-  -moz-transform: scale(1.5); /* FF */
-  -webkit-transform: scale(1.5); /* Safari and Chrome */
-  -o-transform: scale(1.5); /* Opera */
-  padding: 10px;
+    /* Double-sized Checkboxes  - Browser dependent code */
+    transform: scale(1.5);
+    -ms-transform: scale(1.5); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+    padding: 10px;
+    position: relative;
+    z-index: 1;
+}
+#clusters {
+    height: 34px;
+}
+#newcoords {
+    display: none;
+}
+#cluscoords {
+    position: relative;
+    top: 6px;
 }
 div[id^="d"] {
     position: fixed;
@@ -171,6 +173,10 @@ div[id^="d"] {
 .tab-panel.active {
     display: block;
 }
+input[id^=ap] {
+    position: fixed;
+    z-index: 10000;
+}
 /* tab2 items */
 #userupld {
     font-weight: bold;
@@ -224,23 +230,6 @@ div[id^="d"] {
     position: relative;
     top: 32px;
     left: 320px;
-}
-/* tab4 items */
-.bkauths {
-    position: relative;
-    top: -8px;
-    margin-bottom: 6px;
-}
-.nbk {
-    display: none;
-    position: relative;
-    top: -8px;
-    margin-bottom: 6px;
-}
-.upbox {
-    position: relative;
-    top: -8px;
-    margin-bottom: 6px;
 }
 .popupCap {
     margin: 0px;

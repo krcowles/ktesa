@@ -18,7 +18,7 @@ $show = filter_input(INPUT_GET, 'show');
 if ($userid == 1 || $userid == 2) {
     $show = 'all';
 }
-$pageType = 'Editor';
+$pageType = $age === 'old' ? 'EditPub' : 'Edit';
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -40,7 +40,8 @@ $pageType = 'Editor';
 
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Select A Hike To Edit</p>
-<p id="page_id" style="display:none">Build</p>
+
+<p id="page_id" style="display:none"><?=$pageType;?></p>
 
 <div><p style="text-align:center;">When you click on the hike in the table
     below, you will be presented with an editable version of the hike page.</p>
@@ -52,8 +53,7 @@ $pageType = 'Editor';
 </div>
 
 <script type="text/javascript">
-    var age = "<?= $age;?>";
-    var statfields = <?= $status;?>;
+    var age = "<?=$age;?>";
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="hikeEditor.js"></script>

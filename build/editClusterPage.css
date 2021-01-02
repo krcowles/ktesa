@@ -1,0 +1,46 @@
+body {
+    min-width: 960px;
+    font-family: arial, verdana;
+    background-color: #dadada;
+    margin: 0px;
+}
+#main {
+    margin-left: 16px;
+}
+#buttons {
+    position: fixed;
+    top: 120px;
+    left: 840px;
+}
+#preview {
+    margin-right: 40px;
+    z-index: 10000;
+}
+#submit {
+    z-index: 10000;
+}
+#info, #dirs {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 6px;
+    width: 90%;
+    background-color: LavenderBlush;
+}
+#info:focus, #dirs:focus {
+    background-color: PapayaWhip;
+}
+input {
+    background-color: LavenderBlush;
+}
+#area {
+    height: 24px;
+    font-size: 16px;
+    padding-bottom: 2px;
+}
+.coords {
+    font-size: 16px;
+    padding-left: 5px;
+}
+form {
+    font-size: 18px;
+}

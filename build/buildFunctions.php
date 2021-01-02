@@ -30,15 +30,19 @@ function validateUpload($name, $init, $elev=false)
         $tmp_upload = $_FILES[$name]['tmp_name'];    
         $filestat = $_FILES[$name]['error'];
         if ($filestat !== UPLOAD_ERR_OK) {
-            $_SESSION['user_alert'] .= " Server error: Failed to upload " .
-                "{$filename}: " . uploadErr($filestat);
+            $_SESSION['user_alert'] .= " Server error: " .
+                "Failed to upload {$filename}: " . uploadErr($filestat);
         } else {
-            $filetype = $_FILES[$name]['type'];
-            $uploadType = validateType($filetype);
-            if ($uploadType === 'unknown') {
-                $_SESSION['user_alert'] .= " Incorrect file type for upload; ";
-            } elseif ($uploadType === 'gpx') {
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
+            if (strtolower($ext) === 'gpx') {
+                $uploadType = 'gpx';
                 validateGpx($tmp_upload, $filename, $elev);
+            } else { 
+                $filetype = $_FILES[$name]['type'];
+                $uploadType = validateType($filetype);
+                if ($uploadType === 'unknown') {
+                    $_SESSION['user_alert'] .= " Incorrect file type for upload; ";
+                }
             }
         }
     } else {
@@ -85,9 +89,6 @@ function uploadErr($errdat)
 function validateType($filetype)
 {
     switch ($filetype) {
-    case "application/octet-stream":
-        $usertype = 'gpx';
-        break;
     case "text/html":
         $usertype = 'html';
         break;
@@ -126,8 +127,8 @@ function validateGpx($file, $filename, $etest)
     if ($etest) {
         $elevs = $dom->getElementsByTagName('ele');
         if ($elevs->length === 0) {
-            $_SESSION['user_alert'] .= " {$filename} cannot be used without " .
-                "elevation data";
+            $_SESSION['user_alert'] .= " {$filename} cannot be used " .
+                "without elevation data";
         }
     }
     return;

@@ -450,7 +450,7 @@ const IdTableElements = (boundsStr, zoom) => {
     CL.forEach(function(clus, clindx) {
         var color = 0;
         var link = "hikePageTemplate.php?hikeIndx=";
-        if (parseInt(clus.page) !== 0) { // then this is a 'Cluster Page'
+        if (parseInt(clus.page) > 0) { // then this is a 'Cluster Page'
             link = "hikePageTemplate.php?clus=y&hikeIndx=";
         }
         clus.hikes.forEach(function(hike) {

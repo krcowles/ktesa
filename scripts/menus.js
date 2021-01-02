@@ -9,7 +9,7 @@
  */
 $(function() {  // document ready function
 
-var menuWidth = ['140', '180', '150', '140']; // calculate these later...
+var menuWidth = ['140', '200', '150', '140']; // calculate these later...
 var subWidth = ['140']; // ditto: unused as there is only one sub-menu
 var $mainMenus = $('.menu-main');
 var navPos = $('#navbar').offset();
@@ -34,13 +34,13 @@ switch(page_type.trim()) { // only on actual pages...
         $('#yours').prepend(icon);
         break;
     case "Create":
-        $('#newpg').prepend(icon);
+        $('#newPg').prepend(icon);
         break;
     case "Edit":
-        $('#editor').prepend(icon);
+        $('#edits').prepend(icon);
         break;
     case "EditPub":
-        $('#pubtbl').prepend(icon);
+        $('#epubs').prepend(icon);
     case "About":
         $('#about').prepend(icon);
         break;
@@ -67,13 +67,13 @@ function gotoPage(content) {
             let favpg = '../pages/favTable.php';
             window.open(favpg, '_self');
             break;
-        case 'Create New Hike':
+        case 'Create New Page':
             page = 'new';
             break;
-        case 'Continue Editing Your Hikes':
+        case 'Continue Editing Your Pages':
             page = 'existing';
             break;
-        case 'Edit Your Published Hike':
+        case 'Edit Your Published Page':
             page = 'published';
             break;
         case 'Submit for Publication':

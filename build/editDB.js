@@ -1,11 +1,14 @@
+"use strict"
 /**
  * @fileoverview This script handles all four tabs - presentation and data
  * validation, also initialization of settings for <select> boxes, etc.
  * 
  * @author Tom Sandberg
  * @author Ken Cowles
+ * 
+ * @version 2.0 First release with Cluster Page editing
  */
-$( function () { // when page is loaded...
+$( function () {
 
 /**
  * The framework/appearance of the edit page and buttons
@@ -26,7 +29,7 @@ var btop;
 var blft;
 var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-$(window).scroll(function() {
+$(window).trigger('scroll', function() {
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 });
@@ -50,7 +53,7 @@ $apply.each(function(indx) {
     applyPos[indx] = $inp.detach();
 });
 // when window is resized:
-$(window).resize( function() {
+$(window).on('resize', function() {
     linewidth = $('#main').width() - listwidth;
     $('#line').width(linewidth);
     positionApply();
@@ -84,6 +87,7 @@ $('button[id^=t]').on('click', function(ev) {
         $(newid).prepend(applyPos[lastA - 1]); // use index number, not tab no.
         $(newid).show();
         $(newid).offset({top: btop, left: blft});
+        prepareSubmit(newid);
     }
 });
 // place correct tab (and apply button) in foreground - on page load only
@@ -96,6 +100,7 @@ $(applyAdd).prepend(applyPos[posNo]);
 $(applyAdd).show();
 $(applyAdd).offset({top: btop, left: blft});
 var lastA = tab;
+prepareSubmit($(applyAdd));
 
 // If there is a user alert to show, set the message text:
 var user_alert = '';
@@ -169,13 +174,6 @@ $('#showll').on('click', function() {
     $(this).prop('checked',false);
 });
 
-// open the photo uploader page (tab2)
-$('#upld').on('click', function() {
-    var user = $('input[name=usr]').val();
-    var uploader = 'ktesaUploader.php?indx=' + hike + "&usr=" + user;
-    window.open(uploader, "_self");
-});
-
 // Pressing 'Return' while in textarea only adds newline chars, therefore:
 window.onkeydown = function(event) {
     if(event.keyCode == 13) {
@@ -241,313 +239,200 @@ $wbox.each(function(indx) {
 });
 
 /**
- * To correctly save changes involving cluster types, the following
- * state information needs to be passed to the server:
- *   1. Is a totally new cluster group being assigned?  (#newg)
- *      Whether or not the previous type was cluster, the new
- *      group will be saved
- *   2. Remove an existing cluster assignment?  (#deassign)
+ * Cluster operation
+ * The 'var newgrps' (see function) is set in tab1display.php
  */
-var msg;
-var rule = "The specified new group will be added;" + "\n" + 
-	"Any current Cluster assignment will be ignored" + "\n" + 
-    "Uncheck the box to use currently available groups";
 var orignme = $('#group').text();
-// clusnme will be updated depending on user state selected
-var clusnme = orignme; 
-$('#clusters').val(orignme);  // show above in the select box on page load
-
-// If a new hike page was created and  asking to define a new cluster:
-if ($('#newclus').text() === 'Yes') {
-    $('#newg').attr('checked', true);
-    $('#newg').val("YES");
-    $('#newt').focus();
-    $('#newt').css('border', '2px solid red');
-    $('#newt').on('change', function() {
-        $(this).css('border', 'none');
-    });
-    $('#notclus').css('display','inline');
-    window.scrollTo(0, document.body.scrollHeight);
-    alert("Enter your requested new group name in the highlighted text box below;\n" +
-        "If you don't want a new group, uncheck the box.");
-} else if (clusnme == '') {  // no incoming assignment:
-	$('#notclus').css('display','inline');
+$('#clusters').val(orignme);  // page load value
+if (orignme == '') {  // no incoming assignment:
+    $('#notclus').css('display','inline')
 } else {
 	$('#showdel').css('display','block');
 }
+var clusnme = orignme;  // clusnme can change later
 
-// Reset: Restore original assignments 
-$('#resetclus').change(function() {
-    if (this.checked) {
-        $('#clusters').val(orignme);
-        clusnme = orignme;
-        if (clusnme == '') {
-            $('#notclus').css('display','inline');
+/**
+ * This function determines whether or not the current selection in the
+ * clusters <select> drop-down box is an unpublished group (which will
+ * then display lat/lng for that group). Default value when there are no
+ * unpublished groups is 'no display' (see editDB.css)
+ * 
+ * @return {null}
+ */
+const showClusCoords = () => {
+    let match = false;
+    let nglat;
+    let nglng;
+    if (newgrps.length > 0) {
+        for (let k=0; k<newgrps.length; k++) {
+            if (newgrps[k].group == clusnme) {
+                nglat = newgrps[k].loc.lat;
+                nglng = newgrps[k].loc.lng;
+                match = true;
+                break;
+            }
         }
-        $('input:checkbox[name=nxtg]').attr('checked',false);
-        $('#newg').val("NO");
-        $('#newt').val("");
-        $('#deassign').val("NO");
-        $('input:checkbox[name=rmclus]').attr('checked',false);
-        window.alert("Original state restored" + "\n" + "No edits at this time to clusters");
-        this.checked = false;
-    }
-});
-// Assign a new group:
-$('#newg').change(function() {
-    if (this.checked) {
-        this.value = "YES";
-        fieldflag = true;
-        window.alert(rule);
-    } else {  // newg is unchecked
-        this.value = "NO";
-        $('#newt').val("");
-        fieldflag = false;				
-    }
-});
-// Change Cluster selection:
-$('#clusters').change(function() {
-    if ( $('#newg').val() === 'NO' ) {
-        if (this.value !== clusnme) {
-            // let user know the existing cluster group assignment will change
-            msg = "Cluster type will be changed from " + "\n" + "Original setting of: "
-                    + clusnme + "\n";
-            msg += "To: " + $('#clusters').val();
-            window.alert(msg);
+        if (match) {
+            $('#cluslat').val(nglat);
+            $('#cluslng').val(nglng);
+            $('#newcoords').show();
+            window.scrollTo(0,document.body.scrollHeight);
+        } else {
+            $('#newcoords').hide();
         }
     } else {
-        window.alert("Changes ignored while New Group Box is checked");
+            $('#newcoords').hide();
     }
+    return;
+};
+showClusCoords();
+
+// Change Cluster selection:
+$('#clusters').on('change', function() {
+    if (this.value !== clusnme) {
+        if (clusnme == '') {
+            clusnme = "None assigned";
+            $('#notclus').css('display','none');
+            $('#showdel').css('display','block');
+        }
+        // let user know the existing cluster group assignment will change
+        let msg = "Cluster type will be changed from:\n" + "Original setting: "
+                + clusnme;
+        msg += "\nTo: " + $(this).val();
+        alert(msg); 
+    } 
     clusnme = $(this).val();
+    showClusCoords();
 });
 // Remove an existing cluster assignment:
-$('#deassign').change(function() {
+$('#deassign').on('change', function() {
     if (this.checked) {
-        $('#deassign').val("YES");
         $('#clusters').val('');
-    } else {
-        $('#deassign').val("NO");
-        $('#clusters').val(clusnme);
+        $('#showdel').css('display','none');
+        $('#notclus').css('display','inline');
+        $('#newcoords').hide();
+        clusnme = '';
+        this.checked = false;
+        alert("No group will be assigned to this hike");
     }
 });
 // End of cluster processing
 
-// References section:
-// A: This code refers to existing refs (in database), not new ones...
-var refCnt = parseInt($('#refcnt').text());
-var item0;  // <p> element containing text = rtype
-var rtype;
-var item1;  // <p> element containing text = rit1
-var rit1;
-var item2;  // <p> element containing text = rit2
-var rit2;
-var selbox; // <select> element holding reference type selection
-var boxid;
-var box;
-// initialize (pre-populate) the boxes:
-for (var i=0; i<refCnt; i++) {
-    item0 = '#rtype' + i;
-    rtype = $(item0).text().trim();  // get the rtype for this reference item
-    item1 = '#rit1' + i;
-    rit1 = $(item1).text().trim();  // get the rit1 for this item (numeric for a book)
-    item2 = '#rit2' + i;
-    rit2 = $(item2).text().trim();  // get the rit2 for this item
-    selbox = '#sel' + i;
-    $(selbox).val(rtype); // pre-populate reference type drop-down
-    boxid = 'sel' + i;
-    if (rtype === 'Book:' || rtype === 'Photo Essay:') {
-        indx = parseInt(rit1) - 1;
-        var bkname = '#bkname' + i;  // input box id for book name                
-        $(bkname).val(rit1);
-        var auth = '#auth' + i;
-        $(auth).attr('value', authors[indx]);  // get the name from the array
-        box = document.getElementById(boxid);
-        // disable non-book entries
-        for (var u=2; u<box.options.length; u++) {
-            box.options[u].disabled = true;
-        }
-    } else if (rtype === 'Text:') {
-        var url = '#url' + i;
-        $(url).val('');
-        $(url).attr('placeholder','THIS BOX IGNORED');
-        // disable book type entries
-        document.getElementById(boxid).options[0].disabled = true;
-        document.getElementById(boxid).options[1].disabled = true;
-    } else {
-        // disable book type entries
-        document.getElementById(boxid).options[0].disabled = true;
-        document.getElementById(boxid).options[1].disabled = true;
-    }
-}
-// user can change book selection:
-var $bksels = $('select[id^=bkname]');
-// jQuery doesn't always allow .on('change') for $('select[attr=xyz]'), so:
-$bksels.each(function() {
-    var ino = this.id;
-    var bksel = '#' + ino + ' option:selected';
-    var inpid = '#auth' + ino.substr(6);
-    $(this).on('change', function() {
-        var newbk = parseInt($(bksel).val()) - 1;
-        var newauth = authors[newbk];
-        $(inpid).attr('value', newauth);
-    });
-});
-// B: This code refers to the new refs (if any) which can be added by the user
-/*
- * This code detects when the user selects a reference type other than
- * book/photo essay and displays a different set of boxes with appropriate
- * placeholder text. 
- */
-$reftags = $('select[id^="href"]');
-$reftags.each( function() {
-    $(this).change( function() {
-        var refno = this.id;
-        var elementNo = refno.substr(4,1);
-        var bkid = '#bk' + elementNo;
-        var nbkid = '#nbk' + elementNo;
-        var box1 = '#nr1' + elementNo;
-        var box2 = '#nr2' + elementNo;
-        var bkbox = '#usebk' + elementNo;
-        var notbk = '#notbk' + elementNo;
-        if ($(this).val() === 'Book:' || $(this).val() === 'Photo Essay:') {
-            $(bkid).css('display','inline');
-            $(nbkid).css('display','none');
-            var ttl = '#bkttl' + elementNo;
-            var auth = '#bkauth' + elementNo;
-            for (var n=0; n<titles.length; n++) {
-                if (titles[n] === $(ttl).val()) {
-                    $(auth).val(authors[n]);
-                    break;
-                }
-            }
-            $(bkbox).val('yes');
-            $(notbk).val('no');
-        } else if ($(this).val() !== 'Text:') {
-            $(bkid).css('display','none');
-            $(nbkid).css('display','inline');
-            if ($(box1).val() === '') {
-                $(box1).attr('placeholder','URL');
-            }
-            if ($(box2).val() === '') {
-                $(box2).attr('placeholder','Clickable text');
-            }
-            $(bkbox).val('no');
-            $(notbk).val('yes');
-        } else {
-            $(bkid).css('display','none');
-            $(nbkid).css('display','inline');
-            if ($(box1).val() === '') {
-                $(box1).attr('placeholder','Enter Text Here');
-            } 
-            if ($(box2).val() === '') {
-                $(box2).attr('placeholder','THIS BOX IGNORED');
-            }
-            $(bkbox).val('no');
-            $(notbk).val('yes');
-        }
-    });
-});
-// validate length of URL's and click-on text
-$('input[id^=nr1]').each(function() {
-    $(this).on('change', function() {
-        if($(this).val().length > 1024) {
-            alert("This URL exceeds the max length of 1024 characters");
-            $(this).val("");
-        }
-    });
-});
-$('input[id^=nr2]').each(function() {
-    $(this).on('change', function() {
-        if ($(this).val().length > 512) {
-            alert("The maximum no of characters allowed in this field is 512");
-            $(this).val("");
-        }
-    });
-});
-var $bktags = $('select[id^="bkttl"]');
-$bktags.each( function() {
-    $(this).val(''); // initialize to show no selection:
-    $(this).on('change', function() {
-        var bkid = this.id;
-        bkid = bkid.substr(bkid.length-1, 1);
-        var authid = '#bkauth' + bkid;
-        var authindx = $(this).val() - 1;
-        $(authid).val(authors[authindx]);
-    });
-});
-
 /**
  * Database data validation: does item conform to database data type?
- * Note: there is no 'range' validation for numbers, neither is there a
- * test to see if < 0, etc. The only qualification is conformity to db spec.
+ * Note: there is no 'range' validation for most numbers, neither is there a
+ * test to see if < 0 (except lng). The main qualification is conformity to db spec.
  * In addition, if a user clicks 'Apply' while the user is entering invalid
- * data, form submission is halted. The subject field is converted to an
- * empty string, after which the user may 'Apply' as is, or change the data.
+ * data, form submission is halted. The user is advised to fix the identified
+ * issue(s) prior to clicking 'Apply'
  */
- var submit = true;  // unless invalid data is entered... (may prevent submit)
+var issues = [];
+/**
+ * This function clears an issue when it has been corrected
+ * @param {string} issue The issue key 
+ * 
+ * @return {null}
+ */
+const clearIssue = (issue) => {
+    for (let i=0; i<issues.length; i++) {
+        if (issue in issues[i]) {
+            // this is the i-th element, so the index is i
+            issues.splice(i, 1);
+        }
+    }
+    return;
+};
+/**
+ * Check to make sure a message isn't getting repeated due to multiple
+ * incorrect entries by a user on the same data
+ * @param {string} type 
+ * @param {string} msg 
+ * 
+ * @return {boolean}
+ */
+const repeatIssue = (type, msg) => {
+    for (let j=0; j<issues.length; j++) {
+        if (type in issues[j]) {
+            if (issues[j][type] == msg) {
+                return true;
+            }
+        }
+    }
+    return false;
+};
 
 // miles: numeric, and up to two decimal points
-var orgmiles = $('#miles').val(); // original value loaded
+const nan  = "The value entered is not a number";
+const badmiles = "Please enter a number less than 50 for 'miles'\n" +
+    "with a maximum of 2 decimal places";
 $('#miles').on('change', function() {
-    var warn = "Please enter a number less than 100 for 'miles'\n" +
-        "with a maximum of 2 decimal places";
-    var milesEntry = $('#miles').val();
-    if ($.isNumeric(milesEntry)) {
-        milesEntry = Number(milesEntry); // textareas are strings
-        var milesString = milesEntry.toString();
-        var regexp = /^\d+(\.\d{1,2})?$/;
+    let submit;
+    let milesissue = {miles: ""};
+    let milesEntry = $('#miles').val();
+    if (!isNaN(milesEntry)) {
+        let milesString = milesEntry; // textareas are strings
+        milesEntry = Number(milesEntry); // numerical version
+        let regexp = /^\d+(\.\d{1,2})?$/;
         if (regexp.test(milesString)) {
-            if (Math.abs(milesEntry) > 99.99) {
-                alert(warn);
-                $('#miles').val(orgmiles);
+            if (Math.abs(milesEntry) > 49.99) {
+                alert(badmiles);
                 submit = false;
+                milesissue.miles = "Miles value too large";
             } else {
                 $('input[name=usrmiles]').val("YES");
                 submit = true;
             }
         } else {
-            var strlen = milesEntry.length;
-            if (milesString.indexOf('.') !== -1 && milesString.indexOf('.') !== strlen -1) {
-                    alert(warn);
-                    $('#miles').val(orgmiles);
-                    submit = false;
-            } else {
-                $('input[name=usrmiles]').val("YES");
-                submit = true;
-            }
+            $('input[name=usrmiles]').val("YES");
+            submit = true;
         }
     } else {
-        alert(warn);
-        $('#miles').val(orgmiles);
+        alert(nan);
         submit = false;
+        milesissue.miles = "Please correct 'miles' data";
+    }
+    if (!submit) {
+        if (!repeatIssue('miles', milesissue.miles)) {
+            issues.push(milesissue);
+        }
+    } else {
+        clearIssue('miles');
     }
 });
 // elevation: up to five digits, integer
-var orgelev = $('#elev').val();  // original value loaded
+let badelev = "Only Integers less than 20,000 are allowed";
 $('#elev').on('change', function() {
-    var feet = Number($('#elev').val());
-    alarm = "Only integers less than 100,000 are allowed for 'Elevation Change'";
-    if ($.isNumeric(feet)) {
+    let submit;
+    let elevissue = {feet: ""};
+    let elev = $('#elev').val();
+    if (!isNaN(elev)) {
+        let feet = Number(elev);
         if (Number.isInteger(feet)) {
-            if (Math.abs(feet) > 99999) {
-                alert(alarm);
-                $('#elev').val(orgelev);
+            if (Math.abs(feet) > 19999) {
+                alert(badelev);
                 submit = false;
+                elevissue.feet = "Elevation entry too large";
             } else {
                 $('input[name=usrfeet]').val("YES");
                 submit = true;
             }
         } else {
-            alert(alarm);
-            $('#elev').val(orgelev);
+            alert(badelev);
             submit = false;
+            elevissue.feet = "Elevation change must be an integer";
         }
     } else {
-        alert(alarm);
-        $('#elev').val(orgelev);
+        alert(nan);
         submit = false;
+        elevissue.feet = "Elevation data is not a number";
     }
-
+    if (!submit) {
+        if (!repeatIssue('feet', elevissue.feet)) {
+            issues.push(elevissue);
+        }
+    } else {
+        clearIssue('feet');
+    }
 });
 // gpx: file name length 1024; NOTE: This also covers GPS Data uploads
 $('input[type=file]').on('change', function() {
@@ -557,108 +442,182 @@ $('input[type=file]').on('change', function() {
         this.value = null;
     }
 });
-// lat: float (13.10)
-var orglat = $('#lat').val();  // original value loaded
+// latitude & longitude checks:
+const notlatlng = "The value entered does not conform to a ";
+const notfloat  = "The value is not a decimal number";
+const latneg    = "Latitudes for New Mexico must be positive";
+const toolarge  = "The entered value exceeds bounds for a gps coord";
+/**
+ * This function checks the latitude entry for valid float value
+ * @param {string} value Latitude value
+ * 
+ * @return {null}
+ */
+const latCheck = (loc, value) => {
+    let submit;
+    let latissue = {lat: ""};
+    let locater = loc === 'hike' ? "For Hike Latitude: " :
+         "For Cluster Group Latitude: ";
+    if (value.indexOf('.') === -1) {
+        alert(notfloat);
+        submit = false;
+        latissue.lat = locater + "Latitude is not a decimal number";
+    } else {
+        if (!isNaN(value)) {
+            let lat = Number(value);
+            if (lat < 0) {
+                alert(latneg);
+                submit = false;
+                latissue.lat = locater + "Latitude must be positive number";
+            } else {
+                let decimal = /^[-+]?[0-9]+\.[0-9]+$/;
+                if (decimal.test(lat)) {
+                    if (Math.abs(lat) > 180) {
+                        alert(toolarge);
+                        submit = false;
+                        latissue.lat = locater + "The latitude value is too large";
+                    } else {
+                        submit = true;
+                    }
+                } else {
+                    alert(notlatlng + 'latitude');
+                    submit = false;
+                    latissue.lat = locater + "Please correct latitude data";
+                }
+            }
+        } else {
+            alert(nan);
+            submit = false;
+            latissue.lat = locater + "Latitude is not a number";
+        }
+    }
+    if (!submit) {
+        if (!repeatIssue('lat', latissue.lat)) {
+            issues.push(latissue);
+        } 
+    } else {
+        clearIssue('lat');
+    }
+    return;
+};
+const lngvalue  = "Longitudes must be negative values for New Mexico";
+/**
+ * This function checks the longitude entry for valid float value
+ * @param {string} value The longitude value
+ * 
+ * @return {null}
+ */
+const lngCheck = (loc, value) => {
+    let submit;
+    let lngissue = {lng: ""};
+    let locater = loc === 'hike' ? "For Hike Longitude: " :
+         "For Cluster Group Longitude: ";
+    if (value.indexOf('.') === -1) {
+        alert(notfloat);
+        submit = false;
+        lngissue.lng = locater + "Longitude is not a decimal number";
+    } else {
+        if (!isNaN(value)) {
+            let lng = Number(value);
+            if (lng > 0) {
+                alert(lngvalue);
+                submit = false;
+                lngissue.lng = locater + "Longitude must be negative";
+            } else {
+                let testval = Math.abs(lng);
+                let decimal = /^[-+]?[0-9]+\.[0-9]+$/;
+                if (decimal.test(testval)) {
+                    if (testval > 180) {
+                        alert(toolarge);
+                        submit = false;
+                        lngissue.lng = locater + "The longitude value is too large";
+                    } else {
+                        submit = true;
+                    }
+                } else {
+                    alert(notlatlng + 'longitude');
+                    submit = false;
+                    lngissue.lng = locater + "Please correct longitude data";
+                }
+            }
+        } else {
+            alert(nan);
+            submit = false;
+            lngissue.lng = locater + "Longitude is not a number";
+        }
+    }
+    if (!submit) {
+        if (!repeatIssue('lng', lngissue.lng)) {
+            issues.push(lngissue);
+        }
+    } else {
+        clearIssue('lng');
+    }
+    return;
+}
 $('#lat').on('change', function() {
-    var lat = Number($(this).val());
-    var notlat = "The value entered does not conform to a lat/lng";
-    if ($.isNumeric(lat)) {
-        decimal = /^[-+]?[0-9]+\.[0-9]+$/; 
-        if (decimal.test(lat)) {
-            if (Math.abs(lat) > 180) {
-                alert(notlat);
-                $(this).val(orglat);
-                submit = false;
-            } else {
-                submit = true;
-            }
-        } else {
-            alert(notlat);
-            $(this).val(orglat);
-            submit = false;
-        }
-    } else {
-        alert(notlat);
-        $(this).val(orglat);
-        submit = false;
-    }
+    latCheck('hike', $(this).val());
 });
-// lng: float (13.10)
-var orglng = $('#lon').val();  // original value loaded
+$('#cluslat').on('change', function() {
+    latCheck('group', $(this).val());
+});
 $('#lon').on('change', function() {
-    var lng = Number($(this).val());
-    var notlng = "The value entered does not conform to a lat/lng";
-    if ($.isNumeric(lng)) {
-        decimal = /^[-+]?[0-9]+\.[0-9]+$/; 
-        if (decimal.test(lng)) {
-            if (Math.abs(lng) > 180) {
-                alert(notlng);
-                $(this).val(orglng);
-                submit = false;
-            } else {
-                submit = true;
-            }
-        } else {
-            alert(notlng);
-            $(this).val(orglng);
-            submit = false;
-        }
-    } else {
-        alert(notlng);
-        $(this).val(orglng);
-        submit = false;
-    }
+    lngCheck('hike', $(this).val());
 });
-// GPS Data: 
-// label
-$('input[name^=labl]').each(function() {
-    $(this).on('change', function() {
-        if ($(this).val().length > 128) {
-            alert("Only 128 characters are allowed");
-            $(this).val("");
-            submit = false;
-        }
-    });
+$('#cluslng').on('change', function() {
+    lngCheck('group', $(this).val());
 });
-// url length
-$('input[name^=lnk]').each(function() {
-    $(this).on('change', function() {
-        if ($(this).val().length > 1024) {
-            alert("Only 1024 characters are allowed");
-            submit = false;
-        }
-    });
-});
+
+// GPS Data Section: 
+
 // click-on-text length
-$('input[name^=ctxt]').each(function() {
+$('textarea[name^=click]').each(function(j) {
+    let submit;
+    let key = 'cot' + j;
+    let cotissue = {};
+    cotissue[key] = "";
     $(this).on('change', function() {
         if ($(this).val().length > 256) {
             alert("Only 256 characters are allowed");
             submit = false;
+            cotissue[key] = "Too many characters in click-text #" + (j+1);
+        } else {
+            submit = true;
+        }
+        if (!submit) {
+            if (!repeatIssue(key, cotissue[key])) {
+                issues.push(cotissue);
+            }
+        } else {
+            clearIssue(key);
         }
     });
 });
 
-// Form submission if 'submit' is still true
-$('input[name=savePg]').on('click', function(evt) {
-    if (submit) {
-        // make sure that a new group name has been specified if the checkbox is checked
-        if ($('#newg').prop('checked')) {
-            if ($('#newt').val() == '') {
-                evt.preventDefault();
-                alert("No new cluster name has been specified:\n" +
-                    "please enter a name or uncheck the 'new nMW' checkbox");
-            } else {
-                if ($('#newt').val().length > 25) {  // db limit
-                    evt.preventDefault();
-                    alert("Only 25 characters allowed");
-                }
-            }
+/**
+ * Even though jQuery can access SOME elements with display:none (e.g. 
+ * <p> elements), it can't seem to access certain other elements, in
+ * this case the input form 'submits'. Instead, every time a tab changes,
+ * invoke this function to enable issue reporting during submit.
+ * @param {node} jQnode The node representing the submit button
+ * 
+ * @return {boolean}
+ */
+function prepareSubmit(jQnode) {
+    $(jQnode).off('click').on('click', function(evt) {
+        if (issues.length > 0) {
+            let msg = "Please resolve the following issue(s)\n";
+            issues.forEach(function(issue) {
+                let okey = Object.keys(issue); // returns array
+                msg += issue[okey[0]] + "\n";
+            });
+            alert(msg);
+            evt.preventDefault();
+            return;
+        } else {
+            // proceed w/submit
         }
-    } else {
-        submit = true;
-        return false;
-    }
-});
+    });
+}
 
 });  // end of 'page (DOM) loading complete'

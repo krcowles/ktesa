@@ -1,11 +1,11 @@
 body {
-    min-width: 960px;
     font-family: arial, verdana;
     background-color: #dadada;
     margin: 0px;
 }
 #main {
     margin-left: 16px;
+    padding-right: 12px;
 }
 form {
     font-size: 18px;
@@ -13,21 +13,37 @@ form {
 .entries {
     font-weight: bold;
 }
-#newname:hover {
-    background-color: PapayaWhip;
+#maxchars {
+    color: brown;
+}
+#hikename, #newgroup, #newclusgrp {
+    height: 18px;
+    font-size: 16px;
+}
+#newgroup, #newclusgrp {
+    width: 280px;
 }
 #cls {
     display: none;
     margin-left: 32px;
-    color: DarkBlue;
+}
+.note {
+    color: darkblue;
+}
+.shift {
+    position: relative;
+    top: -18px;
 }
 input[type=submit] {
     height: 28px;
     font-size: 16px;
-    font-weight: bold;
+    border-radius: 8px;
+    background-color: #6D3C17;
+    color: white;
 }
 input[type=submit]:hover {
-    background-color: PapayaWhip;
+    background-color: moccasin;
+    color: black;
 }
 input[type="checkbox"]{
     margin-top: 0px;
@@ -38,15 +54,13 @@ input[type="checkbox"]{
     height: 24px;
     cursor: pointer;
 }
-span.brown {
-    color:brown;
-}
-#clusters {
+#clusters, #cpages {
     -webkit-appearance: menulist-button;
     height: 28px;
     font-size: 16px;
 }
-#newname {
-    height: 18px;
-    font-size: 16px;
+#cpgtxt {
+    font-size: 18px;
+    position: relative;
+    top: -8px;
 }

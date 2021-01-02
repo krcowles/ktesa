@@ -1,61 +1,94 @@
 <?php
 /**
- * When a user wishes to edit a hike already published, this script
- * will extract the data from the HIKES db and copy it into EHIKES
- * where it can be edited. When edits are complete the administrator
- * can then publish the EHIKE which updates the HIKES db with the 
- * edited data. The user is directed to the editor via editDB.php.
- * PHP Version 7.1
+ * When a user wishes to edit a page already published (whether hike or
+ * cluster page), this script will extract the data from the page's db
+ * tables and copy it into EHIKES et al where it can be edited. When a
+ * published page is undergoing edit, the 'stat' field in EHIKES will be
+ * set to the published indxNo. The user is then directed to either the
+ * hike page editor or to the cluster page editor accordingly. When edits
+ * are complete the admin can then publish the EHIKE which updates the
+ * HIKES and associated tables with the newly edited data.
+ * PHP Version 7.4
  * 
- * @package Editing
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();
 require "../php/global_boot.php";
-$getHike = filter_input(INPUT_GET, 'hikeNo');
+
+$getHike = filter_input(INPUT_GET, 'hikeNo'); // published indxNo
+$cluspg  = isset($_GET['clus']) && $_GET['clus'] === 'y' ? true : false;
 $userid = $_SESSION['userid'];
+
+/**
+ * Since EHIKES depends on 'cname' to identify association w/new or
+ * published cluster groups, it must be specified to ensure proper
+ * transfer. HIKES no longer supports 'cname'.
+ */ 
+$cname = '';
+$clusHikeStatReq = "SELECT `cluster` FROM `CLUSHIKES` WHERE " .
+    "`indxNo`=? AND `pub`='Y';";
+$clusHikeStat = $pdo->prepare($clusHikeStatReq);
+$clusHikeStat->execute([$getHike]);
+$clusHike = $clusHikeStat->fetchAll(PDO::FETCH_ASSOC); // always an array
+if (count($clusHike) > 0) {
+    $clusid = $clusHike[0]['cluster'];
+    $getGroupNameReq = "SELECT `group` FROM `CLUSTERS` WHERE `clusid`=?;";
+    $getGroupName = $pdo->prepare($getGroupNameReq);
+    $getGroupName->execute([$clusid]);
+    $groupName = $getGroupName->fetch(PDO::FETCH_ASSOC);
+    $cname = $groupName['group'];
+}
 /*
- * GET HIKES DATA
+ * Place HIKES data into EHIKES
  */
-$xfrReq = "INSERT INTO EHIKES (usrid,stat,pgTitle,locale,marker,`collection`," .
-    "cgroup,cname,logistics,miles,feet,diff,fac,wow,seasons,expo,gpx,trk,lat," .
-    "lng,aoimg1,aoimg2,purl1,purl2,dirs,tips,info,eThresh,dThresh,maWin)" .
-    "SELECT ?,?," .
-    "pgTitle,locale,marker,collection,cgroup,cname,logistics,miles,feet,diff," .
-    "fac,wow,seasons,expo,gpx,trk,lat,lng,aoimg1,aoimg2,purl1,purl2,dirs,tips," .
-    "info,eThresh,dThresh,maWin FROM HIKES WHERE indxNo = ?;";
+
+$xfrReq = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`,`locale`," .
+    "`cname`,`logistics`,`miles`,`feet`,`diff`,`fac`,`wow`,`seasons`," .  
+    "`expo`,`gpx`,`trk`,`lat`,`lng`,`purl1`,`purl2`,`dirs`,`tips`," .
+    "`info`,`dThresh`,`eThresh`,`maWin`)" .
+    "SELECT `pgTitle`,?,?,`locale`,?,`logistics`,`miles`,`feet`,`diff`," .
+    "`fac`,`wow`,`seasons`,`expo`,`gpx`,`trk`,`lat`,`lng`,`purl1`," .
+    "`purl2`,`dirs`,`tips`,`info`,`dThresh`,`eThresh`,`maWin` " .
+    "FROM `HIKES` WHERE `indxNo` = ?;";
 $query = $pdo->prepare($xfrReq);
-$query->execute([$userid, $getHike, $getHike]);
+$query->execute([$userid, $getHike, $cname, $getHike]);
 // Fetch the new hike no in EHIKES:
 $indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
 $indxq = $pdo->query($indxReq);
 $indxNo = $indxq->fetch(PDO::FETCH_NUM);
 $hikeNo = $indxNo[0];
+
 /*
- * GET TSV DATA
+ * PLace TSV data into ETSV
  */
-$xfrTsvReq = "INSERT INTO ETSV (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
-    "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) SELECT ?,folder,title," .
-    "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org FROM " .
-    "TSV WHERE indxNo = ?;";
-$tsvq = $pdo->prepare($xfrTsvReq);
-$tsvq->execute([$hikeNo, $getHike]);
+if (!$cluspg) {
+    $xfrTsvReq = "INSERT INTO `ETSV` (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
+        "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) SELECT ?,folder,title," .
+        "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org FROM " .
+        "`TSV` WHERE `indxNo` = ?;";
+    $tsvq = $pdo->prepare($xfrTsvReq);
+    $tsvq->execute([$hikeNo, $getHike]);
+    /*
+    * Place GPSDATA into EGPSDATA
+    */
+    $gpsDatReq = "INSERT INTO `EGPSDAT` (indxNo,datType,label,`url`,clickText) " .
+        "SELECT ?,datType,label,`url`,clickText FROM `GPSDAT` WHERE " .
+        "`indxNo` = ?;";
+    $gpsq = $pdo->prepare($gpsDatReq);
+    $gpsq->execute([$hikeNo, $getHike]);
+}
 /*
- * GET GPSDAT DATA
+ * Place REFS data into EREFS
  */
-$gpsDatReq = "INSERT INTO EGPSDAT (indxNo,datType,label,url,clickText) " .
-    "SELECT ?,datType,label,url,clickText FROM GPSDAT WHERE " .
-    "indxNo = ?;";
-$gpsq = $pdo->prepare($gpsDatReq);
-$gpsq->execute([$hikeNo, $getHike]);
-/*
- * GET REFS DATA
- */
-$refDatReq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) SELECT " .
-    "?,rtype,rit1,rit2 FROM REFS WHERE indxNo = ?;";
+$refDatReq = "INSERT INTO `EREFS` (indxNo,rtype,rit1,rit2) SELECT " .
+    "?,rtype,rit1,rit2 FROM `REFS` WHERE `indxNo` = ?;";
 $refq = $pdo->prepare($refDatReq);
 $refq->execute([$hikeNo, $getHike]);
-// Back to the editor
-$redirect = "editDB.php?tab=1&hikeNo={$hikeNo}";
+
+// Redirect to appropriate editor
+$redirect = $cluspg ?
+    "editClusterPage.php?hikeNo={$hikeNo}" : "editDB.php?tab=1&hikeNo={$hikeNo}";
 header("Location: {$redirect}");

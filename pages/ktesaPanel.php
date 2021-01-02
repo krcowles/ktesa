@@ -39,9 +39,9 @@ require_once "../accounts/getLogin.php";
                 </div>
                 <div id="menu-contrib" class="menu-default">
                     <ul class="menus">
-                        <li><div id="newPg">Create New Hike</div></li>
-                        <li><div id="edits">Continue Editing Your Hikes</div></li>
-                        <li><div id="epubs">Edit Your Published Hike</div></li>
+                        <li><div id="newPg">Create New Page</div></li>
+                        <li><div id="edits">Continue Editing Your Pages</div></li>
+                        <li><div id="epubs">Edit Your Published Page</div></li>
                         <!--
                         <li><div id="pubReq">Submit for Publication</div></li>
                         -->

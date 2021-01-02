@@ -1,7 +1,10 @@
 "use strict"
 /**
  * @fileoverview This file supplies functions and variables to draw
- * an elevation profile on the page with a given gpx track name.
+ * an elevation profile on the page with a given gpx track name. It
+ * also allows the user to check/uncheck tracks to change the tracks
+ * that are displayed on the map and correlate the topmost checked
+ * track with the elevation chart that is displayed.
  * @author Tom Sandberg
  * @author Ken Cowles
  * 

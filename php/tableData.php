@@ -5,7 +5,7 @@
  * The 'makeTables.php' script can be invoked in three different scenarios:
  *  1.  By 'pages/tableOnly.php' ['Explore->Table Only]
  *      $pageType = 'FullTable'
- *      Here it is used to display ALL hikes and index pages regardless of 
+ *      Here it is used to display ALL hikes and cluster pages regardless of 
  *      userid; [show=all, table=HIKES (ie age=old)];
  *  2.  By 'build/hikeEditor.php' [Contribute->...]
  *      Here it is used to display ONLY hikes which can be edited by the userid;
@@ -14,7 +14,7 @@
  *           [...Continue Editing Your Hike]
  *           [show=usr, table=EHIKES (ie age=new)];
  *           NOTE: The admin can see all hikes in edit (modified to show=all)
- *        b. Editing of a published hike which (not currently in edit mode)
+ *        b. Editing of a published hike (not currently in edit mode)
  *           [...Edit Your Published Hike]
  *           NOTE: The admin can edit any published hike.
  *           [show=usr, table=HIKES (ie age=old): show=all for admin]      
@@ -45,7 +45,8 @@ if ($show !== 'all') {
     $userid = $_SESSION['userid'];
 }
 // Get Cluster Data:
-$clusReq = "SELECT `group`,`page` FROM `CLUSTERS`";
+// NOTE: New Cluster Pages in-edit will have negative integers in 'page'
+$clusReq = "SELECT `group`,`page` FROM `CLUSTERS` WHERE `page` <> 0;";
 $clusters = $pdo->query($clusReq)->fetchAll(PDO::FETCH_KEY_PAIR);
 
 // HTML data- attributes, not visible to user

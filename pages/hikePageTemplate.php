@@ -53,7 +53,7 @@ function off() {
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="page_id" style="display:none">Page</p>
 <p id="gpx" style="display:none"><?=$gpxPath;?></p>
-<p id="cpg" style="display:none"><?=$clus;?></p>
+<p id="cpg" style="display:none"><?=$cluspg;?></p>
 
 <!-- ---------------------------- OLD STYLE -------------------------- -->
 <?php if (!$newstyle) : ?>
@@ -196,17 +196,22 @@ function off() {
 <div class="popupCap"></div>
 
 <script type="text/javascript">
+    <?php if (isset($hikeFiles)) : ?>
+    var hikeFiles = <?=$hikeFiles;?>;
+    <?php endif; ?>
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
+    <?php else: ?>
+        <?php if (isset($capCnt)) : ?>
+        var photocnt  = <?=$capCnt;?>;
+        var d  = "<?=implode("|", $descs);?>";
+        var al = "<?=implode("|", $alblnks);?>";
+        var p  = "<?=implode("|", $piclnks);?>";
+        var c  = "<?=implode("|", $captions);?>";
+        var as = "<?=implode("|", $aspects);?>";
+        var w  = "<?=implode("|", $widths);?>";
+        <?php endif; ?>
     <?php endif; ?>
-    var hikeFiles = <?=$hikeFiles;?>;
-    var photocnt  = <?=$capCnt;?>;
-    var d  = "<?=implode("|", $descs);?>";
-    var al = "<?=implode("|", $alblnks);?>";
-    var p  = "<?=implode("|", $piclnks);?>";
-    var c  = "<?=implode("|", $captions);?>";
-    var as = "<?=implode("|", $aspects);?>";
-    var w  = "<?=implode("|", $widths);?>";
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/picRowFormation.js"></script>

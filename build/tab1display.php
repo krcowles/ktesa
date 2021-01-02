@@ -10,15 +10,14 @@
  */
 ?>
 <!-- Hidden inputs required by saveTab1.php,  & non-displayed <p>'s' by editDB.js -->
-<input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
-<input type="hidden" name="mgpx" value="<?= $curr_gpx;?>" />
-<input type="hidden" name="mtrk" value="<?= $curr_trk;?>" />
-<p id="group" style="display:none;"><?= $cname;?></p>
-<input type="hidden" name="cname" value="<?= $cname;?>" />
-<p id="newclus" style="display:none;"><?= $newclus;?></p>
-<p id="ctype" style="display:none"><?= $logistics;?></p>
-<p id="ptype" style="display:none">Edit</p>
-<p id="ua1" class="user_alert" style="display:none"><?=$user_alert;?></p>
+<input type="hidden" name="hikeNo" value="<?=$hikeNo;?>" />
+<input type="hidden" name="mgpx" value="<?=$curr_gpx;?>" />
+<input type="hidden" name="mtrk" value="<?=$curr_trk;?>" />
+<p id="group" style="display:none;"><?=$cname;?></p>
+<input type="hidden" name="cname" value="<?=$cname;?>" />
+<p id="ctype" style="display:none;"><?=$logistics;?></p>
+<p id="ptype" style="display:none;">Edit</p>
+<p id="ua1" class="user_alert" style="display:none;"><?=$user_alert;?></p>
 
 <div id="d1">
     <input id="ap1" type="submit" name="savePg" value="Apply" />
@@ -117,30 +116,30 @@
     <span class="brown">[Number less than 100, and a max of two
         decimal places]&nbsp;</span>
 </label>
-<textarea id="miles" name="miles"><?= $miles;?></textarea><br />
+<textarea id="miles" name="miles"><?=$miles;?></textarea><br />
 <input type="hidden" name="usrmiles" value="NO" />
 
 <label for="elev">Elevation change in feet:
     <span class="brown">[Integer value up to five digits]&nbsp;</span>
 </label>
-<textarea id="elev" name="feet" maxlength="30"><?= $feet;?></textarea><br /><br />
+<textarea id="elev" name="feet" maxlength="30"><?=$feet;?></textarea><br /><br />
 <input type="hidden" name="usrfeet" value="NO" />
 
 <label for="fac">Facilities at the trailhead:
     <span class="brown">[30 Characters Max]</span>
 </label>
-<textarea id="fac" name="fac" maxlength="30"><?= $fac;?></textarea><br /><br />
+<textarea id="fac" name="fac" maxlength="30"><?=$fac;?></textarea><br /><br />
 
 <label for="wow">"Wow" Appeal:
     <span class="brown">[50 Characters Max]</span>
 </label>
-<textarea id="wow" name="wow" maxlength="50"><?= $wow;?></textarea><br /><br />
+<textarea id="wow" name="wow" maxlength="50"><?=$wow;?></textarea><br /><br />
 
 <label for="seas">Best Hiking Seasons:
     <span class="brown">[12 Characters Max]</span>
 </label>
-<textarea id="seas" name="seasons" maxlength="12"><?= $seasons;?></textarea>
-&nbsp;&nbsp;&nbsp;&nbsp;<p id="expo" style="display:none"><?= $expo;?></p>
+<textarea id="seas" name="seasons" maxlength="12"><?=$seasons;?></textarea>
+&nbsp;&nbsp;&nbsp;&nbsp;<p id="expo" style="display:none"><?=$expo;?></p>
 <label for="sun">Exposure: </label>
 <select id="sun" name="expo">
     <option value="Full sun">Full sun</option>
@@ -153,34 +152,36 @@
     <input id="showll" type="checkbox" name="latlng" value="nosend" /></p>
 <p id="lldisp" style="display:none">
 <label for="lat">Trailhead: Latitude </label>
-<textarea id="lat" name="lat"><?= $lat;?></textarea>&nbsp;&nbsp;
+<textarea id="lat" name="lat"><?=$lat;?></textarea>&nbsp;&nbsp;
 <label for="lon">Longitude </label>
-<textarea id="lon" name="lng"><?= $lng;?></textarea></p>
+<textarea id="lon" name="lng"><?=$lng;?></textarea></p>
 
 <br /><label for="murl">Map Directions Link (Url):
     <span class="brown">[1024 Characters Max]</span>
 </label>
 <textarea id="murl" class="blink" name="dirs"
-    maxlength="1024"><?= $dirs;?></textarea>
-
-
-
+    maxlength="1024"><?=$dirs;?></textarea>
 
 <h3 style="margin-bottom:12px;">Cluster Hike Assignments:
     (Hikes with overlapping trailheads or in close proximity)</h3>
-<span style="font-size:18px;color:Brown;">Reset Assignments:&nbsp;&nbsp;
-<input id="resetclus" type="checkbox" name="nocare" /></span><br /><br />
-<label for="clusters">Cluster: </label><?= $clusters;?>&nbsp;&nbsp;<span
-    id="showdel" style="display:none;">You may remove the cluster
-    assignment by checking here:&nbsp;<input id="deassign"
-    type="checkbox" name="rmClus" value="NO" /></span>
-    <span id="notclus" style="display:none;">There is no currently
+<label for="clusters">Current Cluster: </label><?=$clusters;?>&nbsp;&nbsp;
+<p id="showdel" style="display:none;">Remove the cluster
+    assignment by checking here:&nbsp;
+    <input id="deassign" type="checkbox" name="rmClus" value="NO" /></p>
+<span id="notclus" style="display:none;">There is no currently
         assigned cluster for this hike.</span>
-<p>If you are establishing a new group, select the checkbox: 
-    <input id="newg" type="checkbox" name="nxtGrp" value="NO" />
-</p>
-<p style="margin-top:-10px;margin-left:40px;">and enter the name for the 
-    new group here: <input id="newt" type="text" name="newgname" size="25"
-        maxlength="25" />
-    &nbsp;&nbsp;<span class="brown">[25 Characters Max]</span>
-</p>
+<br /><br />
+
+<div id="newcoords">
+    This cluster group is not yet published; Please enter/verify the following:
+    <br />
+    <div id="cluscoords">
+        Cluster's (NOT Hike's) latitude:
+        <textarea id="cluslat" class="tstyle4" name="cluslat"></textarea>&nbsp;&nbsp;
+        Longitude: <textarea id="cluslng" class="tstyle4" name="cluslng"></textarea>
+    </div>
+</div><br />
+
+<script type="text/javascript">
+    var newgrps = <?=$newgrps;?>;
+</script>

@@ -63,7 +63,7 @@ $cbox = $pageType == 'FullTable' ? true : false;
             <td><?= $hikeDiff[$j];?></td>
             <td><?= $hikeExpIcon[$j];?></td>
             <td style="text-align:center"><a href="<?= $hikeDirections[$j];?>"
-                target="_blank"><?= $dirIcon;?></a></td
+                target="_blank"><?= $dirIcon;?></a></td>
         </tr>
     <?php endfor; ?>
 <?php endif; ?>

@@ -1,46 +1,62 @@
-$( function () { // when page is loaded...
-/*
- * This script responds based on the current status:
- *  1. HIKES table items -- these are all 'published' and need to first be
- *     transferred 'as is' to the EHIKES (et al) tables. Then direct the user
- * 	   to the editDB.php page with the stat field = HIKES indxNo.
- *  2. EHIKES table items -- these will be directed immediately to editDB.php;
- *     If the hike was originally published, a reminder will pop up.
+"use strict"
+/**
+ * @fileoverview For each link in the table of hikes, parse for the href
+ * attribute, then replace with an attribute which points to the correct
+ * editor for the page type.
+ * 
+ * @author Tom Sandberg
+ * @author Ken Cowles
+ * 
+ * @version 2.0 Support for cluster pages
  */
-var useEditor = 'editDB.php?tab=1&hikeNo=';
-$rows = $('tbody').find('tr');
-$('a:not(.navs)').each(function(i) {
-	// *** THESE HIKES ARE EHIKES ***
-	var ptr = $(this).prop('href');
-    if (age === 'new') {
-		// find the hiken no:
-		if (ptr.indexOf('hikeIndx') !== -1) {
-			var hikeloc = ptr.indexOf('hikeIndx=') + 9;
-			var hikeno = ptr.substr(hikeloc);
-			var editlnk = useEditor + hikeno;
-			$(this).attr('href', editlnk);
-			$(this).attr('target', '_self');
+$( function () { // when page is loaded...
+/**
+ * This script responds based on the current scenario:
+ *  1. The user selected Contribute->Edit Your Published Hike
+ *     In this case, a list of pages created by the user (and already
+ *     published) is presented as a table. The links for these pages
+ *     are modified by this script to point to the xfrPub.php scipt,
+ *     which will transfer a copy of the page into the edit tables.
+ *     If the page is a cluster page, the link contains a query string
+ *     parameter to identify it (clus=y).
+ *  2. The user selected Contribute->Continue Editing Your Hikes
+ *     In this case, a list of pages already in edit mode is presented
+ *     as a table. The links for these pages are modified by this
+ *     script to point either to editDB.php if the page is a hike page,
+ *     or to editClusterPage.php if the page is a cluster page.
+ */
+var useHikeEd = 'editDB.php?tab=1&hikeNo=';
+var useClusEd = 'editClusterPage.php?hikeNo=';
+var xfrPage   = 'xfrPub.php?hikeNo=';
+var $rows      = $('tbody').find('tr');
+var hikeno;
+var lnk;
+$rows.each(function() {
+	var $tdlink = $(this).children().eq(0);
+	var $anchor = $tdlink.children().eq(0);
+	var ptr = $anchor.prop('href');
+	var clushike =  ptr.indexOf('clus=y') !== -1 ? true : false;
+	if (ptr.indexOf('hikeIndx') !== -1) {
+		// find the hike no:
+		var hikeloc = ptr.indexOf('hikeIndx=') + 9;
+		hikeno = ptr.substr(hikeloc); // NOTE: this picks up the clus=y parm if present
+	} else {
+		hikeno = 0;
+		alert("Could not locate hike");
+	}
+	// *** THESE HIKES ARE NEW (EHIKES) ***
+	if (age === 'new') { // age is established in hikeEditor.php
+		if (clushike) {
+			lnk = useClusEd + hikeno;
+		} else {
+			lnk = useHikeEd + hikeno;
 		}
 	// *** THESE HIKES ARE PUBLSIHED ***
     } else {
-		if (ptr.indexOf('hikeIndx') !== -1) {
-			// need to differentiate between index and hike pages:
-			var $containerRow = $(this).parent().parent();
-			if ( !$containerRow.hasClass('indxd') ) {
-				var hikeToUse = $containerRow.data('indx');
-				var callPhp = 'xfrPub.php?hikeNo=' + hikeToUse;
-				$(this).attr('href', callPhp);
-				$(this).attr('target', '_self');
-			} else {
-				// there is currently no ability to edit index pages
-				$containerRow.find('td').css('background-color', 'lightgray');
-				$(this).on('click', function(ev) {
-					ev.preventDefault();
-					alert("Index pages/Visitor Centers cannot be edited");
-				});
-			}
-		}
-    }
+		lnk = xfrPage + hikeno;	
+	}
+	$anchor.attr('href', lnk);
+	$anchor.attr('target', '_self');
 });
 
 // global object used to define how table items get compared in a sort:
@@ -85,7 +101,7 @@ $('.sortable').each( function() {
 	var rows = $tbody.find('tr').toArray();
 	
 	$controls.on('click', function() {
-		$header = $(this);
+		var $header = $(this);
 		var order = $header.data('sort');
 		var column;
 		

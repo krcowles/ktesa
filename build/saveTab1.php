@@ -29,18 +29,6 @@ $usrmiles = filter_input(INPUT_POST, 'usrmiles');  // registers user changes
 $usrfeet  = filter_input(INPUT_POST, 'usrfeet');   // registers user changes
 $_SESSION['uplmsg'] = ''; // return status to user on tab1
 
-// Check current `cname` field to ensure lat/lng gets updated if `cname` exists
-$updateCluster = false;
-$state_req = "SELECT `cname`,`lat`,`lng` FROM `EHIKES` WHERE `indxNo` = ?;";
-$clus_state = $pdo->prepare($state_req);
-$clus_state->execute([$hikeNo]);
-$state = $clus_state->fetch(PDO::FETCH_ASSOC);
-if (!empty($state['cname'])) {
-    if (empty($state['lat']) || empty($state['lng'])) {
-        $updateCluster = true;
-    }
-}
-
 /**
  * This section handles the main gpx file delete and new gpx file upload.
  * Miles/ft entries are not automatically overwritten when gpx file is deleted
@@ -121,10 +109,12 @@ if (!empty($gpxfile)) {  // new upload
             $maingpx = $uploadResult['file'];
         } else {
             $_SESSION['user_alert'] = "{$gpxfile} is not a gpx file";
-            $_SESSION['uplmsg'] .= "<span style='color:red;'>{$gpxfile} NOT UPLOADED</span>";
+            $_SESSION['uplmsg']
+                .= "<span style='color:red;'>{$gpxfile} NOT UPLOADED</span>";
         }
     } else {
-        $_SESSION['uplmsg'] .= "<span style='color:red;'>{$gpxfile} NOT UPLOADED</span>";
+        $_SESSION['uplmsg']
+            .= "<span style='color:red;'>{$gpxfile} NOT UPLOADED</span>";
     }
 }
 /**
@@ -202,45 +192,94 @@ if (isset($_POST['mft'])) {
 
 /**
  * CLUSTER ASSIGNMENT PROCESSING:
- *  The order of changes processed are in the following priority:
- *     1. New Group added
- *     2. Existing assignment deleted
- *     3. Group Assignment Changed
- *     4. Nothing Changed
-*/ 
-$nxtGrp = isset($_POST['nxtGrp']) ?
-    filter_input(INPUT_POST, 'nxtGrp') : 'NO';
-$rmClus = isset($_POST['rmClus']) ?
-    filter_input(INPUT_POST, 'rmClus') : 'NO';
-$clat = empty($lat) ? null : $lat;
-$clng = empty($lng) ? null : $lng;
-// If cluster was entered previously w/no lat/lng
-if ($updateCluster) {
-    $updte_req = "UPDATE `CLUSTERS` SET `lat` = :lat, `lng` = :lng WHERE " .
-        "`group` = :group;";
-    $updte = $pdo->prepare($updte_req);
-    $updte->execute(
-        ["lat" => $clat, "lng" => $clng, "group" => $state['cname']]
-    );
+ */ 
+// Previous state of `cname` determines CLUSHIKES actions
+$clusAssignmentReq = "SELECT `cname` FROM `EHIKES` WHERE `indxNo`=?;";
+$clusAssignment = $pdo->prepare($clusAssignmentReq);
+$clusAssignment->execute([$hikeNo]);
+$assign = $clusAssignment->fetch(PDO::FETCH_ASSOC);
+$current = $assign['cname'];
+$currentClus = empty($current) ? false : $assign['cname'];
+$delCHike = false;
+$addCHike = false;
+
+$cname = filter_input(INPUT_POST, 'clusters');
+// 'clusters' posts as 'null' when clusters drop-down is empty
+
+if ($currentClus === false && !empty($cname)) {
+    $addCHike = true;
+}
+if ($currentClus && empty($cname)) {
+    $delCHike = true;
+}
+if (!empty($cname)) {
+    if ($currentClus && $currentClus !== $cname) { // assignmt changed
+        $delCHike = true;
+        $addCHike = true;
+    }
+    // Is this an unpublished cluster?
+    $getStateReq = "SELECT `pub` FROM `CLUSTERS` WHERE `group`=?;";
+    $getState = $pdo->prepare($getStateReq);
+    $getState->execute([$cname]);
+    $clusState = $getState->fetch(PDO::FETCH_ASSOC);
+    if ($clusState['pub'] === 'N') {
+        $clat = empty($_POST['cluslat']) ? null :
+            filter_input(INPUT_POST, 'cluslat', FILTER_VALIDATE_FLOAT);
+        $clng = empty($_POST['cluslng']) ? null :
+            filter_input(INPUT_POST, 'cluslng', FILTER_VALIDATE_FLOAT);
+        if ((!is_null($clat) && !$clat) || (!is_null($clng) && !$clng)) {
+            $_SESSION['user_alert'] = "You have entered invalid data in\n" .
+                "either cluster latitude or longitude";
+            header("Location: {$redirect}");
+            exit;
+        }
+        // php yields '0' for [constant * null]! Therefore:
+        $clat = is_null($clat) ? null : LOC_SCALE * $clat;
+        $clng = is_null($clng) ? null : LOC_SCALE * $clng;
+        $updte_req = "UPDATE `CLUSTERS` SET `lat` = :lat, `lng` = :lng WHERE " .
+            "`group` = :group;";
+        $updte = $pdo->prepare($updte_req);
+        $updte->execute(["lat" => $clat, "lng" => $clng, "group" => $cname]);
+        /**
+         * If there is a Cluster Page in-edit for this new group, update it's
+         * lat/lng values. 
+         * Note: if a Cluster Page for this new group was published, it must
+         * already have had lat/lng specified (it won't publish otherwise).
+         * Therefore, the only scenario to update is if the Cluster Page for
+         * the new group is in-edit.
+         */
+        $checkForCPReq = "SELECT `pgTitle` FROM `EHIKES` WHERE `pgTitle`=?;";
+        $checkForCP = $pdo->prepare($checkForCPReq);
+        $checkForCP->execute([$cname]);
+        $CP_InEdit = $checkForCP->fetch(PDO::FETCH_ASSOC);
+        if ($CP_InEdit !== false) {
+            $newLatLngReq = "UPDATE `EHIKES` SET `lat`=?,`lng`=? WHERE " .
+                "`pgTitle`=?;";
+            $newLatLng = $pdo->prepare($newLatLngReq);
+            $newLatLng->execute([$clat, $clng, $cname]);
+        }
+    }
+}
+// update CLUSHIKES as appropriate
+if ($delCHike) {
+    $deleteCHikeReq = "DELETE FROM `CLUSHIKES` WHERE `indxNo`=?;";
+    $deleteCHike = $pdo->prepare($deleteCHikeReq);
+    $deleteCHike->execute([$hikeNo]);
+}
+if ($addCHike) {
+    // get clusterid for $cname
+    $cnameIdReq = "SELECT `clusid` FROM `CLUSTERS` WHERE `group`=:grp;";
+    $cnameId = $pdo->prepare($cnameIdReq);
+    $cnameId->execute(["grp" => $cname]);
+    $cnId = $cnameId->fetch(PDO::FETCH_ASSOC);
+    $id = $cnId['clusid'];
+    $addClusHikeReq = "INSERT INTO `CLUSHIKES` (`indxNo`,`pub`,`cluster`) " .
+        "VALUES(?,'N',?);";
+    $addClusHike = $pdo->prepare($addClusHikeReq);
+    $addClusHike->execute([$hikeNo, $id]);
 }
 
-// 1. This category 'overrules' any other conditions
-if ($nxtGrp === 'YES') {
-    $cname = filter_input(INPUT_POST, 'newgname');
-    // If no lat/lng now, will be updated later when entered
-    $insert_req = "INSERT INTO `CLUSTERS` (`group`,`lat`,`lng`,`page`) " .
-        "VALUES (?, ?, ?, '0');";
-    $insert = $pdo->prepare($insert_req);
-    $insert->execute([$cname, $clat, $clng]);
-    // 2. Next in order, delete if so marked
-} elseif ($rmClus === 'YES') {
-    $cname = '';
-    // 3. & 4. Whatever the select-box entry, use it
-} else {
-    $cname = filter_input(INPUT_POST, 'clusters');
-}
-
-// setup variables for saving to db:
+// Back to EHIKES: setup variables for saving to db:
 $pdoBindings['pgTitle'] = filter_input(INPUT_POST, 'pgTitle');
 $pdoBindings['locale'] = filter_input(INPUT_POST, 'locale');
 $pdoBindings['cname'] = $cname;
@@ -250,16 +289,12 @@ $pdoBindings['fac'] = filter_input(INPUT_POST, 'fac');
 $pdoBindings['wow'] = filter_input(INPUT_POST, 'wow');
 $pdoBindings['seasons'] = filter_input(INPUT_POST, 'seasons');
 $pdoBindings['expo'] = filter_input(INPUT_POST, 'expo');
-// get an unfiltered input first to check for empty string:
-$rawdir = filter_input(INPUT_POST, 'dirs');
-if (empty($rawdir)) {
+// FILTER_VALIDATE_URL returning false for Google Maps! Can't get
+// online answer to that...
+$dirs = filter_input(INPUT_POST, 'dirs');
+if (empty($dirs)) {
     $dirs = '';
-} else {
-    $dirs = filter_input(INPUT_POST, 'dirs', FILTER_VALIDATE_URL);
-    if ($dirs === false) {
-        $dirs = "--- INVALID URL DETECTED ---";
-    }
-}
+} 
 $pdoBindings['dirs'] = $dirs;
 
 $svreq = "UPDATE EHIKES SET " .

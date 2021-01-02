@@ -25,8 +25,9 @@ $moved = array(76, 77, 79, 80, 81, 83, 84, 202, 204);
 /**
  * Retrieve cluster & hike data from db
  */
-$clusters = $pdo->query("SELECT * FROM `CLUSTERS`;")->fetchAll(PDO::FETCH_ASSOC);
-$clushike_req = "SELECT `indxNo`,`cluster` FROM `CLUSHIKES`;";
+$clusdata = $pdo->query("SELECT * FROM `CLUSTERS` WHERE `pub`='Y';");
+$clusters = $clusdata->fetchAll(PDO::FETCH_ASSOC);
+$clushike_req = "SELECT `indxNo`,`cluster` FROM `CLUSHIKES` WHERE `pub`='Y';";
 $clushikes 
     = $pdo->query($clushike_req)->fetchAll(PDO::FETCH_ASSOC);
 $hike_req = "SELECT `pgTitle`,`indxNo`,`miles`,`feet`,`diff`,`lat`,`lng`," .
