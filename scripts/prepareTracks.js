@@ -51,13 +51,21 @@ function getTrackData(promise) {
                 gpxtype = 'rte';
                 pts = 'rtept';
             }
-            // process track/route by track/route (may be multiple tracks)
-            $(gpsdata).find(gpxtype).each(function() {
+            // process by track/route (may be multiple per file)
+            $(gpsdata).find(gpxtype).each(function(indx) {
+                let trackName;
+                let child = $(this).find('name');
+                if (child.length == 0) {
+                    // GPSVisualizer supplies a default name if none in gpx file
+                    trackName = '[track ' + (indx + 1) + ']';
+                } else {
+                    trackName = child.text();
+                }
                 let lats = [];
                 let lngs = [];
                 let elevs = [];
                 let rows = [];
-                gpsvTracks.push($(this).find('name').text());
+                gpsvTracks.push(trackName);
                 var hikelgth = 0;
                 $(this).find(pts).each(function() {
                     let tag = parseFloat($(this).attr('lat'));
