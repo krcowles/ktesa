@@ -15,7 +15,7 @@ require "../php/global_boot.php";
 if (isset($_GET['expire']) && $_GET['expire'] === 'Y') {
     $removeReq = "DELETE FROM `USERS` WHERE `username`=?;";
     $remove = $pdo->prepare($removeReq);
-    $remove->execute([$_SESSION['cancel']]);
+    $remove->execute([$_SESSION['username']]);
     unset($_SESSION['cancel']);
 }
 setcookie('nmh_mstr', '', 0, '/');

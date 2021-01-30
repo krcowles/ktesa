@@ -199,6 +199,11 @@ switch (formtype) {
                 alert("Please accept or reject cookies");
                 return false;
             }
+            let confirm = $('#confirm').val();
+            if (confirm !== password) {
+                alert("Your passwords do not match");
+                return false;
+            }
             let formdata = {
                 submitter: 'change',
                 code: login_renew,
