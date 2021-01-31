@@ -39,8 +39,7 @@ if ($tblOnly) {
         }
     }
     $map_opts = [
-        'show_geoloc' => 'false',
-        'zoom' => 'auto',
+        'zoom' => 17,
         'map_type' => 'ARCGIS_TOPO_WORLD',
         'street_view'=> 'false',
         'zoom_control' => 'large',

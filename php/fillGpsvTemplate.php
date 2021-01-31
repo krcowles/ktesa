@@ -25,20 +25,12 @@ foreach ($gpsv as $line) {
         $maphtml .= '        <title>' . $hikeTitle . '</title>' . PHP_EOL;
     } elseif (strpos($line, 'API_KEY_HERE')) {
         $maphtml .= '            google_api_key = "' . API_KEY . '";' . PHP_EOL;
-    } elseif (strpos($line, '<meta name="geo.postion"')) {
+    } elseif (strpos($line, 'geo.postion')) {
         $maphtml .= '        <meta name="geo.position" content="' . $clat .
             ', ' . $clon . '" />' . PHP_EOL;
     } elseif (strpos($line, '<meta name="ICBM"')) {
         $maphtml .= '        <meta name="ICBM" content="' . $clat . ', ' .
             $clon . '" />' . PHP_EOL;
-    } elseif (strpos($line, "Although GPS Visualizer didn")) {
-        $maphtml .= $line . PHP_EOL;
-        if ($map_opts['show_geoloc'] === 'true') {
-            $maphtml .= "                <a href='javascript:GV_Geolocate(" .
-                "{marker:true,info_window:true})' target='_self' " .
-                "style='position:absolute;top:20px;left:42px;z-index:500;'>" .
-                "<img src='../../images/geoloc.png' /></a>" . PHP_EOL;
-        }
     } elseif (strpos($line, "gv_options.center =")) {
         $maphtml .= '            gv_options.center = [' . $clat . ',' . $clon .
             '];  // [latitude,longitude] - be sure to keep the square brackets' .

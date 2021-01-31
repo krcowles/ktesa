@@ -293,8 +293,7 @@ if ($newstyle) {
     }
         
     $map_opts = [
-        'show_geoloc' => 'true',
-        'zoom' => 'auto',
+        'zoom' => 18,
         'map_type' => 'ARCGIS_TOPO_WORLD',
         'street_view'=> 'false',
         'zoom_control' => 'large',

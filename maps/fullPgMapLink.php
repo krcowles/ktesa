@@ -32,8 +32,7 @@ $maWindow   = 1;
  * The map_opts specify the optional settings for the full-page map.
  */
 $map_opts = [
-    'show_geoloc' => 'true',
-    'zoom' => 'auto',
+    'zoom' => 17,
     'map_type' => 'GV_HYBRID',
     'street_view'=> 'true',
     'zoom_control' => 'large',
