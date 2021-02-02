@@ -16,12 +16,23 @@ legend {
     font-size: 18px;
     color: brown;
 }
+#testsite {
+    margin-left: 24px;
+}
+.installdat {
+    height: 18px;
+    font-size: 14px;
+    width: 180px;
+}
+#sites {
+    padding-top: 6px;
+}
 #switchstate, #lst, #swdb {
     margin-bottom: 12px;
 }
 #switchstate, #upld, #chgs, #site, #npix, #rel2pic, #lst, #reload,
 #drall, #ldall, #exall, #show, #swdb, #editmode, #commit, #cleanPix,
-#pinfo, #addbk, #pub, #ehdel, #revall, #revsgl {
+#pinfo, #addbk, #pub, #ehdel, #revall, #revsgl, #install {
     color: black;
     background-color: ghostwhite;
 }
@@ -29,7 +40,7 @@ legend {
 #rel2pic:hover, #lst:hover, #reload:hover, #drall:hover, #ldall:hover,
 #exall:hover, #show:hover, #swdb:hover, #editmode:hover, #commit:hover,
 #cleanPix:hover, #pinfo:hover, #addbk:hover, #pub:hover, #ehdel:hover,
-#revall:hover, #revsgl:hover {
+#revall:hover, #revsgl:hover, #install:hover {
     color: white;
     background-color: saddlebrown;
 }

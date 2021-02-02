@@ -5,6 +5,88 @@ $('#switchstate').on('click', function() {
     window.open('changeSiteMode.php?mode=' + current_state);
     window.close();
 });
+// uploading of test site:
+$('#upld').on('click', function() {
+    let branch = $('#ubranch').val() == '' ? 'master' : $('#ubranch').val();
+    let commit = $('#ucomm').val();
+    if (commit == '') {
+        alert("Please specify a commit number");
+        return;
+    }
+    let postdata = {branch: branch, commit: commit};
+    let ans = confirm("Proceed to upload '" + branch + "'?");
+    if (ans) {
+        $.ajax({
+            url: '../php/ftp.php',
+            method: "post",
+            data: postdata,
+            success: function(result) {
+                if (result !== "\nDone") {
+                    alert("Error: " + result)
+                } else {
+                    alert("Test site successfully uploaded via ftp");
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                var newDoc = document.open();
+                newDoc.write(jqXHR.responseText);
+                newDoc.close();
+            }
+        });
+    }
+});
+// installation script:
+$('#install').on('click', function() {
+    if (hostIs !== 'nmhikes.com' || server_loc !== 'main') {
+        alert("This tool only works on the server docroot");
+        return;
+    }
+    if (typeof auth !== 'undefined') {
+        alert("There is no authorization to run this utility");
+        return;
+    }
+    let deletions = [];
+    let deleters = $('#sites').val();
+    let copyloc = $('#copyloc').val();
+    if (copyloc == '') {
+        alert("Please specify a location from which to install files");
+        return;
+    }
+    let ajax = false;
+    if (deleters == '') {
+        let ans = confirm("No additional test site files will be deleted");
+        if (ans) {
+            ajax = true; 
+            deletions = '';  
+        } else {
+            return;
+        }
+    } else {
+        userspec = deleters.split(",");
+        for (let i=0; i<userspec.length; i++) {
+            let item = userspec[i].trim();
+            deletions.push(item);
+        }
+        ajax = true;
+    }
+    if (ajax) {
+        let postdata = {install: copyloc, delete: deletions};
+        $.ajax({
+            url: 'install.php',
+            method: "post",
+            data: postdata,
+            success: function(result) {
+                alert(result);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                var newDoc = document.open();
+                newDoc.write(jqXHR.responseText);
+                newDoc.close();
+            }
+        });
+    }
+    return;
+});
 $('#chgs').on('click', function() {
     window.open('export_all_tables.php?dwnld=C');
 });

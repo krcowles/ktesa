@@ -17,6 +17,8 @@ if (isset($_SESSION['user_alert'])) {
     $admin_alert = $_SESSION['user_alert'];
     unset($_SESSION['user_alert']);
 }
+$server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
+    'test' : 'main';
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -37,7 +39,8 @@ if (isset($_SESSION['user_alert'])) {
                 dateFormat: "yy-mm-dd"
             });
         });
-        var hostIs = "<?= $_SERVER['SERVER_NAME'];?>";
+        var hostIs = "<?=$_SERVER['SERVER_NAME'];?>";
+        var server_loc = "<?=$server_loc;?>";
     </script>
 </head>
 <body>
@@ -50,21 +53,41 @@ if (isset($_SESSION['user_alert'])) {
     <?php $_SESSION['nopix'] = ''; ?>
 <?php endif; ?>
 
+<?php if ($admin) : ?>
+<script type="text/javascript">var auth;</script>
+<?php endif; ?>
+
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Overall Site Management</legend>
         <button id="switchstate">Switch Site Mode</button>&nbsp;&nbsp;
         <span id="sitemode">The site is currently in
             <span id="currstate"><?= $appMode;?></span> mode:</span><br />
-        <!-- CURRENTLY NOT USED
-        <form action="upldSite.php" method="POST" target="_blank"
-            enctype="multipart/form-data">
-            Upload:<br />
-            <button id="upld">Upload</button>&nbsp;&nbsp;
-            <input id="ufile" type="file" name="ufile" />
-                &nbsp;[Uploads Zip File and Extracts to 'upload' directory]<br />
-        </form>
-        -->
+
+        <!-- The following uploads or installs a test site -->
+        <span class="cats">Upload Test Site:</span><br />
+        <button id="upld">Upload</button>&nbsp;&nbsp;
+            [From Localhost]<br />
+        <div id="testsite">
+            <span>If not current master, specify git branch here:</span>
+            <input id="ubranch" class="installdat" type="text" 
+                placeholder="master" />&nbsp;&nbsp;
+            Commit# for upload: <input id="ucomm" class="installdat" type="text" />
+        </div>
+
+        <span class="cats">Install Test Site to Main</span><br />
+        <button id="install">Install main</button>&nbsp;&nbsp;
+            [From server]<br />
+        <div style="margin-left:24px;">
+            <span>Delete the following <strong>test site</strong>
+            directories (comma-separated list)<br />[NOTE:]
+            the <em>install</em> directory is always saved</span>
+            <br /><textarea id="sites" cols="80"></textarea>
+            <br /><span>Install from:<span>
+            <input id="copyloc" class="installdat" type="text"
+                placeholder="Test Site" /><br />
+        </div><br />
+
         <span class="cats">Downloads:</span><br />
         <button id="chgs">Changes Only</button>
             &nbsp;[Downloads zip file]<br />
