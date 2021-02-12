@@ -4,7 +4,7 @@
  * to display an individual hike or cluster page. The hike data may come from
  * either the released HIKES tables, or those in-edit (EHIKES); When a cluster
  * page, the value of $clusterPage may be either 'y', or a positive or negative
- * number corresponding to the 'page' field in CLUSTERS [depending  on whether
+ * number corresponding to the 'page' field in CLUSTERS [depending on whether
  * the page-in-edit is currently published (positive) or not (negative)]. If the
  * script was invoked via a link from standard published page code, e.g. map
  * link, the $clusterPage will be 'y'.
@@ -93,12 +93,10 @@ $hikeExposure   = $row['expo'];
 $files = []; // required by multiMap.php
 $allgpx = $row['gpx'];
 if (!empty($allgpx)) {
-    $newstyle = true; 
     $files    = explode(",", $allgpx);
     $gpxfile  = $files[0];
     $gpxPath  = '../gpx/' . $gpxfile;
-} else { // for 'old style' pages; cluster pages defined later...
-    $newstyle = false;
+} else { // cluster pages defined later...
     $gpxfile  = '';
     $gpxPath  = '';
 }
@@ -138,7 +136,6 @@ $displayAscDsc  = ($showAscDsc == true) || is_numeric($hikeEThresh) ? true : fal
  */
 if ($clusterPage) {
     $cluspg = 'yes'; 
-    $newstyle = true;
     // get cluster id
     $clusPgReq= "SELECT `clusid`,`lat`,`lng` FROM `CLUSTERS` WHERE `group`=?;";
     $clusPg = $pdo->prepare($clusPgReq);
@@ -190,27 +187,20 @@ if ($clusterPage) {
         }
         $sidePanelData = json_encode($hike_data);
     } else { // no published hikes for this group yet
-        // hence, no gpx file. Pseudo file created to allow display of map:
         $ctrlat = $cpdata['lat']/LOC_SCALE;
         $ctrlng = $cpdata['lng']/LOC_SCALE;
-        $pseudo = simplexml_load_file("../build/pseudo.gpx");
-        $y = $pseudo->trk->trkseg[0];
-        $y->trkpt[0]['lat'] = $ctrlat;
-        $y->trkpt[0]['lon'] = $ctrlng;
-        $y->trkpt[1]['lat'] = $ctrlat + .004507;
-        $y->trkpt[1]['lon'] = $ctrlng;
-        $y->trkpt[2]['lat'] = $ctrlat - .004507;
-        $y->trkpt[2]['lon'] = $ctrlng;
-        $y->trkpt[3]['lat'] = $ctrlat;
-        $y->trkpt[3]['lon'] = $ctrlng;
-        $y->trkpt[4]['lat'] = $ctrlat;
-        $y->trkpt[4]['lon'] = $ctrlng - .005477;
-        $y->trkpt[5]['lat'] = $ctrlat;
-        $y->trkpt[5]['lon'] = $ctrlng + .005477;
-        $pseudo->asXML("../gpx/filler.gpx");
-        $gpxfile = "filler.gpx";
-        $files = [$gpxfile];
+        createPseudoGpx($ctrlat, $ctrlng, $gpxfile, $files);
     }
+} elseif ($gpxfile === '') {
+    if (empty($row['lat']) || empty($row['lng'])) {
+        // use NM State geographic center
+        $ctrlat = 34.450;
+        $ctrlng = -106.042;
+    } else {
+        $ctrlat = $row['lat'];
+        $ctrlng = $row['lng'];
+    }
+    createPseudoGpx($ctrlat, $ctrlng, $gpxfile, $files);
 }
 require "relatedInfo.php";
 /**
@@ -259,93 +249,84 @@ if (!$clusterPage) {
     $capCnt = count($descs);
 }
 /**
- * There are two possible types of hike page displays. If the hike page
- * has a map and elevation chart to display, the variable $newstyle is
- * true, and these items are displayed.  Otherwise, a page with a hike
- * summary table is presented with photos and information, but no map or
- * elevation chart ($newstyle is false).
+ * In the case of hike map and elevation chart, in order for the map to be
+ * displayed in an iframe, a file is created and stored in the maps/tmp
+ * sub-directory. The file is deleted after loading the page.
  */
-if ($newstyle) {
-    /**
-     * In the case of hike map and elevation chart, in order for the map to be
-     * displayed in an iframe, a file is created and stored in the maps/tmp
-     * sub-directory. The file is deleted after loading the page.
-     */
-    $extLoc = strrpos($gpxfile, '.');
-    $gpsvMap = substr($gpxfile, 0, $extLoc); // strip file extension
-    $date = date_create();
-    $date_str = date_format($date, 'YmdHisu');
-    $tmpMap = "../maps/tmp/" . "_" . $gpsvMap . "_" . $date_str . ".php";
-    if (($mapHandle = fopen($tmpMap, "w")) === false) {
-        $mapmsg = "Contact Site Master: could not open tmp map file: " .
-            $tmpMap . ", for writing";
-        throw new Exception($mapmsg);
-    }
-    $fpLnk = "../maps/fullPgMapLink.php?hike={$hikeTitle}" .
-        "&hno={$hikeIndexNo}&tbl={$tbl}";
-    if ($clusterPage) {
-        $fpLnk .= "&clus=y";
-        foreach ($files as $gpx) {
-            $fpLnk .= "&gpx[]={$gpx}";
-        }
-    } else {
-        $fpLnk .= "&gpx={$gpxfile}";
-    }
-        
-    $map_opts = [
-        'zoom' => 18,
-        'map_type' => 'ARCGIS_TOPO_WORLD',
-        'street_view'=> 'false',
-        'zoom_control' => 'large',
-        'map_type_control' => 'menu',
-        'center_coordinates' => 'true',
-        'measurement_tools' => 'false',
-        'utilities_menu' => "{ 'maptype':true, 'opacity':true, " .
-            "'measure':true, 'export':true }",
-        'tracklist_options' => 'true',
-        'marker_list_options' => 'false',
-        'show_markers' => 'true',
-        'dynamicMarker' => 'true'  
-    ];
-    /**
-     * Set smoothing parameter values per the following hierarchy:
-     *  from query string
-     *  hike-specific value from database,
-     *  default value defined here.
-    */
-    if ($elevThreshParm) { // threshold (meters) for elevation smoothing
-        $elevThresh = $elevThreshParm;
-    } else {
-        $elevThresh = isset($hikeEThresh) ? $hikeEThresh : 1;
-    }
-    if ($distThreshParm) { // threshold (meters) for distance smoothing
-        $distThresh = $distThreshParm;
-    } else {
-        $distThresh = isset($hikeDThresh) ? $hikeDThresh : 1;
-    }
-    if ($maWindowParm) { // moving average window size for elevation smoothing
-        $maWindow = $maWindowParm;
-    } else {
-        $maWindow = isset($hikeMaWin) ? $hikeMaWin : 1;
-    }
-    if ($makeGpsvDebugParm) {
-        $makeGpsvDebug = $makeGpsvDebug === "true" ? true : false;
-    } else {
-        $makeGpsvDebug = false;
-    }
-
-    // Open debug files with headers, if requested by query string
-    $handleDfa = null;
-    $handleDfc = null;
-    if ($makeGpsvDebug) {
-        $handleDfa = gpsvDebugFileArray($gpxPath);
-        $handleDfc = gpsvDebugComputeArray($gpxPath);
-    }
-    
-    include '../php/multiMap.php';
-  
-    // this is the html for the map: precede it with cache-control:
-    $php  = "<?php header('Cache-Control: max-age=0'); ?>" . $maphtml;
-    fputs($mapHandle, $php);
-    fclose($mapHandle);
+$extLoc = strrpos($gpxfile, '.');
+$gpsvMap = substr($gpxfile, 0, $extLoc); // strip file extension
+$date = date_create();
+$date_str = date_format($date, 'YmdHisu');
+$tmpMap = "../maps/tmp/" . "_" . $gpsvMap . "_" . $date_str . ".php";
+if (($mapHandle = fopen($tmpMap, "w")) === false) {
+    $mapmsg = "Contact Site Master: could not open tmp map file: " .
+        $tmpMap . ", for writing";
+    throw new Exception($mapmsg);
 }
+$fpLnk = "../maps/fullPgMapLink.php?hike={$hikeTitle}" .
+    "&hno={$hikeIndexNo}&tbl={$tbl}";
+if ($clusterPage) {
+    $fpLnk .= "&clus=y";
+    foreach ($files as $gpx) {
+        $fpLnk .= "&gpx[]={$gpx}";
+    }
+} else {
+    $fpLnk .= "&gpx={$gpxfile}";
+}
+    
+$map_opts = [
+    'zoom' => 18,
+    'map_type' => 'ARCGIS_TOPO_WORLD',
+    'street_view'=> 'false',
+    'zoom_control' => 'large',
+    'map_type_control' => 'menu',
+    'center_coordinates' => 'true',
+    'measurement_tools' => 'false',
+    'utilities_menu' => "{ 'maptype':true, 'opacity':true, " .
+        "'measure':true, 'export':true }",
+    'tracklist_options' => 'true',
+    'marker_list_options' => 'false',
+    'show_markers' => 'true',
+    'dynamicMarker' => 'true'  
+];
+/**
+ * Set smoothing parameter values per the following hierarchy:
+ *  from query string
+ *  hike-specific value from database,
+ *  default value defined here.
+*/
+if ($elevThreshParm) { // threshold (meters) for elevation smoothing
+    $elevThresh = $elevThreshParm;
+} else {
+    $elevThresh = isset($hikeEThresh) ? $hikeEThresh : 1;
+}
+if ($distThreshParm) { // threshold (meters) for distance smoothing
+    $distThresh = $distThreshParm;
+} else {
+    $distThresh = isset($hikeDThresh) ? $hikeDThresh : 1;
+}
+if ($maWindowParm) { // moving average window size for elevation smoothing
+    $maWindow = $maWindowParm;
+} else {
+    $maWindow = isset($hikeMaWin) ? $hikeMaWin : 1;
+}
+if ($makeGpsvDebugParm) {
+    $makeGpsvDebug = $makeGpsvDebug === "true" ? true : false;
+} else {
+    $makeGpsvDebug = false;
+}
+
+// Open debug files with headers, if requested by query string
+$handleDfa = null;
+$handleDfc = null;
+if ($makeGpsvDebug) {
+    $handleDfa = gpsvDebugFileArray($gpxPath);
+    $handleDfc = gpsvDebugComputeArray($gpxPath);
+}
+
+include '../php/multiMap.php';
+
+// this is the html for the map: precede it with cache-control:
+$php  = "<?php header('Cache-Control: max-age=0'); ?>" . $maphtml;
+fputs($mapHandle, $php);
+fclose($mapHandle);

@@ -225,7 +225,35 @@ function getClusters($pdo)
     $select .= '</select>' . PHP_EOL;
     return $select;
 }
-
+/**
+ * When there is no gpxfile, a pseudo-gpx file is created for display on
+ * the map.
+ * 
+ * @param float $clat Map center latitude
+ * @param float $clng Map center longitude
+ * 
+ * @return null
+ */
+function createPseudoGpx($clat, $clng, &$gpxfile, &$files)
+{
+    $pseudo = simplexml_load_file("../build/pseudo.gpx");
+    $y = $pseudo->trk->trkseg[0];
+    $y->trkpt[0]['lat'] = $clat;
+    $y->trkpt[0]['lon'] = $clng;
+    $y->trkpt[1]['lat'] = $clat + .004507;
+    $y->trkpt[1]['lon'] = $clng;
+    $y->trkpt[2]['lat'] = $clat - .004507;
+    $y->trkpt[2]['lon'] = $clng;
+    $y->trkpt[3]['lat'] = $clat;
+    $y->trkpt[3]['lon'] = $clng;
+    $y->trkpt[4]['lat'] = $clat;
+    $y->trkpt[4]['lon'] = $clng - .005477;
+    $y->trkpt[5]['lat'] = $clat;
+    $y->trkpt[5]['lon'] = $clng + .005477;
+    $pseudo->asXML("../gpx/filler.gpx");
+    $gpxfile = "filler.gpx";
+    $files = [$gpxfile];
+}
 /**
  * For Flickr Albums ONLY: retrieve photo date from Flickr html based
  * on Flickr's photomodel javascript object.
@@ -521,16 +549,3 @@ function getPicturesDirectory()
     $picdir .= 'pictures/zsize/';
     return $picdir;
 }
-/*
-function convtTime($GPStime) {
-    $hrs = explode("/",$GPStime[0]);
-    $hr = intval($hrs[0]/$hrs[1]);
-    $mins = explode("/",$GPStime[1]);
-    $min = intval($mins[0]/$mins[1]);
-    $secs = explode("/",$GPStime[2]);
-    $sec = intval($secs[0]/$secs[1]);
-    $tstring = $hr . ':' . $min . ":" . $sec;
-    return $tstring;
-}
- * NOT CURRENTLY USED
- */

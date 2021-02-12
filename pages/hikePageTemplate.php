@@ -27,10 +27,8 @@ require "hikePageData.php";
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
-<?php if ($newstyle) : ?>
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
-<?php endif; ?>
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>
@@ -55,53 +53,6 @@ function off() {
 <p id="gpx" style="display:none"><?=$gpxPath;?></p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
 
-<!-- ---------------------------- OLD STYLE -------------------------- -->
-<?php if (!$newstyle) : ?>
-<div id="hikeSummary">
-    <table id="topper">
-        <thead>
-            <tr>
-                <th>Difficulty</th>
-                <th>Round-trip</th>
-                <th>Type</th>
-                <th>Elev. Chg.</th>
-                <th>Exposure</th>
-                <th>Wow Factor</th>
-                <th>Facilities</th>
-                <th>Seasons</th>
-    <?php if ($hikePhotoLink2 == '') : ?>
-                <th>Photos</th>
-    <?php endif; ?>
-                <th>By Car</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><?= $hikeDifficulty;?></td>
-                <td><?= $hikeLength;?></td>
-                <td><?= $hikeType;?></td>
-                <td><?= $hikeElevation;?></td>
-                <td><?= $hikeExposure;?></td>
-                <td><?= $hikeWow;?></td>
-                <td><?= $hikeFacilities;?></td>
-                <td><?= $hikeSeasons;?></td>
-    <?php if ($hikePhotoLink2 == '') : ?>
-                <td><a href="<?= $hikePhotoLink1;?>" target="_blank">
-                    <img style="margin-bottom:0px;border-style:none;"
-                    src="../images/album_lnk.png" alt="photo album link icon" />
-                        </a></td>
-    <?php endif; ?>
-                <td><a href="<?= $hikeDirections;?>" target="_blank">
-                    <img style="margin-bottom:0px;padding-bottom:0px;"
-                    src="../images/dirs.png" alt="google driving directions" />
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<?php else : ?>
-<!--  ---------------------------- NEW STYLE -------------------------- -->
 <!-- Side Panel: -->
 <div id="unhide">></div>
 <div id="sidePanel">
@@ -177,7 +128,6 @@ function off() {
 <!-- Map & Chart on right adjacent to side panel: -->
 <iframe id="mapline" src="<?=  $tmpMap;?>"></iframe>
 <div data-gpx="<?= $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
-<?php endif; ?>
 <!-- BOTH STYLES: -->
 <div style="clear:both;"><br />
 <?php if (!is_null($hikeTips)) : ?>
@@ -217,10 +167,8 @@ function off() {
 <script src="../scripts/picRowFormation.js"></script>
 <script src="../scripts/captions.js"></script>
 <script src="../scripts/rowManagement.js"></script>
-<?php if ($newstyle) : ?>
 <script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>
-<?php endif; ?>
 
 </body>
 </html>
