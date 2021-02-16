@@ -1,3 +1,11 @@
+"use strict"
+/**
+ * @fileoverview This script actually places the pictues in the rows on load or resize
+ * 
+ * @author Ken Cowles
+ * @version 1.0 Original release
+ * @version 1.1 Updated to allow left shift of last row images for mobile
+ */
 var hike = $('#trail').text();
 // Decode array data passed via php:
 var descs = d.split("|");
@@ -88,8 +96,11 @@ function drawRows(useWidth) {
             }
             if ( (n === itemcnt-1) && !rowComplete ) {
                 // in this case, last row will not be filled, so no scaling
-                rowHtml += '<div id="row' + rowNo + 
-                    '" class="ImgRow">' + "\n";
+                if (mobile) {
+                    rowHtml += '<div id="row' + rowNo + '" class="ImgRow mobile">' + "\n";
+                } else {
+                    rowHtml += '<div id="row' + rowNo + '" class="ImgRow">' + "\n";
+                }
                 for (var l=imgStartNo; l< n+1; l++) {
                     if (l === imgStartNo) {
                         styling = ''; // don't add left-margin to leftmost image

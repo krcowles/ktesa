@@ -5,13 +5,9 @@
  * @author Tom Sandberg
  * @author Ken Cowles
  * 
- * @version 1.0 First release
+ * @version 2.0 Redesigned for responsiveness
  */
 $(function() {
-
-// For these pages, don't show the menu
-$('#navbar').hide();
-$('#trail').css('top', '2px');
 
 // declared cookie choice:
 $('#accept').on('click', function() {
@@ -23,10 +19,9 @@ $('#reject').on('click', function() {
     $('#usrchoice').val("reject");
 });
 
-
-var reg = {top: 48, height: 570, width: 460};
-var log = {top: 80, height: 300, width: 500};
-var ren = {top: 80, height: 420, width: 560};
+var reg = {top: 48, height: 570};
+var log = {top: 80, height: 380};
+var ren = {top: 80, height: 420};
 
 var formtype = $('#formtype').text();
 var $container = $('#container');
@@ -38,8 +33,7 @@ switch (formtype) {
     case 'reg':
         $container.css({
             top: reg.top,
-            height: reg.height,
-            width: reg.width
+            height: reg.height
         });
         $('#policylnk').on('click', function() {
             let plnk = '../php/postPDF.php?doc=../accounts/PrivacyPolicy.pdf';
@@ -179,8 +173,7 @@ switch (formtype) {
         ren.height = login_renew == '' ? 380 : ren.height
         $container.css({
             top: ren.top,
-            height: ren.height,
-            width: ren.width
+            height: ren.height
         });
         // toggle visibility of password:
         var cbox = document.getElementsByName('password');
@@ -240,8 +233,7 @@ switch (formtype) {
         // NOTE: expired or renew password scenario handled in menus.js
         $container.css({
             top: log.top,
-            height: log.height,
-            width: log.width
+            height: log.height
         });
         $('#cookie_banner').hide();
         $('#form').on('submit', function(ev) {
@@ -249,6 +241,47 @@ switch (formtype) {
             let user = $('#username').val();
             let pass = $('#password').val();
             validateUser(user, pass);
+        });
+        $('#send').on('click', function(ev) {
+            ev.preventDefault();
+            let email = $('#forgot').val(); 
+            if (email == '') {
+                alert("You must enter a valid email address");
+                return false;
+            }
+            let data = {form: 'req', email: email};
+            $.ajax({
+                url: '../accounts/resetMail.php',
+                data: data,
+                dataType: 'text',
+                method: 'post',
+                success: function(result) {
+                    if (result === 'OK') {
+                        alert("An email has been sent: these sometimes " +
+                            "take awhile\nYou are logged out and can log in" +
+                            " again\nwhen your email is received");
+                        $.get({
+                            url: '../accounts/logout.php',
+                            success: function() {
+                                if (type === 'reset') {
+                                    window.open('../index.html', '_self');
+                                } else {
+                                    window.open('', 'homePage', '');
+                                    window.close();
+                                }
+                            }
+                        });
+                        $('#closer').trigger('click');
+                    } else {
+                        alert(result);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    var newDoc = document.open();
+                    newDoc.write(jqXHR.responseText);
+                    newDoc.close();
+                }
+            });
         });
         break;
 }

@@ -1,0 +1,40 @@
+body {
+	margin: 0px;
+	font-family: arial, verdana;
+}
+#trail {
+	display: none;
+}
+#dropdownMenuButton {
+	background-color: dimgray;
+}
+#floater {
+	height: 34px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#opts {
+	float: right;
+}
+#areas {
+	float: right;
+	margin-right: 12px;
+}
+.container {
+	clear: right;
+}
+#regions {
+	height: 36px;
+	font-size: 16px;
+}
+#miles {
+	width: 50px;
+}
+table {
+	border-collapse: collapse;
+	border: 1px solid dimgray !important;
+}
+thead {
+	background-color: dimgray;
+	color: white;
+}

@@ -106,14 +106,15 @@ $hikePhotoLink1 = $row['purl1'];
 $hikePhotoLink2 = $row['purl2'];
 $photoAlbum = '<br />';
 if (!empty($row['purl1'])) {
+    $link = '<a href="' . $row['purl1'] . '" target="_blank">Photo Album Link</a>';
     $photoAlbum = '<p id="albums">For improved photo viewing,<br />check out
         the following album(s):</p>';
-    $photoAlbum .= '<p id="alnks"><a href="' . $row['purl1']
-        . '" target="_blank">Photo Album Link</a>';
+    $photoAlbum .= '<p id="alnks">' . $link;
     if (!empty($row['purl2'])) {
         $photoAlbum .= '<br /><a href="' . $row['purl2']
             .'" target="_blank">Additional Album Link</a></p>';
     }
+
 }
 $hikeDirections = $row['dirs'];
 $hikeTips       = $row['tips'];

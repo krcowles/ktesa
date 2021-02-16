@@ -1,3 +1,11 @@
+"use strict"
+/**
+ * @fileoverview This script manages image sizes in a row
+ * 
+ * @author Ken Cowles
+ * @version 1.0 Original release 
+ * @version 1.1 added jsDocs
+ */
 var winWidth = $(window).width(); 
 // initialize variables for original page load:
 var resizeFlag = false;  // semaphore: don't execute resize event code if true
@@ -20,7 +28,7 @@ initLoad = false;
  * rapid resize triggering. The timeout allows a quiet period until 
  * another trigger can occur.
  */
-$(window).resize( function() {
+$(window).on('resize', function() {
     // resize top part of page per new viewport:
     if ( newStyle && (window.innerHeight < (vpHeight - 10) || 
             window.innerHeight > (vpHeight + 10)) ) {
@@ -84,4 +92,3 @@ function imageSizer() {
         }
     }
 }
-

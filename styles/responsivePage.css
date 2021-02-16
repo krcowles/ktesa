@@ -1,0 +1,205 @@
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+ }
+body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px; 
+    font-family: Arial, Verdana;
+    background-color: #eaeaea;
+}
+#trail {
+    display: none;
+}
+/* Hike Stats Div */
+#hinfo, #favs {
+    position: absolute;
+}
+#sidePanel {
+   display: none;
+}
+.sumClr {
+    color: Brown;
+}
+#mlnk {
+	text-align: center;
+	margin-top: 4px;
+    margin-bottom: 6px;
+}
+#albums {
+	margin-top: 0px;
+	text-align: center;
+}
+#directions {
+	margin-top: -12px;
+	text-align: center;
+}
+#dlnk {
+	margin-top: -12px;
+	text-align: center;
+}
+#scrollmsg {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#cdesc {
+    text-align: center;
+}
+#trknote {
+    padding: 0px 8px 0px 8px;
+}
+#top {
+    font-style: italic;
+}
+iframe {
+    position: relative;
+    top: -6px;
+	min-height: 200px;
+	width:100%;
+}
+#chartline {
+    position: relative;
+    top: -12px;
+    background-color: white;
+    width: 100%;
+}
+#hikeInfo {
+    margin-top: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #d4e8d4;
+    padding: 10px;
+    background-color: #c5d5d5;
+    line-height: 1.3em;
+}
+fieldset {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 8px;
+    padding: 16px;
+    padding-top: 8px; }
+#fldrefs {
+    font-size: 18px;
+    color: Teal; }
+#flddat {
+    color: Teal; }
+.boptag {
+    font-size: 14px;
+    font-weight: bold;
+}
+#refs {
+    margin-top: 12px;
+    margin-bottom: 0px;
+    padding-right: 10px;
+}
+#related {
+    margin-top: 0px;
+    margin-bottom: 8px;
+}
+#gps {
+    margin-top: 0px;
+    margin-bottom: 8px;
+}
+/* image alignment and pop-up caption styles */
+.ImgRow {
+    min-width: 960px;
+    overflow: hidden;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
+}
+.mobile {
+    text-align: left;
+    padding-left: 14px;
+}
+img {
+    display: inline-block;
+    margin-bottom: 0px; }
+#imgArea {
+    min-width: 960px;
+}
+iframe {
+    border: none;
+}
+.popupCap {
+    margin: 0px;
+    display: none;
+    position: absolute;
+    width: 300px;
+    top: 0px;
+    left: 0px; }
+.capLine {
+    margin: 0px;
+    font-weight: bold;
+    background-color: #eaeaea; }
+/* details about the hike */
+#trailTips {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 10px;
+    border-style: inset;
+    border-width: 2px;
+    border-color: Brown;
+    line-height: 1.4em;
+    min-height: 84px;
+}
+#tipPic {
+	float: left;
+    padding: 0 20px 0 0;
+}
+#tipHdr {
+    color: Brown;
+    font-weight: bold;
+    font-size: 20px;
+}
+#albumlinks {
+    color: DarkBlue;
+    margin-bottom: 12px; }
+div em {
+    color: DarkGreen; }
+#tips {
+    text-align: left; }
+#hdesc {
+    text-align: left; }
+#problems {
+	margin-left: 12px;
+	margin-right: 12px;
+	padding: 10px;
+	background-color: #c5d5d5;
+	border-style: outset;
+	border-width: 2px;
+	border-color: #c9d7e8;
+}
+#overlay {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 98%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(200,200,200,0.5);;
+    z-index: 10000;
+    cursor: pointer;
+}
+#text{
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    font-size: 50px;
+    color: DarkSlateGray;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}

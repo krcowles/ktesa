@@ -9,34 +9,42 @@
  * @author Ken Cowles
  * 
  * @version 3.0 Added Cluster Page compatibility
+ * @version 3.1 Added mobile page width control
  */
 var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var resizeFlag = true;
 var trackNumber;   // global used to identify current active track (topmost in tracklist)
-// Hide/unhide side panel (changes width of elevation profile chart)
-var orgWidth;
-$('#hide').on('click', function() {
-    orgWidth = canvasEl.width;
-    $('#sidePanel').css('display', 'none');
-    $('#chartline').width(fullWidth);
-    canvasEl.width = fullWidth;
-    // redraw the chart
-    drawChart(trackNumber);
+var chartConst;
 
-    $('iframe').width(fullWidth);
-    $('#unhide').css('display','block');
-});
-$('#unhide').on('click', function() {
-    $('#sidePanel').css('display','block');
-    $('#chartline').width(orgWidth);
-    canvasEl.width = orgWidth;
-    $('#chartline').height(chartHeight);
-    canvasEl.height = chartHeight;
-    // redraw the chart
-    drawChart(trackNumber);
-    $('iframe').width(orgWidth);
-    $('#unhide').css('display','none');
-});
+if (!mobile) {
+    chartConst = 0.77;
+    // Hide/unhide side panel (changes width of elevation profile chart)
+    var orgWidth;
+    $('#hide').on('click', function() {
+        orgWidth = canvasEl.width;
+        $('#sidePanel').css('display', 'none');
+        $('#chartline').width(fullWidth);
+        canvasEl.width = fullWidth;
+        // redraw the chart
+        drawChart(trackNumber);
+
+        $('iframe').width(fullWidth);
+        $('#unhide').css('display','block');
+    });
+    $('#unhide').on('click', function() {
+        $('#sidePanel').css('display','block');
+        $('#chartline').width(orgWidth);
+        canvasEl.width = orgWidth;
+        $('#chartline').height(chartHeight);
+        canvasEl.height = chartHeight;
+        // redraw the chart
+        drawChart(trackNumber);
+        $('iframe').width(orgWidth);
+        $('#unhide').css('display','none');
+    });
+} else {
+    chartConst = 1.0000;
+}
 
 /**
  * ----- GPSV iframe:
@@ -147,8 +155,12 @@ var prevCHairs = false;
 var fullWidth;
 var chartHeight;
 var chartWidth;
-var lmarg = $('#sidePanel').css('margin-left');
-var pnlMarg = lmarg.substr(0, lmarg.length-2); // remove 'px' at end
+if (!mobile) {
+    var lmarg = $('#sidePanel').css('margin-left');
+    var pnlMarg = lmarg.substr(0, lmarg.length-2); // remove 'px' at end
+} else {
+    pnlMarg = 0;
+}
 setChartDims();
 
 /**
@@ -158,7 +170,7 @@ setChartDims();
 function setChartDims() {
     // calculate space available for canvas: (panel width = 23%)
     fullWidth = $('body').innerWidth();
-    chartWidth = Math.floor(0.77 * fullWidth) - pnlMarg;
+    chartWidth = Math.floor(chartConst * fullWidth) - pnlMarg;
     var vpHeight = window.innerHeight;
     var sidePnlPos = $('#sidePanel').offset();
     var sidePnlLoc = parseInt(sidePnlPos.top);
@@ -174,6 +186,9 @@ function setChartDims() {
     $('#chartline').width(chartWidth);
     canvasEl.width = chartWidth;
     $('iframe').width(chartWidth);
+    if (mobile) {
+        chartPlaced.resolve();
+    }
     return;
 }
 

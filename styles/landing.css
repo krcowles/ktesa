@@ -1,0 +1,114 @@
+body {
+    margin: 0px;
+    font-family: arial, verdana;
+    background-color: #fcf4e8;
+    overflow-x: hidden;
+}
+/* Logo and login bar */
+#logo {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 80px;
+    margin-bottom: 4px;
+    margin-right: 12px;
+    background-color: #ffe866;
+    z-index: 1;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+}
+#pattern {
+    background-image: url("../images/southwest_pattern.png");
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    margin-top: 2px;
+    padding: 0px;
+    height: 24px;
+}
+#pgheader {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+#hikers {
+    margin-left: 8px;
+    z-index: 5;
+}
+#logo_left {
+    position: relative;
+    top: 1px;
+}
+#center {
+    float: left;
+    margin-top: 3px;
+}
+#logo_right {
+    clear: left;
+    position: relative;
+    top:  3px;
+    z-index: 5;
+}
+#tmap {
+    margin-right: 8px;
+    margin-top: 4px;
+    z-index: 5;
+}
+#cookie_state, #cookies_choice, #admin, #admintools {
+    display: none;
+}
+
+/* Main body section */
+.container {
+    clear: both;
+    text-align: center;
+    color: black;
+    font-size: 20px;
+}
+h2 {
+    padding-top: 6px;
+    font-family: cursive;
+}
+::placeholder {
+    color: gray;
+}
+#hide {
+    display: none;
+}
+#searchbar {
+    border-radius: 8px;
+	border-width: 2px;
+    border-color: darkgoldenrod;
+    height: 40px;
+    width: 240px;
+    font-size: 22px;
+    margin-top: 40px;
+    padding: 8px;
+    background-color: #fff5e6; 
+    position: relative;
+    top: -40px;
+}
+#searchbar:focus {
+    background-color: ghostwhite;
+}
+#usrview {
+    text-decoration: underline;
+    margin-top: 16px;
+}
+#choice1, #choice2 {
+    display: inline-block;
+}
+#choice1 {
+    margin-right: 20px;
+}
+#choice1:hover, #choice2:hover {
+    cursor: pointer;
+}
+@media only screen and (max-width: 415px) {
+    #logo_left, #logo_right  { font-size: 10px; }
+}

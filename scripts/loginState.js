@@ -1,0 +1,99 @@
+"use strict"
+/**
+ * @fileoverview This script utilizes the getLogin.php activity to determine which
+ * menu items are to be activated, and which are to blocked (grayed out). The 
+ * landing site has a different menu, the 'page' var is set to indicate this
+ * 
+ * @author Ken Cowles
+ * 
+ * @version 1.0 Ported from menuControl.js for responsive design
+ */
+$(function() {
+
+// ************ FIX platform for released usage! **************
+var cookies = navigator.cookieEnabled ? true : false;
+var user_cookie_state = document.getElementById('cookie_state').innerText;
+// check to see if cookies are enabled for the browser
+if(cookies) {
+    // Now examine the cookie_state:
+    if (user_cookie_state === 'NOLOGIN') {
+        notLoggedInItems(); // cookies off or rejected
+    } else if (user_cookie_state === 'NONE') {
+        alert("No user registration was located");
+        notLoggedInItems();
+    } else if (user_cookie_state === 'EXPIRED') {
+        alert("Your password has expired; Use 'Log in' to renew:\n" +
+            "You are not currently logged in");
+        // destroy user cookie to prevent repeat messaging for other pages
+        $.get('../accounts/logout.php');
+        notLoggedInItems();
+    } else if (user_cookie_state === 'RENEW') {
+        alert("Your password will expire soon; Use 'Log in' to renew:\n" +
+            "You are not currently logged in");
+        // destroy user cookie to prevent repeat messaging for other pages
+        $.get('../accounts/logout.php');
+        notLoggedInItems();
+    } else if (user_cookie_state === 'MULTIPLE') {
+        alert("Multiple accounts are registered for this cookie\n" +
+            "\nPlease contact the site master");
+        notLoggedInItems();
+    } else if (user_cookie_state === 'OK') {
+        loggedInItems();
+        /* Not at this time for mobile...
+        if ($('#admin').text() === "admin") {
+            adminLoggedIn();
+        } 
+        */
+    }
+}
+else { // cookies disabled
+    let msg = "Cookies are disabled on this browser:\n" +
+        "You will not be able to register or login\n" +
+        "until cookies are enabled";
+    alert(msg);
+    notLoggedInItems();
+}
+
+/**
+ * Turn on menu items for registered members
+ *  
+ * @return {null}
+ */
+function loggedInItems() {
+    $('#login').removeClass('active'); 
+    $('#login').addClass('disabled');
+    $('#logout').removeClass('disabled');
+    $('#logout').addClass('active');
+    $('#bam').removeClass('active');
+    $('#bam').addClass('disabled');
+    $('#chg').removeClass('disabled');
+    $('#chg').addClass('active');
+    return;
+}
+/**
+ * Turn off menu items for resitered members
+ *
+ * @return {null}
+ */
+function notLoggedInItems() {
+        $('#login').removeClass('disabled'); 
+        $('#login').addClass('active');
+        $('#logout').addClass('disabled');
+        $('#logout').removeClass('active');
+        $('#bam').removeClass('disabled');
+        $('#bam').addClass('active');
+        $('#chg').removeClass('active');
+        $('#chg').addClass('disabled');
+        $('admin').css('display', 'none');
+    return;
+}
+/**
+ * Enable admintools for admins
+ * 
+ * @return {null}
+ */
+function adminLoggedIn() {
+    $('#admintools').css('display', 'block');
+    return;
+}
+});

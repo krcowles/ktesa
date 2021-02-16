@@ -41,6 +41,7 @@ switch(page_type.trim()) { // only on actual pages...
         break;
     case "EditPub":
         $('#epubs').prepend(icon);
+        break;
     case "About":
         $('#about').prepend(icon);
         break;

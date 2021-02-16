@@ -101,5 +101,6 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
     // LOGGED IN: (User data is in $_SESSION vars);
     if ($_SESSION['userid'] == '1'  || $_SESSION['userid'] == '2') {
         $admin = true;
+        $cookie_state = "OK";
     }
 }
