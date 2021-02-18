@@ -127,22 +127,36 @@ function retrieveDwnldCookie(dcname) {
     }
 }
 $('#reload').on('click', function() {
+    let proceed = $.Deferred();
     if (confirm("Do you really want to drop all tables and reload them?")) {
-        if (hostIs !== 'localhost') {
-            window.open('export_all_tables.php?dwnld=N', "_blank");
-            var dwnldResult;
-            var downloadTimer = setInterval(function() {
-                dwnldResult = retrieveDwnldCookie('DownloadDisplayed');
-                if (dwnldResult === '1234') {
-                    clearInterval(downloadTimer);
-                    if (confirm("Proceed with reload?")) {
-                        window.open('drop_all_tables.php', "_blank");
+        $.get('checkUsers.php',function(result) {
+            let outcome = parseInt(result);
+            if (outcome > 0) {
+                alert(outcome + " User(s) added");
+            } else if (outcome < 0) {
+                alert(outcome + "User(s) deleted");
+            } else {
+                alert("No change in users");
+            }  
+            proceed.resolve();   
+        });
+        $.when(proceed).then(function() {
+            if (hostIs !== 'localhost') {
+                window.open('export_all_tables.php?dwnld=N', "_blank");
+                var dwnldResult;
+                var downloadTimer = setInterval(function() {
+                    dwnldResult = retrieveDwnldCookie('DownloadDisplayed');
+                    if (dwnldResult === '1234') {
+                        clearInterval(downloadTimer);
+                        if (confirm("Proceed with reload?")) {
+                            window.open('drop_all_tables.php', "_blank");
+                        }
                     }
-                }
-            }, 1000)
-        } else {
-            window.open('drop_all_tables.php', "_blank");
-        }
+                }, 1000)
+            } else {
+                window.open('drop_all_tables.php', "_blank");
+            }
+        });
     }
 });
 $('#drall').on('click', function() {

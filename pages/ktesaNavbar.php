@@ -7,7 +7,7 @@
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
- */;
+ */
 require "../accounts/getLogin.php";
 ?>
 <nav id="nav" class="navbar navbar-expand-sm navbar-dark"><!-- navbar-dark cause light collapsed icon (hampurger) -->

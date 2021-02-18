@@ -38,7 +38,7 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
     if ($regusr) {
         $username = $_COOKIE['nmh_id'];
         // check cookie choice and password expiration
-        $userDataReq = "SELECT `userid`,`passwd_expire`,`facebook_url` FROM " .
+        $userDataReq = "SELECT `userid`,`passwd_expire`,`cookies` FROM " .
             "`USERS` WHERE username = ?;";
         $userData = $pdo->prepare($userDataReq);
         $userData->execute([$username]);
@@ -50,7 +50,7 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
             $user_info = $userData->fetch(PDO::FETCH_ASSOC);
             $userid = $user_info['userid'];
             $expDate = $user_info['passwd_expire'];
-            $cookies = $user_info['facebook_url'];
+            $cookies = $user_info['cookies'];
             $choice = 'reject';  // default if no user selection recorded
             if (!empty($cookies)) {
                 $choice = $cookies;
@@ -102,5 +102,5 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
     if ($_SESSION['userid'] == '1'  || $_SESSION['userid'] == '2') {
         $admin = true;
         $cookie_state = "OK";
-    }
+    } 
 }

@@ -131,9 +131,8 @@ switch (formtype) {
                 method: 'post',
                 success: function(result) {
                     if (result !== 'OK') {
-                        alert("Your user data could not be stored:\n" +
-                            "Please contact the system administrator");
-                        return;
+                        alert(result);
+                        return false;
                     }
                     let email = $('#email').val();
                     let mail_data = {form: 'reg', email: email};
@@ -145,11 +144,11 @@ switch (formtype) {
                             if (result === 'OK') {
                                 alert("An email has been sent - it may take awhile\n" +
                                     "You can continue as a guest for now");
-                                window.open('', 'homePage', '');
-                                window.close();
+                                window.open('../index.html', '_self');
                             } else {
                                 alert("A problem was encountered sending mail:\n" +
                                     result);
+                                location.reload();
                             }
                         },
                         error: function(jqXHR, _textStatus, _errorThrown) {
@@ -263,15 +262,9 @@ switch (formtype) {
                         $.get({
                             url: '../accounts/logout.php',
                             success: function() {
-                                if (type === 'reset') {
                                     window.open('../index.html', '_self');
-                                } else {
-                                    window.open('', 'homePage', '');
-                                    window.close();
-                                }
                             }
                         });
-                        $('#closer').trigger('click');
                     } else {
                         alert(result);
                     }

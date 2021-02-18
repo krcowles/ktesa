@@ -4426,23 +4426,41 @@ CREATE TABLE `USERS` (
   `last_name` varchar(30) NOT NULL,
   `first_name` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `facebook_url` varchar(100) DEFAULT NULL,
-  `twitter_handle` varchar(20) DEFAULT NULL,
-  `bio` varchar(500) DEFAULT NULL,
+  `cookies` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`userid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO USERS VALUES
-('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2021-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept',NULL,'One of the geniuses behind this site :-)'),
-('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL,NULL,'One of the geniuses behind this site :-)'),
-('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com','','','Just and old dusty traveler'),
-('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu','','',''),
-('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com','','',''),
-('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com','','','Standard user account established by admin'),
-('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com','','N/A','Hi Ken,\r\n\r\nMark Holmes & I met you yesterday in the Sandias on a hike, and we mentioned that we were going to try to find the Medallion Tree that another hiker had told us about.  We told you that we would take a photo & email it to you.  Sorry to say, we couldn\'t find the tree.  We went to the area we thought they had described and we looked all over for it, but found nothing.  So, we either didn\'t go far enough or we went too far.\r\n\r\nWe told you we\'d get back to you.  I couldn\'t find an email.');
+('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2021-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
+('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
+('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com',''),
+('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu',''),
+('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com',''),
+('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com',''),
+('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com','');
+
+CREATE TABLE `LKUSERS` (
+  `userid` smallint(6) NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) NOT NULL,
+  `passwd` varchar(255) DEFAULT NULL,
+  `passwd_expire` date DEFAULT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `cookies` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 
+INSERT INTO LKUSERS VALUES
+('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2021-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
+('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
+('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com',''),
+('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu',''),
+('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com',''),
+('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com',''),
+('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com','');
 
 
 CREATE TABLE `FAVORITES` (

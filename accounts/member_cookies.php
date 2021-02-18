@@ -15,7 +15,7 @@ require "../php/global_boot.php";
 
 $choice  = filter_input(INPUT_POST, 'choice');
 
-$useCookieReq = "UPDATE `USERS` SET `facebook_url` = :choice WHERE " .
+$useCookieReq = "UPDATE `USERS` SET `cookies` = :choice WHERE " .
     "`username` = :uname;";
 $useCookie = $pdo->prepare($useCookieReq);
 $useCookie->execute(["uname" => $_SESSION['username'], "choice" => $choice]);

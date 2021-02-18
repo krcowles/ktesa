@@ -20,7 +20,7 @@ $username = isset($_POST['usr_name']) ?
 $userpass = isset($_POST['usr_pass']) ? filter_input(INPUT_POST, 'usr_pass') : false;
 
 // retrieve required user data
-$usr_req = "SELECT `userid`,`passwd`,`passwd_expire`,`facebook_url`" .
+$usr_req = "SELECT `userid`,`passwd`,`passwd_expire`,`cookies`" .
     " FROM `USERS` WHERE `username` = :usr;";
 $auth = $pdo->prepare($usr_req);
 $auth->execute(["usr" => $username]);
@@ -47,7 +47,7 @@ if ($rowcnt === 1) {  // located single instance of user
             $_SESSION['userid'] = $user_dat['userid'];
             $_SESSION['expire'] = $expiration;
             $_SESSION['cookie_state'] = "OK";
-            $_SESSION['cookies'] = $user_dat['facebook_url'];
+            $_SESSION['cookies'] = $user_dat['cookies'];
             $american = str_replace("-", "/", $expiration);
             $expdate = strtotime($american);
             if ($expdate <= time()) {
@@ -56,7 +56,7 @@ if ($rowcnt === 1) {  // located single instance of user
             } else {
                 $days = floor(($expdate - time())/UX_DAY);
                 if ($days <= 5) {
-                    if ($user_dat['facebook_url'] === 'accept') {
+                    if ($user_dat['cookies'] === 'accept') {
                         // set current cookie pending renewal
                         setcookie(
                             "nmh_id", $username, $expdate, "/", "", true, true
@@ -66,7 +66,7 @@ if ($rowcnt === 1) {  // located single instance of user
                     exit;
                 }
             }
-            if ($user_dat['facebook_url'] === 'accept') {
+            if ($user_dat['cookies'] === 'accept') {
                 setcookie(
                     "nmh_id", $username, $expdate, "/", "", true, true
                 );

@@ -29,8 +29,15 @@ if ($submitter == 'create') {
     $username  = filter_input(INPUT_POST, 'username');
     $cookies   = $cookies === 'nochoice' ? 'reject' : $cookies;
     $email     = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    // Has this email already been registered?
+    $regmails
+        = $pdo->query("SELECT `email` FROM `USERS`;")->fetchAll(PDO::FETCH_COLUMN);
+    if (in_array($email, $regmails)) {
+        echo "Email already registered";
+        exit;
+    }
     $newuser   = "INSERT INTO `USERS` (" .
-        "username,last_name,first_name,email,facebook_url) " .
+        "username,last_name,first_name,email,cookies) " .
         "VALUES (:uname,:lastname,:firstname,:email,:cookies);";
     $user = $pdo->prepare($newuser);
     $user->execute(
@@ -43,7 +50,7 @@ if ($submitter == 'create') {
         )
     );
     if (!$user) {
-        echo "FAIL";
+        echo "Failed to store registration:\ncontact Administrator";
     } else {
         echo "OK";
     }
@@ -73,7 +80,7 @@ if ($submitter == 'create') {
         }
     }  // session variables already exist for logged in renewer
     $updateuser = "UPDATE `USERS` SET `passwd`=?, `passwd_expire`=?, " .
-        "`facebook_url`=? WHERE `username`=?;";
+        "`cookies`=? WHERE `username`=?;";
     $update = $pdo->prepare($updateuser);
     $update->execute(
         array($password, $exp_date, $cookies, $_SESSION['username'])

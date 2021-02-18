@@ -2,19 +2,22 @@
 /**
  * @fileoverview This script utilizes the getLogin.php activity to determine which
  * menu items are to be activated, and which are to blocked (grayed out). The 
- * landing site has a different menu, the 'page' var is set to indicate this
+ * landing site has a different menu, the 'page' var is set to indicate this;
+ * Note that mobile sites require defn of renewPassword, as does unifiedLogin.php
  * 
  * @author Ken Cowles
  * 
  * @version 1.0 Ported from menuControl.js for responsive design
  */
-$(function() {
-
-// ************ FIX platform for released usage! **************
 var cookies = navigator.cookieEnabled ? true : false;
-var user_cookie_state = document.getElementById('cookie_state').innerText;
+var user_cookie_state = document.getElementById('cookie_state') === null ?
+    false : document.getElementById('cookie_state').innerText;
+var renewp;
 // check to see if cookies are enabled for the browser
 if(cookies) {
+    /**
+     * Note that for the unifiedLogin page, this code will not be executed
+     */
     // Now examine the cookie_state:
     if (user_cookie_state === 'NOLOGIN') {
         notLoggedInItems(); // cookies off or rejected
@@ -96,4 +99,34 @@ function adminLoggedIn() {
     $('#admintools').css('display', 'block');
     return;
 }
-});
+/**
+ * IF a user cookie has either expired or is up for renewal,
+ * he/she is provided the option to update the password,
+ * set a new expiration date, and continue as a registered user.
+ * User credentials have already been established at this point. 
+ * 
+ * @param {string} update 
+ * @param {string} status 
+ * 
+ * @return {null}
+ */
+const renewPassword = (renew) => {
+    if (renew === 'renew') { // send email to reset password
+        renewp = new bootstrap.Modal(document.getElementById('cpw'), {
+            keyboard: false
+        });
+        renewp.show();
+    } else {
+        // When a user does not renew membership,
+        // his/her login info is removed from the USERS table 
+        $.get({
+            url: '../accounts/logout.php?expire=Y',
+            success: function() {
+                alert("You are permanently logged out\n" +
+                    "To rejoin, select 'Become a member' from the menu");
+                window.open("../index.html", "_self");
+            }
+        });
+    }
+    return;
+};
