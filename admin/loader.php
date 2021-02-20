@@ -59,7 +59,9 @@ for ($i=0; $i<$line_cnt; $i++) {
         $qcnt++;
         $i--;
     } else {
-        throw new Exception("Unrecognized table entry at db line " . $i . "<br />" . $lines[$i]);
+        throw new Exception(
+            "Unrecognized table entry at db line " . $i . "<br />" . $lines[$i]
+        );
     }
     if (!$msg_out) {
         echo "<script type='text/javascript'>var qcnt = {$qcnt};</script>";

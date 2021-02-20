@@ -127,38 +127,5 @@ var modal = (function() {
         });
 
     }
-    /**
-     * This presents a means by which a visitor can pose questions
-     * of comments
-     * 
-     * @return {null}
-     */
-    function contactAdmins() {
-        $('#submit').after($close);
-        $close.css({
-            'top': '1',
-            'float': 'right',
-            'margin-right': '6px'
-        });
-        $close.css('top', '1px');
-        $('#submit').on('click', function() {
-            var ta = $('#fdbk').val();
-            for (let i=0; i< 2; i++) {
-                let ajaxdata = {admin: i, feedback: ta};
-                $.ajax({
-                    url: '../admin/support.php',
-                    method: 'post',
-                    data: ajaxdata,
-                    success: function() {
-                        alert("Email sent");
-                    },
-                    error: function() {
-                        alert("Error encountered: not sent");
-                    }
-                });
-            }
-            modal.close();
-        });
-    }
 
 }());  // modal is an IIFE

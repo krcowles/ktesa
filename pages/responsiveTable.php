@@ -105,7 +105,8 @@ require "respTableData.php";
                 <br /><br />Select Region: <?=$regions;?></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary"
                     id="show">Show hikes</button>
             </div>

@@ -128,42 +128,52 @@ function off() {
         <button id="favs" class="btn-sm btn-primary">Mark as Favorite</button>
     <?php endif; ?>
 <?php endif; ?>
-<button id="hinfo" type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#hikeData">
+<button id="hinfo" type="button" class="btn btn-primary btn-sm"
+    data-bs-toggle="modal" data-bs-target="#hikeData">
   Hike Stats
 </button>
 
-<div class="modal fade" id="hikeData" tabindex="-1" aria-labelledby="statlist" aria-hidden="true">
+<div class="modal fade" id="hikeData" tabindex="-1" aria-labelledby="statlist"
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="statlist"><?=$hikeTitle;?> Statistics</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="statlist"><?=$hikeTitle;?> 
+                    Statistics</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 Hike Directions: <a href="<?= $hikeDirections;?>"
                     target="_blank">Google Directions</a><br />
-                Logistics: <span id="hlog" class="sumClr"><?= $hikeType;?></span><br />
+                Logistics: <span id="hlog" class="sumClr"><?= $hikeType;?></span>
+                <br />
                 Total Length of Hike: <span id="hlgth" class="sumClr">
                     <?= $hikeLength;?></span><br />
                 Max to Min Elevation: <span id="hmmx" class="sumClr">
                     <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
                 Hike Difficulty: <span id="hdiff" class="sumClr">
                     <?= $hikeDifficulty;?></span><br />
-                Exposure Type: <span id="hexp" class="sumClr"> <?= $hikeExposure;?></span><br />
-                Seasons : <span id="hseas" class="sumClr"> <?= $hikeSeasons;?></span><br />
+                Exposure Type: <span id="hexp" class="sumClr">
+                    <?= $hikeExposure;?></span><br />
+                Seasons : <span id="hseas" class="sumClr">
+                    <?= $hikeSeasons;?></span><br />
                 Region: <span class="sumClr"> <?= $hikeLocale;?></span><br />
                 Features: <span id="hwow" class="sumClr"><?= $hikeWow;?></span><br />
                 <?php if (!($photoAlbum === '<br />')) : ?>
                     More photos: <?=$link;?><br />
                 <?php endif; ?>
-                <p>View <a href="<?= $fpLnk;?>" target="_blank">Full Page Map</a><br />
+                <p>View <a href="<?= $fpLnk;?>" target="_blank">Full Page Map</a>
+                <br />
                 Hike track:
-                <span>View <a id="view" href="<?= $gpxPath;?>" target="_blank">GPX File</a></span><br />
+                <span>View <a id="view" href="<?= $gpxPath;?>"
+                    target="_blank">GPX File</a></span><br />
                 <span>Download <a id="dwn" href="<?= $gpxPath;?>"
                         download>GPX File</a></span>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

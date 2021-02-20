@@ -229,8 +229,10 @@ function getClusters($pdo)
  * When there is no gpxfile, a pseudo-gpx file is created for display on
  * the map.
  * 
- * @param float $clat Map center latitude
- * @param float $clng Map center longitude
+ * @param float  $clat    Map center latitude
+ * @param float  $clng    Map center longitude
+ * @param string $gpxfile Gpx file name
+ * @param array  $files   All gpx files associated
  * 
  * @return null
  */

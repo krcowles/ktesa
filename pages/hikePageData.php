@@ -325,7 +325,7 @@ if ($makeGpsvDebug) {
     $handleDfc = gpsvDebugComputeArray($gpxPath);
 }
 
-include '../php/multiMap.php';
+require '../php/multiMap.php';
 
 // this is the html for the map: precede it with cache-control:
 $php  = "<?php header('Cache-Control: max-age=0'); ?>" . $maphtml;

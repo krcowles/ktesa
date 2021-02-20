@@ -90,14 +90,16 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
                button
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Links to favorites -->
-<button id="favlist" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#favs">
+<button id="favlist" type="button" class="btn btn-primary"
+    data-bs-toggle="modal" data-bs-target="#favs">
   List Favorites Pages
 </button>
 <div id="favs" class="modal" tabindex="-1">
@@ -111,7 +113,8 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
             <div id="favlinks" class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

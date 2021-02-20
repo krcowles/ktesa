@@ -109,8 +109,8 @@ require "../php/global_boot.php";
             <li> Floods: Bandelier (2011); Rinconada Canyon (2013)</li>
             <li> Volcanoes & Earthquakes: we hope not!</li>
         </ul>
-        <p class="lht">If you see something that you'd like to comment on - suggestions,
-            improvements, things not working, etc...</p>
+        <p class="lht">If you see something that you'd like to comment on -
+            suggestions, improvements, things not working, etc...</p>
         <div id="caveat"> <a href="mailto:admin@nmhikes.com">email us!</a>
         </div>
     </div>

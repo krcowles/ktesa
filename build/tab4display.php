@@ -1,3 +1,14 @@
+<?php
+/**
+ * This is the html for tab4 in the editor 
+ * PHP Version 7.4
+ * 
+ * @package Ktesa
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
+ * @license No license to date
+ */
+?>
 <div id="d4">
     <input id="ap4" type="submit" name="savePg" value="Apply" />
 </div>

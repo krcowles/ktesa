@@ -63,7 +63,7 @@ if (isset($_REQUEST['no'])) {
 for ($i=0; $i<$tblcnt; $i++) {
     echo "Dropping {$tables[$i]}: ... ";
     try {
-    $pdo->query("DROP TABLE {$tables[$i]};");
+        $pdo->query("DROP TABLE {$tables[$i]};");
     } catch (PDOException $pdoe) {
         // do nothing
     }
@@ -77,7 +77,8 @@ for ($i=0; $i<$tblcnt; $i++) {
     <div id="progress">
         <div id="bar"></div>
     </div>
-    <p id="done" style="display:none;color:brown;">DONE: Tables imported successfully</p>
+    <p id="done" style="display:none;color:brown;">DONE:
+        Tables imported successfully</p>
     <script src="load_progress.js"></script>
         <?php include 'loader.php'; ?>
     <p>DONE: Tables imported successfully</p>

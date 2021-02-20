@@ -109,11 +109,13 @@ if ($form === 'reg') {
             <input type="password" name="one-time" autocomplete="off"
                 value="<?=$code;?>" /><br /><br />  
         <?php endif; ?>
-        <input id="password" type="password" name="password" autocomplete="new-password"
-            required placeholder="New Password" /><br />
-        Show password&nbsp;&nbsp;&nbsp;<input id="ckbox" type="checkbox" /><br /><br />
-        <input id="confirm" type="password" name="confirm" autocomplete="new-password"
-            required="required" placeholder="Confirm Password" /><br /><br />
+        <input id="password" type="password" name="password"
+            autocomplete="new-password" required placeholder="New Password" /><br />
+        Show password&nbsp;&nbsp;&nbsp;
+        <input id="ckbox" type="checkbox" /><br /><br />
+        <input id="confirm" type="password" name="confirm"
+            autocomplete="new-password" required="required"
+            placeholder="Confirm Password" /><br /><br />
         <button id="formsubmit">Submit</button>
     </form>
 <?php elseif ($form === 'log') : ?>
@@ -131,15 +133,19 @@ if ($form === 'reg') {
         </form>
 
         <!-- For 'Forgot password' and 'Renew password -->
-        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#cpw">
+        <button type="button" class="btn btn-outline-secondary"
+        data-bs-toggle="modal" data-bs-target="#cpw">
         Forgot Password?
         </button>
-        <div class="modal fade" id="cpw" tabindex="-1" aria-labelledby="ResetPassword" aria-hidden="true">
+        <div class="modal fade" id="cpw" tabindex="-1"
+                aria-labelledby="ResetPassword" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            Reset Password</h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         Enter your email below. You will receive an email link to 
@@ -148,7 +154,8 @@ if ($form === 'reg') {
                             placeholder="Enter your email" /><br /><br />
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
                         <button id="send">Send</button>
                     </div>
                 </div>

@@ -132,14 +132,8 @@ function gotoPage(content) {
         case 'About this site':
             window.open('../pages/about.php', '_blank');
             break;
-        case 'Contact us':
-            // code ready, but holding off for now
-            /*
-            modal.open(
-                {content: support, height: '150px', width: '340px',
-                    id: 'contact'}
-            );
-            */
+        case 'Contact Us':
+            document.getElementById("support").click(); 
             break;
         case 'Accept Cookies':
             let accept = {choice: 'accept'};

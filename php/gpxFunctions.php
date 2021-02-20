@@ -220,7 +220,7 @@ function getGpxL1(
     // Get all trkpts for current trk (all trksegs) into array
     $noOfSegs = $gpxdat->trk[$trkIdx]->trkseg->count();
     for ($trkSegIdx=0; $trkSegIdx<$noOfSegs; $trkSegIdx++) {  // All trksegs
-        foreach ($gpxdat->trk[$trkIdx]->trkseg[$trkSegIdx]->trkpt as $datum) { // All trkpts
+        foreach ($gpxdat->trk[$trkIdx]->trkseg[$trkSegIdx]->trkpt as $datum) {
             if (isset($datum->ele)) { // skip trkpts with no ele element
                 array_push($gpxlats, (float)$datum['lat']);
                 array_push($gpxlons, (float)$datum['lon']);

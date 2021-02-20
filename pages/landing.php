@@ -41,12 +41,15 @@ require "siteHikes.php";
                 Membership
             </button>
             <ul class="dropdown-menu" aria-labelledby="memberOpts">
-                <a id="login" class="dropdown-item" href="../accounts/unifiedLogin.php?form=log">Login</a>
+                <a id="login" class="dropdown-item"
+                    href="../accounts/unifiedLogin.php?form=log">Login</a>
                 <a id= "logout" class="dropdown-item" href="#">Logout</a>
-                <a id="bam" class="dropdown-item" href="../accounts/unifiedLogin.php?form=reg">Become a member</a>
+                <a id="bam" class="dropdown-item"
+                    href="../accounts/unifiedLogin.php?form=reg">Become a member</a>
                 <div id="admintools">
                     <div class="dropdown-divider"></div>
-                    <a id="adminmenu" class="dropdown-item" href="../admin/admintools.php">Admintools</a>
+                    <a id="adminmenu" class="dropdown-item"
+                        href="../admin/admintools.php">Admintools</a>
                 </div>
             </ul>
         </div>

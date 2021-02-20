@@ -9,64 +9,80 @@
  * @license No license to date
  */
 require "../accounts/getLogin.php";
+$policy = "../accounts/PrivacyPolicy.pdf";
 ?>
-<nav id="nav" class="navbar navbar-expand-sm navbar-dark"><!-- navbar-dark cause light collapsed icon (hampurger) -->
+<!-- navbar-dark cause light collapsed icon (hampurger) -->
+<nav id="nav" class="navbar navbar-expand-sm navbar-dark">
     <div class="container-fluid"> 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ktesaMenu" aria-controls="ktesaMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#ktesaMenu" aria-controls="ktesaMenu"
+            aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="ktesaMenu">
             <a class="navbar-brand" href="#">nmhikes.com:</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#"
+                        id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                     Explore
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="../pages/mapOnly.php">Map Page</a></li>
-                        <li><a class="dropdown-item" href="../pages/responsiveTable.php">Table Page</a></li>
-                        <li><a class="dropdown-item" href="../pages/responsiveFavs.php">Show Favorites</a></li>
+                        <li><a class="dropdown-item"
+                            href="../pages/mapOnly.php">Map Page</a>
+                        </li>
+                        <li><a class="dropdown-item"
+                            href="../pages/responsiveTable.php">Table Page</a>
+                        </li>
+                        <li><a class="dropdown-item"
+                            href="../pages/responsiveFavs.php">Show Favorites</a>
+                        </li>
                         <div id="admintools">
                             <div class="dropdown-divider"></div>
-                            <li><a id="adminmenu" class="dropdown-item" href="../admin/admintools.php">Admintools</a></li>
+                            <li><a id="adminmenu" class="dropdown-item"
+                                href="../admin/admintools.php">Admintools</a></li>
                         </div>
                     </ul>
                 </li>
-                <!-- Not enabled for mobile at this time 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Contribute
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item edit" href="#">Create New Page</a></li>
-                        <li><a class="dropdown-item edit" href="#">Continue Editing Your Page</a></li>
-                        <li><a class="dropdown-item edit" href="#">Edit Your Published Page</a></li>
-                    </ul>
-                </li>
-                -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                     Members
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a id="login" class="dropdown-item"
-                            href="../accounts/unifiedLogin.php?form=log">Login</a></li>
-                        <li><a id="logout" class="dropdown-item" href="#">Logout</a></li>
-                        <li><a id="chg" class="dropdown-item" href="#">Change Password</a></li>
+                            href="../accounts/unifiedLogin.php?form=log">Login</a>
+                        </li>
+                        <li><a id="logout" class="dropdown-item"
+                            href="#">Logout</a>
+                        </li>
+                        <li><a id="chg" class="dropdown-item"
+                            href="#">Change Password</a>
+                        </li>
                         <li><a id="bam" class="dropdown-item"
-                            href="../accoUnts/unifiedLogin.php?form=reg">Become a Member</a></li>
+                            href="../accounts/unifiedLogin.php?form=reg">Become
+                                a Member</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                     Help
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="../pages/responsiveAbout.php">About This Site</a></li>
                         <li><a class="dropdown-item"
-                            href="../php/postPDF.php?doc=../accounts/PrivacyPolicy.pdf"
-                            target="_blank">Privacy Policy</a></li>
-                        <li><a id="cookies" class="dropdown-item" href="#">Accept Cookies</a></li>
+                            href="../pages/responsiveAbout.php">About This Site</a>
+                        </li>
+                        <li><a class="dropdown-item"
+                            href="../php/postPDF.php?doc=<?=$policy;?>"
+                            target="_blank">Privacy Policy</a>
+                        </li>
+                        <li><a id="cookies" class="dropdown-item"
+                            href="#">Accept Cookies</a></li>
                     </ul>
                 </li>
             </ul>
@@ -97,10 +113,12 @@ require "../accounts/getLogin.php";
             </div>
             <div class="modal-body">
                 <p>You will receive an email to reset/change your password<br />
-                Enter email: <input id="cpwmail" type="email" required="required" /></p>
+                Enter email: <input id="cpwmail" type="email"
+                    required="required" /></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary"
                     id="send">Send Email</button>
             </div>

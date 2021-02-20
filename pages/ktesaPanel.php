@@ -73,8 +73,7 @@ require_once "../accounts/getLogin.php";
                     <li><div id="about">About this site</div></li>
                     <li id="ifuser"><div id="ctoggle">Reject Cookies</div></li>
                     <li id="policy"><div id="privacy">Privacy Policy</div></li>
-                    <!--
-                    <li><div id="contact">Contact us</div></li> -->
+                    <li><div id="contact">Contact Us</a></div></li>
                 </ul>
                 </div>
             </li>
@@ -88,10 +87,11 @@ require_once "../accounts/getLogin.php";
         <img id="tmap" src="../images/trail.png" alt="trail map icon" />
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
+    <a id="support" href="mailto:admin@nmhikes.com">Support</a>
 </div>
-<p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
+<p id="cookie_state"><?=$_SESSION['cookie_state'];?></p>
 <?php if (isset($_SESSION['cookies'])) : ?>
-<p id="cookies_choice"><?= $_SESSION['cookies'];?></p>
+<p id="cookies_choice"><?=$_SESSION['cookies'];?></p>
 <?php endif; ?>
 
 <?php if (isset($admin) && $admin) : ?>

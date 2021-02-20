@@ -2,30 +2,9 @@
 /**
  * ----- FOR RESPONSIVE DESIGN -----
  * This script collects the data from the database needed to construct the html 
- * that is used to display various tables of hikes. The 'responsiveTable.php' script
- * can be invoked in three different scenarios:
- *  1.  By 'pages/responsiveTable.php' ['Explore->Table Only]
- *      $pageType = 'FullTable'
- *      Here it is used to display ALL hikes and cluster pages regardless of 
- *      userid; [show=all, table=HIKES (ie age=old)];
- *  2.  By 'build/hikeEditor.php' [Contribute->...]
- *      Here it is used to display ONLY hikes which can be edited by the userid;
- *      $pageType = 'Editor'
- *        a. Editing of newly created hikes or already in-edit hikes;
- *           [...Continue Editing Your Hike]
- *           [show=usr, table=EHIKES (ie age=new)];
- *           NOTE: The admin can see all hikes in edit (modified to show=all)
- *        b. Editing of a published hike (not currently in edit mode)
- *           [...Edit Your Published Hike]
- *           NOTE: The admin can edit any published hike.
- *           [show=usr, table=HIKES (ie age=old): show=all for admin]      
- *  3.  By 'admin/reldel.php'
- *      $pageType = 'Publish'
- *      Here it is used to list ALL EHIKES (for master) to release or delete:
- *      [show=all, table=EHIKES (ie age=new)]
- * Each 'calling' script must set the $show, $age (table), and $pageType
- * parameters; In all cases, the .js will direct the web page link to the proper
- * location.
+ * that is used to display various tables of hikes on the responsive page:
+ * 'pages/responsiveTable.php'. It is used to display ALL hikes and cluster
+ * pages for the userid userid; [show=all, table=HIKES (ie age=old)];
  * PHP Version 7.4
  * 
  * @package Ktesa

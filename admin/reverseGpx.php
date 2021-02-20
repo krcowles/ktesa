@@ -46,10 +46,14 @@ if ($revtype === 'gpxall') {
             $start = array_shift($range);
             $end = array_shift($range);
             if (!is_numeric($start) || !is_numeric($end)) {
-                throw new Exception("Bad range, non-numeric element: " . $start . "-" . $end);
+                throw new Exception(
+                    "Bad range, non-numeric element: " . $start . "-" . $end
+                );
             }
             if ($start >= $end) {
-                throw new Exception("Range limits are incorrect: " . $start . "-" . $end);
+                throw new Exception(
+                    "Range limits are incorrect: " . $start . "-" . $end
+                );
             }
             for ($j=$start; $j<$end; $j++) {
                 if ($j > $trkcnt) {
