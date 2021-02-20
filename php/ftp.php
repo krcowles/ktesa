@@ -34,7 +34,7 @@ if (($result = shell_exec($cmd)) === false) {
  * Upload to main
  */
 chdir($documentRoot);
-if (($conn = ftp_ssl_connect('nmhikes.com')) === false) {
+if (($conn = ftp_connect('ftp.nmhikes.com')) === false) {
     echo "Created archive, but could not connect to main";
     exit;
 }
