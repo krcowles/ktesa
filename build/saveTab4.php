@@ -141,7 +141,7 @@ if ($addcnt > 0) {
  * GPS Data File upload section. May be a gpx or kml file, or an html map file
  */
 $_SESSION['gpsmsg'] = '';
-$gpsfile = uploadGpxKmlFile('newgps', true);
+$gpsfile = uploadGpxKmlFile('newgps', true, true);
 if ($_SESSION['user_alert'] !== 'No file specified') {
     if (empty($_SESSION['user_alert'])) {
         $ngpsreq
