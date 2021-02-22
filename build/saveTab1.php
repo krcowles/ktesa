@@ -1,11 +1,14 @@
 <?php
 /**
- * This script saves data present on tab1 ("Basic Data") of the hike page Editor,
- * including uploading/deleting of the main gpx file (track file). If a gpx file
- * already exists, it may be deleted, or otherwise replaced by a newly specified
- * file via tab 1's browse button. When a new gpx file is uploaded without deleting
- * the previous file (if any), the previous file is not deleted. This script is
- * invoked when the user submits the data via the 'Apply' button on tab1.
+ * This script saves data present on tab1 ("Basic Data") of the hike page Editor.
+ * 
+ * With regard to gpx files: the normal situation allows for uploading one file
+ * ("main") to be displayed on the hike page map. The user may, however, choose to
+ * add additional files which will also be displayed on the same hike page map. Any
+ * of these additional files may be excluded later, if so specified by the user. 
+ * However there is no current method to delete the additional files. If any gpx
+ * file already exists at the time of the upload, the previous file will remain on
+ * the server, and the new file will have '_DUP' appended to its name. 
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -17,17 +20,34 @@ session_start();
 require "../php/global_boot.php";
 require_once "../php/gpxFunctions.php";
 
-$hikeNo = filter_input(INPUT_POST, 'hikeNo');
-$redirect = "editDB.php?tab=1&hikeNo={$hikeNo}";
+$hikeNo     = filter_input(INPUT_POST, 'hikeNo');
+$maintrk    = filter_input(INPUT_POST, 'mtrk'); // already uploaded track
+$delgpx     = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
+$noincludes = isset($_POST['deladd']) ? $_POST['deladd'] : false;
+$addfiles   = array('addgpx1', 'addgpx2', 'addgpx3');            
+$usrmiles   = filter_input(INPUT_POST, 'usrmiles');  // registers user changes
+$usrfeet    = filter_input(INPUT_POST, 'usrfeet');   // registers user changes
+$_SESSION['uplmsg'] = ''; // return status to user on tab1
 
+// get the current list of gpx files from the database; comma-separated string
+$getGpxReq = "SELECT `gpx` FROM `EHIKES` WHERE `indxNo` = ?;";
+$getGpx  = $pdo->prepare($getGpxReq);
+$getGpx->execute([$hikeNo]);
+$gpxList = $getGpx->fetch(PDO::FETCH_ASSOC);
+$allgpx = explode(",", $gpxList['gpx']); // empty string returns array[0] = ''
+foreach ($allgpx as &$gpx) { // count($allgpx) always >= 1
+    $gpx = trim($gpx);
+}
+$maingpx = $allgpx[0] !== '' ? $allgpx[0] : '';
+if ($noincludes) { // need ints for comparison later
+    foreach ($noincludes as &$value) {
+        $value = (int)$value;
+    }
+}
+
+$redirect = "editDB.php?tab=1&hikeNo={$hikeNo}";
 $pdoBindings = [];
 $pdoBindings['hikeNo'] = $hikeNo;
-$maingpx  = filter_input(INPUT_POST, 'mgpx'); // may be empty
-$maintrk  = filter_input(INPUT_POST, 'mtrk'); // may be empty
-$delgpx   = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
-$usrmiles = filter_input(INPUT_POST, 'usrmiles');  // registers user changes
-$usrfeet  = filter_input(INPUT_POST, 'usrfeet');   // registers user changes
-$_SESSION['uplmsg'] = ''; // return status to user on tab1
 
 /**
  * This section handles the main gpx file delete and new gpx file upload.
@@ -49,11 +69,8 @@ if (isset($delgpx)) {
         throw new Exception("Could not remove {$deltrk} from site");
     }
     $maingpx = '';
-    $udgpxreq = "UPDATE EHIKES SET 
-        gpx = NULL, trk = NULL, 
-        lat = NULL, lng = NULL,
-        miles = NULL, feet = NULL 
-        WHERE indxNo = ?;";
+    $udgpxreq = "UPDATE EHIKES SET gpx = NULL, trk = NULL, lat = NULL, lng = NULL,
+        miles = NULL, feet = NULL WHERE indxNo = ?;";
     $udgpx = $pdo->prepare($udgpxreq);
     $udgpx->execute([$hikeNo]);
     $lat = '';
@@ -81,42 +98,55 @@ if (!$deletedLatLng) {
 // IF a gpx file was uploaded:
 $gpxfile = basename($_FILES['newgpx']['name']);
 if (!empty($gpxfile)) {  // new upload
-    $uploadResult = validateUpload('newgpx', true, true); // array
+    $saved = uploadGpxKmlFile('newgpx', true, true);
     if (empty($_SESSION['user_alert'])) {
-        if ($uploadResult['type'] === 'gpx') {
-            $saveloc = '../gpx/' . $uploadResult['file'];
-            if (file_exists($saveloc)) {
-                $barefile = pathinfo($path, PATHINFO_FILENAME);
-                $newfile = $barefile . '_DOC.gpx';
-                $saveloc = '../gpx/' . $filename;
-                $_SESSION['uplmsg'] .= "NOTE: {$gpxfile} already exists; " .
-                "The file was saved with a new name: " . $newfile;
-            }
-            if (!move_uploaded_file($uploadResult['loc'], $saveloc)) {
-                $nomove = "Could not save {$filename} to site: contact Site Master";
-                throw new Exception($nomove);
-            } else {
-                $_SESSION['uplmsg'].= "{$gpxfile} was successfully uploaded";
-            }
-            $trkdat = makeTrackFile($saveloc);
-            $newtrk = $trkdat[0];
-            $lat = (int) ((float)($trkdat[1]) * LOC_SCALE);
-            $lng = (int) ((float)($trkdat[2]) * LOC_SCALE);
-            $newgpxq = "UPDATE EHIKES " .
-                "SET gpx = ?, trk = ?, lat = ?, lng = ? WHERE indxNo = ?;";
-            $ngpx = $pdo->prepare($newgpxq);
-            $ngpx->execute([$uploadResult['file'], $newtrk, $lat, $lng, $hikeNo]);
-            $maingpx = $uploadResult['file'];
-        } else {
-            $_SESSION['user_alert'] = "{$gpxfile} is not a gpx file";
-            $_SESSION['uplmsg']
-                .= "<span style='color:red;'>{$gpxfile} NOT UPLOADED</span>";
-        }
+        $trkdat = makeTrackFile($saved);
+        $newtrk = $trkdat[0];
+        $lat = (int) ((float)($trkdat[1]) * LOC_SCALE);
+        $lng = (int) ((float)($trkdat[2]) * LOC_SCALE);
+        // only update trk, lat, lng: gpx may be a string list - saved later
+        $newdatReq = "UPDATE EHIKES " .
+            "SET trk = ?, lat = ?, lng = ? WHERE indxNo = ?;";
+        $newdat = $pdo->prepare($newdatReq);
+        $newdat->execute([$newtrk, $lat, $lng, $hikeNo]);
+        $maingpx = $gpxfile;
     } else {
-        $_SESSION['uplmsg']
-            .= "<span style='color:red;'>{$gpxfile} NOT UPLOADED</span>";
+        exit;
+    }
+} 
+// current maingpx may have been deleted and/or replaced above:
+$allgpx[0] = $maingpx;
+// remove any current elements in $allgpx whose checkbox has been ticked
+$orgsize = count($allgpx);
+if ($orgsize > 1) {
+    for ($x=1; $x<$orgsize; $x++) {
+        if ($noincludes) { 
+            if (in_array($x, $noincludes)) {
+                unset($allgpx[$x]);
+            }
+        }
+    }
+    $allgpx = array_values($allgpx); // re-index array
+}
+// add any new gpx files specified by user
+for ($j=0; $j<count($addfiles); $j++) {
+    $filesName = $addfiles[$j];
+    $gfile = $_FILES[$filesName]; // file array, i.e. ['name'], ['error'], etc.
+    if ($gfile['name'] !== '') {
+        $adder = uploadGpxKmlFile($filesName, true);
+        if (empty($_SESSION['user_alert'])) {
+            array_push($allgpx, $gfile['name']);
+        } else {
+            exit;
+        }
     }
 }
+// write out the updated gpx file list:
+$gpx_file_list = implode(",", $allgpx);
+$newlistReq = "UPDATE `EHIKES` SET `gpx`=? WHERE `indxNo` =?;";
+$newlist = $pdo->prepare($newlistReq);
+$newlist->execute([$gpx_file_list, $hikeNo]);
+
 /**
  * If the user selected 'Calculate From GPX', then those values will
  * be used instead of any existing values in the miles and feet fields. 

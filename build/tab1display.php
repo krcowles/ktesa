@@ -9,10 +9,10 @@
  * @license No license to date
  */
 ?>
-<!-- Hidden inputs required by saveTab1.php,  & non-displayed <p>'s' by editDB.js -->
+<!-- Hidden inputs required by saveTab1.php, & non-displayed <p>'s' for editDB.js -->
 <input type="hidden" name="hikeNo" value="<?=$hikeNo;?>" />
-<input type="hidden" name="mgpx" value="<?=$curr_gpx;?>" />
 <input type="hidden" name="mtrk" value="<?=$curr_trk;?>" />
+<p id="mgpx" style="display:none;"><?=$curr_gpx;?></p>
 <p id="group" style="display:none;"><?=$cname;?></p>
 <input type="hidden" name="cname" value="<?=$cname;?>" />
 <p id="ctype" style="display:none;"><?=$logistics;?></p>
@@ -22,11 +22,14 @@
 <div id="d1">
     <input id="ap1" type="submit" name="savePg" value="Apply" />
 </div>
-<!-- File upload area for main gpx file -->
+
+<!-- File upload for all gpx files to be displayed on hike page map -->
 <h3 class="up">File Upload for Hike Page Map and Track: (.gpx file)</h3>
-<p><em style="text-decoration:underline;">Warning:</em> If you delete an
-    existing gpx file, published hikes may be affected; you may simply
-    specify a new file to override the current settings for this hike.</p>
+<p><span class="brown" style="font-weight:bold;"><em
+    style="text-decoration:underline;">Warning:</em></span>
+    If you delete the main gpx file, published hikes may be affected; you may
+    simply specify a new main file to override the current settings for this hike.
+</p>
 <?php if (isset($_SESSION['uplmsg']) && $_SESSION['uplmsg'] !== '') : ?>
 <p style="font-size:18px;color:darkblue;">The following action has resulted
     from your latest "APPLY": <?= $_SESSION['uplmsg'];?></p>
@@ -34,20 +37,32 @@
 <?php endif; ?>
 <span class="brown">Current Main Hike Track File: </span>
 <?php if (empty($curr_gpx)) : ?>
-<em>None Specified</em><br />
+    <em>None Specified</em><br />
 <?php  else : ?>
-<em><?= $curr_gpx;?></em>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<span class="brown">Check to Delete&nbsp;&nbsp;</span>
-<input type="checkbox" name="dgpx" /><br />
+    <em><?= $curr_gpx;?></em>&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="brown">Check to Delete&nbsp;&nbsp;</span>
+    <input type="checkbox" name="dgpx" /><br />
+        <?php if (count($additional_files) > 0) : ?>
+            The following files will also appear on the main hike page:
+            <?=$adders;?>
+        <?php endif; ?>
 <?php endif; ?>
 <ul>
-    <li><span class="brown">Upload new gpx file:&nbsp;</span>
-        <input type="file" name="newgpx" /></li>
+    <li><span class="brown">Upload main/new gpx file:&nbsp;</span>
+        <input id="gpxfile1" type="file" name="newgpx" /></li>
+        <span>- Note: you can add up to <span id="addno">3</span>
+        additional gpx file[s] to be displayed on the hike page map simultaneously
+        </span>
+    <li id="li1"><span class="brown">Additional track for main chart</span>
+        <input id="gpxfile2" type="file" name="addgpx1" /></li>
+    <li id="li2"><span class="brown">Additional track for main chart</span>
+        <input id="gpxfile3" type="file" name="addgpx2" /></li>
+    <li id="li3"><span class="brown">Additional track for main chart</span>
+        <input id="gpxfile4" type="file" name="addgpx3" /></li>
 </ul>
-<h3>Data Related to This Hike:</h3>
 
 <!-- Begin basic data presentation -->
+<h3>Data Related to This Hike:</h3>
 <label for="hike">Hike Name: <span class="brown">[30 Characters Max]</span></label>
 <textarea id="hike" name="pgTitle"
         maxlength="30"><?= $pgTitle;?></textarea>&nbsp;&nbsp;

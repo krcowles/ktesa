@@ -74,6 +74,26 @@ if (count($nonpubs) > 0) {
 }
 $newgrps = '[' . implode(",", $jsData) . ']';
 
+// separate gpx files if multiple
+$additional_files = [];
+$adders = '<ul id="addlist" style="margin-top:4px;">' . PHP_EOL;
+$all_files = explode(",", $curr_gpx);
+$curr_gpx = $all_files[0];
+if (count($all_files) > 1) {
+    for ($j=1; $j<count($all_files); $j++) {
+        $extra = trim($all_files[$j]);
+        array_push($additional_files, $extra); 
+    }
+}
+for ($k=0; $k<count($additional_files); $k++) {
+    $fileno = $k +1;
+    $adders .= '<li><em>' . $additional_files[$k] . '</em>&nbsp;&nbsp;<span ' .
+        'class="brown"> Do not include this file:&nbsp;&nbsp;' .
+        '<input type="checkbox" name="deladd[]" value="' . $fileno .'" />' .
+        '</span></li>' . PHP_EOL;
+}
+$adders .= '</ul>' . PHP_EOL;
+
 // any alerts to display?
 $user_alert = '';
 if (isset($_SESSION['user_alert']) && !empty($_SESSION['user_alert'])) {

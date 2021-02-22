@@ -68,12 +68,12 @@ $hikeGpx = array();
 if ($age === 'new') {
     $status = '[';  // editing new hikes requires gathering the 'stat' field
     $enos = '[';    // and their corresponding EHIKES indxNo's
-    $query = 'SELECT * FROM `EHIKES`';
+    $query = "SELECT * FROM `EHIKES`ORDER BY `pgTitle`";
     if ($show === 'usr') {
         $query .= " WHERE `usrid` = :userid";
     }
 } elseif ($age === 'old') {
-    $query = 'SELECT * FROM HIKES';
+    $query = "SELECT * FROM `HIKES` ORDER BY `pgTitle`";
     if ($show === 'usr') {
         $query .= " WHERE usrid = :userid";
     }

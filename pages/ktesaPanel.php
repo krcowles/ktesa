@@ -110,11 +110,6 @@ require_once "../accounts/getLogin.php";
         <br />
     </form>
 </div>
-<div id="feedback">
-    Please type your feedback or question here:<br />
-    <textarea id="fdbk" rows="6"></textarea><br />
-    <p><button id="submit">Submit</button></p>
-</div>
 
 <script src="../scripts/modal_setup.js"></script>
 <script src="../scripts/menuControl.js"></script>

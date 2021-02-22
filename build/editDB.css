@@ -4,6 +4,17 @@ body {
     background-color: #dadada;
     margin: 0px; }
 /* tab1 items */
+input[id^=gpxfile] {
+    height: 22px;
+    font-size: 16px;
+}
+#moregpx {
+    cursor: pointer;
+    text-decoration: underline;
+}
+#addgpx {
+    display: none;
+}
 #hike {
     height: 20px;
     width: 200px; }
@@ -311,4 +322,8 @@ input[type=submit]:hover {
     background-color: cornsilk;
     cursor: pointer;
     color: black;
+}
+input[name=newgps] , input[name=newmap] {
+    height: 22px;
+    font-size: 16px;
 }

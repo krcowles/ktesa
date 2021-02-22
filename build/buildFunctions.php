@@ -11,19 +11,59 @@
  * @license No license to date
  */
 libxml_use_internal_errors(true);
+
+/**
+ * Multiple places require uploading a gpx (or possibly a kml file). 
+ * Only one file at a time may be uploaded.
+ * 
+ * @param string  $name <input type="file" name="$name" />
+ * @param boolean $init Reset alerts if true, Accumulate if false
+ * @param boolean $elev Test for elevation data if true, ignore otherwise 
+ * 
+ * @return string Location of file save, otherwise all msgs are in SESSION
+ */
+function uploadGpxKmlFile($name, $init, $elev=false)
+{
+    $_SESSION['user_alert'] = $init ? '' : $_SESSION['user_alert'];
+    // first, validate the file as as <gpx> or <kml>
+    $valid = validateUpload($name, $elev);
+    if (empty($valid['file'])) {
+        $_SESSION['user_alert'] .= "No file specified";
+        return 'none';
+    }
+    if ($valid['type'] === 'gpx' || $valid['type'] === 'kml') {
+        $file_ext = $valid['type'] === 'gpx' ? '.gpx' : '.kml';
+        $saveloc = '../gpx/' . $valid['file'];
+        if (file_exists($saveloc)) {
+            $barefile = pathinfo($saveloc, PATHINFO_BASENAME);
+            $newfile = $barefile . '_' . time() . $file_ext;
+            $saveloc = '../gpx/' . $newfile;
+            $_SESSION['uplmsg'] .= "NOTE: {$valid['file']} already exists; " .
+            "The file was saved with a new name: " . $newfile . "; ";
+        }
+        if (!move_uploaded_file($valid['loc'], $saveloc)) {
+            $nomove = "Could not save {$valid['file']} to site: contact Site Master";
+            throw new Exception($nomove);
+        } else {
+            $_SESSION['uplmsg'].= "{$valid['file']} was successfully uploaded; ";
+        }
+    } else {
+        $saveloc = '';
+        $_SESSION['user_alert'] .= " Incorrect file type: not gpx or kml; ";
+    }
+    return $saveloc;
+}
 /**
  * This function validates the uploaded file against currently allowed types.
  * Errors encountered are communicated via session variable 'user_alert'.
  * 
  * @param string  $name <input type="file" name="$name" />
- * @param boolean $init Reset alerts if true, Accumulate if false
  * @param boolean $elev Test for elevation data if true, ignore otherwise
  * 
  * @return array The client filename that was uploaded & server location
  */
-function validateUpload($name, $init, $elev=false)
+function validateUpload($name, $elev=false)
 {
-    $_SESSION['user_alert'] = $init ? '' : $_SESSION['user_alert'];
     $filename = basename($_FILES[$name]['name']);
     $uploadType = 'none';
     if (!empty($filename)) {

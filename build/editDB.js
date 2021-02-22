@@ -114,6 +114,51 @@ if (user_alert !== '') {
     $.get('resetAlerts.php');
 }
 
+// set max additional gpx files at 3
+let listItems = $("#addlist").children();
+let count = listItems.length;
+if (count > 0 && count < 3) {
+    let addmore = 3 - count;
+    if (addmore > 0) { // can only be 1 or 2...
+        $('#addno').text(addmore);
+        if (addmore === 1) {
+            $('#li3').hide();
+            $('#li2').hide();
+        } else {
+            $('#li3').hide();
+        } 
+    } 
+} else if (count === 3) {
+    $('#addno').text('0');
+    $('#li3').hide();
+    $('#li2').hide();
+    $('#li1').hide();
+}
+// If a main gpx file is checked for delete and there are additional files specified,
+// alert user that a main file must be specified to see the additional files.
+$('input[name=dgpx]').on('change', function() {
+    if ($(this).is(':checked')) {
+        if (count > 0) {
+            if ($('#gpxfile1').get(0).files.length === 0) {
+                alert("You must specify a main file\n" +
+                    "Otherwise additional files will be removed");
+            }
+        }
+    }
+});
+// only allow additional file specs if there is a main
+$('input[name^=addgpx]').each(function() {
+    $(this).on('change', function() {
+        let filedata = document.getElementById("gpxfile1").files[0];
+        if (typeof filedata === 'undefined') {
+            if ($('#mgpx').text() === '') {
+                alert("You must first specify a main gpx file\n or have one" +
+                    " already uploaded");
+                $(this).val('');
+            }
+        }
+    });
+});
 /**
  * This section does data validation for the 'directions' URL and highlights
  * the textarea, with focus, if the URL failed validation.
@@ -435,7 +480,7 @@ $('#elev').on('change', function() {
     }
 });
 // gpx: file name length 1024; NOTE: This also covers GPS Data uploads
-$('input[type=file]').on('change', function() {
+$('#gpxfile1').on('change', function() {
     var newname = this.files[0].name;
     if (newname.length > 1024) {
         alert("Only 1024 Characters are allowed for file names");

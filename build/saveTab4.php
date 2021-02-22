@@ -12,6 +12,7 @@ session_start();
 require "../php/global_boot.php";
 
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
+$redirect = "editDB.php?tab=4&hikeNo={$hikeNo}";
 /**
  * There are two sections of 'references': 1) existing in db; 2) new (if any)
  *   1. Those which already exist in the database may have been edited by the
@@ -140,36 +141,27 @@ if ($addcnt > 0) {
  * GPS Data File upload section. May be a gpx or kml file, or an html map file
  */
 $_SESSION['gpsmsg'] = '';
-$gpsfile  = validateUpload('newgps', true);
-$badgpx = false;
-if (!empty($gpsfile['file'])) {
+$gpsfile = uploadGpxKmlFile('newgps', true);
+if ($_SESSION['user_alert'] !== 'No file specified') {
     if (empty($_SESSION['user_alert'])) {
-        if ($gpsfile['type'] === 'gpx' || $gpsfile['type'] === 'kml') {
-            $newurl = '../gpx/' . $gpsfile['file'];
-            $ngpsreq
-                = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`,clickText) " .
-                    "VALUES (?,'P','GPX:',?,'GPX Track File');";
-            $newgps = $pdo->prepare($ngpsreq);
-            $newgps->execute([$hikeNo, $newurl]);
-            $_SESSION['gpsmsg'] .= "{$gpsfile['file']} was successfully uploaded";
-        } else {
-            $badgpx = true;
-            $_SESSION['user_alert'] = "Unacceptable file type: {$gpsfile['file']}";
-            $_SESSION['gpsmsg'] .= "<span style='color:red;'>{$gpsfile['file']} " .
-                "NOT UPLOADED</span>";
-        }
+        $ngpsreq
+            = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`,`clickText`) " .
+                "VALUES (?,'P','GPX:',?,'GPX Track File');";
+        $newgps = $pdo->prepare($ngpsreq);
+        $newgps->execute([$hikeNo, $gpsfile]);
+        $gfile = pathinfo($gpsfile, PATHINFO_FILENAME);
+        $_SESSION['gpsmsg'] .= "{$gfile} was successfully uploaded; ";
     } else {
-        $badgpx = true;
-        $_SESSION['gpsmsg'] .= "<span style='color:red;'>{$gpsfile['file']} " .
-            "NOT UPLOADED</span>";
+        header("Location: {$redirect}");
+        exit;
     }
+} else {
+    $_SESSION['user_alert'] = '';
 }
-$htmlfile = validateUpload('newmap', false);
+$htmlfile = validateUpload('newmap');
 if (!empty($htmlfile['file'])) {
     if ($htmlfile['type'] === 'html') {
-        if (empty($_SESSION['user_alert'])
-            || (!empty($_SESSION['user_alert']) && $badgpx)
-        ) {
+        if (empty($_SESSION['user_alert'])) {
             $newurl = '../maps/' . $htmlfile['file'];
             $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`," .
                 "clickText) VALUES (?,'P','MAP:',?,'Map File');";
@@ -177,13 +169,13 @@ if (!empty($htmlfile['file'])) {
             $newgps->execute([$hikeNo, $newurl]);
             $_SESSION['gpsmsg'] .= " {$htmlfile['file']} was successfully uploaded" ;
         } else {
-            $_SESSION['gpsmsg'] .= " <span style='color:red;'>{$htmlfile['file']} " .
-                "NOT UPLOADED</span>";
+            header("Location: {$redirect}");
+            exit;
         } 
     } else {
-        $_SESSION['user_alert'] .= " Unacceptable file type: {$htmlfile['file']}";
-        $_SESSION['gpsmsg'] .= " <span style='color:red;'>{$htmlfile['file']} " .
-            "NOT UPLOADED</span>";
+        $_SESSION['user_alert'] = "Only html files can be uploaded here";
+        header("Location: {$redirect}");
+        exit;
     }
 }  
 /**
@@ -225,5 +217,4 @@ for ($j=0; $j<$datacnt; $j++) {
     }
 }
 // return to editor with new data:
-$redirect = "editDB.php?tab=4&hikeNo={$hikeNo}";
 header("Location: {$redirect}");
