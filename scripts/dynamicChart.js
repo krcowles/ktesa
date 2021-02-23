@@ -201,7 +201,7 @@ function drawChart(trackNo) {
     var chartData = defineData(trackNo);
     ChartObj.render('grph', chartData);
     crossHairs(trackNo);
-    if (cluspage) {
+    if (typeof panelData === 'object') {
         displayTrackSidePanel(trackNames[trackNo]);
     }
     return;

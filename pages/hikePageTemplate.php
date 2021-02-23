@@ -12,8 +12,8 @@
  */
 session_start();
 require "../php/global_boot.php";
+require "../php/gpxFunctions.php";
 require "hikePageData.php";
-
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -98,6 +98,12 @@ function off() {
             <p id="scrollmsg">Scroll down to see images, hike description,
                 reference sources and additonal information as applicable
             </p>
+            <!-- When there are multiple tracks, display the note following -->
+            <div id="trknote">NOTE: The <span id="top">topmost checked</span>
+                item in the 'Tracks' box (in the upper right-hand corner of the
+                map) will display its elevation chart and hike data. Turn tracks
+                on and off for display.
+            </div>
             <p id="problems">If you are having problems with this page, please: 
                 <a href="mailto:krcowles29@gmail.com">send us a note!</a>
             </p>
@@ -151,16 +157,15 @@ function off() {
     <?php endif; ?>
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
-    <?php else: ?>
-        <?php if (isset($capCnt)) : ?>
-        var photocnt  = <?=$capCnt;?>;
-        var d  = "<?=implode("|", $descs);?>";
-        var al = "<?=implode("|", $alblnks);?>";
-        var p  = "<?=implode("|", $piclnks);?>";
-        var c  = "<?=implode("|", $captions);?>";
-        var as = "<?=implode("|", $aspects);?>";
-        var w  = "<?=implode("|", $widths);?>";
-        <?php endif; ?>
+    <?php endif; ?>
+    <?php if (isset($capCnt)) : ?>
+    var photocnt  = <?=$capCnt;?>;
+    var d  = "<?=implode("|", $descs);?>";
+    var al = "<?=implode("|", $alblnks);?>";
+    var p  = "<?=implode("|", $piclnks);?>";
+    var c  = "<?=implode("|", $captions);?>";
+    var as = "<?=implode("|", $aspects);?>";
+    var w  = "<?=implode("|", $widths);?>";
     <?php endif; ?>
 </script>
 <script src="../scripts/menus.js"></script>

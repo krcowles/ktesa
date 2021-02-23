@@ -100,8 +100,8 @@ foreach ($files as $gpx) {
             "width = 3; trk[t].info.opacity = 0.9; trk[t].info.hidden = false;\n";
         $line .= "                trk[t].info.outline_color = " .
             "'black'; trk[t].info." .
-            "outline_width = 0; trk[t].info.fill_color = '" . $defClrs[$colorIndx++] .
-            "'; trk[t].info.fill_opacity = 0;\n";
+            "outline_width = 0; trk[t].info.fill_color = '" .
+            $defClrs[$colorIndx++] . "'; trk[t].info.fill_opacity = 0;\n";
         $tdat = "                trk[t].segments.push({ points:[ [";
         /**
          * Get gpx data into individual arrays and do first level

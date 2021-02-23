@@ -43,7 +43,7 @@ if (!ftp_login($conn, FTP_USER, FTP_PASS)) {
     echo "Created archive, but can't login to ftp";
     exit;
 }
-if (!ftp_put($conn, $testSite, $zipFile, FTP_BINARY)) {
+if (!ftp_put($conn, $remote, $zipFile, FTP_BINARY)) {
     echo "Created archive and logged in, but failed to upload file";
     exit;
 }

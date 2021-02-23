@@ -192,7 +192,7 @@ if ($clusterPage) {
         $ctrlng = $cpdata['lng']/LOC_SCALE;
         createPseudoGpx($ctrlat, $ctrlng, $gpxfile, $files);
     }
-} elseif ($gpxfile === '') {
+} elseif ($gpxfile === '') {  // hike page has no gpx file
     if (empty($row['lat']) || empty($row['lng'])) {
         // use NM State geographic center
         $ctrlat = 34.450;
@@ -202,6 +202,44 @@ if ($clusterPage) {
         $ctrlng = $row['lng'];
     }
     createPseudoGpx($ctrlat, $ctrlng, $gpxfile, $files);
+} else {  // hike page has at least one gpx file
+    if (strpos($allgpx, ",") !== false) {
+        $hikeTrackFiles = explode(",", $allgpx);
+        foreach ($hikeTrackFiles as &$hikegpx) {
+            $hikegpx = trim($hikegpx);
+        }
+    } else {
+        $hikeTrackFiles = [$gpxfile];
+    }
+    $hike_data = []; // array to collect info for javascript
+    foreach ($hikeTrackFiles as $gpx) {
+        $gpxPath = '../gpx/' . $gpx;
+        $gpxData = simplexml_load_file("../gpx/" . $gpx);
+        // there may be more than one track in a file (e.g. Black Canyon)
+        $noOfTrks = $gpxData->trk->count();
+        for ($j=0; $j<$noOfTrks; $j++) {
+            $trkname = $gpxData->trk[$j]->name->__toString();
+            $calcs = getTrackDistAndElev(
+                1, $j, $trkname, $gpxPath, $gpxData, false, null, null, 1, 1, 1
+            );
+            $max2min  = 3.28084 * ($calcs[1] - $calcs[2]);
+            $feet  = round($max2min);
+            $miles = 0.00062137119223733 * $calcs[0];
+            $miles = round($miles, 2);
+            $sidepanel = array(
+                'logistics' => $hikeType,
+                'miles' => $miles,
+                'feet' => $feet,
+                'diff' => $hikeDifficulty,
+                'wow' => $hikeWow,
+                'seasons' => $hikeSeasons,
+                'expo' => $hikeExposure
+            );
+            $trkrel = array($trkname => $sidepanel);
+            $hike_data += $trkrel;  // "+" is union operator for arrays
+            $sidePanelData = json_encode($hike_data);
+        }
+    }
 }
 require "relatedInfo.php";
 /**
@@ -272,7 +310,7 @@ if ($clusterPage) {
         $fpLnk .= "&gpx[]={$gpx}";
     }
 } else {
-    $fpLnk .= "&gpx={$gpxfile}";
+    $fpLnk .= "&gpx={$allgpx}";
 }
     
 $map_opts = [

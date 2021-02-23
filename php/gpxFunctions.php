@@ -110,7 +110,7 @@ function gpsvDebugMaArray($gpxPath, $window)
  * @param string   $tdat      GPSV track data js string
  * @param array    $ticks     GPSV array of ticks
  * 
- * @return float           $hikeLgthTot total distance traversed in all tracks
+ * @return float $hikeLgthTot total distance traversed in all tracks
  */
 function getTrackDistAndElev(
     $seqTrkNo, $trkNo, $trkname, $gpxPath, &$xmldata, $debug, $handleDfa,

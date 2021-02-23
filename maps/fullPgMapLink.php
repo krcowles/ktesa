@@ -17,8 +17,15 @@ $ttable      = filter_input(INPUT_GET, 'tbl') === 'new' ? "ETSV" : "TSV";
 if (isset($_GET['clus']) && $_GET['clus'] === 'y') {
     $files = $_GET['gpx'];
 } else {
-    $gpx   = filter_input(INPUT_GET, 'gpx');
-    $files = [$gpx];
+    $gpx = filter_input(INPUT_GET, 'gpx');
+    if (strpos($gpx, ",") === false) {
+        $files = [$gpx];
+    } else {
+        $files = explode(",", $gpx);
+        foreach ($files as &$file) {
+            $file = trim($file);
+        }
+    }
 }
 
 // required by multiMap.php
