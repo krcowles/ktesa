@@ -14,11 +14,27 @@ require "../php/global_boot.php";
 
 $page       = filter_input(INPUT_GET, 'choice');
 $newClusGrp = isset($_GET['new']) && $_GET['new'] == 'y' ? true : false;
+if ($newClusGrp) {
+    // make sure this new group didn't just get posted...
+    $encgReq = "SELECT `pgTitle` FROM `EHIKES`;";
+    $pncgReq = "SELECT `pgTitle` FROM `HIKES`;";
+    $pdo->beginTransaction();
+    $etitles = $pdo->query($encgReq)->fetchAll(PDO::FETCH_COLUMN);
+    $ptitles = $pdo->query($pncgReq)->fetchAll(PDO::FETCH_COLUMN);
+    $titles = array_merge($ptitles, $etitles);
+    if (in_array($page, $titles)) {
+        $_SESSION['pgtitle'] = "This cluster page '{$page}' was recently " .
+            "submitted by another user";
+        header("Location: startNewPg.php");
+        exit;
+    }
+    // Save basic data for new page in EHIKES (NOTE: do not save `cname`)
+    $newClusPgReq = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`) VALUES (?,?,'0');";
+    $newClusPg = $pdo->prepare($newClusPgReq);
+    $newClusPg->execute([$page, $_SESSION['userid']]);
+    $pdo->commit();
+}
 
-// Save basic data for new page in EHIKES (NOTE: do not save `cname`)
-$newClusPgReq = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`) VALUES (?,?,'0');";
-$newClusPg = $pdo->prepare($newClusPgReq);
-$newClusPg->execute([$page, $_SESSION['userid']]);
 // get new indxNo
 $indxNoReq = "SELECT `indxNo` FROM `EHIKES` WHERE `pgTitle`=?;";
 $indxNoRecord = $pdo->prepare($indxNoReq);

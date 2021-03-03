@@ -11,6 +11,11 @@
  */
 $( function () { // when page is loaded...
 
+var error = $('#pgerror').text();
+var grpnamedup = error.indexOf('Group') !== -1 ? true : false;
+if (error !== 'clear' && error !== '') {
+    alert("Error encountered: " + error);
+}
 // load lists of 'pgTitle's & 'clusters' for data validation 
 var titleList;
 $.ajax({
@@ -62,6 +67,9 @@ $('#cluster').on('change', function() {
         $('#cls').css('display','block');
     }
 });
+if (grpnamedup) {
+    $('#cluster').trigger('click');
+}
 $('#normal').on('change', function() {
     if ($(this).prop('checked')) {
         $('#cls').css('display','none');

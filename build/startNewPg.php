@@ -10,6 +10,8 @@
  */
 session_start();
 require "../php/global_boot.php";
+$pgerror = isset($_SESSION['pgtitle']) ? $_SESSION['pgtitle'] : 'clear';
+unset($_SESSION['pgtitle']);
 
 // establish drop-downs for selecting a cluster
 $clusterSelect = getClusters($pdo);  // For hike page
@@ -37,6 +39,7 @@ $newClusterPage = str_replace('id="clusters"', 'id="cpages"', $newClusterPage);
 <p id="page_id" style="display:none">Create</p>
 
 <div id="main">
+    <p id="pgerror" style="display:none;"><?=$pgerror;?></p>
     <h2 style="color:DarkBlue;">Begin Your Journey Here!</h2>
     <h3><em>This page must be completed in order to proceed:</em></h3>
     <form action="submitNewPg.php" method="POST">
