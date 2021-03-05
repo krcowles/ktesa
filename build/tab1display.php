@@ -67,47 +67,8 @@
 <textarea id="hike" name="pgTitle"
         maxlength="30"><?= $pgTitle;?></textarea>&nbsp;&nbsp;
     <p style="display:none;" id="locality"><?= $locale;?></p>
-    <label for="area">Locale (City/POI): </label>
-    <select id="area" name="locale">
-    <optgroup label="North/Northeast">
-        <option value="Jemez Springs">Jemez Springs</option>
-        <option value="Valles Caldera">Valles Caldera</option>
-        <option value="Los Alamos">Los Alamos</option>
-        <option value="White Rock">White Rock</option>
-        <option value="Santa Fe">Santa Fe</option>
-        <option value="Ojo Caliente">Ojo Caliente</option>
-        <option value="Abiquiu">Abiquiu</option>
-        <option value="Pecos">Pecos</option>
-        <option value="Villanueva">Villanueva</option>
-        <option value="Taos">Taos</option>
-        <option value="Pilar">Pilar</option>
-    <optgroup label="Northwest">
-        <option value="Farmington">Farmington</option>
-        <option value="San Ysidro">San Ysidro</option>
-        <option value="San Luis">San Luis</option>
-        <option value="Cuba">Cuba</option>
-        <option value="Lybrook">Lybrook</option>
-    <optgroup label="Central NM">
-        <option value="Cerrillos">Cerrillos</option>
-        <option value="Golden">Golden</option>
-        <option value="Albuquerque">Albuquerque</option>
-        <option value="Placitas">Placitas</option>
-        <option value="Corrales">Corrales</option>
-        <option value="Tijeras">Tijeras</option>
-        <option value="Tajique">Tajique</option>
-    <optgroup label="West">
-        <option value="Grants">Grants</option>
-        <option value="Ramah">Ramah</option>
-        <option value="Gallup">Gallup</option>
-    <optgroup label="South Central">
-        <option value="San Acacia">San Acacia</option>
-        <option value="San Antonio">San Antonio</option>
-        <option value="Tularosa">Tularosa</option>
-    <optgroup label="Southwest">
-        <option value="Silver City">Silver City</option>
-        <option value="Pinos Altos">Pinos Altos</option>
-        <option value="Glenwood">Glenwood</option>
-</select><br /><br />
+    <?php require "localeBox.html"; ?>
+    <br /><br />
 
 <label for="type">Hike Type: </label>
 <select id="type" name="logistics">

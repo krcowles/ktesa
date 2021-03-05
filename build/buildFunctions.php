@@ -13,6 +13,24 @@
 libxml_use_internal_errors(true);
 
 /**
+ * The following function gets the visitor's machine IP even when going through
+ * a proxy server. Copied from:
+ * https://www.w3adda.com/blog/how-to-get-user-ip-address-in-php
+ * 
+ * @return string $ip user's machine IP address
+ */
+function getIpAddress()
+{
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
+}
+/**
  * Multiple places require uploading a gpx (or possibly a kml file). 
  * Only one file at a time may be uploaded.
  * 
@@ -24,6 +42,7 @@ libxml_use_internal_errors(true);
  */
 function uploadGpxKmlFile($name, $init, $elev=false)
 {
+    $user_ip = getIpAddress();
     $_SESSION['user_alert'] = $init ? '' : $_SESSION['user_alert'];
     // first, validate the file as as <gpx> or <kml>
     $valid = validateUpload($name, $elev);
@@ -33,19 +52,15 @@ function uploadGpxKmlFile($name, $init, $elev=false)
     }
     if ($valid['type'] === 'gpx' || $valid['type'] === 'kml') {
         $file_ext = $valid['type'] === 'gpx' ? '.gpx' : '.kml';
-        $saveloc = '../gpx/' . $valid['file'];
-        if (file_exists($saveloc)) {
-            $barefile = pathinfo($saveloc, PATHINFO_BASENAME);
-            $newfile = $barefile . '_' . time() . $file_ext;
-            $saveloc = '../gpx/' . $newfile;
-            $_SESSION['uplmsg'] .= "NOTE: {$valid['file']} already exists; " .
-            "The file was saved with a new name: " . $newfile . "; ";
-        }
+        $barefile = pathinfo($valid['file'], PATHINFO_FILENAME);
+        $unique_file_name = $barefile . "-" . $user_ip . "-" . time() . $file_ext;
+        $saveloc = "../gpx/" . $unique_file_name;
         if (!move_uploaded_file($valid['loc'], $saveloc)) {
             $nomove = "Could not save {$valid['file']} to site: contact Site Master";
             throw new Exception($nomove);
         } else {
-            $_SESSION['uplmsg'].= "{$valid['file']} was successfully uploaded; ";
+            $_SESSION['uplmsg'].= "Your file [{$valid['file']}] was saved as " .
+                $unique_file_name . "; ";
         }
     } else {
         $saveloc = '';

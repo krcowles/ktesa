@@ -214,7 +214,7 @@ if ($clusterPage) {
     $hike_data = []; // array to collect info for javascript
     foreach ($hikeTrackFiles as $gpx) {
         $gpxPath = '../gpx/' . $gpx;
-        $gpxData = simplexml_load_file("../gpx/" . $gpx);
+        $gpxData = simplexml_load_file($gpxPath);
         // there may be more than one track in a file (e.g. Black Canyon)
         $noOfTrks = $gpxData->trk->count();
         for ($j=0; $j<$noOfTrks; $j++) {

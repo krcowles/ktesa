@@ -98,9 +98,9 @@ if (!$deletedLatLng) {
 // IF a gpx file was uploaded:
 $gpxfile = basename($_FILES['newgpx']['name']);
 if (!empty($gpxfile)) {  // new upload
-    $saved = uploadGpxKmlFile('newgpx', true, true);
+    $unique = uploadGpxKmlFile('newgpx', true, true);
     if (empty($_SESSION['user_alert'])) {
-        $trkdat = makeTrackFile($saved);
+        $trkdat = makeTrackFile($unique);
         $newtrk = $trkdat[0];
         $lat = (int) ((float)($trkdat[1]) * LOC_SCALE);
         $lng = (int) ((float)($trkdat[2]) * LOC_SCALE);
@@ -109,7 +109,7 @@ if (!empty($gpxfile)) {  // new upload
             "SET trk = ?, lat = ?, lng = ? WHERE indxNo = ?;";
         $newdat = $pdo->prepare($newdatReq);
         $newdat->execute([$newtrk, $lat, $lng, $hikeNo]);
-        $maingpx = $gpxfile;
+        $maingpx = pathinfo($unique, PATHINFO_BASENAME);
     } else {
         exit;
     }
@@ -117,16 +117,25 @@ if (!empty($gpxfile)) {  // new upload
 // current maingpx may have been deleted and/or replaced above:
 $allgpx[0] = $maingpx;
 // remove any current elements in $allgpx whose checkbox has been ticked
-$orgsize = count($allgpx);
-if ($orgsize > 1) {
-    for ($x=1; $x<$orgsize; $x++) {
-        if ($noincludes) { 
+if ($allgpx[0] !== '') {
+    $orgsize = count($allgpx);
+    if ($orgsize > 1) {
+        for ($x=1; $x<$orgsize; $x++) {
             if (in_array($x, $noincludes)) {
+                $unlinkAdd = '../gpx/' . $allgpx[$x];
+                if (!unlink($unlinkAdd)) {
+                    throw new Exception(
+                        "Could not remove additional file from site"
+                    );
+                }
                 unset($allgpx[$x]);
             }
         }
+        $allgpx = array_values($allgpx); // re-index array
     }
-    $allgpx = array_values($allgpx); // re-index array
+} else {
+    $allgpx = [];
+    $allgpx[0] = '';
 }
 // add any new gpx files specified by user
 for ($j=0; $j<count($addfiles); $j++) {
@@ -135,7 +144,8 @@ for ($j=0; $j<count($addfiles); $j++) {
     if ($gfile['name'] !== '') {
         $adder = uploadGpxKmlFile($filesName, true);
         if (empty($_SESSION['user_alert'])) {
-            array_push($allgpx, $gfile['name']);
+            $newadder = pathinfo($adder, PATHINFO_BASENAME);
+            array_push($allgpx, $newadder);
         } else {
             exit;
         }
