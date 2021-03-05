@@ -24,6 +24,16 @@ $lng   = filter_input(INPUT_POST, 'lng', FILTER_VALIDATE_FLOAT);
 $date  = filter_input(INPUT_POST, 'date');
 $map   = filter_input(INPUT_POST, 'mappable', FILTER_VALIDATE_BOOLEAN);
 
+// prepare database entries
+if ($lat == 0 || $lng == 0) {
+    $dblat = null;
+    $dblng = null;
+} else {
+    $dblat = $lat * LOC_SCALE;
+    $dblng = $lng * LOC_SCALE;
+}
+$dbdate =  strlen($date) > 1 ? $date : null;
+
 if (($image = file_get_contents($blob)) === false) {
     throw new Exception(
         "Uploaded server data could not be retrieved for {$fanme}\n" .
@@ -35,29 +45,19 @@ if (($image = file_get_contents($blob)) === false) {
 $dot = strrpos($fname, ".");
 $basename = substr($fname, 0, $dot); // this is the 'title' field in ETSV
 
- // Determine next 'thumb' value for new entry and create filepath for image
 $pictures_directory = getPicturesDirectory();
+// Determine next 'thumb' value for new entry and create filepath for image
+// use committed transaction to eliminate possible duplicate assignment of thumb:
 $tval = "SELECT `thumb` FROM `TSV` ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
+$eval = "SELECT `thumb` FROM `ETSV` ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
+
+$pdo->beginTransaction();
 $tresult = $pdo->query($tval);
 $tmax = $tresult->fetch(PDO::FETCH_NUM);
-$eval = "SELECT `thumb` FROM `ETSV` ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
 $eresult = $pdo->query($eval);
 $emax = $eresult->fetch(PDO::FETCH_NUM);
 $max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
 $newthumb = (int)$max + 1;
-$zimg = $basename . '_' . $newthumb . '_z.jpg';
-$filename = $pictures_directory . $zimg;
-
-// prepare database entries
-if ($lat == 0 || $lng == 0) {
-    $dblat = null;
-    $dblng = null;
-} else {
-    $dblat = $lat * LOC_SCALE;
-    $dblng = $lng * LOC_SCALE;
-}
-$dbdate =  strlen($date) > 1 ? $date : null;
-
 $tsv_req = "INSERT INTO `ETSV` (`indxNo`,`title`,`hpg`,`mpg`,`lat`," .
     "`lng`,`thumb`,`date`,`mid`,`imgHt`,`imgWd`) VALUES " .
     "(?,?,'N','N',?,?,?,?,?,?,?);";
@@ -66,6 +66,11 @@ $tsv->execute(
     [$ehike, $basename, $dblat, $dblng, $newthumb, $dbdate, $basename, 
     $imght, $imgwd]
 );
+$pdo->commit();
+
+$zimg = $basename . '_' . $newthumb . '_z.jpg';
+$filename = $pictures_directory . $zimg;
+
 
 if (file_put_contents($filename, $image) === false) {
     throw new Exception("Could not store image data from upload");
