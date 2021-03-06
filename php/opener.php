@@ -42,10 +42,12 @@ if ($page === 'admin' && $login) {
     }
 } elseif ($page === 'published') {
     if ($editing === 'yes') {
-        $script .= "../build/hikeEditor.php?age=old&show=usr" . $close;
+        $script .= "../build/hikeEditor.php?age=old" . $close;
     } else {
         $script = $noedit;
     }
+} elseif ($page === 'ready') {
+    $script .= "../build/hikeEditor.php?age=new&pub=usr" . $close;
 } elseif ($page === 'register') {
     $script .= "../accounts/registration.php" . $close;
 }

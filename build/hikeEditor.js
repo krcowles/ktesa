@@ -25,38 +25,75 @@ $( function () { // when page is loaded...
  *     script to point either to editDB.php if the page is a hike page,
  *     or to editClusterPage.php if the page is a cluster page.
  */
+var page_type = $('#page_id').text();
 var useHikeEd = 'editDB.php?tab=1&hikeNo=';
 var useClusEd = 'editClusterPage.php?hikeNo=';
 var xfrPage   = 'xfrPub.php?hikeNo=';
-var $rows      = $('tbody').find('tr');
+var shipit    = '../build/notifyAdmin.php?hikeNo=';
+var $rows     = $('tbody').find('tr');
 var hikeno;
 var lnk;
 $rows.each(function() {
-	var $tdlink = $(this).children().eq(0);
-	var $anchor = $tdlink.children().eq(0);
-	var ptr = $anchor.prop('href');
-	var clushike =  ptr.indexOf('clus=y') !== -1 ? true : false;
+	let $tdlink = $(this).children().eq(0);
+	let $anchor = $tdlink.children().eq(0);
+	let ptr = $anchor.prop('href');
+	let pubpg = $anchor.text();
+	let clushike =  ptr.indexOf('clus=y') !== -1 ? true : false;
 	if (ptr.indexOf('hikeIndx') !== -1) {
 		// find the hike no:
-		var hikeloc = ptr.indexOf('hikeIndx=') + 9;
+		let hikeloc = ptr.indexOf('hikeIndx=') + 9;
 		hikeno = ptr.substr(hikeloc); // NOTE: this picks up the clus=y parm if present
 	} else {
 		hikeno = 0;
 		alert("Could not locate hike");
 	}
-	// *** THESE HIKES ARE NEW (EHIKES) ***
-	if (age === 'new') { // age is established in hikeEditor.php
-		if (clushike) {
-			lnk = useClusEd + hikeno;
+	if (page_type === 'PubReq') {
+		let loc = shipit + hikeno;
+		// This is a request to publish a hike
+		$anchor.on('click', function(ev) {
+			ev.preventDefault();
+			$.ajax({
+				url: loc,
+				method: 'get',
+				dataType: 'text',
+				success: function(results) {
+					if (results === "OK") {
+						alert("An email has been sent to the admin");
+					} else {
+						alert("The email did not get sent: please use Help->Contact Us");
+					}
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					let newDoc = document.open();
+					newDoc.write(jqXHR.responseText);
+					newDoc.close();
+				}
+			});
+		});
+	} else {
+		// *** THESE HIKES ARE NEW (EHIKES) ***
+		if (age === 'new') { // age is established in hikeEditor.php
+			if (clushike) {
+				lnk = useClusEd + hikeno;
+			} else {
+				lnk = useHikeEd + hikeno;
+			}
+		// *** THESE HIKES ARE PUBLSIHED ***
 		} else {
-			lnk = useHikeEd + hikeno;
+			lnk = xfrPage + hikeno;	
 		}
-	// *** THESE HIKES ARE PUBLSIHED ***
-    } else {
-		lnk = xfrPage + hikeno;	
+		// gray out hikes already in-edit
+		if (age === 'old' && inEdits.indexOf(pubpg) !== -1) {
+			$(this).css('background-color', 'gainsboro');
+			$anchor.css('cursor', 'default');
+			$anchor.on('click', function(ev) {
+				ev.preventDefault();
+			});
+		} else {
+			$anchor.attr('href', lnk);
+			$anchor.attr('target', '_self');
+		}
 	}
-	$anchor.attr('href', lnk);
-	$anchor.attr('target', '_self');
 });
 
 // global object used to define how table items get compared in a sort:

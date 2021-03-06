@@ -41,10 +41,8 @@ require_once "../accounts/getLogin.php";
                     <ul class="menus">
                         <li><div id="newPg">Create New Page</div></li>
                         <li><div id="edits">Continue Editing Your Pages</div></li>
-                        <li><div id="epubs">Edit Your Published Page</div></li>
-                        <!--
+                        <li><div id="epubs">Edit A Published Page</div></li>
                         <li><div id="pubReq">Submit for Publication</div></li>
-                        -->
                     </ul>
                 </div>
             </li>

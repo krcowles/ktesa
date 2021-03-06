@@ -32,6 +32,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+$userid = $_SESSION['userid'];
 // Icons used for table display:
 $mapIcon
     = 'class="gotomap" src="../images/mapit.png" alt="Zoom-to-map symbol" />';
@@ -41,9 +42,7 @@ $partialIcon = '<img class="expShift" src="../images/partShade.jpg" '
     . 'alt="Partial shade icon" />';
 $shadeIcon = '<img class="expShift" src="../images/goodShade.jpg" '
     . 'alt="Partial sun/shade icon" />';
-if ($show !== 'all') {
-    $userid = $_SESSION['userid'];
-}
+
 // Get Cluster Data:
 // NOTE: New Cluster Pages in-edit will have negative integers in 'page'
 $clusReq = "SELECT `group`,`page` FROM `CLUSTERS` WHERE `page` <> 0;";
@@ -68,15 +67,17 @@ $hikeGpx = array();
 if ($age === 'new') {
     $status = '[';  // editing new hikes requires gathering the 'stat' field
     $enos = '[';    // and their corresponding EHIKES indxNo's
-    $query = "SELECT * FROM `EHIKES`ORDER BY `pgTitle`";
+    $query = "SELECT * FROM `EHIKES`";
     if ($show === 'usr') {
-        $query .= " WHERE `usrid` = :userid";
+        $query .= " WHERE `usrid` = :userid ";
     }
+    $query .= "ORDER BY `pgTitle`;";
 } elseif ($age === 'old') {
-    $query = "SELECT * FROM `HIKES` ORDER BY `pgTitle`";
+    $query = "SELECT * FROM `HIKES` ";
     if ($show === 'usr') {
-        $query .= " WHERE usrid = :userid";
+        $query .= "WHERE `usrid` = :userid ";
     }
+    $query .= "ORDER BY `pgTitle`;";
     $status = '[]';
     $enos = '[]';
 } else {

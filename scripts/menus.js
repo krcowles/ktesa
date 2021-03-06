@@ -42,6 +42,8 @@ switch(page_type.trim()) { // only on actual pages...
     case "EditPub":
         $('#epubs').prepend(icon);
         break;
+    case "PubReq":
+        $('#pubReq').prepend(icon);
     case "About":
         $('#about').prepend(icon);
         break;
@@ -74,12 +76,11 @@ function gotoPage(content) {
         case 'Continue Editing Your Pages':
             page = 'existing';
             break;
-        case 'Edit Your Published Page':
+        case 'Edit A Published Page':
             page = 'published';
             break;
         case 'Submit for Publication':
-            page = 'Under Construction';
-            // no script yet
+            page = 'ready';
             break;
         case 'Log in':
             if (user_cookie_state === 'EXPIRED') {

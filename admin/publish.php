@@ -90,7 +90,9 @@ if ($msgout == '') {
     if ($status > 0) { // this is an existing hike, UPDATE its record in HIKES
         $query = "UPDATE HIKES, EHIKES SET ";
         foreach ($columns as $column) {
-            if (($column[0] !== "indxNo") && ($column[0] !== "stat")) {
+            if (($column[0] !== "indxNo") && ($column[0] !== "stat")
+                && $column[0] !== "cname"
+            ) {
                 $query .= "HIKES.{$column[0]} = EHIKES.{$column[0]}, ";
             }
         }
@@ -103,7 +105,9 @@ if ($msgout == '') {
         $query = "INSERT INTO HIKES (";
         $fields = '';
         foreach ($columns as $column) {
-            if (($column[0] !== "indxNo") && ($column[0] !== "stat")) {
+            if (($column[0] !== "indxNo") && ($column[0] !== "stat")
+                && ($column[0] !== "cname")
+            ) {
                 $fields .= "{$column[0]}, ";
             }
         }
