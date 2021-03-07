@@ -35,6 +35,8 @@ foreach ($gpsv as $line) {
         $maphtml .= '            gv_options.center = [' . $clat . ',' . $clon .
             '];  // [latitude,longitude] - be sure to keep the square brackets' .
             PHP_EOL;
+    } elseif (strpos($line, 'GEOLOC_PNG')) {
+        $maphtml .= str_replace("GEOLOC_PNG", $geoloc, $line);
     } elseif (strpos($line, "gv_options.zoom =")) {
         $maphtml .= "            gv_options.zoom = '{$map_opts['zoom']}';  " .
             "// higher number means closer view; can also be 'auto' for automatic " .
