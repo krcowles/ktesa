@@ -10,6 +10,7 @@
  * @license None to date
  */
 require "../php/global_boot.php";
+$geoloc = '../../images/geoloc.png';
 
 $hikeIndexNo = filter_input(INPUT_GET, 'hno');
 $hikeTitle   = filter_input(INPUT_GET, 'hike');

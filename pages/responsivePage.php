@@ -119,7 +119,7 @@ function off() {
 
 <?=$bop;?>
 
-<div id="imgArea"></div>
+<div id="imgArea">HELLO</div>
 <p id="ptype" style="display:none">Hike</p>
 
 <!-- page buttons -->
@@ -189,16 +189,13 @@ function off() {
     <?php endif; ?>
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
-    <?php else: ?>
-        <?php if (isset($capCnt)) : ?>
-        var photocnt  = <?=$capCnt;?>;
-        var d  = "<?=implode("|", $descs);?>";
-        var al = "<?=implode("|", $alblnks);?>";
-        var p  = "<?=implode("|", $piclnks);?>";
-        var c  = "<?=implode("|", $captions);?>";
-        var as = "<?=implode("|", $aspects);?>";
-        var w  = "<?=implode("|", $widths);?>";
-        <?php endif; ?>
+    var photocnt  = <?=$capCnt;?>;
+    var d  = "<?=implode("|", $descs);?>";
+    var al = "<?=implode("|", $alblnks);?>";
+    var p  = "<?=implode("|", $piclnks);?>";
+    var c  = "<?=implode("|", $captions);?>";
+    var as = "<?=implode("|", $aspects);?>";
+    var w  = "<?=implode("|", $widths);?>";
     <?php endif; ?>
 </script>
 <script src="../scripts/responsivePage.js"></script>

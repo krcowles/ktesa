@@ -15,7 +15,7 @@ CREATE TABLE `EHIKES` (
   `wow` varchar(50) DEFAULT NULL,
   `seasons` varchar(12) DEFAULT NULL,
   `expo` varchar(15) DEFAULT NULL,
-  `gpx` varchar(1024) DEFAULT NULL,
+  `gpx` varchar(2048) DEFAULT NULL,
   `trk` varchar(1024) DEFAULT NULL,
   `lat` int(10) DEFAULT NULL,
   `lng` int(10) DEFAULT NULL,
@@ -28,11 +28,11 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
-('21','Quebradas Road Trip','mstr','0','San Antonio','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384','https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.',NULL,NULL,NULL);
+('21','Quebradas Road Trip','2','0','San Antonio','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384','https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.',NULL,NULL,NULL);
 
 
 
@@ -42,7 +42,7 @@ CREATE TABLE `BOOKS` (
   `title` varchar(200) NOT NULL,
   `author` varchar(200) NOT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO BOOKS VALUES
@@ -66,7 +66,8 @@ INSERT INTO BOOKS VALUES
 ('18','Hiking New Mexico\'s Aldo Leopold Wilderness','Bill Cunningham and Polly Burke'),
 ('19','Following the Royal Road: A Guide to the Historic Camino Real de Tierra Adentro','Hal E. Jackson'),
 ('20','Wonderland: A Photographer\'s Journey Into The Bisti','Eduardo Fuss'),
-('21','60 Short Hikes In The Sandia Foothills','Tamara Massong');
+('21','60 Short Hikes In The Sandia Foothills','Tamara Massong'),
+('22','Hiking Trails in Valles Caldera National Preserve','Coco Rae');
 
 
 
@@ -335,7 +336,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -368,7 +369,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=536 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=591 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -487,7 +488,7 @@ CREATE TABLE `HIKES` (
   `wow` varchar(50) DEFAULT NULL,
   `seasons` varchar(12) DEFAULT NULL,
   `expo` varchar(15) DEFAULT NULL,
-  `gpx` varchar(1024) DEFAULT NULL,
+  `gpx` varchar(2048) DEFAULT NULL,
   `trk` varchar(1024) DEFAULT NULL,
   `lat` int(10) DEFAULT NULL,
   `lng` int(10) DEFAULT NULL,
@@ -500,7 +501,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=254 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=256 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -544,7 +545,7 @@ INSERT INTO HIKES VALUES
 ('40','Cerrillos Hills','mstr','Cerrillos','Loop','5.10','400','Easy','None','Views & mines','Any','Full sun','Cerrillos_Hills.GPX','Cerrillos_Hills.json','354445809','-1061224635','https://www.flickr.com/photos/139088815@N08/albums/72157669429537095','https://www.flickr.com/photos/30474783@N06/albums/72157674599596353','https://www.google.com/maps/place/Cerrillos Hills State Park/@35.4420269,-106.1288847,15.61z/data=!4m5!3m4!1s0x8718f48e222b3e2b:0x50e070d4771ed943!8m2!3d35.44465!4d-106.122426',NULL,'Cerrillos Hills State Park is just outside of the \'ghost town\' of Cerrillos (actually, there are over a hundred residents in Cerrillos). From I-25, the road in (Waldo Canyon) is part of the great viewing of the area. The Cerrillos Hills are full of old abandoned mines, now closed off, containing everything from galena to turquoise. The variety of turquoise from this area is a light blue and is given the name Cerrillos Turquoise. Hiking trails weave through the hills, so that various length trips are available. Adding in the elevation changes, the hike makes for good exercise, though not strenuous at all. There is a State Park entrance fee, but note that if you want to stop in at the State Park Ranger Station, it has very limited hours of operation. ',NULL,NULL,NULL),
 ('41','Chamisa Trail','mstr','Santa Fe','Loop','5.30','579','Medium','None','Forest & views','Any','Full sun','Chamisa_Trail.GPX','cham.json','357284170','-1058659700','https://www.flickr.com/photos/139088815@N08/albums/72157670243652485',NULL,'https://www.google.com/maps/place/Chamisa Trailhead/@35.7314932,-105.8819351,13.58z/data=!4m5!3m4!1s0x87184dfa79f0a227:0xfcfb943beadcd3f8!8m2!3d35.7283477!4d-105.8645982',NULL,'The Chamisa Trail can be a great hike - any time of year! It is not far up Hyde Park Road from Santa Fe, so it is accessible, and provides some good exercise, as the climb up is somewhat steep. At the high point, one can return via the alternate route, or continue back down the hill towards Tesuque Creek. In the summer, the trail along Tesuque Creek (the Winsor Trail) can be followed up or down river from the meadow junction with Chamisa. The meadow and creek there are quite picturesque.',NULL,NULL,NULL),
 ('42','Chavez Canyon','mstr','Abiquiu','Out-and-back','2.00','600','Easy','None','Box canyon','Any','Full sun','Chavez_Canyon.gpx','Chavez_Canyon.json','363725300','-1066780100','https://www.flickr.com/photos/139088815@N08/albums/72157666523519104',NULL,'https://www.google.com/maps/place/Chavez Canyon/@36.3683839,-106.6953317,14.22z/data=!4m5!3m4!1s0x873d5b7e98e5e08f:0x5f5908f53b4c2d3a!8m2!3d36.3661267!4d-106.6817035',NULL,'Chavez Canyon is not a long hike but provides some lovely views of the surrounding terrain. Located off Highway 151 (from US 84 just north of Ghost Ranch) near Christ of the Desert Monastery, the trail proceeds along the canyon floor and across and through some small arroyos en route to its terminus. It is worth the trip if one is in the area, and, as the road parallels the Chama River, pleasant views of the river valley are also enjoyed along the way. Read the trailhead description (reference book below) to gain a more accurate starting location, as the google map marker points to a nearby feature, not the trailhead.',NULL,NULL,NULL),
-('43','Coyote Call','mstr','Los Alamos','Loop','7.10','900','Easy','None','Views of the Valles Caldera','Any','Mixed sun/shade','Full_Coyote.GPX','Full_Coyote.json','358481274','-1064652684','https://www.flickr.com/photos/139088815@N08/albums/72157667458405014',NULL,'https://www.google.com/maps/place/35%C2%B050\'53.4%22N+106%C2%B027\'55.4%22W/@35.8423757,-106.493655,12z',NULL,'The Coyote Call Trail is a loop trail on the south side of Highway 4, just opposite the Valles Caldera, offering great views of the Valle Grande meadow and surrounding mountains. The photos represent multiple excursions, beginning in the year 2009, preceding the Las Conchas fire. Many signs of regeneration exist along the way, however, from wildflowers to numerous fast-growing aspens making it nonetheless an interesting hike. You can extend the loop by traversing either the Rabbit Hill trail or Scooter Peak trail, or both, as shown on the map. Note that the Scooter Peak trail is not maintained and requires navigating through considerable deadfall.',NULL,NULL,NULL),
+('43','Coyote Call','2','Los Alamos','Loop','7.10','900','Easy','None','Views of the Valles Caldera','Any','Mixed sun/shade','Full_Coyote.GPX','Full_Coyote.json','358481274','-1064652684','https://www.flickr.com/photos/139088815@N08/albums/72157667458405014',NULL,'https://www.google.com/maps/place/35%C2%B050\'53.4%22N+106%C2%B027\'55.4%22W/@35.8423757,-106.493655,12z',NULL,'The Coyote Call Trail is a loop trail on the south side of Highway 4, just opposite the Valles Caldera, offering great views of the Valle Grande meadow and surrounding mountains. The photos represent multiple excursions, beginning in the year 2009, preceding the Las Conchas fire. Many signs of regeneration exist along the way, however, from wildflowers to numerous fast-growing aspens making it nonetheless an interesting hike. You can extend the loop by traversing either the Rabbit Hill trail or Scooter Peak trail, or both, as shown on the map. Note that the Scooter Peak trail is not maintained and requires navigating through considerable deadfall.',NULL,NULL,NULL),
 ('44','Dale Ball Northwest Loop','mstr','Santa Fe','Loop','2.00','247','Easy','None','Local views','Any','Mixed sun/shade','Dale_Ball.GPX','dbnorth.json','357107500','-1058994670','https://www.flickr.com/photos/139088815@N08/albums/72157666078737535','','https://www.google.com/maps/place/Dale Ball Trail Parking/@35.7102265,-105.905635,15.06z/data=!4m5!3m4!1s0x871851e759c207f3:0xbc5462bc12584749!8m2!3d35.710267!4d-105.8992204',NULL,'The Dale Ball Trails on the north side of Santa Fe represent an extensive network of interconnected trails, allowing the hiker to create a hike of almost any length. The trails also connect with some other area hikes, like the Dorothy Stewart Trail, the Santa Fe Canyon Trail, etc. While there are numerous ups and downs, usually 100-300 ft, there seems to be no sustained elevation change. Great views of the Santa Fe area are afforded.',NULL,NULL,NULL),
 ('45','Del Agua - Piedra Lisa Loop','mstr','Placitas','Loop','4.10','999','Easy-Moderate','None','Sandia views','Not Winter','Mixed sun/shade','PiedraDelAguaLoop.gpx','PiedraDelAguaLoop.json','352789400','-1064785400','https://www.flickr.com/photos/139088815@N08/albums/72157663779952699','https://www.flickr.com/photos/30474783@N06/albums/72157693690793305','https://www.google.com/maps/place/Piedra+Lisa+North+Trailhead+Parking,+Placitas,+NM/@35.2875541,-106.5018082,13z/data=!4m8!1m2!3m1!2zMzXCsDE2JzM3LjIiTiAxMDbCsDI5JzAyLjUiVw!3m4!1s0x0:0x581950944de90d29!8m2!3d35.2789432!4d-106.4784837','NOTE: The authors inadvertently traversed a now obsolete (and private) section of the trail, located in recently purchased Sandia Pueblo land. When viewing the reference below, \'Actual Hike + New Leg\', as a map, the old trail segment, now off-limits, is displayed in light blue, whereas the correct new route section is displayed in dark blue.','This is a pleasant hike into the foothills of the Sandias and joins the Del Agua trail at its peak. This section of the Piedra Lisa can be taken as an out-and-back hike from the parking area, or as a loop by continuing along the Del Agua trail back to the Piedra Lisa trail head. There are many pleasant views of the valley near Placitas, and of terrain to the north and west. As this trail does not ascend to the crest, it is less demanding, while affording scenery of the Sandia foothills.',NULL,NULL,NULL),
 ('46','Diablo Canyon','mstr','Santa Fe','Out-and-back','4.00','273','Easy','Outdoor John','Lava canyon','Any','Full sun','Diablo_Canyon.GPX','diablo.json','358046000','-1061362333','https://www.flickr.com/photos/139088815@N08/albums/72157667965478846',NULL,'https://www.google.com/maps/place/Diablo Canyon Recreation Area/@35.8049643,-106.146631,2773m/data=!3m1!1e3!4m5!3m4!1s0x871841cc309ae52d:0x694906cba94e2b69!8m2!3d35.806363!4d-106.142693',NULL,'Parking for the Diablo Canyon hike is off of Old Buckman Road, a mile or two before reaching the Rio Grande. There is a sign indicating the canyon. Once there, the steep lava cliffs are not only striking, but also present rock climbers a great practice site. The hike proceeds through the canyon, which is by far the most scenic part of the trip, and down a wide arroyo to the Rio Grande. Interesting lava flows are viewable en route, and eventually Otowi Peak can be seen to the south.',NULL,NULL,NULL),
@@ -724,7 +725,7 @@ INSERT INTO HIKES VALUES
 ('222','Ojo Caliente Trails Loop','mstr','Ojo Caliente','Loop','8.90','400','Easy-Moderate','Ojo Caliente Spa','Foothills and Potsherds','All','Full sun','Ojo_Caliente.GPX','Ojo_Caliente.json','363050864','-1060526289',NULL,NULL,'https://www.google.com/maps/place/Ojo+Caliente+Mineral+Springs+Resort+%26+Spa/@36.3014539,-106.0653403,13.94z/data=!4m8!3m7!1s0x87178ebb50dbd379:0x5ecf24677e52fcea!5m2!4m1!1i2!8m2!3d36.3043312!4d-106.0522699','Joseph\'s Mine is not marked, and the wide dirt road traverses briefly alongside it then proceeds on. At a nearby split (see red flag on map), an arrow points to the right seeming to indicate that the mine is in that direction. If you reach this split you have passed the mine. The other road goes uphill and into the foothills to an unknown location.','There are 5 hiking trails at the Ojo Caliente Resort. As none of these were long, the author blended them into one loop hike. All of the hikes, except for Joseph\'s Mine, are loop trails, and any, including Joseph\'s Mine, can be taken separately for a shorter hike from the Spa. The P\'osi Ruins are unexcavated and the contours of the land suggest where the pueblo buildings were. Expect to see, however, numerous potsherds in the ruins area. There are also some nice views of Rio Ojo Caliente, and the Spa from the P\'osi Trail. The Rincon trail is a lovely trek towards Cerro Colarado and the surrounding hills, with beautiful vistas en route. Joseph\'s mine is an old abandoned mica mine, and parts of the trail around it are loaded with reflective mica pieces. The Tewa Trail returns downhill along an arroyo and lovely canyon to the river, where the Bosque River Trail may be used to return to the spa. ',NULL,NULL,NULL),
 ('223','St Peter\'s Dome','mstr','Valles Caldera','Out-and-back','9.10','700','Easy-Moderate','None','Excellent 360-Degree Views','Spring/Fall','Full sun','StPetersDome.GPX','StPetersDome.json','357735205','-1064179606',NULL,NULL,'https://www.google.com/maps/place/35%C2%B046\'24.7%22N+106%C2%B025\'04.7%22W/@35.7986798,-106.4720645,12.45z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.7735205!4d-106.4179606','The two-track road (FR142) heading east from FR289 becomes progressively more rutted and rocky as you proceed. About a quarter mile from the summit, a steel gate prevents vehicles from ascending to the top. If you wish to drive partway on this road to reduce the overall hike length, be advised that a high-clearance all-wheel drive vehicle is required, and that numerous road hazards may block your path. Also, there are very few places to park your vehicle, and even fewer places to turn around.','This hike follows a two-track gravel road (FR142) that begins at FR289 and ends at the top of St. Peter\'s Dome. This is in an isolated area in the midst of the Jemez Mountains, with both the drive in and the hike itself presenting wonderful vistas. St Peter\'s Dome offers spectacular 360-degree views and for this reason was chosen by the Forest Service for a Lookout Tower, which is now boarded up. The grades are mostly gentle with each switchback revealing new vistas, especially of the nearby Jemez Mountains. This is a hike not to miss!',NULL,NULL,NULL),
 ('224','Ellis - Del Agua Overlook','mstr','Tijeras','Out-and-back','8.00','600','Moderate','Public Toilet','Views from the Sandia Crest','Not Winter','Good shade','EllisDelAgua.GPX','EllisDelAgua.json','352084990','-1064410174',NULL,NULL,'https://www.google.com/maps/place/Ellis+Trailhead/@35.1780292,-106.4495083,12.49z/data=!4m5!3m4!1s0x87189952877443f5:0xd7c1f545c3944868!8m2!3d35.2090201!4d-106.4410768','Be mindful that bears have been seen on this trail. Also note that a \'shortcut\' back to the Switchback Trail is shown on the return route. This is very steep, though short, and is not generally recommended. The author used this to avoid the parking lot at the crest.','This hike begins from the Ellis Trailhead, but it could just as easily begin from the parking lot at the end of NM536 for a shorter hike. The main attraction is the views from the Crest Trail en route. It is well shaded otherwise for most of the hike. The map shows blue flags at points where a side trail to an unnamed overlook can be taken. The photos include views from that point, and it is worth the small amount of extra effort. Another branch is shown proceeding to the North Peak. This trail is somewhat long and occasionally steep, and the views at the peak are partially blocked by trees making this route less desirable. The Del Agua Overlook provides the most expansive views. ',NULL,NULL,NULL),
-('225','Abrigo','mstr','Valles Caldera','Loop','7.10','750','Moderate','Visitor Center','Grand views of the Valles Caldera Interior','Not Winter','Full sun','Abrigo.GPX','Abrigo.json','359152387','-1064939057',NULL,NULL,'https://www.google.com/maps/dir//35.9151741,-106.493919/@35.8789837,-106.5166135,11.8z','This hike is in the Valles Caldera, and the visitor must register at the Valles Caldera Visitor Center. A limited number of vehicles are permitted per day, so arrive reasonably early to ensure access. ','This hike, while moderate in length, has generally easy grades. It ascends at first and thereby allows great views of the Valles Caldera. As it circumnavigates the Cerro del Abrigo, it provides a wonderful opportunity to see different sections of the Caldera. This hike is great for the views and the solitude. ',NULL,NULL,NULL),
+('225','Abrigo','2','Valles Caldera','Loop','7.10','750','Moderate','Visitor Center','Grand views of the Valles Caldera Interior','Not Winter','Full sun','Abrigo.GPX','Abrigo.json','359152387','-1064939057',NULL,NULL,'https://www.google.com/maps/dir//35.9151741,-106.493919/@35.8789837,-106.5166135,11.8z','This hike is in the Valles Caldera, and the visitor must register at the Valles Caldera Visitor Center. A limited number of vehicles are permitted per day, so arrive reasonably early to ensure access. ','This hike, while moderate in length, has generally easy grades. It ascends at first and thereby allows great views of the Valles Caldera. As it circumnavigates the Cerro del Abrigo, it provides a wonderful opportunity to see different sections of the Caldera. This hike is great for the views and the solitude. ',NULL,NULL,NULL),
 ('226','White Mesa Bike Trails Loop','mstr','San Ysidro','Loop','8.30','500','Moderate','None','Unexpected geological features and views','Not Summer','Full sun','White_Mesa_Loop.GPX','White_Mesa_Loop.json','354984486','-1068414976','https://www.flickr.com/photos/139088815@N08/albums/72157690464992781','https://www.flickr.com/photos/30474783@N06/albums/72157691097601614','https://www.google.com/maps/dir//White+Mesa+Bike+Trails,+4493+Cabezon+Rd,+Rio+Rancho,+NM+87124/@35.5116879,-106.8660674,12.8z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87228b8ba777132f:0x210ac2b8313d0ff7!2m2!1d-106.8414231!2d35.4984664','Cabezon Road is not necessarily well maintained, and sections can flood out. A four-wheel drive vehicle with some clearance is recommended.','The White Mesa Bike Trails area is a very scenic wilderness area, beginning from the intersection of Dragon\'s Back and the Bike Trails East. A short hike takes you to the top of a gorgeous canyon ridge, where the two trails diverge. Unexpectedly, the Bike Trails East provides a significantly different view than Dragon\'s Back, and is rich with variety. This hike begins the loop in that direction. As it meanders along the edge of the canyon, the hike provides views to the east, including hoodoos and multi-colored hills, as well as across the green valley to Dragon\'s Back. The eastern trail eventually ends by rounding the terminus of the Dragon\'s Back to form the loop back. The map includes some pictures from a previous hike down from Dragon\'s Back - see the Alternate View in the GPS Data section. It is rather steep and parts of the trail are precarious - it is not recommended.',NULL,NULL,NULL),
 ('227','Mesa de Cuba - 2014 Hike','mstr','Cuba','Out-and-back','1.60','40','Easy','None','Badlands geology - hoodoos and hills','Not Winter','Full sun','Mesa2014DEM.gpx','Mesa2014DEM.json','359851774','-1070378745','https://www.flickr.com/photos/139088815@N08/albums/72157667761292860',NULL,'https://www.google.com/maps/place/35%C2%B059\'56.3%22N+107%C2%B002\'28.4%22W/@35.9859943,-107.0592881,12z','The road north from NM 197 is a poorly maintained dirt road and requires all-wheel drive with good clearance. Do not attempt this road if weather conditions do not permit - the road can get muddy and flooding can occur.','The map shown in the photo section (taken from New Mexico Magazine, Nov. 2013) depicts the five major badland areas near Cuba. Mesa de Cuba is the first area encountered of the five when traveling west on NM 197 from US 550. Parking is basically wherever you wish to begin your adventure. The entire Mesa de Cuba area is full of hoodoos, odd-colored hills and petrified wood, and many hiking possibilities exist - none have trails. This hike was chosen being near the dirt road, having an odd rock formation, and easy access. The hike constituted a simple walk around the multi-colored hills, exploring hoodoos and washes. Each turn seemed to present more interesting features. Note that the map track shown is a partial hand-drawn version of the hike, as the author had no GPS system at the time. The hike actually continues down the wash.',NULL,NULL,NULL),
 ('228','Mesa de Cuba - 2019 Hike','mstr','Cuba','Loop','2.60','250','Easy-Moderate','None','Badlands geology and ridgetop views','Not Winter','Full sun','MesaDeCuba.GPX','MesaDeCuba.json','359989060','-1070638055',NULL,NULL,'https://www.google.com/maps/place/35%C2%B059\'56.3%22N+107%C2%B002\'28.4%22W/@35.9859943,-107.0592881,12z','The road north from NM 197 is a poorly maintained dirt road and requires all-wheel drive with good clearance. Do not attempt this road if weather conditions do not permit - the road can get muddy and flooding can occur.','The map shown in the photo section (taken from New Mexico Magazine, Nov. 2013) depicts the five major badland areas near Cuba. Mesa de Cuba is the first area encountered of the five when traveling west on NM 197 from US 550. Parking is basically wherever you wish to begin your adventure. This particular hike was chosen by whim. The entire Mesa de Cuba area is full of hoodoos, odd-colored hills and petrified wood, and many hiking possibilities exist - none have trails. This hike skirted a short mesa and presented interesting geological features along the way. The authors back-tracked at one point to follow a ridge line up the initial mesa. That mesa offered some great views in every direction, along with huge petrified wood sections and wild colored sandstones.',NULL,NULL,NULL),
@@ -750,7 +751,34 @@ INSERT INTO HIKES VALUES
 ('250','Mesa de los Datiles','2','Jemez Springs','Out-and-back','7.20','1200','Med-Difficult','','Great views of the Jemez Mesas','Not Winter','Full sun','mesa_datiles.gpx','mesa_datiles.json','357050460','-1067280380',NULL,NULL,'https://www.google.com/maps/dir//35.7050461,-106.7280381/@35.6907847,-106.7503985,13.98z','This hike requires a degree of rock scrambling, varying from easy to more difficult. It is recommended that you bring gloves suitable for scaling boulders.','While not an \'official\' trail, this hike leads you into the interior of the Jemez mesas by following an arroyo uphill. The arroyo presents a number of obstacles requiring scrambling up boulders, and sometimes overhanging bushes. Eventually the arroyo terminates at a box canyon, and you must scale a gravelly slope to reach an area where you can proceed to another arroyo. Given the numerous challenges on the trail, the author did not complete the hike to the Datiles Mesa. On the accompanying map you will see where the author turned around. Click on the \'Proposed\' track in the upper right corner of the map to see the remaining route. To complete the hike, another climb uphill is required to get to the mesa overlook, which undoubtedly has great views.',NULL,NULL,NULL),
 ('251','Alamo Boundary - Coyote Call','2','Valles Caldera','Loop','4.80','400','Easy-Moderate','None','Views of the Valles Caldera','Any','Mixed sun/shade','Alamo_Boundary.GPX','Alamo_Boundary.json','358335263','-1064435629',NULL,NULL,'https://www.google.com/maps/place/35%C2%B050\'00.7%22N+106%C2%B026\'36.8%22W/@35.8277985,-106.4787043,13.51z/data=!4m5!3m4!1s0x0:0x0!8m2!3d35.8335263!4d-106.4435629','Although the trail can be used in all seasons, be aware that heavy snows may prevent driving access to the trail head in the winter.','This hike is an easy ascent up from Forest Road 289 to a saddle where the trail intersects the Coyote Call trail. The latter offers great views of the Valle Grande - the large open meadow in the Valles Caldera where the Visitor Center is located, and where elk can sometimes be seen. The hike also progresses from a severe burn area of the Las Conchas Fire in Bandelier Natl Monument, into a section where aspen are repopulating the terrain (Valles Caldera Natl Park).',NULL,NULL,NULL),
 ('252','Three Gun - Oso Pass','2','Albuquerque','Out-and-back','7.70','2100','Med-Difficult','None','Canyon Views','Not Winter','Mixed sun/shade','Three_Gun_Spring.GPX','Three_Gun_Spring.json','350764463','-1064441734',NULL,NULL,'https://www.google.com/maps/dir//Three+Guns+Trailhead,+19+Tres+Pistolas+Trail+NE,+Albuquerque,+NM+87123/@35.0649298,-106.4604222,14.33z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a17cda821e47:0x4689e3d1eef39baf!2m2!1d-106.4441074!2d35.0764161',NULL,'This is a lovely hike into Tijeras Canyon at the south end of the Sandias. It begins with a sunny, exposed, mostly moderate climb upward towards the foothills. The trail becomes steeper at this point, and slowly begins to acquire some shade as elevation is gained. From the Embudo Trail junction and beyond, the trail becomes quite well shaded. This hike offers great views in almost every direction, as the trail often changes direction once you pass the Embudo marker. Scenic vistas appear periodically, as well as views of the Sandia interior. The trail ends at \'Oso Pass\', where four trails converge, affording the opportunity to extend the hike. The trail can be used in the winter, but generally only up to the Embudo trail junction.',NULL,NULL,NULL),
-('253','Gallegos - No Name Loop','2','Albuquerque','Loop','7.00','1100','Moderate','Picnic Area w/Toilets','Sandia Interior','Not Winter','Full sun','Gallegos_NoName.GPX','Gallegos_NoName.json','351657692','-1064734421',NULL,NULL,'https://www.google.com/maps/dir//35.1657778,-106.4734444/@35.1589435,-106.491118,15z','Although no closure signs were posted at the point of departure to the NoName Trail, the first 200-300 ft had \'nature litter\' typical of that used to indicate a closed area. The beginning of the NoName Trail appeared clear and open with no postings.','This hike is a nice departure from the somewhat busy trails of Gallegos Open Space. In order to avoid a large number of bikers, it is best to go during the week. Once at the point of departure to the NoName segment of the trail, there appeared to be no other hikers or bikers, and hence pleasant solitude, along with great views. That section of trail ascends quickly into the foothills interior providing some unique perspectives to the hiker. While the path is clear and easy to follow, it is nonetheless recommended that you use a GPS tracking device or app, as the return trip seems somehow less obvious! ',NULL,NULL,NULL);
+('253','Gallegos - No Name Loop','2','Albuquerque','Loop','7.00','1100','Moderate','Picnic Area w/Toilets','Sandia Interior','Not Winter','Full sun','Gallegos_NoName.GPX','Gallegos_NoName.json','351657692','-1064734421',NULL,NULL,'https://www.google.com/maps/dir//35.1657778,-106.4734444/@35.1589435,-106.491118,15z','Although no closure signs were posted at the point of departure to the NoName Trail, the first 200-300 ft had \'nature litter\' typical of that used to indicate a closed area. The beginning of the NoName Trail appeared clear and open with no postings.','This hike is a nice departure from the somewhat busy trails of Gallegos Open Space. In order to avoid a large number of bikers, it is best to go during the week. Once at the point of departure to the NoName segment of the trail, there appeared to be no other hikers or bikers, and hence pleasant solitude, along with great views. That section of trail ascends quickly into the foothills interior providing some unique perspectives to the hiker. While the path is clear and easy to follow, it is nonetheless recommended that you use a GPS tracking device or app, as the return trip seems somehow less obvious! ',NULL,NULL,NULL),
+('254','Bosque Canopy Loop Trail','2','Albuquerque','Loop','4.40','70','Easy','None','Bosque Views','Any','Full sun','SBChurch1-75.161.39.105-1615131610.gpx','SBChurch1-75.161.39.105-1615131610.json','351611895','-1066750892',NULL,NULL,'https://www.google.com/maps/dir//35.1611895,-106.6750893/@35.1605756,-106.679242,15.75z',NULL,'This easy stroll in the Bosque provides ample opportunity to catch views of the lazy Rio Grande. Several man-made features pique interest along the way (see photos). A variety of criss-crossing paths make for opportunities to change the length and viewing options for this hike.',NULL,NULL,NULL),
+('255','Seismosaurus Trail','2','San Ysidro','Out-and-back','2.30','80','Easy','None','Wilderness views, petroglyphs','Not Summer','Full sun','Seismosaurus_Trail-75.161.39.105-1615164298.gpx','Seismosaurus_Trail-75.161.39.105-1615164298.json','354956870','-1069066046',NULL,NULL,'https://www.google.com/maps/dir//35.49558,-106.90681/@35.4954434,-106.9138716,12.34z',NULL,'This easy hike provides yet another glimpse of the varied landscapes contained in the Ojito Wilderness area. Longer views of the Jemez and Naciemiento Mtn ranges, and shorter views of tortured basins and colorful rock highlight the trail. Near the end of the trail appears some petroglyphs and what looks like a large petrified log. This is a pleasant outing with plenty of scenery.',NULL,NULL,NULL);
+
+
+
+
+CREATE TABLE `LKUSERS` (
+  `userid` smallint(6) NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) NOT NULL,
+  `passwd` varchar(255) DEFAULT NULL,
+  `passwd_expire` date DEFAULT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `cookies` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO LKUSERS VALUES
+('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2021-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
+('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
+('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com',''),
+('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu',''),
+('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com',''),
+('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com',''),
+('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com','');
 
 
 
@@ -762,7 +790,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1687 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1705 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1569,13 +1597,11 @@ INSERT INTO REFS VALUES
 ('1554','224','Blog:','https://ondafringe.wordpress.com/2012/06/26/day-hike-north-crest-trail-to-del-agua-canyon-overlook-sandia-mountains-albuquerque-new-mexico-usa/','On Da Fringe'),
 ('1555','224','Website:','http://friendsofthesandias.org/fosmwordpress/recreation/hiking/','Friends of the Sandia'),
 ('1556','224','Book:','2',NULL),
-('1557','225','App:','https://www.alltrails.com/trail/us/new-mexico/abrigo-trail','AllTrails.com'),
-('1558','225','Website:','https://naturalatlas.com/trailheads/abrigo-2077251','Natural Atlas'),
 ('1559','226','Book:','2',NULL),
-('1560','226','Website:','https://www.blm.gov/visit/white-ridge-bike-trails','BLM: White Ridge Bike Trails');
-INSERT INTO REFS VALUES
+('1560','226','Website:','https://www.blm.gov/visit/white-ridge-bike-trails','BLM: White Ridge Bike Trails'),
 ('1561','226','Website:','https://www.mtbproject.com/trail/206544/white-ridge-trail-system-main-loop','MTB Project: White Ridge Trail System'),
-('1562','226','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails'),
+('1562','226','Website:','https://www.singletracks.com/bike-trails/white-mesa-bike-trails.html','SingleTracks: White Mesa Bike Trails');
+INSERT INTO REFS VALUES
 ('1566','227','Magazine: ','http://www.nmmagazine.com/article/?aid=83869#.V9Ll0LVzabM','New Mexico, March 2003, January 2007, andNovember 2013: \"Badlands Walkabout'),
 ('1567','227','Website: ','http://www.nmmagazine.com/article/?aid=83869#.V9Ll0LVzabM','New Mexico Magazine (Link to 2013 article)'),
 ('1568','227','Map: ','http://www.americansouthwest.net/new_mexico/san-juan-basin/map.html','American Southwest'),
@@ -1612,11 +1638,6 @@ INSERT INTO REFS VALUES
 ('1605','235','Book:','1',NULL),
 ('1606','236','Book:','21',NULL),
 ('1607','237','Book:','21',NULL),
-('1608','43','Book:','1','The Northern New Mexico Group of the Sierra Club'),
-('1609','43','Book:','8','J D Tanner and Emily Ressler-Tanner'),
-('1610','43','App:','https://www.alltrails.com/trail/us/new-mexico/coyote-call-trail-loop','AllTrails'),
-('1611','43','Blog:','http://discoverthewest.blogspot.com/2015/10/the-coyote-call-trail.html','Discover The West'),
-('1612','43','Blog:','https://ondafringe.wordpress.com/2015/06/06/day-hike-coyote-call-trail-valles-caldera-national-preserve-new-mexico-usa/','On Da Fringe'),
 ('1615','238','Book:','21',NULL),
 ('1616','139','Book: ','9',''),
 ('1617','139','Book: ','3',''),
@@ -1667,17 +1688,28 @@ INSERT INTO REFS VALUES
 ('1674','250','App:','https://www.alltrails.com/trail/us/new-mexico/mesa-de-los-datiles','AllTrails'),
 ('1675','250','Website:','https://www.mountainzone.com/mountains/new-mexico/sandoval-nm/summits/mesa-de-los-datiles/','Mesa de los Datiles in Sandoval County'),
 ('1676','250','Website:','https://mapcarta.com/23274380','MapCarta.com'),
-('1677','251','Website:','https://www.nps.gov/band/alamocoyote.htm','NPS: Alamo Boundary to Coyote Call'),
-('1678','251','App:','https://www.alltrails.com/trail/us/new-mexico/alamo-boundary-trail','AllTrails.com'),
-('1679','251','Website:','http://trailmob.com/trail/alamo-boundary-trail','TrailMob'),
 ('1680','196','Website:','https://www.cabq.gov/parksandrecreation/open-space/lands/elena-gallegos-open-space','Elena Gallegos Open Space'),
 ('1681','196','On-line Map:','https://www.cabq.gov/parksandrecreation/documents/foothills_brochure_elena_2018-update.pdf','Map of Trails'),
 ('1682','196','Book:','21','Tamara Massong'),
-('1683','252','Book:','7',NULL);
-INSERT INTO REFS VALUES
+('1683','252','Book:','7',NULL),
 ('1684','252','Website:','https://www.hikingproject.com/trail/7030634/tres-pistolas-three-gun-springs-trail','Hiking Project'),
 ('1685','252','App:','https://www.alltrails.com/trail/us/new-mexico/three-guns-spring-trail-loop','AllTrails.com'),
-('1686','252','Blog:','https://www.dogofthedesert.net/three-gun-spring-trail/','Dog of the Desert');
+('1686','252','Blog:','https://www.dogofthedesert.net/three-gun-spring-trail/','Dog of the Desert'),
+('1687','225','App:','https://www.alltrails.com/trail/us/new-mexico/abrigo-trail','AllTrails.com'),
+('1688','225','Website:','https://naturalatlas.com/trailheads/abrigo-2077251','Natural Atlas'),
+('1689','225','Book:','22',NULL),
+('1690','251','Website:','https://www.nps.gov/band/alamocoyote.htm','NPS: Alamo Boundary to Coyote Call'),
+('1691','251','App:','https://www.alltrails.com/trail/us/new-mexico/alamo-boundary-trail','AllTrails.com'),
+('1692','251','Website:','http://trailmob.com/trail/alamo-boundary-trail','TrailMob'),
+('1693','251','Book:','22',NULL);
+INSERT INTO REFS VALUES
+('1697','43','Book:','1','The Northern New Mexico Group of the Sierra Club'),
+('1698','43','Book:','8','J D Tanner and Emily Ressler-Tanner'),
+('1699','43','App:','https://www.alltrails.com/trail/us/new-mexico/coyote-call-trail-loop','AllTrails'),
+('1700','43','Blog:','http://discoverthewest.blogspot.com/2015/10/the-coyote-call-trail.html','Discover The West'),
+('1701','43','Blog:','https://ondafringe.wordpress.com/2015/06/06/day-hike-coyote-call-trail-valles-caldera-national-preserve-new-mexico-usa/','On Da Fringe'),
+('1702','43','Book:','22',NULL),
+('1704','255','App:','https://www.alltrails.com/explore/trail/us/new-mexico/seismosaurus-trail','Alltrails.com');
 
 
 
@@ -1701,7 +1733,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4852 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4919 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -3961,13 +3993,6 @@ INSERT INTO TSV VALUES
 ('4313','224',NULL,'IMG_2316','Y','Y','Looking South from Del Agua','352379944','-1064499583','2424',NULL,'2019-09-22 11:46:21','IMG_2316','240','320',NULL,NULL),
 ('4314','224',NULL,'IMG_2308','Y','Y','The jagged outline of the west face of the Sandia is seen near North Peak','352342500','-1064550694','2425',NULL,'2019-09-22 11:16:00','IMG_2308','240','320',NULL,NULL),
 ('4315','224',NULL,'IMG_2312','Y','Y','The point on the North Crest where the 10K Trail joins in','352377361','-1064496916','2426',NULL,'2019-09-22 11:43:22','IMG_2312','240','320',NULL,NULL),
-('4316','225',NULL,'IMG_2049','Y','Y','An unusually rocky hill appears at the back of Cerro del Abrigo','359384305','-1064805833','2413',NULL,'2019-09-06 11:15:03','IMG_2049','240','320',NULL,NULL),
-('4317','225',NULL,'IMG_2043','Y','Y','Bill proceeds up the easy grade','359353027','-1064664694','2414',NULL,'2019-09-06 10:46:06','IMG_2043','240','320',NULL,NULL),
-('4318','225',NULL,'IMG_2034','Y','Y','A great deal of the Las Conchas fire aftereffects remain','359199222','-1064935388','2415',NULL,'2019-09-06 09:42:49','IMG_2034','240','320',NULL,NULL),
-('4319','225',NULL,'IMG_2033','Y','Y','The trail begins a short hike from the road','359169472','-1064912555','2416',NULL,'2019-09-06 09:33:07','IMG_2033','240','320',NULL,NULL),
-('4320','225',NULL,'IMG_2039','Y','Y','The views of the Caldera improve with altitude','359230638','-1064820333','2417',NULL,'2019-09-06 10:08:50','IMG_2039','240','320',NULL,NULL),
-('4321','225',NULL,'IMG_2044','Y','Y','This section displays good regrowth after the fire','359369777','-1064665305','2418',NULL,'2019-09-06 10:48:49','IMG_2044','240','320',NULL,NULL),
-('4322','225',NULL,'IMG_2038','Y','Y','An earlier view of the interior','359233194','-1064844194','2419',NULL,'2019-09-06 10:04:45','IMG_2038','240','320',NULL,NULL),
 ('4323','226','Folder1','TowardsDragonsBack','Y','Y','The trail split: Dragon\'s Back left, Bike Trails East to the right','355031055','-1068400944','1076','72157690464992781','2018-01-02 10:52:54','39592999432_8478fee0ab','2448','3264','red',NULL),
 ('4324','226','Folder1','ColoredSlopes','Y','Y','Surprising colors appear in the hills','355071222','-1068391416','1077','72157690464992781','2018-01-02 11:26:46','24754386487_4d74dbbca8','2448','3264','red',NULL),
 ('4325','226','Folder1','NamesakeMesa','Y','Y','A view of White Mesa punctuates the scene','355070138','-1068374722','1078','72157690464992781','2018-01-02 11:33:43','39592996762_e71141b058','2448','3264','red',NULL),
@@ -4026,15 +4051,15 @@ INSERT INTO TSV VALUES
 ('4394','205',NULL,'IMG_20191007_151727623_HDR','Y','Y','Long view.','356769019','-1058866660','2443',NULL,'2019-10-07 15:17:33','IMG_20191007_151727623_HDR','180','320',NULL,NULL),
 ('4395','205',NULL,'IMG_1532','Y','Y','From the Upper Trailhead','356705694','-1059006277','2259',NULL,'2019-06-04 15:17:33','IMG_1532','360','240',NULL,NULL),
 ('4396','205',NULL,'IMG_1533','Y','Y','From the saddle towards Sun-Moon mountain','356693000','-1058910222','2256',NULL,'2019-06-04 15:17:33','IMG_1533','240','360',NULL,NULL),
-('4397','205',NULL,'TowardsSunMtn','Y','Y','Looking towards Sun Mtn from Atalaya Ridge','356644694','-1058772583','1541',NULL,'2019-06-04 15:17:33','27231343720_d74ffd729a','240','360',NULL,NULL);
-INSERT INTO TSV VALUES
+('4397','205',NULL,'TowardsSunMtn','Y','Y','Looking towards Sun Mtn from Atalaya Ridge','356644694','-1058772583','1541',NULL,'2019-06-04 15:17:33','27231343720_d74ffd729a','240','360',NULL,NULL),
 ('4399','219',NULL,'IMG_20191001_111319572_HDR','Y','Y','A long view of St Peters Dome','358080599','-1063956400','2444',NULL,'2019-10-01 11:13:23','IMG_20191001_111319572_HDR','180','320',NULL,NULL),
 ('4400','219',NULL,'IMG_2386','Y','Y','The trail begins','358261388','-1064431305','2445',NULL,'2019-10-01 09:45:44','IMG_2386','240','320',NULL,NULL),
 ('4401','219',NULL,'IMG_20191001_094402051','Y','Y','Much burned vegetation, but significant replanting has begun','358256659','-1064436170','2446',NULL,'2019-10-01 09:44:03','IMG_20191001_094402051','180','320',NULL,NULL),
 ('4402','219',NULL,'IMG_20191001_112924105_HDR','Y','Y','Deep canyons and valleys dot the landscape','358076020','-1064025029','2447',NULL,'2019-10-01 11:29:29','IMG_20191001_112924105_HDR','180','320',NULL,NULL),
 ('4403','219',NULL,'IMG_2398','Y','Y','A view from Obsidian Ridge','358080944','-1064036027','2448',NULL,'2019-10-01 10:59:42','IMG_2398','240','320',NULL,NULL),
 ('4404','219',NULL,'IMG_2394','Y','Y','Beyond the ridge, canyons abound','358105444','-1064105694','2449',NULL,'2019-10-01 10:46:01','IMG_2394','240','320',NULL,NULL),
-('4406','32','Folder','Loma_view','Y','Y','Along Loma Larga','352521970','-1066045900','1636','72157664469121925','2013-04-03 14:57:13','24903395275_740edd5946','240','320',NULL,NULL),
+('4406','32','Folder','Loma_view','Y','Y','Along Loma Larga','352521970','-1066045900','1636','72157664469121925','2013-04-03 14:57:13','24903395275_740edd5946','240','320',NULL,NULL);
+INSERT INTO TSV VALUES
 ('4407','32',NULL,'Bosque_view','Y','N','Summer view on the Bosque Acequia',NULL,NULL,'1637','72157664469121925','2013-06-10 10:09:16','24607527060_b69c6522a8','240','320',NULL,NULL),
 ('4408','32',NULL,'WinterView','Y','N','Bosque Acequia winter view',NULL,NULL,'1638','72157664469121925','2016-01-22 11:09:29','26727484164_bf13f6759d','240','320',NULL,NULL),
 ('4409','32',NULL,'Cottonwoods','Y','N','Ranches and farms along the acequia',NULL,NULL,'1639','72157664469121925','2013-05-09 14:28:02','26727496694_0851bcac21','240','320',NULL,NULL),
@@ -4127,15 +4152,15 @@ INSERT INTO TSV VALUES
 ('4516','234',NULL,'IMG_20200226_115111266_HDR','Y','Y','Bennie looks to descend','351245770','-1064852219','2515',NULL,'2020-02-26 11:51:15','IMG_20200226_115111266_HDR','2268','4032',NULL,NULL),
 ('4520','235',NULL,'IMG_2811','Y','Y','Further up from St. John\'s','356635472','-1059114083','2516',NULL,'2020-03-04 10:32:39','IMG_2811','2448','3264',NULL,NULL),
 ('4521','235',NULL,'IMG_2812','Y','Y','Looking out from the trail up Sun Mountain','356611722','-1059113527','2517',NULL,'2020-03-04 10:43:32','IMG_2812','2448','3264',NULL,NULL),
-('4522','235',NULL,'IMG_2813','Y','Y','A break with Ben en route','356609333','-1059117666','2518',NULL,'2020-03-04 10:47:45','IMG_2813','2448','3264',NULL,NULL);
-INSERT INTO TSV VALUES
+('4522','235',NULL,'IMG_2813','Y','Y','A break with Ben en route','356609333','-1059117666','2518',NULL,'2020-03-04 10:47:45','IMG_2813','2448','3264',NULL,NULL),
 ('4523','235',NULL,'IMG_2814','Y','N','A view of Atalaya Ridge','356592555','-1059122916','2519',NULL,'2020-03-04 10:55:45','IMG_2814','2448','3264',NULL,NULL),
 ('4524','235',NULL,'IMG_2815','Y','Y','From Sun Mountain southwest toward the Sandia','356592000','-1059124305','2520',NULL,'2020-03-04 11:00:16','IMG_2815','2448','3264',NULL,NULL),
 ('4525','235',NULL,'IMG_2816','Y','Y','From the saddle towards Aspen Peak','356575861','-1059089888','2521',NULL,'2020-03-04 11:13:43','IMG_2816','2448','3264',NULL,NULL),
 ('4526','235',NULL,'IMG_2817','Y','Y','A view from the summit of Moon Mountain','356553916','-1059073499','2522',NULL,'2020-03-04 11:38:25','IMG_2817','2448','3264',NULL,NULL),
 ('4527','235',NULL,'IMG_2818','Y','N','South towards the Sandias','356555583','-1059073777','2523',NULL,'2020-03-04 11:39:35','IMG_2818','2448','3264',NULL,NULL),
 ('4528','235',NULL,'IMG_20200304_102716582_HDR','Y','Y','Looking north from the trail','356648550','-1059112879','2524',NULL,'2020-03-04 10:27:21','IMG_20200304_102716582_HDR','2268','4032',NULL,NULL),
-('4529','236',NULL,'IMG_2822','Y','Y','Early view towards the parking area','351347472','-1064774388','2525',NULL,'2020-03-12 11:21:37','IMG_2822','2448','3264',NULL,NULL),
+('4529','236',NULL,'IMG_2822','Y','Y','Early view towards the parking area','351347472','-1064774388','2525',NULL,'2020-03-12 11:21:37','IMG_2822','2448','3264',NULL,NULL);
+INSERT INTO TSV VALUES
 ('4530','236',NULL,'IMG_2823','Y','Y','Looking north into the canyon and towards Rincon Ridge','351342722','-1064777666','2526',NULL,'2020-03-12 11:24:54','IMG_2823','2448','3264',NULL,NULL),
 ('4531','236',NULL,'IMG_2824','Y','Y','Many interesting rock formations along the way','351332861','-1064773111','2527',NULL,'2020-03-12 11:32:06','IMG_2824','2448','3264',NULL,NULL),
 ('4532','236',NULL,'IMG_2825','Y','N','A higher view north','351190722','-1064933916','2528',NULL,'2020-03-12 11:40:03','IMG_2825','2448','3264',NULL,NULL),
@@ -4150,19 +4175,6 @@ INSERT INTO TSV VALUES
 ('4542','237',NULL,'IMG_2914','Y','Y','Loop beginnings','351658777','-1064734416','2536',NULL,'2020-05-05 08:40:39','IMG_2914','3024','4032',NULL,NULL),
 ('4543','237',NULL,'IMG_2915','Y','Y','Smooth boulders dot the trail','351693388','-1064744111','2537',NULL,'2020-05-05 08:53:54','IMG_2915','3024','4032',NULL,NULL),
 ('4544','237',NULL,'IMG_2916','Y','Y','More spring surprises','351755750','-1064766083','2538',NULL,'2020-05-05 09:09:49','IMG_2916','3024','4032',NULL,NULL),
-('4551','43','Folder1','ViewThruBurn','Y','Y','Caldera thru burned trees','358459166','-1064622333','201','photostream','2016-06-23 11:38:41','27852043926_1fb247f72f','240','320',NULL,NULL),
-('4552','43','Folder1','RaodsideTrailhead','Y','Y','A look at Rabbit Ridge from the trail head','358481861','-1064652638','202','photostream','2016-06-23 11:08:38','27608712980_4739d50cdb','240','320',NULL,NULL),
-('4553','43','Folder1','LowBurnMarks','Y','Y','Aspens bear the marks of low burns','358452027','-1064654833','203','photostream','2016-06-23 11:19:59','27852055206_d716ca89e9','240','320',NULL,NULL),
-('4554','43','Folder1','EasternCaldera','Y','Y','The eastern edge of the Caldera from the loop terminus','358482777','-1064511861','204','photostream','2016-06-23 12:03:05','27785685982_a429005a12','320','240',NULL,NULL),
-('4555','43','Folder1','Devastation','Y','Y','Results from Las Conchas fire are everywhere','358441694','-1064654833','205','photostream','2016-06-23 11:23:10','27785701302_ba4509bbbe','240','320',NULL,NULL),
-('4556','43','Folder1','BeforeFire','Y','Y','Before the fire, lots of shade!','358488833','-1064613500','206','photostream','2009-05-19 17:41:59','27608768200_1f404a72bc','213','320',NULL,NULL),
-('4557','43','Folder1','AscendingView','Y','Y','Looking over the Caldera as the climb begins','358459750','-1064660250','207','photostream','2016-06-23 11:18:25','27274460833_0e1f23d63e','320','240',NULL,NULL),
-('4558','43','Folder1','IMG_2969','Y','Y','Looking over the Caldera near the trail head','358453250','-1064657583','2539',NULL,'2020-05-14 10:08:52','IMG_2969','3024','4032',NULL,NULL),
-('4559','43','Folder1','IMG_2985','Y','N','Aspens are coming back in 2020','353060833','-1065957333','2540',NULL,'2020-05-14 13:21:06','IMG_2985','4032','3024',NULL,NULL),
-('4560','43','Folder1','IMG_2976','Y','Y','False lupine proliferates in open areas','358461416','-1064576027','2541',NULL,'2020-05-14 10:41:41','IMG_2976','4032','3024',NULL,NULL),
-('4561','43','Folder1','IMG_2970','Y','Y','Bennie shows the way up Rabbit Ridge','358436694','-1064640722','2542',NULL,'2020-05-14 10:15:27','IMG_2970','3024','4032',NULL,NULL),
-('4562','43','Folder1','IMG_2980','Y','Y','View of devastation from Scooter Hill','358425416','-1064444972','2543',NULL,'2020-05-14 12:19:43','IMG_2980','3024','4032',NULL,NULL),
-('4563','43','Folder1','IMG_2973','Y','Y','Shooting starts dot the trail','358457333','-1064590305','2544',NULL,'2020-05-14 10:37:32','IMG_2973','3024','4032',NULL,NULL),
 ('4566','238',NULL,'IMG_2844','Y','N','Emery trail view while heading up','351468916','-1064569944','2545',NULL,'2020-03-31 12:20:37','IMG_2844','2448','3264',NULL,NULL),
 ('4567','238',NULL,'IMG_2846','Y','Y','Intriguing rock formations in the area','351464611','-1064571527','2546',NULL,'2020-03-31 12:23:00','IMG_2846','2448','3264',NULL,NULL),
 ('4568','238',NULL,'IMG_2848','Y','N','Looking north from the trail','351465249','-1064573138','2547',NULL,'2020-03-31 12:24:15','IMG_2848','2448','3264',NULL,NULL),
@@ -4228,8 +4240,7 @@ INSERT INTO TSV VALUES
 ('4635','242',NULL,'IMG_3080','Y','Y','Near the campground','357783361','-1057044667','2562',NULL,'2020-06-24 08:50:07','IMG_3080','480','640',NULL,NULL),
 ('4636','242',NULL,'IMG_3083','Y','Y','Where the alternate routes meet','357790833','-1057050083','2562',NULL,'2020-06-24 08:54:46','IMG_3083','480','640',NULL,NULL),
 ('4637','242',NULL,'IMG_3082','Y','Y','One of seven crossings encountered - the easiest!','357783278','-1057046139','2562',NULL,'2020-06-24 08:53:07','IMG_3082','480','640',NULL,NULL),
-('4638','242',NULL,'IMG_3084','Y','Y','A beautiful winding path through the trees','357807972','-1057057583','2563',NULL,'2020-06-24 08:58:42','IMG_3084','480','640',NULL,NULL);
-INSERT INTO TSV VALUES
+('4638','242',NULL,'IMG_3084','Y','Y','A beautiful winding path through the trees','357807972','-1057057583','2563',NULL,'2020-06-24 08:58:42','IMG_3084','480','640',NULL,NULL),
 ('4639','242',NULL,'IMG_3093','Y','Y','A second partial overview','358119500','-1057086194','2564',NULL,'2020-06-24 10:31:47','IMG_3093','480','640',NULL,NULL),
 ('4640','242',NULL,'IMG_3085','Y','Y','Occasionally, long views are available','357816278','-1057053000','2564',NULL,'2020-06-24 09:00:04','IMG_3085','480','640',NULL,NULL),
 ('4641','242',NULL,'IMG_3091','Y','Y','An overlook higher up','358109806','-1057100139','2565',NULL,'2020-06-24 10:24:02','IMG_3091','480','640',NULL,NULL),
@@ -4249,7 +4260,8 @@ INSERT INTO TSV VALUES
 ('4655','243',NULL,'King of Mtn Trail',NULL,'Y',NULL,'351971833','-1064341166',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
 ('4656','243',NULL,'Unamed Loopback',NULL,'Y',NULL,'352000333','-1064342999',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
 ('4657','243',NULL,'Kiwanis Cabin Trail',NULL,'Y',NULL,'352039333','-1064419500',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Blue',NULL),
-('4658','243',NULL,'WallFlower','Y','Y','Wallflower','352051694','-1064337611','2573',NULL,'2020-06-03 12:19:30','WallFlower','4032','3024',NULL,NULL),
+('4658','243',NULL,'WallFlower','Y','Y','Wallflower','352051694','-1064337611','2573',NULL,'2020-06-03 12:19:30','WallFlower','4032','3024',NULL,NULL);
+INSERT INTO TSV VALUES
 ('4659','244',NULL,'IMG_20200609_130316978_HDR','Y','Y','Apache Plume highlights the trail into the canyon','352777249','-1064769450','2567',NULL,'2020-06-09 13:03:22','IMG_20200609_130316978_HDR','2268','4032',NULL,NULL),
 ('4660','244',NULL,'IMG_3067','Y','Y','Placitas is soon left behind','352544944','-1064714444','2568',NULL,'2020-06-09 12:00:54','IMG_3067','3024','4032',NULL,NULL),
 ('4661','244',NULL,'IMG_3054','Y','Y','Tom takes in a view of Sandia\'s interior','352653833','-1064693000','2569',NULL,'2020-06-09 10:01:39','IMG_3054','2880','3840',NULL,NULL),
@@ -4329,8 +4341,7 @@ INSERT INTO TSV VALUES
 ('4751','206',NULL,'IMG_3306','Y','Y','An example of \'selective\' burning from the Las Conchas fire','358387139','-1065532444','2615',NULL,'2020-08-25 11:09:57','IMG_3306','480','640',NULL,NULL),
 ('4752','206',NULL,'IMG_3310','Y','Y','A look towards Redondo Peak','358424722','-1065598611','2616',NULL,'2020-08-25 11:26:23','IMG_3310','480','640',NULL,NULL),
 ('4753','206',NULL,'IMG_3311','Y','Y','Clouds begin to form -  potential rain ahead!','358491083','-1065693278','2617',NULL,'2020-08-25 11:45:00','IMG_3311','480','640',NULL,NULL),
-('4754','206',NULL,'IMG_3312','Y','Y','Don\'t miss this important turnoff! Head south into the woods to find the two-track','358506889','-1065874167','2618',NULL,'2020-08-25 12:07:56','IMG_3312','480','640',NULL,NULL);
-INSERT INTO TSV VALUES
+('4754','206',NULL,'IMG_3312','Y','Y','Don\'t miss this important turnoff! Head south into the woods to find the two-track','358506889','-1065874167','2618',NULL,'2020-08-25 12:07:56','IMG_3312','480','640',NULL,NULL),
 ('4755','206',NULL,'Short Cut VC0703',NULL,'Y',NULL,'358369551','-1066104139',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
 ('4756','206',NULL,'Short Cut VC0702',NULL,'Y',NULL,'358361300','-1066056200',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
 ('4757','206',NULL,'Short Cut 4',NULL,'Y',NULL,'358366600','-1065748799',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Red',NULL),
@@ -4350,7 +4361,8 @@ INSERT INTO TSV VALUES
 ('4771','207',NULL,'IMG_3331','Y','N','A faint footpath in the ruins','357603111','-1067550500','2631',NULL,'2020-09-02 10:45:18','IMG_3331','480','640',NULL,NULL),
 ('4774','248',NULL,'IMG_3379','Y','Y','Looking out to the south','349783444','-1063527917','2632',NULL,'2020-09-14 09:19:19','IMG_3379','480','640',NULL,NULL),
 ('4775','248',NULL,'IMG_3378','Y','Y','Trail head just off of Mars Court','349838556','-1063499056','2633',NULL,'2020-09-14 09:03:32','IMG_3378','640','480',NULL,NULL),
-('4776','248',NULL,'IMG_3382','Y','Y','The floor of David Canyon','349637556','-1063582833','2634',NULL,'2020-09-14 10:05:26','IMG_3382','480','640',NULL,NULL),
+('4776','248',NULL,'IMG_3382','Y','Y','The floor of David Canyon','349637556','-1063582833','2634',NULL,'2020-09-14 10:05:26','IMG_3382','480','640',NULL,NULL);
+INSERT INTO TSV VALUES
 ('4777','248',NULL,'IMG_3381','Y','Y','Diversity: Alligator Juniper, Cedar, Pondrosa','349750944','-1063513639','2635',NULL,'2020-09-14 09:25:42','IMG_3381','640','480',NULL,NULL),
 ('4778','248',NULL,'IMG_3383','Y','N','Looking north from the floor of the canyon','349637417','-1063586806','2636',NULL,'2020-09-14 10:06:27','IMG_3383','480','640',NULL,NULL),
 ('4779','248',NULL,'IMG_3388','Y','Y','Looking west from the loop\'s west side','349621583','-1063656389','2637',NULL,'2020-09-14 10:35:00','IMG_3388','480','640',NULL,NULL),
@@ -4374,18 +4386,6 @@ INSERT INTO TSV VALUES
 ('4797','250',NULL,'IMG_3443','Y','Y','Fascinating banded rock while descending into an arroyo','357006389','-1067143639','2655',NULL,'2020-10-13 10:58:48','IMG_3443','480','640',NULL,NULL),
 ('4798','250',NULL,'IMG_3450','Y','N','Blue skies and red rock provide a stark contrast','357049000','-1067260500','2656',NULL,'2020-10-13 13:33:50','IMG_3450','480','640',NULL,NULL),
 ('4799','250',NULL,'IMG_3446','Y','Y','Looking back from the last arroyo','356990139','-1067118750','2657',NULL,'2020-10-13 11:29:26','IMG_3446','480','640',NULL,NULL),
-('4803','251',NULL,'IMG_3478','Y','Y','Cresting the saddle into Valles Caldera National Park','358467167','-1064480361','2658',NULL,'2020-11-05 10:36:05','IMG_3478','480','640',NULL,NULL),
-('4804','251',NULL,'IMG_3473','Y','Y','A typical burn area in Bandelier National Monument','358368528','-1064467000','2659',NULL,'2020-11-05 10:19:09','IMG_3473','480','640',NULL,NULL),
-('4805','251',NULL,'IMG_3476','Y','Y','Ascending the saddle from Bandelier','358429806','-1064484333','2660',NULL,'2020-11-05 10:29:27','IMG_3476','640','480',NULL,NULL),
-('4806','251',NULL,'IMG_3472','Y','Y','At the trail head','358335278','-1064435056','2661',NULL,'2020-11-05 10:06:06','IMG_3472','480','640',NULL,NULL),
-('4807','251',NULL,'IMG_3482','Y','Y','The distant Visitor Center of the Valles Caldera','358497556','-1064596472','2662',NULL,'2020-11-05 10:57:15','IMG_3482','480','640',NULL,NULL),
-('4808','251',NULL,'IMG_3479','Y','Y','View descending the Coyote Call trail','358474056','-1064479306','2663',NULL,'2020-11-05 10:37:32','IMG_3479','480','640',NULL,NULL),
-('4809','251',NULL,'IMG_3480','Y','Y','Remnants from an October storm','358494222','-1064501500','2664',NULL,'2020-11-05 10:43:52','IMG_3480','640','480',NULL,NULL),
-('4810','251',NULL,'IMG_3483','Y','Y','Looking towards Scooter Peak','358471861','-1064654472','2665',NULL,'2020-11-05 11:07:09','IMG_3483','480','640',NULL,NULL),
-('4811','251',NULL,'IMG_3487','Y','Y','An internal access road in the Valle Grande','358490500','-1064537111','2666',NULL,'2020-11-05 11:35:13','IMG_3487','640','480',NULL,NULL),
-('4812','251',NULL,'IMG_3484','Y','Y','A full view of the La Jara mound near the Visitor Center in Valle Grande','358453472','-1064658056','2667',NULL,'2020-11-05 11:10:44','IMG_3484','480','640',NULL,NULL),
-('4813','251',NULL,'IMG_3485','Y','Y','The western end of Coyote Call','358432611','-1064649111','2668',NULL,'2020-11-05 11:15:15','IMG_3485','480','640',NULL,NULL),
-('4814','251',NULL,'IMG_3486','Y','Y','The junction with Rabbit Ridge Trail','358432917','-1064640667','2669',NULL,'2020-11-05 11:17:01','IMG_3486','480','640',NULL,NULL),
 ('4815','196',NULL,'IMG_0880','Y','Y','Looking west from the trail','351699222','-1064623333','2150',NULL,'2019-03-10 15:24:56','IMG_0880','240','320',NULL,NULL),
 ('4816','196',NULL,'IMG_0879','Y','Y','Scenery changes at the north end of Trail 341','351683499','-1064582222','2151',NULL,'2019-03-10 15:17:49','IMG_0879','240','320',NULL,NULL),
 ('4817','196',NULL,'IMG_0875','Y','Y','A peek of the Rincon Ridge','351544694','-1064691305','2152',NULL,'2019-03-10 14:41:18','IMG_0875','240','320',NULL,NULL),
@@ -4413,7 +4413,58 @@ INSERT INTO TSV VALUES
 ('4848','253',NULL,'IMG_3561','Y','Y','A glimpse towards the peaks from the snowy trail','351733472','-1064447250','2685',NULL,'2020-12-04 12:07:15','IMG_3561','480','640',NULL,NULL),
 ('4849','253',NULL,'IMG_3571','Y','Y','A clear view of Mount Taylor to the west from Pino Trail','351647222','-1064584889','2686',NULL,'2020-12-04 13:13:05','IMG_3571','480','640',NULL,NULL),
 ('4850','253',NULL,'IMG_3568','Y','Y','Open Space - Wilderness boundary: hikers have kept it open','351680944','-1064557278','2687',NULL,'2020-12-04 13:01:49','IMG_3568','480','640',NULL,NULL),
-('4851','253',NULL,'IMG_3569','Y','Y','The NoName trail begins','351672667','-1064582583','2688',NULL,'2020-12-04 13:05:55','IMG_3569','640','480',NULL,NULL);
+('4851','253',NULL,'IMG_3569','Y','Y','The NoName trail begins','351672667','-1064582583','2688',NULL,'2020-12-04 13:05:55','IMG_3569','640','480',NULL,NULL),
+('4852','254',NULL,'IMG_3696','Y','Y','Porcupine damage','351791694','-1066540611','2689',NULL,'2021-01-06 10:04:38','IMG_3696','640','480',NULL,NULL),
+('4853','254',NULL,'IMG_3684','Y','Y','Tree Owl?','351623833','-1066679389','2690',NULL,'2021-01-06 09:16:29','IMG_3684','480','640',NULL,NULL),
+('4854','254',NULL,'IMG_3695','Y','Y','Lone porcupine','351789972','-1066542056','2691',NULL,'2021-01-06 10:03:32','IMG_3695','640','480',NULL,NULL),
+('4855','254',NULL,'IMG_3685','Y','Y','Metal sculpture?','351628000','-1066682889','2692',NULL,'2021-01-06 09:19:20','IMG_3685','480','640',NULL,NULL),
+('4856','254',NULL,'IMG_3690','Y','Y','Rio Grande view','351682889','-1066594611','2693',NULL,'2021-01-06 09:36:59','IMG_3690','480','640',NULL,NULL),
+('4857','254',NULL,'IMG_3686','Y','Y','Bosque arch','351638972','-1066664278','2694',NULL,'2021-01-06 09:22:17','IMG_3686','480','640',NULL,NULL),
+('4858','254',NULL,'IMG_3693','Y','Y','Open space in the Open Space','351694028','-1066594250','2695',NULL,'2021-01-06 09:44:46','IMG_3693','480','640',NULL,NULL),
+('4859','254',NULL,'IMG_3683','Y','Y','Ground level brush','352056194','-1066368778','2696',NULL,'2021-01-04 09:45:00','IMG_3683','480','640',NULL,NULL),
+('4867','225',NULL,'IMG_2049','Y','Y','An unusually rocky hill appears at the back of Cerro del Abrigo','359384305','-1064805833','2413',NULL,'2019-09-06 11:15:03','IMG_2049','240','320',NULL,NULL),
+('4868','225',NULL,'IMG_2043','Y','Y','Bill proceeds up the easy grade','359353027','-1064664694','2414',NULL,'2019-09-06 10:46:06','IMG_2043','240','320',NULL,NULL),
+('4869','225',NULL,'IMG_2034','Y','Y','A great deal of the Las Conchas fire aftereffects remain','359199222','-1064935388','2415',NULL,'2019-09-06 09:42:49','IMG_2034','240','320',NULL,NULL),
+('4870','225',NULL,'IMG_2033','Y','Y','The trail begins a short hike from the road','359169472','-1064912555','2416',NULL,'2019-09-06 09:33:07','IMG_2033','240','320',NULL,NULL),
+('4871','225',NULL,'IMG_2039','Y','Y','The views of the Caldera improve with altitude','359230638','-1064820333','2417',NULL,'2019-09-06 10:08:50','IMG_2039','240','320',NULL,NULL),
+('4872','225',NULL,'IMG_2044','Y','Y','This section displays good regrowth after the fire','359369777','-1064665305','2418',NULL,'2019-09-06 10:48:49','IMG_2044','240','320',NULL,NULL),
+('4873','225',NULL,'IMG_2038','Y','Y','An earlier view of the interior','359233194','-1064844194','2419',NULL,'2019-09-06 10:04:45','IMG_2038','240','320',NULL,NULL),
+('4874','251',NULL,'IMG_3478','Y','Y','Cresting the saddle into Valles Caldera National Park','358467167','-1064480361','2658',NULL,'2020-11-05 10:36:05','IMG_3478','480','640',NULL,NULL),
+('4875','251',NULL,'IMG_3473','Y','Y','A typical burn area in Bandelier National Monument','358368528','-1064467000','2659',NULL,'2020-11-05 10:19:09','IMG_3473','480','640',NULL,NULL),
+('4876','251',NULL,'IMG_3476','Y','Y','Ascending the saddle from Bandelier','358429806','-1064484333','2660',NULL,'2020-11-05 10:29:27','IMG_3476','640','480',NULL,NULL),
+('4877','251',NULL,'IMG_3472','Y','Y','At the trail head','358335278','-1064435056','2661',NULL,'2020-11-05 10:06:06','IMG_3472','480','640',NULL,NULL),
+('4878','251',NULL,'IMG_3482','Y','Y','The distant Visitor Center of the Valles Caldera','358497556','-1064596472','2662',NULL,'2020-11-05 10:57:15','IMG_3482','480','640',NULL,NULL),
+('4879','251',NULL,'IMG_3479','Y','Y','View descending the Coyote Call trail','358474056','-1064479306','2663',NULL,'2020-11-05 10:37:32','IMG_3479','480','640',NULL,NULL),
+('4880','251',NULL,'IMG_3480','Y','Y','Remnants from an October storm','358494222','-1064501500','2664',NULL,'2020-11-05 10:43:52','IMG_3480','640','480',NULL,NULL),
+('4881','251',NULL,'IMG_3483','Y','Y','Looking towards Scooter Peak','358471861','-1064654472','2665',NULL,'2020-11-05 11:07:09','IMG_3483','480','640',NULL,NULL),
+('4882','251',NULL,'IMG_3487','Y','Y','An internal access road in the Valle Grande','358490500','-1064537111','2666',NULL,'2020-11-05 11:35:13','IMG_3487','640','480',NULL,NULL),
+('4883','251',NULL,'IMG_3484','Y','Y','A full view of the La Jara mound near the Visitor Center in Valle Grande','358453472','-1064658056','2667',NULL,'2020-11-05 11:10:44','IMG_3484','480','640',NULL,NULL),
+('4884','251',NULL,'IMG_3485','Y','Y','The western end of Coyote Call','358432611','-1064649111','2668',NULL,'2020-11-05 11:15:15','IMG_3485','480','640',NULL,NULL),
+('4885','251',NULL,'IMG_3486','Y','Y','The junction with Rabbit Ridge Trail','358432917','-1064640667','2669',NULL,'2020-11-05 11:17:01','IMG_3486','480','640',NULL,NULL),
+('4889','43','Folder1','ViewThruBurn','Y','Y','Caldera thru burned trees','358459166','-1064622333','201','photostream','2016-06-23 11:38:41','27852043926_1fb247f72f','240','320',NULL,NULL),
+('4890','43','Folder1','RaodsideTrailhead','Y','Y','A look at Rabbit Ridge from the trail head','358481861','-1064652638','202','photostream','2016-06-23 11:08:38','27608712980_4739d50cdb','240','320',NULL,NULL),
+('4891','43','Folder1','LowBurnMarks','Y','Y','Aspens bear the marks of low burns','358452027','-1064654833','203','photostream','2016-06-23 11:19:59','27852055206_d716ca89e9','240','320',NULL,NULL),
+('4892','43','Folder1','EasternCaldera','Y','Y','The eastern edge of the Caldera from the loop terminus','358482777','-1064511861','204','photostream','2016-06-23 12:03:05','27785685982_a429005a12','320','240',NULL,NULL),
+('4893','43','Folder1','Devastation','Y','Y','Results from Las Conchas fire are everywhere','358441694','-1064654833','205','photostream','2016-06-23 11:23:10','27785701302_ba4509bbbe','240','320',NULL,NULL),
+('4894','43','Folder1','BeforeFire','Y','Y','Before the fire, lots of shade!','358488833','-1064613500','206','photostream','2009-05-19 17:41:59','27608768200_1f404a72bc','213','320',NULL,NULL),
+('4895','43','Folder1','AscendingView','Y','Y','Looking over the Caldera as the climb begins','358459750','-1064660250','207','photostream','2016-06-23 11:18:25','27274460833_0e1f23d63e','320','240',NULL,NULL),
+('4896','43','Folder1','IMG_2969','Y','Y','Looking over the Caldera near the trail head','358453250','-1064657583','2539',NULL,'2020-05-14 10:08:52','IMG_2969','3024','4032',NULL,NULL),
+('4897','43','Folder1','IMG_2985','Y','N','Aspens are coming back in 2020','353060833','-1065957333','2540',NULL,'2020-05-14 13:21:06','IMG_2985','4032','3024',NULL,NULL),
+('4898','43','Folder1','IMG_2976','Y','Y','False lupine proliferates in open areas','358461416','-1064576027','2541',NULL,'2020-05-14 10:41:41','IMG_2976','4032','3024',NULL,NULL),
+('4899','43','Folder1','IMG_2970','Y','Y','Bennie shows the way up Rabbit Ridge','358436694','-1064640722','2542',NULL,'2020-05-14 10:15:27','IMG_2970','3024','4032',NULL,NULL),
+('4900','43','Folder1','IMG_2980','Y','Y','View of devastation from Scooter Hill','358425416','-1064444972','2543',NULL,'2020-05-14 12:19:43','IMG_2980','3024','4032',NULL,NULL),
+('4901','43','Folder1','IMG_2973','Y','Y','Shooting starts dot the trail','358457333','-1064590305','2544',NULL,'2020-05-14 10:37:32','IMG_2973','3024','4032',NULL,NULL),
+('4904','255',NULL,'IMG_3811','Y','N','Arroyo LaJara   in view','355062111','-1069092333','2697',NULL,'2021-03-07 14:57:00','IMG_3811','480','640',NULL,NULL),
+('4905','255',NULL,'IMG_3819','Y','Y','Towards the red Jemez Mtns','355061333','-1069096000','2698',NULL,'2021-03-07 15:15:24','IMG_3819','480','640',NULL,NULL),
+('4906','255',NULL,'IMG_3804','Y','Y','Multi-colored basin','354986306','-1069047306','2699',NULL,'2021-03-07 14:13:55','IMG_3804','480','640',NULL,NULL),
+('4907','255',NULL,'IMG_3820','Y','Y','An old petrified tree?','355061111','-1069092722','2700',NULL,'2021-03-07 15:17:26','IMG_3820','480','640',NULL,NULL),
+('4908','255',NULL,'IMG_3812','Y','Y','Rugged interior view','355057417','-1069103167','2701',NULL,'2021-03-07 15:01:14','IMG_3812','480','640',NULL,NULL),
+('4909','255',NULL,'IMG_3801','Y','Y','Trail beginnings and dogs','354959056','-1069064861','2702',NULL,'2021-03-07 14:05:33','IMG_3801','480','640',NULL,NULL),
+('4910','255',NULL,'IMG_3805','Y','Y','Distant Cabezon','354989500','-1069048917','2703',NULL,'2021-03-07 14:15:15','IMG_3805','480','640',NULL,NULL),
+('4911','255',NULL,'IMG_3806','Y','N','Splendid scenery in many directions','355047389','-1069062889','2704',NULL,'2021-03-07 14:39:10','IMG_3806','480','640',NULL,NULL),
+('4912','255',NULL,'IMG_3822','Y','N','Looking towards the Naciemiento\'s and Jemez','355047861','-1069065250','2705',NULL,'2021-03-07 15:27:23','IMG_3822','480','640',NULL,NULL);
+INSERT INTO TSV VALUES
+('4913','255',NULL,'IMG_3817','Y','Y','Petroglyphs near the trail end','355056306','-1069106750','2706',NULL,'2021-03-07 15:08:29','IMG_3817','480','640',NULL,NULL);
 
 
 
@@ -4440,27 +4491,7 @@ INSERT INTO USERS VALUES
 ('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com',''),
 ('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com','');
 
-CREATE TABLE `LKUSERS` (
-  `userid` smallint(6) NOT NULL AUTO_INCREMENT,
-  `username` varchar(32) NOT NULL,
-  `passwd` varchar(255) DEFAULT NULL,
-  `passwd_expire` date DEFAULT NULL,
-  `last_name` varchar(30) NOT NULL,
-  `first_name` varchar(20) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `cookies` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
-
-INSERT INTO LKUSERS VALUES
-('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2021-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
-('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
-('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com',''),
-('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu',''),
-('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com',''),
-('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com',''),
-('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com','');
 
 
 CREATE TABLE `FAVORITES` (
