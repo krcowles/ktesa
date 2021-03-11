@@ -107,22 +107,17 @@ fieldset {
 }
 /* image alignment and pop-up caption styles */
 .ImgRow {
-    min-width: 960px;
     overflow: hidden;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 1px;
+}
+img[id^=pic] {
+    position: relative;
     margin-bottom: 0px;
 }
 .mobile {
     text-align: left;
     padding-left: 14px;
-}
-img {
-    display: inline-block;
-    margin-bottom: 0px; }
-#imgArea {
-    min-width: 960px;
 }
 iframe {
     border: none;

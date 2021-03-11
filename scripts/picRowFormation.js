@@ -25,6 +25,7 @@ if (descs[0] !== '') {
 const pageMargin = 36;
 const maxRowHt   = 260;	
 const rowWidth   = 940;  // see note at end of module; if 950, imgs may wrap
+var picSetupDone = $.Deferred();
 
 function drawRows(useWidth) {
     if (itemcnt !== 0) {
@@ -124,6 +125,7 @@ function drawRows(useWidth) {
             rowComplete = false;
         } // end of processing images to fit in rows
         $('#imgArea').html(rowHtml);
+        picSetupDone.resolve();
     }
 }
 drawRows(rowWidth);

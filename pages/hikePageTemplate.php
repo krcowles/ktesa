@@ -171,10 +171,10 @@ function off() {
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/picRowFormation.js"></script>
-<script src="../scripts/captions.js"></script>
 <script src="../scripts/rowManagement.js"></script>
 <script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>
+<script src="../scripts/captions.js"></script>
 
 </body>
 </html>

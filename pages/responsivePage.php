@@ -119,7 +119,7 @@ function off() {
 
 <?=$bop;?>
 
-<div id="imgArea">HELLO</div>
+<div id="imgArea"></div>
 <p id="ptype" style="display:none">Hike</p>
 
 <!-- page buttons -->
@@ -199,11 +199,11 @@ function off() {
     <?php endif; ?>
 </script>
 <script src="../scripts/responsivePage.js"></script>
-<script src="../scripts/picRowFormation.js"></script>
-<script src="../scripts/captions.js"></script>
-<script src="../scripts/rowManagement.js"></script>
+<script src="../scripts/responsivePics.js"></script>
 <script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>
+<!-- NOTE: timing requires the following script to load last -->
+<script src="../scripts/responsiveCaptions.js"></script>
 
 </body>
 </html>
