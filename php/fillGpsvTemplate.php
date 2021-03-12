@@ -20,6 +20,8 @@
 $template = "../php/GPSV_Template.html";
 $gpsv = file($template, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 $maphtml = '';
+$geo = isset($respPg) && $respPg ? 'true' : 'false';
+$box = isset($respPg) && $respPg ? 'false' : 'true';
 foreach ($gpsv as $line) {
     if (strpos($line, "<title>") > 0) {
         $maphtml .= '        <title>' . $hikeTitle . '</title>' . PHP_EOL;
@@ -52,10 +54,16 @@ foreach ($gpsv as $line) {
     } elseif (strpos($line, "gv_options.zoom_control =")) {
         $maphtml .= "            gv_options.zoom_control = " .
             "'{$map_opts['zoom_control']}'; // 'large'|'small'|'none'" . PHP_EOL;
+    } elseif (strpos($line, "geolocation_control")) {
+            $maphtml .= "            gv_options.geolocation_control = " .
+            $geo . ";" . PHP_EOL;
     } elseif (strpos($line, "gv_options.map_type_control.excluded =")) {
         $maphtml .= $line . PHP_EOL;
         $maphtml .= "            gv_options.map_type_control.style = " .
             "'{$map_opts['map_type_control']}'; // 'menu'|'none'" . PHP_EOL;
+    } elseif (strpos($line, "infobox_options.enabled =")) {
+        $maphtml .= "          gv_options.infobox_options.enabled = " .
+            $box . ";" . PHP_EOL;
     } elseif (strpos($line, "gv_options.center_coordinates =")) {
         $maphtml .= "            gv_options.center_coordinates = " .
             "{$map_opts['center_coordinates']}  // true|false: " .
@@ -155,7 +163,7 @@ if (isset($tmpMap)) {
     $maphtml .= "    var newDoc = document.open();" . PHP_EOL;
     $maphtml .= "    newDoc.write(xhr.responseText);" . PHP_EOL;
     $maphtml .= "    newDoc.close();" . PHP_EOL;
-    $maphtml .= "  }" . PHP_EOL;
+    $maphtml .= " }" . PHP_EOL;
 
     $maphtml .= '};' . PHP_EOL;
     $maphtml .= 'xhr.open("get", "../../php/tmpMapDelete.php?file=' . 

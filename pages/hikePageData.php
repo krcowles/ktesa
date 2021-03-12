@@ -312,12 +312,13 @@ if ($clusterPage) {
 } else {
     $fpLnk .= "&gpx={$allgpx}";
 }
-    
+ 
+$zoom = isset($respPg) && $respPg ? 'small' : 'large';
 $map_opts = [
     'zoom' => 18,
     'map_type' => 'ARCGIS_TOPO_WORLD',
     'street_view'=> 'false',
-    'zoom_control' => 'large',
+    'zoom_control' => "{$zoom}",
     'map_type_control' => 'menu',
     'center_coordinates' => 'true',
     'measurement_tools' => 'false',
