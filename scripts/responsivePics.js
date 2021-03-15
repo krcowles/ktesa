@@ -8,7 +8,7 @@
  * @version 1.0 Original release for responsive pages
  */
 var hike = $('#trail').text();
-// Decode array data passed via php:
+// Decode array data passed via php from responsivePage.php
 var descs = d.split("|");
 var alblnks = al.split("|");
 var piclnks = p.split("|");
@@ -22,6 +22,7 @@ if (descs[0] !== '') {
 }
 var picSetupDone = $.Deferred();
 var imgspan = '<span class="helper"></span>';
+var capbtn  = '<button>Caption</button>';
 
 /**
  * Function to place one photo per row
@@ -32,13 +33,14 @@ var imgspan = '<span class="helper"></span>';
  * @return {null}
  */
 const onePer = (wd, ht, item) => {
-    rowHtml += '<img  id="pic' + item + '" width="' + wd + '" height="' + ht +
-        '" src="' + "/pictures/zsize/" + piclnks[item] + "_z.jpg" +
-        '" alt="' + capts[item] + '" />\n';
+    rowHtml += '<div id="' + item + '" class="imgs"><img  id="pic' + item +
+        '" width="' + wd + '" height="' + ht + '" src="/pictures/zsize/' +
+        piclnks[item] + '_z.jpg" alt="trail photo" /><p id="pup' + item +
+        '">' + capts[item] + '</p></div>\n';
     return;
 };
 /**
- * 
+ * Function which places a side-by-side pair of photos in a row
  * @param {number} wd 
  * @param {number} item1
  * @param {number} item2
@@ -67,19 +69,22 @@ const makePair = (picwd, item1, item2) => {  // always landscape images
     rowHtml += '<div id="row' + rowNo + '" style="width:' + Wmax +'px;height:' + divht +
         'px;margin-left:6px;" class="ImgRow">' + "\n";
     // images
-    rowHtml += '<img  id="pic' + item1 + '" width="' + picwd + '" height="' + height1 +
-        '" src="' + "/pictures/zsize/" + piclnks[item1] + "_z.jpg" + '" alt="' +
-        capts[item1] + '" style="top:' + top1 + 'px;margin-right:1px;float:left;" />\n';
-    rowHtml += '<img  id="pic' + item2 + '" width="' + picwd + '" height="' + height2 +
-        '" src="' + "/pictures/zsize/" + piclnks[item2] + "_z.jpg" + '" alt="' +
-        capts[item2] + '" style="top:' + top2 + 'px;float:left;" />\n';
+    rowHtml += '<div id="' + item1 + '" class="imgs"><img  id="pic' + item1 + 
+        '" width="' + picwd + '" height="' + height1 + '" src="/pictures/zsize/' +
+        piclnks[item1] + '_z.jpg" alt="trail photo" style="top:' + top1 +
+        'px;margin-right:1px;float:left;" /><p id="pup' + item1 + '">' + 
+        capts[item1] + '</p></div>\n';
+    rowHtml += '<div id="' + item2 + '" class="imgs"><img  id="pic' + item2 +
+        '" width="' + picwd + '" height="' + height2 + '" src="/pictures/zsize/' +
+        piclnks[item2] + '_z.jpg" alt="trail photo" style="top:' + top2 +
+        'px;float:left;" /><p id="pup' + item2 + '">' + capts[item2] + '</p></div>\n';
     rowHtml += "</div>\n";
     rowNo++;
     return;
 }
 
 /**
- * Row creation
+ * Image Row creation - based on screen size
  */
 var Wmax;
 var rowNo = 0;

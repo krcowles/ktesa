@@ -73,6 +73,7 @@ function off() {
 
 <!-- Hike Stats -->
 <div id="hike_stats"></div>
+
 <div id="sidePanel">
     <?php if (!$clusterPage) : ?> 
         <p id="scrollmsg">Scroll down to see images, hike description,
@@ -106,7 +107,7 @@ function off() {
     <?php endif; ?>
 </div>
 
-<iframe id="mapline" src="<?=  $tmpMap;?>"></iframe>
+<iframe id="mapline" src="<?=$tmpMap;?>"></iframe>
 <div data-gpx="<?= $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
 
 <?php if (!is_null($hikeTips)) : ?>
@@ -199,7 +200,7 @@ function off() {
     var w  = "<?=implode("|", $widths);?>";
     <?php endif; ?>
 </script>
-<script src="../scripts/responsivePage.js"></script>
+<script src="../scripts/responsivePage.js?"></script>
 <script src="../scripts/responsivePics.js"></script>
 <script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>

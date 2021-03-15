@@ -48,10 +48,12 @@ $.when( chartPlaced ).then(function() {
     buttonPos();
     favoritesPos();
 });
+/*
 $(window).on('resize', function() {
     buttonPos();
     favoritesPos();
 });
+*/
 
 $('#favs').on('click', function() {
     let newtext;
@@ -84,4 +86,7 @@ $('#favs').on('click', function() {
             newDoc.close();
         }
     });
+});
+window.addEventListener('orientationchange', function() {
+    location.reload();
 });

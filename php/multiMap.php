@@ -25,6 +25,7 @@ $tblOnly = isset($hikeIndexNo) ? false : true;
 
 // tblOnly files are input via query string, $map_opts are included below:
 if ($tblOnly) {
+    $geoloc = "../../images/geoloc.png";
     $query_files = $_GET['m'];
     $files = [];
     for ($j=0; $j<count($query_files); $j++) {

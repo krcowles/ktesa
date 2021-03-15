@@ -170,25 +170,26 @@ setChartDims();
 function setChartDims() {
     // calculate space available for canvas: (panel width = 23%)
     fullWidth = $('body').innerWidth();
-    chartWidth = Math.floor(chartConst * fullWidth) - pnlMarg;
-    var vpHeight = window.innerHeight;
-    var sidePnlPos = $('#sidePanel').offset();
-    var sidePnlLoc = parseInt(sidePnlPos.top);
-    var usable = vpHeight - sidePnlLoc;
-    chartHeight = Math.floor(0.35 * usable);
-    if (chartHeight < 100) {
-        $('#chartline').height(100);
-        canvasEl.height = 100;
+    if (!mobile) { // don't mess with chart height for mobile!
+        chartWidth = Math.floor(chartConst * fullWidth) - pnlMarg;
+        var vpHeight = window.innerHeight;
+        var sidePnlPos = $('#sidePanel').offset();
+        var sidePnlLoc = parseInt(sidePnlPos.top);
+        var usable = vpHeight - sidePnlLoc;
+        chartHeight = Math.floor(0.35 * usable);
+        if (chartHeight < 100) {
+            $('#chartline').height(100);
+            canvasEl.height = 100;
+        } else {
+            $('#chartline').height(chartHeight);
+            canvasEl.height = chartHeight;
+        }
+        $('#chartline').width(chartWidth);
     } else {
-        $('#chartline').height(chartHeight);
-        canvasEl.height = chartHeight;
+        chartWidth = fullWidth;
     }
-    $('#chartline').width(chartWidth);
     canvasEl.width = chartWidth;
     $('iframe').width(chartWidth);
-    if (mobile) {
-        chartPlaced.resolve();
-    }
     return;
 }
 
@@ -203,6 +204,9 @@ function drawChart(trackNo) {
     crossHairs(trackNo);
     if (typeof panelData === 'object') {
         displayTrackSidePanel(trackNames[trackNo]);
+        if (mobile) {
+            chartPlaced.resolve();
+        }
     }
     return;
 }
