@@ -32,7 +32,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$userid = $_SESSION['userid'];
+$userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : '';
 // Icons used for table display:
 $mapIcon
     = 'class="gotomap" src="../images/mapit.png" alt="Zoom-to-map symbol" />';
