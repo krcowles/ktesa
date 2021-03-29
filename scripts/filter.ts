@@ -1,12 +1,20 @@
-"use strict";
 /// <reference types="jqueryui" />
+interface AreaData {
+    loc: string;
+    lat: number;
+    lng: number;
+}
+interface GPSData {
+    lat?: number;
+    lng?: number;
+}
 /**
  * @fileoverview This module setups & executes the table's filtering capability
  * @author Ken Cowles
  * @version 2.0 Typescripted, with some type errors corrected
  */
-var arealoc = {}; // coordinates of location from which to calculate radius
-var mapHikes = []; // save hikes to be drawn together on a new map
+var arealoc: GPSData = {}; // coordinates of location from which to calculate radius
+var mapHikes: string[] = []; // save hikes to be drawn together on a new map
 // the jqueryui 'miles' spinner:
 var spinner = $('#spinner').spinner({
     min: 1,
@@ -15,40 +23,42 @@ var spinner = $('#spinner').spinner({
 });
 spinner.spinner("value", 5);
 positionMain();
+
 /**
  * This function will place position elements on the page on page
  * load and during window resize
  */
 function positionMain() {
     // Position the options table:
-    var table_pos = $('#refTbl').offset();
+    var table_pos = <JQuery.Coordinates>$('#refTbl').offset();
     $('#divopts').css('left', table_pos.left);
     // Filter options and note
-    var winwidth = $(window).innerWidth();
-    var tblwidth = $('.sortable').width();
-    var margs = Math.floor((winwidth - tblwidth) / 2) + "px";
+    let winwidth = <number>$(window).innerWidth();
+    let tblwidth = <number>$('.sortable').width();
+    let margs = Math.floor((winwidth - tblwidth)/2) + "px";
     $('#tblfilter').css('margin-left', margs);
     $('#tblfilter').css('margin-right', margs);
     $('#filtnote').css('margin-left', margs);
     $('#filtnote').css('margin-right', margs);
     return;
 }
+
 /**
  * After selecting an area around which to filter hikes, clicking on the button
  * will perform the filtering
  */
-$('#filtpoi').on('click', function () {
+$('#filtpoi').on('click', function() {
     var epsilon = $('#spinner').spinner('value');
     var area = $('#area').find(":selected").text();
-    $.ajax({
-        url: '../json/areas.json',
+    $.ajax({ // returns array of location centers on success
+        url:      '../json/areas.json',
         dataType: 'json',
-        success: function (json_data) {
-            var areaLocCenters = json_data.areas;
-            for (var j = 0; j < areaLocCenters.length; j++) {
+        success: function(json_data) {
+            var areaLocCenters: AreaData[] = json_data.areas;
+            for (var j=0; j<areaLocCenters.length; j++) {
                 if (areaLocCenters[j].loc == area) {
                     arealoc = {
-                        "lat": areaLocCenters[j].lat,
+                        "lat": areaLocCenters[j].lat, 
                         "lng": areaLocCenters[j].lng
                     };
                     break;
@@ -56,15 +66,16 @@ $('#filtpoi').on('click', function () {
             }
             filterList(epsilon, arealoc);
         },
-        error: function () {
+        error: function() {
             alert("Unable to retrieve areas.json");
             return false;
         }
     });
+
 });
-$('#filthike').on('click', function () {
+$('#filthike').on('click', function() {
     var epsilon = $('#spinner').spinner('value');
-    var hikeloc = $('#usehike').val();
+    var hikeloc = <string>$('#usehike').val();
     if (hikeloc !== '') {
         arealoc = getHikeCoords(hikeloc);
         filterList(epsilon, arealoc);
@@ -78,15 +89,15 @@ $('#filthike').on('click', function () {
  * This function extracts latitude/longitude form the table for the
  * target hike name.
  */
-function getHikeCoords(hike) {
+function getHikeCoords(hike: string): GPSData {
     var $tblrows = $('.sortable tbody tr');
-    var coords = {};
-    $tblrows.each(function () {
-        var hikeLinkText = $(this).find('td').eq(hike_hdr).children().eq(0).text();
+    var coords: GPSData = {};
+    $tblrows.each(function() {
+        let hikeLinkText = $(this).find('td').eq(hike_hdr).children().eq(0).text();
         if (hikeLinkText === hike) {
             var hlat = $(this).data('lat');
             var hlon = $(this).data('lon');
-            coords = { lat: hlat, lng: hlon };
+            coords = {lat: hlat, lng: hlon};
             return;
         }
     });
@@ -96,17 +107,17 @@ function getHikeCoords(hike) {
     return coords;
 }
 /**
- * This function creates the rows for the results table based on the
+ * This function creates the rows for the results table based on the 
  * filter parameters (radius from center pt, center pt). After creating
  * the table, it displays the results
  */
-function filterList(radius, geo) {
+function filterList(radius: number, geo: GPSData) {
     $('#ftable tbody').empty();
-    var ctrlat = geo.lat;
-    var ctrlng = geo.lng;
-    $('#maintbl tbody tr').each(function () {
-        var hikelat = $(this).data('lat');
-        var hikelng = $(this).data('lon');
+    let ctrlat = <number>geo.lat;
+    let ctrlng = <number>geo.lng;
+    $('#maintbl tbody tr').each( function() {
+        var hikelat = <number>$(this).data('lat');
+        var hikelng = <number>$(this).data('lon');
         var distance = radialDist(hikelat, hikelng, ctrlat, ctrlng, 'M');
         if (distance <= radius) {
             // create clone, else node is removed from big table!
@@ -118,16 +129,15 @@ function filterList(radius, geo) {
     tableSort('#ftable');
     // data retrieved is always from the current state of #maintbl
     if (ftbl_init) {
-        var ftbl_units = $('#units').text();
+        let ftbl_units = $('#units').text();
         if (ftbl_units.indexOf('English') !== -1) {
             curr_ftbl_state = engtxt;
             // currently, table units are Metric: this table must be converted
-            var $fbody = $('#ftable').find('tbody');
+            let $fbody = $('#ftable').find('tbody');
             convert('#ftable', $fbody, 'Metric');
         }
-    }
-    else {
-        ftbl_init = true;
+    } else {
+        ftbl_init =true;
         curr_ftbl_state = curr_main_state;
     }
     setupConverter('#ftable', false);
@@ -137,23 +147,17 @@ function filterList(radius, geo) {
 /**
  * This function will return the radial distance between two lat/lngs
  */
-function radialDist(lat1, lon1, lat2, lon2, unit) {
-    if (lat1 === lat2 && lon1 === lon2) {
-        return 0;
-    }
-    var radlat1 = Math.PI * lat1 / 180;
-    var radlat2 = Math.PI * lat2 / 180;
-    var theta = lon1 - lon2;
-    var radtheta = Math.PI * theta / 180;
+function radialDist(lat1: number, lon1: number, lat2: number, lon2: number, unit: string) {
+    if (lat1 === lat2 && lon1 === lon2) { return 0; }
+    var radlat1 = Math.PI * lat1/180;
+    var radlat2 = Math.PI * lat2/180;
+    var theta = lon1-lon2;
+    var radtheta = Math.PI * theta/180;
     var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     dist = Math.acos(dist);
-    dist = dist * 180 / Math.PI;
+    dist = dist * 180/Math.PI;
     dist = dist * 60 * 1.1515;
-    if (unit === "K") {
-        dist = dist * 1.609344;
-    }
-    if (unit === "N") {
-        dist = dist * 0.8684;
-    } // else result is in miles "M"
+    if (unit === "K") { dist = dist * 1.609344; }
+    if (unit === "N") { dist = dist * 0.8684; }  // else result is in miles "M"
     return dist;
 }

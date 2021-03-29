@@ -4,6 +4,68 @@ body {
 	font-family: arial, verdana;
 	background-color: #dfdfdf;
 }
+#optcontainer {
+	position: relative;
+	top: -6px;
+	text-align: center;
+}
+#tblopts {
+	text-align: center;
+	display: inline-block;
+	background-color: #ffffdf;
+	border-style: solid;
+	border-width: 2px;
+	border-color:dimgray;
+	height: 45px;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 7px;
+}
+.topts {
+	display: inline-block;
+	background-color: ivory;
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+	height: 34px;
+	padding-top: 4px;
+	text-align: center;
+}
+#opt1 {
+	width: 110px;
+	vertical-align: middle;
+}
+#opt2 {
+	width: 300px;
+	vertical-align: middle;
+}
+#opt3 {
+	width: 168px;
+	vertical-align: middle;
+}
+#tblfilter {
+	display: none;
+}
+#areachoice {
+	margin-top: 8px;
+	margin-bottom: 6px;
+}
+#hikechoice {
+	margin-top: 2px;
+}
+#usehike {
+	height: 24px;
+	font-size: 16px;
+	border-radius: 4px;
+	padding-left: 6px;
+}
+#spinner {
+	width: 40px;
+}
+#filtnote {
+	font-style: italic;
+	margin-bottom: 4px;
+}
 select {
 	font-size: 16px;
 }
@@ -19,8 +81,6 @@ input[type=checkbox] {
 }
 img.webShift {
 	padding-left: 19px; }
-img.flckrShift {
-	padding-left: 15px; }
 img.expShift {
 	padding-left: 24px; }
 table:not(#loginTbl) {
@@ -32,7 +92,7 @@ table:not(#loginTbl) {
 	background-color: #ffffdf;
 	border-style: groove;
 	border-width: 4px;
-	border-color: goldenRod; }
+	border-color: gainsboro; }
 th:not(#loginTbl) {
 	text-align: center;
 	padding-left: 5px;
@@ -45,9 +105,7 @@ tr:hover {
 td:not('#loginTbl') {
 	vertical-align: top;
 	padding-left: 5px;
-	padding-right: 5px; }
-tr #resetrow {
-	height: 28px;
+	padding-right: 5px;
 }
 .hdr_row {
 	background-color: bisque; }
@@ -55,32 +113,59 @@ tr #resetrow {
 	cursor: pointer;
 	background-color: Brown;
 	color: White; }
-.indxd {
-	color: brown; }
-#metric {
-	text-align: left;
-	width: 190px;
-	margin-left: 8px;
-	margin-top: -10px;
-	padding-left: 10px;
-	padding-right: 10px;
-	color: MidnightBlue;
-	border-style: inset;
-	border-width: 3px;
-	border-color: MidnightBlue;
-	cursor: pointer; }
-#geoSetting {
-	display: none; }
-#map {
+.blue {
+	color: darkblue;
+}
+select {
+	font-size: 16px;
+}
+#usermodal {
+	display: none;
 	position: fixed;
-	background-color: #6D3C17;
-	color: white;
+	top: 160px;
+	left: 590px;
+	width: 380px;
+	height: 248px;
+	padding-left: 8px;
+	padding-right: 8px;
+	background-color: ghostwhite;
+	border: 3px solid gray;
+	z-index: 1000;
 }
-#map:hover {
-	background-color: moccasin;
-	color: black;
-}
-#mapnote {
+#modalhdr {
 	position: relative;
-	margin-top: 8px;
+	top: -3px;
+	left: -10px;
+	height: 32px;
+	width: 396px;
+	padding-top: 5px;
+	background-color: blanchedalmond;
+	border: 2px ridge gray;
+}
+#hdrleft {
+	float: left;
+	margin-left: 12px;
+	line-height: 1.6em;
+}
+#hdrright {
+	float: right;
+	margin-right: 12px;
+	background-color: dimgray;
+}
+#hike2map {
+	height: 24px;
+	width: 200px;
+	font-size: 16px;
+	border-radius: 4px;
+}
+#hlist {
+	color: gray;
+}
+#selections {
+	margin-top: 0px;
+}
+.selectlist {
+	font-size: 16px;
+	position: relative;
+	left: -12px;
 }

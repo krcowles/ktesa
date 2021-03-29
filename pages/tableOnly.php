@@ -9,6 +9,7 @@
  */
 session_start();
 require "../php/global_boot.php";
+require "alphabeticHikes.php";
 // required by makeTables.php
 $age = 'old';
 $show = 'all';
@@ -26,7 +27,6 @@ $pageType = 'FullTable';
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="../styles/tblPg.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/filter.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>
@@ -36,32 +36,41 @@ $pageType = 'FullTable';
 <p id="trail">Sortable Table of Hikes</p>
 <p id="page_id" style="display:none">Table</p>
 
+<div id="optcontainer">
+    <div id="tblopts">
+        <strong>Table Options:</strong>&nbsp;&nbsp;
+        <div id="opt1" class="topts">
+            <button id="showfilter">Filter Hikes</button>
+        </div>
+        <div id="opt2" class="topts">
+            Show Multiple Hikes on a Map
+            <button id="multimap">Select</button>
+        </div>
+        <div id="opt3" class="topts">
+            <button id="units">Show Metric Units</button>
+        </div>
+    </div>
+</div>
 
-<p id="mapnote"><button id="map">Draw Map</button>
-    Draw multiple hikes on a single map by selecting available checkboxes, and
-    then click "Draw Map".
-</p>
-<!--Sub-table Filtering and SortingOptions: -->
+<!-- Filtering and SortingOptions: -->
 <div id="tblfilter">
-    <button id="showfilter">Show/Hide</button> Table Filtering
-    <div id="dispopts">
-        <strong class="blue">Sort the table of hikes by proximity:</strong><br />
-        Hikes within 
-        <input id="spinner" />&nbsp;miles of&nbsp;&nbsp;(Choose either:)
-        <input id="loc" type="radio" name="prox" />
-        <label id="loclbl" class="normal">Area:</label>
-        <div id="selloc" class="hidden">
-            (Select)&nbsp;<?php require "../build/localeBox.html";?>
-        </div>&nbsp;&nbsp;<span style="color:brown;">OR</span>
-        <input id="hike" type="radio" name="prox" />
-        <label id="hikelbl" class="normal">Hike/Trail</label>
-        <div id="selhike" class="hidden">
-            <input style="font-size:14px;" 
-                id="link" type="text" name="link" size="35"
-                placeholder="...select hike by clicking link in table" />
-        </div><br /><br />
-        <button id="apply">Apply Filter</button><br />
-        <strong class="blue">Then sort the table:</strong><br />By&nbsp;&nbsp;
+    <div>
+        <strong class="blue">Filter hikes:&nbsp;&nbsp;</strong>Hikes within 
+        <input id="spinner" />&nbsp;miles of
+    </div>
+    <div id="areachoice">
+        <?php require "../build/localeBox.html";?>&nbsp;&nbsp;
+        <button id="filtpoi">Filter By Area</button>
+    </div>
+    <div id="hikechoice">
+        Hike Name: 
+        <input id="usehike" placeholder="Type in Hike Name" list="hikelist" />
+        <?=$datalist;?>&nbsp;&nbsp;
+        <button id="filthike">Filter By Hike</button>
+        <br /><br />
+    </div>
+    <div id="sorter">
+        <strong class="blue">Then sort the results:</strong><br />By&nbsp;&nbsp;
         <select id="sort1">
             <option value="No Sort">Do Not Sort</option>
             <option value="WOW Factor">WOW Factor</option>
@@ -79,12 +88,12 @@ $pageType = 'FullTable';
             <option value="Difficulty">Difficulty</option>
             <option value="Exposure">Exposure</option>
         </select>&nbsp;&nbsp;
-        <button id="sort">Sort</button><br /><br />
-        <div id="results" style="display:none;">
-            <button id="redo">Reset Search</button><br />
-            The results of your search appear in the table below:<br />
-            <table id="ftable" class="fsort"><tbody></tbody></table>
-        </div>
+        <button id="sort">Sort</button>
+    </div>
+    <div id="results" style="display:none;">
+        
+        The results of your search appear in the table below:<br />
+        <table id="ftable" class="fsort"><tbody></tbody></table>
     </div>
 </div>
 <!-- End of sub-table filter/sort -->
@@ -95,12 +104,27 @@ $pageType = 'FullTable';
 <div id="refTbl">
     <?php require "../php/makeTables.php"; ?>
 </div>
-<div style="margin-top:20px;"><p id="metric" class="dressing">
-        Click here for metric units</p>
+
+<div id="usermodal">
+    <div id="modalhdr">
+        <div id="hdrleft"><strong>Drag Here</strong></div>
+        <div id="hdrright"><button id="closer">Close</button></div>
+    </div>
+    <p>To view multiple hikes on a single map, select the hikes below. When
+    you are ready, click on 'Draw Map'</p>
+    <button id="mapem">Draw Map</button>
+    <p><input id="hike2map" placeholder="Type in next Hike Name"
+        list="hikelist" />&nbsp;&nbsp;&nbsp;
+        <button id="hikeclr">Clear Entries</button>
+        <?=$datalist;?></p>
+    <span id="hlist">Hikes you have selected:</span>
+    <ul id="selections"></ul>
 </div>
 <script src="../scripts/menus.js"></script>
-<script src="../scripts/filter.js"></script>
 <script src="../scripts/tblOnlySort.js"></script>
+<script src="../scripts/filter.js"></script>
 <script src="../scripts/multi-sort.js"></script>
+<script src="../scripts/map-multiples.js"></script>
+
 </body>
 </html>

@@ -1,26 +1,15 @@
 #spinner {
-	height: 16px;
 	width: 40px;
 }
-#dispopts {
+#tblfilter {
 	display: none;
 }
-#opts {
-	display: inline-block;
+#areachoice {
+	margin-top: 8px;
+	margin-bottom: 6px;
 }
-.normal {
-	color: black;
-	text-decoration: none;
-}
-.hidden {
-	display: none;
-}
-.inline {
-	display: inline-block;
-}
-.hilite {
-	color: brown;
-	text-decoration: underline;
+#hikechoice {
+	margin-top: 2px;
 }
 .blue {
 	color: darkblue;

@@ -1,10 +1,7 @@
 <?php
 /**
  * The html for the specified hike table is created here by first collecting the
- * table type and its associated data from the tableData.php script. Note that 
- * the Table Only page uses checkboxes for each hike (w/gpx) whereas the
- * hike editor does not. This necissitated an identifier, $pageType, which
- * must be defined by the caller.
+ * table type and its associated data from the tableData.php script.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -13,14 +10,10 @@
  * @license No license to date
  */
 require_once "tableData.php";
-$cbox = $pageType == 'FullTable' ? true : false;
 ?>
 <!-- REFERENCE TABLE OF HIKES -->
 <table class="sortable">
     <colgroup>
-        <?php if ($cbox) : ?>
-        <col style="width:30px">
-        <?php endif; ?>
         <col style="width:210px">
         <col style="width:108px">
         <col style="width:160px">
@@ -32,9 +25,6 @@ $cbox = $pageType == 'FullTable' ? true : false;
     </colgroup>
     <thead>
         <tr>
-            <?php if ($cbox) : ?>
-            <th class="hdr_row">Use</th>
-            <?php endif; ?>
             <th class="hdr_row" data-sort="std">Hike/Trail Name</th>
             <th class="hdr_row" data-sort="std">Locale</th>
             <th class="hdr_row" data-sort="std">WOW Factor</th>
@@ -51,9 +41,6 @@ $cbox = $pageType == 'FullTable' ? true : false;
 <?php else : ?>
     <?php for ($j=0; $j<$entries; $j++) : ?>
         <tr <?= $hikeHiddenDat[$j];?>>
-            <?php if ($cbox) : ?>
-            <td data-track="<?= $hikeGpx[$j];?>"><input type="checkbox" /></td>
-            <?php endif; ?>
             <td><a href="<?= $pgLink[$j];?>"
                 target="_blank"><?= $hikeName[$j];?></a></td>
             <td><?= $hikeLocale[$j];?></td>

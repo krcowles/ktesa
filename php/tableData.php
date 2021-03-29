@@ -62,7 +62,6 @@ $hikeDiff = array();
 $hikeExpIcon = array();
 $hikeDirections = array();
 $hikeAlbum = array();
-$hikeGpx = array();
 // formulate the database query based on predefined variables:
 if ($age === 'new') {
     $status = '[';  // editing new hikes requires gathering the 'stat' field
@@ -105,14 +104,13 @@ for ($i=0; $i<$entries; $i++) {
         $status .= '"' . $row['stat'] . '",';
         $enos .= '"' . $row['indxNo'] . '",';
     }
+    // part of hidden data:
     $indx    = $row['indxNo'];
     $hikeLat = $row['lat']/LOC_SCALE;
     $hikeLon = $row['lng']/LOC_SCALE;
+    $gpxFile = $row['gpx'];
     $hikeTrk = $row['trk'];
-    // HTML data- attributes (not visible to user)
-    $hikeHiddenDat[$i] = 'data-indx="' . $indx . '" data-lat="' . $hikeLat .
-        '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '"';
-
+    // 
     $hikeLocale[$i] = $row['locale'];
     $hikeWow[$i]    = $row['wow'];
     $hikeName[$i]   = $row['pgTitle'];
@@ -139,6 +137,10 @@ for ($i=0; $i<$entries; $i++) {
     $hikeDirections[$i] = $row['dirs'];
     $hikeAlbum[$i] = $row['purl1'];
     $hikeGpx[$i] = $row['gpx'];
+    // HTML data-* attributes
+    $hikeHiddenDat[$i] = 'data-indx="' . $indx . '" data-lat="' . $hikeLat .
+        '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '" ' .
+        'data-gpx="' . $gpxFile . '"';
 }
 if ($age === 'new') { // forming javascript array data
     if (strlen($status) !== 1) {

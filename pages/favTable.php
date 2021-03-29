@@ -81,7 +81,6 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 <div id="sideTable"></div>
 
 <script>
-    var VC = [];
     var CL = [];
     var NM = <?= $jsHikes;?>;
     var allHikes = <?= $allHikes;?>;
