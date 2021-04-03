@@ -1,20 +1,25 @@
-var pwidth = parseInt($('#progress').width());
+"use strict";
+/**
+ * @fileoverview Manage the tracking progress of load tables
+ *
+ * @author Ken Cowles
+ * @version 2.0 Typescripted
+ */
+var pwidth = $('#progress').width();
 var $bar = $('#bar');
 var go = false;
 var barinc;
-$getcnt = setInterval( function () {
-    if (typeof(totq) !== "undefined") {
+var $getcnt = setInterval(function () {
+    if (typeof (totq) !== "undefined") {
         clearInterval($getcnt);
-        totq = parseInt(totq);
-        barinc = Math.floor(pwidth/totq);
+        totq = totq;
+        barinc = Math.floor(pwidth / totq);
         $('#progress').width(barinc * totq);
         go = true;
     }
 }, 5);
-$statcheck = setInterval( function() {        
+var $statcheck = setInterval(function () {
     if (go) {
         $bar.width(qcnt * barinc);
     }
 }, 100);
-
-

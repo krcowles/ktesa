@@ -352,7 +352,7 @@ function setupLoc() {
         new google.maps.Marker({
             position: newWPos,
             map: map,
-            icon: geoIcon
+            icon: geoIcon,
         });
         map.setCenter(newWPos);
         var currzoom = map.getZoom();

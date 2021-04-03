@@ -1,5 +1,8 @@
-var $photos;
-var noOfPix;
+declare var descs: string;
+declare var capts: string;
+declare var phMaps: string[];
+var $photos: JQuery<HTMLElement>
+var noOfPix: number;
 var picSel;
 var capTop = new Array();
 var capLeft = new Array();
@@ -25,6 +28,8 @@ if (pageType.substring(0,4) === 'Edit' && pageType.length > 4) {
     var newUplds = false;
 }
 var caps = true;
+// for our friendly typescript that can't see that $photos actually does get defined:
+$photos = $('img[id^="pic"]');
 if (pageType === 'Hike') {
     $photos = $('img[id^="pic"]');
     var phTitles = descs.slice();
@@ -41,7 +46,7 @@ if (pageType === 'Edit') {
 if( pageType === 'Edit' && !newUplds) {
     $('#t2').on('click', function(ev) {
         ev.preventDefault();
-        $loadWait = setTimeout( function() {
+        setTimeout( function() {
             noOfPix = $photos.length;
             executeCaptions();
         }, 100); 
@@ -61,11 +66,11 @@ function executeCaptions() {
             } else {  // REFRESH ENTRY
                 // retrieve location data (pic/iframe data is string type and does not need 
                 //   to be converted to numeric)
-                for ( i=0; i<noOfPix; i++ ) {
+                for (let i=0; i<noOfPix; i++ ) {
                         pwidth = 'pwidth' + i;
                         capWidth[i] = sessionStorage.getItem(pwidth);
                 }
-                for ( i=0; i<noOfPix; i++ ) {
+                for (let i=0; i<noOfPix; i++ ) {
                         pleft = 'pleft' + i;
                         capLeft[i] = sessionStorage.getItem(pleft);
                         ptop = 'ptop' + i;
@@ -82,7 +87,7 @@ function executeCaptions() {
     // function to capture *current* image widths & map link loc
     function captureWidths() {
         $photos.each( function(i) {
-            capWidth[i] = this.width + 'px';
+            capWidth[i] = this.style.width + 'px';
             pwidth = 'pwidth'+ i;
             if (sessSupport) {
                     sessionStorage.setItem(pwidth,capWidth[i]);
@@ -91,7 +96,7 @@ function executeCaptions() {
     }
     function calcPos() {
         $photos.each( function(j) {
-            picPos = $(this).offset();
+            picPos = <JQuery.Coordinates>$(this).offset();
             if (emode) {
                 capTop[j] = Math.floor(picPos.top) + 20 + 'px';
             } else {
@@ -107,7 +112,8 @@ function executeCaptions() {
         });
     }
     // function to popup the description for the picture 'selected'
-    function picPop(photoName) {
+    function picPop(photoName: string) {
+        var picNo = 0;
         for (var x=0; x<noOfPix; x++) {
             if (photoName == phTitles[x]) {
                 picNo = x;
@@ -119,7 +125,7 @@ function executeCaptions() {
                 ': ' + '<em>' + phDescs[picNo] + '</em></p>';
         } else {
             var htmlDesc = '<p class="capLine">' + photoName;
-            if (phMaps[picNo] == 0) {
+            if (phMaps[picNo] == '0') {
                 htmlDesc += '<br /><span style="color:brown">No Location Data: ' +
                     'Photo Cannot Be Mapped</span></p>';
             } else {
@@ -141,7 +147,8 @@ function executeCaptions() {
     // popup a description when mouseover a photo
     $photos.css('z-index','1'); // keep pix in the background
     $photos.on('mouseover', function(ev) {
-        var selected = ev.target.alt;
+        var targ = <HTMLImageElement>ev.target;
+        var selected = targ.alt;
         picPop(selected);
     });
     // kill the popup when mouseout
@@ -150,7 +157,7 @@ function executeCaptions() {
         $('.popupCap').css('display','none');
     });
 
-    $(window).resize( function() {
+    $(window).on('resize', function() {
         captureWidths();
         calcPos();
     });
@@ -166,7 +173,7 @@ var $nomap = $('.nomap');
 $nomap.each(function() {
     $(this).on('mouseover', function() {
         $(this).css('cursor', 'pointer');
-        var loc = $(this).offset();
+        var loc = <JQuery.Coordinates>$(this).offset();
         $mapmsg.css({
             top: loc.top - 20,
             left: loc.left + 60

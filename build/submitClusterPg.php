@@ -28,13 +28,14 @@ if ($newClusGrp) {
         header("Location: startNewPg.php");
         exit;
     }
-    // Save basic data for new page in EHIKES (NOTE: do not save `cname`)
-    $newClusPgReq = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`) VALUES (?,?,'0');";
-    $newClusPg = $pdo->prepare($newClusPgReq);
-    $newClusPg->execute([$page, $_SESSION['userid']]);
-    $pdo->commit();
+} else {
+    $pdo->beginTransaction();
 }
-
+// Save basic data for new page in EHIKES (NOTE: do not save `cname`)
+$newClusPgReq = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`) VALUES (?,?,'0');";
+$newClusPg = $pdo->prepare($newClusPgReq);
+$newClusPg->execute([$page, $_SESSION['userid']]);
+$pdo->commit();
 // get new indxNo
 $indxNoReq = "SELECT `indxNo` FROM `EHIKES` WHERE `pgTitle`=?;";
 $indxNoRecord = $pdo->prepare($indxNoReq);

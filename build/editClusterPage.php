@@ -22,10 +22,6 @@ $cpdata = $pdo->prepare($dataReq);
 $cpdata->execute([$indxNo]);
 $pgdata = $cpdata->fetch(PDO::FETCH_ASSOC);
 $page   = $pgdata['pgTitle'];
-$state  = $pgdata['stat']; // 0 if new, 'indxNo' in HIKES if published
-if ($state == '0') {
-    $state = -1 * $indxNo;  // value in the CLUSTERS table for this new page
-}
 $area   = !empty($pgdata['locale']) ? $pgdata['locale'] : '';
 $lat    = !empty($pgdata['lat']) ?    $pgdata['lat']/LOC_SCALE : '';
 $lng    = !empty($pgdata['lng']) ?    $pgdata['lng']/LOC_SCALE : '';
@@ -90,7 +86,6 @@ $info   = !empty($pgdata['info']) ?   $pgdata['info'] : '';
 <script type="text/javascript">
     var titles  = <?=$jsonBooks;?>;
     var authors = <?=$jsonAuths;?>;
-    var state   = <?=$state;?>;
 </script>
 <script src="editClusterPage.js"></script>
 <script src="refs.js"></script>

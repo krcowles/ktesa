@@ -8,11 +8,10 @@
  * of these additional files may be excluded later, if so specified by the user. 
  * However there is no current method to delete the additional files. If any gpx
  * file already exists at the time of the upload, the previous file will remain on
- * the server, and the new file will have '_DUP' appended to its name. 
+ * the server.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */

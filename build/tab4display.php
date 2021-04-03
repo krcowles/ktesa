@@ -9,9 +9,6 @@
  * @license No license to date
  */
 ?>
-<div id="d4">
-    <input id="ap4" type="submit" name="savePg" value="Apply" />
-</div>
 <h3 class="up">Hike Reference Sources: (NOTE: Book type cannot be 
     changed - if needed, delete and add a new one)</h3>
 <input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />

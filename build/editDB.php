@@ -58,7 +58,7 @@ require "dataForEditor.php";
 <div id="line"></div>
 
 <div id="tab1" class="active tab-panel">
-<form action="saveTab1.php" method="POST" enctype="multipart/form-data">
+<form id="f1" action="saveTab1.php" method="POST" enctype="multipart/form-data">
     <?php require 'tab1display.php';?>
 </form>
 </div>
@@ -68,19 +68,19 @@ require "dataForEditor.php";
 </div>
 
 <div id='tab3' class='tab-panel'>
-<form action="saveTab3.php" method="POST">
+<form id="f3" action="saveTab3.php" method="POST">
     <?php require 'tab3display.php';?>
 </form>
 </div>
 
 <div id="tab4" class="tab-panel">
-<form action="saveTab4.php" method="POST" enctype="multipart/form-data">
+<form id="f4" action="saveTab4.php" method="POST" enctype="multipart/form-data">
     <?php require 'tab4display.php';?>
 </form>
 </div>
 
-</div> <!-- MAIN -->
-<div class="popupCap"></div>
+</div>
+
 <script src="../scripts/menus.js"></script>
 <script src="editDB.js"></script>
 <script src="ktesaUploader.js"></script>

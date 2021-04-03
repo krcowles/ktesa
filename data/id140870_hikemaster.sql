@@ -4483,8 +4483,8 @@ CREATE TABLE `USERS` (
 
 
 INSERT INTO USERS VALUES
-('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2021-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
-('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
+('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2050-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
+('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2050-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
 ('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com',''),
 ('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu',''),
 ('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com',''),
@@ -4504,5 +4504,9 @@ CREATE TABLE `FAVORITES` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+INSERT INTO FAVORITES VALUES
+('2','156'),
+('2','162'),
+('2','163');
 
 

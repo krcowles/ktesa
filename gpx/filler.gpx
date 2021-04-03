@@ -6,22 +6,22 @@
   <trk>
     <name>NO TRACK FILES AVAILABLE</name>
     <trkseg>
-      <trkpt lat="3.445E-6" lon="-1.06042E-5">
+      <trkpt lat="34.45" lon="-106.042">
         <ele>1500</ele>
       </trkpt>
-      <trkpt lat="0.004510445" lon="-1.06042E-5">
+      <trkpt lat="34.454507" lon="-106.042">
         <ele>1500</ele>
       </trkpt>
-      <trkpt lat="-0.004503555" lon="-1.06042E-5">
+      <trkpt lat="34.445493" lon="-106.042">
         <ele>1500</ele>
       </trkpt>
-      <trkpt lat="3.445E-6" lon="-1.06042E-5">
+      <trkpt lat="34.45" lon="-106.042">
         <ele>1500</ele>
       </trkpt>
-      <trkpt lat="3.445E-6" lon="-0.0054876042">
+      <trkpt lat="34.45" lon="-106.047477">
         <ele>1500</ele>
       </trkpt>
-      <trkpt lat="3.445E-6" lon="0.0054663958">
+      <trkpt lat="34.45" lon="-106.036523">
         <ele>1500</ele>
       </trkpt>
     </trkseg>

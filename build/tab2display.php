@@ -15,7 +15,7 @@
 <hr />
 <p id="ehno" style="display:none;"><?= $hikeNo;?></p>
 
-<form class="box" action="saveTab2.php" method="POST">
+<form id="f2" class="box" action="saveTab2.php" method="POST">
 <span id="userupld">Add Photos using drag-and-drop onto the page, or select:</span>
 <span class="box__input">
     <input type="file" name="files[]" id="file" class="inputfile"
@@ -32,9 +32,6 @@
 </p>
 <input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
 
-<div id="d2">
-    <input id="ap2" type="submit" name="savePg" value="Apply" />
-</div>
 <?php if ($inclPix === 'YES') : ?>
 <style type="text/css">
     .capLine {
@@ -68,12 +65,13 @@
 </form>
 
 <script type="text/javascript">
-    var phTitles = <?php echo $jsTitles;?>;
-    var phDescs = <?php echo $jsDescs;?>;
-    var phMaps = <?php echo $jsMaps;?>;
+    var phTitles = <?=$jsTitles;?>;
+    var phDescs = <?=$jsDescs;?>;
+    var phMaps = <?=$jsMaps;?>;
 </script>
 <script src="photoSelect.js" type="text/javascript"></script>
-<script src="../scripts/picPops.js" type="text/javascript"></script>
+<script src="picPops.js" type="text/javascript"></script>
+
 <div class="popupCap"></div>
 <input type="hidden" name="usepics" value="<?= $inclPix;?>" />
 <input type="hidden" name="hikeno" value="<?= $hikeNo;?>" />

@@ -19,10 +19,6 @@
 <p id="ptype" style="display:none;">Edit</p>
 <p id="ua1" class="user_alert" style="display:none;"><?=$user_alert;?></p>
 
-<div id="d1">
-    <input id="ap1" type="submit" name="savePg" value="Apply" />
-</div>
-
 <!-- File upload for all gpx files to be displayed on hike page map -->
 <h3 class="up">File Upload for Hike Page Map and Track: (.gpx file)</h3>
 <p><span class="brown" style="font-weight:bold;"><em
@@ -89,14 +85,14 @@
 <input id="mft" type="checkbox" name="mft" />&nbsp;&nbsp;
     Calculate Miles/Feet From GPX,&nbsp;&nbsp;or Specify/Change below:<br />
 <label for="miles">Round-trip length in miles:
-    <span class="brown">[Number less than 100, and a max of two
+    <span class="brown">[Number less than 50, and a max of two
         decimal places]&nbsp;</span>
 </label>
 <textarea id="miles" name="miles"><?=$miles;?></textarea><br />
 <input type="hidden" name="usrmiles" value="NO" />
 
 <label for="elev">Elevation change in feet:
-    <span class="brown">[Integer value up to five digits]&nbsp;</span>
+    <span class="brown">[Integer value up to four digits]&nbsp;</span>
 </label>
 <textarea id="elev" name="feet" maxlength="30"><?=$feet;?></textarea><br /><br />
 <input type="hidden" name="usrfeet" value="NO" />
@@ -135,8 +131,7 @@
 <br /><label for="murl">Map Directions Link (Url):
     <span class="brown">[1024 Characters Max]</span>
 </label>
-<textarea id="murl" class="blink" name="dirs"
-    maxlength="1024"><?=$dirs;?></textarea>
+<textarea id="murl" name="dirs" maxlength="1024"><?=$dirs;?></textarea>
 
 <h3 style="margin-bottom:12px;">Cluster Hike Assignments:
     (Hikes with overlapping trailheads or in close proximity)</h3>

@@ -2,15 +2,14 @@
 body {
     margin: 0px;
     font-family: arial, verdana;
-    background-color: #dfdfdf; }
-.container {
-    position: relative; }
+    background-color: #dfdfdf;
+}
 img.webShift {
-    padding-left: 19px; }
-img.flckrShift {
-    padding-left: 15px; }
+    padding-left: 19px;
+}
 img.expShift {
-    padding-left: 24px; }
+    padding-left: 24px;
+}
 /* table dressing */
 table:not(#loginTbl) {
     margin-left: auto;
@@ -22,38 +21,43 @@ table:not(#loginTbl) {
     background-color: #ffffdf;
     border-style: groove;
     border-width: 4px;
-    border-color: goldenRod; }
+    border-color: goldenRod;
+}
 th {
     text-align: center;
     padding-left: 5px;
     padding-right: 5px;
     border-style: outset;
     border-width: 2px;
-    border-color: peru; }
+    border-color: peru;
+}
 tr:hover {
-    background-color: BlanchedAlmond; }
+    background-color: BlanchedAlmond;
+}
 td {
     vertical-align: top;
-    padding-left: 5px;
-    padding-right: 5px; }
+    padding-left: 4px;
+    padding-right: 2px;
+}
 .hdr_row {
-    background-color: bisque; }
+    background-color: bisque;
+}
 .hdr_row:hover {
     cursor: pointer;
     background-color: Brown;
-    color: White; }
+    color: White;
+}
 .indxd {
-    color: brown; }
-#metric {
-    text-align: left;
-    width: 190px;
-    margin-left: 8px;
-    margin-top: -10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    color: MidnightBlue;
-    border-style: inset;
-    border-width: 3px;
-    border-color: MidnightBlue;
-    cursor: pointer; }
+    color: brown;
+}
+#ineditModal {
+    position: absolute;
+    display: none;
+    height: 32px;
+    width: 200px;
+    padding-left: 6px;
+    padding-top: 12px;
+    font-size: 16px;
+    background-color: ghostwhite;
+}
 

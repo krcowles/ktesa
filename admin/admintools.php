@@ -41,6 +41,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         });
         var hostIs = "<?=$_SERVER['SERVER_NAME'];?>";
         var server_loc = "<?=$server_loc;?>";
+        var auth;
     </script>
 </head>
 <body>
@@ -51,10 +52,6 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 <?php if (isset($_SESSION['nopix']) && !empty($_SESSION['nopix'])) : ?>
     <script type="text/javascript">var nopix = "<?= $_SESSION['nopix'];?>";</script>
     <?php $_SESSION['nopix'] = ''; ?>
-<?php endif; ?>
-
-<?php if ($admin) : ?>
-<script type="text/javascript">var auth;</script>
 <?php endif; ?>
 
 <div style="margin-left:24px;" id="tools">

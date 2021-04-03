@@ -80,7 +80,9 @@ $jsInEdit = json_encode($nowInEdit);
 <div><br />
 
 <?php require "../php/makeTables.php"; ?>
-
+</div>
+<div id="ineditModal">
+    This hike is already in edit
 </div>
 
 <script type="text/javascript">

@@ -6,12 +6,9 @@
  * @package Ktesa
  * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
- * @license No license to date
+ * @license No licenxse to date
  */
 ?>
-<div id="d3">
-        <input id="ap3" type="submit" name="savePg" value="Apply" />
-</div>
 <p class="up" style="color:darkblue;font-size:16px;">
         All inputs limited to 4096 Characters</p>
 <p>Tips Text: </p>

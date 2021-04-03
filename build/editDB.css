@@ -128,9 +128,6 @@ input[type=checkbox]
     position: relative;
     top: 6px;
 }
-div[id^="d"] {
-    position: fixed;
-}
 #atxt {
     font-size: 20px;
     float: right;
@@ -184,9 +181,9 @@ div[id^="d"] {
 .tab-panel.active {
     display: block;
 }
-input[id^=ap] {
-    position: fixed;
-    z-index: 10000;
+.subbtn {
+    z-index: 9999;
+    width: 100px;
 }
 /* tab2 items */
 #userupld {
