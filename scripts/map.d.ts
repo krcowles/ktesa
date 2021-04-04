@@ -63,7 +63,7 @@ interface MapDoc extends Document {
 }
 interface MarkerId {
     hikeid: string;
-    clicked: boolean;
+    clicked?: boolean;
     pin: google.maps.Marker;
 }
 interface MarkerIds extends Array<MarkerId> {

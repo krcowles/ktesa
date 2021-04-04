@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+      "module": "none",
+      "lib": ["es2016", "DOM"],
+      "strict": true,
+      "noImplicitAny": true,
+      "alwaysStrict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      "allowSyntheticDefaultImports": true
+  },
+  "files": [
+    "landing.ts",
+    "loginState.ts",
+    "logo.ts",
+    "mapOnly.ts",
+    "navMenu.ts",
+    "responsiveCaptions.ts",
+    "responsivePics.ts",
+    "responsiveTable.ts",
+    "searchbar.ts"
+  ]
+}
