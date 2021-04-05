@@ -97,7 +97,7 @@ function adminLoggedIn() {
  */
 const renewPassword = (renew: string) => {
     if (renew === 'renew') { // send email to reset password
-        renewp = new Bootstrap.Modal(<Element>document.getElementById('cpw'), {
+        renewp = new bootstrap.Modal(<Element>document.getElementById('cpw'), {
             keyboard: false
         });
         renewp.show();

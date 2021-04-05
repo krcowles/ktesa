@@ -1,8 +1,11 @@
 /// <reference types="bootstrap" />
-declare var regions: string[];
+declare var regions: HikeNoSet[];
 interface Geo {
     lat: number;
     lng: number;
+}
+interface HikeNoSet {
+    [key: string]: number[];
 }
 /**
  * @fileoverview Management of options button
@@ -35,7 +38,7 @@ $('#ctr').text(title);
 var $tbody = $('table').find('tbody');
 var rows = $tbody.find('tr').toArray();
 // js modal
-var near_modal = new Bootstrap.Modal(<HTMLElement>document.getElementById('near'), {
+var near_modal = new bootstrap.Modal(<HTMLElement>document.getElementById('near'), {
     keyboard: false
 });
 
@@ -62,14 +65,13 @@ $loc_list.each(function() {
     $(this).on('click', function(ev) {
         ev.preventDefault();
         let lochikes = [];
-        let locale = $(this).text();
-        let locarea = parseInt(locale);
-        let hikeset: string = regions[locarea];
+        let locarea = <string>$(this).text();
+        let hikeset: any = regions[locarea]; // regions are objects whose key is a locale (string)
         for (let i=0; i<rows.length; i++) {
             let item = <string>$(rows[i]).data('indx');
             let hikeno = parseInt(item)
             for (let j=0; j<hikeset.length; j++) {
-                if (hikeno == parseInt(hikeset[j])) {
+                if (hikeno == hikeset[j]) {
                     lochikes.push(rows[i]);
                 }
             }

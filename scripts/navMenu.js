@@ -16,7 +16,7 @@ if (choice === 'accept') {
 else {
     $('#cookies').text('Accept Cookies');
 }
-var chg_modal = new Bootstrap.Modal(document.getElementById('cpw'), {
+var chg_modal = new bootstrap.Modal(document.getElementById('cpw'), {
     keyboard: false
 });
 /**

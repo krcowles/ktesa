@@ -28,7 +28,7 @@ $(function () {
     var $tbody = $('table').find('tbody');
     var rows = $tbody.find('tr').toArray();
     // js modal
-    var near_modal = new Bootstrap.Modal(document.getElementById('near'), {
+    var near_modal = new bootstrap.Modal(document.getElementById('near'), {
         keyboard: false
     });
     // dropdown selections:
@@ -53,14 +53,13 @@ $(function () {
         $(this).on('click', function (ev) {
             ev.preventDefault();
             var lochikes = [];
-            var locale = $(this).text();
-            var locarea = parseInt(locale);
-            var hikeset = regions[locarea];
+            var locarea = $(this).text();
+            var hikeset = regions[locarea]; // regions are objects whose key is a locale (string)
             for (var i = 0; i < rows.length; i++) {
                 var item = $(rows[i]).data('indx');
                 var hikeno = parseInt(item);
                 for (var j = 0; j < hikeset.length; j++) {
-                    if (hikeno == parseInt(hikeset[j])) {
+                    if (hikeno == hikeset[j]) {
                         lochikes.push(rows[i]);
                     }
                 }

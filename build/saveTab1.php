@@ -110,6 +110,7 @@ if (!empty($gpxfile)) {  // new upload
         $newdat->execute([$newtrk, $lat, $lng, $hikeNo]);
         $maingpx = pathinfo($unique, PATHINFO_BASENAME);
     } else {
+        header("Location: " . $redirect);
         exit;
     }
 } 
@@ -120,14 +121,16 @@ if ($allgpx[0] !== '') {
     $orgsize = count($allgpx);
     if ($orgsize > 1) {
         for ($x=1; $x<$orgsize; $x++) {
-            if (in_array($x, $noincludes)) {
-                $unlinkAdd = '../gpx/' . $allgpx[$x];
-                if (!unlink($unlinkAdd)) {
-                    throw new Exception(
-                        "Could not remove additional file from site"
-                    );
+            if ($noincludes) {
+                if (in_array($x, $noincludes)) {
+                    $unlinkAdd = '../gpx/' . $allgpx[$x];
+                    if (!unlink($unlinkAdd)) {
+                        throw new Exception(
+                            "Could not remove additional file from site"
+                        );
+                    }
+                    unset($allgpx[$x]);
                 }
-                unset($allgpx[$x]);
             }
         }
         $allgpx = array_values($allgpx); // re-index array
@@ -141,11 +144,12 @@ for ($j=0; $j<count($addfiles); $j++) {
     $filesName = $addfiles[$j];
     $gfile = $_FILES[$filesName]; // file array, i.e. ['name'], ['error'], etc.
     if ($gfile['name'] !== '') {
-        $adder = uploadGpxKmlFile($filesName, true);
+        $adder = uploadGpxKmlFile($filesName, true, true);
         if (empty($_SESSION['user_alert'])) {
             $newadder = pathinfo($adder, PATHINFO_BASENAME);
             array_push($allgpx, $newadder);
         } else {
+            header("Location: " . $redirect);
             exit;
         }
     }

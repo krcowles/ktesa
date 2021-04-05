@@ -49,6 +49,10 @@ function uploadGpxKmlFile($name, $init, $elev=false)
     if (empty($valid['file'])) {
         $_SESSION['user_alert'] .= "No file specified";
         return 'none';
+    } else {
+        if ($_SESSION['user_alert'] !== '' && $init) {
+            return;
+        }
     }
     if ($valid['type'] === 'gpx' || $valid['type'] === 'kml') {
         $file_ext = $valid['type'] === 'gpx' ? '.gpx' : '.kml';
