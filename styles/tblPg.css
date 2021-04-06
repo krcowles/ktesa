@@ -4,6 +4,7 @@ body {
 	font-family: arial, verdana;
 	background-color: #dfdfdf;
 }
+/* Table options header */
 #optcontainer {
 	position: relative;
 	top: -6px;
@@ -43,6 +44,52 @@ body {
 	width: 168px;
 	vertical-align: middle;
 }
+#opt4 {
+	width: 120px;
+	vertical-align: middle;
+}
+#showfilter, #multimap, #units {
+	margin-top: 1px;
+}
+#scroller {
+	margin-top: 1px;
+	font-size: 16px;
+	background-color: #6D3C17;
+	color: white;
+	border-radius: 6px;
+	height: 28px;
+	width: 110px;
+}
+#scroller:hover {
+	cursor: pointer;
+	color: black;
+	background-color: moccasin;
+}
+#backup {
+	display: none;
+	position: sticky;
+	position: -webkit-sticky;
+	top: 120px;
+	width: 100px;
+	height: 26px;
+	font-size: 16px;
+	background-color: #6D3C17;
+	color: white;
+	padding-left: 10px;
+	padding-top: 6px;
+	transform: rotate(270deg);
+	transform-origin: 0px, 0px;
+	/* webkit browsers */
+	/*-webkit-transform: rotate(270deg);
+	-webkit-transform-origin-x: center;
+	-webkit-transform-origin-y: 0px;
+	/* firefox */
+	/*-moz-transform:rotate(270deg);
+	-moz-transform-origin: center;
+	/* internet explorer
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);*/
+}
+/* Filtering */
 #tblfilter {
 	display: none;
 }
@@ -62,23 +109,32 @@ body {
 #spinner {
 	width: 40px;
 }
+select {
+	font-size: 16px;
+}
 #filtnote {
 	font-style: italic;
 	margin-bottom: 4px;
 }
-select {
-	font-size: 16px;
-}
 #note {
 	color: brown;
 }
-input[type=checkbox] {
-	-ms-transform: scale(1.5); /* IE */
-	-moz-transform: scale(1.5); /* FF */
-	-webkit-transform: scale(1.5); /* Safari and Chrome */
-	-o-transform: scale(1.5); /* Opera */
-	transform: scale(1.5);
+/* Subtables */
+#tblgroups {
+	text-align: center;
+	display: none;
 }
+div[id^=sub] {
+	display: none;
+}
+.subtbl {
+	width: 50%;
+	height: 36px;
+	background-color: #ffffdf;
+	color: black;
+	font-weight: bold;
+}
+/* Main ref table */
 img.webShift {
 	padding-left: 19px; }
 img.expShift {
@@ -116,9 +172,7 @@ td:not('#loginTbl') {
 .blue {
 	color: darkblue;
 }
-select {
-	font-size: 16px;
-}
+/* Multimap select modal */
 #usermodal {
 	display: none;
 	position: fixed;

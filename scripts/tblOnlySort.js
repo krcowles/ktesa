@@ -132,6 +132,10 @@ function convert(tblid, jqTable, to_units) {
     $('#units').text(newUnits); // new data element text
     return;
 }
+/**
+ * This function will set up conversion to use original loaded values instead of
+ * recalculating from metric to english. It also registers the click on #units
+ */
 function setupConverter(tblid, org) {
     var $etable = $(tblid);
     var $etbody = $etable.find('tbody');
@@ -266,6 +270,18 @@ $(function () {
     // Provide table id for main table (originally loaded with class only)
     $('.sortable')[0].id = 'maintbl';
     tableSort('#maintbl');
+    $('#maintbl').css('margin-bottom', '26px');
+    // 'Return to top' div, when selecting scroll
+    var tablepos = $('#maintbl').offset();
+    var table_left = (tablepos.left - 78) + 'px';
+    $('#backup').css('left', table_left);
+    $(window).on('scroll', function () {
+        var s = $(window).scrollTop();
+        if (s < 200) {
+            $('#backup').hide();
+            $('#scroller').val("none");
+        }
+    });
     // Initialize the results table html by adding column headers from main table
     var tblHdrs = $('#maintbl').html();
     var bdystrt = tblHdrs.indexOf('<tbody>');
@@ -295,20 +311,24 @@ $(function () {
             // there is no ftable yet, so don't alter converter setup, just toggle displays
             if ($('#tblfilter').css('display') === 'none') {
                 $('#tblfilter').show();
+                $(this).text("Close Filter");
             }
             else {
                 $('#tblfilter').hide();
+                $(this).text("Filter Hikes");
             }
         }
         else {
             if ($('#tblfilter').css('display') === 'none') {
                 $('#tblfilter').show();
+                $(this).text("Close Filter");
                 $('#refTbl').hide();
                 $('#units').text(curr_ftbl_state);
                 setupConverter('#ftable', false);
             }
             else {
                 $('#tblfilter').hide();
+                $(this).text("Filter Hikes");
                 $('#refTbl').show();
                 $('#units').text(curr_main_state);
                 setupConverter('#maintbl', false);
@@ -317,5 +337,55 @@ $(function () {
     });
     $('#multimap').on('click', function () {
         $('#usermodal').show();
+    });
+    var hikelist = [];
+    var $alph = $('#maintbl').find('tbody tr');
+    $alph.each(function () {
+        var $link = $(this).children().eq(0).children().eq(0);
+        var hikename = $link.text().toLowerCase();
+        hikelist.push(hikename[0]);
+    });
+    var ele_indx = [];
+    var scroll = [];
+    ele_indx[0] = 0;
+    ele_indx[1] = hikelist.indexOf('c') - 1;
+    ele_indx[2] = hikelist.indexOf('e') - 1;
+    ele_indx[3] = hikelist.indexOf('l') - 1;
+    ele_indx[4] = hikelist.indexOf('p') - 1;
+    ele_indx[5] = hikelist.indexOf('t') - 1;
+    for (var k = 0; k < ele_indx.length; k++) {
+        var $elemnt = $alph.eq(ele_indx[k]);
+        var coords_1 = $elemnt.offset();
+        scroll[k] = coords_1.top;
+    }
+    $('#scroller').on('change', function () {
+        var selected = $(this).val();
+        if (selected === 'none') {
+            $(window).scrollTop(0);
+            $('#backup').hide();
+        }
+        else {
+            var position = parseInt(selected);
+            if (position === 0) {
+                $(window).scrollTop(0);
+                $('#backup').hide();
+            }
+            else {
+                $(window).scrollTop(scroll[position]);
+                // sticky position of *rotated* div will always be 60px from top of new viewport
+                $('#backup').css('top', '60px');
+                $('#backup').show();
+            }
+        }
+    });
+    $('#backup').on('click', function () {
+        $(this).hide();
+        $(window).scrollTop(0);
+        $('#scroller').val(0);
+    });
+    $(window).on('resize', function () {
+        tablepos = $('#maintbl').offset();
+        table_left = (tablepos.left - 78) + 'px';
+        $('#backup').css('left', table_left);
     });
 });

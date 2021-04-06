@@ -20,6 +20,7 @@ $pageType = 'FullTable';
 <head>
     <title>New Mexico Hikes</title>
     <meta charset="utf-8" />
+    <meta content-type="text/html" />
     <meta name="description"
         content="Table of hikes the authors have undertaken in New Mexico" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
@@ -38,7 +39,7 @@ $pageType = 'FullTable';
 
 <div id="optcontainer">
     <div id="tblopts">
-        <strong>Table Options:</strong>&nbsp;&nbsp;
+        <strong>Options:</strong>&nbsp;&nbsp;
         <div id="opt1" class="topts">
             <button id="showfilter">Filter Hikes</button>
         </div>
@@ -49,8 +50,20 @@ $pageType = 'FullTable';
         <div id="opt3" class="topts">
             <button id="units">Show Metric Units</button>
         </div>
+        <div id="opt4" class="topts">
+            <select id="scroller">
+                <option value="none">Scroll to:</option>
+                <option value="0">Top</option>
+                <option value="1">C's</option>
+                <option value="2">E's</option>
+                <option value="3">L's</option>
+                <option value="4">P's</option>
+                <option value="5">T's</option>
+            </select>
+        </div>
     </div>
 </div>
+<div id="backup">Return to top</div>
 
 <!-- Filtering and SortingOptions: -->
 <div id="tblfilter">
@@ -101,10 +114,12 @@ $pageType = 'FullTable';
     <strong id="note">NOTE:</strong>
     Click on any hike column to sort; again to reverse.<br />
 </p>
+
 <div id="refTbl">
     <?php require "../php/makeTables.php"; ?>
 </div>
 
+<!-- Multimap Modal -->
 <div id="usermodal">
     <div id="modalhdr">
         <div id="hdrleft"><strong>Drag Here</strong></div>
