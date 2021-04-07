@@ -31,8 +31,8 @@ require_once "tableData.php";
             <th class="hdr_row" data-sort="lan">Length</th>
             <th class="hdr_row" data-sort="lan">Elev Chg</th>
             <th class="hdr_row" data-sort="std">Difficulty</th>
-            <th class="hdr_row">Exposure</th>
-            <th class="hdr_row">By Car</th>
+            <th class="hdr_row" data-sort="icn">Exposure</th>
+            <th class="hdr_row" data-sort="no">By Car</th>
         </tr>
     </thead>
     <tbody>

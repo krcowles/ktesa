@@ -53,6 +53,14 @@ var compare = {
             bout = noPart1 + noPart2;
         }
         return aout - bout;
+    },
+    icn: function (a, b) {
+        if (a < b) {
+            return -1;
+        }
+        else {
+            return a > b ? 1 : 0;
+        }
     }
 }; // end of COMPARE object
 var lgth_hdr;
@@ -181,6 +189,22 @@ var main_rows;
 var ftbl_rows;
 var sort_rows;
 /**
+ * This function translates an exposure icon into sortable text
+ */
+function iconText(imgsrc) {
+    var type;
+    if (imgsrc.indexOf("fullSun") !== -1) {
+        type = "fullsun";
+    }
+    else if (imgsrc.indexOf("partShade") !== -1) {
+        type = "partshade";
+    }
+    else {
+        type = "reasonableshade";
+    }
+    return type;
+}
+/**
  * Apply this function to either main or results table to provide sortable headers
  * Note: provide globals ...
  */
@@ -212,56 +236,127 @@ function tableSort(id) {
     }
     $controls.each(function () {
         $(this).off('click').on('click', function () {
-            $tbody.empty();
+            var success = true;
             var $header = $(this);
-            var order = $header.data('sort');
-            var column;
-            // begin the sort process
-            if ($header.hasClass('ascending') || $header.hasClass('descending')) {
-                $header.toggleClass('ascending descending');
-                if (id === '#maintbl')
-                    $tbody.append(main_rows.reverse());
-                else {
-                    $tbody.append(ftbl_rows.reverse());
-                }
+            if ($header.text() === 'Hike/Trail Name') {
+                toggleScrollSelect(true);
             }
             else {
-                $header.addClass('ascending');
-                $header.siblings().removeClass('ascending descending');
-                if (compare.hasOwnProperty(order)) { // compare object needs method for var order
-                    column = $controls.index(this);
-                    if (id === '#maintbl') {
-                        main_rows.sort(function (a, b) {
-                            var ael = $(a).find('td').eq(column);
-                            var acell = ael.text();
-                            var bel = $(b).find('td').eq(column);
-                            var bcell = bel.text();
-                            var retval = 0;
-                            if (hasKey(compare, order)) {
-                                retval = compare[order](acell, bcell);
-                            }
-                            return retval;
-                        });
-                        $tbody.append(main_rows);
+                toggleScrollSelect(false);
+            }
+            var order = $header.data('sort');
+            if (order === 'no') {
+                alert("This column cannot be sorted");
+                success = false;
+            }
+            else {
+                $tbody.empty();
+                var column;
+                // begin the sort process
+                if ($header.hasClass('ascending') || $header.hasClass('descending')) {
+                    $header.toggleClass('ascending descending');
+                    if (id === '#maintbl')
+                        $tbody.append(main_rows.reverse());
+                    else {
+                        $tbody.append(ftbl_rows.reverse());
+                    }
+                }
+                else {
+                    $header.addClass('ascending');
+                    $header.siblings().removeClass('ascending descending');
+                    if (compare.hasOwnProperty(order)) { // compare object needs method for var order
+                        column = $controls.index(this);
+                        if (id === '#maintbl') {
+                            main_rows.sort(function (a, b) {
+                                var acell;
+                                var bcell;
+                                var icn;
+                                var ael = $(a).find('td').eq(column);
+                                if (order === 'icn') {
+                                    icn = ael.children().eq(0).attr('src');
+                                    acell = iconText(icn);
+                                }
+                                else {
+                                    acell = ael.text();
+                                }
+                                var bel = $(b).find('td').eq(column);
+                                if (order === 'icn') {
+                                    icn = bel.children().eq(0).attr('src');
+                                    bcell = iconText(icn);
+                                }
+                                else {
+                                    bcell = bel.text();
+                                }
+                                var retval = 0;
+                                if (hasKey(compare, order)) {
+                                    retval = compare[order](acell, bcell);
+                                }
+                                return retval;
+                            });
+                            $tbody.append(main_rows);
+                        }
+                        else {
+                            ftbl_rows.sort(function (a, b) {
+                                var acell;
+                                var bcell;
+                                var icn;
+                                var ael = $(a).find('td').eq(column);
+                                if (order === 'icn') {
+                                    icn = ael.children().eq(0).attr('src');
+                                    acell = iconText(icn);
+                                }
+                                else {
+                                    acell = ael.text();
+                                }
+                                var bel = $(b).find('td').eq(column);
+                                if (order === 'icn') {
+                                    icn = bel.children().eq(0).attr('src');
+                                    bcell = iconText(icn);
+                                }
+                                else {
+                                    bcell = bel.text();
+                                }
+                                var retval = 0;
+                                if (hasKey(compare, order)) {
+                                    retval = compare[order](acell, bcell);
+                                }
+                                return retval;
+                            });
+                            $tbody.append(ftbl_rows);
+                        }
                     }
                     else {
-                        ftbl_rows.sort(function (a, b) {
-                            var ael = $(a).find('td').eq(column);
-                            var acell = ael.text();
-                            var bel = $(b).find('td').eq(column);
-                            var bcell = bel.text();
-                            var retval = 0;
-                            if (hasKey(compare, order)) {
-                                retval = compare[order](acell, bcell);
-                            }
-                            return retval;
-                        });
-                        $tbody.append(ftbl_rows);
+                        alert("Compare failed for this header");
+                        success = false;
                     }
                 }
             }
+            return success;
         });
     });
+}
+/**
+ * Turn on/off the 'Scroll to:' selector based on current settings:
+ * >> When hike title not sorted in ascending order
+ * >> When filter table is showing
+ * NOTE: Attempting to change the background color of the select box destroyed its
+ * 'hover' behavior, so the author simply places a disabled gray selector on top of
+ * the working when to make it appear disabled.
+ */
+function toggleScrollSelect(state) {
+    if (state) {
+        $('#gray').remove();
+    }
+    else {
+        if (!$('#gray').length) {
+            var cover = '<select id="gray"><option value="no">Scroll to:</option></select>';
+            var selpos = $('#scroller').offset();
+            $('#opt4').append(cover);
+            $('#gray').offset({ top: selpos.top, left: selpos.left });
+            $('#gray').css('z-index', '1000');
+            $('#gray').attr('disabled', 'disabled');
+        }
+    }
 }
 /**
  * When page is loaded and table is estabished:
@@ -325,6 +420,7 @@ $(function () {
                 $('#refTbl').hide();
                 $('#units').text(curr_ftbl_state);
                 setupConverter('#ftable', false);
+                toggleScrollSelect(false);
             }
             else {
                 $('#tblfilter').hide();
@@ -332,6 +428,7 @@ $(function () {
                 $('#refTbl').show();
                 $('#units').text(curr_main_state);
                 setupConverter('#maintbl', false);
+                toggleScrollSelect(true);
             }
         }
     });

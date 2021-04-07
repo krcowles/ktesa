@@ -51,7 +51,7 @@ $pageType = 'FullTable';
             <button id="units">Show Metric Units</button>
         </div>
         <div id="opt4" class="topts">
-            <select id="scroller">
+            <select id="scroller" class="selhover">
                 <option value="none">Scroll to:</option>
                 <option value="0">Top</option>
                 <option value="1">C's</option>

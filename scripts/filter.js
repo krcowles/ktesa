@@ -55,6 +55,7 @@ $('#filtpoi').on('click', function () {
                 }
             }
             filterList(epsilon, arealoc);
+            toggleScrollSelect(false);
         },
         error: function () {
             alert("Unable to retrieve areas.json");
@@ -68,6 +69,7 @@ $('#filthike').on('click', function () {
     if (hikeloc !== '') {
         arealoc = getHikeCoords(hikeloc);
         filterList(epsilon, arealoc);
+        toggleScrollSelect(false);
     }
     else {
         alert("You have not selected a hike");

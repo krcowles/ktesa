@@ -62,8 +62,17 @@ body {
 }
 #scroller:hover {
 	cursor: pointer;
-	color: black;
 	background-color: moccasin;
+	color: black;
+}
+#gray {
+	margin-top: 1px;
+	font-size: 16px;
+	background-color: gray;
+	color: white;
+	border-radius: 6px;
+	height: 28px;
+	width: 110px;
 }
 #backup {
 	display: none;
@@ -80,14 +89,14 @@ body {
 	transform: rotate(270deg);
 	transform-origin: 0px, 0px;
 	/* webkit browsers */
-	/*-webkit-transform: rotate(270deg);
-	-webkit-transform-origin-x: center;
+	-webkit-transform: rotate(270deg);
+	-webkit-transform-origin-x: 0px;
 	-webkit-transform-origin-y: 0px;
 	/* firefox */
-	/*-moz-transform:rotate(270deg);
-	-moz-transform-origin: center;
-	/* internet explorer
-	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);*/
+	-moz-transform:rotate(270deg);
+	-moz-transform-origin: 0px, 0px;
+	/* internet explorer */
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 /* Filtering */
 #tblfilter {

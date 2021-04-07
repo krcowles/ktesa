@@ -41,7 +41,7 @@ $sunIcon = '<img class="expShift" src="../images/fullSun.jpg" alt="Sunny icon" /
 $partialIcon = '<img class="expShift" src="../images/partShade.jpg" '
     . 'alt="Partial shade icon" />';
 $shadeIcon = '<img class="expShift" src="../images/goodShade.jpg" '
-    . 'alt="Partial sun/shade icon" />';
+    . 'alt="Good shade icon" />';
 
 // Get Cluster Data:
 // NOTE: New Cluster Pages in-edit will have negative integers in 'page'
