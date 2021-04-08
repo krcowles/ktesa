@@ -22,11 +22,13 @@ $(function () {
         var postdata = { branch: branch, commit: commit };
         var ans = confirm("Proceed to upload '" + branch + "'?");
         if (ans) {
+            $('#loading').show();
             $.ajax({
                 url: '../php/ftp.php',
                 method: "post",
                 data: postdata,
                 success: function (result) {
+                    $('#loading').hide();
                     if (result !== "\nDone") {
                         alert("Error: " + result);
                     }
@@ -72,19 +74,21 @@ $(function () {
         }
         else {
             var userspec = deleters.split(",");
-            for (var i_1 = 0; i_1 < userspec.length; i_1++) {
-                var item = userspec[i_1].trim();
+            for (var i = 0; i < userspec.length; i++) {
+                var item = userspec[i].trim();
                 deletions.push(item);
             }
             ajax = true;
         }
         if (ajax) {
-            var postdata = { install: copyloc, delete: deletions };
+            $('#loading').show();
+            var postdata = { install: copyloc, "delete": deletions };
             $.ajax({
                 url: 'install.php',
                 method: "post",
                 data: postdata,
                 success: function (result) {
+                    $('#loading').hide();
                     alert(result);
                 },
                 error: function (jqXHR) {

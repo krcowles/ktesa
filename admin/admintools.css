@@ -12,6 +12,12 @@ legend {
     font-style: italic;
     font-size: 18px;
 }
+#loading {
+    display: none;
+    position: absolute;
+    top: 276px;
+    left: 32%;
+}
 .cats {
     font-size: 18px;
     color: brown;

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+      "moduleResolution": "Node",
       "module": "none",
       "lib": ["es2016", "DOM"],
       "strict": true,

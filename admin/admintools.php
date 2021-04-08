@@ -161,6 +161,10 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
     </fieldset><br/>
     <p id="admin_alert" style="display:none;"><?=$admin_alert;?></p>
 </div>
+<div id="loading">
+    <img src="../images/loader-64x/Preloader_3.gif" alt="image while loading" />
+</div>
+
 <script src="../scripts/menus.js" type="text/javascript"></script>
 <script src="admintools.js" type="text/javascript"></script>
 </body>

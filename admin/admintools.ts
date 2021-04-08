@@ -32,11 +32,13 @@ $('#upld').on('click', function() {
     let postdata = {branch: branch, commit: commit};
     let ans = confirm("Proceed to upload '" + branch + "'?");
     if (ans) {
+        $('#loading').show();
         $.ajax({
             url: '../php/ftp.php',
             method: "post",
             data: postdata,
             success: function(result) {
+                $('#loading').hide();
                 if (result !== "\nDone") {
                     alert("Error: " + result)
                 } else {
@@ -86,12 +88,14 @@ $('#install').on('click', function() {
         ajax = true;
     }
     if (ajax) {
+        $('#loading').show();
         let postdata = {install: copyloc, delete: deletions};
         $.ajax({
             url: 'install.php',
             method: "post",
             data: postdata,
             success: function(result) {
+                $('#loading').hide();
                 alert(result);
             },
             error: function(jqXHR) {
