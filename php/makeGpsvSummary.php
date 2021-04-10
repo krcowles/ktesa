@@ -12,7 +12,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require "../build/buildFunctions.php";
+require "../edit/editFunctions.php";
 // Error messaging
 $intro = '<p style="color:red;left-margin:12px;font-size:18px;">';
 $close = '</p>';

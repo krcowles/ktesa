@@ -257,7 +257,7 @@ function makeTrackFile($gpxfile)
     $trk = fopen($trkloc, "w");
     $dwnld = fwrite($trk, $gpxdat[3]);
     if ($dwnld === false) {
-        $trkfail =  "buildFunctions.php: Failed to write out {$trkfile} " .
+        $trkfail =  "editFunctions.php: Failed to write out {$trkfile} " .
             "[length: " . strlen($jdat) . "]; Please contact Site Master";
         throw new Exception($trkfail);
     } 
@@ -297,7 +297,7 @@ function getClusters($pdo)
  */
 function createPseudoGpx($clat, $clng, &$gpxfile, &$files)
 {
-    $pseudo = simplexml_load_file("../build/pseudo.gpx");
+    $pseudo = simplexml_load_file("../edit/pseudo.gpx");
     $y = $pseudo->trk->trkseg[0];
     $y->trkpt[0]['lat'] = $clat;
     $y->trkpt[0]['lon'] = $clng;

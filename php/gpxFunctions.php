@@ -1,6 +1,6 @@
 <?php
 /**
- * This module contains functions used both during build and when creating
+ * This module contains functions used both during editng and when creating
  * GPSV maps.
  * PHP Version 7.4
  * 

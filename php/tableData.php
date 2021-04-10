@@ -7,7 +7,7 @@
  *      $pageType = 'FullTable'
  *      Here it is used to display ALL hikes and cluster pages regardless of 
  *      userid; [show=all, table=HIKES (ie age=old)];
- *  2.  By 'build/hikeEditor.php' [Contribute->...]
+ *  2.  By 'edit/hikeEditor.php' [Contribute->...]
  *      Here it is used to display ONLY hikes which can be edited by the userid;
  *      $pageType = 'Editor'
  *        a. Editing of newly created hikes or already in-edit hikes;

@@ -38,7 +38,7 @@ var page_type = $('#page_id').text();
 var useHikeEd = 'editDB.php?tab=1&hikeNo=';
 var useClusEd = 'editClusterPage.php?hikeNo=';
 var xfrPage   = 'xfrPub.php?hikeNo=';
-var shipit    = '../build/notifyAdmin.php?hikeNo=';
+var shipit    = '../edit/notifyAdmin.php?hikeNo=';
 var $rows     = $('tbody').find('tr');
 var hikeno: string;
 var lnk: string;

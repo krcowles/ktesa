@@ -72,7 +72,7 @@ $pageType = 'FullTable';
         <input id="spinner" />&nbsp;miles of
     </div>
     <div id="areachoice">
-        <?php require "../build/localeBox.html";?>&nbsp;&nbsp;
+        <?php require "../edit/localeBox.html";?>&nbsp;&nbsp;
         <button id="filtpoi">Filter By Area</button>
     </div>
     <div id="hikechoice">

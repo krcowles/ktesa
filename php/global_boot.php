@@ -34,7 +34,7 @@ require $documentRoot . "/../settings.php";
 require "../admin/set_sql_mode.php";
 // Function definitions:
 require "../admin/adminFunctions.php";
-require "../build/buildFunctions.php";
+require "../edit/editFunctions.php";
 require "../php/errFunctions.php";
 
 ob_start(); // start output buffering so we can avoid "headers already sent" errors

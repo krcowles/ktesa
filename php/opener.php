@@ -27,27 +27,27 @@ if ($page === 'admin' && $login) {
         $script = '';
     }
 } elseif ($page === 'viewPubs') { // not implemented yet
-    $script .= "../build/viewPubs.php" . $close;
+    $script .= "../edit/viewPubs.php" . $close;
 } elseif ($page === 'new') {
     if ($editing === 'yes') {
-        $script .= "../build/startNewPg.php" . $close;
+        $script .= "../edit/startNewPg.php" . $close;
     } else {
         $script = $noedit;
     }
 } elseif ($page === 'existing') {
     if ($editing === 'yes') {
-        $script .= "../build/hikeEditor.php?age=new&show=usr" . $close;
+        $script .= "../edit/hikeEditor.php?age=new&show=usr" . $close;
     } else {
         $script = $noedit;
     }
 } elseif ($page === 'published') {
     if ($editing === 'yes') {
-        $script .= "../build/hikeEditor.php?age=old" . $close;
+        $script .= "../edit/hikeEditor.php?age=old" . $close;
     } else {
         $script = $noedit;
     }
 } elseif ($page === 'ready') {
-    $script .= "../build/hikeEditor.php?age=new&pub=usr" . $close;
+    $script .= "../edit/hikeEditor.php?age=new&pub=usr" . $close;
 } elseif ($page === 'register') {
     $script .= "../accounts/registration.php" . $close;
 }
