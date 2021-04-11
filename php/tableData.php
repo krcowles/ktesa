@@ -1,47 +1,52 @@
 <?php
 /**
- * This script collects the data from the database needed to construct the html 
- * that is used to display various tables of hikes via 'makeTables.php'.
+ * This script collects the data from the database that is needed to construct
+ * the html that is used to display various tables of hikes, via 'makeTables.php'.
+ * [$pageType is used simply to identify the icon for the navbar]
  * The 'makeTables.php' script can be invoked in three different scenarios:
  *  1.  By 'pages/tableOnly.php' ['Explore->Table Only]
  *      $pageType = 'FullTable'
  *      Here it is used to display ALL hikes and cluster pages regardless of 
- *      userid; [show=all, table=HIKES (ie age=old)];
+ *      userid; [age=old, show=all]
  *  2.  By 'edit/hikeEditor.php' [Contribute->...]
- *      Here it is used to display ONLY hikes which can be edited by the userid;
- *      $pageType = 'Editor'
+ *      Here it is used primarily to display hikes which can be edited by the userid;
  *        a. Editing of newly created hikes or already in-edit hikes;
- *           [...Continue Editing Your Hike]
- *           [show=usr, table=EHIKES (ie age=new)];
+ *           [...Continue Editing Your Pages]
+ *           $pageType = 'Edit'
+ *           [age=new, show=usr];
  *           NOTE: The admin can see all hikes in edit (modified to show=all)
  *        b. Editing of a published hike (not currently in edit mode)
  *           [...Edit Your Published Hike]
- *           NOTE: The admin can edit any published hike.
- *           [show=usr, table=HIKES (ie age=old): show=all for admin]      
- *  3.  By 'admin/reldel.php'
+ *           $pageType = 'EditPub'
+ *           [age=old, show=all]
+ *        c. Submitting a hike-in-edit for publication
+ *           [...Submit for publication]
+ *           $pageType = 'PubReq'
+ *           [age=new, pub=usr]    
+ *  3.  By 'admin/reldel.php': via Admintools.php
+ *      Here it is used to list ALL EHIKES (for admin) to release or delete:
  *      $pageType = 'Publish'
- *      Here it is used to list ALL EHIKES (for master) to release or delete:
- *      [show=all, table=EHIKES (ie age=new)]
- *  Each 'calling' script must set the $show, $age (table), and $pageType
- *  parameters; In all cases, the .js will direct the web page link to the proper
- * location.
+ *      [$age=new, show=all]
+ * Each 'calling' script must set the $age, $show (except for publsh request),
+ * and $pageType parameters; In all cases, the .js will direct the web page link
+ * to the proper location.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : '';
+
 // Icons used for table display:
-$mapIcon
-    = 'class="gotomap" src="../images/mapit.png" alt="Zoom-to-map symbol" />';
 $dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
 $sunIcon = '<img class="expShift" src="../images/fullSun.jpg" alt="Sunny icon" />';
 $partialIcon = '<img class="expShift" src="../images/partShade.jpg" '
     . 'alt="Partial shade icon" />';
 $shadeIcon = '<img class="expShift" src="../images/goodShade.jpg" '
     . 'alt="Good shade icon" />';
+$groupIcon = '<img class="expShift nodats" src="../images/group.jpg" '
+. 'alt="Indicator of a group of hikes" />';
 
 // Get Cluster Data:
 // NOTE: New Cluster Pages in-edit will have negative integers in 'page'
@@ -55,7 +60,6 @@ $hikeLocale = array();
 $hikeName = array();
 $hikeWow = array(); 
 $pgLink = array();
-$mapLink = array();    
 $hikeLgth = array();
 $hikeElev = array();
 $hikeDiff = array();
@@ -121,7 +125,6 @@ for ($i=0; $i<$entries; $i++) {
     if ($clusPg) {
         $pgLink[$i] .= '&clus=y';
     }
-    $mapLink[$i]  = '<img id="' . $indx . '" ' . $mapIcon;
     $hikeLgth[$i] = $row['miles'];
     $hikeElev[$i] = $row['feet'];
     $hikeDiff[$i] = $row['diff'];
@@ -130,10 +133,11 @@ for ($i=0; $i<$entries; $i++) {
         $hikeExpIcon[$i] = $sunIcon;
     } elseif ($hikeExposure == 'Mixed sun/shade') {
         $hikeExpIcon[$i] = $partialIcon;
-    } else {
+    } elseif ($hikeExposure == 'Good shade') {
         $hikeExpIcon[$i] = $shadeIcon;
+    } else {
+        $hikeExpIcon[$i] = $groupIcon;
     }
-        //$hikeLinkIcon = $webIcon;
     $hikeDirections[$i] = $row['dirs'];
     $hikeAlbum[$i] = $row['purl1'];
     $hikeGpx[$i] = $row['gpx'];

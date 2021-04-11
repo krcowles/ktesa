@@ -25,9 +25,11 @@ if ($age === 'old') {
     $show = 'all';
     $msg = 'an editable version of the hike';
 } else {
-    $show = 'usr';
+    // age is 'new'
     if ($pubreq) {
         $pageType = 'PubReq';
+        $show = 'usr';
+        // Note: admin won't need to use this option
     } else {
         $pageType = 'Edit';
         $msg = 'the current state of your in-edit hike page';

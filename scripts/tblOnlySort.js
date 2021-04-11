@@ -66,6 +66,7 @@ var compare = {
 var lgth_hdr;
 var elev_hdr;
 var hike_hdr;
+var expo_hdr;
 var eng_units = [];
 var curr_main_state;
 var curr_ftbl_state;
@@ -199,10 +200,21 @@ function iconText(imgsrc) {
     else if (imgsrc.indexOf("partShade") !== -1) {
         type = "partshade";
     }
-    else {
+    else if (imgsrc.indexOf("goodShade") !== -1) {
         type = "reasonableshade";
     }
+    else {
+        type = "zgroup";
+    }
     return type;
+}
+function setNodatAlerts() {
+    $('.nodats').each(function () {
+        $(this).on('mouseover', function () {
+            alert("For Group pages, check each hike\n" +
+                "within the group; otherwise, no data");
+        });
+    });
 }
 /**
  * Apply this function to either main or results table to provide sortable headers
@@ -331,6 +343,7 @@ function tableSort(id) {
                     }
                 }
             }
+            setNodatAlerts();
             return success;
         });
     });
@@ -395,6 +408,9 @@ $(function () {
         }
         if ($(this).text() === 'Elev Chg') {
             elev_hdr = indx;
+        }
+        if ($(this).text() === 'Exposure') {
+            expo_hdr = indx;
         }
     });
     // first state of newly loaded table:
@@ -480,6 +496,7 @@ $(function () {
         $(window).scrollTop(0);
         $('#scroller').val(0);
     });
+    setNodatAlerts();
     $(window).on('resize', function () {
         tablepos = $('#maintbl').offset();
         table_left = (tablepos.left - 78) + 'px';

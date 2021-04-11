@@ -41,11 +41,13 @@ function getHeaderColumn(jqHeaders: JQuery<HTMLTableHeaderCellElement>, key: str
  */
 function iconType(imgsrc: string): string {
     if (imgsrc.indexOf('fullSun') !== -1) {
-        return 'Sun';
+        return 'fullsun';
     } else if(imgsrc.indexOf('partShade') !== -1) {
-        return 'Partial';
+        return 'partsun';
+    } else if (imgsrc.indexOf('goodShade') !== -1) {
+        return 'reasonableshade';
     } else {
-        return 'Shady';
+        return 'zgroup';
     }
 }
 /**
@@ -160,7 +162,7 @@ $('#sort').on('click', function() {
         // get the first level1 key value to compare against
         if (icon) {
             $sortCell = $($rows[0]).find('td').eq(lastkey);
-            exposure = <string>$($sortCell[0]).attr('src');
+            exposure = <string>$sortCell[0].innerHTML;
             lastKey1Val = iconType(exposure);
         } else {
             $sortCell = $($rows[0]).find('td').eq(lastkey);

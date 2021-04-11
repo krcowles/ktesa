@@ -12,14 +12,15 @@
  * @license No license to date
  */
 // Icons used for table display:
-$mapIcon
-    = 'class="gotomap" src="../images/mapit.png" alt="Zoom-to-map symbol" />';
 $dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
 $sunIcon = '<img class="expShift" src="../images/fullSun.jpg" alt="Sunny icon" />';
 $partialIcon = '<img class="expShift" src="../images/partShade.jpg" '
     . 'alt="Partial shade icon" />';
 $shadeIcon = '<img class="expShift" src="../images/goodShade.jpg" '
     . 'alt="Partial sun/shade icon" />';
+$groupIcon = '<img class="expShift" src="../images/group.jpg" '
+    . 'alt="Indicator of a group of hikes" />';
+
 if ($show !== 'all') {
     $userid = $_SESSION['userid'];
 }
@@ -35,7 +36,6 @@ $hikeLocale = array();
 $hikeName = array();
 $hikeWow = array(); 
 $pgLink = array();
-$mapLink = array();    
 $hikeLgth = array();
 $hikeElev = array();
 $hikeDiff = array();
@@ -113,7 +113,6 @@ for ($i=0; $i<$entries; $i++) {
     if ($clusPg) {
         $pgLink[$i] .= '&clus=y';
     }
-    $mapLink[$i]  = '<img id="' . $indx . '" ' . $mapIcon;
     $hikeLgth[$i] = $row['miles'];
     $hikeElev[$i] = $row['feet'];
     $hikeDiff[$i] = $row['diff'];
@@ -122,10 +121,11 @@ for ($i=0; $i<$entries; $i++) {
         $hikeExpIcon[$i] = $sunIcon;
     } elseif ($hikeExposure == 'Mixed sun/shade') {
         $hikeExpIcon[$i] = $partialIcon;
-    } else {
+    } elseif ($hikeExposure == 'Good shade') {
         $hikeExpIcon[$i] = $shadeIcon;
+    } else {
+        $hikeExpIcon[$i] = $groupIcon;
     }
-        //$hikeLinkIcon = $webIcon;
     $hikeDirections[$i] = $row['dirs'];
     $hikeAlbum[$i] = $row['purl1'];
     $hikeGpx[$i] = $row['gpx'];

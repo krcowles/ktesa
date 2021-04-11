@@ -26,8 +26,6 @@ if ($page === 'admin' && $login) {
     } else {
         $script = '';
     }
-} elseif ($page === 'viewPubs') { // not implemented yet
-    $script .= "../edit/viewPubs.php" . $close;
 } elseif ($page === 'new') {
     if ($editing === 'yes') {
         $script .= "../edit/startNewPg.php" . $close;
@@ -36,7 +34,11 @@ if ($page === 'admin' && $login) {
     }
 } elseif ($page === 'existing') {
     if ($editing === 'yes') {
-        $script .= "../edit/hikeEditor.php?age=new&show=usr" . $close;
+        if ($login && ($login == '1' || $login == '2')) {
+            $script .= "../edit/hikeEditor.php?age=new&show=all" . $close;
+        } else {
+            $script .= "../edit/hikeEditor.php?age=new&show=usr" . $close; 
+        }  
     } else {
         $script = $noedit;
     }

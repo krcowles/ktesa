@@ -62,10 +62,6 @@ function gotoPage(content: string) {
         case 'Admintools':
             page = 'admin';
             break;
-        case 'View Published Hikes':
-            page = 'viewPubs';
-            // no script yet
-            break;
         case 'Show Favorites':
             let favpg = '../pages/favTable.php';
             window.open(favpg, '_self');
