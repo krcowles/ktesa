@@ -119,6 +119,12 @@ $pageType = 'FullTable';
     <?php require "../php/makeTables.php"; ?>
 </div>
 
+<!-- Exposure info on mouseover -->
+<div id="nodata">
+    For Group pages, check each hike<br />
+    within the group; otherwise, no data
+</div>
+
 <!-- Multimap Modal -->
 <div id="usermodal">
     <div id="modalhdr">
@@ -135,8 +141,10 @@ $pageType = 'FullTable';
     <span id="hlist">Hikes you have selected:</span>
     <ul id="selections"></ul>
 </div>
+
 <script src="../scripts/menus.js"></script>
-<script src="../scripts/tblOnlySort.js"></script>
+<script src="../scripts/columnSort.js"></script>
+<script src="../scripts/tableOpts.js"></script>
 <script src="../scripts/filter.js"></script>
 <script src="../scripts/multi-sort.js"></script>
 <script src="../scripts/map-multiples.js"></script>

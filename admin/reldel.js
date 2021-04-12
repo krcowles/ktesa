@@ -10,6 +10,7 @@
  * @version 2.1 Typescripted
  */
 $(function () {
+    $('table').attr('id', 'pubTbl');
     var exe = $('#action').text();
     var linkbase;
     if (exe === 'rel') {
@@ -36,4 +37,5 @@ $(function () {
         $(this).find('td').eq(hikeCol).children().attr('href', newlink);
         $(this).find('td').eq(hikeCol).children().attr('target', '');
     });
+    tableSort('#pubTbl');
 });

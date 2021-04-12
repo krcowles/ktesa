@@ -51,6 +51,7 @@ require '../php/makeTables.php';
 <script type="text/javascript">
     var enos = <?= $enos;?>;
 </script>
+<script src="../scripts/columnSort.js"></script>
 <script src ="reldel.js"></script>
 
 </body>

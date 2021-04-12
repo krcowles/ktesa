@@ -8,13 +8,8 @@
  *
  * @version 2.0 Support for cluster pages
  * @version 2.1 Typescripted
+ * @version 2.2 Replaced local sort with new columnSort.ts/js script
  */
-// To use a variable as an index into an object, the following helper function is required
-// to overcome typescript complaints - compliments of
-// https://dev.to/mapleleaf/indexing-objects-in-typescript-1cgi
-function hasKey(obj, key) {
-    return key in obj;
-}
 $(function () {
     /**
      * This script responds based on the current scenario:
@@ -32,6 +27,11 @@ $(function () {
      *     as a table. The links for these pages are modified by this
      *     script to point either to editDB.php if the page is a hike page,
      *     or to editClusterPage.php if the page is a cluster page.
+     *  3. The user selected Contribute->Submit for Publication
+     * 	   In this case, a list of all in-edit hikes created by the user is displayed.
+     *     The display will be the same as Item 2, above. The links however will
+     * 	   generate an email to the admin for processing the request to publish the
+     *     selected hike page.
      */
     var page_type = $('#page_id').text();
     var useHikeEd = 'editDB.php?tab=1&hikeNo=';
@@ -39,6 +39,7 @@ $(function () {
     var xfrPage = 'xfrPub.php?hikeNo=';
     var shipit = '../edit/notifyAdmin.php?hikeNo=';
     var $rows = $('tbody').find('tr');
+    $('table').attr('id', 'editTbl');
     var hikeno;
     var lnk;
     $rows.each(function () {
@@ -124,77 +125,5 @@ $(function () {
             }
         }
     });
-    // global object used to define how table items get compared in a sort:
-    var noPart1;
-    var noPart2;
-    var aout;
-    var bout;
-    var compare = {
-        std: function (a, b) {
-            if (a < b) {
-                return -1;
-            }
-            else {
-                return a > b ? 1 : 0;
-            }
-        },
-        lan: function (a, b) {
-            // commas allowed in numbers, so;
-            var indx = a.indexOf(',');
-            if (indx < 0) {
-                aout = parseFloat(a);
-            }
-            else {
-                noPart1 = 1000 * parseFloat(a);
-                var thou = a.substring(indx + 1, indx + 4);
-                noPart2 = parseInt(thou);
-                aout = noPart1 + noPart2;
-            }
-            indx = b.indexOf(',');
-            if (indx < 0) {
-                bout = parseFloat(b);
-            }
-            else {
-                noPart1 = 1000 * parseFloat(b);
-                var thou = b.substring(indx + 1, indx + 4);
-                noPart2 = parseInt(thou);
-                bout = noPart1 + noPart2;
-            }
-            return aout - bout;
-        }
-    }; // end of COMPARE object
-    $('.sortable').each(function () {
-        var $table = $(this);
-        var $tbody = $table.find('tbody');
-        var $controls = $table.find('th');
-        var rows = $tbody.find('tr').toArray();
-        $controls.on('click', function () {
-            var $header = $(this);
-            var order = $header.data('sort');
-            var column;
-            if ($header.hasClass('ascending') || $header.hasClass('descending')) {
-                $header.toggleClass('ascending descending');
-                $tbody.append(rows.reverse());
-            }
-            else {
-                $header.addClass('ascending');
-                $header.siblings().removeClass('ascending descending');
-                if (compare.hasOwnProperty(order)) { // compare object needs method for var order
-                    column = $controls.index(this);
-                    rows.sort(function (a, b) {
-                        var $ael = $(a).find('td').eq(column);
-                        var acell = $ael.text();
-                        var $bel = $(b).find('td').eq(column);
-                        var bcell = $bel.text();
-                        var retval = 0;
-                        if (hasKey(compare, order)) {
-                            retval = compare[order](acell, bcell);
-                        }
-                        return retval;
-                    });
-                    $tbody.append(rows);
-                } // end compare
-            } // end else
-        });
-    });
+    tableSort('#editTbl');
 });

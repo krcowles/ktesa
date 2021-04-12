@@ -12,6 +12,11 @@
  */
 session_start();
 require "../php/global_boot.php";
+/*
+if (!isset($_SESSION['userid'])) {
+    die("No got");
+}
+*/
 $userid = $_SESSION['userid'];
 
 $age = filter_input(INPUT_GET, 'age');
@@ -92,6 +97,7 @@ $jsInEdit = json_encode($nowInEdit);
     var inEdits = <?=$jsInEdit;?>;
 </script>
 <script src="../scripts/menus.js"></script>
+<script src="../scripts/columnSort.js"></script>
 <script src="hikeEditor.js"></script>
 
 </body>

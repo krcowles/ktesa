@@ -38,6 +38,8 @@ function positionMain() {
  * will perform the filtering
  */
 $('#filtpoi').on('click', function () {
+    $('#sort1').val("No Sort");
+    $('#sort2').val("No Sort");
     var epsilon = $('#spinner').spinner('value');
     var area = $('#area').find(":selected").text();
     $.ajax({
@@ -64,6 +66,8 @@ $('#filtpoi').on('click', function () {
     });
 });
 $('#filthike').on('click', function () {
+    $('#sort1').val("No Sort");
+    $('#sort2').val("No Sort");
     var epsilon = $('#spinner').spinner('value');
     var hikeloc = $('#usehike').val();
     if (hikeloc !== '') {

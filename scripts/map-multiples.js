@@ -1,8 +1,14 @@
 "use strict";
-dragElement(document.getElementById("usermodal"));
+/**
+ * @fileoverview Performance of the 'map multiple hikes on a page' function.
+ *
+ * @author Ken Cowles
+ * @version 1.0 First release
+ */
 /**
  * Make the usermodal draggable:
  */
+dragElement(document.getElementById("usermodal"));
 function dragElement(elmnt) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     var header = document.getElementById("modalhdr");
@@ -47,7 +53,7 @@ function dragElement(elmnt) {
 var selectedHikes = [];
 var orgHt = $('#usermodal').height();
 /**
- * Add this user entry to the 'Selected' list
+ * Add a hike to the 'Selected' list
  */
 function addToList(hike) {
     for (var k = 0; k < eng_units.length; k++) {
@@ -72,7 +78,6 @@ function addToList(hike) {
     $('#selections').append(item);
     $('#usermodal').height(modalheight);
     $('#hike2map').val('');
-    // get the track name:
 }
 // capture user selected hikes
 var mapHikes = [];

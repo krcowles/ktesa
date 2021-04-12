@@ -181,6 +181,12 @@ td:not('#loginTbl') {
 .blue {
 	color: darkblue;
 }
+#nodata {
+	display: none;
+	background-color: ghostwhite;
+	font-size: 11px;
+	position: absolute;
+}
 /* Multimap select modal */
 #usermodal {
 	display: none;

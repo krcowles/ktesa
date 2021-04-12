@@ -83,7 +83,8 @@
     "prepareTracks.ts",
     "dynamicChart.ts",
     /* Table Only page */
-    "tblOnlySort.ts",
+    "columnSort.ts",
+    "tableOpts.ts",
     "filter.ts",
     "multi-sort.ts",
     "map-multiples.ts"
