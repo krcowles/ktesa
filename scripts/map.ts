@@ -113,6 +113,10 @@ function initMap() {
 		rotateControl: false,
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
+    new google.maps.KmlLayer({
+		url: "https://nmhikes.com/maps/NM_Borders.kml",
+		map: map
+	});
 	mapdone.resolve();
 
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
