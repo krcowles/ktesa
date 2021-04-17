@@ -50,15 +50,15 @@ if (sessSupport) {
     else { // REFRESH ENTRY
         // retrieve location data (pic/iframe data is string type and does not need 
         //   to be converted to numeric)
-        for (var i_1 = 0; i_1 < noOfPix; i_1++) {
-            pwidth = 'pwidth' + i_1;
-            capWidth[i_1] = sessionStorage.getItem(pwidth);
+        for (var i = 0; i < noOfPix; i++) {
+            pwidth = 'pwidth' + i;
+            capWidth[i] = sessionStorage.getItem(pwidth);
         }
-        for (var i_2 = 0; i_2 < noOfPix; i_2++) {
-            pleft = 'pleft' + i_2;
-            capLeft[i_2] = sessionStorage.getItem(pleft);
-            ptop = 'ptop' + i_2;
-            capTop[i_2] = sessionStorage.getItem(ptop);
+        for (var i = 0; i < noOfPix; i++) {
+            pleft = 'pleft' + i;
+            capLeft[i] = sessionStorage.getItem(pleft);
+            ptop = 'ptop' + i;
+            capTop[i] = sessionStorage.getItem(ptop);
         }
     }
 }

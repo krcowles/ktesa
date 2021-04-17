@@ -21,6 +21,7 @@ $allHikeIndices = [];
 $locaters = [];
 // These hikes were previously listed as 'Normal' and are now clustered
 $moved = array(76, 77, 79, 80, 81, 83, 84, 202, 204);
+// The above is for reference only, and is otherwise unused.
 
 /**
  * Retrieve cluster & hike data from db
@@ -31,7 +32,7 @@ $clushike_req = "SELECT `indxNo`,`cluster` FROM `CLUSHIKES` WHERE `pub`='Y';";
 $clushikes 
     = $pdo->query($clushike_req)->fetchAll(PDO::FETCH_ASSOC);
 $hike_req = "SELECT `pgTitle`,`indxNo`,`miles`,`feet`,`diff`,`lat`,`lng`," .
-    "`dirs` FROM `HIKES`;";
+    "`preview`,`dirs` FROM `HIKES`;";
 $hikes = $pdo->query($hike_req)->fetchAll(PDO::FETCH_ASSOC);
 
 /**
@@ -107,7 +108,8 @@ foreach ($hikes as $hike) {
                 $chikeObj = '{name:"' . $hike['pgTitle']. '",indx:' .
                     $hike['indxNo'] . ',lgth:' . $hike['miles'] . ',elev:' .
                     $hike['feet'] . ',diff:"' . $hike['diff'] . '",loc:{lat:' .
-                    $hike['lat']/LOC_SCALE . ',lng:' . $hike['lng']/LOC_SCALE . '}}';
+                    $hike['lat']/LOC_SCALE . ',lng:' . $hike['lng']/LOC_SCALE .
+                    '},' . 'prev:"' . $hike['preview'] . '"}';
                 if (substr($clusterObjs[$clusterid], -1) == '}') {
                     $clusterObjs[$clusterid] .= ',' . $chikeObj;
                 } else {
@@ -121,7 +123,8 @@ foreach ($hikes as $hike) {
                 $hike['indxNo'] . ',loc:{lat:' . $hike['lat']/LOC_SCALE .
                 ',lng:' . $hike['lng']/LOC_SCALE . '},lgth:' .
                 $hike['miles'] . ',elev:' . $hike['feet'] . ',diff:"' .
-                $hike['diff'] . '",dirs:"' . $hike['dirs'] . '"}';
+                $hike['diff'] . '",prev:"' . $hike['preview'] . '",dirs:"' .
+                $hike['dirs'] . '"}';
             array_push($normalObjs, $hikeObj);
         }
     }

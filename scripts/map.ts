@@ -8,6 +8,7 @@
  * @author Ken Cowles
  * @version 3.0 Added Cluster Page compatibility (removes indexPageTemplate links)
  * @version 4.0 Typescripted, with some type errors corrected
+ * @version 5.0 Reworked to synchronize with the new thumbnail loading process
  */
 // Hike Track Colors: red, blue, orange, purple, black
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000']
@@ -28,7 +29,10 @@ var hiliteObj: Hilite_Obj = {};     // global object holding hike object & marke
 var hilited: google.maps.Polyline[] = [];
 var zoom_level: number;
 var zoomdone: JQuery.Deferred<void>;
+// map event handler globals for determining resulting action in handler
 var panning: boolean = false;
+var marker_click: boolean = false;
+
 /**
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
@@ -166,10 +170,17 @@ function initMap() {
 			locaters[itemno].clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			if (zoom_level < 13) {
-				map.setZoom(13);
+			if (loadSpreader !== undefined) {
+				clearInterval(loadSpreader);
+				loadSpreader = undefined;
 			}
+			zoom_level = map.getZoom();
+			marker_click = zoom_level < 13 ? true : false;
 			map.setCenter(location);
+			if (marker_click) {
+				map.setZoom(13);
+				marker_click = false;
+			}
 			iw.open(map, this);
 			locaters[itemno].clicked = true;
 		});
@@ -204,10 +215,17 @@ function initMap() {
 			locaters[itemno].clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			if (zoom_level < 13) {
-				map.setZoom(13);
+			if (loadSpreader !== undefined) {
+				clearInterval(loadSpreader);
+				loadSpreader = undefined;
 			}
+			zoom_level = map.getZoom();
+			marker_click = zoom_level < 13 ? true : false;
 			map.setCenter(hikeobj.loc);
+			if (marker_click) {
+				map.setZoom(13);
+				marker_click = false;
+			}
 			iw.open(map, this);
 			locaters[itemno].clicked = true;
 		});
@@ -225,6 +243,10 @@ function initMap() {
 
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
 	map.addListener('zoom_changed', function() {
+		if (typeof loadSpreader !== undefined) {
+			clearInterval(loadSpreader);
+			loadSpreader = undefined;
+		}
 		var zoomTracks = false;
 		zoomdone = $.Deferred();
 		var idle = google.maps.event.addListener(map, 'idle', function () {
@@ -249,6 +271,10 @@ function initMap() {
 	});
 	
 	map.addListener('dragstart', function() {
+		if (loadSpreader !== undefined) {
+			clearInterval(loadSpreader);
+			loadSpreader = undefined;
+		}
 		panning = true;
 	});
 
@@ -268,15 +294,27 @@ function initMap() {
 	});
 
 	map.addListener('center_changed', function() {
-		if (!panning) {
-			$.when(zoomdone).then(function() {
+		if (!panning && (!marker_click && !cluster_click)) {
+			if (loadSpreader !== undefined) {
+				clearInterval(loadSpreader);
+				loadSpreader = undefined;
+			}
+			var curZoom = map.getZoom();
+			let zoomTracks = true;
+			var perim = String(map.getBounds());
+			if (curZoom < 13) {
+				zoomTracks = false;
+			}
+			zoomedHikes = IdTableElements(perim, zoomTracks);
+			if (zoomTracks && zoomedHikes.length > 0) {
+				zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2]);
 				if (applyHighlighting) {
 					restoreTracks();
 					highlightTracks();
 				}
-			});
+			}
 		} else {
-			panning = false;
+			cluster_click = false;
 		}
 	});
 }
@@ -286,12 +324,6 @@ function initMap() {
 /**
  * This file will create tracks for the input arrays of hike objects and clusters.
  * If a track has already been created, it will not be created again.
- * 
- * @param {array} hikenos The array of hike numbers within zoomed map bounds
- * @param {array} infoWins The array of infoWins corresponding to hikenos
- * @param {array} trackcolors Colors assigned to a track
- * 
- * @return {array} promises (deferred objects)
  */
 function zoom_track(hikenos:number[], infoWins:string[], trackcolors:string[]) {
 	var promises:JQueryDeferred<void>[] = [];
@@ -365,7 +397,9 @@ function drawTrack(json_filename:string, info_win:string, color:string,
 // /////////////////////////  END TRACK DRAWING  ///////////////////////////
 
 // //////////////////////////  GEOLOCATION CODE ////////////////////////////
-// THIS ISN'T WORKING AND I DON'T KNOW WHY - IT USED TO....
+/**
+ * Drop the geolocation symbol on the user's current location
+ */
 function setupLoc() {
 		navigator.geolocation.getCurrentPosition(success, error, geoOpts);
 		function success(_pos:any) {
@@ -418,7 +452,11 @@ $(window).on('resize', function() {
 	$map.css('width', mapWidth + 'px');
 	$('#sideTable').css('width', tblWidth + 'px');
 	locateGeoSym();
-	positionFavTooltips();
+	$('.like').each(function() {
+		let $icon = $(this);
+        let $tooldiv = $icon.parent().prev();
+        positionFavToolTip($tooldiv, $icon);
+	});
 });
 
 // //////////////////////////////////////////////////////////////

@@ -12,6 +12,21 @@
 session_start();
 require "../php/global_boot.php";
 require "alphabeticHikes.php";
+// find level at which pictures directory resides
+$current = getcwd();
+$startDir = $current;
+$ups = 0;
+$rels = '';
+while (!in_array('pictures', scandir($current))) {
+    chdir('..');
+    $current = getcwd();
+    $ups++;
+    $rels .= '../';
+    if ($ups > 5) { 
+        throw new Exception("Can't find pictures directory!");
+    }
+}
+chdir($startDir);
 ?> 
 <!DOCTYPE html>
 <html lang="en-us">
@@ -27,6 +42,35 @@ require "alphabeticHikes.php";
     <link href="../styles/home.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
+    <script type="text/javascript">
+        /* favlist is required later and needs to be complete
+         * before side tables are formed
+         */
+        var favlist;
+        $.ajax({
+            url: 'getFavorites.php',
+            method: 'get',
+            dataType: 'text',
+            success: function(flist) {
+                if (flist == '') {
+                    favlist = [];
+                } else {
+                    favlist = JSON.parse(flist); // array of hike numbers
+                }
+                return;
+            },
+            error: function(jqXHR) {
+                var newDoc = document.open();
+                newDoc.write(jqXHR.responseText);
+                newDoc.close();
+                return;
+            }
+        });
+        var thumb    = '<?=$rels;?>' + 'pictures/thumbs/';
+        var preview  = '<?=$rels;?>' + 'pictures/previews';
+        var loadSpreader; // interval timer for spacing out thumbnail loads
+        var cluster_click = false; // linked to clicking a clusterer marker
+    </script>
 </head>
 
 <body>
@@ -59,7 +103,6 @@ var allHikes = <?=$jsIndx;?>;
 var locations = <?=$jsLocs;?>;
 var pages = <?=$jsPages;?>;    // page indxNo for non-hikes
 var pgnames = <?=$jsPageNames;?>;
-window.name = "homePage";
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/markerclusterer.js"></script>

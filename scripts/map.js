@@ -9,6 +9,7 @@
  * @author Ken Cowles
  * @version 3.0 Added Cluster Page compatibility (removes indexPageTemplate links)
  * @version 4.0 Typescripted, with some type errors corrected
+ * @version 5.0 Reworked to synchronize with the new thumbnail loading process
  */
 // Hike Track Colors: red, blue, orange, purple, black
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000'];
@@ -28,7 +29,9 @@ var hiliteObj = {}; // global object holding hike object & marker type
 var hilited = [];
 var zoom_level;
 var zoomdone;
+// map event handler globals for determining resulting action in handler
 var panning = false;
+var marker_click = false;
 /**
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
@@ -158,10 +161,17 @@ function initMap() {
             locaters[itemno].clicked = false;
         });
         marker.addListener('click', function () {
-            if (zoom_level < 13) {
-                map.setZoom(13);
+            if (loadSpreader !== undefined) {
+                clearInterval(loadSpreader);
+                loadSpreader = undefined;
             }
+            zoom_level = map.getZoom();
+            marker_click = zoom_level < 13 ? true : false;
             map.setCenter(location);
+            if (marker_click) {
+                map.setZoom(13);
+                marker_click = false;
+            }
             iw.open(map, this);
             locaters[itemno].clicked = true;
         });
@@ -194,10 +204,17 @@ function initMap() {
             locaters[itemno].clicked = false;
         });
         marker.addListener('click', function () {
-            if (zoom_level < 13) {
-                map.setZoom(13);
+            if (loadSpreader !== undefined) {
+                clearInterval(loadSpreader);
+                loadSpreader = undefined;
             }
+            zoom_level = map.getZoom();
+            marker_click = zoom_level < 13 ? true : false;
             map.setCenter(hikeobj.loc);
+            if (marker_click) {
+                map.setZoom(13);
+                marker_click = false;
+            }
             iw.open(map, this);
             locaters[itemno].clicked = true;
         });
@@ -213,6 +230,10 @@ function initMap() {
     new MarkerClusterer(map, clustererMarkerSet, clusterer_opts);
     // //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
     map.addListener('zoom_changed', function () {
+        if (typeof loadSpreader !== undefined) {
+            clearInterval(loadSpreader);
+            loadSpreader = undefined;
+        }
         var zoomTracks = false;
         zoomdone = $.Deferred();
         var idle = google.maps.event.addListener(map, 'idle', function () {
@@ -235,6 +256,10 @@ function initMap() {
         });
     });
     map.addListener('dragstart', function () {
+        if (loadSpreader !== undefined) {
+            clearInterval(loadSpreader);
+            loadSpreader = undefined;
+        }
         panning = true;
     });
     map.addListener('dragend', function () {
@@ -252,16 +277,28 @@ function initMap() {
         panning = false;
     });
     map.addListener('center_changed', function () {
-        if (!panning) {
-            $.when(zoomdone).then(function () {
+        if (!panning && (!marker_click && !cluster_click)) {
+            if (loadSpreader !== undefined) {
+                clearInterval(loadSpreader);
+                loadSpreader = undefined;
+            }
+            var curZoom = map.getZoom();
+            var zoomTracks = true;
+            var perim = String(map.getBounds());
+            if (curZoom < 13) {
+                zoomTracks = false;
+            }
+            zoomedHikes = IdTableElements(perim, zoomTracks);
+            if (zoomTracks && zoomedHikes.length > 0) {
+                zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2]);
                 if (applyHighlighting) {
                     restoreTracks();
                     highlightTracks();
                 }
-            });
+            }
         }
         else {
-            panning = false;
+            cluster_click = false;
         }
     });
 }
@@ -270,26 +307,20 @@ function initMap() {
 /**
  * This file will create tracks for the input arrays of hike objects and clusters.
  * If a track has already been created, it will not be created again.
- *
- * @param {array} hikenos The array of hike numbers within zoomed map bounds
- * @param {array} infoWins The array of infoWins corresponding to hikenos
- * @param {array} trackcolors Colors assigned to a track
- *
- * @return {array} promises (deferred objects)
  */
 function zoom_track(hikenos, infoWins, trackcolors) {
     var promises = [];
-    for (var i_1 = 0, j = 0; i_1 < hikenos.length; i_1++, j++) {
-        if (!drawnHikes.includes(hikenos[i_1])) {
-            if (tracks[hikenos[i_1]] !== '') {
+    for (var i = 0, j = 0; i < hikenos.length; i++, j++) {
+        if (!drawnHikes.includes(hikenos[i])) {
+            if (tracks[hikenos[i]] !== '') {
                 var sgldef = $.Deferred();
                 promises.push(sgldef);
-                var trackfile = '../../json/' + tracks[hikenos[i_1]];
-                drawnHikes.push(hikenos[i_1]);
+                var trackfile = '../../json/' + tracks[hikenos[i]];
+                drawnHikes.push(hikenos[i]);
                 if (j === trackcolors.length) {
                     j = 0; // rollover colors when # of tracks > # of colors
                 }
-                drawTrack(trackfile, infoWins[i_1], trackcolors[j], hikenos[i_1], sgldef);
+                drawTrack(trackfile, infoWins[i], trackcolors[j], hikenos[i], sgldef);
             }
         }
     }
@@ -345,7 +376,9 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
 }
 // /////////////////////////  END TRACK DRAWING  ///////////////////////////
 // //////////////////////////  GEOLOCATION CODE ////////////////////////////
-// THIS ISN'T WORKING AND I DON'T KNOW WHY - IT USED TO....
+/**
+ * Drop the geolocation symbol on the user's current location
+ */
 function setupLoc() {
     navigator.geolocation.getCurrentPosition(success, error, geoOpts);
     function success(_pos) {
@@ -395,6 +428,10 @@ $(window).on('resize', function () {
     $map.css('width', mapWidth + 'px');
     $('#sideTable').css('width', tblWidth + 'px');
     locateGeoSym();
-    positionFavTooltips();
+    $('.like').each(function () {
+        var $icon = $(this);
+        var $tooldiv = $icon.parent().prev();
+        positionFavToolTip($tooldiv, $icon);
+    });
 });
 // //////////////////////////////////////////////////////////////

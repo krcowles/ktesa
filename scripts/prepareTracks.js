@@ -18,10 +18,10 @@ var trkLngs = [];
 var trkMaxs = []; // elevation max 
 var trkMins = []; // elevation min
 var trkRows = []; // track data points {x, y}
-for (var i_1 = 0; i_1 < hikeFiles.length; i_1++) {
+for (var i = 0; i < hikeFiles.length; i++) {
     var trackDef = $.Deferred();
     promises.push(trackDef);
-    hikeTrack = "../gpx/" + hikeFiles[i_1];
+    hikeTrack = "../gpx/" + hikeFiles[i];
     getTrackData(trackDef);
 }
 $.when.apply($, promises).then(function () {
@@ -88,15 +88,15 @@ function getTrackData(promise) {
                 rows[0] = { x: 0, y: elevs[0] };
                 var emax = 0;
                 var emin = 20000;
-                for (var i_2 = 0; i_2 < lats.length - 1; i_2++) {
-                    hikelgth += distance(lats[i_2], lngs[i_2], lats[i_2 + 1], lngs[i_2 + 1], "M");
-                    if (elevs[i_2 + 1] > emax) {
-                        emax = elevs[i_2 + 1];
+                for (var i = 0; i < lats.length - 1; i++) {
+                    hikelgth += distance(lats[i], lngs[i], lats[i + 1], lngs[i + 1], "M");
+                    if (elevs[i + 1] > emax) {
+                        emax = elevs[i + 1];
                     }
-                    if (elevs[i_2 + 1] < emin) {
-                        emin = elevs[i_2 + 1];
+                    if (elevs[i + 1] < emin) {
+                        emin = elevs[i + 1];
                     }
-                    var dataPtObj = { x: hikelgth, y: elevs[i_2 + 1] };
+                    var dataPtObj = { x: hikelgth, y: elevs[i + 1] };
                     rows.push(dataPtObj);
                 }
                 trkRows.push(rows);

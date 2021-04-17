@@ -1,10 +1,17 @@
 /// <reference path='./map.d.ts' />
+declare var loadSpreader: any;
+declare var thumb: string;
+declare var preview: string;
+declare var favlist: number[];
 /**
  * @file This file creates and places the html for the side table, as well as providing
- *       a search bar capability synchronized to the side table.
+ *       a search bar capability synchronized to the side table. Note that any globals
+ *       needed for map.js are either supplied via home.php, or have already been
+ *       declared via map.js, which is called first.
  * @author Ken Cowles
  * @version 4.0 Adds track highlighting
- * @version 5.0 Typescripted, with some type errors corrected
+ * @version 5.0 Typescripted, with some previous type errors corrected
+ * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
  */
  
 /**
@@ -21,6 +28,7 @@ $('#searchbar').on('input', function() {
     if (match.length > 0) {
         popupHikeName(val);
     }
+    return;
 });
 
 /**
@@ -58,12 +66,15 @@ function popupHikeName(hikename: string) {
     }
     if (!found) {
         alert("This hike cannot be located in the list of hikes");
-        //infoWin_zoom = false;
     }
+    return;
 }
 /**
- * This function will click the argument's infoWindow
- * 
+ * This function will click the argument's infoWindow;
+ * Note the use of 'setCenter': when NOT panning, as in this case, setCenter
+ * will wait for the deferred 'zoomdone' to be resolved. If the marker has
+ * already been clicked (infoWin present), there is no need to re-zoom, so 
+ * 'zoomdone' get resolved immediately.
  */
 const infoWin = (hike:string, loc:GPS_Coord)  => {
     // highlight track for either searchbar or zoom-to icon:
@@ -72,7 +83,6 @@ const infoWin = (hike:string, loc:GPS_Coord)  => {
     for (let k=0; k<locaters.length; k++) {
         if (locaters[k].hikeid == hike) {
             if (locaters[k].clicked === false) {
-                zoom_level = map.getZoom();
                 google.maps.event.trigger(locaters[k].pin, 'click');
             } else {
                 map.setCenter(loc);
@@ -85,7 +95,7 @@ const infoWin = (hike:string, loc:GPS_Coord)  => {
 
 /**
  * This function emphasizes the hike track(s) that have been zoomed to;
- * NOTE: A javascript anomaly - passing in a single object in an array
+ * NOTE: A javascript anomaly: passing in a single object in an array
  * results in the function receiving the object, but not as an array.
  * Hence a 'type' identifier is used here
  */
@@ -128,6 +138,7 @@ function highlightTracks() {
         }
         hiliteObj = {};
     }
+    return;
 }
 
 /**
@@ -150,23 +161,23 @@ function restoreTracks() {
  * allHikes:  an array of every hike in the database;
  * locations: a one-to-one correspondence to allHikes; an array of objects containing
  * the object type of the hike (CL, or NM) and its index in that array.
- * [CL, NM are arrays]
  */
-var sideTbl: Normals = new Array();
-for ( var i=0; i<allHikes.length; i++ ) {
-    var groupObj = locations[i];
-    var hikeObj = <NM>idHike(allHikes[i], groupObj); // retrieve the specific hike object
-    sideTbl.push(hikeObj);
+function compareObj(a: NM, b: NM) {
+    var hikea = a.name;
+    var hikeb = b.name;
+    var comparison: number;
+    if (hikea > hikeb) {
+        comparison = 1;
+    } else {
+        comparison = -1;
+    }
+    return comparison;
 }
 
 /**
  * The following function returns the appropriate hike object based on the incoming
  * object (obj) and the desired hike number (indx) in that object. Note that Type VC
  * and CL hikes can have an array of hikes in their corresponding objects.
- * 
- * @param {integer} indx This is the hike number (indxNo in database)
- * @param {object}  obj  This is the object holding the hike's object type (VC, CL, NM)
- * @returns {object}     The desired hike object
  */
 function idHike(indx:number, obj:HikeObjectLocation):NM {
     if (obj.type === 'cl') {
@@ -184,34 +195,11 @@ function idHike(indx:number, obj:HikeObjectLocation):NM {
 }
 
 /**
- * Get the current list of user's favorites. Note that a deferred object is
- * defined so that the list can be retrieved prior to invoking the side table.
- */ 
-var listdone: JQuery.Deferred<void> = $.Deferred();
-var favlist: number[];
-var ftbl = 'getFavorites.php';
-$.ajax({
-    url: ftbl,
-    method: 'get',
-    dataType: 'text',
-    success: function(flist) {
-        if (flist == '') {
-            favlist = [];
-        } else {
-            favlist = JSON.parse(flist); // array of hike numbers
-        }
-        listdone.resolve();
-    },
-    error: function(jqXHR) {
-        var newDoc = document.open();
-        newDoc.write(jqXHR.responseText);
-        newDoc.close();
-    }
-});
-
-/**
  * The html 'wrapper' for each item included in the side table
  */
+const subsize = 10;
+var indexer: number;
+var done = false;
 var tblItemHtml: string;
 // one tableItem div for each side table hike
 tblItemHtml = '<div class="tableItem"><div class="tip">Add to Favorites</div>';
@@ -223,63 +211,146 @@ tblItemHtml += '<span class="zpop">Zoom to Hike</span>';
 tblItemHtml += '</div>';
 // the div holding the hike-specific data
 tblItemHtml += '<div class="content">';
-$.when(listdone).then(function() {
-    formTbl(sideTbl); // initial page load
-});
-
 
 /**
- * The DOM elements for the side table are created and attached in this function       
+ * The DOM elements for the side table are created and attached in this function;
+ * To reduce apparent 'thumb image' load times, the table is created 'subsize'
+ * elements at a time, per interval. The table will populate the topmost items
+ * first with no wait.    
  */
+function appendSegment(subset: NM[]) {
+    let jqSubset: JQuery<HTMLElement>[] = [];
+    for (let m=0; m<subset.length; m++) {
+        let obj = subset[m];
+        let hno = obj.indx;
+        var tbl;
+        if (favlist.includes(hno)) {
+            tbl = tblItemHtml.replace('Yellow', 'Red');
+        } else {
+            tbl = tblItemHtml;
+        }   
+        let lnk = '<a href="../pages/hikePageTemplate.php?hikeIndx=' + obj.indx + 
+            '">' + obj.name + '</a>';
+        tbl += lnk;
+        tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
+            + obj.lgth + ' miles';
+        tbl += '</span><br /><span class="subtxt">Elev Change: ';
+        tbl += obj.elev + ' feet</span><p id="sidelat" style="display:none">';
+        tbl += obj.loc.lat  + '</p><p id="sidelng" style="display:none">';
+        tbl += obj.loc.lng + '</p></div>';
+        tbl += '<div class="thumbs"><img src="' + thumb + 
+            obj.prev + '" alt="preview image" /></div>';
+        tbl += '</div>';
+        let $tbl = $(tbl);
+        $('#sideTable').append($tbl);
+        // Note: $tbl must be appended before adding to array!!
+        jqSubset.push($tbl);
+    }
+    enlargePreview(jqSubset);
+    enableFavorites(jqSubset);
+    enableZoom(jqSubset);
+    return;
+}
 function formTbl(indxArray: NM[]) {
     $('#sideTable').empty();
-    if (allHikes.length === 0) {
-        let no_table = '<div class="tableItem" style="text-align:center;font-size:' +
-            '20px;color:brown;padding-top:32px;">No favorites selected</div>';
-        $('#sideTable').append(no_table);
-    } else {
-        $.each(indxArray, function(_i, obj) {
-            let hno = obj.indx;
-            var tbl;
-            if (favlist.includes(hno)) {
-                tbl = tblItemHtml.replace('Yellow', 'Red');
-            } else {
-                tbl = tblItemHtml;
-            }   
-            let lnk = '<a href="../pages/hikePageTemplate.php?hikeIndx=' + obj.indx + 
-                '">' + obj.name + '</a>';
-            tbl += lnk;
-            tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
-                + obj.lgth + ' miles';
-            tbl += '</span><br /><span class="subtxt">Elev Change: ';
-            tbl += obj.elev + ' feet</span><p id="sidelat" style="display:none">';
-            tbl += obj.loc.lat  + '</p><p id="sidelng" style="display:none">';
-            tbl += obj.loc.lng + '</p></div></div>';
-            $('#sideTable').append(tbl);
-        });
-        enableFavorites();
-        enableZoom();
-        return;
-    }
+    let primeArray = indxArray.slice(0, subsize);
+    appendSegment(primeArray);
+    indexer = subsize;
+    loadSpreader = setInterval(
+        function() {
+            let end = indexer + subsize;
+            if (end >= indxArray.length) {
+                end = indxArray.length;
+                done = true;
+            }
+            let nextArray = indxArray.slice(indexer, end);
+            appendSegment(nextArray);
+            indexer += subsize;
+            if (done) {
+                clearInterval(loadSpreader);
+                loadSpreader = undefined;
+                indexer = subsize;
+                done = false;
+            }
+        },
+        500
+    );
+    return;
 }
 
 /**
+ * This function allows the user an enlarged view of the preview when moused over
+ */
+function enlargePreview(items: JQuery<HTMLElement>[]) {
+    for (let i=0; i<items.length; i++) {
+        // setup mouse behavior on thumb
+        let idiv = items[i].find('.thumbs');
+        let $image = idiv.children().eq(0);
+        $image.on('mouseover', function() {
+            let ipos = <JQuery.Coordinates>$(this).offset();
+            let left = (ipos.left - 280) + 'px'; 
+            let top  = (ipos.top  - 60) + 'px';
+            let isrc = <string>$(this).attr('src');
+            isrc = isrc.replace("thumbs", "previews")
+            let expand = '<img class="bigger" src="' + isrc + '" />';
+            let $img = $(expand);
+            $img.css({
+                top: top,
+                left: left,
+                zIndex: 100
+            });
+            $('body').append($img);
+        });
+        $image.on('mouseout', function() {
+            $('.bigger').remove();
+        });
+        // position tooltip
+        let $ttdiv = items[i].children().eq(0);  // div holding tooltip
+        let $icndiv = $ttdiv.next().children().eq(0); // <img holding 'Like' symbol
+        positionFavToolTip($ttdiv, $icndiv);
+    }
+    return;
+}
+/**
+ * This function is required in order to reposition the like popups after
+ * resizing
+ */
+function positionFavToolTip(tipdiv: JQuery<HTMLElement>, icon: JQuery<HTMLElement>) {
+    let likeSym = <string>icon.attr('src');
+    if (likeSym.indexOf('Yellow') === -1) {
+        tipdiv[0].innerHTML = 'Unmark Favorite';
+    }
+    icon.on('mouseover', function() {
+        let pos = <HTMLPosition>$(this).offset();
+        let left = pos.left - 128 + 'px'; // width of tip is 120px
+        let top = pos.top + 'px';
+        tipdiv[0].style.top = top;
+        tipdiv[0].style.left = left;
+        tipdiv[0].style.display = 'block';
+    });
+    icon.on('mouseout', function() {
+        tipdiv[0].style.display = 'none';
+    });
+    return;
+}
+/**
  * This function will track events on the favorites icons
  */
-function enableFavorites() {
-    positionFavTooltips();
-    $('.like').each(function() {
-        $(this).unbind('click').bind('click', function() {
-            // get this div's hikeno
-            let href = <string>$(this).parent().next().children().eq(0).attr('href');
-            let digitpos = href.indexOf('=') + 1;
-            var hno = href.substr(digitpos);
-            var hikeno = parseInt(hno);
-            var ajaxdata:AjaxData = {no: hikeno};
-            var isrc = <string>$(this).attr('src');
-            var newsrc;
-            var $tooltip = $(this).parent().prev();
-            var $that = $(this);
+function enableFavorites(items: JQuery<HTMLElement>[]) {
+    for (let k=0; k<items.length; k++) {
+        let $icndiv = items[k].children().eq(1);  // icons div
+        let $favicn = $icndiv.children().eq(0);   // 'like' <img> element
+        // retrieve hike no from content div
+        let hikelink = <string>$icndiv.next().children().eq(0).attr('href');
+        let digitpos = hikelink.indexOf('=') + 1;
+        let hno = hikelink.substr(digitpos);
+        let hikeno = parseInt(hno);
+        $favicn.off('click').on('click', function() {    
+            let ajaxdata:AjaxData = {no: hikeno};
+            let isrc = <string>$(this).attr('src');
+            let newsrc;
+            let $tooltip = $(this).parent().prev();
+            let $that = $(this);
             if (isrc.indexOf('Yellow') !== -1) { // currently a not favorite
                 ajaxdata.action = 'add';
                 $.ajax({
@@ -331,48 +402,22 @@ function enableFavorites() {
                 });
             }
         });
-    });
+    }
     return;
 };
-
-/**
- * This function is required in order to reposition the like popups after
- * resizing
- */
-function positionFavTooltips() {
-    $('.like').each(function() {
-        var $txtspan = $(this).parent().parent().children().eq(0); // div holding tooltip
-        let likeSym = <string>$(this).attr('src');
-        if (likeSym.indexOf('Yellow') === -1) {
-            $txtspan[0].innerHTML = 'Unmark Favorite';
-        }
-        $(this).on('mouseover', function() {
-            let pos = <HTMLPosition>$(this).offset();
-            let left = pos.left - 128 + 'px'; // width of tip is 120px
-            let top = pos.top + 'px';
-            $txtspan[0].style.top = top;
-            $txtspan[0].style.left = left;
-            $txtspan[0].style.display = 'block';
-        });
-        $(this).on('mouseout', function() {
-            $txtspan[0].style.display = 'none';
-        });
-    });
-}
 
 /**
  * This function will zoom to the correct map location for the corresponding
  * hike, and popup its infoWin. It also displays a tooltip on mouseover.
  */
-function enableZoom() {
-    let $mags = $('.zoomers');
-    $mags.each(function() {
-        $(this).css('cursor', 'pointer');
-        $(this).on('click', function() {
+function enableZoom(items: JQuery<HTMLElement>[]) {
+    for (let j=0; j<items.length; j++) {
+        let $mag = items[j].find('.zoomers');
+        $mag.on('click', function() {
             let hikename = $(this).parent().next().children().eq(0).text();
             popupHikeName(hikename);
         });
-        $(this).on('mouseover', function() {
+        $mag.on('mouseover', function() {
             let zpos = <HTMLPosition>$(this).offset();
             let hpos = zpos.left - 108;
             let vpos = zpos.top;
@@ -380,10 +425,11 @@ function enableZoom() {
             $(this).next().css('top', vpos);
             $(this).next().css('display', 'block');
         });
-        $(this).on('mouseout', function() {
+        $mag.on('mouseout', function() {
             $(this).next().css('display', 'none');
         });
-    });
+    }
+    return;
 }
 
 /**
@@ -393,12 +439,6 @@ function enableZoom() {
  * This function also returns a set of hikenumbers for making tracks when the map
  * zoom >= 13. Clusters are 'segregated' so that the entire set of hikes in the
  * cluster can be drawn, each with a unique color.
- * 
- * @param {string} boundsStr The string from google maps holding the new map bounds
- * @param {boolean} zoom Indicates whether or not map is zoomed > 12.
- * @returns {array}  if map zoom > 12, arrays of hike numbers (and their
- *                   corresponding info window text) within bounds: clusters return
- *                   only the index number into the CL array.
  */
  const IdTableElements = (boundsStr:string, zoom:boolean):[number[],string[],string[]] => {
     var singles: number[] = [];        // individual hike nos
@@ -470,6 +510,7 @@ function enableZoom() {
             'There are no hikes in the viewing area</p>';
         $('#sideTable').html(nohikes);
     } else {
+        hikearr.sort(compareObj);
         formTbl(hikearr);
     }
     return [singles, hikeInfoWins, trackColors];
@@ -481,22 +522,17 @@ grabber.addEventListener('mousedown', changeWidth, false);
 /**
  * Function to change div widths when mousedown on 'grabber' (#adjustWidth)
  * Thie function adds a mousemove listener to track the mouse location
- * 
- * @param {DOMevent} ev The DOM event associated with mousedown
- * @return {null}
  */
 function changeWidth(ev:MouseEvent) {
     ev.preventDefault(); // prevents selecting other elements while mousedown
     document.addEventListener('mousemove', widthSizer, false);
+    return;
 }
 
 /**
  * The function is called by the mousemove event listener. It is necessary
  * not to use anonymous functions here as those listeners cannot be removed.
  * When the mouse moves, a listener is add to detect when the mouse is released.
- * 
- * @param {DOMevent} evt 
- * @return {null}
  */
 function widthSizer(evt:MouseEvent) {
     document.addEventListener('mouseup', stopMoving, false);
@@ -504,8 +540,13 @@ function widthSizer(evt:MouseEvent) {
     let sideWidth = viewport - evt.clientX - 3;
     $('#map').width(evt.clientX);
     $('#sideTable').width(sideWidth);
-    positionFavTooltips();
+    $('.like').each(function() {
+        let $icon = $(this);
+        let $tooldiv = $icon.parent().prev();
+        positionFavToolTip($tooldiv, $icon);
+    });
     locateGeoSym();
+    return;
 }
 
 /**
@@ -515,4 +556,5 @@ function widthSizer(evt:MouseEvent) {
 function stopMoving() {
     document.removeEventListener('mousemove', widthSizer, false);
     document.removeEventListener('mouseup', stopMoving, false);
+    return;
 }

@@ -195,8 +195,8 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
     // Y AXIS
     var lgx = margin.left;
     var txtSize;
-    for (var i_1 = 0; i_1 < noOfGrids; i_1++) {
-        yPos += (i_1 === 0) ? margin.top : yInc;
+    for (var i = 0; i < noOfGrids; i++) {
+        yPos += (i === 0) ? margin.top : yInc;
         // gradient applied to y grid points
         var grad = context.createLinearGradient(lgx, yPos, lgx, yPos + yInc);
         grad.addColorStop(0, "#dfecdf");
@@ -204,7 +204,7 @@ var renderLinesAndLabels = function renderLinesAndLabels() {
         context.fillStyle = grad;
         context.fillRect(lgx, yPos, xMax, yInc);
         // y axis labels  
-        yVal = rgMax - (i_1 * gridSpacing);
+        yVal = rgMax - (i * gridSpacing);
         str_yVal = Thousands(yVal);
         txtSize = context.measureText(str_yVal);
         // position of y axis labels:
@@ -347,15 +347,15 @@ var renderData = function renderData(type) {
     var prevX = 0;
     var prevY = 0;
     var ptY;
-    for (var i_2 = 0; i_2 < data.dataPoints.length; i_2++) {
-        var pt = data.dataPoints[i_2];
+    for (var i = 0; i < data.dataPoints.length; i++) {
+        var pt = data.dataPoints[i];
         ptY = margin.top + (rgMax - pt.y) * ratio;
         // don't let bad points over-extend:
         if (ptY < margin.top) {
             ptY = margin.top;
         }
-        var ptX = margin.left + pxPerMile * data.dataPoints[i_2].x;
-        if (i_2 > 0 && type == renderType.lines) {
+        var ptX = margin.left + pxPerMile * data.dataPoints[i].x;
+        if (i > 0 && type == renderType.lines) {
             //Draw connecting lines
             drawLine(ptX, ptY, prevX, prevY, 'DarkGreen', 2);
         }

@@ -62,8 +62,8 @@ function addToList(hike) {
             if (gpxinfo.indexOf(',') !== -1) {
                 // this hike has multiple track files
                 var gpxfiles = gpxinfo.split(",");
-                for (var i_1 = 0; i_1 < gpxfiles.length; i_1++) {
-                    selectedHikes.push(gpxfiles[i_1]);
+                for (var i = 0; i < gpxfiles.length; i++) {
+                    selectedHikes.push(gpxfiles[i]);
                 }
             }
             else {

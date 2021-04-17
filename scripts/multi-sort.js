@@ -23,10 +23,10 @@ var level2rows = []; // accumulated array of level2 sorted $rows
  */
 function getHeaderColumn(jqHeaders, key) {
     var colno = -1;
-    for (var i_1 = 0; i_1 < jqHeaders.length; i_1++) {
-        if ($(jqHeaders[i_1]).text() === key) {
-            colno = i_1;
-            compareType = $(jqHeaders[i_1]).data('sort');
+    for (var i = 0; i < jqHeaders.length; i++) {
+        if ($(jqHeaders[i]).text() === key) {
+            colno = i;
+            compareType = $(jqHeaders[i]).data('sort');
             if (typeof (compareType == 'undefined')) {
                 compareType = 'std'; // exposure has no data-sort type
             }
