@@ -42,35 +42,6 @@ chdir($startDir);
     <link href="../styles/home.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
-    <script type="text/javascript">
-        /* favlist is required later and needs to be complete
-         * before side tables are formed
-         */
-        var favlist;
-        $.ajax({
-            url: 'getFavorites.php',
-            method: 'get',
-            dataType: 'text',
-            success: function(flist) {
-                if (flist == '') {
-                    favlist = [];
-                } else {
-                    favlist = JSON.parse(flist); // array of hike numbers
-                }
-                return;
-            },
-            error: function(jqXHR) {
-                var newDoc = document.open();
-                newDoc.write(jqXHR.responseText);
-                newDoc.close();
-                return;
-            }
-        });
-        var thumb    = '<?=$rels;?>' + 'pictures/thumbs/';
-        var preview  = '<?=$rels;?>' + 'pictures/previews';
-        var loadSpreader; // interval timer for spacing out thumbnail loads
-        var cluster_click = false; // linked to clicking a clusterer marker
-    </script>
 </head>
 
 <body>
@@ -93,6 +64,7 @@ chdir($startDir);
 
 <?php
 require "../php/mapJsData.php";
+require "getFavorites.php";
 ?>
 <script>
 // data required for map and side tables (from mapJsData.php)
@@ -103,6 +75,11 @@ var allHikes = <?=$jsIndx;?>;
 var locations = <?=$jsLocs;?>;
 var pages = <?=$jsPages;?>;    // page indxNo for non-hikes
 var pgnames = <?=$jsPageNames;?>;
+var favlist = <?=$favlist;?>;
+var thumb    = '<?=$rels;?>' + 'pictures/thumbs/';
+var preview  = '<?=$rels;?>' + 'pictures/previews';
+var loadSpreader; // interval timer for spacing out thumbnail loads
+var cluster_click = false; // linked to clicking a clusterer marker
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/markerclusterer.js"></script>
