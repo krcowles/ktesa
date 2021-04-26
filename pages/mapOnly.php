@@ -36,7 +36,6 @@ require "alphabeticHikes.php";
 
 <div id="map"></div>
 
-<p id="geoSetting">ON</p>
 <img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />
 
 <input id="searchbar" placeholder="Search for a hike" list="hikelist" />

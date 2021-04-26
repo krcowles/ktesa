@@ -7,6 +7,7 @@ interface Geo {
 interface HikeNoSet {
     [key: string]: number[];
 }
+type HikeNos = number[];
 /**
  * @fileoverview Management of options button
  * 
@@ -60,13 +61,13 @@ $('#cls').on('click', function(ev) {
 });
 
 // setup area links
-let $loc_list = $('#alist').find('li a');
+let $loc_list = $('#alist').find('li a'); // drop-down list of locales
 $loc_list.each(function() {
     $(this).on('click', function(ev) {
         ev.preventDefault();
         let lochikes = [];
         let locarea = <string>$(this).text();
-        let hikeset: any = regions[locarea]; // regions are objects whose key is a locale (string)
+        let hikeset = regions[locarea]; // regions are objects whose key is a locale (string)
         for (let i=0; i<rows.length; i++) {
             let item = <string>$(rows[i]).data('indx');
             let hikeno = parseInt(item)

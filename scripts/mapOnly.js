@@ -83,7 +83,6 @@ var getIcon = function (no_of_hikes) {
     return icon;
 };
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
-var mapdone = $.Deferred();
 function initMap() {
     google.maps.Marker.prototype.clicked = false; // used in sideTables.js
     var clustererMarkerSet = [];
@@ -110,7 +109,6 @@ function initMap() {
         rotateControl: false,
         mapTypeId: google.maps.MapTypeId.TERRAIN
     });
-    mapdone.resolve();
     // ///////////////////////////   MARKER CREATION   ////////////////////////////
     CL.forEach(function (clobj) {
         AddClusterMarker(clobj.loc, clobj.group, clobj.hikes, clobj.page);

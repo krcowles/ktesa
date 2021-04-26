@@ -42,25 +42,15 @@ ob_start(); // start output buffering so we can avoid "headers already sent" err
 // PHP site recommends following value for future expansion of E_ALL
 error_reporting(-1);  // 2147483647 is also suggested on PHP site, both work
 if ($appMode === 'production') {
-    ini_set('log_errors', 1); // (this may be the default anyway)
+    ini_set('log_errors', 1);
     ini_set('error_log', $thisSitePrivateDir . '/ktesa.log');
     // UNCAUGHT error/exception handling:
     set_error_handler('ktesaErrors'); // errors not using Throwable interface
-    set_exception_handler('ktesaExceptions'); // uncaught exceptions (no try/ctach)
+    set_exception_handler('ktesaExceptions'); // uncaught exceptions (no try/catch)
     // A method for fatal errors that handlers don't catch
     register_shutdown_function("shutdownHandler");
-} else { // development
-    /**
-     * In this mode, no error_log is specified, so syslog could be used;
-     * However, with whoops, there is no syslog, thus the following three
-     * statements are not needed.
-     * Use them if/when whoops is not available.
-     */
-    //ini_set('display_errors', "1"); // default is off i.e. 'production'
-    //ini_set('display_startup_errors', 1);  // should never be 'on' in production
-    //ini_set('log_errors', 1);
-
-    // In effect, the default UNCAUGHT error/exception handler
+} else {
+    // In effect, the default UNCAUGHT error/exception handler in development mode
     $whoops = new \Whoops\Run;
     $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
     $whoops->register();

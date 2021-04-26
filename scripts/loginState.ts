@@ -1,4 +1,5 @@
 /// <reference types="bootstrap" />
+
 /**
  * @fileoverview This script utilizes the getLogin.php activity to determine which
  * menu items are to be activated, and which are to blocked (grayed out). The 

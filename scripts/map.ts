@@ -32,6 +32,7 @@ var zoomdone: JQuery.Deferred<void>;
 // map event handler globals for determining resulting action in handler
 var panning: boolean = false;
 var marker_click: boolean = false;
+const zoomThresh = 13;
 
 /**
  * This function is called initially, and again when resizing the window;
@@ -91,7 +92,6 @@ const getIcon = (no_of_hikes:number) => {
 };
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
-var mapdone:JQueryDeferred<void> = $.Deferred<void>();
 function initMap() {
 	var clustererMarkerSet:google.maps.Marker[] = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
@@ -121,7 +121,6 @@ function initMap() {
 		url: "https://nmhikes.com/maps/NM_Borders.kml",
 		map: map
 	});
-	mapdone.resolve();
 
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
 	CL.forEach(function(clobj) {
@@ -175,10 +174,10 @@ function initMap() {
 				loadSpreader = undefined;
 			}
 			zoom_level = map.getZoom();
-			marker_click = zoom_level < 13 ? true : false;
+			marker_click = zoom_level < zoomThresh ? true : false;
 			map.setCenter(location);
 			if (marker_click) {
-				map.setZoom(13);
+				map.setZoom(zoomThresh);
 				marker_click = false;
 			}
 			iw.open(map, this);
@@ -220,10 +219,10 @@ function initMap() {
 				loadSpreader = undefined;
 			}
 			zoom_level = map.getZoom();
-			marker_click = zoom_level < 13 ? true : false;
+			marker_click = zoom_level < zoomThresh ? true : false;
 			map.setCenter(hikeobj.loc);
 			if (marker_click) {
-				map.setZoom(13);
+				map.setZoom(zoomThresh);
 				marker_click = false;
 			}
 			iw.open(map, this);
@@ -252,7 +251,7 @@ function initMap() {
 		var idle = google.maps.event.addListener(map, 'idle', function () {
 			var curZoom = map.getZoom();
 			var perim = String(map.getBounds());
-			if ( curZoom > 12 ) {
+			if ( curZoom >= zoomThresh ) {
 				zoomTracks = true;
 			}
 			zoomedHikes = IdTableElements(perim, zoomTracks);
@@ -281,9 +280,9 @@ function initMap() {
 	map.addListener('dragend', function() {
 		// no highlighting is required during pan
 		var curr_zoom = map.getZoom();
-		let zoomTracks = true;
-		if (curr_zoom < 13) {
-			zoomTracks = false;
+		let zoomTracks = false;
+		if (curr_zoom >= zoomThresh) {
+			zoomTracks = true;
 		}
 		var newBds = String(map.getBounds());
 		zoomedHikes = IdTableElements(newBds, zoomTracks);
@@ -300,10 +299,10 @@ function initMap() {
 				loadSpreader = undefined;
 			}
 			var curZoom = map.getZoom();
-			let zoomTracks = true;
+			let zoomTracks = false;
 			var perim = String(map.getBounds());
-			if (curZoom < 13) {
-				zoomTracks = false;
+			if (curZoom >= zoomThresh) {
+				zoomTracks = true;
 			}
 			zoomedHikes = IdTableElements(perim, zoomTracks);
 			if (zoomTracks && zoomedHikes.length > 0) {
@@ -414,8 +413,8 @@ function setupLoc() {
 			});
 			map.setCenter(newWPos);
 			var currzoom = map.getZoom();
-			if (currzoom < 13) {
-				map.setZoom(13);
+			if (currzoom < zoomThresh) {
+				map.setZoom(zoomThresh);
 			}
 		}
 		function error(eobj: GeoErrorObject) {
@@ -425,7 +424,7 @@ function setupLoc() {
 }
 
 // //////////////////////  MAP FULL SCREEN DETECT  //////////////////////
-$(document).bind(
+$(document).on(
 	'webkitfullscreenchange mozfullscreenchange fullscreenchange',
 	function() {
 		let thisMapDoc = <MapDoc>document;
