@@ -153,8 +153,8 @@ function initMap() {
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 // collect mouseover data for tracks; initialize arrow holding info
 var trackdat = [];
-for (var i_1 = 0; i_1 < tracks.length; i_1++) {
-    trackdat[i_1] = '';
+for (var i = 0; i < tracks.length; i++) {
+    trackdat[i] = '';
 }
 NM.forEach(function (hobj, indx) {
     trackdat[indx] = '<div id="iwNH">' + hobj.name + '<br />Length: ' +

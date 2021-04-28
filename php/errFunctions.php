@@ -8,6 +8,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 /**
  * This function establishes production mode error handling, which
  * will present a user-friendly error page. Uncaught errors will be
@@ -22,11 +23,9 @@
  */
 function ktesaErrors($errno, $errstr, $errfile, $errline)
 {
-    $message = "An error occurred in {$errfile} on line {$errline}. " .
-        "\nError no. {$errno}: {$errstr}\n";
-    $message .= (new Exception)->getTraceAsString();
+    $message = (new Exception)->getTraceAsString();
     error_log($message);
-    // send email to site master
+    errorEmail($message);
     errorPage();
 }
 /**
@@ -47,7 +46,7 @@ function ktesaExceptions($exception)
         $exception->getMessage() . "\n" .
         "TRACE: " . $exception->getTraceAsString();
     error_log($message);
-    // send email to site masters
+    errorEmail($message);
     errorPage();
 } 
 /**
@@ -89,7 +88,9 @@ function shutdownHandler() //will be called when php script ends.
  */
 function shutdownError($errmsg, $errlvl) 
 {
-    error_log($errmsg);
+    $message = $errmsg;
+    error_log($message);
+    errorEmail($message);
     errorPage();
 }
 /**
@@ -106,4 +107,22 @@ function errorPage()
     http_response_code(500);
     include "../php/user_error_page.php"; // send user error page
     exit(-1);
+}
+/**
+ * This function generates an email to the current admin to report the error
+ * encountered by a user.
+ * 
+ * @param string $msg The error message and trace
+ * 
+ * @return null;
+ */
+function errorEmail($msg)
+{
+    $user = isset($_SESSION['username']) ? $_SESSION['username'] : 'no_user';
+    $to = "krcowles29@gmail.com";
+    $subject = "Production error encountered";
+    $message = "User " . $user . " encountered the " .
+        "following error: " . PHP_EOL . $msg;
+    // Mail it
+    mail($to, $subject, $message);
 }

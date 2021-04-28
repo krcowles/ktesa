@@ -32,11 +32,11 @@ $(function () {
         $(selbox).val(rtype); // pre-populate reference type drop-down
         boxid = 'sel' + i;
         if (rtype === 'Book:' || rtype === 'Photo Essay:') {
-            var indx = parseInt(rit1) - 1;
+            var indx_1 = parseInt(rit1) - 1;
             var bkname = '#bkname' + i; // input box id for book name                
             $(bkname).val(rit1);
-            var auth = '#auth' + i;
-            $(auth).attr('value', authors[indx]); // get the name from the array
+            var auth_1 = '#auth' + i;
+            $(auth_1).attr('value', authors[indx_1]); // get the name from the array
             box = document.getElementById(boxid);
             // disable non-book entries
             for (var u = 2; u < box.options.length; u++) {

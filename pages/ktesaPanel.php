@@ -1,3 +1,4 @@
+
 <?php
 /**
  * This script presents the html that comprises the top-of-the-page panel.
@@ -95,6 +96,9 @@ require_once "../accounts/getLogin.php";
 <?php if (isset($admin) && $admin) : ?>
 <p id="admin">admin</p>
 <?php endif; ?>
+
+<!-- the current environment: -->
+<p id="appMode"><?=$appMode;?></p>
 
 <!-- Modal Windows HTML -->
 <div id="email_password">

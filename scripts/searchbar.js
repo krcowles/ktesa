@@ -27,9 +27,9 @@ $('#searchbar').on('input', function () {
 function popupHikeName(hikename) {
     var found = false;
     if (pgnames.includes(hikename)) { // These are 'Cluster Pages', not hikes
-        var indx = pgnames.indexOf(hikename);
-        hilite_obj = { obj: CL[indx].hikes, type: 'cl' };
-        infoWin(CL[indx].group, CL[indx].loc);
+        var indx_1 = pgnames.indexOf(hikename);
+        hilite_obj = { obj: CL[indx_1].hikes, type: 'cl' };
+        infoWin(CL[indx_1].group, CL[indx_1].loc);
         found = true;
     }
     else {

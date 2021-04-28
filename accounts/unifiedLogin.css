@@ -65,6 +65,9 @@ body {
     z-index: 5;
 }
 
+#appMode {
+    display: none;
+}
 /* ALL FORMS */
 #container {
     position: relative;

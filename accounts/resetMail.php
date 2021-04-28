@@ -33,6 +33,7 @@ $href = '<br /><br /><a href="' . $thisSiteUrl .
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 if ($email === false) {
     echo "The email {$email} is not valid";
+    exit;
 } else {
     $register_req = "SELECT * FROM `USERS` WHERE `email` = :email;";
     $register = $pdo->prepare($register_req);

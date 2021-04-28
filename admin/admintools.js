@@ -82,7 +82,7 @@ $(function () {
         }
         if (ajax) {
             $('#loading').show();
-            var postdata = { install: copyloc, "delete": deletions };
+            var postdata = { install: copyloc, delete: deletions };
             $.ajax({
                 url: 'install.php',
                 method: "post",
