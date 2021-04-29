@@ -342,6 +342,16 @@ $(function () {
                             });
                         }
                         else {
+                            if (result.indexOf('valid') !== -1) {
+                                var msg = "Your email is not valid. You cannot reset\n" +
+                                    "your password until this has been corrected";
+                                alert(msg);
+                            }
+                            else {
+                                var msg = "Your email could not be located in our database\n" +
+                                    "Please make sure it is the address you used when registering";
+                                alert(msg);
+                            }
                             alert(result);
                         }
                     },

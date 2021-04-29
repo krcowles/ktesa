@@ -1,5 +1,6 @@
 /// <reference path="canvas.d.ts" />
 declare var hikeFiles: string[]; // on hikePageTemplate.php
+declare var appMode: string;
 /**
  * @fileoverview This file will assemble track data for all tracks. The
  * track data is used to draw a given track's elevation chart.
@@ -118,12 +119,18 @@ function getTrackData(promise: JQueryDeferred<void>): void {
             promise.resolve();
         },
         error: function(_jqXHR, textStatus, errorThrown) {
-            var msg = "Ajax call in prepareTracks.js failed " +
-                "with error code: " + errorThrown + 
-                "Could not extract XML data from " + hikeTrack + 
-                "\nSystem error message: " + textStatus;
+            if (appMode === 'production') {
+                let msg = "Could not read " + hikeTrack + ";\nThere will " +
+                    "be no chart data for it";
+                alert(msg);
+            } else {
+                var msg = "Ajax call in prepareTracks.js failed " +
+                    "with error code: " + errorThrown + 
+                    "Could not extract XML data from " + hikeTrack + 
+                    "\nSystem error message: " + textStatus;
+                alert(msg);
+            }
             promise.reject();
-           alert(msg);
         }
     });
     return;

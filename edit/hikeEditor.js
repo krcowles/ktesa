@@ -69,15 +69,19 @@ $(function () {
                     success: function (results) {
                         if (results === "OK") {
                             alert("An email has been sent to the admin");
-                        }
-                        else {
-                            alert("The email did not get sent: please use Help->Contact Us");
-                        }
+                        } // no other results available in script
                     },
                     error: function (jqXHR) {
-                        var newDoc = document.open();
-                        newDoc.write(jqXHR.responseText);
-                        newDoc.close();
+                        if (appMode === 'development') {
+                            var newDoc = document.open();
+                            newDoc.write(jqXHR.responseText);
+                            newDoc.close();
+                        }
+                        else {
+                            var msg = "Problem encountered sending admin mail\n" +
+                                "The admin has been notified.";
+                            alert(msg);
+                        }
                     }
                 });
             });

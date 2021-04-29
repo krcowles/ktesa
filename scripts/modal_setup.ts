@@ -86,8 +86,6 @@ var modal = (function(): Modal {
     //  ------------------  private functions:  ------------------
     /**
      * This function allows a user to login or refresh password
-     * 
-     * @return {null}
      */
     function passwd_reset(type: string) {
         $('#sendmail').after($close);
@@ -122,7 +120,20 @@ var modal = (function(): Modal {
                         });
                         modal.close();
                     } else {
-                        alert(result);
+                        let err: string;
+                        if (result.indexOf('valid')) {
+                            err = 'The email is not valid; You cannot change ' +
+                                'your password at this time\nThe admin has been ' +
+                                'notified';
+                        } else {
+                            err = "Your email could not be located in  our " +
+                                "database\nThe admin has been notified";
+                        }
+                        alert(err);
+                        let ajaxerr = "Forgot/change password error: " +
+                            err + "; " + email;
+                        let errobj = {err: ajaxerr};
+                        $.post('../php/ajaxError.php', errobj);
                     }
                 },
                 error: function(jqXHR) {

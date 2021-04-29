@@ -384,8 +384,8 @@ function drawTrack(json_filename:string, info_win:string, color:string,
 			drawnTracks.push(newtrack);
 			deferred.resolve();
 		},
-		error: function(_jqXHR, _textStatus, _errorThrown) {
-			let msg:string = 'Did not succeed in getting JSON data: ' + 
+		error: function() {
+			let msg:string = 'Did not succeed in getting track data: ' + 
 				json_filename;
 			alert(msg);
 			deferred.reject();

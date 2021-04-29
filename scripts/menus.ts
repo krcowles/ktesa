@@ -113,6 +113,13 @@ function gotoPage(content: string) {
                     notLoggedInItems();
                     $('#ifadmin').css('display', 'none');
                     window.open('../index.html', '_self');
+                },
+                error: function() {
+                    let msg = "Cannot log out at this time:\n" +
+                        "The admin has been notified";
+                    alert(msg);
+                    let errobj = {err: msg};
+                    $.post('../php/ajaxError.php', errobj);
                 }
             });
             break;
@@ -179,7 +186,15 @@ function gotoPage(content: string) {
             url: '../php/opener.php?page=' + page,
             dataType: "html",
             success: function(redir) {
-                $('body').after(redir);
+                if (redir.indexOf('<script>') !== -1) {
+                    $('body').after(redir);
+                } else {
+                    let msg = "A problem was encountered trying to open the page\n" +
+                        "The admin has been notified";
+                    alert(msg);
+                    let errobj = {err: msg};
+                    $.post('../php/ajaxError.php', errobj);
+                }
             },
             error: function(jqXHR) {
                 var newDoc = document.open();

@@ -400,7 +400,7 @@ function drawTrack(json_filename: string, info_win: string, color:string,
 			deferred.resolve();
 		},
 		error: function() {
-			let msg = 'Did not succeed in getting JSON data: ' + 
+			let msg = 'Did not succeed in getting track data: ' + 
 				json_filename;
 			alert(msg);
 			deferred.reject();

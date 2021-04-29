@@ -61,7 +61,7 @@ var compare = {
         else {
             return a > b ? 1 : 0;
         }
-    },
+    }
 }; // end of COMPARE object
 /**
  * This function translates an exposure icon (<img> src) into sortable text

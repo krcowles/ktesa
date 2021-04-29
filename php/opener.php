@@ -53,4 +53,5 @@ if ($page === 'admin' && $login) {
 } elseif ($page === 'register') {
     $script .= "../accounts/registration.php" . $close;
 }
-echo $script;
+echo "garbage:";
+//echo $script;

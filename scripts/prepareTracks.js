@@ -124,12 +124,19 @@ function getTrackData(promise) {
             promise.resolve();
         },
         error: function (_jqXHR, textStatus, errorThrown) {
-            var msg = "Ajax call in prepareTracks.js failed " +
-                "with error code: " + errorThrown +
-                "Could not extract XML data from " + hikeTrack +
-                "\nSystem error message: " + textStatus;
+            if (appMode === 'production') {
+                var msg_1 = "Could not read " + hikeTrack + ";\nThere will " +
+                    "be no chart data for it";
+                alert(msg_1);
+            }
+            else {
+                var msg = "Ajax call in prepareTracks.js failed " +
+                    "with error code: " + errorThrown +
+                    "Could not extract XML data from " + hikeTrack +
+                    "\nSystem error message: " + textStatus;
+                alert(msg);
+            }
             promise.reject();
-            alert(msg);
         }
     });
     return;

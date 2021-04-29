@@ -103,7 +103,11 @@ $(function () {
                     filterHikes(miles_no, coords);
                 },
                 error: function () {
-                    alert("Unable to retrieve areas.json in json directory");
+                    alert("Sorry, we can't find the coordinates\nThe admin " +
+                        "has been notified");
+                    var err = "Mobile access of areas.json failed";
+                    var errobj = { err: err };
+                    $.post('../php/ajaxError.php', errobj);
                     return false;
                 }
             });
@@ -120,8 +124,8 @@ $(function () {
         for (var j = 0; j < rows.length; j++) {
             var lat = $(rows[j]).data('lat');
             var lng = $(rows[j]).data('lon');
-            var distance_1 = radialDist(lat, lng, geo.lat, geo.lng, 'M');
-            if (distance_1 <= radius) {
+            var distance = radialDist(lat, lng, geo.lat, geo.lng, 'M');
+            if (distance <= radius) {
                 nearby.push(rows[j]);
             }
         }

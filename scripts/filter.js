@@ -60,7 +60,9 @@ $('#filtpoi').on('click', function () {
             toggleScrollSelect(false);
         },
         error: function () {
-            alert("Unable to retrieve areas.json");
+            alert("Unable to retrieve area data\nAdmin has been notified");
+            var errobj = { err: "No areas.json file" };
+            $.post('../php/ajaxError.php', errobj);
             return false;
         }
     });

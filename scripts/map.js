@@ -365,8 +365,8 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
             drawnTracks.push(newtrack);
             deferred.resolve();
         },
-        error: function (_jqXHR, _textStatus, _errorThrown) {
-            var msg = 'Did not succeed in getting JSON data: ' +
+        error: function () {
+            var msg = 'Did not succeed in getting track data: ' +
                 json_filename;
             alert(msg);
             deferred.reject();
@@ -389,7 +389,7 @@ function setupLoc() {
         new google.maps.Marker({
             position: newWPos,
             map: map,
-            icon: geoIcon,
+            icon: geoIcon
         });
         map.setCenter(newWPos);
         var currzoom = map.getZoom();

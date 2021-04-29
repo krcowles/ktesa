@@ -8,7 +8,9 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 /**
  * This function establishes production mode error handling, which
  * will present a user-friendly error page. Uncaught errors will be
