@@ -119,7 +119,7 @@ $(function () {
                         $('#ifadmin').css('display', 'none');
                         window.open('../index.html', '_self');
                     },
-                    error: function (jQXHR) {
+                    error: function () {
                         var msg = "Cannot log out at this time:\n" +
                             "The admin has been notified";
                         alert(msg);
@@ -153,10 +153,12 @@ $(function () {
                     success: function () {
                         window.location.reload();
                     },
-                    error: function (jqXHR) {
-                        var newDoc = document.open();
-                        newDoc.write(jqXHR.responseText);
-                        newDoc.close();
+                    error: function () {
+                        var msg = "Cannot change cookie preference at this time:\n" +
+                            "The admin has been notified";
+                        alert(msg);
+                        var errobj = { err: msg };
+                        $.post('../php/ajaxError.php', errobj);
                     }
                 });
                 return;
@@ -170,10 +172,12 @@ $(function () {
                     success: function () {
                         window.location.reload();
                     },
-                    error: function (jqXHR) {
-                        var newDoc = document.open();
-                        newDoc.write(jqXHR.responseText);
-                        newDoc.close();
+                    error: function () {
+                        var msg = "Cannot change cookie preference at this time:\n" +
+                            "The admin has been notified";
+                        alert(msg);
+                        var errobj = { err: msg };
+                        $.post('../php/ajaxError.php', errobj);
                     }
                 });
                 return;
@@ -189,7 +193,7 @@ $(function () {
                 url: '../php/opener.php?page=' + page,
                 dataType: "html",
                 success: function (redir) {
-                    if (redir.indexOf('<script>') !== -1) {
+                    if (redir.indexOf('<script') !== -1) {
                         $('body').after(redir);
                     }
                     else {

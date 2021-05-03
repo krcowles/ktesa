@@ -359,10 +359,13 @@ function enableFavorites(items) {
                                 "in order to save Favorites");
                         }
                     },
-                    error: function (jqXHR) {
-                        var newDoc = document.open("text/html", "replace");
-                        newDoc.write(jqXHR.responseText);
-                        newDoc.close();
+                    error: function () {
+                        var msg = "A server error occurred\nYou will not be able " +
+                            "to save Favorites at this time:\nThe admin has been " +
+                            "notified";
+                        alert(msg);
+                        var ajxerr = { err: "Mark favorites php error: save" };
+                        $.post('../php/ajaxError.php', ajxerr);
                     }
                 });
             }
@@ -386,10 +389,13 @@ function enableFavorites(items) {
                                 "in order to save Favorites");
                         }
                     },
-                    error: function (jqXHR) {
-                        var newDoc = document.open("text/html", "replace");
-                        newDoc.write(jqXHR.responseText);
-                        newDoc.close();
+                    error: function () {
+                        var msg = "A server error occurred\nYou will not be able " +
+                            "to unsave Favorites at this time:\nThe admin has been " +
+                            "notified";
+                        alert(msg);
+                        var ajxerr = { err: "Mark favorites php error: unsave" };
+                        $.post('../php/ajaxError.php', ajxerr);
                     }
                 });
             }

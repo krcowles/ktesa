@@ -80,6 +80,7 @@ var modal = (function () {
             'float': 'right',
             'margin-right': '6px'
         });
+        $('#femail').trigger('focus');
         $('#emailform').on('submit', function (ev) {
             ev.preventDefault();
             var email = $('#femail').val();
@@ -109,27 +110,33 @@ var modal = (function () {
                         modal.close();
                     }
                     else {
-                        var err = void 0;
-                        if (result.indexOf('valid')) {
-                            err = 'The email is not valid; You cannot change ' +
+                        var errmsg = void 0;
+                        if (result.indexOf('valid') !== -1) {
+                            errmsg = 'The email is not valid; You cannot change ' +
                                 'your password at this time\nThe admin has been ' +
                                 'notified';
                         }
                         else {
-                            err = "Your email could not be located in  our " +
+                            errmsg = "Your email could not be located in  our " +
                                 "database\nThe admin has been notified";
                         }
-                        alert(err);
+                        alert(errmsg);
+                        modal.close();
                         var ajaxerr = "Forgot/change password error: " +
-                            err + "; " + email;
+                            errmsg + "; " + email;
                         var errobj = { err: ajaxerr };
                         $.post('../php/ajaxError.php', errobj);
                     }
                 },
-                error: function (jqXHR) {
-                    var newDoc = document.open();
-                    newDoc.write(jqXHR.responseText);
-                    newDoc.close();
+                error: function () {
+                    var msg = "A server error has occurred\nYou will be unable " +
+                        "to change your password at this time\nThe admin has been " +
+                        "notified";
+                    alert(msg);
+                    modal.close();
+                    var ajaxerr = "resetMail.php error:  " + email;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
                 }
             });
         });

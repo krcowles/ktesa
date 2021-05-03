@@ -93,6 +93,7 @@ var modal = (function(): Modal {
             'float': 'right',
             'margin-right': '6px'
         });
+        $('#femail').trigger('focus');
         $('#emailform').on('submit', function(ev) {
             ev.preventDefault();
             let email = $('#femail').val(); 
@@ -120,30 +121,35 @@ var modal = (function(): Modal {
                         });
                         modal.close();
                     } else {
-                        let err: string;
-                        if (result.indexOf('valid')) {
-                            err = 'The email is not valid; You cannot change ' +
+                        let errmsg: string;
+                        if (result.indexOf('valid') !== -1) {
+                            errmsg = 'The email is not valid; You cannot change ' +
                                 'your password at this time\nThe admin has been ' +
                                 'notified';
                         } else {
-                            err = "Your email could not be located in  our " +
+                            errmsg = "Your email could not be located in  our " +
                                 "database\nThe admin has been notified";
                         }
-                        alert(err);
+                        alert(errmsg);
+                        modal.close();
                         let ajaxerr = "Forgot/change password error: " +
-                            err + "; " + email;
+                            errmsg + "; " + email;
                         let errobj = {err: ajaxerr};
                         $.post('../php/ajaxError.php', errobj);
                     }
                 },
-                error: function(jqXHR) {
-                    var newDoc = document.open();
-                    newDoc.write(jqXHR.responseText);
-                    newDoc.close();
+                error: function() {
+                    let msg = "A server error has occurred\nYou will be unable " +
+                        "to change your password at this time\nThe admin has been " +
+                        "notified";
+                    alert(msg);
+                    modal.close();
+                    let ajaxerr = "resetMail.php error:  " + email;
+                    let errobj = {err: ajaxerr};
+                    $.post('../php/ajaxError.php', errobj);
                 }
             });
         });
-
     }
 
 }());  // modal is an IIFE

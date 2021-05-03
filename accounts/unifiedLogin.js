@@ -190,7 +190,7 @@ $(function () {
                                         }
                                         else if (result.indexOf('located') !== -1) {
                                             mailmsg = "Your email did not record properly:\n" +
-                                                "You will not be able to complete your registtation " +
+                                                "You will not be able to complete your registration " +
                                                 "at this time.\nAn email has been sent to the admin" +
                                                 " to correct the situation.";
                                             alert(mailmsg);

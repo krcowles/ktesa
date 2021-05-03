@@ -49,7 +49,7 @@ if ($submitter == 'create') {
             ":cookies" => $cookies
         )
     );
-    if ($user) {
+    if (!$user) {
         echo "Registration: database write error for {$username} at {$email}.";
     } else {
         echo "OK";
