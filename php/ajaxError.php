@@ -17,7 +17,7 @@ verifyAccess('ajax');
 $errmsg = filter_input(INPUT_POST, 'err'); // always present
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'no user';
 
-$admin_msg = "User " . $username . "encountered an ajax error: " . 
+$admin_msg = "User " . $username . " encountered an ajax error: " . 
     PHP_EOL . $errmsg . PHP_EOL;
 $to = "krcowles29@gmail.com";
 $subject = "User ajax error";
