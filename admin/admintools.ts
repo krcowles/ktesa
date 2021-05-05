@@ -196,6 +196,11 @@ $('#ldall').on('click', function() {
 $('#exall').on('click', function() {
     window.open('export_all_tables.php?dwnld=N', "_blank");
 });
+$('#updatelk').on('click', function() {
+   $.get('updateUsers.php', function() {
+       alert("LKUSERS has been updated");
+   });
+});
 $('#swdb').on('click', function() {
     window.open('switchDb.php');
     window.close();

@@ -82,7 +82,7 @@ $(function () {
         }
         if (ajax) {
             $('#loading').show();
-            var postdata = { install: copyloc, delete: deletions };
+            var postdata = { install: copyloc, "delete": deletions };
             $.ajax({
                 url: 'install.php',
                 method: "post",
@@ -192,6 +192,11 @@ $(function () {
     });
     $('#exall').on('click', function () {
         window.open('export_all_tables.php?dwnld=N', "_blank");
+    });
+    $('#updatelk').on('click', function () {
+        $.get('updateUsers.php', function () {
+            alert("LKUSERS has been updated");
+        });
     });
     $('#swdb').on('click', function () {
         window.open('switchDb.php');

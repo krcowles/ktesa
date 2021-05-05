@@ -57,13 +57,14 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Overall Site Management</legend>
-        <button id="switchstate">Switch Site Mode</button>&nbsp;&nbsp;
+        <button id="switchstate" class="adminbuttons">Switch Site Mode
+            </button>&nbsp;&nbsp;
         <span id="sitemode">The site is currently in
             <span id="currstate"><?= $appMode;?></span> mode:</span><br />
 
         <!-- The following uploads or installs a test site -->
         <span class="cats">Upload Test Site:</span><br />
-        <button id="upld">Upload</button>&nbsp;&nbsp;
+        <button id="upld" class="adminbuttons">Upload</button>&nbsp;&nbsp;
             [From Localhost]<br />
         <div id="testsite">
             <span>If not current master, specify git branch here:</span>
@@ -73,7 +74,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         </div>
 
         <span class="cats">Install Test Site to Main</span><br />
-        <button id="install">Install main</button>&nbsp;&nbsp;
+        <button id="install" class="adminbuttons">Install main</button>&nbsp;&nbsp;
             [From server]<br />
         <div style="margin-left:24px;">
             <span>Delete the following <strong>test site</strong>
@@ -86,33 +87,36 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         </div><br />
 
         <span class="cats">Downloads:</span><br />
-        <button id="chgs">Changes Only</button>
+        <button id="chgs" class="adminbuttons">Changes Only</button>
             &nbsp;[Downloads zip file]<br />
         <!-- CURRENTLY NOT USED
         <button id="site">Entire Site</button>
             &nbsp;[Downloads compressed archive]<br />
         -->
-        <button id="npix">New Pictures</button>
+        <button id="npix" class="adminbuttons">New Pictures</button>
             &nbsp;[Downloads new pictures since last Site upload]<br />
-        <button id="rel2pic">Pictures newer than: </button>&nbsp;&nbsp;
+        <button id="rel2pic" class="adminbuttons">Pictures newer than:
+            </button>&nbsp;&nbsp;
             <span id="psel">Select a file from the 'pictures' directory</span>
                 &nbsp;&nbsp;<input id="cmppic" type="file" /><br />
             <span id="dsel">OR specify calendar date&nbsp;&nbsp;
             <input style="font-size:12px;width:90px;"
                 id="datepicker" type="text" name="datepicker" /></span><br />
         <span class="cats">Listings:</span><br />
-        <button id="lst">List New Files</button>
+        <button id="lst" class="adminbuttons">List New Files</button>
             &nbsp;&nbsp;[Since last upload]<br />
         <span id="mgmt" class="cats">Database Management Tools:</span><br />
-        <button id="reload">Reload Database</button>&nbsp;
+        <button id="reload" class="adminbuttons">Reload Database</button>&nbsp;
             [Drops All Tables and Loads All Tables]<br />
-        <button id="drall">Drop All Tables</button><br />
-        <button id="ldall">Load All Tables</button>
-            [NOTE: Tables must not exist]<br />
-        <button id="exall">Export All Tables</button>
-            [NOTE: Creates .sql file]<br />
-        <button id="show">Show All Tables</button><br />
-        <button id="swdb">Switch DB's</button>&nbsp;&nbsp;
+        <button id="drall" class="adminbuttons">Drop All Tables</button><br />
+        <button id="ldall" class="adminbuttons">Load All Tables</button>
+            &nbsp;&nbsp;[NOTE: Tables must not exist]<br />
+        <button id="exall" class="adminbuttons">Export All Tables</button>
+            &nbsp;&nbsp;[NOTE: Creates .sql file]<br />
+        <button id="updatelk" class="adminbuttons">Update USERS tables</button>
+            &nbsp;&nbsp;[NOTE: USERS changes will be moved into LKUSERS]<br>
+        <button id="show" class="adminbuttons">Show All Tables</button><br />
+        <button id="swdb" class="adminbuttons">Switch DB's</button>&nbsp;&nbsp;
             <span id="cdb">Current database in use:
         <?php if ($dbState === 'test') : ?>
             <span id="test" style="color:red;">Test</span>
@@ -128,18 +132,21 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             $allow = "No Editing Mode";
         }
         ?>
-        <button id="editmode" >Change Edit Mode</button>&nbsp;&nbsp;
-            <span id="emode" style="color:blue;"><?=$allow;?></span><br />
-        <button id="commit">Display Commit</button>&nbsp;&nbsp;[for this site]<br />
-        <button id="cleanPix">Cleanup Pictures</button>
+        <button id="editmode" class="adminbuttons">Change Edit Mode</button>
+            &nbsp;&nbsp;<span id="emode" style="color:blue;"><?=$allow;?>
+            </span><br />
+        <button id="commit" class="adminbuttons">Display Commit</button>
+            &nbsp;&nbsp;[for this site]<br />
+        <button id="cleanPix" class="adminbuttons">Cleanup Pictures</button>
             &nbsp;&nbsp;[removes photos not related to hikes]<br />
-        <button id="pinfo">Php Info</button><br />
-        <button id="addbk">Add Book</button><br />
+        <button id="pinfo" class="adminbuttons">Php Info</button><br />
+        <button id="addbk" class="adminbuttons">Add Book</button><br />
     </fieldset><br />
     <fieldset>
         <legend>Hike Management</legend>
-        <button id="pub">Publish Page</button> (Move from EHIKES to HIKES)<br/>
-        <button id="ehdel">Remove Page</button>
+        <button id="pub" class="adminbuttons">Publish Page</button>
+            (Move from EHIKES to HIKES)<br/>
+        <button id="ehdel" class="adminbuttons">Remove Page</button>
             <span style="color:brown;">(Not implemented at this time)</span><br />
     </fieldset><br />
     <fieldset>
@@ -152,8 +159,9 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
                 <label for="gpx2edit">Upload GPX File:</label>
                 <input type="file" name="gpx2edit" />
             </div>
-            <button id="revall">Reverse All Tracks</button><br />
-            <button id="revsgl">Reverse Only Track(s)</button>
+            <button id="revall" class="adminbuttons">Reverse All
+                    Tracks</button><br />
+            <button id="revsgl" class="adminbuttons">Reverse Only Track(s)</button>
             <input type="hidden" name="revtype" value="" /> 
             (Single trk#, comma-list, or hyphen-range):&nbsp;
             <input id="revlist" type="text" name="revlist" size="20" />
