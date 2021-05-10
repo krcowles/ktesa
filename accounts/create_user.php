@@ -33,7 +33,7 @@ if ($submitter == 'create') {
     $regmails
         = $pdo->query("SELECT `email` FROM `USERS`;")->fetchAll(PDO::FETCH_COLUMN);
     if (in_array($email, $regmails)) {
-        echo "Email already registered";
+        echo "This Email has already been registered";
         exit;
     }
     $newuser   = "INSERT INTO `USERS` (" .
@@ -50,7 +50,7 @@ if ($submitter == 'create') {
         )
     );
     if (!$user) {
-        echo "Failed to store registration:\ncontact Administrator";
+        echo "Registration: database write error for {$username} at {$email}.";
     } else {
         echo "OK";
     }

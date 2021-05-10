@@ -119,6 +119,9 @@
 #support {
     display: none;
 }
+#appMode {
+    display: none;
+}
 #trail {
     position: absolute;
     top: 33px;

@@ -66,8 +66,8 @@ $loc_list.each(function() {
     $(this).on('click', function(ev) {
         ev.preventDefault();
         let lochikes = [];
-        let locarea = <string>$(this).text();
-        let hikeset = regions[locarea]; // regions are objects whose key is a locale (string)
+        let locarea = <any>$(this).text();
+        let hikeset: any = regions[locarea]; // regions are objects whose key is a locale (string)
         for (let i=0; i<rows.length; i++) {
             let item = <string>$(rows[i]).data('indx');
             let hikeno = parseInt(item)
@@ -115,7 +115,11 @@ $('#show').on('click', function(ev) {
                 filterHikes(miles_no, coords);
             },
             error: function() {
-                alert("Unable to retrieve areas.json in json directory");
+                alert("Sorry, we can't find the coordinates\nThe admin " +
+                    "has been notified");
+                let err = "Mobile access of areas.json failed";
+                let errobj = {err: err};
+                $.post('../php/ajaxError.php', errobj);
                 return false;
             }
         });

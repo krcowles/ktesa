@@ -57,6 +57,7 @@ if ($form === 'reg') {
     </div>   
 </div>
 
+<p id="appMode"><?=$appMode;?></p>
 <p id="formtype" style="display:none;"><?=$form;?></p>
 <div id="container">
 <?php if ($form === 'reg') : ?>

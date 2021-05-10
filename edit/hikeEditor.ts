@@ -1,5 +1,6 @@
 declare var age: string;
 declare var inEdits: string[];
+declare var appMode: string;
 declare function toggleScrollSelect(state: boolean): void;
 declare function setNodDatAlerts(): void;
 declare function tableSort(tableid: string): void;
@@ -73,14 +74,18 @@ $rows.each(function() {
 				success: function(results) {
 					if (results === "OK") {
 						alert("An email has been sent to the admin");
-					} else {
-						alert("The email did not get sent: please use Help->Contact Us");
-					}
+					} // no other results available in script
 				},
 				error: function (jqXHR) {
-					let newDoc = document.open();
-					newDoc.write(jqXHR.responseText);
-					newDoc.close();
+					if (appMode === 'development') {
+						let newDoc = document.open();
+						newDoc.write(jqXHR.responseText);
+						newDoc.close();
+					} else {
+						let msg = "Problem encountered sending admin mail\n" +
+							"The admin has been notified.";
+						alert(msg);
+					}
 				}
 			});
 		});

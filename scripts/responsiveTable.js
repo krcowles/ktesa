@@ -103,7 +103,11 @@ $(function () {
                     filterHikes(miles_no, coords);
                 },
                 error: function () {
-                    alert("Unable to retrieve areas.json in json directory");
+                    alert("Sorry, we can't find the coordinates\nThe admin " +
+                        "has been notified");
+                    var err = "Mobile access of areas.json failed";
+                    var errobj = { err: err };
+                    $.post('../php/ajaxError.php', errobj);
                     return false;
                 }
             });

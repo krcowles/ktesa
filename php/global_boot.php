@@ -42,8 +42,9 @@ ob_start(); // start output buffering so we can avoid "headers already sent" err
 // PHP site recommends following value for future expansion of E_ALL
 error_reporting(-1);  // 2147483647 is also suggested on PHP site, both work
 if ($appMode === 'production') {
-    ini_set('log_errors', 1);
+    ini_set('log_errors', '1'); // (this may be the default anyway)
     ini_set('error_log', $thisSitePrivateDir . '/ktesa.log');
+    ini_set('log_errors_max_length', '0');
     // UNCAUGHT error/exception handling:
     set_error_handler('ktesaErrors'); // errors not using Throwable interface
     set_exception_handler('ktesaExceptions'); // uncaught exceptions (no try/catch)

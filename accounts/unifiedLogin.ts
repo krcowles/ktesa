@@ -1,4 +1,5 @@
 declare function validateUser(user: string, pass: string): void;
+declare var appMode: string;
 /**
  * @fileoverview Adjust page according to form type
  * 
@@ -45,6 +46,7 @@ switch (formtype) {
          */
         var namespace = false;
         var goodname = true;
+        var php_bademail = false; // also other errors preventing submission
         var uniqueness = $.Deferred();
         /**
          * Ensure the user name has no embedded spaces
@@ -65,10 +67,8 @@ switch (formtype) {
         };
         /**
          * Make sure user name is unique;
-         * NOTE: TypeScript won't allow a function's return value to be boolean! "you
-         * must return a value": hence the return values specified below
-         *
-         * @return {boolean}
+         * NOTE: TypeScript won't allow a function's return value to be boolean!
+         * This function will set a global, goodname, instead.
          */
         var uniqueuser = function () {
             let data = $('#uname').val();
@@ -83,14 +83,30 @@ switch (formtype) {
                     }
                     else {
                         goodname = false;
+                        $('#uname').css('color', 'red');
                     }
                     uniqueness.resolve();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    uniqueness.reject();
-                    let newDoc = document.open();
-                    newDoc.write(jqXHR.responseText);
-                    newDoc.close();
+                    if (appMode === 'development') {
+                        uniqueness.reject();
+                        let newDoc = document.open();
+                        newDoc.write(jqXHR.responseText);
+                        newDoc.close();
+                    } else { // production
+                        goodname = false;
+                        $('#uname').css('color', 'red');
+                        uniqueness.reject();
+                        let msg = "The current list of usernames could not " +
+                            "be retrieved\nto check for duplicates. " +
+                            "We apologize for any inconvenience\n" +
+                            "The webmaster has been notified; please try again later";
+                        alert(msg);
+                        let ajaxerr = "Trying to get Users list; Error text: " +
+                            textStatus + "; Error: " + errorThrown;
+                        let errobj = {err: ajaxerr};
+                        $.post('../php/ajaxError.php', errobj);
+                    }
                 }
             });
         };
@@ -112,11 +128,15 @@ switch (formtype) {
         $('#uname').on('focus', function () {
             $(this).css('color', 'black');
         });
-        // input fields: no blanks; no username spaces; valid email address
+        $('#email').on('focus', function() {
+            $(this).css('color', 'black');
+        });
+        // input fields: no blanks; no username spaces; valid email address;
+        // no other faults
         $("#form").on('submit', function (ev) {
             ev.preventDefault();
-            if (!goodname || namespace) {
-                alert("Please correct item in red before submitting");
+            if (!goodname || namespace || php_bademail) {
+                alert("Cannot proceed until all entries are corrected");
                 return false;
             }
             if ($('#cookie_banner').css('display') !== 'none') {
@@ -124,6 +144,8 @@ switch (formtype) {
                 return false;
             }
             let formdata = $('#form').serializeArray();
+            let proposed_name = formdata[4]['value'];
+            let proposed_email = formdata[5]['value'];
             $.ajax({
                 url: 'create_user.php',
                 data: formdata,
@@ -131,39 +153,88 @@ switch (formtype) {
                 method: 'post',
                 success: function(result) {
                     if (result !== 'OK') {
-                        alert(result);
-                        return false;
+                        if (result.indexOf("Email") !== -1) {
+                            alert(result);
+                            $('#email').css('color', 'red');
+                        } else {
+                            let err = "Your registration could not be completed\n" +
+                                "due to an apparent database error\nThe admin " +
+                                "has been notified.";
+                            alert(err)
+                            let ajaxerr = {err: result};
+                            $.post('../php/ajaxError.php', ajaxerr);
+                            php_bademail = true;
+                        }
+                    } else {
+                        let email = $('#email').val();
+                        let mail_data = {form: 'reg', email: email};
+                        // admin action to cleanup database if errors here
+                        $.ajax({
+                            url: 'resetMail.php',
+                            method: 'post',
+                            data: mail_data,
+                            success: function(result) {
+                                if (result === 'OK') {
+                                    alert("An email has been sent - it may take awhile\n" +
+                                        "You can continue as a guest for now");
+                                    window.open('../index.html', '_self');
+                                } else {
+                                    let mailmsg: string;
+                                    if (result.indexOf('valid') !== -1) {
+                                        mailmsg = result + ";\nYou will not be able to " +
+                                            "complete your registration at this time;\nAn " +
+                                            "email has been sent to the admin to correct " + 
+                                            "the situation.";
+                                        alert(mailmsg);
+                                    } else if(result.indexOf('located') !== -1) {
+                                        mailmsg = "Your email did not record properly:\n" +
+                                        "You will not be able to complete your registration " +
+                                        "at this time.\nAn email has been sent to the admin" +
+                                        " to correct the situation.";
+                                        alert(mailmsg);
+                                    }
+                                    $('#email').css('color', 'red');
+                                    php_bademail = true;
+                                    // notify admin for db clean-up
+                                    let ajaxerr = "User email not sent, but entry has " + 
+                                        "been created in USERS: " + result;
+                                    ajaxerr += "\nuser: " + proposed_name + " email: " +
+                                        proposed_email;
+                                    let errobj = {err: ajaxerr};
+                                    $.post('../php/ajaxError.php', errobj);
+                                }
+                            },
+                            error: function(jqXHR, _textStatus, _errorThrown) {
+                                if (appMode === 'development') {
+                                    let newDoc = document.open();
+                                    newDoc.write(jqXHR.responseText);
+                                    newDoc.close();
+                                } else {
+                                    let err = "An error was encountered while " +
+                                        "attempting to send your email.\nYour " +
+                                        "registration cannot be completed at this " + 
+                                        "time.\nAn email has been sent to the admin" +
+                                        " to correct the situation.";
+                                    php_bademail = true;
+                                    alert(err);
+                                    let ajaxerr = "Server error: cleanup USERS\n" +
+                                        "registrant" + proposed_name + "; email " +
+                                        proposed_email;
+                                    let errobj = {err: ajaxerr};
+                                    $.post('../php/ajaxError.php', errobj);
+                                    // handlers will generate error log email.
+                                }
+                            }   
+                        });
                     }
-                    let email = $('#email').val();
-                    let mail_data = {form: 'reg', email: email};
-                    $.ajax({
-                        url: 'resetMail.php',
-                        method: 'post',
-                        data: mail_data,
-                        success: function(result) {
-                            if (result === 'OK') {
-                                alert("An email has been sent - it may take awhile\n" +
-                                    "You can continue as a guest for now");
-                                window.open('../index.html', '_self');
-                            } else {
-                                alert("A problem was encountered sending mail:\n" +
-                                    result);
-                                location.reload();
-                            }
-                        },
-                        error: function(jqXHR, _textStatus, _errorThrown) {
-                            let newDoc = document.open();
-                            newDoc.write(jqXHR.responseText);
-                            newDoc.close();
-                        }     
-                    });
                 },
-                error: function(jqXHR, _textStatus, _errorThrown) {
+                error: function(jqXHR) {
                     let newDoc = document.open();
                     newDoc.write(jqXHR.responseText);
                     newDoc.close();
                 }
             });
+            return true;
         });
         break;
     case 'renew':
@@ -220,12 +291,13 @@ switch (formtype) {
                         return;
                     }
                 },
-                error: function(jqXHR, _textStatus, _errorThrown) {
+                error: function(jqXHR) {
                     let newDoc = document.open();
                     newDoc.write(jqXHR.responseText);
                     newDoc.close();
                 }
             });
+            return true;
         });
         break;
     case 'log':
@@ -266,15 +338,24 @@ switch (formtype) {
                             }
                         });
                     } else {
-                        alert(result);
+                        let msg;
+                        if (result.indexOf('valid') !== -1) {
+                            msg = "Your email is not valid. You cannot reset\n" +
+                                "your password until this has been corrected";
+                        } else {
+                            msg = "Your email could not be located in our database\n" +
+                                "Please make sure it is the address you used when registering";
+                        }
+                        alert(msg);
                     }
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function(jqXHR) {
                     var newDoc = document.open();
                     newDoc.write(jqXHR.responseText);
                     newDoc.close();
                 }
             });
+            return true;
         });
         break;
 }

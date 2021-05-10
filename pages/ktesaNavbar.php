@@ -134,6 +134,27 @@ $policy = "../accounts/PrivacyPolicy.pdf";
 <p id="admin">admin</p>
 <?php endif; ?>
 
+<!-- info modal when ajax errors occur -->
+<div id="ajaxerr" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">An Error Has Occurred</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                We are sorry, but an error has occurred. The admin has been notified.
+                We apologize for any inconvenience.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
 window.mobileAndTabletCheck = function() {
         let check = false;

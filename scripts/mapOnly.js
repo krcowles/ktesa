@@ -377,7 +377,7 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
             deferred.resolve();
         },
         error: function () {
-            var msg = 'Did not succeed in getting JSON data: ' +
+            var msg = 'Did not succeed in getting track data: ' +
                 json_filename;
             alert(msg);
             deferred.reject();

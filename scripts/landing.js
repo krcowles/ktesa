@@ -9,11 +9,24 @@
  * @version 1.1 Typescripted
  */
 $(function () {
+    // Setup modal as a user presentation for any ajax errors.
+    var ajaxerror = new bootstrap.Modal(document.getElementById('ajaxerr'), {
+        keyboard: false
+    });
     $('#logout').on('click', function (evt) {
         evt.preventDefault();
         var data = { expire: 'N' };
-        $.get('../accounts/logout.php', data, function () {
-            location.reload();
+        $.ajax({
+            url: '../accounts/logout.php',
+            data: data,
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                ajaxerror.show();
+                var errobj = { err: "Failure in mobile logout" };
+                $.post('../php/ajaxError.php', errobj);
+            }
         });
     });
     /**

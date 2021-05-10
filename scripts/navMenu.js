@@ -19,6 +19,10 @@ else {
 var chg_modal = new bootstrap.Modal(document.getElementById('cpw'), {
     keyboard: false
 });
+// Setup modal as a user presentation for any ajax errors.
+var ajaxerror = new bootstrap.Modal(document.getElementById('ajaxerr'), {
+    keyboard: false
+});
 /**
  * Menu operation
  */
@@ -31,10 +35,10 @@ $('#logout').on('click', function () {
         success: function () {
             window.open('../pages/landing.php');
         },
-        error: function (jqXHR) {
-            var newDoc = document.open();
-            newDoc.write(jqXHR.responseText);
-            newDoc.close();
+        error: function () {
+            ajaxerror.show();
+            var err = { err: "Mobile logout error" };
+            $.post('../php/ajaxError.php', err);
         }
     });
 });
@@ -67,10 +71,10 @@ $('#send').on('click', function (ev) {
                 alert(result);
             }
         },
-        error: function (jqXHR) {
-            var newDoc = document.open();
-            newDoc.write(jqXHR.responseText);
-            newDoc.close();
+        error: function () {
+            ajaxerror.show();
+            var err = { err: "Mobile - resetMail.php error" };
+            $.post('../php/ajaxError.php', err);
         }
     });
 });
@@ -92,10 +96,10 @@ $('#cookies').on('click', function () {
         success: function () {
             window.location.reload();
         },
-        error: function (jqXHR) {
-            var newDoc = document.open();
-            newDoc.write(jqXHR.responseText);
-            newDoc.close();
+        error: function () {
+            ajaxerror.show();
+            var err = { err: "Mobile member_cookies.php error" };
+            $.post('../php/ajaxError.php', err);
         }
     });
 });

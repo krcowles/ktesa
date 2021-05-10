@@ -331,7 +331,7 @@ function zoom_track(hikenos:number[], infoWins:string[], trackcolors:string[]) {
 			if (tracks[hikenos[i]] !== '') {
 				let sgldef:JQueryDeferred<void> = $.Deferred<void>();
 				promises.push(sgldef);
-				let trackfile = '../../json/' + tracks[hikenos[i]];
+				let trackfile = '../json/' + tracks[hikenos[i]];
 				drawnHikes.push(hikenos[i]);
 				if (j === trackcolors.length) {
 					j = 0;  // rollover colors when # of tracks > # of colors
@@ -383,10 +383,14 @@ function drawTrack(json_filename:string, info_win:string, color:string,
 			drawnTracks.push(newtrack);
 			deferred.resolve();
 		},
-		error: function(_jqXHR, _textStatus, _errorThrown) {
-			let msg:string = 'Did not succeed in getting JSON data: ' + 
+		error: function() {
+			let msg:string = 'Did not succeed in getting track data: ' + 
 				json_filename;
 			alert(msg);
+			let usererr = "User couldn't retrieve json file: " +
+				json_filename;
+			let errobj = {err: usererr};
+			$.post('../php/ajaxError.php', errobj);
 			deferred.reject();
 		}
 	});
