@@ -315,7 +315,7 @@ function zoom_track(hikenos, infoWins, trackcolors) {
             if (tracks[hikenos[i]] !== '') {
                 var sgldef = $.Deferred();
                 promises.push(sgldef);
-                var trackfile = '../../json/' + tracks[hikenos[i]];
+                var trackfile = '../json/' + tracks[hikenos[i]];
                 drawnHikes.push(hikenos[i]);
                 if (j === trackcolors.length) {
                     j = 0; // rollover colors when # of tracks > # of colors
@@ -369,6 +369,10 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
             var msg = 'Did not succeed in getting track data: ' +
                 json_filename;
             alert(msg);
+            var usererr = "User couldn't retrieve json file: " +
+                json_filename;
+            var errobj = { err: usererr };
+            $.post('../php/ajaxError.php', errobj);
             deferred.reject();
         }
     });

@@ -298,6 +298,9 @@ function getClusters($pdo)
 function createPseudoGpx($clat, $clng, &$gpxfile, &$files)
 {
     $pseudo = simplexml_load_file("../edit/pseudo.gpx");
+    if ($pseudo === false) {
+        throw new Exception("Couldn't load pseudo.gpx");
+    }
     $y = $pseudo->trk->trkseg[0];
     $y->trkpt[0]['lat'] = $clat;
     $y->trkpt[0]['lon'] = $clng;
@@ -390,8 +393,8 @@ function gpxLatLng($gpxfile, $no_of_tracks)
     $gpxdat = simplexml_load_file($gpxfile);
     if ($gpxdat === false) {
         throw new Exception(
-            __FILE__ . "Line " . __LINE__ . "Could not load gpx file as " .
-            "simplexml; Please contact Site Master"
+            __FILE__ . "Line " . __LINE__ . "Could not load {$gpxfile} as " .
+            "simplexml"
         );
     }
     // If file happens to contain routes instead of tracks, convert:
@@ -542,6 +545,11 @@ function genLatLng($gpxobj, $trkno)
 function simplexmlInsertAfter(SimpleXMLElement $insert, SimpleXMLElement $target)
 {
     $domTarg = dom_import_simplexml($target);
+    if ($domTarg === false) {
+        throw new Exception(
+            "Function simplexmlInsertAfter failed with attempt to load as dom"
+        );
+    }
     $domIns = $domTarg->ownerDocument->importNode(
         dom_import_simplexml($insert), true
     );

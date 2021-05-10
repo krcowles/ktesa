@@ -12,6 +12,62 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 /**
+ * Exception traces seem to get truncated, which isn't helpful! This
+ * function expands the information so that it is not truncated...
+ * https://stackoverflow.com/questions/1949345/how-can-i-get-the-full-string-of-php-s-gettraceasstring
+ * 
+ * @param Exception $exception The exception thrown;
+ * 
+ * @return string $rtn
+ */
+function getExceptionTraceAsString($exception)
+{
+    $rtn = "";
+    $count = 0;
+    foreach ($exception->getTrace() as $frame) {
+        $args = "";
+        if (isset($frame['args'])) {
+            $args = array();
+            foreach ($frame['args'] as $arg) {
+                if (is_string($arg)) {
+                    $args[] = "'" . $arg . "'";
+                } elseif (is_array($arg)) {
+                    $args[] = "Array";
+                } elseif (is_null($arg)) {
+                    $args[] = 'NULL';
+                } elseif (is_bool($arg)) {
+                    $args[] = ($arg) ? "true" : "false";
+                } elseif (is_object($arg)) {
+                    $args[] = get_class($arg);
+                } elseif (is_resource($arg)) {
+                    $args[] = get_resource_type($arg);
+                } else {
+                    $args[] = $arg;
+                }
+            }
+            $args = join(", ", $args);
+        }
+        $current_file = "[internal function]";
+        if (isset($frame['file'])) {
+            $current_file = $frame['file'];
+        }
+        $current_line = "";
+        if (isset($frame['line'])) {
+            $current_line = $frame['line'];
+        }
+        $rtn .= sprintf(
+            "#%s %s(%s): %s(%s)\n",
+            $count,
+            $current_file,
+            $current_line,
+            $frame['function'],
+            $args
+        );
+        $count++;
+    }
+    return $rtn;
+}
+/**
  * This function establishes production mode error handling, which
  * will present a user-friendly error page. Uncaught errors will be
  * logged to ktesa.log, and an email sent to site masters.
@@ -25,9 +81,9 @@ if (session_status() == PHP_SESSION_NONE) {
  */
 function ktesaErrors($errno, $errstr, $errfile, $errline)
 {
-    $message = (new Exception)->getTraceAsString();
-    error_log($message);
-    errorEmail($message);
+    $lastTrace = getExceptionTraceAsString(new Exception);
+    error_log($lastTrace);
+    errorEmail($lastTrace);
     errorPage();
 }
 /**
@@ -41,12 +97,13 @@ function ktesaErrors($errno, $errstr, $errfile, $errline)
  */
 function ktesaExceptions($exception)
 {
+    $lastTrace = getExceptionTraceAsString(new Exception);
     $message = "An uncaught exception occurred:\n" .
         "Code: " . $exception->getCode() . 
         " in file " . $exception->getFile() .
         " at line " . $exception->getLine() . "\n" .
         $exception->getMessage() . "\n" .
-        "TRACE: " . $exception->getTraceAsString();
+        "TRACE: " . $lastTrace;
     error_log($message);
     errorEmail($message);
     errorPage();

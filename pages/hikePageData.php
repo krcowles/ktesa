@@ -215,6 +215,9 @@ if ($clusterPage) {
     foreach ($hikeTrackFiles as $gpx) {
         $gpxPath = '../gpx/' . $gpx;
         $gpxData = simplexml_load_file($gpxPath);
+        if ($gpxData === false) {
+            throw new Exception("GPX File could not be loaded: " . $gpx);
+        }
         // there may be more than one track in a file (e.g. Black Canyon)
         $noOfTrks = $gpxData->trk->count();
         for ($j=0; $j<$noOfTrks; $j++) {
