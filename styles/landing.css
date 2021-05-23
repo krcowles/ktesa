@@ -77,25 +77,6 @@ h2 {
 ::placeholder {
     color: gray;
 }
-#hide {
-    display: none;
-}
-#searchbar {
-    border-radius: 8px;
-	border-width: 2px;
-    border-color: darkgoldenrod;
-    height: 40px;
-    width: 240px;
-    font-size: 22px;
-    margin-top: 40px;
-    padding: 8px;
-    background-color: #fff5e6; 
-    position: relative;
-    top: -40px;
-}
-#searchbar:focus {
-    background-color: ghostwhite;
-}
 #usrview {
     text-decoration: underline;
     margin-top: 16px;

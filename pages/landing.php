@@ -10,7 +10,6 @@
 session_start();
 require "../php/global_boot.php";
 require "../accounts/getLogin.php";
-require "siteHikes.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -20,10 +19,8 @@ require "siteHikes.php";
     <meta name="description" content="Mobile site for New Mexico Hikes" />
     <meta name="author" content="Ken Cowles" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/landing.css" type="text/css" rel="stylesheet" />
-    <script src="../scripts/jquery.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -70,16 +67,7 @@ require "siteHikes.php";
 
 <div class="container">
     <h2 id="welcome">Welcome to New Mexico Hikes!</h2>
-    <h3>A free site where members can create their own hikes</h3>
-    
-    <!-- datalist not supported by bootstrap; disabled in CSS -->
-    <div id="hide">
-        <input id="searchbar" placeholder="Enter hike" list="hikelist" />
-        <?=$datalist;?> 
-        <a id="goto" type="button" class="btn btn-secondary" href="#">
-            View Hike Page</a>
-    </div>
-        
+    <h3>A free site where members can create their own hikes</h3>  
     <p id="usrview">Choose from the following viewing options:</p>
     <div>
         <div id="choice1">
@@ -112,10 +100,12 @@ require "siteHikes.php";
     </div>
 </div>
 
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
+<script src="../scripts/jquery.js"></script>
 <script src="../scripts/logo.js"></script>
 <script src="../scripts/landing.js"></script>
 <script src="../scripts/loginState.js"></script>
-<script type="text/javascript">var hikeObjects = <?=$jsonHikes;?>;</script>
 </body>
 
 </html>
