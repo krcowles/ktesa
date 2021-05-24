@@ -9,11 +9,25 @@
  */
 $(function() {
 
+// Setup modal as a user presentation for any ajax errors.
+var ajaxerror = new bootstrap.Modal(<HTMLElement>document.getElementById('ajaxerr'), {
+    keyboard: false
+});
+
 $('#logout').on('click', function(evt) {
     evt.preventDefault();
     let data = {expire: 'N'};
-    $.get('../accounts/logout.php', data, function() {
-        location.reload();
+    $.ajax({
+        url: '../accounts/logout.php',
+        data: data,
+        success: function() {
+            location.reload();
+        },
+        error: function() {
+            ajaxerror.show();
+            let errobj = {err: "Failure in mobile logout"};
+            $.post('../php/ajaxError.php', errobj);
+        }
     });
 });
 /**

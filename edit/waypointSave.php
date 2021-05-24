@@ -65,7 +65,7 @@ if (!empty($_POST['gdes'])) {
     $xml = simplexml_load_file($gpxloc);
     if ($xml === false) {
         // NOTE: file already validated during upload
-        throw new Exception("Failed to load {$xml}");
+        throw new Exception("Failed to load {$gpxfile}");
     }
     // rather than check each node and all its children to look for any
     // changes, the nodes are simply deleted then re-added from POSTed data

@@ -48,7 +48,7 @@ $(function () {
         near_modal.show();
     });
     // setup area links
-    var $loc_list = $('#alist').find('li a');
+    var $loc_list = $('#alist').find('li a'); // drop-down list of locales
     $loc_list.each(function () {
         $(this).on('click', function (ev) {
             ev.preventDefault();

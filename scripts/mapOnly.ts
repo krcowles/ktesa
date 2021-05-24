@@ -87,7 +87,6 @@ const getIcon = (no_of_hikes: number) => {
 };
 
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
-var mapdone: JQuery.Deferred<void> = $.Deferred();
 function initMap() {
 	google.maps.Marker.prototype.clicked = false;  // used in sideTables.js
 	var clustererMarkerSet: google.maps.Marker[] = [];
@@ -114,7 +113,6 @@ function initMap() {
 		rotateControl: false,
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
-	mapdone.resolve();
 
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
 	CL.forEach(function(clobj) {

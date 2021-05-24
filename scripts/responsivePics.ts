@@ -4,6 +4,7 @@ declare var p: string;
 declare var c: string;
 declare var as: string;
 declare var w: string;
+declare var vw: number;
 /**
  * @fileoverview For responsive design, the only window resize to occur
  * will be vertical/horizontal, so rows can always be simply calculated

@@ -40,7 +40,7 @@ body {
 #map {
 	float: left;
 	margin-bottom: 16px;
-    width: 72%;
+    width: 65%;
     height: 720px;
 	z-index: 1;
 }
@@ -99,15 +99,17 @@ li {
 #sideTable {
 	float: left;
 	white-space: nowrap;
-	width: 28%;
+	width: 35%;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
 .tableItem {
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
 	background-color: floralwhite;
 	height: 64px;
 	width: 100%;
-	min-width: 384px;
 	border-style: solid;
 	border-top: none;
 	border-color: black;
@@ -115,7 +117,6 @@ li {
 	float: left;
 }
 .icons {
-	display: inline-block;
 	height: 100%;
 	width: 36px;
 }
@@ -160,16 +161,18 @@ a:link {
 	top: 2px;
 }
 .content {
-	display: inline-block;
+	flex-wrap: wrap;
+	width: calc(100% - 123px);
+	overflow: hidden;
 }
 .content:last-child {
 	top: 0px;
 }
 .thumbs {
 	margin-right: 4px;
-	float: right;
 	cursor: pointer;
 	z-index: 50;
+	width: 83px;
 }
 .bigger {
 	position: absolute;

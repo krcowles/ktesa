@@ -144,7 +144,8 @@ var modal = (function(): Modal {
                         "notified";
                     alert(msg);
                     modal.close();
-                    let ajaxerr = "resetMail.php error:  " + email;
+                    let ajaxerr = "resetMail.php error:  " + email + "; Database" +
+                        " password may have been altered";
                     let errobj = {err: ajaxerr};
                     $.post('../php/ajaxError.php', errobj);
                 }

@@ -168,26 +168,6 @@ function compareObj(a, b) {
     return comparison;
 }
 /**
- * The following function returns the appropriate hike object based on the incoming
- * object (obj) and the desired hike number (indx) in that object. Note that Type VC
- * and CL hikes can have an array of hikes in their corresponding objects.
- */
-function idHike(indx, obj) {
-    if (obj.type === 'cl') {
-        var clobj = CL[obj.group];
-        var clhikes = clobj.hikes;
-        for (var m = 0; m < clhikes.length; m++) {
-            if (clhikes[m].indx === indx) {
-                return clhikes[m];
-            }
-        }
-    }
-    else if (obj.type === 'nm') {
-        return NM[obj.group];
-    }
-    return '';
-}
-/**
  * The html 'wrapper' for each item included in the side table
  */
 var subsize = 10;
@@ -261,7 +241,6 @@ function formTbl(indxArray) {
         if (done) {
             clearInterval(loadSpreader);
             loadSpreader = undefined;
-            indexer = subsize;
             done = false;
         }
     }, 500);
@@ -433,12 +412,32 @@ function enableZoom(items) {
     return;
 }
 /**
+ * The following function returns the appropriate hike object based on the
+ * incoming object (obj) and the subject hike number (indx) in that object.
+ * Note that CL objects can have an array of hikes in their corresponding objects.
+ * It is invoked by the IdTableElements function.
+ */
+function idHike(indx, obj) {
+    if (obj.type === 'cl') {
+        var clobj = CL[obj.group];
+        var clhikes = clobj.hikes;
+        for (var m = 0; m < clhikes.length; m++) {
+            if (clhikes[m].indx === indx) {
+                return clhikes[m];
+            }
+        }
+    }
+    else if (obj.type === 'nm') {
+        return NM[obj.group];
+    }
+    return '';
+}
+/**
  * A function to find elements within current map bounds and display them in
  * the side table. This is invoked by either a pan or a zoom on the map (see
- * map.js for listeners).
- * This function also returns a set of hikenumbers for making tracks when the map
- * zoom >= 13. Clusters are 'segregated' so that the entire set of hikes in the
- * cluster can be drawn, each with a unique color.
+ * map.js for listeners). This function also returns a set of hikenumbers for
+ * making tracks when the map zoom >= 13. Clusters are 'segregated' so that the
+ * entire set of hikes in the cluster can be drawn, each with a unique color.
  */
 var IdTableElements = function (boundsStr, zoom) {
     var singles = []; // individual hike nos

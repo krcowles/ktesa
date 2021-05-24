@@ -1,12 +1,13 @@
 <?php
 /**
- * This is the default home page for the ktesa site. It consists of
- * a page-wide google map w/pins indicating hike locations, and a table
- * of hikes below which can be sorted/filtered.
- * PHP Version 7.1
+ * This is the home page for the ktesa site when not being viewed by a mobile
+ * device. It consists of a google map with markers indicating hike locations,
+ * and a side table showing all the hikes in the viewing area, along with some
+ * links, info, and a thumbnail for each.
+ * PHP Version 7.4
  * 
- * @package Home
- * @author  Tom Sandberg and Ken Cowles <krcowle29@gmail.com>
+ * @package Ktesa
+ * @author  Ken Cowles <krcowle29@gmail.com>
  * @license No license to date
  */
 session_start();
@@ -56,7 +57,6 @@ chdir($startDir);
 <div id="sideTable">
 </div>
 
-<p id="geoSetting">ON</p>
 <img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />
 
 <input id="searchbar" placeholder="Search for a hike" list="hikelist" />

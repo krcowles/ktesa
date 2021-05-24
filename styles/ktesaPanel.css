@@ -119,9 +119,6 @@
 #support {
     display: none;
 }
-#appMode {
-    display: none;
-}
 #trail {
     position: absolute;
     top: 33px;
@@ -139,7 +136,7 @@
     z-index: 100;
 }
 /* Hidden elements and Modal windows: not turned on when page loads */
-#cookie_state, #cookies_choice, #admin, #email_password, #ifadmin, #feedback {
+#cookie_state, #cookies_choice, #admin, #appMode, #email_password, #ifadmin, #feedback {
     display: none;
 }
 #enter, #canceler {

@@ -7,6 +7,7 @@ interface Geo {
 interface HikeNoSet {
     [key: string]: number[];
 }
+type HikeNos = number[];
 /**
  * @fileoverview Management of options button
  * 
@@ -60,7 +61,7 @@ $('#cls').on('click', function(ev) {
 });
 
 // setup area links
-let $loc_list = $('#alist').find('li a');
+let $loc_list = $('#alist').find('li a'); // drop-down list of locales
 $loc_list.each(function() {
     $(this).on('click', function(ev) {
         ev.preventDefault();

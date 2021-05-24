@@ -32,6 +32,7 @@ var zoomdone;
 // map event handler globals for determining resulting action in handler
 var panning = false;
 var marker_click = false;
+var zoomThresh = 13;
 /**
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
@@ -84,7 +85,6 @@ var getIcon = function (no_of_hikes) {
     return icon;
 };
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
-var mapdone = $.Deferred();
 function initMap() {
     var clustererMarkerSet = [];
     var nmCtr = { lat: 34.450, lng: -106.042 };
@@ -114,7 +114,6 @@ function initMap() {
         url: "https://nmhikes.com/maps/NM_Borders.kml",
         map: map
     });
-    mapdone.resolve();
     // ///////////////////////////   MARKER CREATION   ////////////////////////////
     CL.forEach(function (clobj) {
         AddClusterMarker(clobj.loc, clobj.group, clobj.hikes, clobj.page);
@@ -166,10 +165,10 @@ function initMap() {
                 loadSpreader = undefined;
             }
             zoom_level = map.getZoom();
-            marker_click = zoom_level < 13 ? true : false;
+            marker_click = zoom_level < zoomThresh ? true : false;
             map.setCenter(location);
             if (marker_click) {
-                map.setZoom(13);
+                map.setZoom(zoomThresh);
                 marker_click = false;
             }
             iw.open(map, this);
@@ -209,10 +208,10 @@ function initMap() {
                 loadSpreader = undefined;
             }
             zoom_level = map.getZoom();
-            marker_click = zoom_level < 13 ? true : false;
+            marker_click = zoom_level < zoomThresh ? true : false;
             map.setCenter(hikeobj.loc);
             if (marker_click) {
-                map.setZoom(13);
+                map.setZoom(zoomThresh);
                 marker_click = false;
             }
             iw.open(map, this);
@@ -239,7 +238,7 @@ function initMap() {
         var idle = google.maps.event.addListener(map, 'idle', function () {
             var curZoom = map.getZoom();
             var perim = String(map.getBounds());
-            if (curZoom > 12) {
+            if (curZoom >= zoomThresh) {
                 zoomTracks = true;
             }
             zoomedHikes = IdTableElements(perim, zoomTracks);
@@ -265,9 +264,9 @@ function initMap() {
     map.addListener('dragend', function () {
         // no highlighting is required during pan
         var curr_zoom = map.getZoom();
-        var zoomTracks = true;
-        if (curr_zoom < 13) {
-            zoomTracks = false;
+        var zoomTracks = false;
+        if (curr_zoom >= zoomThresh) {
+            zoomTracks = true;
         }
         var newBds = String(map.getBounds());
         zoomedHikes = IdTableElements(newBds, zoomTracks);
@@ -283,10 +282,10 @@ function initMap() {
                 loadSpreader = undefined;
             }
             var curZoom = map.getZoom();
-            var zoomTracks = true;
+            var zoomTracks = false;
             var perim = String(map.getBounds());
-            if (curZoom < 13) {
-                zoomTracks = false;
+            if (curZoom >= zoomThresh) {
+                zoomTracks = true;
             }
             zoomedHikes = IdTableElements(perim, zoomTracks);
             if (zoomTracks && zoomedHikes.length > 0) {
@@ -315,7 +314,7 @@ function zoom_track(hikenos, infoWins, trackcolors) {
             if (tracks[hikenos[i]] !== '') {
                 var sgldef = $.Deferred();
                 promises.push(sgldef);
-                var trackfile = '../../json/' + tracks[hikenos[i]];
+                var trackfile = '../json/' + tracks[hikenos[i]];
                 drawnHikes.push(hikenos[i]);
                 if (j === trackcolors.length) {
                     j = 0; // rollover colors when # of tracks > # of colors
@@ -369,6 +368,10 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
             var msg = 'Did not succeed in getting track data: ' +
                 json_filename;
             alert(msg);
+            var usererr = "User couldn't retrieve json file: " +
+                json_filename;
+            var errobj = { err: usererr };
+            $.post('../php/ajaxError.php', errobj);
             deferred.reject();
         }
     });
@@ -393,8 +396,8 @@ function setupLoc() {
         });
         map.setCenter(newWPos);
         var currzoom = map.getZoom();
-        if (currzoom < 13) {
-            map.setZoom(13);
+        if (currzoom < zoomThresh) {
+            map.setZoom(zoomThresh);
         }
     }
     function error(eobj) {
@@ -403,7 +406,7 @@ function setupLoc() {
     }
 }
 // //////////////////////  MAP FULL SCREEN DETECT  //////////////////////
-$(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function () {
+$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function () {
     var thisMapDoc = document;
     var isFullScreen = thisMapDoc.fullScreen ||
         thisMapDoc.mozFullScreen ||

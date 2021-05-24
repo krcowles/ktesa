@@ -220,7 +220,9 @@ $(function () {
                                             " to correct the situation.";
                                         php_bademail = true;
                                         alert(err);
-                                        var ajaxerr = "Server error: cleanup USERS";
+                                        var ajaxerr = "Server error: cleanup USERS\n" +
+                                            "registrant" + proposed_name + "; email " +
+                                            proposed_email;
                                         var errobj = { err: ajaxerr };
                                         $.post('../php/ajaxError.php', errobj);
                                         // handlers will generate error log email.
@@ -342,17 +344,16 @@ $(function () {
                             });
                         }
                         else {
+                            var msg = void 0;
                             if (result.indexOf('valid') !== -1) {
-                                var msg = "Your email is not valid. You cannot reset\n" +
+                                msg = "Your email is not valid. You cannot reset\n" +
                                     "your password until this has been corrected";
-                                alert(msg);
                             }
                             else {
-                                var msg = "Your email could not be located in our database\n" +
+                                msg = "Your email could not be located in our database\n" +
                                     "Please make sure it is the address you used when registering";
-                                alert(msg);
                             }
-                            alert(result);
+                            alert(msg);
                         }
                     },
                     error: function (jqXHR) {
