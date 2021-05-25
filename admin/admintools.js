@@ -193,6 +193,9 @@ $(function () {
     $('#exall').on('click', function () {
         window.open('export_all_tables.php?dwnld=N', "_blank");
     });
+    $('#findnew').on('click', function() {
+        window.open('findNewUsers.php');
+    });
     $('#updatelk').on('click', function () {
         $.get('updateUsers.php', function () {
             alert("LKUSERS has been updated");

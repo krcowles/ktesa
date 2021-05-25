@@ -113,6 +113,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             &nbsp;&nbsp;[NOTE: Tables must not exist]<br />
         <button id="exall" class="adminbuttons">Export All Tables</button>
             &nbsp;&nbsp;[NOTE: Creates .sql file]<br />
+        <button id="findnew" class="adminbuttons">Find New Users</button><br />
         <button id="updatelk" class="adminbuttons">Update USERS tables</button>
             &nbsp;&nbsp;[NOTE: USERS changes will be moved into LKUSERS]<br>
         <button id="show" class="adminbuttons">Show All Tables</button><br />
