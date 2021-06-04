@@ -175,6 +175,5 @@ if ($inclPix === 'YES') {
         }
     }
     $jsMaps .= ']';
-    $html .= '</div>';
     chdir($prev);
 }

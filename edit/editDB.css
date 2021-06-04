@@ -230,7 +230,7 @@ input[type=checkbox]
     display: none;
     font-weight: bold;
 }
-.box.is-dragover {
+#pupld.is-dragover {
     background-color: grey;
 }
 #preload {
@@ -323,4 +323,78 @@ input[type=submit]:hover {
 input[name=newgps] , input[name=newmap] {
     height: 22px;
     font-size: 16px;
+}
+#boxes {
+    display: flex;
+    flex-flow: row nowrap;
+    align-content: center;
+    justify-content: space-evenly;
+}
+#repl, #rsrestart {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    align-self: center;
+    text-align: center;
+    width: 500px;
+    height: 500px;
+    border-style: dashed;
+    border-width: 1px;
+    background-color: blanchedalmond;
+}
+#presize, #sizeblock, #cprestart {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    align-self: center;
+    text-align: center;
+    width: 300px;
+    height: 225px;
+    border-style: dashed;
+    border-width: 1px;
+    background-color: blanchedalmond;
+}
+#redo_thumb {
+    font-size: 16px;
+}
+#cprestart {
+    flex-direction: column;
+    align-content: space-between;
+    border: none;
+    background-color: #dadada;
+    text-align: left;
+}
+#reset {
+    font-size: 18px;
+    height: 34px;
+    padding: 5px;
+    width: 128px;
+    margin-bottom: 8px;
+}
+.file_input {
+    display: none;
+}
+.file_label {
+    font-size: 16px;
+    background-color: #6D3C17;
+    color: white;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 5px 8px;
+}
+.file_label:hover {
+    background-color: blanchedalmond;
+    color: black;
+}
+ol li:first-child {
+    margin-bottom: 12px;
+}
+#repl.entered {
+    background-color: darkgray;
+}
+#presize.entered {
+    background-color: darkgray;
 }

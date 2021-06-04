@@ -37,10 +37,11 @@ require "dataForEditor.php";
 <p id="page_id" style="display:none">Build</p>
 <p id="hikeNo" style="display:none"><?= $hikeNo;?></p>
 <p id="entry" style="display:none"><?= $tab;?></p>
+<p id="htitle" style="display:none"><?=$pgTitle;?></p>
 
 <div id="main" style="padding:16px;margin-bottom:0px;">
 <h3 style="margin-top:0px;margin-bottom:0px;">
-    <em style="font-style:italic;color:DarkBlue;"><?= $pgTitle;?></em>: 
+    <em style="font-style:italic;color:DarkBlue;"><?=$pgTitle;?></em>: 
     Changes below will be applied to this hike. To save your edits, 
     select the 'Apply' button at the top. When you are done applying edits,
     or if no edits are being made, you may simply exit this page. Note 

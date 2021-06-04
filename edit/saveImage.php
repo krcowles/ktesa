@@ -36,7 +36,7 @@ $dbdate =  strlen($date) > 1 ? $date : null;
 
 if (($image = file_get_contents($blob)) === false) {
     throw new Exception(
-        "Uploaded server data could not be retrieved for {$fanme}\n" .
+        "Uploaded server data could not be retrieved for {$fname}\n" .
         "Error occurred in zstore.php"
     );
 }
