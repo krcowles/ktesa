@@ -81,7 +81,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             directories (comma-separated list)<br />[NOTE:]
             the <em>install</em> directory is always saved</span>
             <br /><textarea id="sites" cols="80"></textarea>
-            <br /><span>Install from:<span>
+            <br /><span>Install from:</span>
             <input id="copyloc" class="installdat" type="text"
                 placeholder="Test Site" /><br />
         </div><br />

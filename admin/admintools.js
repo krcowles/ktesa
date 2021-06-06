@@ -103,9 +103,11 @@ $(function () {
     $('#chgs').on('click', function () {
         window.open('export_all_tables.php?dwnld=C');
     });
+    /* No longer used
     $('#site').on('click', function () {
         window.open('export_all_tables.php?dwnld=S');
     });
+    */
     $('#npix').on('click', function () {
         window.open('list_new_files.php?request=pictures', "_self");
     });

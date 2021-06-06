@@ -92,6 +92,8 @@ function photoEvents() {
         ev.preventDefault();
         if (!posted) {
             $('#boxes').replaceWith(orgBoxesState);
+            $('#uccrop').text("0");
+            $('#ucprev').text("0");
             photoEvents();
         }
         else {
@@ -113,8 +115,8 @@ function loadPreview(img) {
         image.onload = function () {
             var imgitem = this;
             var loaded = imgitem;
-            var xdim = loaded.width;
-            var ydim = loaded.height;
+            var xdim = loaded.naturalWidth;
+            var ydim = loaded.naturalHeight;
             if (xdim > (cropWd + epsilon) || xdim < (cropWd - epsilon) ||
                 ydim > (cropHt + epsilon) || ydim < (cropHt - epsilon)) {
                 alert("This image is not properly sized to 300 x 225 pixels\n" +
@@ -240,7 +242,7 @@ function moveCropper(ctx, x, y) {
     yCropOrg = y;
 }
 /**
- * If the user wishes to delete the save preview and start over, he/she may
+ * If the user wishes to delete the saved preview and start over, he/she may
  * click the 'Delete Preview' button.
  */
 $('#redo_thumb').on('click', function (ev) {
@@ -325,6 +327,9 @@ $(document).off('click', '#ap2').on('click', '#ap2', function (ev) {
             saveImages(psDat);
         };
         thumbimg.src = base64img;
+    }
+    else { // Apply with no preview image
+        $('#f2').trigger('submit');
     }
 });
 /**

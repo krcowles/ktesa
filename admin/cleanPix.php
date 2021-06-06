@@ -7,17 +7,21 @@
  * those extraneous files, he may do so by checking the boxes provided,
  * and then selecting the 'Remove' button. In addition, those same tables
  * are compared to the filelist to see if any of the table entries do not
- * have matching files.
+ * have matching files. In addition, the previews and thumbs directories 
+ * are compared against the HIKES and EHIKES tables to perform a similar 
+ * check.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();
 require "../php/global_boot.php";
 
+/**
+ * First, the ETSV and TSV photo status is checked
+ */
 $published_query = "SELECT picIdx,thumb,mid FROM TSV;";
 $in_edit_query   = "SELECT picIdx,thumb,mid FROM ETSV;";
 $published_pix   = $pdo->query($published_query);
@@ -94,6 +98,55 @@ foreach ($photo_array as $filename) {
     }
 }
 $i = 0; // index for checkboxes
+/**
+ * Now the HIKES and EHIKES tables are checked
+ */
+$ehikesPrevReq = "SELECT `preview` FROM `EHIKES`;";
+$hikesPrevReq  = "SELECT `preview` FROM `HIKES`;";
+$ehikesPrev = $pdo->query($ehikesPrevReq)->fetchAll(PDO::FETCH_COLUMN);
+$hikesPrev  = $pdo->query($hikesPrevReq)->fetchAll(PDO::FETCH_COLUMN);
+$allPrevs   = array_merge($hikesPrev, $ehikesPrev);
+
+$prev_candidates = [];  // p
+$prev_noshows = [];     // prevs not in the tables
+$prevPix    = scandir('pictures/previews');
+array_shift($prevPix);  // eliminate '.'
+array_shift($prevPix);  // eliminate '..'
+if ($prevPix[0] == '.DS_Store') {  // MacOS 
+    array_shift($prevPix);
+}
+// any previews pix not assigned in the HIKES/EHIKES tables?
+foreach ($prevPix as $pImage) {
+    if (!in_array($pImage, $allPrevs)) {
+        array_push($prev_candidates, $pImage);
+    }
+}
+// does every table entry have a corresponding previews pic?
+foreach ($allPrevs as $tableItem) {
+    if (!in_array($tableItem, $prevPix)) {
+        array_push($prev_noshows, $tableItem);
+    }
+}
+$th_candidates = [];
+$th_noshows = [];
+$thPix = scandir('pictures/thumbs');
+array_shift($thPix);  // eliminate '.'
+array_shift($thPix);  // eliminate '..'
+if ($thPix[0] == '.DS_Store') {  // MacOS 
+    array_shift($thPix);
+}
+// any thumbs pix not assigned in the HIKES/EHIKES tables?
+foreach ($thPix as $tImage) {
+    if (!in_array($tImage, $allPrevs)) {
+        array_push($th_candidates, $tImage);
+    }
+}
+// does every table entry have a corresponding thumbs pic?
+foreach ($allPrevs as $tableItem) {
+    if (!in_array($tableItem, $thPix)) {
+        array_push($th_noshows, $tableItem);
+    }
+}
 chdir($startDir);
 // list the findings and provide a means for deletion via html 'form'
 ?>
@@ -150,6 +203,44 @@ chdir($startDir);
     <ul>
     <?php for ($j=0; $j<count($zsize_noshows); $j++) : ?>
     <li><?= $zsize_noshows[$j];?></li>
+    <?php endfor; ?>
+    </ul>
+<?php endif; ?>
+<p class="head">Previews images that exist that do not appear in the database</p>
+<?php if (count($prev_candidates) > 0) : ?>
+    <ul>
+    <?php for ($k=0; $k<count($prev_candidates); $k++) : ?>
+    <li><input id="chkbox<?= $i++;?>" type="checkbox" name="checkboxes[]"
+        value="<?=$prev_candidates[$k];?>" />&nbsp;&nbsp;<?=$prev_candidates[$k];?>
+    </li>
+    <?php endfor; ?>
+    </ul>
+<?php endif; ?>
+<p class="head">The database lists the following preview images which
+    cannot be located</p>
+<?php if (count($prev_noshows) > 0) : ?>
+    <ul>
+    <?php for ($k=0; $k<count($prev_candidates); $k++) : ?>
+    <li><?= $prev_noshows[$k];?></li>
+    <?php endfor; ?>
+    </ul>
+<?php endif; ?>
+<p class="head">Thumbs images that exist that do not appear in the database</p>
+<?php if (count($th_candidates) > 0) : ?>
+    <ul>
+    <?php for ($k=0; $k<count($th_candidates); $k++) : ?>
+        <li><input id="chkbox<?= $i++;?>" type="checkbox" name="checkboxes[]"
+        value="<?=$th_candidates[$k];?>" />&nbsp;&nbsp;<?=$th_candidates[$k];?>
+    </li>
+    <?php endfor; ?>
+    </ul>
+<?php endif; ?>
+<p class="head">The database lists the following thumbs images which
+        cannot be located</p>
+<?php if (count($th_noshows) > 0) : ?>
+    <ul>
+    <?php for ($k=0; $k<count($th_noshows); $k++) : ?>
+    <li><?= $th_noshows[$k];?></li>
     <?php endfor; ?>
     </ul>
 <?php endif; ?>
