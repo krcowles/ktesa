@@ -18,6 +18,7 @@ CREATE TABLE `EHIKES` (
   `gpx` varchar(2048) DEFAULT NULL,
   `trk` varchar(1024) DEFAULT NULL,
   `lat` int(10) DEFAULT NULL,
+  `preview` varchar(100) DEFAULT NULL,
   `lng` int(10) DEFAULT NULL,
   `purl1` varchar(1024) DEFAULT NULL,
   `purl2` varchar(1024) DEFAULT NULL,
@@ -28,11 +29,11 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
-('21','Quebradas Road Trip','2','0','San Antonio','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384','https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.',NULL,NULL,NULL);
+('21','Quebradas Road Trip','2','0','San Antonio','','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096',NULL,'-1068717384','https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.','The Quebradas Backcountry Highway provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view. The map above shows the 10 stops with photos of the surrounding areas. Sometimes hiking is a good option, and sometimes not so much. Below are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.',NULL,NULL,NULL);
 
 
 
@@ -78,7 +79,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=160 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=162 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -238,7 +239,9 @@ INSERT INTO CLUSHIKES VALUES
 ('156','247','Y','48'),
 ('157','172','Y','48'),
 ('158','252','Y','45'),
-('159','253','Y','7');
+('159','253','Y','7'),
+('160','258','Y','49'),
+('161','259','Y','49');
 
 
 
@@ -251,7 +254,7 @@ CREATE TABLE `CLUSTERS` (
   `pub` char(1) DEFAULT NULL,
   `page` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`clusid`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSTERS VALUES
@@ -302,7 +305,8 @@ INSERT INTO CLUSTERS VALUES
 ('45','Three Gun Springs Group','350764463','-1064441734','Y','0'),
 ('46','Copper Ave Group','350792529','-1064846551','Y','0'),
 ('47','Ellis Group','352084293','-1064410284','Y','0'),
-('48','Cerro Grande Group','358474890','-1064217706','Y','0');
+('48','Cerro Grande Group','358474890','-1064217706','Y','0'),
+('49','Alameda Group','351952318','-1066398802','Y','0');
 
 
 
@@ -336,7 +340,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EREFS VALUES
@@ -502,7 +506,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=256 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=260 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -754,32 +758,36 @@ INSERT INTO HIKES VALUES
 ('252','Three Gun - Oso Pass','2','Albuquerque','Out-and-back','7.70','2100','Med-Difficult','None','Canyon Views','Not Winter','Mixed sun/shade','Three_Gun_Spring.GPX','Three_Gun_Spring.json','350764463','-1064441734','oso.jpg',NULL,NULL,'https://www.google.com/maps/dir//Three+Guns+Trailhead,+19+Tres+Pistolas+Trail+NE,+Albuquerque,+NM+87123/@35.0649298,-106.4604222,14.33z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a17cda821e47:0x4689e3d1eef39baf!2m2!1d-106.4441074!2d35.0764161',NULL,'This is a lovely hike into Tijeras Canyon at the south end of the Sandias. It begins with a sunny, exposed, mostly moderate climb upward towards the foothills. The trail becomes steeper at this point, and slowly begins to acquire some shade as elevation is gained. From the Embudo Trail junction and beyond, the trail becomes quite well shaded. This hike offers great views in almost every direction, as the trail often changes direction once you pass the Embudo marker. Scenic vistas appear periodically, as well as views of the Sandia interior. The trail ends at \'Oso Pass\', where four trails converge, affording the opportunity to extend the hike. The trail can be used in the winter, but generally only up to the Embudo trail junction.',NULL,NULL,NULL),
 ('253','Gallegos - No Name Loop','2','Albuquerque','Loop','7.00','1100','Moderate','Picnic Area w/Toilets','Sandia Interior','Not Winter','Full sun','Gallegos_NoName.GPX','Gallegos_NoName.json','351657692','-1064734421','egnoname.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.1657778,-106.4734444/@35.1589435,-106.491118,15z','Although no closure signs were posted at the point of departure to the NoName Trail, the first 200-300 ft had \'nature litter\' typical of that used to indicate a closed area. The beginning of the NoName Trail appeared clear and open with no postings.','This hike is a nice departure from the somewhat busy trails of Gallegos Open Space. In order to avoid a large number of bikers, it is best to go during the week. Once at the point of departure to the NoName segment of the trail, there appeared to be no other hikers or bikers, and hence pleasant solitude, along with great views. That section of trail ascends quickly into the foothills interior providing some unique perspectives to the hiker. While the path is clear and easy to follow, it is nonetheless recommended that you use a GPS tracking device or app, as the return trip seems somehow less obvious! ',NULL,NULL,NULL),
 ('254','Bosque Canopy Loop Trail','2','Albuquerque','Loop','4.40','70','Easy','None','Bosque Views','Any','Full sun','SBChurch1-75.161.39.105-1615217300.gpx','SBChurch1-75.161.39.105-1615217300.json','351611895','-1066750892','bcan.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.1611895,-106.6750893/@35.1605756,-106.679242,15.75z',NULL,'This easy stroll in the Bosque provides ample opportunity to catch views of the lazy Rio Grande. Several man-made features pique interest along the way (see photos). A variety of criss-crossing paths make for opportunities to change the length and viewing options for this hike.',NULL,NULL,NULL),
-('255','Seismosaurus Trail','2','San Ysidro','Out-and-back','2.30','80','Easy','None','Wilderness views, petroglyphs','Not Summer','Full sun','Seismosaurus_Trail-75.161.39.105-1615164298.gpx','Seismosaurus_Trail-75.161.39.105-1615164298.json','354956870','-1069066046','seis.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.49558,-106.90681/@35.4954434,-106.9138716,12.34z',NULL,'This easy hike provides yet another glimpse of the varied landscapes contained in the Ojito Wilderness area. Longer views of the Jemez and Naciemiento Mtn ranges, and shorter views of tortured basins and colorful rock highlight the trail. Near the end of the trail appears some petroglyphs and what looks like a large petrified log. This is a pleasant outing with plenty of scenery.',NULL,NULL,NULL);
+('255','Seismosaurus Trail','2','San Ysidro','Out-and-back','2.30','80','Easy','None','Wilderness views, petroglyphs','Not Summer','Full sun','Seismosaurus_Trail-75.161.39.105-1615164298.gpx','Seismosaurus_Trail-75.161.39.105-1615164298.json','354956870','-1069066046','seis.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.49558,-106.90681/@35.4954434,-106.9138716,12.34z',NULL,'This easy hike provides yet another glimpse of the varied landscapes contained in the Ojito Wilderness area. Longer views of the Jemez and Naciemiento Mtn ranges, and shorter views of tortured basins and colorful rock highlight the trail. Near the end of the trail appears some petroglyphs and what looks like a large petrified log. This is a pleasant outing with plenty of scenery.',NULL,NULL,NULL),
+('256','Sagebrush Church Loop','2','Albuquerque','Loop','4.40','70','Easy','None','Bosque Views and Porcupines','Any','Mixed sun/shade','SBChurch1-174.28.133.253-1622312089.gpx','SBChurch1-174.28.133.253-1622312089.json','351611895','-1066750892','sbchurch.jpg',NULL,NULL,'https://www.google.com/maps/dir//Sagebrush+Church,+6440+Coors+Blvd+NW,+Albuquerque,+NM+87120/@35.1630541,-106.6790094,15.29z/data=!4m8!4m7!1m0!1m5!1m1!1s0x872273caadc530cf:0x78c2375ad16436b4!2m2!1d-106.6764917!2d35.1616658','For parking access, proceed to the very back end of the church lot.','The trail was accessed in the winter, so it\'s difficult to say what it would be like in the summer. The main feature of the hike, besides views of the Bosque and Rio Grande, was sightings of porcupines. It requires some looking up in the trees, as the bushy bundles can be easily mistaken for birds nests, mistletoe, etc. ',NULL,NULL,NULL),
+('257','Montano Road Picnic Area','2','Albuquerque','Loop','3.70','20','Easy','No Pubilc Toilets','Bosque Views','Any','Mixed sun/shade','Montano_BosqueDEM-174.28.133.253-1622310321.gpx,MontanoLoop-174.28.133.253-1622310321.gpx','Montano_BosqueDEM-174.28.133.253-1622310321.json','351477184','-1066841079','puebmont.jpg',NULL,NULL,'https://www.google.com/maps/dir//Pueblo+Monta%C3%B1o+Picnic+Area+and+Trailhead,+4100-4112+Monta%C3%B1o+Rd+NW,+Albuquerque,+NM+87120/@35.1463332,-106.6893512,14.96z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87227251c7721571:0x904f159d11f0ea6!2m2!1d-106.6841742!2d35.147886','Please lock your vehicle - several reports of vandalism have been made in spite of the somewhat busy nature of the park.','This hike overlaps some of the Rio Grande State Park trails, but acceses them from the North end. There is a considerable overlap with the Nature Center trails: Aldo Leopold, Bosque and River Loops, but they are accessed by crossing the Montano Road bridge over the Rio Grande - not the most pleasant part of the hike! The picnic area also affords shorter trails on the west side of the Rio Grande without crossing the bridge.',NULL,NULL,NULL),
+('258','Boxing Bear Trails','2','Albuquerque','Loop','5.40','80','Easy','None','Bosque and River Views','Any','Mixed sun/shade','A_BosqueLevveLoop2-174.28.133.253-1622319147.gpx,B_BosqueLeveeLoop1-174.28.133.253-1622319147.gpx,C_BosqueLeveeLoop3-174.28.133.253-1622319147.gpx','A_BosqueLevveLoop2-174.28.133.253-1622319147.json','352033687','-1066453703','box.jpg',NULL,NULL,'https://www.google.com/maps/dir//Boxing+Bear+Brewing+Co.+Brewpub%2FBrewery+Location,+10200+Corrales+Rd,+Albuquerque,+NM+87114/@35.2017505,-106.6475415,16.38z/data=!3m1!5s0x8722714421d7e8ed:0x88f9d6362f1413a3!4m8!4m7!1m0!1m5!1m1!1s0x8722714698647fbb:0x71ad0980377e0d76!2m2!1d-106.6452527!2d35.2029069','Parking is just north of the Boxing Bear Brewery, near the acequia.','Again, there are multiple options once you cross the foot bridge from the parking area. Most of them proceed into the Bosque where there are occasional views of the Sandias and of the Rio Grande. In the winter, porcupines may be spotted. The length of the hikes can easily be adjusted, as there are multiple return routes from the Bosque.',NULL,NULL,NULL),
+('259','Alameda Open Space','2','Albuquerque','Loop','5.70','250','Easy','Public Toilets','Bosque and River Views','Any','Mixed sun/shade','A_Bosque-174.28.133.253-1622318970.gpx,B_SouthLoop-174.28.133.253-1622316422.gpx,D_Urban-174.28.133.253-1622316422.gpx,NorthLoop-174.28.133.253-1622318996.gpx','A_Bosque-174.28.133.253-1622318970.json','351950530','-1066401534','alameda.jpg',NULL,NULL,'https://www.google.com/maps/dir//Alameda+Bosque+Trail+Parking+Space,+Nature+Trail,+Albuquerque,+NM+87114/@35.1940834,-106.646904,15.08z/data=!4m8!4m7!1m0!1m5!1m1!1s0x872271955943f5cb:0x8d3caf3a49b6e1ae!2m2!1d-106.6391604!2d35.1948716',NULL,'There is a wide variety of possibility for hiking (and biking) along the Rio Grande starting from the Rio Grande Valley Parking Space on Alameda. Options lead through the Bosque, along the river, and along the ditches where waterfowl can often be spotted. As the area borders a rural community, interesting yard displays can sometimes be seen (check the dinosaurs and dragons). This page shows trails taken by the author primarily to the south, with one exception. For trails on the north side of Alameda, check out the \'Boxing Bear Trails\' page.',NULL,NULL,NULL);
 
 
 
 
 CREATE TABLE `LKUSERS` (
-  `userid` smallint(6) NOT NULL AUTO_INCREMENT,
+  `userid` smallint(6) NOT NULL DEFAULT '0',
   `username` varchar(32) NOT NULL,
   `passwd` varchar(255) DEFAULT NULL,
   `passwd_expire` date DEFAULT NULL,
   `last_name` varchar(30) NOT NULL,
   `first_name` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `cookies` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  `cookies` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 INSERT INTO LKUSERS VALUES
-('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2021-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
-('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2020-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
+('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2050-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
+('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2050-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
 ('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com',''),
 ('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu',''),
 ('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com',''),
 ('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com',''),
-('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com','');
+('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com',''),
+('10','kenuser','$2y$10$1Zcu3a3/OIU0iPBA0B5ECu9GjQrAkvFraxkOqHV0oohF7.JfaA1PK','2022-04-11','admin','ken','hawk109@icloud.com','reject');
 
 
 
@@ -791,7 +799,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1705 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1710 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1710,7 +1718,11 @@ INSERT INTO REFS VALUES
 ('1700','43','Blog:','http://discoverthewest.blogspot.com/2015/10/the-coyote-call-trail.html','Discover The West'),
 ('1701','43','Blog:','https://ondafringe.wordpress.com/2015/06/06/day-hike-coyote-call-trail-valles-caldera-national-preserve-new-mexico-usa/','On Da Fringe'),
 ('1702','43','Book:','22',NULL),
-('1704','255','App:','https://www.alltrails.com/explore/trail/us/new-mexico/seismosaurus-trail','Alltrails.com');
+('1704','255','App:','https://www.alltrails.com/explore/trail/us/new-mexico/seismosaurus-trail','Alltrails.com'),
+('1705','257','App:','https://www.alltrails.com/trail/us/new-mexico/pueblo-montano-trail','AllTrails.com'),
+('1706','257','Website:','https://prescriptiontrails.org/trail/46/pueblo-montao-and-bosque-loop/','Pueblo Montano Site'),
+('1708','259','App:','https://www.alltrails.com/trail/us/new-mexico/alameda-and-bachechi-open-space-walk','Alameda Open Space Trails'),
+('1709','259','Website:','https://www.cabq.gov/parksandrecreation/open-space/lands/rio-grande-valley-state-park','Parks & Recreation: Rio Grande Valley');
 
 
 
@@ -1734,7 +1746,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=4914 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4964 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4465,7 +4477,47 @@ INSERT INTO TSV VALUES
 ('4911','255',NULL,'IMG_3806','Y','N','Splendid scenery in many directions','355047389','-1069062889','2704',NULL,'2021-03-07 14:39:10','IMG_3806','480','640',NULL,NULL),
 ('4912','255',NULL,'IMG_3822','Y','N','Looking towards the Naciemiento\'s and Jemez','355047861','-1069065250','2705',NULL,'2021-03-07 15:27:23','IMG_3822','480','640',NULL,NULL);
 INSERT INTO TSV VALUES
-('4913','255',NULL,'IMG_3817','Y','Y','Petroglyphs near the trail end','355056306','-1069106750','2706',NULL,'2021-03-07 15:08:29','IMG_3817','480','640',NULL,NULL);
+('4913','255',NULL,'IMG_3817','Y','Y','Petroglyphs near the trail end','355056306','-1069106750','2706',NULL,'2021-03-07 15:08:29','IMG_3817','480','640',NULL,NULL),
+('4914','256',NULL,'IMG_3695','Y','Y','Another tree-born porcupine','351789972','-1066542056','2714',NULL,'2021-01-06 10:03:32','IMG_3695','640','480',NULL,NULL),
+('4915','256',NULL,'IMG_3696','Y','Y','In the winter, porcupines eat the bark off of trees','351791694','-1066540611','2715',NULL,'2021-01-06 10:04:38','IMG_3696','640','480',NULL,NULL),
+('4916','256',NULL,'IMG_3691','Y','Y','Porcupine by the river','351684889','-1066596056','2716',NULL,'2021-01-06 09:38:52','IMG_3691','640','480',NULL,NULL),
+('4917','256',NULL,'IMG_3684','Y','Y','Wooden \'au naturel\' owl','351623833','-1066679389','2717',NULL,'2021-01-06 09:16:29','IMG_3684','480','640',NULL,NULL),
+('4918','256',NULL,'IMG_3685','Y','Y','Fence sculpture?','351628000','-1066682889','2718',NULL,'2021-01-06 09:19:20','IMG_3685','480','640',NULL,NULL),
+('4919','256',NULL,'IMG_3690','Y','Y','A serene view of the Rio Grande','351682889','-1066594611','2719',NULL,'2021-01-06 09:36:59','IMG_3690','480','640',NULL,NULL),
+('4920','256',NULL,'IMG_3686','Y','Y','Man-made arch','351638972','-1066664278','2720',NULL,'2021-01-06 09:22:17','IMG_3686','480','640',NULL,NULL),
+('4921','256',NULL,'IMG_3693','Y','Y','One of several diverging paths','351694028','-1066594250','2721',NULL,'2021-01-06 09:44:46','IMG_3693','480','640',NULL,NULL),
+('4922','256',NULL,'IMG_3683','Y','Y','Braving the brush','352056194','-1066368778','2722',NULL,'2021-01-04 09:45:00','IMG_3683','480','640',NULL,NULL),
+('4929','257',NULL,'IMG_3894','Y','Y','Coyotes at the park','351475000','-1066837389','2707',NULL,'2021-05-27 09:53:01','IMG_3894','640','480',NULL,NULL),
+('4930','257',NULL,'IMG_3891','Y','Y','A vigilant owl','351476583','-1066831194','2708',NULL,'2021-05-27 09:51:04','IMG_3891','640','480',NULL,NULL),
+('4931','257',NULL,'IMG_3892','Y','Y','Another bird-fellow','351478528','-1066834556','2710',NULL,'2021-05-27 09:51:43','IMG_3892','640','480',NULL,NULL),
+('4932','257',NULL,'IMG_3889','Y','Y','The serene Rio Grande','351454500','-1066779778','2711',NULL,'2021-05-27 09:44:07','IMG_3889','480','640',NULL,NULL),
+('4933','257',NULL,'IMG_3893','Y','Y','The watchful eagle','351477694','-1066838222','2712',NULL,'2021-05-27 09:52:22','IMG_3893','640','480',NULL,NULL),
+('4934','257',NULL,'IMG_3895','Y','Y','Unnamed worker','351475500','-1066836167','2713',NULL,'2021-05-27 09:53:21','IMG_3895','640','480',NULL,NULL),
+('4936','258',NULL,'IMG_3658','Y','Y','The scenic Rio Grande - a quiet corner','352081861','-1066229639','2749',NULL,'2020-12-21 09:51:18','IMG_3658','480','640',NULL,NULL),
+('4937','258',NULL,'IMG_3657','Y','Y','Views of the Sandias abound','352086750','-1066230611','2750',NULL,'2020-12-21 09:50:23','IMG_3657','480','640',NULL,NULL),
+('4938','258',NULL,'IMG_3672','Y','Y','Waterfowl are often attracted to the ditches','352104944','-1066278833','2751',NULL,'2020-12-28 09:48:02','IMG_3672','480','640',NULL,NULL),
+('4939','258',NULL,'IMG_3671','Y','Y','An easy walk North','352077944','-1066369694','2752',NULL,'2020-12-28 09:20:13','IMG_3671','480','640',NULL,NULL),
+('4943','259',NULL,'IMG_3884','Y','Y','Spring Offspring','351714972','-1066521917','2723',NULL,'2021-05-24 09:11:17','IMG_3884','480','640',NULL,NULL),
+('4944','259',NULL,'AOS1','Y','Y','Flocking winter birds','351939722','-1066426778','2724',NULL,'2020-11-16 08:53:05','AOS1','480','640',NULL,NULL),
+('4945','259',NULL,'AOS7','Y','Y','Bucolic scene en route','351710056','-1066523972','2725',NULL,'2020-11-02 09:48:53','AOS7','480','640',NULL,NULL),
+('4946','259',NULL,'AOS3','Y','Y','Old River Jacks - old CCC debris collectors when the Rio Grande overflowed','351706056','-1066539528','2726',NULL,'2020-11-16 09:47:15','AOS3','480','640',NULL,NULL),
+('4947','259',NULL,'AOS6','Y','Y','Some pretty nice artwork under Paseo Del Norte','351825444','-1066501833','2727',NULL,'2020-10-26 09:03:29','AOS6','480','640',NULL,NULL),
+('4948','259',NULL,'IMG_3871','Y','Y','Dragons in our midst','351956472','-1066475056','2728',NULL,'2021-05-17 08:52:28','IMG_3871','480','640',NULL,NULL),
+('4949','259',NULL,'AOS4','Y','Y','A wide open view looking south','351905250','-1066450889','2729',NULL,'2020-11-16 09:02:28','AOS4','480','640',NULL,NULL),
+('4950','259',NULL,'AOS5','Y','Y','River Jacks entrance','351879083','-1066478417','2730',NULL,'2020-11-16 09:12:38','AOS5','480','640',NULL,NULL),
+('4951','259',NULL,'AOS2','Y','Y','A quiet view of the Rio Grande','351888889','-1066472250','2731',NULL,'2020-11-16 09:09:37','AOS2','480','640',NULL,NULL),
+('4952','259',NULL,'F5C8AB6B-5C70-4D88-9620-8CB04C9BC3AA','Y','Y','Towards the Sandias','351624111','-1066620722','2732',NULL,'2020-11-16 10:04:25','F5C8AB6B-5C70-4D88-9620-8CB04C9BC3AA','480','640',NULL,NULL),
+('4953','259',NULL,'IMG_3581','Y','Y','These drain pipes create an artistic view','351907667','-1066566250','2733',NULL,'2020-12-07 09:37:25','IMG_3581','480','640',NULL,NULL),
+('4954','259',NULL,'IMG_3587','Y','Y','Dinosaurs?','351944778','-1066464306','2734',NULL,'2020-12-07 10:05:18','IMG_3587','480','640',NULL,NULL),
+('4955','259',NULL,'IMG_3592','Y','Y','The ditches collect waterfowl','351867639','-1066467806','2735',NULL,'2020-12-14 09:24:13','IMG_3592','640','480',NULL,NULL),
+('4956','259',NULL,'IMG_3586','Y','Y','An old hydro station?','351937944','-1066461500','2737',NULL,'2020-12-07 10:01:21','IMG_3586','480','640',NULL,NULL),
+('4957','259',NULL,'IMG_3582','Y','Y','Pseudo-bones of a prehistoric nature','351908000','-1066571361','2738',NULL,'2020-12-07 09:38:42','IMG_3582','480','640',NULL,NULL),
+('4958','259',NULL,'IMG_3575','Y','Y','Crossing near the parking area','351961667','-1066401667','2739',NULL,'2020-12-07 09:05:38','IMG_3575','480','640',NULL,NULL),
+('4959','259',NULL,'IMG_3585','Y','Y','Entering the winter bosque','351903194','-1066493750','2740',NULL,'2020-12-07 09:54:07','IMG_3585','480','640',NULL,NULL),
+('4960','259',NULL,'IMG_3886','Y','Y','A sluice along the way','351694194','-1066529472','2744',NULL,'2021-05-24 09:49:08','IMG_3886','480','640',NULL,NULL),
+('4961','259',NULL,'IMG_3598','Y','Y','Porcupines predominate in the winter','351710167','-1066542583','2745',NULL,'2020-12-14 10:05:20','IMG_3598','640','480',NULL,NULL),
+('4962','259',NULL,'IMG_3882','Y','Y','Pleasant Springtime view','351824194','-1066478944','2746',NULL,'2021-05-24 08:54:37','IMG_3882','640','480',NULL,NULL),
+('4963','259',NULL,'IMG_3872','Y','Y','A wide walkway','351872361','-1066519083','2748',NULL,'2021-05-17 09:08:39','IMG_3872','480','640',NULL,NULL);
 
 
 
