@@ -68,6 +68,7 @@
     "editDB.ts",
     "hikeEditor.ts",
     "ktesaUploader.ts",
+    "makeThumbs.ts",
     "photoSelect.ts",
     "picPops.ts",
     "refs.ts",

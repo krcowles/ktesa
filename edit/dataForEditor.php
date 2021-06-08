@@ -53,6 +53,7 @@ $curr_gpx = $hike['gpx'];  // can contain more than one filename, comma-separate
 $curr_trk = $hike['trk'];
 $lat      = !empty($hike['lat']) ? $hike['lat']/LOC_SCALE : '';
 $lng      = !empty($hike['lng']) ? $hike['lng']/LOC_SCALE : '';
+$preview_name = $hike['preview'];
 $dirs     = $hike['dirs'];
 
 // collect data for any unpublished cluster groups
@@ -110,8 +111,11 @@ require "wayPointEdits.php";
 /**
  * Tab 3: [hike tips and hike descripton]
  */
-$tips = $hike['tips'];
-$info = $hike['info'];
+$tips    = $hike['tips'];
+$info    = $hike['info'];
+$picdir  = getPicturesDirectory();
+$prevdir = str_replace('zsize', 'previews', $picdir);
+$prevImg = $prevdir . $preview_name;
 
 /**
  * Tab 4: [GPS data] Note: tab4display.php calls references from EREFS
