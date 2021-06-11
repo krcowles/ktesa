@@ -116,9 +116,10 @@ if (!empty($row['purl1'])) {
     }
 
 }
+$infoHd         = $clusterPage ? 'area:' : 'hike:';
 $hikeDirections = $row['dirs'];
 $hikeTips       = $row['tips'];
-$hikeInfo       = $row['info'];
+$hikeInfo       = "<span id='ihd'>About this {$infoHd}</span><br />" . $row['info'];
 $hikeEThresh    = $row['eThresh'];
 $hikeDThresh    = $row['dThresh'];
 $hikeMaWin      = $row['maWin'];

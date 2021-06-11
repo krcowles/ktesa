@@ -11,13 +11,15 @@
 ?>
 <p class="up" style="color:darkblue;font-size:16px;">
         All inputs limited to 4096 Characters</p>
-<p>Tips Text: </p>
-<textarea id="ttxt" name="tips" rows="10" cols="130" maxlength="4096"
+<p><strong>Tips Text:</strong></p>
+<textarea id="ttxt" class="wysiwyg" name="tips" rows="14" cols="130" maxlength="4096"
     placeholder="Add any special notes about travel, or the hike, here"><?php
     if (!empty($tips)) {
             echo $tips;
     }?></textarea><br />
-<p>Hike Information:</p>
-<textarea id="info" name="hinfo" rows="16"  maxlength="4096" 
-        cols="130"><?= $info;?></textarea>
+<p><strong>Hike Information:</strong></p>
+<textarea id="info" class="wysiwyg" name="hinfo" rows="44"  maxlength="4096" 
+        cols="130"
+        placeholder="Enter hike description here"><?= $info;?></textarea>
 <input type="hidden" name="dno" value="<?= $hikeNo;?>" />
+<br /><br />

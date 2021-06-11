@@ -136,13 +136,14 @@ function off() {
 <iframe id="mapline" src="<?=  $tmpMap;?>"></iframe>
 <div data-gpx="<?= $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
 <!-- BOTH STYLES: -->
-<div style="clear:both;"><br />
+<div style="clear:both;padding-top:12px;">
 <?php if (!is_null($hikeTips)) : ?>
-<div id="trailTips"><img id="tipPic" src="../images/tips.png"
+<div id="trailTips" class="wysiwyg"><img id="tipPic" src="../images/tips.png"
     alt="special notes icon" /><p id="tipHdr">TRAIL TIPS!</p>
     <p id="tipNotes"><?= $hikeTips;?></p></div>
 <?php endif; ?>
-<div id="hikeInfo"><?= $hikeInfo;?></div></div><br />
+
+<div id="hikeInfo"><?= $hikeInfo;?></div></div>
 
 <?=$bop;?>
 

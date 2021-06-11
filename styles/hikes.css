@@ -10,7 +10,7 @@ body {
     margin: 0px;
     padding: 0px; 
     font-family: Arial, Verdana;
-    background-color: #eaeaea; }
+    background-color: whitesmoke; }
 table:not('#loginTbl') {
     margin-top: 8px;
     margin-bottom: 20px;
@@ -51,6 +51,7 @@ table:not('#loginTbl') td {
     -webkit-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
+    background-color: floralwhite;
     overflow:scroll;
 }
 #enotes {
@@ -160,26 +161,42 @@ iframe {
         width: 74%;
         background-color: white;
 }
+#trailTips {
+    background-color: floralwhite;
+}
+#ihd {
+    position: relative;
+    top: -4px;
+    color: darkred;
+    font-size: 16px;
+    font-style: italic;
+    text-decoration: underline;
+}
 #hikeInfo {
     margin-top: 0px;
     margin-left: 10px;
     margin-right: 10px;
-    border-style: outset;
+    border-style: inset;
     border-width: 2px;
-    border-color: #d4e8d4;
+    border-color: Brown;
     padding: 10px;
-    background-color: #c5d5d5; }
+    background-color: floralwhite;}
 fieldset {
+    margin-top: 8px;
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 8px;
     padding: 16px;
-    padding-top: 8px; }
+    padding-top: 8px;
+    border-style: inset;
+    border-width: 2px;
+    border-color: Brown;
+    background-color: floralwhite;
+ }
 #fldrefs {
     font-size: 18px;
-    color: Teal; }
-#flddat {
-    color: Teal; }
+    color: darkred;
+}
 .boptag {
     font-size: 14px;
     font-weight: bold;
@@ -268,7 +285,7 @@ div em {
 	margin-left: 12px;
 	margin-right: 12px;
 	padding: 10px;
-	background-color: #c5d5d5;
+	background-color: linen;
 	border-style: outset;
 	border-width: 2px;
 	border-color: #c9d7e8;

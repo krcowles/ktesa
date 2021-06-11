@@ -8,12 +8,14 @@
  * PHP Version 7.1
  * 
  * @package Editing
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();
 require "../php/global_boot.php";
 require "dataForEditor.php";
+$tinymce = "https://cdn.tiny.cloud/1/" .
+    "q5s4ci6ofnx0rvv1oix9zgxsd4cvw83kimrrw0n5ugz3n6d3/tinymce/5/tinymce.min.js";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -27,6 +29,7 @@ require "dataForEditor.php";
     <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <link href="editDB.css" type="text/css" rel="stylesheet" />
     <link href="refs.css" type="text/css" rel="stylesheet" />
+    <script src="<?=$tinymce;?>" referrerpolicy="origin"></script>
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>

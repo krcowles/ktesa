@@ -220,7 +220,7 @@ chdir($startDir);
     cannot be located</p>
 <?php if (count($prev_noshows) > 0) : ?>
     <ul>
-    <?php for ($k=0; $k<count($prev_candidates); $k++) : ?>
+    <?php for ($k=0; $k<count($prev_noshows); $k++) : ?>
     <li><?= $prev_noshows[$k];?></li>
     <?php endfor; ?>
     </ul>

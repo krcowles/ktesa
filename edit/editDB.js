@@ -9,6 +9,14 @@
  * @version 2.1 Typescripted
  */
 $(function () {
+    // Wysiwyg editor for tab3 hike info:
+    tinymce.init({
+        selector: '.wysiwyg',
+        plugins: 'advlist link image lists',
+        toolbar: 'undo redo | styleselect | bold italic | ' +
+            'alignleft aligncenter alignright alignjustify | outdent indent | ' +
+            'cut copy paste | forecolor backcolor | bullist numlist | link image'
+    });
     /**
      * The framework/appearance of the edit page and buttons
      */
