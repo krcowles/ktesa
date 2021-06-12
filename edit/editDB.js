@@ -12,8 +12,8 @@ $(function () {
     // Wysiwyg editor for tab3 hike info:
     tinymce.init({
         selector: '.wysiwyg',
-        plugins: 'advlist link image lists',
-        toolbar: 'undo redo | styleselect | bold italic | ' +
+        plugins: 'autoresize advlist charmap image link lists',
+        toolbar: 'undo redo | styleselect | bold italic | charmap | ' +
             'alignleft aligncenter alignright alignjustify | outdent indent | ' +
             'cut copy paste | forecolor backcolor | bullist numlist | link image'
     });
