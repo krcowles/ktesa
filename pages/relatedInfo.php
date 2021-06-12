@@ -62,8 +62,6 @@ if ($clusterId) {
     $relHikes = '<ul id="related">' . PHP_EOL;
     foreach ($groupHikes as $hike) {
         if ((int) $hike !== (int) $hikeIndexNo) {
-            // For EHIKES, check the pgTitle against the EHIKES pgTitle 
-            // as it may represent an edit of a published hike
             $hikeReq = "SELECT `pgTitle` FROM `HIKES` WHERE `indxNo`=?;";
             $pageTitle = $pdo->prepare($hikeReq);
             $pageTitle->execute([$hike]);
@@ -74,7 +72,7 @@ if ($clusterId) {
                 $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' . $hike .
                     '" target="_blank">' . $pg['pgTitle'] . '</a></li>' . PHP_EOL; 
             } 
-        }
+        } 
     }
     $relHikes .= '</ul>' . PHP_EOL;
 }

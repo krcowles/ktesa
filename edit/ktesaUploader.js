@@ -31,7 +31,7 @@ var newed = "editDB.php?hikeNo=" + ehikeIndxNo + "&tab=2";
  */
 // test browser's feature support
 var isAdvancedUpload = 'FormData' in window && 'FileReader' in window;
-var $form = $('.box');
+var $form = $('#pupld');
 if (isAdvancedUpload) {
     $form.on('drag dragstart dragend dragover dragenter dragleave drop', function (ev) {
         ev.preventDefault();
