@@ -61,14 +61,20 @@ if ($clusterId) {
     $groupHikes = $related->fetchAll(PDO::FETCH_COLUMN);
     $relHikes = '<ul id="related">' . PHP_EOL;
     foreach ($groupHikes as $hike) {
-        if ($hike !== (int) $hikeIndexNo) {
+        if ((int) $hike !== (int) $hikeIndexNo) {
+            // For EHIKES, check the pgTitle against the EHIKES pgTitle 
+            // as it may represent an edit of a published hike
             $hikeReq = "SELECT `pgTitle` FROM `HIKES` WHERE `indxNo`=?;";
             $pageTitle = $pdo->prepare($hikeReq);
             $pageTitle->execute([$hike]);
             $pg = $pageTitle->fetch(PDO::FETCH_ASSOC);
-            $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' . $hike .
-                '" target="_blank">' . $pg['pgTitle'] . '</a></li>' . PHP_EOL; 
-        } 
+            if (($tbl === 'new' && $hikeTitle !== $pg['pgTitle'])
+                || $tbl === 'old'
+            ) {
+                $relHikes .= '<li><a href="hikePageTemplate.php?hikeIndx=' . $hike .
+                    '" target="_blank">' . $pg['pgTitle'] . '</a></li>' . PHP_EOL; 
+            } 
+        }
     }
     $relHikes .= '</ul>' . PHP_EOL;
 }
