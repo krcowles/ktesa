@@ -82,6 +82,11 @@ function getExceptionTraceAsString($exception)
 function ktesaErrors($errno, $errstr, $errfile, $errline)
 {
     $lastTrace = getExceptionTraceAsString(new Exception);
+    // When a session has expired, $_SESSION['userid'] is undefined.
+    // This will be redirected instead of processing as an error
+    if (strpos($lastTrace, 'Undefined index: userid') !== false) {
+        header("Location: ../accounts/session_expired.php");
+    }
     error_log($lastTrace);
     errorEmail($lastTrace);
     errorPage();
