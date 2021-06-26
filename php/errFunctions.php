@@ -4,13 +4,13 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-if (session_status() == PHP_SESSION_NONE) {
+/*if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+*/
 /**
  * Exception traces seem to get truncated, which isn't helpful! This
  * function expands the information so that it is not truncated...
@@ -82,14 +82,15 @@ function getExceptionTraceAsString($exception)
 function ktesaErrors($errno, $errstr, $errfile, $errline)
 {
     $lastTrace = getExceptionTraceAsString(new Exception);
-    // When a session has expired, $_SESSION['userid'] is undefined.
-    // This will be redirected instead of processing as an error
-    if (strpos($lastTrace, 'Undefined index: userid') !== false) {
+    $loc = strpos($lastTrace, "Undefined index: userid");
+    if ($loc > 0) { // For an expired session:
         header("Location: ../accounts/session_expired.php");
+        exit;
+    } else {
+        error_log($lastTrace);
+        errorEmail($lastTrace);
+        errorPage();
     }
-    error_log($lastTrace);
-    errorEmail($lastTrace);
-    errorPage();
 }
 /**
  * This is the production mode exception handler, also presenting 
