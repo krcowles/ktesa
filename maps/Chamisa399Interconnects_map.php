@@ -1,3 +1,15 @@
+<?php
+/**
+ * A map for the GPS data section of Saddleback
+ * PHP Version 7.4
+ * 
+ * @package Ktesa
+ * @author  Tom Sandbert <tjsandberg@yahoo.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
+ * @license None to date
+ */
+require "../php/global_boot.php";
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>

@@ -166,7 +166,7 @@ iframe {
 }
 #ihd {
     position: relative;
-    top: -4px;
+    top: 0px;
     color: darkred;
     font-size: 16px;
     font-style: italic;
@@ -180,7 +180,11 @@ iframe {
     border-width: 2px;
     border-color: Brown;
     padding: 10px;
-    background-color: floralwhite;}
+    background-color: floralwhite;
+}
+#hikeInfo p {
+    margin-top: 8px;
+}
 fieldset {
     margin-top: 8px;
     margin-left: 10px;
