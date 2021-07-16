@@ -51,12 +51,17 @@ $pictures_directory = getPicturesDirectory();
 $tval = "SELECT `thumb` FROM `TSV` ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
 $eval = "SELECT `thumb` FROM `ETSV` ORDER BY CAST(thumb AS UNSIGNED) DESC LIMIT 1;";
 
-$pdo->beginTransaction();
+//$pdo->beginTransaction();
 $tresult = $pdo->query($tval);
 $tmax = $tresult->fetch(PDO::FETCH_NUM);
 $eresult = $pdo->query($eval);
+// ETSV may be empty!
 $emax = $eresult->fetch(PDO::FETCH_NUM);
-$max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
+if ($emax === false) {
+    $max = $tmax;
+} else {
+    $max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
+}
 $newthumb = (int)$max + 1;
 $tsv_req = "INSERT INTO `ETSV` (`indxNo`,`title`,`hpg`,`mpg`,`lat`," .
     "`lng`,`thumb`,`date`,`mid`,`imgHt`,`imgWd`) VALUES " .
@@ -66,7 +71,7 @@ $tsv->execute(
     [$ehike, $basename, $dblat, $dblng, $newthumb, $dbdate, $basename, 
     $imght, $imgwd]
 );
-$pdo->commit();
+//$pdo->commit();
 
 $zimg = $basename . '_' . $newthumb . '_z.jpg';
 $filename = $pictures_directory . $zimg;
