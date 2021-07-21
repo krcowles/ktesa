@@ -29,7 +29,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=273 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=275 DEFAULT CHARSET=utf8;
 
 
 
@@ -77,7 +77,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=166 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -241,7 +241,8 @@ INSERT INTO CLUSHIKES VALUES
 ('160','258','Y','49'),
 ('161','259','Y','49'),
 ('162','251','Y','50'),
-('163','43','Y','50');
+('163','43','Y','50'),
+('165','261','Y','37');
 
 
 
@@ -338,7 +339,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1398 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1414 DEFAULT CHARSET=utf8;
 
 
 
@@ -366,7 +367,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4634 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4660 DEFAULT CHARSET=utf8;
 
 
 
@@ -468,7 +469,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=262 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -725,7 +726,8 @@ INSERT INTO HIKES VALUES
 ('257','Montano Road Picnic Area','2','Albuquerque','Loop','3.70','20','Easy','No Pubilc Toilets','Bosque Views','Any','Mixed sun/shade','Montano_BosqueDEM-174.28.133.253-1622310321.gpx,MontanoLoop-174.28.133.253-1622310321.gpx','Montano_BosqueDEM-174.28.133.253-1622310321.json','351477184','-1066841079','puebmont.jpg',NULL,NULL,'https://www.google.com/maps/dir//Pueblo+Monta%C3%B1o+Picnic+Area+and+Trailhead,+4100-4112+Monta%C3%B1o+Rd+NW,+Albuquerque,+NM+87120/@35.1463332,-106.6893512,14.96z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87227251c7721571:0x904f159d11f0ea6!2m2!1d-106.6841742!2d35.147886','<p>Please lock your vehicle - several reports of vandalism have been made in spite of the somewhat busy nature of the park.</p>','<p>The <em><span style=\"color: #1428d2;\">Montano Road Picnic Area</span></em> and its multiple trails overlap some of the <em>Rio Grande State Park</em> trails, but acceses them from the north end. There is a considerable overlap with the <em>Nature Center</em> trails, primarily the <span style=\"color: #1428d2;\"><em>Aldo Leopold</em></span>, <em><span style=\"color: #1428d2;\">Bosque and River Loops</span></em>, but, they are accessed by crossing the <em>Montano Road Bridge</em> over the <em>Rio Grande</em> - not the most pleasant part of the hike!</p>\r\n<p>The picnic area also affords shorter trails on the west side of the <em>Rio Grande</em> without crossing the bridge.</p>',NULL,NULL,NULL),
 ('258','Boxing Bear Trails','2','Albuquerque','Loop','5.40','80','Easy','None','Bosque and River Views','Any','Mixed sun/shade','A_BosqueLevveLoop2-174.28.133.253-1622319147.gpx,B_BosqueLeveeLoop1-174.28.133.253-1622319147.gpx,C_BosqueLeveeLoop3-174.28.133.253-1622319147.gpx','A_BosqueLevveLoop2-174.28.133.253-1622319147.json','352033687','-1066453703','box.jpg',NULL,NULL,'https://www.google.com/maps/dir//Boxing+Bear+Brewing+Co.+Brewpub%2FBrewery+Location,+10200+Corrales+Rd,+Albuquerque,+NM+87114/@35.2017505,-106.6475415,16.38z/data=!3m1!5s0x8722714421d7e8ed:0x88f9d6362f1413a3!4m8!4m7!1m0!1m5!1m1!1s0x8722714698647fbb:0x71ad0980377e0d76!2m2!1d-106.6452527!2d35.2029069','<p>Parking is in a lot just north of the Boxing Bear Brewery, near the acequia.</p>','<p>The <span style=\"color: #1428d2;\"><em>Boxing Bear Trails</em></span> provide multiple options once you cross the foot bridge near the parking area. Most of them proceed into the Bosque where there are occasional views of the Sandias and of the Rio Grande. In the winter, porcupines may be spotted. The length of the hikes can easily be adjusted, as there are multiple return routes from the Bosque.</p>',NULL,NULL,NULL),
 ('259','Alameda Open Space','2','Albuquerque','Loop','5.70','250','Easy','Public Toilets','Bosque and River Views','Any','Mixed sun/shade','A_Bosque-174.28.133.253-1622318970.gpx,B_SouthLoop-174.28.133.253-1622316422.gpx,D_Urban-174.28.133.253-1622316422.gpx,NorthLoop-174.28.133.253-1622318996.gpx','A_Bosque-174.28.133.253-1622318970.json','351950530','-1066401534','alameda.jpg',NULL,NULL,'https://www.google.com/maps/dir//Alameda+Bosque+Trail+Parking+Space,+Nature+Trail,+Albuquerque,+NM+87114/@35.1940834,-106.646904,15.08z/data=!4m8!4m7!1m0!1m5!1m1!1s0x872271955943f5cb:0x8d3caf3a49b6e1ae!2m2!1d-106.6391604!2d35.1948716',NULL,'<p>The <em><span style=\"color: #1428d2;\">Alameda Open Space</span></em> offers a wide variety of possibilities for hiking (and biking) along the Rio Grande, starting from the <span style=\"color: #1428d2;\">Rio Grande Valley Parking Space</span> on Alameda near Corrales Road. Options lead through the Bosque, along the river, and along the ditches where waterfowl can often be spotted. In the winter, when leaves are down, you can often spot a tree-dwelling porcupine. As the area borders a rural community, hikes can be extended into the community where interesting yard displays can sometimes be seen (check the dinosaurs and dragons photos). Also note the \'river jacks\' which were installed back in the days of the CCC to prevent debris from spreading when the river overflowed. The Rio Grande is now controlled by the Cochiti Dam, and the jacks are no longer needed.</p>\r\n<p>This page shows trails taken by the author primarily to the south, with one exception. For more trails on the north side of Alameda, check out the \'<em><span style=\"color: #1428d2;\">Boxing Bear Trails</span></em>\' page. The hikes, which can be displayed by checking the \'<strong>Tracks</strong>\' boxes in the upper right hand corner of the map, were taken over a number of months and through the seasons.</p>',NULL,NULL,NULL),
-('260','Quebradas Road Trip','2','San Antonio','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384','Queb3705c4.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','<p>This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended, though the road is mostly maintained. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.</p>','<p>The <span style=\"color: #1428d2;\"><em>Quebradas Backcountry Highway</em></span> provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view.</p>\r\n<p>The interactive map above shows the 10 stops with photos of the surrounding areas. It might be helpful to click on the \'Full Page Map\' link in the side table to be able to zoom in at a larger scale. Sometimes hiking is a good option at a stop, and sometimes not so much. Below, in the <strong>GPS Data</strong> section, are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.</p>',NULL,NULL,NULL);
+('260','Quebradas Road Trip','2','San Antonio','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384','Queb3705c4.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','<p>This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended, though the road is mostly maintained. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.</p>','<p>The <span style=\"color: #1428d2;\"><em>Quebradas Backcountry Highway</em></span> provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view.</p>\r\n<p>The interactive map above shows the 10 stops with photos of the surrounding areas. It might be helpful to click on the \'Full Page Map\' link in the side table to be able to zoom in at a larger scale. Sometimes hiking is a good option at a stop, and sometimes not so much. Below, in the <strong>GPS Data</strong> section, are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.</p>',NULL,NULL,NULL),
+('261','South Crest - CCC (Partial)','2','Tijeras','Out-and-back','6.60','2800','Med-Difficult','None','Views of Hondo Canyon and points East','Any','Mixed sun/shade','South_Crest-75.161.84.172-1626477047.gpx','South_Crest-75.161.84.172-1626477047.json','350895490','-1063914511','Sout7ce088.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0851237,-106.394046,16.04z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <span style=\"color: #1428d2;\"><em>South Crest Trail </em></span>begins the march of the 26-mile Crest Trail along the top of the <em>Sandias</em>. The original objective of this hike was to traverse the <em><span style=\"color: #1428d2;\">CCC Trail</span></em><span style=\"color: #000000;\">, which begins near the junction of the <span style=\"color: #1428d2;\"><em>South Crest Trail</em></span> with the <em><span style=\"color: #1428d2;\">Upper Faulty Trail</span></em>. You must be on <em><span style=\"color: #1428d2;\">Upper Faulty</span></em> to find the trail head, which is marked with a large pile of rocks.</span></p>\r\n<p><span style=\"color: #000000;\">You begin by hiking about 2.5 miles along the <em><span style=\"color: #1428d2;\">South Crest Trail</span></em>, ascending about 1,000 ft to the start of the <span style=\"color: #1428d2;\"><em>CCC Trail</em><span style=\"color: #000000;\">, which starts a very short distance from the juncture with <span style=\"color: #1428d2;\"><em>Upper Faulty Trail</em></span>.</span></span> The <em><span style=\"color: #1428d2;\">CCC Trail</span></em>&nbsp; ascends quite steeply and relentlessly from this point. Each mile along the trail goes up about 1,000 ft, for an average grade of 18%! The hike is primarily a physical challenge, as there is no scenery along the way. The author couldn\'t complete the journey to the top, but the remainder of the trail can be seen on the map by clicking on the \'CCC Trail\' checkbox in the \'Tracks\' box, located in the upper right hand corner of the map.</span></p>',NULL,NULL,NULL);
 
 
 
@@ -762,7 +764,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2980 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2994 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1693,7 +1695,11 @@ INSERT INTO REFS VALUES
 ('2976','72','Book: ','3',''),
 ('2977','72','Website: ','http://www.fs.usda.gov/recarea/willamette/recreation/wateractivities/recarea/?recid=4634&actid=51','Forest Service: Willamette National Forest'),
 ('2978','72','Website: ','http://www.taostrails.com/williams_lake.html','Taos Trails'),
-('2979','72','Website: ','http://www.summitpost.org/williams-lake-trail/162410','Summit Post');
+('2979','72','Website: ','http://www.summitpost.org/williams-lake-trail/162410','Summit Post'),
+('2987','261','Book:','7','Mike Coltrin'),
+('2988','261','App:','https://www.alltrails.com/explore/trail/us/new-mexico/south-sandia-peak-via-south-crest-and-ccc-trail-loop?mobileMap=false&ref=sidebar-static-map','AllTrails.com'),
+('2989','261','Blog:','https://www.dogofthedesert.net/south-crest-and-ccc-trails/','Dog of the Desert'),
+('2990','261','Website:','https://www.stavislost.com/hikes/trail/south-sandia-mountain-via-crest-and-ccc-loop','Stav is Lost');
 
 
 
@@ -1717,7 +1723,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9014 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9044 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4520,7 +4526,18 @@ INSERT INTO TSV VALUES
 ('9009','72','Folder1','TrailSummit','Y','N','Top of the trail','0','0','1813','72157668795870731','2006-09-10 13:52:35','27398890825_571c58b64e','1536','2048',NULL,NULL),
 ('9010','72','Folder1','MtnPeaks','Y','N','View from Williams Lake','0','0','1814','72157668795870731','2006-09-10 13:57:47','27300765932_beaf051db5','2048','1536',NULL,NULL),
 ('9011','72','Folder1','LakeView','Y','N','Williams Lake','0','0','1815','72157668795870731','2006-09-10 14:19:41','27123201700_b1ec474fd8','1536','2048',NULL,NULL),
-('9012','72','Folder1','Feeder','Y','N','Springs empty into Williams Lake','0','0','1816','72157668795870731','2006-09-10 14:30:32','26790910434_8211dcdf88','2048','1536',NULL,NULL);
+('9012','72','Folder1','Feeder','Y','N','Springs empty into Williams Lake','0','0','1816','72157668795870731','2006-09-10 14:30:32','26790910434_8211dcdf88','2048','1536',NULL,NULL),
+('9029','261',NULL,'IMG_4013','Y','Y','Travertine caves formed by falls','350950667','-1063936611','2',NULL,'2021-07-16 07:35:04','IMG_4013','480','640',NULL,NULL),
+('9030','261',NULL,'IMG_4014','Y','N','Travertine falls is imperceptibly small!','350951639','-1063937833','2812',NULL,'2021-07-16 07:36:12','IMG_4014','640','480',NULL,NULL),
+('9031','261',NULL,'IMG_4020','Y','Y','Looking out while heading up the South Crest','350977778','-1064009944','2813',NULL,'2021-07-16 08:14:49','IMG_4020','480','640',NULL,NULL),
+('9032','261',NULL,'IMG_4017','Y','N','A view southeast from South Crest','350950361','-1063919139','2814',NULL,'2021-07-16 07:41:16','IMG_4017','480','640',NULL,NULL),
+('9033','261',NULL,'IMG_4018','Y','Y','Part of Hondo Canyon','350950444','-1063920889','2815',NULL,'2021-07-16 07:41:44','IMG_4018','480','640',NULL,NULL),
+('9034','261',NULL,'IMG_4019','Y','Y','Higher up, a view towards the trail head','350975611','-1063996806','2816',NULL,'2021-07-16 08:06:51','IMG_4019','480','640',NULL,NULL),
+('9035','261',NULL,'IMG_4025','Y','Y','South Mountain in view','350978167','-1064009472','2817',NULL,'2021-07-16 11:09:13','IMG_4025','480','640',NULL,NULL),
+('9036','261',NULL,'IMG_4023','Y','Y','A rest stop on CCC','351015444','-1064113917','2818',NULL,'2021-07-16 09:00:11','IMG_4023','640','480',NULL,NULL),
+('9037','261',NULL,'IMG_4026','Y','Y','An expansive view east','350947528','-1063926250','2819',NULL,'2021-07-16 11:39:11','IMG_4026','480','640',NULL,NULL),
+('9038','261',NULL,'IMG_4024','Y','Y','A cairn at the high point of the author\'s excursion','351049694','-1064176111','2820',NULL,'2021-07-16 09:57:46','IMG_4024','640','480',NULL,NULL),
+('9039','261',NULL,'IMG_4021','Y','Y','This rock pile marks the beginning of the CCC on Upper Faulty Trail','350989917','-1064058694','2821',NULL,'2021-07-16 08:37:26','IMG_4021','480','640',NULL,NULL);
 
 
 
