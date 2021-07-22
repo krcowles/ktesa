@@ -23,7 +23,10 @@ $hikeNo     = filter_input(INPUT_POST, 'hikeNo');
 $maintrk    = filter_input(INPUT_POST, 'mtrk'); // already uploaded track
 $delgpx     = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
 $noincludes = isset($_POST['deladd']) ? $_POST['deladd'] : false;
-$addfiles   = array('addgpx1', 'addgpx2', 'addgpx3');            
+$addfiles   = array('addgpx1', 'addgpx2', 'addgpx3');  
+$addloc     = isset($_POST['addaloc']) ? true : false; 
+$region = filter_input(INPUT_POST, 'locregion'); 
+$newloc     = filter_input(INPUT_POST, 'userloc');        
 $usrmiles   = filter_input(INPUT_POST, 'usrmiles');  // registers user changes
 $usrfeet    = filter_input(INPUT_POST, 'usrfeet');   // registers user changes
 $_SESSION['uplmsg'] = ''; // return status to user on tab1
@@ -160,6 +163,20 @@ $newlistReq = "UPDATE `EHIKES` SET `gpx`=? WHERE `indxNo` =?;";
 $newlist = $pdo->prepare($newlistReq);
 $newlist->execute([$gpx_file_list, $hikeNo]);
 
+if ($addloc) {
+    $loc = ['        <option value="' . $newloc . '">' . $newloc .
+        '</option>' . PHP_EOL];
+    $areas = file('localeBox.html');
+    $position = 0;
+    for ($j=0; $j<count($areas); $j++) {
+        if (strpos($areas[$j], $region) !== false) {
+            $position = $j + 1;
+            break;
+        }
+    }
+    array_splice($areas, $position, 0, $loc);
+    file_put_contents('localeBox.html', $areas);
+}
 /**
  * If the user selected 'Calculate From GPX', then those values will
  * be used instead of any existing values in the miles and feet fields. 

@@ -63,8 +63,20 @@
 <textarea id="hike" name="pgTitle"
         maxlength="30"><?= $pgTitle;?></textarea>&nbsp;&nbsp;
     <p style="display:none;" id="locality"><?= $locale;?></p>
-    <?php require "localeBox.html"; ?>
-    <br /><br />
+    <?php require "localeBox.html"; ?>&nbsp;&nbsp;
+        [ Add a location<input id="addaloc" name="addaloc" type="checkbox" /> ]<br />
+        <div id="newloc">General Area:&nbsp;&nbsp;
+            <select id="locregion" name="locregion">
+                <option value="North/Northeast">North/Northeast</option>
+                <option value="Northwest">Northwest</option>
+                <option value="Central NM">Cetnral NM</option>
+                <option value="West">West</option>
+                <option value="South Central">South Central</option>
+                <option value="Southwest">Southwest</option>
+            </select>&nbsp;&nbsp;New Location: <input id="userloc" type="text"
+                name="userloc" />
+        </div>
+    <br />
 
 <label for="type">Hike Type: </label>
 <select id="type" name="logistics">

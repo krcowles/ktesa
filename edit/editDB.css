@@ -21,6 +21,20 @@ input[id^=gpxfile] {
 #area {
     height: 34px;
     width: 120px; }
+#newloc {
+    display: none;
+}
+#locregion {
+    height: 34px;
+}
+#userloc {
+    height: 28px;
+    font-size: 16px;
+    background-color: lavenderblush;
+}
+#userloc:focus {
+    background-color: papayawhip;
+}
 #clusters {
     height: 28px;
     width: 220px; }

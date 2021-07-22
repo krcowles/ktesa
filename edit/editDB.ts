@@ -205,7 +205,15 @@ $('input[name^=addgpx]').each(function() {
         }
     });
 });
-
+$('#addaloc').on('click', function() {
+    if ($('#addaloc').is(':checked')) {
+        $('#newloc').show();
+        $('#userloc').prop('required', true);
+    } else {
+        $('#newloc').hide();
+        $('#userloc').prop('required', false);
+    }
+});
 /**
  * This section does data validation for the 'directions' URL, and the URL's on tab4.
  * In the case of tab1, php validation filtering doesn't work when applied to google maps
