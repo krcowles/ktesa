@@ -29,7 +29,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=275 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=276 DEFAULT CHARSET=utf8;
 
 
 
@@ -77,7 +77,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=166 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=167 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -242,7 +242,8 @@ INSERT INTO CLUSHIKES VALUES
 ('161','259','Y','49'),
 ('162','251','Y','50'),
 ('163','43','Y','50'),
-('165','261','Y','37');
+('165','261','Y','37'),
+('166','262','Y','51');
 
 
 
@@ -255,7 +256,7 @@ CREATE TABLE `CLUSTERS` (
   `pub` char(1) DEFAULT NULL,
   `page` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`clusid`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSTERS VALUES
@@ -308,7 +309,8 @@ INSERT INTO CLUSTERS VALUES
 ('47','Ellis Group','352084293','-1064410284','Y','0'),
 ('48','Cerro Grande Group','358474890','-1064217706','Y','0'),
 ('49','Alameda Group','351952318','-1066398802','Y','0'),
-('50','Coyote Call Group','358481274','-1064652684','Y','0');
+('50','Coyote Call Group','358481274','-1064652684','Y','0'),
+('51','Doc Long Group','351769800','-1063790600','Y','0');
 
 
 
@@ -339,7 +341,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1414 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1418 DEFAULT CHARSET=utf8;
 
 
 
@@ -367,7 +369,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4660 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4668 DEFAULT CHARSET=utf8;
 
 
 
@@ -469,7 +471,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=262 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=263 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -727,7 +729,8 @@ INSERT INTO HIKES VALUES
 ('258','Boxing Bear Trails','2','Albuquerque','Loop','5.40','80','Easy','None','Bosque and River Views','Any','Mixed sun/shade','A_BosqueLevveLoop2-174.28.133.253-1622319147.gpx,B_BosqueLeveeLoop1-174.28.133.253-1622319147.gpx,C_BosqueLeveeLoop3-174.28.133.253-1622319147.gpx','A_BosqueLevveLoop2-174.28.133.253-1622319147.json','352033687','-1066453703','box.jpg',NULL,NULL,'https://www.google.com/maps/dir//Boxing+Bear+Brewing+Co.+Brewpub%2FBrewery+Location,+10200+Corrales+Rd,+Albuquerque,+NM+87114/@35.2017505,-106.6475415,16.38z/data=!3m1!5s0x8722714421d7e8ed:0x88f9d6362f1413a3!4m8!4m7!1m0!1m5!1m1!1s0x8722714698647fbb:0x71ad0980377e0d76!2m2!1d-106.6452527!2d35.2029069','<p>Parking is in a lot just north of the Boxing Bear Brewery, near the acequia.</p>','<p>The <span style=\"color: #1428d2;\"><em>Boxing Bear Trails</em></span> provide multiple options once you cross the foot bridge near the parking area. Most of them proceed into the Bosque where there are occasional views of the Sandias and of the Rio Grande. In the winter, porcupines may be spotted. The length of the hikes can easily be adjusted, as there are multiple return routes from the Bosque.</p>',NULL,NULL,NULL),
 ('259','Alameda Open Space','2','Albuquerque','Loop','5.70','250','Easy','Public Toilets','Bosque and River Views','Any','Mixed sun/shade','A_Bosque-174.28.133.253-1622318970.gpx,B_SouthLoop-174.28.133.253-1622316422.gpx,D_Urban-174.28.133.253-1622316422.gpx,NorthLoop-174.28.133.253-1622318996.gpx','A_Bosque-174.28.133.253-1622318970.json','351950530','-1066401534','alameda.jpg',NULL,NULL,'https://www.google.com/maps/dir//Alameda+Bosque+Trail+Parking+Space,+Nature+Trail,+Albuquerque,+NM+87114/@35.1940834,-106.646904,15.08z/data=!4m8!4m7!1m0!1m5!1m1!1s0x872271955943f5cb:0x8d3caf3a49b6e1ae!2m2!1d-106.6391604!2d35.1948716',NULL,'<p>The <em><span style=\"color: #1428d2;\">Alameda Open Space</span></em> offers a wide variety of possibilities for hiking (and biking) along the Rio Grande, starting from the <span style=\"color: #1428d2;\">Rio Grande Valley Parking Space</span> on Alameda near Corrales Road. Options lead through the Bosque, along the river, and along the ditches where waterfowl can often be spotted. In the winter, when leaves are down, you can often spot a tree-dwelling porcupine. As the area borders a rural community, hikes can be extended into the community where interesting yard displays can sometimes be seen (check the dinosaurs and dragons photos). Also note the \'river jacks\' which were installed back in the days of the CCC to prevent debris from spreading when the river overflowed. The Rio Grande is now controlled by the Cochiti Dam, and the jacks are no longer needed.</p>\r\n<p>This page shows trails taken by the author primarily to the south, with one exception. For more trails on the north side of Alameda, check out the \'<em><span style=\"color: #1428d2;\">Boxing Bear Trails</span></em>\' page. The hikes, which can be displayed by checking the \'<strong>Tracks</strong>\' boxes in the upper right hand corner of the map, were taken over a number of months and through the seasons.</p>',NULL,NULL,NULL),
 ('260','Quebradas Road Trip','2','San Antonio','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384','Queb3705c4.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','<p>This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended, though the road is mostly maintained. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.</p>','<p>The <span style=\"color: #1428d2;\"><em>Quebradas Backcountry Highway</em></span> provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view.</p>\r\n<p>The interactive map above shows the 10 stops with photos of the surrounding areas. It might be helpful to click on the \'Full Page Map\' link in the side table to be able to zoom in at a larger scale. Sometimes hiking is a good option at a stop, and sometimes not so much. Below, in the <strong>GPS Data</strong> section, are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.</p>',NULL,NULL,NULL),
-('261','South Crest - CCC (Partial)','2','Tijeras','Out-and-back','6.60','2800','Med-Difficult','None','Views of Hondo Canyon and points East','Any','Mixed sun/shade','South_Crest-75.161.84.172-1626477047.gpx','South_Crest-75.161.84.172-1626477047.json','350895490','-1063914511','Sout7ce088.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0851237,-106.394046,16.04z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <span style=\"color: #1428d2;\"><em>South Crest Trail </em></span>begins the march of the 26-mile Crest Trail along the top of the <em>Sandias</em>. The original objective of this hike was to traverse the <em><span style=\"color: #1428d2;\">CCC Trail</span></em><span style=\"color: #000000;\">, which begins near the junction of the <span style=\"color: #1428d2;\"><em>South Crest Trail</em></span> with the <em><span style=\"color: #1428d2;\">Upper Faulty Trail</span></em>. You must be on <em><span style=\"color: #1428d2;\">Upper Faulty</span></em> to find the trail head, which is marked with a large pile of rocks.</span></p>\r\n<p><span style=\"color: #000000;\">You begin by hiking about 2.5 miles along the <em><span style=\"color: #1428d2;\">South Crest Trail</span></em>, ascending about 1,000 ft to the start of the <span style=\"color: #1428d2;\"><em>CCC Trail</em><span style=\"color: #000000;\">, which starts a very short distance from the juncture with <span style=\"color: #1428d2;\"><em>Upper Faulty Trail</em></span>.</span></span> The <em><span style=\"color: #1428d2;\">CCC Trail</span></em>&nbsp; ascends quite steeply and relentlessly from this point. Each mile along the trail goes up about 1,000 ft, for an average grade of 18%! The hike is primarily a physical challenge, as there is no scenery along the way. The author couldn\'t complete the journey to the top, but the remainder of the trail can be seen on the map by clicking on the \'CCC Trail\' checkbox in the \'Tracks\' box, located in the upper right hand corner of the map.</span></p>',NULL,NULL,NULL);
+('261','South Crest - CCC (Partial)','2','Tijeras','Out-and-back','6.60','2800','Med-Difficult','None','Views of Hondo Canyon and points East','Any','Mixed sun/shade','South_Crest-75.161.84.172-1626477047.gpx','South_Crest-75.161.84.172-1626477047.json','350895490','-1063914511','Sout7ce088.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0851237,-106.394046,16.04z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <span style=\"color: #1428d2;\"><em>South Crest Trail </em></span>begins the march of the 26-mile Crest Trail along the top of the <em>Sandias</em>. The original objective of this hike was to traverse the <em><span style=\"color: #1428d2;\">CCC Trail</span></em><span style=\"color: #000000;\">, which begins near the junction of the <span style=\"color: #1428d2;\"><em>South Crest Trail</em></span> with the <em><span style=\"color: #1428d2;\">Upper Faulty Trail</span></em>. You must be on <em><span style=\"color: #1428d2;\">Upper Faulty</span></em> to find the trail head, which is marked with a large pile of rocks.</span></p>\r\n<p><span style=\"color: #000000;\">You begin by hiking about 2.5 miles along the <em><span style=\"color: #1428d2;\">South Crest Trail</span></em>, ascending about 1,000 ft to the start of the <span style=\"color: #1428d2;\"><em>CCC Trail</em><span style=\"color: #000000;\">, which starts a very short distance from the juncture with <span style=\"color: #1428d2;\"><em>Upper Faulty Trail</em></span>.</span></span> The <em><span style=\"color: #1428d2;\">CCC Trail</span></em>&nbsp; ascends quite steeply and relentlessly from this point. Each mile along the trail goes up about 1,000 ft, for an average grade of 18%! The hike is primarily a physical challenge, as there is no scenery along the way. The author couldn\'t complete the journey to the top, but the remainder of the trail can be seen on the map by clicking on the \'CCC Trail\' checkbox in the \'Tracks\' box, located in the upper right hand corner of the map.</span></p>',NULL,NULL,NULL),
+('262','Bill Spring-Oso-Faulty Loop','2','Tijeras','Loop','8.40','1100','Moderate','Picnic Area w/multiple toilets','East-looking views from Sandia','Any','Good shade','Bill Spring-75.161.84.172-1627138990.gpx','Bill Spring-75.161.84.172-1627138990.json','351767613','-1063789963','Billc78119.jpg',NULL,NULL,'https://www.google.com/maps/dir//DOC+LONG+PICNIC+AREA,+7562+Sandia+Crest+Rd,+Cedar+Crest,+NM+87008/@35.1685046,-106.3783427,14.53z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984dbceffff3:0x5318c098cf645d67!2m2!1d-106.3768858!2d35.1757456',NULL,'<p>The <em><span style=\"color: #1428d2;\">Bill Spring Trail</span></em>, located at the <em>Doc Long Picnic Area</em>, is a starting point for variations of hikes in this area. This is reflected by the variations shown in the references below. It connects with the <span style=\"color: #1428d2;\"><em>Faulty Trail</em></span> at its northern end (see the northernmost green flag on the interactive map) and the much less used <span style=\"color: #1428d2;\"><em>Old Faulty Trail </em></span>prior to that (red flag on the <span style=\"color: #1428d2;\"><em>Bill Spring Trail</em></span>).</p>\r\n<p>This hike is actually a result of the author mistakenly proceeding up <em><span style=\"color: #1428d2;\">Oso Corredor Trail </span></em>instead of following the planned route along <em><span style=\"color: #1428d2;\">Faulty Trail</span></em>. While there are not many vista points along the way, the hike is pleasant, though continously uphill at a moderate pace. The author turned around near the end of <em><span style=\"color: #1428d2;\">Oso Corredor</span></em> and proceeded back to <span style=\"color: #1428d2;\"><em>Faulty Trail</em></span> to complete the loop back by following <span style=\"color: #1428d2;\"><em>Old Faulty Trail</em></span>. Note the southernmost green flag on the map - it indicates the trail head for the <em><span style=\"color: #1428d2;\">Old Faulty Trail</span></em>, which is rather obscure. It appears that there was an attempt to intentionally discourage use of the trail, as it blocked by a sawed-off section of tree and some sticks. The trail is nonetheless in rather good condition and easy to follow. It occurs a very short distance prior to the <em><span style=\"color: #1428d2;\">Sulpher Canyon Trail</span></em>, which is well marked.</p>\r\n<p>Though there is good shade along the way, the section of <em><span style=\"color: #1428d2;\">Faulty Trail</span></em> between the <em><span style=\"color: #1428d2;\">Oso Corredor</span></em> junction (red flag) and the <span style=\"color: #1428d2;\"><em>Old Faulty</em></span> junction (green flag) can get more exposed. The author chose the use of red flags for right turns and green flags for left turns.</p>',NULL,NULL,NULL);
 
 
 
@@ -764,7 +767,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2994 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3001 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1699,7 +1702,11 @@ INSERT INTO REFS VALUES
 ('2987','261','Book:','7','Mike Coltrin'),
 ('2988','261','App:','https://www.alltrails.com/explore/trail/us/new-mexico/south-sandia-peak-via-south-crest-and-ccc-trail-loop?mobileMap=false&ref=sidebar-static-map','AllTrails.com'),
 ('2989','261','Blog:','https://www.dogofthedesert.net/south-crest-and-ccc-trails/','Dog of the Desert'),
-('2990','261','Website:','https://www.stavislost.com/hikes/trail/south-sandia-mountain-via-crest-and-ccc-loop','Stav is Lost');
+('2990','261','Website:','https://www.stavislost.com/hikes/trail/south-sandia-mountain-via-crest-and-ccc-loop','Stav is Lost'),
+('2994','262','Book:','7',NULL),
+('2995','262','App:','https://www.alltrails.com/trail/us/new-mexico/sulphur-canyon-faulty-and-bill-spring-trails-loop','AllTrails.com'),
+('2996','262','Website:','https://www.hikingproject.com/trail/7038410/bill-spring-trail','REI Hiking Project'),
+('2997','262','App:','https://www.alltrails.com/trail/us/new-mexico/bill-spring-196-oso-corredor-265-and-tree-spring-147','AllTrails.com');
 
 
 
@@ -1723,7 +1730,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9044 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9059 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4537,7 +4544,15 @@ INSERT INTO TSV VALUES
 ('9036','261',NULL,'IMG_4023','Y','Y','A rest stop on CCC','351015444','-1064113917','2818',NULL,'2021-07-16 09:00:11','IMG_4023','640','480',NULL,NULL),
 ('9037','261',NULL,'IMG_4026','Y','Y','An expansive view east','350947528','-1063926250','2819',NULL,'2021-07-16 11:39:11','IMG_4026','480','640',NULL,NULL),
 ('9038','261',NULL,'IMG_4024','Y','Y','A cairn at the high point of the author\'s excursion','351049694','-1064176111','2820',NULL,'2021-07-16 09:57:46','IMG_4024','640','480',NULL,NULL),
-('9039','261',NULL,'IMG_4021','Y','Y','This rock pile marks the beginning of the CCC on Upper Faulty Trail','350989917','-1064058694','2821',NULL,'2021-07-16 08:37:26','IMG_4021','480','640',NULL,NULL);
+('9039','261',NULL,'IMG_4021','Y','Y','This rock pile marks the beginning of the CCC on Upper Faulty Trail','350989917','-1064058694','2821',NULL,'2021-07-16 08:37:26','IMG_4021','480','640',NULL,NULL),
+('9044','262',NULL,'IMG_4028','Y','Y','Bill Spring Trail Head','351774944','-1063796000','2',NULL,'2021-07-23 07:33:05','IMG_4028','480','640',NULL,NULL),
+('9045','262',NULL,'IMG_4029','Y','Y','Proceeding up Bill Spring to Faulty','351806056','-1063836583','2822',NULL,'2021-07-23 07:43:59','IMG_4029','480','640',NULL,NULL),
+('9046','262',NULL,'IMG_4038','Y','Y','A view east to the San Pedro and Ortiz mountains','351794028','-1063950417','2823',NULL,'2021-07-23 10:16:59','IMG_4038','480','640',NULL,NULL),
+('9047','262',NULL,'IMG_4039','Y','N','An interior view towards the Crest Highway','351793583','-1063928667','2824',NULL,'2021-07-23 10:21:45','IMG_4039','480','640',NULL,NULL),
+('9048','262',NULL,'IMG_4031','Y','Y','Faulty parallels the Crest Highway','351818389','-1063892583','2825',NULL,'2021-07-23 07:59:08','IMG_4031','480','640',NULL,NULL),
+('9049','262',NULL,'IMG_4033','Y','Y','A view along the way','351793333','-1063928917','2826',NULL,'2021-07-23 08:27:14','IMG_4033','480','640',NULL,NULL),
+('9050','262',NULL,'IMG_4037','Y','Y','Horse mint Hysssops (?)','351826667','-1063962333','2827',NULL,'2021-07-23 10:10:40','IMG_4037','480','640',NULL,NULL),
+('9051','262',NULL,'IMG_4030','Y','Y','A little help on Faulty','351819611','-1063895500','2828',NULL,'2021-07-23 07:58:04','IMG_4030','640','480',NULL,NULL);
 
 
 
