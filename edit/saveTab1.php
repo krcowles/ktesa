@@ -176,6 +176,10 @@ if ($addloc) {
     }
     array_splice($areas, $position, 0, $loc);
     file_put_contents('localeBox.html', $areas);
+    // add this locale to the db so that it will display on page refresh
+    $loc_binding = $newloc;
+} else {
+    $loc_binding = filter_input(INPUT_POST, 'locale');
 }
 /**
  * If the user selected 'Calculate From GPX', then those values will
@@ -341,7 +345,7 @@ if ($addCHike) {
 
 // Back to EHIKES: setup variables for saving to db:
 $pdoBindings['pgTitle'] = filter_input(INPUT_POST, 'pgTitle');
-$pdoBindings['locale'] = filter_input(INPUT_POST, 'locale');
+$pdoBindings['locale'] = $loc_binding;
 $pdoBindings['cname'] = $cname;
 $pdoBindings['logistics'] = filter_input(INPUT_POST, 'logistics');
 $pdoBindings['diff'] = filter_input(INPUT_POST, 'diff');
