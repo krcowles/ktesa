@@ -6,7 +6,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -57,10 +56,20 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Overall Site Management</legend>
-        <button id="switchstate" class="adminbuttons">Switch Site Mode
-            </button>&nbsp;&nbsp;
         <span id="sitemode">The site is currently in
-            <span id="currstate"><?= $appMode;?></span> mode:</span><br />
+            <span id="currstate"><?= $appMode;?></span> mode:</span>&nbsp;&nbsp;
+            <button id="switchstate" class="adminbuttons">Switch Site Mode
+            </button><br />
+
+        <span id="cdb">
+            <?php if ($dbState === 'test') : ?>
+                <span id="test" style="color:red;">Test DB</span>
+            <?php else : ?>
+                <span id="real" style="color:blue;">Main DB</span>
+            <?php endif; ?>
+            &nbsp;is currently in use:&nbsp;&nbsp;
+            <button id="swdb" class="adminbuttons">Switch DB's</button>
+        </span><br />
 
         <!-- The following uploads or installs a test site -->
         <span class="cats">Upload Test Site:</span><br />
@@ -113,18 +122,14 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             &nbsp;&nbsp;[NOTE: Tables must not exist]<br />
         <button id="exall" class="adminbuttons">Export All Tables</button>
             &nbsp;&nbsp;[NOTE: Creates .sql file]<br />
+        <button id="dbchanges" class="adminbuttons">
+            Check for DB Changes</button><br />
+        <button id="gensums" class="adminbuttons">Generate Checksums</button>
+            &nbsp;&nbsp;[NOTE: New checksums will be placed in Checksums table]<br />
         <button id="findnew" class="adminbuttons">Find New Users</button><br />
         <button id="updatelk" class="adminbuttons">Update USERS tables</button>
             &nbsp;&nbsp;[NOTE: USERS changes will be moved into LKUSERS]<br>
         <button id="show" class="adminbuttons">Show All Tables</button><br />
-        <button id="swdb" class="adminbuttons">Switch DB's</button>&nbsp;&nbsp;
-            <span id="cdb">Current database in use:
-        <?php if ($dbState === 'test') : ?>
-            <span id="test" style="color:red;">Test</span>
-        <?php else : ?>
-            <span id="real" style="color:blue;">Site</span>
-        <?php endif; ?>
-            </span><br />
         <span class="cats">Miscellaneous Tools:</span><br />
         <?php
         if ($editing === 'yes') {

@@ -195,6 +195,12 @@ $(function () {
     $('#exall').on('click', function () {
         window.open('export_all_tables.php?dwnld=N', "_blank");
     });
+    $('#dbchanges').on('click', function() {
+        window.open('manageChecksums.php?act=exam');
+    });
+    $('#gensums').on('click', function() {
+        window.open('manageChecksums.php?act=updte');
+    });
     $('#findnew').on('click', function() {
         window.open('findNewUsers.php');
     });
