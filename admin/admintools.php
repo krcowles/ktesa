@@ -98,10 +98,6 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         <span class="cats">Downloads:</span><br />
         <button id="chgs" class="adminbuttons">Changes Only</button>
             &nbsp;[Downloads zip file]<br />
-        <!-- CURRENTLY NOT USED
-        <button id="site">Entire Site</button>
-            &nbsp;[Downloads compressed archive]<br />
-        -->
         <button id="npix" class="adminbuttons">New Pictures</button>
             &nbsp;[Downloads new pictures since last Site upload]<br />
         <button id="rel2pic" class="adminbuttons">Pictures newer than:
@@ -126,9 +122,6 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             Check for DB Changes</button><br />
         <button id="gensums" class="adminbuttons">Generate Checksums</button>
             &nbsp;&nbsp;[NOTE: New checksums will be placed in Checksums table]<br />
-        <button id="findnew" class="adminbuttons">Find New Users</button><br />
-        <button id="updatelk" class="adminbuttons">Update USERS tables</button>
-            &nbsp;&nbsp;[NOTE: USERS changes will be moved into LKUSERS]<br>
         <button id="show" class="adminbuttons">Show All Tables</button><br />
         <span class="cats">Miscellaneous Tools:</span><br />
         <?php

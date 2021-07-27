@@ -6,12 +6,30 @@
  * @version 2.0 Typescripted
  */
 $(function () {
+    // If any alerts were set by scripts
+    var admin_alert = $('#admin_alert').text();
+    if (admin_alert !== '') {
+        alert(admin_alert);
+    }
+    if (typeof (nopix) !== 'undefined') {
+        alert(nopix);
+    }
+    /**
+     * Site Modes
+     */
     var current_state = $('#currstate').text();
     $('#switchstate').on('click', function () {
         window.open('changeSiteMode.php?mode=' + current_state);
         window.close();
     });
-    // uploading of test site:
+    $('#swdb').on('click', function () {
+        window.open('switchDb.php');
+        window.close();
+    });
+    /**
+     * Upload to main site and install
+     */
+    // uploading of git branch to server
     $('#upld').on('click', function () {
         var branch = $('#ubranch').val() == '' ? 'master' : $('#ubranch').val();
         var commit = $('#ucomm').val();
@@ -44,7 +62,7 @@ $(function () {
             });
         }
     });
-    // installation script:
+    // main site installation
     $('#install').on('click', function () {
         if (hostIs !== 'nmhikes.com' || server_loc !== 'main') {
             alert("This tool only works on the server docroot");
@@ -100,17 +118,18 @@ $(function () {
         }
         return;
     });
+    /**
+     * Download Actions
+     */
+    // Changes only
     $('#chgs').on('click', function () {
         window.open('export_all_tables.php?dwnld=C');
     });
-    /* No longer used
-    $('#site').on('click', function () {
-        window.open('export_all_tables.php?dwnld=S');
-    });
-    */
+    // New pictures
     $('#npix').on('click', function () {
         window.open('list_new_files.php?request=pictures', "_self");
     });
+    // Pictures newer than
     var picfile = '';
     var pselLoc = $('#psel').offset();
     var dselLoc = $('#dsel').offset();
@@ -138,6 +157,17 @@ $(function () {
                 "&dtTime=" + dateSelected, "_self");
         }
     });
+    /**
+     * Listings
+     */
+    // List new files
+    $('#lst').on('click', function () {
+        window.open("list_new_files.php?request=files", "_blank");
+    });
+    /**
+     * Databse management tools
+     */
+    // Reload Database
     function retrieveDwnldCookie(dcname) {
         var parts = document.cookie.split(dcname + "=");
         var returnitem = '';
@@ -148,23 +178,38 @@ $(function () {
         }
         return returnitem;
     }
-    $('#reload').on('click', function () {
-        var proceed = $.Deferred();
-        if (confirm("Do you really want to drop all tables and reload them?")) {
-            $.get('checkUsers.php', function (result) {
-                var outcome = parseInt(result);
-                if (outcome > 0) {
-                    alert(outcome + " User(s) added");
-                }
-                else if (outcome < 0) {
-                    alert(outcome + "User(s) deleted");
+    function checkChecksums(deferred) {
+        $.ajax({
+            url: 'manageChecksums.php?act=ajax',
+            method: 'get',
+            dataType: 'text',
+            success: function (result) {
+                if (result !== '') {
+                    var mismatches = result.split("|");
+                    var output = "Note: the following table items have changed checksums\n";
+                    for (var i = 0; i < mismatches.length; i++) {
+                        output += mismatches[i] + "\n";
+                    }
+                    alert(output);
+                    deferred.resolve();
                 }
                 else {
-                    alert("No change in users");
+                    deferred.resolve();
                 }
-                proceed.resolve();
-            });
-            $.when(proceed).then(function () {
+            },
+            error: function (jqXHR) {
+                var newDoc = document.open();
+                newDoc.write(jqXHR.responseText);
+                newDoc.close();
+            }
+        });
+    }
+    $('#reload').on('click', function () {
+        // first look for db changes of importance:
+        var checksumsDef = $.Deferred();
+        checkChecksums(checksumsDef);
+        $.when(checksumsDef).then(function () {
+            if (confirm("Do you really want to drop all tables and reload them?")) {
                 if (hostIs !== 'localhost') {
                     window.open('export_all_tables.php?dwnld=N', "_blank");
                     var dwnldResult;
@@ -181,38 +226,43 @@ $(function () {
                 else {
                     window.open('drop_all_tables.php', "_blank");
                 }
-            });
-        }
+            }
+        });
     });
+    // Drop All Tables
     $('#drall').on('click', function () {
-        if (confirm("Do you really want to drop all tables?")) {
-            window.open('drop_all_tables.php?no=all', "_blank");
-        }
+        var testSums = $.Deferred();
+        checkChecksums(testSums);
+        $.when(testSums).then(function () {
+            if (confirm("Do you really want to drop all tables?")) {
+                window.open('drop_all_tables.php?no=all', "_blank");
+            }
+        });
     });
+    // Load All Tables
     $('#ldall').on('click', function () {
         window.open('load_all_tables.php', "_blank");
     });
+    // Export All Tables
     $('#exall').on('click', function () {
         window.open('export_all_tables.php?dwnld=N', "_blank");
     });
-    $('#dbchanges').on('click', function() {
+    // Check for DB Changes
+    $('#dbchanges').on('click', function () {
         window.open('manageChecksums.php?act=exam');
     });
-    $('#gensums').on('click', function() {
+    // Generate New Checksums
+    $('#gensums').on('click', function () {
         window.open('manageChecksums.php?act=updte');
     });
-    $('#findnew').on('click', function() {
-        window.open('findNewUsers.php');
+    // Show All Tables
+    $('#show').on('click', function () {
+        window.open('show_tables.php', "_blank_");
     });
-    $('#updatelk').on('click', function () {
-        $.get('updateUsers.php', function () {
-            alert("LKUSERS has been updated");
-        });
-    });
-    $('#swdb').on('click', function () {
-        window.open('switchDb.php');
-        window.close();
-    });
+    /**
+     * Miscellaneous Tools
+     */
+    // Change Edit Mode
     $('#editmode').on('click', function () {
         var emode = $('#emode').text();
         $.ajax({
@@ -229,6 +279,7 @@ $(function () {
             }
         });
     });
+    // Display commit
     $('#commit').on('click', function () {
         $.ajax({
             url: 'commit_number.txt',
@@ -245,42 +296,42 @@ $(function () {
             }
         });
     });
+    // Cleanup Pictures
     $('#cleanPix').on('click', function () {
         window.open('cleanPix.php', "_blank");
     });
+    // PHP Info
     $('#pinfo').on('click', function () {
         window.open('phpInfo.php', "_blank");
     });
-    $('#pub').on('click', function () {
-        window.open("reldel.php?act=rel", "_blank");
-    });
-    $('#lst').on('click', function () {
-        window.open("list_new_files.php?request=files", "_blank");
-    });
-    $('#ehdel').on('click', function () {
-        window.open("reldel.php?act=del", "_blank");
-    });
-    $('#show').on('click', function () {
-        window.open('show_tables.php', "_blank_");
-    });
-    if (typeof (nopix) !== 'undefined') {
-        alert(nopix);
-    }
+    // Add Book to BOOKS Table
     $('#addbk').on('click', function () {
         window.open("addBook.php", "_blank");
     });
+    /**
+     * Hike Management
+     */
+    // Publish a hike
+    $('#pub').on('click', function () {
+        window.open("reldel.php?act=rel", "_blank");
+    });
+    // Delete a hike
+    $('#ehdel').on('click', function () {
+        window.open("reldel.php?act=del", "_blank");
+    });
+    /**
+     * GPX File Management
+     */
+    // Reverse all tracks
     $('#revall').on('click', function (ev) {
         ev.preventDefault();
         $('input[name=revtype]').val("gpxall");
         $('#revgpx').trigger('submit');
     });
+    // Reverse single track
     $('#revsgl').on('click', function (ev) {
         ev.preventDefault();
         $('input[name=revtype]').val("gpxsgl");
         $('#revgpx').trigger('submit');
     });
-    var admin_alert = $('#admin_alert').text();
-    if (admin_alert !== '') {
-        alert(admin_alert);
-    }
-}); // end of doc loaded
+}); // end of docloaded

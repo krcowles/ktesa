@@ -15,6 +15,10 @@ session_start();
 require "../php/global_boot.php";
 
 $action = filter_input(INPUT_GET, 'act');
+$ajaxed = $action === 'ajax' ? true : false;
+if ($ajaxed) {
+    $action = 'exam';
+}
 $latest = "sumDate.txt";
 
 if ($action === "updte") {
@@ -24,28 +28,32 @@ if ($action === "updte") {
         `indx` smallint(6) NOT NULL AUTO_INCREMENT,
         `name` varchar(100) DEFAULT NULL,
         `chksum` bigint DEFAULT NULL,
+        `creation` datetime DEFAULT NULL,
         PRIMARY KEY (`indx`)
     );";
     $createSums = $pdo->query($createChkSumsReq);
     
+    // Note table creation time:
+    date_default_timezone_set('America/Denver');
+    $ctime = date('Y-m-d H:i:s');
+    // Fill in table
     $allTablesReq = "SHOW TABLES;";
     $allTables = $pdo->query($allTablesReq)->fetchAll(PDO::FETCH_COLUMN);
     foreach ($allTables as $tbl) {
         if ($tbl !== 'Checksums') {
             $sumReq = "CHECKSUM TABLE {$tbl};";
             $tblsum = $pdo->query($sumReq)->fetch(PDO::FETCH_NUM);
-            $addSumReq = "INSERT INTO `Checksums` (`name`, `chksum`) VALUES " .
-                "(?, ?);";
+            $addSumReq = "INSERT INTO `Checksums` (`name`,`chksum`,`creation`) " .
+                "VALUES (?, ?, ?);";
             $addSum = $pdo->prepare($addSumReq);
-            $addSum->execute([$tbl, $tblsum[1]]);
+            $addSum->execute([$tbl, $tblsum[1], $ctime]);
         }
     }
-    // Note table creation time:
-    date_default_timezone_set('America/Denver');
-    $ctime = date('M d Y H:i:s');
-    file_put_contents($latest, $ctime);
 } elseif ($action === 'exam') {
-    $lastchk = file_get_contents($latest);
+    $getDateReq = "SELECT `creation` FROM `Checksums` WHERE `indx`='1';";
+    $getDate = $pdo->query($getDateReq)->fetch(PDO::FETCH_ASSOC);
+    $lastchk = $getDate['creation'];
+
     // Get the current checksums
     $getSumsReq = "SELECT `name`,`chksum` FROM `Checksums`;";
     $getSums = $pdo->query($getSumsReq)->fetchAll(PDO::FETCH_KEY_PAIR);
@@ -76,6 +84,15 @@ if ($action === "updte") {
             }
         }
     }
+}
+if ($ajaxed) {
+    if (count($nomatch) > 0) {
+        $js_nomatch = implode("|", $nomatch);
+    } else {
+        $js_nomatch = '';
+    }
+    echo $js_nomatch;
+    exit;
 }
 ?>
 <!DOCTYPE html>

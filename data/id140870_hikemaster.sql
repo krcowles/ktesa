@@ -315,6 +315,33 @@ INSERT INTO CLUSTERS VALUES
 
 
 
+CREATE TABLE `Checksums` (
+  `indx` smallint(6) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `chksum` bigint(20) DEFAULT NULL,
+  `creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`indx`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO Checksums VALUES
+('1','BOOKS','3801470195','2021-07-27 15:46:01'),
+('2','CLUSHIKES','948942224','2021-07-27 15:46:01'),
+('3','CLUSTERS','368350707','2021-07-27 15:46:01'),
+('4','EGPSDAT','0','2021-07-27 15:46:01'),
+('5','EHIKES','0','2021-07-27 15:46:01'),
+('6','EREFS','0','2021-07-27 15:46:01'),
+('7','ETSV','0','2021-07-27 15:46:01'),
+('8','FAVORITES','3651041965','2021-07-27 15:46:01'),
+('9','GPSDAT','4093278896','2021-07-27 15:46:01'),
+('10','HIKES','2415192064','2021-07-27 15:46:01'),
+('11','REFS','2883540636','2021-07-27 15:46:01'),
+('12','TSV','4152199831','2021-07-27 15:46:01'),
+('13','USERS','510490655','2021-07-27 15:46:01');
+
+
+
+
 CREATE TABLE `EGPSDAT` (
   `datId` smallint(6) NOT NULL AUTO_INCREMENT,
   `indxNo` smallint(6) DEFAULT NULL,
@@ -731,31 +758,6 @@ INSERT INTO HIKES VALUES
 ('260','Quebradas Road Trip','2','San Antonio','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384','Queb3705c4.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','<p>This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended, though the road is mostly maintained. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.</p>','<p>The <span style=\"color: #1428d2;\"><em>Quebradas Backcountry Highway</em></span> provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view.</p>\r\n<p>The interactive map above shows the 10 stops with photos of the surrounding areas. It might be helpful to click on the \'Full Page Map\' link in the side table to be able to zoom in at a larger scale. Sometimes hiking is a good option at a stop, and sometimes not so much. Below, in the <strong>GPS Data</strong> section, are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.</p>',NULL,NULL,NULL),
 ('261','South Crest - CCC (Partial)','2','Tijeras','Out-and-back','6.60','2800','Med-Difficult','None','Views of Hondo Canyon and points East','Any','Mixed sun/shade','South_Crest-75.161.84.172-1626477047.gpx','South_Crest-75.161.84.172-1626477047.json','350895490','-1063914511','Sout7ce088.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0851237,-106.394046,16.04z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <span style=\"color: #1428d2;\"><em>South Crest Trail </em></span>begins the march of the 26-mile Crest Trail along the top of the <em>Sandias</em>. The original objective of this hike was to traverse the <em><span style=\"color: #1428d2;\">CCC Trail</span></em><span style=\"color: #000000;\">, which begins near the junction of the <span style=\"color: #1428d2;\"><em>South Crest Trail</em></span> with the <em><span style=\"color: #1428d2;\">Upper Faulty Trail</span></em>. You must be on <em><span style=\"color: #1428d2;\">Upper Faulty</span></em> to find the trail head, which is marked with a large pile of rocks.</span></p>\r\n<p><span style=\"color: #000000;\">You begin by hiking about 2.5 miles along the <em><span style=\"color: #1428d2;\">South Crest Trail</span></em>, ascending about 1,000 ft to the start of the <span style=\"color: #1428d2;\"><em>CCC Trail</em><span style=\"color: #000000;\">, which starts a very short distance from the juncture with <span style=\"color: #1428d2;\"><em>Upper Faulty Trail</em></span>.</span></span> The <em><span style=\"color: #1428d2;\">CCC Trail</span></em>&nbsp; ascends quite steeply and relentlessly from this point. Each mile along the trail goes up about 1,000 ft, for an average grade of 18%! The hike is primarily a physical challenge, as there is no scenery along the way. The author couldn\'t complete the journey to the top, but the remainder of the trail can be seen on the map by clicking on the \'CCC Trail\' checkbox in the \'Tracks\' box, located in the upper right hand corner of the map.</span></p>',NULL,NULL,NULL),
 ('262','Bill Spring-Oso-Faulty Loop','2','Tijeras','Loop','8.40','1100','Moderate','Picnic Area w/multiple toilets','East-looking views from Sandia','Any','Good shade','Bill Spring-75.161.84.172-1627138990.gpx','Bill Spring-75.161.84.172-1627138990.json','351767613','-1063789963','Billc78119.jpg',NULL,NULL,'https://www.google.com/maps/dir//DOC+LONG+PICNIC+AREA,+7562+Sandia+Crest+Rd,+Cedar+Crest,+NM+87008/@35.1685046,-106.3783427,14.53z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984dbceffff3:0x5318c098cf645d67!2m2!1d-106.3768858!2d35.1757456',NULL,'<p>The <em><span style=\"color: #1428d2;\">Bill Spring Trail</span></em>, located at the <em>Doc Long Picnic Area</em>, is a starting point for variations of hikes in this area. This is reflected by the variations shown in the references below. It connects with the <span style=\"color: #1428d2;\"><em>Faulty Trail</em></span> at its northern end (see the northernmost green flag on the interactive map) and the much less used <span style=\"color: #1428d2;\"><em>Old Faulty Trail </em></span>prior to that (red flag on the <span style=\"color: #1428d2;\"><em>Bill Spring Trail</em></span>).</p>\r\n<p>This hike is actually a result of the author mistakenly proceeding up <em><span style=\"color: #1428d2;\">Oso Corredor Trail </span></em>instead of following the planned route along <em><span style=\"color: #1428d2;\">Faulty Trail</span></em>. While there are not many vista points along the way, the hike is pleasant, though continously uphill at a moderate pace. The author turned around near the end of <em><span style=\"color: #1428d2;\">Oso Corredor</span></em> and proceeded back to <span style=\"color: #1428d2;\"><em>Faulty Trail</em></span> to complete the loop back by following <span style=\"color: #1428d2;\"><em>Old Faulty Trail</em></span>. Note the southernmost green flag on the map - it indicates the trail head for the <em><span style=\"color: #1428d2;\">Old Faulty Trail</span></em>, which is rather obscure. It appears that there was an attempt to intentionally discourage use of the trail, as it blocked by a sawed-off section of tree and some sticks. The trail is nonetheless in rather good condition and easy to follow. It occurs a very short distance prior to the <em><span style=\"color: #1428d2;\">Sulpher Canyon Trail</span></em>, which is well marked.</p>\r\n<p>Though there is good shade along the way, the section of <em><span style=\"color: #1428d2;\">Faulty Trail</span></em> between the <em><span style=\"color: #1428d2;\">Oso Corredor</span></em> junction (red flag) and the <span style=\"color: #1428d2;\"><em>Old Faulty</em></span> junction (green flag) can get more exposed. The author chose the use of red flags for right turns and green flags for left turns.</p>',NULL,NULL,NULL);
-
-
-
-
-CREATE TABLE `LKUSERS` (
-  `userid` smallint(6) NOT NULL DEFAULT '0',
-  `username` varchar(32) NOT NULL,
-  `passwd` varchar(255) DEFAULT NULL,
-  `passwd_expire` date DEFAULT NULL,
-  `last_name` varchar(30) NOT NULL,
-  `first_name` varchar(20) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `cookies` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-INSERT INTO LKUSERS VALUES
-('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2050-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
-('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2050-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
-('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com',''),
-('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu',''),
-('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com',''),
-('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com',''),
-('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com',''),
-('10','kenuser','$2y$10$1Zcu3a3/OIU0iPBA0B5ECu9GjQrAkvFraxkOqHV0oohF7.JfaA1PK','2022-04-11','admin','ken','hawk109@icloud.com','reject');
 
 
 
