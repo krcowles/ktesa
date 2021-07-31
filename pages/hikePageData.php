@@ -251,11 +251,12 @@ require "relatedInfo.php";
  * to build the picture rows a hike page
  */
 if (!$clusterPage) {
-    $photos = "SELECT `folder`,`title`,`hpg`,`mpg`,`desc`,`thumb`,`alblnk`,`date`," .
-    "`mid`,`imgHt`,`imgWd` FROM {$ttable} WHERE `indxNo` = :indxNo;";
-    $photosPDO = $pdo->prepare($photos);
+    $photosReq = "SELECT `folder`,`title`,`hpg`,`mpg`,`desc`,`thumb`,`alblnk`,`date`," .
+    "`mid`,`imgHt`,`imgWd`,`org` FROM {$ttable} WHERE `indxNo` = :indxNo;";
+    $photosPDO = $pdo->prepare($photosReq);
     $photosPDO->execute(["indxNo" =>$hikeIndexNo]);
-    $photosData = $photosPDO->fetchAll(PDO::FETCH_ASSOC);
+    $photos = $photosPDO->fetchAll(PDO::FETCH_ASSOC);
+    usort($photos, "cmp"); // sort by stored sequence number 
     $months = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
         "Sep","Oct","Nov","Dec");
     $descs = [];
@@ -264,7 +265,7 @@ if (!$clusterPage) {
     $captions = [];
     $aspects = [];
     $widths = [];
-    foreach ($photosData as $pics) {
+    foreach ($photos as $pics) {
         if ($pics['hpg'] === 'Y') {
             array_push($descs, $pics['title']);
             array_push($alblnks, $pics['alblnk']);
