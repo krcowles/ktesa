@@ -271,6 +271,10 @@ $(function () {
         }
         return retval;
     };
+    // photo reordering:
+    if ($("ul.reorder-photos-list").length > 0) { // there may be no pix yet...
+        $("ul.reorder-photos-list").sortable({ tolerance: 'pointer' });
+    }
     /**
      * The remaining script handles several features of the editor:
      *  1. Initialization of text and numeric fields based on db entries

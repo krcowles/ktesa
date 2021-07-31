@@ -1,15 +1,22 @@
 <?php
 /**
  * This is the tab for users to add/delete photos with captions,
- * as well as to add/edit waypoints.
+ * as well as to add/edit waypoints. Note that pictures may also be
+ * reordered by dragging and dropping.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 ?>
+<style type="text/css">
+    .gallery { height: 100px; width: 100%; }
+    .gallery ul {margin: 0; padding: 0; list-style-type: none; }
+    .gallery ul li { padding: 7px; border: 2px solid #ccc; float: left;
+        margin: 10px 7px; background: none; width: auto; height: auto; }
+    .image_link:link { color: black; text-decoration: none;}
+</style>
 <span><strong>Manage Your Photos Below</strong><a class="like-button"
     href="#wloc">Manage Waypoints</a></span>
 <hr />
@@ -38,10 +45,7 @@
 
 <?php if ($inclPix === 'YES') : ?>
     <style type="text/css">
-        .capLine {
-        margin: 0px;
-        font-weight: bold;
-        background-color: #dadada; }
+        .capLine { margin: 0px; font-weight: bold; background-color: #dadada; }
     </style>
     <h4>Please check the boxes corresponding to the pictures you wish to
             include on the hike page, and those you wish to include on the geomap.
@@ -53,9 +57,11 @@
             Use All Photos on Map
     </div>
 
-    <div style="margin-left:16px;">
-        <div class="flex-box">
+    <div style="margin-left:16px;clear:none;overflow:auto;">
+        <div class="gallery">
+            <ul class="reorder-ul reorder-photos-list">
             <?= $html;?>
+            </ul>
         </div>
     </div>
 <?php else : ?>

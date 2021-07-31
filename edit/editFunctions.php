@@ -618,3 +618,15 @@ function getPicturesDirectory()
     $picdir .= 'pictures/zsize/';
     return $picdir;
 }
+/**
+ * A simple comparison function for photo sequencing
+ * 
+ * @param string $a Org field within the array for a-th element
+ * @param string $b Org field within the array for b-th element
+ * 
+ * @return integer
+ */
+function cmp($a, $b)
+{
+    return strcmp($a["org"], $b["org"]);
+}

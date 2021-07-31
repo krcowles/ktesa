@@ -8,7 +8,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -22,7 +21,18 @@ if ($picq->rowCount() === 0) {
     $jsMaps = "''";
 } else {
     $inclPix = 'YES';
-    // NOTE: this will also be yes when there are no pics but there are waypoints
+    $picarray = $picq->fetchAll(PDO::FETCH_ASSOC);
+    /**
+     * Find the first photo (not waypoint) and see if the 'org' field is set, ie
+     * has a photo sequencing number [not all do at first invocation]. Note: a
+     * hikeno with photo sequencing has all 'org' fields populated
+     */
+    foreach ($picarray as $item) {
+        if (!empty($item['mid']) && !empty($item['org'])) {
+            usort($picarray, "cmp"); // sort by stored sequence number 
+            break;
+        }
+    }
 }
 $wayPointCount = 0;
 $picCount = 0;
@@ -40,23 +50,14 @@ if ($inclPix === 'YES') {
      * is necessary to extract the correct relative path to the pictures
      * directory from wherever this code is invoked. 
      */
-    $picpath = "";
-    // iteratively look for the pictures directory from current location
-    $current = getcwd();
-    $prev = $current;
-    while (!in_array('pictures', scandir($current))) {
-        $picpath .= "../";
-        chdir('..');
-        $current = getcwd();
-    }
-
+    $picpath = getPicturesDirectory();
+    
     $html = '';
     $wids = [];  // 'picIdx' of waypoint
     $wdes = [];  // 'title'
     $wlat = [];
     $wlng = [];
     $wicn = []; // 'iclr' = icon symbol
-    $picpath .= "pictures/zsize/";
     $picno = 0;
     $wptno = 0;
     $tsvId = [];
@@ -67,7 +68,7 @@ if ($inclPix === 'YES') {
     $phWds = []; // width
     $pMap = [];  // status of 'Map It' checkbox
     $rowHt = 220; // nominal choice for photo height in div
-    while ($pics = $picq->fetch(PDO::FETCH_ASSOC)) {
+    foreach ($picarray as $pics) {
         if (!empty($pics['mid'])) {  // Picture
             $tsvId[$picno] = $pics['picIdx'];
             $phDescs[$picno] = $pics['desc'];
@@ -98,8 +99,12 @@ if ($inclPix === 'YES') {
      * Each photo and its checkboxes will be held in a wrapper for insertion
      * in the CSS flex box.
      */ 
-    for ($i=0; $i<$picCount; $i++) {
-        $wrapper = '<div style="margin-right:12px;width:' . $phWds[$i] . 'px;">';
+    for ($i=0; $i<$picCount; $i++) { // added re-ordering via ul/li/a elements
+        $wrapper = '<li id="' . $tsvId[$i] . '" class="ui-sortable-handle">';
+        $wrapper .= '<a href="javascript:void(0);" class="image_link" ' .
+            'style="float:none;">';
+        // the div is the container for the gallery of re-orderable elements
+        $wrapper .= '<div style="margin-right:12px;width:' . $phWds[$i] . 'px;">';
         // 'add to page' checkbox
         $pgbox = '<input class="hpguse" type="checkbox" name="pix[]" value="' .
             $tsvId[$i];
@@ -123,7 +128,7 @@ if ($inclPix === 'YES') {
                 'disabled="disabled" /><span style="color:gray">Map</span>' .
                 '<br /></span>';
         }
-        // delete photo checkbox
+        // 'delete photo' checkbox
         $delbox = '<input class="delp" type="checkbox" name="rem[]" value="' .
             $tsvId[$i] . '" />Delete<br />';
         // photo
@@ -135,8 +140,9 @@ if ($inclPix === 'YES') {
         $caption = '<textarea class="capts" style="width:' . $tawd .
             'px;margin-bottom:12px;" name="ecap[]" maxlength="512">' .
             $phDescs[$i] . "</textarea>";
-        // add all to wrapper
-        $wrapper .= $pgbox . $mpbox . $delbox . $photo . $caption . "</div>";
+        // add all to wrapper, a self-contained <li> element which can be reordered
+        $wrapper .= $pgbox . $mpbox . $delbox . $photo .
+            $caption . "</div></a></li>";
         $html .= $wrapper;
     }
     // create the js arrays to be passed to the accompanying script:
@@ -175,5 +181,4 @@ if ($inclPix === 'YES') {
         }
     }
     $jsMaps .= ']';
-    chdir($prev);
 }

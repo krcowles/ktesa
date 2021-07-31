@@ -298,6 +298,10 @@ window.onkeydown = function(event: KeyboardEvent) {
     }
     return retval;
 }
+// photo reordering:
+if ($("ul.reorder-photos-list").length > 0) {  // there may be no pix yet...
+    $("ul.reorder-photos-list").sortable({ tolerance: 'pointer' });
+}
 
 /**
  * The remaining script handles several features of the editor:

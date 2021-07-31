@@ -13,7 +13,7 @@ $hikeNo = filter_input(INPUT_POST, 'hikeNo');
 verifyAccess('post');
 
 /* It is possible that no pictures are present, also that no
- * checkboxes are checked. Therefore, the script tests for these things
+ * checkboxes are checked. Therefore, the script tests for these conditons
  * to prevent undefined vars
  */
 // # of captions corresponds to # pictures present
@@ -47,11 +47,12 @@ if (isset($_POST['rem'])) {
 $photoReq = "SELECT * FROM `ETSV` WHERE `indxNo` = ?;";
 $photoq = $pdo->prepare($photoReq);
 $photoq->execute([$hikeNo]);
-$p = 0;
-while ($photo = $photoq->fetch(PDO::FETCH_ASSOC)) {
-    if (!empty($photo['imgHt'])) {  // waypoints have empty imgHt
-        $thisid = (string) $photo['picIdx'];
-        $newcap = $ecapts[$p];
+$picarray = $photoq->fetchAll(PDO::FETCH_ASSOC);
+usort($picarray, "cmp"); // sort by stored sequence number 
+for ($n=0; $n<count($picarray); $n++) {
+    if (!empty($picarray[$n]['imgHt'])) {  // waypoints have empty imgHt
+        $thisid = (string) $picarray[$n]['picIdx'];
+        $newcap = $ecapts[$n];
         // look for a matching checkbox then set for display (or map)
         $disph = 'N';
         for ($i=0; $i<count($displayPg); $i++) {
@@ -79,12 +80,11 @@ while ($photo = $photoq->fetch(PDO::FETCH_ASSOC)) {
             $del = $pdo->prepare($delreq);
             $del->execute([$thisid]);
         } else {
-            $updtreq = "UPDATE `ETSV` SET `hpg` = ?, `mpg` = ?, `desc` = ? "
+            $updtreq = "UPDATE `ETSV` SET `hpg`=?,`mpg`=?,`desc`=?,`org`=? "
                 . "WHERE picIdx = ?;";
             $update = $pdo->prepare($updtreq);
-            $update->execute([$disph, $dispm, $newcap, $thisid]);
+            $update->execute([$disph, $dispm, $newcap, $n, $thisid]);
         }
-        $p++;
     }
 }
 // enter/save waypoints

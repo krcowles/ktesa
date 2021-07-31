@@ -338,8 +338,13 @@ $('#redo_thumb').on('click', function(ev) {
             saveImages(psDat);
         }
         thumbimg.src = base64img;
-    } else {  // Apply with no preview image
-        $('#f2').trigger('submit');
+    } else {  // Apply with no user-specified preview image, or image already saved
+        if ($("ul.reorder-photos-list").length > 0) {
+            var sortedIds = $("ul.reorder-photos-list").sortable("toArray");
+            saveOrder(sortedIds);
+        } else {
+            $('#f2').trigger('submit');
+        }
     }
 
 });
@@ -359,6 +364,26 @@ $('#redo_thumb').on('click', function(ev) {
     return new Blob([ab], { type: 'image/jpeg' });
 }
 /**
+ *  This script will save any changes in the photo order
+ */
+function saveOrder(sortdata: string[]) {
+    var sortarray = JSON.stringify(sortdata);
+    var ajaxdata = {sort: sortarray};
+    $.ajax({
+        url: 'saveOrder.php',
+        data: ajaxdata,
+        method: "post",
+        success: function() {
+            $('#f2').trigger('submit');
+        },
+        error: function(jqXHR) {
+            var newDoc = document.open();
+            newDoc.write(jqXHR.responseText);
+            newDoc.close();
+        }
+    });
+}
+/**
  * Upload the preview and thumb images
  */
 function saveImages(ajaxdata: FormData) {
@@ -371,7 +396,12 @@ function saveImages(ajaxdata: FormData) {
         success: function(saved) {
             if (saved === 'OK') {
                 posted = true;
-                $('#f2').trigger('submit');
+                if ($("ul.reorder-photos-list").length > 0) {
+                    var sortedIds = $("ul.reorder-photos-list").sortable("toArray");
+                    saveOrder(sortedIds);
+                } else {
+                    $('#f2').trigger('submit');
+                }
             } else {
                 alert("Could not save image; contact admin");
             }
@@ -382,5 +412,4 @@ function saveImages(ajaxdata: FormData) {
             newDoc.close();
         }
     });
-
 }

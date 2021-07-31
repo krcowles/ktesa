@@ -7,7 +7,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -71,7 +70,6 @@ $tsv->execute(
     [$ehike, $basename, $dblat, $dblng, $newthumb, $dbdate, $basename, 
     $imght, $imgwd]
 );
-//$pdo->commit();
 
 $zimg = $basename . '_' . $newthumb . '_z.jpg';
 $filename = $pictures_directory . $zimg;
