@@ -14,10 +14,11 @@
 session_start();
 require "../php/global_boot.php";
 
+$reload = isset($_GET['reload']) ? true : false;
 $action = filter_input(INPUT_GET, 'act');
 $ajaxed = $action === 'ajax' ? true : false;
 if ($ajaxed) {
-    $action = 'exam';
+    $action = $reload ? 'updte' : 'exam';
 }
 $latest = "sumDate.txt";
 
@@ -48,6 +49,9 @@ if ($action === "updte") {
             $addSum = $pdo->prepare($addSumReq);
             $addSum->execute([$tbl, $tblsum[1], $ctime]);
         }
+    }
+    if ($reload) {
+        exit;
     }
 } elseif ($action === 'exam') {
     $getDateReq = "SELECT `creation` FROM `Checksums` WHERE `indx`='1';";

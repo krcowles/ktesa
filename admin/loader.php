@@ -70,7 +70,15 @@ for ($i=0; $i<$line_cnt; $i++) {
         $msg_out = false;
     }
 }
-echo '<script type="text/javascript">
+echo PHP_EOL . '<script type="text/javascript">
     var doneid = document.getElementById("done");
     doneid.style.display = "block";
-    </script>';
+    xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            alert("Checksums regenerated");
+        }
+    };
+    xhr.open("get", "manageChecksums.php?act=ajax&reload=y");
+    xhr.send();
+    </script>' . PHP_EOL;
