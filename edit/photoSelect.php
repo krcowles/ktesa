@@ -11,6 +11,8 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+$wayPointCount = 0;
+$picCount = 0;
 $picreq = "SELECT * FROM ETSV WHERE indxNo = :hikeno;";
 $picq = $pdo->prepare($picreq);
 $picq->execute(["hikeno" => $hikeNo]);
@@ -33,10 +35,6 @@ if ($picq->rowCount() === 0) {
             break;
         }
     }
-}
-$wayPointCount = 0;
-$picCount = 0;
-if ($inclPix === 'YES') {
     /**
      * The location of the 'pictures' directory is needed in order to 
      * specify <img> src attribute. The issue is that the src attribute
@@ -93,7 +91,6 @@ if ($inclPix === 'YES') {
     }
     $picCount = $picno;
     $wayPointCount = $wptno;
-
     /**
      * Photo html creation:
      * Each photo and its checkboxes will be held in a wrapper for insertion
@@ -139,10 +136,15 @@ if ($inclPix === 'YES') {
         $tawd = $phWds[$i] - 12; // padding and borders
         $caption = '<textarea class="capts" style="width:' . $tawd .
             'px;margin-bottom:12px;" name="ecap[]" maxlength="512">' .
-            $phDescs[$i] . "</textarea>";
-        // add all to wrapper, a self-contained <li> element which can be reordered
-        $wrapper .= $pgbox . $mpbox . $delbox . $photo .
-            $caption . "</div></a></li>";
+            $phDescs[$i] . '</textarea>';
+        /**
+         * Add all items to $wrapper: a self-contained <li> element which can be
+         * reordered (via jquery ui 'sortable' widget)
+         * NOTE: If textarea is placed inside the div, for some reason it cannot
+         * be edited; hence it is placed outside the div but inside the <a> link
+         */
+        $wrapper .= $pgbox . $mpbox . $delbox . $photo . "</div></a>" .
+            $caption . "</li>";
         $html .= $wrapper;
     }
     // create the js arrays to be passed to the accompanying script:

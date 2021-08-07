@@ -628,5 +628,6 @@ function getPicturesDirectory()
  */
 function cmp($a, $b)
 {
-    return strcmp($a["org"], $b["org"]);
+    $delta = intval($a["org"]) - intval($b["org"]);
+    return  $delta;
 }

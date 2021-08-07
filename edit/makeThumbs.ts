@@ -99,7 +99,8 @@ function photoEvents() {
         var szfiles = <FileList>file_input.files;
         loadPreview(szfiles[0]);
     });
-    // Reset button to restore 'thumbpic' div to original state
+    // Reset button to restore 'thumbpic' div to original state is added
+    // to document when either loadImage or loadPreview is invoked
     $(document).off('click', '#reset').on('click', '#reset', function(ev) {
         ev.preventDefault();
         if (!posted) {
@@ -276,7 +277,7 @@ $('#redo_thumb').on('click', function(ev) {
     ev.preventDefault();
     var urlCreator = window.URL || window.webkitURL;
     // first part of file name for preview/thumb
-    let prefix = $('#htitle').text();
+    let prefix = $('#htitle').text(); // on main editDB.php page
     prefix = prefix.substr(0, 4);
     // which image has user selected?
     let uccrop = $('#uccrop').text();

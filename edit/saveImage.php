@@ -57,11 +57,12 @@ $eresult = $pdo->query($eval);
 // ETSV may be empty!
 $emax = $eresult->fetch(PDO::FETCH_NUM);
 if ($emax === false) {
-    $max = $tmax;
+    $max = $tmax[0];
 } else {
     $max = $emax[0] > $tmax[0] ? $emax[0] : $tmax[0];
 }
 $newthumb = (int)$max + 1;
+// Note: 'org' field sequences are established by makeThumbs.js when tab2 'Apply' hit
 $tsv_req = "INSERT INTO `ETSV` (`indxNo`,`title`,`hpg`,`mpg`,`lat`," .
     "`lng`,`thumb`,`date`,`mid`,`imgHt`,`imgWd`) VALUES " .
     "(?,?,'N','N',?,?,?,?,?,?,?);";

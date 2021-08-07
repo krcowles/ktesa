@@ -10,6 +10,7 @@
  * @license No license to date
  */
 ?>
+<!-- Photo entry and management section -->
 <style type="text/css">
     .gallery { height: 100px; width: 100%; }
     .gallery ul {margin: 0; padding: 0; list-style-type: none; }
@@ -70,6 +71,7 @@
 </div>
 
 <hr />
+<!-- add or display thumb/preview image -->
 <div id="thumbpic">
     <input id="uccrop" type="hidden" name="uccrop" value="0" />
     <input id="ucprev" type="hidden" name="ucprev" value="0" />
@@ -115,6 +117,7 @@
     <?php endif; ?>
 </div><br />
 
+<!-- waypoint section -->
 <hr id="wloc" />
 <?= $wptedits;?>
 

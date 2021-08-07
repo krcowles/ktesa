@@ -1,11 +1,12 @@
 <?php
 /**
- * This routine saves any changes made (or current data) on tab2
- * ('Photo Selection') and updates the ETSV table.
- * PHP Version 7.1
+ * This routine updates ETSV values for photo captions, and hpg and mpg
+ * values for the corresponding photos. It requires the waypoint save 
+ * script as well (see waypointSave.php for documentation)
+ * PHP Version 7.4
  * 
  * @package Editing
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 require "../php/global_boot.php";
@@ -20,7 +21,7 @@ verifyAccess('post');
 if (isset($_POST['ecap'])) {
     $ecapts = $_POST['ecap'];
     $noOfPix = count($ecapts);
-} else {
+} else { // no photos on page yet
     $ecapts = [];
     $noOfPix = 0;
 }
@@ -47,10 +48,20 @@ if (isset($_POST['rem'])) {
 $photoReq = "SELECT * FROM `ETSV` WHERE `indxNo` = ?;";
 $photoq = $pdo->prepare($photoReq);
 $photoq->execute([$hikeNo]);
-$picarray = $photoq->fetchAll(PDO::FETCH_ASSOC);
-usort($picarray, "cmp"); // sort by stored sequence number 
+if (($picarray = $photoq->fetchAll(PDO::FETCH_ASSOC)) === false) {
+    throw new Exception("Photo fetch failed in saveTab2");
+}
+if (count($picarray) > 0) {
+    // if any photos are in array, they will be sorted by 'org' field
+    foreach ($picarray as $item) {
+        if (!empty($item['mid']) && !empty($item['org'])) {
+            usort($picarray, "cmp"); // sort by stored sequence number 
+            break;
+        }
+    }
+}
 for ($n=0; $n<count($picarray); $n++) {
-    if (!empty($picarray[$n]['imgHt'])) {  // waypoints have empty imgHt
+    if (!empty($picarray[$n]['mid'])) {  // waypoints have empty 'mid' field'
         $thisid = (string) $picarray[$n]['picIdx'];
         $newcap = $ecapts[$n];
         // look for a matching checkbox then set for display (or map)

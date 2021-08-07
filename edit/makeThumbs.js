@@ -87,7 +87,8 @@ function photoEvents() {
         var szfiles = file_input.files;
         loadPreview(szfiles[0]);
     });
-    // Reset button to restore 'thumbpic' div to original state
+    // Reset button to restore 'thumbpic' div to original state is added
+    // to document when either loadImage or loadPreview is invoked
     $(document).off('click', '#reset').on('click', '#reset', function (ev) {
         ev.preventDefault();
         if (!posted) {
@@ -264,7 +265,7 @@ $(document).off('click', '#ap2').on('click', '#ap2', function (ev) {
     ev.preventDefault();
     var urlCreator = window.URL || window.webkitURL;
     // first part of file name for preview/thumb
-    var prefix = $('#htitle').text();
+    var prefix = $('#htitle').text(); // on main editDB.php page
     prefix = prefix.substr(0, 4);
     // which image has user selected?
     var uccrop = $('#uccrop').text();
