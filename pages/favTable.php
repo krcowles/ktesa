@@ -1,11 +1,11 @@
 <?php
 /**
- * This page displays a map showing only the user's favorites, and markers 
- * on the map for each favorite.
+ * This page displays a map showing only the user's favorites with markers 
+ * on the map for each favorite. A message is displayed when there are no
+ * favorites saved by the user.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -18,9 +18,10 @@ $usrfavs = $pdo->prepare($favreq);
 $usrfavs->execute(["uid" => $userid]);
 $favarray = $usrfavs->fetchAll(PDO::FETCH_COLUMN);
 /**
+ * >>> NOTE: This page does not call mapJsData.php but rather creates data below. <<<
  * Get hike data for each favorite (this should be a rather small list!);
  * Form js arrays for side table and marker creation (akin to jsMapData.php 
- * on home.php). No VC or CL hikes on this page.
+ * on home.php). No CL hikes on this page.
  */ 
 $hikeobj = [];
 $tracks = [];
@@ -33,7 +34,8 @@ foreach ($favarray as $hike) {
         ',loc:{lat:' . $hikedat['lat']/LOC_SCALE . ',lng:' .
         $hikedat['lng']/LOC_SCALE . '},lgth:' .
         $hikedat['miles'] . ',elev:' . $hikedat['feet'] . ',diff:"' . 
-        $hikedat['diff'] . '",dir:"' . $hikedat['dirs'] . '"}';
+        $hikedat['diff'] . '",dir:"' . $hikedat['dirs'] . '",prev:"' .
+        $hikedat['preview'] . '"}';
     array_push($hikeobj, $hike);
     array_push($tracks, '"' . $hikedat['trk'] . '"');
     
@@ -44,6 +46,10 @@ for ($j=0; $j<count($favarray); $j++) {
     $locater = '{type:"nm",group:' . $nmindx++ . '}';
     array_push($locaters, $locater);
 }
+// locate the 'thumbs' dir:
+$zsizedir = getPicturesDirectory();
+$thumbdir = '"' . str_replace('zsize', 'thumbs', $zsizedir) . '"';
+
 $jsHikes  = '[' . implode(",", $hikeobj)  . ']';
 $allHikes = '[' . implode(",", $favarray) . ']';
 $jsLocs   = '[' . implode(",", $locaters) . ']';
@@ -53,7 +59,7 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>Your Favorites</title>
+    <title>My Favorites</title>
     <meta charset="utf-8" />
     <meta name="description"
         content="Map with User Favorites identified" />
@@ -68,7 +74,7 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 
 <body>
 <?php require "ktesaPanel.php"; ?>
-<p id="trail">Welcome!</p>
+<p id="trail">My Favorites</p>
 <p id="page_id" style="display:none;">Favorites</p>
 
 <p id="geoSetting">ON</p>
@@ -81,15 +87,15 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 <div id="sideTable"></div>
 
 <script>
-    var CL = [];
-    var NM = <?= $jsHikes;?>;
-    var allHikes = <?= $allHikes;?>;
-    var locations = <?= $jsLocs;?>;
-    var tracks = <?= $jsTracks;?>;
+    var NM = <?=$jsHikes;?>;
+    var allHikes = <?=$allHikes;?>;
+    var locations = <?=$jsLocs;?>;
+    var tracks = <?=$jsTracks;?>;
+    var thumb = <?=$thumbdir;?>;
 </script>
 <script src="../scripts/menus.js"></script>
 <script src="../scripts/fmap.js"></script>
-<script src="../scripts/sideTables.js"></script>
+<script src="../scripts/favSideTable.js"></script>
 <script src="../scripts/modal_setup.js"></script>
 <script src="../scripts/markerclusterer.js"></script>
 <script async defer src="<?=Google_Map;?>"></script>
