@@ -4,11 +4,16 @@ body {
 	font-family: arial, verdana;
 	background-color: #dfdfdf;
 }
+#main {
+	position: relative;
+	top: 10px;
+}
 /* Table options header */
 #optcontainer {
 	position: relative;
 	top: -6px;
 	text-align: center;
+	box-sizing: content-box;
 }
 #tblopts {
 	text-align: center;
@@ -21,6 +26,7 @@ body {
 	padding-left: 12px;
 	padding-right: 12px;
 	padding-top: 7px;
+	box-sizing: inherit;
 }
 .topts {
 	display: inline-block;
@@ -29,24 +35,40 @@ body {
 	border-width: 1px;
 	border-color: gray;
 	height: 34px;
-	padding-top: 4px;
+	padding-top: 1px;
 	text-align: center;
+	box-sizing: inherit;
 }
 #opt1 {
 	width: 110px;
 	vertical-align: middle;
+	box-sizing: inherit;
 }
 #opt2 {
 	width: 300px;
 	vertical-align: middle;
+	box-sizing: inherit;
 }
 #opt3 {
 	width: 168px;
 	vertical-align: middle;
+	box-sizing: inherit;
 }
 #opt4 {
 	width: 120px;
 	vertical-align: middle;
+	padding-top: 4px;
+	box-sizing: inherit;
+}
+.tblbtn {
+	background-color:#6D3C17;
+	color: white;
+	border-radius: 6px;
+}
+.tblbtn:hover {
+	background-color: moccasin;;
+	color: black;
+	
 }
 #showfilter, #multimap, #units {
 	margin-top: 1px;
@@ -148,7 +170,7 @@ img.webShift {
 	padding-left: 19px; }
 img.expShift {
 	padding-left: 24px; }
-table:not(#loginTbl) {
+table {
     margin-left: auto;
     margin-right: auto;
 	font-size: 14px;
@@ -157,26 +179,36 @@ table:not(#loginTbl) {
 	background-color: #ffffdf;
 	border-style: groove;
 	border-width: 4px;
-	border-color: gainsboro; }
-th:not(#loginTbl) {
+	border-color: gainsboro;
+	box-sizing: content-box;
+	border-collapse: separate; }
+th {
 	text-align: center;
 	padding-left: 5px;
 	padding-right: 5px;
 	border-style: outset;
-	border-width: 2px;
-	border-color: peru; }
+	border-width: 1px;
+	border-color: gray;
+	box-sizing: content-box !important; }
+tr {
+	box-sizing: content-box;
+}
 tr:hover {
 	background-color: BlanchedAlmond; }
-td:not('#loginTbl') {
+td {
 	vertical-align: top;
 	padding-left: 5px;
 	padding-right: 5px;
+	box-sizing: content-box !important;
+}
+td a {
+	color: blue;
 }
 .hdr_row {
-	background-color: bisque; }
+	background-color: moccasin; }
 .hdr_row:hover {
 	cursor: pointer;
-	background-color: Brown;
+	background-color: #6D3C17;
 	color: White; }
 .blue {
 	color: darkblue;
@@ -197,9 +229,10 @@ td:not('#loginTbl') {
 	height: 248px;
 	padding-left: 8px;
 	padding-right: 8px;
-	background-color: ghostwhite;
+	background-color: white;
 	border: 3px solid gray;
 	z-index: 1000;
+	box-sizing: content-box;
 }
 #modalhdr {
 	position: relative;
@@ -208,8 +241,9 @@ td:not('#loginTbl') {
 	height: 32px;
 	width: 396px;
 	padding-top: 5px;
-	background-color: blanchedalmond;
+	background-color: #ffffdf;
 	border: 2px ridge gray;
+	box-sizing: content-box;
 }
 #hdrleft {
 	float: left;
@@ -219,7 +253,34 @@ td:not('#loginTbl') {
 #hdrright {
 	float: right;
 	margin-right: 12px;
-	background-color: dimgray;
+	
+}
+#closer {
+	border-radius: 6px;
+
+	background-color: #6D3C17;
+	color: white;
+	box-sizing: content-box;
+}
+#closer:hover {
+	background-color: blanchedalmond !important;
+	color: black !important;
+}
+#mapem {
+	position: relative;
+	top: -6px;
+}
+#mapem, #hikeclr {
+	border-radius: 6px;
+	background-color: #6D3C17;
+	color: white;
+}
+#mapem:hover, #hikeclr:hover {
+	background-color: blanchedalmond;
+	color: black;
+}
+#usearch {
+	margin-bottom: 3px;
 }
 #hike2map {
 	height: 24px;

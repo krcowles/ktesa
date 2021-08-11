@@ -22,12 +22,12 @@ while (!in_array('pictures', scandir($current))) {
     chdir('..');
     $current = getcwd();
     $ups++;
-    $rels .= '../';
+    $rels .= '../';  // used in passing info to javascript, below
     if ($ups > 5) { 
         throw new Exception("Can't find pictures directory!");
     }
 }
-chdir($startDir);
+chdir($startDir);  
 ?> 
 <!DOCTYPE html>
 <html lang="en-us">
@@ -38,18 +38,20 @@ chdir($startDir);
         content="Listing of hikes the authors have undertaken in New Mexico" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/home.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
+    <link href="../styles/home.css" type="text/css" rel="stylesheet" />    
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
-
+ <!-- body tag must be read prior to invoking bootstrap.js -->
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php"; ?>
-<p id="trail">Welcome!</p>
-<p id="page_id" style="display:none;">Home</p>
+<p id="trail">Find Your Hike!</p>
+<p id="active" style="display:none">Home</p>
 
 <div id="map"></div>
 
@@ -81,7 +83,6 @@ var preview  = '<?=$rels;?>' + 'pictures/previews';
 var loadSpreader; // interval timer for spacing out thumbnail loads
 var cluster_click = false; // linked to clicking a clusterer marker
 </script>
-<script src="../scripts/menus.js"></script>
 <script src="../scripts/markerclusterer.js"></script>
 <script src="../scripts/map.js"></script>
 <script src="../scripts/sideTables.js"></script>

@@ -1,4 +1,5 @@
-/* Styles for the New Mexico Hiking Adventures page */
+/* Note that some of the settings are present explicitly to
+   override either the bootstrap CSS or ktesaNavbar.css settings */
 body {
 	min-width: 960px;
 	margin-left: auto;
@@ -9,8 +10,9 @@ body {
 	overflow-x: hidden;
 	overflow-y: hidden;
 }
-#logo {
+#logo {  /* override ktesaPanel.css */
 	margin-bottom: 0px;
+	margin-right: 0px;
 }
 #searchbar {
 	border-radius: 8px;
@@ -20,7 +22,7 @@ body {
 	padding-left: 6px;
 	height: 34px;
 	position: absolute;
-	top: 91px;
+	top: 120px;
 	left: 140px;
 	z-index: 200;
 }
@@ -47,6 +49,7 @@ body {
 #legend {
 	position: absolute;
 }
+/*
 li img {
 	float: left;
 	margin-right: 4px;
@@ -56,6 +59,7 @@ li {
 	padding-right: 6px;
 	margin-bottom: 4px;
 }
+*/
 #iwVC {
 	background-color: #f0f0f0;
 	color: Black;
@@ -102,6 +106,7 @@ li {
 	width: 35%;
 	overflow-y: scroll;
 	overflow-x: hidden;
+	box-sizing: content-box;
 }
 .tableItem {
 	display: flex;
@@ -115,10 +120,7 @@ li {
 	border-color: black;
 	border-width: 1px;
 	float: left;
-}
-.icons {
-	height: 100%;
-	width: 36px;
+	box-sizing: inherit;
 }
 .tip, .zpop {
 	display: none;
@@ -130,23 +132,72 @@ li {
 	border-radius: 6px;
 	position: absolute;
   	z-index: 200;
+	box-sizing: inherit; 
 }
-.zpop {
-	width: 104px;
+.icons {
+	height: 100%;
+	width: 36px;
+	box-sizing: inherit;
 }
 .like {
 	cursor: pointer;
 	padding-left: 3px;
 	width: 28px;
 	height: 28px;
+	box-sizing: inherit;
 }
 .zoomers {
 	padding-left: 5px;
 	height: 24px;
 	width: 24px;
 	cursor: pointer;
+	box-sizing: inherit;
 }
-a:link {
+.content {
+	width: calc(100% - 123px);
+	line-height: 100%;
+	overflow: hidden;
+	box-sizing: inherit;
+}
+.content:last-child {
+	top: 0px;
+}
+.stlinks {
+	position: relative;
+	top: 4px;
+	padding-left: 6px;
+	font-size: 18px;
+	box-sizing: inherit;
+	color: blue;
+}
+.subtxt, .subtxtb {
+	padding-left: 6px;
+	font-size: 14px;
+	position: relative;
+	top: 6px;
+	box-sizing: inherit;
+}
+.subtxtb {
+	top: 7px;
+}
+.thumbs {
+	margin-right: 4px;
+	cursor: pointer;
+	z-index: 50;
+	width: 83px;
+	box-sizing: inherit;
+}
+.thmbpic {
+	box-sizing: inherit;
+}
+.zpop {
+	width: 104px;
+}
+
+
+
+/*
+.stlinks {
 	position: relative;
 	top: 2px;
 	padding-left:6px;
@@ -154,26 +205,9 @@ a:link {
 	color: blue;
 	text-decoration: underline;
 }
-.subtxt {
-	padding-left: 6px;
-	font-size: 14px;
-	position: relative;
-	top: 2px;
-}
-.content {
-	flex-wrap: wrap;
-	width: calc(100% - 123px);
-	overflow: hidden;
-}
-.content:last-child {
-	top: 0px;
-}
-.thumbs {
-	margin-right: 4px;
-	cursor: pointer;
-	z-index: 50;
-	width: 83px;
-}
+*/
+
+
 .bigger {
 	position: absolute;
 }

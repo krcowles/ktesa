@@ -2,7 +2,7 @@
     background-color: darkslategray;
 }
 .navbar-brand {
-    color: silver !important;
+    color: #bfd9bf !important;
     font-style: italic;
 }
 .nav-link {
@@ -41,13 +41,16 @@ ul.dropdown-menu {
 }
 #leftside {
     float: left;
+    margin-bottom: 0px;
 }
 #ctr {
     clear: both;
     margin-top: 4px;
+    margin-bottom: 0px;
 }
 #rightside {
     float: right;
+    margin-bottom: 0px;
 }
 #hikers {
     float: left;
@@ -65,6 +68,10 @@ ul.dropdown-menu {
     margin-top: 4px;
     color: darkslategray;
     z-index:5; }
+#ctr {
+    font-size: 18px;
+    font-weight: bold;
+}
 #logo_right {
     float: right;
     margin-right: 10px;
@@ -77,6 +84,7 @@ ul.dropdown-menu {
     font-weight: bold;
 }
 /* login elements */
-#cookie_state, #cookies_choice, #admin, #admintools {
+#cookie_state, #cookies_choice, #admin, #contrib, #admintools,
+#change_cookies {
     display: none;
 }

@@ -65,7 +65,7 @@
   },
   "files": [   /* .ts sources to be compiled */
     /* all "pages" (that can be displayed as a page) */
-    "menus.ts",
+    "panelMenu.ts",
     /* ktesaPanel */
     "modal_setup.ts",
     "menuControl.ts",

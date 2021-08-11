@@ -1,10 +1,10 @@
 <?php
 /**
  * This page presents a sortable, filterable table of hikes
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Display_Page
- * @author  Tom Sandberg and Ken Cowles <krcowle29@gmail.com>
+ * @package Ktesa
+ * @author  Ken Cowles <krcowle29@gmail.com>
  * @license No license to date
  */
 session_start();
@@ -25,30 +25,35 @@ $pageType = 'FullTable';
         content="Table of hikes the authors have undertaken in New Mexico" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
+    <!--<link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />-->
     <link href="../styles/tblPg.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php"; ?>
 <p id="trail">Sortable Table of Hikes</p>
-<p id="page_id" style="display:none">Table</p>
+<p id="active" style="display:none">Table</p>
 
+<div id="main">
 <div id="optcontainer">
     <div id="tblopts">
         <strong>Options:</strong>&nbsp;&nbsp;
         <div id="opt1" class="topts">
-            <button id="showfilter">Filter Hikes</button>
+            <button id="showfilter" class="tblbtn">Filter Hikes</button>
         </div>
         <div id="opt2" class="topts">
             Show Multiple Hikes on a Map
-            <button id="multimap">Select</button>
+            <button id="multimap" class="tblbtn">Select</button>
         </div>
         <div id="opt3" class="topts">
-            <button id="units">Show Metric Units</button>
+            <button id="units" class="tblbtn">Show Metric Units</button>
         </div>
         <div id="opt4" class="topts">
             <select id="scroller" class="selhover">
@@ -110,6 +115,7 @@ $pageType = 'FullTable';
     </div>
 </div>
 <!-- End of sub-table filter/sort -->
+<br />
 <p id="filtnote">
     <strong id="note">NOTE:</strong>
     Click on any hike column to sort; again to reverse.<br />
@@ -124,25 +130,24 @@ $pageType = 'FullTable';
     For Group pages, check each hike<br />
     within the group; otherwise, no data
 </div>
-
+</div>
 <!-- Multimap Modal -->
 <div id="usermodal">
     <div id="modalhdr">
         <div id="hdrleft"><strong>Drag Here</strong></div>
         <div id="hdrright"><button id="closer">Close</button></div>
     </div>
-    <p>To view multiple hikes on a single map, select the hikes below. When
-    you are ready, click on 'Draw Map'</p>
+    <p>To view multiple hikes on a single map, begin typing the hike name
+        in the box below to select the hikes. When you are ready,
+        click on 'Draw Map'</p>
     <button id="mapem">Draw Map</button>
-    <p><input id="hike2map" placeholder="Type in next Hike Name"
-        list="hikelist" />&nbsp;&nbsp;&nbsp;
-        <button id="hikeclr">Clear Entries</button>
-        <?=$datalist;?></p>
+    <p id="usearch"><input id="hike2map" list="hikelist" />&nbsp;&nbsp;&nbsp;<?=$datalist;?>
+        <button id="hikeclr">Clear Hikes</button>
+    </p>
     <span id="hlist">Hikes you have selected:</span>
     <ul id="selections"></ul>
 </div>
 
-<script src="../scripts/menus.js"></script>
 <script src="../scripts/columnSort.js"></script>
 <script src="../scripts/tableOpts.js"></script>
 <script src="../scripts/filter.js"></script>

@@ -10,6 +10,7 @@
  * @version 3.0 Added Cluster Page compatibility (removes indexPageTemplate links)
  * @version 4.0 Typescripted, with some type errors corrected
  * @version 5.0 Reworked to synchronize with the new thumbnail loading process
+ * @version 6.0 Change from old panel design to bootstrap navbar design
  */
 // Hike Track Colors: red, blue, orange, purple, black
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000'];
@@ -33,13 +34,14 @@ var zoomdone;
 var panning = false;
 var marker_click = false;
 var zoomThresh = 13;
+var panel = $('#nav').height() + $('#logo').height();
 /**
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
  * needs to be specified for the divs to be visible.
  */
 var initDivParms = function () {
-    mapht = $(window).height() - $('#panel').height();
+    mapht = $(window).height() - panel;
     $map.css('height', mapht + 'px');
     $('#adjustWidth').css('height', mapht + 'px');
     $('#sideTable').css('height', mapht + 'px');
@@ -56,13 +58,13 @@ var mapTick = {
     strokeWeight: 2
 };
 /**
- * This function places the geopoitioning symbol in the lower right corner of the map
+ * This function places the geopositioning symbol in the lower right corner of the map
  */
 function locateGeoSym() {
-    var winht = $('#panel').height() + mapht - 100;
-    var mapwd = $('#map').width() - 120;
-    $('#geoCtrl').css('top', winht);
-    $('#geoCtrl').css('left', mapwd);
+    var fromTop = panel + mapht - 84;
+    var fromLft = $('#map').width() - 120;
+    $('#geoCtrl').css('top', fromTop);
+    $('#geoCtrl').css('left', fromLft);
     return;
 }
 locateGeoSym();
@@ -436,5 +438,6 @@ $(window).on('resize', function () {
         var $tooldiv = $icon.parent().prev();
         positionFavToolTip($tooldiv, $icon);
     });
+    //initMap();
 });
 // //////////////////////////////////////////////////////////////

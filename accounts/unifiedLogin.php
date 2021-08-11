@@ -1,17 +1,15 @@
 <?php
 /**
- * This page allows the user to login to the site as a member,
- * whether a new member registration, change password request,
- * 'Forgot password' request, expired/renewable membership,
- * or rejected cookies. In each case the user is sent a one-time
- * secure code as a password, and must select a new password
- * to continue. 
+ * This page allows the user to login to the site as a member, whether a new member
+ * registration, a change password request, 'Forgot password' request, expired or
+ * renewable membership, or rejected cookies. In each case the user is sent a
+ * one-time secure code as a password, and must select a new password to continue. 
  * PHP Version 7.4
  * 
  * @package Ktesa
  * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
- * @license No Liscense to date
+ * @license No License to date
  */
 session_start();
 require "../php/global_boot.php";
@@ -28,20 +26,20 @@ if ($form === 'reg') {
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
+    <!-- there is no navbar on this page -->
     <title><?=$title;?></title>
     <meta charset="utf-8" />
-    <meta name="description" content="Unified log in page" />
+    <meta name="description" content="Unified login page" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" /> 
     <link href="unifiedLogin.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     <script type="text/javascript">var page = 'unified';</script>
 </head>
 
 <body>
+<!-- only the logo is presented on this page, no navbar -->
 <div id="logo">
     <div id="pattern"></div>
     <div id="pgheader">
@@ -59,7 +57,7 @@ if ($form === 'reg') {
 
 <p id="appMode"><?=$appMode;?></p>
 <p id="formtype" style="display:none;"><?=$form;?></p>
-<div id="container">
+<div id="container">  <!-- only one of the three sections will appear on page -->
 <?php if ($form === 'reg') : ?>
     <form id="form" action="#" method="post">
         <input type="hidden" name="submitter" value="create" />
@@ -171,6 +169,7 @@ if ($form === 'reg') {
     <h3>This site uses cookies to save member usernames</h3>
     <p>Accepting cookies allows automatic login. If you reject cookies,
     no cookie data will be collected, and you must login each visit.
+    Please read the Help->Policy document for more details.
     <br />You may change your decision later via the Help menu.
     </p>
     <div id="cbuttons">

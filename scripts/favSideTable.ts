@@ -2,66 +2,31 @@
 declare var loadSpreader: any;
 declare var thumb: string;
 declare var preview: string;
-declare var favlist: number[];
+declare var map: google.maps.Map;
+declare var locaters: any[];
+declare var colors: string[];
+declare function locateGeoSym(): void;
 /**
- * @file This file creates and places the html for the side table, as well as providing
- *       a search bar capability synchronized to the side table. Note that any globals
- *       needed for map.js are either supplied via home.php, or have already been
- *       declared via map.js, which is called first.
+ * @file This file was created as a simplification of sideTables.ts/js code,
+ * which contains a significant amount of code not required by the Favorites page.
+ * favTable.php now calles favSideTable.js instead of sideTables.js
+ * 
  * @author Ken Cowles
- * @version 4.0 Adds track highlighting
- * @version 5.0 Typescripted, with some previous type errors corrected
- * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
+ * @version 1.0 Simplify and fix the display of the Favorites page after having modified
+ * sideTables.ts/js to add thumbnail images;
  */
  
-/**
- * Searchbar Functionality (html datalist element)
- */
-$('#searchbar').val('');
-$('#searchbar').on('input', function() {
-    var $input = $(this),
-        val = <string>$input.val(),
-        list = $input.attr('list'),
-        match = $('#'+list + ' option').filter(function() {
-            return ($(this).val() === val);
-        });
-    if (match.length > 0) {
-        popupHikeName(val);
-    }
-    return;
-});
-
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike
  */
 function popupHikeName(hikename: string) {
     var found = false;
-    if (pgnames.includes(hikename)) { // These are 'Cluster Pages', not hikes
-            let indx = pgnames.indexOf(hikename);
-            hiliteObj = {obj: CL[indx].hikes, type: 'cl'};
-            infoWin(CL[indx].group, CL[indx].loc);
+    for (let k=0; k<NM.length; k++) {
+        if (NM[k].name == hikename) {
+            infoWin(NM[k].name, NM[k].loc);
             found = true;
-    } else {
-        for (let i=0; i<CL.length; i++) {
-            for (let j=0; j<CL[i].hikes.length; j++) {
-                if (CL[i].hikes[j].name == hikename) {
-                    hiliteObj = {obj: CL[i].hikes[j], type: 'nm'};
-                    infoWin(CL[i].group, CL[i].loc);
-                    found = true;
-                    break;
-                }
-            }
-        }
-    }
-    if (!found) {
-        for (let k=0; k<NM.length; k++) {
-            if (NM[k].name == hikename) {
-                hiliteObj = {obj: NM[k], type: 'nm'};
-                infoWin(NM[k].name, NM[k].loc);
-                found = true;
-                break;
-            }
+            break;
         }
     }
     if (!found) {
@@ -77,8 +42,6 @@ function popupHikeName(hikename: string) {
  * 'zoomdone' get resolved immediately.
  */
 const infoWin = (hike:string, loc:GPS_Coord)  => {
-    // highlight track for either searchbar or zoom-to icon:
-    applyHighlighting = true;
     // clicking marker sets zoom
     for (let k=0; k<locaters.length; k++) {
         if (locaters[k].hikeid == hike) {
@@ -87,6 +50,10 @@ const infoWin = (hike:string, loc:GPS_Coord)  => {
             } else {
                 map.setCenter(loc);
             }
+            let czoom = map.getZoom();
+            if (czoom <= 13) {
+                map.setZoom(13);
+            }
             break;
         }
     }
@@ -94,73 +61,12 @@ const infoWin = (hike:string, loc:GPS_Coord)  => {
 }  
 
 /**
- * This function emphasizes the hike track(s) that have been zoomed to;
- * NOTE: A javascript anomaly: passing in a single object in an array
- * results in the function receiving the object, but not as an array.
- * Hence a 'type' identifier is used here
- */
-function highlightTracks() {
-    if (!$.isEmptyObject(hiliteObj)) {
-        if (hiliteObj.type === 'cl') { // object is an array of objects
-            let cluster = <Normals>hiliteObj.obj;
-            cluster.forEach(function(track) {
-                let polyno = track.indx;
-                for (let k=0; k<drawnTracks.length; k++) {
-                    if (drawnTracks[k].hike == polyno) {
-                        let polyline = drawnTracks[k].track;
-                        polyline.setOptions({
-                            strokeWeight: 4,
-                            strokeColor: '#FFFF00',
-                            strokeOpacity: 1,
-                            zIndex: 10
-                        });
-                        hilited.push(polyline);
-                        break;
-                    }
-                }
-            });
-        } else { // mrkr === 'nm'; object is a single object
-            let nmobj = <NM>hiliteObj.obj;
-            let polyno = nmobj.indx;
-            for (let k=0; k<drawnTracks.length; k++) {
-                if (drawnTracks[k].hike == polyno) {
-                    let polyline = drawnTracks[k].track;
-                    polyline.setOptions({
-                        strokeWeight: 4,
-                        strokeColor: '#FFFF00',
-                        strokeOpacity: 1,
-                        zIndex: 10
-                    });
-                    hilited.push(polyline);
-                    break;
-                }
-            }
-        }
-        hiliteObj = {};
-    }
-    return;
-}
-
-/**
- * Undo any previous track highlighting
- */
-function restoreTracks() {
-    for (let n=0; n<hilited.length; n++) {
-        hilited[n].setOptions({
-            strokeOpacity: 0.60,
-            strokeWeight: 3,
-            zIndex: 1
-        });
-    }
-    return;
-}
-/**
  * The side table includes all hikes on page load; on pan/zoom it will include only those
  * hikes within the map bounds. In the following code, the variables 'allHikes' and 
  * 'locations' are declared on home.php (and created by mapJsData.php):
- * allHikes:  an array of every hike in the database;
+ * allHikes:  an array of the current user favorite hikes
  * locations: a one-to-one correspondence to allHikes; an array of objects containing
- * the object type of the hike (CL, or NM) and its index in that array.
+ * the object type of the hike (NM) and its index in that array.
  */
 function compareObj(a: NM, b: NM) {
     var hikea = a.name;
@@ -185,7 +91,7 @@ var tblItemHtml: string;
 tblItemHtml = '<div class="tableItem"><div class="tip">Add to Favorites</div>';
 // the div holding the favorites icon and the zoom-to-map icon
 tblItemHtml += '<div class="icons">';
-tblItemHtml += '<img class="like" src="../images/favoritesYellow.png" alt="favorites icon" />';
+tblItemHtml += '<img class="like" src="../images/favoritesRed.png" alt="favorites icon" />';
 tblItemHtml += '<br /><img class="zoomers" src="../images/mapZoom.png" alt="zoom symbol" />';
 tblItemHtml += '<span class="zpop">Zoom to Hike</span>';
 tblItemHtml += '</div>';
@@ -203,23 +109,18 @@ function appendSegment(subset: NM[]) {
     for (let m=0; m<subset.length; m++) {
         let obj = subset[m];
         let hno = obj.indx;
-        var tbl;
-        if (favlist.includes(hno)) {
-            tbl = tblItemHtml.replace('Yellow', 'Red');
-        } else {
-            tbl = tblItemHtml;
-        }   
-        let lnk = '<a href="../pages/hikePageTemplate.php?hikeIndx=' + obj.indx + 
-            '" class="stlinks">' + obj.name + '</a>';
+        var tbl = tblItemHtml;
+        let lnk = '<a class="stlinks" href="../pages/hikePageTemplate.php?hikeIndx=' + 
+            obj.indx + '">' + obj.name + '</a>';
         tbl += lnk;
         tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
             + obj.lgth + ' miles';
-        tbl += '</span><br /><span class="subtxtb">Elev Change: ';
+        tbl += '</span><br /><span class="subtxt">Elev Change: ';
         tbl += obj.elev + ' feet</span><p id="sidelat" style="display:none">';
         tbl += obj.loc.lat  + '</p><p id="sidelng" style="display:none">';
         tbl += obj.loc.lng + '</p></div>';
         tbl += '<div class="thumbs"><img src="' + thumb + 
-            obj.prev + '" alt="preview image" class="thmbpic" /></div>';
+            obj.prev + '" alt="preview image" /></div>';
         tbl += '</div>';
         let $tbl = $(tbl);
         $('#sideTable').append($tbl);
@@ -339,7 +240,6 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                     dataType: "text",
                     success: function(results) {
                         if (results === "OK") {
-                            favlist.push(hikeno);
                             newsrc = isrc.replace('Yellow', 'Red');
                             $tooltip.text('Unmark');
                             $that.attr('src', newsrc);
@@ -366,8 +266,6 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                     dataType: "text",
                     success: function(results) {
                         if (results === 'OK') {
-                            let key = favlist.indexOf(hikeno);
-                            favlist.splice(key, 1);
                             newsrc = isrc.replace('Red', 'Yellow');
                             $tooltip.text('Add to Favorites');
                             $that.attr('src', newsrc);
@@ -464,31 +362,6 @@ function enableZoom(items: JQuery<HTMLElement>[]) {
     /* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
     var hikearr: NM[] = [];
     var max_color = colors.length - 1;
-    CL.forEach(function(clus) {
-        var color = 0;
-        clus.hikes.forEach(function(hike) {
-            let lat = hike.loc.lat;
-            let lng = hike.loc.lng;
-            if (lng <= east && lng >= west && lat <= north && lat >= south) {
-                let hikeindx = allHikes.indexOf(hike.indx);   
-                let hikeobj = locations[hikeindx];
-                let data = idHike(allHikes[hikeindx], hikeobj);
-                hikearr.push(data);
-                if (zoom) {
-                    let cliw = '<div id="iwCH"><a href="../pages/hikePageTemplate.php?hikeIndx=' + 
-                        hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +
-                        hike.lgth + ' miles<br />Elev Chg: ' + hike.elev +
-                        '<br />Difficulty: ' + hike.diff + '</div>';
-                    singles.push(hike.indx);
-                    hikeInfoWins.push(cliw);
-                    trackColors.push(colors[color++]);
-                    if (color > max_color) { // rotate through colors
-                        color = 0;
-                    }
-                }
-            }
-        });
-    });
     NM.forEach(function(hike) {
         let lat = hike.loc.lat;
         let lng = hike.loc.lng;

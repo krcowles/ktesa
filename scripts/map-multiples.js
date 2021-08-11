@@ -4,6 +4,7 @@
  *
  * @author Ken Cowles
  * @version 1.0 First release
+ * @version 2.0 Updates (mostly CSS) to work with bootstrap navigation
  */
 /**
  * Make the usermodal draggable:

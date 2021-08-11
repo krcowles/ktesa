@@ -3,12 +3,13 @@
  * 
  * @author Ken Cowles
  * @version 1.0 First release
+ * @version 2.0 Updates (mostly CSS) to work with bootstrap navigation
  */
 
 /**
  * Make the usermodal draggable:
  */
- dragElement(<HTMLElement>document.getElementById("usermodal"));
+dragElement(<HTMLElement>document.getElementById("usermodal"));
 function dragElement(elmnt: HTMLElement) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     let header = <HTMLElement>document.getElementById("modalhdr")

@@ -1,11 +1,12 @@
-"use strict";
 /// <reference path='./map.d.ts' />
+//declare function positionFavToolTip(): void;
 /**
  * @fileoverview Set up a full page map showing the Favorites selected
  * by the user
  *
  * @author Ken Cowles
  * @version  2.0 Typescripted, some type errors corrected
+ * @version  3.0 Reworked for bootstrap
  */
 var map;
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00'];
@@ -16,13 +17,14 @@ var maxlat = 0; // north
 var maxlng = -180; // east
 var minlat = 90; // south
 var minlng = 0; // west
+var navHt = $('#nav').height() + $('#logo').height();
 /**
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
  * needs to be specified for the divs to be visible.
  */
 var initDivParms = function () {
-    mapht = $(window).height() - $('#panel').height();
+    mapht = $(window).height() - (navHt);
     $map.css('height', mapht + 'px');
     $('#adjustWidth').css('height', mapht + 'px');
     $('#sideTable').css('height', mapht + 'px');
@@ -40,7 +42,7 @@ var mapTick = {
  * This function simply locates the geolocation symbol on the page
  */
 function locateGeoSym() {
-    var winht = $('#panel').height() + mapht - 100;
+    var winht = navHt + mapht - 80;
     var mapwd = $('#map').width() - 120;
     $('#geoCtrl').css('top', winht);
     $('#geoCtrl').css('left', mapwd);
@@ -53,6 +55,7 @@ var smallGeo = '../images/starget.png';
 var medGeo = '../images/purpleTarget.png';
 var lgGeo = '../images/ltarget.png';
 var locaters = []; // global used to popup info window on map when hike is searched
+formTbl(NM);
 /**
  * This function returns the correct icon for the map based on no. of hikes
  */
@@ -329,6 +332,6 @@ $(window).on('resize', function () {
     $map.css('width', mapWidth + 'px');
     $('#sideTable').css('width', tblWidth + 'px');
     locateGeoSym();
-    positionFavTooltips();
+    //positionFavToolTip();
 });
 // //////////////////////////////////////////////////////////////
