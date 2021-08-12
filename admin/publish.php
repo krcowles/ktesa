@@ -235,19 +235,22 @@ if ($msgout == '') {
     <meta name="description" content="Present tools for admin of site" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
         .brown { color: brown }
     </style>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Release EHIKE No. <?=$hikeNo;?></p>
-<p id="page_id" style="display:none">Admin</p>
+<p id="active" style="display:none">Admin</p>
+
 
 <div style="margin-left:16px;font-size:22px">
     <?php if ($msgout !== '') : ?>
@@ -258,7 +261,6 @@ if ($msgout == '') {
         <p>Hike has been removed from the list of New/In-Edit Hikes</p>
     <?php endif; ?>
 </div>
-<script src="../scripts/menus.js"></script>
 
 </body>
 </html>

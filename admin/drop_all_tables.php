@@ -9,7 +9,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -34,14 +33,16 @@ if (isset($_REQUEST['no'])) {
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title><?= $action;?></title>
+    <title><?=$action;?></title>
     <meta charset="utf-8" />
     <meta name="description"
         content="Drop (and Load if reqested) the specified Tables" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" rel="stylesheet" />
     <style type="text/css">
         body {
             background-color: #eaeaea;
@@ -53,9 +54,11 @@ if (isset($_REQUEST['no'])) {
     <script src="../scripts/jquery-ui.js"></script>
 </head>
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
-<p id="trail"><?= $action;?></p>
-<p id="page_id" style="display:none">Admin</p>
+<p id="trail"><?=$action;?></p>
+<p id="active" style="display:none">Admin</p>
 
 <div style="margin-left:16px;font-size:18px;">
 <?php
@@ -85,7 +88,6 @@ for ($i=0; $i<$tblcnt; $i++) {
     </div>
 <?php endif; ?>
 </div>
-<script src="../scripts/menus.js"></script>
 
 </body>
 </html>

@@ -22,7 +22,7 @@ $policy = "../accounts/PrivacyPolicy.pdf";
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="ktesaMenu">
-            <a class="navbar-brand" href="#">nmhikes.com:</a>
+            <a class="navbar-brand" href="../pages/about.php">nmhikes.com:</a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#"
@@ -42,7 +42,7 @@ $policy = "../accounts/PrivacyPolicy.pdf";
                         </li>
                         <div id="admintools">
                             <div class="dropdown-divider"></div>
-                            <li><a id="adminmenu" class="dropdown-item"
+                            <li><a id="adminpg" class="dropdown-item"
                                 href="../admin/admintools.php">Admintools</a></li>
                         </div>
                     </ul>
@@ -100,7 +100,7 @@ $policy = "../accounts/PrivacyPolicy.pdf";
                     Help
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item"
+                        <li><a id="aboutpg" class="dropdown-item"
                             href="../pages/about.php">About This Site</a>
                         </li>
                         <li><a class="dropdown-item"

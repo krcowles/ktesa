@@ -6,7 +6,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -14,20 +13,15 @@ session_start();
 require "../php/global_boot.php";
 
 $action = filter_input(INPUT_POST, 'submit');  // remove files or create shell?
+
+$picdir = getPicturesDirectory();
+$basedir = str_replace("zsize/", "", $picdir);
 $shell = false; // unless proven otherwise...
-$shell_file = "pictures/cleanpix.sh";
-// find level at which pictures directory resides
-$current = getcwd();
-$adminDir = $current;
-$ups = 0;
-while (!in_array('pictures', scandir($current))) {
-    chdir('..');
-    $current = getcwd();
-    $ups++;
-    if ($ups > 10) { 
-        throw new Exception("Can't find pictures directory!");
-    }
-}
+$shell_file = $basedir . "cleanpix.sh";
+
+/**
+ * If a shell script is to be created instead of outright deletion of files:
+ */
 if (strpos($action, "Create") !== false) {
     $shell = true;
     $handle = fopen($shell_file, "w"); // this writes over any existing
@@ -35,14 +29,19 @@ if (strpos($action, "Create") !== false) {
     fwrite($handle, $bash_start);
     fclose($handle);
     $script = fopen($shell_file, "a"); // now append to this new file
-}
-$checkboxes = isset($_POST['checkboxes']) ? $_POST['checkboxes'] : null;
+} // otherwise $shell remains false
+
+// 'p' and 't' prefixes indicate 'preview' and 'thumb' respectively
+$checkboxes  = isset($_POST['checkboxes']) ? $_POST['checkboxes'] : null;
+$pcheckboxes = isset($_POST['pcheckboxes']) ? $_POST['pcheckboxes'] : null;
+$tcheckboxes = isset($_POST['tcheckboxes']) ? $_POST['tcheckboxes'] : null;
 $deleted = [];
 $failures = [];
 $msg = '';
 if (isset($checkboxes)) {
+    // remove z-size photos
     foreach ($checkboxes as $deletion) {
-        $file = 'pictures/zsize/' . $deletion;
+        $file = $picdir . $deletion;
         if ($shell) {
             // append the remove command
             $cmd = "rm zsize/" . $deletion . "\n";
@@ -61,10 +60,56 @@ if (isset($checkboxes)) {
         fclose($script);
         chmod($shell_file, 0755);
     }
-} else {
-    $msg = "No Pictures were selected for deletion";
 }
-chdir($adminDir);
+if (isset($pcheckboxes)) {
+    // remove preview images
+    foreach ($pcheckboxes as $deletion) {
+        $file = $basedir . 'previews/' . $deletion;
+        if ($shell) {
+            // append the remove command
+            $cmd = "rm previews/" . $deletion . "\n";
+            fwrite($script, $cmd);
+            array_push($deleted, $file);
+        } else {
+            if (file_exists($file)) {
+                array_push($deleted, $file);
+                unlink($file);
+            } else {
+                array_push($failures, $file);
+            }
+        }
+    }
+    if ($shell) {
+        fclose($script);
+        chmod($shell_file, 0755);
+    }
+}
+if (isset($tcheckboxes)) {
+    // remove thumb images
+    foreach ($tcheckboxes as $deletion) {
+        $file = $basedir . 'thumbs/' . $deletion;
+        if ($shell) {
+            // append the remove command
+            $cmd = "rm thumbs/" . $deletion . "\n";
+            fwrite($script, $cmd);
+            array_push($deleted, $file);
+        } else {
+            if (file_exists($file)) {
+                array_push($deleted, $file);
+                unlink($file);
+            } else {
+                array_push($failures, $file);
+            }
+        }
+    }
+    if ($shell) {
+        fclose($script);
+        chmod($shell_file, 0755);
+    }
+}
+if (!isset($checkboxes) && !isset($pcheckboxes) && !isset($zcheckboxes)) {
+    $msg .= "No items were selected for deletion";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -74,15 +119,17 @@ chdir($adminDir);
     <meta name="description" content="Check for extraneous photos" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="cleanPix.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Photos Deleted</p>
-<p id="page_id" style="display:none">Admin</p>
+<p id="active" style="display:none">Admin</p>
 
 </div>
 <div style="margin-left:24px;">
@@ -116,7 +163,6 @@ chdir($adminDir);
     <br /><?= $msg;?>
     <?php endif; ?>
 <?php endif; ?>
-<script src="../scripts/menus.js"></script>
 
 </body>
 </html>

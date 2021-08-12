@@ -1,19 +1,12 @@
 <?php
 /**
- * This module serves several purposes:
- *  1. List all the files that are new since the last upload (based on 
- *     timestamp), and present that list on a page;
- *  2. Download all pictures that have been added since the last upload
- *     (based on timestamp);
- *  3. Download all pictures that are newer than:
- *      a. A picture file selected *locally* from the 'pictures' directory
- *      b. A user-selected calendar date
+ * List all the files that are new since the last upload (based on 
+ * timestamp), and present that list on a page;
  * In all cases, the code will recursively scan the project directory and
  * identify the desired items.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -72,8 +65,6 @@ $iterator = new RecursiveIteratorIterator(
 );
 // could use CHILD_FIRST if you so wish
 $items = [];
-//echo "Upload date: " . date(DATE_RFC2822, $uploadDate) . "<br /><br />";
-//echo "Files changed since upload:<br />";
 foreach ($iterator as $file) {
     if ($file->isFile()) {
         if ($file->getMTime() > $uploadDate) {
@@ -88,6 +79,10 @@ foreach ($iterator as $file) {
     }
 }
 if ($request === 'pictures') {
+    /**
+     * NOTE: download memory limit (20MB) may be exceeded resulting in
+     * no download. 
+     */
     $zip = new ZipArchive();
     $stat = $zip->open($tmpPix, ZipArchive::CREATE);
     if ($stat !== true) {
@@ -126,16 +121,18 @@ chdir($adminDir);
     <meta name="description" content="List new <?= $request;?> since last upload" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">List New Files Since Last Upload</p>
-<p id="page_id" style="display:none">Admin</p>
+<p id="active" style="display:none">Admin</p>
 
 <div style="margin-left:24px;">
 <p style="font-size:16px;">Upload date: <?= $udate;?></p>
@@ -145,7 +142,6 @@ chdir($adminDir);
 <?php endforeach; ?>
 <p style="font-size:18px;color:brown;">DONE</p>
 </div>
-<script src="../scripts/menus.js"></script>
 
 </body>
 </html>

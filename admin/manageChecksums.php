@@ -20,7 +20,6 @@ $ajaxed = $action === 'ajax' ? true : false;
 if ($ajaxed) {
     $action = $reload ? 'updte' : 'exam';
 }
-$latest = "sumDate.txt";
 
 if ($action === "updte") {
     $dropold = "DROP TABLE IF EXISTS `Checksums`";
@@ -107,27 +106,30 @@ if ($ajaxed) {
     <meta name="description" content="Look for database changes" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
-    <link rel="stylesheet" href="../styles/jquery-ui.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
     <style type="text/css">ul {font-weight: bold;}</style>
 </head>
+
 <body style="background-color:#eaeaea;">
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Database Change Management</p>
-<p id="page_id" style="display:none">Admin</p>
+<p id="active" style="display:none">Admin</p>
 
 <div style="margin-left:24px;">
 <?php if ($action === 'updte') : ?>
     <h3>All current tables in the database have had new checksums created</h3>
 <?php else : ?>
-    <h3>All tables in the database have had their corresponding checksums
+    <h4>All tables in the database have had their corresponding checksums
         validated.<br />Results compared to last generated checksums 
-        on <span style="color:brown;"><?=$lastchk;?></span>:</h3>
+        on <span style="color:brown;"><?=$lastchk;?></span>:</h4><hr />
     <?php if (count($obs) > 0) : ?>
-        <h3 style="color:brown;">The following tables appear in the Checksums 
-        Table but not in the database:</h3>
+        <h5 style="color:brown;">The following tables appear in the Checksums 
+        Table but not in the database:</h5>
         <ul>
             <?php foreach ($obs as $old) : ?>
                 <li><?=$old;?></li>
@@ -135,8 +137,8 @@ if ($ajaxed) {
         </ul>
     <?php endif; ?>
     <?php if (count($missing) > 0) : ?>
-        <h3 style="color:brown;">The following database tables do not appear 
-        in the Checksums Table:</h3>
+        <h5 style="color:brown;">The following database tables do not appear 
+        in the Checksums Table:</h5>
         <ul>
             <?php foreach ($missing as $out) : ?>
                 <li><?=$out;?></li>
@@ -144,20 +146,18 @@ if ($ajaxed) {
         </ul>
     <?php endif; ?>
     <?php if (count($nomatch) > 0) : ?>
-        <h3 style="color:brown;">The following tables have changed:</h3>
+        <h5 style="color:brown;">The following tables have changed:</h5>
         <ul>
             <?php for ($j=0; $j<count($nomatch); $j++) : ?>
                 <li><?=$nomatch[$j];?></li>
             <?php endfor; ?>
         </ul>
     <?php else : ?>
-        <h3 style="color:darkblue">No [other] changes have been detected since 
-        the 'last checked' date above</h3>
+        <h5 style="color:darkblue">No [other] changes have been detected since 
+        the 'last checked' date above</h5>
     <?php endif; ?>
 <?php endif; ?>
 </div>
-
-<script src="../scripts/menus.js" type="text/javascript"></script>
 
 </body>
 </html>

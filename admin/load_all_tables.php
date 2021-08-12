@@ -19,19 +19,21 @@ require '../php/global_boot.php';
     <meta name="description" content="Present tools for admin of site" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="admintools.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
         #progress { width: 420px; height: 36px; background-color: #ace600; }
         #bar { width: 0px; height: 36px; background-color: #aa0033; }
     </style>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>  
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Loading Database</p>
-<p id="page_id" style="display:none">Admin</p>
+<p id="active" style="display:none">Admin</p>
 
 <div style="margin-left:16px;">
 <p>Please wait until the 'DONE' message appears below</p>
@@ -41,5 +43,7 @@ require '../php/global_boot.php';
 <p id="done" style="display:none;color:brown;">DONE: Tables imported successfully</p>
 <script src="load_progress.js"></script>
 <?php require "loader.php"; ?>
-<script src="../scripts/menus.js"></script>
 </div>
+
+</body>
+</html>

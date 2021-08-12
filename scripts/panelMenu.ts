@@ -10,8 +10,7 @@ $(function() {  // document ready function
 
 // when page is called, clear any menu items that are/were active
 $('.dropdown-item a').removeClass('active');
-// add the active class to the current menu item corresponding to the page
-var activeItem = $('#active').text();  // menu item indicator on each page
+var activeItem = $('#active').text();
 switch(activeItem) {
     case "Home":
         $('#homepg').addClass('active');
@@ -21,6 +20,12 @@ switch(activeItem) {
         break;
     case "Favorites":
         $('#favpg').addClass('active');
+        break;
+    case "About":
+        $('#aboutpg').addClass('active');
+        break;
+    case "Admin":
+        $('#adminpg').addClass('active');
         break;
 }
 // establish the page title in the logo 'ctr' div

@@ -9,18 +9,6 @@ ul {
 #main {
     margin-left: 24px;
 }
-input[type=submit] {
-    font-size: 16px;
-    height: 28px;
-    width: 220px;
-    background-color: blanchedalmond;
-}
-input[type=submit]:hover, #shell:hover {
-    background-color: honeydew;
-    cursor: pointer;
-    color: brown;
-    font-weight: bold;
-}
 .head {
     color: brown;
     font-size: 18px;

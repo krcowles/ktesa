@@ -7,6 +7,10 @@ body {
     border-width: 2px;
     border-color: DarkBlue;
 }
+#mainabout {
+    padding-left: 16px;
+    padding-right: 12px;
+}
 img#tompic {
     display: block;
     float: right;
@@ -33,25 +37,17 @@ img#tompic {
     font-weight: bold;
     color: #302dd3;
 }
-fieldset#mtype {
-    height: 54px;
+.blue {
+    color: blue;
 }
-legend {
-    color: DarkGreen;
+.red {
+    color: red;
 }
-#tbl {
-    margin-left: 28px;
+.green {
+    color: green;
 }
-#tbl {
-    background-color: #eff5ef;
-    font-size: 16px;
-    width: 160px;
-    height: 36px;
-}
-#tbl:hover {
-    cursor: pointer;
-    color: brown;
-    background-color: #d5f8dc;
+.purple {
+    color: purple;
 }
 #intro {
     margin-left: 8px;
@@ -61,52 +57,6 @@ legend {
 }
 #features {
     margin-top: 16px;
-    margin-left: 8px;
-}
-#logins {
-    margin-left: 8px;
-}
-#expOpt {
-    color: DarkGreen;
-    font-size: 18px;
-}
-.brown {
-    color: brown;
-}
-#opts {
-    height: 28px;
-    width: 140px;
-    font-size: 16px;
-    font-style: bold;
-}
-#opts:hover, #enter:hover {
-    cursor: pointer;
-    color: brown;
-    background-color: #d5f8dc;
-}
-.boldtxt {
-    font-weight: bold;
-}
-#regusrs, #regusr, #masters, #master {
-    display: none;
-}
-#mstrbtns {
-    width: 796px;
-}
-#usrbtns {
-    width: 700px;
-}
-div #masters button, div #regusrs button {
-    height: 32px;
-    font-size: 16px;
-    background-color: #eff5ef;
-    margin-left: 6px;
-    margin-right: 6px;
-}
-div #regusrs button:hover, div #masters button:hover {
-    cursor: pointer;
-    color: brown;
-    background-color: #d5f8dc;
 }
 #expect {
     padding-left: 8px;
@@ -117,6 +67,9 @@ div #regusrs button:hover, div #masters button:hover {
 }
 #expl {
     padding-left: 8px;
+}
+#mrkrs {
+    padding-right: 8px;
 }
 .maindisp {
     cursor: pointer;
@@ -152,7 +105,7 @@ div #regusrs button:hover, div #masters button:hover {
 }
 #disclaimers {
     margin-top: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 6px;
 }
 #disasters {
     list-style-type: square;
@@ -164,8 +117,8 @@ div #regusrs button:hover, div #masters button:hover {
     margin-top: 20px;
     margin-left: 8px;
     margin-bottom: 20px;
-    height: 32px;
-    line-height: 1.8em;
+    height: 42px;
+    line-height: 1.1em;
     padding: 10px;
     background-color: #c9d7e8;
     border-style: outset;

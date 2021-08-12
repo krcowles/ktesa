@@ -3,13 +3,26 @@ body {
     font-size: 16px;
     margin: 0px;
 }
+#tools {
+    margin-left: 24px;
+    box-sizing: content-box;
+}
 button {
     margin-bottom: 4px;
     border-width: 1px;
 }
+/* Can't get fieldset to show up using bootstrap!
+fieldset {
+    width: 96%;
+    padding: 2px;
+    margin: 0;
+    border: 2px;
+    border-color: darkgreen;
+} */
 legend { 
     color: darkgreen;
     font-style: italic;
+    text-decoration: underline;
     font-size: 18px;
 }
 #loading {
@@ -26,8 +39,8 @@ legend {
     margin-left: 24px;
 }
 .installdat {
-    height: 18px;
-    font-size: 14px;
+    height: 28px;
+    font-size: 16px;
     width: 180px;
 }
 #sites {
@@ -63,7 +76,7 @@ select {
     font-size: 16px;
 }
 #datepicker, #revlist {
-    height: 18px;
+    height: 28px;
     border-radius: 4px;
     font-size: 14px;
     padding-left: 4px;

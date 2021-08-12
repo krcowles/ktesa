@@ -23,23 +23,25 @@ $show = $list[0];
     <meta name="description" content="Create the USERS Table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <style type='text/css'>
         body { 
             background-color: #eaeaea;
             margin: 0px; }
     </style>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
-    <p id="trail">SHOW Database Tables</p>
-    <p id="page_id" style="display:none">Admin</p>
+<p id="trail">SHOW Database Tables</p>
+<p id="active" style="display:none">Admin</p>
 
-    <div style="margin-left:16px;font-size:18px;">
+<div style="margin-left:16px;font-size:18px;">
     <p>Results from SHOW TABLES:</p>
     <ul>
     <?php for ($i=0; $i<count($show); $i++) : ?>
@@ -48,7 +50,6 @@ $show = $list[0];
     </ul>
     <p>DONE</p>
 </div>
-<script src="../scripts/menus.js"></script>
 
 </body>
 </html>
