@@ -44,7 +44,7 @@ $(function () {
             }
         }
         else if (rtype === 'Text:') {
-            var url = '#url' + i;
+            var url = '#txt' + i;
             $(url).val('');
             $(url).attr('placeholder', 'THIS BOX IGNORED');
             // disable book type entries

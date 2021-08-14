@@ -28,9 +28,10 @@ $(function () {
     $('#line').width(linewidth);
     // globals
     var tabstr;
+    // the subs array holds the 'Apply' buttons for each tab, placed by positionApply()
     var subs = [];
     for (var j = 1; j <= 4; j++) {
-        var btn = '<button id="ap' + j + '" class="subbtn">Apply</button>';
+        var btn = '<input id="ap' + j + '" class="btn btn-dark" type="submit" value="Apply" />';
         var jqbtn = $(btn);
         subs[j] = jqbtn;
     }
@@ -271,9 +272,17 @@ $(function () {
         }
         return retval;
     };
+    // this detects when a sorted item has completed its move (args not currently used)
+    var refreshCapts = function () {
+        forcedReset();
+    };
     // photo reordering:
     if ($("ul.reorder-photos-list").length > 0) { // there may be no pix yet...
-        $("ul.reorder-photos-list").sortable({ tolerance: 'pointer' });
+        $("ul.reorder-photos-list").sortable({
+            tolerance: 'pointer',
+            stop: refreshCapts
+        });
+        $("ul-reorder-photos-list").on("sortstop", refreshCapts);
     }
     /**
      * The remaining script handles several features of the editor:
@@ -312,7 +321,7 @@ $(function () {
     $('#sun').val(exposure);
     // Waypoint icons when present in the gpx file:
     var $gicons = $('[id^="gicn"]');
-    var $gbox = $('[id^="selgicon"]');
+    var $gbox = $('[id^="gselicon"]');
     $gbox.each(function (indx) {
         if ($gicons[indx].innerText == '') {
             $(this).val('googlemini');
@@ -323,7 +332,7 @@ $(function () {
     });
     // Waypoint icons when present in the database
     var $wicons = $('[id^="dicn"]');
-    var $wbox = $('[id^="seldicon"]');
+    var $wbox = $('[id^="dselicon"]');
     $wbox.each(function (indx) {
         if ($wicons[indx].innerText == '') {
             $(this).val('googlemini');
@@ -332,6 +341,7 @@ $(function () {
             $(this).val($wicons[indx].innerText);
         }
     });
+    $('#wpteds textarea').addClass('wpticonshift');
     /**
      * Cluster operation
      */

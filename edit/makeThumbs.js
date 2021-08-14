@@ -29,6 +29,24 @@ var yCropOrg;
 var ctx; // canvas context
 var indxNo = $('#hikeNo').text();
 var posted = false;
+// the reset button div when a preview image is loaded
+var html = '<span id="cprestart"><div id="bxresbtn"><button id="reset" type="button" ';
+html += 'class="btn btn-danger">Reset Image</button>';
+html += '</div><div><span>Clear this image to reset the options;<br />';
+html += 'Or when ready, click "Apply"</span></div></span>';
+function locateResetDiv(box, height) {
+    var divht = $('#cprestart').height();
+    var topoffset = 20; // to be updated below
+    if (box === 'sized') {
+        topoffset = (height - divht) / 2;
+    }
+    else {
+        topoffset = (height - divht) / 2;
+    }
+    $('#cprestart').css({
+        top: topoffset
+    });
+}
 /**
  * The following code needs to be re-invoked after clearing the 'boxes' div
  * in order for dragNdrop or file select to continue to work. Hence it was
@@ -129,10 +147,8 @@ function loadPreview(img) {
         image.src = event.result;
         image.height = sboxht;
         // remove Crop Box and replace with Restart button and text
-        var html = '<div id="cprestart"><div><button id="reset">Reset Image</button>';
-        html += '</div><div><span>Clear this image to reset the options;<br />';
-        html += 'Or when ready, click "Apply"</span></div></div>';
         $('#repl').replaceWith(html);
+        locateResetDiv('sized', sboxht);
         $('#uccrop').text("0");
         $('#ucprev').text("1");
     };
@@ -178,10 +194,8 @@ function loadImage(img) {
                 var child = document.getElementById('repl');
                 parent.replaceChild(outputImage, child);
                 // remove Pre-size box and replace with Restart button and text
-                var html = '<div id="cprestart"><div><button id="reset">Reset Image</button>';
-                html += '</div><div><span>Clear this image and reset for loading;<br />';
-                html += 'Or when ready, click "Apply"</span></div></div>';
                 $('#presize').replaceWith(html);
+                locateResetDiv('upld', height);
                 $('#uccrop').text("1");
                 $('#ucprev').text("0");
                 /**
@@ -241,6 +255,9 @@ function moveCropper(ctx, x, y) {
     // assign crop values for 'Apply'
     xCropOrg = x;
     yCropOrg = y;
+}
+if ($('#redo_thumb').length) {
+    $('#ifnothmb').hide();
 }
 /**
  * If the user wishes to delete the saved preview and start over, he/she may

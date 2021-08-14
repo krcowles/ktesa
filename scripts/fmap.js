@@ -1,12 +1,13 @@
+"use strict";
 /// <reference path='./map.d.ts' />
-//declare function positionFavToolTip(): void;
+// Overload & redeclare block warnings do not show up during compile
 /**
  * @fileoverview Set up a full page map showing the Favorites selected
  * by the user
  *
  * @author Ken Cowles
  * @version  2.0 Typescripted, some type errors corrected
- * @version  3.0 Reworked for bootstrap
+ * @version  3.0 Updated for compatibility with side table that shows previews
  */
 var map;
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00'];
@@ -71,7 +72,7 @@ var mapdone = $.Deferred();
  * @return {null}
  */
 function initMap() {
-    google.maps.Marker.prototype.clicked = false; // used in sideTables.js
+    google.maps.Marker.prototype.clicked = false; // used in favSideTable.ts
     var clustererMarkerSet = [];
     var nmCtr = { lat: 34.450, lng: -106.042 };
     map = new google.maps.Map($map.get(0), {
@@ -137,9 +138,20 @@ function initMap() {
         });
         marker.addListener('click', function () {
             map.setCenter(hikeobj.loc);
-            map.setZoom(13);
+            var curr = map.getZoom();
+            if (curr <= 12) {
+                map.setZoom(13);
+            }
             iw.open(map, this);
             marker.clicked = true;
+        });
+        // IdTableElements must be invoked in order to create side table:
+        var idle = google.maps.event.addListener(map, 'idle', function () {
+            var perim = String(map.getBounds());
+            IdTableElements(perim, true);
+        });
+        map.addListener('bounds_changed', function () {
+            google.maps.event.trigger(map, 'resize');
         });
         return;
     }
@@ -167,20 +179,6 @@ NM.forEach(function (hobj, indx) {
 // ////////////////////////////  DRAW HIKING TRACKS  //////////////////////////
 var trackFile; // name of the JSON file to be read in
 var geoOptions = { enableHighAccuracy: true };
-/**
- * This function will turn on tracks after tracks have been drawn;
- *
- * @return {null}
- */
-/*
-const enableTracks = () => {
-    for (var m=0; m<tracks.length; m++) {
-        trkKeyStr = 'trk' + m;
-        trkObj[trkKeyStr].setMap(map);
-    }
-    return;
-}
-*/
 // deferred wait for map to get initialized
 $.when(mapdone).then(drawTracks).then(function () {
     $fullScreenDiv = $map.children('div:first');
@@ -307,7 +305,7 @@ function setupLoc() {
     }
 }
 // //////////////////////  MAP FULL SCREEN DETECT  //////////////////////
-$(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function () {
+$(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function () {
     var thisMapDoc = document;
     var isFullScreen = thisMapDoc.fullScreen ||
         thisMapDoc.mozFullScreen ||
@@ -332,6 +330,8 @@ $(window).on('resize', function () {
     $map.css('width', mapWidth + 'px');
     $('#sideTable').css('width', tblWidth + 'px');
     locateGeoSym();
-    //positionFavToolTip();
+    $('.like').each(function () {
+        // apparently don't need positionFavToolTip for fav page
+    });
 });
 // //////////////////////////////////////////////////////////////

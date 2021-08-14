@@ -27,6 +27,18 @@ switch(activeItem) {
     case "Admin":
         $('#adminpg').addClass('active');
         break;
+    case "Create":
+        $('#createpg').addClass('active');
+        break;
+    case "Edit":
+        $('#conteditpg').addClass('active');
+        break;
+    case "EditPub":
+        $('#editpubpg').addClass('active');
+        break;
+    case "PubReq":
+        $('#pubreqpg').addClass('active');
+        break;
 }
 // establish the page title in the logo 'ctr' div
 var pgtitle = $('#trail').detach();

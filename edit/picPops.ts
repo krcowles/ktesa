@@ -83,11 +83,12 @@ function executeCaptions() {
             captureWidths();
             // get caption locations
             calcPos();
-    }  // end of session storage IF
+    }
     // function to capture *current* image widths & map link loc
+    // NOTE: this.style.width yielded '' for the first el, so using this.clientWidth
     function captureWidths() {
         $photos.each( function(i) {
-            capWidth[i] = this.style.width + 'px';
+            capWidth[i] = this.clientWidth + 'px';
             pwidth = 'pwidth'+ i;
             if (sessSupport) {
                     sessionStorage.setItem(pwidth,capWidth[i]);

@@ -2,6 +2,7 @@ declare var newgrps: UnpubClus[];
 declare var tinymce: {
     init: (parms: settings) => void;
 }
+declare function forcedReset(): void;
 interface settings {
     selector: string;
     plugins: string;
@@ -56,9 +57,10 @@ var linewidth = <number>$('#main').width() - listwidth;
 $('#line').width(linewidth);
 // globals
 var tabstr: string;
+// the subs array holds the 'Apply' buttons for each tab, placed by positionApply()
 var subs: JQuery<HTMLElement>[] = [];
 for (let j=1; j<=4; j++) {
-    let btn = '<button id="ap' + j + '" class="subbtn">Apply</button>';
+    let btn = '<input id="ap' + j + '" class="btn btn-dark" type="submit" value="Apply" />';
     let jqbtn = $(btn);
     subs[j] =jqbtn;
 }
@@ -298,9 +300,17 @@ window.onkeydown = function(event: KeyboardEvent) {
     }
     return retval;
 }
+// this detects when a sorted item has completed its move (args not currently used)
+const refreshCapts = () => {
+    forcedReset();
+};
 // photo reordering:
 if ($("ul.reorder-photos-list").length > 0) {  // there may be no pix yet...
-    $("ul.reorder-photos-list").sortable({ tolerance: 'pointer' });
+    $("ul.reorder-photos-list").sortable({
+        tolerance: 'pointer',
+        stop: refreshCapts
+    });
+    $("ul-reorder-photos-list").on("sortstop", refreshCapts);
 }
 
 /**
@@ -338,9 +348,10 @@ $('#diff').val(diffic);
 // Exposure:
 var exposure = $('#expo').text();
 $('#sun').val(exposure);
+
 // Waypoint icons when present in the gpx file:
 var $gicons = $('[id^="gicn"]');
-var $gbox   = $('[id^="selgicon"]');
+var $gbox   = $('[id^="gselicon"]');
 $gbox.each(function(indx) {
     if ($gicons[indx].innerText == '') {
         $(this).val('googlemini');
@@ -350,7 +361,7 @@ $gbox.each(function(indx) {
 });
 // Waypoint icons when present in the database
 var $wicons = $('[id^="dicn"]');
-var $wbox   = $('[id^="seldicon"]');
+var $wbox   = $('[id^="dselicon"]');
 $wbox.each(function(indx) {
     if ($wicons[indx].innerText == '') {
         $(this).val('googlemini');
@@ -358,6 +369,7 @@ $wbox.each(function(indx) {
         $(this).val($wicons[indx].innerText);
     }
 });
+$('#wpteds textarea').addClass('wpticonshift');
 
 /**
  * Cluster operation

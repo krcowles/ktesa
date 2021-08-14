@@ -101,23 +101,24 @@ if ($picq->rowCount() === 0) {
         $wrapper .= '<a href="javascript:void(0);" class="image_link" ' .
             'style="float:none;">';
         // the div is the container for the gallery of re-orderable elements
-        $wrapper .= '<div style="margin-right:12px;width:' . $phWds[$i] . 'px;">';
+        $wrapper .= '<div style="margin-right:12px;width:' . $phWds[$i] . 'px;' .
+            'box-sizing:content-box;">';
         // 'add to page' checkbox
         $pgbox = '<input class="hpguse" type="checkbox" name="pix[]" value="' .
             $tsvId[$i];
         if ($hpg[$i] === 'Y') {
-            $pgbox .= '" checked />Page&nbsp;&nbsp;';
+            $pgbox .= '" checked />&nbsp;Page&nbsp;&nbsp;';
         } else {
-            $pgbox .= '" />Page&nbsp;&nbsp;';
+            $pgbox .= '" />&nbsp;Page&nbsp;&nbsp;';
         }
         // 'add to map' checkbox - don't allow mapping for pix w/no lat/lng:
         if ($pMap[$i]) {
-            $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" ' .
+            $mpbox = '<span><input class="mpguse" type="checkbox" name="mapit[]" ' .
                 'value="' . $tsvId[$i];
             if ($mpg[$i] === 'Y') {
-                $mpbox .= '" checked />Map<br />' . PHP_EOL;
+                $mpbox .= '" checked />&nbsp;Map</span><br />' . PHP_EOL;
             } else {
-                $mpbox .= '" />Map<br />' . PHP_EOL;
+                $mpbox .= '" />&nbsp;Map</span><br />' . PHP_EOL;
             }
         } else {
             $mpbox = '<span class="nomap"><input class="mpguse" type="checkbox" '
@@ -127,7 +128,7 @@ if ($picq->rowCount() === 0) {
         }
         // 'delete photo' checkbox
         $delbox = '<input class="delp" type="checkbox" name="rem[]" value="' .
-            $tsvId[$i] . '" />Delete<br />';
+            $tsvId[$i] . '" />&nbsp;Delete<br />';
         // photo
         $photo = '<img class="allPhotos" height="200px" width="' . 
             $phWds[$i] . 'px" src="' . $picpath . $phPics[$i] . "_z.jpg" .

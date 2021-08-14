@@ -1,4 +1,4 @@
 AuthType Basic
 AuthName "NM Hikes Admin Area"
-AuthUserFile "/Users/kencowles/src/passwd"
+AuthUserFile "/home/nmhikesc/.htpasswds/public_html/admin/passwd"
 require valid-user

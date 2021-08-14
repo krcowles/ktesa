@@ -54,18 +54,18 @@ $policy = "../accounts/PrivacyPolicy.pdf";
                     Contribute
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item"
+                        <li><a id="createpg" class="dropdown-item"
                             href="../edit/startNewPg.php">Create New Page</a>
                         </li>
-                        <li><a class="dropdown-item"
+                        <li><a id="conteditpg" class="dropdown-item"
                             href="../edit/hikeEditor.php?age=new&show=all">
                             Continue Editing Your Page</a>
                         </li>
-                        <li><a class="dropdown-item"
+                        <li><a id="editpubpg" class="dropdown-item"
                             href="../edit/hikeEditor.php?age=old">
                             Edit a Published Page</a>
                         </li>
-                        <li><a class="dropdown-item"
+                        <li><a id="pubreqpg" class="dropdown-item"
                             href="../edit/hikeEditor.php?age=new&pub=usr">
                             Submit for Publication</a>
                         </li>

@@ -45,7 +45,7 @@ for (var i=0; i<refCnt; i++) {
             box.options[u].disabled = true;
         }
     } else if (rtype === 'Text:') {
-        let url = '#url' + i;
+        let url = '#txt' + i;
         $(url).val('');
         $(url).attr('placeholder','THIS BOX IGNORED');
         // disable book type entries

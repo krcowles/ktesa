@@ -66,7 +66,9 @@ for ($j=0; $j<$newcnt; $j++) {
         }
     }
     if ($addit && !empty($drit1s[$j])) {
-        if ($drtypes[$j] !== 'Book:' && $drtypes[$j] !== 'Photo Essay:') {
+        if ($drtypes[$j] !== 'Book:' && $drtypes[$j] !== 'Photo Essay:'
+            && $drtypes[$j] !== 'Text:'
+        ) {
             $rit1 = filter_var($drit1s[$j], FILTER_VALIDATE_URL);
             if (empty($rit1) || $rit1 === false) {
                 $rit1 = " --- INVALID URL DETECTED ---";
@@ -106,10 +108,14 @@ for ($s=0; $s<count($usebooks); $s++) {
     } elseif ($usebooks[$s] === 'no' && $useothrs[$s] === 'yes') {
         if ($_POST[$o1id] !== '') {  // This is the url
             array_push($addtypes, $newtypes[$s]);
-            $url = filter_var($_POST[$o1id], FILTER_VALIDATE_URL);
-            if ($url === false) {
-                $_SESSION['riturl'] = "The URL you entered is not valid";
-                $url = " --- INVALID URL DETECTED ---";
+            if (strpos($newtypes[$s], 'Text') !== false) {
+                $url = $_POST[$o1id];
+            } else {
+                $url = filter_var($_POST[$o1id], FILTER_VALIDATE_URL);
+                if ($url === false) {
+                    $_SESSION['riturl'] = "The URL you entered is not valid";
+                    $url = " --- INVALID URL DETECTED ---";
+                }
             }
             array_push($addrit1s, $url);
             $ctxt = filter_var($_POST[$o2id]);

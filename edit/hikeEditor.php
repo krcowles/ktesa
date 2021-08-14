@@ -12,11 +12,6 @@
  */
 session_start();
 require "../php/global_boot.php";
-/*
-if (!isset($_SESSION['userid'])) {
-    die("No got");
-}
-*/
 $userid = $_SESSION['userid'];
 
 $age = filter_input(INPUT_GET, 'age');
@@ -54,19 +49,19 @@ $jsInEdit = json_encode($nowInEdit);
             content="Select hike to edit from table" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="tables.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
-
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Select A Hike To <?=$navbar;?></p>
-
-<p id="page_id" style="display:none"><?=$pageType;?></p>
+<p id="active" style="display:none"><?=$pageType;?></p>
 
 <div>
     <?php if ($pubreq) : ?>
@@ -96,7 +91,6 @@ $jsInEdit = json_encode($nowInEdit);
     var age = "<?=$age;?>";
     var inEdits = <?=$jsInEdit;?>;
 </script>
-<script src="../scripts/menus.js"></script>
 <script src="../scripts/columnSort.js"></script>
 <script src="hikeEditor.js"></script>
 

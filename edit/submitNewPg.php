@@ -1,17 +1,16 @@
 <?php
 /**
- * This script establishes a new hike in EHIKES with only the data
- * entered in the form on startNewPg.php. The user is then 
- * redirected to the editor (editDB.php). If a cluster group was selected,
- * that selection is saved in the `cname` field of EHIKES. If a new cluster
- * group was specified, that is (also) saved in `cname`, and the new group is
- * entered into the CLUSTERS table. In either case, since the hike is
- * associated with the cluster (old or new), it is entered into the CLUSHIKES
- * table.
+ * This script establishes a new hike in EHIKES with only the data entered on
+ * the form on 'startNewPg.php'. (New Cluster Pages utilize the script:
+ * 'saveClusterPage.php'). The user is then redirected to the editor
+ * ('editDB.php'). If an existing cluster group was selected, that selection is
+ * saved in the `cname` field of EHIKES. If a new cluster group was specified, that
+ * is (also) saved in `cname`, and the new group is entered into the CLUSTERS table.
+ * In either case, since the hike is associated with the cluster (old or new),
+ * it is entered into the CLUSHIKES table (but detectable as an in-edit hike).
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -21,12 +20,13 @@ verifyAccess('post');
 
 $userid     = $_SESSION['userid'];
 $pgTitle    = filter_input(INPUT_POST, 'hikename');
-$type       = filter_input(INPUT_POST, 'type');
-$cluster    = filter_input(INPUT_POST, 'clusters');
-$newgroup   = filter_input(INPUT_POST, 'newgroup');
+$type       = filter_input(INPUT_POST, 'type'); // normal or cluster hike
+$cluster    = filter_input(INPUT_POST, 'clusters'); // if existing cluster group
+$newgroup   = filter_input(INPUT_POST, 'newgroup'); // if newly specified group
 
-// new group takes priority
+// new group takes priority: $cluster will always have data from the select box
 $cname = !empty($newgroup) ? $newgroup : $cluster;
+// if this is not a cluster hike, $cname should be an empty string...
 $cname = $type === 'Cluster' ? $cname : '';
 // make sure newgroup didn't just get posted...
 if ($type === 'Cluster' && $cname == $newgroup) { 

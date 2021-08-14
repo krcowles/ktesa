@@ -9,16 +9,17 @@ select:focus, input:focus, textarea:focus {
 }
 
 /* Pre-populated reference elements */
+/* books  & 'delete' checkboxes */
 select[id^=sel] {
     height: 30px;
     width: 164px;
 }
 select[id^=bkname] {
-    height: 32px;
+    height: 30px;
     width: 386px;
 }
 input[id^=auth] {
-    height: 26px;
+    height: 30px;
     width: 280px;
     position: relative;
     top: -1px;
@@ -35,13 +36,20 @@ input[type=checkbox] {
     padding: 10px;
     z-index: 1;
 }
+/* deletions for pre-populated elements */
+.upbox {
+    position: relative;
+    top: -8px;
+    margin-bottom: 6px;
+}
+/* url boxes */
 input[id^=url] {
-    height: 26px;
-    width: 376px;
+    height: 30px;
+    width: 386px;
     padding-left: 5px;
 }
 input[id^=txt] {
-    height: 26px;
+    height: 30px;
     width: 280px;
     padding-left: 5px;
     margin-bottom: 6px;
@@ -53,11 +61,11 @@ select[id^=href] {
     width: 164px;
 }
 select[id^=bkttl] {
-    height: 32px;
+    height: 30px;
     width: 386px;
 }
 input[id^=bkauth] {
-    height: 26px;
+    height: 30px;
     width: 280px;
     position: relative;
     top: -1px;
@@ -65,12 +73,12 @@ input[id^=bkauth] {
     padding-left: 5px;
 }
 input[id^=nr1] {
-    height: 28px;
+    height: 30px;
     width: 380px;
     padding-left: 5px;
 }
 input[id^=nr2] {
-    height: 28px;
+    height: 30px;
     width: 282px;
     margin-bottom: 6px;
     padding-left: 5px;
@@ -78,11 +86,4 @@ input[id^=nr2] {
 span[id^=nbk] {
     display: none;
     position: relative;
-}
-
-/* DELTETE?? pre-populated elements */
-.upbox {
-    position: relative;
-    top: -8px;
-    margin-bottom: 6px;
 }

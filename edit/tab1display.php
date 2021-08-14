@@ -20,7 +20,7 @@
 <p id="ua1" class="user_alert" style="display:none;"><?=$user_alert;?></p>
 
 <!-- File upload for all gpx files to be displayed on hike page map -->
-<h3 class="up">File Upload for Hike Page Map and Track: (.gpx file)</h3>
+<h4 class="up">File Upload for Hike Page Map and Track: (.gpx file)</h4>
 <p><span class="brown" style="font-weight:bold;"><em
     style="text-decoration:underline;">Warning:</em></span>
     If you delete the main gpx file, published hikes may be affected; you may
@@ -58,25 +58,29 @@
 </ul>
 
 <!-- Begin basic data presentation -->
-<h3>Data Related to This Hike:</h3>
+<h4>Data Related to This Hike:</h4>
+
 <label for="hike">Hike Name: <span class="brown">[30 Characters Max]</span></label>
-<textarea id="hike" name="pgTitle"
-        maxlength="30"><?= $pgTitle;?></textarea>&nbsp;&nbsp;
-    <p style="display:none;" id="locality"><?= $locale;?></p>
-    <?php require "localeBox.html"; ?>&nbsp;&nbsp;
-        [ Add a location<input id="addaloc" name="addaloc" type="checkbox" /> ]<br />
-        <div id="newloc">General Area:&nbsp;&nbsp;
-            <select id="locregion" name="locregion">
-                <option value="North/Northeast">North/Northeast</option>
-                <option value="Northwest">Northwest</option>
-                <option value="Central NM">Cetnral NM</option>
-                <option value="West">West</option>
-                <option value="South Central">South Central</option>
-                <option value="Southwest">Southwest</option>
-            </select>&nbsp;&nbsp;New Location: <input id="userloc" type="text"
-                name="userloc" />
-        </div>
-    <br />
+<textarea id="hike" class="ctrshift" name="pgTitle"
+        maxlength="30"><?=$pgTitle;?></textarea>&nbsp;&nbsp;
+
+<p style="display:none;" id="locality"><?= $locale;?></p>
+<?php require "localeBox.html"; ?>&nbsp;&nbsp;
+[ Add a location&nbsp;&nbsp;<input id="addaloc" name="addaloc"
+    type="checkbox" />&nbsp;&nbsp;]<br />
+<div id="newloc"><br />General Area:&nbsp;&nbsp;
+    <select id="locregion" name="locregion">
+        <option value="North/Northeast">North/Northeast</option>
+        <option value="Northwest">Northwest</option>
+        <option value="Central NM">Cetnral NM</option>
+        <option value="West">West</option>
+        <option value="South Central">South Central</option>
+        <option value="Southwest">Southwest</option>
+    </select>&nbsp;&nbsp;New Location: <input id="userloc" type="text"
+        name="userloc" />
+    <hr />
+</div>
+<br />
 
 <label for="type">Hike Type: </label>
 <select id="type" name="logistics">
@@ -84,6 +88,7 @@
     <option value="Two-Cars">Two-Cars</option>
     <option value="Out-and-back">Out-and-back</option>
 </select>&nbsp;&nbsp;&nbsp;&nbsp;
+
 <p id="dif" style="display:none"><?= $diff;?></p>
 <label for="diff">Level of difficulty: </label>
 <select id="diff" name="diff">
@@ -100,36 +105,41 @@
     <span class="brown">[Number less than 50, and a max of two
         decimal places]&nbsp;</span>
 </label>
-<textarea id="miles" name="miles"><?=$miles;?></textarea><br />
+<textarea id="miles" class="ctrshift" name="miles"><?=$miles;?></textarea><br />
 <input type="hidden" name="usrmiles" value="NO" />
 
 <label for="elev">Elevation change in feet:
     <span class="brown">[Integer value up to four digits]&nbsp;</span>
 </label>
-<textarea id="elev" name="feet" maxlength="30"><?=$feet;?></textarea><br /><br />
+<textarea id="elev" class="ctrshift" name="feet" 
+    maxlength="30"><?=$feet;?></textarea><br /><br />
 <input type="hidden" name="usrfeet" value="NO" />
 
 <label for="fac">Facilities at the trailhead:
     <span class="brown">[30 Characters Max]</span>
 </label>
-<textarea id="fac" name="fac" maxlength="30"><?=$fac;?></textarea><br /><br />
+<textarea id="fac" class="ctrshift" name="fac"
+    maxlength="30"><?=$fac;?></textarea><br /><br />
 
 <label for="wow">"Wow" Appeal:
     <span class="brown">[50 Characters Max]</span>
 </label>
-<textarea id="wow" name="wow" maxlength="50"><?=$wow;?></textarea><br /><br />
+<textarea id="wow" class="ctrshift" name="wow"
+    maxlength="50"><?=$wow;?></textarea><br /><br />
 
 <label for="seas">Best Hiking Seasons:
     <span class="brown">[12 Characters Max]</span>
 </label>
-<textarea id="seas" name="seasons" maxlength="12"><?=$seasons;?></textarea>
+<textarea id="seas" class="ctrshift" name="seasons"
+    maxlength="12"><?=$seasons;?></textarea>
+
 &nbsp;&nbsp;&nbsp;&nbsp;<p id="expo" style="display:none"><?=$expo;?></p>
 <label for="sun">Exposure: </label>
 <select id="sun" name="expo">
     <option value="Full sun">Full sun</option>
     <option value="Mixed sun/shade">Mixed sun/shade</option>
     <option value="Good shade">Good shade</option>
-</select>&nbsp;&nbsp;
+</select><br /><br />
 
 <p>Trailhead Latitude/Longitude is set by the uploaded GPX file.
     If you wish to manually enter/edit these, click here: (again to hide) 
@@ -140,28 +150,29 @@
 <label for="lon">Longitude </label>
 <textarea id="lon" name="lng"><?=$lng;?></textarea></p>
 
-<br /><label for="murl">Map Directions Link (Url):
+<label id="dirlbl" for="murl">Map Directions Link (Url):
     <span class="brown">[1024 Characters Max]</span>
 </label>
 <textarea id="murl" name="dirs" maxlength="1024"><?=$dirs;?></textarea>
 
-<h3 style="margin-bottom:12px;">Cluster Hike Assignments:
-    (Hikes with overlapping trailheads or in close proximity)</h3>
-<label for="clusters">Current Cluster: </label><?=$clusters;?>&nbsp;&nbsp;
+<hr />
+<h4 style="margin-bottom:12px;">Cluster Hike Assignments:
+    (Hikes with overlapping trailheads or in close proximity)</h4>
+<label for="clusters">Current Cluster:&nbsp;&nbsp;</label><?=$clusters;?>&nbsp;&nbsp;
 <p id="showdel" style="display:none;">Remove the cluster
     assignment by checking here:&nbsp;
     <input id="deassign" type="checkbox" name="rmClus" value="NO" /></p>
 <span id="notclus" style="display:none;">There is no currently
         assigned cluster for this hike.</span>
-<br /><br />
 
 <div id="newcoords">
     This cluster group is not yet published; Please enter/verify the following:
     <br />
     <div id="cluscoords">
         Cluster's (NOT Hike's) latitude:
-        <textarea id="cluslat" class="tstyle4" name="cluslat"></textarea>&nbsp;&nbsp;
-        Longitude: <textarea id="cluslng" class="tstyle4" name="cluslng"></textarea>
+        <textarea id="cluslat" class="tstyle4 ctrshift" name="cluslat"></textarea>
+        &nbsp;&nbsp;Longitude:
+        <textarea id="cluslng" class="tstyle4 ctrshift" name="cluslng"></textarea>
     </div>
 </div><br />
 

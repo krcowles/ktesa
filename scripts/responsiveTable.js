@@ -124,8 +124,8 @@ $(function () {
         for (var j = 0; j < rows.length; j++) {
             var lat = $(rows[j]).data('lat');
             var lng = $(rows[j]).data('lon');
-            var distance = radialDist(lat, lng, geo.lat, geo.lng, 'M');
-            if (distance <= radius) {
+            var distance_1 = radialDist(lat, lng, geo.lat, geo.lng, 'M');
+            if (distance_1 <= radius) {
                 nearby.push(rows[j]);
             }
         }

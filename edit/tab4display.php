@@ -47,11 +47,11 @@ and/or maps</p>
 </ul>
 <!-- Pre-populated GPS Data -->
 <?php for ($n=0; $n<$gpsDbCnt; $n++) : ?>
-    Specify click-text here: <textarea class="tstyle2"
+    Specify click-text here: <textarea class="tstyle2 ctrshift"
         name="clickText[]"><?= $clickText[$n];?></textarea>
     <input type="hidden" name="datId[]" value="<?= $datId[$n];?>" />
     &nbsp;&nbsp;
-    <label>Delete Reference ? </label>
+    <label>Delete Reference ? </label>&nbsp;&nbsp;
     <input style="height:18px;width:18px;" type="checkbox"
         name="delgps[]" value="<?= $datId[$n];?>" />
     &nbsp;&nbsp;For File: <span 

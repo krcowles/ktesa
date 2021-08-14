@@ -6,7 +6,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
@@ -33,30 +32,35 @@ $info   = !empty($pgdata['info']) ?   $pgdata['info'] : '';
 <head>
     <title>Cluster Page Editor</title>
     <meta charset="utf-8" />
-    <meta name="description" content="Edit the selected hike" />
-    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="description" content="Edit the created/selected cluster page" />
+    <meta name="author" content="Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="editClusterPage.css" type="text/css" rel="stylesheet" />
     <link href="refs.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Cluster Page Editor</p>
+<p id="active" style="display:none;">Edit</p>
 
 <div id="main">
     <p id="locale" style="display:none;"><?=$area;?></p>
     <form id="form" action="saveClusterPage.php" method="post">
         <input type="hidden" name="indxNo" value="<?=$indxNo;?>" />
         <input type="hidden" name="clustergroup" value="<?=$page;?>" />
-        <h3 id="hdr">Enter the data required to create a new page for
-            the "<?=$page;?>"</h3>
+        <h4 id="hdr">Enter the data required to create a new page for
+            the "<?=$page;?>"</h4>
         <div id="buttons">
-            <button id="preview">Preview</button>
-            <button id="submit">Apply</button>
+            <button id="preview" type="button" class="btn btn-secondary">
+                Preview</button>
+            <button id="submit" type="button" class="btn btn-secondary">
+                Apply</button>
         </div>
         <span id="locale">Enter a representative locale for this group&nbsp;&nbsp;
             <?php require "localeBox.html"; ?><br /><br />
@@ -71,10 +75,10 @@ $info   = !empty($pgdata['info']) ?   $pgdata['info'] : '';
         <div><textarea id="dirs" class="ta" name="dirs"
             placeholder="Google directions link" rows="4"><?=$dirs;?></textarea>
         </div><br />
-        <h3 class="up">Area Reference Sources: (NOTE: Book type cannot be 
-            changed - if needed, delete and add a new one)</h3>
-        <h4>When all references are used, click on 'Apply' to generate 
-            more choices</h4>
+        <h4 class="up">Area Reference Sources: (NOTE: Book type cannot be 
+            changed - if needed, delete and add a new one)</h4>
+        <h5>When all references are used, click on 'Apply' to generate 
+            more choices</h5>
         <?php 
             $hikeIndexNo = $indxNo;
             require "getRefs.php";
@@ -82,7 +86,6 @@ $info   = !empty($pgdata['info']) ?   $pgdata['info'] : '';
     </form><br /><br />
 </div>
 
-<script src="../scripts/menus.js"></script>
 <script type="text/javascript">
     var titles  = <?=$jsonBooks;?>;
     var authors = <?=$jsonAuths;?>;

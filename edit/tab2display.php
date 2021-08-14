@@ -12,18 +12,20 @@
 ?>
 <!-- Photo entry and management section -->
 <style type="text/css">
-    .gallery { height: 100px; width: 100%; }
+    .gallery { height: 100px; width: 100%; box-sizing: content-box; }
     .gallery ul {margin: 0; padding: 0; list-style-type: none; }
     .gallery ul li { padding: 7px; border: 2px solid #ccc; float: left;
         margin: 10px 7px; background: none; width: auto; height: auto; }
     .image_link:link { color: black; text-decoration: none;}
 </style>
-<span><strong>Manage Your Photos Below</strong><a class="like-button"
-    href="#wloc">Manage Waypoints</a></span>
+<span><strong>Manage Your Photos Below, or&nbsp;&nbsp;</strong>
+    <a class="btn btn-secondary" href="#wloc" role="button">Manage Waypoints</a>
+</span>
 <hr />
 <p id="ehno" style="display:none;"><?= $hikeNo;?></p>
 
 <form id="f2" class="box" action="saveTab2.php" method="POST">
+
 <div id="pupld"> <!-- a div around photos for DnD -->
     <span id="userupld">Add Photos using drag-and-drop onto the page,
         or select:</span>
@@ -48,17 +50,16 @@
     <style type="text/css">
         .capLine { margin: 0px; font-weight: bold; background-color: #dadada; }
     </style>
-    <h4>Please check the boxes corresponding to the pictures you wish to
+    <h5>Please check the boxes corresponding to the pictures you wish to
             include on the hike page, and those you wish to include on the geomap.
-        </h4><br />
-    <div style="position:relative;top:-14px;margin-left:16px;">
+        </h5><br />
+    <div id="picchks">
         <input id="all" type="checkbox" name="allPix" value="useAll" />&nbsp;
             Use All Photos on Hike Page<br />
         <input id="mall" type="checkbox" name="allMap" value="mapAll" />&nbsp;
             Use All Photos on Map
     </div>
-
-    <div style="margin-left:16px;clear:none;overflow:auto;">
+    <div id="picbox">
         <div class="gallery">
             <ul class="reorder-ul reorder-photos-list">
             <?= $html;?>
@@ -68,20 +69,21 @@
 <?php else : ?>
     <p id="nophotos">There are no photos to edit<p>
 <?php endif; ?>
-</div>
+</div> <!-- end pupld -->
 
 <hr />
 <!-- add or display thumb/preview image -->
 <div id="thumbpic">
     <input id="uccrop" type="hidden" name="uccrop" value="0" />
     <input id="ucprev" type="hidden" name="ucprev" value="0" />
-    <h4>Use this space to upload a representative photo for use as a thumbnail
-    in the side table of hikes. There are two options:</h4>
+    <h4 id="ifnothmb">Use this space to upload a representative photo for use
+        as a thumbnail in the side table of hikes. There are two options:</h4>
     <?php if (!empty($preview_name)) : ?>
         <div id="thmb_saved">
             <p style="color:brown;font-size:18px;">You have already saved the
                 following preview for this hike.<br /><br />
-                You may <button id="redo_thumb">Delete
+                You may <button id="redo_thumb" type="button" 
+                    class="btn btn-danger">Delete
                 Preview</button> and start over if you wish.
             </p>
             <img id="current_preview" src="<?=$prevImg;?>" width="300"
@@ -92,7 +94,7 @@
             <li>
                 <label for="selthmb" class="file_label">Select Photo</label>
                 &nbsp;&nbsp;<input id="selthmb" class="file_input" type="file" />
-                Select a photo (or drop into 'Crop Box'). Once loaded, You can move
+                Select a photo (or drop into 'Crop Box'). Then move
                 the cropping rectangle to select the best portion of the photo by
                 grabbing the upper-left corner of the box.
             </li>
@@ -119,17 +121,18 @@
 
 <!-- waypoint section -->
 <hr id="wloc" />
-<?= $wptedits;?>
+<div id="wpteds">
+    <?= $wptedits;?>
+</div>
 
 </form>
 
 <script type="text/javascript">
-    var phTitles = <?=$jsTitles;?>;
-    var phDescs = <?=$jsDescs;?>;
-    var phMaps = <?=$jsMaps;?>;
+    var edit_mode = true;
+    var phMaps = <?=$jsMaps;?>; // cases where there is no lat/lng data
 </script>
+<script src="../scripts/popupCaptions.js"><script>
 <script src="photoSelect.js"></script>
-<script src="picPops.js"></script>
 <script src="makeThumbs.js"></script>
 
 <div class="popupCap"></div>

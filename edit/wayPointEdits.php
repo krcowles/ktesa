@@ -2,11 +2,10 @@
 /**
  * This file constructs the html for editing waypoints based on 
  * which, if any, waypoints may exist either in the gpx file or in 
- * the database
+ * the database. 
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -77,7 +76,7 @@ $icons = <<<WPTICONS
 WPTICONS;
 
 // Three possible states:
-// 1.
+// 1. No waypoints exist yet
 if ($gpxWptCount === 0 && $wayPointCount === 0) { 
     $wptedits .= $noPrevious . PHP_EOL;
     $wptedits .= $wptDescriptions . PHP_EOL;
@@ -87,7 +86,7 @@ if ($gpxWptCount === 0 && $wayPointCount === 0) {
         $wptedits .= '<textarea class="tstyle2" name="ndes[]"></textarea>' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
-        $wptedits .= '<select name="nsym[]">' . PHP_EOL;
+        $wptedits .= '<select class="wpticons" name="nsym[]">' . PHP_EOL;
         $wptedits .= $icons . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
         $wptedits .= '<textarea class="tstyle4 coords" name="nlat[]"></textarea>'
@@ -97,7 +96,7 @@ if ($gpxWptCount === 0 && $wayPointCount === 0) {
     }
     $wptedits .= '</div>' . PHP_EOL;
 }
-// 2.
+// 2. Some waypoints are present in the gpx file
 if ($gpxWptCount > 0) {
     $wptedits .= $gpxWpts . PHP_EOL;
     $wptedits .= $wptDescriptions . PHP_EOL;
@@ -112,9 +111,10 @@ if ($gpxWptCount > 0) {
             . $gpxWptDes[$m] . '</textarea>' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL;
-        $wptedits .= '<select id="selgicon' . $m . '" name="gsym[]">' . PHP_EOL;
+        $wptedits .= '<select id="gselicon' . $m . '" name="gsym[]" ' . 
+            'class="wpticons">' . PHP_EOL;
         $wptedits .= $icons . PHP_EOL;
-        $wptedits .= '&nbsp;&nbsp;Remove this waypoint:'
+        $wptedits .= '&nbsp;&nbsp;Remove this waypoint:&nbsp;&nbsp;'
             . '<input id="gdel' . $m . '" type="checkbox" '
             . 'name="gdel[]" value="g' . $m . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
@@ -135,7 +135,7 @@ if ($gpxWptCount > 0) {
             . 'name="ngdes[]"></textarea>' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
-        $wptedits .= '<select name="ngsym[]">' . PHP_EOL;
+        $wptedits .= '<select class="wpticons" name="ngsym[]">' . PHP_EOL;
         $wptedits .= $icons . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
         $wptedits .= '<textarea class="tstyle4 coords" name="nglat[]"></textarea>'
@@ -144,7 +144,7 @@ if ($gpxWptCount > 0) {
             . '<br /><br />' . PHP_EOL;
     }
 }
-// 3.
+// 3. Some waypoints are present in the database
 if ($wayPointCount > 0) {
     $wptedits .= $dbWpts . PHP_EOL;
     $wptedits .= $wptDescriptions . PHP_EOL;
@@ -159,9 +159,10 @@ if ($wayPointCount > 0) {
             . $wdes[$n] . '</textarea>' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL;
-        $wptedits .= '<select id="seldicon' . $n . '" name="dsym[]">' . PHP_EOL;
+        $wptedits .= '<select id="dselicon' . $n . '" name="dsym[]" ' .
+            'class="wpticons">' . PHP_EOL;
         $wptedits .= $icons . PHP_EOL;
-        $wptedits .= '&nbsp;&nbsp;Remove this waypoint:'
+        $wptedits .= '&nbsp;&nbsp;Remove this waypoint:&nbsp;&nbsp;'
             . '<input id="ddel' . $n . '" type="checkbox" '
             . 'name="ddel[]" value="d' . $n . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
@@ -184,7 +185,7 @@ if ($wayPointCount > 0) {
             . 'name="nddes[]"></textarea>' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
-        $wptedits .= '<select name="ndsym[]">' . PHP_EOL;
+        $wptedits .= '<select name="ndsym[]" class="wpticons">' . PHP_EOL;
         $wptedits .= $icons . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
         $wptedits .= '<textarea class="tstyle4 coords" name="ndlat[]"></textarea>'

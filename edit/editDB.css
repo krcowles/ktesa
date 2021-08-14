@@ -2,145 +2,10 @@ body {
     min-width: 960px;
     font-family: arial, verdana;
     background-color: #dadada;
-    margin: 0px; }
-/* tab1 items */
-input[id^=gpxfile] {
-    height: 22px;
-    font-size: 16px;
+    margin: 0px;
 }
-#moregpx {
-    cursor: pointer;
-    text-decoration: underline;
-}
-#addgpx {
-    display: none;
-}
-#hike {
-    height: 20px;
-    width: 200px; }
-#area {
-    height: 34px;
-    width: 120px; }
-#newloc {
-    display: none;
-}
-#locregion {
-    height: 34px;
-}
-#userloc {
-    height: 28px;
-    font-size: 16px;
-    background-color: lavenderblush;
-}
-#userloc:focus {
-    background-color: papayawhip;
-}
-#clusters {
-    height: 28px;
-    width: 220px; }
-#newt {
-    height: 18px;
-    font-size: 16px; }
-#miles {
-    height: 20px;
-    width: 70px; }
-#type {
-    height: 34px;
-    width: 130px; }
-#elev {
-    height: 20px;
-    width: 100px; }
-#pup {
-    height: 20px;
-    width: 100px; }
-#diff {
-    height: 34px;
-    width: 160px; }
-#fac {
-    height: 20px;
-    width: 200px; }
-#wow {
-    height: 20px;
-    width: 320px; }
-#seas {
-    height: 20px;
-    width: 100px; }
-#sun {
-    height: 34px;
-    width: 150px; }
-#lat {
-    height: 20px;
-    width: 130px; }
-#lon {
-    height: 20px;
-    width: 140px; }
-#ph1 {
-    height: 20px;
-    width: 680px; }
-#ph2 {
-    height: 20px;
-    width: 680px; }
-#murl {
-    height: 68px;
-    width: 850px; }
-.phurl {
-    height: 20px;
-    width: 520px; 
-}
-.albs {
-    position: relative;
-    top: 2px;
-    height: 24px;
-    width: 110px;
-    font-size: 14px;
-}
-.tstyle1 {
-    height: 20px;
-    width: 65px; }
-.tstyle2 {
-    height: 20px;
-    width: 260px; }
-.tstyle3 {
-    height: 20px;
-    width: 200px; }
-.tstyle4 {
-    height: 20px;
-    width: 160px;
-}
-textarea {
-    font-family: Tahoma, sans-serif;
-    font-size: 14px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: DarkGray;
-    padding: 5px;
-    background-color: LavenderBlush; }
-textarea:focus {
-    background-color: PapayaWhip; }
-#go {
-    height: 24px;
-    width: 100px; }
-input[type=checkbox]
-{
-    /* Double-sized Checkboxes  - Browser dependent code */
-    transform: scale(1.5);
-    -ms-transform: scale(1.5); /* IE */
-    -moz-transform: scale(1.5); /* FF */
-    -webkit-transform: scale(1.5); /* Safari and Chrome */
-    -o-transform: scale(1.5); /* Opera */
-    padding: 10px;
-    position: relative;
-    z-index: 1;
-}
-#clusters {
-    height: 34px;
-}
-#newcoords {
-    display: none;
-}
-#cluscoords {
-    position: relative;
-    top: 6px;
+#main {
+    box-sizing: content-box;
 }
 #atxt {
     font-size: 20px;
@@ -148,10 +13,7 @@ input[type=checkbox]
     margin-right: 16px;
     color: black;
 }
-.up {
-    position: relative;
-    top: -12px;
-}
+/* tabbing items */
 .tablist {
     float: left;
     width: 180px;
@@ -199,7 +61,151 @@ input[type=checkbox]
     z-index: 9999;
     width: 100px;
 }
-/* tab2 items */
+/* The next several apply to tab1 plus other tabs as well */
+.up {
+    position: relative;
+    top: -4px;
+}
+input[type=checkbox]
+{
+    /* Double-sized Checkboxes  - Browser dependent code */
+    transform: scale(1.5);
+    -ms-transform: scale(1.5); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+    padding: 10px;
+    position: relative;
+    z-index: 1;
+}
+textarea {
+    font-family: Tahoma, sans-serif;
+    font-size: 14px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: DarkGray;
+    padding: 5px;
+    background-color: LavenderBlush;
+}
+textarea:focus {
+    background-color: PapayaWhip;
+}
+textarea.ctrshift {
+    position: relative;
+    top: 10px;
+}
+.tstyle1 {
+    height: 33px;
+    width: 65px;
+}
+.tstyle2 {
+    height: 33px;
+    width: 260px;
+}
+.tstyle3 {
+    height: 33px;
+    width: 200px;
+}
+.tstyle4 {
+    height: 33px;
+    width: 160px;
+}
+
+/*  next are tab1 only */
+input[id^=gpxfile] {
+    height: 28px;
+    font-size: 16px;
+}
+span.brown {
+    color: brown;
+}
+#hike {
+    height: 36px;
+    width: 200px;
+}
+#newloc {
+    display: none;
+}
+#area {
+    height: 34px;
+    width: 120px; }
+
+#locregion {
+    height: 34px;
+}
+#userloc {
+    height: 32px;
+    font-size: 16px;
+    background-color: lavenderblush;
+}
+#userloc:focus {
+    background-color: papayawhip;
+}
+#type {
+    height: 34px;
+    width: 130px;
+}
+#diff {
+    height: 34px;
+    width: 160px;
+}
+#miles {
+    height: 34px;
+    width: 70px;
+}
+#elev {
+    height: 34px;
+    width: 100px;
+}
+#fac {
+    height: 36px;
+    width: 200px;
+}
+#wow {
+    height: 36px;
+    width: 320px;
+}
+#seas {
+    height: 36px;
+    width: 100px;
+}
+#sun {
+    height: 34px;
+    width: 150px;
+}
+#lat {
+    height: 34px;
+    width: 130px;
+}
+#lon {
+    height: 34px;
+    width: 140px;
+}
+#dirlbl {
+    position: relative;
+    top: -28px;
+}
+#murl {
+    height: 68px;
+    width: 850px;
+}
+#clusters {
+    height: 32px;
+    width: 220px;
+}
+#cluscoords {
+    position: relative;
+    top: 6px;
+}
+#cluslat, #cluslng {
+    height: 34px;
+}
+
+/* tab2 only items */
+#pupld.is-dragover {
+    box-sizing: content-box;
+    background-color: grey;
+}
 #userupld {
     font-weight: bold;
     font-size: 18px;
@@ -225,27 +231,24 @@ input[type=checkbox]
 .inputfile + label {
     margin-left: 16px;
     font-size: 18px;
-    background-color: #6D3C17;
+    border-radius: 6px;
+    background-color: #6c757d;
     color: white;
     display: inline-block;
     cursor: pointer;
     padding: 6px;
     outline: 1px dotted #000;
     outline: -webkit-focus-ring-color auto 5px;
-    
 }
 .inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: cornsilk;
-    color: black;
+    background-color: #696969;
+    color: white;
 }
 #ldg {
     color: brown;
     display: none;
     font-weight: bold;
-}
-#pupld.is-dragover {
-    background-color: grey;
 }
 #preload {
     display: none;
@@ -253,17 +256,38 @@ input[type=checkbox]
     top: 32px;
     left: 320px;
 }
+#picchks {
+    box-sizing: content-box;
+    position: relative;
+    top: -14px;
+    margin-left: 16px;
+}
+#picbox {
+    box-sizing: content-box;
+    margin-left: 16px;
+    clear: none;
+    overflow: auto;
+}
+.capts {
+    box-sizing: content-box;
+}
 .popupCap {
     margin: 0px;
     display: none;
     position: absolute;
     width: 300px;
     top: 0px;
-    left: 0px; }
+    left: 0px;
+}
 .capLine {
     margin: 0px;
     font-weight: bold;
-    background-color: #eaeaea; }
+    background-color: #eaeaea;
+}
+.allPhotos {
+    box-sizing: content-box;
+}
+
 #ldgif {
     display: block;
     margin-left: auto;
@@ -278,64 +302,48 @@ input[type=checkbox]
     cursor: pointer;
     background-color: papayawhip;
 }
-span.brown {
-    color: brown;
-}
-/* Button styling  [input type=submit looks like button] */
-button:not(.tablist) {
-	border-width: 1px;
-    border-radius: 4px;
-	background-color: #6D3C17;
-    color: white;
-    font-size: 14px;
-    height: 24px;
-}
-button:not(.tablist):hover {
-	background-color: cornsilk;
-	color: black;
-}
-input[type=submit] {
-    border-width: 1px;
-    border-radius: 4px;
-    height: 30px;
-    width: 120px;
-    font-size: 16px;
-    background-color: #6D3C17;
-    color: white;
-}
-input[type=submit]:hover {
-    background-color: cornsilk;
-    cursor: pointer;
-    color: black;
-}
-#wypts {
-    height: 28px;
+#npts > textarea, #gpts > textarea, #wypts >  textarea {
+    position: relative;
+    top: 7px;
+    height: 33px;
     font-size: 16px;
     margin-left: 12px;
 }
-#preview {
-    font-size: 18px;
-    height: 28px;
+.wpticons {
+    height: 32px;
 }
-.like-button {
-    display: inline-block;
-    font-size: 18px;
-    text-decoration: none;
-    padding-top: 3px;
-    width: 176px;
-    height: 24px;
-    background: #6D3C17;
-    text-align: center;
+.wpticonshift {
+    position: relative;
+    top: 7px;
+}
+
+/* tab2 preview boxes */
+ol li:first-child {
+    margin-bottom: 12px;
+}
+ol li::marker {
+    font-size: 20px;
+}
+.file_label {
+    font-size: 16px;
+    background-color: #6c757d;
     color: white;
-    margin-left: 24px;
-}
-.like-button:hover {
-    background-color: cornsilk;
+    display: inline-block;
     cursor: pointer;
+    border-radius: 5px;
+    padding: 5px 8px;
+}
+.file_label:hover {
+    background-color: #696969;
     color: black;
 }
-input[name=newgps] , input[name=newmap] {
-    height: 22px;
+.file_input {
+    display: none;
+}
+#thumbpic {
+    box-sizing: content-box;
+}
+#redo_thumb {
     font-size: 16px;
 }
 #boxes {
@@ -343,8 +351,9 @@ input[name=newgps] , input[name=newmap] {
     flex-flow: row nowrap;
     align-content: center;
     justify-content: space-evenly;
+    box-sizing: content-box
 }
-#repl, #rsrestart {
+#repl {
     display: flex;
     justify-content: center;
     align-content: center;
@@ -357,7 +366,7 @@ input[name=newgps] , input[name=newmap] {
     border-width: 1px;
     background-color: blanchedalmond;
 }
-#presize, #sizeblock, #cprestart {
+#presize, #sizeblock {
     display: flex;
     justify-content: center;
     align-content: center;
@@ -370,45 +379,30 @@ input[name=newgps] , input[name=newmap] {
     border-width: 1px;
     background-color: blanchedalmond;
 }
-#redo_thumb {
-    font-size: 16px;
-}
-#cprestart {
-    flex-direction: column;
-    align-content: space-between;
-    border: none;
-    background-color: #dadada;
-    text-align: left;
-}
-#reset {
-    font-size: 18px;
-    height: 34px;
-    padding: 5px;
-    width: 128px;
-    margin-bottom: 8px;
-}
-.file_input {
-    display: none;
-}
-.file_label {
-    font-size: 16px;
-    background-color: #6D3C17;
-    color: white;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 5px;
-    padding: 5px 8px;
-}
-.file_label:hover {
-    background-color: blanchedalmond;
-    color: black;
-}
-ol li:first-child {
-    margin-bottom: 12px;
-}
 #repl.entered {
     background-color: darkgray;
 }
 #presize.entered {
     background-color: darkgray;
+}
+#cprestart, #bxresbtn {
+    box-sizing: content-box;
+}
+#cprestart {
+    position: relative;
+    top: 0px;
+    height: 100px; 
+    text-align: center;
+}
+
+/* tab4 only items */
+div[id=tab4] {
+    box-sizing: content-box;
+}
+input[name=newgps] , input[name=newmap] {
+    height: 22px;
+    font-size: 16px;
+}
+input[name=newgps], input[name=newmap] {
+    height: 30px;
 }

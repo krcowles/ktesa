@@ -27,21 +27,23 @@ $newClusterPage = str_replace('id="clusters"', 'id="cpages"', $newClusterPage);
     <meta name="description" content="Begin New Page" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="startNewPg.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
-<body>  
+<body> 
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">New Hike Page</p>
-<p id="page_id" style="display:none">Create</p>
+<p id="active" style="display:none">Create</p>
 
 <div id="main">
     <p id="pgerror" style="display:none;"><?=$pgerror;?></p>
-    <h2 style="color:DarkBlue;">Begin Your Journey Here!</h2>
-    <h3><em>This page must be completed in order to proceed:</em></h3>
+    <h3 style="color:DarkBlue;">Begin Your Journey Here!</h3>
+    <h4><em>This page must be completed in order to proceed:</em></h4>
     <form action="submitNewPg.php" method="POST">
         <span class="entries">
             Please Enter A Unique Name For This Hike</span>&nbsp;&nbsp;
@@ -49,30 +51,43 @@ $newClusterPage = str_replace('id="clusters"', 'id="cpages"', $newClusterPage);
             maxlength="30" required="required" />
             &nbsp;&nbsp;<span id="maxchars">[30 Characters Max]</span><br />
         <span class="entries">Please Select a Hike Type Below:</span><br />
-        <input id="cluster" type="radio" name="type" value="Cluster" />&nbsp;
-            A Hike That Shares A Trailhead With (or Is In 
-            Close Proximity To) Existing Hikes
+        <span class="form-check">
+            <input class="form-check-input" type="radio" name="type" 
+                value="Cluster" id="cluster">
+            <label class="form-check-label" for="cluster">
+            A Hike That Shares A Trailhead With (or Is In Close Proximity To)
+            Existing Hikes
+            </label>
+        </span>
         <div id="cls">
-            <em>Select from the available groups</em><?= $clusterSelect;?><br />
+            <em>Select from the available groups&nbsp;&nbsp;</em>
+                <?= $clusterSelect;?><br />
             <span>Or enter a new group name below:</span><br />
             <input id="newgroup" class="new" type="text"
                 name="newgroup" />&nbsp;&nbsp;
             <span class="note">
                 NOTE: Any entry here will override the selection above.
-            </span>
-        </div><br />
-        <input id="normal" type="radio" name="type" value="Normal" />&nbsp;
-            All Other Hikes<br /><br />
+            </span><br /><br />
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="type" id="normal"
+                value="Normal" checked>
+            <label class="form-check-label" for="normal">
+            All Other Hikes
+            </label>
+        </div>
+        <br />
         <h4 class="shift">Please submit the data when ready. You will be taken
             to a form where you may continue to enter data, or simply return
             later and select "Contribute->Continue Editing Your Hikes" from the
-            menubar above.
+            menu above.
         </h4>
-        <input class="shift" type="submit" name="newpg" value="Create Hike Page" />
+        <input class="btn btn-secondary" type="submit" name="newpg"
+            value="Create Hike Page">
     </form>
     <hr />
-    Alternately:
-    <h3>Select a cluster group: <?=$newClusterPage;?></h3>
+    <h4>Alternately, Create a new Cluster Group Page</h4>
+    <h5>Select a cluster group: <?=$newClusterPage;?></h5>
     <div id="cpgtxt">Or enter a new group name below:<br />
         <input id="newclusgrp" class="new" type="text" name="newclusgrp" />
         <span class="note">&nbsp;&nbsp;NOTE: Any entry here will override
@@ -80,10 +95,10 @@ $newClusterPage = str_replace('id="clusters"', 'id="cpages"', $newClusterPage);
         </span>
     </div>
     <br />
-    <button id="createcpg">Create Cluster Page</button>
+    <button id="createcpg" type="button" class="btn btn-secondary">
+        Create Cluster Page</button>
 </div>
 
-<script src="../scripts/menus.js"></script>
 <script src="startNewPg.js"></script>
 
 </body>
