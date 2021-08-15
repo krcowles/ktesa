@@ -33,12 +33,15 @@ if ($form === 'reg') {
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="unifiedLogin.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script type="text/javascript">var page = 'unified';</script>
 </head>
 
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <!-- only the logo is presented on this page, no navbar -->
 <div id="logo">
     <div id="pattern"></div>
@@ -133,11 +136,11 @@ if ($form === 'reg') {
 
         <!-- For 'Forgot password' and 'Renew password -->
         <button type="button" class="btn btn-outline-secondary"
-        data-bs-toggle="modal" data-bs-target="#cpw">
+        data-bs-toggle="modal" data-bs-target="#cpw" onclick="this.blur();">
         Forgot Password?
         </button>
         <div class="modal fade" id="cpw" tabindex="-1"
-                aria-labelledby="ResetPassword" aria-hidden="true">
+        aria-labelledby="ResetPassword" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -149,7 +152,7 @@ if ($form === 'reg') {
                     <div class="modal-body">
                         Enter your email below. You will receive an email link to 
                         reset your password<br />
-                        <input id="forgot" type="email" required 
+                        <input id="rstmail" type="email" required 
                             placeholder="Enter your email" /><br /><br />
                     </div>
                     <div class="modal-footer">
@@ -160,7 +163,6 @@ if ($form === 'reg') {
                 </div>
             </div>
         </div>
-
     </div>
 <?php endif; ?>
 </div>   <!-- end of #container -->
@@ -190,6 +192,7 @@ if ($form === 'reg') {
 <script src="../scripts/logo.js"></script>
 <script src="../scripts/loginState.js"></script>
 <script src="../scripts/validateUser.js"></script>
+<script src="../scripts/initiateReset.js"></script>
 <script src="unifiedLogin.js"></script>
 
 </body>

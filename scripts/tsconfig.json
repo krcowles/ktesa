@@ -64,14 +64,14 @@
       //"forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   },
   "files": [   /* .ts sources to be compiled */
-    /* all "pages" (that can be displayed as a page) */
-    "panelMenu.ts",
     /* ktesaPanel */
-    "modal_setup.ts",
     "menuControl.ts",
-    "validateUser.ts",
+    "panelMenu.ts",
+    "initiateReset.ts",
     /* 'About' page */
     "about.ts",
+    /* Accounts */
+    "validateUser.ts",
     /* Home page */
     "map.ts", // NOTE: fmap.ts overlaps map.ts and cannot be included here; run tsc separately
     "sideTables.ts",

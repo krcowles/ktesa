@@ -9,8 +9,8 @@
  * @license No license to date
  */
 ?>
-<h3 class="up">Hike Reference Sources: (NOTE: Book type cannot be 
-    changed - if needed, delete and add a new one)</h3>
+<h4 class="up">Hike Reference Sources: (NOTE: Book type cannot be 
+    changed - if needed, delete and add a new one)</h4>
 <input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
 <?php 
     $hikeIndexNo = $hikeNo;
@@ -22,9 +22,9 @@
 </script>
 <script src="refs.js"></script>
 
-<h3>GPS Data:</h3>
+<h4>GPS Data:</h4>
 <p id="ua4" class="user_alert" style="display:none;"><?=$user_alert;?></p>
-<h3>File Upload for 'Related Hike Information' (types .gpx, .kml, .html):</h3>
+<h4>File Upload for 'Related Hike Information' (types .gpx, .kml, .html):</h4>
 <p>Note: These files are generally useful for proposed hike track data
 and/or maps</p>
 <?php if (isset($_SESSION['gpsmsg']) && $_SESSION['gpsmsg'] !== '') : ?>

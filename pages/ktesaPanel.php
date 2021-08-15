@@ -140,14 +140,14 @@ $policy = "../accounts/PrivacyPolicy.pdf";
             </div>
             <div class="modal-body">
                 <p>You will receive an email to reset/change your password<br />
-                Enter email: <input id="cpwmail" type="email"
+                Enter email: <input id="rstmail" type="email"
                     required="required" /></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
                     data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary"
-                    id="send">Send Email</button>
+                    id="send" data-bs-dismiss="modal">Send Email</button>
             </div>
         </div>
     </div>
@@ -193,3 +193,4 @@ window.mobileAndTabletCheck = function() {
 </script>
 <script src="../scripts/menuControl.js"></script>
 <script src="../scripts/panelMenu.js"></script>
+<script src="../scripts/initiateReset.js"></script>

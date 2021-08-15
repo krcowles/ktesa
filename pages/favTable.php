@@ -97,7 +97,6 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 </script>
 <script src="../scripts/favSideTable.js"></script>
 <script src="../scripts/fmap.js"></script>
-<script src="../scripts/modal_setup.js"></script>
 <script src="../scripts/markerclusterer.js"></script>
 <script async defer src="<?=Google_Map;?>"></script>
 </body>

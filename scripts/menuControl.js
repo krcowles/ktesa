@@ -9,7 +9,7 @@
  * called getLogin.js)
  * @version 2.1 Added mobile platform detection for responsive design
  * @version 3.0 Typescripted, with some type errors corrected
- * @version 4.0 Reworked for new bootstrap design on non-mobile platforms
+ * @version 4.0 Reworked for new bootstrap navbar on non-mobile platforms
  */
 var cookies = navigator.cookieEnabled ? true : false;
 var cookie_info = document.getElementById('cookie_state');
@@ -18,6 +18,8 @@ var active_member = user_cookie_state !== "NOLOGIN" && user_cookie_state !== "NO
     && user_cookie_state !== "EXPIRED" && user_cookie_state !== "RENEW"
     && user_cookie_state !== "MULTIPLE";
 if (active_member) {
+    var cookie_choice = document.getElementById('cookies_choice');
+    var user_cookie_choice = cookie_choice.innerText;
     // members will have the 'Contribute' menu items displayed
     $('#contrib').css('display', 'block');
     // enable admintools if admin logged in
@@ -25,15 +27,18 @@ if (active_member) {
     if (adminState !== null) {
         $('#admintools').css('display', 'block');
     }
-    // set the members Help menu item for changing cookies choice
-    var uchoice = document.getElementById('cookies_choice');
-    $('#change_cookies').css('display', 'block');
-    if ($('#cookies_choice').text() === 'accept') {
-        $('#usrcookies').text("Reject Cookies");
-    }
-    else if ($('#cookies_choice').text() === 'reject') {
-        $('#usrcookies').text("Accept Cookies");
-    }
+    // set 'Members' choices
+    $('#login').addClass('disabled');
+    $('#bam').addClass('disabled');
+    // display appropriate change-cookie text
+    var display_choice = user_cookie_choice === 'accept' ? 'Reject Cookies' : 'Accept Cookies';
+    $('#usrcookies').text(display_choice);
+}
+else {
+    // disable appropriate 'Members' items
+    $('#logout').addClass('disabled');
+    $('#chg').addClass('disabled');
+    $('#change_cookies').css('display', 'none');
 }
 // check to see if cookies are enabled for the browser
 if (cookies) { // exception messages

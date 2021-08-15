@@ -1,5 +1,4 @@
 /// <reference path='./map.d.ts' />
-declare var loadSpreader: any;
 declare var thumb: string;
 declare var preview: string;
 declare var map: google.maps.Map;
@@ -15,7 +14,6 @@ declare function locateGeoSym(): void;
  * @version 1.0 Simplify and fix the display of the Favorites page after having modified
  * sideTables.ts/js to add thumbnail images;
  */
- 
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike
@@ -137,7 +135,7 @@ function formTbl(indxArray: NM[]) {
     let primeArray = indxArray.slice(0, subsize);
     appendSegment(primeArray);
     indexer = subsize;
-    loadSpreader = setInterval(
+    var loadSpreader = setInterval(
         function() {
             let end = indexer + subsize;
             if (end >= indxArray.length) {

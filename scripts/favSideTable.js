@@ -1,4 +1,3 @@
-"use strict";
 /// <reference path='./map.d.ts' />
 /**
  * @file This file was created as a simplification of sideTables.ts/js code,
@@ -129,7 +128,7 @@ function formTbl(indxArray) {
     var primeArray = indxArray.slice(0, subsize);
     appendSegment(primeArray);
     indexer = subsize;
-    loadSpreader = setInterval(function () {
+    var loadSpreader = setInterval(function () {
         var end = indexer + subsize;
         if (end >= indxArray.length) {
             end = indxArray.length;
@@ -362,8 +361,8 @@ var IdTableElements = function (boundsStr, zoom) {
         if (lng <= east && lng >= west && lat <= north && lat >= south) {
             var hikeindx = allHikes.indexOf(hike.indx);
             var hikeobj = locations[hikeindx];
-            var data_1 = idHike(allHikes[hikeindx], hikeobj);
-            hikearr.push(data_1);
+            var data = idHike(allHikes[hikeindx], hikeobj);
+            hikearr.push(data);
             if (zoom) {
                 var nmiw = '<div id="iwNH"><a href="../pages/hikePageTemplate.php?hikeIndx=' +
                     hike.indx + '" target="_blank">' + hike.name + '</a><br />Length: ' +

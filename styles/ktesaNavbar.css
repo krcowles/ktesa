@@ -84,7 +84,6 @@ ul.dropdown-menu {
     font-weight: bold;
 }
 /* login elements */
-#cookie_state, #cookies_choice, #admin, #contrib, #admintools,
-#change_cookies {
+#cookie_state, #cookies_choice, #admin, #contrib, #admintools {
     display: none;
 }
