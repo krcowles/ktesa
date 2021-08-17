@@ -5,26 +5,17 @@
  * @version 1.0 Original release 
  * @version 1.1 added jsDocs
  * @version 2.0 Typescripted, with some type errors corrected
+ * @version 3.0 Updated for new 'popupCaptions.js' routine (replaced 'captions.js')
  */
-var winWidth = <number>$(window).width(); 
+ 
 // initialize variables for original page load:
 var resizeFlag = false;  // semaphore: don't execute resize event code if true
 var unProcSpace = 0;  // used to detect multiple small incremental growth in resizing
 var prevWidth = winWidth; // last established window size (recalculated during resize event)
 var tooLittle = 8;  // don't grow images if re-size only increased width by this amount or less
-var initLoad = true;
-var initSize = winWidth - pageMargin;
-if (initSize > 946) { // redraw rows
-    $photos = $('img[id^="pic"]');
-    sizeProcessor();
-} else {
-    $('html').css('overflow-x', 'scroll');
-}
-initLoad = false;
 
-/* 
+/**
  * PROCESSING WINDOW RESIZE EVENTS
- * Re-establish photo locations to recalculate captions.
  * Note: the semaphore 'resizeFlag' prevents multiple recursive calls during 
  * rapid resize triggering. The timeout allows a quiet period until 
  * another trigger can occur.
@@ -32,12 +23,12 @@ initLoad = false;
 $(window).on('resize', function() {
     // resize top part of page per new viewport:
     if (window.innerHeight < (vpHeight - 10) || 
-            window.innerHeight > (vpHeight + 10)) {
+        window.innerHeight > (vpHeight + 10)) {
         vpHeight = window.innerHeight;
-        usable = vpHeight - sidePnlLoc;
+        var usable = vpHeight - sidePnlLoc;
         let mapHt = Math.floor(0.65 * usable);
-        chartHt = Math.floor(0.35 * usable);
-        pnlHeight = (mapHt + chartHt) + 'px';
+        var chartHt = Math.floor(0.35 * usable);
+        var pnlHeight = (mapHt + chartHt) + 'px';
         let mapHeight = mapHt + 'px';
         let chartHeight = chartHt + 'px';
         $('#mapline').css('height',mapHeight);
@@ -62,34 +53,31 @@ $(window).on('resize', function() {
             }, 400);
     } else {  // when zoom modifies image sizes:
             captureWidths();
-            calcPos();
+            calculatePositions();
     }
 });
+
 function sizeProcessor() {
     winWidth = <number>$(window).width();  // get new window width
-    killEvents();  // NO $photos object NOW....
-    imageSizer();
-    prevWidth = winWidth;
-    $photos = $('img[id^="pic"]');
-    // now re-calc image positions
-    captureWidths();
-    calcPos();
-    eventSet();
-}
-function imageSizer() {
     var picRowWidth = winWidth - pageMargin;
-    if (initLoad) {  // initial page width larger than 946
-        drawRows(picRowWidth);
-    } else {  // normal resize event
-        var delta = unProcSpace + Math.abs(winWidth - prevWidth);
-        if (delta <= tooLittle) {
-            unProcSpace = delta;
+    var delta = unProcSpace + Math.abs(winWidth - prevWidth);
+    if (delta <= tooLittle) {
+        unProcSpace = delta;
+    } else {
+        killEvents();
+        captions = [];
+        capTop = [];
+        capLeft = [];
+        capWidth = [];
+        $('.popupCap').children().remove();
+        $('.popupCap').css('display', 'none');
+        if (picRowWidth <= rowWidth) {
+            drawRows(rowWidth); // observe min pg width
         } else {
-           if (picRowWidth <= rowWidth) {
-               drawRows(rowWidth);
-           } else {
-               drawRows(picRowWidth);
-           }
+            drawRows(picRowWidth);
         }
+        $photos = $('img[id^=pic');
+        initializePopupCaptions();
     }
+    prevWidth = winWidth;
 }

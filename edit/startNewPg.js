@@ -148,8 +148,8 @@ $(function () {
                 var retval = true;
                 if (submittable(selectVal)) {
                     var item = selectVal;
-                    var choice = item.replace(/ /g, '+');
-                    var newpg = "submitClusterPg.php?choice=" + choice;
+                    var choice_1 = item.replace(/ /g, '+');
+                    var newpg = "submitClusterPg.php?choice=" + choice_1;
                     window.open(newpg, "_blank");
                 }
                 else {
@@ -164,8 +164,8 @@ $(function () {
                 returnbool = false;
             }
             else {
-                var choice = newgrp.replace(/ /g, '+');
-                var newpg = "submitClusterPg.php?new=y&choice=" + choice;
+                var choice_2 = newgrp.replace(/ /g, '+');
+                var newpg = "submitClusterPg.php?new=y&choice=" + choice_2;
                 window.open(newpg, "_blank");
             }
         }

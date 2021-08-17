@@ -1,13 +1,13 @@
 <?php
 /**
- * This is the main routine utilized to display any given hike page.
+ * This is the main routine utilized to display any given hike (or cluster) page.
  * Depending on the query string ('age'), either the in-edit hikes will be
- * accessed, or the already published hikes. All MySQL tables for
- * in-edit hikes begin with the letter "E".
- * PHP Version 7.1
+ * accessed, or the already published hikes. All MySQL tables for in-edit hikes
+ * begin with the letter "E".
+ * PHP Version 7.4
  * 
- * @package Page_Display
- * @author  Tom Sandberge and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
 session_start();
@@ -25,13 +25,12 @@ require "hikePageData.php";
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="../styles/hikes.css" type="text/css" rel="stylesheet" />
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
      
 <body> 
@@ -48,9 +47,11 @@ function off() {
 </div>
 <?php endif; ?>
 
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php";?>
 <p id="trail"><?= $hikeTitle;?></p>
-<p id="page_id" style="display:none">Page</p>
+<p id="active" style="display:none">Page</p>
 <p id="gpx" style="display:none"><?=$gpxPath;?></p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
 
@@ -148,6 +149,7 @@ function off() {
 <?=$bop;?>
 
 <div id="imgArea"></div>
+<br />
 <p id="ptype" style="display:none">Hike</p>
 <div id="dbug"></div>
 
@@ -168,15 +170,14 @@ function off() {
     var c  = "<?=implode("|", $captions);?>";
     var as = "<?=implode("|", $aspects);?>";
     var w  = "<?=implode("|", $widths);?>";
+    var phMaps = [];
     <?php endif; ?>
 </script>
-<script src="../scripts/menus.js"></script>
-<script src="../scripts/picRowFormation.js"></script>
-<script src="../scripts/captions.js"></script>
+<script src="../scripts/hikePageLayout.js"></script>
+<script src="../scripts/popupCaptions.js"></script>
 <script src="../scripts/rowManagement.js"></script>
 <script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>
-
 
 </body>
 </html>

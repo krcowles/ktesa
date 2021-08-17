@@ -77,8 +77,8 @@
     "sideTables.ts",
     /* Hike page */
     "canvas.ts",
-    "picRowFormation.ts",
-    "captions.ts",
+    "hikePageLayout.ts",
+    "popupCaptions.ts",
     "rowManagement.ts",
     "prepareTracks.ts",
     "dynamicChart.ts",

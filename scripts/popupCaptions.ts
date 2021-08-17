@@ -1,5 +1,5 @@
-declare var edit_mode: boolean;
-declare var phMaps: number[];
+declare var edit_mode: boolean; // only defined in editDB.php
+declare var phMaps: number[]; // supplied by hikePageTemplate.php or editDB.php
 /**
  * @fileoverview This script supplies routines to popup photo captions
  * over the top of each photo when mouseover occur. It is used either by
@@ -8,13 +8,23 @@ declare var phMaps: number[];
  * @author Ken Cowles
  * @version 1.0 Designed to reduce duplication of code in previous scripts
  */
-var $photos: JQuery<HTMLImageElement> | null;
+// global vars
+var $photos: any; //JQuery<HTMLImageElement> | null;
 var captions: string[] = [];
+var noOfPix: number;
+// globals for locating and sizing caption to popup
+var picSel: string;
+var capTop: string[] = [];
+var capLeft: string[] = [];
+var capWidth: string[] = [];
+var picPos: JQuery.Coordinates;
 // in edit mode, photo positions are not available unless tab2 is active
 var photosDisplayed = false;
 
+// when the page load is completed
+$(function() {
 // initial settings on page load or refresh
-if (edit_mode === true) { // edit_mode is defined only in editDB.php
+if (typeof edit_mode !== 'undefined' && edit_mode === true) {
     $photos = $('.allPhotos');
     if ($('#t2').hasClass('active')) {
         photosDisplayed = true;
@@ -31,17 +41,15 @@ if (edit_mode === true) { // edit_mode is defined only in editDB.php
     $photos = $('img[id^="pic"]');
     photosDisplayed = true;
 }
-var noOfPix = $photos.length;
-// globals for locating and sizing caption to popup
-var picSel: string;
-var capTop: string[] = [];
-var capLeft: string[] = [];
-var capWidth: string[] = [];
-var picPos: JQuery.Coordinates;
+noOfPix = $photos.length;
 // setup after load:
 if (photosDisplayed) {
    initializePopupCaptions();
 }
+
+});
+
+// global functions
 /**
  * This kicks off all captioning, whether initially on page load, or when
  * tab2 is clicked in edit mode
@@ -51,6 +59,7 @@ function initializePopupCaptions() {
     calculatePositions();
     associateCaptions();
     initActions();
+    return;
 }
 /**
  * Function to capture -- current -- image widths
@@ -72,26 +81,27 @@ function calculatePositions() {
         capTop[m] = Math.round(picPos.top) + 'px';
         capLeft[m] = Math.round(picPos.left) + 'px';
     }
+    return;
 }
 /**
  * Associate each photo with its respective caption
  */
 function associateCaptions() {
     // for edit mode, the popup consists of the image name, not the caption
-    $photos.each(function() {
-        captions.push(this.alt);
-    });
+    for (let q=0; q<noOfPix; q++) {
+        let img = $photos[q];
+        captions.push(img.alt);
+    }
+    return;
 }
 /**
  * Establish the behaviors when mousing over/out
  */
 function initActions() {
-    $photos.each( function() {
-        $(this).css('cursor','pointer');
-    });
+    $photos.css('cursor','pointer');
     // popup a description when mouseover a photo
     $photos.css('z-index','1'); // keep pix in the background
-    $photos.on('mouseover', function(ev) {
+    $photos.on('mouseover', function(ev: MouseEvent) {
         var targ = <HTMLImageElement>ev.target;
         var selected = targ.alt;
         picPop(selected);
@@ -101,6 +111,14 @@ function initActions() {
         $('.popupCap > p').remove();
         $('.popupCap').css('display','none');
     });
+    for (let t=0; t<noOfPix; t++) {
+        let item = <HTMLElement>$photos[t];
+        $(item).on('click', function() {
+            var zpic = "/pictures/zsize/" + piclnks[t] + "_z.jpg";
+            window.open(zpic,"_blank");
+        });
+    }
+    return;
 }
 /**
  *  The function that actually places the popup on the photo
@@ -115,9 +133,13 @@ function picPop(caption: string) {
         }
     }
     var htmlDesc = '<p class="capLine">' + caption;
-    if (phMaps[picNo] == 0) {
-        htmlDesc += '<br /><span style="color:brown">No Location Data: ' +
-            'Photo Cannot Be Mapped</span></p>';
+    if (phMaps.length > 0) {
+        if (phMaps[picNo] == 0) {
+            htmlDesc += '<br /><span style="color:brown">No Location Data: ' +
+                'Photo Cannot Be Mapped</span></p>';
+        } else {
+            htmlDesc += '</p>';
+        }
     } else {
         htmlDesc += '</p>';
     }
@@ -128,6 +150,7 @@ function picPop(caption: string) {
     $('.popupCap').css('width',capWidth[picNo]);
     $('.popupCap').css('z-index','10');
     $('.popupCap').prepend(htmlDesc);
+    return;
 }
 // turn off events during resize or forced reset until finished resizing
 function killEvents() {
@@ -135,6 +158,7 @@ function killEvents() {
     $photos.off('mouseout');
     $photos.off('click');
     $photos = null;
+    return;
 }
 /**
  * During re-ordering of photos in the edit mode, items need to be re-established
@@ -150,4 +174,5 @@ function killEvents() {
     capLeft = [];
     capWidth = [];
     initializePopupCaptions();
+    return;
 }

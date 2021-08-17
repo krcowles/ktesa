@@ -8,6 +8,14 @@
  * @version 1.0 Introduction of bootstrap navbar for non-mobile platforms
  */
 $(function () {
+    // establish the page title in the logo 'ctr' div
+    var logo_done = $.Deferred();
+    function logo_title(deferred) {
+        var pgtitle = $('#trail').detach();
+        $('#ctr').append(pgtitle);
+        deferred.resolve();
+    }
+    logo_title(logo_done);
     // Reset password modal:
     var resetPassModal = new bootstrap.Modal(document.getElementById('cpw'));
     // when page is called, clear any menu items that are/were active
@@ -42,9 +50,6 @@ $(function () {
             $('#pubreqpg').addClass('active');
             break;
     }
-    // establish the page title in the logo 'ctr' div
-    var pgtitle = $('#trail').detach();
-    $('#ctr').append(pgtitle);
     /**
      * Some menu items require a response that is not simply opening
      * a new window
