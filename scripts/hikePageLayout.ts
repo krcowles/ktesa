@@ -13,18 +13,23 @@ declare var mobile: boolean;
  * @author Ken Cowles
  * @version 1.0 Replaces picRowFormation.ts/js and is compatible with bootstrap
  */
-
-// Decode the array data passed via php:
-var descs   = d.split("|");
-var alblnks = al.split("|");
-var piclnks = p.split("|");
-var capts   = c.split("|");
-var aspects = as.split("|");
-var widths  = w.split("|");
-if (descs[0] !== '') {
-    var itemcnt = descs.length;
+var itemcnt: number;
+var cluster_page = $('#cpg').text() === 'yes' ? true : false;
+if (!cluster_page) {
+    // Decode the array data passed via php:
+    var descs   = d.split("|");
+    var alblnks = al.split("|");
+    var piclnks = p.split("|");
+    var capts   = c.split("|");
+    var aspects = as.split("|");
+    var widths  = w.split("|");
+    if (descs[0] !== '') {
+        var itemcnt = descs.length;
+    } else {
+        var itemcnt = 0;
+    }
 } else {
-    var itemcnt = 0;
+    itemcnt = 0;
 }
 // global used in multiple scripts
 var winWidth = <number>$(window).width();
@@ -165,8 +170,10 @@ if ($('#mapline').length) {
  * The rows will be drawn on page load, and again for window resize events
  * (see rowManagement.js)
  */
-var initSize = winWidth - pageMargin;
-drawRows(initSize);
-$('html').css('overflow-x', 'scroll');
+if (!cluster_page) {
+    var initSize = winWidth - pageMargin;
+    drawRows(initSize);
+    $('html').css('overflow-x', 'scroll');
+}
  
 });
