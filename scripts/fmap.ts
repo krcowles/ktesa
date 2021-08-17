@@ -2,6 +2,7 @@
 declare var NM: NM[];
 declare function positionFavToolTip(div: JQuery<HTMLElement>, like: JQuery<HTMLElement>): void;
 declare function IdTableElements(bounds: string, zooms: boolean): void;
+declare function formTbl(hikeobjs: NM[]): void;
 // Overload & redeclare block warnings do not show up during compile
 /**
  * @fileoverview Set up a full page map showing the Favorites selected
@@ -353,5 +354,6 @@ $(window).on('resize', function() {
 	$('.like').each(function() {
 		// apparently don't need positionFavToolTip for fav page
 	});
+	google.maps.event.trigger(map, "resize");
 });
 // //////////////////////////////////////////////////////////////

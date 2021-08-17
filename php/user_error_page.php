@@ -2,10 +2,10 @@
 /**
  * This page will appear only if the site is in 'Production' mode and an
  * error/exception is encountered.
- * PHP Version 7.1
+ * PHP Version 7.4
  * 
- * @package Error
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @package Ktesa
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 if (session_status() == PHP_SESSION_NONE) {
@@ -22,8 +22,9 @@ $appMode = 'production';
     <meta name="description" content="User notice of problem encountered" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <style type="text/css">
         body { 
             background-color: #eaeaea;
@@ -31,13 +32,14 @@ $appMode = 'production';
         };
     </style>
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Problem Encountered</p>
-<p id="page_id" style="display:none">Error</p>
+<p id="active" style="display:none">Error</p>
 
 
 <div style="margin-left:16px;font-size:18px;color:brown">
@@ -50,6 +52,6 @@ $appMode = 'production';
     <p>You may wish to try again at a later date/time.
         Thanks for your patience!</p>   
 </div>
-<script src="../scripts/menus.js"></script>
+
 </body>
 </html>

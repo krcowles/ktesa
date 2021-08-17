@@ -1,4 +1,3 @@
-"use strict";
 /// <reference path='./map.d.ts' />
 // Overload & redeclare block warnings do not show up during compile
 /**
@@ -333,5 +332,6 @@ $(window).on('resize', function () {
     $('.like').each(function () {
         // apparently don't need positionFavToolTip for fav page
     });
+    google.maps.event.trigger(map, "resize");
 });
 // //////////////////////////////////////////////////////////////

@@ -462,7 +462,7 @@ $(window).on('resize', function() {
         let $tooldiv = $icon.parent().prev();
         positionFavToolTip($tooldiv, $icon);
 	});
-	//initMap();
+	google.maps.event.trigger(map, "resize");
 });
 
 // //////////////////////////////////////////////////////////////

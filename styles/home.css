@@ -45,21 +45,11 @@ body {
     width: 65%;
     height: 720px;
 	z-index: 1;
+	box-sizing: content-box
 }
 #legend {
 	position: absolute;
 }
-/*
-li img {
-	float: left;
-	margin-right: 4px;
-}
-li {
-	padding-left: 6px;
-	padding-right: 6px;
-	margin-bottom: 4px;
-}
-*/
 #iwVC {
 	background-color: #f0f0f0;
 	color: Black;
@@ -193,21 +183,6 @@ li {
 .zpop {
 	width: 104px;
 }
-
-
-
-/*
-.stlinks {
-	position: relative;
-	top: 2px;
-	padding-left:6px;
-	font-size: 18px;
-	color: blue;
-	text-decoration: underline;
-}
-*/
-
-
 .bigger {
 	position: absolute;
 }
