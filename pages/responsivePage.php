@@ -200,7 +200,7 @@ function off() {
 <script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <script src="../scripts/jquery.js"></script>
-<script src="../scripts/responsivePage.js?"></script>
+<script src="../scripts/responsivePage.js"></script>
 <script src="../scripts/responsivePics.js"></script>
 <script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>

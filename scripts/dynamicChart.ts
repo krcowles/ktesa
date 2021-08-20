@@ -45,7 +45,6 @@ var checkboxes:JQuery<ChildNode>[] = [];
 var box_states: number[] = [];
 var lastTrack = 0; // indx in box_states
 // global charting vars
-var canvasEl = document.getElementById('grph') as HTMLCanvasElement;
 var coords: Coords;  // x,y location of mouse in chart
 var indxOfPt: number;
 var prevCHairs = false;
@@ -56,37 +55,22 @@ var chartHeight: number;
 var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var do_resize = true;
 var trackNumber: number   // global used to identify current active track (topmost in tracklist)
-var chartConst: number;
 var pnlMarg: number;
 
 if (!mobile) {
-    chartConst = 0.77;
     // Hide/unhide side panel (changes width of elevation profile chart)
-    var orgWidth: number;
     $('#hide').on('click', function() {
-        orgWidth = <number>canvasEl.width;
         $('#sidePanel').css('display', 'none');
-        $('#chartline').width(fullWidth);
-        canvasEl.width = fullWidth;
-        // redraw the chart
+        setViewport();
         drawChart(trackNumber);
-
-        $('iframe').width(fullWidth);
         $('#unhide').css('display','block');
     });
     $('#unhide').on('click', function() {
         $('#sidePanel').css('display','block');
-        $('#chartline').width(orgWidth);
-        canvasEl.width = orgWidth;
-        $('#chartline').height(chartHeight);
-        canvasEl.height = chartHeight;
-        // redraw the chart
+        setViewport();
         drawChart(trackNumber);
-        $('iframe').width(orgWidth);
         $('#unhide').css('display','none');
     });
-} else {
-    chartConst = 1.0000;
 }
 
 /**
@@ -182,57 +166,6 @@ mapdiv.onload = function() {
             drawChart(trackNumber);
         });
     }, 200);
-}
-
-if (!mobile) {
-    if ($('#sidePanel').css('display') !== 'none') {
-        var lmarg = $('#sidePanel').css('margin-left');
-        let str_marg = lmarg.substr(0, lmarg.length - 2); // remove 'px' at end
-        pnlMarg = parseInt(str_marg);
-    } else {
-        pnlMarg = 0;
-    }
-} else {
-    pnlMarg = 0;
-}
-setChartDims();
-
-/**
- * This function establishes the chart dimensions on the page
- */
-function setChartDims() {
-    // calculate space available for canvas: (panel width = 23%)
-    fullWidth = <number>$('body').innerWidth();
-    if (!mobile) { // don't mess with chart height for mobile!
-        var chartWidth = Math.floor(chartConst * fullWidth) - pnlMarg;
-        var vpHeight = window.innerHeight;
-        // items on the page sit just below the navbar & logo
-        var topPos = <number>$('#nav').height() + <number>$('#logo').height();
-        /*
-        var sidePnlPos = <JQuery.Coordinates>$('#sidePanel').offset();
-        var sidePnlLoc = sidePnlPos.top;
-        var usable = vpHeight - sidePnlLoc;
-        */
-        var usable = vpHeight - topPos;
-        chartHeight = Math.floor(0.35 * usable);
-        if (chartHeight < 100) {
-            $('#chartline').height(100);
-            canvasEl.height = 100;
-        } else {
-            $('#chartline').height(chartHeight);
-            canvasEl.height = chartHeight;
-        }
-        if ($('#sidePanel').css('display') !== 'none') {
-            $('#chartline').width(chartWidth);
-        } else {
-            chartWidth = fullWidth;
-        }
-    } else {
-        chartWidth = fullWidth;
-    }
-    canvasEl.width = chartWidth;
-    $('iframe').width(chartWidth);
-    return;
 }
 
 /**
@@ -399,7 +332,7 @@ $(window).on('resize', function() {
         do_resize = false;
         setTimeout( function() {
             canvasEl.onmousemove = null;
-            setChartDims();
+            setViewport();
             var chartData = defineData(trackNumber);
             ChartObj.render('grph', chartData);
             crossHairs(trackNumber);

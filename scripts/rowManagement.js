@@ -5,7 +5,7 @@
  * @author Ken Cowles
  * @version 1.0 Original release
  * @version 1.1 added jsDocs
- * @version 2.0 Typescripted, with some type errors corrected
+ * @version 2.0 Typescripted, with some type errors corrected; jsDocs no longer needed
  * @version 3.0 Updated for new 'popupCaptions.js' routine (replaced 'captions.js')
  */
 // initialize variables for original page load:
@@ -23,16 +23,7 @@ $(window).on('resize', function () {
     // resize top part of page per new viewport:
     if (window.innerHeight < (vpHeight - 10) ||
         window.innerHeight > (vpHeight + 10)) {
-        vpHeight = window.innerHeight;
-        var usable = vpHeight - sidePnlLoc;
-        var mapHt = Math.floor(0.65 * usable);
-        var chartHt = Math.floor(0.35 * usable);
-        var pnlHeight = (mapHt + chartHt) + 'px';
-        var mapHeight = mapHt + 'px';
-        var chartHeight_1 = chartHt + 'px';
-        $('#mapline').css('height', mapHeight);
-        $('#chartline').css('height', chartHeight_1);
-        $('#sidePanel').css('height', pnlHeight);
+        setViewport();
     }
     winWidth = $(window).width();
     if (winWidth < 960) {

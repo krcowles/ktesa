@@ -9,7 +9,7 @@
 var itemcnt;
 var cluster_page = $('#cpg').text() === 'yes' ? true : false;
 if (!cluster_page) {
-    // Decode the array data passed via php:
+    // Decode the photo array data passed via php:
     var descs = d.split("|");
     var alblnks = al.split("|");
     var piclnks = p.split("|");
@@ -26,14 +26,97 @@ if (!cluster_page) {
 else {
     itemcnt = 0;
 }
-// global used in multiple scripts
+// globals used in multiple scripts
 var winWidth = $(window).width();
 var vpHeight;
-var sidePnlLoc;
+var pnlBox; // caluclated once on page load
+var pnlWidth;
+var initLoad = true;
+var canvasEl;
+// jquery page elements
+var $panel;
+var $mapEl;
+var $chartEl;
 // Nominal settings for drawing picture rows
 var pageMargin = 36;
 var maxRowHt = 260;
 var rowWidth = 940;
+$(function () {
+    // define globals
+    $panel = $('#sidePanel'); // always present on page load
+    $mapEl = $('#mapline');
+    $chartEl = $('#chartline');
+    canvasEl = document.getElementById('grph');
+    // the following should not change throughout resizing, etc.
+    var pnlMarg = parseInt($panel.css('margin-left')) +
+        parseInt($panel.css('margin-right'));
+    var pnlBorder = parseInt($panel.css('border-left-width')) +
+        parseInt($panel.css('border-right-width'));
+    var pnlPad = parseInt($panel.css('padding-left')) +
+        parseInt($panel.css('padding-right'));
+    pnlBox = pnlMarg + pnlBorder + pnlPad;
+    // set viewport
+    if ($('#mapline').length) {
+        setViewport();
+    }
+    /**
+     * Now create the html that comprises the rows of photos:
+     * The rows will be drawn on page load, and again for window resize events
+     * (see rowManagement.ts/js)
+     */
+    if (!cluster_page) {
+        var initSize = winWidth - pageMargin;
+        drawRows(initSize);
+        $('html').css('overflow-x', 'scroll');
+    }
+});
+/**
+ * Establishing the viewport layout occurs on page load and also on
+ * window resizing. The layout depends on the whether or not the
+ * side panel is displayed. Don't mess with chart height, once established,
+ * for mobile devices.
+ */
+function setViewport() {
+    var canvasWidth;
+    var panelDisplay = $panel.css('display') !== 'none' ? true : false;
+    // Height calcs
+    vpHeight = window.innerHeight;
+    var consumed = $('#nav').height() + $('#logo').height();
+    var usable = vpHeight - consumed;
+    var mapHt = Math.floor(0.65 * usable);
+    var chartHt = Math.floor(0.35 * usable);
+    var pnlHeight = (mapHt + chartHt);
+    $mapEl.height(mapHt);
+    $chartEl.height(chartHt);
+    $panel.height(pnlHeight);
+    // Width calcs
+    winWidth = $(window).width();
+    if (panelDisplay) {
+        pnlWidth = pnlBox + $panel.width();
+    }
+    else {
+        pnlWidth = 0;
+    }
+    var availWidth = winWidth - pnlWidth;
+    $mapEl.width(availWidth);
+    $chartEl.width(availWidth);
+    // set up canvas inside chartline div
+    if (chartHt < 100) {
+        $chartEl.height(100);
+        canvasEl.height = 100;
+    }
+    else {
+        canvasEl.height = chartHt;
+    }
+    if (panelDisplay) {
+        pnlWidth = $panel.width();
+    }
+    else {
+        pnlWidth = 0;
+    }
+    canvasWidth = winWidth - pnlWidth;
+    canvasEl.width = canvasWidth;
+}
 /**
  * Function pertinent to drawing rows of photos
  */
@@ -145,33 +228,3 @@ function drawRows(useWidth) {
         return;
     }
 }
-$(function () {
-    /**
-     * After the page is loaded, set up the viewport area
-     */
-    if ($('#mapline').length) {
-        // setting up map & chart to occupy viewport space
-        vpHeight = window.innerHeight;
-        var sidePnlPos = $('#sidePanel').offset();
-        sidePnlLoc = sidePnlPos.top;
-        var usable = vpHeight - sidePnlLoc;
-        var mapHt = Math.floor(0.65 * usable);
-        var chartHt = Math.floor(0.35 * usable);
-        var pnlHeight = (mapHt + chartHt) + 'px';
-        var mapHeight = mapHt + 'px';
-        var chtHeight = chartHt + 'px';
-        $('#mapline').css('height', mapHeight);
-        $('#chartline').css('height', chtHeight);
-        $('#sidePanel').css('height', pnlHeight);
-    }
-    /**
-     * Now create the html that comprises the rows of photos:
-     * The rows will be drawn on page load, and again for window resize events
-     * (see rowManagement.js)
-     */
-    if (!cluster_page) {
-        var initSize = winWidth - pageMargin;
-        drawRows(initSize);
-        $('html').css('overflow-x', 'scroll');
-    }
-});
