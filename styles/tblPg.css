@@ -120,28 +120,74 @@ body {
 	/* internet explorer */
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
+.btstrp {
+	box-sizing: content-box;
+}
 /* Filtering */
 #tblfilter {
 	display: none;
 }
+#pseudospin {
+	width: 38px;
+	height: 28px;
+}
+#spinicons {
+	display: inline-block;
+	position: relative;
+	top: 9px;
+}
+#uparw {
+	cursor: pointer;
+	width: 0px;
+	height: 0px;
+	border-left: 8px solid transparent;
+ 	border-right: 8px solid transparent;
+  	border-bottom: 10px solid black;
+}
+#separator {
+	max-height: 4px;
+}
+#dwnarw {
+	cursor: pointer;
+	width: 0; 
+	height: 0; 
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+  	border-top: 10px solid black;;
+}
 #areachoice {
 	margin-top: 8px;
 	margin-bottom: 6px;
+	height: 28px;
+}
+#filtpoi, #filthike, #sort {
+	height: 26px;
+	background-color: #6D3C17;
+	color: white;
+	cursor: pointer;
+	border-radius: 6px;
+}
+#filtpoi:hover, #filthike:hover, #sort:hover {
+	background-color: moccasin;
+	color: black;
 }
 #hikechoice {
-	margin-top: 2px;
+	position: relative;
+	top: 8px;
 }
 #usehike {
-	height: 24px;
+	height: 28px;
 	font-size: 16px;
 	border-radius: 4px;
 	padding-left: 6px;
-}
-#spinner {
-	width: 40px;
+	box-sizing: content-box;
 }
 select {
 	font-size: 16px;
+	height: 30px;
+}
+#sort {
+	min-width: 46px;
 }
 #filtnote {
 	font-style: italic;

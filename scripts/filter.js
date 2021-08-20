@@ -7,13 +7,6 @@
  */
 var arealoc = {}; // coordinates of location from which to calculate radius
 var mapHikes = []; // save hikes to be drawn together on a new map
-// the jqueryui 'miles' spinner:
-var spinner = $('#spinner').spinner({
-    min: 1,
-    max: 50,
-    page: 5
-});
-spinner.spinner("value", 5);
 positionMain();
 /**
  * This function will place position elements on the page on page
@@ -34,13 +27,26 @@ function positionMain() {
     return;
 }
 /**
+ * Functions which simulate the jquery ui 'spinner' widget
+ */
+$('#uparw').on('click', function () {
+    var current = parseInt($('#pseudospin').val());
+    var spinup = current >= 50 ? 50 : current + 1;
+    $('#pseudospin').val(spinup);
+});
+$('#dwnarw').on('click', function () {
+    var current = parseInt($('#pseudospin').val());
+    var spindwn = current > 1 ? current - 1 : 1;
+    $('#pseudospin').val(spindwn);
+});
+/**
  * After selecting an area around which to filter hikes, clicking on the button
  * will perform the filtering
  */
 $('#filtpoi').on('click', function () {
     $('#sort1').val("No Sort");
     $('#sort2').val("No Sort");
-    var epsilon = $('#spinner').spinner('value');
+    var epsilon = $('#pseudospin').val();
     var area = $('#area').find(":selected").text();
     $.ajax({
         url: '../json/areas.json',
@@ -70,7 +76,7 @@ $('#filtpoi').on('click', function () {
 $('#filthike').on('click', function () {
     $('#sort1').val("No Sort");
     $('#sort2').val("No Sort");
-    var epsilon = $('#spinner').spinner('value');
+    var epsilon = $('#pseudospin').val();
     var hikeloc = $('#usehike').val();
     if (hikeloc !== '') {
         arealoc = getHikeCoords(hikeloc);

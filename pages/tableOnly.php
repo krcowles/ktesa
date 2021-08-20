@@ -31,7 +31,6 @@ $pageType = 'FullTable';
     <!--<link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />-->
     <link href="../styles/tblPg.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
-    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -68,25 +67,31 @@ $pageType = 'FullTable';
         </div>
     </div>
 </div>
-<div id="backup">Return to top</div>
+<div id="backup" class="btstrp">Return to top</div>
 
 <!-- Filtering and SortingOptions: -->
-<div id="tblfilter">
+<div id="tblfilter" class="btstrp">
     <div>
-        <strong class="blue">Filter hikes:&nbsp;&nbsp;</strong>Hikes within 
-        <input id="spinner" />&nbsp;miles of
+        <strong class="blue">Filter hikes:&nbsp;&nbsp;</strong>Hikes within
+        <input id="pseudospin" type="text" value="5" />
+        <div id="spinicons">
+            <div id="uparw"></div>
+            <div id="separator">&nbsp;</div>
+            <div id="dwnarw"></div>
+        </div>
+        <span>miles</span>
     </div>
-    <div id="areachoice">
+    <div id="areachoice" class="btstrp">
         <?php require "../edit/localeBox.html";?>&nbsp;&nbsp;
-        <button id="filtpoi">Filter By Area</button>
+        <button id="filtpoi" class="btstrp">Filter by Area</button>
     </div>
-    <div id="hikechoice">
+    <div id="hikechoice" class="btstrp">
         Hike Name: 
         <input id="usehike" placeholder="Type in Hike Name" list="hikelist" />
         <?=$datalist;?>&nbsp;&nbsp;
-        <button id="filthike">Filter By Hike</button>
-        <br /><br />
-    </div>
+        <button id="filthike" class="btstrp">Filter by Hike</button>
+        <br />
+    </div><br />
     <div id="sorter">
         <strong class="blue">Then sort the results:</strong><br />By&nbsp;&nbsp;
         <select id="sort1">
@@ -106,7 +111,7 @@ $pageType = 'FullTable';
             <option value="Difficulty">Difficulty</option>
             <option value="Exposure">Exposure</option>
         </select>&nbsp;&nbsp;
-        <button id="sort">Sort</button>
+        <button id="sort" class="btstrp">Sort</button>
     </div>
     <div id="results" style="display:none;">
         

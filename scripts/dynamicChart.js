@@ -27,7 +27,7 @@ var fullWidth;
 var chartHeight;
 // misc.
 var cluspage = $('#cpg').text() === 'yes' ? true : false;
-var resizeFlag = true;
+var do_resize = true;
 var trackNumber; // global used to identify current active track (topmost in tracklist)
 var chartConst;
 var pnlMarg;
@@ -158,9 +158,14 @@ mapdiv.onload = function () {
     }, 200);
 };
 if (!mobile) {
-    var lmarg = $('#sidePanel').css('margin-left');
-    var str_marg = lmarg.substr(0, lmarg.length - 2); // remove 'px' at end
-    pnlMarg = parseInt(str_marg);
+    if ($('#sidePanel').css('display') !== 'none') {
+        var lmarg = $('#sidePanel').css('margin-left');
+        var str_marg = lmarg.substr(0, lmarg.length - 2); // remove 'px' at end
+        pnlMarg = parseInt(str_marg);
+    }
+    else {
+        pnlMarg = 0;
+    }
 }
 else {
     pnlMarg = 0;
@@ -175,9 +180,14 @@ function setChartDims() {
     if (!mobile) { // don't mess with chart height for mobile!
         var chartWidth = Math.floor(chartConst * fullWidth) - pnlMarg;
         var vpHeight = window.innerHeight;
-        var sidePnlPos = $('#sidePanel').offset();
+        // items on the page sit just below the navbar & logo
+        var topPos = $('#nav').height() + $('#logo').height();
+        /*
+        var sidePnlPos = <JQuery.Coordinates>$('#sidePanel').offset();
         var sidePnlLoc = sidePnlPos.top;
         var usable = vpHeight - sidePnlLoc;
+        */
+        var usable = vpHeight - topPos;
         chartHeight = Math.floor(0.35 * usable);
         if (chartHeight < 100) {
             $('#chartline').height(100);
@@ -187,7 +197,12 @@ function setChartDims() {
             $('#chartline').height(chartHeight);
             canvasEl.height = chartHeight;
         }
-        $('#chartline').width(chartWidth);
+        if ($('#sidePanel').css('display') !== 'none') {
+            $('#chartline').width(chartWidth);
+        }
+        else {
+            chartWidth = fullWidth;
+        }
     }
     else {
         chartWidth = fullWidth;
@@ -359,16 +374,16 @@ function findNeighbors(xDataPt, trackno) {
  * @return {null}
  */
 $(window).on('resize', function () {
-    if (resizeFlag) {
+    if (do_resize) {
         prevCHairs = false;
-        resizeFlag = false;
+        do_resize = false;
         setTimeout(function () {
             canvasEl.onmousemove = null;
             setChartDims();
             var chartData = defineData(trackNumber);
             ChartObj.render('grph', chartData);
             crossHairs(trackNumber);
-            resizeFlag = true;
+            do_resize = true;
         }, 300);
     }
     return;
