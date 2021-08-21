@@ -23,6 +23,7 @@ require_once "tableData.php";
         <col style="width:86px">
         <col style="width:64px">
     </colgroup>
+    <!-- total col widths: 902 -->
     <thead>
         <tr>
             <th class="hdr_row" data-sort="std">Hike/Trail Name</th>

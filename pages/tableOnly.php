@@ -67,7 +67,6 @@ $pageType = 'FullTable';
         </div>
     </div>
 </div>
-<div id="backup" class="btstrp">Return to top</div>
 
 <!-- Filtering and SortingOptions: -->
 <div id="tblfilter" class="btstrp">
@@ -126,6 +125,7 @@ $pageType = 'FullTable';
     Click on any hike column to sort; again to reverse.<br />
 </p>
 
+<div id="backup" class="btstrp">Return to top</div>
 <div id="refTbl">
     <?php require "../php/makeTables.php"; ?>
 </div>

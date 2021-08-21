@@ -1,3 +1,4 @@
+"use strict";
 /// <reference path='./map.d.ts' />
 // Overload & redeclare block warnings do not show up during compile
 /**

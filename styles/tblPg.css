@@ -4,14 +4,10 @@ body {
 	font-family: arial, verdana;
 	background-color: #dfdfdf;
 }
-#main {
-	position: relative;
-	top: 10px;
-}
 /* Table options header */
 #optcontainer {
 	position: relative;
-	top: -6px;
+	top: 10px;
 	text-align: center;
 	box-sizing: content-box;
 }
@@ -98,26 +94,26 @@ body {
 }
 #backup {
 	display: none;
-	position: sticky;
-	position: -webkit-sticky;
-	top: 120px;
+	position: fixed;
 	width: 100px;
-	height: 26px;
+	height: 20px;
 	font-size: 16px;
 	background-color: #6D3C17;
 	color: white;
-	padding-left: 10px;
-	padding-top: 6px;
+	padding-left: 8px;
+	padding-bottom: 3px;
+	/* standard declarations must be present for browser-specifics to work
+	   but will be OVERRIDEN by browser declarations!  */
 	transform: rotate(270deg);
-	transform-origin: 0px, 0px;
-	/* webkit browsers */
+	transform-origin: center;
+	/* webkit browsers [e.g. Chrome, Safari, ...] */
 	-webkit-transform: rotate(270deg);
-	-webkit-transform-origin-x: 0px;
-	-webkit-transform-origin-y: 0px;
+	-webkit-transform-origin-x: center;
+	-webkit-transform-origin-y: center;
 	/* firefox */
-	-moz-transform:rotate(270deg);
-	-moz-transform-origin: 0px, 0px;
-	/* internet explorer */
+	-moz-transform: rotate(270deg);
+	-moz-transform-origin: center;
+	/* internet explorer - not tried yet */
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 .btstrp {

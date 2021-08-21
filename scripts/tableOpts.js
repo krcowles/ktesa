@@ -158,7 +158,7 @@ function setNodatAlerts() {
  * >> When filter table is showing
  * NOTE: Attempting to change the background color of the select box destroyed its
  * 'hover' behavior, so the author simply places a disabled gray selector on top of
- * the working when to make it appear disabled.
+ * the working to make it appear disabled.
  */
 function toggleScrollSelect(state) {
     if (state) {
@@ -176,6 +176,34 @@ function toggleScrollSelect(state) {
     }
 }
 /**
+ * Positioning of the 'Return to top' div, after selecting a scroll from
+ * the scroller in table opts, has to take into account the applied rotation
+ * of the div (CSS uses attribute 'center' for the point of rotation). The
+ * center of the div will be placed left of the table with space in between.
+ * This is calculated based on the div width/height. Padding further affects
+ * the outcome, and was not specifically addressed in the calcs, so if that
+ * changes later on, the numbers may have to be adjusted to account for it.
+ * This also means that when the window size is less than allows for display
+ * of the return to top box under these conditions, the 'Return to top' div
+ * will not be displayed at all. In addition, the top of the element is
+ * positioned, after displaying, to the point at which the scroller places
+ * the starting point.
+ */
+function positionReturnDiv(scrolltop) {
+    var half_div_wid = Math.floor(0.50 * $('#backup').width());
+    var half_div_ht = Math.floor(0.50 * $('#backup').height());
+    var div_marg = 10;
+    var shift = half_div_wid + half_div_ht + div_marg;
+    var tablepos = $('#maintbl').offset();
+    var shift_left = (tablepos.left - shift) + 'px';
+    $('#backup').css('left', shift_left);
+    if (scrolltop !== 0) {
+        var starttop = $('#backup').css('top');
+        var down = (parseInt(starttop) - 120) + 'px';
+        $('#backup').css('top', down);
+    }
+}
+/**
  * When page is loaded and table is estabished:
  */
 $(function () {
@@ -183,10 +211,6 @@ $(function () {
     $('.sortable')[0].id = 'maintbl';
     tableSort('#maintbl');
     $('#maintbl').css('margin-bottom', '26px');
-    // 'Return to top' div, when selecting scroll
-    var tablepos = $('#maintbl').offset();
-    var table_left = (tablepos.left - 78) + 'px';
-    $('#backup').css('left', table_left);
     $(window).on('scroll', function () {
         var s = $(window).scrollTop();
         if (s < 200) {
@@ -286,16 +310,17 @@ $(function () {
             $('#backup').hide();
         }
         else {
-            var position = parseInt(selected);
-            if (position === 0) {
+            var position_1 = parseInt(selected);
+            if (position_1 === 0) {
                 $(window).scrollTop(0);
                 $('#backup').hide();
             }
             else {
-                $(window).scrollTop(scroll[position]);
-                // sticky position of *rotated* div will always be 60px from top of new viewport
-                $('#backup').css('top', '60px');
-                $('#backup').show();
+                $(window).scrollTop(scroll[position_1]);
+                setTimeout(function () {
+                    $('#backup').show();
+                    positionReturnDiv(scroll[position_1]);
+                }, 600);
             }
         }
     });
@@ -306,8 +331,6 @@ $(function () {
     });
     setNodatAlerts();
     $(window).on('resize', function () {
-        tablepos = $('#maintbl').offset();
-        table_left = (tablepos.left - 78) + 'px';
-        $('#backup').css('left', table_left);
+        positionReturnDiv(0);
     });
 });
