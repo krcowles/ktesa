@@ -54,12 +54,12 @@ $info   = !empty($pgdata['info']) ?   $pgdata['info'] : '';
     <form id="form" action="saveClusterPage.php" method="post">
         <input type="hidden" name="indxNo" value="<?=$indxNo;?>" />
         <input type="hidden" name="clustergroup" value="<?=$page;?>" />
-        <h4 id="hdr">Enter the data required to create a new page for
-            the "<?=$page;?>"</h4>
+        <h5 id="hdr">Enter the data required to create a new page for
+            the "<?=$page;?>"</h5>
         <div id="buttons">
             <button id="preview" type="button" class="btn btn-secondary">
                 Preview</button>
-            <button id="submit" type="button" class="btn btn-secondary">
+            <button id="submit" type="submit" class="btn btn-secondary">
                 Apply</button>
         </div>
         <span id="locale">Enter a representative locale for this group&nbsp;&nbsp;

@@ -78,13 +78,10 @@ $(function () {
             '&clus=y&hikeIndx=' + indxNo;
         window.open(cpviewer, "_blank");
     });
-    $('#submit').on('click', function () {
-        var retval = true;
+    $('#submit').on('click', function (ev) {
         if (!validateLatLng()) {
-            retval = false;
+            return false;
         }
-        $('form').trigger('submit');
-        return retval;
     });
     var dirtxt = $('#dirs').val();
     if (dirtxt.indexOf("INVALID") !== -1) {

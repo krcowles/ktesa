@@ -84,14 +84,10 @@ $('#preview').on('click', function(ev) {
         '&clus=y&hikeIndx=' + indxNo;
     window.open(cpviewer, "_blank");
 });
-
-$('#submit').on('click', function() {
-    let retval = true;
+$('#submit').on('click', function(ev: JQuery.ClickEvent) {
     if (!validateLatLng()) {
-        retval = false;
+        return false;
     }
-    $('form').trigger('submit');
-    return retval;
 });
 
 let dirtxt = <string>$('#dirs').val();
