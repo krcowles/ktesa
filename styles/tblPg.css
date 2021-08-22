@@ -123,6 +123,8 @@ body {
 /* Filtering */
 #tblfilter {
 	display: none;
+	position: relative;
+	top: 10px;
 }
 #pseudospin {
 	width: 38px;
