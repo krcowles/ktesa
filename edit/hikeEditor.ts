@@ -39,7 +39,7 @@ $( function () { // DOM loaded
  * 	   generate an email to the admin for processing the request to publish the
  *     selected hike page.
  */
-var page_type = $('#page_id').text();
+var page_type = $('#active').text();
 var useHikeEd = 'editDB.php?tab=1&hikeNo=';
 var useClusEd = 'editClusterPage.php?hikeNo=';
 var xfrPage   = 'xfrPub.php?hikeNo=';

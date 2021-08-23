@@ -6,7 +6,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -65,8 +64,9 @@ $jsInEdit = json_encode($nowInEdit);
 
 <div>
     <?php if ($pubreq) : ?>
+        <p id="pubrequest" style="display:none;"><?=$pubreq;?></p>
         <p style="text-align:center;font-size:18px;">Click on the hike you
-            wish to publish; an email notificartion will be sent to the
+            wish to publish; an email notification will be sent to the
             admin.<br />You will be advised when the hike has been published.</p>
     <?php else : ?>
         <p style="text-align:center;font-size:18px;">When you click on a hike
