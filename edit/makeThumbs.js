@@ -270,7 +270,7 @@ $('#redo_thumb').on('click', function (ev) {
     $.post('deletePreview.php', post_data, function (result) {
         if (result === 'OK') {
             // note: using reload() can return the user to tab1
-            window.open('editDB.php?tab=2&hikeNo=23', '_self');
+            window.open('editDB.php?tab=2&hikeNo=' + indxNo, '_self');
         }
     });
 });
