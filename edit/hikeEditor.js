@@ -10,6 +10,42 @@
  * @version 2.1 Typescripted
  * @version 2.2 Replaced local sort with new columnSort.ts/js script
  */
+// when preview buttons are displayed:
+var preview = '../pages/hikePageTemplate.php?age=new&hikeIndx=';
+var btnId = '<a id="prev';
+var btnHtml = 'class="btn btn-outline-primary btn-sm styled" role="button"' +
+    'href="' + preview;
+/**
+ * On load and after every column sort, provide corresponding preview buttons
+ */
+function assignPreviews() {
+    /**
+     * After sorting or resizing, prepend preview buttons
+     */
+    var row1_loc = $('tbody').find('tr').eq(0).offset();
+    $('#prev_btns').offset({ top: row1_loc.top, left: row1_loc.left - 72 });
+    var $sorted_rows;
+    $sorted_rows = null; // erase previous history
+    $('#prev_btns').empty();
+    $sorted_rows = $('tbody').find('tr');
+    $sorted_rows.each(function (indx) {
+        var trow_ht = $(this).height();
+        var trow_pos = $(this).offset();
+        var link_pos = { top: trow_pos.top, left: trow_pos.left - 72 };
+        // get link
+        var $alink = $(this).find('td').eq(0).children().eq(0);
+        var href = $alink.attr('href');
+        var hike_no_pos = href.indexOf('hikeNo') + 7;
+        var hike_no = href.substring(hike_no_pos);
+        var btn_link = '<div>' + btnId + indx + '" style="height:' + trow_ht + '" ' +
+            btnHtml + hike_no + '">Preview</a></div>';
+        $('#prev_btns').append(btn_link);
+        $('#prev' + indx).offset(link_pos);
+    });
+}
+$(window).on('resize', function () {
+    assignPreviews();
+});
 $(function () {
     /**
      * This script responds based on the current scenario:
@@ -34,6 +70,7 @@ $(function () {
      *     selected hike page.
      */
     var page_type = $('#active').text();
+    var display_preview = page_type === 'Edit' ? true : false;
     var useHikeEd = 'editDB.php?tab=1&hikeNo=';
     var useClusEd = 'editClusterPage.php?hikeNo=';
     var xfrPage = 'xfrPub.php?hikeNo=';
@@ -130,4 +167,7 @@ $(function () {
         }
     });
     tableSort('#editTbl');
+    if (display_preview) {
+        assignPreviews();
+    }
 });

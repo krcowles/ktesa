@@ -52,6 +52,10 @@ $jsInEdit = json_encode($nowInEdit);
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="tables.css" type="text/css" rel="stylesheet" />
+    <style type="text/css">
+       .styled { font-size: 12px;
+                 position: absolute; }
+    </style>
     <script src="../scripts/jquery.js"></script>
 </head>
 
@@ -79,8 +83,9 @@ $jsInEdit = json_encode($nowInEdit);
         <?php endif; ?>
     <?php endif; ?>
 </div>
-<div><br />
+<div>
 
+<div id="prev_btns" style="position:absolute"></div>
 <?php require "../php/makeTables.php"; ?>
 </div>
 <div id="ineditModal">
@@ -90,9 +95,10 @@ $jsInEdit = json_encode($nowInEdit);
 <script type="text/javascript">
     var age = "<?=$age;?>";
     var inEdits = <?=$jsInEdit;?>;
+    var previewSort = true;
 </script>
-<script src="../scripts/columnSort.js"></script>
 <script src="hikeEditor.js"></script>
+<script src="../scripts/columnSort.js"></script>
 
 </body>
 </html>

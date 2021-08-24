@@ -131,6 +131,9 @@ function tableSort(tableid) {
                 if ($header.hasClass('ascending') || $header.hasClass('descending')) {
                     $header.toggleClass('ascending descending');
                     $tbody.append($grows.reverse());
+                    if (typeof previewSort !== 'undefined' && previewSort) {
+                        assignPreviews();
+                    }
                 }
                 else {
                     $header.addClass('ascending');
@@ -164,6 +167,9 @@ function tableSort(tableid) {
                             return retval;
                         });
                         $tbody.append($grows);
+                        if (typeof previewSort !== 'undefined' && previewSort) {
+                            assignPreviews();
+                        }
                     }
                     else {
                         alert("Compare failed for this header");
@@ -171,7 +177,9 @@ function tableSort(tableid) {
                     }
                 }
             }
-            setNodatAlerts();
+            if ($('#active').length !== 0 && $('#active').text() === 'Table') {
+                setNodatAlerts();
+            }
             return success;
         });
     });

@@ -15,7 +15,42 @@ declare function tableSort(tableid: string): void;
  * @version 2.1 Typescripted
  * @version 2.2 Replaced local sort with new columnSort.ts/js script
  */
-
+// when preview buttons are displayed:
+var preview   = '../pages/hikePageTemplate.php?age=new&hikeIndx=';
+var btnId     = '<a id="prev';
+var btnHtml   = 'class="btn btn-outline-primary btn-sm styled" role="button"' +
+	'href="' + preview;
+/**
+ * On load and after every column sort, provide corresponding preview buttons
+ */
+ function assignPreviews(): void {
+	/**
+	 * After sorting or resizing, prepend preview buttons
+	 */
+	var row1_loc= <JQuery.Coordinates>$('tbody').find('tr').eq(0).offset();
+	$('#prev_btns').offset({ top: row1_loc.top, left: row1_loc.left - 72 });
+	var $sorted_rows: JQuery<HTMLTableRowElement> | null;
+	$sorted_rows = null; // erase previous history
+	$('#prev_btns').empty();
+	$sorted_rows = $('tbody').find('tr');
+	$sorted_rows.each(function(indx) {
+		let trow_ht = <number>$(this).height();
+		let trow_pos = <JQuery.Coordinates>$(this).offset();
+		let link_pos = { top: trow_pos.top, left: trow_pos.left -72 };
+		// get link
+		let $alink = $(this).find('td').eq(0).children().eq(0);
+		let href = <string>$alink.attr('href');
+		let hike_no_pos = href.indexOf('hikeNo') + 7
+		let hike_no = href.substring(hike_no_pos);
+		let btn_link = '<div>' + btnId + indx + '" style="height:' + trow_ht + '" ' +
+			btnHtml + hike_no + '">Preview</a></div>';
+		$('#prev_btns').append(btn_link);
+		$('#prev'+indx).offset(link_pos);
+	});
+}
+$(window).on('resize', function() {
+	assignPreviews();
+});
 $( function () { // DOM loaded
 /**
  * This script responds based on the current scenario:
@@ -40,10 +75,11 @@ $( function () { // DOM loaded
  *     selected hike page.
  */
 var page_type = $('#active').text();
+var display_preview = page_type === 'Edit' ? true : false;
 var useHikeEd = 'editDB.php?tab=1&hikeNo=';
 var useClusEd = 'editClusterPage.php?hikeNo=';
 var xfrPage   = 'xfrPub.php?hikeNo=';
-var shipit    = '../edit/notifyAdmin.php?hikeNo=';
+var shipit    = '../edit/notifyAdmin.php?hikeNo=';	
 var $rows     = $('tbody').find('tr');
 $('table').attr('id', 'editTbl');
 var hikeno: string;
@@ -130,5 +166,8 @@ $rows.each(function() {
 	}
 });
 tableSort('#editTbl');
+if (display_preview) {
+	assignPreviews();
+}
 
 });

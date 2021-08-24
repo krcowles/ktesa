@@ -1,3 +1,5 @@
+declare var previewSort: boolean;
+declare function assignPreviews(): void;
 /**
  * @fileoverview This reusable module specifies the sorting method for all
  * sortable tables (e.g. Table Only: #maintbl, #ftable; Hike Editor table:
@@ -125,6 +127,9 @@ var compare = {
 				if ($header.hasClass('ascending') || $header.hasClass('descending')) {
 					$header.toggleClass('ascending descending');
 					$tbody.append($grows.reverse());
+					if (typeof previewSort !== 'undefined' && previewSort) {
+						assignPreviews();
+					}
 				} else {
 					$header.addClass('ascending');
 					$header.siblings().removeClass('ascending descending');
@@ -156,13 +161,18 @@ var compare = {
 						
 						});
 						$tbody.append($grows);
+						if (typeof previewSort !== 'undefined' && previewSort) {
+							assignPreviews();
+						}
 					} else {
 						alert("Compare failed for this header");
 						success = false;
 					}
 				}
 			}
-			setNodatAlerts();
+			if ($('#active').length !== 0 && $('#active').text() === 'Table') {
+				setNodatAlerts();
+			}
 			return success;
 		});
 	});
