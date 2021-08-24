@@ -178,6 +178,15 @@ function initMap() {
 			averageCenter: true,
 			zoomOnClick: true
 	});
+
+	// IdTableElements must be called in order to initiate the side table creation
+	var idle = google.maps.event.addListener(map, 'idle', function () {
+		var perim = String(map.getBounds());
+		IdTableElements(perim, true);  // kicks off 'formTbl'
+	});
+	map.addListener('bounds_changed', function() {
+		google.maps.event.trigger(map, 'resize');
+	});
 	return;
 }  // end of initMap()
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
