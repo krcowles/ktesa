@@ -29,7 +29,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 
 
@@ -326,19 +326,19 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','3801470195','2021-08-06 08:19:44'),
-('2','CLUSHIKES','1466609144','2021-08-06 08:19:44'),
-('3','CLUSTERS','368350707','2021-08-06 08:19:44'),
-('4','EGPSDAT','0','2021-08-06 08:19:44'),
-('5','EHIKES','0','2021-08-06 08:19:44'),
-('6','EREFS','0','2021-08-06 08:19:44'),
-('7','ETSV','0','2021-08-06 08:19:44'),
-('8','FAVORITES','3651041965','2021-08-06 08:19:44'),
-('9','GPSDAT','4093278896','2021-08-06 08:19:44'),
-('10','HIKES','2629280101','2021-08-06 08:19:44'),
-('11','REFS','2795014114','2021-08-06 08:19:44'),
-('12','TSV','1662981847','2021-08-06 08:19:44'),
-('13','USERS','510490655','2021-08-06 08:19:44');
+('1','BOOKS','3801470195','2021-08-11 15:12:52'),
+('2','CLUSHIKES','1466609144','2021-08-11 15:12:52'),
+('3','CLUSTERS','368350707','2021-08-11 15:12:52'),
+('4','EGPSDAT','0','2021-08-11 15:12:52'),
+('5','EHIKES','0','2021-08-11 15:12:52'),
+('6','EREFS','0','2021-08-11 15:12:52'),
+('7','ETSV','0','2021-08-11 15:12:52'),
+('8','FAVORITES','3651041965','2021-08-11 15:12:52'),
+('9','GPSDAT','4093278896','2021-08-11 15:12:52'),
+('10','HIKES','2728897023','2021-08-11 15:12:52'),
+('11','REFS','1829307462','2021-08-11 15:12:52'),
+('12','TSV','131204467','2021-08-11 15:12:52'),
+('13','USERS','510490655','2021-08-11 15:12:52');
 
 
 
@@ -369,7 +369,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 
 
@@ -397,7 +397,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 
 
@@ -499,7 +499,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=265 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=266 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -760,7 +760,8 @@ INSERT INTO HIKES VALUES
 ('261','South Crest - CCC (Partial)','2','Tijeras','Out-and-back','6.60','2800','Med-Difficult','None','Views of Hondo Canyon and points East','Any','Mixed sun/shade','South_Crest-75.161.84.172-1626477047.gpx','South_Crest-75.161.84.172-1626477047.json','350895490','-1063914511','Sout7ce088.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0851237,-106.394046,16.04z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <span style=\"color: #1428d2;\"><em>South Crest Trail </em></span>begins the march of the 26-mile Crest Trail along the top of the <em>Sandias</em>. The original objective of this hike was to traverse the <em><span style=\"color: #1428d2;\">CCC Trail</span></em><span style=\"color: #000000;\">, which begins near the junction of the <span style=\"color: #1428d2;\"><em>South Crest Trail</em></span> with the <em><span style=\"color: #1428d2;\">Upper Faulty Trail</span></em>. You must be on <em><span style=\"color: #1428d2;\">Upper Faulty</span></em> to find the trail head, which is marked with a large pile of rocks.</span></p>\r\n<p><span style=\"color: #000000;\">You begin by hiking about 2.5 miles along the <em><span style=\"color: #1428d2;\">South Crest Trail</span></em>, ascending about 1,000 ft to the start of the <span style=\"color: #1428d2;\"><em>CCC Trail</em><span style=\"color: #000000;\">, which starts a very short distance from the juncture with <span style=\"color: #1428d2;\"><em>Upper Faulty Trail</em></span>.</span></span> The <em><span style=\"color: #1428d2;\">CCC Trail</span></em>&nbsp; ascends quite steeply and relentlessly from this point. Each mile along the trail goes up about 1,000 ft, for an average grade of 18%! The hike is primarily a physical challenge, as there is no scenery along the way. The author couldn\'t complete the journey to the top, but the remainder of the trail can be seen on the map by clicking on the \'CCC Trail\' checkbox in the \'Tracks\' box, located in the upper right hand corner of the map.</span></p>',NULL,NULL,NULL),
 ('262','Bill Spring-Oso-Faulty Loop','2','Tijeras','Loop','8.40','1100','Moderate','Picnic Area w/multiple toilets','East-looking views from Sandia','Any','Good shade','Bill Spring-75.161.84.172-1627138990.gpx','Bill Spring-75.161.84.172-1627138990.json','351767613','-1063789963','Billc78119.jpg',NULL,NULL,'https://www.google.com/maps/dir//DOC+LONG+PICNIC+AREA,+7562+Sandia+Crest+Rd,+Cedar+Crest,+NM+87008/@35.1685046,-106.3783427,14.53z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984dbceffff3:0x5318c098cf645d67!2m2!1d-106.3768858!2d35.1757456',NULL,'<p>The <em><span style=\"color: #1428d2;\">Bill Spring Trail</span></em>, located at the <em>Doc Long Picnic Area</em>, is a starting point for variations of hikes in this area. This is reflected by the variations shown in the references below. It connects with the <span style=\"color: #1428d2;\"><em>Faulty Trail</em></span> at its northern end (see the northernmost green flag on the interactive map) and the much less used <span style=\"color: #1428d2;\"><em>Old Faulty Trail </em></span>prior to that (red flag on the <span style=\"color: #1428d2;\"><em>Bill Spring Trail</em></span>).</p>\r\n<p>This hike is actually a result of the author mistakenly proceeding up <em><span style=\"color: #1428d2;\">Oso Corredor Trail </span></em>instead of following the planned route along <em><span style=\"color: #1428d2;\">Faulty Trail</span></em>. While there are not many vista points along the way, the hike is pleasant, though continously uphill at a moderate pace. The author turned around near the end of <em><span style=\"color: #1428d2;\">Oso Corredor</span></em> and proceeded back to <span style=\"color: #1428d2;\"><em>Faulty Trail</em></span> to complete the loop back by following <span style=\"color: #1428d2;\"><em>Old Faulty Trail</em></span>. Note the southernmost green flag on the map - it indicates the trail head for the <em><span style=\"color: #1428d2;\">Old Faulty Trail</span></em>, which is rather obscure. It appears that there was an attempt to intentionally discourage use of the trail, as it blocked by a sawed-off section of tree and some sticks. The trail is nonetheless in rather good condition and easy to follow. It occurs a very short distance prior to the <em><span style=\"color: #1428d2;\">Sulpher Canyon Trail</span></em>, which is well marked.</p>\r\n<p>Though there is good shade along the way, the section of <em><span style=\"color: #1428d2;\">Faulty Trail</span></em> between the <em><span style=\"color: #1428d2;\">Oso Corredor</span></em> junction (red flag) and the <span style=\"color: #1428d2;\"><em>Old Faulty</em></span> junction (green flag) can get more exposed. The author chose the use of red flags for right turns and green flags for left turns.</p>',NULL,NULL,NULL),
 ('263','Bill Spring-Faulty Mulitloop','2','Tijeras','Loop','6.00','550','Moderate','Picnic area w/multiple toilets','Interior and eastward views','Any','Good shade','BillSpringMulti-174.28.118.186-1627684370.gpx','BillSpringMulti-174.28.118.186-1627684370.json','351768203','-1063788412','Billf65b34.jpg',NULL,NULL,'https://www.google.com/maps/dir//DOC+LONG+PICNIC+AREA,+7562+Sandia+Crest+Rd,+Cedar+Crest,+NM+87008/@35.1693953,-106.3760751,14.55z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984dbceffff3:0x5318c098cf645d67!2m2!1d-106.3768858!2d35.1757456',NULL,'<p>This hike makes a double loop by using various trail options, starting from the <em><span style=\"color: #1428d2;\">Bill Spring Trail </span></em>head. At the end of <em><span style=\"color: #1428d2;\">Bill Spring</span></em>, <span style=\"color: #1428d2;\"><em>Faulty Trail </em></span>begins. It forms the backbone from which other trails branch out.</p>\r\n<p>During the first loop, <em><span style=\"color: #1428d2;\">Faulty Trail</span></em> is followed up to the <span style=\"color: #1428d2;\"><em>Cienega Horse Bypass</em>, <span style=\"color: #000000;\">where this hike takes a sharp left turn</span></span><span style=\"color: #000000;\">.</span> Although a horse trail, it is a very pleasant section of trail with nice views along the way. Following this trail takes the hiker down to the <em>Sulfer Canyon</em> and <em>Cienega Picnic Grounds</em>, where the <em><span style=\"color: #1428d2;\">Wagon Trail</span></em> picks up for a short distance, leading then to the <em><span style=\"color: #1428d2;\">Acequia Trail</span></em>. The latter proceeds through the picnic ground, and at its northern end, the <span style=\"color: #1428d2;\"><em>Cienega Trail</em></span> begins. This section of the trail soon intersects the <em><span style=\"color: #1428d2;\">Faulty Trail</span></em>, which is then followed back to the <em><span style=\"color: #1428d2;\">Sulfer Canyon Trail</span></em>. Proceeding down that trail at a fairly easy pace leads back to the <em>Sulfer Canyon</em> picnic area. From here, a newer trail segment, the <em><span style=\"color: #1428d2;\">Doc Long/Sulfer Canyon Link Trail</span></em>, returns the hiker to the starting point. For a slightly more adventurous return from <em><span style=\"color: #1428d2;\">Faulty</span></em>, use the <span style=\"color: #1428d2;\"><em>Old Faulty Trail</em></span>, referenced in the <a href=\"../pages/hikePageTemplate.php?hikeIndx=262\" target=\"_blank\" rel=\"noopener\">Bill Spring-Oso-Faulty Loop</a></p>',NULL,NULL,NULL),
-('264','Rito de los Indios','2','Valles Caldera','Out-and-back','7.90','950','Moderate','No (public toilets on road in)','Mountain and valley views','Not Winter','Mixed sun/shade','RitoDeLosIndios-75.161.75.101-1628346864.gpx','RitoDeLosIndios-75.161.75.101-1628346864.json','359642910','-1064911560','Rito01bf24.jpg',NULL,NULL,'https://www.google.com/maps/dir//Rito+de+los+Indios,+New+Mexico+87025/@35.9004235,-106.5578068,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718086323b10d6f:0xeb04ec82b3b2118d!2m2!1d-106.4911447!2d35.9627989','<p>The interior roads of the Valles Caldera are somewhat rugged dirt and gravel, and only one-and-a-half lanes wide. An all-wheel drive vehicle is strongly recommended. This hike begins almost 15 miles from the Entrance Station, and at slow speeds will take about 45 minutes to reach - plan your time accordingly.</p>','<p>The <span style=\"color: #1428d2;\"><em>Rito de los Indios Trail </em></span>is one of the best hikes around for many reasons: long mountain views, grassy hillsides, meadows with wildflowers and butterflies, solitude, sunshine, clean air and great exercise. It follows alongside the <em>Rito de los Indios</em> and crosses it four times on this hike - none of which are challenging at all.</p>\r\n<p>The trail is exposed for the first half of the trip and maintains an easy grade uphill. After that, partial shade begins to appear and the ascent becomes more moderate in grade. The last short section of trail up to the boundary fence is somewhat steep. There are many and varied views within the Caldera and of surrounding mountains. Perhaps due to the monsoons, the wildflower population on this trip was very colorful with many varieties along the way. If you enjoy solitude and great scenery, this is the hike for you.</p>',NULL,NULL,NULL);
+('264','Rito de los Indios','2','Valles Caldera','Out-and-back','7.90','950','Moderate','No (public toilets on road in)','Mountain and valley views','Not Winter','Mixed sun/shade','RitoDeLosIndios-75.161.75.101-1628346864.gpx','RitoDeLosIndios-75.161.75.101-1628346864.json','359642910','-1064911560','Rito01bf24.jpg',NULL,NULL,'https://www.google.com/maps/dir//Rito+de+los+Indios,+New+Mexico+87025/@35.9004235,-106.5578068,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718086323b10d6f:0xeb04ec82b3b2118d!2m2!1d-106.4911447!2d35.9627989','<p>The interior roads of the Valles Caldera are somewhat rugged dirt and gravel, and only one-and-a-half lanes wide. An all-wheel drive vehicle is strongly recommended. This hike begins almost 15 miles from the Entrance Station, and at slow speeds will take about 45 minutes to reach - plan your time accordingly.</p>','<p>The <span style=\"color: #1428d2;\"><em>Rito de los Indios Trail </em></span>is one of the best hikes around for many reasons: long mountain views, grassy hillsides, meadows with wildflowers and butterflies, solitude, sunshine, clean air and great exercise. It follows alongside the <em>Rito de los Indios</em> and crosses it four times on this hike - none of which are challenging at all.</p>\r\n<p>The trail is exposed for the first half of the trip and maintains an easy grade uphill. After that, partial shade begins to appear and the ascent becomes more moderate in grade. The last short section of trail up to the boundary fence is somewhat steep. There are many and varied views within the Caldera and of surrounding mountains. Perhaps due to the monsoons, the wildflower population on this trip was very colorful with many varieties along the way. If you enjoy solitude and great scenery, this is the hike for you.</p>',NULL,NULL,NULL),
+('265','Guitierrez Canyon Open Space','2','Tijeras','Loop','6.20','450','Moderate','None','Views of Sandia\'s eastern slopes','Not Winter','Mixed sun/shade','San_Antonito-75.161.75.101-1628716910.gpx','San_Antonito-75.161.75.101-1628716910.json','351292822','-1063651933','San 4fb279.jpg',NULL,NULL,'https://www.google.com/maps/dir//John+A.+Milne+%26+Gutierrez+Canyon+Open+Space,+Unnamed+Road,+Cedar+Crest,+NM+87008/@35.1290221,-106.3686694,15.64z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a2bcb45adf05:0xcb6eac2e5282fc79!2m2!1d-106.3652707!2d35.1292888',NULL,'<p>The Open Space in San Antonito is unassumingly located right off of NM 14, 3 miles north of Tijeras next to the Post Office. It quickly leads into the foothills opposite of Sandia\'s eastern face. On the interactive map above, you will see colored flags, generally representing points where trails intersect. The author uses green to indicate left turns, and red to indicate right. The one instance of blue flag was to indicate that the trail (not so obviously) proceeds straight ahead, on a less well-traveled path.</p>\r\n<p>This hike was \'constructed\' by the author to piece together sufficient trail segments to provide a moderately long adventure - other options can be used to reduce the overall hike length. Some of those options can be seen by clicking on the link provided below in <strong>References</strong>. There are numerous trail crossings, along with twists and turns which provide lovely views in multiple directions. The hike begins with <em><span style=\"color: #1428d2;\">Wagon Mound Trail</span></em>, which proceeds somewhat steeply uphill, and is quite rocky. Berfore long it intersects the <em><span style=\"color: #1428d2;\">Sierra Vista Bypass Trail</span></em>, which maintains a more level contour along the ridge. This trail ends at an \'Emergency Access Road\', which is wide and rocky. A short downhill takes you to the beginning of <em><span style=\"color: #1428d2;\">Canyon Trail </span></em>on the left.</p>\r\n<p><em><span style=\"color: #1428d2;\">Canyon Trail </span></em>loops around to another junction with <span style=\"color: #1428d2;\"><em>Doe Run</em></span> and <em><span style=\"color: #1428d2;\">Eagle Ridge</span></em>. Keep straight/left to follow the <em><span style=\"color: #1428d2;\">Doe Run Trail</span></em>. It proceeds up from the canyon to the top of a ridge. Here it intersects with <em><span style=\"color: #1428d2;\">Ridge Trail</span></em>, but this hike turns right and goes uphill on an <em>unnamed trail</em>. Soon the <em>unnamed trail</em> proceeds sharply downhill and meets the <em><span style=\"color: #1428d2;\">Chapparal Trail</span></em>, where the hike turns left. In a short distance, the <em><span style=\"color: #1428d2;\">Arroyo Loop Trail</span></em> is met, and the hike keeps right to proceed along the west side of the loop. There are some lovely views along the arroyo on this trail, which leads back to the <em><span style=\"color: #1428d2;\">Mine Trail</span></em>, returning back to the parking area.</p>',NULL,NULL,NULL);
 
 
 
@@ -772,7 +773,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3011 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3014 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1718,7 +1719,9 @@ INSERT INTO REFS VALUES
 ('3004','263','App:','https://www.alltrails.com/explore/trail/us/new-mexico/faulty-trail-195-and-bill-spring-trail-196-loop?mobileMap=false&ref=sidebar-static-map','AllTrails.com'),
 ('3008','264','Book:','22',NULL),
 ('3009','264','App:','https://www.alltrails.com/trail/us/new-mexico/rito-de-los-indios','AllTrails.com'),
-('3010','264','Website:','https://www.nps.gov/vall/planyourvisit/moderate-hikes.htm','Natl Park Service');
+('3010','264','Website:','https://www.nps.gov/vall/planyourvisit/moderate-hikes.htm','Natl Park Service'),
+('3011','265','App:','https://www.alltrails.com/explore/us/new-mexico/cedar-crest?b_tl_lat=35.140759986293645&b_tl_lng=-106.37196555281791&b_br_lat=35.12468092603041&b_br_lng=-106.34798826419168','AllTrails.com'),
+('3012','265','Website:','https://www.cabq.gov/parksandrecreation/open-space/lands/east-mountain-open-space','East Mtn Open Space: ABQ Parks');
 
 
 
@@ -1742,7 +1745,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9089 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9104 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4591,7 +4594,19 @@ INSERT INTO TSV VALUES
 ('9082','264',NULL,'IMG_4103','Y','Y','Firecracker penstemmon beautiful the slopes','359781917','-1064768444','2851',NULL,'2021-08-05 09:47:03','IMG_4103','480','640',NULL,'6'),
 ('9083','264',NULL,'IMG_4110','Y','Y','One of four stream crossing - all easy','359853056','-1064754722','2853',NULL,'2021-08-05 10:00:08','IMG_4110','480','640',NULL,'7'),
 ('9084','264',NULL,'IMG_4101','Y','Y','This fence occurs near the fork in the road','359721556','-1064804611','2854',NULL,'2021-08-05 09:35:20','IMG_4101','480','640',NULL,'5'),
-('9085','264',NULL,'IMG_4097','Y','N','Harebells and other wildflowers proliferate the trail','359643667','-1064910889','2855',NULL,'2021-08-05 09:15:54','IMG_4097','480','640',NULL,'1');
+('9085','264',NULL,'IMG_4097','Y','N','Harebells and other wildflowers proliferate the trail','359643667','-1064910889','2855',NULL,'2021-08-05 09:15:54','IMG_4097','480','640',NULL,'1'),
+('9089','265',NULL,'IMG_4139','Y','Y','Sandia\'s eastern slopes from aptly named Sierra Vista Bypass','351294972','-1063612972','2856',NULL,'2021-08-11 07:38:34','IMG_4139','480','640',NULL,'2'),
+('9090','265',NULL,'IMG_4145','Y','Y','Looking south from Sierra Vista','351286722','-1063518222','2857',NULL,'2021-08-11 08:10:24','IMG_4145','480','640',NULL,'4'),
+('9091','265',NULL,'IMG_4134','Y','Y','A rocky slope up Wagon Mound','351292444','-1063637611','2858',NULL,'2021-08-11 07:25:46','IMG_4134','640','480',NULL,'1'),
+('9092','265',NULL,'IMG_4148','Y','Y','The arroyo-formed canyon of Canyon Trail','351277306','-1063476500','2859',NULL,'2021-08-11 08:36:43','IMG_4148','640','480',NULL,'6'),
+('9093','265',NULL,'IMG_4147','Y','Y','The beginning of Canyon Trail','351251250','-1063484639','2860',NULL,'2021-08-11 08:26:50','IMG_4147','640','480',NULL,'5'),
+('9094','265',NULL,'IMG_4143','Y','Y','Gentle uphill on Sierra Vista Bypass','351298417','-1063579639','2861',NULL,'2021-08-11 07:45:44','IMG_4143','640','480',NULL,'3'),
+('9095','265',NULL,'IMG_4157','Y','Y','Another Sandia view from the Junction of Ridge Trail and Doe Run','351332389','-1063555139','2862',NULL,'2021-08-11 09:24:57','IMG_4157','480','640',NULL,'9'),
+('9096','265',NULL,'IMG_4151','Y','Y','Looking out from Doe Run\'s heights','351262556','-1063454139','2863',NULL,'2021-08-11 08:55:18','IMG_4151','480','640',NULL,'8'),
+('9097','265',NULL,'IMG_4149','Y','Y','\'Lone Pine\' at Doe Run','351254361','-1063441472','2864',NULL,'2021-08-11 08:46:59','IMG_4149','640','480',NULL,'7'),
+('9098','265',NULL,'IMG_4165','Y','Y','Lovely views along Arroyo Loop Trail - West Side','351329583','-1063621056','2865',NULL,'2021-08-11 10:12:45','IMG_4165','480','640',NULL,'11'),
+('9099','265',NULL,'IMG_4168','Y','Y','Trail head view','351292083','-1063649139','2866',NULL,'2021-08-11 10:24:18','IMG_4168','480','640',NULL,'0'),
+('9100','265',NULL,'IMG_4160','Y','Y','The trail\'s namesake arroyo','351389500','-1063568722','2867',NULL,'2021-08-11 09:57:25','IMG_4160','480','640',NULL,'10');
 
 
 
