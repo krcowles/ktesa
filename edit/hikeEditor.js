@@ -150,7 +150,9 @@ $(function () {
                     var affected = $(this).offset();
                     $('#ineditModal').css({
                         top: affected.top + 25,
-                        left: affected.left - 28
+                        left: affected.left - 28,
+                        paddingTop: '4px',
+                        paddingBottom: '6px'
                     });
                     $('#ineditModal').show();
                     return;

@@ -150,7 +150,9 @@ $rows.each(function() {
 				let affected = <JQuery.Coordinates>$(this).offset();
 				$('#ineditModal').css({
 					top: affected.top + 25,
-					left: affected.left - 28
+					left: affected.left - 28,
+					paddingTop: '4px',
+					paddingBottom: '6px'
 				});
 				$('#ineditModal').show();
 				return;
