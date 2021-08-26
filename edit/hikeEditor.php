@@ -17,6 +17,7 @@ $age = filter_input(INPUT_GET, 'age');
 $show = filter_input(INPUT_GET, 'show');
 $pubreq = isset($_GET['pub']) ? filter_input(INPUT_GET, 'pub') : false;
 $msg= '';
+$include_previews = 'false';
 
 $navbar = $pubreq ? 'Publish' : 'Edit';
 if ($age === 'old') {
@@ -32,6 +33,7 @@ if ($age === 'old') {
     } else {
         $pageType = 'Edit';
         $msg = 'the current state of your in-edit hike page';
+        $include_previews = 'true';
     }
 }
 // prepare list of existing hikes in edit mode
@@ -95,7 +97,7 @@ $jsInEdit = json_encode($nowInEdit);
 <script type="text/javascript">
     var age = "<?=$age;?>";
     var inEdits = <?=$jsInEdit;?>;
-    var previewSort = true;
+    var previewSort = <?=$include_previews;?>;
 </script>
 <script src="hikeEditor.js"></script>
 <script src="../scripts/columnSort.js"></script>
