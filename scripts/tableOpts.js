@@ -17,7 +17,6 @@ var curr_ftbl_state;
 var ftbl_init = false;
 var engtxt = "Show English Units";
 var mettxt = "Show Metric Units";
-var scroll_to = true; // initial load has alphabetic sort of hikes
 /**
  * This function will set up the converter to use the originally loaded values
  * for units (English) when recalculating from metric back to English. This
@@ -153,29 +152,6 @@ function setNodatAlerts() {
     });
 }
 /**
- * Turn on/off the 'Scroll to:' selector based on current settings:
- * >> When hike title not sorted in ascending order
- * >> When filter table is showing
- * NOTE: Attempting to change the background color of the select box destroyed its
- * 'hover' behavior, so the author simply places a disabled gray selector on top of
- * the working to make it appear disabled.
- */
-function toggleScrollSelect(state) {
-    if (state) {
-        $('#gray').remove();
-    }
-    else {
-        if (!$('#gray').length) {
-            var cover = '<select id="gray"><option value="no">Scroll to:</option></select>';
-            var selpos = $('#scroller').offset();
-            $('#opt4').append(cover);
-            $('#gray').offset({ top: selpos.top, left: selpos.left });
-            $('#gray').css('z-index', '1000');
-            $('#gray').attr('disabled', 'disabled');
-        }
-    }
-}
-/**
  * Positioning of the 'Return to top' div, after selecting a scroll from
  * the scroller in table opts, has to take into account the applied rotation
  * of the div (CSS uses attribute 'center' for the point of rotation). The
@@ -243,19 +219,16 @@ $(function () {
     curr_ftbl_state = mettxt;
     setupConverter('#maintbl', true);
     $('#showfilter').on('click', function () {
+        var current_id;
         if (!ftbl_init) {
             // there is no ftable yet, so don't alter converter setup, just toggle displays
             if ($('#tblfilter').css('display') === 'none') {
                 $('#tblfilter').show();
                 $(this).text("Close Filter");
-                toggleScrollSelect(false);
             }
             else {
                 $('#tblfilter').hide();
                 $(this).text("Filter Hikes");
-                if (scroll_to) {
-                    toggleScrollSelect(true);
-                }
             }
         }
         else {
@@ -265,7 +238,6 @@ $(function () {
                 $('#refTbl').hide();
                 $('#units').text(curr_ftbl_state);
                 setupConverter('#ftable', false);
-                toggleScrollSelect(false);
             }
             else {
                 $('#tblfilter').hide();
@@ -273,11 +245,15 @@ $(function () {
                 $('#refTbl').show();
                 $('#units').text(curr_main_state);
                 setupConverter('#maintbl', false);
-                if (scroll_to) {
-                    toggleScrollSelect(true);
-                }
             }
         }
+        if ($('#maintbl').length !== 0) {
+            current_id = '#maintbl';
+        }
+        else {
+            current_id = '#ftable';
+        }
+        scrollCheck(current_id);
     });
     $('#multimap').on('click', function () {
         $('#usermodal').show();

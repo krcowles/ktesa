@@ -84,38 +84,38 @@ var compare = {
  * Apply this function to a table to provide sortable headers (table columns)
  */
  function tableSort(tableid: string) {
+	/**
+	 * On table load only...
+	 */
 	let $table = $(tableid);
 	let $tbody = $table.find('tbody');
 	let $controls = $table.find('th');
-	if (tableid === '#ftable') { // see Table Only page
-		// every time a new ftable is formed, old sort criteria
-		// from previous tables must be cleared:
+	if (tableid === '#ftable') {
+		/** 
+		 * for Table Only page:
+		 *  every time a new #ftable is formed, old sort criteria
+		 * from previous tables must be cleared
+		 */
 		$controls.each(function() {
 			$(this).removeClass('ascending');
 			$(this).removeClass('descending');
 		});
 	}
 	$controls.each(function() {
-		// Setup hikename w/class 'ascending', since hikes are pre-sorted
+		// Setup Hike/Trail Name header w/class 'ascending', since hikes are pre-sorted on load
 		if ($(this).text() === 'Hike/Trail Name') {
 			$(this).addClass('ascending');
 			return;
 		}
 	}); 
 	let $grows = $tbody.find('tr').toArray();
+	/**
+	 * Table's click behavior after loading table...
+	 */
 	$controls.each(function() {
 		$(this).off('click').on('click', function() {
 			let success = true;
 			var $header = $(this);
-			if (tableid === '#maintbl') {
-				if ($header.text() === 'Hike/Trail Name') {
-					toggleScrollSelect(true);
-					scroll_to = true;
-				} else { 
-					toggleScrollSelect(false);
-					scroll_to = false;
-				}
-			}
 			var order: string = $header.data('sort');
 			if (order === 'no') {
 				alert("This column cannot be sorted");
@@ -173,7 +173,54 @@ var compare = {
 			if ($('#active').length !== 0 && $('#active').text() === 'Table') {
 				setNodatAlerts();
 			}
+			scrollCheck(tableid);
 			return success;
 		});
 	});
+}
+/**
+ * This function applies only to the #maintbl on the 'Table Only Page'
+ * When to show/hide the scroller became too complex to control in the
+ * sort routine itself, hence whenever a relevant event occurs (on 'Table
+ * Only Page), conditions are examined to see whether or not to show the
+ * scroller. The conditions themselves are easy to identify.
+ */
+function scrollCheck(table_id: string) {
+	if ($('#active').text() === 'Table') {
+		if (table_id === '#maintbl') {
+			if  ($('#tblfilter').css('display') === 'none') {
+				let $headers = $('#maintbl').find('th');
+				let title = $headers.get(0);
+				if ($(title).hasClass('ascending')) {
+					toggleScrollSelect(true);
+				} else {
+					toggleScrollSelect(false);
+				}
+			} else {
+				toggleScrollSelect(false);
+			}
+		}
+	}
+}
+/**
+ * Turn on/off the 'Scroll to:' selector based on current settings:
+ * >> When hike title not sorted in ascending order
+ * >> When filter table is showing
+ * NOTE: Attempting to change the background color of the select box destroyed its
+ * 'hover' behavior, so the author simply places a disabled gray selector on top of
+ * the working to make it appear disabled.
+ */
+ function toggleScrollSelect(state: boolean) {
+	if (state) {
+		$('#gray').remove();
+	} else {
+		if (!$('#gray').length) {
+			let cover = '<select id="gray"><option value="no">Scroll to:</option></select>';
+			let selpos = <JQuery.Coordinates>$('#scroller').offset();
+			$('#opt4').append(cover);
+			$('#gray').offset({top: selpos.top, left: selpos.left});
+			$('#gray').css('z-index', '1000');
+			$('#gray').attr('disabled', 'disabled');
+		}
+	}
 }

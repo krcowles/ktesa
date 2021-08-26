@@ -24,7 +24,6 @@ var curr_ftbl_state: string;
 var ftbl_init = false;
 var engtxt = "Show English Units";
 var mettxt = "Show Metric Units";
-let scroll_to = true; // initial load has alphabetic sort of hikes
 
 /**
  * This function will set up the converter to use the originally loaded values
@@ -159,28 +158,6 @@ function setNodatAlerts() {
 	});
 }
 /**
- * Turn on/off the 'Scroll to:' selector based on current settings:
- * >> When hike title not sorted in ascending order
- * >> When filter table is showing
- * NOTE: Attempting to change the background color of the select box destroyed its
- * 'hover' behavior, so the author simply places a disabled gray selector on top of
- * the working to make it appear disabled.
- */
-function toggleScrollSelect(state: boolean) {
-	if (state) {
-		$('#gray').remove();
-	} else {
-		if (!$('#gray').length) {
-			let cover = '<select id="gray"><option value="no">Scroll to:</option></select>';
-			let selpos = <JQuery.Coordinates>$('#scroller').offset();
-			$('#opt4').append(cover);
-			$('#gray').offset({top: selpos.top, left: selpos.left});
-			$('#gray').css('z-index', '1000');
-			$('#gray').attr('disabled', 'disabled');
-		}
-	}
-}
-/**
  * Positioning of the 'Return to top' div, after selecting a scroll from
  * the scroller in table opts, has to take into account the applied rotation
  * of the div (CSS uses attribute 'center' for the point of rotation). The
@@ -253,18 +230,15 @@ $( function() {
 	setupConverter('#maintbl', true);
 
 	$('#showfilter').on('click', function() {
+		let current_id: string;
 		if (!ftbl_init) {
 			// there is no ftable yet, so don't alter converter setup, just toggle displays
 			if ($('#tblfilter').css('display') === 'none') {
 				$('#tblfilter').show();
 				$(this).text("Close Filter");
-				toggleScrollSelect(false);
 			} else {
 				$('#tblfilter').hide();
 				$(this).text("Filter Hikes");
-				if (scroll_to) {
-					toggleScrollSelect(true);
-				}
 			}
 		} else {
 			if ($('#tblfilter').css('display') === 'none') {
@@ -273,18 +247,20 @@ $( function() {
 				$('#refTbl').hide();
 				$('#units').text(curr_ftbl_state);
 				setupConverter('#ftable', false);
-				toggleScrollSelect(false);
 			} else {
 				$('#tblfilter').hide();
 				$(this).text("Filter Hikes");
 				$('#refTbl').show();
 				$('#units').text(curr_main_state );
 				setupConverter('#maintbl', false);
-				if (scroll_to) {
-					toggleScrollSelect(true);
-				}
 			}
 		}
+		if ($('#maintbl').length !== 0) {
+			current_id = '#maintbl';
+		} else {
+			current_id = '#ftable';
+		}
+		scrollCheck(current_id);
     });
 
 	$('#multimap').on('click', function() {
