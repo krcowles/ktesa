@@ -29,7 +29,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -326,19 +326,19 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','3801470195','2021-08-27 17:22:30'),
-('2','CLUSHIKES','1466609144','2021-08-27 17:22:30'),
-('3','CLUSTERS','368350707','2021-08-27 17:22:30'),
-('4','EGPSDAT','0','2021-08-27 17:22:30'),
-('5','EHIKES','0','2021-08-27 17:22:30'),
-('6','EREFS','0','2021-08-27 17:22:30'),
-('7','ETSV','0','2021-08-27 17:22:30'),
-('8','FAVORITES','3651041965','2021-08-27 17:22:30'),
-('9','GPSDAT','4093278896','2021-08-27 17:22:30'),
-('10','HIKES','3475806777','2021-08-27 17:22:30'),
-('11','REFS','4070905361','2021-08-27 17:22:30'),
-('12','TSV','3892256178','2021-08-27 17:22:30'),
-('13','USERS','510490655','2021-08-27 17:22:30');
+('1','BOOKS','3801470195','2021-08-28 09:57:16'),
+('2','CLUSHIKES','1466609144','2021-08-28 09:57:16'),
+('3','CLUSTERS','368350707','2021-08-28 09:57:16'),
+('4','EGPSDAT','0','2021-08-28 09:57:16'),
+('5','EHIKES','0','2021-08-28 09:57:16'),
+('6','EREFS','0','2021-08-28 09:57:16'),
+('7','ETSV','0','2021-08-28 09:57:16'),
+('8','FAVORITES','3651041965','2021-08-28 09:57:16'),
+('9','GPSDAT','4093278896','2021-08-28 09:57:16'),
+('10','HIKES','1848540590','2021-08-28 09:57:16'),
+('11','REFS','2313867221','2021-08-28 09:57:16'),
+('12','TSV','2924796339','2021-08-28 09:57:16'),
+('13','USERS','510490655','2021-08-28 09:57:16');
 
 
 
@@ -369,7 +369,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -397,7 +397,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -519,7 +519,7 @@ INSERT INTO HIKES VALUES
 ('14','Tunnel Canyon','2','Tijeras','Out-and-back','5.20','562','Easy-Moderate','None','Sandia\'s Back','Not Winter','Full sun','Tunnel_Canyon.GPX','tun.json','350465620','-1063830880','tunnel.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157668655233912',NULL,'https://www.google.com/maps/place/Tunnel Canyon/@35.0595439,-106.4050049,13.71z/data=!4m5!3m4!1s0x8718a484be407b0f:0x212571f1df19a1cb!8m2!3d35.0456033!4d-106.3830797',NULL,'<p><span style=\"color: #1428d2;\"><em>Tunnel Canyon</em></span> is one of the many hiking/biking trails offered in the <em>Manzanita Mountain Trails</em> system, part of <em>Cibola National Forest</em> just outside of Tijeras. The trail head is located on Highway 337 a few miles south of the I-40 exit for Tijeras.</p>\r\n<p>This hike virtually parallels the <em><span style=\"color: #1428d2;\">Birdhouse Ridge</span></em> hike, but at a lower elevation with fewer twists and turns. It links up with the <em>Otero Canyon</em> hike (not included herein). There are not many good online reference for the <em>Mountain Trails System</em>, and the hike does not show up in most hiking books. There are some uniques views of the eastern side of the <em>Sandias</em>.</p>',NULL,NULL,NULL),
 ('15','Birdhouse Ridge','2','Tijeras','Loop','5.20','964','Easy-Moderate','None','Sandia\'s Back','Not Winter','Full sun','Birdhouse_Ridge.GPX','bird.json','350471072','-1063830301','birdhouse.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157668687108211',NULL,'https://www.google.com/maps/place/Tunnel Canyon/@35.0595439,-106.4050049,13.71z/data=!4m5!3m4!1s0x8718a484be407b0f:0x212571f1df19a1cb!8m2!3d35.0456033!4d-106.3830797',NULL,'<p>The <em><span style=\"color: #1428d2;\">Birdhouse Ridge Trail </span></em>is located in the Cibola National Forest, near Tijeras, which has multiple trails available for hiking/biking and jogging in the <em>Manzanita Mountains.</em> The trail heads are generally immediately on, or just off of Highway 337.</p>\r\n<p><span style=\"color: #1428d2;\"><em>Birdhouse Ridge</em> </span>is generally listed online as a biking trail, but it also makes for a nice hike and provides some very good vistas. It is interconnected with other trails, such as <em><span style=\"color: #1428d2;\">Tunnel Canyon</span> </em>and <span style=\"color: #1428d2;\"><em>Otero Canyon,</em></span> so hikes can be made roundtrip and of different lengths. There are not many good online references, and no references have been noted in any of the authors\' hiking books. Most on-line sites couple the hike with <span style=\"color: #1428d2;\"><em>Tunnel Canyon</em></span> to form a loop.</p>',NULL,NULL,NULL),
 ('16','Boca Negra','2','Albuquerque','Loop','0.30','150','Easy','Picnic Area','Petroglyphs','All','Full sun','Boca_Negra.gpx','Boca_Negra.json','351609100','-1067166000','boca.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669925680945',NULL,'https://www.google.com/maps/dir//Boca Negra Canyon Trails, Atrisco Dr NW, Albuquerque, NM 87120/@35.1611191,-106.7200415,17z/data=!4m15!1m6!3m5!1s0x87227209650d715f:0x37ef4badaa85904c!2sBoca Negra Canyon Trails!8m2!3d35.1611147!4d-106.7178528!4m7!1m0!1m5!1m1!1s0x87227209650d715f:0x37ef4badaa85904c!2m2!1d-106.7178528!2d35.1611147',NULL,'<p><em><span style=\"color: #1428d2;\">Boca Negra</span></em> is one of the more popular of the Petroglyphs sites, as one can immediately see petroglyph specimens without walking far. The trail up the hill is paved, and is relatively easy. From the top of the hill are many grand vistas of the area.</p>\r\n<p>All of the hikes in Boca Negra are designated on the trail map in minutes as opposed to miles, since the distances are all rather short. According to the literature, although the number of total petroglyphs at the site is not large - less than 5% of the total available in the National Monument - they are readily accessible to the viewer.</p>',NULL,NULL,NULL),
-('19','Tesuque Creek - Upper','2','Santa Fe','Out-and-back','1.70','600','Moderate','Campground','Mountain Views','Not Winter','Mixed sun/shade','UpperTesuque-97.123.114.136-1625585523.gpx','UpperTesuque-97.123.114.136-1625585523.json','357693560','-1058092457','upprtes.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669979230415',NULL,'https://www.google.com/maps/place/Big Tesuque Campground/@35.7716134,-105.8151425,15.64z/data=!4m5!3m4!1s0x87184d1e4f78e5f7:0x607cb44f87419be0!8m2!3d35.7691964!4d-105.8091858',NULL,'<p>The upper portion of <em>Tesuque Creek</em> (the North Fork) ascends up to the <em>Santa Fe Ski Basin</em> from the <em>Big Tesuque Campground </em>pullout on Hyde Park Road. The <span style=\"color: #1428d2;\"><em>Tesuque Creek - Upper Trail</em></span>&nbsp; intersects the <em><span style=\"color: #1428d2;\">Aspen Vista Trail&nbsp;</span></em><span style=\"color: #000000;\">at its terminus.&nbsp;</span> One can also intercept the <em><span style=\"color: #1428d2;\">Tesuque Creek - Upper Trail </span></em>by hiking along the <span style=\"color: #1428d2;\"><em>Aspen Vista Trail</em></span> to the <em>Tesuque Creek</em> juncture (see the interactive map above).</p>\r\n<p>The hike proceeds quickly uphill and is very pleasant. It winds up the ski basin hill and passes through groves of aspens with wildflowers along the way. Most of the websites pertaining to <em>Tesuque Creek</em> do not include this section of the trail.</p>',NULL,NULL,NULL),
+('19','Tesuque Creek - Upper','2','Santa Fe','Out-and-back','1.70','600','Moderate','Campground','Mountain Views','Not Winter','Mixed sun/shade','UpperTesuque.GPX','utes.json','357693560','-1058092457','upprtes.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669979230415',NULL,'https://www.google.com/maps/place/Big Tesuque Campground/@35.7716134,-105.8151425,15.64z/data=!4m5!3m4!1s0x87184d1e4f78e5f7:0x607cb44f87419be0!8m2!3d35.7691964!4d-105.8091858',NULL,'<p>The upper portion of <em>Tesuque Creek</em> (the North Fork) ascends up to the <em>Santa Fe Ski Basin</em> from the <em>Big Tesuque Campground </em>pullout on Hyde Park Road. The <span style=\"color: #1428d2;\"><em>Tesuque Creek - Upper Trail</em></span>&nbsp; intersects the <em><span style=\"color: #1428d2;\">Aspen Vista Trail&nbsp;</span></em><span style=\"color: #000000;\">at its terminus.&nbsp;</span> One can also intercept the <em><span style=\"color: #1428d2;\">Tesuque Creek - Upper Trail </span></em>by hiking along the <span style=\"color: #1428d2;\"><em>Aspen Vista Trail</em></span> to the <em>Tesuque Creek</em> juncture (see the interactive map above).</p>\r\n<p>The hike proceeds quickly uphill and is very pleasant. It winds up the ski basin hill and passes through groves of aspens with wildflowers along the way. Most of the websites pertaining to <em>Tesuque Creek</em> do not include this section of the trail.</p>',NULL,NULL,NULL),
 ('20','Tesuque Creek - Mid','2','Santa Fe','Out-and-back','7.00','1188','Moderate','Campground','River Valley','Not Winter','Mixed sun/shade','20160530_BigTesuqueDown.gpx','mtes.json','357692860','-1058094320','midtes.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669941376466',NULL,'https://www.google.com/maps/place/Big Tesuque Campground/@35.7716134,-105.8151425,15.64z/data=!4m5!3m4!1s0x87184d1e4f78e5f7:0x607cb44f87419be0!8m2!3d35.7691964!4d-105.8091858',NULL,'<p>For this hike, <span style=\"color: #1428d2;\"><em>Tesuque Creek - Mid</em></span>, the starting point is the same as the <em><span style=\"color: #1428d2;\">T</span><span style=\"color: #1428d2;\">esuque Creek - Upper </span></em><span style=\"color: #1428d2;\"><span style=\"color: #000000;\">hike</span></span><span style=\"color: #000000;\">:</span> the <em>Big Tesuque Campground</em> pullout on Hyde Park Road, before the Ski Basin.</p>\r\n<p>The <span style=\"color: #1428d2;\"><em>Tesuque Creek - Mid</em></span> hike proceeds downward from the campground. For a good portion of the trail (up to the <em><span style=\"color: #1428d2;\">Borrego/Bear Wallows</span></em> juncture), it does not run alongside the creek itself (refer to the interactive map above). As with the <span style=\"color: #1428d2;\"><em>Tesuque Creek - Upper </em></span>hike, there is not much online about this portion of the trail. Some of the sites blend in with the <em><span style=\"color: #1428d2;\">Borrego/Bear Wallow</span></em> hike. The most pleasant views of the creek are not far from the parking area at <em>Big Tesuque Campgound.</em></p>',NULL,NULL,NULL),
 ('21','Deception Peak','2','Santa Fe','Loop','6.30','2022','Difficult','Picnic Area','Great Vistas!','Not Winter','Mixed sun/shade','Deception_Peak.GPX','decp.json','357958450','-1058046050','deception.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669132112560',NULL,'https://www.google.com/maps/place/Winsor Trailhead/@35.7918157,-105.8110332,15.17z/data=!4m5!3m4!1s0x87184cbfcc11af63:0x1526b1395abfefd!8m2!3d35.7956032!4d-105.8047946',NULL,'<p><em><span style=\"color: #1428d2;\">Deception Peak </span></em><span style=\"color: #000000;\">is </span>one of the four \"twelvers\" (peaks over 12,000 ft) in the Santa Fe area. Two of the remaining three can be reached with some additional effort from <span style=\"color: #1428d2;\"><em>Deception Peak</em></span>.</p>\r\n<p>There are actaully two approaches to the summit: hiking along the <em><span style=\"color: #1428d2;\">Ravens Ridge Trail</span></em> from the <span style=\"color: #1428d2;\"><em>Winsor Trail</em></span>, and also from the Ski Basin ski lift area. Taking the ski lift trail up provides far less shade - both are steep. From <span style=\"color: #1428d2;\"><em>Ravens Ridge</em></span>, there are several lookout points that offer excellent views of <em>Mt Baldy</em>, and when higher, the <em>Sangre de Cristos </em>- to <em>Pecos Baldy</em> and beyond. Owing to the altitude and steepness, it is not a quick hike, and is rated as difficult or strenuous - justly so.</p>',NULL,NULL,NULL),
 ('22','Nambe Lake','2','Santa Fe','Out-and-back','7.30','1167','Med-Difficult','Picnic Area','Gorgeous Views','Not Winter','Mixed sun/shade','Nambe_Lake.GPX','nambe.json','357955064','-1058046584','nambelake.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157670306506915',NULL,'https://www.google.com/maps/place/Winsor Trailhead/@35.7918157,-105.8110332,15.17z/data=!4m5!3m4!1s0x87184cbfcc11af63:0x1526b1395abfefd!8m2!3d35.7956032!4d-105.8047946',NULL,'<p><span style=\"color: #1428d2;\"><em>Nambe Lake</em></span> is a must-see alpine lake in the Santa Fe area, located at over 11,300 ft and sitting at the feet of multiple 12,000 ft plus peaks. Although quite a climb, the trail itself is gorgeous, with tall trees ranging from firs to aspens en route.</p>\r\n<p>The trail becomes even more beautiful as it encounters <em>Nambe Creek</em>, which cascades down from the lake to the <em><span style=\"color: #1428d2;\">Winsor Trail</span></em>. The <em><span style=\"color: #1428d2;\">Nambe Lake Trail</span></em> essentially begins at this point, marked by a sign, and proceeds sharply up. The entire lake may be circumnavigated, with beautiful views from every angle!</p>',NULL,NULL,NULL),
