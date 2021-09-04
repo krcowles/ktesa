@@ -146,7 +146,8 @@ $pageType = 'FullTable';
         in the box below to select the hikes. When you are ready,
         click on 'Draw Map'</p>
     <button id="mapem">Draw Map</button>
-    <p id="usearch"><input id="hike2map" list="hikelist" />&nbsp;&nbsp;&nbsp;<?=$datalist;?>
+    <p id="usearch"><input id="hike2map"
+        list="hikelist" />&nbsp;&nbsp;&nbsp;<?=$datalist;?>
         <button id="hikeclr">Clear Hikes</button>
     </p>
     <span id="hlist">Hikes you have selected:</span>

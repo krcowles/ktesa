@@ -172,6 +172,12 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
     </fieldset><br />
 
     <fieldset>
+        <legend>Visitor Data</legend>
+        <button id="vdat" type="button" class="btn
+            btn-secondary">Display Data</button>
+    </fieldset><br />
+
+    <fieldset>
         <legend>GPX File Edits</legend>
         <form id="revgpx" action="reverseGpx.php" method="POST"
             enctype="multipart/form-data" />

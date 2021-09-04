@@ -100,7 +100,7 @@ $(function () {
         }
         if (ajax) {
             $('#loading').show();
-            var postdata = { install: copyloc, delete: deletions };
+            var postdata = { install: copyloc, "delete": deletions };
             $.ajax({
                 url: 'install.php',
                 method: "post",
@@ -318,6 +318,12 @@ $(function () {
     // Delete a hike
     $('#ehdel').on('click', function () {
         window.open("reldel.php?act=del", "_blank");
+    });
+    /**
+     * Display of visitation data
+     */
+    $('#vdat').on('click', function () {
+        window.open("visitor_data.php", "_blank");
     });
     /**
      * GPX File Management

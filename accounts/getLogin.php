@@ -104,3 +104,31 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
         $cookie_state = "OK";
     } 
 }
+if (!$admin) {
+    /**
+     * Capture visitor tracking info; Functions are contained in editFunctions.php
+     * and in adminFunctions.php. For browser type identification:
+     * https://stackoverflow.com/questions/2199793/php-get-the-browser-name
+     * For page url identification: [PSR syntax corrections made]
+     * http://geeklabel.com/tutorial/track-visitors-php-tutorial/ 
+     */
+    $user_ip = getIpAddress();
+    $browser = getBrowserType();
+    date_default_timezone_set('America/Denver');
+    $visit_time = date('Y-m-d h:i:s');
+    $vtime = explode("-", $visit_time);
+    $vpage = selfURL();
+    $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`vbrowser`,`vplatform`," .
+        "`vdatetime`,`vpage`) " .
+        "VALUES (?,?,?,?,?);";
+    $visitor_data = $pdo->prepare($visitor_data_req);
+    $visitor_data->execute(
+        [
+            $user_ip,
+            $browser['name'],
+            $browser['platform'],
+            $visit_time,
+            $vpage
+        ]
+    );
+}

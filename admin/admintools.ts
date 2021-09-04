@@ -332,6 +332,13 @@ $('#ehdel').on('click', function() {
 });
 
 /**
+ * Display of visitation data
+ */
+ $('#vdat').on('click', function() {
+    window.open("visitor_data.php", "_blank");
+});
+
+/**
  * GPX File Management
  */
 // Reverse all tracks

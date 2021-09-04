@@ -67,7 +67,8 @@
     "admintools.ts",
     "cleanPix.ts",
     "load_progress.ts",
-    "reldel.ts"
+    "reldel.ts",
+    "visitor_data.ts"
   ]
   /* also "include": [] and/or "exclude": [] */
 }
