@@ -13,11 +13,11 @@ if ($devhost) { // LOCAL MACHINE
     $USERNAME = "root";
     $PASSWORD = "root";
     if ($dbState === 'main') {  // main db
-        $DATABASE = "id140870_hikemaster";
+        $DATABASE = "nmhikesc_main";
     } else {  // test db
-        $DATABASE = "id140870_nmhikestest";
+        $DATABASE = "nmhikesc_test";
     }
-} else { // WEB SERVER
+} else { // WEB SERVER:
     $HOSTNAME = "localhost";
     $PASSWORD = "xxxxx"; // to be manually edited on each machine
     if ($dbState === 'main') {  // main db

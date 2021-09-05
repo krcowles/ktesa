@@ -11,7 +11,7 @@
  */
 
 // Read in entire file
-$dbFile = "../data/id140870_hikemaster.sql";
+$dbFile = "../data/nmhikesc_main.sql";
 $lines = file($dbFile);
 if (!$lines) {
     throw new Exception(
