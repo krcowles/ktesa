@@ -116,6 +116,10 @@ $addmax = $addtwo . '<option value="31">31</option>';
         </div>
     </div>
 </div><br /><br/>
+<div id="loading" style="display:none;text-align:center;">
+    <img src="../images/loader-64x/Preloader_4.gif"
+        alt="Waiting for server to complete" />
+</div>
 
 <script type="text/javascript">
     var longmos  = '<?=$longmos;?>';

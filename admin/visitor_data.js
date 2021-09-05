@@ -121,12 +121,14 @@ var clearData = function () {
  * This is the function that extracts visitor data for display on the page
  */
 var getVisitorData = function (postdata) {
+    $('#loading').show();
     $.ajax({
         url: 'getVisitorData.php',
         method: 'post',
         data: postdata,
         dataType: 'html',
         success: function (results) {
+            $('#loading').hide();
             $('body').append(results);
         },
         error: function (jqXHR) {

@@ -123,12 +123,14 @@ const clearData = (): void => {
  * This is the function that extracts visitor data for display on the page
  */
 const getVisitorData = (postdata: object): void => {
+    $('#loading').show();
     $.ajax({
         url: 'getVisitorData.php',
         method: 'post',
         data: postdata,
         dataType: 'html',
         success: function(results) {
+            $('#loading').hide();
             $('body').append(results);
         },
         error: function(jqXHR) {

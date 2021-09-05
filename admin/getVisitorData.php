@@ -24,14 +24,25 @@ if ($start_date === $end_date) {
 }
 $data = $pdo->query($dataReq);
 $visitor_data = $data->fetchAll(PDO::FETCH_ASSOC);
-
-/**
- * Create the page html
- */
 if (count($visitor_data) === 0) {
     echo '<span id="nodat">There is no visitation data to display</span>';
     exit;
 }
+// find locations of IP addresses (Not done in getLogin.php to improve performance)
+$vloc = [];
+// not local machine
+foreach ($visitor_data as $row) {
+    $details 
+        = json_decode(file_get_contents("http://ipinfo.io/{$row['vip']}/json"));
+    if (isset($details->city)) {
+        array_push($vloc, $details->city);
+    } else {
+        array_push($vloc, 'Local Machine');
+    }
+}
+/**
+ * Create the page html
+ */
 $html = <<<EOH
 <table id="vdat">
     <thead>
@@ -41,17 +52,19 @@ $html = <<<EOH
             <th>Platform</th>
             <th>Time of Visit</th>
             <th>Page Visited</th>
+            <th>IP Location</th>
         </tr>
     </thead>
     <tbody>
 EOH;
-foreach ($visitor_data as $visit) {
+for ($k=0; $k<count($visitor_data); $k++) {
     $html .= '<tr>' . PHP_EOL . 
-                '<td>' . $visit['vip'] . '</td>' . PHP_EOL .
-                '<td>' . $visit['vbrowser'] . '</td>' . PHP_EOL .
-                '<td>' . $visit['vplatform'] . '</td>' . PHP_EOL .
-                '<td>' . $visit['vdatetime'] . '</td>' . PHP_EOL .
-                '<td>' . $visit['vpage'] . '</td>' . PHP_EOL .
+                '<td>' . $visitor_data[$k]['vip'] . '</td>' . PHP_EOL .
+                '<td>' . $visitor_data[$k]['vbrowser'] . '</td>' . PHP_EOL .
+                '<td>' . $visitor_data[$k]['vplatform'] . '</td>' . PHP_EOL .
+                '<td>' . $visitor_data[$k]['vdatetime'] . '</td>' . PHP_EOL .
+                '<td>' . $visitor_data[$k]['vpage'] . '</td>' . PHP_EOL .
+                '<td>' . $vloc[$k] . '</td>'. PHP_EOL .
             '</tr>';
 }
 $html .= '</tbody>' . PHP_EOL . '</table>' . PHP_EOL;
