@@ -8,7 +8,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require "../accounts/getLogin.php";
+require_once "../accounts/getLogin.php";
 $policy = "../accounts/PrivacyPolicy.pdf";
 ?>
 <!-- navbar-dark cause light collapsed icon (hampurger) -->

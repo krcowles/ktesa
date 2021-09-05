@@ -233,6 +233,7 @@ function getBrowserType()
     $bname = 'Unknown';
     $platform = 'Unknown';
     $version= "";
+    $ub = "Unknown";
 
     //First get the platform?
     if (preg_match('/linux/i', $u_agent)) {
@@ -261,7 +262,7 @@ function getBrowserType()
     } elseif (preg_match('/Netscape/i', $u_agent)) {
         $bname = 'Netscape';
         $ub = "Netscape";
-    }
+    } 
 
     // finally get the correct version number
     $known = array('Version', $ub, 'other');

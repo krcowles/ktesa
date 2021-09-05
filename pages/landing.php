@@ -8,8 +8,8 @@
  * @license No license to date
  */
 session_start();
-require "../php/global_boot.php";
-require "../accounts/getLogin.php";
+require_once "../php/global_boot.php";
+require_once "../accounts/getLogin.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
