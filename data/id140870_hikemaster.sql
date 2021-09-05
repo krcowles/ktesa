@@ -29,7 +29,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
 
@@ -322,23 +322,24 @@ CREATE TABLE `Checksums` (
   `chksum` bigint(20) DEFAULT NULL,
   `creation` datetime DEFAULT NULL,
   PRIMARY KEY (`indx`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','3801470195','2021-08-28 09:57:16'),
-('2','CLUSHIKES','1466609144','2021-08-28 09:57:16'),
-('3','CLUSTERS','368350707','2021-08-28 09:57:16'),
-('4','EGPSDAT','0','2021-08-28 09:57:16'),
-('5','EHIKES','0','2021-08-28 09:57:16'),
-('6','EREFS','0','2021-08-28 09:57:16'),
-('7','ETSV','0','2021-08-28 09:57:16'),
-('8','FAVORITES','3651041965','2021-08-28 09:57:16'),
-('9','GPSDAT','4093278896','2021-08-28 09:57:16'),
-('10','HIKES','1848540590','2021-08-28 09:57:16'),
-('11','REFS','2313867221','2021-08-28 09:57:16'),
-('12','TSV','2924796339','2021-08-28 09:57:16'),
-('13','USERS','510490655','2021-08-28 09:57:16');
+('1','BOOKS','3801470195','2021-09-04 09:46:38'),
+('2','CLUSHIKES','1466609144','2021-09-04 09:46:38'),
+('3','CLUSTERS','368350707','2021-09-04 09:46:38'),
+('4','EGPSDAT','0','2021-09-04 09:46:38'),
+('5','EHIKES','0','2021-09-04 09:46:38'),
+('6','EREFS','0','2021-09-04 09:46:38'),
+('7','ETSV','0','2021-09-04 09:46:38'),
+('8','FAVORITES','3651041965','2021-09-04 09:46:38'),
+('9','GPSDAT','4093278896','2021-09-04 09:46:38'),
+('10','HIKES','2280933036','2021-09-04 09:46:38'),
+('11','REFS','2313867221','2021-09-04 09:46:38'),
+('12','TSV','2924796339','2021-09-04 09:46:38'),
+('13','USERS','510490655','2021-09-04 09:46:38'),
+('14','VISITORS','0','2021-09-04 09:46:38');
 
 
 
@@ -369,7 +370,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 
 
@@ -397,7 +398,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 
 
@@ -499,7 +500,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=268 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -762,7 +763,8 @@ INSERT INTO HIKES VALUES
 ('263','Bill Spring-Faulty Mulitloop','2','Tijeras','Loop','6.00','550','Moderate','Picnic area w/multiple toilets','Interior and eastward views','Any','Good shade','BillSpringMulti-174.28.118.186-1627684370.gpx','BillSpringMulti-174.28.118.186-1627684370.json','351768203','-1063788412','Billf65b34.jpg',NULL,NULL,'https://www.google.com/maps/dir//DOC+LONG+PICNIC+AREA,+7562+Sandia+Crest+Rd,+Cedar+Crest,+NM+87008/@35.1693953,-106.3760751,14.55z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984dbceffff3:0x5318c098cf645d67!2m2!1d-106.3768858!2d35.1757456',NULL,'<p>This hike makes a double loop by using various trail options, starting from the <em><span style=\"color: #1428d2;\">Bill Spring Trail </span></em>head. At the end of <em><span style=\"color: #1428d2;\">Bill Spring</span></em>, <span style=\"color: #1428d2;\"><em>Faulty Trail </em></span>begins. It forms the backbone from which other trails branch out.</p>\r\n<p>During the first loop, <em><span style=\"color: #1428d2;\">Faulty Trail</span></em> is followed up to the <span style=\"color: #1428d2;\"><em>Cienega Horse Bypass</em>, <span style=\"color: #000000;\">where this hike takes a sharp left turn</span></span><span style=\"color: #000000;\">.</span> Although a horse trail, it is a very pleasant section of trail with nice views along the way. Following this trail takes the hiker down to the <em>Sulfer Canyon</em> and <em>Cienega Picnic Grounds</em>, where the <em><span style=\"color: #1428d2;\">Wagon Trail</span></em> picks up for a short distance, leading then to the <em><span style=\"color: #1428d2;\">Acequia Trail</span></em>. The latter proceeds through the picnic ground, and at its northern end, the <span style=\"color: #1428d2;\"><em>Cienega Trail</em></span> begins. This section of the trail soon intersects the <em><span style=\"color: #1428d2;\">Faulty Trail</span></em>, which is then followed back to the <em><span style=\"color: #1428d2;\">Sulfer Canyon Trail</span></em>. Proceeding down that trail at a fairly easy pace leads back to the <em>Sulfer Canyon</em> picnic area. From here, a newer trail segment, the <em><span style=\"color: #1428d2;\">Doc Long/Sulfer Canyon Link Trail</span></em>, returns the hiker to the starting point. For a slightly more adventurous return from <em><span style=\"color: #1428d2;\">Faulty</span></em>, use the <span style=\"color: #1428d2;\"><em>Old Faulty Trail</em></span>, referenced in the <a href=\"../pages/hikePageTemplate.php?hikeIndx=262\" target=\"_blank\" rel=\"noopener\">Bill Spring-Oso-Faulty Loop</a></p>',NULL,NULL,NULL),
 ('264','Rito de los Indios','2','Valles Caldera','Out-and-back','7.90','950','Moderate','No (public toilets on road in)','Mountain and valley views','Not Winter','Mixed sun/shade','RitoDeLosIndios-75.161.75.101-1628346864.gpx','RitoDeLosIndios-75.161.75.101-1628346864.json','359642910','-1064911560','Rito01bf24.jpg',NULL,NULL,'https://www.google.com/maps/dir//Rito+de+los+Indios,+New+Mexico+87025/@35.9004235,-106.5578068,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718086323b10d6f:0xeb04ec82b3b2118d!2m2!1d-106.4911447!2d35.9627989','<p>The interior roads of the Valles Caldera are somewhat rugged dirt and gravel, and only one-and-a-half lanes wide. An all-wheel drive vehicle is strongly recommended. This hike begins almost 15 miles from the Entrance Station, and at slow speeds will take about 45 minutes to reach - plan your time accordingly.</p>','<p>The <span style=\"color: #1428d2;\"><em>Rito de los Indios Trail </em></span>is one of the best hikes around for many reasons: long mountain views, grassy hillsides, meadows with wildflowers and butterflies, solitude, sunshine, clean air and great exercise. It follows alongside the <em>Rito de los Indios</em> and crosses it four times on this hike - none of which are challenging at all.</p>\r\n<p>The trail is exposed for the first half of the trip and maintains an easy grade uphill. After that, partial shade begins to appear and the ascent becomes more moderate in grade. The last short section of trail up to the boundary fence is somewhat steep. There are many and varied views within the Caldera and of surrounding mountains. Perhaps due to the monsoons, the wildflower population on this trip was very colorful with many varieties along the way. If you enjoy solitude and great scenery, this is the hike for you.</p>',NULL,NULL,NULL),
 ('265','Guitierrez Canyon Open Space','2','Tijeras','Loop','6.20','450','Moderate','None','Views of Sandia\'s eastern slopes','Not Winter','Mixed sun/shade','San_Antonito-75.161.75.101-1628716910.gpx','San_Antonito-75.161.75.101-1628716910.json','351292822','-1063651933','San 4fb279.jpg',NULL,NULL,'https://www.google.com/maps/dir//John+A.+Milne+%26+Gutierrez+Canyon+Open+Space,+Unnamed+Road,+Cedar+Crest,+NM+87008/@35.1290221,-106.3686694,15.64z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a2bcb45adf05:0xcb6eac2e5282fc79!2m2!1d-106.3652707!2d35.1292888',NULL,'<p>The Open Space in San Antonito is unassumingly located right off of NM 14, 3 miles north of Tijeras next to the Post Office. It quickly leads into the foothills opposite of Sandia\'s eastern face. On the interactive map above, you will see colored flags, generally representing points where trails intersect. The author uses green to indicate left turns, and red to indicate right. The one instance of blue flag was to indicate that the trail (not so obviously) proceeds straight ahead, on a less well-traveled path.</p>\r\n<p>This hike was \'constructed\' by the author to piece together sufficient trail segments to provide a moderately long adventure - other options can be used to reduce the overall hike length. Some of those options can be seen by clicking on the link provided below in <strong>References</strong>. There are numerous trail crossings, along with twists and turns which provide lovely views in multiple directions. The hike begins with <em><span style=\"color: #1428d2;\">Wagon Mound Trail</span></em>, which proceeds somewhat steeply uphill, and is quite rocky. Berfore long it intersects the <em><span style=\"color: #1428d2;\">Sierra Vista Bypass Trail</span></em>, which maintains a more level contour along the ridge. This trail ends at an \'Emergency Access Road\', which is wide and rocky. A short downhill takes you to the beginning of <em><span style=\"color: #1428d2;\">Canyon Trail </span></em>on the left.</p>\r\n<p><em><span style=\"color: #1428d2;\">Canyon Trail </span></em>loops around to another junction with <span style=\"color: #1428d2;\"><em>Doe Run</em></span> and <em><span style=\"color: #1428d2;\">Eagle Ridge</span></em>. Keep straight/left to follow the <em><span style=\"color: #1428d2;\">Doe Run Trail</span></em>. It proceeds up from the canyon to the top of a ridge. Here it intersects with <em><span style=\"color: #1428d2;\">Ridge Trail</span></em>, but this hike turns right and goes uphill on an <em>unnamed trail</em>. Soon the <em>unnamed trail</em> proceeds sharply downhill and meets the <em><span style=\"color: #1428d2;\">Chapparal Trail</span></em>, where the hike turns left. In a short distance, the <em><span style=\"color: #1428d2;\">Arroyo Loop Trail</span></em> is met, and the hike keeps right to proceed along the west side of the loop. There are some lovely views along the arroyo on this trail, which leads back to the <em><span style=\"color: #1428d2;\">Mine Trail</span></em>, returning back to the parking area.</p>',NULL,NULL,NULL),
-('266','South Mountain','2','Valles Caldera','Out-and-back','8.10','1000','Moderate','Entrance Station','Interior Caldera views','Not Winter','Mixed sun/shade','South_Mountain-75.161.75.101-1630106842.gpx','South_Mountain-75.161.75.101-1630106842.json','358632336','-1065192435','Sout2df217.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.8632336,-106.5192435/@35.8434838,-106.5298175,13.19z','<p>You must register to travel witihin the National Preserve. The registration station is about 1.8 miles from NM 4, and only a limited number of vehicles are permitted access. Plan accordingly.</p>','<p>The <em><span style=\"color: #1428d2;\">South Mountain Hike</span></em> begins at a cabled gate near the Cabin District of the Caldera. Access to <em><span style=\"color: #1428d2;\">South Mountain </span></em><span style=\"color: #000000;\">is gained by hiking the old VC02 jeep trail about 1.37 miles southwest, just past the intersection of VC02 with VC0201. Here the trail up the mountain actually begins, and a trail marker directs the hiker to turn left (south) and begin the ascent. Note that the mileage information in the book reference below is not very precise. Generally, the mileage is over-stated somewhat.<br /></span></p>\r\n<p><span style=\"color: #000000;\">The <span style=\"color: #1428d2;\"><em>South Mountain Trail</em></span>, at this point, follows an unused and slowly degenerating jeep track uphill, gently at first and becoming more moderate as you proceed. The two-track is beginning to become overgrown from disuse, and degenerates further uphill until it ends at about 3.3 miles into the hike (see the blue flag on the interactive map). From here, the blue diamonds on the trees continue on, marking the actual trail. Please note, however, that there is a jog to the left about 100 yards/meters from the end of the jeep trail (marked on the interactive map with a green flag). This is easy to miss, as the trail appears to go straight at this point. Following that straight-ahead trail, however, as the author did at first, results eventually in a dead end. It is still possible to bushwhack up the hill from there towards the summit meadow, but it involves crossing a significant amount of deadfall. That \'route\' is not shown on the map.</span></p>\r\n<p><span style=\"color: #000000;\">From the meadow, the trail - still visible but somewhat faint - proceeds towards the summit. After entering a grove of aspens and climbing uphill the hike ends there with some nice 360-degree views, though partially obstructed in some directions due to the tree cover. Note that heading back, the trail across the meadow can seem to disappear, so a GPS device of some sort is advised.</span></p>',NULL,NULL,NULL);
+('266','South Mountain','2','Valles Caldera','Out-and-back','8.10','1000','Moderate','Entrance Station','Interior Caldera views','Not Winter','Mixed sun/shade','South_Mountain-75.161.75.101-1630106842.gpx','South_Mountain-75.161.75.101-1630106842.json','358632336','-1065192435','Sout2df217.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.8632336,-106.5192435/@35.8434838,-106.5298175,13.19z','<p>You must register to travel witihin the National Preserve. The registration station is about 1.8 miles from NM 4, and only a limited number of vehicles are permitted access. Plan accordingly.</p>','<p>The <em><span style=\"color: #1428d2;\">South Mountain Hike</span></em> begins at a cabled gate near the Cabin District of the Caldera. Access to <em><span style=\"color: #1428d2;\">South Mountain </span></em><span style=\"color: #000000;\">is gained by hiking the old VC02 jeep trail about 1.37 miles southwest, just past the intersection of VC02 with VC0201. Here the trail up the mountain actually begins, and a trail marker directs the hiker to turn left (south) and begin the ascent. Note that the mileage information in the book reference below is not very precise. Generally, the mileage is over-stated somewhat.<br /></span></p>\r\n<p><span style=\"color: #000000;\">The <span style=\"color: #1428d2;\"><em>South Mountain Trail</em></span>, at this point, follows an unused and slowly degenerating jeep track uphill, gently at first and becoming more moderate as you proceed. The two-track is beginning to become overgrown from disuse, and degenerates further uphill until it ends at about 3.3 miles into the hike (see the blue flag on the interactive map). From here, the blue diamonds on the trees continue on, marking the actual trail. Please note, however, that there is a jog to the left about 100 yards/meters from the end of the jeep trail (marked on the interactive map with a green flag). This is easy to miss, as the trail appears to go straight at this point. Following that straight-ahead trail, however, as the author did at first, results eventually in a dead end. It is still possible to bushwhack up the hill from there towards the summit meadow, but it involves crossing a significant amount of deadfall. That \'route\' is not shown on the map.</span></p>\r\n<p><span style=\"color: #000000;\">From the meadow, the trail - still visible but somewhat faint - proceeds towards the summit. After entering a grove of aspens and climbing uphill the hike ends there with some nice 360-degree views, though partially obstructed in some directions due to the tree cover. Note that heading back, the trail across the meadow can seem to disappear, so a GPS device of some sort is advised.</span></p>',NULL,NULL,NULL),
+('267','Otero Canyon','2','Tijeras','Loop','7.40','700','Moderate','None','Views of Manzanitas and Sandias','Not Winter','Mixed sun/shade','Otero_Canyon-75.161.75.101-1630770853.gpx','Otero_Canyon-75.161.75.101-1630770853.json','350346132','-1063743346','Oter47a179.jpg',NULL,NULL,'https://www.google.com/maps/dir//Otero+Canyon+East+Trailhead,+Tijeras,+NM+87059/@35.0532032,-106.3932463,13.4z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a5204426aaf7:0x37fa5ac7c94cc92c!2m2!1d-106.3742777!2d35.0347618','<p>&nbsp;Note that the sign (see Photos) on the <span style=\"color: #1428d2;\"><em>Three Bottles Trail</em></span> indicating \'<em>Enter at your Own Risk</em>\' is completely bogus - the trail beyond the sign, all the way to the <em><span style=\"color: #1428d2;\">Blue Ribbon Trail,</span></em> is nothing other than moderate-easy, and is less challenging than other trail segments, like <span style=\"color: #1428d2;\"><em>Gnasty Wag</em></span> or parts of the <span style=\"color: #1428d2;\"><em>Blue Ribbon Trail</em></span>. Ignore the sign and enjoy a relatively easy walk along the contour of the hill.</p>\r\n<p>Note also that the trails may abut land held by the DoD, and it is illegal to enter those sections. This is especially important if you are mapping your own trail using some of the existing online map sources, which show trails, but not the DoD land! The hike shown avoids entry.</p>','<p>The <em><span style=\"color: #1428d2;\">Otero Canyon</span></em> hike is actually a loop formed by several trails. The hike begins on the <span style=\"color: #1428d2;\"><em>Otero Canyon Trail</em></span>, but eventually ends abruptly at <em><span style=\"color: #1428d2;\">Gnasty Wag</span></em>, where it is illegal to proceed further on the canyon trail into the DoD held territory.</p>\r\n<p>Continue the hike by proceeding up the <em><span style=\"color: #1428d2;\">Gnasty Wag Trail</span></em> which ascends at a moderate rate to the <span style=\"color: #1428d2;\"><em>Blue Ribbon Trail</em></span>. If you wish to make for a much shorter hike (total about 5 miles) you may proceed left on the <span style=\"color: #1428d2;\">Blue Ribbon Trail</span> back to the trail head. This hike turns right and follows the <em><span style=\"color: #1428d2;\">Blue Ribbon Trail</span></em> onto <span style=\"color: #1428d2;\"><em>Forest Road 106 </em></span>south. <em><span style=\"color: #1428d2;\">FR106</span></em> soon intersects the <span style=\"color: #1428d2;\"><em>Three Bottles Trail </em><span style=\"color: #000000;\">head</span></span>, where you proceed left (east).</p>\r\n<p>Very soon you will encounter a puzzling sign indicating that the trail ahead \'requires specialized skills and equipment\' and&nbsp; \'Enter at your own risk\' (see Photos below). This is <em>completely erroneous</em>. The author cautiously proceeded to see where it got \'challenging\' and discovered that there was nothing even so challenging as what had already been encountered! You may safely proceed north on this trail segment back to the intersection with <span style=\"color: #1428d2;\"><em>Blue Ribbon</em></span>. The trail then leads back down into <em>Otero Canyon </em>and back to the trail head and parking area.</p>',NULL,NULL,NULL);
 
 
 
@@ -774,7 +776,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3020 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3027 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1725,7 +1727,11 @@ INSERT INTO REFS VALUES
 ('3012','265','Website:','https://www.cabq.gov/parksandrecreation/open-space/lands/east-mountain-open-space','East Mtn Open Space: ABQ Parks'),
 ('3017','266','Book:','22',NULL),
 ('3018','266','App:','https://www.alltrails.com/trail/us/new-mexico/south-mountain-trail-vc-02','AllTrails.com'),
-('3019','266','Blog:','https://aschg.org/hike/valles-caldera-national-preserve-south-mountain/','Albuquerque Seniors Hiking Group');
+('3019','266','Blog:','https://aschg.org/hike/valles-caldera-national-preserve-south-mountain/','Albuquerque Seniors Hiking Group'),
+('3020','267','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64226','USDA Forest Service'),
+('3021','267','App:','https://www.alltrails.com/trail/us/new-mexico/otero-canyon-east','AllTrails.com'),
+('3022','267','Website:','https://www.hikingproject.com/trail/7032750/otero-canyon-loop','Hiking Project'),
+('3023','267','Blog:','https://www.dogofthedesert.net/manzanitas-trail-map/','Dog of the Desert (Map)');
 
 
 
@@ -1749,7 +1755,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9134 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9165 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4625,7 +4631,23 @@ INSERT INTO TSV VALUES
 ('9130','266',NULL,'IMG_4210','Y','Y','From the top, looking east across the Caldera','358379444','-1065309222','2879',NULL,'2021-08-27 10:17:00','IMG_4210','480','640',NULL,'11'),
 ('9131','266',NULL,'IMG_4212','Y','Y','A view to the west from the summit, partially obscured by Las Conchas Fire remnants','358380611','-1065311889','2880',NULL,'2021-08-27 10:22:35','IMG_4212','480','640',NULL,'12'),
 ('9132','266',NULL,'IMG_4209','Y','N','The [virtual] summit pine','358380917','-1065306917','2881',NULL,'2021-08-27 10:14:59','IMG_4209','480','640',NULL,'13'),
-('9133','266',NULL,'IMG_4211','Y','Y','From the trail\'s end to the south','358369778','-1065313250','2882',NULL,'2021-08-27 10:19:31','IMG_4211','480','640',NULL,'14');
+('9133','266',NULL,'IMG_4211','Y','Y','From the trail\'s end to the south','358369778','-1065313250','2882',NULL,'2021-08-27 10:19:31','IMG_4211','480','640',NULL,'14'),
+('9134','267',NULL,'IMG_4237','Y','Y','Bright deep-yellow clusters of snakeweed in every direction','350123028','-1063636333','2883',NULL,'2021-09-03 10:32:46','IMG_4237','480','640',NULL,'0'),
+('9135','267',NULL,'IMG_4196','Y','Y','View entering the canyon','350324667','-1063741750','2883',NULL,'2021-08-19 12:43:51','IMG_4196','480','640',NULL,'1'),
+('9136','267',NULL,'IMG_4191','Y','Y','Looking at the eastern slopes of the Sandia','350290139','-1063682639','2884',NULL,'2021-08-19 12:13:41','IMG_4191','480','640',NULL,'2'),
+('9137','267',NULL,'IMG_4241','Y','N','A view from the \'technically challlenging\' 3 Bottles trail segment','350093611','-1063606639','2885',NULL,'2021-09-03 10:43:13','IMG_4241','480','640',NULL,'3'),
+('9138','267',NULL,'IMG_4193','Y','Y','Towards Otero Canyon','350312722','-1063707583','2886',NULL,'2021-08-19 12:23:59','IMG_4193','480','640',NULL,'4'),
+('9139','267',NULL,'IMG_4240','Y','Y','100% Bogus Sign - disregard! (See Trail Tips)','350092500','-1063611139','2887',NULL,'2021-09-03 10:41:25','IMG_4240','480','640',NULL,'5'),
+('9140','267',NULL,'IMG_4229','Y','Y','A better Sandia view from the \'Wag\'','350182722','-1063653194','2888',NULL,'2021-09-03 10:05:04','IMG_4229','480','640',NULL,'6'),
+('9141','267',NULL,'IMG_4226','Y','Y','A \'Gnasty view\' from the \'Wag\'','350153694','-1063679111','2889',NULL,'2021-09-03 09:43:31','IMG_4226','480','640',NULL,'7'),
+('9142','267',NULL,'IMG_4174','Y','Y','Following the arroyo','350304722','-1063737250','2890',NULL,'2021-08-19 09:04:12','IMG_4174','640','480',NULL,'8'),
+('9143','267',NULL,'IMG_4176','Y','Y','Iinteresting strata of rock along the trail','350253222','-1063740389','2891',NULL,'2021-08-19 09:14:45','IMG_4176','480','640',NULL,'9'),
+('9144','267',NULL,'IMG_4224','Y','Y','A lovely old-fashioned trail sign','350131417','-1063700722','2892',NULL,'2021-09-03 09:36:04','IMG_4224','640','480',NULL,'10'),
+('9145','267',NULL,'IMG_4172','Y','Y','At the trail head','350346000','-1063742833','2893',NULL,'2021-08-19 08:54:07','IMG_4172','480','640',NULL,'11'),
+('9146','267',NULL,'IMG_4244','Y','Y','The parting of the trees','350213389','-1063636778','2894',NULL,'2021-09-03 11:13:43','IMG_4244','480','640',NULL,'12'),
+('9147','267',NULL,'IMG_4187','Y','Y','A high point on Blue Ribbon','350200056','-1063623722','2895',NULL,'2021-08-19 11:50:18','IMG_4187','480','640',NULL,'13'),
+('9148','267',NULL,'IMG_4233','Y','Y','Old FR106 continues north to oblivion','350151833','-1063625194','2896',NULL,'2021-09-03 10:24:40','IMG_4233','480','640',NULL,'14'),
+('9149','267',NULL,'IMG_4222','Y','N','DoD Warning and obvious blockade','350129500','-1063701472','2897',NULL,'2021-09-03 09:34:48','IMG_4222','480','640',NULL,'15');
 
 
 
@@ -4656,6 +4678,32 @@ INSERT INTO USERS VALUES
 
 
 
+CREATE TABLE `VISITORS` (
+  `vid` int(11) NOT NULL AUTO_INCREMENT,
+  `vip` varchar(32) DEFAULT NULL,
+  `vbrowser` varchar(255) DEFAULT NULL,
+  `vplatform` varchar(40) DEFAULT NULL,
+  `vdatetime` datetime DEFAULT NULL,
+  `vpage` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`vid`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+
+INSERT INTO VISITORS VALUES
+('1','75.161.75.101','Mozilla Firefox','mac','2021-09-04 09:55:46','https://nmhikes.com:443/edit/editDB.php?hikeNo=1&tab=2'),
+('2','75.161.75.101','Mozilla Firefox','mac','2021-09-04 09:58:17','https://nmhikes.com:443/edit/editDB.php?tab=2&hikeNo=1'),
+('3','107.77.228.231','Apple Safari','mac','2021-09-04 08:29:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=176'),
+('4','75.161.75.101','Mozilla Firefox','mac','2021-09-05 08:30:44','https://nmhikes.com:443/pages/home.php'),
+('5','75.161.75.101','Mozilla Firefox','mac','2021-09-05 08:30:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=78'),
+('6','75.161.75.101','Mozilla Firefox','mac','2021-09-05 08:33:29','https://nmhikes.com:443/pages/home.php'),
+('7','75.161.75.101','Mozilla Firefox','mac','2021-09-05 08:34:20','https://nmhikes.com:443/pages/home.php'),
+('8','75.161.75.101','Mozilla Firefox','mac','2021-09-05 08:34:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=225'),
+('9','75.161.75.101','Mozilla Firefox','mac','2021-09-05 08:34:39','https://nmhikes.com:443/pages/home.php'),
+('10','75.161.75.101','Mozilla Firefox','mac','2021-09-05 02:22:34','https://nmhikes.com:443/admin/visitor_data.php');
+
+
+
+
 CREATE TABLE `FAVORITES` (
   `userid` smallint(6) NOT NULL,
   `hikeNo` smallint(6) NOT NULL,
@@ -4672,11 +4720,3 @@ INSERT INTO FAVORITES VALUES
 ('2','163');
 
 
-CREATE TABLE `VISITORS` (
-  `vid` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `vip` VARCHAR(32) NULL,
-  `vbrowser` VARCHAR(255) NULL, 
-  `vplatform` VARCHAR(40) NULL,
-  `vdatetime` DATETIME NULL,
-  `vpage` VARCHAR(255) NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
