@@ -19,12 +19,19 @@ $('#end').datepicker({
     dateFormat: "yy-mm-dd"
 });
 var thisyr = $('#curr_yr').text();
+var thismo = $('#curr_mo').text();
+var thisdy = $('#curr_dy').text();
 var selected = '';
 var mosel: number;
 var daysel: string;
 var start: string;
 var end: string;
 var ajaxdata: object;
+$('#today').on('click', function() {
+    let day = thisyr + '-' + thismo + '-' + thisdy;
+    ajaxdata = {start: day, end: day};
+    getVisitorData(ajaxdata);
+});
 // display the options when a year is selected
 $('#strt_yr').on('change', function() {
     selected = $('#strt_yr option:selected').text();

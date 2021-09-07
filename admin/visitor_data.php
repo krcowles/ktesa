@@ -10,6 +10,7 @@
  */
 session_start();
 require "../php/global_boot.php";
+date_default_timezone_set('America/Denver');
 
 $avail_yrs = '<option value="0">Select Year</option>';
 $firstyr = 2021;
@@ -32,7 +33,8 @@ for ($i=0; $i<12; $i++) {
 }
 $longmos .= '</select>';
 // Selectable months for current year
-$currmo = intval(date('m'));
+$nowmo  = date('m');
+$currmo = intval($nowmo);
 $shortmos = [];
 for ($i=1; $i<13; $i++) {
     if ($currmo >= $i) {
@@ -57,6 +59,7 @@ $modays .= '</select>';
 $curryr = date('Y');
 $onemo = '&nbsp;&nbsp;<button id="onemo" type="button" class="btn ' .
     'btn-secondary btn-sm">Display Month</button>';
+$currday = date('d');
 // day extensions
 $addone = '<option value="29">29</option>';
 $addtwo = $addone . '<option value="30">30</option>';
@@ -88,12 +91,16 @@ $addmax = $addtwo . '<option value="31">31</option>';
 <p id="active" style="display:none">Admin</p>
 
 <div id="main">
-    <p id="curr_yr" style="display:none"><?=$curryr;?></p>
-    <h5>Select a day or month to display visitor data</h5>
-    <div>
-        <select id="strt_yr">
+    <p id="curr_yr" style="display:none;"><?=$curryr;?></p>
+    <p id="curr_mo" style="display:none;"><?=$nowmo;?></p>
+    <p id="curr_dy" style="display:none;"><?=$currday;?></p>
+    <h5>Today's Data:&nbsp;&nbsp;<button id="today" class="btn 
+        btn-secondary btn-sm">Today</button>&nbsp;&nbsp;</span>
+        OR:&nbsp;&nbsp;Select a day or month to display visitor data
+        &nbsp;&nbsp;<select id="strt_yr">
             <?=$avail_yrs;?>
-        </select><br />
+        </select><br /></h5>
+    <div>
         <div id="opts">
             <h5>For a single month in the selected year:</h5>
             <p id="sglmo"></p>

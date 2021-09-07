@@ -30,6 +30,8 @@ if (count($visitor_data) === 0) {
 }
 // find locations of IP addresses (Not done in getLogin.php to improve performance)
 $vloc = [];
+$vreg = [];
+$vcnt = [];
 // not local machine
 foreach ($visitor_data as $row) {
     $details 
@@ -38,6 +40,16 @@ foreach ($visitor_data as $row) {
         array_push($vloc, $details->city);
     } else {
         array_push($vloc, 'Local Machine');
+    }
+    if (isset($details->region)) {
+        array_push($vreg, $details->region);
+    } else {
+        array_push($vreg, "N/A");
+    }
+    if (isset($details->country)) {
+        array_push($vcnt, $details->country);
+    } else {
+        array_push($vcnt, "N/A");
     }
 }
 /**
@@ -53,6 +65,8 @@ $html = <<<EOH
             <th>Time of Visit</th>
             <th>Page Visited</th>
             <th>IP Location</th>
+            <th>Region</th>
+            <th>Country</th>
         </tr>
     </thead>
     <tbody>
@@ -65,7 +79,9 @@ for ($k=0; $k<count($visitor_data); $k++) {
                 '<td>' . $visitor_data[$k]['vdatetime'] . '</td>' . PHP_EOL .
                 '<td>' . $visitor_data[$k]['vpage'] . '</td>' . PHP_EOL .
                 '<td>' . $vloc[$k] . '</td>'. PHP_EOL .
-            '</tr>';
+                '<td>' . $vreg[$k] . '</td>' . PHP_EOL .
+                '<td>' . $vcnt[$k] . '</td>' . PHP_EOL .
+            '</tr>' . PHP_EOL;
 }
 $html .= '</tbody>' . PHP_EOL . '</table>' . PHP_EOL;
 echo $html;
