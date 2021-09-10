@@ -274,7 +274,7 @@ if ($msgout == '') {
     <?php else : ?>
         <p>E-Hike <?=$hikeNo;?> Has Been Released to the Main Site and 
             may now be viewed from the main page as hike no <?=$indxNo;?>
-            (<a href="<?$newPage;?>">New Hike</a>)</p>
+            (<a href="<?=$newPage;?>">New Hike</a>)</p>
         <p>Edited hike has been removed from the list of New/In-Edit Hikes</p>
     <?php endif; ?>
 </div>
