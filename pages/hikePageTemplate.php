@@ -81,6 +81,9 @@ function off() {
             Seasons : <span id="hseas" class="sumClr">
                 <?= $hikeSeasons;?></span><br />
             "Wow" Factor: <span id="hwow" class="sumClr"><?= $hikeWow;?></span>
+        <?php if ($hikedLast) : ?>
+            <br />Authors last hiked: <span class="sumClr"><?=$hikedLast;?></span>
+        <?php endif; ?>
         </p>
         <?php if (!$clusterPage) : ?>
             <p id="addtl"><strong>More!</strong></p>

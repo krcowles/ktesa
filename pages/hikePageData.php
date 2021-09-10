@@ -120,6 +120,11 @@ $infoHd         = $clusterPage ? 'area:' : 'hike:';
 $hikeDirections = $row['dirs'];
 $hikeTips       = $row['tips'];
 $hikeInfo       = "<span id='ihd'>About this {$infoHd}</span><br />" . $row['info'];
+if ($tbl === 'old') {
+    $hikedLast  = $row['last_hiked'];
+} else {
+    $hikedLast  = false;
+}
 $hikeEThresh    = $row['eThresh'];
 $hikeDThresh    = $row['dThresh'];
 $hikeMaWin      = $row['maWin'];

@@ -84,7 +84,7 @@ if ($status > $lastHikeNo || $status < 0) {
  * Continue ONLY IF NO ERRORS...
  */
 if ($msgout == '') {    
-    // Get column names for buillding query strings
+    // Get column names for building query strings
     $result = $pdo->query("SHOW COLUMNS FROM EHIKES;");
     $columns = $result->fetchAll(PDO::FETCH_BOTH);
     if ($status > 0) { // this is an existing hike, UPDATE its record in HIKES
@@ -125,6 +125,22 @@ if ($msgout == '') {
     } else { // this will be the already published hikeno
         $indxNo = $status;
     }
+    // Update the 'last_hiked' field (may have changed for published hike!)
+    if (!$clusterPage) {
+        $getPixReq = "SELECT `date` FROM `TSV` WHERE `indxNo`=? ORDER BY date " .
+            "DESC LIMIT 1;";
+        $photoDates = $pdo->prepare($getPixReq);
+        $photoDates->execute([$indxNo]);
+        $latest = $photoDates->fetch(PDO::FETCH_ASSOC);
+        $lastHiked = '0000-00-00';
+        if ($latest !== false && count($latest) > 0) {
+            $lastHiked = substr($latest['date'], 0, 10);
+        }
+        $writeDateReq = "UPDATE `HIKES` SET `last_hiked` = '{$lastHiked}' WHERE " .
+            "`indxNo` = {$indxNo};";
+        $writeDate = $pdo->query($writeDateReq);
+    }
+    $newPage = "../pages/hikePageTemplate.php?hikeIndx=" . $indxNo;
     /**
      * In the cases of EGPSDAT, EREFS, and ETSV, elements may have been
      * deleted during edit, therefore, remove ALL the old data if the
@@ -257,8 +273,9 @@ if ($msgout == '') {
         <?=$msgout;?>
     <?php else : ?>
         <p>E-Hike <?=$hikeNo;?> Has Been Released to the Main Site and 
-            may now be viewed from the main page</p>
-        <p>Hike has been removed from the list of New/In-Edit Hikes</p>
+            may now be viewed from the main page as hike no <?=$indxNo;?>
+            (<a href="<?$newPage;?>">New Hike</a>)</p>
+        <p>Edited hike has been removed from the list of New/In-Edit Hikes</p>
     <?php endif; ?>
 </div>
 

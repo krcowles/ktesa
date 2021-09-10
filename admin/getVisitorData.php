@@ -83,5 +83,5 @@ for ($k=0; $k<count($visitor_data); $k++) {
                 '<td>' . $vcnt[$k] . '</td>' . PHP_EOL .
             '</tr>' . PHP_EOL;
 }
-$html .= '</tbody>' . PHP_EOL . '</table>' . PHP_EOL;
+$html .= '</tbody>' . PHP_EOL . '</table><br /><br />' . PHP_EOL;
 echo $html;
