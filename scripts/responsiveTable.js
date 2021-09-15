@@ -57,9 +57,9 @@ $(function () {
             var hikeset = regions[locarea]; // regions are objects whose key is a locale (string)
             for (var i = 0; i < rows.length; i++) {
                 var item = $(rows[i]).data('indx');
-                var hikeno = parseInt(item);
+                var hikeno_1 = parseInt(item);
                 for (var j = 0; j < hikeset.length; j++) {
-                    if (hikeno == hikeset[j]) {
+                    if (hikeno_1 == hikeset[j]) {
                         lochikes.push(rows[i]);
                     }
                 }
@@ -124,8 +124,8 @@ $(function () {
         for (var j = 0; j < rows.length; j++) {
             var lat = $(rows[j]).data('lat');
             var lng = $(rows[j]).data('lon');
-            var distance_1 = radialDist(lat, lng, geo.lat, geo.lng, 'M');
-            if (distance_1 <= radius) {
+            var distance = radialDist(lat, lng, geo.lat, geo.lng, 'M');
+            if (distance <= radius) {
                 nearby.push(rows[j]);
             }
         }
