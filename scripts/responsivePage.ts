@@ -4,7 +4,7 @@
  * @author Ken Cowles
  * @version 1.0 First release of responsive design
  */
-let title = $('#trail').text();
+var title = $('#trail').text();
 $('#ctr').text(title);
 
 // hike number
@@ -18,6 +18,44 @@ var hike_stats = new bootstrap.Modal(statsEl, {
 
 // Move the buttons towards the bottom to prevent blocking collapsed drop-down menu
 var chartPlaced = $.Deferred(); // placed in dynamicChart.js
+
+// establish globals for placing map & chart in viewport
+var $mapEl: JQuery<HTMLElement>;
+var $chartEl: JQuery<HTMLElement>;
+var canvasEl: HTMLCanvasElement;
+
+// Establish the placement of the map & chart in the viewport on load & resize
+const setMobileView = () => {
+    var canvasWidth
+    // Height calcs
+    var vpHeight = window.innerHeight;
+    var consumed = <number>$('#nav').height() + <number>$('#logo').height();
+    var usable = vpHeight - consumed;
+    var mapHt = Math.floor(0.65 * usable);
+    var chartHt = Math.floor(0.35 * usable);
+    $mapEl.height(mapHt);
+    $chartEl.height(chartHt);
+    // Width calcs
+    var availWidth = <number>$(window).width();
+    availWidth = Math.floor(availWidth) - 2;
+    $mapEl.width(availWidth);
+    $chartEl.width(availWidth);
+    // set up canvas inside chartline div
+    if (chartHt < 100) {
+        $chartEl.height(100);
+        canvasEl.height = 100;
+    } else {
+        canvasEl.height = chartHt;
+    }
+    canvasWidth = availWidth;
+    canvasEl.width = canvasWidth;  
+}
+$(function () {
+    $mapEl = $('#mapline');
+    $chartEl = $('#chartline');
+    canvasEl = <HTMLCanvasElement>document.getElementById('grph');
+    setMobileView();
+});
 /**
  * Position the hike stats button first, as the favorites will sit on top
  */

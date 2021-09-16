@@ -62,9 +62,13 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/ktesaNavbar.css" type="text/css" rel="stylesheet" />
     <link href="../styles/mapOnly.css" type="text/css" rel="stylesheet" />
+    <script src="../scripts/jquery.js"></script>
 </head>
 
 <body>
+    
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaNavbar.php"; ?>
 <p id="trail">Your Favorites</p>
 
@@ -126,9 +130,7 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
     var locations = <?=$jsLocs;?>;
     var tracks = <?=$jsTracks;?>;
 </script>
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
-<script src="../scripts/bootstrap.min.js"></script>
-<script src="../scripts/jquery.js"></script>
+<script src="../scripts/logo.js"></script>
 <script src="../scripts/responsiveFmap.js"></script>
 <script src="../scripts/markerclusterer.js"></script>
 <script async defer src="<?=Google_Map;?>"></script>

@@ -43,6 +43,7 @@ if (isset($_SESSION['userid'])) {
     <link href="../styles/responsivePage.css" rel="stylesheet" />
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
+    <script src="../scripts/jquery.js"></script>
 </head>
      
 <body>
@@ -62,6 +63,8 @@ function off() {
 <?php endif; ?>
 <!-- End Overlay -->
 
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaNavbar.php";?>
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="gpx" style="display:none"><?=$gpxPath;?></p>
@@ -197,9 +200,7 @@ function off() {
     var w  = "<?=implode("|", $widths);?>";
     <?php endif; ?>
 </script>
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
-<script src="../scripts/bootstrap.min.js"></script>
-<script src="../scripts/jquery.js"></script>
+<script src="../scripts/logo.js"></script>
 <script src="../scripts/responsivePage.js"></script>
 <script src="../scripts/responsivePics.js"></script>
 <script src="../scripts/prepareTracks.js"></script>

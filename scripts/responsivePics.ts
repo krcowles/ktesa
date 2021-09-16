@@ -128,7 +128,7 @@ if (vw <= 415) {
     let pairs = 0;
     let solo  = lands.length === 1 ? true : false; 
     if (!solo) {
-        pairs = Math.round(lands.length/2);
+        pairs = Math.floor(lands.length/2);
         solo  = lands.length % 2 === 0 ? false : true;
     }
     for (let j=0; j<pairs; j++) {

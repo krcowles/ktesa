@@ -25,10 +25,13 @@ require "alphabeticHikes.php";
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="../styles/mapOnly.css" rel="stylesheet" />
+    <script src="../scripts/jquery.js"></script>
 </head>
 
 <body>
 
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaNavbar.php"; ?>
 <div id="trail">Welcome!</div>
 
@@ -54,9 +57,7 @@ require "../php/mapJsData.php";
     var pgnames = <?=$jsPageNames;?>;
     window.name = "homePage";
 </script>
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
-<script src="../scripts/bootstrap.min.js"></script>
-<script src="../scripts/jquery.js"></script>
+<script src="../scripts/logo.js"></script>
 <script src="../scripts/markerclusterer.js"></script>
 <script src="../scripts/searchbar.js"></script>
 <script src="../scripts/mapOnly.js"></script>

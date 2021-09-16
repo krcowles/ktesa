@@ -332,7 +332,9 @@ $(window).on('resize', function() {
         do_resize = false;
         setTimeout( function() {
             canvasEl.onmousemove = null;
-            setViewport();
+            if (!mobile) {
+                setViewport();
+            }
             var chartData = defineData(trackNumber);
             ChartObj.render('grph', chartData);
             crossHairs(trackNumber);

@@ -125,7 +125,7 @@ else {
     var pairs = 0;
     var solo = lands.length === 1 ? true : false;
     if (!solo) {
-        pairs = Math.round(lands.length / 2);
+        pairs = Math.floor(lands.length / 2);
         solo = lands.length % 2 === 0 ? false : true;
     }
     for (var j = 0; j < pairs; j++) {

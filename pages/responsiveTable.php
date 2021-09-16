@@ -28,9 +28,13 @@ require "respTableData.php";
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="../styles/responsiveTable.css" rel="stylesheet" />
+    <script src="../scripts/jquery.js"></script>
 </head>
 
 <body>
+
+<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaNavbar.php";?>
 <div id="trail">Table of Hikes</div>
 <br />
@@ -113,9 +117,7 @@ require "respTableData.php";
 </div>
 
 <script type="text/javascript">var regions = <?=$locale_groups;?>;</script>
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
-<script src="../scripts/bootstrap.min.js"></script>
-<script src="../scripts/jquery.js"></script>
+<script src="../scripts/logo.js"></script>
 <script src="../scripts/responsiveTable.js"></script>
 </body>
 </html>
