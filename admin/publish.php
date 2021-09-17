@@ -51,7 +51,8 @@ if ($clusterPage) {
             .= "<p class='brown'>Missing lat or lng for Cluster {$clusPgField}</p>";
     }
 } else {
-    // Data omission here will cause issues in mapJsData.php on home page; no display
+    // Data omission here will cause issues in mapJsData.php on home page,
+    // or other problems (including execution errors)
     if (!empty($cname)) {
         // if a group hike page, validate data in CLUSTERS (whether or not published)
         $clusterDataReq = "SELECT * FROM `CLUSTERS` WHERE `group`=?;";
@@ -70,6 +71,12 @@ if ($clusterPage) {
     }
     if (empty($ehike['lat']) || empty($ehike['lng'])) {
         $msgout .= '<p class="brown">Missing lat or lng data</p>';
+    }
+    if (empty($ehike['last_hiked'])) {
+        $msgout .= '<p class="brown">Missing last_hiked data</p>';
+    }
+    if (empty($ehike['preview'])) {
+        $msgout .= '<p class="brown">Missing preview/thumb data</p>';
     }
 }
 if (empty($ehike['dirs'])) {

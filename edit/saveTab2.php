@@ -101,5 +101,8 @@ for ($n=0; $n<count($picarray); $n++) {
 // enter/save waypoints
 require "waypointSave.php";
 
+// get last_hiked date:
+require "lastHiked.php";
+
 $redirect = "editDB.php?tab=2&hikeNo={$hikeNo}";
 header("Location: {$redirect}");
