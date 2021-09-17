@@ -14,8 +14,9 @@ var statsEl = document.getElementById('hikeData');
 var hike_stats = new bootstrap.Modal(statsEl, {
     keyboard: false
 });
-// Move the buttons towards the bottom to prevent blocking collapsed drop-down menu
-var chartPlaced = $.Deferred(); // placed in dynamicChart.js
+// asynch promises
+var chartPlaced = $.Deferred(); // placed in dynamicChart.js 
+var docReady = $.Deferred(); // Timing required to set captions properly on top of pix
 // establish globals for placing map & chart in viewport
 var $mapEl;
 var $chartEl;
@@ -52,6 +53,7 @@ $(function () {
     $chartEl = $('#chartline');
     canvasEl = document.getElementById('grph');
     setMobileView();
+    docReady.resolve();
 });
 /**
  * Position the hike stats button first, as the favorites will sit on top
@@ -75,6 +77,7 @@ var favoritesPos = function () {
     $('#hinfo').width(favwidth);
     return;
 };
+// Move the buttons towards the bottom to prevent blocking collapsed drop-down menu
 $.when(chartPlaced).then(function () {
     buttonPos();
     favoritesPos();

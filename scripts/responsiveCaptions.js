@@ -7,7 +7,7 @@
  * @version 2.0 Added responsive design capability
  * @version 2.1 Typescripted
  */
-$.when(picSetupDone).then(function () {
+$.when(picSetupDone, docReady).then(function () {
     var vpHeight = window.innerHeight;
     var navbarht = $('nav').height();
     var logo_ht = $('#logo').height();
