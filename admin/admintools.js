@@ -165,9 +165,18 @@ $(function () {
         window.open("list_new_files.php?request=files", "_blank");
     });
     /**
-     * Databse management tools
+     * Database management tools
      */
-    // Reload Database
+    /**
+     * "Reload Database" is a special case requiring more attention to
+     * circumstances and state of the db. If the db tables have been dropped
+     * separately (not a part of "Reload Database"), or because the reload
+     * failed to complete after already dropping tables, then the Checksums table
+     * won't be present, so the deferred promise must be resolved. Also, when the
+     * "Reload Database" is performed on the server, the extra precaution is
+     * taken to save the current database before reloading (not so for local
+     * machine). The function 'retrieveDwnldCookie' is related to that case.
+     */
     function retrieveDwnldCookie(dcname) {
         var parts = document.cookie.split(dcname + "=");
         var returnitem = '';
@@ -207,7 +216,14 @@ $(function () {
     $('#reload').on('click', function () {
         // first look for db changes of importance:
         var checksumsDef = $.Deferred();
-        checkChecksums(checksumsDef);
+        $.get("checksumTest.php", function (result) {
+            if (result === 'no') {
+                checksumsDef.resolve();
+            }
+            else {
+                checkChecksums(checksumsDef);
+            }
+        });
         $.when(checksumsDef).then(function () {
             if (confirm("Do you really want to drop all tables and reload them?")) {
                 if (hostIs !== 'localhost') {
@@ -229,7 +245,7 @@ $(function () {
             }
         });
     });
-    // Drop All Tables
+    // Drop All Tables (only - not a part of "Reload Database")
     $('#drall').on('click', function () {
         var testSums = $.Deferred();
         checkChecksums(testSums);

@@ -1,11 +1,14 @@
 <?php
 /**
  * This script is the essence of the action for loading all tables. It
- * can be called individually, or as a part of the reload action.
- * PHP Version 7.4
+ * can be called individually, or as a part of the reload action. NOTE:
+ * if the sql file was created via a phpMyAdmin 'export', additional SQL
+ * commands (ones not present when performing 'EXPORT ALL TABLES') may
+ * be present and require modifications (e.g. a "COMMIT" statement at the
+ * end of file, and/or C-style comment lines).
+ * PHP Version 7.8
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -39,7 +42,8 @@ for ($i=0; $i<$line_cnt; $i++) {
     if (substr($lines[$i], 0, 2) == '--' || trim($lines[$i]) == '') {
         continue;
     }
-    // There are 2 kinds of query: CREATE TABLE and INSERT INTO:
+    // There are 3 kinds of queries: CREATE TABLE, INSERT INTO, AND ALTER:
+    // NOTE: Any present 'COMMIT' or C-style comments must be removed
     if (strpos($lines[$i], "CREATE TABLE") !== false) {
         $msg = '"' . $lines[$i] . '"';
         $create = "";
@@ -56,6 +60,15 @@ for ($i=0; $i<$line_cnt; $i++) {
             $insert .= $lines[$i];
         } while (strrpos($lines[$i], ";") !== strlen($lines[$i++])-2);
         $pdo->query($insert);
+        $qcnt++;
+        $i--;
+    } elseif (strpos($lines[$i], "ALTER") !== false) {
+        $msg = '"' . $lines[$i] . '"';
+        $alter = "";
+        do {
+            $alter .= $lines[$i];
+        } while (strpos($lines[$i++], ";") === false);
+        $pdo->query($alter);
         $qcnt++;
         $i--;
     } else {
