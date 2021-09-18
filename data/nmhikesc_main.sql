@@ -25,11 +25,12 @@ CREATE TABLE `EHIKES` (
   `dirs` varchar(1024) DEFAULT NULL,
   `tips` varchar(4096) DEFAULT NULL,
   `info` varchar(4096) DEFAULT NULL,
+  `last_hiked` date DEFAULT NULL,
   `dThresh` tinyint(2) DEFAULT NULL,
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 
 
@@ -41,7 +42,7 @@ CREATE TABLE `BOOKS` (
   `title` varchar(200) NOT NULL,
   `author` varchar(200) NOT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO BOOKS VALUES
@@ -66,7 +67,8 @@ INSERT INTO BOOKS VALUES
 ('19','Following the Royal Road: A Guide to the Historic Camino Real de Tierra Adentro','Hal E. Jackson'),
 ('20','Wonderland: A Photographer\'s Journey Into The Bisti','Eduardo Fuss'),
 ('21','60 Short Hikes In The Sandia Foothills','Tamara Massong'),
-('22','Hiking Trails in Valles Caldera National Preserve','Coco Rae');
+('22','Hiking Trails in Valles Caldera National Preserve','Coco Rae'),
+('23','Hiking Trails of the Sandia and Monzano Mountains','Kay Matthews');
 
 
 
@@ -329,20 +331,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','3801470195','2021-09-10 15:48:30'),
-('2','CLUSHIKES','547532434','2021-09-10 15:48:30'),
-('3','CLUSTERS','3711755857','2021-09-10 15:48:30'),
-('4','EGPSDAT','0','2021-09-10 15:48:30'),
-('5','EHIKES','0','2021-09-10 15:48:30'),
-('6','EREFS','0','2021-09-10 15:48:30'),
-('7','ETSV','0','2021-09-10 15:48:30'),
-('8','FAVORITES','3651041965','2021-09-10 15:48:30'),
-('9','GPSDAT','4093278896','2021-09-10 15:48:30'),
-('10','HIKES','2625628431','2021-09-10 15:48:30'),
-('11','REFS','2187643920','2021-09-10 15:48:30'),
-('12','TSV','447143115','2021-09-10 15:48:30'),
-('13','USERS','510490655','2021-09-10 15:48:30'),
-('14','VISITORS','2401794408','2021-09-10 15:48:30');
+('1','BOOKS','2674158859','2021-09-17 16:15:09'),
+('2','CLUSHIKES','547532434','2021-09-17 16:15:09'),
+('3','CLUSTERS','3711755857','2021-09-17 16:15:09'),
+('4','EGPSDAT','3862110335','2021-09-17 16:15:09'),
+('5','EHIKES','1487142722','2021-09-17 16:15:09'),
+('6','EREFS','2115091881','2021-09-17 16:15:09'),
+('7','ETSV','2665195112','2021-09-17 16:15:09'),
+('8','FAVORITES','3651041965','2021-09-17 16:15:09'),
+('9','GPSDAT','4093278896','2021-09-17 16:15:09'),
+('10','HIKES','3961514991','2021-09-17 16:15:09'),
+('11','REFS','2187643920','2021-09-17 16:15:09'),
+('12','TSV','447143115','2021-09-17 16:15:09'),
+('13','USERS','510490655','2021-09-17 16:15:09'),
+('14','VISITORS','2401794408','2021-09-17 16:15:09');
 
 
 
@@ -357,7 +359,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
 
@@ -373,7 +375,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 
 
@@ -401,7 +403,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 
 
 
@@ -416,7 +418,7 @@ CREATE TABLE `GPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=143 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO GPSDAT VALUES
@@ -471,7 +473,8 @@ INSERT INTO GPSDAT VALUES
 ('138','260','P','MAP:','../maps/Stop1.html','Stop1 Hike'),
 ('139','260','P','MAP:','../maps/Stop3.html','Stop3 Hike'),
 ('141','156','P','GPX:','../gpx/WaterCanyonSbWithElev.gpx','Proposed Hike Track File'),
-('142','226','P','GPX:','../gpx/WhiteMesaAlt.gpx','Segment from Dragons Back (Not Recommended)');
+('142','226','P','GPX:','../gpx/WhiteMesaAlt.gpx','Segment from Dragons Back (Not Recommended)'),
+('143','269','P','GPX:','../gpx/SpruceSpringsLoop-174.28.97.193-1631892872.gpx','Red Canyon-Spruce Springs Loop');
 
 
 
@@ -504,7 +507,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=269 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=272 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -769,7 +772,8 @@ INSERT INTO HIKES VALUES
 ('265','Guitierrez Canyon Open Space','2','Tijeras','Loop','6.20','450','Moderate','None','Views of Sandia\'s eastern slopes','Not Winter','Mixed sun/shade','San_Antonito-75.161.75.101-1628716910.gpx','San_Antonito-75.161.75.101-1628716910.json','351292822','-1063651933','San 4fb279.jpg',NULL,NULL,'https://www.google.com/maps/dir//John+A.+Milne+%26+Gutierrez+Canyon+Open+Space,+Unnamed+Road,+Cedar+Crest,+NM+87008/@35.1290221,-106.3686694,15.64z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a2bcb45adf05:0xcb6eac2e5282fc79!2m2!1d-106.3652707!2d35.1292888',NULL,'<p>The Open Space in San Antonito is unassumingly located right off of NM 14, 3 miles north of Tijeras next to the Post Office. It quickly leads into the foothills opposite of Sandia\'s eastern face. On the interactive map above, you will see colored flags, generally representing points where trails intersect. The author uses green to indicate left turns, and red to indicate right. The one instance of blue flag was to indicate that the trail (not so obviously) proceeds straight ahead, on a less well-traveled path.</p>\r\n<p>This hike was \'constructed\' by the author to piece together sufficient trail segments to provide a moderately long adventure - other options can be used to reduce the overall hike length. Some of those options can be seen by clicking on the link provided below in <strong>References</strong>. There are numerous trail crossings, along with twists and turns which provide lovely views in multiple directions. The hike begins with <em><span style=\"color: #1428d2;\">Wagon Mound Trail</span></em>, which proceeds somewhat steeply uphill, and is quite rocky. Berfore long it intersects the <em><span style=\"color: #1428d2;\">Sierra Vista Bypass Trail</span></em>, which maintains a more level contour along the ridge. This trail ends at an \'Emergency Access Road\', which is wide and rocky. A short downhill takes you to the beginning of <em><span style=\"color: #1428d2;\">Canyon Trail </span></em>on the left.</p>\r\n<p><em><span style=\"color: #1428d2;\">Canyon Trail </span></em>loops around to another junction with <span style=\"color: #1428d2;\"><em>Doe Run</em></span> and <em><span style=\"color: #1428d2;\">Eagle Ridge</span></em>. Keep straight/left to follow the <em><span style=\"color: #1428d2;\">Doe Run Trail</span></em>. It proceeds up from the canyon to the top of a ridge. Here it intersects with <em><span style=\"color: #1428d2;\">Ridge Trail</span></em>, but this hike turns right and goes uphill on an <em>unnamed trail</em>. Soon the <em>unnamed trail</em> proceeds sharply downhill and meets the <em><span style=\"color: #1428d2;\">Chapparal Trail</span></em>, where the hike turns left. In a short distance, the <em><span style=\"color: #1428d2;\">Arroyo Loop Trail</span></em> is met, and the hike keeps right to proceed along the west side of the loop. There are some lovely views along the arroyo on this trail, which leads back to the <em><span style=\"color: #1428d2;\">Mine Trail</span></em>, returning back to the parking area.</p>','2021-08-11',NULL,NULL,NULL),
 ('266','South Mountain','2','Valles Caldera','Out-and-back','8.10','1000','Moderate','Entrance Station','Interior Caldera views','Not Winter','Mixed sun/shade','South_Mountain-75.161.75.101-1630106842.gpx','South_Mountain-75.161.75.101-1630106842.json','358632336','-1065192435','Sout2df217.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.8632336,-106.5192435/@35.8434838,-106.5298175,13.19z','<p>You must register to travel witihin the National Preserve. The registration station is about 1.8 miles from NM 4, and only a limited number of vehicles are permitted access. Plan accordingly.</p>','<p>The <em><span style=\"color: #1428d2;\">South Mountain Hike</span></em> begins at a cabled gate near the Cabin District of the Caldera. Access to <em><span style=\"color: #1428d2;\">South Mountain </span></em><span style=\"color: #000000;\">is gained by hiking the old VC02 jeep trail about 1.37 miles southwest, just past the intersection of VC02 with VC0201. Here the trail up the mountain actually begins, and a trail marker directs the hiker to turn left (south) and begin the ascent. Note that the mileage information in the book reference below is not very precise. Generally, the mileage is over-stated somewhat.<br /></span></p>\r\n<p><span style=\"color: #000000;\">The <span style=\"color: #1428d2;\"><em>South Mountain Trail</em></span>, at this point, follows an unused and slowly degenerating jeep track uphill, gently at first and becoming more moderate as you proceed. The two-track is beginning to become overgrown from disuse, and degenerates further uphill until it ends at about 3.3 miles into the hike (see the blue flag on the interactive map). From here, the blue diamonds on the trees continue on, marking the actual trail. Please note, however, that there is a jog to the left about 100 yards/meters from the end of the jeep trail (marked on the interactive map with a green flag). This is easy to miss, as the trail appears to go straight at this point. Following that straight-ahead trail, however, as the author did at first, results eventually in a dead end. It is still possible to bushwhack up the hill from there towards the summit meadow, but it involves crossing a significant amount of deadfall. That \'route\' is not shown on the map.</span></p>\r\n<p><span style=\"color: #000000;\">From the meadow, the trail - still visible but somewhat faint - proceeds towards the summit. After entering a grove of aspens and climbing uphill the hike ends there with some nice 360-degree views, though partially obstructed in some directions due to the tree cover. Note that heading back, the trail across the meadow can seem to disappear, so a GPS device of some sort is advised.</span></p>','2021-08-27',NULL,NULL,NULL),
 ('267','Otero Canyon','2','Tijeras','Loop','7.40','700','Moderate','None','Views of Manzanitas and Sandias','Not Winter','Mixed sun/shade','Otero_Canyon-75.161.75.101-1630770853.gpx','Otero_Canyon-75.161.75.101-1630770853.json','350346132','-1063743346','Oter47a179.jpg',NULL,NULL,'https://www.google.com/maps/dir//Otero+Canyon+East+Trailhead,+Tijeras,+NM+87059/@35.0532032,-106.3932463,13.4z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a5204426aaf7:0x37fa5ac7c94cc92c!2m2!1d-106.3742777!2d35.0347618','<p>&nbsp;Note that the sign (see Photos) on the <span style=\"color: #1428d2;\"><em>Three Bottles Trail</em></span> indicating \'<em>Enter at your Own Risk</em>\' is completely bogus - the trail beyond the sign, all the way to the <em><span style=\"color: #1428d2;\">Blue Ribbon Trail,</span></em> is nothing other than moderate-easy, and is less challenging than other trail segments, like <span style=\"color: #1428d2;\"><em>Gnasty Wag</em></span> or parts of the <span style=\"color: #1428d2;\"><em>Blue Ribbon Trail</em></span>. Ignore the sign and enjoy a relatively easy walk along the contour of the hill.</p>\r\n<p>Note also that the trails may abut land held by the DoD, and it is illegal to enter those sections. This is especially important if you are mapping your own trail using some of the existing online map sources, which show trails, but not the DoD land! The hike shown avoids entry.</p>','<p>The <em><span style=\"color: #1428d2;\">Otero Canyon</span></em> hike is actually a loop formed by several trails. The hike begins on the <span style=\"color: #1428d2;\"><em>Otero Canyon Trail</em></span>, but eventually ends abruptly at <em><span style=\"color: #1428d2;\">Gnasty Wag</span></em>, where it is illegal to proceed further on the canyon trail into the DoD held territory.</p>\r\n<p>Continue the hike by proceeding up the <em><span style=\"color: #1428d2;\">Gnasty Wag Trail</span></em> which ascends at a moderate rate to the <span style=\"color: #1428d2;\"><em>Blue Ribbon Trail</em></span>. If you wish to make for a much shorter hike (total about 5 miles) you may proceed left on the <span style=\"color: #1428d2;\">Blue Ribbon Trail</span> back to the trail head. This hike turns right and follows the <em><span style=\"color: #1428d2;\">Blue Ribbon Trail</span></em> onto <span style=\"color: #1428d2;\"><em>Forest Road 106 </em></span>south. <em><span style=\"color: #1428d2;\">FR106</span></em> soon intersects the <span style=\"color: #1428d2;\"><em>Three Bottles Trail </em><span style=\"color: #000000;\">head</span></span>, where you proceed left (east).</p>\r\n<p>Very soon you will encounter a puzzling sign indicating that the trail ahead \'requires specialized skills and equipment\' and&nbsp; \'Enter at your own risk\' (see Photos below). This is <em>completely erroneous</em>. The author cautiously proceeded to see where it got \'challenging\' and discovered that there was nothing even so challenging as what had already been encountered! You may safely proceed north on this trail segment back to the intersection with <span style=\"color: #1428d2;\"><em>Blue Ribbon</em></span>. The trail then leads back down into <em>Otero Canyon </em>and back to the trail head and parking area.</p>','2021-09-03',NULL,NULL,NULL),
-('268','Redondo-Solitario Loop','2','Valles Caldera','Loop','8.70','400','Easy-Moderate','Entrance Station','Interior views of the Caldera','Not Winter','Mixed sun/shade','Redondo-Solitario-174.28.97.193-1631145361.gpx','Redondo-Solitario-174.28.97.193-1631145361.json','358632916','-1065192631','Redo837b40.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.8632917,-106.5192631/@35.8487465,-106.5203644,14.09z','<p>&nbsp;While the main trail is not difficult, the <span style=\"color: #1428d2;\"><em>Solitario Shortcut</em></span> is not recommended by the author. Firstly, the <em><span style=\"color: #1428d2;\">Solitario</span><span style=\"color: #1428d2;\"> Trail</span></em> head was <span style=\"text-decoration: underline;\">not</span> marked, contrary to what is stated in the book reference below. The author located the trail using a pre-mapped GPS track on a phone app. Secondly, it requires constant attention to deadfall, which is prolific, and which detracts from the enjoyment of the hike. Lastly, the trail disappears near the cabins in the high grasses, which were filled with sticky briars and seeds. The area is fenced, and requires circumnavigating to find a way through. Luckily the author found a route back to the road through an open corral gate.</p>','<p>The hike begins at the <em><span style=\"color: #1428d2;\">South Mountain Trail</span></em> head, and proceeds through the Ponderosas and open meadow to the <em><span style=\"color: #1428d2;\">VC0201 Trail</span></em> marker, about 1.35 miles from the start. The marker is small and set back from the trail on the right, so look for it before the <em><span style=\"color: #1428d2;\">South Mountain Trail</span></em> branches left (see Photos). From here, the degenerating trail proceeds north/northeast. It appears to be seldom used and is overgrown and quite faint at times.</p>\r\n<p>Though the side panel statistics indicate \'Mixed sun/shade\', most of the trail from here traverses major burn areas from the <em>Las Conchas Fire</em>, and is therefore exposed. This would not be a good hike for mid-day in the summer! There are occasional streams and drainages, but none are difficult to traverse. The crossing at <em>La Jara Creek </em>has been buttressed by previous hikers (see Photos).</p>\r\n<p>Don\'t let the elevation chart decieve you - the ascent from the <span style=\"color: #1428d2;\"><em>South Mountain Trail</em></span> is moderate at worst, and easy at times. The chart appears to exaggerate the ascent due to the length of the hike, and the elevation scale on the left axis.</p>\r\n<p>Eventually, the <span style=\"color: #1428d2;\"><em>Solitario Shortcut</em></span> can be found on the right (south) side of the trail, but is currently unmarked (see <strong>Trail Tips</strong>). For the reasons listed, the author does not recommend this route, though it does trim a mile off of the hike length.</p>','2021-09-08',NULL,NULL,NULL);
+('268','Redondo-Solitario Loop','2','Valles Caldera','Loop','8.70','400','Easy-Moderate','Entrance Station','Interior views of the Caldera','Not Winter','Mixed sun/shade','Redondo-Solitario-174.28.97.193-1631145361.gpx','Redondo-Solitario-174.28.97.193-1631145361.json','358632916','-1065192631','Redo837b40.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.8632917,-106.5192631/@35.8487465,-106.5203644,14.09z','<p>&nbsp;While the main trail is not difficult, the <span style=\"color: #1428d2;\"><em>Solitario Shortcut</em></span> is not recommended by the author. Firstly, the <em><span style=\"color: #1428d2;\">Solitario</span><span style=\"color: #1428d2;\"> Trail</span></em> head was <span style=\"text-decoration: underline;\">not</span> marked, contrary to what is stated in the book reference below. The author located the trail using a pre-mapped GPS track on a phone app. Secondly, it requires constant attention to deadfall, which is prolific, and which detracts from the enjoyment of the hike. Lastly, the trail disappears near the cabins in the high grasses, which were filled with sticky briars and seeds. The area is fenced, and requires circumnavigating to find a way through. Luckily the author found a route back to the road through an open corral gate.</p>','<p>The hike begins at the <em><span style=\"color: #1428d2;\">South Mountain Trail</span></em> head, and proceeds through the Ponderosas and open meadow to the <em><span style=\"color: #1428d2;\">VC0201 Trail</span></em> marker, about 1.35 miles from the start. The marker is small and set back from the trail on the right, so look for it before the <em><span style=\"color: #1428d2;\">South Mountain Trail</span></em> branches left (see Photos). From here, the degenerating trail proceeds north/northeast. It appears to be seldom used and is overgrown and quite faint at times.</p>\r\n<p>Though the side panel statistics indicate \'Mixed sun/shade\', most of the trail from here traverses major burn areas from the <em>Las Conchas Fire</em>, and is therefore exposed. This would not be a good hike for mid-day in the summer! There are occasional streams and drainages, but none are difficult to traverse. The crossing at <em>La Jara Creek </em>has been buttressed by previous hikers (see Photos).</p>\r\n<p>Don\'t let the elevation chart decieve you - the ascent from the <span style=\"color: #1428d2;\"><em>South Mountain Trail</em></span> is moderate at worst, and easy at times. The chart appears to exaggerate the ascent due to the length of the hike, and the elevation scale on the left axis.</p>\r\n<p>Eventually, the <span style=\"color: #1428d2;\"><em>Solitario Shortcut</em></span> can be found on the right (south) side of the trail, but is currently unmarked (see <strong>Trail Tips</strong>). For the reasons listed, the author does not recommend this route, though it does trim a mile off of the hike length.</p>','2021-09-08',NULL,NULL,NULL),
+('269','Red Canyon','2','Tajique','Out-and-back','5.00','1600','Med-Difficult','Picnic Area w/Toilets','Canyon and Springs','Not Winter','Good shade','Red_Canyon-174.28.97.193-1631891289.gpx','Red_Canyon-174.28.97.193-1631891289.json','346221726','-1064116711','Red c28bcb.jpg',NULL,NULL,'https://www.google.com/maps/dir//Red+Canyon+Campground,+Cibola+National+Forest,+Torreon,+NM+87061/@34.6619479,-106.4527204,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x871f509c28f59cf7:0xd947cbe5a26c2684!2m2!1d-106.4119065!2d34.6221323','<p>&nbsp;The last couple miles are rutted dirt roads - all wheel drive with clearance is recommended</p>','<p>The <em><span style=\"color: #1428d2;\">Red Canyon Trail </span></em>provides access to the <em><span style=\"color: #1428d2;\">Monzano Crest Trail,</span></em> but it is somewhat relentless in ascent. It starts off moderately and gets steeper as you near the top.</p>\r\n<p>The trail lacks somewhat in terms of scenery and is mostly a good aerobic workout. It is well shaded throughout. There are occasional glimpses of canyon rock formations, along with a slow cascade from a stream which is crossed multiple times along the way. Sometimes the streambed is wet, and sometimes dry, but it is never difficult to navigate. At the top, the <em><span style=\"color: #1428d2;\">Crest Trail </span></em>heading south is well-defined, but heading north is rather faint.</p>\r\n<p>An option for an extended hike using the <em><span style=\"color: #1428d2;\">Spruce Springs Trail</span></em> back to the trail head is shown in the <strong>GPS DATA Section</strong> as \"<em>Red Canyon-Spruce Springs Loop</em>\". The author returned via the <em><span style=\"color: #1428d2;\">Red Canyon Trail </span></em><span style=\"color: #000000;\">on this hike </span>as a result of uncertainty of trail condition on the <em><span style=\"color: #1428d2;\">Crest Trail</span></em>. If taking the extended option, it would be less difficult to ascend via the <span style=\"color: #1428d2;\"><em>Spruce Springs Trail</em></span>.</p>','2021-09-16',NULL,NULL,NULL);
 
 
 
@@ -781,7 +785,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3031 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3034 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1737,7 +1741,10 @@ INSERT INTO REFS VALUES
 ('3027','268','Book:','22',NULL),
 ('3028','266','Book:','22',NULL),
 ('3029','266','App:','https://www.alltrails.com/trail/us/new-mexico/south-mountain-trail-vc-02','AllTrails.com'),
-('3030','266','Blog:','https://aschg.org/hike/valles-caldera-national-preserve-south-mountain/','Albuquerque Seniors Hiking Group');
+('3030','266','Blog:','https://aschg.org/hike/valles-caldera-national-preserve-south-mountain/','Albuquerque Seniors Hiking Group'),
+('3031','269','Book:','23','Kay Matthews'),
+('3032','269','Book:','3','Laurence Parent'),
+('3033','269','App:','https://www.alltrails.com/trail/us/new-mexico/red-canyon-camp-trail','AllTrails.com');
 
 
 
@@ -1761,7 +1768,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9211 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9226 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4669,7 +4676,15 @@ INSERT INTO TSV VALUES
 ('9207','266',NULL,'IMG_4210','Y','Y','From the top, looking east across the Caldera','358379444','-1065309222','2879',NULL,'2021-08-27 10:17:00','IMG_4210','480','640',NULL,'11'),
 ('9208','266',NULL,'IMG_4212','Y','Y','A view to the west from the summit, partially obscured by Las Conchas Fire remnants','358380611','-1065311889','2880',NULL,'2021-08-27 10:22:35','IMG_4212','480','640',NULL,'12'),
 ('9209','266',NULL,'IMG_4209','Y','N','The [virtual] summit pine','358380917','-1065306917','2881',NULL,'2021-08-27 10:14:59','IMG_4209','480','640',NULL,'13'),
-('9210','266',NULL,'IMG_4211','Y','Y','From the trail\'s end to the south','358369778','-1065313250','2882',NULL,'2021-08-27 10:19:31','IMG_4211','480','640',NULL,'14');
+('9210','266',NULL,'IMG_4211','Y','Y','From the trail\'s end to the south','358369778','-1065313250','2882',NULL,'2021-08-27 10:19:31','IMG_4211','480','640',NULL,'14'),
+('9211','269',NULL,'IMG_4282','Y','Y','Special parking area for hikers','346220583','-1064113222','2914',NULL,'2021-09-16 08:19:33','IMG_4282','640','480',NULL,'0'),
+('9212','269',NULL,'IMG_4301','Y','Y','Cliffs in the canyon','346240278','-1064262472','2915',NULL,'2021-09-16 11:05:17','IMG_4301','640','480',NULL,'1'),
+('9213','269',NULL,'IMG_4286','Y','N','Towering rock formation along the way','346240917','-1064260028','2916',NULL,'2021-09-16 08:54:32','IMG_4286','640','480',NULL,'2'),
+('9214','269',NULL,'IMG_4298','Y','Y','Views in the canyon','346247000','-1064280306','2917',NULL,'2021-09-16 10:57:35','IMG_4298','480','640',NULL,'3'),
+('9215','269',NULL,'IMG_4299','Y','Y','A quiet cascade','346244167','-1064275750','2918',NULL,'2021-09-16 11:00:30','IMG_4299','640','480',NULL,'4'),
+('9216','269',NULL,'IMG_4292','Y','Y','Ponderosa meadow','346309000','-1064364000','2919',NULL,'2021-09-16 09:44:26','IMG_4292','640','480',NULL,'5'),
+('9217','269',NULL,'IMG_4291','Y','Y','Typical trail scene in the woods','346304500','-1064359056','2920',NULL,'2021-09-16 09:42:36','IMG_4291','480','640',NULL,'6'),
+('9218','269',NULL,'IMG_4293','Y','Y','Limited Monzano views en route','346314278','-1064368139','2921',NULL,'2021-09-16 09:46:12','IMG_4293','480','640',NULL,'7');
 
 
 
