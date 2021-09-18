@@ -132,21 +132,6 @@ if ($msgout == '') {
     } else { // this will be the already published hikeno
         $indxNo = $status;
     }
-    // Update the 'last_hiked' field (may have changed for published hike!)
-    if (!$clusterPage) {
-        $getPixReq = "SELECT `date` FROM `TSV` WHERE `indxNo`=? ORDER BY date " .
-            "DESC LIMIT 1;";
-        $photoDates = $pdo->prepare($getPixReq);
-        $photoDates->execute([$indxNo]);
-        $latest = $photoDates->fetch(PDO::FETCH_ASSOC);
-        $lastHiked = '0000-00-00';
-        if ($latest !== false && count($latest) > 0) {
-            $lastHiked = substr($latest['date'], 0, 10);
-        }
-        $writeDateReq = "UPDATE `HIKES` SET `last_hiked` = '{$lastHiked}' WHERE " .
-            "`indxNo` = {$indxNo};";
-        $writeDate = $pdo->query($writeDateReq);
-    }
     $newPage = "../pages/hikePageTemplate.php?hikeIndx=" . $indxNo;
     /**
      * In the cases of EGPSDAT, EREFS, and ETSV, elements may have been
