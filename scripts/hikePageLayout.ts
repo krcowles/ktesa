@@ -118,7 +118,7 @@ function setViewport() {
     } else {
         pnlWidth = 0;
     }
-    canvasWidth = winWidth - pnlWidth; 
+    canvasWidth = availWidth;
     canvasEl.width = canvasWidth;  
 }
 /** 
