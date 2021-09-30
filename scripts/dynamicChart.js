@@ -195,8 +195,8 @@ function crossHairs(trackno) {
         drawLine(margin.left, coords.py, margin.left + xMax, coords.py, null, null);
         if (coords.x !== -1) {
             var mapObj = {
-                lat: trkLats[trackno][indxOfPt],
-                lng: trkLngs[trackno][indxOfPt]
+                lat: parseFloat(trkLats[trackno][indxOfPt]),
+                lng: parseFloat(trkLngs[trackno][indxOfPt])
             };
             infoBox(coords.px, coords.py, coords.x.toFixed(2), coords.y.toFixed(), mapObj);
         }

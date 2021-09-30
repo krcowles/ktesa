@@ -7,6 +7,7 @@
  * via php in hikePageTemplate.php
  * @author Ken Cowles
  * @version 2.0 Typescripted, with some type errors corrected
+ * @version 3.0 Converted to use of database GPX files
  */
 var hikeTrack; // variable used in getTrackData() ajax
 var allTracks = $.Deferred(); // when done, draw chart
@@ -21,7 +22,7 @@ var trkRows = []; // track data points {x, y}
 for (var i = 0; i < hikeFiles.length; i++) {
     var trackDef = $.Deferred();
     promises.push(trackDef);
-    hikeTrack = "../gpx/" + hikeFiles[i];
+    hikeTrack = hikeFiles[i];
     getTrackData(trackDef);
 }
 $.when.apply($, promises).then(function () {
@@ -36,91 +37,32 @@ $.when.apply($, promises).then(function () {
  */
 function getTrackData(promise) {
     $.ajax({
-        dataType: "xml",
-        url: hikeTrack,
-        success: function (gpsdata) {
-            var gpxtype = 'trk';
-            var pts = 'trkpt';
-            if ($(gpsdata).find('trk').length === 0) {
-                if ($(gpsdata).find('rte').length === 0) {
-                    alert("No, or unrecognizable, track data in gpx");
-                    return;
+        dataType: "json",
+        url: '../php/getTrackData.php?fileno=' + hikeTrack + '&chrt=y&wpts=n',
+        method: "get",
+        success: function(chartdata) { 
+            gpsvTracks = chartdata[0];
+            trkLats = chartdata[1];
+            trkLngs = chartdata[2];
+            let trkEles = chartdata[3];
+            trkMaxs = chartdata[4];
+            trkMins = chartdata[5];
+            // create row objects for chart
+            let trkcnt = trkLats.length;
+            for (let j=0; j<trkcnt; j++) {
+                let chartrow = [];
+                chartrow[0] = {x:0, y:parseFloat(trkEles[0][0])};
+                let datcnt = trkLats[j].length - 1;
+                let hikelgth = 0;
+                for (let k=0; k<datcnt; k++) {
+                    hikelgth += distance(trkLats[j][k], trkLngs[j][k],
+                        trkLats[j][k+1], trkLngs[j][k+1], "M");
+                    let ele = trkEles[j][k] * 3.2808;
+                    let dataPtObj = {x:hikelgth,y:ele};
+                    chartrow.push(dataPtObj);
                 }
-                gpxtype = 'rte';
-                pts = 'rtept';
+                trkRows.push(chartrow);
             }
-            // process by track/route (may be multiple per file)
-            $(gpsdata).find(gpxtype).each(function (indx) {
-                var trackName;
-                var child = $(this).find('name');
-                if (child.length == 0) {
-                    // GPSVisualizer supplies a default name if none in gpx file
-                    trackName = '[track ' + (indx + 1) + ']';
-                }
-                else {
-                    trackName = child.text();
-                }
-                var lats = [];
-                var lngs = [];
-                var elevs = [];
-                var rows = [];
-                gpsvTracks.push(trackName);
-                var hikelgth = 0;
-                $(this).find(pts).each(function () {
-                    var tag = parseFloat($(this).attr('lat'));
-                    lats.push(tag);
-                    tag = parseFloat($(this).attr('lon'));
-                    lngs.push(tag);
-                    var $ele = $(this).find('ele').text();
-                    if ($ele.length) {
-                        tag = parseFloat($ele) * 3.2808;
-                        elevs.push(tag);
-                    }
-                    else { // some GPX files contain trkpts w/no ele tag
-                        // remove entries for trkpts that have no elevation:
-                        lats.pop();
-                        lngs.pop();
-                    }
-                });
-                trkLats.push(lats);
-                trkLngs.push(lngs);
-                // form the array of datapoint objects for this track:
-                rows[0] = { x: 0, y: elevs[0] };
-                var emax = 0;
-                var emin = 20000;
-                for (var i = 0; i < lats.length - 1; i++) {
-                    hikelgth += distance(lats[i], lngs[i], lats[i + 1], lngs[i + 1], "M");
-                    if (elevs[i + 1] > emax) {
-                        emax = elevs[i + 1];
-                    }
-                    if (elevs[i + 1] < emin) {
-                        emin = elevs[i + 1];
-                    }
-                    var dataPtObj = { x: hikelgth, y: elevs[i + 1] };
-                    rows.push(dataPtObj);
-                }
-                trkRows.push(rows);
-                // set y axis range values:
-                // NOTE: this algorithm works for elevs above 1,000ft (untested below that)
-                var Cmin = Math.floor(emin / 100);
-                var Cmax = Math.ceil(emax / 100);
-                if ((emin - 100 * Cmin) < 40) {
-                    emin = Cmin - 0.5;
-                }
-                else {
-                    emin = Cmin;
-                }
-                if ((100 * Cmax - emax) < 40) {
-                    emax = Cmax + 0.5;
-                }
-                else {
-                    emax = Cmax;
-                }
-                emax *= 100;
-                emin *= 100;
-                trkMaxs.push(emax);
-                trkMins.push(emin);
-            });
             promise.resolve();
         },
         error: function (_jqXHR, textStatus, errorThrown) {

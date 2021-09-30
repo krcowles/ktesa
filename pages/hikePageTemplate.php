@@ -52,7 +52,6 @@ function off() {
 <?php require "ktesaPanel.php";?>
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="active" style="display:none">Page</p>
-<p id="gpx" style="display:none"><?=$gpxPath;?></p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
 
 <!-- Side Panel: -->
@@ -138,7 +137,7 @@ function off() {
 </div>
 <!-- Map & Chart on right adjacent to side panel: -->
 <iframe id="mapline" src="<?=  $tmpMap;?>"></iframe>
-<div data-gpx="<?= $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
+<div id="chartline"><canvas id="grph"></canvas></div>
 <!-- BOTH STYLES: -->
 <div style="clear:both;padding-top:12px;">
 <?php if (!is_null($hikeTips)) : ?>
@@ -159,6 +158,7 @@ function off() {
 <div class="popupCap"></div>
 
 <script type="text/javascript">
+    var appMode = "<?=$appMode;?>";
     <?php if (isset($hikeFiles)) : ?>
     var hikeFiles = <?=$hikeFiles;?>;
     <?php endif; ?>

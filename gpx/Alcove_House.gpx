@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" creator="AllTrails.com" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
   <metadata>
-    <name><![CDATA[Alcove House Trail [CLOSED]]]></name>
-    <desc><![CDATA[]]></desc>
+    <name>Alcove House Trail></name>
+    <desc>Temp Closure</desc>
     <link href="http://www.alltrails.com">
       <text>AllTrails, LLC</text>
     </link>
     <bounds minlat="35.77912" minlon="-106.28572" maxlat="35.78892" maxlon="-106.27122"/>
   </metadata>
   <trk>
-    <name><![CDATA[Alcove House Trail [CLOSED]]]></name>
-    <desc><![CDATA[]]></desc>
+    <name>Alcove House Trail [CLOSED]></name>
+    <desc>Ruins Trail</desc>
     <src>AllTrails</src>
     <trkseg>
       <trkpt lat="35.77912" lon="-106.27122">

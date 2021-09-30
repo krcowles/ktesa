@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" creator="AllTrails.com" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
   <metadata>
-    <name><![CDATA[Trail Planner Map]]></name>
-    <desc><![CDATA[]]></desc>
+    <name>Glorieta Baldy</name>
+    <desc>Proposed Trail</desc>
     <link href="http://www.alltrails.com">
       <text>AllTrails, LLC</text>
     </link>
     <bounds minlat="35.62142" minlon="-105.85888" maxlat="35.65116" maxlon="-105.79954"/>
   </metadata>
   <trk>
-    <name><![CDATA[Trail Planner Map]]></name>
-    <desc><![CDATA[]]></desc>
+    <name>Glorieta Baldy</name>
+    <desc>Mountain Trail</desc>
     <src>AllTrails</src>
     <trkseg>
       <trkpt lat="35.62989" lon="-105.85888">

@@ -68,3 +68,7 @@ $dsn = sprintf(
     'mysql:host=%s;dbname=%s;charset=%s', $HOSTNAME, $DATABASE, $CHARSET
 );
 $pdo = new PDO($dsn, $USERNAME, $PASSWORD, $options);
+$gdsn = sprintf(
+    'mysql:host=%s;dbname=%s;charset=%s', $HOSTNAME, $GPXDATA, $CHARSET
+);
+$gdb = new PDO($gdsn, $USERNAME, $PASSWORD, $options);

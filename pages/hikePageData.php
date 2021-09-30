@@ -88,10 +88,9 @@ $hikeSeasons    = $row['seasons'];
 $hikeExposure   = $row['expo'];
 /**
  * It is permitted to have more than one gpx file per hike (e.g. Knife's Edge)
- * Also, 'old style' hikes and cluster pages will have no files specified
  */
 $files = []; // required by multiMap.php
-$allgpx = $row['gpx'];
+$allgpx = $row['gpxlist'];
 if (!empty($allgpx)) {
     $files    = explode(",", $allgpx);
     $gpxfile  = $files[0];
