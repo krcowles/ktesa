@@ -11,6 +11,7 @@
  * @version 3.0 Added Cluster Page compatibility
  * @version 3.1 Added mobile page width control
  * @version 4.0 Typescripted, some type errors corrected
+ * @version 5.0 Modified to accommodate elimination of gpxfiles for GPX db
  */
 //GPSV iframe: The following code addresses tracklist checkboxes in the iframe map
 var trackNames = [];
@@ -47,29 +48,28 @@ if (!mobile) {
 /**
  * Once a track is identified for display, show that gpx file's data in the
  * side panel.
- *
- * @return {null}
  */
-var displayTrackSidePanel = function (trkname) {
-    var data = panelData[trkname];
+var displayTrackSidePanel = function (trkno) {
+    var data = panelData[trkno + 1];
     $('#hdiff').text(data["diff"]);
-    $('#hlgth').text(data["miles"]);
-    $('#hmmx').text(data["feet"]);
+    $('#hlgth').text(data["miles"] + " mi");
+    $('#hmmx').text(data["feet"] + " ft");
     $('#hlog').text(data["logistics"]);
     $('#hexp').text(data["expo"]);
     $('#hseas').text(data["seasons"]);
     $('#hwow').text(data["wow"]);
+    $('#tasc').text(data["asc"]);
+    $('#tdsc').text(data["dsc"]);
 };
 /**
  * This function turns on the topmost checked tracklist box. If all boxes
  * are unchecked, the last box checked remains displayed in elevation chart.
- *
- * @return {null}
  */
 var plotTopMost = function () {
     for (var n = 0; n < box_states.length; n++) {
         if (box_states[n] === 1) {
             lastTrack = n;
+            trackNumber = n;
             break;
         }
     }
@@ -149,7 +149,7 @@ function drawChart(trackNo) {
     ChartObj.render('grph', chartData);
     crossHairs(trackNo);
     if (typeof panelData === 'object') {
-        displayTrackSidePanel(trackNames[trackNo]);
+        displayTrackSidePanel(trackNo);
         if (mobile) {
             chartPlaced.resolve();
         }
@@ -195,8 +195,8 @@ function crossHairs(trackno) {
         drawLine(margin.left, coords.py, margin.left + xMax, coords.py, null, null);
         if (coords.x !== -1) {
             var mapObj = {
-                lat: parseFloat(trkLats[trackno][indxOfPt]),
-                lng: parseFloat(trkLngs[trackno][indxOfPt])
+                lat: parseFloat(trkLats[trackNumber][indxOfPt]),
+                lng: parseFloat(trkLngs[trackNumber][indxOfPt])
             };
             infoBox(coords.px, coords.py, coords.x.toFixed(2), coords.y.toFixed(), mapObj);
         }

@@ -2,28 +2,34 @@
 declare var hikeFiles: string[]; // on hikePageTemplate.php
 declare var appMode: string;
 /**
- * @fileoverview This file will assemble track data for all tracks. The
- * track data is used to draw a given track's elevation chart.
- * Note: the var 'hikeFiles', a list of the page's gpx files, is supplied
- * via php in hikePageTemplate.php
+* @fileoverview This module will assemble track data for all tracks, even
+ * when there are multiple files to parse. Each set of track data is used
+ * to draw a given track's elevation chart. Note: the var 'hikeFiles', is 
+ * a list of the page's gpx filenos, supplied by hikePageTemplate.php via
+ * multiMap.php. Track numbers increment over multiple files, that is, the
+ * track numbers go from 1..n, where each number is associated with a given
+ * track in a given file.
+ * 
  * @author Ken Cowles
  * @version 2.0 Typescripted, with some type errors corrected
+ * @version 3.0 Converted to use of GPX database instead of gpx files
  */
-var hikeTrack: string; // variable used in getTrackData() ajax
-var allTracks: JQueryDeferred<void>  = $.Deferred(); // when done, draw chart
-var promises: JQueryDeferred<void>[]  = []; // collection of promises
-// The following have a one-to-one correspondence for track drawing:
+var hikeTrack: string; // hike fileno supplied to ajax call
+var allTracks: JQueryDeferred<void>  = $.Deferred(); // when done with all files, draw chart
+var promises: JQueryDeferred<void>[]  = []; // collection of promises (one per file)
+// globals
 var gpsvTracks: string[] = []; // track names appearing in GPSV tracklist box
-var trkLats: number[][] = []; // array of track's latitudes
-var trkLngs: number[][] = [];
-var trkMaxs: number[] = []; // elevation max 
-var trkMins: number[] = []; // elevation min
-var trkRows: Coords[][] = []; // track data points {x, y}
+var trkLats: string[][] = []; // array of each track's set of latitudes
+var trkLngs: string[][] = []; // array of each track's set of longitudes
+var trkMaxs: number[] = []; // elevation maxes, one per track
+var trkMins: number[] = []; // elevation mins, one per track
+var trkRows: Coords[][] = []; // array of each track's set of chart points:
+                  // [{x:distance, y:elevation}, ...], where dist=>miles, ele=>feet
 
 for (let i=0; i<hikeFiles.length; i++) {
     let trackDef: JQueryDeferred<void> = $.Deferred();
     promises.push(trackDef);
-    hikeTrack = "../gpx/" + hikeFiles[i];
+    hikeTrack = hikeFiles[i];
     getTrackData(trackDef);
 }
 $.when.apply($, promises).then(function() {
@@ -33,89 +39,45 @@ $.when.apply($, promises).then(function() {
 });
 
 /**
- * This function retrieves the gps data from 'hikeTrack' and stores key
- * data for chart-drawing. Data is stored in the above global arrays.
- * @return {null}
+ * The values for sets of lats/lngs/eles + track names and maxs and mins are
+ * retrieved (for all tracks in the hikeFfile supplied) by php and delivered
+ * back to the success routine. From the sets of lats/lngs/eles, the chart
+ * row data is created. The routine then adds the data to the globals listed
+ * above such that each track, whether from one or multiple files, has a 
+ * corresponding set of data supplied to the charting routine (dynamicChart.js).
  */
 function getTrackData(promise: JQueryDeferred<void>): void {
     $.ajax({
-        dataType: "xml",
-        url: hikeTrack,
-        success: function(gpsdata:XMLDocument) {
-            var gpxtype = 'trk';
-            var pts = 'trkpt';
-            if ($(gpsdata).find('trk').length === 0) {
-                if ($(gpsdata).find('rte').length ===0) {
-                    alert("No, or unrecognizable, track data in gpx");
-                    return;
+        url:  '../php/getTrackData.php?fileno=' + hikeTrack + '&chrt=y',
+        method: "get",
+        dataType: "json",
+        success: function(chartdata) { 
+            gpsvTracks = gpsvTracks.concat(chartdata[0]);
+            let tlats   = chartdata[1];
+            let tlngs   = chartdata[2];
+            let trkEles = chartdata[3];
+            trkMaxs = trkMaxs.concat(chartdata[4]);
+            trkMins = trkMins.concat(chartdata[5]);
+            // create row objects for chart
+            let trkcnt = tlats.length;
+            for (let j=0; j<trkcnt; j++) {
+                let chartrow = [];
+                let startEle = parseFloat(trkEles[j][0]) * 3.2808;
+                chartrow[0] = {x:0, y:startEle};
+                let datcnt = tlats[j].length - 1;
+                let hikelgth = 0;
+                for (let k=0; k<datcnt; k++) {
+                    hikelgth += distance(tlats[j][k], tlngs[j][k],
+                        tlats[j][k+1], tlngs[j][k+1], "M");
+                    let ele = trkEles[j][k] * 3.2808;
+                    let dataPtObj = {x:hikelgth,y:ele};
+                    chartrow.push(dataPtObj);
                 }
-                gpxtype = 'rte';
-                pts = 'rtept';
+                // the following pushes establish the track's indices
+                trkRows.push(chartrow); // pushes an array of objects
+                trkLats = trkLats.concat(tlats);    // pushes an array of lats
+                trkLngs = trkLngs.concat(tlngs);    // pushes an array of lngs
             }
-            // process by track/route (may be multiple per file)
-            $(gpsdata).find(gpxtype).each(function(indx) {
-                let trackName: string;
-                let child = $(this).find('name');
-                if (child.length == 0) {
-                    // GPSVisualizer supplies a default name if none in gpx file
-                    trackName = '[track ' + (indx + 1) + ']';
-                } else {
-                    trackName = child.text();
-                }
-                let lats: number[] = [];
-                let lngs: number[] = [];
-                let elevs: number[] = [];
-                let rows: Coords[] = [];
-                gpsvTracks.push(trackName);
-                var hikelgth = 0;
-                $(this).find(pts).each(function() {
-                    let tag = parseFloat(<string>$(this).attr('lat'));
-                    lats.push(tag);
-                    tag =parseFloat(<string>$(this).attr('lon'));
-                    lngs.push(tag);
-                    let $ele = $(this).find('ele').text();
-                    if ( $ele.length ) { 
-                        tag = parseFloat($ele) * 3.2808;
-                        elevs.push(tag);
-                    } else {   // some GPX files contain trkpts w/no ele tag
-                        // remove entries for trkpts that have no elevation:
-                        lats.pop();
-                        lngs.pop();
-                    }
-                });
-                trkLats.push(lats);
-                trkLngs.push(lngs);
-                // form the array of datapoint objects for this track:
-                rows[0] = { x: 0, y: elevs[0] };
-                let emax = 0;
-                let emin = 20000;
-                for (let i=0; i<lats.length-1; i++) {
-                    hikelgth += distance(lats[i],lngs[i],lats[i+1],lngs[i+1],"M");
-                    if (elevs[i+1] > emax) { emax = elevs[i+1]; }
-                    if (elevs[i+1] < emin) { emin = elevs[i+1]; }
-                    let dataPtObj = { x: hikelgth, y: elevs[i+1] };
-                    rows.push(dataPtObj);
-                }
-                trkRows.push(rows);
-                // set y axis range values:
-                // NOTE: this algorithm works for elevs above 1,000ft (untested below that)
-                let Cmin = Math.floor(emin/100);
-                let Cmax = Math.ceil(emax/100);
-                if ( (emin - 100 * Cmin) < 40 ) {
-                    emin = Cmin - 0.5;
-                } else {
-                    emin = Cmin;
-                }
-                if ( (100 * Cmax - emax) < 40 ) {
-                    emax = Cmax + 0.5;
-                } else {
-                    emax = Cmax;
-                }
-                emax *= 100;
-                emin *= 100;
-                trkMaxs.push(emax);
-                trkMins.push(emin);
-            });
             promise.resolve();
         },
         error: function(_jqXHR, textStatus, errorThrown) {
@@ -139,7 +101,9 @@ function getTrackData(promise: JQueryDeferred<void>): void {
  * This function determines the radial distance between lat/lng pairs
  */
 function distance(lat1: number, lon1: number, lat2: number, lon2: number, unit: string) {
-    if (lat1 === lat2 && lon1 === lon2) { return 0; }
+    if (lat1 === lat2 && lon1 === lon2) {
+        return 0;
+    }
     var radlat1 = Math.PI * lat1/180;
     var radlat2 = Math.PI * lat2/180;
     var theta = lon1 - lon2;
@@ -148,6 +112,8 @@ function distance(lat1: number, lon1: number, lat2: number, lon2: number, unit: 
     dist = Math.acos(dist);
     dist = dist * 180 / Math.PI;
     dist = dist * 60 * 1.1515; // Miles
-    if (unit === "K") { dist = dist * 1.609344; } // Kilometers
+    if (unit === "K") {
+        dist = dist * 1.609344;
+    } // Kilometers
     return dist;
 }

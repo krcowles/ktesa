@@ -81,7 +81,8 @@ function setViewport() {
     var panelDisplay = $panel.css('display') !== 'none' ? true : false;
     // Height calcs
     vpHeight = window.innerHeight;
-    var consumed = $('#nav').height() + $('#logo').height();
+    var navPadding = parseInt($('#nav').css('padding-top'));
+    var consumed = $('#nav').height() + $('#logo').height() + 2 * navPadding;
     var usable = vpHeight - consumed;
     var mapHt = Math.floor(0.65 * usable);
     var chartHt = Math.floor(0.35 * usable);

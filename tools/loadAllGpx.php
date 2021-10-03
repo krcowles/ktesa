@@ -23,6 +23,10 @@ CREATE TABLE `META` (
     `trkno` INT NOT NULL,
     `trkext` VARCHAR(2500) NULL,
     `trkname` VARCHAR(200) NULL,
+    `length` DECIMAL(4,2) NULL,
+    `min2max` INT NULL,
+    `asc` INT NULL,
+    `dsc` INT NULL,
     PRIMARY KEY (`gpxindx`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 META;
@@ -86,8 +90,8 @@ foreach ($gpxFiles as $hike => $fileset) {
         $updte->execute([$newlist, $hike]);
     }
 }
-
 $fileno = 0;
+$emptyEles = [];
 foreach ($loadfiles as $gpxfile) {
     /**
      * Save the beginning of the xml and assign a gpx file no. This
@@ -130,13 +134,11 @@ foreach ($loadfiles as $gpxfile) {
             $end = strpos($gpx_string, "<trkseg", $offset);
         }
         $lgth = $end - $pos;
-        $offset = strpos($gpx_string, "</trk>", $offset);
+        $offset = strpos($gpx_string, "</trk>", $offset+50);
         // Without 'trim' below, field data cannot be retrieved!
         $trkext = trim(substr($gpx_string, $pos, $lgth));
-        $nmstart = strpos($trkext, "<name>") + 6;
-        $nmend = strpos($trkext, "</name>");
-        $lgth = $nmend - $nmstart;
-        $name = substr($trkext, $nmstart, $lgth);
+        $name = $gpx->trk[$i-1]->name->__toString();
+
         $saveDataReq = "INSERT INTO `META` (`fname`,`fileno`,`meta`," .
             "`trkno`,`trkext`,`trkname`) VALUES (?,?,?,?,?,?);";
         $saveData = $gdb->prepare($saveDataReq);
@@ -145,40 +147,47 @@ foreach ($loadfiles as $gpxfile) {
         );
     }
     $gpx_string = null;
-    // Load track data
+    /**
+     * Load the track data for each <trkpt> into the GPX table
+     * NOTE: trkpts with no <ele> are not written out, and message
+     * is printed at end showing affected files
+     */
     $trkno = 1; 
     foreach ($gpx->trk as $track) {
+        $noEles = 0;
         $segno = 1;
-        foreach ($track->trkseg as $seg) {
-            foreach ($seg->trkpt as $row) {
-                $lat = $row['lat']->__toString();
-                $lon = $row['lon']->__toString();
-                $ele = null;
-                $time = null;
-                if ($row->count() > 0) {
-                    foreach ($row->children() as $child) {
-                        $name = $child->getName();
-                        if ($name === 'ele') {
-                            $ele = $child->__toString();
-                        }
-                        if ($name === 'time') {
-                            $time = $child->__toString();
-                            $tim  = str_replace('T', ' ', $time);
-                            $time = str_replace('Z', '', $tim);
-                        }
+        // some files have no trkseg
+        if ($track->trkseg->count() !== 0) {
+            foreach ($track->trkseg as $seg) {
+                foreach ($seg->trkpt as $row) {
+                    if (!writeGPSData($fileno, $trkno, $segno, $row, $gdb)) {
+                        $noEles++;
                     }
                 }
-                $addRowReq = "INSERT INTO `GPX` (`fileno`,`trackno`," .
-                    "`segno`,`lat`,`lon`,`ele`,`time`) " .
-                    "VALUES (?,?,?,?,?,?,?);";
-                $addRow = $gdb->prepare($addRowReq);
-                $addRow->execute(
-                    [$fileno, $trkno, $segno, $lat, $lon, $ele, $time]
-                );
+                $segno++;
             }
-            $segno++;
+        } else {
+            foreach ($track->trkpt as $row) {
+                if (!writeGPSData($fileno, $trkno, $segno, $row, $gdb)) {
+                    $noEles++;
+                }
+            }
         }
         $trkno++;
+        if ($noEles > 0) {
+            $emptyEles[$gpxfile] = $noEles;
+        }
     }
 }
-echo "SITE GPX FILES LOADED";
+echo "SITE GPX FILES LOADED<br /><br />";
+$html  = '<table>' . PHP_EOL;
+$html .= '<tbody>' . PHP_EOL;
+foreach ($emptyEles as $file => $qty) {
+    $html .= '<tr>' . PHP_EOL;
+    $html .= '<td>' . $file . '</td>';
+    $html .= '<td>' . $qty . '</td>';
+    $html .= '</tr>' . PHP_EOL;
+}
+$html .= '</tbody>' . PHP_EOL;
+$html .= '</table>' . PHP_EOL;
+echo $html;

@@ -30,6 +30,7 @@ function setupConverter(tblid, org) {
     if (org) {
         // save original English units from main table on the first pass
         $erows.each(function () {
+            var gpxdat;
             var $trail = $(this).find('td').eq(hike_hdr);
             var trail = $trail.text();
             var hike = $(this).data('indx');
@@ -37,7 +38,13 @@ function setupConverter(tblid, org) {
             var orgdist = $disttd.text();
             var $elevtd = $(this).find('td').eq(elev_hdr);
             var orgelev = $elevtd.text();
-            var gpxdat = $(this).data('gpx');
+            var gpxdata = $(this).data('gpx');
+            if (typeof gpxdata === 'number') {
+                gpxdat = gpxdata.toString();
+            }
+            else {
+                gpxdat = gpxdata;
+            }
             var orgdata = { trail: trail, hikeno: hike, dist: orgdist, elev: orgelev, gpx: gpxdat };
             eng_units.push(orgdata);
         });

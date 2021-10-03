@@ -112,7 +112,7 @@ for ($i=0; $i<$entries; $i++) {
     $indx    = $row['indxNo'];
     $hikeLat = $row['lat']/LOC_SCALE;
     $hikeLon = $row['lng']/LOC_SCALE;
-    $gpxFile = $row['gpx'];
+    $gpxFile = $row['gpxlist'];
     $hikeTrk = $row['trk'];
     // 
     $hikeLocale[$i] = $row['locale'];

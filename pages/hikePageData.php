@@ -93,7 +93,7 @@ $files = []; // required by multiMap.php
 $allgpx = $row['gpxlist'];
 if (!empty($allgpx)) {
     $files    = explode(",", $allgpx);
-    $gpxfile  = $files[0];
+    $gpxfile  = $files[0]; // the main gpx file to be displayed on the page
     $gpxPath  = '../gpx/' . $gpxfile;
 } else { // cluster pages defined later...
     $gpxfile  = '';
@@ -208,32 +208,23 @@ if ($clusterPage) {
     }
     createPseudoGpx($ctrlat, $ctrlng, $gpxfile, $files);
 } else {  // hike page has at least one gpx file
-    if (strpos($allgpx, ",") !== false) {
-        $hikeTrackFiles = explode(",", $allgpx);
-        foreach ($hikeTrackFiles as &$hikegpx) {
-            $hikegpx = trim($hikegpx);
-        }
-    } else {
-        $hikeTrackFiles = [$gpxfile];
-    }
     $hike_data = []; // array to collect info for javascript
-    foreach ($hikeTrackFiles as $gpx) {
-        $gpxPath = '../gpx/' . $gpx;
-        $gpxData = simplexml_load_file($gpxPath);
-        if ($gpxData === false) {
-            throw new Exception("GPX File could not be loaded: " . $gpx);
-        }
-        // there may be more than one track in a file (e.g. Black Canyon)
-        $noOfTrks = $gpxData->trk->count();
-        for ($j=0; $j<$noOfTrks; $j++) {
-            $trkname = $gpxData->trk[$j]->name->__toString();
-            $calcs = getTrackDistAndElev(
-                1, $j, $trkname, $gpxPath, $gpxData, false, null, null, 1, 1, 1
-            );
-            $max2min  = 3.28084 * ($calcs[1] - $calcs[2]);
-            $feet  = round($max2min);
-            $miles = 0.00062137119223733 * $calcs[0];
-            $miles = round($miles, 2);
+    foreach ($files as $fileno) {
+        $noOfTrks = $gdb->query(
+            "SELECT `trkno` FROM `META` WHERE `fileno`={$fileno} " .
+            "ORDER BY `trkno` DESC LIMIT 1;"
+        )->fetch(PDO::FETCH_NUM);
+        $trkcount = $noOfTrks[0];
+        for ($j=1; $j<=$trkcount; $j++) {
+            $statsReq = "SELECT `length`,`min2max`,`asc`,`dsc` FROM `META` WHERE " .
+                "`fileno`=? AND `trkno`=?;";
+            $stats = $gdb->prepare($statsReq);
+            $stats->execute([$fileno, $j]);
+            $pnldat  = $stats->fetch(PDO::FETCH_ASSOC);
+            $miles   = $pnldat['length'];
+            $feet    = $pnldat['min2max'];
+            $ascent  = $pnldat['asc'];
+            $descent = $pnldat['dsc'];
             $sidepanel = array(
                 'logistics' => $hikeType,
                 'miles' => $miles,
@@ -241,11 +232,16 @@ if ($clusterPage) {
                 'diff' => $hikeDifficulty,
                 'wow' => $hikeWow,
                 'seasons' => $hikeSeasons,
-                'expo' => $hikeExposure
+                'expo' => $hikeExposure,
+                'asc' => $ascent,
+                'dsc' => $descent
             );
-            $trkrel = array($trkname => $sidepanel);
-            $hike_data += $trkrel;  // "+" is union operator for arrays
+            $hike_data[$j] = $sidepanel;
             $sidePanelData = json_encode($hike_data);
+            if ($j === 1 && $fileno === $files[0]) {
+                $mainfeet = $feet;
+                $mainmiles = $miles;
+            }
         }
     }
 }
@@ -255,8 +251,9 @@ require "relatedInfo.php";
  * to build the picture rows a hike page
  */
 if (!$clusterPage) {
-    $photosReq = "SELECT `folder`,`title`,`hpg`,`mpg`,`desc`,`thumb`,`alblnk`,`date`," .
-    "`mid`,`imgHt`,`imgWd`,`org` FROM {$ttable} WHERE `indxNo` = :indxNo;";
+    $photosReq = "SELECT `folder`,`title`,`hpg`,`mpg`,`desc`,`thumb`," .
+        "`alblnk`,`date`,`mid`,`imgHt`,`imgWd`,`org` FROM {$ttable} " .
+        "WHERE `indxNo` = :indxNo;";
     $photosPDO = $pdo->prepare($photosReq);
     $photosPDO->execute(["indxNo" =>$hikeIndexNo]);
     $photos = $photosPDO->fetchAll(PDO::FETCH_ASSOC);
@@ -301,8 +298,7 @@ if (!$clusterPage) {
  * displayed in an iframe, a file is created and stored in the maps/tmp
  * sub-directory. The file is deleted after loading the page.
  */
-$extLoc = strrpos($gpxfile, '.');
-$gpsvMap = substr($gpxfile, 0, $extLoc); // strip file extension
+$gpsvMap = "GpxFile" . $gpxfile;
 $date = date_create();
 $date_str = date_format($date, 'YmdHisu');
 $tmpMap = "../maps/tmp/" . "_" . $gpsvMap . "_" . $date_str . ".php";
@@ -365,6 +361,7 @@ if ($makeGpsvDebugParm) {
     $makeGpsvDebug = false;
 }
 
+/* NOT UPDATED FOR GPX FILES IN DATABASE"
 // Open debug files with headers, if requested by query string
 $handleDfa = null;
 $handleDfc = null;
@@ -372,6 +369,7 @@ if ($makeGpsvDebug) {
     $handleDfa = gpsvDebugFileArray($gpxPath);
     $handleDfc = gpsvDebugComputeArray($gpxPath);
 }
+*/
 
 require '../php/multiMap.php';
 

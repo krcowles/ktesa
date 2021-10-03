@@ -13,12 +13,11 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None at this time
  */
 require_once "../php/global_boot.php";
-require_once "../php/gpxFunctions.php";
+//require_once "../php/gpxFunctions.php";
 
 // detect if script called as window (Table Only page)
 $tblOnly = isset($hikeIndexNo) ? false : true;
@@ -63,38 +62,34 @@ if ($tblOnly) {
     $maWindow   = 1;
 }
 // data for hike page, if required
-$hikeFiles = json_encode($files);
+$hikeFiles = $files;
 // data for map
 $allLats     = [];
 $allLngs     = [];
-$defClrs     = array('red','blue','aqua','green','fuchsia','pink','orange','black');
+$defClrs     = array('red','blue','green','fuchsia','pink','orange','black');
 $colorIndx   = 0;
 $noOfTrks    = 0;  // sequentially increasing with each file
 $GPSV_Tracks = [];
 $waypoints   = [];
-$trackTicks  = []; // each member is an array of ticks for a track 
-foreach ($files as $gpx) {
-    $gpxPath = '../gpx/' . $gpx;
-    $gpxdat  = simplexml_load_file($gpxPath);
-    if ($gpxdat === false) {
-        throw new Exception("Could not retrieve {$gpx} in multiMap.php");
-    }
-    if ($gpxdat->rte->count() > 0) {
-        $gpxdat = convertRtePts($gpxdat);
-    }
-    $noOfFileTrks = $gpxdat->trk->count();
-    
-    // calculated stats for all tracks within the file
-    $pup = (float)0;
-    $pdwn = (float)0;
-    $pmax = (float)0;
-    $pmin = (float)50000;
-    $hikeLgthTot = (float)0;
-    // Iterate through all tracks in this gpx file
-    for ($k=0; $k<$noOfFileTrks; $k++) { // PROCESS EACH TRK
+$trackTicks  = []; // each member is an array of ticks for a track
+
+// Create GPSV <script> to append to HTML of map
+$mapdata = true;
+foreach ($files as $fileno) {
+    $tracksReq = "SELECT MAX(trackno) FROM `GPX` WHERE `fileno` = ?;";
+    $tracks = $gdb->prepare($tracksReq);
+    $tracks->execute([$fileno]);
+    $trackmax = $tracks->fetch(PDO::FETCH_NUM);
+    $trackcnt = $trackmax[0];
+    for ($k=1; $k<=$trackcnt; $k++) { // PROCESS EACH TRK
         $ticks = []; // one set of ticks per track
-        $trkNo = $noOfTrks + $k + 1;
-        $trkname = str_replace("'", "\'", $gpxdat->trk[$k]->name);
+        $trkNo = $noOfTrks + $k;
+        $gpsvTrack = "SELECT `trkname` FROM `META` WHERE `fileno`=? AND " .
+            "`trkno`=?;";
+        $gpsvtrk = $gdb->prepare($gpsvTrack);
+        $gpsvtrk->execute([$fileno, $k]);
+        $gpsvname = $gpsvtrk->fetch(PDO::FETCH_NUM);
+        $trkname = $gpsvname[0];
         $line = "                t = " . $trkNo . "; trk[t] = " .
             "{info:[],segments:[]};\n";
         $line .= "                trk[t].info.name = '" . $trkname .
@@ -107,33 +102,39 @@ foreach ($files as $gpx) {
             "outline_width = 0; trk[t].info.fill_color = '" .
             $defClrs[$colorIndx++] . "'; trk[t].info.fill_opacity = 0;\n";
         $tdat = "                trk[t].segments.push({ points:[ [";
-        /**
-         * Get gpx data into individual arrays and do first level
-         * processing. $tdat will be updated with all lats/lngs
-         */
-        $calcs = getTrackDistAndElev(
-            $trkNo, $k, $trkname, $gpxPath, $gpxdat, $makeGpsvDebug, $handleDfa,
-            $handleDfc, $distThresh, $elevThresh, $maWindow, $tdat, $ticks
-        );
-        array_push($trackTicks, $ticks);
-        $hikeLgthTot += $calcs[0];
-        if ($calcs[1] > $pmax) {
-            $pmax = $calcs[1];
+        include "../php/getTrackData.php";  // extract from gpx database 
+        $allLats = array_merge($allLats, $latdat);
+        $allLngs = array_merge($allLngs, $lngdat);
+        $tickMrk = 0.3 * 1609;
+        for ($m=1; $m<count($latdat); $m++) {
+            $hikeLgth = (float) 0;
+            $d_and_r = distance(
+                floatval($latdat[$m-1]), floatval($lngdat[$m-1]), 
+                floatval($latdat[$m]), floatval($lngdat[$m])
+            );
+            $hikeLgth += ($d_and_r[0] * 3.2808)/5280;
+            $rotation = $d_and_r[1];
+            // Form GPSV javascript track and tickmark data for this trkpt
+            $tdat .= $latdat[$m] . "," . $lngdat[$m] . "],[";
+            if ($hikeLgth > $tickMrk) {
+                $tick
+                    = "GV_Draw_Marker({lat:" . $gpxlats[$m] . ",lon:" . $gpxlons[$m]
+                        . ",alt:" . $gpxeles[$m] . ",name:'" . $tickMrk/1609 . " mi'"
+                        . ",desc:trk[" . $seqTrkNo . "].info.name,color:trk["
+                        . $seqTrkNo . "]"
+                        . ".info.color,icon:'tickmark',type:'tickmark',folder:'"
+                        . $trkname . " [tickmarks]',rotation:" . $rotation
+                        . ",track_number:" . $seqTrkNo . ",dd:false});";
+                array_push($ticks, $tick);
+                $tickMrk += 0.30 * 1609; // interval in miles converted to meters
+            }
         }
-        if ($calcs[2] < $pmin) {
-            $pmin = $calcs[2];
-        }
-        $pup  += $calcs[3];
-        $pdwn += $calcs[4];
-        $allLats = array_merge($allLats, $calcs[5]);
-        $allLngs = array_merge($allLngs, $calcs[6]);
-        // Finish javascript for this trk: remove last ",[" and end string:
         $tdat = substr($tdat, 0, strlen($tdat)-2);
         $line .= $tdat . " ] });\n";
         $line .= "                GV_Draw_Track(t);\n";
         array_push($GPSV_Tracks, $line);
-    }  // end PROCESS EACH TRK
-
+    }
+    $noOfTrks = $trkNo;
     // Do debug output (summary stats for entire hike)
     if ($makeGpsvDebug) { // only if param is set
         fputs(
@@ -153,15 +154,19 @@ foreach ($files as $gpx) {
     /**
      *   ---- ESTABLISH ANY WAYPOINTS IN GPX FILE ----
      */
-    $noOfWaypts = $gpxdat->wpt->count();
+    $getWaypts = "SELECT * FROM `WAYPTS` WHERE `fileno`=?;";
+    $wpts = $gdb->prepare($getWaypts);
+    $wpts->execute([$fileno]);
+    $gpsvWaypts = $wpts->fetchAll(PDO::FETCH_ASSOC);
+    $noOfWaypts = count($gpsvWaypts);
     if ($noOfWaypts > 0) {
-        foreach ($gpxdat->wpt as $waypt) {
+        foreach ($gpsvWaypts as $waypt) {
             $wlat = $waypt['lat'];
             $wlng = $waypt['lon'];
-            $sym = $waypt->sym;
-            //$text = preg_replace("/'/", "\'", $waypt->name);
-            $text = str_replace("'", "\'", $waypt->name);
-            $desc = str_replace("'", "\'", $waypt->desc);
+            $sym  = $waypt['sym'];
+            $text = str_replace("'", "\'", $waypt['name']);
+            //$desc = str_replace("'", "\'", $waypt->desc);
+            $desc = "";
             $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng .
                 ",name:'" . $text . "',desc:'" . $desc . "',color:'" . "blue" .
                 "',icon:'" . $sym . "'});\n";
@@ -236,7 +241,6 @@ foreach ($files as $gpx) {
             }
         }
     }
-    $noOfTrks += $noOfFileTrks;
 }
 // Calculate map bounds and center coordiantes
 $north = $allLats[0];

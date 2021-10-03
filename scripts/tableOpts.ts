@@ -38,6 +38,7 @@ var mettxt = "Show Metric Units";
 	if (org) {
 		// save original English units from main table on the first pass
 		$erows.each(function() {
+			var gpxdat: string;
 			let $trail = $(this).find('td').eq(hike_hdr);
 			let trail = $trail.text();
 			let hike = $(this).data('indx');
@@ -45,7 +46,12 @@ var mettxt = "Show Metric Units";
 			let orgdist = $disttd.text();
 			let $elevtd = $(this).find('td').eq(elev_hdr);
 			let orgelev = $elevtd.text();
-			let gpxdat = $(this).data('gpx');
+			let gpxdata = $(this).data('gpx');
+			if (typeof gpxdata === 'number') {
+				gpxdat = gpxdata.toString();
+			} else {
+				gpxdat = gpxdata;
+			}
 			let orgdata: RowData =
 				{trail: trail, hikeno: hike, dist: orgdist, elev: orgelev, gpx: gpxdat};
 			eng_units.push(orgdata);

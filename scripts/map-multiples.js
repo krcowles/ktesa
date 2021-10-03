@@ -59,16 +59,16 @@ var orgHt = $('#usermodal').height();
 function addToList(hike) {
     for (var k = 0; k < eng_units.length; k++) {
         if (eng_units[k].trail === hike) {
-            var gpxinfo = eng_units[k].gpx;
-            if (gpxinfo.indexOf(',') !== -1) {
+            var gpxlist = eng_units[k].gpx;
+            var gpxinfo = gpxlist.split(",");
+            if (gpxinfo.length > 1) {
                 // this hike has multiple track files
-                var gpxfiles = gpxinfo.split(",");
-                for (var i = 0; i < gpxfiles.length; i++) {
-                    selectedHikes.push(gpxfiles[i]);
+                for (var i = 0; i < gpxinfo.length; i++) {
+                    selectedHikes.push(parseInt(gpxinfo[i]));
                 }
             }
             else {
-                selectedHikes.push(gpxinfo);
+                selectedHikes.push(parseInt(gpxinfo[0]));
             }
             break;
         }

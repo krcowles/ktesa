@@ -61,19 +61,17 @@ function off() {
         <p id="stats">Hike Statistics</p>
         <p id="summary">
             Nearby City / Locale: <span class="sumClr">
-                <?= $hikeLocale;?></span><br />
+                <?=$hikeLocale;?></span><br />
             Hike Difficulty: <span id="hdiff" class="sumClr">
-                <?= $hikeDifficulty;?></span><br />
+                <?=$hikeDifficulty;?></span><br />
             Total Length of Hike: <span id="hlgth" class="sumClr">
-                <?= $hikeLength;?></span><br />
+                <?=$mainmiles;?></span><br />
             Max to Min Elevation: <span id="hmmx" class="sumClr">
-                <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
-        <?php if ($displayAscDsc) : ?>
-            Total Ascent: <span class="sumClr">
-                <?= sprintf("%.0f", $pup * 3.28084);?> ft</span><br />
-            Total Descent: <span class="sumClr">
-                <?= sprintf("%.0f", $pdwn * 3.28084);?> ft</span><br />
-        <?php endif; ?>
+                <?=$mainfeet;?> ft</span><br />
+            Approx Ascent: <span id="tasc" class="sumClr">
+                <?=$ascent;?> ft</span> /
+            Descent: <span id="tdsc" class="sumClr">
+                <?= $descent?> ft</span><br />
             Logistics: <span id="hlog" class="sumClr"><?= $hikeType;?></span><br />
             Exposure Type: <span id="hexp" 
                 class="sumClr"><?= $hikeExposure;?></span><br />
@@ -136,7 +134,7 @@ function off() {
         <?php endif; ?>
 </div>
 <!-- Map & Chart on right adjacent to side panel: -->
-<iframe id="mapline" src="<?=  $tmpMap;?>"></iframe>
+<iframe id="mapline" src="<?=$tmpMap;?>"></iframe>
 <div id="chartline"><canvas id="grph"></canvas></div>
 <!-- BOTH STYLES: -->
 <div style="clear:both;padding-top:12px;">
@@ -160,7 +158,7 @@ function off() {
 <script type="text/javascript">
     var appMode = "<?=$appMode;?>";
     <?php if (isset($hikeFiles)) : ?>
-    var hikeFiles = <?=$hikeFiles;?>;
+    var hikeFiles = <?=json_encode($hikeFiles);?>;
     <?php endif; ?>
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
