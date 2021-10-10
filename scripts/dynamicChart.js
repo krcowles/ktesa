@@ -1,4 +1,3 @@
-"use strict";
 /// <reference path='./canvas.d.ts' />
 /**
  * @fileoverview This file supplies functions and variables to draw
@@ -26,6 +25,7 @@ var prevCHairs = false;
 var fullWidth;
 var chartHeight;
 // misc.
+var pnlId = 0; // which side panel data to display
 var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var do_resize = true;
 var trackNumber; // global used to identify current active track (topmost in tracklist)
@@ -50,7 +50,7 @@ if (!mobile) {
  * side panel.
  */
 var displayTrackSidePanel = function (trkno) {
-    var data = panelData[trkno + 1];
+    var data = panelData[trkno];
     $('#hdiff').text(data["diff"]);
     $('#hlgth').text(data["miles"] + " mi");
     $('#hmmx').text(data["feet"] + " ft");
@@ -66,17 +66,18 @@ var displayTrackSidePanel = function (trkno) {
  * are unchecked, the last box checked remains displayed in elevation chart.
  */
 var plotTopMost = function () {
+    var trackId = 0;
     for (var n = 0; n < box_states.length; n++) {
         if (box_states[n] === 1) {
             lastTrack = n;
-            trackNumber = n;
+            trackId = trkIndex[n];
+            pnlId = n;
             break;
         }
     }
     // find index in preloaded tracks:
-    trackNumber = gpsvTracks.indexOf(trackNames[lastTrack]);
     canvasEl.onmousemove = null;
-    drawChart(trackNumber);
+    drawChart(trackId);
 };
 // one-time tracklist setup when iframe is loaded:
 var mapdiv = document.getElementById('mapline');
@@ -136,8 +137,7 @@ mapdiv.onload = function () {
             });
         });
         $.when(allTracks).then(function () {
-            trackNumber = gpsvTracks.indexOf(trackNames[0]);
-            drawChart(trackNumber);
+            drawChart(trkIndex[0]);
         });
     }, 200);
 };
@@ -149,7 +149,7 @@ function drawChart(trackNo) {
     ChartObj.render('grph', chartData);
     crossHairs(trackNo);
     if (typeof panelData === 'object') {
-        displayTrackSidePanel(trackNo);
+        displayTrackSidePanel(pnlId);
         if (mobile) {
             chartPlaced.resolve();
         }
@@ -195,8 +195,8 @@ function crossHairs(trackno) {
         drawLine(margin.left, coords.py, margin.left + xMax, coords.py, null, null);
         if (coords.x !== -1) {
             var mapObj = {
-                lat: parseFloat(trkLats[trackNumber][indxOfPt]),
-                lng: parseFloat(trkLngs[trackNumber][indxOfPt])
+                lat: parseFloat(trkLats[trackno][indxOfPt]),
+                lng: parseFloat(trkLngs[trackno][indxOfPt])
             };
             infoBox(coords.px, coords.py, coords.x.toFixed(2), coords.y.toFixed(), mapObj);
         }

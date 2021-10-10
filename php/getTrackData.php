@@ -1,6 +1,13 @@
 <?php
 /**
- * Extract and prepare data from gpx file for javascript module
+ * Extract and prepare data from a single gpx file for charting tracks on a
+ * map ($chart = true), or when creating a map to display ($mapdata is set).
+ * When charting elevation data, the script may be invoked rapidly multiple 
+ * times when multi-track files are being loaded (e.g. BlackCanyonComnposite.gpx),
+ * or when multiple gpx files have been specified (e.g. Knife's Edge hike).
+ * In these cases, the asynchronous nature of ajax results in a potentially
+ * non-sequential return of data. For this reason, the unique track name for
+ * the track is associated with its data sets for identification during charting.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -40,26 +47,28 @@ if (isset($mapdata)) {  // when invoked via multiMap.php
     $trackmax = $tracks->fetch(PDO::FETCH_NUM);
     $trackcnt = $trackmax[0];
 }
-if ($chart) { 
-    $trkNames = [];
+if ($chart) {
+    $trkNames = []; 
     $trkLats  = [];
     $trkLngs  = [];
     $trkRows  = [];
     $trkMaxs  = [];
     $trkMins  = [];
-    $trkEles  = [];
     /**
      * Each track will have a name, a min elev, a max elev,
      * and arrays of lats, lngs, and elevations
      */ 
     for ($j=1; $j<= $trackcnt; $j++) {
+        $chartrow = [];
         // track names
         $trkNameReq = "SELECT `trkname` FROM `META` WHERE `fileno`=? AND " .
             "`trkno`=?;";
         $trkName = $gdb->prepare($trkNameReq);
         $trkName->execute([$fileno, $j]);
-        $trkname = $trkName->fetch(PDO::FETCH_ASSOC);
-        array_push($trkNames, $trkname['trkname']);
+        $trkname = $trkName->fetch(PDO::FETCH_NUM);
+        $trkid = $trkname[0];
+        array_push($trkNames, $trkid);
+        //array_push($trkNames, $trkname['trkname']);
         // track lat/lngs
         $tlatReq = "SELECT `lat` FROM `GPX` WHERE `fileno`=? AND `trackno`=?;";
         $tlats = $gdb->prepare($tlatReq);
@@ -69,23 +78,38 @@ if ($chart) {
         $tlngs = $gdb->prepare($tlngReq);
         $tlngs->execute([$fileno, $j]);
         $lngdat = $tlngs->fetchAll(PDO::FETCH_COLUMN);
+        array_push($trkLats, $latdat);
+        array_push($trkLngs, $lngdat);
         // track elevations
         $teleReq = "SELECT `ele` FROM `GPX` WHERE `fileno`=? AND `trackno`=?;";
         $teles = $gdb->prepare($teleReq);
         $teles->execute([$fileno, $j]);
         $eles = $teles->fetchAll(PDO::FETCH_COLUMN); // Note: these are in meters
-        array_push($trkLats, $latdat);
-        array_push($trkLngs, $lngdat);
-        array_push($trkEles, $eles);
-        $trkMax = max($eles) * 3.2808; // Convert to feet
-        $trkMin = min($eles) * 3.2808;
+        // create plot data as js objects (when json_encoded)
+        $miles = 0;
+        $elev1_ft = round($eles[0] * 3.2808);
+        $chartrow[0] = ["x" => $miles,"y" => $elev1_ft];
+        $limit = count($latdat) - 1;
+        for ($n=0; $n<$limit; $n++) {
+            $dist = distance(
+                (float)$latdat[$n], (float)$lngdat[$n],
+                (float)$latdat[$n+1], (float)$lngdat[$n+1]
+            );
+            $miles += round($dist[0]*3.2808/5280, 4);
+            $chartrow[$n+1] = ["x" => $miles, "y" => round($eles[$n] * 3.2808)];
+        }
+        array_push($trkRows, $chartrow);
+        // associate maxs/mins
+        $trkMax = round(max($eles) * 3.2808); // Convert to feet
+        $trkMin = round(min($eles) * 3.2808);
         array_push($trkMaxs, $trkMax);
         array_push($trkMins, $trkMin);
     }
     if (!isset($mapdata)) {
-        $returndat = array(
-            $trkNames, $trkLats, $trkLngs, $trkEles, $trkMaxs, $trkMins
+        $data = array(
+            $trkNames, $trkRows, $trkLats, $trkLngs, $trkMaxs, $trkMins
         );
-        echo json_encode($returndat);
+        $returndata = json_encode($data);
+        echo $returndata;
     }
 }

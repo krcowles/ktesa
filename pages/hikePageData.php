@@ -94,10 +94,8 @@ $allgpx = $row['gpxlist'];
 if (!empty($allgpx)) {
     $files    = explode(",", $allgpx);
     $gpxfile  = $files[0]; // the main gpx file to be displayed on the page
-    $gpxPath  = '../gpx/' . $gpxfile;
 } else { // cluster pages defined later...
     $gpxfile  = '';
-    $gpxPath  = '';
 }
 $jsonFile = $row['trk'];
 // Pages with old Flickr photos
@@ -154,7 +152,6 @@ if ($clusterPage) {
     if (empty($cpdata['lng'])) {
         $cpdata['lng'] = -106.042;
     }
-
     /**
      * NOTE: Only show published hikes as there may also be an in-edit
      * version of the hike, and the complications managing hikes-in-edit
@@ -168,26 +165,49 @@ if ($clusterPage) {
     $clushikes = $chikes->fetchAll(PDO::FETCH_COLUMN);
     if (count($clushikes) > 0) {
         $hike_data = []; // array to collect info for javascript
+        $indx = 0;
+        $nme_start = 0;
         foreach ($clushikes as $hike) {
-            // Get the side panel data for this $hike ('indxNo')
-            $hikeReq = "SELECT `logistics`,`miles`,`feet`,`diff`,`wow`," .
-                "`seasons`,`expo`,`gpx` FROM `HIKES` WHERE `indxNo`=?;";
+            // Get info associated with this hike id (indxNo):
+            $hikeReq = "SELECT `locale`,`logistics`,`miles`,`feet`,`diff`,`wow`," .
+                "`seasons`,`expo`,`gpxlist` FROM `HIKES` WHERE `indxNo`=?;";
             $hikedat = $pdo->prepare($hikeReq);
             $hikedat->execute([$hike]);
-            $sidepnl = $hikedat->fetch(PDO::FETCH_ASSOC);
-            $gpxfnames = array_pop($sidepnl);
-            // there may be multiple files associated with this hike
-            $filelist = explode(",", $gpxfnames);
-            // associate each trackname in any file with its corresponding gpx file
-            foreach ($filelist as $gpx) {
-                array_push($files, $gpx);
-                $contents = simplexml_load_file("../gpx/" . $gpx);
-                // there may be more than one track in a file (e.g. Black Canyon)
-                $noOfTrks = $contents->trk->count();
+            $sidepnl = $hikedat->fetch(PDO::FETCH_ASSOC); // only 1 entry per indxNo
+            // any given hike may have multiple files
+            $filelist = explode(",", $sidepnl['gpxlist']);
+            $files = array_merge($files, $filelist);
+            foreach ($filelist as $fileid) {
+                // Each file may have multiple tracks
+                $clidTrackReq = "SELECT `trkname`,`length`,`min2max`," .
+                "`asc`,`dsc` FROM `META` WHERE `fileno`=?;";
+                $clidTracks = $gdb->prepare($clidTrackReq);
+                $clidTracks->execute([$fileid]);
+                $tracks = $clidTracks->fetchAll(PDO::FETCH_ASSOC);
+                $noOfTrks = count($tracks);
+                if ($indx === 0) {
+                    // for clusters, some fields defined above are null
+                    $hikeLocale     = $sidepnl['locale'];
+                    $hikeDifficulty = $sidepnl['diff'];
+                    $hikeType       = $sidepnl['logistics'];
+                    $hikeExposure   = $sidepnl['expo'];
+                    $hikeSeasons    = $sidepnl['seasons'];
+                    $hikeWow   = $sidepnl['wow'];
+                    $mainmiles = $sidepnl['miles'];
+                    $mainfeet  = $sidepnl['feet'];
+                    $ascent    = $tracks[0]['asc'];
+                    $descent   = $tracks[0]['dsc'];
+                    $indx      = 100;
+                } 
                 for ($j=0; $j<$noOfTrks; $j++) {
-                    $tname = $contents->trk[$j]->name->__toString();
-                    $trkrel = array($tname => $sidepnl);
-                    $hike_data += $trkrel;  // "+" is union operator for arrays
+                    $tname = $nme_start++;
+                    $trkpanel = $sidepnl;
+                    $trkpanel['miles'] = $tracks[$j]['length'];
+                    $trkpanel['feet']  = $tracks[$j]['min2max'];
+                    $trkpanel['asc']   = $tracks[$j]['asc'];
+                    $trkpanel['dsc']   = $tracks[$j]['dsc'];
+                    $trkrel = array($tname => $trkpanel);
+                    $hike_data += $trkrel;  // "+" union operator for (assoc) arrays
                 }
             }
         }
@@ -209,12 +229,13 @@ if ($clusterPage) {
     createPseudoGpx($ctrlat, $ctrlng, $gpxfile, $files);
 } else {  // hike page has at least one gpx file
     $hike_data = []; // array to collect info for javascript
+    $trkcnt = 0;
     foreach ($files as $fileno) {
-        $noOfTrks = $gdb->query(
+        $hikeTrkCnt = $gdb->query(
             "SELECT `trkno` FROM `META` WHERE `fileno`={$fileno} " .
             "ORDER BY `trkno` DESC LIMIT 1;"
         )->fetch(PDO::FETCH_NUM);
-        $trkcount = $noOfTrks[0];
+        $trkcount = $hikeTrkCnt[0];
         for ($j=1; $j<=$trkcount; $j++) {
             $statsReq = "SELECT `length`,`min2max`,`asc`,`dsc` FROM `META` WHERE " .
                 "`fileno`=? AND `trkno`=?;";
@@ -236,14 +257,14 @@ if ($clusterPage) {
                 'asc' => $ascent,
                 'dsc' => $descent
             );
-            $hike_data[$j] = $sidepanel;
-            $sidePanelData = json_encode($hike_data);
+            $hike_data[$trkcnt++] = $sidepanel;
             if ($j === 1 && $fileno === $files[0]) {
                 $mainfeet = $feet;
                 $mainmiles = $miles;
             }
         }
     }
+    $sidePanelData = json_encode($hike_data);
 }
 require "relatedInfo.php";
 /**

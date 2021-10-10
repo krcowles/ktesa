@@ -229,3 +229,14 @@ function drawRows(useWidth) {
         return;
     }
 }
+/**
+ * When user wishes to download a gpx file
+ */
+$('#dwnld').on('click', function () {
+    var pgname = $('#trail').text();
+    var hikeno = $('#hikeno').text();
+    var tbls = $('#tbls').text();
+    var php = '../php/downloadGpx.php?indx=' + hikeno + '&name=' + pgname
+        + '&tbl=' + tbls;
+    window.open(php);
+});

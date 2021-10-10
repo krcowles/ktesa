@@ -45,61 +45,49 @@ CREATE TABLE `GPX` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 GPX;
 
-$waypts = <<<WAY
-CREATE TABLE `WAYPTS` (
-    `wptindx` INT NOT NULL AUTO_INCREMENT,
-    `fileno` INT NOT NULL,
-    `name` VARCHAR(200) NULL,
-    `lat` DECIMAL(13,11) NULL,
-    `lon` DECIMAL(14,11) NULL,
-    `sym` VARCHAR(100) NULL,
-    PRIMARY KEY (`wptindx`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-WAY;
-
 $gdb->query("DROP TABLE IF EXISTS `META`;");
 $gdb->query("DROP TABLE IF EXISTS `GPX`;");
-$gdb->query("DROP TABLE IF EXISTS `WAYPTS`;");
 $makeMetaTbl = $gdb->query($metatbl);
 $makeDataTbl = $gdb->query($gpxtbl);
-$makeWptsTbl = $gdb->query($waypts);
 
 // Current listing of hikes vs gpx file(s)
 $getGpxFilesReq = "SELECT `indxNo`,`gpx` FROM `HIKES`;";
 $gpxFiles = $pdo->query($getGpxFilesReq)->fetchAll(PDO::FETCH_KEY_PAIR);
+$fileToIndx = [];
 // NOTE: hikes may have multiple gpx files specified per hike
-$loadfiles   = [];
-foreach ($gpxFiles as $hike => $fileset) {
-    if (!empty($fileset)) {
-        $indx = count($loadfiles);
-        if (strpos($fileset, ",") !== false) {
-            // this hike has multiple gpx files specified
-            $newlist = '';
-            $filelist = explode(",", $fileset);
-            for ($k=0; $k<count($filelist); $k++) {
-                $newlist .= ($indx + $k + 1) . ",";
-                array_push($loadfiles, $filelist[$k]);
+$fileno_count = 0;
+foreach ($gpxFiles as $key => $value) {
+    if (!empty($value)) { // cluster pages have no gpx file specified
+        $fileno_count++;
+        if (strpos($value, ",") !== false) {
+            $allfiles = explode(",", $value);
+            $glist = '';
+            foreach ($allfiles as $mult) {
+                $fileToIndx[$mult] = $key;
+                $glist .= $fileno_count++ . ",";
             }
-            $newlist = substr_replace($newlist, "", -1);
+            $glist = substr_replace($glist, "", -1);
+            $fileno_count--;
         } else {
-            array_push($loadfiles, $fileset);
-            $newlist = $indx + 1;
+            $fileToIndx[$value] = $key;
+            $glist = $fileno_count;
         }
         $updteReq = "UPDATE `HIKES` SET `gpxlist` = ? WHERE `indxNo` = ?;";
         $updte = $pdo->prepare($updteReq);
-        $updte->execute([$newlist, $hike]);
+        $updte->execute([$glist, $key]);
     }
 }
+
 $fileno = 0;
 $emptyEles = [];
+$loadfiles = array_keys($fileToIndx);
 foreach ($loadfiles as $gpxfile) {
     /**
      * Save the beginning of the xml and assign a gpx file no. This
-     * can be used later to re-create the gpx file as required; also
-     * capture any waypoints and track extensions. Note that although
-     * the 'beginning' includes any waypoint data, if waypoints have
-     * been edited later, the waypoint data in text string will also
-     * require updating in order to recreate a gpx file for download.
+     * can be used later to re-create the gpx file as required; The 
+     * 'meta' data field also includes any gpx waypoints. These are
+     * saved to the standard TSV database. If a gpx download is
+     * requested, any waypoints in the TSV database will be inluded.
      */
     $fname = $gpxfile;
     $file2load = "../gpx/" . $fname;
@@ -119,7 +107,8 @@ foreach ($loadfiles as $gpxfile) {
         throw new Exception("Could not load {$fname} as simplexml");
     }
     if ($gpx->wpt->count() > 0) {
-        extractWayPts($fileno, $gpx, $gdb);
+        $hikeno = $fileToIndx[$fname];
+        extractWayPts($hikeno, $gpx, $pdo);
     }
     // Extract any track extensions
     $gpx_string = file_get_contents($file2load);

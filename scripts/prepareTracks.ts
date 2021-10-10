@@ -1,6 +1,23 @@
 /// <reference path="canvas.d.ts" />
 declare var hikeFiles: string[]; // on hikePageTemplate.php
 declare var appMode: string;
+interface PlotObj { // objects passed to canvas.js for plotting
+    x: number;
+    y: number;
+}
+type TrackList = Array<string>;
+type LatLngData   = Array<number>
+type PlotData  = Array<PlotObj>;
+type MinMax = Array<number>
+type ReturnedAjax = TrackList | LatLngData | PlotData  | MinMax;
+interface AjaxData extends Array<ReturnedAjax> {
+    [index: number]: ReturnedAjax;
+}
+interface ReturnData {
+    called: number;
+    tracks: ReturnedAjax;
+}
+
 /**
 * @fileoverview This module will assemble track data for all tracks, even
  * when there are multiple files to parse. Each set of track data is used
@@ -18,66 +35,76 @@ var hikeTrack: string; // hike fileno supplied to ajax call
 var allTracks: JQueryDeferred<void>  = $.Deferred(); // when done with all files, draw chart
 var promises: JQueryDeferred<void>[]  = []; // collection of promises (one per file)
 // globals
-var gpsvTracks: string[] = []; // track names appearing in GPSV tracklist box
-var trkLats: string[][] = []; // array of each track's set of latitudes
-var trkLngs: string[][] = []; // array of each track's set of longitudes
-var trkMaxs: number[] = []; // elevation maxes, one per track
-var trkMins: number[] = []; // elevation mins, one per track
+var trkOrder: ReturnData[]  = [];  // The returned order of ajax calls vs "i" in for loop
+var trkSequence: string[] = []; // Re-ordered seq of track indices per order called
+var trkIndex: number[]   = [];  // The corrected order of tracks as an index into arrays
+var gpsvTracks: TrackList = []; // track names appearing in GPSV tracklist box
+var trkLats: LatLngData = []; // array of each track's set of latitudes
+var trkLngs: LatLngData = []; // array of each track's set of longitudes
+var trkMaxs: MinMax = []; // elevation maxes, one per track
+var trkMins: MinMax = []; // elevation mins, one per track
 var trkRows: Coords[][] = []; // array of each track's set of chart points:
                   // [{x:distance, y:elevation}, ...], where dist=>miles, ele=>feet
 
+// Get charting data for each hike file specified
 for (let i=0; i<hikeFiles.length; i++) {
     let trackDef: JQueryDeferred<void> = $.Deferred();
     promises.push(trackDef);
     hikeTrack = hikeFiles[i];
-    getTrackData(trackDef);
+    getTrackData(trackDef, i);
 }
 $.when.apply($, promises).then(function() {
-    // Note: due to asynchronous loading, gpsvtracks and associated data
-    // may not be in the same order as the gpsv map's tracklist box
+    /** 
+     * Note: due to asynchronous loading, gpsvTracks and associated data
+     * can be returned in any order. The order in which the file data is 
+     * actually returned is tracked by the array of objects: 'trkOrder', 
+     * which lists the call id ('i' in the for loop) and which tracks
+     * were returned with the call. 
+     */
+     var lim = trkOrder.length;
+     var fin = 0; // no of files processed
+     var tno = 0; // no of tracks accumulated
+     while (fin < lim) {
+         for (let k=0; k<lim; k++) {
+             // was 'parseInt': typescript wants int
+             let ord = trkOrder[k].called;
+             if (ord === fin) {
+                 for (let m=0; m<trkOrder[k].tracks.length; m++) {
+                     trkSequence[tno++] = <string>trkOrder[k].tracks[m];
+                 }
+                 fin++;
+                 break;
+             }
+         }
+     }
+     for (let l=0; l<tno; l++) {
+         let indx = gpsvTracks.indexOf(trkSequence[l]);
+         trkIndex[l] = indx;
+     }
     allTracks.resolve();
 });
 
 /**
- * The values for sets of lats/lngs/eles + track names and maxs and mins are
- * retrieved (for all tracks in the hikeFfile supplied) by php and delivered
- * back to the success routine. From the sets of lats/lngs/eles, the chart
- * row data is created. The routine then adds the data to the globals listed
- * above such that each track, whether from one or multiple files, has a 
- * corresponding set of data supplied to the charting routine (dynamicChart.js).
+ * The values for sets of lats, lngs, and plot data, along with track names and
+ * maxs and mins, are retrieved by php for each track in the hikeFfile supplied.
+ * The routine then adds the data to the globals such that each track, whether
+ * from one or multiple files, has a corresponding set of data supplied to the
+ * charting routine (dynamicChart.js).
  */
-function getTrackData(promise: JQueryDeferred<void>): void {
+function getTrackData(promise: JQueryDeferred<void>, callorder: number): void {
     $.ajax({
-        url:  '../php/getTrackData.php?fileno=' + hikeTrack + '&chrt=y',
+        url: '../php/getTrackData.php?fileno=' + hikeTrack + '&chrt=y',
         method: "get",
         dataType: "json",
-        success: function(chartdata) { 
-            gpsvTracks = gpsvTracks.concat(chartdata[0]);
-            let tlats   = chartdata[1];
-            let tlngs   = chartdata[2];
-            let trkEles = chartdata[3];
-            trkMaxs = trkMaxs.concat(chartdata[4]);
-            trkMins = trkMins.concat(chartdata[5]);
-            // create row objects for chart
-            let trkcnt = tlats.length;
-            for (let j=0; j<trkcnt; j++) {
-                let chartrow = [];
-                let startEle = parseFloat(trkEles[j][0]) * 3.2808;
-                chartrow[0] = {x:0, y:startEle};
-                let datcnt = tlats[j].length - 1;
-                let hikelgth = 0;
-                for (let k=0; k<datcnt; k++) {
-                    hikelgth += distance(tlats[j][k], tlngs[j][k],
-                        tlats[j][k+1], tlngs[j][k+1], "M");
-                    let ele = trkEles[j][k] * 3.2808;
-                    let dataPtObj = {x:hikelgth,y:ele};
-                    chartrow.push(dataPtObj);
-                }
-                // the following pushes establish the track's indices
-                trkRows.push(chartrow); // pushes an array of objects
-                trkLats = trkLats.concat(tlats);    // pushes an array of lats
-                trkLngs = trkLngs.concat(tlngs);    // pushes an array of lngs
-            }
+        success: function (chartdata:AjaxData) {
+            var order = {called: callorder, tracks:chartdata[0]};
+            trkOrder.push(order);
+            gpsvTracks = gpsvTracks.concat(<TrackList>chartdata[0]);
+            trkRows = trkRows.concat(<PlotData>chartdata[1]);
+            trkLats = trkLats.concat(<LatLngData>chartdata[2]);
+            trkLngs = trkLngs.concat(<LatLngData>chartdata[3]);
+            trkMaxs = trkMaxs.concat(<MinMax>chartdata[4]);
+            trkMins = trkMins.concat(<MinMax>chartdata[5]);
             promise.resolve();
         },
         error: function(_jqXHR, textStatus, errorThrown) {

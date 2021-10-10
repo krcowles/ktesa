@@ -152,27 +152,23 @@ foreach ($files as $fileno) {
         fclose($handleDfc);
     }
     /**
-     *   ---- ESTABLISH ANY WAYPOINTS IN GPX FILE ----
+     *   ---- ESTABLISH ANY WAYPOINTS ----
      */
-    $getWaypts = "SELECT * FROM `WAYPTS` WHERE `fileno`=?;";
-    $wpts = $gdb->prepare($getWaypts);
+    $getWaypts = "SELECT `title`,`lat`,`lng`,`iclr` FROM {$ttable} WHERE " .
+        "`indxNo`=? AND `thumb` IS NULL;";
+    $wpts = $pdo->prepare($getWaypts);
     $wpts->execute([$fileno]);
-    $gpsvWaypts = $wpts->fetchAll(PDO::FETCH_ASSOC);
-    $noOfWaypts = count($gpsvWaypts);
-    if ($noOfWaypts > 0) {
-        foreach ($gpsvWaypts as $waypt) {
-            $wlat = $waypt['lat'];
-            $wlng = $waypt['lon'];
-            $sym  = $waypt['sym'];
-            $text = str_replace("'", "\'", $waypt['name']);
-            //$desc = str_replace("'", "\'", $waypt->desc);
-            $desc = "";
-            $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng .
-                ",name:'" . $text . "',desc:'" . $desc . "',color:'" . "blue" .
-                "',icon:'" . $sym . "'});\n";
-            array_push($waypoints, $wlnk);
-        }
+    $gpsvWaypts = $wpts->fetchAll(PDO::FETCH_ASSOC); // returns array, even if empty
+    $noOfWaypts = count($gpsvWaypts); // used in fillGpsvTemplate.php
+    $desc = "";
+    foreach ($gpsvWaypts as $waypt) {
+        $wlnk = "GV_Draw_Marker({lat:" . $waypt['lat']/LOC_SCALE .
+            ",lon:" . $waypt['lng']/LOC_SCALE .
+            ",name:'" . $waypt['title'] . "',desc:'" . $desc . "',color:'" .
+            "blue" . "',icon:'" . $waypt['iclr'] . "'});\n";
+        array_push($waypoints, $wlnk);
     }
+
     /**
      *   ---- OPTIONAL PHOTOS ----
      */

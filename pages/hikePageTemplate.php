@@ -13,15 +13,15 @@
 session_start();
 $geoloc = "../../images/geoloc.png";
 require "../php/global_boot.php";
-require "../php/gpxFunctions.php";
+//require "../php/gpxFunctions.php";
 require "hikePageData.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title><?= $hikeTitle;?></title>
+    <title><?=$hikeTitle;?></title>
     <meta charset="utf-8" />
-    <meta name="description" content="Details about the <?= $hikeTitle;?> hike" />
+    <meta name="description" content="Details about the <?=$hikeTitle;?> hike" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,9 +50,11 @@ function off() {
 <script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php";?>
-<p id="trail"><?= $hikeTitle;?></p>
+<p id="trail"><?=$hikeTitle;?></p>
 <p id="active" style="display:none">Page</p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
+<p id="hikeno" style="display:none"><?=$hikeIndexNo;?></p>
+<p id="tbls" style="display:none"><?=$tbl;?></p>
 
 <!-- Side Panel: -->
 <div id="unhide">></div>
@@ -86,10 +88,8 @@ function off() {
             <p id="addtl"><strong>More!</strong></p>
             <p id="mlnk">View <a href="<?= $fpLnk;?>"
                 target="_blank">Full Page Map</a><br />
-                <span class="track">View <a id="view" href="<?= $gpxPath;?>"
-                    target="_blank">GPX File</a></span><br />
-                <span class="track">Download <a id="dwn" href="<?= $gpxPath;?>"
-                        download>GPX File</a></span>
+                <span class="track">Download <a id="dwnld" href="#">GPX File</a>
+                </span>
             </p>
             <?= $photoAlbum;?>
             <p id="directions">The following link provides on-line directions to
