@@ -1,3 +1,4 @@
+"use strict";
 /// <reference path='./canvas.d.ts' />
 /**
  * @fileoverview This file supplies functions and variables to draw
@@ -21,6 +22,7 @@ var lastTrack = 0; // indx in box_states
 var coords; // x,y location of mouse in chart
 var indxOfPt;
 var prevCHairs = false;
+var trackId = 0; // currently active trackno
 // vars for setting chart dimension;
 var fullWidth;
 var chartHeight;
@@ -28,20 +30,19 @@ var chartHeight;
 var pnlId = 0; // which side panel data to display
 var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var do_resize = true;
-var trackNumber; // global used to identify current active track (topmost in tracklist)
 var pnlMarg;
 if (!mobile) {
     // Hide/unhide side panel (changes width of elevation profile chart)
     $('#hide').on('click', function () {
         $('#sidePanel').css('display', 'none');
         setViewport();
-        drawChart(trackNumber);
+        drawChart(trackId);
         $('#unhide').css('display', 'block');
     });
     $('#unhide').on('click', function () {
         $('#sidePanel').css('display', 'block');
         setViewport();
-        drawChart(trackNumber);
+        drawChart(trackId);
         $('#unhide').css('display', 'none');
     });
 }
@@ -66,7 +67,6 @@ var displayTrackSidePanel = function (trkno) {
  * are unchecked, the last box checked remains displayed in elevation chart.
  */
 var plotTopMost = function () {
-    var trackId = 0;
     for (var n = 0; n < box_states.length; n++) {
         if (box_states[n] === 1) {
             lastTrack = n;
@@ -301,7 +301,6 @@ function findNeighbors(xDataPt, trackno) {
 }
 /**
  * Redraw when there is a window resize
- * @return {null}
  */
 $(window).on('resize', function () {
     if (do_resize) {
@@ -309,12 +308,13 @@ $(window).on('resize', function () {
         do_resize = false;
         setTimeout(function () {
             canvasEl.onmousemove = null;
+            $('body').scrollTop(0);
             if (!mobile) {
                 setViewport();
             }
-            var chartData = defineData(trackNumber);
+            var chartData = defineData(trackId);
             ChartObj.render('grph', chartData);
-            crossHairs(trackNumber);
+            crossHairs(trackId);
             do_resize = true;
         }, 300);
     }

@@ -1,8 +1,3 @@
-html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
- }
 body {
     min-width: 960px;
     height: 100%;
@@ -47,7 +42,6 @@ table:not('#loginTbl') td {
     margin-left: 4px;
     margin-right: 0px;
     width: 23%;
-    min-height: 400px;
     border-style: inset;
     border-width: 2px;
     border-color: Brown;
@@ -220,8 +214,12 @@ fieldset {
     margin-top: 0px;
     margin-bottom: 8px;
 }
+#flnk {
+    display: none;
+}
 /* image alignment and pop-up caption styles */
 .ImgRow {
+    box-sizing: content-box;
     min-width: 960px;
     overflow: hidden;
     text-align: center;
@@ -229,9 +227,11 @@ fieldset {
     margin-right: auto;
     margin-bottom: 0px; }
 img {
+    box-sizing: content-box;
     display: inline-block;
-    margin-bottom: 0px; }
+    margin-bottom: 1px; }
 #imgArea {
+    box-sizing: content-box;
     min-width: 960px;
 }
 iframe {
@@ -239,16 +239,19 @@ iframe {
     box-sizing: content-box;
 }
 .popupCap {
+    box-sizing: content-box;
     margin: 0px;
     display: none;
     position: absolute;
     width: 300px;
     top: 0px;
     left: 0px;
-    line-height: 1.15em
+    line-height: 1.15em;
+    z-index: 9999;
 }
 .capLine {
     margin: 0px;
+    position: relative;
     font-weight: bold;
     background-color: #eaeaea; }
 /* details about the hike */

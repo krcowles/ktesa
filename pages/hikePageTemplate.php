@@ -157,6 +157,9 @@ function off() {
 
 <script type="text/javascript">
     var appMode = "<?=$appMode;?>";
+    <?php if (isset($pseudo)) : ?>
+    var pseudo = true;
+    <?php endif; ?>
     <?php if (isset($hikeFiles)) : ?>
     var hikeFiles = <?=json_encode($hikeFiles);?>;
     <?php endif; ?>

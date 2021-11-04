@@ -10,13 +10,11 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
-
-// query string data:
 $hikeNo = filter_input(INPUT_GET, 'hikeNo');
+$hikeIndexNo = $hikeNo; // alias
 $tab    = filter_input(INPUT_GET, 'tab');
 
 /**
@@ -34,27 +32,69 @@ if ($hikeq->execute(["hikeno" => $hikeNo]) === false) {
 $hike = $hikeq->fetch(PDO::FETCH_ASSOC);
 
 $pgTitle   = $hike['pgTitle'];
+$hikeTitle = $pgTitle; // alias
 $locale    = $hike['locale'];
 $cname     = $hike['cname'];
 $logistics = $hike['logistics'];
-$miles     = $hike['miles'];
-if (empty($miles)) {
-    $miles = '';
-} else {
-    $miles = sprintf("%.2f", $miles);
-}
+$miles    = $hike['miles'];
 $feet     = $hike['feet'];
 $diff     = $hike['diff'];
 $fac      = $hike['fac'];
 $wow      = $hike['wow'];
 $seasons  = $hike['seasons'];
 $expo     = $hike['expo'];
-$curr_gpx = $hike['gpx'];  // can contain more than one filename, comma-separated
+$flist    = $hike['gpxlist'];  // can contain more than one fileno, comma-separated
 $curr_trk = $hike['trk'];
 $lat      = !empty($hike['lat']) ? $hike['lat']/LOC_SCALE : '';
 $lng      = !empty($hike['lng']) ? $hike['lng']/LOC_SCALE : '';
 $preview_name = $hike['preview'];
 $dirs     = $hike['dirs'];
+if (empty($flist)) {
+    $miles = '';
+    $feet  = '';
+    $lat = '';
+    $lng = '';
+} else {
+    if (empty($miles)) {
+        $miles = '';
+    } else {
+        $miles = sprintf("%.2f", $miles);
+    }
+}
+
+/**
+ * Get the EGPX metadata to id any uploaded gpx files and retrieve their names.
+ * NOTE: When a main was loaded previously with additional files, the main
+ * may have been deleted (represented by fileno=0) while additionals remain.
+ */
+$gpxs = [];
+$curr_gpx = '';
+if (!empty($flist)) {
+    $efilenos = explode(",", $flist);
+    foreach ($efilenos as $fnum) {
+        if ($fnum !== '0') {
+            $egpxReq = "SELECT `fname` FROM `EMETA` WHERE `fileno`=?;";
+            $gpxName = $gdb->prepare($egpxReq);
+            $gpxName->execute([$fnum]);
+            $gpxfile = $gpxName->fetch(PDO::FETCH_NUM);
+            array_push($gpxs, $gpxfile[0]);
+        } else {
+            array_push($gpxs, '');
+        }
+    }
+    if ($gpxs[0] !== '') {
+        $curr_gpx = $gpxs[0];
+    } 
+}
+// id any additional files (not main gpx: 'curr_gpx')
+$adders = '<ul id="addlist" style="margin-top:4px;">' . PHP_EOL;
+for ($k=1; $k<count($gpxs); $k++) {
+    $adders .= '<li><em>' . $gpxs[$k] . '</em>&nbsp;&nbsp;<span ' .
+        'class="brown"> Do not include this file:&nbsp;&nbsp;' .
+        '<input type="checkbox" name="deladd[]" value="' . $k .'" />' .
+        '</span></li>' . PHP_EOL;
+}
+$adders .= '</ul>' . PHP_EOL;
 
 // collect data for any unpublished cluster groups
 $pubReq = "SELECT `group` FROM `CLUSTERS` WHERE `pub`='N';";
@@ -75,25 +115,6 @@ if (count($nonpubs) > 0) {
 }
 $newgrps = '[' . implode(",", $jsData) . ']';
 
-// separate gpx files if multiple
-$additional_files = [];
-$adders = '<ul id="addlist" style="margin-top:4px;">' . PHP_EOL;
-$all_files = explode(",", $curr_gpx);
-$curr_gpx = $all_files[0];
-if (count($all_files) > 1) {
-    for ($j=1; $j<count($all_files); $j++) {
-        $extra = trim($all_files[$j]);
-        array_push($additional_files, $extra); 
-    }
-}
-for ($k=0; $k<count($additional_files); $k++) {
-    $fileno = $k +1;
-    $adders .= '<li><em>' . $additional_files[$k] . '</em>&nbsp;&nbsp;<span ' .
-        'class="brown"> Do not include this file:&nbsp;&nbsp;' .
-        '<input type="checkbox" name="deladd[]" value="' . $fileno .'" />' .
-        '</span></li>' . PHP_EOL;
-}
-$adders .= '</ul>' . PHP_EOL;
 
 // any alerts to display?
 $user_alert = '';
@@ -118,25 +139,34 @@ $prevdir = str_replace('zsize', 'previews', $picdir);
 $prevImg = $prevdir . $preview_name;
 
 /**
- * Tab 4: [GPS data] Note: tab4display.php calls references from EREFS
+ * Tab 4: [GPS data]
  */
-$gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = :hikeno " .
-    "AND (datType = 'P' OR datType = 'A');";
+$gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = :hikeno;";
 $gpsq = $pdo->prepare($gpsreq);
 $gpsq->execute(["hikeno" => $hikeNo]);
-$gpsDbCnt = $gpsq->rowCount(); // needed for tab4display.php
-$label = [];
-$url = [];
-$clickText = [];
-$datId = [];
-for ($j=0; $j<$gpsDbCnt; $j++) {
-    $gpsdat = $gpsq->fetch(PDO::FETCH_ASSOC);
-    $datId[$j] = $gpsdat['datId'];
-    $url[$j] = $gpsdat['url'];
-    $clickText[$j] = $gpsdat['clickText'];
-    if ($gpsdat['label'] !== 'GPX:') {
-        $fname[$j] = substr($url[$j], 8);
+$gpsdisplay = $gpsq->fetchAll(PDO::FETCH_ASSOC); // returns array, even if empty
+$no_previous = count($gpsdisplay) === 0 ? true : false;
+// filenames (unique by defni) are needed for tab4 display
+$disp_data = [];
+foreach ($gpsdisplay as $gdat) {
+    $label = trim($gdat['label']);
+    if ($label === 'GPX' || $label === 'GPX:') {
+         // get filename
+        $fnameReq = "SELECT `fname` FROM `EMETA` WHERE `fileno`=?";
+        $fname = $gdb->prepare($fnameReq);
+        $fname->execute([$gdat['fileno']]);
+        $gpsname = $fname->fetch(PDO::FETCH_NUM);
+        $disp_data[$gpsname[0]] = $gdat;
     } else {
-        $fname[$j] = substr($url[$j], 7);
+        // strip off directory path for filename
+        $nongpxname = substr($label, 8);
+        $disp_data[$nongpxname] = $gdat;
     }
 }
+$displayGps = !empty($disp_data) ? true : false;
+
+$clusterPage = false;
+$tbl = 'new';
+$rtable = 'EREFS';
+$gtable = 'EGPSDAT';
+require "../pages/relatedInfo.php";

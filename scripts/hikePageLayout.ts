@@ -14,6 +14,7 @@ declare var mobile: boolean;
  * @version 1.0 Replaces picRowFormation.ts/js and is compatible with bootstrap
  */
 var itemcnt: number;
+var photosLoaded = $.Deferred();
 var cluster_page = $('#cpg').text() === 'yes' ? true : false;
 if (!cluster_page) {
     // Decode the photo array data passed via php:
@@ -46,7 +47,6 @@ var $chartEl: JQuery<HTMLElement>;
 const pageMargin = 36;
 const maxRowHt   = 260;	
 const rowWidth   = 940;
-
 $(function() {  // page loaded...
     // define globals
     $panel   = $('#sidePanel'); // always present on page load
@@ -56,8 +56,10 @@ $(function() {  // page loaded...
     // the following should not change throughout resizing, etc.
     var pnlMarg   = parseInt($panel.css('margin-left')) + 
         parseInt($panel.css('margin-right'));
-    var pnlBorder = parseInt($panel.css('border-left-width')) + 
-        parseInt($panel.css('border-right-width'));
+    // oddly, on local machine, borders are fractional...
+    var border_left = parseFloat($panel.css('border-left-width'));
+    var border_right = parseFloat($panel.css('border-right-width'));
+    var pnlBorder = Math.ceil(border_left + border_right);
     var pnlPad    = parseInt($panel.css('padding-left')) + 
         parseInt($panel.css('padding-right'));
     pnlBox = pnlMarg + pnlBorder + pnlPad;
@@ -88,8 +90,7 @@ function setViewport() {
     var panelDisplay = $panel.css('display') !== 'none' ? true: false;
     // Height calcs
     vpHeight = window.innerHeight;
-    var navPadding = parseInt($('#nav').css('padding-top'));
-    var consumed = <number>$('#nav').height() + <number>$('#logo').height() + 2*navPadding;
+    var consumed = <number>$('#nav').height() + <number>$('#logo').height();
     var usable = vpHeight - consumed;
     var mapHt = Math.floor(0.65 * usable);
     var chartHt = Math.floor(0.35 * usable);
@@ -99,8 +100,9 @@ function setViewport() {
     $panel.height(pnlHeight);
     // Width calcs
     winWidth = <number>$(window).width();
+    winWidth = Math.floor(winWidth);
     if (panelDisplay) {
-        pnlWidth = pnlBox + <number>$panel.width();
+        pnlWidth = Math.ceil(pnlBox + <number>$panel.width());
     } else {
         pnlWidth = 0;
     }
@@ -224,18 +226,9 @@ function drawRows(useWidth: number) {
             rowComplete = false;
         } // end of processing images to fit in rows
         $('#imgArea').html(rowHtml);
+        photosLoaded.resolve();
         return;
     }
 }
 
-/**
- * When user wishes to download a gpx file
- */
-$('#dwnld').on('click', function() {
-    let pgname = $('#trail').text();
-    let hikeno = $('#hikeno').text();
-    let tbls   = $('#tbls').text();
-    let php = '../php/downloadGpx.php?indx=' + hikeno + '&name=' + pgname 
-        + '&tbl=' + tbls;
-    window.open(php);
-});
+

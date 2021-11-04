@@ -1,6 +1,7 @@
 /// <reference path="canvas.d.ts" />
 declare var hikeFiles: string[]; // on hikePageTemplate.php
 declare var appMode: string;
+declare var pseudo: boolean;
 interface PlotObj { // objects passed to canvas.js for plotting
     x: number;
     y: number;
@@ -44,14 +45,17 @@ var trkLngs: LatLngData = []; // array of each track's set of longitudes
 var trkMaxs: MinMax = []; // elevation maxes, one per track
 var trkMins: MinMax = []; // elevation mins, one per track
 var trkRows: Coords[][] = []; // array of each track's set of chart points:
-                  // [{x:distance, y:elevation}, ...], where dist=>miles, ele=>feet
-
+var tbltype = $('#tbls').text();
+if (typeof pseudo === 'undefined') {
+    var pseudo = false;
+}
+// [{x:distance, y:elevation}, ...], where dist=>miles, ele=>feet
 // Get charting data for each hike file specified
 for (let i=0; i<hikeFiles.length; i++) {
     let trackDef: JQueryDeferred<void> = $.Deferred();
     promises.push(trackDef);
     hikeTrack = hikeFiles[i];
-    getTrackData(trackDef, i);
+    getTrackData(trackDef, i, cluster_page);
 }
 $.when.apply($, promises).then(function() {
     /** 
@@ -91,9 +95,15 @@ $.when.apply($, promises).then(function() {
  * from one or multiple files, has a corresponding set of data supplied to the
  * charting routine (dynamicChart.js).
  */
-function getTrackData(promise: JQueryDeferred<void>, callorder: number): void {
+function getTrackData(promise: JQueryDeferred<void>, callorder: number, clusterPg: boolean): void {
+    var trkurl = '../php/getTrackData.php?fileno=' + hikeTrack + '&chrt=y' +
+        '&tbl=' + tbltype;
+    if (clusterPg) {
+        var adder = pseudo ? '&clus=y&pseudo=y' : '&clus=y';
+        trkurl += adder;
+    }
     $.ajax({
-        url: '../php/getTrackData.php?fileno=' + hikeTrack + '&chrt=y',
+        url: trkurl,
         method: "get",
         dataType: "json",
         success: function (chartdata:AjaxData) {

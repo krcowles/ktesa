@@ -104,6 +104,7 @@ function reverseTrack($trknodes, $trkno)
  */
 function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = false)
 {
+    ini_set('memory_limit', '256M');
     foreach ($tables as $table) {
         $tbl_data       = $pdo->query("SELECT * FROM {$table}");
         $tbl_fields     = $tbl_data->columnCount();

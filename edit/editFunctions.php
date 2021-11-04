@@ -30,46 +30,55 @@ function getIpAddress()
     return $ip;
 }
 /**
- * Multiple places require uploading a gpx (or possibly a kml file). 
- * Only one file at a time may be uploaded.
+ * Multiple places require uploading a gpx, kml, or html file. Any other
+ * type results in a user alert. Only one file at a time may be uploaded.
  * 
- * @param string  $name <input type="file" name="$name" />
- * @param boolean $init Reset alerts if true, Accumulate if false
- * @param boolean $elev Test for elevation data if true, ignore otherwise 
+ * @param PDO     $pdo    The PDO class object for EHIKES, ETSV
+ * @param PDO     $gdb    The PDO class object for EMETA, EGPX
+ * @param string  $name   The 'name' of the file: <input id="name">
+ * @param string  $hikeno The EHIKE indxNo
+ * @param boolean $init   Reset alerts if true, Accumulate if false
+ * @param boolean $elev   Test for elevation data if true, ignore otherwise
+ * @param boolean $getwpt If waypoints are to be extracted and recorded in ETSV 
  * 
- * @return string Location of file save, otherwise all msgs are in SESSION
+ * @return string array with new fileno and location of server data for file
  */
-function uploadGpxKmlFile($name, $init, $elev=false)
-{
-    $user_ip = getIpAddress();
+function uploadGpxKmlFile(
+    $pdo, $gdb, $name, $hikeno, $init, $elev=false, $getwpt=true
+) {
+    $user_ip = getIpAddress();  // for forming a unique upload name
     $_SESSION['user_alert'] = $init ? '' : $_SESSION['user_alert'];
-    // first, validate the file as as <gpx> or <kml>
+    // first, validate the file type (gpx, kml or html)
     $valid = validateUpload($name, $elev);
     if (empty($valid['file'])) {
         $_SESSION['user_alert'] .= "No file specified";
-        return 'none';
-    } else {
-        if ($_SESSION['user_alert'] !== '' && $init) {
-            return;
-        }
+        return array('0', '', '', '');
+    } elseif ($_SESSION['user_alert'] !== '') {
+            return array('0', '', '', $valid['type']);
     }
-    if ($valid['type'] === 'gpx' || $valid['type'] === 'kml') {
-        $file_ext = $valid['type'] === 'gpx' ? '.gpx' : '.kml';
-        $barefile = pathinfo($valid['file'], PATHINFO_FILENAME);
-        $unique_file_name = $barefile . "-" . $user_ip . "-" . time() . $file_ext;
-        $saveloc = "../gpx/" . $unique_file_name;
-        if (!move_uploaded_file($valid['loc'], $saveloc)) {
-            $nomove = "Could not save {$valid['file']} to site: contact Site Master";
-            throw new Exception($nomove);
-        } else {
-            $_SESSION['uplmsg'].= "Your file [{$valid['file']}] was saved as " .
-                $unique_file_name . "; ";
-        }
+    $tmp_loc = $valid['loc'];
+    // No errors so far...
+    $newfileno = '0';
+    $barefile = pathinfo($valid['file'], PATHINFO_FILENAME);
+    $unique_file_name = $barefile . "-" . $user_ip . "-" . time() .
+        "." . $valid['type'];
+    if ($valid['type'] === 'gpx') {
+        // For gpx files, save to EMETA & EGPX, get fileno to return
+        $newfileno = loadGPXdb(
+            $hikeno, $unique_file_name, $valid['loc'], $pdo, $gdb, $getwpt
+        );
+    } elseif ($valid['type'] !== 'unknown') { // kml or html
+        $dir = $valid['type'] === 'kml' ?  "../gpx/"  : "../maps/";
+        $floc = $dir . $unique_file_name;
+        move_uploaded_file($tmp_loc, $floc);
     } else {
-        $saveloc = '';
-        $_SESSION['user_alert'] .= " Incorrect file type: not gpx or kml; ";
+        return array('0', '', '', 'unknown');
     }
-    return $saveloc;
+    if (isset($_SESSION['uplmsg'])) {
+        $_SESSION['uplmsg'] .= "Your file [{$valid['file']}] was saved as " .
+            $unique_file_name . "; ";
+    } 
+    return array($newfileno, $tmp_loc, $unique_file_name, $valid['type']);
 }
 /**
  * This function validates the uploaded file against currently allowed types.
@@ -83,6 +92,8 @@ function uploadGpxKmlFile($name, $init, $elev=false)
 function validateUpload($name, $elev=false)
 {
     $filename = basename($_FILES[$name]['name']);
+    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    $file_ext = strtolower($ext);
     $uploadType = 'none';
     if (!empty($filename)) {
         $tmp_upload = $_FILES[$name]['tmp_name'];    
@@ -91,13 +102,13 @@ function validateUpload($name, $elev=false)
             $_SESSION['user_alert'] .= " Server error: " .
                 "Failed to upload {$filename}: " . uploadErr($filestat);
         } else {
-            $ext = pathinfo($filename, PATHINFO_EXTENSION);
-            if (strtolower($ext) === 'gpx') {
+            if ($file_ext === 'gpx') {
                 $uploadType = 'gpx';
+                // make sure xml loads and passes gpx file schema
                 validateGpx($tmp_upload, $filename, $elev);
-            } else { 
+            } else {
                 $filetype = $_FILES[$name]['type'];
-                $uploadType = validateType($filetype);
+                $uploadType = validateType($filetype);  // kml, html ok
                 if ($uploadType === 'unknown') {
                     $_SESSION['user_alert'] .= " Incorrect file type for upload; ";
                 }
@@ -150,7 +161,7 @@ function validateType($filetype)
     case "text/html":
         $usertype = 'html';
         break;
-    case "application/vnd.google-earth.kml+xml": // add Google Earth - KML  ??
+    case "application/vnd.google-earth.kml+xml": // add Google Earth - KML
         $usertype = 'kml';
         break;
     default;
@@ -234,22 +245,280 @@ function displayXmlError($error)
         ", Column: $error->column";
     return $return;
 }
+/**
+ * Load the server file data into the EMETA & EGPX tables;
+ * NOTE: Processes one ($file_name) file
+ * 
+ * @param string  $hikeno     The EHIKE's indxNo
+ * @param string  $file_name  The uploaded unique file name
+ * @param string  $server_loc The location of the server's temp data
+ * @param PDO     $pdo        The class object for the EHIKES table
+ * @param PDO     $gdb        The class object for the EMETA/EGPX tables
+ * @param boolean $wpt        Whether or not to record waypts in ETSV
+ * 
+ * @return string the new fileno representing the loaded gpx data
+ */
+function loadGPXdb($hikeno, $file_name, $server_loc, $pdo, $gdb, $wpt)
+{
+    $gpxarray = file($server_loc);
+    if ($gpxarray === false) {
+        throw new Exception("Failed to load server contents for {$file_name}");
+    }
+    $gpxhead = '';
+    foreach ($gpxarray as $line) {
+        if (strpos($line, "<trk>") === false) {
+            $gpxhead .= $line;
+        } else {
+            break;
+        }
+    }
+    $gpxarray = null;
+    $gpx = simplexml_load_file($server_loc);
+    if ($gpx === false) {
+        throw new Exception("Could not load {$file_name} as xml");
+    }
+    if ($wpt && $gpx->wpt->count() > 0) {
+        extractWayPts($hikeno, $gpx, $pdo);
+    }
+    // get the current highest fileno
+    $fileno = 1;
+    $lastFilenoReq = "SELECT `fileno` FROM `EMETA` ORDER BY `fileno` " .
+        "DESC LIMIT 1;";
+    $lastFileno = $gdb->query($lastFilenoReq);
+    $last = $lastFileno->fetch(PDO::FETCH_NUM); // no data => false
+    if ($last !== false) {
+        $fileno = $last[0] + 1;
+    } 
+    // Extract any track extensions
+    $gpx_string = file_get_contents($server_loc);
+    $trkcnt = substr_count($gpx_string, "<trk>");
+    $offset = 0;
+    for ($i=1; $i<=$trkcnt; $i++) {
+        $pos = strpos($gpx_string, "<trk", $offset) + 5;
+        // Note: <trkseg> is not required and may not be present...
+        if (strpos($gpx_string, "<trkseg") === false) {
+            $end = strpos($gpx_string, "<trkpt", $offset);
+        } else {
+            $end = strpos($gpx_string, "<trkseg", $offset);
+        }
+        $lgth = $end - $pos;
+        $offset = strpos($gpx_string, "</trk>", $offset+50);
+        // Without 'trim' below, field data cannot be retrieved!
+        $trkext = trim(substr($gpx_string, $pos, $lgth));
+        $name = $gpx->trk[$i-1]->name->__toString();
+        // If $name looks like a timestamp:
+        $dtime = explode(" ", $name);
+        $dte   = explode("-", $dtime[0]);
+        if (count($dte) === 3) {
+            if (strlen($dte[0]) === 4 
+                && strlen($dte[1]) === 2 && strlen($dte[2]) === 2
+            ) {
+                // $name is a date format
+                $name = substr($file_name, 0, 7) . '_' . $i;
+            }
+        }
+        // no length, etc. yet...
+        $saveDataReq = "INSERT INTO `EMETA` (`fname`,`fileno`,`meta`," .
+            "`trkno`,`trkext`,`trkname`) VALUES (?,?,?,?,?,?);";
+        $saveData = $gdb->prepare($saveDataReq);
+        $saveData->execute(
+            [$file_name, $fileno, $gpxhead, $i, $trkext, $name]
+        );
+    }
+    $gpx_string = null;
+    /**
+     * Load the track data for each <trk>'s <trkpt> into the GPX table
+     * NOTE: trkpts with no <ele> are not written out, and message can
+     * be printed at end showing affected files
+     */
+    $trkno = 1; 
+    foreach ($gpx->trk as $track) {
+        $noEles = 0;
+        $segno = 1;
+        // some files have no trkseg
+        if ($track->trkseg->count() !== 0) {
+            foreach ($track->trkseg as $seg) {
+                foreach ($seg->trkpt as $row) {
+                    if (!writeGPSData($fileno, $trkno, $segno, $row, $gdb)) {
+                        $noEles++;
+                    }
+                }
+                $segno++;
+            }
+        } else {
+            foreach ($track->trkpt as $row) {
+                if (!writeGPSData($fileno, $trkno, $segno, $row, $gdb)) {
+                    $noEles++;
+                }
+            }
+        }
+        $trkno++;
+    }
+    if ($file_name !== 'filler.gpx') {
+        getTrkStats($fileno, $gdb);
+    }
+    return $fileno;
+}
 
+/**
+ * This function will add data to the ETSV table for the gpx file specified
+ * First, the ETSV table is checked to see if waypoints already exist, and
+ * if they do (and are not duplicates), then the gpx waypoints are appended.
+ * Since names and symbols may be changed during edit, but probably not the
+ * lats/lngs, the latter is checked for duplicate entries.
+ * 
+ * @param integer          $hikeno  The file # associated with the waypoints
+ * @param simpleXMLElement $xmlfile The file loaded as simpleXMLElement
+ * @param PDO              $pdo     The PDO class for the TSV table
+ * 
+ * @return null;
+ */
+function extractWayPts($hikeno, $xmlfile, $pdo)
+{
+    // retrieve any existing waypt data for this hikeno
+    $etsvdatReq = "SELECT `lat`,`lng` FROM `ETSV` WHERE `indxNo`={$hikeno};";
+    $etsvdat = $pdo->query($etsvdatReq)->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($xmlfile->wpt as $waypt) {
+        $wlat  = floor($waypt['lat'] * LOC_SCALE);
+        $wlon  = floor($waypt['lon'] * LOC_SCALE);
+        $wname = $waypt->name->__toString();
+        $wsym  = $waypt->sym->__toString();
+        $add = true;
+        foreach ($etsvdat as $twpt) {
+            if ($wlat == $twpt['lat'] && $wlon == $twpt['lng']) {
+                $add = false;
+                break;
+            }
+        }
+        if ($add) {
+            $wptSaveReq = "INSERT INTO `ETSV` (`indxNo`,`title`,`mpg`,`lat`,`lng`," .
+                "`iclr`) VALUES (?,?,?,?,?,?);";
+            $wptSave = $pdo->prepare($wptSaveReq);
+            $wptSave->execute(
+                [$hikeno, $wname, 'Y', $wlat, $wlon, $wsym]
+            );
+        }
+    }
+}
+/**
+ * A function to extract GPS data from simplexml element and write to GPX table
+ * (Created to avoid code duplication)
+ * 
+ * @param number           $fileno The file no in the db for the subject gpx file
+ * @param number           $trkno  The track number being processed 
+ * @param number           $segno  The <trkseg> being processed
+ * @param simpleXMLElement $row    The <trkpt> tag data
+ * @param PDO              $gdb    The PDO class instantiated for the GPX table
+ * 
+ * @return boolean
+ */
+function writeGPSData($fileno, $trkno, $segno, $row, $gdb)
+{
+    $lat = $row['lat']->__toString();
+    $lon = $row['lon']->__toString();
+    $ele = null;
+    $time = null;
+    if ($row->count() > 0) {
+        foreach ($row->children() as $child) {
+            $name = $child->getName();
+            if ($name === 'ele') {
+                $ele = $child->__toString();
+            }
+            if ($name === 'time') {
+                $time = $child->__toString();
+                $tim  = str_replace('T', ' ', $time);
+                $time = str_replace('Z', '', $tim);
+            }
+        }
+    }
+    if (empty($ele)) { // don't write a <trkpt> with no elevation data
+        return false;
+    } else {
+        $addRowReq = "INSERT INTO `EGPX` (`fileno`,`trackno`," .
+            "`segno`,`lat`,`lon`,`ele`,`time`) " .
+            "VALUES (?,?,?,?,?,?,?);";
+        $addRow = $gdb->prepare($addRowReq);
+        $addRow->execute(
+            [$fileno, $trkno, $segno, $lat, $lon, $ele, $time]
+        );
+        return true;
+    }
+}
+/**
+ * Create the track data for the specified fileno
+ * 
+ * @param string $fileno The fileno in the GPX database for the file
+ * @param PCO    $gdb    The PDO class for EGPX/EMETA
+ * 
+ * @return null;
+ */
+function getTrkStats($fileno, $gdb)
+{
+    $getTracks = "SELECT `trkno` FROM `EMETA` WHERE `fileno`={$fileno} " .
+        "ORDER BY `trkno` DESC LIMIT 1;";
+    $noOfTracks = $gdb->query($getTracks)->fetch(PDO::FETCH_NUM);
+    $trkcount = $noOfTracks[0];
+    for ($k=1; $k<=$trkcount; $k++) {
+        $getData = "SELECT `lat`,`lon`,`ele` FROM `EGPX` WHERE `fileno`=? " .
+            "AND `trackno`=?;";
+        $gpsdata = $gdb->prepare($getData);
+        $gpsdata->execute([$fileno, $k]);
+        $gps = $gpsdata->fetchAll(PDO::FETCH_ASSOC);
+        // in case of a missing fileno
+        if ($gps !== false) {
+            $length = (float) 0;
+            $maxele = (float) 0;
+            $minele = (float) 100000;
+            $asc = 0;
+            $dsc = 0;
+            for ($i=0; $i<count($gps)-1; $i++) {
+                $calcs = distance(
+                    floatval($gps[$i]['lat']), floatval($gps[$i]['lon']), 
+                    floatval($gps[$i+1]['lat']), floatval($gps[$i+1]['lon'])
+                );
+                $length += $calcs[0];
+                $maxele = floatval($gps[$i]['ele']) > $maxele ? 
+                    floatval($gps[$i]['ele']) : $maxele;
+                $minele = floatval($gps[$i]['ele']) < $minele ? 
+                    floatval($gps[$i]['ele']) : $minele;
+                $delta = round($gps[$i+1]['ele'], 2) - round($gps[$i]['ele'], 2);
+                if ($delta < 0) {
+                    $dsc -= $delta;
+                } else {
+                    $asc += $delta;
+                }
+            }
+            // convert from meters to feet
+            $min2max   = ($maxele - $minele) * 3.2808;
+            $asc       = round($asc*3.2808);
+            $dsc       = round($dsc*3.2808);
+            $length    = ($length * 3.2808)/5280;
+            $dbmin2max = round($min2max);
+            $dblength  = round($length, 2);
+
+            $add2dbReq = "UPDATE `EMETA` SET `length`=?,`min2max`=?,`asc`=?," .
+                "`dsc`=? WHERE `fileno`=? AND `trkno`=?;";
+            $add2db = $gdb->prepare($add2dbReq);
+            $add2db->execute([$dblength, $dbmin2max, $asc, $dsc, $fileno, $k]);
+        }
+    }
+}
 /**
  * This function will create a JSON track file from the specified gpx.
  * 
- * @param string $gpxfile The filepath for the file to be converted.
+ * @param string $tmpdata The filepath the server data
+ * @param string $fname   The unique file name
  * 
  * @return array JSON file made from target gpx file, lat & lng of 
  * track starting point
  */
-function makeTrackFile($gpxfile) 
+function makeTrackFile($tmpdata, $fname) 
 {
-    $basename = basename($gpxfile);
-    $ext = strrpos($basename, ".");
-    $base = substr($basename, 0, $ext);
+    $ext = strrpos($fname, ".");
+    $base = substr($fname, 0, $ext);
     $trkfile = $base . ".json";
     $trkloc = '../json/' . $trkfile;
+    $gpxfile = simplexml_load_file($tmpdata);
     $gpxdat = gpxLatLng($gpxfile, "1");
     $trklat = $gpxdat[0][0];
     $trklng = $gpxdat[1][0];
@@ -285,37 +554,53 @@ function getClusters($pdo)
 }
 /**
  * When there is no gpxfile, a pseudo-gpx file is created for display on
- * the map.
+ * the map. This will only happen in edit mode, so the data is stored in the
+ * EGPX and EMETA tables. Once published, any associated pseudo files will be
+ * removed.
  * 
- * @param float  $clat    Map center latitude
- * @param float  $clng    Map center longitude
- * @param string $gpxfile Gpx file name
- * @param array  $files   All gpx files associated
+ * @param string $hikeno The EHIKES indxNo
+ * @param float  $clat   Map center latitude
+ * @param float  $clng   Map center longitude
+ * @param PDO    $pdo    The PDO Class for EHIKES
+ * @param PDO    $gdb    The PDO Class for the EGPX/EMETA tables
  * 
- * @return null
+ * @return string $pseudoFile The fileno in EGPX/EMETA where the file is located
  */
-function createPseudoGpx($clat, $clng, &$gpxfile, &$files)
+function createPseudoGpx($hikeno, $clat, $clng, $pdo, $gdb)
 {
-    $pseudo = simplexml_load_file("../edit/pseudo.gpx");
-    if ($pseudo === false) {
-        throw new Exception("Couldn't load pseudo.gpx");
+    // Prevent duplication:
+    $emeta_name = "E{$hikeno}_filler.gpx";
+    $pseudo_loc = '../gpx/filler.gpx';
+    $filenum    = ''; // default
+    $checkReq = "SELECT `fileno` FROM `EMETA` WHERE `fname`=?;";
+    $dupPrep  = $gdb->prepare($checkReq);
+    $dupPrep->execute([$emeta_name]);
+    $dupcheck = $dupPrep->fetch(PDO::FETCH_NUM);
+    if ($dupcheck === false) { // no dup
+        $pseudo = simplexml_load_file("../edit/pseudo.gpx"); // default file
+        if ($pseudo === false) {
+            throw new Exception("Couldn't load pseudo.gpx");
+        }
+        $y = $pseudo->trk->trkseg[0];
+        $y->trkpt[0]['lat'] = $clat;
+        $y->trkpt[0]['lon'] = $clng;
+        $y->trkpt[1]['lat'] = $clat + .004507;
+        $y->trkpt[1]['lon'] = $clng;
+        $y->trkpt[2]['lat'] = $clat - .004507;
+        $y->trkpt[2]['lon'] = $clng;
+        $y->trkpt[3]['lat'] = $clat;
+        $y->trkpt[3]['lon'] = $clng;
+        $y->trkpt[4]['lat'] = $clat;
+        $y->trkpt[4]['lon'] = $clng - .005477;
+        $y->trkpt[5]['lat'] = $clat;
+        $y->trkpt[5]['lon'] = $clng + .005477;
+        $pseudo->asXML($pseudo_loc);  // tmp save in gpx directory
+        $filenum = loadGPXdb($hikeno, $emeta_name, $pseudo_loc, $pdo, $gdb, false);
+        unlink($pseudo_loc);
+    } else {
+        $filenum = $dupcheck[0];
     }
-    $y = $pseudo->trk->trkseg[0];
-    $y->trkpt[0]['lat'] = $clat;
-    $y->trkpt[0]['lon'] = $clng;
-    $y->trkpt[1]['lat'] = $clat + .004507;
-    $y->trkpt[1]['lon'] = $clng;
-    $y->trkpt[2]['lat'] = $clat - .004507;
-    $y->trkpt[2]['lon'] = $clng;
-    $y->trkpt[3]['lat'] = $clat;
-    $y->trkpt[3]['lon'] = $clng;
-    $y->trkpt[4]['lat'] = $clat;
-    $y->trkpt[4]['lon'] = $clng - .005477;
-    $y->trkpt[5]['lat'] = $clat;
-    $y->trkpt[5]['lon'] = $clng + .005477;
-    $pseudo->asXML("../gpx/filler.gpx");
-    $gpxfile = "filler.gpx";
-    $files = [$gpxfile];
+    return $filenum;
 }
 /**
  * For Flickr Albums ONLY: retrieve photo date from Flickr html based
@@ -376,26 +661,19 @@ function mantissa($degrees)
  * NOTE: if there are multiple segments within a track, they are essentially
  * combined into one seqment.
  * 
- * @param string $gpxfile      The (full or relative) path to the gpx file
- * @param string $no_of_tracks Return data for number of tracks specified (or all)
+ * @param SimpleXMLElement $gpxdat       simplexml version of server's tmpdat    
+ * @param string           $no_of_tracks Return data for number of tracks 
+ *                                       specified (or all)
  * 
  * @return array $track_data
  */
-function gpxLatLng($gpxfile, $no_of_tracks)
+function gpxLatLng($gpxdat, $no_of_tracks)
 {
     $gpxlats = [];
     $gpxlons = [];
     $gpxelev = [];
     $plat = 0;
     $plng = 0;
-    // get file as simple xml
-    $gpxdat = simplexml_load_file($gpxfile);
-    if ($gpxdat === false) {
-        throw new Exception(
-            __FILE__ . "Line " . __LINE__ . "Could not load {$gpxfile} as " .
-            "simplexml"
-        );
-    }
     // If file happens to contain routes instead of tracks, convert:
     if ($gpxdat->rte->count() > 0) {
         $gpxdat = convertRtePts($gpxdat);
@@ -629,4 +907,59 @@ function cmp($a, $b)
 {
     $delta = intval($a["org"]) - intval($b["org"]);
     return  $delta;
+}
+/**
+ * The following function will accept a $target fileno to use to store
+ * data into the corresponding $action tables where that data is selected 
+ * from the originating tables (using their corresponding fileno: $fromno).
+ * 
+ * @param string $action Specifies originating and receiving tables
+ * @param string $target Fileno for the receiving tables
+ * @param string $fromno Fileno for the originating tables
+ * @param PDO    $gdb    The GPX database class
+ * 
+ * @return null
+ */
+function xfrGpxData($action, $target, $fromno, $gdb)
+{
+    $FromMetaTable = $action === 'xfr' ? 'META' : 'EMETA';
+    $ToMetaTable   = $action === 'xfr' ? 'EMETA' : 'META';
+    $FromGpxTable  = $action === 'xfr' ? 'GPX' : 'EGPX';
+    $ToGpxTable    = $action === 'xfr' ? 'EGPX' : 'GPX';
+
+    $meta = "INSERT INTO {$ToMetaTable} (`fname`,`fileno`,`meta`,`trkno`,`trkext`," .
+        "`trkname`,`length`,`min2max`,`asc`,`dsc`) SELECT `fname`,?,`meta`," .
+        "`trkno`,`trkext`,`trkname`,`length`,`min2max`,`asc`,`dsc` FROM " .
+        "{$FromMetaTable} WHERE `fileno`=?;";
+    $putMeta = $gdb->prepare($meta);
+    $putMeta->execute([$target, $fromno]);
+    $gpx  = "INSERT INTO {$ToGpxTable} (`fileno`,`trackno`,`segno`,`lat`,`lon`," .
+        "`ele`,`time`) SELECT ?,`trackno`,`segno`,`lat`,`lon`,`ele`,`time` FROM ".
+        "{$FromGpxTable} WHERE `fileno`=?;";
+    $putGPX = $gdb->prepare($gpx);
+    $putGPX->execute([$target, $fromno]);
+    return;
+}
+/**
+ * Delete all [E]META and [E]GPX data for the specified tables and fileno
+ * and if any waypoints were included in [E]TSV, delete them for the
+ * corresponding hikeno
+ * 
+ * @param string $type   Whether [E]DATA or DATA
+ * @param PDO    $gdb    The PDO class of the GPX db
+ * @param string $fileno Fileno of data to be deleted
+ * 
+ * @return null
+ */
+function deleteGpxData($type, $gdb, $fileno)
+{
+    $targetGPX  = $type === 'pub' ? 'GPX' : 'EGPX';
+    $targetMETA = $type === 'pub' ? 'META' : 'EMETA';
+    $deletionMReq = "DELETE FROM {$targetMETA} WHERE `fileno`=?;";
+    $deleteMeta = $gdb->prepare($deletionMReq);
+    $deleteMeta->execute([$fileno]);
+    $deletionGReq = "DELETE FROM {$targetGPX} WHERE `fileno`=?;";
+    $deleteGpx = $gdb->prepare($deletionGReq);
+    $deleteGpx->execute([$fileno]);
+    return;
 }

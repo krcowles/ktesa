@@ -18,30 +18,42 @@ require_once "../php/global_boot.php";
 
 if (isset($mapdata)) {  // when invoked via multiMap.php
     $chart = false;
+    $xtable = $clusterPage && count($clushikes) > 0 ? 'GPX' : $xtable;
     // track lat/lngs
-    $tlatReq = "SELECT `lat` FROM `GPX` WHERE `fileno`=? AND `trackno`=?;";
+    $tlatReq = "SELECT `lat` FROM {$xtable} WHERE `fileno`=? AND `trackno`=?;";
     $tlats = $gdb->prepare($tlatReq);
     $tlats->execute([$fileno, $k]);
     $latdat = $tlats->fetchAll(PDO::FETCH_COLUMN);
-    $tlngReq = "SELECT `lon` FROM `GPX` WHERE `fileno`=? AND `trackno`=?;";
+    $tlngReq = "SELECT `lon` FROM {$xtable} WHERE `fileno`=? AND `trackno`=?;";
     $tlngs = $gdb->prepare($tlngReq);
     $tlngs->execute([$fileno, $k]);
     $lngdat = $tlngs->fetchAll(PDO::FETCH_COLUMN);
 } else {  // when ajaxed via prepareTracks.js
+    // May be for either published or hikes-in-edit
     verifyAccess('ajax');
+
     $fileno = filter_input(INPUT_GET, 'fileno');
+    $tbl    = filter_input(INPUT_GET, 'tbl');
+    $clusterPg = (isset($_GET['clus']) && $_GET['clus'] === 'y') ? true : false;
     if (isset($_GET['chrt'])) {
         $chart  = filter_input(INPUT_GET, 'chrt') === 'y' ? true :false;
     } else {
         $chart = false;
     }
+    $cpg_nofiles = isset($_GET['pseudo']) ? true : false;
     if (isset($_GET['wpts'])) {
         $waypts = filter_input(INPUT_GET, 'wpts') === 'y' ? true : false;
     } else {
         $waypts = false;
     }
-   
-    $tracksReq = "SELECT MAX(trackno) FROM `GPX` WHERE `fileno` = ?;";
+    if (!$clusterPg && $tbl === 'new' || $cpg_nofiles) {
+        $xtable = 'EGPX';
+        $mtable = 'EMETA';
+    } else {
+        $xtable = 'GPX';
+        $mtable = 'META';
+    }
+    $tracksReq = "SELECT MAX(trkno) FROM {$mtable} WHERE `fileno` = ?;";
     $tracks = $gdb->prepare($tracksReq);
     $tracks->execute([$fileno]);
     $trackmax = $tracks->fetch(PDO::FETCH_NUM);
@@ -61,7 +73,7 @@ if ($chart) {
     for ($j=1; $j<= $trackcnt; $j++) {
         $chartrow = [];
         // track names
-        $trkNameReq = "SELECT `trkname` FROM `META` WHERE `fileno`=? AND " .
+        $trkNameReq = "SELECT `trkname` FROM {$mtable} WHERE `fileno`=? AND " .
             "`trkno`=?;";
         $trkName = $gdb->prepare($trkNameReq);
         $trkName->execute([$fileno, $j]);
@@ -70,18 +82,18 @@ if ($chart) {
         array_push($trkNames, $trkid);
         //array_push($trkNames, $trkname['trkname']);
         // track lat/lngs
-        $tlatReq = "SELECT `lat` FROM `GPX` WHERE `fileno`=? AND `trackno`=?;";
+        $tlatReq = "SELECT `lat` FROM {$xtable} WHERE `fileno`=? AND `trackno`=?;";
         $tlats = $gdb->prepare($tlatReq);
         $tlats->execute([$fileno, $j]);
         $latdat = $tlats->fetchAll(PDO::FETCH_COLUMN);
-        $tlngReq = "SELECT `lon` FROM `GPX` WHERE `fileno`=? AND `trackno`=?;";
+        $tlngReq = "SELECT `lon` FROM {$xtable} WHERE `fileno`=? AND `trackno`=?;";
         $tlngs = $gdb->prepare($tlngReq);
         $tlngs->execute([$fileno, $j]);
         $lngdat = $tlngs->fetchAll(PDO::FETCH_COLUMN);
         array_push($trkLats, $latdat);
         array_push($trkLngs, $lngdat);
         // track elevations
-        $teleReq = "SELECT `ele` FROM `GPX` WHERE `fileno`=? AND `trackno`=?;";
+        $teleReq = "SELECT `ele` FROM {$xtable} WHERE `fileno`=? AND `trackno`=?;";
         $teles = $gdb->prepare($teleReq);
         $teles->execute([$fileno, $j]);
         $eles = $teles->fetchAll(PDO::FETCH_COLUMN); // Note: these are in meters

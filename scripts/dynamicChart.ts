@@ -52,6 +52,7 @@ var lastTrack = 0; // indx in box_states
 var coords: Coords;  // x,y location of mouse in chart
 var indxOfPt: number;
 var prevCHairs = false;
+var trackId = 0; // currently active trackno
 // vars for setting chart dimension;
 var fullWidth: number;
 var chartHeight: number;
@@ -59,7 +60,6 @@ var chartHeight: number;
 var pnlId = 0; // which side panel data to display
 var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var do_resize = true;
-var trackNumber: number   // global used to identify current active track (topmost in tracklist)
 var pnlMarg: number;
 
 if (!mobile) {
@@ -67,13 +67,13 @@ if (!mobile) {
     $('#hide').on('click', function() {
         $('#sidePanel').css('display', 'none');
         setViewport();
-        drawChart(trackNumber);
+        drawChart(trackId);
         $('#unhide').css('display','block');
     });
     $('#unhide').on('click', function() {
         $('#sidePanel').css('display','block');
         setViewport();
-        drawChart(trackNumber);
+        drawChart(trackId);
         $('#unhide').css('display','none');
     });
 }
@@ -99,7 +99,6 @@ const displayTrackSidePanel = (trkno: number) => {
  * are unchecked, the last box checked remains displayed in elevation chart.
  */
 const plotTopMost = () => {
-    var trackId = 0;
     for (let n=0; n<box_states.length; n++) {
         if (box_states[n] === 1) {
             lastTrack = n;
@@ -328,7 +327,6 @@ function findNeighbors(xDataPt: number, trackno: number): Bounds {
 
 /**
  * Redraw when there is a window resize
- * @return {null}
  */
 $(window).on('resize', function() {
     if (do_resize) {
@@ -336,12 +334,13 @@ $(window).on('resize', function() {
         do_resize = false;
         setTimeout( function() {
             canvasEl.onmousemove = null;
+            $('body').scrollTop(0);
             if (!mobile) {
                 setViewport();
             }
-            var chartData = defineData(trackNumber);
+            var chartData = defineData(trackId);
             ChartObj.render('grph', chartData);
-            crossHairs(trackNumber);
+            crossHairs(trackId);
             do_resize = true; 
         }, 300);      
     } 

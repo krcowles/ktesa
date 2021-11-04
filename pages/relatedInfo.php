@@ -84,8 +84,7 @@ $bkPDO = $pdo->prepare($bkReq);
 $refReq = "SELECT rtype,rit1,rit2 FROM {$rtable} WHERE indxNo = :indxNo";
 $refPDO = $pdo->prepare($refReq);
 // gps data
-$gpsReq = "SELECT datType,label,`url`,clickText FROM {$gtable} "
-    . "WHERE indxNo = :indxNo";
+$gpsReq = "SELECT * FROM {$gtable} WHERE indxNo = :indxNo";
 $gpsPDO = $pdo->prepare($gpsReq);
 $pdo->beginTransaction();
 $bkPDO->execute();
@@ -126,42 +125,40 @@ if ($noOfRefs === 0) {
 }
 $refHtml .= "</ul>". PHP_EOL;
 
+/** 
+ * Each GPS Data reference will have a link: if gpx file, the link references
+ * fullPgMap.php for display; if kml, the link will 'click' the file; if html,
+ * the link will 'click' the file
+ */
 $noOfGps = 0;
 $gpsHtml = '<ul id="gps">' . PHP_EOL;
 $gpsData = $gpsPDO->fetchAll(PDO::FETCH_ASSOC);
-foreach ($gpsData as $row) {
-    if ($row['datType'] === 'P' || $row['datType'] === 'A') {
-        $url = $row['url'];
-        $extpos = strrpos($url, ".") + 1;
-        $ext = strtolower(substr($url, $extpos, 3));
-        if ($ext === 'gpx') {
-            if (substr($gtable, 0, 1) === 'E') {
-                $age = 'new';
-            } else {
-                $age = 'old';
-            }
-            $mapLink = "../maps/fullPgMapLink.php?maptype=extra&" .
-                "hno={$hikeIndexNo}&hike={$hikeTitle}&gpx={$url}&tbl={$age}";
-            $gpsHtml .= '<li class="gpslnks">' . $row['clickText'] .
-                '&nbsp;&nbsp;' . ' <a href="' .
-                $url . '" download>Download</a>&nbsp;&nbsp;' .'<a href="' .
-                $url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
-                '<a href="' . $mapLink . 
-                '" target="_blank">View as Map</a></li>' . PHP_EOL;
-        } else {
-            $gpsHtml .= '<li>' . $row['label'] . '<a href="' . $url .
-                '" target="_blank">' . $row['clickText'] . '</a></li>' . PHP_EOL;
-        }
-    } 
-    $noOfGps += 1;
+foreach ($gpsData as $item) {
+    // Separate GPX files from others, identify html vs kml
+    $label = trim($item['label']);
+    if ($label === 'GPX' || $label === 'GPX:') {
+        $mapLink = "../maps/fullPgMapLink.php?hno=" . $hikeIndexNo . 
+            "&hike=" . $item['clickText'] . "&tbl=" . $tbl .
+            "&gpx=" . $item['fileno'];
+        $gpsHtml .= '<li class="gpslnks"><span id="click">' . $item['clickText'] .
+            '</span>&nbsp;&nbsp;&nbsp;<a id="gpsdwnld" href="#">Download</a>' .
+            '&nbsp;&nbsp;&nbsp;<a href="' . $mapLink . '" target="_blank">' .
+            'View as Map</a><span id="flnk">' . $item['fileno'] . '</span></li>' .
+            PHP_EOL;
+    } else {
+        $type = pathinfo($label, PATHINFO_FILENAME);
+        $txt = $type === 'kml' ? 'Google Earth File' : 'HTML File';
+        $gpsHtml .= '<li>' . $item['clickText'] . '&nbsp;&nbsp;<a href="' .
+        $label . '" target="_blank">View ' . $txt . '</a></li>' . PHP_EOL;
+    }
+    $noOfGps++;
 }
 $gpsHtml .= "</ul>";
 /**
  *  Present 'bottom-of-page' information, including:
- *  References,
- *  Related hikes
- *  GPS Maps and Data
- *  Other miscellaneous info
+ *    References,
+ *    Related hikes
+ *    GPS Maps and Data
  */
 $bop = '<fieldset>'. PHP_EOL .
     '<legend id="fldrefs"><em>Related Hike Information</em></legend>' . PHP_EOL .

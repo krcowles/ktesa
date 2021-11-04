@@ -128,7 +128,10 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             btn-danger">Load All Tables</button>&nbsp;&nbsp;
             [NOTE: Tables must not exist]<br />
         <button id="exall" type="button" class="btn 
-            btn-secondary">Export All Tables</button>&nbsp;&nbsp;
+            btn-secondary">Export Main DB Tables</button>&nbsp;&nbsp;
+            [NOTE: Creates .sql file]<br />
+        <button id="exgpx" type="button" class="btn 
+            btn-secondary">Export GPX DB Tables</button>&nbsp;&nbsp;
             [NOTE: Creates .sql file]<br />
         <button id="dbchanges" type="button" class="btn 
             btn-secondary">Check for DB Changes</button><br />

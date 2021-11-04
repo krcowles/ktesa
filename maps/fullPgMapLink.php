@@ -6,7 +6,7 @@
  * PHP Version 7.1
  * 
  * @package GPSV_Mapping
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None to date
  */
 require "../php/global_boot.php";
@@ -14,19 +14,23 @@ $geoloc = '../../images/geoloc.png';
 
 $hikeIndexNo = filter_input(INPUT_GET, 'hno');
 $hikeTitle   = filter_input(INPUT_GET, 'hike');
-$ttable      = filter_input(INPUT_GET, 'tbl') === 'new' ? "ETSV" : "TSV";
+$tbl         = filter_input(INPUT_GET, 'tbl');
+$clusterPage = false;  // default
+if ($tbl === 'new') {
+    $mtable = 'EMETA';
+    $xtable = 'EGPX';
+    $ttable = 'ETSV';
+} else {
+    $mtable = 'META';
+    $xtable = 'GPX';
+    $ttable = 'TSV';
+}
 if (isset($_GET['clus']) && $_GET['clus'] === 'y') {
     $files = $_GET['gpx'];
+    $clusterPage = true;
 } else {
     $gpx = filter_input(INPUT_GET, 'gpx');
-    if (strpos($gpx, ",") === false) {
-        $files = [$gpx];
-    } else {
-        $files = explode(",", $gpx);
-        foreach ($files as &$file) {
-            $file = trim($file);
-        }
-    }
+    $files = explode(",", $gpx);
 }
 
 // required by multiMap.php

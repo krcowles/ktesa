@@ -11,7 +11,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -60,12 +59,16 @@ if ($ehikes) {
     $rtable = 'EREFS';
     $gtable = 'EGPSDAT';
     $ttable = 'ETSV';
+    $mtable = 'EMETA';
+    $xtable = 'EGPX';
     $tbl    = 'new';
 } else {
     $htable = 'HIKES';
     $rtable = 'REFS';
     $gtable = 'GPSDAT';
     $ttable = 'TSV';
+    $mtable = 'META';
+    $xtable = 'GPX';
     $tbl    = 'old';
 }
 $cluspg   = 'no'; // hidden <p> element => is/not cluster page, for js
@@ -77,7 +80,7 @@ $basicPDO->execute(["indxNo" => $hikeIndexNo]);
 $row = $basicPDO->fetch(PDO::FETCH_ASSOC);
 $hikeTitle      = $row['pgTitle'];
 $hikeLocale     = $row['locale'];
-$hikeGroup      = $tbl === 'new' ? $row['cname'] : '';
+$hikeGroup      = $ehikes ? $row['cname'] : '';
 $hikeType       = $row['logistics'];
 $hikeLength     = $row['miles'] . " miles";
 $hikeElevation  = $row['feet'] . " ft";
@@ -94,7 +97,7 @@ $allgpx = $row['gpxlist'];
 if (!empty($allgpx)) {
     $files    = explode(",", $allgpx);
     $gpxfile  = $files[0]; // the main gpx file to be displayed on the page
-} else { // cluster pages defined later...
+} else {
     $gpxfile  = '';
 }
 $jsonFile = $row['trk'];
@@ -128,10 +131,29 @@ $hikeMaWin      = $row['maWin'];
 $displayAscDsc  = ($showAscDsc == true) || is_numeric($hikeEThresh) ? true : false;
 
 /**
- * For Cluster Pages only: find all the hikes in this cluster and extract the
+ * Cluster Pages may be: published, published-in-edit, or brand new-in-edit.
+ * None of these has an entry in HIKES/EHIKES for 'gpxlist'. For this reason,
+ * the $files array is created from CLUSHIKES so that multiMap.php can display
+ * a map. When there is no list in CLUSHIKES, a defaut map is shown. Also, the
+ * complications of trying to manage in-edit hikes that are included or to-be
+ * included on a Cluster Page has mandated the restriction that only published
+ * cluster group hikes are included on the edited Cluster Page. To include
+ * in-edit hikes, they must be assigned to the cluster group and published. 
+ * Then the editor will reflect the newly published hike along with others.
+ * 
+ * 1. For PUBLISHED pages, all cluster parameters are defined in CLUSTERS
+ * and in CLUSHIKES, and the 'page' field in CLUSTERS has a numerical entry
+ * corresponding to its published 'indxNo' in HIKES, with 'pub' = 'Y'. 
+ * 2. For PUBLISHED IN-EDIT pages, the edit is held in EHIKES, while the former
+ * published page remains as it was in HIKES. In CLUSTERS, the published page
+ * ('pub' = 'Y') now has a NEGATIVE number corresponding to its PUBLISHED
+ * 'indxNo' in HIKES.
+ * 3. For NEW-IN-EDIT pages, 'pub' = 'N' in CLUSTERS, but no hikes will be 
+ * assigned yet. The 'page' field contains a NEGATIVE number equal to its
+ * EHIKES 'indxNo'.
+ * 
+ * For 1, 2, [and 3] above, find all the hikes in this cluster and extract the
  * data required to display each hike's corresponding info in the side panel.
- * Also, since there are no gpx files listed in [E]HIKES for a Cluster Page,
- * the $files array (used in multiMap.php) is populated here for map creation.
  * Note that the GPSV map 'tracklist' displays the TRACK name found in the gpx
  * file, not the gpx FILE name. For that reason, a javascript object is formed
  * which correlates track name with gpx file. Thus, when a track is chosen
@@ -145,100 +167,105 @@ if ($clusterPage) {
     $clusPg = $pdo->prepare($clusPgReq);
     $clusPg->execute([$hikeTitle]);
     $cpdata = $clusPg->fetch(PDO::FETCH_ASSOC);
-    // Use NM state midpoint so that a map can be drawn
+    // If no lag/lng, use NM state midpoint so that a map can be drawn
     if (empty($cpdata['lat'])) {
         $cpdata['lat'] = 34.450;
     }
     if (empty($cpdata['lng'])) {
         $cpdata['lng'] = -106.042;
     }
-    /**
-     * NOTE: Only show published hikes as there may also be an in-edit
-     * version of the hike, and the complications managing hikes-in-edit
-     * along with published hikes seems high effort with low return. In
-     * addition, new hikes may not yet have gpx files, complicating the 
-     * formation of $files for multiMap.php
-     */
     $chikesReq = "SELECT `indxNo` FROM `CLUSHIKES` WHERE `cluster`=? AND `pub`='Y';";
     $chikes = $pdo->prepare($chikesReq);
     $chikes->execute([$cpdata['clusid']]);
     $clushikes = $chikes->fetchAll(PDO::FETCH_COLUMN);
-    if (count($clushikes) > 0) {
-        $hike_data = []; // array to collect info for javascript
-        $indx = 0;
-        $nme_start = 0;
-        foreach ($clushikes as $hike) {
-            // Get info associated with this hike id (indxNo):
-            $hikeReq = "SELECT `locale`,`logistics`,`miles`,`feet`,`diff`,`wow`," .
-                "`seasons`,`expo`,`gpxlist` FROM `HIKES` WHERE `indxNo`=?;";
-            $hikedat = $pdo->prepare($hikeReq);
-            $hikedat->execute([$hike]);
-            $sidepnl = $hikedat->fetch(PDO::FETCH_ASSOC); // only 1 entry per indxNo
-            // any given hike may have multiple files
-            $filelist = explode(",", $sidepnl['gpxlist']);
-            $files = array_merge($files, $filelist);
-            foreach ($filelist as $fileid) {
-                // Each file may have multiple tracks
-                $clidTrackReq = "SELECT `trkname`,`length`,`min2max`," .
-                "`asc`,`dsc` FROM `META` WHERE `fileno`=?;";
-                $clidTracks = $gdb->prepare($clidTrackReq);
-                $clidTracks->execute([$fileid]);
-                $tracks = $clidTracks->fetchAll(PDO::FETCH_ASSOC);
-                $noOfTrks = count($tracks);
-                if ($indx === 0) {
-                    // for clusters, some fields defined above are null
-                    $hikeLocale     = $sidepnl['locale'];
-                    $hikeDifficulty = $sidepnl['diff'];
-                    $hikeType       = $sidepnl['logistics'];
-                    $hikeExposure   = $sidepnl['expo'];
-                    $hikeSeasons    = $sidepnl['seasons'];
-                    $hikeWow   = $sidepnl['wow'];
-                    $mainmiles = $sidepnl['miles'];
-                    $mainfeet  = $sidepnl['feet'];
-                    $ascent    = $tracks[0]['asc'];
-                    $descent   = $tracks[0]['dsc'];
-                    $indx      = 100;
-                } 
-                for ($j=0; $j<$noOfTrks; $j++) {
-                    $tname = $nme_start++;
-                    $trkpanel = $sidepnl;
-                    $trkpanel['miles'] = $tracks[$j]['length'];
-                    $trkpanel['feet']  = $tracks[$j]['min2max'];
-                    $trkpanel['asc']   = $tracks[$j]['asc'];
-                    $trkpanel['dsc']   = $tracks[$j]['dsc'];
-                    $trkrel = array($tname => $trkpanel);
-                    $hike_data += $trkrel;  // "+" union operator for (assoc) arrays
-                }
-            }
-        }
-        $sidePanelData = json_encode($hike_data);
-    } else { // no published hikes for this group yet
+    $hike_data = []; // array to collect info for javascript
+    $indx = 0;
+    $nme_start = 0;
+    if (count($clushikes) === 0) { // brand new pagw w/no hikes yet
+        $pseudo = true;
         $ctrlat = $cpdata['lat']/LOC_SCALE;
         $ctrlng = $cpdata['lng']/LOC_SCALE;
-        createPseudoGpx($ctrlat, $ctrlng, $gpxfile, $files);
+        $fno = createPseudoGpx($hikeIndexNo, $ctrlat, $ctrlng, $pdo, $gdb);
+        $files[0] = $fno;
+        // no trackfiles available:
+        $hikeLocale     = '';
+        $hikeDifficulty = '';
+        $hikeType       = '';
+        $hikeExposure   = '';
+        $hikeSeasons    = '';
+        $hikeWow   = '';
+        $mainmiles = 0;
+        $mainfeet  = 0;
+        $ascent    = 0;
+        $descent   = 0;
     }
-} elseif ($gpxfile === '') {  // hike page has no gpx file
-    if (empty($row['lat']) || empty($row['lng'])) {
+    foreach ($clushikes as $hike) {
+        // Get info associated with this hike id (indxNo in HIKES):
+        $hikeReq = "SELECT `locale`,`logistics`,`miles`,`feet`,`diff`,`wow`," .
+            "`seasons`,`expo`,`gpxlist` FROM `HIKES` WHERE `indxNo`=?;";
+        $hikedat = $pdo->prepare($hikeReq);
+        $hikedat->execute([$hike]);
+        $sidepnl = $hikedat->fetch(PDO::FETCH_ASSOC); // only 1 entry per indxNo
+        // any given hike may have multiple files
+        $filelist = explode(",", $sidepnl['gpxlist']);
+        $files = array_merge($files, $filelist);
+        foreach ($filelist as $fileid) {
+            // Each file may have multiple tracks (remember, only published hikes)
+            $clidTrackReq = "SELECT `trkname`,`length`,`min2max`," .
+            "`asc`,`dsc` FROM META WHERE `fileno`=?;";
+            $clidTracks = $gdb->prepare($clidTrackReq);
+            $clidTracks->execute([$fileid]);
+            $tracks = $clidTracks->fetchAll(PDO::FETCH_ASSOC);
+            $noOfTrks = count($tracks);
+            if ($indx === 0) {
+                // for clusters, some fields defined above are null
+                $hikeLocale     = $sidepnl['locale'];
+                $hikeDifficulty = $sidepnl['diff'];
+                $hikeType       = $sidepnl['logistics'];
+                $hikeExposure   = $sidepnl['expo'];
+                $hikeSeasons    = $sidepnl['seasons'];
+                $hikeWow   = $sidepnl['wow'];
+                $mainmiles = $sidepnl['miles'];
+                $mainfeet  = $sidepnl['feet'];
+                $ascent    = $tracks[0]['asc'];
+                $descent   = $tracks[0]['dsc'];
+                $indx      = 100;
+            } 
+            for ($j=0; $j<$noOfTrks; $j++) {
+                $tname = $nme_start++;
+                $trkpanel = $sidepnl;
+                $trkpanel['miles'] = $tracks[$j]['length'];
+                $trkpanel['feet']  = $tracks[$j]['min2max'];
+                $trkpanel['asc']   = $tracks[$j]['asc'];
+                $trkpanel['dsc']   = $tracks[$j]['dsc'];
+                $trkrel = array($tname => $trkpanel);
+                $hike_data += $trkrel;  // "+" union operator for (assoc) arrays
+            }
+        }
+    }
+    $sidePanelData = json_encode($hike_data);
+        
+} else {
+    if ($gpxfile === '') {
         // use NM State geographic center
         $ctrlat = 34.450;
         $ctrlng = -106.042;
-    } else {
-        $ctrlat = $row['lat'];
-        $ctrlng = $row['lng'];
+        $fno = createPseudoGpx($hikeIndexNo, $ctrlat, $ctrlng, $pdo, $gdb);
+        $files[0] = $fno;
+        $mainmiles = '';
+        $mainfeet  = '';
     }
-    createPseudoGpx($ctrlat, $ctrlng, $gpxfile, $files);
-} else {  // hike page has at least one gpx file
     $hike_data = []; // array to collect info for javascript
     $trkcnt = 0;
     foreach ($files as $fileno) {
         $hikeTrkCnt = $gdb->query(
-            "SELECT `trkno` FROM `META` WHERE `fileno`={$fileno} " .
+            "SELECT `trkno` FROM {$mtable} WHERE `fileno`={$fileno} " .
             "ORDER BY `trkno` DESC LIMIT 1;"
         )->fetch(PDO::FETCH_NUM);
         $trkcount = $hikeTrkCnt[0];
         for ($j=1; $j<=$trkcount; $j++) {
-            $statsReq = "SELECT `length`,`min2max`,`asc`,`dsc` FROM `META` WHERE " .
-                "`fileno`=? AND `trkno`=?;";
+            $statsReq = "SELECT `length`,`min2max`,`asc`,`dsc` FROM {$mtable} " .
+                "WHERE `fileno`=? AND `trkno`=?;";
             $stats = $gdb->prepare($statsReq);
             $stats->execute([$fileno, $j]);
             $pnldat  = $stats->fetch(PDO::FETCH_ASSOC);
@@ -336,7 +363,11 @@ if ($clusterPage) {
         $fpLnk .= "&gpx[]={$gpx}";
     }
 } else {
-    $fpLnk .= "&gpx={$allgpx}";
+    if ($gpxfile === '') {
+        $fpLnk .= "&gpx={$files[0]}"; // when pseudo file is being used
+    } else {
+        $fpLnk .= "&gpx={$allgpx}";
+    }
 }
  
 $zoom = isset($respPg) && $respPg ? 'small' : 'large';
@@ -382,10 +413,11 @@ if ($makeGpsvDebugParm) {
     $makeGpsvDebug = false;
 }
 
-/* NOT UPDATED FOR GPX FILES IN DATABASE"
+
 // Open debug files with headers, if requested by query string
 $handleDfa = null;
 $handleDfc = null;
+/* NOT UPDATED FOR GPX FILES IN DATABASE
 if ($makeGpsvDebug) {
     $handleDfa = gpsvDebugFileArray($gpxPath);
     $handleDfc = gpsvDebugComputeArray($gpxPath);

@@ -108,7 +108,7 @@ foreach ($loadfiles as $gpxfile) {
     }
     if ($gpx->wpt->count() > 0) {
         $hikeno = $fileToIndx[$fname];
-        extractWayPts($hikeno, $gpx, $pdo);
+        saveWayPts($hikeno, $gpx, $pdo);
     }
     // Extract any track extensions
     $gpx_string = file_get_contents($file2load);
@@ -149,7 +149,7 @@ foreach ($loadfiles as $gpxfile) {
         if ($track->trkseg->count() !== 0) {
             foreach ($track->trkseg as $seg) {
                 foreach ($seg->trkpt as $row) {
-                    if (!writeGPSData($fileno, $trkno, $segno, $row, $gdb)) {
+                    if (!writeTrkData($fileno, $trkno, $segno, $row, $gdb)) {
                         $noEles++;
                     }
                 }
@@ -157,7 +157,7 @@ foreach ($loadfiles as $gpxfile) {
             }
         } else {
             foreach ($track->trkpt as $row) {
-                if (!writeGPSData($fileno, $trkno, $segno, $row, $gdb)) {
+                if (!writeTrkData($fileno, $trkno, $segno, $row, $gdb)) {
                     $noEles++;
                 }
             }

@@ -1,3 +1,4 @@
+"use strict";
 /// <reference path="canvas.d.ts" />
 /**
 * @fileoverview This module will assemble track data for all tracks, even
@@ -25,13 +26,17 @@ var trkLngs = []; // array of each track's set of longitudes
 var trkMaxs = []; // elevation maxes, one per track
 var trkMins = []; // elevation mins, one per track
 var trkRows = []; // array of each track's set of chart points:
+var tbltype = $('#tbls').text();
+if (typeof pseudo === 'undefined') {
+    var pseudo = false;
+}
 // [{x:distance, y:elevation}, ...], where dist=>miles, ele=>feet
 // Get charting data for each hike file specified
 for (var i = 0; i < hikeFiles.length; i++) {
     var trackDef = $.Deferred();
     promises.push(trackDef);
     hikeTrack = hikeFiles[i];
-    getTrackData(trackDef, i);
+    getTrackData(trackDef, i, cluster_page);
 }
 $.when.apply($, promises).then(function () {
     /**
@@ -58,8 +63,8 @@ $.when.apply($, promises).then(function () {
         }
     }
     for (var l = 0; l < tno; l++) {
-        var indx = gpsvTracks.indexOf(trkSequence[l]);
-        trkIndex[l] = indx;
+        var indx_1 = gpsvTracks.indexOf(trkSequence[l]);
+        trkIndex[l] = indx_1;
     }
     allTracks.resolve();
 });
@@ -70,9 +75,15 @@ $.when.apply($, promises).then(function () {
  * from one or multiple files, has a corresponding set of data supplied to the
  * charting routine (dynamicChart.js).
  */
-function getTrackData(promise, callorder) {
+function getTrackData(promise, callorder, clusterPg) {
+    var trkurl = '../php/getTrackData.php?fileno=' + hikeTrack + '&chrt=y' +
+        '&tbl=' + tbltype;
+    if (clusterPg) {
+        var adder = pseudo ? '&clus=y&pseudo=y' : '&clus=y';
+        trkurl += adder;
+    }
     $.ajax({
-        url: '../php/getTrackData.php?fileno=' + hikeTrack + '&chrt=y',
+        url: trkurl,
         method: "get",
         dataType: "json",
         success: function (chartdata) {

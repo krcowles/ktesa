@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @fileoverview This script executes all buttons on the admintools.php page
  *
@@ -259,9 +258,13 @@ $(function () {
     $('#ldall').on('click', function () {
         window.open('load_all_tables.php', "_blank");
     });
-    // Export All Tables
+    // Export All Main DB Tables
     $('#exall').on('click', function () {
-        window.open('export_all_tables.php?dwnld=N', "_blank");
+        window.open('export_all_tables.php?dwnld=N&db=main', "_blank");
+    });
+    // Export GPX Database
+    $('#exgpx').on('click', function () {
+        window.open('export_all_tables.php?dwnld=N&db=gpx', "_blank");
     });
     // Check for DB Changes
     $('#dbchanges').on('click', function () {

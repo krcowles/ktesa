@@ -1,5 +1,7 @@
 declare var edit_mode: boolean; // only defined in editDB.php
 declare var phMaps: number[]; // supplied by hikePageTemplate.php or editDB.php
+declare var photosLoaded: JQueryDeferred<any>;
+declare var piclnks: string[];
 /**
  * @fileoverview This script supplies routines to popup photo captions
  * over the top of each photo when mouseover occur. It is used either by
@@ -20,45 +22,44 @@ var capWidth: string[] = [];
 var picPos: JQuery.Coordinates;
 // in edit mode, photo positions are not available unless tab2 is active
 var photosDisplayed = false;
-
 // when the page load is completed
 $(function() {
-// initial settings on page load or refresh
-if (typeof edit_mode !== 'undefined' && edit_mode === true) {
-    $photos = $('.allPhotos');
-    if ($('#t2').hasClass('active')) {
+    // initial settings on page load or refresh
+    if (typeof edit_mode !== 'undefined' && edit_mode === true) {
+        $photos = $('.allPhotos');
+        if ($('#t2').hasClass('active')) {
+            photosDisplayed = true;
+        } else {  // wait until tab2 is clicked and page is displayed
+            $('#t2').on('click', function(ev) {
+                ev.preventDefault();
+                setTimeout( function() {
+                photosDisplayed = true;
+                initializePopupCaptions();
+                }, 100); 
+            });  
+        }
+    } else { // used on hike pages
+        $photos = $('img[id^="pic"]');
         photosDisplayed = true;
-    } else {  // wait until tab2 is clicked and page is displayed
-        $('#t2').on('click', function(ev) {
-            ev.preventDefault();
-            setTimeout( function() {
-               photosDisplayed = true;
-               initializePopupCaptions();
-            }, 100); 
-        });  
     }
-} else { // used on hike pages
-    $photos = $('img[id^="pic"]');
-    photosDisplayed = true;
-}
-noOfPix = $photos.length;
-// setup after load:
-if (photosDisplayed) {
-   initializePopupCaptions();
-}
-
+    // setup after load:
+    if (photosDisplayed) {
+    initializePopupCaptions();
+    }
 });
-
 // global functions
 /**
  * This kicks off all captioning, whether initially on page load, or when
  * tab2 is clicked in edit mode
  */
 function initializePopupCaptions() {
-    captureWidths();
-    calculatePositions();
-    associateCaptions();
-    initActions();
+    $.when(photosLoaded).then(function() {
+        noOfPix = $photos.length;
+        captureWidths();
+        calculatePositions();
+        associateCaptions();
+        initActions();
+    });
     return;
 }
 /**
@@ -101,21 +102,20 @@ function initActions() {
     $photos.css('cursor','pointer');
     // popup a description when mouseover a photo
     $photos.css('z-index','1'); // keep pix in the background
-    $photos.on('mouseover', function(ev: MouseEvent) {
-        var targ = <HTMLImageElement>ev.target;
-        var selected = targ.alt;
-        picPop(selected);
-    });
-    // kill the popup when mouseout
-    $photos.on('mouseout', function() {
-        $('.popupCap > p').remove();
-        $('.popupCap').css('display','none');
-    });
-    for (let t=0; t<noOfPix; t++) {
-        let item = <HTMLElement>$photos[t];
-        $(item).on('click', function() {
-            var zpic = "/pictures/zsize/" + piclnks[t] + "_z.jpg";
-            window.open(zpic,"_blank");
+    // NOTE: using .each() w/ $(this) ws a typescript nightmare
+    for (let k=0; k<noOfPix; k++) {
+        $($photos[k]).on('mouseover', function (ev) {
+            var targ = ev.target;
+            var selected = targ.alt;
+            picPop(selected);
+        });
+        $($photos[k]).on('mouseout', function () {
+            $('.popupCap > p').remove();
+            $('.popupCap').css('display', 'none');
+        });
+        $($photos[k]).on('click', function () {
+            var zpic = "/pictures/zsize/" + piclnks[k] + "_z.jpg";
+            window.open(zpic, "_blank");
         });
     }
     return;
@@ -144,12 +144,11 @@ function picPop(caption: string) {
         htmlDesc += '</p>';
     }
     $('.popupCap').css('display','block');
-    $('.popupCap').css('position','absolute');
     $('.popupCap').css('top',capTop[picNo]);
     $('.popupCap').css('left',capLeft[picNo]);
     $('.popupCap').css('width',capWidth[picNo]);
-    $('.popupCap').css('z-index','10');
-    $('.popupCap').prepend(htmlDesc);
+    $('.popupCap').css('z-index','9999');
+    $('.popupCap').append(htmlDesc);
     return;
 }
 // turn off events during resize or forced reset until finished resizing

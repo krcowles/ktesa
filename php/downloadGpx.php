@@ -17,9 +17,10 @@
  */
 require "../php/global_boot.php";
 
-$hike = filter_input(INPUT_GET, 'indx');
-$name = filter_input(INPUT_GET, 'name');
-$tbl  = filter_input(INPUT_GET, 'tbl');
+$dwnld = filter_input(INPUT_GET, 'type');
+$hike  = filter_input(INPUT_GET, 'indx');
+$name  = filter_input(INPUT_GET, 'name');
+$tbl   = filter_input(INPUT_GET, 'tbl');
 $table = $tbl === 'new' ? 'EHIKES' : 'HIKES';
 $tsv   = $tbl === 'new' ? 'ETSV' : 'TSV';
 
@@ -30,15 +31,19 @@ $gpxdecl = $xmldeclaration .
     'xsi:schemaLocation="http://www.topografix.com/GPX/1/1 ' .
     'http://www.topografix.com/GPX/1/1/gpx.xsd">' . PHP_EOL;
 
-$fileListReq = "SELECT `gpxlist` FROM {$table} WHERE `indxNo`=?;";
-$fileList = $pdo->prepare($fileListReq);
-$fileList->execute([$hike]);
-$hikefile = $fileList->fetch(PDO::FETCH_NUM);
+if ($dwnld === 'main') {
+    $fileListReq = "SELECT `gpxlist` FROM {$table} WHERE `indxNo`=?;";
+    $fileList = $pdo->prepare($fileListReq);
+    $fileList->execute([$hike]);
+    $hikefile = $fileList->fetch(PDO::FETCH_NUM);
 
-if (strpos($hikefile[0], ",") === false) {
-    $files = array($hikefile[0]);
-} else {   
-    $files = explode(",", $hikefile[0]);
+    if (strpos($hikefile[0], ",") === false) {
+        $files = array($hikefile[0]);
+    } else {   
+        $files = explode(",", $hikefile[0]);
+    }
+} else { // GPS Data File
+    $files = array($hike);
 }
 // Create the file structure without data
 $xml = '';

@@ -22,7 +22,7 @@
     <a class="btn btn-secondary" href="#wloc" role="button">Manage Waypoints</a>
 </span>
 <hr />
-<p id="ehno" style="display:none;"><?= $hikeNo;?></p>
+<p id="ehno" style="display:none;"><?=$hikeNo;?></p>
 
 <form id="f2" class="box" action="saveTab2.php" method="POST">
 
@@ -44,8 +44,6 @@
         <em>Edit captions below each photo as needed and assign display options.</em>
     </p>
     <input type="hidden" name="hikeNo" value="<?= $hikeNo;?>" />
-    <input type="hidden" name="track" value="<?= $curr_gpx;?>" />
-
 <?php if ($inclPix === 'YES') : ?>
     <style type="text/css">
         .capLine { margin: 0px; font-weight: bold; background-color: #dadada; }

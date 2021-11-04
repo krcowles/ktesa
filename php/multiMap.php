@@ -6,6 +6,7 @@
  *      1. "Draw Map" button on Table Only page
  *      2. Hike Page via hikePageTemplate.php (hikePageData.php)
  *      3. Full page map via link on Hike Page (fullPgMapLink.php)
+ *      4. Full page map via link from GPS Data section
  * Optional elements are waypoints and photo markers.
  * Whether required by the calling program or not, latitude and longitude
  * values are extracted, and, if requested,  ascent/descent data and debug
@@ -17,13 +18,17 @@
  * @license None at this time
  */
 require_once "../php/global_boot.php";
-//require_once "../php/gpxFunctions.php";
 
 // detect if script called as window (Table Only page)
 $tblOnly = isset($hikeIndexNo) ? false : true;
 
-// tblOnly files are input via query string, $map_opts are included below:
+// tblOnly files are input via query string, $map_opts are defined below:
 if ($tblOnly) {
+    // 'Table Only' contains only published hikes...
+    $tbl = 'old';
+    $mtable = 'META';
+    $xtable = 'GPX';
+    $ttable = 'TSV';
     $geoloc = "../../images/geoloc.png";
     $query_files = $_GET['m'];
     $files = [];
@@ -53,7 +58,7 @@ if ($tblOnly) {
         'show_markers' => 'true',
         'dynamicMarker' => 'true'  
     ];
-    $hikeTitle = "Multiple GPX File Map";
+    $hikeTitle  = "Multiple GPX File Map";
     $makeGpsvDebug = false;
     $handleDfa  = null;
     $handleDfc  = null;
@@ -62,7 +67,7 @@ if ($tblOnly) {
     $maWindow   = 1;
 }
 // data for hike page, if required
-$hikeFiles = $files;
+$hikeFiles   = $files;
 // data for map
 $allLats     = [];
 $allLngs     = [];
@@ -72,11 +77,16 @@ $noOfTrks    = 0;  // sequentially increasing with each file
 $GPSV_Tracks = [];
 $waypoints   = [];
 $trackTicks  = []; // each member is an array of ticks for a track
-
-// Create GPSV <script> to append to HTML of map
-$mapdata = true;
+$mapdata = true;   // for getTrackData.php...
+/**
+ * For Cluster pages, whether displaying a published page or a page
+ * in-edit, the filenos apply only to META, since unpublished hikes
+ * are not currently supported in Cluster pages.
+ */
+$usetbl = $clusterPage && count($clushikes) > 0 ? 'META' : $mtable;
 foreach ($files as $fileno) {
-    $tracksReq = "SELECT MAX(trackno) FROM `GPX` WHERE `fileno` = ?;";
+    // Create GPSV <script> to append to HTML of map
+    $tracksReq = "SELECT MAX(trkno) FROM {$usetbl} WHERE `fileno` = ?;";
     $tracks = $gdb->prepare($tracksReq);
     $tracks->execute([$fileno]);
     $trackmax = $tracks->fetch(PDO::FETCH_NUM);
@@ -84,7 +94,7 @@ foreach ($files as $fileno) {
     for ($k=1; $k<=$trackcnt; $k++) { // PROCESS EACH TRK
         $ticks = []; // one set of ticks per track
         $trkNo = $noOfTrks + $k;
-        $gpsvTrack = "SELECT `trkname` FROM `META` WHERE `fileno`=? AND " .
+        $gpsvTrack = "SELECT `trkname` FROM {$usetbl} WHERE `fileno`=? AND " .
             "`trkno`=?;";
         $gpsvtrk = $gdb->prepare($gpsvTrack);
         $gpsvtrk->execute([$fileno, $k]);
@@ -133,6 +143,7 @@ foreach ($files as $fileno) {
         $line .= $tdat . " ] });\n";
         $line .= "                GV_Draw_Track(t);\n";
         array_push($GPSV_Tracks, $line);
+        $colorIndx = $colorIndx > 6 ? 0 : $colorIndx;
     }
     $noOfTrks = $trkNo;
     // Do debug output (summary stats for entire hike)

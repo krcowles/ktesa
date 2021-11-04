@@ -7,6 +7,7 @@
  * @version 1.0 Replaces picRowFormation.ts/js and is compatible with bootstrap
  */
 var itemcnt;
+var photosLoaded = $.Deferred();
 var cluster_page = $('#cpg').text() === 'yes' ? true : false;
 if (!cluster_page) {
     // Decode the photo array data passed via php:
@@ -50,8 +51,10 @@ $(function () {
     // the following should not change throughout resizing, etc.
     var pnlMarg = parseInt($panel.css('margin-left')) +
         parseInt($panel.css('margin-right'));
-    var pnlBorder = parseInt($panel.css('border-left-width')) +
-        parseInt($panel.css('border-right-width'));
+    // oddly, on local machine, borders are fractional...
+    var border_left = parseFloat($panel.css('border-left-width'));
+    var border_right = parseFloat($panel.css('border-right-width'));
+    var pnlBorder = Math.ceil(border_left + border_right);
     var pnlPad = parseInt($panel.css('padding-left')) +
         parseInt($panel.css('padding-right'));
     pnlBox = pnlMarg + pnlBorder + pnlPad;
@@ -81,8 +84,7 @@ function setViewport() {
     var panelDisplay = $panel.css('display') !== 'none' ? true : false;
     // Height calcs
     vpHeight = window.innerHeight;
-    var navPadding = parseInt($('#nav').css('padding-top'));
-    var consumed = $('#nav').height() + $('#logo').height() + 2 * navPadding;
+    var consumed = $('#nav').height() + $('#logo').height();
     var usable = vpHeight - consumed;
     var mapHt = Math.floor(0.65 * usable);
     var chartHt = Math.floor(0.35 * usable);
@@ -92,8 +94,9 @@ function setViewport() {
     $panel.height(pnlHeight);
     // Width calcs
     winWidth = $(window).width();
+    winWidth = Math.floor(winWidth);
     if (panelDisplay) {
-        pnlWidth = pnlBox + $panel.width();
+        pnlWidth = Math.ceil(pnlBox + $panel.width());
     }
     else {
         pnlWidth = 0;
@@ -226,17 +229,7 @@ function drawRows(useWidth) {
             rowComplete = false;
         } // end of processing images to fit in rows
         $('#imgArea').html(rowHtml);
+        photosLoaded.resolve();
         return;
     }
 }
-/**
- * When user wishes to download a gpx file
- */
-$('#dwnld').on('click', function () {
-    var pgname = $('#trail').text();
-    var hikeno = $('#hikeno').text();
-    var tbls = $('#tbls').text();
-    var php = '../php/downloadGpx.php?indx=' + hikeno + '&name=' + pgname
-        + '&tbl=' + tbls;
-    window.open(php);
-});

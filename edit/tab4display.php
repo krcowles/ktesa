@@ -33,27 +33,43 @@ and/or maps</p>
     <?php $_SESSION['gpsmsg'] = ''; ?>
 <?php endif; ?>
 <span style="font-weight:bold;margin-bottom:0px;color:black;">
-    Upload New Data File:<br />
-<em style="font-weight:normal;">
-    - Note: You will be able to specify the click-text after the 'Apply'
-    Is Performed</em></span><br />
-<ul style="margin-top:0px;" id="relgpx">
-    <li>Track Data Uploads:<br />
-        <label style="color:brown;">Upload New File&nbsp;(Accepted file types:
-        gpx, kml)</label>&nbsp;<input type="file" name="newgps" /></li>
-    <li>Map Uploads:<br />
-        <label style="color:brown;">Upload New File&nbsp;(Accepted file type:
-        html)</label>&nbsp;<input type="file" name="newmap" /></li>
-</ul>
+    Upload New Data File:</span><br />
+<table>
+    <tbody>
+        <tr>
+            <td class="italic">GPS Track Uploads:</td>
+        </tr>
+        <tr>
+            <td><label style="color:brown;padding-right:6px;">Upload New File&nbsp;
+                (Accepted file types: gpx, kml)</label></td>
+            <td><input type="file" name="newgps" /></td>
+            <td><textarea id="ctgpx" name="glnktxt" placeholder=
+                "Enter text to use for the link to this file"></textarea></td>
+        </tr>
+        <tr>
+            <td class="italic">HTML Map Uploads:</td>
+        </tr>
+        <tr>
+            <td><label style="color:brown;padding-right:6px;">Upload New MAP
+                File&nbsp;(Accepted file type: html)</label></td>
+            <td><input type="file" name="newmap" /></td>
+            <td><textarea id="cthtm" name="hlnktxt" placeholder=
+                "Enter text to use for the link to this file"></textarea></td>
+        </tr>
+    </tbody>
+</table>
+
+
 <!-- Pre-populated GPS Data -->
-<?php for ($n=0; $n<$gpsDbCnt; $n++) : ?>
-    Specify click-text here: <textarea class="tstyle2 ctrshift"
-        name="clickText[]"><?= $clickText[$n];?></textarea>
-    <input type="hidden" name="datId[]" value="<?= $datId[$n];?>" />
-    &nbsp;&nbsp;
-    <label>Delete Reference ? </label>&nbsp;&nbsp;
-    <input style="height:18px;width:18px;" type="checkbox"
-        name="delgps[]" value="<?= $datId[$n];?>" />
-    &nbsp;&nbsp;For File: <span 
-        style="color:brown;"><?= $fname[$n];?></span><br /><br />
-<?php endfor; ?>
+<?php if ($displayGps) : ?>
+    <strong>The following items have already been uploaded and created:</strong>
+    <br />[You may modify the Link text below]<br />
+    <?php foreach ($disp_data as $fname => $data) : ?>
+        Link text: <textarea class="tstyle2 ctrshift"
+            name="clickText[]"><?=$data['clickText'];?></textarea>&nbsp;&nbsp;
+        For uploaded file:&nbsp;&nbsp;<em><?=$fname;?></em>&nbsp;&nbsp;
+        <label>Delete This Reference ? </label>&nbsp;&nbsp;
+        <input style="height:18px;width:18px;" type="checkbox"
+            name="delgps[]" value="<?=$data['datId'];?>" /><br />
+    <?php endforeach; ?>
+<?php endif; ?>

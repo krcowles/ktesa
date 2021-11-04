@@ -41,7 +41,6 @@ $(function () {
         $photos = $('img[id^="pic"]');
         photosDisplayed = true;
     }
-    noOfPix = $photos.length;
     // setup after load:
     if (photosDisplayed) {
         initializePopupCaptions();
@@ -53,10 +52,13 @@ $(function () {
  * tab2 is clicked in edit mode
  */
 function initializePopupCaptions() {
-    captureWidths();
-    calculatePositions();
-    associateCaptions();
-    initActions();
+    $.when(photosLoaded).then(function () {
+        noOfPix = $photos.length;
+        captureWidths();
+        calculatePositions();
+        associateCaptions();
+        initActions();
+    });
     return;
 }
 /**
@@ -99,25 +101,24 @@ function initActions() {
     $photos.css('cursor', 'pointer');
     // popup a description when mouseover a photo
     $photos.css('z-index', '1'); // keep pix in the background
-    $photos.on('mouseover', function (ev) {
-        var targ = ev.target;
-        var selected = targ.alt;
-        picPop(selected);
-    });
-    // kill the popup when mouseout
-    $photos.on('mouseout', function () {
-        $('.popupCap > p').remove();
-        $('.popupCap').css('display', 'none');
-    });
-    var _loop_1 = function (t) {
-        var item = $photos[t];
-        $(item).on('click', function () {
-            var zpic = "/pictures/zsize/" + piclnks[t] + "_z.jpg";
+    var _loop_1 = function (k) {
+        $($photos[k]).on('mouseover', function (ev) {
+            var targ = ev.target;
+            var selected = targ.alt;
+            picPop(selected);
+        });
+        $($photos[k]).on('mouseout', function () {
+            $('.popupCap > p').remove();
+            $('.popupCap').css('display', 'none');
+        });
+        $($photos[k]).on('click', function () {
+            var zpic = "/pictures/zsize/" + piclnks[k] + "_z.jpg";
             window.open(zpic, "_blank");
         });
     };
-    for (var t = 0; t < noOfPix; t++) {
-        _loop_1(t);
+    // NOTE: using .each() w/ $(this) ws a typescript nightmare
+    for (var k = 0; k < noOfPix; k++) {
+        _loop_1(k);
     }
     return;
 }
@@ -147,12 +148,11 @@ function picPop(caption) {
         htmlDesc += '</p>';
     }
     $('.popupCap').css('display', 'block');
-    $('.popupCap').css('position', 'absolute');
     $('.popupCap').css('top', capTop[picNo]);
     $('.popupCap').css('left', capLeft[picNo]);
     $('.popupCap').css('width', capWidth[picNo]);
-    $('.popupCap').css('z-index', '10');
-    $('.popupCap').prepend(htmlDesc);
+    $('.popupCap').css('z-index', '9999');
+    $('.popupCap').append(htmlDesc);
     return;
 }
 // turn off events during resize or forced reset until finished resizing

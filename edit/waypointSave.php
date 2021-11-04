@@ -1,21 +1,18 @@
 <?php
 /**
  * This code module performs the saving of edited and new waypoints in
- * either the database, or the gpx file, depending on where the waypoints
- * are found. If there are no waypoints yet, the new ones will be entered 
- * into the database.
+ * the database. Note that all waypoints found in gpx files when uploaded
+ * are stored in the database.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-// waypoint data, if present in database
-$gpxfile = filter_input(INPUT_POST, 'track');
 
-// 1. No waypoints previously existed in either the gpx file or database
-if (!empty($_POST['ndes'])) {
+
+// A. No waypoints previously existed in the database
+if ($wptCount === 0) {
     $newdesc = $_POST['ndes'];
     $newicon = $_POST['nsym'];
     $newlat  = $_POST['nlat'];
@@ -46,80 +43,7 @@ if (!empty($_POST['ndes'])) {
             [$hikeNo, $dbdesc[$j], $dblat[$j], $dblng[$j], $dbicon[$j]]
         );
     }
-}
-
-// 2. If the current gpx file has embedded waypoints
-if (!empty($_POST['gdes'])) {
-    $newgdesc = $_POST['gdes'];
-    $newgicon = $_POST['gsym'];
-    $newglat  = $_POST['glat'];
-    $newglng  = $_POST['glng'];
-    $newgrem  = isset($_POST['gdel']) ? $_POST['gdel'] : false;
-    $addgdesc = $_POST['ngdes'];
-    $addgicon = $_POST['ngsym'];
-    $addglat  = $_POST['nglat'];
-    $addglng  = $_POST['nglng'];
-    // arrays used to hold updates to gpx file
-    $allpts = [];
-    $gpxloc = '../gpx/' . $gpxfile;
-    $xml = simplexml_load_file($gpxloc);
-    if ($xml === false) {
-        // NOTE: file already validated during upload
-        throw new Exception("Failed to load {$gpxfile}");
-    }
-    // rather than check each node and all its children to look for any
-    // changes, the nodes are simply deleted then re-added from POSTed data
-    $xml->registerXPathNamespace('gpx', 'http://www.topografix.com/GPX/1/1');
-    $waypts = $xml->xpath('//gpx:wpt');
-    foreach ($waypts as $node) {
-        unset($node[0]);  // each node is an array, with [0] as the self-reference
-    }
-    // Form new waypoint nodes: 1) From current:
-    for ($i=0; $i<count($newgdesc); $i++) {
-        $newpt = '';
-        $tag = "g" . $i;
-        if (!$newgrem || ($newgrem && !in_array($tag, $newgrem))) {
-            $newpt .= '<wpt lat="' . $newglat[$i] . '" lon="' . $newglng[$i]
-                . '"><name>' . $newgdesc[$i] . '</name><sym>' . $newgicon[$i]
-                . '</sym></wpt>';
-            array_push($allpts, $newpt);
-        }
-    }
-    // 2) From newly added:
-    for ($j=0; $j<count($addgdesc); $j++) {
-        $addpt = '';
-        if (!empty($addgdesc[$j]) || !empty($addglat[$j]) || !empty($addglng[$j])) {
-            $addpt .= '<wpt lat="' . $addglat[$j] . '" lon="' . $addglng[$j]
-            . '"><name>' . $addgdesc[$j] . '</name><sym>' . $addgicon[$j]
-            . '</sym></wpt>';
-            array_push($allpts, $addpt);
-        }
-    }
-    // find first <trk/> node
-    $target;
-    foreach ($xml->children() as $child) {
-        $nodeName = $child->getName();
-        if ($nodeName == 'trk') {
-            $target = $child;
-            break;
-        }
-    }
-    foreach ($allpts as $savept) {
-        $newwaypt = new SimpleXMLElement($savept);
-        simplexmlInsertAfter($newwaypt, $target);
-    }
-    /**
-     * SimpleXML formatOutput does NOT work, but DOES on Dom docs:
-     */
-    $dom = new DOMDocument('1.0');
-    $dom->preserveWhiteSpace = false;
-    $dom->formatOutput = true;
-    $dom->loadXML($xml->asXML());
-    $dom->save($gpxloc);
-}
-
-// 3. If there are any waypoints in the database for this hike
-if (!empty($_POST['ddes'])) {
+} else {
     $chgdesc = $_POST['ddes'];
     $chgicon = $_POST['dsym'];
     $chglat  = $_POST['dlat'];

@@ -1,11 +1,11 @@
 <?php
 /**
  * This file saves data present on tab4 (Related Hike Info), including
- * uploads of gps file data (gpx or html maps).
- * PHP Version 7.1
+ * uploads of gps file data (gpx/kml or html maps).
+ * PHP Version 7.4
  * 
  * @package Editing
- * @author  Tom Sandberg and Ken Cowles <krcowles29@gmail.com>
+ * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();
@@ -13,6 +13,7 @@ require "../php/global_boot.php";
 
 $hikeNo = filter_input(INPUT_POST, 'hikeNo');
 $redirect = "editDB.php?tab=4&hikeNo={$hikeNo}";
+$_SESSION['user_alert'] = ''; // start clean
 /**
  * There are two sections of 'references': 1) existing in db; 2) new (if any)
  *   1. Those which already exist in the database may have been edited by the
@@ -140,86 +141,126 @@ if ($addcnt > 0) {
     }
 }
 /*
- * Beyond uploading new GPS Data files, the only user editing permitted is
- * on the click-text for a file. If the click-text is marked for deletion,
- * the GPS Data reference, in its entirety, will be deleted.
- *
  * GPS Data File upload section. May be a gpx or kml file, or an html map file
+ *  - GPX files are stored in the META & GPX tables
+ *  - KML files are stored in the gpx directory
+ *  - HTML map files are stored in the maps directory
  */
+// Retrieve any existing EGPSDAT data
+$currGpsReq = "SELECT * FROM `EGPSDAT` WHERE `indxNo`=?;";
+$currGps = $pdo->prepare($currGpsReq);
+$currGps->execute([$hikeNo]);
+$gps_data = $currGps->fetchAll(PDO::FETCH_ASSOC);
+$no_previous = count($gps_data) === 0 ? true : false;
+
+// uploads here will put data in EGPSDAT
 $_SESSION['gpsmsg'] = '';
-$gpsfile = uploadGpxKmlFile('newgps', true, true);
+$gpxtxt = filter_input(INPUT_POST, 'glnktxt'); // either gpx or kml
+$gpsfile = uploadGpxKmlFile($pdo, $gdb, 'newgps', $hikeNo, true, true, false);
 if ($_SESSION['user_alert'] !== 'No file specified') {
     if (empty($_SESSION['user_alert'])) {
-        $ngpsreq
-            = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`,`clickText`) " .
-                "VALUES (?,'P','GPX:',?,'GPX Track File');";
-        $newgps = $pdo->prepare($ngpsreq);
-        $newgps->execute([$hikeNo, $gpsfile]);
-        $gfile = pathinfo($gpsfile, PATHINFO_FILENAME);
-        $_SESSION['gpsmsg'] .= "{$gfile} was successfully uploaded; ";
-    } else {
-        header("Location: {$redirect}");
-        exit;
-    }
-} else {
-    $_SESSION['user_alert'] = '';
-}
-$htmlfile = validateUpload('newmap');
-if (!empty($htmlfile['file'])) {
-    if ($htmlfile['type'] === 'html') {
-        if (empty($_SESSION['user_alert'])) {
-            $newurl = '../maps/' . $htmlfile['file'];
-            $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`," .
-                "clickText) VALUES (?,'P','MAP:',?,'Map File');";
+        if ($gpsfile[3] === 'gpx') { // gpx file
+            $ngpsreq
+                = "INSERT INTO `EGPSDAT` (`indxNo`,`fileno`,`label`,`clickText`) " .
+                    "VALUES (?,?,'GPX:',?);";
             $newgps = $pdo->prepare($ngpsreq);
-            $newgps->execute([$hikeNo, $newurl]);
-            $_SESSION['gpsmsg'] .= " {$htmlfile['file']} was successfully uploaded" ;
+            $newgps->execute([$hikeNo, $gpsfile[0], $gpxtxt]);
+        } else if ($gpsfile[3] === 'kml') { // kml file
+            $kmlLabel = '../gpx/' . $gpsfile[2]; 
+            $nkmlReq
+                = "INSERT INTO `EGPSDAT` (`indxNo`,`label`,`clickText`) " .
+                    "VALUES (?,?,?);";
+            $newkml = $pdo->prepare($nkmlReq);
+            $newkml->execute([$hikeNo, $kmlLabel, $gpxtxt]);
         } else {
+            $_SESSION['user_alert'] = "Wrong file type for upload: use gpx or kml";
             header("Location: {$redirect}");
             exit;
-        } 
+        }
+        $_SESSION['gpsmsg'] .= "{$gpsfile[2]} was successfully uploaded; ";
+    } // ELSE do nothing - proceed with html uploads if any; preserve alert
+} else {
+    // The typical case will not have an upload here
+    $_SESSION['user_alert'] = '';
+}
+$saved_alert = !empty($_SESSION['user_alert']) ? $_SESSION['user_alert'] : false;
+$_SESSION['user_alert'] = ''; // reset for next upload
+
+// HTML MAP File Upload
+$htmtxt = filter_input(INPUT_POST, 'hlnktxt');
+$htmname = $_FILES['newmap']['name'];
+$htmbase = pathinfo($htmname, PATHINFO_EXTENSION);
+// preliminary extension check so no gpx file is uploaded here
+if (strtolower($htmbase) === 'html') {
+    $htmlfile = uploadGpxKmlFile($pdo, $gdb, 'newmap', $hikeNo, true);
+    if ($_SESSION['user_alert'] !== 'No file specified') {
+        if (empty($_SESSION['user_alert'])) {
+            if ($htmlfile[3] === 'html') {
+                $mtxt = "../maps/" . $htmlfile[2];
+                $ngpsreq = "INSERT INTO EGPSDAT (`indxNo`,`label`,`clickText`) " .
+                    "VALUES (?,?,?);";
+                $newgps = $pdo->prepare($ngpsreq);
+                $newgps->execute([$hikeNo, $mtxt, $htmtxt]);
+                $_SESSION['gpsmsg'] .= " {$htmlfile[2]} was successfully uploaded" ;
+            } else {
+                $_SESSION['user_alert'] = "Only html files can be uploaded here";
+            }
+        } // ELSE DO NOTHING: Proceed with any further processing
     } else {
-        $_SESSION['user_alert'] = "Only html files can be uploaded here";
-        header("Location: {$redirect}");
-        exit;
+        // the typical case will not have an upload here,
+        $_SESSION['user_alert'] = '';
     }
-}  
+} else {
+    $_SESSION['user_alert'] = "Incorrect file type: should be .html";
+}
+if ($saved_alert && !empty($_SESSION['user_alert'])) {
+    $_SESSION['user_alert'] = $saved_alert . PHP_EOL . $_SESSION['user_alert'];
+} else {
+    $_SESSION['user_alert'] = $saved_alert;
+}
+
 /**
- * NOTE: the only items that have 'delete' boxes are those for which GPS data
- * already existed in the database. Those checkboxes will have values of
- * 0..$newcnt.
+ * NOTE: the only items that might appear in this last section on Tab4 are items
+ * for which GPS data already exists in the database. Every posting here will have
+ * a 'clickText' [Link text] <textarea>, a hidden input containing the textarea's
+ * 'datId', a file name, and a checkbox allowing the user to delete the item.
+ * The checkbox will also have a value of 'datId' in order to ID the entry to be
+ * deleted, if any.
  */
-// Pick up any changes to click-text
+// Pick up all 'clickText' fields (one-to-one corr. w/$gps_data values in the array)
 $clickText = isset($_POST['clickText']) ? $_POST['clickText'] : [];
-$datId = isset($_POST['datId']) ? $_POST['datId'] : [];
+// any checked boxes will contain 'datId' of the entries to be deleted
 if (isset($_POST['delgps'])) {
-    // any entries will contain datId of the corresponding text
     $deletes = $_POST['delgps'];
     $chk_del = true;
 } else {
     $deletes = [];
     $chk_del = false;
 }
-$datacnt = empty($clickText) ? 0 : count($clickText);
-$cb_indx = 0;
-for ($j=0; $j<$datacnt; $j++) {
-    $update = true;
-    if ($chk_del) {  // delete checkboxes exist
-        if ($datId[$j] == $deletes[$cb_indx]) {
+// there may not be pre-existing data
+if (!$no_previous) {
+    $itemno = 0;
+    foreach ($gps_data as $entry) {
+        // is this entry to be deleted?
+        if (in_array($entry['datId'], $deletes)) {
+            // is this a GPX file?
+            if (!empty($entry['fileno'])) {
+                deleteGpxData('new', $gdb, $entry['fileno']);
+            } else { // kml or html file with defined path
+                $nongpx = explode("|", $entry['label']);
+                if (unlink($nongpx[1]) === false) {
+                    throw new Exception("Could not delete {$nongpx[1]}");
+                }
+            }
             $delgpsreq = "DELETE FROM EGPSDAT WHERE datId = ?;";
             $delgps = $pdo->prepare($delgpsreq);
-            $delgps->execute([$datId[$j]]);
-            $cb_indx++; // advance to next delete checkbox, if there is one
-            $update = false;
-            if ($cb_indx >= count($deletes)) {
-                $chk_del = false;
-            }
+            $delgps->execute([$entry['datId']]);
+        } else {
+            $updtgps = "UPDATE EGPSDAT SET clickText = ? WHERE datID = ?;";
+            $update = $pdo->prepare($updtgps);
+            $update->execute([$clickText[$itemno], $entry['datId']]);
         }
-    }
-    if ($update) {
-        $addgpsreq = "UPDATE EGPSDAT SET clickText = ? WHERE datID = ?;";
-        $addgps = $pdo->prepare($addgpsreq);
-        $addgps->execute([$clickText[$j], $datId[$j]]);
+        $itemno++;
     }
 }
 // return to editor with new data:
