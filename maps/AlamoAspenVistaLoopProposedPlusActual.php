@@ -605,7 +605,6 @@
 			  
 			}
 			GV_Map(); // execute the above code
-			// http://www.gpsvisualizer.com/map_input?allow_export=1&form=google&google_api_key=AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU&google_street_view=1&google_trk_mouseover=1&tickmark_interval=.3%20mi&trk_colorize=slope&trk_hue=60&trk_stats=1&units=us&wpt_driving_directions=1&add_elevation=NED1
 		</script>
 		
 		

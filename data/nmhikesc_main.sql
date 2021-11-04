@@ -476,8 +476,8 @@ INSERT INTO GPSDAT VALUES
 ('135','89','P','GPX: ','../gpx/SanYsidroProposed.gpx','Proposed Trail'),
 ('136','128','P','GPX:','../gpx/SFBaldyFullLoop.gpx','Proposed hike GPX file'),
 ('137','218','P','GPX:','../gpx/SantaFeLakeClipped.gpx','Shorter route from Ski Santa Fe parking lot'),
-('138','260','P','MAP:','../maps/Stop1.html','Stop1 Hike'),
-('139','260','P','MAP:','../maps/Stop3.html','Stop3 Hike'),
+('138','260','P','MAP:','../maps/Stop1.php','Stop1 Hike'),
+('139','260','P','MAP:','../maps/Stop3.php','Stop3 Hike'),
 ('141','156','P','GPX:','../gpx/WaterCanyonSbWithElev.gpx','Proposed Hike Track File'),
 ('142','226','P','GPX:','../gpx/WhiteMesaAlt.gpx','Segment from Dragons Back (Not Recommended)'),
 ('143','269','P','GPX:','../gpx/SpruceSpringsLoop-174.28.97.193-1631892872.gpx','Red Canyon-Spruce Springs Loop');
