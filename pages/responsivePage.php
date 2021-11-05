@@ -66,6 +66,13 @@ function off() {
 <script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaNavbar.php";?>
+<script type="text/javascript">
+if (!mobile) {
+    window.open(
+        "hikePageTemplate.php?hikeIndx=<?=$hikeIndexNo;?>&tbl=<?=$tbl;?>", "_blank"
+    )
+}
+</script>
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="gpx" style="display:none"><?=$gpxPath;?></p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>

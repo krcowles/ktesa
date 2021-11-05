@@ -36,6 +36,7 @@ interface Issue {
  * 
  * @version 2.0 First release with Cluster Page editing
  * @version 2.1 Typescripted
+ * @version 2.2 Updated tab1 look and feel
  */
 $( function () {
 // Wysiwyg editor for tab3 hike info:
@@ -85,10 +86,17 @@ var issues: Issue[] = [];
 function positionApply(tab: number) {
     let atxt = <JQuery.Coordinates>$('#atxt').offset();
     let centerMarg  = (awd - apwd)/2 - 4; // 4: allow for right margin
+    let postype = "fixed";
     btop = atxt.top + aht + 6; // 6 for spacing
     blft = atxt.left + centerMarg;
+    if (tab === 3) {
+        let apos = <JQuery.Coordinates>$('#atxt').offset();
+        btop = apos.top + 32;
+        blft = apos.left;
+        postype = "absolute";
+    }
     subs[tab].css({
-        position: "fixed",
+        position: postype,
         top: btop,
         left: blft
     });
@@ -286,11 +294,6 @@ $('#preview').on('click', function() {
     window.open(prevPg,"_blank");
 });
 
-// show/hide lat lng data entries
-$('#showll').on('click', function() {
-    $('#lldisp').slideToggle();
-});
-
 // Pressing 'Return' while in textarea only adds newline chars, therefore:
 window.onkeydown = function(event: KeyboardEvent) {
     let retval = true;
@@ -299,6 +302,11 @@ window.onkeydown = function(event: KeyboardEvent) {
         retval = false; // Just a workaround for old browsers
     }
     return retval;
+}
+if ($('#mgpx').text() === '') {
+    $('#file_exists').css('color', 'gray');
+} else {
+    $('#file_exists').css('color', 'black');
 }
 // this detects when a sorted item has completed its move (args not currently used)
 const refreshCapts = () => {
@@ -450,242 +458,6 @@ $('#deassign').on('change', function() {
     }
 });
 // End of cluster processing
-
-/**
- * Database data validation: does item conform to database data type?
- * Note: there is no 'range' validation for most numbers, neither is there a
- * test to see if < 0 (except lng). The main qualification is conformity to db spec.
- * In addition, if a user clicks 'Apply' while the user is entering invalid
- * data, form submission is halted. The user is advised to fix the identified
- * issue(s) prior to clicking 'Apply'
- */
-/**
- * This function clears an issue when it has been corrected
- */
-const clearIssue = (issuekey: string) => {
-    for (let i=0; i<issues.length; i++) {
-        if (issuekey in issues[i]) {
-            // this is the i-th element, so the index is i
-            issues.splice(i, 1);
-        }
-    }
-    return;
-};
-/**
- * Check to make sure a message isn't getting repeated due to multiple
- * incorrect entries by a user on the same data
- */
-const repeatIssue = (type: string, msg: string): boolean => {
-    for (let j=0; j<issues.length; j++) {
-        if (type in issues[j]) {
-            if (issues[j][type] == msg) {
-                return true;
-            }
-        }
-    }
-    return false;
-};
-
-// miles: numeric, and up to two decimal points
-const nan  = "The value entered is not a number";
-const badmiles = "Please enter a number less than 50 for 'miles'\n" +
-    "with a maximum of 2 decimal places";
-$('#miles').on('change', function() {
-    let submit = true;
-    let milesissue = {miles: ""};
-    clearIssue("miles"); // any previous issue is no longer relevant
-    let milesString = <string>$('#miles').val();
-    let milesEntry = Number(milesString);
-    if (!isNaN(milesEntry)) {
-        let regexp = /^\d+(\.\d{1,2})?$/;
-        if (regexp.test(milesString)) {
-            if (Math.abs(milesEntry) > 49.99) {
-                alert(badmiles);
-                submit = false; 
-                milesissue.miles = "Miles value too large";
-            } else {
-                $('input[name=usrmiles]').val("YES");
-            }
-        } else {
-            alert(badmiles);
-            submit = false;
-            milesissue.miles = "Greater than two digits after the decimal";
-        }
-    } else {
-        alert(nan);
-        submit = false;
-        milesissue.miles = "Miles data is not a number";
-    }
-    if (!submit) {
-        issues.push(milesissue);
-    }
-});
-// elevation: up to five digits, integer
-let badelev = "Only Integers less than 10,000 are allowed";
-$('#elev').on('change', function() {
-    let submit = true;
-    let elevissue = {feet: ""};
-    clearIssue("feet");
-    let elevString = <string>$('#elev').val();
-    let elev = Number(elevString);
-    if (!isNaN(elev)) {
-        let feet = elev;
-        if (Number.isInteger(feet)) {
-            if (Math.abs(feet) > 9999) {
-                alert(badelev);
-                submit = false;
-                elevissue.feet = "Elevation entry too large";
-            } else {
-                $('input[name=usrfeet]').val("YES");
-            }
-        } else {
-            alert(badelev);
-            submit = false;
-            elevissue.feet = "Elevation change must be an integer";
-        }
-    } else {
-        alert(nan);
-        submit = false;
-        elevissue.feet = "Elevation data is not a number";
-    }
-    if (!submit) {
-        if (!repeatIssue('feet', elevissue.feet)) {
-            issues.push(elevissue);
-        }
-    } 
-});
-// gpx: file name length 1024; NOTE: This also covers GPS Data uploads
-$('input[type=file]').each(function() {
-    $(this).on('change', function() {
-        var gpxitem = <DOMFiles>this;
-        var newname = gpxitem.files[0].name;
-        if (newname.length > 1024) {
-            alert("Only 1024 Characters are allowed for file names");
-            gpxitem.value = null;
-        }
-    });
-});
-// latitude & longitude checks:
-const notfloat  = "The value is not a decimal number";
-const latneg    = "Latitudes for New Mexico must be positive";
-const toolarge  = "The entered value exceeds bounds for a gps coord";
-/**
- * This function checks the latitude entry for valid float value
- */
-const latCheck = (loc: string, value: string) => {
-    let submit = true;
-    let latissue = {lat: ""};
-    clearIssue("lat"); 
-    let locater = loc === 'hike' ? "For Hike Latitude: " :
-         "For Cluster Group Latitude: ";
-    let decimal = /^[-+]?[0-9]+\.[0-9]+$/;
-    if (!decimal.test(value)) {
-        alert(notfloat);
-        submit = false;
-        latissue.lat = locater + "Latitude is not a decimal number";
-    } else {
-        let lat = Number(value);
-        if (!isNaN(lat)) {
-            if (lat < 0) {
-                alert(latneg);
-                submit = false;
-                latissue.lat = locater + "Latitude must be positive number";
-            } else if (Math.abs(lat) > 180) {
-                    alert(toolarge);
-                    submit = false;
-                    latissue.lat = locater + "The latitude value is too large";
-            }
-        } else {
-            alert(nan);
-            submit = false;
-            latissue.lat = locater + "Latitude is not a number";
-        }
-    }
-    if (!submit) {
-        issues.push(latissue);
-    } 
-    return;
-};
-const lngvalue  = "Longitudes must be negative values for New Mexico";
-/**
- * This function checks the longitude entry for valid float value
- */
-const lngCheck = (loc: string, value: string) => {
-    let submit = true;
-    let lngissue = {lng: ""};
-    clearIssue("lng");
-    let locater = loc === 'hike' ? "For Hike Longitude: " :
-         "For Cluster Group Longitude: ";
-    let decimal = /^[-+]?[0-9]+\.[0-9]+$/;
-    if (!decimal.test(value)) {
-        alert(notfloat);
-        submit = false;
-        lngissue.lng = locater + "Longitude is not a decimal number";
-    } else {
-        let lng = Number(value);
-        if (!isNaN(lng)) {
-            if (lng > 0) {
-                alert(lngvalue);
-                submit = false;
-                lngissue.lng = locater + "Longitude must be negative";
-            } else {
-                let testval = Math.abs(lng);
-                if (testval > 180) {
-                    alert(toolarge);
-                    submit = false;
-                    lngissue.lng = locater + "The longitude value is too large";
-                } 
-            } 
-        } else {
-            alert(nan);
-            submit = false;
-            lngissue.lng = locater + "Longitude is not a number";
-        }
-    }
-    if (!submit) {
-        issues.push(lngissue);
-    } 
-    return;
-}
-$('#lat').on('change', function() {
-    let latentry = <string>$(this).val();
-    latCheck('hike', latentry);
-});
-$('#cluslat').on('change', function() {
-    let latentry = <string>$(this).val();
-    latCheck('group', latentry);
-});
-$('#lon').on('change', function() {
-    let lngentry = <string>$(this).val();
-    lngCheck('hike', lngentry);
-});
-$('#cluslng').on('change', function() {
-    let lngentry = <string>$(this).val();
-    lngCheck('group', lngentry);
-});
-
-// GPS Data Section: 
-
-// click-on-text length
-$('textarea[name^=click]').each(function(j) {
-    let submit = true;
-    let key = 'cot' + j;
-    let cotissue = <Issue>{};
-    cotissue[key] = "";
-    $(this).on('change', function() {
-        clearIssue(key);
-        let ta = <string>$(this).val();
-        if (ta.length > 256) {
-            alert("Only 256 characters are allowed");
-            submit = false;
-            cotissue[key] = "Too many characters in click-text #" + (j+1);
-        } 
-        if (!submit) {
-            issues.push(cotissue);
-        }
-    });
-});
-
 $(window).on('resize', function() {
     $('.subbtn').remove();
     linewidth = <number>$('#main').width() - listwidth;

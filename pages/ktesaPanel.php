@@ -1,9 +1,7 @@
 <?php
 /**
  * This script presents the html that comprises the top-of-the-page
- * menu-driven navigation bar and ktesa logo. The supplied incoming
- * variable [$source] indicates whether for a mobile device or other.
- * When mobile, the 'Contribute' menu will not appear.
+ * menu-driven navigation bar and ktesa logo.
  * PHP Version 7.4
  * 
  * @package Ktesa
