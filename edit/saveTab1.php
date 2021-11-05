@@ -59,7 +59,6 @@ $pdoBindings['hikeNo'] = $hikeNo;
  * Note: the delete gpx checkbox does not appear if a main gpx file is not
  * specified
  */
-$mftNulls = false; 
 $deletedLatLng = false;
 if (isset($delgpx)) {
     $delgpx = '../gpx/' . $maingpx;
@@ -80,16 +79,8 @@ if (isset($delgpx)) {
     $deletedLatLng = true;
     $_SESSION['uplmsg']
         .= "Deleted file {$maingpx} and it's associated track from site; ";
-    if ($usrmiles === "NO" && $usrfeet === "NO") { // don't overwrite user changes
-        $miles = '';
-        $feet  = '';
-        $mftNulls = true;
-    }  
 }
-if (!$mftNulls) { // get POSTED miles/feet if not nulled above
-    $miles = filter_input(INPUT_POST, 'miles');
-    $feet  = filter_input(INPUT_POST, 'feet');
-}
+
 if (!$deletedLatLng) {
     $lat = empty($_POST['lat']) ? 
         '' : (int) ((float)(filter_input(INPUT_POST, 'lat')) * LOC_SCALE);
@@ -98,6 +89,7 @@ if (!$deletedLatLng) {
     
 }
 // IF a gpx file was uploaded:
+$updateStats = false;
 $gpxfile = basename($_FILES['newgpx']['name']);
 if (!empty($gpxfile)) {  // new upload
     $unique = uploadGpxKmlFile('newgpx', true, true);
@@ -112,6 +104,69 @@ if (!empty($gpxfile)) {  // new upload
         $newdat = $pdo->prepare($newdatReq);
         $newdat->execute([$newtrk, $lat, $lng, $hikeNo]);
         $maingpx = pathinfo($unique, PATHINFO_BASENAME);
+
+        // Now calculate the new gpx file's statistics (miles, feet, ...)
+        $gpxPath = "../gpx/" . $maingpx;
+        $gpxdat = simplexml_load_file($gpxPath);
+        if ($gpxdat === false) {
+            throw new Exception("Failed to open {$gpxPath}");
+        }
+        if ($gpxdat->rte->count() > 0) {
+            $gpxdat = convertRtePts($gpxdat);
+        }
+        $noOfTrks = $gpxdat->trk->count();
+        // threshold in meters to filter out elevation and distance value variation
+        // set by default if command line parameter(s) is not given
+        $elevThresh = 1.0;
+        $distThresh = 5.0;
+        $maWindow = 3;
+        
+        // calculate stats for all tracks:
+        $pup = (float)0;
+        $pdwn = (float)0;
+        $pmax = (float)0;
+        $pmin = (float)50000;
+        $hikeLgthTot = (float)0;
+        for ($k=0; $k<$noOfTrks; $k++) {
+            $calcs = getTrackDistAndElev(
+                0, $k, "", $gpxPath, $gpxdat, false, null,
+                null, $distThresh, $elevThresh, $maWindow
+            );
+            $hikeLgthTot += $calcs[0];
+            if ($calcs[1] > $pmax) {
+                $pmax = $calcs[1];
+            }
+            if ($calcs[2] < $pmin) {
+                $pmin = $calcs[2];
+            }
+            $pup  += $calcs[3];
+            $pdwn += $calcs[4];
+        } // end for: PROCESS EACH TRK
+        
+        $totalDist = $hikeLgthTot / 1609;
+        $miles = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
+        $elev = ($pmax - $pmin) * 3.28084;
+        if ($elev < 100) { // round to nearest 10
+            $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
+            $feet = 10 * $adj;
+        } elseif ($elev < 1000) { // 100-999: round to nearest 50
+            $adj = $elev/100;
+            $lead = substr($adj, 0, 1);
+            $n5 = $lead + 0.50;
+            $n2 = $lead + 0.25;
+            if ($adj > $n5) {
+                $adj = $lead + 1;
+            } elseif ($adj >$n2) {
+                $adj = $lead + 0.5;
+            } else {
+                $adj = $lead;
+            }
+            $feet = 100 * $adj;
+        } else { // 1000+: round to nearest 100
+            $adj = round($elev/100, 0, PHP_ROUND_HALF_UP);
+            $feet = 100 * $adj;
+        }
+        $updateStats = true;
     } else {
         header("Location: " . $redirect);
         exit;
@@ -181,79 +236,7 @@ if ($addloc) {
 } else {
     $loc_binding = filter_input(INPUT_POST, 'locale');
 }
-/**
- * If the user selected 'Calculate From GPX', then those values will
- * be used instead of any existing values in the miles and feet fields. 
- */
-if (isset($_POST['mft'])) {
-    if (empty($maingpx)) {
-        $_SESSION['uplmsg'] .= "<br />No gpx file has been uploaded for this hike; " 
-            . "Miles/Feet Calculations cannot be performed";
-        // miles/feet remain as previously defined
-    } else {
-        $gpxPath = "../gpx/" . $maingpx;
-        $gpxdat = simplexml_load_file($gpxPath);
-        if ($gpxdat === false) {
-            throw new Exception("Failed to open {$gpxPath}");
-        }
-        if ($gpxdat->rte->count() > 0) {
-            $gpxdat = convertRtePts($gpxdat);
-        }
-        $noOfTrks = $gpxdat->trk->count();
-        // threshold in meters to filter out elevation and distance value variation
-        // set by default if command line parameter(s) is not given
-        $elevThresh = 1.0;
-        $distThresh = 5.0;
-        $maWindow = 3;
-
-        // calculate stats for all tracks:
-        $pup = (float)0;
-        $pdwn = (float)0;
-        $pmax = (float)0;
-        $pmin = (float)50000;
-        $hikeLgthTot = (float)0;
-        for ($k=0; $k<$noOfTrks; $k++) {
-            $calcs = getTrackDistAndElev(
-                0, $k, "", $gpxPath, $gpxdat, false, null,
-                null, $distThresh, $elevThresh, $maWindow
-            );
-            $hikeLgthTot += $calcs[0];
-            if ($calcs[1] > $pmax) {
-                $pmax = $calcs[1];
-            }
-            if ($calcs[2] < $pmin) {
-                $pmin = $calcs[2];
-            }
-            $pup  += $calcs[3];
-            $pdwn += $calcs[4];
-        } // end for: PROCESS EACH TRK
-
-        $totalDist = $hikeLgthTot / 1609;
-        $miles = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
-        $elev = ($pmax - $pmin) * 3.28084;
-        if ($elev < 100) { // round to nearest 10
-            $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
-            $feet = 10 * $adj;
-        } elseif ($elev < 1000) { // 100-999: round to nearest 50
-            $adj = $elev/100;
-            $lead = substr($adj, 0, 1);
-            $n5 = $lead + 0.50;
-            $n2 = $lead + 0.25;
-            if ($adj > $n5) {
-                $adj = $lead + 1;
-            } elseif ($adj >$n2) {
-                $adj = $lead + 0.5;
-            } else {
-                $adj = $lead;
-            }
-            $feet = 100 * $adj;
-        } else { // 1000+: round to nearest 100
-            $adj = round($elev/100, 0, PHP_ROUND_HALF_UP);
-            $feet = 100 * $adj;
-        }
-    }
-} 
-
+ 
 /**
  * CLUSTER ASSIGNMENT PROCESSING:
  */ 
@@ -368,41 +351,48 @@ $svreq = "UPDATE EHIKES SET " .
     "WHERE indxNo = :hikeNo";
 $basic = $pdo->prepare($svreq);
 $basic->execute($pdoBindings);
-// Preserve NULLs in miles/feet when entry is empty
-$milesFeet = [];
-$mfquery = "UPDATE EHIKES SET miles = ";
-if (empty($miles)) {
-    $mfquery .= "NULL, feet = ";
-} else {
-    $mfquery .= "?, feet = ";
-    $milesFeet[0] = $miles;
+
+if ($updateStats) {
+    $newstatsReq = "UPDATE `EHIKES` SET `miles`=?,`feet`=? WHERE `indxNo`=?;";
+    $newstats = $pdo->prepare($newstatsReq);
+    $newstats->execute([$miles, $feet, $hikeNo]);
 }
-if (empty($feet)) {
-    $mfquery .= "NULL ";
-} else {
-    $mfquery .= "? ";
-    array_push($milesFeet, $feet);
-}
-$mfquery .= "WHERE indxNo = ?;";
-array_push($milesFeet, $hikeNo);
-$pdo->prepare($mfquery)->execute($milesFeet);
-// preserve NULLs in lat/lng when empty
-$data = [];
-$latlng = "UPDATE EHIKES SET lat = ";
-if (empty($lat)) {
-    $latlng .= "NULL, lng = ";
-} else {
-    $latlng .= "?, lng =  ";
-    $data[0] = $lat;
-}
-if (empty($lng)) {
-    $latlng .= "NULL ";
-} else {
-    $latlng .= "? ";
-    array_push($data, $lng);
-}
-$latlng .= "WHERE indxNo = ?;";
-array_push($data, $hikeNo);
-$pdo->prepare($latlng)->execute($data);
+    /*
+    $milesFeet = [];
+    $mfquery = "UPDATE EHIKES SET miles = ";
+    if (empty($miles)) {
+        $mfquery .= "NULL, feet = ";
+    } else {
+        $mfquery .= "?, feet = ";
+        $milesFeet[0] = $miles;
+    }
+    if (empty($feet)) {
+        $mfquery .= "NULL ";
+    } else {
+        $mfquery .= "? ";
+        array_push($milesFeet, $feet);
+    }
+    $mfquery .= "WHERE indxNo = ?;";
+    array_push($milesFeet, $hikeNo);
+    $pdo->prepare($mfquery)->execute($milesFeet);
+    // preserve NULLs in lat/lng when empty
+    $data = [];
+    $latlng = "UPDATE EHIKES SET lat = ";
+    if (empty($lat)) {
+        $latlng .= "NULL, lng = ";
+    } else {
+        $latlng .= "?, lng =  ";
+        $data[0] = $lat;
+    }
+    if (empty($lng)) {
+        $latlng .= "NULL ";
+    } else {
+        $latlng .= "? ";
+        array_push($data, $lng);
+    }
+    $latlng .= "WHERE indxNo = ?;";
+    array_push($data, $hikeNo);
+    */
+
 
 header("Location: {$redirect}");

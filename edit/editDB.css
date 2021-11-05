@@ -112,6 +112,12 @@ textarea.ctrshift {
 }
 
 /*  next are tab1 only */
+#hilite {
+    padding: 6px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
 input[id^=gpxfile] {
     height: 28px;
     font-size: 16px;
@@ -149,14 +155,6 @@ span.brown {
     height: 34px;
     width: 160px;
 }
-#miles {
-    height: 34px;
-    width: 70px;
-}
-#elev {
-    height: 34px;
-    width: 100px;
-}
 #fac {
     height: 36px;
     width: 200px;
@@ -173,20 +171,31 @@ span.brown {
     height: 34px;
     width: 150px;
 }
+#gpxcalcs {
+    margin-bottom: 6px;
+}
+#miles, #elev, #lat, #lon {
+    display: inline-block;
+    font-size: 18px;
+}
+#miles {
+    width: 70px;
+}
+#elev {
+    width: 100px;
+}
 #lat {
-    height: 34px;
     width: 130px;
 }
 #lon {
-    height: 34px;
     width: 140px;
 }
 #dirlbl {
     position: relative;
-    top: -12px;
+    top: -24px;
 }
 #murl {
-    height: 68px;
+    height: 76px;
     width: 850px;
 }
 #clusters {

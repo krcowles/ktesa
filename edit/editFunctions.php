@@ -276,6 +276,7 @@ function getClusters($pdo)
     $select = '<select id="clusters" name="clusters">' . PHP_EOL;
     $clus_req = "SELECT `group` FROM `CLUSTERS`;";
     $clusters = $pdo->query($clus_req)->fetchAll(PDO::FETCH_COLUMN);
+    sort($clusters);
     foreach ($clusters as $cluster) {
         $select .= '<option value="' . $cluster . '">' . $cluster .
             '</option>' . PHP_EOL;
