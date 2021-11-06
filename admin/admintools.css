@@ -75,7 +75,7 @@ select {
     height: 24px;
     font-size: 16px;
 }
-#datepicker, #revlist {
+#datepicker, #revlist, #grge {
     height: 28px;
     border-radius: 4px;
     font-size: 14px;
@@ -92,4 +92,18 @@ input[type=file]:hover {
 }
 #filebrowse {
     margin-bottom: 6px;
+}
+#gpxrange {
+    color: black;
+}
+select#gpxsel {
+    height: 28px;
+    background: #f4e7d7;
+    color: black;
+    padding: 4 10px;
+    font-size: 16px;
+}
+select#gpxsel option{
+	color: black;
+    padding: 4 10px;
 }

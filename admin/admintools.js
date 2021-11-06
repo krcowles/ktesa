@@ -3,6 +3,7 @@
  *
  * @author Ken Cowles
  * @version 2.0 Typescripted
+ * @version 3.0 Updated for GPX Database implementation
  */
 $(function () {
     // If any alerts were set by scripts
@@ -233,13 +234,13 @@ $(function () {
                         if (dwnldResult === '1234') {
                             clearInterval(downloadTimer);
                             if (confirm("Proceed with reload?")) {
-                                window.open('drop_all_tables.php', "_blank");
+                                window.open('drop_all_tables.php?db=main', "_blank");
                             }
                         }
                     }, 1000);
                 }
                 else {
-                    window.open('drop_all_tables.php', "_blank");
+                    window.open('drop_all_tables.php?db=main', "_blank");
                 }
             }
         });
@@ -250,13 +251,19 @@ $(function () {
         checkChecksums(testSums);
         $.when(testSums).then(function () {
             if (confirm("Do you really want to drop all tables?")) {
-                window.open('drop_all_tables.php?no=all', "_blank");
+                window.open('drop_all_tables.php?db=main&no=all', "_blank");
             }
         });
     });
     // Load All Tables
     $('#ldall').on('click', function () {
         window.open('load_all_tables.php', "_blank");
+    });
+    // Reload GPX Database
+    $('#grld').on('click', function () {
+        if (confirm("Do you really want to reload tables in the GPX Database?")) {
+            window.open('drop_all_tables.php?db=gpx', "_blank");
+        }
     });
     // Export All Main DB Tables
     $('#exall').on('click', function () {
@@ -265,6 +272,37 @@ $(function () {
     // Export GPX Database
     $('#exgpx').on('click', function () {
         window.open('export_all_tables.php?dwnld=N&db=gpx', "_blank");
+    });
+    // Delete specified GPX DB filenos
+    $('#delfnos').on('click', function () {
+        var script = 'gpxFileDeletes.php';
+        var dbtype = $('#gpxsel').val();
+        var list = $('#items').val();
+        if (list.trim() === '') {
+            alert("No list of filenos were entered");
+            return false;
+        }
+        var ajaxdata = { dbtype: dbtype, items: list };
+        $.ajax({
+            url: script,
+            method: "post",
+            data: ajaxdata,
+            dataType: "text",
+            success: function (result) {
+                if (result === 'OK') {
+                    alert("Filenos " + list + " successfully deleted");
+                }
+                else {
+                    alert(result + "\nFiles not deleted");
+                }
+            },
+            error: function (jqXHR) {
+                var newDoc = document.open();
+                newDoc.write(jqXHR.responseText);
+                newDoc.close();
+            }
+        });
+        return true;
     });
     // Check for DB Changes
     $('#dbchanges').on('click', function () {

@@ -14,17 +14,24 @@
  */
 session_start();
 require "../php/global_boot.php";
+ini_set('memory_limit', '256M');
+$main = filter_input(INPUT_GET, 'db') === 'main' ? true : false;
+
 $tables = array();
-$data = $pdo->query("SHOW TABLES");
-$tbl_list = $data->fetchALL(PDO::FETCH_NUM);
-foreach ($tbl_list as $row) {
-    if ($row[0] !== 'EHIKES') {
-        array_push($tables, $row[0]);
+if ($main) {
+    $data = $pdo->query("SHOW TABLES");
+    $tbl_list = $data->fetchALL(PDO::FETCH_NUM);
+    foreach ($tbl_list as $row) {
+        if ($row[0] !== 'EHIKES') {
+            array_push($tables, $row[0]);
+        }
     }
+    array_push($tables, 'EHIKES');
+} else {
+    $tables = array("EMETA", "META", "EGPX", "GPX");   
 }
-array_push($tables, 'EHIKES');
 $tblcnt = count($tables); // total number of database tables
-if (isset($_REQUEST['no'])) {
+if (isset($_REQUEST['no'])) {  // 'no' => no reload, only drop tables
     $action = 'Drop All Tables';
 } else {
     $action = "Reload Database";
@@ -66,14 +73,18 @@ if (isset($_REQUEST['no'])) {
 for ($i=0; $i<$tblcnt; $i++) {
     echo "Dropping {$tables[$i]}: ... ";
     try {
-        $pdo->query("DROP TABLE {$tables[$i]};");
+        if ($main) {
+            $pdo->query("DROP TABLE {$tables[$i]};");
+        } else {
+            $gdb->query("DROP TABLE {$tables[$i]};");
+        }  
     } catch (PDOException $pdoe) {
         // do nothing
     }
     echo "Table Removed<br />";
 }
 ?>
-<?php if ($action == 'Reload Database') : ?>
+<?php if ($action === 'Reload Database') : ?>
     <div style="margin-left:16px;">
     <p>Please wait until the 'DONE' message appears below</p>
         <br />

@@ -14,7 +14,12 @@
  */
 
 // Read in entire file
-$dbFile = "../data/nmhikesc_main.sql";
+if ($main) {
+    $dbFile = "../data/nmhikesc_main.sql";
+} else {
+    $dbFile = "../data/nmhikesc_gpx.sql";
+}
+
 $lines = file($dbFile);
 if (!$lines) {
     throw new Exception(
@@ -50,7 +55,11 @@ for ($i=0; $i<$line_cnt; $i++) {
         do {
             $create .= $lines[$i];
         } while (strpos($lines[$i++], ";") === false);
-        $pdo->exec($create);
+        if ($main) {
+            $pdo->exec($create);
+        } else {
+            $gdb->exec($create);
+        }
         $qcnt++;
         $i--;
     } elseif (strpos($lines[$i], "INSERT INTO") !== false) {
@@ -59,7 +68,11 @@ for ($i=0; $i<$line_cnt; $i++) {
         do {
             $insert .= $lines[$i];
         } while (strrpos($lines[$i], ";") !== strlen($lines[$i++])-2);
-        $pdo->query($insert);
+        if ($main) {
+            $pdo->query($insert);
+        } else {
+            $gdb->query($insert);
+        }  
         $qcnt++;
         $i--;
     } elseif (strpos($lines[$i], "ALTER") !== false) {
@@ -68,7 +81,11 @@ for ($i=0; $i<$line_cnt; $i++) {
         do {
             $alter .= $lines[$i];
         } while (strpos($lines[$i++], ";") === false);
-        $pdo->query($alter);
+        if ($main) {
+            $pdo->query($alter);
+        } else {
+            $gdb->query($alter);
+        }
         $qcnt++;
         $i--;
     } else {
@@ -83,9 +100,12 @@ for ($i=0; $i<$line_cnt; $i++) {
         $msg_out = false;
     }
 }
-echo PHP_EOL . '<script type="text/javascript">
+$gpx_only = <<<HDR
+<script type="text/javascript">
     var doneid = document.getElementById("done");
     doneid.style.display = "block";
+HDR;
+$main_msg = <<<BOD
     xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
@@ -94,4 +114,11 @@ echo PHP_EOL . '<script type="text/javascript">
     };
     xhr.open("get", "manageChecksums.php?act=ajax&reload=y");
     xhr.send();
-    </script>' . PHP_EOL;
+BOD;
+if ($main) {
+    $mout = $gpx_only . PHP_EOL . $main_msg . PHP_EOL;
+} else {
+    $mout = $gpx_only . PHP_EOL;
+}
+$mout .= '</script>' . PHP_EOL;
+echo $mout;

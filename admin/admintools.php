@@ -1,6 +1,6 @@
 <?php
 /**
- * Administration tools for the site masters are included here. These
+ * Administration tools for the site master(s) are included here. These
  * comprise buttons to carry out certain admin tasks, and are grouped
  * and ordered based on current usage.
  * PHP Version 7.4
@@ -61,19 +61,20 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 <div style="margin-left:24px;" id="tools">
     <fieldset>
         <legend>Overall Site Management</legend>
+        <button id="switchstate" type="button" class="btn 
+                btn-danger">Switch Site Mode</button>&nbsp;&nbsp;
         <span id="sitemode">The site is currently in
-            <span id="currstate"><?= $appMode;?></span> mode:</span>&nbsp;&nbsp;
-            <button id="switchstate" type="button" class="btn 
-                btn-danger">Switch Site Mode</button><br />
+            <span id="currstate"><?= $appMode;?></span> mode:</span><br /> 
+        <button id="swdb" type="button" class="btn
+            btn-danger">Switch DB's</button>&nbsp;&nbsp;
         <span id="cdb">
             <?php if ($dbState === 'test') : ?>
                 <span id="test" style="color:red;">Test DB</span>
             <?php else : ?>
                 <span id="real" style="color:blue;">Main DB</span>
             <?php endif; ?>
-            &nbsp;is currently in use:&nbsp;&nbsp;
-            <button id="swdb" type="button" class="btn
-            btn-danger">Switch DB's</button></span><br />
+            &nbsp;is currently in use
+            </span><br />
 
         <!-- The following uploads or installs a test site -->
         <span class="cats">Upload Test Site:</span><br />
@@ -113,35 +114,52 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             <span id="dsel">OR specify calendar date&nbsp;&nbsp;
             <input style="font-size:12px;width:90px;"
                 id="datepicker" type="text" name="datepicker" /></span><br />
+
         <span class="cats">Listings:</span><br />
         <button id="lst" type="button" class="btn 
             btn-secondary">List New Files</button>&nbsp;&nbsp;
-            [Since last upload]<br />
+            [Since last upload]<br /><br />
 
-        <span id="mgmt" class="cats">Database Management Tools:</span><br />
+        <span id="mgmt" class="cats">Main DB Management:</span><br />
         <button id="reload" type="button" class="btn 
-            btn-danger">Reload Database</button>&nbsp;
-            [Drops All Tables and Loads All Tables]<br />
+            btn-danger">Reload Main DB</button><br />
         <button id="drall" type="button" class="btn 
-            btn-danger">Drop All Tables</button><br />
+            btn-danger">Drop Tables in Main</button><br />
         <button id="ldall" type="button" class="btn 
-            btn-danger">Load All Tables</button>&nbsp;&nbsp;
+            btn-danger">Load Tables in Main</button>&nbsp;&nbsp;
             [NOTE: Tables must not exist]<br />
         <button id="exall" type="button" class="btn 
             btn-secondary">Export Main DB Tables</button>&nbsp;&nbsp;
             [NOTE: Creates .sql file]<br />
-        <button id="exgpx" type="button" class="btn 
-            btn-secondary">Export GPX DB Tables</button>&nbsp;&nbsp;
-            [NOTE: Creates .sql file]<br />
         <button id="dbchanges" type="button" class="btn 
             btn-secondary">Check for DB Changes</button><br />
-
         <button id="gensums" type="button" class="btn 
             btn-secondary">Generate Checksums</button>&nbsp;&nbsp;
             [NOTE: New checksums will be placed in Checksums table]<br />
         <button id="show" type="button" class="btn 
-            btn-secondary">Show All Tables</button><br />
+            btn-secondary">Show All Tables</button><br /><br />
 
+        <span id="mggpx" class="cats">GPX DB Management><br />
+        <button id="grld" type=button class="btn
+            btn-danger">Reload GPX DB</button><br />
+        <button id="exgpx" type="button" class="btn 
+            btn-secondary">Export GPX DB Tables</button>&nbsp;&nbsp;
+            [NOTE: Creates .sql file]<br />
+        
+        <button id="delfnos" type=button class="btn
+                btn-danger">Delete GPX Records</button>&nbsp;&nbsp;
+        <span>
+            <select id="gpxsel">
+                <option value="gpx">GPX/META</option>
+                <option value="egpx">EGPX/EMETA</option>
+            </select>&nbsp;&nbsp;
+            <span id="gpxrange">Specify fileno, comma-list, or hypen range here:
+                &nbsp;&nbsp;<input id="items" type="text"  />
+            </span>
+        </span>
+       
+        <br /><br />
+        
         <span class="cats">Miscellaneous Tools:</span><br />
         <?php
         if ($editing === 'yes') {
