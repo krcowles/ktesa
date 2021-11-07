@@ -17,9 +17,9 @@ require "../php/global_boot.php";
     <meta charset="utf-8" />
     <meta name="description" content="User session has expired" />
     <meta name="robots" content="nofollow" />
-    <link href="../styles/ktesaPanel.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/ktesaNavbar.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
-        body { background-color: whitesmoke; }
+        body { background-color: #eaeaea; }
         #msg { margin-left: 24px; }
     </style>
 </head>
@@ -35,9 +35,11 @@ require "../php/global_boot.php";
 
 <div id="msg">
     <h2>Your login session has expired</h2>
-    <h3>If you have accepted cookies, you may automatically re-login: 
+    <h3>[Not on mobile devices:] If you have accepted cookies, you
+        may automatically re-login: 
         <a href="../pages/home.php">Click here</a></h3>
-    <h3>If you have rejected cookies (or don't remember), use this link to log in:
+    <h3>[Mobile or other:] If you have rejected cookies (or don't
+        remember), use this link to log in:
         <a href="unifiedLogin.php?form=log">Login Page</a></h3>
 </div>
 

@@ -1,9 +1,6 @@
-body {
-    margin: 0px;
-    font-family: arial, verdana;
-    background-color: #FFF9F1 !important;
-    overflow-x: hidden;
-}
+@import "body";
+@import "overflow";
+
 /* Page Top */
 #logo {
     display: inline-block;

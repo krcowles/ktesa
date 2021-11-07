@@ -1,0 +1,112 @@
+@import "body";
+@import "ktesaNavbar";
+
+#logo {
+    margin-bottom: 0;
+}
+#banner {
+    height: 36px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-style: oblique;
+    background-color: #dff8e3;
+    text-align: center;
+    line-height: 1.8em;
+}
+#authors {
+    text-align: center;
+}
+#intro {
+    margin-top: 8px;
+    padding: 6px;
+}
+#hikes {
+    font-weight: bold;
+    text-decoration: underline;
+}
+#features {
+    margin-top: 16px;
+    margin-left: 8px;
+}
+#expect {
+    padding-left: 8px;
+    font-weight: bold;
+    text-decoration: underline;
+    color: DarkBlue;
+    font-size: 20px;
+}
+#expl {
+    padding-left: 8px;
+}
+.lht {
+    line-height: 1.3em;
+}
+.maindisp {
+    cursor: pointer;
+    color: darkblue;
+}
+#mapfeat {
+    position: relative;
+    top: -4px;
+}
+#mul {
+    display: none;
+}
+#tblfeat {
+    position: relative;
+    top: -4px;
+}
+#tul {
+    display: none;
+}
+#hikefeat {
+    position: relative;
+    top: -4px;
+}
+#hul {
+    display: none;
+}
+.dashed {
+    list-style-type: disc;
+    list-style-position: inside;
+}
+#disclaimers {
+    margin-top: 12px;
+    margin-bottom: 15px;
+}
+#disasters {
+    list-style-type: square;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+#caveat {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    width: 80%;
+    height: 36px;
+    line-height: 0.6em;
+    padding: 8px;
+    background-color: #dfdfdf;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #c9d7e8;
+    text-align: center;
+}
+.twisty-right {
+    float: left;
+    width: 0; 
+    max-height: 6px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid darkblue;
+}
+.twisty-down {
+    float: left;
+    width: 0; 
+    max-height: 6px; 
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgb(38, 201, 23);
+}

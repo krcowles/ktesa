@@ -1,0 +1,16 @@
+/* scss standard definitions */
+$page-min: 960px;
+$page-bg: #eaeaea;
+$page-fontsize: 16px;
+$page-fonts: arial, verdana;
+$page-margin: 0;
+
+body {
+    min-width: $page-min;
+    background-color: $page-bg;
+    margin: $page-margin;
+    font: {
+        family: $page-fonts;
+        size: $page-fontsize;
+    }
+}

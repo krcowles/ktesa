@@ -1,0 +1,87 @@
+@import "ktesaNavbar";
+#logo {
+	margin-bottom: 0px;
+}
+html, body {
+	font-family: arial, verdana;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+	overflow-x: hidden;
+	overflow-y: hidden;
+  }
+#trail {
+	display: none;
+}
+#searchbar {
+	border-radius: 8px;
+	border-width: 1px;
+	border-color: darkslategray;
+	font-size: 16px;
+	padding-left: 6px;
+	height: 34px;
+	position: absolute;
+	z-index: 200;
+}
+#map {
+	height: 100%;
+	width: 100%;
+}
+#srch {
+	display: none;
+}
+#geoSetting {
+	display: none;
+}
+#geoCtrl {
+	position: absolute;
+	z-index: 100;
+}
+#geoCtrl:hover {
+	cursor: pointer;
+}
+#legend {
+	position: absolute;
+}
+li img {
+	float: left;
+	margin-right: 4px;
+}
+li {
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-bottom: 4px;
+}
+#iwVC {
+	background-color: #f0f0f0;
+	color: Black;
+	padding: 8px;
+	margin: 3px;
+}
+#iwCH {
+	background-color: #f0f0f0;
+	color: Black;
+	padding: 8px;
+	margin: 3px;
+}
+#iwNH {
+	background-color: #f0f0f0;
+	color: Black;
+	padding: 8px;
+	margin: 3px;
+}
+#iwXH {
+	background-color: #f0f0f0;
+	color: Black;
+	padding: 8px;
+	margin: 3px;
+}
+#iwVC a, #iwCH a, #iwNH a, #iwXH a {
+	font-size: 12px;
+	top: -1px;
+	left: -6px;
+}
+/* For favorites map page: */
+#favlist {
+	position: absolute;
+}

@@ -1,8 +1,6 @@
-body { 
-    background-color: #eaeaea;
-    font-size: 16px;
-    margin: 0px;
-}
+@import "body";
+@import "ktesaNavbar";
+
 #tools {
     margin-left: 24px;
     box-sizing: content-box;

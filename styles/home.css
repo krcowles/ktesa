@@ -1,191 +1,392 @@
 /* Note that some of the settings are present explicitly to
    override either the bootstrap CSS or ktesaNavbar.css settings */
+/* scss standard definitions */
+/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/_body.scss */
 body {
-	min-width: 960px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 0px;
-	font-family: arial, verdana;
-	background-color: #dfdfdf;
-	overflow-x: hidden;
-	overflow-y: hidden;
+  min-width: 960px;
+  background-color: #eaeaea;
+  margin: 0;
+  font-family: arial, verdana;
+  font-size: 16px;
 }
-#logo {  /* override ktesaPanel.css */
-	margin-bottom: 0px;
-	margin-right: 0px;
+
+/* Overflow definitions when needed to prevent scroll bars */
+/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/_overflow.scss */
+body {
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
+
+/* line 1, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+.navbar {
+  background-color: darkslategray;
+}
+
+/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+.navbar-brand {
+  color: #bfd9bf !important;
+  font-style: italic;
+}
+
+/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+.nav-link {
+  color: whitesmoke !important;
+}
+
+/* line 11, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+ul.dropdown-menu {
+  background-color: whitesmoke !important;
+}
+
+/* Logo */
+/* line 15, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#logo {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 52px;
+  margin-bottom: 6px;
+  margin-right: 12px;
+  background-color: #ffe866;
+  z-index: 1;
+  text-align: center;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 31, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#pattern {
+  background-image: url("../images/southwest_pattern.png");
+  background-repeat: repeat-x;
+  background-attachment: scroll;
+  margin-top: 2px;
+  padding: 0px;
+  height: 16px;
+}
+
+/* line 39, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+.logo_items {
+  display: inline-block;
+}
+
+/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#leftside {
+  float: left;
+  margin-bottom: 0px;
+}
+
+/* line 46, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#ctr {
+  clear: both;
+  margin-top: 4px;
+  margin-bottom: 0px;
+}
+
+/* line 51, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#rightside {
+  float: right;
+  margin-bottom: 0px;
+}
+
+/* line 55, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#hikers {
+  float: left;
+  margin-top: 3px;
+  margin-left: 10px;
+  z-index: 100;
+}
+
+/* line 60, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#tmap {
+  float: right;
+  margin-right: 8px;
+  margin-top: 4px;
+  z-index: 100;
+}
+
+/* line 65, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#logo_left {
+  float: left;
+  margin-left: 12px;
+  margin-top: 4px;
+  color: darkslategray;
+  z-index: 5;
+}
+
+/* line 71, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#ctr {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* line 75, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#logo_right {
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
+  color: darkslategray;
+  z-index: 5;
+}
+
+/* line 81, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#trail {
+  clear: both;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* login elements */
+/* line 87, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#cookie_state, #cookies_choice, #admin, #contrib, #admintools {
+  display: none;
+}
+
+/* line 7, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
+#logo {
+  /* override ktesaPanel.css */
+  margin-bottom: 0px;
+  margin-right: 0px;
+}
+
+/* line 11, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #searchbar {
-	border-radius: 8px;
-	border-width: 1px;
-	border-color: darkslategray;
-	font-size: 16px;
-	padding-left: 6px;
-	height: 34px;
-	position: absolute;
-	top: 120px;
-	left: 140px;
-	z-index: 200;
+  border-radius: 8px;
+  border-width: 1px;
+  border-color: darkslategray;
+  font-size: 16px;
+  padding-left: 6px;
+  height: 34px;
+  position: absolute;
+  top: 120px;
+  left: 140px;
+  z-index: 200;
 }
+
+/* line 23, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #srch {
-	display: none;
+  display: none;
 }
+
+/* line 26, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #geoSetting {
-	display: none;
+  display: none;
 }
+
+/* line 29, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #geoCtrl {
-	position: absolute;
-	z-index: 100;
+  position: absolute;
+  z-index: 100;
 }
+
+/* line 33, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #geoCtrl:hover {
-	cursor: pointer;
+  cursor: pointer;
 }
+
+/* line 36, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #map {
-	float: left;
-	margin-bottom: 16px;
-    width: 65%;
-    height: 720px;
-	z-index: 1;
-	box-sizing: content-box
+  float: left;
+  margin-bottom: 16px;
+  width: 65%;
+  height: 720px;
+  z-index: 1;
+  box-sizing: content-box;
 }
+
+/* line 44, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #legend {
-	position: absolute;
+  position: absolute;
 }
+
+/* Info windows on map popups */
+/* line 48, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #iwVC {
-	background-color: #f0f0f0;
-	color: Black;
-	padding: 8px;
-	margin: 3px;
+  background-color: #f0f0f0;
+  color: Black;
+  padding: 8px;
+  margin: 3px;
 }
+
+/* line 54, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #iwCH {
-	background-color: #f0f0f0;
-	color: Black;
-	padding: 8px;
-	margin: 3px;
+  background-color: #f0f0f0;
+  color: Black;
+  padding: 8px;
+  margin: 3px;
 }
+
+/* line 60, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #iwNH {
-	background-color: #f0f0f0;
-	color: Black;
-	padding: 8px;
-	margin: 3px;
+  background-color: #f0f0f0;
+  color: Black;
+  padding: 8px;
+  margin: 3px;
 }
+
+/* line 66, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #iwXH {
-	background-color: #f0f0f0;
-	color: Black;
-	padding: 8px;
-	margin: 3px;
+  background-color: #f0f0f0;
+  color: Black;
+  padding: 8px;
+  margin: 3px;
 }
+
+/* line 72, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #iwVC a, #iwCH a, #iwNH a, #iwXH a {
-	font-size: 12px;
-	top: -1px;
-	left: -6px;
+  font-size: 12px;
+  top: -1px;
+  left: -6px;
 }
+
+/* Moveable vertical bar for right-hand list of hikes */
+/* line 78, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .custom {
-	cursor: url('../images/arrowCursor.png') 12 0, auto;
+  cursor: url("../images/arrowCursor.png") 12 0, auto;
 }
+
+/* line 81, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #adjustWidth {
-	float: left;
-	position: relative;
-	margin-left: -4px;
-	width: 3px;
-	background-color:darkGray;
-	z-index: 100;
+  float: left;
+  position: relative;
+  margin-left: -4px;
+  width: 3px;
+  background-color: darkGray;
+  z-index: 100;
 }
+
+/* line 90, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #sideTable {
-	float: left;
-	white-space: nowrap;
-	width: 35%;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	box-sizing: content-box;
+  float: left;
+  white-space: nowrap;
+  width: 35%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-sizing: content-box;
 }
+
+/* line 98, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .tableItem {
-	display: flex;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	background-color: floralwhite;
-	height: 64px;
-	width: 100%;
-	border-style: solid;
-	border-top: none;
-	border-color: black;
-	border-width: 1px;
-	float: left;
-	box-sizing: inherit;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  background-color: floralwhite;
+  height: 64px;
+  width: 100%;
+  border-style: solid;
+  border-top: none;
+  border-color: black;
+  border-width: 1px;
+  float: left;
+  box-sizing: inherit;
 }
+
+/* line 112, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .tip, .zpop {
-	display: none;
-	width: 126px;
-	background-color: black;
-	color: #fff;
-	text-align: center;
-	padding: 5px 2px;
-	border-radius: 6px;
-	position: absolute;
-  	z-index: 200;
-	box-sizing: inherit; 
+  display: none;
+  width: 126px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 2px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 200;
+  box-sizing: inherit;
 }
+
+/* line 124, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .icons {
-	height: 100%;
-	width: 36px;
-	box-sizing: inherit;
+  height: 100%;
+  width: 36px;
+  box-sizing: inherit;
 }
+
+/* line 129, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .like {
-	cursor: pointer;
-	padding-left: 3px;
-	width: 28px;
-	height: 28px;
-	box-sizing: inherit;
+  cursor: pointer;
+  padding-left: 3px;
+  width: 28px;
+  height: 28px;
+  box-sizing: inherit;
 }
+
+/* line 136, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .zoomers {
-	padding-left: 5px;
-	height: 24px;
-	width: 24px;
-	cursor: pointer;
-	box-sizing: inherit;
+  padding-left: 5px;
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  box-sizing: inherit;
 }
+
+/* line 143, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .content {
-	width: calc(100% - 123px);
-	line-height: 100%;
-	overflow: hidden;
-	box-sizing: inherit;
+  width: calc(100% - 123px);
+  line-height: 100%;
+  overflow: hidden;
+  box-sizing: inherit;
 }
+
+/* line 149, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .content:last-child {
-	top: 0px;
+  top: 0px;
 }
+
+/* line 152, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .stlinks {
-	position: relative;
-	top: 4px;
-	padding-left: 6px;
-	font-size: 18px;
-	box-sizing: inherit;
-	color: blue;
+  position: relative;
+  top: 4px;
+  padding-left: 6px;
+  font-size: 18px;
+  box-sizing: inherit;
+  color: blue;
 }
+
+/* line 160, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .subtxt, .subtxtb {
-	padding-left: 6px;
-	font-size: 14px;
-	position: relative;
-	top: 6px;
-	box-sizing: inherit;
+  padding-left: 6px;
+  font-size: 14px;
+  position: relative;
+  top: 6px;
+  box-sizing: inherit;
 }
+
+/* line 167, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .subtxtb {
-	top: 7px;
+  top: 7px;
 }
+
+/* line 170, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .thumbs {
-	margin-right: 4px;
-	cursor: pointer;
-	z-index: 50;
-	width: 83px;
-	box-sizing: inherit;
+  margin-right: 4px;
+  cursor: pointer;
+  z-index: 50;
+  width: 83px;
+  box-sizing: inherit;
 }
+
+/* line 177, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .thmbpic {
-	box-sizing: inherit;
+  box-sizing: inherit;
 }
+
+/* line 180, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .zpop {
-	width: 104px;
+  width: 104px;
 }
+
+/* line 183, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 .bigger {
-	position: absolute;
+  position: absolute;
 }
+
+/* line 186, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/home.scss */
 #tbl_container {
-	display: none;
+  display: none;
 }
+
+/*# sourceMappingURL=home.css.map */
