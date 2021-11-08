@@ -9,19 +9,21 @@ button {
     margin-bottom: 4px;
     border-width: 1px;
 }
-/* Can't get fieldset to show up using bootstrap!
-fieldset {
-    width: 96%;
-    padding: 2px;
-    margin: 0;
-    border: 2px;
-    border-color: darkgreen;
-} */
-legend { 
+/* Getting fieldset/legend to work in Bootstrap is very tricky! */
+fieldset.afs {
+    float: none;
+    width: auto;
+    border: 2px solid darkgreen !important;
+    border-radius: 4px !important;
+    padding: 0px 6px 6px 8px;
+}
+legend {
+    float: none; 
+    width: inherit;
     color: darkgreen;
     font-style: italic;
-    text-decoration: underline;
     font-size: 18px;
+    padding: 0 5px;
 }
 #loading {
     display: none;

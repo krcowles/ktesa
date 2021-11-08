@@ -1,5 +1,5 @@
 /* scss standard definitions */
-/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/_body.scss */
+/* line 8, ../../../../../Users/kencowles/src/ktesa/sass/_body.scss */
 body {
   min-width: 960px;
   background-color: #eaeaea;
@@ -8,29 +8,29 @@ body {
   font-size: 16px;
 }
 
-/* line 1, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 1, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .navbar {
   background-color: darkslategray;
 }
 
-/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 4, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .navbar-brand {
   color: #bfd9bf !important;
   font-style: italic;
 }
 
-/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 8, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .nav-link {
   color: whitesmoke !important;
 }
 
-/* line 11, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 11, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 ul.dropdown-menu {
   background-color: whitesmoke !important;
 }
 
 /* Logo */
-/* line 15, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 15, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo {
   display: inline-block;
   vertical-align: top;
@@ -49,7 +49,7 @@ ul.dropdown-menu {
   box-sizing: border-box;
 }
 
-/* line 31, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 31, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #pattern {
   background-image: url("../images/southwest_pattern.png");
   background-repeat: repeat-x;
@@ -59,31 +59,31 @@ ul.dropdown-menu {
   height: 16px;
 }
 
-/* line 39, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 39, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .logo_items {
   display: inline-block;
 }
 
-/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 42, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #leftside {
   float: left;
   margin-bottom: 0px;
 }
 
-/* line 46, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 46, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #ctr {
   clear: both;
   margin-top: 4px;
   margin-bottom: 0px;
 }
 
-/* line 51, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 51, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #rightside {
   float: right;
   margin-bottom: 0px;
 }
 
-/* line 55, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 55, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #hikers {
   float: left;
   margin-top: 3px;
@@ -91,7 +91,7 @@ ul.dropdown-menu {
   z-index: 100;
 }
 
-/* line 60, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 60, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #tmap {
   float: right;
   margin-right: 8px;
@@ -99,7 +99,7 @@ ul.dropdown-menu {
   z-index: 100;
 }
 
-/* line 65, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 65, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo_left {
   float: left;
   margin-left: 12px;
@@ -108,13 +108,13 @@ ul.dropdown-menu {
   z-index: 5;
 }
 
-/* line 71, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 71, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #ctr {
   font-size: 18px;
   font-weight: bold;
 }
 
-/* line 75, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 75, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo_right {
   float: right;
   margin-right: 10px;
@@ -123,7 +123,7 @@ ul.dropdown-menu {
   z-index: 5;
 }
 
-/* line 81, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 81, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #trail {
   clear: both;
   text-align: center;
@@ -131,40 +131,44 @@ ul.dropdown-menu {
 }
 
 /* login elements */
-/* line 87, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+/* line 87, ../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #cookie_state, #cookies_choice, #admin, #contrib, #admintools {
   display: none;
 }
 
-/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 4, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #tools {
   margin-left: 24px;
   box-sizing: content-box;
 }
 
-/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 8, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 button {
   margin-bottom: 4px;
   border-width: 1px;
 }
 
-/* Can't get fieldset to show up using bootstrap!
-fieldset {
-    width: 96%;
-    padding: 2px;
-    margin: 0;
-    border: 2px;
-    border-color: darkgreen;
-} */
-/* line 20, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
-legend {
-  color: darkgreen;
-  font-style: italic;
-  text-decoration: underline;
-  font-size: 18px;
+/* Getting fieldset/legend to work in Bootstrap is very tricky! */
+/* line 13, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+fieldset.afs {
+  float: none;
+  width: auto;
+  border: 2px solid darkgreen !important;
+  border-radius: 4px !important;
+  padding: 0px 6px 6px 8px;
 }
 
-/* line 26, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 20, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+legend {
+  float: none;
+  width: inherit;
+  color: darkgreen;
+  font-style: italic;
+  font-size: 18px;
+  padding: 0 5px;
+}
+
+/* line 28, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #loading {
   display: none;
   position: absolute;
@@ -172,75 +176,75 @@ legend {
   left: 32%;
 }
 
-/* line 32, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 34, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 .cats {
   font-size: 18px;
   color: brown;
 }
 
-/* line 36, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 38, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #testsite {
   margin-left: 24px;
 }
 
-/* line 39, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 41, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 .installdat {
   height: 28px;
   font-size: 16px;
   width: 180px;
 }
 
-/* line 44, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 46, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #sites {
   padding-top: 6px;
 }
 
-/* line 47, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 49, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #switchstate, #lst, #swdb {
   margin-bottom: 12px;
 }
 
-/* line 50, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 52, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 .adminbuttons {
   color: black;
   background-color: ghostwhite;
 }
 
-/* line 54, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 56, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 .adminbuttons:hover {
   color: white;
   background-color: #6D3C17;
 }
 
-/* line 58, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 60, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #sitemode, #currstate, #emode, #cdb {
   font-size: 18px;
 }
 
-/* line 61, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 63, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #currstate {
   color: blue;
   font-weight: bold;
 }
 
-/* line 65, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 67, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #test, #real {
   font-weight: bold;
 }
 
-/* line 68, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 70, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #tools {
   margin-left: 24px;
   font-size: 16px;
 }
 
-/* line 72, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 74, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 select {
   height: 24px;
   font-size: 16px;
 }
 
-/* line 76, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 78, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #datepicker, #revlist {
   height: 28px;
   border-radius: 4px;
@@ -248,22 +252,22 @@ select {
   padding-left: 4px;
 }
 
-/* line 82, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 84, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #revresult, label {
   font-size: 18px;
 }
 
-/* line 85, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 87, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 input[type=file] {
   font-size: 18px;
 }
 
-/* line 88, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 90, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 input[type=file]:hover {
   cursor: pointer;
 }
 
-/* line 91, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
+/* line 93, ../../../../../Users/kencowles/src/ktesa/sass/admintools.scss */
 #filebrowse {
   margin-bottom: 6px;
 }
