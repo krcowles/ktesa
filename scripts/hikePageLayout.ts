@@ -230,5 +230,30 @@ function drawRows(useWidth: number) {
         return;
     }
 }
+/**
+ * When user wishes to download a gpx file
+ */
+ $('#dwnld').on('click', function () {
+    var pgname = $('#trail').text();
+    var hikeno = $('#hikeno').text();
+    var tbls = $('#tbls').text();
+    var php = '../php/downloadGpx.php?indx=' + hikeno + '&name=' + pgname
+        + '&tbl=' + tbls + '&type=main';
+    window.open(php);
+});
+$('#gpsdwnld').on('click', function() {
+    var $sibs = $(this).siblings();
+    var $span = $sibs.eq(0);
+    var $fplnk = $sibs.eq(1);
+    var filename = $span.text();
+    var href = <string>$fplnk.attr('href');
+    var gpxno = href.indexOf('gpx=') + 4;
+    var hikeno = href.substring(gpxno);
+    var tbls = $('#tbls').text();
+    var php = '../php/downloadGpx.php?indx=' + hikeno + '&name=' + filename
+        + '&tbl=' + tbls + '&type=gpsdat';
+    window.open(php);
 
 
+
+});
