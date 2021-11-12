@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 
 
@@ -79,7 +79,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=178 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=179 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -256,7 +256,8 @@ INSERT INTO CLUSHIKES VALUES
 ('174','276','Y','55'),
 ('175','248','Y','55'),
 ('176','278','Y','56'),
-('177','267','Y','56');
+('177','267','Y','56'),
+('178','280','Y','37');
 
 
 
@@ -343,20 +344,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2021-10-31 18:34:30'),
-('2','CLUSHIKES','2551973919','2021-10-31 18:34:30'),
-('3','CLUSTERS','744401969','2021-10-31 18:34:30'),
-('4','EGPSDAT','0','2021-10-31 18:34:30'),
-('5','EHIKES','0','2021-10-31 18:34:30'),
-('6','EREFS','0','2021-10-31 18:34:30'),
-('7','ETSV','0','2021-10-31 18:34:30'),
-('8','FAVORITES','3651041965','2021-10-31 18:34:30'),
-('9','GPSDAT','2286893383','2021-10-31 18:34:30'),
-('10','HIKES','4116000427','2021-10-31 18:34:30'),
-('11','REFS','4254339157','2021-10-31 18:34:30'),
-('12','TSV','215435496','2021-10-31 18:34:30'),
-('13','USERS','510490655','2021-10-31 18:34:30'),
-('14','VISITORS','4201875164','2021-10-31 18:34:30');
+('1','BOOKS','2674158859','2021-11-06 14:01:53'),
+('2','CLUSHIKES','3619924806','2021-11-06 14:01:53'),
+('3','CLUSTERS','1449374701','2021-11-06 14:01:53'),
+('4','EGPSDAT','0','2021-11-06 14:01:53'),
+('5','EHIKES','0','2021-11-06 14:01:53'),
+('6','EREFS','0','2021-11-06 14:01:53'),
+('7','ETSV','0','2021-11-06 14:01:53'),
+('8','FAVORITES','3651041965','2021-11-06 14:01:53'),
+('9','GPSDAT','2286893383','2021-11-06 14:01:53'),
+('10','HIKES','31841313','2021-11-06 14:01:53'),
+('11','REFS','4202189160','2021-11-06 14:01:53'),
+('12','TSV','2531764605','2021-11-06 14:01:53'),
+('13','USERS','510490655','2021-11-06 14:01:53'),
+('14','VISITORS','3130111378','2021-11-06 14:01:53');
 
 
 
@@ -371,7 +372,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 
 
@@ -387,7 +388,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 
 
@@ -415,7 +416,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
 
 
 
@@ -430,7 +431,7 @@ CREATE TABLE `GPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO GPSDAT VALUES
@@ -486,7 +487,8 @@ INSERT INTO GPSDAT VALUES
 ('139','260','P','MAP:','../maps/Stop3.html','Stop3 Hike'),
 ('141','156','P','GPX:','../gpx/WaterCanyonSbWithElev.gpx','Proposed Hike Track File'),
 ('142','226','P','GPX:','../gpx/WhiteMesaAlt.gpx','Segment from Dragons Back (Not Recommended)'),
-('143','269','P','GPX:','../gpx/SpruceSpringsLoop-174.28.97.193-1631892872.gpx','Red Canyon-Spruce Springs Loop');
+('143','269','P','GPX:','../gpx/SpruceSpringsLoop-174.28.97.193-1631892872.gpx','Red Canyon-Spruce Springs Loop'),
+('144','280','P','GPX:','../gpx/South_Crest_Trail.gpx','South Crest Trail');
 
 
 
@@ -519,7 +521,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=280 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=281 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -793,7 +795,8 @@ INSERT INTO HIKES VALUES
 ('276','Mars Court Multi-Trail Loop','2','Tijeras','Loop','7.50','400','Easy-Moderate','None','Various Mountain and Canyon Views','Not Winter','Mixed sun/shade','Mars_Court-97.123.105.87-1635552047.gpx','Mars_Court-97.123.105.87-1635552047.json','349839315','-1063498438','Mars71b0f1.jpg',NULL,NULL,'https://www.google.com/maps/dir//Mars+Court+Trailhead,+Tijeras,+NM+87059/@35.0289965,-106.405657,12.41z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a54daea6d5d1:0x1c2171fd84bf2aab!2m2!1d-106.349758!2d34.983951','<p>The parking area is a very short distance off the paved road, but can be quite rugged.</p>\r\n<p>There is some very misleading and confusing signage on <em><span style=\"color: #1428d2;\">3 Bottles Trail</span></em>. At its juncture with the <em><span style=\"color: #1428d2;\">Cajun Pine Trail</span></em>, a sign is posted (see photos below) indicating \"Specialized Skills\" are required to proceed - <span style=\"text-decoration: underline;\">completely false</span> (see also the <em>Otero Canyon Hike</em>). There is no noticeably difficult part of the trail ahead.</p>\r\n<p>At the point of the northernmost yellow triangle on the interactive map, a vertical post indicates \"No Entry\", and a post indicating \"Easiest\" trail proceeds straight ahead - then seems to fizzle out at the nearby blue marker. It may actually proceed to FR 106, but the trail is indistinct. The correct way to proceed is to take the \"No Entry\" path which seems well maintained, and contains <em>additional </em>signage claiming \"Easiest\" trail! The general rule on the map is that green flags indicate a left fork, and red flags indicate a right (or sometimes straight ahead) route.</p>','<p>This hike was put together by the author using trail maps to create a reasonable loop. The trails are generally easy grades, with infrequent short stretches of moderate grade. The hike loop begins by following the <em><span style=\"color: #1428d2;\">Wild Turkey Trail</span></em> from the parking area, to the fork at the <em><span style=\"color: #1428d2;\">Cajun Pine Trail.</span></em> This hike (which undoubtedly indicates the easier direction to follow) slowly proceeds uphill towards the <em><span style=\"color: #1428d2;\">3 Bottle Trail</span></em>, where very confusing signage is in place - please review the <strong>Trail Tips</strong>, above.</p>\r\n<p>Following the route shown on the <em><span style=\"color: #1428d2;\">3 Bottle Trail</span></em>, an intersection occurs at the north end where a short jog to <em><span style=\"color: #1428d2;\">FR 106</span></em> is necessary. The two track then goes a short distance, where the <em><span style=\"color: #1428d2;\">Drop In Trail</span></em> begins and proceeds southwest, then south, to the intersection with the <em><span style=\"color: #1428d2;\">West Boundary Trail</span></em>.</p>\r\n<p>The <em><span style=\"color: #1428d2;\">West Boundary Trail</span></em> is so named, apparently, as it borders the reserved DOD land to its west. It proceeds south and eventually intersects <em><span style=\"color: #1428d2;\">FR 530</span></em>, where the hike heads southeast. The latter slowly makes an arc heading north, where an <em><span style=\"color: #1428d2;\">Unmarked Trail</span></em> veers off and heads towards <em><span style=\"color: #1428d2;\">David Canyon Road, FR 535</span></em>. The <em><span style=\"color: #1428d2;\">Unmarked Trail</span></em> rapidly descends into the canyon before intersecting <em><span style=\"color: #1428d2;\">FR 535</span></em>. This descent is most likely easier than following the trail in opposite direction of the hike, and then having to ascend this section.</p>\r\n<p>A short distance north on <em><span style=\"color: #1428d2;\">FR 535</span></em> takes you to the juncture with <span style=\"color: #1428d2;\"><em>Wild Turkey Trail</em></span>, which is then followed back to the parking area.</p>\r\n<p>Note that the reference link below to the <em>AllTrails</em> version of the hike is similar, but avoids <span style=\"color: #1428d2;\"><em>3 Bottle Trail</em></span> to form its loop. It also extends further south to make a longer 8.8 mile loop.</p>','2021-10-29',NULL,NULL,NULL),
 ('277','Rio Rancho Bosque','2','Albuquerque','Loop','4.10','40','Easy','None','Bosque and Mountain Views','Any','Mixed sun/shade','RioBosque-97.123.105.87-1635720682.gpx','RioBosque-97.123.105.87-1635720682.json','352851548','-1065970496','Rio f99fc8.jpg',NULL,NULL,'https://www.google.com/maps/dir//Rio+Rancho+Bosque+Preserve+-+Riverside+Dr+Entrance,+1740+Black+River+Dr+NE,+Rio+Rancho,+NM+87144/@35.2804451,-106.6085825,15.06z/data=!4m8!4m7!1m0!1m5!1m1!1s0x872279dbcc46f707:0x716399341469b90d!2m2!1d-106.599003!2d35.2838621',NULL,'<p>The <em><span style=\"color: #1428d2;\">Rio Rancho Bosque Preserve Trail</span></em> is accesible from an unsuspecting location - the busy NM 528. A short distance from the highway, the bosque provides a very pleasant environment that is a world apart from the adjacent neighborhood. The trail has higher and lower main arteries providing either views of the Sandias or closer views of the Rio Grande, with a quiet wooded area in between where trails weave in and out. For those in the area, it is a pleasant escape. And, as seen in the photos, autumn adds its own special touch. Note that there is a second entrance from Willow Creek Rd, opposite of Idalia at NM 528.</p>','2021-10-27',NULL,NULL,NULL),
 ('278','Cedro Creek Nature Trail','2','Tijeras','Out-and-back','3.60','200','Easy','None','Canyon and Creekside Views','Not Winter','Mixed sun/shade','CedroCreekNature-97.123.105.87-1635982290.gpx','CedroCreekNature-97.123.105.87-1635982290.json','350346231','-1063742910','Cedr3663b6.jpg',NULL,NULL,'https://www.google.com/maps/dir//Otero+Canyon+East+Trailhead,+Tijeras,+NM+87059/@35.0491555,-106.396061,13z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a5204426aaf7:0x37fa5ac7c94cc92c!2m2!1d-106.3742777!2d35.0347618',NULL,'<p>The <span style=\"color: #1428d2;\"><em>Cedro Creek Nature Trail</em></span> follows a normally well-supplied creek (not this year! [2021]). The path goes up slightly into a wooded area, then back down towards the creek bed where it twists and turns. Multiple alternate routes appear, all apparently rejoining the main trail at some point. There are a variety of views along the way making for a surprisingly pleasant hike.</p>\r\n<p>According to locals, the creek can be quite high at times. The \'usual\' turn-around point for the hike is about a mile in, at an open area with large flat rocks, but the trail does continue up to the point where private land is encountered. When going that route, you will pass the \'climbing wall\' - a section of rock popular with rock climbing practitioners.</p>','2021-11-03',NULL,NULL,NULL),
-('279','Oak Flat Loop','2','Tijeras','Loop','6.50','400','Easy-Moderate','None','Wooded Trails','Not Winter','Good shade','PonderosaLoop-97.123.105.87-1635979105.gpx','PonderosaLoop-97.123.105.87-1635979105.json','349994431','-1063162594','Oak 578577.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.9994444,-106.31625/@34.9990593,-106.3324498,14z','<p>&nbsp;There are multiple unmarked forks and crossings. A tracking device is recommended to prevent unnecessary diversions.</p>','<p>This hike starts at <em><span style=\"color: #1428d2;\">Mohagany Run</span></em> and soon cuts over to the main <span style=\"color: #1428d2;\"><em>Ponderosa Trail</em></span> loop. As the <em><span style=\"color: #1428d2;\">Ponderosa Trail </span></em>is not a long loop, the author extended the trail by cutting back over on <span style=\"color: #1428d2;\"><em>Mohagany</em></span> and on to <em><span style=\"color: #1428d2;\">Gamble Oak</span></em>, <em><span style=\"color: #1428d2;\">Caida del Pino</span></em>, and finally closing the loop via the <em><span style=\"color: #1428d2;\">Easy Pickin Trail</span></em> segment.</p>\r\n<p>Much of the trail is in the woods, so there is not a wide variety of scenery. Occasionally, the forest opens up to allow views west and north so that not only can one catch a view of the <em>Sandia</em>\'s eastern slopes, but also the <em>San Pedros</em> can be seen, and beyond to the <em>Sangre de Cristos</em>. The trail does not present any major elevation changes, but rather slowly ascending or descending trail sections.</p>','2021-11-03',NULL,NULL,NULL);
+('279','Oak Flat Loop','2','Tijeras','Loop','6.50','400','Easy-Moderate','None','Wooded Trails','Not Winter','Good shade','PonderosaLoop-97.123.105.87-1635979105.gpx','PonderosaLoop-97.123.105.87-1635979105.json','349994431','-1063162594','Oak 578577.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.9994444,-106.31625/@34.9990593,-106.3324498,14z','<p>&nbsp;There are multiple unmarked forks and crossings. A tracking device is recommended to prevent unnecessary diversions.</p>','<p>This hike starts at <em><span style=\"color: #1428d2;\">Mohagany Run</span></em> and soon cuts over to the main <span style=\"color: #1428d2;\"><em>Ponderosa Trail</em></span> loop. As the <em><span style=\"color: #1428d2;\">Ponderosa Trail </span></em>is not a long loop, the author extended the trail by cutting back over on <span style=\"color: #1428d2;\"><em>Mohagany</em></span> and on to <em><span style=\"color: #1428d2;\">Gamble Oak</span></em>, <em><span style=\"color: #1428d2;\">Caida del Pino</span></em>, and finally closing the loop via the <em><span style=\"color: #1428d2;\">Easy Pickin Trail</span></em> segment.</p>\r\n<p>Much of the trail is in the woods, so there is not a wide variety of scenery. Occasionally, the forest opens up to allow views west and north so that not only can one catch a view of the <em>Sandia</em>\'s eastern slopes, but also the <em>San Pedros</em> can be seen, and beyond to the <em>Sangre de Cristos</em>. The trail does not present any major elevation changes, but rather slowly ascending or descending trail sections.</p>','2021-11-03',NULL,NULL,NULL),
+('280','South Crest via Travertine','2','Tijeras','Out-and-back','7.80','1700','Moderate','None','Mountain Views','Not Winter','Good shade','South_Crest-97.123.105.87-1636586839.gpx','South_Crest-97.123.105.87-1636586839.json','350895763','-1063914861','Sout65a795.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0866031,-106.396326,15.66z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <em><span style=\"color: #1428d2;\">Crest Trail</span></em> stretches almost 26 miles across the heights of the Sandias. The AllTrails link below in <strong>References</strong> shows approximately half of the entire length, beginning at the Sandia Crest Highway terminus. The author\'s hike begins at the south end of the trail and proceeds almost 4 miles in to make for an&nbsp; 8 mile out-and-back. The author chose to proceed to <em>Travertine Falls</em> and then uphill to the <em><span style=\"color: #1428d2;\">South Crest Trail </span></em>in order to cut off about 1/3 mile from the hike, as taking the South Crest Trail at the Travertine split adds unnecessary distance.</p>\r\n<p>The trail is generally moderate to easy in grade, but continues uphill the entire way - and beyond. Once leaving the <em>Hondo Canyon</em> and reaching higher elevations, some mountain views are accessible. At first, the trail looks out to the northeast, presenting views of <em>South Mountain</em> and the <em>San Pedro</em> range. Later, the trail angles around to afford views south towards the <em>Manzano Mountains</em>. By the time the author reached the turn-around point, the <em>Sandia</em> ridge was visible to the north.</p>','2021-11-10',NULL,NULL,NULL);
 
 
 
@@ -805,7 +808,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3068 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3071 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1776,7 +1779,10 @@ INSERT INTO REFS VALUES
 ('3061','267','Website:','https://www.fs.usda.gov/recarea/cibola/recarea/?recid=64226','USDA Forest Service'),
 ('3062','267','App:','https://www.alltrails.com/trail/us/new-mexico/otero-canyon-east','AllTrails.com'),
 ('3063','267','Website:','https://www.hikingproject.com/trail/7032750/otero-canyon-loop','Hiking Project'),
-('3064','267','Blog:','https://www.dogofthedesert.net/manzanitas-trail-map/','Dog of the Desert (Map)');
+('3064','267','Blog:','https://www.dogofthedesert.net/manzanitas-trail-map/','Dog of the Desert (Map)'),
+('3068','280','Book:','7',NULL),
+('3069','280','App:','https://www.alltrails.com/trail/us/new-mexico/south-crest-trail--2','AllTrails.com'),
+('3070','280','Blog:','https://www.dogofthedesert.net/south-crest-and-ccc-trails/','Dog of the Desert');
 
 
 
@@ -1800,7 +1806,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9433 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9448 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4823,7 +4829,19 @@ INSERT INTO TSV VALUES
 ('9414','267',NULL,'IMG_4244','Y','Y','The parting of the trees','350213389','-1063636778','2894',NULL,'2021-09-03 11:13:43','IMG_4244','480','640',NULL,'12'),
 ('9415','267',NULL,'IMG_4187','Y','Y','A high point on Blue Ribbon','350200056','-1063623722','2895',NULL,'2021-08-19 11:50:18','IMG_4187','480','640',NULL,'13'),
 ('9416','267',NULL,'IMG_4233','Y','Y','Old FR106 continues north to oblivion','350151833','-1063625194','2896',NULL,'2021-09-03 10:24:40','IMG_4233','480','640',NULL,'14'),
-('9417','267',NULL,'IMG_4222','Y','N','DoD Warning and obvious blockade','350129500','-1063701472','2897',NULL,'2021-09-03 09:34:48','IMG_4222','480','640',NULL,'15');
+('9417','267',NULL,'IMG_4222','Y','N','DoD Warning and obvious blockade','350129500','-1063701472','2897',NULL,'2021-09-03 09:34:48','IMG_4222','480','640',NULL,'15'),
+('9433','280',NULL,'IMG_4607','Y','Y','South Crest Trail 130 Trail Head','350895833','-1063915028','3039',NULL,'2021-11-10 09:01:05','IMG_4607','480','640',NULL,'0'),
+('9434','280',NULL,'IMG_4621','Y','Y','Towards the Manzano Mountains','350940139','-1064112083','3040',NULL,'2021-11-10 10:21:28','IMG_4621','480','640',NULL,'6'),
+('9435','280',NULL,'IMG_4612','Y','Y','Hiking up the South Crest Trail','350959250','-1063952333','3041',NULL,'2021-11-10 09:21:52','IMG_4612','640','480',NULL,'2'),
+('9436','280',NULL,'IMG_4618','Y','Y','3-Way Junction on the South Crest','350988306','-1064059000','3042',NULL,'2021-11-10 10:02:44','IMG_4618','640','480',NULL,'3'),
+('9437','280',NULL,'IMG_4613','Y','Y','A view of Hondo Canyon','350974278','-1063992611','3043',NULL,'2021-11-10 09:34:09','IMG_4613','480','640',NULL,'4'),
+('9438','280',NULL,'IMG_4610','Y','Y','At Travertine Falls','350951361','-1063937750','3044',NULL,'2021-11-10 09:17:09','IMG_4610','480','640',NULL,'1'),
+('9439','280',NULL,'IMG_4622','Y','Y','A clear view of the Manzanos','350945583','-1064142083','3045',NULL,'2021-11-10 10:26:15','IMG_4622','480','640',NULL,'7'),
+('9440','280',NULL,'IMG_4625','Y','Y','A view from higher up','350895806','-1064215917','3046',NULL,'2021-11-10 10:44:59','IMG_4625','480','640',NULL,'8'),
+('9441','280',NULL,'IMG_4631','Y','Y','North to the San Pedros and South Mountain','350979083','-1064008472','3047',NULL,'2021-11-10 12:08:09','IMG_4631','480','640',NULL,'5');
+INSERT INTO TSV VALUES
+('9442','280',NULL,'IMG_4629','Y','Y','A corrugated closuep','350896806','-1064243250','3048',NULL,'2021-11-10 11:05:50','IMG_4629','480','640',NULL,'10'),
+('9443','280',NULL,'IMG_4630','Y','Y','Looking back on the Manzanos','350895778','-1064212583','3049',NULL,'2021-11-10 11:16:18','IMG_4630','480','640',NULL,'9');
 
 
 
@@ -4862,7 +4880,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=174 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -5039,7 +5057,14 @@ INSERT INTO VISITORS VALUES
 ('170','157.55.39.83','Unknown','Unknown','2021-11-03 10:38:41','https://nmhikes.com:443/pages/home.php'),
 ('171','97.123.105.87','Mozilla Firefox','mac','2021-11-05 08:10:46','https://nmhikes.com:443/pages/home.php'),
 ('172','191.101.41.65','Unknown','mac','2021-11-05 08:30:47','https://nmhikes.com:443/pages/home.php'),
-('173','191.101.41.65','Apple Safari','mac','2021-11-05 08:30:47','https://nmhikes.com:443/pages/home.php');
+('173','191.101.41.65','Apple Safari','mac','2021-11-05 08:30:47','https://nmhikes.com:443/pages/home.php'),
+('174','149.56.150.218','Unknown','Unknown','2021-11-07 08:20:56','https://nmhikes.com:443/pages/home.php'),
+('175','149.56.150.171','Unknown','Unknown','2021-11-07 10:01:56','https://nmhikes.com:443/pages/home.php'),
+('176','149.56.150.200','Unknown','Unknown','2021-11-07 11:27:53','https://nmhikes.com:443/pages/home.php'),
+('177','149.56.150.25','Unknown','Unknown','2021-11-07 12:40:57','https://nmhikes.com:443/pages/home.php'),
+('178','87.250.224.15','Unknown','Unknown','2021-11-09 07:22:23','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=112'),
+('179','191.101.41.35','Unknown','mac','2021-11-09 07:51:13','https://nmhikes.com:443/pages/home.php'),
+('180','191.101.41.35','Apple Safari','mac','2021-11-09 07:51:13','https://nmhikes.com:443/pages/home.php');
 
 
 
