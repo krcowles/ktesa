@@ -25,7 +25,7 @@
     background-color: cornsilk;
 }
 .tablist.active {
-    background-color: #dadada;
+    background-color: $page-bg;
     color: black;
 }
 .tablist:hover {
@@ -39,7 +39,7 @@
     border: none;
     border-bottom: solid;
     border-width: 1px;
-    background-color: #dadada;
+    background-color: $page-bg;
 }
 .tab-panel {
     clear: left;

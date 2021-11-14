@@ -45,6 +45,7 @@ if (isset($_POST['rem'])) {
     $rems = [];
     $noOfRems = 0;
 }
+$picpath = getPicturesDirectory();
 $photoReq = "SELECT * FROM `ETSV` WHERE `indxNo` = ?;";
 $photoq = $pdo->prepare($photoReq);
 $photoq->execute([$hikeNo]);
@@ -90,6 +91,22 @@ for ($n=0; $n<count($picarray); $n++) {
             $delreq = "DELETE FROM `ETSV` WHERE `picIdx` = ?;";
             $del = $pdo->prepare($delreq);
             $del->execute([$thisid]);
+            /**
+             * If this pic is not specified elsewhere in the db, it can
+             * be deleted permanently; 
+             */
+            $hpixReq = $pdo->query("SELECT `mid` FROM `TSV`;");
+            $hpix = $hpixReq->fetchAll(PDO::FETCH_COLUMN);
+            $epixReq = $pdo->query("SELECT `mid` FROM `ETSV`;");
+            $epix = $epixReq->fetchAll(PDO::FETCH_COLUMN);
+            $allpix = array_merge($hpix, $epix);
+            if (!in_array($picarray[$n]['mid'], $allpix)) {
+                $piclnk = $picpath . $picarray[$n]['mid'] . "_" .
+                    $picarray[$n]['thumb'] . "_z.jpg";
+                if (!unlink($piclnk)) {
+                    throw new Exception("Could not delete {$piclnk}");
+                }
+            }
         } else {
             $updtreq = "UPDATE `ETSV` SET `hpg`=?,`mpg`=?,`desc`=?,`org`=? "
                 . "WHERE picIdx = ?;";

@@ -29,7 +29,7 @@ $tinymce = "https://cdn.tiny.cloud/1/" .
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
-    <link href="editDB.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/editDB.css" type="text/css" rel="stylesheet" />
     <link href="refs.css" type="text/css" rel="stylesheet" />
     <script src="<?=$tinymce;?>" referrerpolicy="origin"></script>
     <script src="../scripts/jquery.js"></script>
