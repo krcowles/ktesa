@@ -1,0 +1,9 @@
+/* Overflow definitions when needed to prevent scroll bars */
+ $page-overflow: hidden;
+ 
+ body {
+    overflow: {
+        x: $page-overflow;
+        y: $page-overflow;
+    }
+}

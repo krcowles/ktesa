@@ -1,0 +1,132 @@
+@import "body";
+@import "colors";
+@import "ktesaNavbar";
+
+body {
+    border-style: solid;
+    border-width: 2px;
+    border-color: DarkBlue;
+}
+#mainabout {
+    padding-left: 16px;
+    padding-right: 12px;
+}
+img#tompic {
+    display: block;
+    float: right;
+    margin-left: 10px;
+    margin-right: 7px;
+    margin-top: -6px;
+}
+#banner {
+    height: 54px;
+    margin-left: 8px;
+    margin-bottom: 6px;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #d4e8d4;
+    font-style: oblique;
+    background-color: #dff8e3;
+    line-height: 3.0em;
+    text-align: center;
+}
+#banner:first-letter {
+    background-color: #dff8e3;
+    font-size: 38px;
+    font-style: oblique;
+    font-weight: bold;
+    color: #302dd3;
+}
+#intro {
+    margin-left: 8px;
+}
+#introp {
+    margin-bottom: 0px;
+}
+#features {
+    margin-top: 16px;
+}
+#expect {
+    padding-left: 8px;
+    font-weight: bold;
+    text-decoration: underline;
+    color: DarkBlue;
+    font-size: 20px;
+}
+#expl {
+    padding-left: 8px;
+}
+#mrkrs {
+    padding-right: 8px;
+}
+.maindisp {
+    cursor: pointer;
+    color: darkblue;
+}
+#mapfeat {
+    position: relative;
+    top: -4px;
+}
+#mul {
+    display: none;
+}
+#tblfeat {
+    position: relative;
+    top: -4px;
+}
+#tul {
+    display: none;
+}
+#hikefeat {
+    position: relative;
+    top: -4px;
+}
+#hul {
+    display: none;
+}
+.dashed {
+    list-style-type: disc;
+    list-style-position: inside;
+}
+#itals {
+    color: DarkBlue;
+}
+#disclaimers {
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+#disasters {
+    list-style-type: square;
+    width: 960px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+#caveat {
+    margin-top: 20px;
+    margin-left: 8px;
+    margin-bottom: 20px;
+    height: 42px;
+    line-height: 1.1em;
+    padding: 10px;
+    background-color: #c9d7e8;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #c9d7e8;
+    text-align: center;
+}
+.twisty-right {
+    float: left;
+    width: 0; 
+    max-height: 6px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid darkblue;
+}
+.twisty-down {
+    float: left;
+    width: 0; 
+    max-height: 6px; 
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid rgb(38, 201, 23);
+}

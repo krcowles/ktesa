@@ -1,9 +1,6 @@
-body {
-    min-width: 960px;
-    font-family: arial, verdana;
-    background-color: #dadada;
-    margin: 0px;
-}
+@import "body";
+@import "ktesaNavbar";
+
 #main {
     box-sizing: content-box;
 }

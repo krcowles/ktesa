@@ -1,205 +1,425 @@
-html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
- }
-body {
-    height: 100%;
-    margin: 0px;
-    padding: 0px; 
-    font-family: Arial, Verdana;
-    background-color: #eaeaea;
+/* line 1, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+.navbar {
+  background-color: darkslategray;
 }
+
+/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+.navbar-brand {
+  color: #bfd9bf !important;
+  font-style: italic;
+}
+
+/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+.nav-link {
+  color: whitesmoke !important;
+}
+
+/* line 11, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+ul.dropdown-menu {
+  background-color: whitesmoke !important;
+}
+
+/* Logo */
+/* line 15, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#logo {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 52px;
+  margin-bottom: 6px;
+  margin-right: 12px;
+  background-color: #ffe866;
+  z-index: 1;
+  text-align: center;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 31, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#pattern {
+  background-image: url("../images/southwest_pattern.png");
+  background-repeat: repeat-x;
+  background-attachment: scroll;
+  margin-top: 2px;
+  padding: 0px;
+  height: 16px;
+}
+
+/* line 39, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+.logo_items {
+  display: inline-block;
+}
+
+/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#leftside {
+  float: left;
+  margin-bottom: 0px;
+}
+
+/* line 46, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#ctr {
+  clear: both;
+  margin-top: 4px;
+  margin-bottom: 0px;
+}
+
+/* line 51, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#rightside {
+  float: right;
+  margin-bottom: 0px;
+}
+
+/* line 55, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#hikers {
+  float: left;
+  margin-top: 3px;
+  margin-left: 10px;
+  z-index: 100;
+}
+
+/* line 60, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#tmap {
+  float: right;
+  margin-right: 8px;
+  margin-top: 4px;
+  z-index: 100;
+}
+
+/* line 65, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#logo_left {
+  float: left;
+  margin-left: 12px;
+  margin-top: 4px;
+  color: darkslategray;
+  z-index: 5;
+}
+
+/* line 71, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#ctr {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* line 75, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#logo_right {
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
+  color: darkslategray;
+  z-index: 5;
+}
+
+/* line 81, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #trail {
-    display: none;
+  clear: both;
+  text-align: center;
+  font-weight: bold;
 }
+
+/* login elements */
+/* line 87, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
+#cookie_state, #cookies_choice, #admin, #contrib, #admintools {
+  display: none;
+}
+
+/* line 3, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* line 9, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
+body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  font-family: Arial, Verdana;
+  background-color: #eaeaea;
+}
+
+/* line 16, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
+#trail {
+  display: none;
+}
+
 /* Hike Stats Div */
+/* line 20, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #hinfo, #favs {
-    position: absolute;
+  position: absolute;
 }
+
+/* line 23, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #sidePanel {
-   display: none;
+  display: none;
 }
+
+/* line 26, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 .sumClr {
-    color: Brown;
+  color: Brown;
 }
+
+/* line 29, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #mlnk {
-	text-align: center;
-	margin-top: 4px;
-    margin-bottom: 6px;
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 6px;
 }
+
+/* line 34, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #albums {
-	margin-top: 0px;
-	text-align: center;
+  margin-top: 0px;
+  text-align: center;
 }
+
+/* line 38, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #directions {
-	margin-top: -12px;
-	text-align: center;
+  margin-top: -12px;
+  text-align: center;
 }
+
+/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #dlnk {
-	margin-top: -12px;
-	text-align: center;
+  margin-top: -12px;
+  text-align: center;
 }
+
+/* line 46, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #scrollmsg {
-	padding-left: 10px;
-	padding-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
+
+/* line 50, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #cdesc {
-    text-align: center;
+  text-align: center;
 }
+
+/* line 53, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #trknote {
-    padding: 0px 8px 0px 8px;
+  padding: 0px 8px 0px 8px;
 }
+
+/* line 56, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #top {
-    font-style: italic;
+  font-style: italic;
 }
+
+/* line 59, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 iframe {
-    position: relative;
-    top: -6px;
-	min-height: 200px;
-	width:100%;
+  position: relative;
+  top: -6px;
+  min-height: 200px;
+  width: 100%;
 }
+
+/* line 65, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #chartline {
-    position: relative;
-    top: -12px;
-    background-color: white;
-    width: 100%;
+  position: relative;
+  top: -12px;
+  background-color: white;
+  width: 100%;
 }
+
+/* line 71, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #hikeInfo {
-    margin-top: 0px;
-    margin-left: 10px;
-    margin-right: 10px;
-    border-style: outset;
-    border-width: 2px;
-    border-color: #d4e8d4;
-    padding: 10px;
-    background-color: #c5d5d5;
-    line-height: 1.3em;
+  margin-top: 0px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-style: outset;
+  border-width: 2px;
+  border-color: #d4e8d4;
+  padding: 10px;
+  background-color: #c5d5d5;
+  line-height: 1.3em;
 }
+
+/* line 82, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 fieldset {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 8px;
-    padding: 16px;
-    padding-top: 8px; }
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 8px;
+  padding: 16px;
+  padding-top: 8px;
+}
+
+/* line 88, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #fldrefs {
-    font-size: 18px;
-    color: Teal; }
+  font-size: 18px;
+  color: Teal;
+}
+
+/* line 91, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #flddat {
-    color: Teal; }
+  color: Teal;
+}
+
+/* line 93, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 .boptag {
-    font-size: 14px;
-    font-weight: bold;
+  font-size: 14px;
+  font-weight: bold;
 }
+
+/* line 97, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #refs {
-    margin-top: 12px;
-    margin-bottom: 0px;
-    padding-right: 10px;
+  margin-top: 12px;
+  margin-bottom: 0px;
+  padding-right: 10px;
 }
+
+/* line 102, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #related {
-    margin-top: 0px;
-    margin-bottom: 8px;
+  margin-top: 0px;
+  margin-bottom: 8px;
 }
+
+/* line 106, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #gps {
-    margin-top: 0px;
-    margin-bottom: 8px;
+  margin-top: 0px;
+  margin-bottom: 8px;
 }
+
 /* image alignment and pop-up caption styles */
+/* line 111, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 .ImgRow {
-    overflow: hidden;
-    text-align: center;
-    margin-bottom: 1px;
+  overflow: hidden;
+  text-align: center;
+  margin-bottom: 1px;
 }
+
+/* line 116, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 img[id^=pic] {
-    position: relative;
-    margin-bottom: 0px;
+  position: relative;
+  margin-bottom: 0px;
 }
+
+/* line 120, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 p[id^=pup] {
-    background-color: white;
-    display: none;
-    position: absolute;
+  background-color: white;
+  display: none;
+  position: absolute;
 }
+
+/* line 125, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 .mobile {
-    text-align: left;
-    padding-left: 14px;
+  text-align: left;
+  padding-left: 14px;
 }
+
+/* line 129, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 iframe {
-    border: none;
+  border: none;
 }
+
+/* line 132, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 .popupCap {
-    margin: 0px;
-    display: none;
-    position: absolute;
-    width: 300px;
-    top: 0px;
-    left: 0px; }
+  margin: 0px;
+  display: none;
+  position: absolute;
+  width: 300px;
+  top: 0px;
+  left: 0px;
+}
+
+/* line 139, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 .capLine {
-    margin: 0px;
-    font-weight: bold;
-    background-color: #eaeaea; }
+  margin: 0px;
+  font-weight: bold;
+  background-color: #eaeaea;
+}
+
 /* details about the hike */
+/* line 144, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #trailTips {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    padding-top: 10px;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-bottom: 10px;
-    border-style: inset;
-    border-width: 2px;
-    border-color: Brown;
-    line-height: 1.4em;
-    min-height: 84px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-bottom: 10px;
+  border-style: inset;
+  border-width: 2px;
+  border-color: Brown;
+  line-height: 1.4em;
+  min-height: 84px;
 }
+
+/* line 159, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #tipPic {
-	float: left;
-    padding: 0 20px 0 0;
+  float: left;
+  padding: 0 20px 0 0;
 }
+
+/* line 163, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #tipHdr {
-    color: Brown;
-    font-weight: bold;
-    font-size: 20px;
+  color: Brown;
+  font-weight: bold;
+  font-size: 20px;
 }
+
+/* line 168, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #albumlinks {
-    color: DarkBlue;
-    margin-bottom: 12px; }
+  color: DarkBlue;
+  margin-bottom: 12px;
+}
+
+/* line 171, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 div em {
-    color: DarkGreen; }
+  color: DarkGreen;
+}
+
+/* line 173, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #tips {
-    text-align: left; }
+  text-align: left;
+}
+
+/* line 175, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #hdesc {
-    text-align: left; }
+  text-align: left;
+}
+
+/* line 177, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #problems {
-	margin-left: 12px;
-	margin-right: 12px;
-	padding: 10px;
-	background-color: #c5d5d5;
-	border-style: outset;
-	border-width: 2px;
-	border-color: #c9d7e8;
+  margin-left: 12px;
+  margin-right: 12px;
+  padding: 10px;
+  background-color: #c5d5d5;
+  border-style: outset;
+  border-width: 2px;
+  border-color: #c9d7e8;
 }
+
+/* line 186, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
 #overlay {
-    position: fixed;
-    display: block;
-    width: 100%;
-    height: 98%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(200,200,200,0.5);;
-    z-index: 10000;
-    cursor: pointer;
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 98%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(200, 200, 200, 0.5);
+  z-index: 10000;
+  cursor: pointer;
 }
-#text{
-    position: absolute;
-    top: 50%;
-    left: 60%;
-    font-size: 50px;
-    color: DarkSlateGray;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
+
+/* line 199, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/responsivePage.scss */
+#text {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  font-size: 50px;
+  color: DarkSlateGray;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }
+
+/*# sourceMappingURL=responsivePage.css.map */

@@ -34,7 +34,7 @@ if ($form === 'reg') {
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="unifiedLogin.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/unifiedLogin.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script type="text/javascript">var page = 'unified';</script>
 </head>

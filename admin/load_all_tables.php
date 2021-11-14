@@ -21,8 +21,7 @@ require '../php/global_boot.php';
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
-    <link href="admintools.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/admintools.css" type="text/css" rel="stylesheet" />
     <style type="text/css">
         #progress { width: 420px; height: 36px; background-color: #ace600; }
         #bar { width: 0px; height: 36px; background-color: #aa0033; }

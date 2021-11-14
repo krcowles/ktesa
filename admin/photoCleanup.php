@@ -121,8 +121,7 @@ if (!isset($checkboxes) && !isset($pcheckboxes) && !isset($zcheckboxes)) {
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
-    <link href="cleanPix.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/cleanPix.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
 <body>
 <script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>

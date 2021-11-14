@@ -76,7 +76,6 @@ $addmax = $addtwo . '<option value="31">31</option>';
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
     <link href="../styles/visitor_data.css" rel="stylesheet" />
     <link href="../styles/jquery-ui.css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>

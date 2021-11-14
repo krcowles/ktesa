@@ -1,0 +1,343 @@
+@import "body";
+@import "ktesaNavbar";
+
+/* Table options header */
+#optcontainer {
+	position: relative;
+	top: 10px;
+	text-align: center;
+	box-sizing: content-box;
+}
+#tblopts {
+	text-align: center;
+	display: inline-block;
+	background-color: #ffffdf;
+	border-style: solid;
+	border-width: 2px;
+	border-color:dimgray;
+	height: 45px;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 7px;
+	box-sizing: inherit;
+}
+.topts {
+	display: inline-block;
+	background-color: ivory;
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+	height: 34px;
+	padding-top: 1px;
+	text-align: center;
+	box-sizing: inherit;
+}
+#opt1 {
+	width: 110px;
+	vertical-align: middle;
+	box-sizing: inherit;
+}
+#opt2 {
+	width: 300px;
+	vertical-align: middle;
+	box-sizing: inherit;
+}
+#opt3 {
+	width: 168px;
+	vertical-align: middle;
+	box-sizing: inherit;
+}
+#opt4 {
+	width: 120px;
+	vertical-align: middle;
+	padding-top: 4px;
+	box-sizing: inherit;
+}
+.tblbtn {
+	background-color:#6D3C17;
+	color: white;
+	border-radius: 6px;
+}
+.tblbtn:hover {
+	background-color: moccasin;;
+	color: black;
+	
+}
+#showfilter, #multimap, #units {
+	margin-top: 1px;
+}
+#scroller {
+	margin-top: 1px;
+	font-size: 16px;
+	background-color: #6D3C17;
+	color: white;
+	border-radius: 6px;
+	height: 28px;
+	width: 110px;
+}
+#scroller:hover {
+	cursor: pointer;
+	background-color: moccasin;
+	color: black;
+}
+#gray {
+	margin-top: 1px;
+	font-size: 16px;
+	background-color: gray;
+	color: white;
+	border-radius: 6px;
+	height: 28px;
+	width: 110px;
+}
+#backup {
+	display: none;
+	position: fixed;
+	width: 100px;
+	height: 20px;
+	font-size: 16px;
+	background-color: #6D3C17;
+	color: white;
+	padding-left: 8px;
+	padding-bottom: 3px;
+	border-radius: 5px;
+	/* standard declarations must be present for browser-specifics to work
+	   but will be OVERRIDEN by browser declarations!  */
+	transform: rotate(270deg);
+	transform-origin: center;
+	/* webkit browsers [e.g. Chrome, Safari, ...] */
+	-webkit-transform: rotate(270deg);
+	-webkit-transform-origin-x: center;
+	-webkit-transform-origin-y: center;
+	/* firefox */
+	-moz-transform: rotate(270deg);
+	-moz-transform-origin: center;
+	/* internet explorer - not tried yet */
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+.btstrp {
+	box-sizing: content-box;
+}
+/* Filtering */
+#tblfilter {
+	display: none;
+	position: relative;
+	top: 10px;
+}
+#pseudospin {
+	width: 38px;
+	height: 28px;
+}
+#spinicons {
+	display: inline-block;
+	position: relative;
+	top: 9px;
+}
+#uparw {
+	cursor: pointer;
+	width: 0px;
+	height: 0px;
+	border-left: 8px solid transparent;
+ 	border-right: 8px solid transparent;
+  	border-bottom: 10px solid black;
+}
+#separator {
+	max-height: 4px;
+}
+#dwnarw {
+	cursor: pointer;
+	width: 0; 
+	height: 0; 
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+  	border-top: 10px solid black;;
+}
+#areachoice {
+	margin-top: 8px;
+	margin-bottom: 6px;
+	height: 28px;
+}
+#filtpoi, #filthike, #sort {
+	height: 26px;
+	background-color: #6D3C17;
+	color: white;
+	cursor: pointer;
+	border-radius: 6px;
+}
+#filtpoi:hover, #filthike:hover, #sort:hover {
+	background-color: moccasin;
+	color: black;
+}
+#hikechoice {
+	position: relative;
+	top: 8px;
+}
+#usehike {
+	height: 28px;
+	font-size: 16px;
+	border-radius: 4px;
+	padding-left: 6px;
+	box-sizing: content-box;
+}
+select {
+	font-size: 16px;
+	height: 30px;
+}
+#sort {
+	min-width: 46px;
+}
+#filtnote {
+	font-style: italic;
+	margin-bottom: 4px;
+}
+#note {
+	color: brown;
+}
+/* Subtables */
+#tblgroups {
+	text-align: center;
+	display: none;
+}
+div[id^=sub] {
+	display: none;
+}
+.subtbl {
+	width: 50%;
+	height: 36px;
+	background-color: #ffffdf;
+	color: black;
+	font-weight: bold;
+}
+/* Main ref table */
+img.webShift {
+	padding-left: 19px; }
+img.expShift {
+	padding-left: 24px; }
+table {
+    margin-left: auto;
+    margin-right: auto;
+	font-size: 14px;
+	text-align: left;
+	margin-top: 5px;
+	background-color: #ffffdf;
+	border-style: groove;
+	border-width: 4px;
+	border-color: gainsboro;
+	box-sizing: content-box;
+	border-collapse: separate; }
+th {
+	text-align: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-style: outset;
+	border-width: 1px;
+	border-color: gray;
+	box-sizing: content-box !important; }
+tr {
+	box-sizing: content-box;
+}
+tr:hover {
+	background-color: BlanchedAlmond; }
+td {
+	vertical-align: top;
+	padding-left: 5px;
+	padding-right: 5px;
+	box-sizing: content-box !important;
+}
+td a {
+	color: blue;
+}
+.hdr_row {
+	background-color: moccasin; }
+.hdr_row:hover {
+	cursor: pointer;
+	background-color: #6D3C17;
+	color: White; }
+.blue {
+	color: darkblue;
+}
+#nodata {
+	display: none;
+	background-color: ghostwhite;
+	font-size: 11px;
+	position: absolute;
+}
+/* Multimap select modal */
+#usermodal {
+	display: none;
+	position: fixed;
+	top: 160px;
+	left: 590px;
+	width: 380px;
+	height: 248px;
+	padding-left: 8px;
+	padding-right: 8px;
+	background-color: white;
+	border: 3px solid gray;
+	z-index: 1000;
+	box-sizing: content-box;
+}
+#modalhdr {
+	position: relative;
+	top: -3px;
+	left: -10px;
+	height: 32px;
+	width: 396px;
+	padding-top: 5px;
+	background-color: #ffffdf;
+	border: 2px ridge gray;
+	box-sizing: content-box;
+}
+#hdrleft {
+	float: left;
+	margin-left: 12px;
+	line-height: 1.6em;
+}
+#hdrright {
+	float: right;
+	margin-right: 12px;
+	
+}
+#closer {
+	border-radius: 6px;
+
+	background-color: #6D3C17;
+	color: white;
+	box-sizing: content-box;
+}
+#closer:hover {
+	background-color: blanchedalmond !important;
+	color: black !important;
+}
+#mapem {
+	position: relative;
+	top: -6px;
+}
+#mapem, #hikeclr {
+	border-radius: 6px;
+	background-color: #6D3C17;
+	color: white;
+}
+#mapem:hover, #hikeclr:hover {
+	background-color: blanchedalmond;
+	color: black;
+}
+#usearch {
+	margin-bottom: 3px;
+}
+#hike2map {
+	height: 24px;
+	width: 200px;
+	font-size: 16px;
+	border-radius: 4px;
+}
+#hlist {
+	color: gray;
+}
+#selections {
+	margin-top: 0px;
+}
+.selectlist {
+	font-size: 16px;
+	position: relative;
+	left: -12px;
+}

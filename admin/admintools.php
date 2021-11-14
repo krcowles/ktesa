@@ -29,9 +29,8 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
-    <link href="admintools.css" type="text/css" rel="stylesheet" />
-    <link rel="stylesheet" href="../styles/jquery-ui.css">
+    <link href="../styles/admintools.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
     <script type="text/javascript">
@@ -59,21 +58,23 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 <?php endif; ?>
 
 <div style="margin-left:24px;" id="tools">
-    <fieldset>
-        <legend>Overall Site Management</legend>
+    <fieldset class="afs">
+        <legend class="afs">Overall Site Management</legend>
+        <button id="switchstate" type="button" class="btn 
+                btn-danger">Switch Site Mode</button>&nbsp;&nbsp;
         <span id="sitemode">The site is currently in
-            <span id="currstate"><?= $appMode;?></span> mode:</span>&nbsp;&nbsp;
-            <button id="switchstate" type="button" class="btn 
-                btn-danger">Switch Site Mode</button><br />
+            <span id="currstate"><?= $appMode;?></span> mode:</span>
+        <br />
         <span id="cdb">
+            <button id="swdb" type="button" class="btn
+            btn-danger">Switch DB's</button></span>&nbsp;&nbsp;
             <?php if ($dbState === 'test') : ?>
                 <span id="test" style="color:red;">Test DB</span>
             <?php else : ?>
                 <span id="real" style="color:blue;">Main DB</span>
             <?php endif; ?>
-            &nbsp;is currently in use:&nbsp;&nbsp;
-            <button id="swdb" type="button" class="btn
-            btn-danger">Switch DB's</button></span><br />
+            &nbsp;is currently in use:
+        <br />
 
         <!-- The following uploads or installs a test site -->
         <span class="cats">Upload Test Site:</span><br />
@@ -161,8 +162,8 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             btn-secondary">Add Book</button><br />
     </fieldset><br />
 
-    <fieldset>
-        <legend>Hike Management</legend>
+    <fieldset class="afs">
+        <legend class="afs">Hike Management</legend>
         <button id="pub" type="button" class="btn 
             btn-danger">Publish Page</button>&nbsp;
             (Move from EHIKES to HIKES)<br/>
@@ -171,14 +172,14 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             <span style="color:brown;">(Not implemented at this time)</span><br />
     </fieldset><br />
 
-    <fieldset>
-        <legend>Visitor Data</legend>
+    <fieldset class="afs">
+        <legend class="afs">Visitor Data</legend>
         <button id="vdat" type="button" class="btn
             btn-secondary">Display Data</button>
     </fieldset><br />
 
-    <fieldset>
-        <legend>GPX File Edits</legend>
+    <fieldset class="afs">
+        <legend class="afs">GPX File Edits</legend>
         <form id="revgpx" action="reverseGpx.php" method="POST"
             enctype="multipart/form-data" />
             <span id="revresult">NOTE: This will download a file
