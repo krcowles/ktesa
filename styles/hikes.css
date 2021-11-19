@@ -6,6 +6,7 @@ body {
   margin: 0;
   font-family: arial, verdana;
   font-size: 16px;
+  box-sizing: content-box;
 }
 
 /* line 1, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
@@ -194,7 +195,6 @@ table td {
 #sidePanel {
   float: left;
   padding: 0px;
-  top: -2px;
   margin-left: 4px;
   margin-right: 0px;
   width: 23%;
@@ -205,7 +205,7 @@ table td {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -ms-box-sizing: border-box;
-  box-sizing: border-box;
+  box-sizing: content-box;
   background-color: floralwhite;
   overflow: scroll;
 }
@@ -350,7 +350,6 @@ iframe {
   float: left;
   border: none;
   box-sizing: content-box;
-  top: -2px;
   min-height: 200px;
   width: 74%;
 }
@@ -358,6 +357,7 @@ iframe {
 /* line 163, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #chartline {
   float: left;
+  box-sizing: content-box;
   background-color: white;
 }
 

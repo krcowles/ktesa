@@ -1,4 +1,3 @@
-"use strict";
 /**
  * @fileoverview Size the viewport and place elements in it, then add the rows
  * of photos.
@@ -47,13 +46,22 @@ $(function () {
     $mapEl = $('#mapline');
     $chartEl = $('#chartline');
     canvasEl = document.getElementById('grph');
-    // the following should not change throughout resizing, etc.
-    var pnlMarg = parseInt($panel.css('margin-left')) +
-        parseInt($panel.css('margin-right'));
-    var pnlBorder = parseInt($panel.css('border-left-width')) +
-        parseInt($panel.css('border-right-width'));
-    var pnlPad = parseInt($panel.css('padding-left')) +
-        parseInt($panel.css('padding-right'));
+    /**
+     * Owing to a rendering of fractional pixel borders ONLY on localhost,
+     * and in spite of specifying a whole-pixel border in CSS (which displays
+     * a whole number in the browser's 'inspector'), this routine rounds up
+     * to provide adequate space for map/chart. Otherwise, the combo wraps
+     * to the next 'line'. Why this is happening suddenly is a mystery.
+     * Even very old commits that were fully tested appear with fractional
+     * pixels.
+     */
+    var pnlMarg = Math.ceil(parseInt($panel.css('margin-left'))) +
+        Math.ceil(parseInt($panel.css('margin-right')));
+    var spb_left = Math.ceil(parseFloat($panel.css('border-left-width')));
+    var spb_right = Math.ceil(parseFloat($panel.css('border-right-width')));
+    var pnlBorder = spb_left + spb_right;
+    var pnlPad = Math.ceil(parseInt($panel.css('padding-left'))) +
+        Math.ceil(parseInt($panel.css('padding-right')));
     pnlBox = pnlMarg + pnlBorder + pnlPad;
     // set viewport
     if ($('#mapline').length) {
@@ -80,7 +88,7 @@ function setViewport() {
     var canvasWidth;
     var panelDisplay = $panel.css('display') !== 'none' ? true : false;
     // Height calcs
-    vpHeight = window.innerHeight;
+    vpHeight = Math.floor(window.innerHeight);
     var consumed = $('#nav').height() + $('#logo').height();
     var usable = vpHeight - consumed;
     var mapHt = Math.floor(0.65 * usable);
@@ -92,7 +100,7 @@ function setViewport() {
     // Width calcs
     winWidth = $(window).width();
     if (panelDisplay) {
-        pnlWidth = pnlBox + $panel.width();
+        pnlWidth = pnlBox + Math.ceil($panel.width());
     }
     else {
         pnlWidth = 0;
