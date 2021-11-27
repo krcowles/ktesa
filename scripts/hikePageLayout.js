@@ -4,6 +4,7 @@
  *
  * @author Ken Cowles
  * @version 1.0 Replaces picRowFormation.ts/js and is compatible with bootstrap
+ * @version 1.1 Modified setViewport() to improve zoom performance
  */
 var itemcnt;
 var cluster_page = $('#cpg').text() === 'yes' ? true : false;
@@ -25,13 +26,12 @@ if (!cluster_page) {
 else {
     itemcnt = 0;
 }
-// globals used in multiple scripts
-var winWidth = $(window).width();
+// globals
+var winWidth = document.body.clientWidth;
 var vpHeight;
-var pnlBox; // caluclated once on page load
-var pnlWidth;
+var sidePnlLoc;
+var pnlTopBottom;
 var initLoad = true;
-var canvasEl;
 // jquery page elements
 var $panel;
 var $mapEl;
@@ -41,29 +41,12 @@ var pageMargin = 36;
 var maxRowHt = 260;
 var rowWidth = 940;
 $(function () {
-    // define globals
+    // after page load, initialize globals defined above...
     $panel = $('#sidePanel'); // always present on page load
     $mapEl = $('#mapline');
     $chartEl = $('#chartline');
-    canvasEl = document.getElementById('grph');
-    /**
-     * Owing to a rendering of fractional pixel borders ONLY on localhost,
-     * and in spite of specifying a whole-pixel border in CSS (which displays
-     * a whole number in the browser's 'inspector'), this routine rounds up
-     * to provide adequate space for map/chart. Otherwise, the combo wraps
-     * to the next 'line'. Why this is happening suddenly is a mystery.
-     * Even very old commits that were fully tested appear with fractional
-     * pixels.
-     */
-    var pnlMarg = Math.ceil(parseInt($panel.css('margin-left'))) +
-        Math.ceil(parseInt($panel.css('margin-right')));
-    var spb_left = Math.ceil(parseFloat($panel.css('border-left-width')));
-    var spb_right = Math.ceil(parseFloat($panel.css('border-right-width')));
-    var pnlBorder = spb_left + spb_right;
-    var pnlPad = Math.ceil(parseInt($panel.css('padding-left'))) +
-        Math.ceil(parseInt($panel.css('padding-right')));
-    pnlBox = pnlMarg + pnlBorder + pnlPad;
-    // set viewport
+    pnlTopBottom = parseFloat($panel.css('border-top-width')) +
+        parseFloat($panel.css('border-bottom-width'));
     if ($('#mapline').length) {
         setViewport();
     }
@@ -79,51 +62,21 @@ $(function () {
     }
 });
 /**
- * Establishing the viewport layout occurs on page load and also on
- * window resizing. The layout depends on the whether or not the
- * side panel is displayed. Don't mess with chart height, once established,
- * for mobile devices.
+ * Establishing the viewport layout occurs on page load and also on window resizing.
+ * This routine establishes the basic vertical space consumed by the map and chart,
+ * but dynamicChart.js completely defines all chart parameters (and window.resize)
  */
 function setViewport() {
-    var canvasWidth;
-    var panelDisplay = $panel.css('display') !== 'none' ? true : false;
-    // Height calcs
-    vpHeight = Math.floor(window.innerHeight);
-    var consumed = $('#nav').height() + $('#logo').height();
-    var usable = vpHeight - consumed;
+    vpHeight = document.body.clientHeight;
+    var sidePnlPos = $('#sidePanel').offset(); // NOTE: includes border box
+    sidePnlLoc = sidePnlPos.top;
+    var usable = vpHeight - sidePnlLoc;
     var mapHt = Math.floor(0.65 * usable);
     var chartHt = Math.floor(0.35 * usable);
-    var pnlHeight = (mapHt + chartHt);
+    var pnlHeight = (mapHt + chartHt) - pnlTopBottom;
+    $panel.height(pnlHeight); // Fits panel to page when debug/inspect
     $mapEl.height(mapHt);
     $chartEl.height(chartHt);
-    $panel.height(pnlHeight);
-    // Width calcs
-    winWidth = $(window).width();
-    if (panelDisplay) {
-        pnlWidth = pnlBox + Math.ceil($panel.width());
-    }
-    else {
-        pnlWidth = 0;
-    }
-    var availWidth = winWidth - pnlWidth;
-    $mapEl.width(availWidth);
-    $chartEl.width(availWidth);
-    // set up canvas inside chartline div
-    if (chartHt < 100) {
-        $chartEl.height(100);
-        canvasEl.height = 100;
-    }
-    else {
-        canvasEl.height = chartHt;
-    }
-    if (panelDisplay) {
-        pnlWidth = $panel.width();
-    }
-    else {
-        pnlWidth = 0;
-    }
-    canvasWidth = availWidth;
-    canvasEl.width = canvasWidth;
 }
 /**
  * Function pertinent to drawing rows of photos

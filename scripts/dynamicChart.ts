@@ -38,6 +38,7 @@ interface GPSCoords {
  * @version 3.0 Added Cluster Page compatibility
  * @version 3.1 Added mobile page width control
  * @version 4.0 Typescripted, some type errors corrected
+ * @version 4.1 Modified viewport calculations to improve zoom performance
  */
 //GPSV iframe: The following code addresses tracklist checkboxes in the iframe map
 var trackNames: string[] = [];
@@ -45,6 +46,7 @@ var checkboxes:JQuery<ChildNode>[] = [];
 var box_states: number[] = [];
 var lastTrack = 0; // indx in box_states
 // global charting vars
+var canvasEl = <HTMLCanvasElement>document.getElementById('grph');
 var coords: Coords;  // x,y location of mouse in chart
 var indxOfPt: number;
 var prevCHairs = false;
@@ -54,30 +56,42 @@ var chartHeight: number;
 // misc.
 var cluspage = $('#cpg').text() === 'yes' ? true : false;
 var do_resize = true;
-var trackNumber: number   // global used to identify current active track (topmost in tracklist)
+var trackNumber: number;   // global used to identify current active track (topmost in tracklist)
+var chartConst: number;
 var pnlMarg: number;
-
 if (!mobile) {
+    chartConst = 0.768; // panel = 23% in CSS
     // Hide/unhide side panel (changes width of elevation profile chart)
+    var orgWidth: number;
     $('#hide').on('click', function() {
+        orgWidth = canvasEl.width;
         $('#sidePanel').css('display', 'none');
-        setViewport();
+        $('#chartline').width(fullWidth);
+        canvasEl.width = fullWidth;
+        // redraw the chart
         drawChart(trackNumber);
+        $('iframe').width(fullWidth);
         $('#unhide').css('display','block');
     });
     $('#unhide').on('click', function() {
         $('#sidePanel').css('display','block');
-        setViewport();
+        $('#chartline').width(orgWidth);
+        canvasEl.width = orgWidth;
+        $('#chartline').height(chartHeight);
+        canvasEl.height = chartHeight;
+        // redraw the chart
         drawChart(trackNumber);
+        $('iframe').width(orgWidth);
         $('#unhide').css('display','none');
     });
+}
+else {
+    chartConst = 1.0000;
 }
 
 /**
  * Once a track is identified for display, show that gpx file's data in the
  * side panel.
- * 
- * @return {null}
  */
 const displayTrackSidePanel = (trkname: string) => {
     let data = panelData[trkname];
@@ -88,12 +102,10 @@ const displayTrackSidePanel = (trkname: string) => {
     $('#hexp').text(data["expo"]);
     $('#hseas').text(data["seasons"]);
     $('#hwow').text(data["wow"]);
-}
+};
 /**
  * This function turns on the topmost checked tracklist box. If all boxes
  * are unchecked, the last box checked remains displayed in elevation chart.
- * 
- * @return {null}
  */
 const plotTopMost = () => {
     for (let n=0; n<box_states.length; n++) {
@@ -167,7 +179,57 @@ mapdiv.onload = function() {
         });
     }, 200);
 }
-
+if (!mobile) {
+    if ($('#sidePanel').css('display') !== 'none') {
+        var pnlBorders = parseFloat($('#sidePanel').css('border-left-width')) +
+            parseFloat($('#sidePanel').css('border-right-width'));
+        var pnlMargins = parseFloat($('#sidePanel').css('margin-left')) +
+            parseFloat($('#sidePanel').css('margin-right'));
+        pnlMarg = Math.ceil(pnlBorders) + Math.ceil(pnlMargins);
+    }
+    else {
+        pnlMarg = 0;
+    }
+}
+else {
+    pnlMarg = 0;
+}
+setChartDims();
+/**
+ * This function establishes the chart dimensions on the page
+ */
+ function setChartDims() {
+    // calculate space available for canvas: (panel width = 23%)
+    fullWidth = Math.floor(document.body.clientWidth);
+    if (!mobile) { // don't mess with chart height for mobile!
+        var chartWidth = Math.floor(chartConst * fullWidth) - pnlMarg;
+        var vpHeight = window.innerHeight;
+        var sidePnlPos = <JQuery.Coordinates>$('#sidePanel').offset();
+        var sidePnlLoc = sidePnlPos.top;
+        var usable = vpHeight - sidePnlLoc;
+        chartHeight = Math.floor(0.35 * usable);
+        if (chartHeight < 100) {
+            $('#chartline').height(100);
+            canvasEl.height = 100;
+        }
+        else {
+            $('#chartline').height(chartHeight);
+            canvasEl.height = chartHeight;
+        }
+        if ($('#sidePanel').css('display') !== 'none') {
+            $('#chartline').width(chartWidth);
+        }
+        else {
+            chartWidth = fullWidth;
+        }
+    }
+    else {
+        chartWidth = fullWidth;
+    }
+    canvasEl.width = chartWidth;
+    $('iframe').width(chartWidth);
+    return;
+}
 /**
  * This function will draw the selected elevation profile in the canvas element
  */
@@ -252,8 +314,6 @@ function window2canvas(canvas: HTMLCanvasElement, x: number, y: number): Coords 
 }
 /**
  * From the canvas x,y (translated by window2canvas), where to draw crosshairs
- * @param {object} mousePos 
- * @return {object}
  */
 function dataReadout(mousePos: MousePosition, trackno: number): Coords {
     var xDat = 0;
@@ -332,9 +392,7 @@ $(window).on('resize', function() {
         do_resize = false;
         setTimeout( function() {
             canvasEl.onmousemove = null;
-            if (!mobile) {
-                setViewport();
-            }
+            setChartDims();
             var chartData = defineData(trackNumber);
             ChartObj.render('grph', chartData);
             crossHairs(trackNumber);
