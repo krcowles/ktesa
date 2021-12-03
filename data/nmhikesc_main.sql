@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 
 
@@ -345,20 +345,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2021-11-06 14:01:53'),
-('2','CLUSHIKES','3619924806','2021-11-06 14:01:53'),
-('3','CLUSTERS','1449374701','2021-11-06 14:01:53'),
-('4','EGPSDAT','0','2021-11-06 14:01:53'),
-('5','EHIKES','0','2021-11-06 14:01:53'),
-('6','EREFS','0','2021-11-06 14:01:53'),
-('7','ETSV','0','2021-11-06 14:01:53'),
-('8','FAVORITES','3651041965','2021-11-06 14:01:53'),
-('9','GPSDAT','2286893383','2021-11-06 14:01:53'),
-('10','HIKES','31841313','2021-11-06 14:01:53'),
-('11','REFS','4202189160','2021-11-06 14:01:53'),
-('12','TSV','2531764605','2021-11-06 14:01:53'),
-('13','USERS','510490655','2021-11-06 14:01:53'),
-('14','VISITORS','3130111378','2021-11-06 14:01:53');
+('1','BOOKS','2674158859','2021-11-30 09:54:53'),
+('2','CLUSHIKES','2979690651','2021-11-30 09:54:53'),
+('3','CLUSTERS','1449374701','2021-11-30 09:54:53'),
+('4','EGPSDAT','0','2021-11-30 09:54:53'),
+('5','EHIKES','0','2021-11-30 09:54:53'),
+('6','EREFS','0','2021-11-30 09:54:53'),
+('7','ETSV','0','2021-11-30 09:54:53'),
+('8','FAVORITES','3651041965','2021-11-30 09:54:53'),
+('9','GPSDAT','145362506','2021-11-30 09:54:53'),
+('10','HIKES','1780192409','2021-11-30 09:54:53'),
+('11','REFS','1744450030','2021-11-30 09:54:53'),
+('12','TSV','3498044611','2021-11-30 09:54:53'),
+('13','USERS','510490655','2021-11-30 09:54:53'),
+('14','VISITORS','1764582789','2021-11-30 09:54:53');
 
 
 
@@ -389,7 +389,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 
 
@@ -417,7 +417,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8;
 
 
 
@@ -522,7 +522,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -798,7 +798,8 @@ INSERT INTO HIKES VALUES
 ('278','Cedro Creek Nature Trail','2','Tijeras','Out-and-back','3.60','200','Easy','None','Canyon and Creekside Views','Not Winter','Mixed sun/shade','CedroCreekNature-97.123.105.87-1635982290.gpx','CedroCreekNature-97.123.105.87-1635982290.json','350346231','-1063742910','Cedr3663b6.jpg',NULL,NULL,'https://www.google.com/maps/dir//Otero+Canyon+East+Trailhead,+Tijeras,+NM+87059/@35.0491555,-106.396061,13z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a5204426aaf7:0x37fa5ac7c94cc92c!2m2!1d-106.3742777!2d35.0347618',NULL,'<p>The <span style=\"color: #1428d2;\"><em>Cedro Creek Nature Trail</em></span> follows a normally well-supplied creek (not this year! [2021]). The path goes up slightly into a wooded area, then back down towards the creek bed where it twists and turns. Multiple alternate routes appear, all apparently rejoining the main trail at some point. There are a variety of views along the way making for a surprisingly pleasant hike.</p>\r\n<p>According to locals, the creek can be quite high at times. The \'usual\' turn-around point for the hike is about a mile in, at an open area with large flat rocks, but the trail does continue up to the point where private land is encountered. When going that route, you will pass the \'climbing wall\' - a section of rock popular with rock climbing practitioners.</p>','2021-11-03',NULL,NULL,NULL),
 ('279','Oak Flat Loop','2','Tijeras','Loop','6.50','400','Easy-Moderate','None','Wooded Trails','Not Winter','Good shade','PonderosaLoop-97.123.105.87-1635979105.gpx','PonderosaLoop-97.123.105.87-1635979105.json','349994431','-1063162594','Oak 578577.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.9994444,-106.31625/@34.9990593,-106.3324498,14z','<p>&nbsp;There are multiple unmarked forks and crossings. A tracking device is recommended to prevent unnecessary diversions.</p>','<p>This hike starts at <em><span style=\"color: #1428d2;\">Mohagany Run</span></em> and soon cuts over to the main <span style=\"color: #1428d2;\"><em>Ponderosa Trail</em></span> loop. As the <em><span style=\"color: #1428d2;\">Ponderosa Trail </span></em>is not a long loop, the author extended the trail by cutting back over on <span style=\"color: #1428d2;\"><em>Mohagany</em></span> and on to <em><span style=\"color: #1428d2;\">Gamble Oak</span></em>, <em><span style=\"color: #1428d2;\">Caida del Pino</span></em>, and finally closing the loop via the <em><span style=\"color: #1428d2;\">Easy Pickin Trail</span></em> segment.</p>\r\n<p>Much of the trail is in the woods, so there is not a wide variety of scenery. Occasionally, the forest opens up to allow views west and north so that not only can one catch a view of the <em>Sandia</em>\'s eastern slopes, but also the <em>San Pedros</em> can be seen, and beyond to the <em>Sangre de Cristos</em>. The trail does not present any major elevation changes, but rather slowly ascending or descending trail sections.</p>','2021-11-03',NULL,NULL,NULL),
 ('280','South Crest via Travertine','2','Tijeras','Out-and-back','7.80','1700','Moderate','None','Mountain Views','Not Winter','Good shade','South_Crest-97.123.105.87-1636586839.gpx','South_Crest-97.123.105.87-1636586839.json','350895763','-1063914861','Sout65a795.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0866031,-106.396326,15.66z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <em><span style=\"color: #1428d2;\">Crest Trail</span></em> stretches almost 26 miles across the heights of the Sandias. The AllTrails link below in <strong>References</strong> shows approximately half of the entire length, beginning at the Sandia Crest Highway terminus. The author\'s hike begins at the south end of the trail and proceeds almost 4 miles in to make for an&nbsp; 8 mile out-and-back. The author chose to proceed to <em>Travertine Falls</em> and then uphill to the <em><span style=\"color: #1428d2;\">South Crest Trail </span></em>in order to cut off about 1/3 mile from the hike, as taking the South Crest Trail at the Travertine split adds unnecessary distance.</p>\r\n<p>The trail is generally moderate to easy in grade, but continues uphill the entire way - and beyond. Once leaving the <em>Hondo Canyon</em> and reaching higher elevations, some mountain views are accessible. At first, the trail looks out to the northeast, presenting views of <em>South Mountain</em> and the <em>San Pedro</em> range. Later, the trail angles around to afford views south towards the <em>Manzano Mountains</em>. By the time the author reached the turn-around point, the <em>Sandia</em> ridge was visible to the north.</p>','2021-11-10',NULL,NULL,NULL),
-('281','Juan Thomas Roller Coaster','2','Tijeras','Loop','9.30','550','Moderate','None','Varying Mountain Views','Not Winter','Mixed sun/shade','JTRocky Top-97.123.105.87-1637197893.gpx','JTRocky Top-97.123.105.87-1637197893.json','350346203','-1063205001','Juan5ce9ba.jpg',NULL,NULL,'https://www.google.com/maps/dir//Juan+Thomas+Trailhead,+244-248+Juan+Tomas+Rd,+Tijeras,+NM+87059/@35.0495026,-106.3882428,13.18z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718bb15d026e56b:0xd3f8a1696d94dfb1!2m2!1d-106.3205034!2d35.0345529','<p>&nbsp;The Forest Road to the parking area is dirt and poorly maintained - an all-wheel drive with reasonable clearance is recommended.</p>','<p>This hike begins on the <em><span style=\"color: #1428d2;\">Bear Scat Trail</span></em>, and heads east and north on the <em><span style=\"color: #1428d2;\">Bernalillo County Open Space Trail</span></em> to the junction of <span style=\"color: #1428d2;\"><em>Roller Coaster Trail</em></span>, where the loop begins. Heading east on the loop, the trail is relatively easy, with a long slow downhill as you head north. As you head south, the ascent begins and gets moderately steep as you progress, then descends somewhat steeply to close the loop. It is unclear as to whether the name of the trail remains for the duration of the loop.</p>\r\n<p>There are a variety of views en route, from shaded trail, to open meadow, to glimpse of mountains to the north and northeast. It is also a good hike for solitude - the author encountered no one on this hike, although apparently mountain bikers do use the trails. The weekend probably bears more traffic, though the rugged road in probably discourages many.</p>','2021-11-17',NULL,NULL,NULL);
+('281','Juan Thomas Roller Coaster','2','Tijeras','Loop','9.30','550','Moderate','None','Varying Mountain Views','Not Winter','Mixed sun/shade','JTRocky Top-97.123.105.87-1637197893.gpx','JTRocky Top-97.123.105.87-1637197893.json','350346203','-1063205001','Juan5ce9ba.jpg',NULL,NULL,'https://www.google.com/maps/dir//Juan+Thomas+Trailhead,+244-248+Juan+Tomas+Rd,+Tijeras,+NM+87059/@35.0495026,-106.3882428,13.18z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718bb15d026e56b:0xd3f8a1696d94dfb1!2m2!1d-106.3205034!2d35.0345529','<p>&nbsp;The Forest Road to the parking area is dirt and poorly maintained - an all-wheel drive with reasonable clearance is recommended.</p>','<p>This hike begins on the <em><span style=\"color: #1428d2;\">Bear Scat Trail</span></em>, and heads east and north on the <em><span style=\"color: #1428d2;\">Bernalillo County Open Space Trail</span></em> to the junction of <span style=\"color: #1428d2;\"><em>Roller Coaster Trail</em></span>, where the loop begins. Heading east on the loop, the trail is relatively easy, with a long slow downhill as you head north. As you head south, the ascent begins and gets moderately steep as you progress, then descends somewhat steeply to close the loop. It is unclear as to whether the name of the trail remains for the duration of the loop.</p>\r\n<p>There are a variety of views en route, from shaded trail, to open meadow, to glimpse of mountains to the north and northeast. It is also a good hike for solitude - the author encountered no one on this hike, although apparently mountain bikers do use the trails. The weekend probably bears more traffic, though the rugged road in probably discourages many.</p>','2021-11-17',NULL,NULL,NULL),
+('282','Jackalope to Cedro Peak','2','Tijeras','Out-and-back','8.20','1100','Moderate','None','Views from Cedro Peak','Not Winter','Good shade','Jackalope-75.161.38.115-1638485270.gpx','Jackalope-75.161.38.115-1638485270.json','350352316','-1063804505','Jack90c364.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.0352317,-106.3804505/@35.0554588,-106.4022621,13.25z','<p>There is only a small pullout on NM 337 at the trailhead by the entrance - it is easy to miss (see <strong>Google Directions</strong> in the <strong>Side Panel </strong>above).</p>','<p>The <em><span style=\"color: #1428d2;\">Jackalope Trail</span></em> begins roadside at NM 337 and proceeds east and north from there, at first paralleling the highway. While it is mostly an ascending grade, it is not difficult. It winds through the forest and eventually ends at the access road for the power lines.</p>\r\n<p>At this point, the trail follows the <em><span style=\"color: #1428d2;\">Powerline Trail </span></em>to the southeast, where it eventually intersects FR 542. Crossing that road takes you onto the <em><span style=\"color: #1428d2;\">Rabbit Run Trail</span></em>, which ascends a bit more. The <em><span style=\"color: #1428d2;\">Rabbit Run Trail</span></em> ends again at FR 542, which is then followed towards <em>Cedro Peak</em>. FR 252 intersects FR 542, and soon thereafter an almost-hidden trail (see interactive map photo) cuts through the woods to a point where a trail up <em>Cedro Peak</em> can be followed.</p>\r\n<p>Because the trail and road continually ascend, by the time you reach the trail to ascend <em>Cedro Peak</em>, there is only abot 200\' of elevation left to gain. The 360-degree views from the top are very nice.</p>\r\n<p>&nbsp;</p>','2021-12-02',NULL,NULL,NULL);
 
 
 
@@ -810,7 +811,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3081 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3082 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1788,7 +1789,8 @@ INSERT INTO REFS VALUES
 ('3074','281','Website:','https://nmvfo.org/trails/juan-tomas-open-space/','NM Volunteers for the Outdoors'),
 ('3075','281','App:','https://www.alltrails.com/explore/us/new-mexico/tijeras?b_tl_lat=35.0733891881122&b_tl_lng=-106.3429723646514&b_br_lat=35.01693534096427&b_br_lng=-106.25995356317841','AllTrails.com'),
 ('3076','281','Blog:','https://womanseekselevation.com/2019/07/21/new-views-open-up-at-juan-tomas-open-space/','Woman Seeks Elevation'),
-('3077','281','Website:','https://www.cabq.gov/parksandrecreation/open-space/lands/east-mountain-open-space','City of Albuquerque');
+('3077','281','Website:','https://www.cabq.gov/parksandrecreation/open-space/lands/east-mountain-open-space','City of Albuquerque'),
+('3081','282','Website:','https://www.trailforks.com/trails/jackalope-101577/','Jackalope Mountain Biking');
 
 
 
@@ -1812,7 +1814,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9478 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9493 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4861,7 +4863,19 @@ INSERT INTO TSV VALUES
 ('9473','281',NULL,'IMG_4670','Y','Y','\"Cedar Road\"','350731500','-1063078139','3060',NULL,'2021-11-17 11:41:42','IMG_4670','640','480',NULL,'9'),
 ('9474','281',NULL,'IMG_4673','Y','Y','Crossing an autumn gold meadow','350619167','-1063090583','3061',NULL,'2021-11-17 12:06:02','IMG_4673','480','640',NULL,'11'),
 ('9475','281',NULL,'IMG_4675','Y','Y','From the \'Rocky Top\'','350545056','-1063097694','3062',NULL,'2021-11-17 12:25:24','IMG_4675','480','640',NULL,'12'),
-('9476','281',NULL,'IMG_4672','Y','Y','The trails often weave in and out of nearby Arroyos','350646833','-1063094861','3063',NULL,'2021-11-17 11:58:48','IMG_4672','480','640',NULL,'10');
+('9476','281',NULL,'IMG_4672','Y','Y','The trails often weave in and out of nearby Arroyos','350646833','-1063094861','3063',NULL,'2021-11-17 11:58:48','IMG_4672','480','640',NULL,'10'),
+('9478','282',NULL,'IMG_4700','Y','Y','Approaching Cedro Peak on FR 542','350454917','-1063538889','3064',NULL,'2021-12-02 10:39:44','IMG_4700','480','640',NULL,'5'),
+('9479','282',NULL,'IMG_4691','Y','Y','Looking down on Otero Canyon from Jackalope','350390750','-1063729861','3065',NULL,'2021-12-02 09:37:34','IMG_4691','480','640',NULL,'2'),
+('9480','282',NULL,'IMG_4703','Y','Y','Looking southwest over the Manzanitas','350525972','-1063528889','3066',NULL,'2021-12-02 11:03:47','IMG_4703','480','640',NULL,'7'),
+('9481','282',NULL,'IMG_4698','Y','Y','Numerous trail sections are lined with cedars and pines','350431139','-1063568722','3067',NULL,'2021-12-02 10:24:42','IMG_4698','480','640',NULL,'4'),
+('9482','282',NULL,'IMG_4690','Y','Y','Jackalope parallels NM337 at first','350363472','-1063748389','3068',NULL,'2021-12-02 09:23:23','IMG_4690','480','640',NULL,'1'),
+('9483','282',NULL,'IMG_4688','Y','Y','Low cut bluffs line the trail near its start','350361167','-1063798833','3069',NULL,'2021-12-02 09:13:51','IMG_4688','480','640',NULL,'0'),
+('9484','282',NULL,'IMG_4712','Y','Y','An easy-to-miss shortcut off FR 252','350502250','-1063530444','3070',NULL,'2021-12-02 11:28:14','IMG_4712','640','480',NULL,'6'),
+('9485','282',NULL,'IMG_4697','Y','Y','From Powerline to Rabbit Run at FR 542','350416750','-1063570111','3071',NULL,'2021-12-02 10:20:12','IMG_4697','480','640',NULL,'3'),
+('9486','282',NULL,'IMG_4711','Y','N','The distant Jemez range','350531306','-1063520444','3072',NULL,'2021-12-02 11:12:58','IMG_4711','480','640',NULL,'8'),
+('9487','282',NULL,'IMG_4710','Y','Y','North towards the Sangre de Cristos','350530972','-1063519972','3073',NULL,'2021-12-02 11:12:51','IMG_4710','480','640',NULL,'9'),
+('9488','282',NULL,'IMG_4708','Y','N','South Mountain and San Pedros','350531528','-1063516611','3074',NULL,'2021-12-02 11:08:52','IMG_4708','480','640',NULL,'10'),
+('9489','282',NULL,'IMG_4709','Y','N','Sandia\'s eastern slopes','350532833','-1063518222','3075',NULL,'2021-12-02 11:10:12','IMG_4709','480','640',NULL,'11');
 
 
 
@@ -4900,7 +4914,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=229 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -5133,7 +5147,9 @@ INSERT INTO VISITORS VALUES
 ('225','157.55.39.89','Unknown','Unknown','2021-11-19 02:26:06','https://nmhikes.com:443/pages/home.php'),
 ('226','191.101.41.35','Unknown','mac','2021-11-19 07:15:50','https://nmhikes.com:443/pages/home.php'),
 ('227','191.101.41.35','Apple Safari','mac','2021-11-19 07:15:52','https://nmhikes.com:443/pages/home.php'),
-('228','207.102.138.19','Google Chrome','linux','2021-11-19 11:26:32','https://nmhikes.com:443/pages/home.php');
+('228','207.102.138.19','Google Chrome','linux','2021-11-19 11:26:32','https://nmhikes.com:443/pages/home.php'),
+('229','13.66.139.0','Unknown','Unknown','2021-12-02 07:23:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=221'),
+('230','157.55.39.232','Unknown','Unknown','2021-12-02 09:57:20','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=33');
 
 
 
