@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 
 
@@ -389,7 +389,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
 
 
@@ -417,7 +417,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8;
 
 
 
@@ -522,7 +522,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=284 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -799,7 +799,8 @@ INSERT INTO HIKES VALUES
 ('279','Oak Flat Loop','2','Tijeras','Loop','6.50','400','Easy-Moderate','None','Wooded Trails','Not Winter','Good shade','PonderosaLoop-97.123.105.87-1635979105.gpx','PonderosaLoop-97.123.105.87-1635979105.json','349994431','-1063162594','Oak 578577.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.9994444,-106.31625/@34.9990593,-106.3324498,14z','<p>&nbsp;There are multiple unmarked forks and crossings. A tracking device is recommended to prevent unnecessary diversions.</p>','<p>This hike starts at <em><span style=\"color: #1428d2;\">Mohagany Run</span></em> and soon cuts over to the main <span style=\"color: #1428d2;\"><em>Ponderosa Trail</em></span> loop. As the <em><span style=\"color: #1428d2;\">Ponderosa Trail </span></em>is not a long loop, the author extended the trail by cutting back over on <span style=\"color: #1428d2;\"><em>Mohagany</em></span> and on to <em><span style=\"color: #1428d2;\">Gamble Oak</span></em>, <em><span style=\"color: #1428d2;\">Caida del Pino</span></em>, and finally closing the loop via the <em><span style=\"color: #1428d2;\">Easy Pickin Trail</span></em> segment.</p>\r\n<p>Much of the trail is in the woods, so there is not a wide variety of scenery. Occasionally, the forest opens up to allow views west and north so that not only can one catch a view of the <em>Sandia</em>\'s eastern slopes, but also the <em>San Pedros</em> can be seen, and beyond to the <em>Sangre de Cristos</em>. The trail does not present any major elevation changes, but rather slowly ascending or descending trail sections.</p>','2021-11-03',NULL,NULL,NULL),
 ('280','South Crest via Travertine','2','Tijeras','Out-and-back','7.80','1700','Moderate','None','Mountain Views','Not Winter','Good shade','South_Crest-97.123.105.87-1636586839.gpx','South_Crest-97.123.105.87-1636586839.json','350895763','-1063914861','Sout65a795.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0866031,-106.396326,15.66z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <em><span style=\"color: #1428d2;\">Crest Trail</span></em> stretches almost 26 miles across the heights of the Sandias. The AllTrails link below in <strong>References</strong> shows approximately half of the entire length, beginning at the Sandia Crest Highway terminus. The author\'s hike begins at the south end of the trail and proceeds almost 4 miles in to make for an&nbsp; 8 mile out-and-back. The author chose to proceed to <em>Travertine Falls</em> and then uphill to the <em><span style=\"color: #1428d2;\">South Crest Trail </span></em>in order to cut off about 1/3 mile from the hike, as taking the South Crest Trail at the Travertine split adds unnecessary distance.</p>\r\n<p>The trail is generally moderate to easy in grade, but continues uphill the entire way - and beyond. Once leaving the <em>Hondo Canyon</em> and reaching higher elevations, some mountain views are accessible. At first, the trail looks out to the northeast, presenting views of <em>South Mountain</em> and the <em>San Pedro</em> range. Later, the trail angles around to afford views south towards the <em>Manzano Mountains</em>. By the time the author reached the turn-around point, the <em>Sandia</em> ridge was visible to the north.</p>','2021-11-10',NULL,NULL,NULL),
 ('281','Juan Thomas Roller Coaster','2','Tijeras','Loop','9.30','550','Moderate','None','Varying Mountain Views','Not Winter','Mixed sun/shade','JTRocky Top-97.123.105.87-1637197893.gpx','JTRocky Top-97.123.105.87-1637197893.json','350346203','-1063205001','Juan5ce9ba.jpg',NULL,NULL,'https://www.google.com/maps/dir//Juan+Thomas+Trailhead,+244-248+Juan+Tomas+Rd,+Tijeras,+NM+87059/@35.0495026,-106.3882428,13.18z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718bb15d026e56b:0xd3f8a1696d94dfb1!2m2!1d-106.3205034!2d35.0345529','<p>&nbsp;The Forest Road to the parking area is dirt and poorly maintained - an all-wheel drive with reasonable clearance is recommended.</p>','<p>This hike begins on the <em><span style=\"color: #1428d2;\">Bear Scat Trail</span></em>, and heads east and north on the <em><span style=\"color: #1428d2;\">Bernalillo County Open Space Trail</span></em> to the junction of <span style=\"color: #1428d2;\"><em>Roller Coaster Trail</em></span>, where the loop begins. Heading east on the loop, the trail is relatively easy, with a long slow downhill as you head north. As you head south, the ascent begins and gets moderately steep as you progress, then descends somewhat steeply to close the loop. It is unclear as to whether the name of the trail remains for the duration of the loop.</p>\r\n<p>There are a variety of views en route, from shaded trail, to open meadow, to glimpse of mountains to the north and northeast. It is also a good hike for solitude - the author encountered no one on this hike, although apparently mountain bikers do use the trails. The weekend probably bears more traffic, though the rugged road in probably discourages many.</p>','2021-11-17',NULL,NULL,NULL),
-('282','Jackalope to Cedro Peak','2','Tijeras','Out-and-back','8.20','1100','Moderate','None','Views from Cedro Peak','Not Winter','Good shade','Jackalope-75.161.38.115-1638485270.gpx','Jackalope-75.161.38.115-1638485270.json','350352316','-1063804505','Jack90c364.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.0352317,-106.3804505/@35.0554588,-106.4022621,13.25z','<p>There is only a small pullout on NM 337 at the trailhead by the entrance - it is easy to miss (see <strong>Google Directions</strong> in the <strong>Side Panel </strong>above).</p>','<p>The <em><span style=\"color: #1428d2;\">Jackalope Trail</span></em> begins roadside at NM 337 and proceeds east and north from there, at first paralleling the highway. While it is mostly an ascending grade, it is not difficult. It winds through the forest and eventually ends at the access road for the power lines.</p>\r\n<p>At this point, the trail follows the <em><span style=\"color: #1428d2;\">Powerline Trail </span></em>to the southeast, where it eventually intersects FR 542. Crossing that road takes you onto the <em><span style=\"color: #1428d2;\">Rabbit Run Trail</span></em>, which ascends a bit more. The <em><span style=\"color: #1428d2;\">Rabbit Run Trail</span></em> ends again at FR 542, which is then followed towards <em>Cedro Peak</em>. FR 252 intersects FR 542, and soon thereafter an almost-hidden trail (see interactive map photo) cuts through the woods to a point where a trail up <em>Cedro Peak</em> can be followed.</p>\r\n<p>Because the trail and road continually ascend, by the time you reach the trail to ascend <em>Cedro Peak</em>, there is only abot 200\' of elevation left to gain. The 360-degree views from the top are very nice.</p>\r\n<p>&nbsp;</p>','2021-12-02',NULL,NULL,NULL);
+('282','Jackalope to Cedro Peak','2','Tijeras','Out-and-back','8.20','1100','Moderate','None','Views from Cedro Peak','Not Winter','Good shade','Jackalope-75.161.38.115-1638485270.gpx','Jackalope-75.161.38.115-1638485270.json','350352316','-1063804505','Jack90c364.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.0352317,-106.3804505/@35.0554588,-106.4022621,13.25z','<p>There is only a small pullout on NM 337 at the trailhead by the entrance - it is easy to miss (see <strong>Google Directions</strong> in the <strong>Side Panel </strong>above).</p>','<p>The <em><span style=\"color: #1428d2;\">Jackalope Trail</span></em> begins roadside at NM 337 and proceeds east and north from there, at first paralleling the highway. While it is mostly an ascending grade, it is not difficult. It winds through the forest and eventually ends at the access road for the power lines.</p>\r\n<p>At this point, the trail follows the <em><span style=\"color: #1428d2;\">Powerline Trail </span></em>to the southeast, where it eventually intersects FR 542. Crossing that road takes you onto the <em><span style=\"color: #1428d2;\">Rabbit Run Trail</span></em>, which ascends a bit more. The <em><span style=\"color: #1428d2;\">Rabbit Run Trail</span></em> ends again at FR 542, which is then followed towards <em>Cedro Peak</em>. FR 252 intersects FR 542, and soon thereafter an almost-hidden trail (see interactive map photo) cuts through the woods to a point where a trail up <em>Cedro Peak</em> can be followed.</p>\r\n<p>Because the trail and road continually ascend, by the time you reach the trail to ascend <em>Cedro Peak</em>, there is only abot 200\' of elevation left to gain. The 360-degree views from the top are very nice.</p>\r\n<p>&nbsp;</p>','2021-12-02',NULL,NULL,NULL),
+('283','Placitas Loop Trail','2','Placitas','Loop','8.00','650','Easy-Moderate','None','Sandias and Westward Views','Not Summer','Full sun','Placitas-75.161.38.115-1639006816.gpx','Placitas-75.161.38.115-1639006816.json','353041707','-1064862716','Plac2b75d0.jpg',NULL,NULL,'https://www.google.com/maps/dir//Placitas+Trailhead,+Forest+Loop+Rd,+Placitas,+NM+87043/@35.3063575,-106.532294,13.36z/data=!4m8!4m7!1m0!1m5!1m1!1s0x871883281bfde5fb:0x99e1930ad84c4a44!2m2!1d-106.4861668!2d35.3040521',NULL,'<p>This hike is formed by mapping various trail segments into a loop hike. The beginning of the trail, from the parking area, follows the dirt road, <em>Forest Loop Road</em>, and then diverges onto the <em><span style=\"color: #1428d2;\">NXNW Trail</span></em>. Here the trail is followed up to a junction where the <em><span style=\"color: #1428d2;\">NXNW</span></em> goes into a residential area, and this hike veers left (east) towards more open space.</p>\r\n<p>The trail proceeds east&nbsp; - but the expected route, as indicated on trail maps (including Google maps), is blocked off. Here the Sandia Pueblo has established a fenceline along its boundary, and a newer trail section is encountered, not easily identified on current maps.&nbsp; To proceed, follow the trail as it winds left (flags on the interactive map indicate turns: green - left; red - right; blue - straight through). The newer, ummarked segment roughly parallels the old route, but to its west about 400 meters.</p>\r\n<p>The trail rejoins the expected route at <em>Forest Loop Road</em>, but requires more walking along the road than originally intended. Follow the <em>Loop Road</em> until it meets the <em><span style=\"color: #1428d2;\">Powerline Cut-through</span></em> (an unnamed but easily identified track along the Powerlines). It later intersects the well-marked <em><span style=\"color: #1428d2;\">Bobsled Trail</span></em>, where the trail takes a left turn.</p>\r\n<p>Follow the <em><span style=\"color: #1428d2;\">Bobsled Trail </span></em>until another marker is found at its intersection with the <em><span style=\"color: #1428d2;\">Bootleg Trail</span></em>. That trail eventually leads back to the southwest corner of the parking area, after passing through numerous other trail intersections - some marked, and some not.</p>','2021-12-08',NULL,NULL,NULL);
 
 
 
@@ -811,7 +812,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3082 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3085 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1790,7 +1791,9 @@ INSERT INTO REFS VALUES
 ('3075','281','App:','https://www.alltrails.com/explore/us/new-mexico/tijeras?b_tl_lat=35.0733891881122&b_tl_lng=-106.3429723646514&b_br_lat=35.01693534096427&b_br_lng=-106.25995356317841','AllTrails.com'),
 ('3076','281','Blog:','https://womanseekselevation.com/2019/07/21/new-views-open-up-at-juan-tomas-open-space/','Woman Seeks Elevation'),
 ('3077','281','Website:','https://www.cabq.gov/parksandrecreation/open-space/lands/east-mountain-open-space','City of Albuquerque'),
-('3081','282','Website:','https://www.trailforks.com/trails/jackalope-101577/','Jackalope Mountain Biking');
+('3081','282','Website:','https://www.trailforks.com/trails/jackalope-101577/','Jackalope Mountain Biking'),
+('3082','283','Website:','https://www.fs.usda.gov/wps/portal/fsinternet/cs/recarea?ss=110303&navtype=BROWSEBYSUBJECT&cid=FSE_003738&navid=110240000000000&pnavid=110000000000000&position=generalinfo&recid=82127&ttype=recarea&pname=Placitas%20Trail%20System','USDA Forest Service'),
+('3083','283','App:','https://www.alltrails.com/trail/us/new-mexico/mustang-alley-bootleg-bobsled-and-fence-line-trails-loop','AllTrails.com');
 
 
 
@@ -1814,7 +1817,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9493 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9508 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4875,7 +4878,16 @@ INSERT INTO TSV VALUES
 ('9486','282',NULL,'IMG_4711','Y','N','The distant Jemez range','350531306','-1063520444','3072',NULL,'2021-12-02 11:12:58','IMG_4711','480','640',NULL,'8'),
 ('9487','282',NULL,'IMG_4710','Y','Y','North towards the Sangre de Cristos','350530972','-1063519972','3073',NULL,'2021-12-02 11:12:51','IMG_4710','480','640',NULL,'9'),
 ('9488','282',NULL,'IMG_4708','Y','N','South Mountain and San Pedros','350531528','-1063516611','3074',NULL,'2021-12-02 11:08:52','IMG_4708','480','640',NULL,'10'),
-('9489','282',NULL,'IMG_4709','Y','N','Sandia\'s eastern slopes','350532833','-1063518222','3075',NULL,'2021-12-02 11:10:12','IMG_4709','480','640',NULL,'11');
+('9489','282',NULL,'IMG_4709','Y','N','Sandia\'s eastern slopes','350532833','-1063518222','3075',NULL,'2021-12-02 11:10:12','IMG_4709','480','640',NULL,'11'),
+('9493','283',NULL,'IMG_4726','Y','Y','Northwest towards the Jemez Range','352982222','-1064979944','3076',NULL,'2021-12-08 09:27:40','IMG_4726','480','640',NULL,'1'),
+('9494','283',NULL,'IMG_4718','Y','Y','A morning view of the Sandias','353038972','-1064874944','3077',NULL,'2021-12-08 08:57:23','IMG_4718','480','640',NULL,'0'),
+('9495','283',NULL,'IMG_4727','Y','Y','Point of divergence from the road to NXNW','352990139','-1064992889','3078',NULL,'2021-12-08 09:29:52','IMG_4727','480','640',NULL,'2'),
+('9496','283',NULL,'IMG_4743','Y','Y','Near the parking area - another alternate trail','353018111','-1064844444','3079',NULL,'2021-12-08 12:33:25','IMG_4743','480','640',NULL,'8'),
+('9497','283',NULL,'IMG_4736','Y','Y','Powerline Path ups and downs','352828222','-1064823444','3080',NULL,'2021-12-08 11:36:00','IMG_4736','640','480',NULL,'5'),
+('9498','283',NULL,'IMG_4741','Y','Y','An alternate trail head for the Strip Mine Trail','352993361','-1064820556','3081',NULL,'2021-12-08 12:28:03','IMG_4741','480','640',NULL,'7'),
+('9499','283',NULL,'IMG_4731','Y','Y','The Pueblo demarcation fence','352953528','-1065041889','3082',NULL,'2021-12-08 10:44:50','IMG_4731','480','640',NULL,'3'),
+('9500','283',NULL,'IMG_4733','Y','Y','The road heads straight towards the Sandias','352803194','-1064897000','3083',NULL,'2021-12-08 11:21:37','IMG_4733','480','640',NULL,'4'),
+('9501','283',NULL,'IMG_4739','Y','Y','Low rolling hills along the Bootleg Trail','352950806','-1064834889','3084',NULL,'2021-12-08 12:13:54','IMG_4739','480','640',NULL,'6');
 
 
 
@@ -4914,7 +4926,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=231 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=238 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -5149,7 +5161,14 @@ INSERT INTO VISITORS VALUES
 ('227','191.101.41.35','Apple Safari','mac','2021-11-19 07:15:52','https://nmhikes.com:443/pages/home.php'),
 ('228','207.102.138.19','Google Chrome','linux','2021-11-19 11:26:32','https://nmhikes.com:443/pages/home.php'),
 ('229','13.66.139.0','Unknown','Unknown','2021-12-02 07:23:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=221'),
-('230','157.55.39.232','Unknown','Unknown','2021-12-02 09:57:20','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=33');
+('230','157.55.39.232','Unknown','Unknown','2021-12-02 09:57:20','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=33'),
+('231','207.46.13.207','Unknown','Unknown','2021-12-03 12:53:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=185'),
+('232','157.55.39.66','Unknown','Unknown','2021-12-05 09:22:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=20'),
+('233','13.66.139.0','Unknown','Unknown','2021-12-05 10:11:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=222'),
+('234','75.161.38.115','Apple Safari','mac','2021-12-07 11:54:05','https://nmhikes.com:443/pages/home.php'),
+('235','149.56.150.197','Unknown','Unknown','2021-12-07 02:49:27','https://nmhikes.com:443/pages/home.php'),
+('236','75.161.38.115','Mozilla Firefox','mac','2021-12-08 05:55:19','https://nmhikes.com:443/pages/home.php'),
+('237','207.46.13.207','Unknown','Unknown','2021-12-10 02:29:01','https://nmhikes.com:443/pages/home.php');
 
 
 
