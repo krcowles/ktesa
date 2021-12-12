@@ -1,0 +1,9 @@
+{
+	"outDir": "../styles",
+	"removeComments": false,
+	"sourceMaps": true,
+	"indentType": "space",
+	"indentWidth": 4,
+	"linefeed": "crlf",
+	"outputStyle": "compressed"
+}
