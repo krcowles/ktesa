@@ -1,10 +1,16 @@
-@import "body";
-@import "overflow";
-$landing-bg: #fcf4e8;
-
+$page-bg: #fcf4e8;
+$page-fontsize: 16px;
+$page-fonts: arial, verdana;
+$page-margin: 0;
 body {
-    background-color: $landing-bg;
+    background-color: $page-bg;
+    margin: $page-margin;
+    font: {
+        family: $page-fonts;
+        size: $page-fontsize;
+    }
 }
+
 /* Logo and login bar */
 #logo {
     display: inline-block;

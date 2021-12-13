@@ -1,251 +1,216 @@
-/* line 1, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .navbar {
-  background-color: darkslategray;
+    background-color: darkslategray;
 }
 
-/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .navbar-brand {
-  color: #bfd9bf !important;
-  font-style: italic;
+    color: #bfd9bf !important;
+    font-style: italic;
 }
 
-/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .nav-link {
-  color: whitesmoke !important;
+    color: whitesmoke !important;
 }
 
-/* line 11, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 ul.dropdown-menu {
-  background-color: whitesmoke !important;
+    background-color: whitesmoke !important;
 }
 
 /* Logo */
-/* line 15, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo {
-  display: inline-block;
-  vertical-align: top;
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 52px;
-  margin-bottom: 6px;
-  margin-right: 12px;
-  background-color: #ffe866;
-  z-index: 1;
-  text-align: center;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 52px;
+    margin-bottom: 6px;
+    margin-right: 12px;
+    background-color: #ffe866;
+    z-index: 1;
+    text-align: center;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-/* line 31, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #pattern {
-  background-image: url("../images/southwest_pattern.png");
-  background-repeat: repeat-x;
-  background-attachment: scroll;
-  margin-top: 2px;
-  padding: 0px;
-  height: 16px;
+    background-image: url("../images/southwest_pattern.png");
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    margin-top: 2px;
+    padding: 0px;
+    height: 16px;
 }
 
-/* line 39, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .logo_items {
-  display: inline-block;
+    display: inline-block;
 }
 
-/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #leftside {
-  float: left;
-  margin-bottom: 0px;
+    float: left;
+    margin-bottom: 0px;
 }
 
-/* line 46, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #ctr {
-  clear: both;
-  margin-top: 4px;
-  margin-bottom: 0px;
+    clear: both;
+    margin-top: 4px;
+    margin-bottom: 0px;
 }
 
-/* line 51, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #rightside {
-  float: right;
-  margin-bottom: 0px;
+    float: right;
+    margin-bottom: 0px;
 }
 
-/* line 55, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #hikers {
-  float: left;
-  margin-top: 3px;
-  margin-left: 10px;
-  z-index: 100;
+    float: left;
+    margin-top: 3px;
+    margin-left: 10px;
+    z-index: 100;
 }
 
-/* line 60, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #tmap {
-  float: right;
-  margin-right: 8px;
-  margin-top: 4px;
-  z-index: 100;
+    float: right;
+    margin-right: 8px;
+    margin-top: 4px;
+    z-index: 100;
 }
 
-/* line 65, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo_left {
-  float: left;
-  margin-left: 12px;
-  margin-top: 4px;
-  color: darkslategray;
-  z-index: 5;
+    float: left;
+    margin-left: 12px;
+    margin-top: 4px;
+    color: darkslategray;
+    z-index: 5;
 }
 
-/* line 71, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #ctr {
-  font-size: 18px;
-  font-weight: bold;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-/* line 75, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo_right {
-  float: right;
-  margin-right: 10px;
-  margin-top: 5px;
-  color: darkslategray;
-  z-index: 5;
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+    color: darkslategray;
+    z-index: 5;
 }
 
-/* line 81, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #trail {
-  clear: both;
-  text-align: center;
-  font-weight: bold;
+    clear: both;
+    text-align: center;
+    font-weight: bold;
 }
 
 /* login elements */
-/* line 87, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #cookie_state, #cookies_choice, #admin, #contrib, #admintools {
-  display: none;
+    display: none;
 }
 
-/* line 2, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #logo {
-  margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
-/* line 5, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 html, body {
-  font-family: arial, verdana;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  overflow-y: hidden;
+    font-family: arial, verdana;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
-/* line 13, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #trail {
-  display: none;
+    display: none;
 }
 
-/* line 16, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #searchbar {
-  border-radius: 8px;
-  border-width: 1px;
-  border-color: darkslategray;
-  font-size: 16px;
-  padding-left: 6px;
-  height: 34px;
-  position: absolute;
-  z-index: 200;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: darkslategray;
+    font-size: 16px;
+    padding-left: 6px;
+    height: 34px;
+    position: absolute;
+    z-index: 200;
 }
 
-/* line 26, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #map {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
-/* line 30, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #srch {
-  display: none;
+    display: none;
 }
 
-/* line 33, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #geoSetting {
-  display: none;
+    display: none;
 }
 
-/* line 36, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #geoCtrl {
-  position: absolute;
-  z-index: 100;
+    position: absolute;
+    z-index: 100;
 }
 
-/* line 40, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #geoCtrl:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-/* line 43, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #legend {
-  position: absolute;
+    position: absolute;
 }
 
-/* line 46, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 li img {
-  float: left;
-  margin-right: 4px;
+    float: left;
+    margin-right: 4px;
 }
 
-/* line 50, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 li {
-  padding-left: 6px;
-  padding-right: 6px;
-  margin-bottom: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-bottom: 4px;
 }
 
-/* line 55, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #iwVC {
-  background-color: #f0f0f0;
-  color: Black;
-  padding: 8px;
-  margin: 3px;
+    background-color: #f0f0f0;
+    color: Black;
+    padding: 8px;
+    margin: 3px;
 }
 
-/* line 61, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #iwCH {
-  background-color: #f0f0f0;
-  color: Black;
-  padding: 8px;
-  margin: 3px;
+    background-color: #f0f0f0;
+    color: Black;
+    padding: 8px;
+    margin: 3px;
 }
 
-/* line 67, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #iwNH {
-  background-color: #f0f0f0;
-  color: Black;
-  padding: 8px;
-  margin: 3px;
+    background-color: #f0f0f0;
+    color: Black;
+    padding: 8px;
+    margin: 3px;
 }
 
-/* line 73, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #iwXH {
-  background-color: #f0f0f0;
-  color: Black;
-  padding: 8px;
-  margin: 3px;
+    background-color: #f0f0f0;
+    color: Black;
+    padding: 8px;
+    margin: 3px;
 }
 
-/* line 79, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #iwVC a, #iwCH a, #iwNH a, #iwXH a {
-  font-size: 12px;
-  top: -1px;
-  left: -6px;
+    font-size: 12px;
+    top: -1px;
+    left: -6px;
 }
 
 /* For favorites map page: */
-/* line 85, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/mapOnly.scss */
 #favlist {
-  position: absolute;
+    position: absolute;
 }
 
 /*# sourceMappingURL=mapOnly.css.map */
