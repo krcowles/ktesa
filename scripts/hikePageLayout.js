@@ -1,3 +1,4 @@
+"use strict";
 /**
  * @fileoverview Size the viewport and place elements in it, then add the rows
  * of photos.

@@ -1,3 +1,4 @@
+"use strict";
 /// <reference path='./canvas.d.ts' />
 /**
  * @fileoverview This file supplies functions and variables to draw

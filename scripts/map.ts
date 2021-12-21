@@ -97,6 +97,9 @@ const getIcon = (no_of_hikes:number) => {
 function initMap() {
 	var clustererMarkerSet:google.maps.Marker[] = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
+	var json_style_array = <google.maps.MapTypeStyle[]>[
+        { "featureType":"poi", "stylers":[{ "visibility": "off" }] }
+    ];
 	map = new google.maps.Map($map.get(0), {
 		center: nmCtr,
 		zoom: 7,
@@ -117,7 +120,8 @@ function initMap() {
 		fullscreenControl: true,
 		streetViewControl: false,
 		rotateControl: false,
-		mapTypeId: google.maps.MapTypeId.TERRAIN
+		mapTypeId: google.maps.MapTypeId.TERRAIN,
+		styles: json_style_array
 	});
     new google.maps.KmlLayer({
 		url: "https://nmhikes.com/maps/NM_Borders.kml",

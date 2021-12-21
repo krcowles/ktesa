@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 
 
@@ -79,7 +79,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -258,7 +258,9 @@ INSERT INTO CLUSHIKES VALUES
 ('176','278','Y','56'),
 ('177','267','Y','56'),
 ('178','280','Y','37'),
-('179','281','Y','53');
+('179','281','Y','53'),
+('180','284','Y','57'),
+('181','64','Y','57');
 
 
 
@@ -271,7 +273,7 @@ CREATE TABLE `CLUSTERS` (
   `pub` char(1) DEFAULT NULL,
   `page` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`clusid`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSTERS VALUES
@@ -330,9 +332,8 @@ INSERT INTO CLUSTERS VALUES
 ('53','Juan Thomas OS Group','350344800','-1063205400','Y','0'),
 ('54','Chamisoso Group','350640400','-1063715400','Y','0'),
 ('55','Mars Court Group','349840700','-1063499800','Y','0'),
-('56','Otero Canyon Group','350348900','-1063743400','Y','0');
-
-
+('56','Otero Canyon Group','350348900','-1063743400','Y','0'),
+('57','Strip Mine Group','353001286','-1064805065','Y','0');
 
 
 CREATE TABLE `Checksums` (
@@ -345,20 +346,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2021-11-30 09:54:53'),
-('2','CLUSHIKES','2979690651','2021-11-30 09:54:53'),
-('3','CLUSTERS','1449374701','2021-11-30 09:54:53'),
-('4','EGPSDAT','0','2021-11-30 09:54:53'),
-('5','EHIKES','0','2021-11-30 09:54:53'),
-('6','EREFS','0','2021-11-30 09:54:53'),
-('7','ETSV','0','2021-11-30 09:54:53'),
-('8','FAVORITES','3651041965','2021-11-30 09:54:53'),
-('9','GPSDAT','145362506','2021-11-30 09:54:53'),
-('10','HIKES','1780192409','2021-11-30 09:54:53'),
-('11','REFS','1744450030','2021-11-30 09:54:53'),
-('12','TSV','3498044611','2021-11-30 09:54:53'),
-('13','USERS','510490655','2021-11-30 09:54:53'),
-('14','VISITORS','1764582789','2021-11-30 09:54:53');
+('1','BOOKS','2674158859','2021-12-12 17:58:40'),
+('2','CLUSHIKES','2979690651','2021-12-12 17:58:40'),
+('3','CLUSTERS','1449374701','2021-12-12 17:58:40'),
+('4','EGPSDAT','0','2021-12-12 17:58:40'),
+('5','EHIKES','0','2021-12-12 17:58:40'),
+('6','EREFS','0','2021-12-12 17:58:40'),
+('7','ETSV','0','2021-12-12 17:58:40'),
+('8','FAVORITES','3651041965','2021-12-12 17:58:40'),
+('9','GPSDAT','145362506','2021-12-12 17:58:40'),
+('10','HIKES','553687441','2021-12-12 17:58:40'),
+('11','REFS','2871644674','2021-12-12 17:58:40'),
+('12','TSV','2566480471','2021-12-12 17:58:40'),
+('13','USERS','510490655','2021-12-12 17:58:40'),
+('14','VISITORS','1415104065','2021-12-12 17:58:40');
 
 
 
@@ -389,7 +390,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 
 
 
@@ -417,7 +418,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=208 DEFAULT CHARSET=utf8;
 
 
 
@@ -522,7 +523,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=284 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=285 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -800,7 +801,8 @@ INSERT INTO HIKES VALUES
 ('280','South Crest via Travertine','2','Tijeras','Out-and-back','7.80','1700','Moderate','None','Mountain Views','Not Winter','Good shade','South_Crest-97.123.105.87-1636586839.gpx','South_Crest-97.123.105.87-1636586839.json','350895763','-1063914861','Sout65a795.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0866031,-106.396326,15.66z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <em><span style=\"color: #1428d2;\">Crest Trail</span></em> stretches almost 26 miles across the heights of the Sandias. The AllTrails link below in <strong>References</strong> shows approximately half of the entire length, beginning at the Sandia Crest Highway terminus. The author\'s hike begins at the south end of the trail and proceeds almost 4 miles in to make for an&nbsp; 8 mile out-and-back. The author chose to proceed to <em>Travertine Falls</em> and then uphill to the <em><span style=\"color: #1428d2;\">South Crest Trail </span></em>in order to cut off about 1/3 mile from the hike, as taking the South Crest Trail at the Travertine split adds unnecessary distance.</p>\r\n<p>The trail is generally moderate to easy in grade, but continues uphill the entire way - and beyond. Once leaving the <em>Hondo Canyon</em> and reaching higher elevations, some mountain views are accessible. At first, the trail looks out to the northeast, presenting views of <em>South Mountain</em> and the <em>San Pedro</em> range. Later, the trail angles around to afford views south towards the <em>Manzano Mountains</em>. By the time the author reached the turn-around point, the <em>Sandia</em> ridge was visible to the north.</p>','2021-11-10',NULL,NULL,NULL),
 ('281','Juan Thomas Roller Coaster','2','Tijeras','Loop','9.30','550','Moderate','None','Varying Mountain Views','Not Winter','Mixed sun/shade','JTRocky Top-97.123.105.87-1637197893.gpx','JTRocky Top-97.123.105.87-1637197893.json','350346203','-1063205001','Juan5ce9ba.jpg',NULL,NULL,'https://www.google.com/maps/dir//Juan+Thomas+Trailhead,+244-248+Juan+Tomas+Rd,+Tijeras,+NM+87059/@35.0495026,-106.3882428,13.18z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718bb15d026e56b:0xd3f8a1696d94dfb1!2m2!1d-106.3205034!2d35.0345529','<p>&nbsp;The Forest Road to the parking area is dirt and poorly maintained - an all-wheel drive with reasonable clearance is recommended.</p>','<p>This hike begins on the <em><span style=\"color: #1428d2;\">Bear Scat Trail</span></em>, and heads east and north on the <em><span style=\"color: #1428d2;\">Bernalillo County Open Space Trail</span></em> to the junction of <span style=\"color: #1428d2;\"><em>Roller Coaster Trail</em></span>, where the loop begins. Heading east on the loop, the trail is relatively easy, with a long slow downhill as you head north. As you head south, the ascent begins and gets moderately steep as you progress, then descends somewhat steeply to close the loop. It is unclear as to whether the name of the trail remains for the duration of the loop.</p>\r\n<p>There are a variety of views en route, from shaded trail, to open meadow, to glimpse of mountains to the north and northeast. It is also a good hike for solitude - the author encountered no one on this hike, although apparently mountain bikers do use the trails. The weekend probably bears more traffic, though the rugged road in probably discourages many.</p>','2021-11-17',NULL,NULL,NULL),
 ('282','Jackalope to Cedro Peak','2','Tijeras','Out-and-back','8.20','1100','Moderate','None','Views from Cedro Peak','Not Winter','Good shade','Jackalope-75.161.38.115-1638485270.gpx','Jackalope-75.161.38.115-1638485270.json','350352316','-1063804505','Jack90c364.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.0352317,-106.3804505/@35.0554588,-106.4022621,13.25z','<p>There is only a small pullout on NM 337 at the trailhead by the entrance - it is easy to miss (see <strong>Google Directions</strong> in the <strong>Side Panel </strong>above).</p>','<p>The <em><span style=\"color: #1428d2;\">Jackalope Trail</span></em> begins roadside at NM 337 and proceeds east and north from there, at first paralleling the highway. While it is mostly an ascending grade, it is not difficult. It winds through the forest and eventually ends at the access road for the power lines.</p>\r\n<p>At this point, the trail follows the <em><span style=\"color: #1428d2;\">Powerline Trail </span></em>to the southeast, where it eventually intersects FR 542. Crossing that road takes you onto the <em><span style=\"color: #1428d2;\">Rabbit Run Trail</span></em>, which ascends a bit more. The <em><span style=\"color: #1428d2;\">Rabbit Run Trail</span></em> ends again at FR 542, which is then followed towards <em>Cedro Peak</em>. FR 252 intersects FR 542, and soon thereafter an almost-hidden trail (see interactive map photo) cuts through the woods to a point where a trail up <em>Cedro Peak</em> can be followed.</p>\r\n<p>Because the trail and road continually ascend, by the time you reach the trail to ascend <em>Cedro Peak</em>, there is only abot 200\' of elevation left to gain. The 360-degree views from the top are very nice.</p>\r\n<p>&nbsp;</p>','2021-12-02',NULL,NULL,NULL),
-('283','Placitas Loop Trail','2','Placitas','Loop','8.00','650','Easy-Moderate','None','Sandias and Westward Views','Not Summer','Full sun','Placitas-75.161.38.115-1639006816.gpx','Placitas-75.161.38.115-1639006816.json','353041707','-1064862716','Plac2b75d0.jpg',NULL,NULL,'https://www.google.com/maps/dir//Placitas+Trailhead,+Forest+Loop+Rd,+Placitas,+NM+87043/@35.3063575,-106.532294,13.36z/data=!4m8!4m7!1m0!1m5!1m1!1s0x871883281bfde5fb:0x99e1930ad84c4a44!2m2!1d-106.4861668!2d35.3040521',NULL,'<p>This hike is formed by mapping various trail segments into a loop hike. The beginning of the trail, from the parking area, follows the dirt road, <em>Forest Loop Road</em>, and then diverges onto the <em><span style=\"color: #1428d2;\">NXNW Trail</span></em>. Here the trail is followed up to a junction where the <em><span style=\"color: #1428d2;\">NXNW</span></em> goes into a residential area, and this hike veers left (east) towards more open space.</p>\r\n<p>The trail proceeds east&nbsp; - but the expected route, as indicated on trail maps (including Google maps), is blocked off. Here the Sandia Pueblo has established a fenceline along its boundary, and a newer trail section is encountered, not easily identified on current maps.&nbsp; To proceed, follow the trail as it winds left (flags on the interactive map indicate turns: green - left; red - right; blue - straight through). The newer, ummarked segment roughly parallels the old route, but to its west about 400 meters.</p>\r\n<p>The trail rejoins the expected route at <em>Forest Loop Road</em>, but requires more walking along the road than originally intended. Follow the <em>Loop Road</em> until it meets the <em><span style=\"color: #1428d2;\">Powerline Cut-through</span></em> (an unnamed but easily identified track along the Powerlines). It later intersects the well-marked <em><span style=\"color: #1428d2;\">Bobsled Trail</span></em>, where the trail takes a left turn.</p>\r\n<p>Follow the <em><span style=\"color: #1428d2;\">Bobsled Trail </span></em>until another marker is found at its intersection with the <em><span style=\"color: #1428d2;\">Bootleg Trail</span></em>. That trail eventually leads back to the southwest corner of the parking area, after passing through numerous other trail intersections - some marked, and some not.</p>','2021-12-08',NULL,NULL,NULL);
+('283','Placitas Loop Trail','2','Placitas','Loop','8.00','650','Easy-Moderate','None','Sandias and Westward Views','Not Summer','Full sun','Placitas-75.161.38.115-1639006816.gpx','Placitas-75.161.38.115-1639006816.json','353041707','-1064862716','Plac2b75d0.jpg',NULL,NULL,'https://www.google.com/maps/dir//Placitas+Trailhead,+Forest+Loop+Rd,+Placitas,+NM+87043/@35.3063575,-106.532294,13.36z/data=!4m8!4m7!1m0!1m5!1m1!1s0x871883281bfde5fb:0x99e1930ad84c4a44!2m2!1d-106.4861668!2d35.3040521',NULL,'<p>This hike is formed by mapping various trail segments into a loop hike. The beginning of the trail, from the parking area, follows the dirt road, <em>Forest Loop Road</em>, and then diverges onto the <em><span style=\"color: #1428d2;\">NXNW Trail</span></em>. Here the trail is followed up to a junction where the <em><span style=\"color: #1428d2;\">NXNW</span></em> goes into a residential area, and this hike veers left (east) towards more open space.</p>\r\n<p>The trail proceeds east&nbsp; - but the expected route, as indicated on trail maps (including Google maps), is blocked off. Here the Sandia Pueblo has established a fenceline along its boundary, and a newer trail section is encountered, not easily identified on current maps.&nbsp; To proceed, follow the trail as it winds left (flags on the interactive map indicate turns: green - left; red - right; blue - straight through). The newer, ummarked segment roughly parallels the old route, but to its west about 400 meters.</p>\r\n<p>The trail rejoins the expected route at <em>Forest Loop Road</em>, but requires more walking along the road than originally intended. Follow the <em>Loop Road</em> until it meets the <em><span style=\"color: #1428d2;\">Powerline Cut-through</span></em> (an unnamed but easily identified track along the Powerlines). It later intersects the well-marked <em><span style=\"color: #1428d2;\">Bobsled Trail</span></em>, where the trail takes a left turn.</p>\r\n<p>Follow the <em><span style=\"color: #1428d2;\">Bobsled Trail </span></em>until another marker is found at its intersection with the <em><span style=\"color: #1428d2;\">Bootleg Trail</span></em>. That trail eventually leads back to the southwest corner of the parking area, after passing through numerous other trail intersections - some marked, and some not.</p>','2021-12-08',NULL,NULL,NULL),
+('284','Strip Mine Sidetrack Trails','2','Placitas','Loop','6.70','950','Moderate','None','Views of the Northern Sandias','Not Summer','Full sun','Sidetrack-75.161.138.96-1639781497.gpx','Sidetrack-75.161.138.96-1639781497.json','353001554','-1064804941','Stri83f0a4.jpg',NULL,NULL,'https://www.google.com/maps/dir//Strip+Mine+Trailhead,+Placitas,+NM+87043/@35.2961586,-106.5400465,12.78z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718832c192f0229:0x961c57f98e6726b4!2m2!1d-106.4805611!2d35.3002468',NULL,'<p>This set of trails is another \'composition\' of the author based on trail maps of the area. It all begins at the <em><span style=\"color: #1428d2;\">Strip Mine Trail</span></em> in Placitas. In rather short order, this hike diverts onto the <span style=\"color: #1428d2;\"><em>Sidetrack Trail</em></span> for the purpose of extra mileage and additional scenery. That trail soon intersects the <em><span style=\"color: #1428d2;\">Sidewinder Trail,</span></em> aptly named as it weaves its way south. Note that the standard designation for flag colors on the interactive map is \"red -&gt; right; green -&gt; left\".</p>\r\n<p>When the <span style=\"color: #1428d2;\"><em>Sidewinder Trail </em></span>approaches the <em>Forest Loop Road </em>(a trail entrance exists there), it curves southeast and soon intersects the <em><span style=\"color: #1428d2;\">High Voltage Trail</span></em>&nbsp; which heads in an easterly direction. Carefully follow the track of this hike, as the <span style=\"color: #1428d2;\"><em>High Voltage Trail </em></span>later splits to the north, and the trail going forward from there becomes <span style=\"color: #1428d2;\"><em>ES06W</em></span> then <span style=\"color: #1428d2;\"><em>ES08W</em></span> according to maps, though unmarked and unnamed on the trail itself. At the next red flag on the map, the trail changes again to <em><span style=\"color: #1428d2;\">ES03</span></em>. The point at which the hike heads sharply southeast is at an unmamed junction, designated as <em><span style=\"color: #1428d2;\">ES18W</span></em>.</p>\r\n<p>At the easternmost end of the hike loop are two \"<em><span style=\"color: #1428d2;\">Dead End</span></em>\" trails that the author explored to see if an overlook or other viewing feature was offered. Primarily, these trails ascend the hills and offer some views, but nothing exceptional. The trails tend to become indistinct as you proceed. They may be omitted for a shorter trek. The trail again changes its name at the first <em><span style=\"color: #1428d2;\">Dead End</span></em> to become <em><span style=\"color: #1428d2;\">ES16W</span></em>. On the return loop to the northwest, the trail intersects the <em><span style=\"color: #1428d2;\">Strip Mine Trail,</span></em> and proceeds westerly along it a short distance to the <span style=\"color: #1428d2;\"><em>Chalk Dust Trail</em></span>. The <em><span style=\"color: #1428d2;\">Chalk Dust Trail</span></em> is well worth taking as the views along it are quite pleasant.</p>\r\n<p>&nbsp;</p>','2021-12-17',NULL,NULL,NULL);
 
 
 
@@ -812,7 +814,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3099 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3109 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1789,11 +1791,13 @@ INSERT INTO REFS VALUES
 ('3086','33','Website: ','http://www.sandiahiking.com/trailguide.html#aguasarca','Hiking Guide Complement'),
 ('3087','33','Website: ','http://www.backpacker.com/trips/new-mexico/albuquerque/albuquerque-nm-agua-sarca-canyon-loop/#bp=0/img1','Backpacker'),
 ('3088','33','App: ','http://www.alltrails.com/trail/us/new-mexico/tunnel-spring-agua-sarca','AllTrails'),
-('3092','64','Book: ','7',NULL),
-('3093','64','Website: ','http://www.sandiahiking.com/trailguide.html#stripmine','Sandia Hiking Guide (Companion to above)'),
-('3094','64','App: ','http://www.alltrails.com/events/2015/03/easy-to-moderate-strip-mine-trail-hike','AllTrails'),
-('3095','64','App: ','https://www.trails.com/tcatalog_trail.aspx?trailid=XAM003-003','Trails.com'),
-('3096','64','Blog: ','https://ondafringe.wordpress.com/2014/04/05/day-hike-strip-mine-trail-sandia-mountains-albuquerque-new-mexico-usa/','On Da Fringe');
+('3099','284','App:','https://www.alltrails.com/explore/trail/us/new-mexico/la-puerta-loop','AllTrails.com (Similar hike)'),
+('3100','284','Website:','https://www.hikingproject.com/trail/7061042/placitas-stripmine-loop','Hiking Project (Similar hike/bike)'),
+('3102','64','Book: ','7',NULL),
+('3103','64','Website: ','http://www.sandiahiking.com/trailguide.html#stripmine','Sandia Hiking Guide (Companion to above)'),
+('3104','64','App: ','http://www.alltrails.com/events/2015/03/easy-to-moderate-strip-mine-trail-hike','AllTrails'),
+('3105','64','App: ','https://www.trails.com/tcatalog_trail.aspx?trailid=XAM003-003','Trails.com'),
+('3106','64','Blog: ','https://ondafringe.wordpress.com/2014/04/05/day-hike-strip-mine-trail-sandia-mountains-albuquerque-new-mexico-usa/','On Da Fringe');
 
 
 
@@ -1817,7 +1821,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9538 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9584 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4879,15 +4883,33 @@ INSERT INTO TSV VALUES
 ('9513','33','Folder1','AlmostThere','Y','Y','Peeping through the firs','352735638','-1064459083','1492','photostream','2015-06-23 09:00:49','24802665482_d24a6397a7','240','320',NULL,'5'),
 ('9514','33','Folder1','OldShelter','Y','Y','Also a pile of rocks left behind','352746083','-1064454499','1493','photostream','2015-06-23 08:52:52','27349578726_3ca844b1a7','240','320',NULL,'4'),
 ('9515','33','Folder1','AutumnView','Y','Y','Looking back, pleasant views','352915222','-1064410694','1494','photostream','2013-10-26 15:05:57','27285097942_5a8beeb0be','240','320',NULL,'3'),
-('9523','64','Folder1','Trailhead','Y','Y','Off FR445','353000833','-1064804833','320','photostream','2013-10-18 11:45:02','24879187586_77df55d086','240','320',NULL,'0'),
-('9524','64','Folder1','Strip_Mine','Y','Y','The Namesake Mine','352959249','-1064552527','321','photostream','2013-10-18 12:55:19','24278610823_8c2c1c6763','320','240',NULL,'6'),
-('9525','64','Folder1','Rusty_hills','Y','Y','Colors in the hills','352962694','-1064729611','322','photostream','2015-06-01 14:57:54','24610023920_2fbe3654b1','240','320',NULL,'3'),
-('9526','64','Folder1','Rusty_bug','Y','Y','A Curiosity just off trail','352967222','-1064625250','323','photostream','2015-06-01 16:11:00','24905508445_5746381204','240','320',NULL,'5'),
-('9527','64','Folder1','North_Sandias','Y','Y','Looking towards Aqua Sarca and the North Crest','352986305','-1064776166','324','photostream','2015-06-01 14:50:27','24787584392_d1334fff5c','240','320',NULL,'2'),
-('9528','64','Folder1','Karen_enroute','Y','Y','A great first hike in the Placitas area','352957083','-1064728250','325','photostream','2013-10-18 13:56:35','24787595772_b61a7d67b8','240','320',NULL,'4'),
-('9529','64','Folder1','Heading_out','Y','Y','Venturing down the trail','352999611','-1064801722','326','photostream','2013-10-18 11:45:49','24787604892_a08503a2dc','240','320',NULL,'1'),
-('9530','64','Folder1','Cloudview','Y','Y','Picturesque skies','352958138','-1064550472','327','photostream','2015-06-01 15:49:33','24905541835_6de25572b2','240','320',NULL,'7'),
-('9531','64','Folder1','Adobe_rocks','Y','Y','Wild rocks everywhere','352958833','-1064550944','328','photostream','2013-10-18 12:58:31','24905548905_5a6f7a0cce','240','320',NULL,'8');
+('9538','284',NULL,'IMG_4754','Y','Y','The sun casts an aura around the cactus','352947222','-1064751194','3085',NULL,'2021-12-17 09:01:33','IMG_4754','640','480',NULL,'2'),
+('9539','284',NULL,'IMG_4744','Y','Y','The Sidetrack Trail begins shortly after the Strip Mine trail head','352988944','-1064779194','3086',NULL,'2021-12-17 08:50:34','IMG_4744','640','480',NULL,'0'),
+('9540','284',NULL,'IMG_4760','Y','N','Towards Agua Sarca canyon','352901361','-1064671111','3087',NULL,'2021-12-17 09:41:02','IMG_4760','480','640',NULL,'5'),
+('9541','284',NULL,'IMG_4757','Y','Y','A definite trail blocker!','352884861','-1064711139','3088',NULL,'2021-12-17 09:30:10','IMG_4757','480','640',NULL,'3'),
+('9542','284',NULL,'IMG_4748','Y','N','Winter morning\'s long shadows on the foothills','352985083','-1064778972','3089',NULL,'2021-12-17 08:52:06','IMG_4748','480','640',NULL,'1'),
+('9543','284',NULL,'IMG_4758','Y','Y','The earth seems to change color en route','352888444','-1064688111','3090',NULL,'2021-12-17 09:35:08','IMG_4758','480','640',NULL,'4'),
+('9544','284',NULL,'IMG_4770','Y','Y','The rich-colored foothills of Placitas','352900167','-1064611972','3091',NULL,'2021-12-17 10:02:09','IMG_4770','480','640',NULL,'9'),
+('9545','284',NULL,'IMG_4769','Y','N','A longer view of Cabezon Peak and White Mesa','352902639','-1064617083','3092',NULL,'2021-12-17 10:00:43','IMG_4769','480','640',NULL,'8'),
+('9546','284',NULL,'IMG_4777','Y','N','Rippled mesas looking northeast towards the Sangre de Cristos','352858806','-1064542528','3093',NULL,'2021-12-17 10:24:37','IMG_4777','480','640',NULL,'11'),
+('9547','284',NULL,'IMG_4772','Y','Y','Interesting stone features dot the ridge','352883389','-1064578028','3094',NULL,'2021-12-17 10:10:11','IMG_4772','480','640',NULL,'10'),
+('9548','284',NULL,'IMG_4761','Y','Y','The foothills are rich with scrub Cedars','352900556','-1064653639','3095',NULL,'2021-12-17 09:43:42','IMG_4761','480','640',NULL,'6'),
+('9549','284',NULL,'IMG_4787','Y','Y','An old wilderness boundary?','352905056','-1064528361','3096',NULL,'2021-12-17 11:40:52','IMG_4787','480','640',NULL,'13'),
+('9550','284',NULL,'IMG_4765','Y','N','The rocky trail proceeds uphill','352913583','-1064637139','3097',NULL,'2021-12-17 09:49:16','IMG_4765','480','640',NULL,'7'),
+('9551','284',NULL,'IMG_4780','Y','Y','The northern end of the Sandias','352854194','-1064547972','3098',NULL,'2021-12-17 10:30:28','IMG_4780','480','640',NULL,'12'),
+('9552','284',NULL,'IMG_4789','Y','Y','The strip mine from the trail juncture','352954222','-1064569389','3099',NULL,'2021-12-17 11:52:12','IMG_4789','480','640',NULL,'14'),
+('9553','284',NULL,'IMG_4790','Y','Y','Begin the Chalk Dust return trip','352954306','-1064613278','3100',NULL,'2021-12-17 11:59:05','IMG_4790','640','480',NULL,'15'),
+('9554','284',NULL,'IMG_4793','Y','Y','Beautiful views along the Chalk Dust','352990278','-1064650361','3101',NULL,'2021-12-17 12:08:54','IMG_4793','480','640',NULL,'16'),
+('9555','284',NULL,'IMG_4796','Y','Y','A fun surprise on the Chalk Dust!','352986000','-1064722361','3102',NULL,'2021-12-17 12:21:42','IMG_4796','480','640',NULL,'17'),
+('9569','64','Folder1','Trailhead','Y','Y','Off FR445','353000833','-1064804833','320','photostream','2013-10-18 11:45:02','24879187586_77df55d086','240','320',NULL,'0'),
+('9570','64','Folder1','Strip_Mine','Y','Y','The Namesake Mine','352959249','-1064552527','321','photostream','2013-10-18 12:55:19','24278610823_8c2c1c6763','320','240',NULL,'6'),
+('9571','64','Folder1','Rusty_hills','Y','Y','Colors in the hills','352962694','-1064729611','322','photostream','2015-06-01 14:57:54','24610023920_2fbe3654b1','240','320',NULL,'3'),
+('9572','64','Folder1','Rusty_bug','Y','Y','A Curiosity just off trail','352967222','-1064625250','323','photostream','2015-06-01 16:11:00','24905508445_5746381204','240','320',NULL,'5'),
+('9573','64','Folder1','North_Sandias','Y','Y','Looking towards Aqua Sarca and the North Crest','352986305','-1064776166','324','photostream','2015-06-01 14:50:27','24787584392_d1334fff5c','240','320',NULL,'2'),
+('9574','64','Folder1','Karen_enroute','Y','Y','A great first hike in the Placitas area','352957083','-1064728250','325','photostream','2013-10-18 13:56:35','24787595772_b61a7d67b8','240','320',NULL,'4'),
+('9575','64','Folder1','Heading_out','Y','Y','Venturing down the trail','352999611','-1064801722','326','photostream','2013-10-18 11:45:49','24787604892_a08503a2dc','240','320',NULL,'1'),
+('9576','64','Folder1','Cloudview','Y','Y','Picturesque skies','352958138','-1064550472','327','photostream','2015-06-01 15:49:33','24905541835_6de25572b2','240','320',NULL,'7'),
+('9577','64','Folder1','Adobe_rocks','Y','Y','Wild rocks everywhere','352958833','-1064550944','328','photostream','2013-10-18 12:58:31','24905548905_5a6f7a0cce','240','320',NULL,'8');
 
 
 
@@ -4926,7 +4948,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=238 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=252 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -5168,7 +5190,21 @@ INSERT INTO VISITORS VALUES
 ('234','75.161.38.115','Apple Safari','mac','2021-12-07 11:54:05','https://nmhikes.com:443/pages/home.php'),
 ('235','149.56.150.197','Unknown','Unknown','2021-12-07 02:49:27','https://nmhikes.com:443/pages/home.php'),
 ('236','75.161.38.115','Mozilla Firefox','mac','2021-12-08 05:55:19','https://nmhikes.com:443/pages/home.php'),
-('237','207.46.13.207','Unknown','Unknown','2021-12-10 02:29:01','https://nmhikes.com:443/pages/home.php');
+('237','207.46.13.207','Unknown','Unknown','2021-12-10 02:29:01','https://nmhikes.com:443/pages/home.php'),
+('238','66.249.69.155','Google Chrome','linux','2021-12-12 07:43:27','https://nmhikes.com:443/pages/landing.php'),
+('239','191.101.41.6','Unknown','mac','2021-12-13 08:44:22','https://nmhikes.com:443/pages/home.php'),
+('240','191.101.41.6','Apple Safari','mac','2021-12-13 08:44:22','https://nmhikes.com:443/pages/home.php'),
+('241','108.14.86.174','Unknown','mac','2021-12-13 09:07:48','https://nmhikes.com:443/pages/home.php'),
+('242','191.101.41.73','Apple Safari','mac','2021-12-13 09:07:50','https://nmhikes.com:443/pages/home.php'),
+('243','108.14.86.174','Unknown','mac','2021-12-13 09:13:02','https://nmhikes.com:443/pages/home.php'),
+('244','108.14.86.174','Apple Safari','mac','2021-12-13 09:13:03','https://nmhikes.com:443/pages/home.php'),
+('245','40.77.167.40','Unknown','Unknown','2021-12-14 11:06:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('246','207.46.13.10','Unknown','Unknown','2021-12-15 08:38:00','https://nmhikes.com:443/pages/home.php'),
+('247','66.249.69.154','Google Chrome','Unknown','2021-12-17 03:42:47','https://nmhikes.com:443/pages/home.php'),
+('248','207.46.13.148','Unknown','Unknown','2021-12-19 05:07:43','https://nmhikes.com:443/pages/home.php'),
+('249','207.46.13.148','Unknown','Unknown','2021-12-20 10:12:30','https://nmhikes.com:443/pages/home.php'),
+('250','191.101.41.72','Unknown','mac','2021-12-20 02:16:00','https://nmhikes.com:443/pages/home.php'),
+('251','191.101.41.72','Apple Safari','mac','2021-12-20 02:16:01','https://nmhikes.com:443/pages/home.php');
 
 
 
