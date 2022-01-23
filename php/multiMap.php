@@ -72,6 +72,7 @@ $colorIndx   = 0;
 $noOfTrks    = 0;  // sequentially increasing with each file
 $GPSV_Tracks = [];
 $waypoints   = [];
+$noOfWaypts  = 0;
 $trackTicks  = []; // each member is an array of ticks for a track 
 foreach ($files as $gpx) {
     $gpxPath = '../gpx/' . $gpx;
@@ -153,20 +154,24 @@ foreach ($files as $gpx) {
     /**
      *   ---- ESTABLISH ANY WAYPOINTS IN GPX FILE ----
      */
-    $noOfWaypts = $gpxdat->wpt->count();
-    if ($noOfWaypts > 0) {
+    $gpxWaypts = $gpxdat->wpt->count();
+    if ($gpxWaypts > 0) {
         foreach ($gpxdat->wpt as $waypt) {
             $wlat = $waypt['lat'];
             $wlng = $waypt['lon'];
             $sym = $waypt->sym;
+            // Note Garmin editor can introduce whitespace
+            $wname = trim($waypt->name);
+            $wdesc = trim($waypt->desc);
             //$text = preg_replace("/'/", "\'", $waypt->name);
-            $text = str_replace("'", "\'", $waypt->name);
-            $desc = str_replace("'", "\'", $waypt->desc);
+            $text = str_replace("'", "\'", $wname);
+            $desc = str_replace("'", "\'", $wdesc);
             $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng .
                 ",name:'" . $text . "',desc:'" . $desc . "',color:'" . "blue" .
                 "',icon:'" . $sym . "'});\n";
             array_push($waypoints, $wlnk);
         }
+        $noOfWaypts += $gpxWaypts;
     }
     /**
      *   ---- OPTIONAL PHOTOS ----
