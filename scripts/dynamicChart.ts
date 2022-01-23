@@ -103,6 +103,7 @@ const displayTrackSidePanel = (trkname: string) => {
     $('#hseas').text(data["seasons"]);
     $('#hwow').text(data["wow"]);
 };
+
 /**
  * This function turns on the topmost checked tracklist box. If all boxes
  * are unchecked, the last box checked remains displayed in elevation chart.
@@ -232,13 +233,16 @@ setChartDims();
 }
 /**
  * This function will draw the selected elevation profile in the canvas element
+ * Note however that the sidepanel data may not correspond to the track -number-
+ * as the track number is not necessarily in the same order as the track names.
+ * Therefore, use the name of the track from gpsvTracks.
  */
 function drawChart(trackNo: number) {
     var chartData: ChartData = defineData(trackNo);
     ChartObj.render('grph', chartData);
     crossHairs(trackNo);
     if (typeof panelData === 'object') {
-        displayTrackSidePanel(trackNames[trackNo]);
+        displayTrackSidePanel(gpsvTracks[trackNo]);
         if (mobile) {
             chartPlaced.resolve();
         }

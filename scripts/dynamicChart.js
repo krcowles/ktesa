@@ -207,13 +207,16 @@ function setChartDims() {
 }
 /**
  * This function will draw the selected elevation profile in the canvas element
+ * Note however that the sidepanel data may not correspond to the track -number-
+ * as the track number is not necessarily in the same order as the track names.
+ * Therefore, use the name of the track from gpsvTracks.
  */
 function drawChart(trackNo) {
     var chartData = defineData(trackNo);
     ChartObj.render('grph', chartData);
     crossHairs(trackNo);
     if (typeof panelData === 'object') {
-        displayTrackSidePanel(trackNames[trackNo]);
+        displayTrackSidePanel(gpsvTracks[trackNo]);
         if (mobile) {
             chartPlaced.resolve();
         }
