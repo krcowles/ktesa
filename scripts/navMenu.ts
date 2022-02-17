@@ -35,7 +35,7 @@ $('#logout').on('click', function() {
         data: ajax,
         method: "get",
         success: function() {
-            window.open('../pages/landing.php')
+            window.open('../pages/landing.php', '_self');
         },
         error: function() {
            ajaxerror.show();

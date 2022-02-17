@@ -53,7 +53,8 @@ $policy = "../accounts/PrivacyPolicy.pdf";
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a id="login" class="dropdown-item"
-                            href="../accounts/unifiedLogin.php?form=log">Login</a>
+                            href="../accounts/unifiedLogin.php?form=log"
+                            target="_self">Login</a>
                         </li>
                         <li><a id="logout" class="dropdown-item"
                             href="#">Logout</a>
@@ -62,8 +63,8 @@ $policy = "../accounts/PrivacyPolicy.pdf";
                             href="#">Change Password</a>
                         </li>
                         <li><a id="bam" class="dropdown-item"
-                            href="../accounts/unifiedLogin.php?form=reg">Become
-                                a Member</a>
+                            href="../accounts/unifiedLogin.php?form=reg"
+                            target="_self">Become a Member</a>
                         </li>
                     </ul>
                 </li>

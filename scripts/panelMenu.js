@@ -84,7 +84,7 @@ $(function () {
             method: 'get',
             success: function () {
                 alert("You have been successfully logged out");
-                window.open('../index.html');
+                window.open('../index.html', '_self');
             },
             error: function () {
                 alert("Failed to execute logout; Admin notified");

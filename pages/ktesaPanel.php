@@ -86,8 +86,8 @@ $policy = "../accounts/PrivacyPolicy.pdf";
                             href="#">Change Password</a>
                         </li>
                         <li><a id="bam" class="dropdown-item"
-                            href="../accounts/unifiedLogin.php?form=reg">Become
-                            a Member</a>
+                            href="../accounts/unifiedLogin.php?form=reg"
+                            target="_self">Become a Member</a>
                         </li>
                         <li><a id="updte_sec" class="dropdown-item" href="#">
                             Security Questions</a></li>

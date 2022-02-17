@@ -14,19 +14,12 @@ declare var tbl_indx: string;
  */
 
 $(function() {
-// declared cookie choice:
-$('#accept').on('click', function() {
-    $('#cookie_banner').hide(); 
-    $('#usrchoice').val("accept");
-});
-$('#reject').on('click', function() {
-    $('#cookie_banner').hide();
-    $('#usrchoice').val("reject");
-});
 
 var reg = mobile ? {top: 20, height: 510} : {top: 48, height: 540};
 var log = mobile ? {top: 48, height: 340} : {top: 80, height: 380};
 var ren = mobile ? {top: 20, height: 480} : {top: 80, height: 460};
+var accept_btn = mobile ? '#maccept' : '#accept';
+var reject_btn = mobile ? '#mreject' : '#reject';
 if (mobile) {
     $('.mobinp').css({
         position: 'relative',
@@ -37,16 +30,19 @@ if (mobile) {
         top: '-12px'
     });
     $('#cookie_banner').hide();
-    $('#reject').css('margin-left', '0',);
-    $('#accept').css({
-        marginLeft: '0',
-        position: 'static'
-    });
     $('.form-check-label').css('padding-left', '1em');
 }
 var formtype = <string>$('#formtype').text();
 var $container = $('#container');
-
+// declared cookie choice:
+$(accept_btn).on('click', function() {
+    $('#cookie_banner').hide(); 
+    $('#usrchoice').val("accept");
+});
+$(reject_btn).on('click', function() {
+    $('#cookie_banner').hide();
+    $('#usrchoice').val("reject");
+});
 /**
  * The code executed depends on which formtype is in play
  */
@@ -371,9 +367,7 @@ switch (formtype) {
                 success: function(result) {
                     if (result === 'OK') {
                         alert("Your password has been updated\nAnd you are logged in");
-                        window.open('../index.html');
-                        // NOTE: current window cannot be closed because it was
-                        // not opened by javascript
+                        window.open('../index.html', '_self');
                     } else {
                         alert("Your one-time code was not located\n" +
                         "Please try again by entering the code in your email\n" +

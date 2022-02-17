@@ -41,10 +41,12 @@ require_once "../accounts/getLogin.php";
             </button>
             <ul class="dropdown-menu" aria-labelledby="memberOpts">
                 <a id="login" class="dropdown-item"
-                    href="../accounts/unifiedLogin.php?form=log">Login</a>
+                    href="../accounts/unifiedLogin.php?form=log"
+                    target="_self">Login</a>
                 <a id= "logout" class="dropdown-item" href="#">Logout</a>
                 <a id="bam" class="dropdown-item"
-                    href="../accounts/unifiedLogin.php?form=reg">Become a member</a>
+                    href="../accounts/unifiedLogin.php?form=reg"
+                    target="_self">Become a member</a>
                 <div id="admintools">
                     <div class="dropdown-divider"></div>
                     <a id="adminmenu" class="dropdown-item"
