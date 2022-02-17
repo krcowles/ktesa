@@ -40,8 +40,6 @@ var mapTick = {
     strokeColor: 'Red',
     strokeWeight: 2
 };
-// position text in logo
-var title = $('#trail').text();
 $('#ctr').text(title);
 // position searchbar
 var navheight = $('nav').height();

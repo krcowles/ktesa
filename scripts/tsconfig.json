@@ -67,7 +67,7 @@
     /* ktesaPanel */
     "menuControl.ts",
     "panelMenu.ts",
-    "initiateReset.ts",
+    "sendResetMail.ts",
     /* 'About' page */
     "about.ts",
     /* Accounts */
@@ -87,7 +87,9 @@
     "tableOpts.ts",
     "filter.ts",
     "multi-sort.ts",
-    "map-multiples.ts"
+    "map-multiples.ts",
+    /* Password Strength Indicator */
+    "passwordStrength.ts"
   ]
   /* also "include": [] and/or "exclude": [] */
 }

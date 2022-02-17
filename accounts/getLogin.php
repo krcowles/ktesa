@@ -2,9 +2,10 @@
 /**
  * This script checks for any incoming site cookies. If cookies are
  * present, and the user has not already logged in, login credentials
- * are set up for this member. If the user is already logged
- * in, essentially nothing else occurs. Session_start must reside on
- * the page from which this routine is being called.
+ * are set up for this member. If the user is already logged in,
+ * or a session is still in effect, essentially nothing else occurs.
+ * session_start() must reside on the page from which this routine is
+ * being initiated. The ktesaPanel/Navbar calls getLogin.php.
  * Note: having a separate admin ('master') cookie allows admins
  * to have both an admin account and a user account to verify user
  * functionality.
@@ -22,20 +23,18 @@ $regusr = isset($_COOKIE['nmh_id'])   ? true : false;
 $cookie_state = "NOLOGIN";  // default
 $admin = false;
 
-// Some test cases have 'partial logins':
+// Some use cases have 'partial logins':
 if (!isset($_SESSION['username']) || !isset($_SESSION['userid']) 
-    || !isset($_SESSION['expire']) || !isset($_SESSION['cookies'])
-    || !isset($_SESSION['cookie_state'])
+    || !isset($_SESSION['cookies']) || !isset($_SESSION['cookie_state'])
 ) {
      unset($_SESSION['username']);
      unset($_SESSION['userid']);
-     unset($_SESSION['expire']); 
      unset($_SESSION['cookies']);
      unset($_SESSION['cookie_state']);
 }
 
-if (!isset($_SESSION['username'])) { // NO LOGIN YET
-    if ($regusr) {
+if (!isset($_SESSION['username'])) { // No login yet...
+    if ($regusr) { // is there a site cookie present?
         $username = $_COOKIE['nmh_id'];
         // check cookie choice and password expiration
         $userDataReq = "SELECT `userid`,`passwd_expire`,`cookies` FROM " .
@@ -48,10 +47,10 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
         } elseif ($rowcnt === 1) {
             $cookie_state = "OK";
             $user_info = $userData->fetch(PDO::FETCH_ASSOC);
-            $userid = $user_info['userid'];
+            $userid  = $user_info['userid'];
             $expDate = $user_info['passwd_expire'];
             $cookies = $user_info['cookies'];
-            $choice = 'reject';  // default if no user selection recorded
+            $choice  = 'reject';  // default if no user selection recorded
             if (!empty($cookies)) {
                 $choice = $cookies;
             }
@@ -59,42 +58,33 @@ if (!isset($_SESSION['username'])) { // NO LOGIN YET
             $orgDate = strtotime($american);
             if ($orgDate <= time()) {
                 $cookie_state = 'EXPIRED';
-                $_SESSION['cancel'] = $username;
             } else {
                 $days = floor(($orgDate - time())/UX_DAY);
                 if ($days <= 5) {
                     $cookie_state = 'RENEW';
-                    $_SESSION['cancel'] = $username;
                 }
             }
-            // Note: user not logged in if RENEW/EXPIRED
+            // Note: user not fully logged in if RENEW/EXPIRED
             if ($cookie_state === 'OK') {
                 // protected login credentials:
-                $_SESSION['username'] = $username;
-                $_SESSION['userid'] = $userid;
-                $_SESSION['expire'] = $expDate;
-                $_SESSION['cookies'] = $choice;
+                $_SESSION['username']     = $username;
+                $_SESSION['userid']       = $userid;
+                $_SESSION['cookies']      = $choice;
             }
         } else {
             $cookie_state = "MULTIPLE"; // for testing only; no longer possible
         }
-    } elseif ($master) {
+    } elseif ($master) { // Currently only 2 masters...
         $cookie_state = "OK";
-        $cookieval = 'mstr';
         if ($_COOKIE['nmh_mstr'] === 'mstr') {
             $_SESSION['userid'] = '1';
             $_SESSION['username'] = 'tom';
-        } elseif ($_COOKIE['nmh_mstr'] === 'mstr2') {
+        } else {
             $_SESSION['userid'] = '2';
             $_SESSION['username'] = 'kc';
-            $cookieval = 'mstr2';
         }
-        $_SESSION['expire'] = "2050-12-31";
         $_SESSION['cookies'] = "accept";
         $admin = true;
-    } else {
-        // STILL NOT LOGGED IN: No credentials are set
-        $cookie_state = "NOLOGIN";  // repeat as documentation...
     }
     $_SESSION['cookie_state'] = $cookie_state;
 } else {
@@ -112,12 +102,17 @@ if (!$admin) {
      * For page url identification: [PSR syntax corrections made]
      * http://geeklabel.com/tutorial/track-visitors-php-tutorial/ 
      */
-    $user_ip = getIpAddress();
-    $browser = getBrowserType();
+    $user_ip = getIpAddress(); // can be null!
+    $user_ip = isset($user_ip) ? $user_ip : 'no ipaddr';
+    $browser = getBrowserType(); // can be null!
+    if (!isset($browser)) {
+        $browser['name'] = "no name";
+        $browser['patform'] = "no platform";
+    }
     date_default_timezone_set('America/Denver');
     $visit_time = date('Y-m-d h:i:s');
-    $vtime = explode("-", $visit_time);
-    $vpage = selfURL();
+    $vpage = selfURL(); // can be null
+    $vpage = isset($vpage) ? $vpage : "no page";
     $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`vbrowser`,`vplatform`," .
         "`vdatetime`,`vpage`) " .
         "VALUES (?,?,?,?,?);";

@@ -20,19 +20,19 @@ if (cookies) {
     /**
      * Note that for the unifiedLogin page, this code will not be executed
      */
-    // Now examine the cookie_state:
+    // Now examine the cookie_state: [admin not enabled on landing]
     if (user_cookie_state === 'NOLOGIN') {
         notLoggedInItems(); // cookies off or rejected
     }
-    else if (user_cookie_state === 'NONE') {
-        alert("No user registration was located");
+    else if (user_cookie_state === 'NONE' || user_cookie_state === 'MULTIPLE') {
+        alert("User registration not located");
         notLoggedInItems();
     }
     else if (user_cookie_state === 'EXPIRED') {
-        alert("Your password has expired; Use 'Log in' to renew:\n" +
-            "You are not currently logged in");
-        // destroy user cookie to prevent repeat messaging for other pages
-        $.get('../accounts/logout.php');
+        alert("Your password has expired; You must re-register\n" +
+            "to access membership priveleges");
+        // delete user from db
+        $.get('../accounts/logout.php?expire=Y');
         notLoggedInItems();
     }
     else if (user_cookie_state === 'RENEW') {
@@ -40,11 +40,6 @@ if (cookies) {
             "You are not currently logged in");
         // destroy user cookie to prevent repeat messaging for other pages
         $.get('../accounts/logout.php');
-        notLoggedInItems();
-    }
-    else if (user_cookie_state === 'MULTIPLE') {
-        alert("Multiple accounts are registered for this cookie\n" +
-            "\nPlease contact the site master");
         notLoggedInItems();
     }
     else if (user_cookie_state === 'OK') {
@@ -94,30 +89,3 @@ function adminLoggedIn() {
     $('#admintools').css('display', 'block');
     return;
 }
-/**
- * IF a user cookie has either expired or is up for renewal,
- * he/she is provided the option to update the password,
- * set a new expiration date, and continue as a registered user.
- * User credentials have already been established at this point.
- */
-var renewPassword = function (renew) {
-    if (renew === 'renew') { // send email to reset password
-        renewp = new bootstrap.Modal(document.getElementById('cpw'), {
-            keyboard: false
-        });
-        renewp.show();
-    }
-    else {
-        // When a user does not renew membership,
-        // his/her login info is removed from the USERS table 
-        $.get({
-            url: '../accounts/logout.php?expire=Y',
-            success: function () {
-                alert("You are permanently logged out\n" +
-                    "To rejoin, select 'Become a member' from the menu");
-                window.open("../index.html", "_self");
-            }
-        });
-    }
-    return;
-};

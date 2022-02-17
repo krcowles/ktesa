@@ -10,6 +10,7 @@
  * @version 2.1 Added mobile platform detection for responsive design
  * @version 3.0 Typescripted, with some type errors corrected
  * @version 4.0 Reworked for new bootstrap navbar on non-mobile platforms
+ * @version 5.0 Updated security w/encryption and 2FA
  */
 var cookies = navigator.cookieEnabled ? true : false;
 var cookie_info = document.getElementById('cookie_state');
@@ -30,6 +31,7 @@ if (active_member) {
     // set 'Members' choices
     $('#login').addClass('disabled');
     $('#bam').addClass('disabled');
+    $('updte_sec').removeClass('disabled');
     // display appropriate change-cookie text
     var display_choice = user_cookie_choice === 'accept' ? 'Reject Cookies' : 'Accept Cookies';
     $('#usrcookies').text(display_choice);
@@ -38,28 +40,25 @@ else {
     // disable appropriate 'Members' items
     $('#logout').addClass('disabled');
     $('#chg').addClass('disabled');
+    $('#updte_sec').addClass('disabled');
     $('#change_cookies').css('display', 'none');
 }
 // check to see if cookies are enabled for the browser
-if (cookies) { // exception messages
-    if (user_cookie_state === 'NONE') {
-        alert("No user registration was located");
+if (cookies) { // exception messages only: auto login may still occur
+    if (user_cookie_state === 'NONE' || user_cookie_state === 'MULTIPLE') {
+        var msg = "User registration not located\nRe-register using 'Members->" +
+            "Become a member";
+        alert(msg);
     }
     else if (user_cookie_state === 'EXPIRED') {
-        alert("Your password has expired; Use 'Members->Login' to renew:\n" +
-            "You are not currently logged in");
-        // destroy user cookie to prevent repeat this messaging for other pages
-        $.get('../accounts/logout.php');
+        $.get('../accounts/logout.php?expire=Y');
+        alert("Your password has expired; You must re-register");
     }
     else if (user_cookie_state === 'RENEW') {
-        alert("Your password will expire soon; Use 'Members->Login' to renew:\n" +
-            "You are not currently logged in");
-        // destroy user cookie to prevent repeat this messaging for other pages
+        // destroy user cookie to prevent repeating this message on other pages
         $.get('../accounts/logout.php');
-    }
-    else if (user_cookie_state === 'MULTIPLE') {
-        alert("Multiple accounts are registered for this cookie\n" +
-            "\nPlease contact the site master");
+        alert("Your password will expire soon; Use 'Members->Login' to renew:\n" +
+            "You are currently logged out");
     }
 }
 else { // cookies disabled
@@ -67,27 +66,4 @@ else { // cookies disabled
         "You will not be able to register or login\n" +
         "until cookies are enabled";
     alert(msg);
-}
-/**
- * IF a user cookie has either expired or is up for renewal,
- * he/she is provided the option to update the password,
- * set a new expiration date, and continue as a registered user.
- * User credentials have already been established at this point.
- */
-function renewPassword(renew) {
-    if (renew === 'renew') { // send email to reset password
-    }
-    else {
-        // When a user does not renew membership,
-        // his/her login info is removed from the USERS table 
-        $.get({
-            url: '../accounts/logout.php?expire=Y',
-            success: function () {
-                alert("You are permanently logged out\n" +
-                    "To rejoin, select 'Become a member' from the menu");
-                window.open("../index.html", "_self");
-            }
-        });
-    }
-    return;
 }

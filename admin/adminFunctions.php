@@ -223,6 +223,52 @@ function describeTable($pdo, $table)
     return $rows;
 }
 /**
+ * Update the count of failures in the LOCKS table when failed login
+ * attempts are encountered.
+ * 
+ * @param integer $noOfFailures The current number of failed attempts for this user
+ * @param string  $ipAddr       The ip address of this user
+ * @param PDO     $pdo          Database connection object
+ * 
+ * @return null
+ */
+function updateFailures($noOfFailures, $ipAddr, $pdo)
+{
+    if ($noOfFailures >= 3) {
+        $latest = new DateTime("now", new DateTimeZone('America/Denver'));
+        $latest->modify('+ 1 hour'); // current wait time = 1 hour
+        $unlock =  $latest->format('Y-m-d H:i:s'); // MySQL DATETIME requires string
+        $updateReq = "UPDATE `LOCKS` SET `fails`=?, `lockout`=? WHERE `ipaddr`=?;";
+        $update = $pdo->prepare($updateReq);
+        $update->execute([$noOfFailures, $unlock, $ipAddr]);
+    } else {
+        $updateReq = "UPDATE `LOCKS` SET `fails`=? WHERE `ipaddr`=?;";
+        $update = $pdo->prepare($updateReq);
+        $update->execute([$noOfFailures, $ipAddr]);
+    }
+    return;
+}
+/**
+ * Eliminate LOCKS or entries in LOCKS based on number of entries
+ * 
+ * @param integer $count The number of entries in the LOCKS table
+ * @param string  $ipadd The subject ip address in the LOCKS table
+ * @param PDO     $pdo   The connection object for the database
+ * 
+ * @return null
+ */
+function reduceLocks($count, $ipadd, $pdo)
+{
+    if ($count === 1) {
+        $pdo->query("DROP TABLE `LOCKS`;");
+    } else {
+        $dropLocks = $pdo->prepare(
+            "DELETE FROM `LOCKS` WHERE `ipaddr`=?;"
+        );
+        $dropLocks->execute([$ipadd]);
+    }
+}
+/**
  * A function to id the visitors browser type.
  * NOTE: this code did not pass certain use cases as copied from
  * https://stackoverflow.com/questions/2199793/php-get-the-browser-name

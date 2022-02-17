@@ -1,7 +1,6 @@
 /* scss standard definitions */
 /* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/_body.scss */
 body {
-  min-width: 960px;
   background-color: #eaeaea;
   margin: 0;
   font-family: arial, verdana;
@@ -115,7 +114,7 @@ body {
   padding-right: 6px;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 800px) {
   /* line 86, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
   #container {
     width: 80%;
@@ -128,13 +127,25 @@ form:not(#ckbox) {
 }
 
 /* line 93, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
-input:not(#ckbox) {
+.wide {
   width: calc(100% - 40px) !important;
   padding-left: 6px;
   height: 38px;
   border-radius: 8px;
 }
-
+.renpass {
+  margin-bottom: 8px;
+}
+#one-time {
+  margin-bottom: 8px;
+}
+#name_req {
+  position: relative;
+  top: 12px;
+}
+#name_req p {
+  margin-bottom: 0;
+}
 /* Unable to set autofill-color for Firefox, using standard yellow */
 /* line 100, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 input:-webkit-autofill,
@@ -180,8 +191,8 @@ input:focus {
   display: inline-block;
   width: calc(100% - 40px);
   height: 40px;
-  background-color: antiquewhite;
-  line-height: 38px;
+  background-color: #f7ddbb;
+  line-height: 1em;
   font-size: 18px;
   border-radius: 8px;
   color: maroon;
@@ -190,7 +201,7 @@ input:focus {
 }
 
 /* line 136, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
-#formsubmit:hover, #submit:hover {
+#formsubmit:hover, #submit:hover, #showdet:hover {
   cursor: pointer;
   background-color: maroon;
   color: white;
@@ -315,5 +326,26 @@ button {
   transform: scale(1.5);
   padding: 5px;
 }
-
+#pexpl {
+  color: #666666;
+  font-size: 16px;
+}
+#showdet {
+  border-radius: 6px;
+  background-color: #f7ddbb;
+  color: maroon;
+}
+#wk {
+  color: maroon;
+}
+#st {
+  color: darkgreen;
+  display: none;
+}
+#lc, #uc, #nm, #sp, #total {
+  color: maroon;
+}
+#rvw {
+  margin-top: 8px;
+}
 /*# sourceMappingURL=unifiedLogin.css.map */

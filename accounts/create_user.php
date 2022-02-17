@@ -27,26 +27,18 @@ if ($submitter == 'create') {
     $firstname = filter_input(INPUT_POST, 'firstname');
     $lastname  = filter_input(INPUT_POST, 'lastname');
     $username  = filter_input(INPUT_POST, 'username');
-    $cookies   = $cookies === 'nochoice' ? 'reject' : $cookies;
     $email     = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    // Has this email already been registered?
-    $regmails
-        = $pdo->query("SELECT `email` FROM `USERS`;")->fetchAll(PDO::FETCH_COLUMN);
-    if (in_array($email, $regmails)) {
-        echo "This Email has already been registered";
-        exit;
-    }
+
     $newuser   = "INSERT INTO `USERS` (" .
-        "username,last_name,first_name,email,cookies) " .
-        "VALUES (:uname,:lastname,:firstname,:email,:cookies);";
+        "username,last_name,first_name,email) " .
+        "VALUES (:uname,:lastname,:firstname,:email);";
     $user = $pdo->prepare($newuser);
     $user->execute(
         array(
-            ":uname" =>  $username,
-            ":lastname" => $lastname,
+            ":uname"     => $username,
+            ":lastname"  => $lastname,
             ":firstname" => $firstname, 
-            ":email" => $email,
-            ":cookies" => $cookies
+            ":email"     => $email
         )
     );
     if (!$user) {
@@ -56,40 +48,39 @@ if ($submitter == 'create') {
     }
     exit;
 } elseif ($submitter == 'change') {
-    $code = filter_input(INPUT_POST, 'code');
+    $code      = filter_input(INPUT_POST, 'code');
     $user_pass = filter_input(INPUT_POST, 'password');
     $password  = password_hash($user_pass, PASSWORD_DEFAULT);
-    if (!empty($code)) { // when $code == '', the user is already logged in
-        $getUserReq = "SELECT * FROM `USERS`;";
-        $users = $pdo->query($getUserReq)->fetchAll(PDO::FETCH_ASSOC);
-        $match = false;
-        foreach ($users as $user) {
-            if (password_verify($code, $user['passwd'])) { 
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['userid']   = $user['userid'];
-                $_SESSION['expire']   = $exp_date;
-                $_SESSION['cookies']  = $cookies;
-                $_SESSION['cookie_state'] = "OK";
-                $match = true;
-                break;
-            }
+    $cookies   = filter_input(INPUT_POST, 'cookies');
+
+    $getUserReq = "SELECT * FROM `USERS`;";
+    $users = $pdo->query($getUserReq)->fetchAll(PDO::FETCH_ASSOC);
+    $match = false;
+    foreach ($users as $user) {
+        if (password_verify($code, $user['passwd'])) { 
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['userid']   = $user['userid'];
+            $_SESSION['cookies']  = $cookies;
+            $_SESSION['cookie_state'] = "OK";
+            $match = true;
+            break;
         }
-        if (!$match) {
-            echo "NOCODE";
-            exit;
-        }
-    }  // session variables already exist for logged in renewer
+    }
+    if (!$match) {
+        echo "NOCODE";
+        exit;
+    }
     $updateuser = "UPDATE `USERS` SET `passwd`=?, `passwd_expire`=?, " .
-        "`cookies`=? WHERE `username`=?;";
+        "`cookies`=? WHERE `userid`=?;";
     $update = $pdo->prepare($updateuser);
     $update->execute(
-        array($password, $exp_date, $cookies, $_SESSION['username'])
+        array($password, $exp_date, $cookies, $_SESSION['userid'])
     );
 }
 // set cookie if user has accepted cookie use
 if ($_SESSION['cookies'] === 'accept') {
     $days = 365; // Number of days before cookie expires
-    $expire = time()+60*60*24*$days;
+    $expire = time() + 60*60*24*$days;
     setcookie("nmh_id", $_SESSION['username'], $expire, "/", "", true, true);
 }
 echo "OK";

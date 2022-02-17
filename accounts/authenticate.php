@@ -1,12 +1,17 @@
 <?php
 /**
- * This script is invoked as an ajax call to validate membership
- * for the username and password supplied: invoked via validateUser.js,
- * whenever the user selects 'Members->Log in'.
+ * This script authenticates the username/password combo entered by the
+ * the user when submitting a login request. The information is compared
+ * to entries in the USERS table. This script is invoked when a user attempts
+ * to login, and is invoked via the validateUser() function. Multiple failed
+ * attempts results in login lockout for 1 hour, or via email link available
+ * to the user when the lockout occurs. Note that the user's IP address is logged
+ * to identify cases where user attempts to use a different browser to bypass
+ * the lockout. No session variables are set here, nor cookies set; login is
+ * not completed until a security question is correctly answered.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -15,67 +20,77 @@ require "../php/global_boot.php";
 verifyAccess('ajax');
 define("UX_DAY", 60*60*24); // unix timestamp value for 1 day
 
-$username = isset($_POST['usr_name']) ?
-    filter_input(INPUT_POST, 'usr_name') : $_SESSION['username'];
-$userpass = isset($_POST['usr_pass']) ? filter_input(INPUT_POST, 'usr_pass') : false;
+$username = filter_input(INPUT_POST, 'usr_name');
+$userpass = filter_input(INPUT_POST, 'usr_pass');
+$ip = getIpAddress();
+$ip = $ip === "::1" ? '127.0.0.1' : $ip; // Chrome localhost ipaddr is different
+$fails = 0;
 
-// retrieve required user data
-$usr_req = "SELECT `userid`,`passwd`,`passwd_expire`,`cookies`" .
-    " FROM `USERS` WHERE `username` = :usr;";
-$auth = $pdo->prepare($usr_req);
-$auth->execute(["usr" => $username]);
-$rowcnt = $auth->rowCount();
-if ($rowcnt === 1) {  // located single instance of user
-    $user_dat = $auth->fetch(PDO::FETCH_ASSOC);
-    if (password_verify($userpass, $user_dat['passwd'])) {  // user data correct
-        if ($username == 'kc' || $username == 'tom') {
-            $_SESSION['username'] = $username;
-            $_SESSION['userid'] = $user_dat['userid'];
-            $_SESSION['expire'] = "2050-12-31";
-            $_SESSION['cookie_state'] = "OK";
-            $_SESSION['cookies'] = 'accept';
-            $adminExpire = time() + 10 * UX_DAY * 365;  // 10 yrs
-            $admin_cookie = $user_dat['userid'] == 1 ? 'mstr' : 'mstr2';
-            setcookie(
-                'nmh_mstr', $admin_cookie, $adminExpire, "/", "", true, true
-            );
-            echo "ADMIN";
+$iptbl = <<<TBL
+CREATE TABLE IF NOT EXISTS `LOCKS` (
+    `indx`   smallint NOT NULL AUTO_INCREMENT,
+    `ipaddr` varchar(15) DEFAULT NULL,
+    `fails`  smallint DEFAULT 0,
+    `lockout` datetime DEFAULT NULL,
+    PRIMARY KEY (`indx`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+TBL;
+$pdo->query($iptbl);
+// Set '$fails' to the current value in the LOCKS table (or use default 0)
+$entryReq = "SELECT `ipaddr`,`fails` FROM `LOCKS`;";
+$entries = $pdo->query($entryReq)->fetchAll(PDO::FETCH_KEY_PAIR);
+if (count($entries) === 0) {
+    $entry = "INSERT INTO `LOCKS` (`ipaddr`,`fails`) VALUES (?, 0);";
+    $adduser = $pdo->prepare($entry);
+    $adduser->execute([$ip]);
+} else {
+    if (array_key_exists($ip, $entries)) {
+        $fails = $entries[$ip];
+    } else {
+        $entry = "INSERT INTO `LOCKS` (`ipaddr`,`fails`) VALUES (?, 0);";
+        $adduser = $pdo->prepare($entry);
+        $adduser->execute([$ip]);
+    }
+}
+
+// validate user info (prior to security questions)
+$user_dat = $pdo->query("SELECT * FROM `USERS`")->fetchAll(PDO::FETCH_ASSOC);
+$nomatch = true;
+foreach ($user_dat as $user) {
+    if (password_verify($userpass, $user['passwd'])) {  // user data correct
+        $nomatch = false;
+        $uid = $user['userid'];
+        reduceLocks(count($entries), $ip, $pdo);
+        $expiration = $user['passwd_expire']; 
+        $american = str_replace("-", "/", $expiration);
+        $expdate = strtotime($american);
+        if ($expdate <= time()) {
+            // remove user from Users table
+            $expiredUser = "DELETE FROM `USERS` WHERE `userid`=?;";
+            $removeUser = $pdo->prepare($expiredUser);
+            $removeUser->execute([$uid]);
+            $return_data['status'] = 'EXPIRED';
+            echo json_encode($return_data);
             exit;
         } else {
-            $expiration = $user_dat['passwd_expire'];
-            $_SESSION['username'] = $username;
-            $_SESSION['userid'] = $user_dat['userid'];
-            $_SESSION['expire'] = $expiration;
-            $_SESSION['cookie_state'] = "OK";
-            $_SESSION['cookies'] = $user_dat['cookies'];
-            $american = str_replace("-", "/", $expiration);
-            $expdate = strtotime($american);
-            if ($expdate <= time()) {
-                echo "EXPIRED";
+            $days = floor(($expdate - time())/UX_DAY);
+            if ($days <= 5) {
+                $return_data['status'] = "RENEW";
+                echo json_encode($return_data);
                 exit;
             } else {
-                $days = floor(($expdate - time())/UX_DAY);
-                if ($days <= 5) {
-                    if ($user_dat['cookies'] === 'accept') {
-                        // set current cookie pending renewal
-                        setcookie(
-                            "nmh_id", $username, $expdate, "/", "", true, true
-                        );
-                    }
-                    echo "RENEW";
-                    exit;
-                }
+                $return_data = array(
+                    'status' => 'LOCATED',
+                    'ix' => $uid
+                ); 
+                break;
             }
-            if ($user_dat['cookies'] === 'accept') {
-                setcookie(
-                    "nmh_id", $username, $expdate, "/", "", true, true
-                );
-            }
-            echo "LOCATED";
         }
-    } else {  // user exists, but password doesn't match:
-        echo "BADPASSWD" . $userpass . ";" . $user_dat['passwd'];
     }
-} else {  // not in USER table (or multiple entries for same user)
-    echo "FAIL";
 }
+if ($nomatch) { // no user or bad password
+    updateFailures(++$fails, $ip, $pdo);
+    $return_data['status'] = 'FAIL';
+    $return_data['fail_cnt'] = $fails;
+}
+echo json_encode($return_data);

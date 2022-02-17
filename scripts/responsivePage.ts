@@ -4,7 +4,6 @@
  * @author Ken Cowles
  * @version 1.0 First release of responsive design
  */
-var title = $('#trail').text();
 $('#ctr').text(title);
 
 // hike number

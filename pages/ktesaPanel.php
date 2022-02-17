@@ -87,8 +87,10 @@ $policy = "../accounts/PrivacyPolicy.pdf";
                         </li>
                         <li><a id="bam" class="dropdown-item"
                             href="../accounts/unifiedLogin.php?form=reg">Become
-                                a Member</a>
+                            a Member</a>
                         </li>
+                        <li><a id="updte_sec" class="dropdown-item" href="#">
+                            Security Questions</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -127,29 +129,6 @@ $policy = "../accounts/PrivacyPolicy.pdf";
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
 </div>
-<!-- Change Password Modal -->
-<div id="cpw" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Reset Password</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>You will receive an email to reset/change your password<br />
-                Enter email: <input id="rstmail" type="email"
-                    required="required" /></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary"
-                    id="send" data-bs-dismiss="modal">Send Email</button>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- login data -->
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
 <?php if (isset($_SESSION['cookies'])) : ?>
@@ -159,26 +138,7 @@ $policy = "../accounts/PrivacyPolicy.pdf";
 <p id="admin">admin</p>
 <?php endif; ?>
 
-<!-- info modal when ajax errors occur -->
-<div id="ajaxerr" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">An Error Has Occurred</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                We are sorry, but an error has occurred. The admin has been notified.
-                We apologize for any inconvenience.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+<?php require "../pages/modals.html"; ?>
 
 <script type="text/javascript">
 window.mobileAndTabletCheck = function() {
@@ -191,4 +151,4 @@ window.mobileAndTabletCheck = function() {
 </script>
 <script src="../scripts/menuControl.js"></script>
 <script src="../scripts/panelMenu.js"></script>
-<script src="../scripts/initiateReset.js"></script>
+<script src="../scripts/sendResetMail.js"></script>

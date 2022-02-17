@@ -5,7 +5,6 @@
  * @author Ken Cowles
  * @version 1.0 First release of responsive design
  */
-var title = $('#trail').text();
 $('#ctr').text(title);
 // hike number
 var hikeno = $('#hikeno').text();
@@ -60,7 +59,7 @@ $(function () {
  */
 var buttonPos = function () {
     var chartpos = $('#chartline').offset();
-    var hinfoTop = chartpos.top - 80 + "px";
+    var hinfoTop = "".concat(chartpos.top - 80, "px");
     $('#hinfo').css('left', '4px');
     $('#hinfo').css('top', hinfoTop);
     return;
@@ -70,7 +69,7 @@ var buttonPos = function () {
  */
 var favoritesPos = function () {
     var statsPos = $('#hinfo').offset();
-    var favtop = statsPos.top - 40 + "px";
+    var favtop = "".concat(statsPos.top - 40, "px");
     var favwidth = $('#favs').width();
     $('#favs').css('left', '4px');
     $('#favs').css('top', favtop);

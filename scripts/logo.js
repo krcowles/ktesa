@@ -24,3 +24,5 @@ $(window).on('resize', function () {
     vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
     ss(vw);
 });
+// position title in the logo
+var title = $('#trail').text();

@@ -41,8 +41,6 @@ var mapTick = {
     strokeWeight: 2
 };
 
-// position text in logo
-let title = $('#trail').text();
 $('#ctr').text(title);
 // position searchbar
 let navheight = <number>$('nav').height();

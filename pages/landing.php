@@ -32,6 +32,8 @@ require_once "../accounts/getLogin.php";
             <img id="hikers" src="../images/hikers.png" alt="hikers icon" />
             <span id="logo_left">Hike New Mexico</span>
         </div>
+        
+        <!-- minimal functionality "navbar" -->
         <div id="center" class="dropdown">
             <button class="btn-sm btn-secondary dropdown-toggle" type="button"
                 id="memberOpts" data-bs-toggle="dropdown" aria-expanded="false">
@@ -50,6 +52,7 @@ require_once "../accounts/getLogin.php";
                 </div>
             </ul>
         </div>
+
         <div id="rightside">
             <span id="logo_right">w/Tom &amp; Ken</span>
             <img id="tmap" src="../images/trail.png" alt="trail map icon" />

@@ -7,16 +7,17 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No License to date
  */
 session_start();
 require "../php/global_boot.php";
-$form  = filter_input(INPUT_GET, 'form');
-$code  = isset($_GET['code']) ? filter_input(INPUT_GET, 'code') : '';
+$form   = filter_input(INPUT_GET, 'form');
+$code   = isset($_GET['code']) ? filter_input(INPUT_GET, 'code') : '';
+$ix     = isset($_GET['ix']) ? filter_input(INPUT_GET, 'ix') : false;
+$newusr = isset($_GET['reg']) ? true : false;
 if ($form === 'reg') {
-    $title = "Sign Up";
+    $title = "Complete Registration";
 } elseif ($form === 'renew') {
     $title = "Set Password";
 } elseif ($form === 'log') {
@@ -34,6 +35,7 @@ if ($form === 'reg') {
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/bootstrap_modals.css" rel="stylesheet" />
     <link href="../styles/unifiedLogin.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script type="text/javascript">var page = 'unified';</script>
@@ -64,61 +66,88 @@ if ($form === 'reg') {
 <?php if ($form === 'reg') : ?>
     <form id="form" action="#" method="post">
         <input type="hidden" name="submitter" value="create" />
-        <input id="usrchoice" type="hidden" name="cookies" value="nochoice" />
-            <p>Sign up for free access to nmhikes.com!</p>
-            <p id="sub">Create and edit your own hikes<br />
-            <a id="policylnk" href="#">Privacy Policy</a>
-            </p>
-            <div>
-                <div class="pseudo-legend">First Name</div>
-                <div id="line1" class="lines"></div>
-                <input id="fname" type="text"
-                    placeholder="First Name" name="firstname"
-                    autocomplete="given-name" required />
-            </div>
-            <div>
-                <div class="pseudo-legend">Last Name</div>
-                <div id="line2" class="lines"></div>
-                <input id="lname" type="text"
-                    placeholder="Last Name" name="lastname"
-                    autocomplete="family-name" required />
-            </div>
-            <div>
-                <div class="pseudo-legend">Username</div>
-                <div id="line3" class="lines"></div>
-                <input id="uname" type="text"
-                    placeholder="User Name" name="username"
-                    autocomplete="username" required />
-            </div>
-            <div>
-                <div class="pseudo-legend">Email</div>
-                <div id="line4" class="lines"></div>
-                <input id="email" type="email"
-                    required placeholder="Email" name="email"
-                    autocomplete="email" /><br /><br />
-            </div>
-            <div>
-                <button id="formsubmit">Submit</button>
-            </div> 
+        <p>Sign up for free access to nmhikes.com!</p>
+        <p id="sub">Create and edit your own hikes<br />
+        <a id="policylnk" href="#">Privacy Policy</a>
+        </p>
+        <div class="mobinp">
+            <div class="pseudo-legend">First Name</div>
+            <div id="line1" class="lines"></div>
+            <input id="fname" type="text" class="wide"
+                placeholder="First Name" name="firstname"
+                autocomplete="given-name" required />
+        </div>
+        <div class="mobinp">
+            <div class="pseudo-legend">Last Name</div>
+            <div id="line2" class="lines"></div>
+            <input id="lname" type="text" class="wide"
+                placeholder="Last Name" name="lastname"
+                autocomplete="family-name" required />
+        </div>
+        <div id="name_req" class="mobtxt"><p>Username must be at least 6
+            characters, no spaces</p>
+        </div>
+        <div class="mobinp">
+            <div class="pseudo-legend">Username</div>
+            <div id="line3" class="lines"></div>
+            <input id="uname" type="text" class="wide"
+                placeholder="User Name" name="username"
+                autocomplete="username" required />
+        </div>
+        <div class="mobinp">
+            <div class="pseudo-legend">Email</div>
+            <div id="line4" class="lines"></div>
+            <input id="email" type="email" class="wide"
+                required placeholder="Email" name="email"
+                autocomplete="email" /><br /><br />
+        </div>
+        <div class="mobinp">
+            <button id="formsubmit">Submit</button>
+        </div> 
     </form>
 <?php elseif ($form === 'renew') : ?>
     <h3>Reset Passsword:</h3>
     <form id="form" action="#" method="post">
         <input type="hidden" name="code" value="<?=$code;?>" />
-        <input id="usrchoice" type="hidden" name="cookies" value="nochoice" />
-        <?php if (!empty($code)) : ?>
-            <span>One-time code</span>
-            <input type="password" name="one-time" autocomplete="off"
-                value="<?=$code;?>" /><br /><br />  
+        <?php if ($ix !== false) : ?>
+            <p id="ix" style="display:none;"><?=$ix;?></p>
+        <?php else : ?>
+            <p><strong>ERROR: missing uid</strong></p>
         <?php endif; ?>
-        <input id="password" type="password" name="password"
-            autocomplete="new-password" required placeholder="New Password" /><br />
-        Show password&nbsp;&nbsp;&nbsp;
-        <input id="ckbox" type="checkbox" /><br /><br />
-        <input id="confirm" type="password" name="confirm"
+        <input id="usrchoice" type="hidden" name="cookies" 
+            value="nochoice" class="wide" />
+        <span class="mobtxt">One-time code</span>
+        <input id="one-time" type="password" name="one-time" autocomplete="off"
+            value="<?=$code;?>" class="wide" /><br /> 
+        <div id="pexpl">
+            **&nbsp;Your new password must be 10 characters or more and contain
+            upper and lower case letters and at least 1 number and 1 special
+            character.
+        </div>
+        <div>
+            <input id="password" type="password" name="password"
+                autocomplete="new-password" required class="wide renpass"
+                placeholder="New Password" /><br />
+            <div id="usrinfo">
+                <span id="wk">Weak</span>
+                <span id="st">Strong</span>&nbsp;&nbsp;
+                <button id="showdet">Show Why</button>&nbsp;&nbsp;
+                Show password&nbsp;&nbsp;&nbsp;
+                <input id="ckbox" type="checkbox" /><br /><br />
+            </div>
+        </div> 
+        <input id="confirm" type="password" name="confirm" class="wide mobinp"
             autocomplete="new-password" required="required"
-            placeholder="Confirm Password" /><br /><br />
-        <button id="formsubmit">Submit</button>
+            placeholder="Confirm Password" /><br />
+        <div>
+            <?php if ($newusr) : ?>
+                <a id="rvw" href="#">Complete Your Security Questions</a>
+            <?php else : ?>
+                <a id="rvw" href="#">Review/Edit Security Questions</a>
+            <?php endif; ?>
+        </div> <br />
+        <button type="submit" id="formsubmit" class="btn mobinp">
+            Submit</button>     
     </form>
 <?php elseif ($form === 'log') : ?>
     <div class="container">
@@ -126,46 +155,24 @@ if ($form === 'reg') {
         <form id="form" action="#" method="post">
             <input id="usrchoice" type="hidden" name="cookies"
                 value="nochoice" />
-            <input class="logger" id="username" type="text" placeholder="Username"
-                name="username" autocomnplete="username" required /><br /><br />
-            <input class="logger" id="password" type="password" name="oldpass"
-                placeholder="Password" size="20" autocomplete="password"
-                required/><br /><br />
-            <button id="formsubmit">Submit</button><br /><br />
+            <input class="logger wide" id="username" type="text"
+                placeholder="Username" name="username" autocomnplete="username"
+                required /><br /><br />
+            <input class="logger wide" id="password" type="password"
+                name="oldpass" placeholder="Password" size="20"
+                autocomplete="password" required/><br /><br />
+            <button id="formsubmit" type="submit" class="btn btn-secondary">
+                Submit</button><br /><br />
         </form>
-
-        <!-- For 'Forgot password' and 'Renew password -->
-        <button type="button" class="btn btn-outline-secondary"
+        <!-- For 'Forgot password' and 'Renew password Modal -->
+        <button id="logger" type="button" class="btn btn-outline-secondary"
         data-bs-toggle="modal" data-bs-target="#cpw" onclick="this.blur();">
-        Forgot Password?
+        Forgot Username/Password?
         </button>
-        <div class="modal fade" id="cpw" tabindex="-1"
-        aria-labelledby="ResetPassword" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                            Reset Password</h5>
-                        <button type="button" class="btn-close"
-                            data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Enter your email below. You will receive an email link to 
-                        reset your password<br />
-                        <input id="rstmail" type="email" required 
-                            placeholder="Enter your email" /><br /><br />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">Close</button>
-                        <button id="send">Send</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 <?php endif; ?>
 </div>   <!-- end of #container -->
+<?php require "../pages/modals.html"; ?>
 
 <div id="cookie_banner">
     <h3>This site uses cookies to save member usernames</h3>
@@ -175,10 +182,13 @@ if ($form === 'reg') {
     <br />You may change your decision later via the Help menu.
     </p>
     <div id="cbuttons">
-        <button id="accept">Accept</button>
-        <button id="reject">Reject</button>
+        <button id="accept" type="button" class="btn btn-secondary">
+            Accept Cookies</button>
+        <button id="reject" type="button" class="btn btn-secondary">
+            Reject Cookies</button>
     </div>
 </div>
+
 
 <script type="text/javascript">
     window.mobileAndTabletCheck = function() {
@@ -189,10 +199,11 @@ if ($form === 'reg') {
     };
     var mobile = mobileAndTabletCheck() ? true : false;
 </script>
+
 <script src="../scripts/logo.js"></script>
-<script src="../scripts/loginState.js"></script>
 <script src="../scripts/validateUser.js"></script>
-<script src="../scripts/initiateReset.js"></script>
+<script src="../scripts/sendResetMail.js"></script>
+<script src="../scripts/passwordStrength.js"></script>
 <script src="unifiedLogin.js"></script>
 
 </body>
