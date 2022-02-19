@@ -57,7 +57,10 @@ if (count($entries) === 0) {
 $user_dat = $pdo->query("SELECT * FROM `USERS`")->fetchAll(PDO::FETCH_ASSOC);
 $nomatch = true;
 foreach ($user_dat as $user) {
-    if (password_verify($userpass, $user['passwd'])) {  // user data correct
+    if ($username === $user['username'] && password_verify(
+        $userpass, $user['passwd']
+    )
+    ) {  // user data matches
         $nomatch = false;
         $uid = $user['userid'];
         reduceLocks(count($entries), $ip, $pdo);

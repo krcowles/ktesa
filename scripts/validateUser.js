@@ -162,16 +162,6 @@ var renewPassword = function () {
     return;
 };
 /**
- * Clicking the 'Send' button will send an email to the user with a link
- * to the renew page and a one-time security code.
- */
-$('#send').on('click', function () {
-    // html validation of email entry will occur on submit
-    var usr_email = $('#rstmail').val();
-    var postdata = { form: "req", email: usr_email };
-    $.post("../accounts/resetMail.php", postdata);
-});
-/**
  * The authenticating function. If you are up for renewal, you will be sent
  * to the renewPassword function - this is the only 'path' to the
  * renewPassword utility. If you have a RENEW status from getLogin, you

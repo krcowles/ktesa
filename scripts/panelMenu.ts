@@ -127,6 +127,7 @@ $('#usrcookies').on('click', function() {
 });
 $('#updte_sec').on('click', function() {
     $.post('../accounts/usersQandA.php', function(data) {
+        $('#uques').empty();
         $('#uques').append(data);
         questions.show();
     }, "html");

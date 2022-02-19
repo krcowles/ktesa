@@ -229,7 +229,6 @@ $(function () {
                                         alert("There was a problem with the email you supplied\n" +
                                             "The admin has been notified");
                                         $('#email').css('color', 'red');
-                                        // notify admin for db clean-up
                                         var ajaxerr = "User email not sent, but entry has " +
                                             "been created in USERS: " + result;
                                         ajaxerr += "\nuser: " + proposed_name + " email: " +
@@ -250,14 +249,12 @@ $(function () {
                                             "registration cannot be completed at this " +
                                             "time.\nAn email has been sent to the admin" +
                                             " to correct the situation.";
-                                        //php_bademail = true;
                                         alert(err);
                                         var ajaxerr = "Server error: cleanup USERS\n" +
                                             "registrant" + proposed_name + "; email " +
                                             proposed_email;
                                         var errobj = { err: ajaxerr };
                                         $.post('../php/ajaxError.php', errobj);
-                                        // handlers will generate error log email.
                                     }
                                 }
                             });

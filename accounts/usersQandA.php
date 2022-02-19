@@ -15,20 +15,15 @@ session_start();
 require_once "../php/global_boot.php";
 require "../accounts/security_questions.php";
 
-try {
-    $userid = isset($_POST['ix']) ?
-    filter_input(INPUT_POST, 'ix') : $_SESSION['userid'];
-} catch (Exception $e) {
-    $err = $e->getMessage();
-    $g = 1;
-}
-/*
+$userid = isset($_POST['ix']) ?
+filter_input(INPUT_POST, 'ix') : $_SESSION['userid'];
+
 chdir('../phpseclib1.0.20');
 require "Crypt/RSA.php";
-$publickey  = file_get_contents('../../budprivate/publickey.pem');
+$publickey  = file_get_contents('../../ktprivate/publickey.pem');
 $rsa = new Crypt_RSA();
 $rsa->loadKey($publickey);
-*/
+
 
 // retrieve user's data
 $user_qandaReq = "SELECT `questions`,`an1`,`an2`,`an3` FROM `USERS` WHERE ".
@@ -39,20 +34,17 @@ $qadata = $user_qanda->fetch(PDO::FETCH_ASSOC);
 $userqs = $qadata['questions'];
 if (empty($userqs)) { // temporary until all users update security questions
     $uques = [];
+    $qa = [];
 } else {
     $uques = explode(",", $userqs);
+    $a1cipher = hex2bin($qadata['an1']);
+    $a2cipher = hex2bin($qadata['an2']);
+    $a3cipher = hex2bin($qadata['an3']);
+    $qa[0] = $rsa->decrypt($a1cipher);
+    $qa[1] = $rsa->decrypt($a2cipher);
+    $qa[2] = $rsa->decrypt($a3cipher);
 }
-/*
-$a1cipher = hex2bin($qadata['an1']);
-$a2cipher = hex2bin($qadata['an2']);
-$a3cipher = hex2bin($qadata['an3']);
-$qa[0] = $rsa->decrypt($a1cipher);
-$qa[1] = $rsa->decrypt($a2cipher);
-$qa[2] = $rsa->decrypt($a3cipher);
-*/
-$qa[0] = $qadata['an1'];
-$qa[1] = $qadata['an2'];
-$qa[2] = $qadata['an3'];
+
 
 // formulate modal body
 $body = '';
