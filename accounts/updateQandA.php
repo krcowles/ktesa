@@ -16,7 +16,8 @@ require_once "../php/global_boot.php";
 chdir('../phpseclib1.0.20');
 require "Crypt/RSA.php";
 $rsa = new Crypt_RSA();
-$privatekey  = file_get_contents('../../ktprivate/privatekey.pem');
+$keyfile = $sitePrivateDir . '/privatekey.pem';
+$privatekey  = file_get_contents($keyfile);
 $rsa->loadKey($privatekey);
 
 $ques_str = filter_input(INPUT_POST, 'questions');

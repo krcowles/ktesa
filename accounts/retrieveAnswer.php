@@ -14,7 +14,8 @@ verifyAccess('ajax');
 
 chdir('../phpseclib1.0.20');
 require "Crypt/RSA.php";
-$publickey  = file_get_contents('../../ktprivate/publickey.pem');
+$keyfile = $sitePrivateDir . '/publickey.pem';
+$publickey  = file_get_contents($keyfile);
 $rsa = new Crypt_RSA();
 $rsa->loadKey($publickey);
 
