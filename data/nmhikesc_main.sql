@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -349,20 +349,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2021-12-12 17:58:40'),
-('2','CLUSHIKES','2979690651','2021-12-12 17:58:40'),
-('3','CLUSTERS','1449374701','2021-12-12 17:58:40'),
-('4','EGPSDAT','0','2021-12-12 17:58:40'),
-('5','EHIKES','0','2021-12-12 17:58:40'),
-('6','EREFS','0','2021-12-12 17:58:40'),
-('7','ETSV','0','2021-12-12 17:58:40'),
-('8','FAVORITES','3651041965','2021-12-12 17:58:40'),
-('9','GPSDAT','145362506','2021-12-12 17:58:40'),
-('10','HIKES','553687441','2021-12-12 17:58:40'),
-('11','REFS','2871644674','2021-12-12 17:58:40'),
-('12','TSV','2566480471','2021-12-12 17:58:40'),
-('13','USERS','510490655','2021-12-12 17:58:40'),
-('14','VISITORS','1415104065','2021-12-12 17:58:40');
+('1','BOOKS','2674158859','2022-01-29 17:49:08'),
+('2','CLUSHIKES','1884684905','2022-01-29 17:49:08'),
+('3','CLUSTERS','3285731063','2022-01-29 17:49:08'),
+('4','EGPSDAT','0','2022-01-29 17:49:08'),
+('5','EHIKES','0','2022-01-29 17:49:08'),
+('6','EREFS','0','2022-01-29 17:49:08'),
+('7','ETSV','0','2022-01-29 17:49:08'),
+('8','FAVORITES','3651041965','2022-01-29 17:49:08'),
+('9','GPSDAT','145362506','2022-01-29 17:49:08'),
+('10','HIKES','1689607165','2022-01-29 17:49:08'),
+('11','REFS','2412587525','2022-01-29 17:49:08'),
+('12','TSV','97253363','2022-01-29 17:49:08'),
+('13','USERS','510490655','2022-01-29 17:49:08'),
+('14','VISITORS','644431020','2022-01-29 17:49:08');
 
 
 
@@ -421,7 +421,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -808,6 +808,19 @@ INSERT INTO HIKES VALUES
 ('284','Strip Mine Sidetrack Trails','2','Placitas','Loop','8.40','950','Moderate','None','Views of the Northern Sandias','Not Summer','Full sun','MultiStrip-75.161.138.96-1640822056.gpx','MultiStrip-75.161.138.96-1640822056.json','353001554','-1064804941','Stri83f0a4.jpg',NULL,NULL,'https://www.google.com/maps/dir//Strip+Mine+Trailhead,+Placitas,+NM+87043/@35.2961586,-106.5400465,12.78z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718832c192f0229:0x961c57f98e6726b4!2m2!1d-106.4805611!2d35.3002468',NULL,'<p>This set of trails is another \'composition\' of the author based on trail maps of the area. It all begins at the <em><span style=\"color: #1428d2;\">Strip Mine Trail</span></em> in Placitas. In rather short order, this hike diverts onto the <span style=\"color: #1428d2;\"><em>Sidetrack Trail</em></span> to gain extra mileage and additional scenery. That trail soon intersects the <em><span style=\"color: #1428d2;\">Sidewinder Trail,</span></em> aptly named as it weaves its way south. Note that the standard designation for flag colors on the interactive map is \"red -&gt; right; green -&gt; left\" (the blue flag indicates the end of the <em><span style=\"color: #1428d2;\">Agua Sarca Link</span></em> at the <span style=\"color: #1428d2;\"><em>Agua Sarca Trail</em></span>).</p>\r\n<p>When the <span style=\"color: #1428d2;\"><em>Sidewinder Trail </em></span>approaches the <em>Forest Loop Road </em>(a trail entrance exists there), it curves southeast and soon intersects the <em><span style=\"color: #1428d2;\">High Voltage Trail</span></em>&nbsp; which heads in an easterly direction. Carefully follow the track of this hike, as the <span style=\"color: #1428d2;\"><em>High Voltage Trail </em></span>later splits to the north, and the trail going forward from there becomes <span style=\"color: #1428d2;\"><em>ES06W</em></span> then <span style=\"color: #1428d2;\"><em>ES08W</em></span> according to maps, though unmarked and unnamed on the trail itself. At the next red flag on the map, the trail changes again to <em><span style=\"color: #1428d2;\">ES03</span></em>. The point at which the hike heads sharply southeast is at an unmamed junction, designated as <em><span style=\"color: #1428d2;\">ES18W</span></em>.</p>\r\n<p>Note that the \'Track Box\' in the upper right hand corner of the interactive map lists several tracks in addition to the loop. These represent two \'dead end\' trails and the <em><span style=\"color: #1428d2;\">Agua Sarca Link</span></em> (unmarked). To view these segments, check the corresponding boxes on the map\'s track box. Any or all of these tracks will add a nice extension to the hike.</p>\r\n<p>The first two \"<em><span style=\"color: #1428d2;\">Dead End</span> <span style=\"color: #1428d2;\">Trails</span></em>\" were explored by the author to see if an overlook or other viewing feature was offered. Primarily, these trails ascend the hills and offer some views, but nothing exceptional.&nbsp; The trails tend to become rather indistinct as you proceed, and the author did not follow them to the very end indicated by the area maps. The third track, the <em><span style=\"color: #1428d2;\">Agua Sarca Link</span></em> is a bit longer and more interesting, ending at the <span style=\"color: #1428d2;\"><em>Agua Sarca Trail</em></span>. The views of the northern Sandias are rather nice from there.</p>\r\n<p>The loop trail again changes its name at the first <em><span style=\"color: #1428d2;\">Dead End</span></em> to become <em><span style=\"color: #1428d2;\">ES16W</span></em>. It retains that name as it winds to the northwest, eventually intersecting the <em><span style=\"color: #1428d2;\">Strip Mine Trail.&nbsp;</span></em> Follow the <em><span style=\"color: #1428d2;\">Strip Mine Trail&nbsp;</span></em> westerly a short distance to the <span style=\"color: #1428d2;\"><em>Chalk Dust Trail</em></span>. The <em><span style=\"color: #1428d2;\">Chalk Dust Trail</span></em> is well worth taking as the views along it are quite pleasant.</p>\r\n<p>&nbsp;</p>','2021-12-29',NULL,NULL,NULL),
 ('285','La Tierra Trails','2','Santa Fe','Loop','6.90','400','Easy-Moderate','Outdoor Facilities','Long views of mountain ranges','Not Summer','Full sun','LaTierra-75.161.138.96-1642032870.gpx','LaTierra-75.161.138.96-1642032870.json','357140682','-1059631235','La T662953.jpg',NULL,NULL,'https://www.google.com/maps/dir//Frijoles+Trailhead+(La+Tierra+Trails),+657-725+Camino+de+los+Montoyas,+Santa+Fe,+NM+87506/@35.7102244,-105.9648201,14.91z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87184ffbeccafc21:0x3683123f88fca0e0!2m2!1d-105.9626536!2d35.7139625',NULL,'<p>The <span style=\"color: #1428d2;\">La Tierra Trail System</span> appears to be targeting mostly bike traffic, and signs indicating \'one-way technical trail\' surely don\'t apply to the hiker. It is difficult to know in advance where these segments are, as they are not always clearly marked on the available map (though a few are). The direction of the hike that the author took placed him going \'against\' the advisories.</p>\r\n<p>While there are occasional lovely views of surrounding mountain ranges, the trail itself is rather uninteresting and consists of the same kind of terrain throughout. At times, the trail junctions can be confusing. The author is not necessarily recommending the hiker take the route shown, but the trail map references below can help to plot a reasonable hike. The trails, on the referenced maps, consist of segment numbers, but unlike the Dale Ball Trail System, trail lengths are not given.</p>','2022-01-12',NULL,NULL,NULL),
 ('286','Sulphur Canyon Multi-Trail','2','Tijeras','Out-and-back','9.70','500','Moderate','Picnic site w/Public Toilets','Long Range Views','Any','Mixed sun/shade','Sulphur_Canyon-174.28.97.51-1642879384.gpx,SulpherShorts-174.28.97.51-1642879296.gpx','Sulphur_Canyon-174.28.97.51-1642879384.json','351722661','-1063763582','Sulp6fb66a.jpg',NULL,NULL,'https://www.google.com/maps/dir//Sulphur+Canyon,+Sandia+Park,+NM+87008/@35.1719877,-106.3849115,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984f4a32741f:0x79ff0afdc2b054a2!2m2!1d-106.3761353!2d35.1719885','<p>&nbsp;Use caution when the trail is snow-covered as ice may be present below the surface. Note that although the min-to-max elevation change is not large, because of the constant up-and-down on the various trail segments (none are steep), the author logged about 1500 feet of total ascent.</p>','<p>This is another of the author\'s composite hikes formulated by pieceing together trail segments. The author underestimated the total length of this hike and has provided some \'Shortcuts\' to reduce the length considerably. Also, an additional 1/3 mile can be chopped off the hike by not taking the <em><span style=\"color: #1428d2;\">Overlook Trail </span></em>at the south-central part of the hike. To enable the Shortcuts, simply check the corresponding boxes in the \"Tracks\" box in the upper right corner of the map. The trails in <em>Sulphur Canyon</em> were all quite well marked with clear signage, so that a complete hike description could be made by simply listing the trails and turns. Note the the conventional colors were assigned to the flags indicating trail junctions: green - turn left; red - turn right. The conventions only apply if traversing the hike in the same direction as indicated, and do not apply when retracing the same sections on the return trip.</p>\r\n<p>As the hike was conducted in the winter, it proceeded from the parking area indicated. The southern route is closed to vehicles in the winter months. More mileage can be cut from the total in the summer months by driving south on the <em>Sulphur Canyon Picnic Ground Road</em> and branching onto the <em>Cienega Equestrian Trailhead</em> and parking area. This will save almost a mile of hiking on the roads.</p>\r\n<p>For this winter hike, proceed south on the <em>Sulphur Canyon Picnic Ground Road</em> and head left on the road leading to the <em>Cienega Equestrian Trailhead</em>. From this point, follow the <em><span style=\"color: #1428d2;\">Cienega Horse Bypass Trail</span></em>. It will lead downhill to the <em>Picnic Grounds</em>, where the <em><span style=\"color: #1428d2;\">Armijo Trail </span></em>can be accessed. A short distance further, turn left on the <em><span style=\"color: #1428d2;\">Valle Trail</span></em> and then thereafter, left on the <span style=\"color: #1428d2;\"><em>Pinedrop Trail</em></span>. The latter eventually leads to the <em><span style=\"color: #1428d2;\">Un Poquito Trail</span></em>, where a sharp turn left is made. That trail leads downhill to a juncture with the <em><span style=\"color: #1428d2;\">This Way Trail</span></em>, where a left is made. Follow it a short distance and turn sharp left onto the <em><span style=\"color: #1428d2;\">That Way Trail</span></em>. It will eventually rejoin the <em><span style=\"color: #1428d2;\">This Way Trail</span></em>, but continue on <em><span style=\"color: #1428d2;\">That Way</span></em> until reaching the junction with the <span style=\"color: #1428d2;\"><em>La Barba Trail</em></span>. Follow <em><span style=\"color: #1428d2;\">La Barba </span></em>south (with the option to explore the <span style=\"color: #1428d2;\"><em>Overlook Trail</em></span> en route). Make a sharp right on the <em><span style=\"color: #1428d2;\">Deer Bed Trail</span></em> and head north. It will turn west and intersect the <em><span style=\"color: #1428d2;\">Vista Trail</span></em><span style=\"color: #1428d2;\"><span style=\"color: #000000;\">, where another left is made. </span></span>The <em><span style=\"color: #1428d2;\">Vista Trail</span></em> heads south briefly, then north to begin to close the loop. It will re-intersect the <em><span style=\"color: #1428d2;\">Deer Bed Trail</span></em> (intersections are opportunities to shorten the trail length). The <em><span style=\"color: #1428d2;\">Vista Trail </span></em>ends at the <em><span style=\"color: #1428d2;\">Madera Locura Trail </span></em>where a right turn heads back towards the earlier part of the hike. This flows back into the <em><span style=\"color: #1428d2;\">La Barba Trail</span></em> again, and a short distance later rejoins the <em><span style=\"color: #1428d2;\">Un Poquito Trail</span></em>. A right turn proceeds to the end of the loop, where you simply backtrack past the <em><span style=\"color: #1428d2;\">This Way Trail</span></em> junction.</p>','2022-01-21',NULL,NULL,NULL);
+
+
+
+
+CREATE TABLE `LOCKS` (
+  `indx` smallint(6) NOT NULL AUTO_INCREMENT,
+  `ipaddr` varchar(15) DEFAULT NULL,
+  `fails` smallint(6) DEFAULT '0',
+  `lockout` datetime DEFAULT NULL,
+  PRIMARY KEY (`indx`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+
 
 
 
@@ -1828,7 +1841,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9656 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9654 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4967,19 +4980,20 @@ CREATE TABLE `USERS` (
   `first_name` varchar(20) NOT NULL,
   `email` varchar(50) NOT NULL,
   `cookies` varchar(100) DEFAULT NULL,
+  `questions` varchar(40) DEFAULT NULL,
+  `an1` varchar(4096) DEFAULT NULL,
+  `an2` varchar(4096) DEFAULT NULL,
+  `an3` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO USERS VALUES
-('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2050-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept'),
-('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2050-10-01','Cowles','Ken','krcowles29@gmail.com',NULL),
-('3','Pirko','$2y$10$1KE56t0sfm6.NOr1gOZWbuXO7fe3AEXx5o0lBeEw6kVnhyMGyx1H.','2018-08-17','Pirko','thomas','lake_thomas@yahoo.com',''),
-('4','hochi','$2y$10$4/GI/6JQ.XPvD6X69T6rlOjWXwGvQMVTTE8Q.ttMumQLPTPmfpSBy','2020-03-28','Green','Alex','Alex.Green@case.edu',''),
-('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com',''),
-('6','krcowles29@gmail.com','$2y$10$dPiIFXaq374C366gIadJgeIt7E6F/4kcUc2gipeRYJsRyv20NNigO','2020-09-25','Cowles','Ken','krcowles29@gmail.com',''),
-('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com',''),
-('10','kenuser','$2y$10$1Zcu3a3/OIU0iPBA0B5ECu9GjQrAkvFraxkOqHV0oohF7.JfaA1PK','2022-04-11','admin','ken','hawk109@icloud.com','reject');
+('1','tom','$2y$10$jtwAC9paJdNVCNRh8mOKf.dry2vAbmn/rWwofVfOb9ue4AgDX2dNO','2050-12-10','Sandberg','Tom','tjsandberg@yahoo.com','accept',NULL,NULL,NULL,NULL),
+('2','kc','$2y$10$uuA21wzPX4zEdgcwpHgVyuCTaIQRfiuWzysBj1luAm0qZQuWkaRu.','2050-10-01','Cowles','Ken','krcowles29@gmail.com','accept','2,5,6','07738e1b33c04a47c5ee04857207c865425babbfe648b3877e6b7c78b622550b9796803e1dafb117074a61b3139a69561fc6aa7b6638c2e5e34a70f2f8334b6617305ed0bf2df65293602aac1b0efad1e6c05947e27f09af8ed914f0755eb6ac2467b01962e8b2cc61d92ffd3ebd3237237491e525b1309c73b0d009f8a6f199','319c6802ed3a5436bb4be12071d9900db75417993441eae53f41933b55ffcee7780b661af256e146ffc475591d8a18328edca1a0a114161137b5d300dfad6990d545eae0eaa412172e1628ce881aa80ea0f4c8b59f1233930a88278d05fdb489ba0307649f4bedab4ea6db6b199e87a8d8aeaf9ab9a518d3d6512a730fd5578a','5808205b2aa13bf57f2df5aca63fe1938cde08b22da3340175927dc7f174896c476be1673587a6da2ee40a69cb1a9feaa4282746d3cf961ede25921115b4e43fac6a5bb606850ce6147b69b7b3a98dfa94fe527e81287a08a56c6bcc1d2fa7b0d0de9d9dd03a8b60be41ccaf97c86ffad2a7a9319f7fd7de9e7e22283a5f76ca'),
+('5','TomUser','$2y$10$GuGTytg7E5E./pMUtLDkwuO/pL4Jn18YIfKDtI/5E/xZDo1Cd.1RC','2020-09-25','Sandberg','Tom','tjsandberg@yahoo.com','',NULL,NULL,NULL,NULL),
+('7','crippelthompson','$2y$10$4Ru0Sc49ZWcXlGTXdqnswulXKCEqBq0BlQy.Nl1joUUIyckZ2iC3W','2021-01-22','Thompson','Cheryl','a.n.m.clynt66@icloud.com','',NULL,NULL,NULL,NULL),
+('17','KenUser','$2y$10$AcNutj/cOxkMmOR/Q8UeX.RaJn10UCVSXjugDLLybWoMStMWVV15K','2023-02-18','Fabeetz','Joe','hawk109@icloud.com','accept','0,2,5','ac7f8309a34b12bb59a6a59e5b9a9aa9c17b968e5418f8cdfa7b94e064ce96217d2ffa20d3ed1833d6832121c06816caf3494a7d3534417f342990d715da49b03d0d7cacacf0e0c74b329842bd97860f2316ee3718595fc723c6ce6fa045719fca50630d9af043795acb7aff11ae8ad6f395fe5819c939053aff3451594e9c01','b0c4204d81d37fcd2d1490757f9c473e7501d466c171efd23a3d06db0f6edb4621e715d8b9a432ed14decc488a0b1768a3ad4651974187ceb6d19e5e929500d83b17f097e9aac57abc6b7dfb8f19bfba870794dfb052e14f394922ee3dbf12d0e90d9cc50318afeb3a632c9f05658a2754a1605b2f48ca5718758e6f0279baec','ac01d3448c94186abaabc30069ad48b9195802369e3444606ee530162b35c81e22dec6e97f1a8ad197303d7790d396f784ca2e0ba84c3859883f79bbc247f6ce2050ddf0ed89e1e9de963d87b84544ce0f5fd6d5124cefc05a01a9048c832c9e2f7639d041e7fc67587c725acdc1527085df4d47cb8719b413eb1bfdf840ce75');
 
 
 
@@ -4992,7 +5006,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=366 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=537 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -5363,7 +5377,180 @@ INSERT INTO VISITORS VALUES
 ('362','157.55.39.72','Unknown','Unknown','2022-01-27 07:39:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=97'),
 ('363','66.249.69.155','Google Chrome','Unknown','2022-01-28 02:21:04','https://nmhikes.com:443/pages/home.php'),
 ('364','66.249.69.156','Google Chrome','linux','2022-01-28 03:35:13','https://nmhikes.com:443/pages/landing.php'),
-('365','207.46.13.50','Unknown','Unknown','2022-01-28 11:04:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35');
+('365','207.46.13.50','Unknown','Unknown','2022-01-28 11:04:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('366','127.0.0.1','Mozilla Firefox','mac','2022-01-29 05:56:42','http://localhost/pages/home.php'),
+('367','127.0.0.1','Mozilla Firefox','mac','2022-02-05 10:29:18','http://localhost/pages/home.php'),
+('368','127.0.0.1','Mozilla Firefox','mac','2022-02-05 10:29:23','http://localhost/admin/admintools.php'),
+('369','127.0.0.1','Mozilla Firefox','mac','2022-02-05 10:29:28','http://localhost/admin/visitor_data.php'),
+('370','127.0.0.1','Mozilla Firefox','mac','2022-02-05 04:08:44','http://localhost/pages/home.php'),
+('371','127.0.0.1','Mozilla Firefox','mac','2022-02-05 04:09:24','http://localhost/pages/home.php'),
+('372','127.0.0.1','Mozilla Firefox','mac','2022-02-05 04:11:02','http://localhost/pages/home.php'),
+('373','127.0.0.1','Mozilla Firefox','mac','2022-02-05 04:11:13','http://localhost/pages/home.php'),
+('374','127.0.0.1','Mozilla Firefox','mac','2022-02-05 04:54:17','http://localhost/pages/home.php'),
+('375','127.0.0.1','Mozilla Firefox','mac','2022-02-05 05:10:25','http://localhost/pages/home.php'),
+('376','127.0.0.1','Mozilla Firefox','mac','2022-02-05 06:17:12','http://localhost/pages/home.php'),
+('377','127.0.0.1','Mozilla Firefox','mac','2022-02-06 10:28:21','http://localhost/pages/home.php'),
+('378','127.0.0.1','Mozilla Firefox','mac','2022-02-06 12:11:55','http://localhost/pages/home.php'),
+('379','127.0.0.1','Mozilla Firefox','mac','2022-02-06 12:25:30','http://localhost/pages/home.php'),
+('380','127.0.0.1','Mozilla Firefox','mac','2022-02-06 12:28:20','http://localhost/pages/home.php'),
+('381','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:28:36','http://localhost/pages/home.php'),
+('382','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:30:32','http://localhost/pages/home.php'),
+('383','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:31:38','http://localhost/pages/home.php'),
+('384','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:34:33','http://localhost/pages/home.php'),
+('385','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:35:37','http://localhost/pages/home.php'),
+('386','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:36:30','http://localhost/pages/home.php'),
+('387','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:36:45','http://localhost/pages/home.php'),
+('388','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:37:02','http://localhost/pages/home.php'),
+('389','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:40:01','http://localhost/pages/home.php'),
+('390','127.0.0.1','Mozilla Firefox','mac','2022-02-06 03:43:28','http://localhost/pages/home.php'),
+('391','127.0.0.1','Mozilla Firefox','mac','2022-02-06 06:59:48','http://localhost/pages/home.php'),
+('392','127.0.0.1','Mozilla Firefox','mac','2022-02-07 10:47:42','http://localhost/pages/home.php'),
+('393','127.0.0.1','Mozilla Firefox','mac','2022-02-07 10:47:51','http://localhost/pages/home.php'),
+('394','127.0.0.1','Mozilla Firefox','mac','2022-02-07 11:23:51','http://localhost/pages/home.php'),
+('395','127.0.0.1','Mozilla Firefox','mac','2022-02-07 11:27:59','http://localhost/pages/home.php'),
+('396','127.0.0.1','Mozilla Firefox','mac','2022-02-07 11:34:30','http://localhost/pages/home.php'),
+('397','127.0.0.1','Mozilla Firefox','mac','2022-02-07 01:18:43','http://localhost/pages/home.php'),
+('398','127.0.0.1','Mozilla Firefox','mac','2022-02-07 01:18:52','http://localhost/pages/home.php'),
+('399','127.0.0.1','Mozilla Firefox','mac','2022-02-08 05:55:26','http://localhost/pages/home.php'),
+('400','127.0.0.1','Mozilla Firefox','mac','2022-02-08 06:06:27','http://localhost/pages/home.php');
+INSERT INTO VISITORS VALUES
+('401','127.0.0.1','Mozilla Firefox','mac','2022-02-08 06:06:37','http://localhost/pages/home.php'),
+('402','127.0.0.1','Mozilla Firefox','mac','2022-02-10 03:58:01','http://localhost/pages/home.php'),
+('403','127.0.0.1','Mozilla Firefox','mac','2022-02-10 03:59:49','http://localhost/pages/home.php'),
+('404','127.0.0.1','Mozilla Firefox','mac','2022-02-10 06:42:32','http://localhost/pages/home.php'),
+('405','127.0.0.1','Mozilla Firefox','mac','2022-02-10 06:51:25','http://localhost/pages/home.php'),
+('406','127.0.0.1','Mozilla Firefox','mac','2022-02-10 06:51:36','http://localhost/pages/home.php'),
+('407','127.0.0.1','Mozilla Firefox','mac','2022-02-10 07:01:29','http://localhost/pages/home.php'),
+('408','127.0.0.1','Mozilla Firefox','mac','2022-02-10 07:07:06','http://localhost/pages/home.php'),
+('409','127.0.0.1','Mozilla Firefox','mac','2022-02-11 07:30:13','http://localhost/pages/home.php'),
+('410','127.0.0.1','Mozilla Firefox','mac','2022-02-11 07:30:23','http://localhost/pages/hikePageTemplate.php?hikeIndx=284'),
+('411','127.0.0.1','Mozilla Firefox','mac','2022-02-11 07:06:07','http://localhost/pages/home.php'),
+('412','127.0.0.1','Mozilla Firefox','mac','2022-02-11 07:15:02','http://localhost/pages/home.php'),
+('413','127.0.0.1','Mozilla Firefox','mac','2022-02-11 07:19:08','http://localhost/pages/home.php'),
+('414','127.0.0.1','Mozilla Firefox','mac','2022-02-11 07:20:31','http://localhost/pages/home.php'),
+('415','127.0.0.1','Mozilla Firefox','mac','2022-02-11 11:37:04','http://localhost/pages/home.php'),
+('416','127.0.0.1','Mozilla Firefox','mac','2022-02-12 03:03:55','http://localhost/pages/home.php'),
+('417','127.0.0.1','Mozilla Firefox','mac','2022-02-12 04:54:34','http://localhost/pages/home.php'),
+('418','127.0.0.1','Mozilla Firefox','mac','2022-02-12 06:59:14','http://localhost/pages/home.php'),
+('419','127.0.0.1','Mozilla Firefox','mac','2022-02-12 06:59:20','http://localhost/pages/home.php'),
+('420','127.0.0.1','Mozilla Firefox','mac','2022-02-12 06:59:54','http://localhost/pages/home.php'),
+('421','127.0.0.1','Mozilla Firefox','mac','2022-02-12 07:03:08','http://localhost/pages/home.php'),
+('422','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:23:00','http://localhost/pages/home.php'),
+('423','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:23:05','http://localhost/pages/home.php'),
+('424','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:26:46','http://localhost/pages/home.php'),
+('425','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:28:27','http://localhost/pages/home.php'),
+('426','127.0.0.1','Mozilla Firefox','mac','2022-02-13 08:38:44','http://localhost/pages/home.php'),
+('427','127.0.0.1','Mozilla Firefox','mac','2022-02-13 11:16:10','http://localhost/pages/home.php'),
+('428','127.0.0.1','Mozilla Firefox','mac','2022-02-13 11:28:12','http://localhost/pages/home.php'),
+('429','127.0.0.1','Mozilla Firefox','mac','2022-02-13 11:31:06','http://localhost/pages/home.php'),
+('430','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:34:24','http://localhost/pages/home.php'),
+('431','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:35:01','http://localhost/pages/home.php'),
+('432','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:38:05','http://localhost/pages/home.php'),
+('433','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:40:56','http://localhost/pages/home.php'),
+('434','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:41:55','http://localhost/pages/home.php'),
+('435','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:49:31','http://localhost/pages/home.php'),
+('436','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:49:49','http://localhost/pages/home.php'),
+('437','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:58:04','http://localhost/pages/home.php'),
+('438','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:58:12','http://localhost/pages/home.php'),
+('439','127.0.0.1','Mozilla Firefox','mac','2022-02-13 03:59:36','http://localhost/pages/home.php'),
+('440','127.0.0.1','Mozilla Firefox','mac','2022-02-13 04:05:42','http://localhost/pages/home.php'),
+('441','127.0.0.1','Mozilla Firefox','mac','2022-02-13 04:05:49','http://localhost/pages/home.php'),
+('442','127.0.0.1','Mozilla Firefox','mac','2022-02-14 04:23:40','http://localhost/pages/home.php'),
+('443','127.0.0.1','Mozilla Firefox','mac','2022-02-14 04:44:41','http://localhost/pages/home.php'),
+('444','127.0.0.1','Mozilla Firefox','mac','2022-02-14 04:46:19','http://localhost/pages/home.php'),
+('445','127.0.0.1','Mozilla Firefox','mac','2022-02-14 04:55:27','http://localhost/pages/home.php'),
+('446','127.0.0.1','Mozilla Firefox','mac','2022-02-14 04:56:44','http://localhost/pages/home.php'),
+('447','127.0.0.1','Mozilla Firefox','mac','2022-02-14 04:57:07','http://localhost/pages/home.php'),
+('448','127.0.0.1','Mozilla Firefox','mac','2022-02-14 07:12:42','http://localhost/pages/home.php'),
+('449','127.0.0.1','Mozilla Firefox','mac','2022-02-14 07:13:04','http://localhost/pages/home.php'),
+('450','127.0.0.1','Mozilla Firefox','mac','2022-02-14 07:17:59','http://localhost/pages/home.php'),
+('451','127.0.0.1','Mozilla Firefox','mac','2022-02-14 07:22:16','http://localhost/pages/home.php'),
+('452','127.0.0.1','Mozilla Firefox','mac','2022-02-14 07:22:20','http://localhost/pages/home.php'),
+('453','127.0.0.1','Mozilla Firefox','mac','2022-02-14 07:23:29','http://localhost/pages/home.php'),
+('454','127.0.0.1','Mozilla Firefox','mac','2022-02-14 07:23:34','http://localhost/pages/home.php'),
+('455','127.0.0.1','Mozilla Firefox','mac','2022-02-14 07:25:38','http://localhost/pages/home.php'),
+('456','127.0.0.1','Mozilla Firefox','mac','2022-02-15 08:45:14','http://localhost/pages/home.php'),
+('457','127.0.0.1','Mozilla Firefox','mac','2022-02-15 08:49:16','http://localhost/pages/home.php'),
+('458','127.0.0.1','Mozilla Firefox','mac','2022-02-15 08:50:42','http://localhost/pages/home.php'),
+('459','127.0.0.1','Mozilla Firefox','mac','2022-02-15 08:51:19','http://localhost/pages/home.php'),
+('460','127.0.0.1','Mozilla Firefox','mac','2022-02-15 10:09:27','http://localhost/pages/home.php'),
+('461','127.0.0.1','Mozilla Firefox','mac','2022-02-15 10:10:19','http://localhost/pages/home.php'),
+('462','127.0.0.1','Mozilla Firefox','mac','2022-02-15 10:14:34','http://localhost/pages/home.php'),
+('463','127.0.0.1','Mozilla Firefox','mac','2022-02-15 10:14:39','http://localhost/pages/home.php'),
+('464','127.0.0.1','Mozilla Firefox','mac','2022-02-15 10:17:06','http://localhost/pages/home.php'),
+('465','127.0.0.1','Mozilla Firefox','mac','2022-02-15 12:58:19','http://localhost/pages/home.php'),
+('466','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:01:02','http://localhost/pages/home.php'),
+('467','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:03:30','http://localhost/pages/home.php'),
+('468','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:05:35','http://localhost/pages/home.php'),
+('469','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:05:41','http://localhost/pages/home.php'),
+('470','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:06:42','http://localhost/pages/home.php'),
+('471','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:08:02','http://localhost/pages/home.php'),
+('472','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:08:43','http://localhost/pages/home.php'),
+('473','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:09:18','http://localhost/pages/home.php'),
+('474','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:15:53','http://localhost/pages/home.php'),
+('475','127.0.0.1','Mozilla Firefox','mac','2022-02-15 01:59:00','http://localhost/pages/home.php'),
+('476','127.0.0.1','Mozilla Firefox','mac','2022-02-15 02:06:00','http://localhost/pages/home.php'),
+('477','127.0.0.1','Mozilla Firefox','mac','2022-02-15 02:06:08','http://localhost/pages/home.php'),
+('478','127.0.0.1','Mozilla Firefox','mac','2022-02-15 02:06:49','http://localhost/pages/home.php'),
+('479','127.0.0.1','Mozilla Firefox','mac','2022-02-15 03:34:32','http://localhost/pages/home.php'),
+('480','127.0.0.1','Mozilla Firefox','mac','2022-02-15 03:34:37','http://localhost/pages/home.php'),
+('481','127.0.0.1','Mozilla Firefox','mac','2022-02-15 03:36:13','http://localhost/pages/home.php'),
+('482','127.0.0.1','Mozilla Firefox','mac','2022-02-15 03:47:21','http://localhost/pages/home.php'),
+('483','127.0.0.1','Mozilla Firefox','mac','2022-02-15 05:12:51','http://localhost/pages/landing.php'),
+('484','127.0.0.1','Mozilla Firefox','mac','2022-02-15 05:14:28','http://localhost/pages/landing.php'),
+('485','127.0.0.1','Mozilla Firefox','mac','2022-02-16 06:36:17','http://localhost/pages/home.php'),
+('486','127.0.0.1','Mozilla Firefox','mac','2022-02-16 06:36:45','http://localhost/pages/landing.php'),
+('487','127.0.0.1','Mozilla Firefox','mac','2022-02-16 06:38:17','http://localhost/pages/landing.php'),
+('488','127.0.0.1','Mozilla Firefox','mac','2022-02-16 06:38:47','http://localhost/pages/landing.php'),
+('489','127.0.0.1','Mozilla Firefox','mac','2022-02-16 06:39:10','http://localhost/pages/responsiveTable.php'),
+('490','127.0.0.1','Mozilla Firefox','mac','2022-02-17 09:06:42','http://localhost/pages/home.php'),
+('491','127.0.0.1','Mozilla Firefox','mac','2022-02-17 09:07:02','http://localhost/pages/home.php'),
+('492','127.0.0.1','Mozilla Firefox','mac','2022-02-17 09:13:38','http://localhost/pages/home.php'),
+('493','127.0.0.1','Mozilla Firefox','mac','2022-02-17 09:36:13','http://localhost/pages/home.php'),
+('494','127.0.0.1','Mozilla Firefox','mac','2022-02-17 09:37:19','http://localhost/pages/home.php'),
+('495','127.0.0.1','Mozilla Firefox','mac','2022-02-17 09:50:44','http://localhost/pages/home.php'),
+('496','127.0.0.1','Mozilla Firefox','mac','2022-02-17 10:14:40','http://localhost/pages/home.php'),
+('497','127.0.0.1','Mozilla Firefox','mac','2022-02-17 03:55:26','http://localhost/pages/home.php'),
+('498','127.0.0.1','Mozilla Firefox','mac','2022-02-17 06:56:23','http://localhost/pages/home.php'),
+('499','127.0.0.1','Mozilla Firefox','mac','2022-02-17 06:56:35','http://localhost/pages/home.php'),
+('500','127.0.0.1','Mozilla Firefox','mac','2022-02-17 06:59:28','http://localhost/pages/home.php');
+INSERT INTO VISITORS VALUES
+('501','127.0.0.1','Mozilla Firefox','mac','2022-02-17 06:59:58','http://localhost/pages/home.php'),
+('502','127.0.0.1','Mozilla Firefox','mac','2022-02-17 07:06:07','http://localhost/pages/home.php'),
+('503','127.0.0.1','Mozilla Firefox','mac','2022-02-17 07:23:38','http://localhost/pages/home.php'),
+('504','127.0.0.1','Mozilla Firefox','mac','2022-02-18 09:44:34','http://localhost/pages/home.php'),
+('505','127.0.0.1','Mozilla Firefox','mac','2022-02-18 10:34:53','http://localhost/pages/home.php'),
+('506','127.0.0.1','Mozilla Firefox','mac','2022-02-18 10:57:59','http://localhost/pages/home.php'),
+('507','127.0.0.1','Mozilla Firefox','mac','2022-02-18 11:04:47','http://localhost/pages/home.php'),
+('508','127.0.0.1','Mozilla Firefox','mac','2022-02-18 11:05:48','http://localhost/pages/home.php'),
+('509','127.0.0.1','Mozilla Firefox','mac','2022-02-18 11:23:44','http://localhost/pages/home.php'),
+('510','127.0.0.1','Mozilla Firefox','mac','2022-02-18 11:29:11','http://localhost/pages/home.php'),
+('511','127.0.0.1','Mozilla Firefox','mac','2022-02-18 11:34:38','http://localhost/pages/home.php'),
+('512','127.0.0.1','Mozilla Firefox','mac','2022-02-18 11:36:32','http://localhost/pages/home.php'),
+('513','127.0.0.1','Mozilla Firefox','mac','2022-02-18 11:36:37','http://localhost/pages/home.php'),
+('514','127.0.0.1','Mozilla Firefox','mac','2022-02-18 11:42:24','http://localhost/pages/home.php'),
+('515','127.0.0.1','Mozilla Firefox','mac','2022-02-18 06:46:09','http://localhost/pages/home.php'),
+('516','127.0.0.1','Mozilla Firefox','mac','2022-02-18 06:57:25','http://localhost/pages/home.php'),
+('517','127.0.0.1','Mozilla Firefox','mac','2022-02-18 06:58:11','http://localhost/pages/home.php'),
+('518','127.0.0.1','Mozilla Firefox','mac','2022-02-18 06:59:03','http://localhost/pages/home.php'),
+('519','127.0.0.1','Mozilla Firefox','mac','2022-02-18 06:59:36','http://localhost/pages/home.php'),
+('520','127.0.0.1','Mozilla Firefox','mac','2022-02-18 07:00:17','http://localhost/pages/home.php'),
+('521','127.0.0.1','Mozilla Firefox','mac','2022-02-18 07:00:54','http://localhost/pages/home.php'),
+('522','127.0.0.1','Mozilla Firefox','mac','2022-02-18 07:01:31','http://localhost/pages/home.php'),
+('523','127.0.0.1','Mozilla Firefox','mac','2022-02-18 07:02:34','http://localhost/pages/home.php'),
+('524','127.0.0.1','Mozilla Firefox','mac','2022-02-18 07:03:10','http://localhost/pages/home.php'),
+('525','127.0.0.1','Mozilla Firefox','mac','2022-02-18 07:03:26','http://localhost/pages/home.php'),
+('526','127.0.0.1','Mozilla Firefox','mac','2022-02-18 07:12:01','http://localhost/pages/home.php'),
+('527','127.0.0.1','Mozilla Firefox','mac','2022-02-19 07:46:39','http://localhost/pages/home.php'),
+('528','127.0.0.1','Mozilla Firefox','mac','2022-02-19 07:47:57','http://localhost/pages/home.php'),
+('529','127.0.0.1','Mozilla Firefox','mac','2022-02-19 08:15:43','http://localhost/pages/home.php'),
+('530','127.0.0.1','Mozilla Firefox','mac','2022-02-19 08:16:06','http://localhost/pages/home.php'),
+('531','127.0.0.1','Mozilla Firefox','mac','2022-02-19 09:50:01','http://localhost/pages/home.php'),
+('532','127.0.0.1','Mozilla Firefox','mac','2022-02-19 09:52:19','http://localhost/pages/home.php'),
+('533','127.0.0.1','Mozilla Firefox','mac','2022-02-19 09:53:44','http://localhost/pages/home.php'),
+('534','127.0.0.1','Mozilla Firefox','mac','2022-02-19 09:54:07','http://localhost/pages/home.php'),
+('535','127.0.0.1','Mozilla Firefox','mac','2022-02-19 09:55:18','http://localhost/pages/home.php'),
+('536','127.0.0.1','Mozilla Firefox','mac','2022-02-19 09:55:35','http://localhost/pages/home.php');
 
 
 
