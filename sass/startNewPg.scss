@@ -1,3 +1,5 @@
+$notes: darkblue;
+@import "colors";
 @import "body";
 @import "ktesaNavbar";
 
@@ -13,7 +15,7 @@ form {
     font-weight: bold;
 }
 #maxchars {
-    color: brown;
+    color: $brown;
 }
 #hikename, #newgroup, #newclusgrp {
     height: 28px;
@@ -27,7 +29,7 @@ form {
     margin-left: 32px;
 }
 .note {
-    color: darkblue;
+    color: $notes;
 }
 .shift {
     position: relative;

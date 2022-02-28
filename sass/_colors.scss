@@ -1,15 +1,9 @@
-.blue {
-    color: blue;
-}
-.red {
-    color: red;
-}
-.green {
-    color: green;
-}
-.purple {
-    color: purple;
-}
-.brown {
-    color: brown;
-}
+/* "global" colors: local exceptions are contained in their respective modules */
+$blue: blue;
+$red: red;
+$green: green;
+$purple: purple;
+$brown: brown;
+$black: black;
+$white: white;
+$gray: gray;

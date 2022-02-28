@@ -1,3 +1,6 @@
+$picType: darkblue;
+
+@import "colors";
 @import "body";
 @import "ktesaNavbar";
 
@@ -8,12 +11,12 @@ ul {
     margin-left: 24px;
 }
 .head {
-    color: brown;
+    color: $brown;
     font-size: 18px;
 }
 .types {
     margin-left: 24px;
-    color: darkblue;
+    color: $picType;
     font-size: 18px;
 }
 input[type=checkbox] {

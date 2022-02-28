@@ -1,15 +1,20 @@
+$navbar: darkslategray;
+$brand: #bfd9bf;
+$link: whitesmoke;
+$logo: #ffe866;
+
 .navbar {
-    background-color: darkslategray;
+    background-color: $navbar;
 }
 .navbar-brand {
-    color: #bfd9bf !important;
+    color: $brand !important;
     font-style: italic;
 }
 .nav-link {
-    color: whitesmoke !important;
+    color: $link !important;
 }
 ul.dropdown-menu {
-    background-color: whitesmoke !important;
+    background-color: $link !important;
 }
 /* Logo */
 #logo {
@@ -21,7 +26,7 @@ ul.dropdown-menu {
     height: 52px;
     margin-bottom: 6px;
     margin-right: 12px;
-    background-color: #ffe866;
+    background-color: $logo;
     z-index: 1;
     text-align: center;
     -moz-box-sizing: border-box;
@@ -66,7 +71,7 @@ ul.dropdown-menu {
     float: left;
     margin-left: 12px;
     margin-top: 4px;
-    color: darkslategray;
+    color: $navbar;
     z-index:5; }
 #ctr {
     font-size: 18px;
@@ -76,7 +81,7 @@ ul.dropdown-menu {
     float: right;
     margin-right: 10px;
     margin-top: 5px;
-    color: darkslategray;
+    color: $navbar;
     z-index:5; }
 #trail {
     clear:both;

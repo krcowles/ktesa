@@ -1,3 +1,4 @@
+"use strict";
 /**
  * @fileoverview This script handles all four tabs - presentation and data
  * validation, also initialization of settings for <select> boxes, etc.

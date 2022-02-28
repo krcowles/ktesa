@@ -1,3 +1,11 @@
+$logo:  #ffe866;
+$container: #fff5e6;
+$containerText: maroon;
+$submitButton: antiquewhite;
+$cookies: floralwhite;
+$customLine: #fcf4e8;
+
+@import "colors";
 @import "body";
 @import "overflow";
 
@@ -11,7 +19,7 @@
     height: 64px;
     margin-bottom: 4px;
     margin-right: 12px;
-    background-color: #ffe866;
+    background-color: $logo;
     z-index: 1;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -71,13 +79,13 @@
     width: 50%;
     margin-left: auto;
     margin-right: auto;
-    background-color: #fff5e6;
+    background-color: $container;
     border-style: solid;
     border-color: gainsboro;
     border-radius: 12px;
     text-align: center;
     font-size: 20px;
-    color: maroon;
+    color: $containerText;
     padding-top: 10px;
     padding-left: 6px;
     padding-right: 6px;
@@ -106,37 +114,37 @@ input:-webkit-autofill:focus {   /* Chrome, Safari */
 }
 input:focus {
     outline: none;
-    border-color: maroon;
+    border-color: $containerText;
     border-width: 2px;
     border-style: solid;
     transition: border-color 1s;
 }
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: gray;
+    color: $gray;
     opacity: 1; /* Firefox */
 }
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: gray;
+    color: $gray;
 }
 ::-ms-input-placeholder { /* Microsoft Edge */
-    color: gray;
+    color: $gray;
 }
 #formsubmit {
     display: inline-block;
     width: calc(100% - 40px);
     height: 40px;
-    background-color: antiquewhite;
+    background-color: $submitButton;
     line-height: 38px;
     font-size: 18px;
     border-radius: 8px;
-    color: maroon;
+    color: $containerText;
     font-weight: bold;
     vertical-align: middle;
 }
 #formsubmit:hover, #submit:hover {
     cursor: pointer;
-    background-color:maroon;
-    color: white;
+    background-color:$containerText;
+    color: $white;
 }
 #cookie_banner {
     position: fixed;
@@ -147,10 +155,10 @@ input:focus {
     padding-left: 16px;
     padding-right: 16px;
     z-index: 9999;
-    background-color: floralwhite;
+    background-color: $cookies;
     border-top-style: solid;
     border-top-width: 1px;
-    border-top-color: gray;
+    border-top-color: $gray;
 }
 #cookie_banner h3, #cookie_banner p {
     margin-top: 8px;
@@ -196,7 +204,7 @@ button {
     top: 8px;
     left: 36px;
     font-size: 14px;
-    color: gray;
+    color: $gray;
     z-index: 400;
     text-align: left;
 }
@@ -206,7 +214,7 @@ button {
     top: 2px;
     width: 76px;
     height: 2px;
-    background-color: #fcf4e8;
+    background-color: $customLine;
     z-index: 300;
 }
 #line4 {

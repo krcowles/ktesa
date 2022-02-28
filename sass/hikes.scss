@@ -1,3 +1,13 @@
+$hikePageBackground: whitesmoke;
+$boxItems: floralwhite;
+$hideArrow: darkgray;
+$darkred: darkred;
+$captions: #eaeaea;
+$alink: #0000b3;
+$issueColor: linen;
+$issueBorder: #c9d7e8;
+
+@import "colors";
 @import "body";
 @import "ktesaNavbar";
 
@@ -10,33 +20,17 @@ html {
 body {
     height: 100%;
     padding: 0px; 
-    background-color: whitesmoke; }
-table {
-    margin-top: 8px;
-    margin-bottom: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    border-style: solid;
-    border-width: 3px;
-    border-color: DarkBlue;
-    background-color: #EDF2F7; }
-table th {
-    text-align: center;
-    padding-left: 5px;
-    padding-right: 5px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: DarkBlue; }
-table td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 5px; 
-    background-color: Gainsboro; 
-    border-style: solid;
-    border-width: 1px;
-    border-color: DarkBlue; }
+    background-color: $hikePageBackground;
+    overflow-x: hidden;
+}
 #logo {
     margin-bottom: 0px;
+}
+a {
+    color: $alink;
+}
+a:hover {
+    color: $brown;
 }
 /* Side Panel styling, including hikeInfo & refs */
 #sidePanel {
@@ -49,12 +43,12 @@ table td {
     min-height: 400px;
     border-style: inset;
     border-width: 2px;
-    border-color: Brown;
+    border-color: $brown;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
-    background-color: floralwhite;
+    background-color: $boxItems;
     overflow:scroll;
 }
 #enotes {
@@ -67,7 +61,7 @@ table td {
     text-align: center;
     height: 30px;
     width: 30px;
-    background-color: darkgray;
+    background-color: $hideArrow;
 }
 #hide:hover {
     cursor: pointer;
@@ -78,7 +72,7 @@ table td {
     text-align: center;
     height: 30px;
     width: 30px;
-    background-color: darkgray;
+    background-color: $hideArrow;
     display: none;
     position: absolute;
     top: 104px;
@@ -92,7 +86,7 @@ table td {
 	margin-top: 6px;
 	margin-bottom: 0px;
 	text-align: center;
-	color: Brown;
+	color: $brown;
 	font-size: 20px;
 }
 #crefs {
@@ -105,13 +99,13 @@ table td {
 	padding: 10px;
 }
 .sumClr {
-    color: Brown;
+    color: $brown;
 }
 #addtl {
 	margin-top: -6px;
 	margin-bottom: 0px;
 	text-align: center;
-	color: Brown;
+	color: $brown;
 	font-size: 20px;
 }
 #mlnk {
@@ -162,15 +156,15 @@ iframe {
 }
 #chartline {
 	float: left;
-    background-color: white;
+    background-color: $white;
 }
 #trailTips {
-    background-color: floralwhite;
+    background-color: $boxItems;
 }
 #ihd {
     position: relative;
     top: 0px;
-    color: darkred;
+    color: $darkred;
     font-size: 16px;
     font-style: italic;
     text-decoration: underline;
@@ -183,7 +177,7 @@ iframe {
     border-width: 2px;
     border-color: Brown;
     padding: 10px;
-    background-color: floralwhite;
+    background-color: $boxItems;
 }
 #hikeInfo p {
     margin-top: 8px;
@@ -197,12 +191,12 @@ fieldset {
     padding-top: 8px;
     border-style: inset;
     border-width: 2px;
-    border-color: Brown;
-    background-color: floralwhite;
+    border-color: $brown;
+    background-color: $boxItems;
  }
 #fldrefs {
     font-size: 18px;
-    color: darkred;
+    color: $darkred;
 }
 .boptag {
     font-size: 14px;
@@ -247,7 +241,8 @@ img {
 .capLine {
     margin: 0px;
     font-weight: bold;
-    background-color: #eaeaea; }
+    background-color: $captions;
+}
 /* details about the hike */
 #trailTips {
     margin-left: 10px;
@@ -260,14 +255,14 @@ img {
     padding-bottom: 10px;
     border-style: inset;
     border-width: 2px;
-    border-color: Brown; }
+    border-color: $brown; }
 #tipPic {
 	float: left; }
 #tipHdr {
     display: inline;
     left: 14px;
     top: -20px;
-    color: Brown;
+    color: $brown;
     font-weight: bold;
     font-size: 20px;
     padding-left: 12px; }
@@ -279,7 +274,7 @@ img {
     padding-right: 8px;
     margin-bottom: -4px; }
 #albumlinks {
-    color: DarkBlue;
+    color: $alink;
     margin-bottom: 12px; }
 #tips {
     text-align: left; }
@@ -289,10 +284,10 @@ img {
 	margin-left: 12px;
 	margin-right: 12px;
 	padding: 10px;
-	background-color: linen;
+	background-color: $issueColor;
 	border-style: outset;
 	border-width: 2px;
-	border-color: #c9d7e8;
+	border-color: $issueBorder;
 }
 #overlay {
     position: fixed;
@@ -312,7 +307,7 @@ img {
     top: 50%;
     left: 60%;
     font-size: 50px;
-    color: DarkSlateGray;
+    color: $navbar;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
 }

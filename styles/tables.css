@@ -1,215 +1,189 @@
+/* "global" colors: local exceptions are contained in their respective modules */
 /* scss standard definitions */
-/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/_body.scss */
 body {
-  min-width: 960px;
-  background-color: #eaeaea;
-  margin: 0;
-  font-family: arial, verdana;
-  font-size: 16px;
+    min-width: 960px;
+    background-color: #eaeaea;
+    margin: 0;
+    font-family: arial, verdana;
+    font-size: 16px;
 }
 
-/* line 1, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .navbar {
-  background-color: darkslategray;
+    background-color: darkslategray;
 }
 
-/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .navbar-brand {
-  color: #bfd9bf !important;
-  font-style: italic;
+    color: #bfd9bf !important;
+    font-style: italic;
 }
 
-/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .nav-link {
-  color: whitesmoke !important;
+    color: whitesmoke !important;
 }
 
-/* line 11, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 ul.dropdown-menu {
-  background-color: whitesmoke !important;
+    background-color: whitesmoke !important;
 }
 
 /* Logo */
-/* line 15, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo {
-  display: inline-block;
-  vertical-align: top;
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 52px;
-  margin-bottom: 6px;
-  margin-right: 12px;
-  background-color: #ffe866;
-  z-index: 1;
-  text-align: center;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 52px;
+    margin-bottom: 6px;
+    margin-right: 12px;
+    background-color: #ffe866;
+    z-index: 1;
+    text-align: center;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-/* line 31, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #pattern {
-  background-image: url("../images/southwest_pattern.png");
-  background-repeat: repeat-x;
-  background-attachment: scroll;
-  margin-top: 2px;
-  padding: 0px;
-  height: 16px;
+    background-image: url("../images/southwest_pattern.png");
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    margin-top: 2px;
+    padding: 0px;
+    height: 16px;
 }
 
-/* line 39, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .logo_items {
-  display: inline-block;
+    display: inline-block;
 }
 
-/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #leftside {
-  float: left;
-  margin-bottom: 0px;
+    float: left;
+    margin-bottom: 0px;
 }
 
-/* line 46, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #ctr {
-  clear: both;
-  margin-top: 4px;
-  margin-bottom: 0px;
+    clear: both;
+    margin-top: 4px;
+    margin-bottom: 0px;
 }
 
-/* line 51, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #rightside {
-  float: right;
-  margin-bottom: 0px;
+    float: right;
+    margin-bottom: 0px;
 }
 
-/* line 55, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #hikers {
-  float: left;
-  margin-top: 3px;
-  margin-left: 10px;
-  z-index: 100;
+    float: left;
+    margin-top: 3px;
+    margin-left: 10px;
+    z-index: 100;
 }
 
-/* line 60, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #tmap {
-  float: right;
-  margin-right: 8px;
-  margin-top: 4px;
-  z-index: 100;
+    float: right;
+    margin-right: 8px;
+    margin-top: 4px;
+    z-index: 100;
 }
 
-/* line 65, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo_left {
-  float: left;
-  margin-left: 12px;
-  margin-top: 4px;
-  color: darkslategray;
-  z-index: 5;
+    float: left;
+    margin-left: 12px;
+    margin-top: 4px;
+    color: darkslategray;
+    z-index: 5;
 }
 
-/* line 71, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #ctr {
-  font-size: 18px;
-  font-weight: bold;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-/* line 75, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo_right {
-  float: right;
-  margin-right: 10px;
-  margin-top: 5px;
-  color: darkslategray;
-  z-index: 5;
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+    color: darkslategray;
+    z-index: 5;
 }
 
-/* line 81, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #trail {
-  clear: both;
-  text-align: center;
-  font-weight: bold;
+    clear: both;
+    text-align: center;
+    font-weight: bold;
 }
 
 /* login elements */
-/* line 87, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #cookie_state, #cookies_choice, #admin, #contrib, #admintools {
-  display: none;
+    display: none;
 }
 
-/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
 img.webShift {
-  padding-left: 19px;
+    padding-left: 19px;
 }
 
-/* line 7, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
 img.expShift {
-  padding-left: 24px;
+    padding-left: 24px;
 }
 
 /* table dressing */
-/* line 11, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
 table {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
-  font-size: 14px;
-  text-align: left;
-  margin-top: 5px;
-  background-color: #ffffdf;
-  border-style: groove;
-  border-width: 4px;
-  border-color: goldenRod;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    font-size: 14px;
+    text-align: left;
+    margin-top: 5px;
+    background-color: #ffffdf;
+    border-style: groove;
+    border-width: 4px;
+    border-color: goldenRod;
 }
 
-/* line 23, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
 th {
-  text-align: center;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-style: outset;
-  border-width: 2px;
-  border-color: peru;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-style: outset;
+    border-width: 2px;
+    border-color: peru;
 }
 
-/* line 31, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
 tr:hover {
-  background-color: BlanchedAlmond;
+    background-color: blanchedalmond;
 }
 
-/* line 34, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
 td {
-  vertical-align: top;
-  padding-left: 4px;
-  padding-right: 2px;
+    vertical-align: top;
+    padding-left: 4px;
+    padding-right: 2px;
 }
 
-/* line 39, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
 .hdr_row {
-  background-color: bisque;
+    background-color: bisque;
 }
 
-/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
 .hdr_row:hover {
-  cursor: pointer;
-  background-color: Brown;
-  color: White;
+    cursor: pointer;
+    background-color: brown;
+    color: white;
 }
 
-/* line 47, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
 .indxd {
-  color: brown;
+    color: brown;
 }
 
-/* line 50, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/tables.scss */
+/* For hike editor page only */
 #ineditModal {
-  position: absolute;
-  display: none;
-  height: 32px;
-  width: 200px;
-  padding-left: 6px;
-  padding-top: 12px;
-  font-size: 16px;
-  background-color: ghostwhite;
+    position: absolute;
+    display: none;
+    height: 32px;
+    width: 200px;
+    padding-left: 6px;
+    padding-top: 12px;
+    font-size: 16px;
+    background-color: ghostwhite;
 }
 
 /*# sourceMappingURL=tables.css.map */

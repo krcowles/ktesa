@@ -1,351 +1,283 @@
+/* "global" colors: local exceptions are contained in their respective modules */
 /* scss standard definitions */
-/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/_body.scss */
 body {
-  background-color: #eaeaea;
-  margin: 0;
-  font-family: arial, verdana;
-  font-size: 16px;
+    min-width: 960px;
+    background-color: #eaeaea;
+    margin: 0;
+    font-family: arial, verdana;
+    font-size: 16px;
 }
 
 /* Overflow definitions when needed to prevent scroll bars */
-/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/_overflow.scss */
 body {
-  overflow-x: hidden;
-  overflow-y: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 /* Page Top */
-/* line 5, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #logo {
-  display: inline-block;
-  vertical-align: top;
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 64px;
-  margin-bottom: 4px;
-  margin-right: 12px;
-  background-color: #ffe866;
-  z-index: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 64px;
+    margin-bottom: 4px;
+    margin-right: 12px;
+    background-color: #ffe866;
+    z-index: 1;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-/* line 21, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #pattern {
-  background-image: url("../images/southwest_pattern.png");
-  background-repeat: repeat-x;
-  background-attachment: scroll;
-  margin-top: 2px;
-  padding: 0px;
-  height: 24px;
+    background-image: url("../images/southwest_pattern.png");
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    margin-top: 2px;
+    padding: 0px;
+    height: 24px;
 }
 
-/* line 29, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #pgheader {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* line 36, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #hikers {
-  position: relative;
-  top: -3px;
-  margin-left: 8px;
-  z-index: 5;
+    position: relative;
+    top: -3px;
+    margin-left: 8px;
+    z-index: 5;
 }
 
-/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #logo_left {
-  position: relative;
-  top: -2px;
+    position: relative;
+    top: -2px;
 }
 
-/* line 46, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #center {
-  position: relative;
-  top: -3px;
-  font-size: 22px;
-  font-weight: bold;
+    position: relative;
+    top: -3px;
+    font-size: 22px;
+    font-weight: bold;
 }
 
-/* line 52, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #logo_right {
-  position: relative;
-  top: -2px;
-  z-index: 5;
+    position: relative;
+    top: -2px;
+    z-index: 5;
 }
 
-/* line 57, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #tmap {
-  position: relative;
-  top: -5px;
-  margin-right: 8px;
-  z-index: 5;
+    position: relative;
+    top: -5px;
+    margin-right: 8px;
+    z-index: 5;
 }
 
-/* line 64, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #appMode {
-  display: none;
+    display: none;
 }
 
 /* ALL FORMS */
-/* line 68, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #container {
-  position: relative;
-  height: 300px;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #fff5e6;
-  border-style: solid;
-  border-color: gainsboro;
-  border-radius: 12px;
-  text-align: center;
-  font-size: 20px;
-  color: maroon;
-  padding-top: 10px;
-  padding-left: 6px;
-  padding-right: 6px;
+    position: relative;
+    height: 300px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff5e6;
+    border-style: solid;
+    border-color: gainsboro;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 20px;
+    color: maroon;
+    padding-top: 10px;
+    padding-left: 6px;
+    padding-right: 6px;
 }
 
-@media only screen and (max-width: 800px) {
-  /* line 86, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
-  #container {
-    width: 80%;
-  }
+@media only screen and (max-width: 500px) {
+    #container {
+        width: 80%;
+    }
 }
-
-/* line 90, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 form:not(#ckbox) {
-  text-align: center;
+    text-align: center;
 }
 
-/* line 93, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
-.wide {
-  width: calc(100% - 40px) !important;
-  padding-left: 6px;
-  height: 38px;
-  border-radius: 8px;
+input:not(#ckbox) {
+    width: calc(100% - 40px) !important;
+    padding-left: 6px;
+    height: 38px;
+    border-radius: 8px;
 }
-.renpass {
-  margin-bottom: 8px;
-}
-#one-time {
-  margin-bottom: 8px;
-}
-#name_req {
-  position: relative;
-  top: 12px;
-}
-#name_req p {
-  margin-bottom: 0;
-}
+
 /* Unable to set autofill-color for Firefox, using standard yellow */
-/* line 100, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-  /* Chrome, Safari */
-  -webkit-text-fill-color: black;
-  -webkit-box-shadow: 0 0 0 1000px ghostwhite inset;
-  box-shadow: 0 0 0 1000px ghostwhite inset;
-  transition: background-color 5000s ease-in-out 0s;
+    /* Chrome, Safari */
+    -webkit-text-fill-color: black;
+    -webkit-box-shadow: 0 0 0 1000px ghostwhite inset;
+    box-shadow: 0 0 0 1000px ghostwhite inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
-/* line 107, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 input:focus {
-  outline: none;
-  border-color: maroon;
-  border-width: 2px;
-  border-style: solid;
-  transition: border-color 1s;
+    outline: none;
+    border-color: maroon;
+    border-width: 2px;
+    border-style: solid;
+    transition: border-color 1s;
 }
 
-/* line 114, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 ::placeholder {
-  /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: gray;
-  opacity: 1;
-  /* Firefox */
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: gray;
+    opacity: 1;
+    /* Firefox */
 }
 
-/* line 118, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 :-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: gray;
+    /* Internet Explorer 10-11 */
+    color: gray;
 }
 
-/* line 121, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 ::-ms-input-placeholder {
-  /* Microsoft Edge */
-  color: gray;
+    /* Microsoft Edge */
+    color: gray;
 }
 
-/* line 124, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #formsubmit {
-  display: inline-block;
-  width: calc(100% - 40px);
-  height: 40px;
-  background-color: #f7ddbb;
-  line-height: 1em;
-  font-size: 18px;
-  border-radius: 8px;
-  color: maroon;
-  font-weight: bold;
-  vertical-align: middle;
+    display: inline-block;
+    width: calc(100% - 40px);
+    height: 40px;
+    background-color: antiquewhite;
+    line-height: 38px;
+    font-size: 18px;
+    border-radius: 8px;
+    color: maroon;
+    font-weight: bold;
+    vertical-align: middle;
 }
 
-/* line 136, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
-#formsubmit:hover, #submit:hover, #showdet:hover {
-  cursor: pointer;
-  background-color: maroon;
-  color: white;
+#formsubmit:hover, #submit:hover {
+    cursor: pointer;
+    background-color: maroon;
+    color: white;
 }
 
-/* line 141, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #cookie_banner {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  padding-left: 16px;
-  padding-right: 16px;
-  z-index: 9999;
-  background-color: floralwhite;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: gray;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    z-index: 9999;
+    background-color: floralwhite;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-top-color: gray;
 }
 
-/* line 155, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #cookie_banner h3, #cookie_banner p {
-  margin-top: 8px;
-  margin-bottom: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
-/* line 159, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #cbuttons {
-  margin-bottom: 12px;
+    margin-bottom: 12px;
 }
 
-/* line 162, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #accept {
-  position: relative;
-  left: -16px;
+    position: relative;
+    left: -16px;
 }
 
-/* line 166, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #reject {
-  margin-left: 40px;
+    margin-left: 40px;
 }
 
 /* LOGIN CSS */
-/* line 171, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 button {
-  height: 36px;
+    height: 36px;
 }
 
-/* line 174, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #forgot {
-  position: relative;
-  top: 6px;
-  border-style: solid;
-  border-radius: 8px;
-  border-width: 2px;
-  padding-left: 6px;
+    position: relative;
+    top: 6px;
+    border-style: solid;
+    border-radius: 8px;
+    border-width: 2px;
+    padding-left: 6px;
 }
 
-/* line 182, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #send {
-  width: 160px;
-  font-size: 16px;
-  border-radius: 8px;
+    width: 160px;
+    font-size: 16px;
+    border-radius: 8px;
 }
 
 /* REGISTRATION CSS */
-/* line 189, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #policylnk {
-  font-size: 14px;
-  position: relative;
-  top: 8px;
+    font-size: 14px;
+    position: relative;
+    top: 8px;
 }
 
-/* line 194, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 .pseudo-legend {
-  position: relative;
-  top: 8px;
-  left: 36px;
-  font-size: 14px;
-  color: gray;
-  z-index: 400;
-  text-align: left;
+    position: relative;
+    top: 8px;
+    left: 36px;
+    font-size: 14px;
+    color: gray;
+    z-index: 400;
+    text-align: left;
 }
 
-/* line 203, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 .lines {
-  position: relative;
-  left: 34px;
-  top: 2px;
-  width: 76px;
-  height: 2px;
-  background-color: #fcf4e8;
-  z-index: 300;
+    position: relative;
+    left: 34px;
+    top: 2px;
+    width: 76px;
+    height: 2px;
+    background-color: #fcf4e8;
+    z-index: 300;
 }
 
-/* line 212, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #line4 {
-  width: 44px;
+    width: 44px;
 }
 
-/* line 215, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #sub {
-  position: relative;
-  top: -18px;
-  font-size: 16px;
-  margin-bottom: 2px;
+    position: relative;
+    top: -18px;
+    font-size: 16px;
+    margin-bottom: 2px;
 }
 
 /* Renew */
-/* line 223, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/unifiedLogin.scss */
 #ckbox {
-  /* Double-sized Checkboxes */
-  -ms-transform: scale(1.5);
-  /* IE */
-  -moz-transform: scale(1.5);
-  /* FF */
-  -webkit-transform: scale(1.5);
-  /* Safari and Chrome */
-  -o-transform: scale(1.5);
-  /* Opera */
-  transform: scale(1.5);
-  padding: 5px;
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(1.5);
+    /* IE */
+    -moz-transform: scale(1.5);
+    /* FF */
+    -webkit-transform: scale(1.5);
+    /* Safari and Chrome */
+    -o-transform: scale(1.5);
+    /* Opera */
+    transform: scale(1.5);
+    padding: 5px;
 }
-#pexpl {
-  color: #666666;
-  font-size: 16px;
-}
-#showdet {
-  border-radius: 6px;
-  background-color: #f7ddbb;
-  color: maroon;
-}
-#wk {
-  color: maroon;
-}
-#st {
-  color: darkgreen;
-  display: none;
-}
-#lc, #uc, #nm, #sp, #total {
-  color: maroon;
-}
-#rvw {
-  margin-top: 8px;
-}
+
 /*# sourceMappingURL=unifiedLogin.css.map */

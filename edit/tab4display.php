@@ -35,7 +35,7 @@ and/or maps</p>
 <span style="font-weight:bold;margin-bottom:0px;color:black;">
     Upload New Data File:<br />
 <em style="font-weight:normal;">
-    - Note: You will be able to specify the click-text after the 'Apply'
+    - Note: You will be able to specify the link text after the 'Apply'
     Is Performed</em></span><br />
 <ul style="margin-top:0px;" id="relgpx">
     <li>Track Data Uploads:<br />

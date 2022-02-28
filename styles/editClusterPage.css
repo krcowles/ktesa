@@ -119,37 +119,55 @@ ul.dropdown-menu {
     display: none;
 }
 
-ul {
-    list-style: none;
-}
-
 #main {
-    margin-left: 24px;
+    margin-left: 16px;
+    box-sizing: content-box;
 }
 
-.head {
-    color: brown;
+#buttons {
+    position: fixed;
+    top: 120px;
+    left: 900px;
+}
+
+#preview {
+    margin-right: 40px;
+    z-index: 10000;
+}
+
+#submit {
+    z-index: 10000;
+}
+
+#info, #dirs {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 6px;
+    width: 90%;
+    background-color: lavenderblush;
+}
+
+#info:focus, #dirs:focus {
+    background-color: papayawhip;
+}
+
+input {
+    background-color: lavenderblush;
+}
+
+#area {
+    height: 28px;
+    font-size: 16px;
+    padding-bottom: 2px;
+}
+
+.coords {
+    font-size: 16px;
+    padding-left: 5px;
+}
+
+form {
     font-size: 18px;
 }
 
-.types {
-    margin-left: 24px;
-    color: darkblue;
-    font-size: 18px;
-}
-
-input[type=checkbox] {
-    /* Double-sized Checkboxes  - Browser dependent code */
-    transform: scale(1.5);
-    -ms-transform: scale(1.5);
-    /* IE */
-    -moz-transform: scale(1.5);
-    /* FF */
-    -webkit-transform: scale(1.5);
-    /* Safari and Chrome */
-    -o-transform: scale(1.5);
-    /* Opera */
-    padding: 10px;
-}
-
-/*# sourceMappingURL=cleanPix.css.map */
+/*# sourceMappingURL=editClusterPage.css.map */

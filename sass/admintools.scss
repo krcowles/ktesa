@@ -1,3 +1,8 @@
+$fieldset: darkgreen;
+$adminButton: ghostwhite;
+$adminButtonHover: #6D3C17;
+
+@import "colors";
 @import "body";
 @import "ktesaNavbar";
 
@@ -13,14 +18,14 @@ button {
 fieldset.afs {
     float: none;
     width: auto;
-    border: 2px solid darkgreen !important;
+    border: 2px solid $fieldset !important;
     border-radius: 4px !important;
     padding: 0px 6px 6px 8px;
 }
 legend {
     float: none; 
     width: inherit;
-    color: darkgreen;
+    color: $fieldset;
     font-style: italic;
     font-size: 18px;
     padding: 0 5px;
@@ -33,7 +38,7 @@ legend {
 }
 .cats {
     font-size: 18px;
-    color: brown;
+    color: $brown;
 }
 #testsite {
     margin-left: 24px;
@@ -50,18 +55,18 @@ legend {
     margin-bottom: 12px;
 }
 .adminbuttons {
-    color: black;
-    background-color: ghostwhite;
+    color: $black;
+    background-color: $adminButton;
 }
 .adminbuttons:hover {
-    color: white;
-    background-color:#6D3C17;
+    color: $white;
+    background-color: $adminButtonHover
 }
 #sitemode, #currstate, #emode, #cdb {
     font-size: 18px;
 }
 #currstate {
-    color: blue;
+    color: $blue;
     font-weight: bold;
 }
 #test, #real {

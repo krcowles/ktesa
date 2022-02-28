@@ -1,3 +1,7 @@
+$entryInactive: lavenderblush;
+$entryFocus: papayawhip;
+
+@import "colors";
 @import "body";
 @import "ktesaNavbar";
 
@@ -22,13 +26,13 @@
     padding-right: 8px;
     padding-top: 6px;
     width: 90%;
-    background-color: LavenderBlush;
+    background-color: $entryInactive;
 }
 #info:focus, #dirs:focus {
-    background-color: PapayaWhip;
+    background-color: $entryFocus;
 }
 input {
-    background-color: LavenderBlush;
+    background-color: $entryInactive;
 }
 #area {
     height: 28px;

@@ -1,3 +1,7 @@
+$header: darkgreen;
+$rowHover: #d2d2d2;
+
+@import "colors";
 @import "body";
 @import "ktesaNavbar";
 
@@ -19,8 +23,8 @@ table {
     border: 2px solid darkgreen;
 }
 th {
-    background-color: darkgreen;
-    color: white;
+    background-color: $header;
+    color: $white;
     font-size: 16px;
     padding: 3px 8px 2px 8px;
     border: 1px solid black;
@@ -33,10 +37,10 @@ tr {
     cursor: pointer;
 }
 tr:hover {
-    background-color: #d2d2d2;
+    background-color: $rowHover;
 }
 #nodat {
     font-size: 18px;
-    color: brown;
+    color: $brown;
     margin-left: 32px;
 }

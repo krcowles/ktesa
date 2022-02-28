@@ -1,3 +1,18 @@
+$inactiveTabBackground: cornsilk;
+$inactiveTabText: darkgray;
+$entryInactive: lavenderblush;
+$entryFocus: papayawhip;
+$photoFileLoad:  #6c757d;
+$photoLoadHover: #696969;
+$thumbSel: #6c757d;
+$thumbSelHover: #696969;
+$thumbDiv: blanchedalmond;
+
+@mixin TA_size($width) {
+    height: 33px;
+    width: $width;
+}
+@import "colors";
 @import "body";
 @import "ktesaNavbar";
 
@@ -8,7 +23,7 @@
     font-size: 20px;
     float: right;
     margin-right: 16px;
-    color: black;
+    color: $black;
 }
 /* tabbing items */
 .tablist {
@@ -21,12 +36,12 @@
     border-width: 2px;
     border-radius: 12px 12px 0px 0px;
     font-size: 18px;
-    color: DarkGray;
-    background-color: cornsilk;
+    color: $inactiveTabText;
+    background-color: $inactiveTabBackground;
 }
 .tablist.active {
     background-color: $page-bg;
-    color: black;
+    color: $black;
 }
 .tablist:hover {
     cursor: pointer;
@@ -82,30 +97,26 @@ textarea {
     border-width: 2px;
     border-color: DarkGray;
     padding: 5px;
-    background-color: LavenderBlush;
+    background-color: $entryInactive;
 }
 textarea:focus {
-    background-color: PapayaWhip;
+    background-color: $entryFocus;
 }
 textarea.ctrshift {
     position: relative;
     top: 10px;
 }
 .tstyle1 {
-    height: 33px;
-    width: 65px;
+    @include TA_size($width: 65px);
 }
 .tstyle2 {
-    height: 33px;
-    width: 260px;
+    @include TA_size($width: 260px);
 }
 .tstyle3 {
-    height: 33px;
-    width: 200px;
+    @include TA_size($width: 200px);
 }
 .tstyle4 {
-    height: 33px;
-    width: 160px;
+    @include TA_size($width: 160px);
 }
 
 /*  next are tab1 only */
@@ -118,9 +129,10 @@ textarea.ctrshift {
 input[id^=gpxfile] {
     height: 28px;
     font-size: 16px;
+    line-height: normal;
 }
 span.brown {
-    color: brown;
+    color: $brown;
 }
 #hike {
     height: 36px;
@@ -131,18 +143,18 @@ span.brown {
 }
 #area {
     height: 34px;
-    width: 120px; }
-
+    width: 120px;
+}
 #locregion {
     height: 34px;
 }
 #userloc {
     height: 32px;
     font-size: 16px;
-    background-color: lavenderblush;
+    background-color: $entryInactive;
 }
 #userloc:focus {
-    background-color: papayawhip;
+    background-color: $entryFocus;
 }
 #type {
     height: 34px;
@@ -210,7 +222,7 @@ span.brown {
 /* tab2 only items */
 #pupld.is-dragover {
     box-sizing: content-box;
-    background-color: grey;
+    background-color: $gray;
 }
 #userupld {
     font-weight: bold;
@@ -218,7 +230,7 @@ span.brown {
 }
 #nophotos {
     font-style: italic;
-    color: brown;
+    color: $brown;
 }
 .flex-box {
     display: flex;
@@ -238,8 +250,8 @@ span.brown {
     margin-left: 16px;
     font-size: 18px;
     border-radius: 6px;
-    background-color: #6c757d;
-    color: white;
+    background-color: $photoFileLoad;
+    color: $white;
     display: inline-block;
     cursor: pointer;
     padding: 6px;
@@ -248,11 +260,11 @@ span.brown {
 }
 .inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: #696969;
-    color: white;
+    background-color: $photoLoadHover;
+    color: $white;
 }
 #ldg {
-    color: brown;
+    color: $brown;
     display: none;
     font-weight: bold;
 }
@@ -288,7 +300,7 @@ span.brown {
 .capLine {
     margin: 0px;
     font-weight: bold;
-    background-color: #eaeaea;
+    background-color: $page-bg;
 }
 .allPhotos {
     box-sizing: content-box;
@@ -299,6 +311,7 @@ span.brown {
     margin-left: auto;
     margin-right: auto;
 }
+/*
 #load {
     font-size: 18px;
     margin-left:24px;
@@ -308,6 +321,7 @@ span.brown {
     cursor: pointer;
     background-color: papayawhip;
 }
+*/
 #npts > textarea, #gpts > textarea, #wypts >  textarea {
     position: relative;
     top: 7px;
@@ -332,7 +346,7 @@ ol li::marker {
 }
 .file_label {
     font-size: 16px;
-    background-color: #6c757d;
+    background-color: $thumbSel;
     color: white;
     display: inline-block;
     cursor: pointer;
@@ -340,8 +354,8 @@ ol li::marker {
     padding: 5px 8px;
 }
 .file_label:hover {
-    background-color: #696969;
-    color: black;
+    background-color: $thumbSelHover;
+    color: $white;
 }
 .file_input {
     display: none;
@@ -370,7 +384,7 @@ ol li::marker {
     height: 500px;
     border-style: dashed;
     border-width: 1px;
-    background-color: blanchedalmond;
+    background-color: $thumbDiv;
 }
 #presize, #sizeblock {
     display: flex;
@@ -383,7 +397,7 @@ ol li::marker {
     height: 225px;
     border-style: dashed;
     border-width: 1px;
-    background-color: blanchedalmond;
+    background-color: $thumbDiv;
 }
 #repl.entered {
     background-color: darkgray;
@@ -406,9 +420,6 @@ div[id=tab4] {
     box-sizing: content-box;
 }
 input[name=newgps] , input[name=newmap] {
-    height: 22px;
-    font-size: 16px;
-}
-input[name=newgps], input[name=newmap] {
     height: 30px;
+    font-size: 16px;
 }

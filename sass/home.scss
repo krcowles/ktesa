@@ -1,7 +1,12 @@
 /* Note that some of the settings are present explicitly to
    override either the bootstrap CSS or ktesaNavbar.css settings */
+$infoWin: #f0f0f0;
+$widthBar: darkgray;
+$tableItem: floralwhite;
+
 @import "body";
 @import "overflow";
+@import "colors";
 @import "ktesaNavbar";
 
 #logo {  /* override ktesaPanel.css */
@@ -11,7 +16,7 @@
 #searchbar {
 	border-radius: 8px;
 	border-width: 1px;
-	border-color: darkslategray;
+	border-color: $navbar;
 	font-size: 16px;
 	padding-left: 6px;
 	height: 34px;
@@ -46,26 +51,26 @@
 }
 /* Info windows on map popups */
 #iwVC {
-	background-color: #f0f0f0;
-	color: Black;
+	background-color: $infoWin;
+	color: $black;
 	padding: 8px;
 	margin: 3px;
 }
 #iwCH {
-	background-color: #f0f0f0;
-	color: Black;
+	background-color: $infoWin;
+	color: $black;
 	padding: 8px;
 	margin: 3px;
 }
 #iwNH {
-	background-color: #f0f0f0;
-	color: Black;
+	background-color: $infoWin;
+	color: $black;
 	padding: 8px;
 	margin: 3px;
 }
 #iwXH {
-	background-color: #f0f0f0;
-	color: Black;
+	background-color: $infoWin;
+	color: $black;
 	padding: 8px;
 	margin: 3px;
 }
@@ -83,7 +88,7 @@
 	position: relative;
 	margin-left: -4px;
 	width: 3px;
-	background-color:darkGray;
+	background-color: $widthBar;
 	z-index: 100;
 }
 
@@ -99,12 +104,12 @@
 	display: flex;
 	flex-wrap: nowrap;
 	justify-content: flex-start;
-	background-color: floralwhite;
+	background-color: $tableItem;
 	height: 64px;
 	width: 100%;
 	border-style: solid;
 	border-top: none;
-	border-color: black;
+	border-color: $black;
 	border-width: 1px;
 	float: left;
 	box-sizing: inherit;
@@ -112,8 +117,8 @@
 .tip, .zpop {
 	display: none;
 	width: 126px;
-	background-color: black;
-	color: #fff;
+	background-color: $black;
+	color: $white;
 	text-align: center;
 	padding: 5px 2px;
 	border-radius: 6px;
@@ -155,7 +160,7 @@
 	padding-left: 6px;
 	font-size: 18px;
 	box-sizing: inherit;
-	color: blue;
+	color: $blue;
 }
 .subtxt, .subtxtb {
 	padding-left: 6px;

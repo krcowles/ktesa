@@ -15,6 +15,8 @@ var preview = '../pages/hikePageTemplate.php?age=new&hikeIndx=';
 var btnId = '<a id="prev';
 var btnHtml = 'class="btn btn-outline-primary btn-sm styled" role="button"' +
     'href="' + preview;
+// hike table rows:
+var $rows = $('table.sortable tbody').find('tr');
 /**
  * On load and after every column sort, provide corresponding preview buttons
  */
@@ -22,12 +24,12 @@ function assignPreviews() {
     /**
      * After sorting or resizing, prepend preview buttons
      */
-    var row1_loc = $('tbody').find('tr').eq(0).offset();
+    var row1_loc = $rows.eq(0).offset();
     $('#prev_btns').offset({ top: row1_loc.top, left: row1_loc.left - 72 });
     var $sorted_rows;
     $sorted_rows = null; // erase previous history
     $('#prev_btns').empty();
-    $sorted_rows = $('tbody').find('tr');
+    $sorted_rows = $('table.sortable tbody').find('tr');
     $sorted_rows.each(function (indx) {
         var trow_ht = $(this).height();
         var trow_pos = $(this).offset();
@@ -75,8 +77,7 @@ $(function () {
     var useClusEd = 'editClusterPage.php?hikeNo=';
     var xfrPage = 'xfrPub.php?hikeNo=';
     var shipit = '../edit/notifyAdmin.php?hikeNo=';
-    var $rows = $('tbody').find('tr');
-    $('table').attr('id', 'editTbl');
+    $('table.sortable').attr('id', 'editTbl');
     var hikeno;
     var lnk;
     $rows.each(function () {

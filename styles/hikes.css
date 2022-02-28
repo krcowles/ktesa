@@ -1,576 +1,484 @@
+/* "global" colors: local exceptions are contained in their respective modules */
 /* scss standard definitions */
-/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/_body.scss */
 body {
-  min-width: 960px;
-  background-color: #eaeaea;
-  margin: 0;
-  font-family: arial, verdana;
-  font-size: 16px;
-  box-sizing: content-box;
+    min-width: 960px;
+    background-color: #eaeaea;
+    margin: 0;
+    font-family: arial, verdana;
+    font-size: 16px;
 }
 
-/* line 1, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .navbar {
-  background-color: darkslategray;
+    background-color: darkslategray;
 }
 
-/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .navbar-brand {
-  color: #bfd9bf !important;
-  font-style: italic;
+    color: #bfd9bf !important;
+    font-style: italic;
 }
 
-/* line 8, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .nav-link {
-  color: whitesmoke !important;
+    color: whitesmoke !important;
 }
 
-/* line 11, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 ul.dropdown-menu {
-  background-color: whitesmoke !important;
+    background-color: whitesmoke !important;
 }
 
 /* Logo */
-/* line 15, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo {
-  display: inline-block;
-  vertical-align: top;
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 52px;
-  margin-bottom: 6px;
-  margin-right: 12px;
-  background-color: #ffe866;
-  z-index: 1;
-  text-align: center;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 52px;
+    margin-bottom: 6px;
+    margin-right: 12px;
+    background-color: #ffe866;
+    z-index: 1;
+    text-align: center;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-/* line 31, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #pattern {
-  background-image: url("../images/southwest_pattern.png");
-  background-repeat: repeat-x;
-  background-attachment: scroll;
-  margin-top: 2px;
-  padding: 0px;
-  height: 16px;
+    background-image: url("../images/southwest_pattern.png");
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+    margin-top: 2px;
+    padding: 0px;
+    height: 16px;
 }
 
-/* line 39, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 .logo_items {
-  display: inline-block;
+    display: inline-block;
 }
 
-/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #leftside {
-  float: left;
-  margin-bottom: 0px;
+    float: left;
+    margin-bottom: 0px;
 }
 
-/* line 46, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #ctr {
-  clear: both;
-  margin-top: 4px;
-  margin-bottom: 0px;
+    clear: both;
+    margin-top: 4px;
+    margin-bottom: 0px;
 }
 
-/* line 51, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #rightside {
-  float: right;
-  margin-bottom: 0px;
+    float: right;
+    margin-bottom: 0px;
 }
 
-/* line 55, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #hikers {
-  float: left;
-  margin-top: 3px;
-  margin-left: 10px;
-  z-index: 100;
+    float: left;
+    margin-top: 3px;
+    margin-left: 10px;
+    z-index: 100;
 }
 
-/* line 60, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #tmap {
-  float: right;
-  margin-right: 8px;
-  margin-top: 4px;
-  z-index: 100;
+    float: right;
+    margin-right: 8px;
+    margin-top: 4px;
+    z-index: 100;
 }
 
-/* line 65, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo_left {
-  float: left;
-  margin-left: 12px;
-  margin-top: 4px;
-  color: darkslategray;
-  z-index: 5;
+    float: left;
+    margin-left: 12px;
+    margin-top: 4px;
+    color: darkslategray;
+    z-index: 5;
 }
 
-/* line 71, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #ctr {
-  font-size: 18px;
-  font-weight: bold;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-/* line 75, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #logo_right {
-  float: right;
-  margin-right: 10px;
-  margin-top: 5px;
-  color: darkslategray;
-  z-index: 5;
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+    color: darkslategray;
+    z-index: 5;
 }
 
-/* line 81, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #trail {
-  clear: both;
-  text-align: center;
-  font-weight: bold;
+    clear: both;
+    text-align: center;
+    font-weight: bold;
 }
 
 /* login elements */
-/* line 87, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/ktesaNavbar.scss */
 #cookie_state, #cookies_choice, #admin, #contrib, #admintools {
-  display: none;
+    display: none;
 }
 
-/* line 4, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 html {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
-/* line 10, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 body {
-  height: 100%;
-  padding: 0px;
-  background-color: whitesmoke;
+    height: 100%;
+    padding: 0px;
+    background-color: whitesmoke;
+    overflow-x: hidden;
 }
 
-/* line 14, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
-table {
-  margin-top: 8px;
-  margin-bottom: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  border-style: solid;
-  border-width: 3px;
-  border-color: DarkBlue;
-  background-color: #EDF2F7;
-}
-
-/* line 23, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
-table th {
-  text-align: center;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-style: solid;
-  border-width: 2px;
-  border-color: DarkBlue;
-}
-
-/* line 30, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
-table td {
-  text-align: center;
-  vertical-align: middle;
-  padding: 5px;
-  background-color: Gainsboro;
-  border-style: solid;
-  border-width: 1px;
-  border-color: DarkBlue;
-}
-
-/* line 38, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #logo {
-  margin-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+a {
+    color: #0000b3;
+}
+
+a:hover {
+    color: brown;
 }
 
 /* Side Panel styling, including hikeInfo & refs */
-/* line 42, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #sidePanel {
-  float: left;
-  padding: 0px;
-  margin-left: 4px;
-  margin-right: 0px;
-  width: 23%;
-  min-height: 400px;
-  border-style: inset;
-  border-width: 2px;
-  border-color: Brown;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: content-box;
-  background-color: floralwhite;
-  overflow: scroll;
+    float: left;
+    padding: 0px;
+    top: -2px;
+    margin-left: 4px;
+    margin-right: 0px;
+    width: 23%;
+    min-height: 400px;
+    border-style: inset;
+    border-width: 2px;
+    border-color: brown;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: floralwhite;
+    overflow: scroll;
 }
 
-/* line 60, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #enotes {
-  padding-left: 6px;
-  padding-right: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
 }
 
-/* line 64, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #hide {
-  float: right;
-  font-size: 20px;
-  text-align: center;
-  height: 30px;
-  width: 30px;
-  background-color: darkgray;
+    float: right;
+    font-size: 20px;
+    text-align: center;
+    height: 30px;
+    width: 30px;
+    background-color: darkgray;
 }
 
-/* line 72, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #hide:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-/* line 75, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #unhide {
-  margin-top: 6px;
-  font-size: 20px;
-  text-align: center;
-  height: 30px;
-  width: 30px;
-  background-color: darkgray;
-  display: none;
-  position: absolute;
-  top: 104px;
-  left: 6px;
-  box-sizing: content-box;
+    margin-top: 6px;
+    font-size: 20px;
+    text-align: center;
+    height: 30px;
+    width: 30px;
+    background-color: darkgray;
+    display: none;
+    position: absolute;
+    top: 104px;
+    left: 6px;
+    box-sizing: content-box;
 }
 
-/* line 88, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #unhide:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-/* line 91, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #stats, #crefs {
-  margin-top: 6px;
-  margin-bottom: 0px;
-  text-align: center;
-  color: Brown;
-  font-size: 20px;
+    margin-top: 6px;
+    margin-bottom: 0px;
+    text-align: center;
+    color: brown;
+    font-size: 20px;
 }
 
-/* line 98, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #crefs {
-  margin-left: auto;
-  margin-right: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* line 102, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #summary {
-  margin-top: -8px;
-  margin-bottom: 0px;
-  padding: 10px;
+    margin-top: -8px;
+    margin-bottom: 0px;
+    padding: 10px;
 }
 
-/* line 107, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 .sumClr {
-  color: Brown;
+    color: brown;
 }
 
-/* line 110, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #addtl {
-  margin-top: -6px;
-  margin-bottom: 0px;
-  text-align: center;
-  color: Brown;
-  font-size: 20px;
+    margin-top: -6px;
+    margin-bottom: 0px;
+    text-align: center;
+    color: brown;
+    font-size: 20px;
 }
 
-/* line 117, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #mlnk {
-  text-align: center;
-  margin-top: 4px;
-  margin-bottom: 6px;
+    text-align: center;
+    margin-top: 4px;
+    margin-bottom: 6px;
 }
 
-/* line 122, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 .track {
-  text-align: center;
-  margin-top: 2px;
+    text-align: center;
+    margin-top: 2px;
 }
 
-/* line 126, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #albums {
-  margin-top: 0px;
-  text-align: center;
+    margin-top: 0px;
+    text-align: center;
 }
 
-/* line 130, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #alnks {
-  margin-top: -12px;
-  text-align: center;
+    margin-top: -12px;
+    text-align: center;
 }
 
-/* line 134, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #directions {
-  margin-top: -12px;
-  text-align: center;
+    margin-top: -12px;
+    text-align: center;
 }
 
-/* line 138, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #dlnk {
-  margin-top: -12px;
-  text-align: center;
+    margin-top: -12px;
+    text-align: center;
 }
 
-/* line 142, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #scrollmsg {
-  padding-left: 10px;
-  padding-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-/* line 146, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #cdesc {
-  text-align: center;
+    text-align: center;
 }
 
-/* line 149, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #trknote {
-  padding: 0px 8px 0px 8px;
+    padding: 0px 8px 0px 8px;
 }
 
-/* line 152, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #top {
-  font-style: italic;
+    font-style: italic;
 }
 
-/* line 155, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 iframe {
-  float: left;
-  border: none;
-  box-sizing: content-box;
-  min-height: 200px;
-  width: 74%;
+    float: left;
+    border: none;
+    box-sizing: content-box;
+    top: -2px;
+    min-height: 200px;
+    width: 74%;
 }
 
-/* line 163, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #chartline {
-  float: left;
-  box-sizing: content-box;
-  background-color: white;
+    float: left;
+    background-color: white;
 }
 
-/* line 167, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #trailTips {
-  background-color: floralwhite;
+    background-color: floralwhite;
 }
 
-/* line 170, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #ihd {
-  position: relative;
-  top: 0px;
-  color: darkred;
-  font-size: 16px;
-  font-style: italic;
-  text-decoration: underline;
+    position: relative;
+    top: 0px;
+    color: darkred;
+    font-size: 16px;
+    font-style: italic;
+    text-decoration: underline;
 }
 
-/* line 178, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #hikeInfo {
-  margin-top: 0px;
-  margin-left: 10px;
-  margin-right: 10px;
-  border-style: inset;
-  border-width: 2px;
-  border-color: Brown;
-  padding: 10px;
-  background-color: floralwhite;
+    margin-top: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-style: inset;
+    border-width: 2px;
+    border-color: Brown;
+    padding: 10px;
+    background-color: floralwhite;
 }
 
-/* line 188, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #hikeInfo p {
-  margin-top: 8px;
+    margin-top: 8px;
 }
 
-/* line 191, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 fieldset {
-  margin-top: 8px;
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-bottom: 8px;
-  padding: 16px;
-  padding-top: 8px;
-  border-style: inset;
-  border-width: 2px;
-  border-color: Brown;
-  background-color: floralwhite;
+    margin-top: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 8px;
+    padding: 16px;
+    padding-top: 8px;
+    border-style: inset;
+    border-width: 2px;
+    border-color: brown;
+    background-color: floralwhite;
 }
 
-/* line 203, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #fldrefs {
-  font-size: 18px;
-  color: darkred;
+    font-size: 18px;
+    color: darkred;
 }
 
-/* line 207, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 .boptag {
-  font-size: 14px;
-  font-weight: bold;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-/* line 211, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #refs {
-  margin-top: 12px;
-  margin-bottom: 0px;
-  padding-right: 10px;
+    margin-top: 12px;
+    margin-bottom: 0px;
+    padding-right: 10px;
 }
 
-/* line 216, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #related {
-  margin-top: 0px;
-  margin-bottom: 8px;
+    margin-top: 0px;
+    margin-bottom: 8px;
 }
 
-/* line 220, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #gps {
-  margin-top: 0px;
-  margin-bottom: 8px;
+    margin-top: 0px;
+    margin-bottom: 8px;
 }
 
 /* image alignment and pop-up caption styles */
-/* line 225, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 .ImgRow {
-  min-width: 960px;
-  overflow: hidden;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 0px;
+    min-width: 960px;
+    overflow: hidden;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0px;
 }
 
-/* line 232, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 img {
-  display: inline-block;
-  margin-bottom: 0px;
+    display: inline-block;
+    margin-bottom: 0px;
 }
 
-/* line 235, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #imgArea {
-  min-width: 960px;
+    min-width: 960px;
 }
 
-/* line 238, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 .popupCap {
-  margin: 0px;
-  display: none;
-  position: absolute;
-  width: 300px;
-  top: 0px;
-  left: 0px;
-  line-height: 1.15em;
+    margin: 0px;
+    display: none;
+    position: absolute;
+    width: 300px;
+    top: 0px;
+    left: 0px;
+    line-height: 1.15em;
 }
 
-/* line 247, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 .capLine {
-  margin: 0px;
-  font-weight: bold;
-  background-color: #eaeaea;
+    margin: 0px;
+    font-weight: bold;
+    background-color: #eaeaea;
 }
 
 /* details about the hike */
-/* line 252, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #trailTips {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 0px;
-  margin-bottom: 10px;
-  padding-top: 10px;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-bottom: 10px;
-  border-style: inset;
-  border-width: 2px;
-  border-color: Brown;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 10px;
+    border-style: inset;
+    border-width: 2px;
+    border-color: brown;
 }
 
-/* line 264, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #tipPic {
-  float: left;
+    float: left;
 }
 
-/* line 266, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #tipHdr {
-  display: inline;
-  left: 14px;
-  top: -20px;
-  color: Brown;
-  font-weight: bold;
-  font-size: 20px;
-  padding-left: 12px;
+    display: inline;
+    left: 14px;
+    top: -20px;
+    color: brown;
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 12px;
 }
 
-/* line 274, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #tipNotes {
-  position: relative;
-  top: -14px;
-  left: 12px;
-  padding-left: 10px;
-  padding-right: 8px;
-  margin-bottom: -4px;
+    position: relative;
+    top: -14px;
+    left: 12px;
+    padding-left: 10px;
+    padding-right: 8px;
+    margin-bottom: -4px;
 }
 
-/* line 281, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #albumlinks {
-  color: DarkBlue;
-  margin-bottom: 12px;
+    color: #0000b3;
+    margin-bottom: 12px;
 }
 
-/* line 284, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #tips {
-  text-align: left;
+    text-align: left;
 }
 
-/* line 286, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #hdesc {
-  text-align: left;
+    text-align: left;
 }
 
-/* line 288, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #problems {
-  margin-left: 12px;
-  margin-right: 12px;
-  padding: 10px;
-  background-color: linen;
-  border-style: outset;
-  border-width: 2px;
-  border-color: #c9d7e8;
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 10px;
+    background-color: linen;
+    border-style: outset;
+    border-width: 2px;
+    border-color: #c9d7e8;
 }
 
-/* line 297, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #overlay {
-  position: fixed;
-  display: block;
-  width: 100%;
-  height: 98%;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(200, 200, 200, 0.5);
-  z-index: 10000;
-  cursor: pointer;
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 98%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(200, 200, 200, 0.5);
+    z-index: 10000;
+    cursor: pointer;
 }
 
-/* line 310, ../../../../../../../../../../../../../Users/kencowles/src/ktesa/sass/hikes.scss */
 #text {
-  position: absolute;
-  top: 50%;
-  left: 60%;
-  font-size: 50px;
-  color: DarkSlateGray;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    font-size: 50px;
+    color: darkslategray;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
 }
 
 /*# sourceMappingURL=hikes.css.map */
