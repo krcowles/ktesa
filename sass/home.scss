@@ -1,6 +1,6 @@
 /* Note that some of the settings are present explicitly to
    override either the bootstrap CSS or ktesaNavbar.css settings */
-$infoWin: #f0f0f0;
+$infoWinBackground: #f0f0f0;
 $widthBar: darkgray;
 $tableItem: floralwhite;
 
@@ -10,8 +10,8 @@ $tableItem: floralwhite;
 @import "ktesaNavbar";
 
 #logo {  /* override ktesaPanel.css */
-	margin-bottom: 0px;
-	margin-right: 0px;
+	margin-bottom: 0;
+	margin-right: 0;
 }
 #searchbar {
 	border-radius: 8px;
@@ -25,10 +25,7 @@ $tableItem: floralwhite;
 	left: 140px;
 	z-index: 200;
 }
-#srch {
-	display: none;
-}
-#geoSetting {
+#srch, #geoSetting {
 	display: none;
 }
 #geoCtrl {
@@ -50,35 +47,18 @@ $tableItem: floralwhite;
 	position: absolute;
 }
 /* Info windows on map popups */
-#iwVC {
-	background-color: $infoWin;
+#iwCH, #iwNH {
+	background-color: $infoWinBackground;
 	color: $black;
 	padding: 8px;
 	margin: 3px;
+	a {
+		font-size: 12px;
+		top: -1px;
+		left: -6px;
+	}
 }
-#iwCH {
-	background-color: $infoWin;
-	color: $black;
-	padding: 8px;
-	margin: 3px;
-}
-#iwNH {
-	background-color: $infoWin;
-	color: $black;
-	padding: 8px;
-	margin: 3px;
-}
-#iwXH {
-	background-color: $infoWin;
-	color: $black;
-	padding: 8px;
-	margin: 3px;
-}
-#iwVC a, #iwCH a, #iwNH a, #iwXH a {
-	font-size: 12px;
-	top: -1px;
-	left: -6px;
-}
+
 /* Moveable vertical bar for right-hand list of hikes */
 .custom {
 	cursor: url('../images/arrowCursor.png') 12 0, auto;

@@ -7,6 +7,11 @@ $alink: #0000b3;
 $issueColor: linen;
 $issueBorder: #c9d7e8;
 
+@mixin panelNote($top) {
+    text-align: center;
+    margin-top: $top;
+}
+
 @import "colors";
 @import "body";
 @import "ktesaNavbar";
@@ -83,9 +88,8 @@ a:hover {
     cursor: pointer;
 }
 #stats, #crefs {
-	margin-top: 6px;
+    @include panelNote($top: 6px);
 	margin-bottom: 0px;
-	text-align: center;
 	color: $brown;
 	font-size: 20px;
 }
@@ -102,36 +106,23 @@ a:hover {
     color: $brown;
 }
 #addtl {
-	margin-top: -6px;
+	@include panelNote($top: -6px);
 	margin-bottom: 0px;
-	text-align: center;
 	color: $brown;
 	font-size: 20px;
 }
 #mlnk {
-	text-align: center;
-	margin-top: 4px;
+    @include panelNote($top: 4px);
     margin-bottom: 6px;
 }
 .track {
-    text-align: center;
-    margin-top: 2px;
+    @include panelNote($top: 2px);
 }
 #albums {
-	margin-top: 0px;
-	text-align: center;
+	@include panelNote($top: 0px);
 }
-#alnks {
-	margin-top: -12px;
-	text-align: center;
-}
-#directions {
-	margin-top: -12px;
-	text-align: center;
-}
-#dlnk {
-	margin-top: -12px;
-	text-align: center;
+#alnks, #directions, #dlnk {
+    @include panelNote($top: -12px);
 }
 #scrollmsg {
 	padding-left: 10px;
@@ -207,14 +198,11 @@ fieldset {
     margin-bottom: 0px;
     padding-right: 10px;
 }
-#related {
+#related, #gps {
     margin-top: 0px;
     margin-bottom: 8px;
 }
-#gps {
-    margin-top: 0px;
-    margin-bottom: 8px;
-}
+
 /* image alignment and pop-up caption styles */
 .ImgRow {
     min-width: 960px;
@@ -222,10 +210,12 @@ fieldset {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 0px; }
+    margin-bottom: 0px;
+}
 img {
     display: inline-block;
-    margin-bottom: 0px; }
+    margin-bottom: 0px;
+}
 #imgArea {
     min-width: 960px;
 }

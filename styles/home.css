@@ -2,342 +2,316 @@
    override either the bootstrap CSS or ktesaNavbar.css settings */
 /* scss standard definitions */
 body {
-    min-width: 960px;
-    background-color: #eaeaea;
-    margin: 0;
-    font-family: arial, verdana;
-    font-size: 16px;
+  min-width: 960px;
+  background-color: #eaeaea;
+  margin: 0;
+  font-family: arial, verdana;
+  font-size: 16px;
 }
 
 /* Overflow definitions when needed to prevent scroll bars */
 body {
-    overflow-x: hidden;
-    overflow-y: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 /* "global" colors: local exceptions are contained in their respective modules */
 .navbar {
-    background-color: darkslategray;
+  background-color: darkslategray;
 }
 
 .navbar-brand {
-    color: #bfd9bf !important;
-    font-style: italic;
+  color: #bfd9bf !important;
+  font-style: italic;
 }
 
 .nav-link {
-    color: whitesmoke !important;
+  color: whitesmoke !important;
 }
 
 ul.dropdown-menu {
-    background-color: whitesmoke !important;
+  background-color: whitesmoke !important;
 }
 
 /* Logo */
 #logo {
-    display: inline-block;
-    vertical-align: top;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 52px;
-    margin-bottom: 6px;
-    margin-right: 12px;
-    background-color: #ffe866;
-    z-index: 1;
-    text-align: center;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 52px;
+  margin-bottom: 6px;
+  margin-right: 12px;
+  background-color: #ffe866;
+  z-index: 1;
+  text-align: center;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #pattern {
-    background-image: url("../images/southwest_pattern.png");
-    background-repeat: repeat-x;
-    background-attachment: scroll;
-    margin-top: 2px;
-    padding: 0px;
-    height: 16px;
+  background-image: url("../images/southwest_pattern.png");
+  background-repeat: repeat-x;
+  background-attachment: scroll;
+  margin-top: 2px;
+  padding: 0px;
+  height: 16px;
 }
 
 .logo_items {
-    display: inline-block;
+  display: inline-block;
 }
 
 #leftside {
-    float: left;
-    margin-bottom: 0px;
+  float: left;
+  margin-bottom: 0px;
 }
 
 #ctr {
-    clear: both;
-    margin-top: 4px;
-    margin-bottom: 0px;
+  clear: both;
+  margin-top: 4px;
+  margin-bottom: 0px;
 }
 
 #rightside {
-    float: right;
-    margin-bottom: 0px;
+  float: right;
+  margin-bottom: 0px;
 }
 
 #hikers {
-    float: left;
-    margin-top: 3px;
-    margin-left: 10px;
-    z-index: 100;
+  float: left;
+  margin-top: 3px;
+  margin-left: 10px;
+  z-index: 100;
 }
 
 #tmap {
-    float: right;
-    margin-right: 8px;
-    margin-top: 4px;
-    z-index: 100;
+  float: right;
+  margin-right: 8px;
+  margin-top: 4px;
+  z-index: 100;
 }
 
 #logo_left {
-    float: left;
-    margin-left: 12px;
-    margin-top: 4px;
-    color: darkslategray;
-    z-index: 5;
+  float: left;
+  margin-left: 12px;
+  margin-top: 4px;
+  color: darkslategray;
+  z-index: 5;
 }
 
 #ctr {
-    font-size: 18px;
-    font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 #logo_right {
-    float: right;
-    margin-right: 10px;
-    margin-top: 5px;
-    color: darkslategray;
-    z-index: 5;
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
+  color: darkslategray;
+  z-index: 5;
 }
 
 #trail {
-    clear: both;
-    text-align: center;
-    font-weight: bold;
+  clear: both;
+  text-align: center;
+  font-weight: bold;
 }
 
 /* login elements */
 #cookie_state, #cookies_choice, #admin, #contrib, #admintools {
-    display: none;
+  display: none;
 }
 
 #logo {
-    /* override ktesaPanel.css */
-    margin-bottom: 0px;
-    margin-right: 0px;
+  /* override ktesaPanel.css */
+  margin-bottom: 0;
+  margin-right: 0;
 }
 
 #searchbar {
-    border-radius: 8px;
-    border-width: 1px;
-    border-color: darkslategray;
-    font-size: 16px;
-    padding-left: 6px;
-    height: 34px;
-    position: absolute;
-    top: 120px;
-    left: 140px;
-    z-index: 200;
+  border-radius: 8px;
+  border-width: 1px;
+  border-color: darkslategray;
+  font-size: 16px;
+  padding-left: 6px;
+  height: 34px;
+  position: absolute;
+  top: 120px;
+  left: 140px;
+  z-index: 200;
 }
 
-#srch {
-    display: none;
-}
-
-#geoSetting {
-    display: none;
+#srch, #geoSetting {
+  display: none;
 }
 
 #geoCtrl {
-    position: absolute;
-    z-index: 100;
+  position: absolute;
+  z-index: 100;
 }
 
 #geoCtrl:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #map {
-    float: left;
-    margin-bottom: 16px;
-    width: 65%;
-    height: 720px;
-    z-index: 1;
-    box-sizing: content-box;
+  float: left;
+  margin-bottom: 16px;
+  width: 65%;
+  height: 720px;
+  z-index: 1;
+  box-sizing: content-box;
 }
 
 #legend {
-    position: absolute;
+  position: absolute;
 }
 
 /* Info windows on map popups */
-#iwVC {
-    background-color: #f0f0f0;
-    color: black;
-    padding: 8px;
-    margin: 3px;
+#iwCH, #iwNH {
+  background-color: #f0f0f0;
+  color: black;
+  padding: 8px;
+  margin: 3px;
 }
-
-#iwCH {
-    background-color: #f0f0f0;
-    color: black;
-    padding: 8px;
-    margin: 3px;
-}
-
-#iwNH {
-    background-color: #f0f0f0;
-    color: black;
-    padding: 8px;
-    margin: 3px;
-}
-
-#iwXH {
-    background-color: #f0f0f0;
-    color: black;
-    padding: 8px;
-    margin: 3px;
-}
-
-#iwVC a, #iwCH a, #iwNH a, #iwXH a {
-    font-size: 12px;
-    top: -1px;
-    left: -6px;
+#iwCH a, #iwNH a {
+  font-size: 12px;
+  top: -1px;
+  left: -6px;
 }
 
 /* Moveable vertical bar for right-hand list of hikes */
 .custom {
-    cursor: url("../images/arrowCursor.png") 12 0, auto;
+  cursor: url("../images/arrowCursor.png") 12 0, auto;
 }
 
 #adjustWidth {
-    float: left;
-    position: relative;
-    margin-left: -4px;
-    width: 3px;
-    background-color: darkgray;
-    z-index: 100;
+  float: left;
+  position: relative;
+  margin-left: -4px;
+  width: 3px;
+  background-color: darkgray;
+  z-index: 100;
 }
 
 #sideTable {
-    float: left;
-    white-space: nowrap;
-    width: 35%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    box-sizing: content-box;
+  float: left;
+  white-space: nowrap;
+  width: 35%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-sizing: content-box;
 }
 
 .tableItem {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    background-color: floralwhite;
-    height: 64px;
-    width: 100%;
-    border-style: solid;
-    border-top: none;
-    border-color: black;
-    border-width: 1px;
-    float: left;
-    box-sizing: inherit;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  background-color: floralwhite;
+  height: 64px;
+  width: 100%;
+  border-style: solid;
+  border-top: none;
+  border-color: black;
+  border-width: 1px;
+  float: left;
+  box-sizing: inherit;
 }
 
 .tip, .zpop {
-    display: none;
-    width: 126px;
-    background-color: black;
-    color: white;
-    text-align: center;
-    padding: 5px 2px;
-    border-radius: 6px;
-    position: absolute;
-    z-index: 200;
-    box-sizing: inherit;
+  display: none;
+  width: 126px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 5px 2px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 200;
+  box-sizing: inherit;
 }
 
 .icons {
-    height: 100%;
-    width: 36px;
-    box-sizing: inherit;
+  height: 100%;
+  width: 36px;
+  box-sizing: inherit;
 }
 
 .like {
-    cursor: pointer;
-    padding-left: 3px;
-    width: 28px;
-    height: 28px;
-    box-sizing: inherit;
+  cursor: pointer;
+  padding-left: 3px;
+  width: 28px;
+  height: 28px;
+  box-sizing: inherit;
 }
 
 .zoomers {
-    padding-left: 5px;
-    height: 24px;
-    width: 24px;
-    cursor: pointer;
-    box-sizing: inherit;
+  padding-left: 5px;
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+  box-sizing: inherit;
 }
 
 .content {
-    width: calc(100% - 123px);
-    line-height: 100%;
-    overflow: hidden;
-    box-sizing: inherit;
+  width: calc(100% - 123px);
+  line-height: 100%;
+  overflow: hidden;
+  box-sizing: inherit;
 }
 
 .content:last-child {
-    top: 0px;
+  top: 0px;
 }
 
 .stlinks {
-    position: relative;
-    top: 4px;
-    padding-left: 6px;
-    font-size: 18px;
-    box-sizing: inherit;
-    color: blue;
+  position: relative;
+  top: 4px;
+  padding-left: 6px;
+  font-size: 18px;
+  box-sizing: inherit;
+  color: blue;
 }
 
 .subtxt, .subtxtb {
-    padding-left: 6px;
-    font-size: 14px;
-    position: relative;
-    top: 6px;
-    box-sizing: inherit;
+  padding-left: 6px;
+  font-size: 14px;
+  position: relative;
+  top: 6px;
+  box-sizing: inherit;
 }
 
 .subtxtb {
-    top: 7px;
+  top: 7px;
 }
 
 .thumbs {
-    margin-right: 4px;
-    cursor: pointer;
-    z-index: 50;
-    width: 83px;
-    box-sizing: inherit;
+  margin-right: 4px;
+  cursor: pointer;
+  z-index: 50;
+  width: 83px;
+  box-sizing: inherit;
 }
 
 .thmbpic {
-    box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 .zpop {
-    width: 104px;
+  width: 104px;
 }
 
 .bigger {
-    position: absolute;
+  position: absolute;
 }
 
 #tbl_container {
-    display: none;
+  display: none;
 }
 
 /*# sourceMappingURL=home.css.map */
