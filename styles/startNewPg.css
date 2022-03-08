@@ -119,6 +119,21 @@ ul.dropdown-menu {
     display: none;
 }
 
+/* modals */
+.modal-header, .modal-footer {
+    background-color: #dfe9e3;
+    color: black;
+}
+
+.modal-body {
+    color: black;
+    text-align: left;
+}
+
+input[id^=q] {
+    margin-bottom: 4px;
+}
+
 #main {
     box-sizing: content-box;
     margin-left: 16px;

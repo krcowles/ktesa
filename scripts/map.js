@@ -3,17 +3,24 @@
 /**
  * @fileoverview This routine initializes the google map to view the state
  *		of New Mexico, places markers on hike locations, and clusters the markers
- * 		together displaying the number of markers in the group. It also draws hike
- * 		tracks when zoomed in, and then also when panned. The script relies on the
- * 		externally supplied lib 'markerclusterer.js'
+ * 		together displaying the number of hikes in the group. It also draws hike
+ * 		tracks when zoomed in, and continues when panned. The script relies on the
+ * 		externally supplied lib 'markerclusterer.js'. A modification was added to
+ *      that file to add a 'cluster_click' boolean.
  * @author Ken Cowles
  * @version 3.0 Added Cluster Page compatibility (removes indexPageTemplate links)
  * @version 4.0 Typescripted, with some type errors corrected
  * @version 5.0 Reworked to synchronize with the new thumbnail loading process
  * @version 6.0 Change from old panel design to bootstrap navbar design
+ * @version 7.0 Rework asynchronous map handlers to better control behavior; increase
+ * 				number of track colors available.
  */
-// Hike Track Colors: red, blue, orange, purple, black
-var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000'];
+var zoomThresh = 13;
+var initialLoad = true;
+// Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
+var colors = [
+    'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
+];
 var geoOpts = { enableHighAccuracy: true };
 // need to be global:
 var map;
@@ -29,11 +36,11 @@ var applyHighlighting = false;
 var hiliteObj = {}; // global object holding hike object & marker type
 var hilited = [];
 var zoom_level;
-var zoomdone;
 // map event handler globals for determining resulting action in handler
 var panning = false;
-var marker_click = false;
-var zoomThresh = 13;
+var clickedOnMarker = false;
+var clickedOnGroup = false;
+// setting space for ktesaPanel
 var panel = $('#nav').height() + $('#logo').height();
 /**
  * This function is called initially, and again when resizing the window;
@@ -166,26 +173,28 @@ function initMap() {
             locaters[itemno].clicked = false;
         });
         marker.addListener('click', function () {
-            if (loadSpreader !== undefined) {
+            clickedOnGroup = true;
+            if (typeof loadSpreader !== "undefined") {
                 clearInterval(loadSpreader);
-                loadSpreader = undefined;
+                loadSpreader = void 0; // forces to "undefined"
             }
-            zoom_level = map.getZoom();
-            marker_click = zoom_level < zoomThresh ? true : false;
+            // clicking on a marker changes the position, but not quite to the marker's loc
             map.setCenter(location);
-            if (marker_click) {
+            zoom_level = map.getZoom();
+            if (zoom_level < zoomThresh) {
                 map.setZoom(zoomThresh);
-                marker_click = false;
             }
+            // hence, two center_change events will take place consecutively
             iw.open(map, this);
             locaters[itemno].clicked = true;
         });
     }
     // Normal Hike Markers
     function AddHikeMarker(hikeobj) {
+        var markerLoc = hikeobj.loc;
         var nmicon = getIcon(1);
         var marker = new google.maps.Marker({
-            position: hikeobj.loc,
+            position: markerLoc,
             map: map,
             icon: nmicon,
             title: hikeobj.name
@@ -209,17 +218,18 @@ function initMap() {
             locaters[itemno].clicked = false;
         });
         marker.addListener('click', function () {
-            if (loadSpreader !== undefined) {
+            clickedOnMarker = true;
+            if (typeof loadSpreader !== "undefined") {
                 clearInterval(loadSpreader);
-                loadSpreader = undefined;
+                loadSpreader = void 0; // forces var to "undefined"
             }
+            // clicking on a marker changes the position, but not quite to the marker's loc
+            map.setCenter(markerLoc);
             zoom_level = map.getZoom();
-            marker_click = zoom_level < zoomThresh ? true : false;
-            map.setCenter(hikeobj.loc);
-            if (marker_click) {
+            if (zoom_level < zoomThresh) {
                 map.setZoom(zoomThresh);
-                marker_click = false;
             }
+            // hence, two center_change events will take place consecutively
             iw.open(map, this);
             locaters[itemno].clicked = true;
         });
@@ -234,78 +244,105 @@ function initMap() {
     };
     new MarkerClusterer(map, clustererMarkerSet, clusterer_opts);
     // //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
-    map.addListener('zoom_changed', function () {
-        if (typeof loadSpreader !== undefined) {
+    /**
+     * NOTE: Loading the map on page load/reload causes an initial center_change AND
+     * zoom_change event [with or without the markerclusterer.js and/or kml overlay
+     * (NM Boundary on map)]; The 'center_change' occurs first.
+     */
+    /**
+     * PANNING: a 'center_change' event will obviously occur, so a variable called
+     * 'panning' is set to prevent the 'center_change' listener from acting. The 'center_change'
+     *  event will be triggered repeatedly but will not affect the pan.
+     */
+    map.addListener('dragstart', function () {
+        panning = true;
+        if (typeof loadSpreader !== "undefined") {
             clearInterval(loadSpreader);
-            loadSpreader = undefined;
+            loadSpreader = void 0; // forces var to "undefined"
         }
-        var zoomTracks = false;
-        zoomdone = $.Deferred();
-        var idle = google.maps.event.addListener(map, 'idle', function () {
-            var curZoom = map.getZoom();
-            var perim = String(map.getBounds());
-            if (curZoom >= zoomThresh) {
-                zoomTracks = true;
+    });
+    map.addListener('dragend', function () {
+        var curr_zoom = map.getZoom();
+        var zoomTracks = curr_zoom >= zoomThresh ? true : false;
+        var newBds = String(map.getBounds());
+        zoomedHikes = IdTableElements(newBds, zoomTracks);
+        if (zoomTracks && zoomedHikes[0].length > 0) {
+            $.when(zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2])).then(function () {
+                panning = false;
+            });
+        }
+        else {
+            panning = false;
+        }
+    });
+    /**
+     * The 'center_changed' event is utilized as the key to all map event cases since:
+     * 1. A click on any marker will shift center. This is determined by the order of
+     *    code execution as defined in the marker listeners. [NOTE: even if the marker
+     *    were already 'dead center', the click would shift it out then back again];
+     * 2. A click on any clusterer (see markerclusterer.js) will shift center as a zoom
+     *    will occur [else there would be no clusterers showing]
+     */
+    map.addListener('center_changed', function () {
+        if (panning) {
+            return;
+        }
+        else {
+            if (typeof loadSpreader !== "undefined") {
+                clearInterval(loadSpreader);
+                loadSpreader = void 0; // forces var to "undefined"
             }
+            setIdleListener();
+        }
+    });
+    /**
+     * Manual zoom will not change the center, but the side table needs to be regenerated;
+     * If the zoom is a post 'center_change' event, only flags are reset, no table generation.
+     */
+    map.addListener('zoom_changed', function () {
+        if (!initialLoad && !cluster_click && !clickedOnGroup && !clickedOnMarker) {
+            // this is a manual zoom after page load/reload
+            if (typeof loadSpreader !== "undefined") {
+                clearInterval(loadSpreader);
+                loadSpreader = void 0; // forces var to "undefined"
+            }
+            setIdleListener();
+        }
+        else {
+            initialLoad = false;
+            cluster_click = false;
+            clickedOnGroup = false;
+            clickedOnMarker = false;
+        }
+    });
+    /**
+     * The time to update the side table and tracks is when any of the events has completed
+     * and the map has returned to an idle state. This function performs the idle ops,
+     * which include re-generating the side table for the new bounds, and if the zoom
+     * threshold is active, then draw any newly included tracks. Note that when done,
+     * the listener is removed.
+     */
+    function setIdleListener() {
+        var idle = google.maps.event.addListener(map, 'idle', function () {
+            // wait for markerclusterer.js to draw clusters
+            var curZoom = map.getZoom();
+            var zoomTracks = curZoom >= zoomThresh ? true : false;
+            var perim = String(map.getBounds());
             zoomedHikes = IdTableElements(perim, zoomTracks);
-            if (zoomTracks && zoomedHikes.length > 0) {
+            if (zoomTracks && zoomedHikes[0].length > 0) {
                 $.when(zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2])).then(function () {
-                    zoomdone.resolve();
+                    if (applyHighlighting) {
+                        restoreTracks();
+                        highlightTracks();
+                    }
                     google.maps.event.removeListener(idle);
                 });
             }
             else {
-                zoomdone.resolve();
                 google.maps.event.removeListener(idle);
             }
         });
-    });
-    map.addListener('dragstart', function () {
-        if (loadSpreader !== undefined) {
-            clearInterval(loadSpreader);
-            loadSpreader = undefined;
-        }
-        panning = true;
-    });
-    map.addListener('dragend', function () {
-        // no highlighting is required during pan
-        var curr_zoom = map.getZoom();
-        var zoomTracks = false;
-        if (curr_zoom >= zoomThresh) {
-            zoomTracks = true;
-        }
-        var newBds = String(map.getBounds());
-        zoomedHikes = IdTableElements(newBds, zoomTracks);
-        if (zoomTracks && zoomedHikes.length > 0) {
-            zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2]);
-        }
-        panning = false;
-    });
-    map.addListener('center_changed', function () {
-        if (!panning && (!marker_click && !cluster_click)) {
-            if (loadSpreader !== undefined) {
-                clearInterval(loadSpreader);
-                loadSpreader = undefined;
-            }
-            var curZoom = map.getZoom();
-            var zoomTracks = false;
-            var perim = String(map.getBounds());
-            if (curZoom >= zoomThresh) {
-                zoomTracks = true;
-            }
-            zoomedHikes = IdTableElements(perim, zoomTracks);
-            if (zoomTracks && zoomedHikes.length > 0) {
-                zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2]);
-                if (applyHighlighting) {
-                    restoreTracks();
-                    highlightTracks();
-                }
-            }
-        }
-        else {
-            cluster_click = false;
-        }
-    });
+    }
 }
 // ////////////////////// END OF MAP INITIALIZATION  ///////////////////////
 // ///////////////////////////  TRACK DRAWING  /////////////////////////////

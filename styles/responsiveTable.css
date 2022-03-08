@@ -117,6 +117,21 @@ ul.dropdown-menu {
     display: none;
 }
 
+/* modals */
+.modal-header, .modal-footer {
+    background-color: #e7f8ee;
+    color: black;
+}
+
+.modal-body {
+    color: black;
+    text-align: left;
+}
+
+input[id^=q] {
+    margin-bottom: 4px;
+}
+
 #trail {
     display: none;
 }

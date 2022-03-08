@@ -160,7 +160,7 @@ input:focus {
     width: calc(100% - 40px);
     height: 40px;
     background-color: antiquewhite;
-    line-height: 38px;
+    line-height: 1.5em;
     font-size: 18px;
     border-radius: 8px;
     color: maroon;
@@ -278,6 +278,21 @@ button {
     /* Opera */
     transform: scale(1.5);
     padding: 5px;
+}
+
+/* modals */
+.modal-header, .modal-footer {
+    background-color: #dfe9e3;
+    color: black;
+}
+
+.modal-body {
+    color: black;
+    text-align: left;
+}
+
+input[id^=q] {
+    margin-bottom: 4px;
 }
 
 /*# sourceMappingURL=unifiedLogin.css.map */

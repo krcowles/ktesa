@@ -12,8 +12,9 @@ declare var favlist: number[];
  * @version 4.0 Adds track highlighting
  * @version 5.0 Typescripted, with some previous type errors corrected
  * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
+ * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
  */
- 
+
 /**
  * Searchbar Functionality (html datalist element)
  */
@@ -70,11 +71,9 @@ function popupHikeName(hikename: string) {
     return;
 }
 /**
- * This function will click the argument's infoWindow;
- * Note the use of 'setCenter': when NOT panning, as in this case, setCenter
- * will wait for the deferred 'zoomdone' to be resolved. If the marker has
- * already been clicked (infoWin present), there is no need to re-zoom, so 
- * 'zoomdone' get resolved immediately.
+ * This function will click the argument's infoWindow:
+ * Note the use of 'setCenter': if the marker has already been clicked,
+ * setCenter() simply restores it to the center of the map.
  */
 const infoWin = (hike:string, loc:GPS_Coord)  => {
     // highlight track for either searchbar or zoom-to icon:
@@ -142,7 +141,7 @@ function highlightTracks() {
 }
 
 /**
- * Undo any previous track highlighting
+ * Restore stroke weight and reduce opacity for tracks no longer being chosen for highlighting
  */
 function restoreTracks() {
     for (let n=0; n<hilited.length; n++) {
@@ -258,7 +257,7 @@ function formTbl(indxArray: NM[]) {
 }
 
 /**
- * This function allows the user an enlarged view of the preview when moused over
+ * This function allows the user an enlarged view of the thumb when moused over
  */
 function enlargePreview(items: JQuery<HTMLElement>[]) {
     for (let i=0; i<items.length; i++) {
@@ -393,7 +392,7 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
 
 /**
  * This function will zoom to the correct map location for the corresponding
- * hike, and popup its infoWin. It also displays a tooltip on mouseover.
+ * hike, and popup its infoWin and highlight it. It also displays a tooltip on mouseover.
  */
 function enableZoom(items: JQuery<HTMLElement>[]) {
     for (let j=0; j<items.length; j++) {
@@ -464,8 +463,8 @@ function enableZoom(items: JQuery<HTMLElement>[]) {
     /* FIND HIKES WITHIN THE CURRENT VIEWPORT BOUNDS */
     var hikearr: NM[] = [];
     var max_color = colors.length - 1;
+    var color_indx = Math.floor(Math.random() * max_color);  // min is always 0
     CL.forEach(function(clus) {
-        var color = 0;
         clus.hikes.forEach(function(hike) {
             let lat = hike.loc.lat;
             let lng = hike.loc.lng;
@@ -481,9 +480,9 @@ function enableZoom(items: JQuery<HTMLElement>[]) {
                         '<br />Difficulty: ' + hike.diff + '</div>';
                     singles.push(hike.indx);
                     hikeInfoWins.push(cliw);
-                    trackColors.push(colors[color++]);
-                    if (color > max_color) { // rotate through colors
-                        color = 0;
+                    trackColors.push(colors[color_indx++]);
+                    if (color_indx > max_color) { // rotate through colors
+                        color_indx = 0;
                     }
                 }
             }
@@ -504,7 +503,10 @@ function enableZoom(items: JQuery<HTMLElement>[]) {
                     '<br />Difficulty: ' + hike.diff + '</div>';
                 singles.push(hike.indx);
                 hikeInfoWins.push(nmiw);
-                trackColors.push(colors[0]);
+                trackColors.push(colors[color_indx++]);
+                if (color_indx > max_color) { // rotate through colors
+                    color_indx = 0;
+                }
             }
         }
     });

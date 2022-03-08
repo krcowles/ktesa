@@ -2,6 +2,7 @@ $navbar: darkslategray;
 $brand: #bfd9bf;
 $link: whitesmoke;
 $logo: #ffe866;
+$modal:  #dfe9e3;
 
 .navbar {
     background-color: $navbar;
@@ -91,4 +92,16 @@ ul.dropdown-menu {
 /* login elements */
 #cookie_state, #cookies_choice, #admin, #contrib, #admintools {
     display: none;
+}
+/* modals */
+.modal-header, .modal-footer {
+    background-color: $modal;
+    color: black;
+}
+.modal-body {
+    color: black;
+    text-align: left;
+}
+input[id^=q] {
+    margin-bottom: 4px;
 }

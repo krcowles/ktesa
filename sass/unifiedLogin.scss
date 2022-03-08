@@ -4,6 +4,7 @@ $containerText: maroon;
 $submitButton: antiquewhite;
 $cookies: floralwhite;
 $customLine: #fcf4e8;
+$modal: #dfe9e3;
 
 @import "colors";
 @import "body";
@@ -134,7 +135,7 @@ input:focus {
     width: calc(100% - 40px);
     height: 40px;
     background-color: $submitButton;
-    line-height: 38px;
+    line-height: 1.5em;
     font-size: 18px;
     border-radius: 8px;
     color: $containerText;
@@ -143,7 +144,7 @@ input:focus {
 }
 #formsubmit:hover, #submit:hover {
     cursor: pointer;
-    background-color:$containerText;
+    background-color: $containerText;
     color: $white;
 }
 #cookie_banner {
@@ -236,4 +237,17 @@ button {
     -o-transform: scale(1.5); /* Opera */
     transform: scale(1.5);
     padding: 5px;
+}
+
+/* modals */
+.modal-header, .modal-footer {
+    background-color: $modal;
+    color: black;
+}
+.modal-body {
+    color: black;
+    text-align: left;
+}
+input[id^=q] {
+    margin-bottom: 4px;
 }
