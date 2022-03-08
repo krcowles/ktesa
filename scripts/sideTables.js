@@ -194,8 +194,9 @@ function appendSegment(subset) {
     for (var m = 0; m < subset.length; m++) {
         var obj = subset[m];
         var hno = obj.indx;
+        var hike_no = hno.toString();
         var tbl;
-        if (favlist.includes(hno)) {
+        if (favlist.includes(hike_no)) {
             tbl = tblItemHtml.replace('Yellow', 'Red');
         }
         else {
@@ -310,8 +311,8 @@ function enableFavorites(items) {
         // retrieve hike no from content div
         var hikelink = $icndiv.next().children().eq(0).attr('href');
         var digitpos = hikelink.indexOf('=') + 1;
-        var hno = hikelink.substr(digitpos);
-        var hikeno = parseInt(hno);
+        var hno = hikelink.substring(digitpos); // this is the string version of hike no
+        var hikeno = parseInt(hno); // this is the integer version of hike no
         $favicn.off('click').on('click', function () {
             var ajaxdata = { no: hikeno };
             var isrc = $(this).attr('src');
@@ -327,7 +328,7 @@ function enableFavorites(items) {
                     dataType: "text",
                     success: function (results) {
                         if (results === "OK") {
-                            favlist.push(hikeno);
+                            favlist.push(hno);
                             newsrc = isrc.replace('Yellow', 'Red');
                             $tooltip.text('Unmark');
                             $that.attr('src', newsrc);
@@ -356,7 +357,7 @@ function enableFavorites(items) {
                     dataType: "text",
                     success: function (results) {
                         if (results === 'OK') {
-                            var key = favlist.indexOf(hikeno);
+                            var key = favlist.indexOf(hno);
                             favlist.splice(key, 1);
                             newsrc = isrc.replace('Red', 'Yellow');
                             $tooltip.text('Add to Favorites');

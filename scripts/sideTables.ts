@@ -2,7 +2,7 @@
 declare var loadSpreader: any;
 declare var thumb: string;
 declare var preview: string;
-declare var favlist: number[];
+declare var favlist: string[];
 /**
  * @file This file creates and places the html for the side table, as well as providing
  *       a search bar capability synchronized to the side table. Note that any globals
@@ -202,8 +202,9 @@ function appendSegment(subset: NM[]) {
     for (let m=0; m<subset.length; m++) {
         let obj = subset[m];
         let hno = obj.indx;
+        let hike_no = hno.toString()
         var tbl;
-        if (favlist.includes(hno)) {
+        if (favlist.includes(hike_no)) {
             tbl = tblItemHtml.replace('Yellow', 'Red');
         } else {
             tbl = tblItemHtml;
@@ -321,8 +322,8 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
         // retrieve hike no from content div
         let hikelink = <string>$icndiv.next().children().eq(0).attr('href');
         let digitpos = hikelink.indexOf('=') + 1;
-        let hno = hikelink.substr(digitpos);
-        let hikeno = parseInt(hno);
+        let hno = hikelink.substring(digitpos);  // this is the string version of hike no
+        let hikeno = parseInt(hno);              // this is the integer version of hike no
         $favicn.off('click').on('click', function() {    
             let ajaxdata:AjaxData = {no: hikeno};
             let isrc = <string>$(this).attr('src');
@@ -338,7 +339,7 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                     dataType: "text",
                     success: function(results) {
                         if (results === "OK") {
-                            favlist.push(hikeno);
+                            favlist.push(hno);
                             newsrc = isrc.replace('Yellow', 'Red');
                             $tooltip.text('Unmark');
                             $that.attr('src', newsrc);
@@ -365,7 +366,7 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                     dataType: "text",
                     success: function(results) {
                         if (results === 'OK') {
-                            let key = favlist.indexOf(hikeno);
+                            let key = favlist.indexOf(hno);
                             favlist.splice(key, 1);
                             newsrc = isrc.replace('Red', 'Yellow');
                             $tooltip.text('Add to Favorites');
