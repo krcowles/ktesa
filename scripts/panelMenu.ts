@@ -98,11 +98,6 @@ $('#chg').on('click', function() {
     resetPassModal.show();
     return;
 });
-$('#send').on('click', function() {
-    var usr_mail = $('#rstmail').val();
-    var postdata = {form: "req", email: usr_mail};
-    $.post('../accounts/resetMail.php', postdata);
-});
 $('#usrcookies').on('click', function() {
     var cookie_action = $(this).text();
     var action = cookie_action === 'Accept Cookies' ? 'accept' : 'reject';
