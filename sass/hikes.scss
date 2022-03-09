@@ -26,7 +26,7 @@ body {
     height: 100%;
     padding: 0px; 
     background-color: $hikePageBackground;
-    overflow-x: hidden;
+    /* THIS KILLS CAPTIONS!!! overflow-x: hidden; */
 }
 #logo {
     margin-bottom: 0px;
