@@ -10,7 +10,7 @@
  * @version 2.1 Typescripted
  */
 $(function () {
-    $('table').attr('id', 'pubTbl');
+    $('table.sortable').attr('id', 'pubTbl');
     var exe = $('#action').text();
     var linkbase;
     if (exe === 'rel') {
@@ -19,9 +19,9 @@ $(function () {
     else if (exe === 'del') {
         linkbase = 'delete.php?hno=';
     }
-    var $tbl = $('tbody tr');
+    var $tbl = $('#pubTbl tbody tr');
     var hikeCol;
-    var $hdr = $('table thead').find('th');
+    var $hdr = $('#pubTbl thead').find('th');
     $hdr.each(function (indx) {
         if ($(this).text() === 'Hike/Trail Name') {
             hikeCol = indx;

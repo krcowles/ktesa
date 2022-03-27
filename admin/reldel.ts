@@ -14,7 +14,7 @@ declare function tableSort(tableid: string): void;
  */
 $(function () { // doc ready
 
-$('table').attr('id', 'pubTbl');
+$('table.sortable').attr('id', 'pubTbl');
 var exe = $('#action').text();
 var linkbase: string;
 if (exe === 'rel') {
@@ -22,9 +22,9 @@ if (exe === 'rel') {
 } else if (exe === 'del') {
     linkbase = 'delete.php?hno=';
 }
-var $tbl = $('tbody tr');
+var $tbl = $('#pubTbl tbody tr');
 var hikeCol: number;
-var $hdr = $('table thead').find('th');
+var $hdr = $('#pubTbl thead').find('th');
 $hdr.each( function(indx) {
     if ($(this).text() === 'Hike/Trail Name') {
         hikeCol = indx;
