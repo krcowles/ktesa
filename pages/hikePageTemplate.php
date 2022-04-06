@@ -107,8 +107,10 @@ if (mobile) {
             <p id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">
                 Google Directions</a>
             </p>
-            <p id="scrollmsg">Scroll down to see images, hike description,
-                reference sources and additonal information as applicable
+            <p id="scrollmsg">Scroll down to see photos and additonal information.
+               <span style="color:red;">Red</span>
+                segments on the elevation chart indicate slopes of 18 degrees
+                or higher.
             </p>
             <!-- When there are multiple tracks, display the note following -->
             <div id="trknote">NOTE: The <span id="top">topmost checked</span>

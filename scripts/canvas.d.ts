@@ -13,6 +13,11 @@ declare type ChartReturns = {
     renderType: ChartRenderTypes;
     render(canvasId: string, dataObj: ChartData): void;
 };
+interface Chartrow {
+    x: number;
+    y: number;
+    g: number;
+}
 interface Coords {
     x: number;
     y: number;
@@ -21,7 +26,7 @@ interface Coords {
 }
 interface ChartData {
     renderTypes: ChartRenderTypes;
-    dataPoints: Coords[];
+    dataPoints: Chartrow[];
     title: string;
     minY: number;
     maxY: number;

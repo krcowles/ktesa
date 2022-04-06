@@ -356,8 +356,9 @@ var renderData = function renderData(type) {
         }
         var ptX = margin.left + pxPerMile * data.dataPoints[i].x;
         if (i > 0 && type == renderType.lines) {
+            var line_color = data.dataPoints[i].g === 0 ? 'DarkGreen' : 'Red';
             //Draw connecting lines
-            drawLine(ptX, ptY, prevX, prevY, 'DarkGreen', 2);
+            drawLine(ptX, ptY, prevX, prevY, line_color, 2);
         }
         /**
          * LEAVE THIS CODE IN CASE POINTS ARE ADDED LATER...

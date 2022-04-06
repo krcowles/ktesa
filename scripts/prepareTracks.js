@@ -7,7 +7,10 @@
  * via php in hikePageTemplate.php
  * @author Ken Cowles
  * @version 2.0 Typescripted, with some type errors corrected
+ * @version 3.0 Modified getTrackData() to highlight steep inclines on chart
  */
+var grade_threshold = 20;
+var min_run = 4;
 var hikeTrack; // variable used in getTrackData() ajax
 var allTracks = $.Deferred(); // when done, draw chart
 var promises = []; // collection of promises
@@ -15,6 +18,7 @@ var promises = []; // collection of promises
 var gpsvTracks = []; // track names appearing in GPSV tracklist box
 var trkLats = []; // array of track's latitudes
 var trkLngs = [];
+var trkEles = [];
 var trkMaxs = []; // elevation max 
 var trkMins = []; // elevation min
 var trkRows = []; // track data points {x, y}
@@ -84,20 +88,57 @@ function getTrackData(promise) {
                 });
                 trkLats.push(lats);
                 trkLngs.push(lngs);
+                trkEles.push(elevs);
                 // form the array of datapoint objects for this track:
-                rows[0] = { x: 0, y: elevs[0] };
+                rows[0] = { x: 0, y: elevs[0], g: 0 };
                 var emax = 0;
                 var emin = 20000;
+                var dist = [];
+                var start = false;
+                var consec = -0;
+                var steeps = [];
+                var runs = [];
+                var runindx = 0;
                 for (var i = 0; i < lats.length - 1; i++) {
-                    hikelgth += distance(lats[i], lngs[i], lats[i + 1], lngs[i + 1], "M");
+                    dist = distInMiles(lats[i], lngs[i], lats[i + 1], lngs[i + 1], elevs[i], elevs[i + 1]);
+                    hikelgth += dist[0];
+                    // check for consecutive 'steep' grades
+                    var degrees = Math.abs(dist[1]);
+                    if (degrees > grade_threshold) {
+                        start = true;
+                        steeps.push(i);
+                        consec++;
+                        // once start is true, keep tracking until below threshhold
+                    }
+                    else if (start && degrees >= grade_threshold - 1) {
+                        steeps.push(i);
+                        consec++;
+                    }
+                    if (start && degrees < grade_threshold - 1) {
+                        start = false;
+                        if (consec >= min_run) {
+                            for (var j = 0; j < steeps.length; j++) {
+                                runs[runindx++] = steeps[j];
+                            }
+                        }
+                        consec = 0;
+                        steeps = [];
+                    }
                     if (elevs[i + 1] > emax) {
                         emax = elevs[i + 1];
                     }
                     if (elevs[i + 1] < emin) {
                         emin = elevs[i + 1];
                     }
-                    var dataPtObj = { x: hikelgth, y: elevs[i + 1] };
+                    var dataPtObj = { x: hikelgth, y: elevs[i + 1], g: 0 };
                     rows.push(dataPtObj);
+                }
+                var rindx = 0;
+                for (var k = 0; k < rows.length; k++) {
+                    if (k === runs[rindx]) {
+                        rows[k].g = 1;
+                        rindx++;
+                    }
                 }
                 trkRows.push(rows);
                 // set y axis range values:
@@ -142,22 +183,25 @@ function getTrackData(promise) {
     return;
 }
 /**
- * This function determines the radial distance between lat/lng pairs
+ * This function determines the radial distance between lat/lng pairs, and calculates
+ * the grade (slope) from the elevation change.
  */
-function distance(lat1, lon1, lat2, lon2, unit) {
-    if (lat1 === lat2 && lon1 === lon2) {
-        return 0;
-    }
-    var radlat1 = Math.PI * lat1 / 180;
-    var radlat2 = Math.PI * lat2 / 180;
-    var theta = lon1 - lon2;
-    var radtheta = Math.PI * theta / 180;
-    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-    dist = Math.acos(dist);
-    dist = dist * 180 / Math.PI;
-    dist = dist * 60 * 1.1515; // Miles
-    if (unit === "K") {
-        dist = dist * 1.609344;
-    } // Kilometers
-    return dist;
+function distInMiles(lat1, lon1, lat2, lon2, el1, el2) {
+    var rads = Math.PI / 180;
+    var R = 6371; // Radius of the earth in km
+    var dLat = (lat2 - lat1) * rads; // convert to radians
+    var dLon = (lon2 - lon1) * rads;
+    var rlat1 = lat1 * rads;
+    var rlat2 = lat2 * rads;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(rlat1) * Math.cos(rlat2) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var b = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var kilos = R * b;
+    var meters = kilos * 1000; // Distance in meters
+    var miles = kilos / 1.609344;
+    var grade = (el2 - el1) / meters;
+    var slope = Math.atan(grade);
+    slope *= 180 / Math.PI;
+    return [miles, slope];
 }
