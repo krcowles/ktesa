@@ -15,7 +15,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -126,10 +125,12 @@ if ($noOfRefs === 0) {
 }
 $refHtml .= "</ul>". PHP_EOL;
 
+// GPS Data Section
 $noOfGps = 0;
 $gpsHtml = '<ul id="gps">' . PHP_EOL;
 $gpsData = $gpsPDO->fetchAll(PDO::FETCH_ASSOC);
 foreach ($gpsData as $row) {
+    // Originally P => Proposed; A => Actual:  no longer used
     if ($row['datType'] === 'P' || $row['datType'] === 'A') {
         $url = $row['url'];
         $extpos = strrpos($url, ".") + 1;
@@ -144,18 +145,20 @@ foreach ($gpsData as $row) {
                 "hno={$hikeIndexNo}&hike={$hikeTitle}&gpx={$url}&tbl={$age}";
             $gpsHtml .= '<li class="gpslnks">' . $row['clickText'] .
                 '&nbsp;&nbsp;' . ' <a href="' .
-                $url . '" download>Download</a>&nbsp;&nbsp;' .'<a href="' .
-                $url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
+                $url . '" download>Download</a>&nbsp;&nbsp;<a class="gpxview" ' .
+                'href="' .$url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
                 '<a href="' . $mapLink . 
                 '" target="_blank">View as Map</a></li>' . PHP_EOL;
         } else {
-            $gpsHtml .= '<li>' . $row['label'] . '<a href="' . $url .
-                '" target="_blank">' . $row['clickText'] . '</a></li>' . PHP_EOL;
+            $gpsHtml .= '<li>' . $row['label'] . '&nbsp;<a class="mapfile" href="' .
+                $url . '" target="_blank">' . $row['clickText'] . '</a></li>' .
+                PHP_EOL;
         }
     } 
     $noOfGps += 1;
 }
 $gpsHtml .= "</ul>";
+
 /**
  *  Present 'bottom-of-page' information, including:
  *  References,

@@ -22,7 +22,7 @@ require "hikePageData.php";
     <title><?= $hikeTitle;?></title>
     <meta charset="utf-8" />
     <meta name="description" content="Details about the <?= $hikeTitle;?> hike" />
-    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="author" content="Ken Cowles" />
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
@@ -102,15 +102,14 @@ if (mobile) {
                         download>GPX File</a></span>
             </p>
             <?= $photoAlbum;?>
-            <p id="directions">The following link provides on-line directions to
-                the trailhead:</p>
-            <p id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">
-                Google Directions</a>
+            <p id="directions">On-line directions to the trailhead:<br />
+            <span id="dlnk"><a href="<?= $hikeDirections;?>" target="_blank">
+                Google Directions</a></span>
             </p>
             <p id="scrollmsg">Scroll down to see photos and additonal information.
-               <span style="color:red;">Red</span>
-                segments on the elevation chart indicate slopes of 18 degrees
-                or higher.
+                Click on photos for enlarged view. 
+                <span style="color:red;">Red</span> segments on the elevation chart
+                indicate slopes of 18 degrees or higher.
             </p>
             <!-- When there are multiple tracks, display the note following -->
             <div id="trknote">NOTE: The <span id="top">topmost checked</span>
@@ -163,7 +162,6 @@ if (mobile) {
 <div id="imgArea"></div>
 <br />
 <p id="ptype" style="display:none">Hike</p>
-<div id="dbug"></div>
 
 <div class="popupCap"></div>
 

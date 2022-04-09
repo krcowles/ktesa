@@ -28,6 +28,7 @@ else {
     itemcnt = 0;
 }
 // globals
+var hikegpx = $('#gpx').text();
 var winWidth = document.body.clientWidth;
 var vpHeight;
 var sidePnlLoc;
@@ -189,4 +190,37 @@ function drawRows(useWidth) {
         $('#imgArea').html(rowHtml);
         return;
     }
+}
+// To view (side panel) file as text:
+$('#view').on('click', function (ev) {
+    ev.preventDefault();
+    var target = '../php/viewGpxFile.php?gpx=' + hikegpx;
+    window.open(target, "_blank");
+});
+// When there are gpx files in the GPS Data section, view them as text:
+if ($('.gpxview').length) {
+    $('.gpxview').each(function () {
+        $(this).on('click', function (ev) {
+            ev.preventDefault();
+            var path = $(this).attr('href');
+            var filename = path.substring(7);
+            var file_display = '../php/viewGpxFile.php?gpx=' + filename;
+            window.open(file_display, "_blank");
+        });
+    });
+}
+// If there is a kml file, process it via displayKml.php
+if ($('.mapfile').length) {
+    $('.mapfile').each(function () {
+        $(this).on('click', function (ev) {
+            var path = $(this).attr('href');
+            var filename = path.substring(7);
+            var file_ext = filename.replace(/^.*\./, '');
+            if (file_ext === 'kml') {
+                ev.preventDefault();
+                var kmlfile = '../maps/displayKml.php?kml=' + filename;
+                window.open(kmlfile, "_blank");
+            }
+        });
+    });
 }

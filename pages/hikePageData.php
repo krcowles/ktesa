@@ -107,13 +107,13 @@ $hikePhotoLink2 = $row['purl2'];
 $photoAlbum = '<br />';
 if (!empty($row['purl1'])) {
     $link = '<a href="' . $row['purl1'] . '" target="_blank">Photo Album Link</a>';
-    $photoAlbum = '<p id="albums">For improved photo viewing,<br />check out
-        the following album(s):</p>';
-    $photoAlbum .= '<p id="alnks">' . $link;
+    $photoAlbum = '<p id="albums">For additional photos, click here:';
+    $photoAlbum .= '<br /><span id="alnks">' . $link;
     if (!empty($row['purl2'])) {
         $photoAlbum .= '<br /><a href="' . $row['purl2']
-            .'" target="_blank">Additional Album Link</a></p>';
+            .'" target="_blank">Additional Album Link</a>';
     }
+    $photoAlbum .= '</span></p>';
 
 }
 $infoHd         = $clusterPage ? 'area:' : 'hike:';
@@ -256,8 +256,9 @@ require "relatedInfo.php";
  * to build the picture rows a hike page
  */
 if (!$clusterPage) {
-    $photosReq = "SELECT `folder`,`title`,`hpg`,`mpg`,`desc`,`thumb`,`alblnk`,`date`," .
-    "`mid`,`imgHt`,`imgWd`,`org` FROM {$ttable} WHERE `indxNo` = :indxNo;";
+    $photosReq = "SELECT `folder`,`title`,`hpg`,`mpg`,`desc`,`thumb`,`alblnk`," .
+        "`date`,`mid`,`imgHt`,`imgWd`,`org` FROM {$ttable} WHERE " .
+        "`indxNo` = :indxNo;";
     $photosPDO = $pdo->prepare($photosReq);
     $photosPDO->execute(["indxNo" =>$hikeIndexNo]);
     $photos = $photosPDO->fetchAll(PDO::FETCH_ASSOC);

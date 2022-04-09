@@ -64,7 +64,7 @@ var mapTick = {
     fillcolor: 'Red',
     fillOpacity: 0.8,
     scale: 1,
-    strokeColor: 'Red',
+    strokeColor: 'Black',
     strokeWeight: 2
 };
 
@@ -391,6 +391,7 @@ function zoom_track(hikenos:number[], infoWins:string[], trackcolors:string[]) {
 function drawTrack(json_filename:string, info_win:string, color:string,
 		hikeno:number, deferred:JQueryDeferred<void>) {
 	let sgltrack:google.maps.Polyline;
+	mapTick.fillcolor = color;
 	$.ajax({
 		dataType: "json",
 		url: json_filename,
