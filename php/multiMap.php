@@ -3,9 +3,9 @@
  * This module constructs the html for a GPSVisualizer map using one or
  * more gpx files. This module can be included by any of three possible
  * sources, each of which can specify optional elements to be included:
- *      1. "Draw Map" button on Table Only page
- *      2. Hike Page via hikePageTemplate.php (hikePageData.php)
- *      3. Full page map via link on Hike Page (fullPgMapLink.php)
+ *      1. "Draw Map" button on Table Only page (tableOnly.php)
+ *      2. Hike Page via hikePageTemplate.php   (hikePageData.php)
+ *      3. Full page map via link on Hike Page  (fullPgMapLink.php)
  * Optional elements are waypoints and photo markers.
  * Whether required by the calling program or not, latitude and longitude
  * values are extracted, and, if requested,  ascent/descent data and debug
@@ -13,7 +13,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license None at this time
  */

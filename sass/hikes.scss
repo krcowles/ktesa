@@ -1,6 +1,7 @@
 $hikePageBackground: whitesmoke;
 $boxItems: floralwhite;
 $hideArrow: darkgray;
+$up_dwn: dimgray;
 $darkred: darkred;
 $captions: #eaeaea;
 $alink: #0000b3;
@@ -104,6 +105,17 @@ a:hover {
 }
 .sumClr {
     color: $brown;
+}
+#adnote {
+    color: $up_dwn;
+    cursor: pointer;
+}
+#advisory {
+    position: absolute;
+    background-color: $hikePageBackground;
+    color: $alink;
+    z-index: 100;
+    font-style: italic;
 }
 #addtl {
 	@include panelNote($top: -6px);

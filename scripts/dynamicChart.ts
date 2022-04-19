@@ -6,6 +6,8 @@ interface PanelData {
     [id: string]: HikeObject;
 }
 interface HikeObject {
+    ascent: string;
+    descent: string;
     diff: string;
     expo: string;
     feet: number;
@@ -89,12 +91,42 @@ else {
     chartConst = 1.0000;
 }
 
+var nvbar  = <number>$('#nav').outerHeight();
+var pglogo = <number>$('#logo').outerHeight();
+var sumpos = $('#sidePanel').position();
+var note_top = nvbar + pglogo +sumpos.top;
+var note_lft = 48;
+var asc_dsc_note = <HTMLElement>document.getElementById('adnote');
+var note_pos = {top: note_top, left: note_lft};
+var $jqnote = $('#advisory');
+$jqnote.offset(note_pos);
+$jqnote.hide();
+asc_dsc_note.onmouseover = function() {
+    $jqnote.show();
+}
+asc_dsc_note.onmouseout = function() {
+    $jqnote.hide();
+}
+/*
+$('#adnote').on('mouseover', function() {
+    let affected = <JQuery.Coordinates>$(this).offset();
+    let pagepos = $(this).offset();
+    let noteht  = $(this).height();
+    $('#advisory').offset({top: pagepos.top + noteht, left: pagepos.left});
+    $('#advisory').css('display', 'block');
+};
+$('#adnote').on('mouseout', function() {
+
+});
+*/
 /**
  * Once a track is identified for display, show that gpx file's data in the
  * side panel.
  */
 const displayTrackSidePanel = (trkname: string) => {
     let data = panelData[trkname];
+    $('#ascent').text(data["ascent"]);
+    $('#descent').text(data["descent"]);
     $('#hdiff').text(data["diff"]);
     $('#hlgth').text(data["miles"]);
     $('#hmmx').text(data["feet"]);

@@ -63,6 +63,7 @@ if (mobile) {
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
 
 <!-- Side Panel: -->
+<div id="advisory">Estimate based on track data</div>
 <div id="unhide">></div>
 <div id="sidePanel">
     <div id="hide"><</div>
@@ -76,12 +77,9 @@ if (mobile) {
                 <?= $hikeLength;?></span><br />
             Max to Min Elevation: <span id="hmmx" class="sumClr">
                 <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
-        <?php if ($displayAscDsc) : ?>
-            Total Ascent: <span class="sumClr">
-                <?= sprintf("%.0f", $pup * 3.28084);?> ft</span><br />
-            Total Descent: <span class="sumClr">
-                <?= sprintf("%.0f", $pdwn * 3.28084);?> ft</span><br />
-        <?php endif; ?>
+            <span id="adnote">* Total Ascent / Descent:
+                <span id="ascent" class="sumClr"><?=$asc;?></span> / 
+                <span id="descent" class="sumClr"><?=$dsc;?></span> ft</span><br />
             Logistics: <span id="hlog" class="sumClr"><?= $hikeType;?></span><br />
             Exposure Type: <span id="hexp" 
                 class="sumClr"><?= $hikeExposure;?></span><br />
@@ -96,8 +94,9 @@ if (mobile) {
             <p id="addtl"><strong>More!</strong></p>
             <p id="mlnk">View <a href="<?= $fpLnk;?>"
                 target="_blank">Full Page Map</a><br />
-                <span class="track">View <a id="view" href="<?= $gpxPath;?>"
-                    target="_blank">GPX File</a></span><br />
+                <!-- Apparently unused feature:
+                    <span class="track">View <a id="view" href="<?= $gpxPath;?>"
+                    target="_blank">GPX File</a></span><br />  -->
                 <span class="track">Download <a id="dwn" href="<?= $gpxPath;?>"
                         download>GPX File</a></span>
             </p>

@@ -11,7 +11,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -231,6 +230,8 @@ if ($clusterPage) {
             $calcs = getTrackDistAndElev(
                 1, $j, $trkname, $gpxPath, $gpxData, false, null, null, 1, 1, 1
             );
+            $asc = round($calcs[3] * 3.28084);
+            $dsc = round($calcs[4] * 3.28084);
             $max2min  = 3.28084 * ($calcs[1] - $calcs[2]);
             $feet  = round($max2min);
             $miles = 0.00062137119223733 * $calcs[0];
@@ -239,6 +240,8 @@ if ($clusterPage) {
                 'logistics' => $hikeType,
                 'miles' => $miles,
                 'feet' => $feet,
+                'ascent' => $asc,
+                'descent' => $dsc,
                 'diff' => $hikeDifficulty,
                 'wow' => $hikeWow,
                 'seasons' => $hikeSeasons,

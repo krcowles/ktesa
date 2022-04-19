@@ -239,6 +239,19 @@ a:hover {
   color: brown;
 }
 
+#adnote {
+  color: dimgray;
+  cursor: pointer;
+}
+
+#advisory {
+  position: absolute;
+  background-color: whitesmoke;
+  color: #0000b3;
+  z-index: 100;
+  font-style: italic;
+}
+
 #addtl {
   text-align: center;
   margin-top: -6px;
