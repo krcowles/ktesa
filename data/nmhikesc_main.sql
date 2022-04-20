@@ -350,21 +350,21 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2022-04-08 19:28:14'),
-('2','CLUSHIKES','2464789554','2022-04-08 19:28:14'),
-('3','CLUSTERS','3285731063','2022-04-08 19:28:14'),
-('4','EGPSDAT','0','2022-04-08 19:28:14'),
-('5','EHIKES','0','2022-04-08 19:28:14'),
-('6','EREFS','0','2022-04-08 19:28:14'),
-('7','ETSV','0','2022-04-08 19:28:14'),
-('8','FAVORITES','3651041965','2022-04-08 19:28:14'),
-('9','GPSDAT','145362506','2022-04-08 19:28:14'),
-('10','HIKES','515467094','2022-04-08 19:28:14'),
-('11','LOCKS','0','2022-04-08 19:28:14'),
-('12','REFS','2356894217','2022-04-08 19:28:14'),
-('13','TSV','2144593324','2022-04-08 19:28:14'),
-('14','USERS','2015883571','2022-04-08 19:28:14'),
-('15','VISITORS','422682338','2022-04-08 19:28:14');
+('1','BOOKS','2674158859','2022-04-19 19:26:57'),
+('2','CLUSHIKES','2464789554','2022-04-19 19:26:57'),
+('3','CLUSTERS','3285731063','2022-04-19 19:26:57'),
+('4','EGPSDAT','0','2022-04-19 19:26:57'),
+('5','EHIKES','3314877092','2022-04-19 19:26:57'),
+('6','EREFS','2422073984','2022-04-19 19:26:57'),
+('7','ETSV','2874995640','2022-04-19 19:26:57'),
+('8','FAVORITES','3651041965','2022-04-19 19:26:57'),
+('9','GPSDAT','478836578','2022-04-19 19:26:57'),
+('10','HIKES','515467094','2022-04-19 19:26:57'),
+('11','LOCKS','0','2022-04-19 19:26:57'),
+('12','REFS','2356894217','2022-04-19 19:26:57'),
+('13','TSV','2144593324','2022-04-19 19:26:57'),
+('14','USERS','2015883571','2022-04-19 19:26:57'),
+('15','VISITORS','422682338','2022-04-19 19:26:57');
 
 
 
@@ -395,7 +395,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 
 
@@ -423,7 +423,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8;
 
 
 
@@ -528,7 +528,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=289 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -810,7 +810,8 @@ INSERT INTO HIKES VALUES
 ('284','Strip Mine Sidetrack Trails','2','Placitas','Loop','8.40','950','Moderate','None','Views of the Northern Sandias','Not Summer','Full sun','MultiStrip-75.161.138.96-1640822056.gpx','MultiStrip-75.161.138.96-1640822056.json','353001554','-1064804941','Stri83f0a4.jpg',NULL,NULL,'https://www.google.com/maps/dir//Strip+Mine+Trailhead,+Placitas,+NM+87043/@35.2961586,-106.5400465,12.78z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718832c192f0229:0x961c57f98e6726b4!2m2!1d-106.4805611!2d35.3002468',NULL,'<p>This set of trails is another \'composition\' of the author based on trail maps of the area. It all begins at the <em><span style=\"color: #1428d2;\">Strip Mine Trail</span></em> in Placitas. In rather short order, this hike diverts onto the <span style=\"color: #1428d2;\"><em>Sidetrack Trail</em></span> to gain extra mileage and additional scenery. That trail soon intersects the <em><span style=\"color: #1428d2;\">Sidewinder Trail,</span></em> aptly named as it weaves its way south. Note that the standard designation for flag colors on the interactive map is \"red -&gt; right; green -&gt; left\" (the blue flag indicates the end of the <em><span style=\"color: #1428d2;\">Agua Sarca Link</span></em> at the <span style=\"color: #1428d2;\"><em>Agua Sarca Trail</em></span>).</p>\r\n<p>When the <span style=\"color: #1428d2;\"><em>Sidewinder Trail </em></span>approaches the <em>Forest Loop Road </em>(a trail entrance exists there), it curves southeast and soon intersects the <em><span style=\"color: #1428d2;\">High Voltage Trail</span></em>&nbsp; which heads in an easterly direction. Carefully follow the track of this hike, as the <span style=\"color: #1428d2;\"><em>High Voltage Trail </em></span>later splits to the north, and the trail going forward from there becomes <span style=\"color: #1428d2;\"><em>ES06W</em></span> then <span style=\"color: #1428d2;\"><em>ES08W</em></span> according to maps, though unmarked and unnamed on the trail itself. At the next red flag on the map, the trail changes again to <em><span style=\"color: #1428d2;\">ES03</span></em>. The point at which the hike heads sharply southeast is at an unmamed junction, designated as <em><span style=\"color: #1428d2;\">ES18W</span></em>.</p>\r\n<p>Note that the \'Track Box\' in the upper right hand corner of the interactive map lists several tracks in addition to the loop. These represent two \'dead end\' trails and the <em><span style=\"color: #1428d2;\">Agua Sarca Link</span></em> (unmarked). To view these segments, check the corresponding boxes on the map\'s track box. Any or all of these tracks will add a nice extension to the hike.</p>\r\n<p>The first two \"<em><span style=\"color: #1428d2;\">Dead End</span> <span style=\"color: #1428d2;\">Trails</span></em>\" were explored by the author to see if an overlook or other viewing feature was offered. Primarily, these trails ascend the hills and offer some views, but nothing exceptional.&nbsp; The trails tend to become rather indistinct as you proceed, and the author did not follow them to the very end indicated by the area maps. The third track, the <em><span style=\"color: #1428d2;\">Agua Sarca Link</span></em> is a bit longer and more interesting, ending at the <span style=\"color: #1428d2;\"><em>Agua Sarca Trail</em></span>. The views of the northern Sandias are rather nice from there.</p>\r\n<p>The loop trail again changes its name at the first <em><span style=\"color: #1428d2;\">Dead End</span></em> to become <em><span style=\"color: #1428d2;\">ES16W</span></em>. It retains that name as it winds to the northwest, eventually intersecting the <em><span style=\"color: #1428d2;\">Strip Mine Trail.&nbsp;</span></em> Follow the <em><span style=\"color: #1428d2;\">Strip Mine Trail&nbsp;</span></em> westerly a short distance to the <span style=\"color: #1428d2;\"><em>Chalk Dust Trail</em></span>. The <em><span style=\"color: #1428d2;\">Chalk Dust Trail</span></em> is well worth taking as the views along it are quite pleasant.</p>\r\n<p>&nbsp;</p>','2021-12-29',NULL,NULL,NULL),
 ('285','La Tierra Trails','2','Santa Fe','Loop','7.10','400','Easy-Moderate','Outdoor Facilities','Long views of mountain ranges','Not Summer','Full sun','LaTierraTrails-97.123.65.76-1649343274.gpx','LaTierraTrails-97.123.65.76-1649343274.json','357140682','-1059631235','La T662953.jpg',NULL,NULL,'https://www.google.com/maps/dir//Frijoles+Trailhead+(La+Tierra+Trails),+657-725+Camino+de+los+Montoyas,+Santa+Fe,+NM+87506/@35.7102244,-105.9648201,14.91z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87184ffbeccafc21:0x3683123f88fca0e0!2m2!1d-105.9626536!2d35.7139625',NULL,'<p>The <span style=\"color: #1428d2;\">La Tierra Trail System</span> appears to be targeting mostly bike traffic, and signs indicating \"one-way technical trail\" are unlikely to apply to the hiker. It is difficult to know in advance where these segments are, as they are not always clearly marked on the available map (though a few are). The direction of the hike that the author took placed him going \'against\' the advisories.</p>\r\n<p>While there are occasional lovely views of surrounding mountain ranges, the trail itself is rather uninteresting and consists of the same kind of terrain throughout. At times, the trail junctions can be confusing. The author is not necessarily recommending the hiker take the route shown, but the trail map references below can help to plot a reasonable hike. The trails, on the referenced maps, consist of segment numbers, but unlike the Dale Ball Trail System, trail lengths are not given.</p>\r\n<p>Note that there is a fence blocking off a segment of trails that appear on some online maps (see map photos). Also, the subject hike takes the hiker out of the official trail system for a period at the far southwestern edge of the hike, but there are still clear trails in that area - the author merely wished to extend the length of the hike via this route.</p>','2022-01-12',NULL,NULL,NULL),
 ('286','Sulphur Canyon Multi-Trail','2','Tijeras','Out-and-back','9.70','500','Moderate','Picnic site w/Public Toilets','Long Range Views','Any','Mixed sun/shade','Sulphur_Canyon-174.28.97.51-1642879384.gpx,SulpherShorts-174.28.97.51-1642879296.gpx','Sulphur_Canyon-174.28.97.51-1642879384.json','351722661','-1063763582','Sulp6fb66a.jpg',NULL,NULL,'https://www.google.com/maps/dir//Sulphur+Canyon,+Sandia+Park,+NM+87008/@35.1719877,-106.3849115,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984f4a32741f:0x79ff0afdc2b054a2!2m2!1d-106.3761353!2d35.1719885','<p>&nbsp;Use caution when the trail is snow-covered as ice may be present below the surface. Note that although the min-to-max elevation change is not large, because of the constant up-and-down on the various trail segments (none are steep), the author logged about 1500 feet of total ascent.</p>','<p>This is another of the author\'s composite hikes formulated by pieceing together trail segments. The author underestimated the total length of this hike and has provided some \'Shortcuts\' to reduce the length considerably. Also, an additional 1/3 mile can be chopped off the hike by not taking the <em><span style=\"color: #1428d2;\">Overlook Trail </span></em>at the south-central part of the hike. To enable the Shortcuts, simply check the corresponding boxes in the \"Tracks\" box in the upper right corner of the map. The trails in <em>Sulphur Canyon</em> were all quite well marked with clear signage, so that a complete hike description could be made by simply listing the trails and turns. Note the the conventional colors were assigned to the flags indicating trail junctions: green - turn left; red - turn right. The conventions only apply if traversing the hike in the same direction as indicated, and do not apply when retracing the same sections on the return trip.</p>\r\n<p>As the hike was conducted in the winter, it proceeded from the parking area indicated. The southern route is closed to vehicles in the winter months. More mileage can be cut from the total in the summer months by driving south on the <em>Sulphur Canyon Picnic Ground Road</em> and branching onto the <em>Cienega Equestrian Trailhead</em> and parking area. This will save almost a mile of hiking on the roads.</p>\r\n<p>For this winter hike, proceed south on the <em>Sulphur Canyon Picnic Ground Road</em> and head left on the road leading to the <em>Cienega Equestrian Trailhead</em>. From this point, follow the <em><span style=\"color: #1428d2;\">Cienega Horse Bypass Trail</span></em>. It will lead downhill to the <em>Picnic Grounds</em>, where the <em><span style=\"color: #1428d2;\">Armijo Trail </span></em>can be accessed. A short distance further, turn left on the <em><span style=\"color: #1428d2;\">Valle Trail</span></em> and then thereafter, left on the <span style=\"color: #1428d2;\"><em>Pinedrop Trail</em></span>. The latter eventually leads to the <em><span style=\"color: #1428d2;\">Un Poquito Trail</span></em>, where a sharp turn left is made. That trail leads downhill to a juncture with the <em><span style=\"color: #1428d2;\">This Way Trail</span></em>, where a left is made. Follow it a short distance and turn sharp left onto the <em><span style=\"color: #1428d2;\">That Way Trail</span></em>. It will eventually rejoin the <em><span style=\"color: #1428d2;\">This Way Trail</span></em>, but continue on <em><span style=\"color: #1428d2;\">That Way</span></em> until reaching the junction with the <span style=\"color: #1428d2;\"><em>La Barba Trail</em></span>. Follow <em><span style=\"color: #1428d2;\">La Barba </span></em>south (with the option to explore the <span style=\"color: #1428d2;\"><em>Overlook Trail</em></span> en route). Make a sharp right on the <em><span style=\"color: #1428d2;\">Deer Bed Trail</span></em> and head north. It will turn west and intersect the <em><span style=\"color: #1428d2;\">Vista Trail</span></em><span style=\"color: #1428d2;\"><span style=\"color: #000000;\">, where another left is made. </span></span>The <em><span style=\"color: #1428d2;\">Vista Trail</span></em> heads south briefly, then north to begin to close the loop. It will re-intersect the <em><span style=\"color: #1428d2;\">Deer Bed Trail</span></em> (intersections are opportunities to shorten the trail length). The <em><span style=\"color: #1428d2;\">Vista Trail </span></em>ends at the <em><span style=\"color: #1428d2;\">Madera Locura Trail </span></em>where a right turn heads back towards the earlier part of the hike. This flows back into the <em><span style=\"color: #1428d2;\">La Barba Trail</span></em> again, and a short distance later rejoins the <em><span style=\"color: #1428d2;\">Un Poquito Trail</span></em>. A right turn proceeds to the end of the loop, where you simply backtrack past the <em><span style=\"color: #1428d2;\">This Way Trail</span></em> junction.</p>','2022-01-21',NULL,NULL,NULL),
-('287','White Mesa East Leg','2','San Ysidro','Out-and-back','6.90','300','Med-Difficult','None','Fabulous colored rock formations','Spring, Fall','Full sun','EasternLeg-97.123.65.76-1649024721.gpx,Slots-97.123.65.76-1649029522.gpx','EasternLeg-97.123.65.76-1649024721.json','354989376','-1068326960','Whit1351ae.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.49891,-106.83269/@35.5112963,-106.8492492,12.86z','<p>&nbsp;Note that the parking area is a BLM Parking Area just east of the White Ridge Bike Trails parking area.</p>','<p>This leg of the <em><span style=\"color: #1428d2;\">White Mesa Bike Trails</span></em> holds a variety of fascinating and colorful rock formations. Some of the truly gorgeous views - and the labyrinth - can be accessed a short distance from the parking lot. After the labyrinth, the trail follows a steep hill up. It is not hard to maneuver going uphill, but coming down is difficult due to the loose sandy gravel on the sharp incline (see warning sign in Photos below).</p>\r\n<p>This trail affords fantastic views towards the <em>Dragon\'s Back</em> and peering into the multi-folded valleys. At one point (the short southbound segment about midway on the trail map), there is a marker stating \"Most Difficult\". Having followed this trail a short distance, the author would agree! The author turned around and continued north after this diversion. The hike eventually veers eastward at the red flag marked \"Two Track Merge\". A second junction occurs at the red flag marked \"Fence Hop\", which while not necessary, saves quite a bit of loop-around on the two-track.</p>\r\n<p>A short distance from the \"Fence Hop\", the two-track drops steeply downhill. The author took this route based on an AllTrails hike. The AllTrails trail appears to follow the arroyo bottom, but the author chose to explore higher ground. You can see the relevant section of the AllTrails track on the hike map, listed as \"AllTrails Slot Segment\". Check the box in the upper right corner of the hike map to display this track. The view at the top of the road, before the steep drop-off, is worth seeing, but you can save some distance and shorten the hike by turning around here (see Yellow Triangle at north end of track).</p>','2022-04-03',NULL,NULL,NULL);
+('287','White Mesa East Leg','2','San Ysidro','Out-and-back','6.90','300','Med-Difficult','None','Fabulous colored rock formations','Spring, Fall','Full sun','EasternLeg-97.123.65.76-1649024721.gpx,Slots-97.123.65.76-1649029522.gpx','EasternLeg-97.123.65.76-1649024721.json','354989376','-1068326960','Whit1351ae.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.49891,-106.83269/@35.5112963,-106.8492492,12.86z','<p>&nbsp;Note that the parking area is a BLM Parking Area just east of the White Ridge Bike Trails parking area.</p>','<p>This leg of the <em><span style=\"color: #1428d2;\">White Mesa Bike Trails</span></em> holds a variety of fascinating and colorful rock formations. Some of the truly gorgeous views - and the labyrinth - can be accessed a short distance from the parking lot. After the labyrinth, the trail follows a steep hill up. It is not hard to maneuver going uphill, but coming down is difficult due to the loose sandy gravel on the sharp incline (see warning sign in Photos below).</p>\r\n<p>This trail affords fantastic views towards the <em>Dragon\'s Back</em> and peering into the multi-folded valleys. At one point (the short southbound segment about midway on the trail map), there is a marker stating \"Most Difficult\". Having followed this trail a short distance, the author would agree! The author turned around and continued north after this diversion. The hike eventually veers eastward at the red flag marked \"Two Track Merge\". A second junction occurs at the red flag marked \"Fence Hop\", which while not necessary, saves quite a bit of loop-around on the two-track.</p>\r\n<p>A short distance from the \"Fence Hop\", the two-track drops steeply downhill. The author took this route based on an AllTrails hike. The AllTrails trail appears to follow the arroyo bottom, but the author chose to explore higher ground. You can see the relevant section of the AllTrails track on the hike map, listed as \"AllTrails Slot Segment\". Check the box in the upper right corner of the hike map to display this track. The view at the top of the road, before the steep drop-off, is worth seeing, but you can save some distance and shorten the hike by turning around here (see Yellow Triangle at north end of track).</p>','2022-04-03',NULL,NULL,NULL),
+('288','Sevilleta Wildlife Refuge','2','San Acacia','Loop','5.50','300','Moderate','Visitor Center','Mesa Views and Geology','Not Summer','Full sun','SevilletaWildlife-97.123.65.76-1650062410.gpx','SevilletaWildlife-97.123.65.76-1650062410.json','343518183','-1068825377','Sevice8f41.jpg',NULL,NULL,'https://www.google.com/maps/dir//Sevilleta+National+Wildlife+Refuge+Visitor+Center,+Socorro,+NM+87801/@34.3516078,-106.8832658,18z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8721c04470ca977f:0x9db0860aea617e49!2m2!1d-106.8824199!2d34.3516061','<p>&nbsp;Note: The Visitor Center is closed during the pandemic, but the trails are open.</p>','<p>The <em>Sevilleta Wildlife Refuge</em> offers some surprises in terms of hiking! The <em><span style=\"color: #283cd2;\">Mesa View Trail</span></em> begins at the northeast corner of the Visitor Center, where it heads towards the nearby mesas and canyons. Before long, the trail forks (see the yellow triangle on the interactive map). Continuing on the left leg takes you up a steep area where steps are built into the hills at multiple points to facilitate the ascent. This segment actually represents a shortcut (or effectively a <em><span style=\"color: #283cd2;\">Mesa View Trail</span></em> loop return) to the overlook where the <em><span style=\"color: #283cd2;\">Ladrones View Trail </span></em>begins. If you instead keep to the right at the fork, you go up a gradually ascending route to that overlook. The author explored the shortcut but decided on the longer route to add hiking distance. Eliminating the steep section (out and back) will reduce the total trail length by a bit over 1/2 mile.</p>\r\n<p>The <em><span style=\"color: #283cd2;\">Mesa View Trail </span></em>extends north and curves around the end of a set of mesas, where the a portion of the <em>Ladron Peak</em> comes into view. It then traverses some fascinating geological structures which are quite colorful (see photos) as it heads south. Eventually the overlook is reached where the <em><span style=\"color: #283cd2;\">Ladrones View Trail </span></em>begins. The colorful journey continues along this trail as it winds southward, then begins to descend into the valley as it heads east. The final leg back to the Visitor Center is via the <em><span style=\"color: #283cd2;\">Nature Loop Trail</span></em> at the southeast corner of the hike.</p>\r\n<p>All of the trails are well-maintained and clearly marked, making for a stress-free and fascinating hike.</p>','2022-04-15',NULL,NULL,NULL);
 
 
 
@@ -835,7 +836,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3135 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3138 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1824,7 +1825,10 @@ INSERT INTO REFS VALUES
 ('3127','287','Website:','https://www.mtbproject.com/directory/8011534/white-mesa-bike-trails','MTB Project'),
 ('3128','287','Book:','2',NULL),
 ('3132','285','On-line Map:','https://sfct.org/wp-content/uploads/2021/03/La_Tierra_Trails_map.pdf','La Tierra Trail System Map'),
-('3133','285','App:','https://www.alltrails.com/trail/us/new-mexico/la-tierra-trails--2','AllTrails.clom');
+('3133','285','App:','https://www.alltrails.com/trail/us/new-mexico/la-tierra-trails--2','AllTrails.clom'),
+('3135','288','Book:','2',NULL),
+('3136','288','Website:','https://www.stateparks.com/sevilleta_national_wildlife_refuge_in_new_mexico.html','NM State Parks'),
+('3137','288','Website:','https://www.fws.gov/refuge/sevilleta','US Fish and Wildlife Service');
 
 
 
@@ -1848,7 +1852,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9719 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9750 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -5013,7 +5017,26 @@ INSERT INTO TSV VALUES
 ('9710','285',NULL,'IMG_4890','Y','Y','A partially snow-covered trail','357161444','-1059795528','3124',NULL,'2022-01-12 10:47:17','IMG_4890','640','480',NULL,'7'),
 ('9711','285',NULL,'IMG_4894','Y','Y','The roadside tower','357219917','-1059605944','3125',NULL,'2022-01-12 11:31:45','IMG_4894','640','480',NULL,'9'),
 ('9712','285',NULL,'IMG_4883','Y','Y','The unexpected fence','357057194','-1059771944','3126',NULL,'2022-01-12 09:42:49','IMG_4883','640','480',NULL,'4'),
-('9713','285',NULL,'IMG_4891','Y','N','These seem to apply to bikers only','357165333','-1059797056','3127',NULL,'2022-01-12 10:51:15','IMG_4891','640','480',NULL,'8');
+('9713','285',NULL,'IMG_4891','Y','N','These seem to apply to bikers only','357165333','-1059797056','3127',NULL,'2022-01-12 10:51:15','IMG_4891','640','480',NULL,'8'),
+('9719','288',NULL,'IMG_5070','Y','Y','A first glimpse of Ladron Peak','343635889','-1068903444','3187',NULL,'2022-04-15 10:16:25','IMG_5070','480','640',NULL,'7'),
+('9720','288',NULL,'IMG_5088','Y','N','The entire front view of Ladrone Peak','343537250','-1068939056','3193',NULL,'2022-04-15 10:55:57','IMG_5088','480','640',NULL,'14'),
+('9721','288',NULL,'IMG_5049','Y','Y','View from the Visitor Center towards ABQ','343516806','-1068821278','3182',NULL,'2022-04-15 09:22:06','IMG_5049','480','640',NULL,'0'),
+('9722','288',NULL,'IMG_5090','Y','Y','Banded hills add beauty to the trail','343535694','-1068942722','3197',NULL,'2022-04-15 10:56:57','IMG_5090','480','640',NULL,'16'),
+('9723','288',NULL,'IMG_5051','Y','Y','An innocuous beginning on well-maintained trails','343519056','-1068831333','3182',NULL,'2022-04-15 09:25:37','IMG_5051','480','640',NULL,'1'),
+('9724','288',NULL,'IMG_5093','Y','N','Looking towards Socorro and the Magdalena Mountains','343477528','-1068979500','3198',NULL,'2022-04-15 11:10:17','IMG_5093','480','640',NULL,'17'),
+('9725','288',NULL,'IMG_5085','Y','Y','Looking east from Ladrones View Trail','343594944','-1068934250','3194',NULL,'2022-04-15 10:43:18','IMG_5085','480','640',NULL,'13'),
+('9726','288',NULL,'IMG_5056','Y','Y','The beginning of a steep \'shortcut\'','343549056','-1068896028','3183',NULL,'2022-04-15 09:39:13','IMG_5056','480','640',NULL,'2'),
+('9727','288',NULL,'IMG_5094','Y','Y','Looking back from when I came','343475500','-1068977667','3199',NULL,'2022-04-15 11:10:57','IMG_5094','480','640',NULL,'18'),
+('9728','288',NULL,'IMG_5060','Y','N','Overlook where the shortcut, Mesa View Trail and Ladrones View Trail merge','343550778','-1068934944','3184',NULL,'2022-04-15 09:48:31','IMG_5060','480','640',NULL,'5'),
+('9729','288',NULL,'IMG_5065','Y','Y','The northern end of the Mesa View Trail','343602944','-1068895278','3188',NULL,'2022-04-15 10:08:29','IMG_5065','480','640',NULL,'6'),
+('9730','288',NULL,'IMG_5077','Y','Y','\'Chocolate Hills\' on Mesa View Trail','343641722','-1068954472','3189',NULL,'2022-04-15 10:27:18','IMG_5077','480','640',NULL,'9'),
+('9731','288',NULL,'IMG_5057','Y','N','The canyon view from the shortcut','343548083','-1068898778','3185',NULL,'2022-04-15 09:40:14','IMG_5057','480','640',NULL,'3'),
+('9732','288',NULL,'IMG_5083','Y','Y','A broader view of the canyon and hills','343607750','-1068932361','3195',NULL,'2022-04-15 10:40:54','IMG_5083','480','640',NULL,'12'),
+('9733','288',NULL,'IMG_5082','Y','Y','Peering down into the canyon of the Chocolate Hills','343609222','-1068943944','3190',NULL,'2022-04-15 10:39:09','IMG_5082','480','640',NULL,'11'),
+('9734','288',NULL,'IMG_5072','Y','Y','One of the canyons formed by arroyos','343644056','-1068918000','3191',NULL,'2022-04-15 10:20:46','IMG_5072','480','640',NULL,'8'),
+('9735','288',NULL,'IMG_5089','Y','N','Yet another colorful canyon','343537222','-1068939528','3196',NULL,'2022-04-15 10:56:25','IMG_5089','480','640',NULL,'15'),
+('9736','288',NULL,'IMG_5059','Y','Y','Last step up on the shortcut','343549889','-1068930194','3186',NULL,'2022-04-15 09:46:21','IMG_5059','480','640',NULL,'4'),
+('9737','288',NULL,'IMG_5079','Y','Y','A massive collection of tumbleweeds required some bushwhacking','343634333','-1068968194','3192',NULL,'2022-04-15 10:30:35','IMG_5079','480','640',NULL,'10');
 
 
 
@@ -5052,7 +5075,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=643 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=647 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -5703,7 +5726,11 @@ INSERT INTO VISITORS VALUES
 ('639','108.14.86.174','Apple Safari','mac','2022-04-05 04:05:42','https://nmhikes.com:443/pages/home.php'),
 ('640','207.46.13.55','Unknown','Unknown','2022-04-06 06:45:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=146'),
 ('641','174.205.182.108','Google Chrome','linux','2022-04-06 09:34:16','https://nmhikes.com:443/pages/tableOnly.php'),
-('642','157.55.39.72','Unknown','Unknown','2022-04-07 07:41:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145');
+('642','157.55.39.72','Unknown','Unknown','2022-04-07 07:41:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('643','207.46.13.55','Unknown','Unknown','2022-04-19 08:55:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=255'),
+('644','157.55.39.205','Unknown','Unknown','2022-04-19 10:39:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=285'),
+('645','207.46.13.60','Unknown','Unknown','2022-04-20 01:30:37','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=196'),
+('646','40.77.167.80','Unknown','Unknown','2022-04-20 05:10:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=194');
 
 
 
