@@ -109,15 +109,17 @@ function initActions() {
         $('.popupCap > p').remove();
         $('.popupCap').css('display', 'none');
     });
-    var _loop_1 = function (t) {
-        var item = $photos[t];
-        $(item).on('click', function () {
-            var zpic = "/pictures/zsize/" + piclnks[t] + "_z.jpg";
-            window.open(zpic, "_blank");
-        });
-    };
-    for (var t = 0; t < noOfPix; t++) {
-        _loop_1(t);
+    if (!edit_mode) {
+        var _loop_1 = function (t) {
+            var item = $photos[t];
+            $(item).on('click', function () {
+                var zpic = "/pictures/zsize/" + piclnks[t] + "_z.jpg";
+                window.open(zpic, "_blank");
+            });
+        };
+        for (var t = 0; t < noOfPix; t++) {
+            _loop_1(t);
+        }
     }
     return;
 }

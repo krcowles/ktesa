@@ -25,28 +25,28 @@ if ($picq->rowCount() === 0) {
     $inclPix = 'YES';
     $picarray = $picq->fetchAll(PDO::FETCH_ASSOC);
     /**
-     * Find the first photo (not waypoint) and see if the 'org' field is set, ie
-     * has a photo sequencing number [not all do at first invocation]. Note: a
-     * hikeno with photo sequencing has all 'org' fields populated
+     * The $picarray may also contain waypoints, so an array of only photos is
+     * required before sorting. If any photo has its 'org' field set, then all
+     * 'org' fields are set and the photo array may be sorted according to it
+     * ordinal assignment. If its 'org' field is empty, then use the default order.
      */
+    $photos = [];
+    $waypoints = [];
     foreach ($picarray as $item) {
-        if (!empty($item['mid']) && !empty($item['org'])) {
-            usort($picarray, "cmp"); // sort by stored sequence number 
-            break;
+        if (!empty($item['mid'])) {
+            array_push($photos, $item);
+        } else {
+            array_push($waypoints, $item);
         }
+    }
+    if (count($photos) > 0 && !empty($photos[0]['org'])) {
+        usort($photos, "cmp");
     }
     /**
      * The location of the 'pictures' directory is needed in order to 
      * specify <img> src attribute. The issue is that the src attribute
      * can only have a relative path or absolute path. To provide the
-     * correct relative path, the 'pictures' directory needs to be
-     * located, which resides at "DOCUMENT_ROOT". Unfortunately, the 
-     * $_SERVER[] for that var specifies the server's absolute path,
-     * e.g. on the MacOS, the DOCUMENT_ROOT includes "/Users/... etc."
-     * This would look like a relative path to the img tag, having a
-     * location of "root"/Users/..., which doesn't exist. Therefore, it
-     * is necessary to extract the correct relative path to the pictures
-     * directory from wherever this code is invoked. 
+     * correct relative path, the 'pictures' directory needs to be located.
      */
     $picpath = getPicturesDirectory();
     
@@ -66,28 +66,27 @@ if ($picq->rowCount() === 0) {
     $phWds = []; // width
     $pMap = [];  // status of 'Map It' checkbox
     $rowHt = 220; // nominal choice for photo height in div
-    foreach ($picarray as $pics) {
-        if (!empty($pics['mid'])) {  // Picture
-            $tsvId[$picno] = $pics['picIdx'];
-            $phDescs[$picno] = $pics['desc'];
-            $hpg[$picno] = $pics['hpg'];
-            $mpg[$picno] = $pics['mpg'];
-            $phPics[$picno] = $pics['mid'] . "_" . $pics['thumb'];
-            $pHeight = $pics['imgHt'];
-            $aspect = $rowHt/$pHeight;
-            $pWidth = $pics['imgWd'];
-            $pMap[$picno] = true;
-            if (empty($pics['lat']) || empty($pics['lng'])) {
-                $pMap[$picno] = false;
-            }
-            $phWds[$picno++] = floor($aspect * $pWidth);
-        } else {  // Waypoint
-            $wids[$wptno] = $pics['picIdx'];
-            $wdes[$wptno] = $pics['title'];
-            $wlat[$wptno] = $pics['lat']/LOC_SCALE;
-            $wlng[$wptno] = $pics['lng']/LOC_SCALE;
-            $wicn[$wptno++] = $pics['iclr'];
+    foreach ($photos as $pics) {
+        $tsvId[$picno] = $pics['picIdx'];
+        $phDescs[$picno] = $pics['desc'];
+        $hpg[$picno] = $pics['hpg'];
+        $mpg[$picno] = $pics['mpg'];
+        $phPics[$picno] = $pics['mid'] . "_" . $pics['thumb'];
+        $pHeight = $pics['imgHt'];
+        $aspect = $rowHt/$pHeight;
+        $pWidth = $pics['imgWd'];
+        $pMap[$picno] = true;
+        if (empty($pics['lat']) || empty($pics['lng'])) {
+            $pMap[$picno] = false;
         }
+        $phWds[$picno++] = floor($aspect * $pWidth);
+    }
+    foreach ($waypoints as $waypt) {
+        $wids[$wptno] = $waypt['picIdx'];
+        $wdes[$wptno] = $waypt['title'];
+        $wlat[$wptno] = $waypt['lat']/LOC_SCALE;
+        $wlng[$wptno] = $waypt['lng']/LOC_SCALE;
+        $wicn[$wptno++] = $waypt['iclr'];
     }
     $picCount = $picno;
     $wayPointCount = $wptno;
