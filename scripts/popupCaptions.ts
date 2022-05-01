@@ -111,14 +111,12 @@ function initActions() {
         $('.popupCap > p').remove();
         $('.popupCap').css('display','none');
     });
-    if (!edit_mode) {
-        for (let t=0; t<noOfPix; t++) {
-            let item = <HTMLElement>$photos[t];
-            $(item).on('click', function() {
-                var zpic = "/pictures/zsize/" + piclnks[t] + "_z.jpg";
-                window.open(zpic,"_blank");
-            });
-        }
+    for (let t=0; t<noOfPix; t++) {
+        let item = <HTMLElement>$photos[t];
+        $(item).on('click', function() {
+            var zphoto = $(this).attr('src');
+            window.open(zphoto,"_blank");
+        });
     }
     return;
 }
