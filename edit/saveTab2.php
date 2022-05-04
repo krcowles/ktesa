@@ -66,7 +66,7 @@ if (count($picarray) > 0) {
             array_push($photos, $item);
         }
     }
-    if (count($photos) > 0 && !empty($photos[0]['org'])) {
+    if (count($photos) > 0 && strlen(($photos[0]['org'])) > 0) {
         usort($photos, "cmp"); // sort by stored sequence number 
     }
 }

@@ -292,9 +292,9 @@ $('#redo_thumb').on('click', function(ev) {
     // submit after asynch functions complete
     ev.preventDefault();
     var urlCreator = window.URL || window.webkitURL;
-    // first part of file name for preview/thumb
+    // first part of file name is used for preview/thumb
     let prefix = $('#htitle').text(); // on main editDB.php page
-    prefix = prefix.substr(0, 4);
+    prefix = prefix.substring(0, 4);
     // which image has user selected?
     let uccrop = $('#uccrop').text();
     let ucprev = $('#ucprev').text();

@@ -39,7 +39,7 @@ if ($picq->rowCount() === 0) {
             array_push($waypoints, $item);
         }
     }
-    if (count($photos) > 0 && !empty($photos[0]['org'])) {
+    if (count($photos) > 0 && strlen(($photos[0]['org'])) > 0) {
         usort($photos, "cmp");
     }
     /**
