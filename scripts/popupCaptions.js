@@ -112,8 +112,13 @@ function initActions() {
     for (var t = 0; t < noOfPix; t++) {
         var item = $photos[t];
         $(item).on('click', function () {
-            var zphoto = $(this).attr('src');
-            window.open(zphoto, "_blank");
+            /**
+             * To avoid annoying behavior in editor when trying to move a photo:
+             */
+            if (typeof edit_mode === 'undefined') {
+                var zphoto = $(this).attr('src');
+                window.open(zphoto, "_blank");
+            }
         });
     }
     return;
