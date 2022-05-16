@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 
 
@@ -395,7 +395,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 
 
@@ -423,7 +423,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 
 
@@ -528,7 +528,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=291 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -813,7 +813,8 @@ INSERT INTO HIKES VALUES
 ('287','White Mesa East Leg','2','San Ysidro','Out-and-back','6.90','300','Med-Difficult','None','Fabulous colored rock formations','Spring, Fall','Full sun','EasternLeg-97.123.65.76-1649024721.gpx,Slots-97.123.65.76-1649029522.gpx','EasternLeg-97.123.65.76-1649024721.json','354989376','-1068326960','Whit1351ae.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.49891,-106.83269/@35.5112963,-106.8492492,12.86z','<p>&nbsp;Note that the parking area is a BLM Parking Area just east of the White Ridge Bike Trails parking area.</p>','<p>This leg of the <em><span style=\"color: #1428d2;\">White Mesa Bike Trails</span></em> holds a variety of fascinating and colorful rock formations. Some of the truly gorgeous views - and the labyrinth - can be accessed a short distance from the parking lot. After the labyrinth, the trail follows a steep hill up. It is not hard to maneuver going uphill, but coming down is difficult due to the loose sandy gravel on the sharp incline (see warning sign in Photos below).</p>\r\n<p>This trail affords fantastic views towards the <em>Dragon\'s Back</em> and peering into the multi-folded valleys. At one point (the short southbound segment about midway on the trail map), there is a marker stating \"Most Difficult\". Having followed this trail a short distance, the author would agree! The author turned around and continued north after this diversion. The hike eventually veers eastward at the red flag marked \"Two Track Merge\". A second junction occurs at the red flag marked \"Fence Hop\", which while not necessary, saves quite a bit of loop-around on the two-track.</p>\r\n<p>A short distance from the \"Fence Hop\", the two-track drops steeply downhill. The author took this route based on an AllTrails hike. The AllTrails trail appears to follow the arroyo bottom, but the author chose to explore higher ground. You can see the relevant section of the AllTrails track on the hike map, listed as \"AllTrails Slot Segment\". Check the box in the upper right corner of the hike map to display this track. The view at the top of the road, before the steep drop-off, is worth seeing, but you can save some distance and shorten the hike by turning around here (see Yellow Triangle at north end of track).</p>','2022-04-03',NULL,NULL,NULL),
 ('288','Sevilleta Wildlife Refuge','2','San Acacia','Loop','5.50','300','Moderate','Visitor Center','Mesa Views and Geology','Not Summer','Full sun','SevilletaWildlife-97.123.65.76-1650062410.gpx','SevilletaWildlife-97.123.65.76-1650062410.json','343518183','-1068825377','Sevice8f41.jpg',NULL,NULL,'https://www.google.com/maps/dir//Sevilleta+National+Wildlife+Refuge+Visitor+Center,+Socorro,+NM+87801/@34.3516078,-106.8832658,18z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8721c04470ca977f:0x9db0860aea617e49!2m2!1d-106.8824199!2d34.3516061','<p>&nbsp;Note: The Visitor Center is closed during the pandemic, but the trails are open.</p>','<p>The <em>Sevilleta Wildlife Refuge</em> offers some surprises in terms of hiking! The <em><span style=\"color: #283cd2;\">Mesa View Trail</span></em> begins at the northeast corner of the Visitor Center, where it heads towards the nearby mesas and canyons. Before long, the trail forks (see the yellow triangle on the interactive map). Continuing on the left leg takes you up a steep area where steps are built into the hills at multiple points to facilitate the ascent. This segment actually represents a shortcut (or effectively a <em><span style=\"color: #283cd2;\">Mesa View Trail</span></em> loop return) to the overlook where the <em><span style=\"color: #283cd2;\">Ladrones View Trail </span></em>begins. If you instead keep to the right at the fork, you go up a gradually ascending route to that overlook. The author explored the shortcut but decided on the longer route to add hiking distance. Eliminating the steep section (out and back) will reduce the total trail length by a bit over 1/2 mile.</p>\r\n<p>The <em><span style=\"color: #283cd2;\">Mesa View Trail </span></em>extends north and curves around the end of a set of mesas, where the a portion of the <em>Ladron Peak</em> comes into view. It then traverses some fascinating geological structures which are quite colorful (see photos) as it heads south. Eventually the overlook is reached where the <em><span style=\"color: #283cd2;\">Ladrones View Trail </span></em>begins. The colorful journey continues along this trail as it winds southward, then begins to descend into the valley as it heads east. The final leg back to the Visitor Center is via the <em><span style=\"color: #283cd2;\">Nature Loop Trail</span></em> at the southeast corner of the hike.</p>\r\n<p>All of the trails are well-maintained and clearly marked, making for a stress-free and fascinating hike.</p>','2022-04-15',NULL,NULL,NULL),
 ('289','Los Poblanos Open Space','2','Albuquerque','Loop','4.20','30','Easy','Public Toilet','Farm fields and Sandia views','Not Summer','Full sun','LosPoblanosOS-97.123.87.144-1651711912.gpx','LosPoblanosOS-97.123.87.144-1651711912.json','351427937','-1066593551','Los dd1e60.jpg',NULL,NULL,'https://www.google.com/maps/place/Los+Poblanos+Fields+Open+Space/@35.1353265,-106.6621556,14.44z/data=!4m5!3m4!1s0x872273a744c27ff9:0xfc6c5dc1c0bcc34d!8m2!3d35.1426806!4d-106.6595841',NULL,'<p>The <em><span style=\"color: #1428d2;\">Los Poblanos Open Space</span></em> is a popular local hiking area for easy strolls. The parking lot is large and access is immediately adjacent. Other possible loops can be formed by checking the trail maps on line and making appropriate adjustments - everything is generally visible and it would be hard to get lost.</p>\r\n<p>This hike extends past the fields by heading towards the aequias alongside the Rio Grande. Multiple views of the Sandia are available, and the Los Ranchos de Albuquergue Growers Market and Art Market are nearby, where farm markets, lavender festivals, art shows and other events occur throughout the year.</p>\r\n<p>If interested, folks can acquire a plot for a personal garden in the fields. Water tanks are nearby, and all maintenance is up to the grower.</p>','2022-05-02',NULL,NULL,NULL),
-('290','Ladron Peak North Ridge','2','San Acacia','Out-and-back','4.20','600','Moderate','None','Ladron Peak and Wilderness','Not Summer','Full sun','LadronNRidge-97.123.87.144-1651756008.gpx','LadronNRidge-97.123.87.144-1651756008.json','344960917','-1071313900','Ladrad685b.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.49576,-107.13214/@34.4132941,-107.1287198,11.28z','<p>&nbsp;Access to the north ridge is an 18+ mile dirt road: County Road 12 near the Bernardo Exit off I-25.&nbsp; The road is sufficiently well-maintained to allow travel for non-high-clearance vehicles; nonetheless, you may encounter grazing cattle en route, so proceed carefully.</p>','<p>The <em><span style=\"color: #1428d2;\">Ladron North Ridge Access</span></em> is not an actual trail, but essentially a well-defined ridge on which sections of footpaths will sometimes appear. From the intersection of CR12 with an unmarked road heading north, simply hike up the hill leading to the ridge, and then follow the ridge south. Views of <em>Ladron Peak</em> are exceptional along the way. You will encounter fences at several points, but all seem to have an easy hikers\' path through.</p>\r\n<p>The intent of this hike was to explore the views offered at the north ridge, and definitely not to attempt to scale <em>Ladron Peak</em>. For routes to ascend, check the reference links below from AllTrails. The end of this hike was arbitrarily determined by an apparent cleft in the ridge where access to continue looked expressly difficult. The area is quite desolate and it is unlikely you will encounter anyone - cars or hikers - on your journey, but the views are unforgettable.</p>','2022-05-04',NULL,NULL,NULL);
+('290','Ladron Peak North Ridge','2','San Acacia','Out-and-back','4.20','600','Moderate','None','Ladron Peak and Wilderness','Not Summer','Full sun','LadronNRidge-97.123.87.144-1651756008.gpx','LadronNRidge-97.123.87.144-1651756008.json','344960917','-1071313900','Ladrad685b.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.49576,-107.13214/@34.4132941,-107.1287198,11.28z','<p>&nbsp;Access to the north ridge is an 18+ mile dirt road: County Road 12 near the Bernardo Exit off I-25.&nbsp; The road is sufficiently well-maintained to allow travel for non-high-clearance vehicles; nonetheless, you may encounter grazing cattle en route, so proceed carefully.</p>','<p>The <em><span style=\"color: #1428d2;\">Ladron North Ridge Access</span></em> is not an actual trail, but essentially a well-defined ridge on which sections of footpaths will sometimes appear. From the intersection of CR12 with an unmarked road heading north, simply hike up the hill leading to the ridge, and then follow the ridge south. Views of <em>Ladron Peak</em> are exceptional along the way. You will encounter fences at several points, but all seem to have an easy hikers\' path through.</p>\r\n<p>The intent of this hike was to explore the views offered at the north ridge, and definitely not to attempt to scale <em>Ladron Peak</em>. For routes to ascend, check the reference links below from AllTrails. The end of this hike was arbitrarily determined by an apparent cleft in the ridge where access to continue looked expressly difficult. The area is quite desolate and it is unlikely you will encounter anyone - cars or hikers - on your journey, but the views are unforgettable.</p>','2022-05-04',NULL,NULL,NULL),
+('291','EE Canyon','2','Pinos Altos','Out-and-back','6.80','950','Easy-Moderate','Visitor Center','Gila River and Canyon Views','Not Winter','Mixed sun/shade','EE_Canyon-97.123.87.144-1652655558.gpx','EE_Canyon-97.123.87.144-1652655558.json','332297445','-1082654832','EE Cf3d59a.jpg',NULL,NULL,'https://www.google.com/maps/dir//Gila+Cliff+Dwellings+Trailhead+Museum,+Silver+City,+NM+88061/@33.0257999,-108.3265197,10.52z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87275a210f36d115:0x6ea318120887ea7f!2m2!1d-108.2648444!2d33.2294192','<p>&nbsp;The road to the Gila Cliff Dwellings is paved, but extremely twisted. Allow almost two hours from Silver City - less from Pinos Alto - to reach the trailhead.</p>','<p>The <span style=\"color: #1428d2;\"><em>EE Canyon Trail</em></span> is one of many hikes available in the general area of the <em>Gila Cliff Dwellings</em>. The area is quite lovely with its sculpted rock features, rivers, trees and canyons. Due to the time required to get there, it will be difficult to do more than 1 day hike per visit unless you are camping nearby, or overnight hiking/camping.</p>\r\n<p>The trailhead is adjacent to the <em>Trailhead Museum</em> by the main Cliff Dwellings path. It begins by following the <em><span style=\"color: #1428d2;\">West Fork Trail </span></em>signs. The route to EE Canyon is not specifically marked, so look for the sign pointing to <span style=\"color: #1428d2;\"><em>Little Creek</em></span> about 1-1/4 miles from the trailhead. This is actually the entrance to EE Canyon, and the creek is actually a very dry arroyo. Note that although marked \'Partial Shade\', shade is somewhat scant on the trail. Also, the trail map provided on <em>AllTrails</em> (see References, below) is out of date, and the footpath clearly deviates east of the indicated route at the point marked with the southernmost green flag [ <img src=\"../images/greenFlag18.png\" alt=\"AllTrails point of deviation\" width=\"18\" height=\"18\" /> ] on the interactive map. Simply follow the well-worn footpath - there is no alternate route up.</p>\r\n<p>Though the trail ascends almost 1,000 ft, the grade is easy for virtually the entire length of the hike. It becomes slightly more moderate just before the juncture with the <em><span style=\"color: #1428d2;\">Ring Canyon Trail</span></em> (the posted sign will indicate TJ Corral, 4.5 miles) which will lead back to the main road (NM15) at a point about 1.5 kilometers from the trailhead. As you hike up the early part of the canyon, it is easy to miss some of the markers for the footpath that runs mostly parallel to the arroyo - but the routes merge uphill. The slight advantage of the footpath is that it is easier to walk than the sandy arroyo.</p>','2022-05-14',NULL,NULL,NULL);
 
 
 
@@ -1836,7 +1837,10 @@ INSERT INTO REFS VALUES
 ('3148','290','Book:','2','Stephen Ausherman'),
 ('3149','290','Website:','https://en.wikipedia.org/wiki/Ladron_Peak','Wikipedia'),
 ('3150','290','Website:','https://www.alltrails.com/trail/us/new-mexico/sierra-ladrones-and-ladron-peak','Ladron Peak - Eastern Approach'),
-('3151','290','Website:','https://www.alltrails.com/trail/us/new-mexico/ladron-peak-west-approach','Ladron Peak - Western Approach');
+('3151','290','Website:','https://www.alltrails.com/trail/us/new-mexico/ladron-peak-west-approach','Ladron Peak - Western Approach'),
+('3152','291','Book:','17',NULL),
+('3153','291','App:','https://www.alltrails.com/trail/us/new-mexico/ee-canyon-loop','AllTrails.com'),
+('3154','291','Website:','https://www.nps.gov/gicl/upload/ACFCCA.pdf','National Park Service Brochure');
 
 
 
@@ -1860,7 +1864,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9811 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9842 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -5079,7 +5083,24 @@ INSERT INTO TSV VALUES
 ('9807','290',NULL,'IMG_5185','Y','Y','Looking south near the trail\'s start','344949444','-1071309750','3234',NULL,'2022-05-04 12:08:32','IMG_5185','480','640',NULL,'14'),
 ('9808','290',NULL,'IMG_5171','Y','Y','A third fence and a view of Ladron Peak','344771528','-1071233444','3235',NULL,'2022-05-04 10:46:35','IMG_5171','480','640',NULL,'8'),
 ('9809','290',NULL,'IMG_5178','Y','Y','A view of the steep valley','344686056','-1071212472','3236',NULL,'2022-05-04 11:03:33','IMG_5178','480','640',NULL,'12'),
-('9810','290',NULL,'IMG_5175','Y','Y','The fourth and final fence approaching the cleft','344701917','-1071217639','3237',NULL,'2022-05-04 10:59:57','IMG_5175','480','640',NULL,'10');
+('9810','290',NULL,'IMG_5175','Y','Y','The fourth and final fence approaching the cleft','344701917','-1071217639','3237',NULL,'2022-05-04 10:59:57','IMG_5175','480','640',NULL,'10'),
+('9811','291',NULL,'IMG_5284','Y','Y','The trail begins at the Cliff Dwellings Trailhead Museum','332297972','-1082653722','3238',NULL,'2022-05-14 09:48:44','IMG_5284','480','640',NULL,'0'),
+('9812','291',NULL,'IMG_5287','Y','Y','There are three well-fortified footbridges in the first mile or so','332308194','-1082677083','3239',NULL,'2022-05-14 09:54:21','IMG_5287','480','640',NULL,'2'),
+('9813','291',NULL,'IMG_5293','Y','Y','An open meadow of Ponderosa early on','332347333','-1082762361','3240',NULL,'2022-05-14 10:10:14','IMG_5293','480','640',NULL,'3'),
+('9814','291',NULL,'IMG_5285','Y','Y','A pleasant start ','332301444','-1082660611','3241',NULL,'2022-05-14 09:50:58','IMG_5285','640','480',NULL,'1'),
+('9815','291',NULL,'IMG_5297','Y','N','Interesting stone features','332352028','-1082866972','3242',NULL,'2022-05-14 10:32:28','IMG_5297','640','480',NULL,'8'),
+('9816','291',NULL,'IMG_5296','Y','Y','The entrance to the EE Canyon','332356028','-1082860556','3243',NULL,'2022-05-14 10:31:00','IMG_5296','480','640',NULL,'7'),
+('9817','291',NULL,'IMG_5299','Y','Y','The canyon opens up early ','332344556','-1082873472','3244',NULL,'2022-05-14 10:34:29','IMG_5299','480','640',NULL,'10'),
+('9818','291',NULL,'IMG_5295','Y','N','Watch for this sign (Little Creek) which is actually the route to EE Canyon','332358750','-1082832417','3245',NULL,'2022-05-14 10:26:43','IMG_5295','480','640',NULL,'6'),
+('9819','291',NULL,'IMG_5319','Y','Y','This day, a wildfire near Deming makes its presence known','332361472','-1082853694','3246',NULL,'2022-05-14 12:21:25','IMG_5319','480','640',NULL,'5'),
+('9820','291',NULL,'IMG_5302','Y','Y','Some interesting rock shapes appear periodically','332330278','-1082872222','3247',NULL,'2022-05-14 10:38:15','IMG_5302','640','480',NULL,'11'),
+('9821','291',NULL,'IMG_5318','Y','N','Truly a face-like sculpt!','332349972','-1082870778','3248',NULL,'2022-05-14 12:17:34','IMG_5318','640','480',NULL,'9'),
+('9822','291',NULL,'IMG_5308','Y','Y','Occasionally, clear and large cairns mark the path, though not really needed','332190806','-1082878028','3249',NULL,'2022-05-14 11:07:24','IMG_5308','480','640',NULL,'13'),
+('9823','291',NULL,'IMG_5316','Y','Y','Looking north across a burn','332149472','-1082915278','3250',NULL,'2022-05-14 11:36:07','IMG_5316','480','640',NULL,'14'),
+('9824','291',NULL,'IMG_5305','Y','Y','A mix of burn areas and old growth is visible','332259556','-1082879194','3251',NULL,'2022-05-14 10:53:45','IMG_5305','480','640',NULL,'12'),
+('9825','291',NULL,'IMG_5320','Y','Y','Nice views of surrounding terrain','332346389','-1082803028','3252',NULL,'2022-05-14 12:28:25','IMG_5320','480','640',NULL,'4');
+INSERT INTO TSV VALUES
+('9826','291',NULL,'IMG_5314','Y','N','The end of the canyon intersects a trail back to NM15','332125306','-1082933722','3253',NULL,'2022-05-14 11:26:28','IMG_5314','480','640',NULL,'15');
 
 
 
@@ -5118,7 +5139,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=654 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=717 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -5780,7 +5801,71 @@ INSERT INTO VISITORS VALUES
 ('650','66.249.75.140','Google Chrome','linux','2022-05-05 01:49:08','https://nmhikes.com:443/pages/landing.php'),
 ('651','40.77.167.80','Unknown','Unknown','2022-05-05 02:46:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=261'),
 ('652','66.249.75.144','Google Chrome','Unknown','2022-05-05 03:09:19','https://nmhikes.com:443/pages/home.php'),
-('653','40.77.167.49','Unknown','Unknown','2022-05-05 05:37:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=166');
+('653','40.77.167.49','Unknown','Unknown','2022-05-05 05:37:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=166'),
+('654','207.46.13.84','Unknown','Unknown','2022-05-06 10:35:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=205'),
+('655','76.213.176.168','Google Chrome','linux','2022-05-06 01:06:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
+('656','76.213.176.168','Google Chrome','linux','2022-05-06 01:54:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
+('657','207.46.13.84','Unknown','Unknown','2022-05-07 04:27:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=94'),
+('658','40.77.167.80','Unknown','Unknown','2022-05-07 08:22:01','https://nmhikes.com:443/pages/home.php'),
+('659','98.60.70.253','Mozilla Firefox','mac','2022-05-07 02:36:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=118'),
+('660','40.77.167.71','Unknown','Unknown','2022-05-07 03:20:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('661','207.46.13.58','Unknown','Unknown','2022-05-07 07:08:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=107'),
+('662','40.77.167.71','Unknown','Unknown','2022-05-08 12:06:29','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('663','157.55.39.176','Unknown','Unknown','2022-05-08 10:29:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=276'),
+('664','207.46.13.84','Unknown','Unknown','2022-05-08 12:30:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('665','75.161.23.116','Google Chrome','linux','2022-05-08 12:45:01','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=135'),
+('666','185.229.59.123','Google Chrome','windows','2022-05-08 01:22:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=128'),
+('667','154.6.17.45','Unknown','mac','2022-05-08 02:03:26','https://nmhikes.com:443/pages/home.php'),
+('668','154.6.17.45','Apple Safari','mac','2022-05-08 02:03:27','https://nmhikes.com:443/pages/home.php'),
+('669','207.46.13.84','Unknown','Unknown','2022-05-08 02:28:23','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=191'),
+('670','207.46.13.84','Unknown','Unknown','2022-05-08 02:38:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
+('671','75.161.23.116','Google Chrome','linux','2022-05-08 05:00:37','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=135'),
+('672','154.6.17.46','Unknown','mac','2022-05-08 08:25:34','https://nmhikes.com:443/pages/home.php'),
+('673','154.6.17.46','Apple Safari','mac','2022-05-08 08:25:34','https://nmhikes.com:443/pages/home.php'),
+('674','40.77.167.49','Apple Safari','mac','2022-05-09 02:54:33','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=116'),
+('675','40.77.202.113','Google Chrome','windows','2022-05-09 02:54:35','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=116&tbl='),
+('676','40.77.202.113','Google Chrome','windows','2022-05-09 02:54:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=116&tbl=old'),
+('677','40.77.202.113','Google Chrome','windows','2022-05-09 03:10:44','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=116&tbl='),
+('678','40.77.202.113','Google Chrome','windows','2022-05-09 03:10:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=116&tbl=old'),
+('679','40.77.167.82','Unknown','Unknown','2022-05-09 09:25:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=263'),
+('680','40.77.167.80','Unknown','Unknown','2022-05-09 10:42:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=136'),
+('681','40.77.167.49','Unknown','Unknown','2022-05-09 04:33:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=186'),
+('682','157.55.39.176','Unknown','Unknown','2022-05-09 06:59:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=131'),
+('683','174.205.166.141','Apple Safari','mac','2022-05-09 09:06:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('684','157.55.39.176','Unknown','Unknown','2022-05-10 10:40:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=108'),
+('685','207.46.13.84','Unknown','Unknown','2022-05-11 03:31:27','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=64'),
+('686','40.77.167.71','Unknown','Unknown','2022-05-11 06:50:27','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=216'),
+('687','40.77.167.71','Unknown','Unknown','2022-05-11 08:03:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=201'),
+('688','207.46.13.84','Unknown','Unknown','2022-05-11 10:02:16','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=20'),
+('689','207.46.13.84','Unknown','Unknown','2022-05-11 10:16:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=88'),
+('690','157.55.39.176','Unknown','Unknown','2022-05-12 06:41:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=137'),
+('691','207.46.13.38','Unknown','Unknown','2022-05-12 07:07:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=71'),
+('692','216.159.180.101','Mozilla Firefox','windows','2022-05-12 10:56:06','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=79'),
+('693','207.46.13.84','Unknown','Unknown','2022-05-13 01:56:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=89'),
+('694','40.77.167.72','Unknown','Unknown','2022-05-13 07:24:15','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=105'),
+('695','174.62.57.193','Apple Safari','mac','2022-05-13 03:57:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('696','157.55.39.215','Unknown','Unknown','2022-05-13 04:43:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=174'),
+('697','157.55.39.215','Unknown','Unknown','2022-05-14 08:14:00','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=49'),
+('698','174.62.57.193','Apple Safari','mac','2022-05-14 11:21:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('699','40.77.167.46','Unknown','Unknown','2022-05-14 12:04:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=122'),
+('700','107.77.229.95','Apple Safari','mac','2022-05-14 12:35:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147');
+INSERT INTO VISITORS VALUES
+('701','107.77.229.95','Apple Safari','mac','2022-05-14 02:05:37','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('702','66.249.75.138','Google Chrome','linux','2022-05-14 06:39:28','https://nmhikes.com:443/pages/landing.php'),
+('703','66.249.75.136','Google Chrome','Unknown','2022-05-14 08:09:15','https://nmhikes.com:443/pages/home.php'),
+('704','185.81.113.109','Google Chrome','windows','2022-05-14 10:27:16','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=116%27'),
+('705','207.46.13.190','Unknown','Unknown','2022-05-15 04:21:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=172'),
+('706','207.46.13.190','Unknown','Unknown','2022-05-15 04:54:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=165'),
+('707','40.77.167.82','Unknown','Unknown','2022-05-15 03:04:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=134'),
+('708','207.46.13.84','Unknown','Unknown','2022-05-15 04:36:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=6'),
+('709','97.123.87.144','Apple Safari','mac','2022-05-15 04:42:33','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=288'),
+('710','65.154.226.168','Google Chrome','windows','2022-05-15 05:45:39','https://nmhikes.com:443/pages/home.php'),
+('711','45.130.83.218','Unknown','mac','2022-05-15 08:04:58','https://nmhikes.com:443/pages/home.php'),
+('712','45.130.83.218','Apple Safari','mac','2022-05-15 08:04:59','https://nmhikes.com:443/pages/home.php'),
+('713','45.130.83.218','Unknown','mac','2022-05-15 08:08:18','https://nmhikes.com:443/pages/home.php'),
+('714','45.130.83.218','Apple Safari','mac','2022-05-15 08:08:19','https://nmhikes.com:443/pages/home.php'),
+('715','40.77.189.121','Unknown','windows','2022-05-16 11:09:19','https://nmhikes.com:443/pages/home.php'),
+('716','157.55.39.215','Unknown','Unknown','2022-05-16 11:09:30','https://nmhikes.com:443/pages/home.php');
 
 
 
