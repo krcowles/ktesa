@@ -58,9 +58,12 @@ $pageType = 'FullTable';
                 <option value="0">Top</option>
                 <option value="1">C's</option>
                 <option value="2">E's</option>
-                <option value="3">L's</option>
-                <option value="4">P's</option>
-                <option value="5">T's</option>
+                <option value="3">G's</option>
+                <option value="4">L's</option>
+                <option value="5">N's</option>
+                <option value="6">P's</option>
+                <option value="7">S's</option>
+                <option value="8">T's</option>
             </select>
         </div>
     </div>

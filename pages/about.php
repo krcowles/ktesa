@@ -179,7 +179,9 @@ require "../php/global_boot.php";
             accessible, or accessible only in modified form. Primarily:</p>
         <ul id="disasters">
             <li> Fires: Cerro Grande (Los Alamos, 2000); Los Conchas (Valles Caldera,
-            2011); Gila (2012); Dog Head (Monzano Mtns, 2016)</li>
+            2011); Gila (2012); Dog Head (Monzano Mtns, 2016); Cerro Pelado, Cook's
+            Peak, Calf Canyon/Hermit's Peak (SF Nat'l Forest, 2022), Black (Gila
+            Nat'l Forest, 2022)</li>
             <li> Floods: Bandelier (2011); Rinconada Canyon (2013)</li>
             <li> Volcanoes & Earthquakes: we hope not!</li>
         </ul>

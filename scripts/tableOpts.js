@@ -7,6 +7,7 @@
  *
  * @version 2.0 Reformatted table options; Fixed broken 'Units Converion'
  * @version 2.1 Typescripted
+ * @version 2.2 Big fix for 'backup' button
  */
 var lgth_hdr;
 var elev_hdr;
@@ -17,6 +18,8 @@ var curr_ftbl_state;
 var ftbl_init = false;
 var engtxt = "Show English Units";
 var mettxt = "Show Metric Units";
+var bkup_button_set = false;
+var scrolltoAlph = 'aceglnpst';
 /**
  * This function will set up the converter to use the originally loaded values
  * for units (English) when recalculating from metric back to English. This
@@ -166,17 +169,20 @@ function setNodatAlerts() {
  * the starting point.
  */
 function positionReturnDiv(scrolltop) {
-    var half_div_wid = Math.floor(0.50 * $('#backup').width());
-    var half_div_ht = Math.floor(0.50 * $('#backup').height());
-    var div_marg = 10;
-    var shift = half_div_wid + half_div_ht + div_marg;
-    var tablepos = $('#maintbl').offset();
-    var shift_left = (tablepos.left - shift) + 'px';
-    $('#backup').css('left', shift_left);
-    if (scrolltop !== 0) {
-        var starttop = $('#backup').css('top');
-        var down = (parseInt(starttop) - 120) + 'px';
-        $('#backup').css('top', down);
+    if (!bkup_button_set) {
+        var half_div_wid = Math.floor(0.50 * $('#backup').width());
+        var half_div_ht = Math.floor(0.50 * $('#backup').height());
+        var div_marg = 10;
+        var shift = half_div_wid + half_div_ht + div_marg;
+        var tablepos = $('#maintbl').offset();
+        var shift_left = (tablepos.left - shift) + 'px';
+        $('#backup').css('left', shift_left);
+        if (scrolltop !== 0) {
+            var starttop = $('#backup').css('top');
+            var down = (parseInt(starttop) - 120) + 'px';
+            $('#backup').css('top', down);
+        }
+        bkup_button_set = true;
     }
 }
 /**
@@ -266,28 +272,25 @@ $(function () {
         var hikename = $link.text().toLowerCase();
         hikelist.push(hikename[0]);
     });
-    var ele_indx = [];
     var scroll = [];
-    ele_indx[0] = 0;
-    ele_indx[1] = hikelist.indexOf('c') - 1;
-    ele_indx[2] = hikelist.indexOf('e') - 1;
-    ele_indx[3] = hikelist.indexOf('l') - 1;
-    ele_indx[4] = hikelist.indexOf('p') - 1;
-    ele_indx[5] = hikelist.indexOf('t') - 1;
-    for (var k = 0; k < ele_indx.length; k++) {
-        var $elemnt = $alph.eq(ele_indx[k]);
+    for (var k = 0; k < scrolltoAlph.length; k++) {
+        var char = scrolltoAlph[k];
+        // rowpos: back up one row from desired starting row for adequate spacing
+        var rowpos = k === 0 ? 0 : hikelist.indexOf(char) - 1;
+        var $elemnt = $alph.eq(rowpos); // get node for row no.
         var coords_1 = $elemnt.offset();
-        scroll[k] = coords_1.top;
+        scroll[k] = coords_1.top; // find coord for top of this row
     }
     $('#scroller').on('change', function () {
         var selected = $(this).val();
         if (selected === 'none') {
+            // this is the 'label' of the select; equivalent to selecting 'Top'
             $(window).scrollTop(0);
             $('#backup').hide();
         }
         else {
             var position_1 = parseInt(selected);
-            if (position_1 === 0) {
+            if (position_1 === 0) { // "Top"
                 $(window).scrollTop(0);
                 $('#backup').hide();
             }

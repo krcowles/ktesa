@@ -13,6 +13,7 @@ interface RowData {
  * 
  * @version 2.0 Reformatted table options; Fixed broken 'Units Converion'
  * @version 2.1 Typescripted
+ * @version 2.2 Big fix for 'backup' button
  */
 
 var lgth_hdr: number;
@@ -24,7 +25,8 @@ var curr_ftbl_state: string;
 var ftbl_init = false;
 var engtxt = "Show English Units";
 var mettxt = "Show Metric Units";
-
+var bkup_button_set = false;
+const scrolltoAlph = 'aceglnpst';
 /**
  * This function will set up the converter to use the originally loaded values
  * for units (English) when recalculating from metric back to English. This
@@ -172,18 +174,21 @@ function setNodatAlerts() {
  * the starting point.
  */
 function positionReturnDiv(scrolltop: number) {
-	let half_div_wid = Math.floor(0.50 * <number>$('#backup').width());
-	let half_div_ht  = Math.floor(0.50 * <number>$('#backup').height());
-	let div_marg = 10;
-	let shift = half_div_wid + half_div_ht + div_marg;
-	let tablepos = <JQuery.Coordinates>$('#maintbl').offset();
-	let shift_left = (tablepos.left - shift) + 'px'; 
-	$('#backup').css('left', shift_left);
-	if (scrolltop !== 0) {
-		let starttop = $('#backup').css('top');
-		let down = (parseInt(starttop) - 120) + 'px';
-		$('#backup').css('top', down);
-	}
+	if (!bkup_button_set) {
+		let half_div_wid = Math.floor(0.50 * <number>$('#backup').width());
+		let half_div_ht  = Math.floor(0.50 * <number>$('#backup').height());
+		let div_marg = 10;
+		let shift = half_div_wid + half_div_ht + div_marg;
+		let tablepos = <JQuery.Coordinates>$('#maintbl').offset();
+		let shift_left = (tablepos.left - shift) + 'px'; 
+		$('#backup').css('left', shift_left);
+		if (scrolltop !== 0) {
+			let starttop = $('#backup').css('top');
+			let down = (parseInt(starttop) - 120) + 'px';
+			$('#backup').css('top', down);
+		}
+		bkup_button_set = true;
+}
 }
 /**
  * When page is loaded and table is estabished:
@@ -275,27 +280,24 @@ $( function() {
 		let hikename = $link.text().toLowerCase();
 		hikelist.push(hikename[0]);
 	});
-	var ele_indx: number[] = [];
 	var scroll: number[] = [];
-	ele_indx[0] = 0;
-	ele_indx[1] = hikelist.indexOf('c') -1;
-	ele_indx[2] = hikelist.indexOf('e') -1;
-	ele_indx[3] = hikelist.indexOf('l') -1;
-	ele_indx[4] = hikelist.indexOf('p') -1;
-	ele_indx[5] = hikelist.indexOf('t') -1;
-	for (let k=0; k<ele_indx.length; k++) {
-		let $elemnt = $alph.eq(ele_indx[k]);
+	for (let k=0; k<scrolltoAlph.length; k++) {
+		let char = scrolltoAlph[k];
+		// rowpos: back up one row from desired starting row for adequate spacing
+		let rowpos = k === 0 ? 0 : hikelist.indexOf(char) - 1;
+		let $elemnt = $alph.eq(rowpos); // get node for row no.
 		let coords = <JQuery.Coordinates>$elemnt.offset();
-		scroll[k] = coords.top;
+		scroll[k] = coords.top; // find coord for top of this row
 	}
 	$('#scroller').on('change', function() {
 		let selected = <string>$(this).val();
 		if (selected === 'none') {
+			// this is the 'label' of the select; equivalent to selecting 'Top'
 			$(window).scrollTop(0);
 			$('#backup').hide();
 		} else {
 		let position = parseInt(selected);
-			if (position === 0) {
+			if (position === 0) { // "Top"
 				$(window).scrollTop(0);
 				$('#backup').hide();
 			} else {
