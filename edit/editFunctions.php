@@ -61,8 +61,11 @@ function uploadGpxKmlFile($name, $init, $elev=false)
         if (!move_uploaded_file($valid['loc'], $saveloc)) {
             $nomove = "Could not save {$valid['file']} to site: contact Site Master";
             throw new Exception($nomove);
-        } else {
+        } else if (isset($_SESSION['uplmsg'])) {
             $_SESSION['uplmsg'].= "Your file [{$valid['file']}] was saved as " .
+                $unique_file_name . "; ";
+        } else if (isset($_SESSION['gpsmsg'])) {
+            $_SESSION['gpsmsg'].= "Your file [{$valid['file']}] was saved as " .
                 $unique_file_name . "; ";
         }
     } else {
