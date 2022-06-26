@@ -62,6 +62,7 @@ chdir($startDir);
 
 <input id="searchbar" placeholder="Search for a hike" list="hikelist" />
 <?= $datalist; ?>
+<div id="pgnote">Click on clusters to zoom in!</div>
 
 <?php
 require "../php/mapJsData.php";

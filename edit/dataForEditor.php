@@ -107,15 +107,17 @@ if (isset($_SESSION['user_alert']) && !empty($_SESSION['user_alert'])) {
  */
 require "photoSelect.php";
 require "wayPointEdits.php";
+$picdir  = getPicturesDirectory();
+$prevdir = str_replace('zsize', 'previews', $picdir);
+$prevImg = $prevdir . $preview_name;
+$tstat = empty($preview_name) ? "Has Not" : "Has";
+$btncolor = empty($preview_name) ? "btn-warning" : "btn-success";
 
 /**
  * Tab 3: [hike tips and hike descripton]
  */
 $tips    = $hike['tips'];
 $info    = $hike['info'];
-$picdir  = getPicturesDirectory();
-$prevdir = str_replace('zsize', 'previews', $picdir);
-$prevImg = $prevdir . $preview_name;
 
 /**
  * Tab 4: [GPS data] Note: tab4display.php calls references from EREFS

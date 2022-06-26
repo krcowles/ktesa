@@ -1,614 +1,618 @@
 /* "global" colors: local exceptions are contained in their respective modules */
 /* scss standard definitions */
 body {
-    min-width: 960px;
-    background-color: #eaeaea;
-    margin: 0;
-    font-family: arial, verdana;
-    font-size: 16px;
+  min-width: 960px;
+  background-color: #eaeaea;
+  margin: 0;
+  font-family: arial, verdana;
+  font-size: 16px;
 }
 
 .navbar {
-    background-color: darkslategray;
+  background-color: darkslategray;
 }
 
 .navbar-brand {
-    color: #bfd9bf !important;
-    font-style: italic;
+  color: #bfd9bf !important;
+  font-style: italic;
 }
 
 .nav-link {
-    color: whitesmoke !important;
+  color: whitesmoke !important;
 }
 
 ul.dropdown-menu {
-    background-color: whitesmoke !important;
+  background-color: whitesmoke !important;
 }
 
 /* Logo */
 #logo {
-    display: inline-block;
-    vertical-align: top;
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 52px;
-    margin-bottom: 6px;
-    margin-right: 12px;
-    background-color: #ffe866;
-    z-index: 1;
-    text-align: center;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 52px;
+  margin-bottom: 6px;
+  margin-right: 12px;
+  background-color: #ffe866;
+  z-index: 1;
+  text-align: center;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 #pattern {
-    background-image: url("../images/southwest_pattern.png");
-    background-repeat: repeat-x;
-    background-attachment: scroll;
-    margin-top: 2px;
-    padding: 0px;
-    height: 16px;
+  background-image: url("../images/southwest_pattern.png");
+  background-repeat: repeat-x;
+  background-attachment: scroll;
+  margin-top: 2px;
+  padding: 0px;
+  height: 16px;
 }
 
 .logo_items {
-    display: inline-block;
+  display: inline-block;
 }
 
 #leftside {
-    float: left;
-    margin-bottom: 0px;
+  float: left;
+  margin-bottom: 0px;
 }
 
 #ctr {
-    clear: both;
-    margin-top: 4px;
-    margin-bottom: 0px;
+  clear: both;
+  margin-top: 4px;
+  margin-bottom: 0px;
 }
 
 #rightside {
-    float: right;
-    margin-bottom: 0px;
+  float: right;
+  margin-bottom: 0px;
 }
 
 #hikers {
-    float: left;
-    margin-top: 3px;
-    margin-left: 10px;
-    z-index: 100;
+  float: left;
+  margin-top: 3px;
+  margin-left: 10px;
+  z-index: 100;
 }
 
 #tmap {
-    float: right;
-    margin-right: 8px;
-    margin-top: 4px;
-    z-index: 100;
+  float: right;
+  margin-right: 8px;
+  margin-top: 4px;
+  z-index: 100;
 }
 
 #logo_left {
-    float: left;
-    margin-left: 12px;
-    margin-top: 4px;
-    color: darkslategray;
-    z-index: 5;
+  float: left;
+  margin-left: 12px;
+  margin-top: 4px;
+  color: darkslategray;
+  z-index: 5;
 }
 
 #ctr {
-    font-size: 18px;
-    font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 #logo_right {
-    float: right;
-    margin-right: 10px;
-    margin-top: 5px;
-    color: darkslategray;
-    z-index: 5;
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
+  color: darkslategray;
+  z-index: 5;
 }
 
 #trail {
-    clear: both;
-    text-align: center;
-    font-weight: bold;
+  clear: both;
+  text-align: center;
+  font-weight: bold;
 }
 
 /* login elements */
 #cookie_state, #cookies_choice, #admin, #contrib, #admintools {
-    display: none;
+  display: none;
 }
 
 /* modals */
 .modal-header, .modal-footer {
-    background-color: #dfe9e3;
-    color: black;
+  background-color: #dfe9e3;
+  color: black;
 }
 
 .modal-body {
-    color: black;
-    text-align: left;
+  color: black;
+  text-align: left;
 }
 
 input[id^=q] {
-    margin-bottom: 4px;
+  margin-bottom: 4px;
 }
 
 #main {
-    box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 #atxt {
-    font-size: 20px;
-    float: right;
-    margin-right: 16px;
-    color: black;
+  font-size: 20px;
+  float: right;
+  margin-right: 16px;
+  color: black;
 }
 
 /* tabbing items */
 .tablist {
-    float: left;
-    width: 180px;
-    height: 30px;
-    margin-bottom: 0px;
-    border-style: inset;
-    border-bottom: none;
-    border-width: 2px;
-    border-radius: 12px 12px 0px 0px;
-    font-size: 18px;
-    color: darkgray;
-    background-color: cornsilk;
+  float: left;
+  width: 180px;
+  height: 30px;
+  margin-bottom: 0px;
+  border-style: inset;
+  border-bottom: none;
+  border-width: 2px;
+  border-radius: 12px 12px 0px 0px;
+  font-size: 18px;
+  color: darkgray;
+  background-color: cornsilk;
 }
 
 .tablist.active {
-    background-color: #eaeaea;
-    color: black;
+  background-color: #eaeaea;
+  color: black;
 }
 
 .tablist:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #line {
-    float: left;
-    width: 60px;
-    height: 30px;
-    margin-bottom: 0px;
-    border: none;
-    border-bottom: solid;
-    border-width: 1px;
-    background-color: #eaeaea;
+  float: left;
+  width: 60px;
+  height: 30px;
+  margin-bottom: 0px;
+  border: none;
+  border-bottom: solid;
+  border-width: 1px;
+  background-color: #eaeaea;
 }
 
 .tab-panel {
-    clear: left;
-    display: none;
-    margin-top: 12px;
-    border-left: solid;
-    border-right: solid;
-    border-bottom: solid;
-    border-width: 1px;
-    padding: 16px;
+  clear: left;
+  display: none;
+  margin-top: 12px;
+  border-left: solid;
+  border-right: solid;
+  border-bottom: solid;
+  border-width: 1px;
+  padding: 16px;
 }
 
 .tab-panel.active {
-    display: block;
+  display: block;
 }
 
 .subbtn {
-    z-index: 9999;
-    width: 100px;
+  z-index: 9999;
+  width: 100px;
 }
 
 /* The next several apply to tab1 plus other tabs as well */
 .up {
-    position: relative;
-    top: -4px;
+  position: relative;
+  top: -4px;
 }
 
 input[type=checkbox] {
-    /* Double-sized Checkboxes  - Browser dependent code */
-    transform: scale(1.5);
-    -ms-transform: scale(1.5);
-    /* IE */
-    -moz-transform: scale(1.5);
-    /* FF */
-    -webkit-transform: scale(1.5);
-    /* Safari and Chrome */
-    -o-transform: scale(1.5);
-    /* Opera */
-    padding: 10px;
-    position: relative;
-    z-index: 1;
+  /* Double-sized Checkboxes  - Browser dependent code */
+  transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  /* IE */
+  -moz-transform: scale(1.5);
+  /* FF */
+  -webkit-transform: scale(1.5);
+  /* Safari and Chrome */
+  -o-transform: scale(1.5);
+  /* Opera */
+  padding: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 textarea {
-    font-family: Tahoma, sans-serif;
-    font-size: 14px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: DarkGray;
-    padding: 5px;
-    background-color: lavenderblush;
+  font-family: Tahoma, sans-serif;
+  font-size: 14px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: DarkGray;
+  padding: 5px;
+  background-color: lavenderblush;
 }
 
 textarea:focus {
-    background-color: papayawhip;
+  background-color: papayawhip;
 }
 
 textarea.ctrshift {
-    position: relative;
-    top: 10px;
+  position: relative;
+  top: 10px;
 }
 
 .tstyle1 {
-    height: 33px;
-    width: 65px;
+  height: 33px;
+  width: 65px;
 }
 
 .tstyle2 {
-    height: 33px;
-    width: 260px;
+  height: 33px;
+  width: 260px;
 }
 
 .tstyle3 {
-    height: 33px;
-    width: 200px;
+  height: 33px;
+  width: 200px;
 }
 
 .tstyle4 {
-    height: 33px;
-    width: 160px;
+  height: 33px;
+  width: 160px;
 }
 
 /*  next are tab1 only */
 #hilite {
-    padding: 6px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
+  padding: 6px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
 }
 
 input[id^=gpxfile] {
-    height: 28px;
-    font-size: 16px;
-    line-height: normal;
+  height: 28px;
+  font-size: 16px;
+  line-height: normal;
 }
 
 span.brown {
-    color: brown;
+  color: brown;
 }
 
 #hike {
-    height: 36px;
-    width: 200px;
+  height: 36px;
+  width: 200px;
 }
 
 #newloc {
-    display: none;
+  display: none;
 }
 
 #area {
-    height: 34px;
-    width: 120px;
+  height: 34px;
+  width: 120px;
 }
 
 #locregion {
-    height: 34px;
+  height: 34px;
 }
 
 #userloc {
-    height: 32px;
-    font-size: 16px;
-    background-color: lavenderblush;
+  height: 32px;
+  font-size: 16px;
+  background-color: lavenderblush;
 }
 
 #userloc:focus {
-    background-color: papayawhip;
+  background-color: papayawhip;
 }
 
 #type {
-    height: 34px;
-    width: 130px;
+  height: 34px;
+  width: 130px;
 }
 
 #diff {
-    height: 34px;
-    width: 160px;
+  height: 34px;
+  width: 160px;
 }
 
 #fac {
-    height: 36px;
-    width: 200px;
+  height: 36px;
+  width: 200px;
 }
 
 #wow {
-    height: 36px;
-    width: 320px;
+  height: 36px;
+  width: 320px;
 }
 
 #seas {
-    height: 36px;
-    width: 100px;
+  height: 36px;
+  width: 100px;
 }
 
 #sun {
-    height: 34px;
-    width: 150px;
+  height: 34px;
+  width: 150px;
 }
 
 #gpxcalcs {
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 
 #miles, #elev, #lat, #lon {
-    display: inline-block;
-    font-size: 18px;
+  display: inline-block;
+  font-size: 18px;
 }
 
 #miles {
-    width: 70px;
+  width: 70px;
 }
 
 #elev {
-    width: 100px;
+  width: 100px;
 }
 
 #lat {
-    width: 130px;
+  width: 130px;
 }
 
 #lon {
-    width: 140px;
+  width: 140px;
 }
 
 #dirlbl {
-    position: relative;
-    top: -24px;
+  position: relative;
+  top: -24px;
 }
 
 #murl {
-    height: 76px;
-    width: 850px;
+  height: 76px;
+  width: 850px;
 }
 
 #clusters {
-    height: 32px;
-    width: 220px;
+  height: 32px;
+  width: 220px;
 }
 
 #cluscoords {
-    position: relative;
-    top: 6px;
+  position: relative;
+  top: 6px;
 }
 
 #cluslat, #cluslng {
-    height: 34px;
+  height: 34px;
 }
 
 /* tab2 only items */
 #pupld.is-dragover {
-    box-sizing: content-box;
-    background-color: gray;
+  box-sizing: content-box;
+  background-color: gray;
 }
 
 #userupld {
-    font-weight: bold;
-    font-size: 18px;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 #nophotos {
-    font-style: italic;
-    color: brown;
+  font-style: italic;
+  color: brown;
+}
+
+#thumbstat {
+  font-weight: bold;
 }
 
 .flex-box {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .inputfile {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 .inputfile + label {
-    margin-left: 16px;
-    font-size: 18px;
-    border-radius: 6px;
-    background-color: #6c757d;
-    color: white;
-    display: inline-block;
-    cursor: pointer;
-    padding: 6px;
-    outline: 1px dotted #000;
-    outline: -webkit-focus-ring-color auto 5px;
+  margin-left: 16px;
+  font-size: 18px;
+  border-radius: 6px;
+  background-color: #6c757d;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  padding: 6px;
+  outline: 1px dotted #000;
+  outline: -webkit-focus-ring-color auto 5px;
 }
 
 .inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: #696969;
-    color: white;
+  background-color: #696969;
+  color: white;
 }
 
 #ldg {
-    color: brown;
-    display: none;
-    font-weight: bold;
+  color: brown;
+  display: none;
+  font-weight: bold;
 }
 
 #preload {
-    display: none;
-    position: relative;
-    top: 32px;
-    left: 320px;
+  display: none;
+  position: relative;
+  top: 32px;
+  left: 320px;
 }
 
 #picchks {
-    box-sizing: content-box;
-    position: relative;
-    top: -14px;
-    margin-left: 16px;
+  box-sizing: content-box;
+  position: relative;
+  top: -14px;
+  margin-left: 16px;
 }
 
 #picbox {
-    box-sizing: content-box;
-    margin-left: 16px;
-    clear: none;
-    overflow: auto;
+  box-sizing: content-box;
+  margin-left: 16px;
+  clear: none;
+  overflow: auto;
 }
 
 .capts {
-    box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 .popupCap {
-    margin: 0px;
-    display: none;
-    position: absolute;
-    width: 300px;
-    top: 0px;
-    left: 0px;
+  margin: 0px;
+  display: none;
+  position: absolute;
+  width: 300px;
+  top: 0px;
+  left: 0px;
 }
 
 .capLine {
-    margin: 0px;
-    font-weight: bold;
-    background-color: #eaeaea;
+  margin: 0px;
+  font-weight: bold;
+  background-color: #eaeaea;
 }
 
 .allPhotos {
-    box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 #ldgif {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #npts > textarea, #gpts > textarea, #wypts > textarea {
-    position: relative;
-    top: 7px;
-    height: 33px;
-    font-size: 16px;
-    margin-left: 12px;
+  position: relative;
+  top: 7px;
+  height: 33px;
+  font-size: 16px;
+  margin-left: 12px;
 }
 
 .wpticons {
-    height: 32px;
+  height: 32px;
 }
 
 .wpticonshift {
-    position: relative;
-    top: 7px;
+  position: relative;
+  top: 7px;
 }
 
 /* tab2 preview boxes */
 ol li:first-child {
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 
 ol li::marker {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .file_label {
-    font-size: 16px;
-    background-color: #6c757d;
-    color: white;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 5px;
-    padding: 5px 8px;
+  font-size: 16px;
+  background-color: #6c757d;
+  color: white;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px 8px;
 }
 
 .file_label:hover {
-    background-color: #696969;
-    color: white;
+  background-color: #696969;
+  color: white;
 }
 
 .file_input {
-    display: none;
+  display: none;
 }
 
 #thumbpic {
-    box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 #redo_thumb {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 #boxes {
-    display: flex;
-    flex-flow: row nowrap;
-    align-content: center;
-    justify-content: space-evenly;
-    box-sizing: content-box;
+  display: flex;
+  flex-flow: row nowrap;
+  align-content: center;
+  justify-content: space-evenly;
+  box-sizing: content-box;
 }
 
 #repl {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-direction: column;
-    align-self: center;
-    text-align: center;
-    width: 500px;
-    height: 500px;
-    border-style: dashed;
-    border-width: 1px;
-    background-color: blanchedalmond;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  align-self: center;
+  text-align: center;
+  width: 500px;
+  height: 500px;
+  border-style: dashed;
+  border-width: 1px;
+  background-color: blanchedalmond;
 }
 
 #presize, #sizeblock {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-direction: column;
-    align-self: center;
-    text-align: center;
-    width: 300px;
-    height: 225px;
-    border-style: dashed;
-    border-width: 1px;
-    background-color: blanchedalmond;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  align-self: center;
+  text-align: center;
+  width: 300px;
+  height: 225px;
+  border-style: dashed;
+  border-width: 1px;
+  background-color: blanchedalmond;
 }
 
 #repl.entered {
-    background-color: darkgray;
+  background-color: darkgray;
 }
 
 #presize.entered {
-    background-color: darkgray;
+  background-color: darkgray;
 }
 
 #cprestart, #bxresbtn {
-    box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 #cprestart {
-    position: relative;
-    top: 0px;
-    height: 100px;
-    text-align: center;
+  position: relative;
+  top: 0px;
+  height: 100px;
+  text-align: center;
 }
 
 /* tab4 only items */
 div[id=tab4] {
-    box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 input[name=newgps], input[name=newmap] {
-    height: 30px;
-    font-size: 16px;
+  height: 30px;
+  font-size: 16px;
 }
 
 /*# sourceMappingURL=editDB.css.map */

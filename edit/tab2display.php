@@ -20,7 +20,12 @@
 </style>
 <span><strong>Manage Your Photos Below, or&nbsp;&nbsp;</strong>
     <a class="btn btn-secondary" href="#wloc" role="button">Manage Waypoints</a>
+    <span id="thumbstat">&nbsp;&nbsp;Your thumbnail image&nbsp;&nbsp;
+        <a id="statlnk" class="btn <?=$btncolor;?>" role="button"><?=$tstat;?></a>
+        &nbsp;&nbsp;been saved
+    </span>
 </span>
+
 <hr />
 <p id="ehno" style="display:none;"><?= $hikeNo;?></p>
 
