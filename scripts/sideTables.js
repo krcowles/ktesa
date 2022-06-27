@@ -10,7 +10,27 @@
  * @version 5.0 Typescripted, with some previous type errors corrected
  * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
  * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
+ * @version 6.2 Address accented letters in page title when using search bar
  */
+/**
+ * When an HTML accented character appears in a hike title (ISO 8859-1), it needs to be
+ * rendered as its html entity number for comparison in the 'popup' function. This is
+ * because  php will process the title text as a string with the entity number embedded
+ * (mapJsData.php).
+ */
+function translate(hike) {
+    var i = hike.length, a = [];
+    while (i--) {
+        var code = hike[i].charCodeAt(0);
+        if (code >= 192) { // HTML entity numbers range from 192-255
+            a[i] = '&#' + code + ';';
+        }
+        else {
+            a[i] = hike[i];
+        }
+    }
+    return a.join('');
+}
 /**
  * Searchbar Functionality (html datalist element)
  */
@@ -20,6 +40,7 @@ $('#searchbar').on('input', function () {
         return ($(this).val() === val);
     });
     if (match.length > 0) {
+        val = translate(val);
         popupHikeName(val);
     }
     return;
