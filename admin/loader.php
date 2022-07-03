@@ -5,7 +5,8 @@
  * if the sql file was created via a phpMyAdmin 'export', additional SQL
  * commands (ones not present when performing 'EXPORT ALL TABLES') may
  * be present and require modifications (e.g. a "COMMIT" statement at the
- * end of file, and/or C-style comment lines).
+ * end of file, and/or C-style comment lines). The VISITORS table will not
+ * have been dropped and will not be reloaded.
  * PHP Version 7.8
  * 
  * @package Ktesa
@@ -15,14 +16,28 @@
 
 // Read in entire file
 $dbFile = "../data/nmhikesc_main.sql";
-$lines = file($dbFile);
-if (!$lines) {
+$db_contents = file($dbFile);
+$lines = [];
+if (!$db_contents) {
     throw new Exception(
         __FILE__ . " Line: " . __LINE__ . 
         " Failed to read database from file: {$dbFile}."
     );
 }
 $totalQs = 0; // total Queries
+// remove the lines containing VISITORS table data
+for ($k=0; $k<count($db_contents); $k++) {
+    if (strpos($db_contents[$k], "CREATE TABLE `VISITORS`") !== false 
+        || strpos($db_contents[$k], "INSERT INTO VISITORS") !== false
+    ) {
+        // continue to skip lines until ";" is encountered
+        while (strpos($db_contents[$k], ";") === false) {
+            $k++;
+        }
+    } else {
+        array_push($lines, $db_contents[$k]);
+    }
+}
 // doing this twice, once just to get info for the progress bar:
 foreach ($lines as $line) {
     // Skip it if it's a comment

@@ -1,9 +1,9 @@
 <?php
 /**
  * This module performs one of two actions based on the query string.
- * If the query string contains the variable "no", then all tables are
- * dropped and the program is exited. If the variable is not set, then
- * the module will first drop all tables and then reload them.
+ * If the query string contains the variable "no", then all tables (except
+ * the VISITORS table) are dropped and the program is exited. If the variable
+ * is not set, then the module will first drop all tables and then reload them.
  * The EHIKES table is placed last in the drop list as it is the parent
  * for multiple foreign keys.
  * PHP Version 7.4
@@ -18,10 +18,11 @@ $tables = array();
 $data = $pdo->query("SHOW TABLES");
 $tbl_list = $data->fetchALL(PDO::FETCH_NUM);
 foreach ($tbl_list as $row) {
-    if ($row[0] !== 'EHIKES') {
+    if ($row[0] !== 'EHIKES' && $row[0] !== 'VISITORS') {
         array_push($tables, $row[0]);
     }
 }
+// due to database FOREIGN KEY constraints, EHIKES must be last
 array_push($tables, 'EHIKES');
 $tblcnt = count($tables); // total number of database tables
 if (isset($_REQUEST['no'])) {
