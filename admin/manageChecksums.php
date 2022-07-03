@@ -40,7 +40,7 @@ if ($action === "updte") {
     $allTablesReq = "SHOW TABLES;";
     $allTables = $pdo->query($allTablesReq)->fetchAll(PDO::FETCH_COLUMN);
     foreach ($allTables as $tbl) {
-        if ($tbl !== 'Checksums') {
+        if ($tbl !== 'Checksums' && $tbl !== 'VISITORS') {
             $sumReq = "CHECKSUM TABLE {$tbl};";
             $tblsum = $pdo->query($sumReq)->fetch(PDO::FETCH_NUM);
             $addSumReq = "INSERT INTO `Checksums` (`name`,`chksum`,`creation`) " .
@@ -75,7 +75,7 @@ if ($action === "updte") {
         }
     }
     foreach ($allTables as $tbl) {
-        if ($tbl !== 'Checksums') {
+        if ($tbl !== 'Checksums' && $tbl !== 'VISITORS') {
             if (!in_array($tbl, $chkTables)) {
                 array_push($missing, $tbl);
             } else {
