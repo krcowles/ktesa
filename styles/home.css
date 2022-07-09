@@ -166,7 +166,7 @@ input[id^=q] {
   border-radius: 8px;
   border-width: 1px;
   position: absolute;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.6);
   font-size: 18px;
   color: darkgreen;
   padding: 6px;

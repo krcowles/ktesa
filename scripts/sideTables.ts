@@ -13,21 +13,27 @@ declare var favlist: string[];
  * @version 5.0 Typescripted, with some previous type errors corrected
  * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
  * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
- * @version 6.2 Address accented letters in page title when using search bar
+ * @version 6.2 Address accented letters (diacritical marks) in page title when using search bar
  */
 
 /**
- * When an HTML accented character appears in a hike title (ISO 8859-1), it needs to be
- * rendered as its html entity number for comparison in the 'popup' function. This is
- * because  php will process the title text as a string with the entity number embedded
- * (mapJsData.php). 
+ * HTML presents on the page, and to javascript, an accented letter (letter w/diacritical
+ * mark) when it encounters either an HTML entity number, or an HTML entity name - the user
+ * may choose either when typing in the title during hike creation. These special entities
+ * are listed in the ISO 8859-1 table of characters. When the function 'translate()' is invoked,
+ * it looks to see if an HTML special character has been rendered by the HTML as an accented
+ * letter. Note that any entity -names- have been converted to entity -numbers- in mapJsData.php.
+ * If there is an accented letter in the searchbar input, the function replaces it with its
+ * entity number. In this way, the 'translated' name can be successfully compared with the list
+ * of hikes as prepared by PHP. PHP, of course, does not render HTML special characters, and so
+ * will list the hike as a string with the HTML entity number intact.
  */
  function translate(hike: string) {
     var i = hike.length,
-        a = [];
+        a: string[] = []; // translated string chars
     while (i--) {
-        var code = hike[i].charCodeAt(0);
-        if (code >= 192) { // HTML entity numbers range from 192-255
+        var code = hike.charCodeAt(i);
+       if (code > 191 && code <= 255) {  // special entity characters should be the only chars here
             a[i] = '&#' + code + ';';
         } else {
             a[i] = hike[i];
