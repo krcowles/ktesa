@@ -24,70 +24,6 @@
  * since the javascript searchbar algorithm (sideTables.ts) retrieves only the
  * entity number, and not the name.
  */
-$entitiesISO8859 = array(
-    'Agrave' => '#192',
-    'Aacute' => '#193',
-    'Acirc'  => '#194',
-    'Atilde' => '#195',
-    'Auml'   => '#196',
-    'Aring'  => '#197',
-    'AElig'  => '#198',
-    'Ccedil' => '#199',
-    'Egrave' => '#200',
-    'Eacute' => '#201',
-    'Ecirc'  => '#202',
-    'Euml'   => '#203',
-    'Igrave' => '#204',
-    'Iacute' => '#205',
-    'Icirc'  => '#206',
-    'Iuml'   => '#207',
-    'ETH'    => '#208',
-    'Ntilde' => '#209',
-    'Ograve' => '#210',
-    'Oacute' => '#211',
-    'Ocirc'  => '#212',
-    'Otilde' => '#213',
-    'Ouml'   => '#214',
-    'Oslash' => '#216',
-    'Ugrave' => '#217',
-    'Uacute' => '#218',
-    'Ucirc'  => '#219',
-    'Uuml'   => '#220',
-    'Yacute' => '#221',
-    'THORN'  => '#222',
-    'szlig'  => '#223',
-    'agrave' => '#224',
-    'aacute' => '#225',
-    'acirc'  => '#226',
-    'atilde' => '#227',
-    'auml'   => '#228',
-    'aring'  => '#229',
-    'aelig'  => '#230',
-    'ccedil' => '#231',
-    'egrave' => '#232',
-    'eacute' => '#233',
-    'ecirc'  => '#234',
-    'euml'   => '#235',
-    'igrave' => '#236',
-    'iacute' => '#237',
-    'icirc'  => '#238',
-    'iuml'   => '#239',
-    'eth'    => '#240',
-    'ntilde' => '#241',
-    'ograve' => '#242',
-    'oacute' => '#243',
-    'ocirc'  => '#244',
-    'otilde' => '#245',
-    'ouml'   => '#246',  // there is no #247
-    'oslash' => '#248',
-    'ugrave' => '#249',
-    'uacute' => '#250',
-    'ucirc'  => '#251',
-    'uuml'   => '#252',
-    'yacute' => '#253',
-    'thorn'  => '#254',
-    'yuml'   => '#255'
-);
 $allHikeIndices = [];
 $locaters = [];
 // These hikes were previously listed as 'Normal' and are now clustered
@@ -132,7 +68,7 @@ $pageNames= [];
 for ($j=0; $j<count($clusters); $j++) {
     // check $clusters[$j]['group'] for the existence of any HTML entity names
     $chkstring = $clusters[$j]['group'];
-    $pgtitle = htmlEntityId($chkstring, $entitiesISO8859);
+    $pgtitle = htmlEntityId($chkstring, $entitiesISO8859)[0];
     $partial = '{group:"' . $pgtitle . '",loc:{lat:' .
         $clusters[$j]['lat']/LOC_SCALE  . ',lng:' . $clusters[$j]['lng']/LOC_SCALE .
         '},page:' . $clusters[$j]['page'] . ',hikes:[';
@@ -161,7 +97,7 @@ foreach ($hikes as $hike) {
     if (!in_array($hike['indxNo'], $pages)) { // no 'Cluster Pages'
         array_push($allHikeIndices, $hike['indxNo']);
         // convert HTML special char entity names to entity code numbers
-        $hike['pgTitle'] = htmlEntityId($hike['pgTitle'], $entitiesISO8859);
+        $hike['pgTitle'] = htmlEntityId($hike['pgTitle'], $entitiesISO8859)[0];
         // PROPOSED HIKES may not have all the data:
         if (strpos($hike['pgTitle'], '[Proposed]') !== false) {
             $hike['miles'] = empty($hike['miles']) ? 0 : $hike['miles'];

@@ -148,7 +148,7 @@ input[id^=q] {
   margin-right: 0;
 }
 
-#searchbar {
+#search {
   border-radius: 8px;
   border-width: 1px;
   border-color: darkslategray;

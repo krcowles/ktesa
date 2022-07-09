@@ -3,6 +3,11 @@ declare var loadSpreader: any;
 declare var thumb: string;
 declare var preview: string;
 declare var favlist: string[];
+declare var hikeSources: AutoItem[];
+interface AutoItem {
+    value: string;
+    label: string;
+}
 /**
  * @file This file creates and places the html for the side table, as well as providing
  *       a search bar capability synchronized to the side table. Note that any globals
@@ -13,9 +18,38 @@ declare var favlist: string[];
  * @version 5.0 Typescripted, with some previous type errors corrected
  * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
  * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
- * @version 6.2 Address accented letters (diacritical marks) in page title when using search bar
+ * @version 6.2 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
  */
 
+/**
+ * Autocomplete search bar (jQueryUI):
+ * HTML Special Characters are properly rendered in an undisplayed ul on the page,
+ * and used for autocompleteselect, below
+ */ 
+var rendered = $('#specchars').children(); // the <li> elements in the undisplayed <ul>
+$("#search").autocomplete({
+    source: hikeSources,
+    minLength: 2
+});
+$("#search").on("autocompleteselect", function(event, ui) {
+    /**
+     * Apparently, since the menu items are js objects, the HTML special characters
+     * don't render when the item.label is replaced by item.value. Hence, the properly
+     * rendered items are placed in an undisplayed ul, and the javascript extracts these
+     * rendered items to replace the label instead of using default method
+     */
+    event.preventDefault();
+    var replaceTxt = '';
+    if (ui.item.value !== ui.item.label) {
+        var lino = parseInt(ui.item.value);
+        replaceTxt = rendered[lino].innerText; // this <li> contains the rendered text
+    } else {
+        replaceTxt = ui.item.value;
+    }
+    $(this).val(replaceTxt);
+    var val = translate(replaceTxt);
+    popupHikeName(val);
+});
 /**
  * HTML presents on the page, and to javascript, an accented letter (letter w/diacritical
  * mark) when it encounters either an HTML entity number, or an HTML entity name - the user
@@ -28,7 +62,7 @@ declare var favlist: string[];
  * of hikes as prepared by PHP. PHP, of course, does not render HTML special characters, and so
  * will list the hike as a string with the HTML entity number intact.
  */
- function translate(hike: string) {
+ function translate(hike: string): string {
     var i = hike.length,
         a: string[] = []; // translated string chars
     while (i--) {
@@ -41,24 +75,6 @@ declare var favlist: string[];
     }
     return a.join('');
 }
-/**
- * Searchbar Functionality (html datalist element)
- */
-$('#searchbar').val('');
-$('#searchbar').on('input', function() {
-    var $input = $(this),
-        val = <string>$input.val(),
-        list = $input.attr('list'),
-        match = $('#'+list + ' option').filter(function() {
-            return ($(this).val() === val);
-        });
-    if (match.length > 0) {
-        val = translate(val);
-        popupHikeName(val);
-    }
-    return;
-});
-
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike

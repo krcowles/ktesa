@@ -640,39 +640,51 @@ function cmp($a, $b)
  * entity exists, it may be a number or a name. If it is a number, leave it intact,
  * and if it is a name, change it to its corresponding number. This provides the
  * sideTables.js searchbar mechanism a mean to prepare a hike name for comparison
- * to clusters/hikes provided by mapJsData.php
+ * to clusters/hikes provided by mapJsData.php. Multiple special entities are
+ * permitted.
  *  
  * @param string $name        The hike/cluster name to be checked
- * @param array  $entityArray ISO8859 chars with codes 
+ * @param array  $entityArray ISO8859 Characters with codes 
  * 
  * @return string
  */
 function htmlEntityId($name, $entityArray)
 {
     $converted = $name;
+    $present = false;
     $entities = substr_count($name, '&');
+    $specChars = []; // letters w/o diacritical mark
     if ($entities > 0) {
         // for each legit entity, there is a '&' and a ';', with 3-6 chars in between
         $indx = 0; // start search at beginning of string
         for ($i=0; $i<$entities; $i++) {
+            $specChars[$i] = ''; // unless over-ridden
             $start = strpos($name, '&', $indx);
             $end   = strpos($name, ';', $indx);
             if ($end !== false) {
                 $chars = $end - $start - 1; // no of chars between
                 $indx  = $start + 1;
                 if ($chars >= 3 && $chars <= 6) {
+                    $present = true;
                     $item = substr($name, $indx, $chars);
                     if ($item[0] !== '#') {
                         // legitimate entity name
+                        $specChars[$i] = $item[0];
                         $item = $entityArray[$item];
                         $converted = substr_replace($name, $item, $start+1, $chars);
-                        $indx = $end + 1;
+                    } else {
+                        // entity number
+                        $keyval = array_search($item, $entityArray);
+                        $specChars[$i] = $keyval[0];
                     }
+                    $indx = $end + 1;
                 }
             } else {
                 $indx = $start + 1;
             } 
         }
+    } else {
+        $specChars[0] = '';
     }
-    return $converted;
+    return [$converted, $present, $specChars];
 }
