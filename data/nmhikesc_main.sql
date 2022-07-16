@@ -350,20 +350,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2022-07-03 16:09:06'),
-('2','CLUSHIKES','2464789554','2022-07-03 16:09:06'),
-('3','CLUSTERS','3285731063','2022-07-03 16:09:06'),
-('4','EGPSDAT','0','2022-07-03 16:09:06'),
-('5','EHIKES','0','2022-07-03 16:09:06'),
-('6','EREFS','0','2022-07-03 16:09:06'),
-('7','ETSV','0','2022-07-03 16:09:06'),
-('8','FAVORITES','3651041965','2022-07-03 16:09:06'),
-('9','GPSDAT','968834188','2022-07-03 16:09:06'),
-('10','HIKES','2945081055','2022-07-03 16:09:06'),
-('11','LOCKS','0','2022-07-03 16:09:06'),
-('12','REFS','1130901026','2022-07-03 16:09:06'),
-('13','TSV','2143566329','2022-07-03 16:09:06'),
-('14','USERS','2015883571','2022-07-03 16:09:06');
+('1','BOOKS','2674158859','2022-07-10 17:09:36'),
+('2','CLUSHIKES','2464789554','2022-07-10 17:09:36'),
+('3','CLUSTERS','3285731063','2022-07-10 17:09:36'),
+('4','EGPSDAT','0','2022-07-10 17:09:36'),
+('5','EHIKES','0','2022-07-10 17:09:36'),
+('6','EREFS','0','2022-07-10 17:09:36'),
+('7','ETSV','0','2022-07-10 17:09:36'),
+('8','FAVORITES','3651041965','2022-07-10 17:09:36'),
+('9','GPSDAT','968834188','2022-07-10 17:09:36'),
+('10','HIKES','1778815564','2022-07-10 17:09:36'),
+('11','LOCKS','0','2022-07-10 17:09:36'),
+('12','REFS','3065290342','2022-07-10 17:09:36'),
+('13','TSV','1119589178','2022-07-10 17:09:36'),
+('14','USERS','2015883571','2022-07-10 17:09:36');
 
 
 
@@ -394,7 +394,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 
 
@@ -422,7 +422,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 
 
@@ -788,7 +788,7 @@ INSERT INTO HIKES VALUES
 ('260','Quebradas Road Trip','2','San Antonio','Two-Cars','23.00','500','Easy','None','Geological Fanatasy Land','Not summer','Full sun','QAll.GPX','QAll.json','341108096','-1068717384','Queb3705c4.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669177869019','https://www.flickr.com/photos/139088815@N08/albums/72157690088502492','https://www.google.com/maps/place/NM-408,+Socorro,+NM/@34.0933597,-106.9160609,13.31z/data=!4m5!3m4!1s0x8721c9d367706c8b:0x1addb2449366eb9c!8m2!3d34.1014802!4d-106.8970613','<p>This Backcountry Scenic Byway is a relatively well-maintained 24-mile gravel road winding through the backcountry between Socorro and San Antonio. A vehicle with good ground clearance is highly recommended, though the road is mostly maintained. Trip preparations should include a water supply, food, sunscreen, and other items as needed for a long trip.</p>','<p>The <span style=\"color: #1428d2;\"><em>Quebradas Backcountry Highway</em></span> provides a fascinating geological tour through Central New Mexico\'s terrain, otherwise not available to the hiker. The online website identifies 10 \'Stops\' where a geological explanation of the area is provided to enhance your understanding and appreciation of the view.</p>\r\n<p>The interactive map above shows the 10 stops with photos of the surrounding areas. It might be helpful to click on the \'Full Page Map\' link in the side table to be able to zoom in at a larger scale. Sometimes hiking is a good option at a stop, and sometimes not so much. Below, in the <strong>GPS Data</strong> section, are links to the short hikes the authors did take on this trip. Because of the number of stops, the trip can take most of the day to accomplish, but the views won\'t be soon forgotten.</p>','2018-01-30',NULL,NULL,NULL),
 ('261','South Crest - CCC (Partial)','2','Tijeras','Out-and-back','6.60','2800','Med-Difficult','None','Views of Hondo Canyon and points East','Any','Mixed sun/shade','South_Crest-75.161.84.172-1626477047.gpx','South_Crest-75.161.84.172-1626477047.json','350895490','-1063914511','Sout7ce088.jpg',NULL,NULL,'https://www.google.com/maps/dir//Canyon+Estates+Trailhead,+Tijeras,+NM+87059/@35.0851237,-106.394046,16.04z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a300c233a649:0xc2bc045ea098f30f!2m2!1d-106.391577!2d35.08956',NULL,'<p>The <span style=\"color: #1428d2;\"><em>South Crest Trail </em></span>begins the march of the 26-mile Crest Trail along the top of the <em>Sandias</em>. The original objective of this hike was to traverse the <em><span style=\"color: #1428d2;\">CCC Trail</span></em><span style=\"color: #000000;\">, which begins near the junction of the <span style=\"color: #1428d2;\"><em>South Crest Trail</em></span> with the <em><span style=\"color: #1428d2;\">Upper Faulty Trail</span></em>. You must be on <em><span style=\"color: #1428d2;\">Upper Faulty</span></em> to find the trail head, which is marked with a large pile of rocks.</span></p>\r\n<p><span style=\"color: #000000;\">You begin by hiking about 2.5 miles along the <em><span style=\"color: #1428d2;\">South Crest Trail</span></em>, ascending about 1,000 ft to the start of the <span style=\"color: #1428d2;\"><em>CCC Trail</em><span style=\"color: #000000;\">, which starts a very short distance from the juncture with <span style=\"color: #1428d2;\"><em>Upper Faulty Trail</em></span>.</span></span> The <em><span style=\"color: #1428d2;\">CCC Trail</span></em>&nbsp; ascends quite steeply and relentlessly from this point. Each mile along the trail goes up about 1,000 ft, for an average grade of 18%! The hike is primarily a physical challenge, as there is no scenery along the way. The author couldn\'t complete the journey to the top, but the remainder of the trail can be seen on the map by clicking on the \'CCC Trail\' checkbox in the \'Tracks\' box, located in the upper right hand corner of the map.</span></p>','2021-07-16',NULL,NULL,NULL),
 ('262','Bill Spring-Oso-Faulty Loop','2','Tijeras','Loop','8.40','1100','Moderate','Picnic Area w/multiple toilets','East-looking views from Sandia','Any','Good shade','Bill Spring-75.161.84.172-1627138990.gpx','Bill Spring-75.161.84.172-1627138990.json','351767613','-1063789963','Billc78119.jpg',NULL,NULL,'https://www.google.com/maps/dir//DOC+LONG+PICNIC+AREA,+7562+Sandia+Crest+Rd,+Cedar+Crest,+NM+87008/@35.1685046,-106.3783427,14.53z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984dbceffff3:0x5318c098cf645d67!2m2!1d-106.3768858!2d35.1757456',NULL,'<p>The <em><span style=\"color: #1428d2;\">Bill Spring Trail</span></em>, located at the <em>Doc Long Picnic Area</em>, is a starting point for variations of hikes in this area. This is reflected by the variations shown in the references below. It connects with the <span style=\"color: #1428d2;\"><em>Faulty Trail</em></span> at its northern end (see the northernmost green flag on the interactive map) and the much less used <span style=\"color: #1428d2;\"><em>Old Faulty Trail </em></span>prior to that (red flag on the <span style=\"color: #1428d2;\"><em>Bill Spring Trail</em></span>).</p>\r\n<p>This hike is actually a result of the author mistakenly proceeding up <em><span style=\"color: #1428d2;\">Oso Corredor Trail </span></em>instead of following the planned route along <em><span style=\"color: #1428d2;\">Faulty Trail</span></em>. While there are not many vista points along the way, the hike is pleasant, though continously uphill at a moderate pace. The author turned around near the end of <em><span style=\"color: #1428d2;\">Oso Corredor</span></em> and proceeded back to <span style=\"color: #1428d2;\"><em>Faulty Trail</em></span> to complete the loop back by following <span style=\"color: #1428d2;\"><em>Old Faulty Trail</em></span>. Note the southernmost green flag on the map - it indicates the trail head for the <em><span style=\"color: #1428d2;\">Old Faulty Trail</span></em>, which is rather obscure. It appears that there was an attempt to intentionally discourage use of the trail, as it blocked by a sawed-off section of tree and some sticks. The trail is nonetheless in rather good condition and easy to follow. It occurs a very short distance prior to the <em><span style=\"color: #1428d2;\">Sulpher Canyon Trail</span></em>, which is well marked.</p>\r\n<p>Though there is good shade along the way, the section of <em><span style=\"color: #1428d2;\">Faulty Trail</span></em> between the <em><span style=\"color: #1428d2;\">Oso Corredor</span></em> junction (red flag) and the <span style=\"color: #1428d2;\"><em>Old Faulty</em></span> junction (green flag) can get more exposed. The author chose the use of red flags for right turns and green flags for left turns.</p>','2021-07-23',NULL,NULL,NULL),
-('263','Bill Spring-Faulty Mulitloop','2','Tijeras','Loop','6.00','550','Moderate','Picnic area w/multiple toilets','Interior and eastward views','Any','Good shade','BillSpringMulti-174.28.118.186-1627684370.gpx','BillSpringMulti-174.28.118.186-1627684370.json','351768203','-1063788412','Billf65b34.jpg',NULL,NULL,'https://www.google.com/maps/dir//DOC+LONG+PICNIC+AREA,+7562+Sandia+Crest+Rd,+Cedar+Crest,+NM+87008/@35.1693953,-106.3760751,14.55z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984dbceffff3:0x5318c098cf645d67!2m2!1d-106.3768858!2d35.1757456',NULL,'<p>This hike makes a double loop by using various trail options, starting from the <em><span style=\"color: #1428d2;\">Bill Spring Trail </span></em>head. At the end of <em><span style=\"color: #1428d2;\">Bill Spring</span></em>, <span style=\"color: #1428d2;\"><em>Faulty Trail </em></span>begins. It forms the backbone from which other trails branch out.</p>\r\n<p>During the first loop, <em><span style=\"color: #1428d2;\">Faulty Trail</span></em> is followed up to the <span style=\"color: #1428d2;\"><em>Cienega Horse Bypass</em>, <span style=\"color: #000000;\">where this hike takes a sharp left turn</span></span><span style=\"color: #000000;\">.</span> Although a horse trail, it is a very pleasant section of trail with nice views along the way. Following this trail takes the hiker down to the <em>Sulfer Canyon</em> and <em>Cienega Picnic Grounds</em>, where the <em><span style=\"color: #1428d2;\">Wagon Trail</span></em> picks up for a short distance, leading then to the <em><span style=\"color: #1428d2;\">Acequia Trail</span></em>. The latter proceeds through the picnic ground, and at its northern end, the <span style=\"color: #1428d2;\"><em>Cienega Trail</em></span> begins. This section of the trail soon intersects the <em><span style=\"color: #1428d2;\">Faulty Trail</span></em>, which is then followed back to the <em><span style=\"color: #1428d2;\">Sulfer Canyon Trail</span></em>. Proceeding down that trail at a fairly easy pace leads back to the <em>Sulfer Canyon</em> picnic area. From here, a newer trail segment, the <em><span style=\"color: #1428d2;\">Doc Long/Sulfer Canyon Link Trail</span></em>, returns the hiker to the starting point. For a slightly more adventurous return from <em><span style=\"color: #1428d2;\">Faulty</span></em>, use the <span style=\"color: #1428d2;\"><em>Old Faulty Trail</em></span>, referenced in the <a href=\"../pages/hikePageTemplate.php?hikeIndx=262\" target=\"_blank\" rel=\"noopener\">Bill Spring-Oso-Faulty Loop</a></p>','2021-07-30',NULL,NULL,NULL),
+('263','Bill Spring-Faulty Mulitloop','2','Tijeras','Loop','6.00','550','Moderate','Picnic area w/multiple toilets','Interior and eastward views','Any','Good shade','BillSpringMulti-174.28.118.186-1627684370.gpx','BillSpringMulti-174.28.118.186-1627684370.json','351768203','-1063788412','Billf65b34.jpg',NULL,NULL,'https://www.google.com/maps/dir//DOC+LONG+PICNIC+AREA,+7562+Sandia+Crest+Rd,+Cedar+Crest,+NM+87008/@35.1693953,-106.3760751,14.55z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718984dbceffff3:0x5318c098cf645d67!2m2!1d-106.3768858!2d35.1757456',NULL,'<p>This hike makes a double loop by using various trail options, starting from the <em><span style=\"color: #1428d2;\">Bill Spring Trail</span></em>. At the end of <em><span style=\"color: #1428d2;\">Bill Spring</span></em>, <span style=\"color: #1428d2;\"><em>Faulty Trail </em></span>begins. It forms the backbone from which other trails branch out.</p>\r\n<p>During the first loop, the trail gains elevation as you traverse the <em><span style=\"color: #1428d2;\">Bill Spring Trail</span></em>, and again when you encounter <em><span style=\"color: #1428d2;\">Faulty Trail</span></em> . Faulty begins to descend where the <em><span style=\"color: #1428d2;\">Oso Corredor</span></em> junction occurs (see northmost flag on the interactive map), then resumes its uphill to the <span style=\"color: #1428d2;\"><em>Cienega Horse Bypass</em> <span style=\"color: #000000;\">where this hike takes a sharp left turn</span></span><span style=\"color: #000000;\">.</span></p>\r\n<p>The <span style=\"color: #1428d2;\"><em>Cienega Horse Bypass</em></span>, although intended as a horse trail, is a very pleasant section of trail with nice views along the way. Following this trail takes the hiker slowly down to the <em>Sulphur Canyon</em> and <em>Cienega Picnic Grounds</em>, where the <em><span style=\"color: #1428d2;\">Wagon Trail</span></em> picks up for a short distance. This winding trail soon gives way to the <em><span style=\"color: #1428d2;\">Acequia Trail</span></em><span style=\"color: #1428d2;\"><span style=\"color: #000000;\">, which resumes a slow and steady uphill.</span></span><span style=\"color: #000000;\"> </span>The latter proceeds through the picnic ground, and at its northern end, the <span style=\"color: #1428d2;\"><em>Cienega Trail</em></span> begins.</p>\r\n<p>The <span style=\"color: #1428d2;\"><em>Cienega Trail</em></span> continues uphill and soon intersects the <em><span style=\"color: #1428d2;\">Faulty Trail</span></em>, which is then followed back to the <em><span style=\"color: #1428d2;\">Sulphur Canyon Trail</span></em>. Proceeding down that trail at a fairly easy pace leads back to the <em>Sulphur Canyon</em> picnic area. From here, a newer trail segment, the <em><span style=\"color: #1428d2;\">Doc Long/Sulfer Canyon Link Trail</span></em>, returns the hiker to the starting point. For a slightly more adventurous return from <em><span style=\"color: #1428d2;\">Faulty</span></em>, use the <span style=\"color: #1428d2;\"><em>Old Faulty Trail</em></span>, referenced in the <a href=\"../pages/hikePageTemplate.php?hikeIndx=262\" target=\"_blank\" rel=\"noopener\">Bill Spring-Oso-Faulty Loop</a></p>','2022-07-15',NULL,NULL,NULL),
 ('264','Rito de los Indios','2','Valles Caldera','Out-and-back','7.90','950','Moderate','No (public toilets on road in)','Mountain and valley views','Not Winter','Mixed sun/shade','RitoDeLosIndios-75.161.75.101-1628346864.gpx','RitoDeLosIndios-75.161.75.101-1628346864.json','359642910','-1064911560','Rito01bf24.jpg',NULL,NULL,'https://www.google.com/maps/dir//Rito+de+los+Indios,+New+Mexico+87025/@35.9004235,-106.5578068,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718086323b10d6f:0xeb04ec82b3b2118d!2m2!1d-106.4911447!2d35.9627989','<p>The interior roads of the Valles Caldera are somewhat rugged dirt and gravel, and only one-and-a-half lanes wide. An all-wheel drive vehicle is strongly recommended. This hike begins almost 15 miles from the Entrance Station, and at slow speeds will take about 45 minutes to reach - plan your time accordingly.</p>','<p>The <span style=\"color: #1428d2;\"><em>Rito de los Indios Trail </em></span>is one of the best hikes around for many reasons: long mountain views, grassy hillsides, meadows with wildflowers and butterflies, solitude, sunshine, clean air and great exercise. It follows alongside the <em>Rito de los Indios</em> and crosses it four times on this hike - none of which are challenging at all.</p>\r\n<p>The trail is exposed for the first half of the trip and maintains an easy grade uphill. After that, partial shade begins to appear and the ascent becomes more moderate in grade. The last short section of trail up to the boundary fence is somewhat steep. There are many and varied views within the Caldera and of surrounding mountains. Perhaps due to the monsoons, the wildflower population on this trip was very colorful with many varieties along the way. If you enjoy solitude and great scenery, this is the hike for you.</p>','2021-08-05',NULL,NULL,NULL),
 ('265','Guitierrez Canyon Open Space','2','Tijeras','Loop','6.20','450','Moderate','None','Views of Sandia\'s eastern slopes','Not Winter','Mixed sun/shade','San_Antonito-75.161.75.101-1628716910.gpx','San_Antonito-75.161.75.101-1628716910.json','351292822','-1063651933','San 4fb279.jpg',NULL,NULL,'https://www.google.com/maps/dir//John+A.+Milne+%26+Gutierrez+Canyon+Open+Space,+Unnamed+Road,+Cedar+Crest,+NM+87008/@35.1290221,-106.3686694,15.64z/data=!4m8!4m7!1m0!1m5!1m1!1s0x8718a2bcb45adf05:0xcb6eac2e5282fc79!2m2!1d-106.3652707!2d35.1292888',NULL,'<p>The Open Space in San Antonito is unassumingly located right off of NM 14, 3 miles north of Tijeras next to the Post Office. It quickly leads into the foothills opposite of Sandia\'s eastern face. On the interactive map above, you will see colored flags, generally representing points where trails intersect. The author uses green to indicate left turns, and red to indicate right. The one instance of blue flag was to indicate that the trail (not so obviously) proceeds straight ahead, on a less well-traveled path.</p>\r\n<p>This hike was \'constructed\' by the author to piece together sufficient trail segments to provide a moderately long adventure - other options can be used to reduce the overall hike length. Some of those options can be seen by clicking on the link provided below in <strong>References</strong>. There are numerous trail crossings, along with twists and turns which provide lovely views in multiple directions. The hike begins with <em><span style=\"color: #1428d2;\">Wagon Mound Trail</span></em>, which proceeds somewhat steeply uphill, and is quite rocky. Berfore long it intersects the <em><span style=\"color: #1428d2;\">Sierra Vista Bypass Trail</span></em>, which maintains a more level contour along the ridge. This trail ends at an \'Emergency Access Road\', which is wide and rocky. A short downhill takes you to the beginning of <em><span style=\"color: #1428d2;\">Canyon Trail </span></em>on the left.</p>\r\n<p><em><span style=\"color: #1428d2;\">Canyon Trail </span></em>loops around to another junction with <span style=\"color: #1428d2;\"><em>Doe Run</em></span> and <em><span style=\"color: #1428d2;\">Eagle Ridge</span></em>. Keep straight/left to follow the <em><span style=\"color: #1428d2;\">Doe Run Trail</span></em>. It proceeds up from the canyon to the top of a ridge. Here it intersects with <em><span style=\"color: #1428d2;\">Ridge Trail</span></em>, but this hike turns right and goes uphill on an <em>unnamed trail</em>. Soon the <em>unnamed trail</em> proceeds sharply downhill and meets the <em><span style=\"color: #1428d2;\">Chapparal Trail</span></em>, where the hike turns left. In a short distance, the <em><span style=\"color: #1428d2;\">Arroyo Loop Trail</span></em> is met, and the hike keeps right to proceed along the west side of the loop. There are some lovely views along the arroyo on this trail, which leads back to the <em><span style=\"color: #1428d2;\">Mine Trail</span></em>, returning back to the parking area.</p>','2021-08-11',NULL,NULL,NULL),
 ('266','South Mountain','2','Valles Caldera','Out-and-back','8.10','1000','Moderate','Entrance Station','Interior Caldera views','Not Winter','Mixed sun/shade','South_Mountain-75.161.75.101-1630106842.gpx','South_Mountain-75.161.75.101-1630106842.json','358632336','-1065192435','Sout2df217.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.8632336,-106.5192435/@35.8434838,-106.5298175,13.19z','<p>You must register to travel witihin the National Preserve. The registration station is about 1.8 miles from NM 4, and only a limited number of vehicles are permitted access. Plan accordingly.</p>','<p>The <em><span style=\"color: #1428d2;\">South Mountain Hike</span></em> begins at a cabled gate near the Cabin District of the Caldera. Access to <em><span style=\"color: #1428d2;\">South Mountain </span></em><span style=\"color: #000000;\">is gained by hiking the old VC02 jeep trail about 1.37 miles southwest, just past the intersection of VC02 with VC0201. Here the trail up the mountain actually begins, and a trail marker directs the hiker to turn left (south) and begin the ascent. Note that the mileage information in the book reference below is not very precise. Generally, the mileage is over-stated somewhat.<br /></span></p>\r\n<p><span style=\"color: #000000;\">The <span style=\"color: #1428d2;\"><em>South Mountain Trail</em></span>, at this point, follows an unused and slowly degenerating jeep track uphill, gently at first and becoming more moderate as you proceed. The two-track is beginning to become overgrown from disuse, and degenerates further uphill until it ends at about 3.3 miles into the hike (see the blue flag on the interactive map). From here, the blue diamonds on the trees continue on, marking the actual trail. Please note, however, that there is a jog to the left about 100 yards/meters from the end of the jeep trail (marked on the interactive map with a green flag). This is easy to miss, as the trail appears to go straight at this point. Following that straight-ahead trail, however, as the author did at first, results eventually in a dead end. It is still possible to bushwhack up the hill from there towards the summit meadow, but it involves crossing a significant amount of deadfall. That \'route\' is not shown on the map.</span></p>\r\n<p><span style=\"color: #000000;\">From the meadow, the trail - still visible but somewhat faint - proceeds towards the summit. After entering a grove of aspens and climbing uphill the hike ends there with some nice 360-degree views, though partially obstructed in some directions due to the tree cover. Note that heading back, the trail across the meadow can seem to disappear, so a GPS device of some sort is advised.</span></p>','2021-08-27',NULL,NULL,NULL),
@@ -841,7 +841,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3184 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3190 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1730,10 +1730,6 @@ INSERT INTO REFS VALUES
 ('2995','262','App:','https://www.alltrails.com/trail/us/new-mexico/sulphur-canyon-faulty-and-bill-spring-trails-loop','AllTrails.com'),
 ('2996','262','Website:','https://www.hikingproject.com/trail/7038410/bill-spring-trail','REI Hiking Project'),
 ('2997','262','App:','https://www.alltrails.com/trail/us/new-mexico/bill-spring-196-oso-corredor-265-and-tree-spring-147','AllTrails.com'),
-('3001','263','Book:','7',NULL),
-('3002','263','App:','https://www.alltrails.com/trail/us/new-mexico/sulphur-canyon-faulty-and-bill-spring-trails-loop','AllTrails.com'),
-('3003','263','App:','https://www.alltrails.com/trail/us/new-mexico/cienaga-faulty-and-bill-spring-trail-loop','AllTrails.com'),
-('3004','263','App:','https://www.alltrails.com/explore/trail/us/new-mexico/faulty-trail-195-and-bill-spring-trail-196-loop?mobileMap=false&ref=sidebar-static-map','AllTrails.com'),
 ('3008','264','Book:','22',NULL),
 ('3009','264','App:','https://www.alltrails.com/trail/us/new-mexico/rito-de-los-indios','AllTrails.com'),
 ('3010','264','Website:','https://www.nps.gov/vall/planyourvisit/moderate-hikes.htm','Natl Park Service'),
@@ -1752,12 +1748,12 @@ INSERT INTO REFS VALUES
 ('3043','273','Website:','https://www.recreation.gov/camping/poi/10094584','Recreation.gov'),
 ('3044','88','Book: ','6',NULL),
 ('3045','88','Book: ','3',NULL),
-('3046','88','Book: ','8',NULL);
-INSERT INTO REFS VALUES
+('3046','88','Book: ','8',NULL),
 ('3047','88','Website: ','http://www.fs.usda.gov/recarea/cibola/null/recarea/?recid=64174&actid=50','Forest Service: Fourth of July Trailhead'),
 ('3048','88','App: ','http://www.alltrails.com/trail/us/new-mexico/albuquerque-78-fourth-of-july-173','AllTrails'),
 ('3049','88','Blog: ','http://www.trimbleoutdoors.com/ViewTrip/10996','Trimble Outdoors (with Waypoints)'),
-('3050','276','App:','https://www.alltrails.com/explore/trail/us/new-mexico/turkey-trot-loop-via-mars-court-trailhead?mobileMap=false&ref=sidebar-static-map','AllTrails.com'),
+('3050','276','App:','https://www.alltrails.com/explore/trail/us/new-mexico/turkey-trot-loop-via-mars-court-trailhead?mobileMap=false&ref=sidebar-static-map','AllTrails.com');
+INSERT INTO REFS VALUES
 ('3051','248','Book:','2',NULL),
 ('3052','248','Website:','https://www.hikingproject.com/directory/8015740/manzanita-mountains-trail-system','Manzanitas Trail System'),
 ('3054','277','App:','https://www.alltrails.com/explore/trail/us/new-mexico/rio-rancho-bosque-to-corrales-bosque-connector-loop?ref=result-card','A nearby hike from AllTrails.com'),
@@ -1848,7 +1844,11 @@ INSERT INTO REFS VALUES
 ('3179','245','Book:','7',NULL),
 ('3180','245','Website:','https://www.mtbproject.com/trail/7047838/challenge-trail-233','MTB Project'),
 ('3181','293','Book:','22',NULL),
-('3182','293','App:','https://www.alltrails.com/trail/us/new-mexico/cerro-la-garita--3','AllTrails.com');
+('3182','293','App:','https://www.alltrails.com/trail/us/new-mexico/cerro-la-garita--3','AllTrails.com'),
+('3183','263','Book:','7',NULL),
+('3184','263','App:','https://www.alltrails.com/trail/us/new-mexico/sulphur-canyon-faulty-and-bill-spring-trails-loop','AllTrails.com'),
+('3185','263','App:','https://www.alltrails.com/trail/us/new-mexico/cienaga-faulty-and-bill-spring-trail-loop','AllTrails.com'),
+('3186','263','App:','https://www.alltrails.com/explore/trail/us/new-mexico/faulty-trail-195-and-bill-spring-trail-196-loop?mobileMap=false&ref=sidebar-static-map','AllTrails.com');
 
 
 
@@ -1872,7 +1872,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9958 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9979 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -4591,21 +4591,6 @@ INSERT INTO TSV VALUES
 ('9049','262',NULL,'IMG_4033','Y','Y','A view along the way','351793333','-1063928917','2826',NULL,'2021-07-23 08:27:14','IMG_4033','480','640',NULL,NULL),
 ('9050','262',NULL,'IMG_4037','Y','Y','Horse mint Hysssops (?)','351826667','-1063962333','2827',NULL,'2021-07-23 10:10:40','IMG_4037','480','640',NULL,NULL),
 ('9051','262',NULL,'IMG_4030','Y','Y','A little help on Faulty','351819611','-1063895500','2828',NULL,'2021-07-23 07:58:04','IMG_4030','640','480',NULL,NULL),
-('9059','263',NULL,'IMG_4055','Y','Y','Fleabane periodically color the trail','351722500','-1063842000','2',NULL,'2021-07-30 08:58:31','IMG_4055','480','640',NULL,NULL),
-('9060','263',NULL,'IMG_4066','Y','Y','Wildflowers proliferate due to recent monsoon','351662222','-1063788139','2829',NULL,'2021-07-30 09:34:37','IMG_4066','640','480',NULL,NULL),
-('9061','263',NULL,'IMG_4047','Y','Y','A ledge bordering the Bill Spring Trail','351810611','-1063842389','2830',NULL,'2021-07-30 07:59:52','IMG_4047','480','640',NULL,NULL),
-('9062','263',NULL,'IMG_4056','Y','Y','Looking towards the Crest Trail','351722722','-1063837889','2831',NULL,'2021-07-30 08:59:40','IMG_4056','480','640',NULL,NULL),
-('9063','263',NULL,'IMG_4058','Y','Y','A lovely view along the Bypass','351721333','-1063817361','2832',NULL,'2021-07-30 09:03:25','IMG_4058','480','640',NULL,NULL),
-('9064','263',NULL,'IMG_4052','Y','Y','Gorgeous Red Penstemmon decorate the trail','351794556','-1063840556','2833',NULL,'2021-07-30 08:25:18','IMG_4052','640','480',NULL,NULL),
-('9065','263',NULL,'IMG_4064','Y','Y','Walking in the Ponderosa pines','351673556','-1063753972','2834',NULL,'2021-07-30 09:26:57','IMG_4064','640','480',NULL,NULL),
-('9066','263',NULL,'IMG_4068','Y','Y','A footbridge prior to a short walk on the grounds','351682444','-1063812028','2835',NULL,'2021-07-30 09:40:30','IMG_4068','640','480',NULL,NULL),
-('9067','263',NULL,'IMG_4080','Y','Y','Interestingly colored Fleabane centers','351723667','-1063864139','2836',NULL,'2021-07-30 10:19:35','IMG_4080','480','640',NULL,NULL),
-('9068','263',NULL,'IMG_4082','Y','Y','An alternate route back to Bill Spring from the Sulfer Canyon grounds','351733778','-1063767694','2837',NULL,'2021-07-30 10:47:18','IMG_4082','480','640',NULL,NULL),
-('9069','263',NULL,'IMG_4079','Y','Y','A little help on the Faulty Trail','351701472','-1063878167','2838',NULL,'2021-07-30 10:12:19','IMG_4079','640','480',NULL,NULL);
-INSERT INTO TSV VALUES
-('9070','263',NULL,'IMG_4078','Y','Y','A peek at South Mountain','351694333','-1063889528','2839',NULL,'2021-07-30 10:09:08','IMG_4078','640','480',NULL,NULL),
-('9071','263',NULL,'IMG_4071','Y','Y','A footbridge over dry terrain','351696333','-1063867861','2840',NULL,'2021-07-30 09:56:25','IMG_4071','640','480',NULL,NULL),
-('9072','263',NULL,'IMG_4070','Y','Y','Sticky Geranium populate the forest spaces','351697500','-1063862917','2841',NULL,'2021-07-30 09:55:19','IMG_4070','640','480',NULL,NULL),
 ('9074','264',NULL,'IMG_4114','Y','Y','Green meadows, grasses and mountain views the length of the trail','359876556','-1064751444','2842',NULL,'2021-08-05 10:05:19','IMG_4114','480','640',NULL,'8'),
 ('9075','264',NULL,'IMG_4117','Y','Y','The last meadow prior to the trail\'s end','360000083','-1064702833','2843',NULL,'2021-08-05 10:31:09','IMG_4117','480','640',NULL,'10'),
 ('9076','264',NULL,'IMG_4120','Y','Y','The VC boundary fence - there is no trail beyond','360085111','-1064578389','2844',NULL,'2021-08-05 10:56:33','IMG_4120','480','640',NULL,'12'),
@@ -4616,7 +4601,8 @@ INSERT INTO TSV VALUES
 ('9081','264',NULL,'IMG_4099','Y','Y','Heading back towards the trail head','359651556','-1064875556','2850',NULL,'2021-08-05 09:21:21','IMG_4099','480','640',NULL,'4'),
 ('9082','264',NULL,'IMG_4103','Y','Y','Firecracker penstemmon beautiful the slopes','359781917','-1064768444','2851',NULL,'2021-08-05 09:47:03','IMG_4103','480','640',NULL,'6'),
 ('9083','264',NULL,'IMG_4110','Y','Y','One of four stream crossing - all easy','359853056','-1064754722','2853',NULL,'2021-08-05 10:00:08','IMG_4110','480','640',NULL,'7'),
-('9084','264',NULL,'IMG_4101','Y','Y','This fence occurs near the fork in the road','359721556','-1064804611','2854',NULL,'2021-08-05 09:35:20','IMG_4101','480','640',NULL,'5'),
+('9084','264',NULL,'IMG_4101','Y','Y','This fence occurs near the fork in the road','359721556','-1064804611','2854',NULL,'2021-08-05 09:35:20','IMG_4101','480','640',NULL,'5');
+INSERT INTO TSV VALUES
 ('9085','264',NULL,'IMG_4097','Y','N','Harebells and other wildflowers proliferate the trail','359643667','-1064910889','2855',NULL,'2021-08-05 09:15:54','IMG_4097','480','640',NULL,'1'),
 ('9089','265',NULL,'IMG_4139','Y','Y','Sandia\'s eastern slopes from aptly named Sierra Vista Bypass','351294972','-1063612972','2856',NULL,'2021-08-11 07:38:34','IMG_4139','480','640',NULL,'2'),
 ('9090','265',NULL,'IMG_4145','Y','Y','Looking south from Sierra Vista','351286722','-1063518222','2857',NULL,'2021-08-11 08:10:24','IMG_4145','480','640',NULL,'4'),
@@ -4702,8 +4688,7 @@ INSERT INTO TSV VALUES
 ('9293','273',NULL,'IMG_4366','Y','Y','A pleasant stroll on the Chamisoso','350639389','-1063498472','2946',NULL,'2021-10-02 12:03:05','IMG_4366','480','640',NULL,'8'),
 ('9294','88',NULL,'MonzanoSpring','Y','N','Spring is coming to the Monzanos',NULL,NULL,'439','72157670328044815','2010-05-13 14:33:50','27871752331_4614b874cf','320','213',NULL,'14'),
 ('9295','88',NULL,'AlligatorJuniper','Y','N','Interesting landmark Juniper',NULL,NULL,'440','72157670328044815','2010-05-13 14:52:45','27871763261_36e4266217','320','213',NULL,'15'),
-('9296','88',NULL,'IMG_4480','Y','N','A view of Mosca Peak on Road A013 ','347901028','-1063633417','2966',NULL,'2021-10-20 09:46:47','IMG_4480','480','640',NULL,'0');
-INSERT INTO TSV VALUES
+('9296','88',NULL,'IMG_4480','Y','N','A view of Mosca Peak on Road A013 ','347901028','-1063633417','2966',NULL,'2021-10-20 09:46:47','IMG_4480','480','640',NULL,'0'),
 ('9297','88',NULL,'IMG_0968','Y','Y','The author stops to take in the maples','347932667','-1063833167','2967',NULL,'2021-10-20 10:10:06','IMG_0968','640','480',NULL,'1'),
 ('9298','88',NULL,'IMG_4488','Y','Y','Walking into the autumn beauty','347943750','-1063861083','2968',NULL,'2021-10-20 10:19:16','IMG_4488','640','480',NULL,'2'),
 ('9299','88',NULL,'IMG_4485','Y','N','Red maple leaves - a rarity in New Mexico','347935417','-1063837139','2969',NULL,'2021-10-20 10:12:08','IMG_4485','480','640',NULL,'6'),
@@ -4717,7 +4702,8 @@ INSERT INTO TSV VALUES
 ('9307','88',NULL,'IMG_4511','Y','Y','The road offers its own beauty','347804944','-1063887778','2977',NULL,'2021-10-20 11:48:21','IMG_4511','480','640',NULL,'13'),
 ('9308','88',NULL,'IMG_0977','Y','Y','Colorful leaves catch the eye','347947194','-1063882917','2978',NULL,'2021-10-20 10:24:38','IMG_0977','640','480',NULL,'3'),
 ('9309','88',NULL,'IMG_0994','Y','Y','More glimpses of the gorgeous trail','347971417','-1063933500','2979',NULL,'2021-10-20 11:02:22','IMG_0994','640','480',NULL,'8'),
-('9310','88',NULL,'DSC_0079','Y','N','A view of the peak from the Crest Trail',NULL,NULL,'2980',NULL,'2010-05-13 15:58:47','DSC_0079','428','640',NULL,'17'),
+('9310','88',NULL,'DSC_0079','Y','N','A view of the peak from the Crest Trail',NULL,NULL,'2980',NULL,'2010-05-13 15:58:47','DSC_0079','428','640',NULL,'17');
+INSERT INTO TSV VALUES
 ('9311','88',NULL,'DSC_0078','Y','N','Monzano Crest Trail',NULL,NULL,'2982',NULL,'2010-05-13 15:56:27','DSC_0078','640','428',NULL,'16'),
 ('9325','272',NULL,'IMG_4311','Y','N','Followed by a watchful eye','350068972','-1063200694','2983',NULL,'2021-09-22 09:58:43','IMG_4311','480','640',NULL,'4'),
 ('9326','272',NULL,'IMG_4317','Y','Y','Autumn color highlights the grassy area','350095472','-1063302222','2984',NULL,'2021-09-22 10:24:58','IMG_4317','480','640',NULL,'5'),
@@ -4803,8 +4789,7 @@ INSERT INTO TSV VALUES
 ('9437','280',NULL,'IMG_4613','Y','Y','A view of Hondo Canyon','350974278','-1063992611','3043',NULL,'2021-11-10 09:34:09','IMG_4613','480','640',NULL,'4'),
 ('9438','280',NULL,'IMG_4610','Y','Y','At Travertine Falls','350951361','-1063937750','3044',NULL,'2021-11-10 09:17:09','IMG_4610','480','640',NULL,'1'),
 ('9439','280',NULL,'IMG_4622','Y','Y','A clear view of the Manzanos','350945583','-1064142083','3045',NULL,'2021-11-10 10:26:15','IMG_4622','480','640',NULL,'7'),
-('9440','280',NULL,'IMG_4625','Y','Y','A view from higher up','350895806','-1064215917','3046',NULL,'2021-11-10 10:44:59','IMG_4625','480','640',NULL,'8');
-INSERT INTO TSV VALUES
+('9440','280',NULL,'IMG_4625','Y','Y','A view from higher up','350895806','-1064215917','3046',NULL,'2021-11-10 10:44:59','IMG_4625','480','640',NULL,'8'),
 ('9441','280',NULL,'IMG_4631','Y','Y','North to the San Pedros and South Mountain','350979083','-1064008472','3047',NULL,'2021-11-10 12:08:09','IMG_4631','480','640',NULL,'5'),
 ('9442','280',NULL,'IMG_4629','Y','Y','A corrugated closuep','350896806','-1064243250','3048',NULL,'2021-11-10 11:05:50','IMG_4629','480','640',NULL,'10'),
 ('9443','280',NULL,'IMG_4630','Y','Y','Looking back on the Manzanos','350895778','-1064212583','3049',NULL,'2021-11-10 11:16:18','IMG_4630','480','640',NULL,'9'),
@@ -4818,7 +4803,8 @@ INSERT INTO TSV VALUES
 ('9455','275',NULL,'IMG_4469','Y','Y','A sharp descent begins','350489583','-1063655389','2962',NULL,'2021-10-15 11:46:34','IMG_4469','640','480',NULL,'8'),
 ('9456','275',NULL,'IMG_4473','Y','Y','Eventually the Powerline trail smooths out','350559889','-1063686000','2963',NULL,'2021-10-15 12:07:08','IMG_4473','480','640',NULL,'9'),
 ('9457','275',NULL,'IMG_4474','Y','Y','To close the loop, back on the Chamisoso','350579806','-1063703389','2964',NULL,'2021-10-15 12:11:32','IMG_4474','480','640',NULL,'10'),
-('9458','275',NULL,'IMG_4468','Y','N','Somebody forgot something!','350484278','-1063654333','2965',NULL,'2021-10-15 11:44:26','IMG_4468','480','640',NULL,'6'),
+('9458','275',NULL,'IMG_4468','Y','N','Somebody forgot something!','350484278','-1063654333','2965',NULL,'2021-10-15 11:44:26','IMG_4468','480','640',NULL,'6');
+INSERT INTO TSV VALUES
 ('9463','281',NULL,'IMG_4651','Y','Y','Roadside view from the parking area','350347028','-1063206111','3050',NULL,'2021-11-17 09:28:02','IMG_4651','480','640',NULL,'0'),
 ('9464','281',NULL,'IMG_4654','Y','Y','A northeasterly view from Bear Scat','350382500','-1063188472','3051',NULL,'2021-11-17 09:37:52','IMG_4654','480','640',NULL,'1'),
 ('9465','281',NULL,'IMG_4665','Y','Y','A distant view','350527611','-1063027722','3052',NULL,'2021-11-17 10:36:48','IMG_4665','640','480',NULL,'6'),
@@ -4904,8 +4890,7 @@ INSERT INTO TSV VALUES
 ('9622','78',NULL,'IMG_4824','Y','Y','A respite en route to Black Volcano','351289444','-1067719278','3109',NULL,'2022-01-07 09:24:34','IMG_4824','480','640',NULL,'1'),
 ('9623','78',NULL,'IMG_4826','Y','N','Approaching Black Volcano','351292222','-1067717972','3110',NULL,'2022-01-07 09:26:28','IMG_4826','480','640',NULL,'2'),
 ('9624','78',NULL,'IMG_4828','Y','Y','From lava stacks to the volcano peak','351333306','-1067714389','3111',NULL,'2022-01-07 09:35:00','IMG_4828','480','640',NULL,'3'),
-('9625','78',NULL,'IMG_4833','Y','N','A view of the Sangre de Cristos','351327056','-1067727583','3112',NULL,'2022-01-07 09:42:05','IMG_4833','480','640',NULL,'6');
-INSERT INTO TSV VALUES
+('9625','78',NULL,'IMG_4833','Y','N','A view of the Sangre de Cristos','351327056','-1067727583','3112',NULL,'2022-01-07 09:42:05','IMG_4833','480','640',NULL,'6'),
 ('9626','78',NULL,'IMG_4843','Y','Y','Approaching Bond and Butte','351508306','-1067680278','3113',NULL,'2022-01-07 10:22:50','IMG_4843','480','640',NULL,'10'),
 ('9627','78',NULL,'IMG_4850','Y','Y','The \'road\' to Butte','351615667','-1067727361','3114',NULL,'2022-01-07 10:50:36','IMG_4850','480','640',NULL,'13'),
 ('9628','78',NULL,'IMG_4853','Y','Y','From Butte looking south','351651333','-1067718889','3115',NULL,'2022-01-07 10:57:40','IMG_4853','480','640',NULL,'14'),
@@ -4919,7 +4904,8 @@ INSERT INTO TSV VALUES
 ('9646','286',NULL,'IMG_4907','Y','Y','Numerous Alligator Junipers can be found','351599472','-1063680361','3133',NULL,'2022-01-21 10:47:19','IMG_4907','640','480',NULL,'2'),
 ('9647','286',NULL,'IMG_4908','Y','Y','A winter\'s shrubs against the mountain vista','351565889','-1063691389','3134',NULL,'2022-01-21 11:01:59','IMG_4908','480','640',NULL,'3'),
 ('9648','286',NULL,'IMG_4898','Y','Y','Mountains and pines','351664667','-1063712778','3135',NULL,'2022-01-21 10:08:34','IMG_4898','480','640',NULL,'0'),
-('9649','286',NULL,'IMG_4906','Y','Y','Aptly named Pinedrop','351607167','-1063686972','3136',NULL,'2022-01-21 10:43:43','IMG_4906','640','480',NULL,'1'),
+('9649','286',NULL,'IMG_4906','Y','Y','Aptly named Pinedrop','351607167','-1063686972','3136',NULL,'2022-01-21 10:43:43','IMG_4906','640','480',NULL,'1');
+INSERT INTO TSV VALUES
 ('9650','286',NULL,'IMG_4920','Y','Y','The Sangre de Cristos can be seen in the distance','351481806','-1063753806','3137',NULL,'2022-01-21 12:11:32','IMG_4920','480','640',NULL,'10'),
 ('9651','286',NULL,'IMG_4918','Y','N','The southernmost point','351448333','-1063747722','3138',NULL,'2022-01-21 12:05:07','IMG_4918','640','480',NULL,'9'),
 ('9652','286',NULL,'IMG_4921','Y','Y','San Pedros from the southernmost point','351431389','-1063800278','3139',NULL,'2022-01-21 12:26:14','IMG_4921','480','640',NULL,'11'),
@@ -5005,8 +4991,7 @@ INSERT INTO TSV VALUES
 ('9751','13','Folder1','TramSighting','Y','N','High overhead is the Sandia Tram','351962472','-1064407277','40','photostream','2015-08-20 11:01:16','27736411446_a9427c2292','320','240',NULL,'7'),
 ('9752','13','Folder1','TrailHead','N','N','Approach to Domingo Baca','351635027','-1064704972','41','photostream','2015-08-20 08:06:35','27159296413_9515555bbf','240','320',NULL,'16'),
 ('9753','13','Folder1','RockHome','N','N','Abandoned shelter early on the trail','351801083','-1064620972','42','photostream','2015-08-20 08:59:51','27669984412_d891694d25','240','320',NULL,'17'),
-('9754','13','Folder1','CanyonView','Y','Y','A beautiful view of Domingo Baca Canyon','351742527','-1064682777','43','photostream','2015-08-20 12:46:49','27159317223_d0ae127bc2','240','320',NULL,'1');
-INSERT INTO TSV VALUES
+('9754','13','Folder1','CanyonView','Y','Y','A beautiful view of Domingo Baca Canyon','351742527','-1064682777','43','photostream','2015-08-20 12:46:49','27159317223_d0ae127bc2','240','320',NULL,'1'),
 ('9755','13',NULL,'Boulder Bypass',NULL,'Y',NULL,'351928332','-1064430000',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Green',NULL),
 ('9756','13',NULL,'IMG_0280','N','N','Pleasant trail views','351703722','-1064663999','2553',NULL,'2018-09-25 11:20:40','IMG_0280','2448','3264',NULL,'18'),
 ('9757','13',NULL,'IMG_0282','Y','Y','Trail head at Cottonwood Parking area','351658750','-1064730694','2554',NULL,'2018-09-25 11:34:09','IMG_0282','2448','3264',NULL,'0'),
@@ -5020,7 +5005,8 @@ INSERT INTO TSV VALUES
 ('9765','13',NULL,'IMG_5126','Y','N','Engine parts are scattered','351949861','-1064423972','3205',NULL,'2022-04-29 11:24:48','IMG_5126','480','640',NULL,'15'),
 ('9766','13',NULL,'IMG_1047','Y','N','Commemorative plaque','351950444','-1064423750','3207',NULL,'2015-08-20 10:42:50','IMG_1047','640','480',NULL,'11'),
 ('9767','13',NULL,'IMG_1051','N','N','','351951556','-1064424139','3208',NULL,'2015-08-20 10:47:47','IMG_1051','480','640',NULL,'14'),
-('9768','13',NULL,'IMG_5134','Y','Y','An erie \'Sleepy Hollow\' tree trunk','351802444','-1064615333','3209',NULL,'2022-04-29 13:19:28','IMG_5134','480','640',NULL,'4'),
+('9768','13',NULL,'IMG_5134','Y','Y','An erie \'Sleepy Hollow\' tree trunk','351802444','-1064615333','3209',NULL,'2022-04-29 13:19:28','IMG_5134','480','640',NULL,'4');
+INSERT INTO TSV VALUES
 ('9769','13',NULL,'IMG_3035','Y','Y','Nature\'s beauty in the midst','351814500','-1064578472','3210',NULL,'2020-05-28 12:47:47','IMG_3035','640','480',NULL,'6'),
 ('9770','13',NULL,'IMG_1054','Y','N','The canyon is enclosed on several sides','351951833','-1064425583','3211',NULL,'2015-08-20 10:49:58','IMG_1054','480','640',NULL,'10'),
 ('9771','13',NULL,'IMG_5127','Y','Y','Scary remnants of 1955','351950556','-1064426028','3212',NULL,'2022-04-29 11:27:40','IMG_5127','480','640',NULL,'12'),
@@ -5106,8 +5092,7 @@ INSERT INTO TSV VALUES
 ('9884','292',NULL,'IMG_5461','Y','N','The peasants, missionaries and workmen','347516639','-1067056722','3275',NULL,'2022-06-05 10:40:39','IMG_5461','480','640',NULL,'12'),
 ('9887','122','Folder1','EmbudoJct','Y','Y','Where Mano leaves Embudo','350991361','-1064716972','628','72157682282811990','2017-05-24 09:25:40','34833547386_f969a4db89','179','320','pink','0'),
 ('9888','122','Folder1','OpenSpace','Y','Y','Looking back for a view','350971722','-1064724166','629','72157682282811990','2017-05-24 09:30:13','34873374845_15ce701044','179','320','pink','1'),
-('9889','122','Folder1','MondoBoulders','Y','Y','Great round boulders accent many of the views','350909305','-1064687277','630','72157682282811990','2017-05-24 09:56:15','34873383535_a911a8fdbf','240','320','pink','5');
-INSERT INTO TSV VALUES
+('9889','122','Folder1','MondoBoulders','Y','Y','Great round boulders accent many of the views','350909305','-1064687277','630','72157682282811990','2017-05-24 09:56:15','34873383535_a911a8fdbf','240','320','pink','5'),
 ('9890','122','Folder1','FlatAtLast','Y','N','Conqueror of the first steep hills','350881694','-1064667361','631','72157682282811990','2017-05-24 10:16:56','34873349255_dcc5c8e3a0','240','320','pink','6'),
 ('9891','122','Folder1','SouthView','Y','Y','Looking towards Magdalena','350851333','-1064663083','633','72157682282811990','2017-05-24 10:24:34','34873368995_772625fc17','240','320','pink','11'),
 ('9892','122','Folder1','SaddleView','Y','Y','Saddle of Mano Trail','350800861','-1064626083','634','72157682282811990','2017-05-24 10:56:53','34873365115_43c7e6c30f','240','320','pink','12'),
@@ -5121,7 +5106,8 @@ INSERT INTO TSV VALUES
 ('9900','122',NULL,'IMG_5466','Y','Y','Unexpected footbridge','350955722','-1064728306','3276',NULL,'2022-06-09 07:18:41','IMG_5466','480','640',NULL,'2'),
 ('9901','122',NULL,'IMG_5479','Y','Y','Bright-colored lichen rocks','350835917','-1064705972','3277',NULL,'2022-06-09 08:36:51','IMG_5479','480','640',NULL,'16'),
 ('9902','122',NULL,'IMG_5470','Y','Y','Odd-shaped sentinels guard the trail','350915139','-1064704750','3278',NULL,'2022-06-09 07:35:00','IMG_5470','480','640',NULL,'3'),
-('9903','122',NULL,'IMG_5481','Y','Y','Interesting sawtooth view','350895972','-1064764028','3279',NULL,'2022-06-09 09:03:33','IMG_5481','480','640',NULL,'21'),
+('9903','122',NULL,'IMG_5481','Y','Y','Interesting sawtooth view','350895972','-1064764028','3279',NULL,'2022-06-09 09:03:33','IMG_5481','480','640',NULL,'21');
+INSERT INTO TSV VALUES
 ('9904','122',NULL,'IMG_5480','Y','Y','Another odd-shaped sentinel','350870694','-1064761972','3280',NULL,'2022-06-09 08:58:11','IMG_5480','480','640',NULL,'19'),
 ('9905','122',NULL,'IMG_5483','Y','Y','Heading back on 401','350921583','-1064792111','3281',NULL,'2022-06-09 09:12:16','IMG_5483','480','640',NULL,'22'),
 ('9906','122',NULL,'IMG_5471','Y','Y','Shooting the gap','350909389','-1064702778','3282',NULL,'2022-06-09 07:36:28','IMG_5471','480','640',NULL,'4'),
@@ -5157,7 +5143,25 @@ INSERT INTO TSV VALUES
 ('9944','293',NULL,'IMG_5544','Y','N','The turnoff to the summit meadow','360034778','-1065054472','3305',NULL,'2022-07-07 11:35:40','IMG_5544','640','480',NULL,'15'),
 ('9945','293',NULL,'IMG_5546','Y','Y','A panorama view of the vast Caldera','360017056','-1065026694','3306',NULL,'2022-07-07 11:45:25','IMG_5546','225','640',NULL,'20'),
 ('9946','293',NULL,'IMG_5561','Y','Y','One of the burn areas to the east','359973611','-1065002806','3307',NULL,'2022-07-07 12:43:54','IMG_5561','480','640',NULL,'6'),
-('9947','293',NULL,'IMG_5562','Y','Y','An open meadow on the way','359896139','-1065067444','3308',NULL,'2022-07-07 13:02:51','IMG_5562','480','640',NULL,'3');
+('9947','293',NULL,'IMG_5562','Y','Y','An open meadow on the way','359896139','-1065067444','3308',NULL,'2022-07-07 13:02:51','IMG_5562','480','640',NULL,'3'),
+('9948','263',NULL,'IMG_4066','Y','Y','Wildflowers proliferate due to recent monsoon','351662222','-1063788139','2829',NULL,'2021-07-30 09:34:37','IMG_4066','640','480',NULL,'10'),
+('9949','263',NULL,'IMG_4047','Y','Y','A ledge bordering the Bill Spring Trail','351810611','-1063842389','2830',NULL,'2021-07-30 07:59:52','IMG_4047','480','640',NULL,'1'),
+('9950','263',NULL,'IMG_4058','Y','Y','A lovely view along the Bypass','351721333','-1063817361','2832',NULL,'2021-07-30 09:03:25','IMG_4058','480','640',NULL,'7'),
+('9951','263',NULL,'IMG_4052','Y','Y','Gorgeous Red Penstemmon decorate the trail','351794556','-1063840556','2833',NULL,'2021-07-30 08:25:18','IMG_4052','640','480',NULL,'4'),
+('9952','263',NULL,'IMG_4064','Y','Y','Walking in the Ponderosa pines','351673556','-1063753972','2834',NULL,'2021-07-30 09:26:57','IMG_4064','640','480',NULL,'9'),
+('9953','263',NULL,'IMG_4080','Y','Y','Interestingly colored Fleabane centers','351723667','-1063864139','2836',NULL,'2021-07-30 10:19:35','IMG_4080','480','640',NULL,'5'),
+('9954','263',NULL,'IMG_4082','Y','Y','An alternate route back to Bill Spring from the Sulfer Canyon grounds','351733778','-1063767694','2837',NULL,'2021-07-30 10:47:18','IMG_4082','480','640',NULL,'17'),
+('9955','263',NULL,'IMG_4079','Y','Y','A little help on the Faulty Trail','351701472','-1063878167','2838',NULL,'2021-07-30 10:12:19','IMG_4079','640','480',NULL,'16'),
+('9956','263',NULL,'IMG_4078','Y','Y','A peek at South Mountain','351694333','-1063889528','2839',NULL,'2021-07-30 10:09:08','IMG_4078','640','480',NULL,'15'),
+('9957','263',NULL,'IMG_4071','Y','Y','A footbridge over dry terrain','351696333','-1063867861','2840',NULL,'2021-07-30 09:56:25','IMG_4071','640','480',NULL,'13'),
+('9958','263',NULL,'IMG_4070','Y','N','Sticky Geranium populate the forest spaces','351697500','-1063862917','2841',NULL,'2021-07-30 09:55:19','IMG_4070','640','480',NULL,'12'),
+('9959','263',NULL,'IMG_5566','Y','Y','\'Rock Art\' on the Bill Spring','351814583','-1063851306','3309',NULL,'2022-07-15 09:14:42','IMG_5566','480','640',NULL,'2'),
+('9960','263',NULL,'IMG_4028','N','Y','Bill Spring\'s official start','351774944','-1063796000','3310',NULL,'2021-07-23 07:33:05','IMG_4028','480','640',NULL,'0'),
+('9961','263',NULL,'IMG_5586','Y','Y','A footbridge to the Picnic Area','351683611','-1063812194','3311',NULL,'2022-07-15 10:54:59','IMG_5586','480','640',NULL,'11'),
+('9962','263',NULL,'IMG_5577','Y','Y','Tecolote Peak from the Horse By-Pass','351724167','-1063835222','3312',NULL,'2022-07-15 10:15:23','IMG_5577','480','640',NULL,'6'),
+('9963','263',NULL,'IMG_5592','Y','Y','Sweet clover abounds','351687583','-1063889000','3313',NULL,'2022-07-15 11:15:43','IMG_5592','640','480',NULL,'14'),
+('9964','263',NULL,'IMG_5582','Y','Y','South Mountain peeks through the trees','351692694','-1063788222','3314',NULL,'2022-07-15 10:28:16','IMG_5582','480','640',NULL,'8'),
+('9965','263',NULL,'IMG_5569','Y','Y','A steep but shady uphill on the Faulty','351820972','-1063897778','3315',NULL,'2022-07-15 09:27:11','IMG_5569','640','480',NULL,'3');
 
 
 
@@ -5196,7 +5200,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=931 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=961 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -6138,7 +6142,37 @@ INSERT INTO VISITORS VALUES
 ('927','154.6.16.63','Apple Safari','mac','2022-07-08 12:46:00','https://nmhikes.com:443/pages/home.php'),
 ('928','75.161.93.91','Apple Safari','mac','2022-07-08 03:21:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=224'),
 ('929','172.58.8.96','Apple Safari','mac','2022-07-08 05:11:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
-('930','66.249.69.180','Google Chrome','Unknown','2022-07-09 05:51:43','https://nmhikes.com:443/pages/home.php');
+('930','66.249.69.180','Google Chrome','Unknown','2022-07-09 05:51:43','https://nmhikes.com:443/pages/home.php'),
+('931','72.174.4.56','Google Chrome','linux','2022-07-09 07:56:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=293'),
+('932','72.174.4.56','Google Chrome','linux','2022-07-09 07:56:43','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=293&tbl='),
+('933','72.174.4.56','Google Chrome','linux','2022-07-09 07:58:14','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=293&tbl='),
+('934','72.174.4.56','Google Chrome','linux','2022-07-09 07:58:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=293&tbl=old'),
+('935','72.174.4.56','Google Chrome','linux','2022-07-09 07:58:15','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=293&tbl='),
+('936','40.77.167.1','Unknown','Unknown','2022-07-10 01:07:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=82'),
+('937','207.46.13.187','Unknown','Unknown','2022-07-10 04:25:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=248'),
+('938','75.161.65.191','Apple Safari','mac','2022-07-10 07:30:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=24'),
+('939','97.123.118.184','Google Chrome','mac','2022-07-10 05:45:03','https://nmhikes.com:443/pages/home.php'),
+('940','66.249.69.180','Google Chrome','linux','2022-07-11 04:49:26','https://nmhikes.com:443/pages/landing.php'),
+('941','108.14.86.174','Unknown','mac','2022-07-11 09:03:30','https://nmhikes.com:443/pages/home.php'),
+('942','108.14.86.174','Apple Safari','mac','2022-07-11 09:03:31','https://nmhikes.com:443/pages/home.php'),
+('943','72.174.4.56','Google Chrome','linux','2022-07-11 10:23:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('944','72.174.4.56','Google Chrome','linux','2022-07-11 12:46:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('945','72.174.4.56','Google Chrome','linux','2022-07-12 07:32:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('946','54.86.66.252','Apple Safari','mac','2022-07-12 08:55:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('947','207.46.13.187','Unknown','Unknown','2022-07-13 04:28:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=252'),
+('948','45.130.83.251','Unknown','mac','2022-07-13 07:04:04','https://nmhikes.com:443/pages/home.php'),
+('949','45.130.83.251','Apple Safari','mac','2022-07-13 07:04:05','https://nmhikes.com:443/pages/home.php'),
+('950','184.72.115.35','Apple Safari','mac','2022-07-13 11:28:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('951','66.249.65.66','Unknown','Unknown','2022-07-13 11:45:26','https://nmhikes.com:443/pages/home.php'),
+('952','40.77.167.43','Unknown','Unknown','2022-07-14 01:28:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=70'),
+('953','66.249.69.180','Google Chrome','linux','2022-07-14 06:52:37','https://nmhikes.com:443/pages/landing.php'),
+('954','66.249.69.184','Google Chrome','linux','2022-07-14 12:09:43','https://nmhikes.com:443/pages/home.php'),
+('955','66.249.69.180','Google Chrome','Unknown','2022-07-15 02:48:55','https://nmhikes.com:443/pages/home.php'),
+('956','66.249.69.182','Google Chrome','linux','2022-07-15 03:24:58','https://nmhikes.com:443/pages/landing.php'),
+('957','66.249.69.184','Google Chrome','Unknown','2022-07-15 03:33:49','https://nmhikes.com:443/pages/home.php'),
+('958','74.51.214.6','Apple Safari','mac','2022-07-15 03:57:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=39'),
+('959','74.51.214.6','Apple Safari','mac','2022-07-15 03:58:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=39'),
+('960','205.169.39.23','Google Chrome','windows','2022-07-15 05:49:56','https://nmhikes.com:443/pages/home.php');
 
 
 
