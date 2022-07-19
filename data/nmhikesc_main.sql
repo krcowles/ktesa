@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 
 
@@ -79,7 +79,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -262,7 +262,8 @@ INSERT INTO CLUSHIKES VALUES
 ('180','284','Y','57'),
 ('181','64','Y','57'),
 ('182','286','Y','32'),
-('183','287','Y','29');
+('183','287','Y','29'),
+('184','294','Y','47');
 
 
 
@@ -350,20 +351,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2022-07-10 17:09:36'),
-('2','CLUSHIKES','2464789554','2022-07-10 17:09:36'),
-('3','CLUSTERS','3285731063','2022-07-10 17:09:36'),
-('4','EGPSDAT','0','2022-07-10 17:09:36'),
-('5','EHIKES','0','2022-07-10 17:09:36'),
-('6','EREFS','0','2022-07-10 17:09:36'),
-('7','ETSV','0','2022-07-10 17:09:36'),
-('8','FAVORITES','3651041965','2022-07-10 17:09:36'),
-('9','GPSDAT','968834188','2022-07-10 17:09:36'),
-('10','HIKES','1778815564','2022-07-10 17:09:36'),
-('11','LOCKS','0','2022-07-10 17:09:36'),
-('12','REFS','3065290342','2022-07-10 17:09:36'),
-('13','TSV','1119589178','2022-07-10 17:09:36'),
-('14','USERS','2015883571','2022-07-10 17:09:36');
+('1','BOOKS','2674158859','2022-07-16 09:27:07'),
+('2','CLUSHIKES','2464789554','2022-07-16 09:27:07'),
+('3','CLUSTERS','3285731063','2022-07-16 09:27:07'),
+('4','EGPSDAT','0','2022-07-16 09:27:07'),
+('5','EHIKES','0','2022-07-16 09:27:07'),
+('6','EREFS','0','2022-07-16 09:27:07'),
+('7','ETSV','0','2022-07-16 09:27:07'),
+('8','FAVORITES','3651041965','2022-07-16 09:27:07'),
+('9','GPSDAT','968834188','2022-07-16 09:27:07'),
+('10','HIKES','3437129067','2022-07-16 09:27:07'),
+('11','LOCKS','0','2022-07-16 09:27:07'),
+('12','REFS','1803300597','2022-07-16 09:27:07'),
+('13','TSV','2552756283','2022-07-16 09:27:07'),
+('14','USERS','2015883571','2022-07-16 09:27:07');
 
 
 
@@ -394,7 +395,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 
 
@@ -422,7 +423,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 
 
@@ -528,7 +529,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=294 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=295 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -816,7 +817,8 @@ INSERT INTO HIKES VALUES
 ('290','Ladron Peak North Ridge','2','San Acacia','Out-and-back','4.20','600','Moderate','None','Ladron Peak and Wilderness','Not Summer','Full sun','LadronNRidge-97.123.87.144-1651756008.gpx','LadronNRidge-97.123.87.144-1651756008.json','344960917','-1071313900','Ladrad685b.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.49576,-107.13214/@34.4132941,-107.1287198,11.28z','<p>&nbsp;Access to the north ridge is an 18+ mile dirt road: County Road 12 near the Bernardo Exit off I-25.&nbsp; The road is sufficiently well-maintained to allow travel for non-high-clearance vehicles; nonetheless, you may encounter grazing cattle en route, so proceed carefully.</p>','<p>The <em><span style=\"color: #1428d2;\">Ladron North Ridge Access</span></em> is not an actual trail, but essentially a well-defined ridge on which sections of footpaths will sometimes appear. From the intersection of CR12 with an unmarked road heading north, simply hike up the hill leading to the ridge, and then follow the ridge south. Views of <em>Ladron Peak</em> are exceptional along the way. You will encounter fences at several points, but all seem to have an easy hikers\' path through.</p>\r\n<p>The intent of this hike was to explore the views offered at the north ridge, and definitely not to attempt to scale <em>Ladron Peak</em>. For routes to ascend, check the reference links below from AllTrails. The end of this hike was arbitrarily determined by an apparent cleft in the ridge where access to continue looked expressly difficult. The area is quite desolate and it is unlikely you will encounter anyone - cars or hikers - on your journey, but the views are unforgettable.</p>','2022-05-04',NULL,NULL,NULL),
 ('291','EE Canyon','2','Pinos Altos','Out-and-back','6.80','950','Easy-Moderate','Visitor Center','Gila River and Canyon Views','Not Winter','Mixed sun/shade','EE_Canyon-97.123.87.144-1652655558.gpx','EE_Canyon-97.123.87.144-1652655558.json','332297445','-1082654832','EE Cf3d59a.jpg',NULL,NULL,'https://www.google.com/maps/dir//Gila+Cliff+Dwellings+Trailhead+Museum,+Silver+City,+NM+88061/@33.0257999,-108.3265197,10.52z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87275a210f36d115:0x6ea318120887ea7f!2m2!1d-108.2648444!2d33.2294192','<p>&nbsp;The road to the Gila Cliff Dwellings is paved, but extremely twisted. Allow almost two hours from Silver City - less from Pinos Alto - to reach the trailhead.</p>','<p>The <span style=\"color: #1428d2;\"><em>EE Canyon Trail</em></span> is one of many hikes available in the general area of the <em>Gila Cliff Dwellings</em>. The area is quite lovely with its sculpted rock features, rivers, trees and canyons. Due to the time required to get there, it will be difficult to do more than 1 day hike per visit unless you are camping nearby, or overnight hiking/camping.</p>\r\n<p>The trailhead is adjacent to the <em>Trailhead Museum</em> by the main Cliff Dwellings path. It begins by following the <em><span style=\"color: #1428d2;\">West Fork Trail </span></em>signs. The route to EE Canyon is not specifically marked, so look for the sign pointing to <span style=\"color: #1428d2;\"><em>Little Creek</em></span> about 1-1/4 miles from the trailhead. This is actually the entrance to EE Canyon, and the creek is actually a very dry arroyo. Note that although marked \'Partial Shade\', shade is somewhat scant on the trail. Also, the trail map provided on <em>AllTrails</em> (see References, below) is out of date, and the footpath clearly deviates east of the indicated route at the point marked with the southernmost green flag [ <img src=\"../images/greenFlag18.png\" alt=\"AllTrails point of deviation\" width=\"18\" height=\"18\" /> ] on the interactive map. Simply follow the well-worn footpath - there is no alternate route up.</p>\r\n<p>Though the trail ascends almost 1,000 ft, the grade is easy for virtually the entire length of the hike. It becomes slightly more moderate just before the juncture with the <em><span style=\"color: #1428d2;\">Ring Canyon Trail</span></em> (the posted sign will indicate TJ Corral, 4.5 miles) which will lead back to the main road (NM15) at a point about 1.5 kilometers from the trailhead. As you hike up the early part of the canyon, it is easy to miss some of the markers for the footpath that runs mostly parallel to the arroyo - but the routes merge uphill. The slight advantage of the footpath is that it is easier to walk than the sandy arroyo.</p>','2022-05-14',NULL,NULL,NULL),
 ('292','Tom&#233; Hill','2','Los Lunas','Out-and-back','1.20','400','Easy-Moderate','None','Views and History','Not Summer','Full sun','Tome Hill-97.123.100.126-1654463932.gpx','Tome Hill-97.123.100.126-1654463932.json','347573481','-1067133959','Tomé844cf0.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.7573481,-106.7133959/@34.7573525,-106.7155846,17z',NULL,'<p>The <span style=\"color: #1428d2;\"><em>Tom</em></span><span style=\"color: #1428d2;\"><em>&eacute; Hill </em></span>hike is short, but with a moderate incline to the top. The area, part of the Tom&eacute; Land Grant from the days of Spanish occupation, has a great deal of history associated with it. It was the good fortune of the author to meet Dorothy [Baca] at the top, where some of the history was imparted.</p>\r\n<p>Dorothy\'s family has lived in the area for a long time, and it was her Great Uncle, Edwin, after WWII, who put up the crosses as Thanks for his survival in a terrible battle in Italy. Dorothy also communicated a more positive image of the Spanish working together with the Indians during its occupation, disspelling some of the one-sided stories of Spanish brutality.</p>\r\n<p>The hike presents some nice views of the area. It is a popular place any day of the week, as folks will make the journey to the top as part of their religious practice. In the summer, it is best to get an early start to avoid midday sun, as the area is completely exposed.</p>','2022-06-05',NULL,NULL,NULL),
-('293','La Garita','2','Valles Caldera','Out-and-back','7.30','1800','Med-Difficult','Portable John','Superlative Views of the Caldera','Not Winter','Mixed sun/shade','La_Garita-97.123.118.184-1657239540.gpx','La_Garita-97.123.118.184-1657239540.json','359724329','-1065043737','La Gbc2cc8.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B058\'20.8%22N+106%C2%B030\'15.8%22W/@35.9035319,-106.618382,11.84z/data=!4m5!3m4!1s0x0:0xb6c6c5258831bc7f!8m2!3d35.972433!4d-106.5043738',NULL,'<p>This hike arguably presents the finest views available of the entire Caldera. While difficult at times due to some steep and continuous slopes, the <em><span style=\"color: #1428d2;\">La Garita Trail</span></em> itself is easy to follow as it is simply an old jeep road. When the jeep road ends at the Caldera boundary fence line, a wooden post marks the continuation of the trail to the summit. At the fence, simply turn right and stay close to the fence (a footpath more or less exists here) and continue uphill to the summit. When it is time to turn south towards the summit meadow, another post (now fallen down), with a right angled-arrow, indicates the trail to follow. The trail markers can be seen in the photos below.</p>\r\n<p>The final section of trail is literally <em>loaded</em> with deadfall, and if you are wearing hiking shorts, as did the author, be mindful of the countless dead branches that can easily cut. The thick deadfall soon gives way to the high meadow though, with views of the Caldera that are absolutely spectacular. Once there, the fantastic scenery beckons you to stay and enjoy. Check out the photos below, many of which would not comfortably fit on the interactive hiking map. Of course, no photo can come close to the feeling of standing there!</p>\r\n<p>&nbsp;</p>','2022-07-07',NULL,NULL,NULL);
+('293','La Garita','2','Valles Caldera','Out-and-back','7.30','1800','Med-Difficult','Portable John','Superlative Views of the Caldera','Not Winter','Mixed sun/shade','La_Garita-97.123.118.184-1657239540.gpx','La_Garita-97.123.118.184-1657239540.json','359724329','-1065043737','La Gbc2cc8.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B058\'20.8%22N+106%C2%B030\'15.8%22W/@35.9035319,-106.618382,11.84z/data=!4m5!3m4!1s0x0:0xb6c6c5258831bc7f!8m2!3d35.972433!4d-106.5043738',NULL,'<p>This hike arguably presents the finest views available of the entire Caldera. While difficult at times due to some steep and continuous slopes, the <em><span style=\"color: #1428d2;\">La Garita Trail</span></em> itself is easy to follow as it is simply an old jeep road. When the jeep road ends at the Caldera boundary fence line, a wooden post marks the continuation of the trail to the summit. At the fence, simply turn right and stay close to the fence (a footpath more or less exists here) and continue uphill to the summit. When it is time to turn south towards the summit meadow, another post (now fallen down), with a right angled-arrow, indicates the trail to follow. The trail markers can be seen in the photos below.</p>\r\n<p>The final section of trail is literally <em>loaded</em> with deadfall, and if you are wearing hiking shorts, as did the author, be mindful of the countless dead branches that can easily cut. The thick deadfall soon gives way to the high meadow though, with views of the Caldera that are absolutely spectacular. Once there, the fantastic scenery beckons you to stay and enjoy. Check out the photos below, many of which would not comfortably fit on the interactive hiking map. Of course, no photo can come close to the feeling of standing there!</p>\r\n<p>&nbsp;</p>','2022-07-07',NULL,NULL,NULL),
+('294','Survey-Ellis Loop','2','Tijeras','Loop','4.80','600','Moderate','Restrooms','Sandia Views','Not Winter','Mixed sun/shade','Survey-Ellis_Loop-97.123.118.184-1658100411.gpx','Survey-Ellis_Loop-97.123.118.184-1658100411.json','352090908','-1064410791','Surv20d335.jpg',NULL,NULL,'https://www.google.com/maps/dir//Ellis+Trailhead,+Sandia+Crest+Scenic+Hwy,+Cedar+Crest,+NM+87008/@35.1949621,-106.4420225,12.9z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87189952877443f5:0xd7c1f545c3944868!2m2!1d-106.4410768!2d35.2090201',NULL,'<p>The <em>Ellis Trailhead</em> has parking and outdoor facilities, and serves as the starting point for a number of hiking adventures. This hike first follows the shady <em><span style=\"color: #1428d2;\">Survey Trail</span></em>, just uphill from the parking lot, and heads directly into the woods. After a short distance it crosses the <em>Crest Highway</em> and continues north, slowly downhill, remaining largely in the shade.</p>\r\n<p>The <span style=\"color: #1428d2;\"><em>Survey Trail</em></span> eventually intersects the <em><span style=\"color: #1428d2;\">10K Trail</span></em>, where the latter heads further north and goes uphill to the <span style=\"color: #1428d2;\"><em>North Crest Trail</em></span>. The point at which it joins provides a beautiful and popular lookout point, called the <em>Del Agua Overlook</em>. After enjoying the view, the hiker can explore the nearby vicinity, then continue back down the <em><span style=\"color: #1428d2;\">10K Trail. </span></em>Instead of retracing the route by heading back south on the <span style=\"color: #1428d2;\"><em>Survey Trail</em></span>, continue a bit further southeast to the point at which the <em><span style=\"color: #1428d2;\">10K Trail</span></em> joins the <em><span style=\"color: #1428d2;\">Ellis Trail</span></em>. From this point, the <em><span style=\"color: #1428d2;\">Ellis Trail </span></em>is mostly open and sunny all the way back to the parking lot, and dotted with wildflowers. It\'s not a long hike, but the views it provides are notable.</p>\r\n<p>Note that the Hiking Book cited in the References below covers each hike separately, and not as a loop.</p>','2022-07-17',NULL,NULL,NULL);
 
 
 
@@ -841,7 +843,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3190 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3191 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1848,7 +1850,8 @@ INSERT INTO REFS VALUES
 ('3183','263','Book:','7',NULL),
 ('3184','263','App:','https://www.alltrails.com/trail/us/new-mexico/sulphur-canyon-faulty-and-bill-spring-trails-loop','AllTrails.com'),
 ('3185','263','App:','https://www.alltrails.com/trail/us/new-mexico/cienaga-faulty-and-bill-spring-trail-loop','AllTrails.com'),
-('3186','263','App:','https://www.alltrails.com/explore/trail/us/new-mexico/faulty-trail-195-and-bill-spring-trail-196-loop?mobileMap=false&ref=sidebar-static-map','AllTrails.com');
+('3186','263','App:','https://www.alltrails.com/explore/trail/us/new-mexico/faulty-trail-195-and-bill-spring-trail-196-loop?mobileMap=false&ref=sidebar-static-map','AllTrails.com'),
+('3190','294','Book:','7',NULL);
 
 
 
@@ -1872,7 +1875,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=9979 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9994 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -5161,7 +5164,16 @@ INSERT INTO TSV VALUES
 ('9962','263',NULL,'IMG_5577','Y','Y','Tecolote Peak from the Horse By-Pass','351724167','-1063835222','3312',NULL,'2022-07-15 10:15:23','IMG_5577','480','640',NULL,'6'),
 ('9963','263',NULL,'IMG_5592','Y','Y','Sweet clover abounds','351687583','-1063889000','3313',NULL,'2022-07-15 11:15:43','IMG_5592','640','480',NULL,'14'),
 ('9964','263',NULL,'IMG_5582','Y','Y','South Mountain peeks through the trees','351692694','-1063788222','3314',NULL,'2022-07-15 10:28:16','IMG_5582','480','640',NULL,'8'),
-('9965','263',NULL,'IMG_5569','Y','Y','A steep but shady uphill on the Faulty','351820972','-1063897778','3315',NULL,'2022-07-15 09:27:11','IMG_5569','640','480',NULL,'3');
+('9965','263',NULL,'IMG_5569','Y','Y','A steep but shady uphill on the Faulty','351820972','-1063897778','3315',NULL,'2022-07-15 09:27:11','IMG_5569','640','480',NULL,'3'),
+('9979','294',NULL,'IMG_2314','Y','N','Looking south on the Del Agua Overlook','352377694','-1064497917','3317',NULL,'2019-09-22 11:44:24','IMG_2314','480','640',NULL,'3'),
+('9980','294',NULL,'IMG_2315','Y','Y','The Del Agua Overlook provides some great vistas','352377694','-1064497917','3318',NULL,'2019-09-22 11:44:30','IMG_2315','480','640',NULL,'4'),
+('9981','294',NULL,'IMG_2313','Y','N','The Sandia frames the view south','352377278','-1064497694','3319',NULL,'2019-09-22 11:44:21','IMG_2313','480','640',NULL,'5'),
+('9982','294',NULL,'IMG_1655','Y','Y','Cross Highway 536 to continue on the Survey Trail','352100500','-1064446333','3320',NULL,'2019-06-23 11:20:15','IMG_1655','480','640',NULL,'0'),
+('9983','294',NULL,'IMG_2312','Y','N','Where the 10K trail meets the North Crest','352377361','-1064496917','3321',NULL,'2019-09-22 11:43:22','IMG_2312','480','640',NULL,'2'),
+('9984','294',NULL,'IMG_1656','Y','Y','One of a few sunny spots on the Survey','352142861','-1064472111','3322',NULL,'2019-06-23 11:28:36','IMG_1656','640','480',NULL,'1'),
+('9985','294',NULL,'IMG_5600','Y','Y','Indian Paintbrush are highlighted by the sun','352226333','-1064464556','3323',NULL,'2022-07-17 11:47:31','IMG_5600','480','640',NULL,'8'),
+('9986','294',NULL,'IMG_5595','Y','Y','Pausing for the shade on Ellis','352281417','-1064472111','3324',NULL,'2022-07-17 11:29:50','IMG_5595','640','480',NULL,'7'),
+('9987','294',NULL,'IMG_5594','Y','Y','Ellis is mostly open with beautiful meadows','352339222','-1064479750','3325',NULL,'2022-07-17 11:14:31','IMG_5594','480','640',NULL,'6');
 
 
 
@@ -5200,7 +5212,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=961 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=968 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -6172,7 +6184,14 @@ INSERT INTO VISITORS VALUES
 ('957','66.249.69.184','Google Chrome','Unknown','2022-07-15 03:33:49','https://nmhikes.com:443/pages/home.php'),
 ('958','74.51.214.6','Apple Safari','mac','2022-07-15 03:57:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=39'),
 ('959','74.51.214.6','Apple Safari','mac','2022-07-15 03:58:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=39'),
-('960','205.169.39.23','Google Chrome','windows','2022-07-15 05:49:56','https://nmhikes.com:443/pages/home.php');
+('960','205.169.39.23','Google Chrome','windows','2022-07-15 05:49:56','https://nmhikes.com:443/pages/home.php'),
+('961','207.46.13.187','Unknown','Unknown','2022-07-17 08:23:31','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=261'),
+('962','97.123.118.184','Mozilla Firefox','mac','2022-07-17 03:53:57','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=213'),
+('963','94.137.92.237','Unknown','mac','2022-07-18 08:54:53','https://nmhikes.com:443/pages/home.php'),
+('964','94.137.92.237','Apple Safari','mac','2022-07-18 08:54:54','https://nmhikes.com:443/pages/home.php'),
+('965','66.36.121.3','Apple Safari','mac','2022-07-18 10:46:46','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=128'),
+('966','66.249.69.180','Google Chrome','linux','2022-07-18 06:48:07','https://nmhikes.com:443/pages/landing.php'),
+('967','66.249.69.182','Google Chrome','Unknown','2022-07-18 07:12:05','https://nmhikes.com:443/pages/home.php');
 
 
 
