@@ -13,6 +13,15 @@
  * @version 6.2 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
  */
 /**
+ * The 'AllTrails' button listing some advantages from NMHIKES
+ */
+var alltrails = new bootstrap.Modal(document.getElementById('alltrails'), {
+    keyboard: false
+});
+$('#advantages').on('click', function () {
+    alltrails.show();
+});
+/**
  * Autocomplete search bar (jQueryUI):
  * HTML Special Characters are properly rendered in an undisplayed ul on the page,
  * and used for autocompleteselect, below

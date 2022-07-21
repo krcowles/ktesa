@@ -162,14 +162,8 @@ input[id^=q] {
   z-index: 200;
 }
 
-#pgnote {
-  border-radius: 8px;
-  border-width: 1px;
+#advantages {
   position: absolute;
-  background-color: rgba(255, 255, 255, 0.6);
-  font-size: 18px;
-  color: darkgreen;
-  padding: 6px;
   top: 124px;
   left: 500px;
   z-index: 200;

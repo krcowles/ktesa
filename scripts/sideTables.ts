@@ -22,6 +22,15 @@ interface AutoItem {
  */
 
 /**
+ * The 'AllTrails' button listing some advantages from NMHIKES
+ */
+var alltrails = new bootstrap.Modal(<HTMLElement>document.getElementById('alltrails'), {
+    keyboard: false
+});
+$('#advantages').on('click', function() {
+    alltrails.show();
+});
+/**
  * Autocomplete search bar (jQueryUI):
  * HTML Special Characters are properly rendered in an undisplayed ul on the page,
  * and used for autocompleteselect, below

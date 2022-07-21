@@ -138,7 +138,8 @@ chdir($startDir);
   <input id="search" placeholder="Search for a Hike" />
 </div>
  
-<div id="pgnote">Click on clusters to zoom in!</div>
+<button id="advantages" type="button" class="btn btn-success">
+    Why not AllTrails?</button>
 
 <ul id="specchars" style="display:none">
     <?=$charli;?>
@@ -147,7 +148,66 @@ chdir($startDir);
 require "../php/mapJsData.php";
 require "getFavorites.php";
 ?>
-
+<div id="alltrails" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Why Not Use AllTrails?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                AllTrails is a great app developed by a great team of designers. Why
+                would anyone (in New Mexico) therefore, choose to use this app? While
+                the authors (just two of us) cannot and are not competing with
+                AllTrails, there are a few pluses to using this site:
+                <ol id="nmhikes">
+                    <li>The site contains more than a dozen New Mexico hikes not
+                        listed on AllTrails</li>
+                    <li>Many of the hike pages offer alternative hikes:
+                        longer, shorter, or unique extensions or shortcuts to
+                        existing hikes
+                    </li>
+                    <li>A member can add photos which will appear on the trail map at
+                        the location where they were taken
+                    </li>
+                    <li>A member can add flags or other markers to indicate special 
+                        features or points of interest, or useful information at
+                        various points on the map. (These might be, for example, 
+                        Waypoints from a Garmin or other device)
+                    </li>
+                    <li>The hike page maps have many (over 50) map 'overlays'
+                        available - these allow looking at the trail from aerial,
+                        hybrid, relief, topographic or other views from Open Source
+                        Maps, Google Maps, CalTopo maps, National Geogrpahic maps,
+                        ArcGIS, USGS, etc.
+                    </li>
+                    <li>The 'Table Page' (menu option) allows searching, sorting, and
+                        filtering of hikes a selectable distance from either a
+                        location, or another hike. It also allows a user the
+                        opportunity to view several user-selected hikes on a separate
+                        page.
+                    </li>
+                    <li>Hike pages also list references - book or online - and a
+                        collection of photos taken at the hike site.
+                    </li>
+                </ol>
+                These are features not found on AllTrails. The author still uses
+                AllTrails often for hikes not yet documented on nmhikes, and it is a
+                great app, for sure. It contains useful information not provided by
+                this site. Sometimes both sites can be useful when taken together.
+                <p>This website was a retirement project for two engineers who like
+                    to stay busy, and is limited to the authors' residence state of
+                    New Mexico
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     // data required for map and side tables (from mapJsData.php)
     var CL = <?=$jsClusters;?>;    // cluster hikes
