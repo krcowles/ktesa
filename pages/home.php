@@ -106,8 +106,8 @@ chdir($startDir);
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../styles/home.css" type="text/css" rel="stylesheet" />    
-    <link rel="stylesheet" href="../styles/jquery-ui.css" />
+    <link href="../styles/home.css" rel="stylesheet" />    
+    <link href="../styles/jquery-ui.css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 

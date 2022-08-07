@@ -1,0 +1,16 @@
+/* Note that some of the settings are present explicitly to
+   override either the bootstrap CSS or ktesaNavbar.css settings */
+@import "body";
+@import "ktesaNavbar";
+
+#logo {  /* override ktesaPanel.css */
+	margin-bottom: 0;
+	margin-right: 0;
+}
+#content {
+	font-size: 18px;
+	margin-left: 1.5rem;
+}
+.title {
+	text-decoration: underline;
+}

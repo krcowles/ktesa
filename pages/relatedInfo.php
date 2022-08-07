@@ -168,8 +168,9 @@ $gpsHtml .= "</ul>";
  */
 $bop = '<fieldset>'. PHP_EOL .
     '<legend id="fldrefs"><em>Related Hike Information</em></legend>' . PHP_EOL .
-    '<span class="boptag">REFERENCES:</span>' . PHP_EOL .
-$refHtml . PHP_EOL;
+    '<span class="boptag">REFERENCES:</span>' . 
+    ' <a href="../pages/booklist.php" target="_blank">List of All Site Book
+    References</a>' . PHP_EOL . $refHtml . PHP_EOL;
 if (!$clusterPage && $noOfRelatedHikes > 0) {
     $bop .= '<span class="boptag">RELATED HIKES</span>' . PHP_EOL .
         $relHikes . PHP_EOL;
