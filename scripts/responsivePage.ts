@@ -1,8 +1,10 @@
+declare var title: string; // defined in logo.js
 /**
  * @fileoverview For mobile applications only - display hike page [released hikes only]
  * 
  * @author Ken Cowles
  * @version 1.0 First release of responsive design
+ * @version 1.1 Added typescript declaration for 'title' found in logo.js
  */
 $('#ctr').text(title);
 

@@ -41,6 +41,7 @@ interface GPSCoords {
  * @version 3.1 Added mobile page width control
  * @version 4.0 Typescripted, some type errors corrected
  * @version 4.1 Modified viewport calculations to improve zoom performance
+ * @version 4.2 Segregated #adnote for inclusion only in non-mobile case
  */
 //GPSV iframe: The following code addresses tracklist checkboxes in the iframe map
 var trackNames: string[] = [];
@@ -96,29 +97,20 @@ var pglogo = <number>$('#logo').outerHeight();
 var sumpos = $('#sidePanel').position();
 var note_top = nvbar + pglogo +sumpos.top;
 var note_lft = 48;
-var asc_dsc_note = <HTMLElement>document.getElementById('adnote');
+if (!mobile) {
+    var asc_dsc_note = <HTMLElement>document.getElementById('adnote');
+    asc_dsc_note.onmouseover = function() {
+        $jqnote.show();
+    }
+    asc_dsc_note.onmouseout = function() {
+        $jqnote.hide();
+    }
+}
 var note_pos = {top: note_top, left: note_lft};
 var $jqnote = $('#advisory');
 $jqnote.offset(note_pos);
 $jqnote.hide();
-asc_dsc_note.onmouseover = function() {
-    $jqnote.show();
-}
-asc_dsc_note.onmouseout = function() {
-    $jqnote.hide();
-}
-/*
-$('#adnote').on('mouseover', function() {
-    let affected = <JQuery.Coordinates>$(this).offset();
-    let pagepos = $(this).offset();
-    let noteht  = $(this).height();
-    $('#advisory').offset({top: pagepos.top + noteht, left: pagepos.left});
-    $('#advisory').css('display', 'block');
-};
-$('#adnote').on('mouseout', function() {
 
-});
-*/
 /**
  * Once a track is identified for display, show that gpx file's data in the
  * side panel.
