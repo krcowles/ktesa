@@ -38,7 +38,7 @@ $list .= '</ul>';
 <script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php"; ?>
-<p id="trail">Hiking Books Used on This Site</p>
+<p id="trail">Site Book List</p>
 
 <div id="content">
     <p>The following list comprises all book references used on this site</p>

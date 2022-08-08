@@ -136,7 +136,7 @@ input[id^=q] {
 }
 
 body {
-  min-width: 400px;
+  min-width: 280px;
 }
 
 #logo {
