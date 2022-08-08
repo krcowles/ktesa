@@ -3,6 +3,9 @@
 @import "body";
 @import "ktesaNavbar";
 
+body {
+	min-width: 400px;
+}
 #logo {  /* override ktesaPanel.css */
 	margin-bottom: 0;
 	margin-right: 0;

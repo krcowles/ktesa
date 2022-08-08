@@ -44,3 +44,9 @@ $list .= '</ul>';
     <p>The following list comprises all book references used on this site</p>
     <?=$list;?>
 </div><br />
+
+<script src="../scripts/logo.js"></script>
+
+</body>
+
+</html>

@@ -135,6 +135,10 @@ input[id^=q] {
   margin-bottom: 4px;
 }
 
+body {
+  min-width: 400px;
+}
+
 #logo {
   /* override ktesaPanel.css */
   margin-bottom: 0;
