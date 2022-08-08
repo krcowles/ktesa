@@ -12,6 +12,7 @@ interface AutoItem {
  * 
  * @version 1.0 Separated from sideTables.js to provide reusable functionality
  * @version 1.1 Typescripted
+ * @version 2.0 Switched from HTML datalist to jquery-ui autocomplete for searches
  */
 
 // Turn off search on load - wait until map is displayed

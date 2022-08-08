@@ -38,7 +38,7 @@ $appMode = 'production';
 <script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
-<p id="trail">Problem Encountered</p>
+<p id="trail">Error</p>
 <p id="active" style="display:none">Error</p>
 
 
@@ -53,5 +53,6 @@ $appMode = 'production';
         Thanks for your patience!</p>   
 </div>
 
+<script src="../scripts/logo.js"></script>
 </body>
 </html>
