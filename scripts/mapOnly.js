@@ -40,14 +40,15 @@ var mapTick = {
     strokeColor: 'Red',
     strokeWeight: 2
 };
-$('#ctr').text(title);
+var trail = "Welcome!";
+$('#ctr').text(trail);
 // position searchbar
 var navheight = $('nav').height();
 var logoheight = $('#logo').height();
 var srchtop = navheight + 16 + logoheight + 14; // 16px padding on navbar
-$('#searchbar').css({
+$('#search').css({
     top: srchtop,
-    left: '100px'
+    left: '40px'
 });
 /**
  * This function positions the geosymbol in the bottom right corner of the map,

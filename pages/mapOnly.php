@@ -9,8 +9,73 @@
  * @license No license to date
  */
 session_start();
+$GLOBALS[$entitiesISO8859];
+$entitiesISO8859 = array(
+    'Agrave' => '#192',
+    'Aacute' => '#193',
+    'Acirc'  => '#194',
+    'Atilde' => '#195',
+    'Auml'   => '#196',
+    'Aring'  => '#197',
+    'AElig'  => '#198',
+    'Ccedil' => '#199',
+    'Egrave' => '#200',
+    'Eacute' => '#201',
+    'Ecirc'  => '#202',
+    'Euml'   => '#203',
+    'Igrave' => '#204',
+    'Iacute' => '#205',
+    'Icirc'  => '#206',
+    'Iuml'   => '#207',
+    'ETH'    => '#208',
+    'Ntilde' => '#209',
+    'Ograve' => '#210',
+    'Oacute' => '#211',
+    'Ocirc'  => '#212',
+    'Otilde' => '#213',
+    'Ouml'   => '#214',
+    'Oslash' => '#216',
+    'Ugrave' => '#217',
+    'Uacute' => '#218',
+    'Ucirc'  => '#219',
+    'Uuml'   => '#220',
+    'Yacute' => '#221',
+    'THORN'  => '#222',
+    'szlig'  => '#223',
+    'agrave' => '#224',
+    'aacute' => '#225',
+    'acirc'  => '#226',
+    'atilde' => '#227',
+    'auml'   => '#228',
+    'aring'  => '#229',
+    'aelig'  => '#230',
+    'ccedil' => '#231',
+    'egrave' => '#232',
+    'eacute' => '#233',
+    'ecirc'  => '#234',
+    'euml'   => '#235',
+    'igrave' => '#236',
+    'iacute' => '#237',
+    'icirc'  => '#238',
+    'iuml'   => '#239',
+    'eth'    => '#240',
+    'ntilde' => '#241',
+    'ograve' => '#242',
+    'oacute' => '#243',
+    'ocirc'  => '#244',
+    'otilde' => '#245',
+    'ouml'   => '#246',  // there is no #247
+    'oslash' => '#248',
+    'ugrave' => '#249',
+    'uacute' => '#250',
+    'ucirc'  => '#251',
+    'uuml'   => '#252',
+    'yacute' => '#253',
+    'thorn'  => '#254',
+    'yuml'   => '#255'
+);
 require "../php/global_boot.php";
-require "alphabeticHikes.php";
+require "autoComplHikes.php";
 ?> 
 <!DOCTYPE html>
 <html lang="en-us">
@@ -23,8 +88,10 @@ require "alphabeticHikes.php";
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" rel="stylesheet" />
     <link href="../styles/mapOnly.css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -38,8 +105,19 @@ require "alphabeticHikes.php";
 
 <img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />
 
-<input id="searchbar" placeholder="Search for a hike" list="hikelist" />
-<?= $datalist; ?>
+<div class="ui-widget">
+  <style type="text/css">
+      ul.ui-widget {
+        width: 300px;
+        clear: both;
+      }
+  </style>
+  <input id="search" placeholder="Search for a Hike" />
+</div>
+
+<ul id="specchars" style="display:none">
+    <?=$charli;?>
+</ul>
 
 <?php
 require "../php/mapJsData.php";
@@ -54,6 +132,7 @@ require "../php/mapJsData.php";
     var locations = <?=$jsLocs;?>;
     var pages = <?=$jsPages;?>;    // page indxNo for non-hikes
     var pgnames = <?=$jsPageNames;?>;
+    var hikeSources = <?=$jsItems;?>;
     window.name = "homePage";
 </script>
 <script src="../scripts/logo.js"></script>
