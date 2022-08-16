@@ -5,7 +5,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -20,7 +19,8 @@ if ($htips === '') {
     $valstr = 'tips = NULL, ';
 } else {
     $valstr = 'tips = ?, ';
-    $vals[0] = $htips;
+    // A space is needed before the Trail Tips logo...
+    $vals[0] = $hitps[0] === ' ' ? $htips : ' ' . $htips;
 }
 if ($hinfo === '') {
     $valstr .= "info = NULL ";

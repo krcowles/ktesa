@@ -193,11 +193,13 @@ function initMap() {
     function AddHikeMarker(hikeobj) {
         var markerLoc = hikeobj.loc;
         var nmicon = getIcon(1);
+        var utname = unTranslate(hikeobj.name);
         var marker = new google.maps.Marker({
             position: markerLoc,
             map: map,
             icon: nmicon,
-            title: hikeobj.name
+            // 'title' is what is displayed on mouseover of the marker
+            title: utname /// hikeobj.name
         });
         var srchmrkr = { hikeid: hikeobj.name, clicked: false, pin: marker };
         locaters.push(srchmrkr);

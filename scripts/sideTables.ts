@@ -19,6 +19,8 @@ interface AutoItem {
  * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
  * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
  * @version 6.2 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
+ * @version 6.3 Had to handle HTML codes in hike names for map.ts/js marker titles; also
+ *              fixed apparent timing issue in formTbl setInterval function.
  */
 
 /**
@@ -59,6 +61,7 @@ $("#search").on("autocompleteselect", function(event, ui) {
     var val = translate(replaceTxt);
     popupHikeName(val);
 });
+
 /**
  * HTML presents on the page, and to javascript, an accented letter (letter w/diacritical
  * mark) when it encounters either an HTML entity number, or an HTML entity name - the user
@@ -84,6 +87,54 @@ $("#search").on("autocompleteselect", function(event, ui) {
     }
     return a.join('');
 }
+/**
+ * When creating the 'title' (mouseover text) for a marker, the unrendered hikeobj.name
+ * (aka function parameter 'hike') needs to be checked for HTML special entities; if
+ * it contains such an item, then the special entity must be removed and replaced with
+ * simple text for the title, as the html rendered version will not be displayed by the
+ * google.Marker function in map.ts/js. The entity's lead-in characters are "&#".
+ */
+const htmlcodes: number[] = [];
+for (let l=0; l<23; l++) {
+    htmlcodes[l] = l + 192;
+}
+for (let m=23; m<54; m++) {
+    htmlcodes[m] = m + 193;
+}
+for (let n=54; n<62; n++) {
+    htmlcodes[n] = n + 194;
+}
+const entityString =
+    "AAAAAAACEEEEIIIIDNOOOOOOUUUUYPsaaaaaaaceeeeiiiidnoooooouuuuypy";
+const htmlchars =entityString.split("");
+function unTranslate(hike: string): string {
+    var i = hike.length;
+    var unrendered: string[] = [];
+    for (let j=0; j<i; j++) {
+        let thisChar = hike.charAt(j);
+        if (thisChar !== '&') {
+            unrendered[j] = thisChar;
+        } else {
+            // can't be the last char in hike...
+            if (j !== i-1) {
+                let teststr = hike.substring(j+1);
+                let testChar = teststr.charAt(0);
+                if (testChar === '#') {
+                    let spec_char = parseInt(teststr.substring(1,4)); // code only
+                    let codeindx = htmlcodes.indexOf(spec_char);
+                    unrendered[j] = htmlchars[codeindx];
+                    j = j + 5;
+                } else {
+                    unrendered[j] = thisChar;
+                }
+            } else {  // is last char, so can't be HTML entity
+                unrendered[j] = thisChar;
+            }
+        }
+    }
+    return unrendered.join('');
+}
+
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike
@@ -295,13 +346,14 @@ function formTbl(indxArray: NM[]) {
                 end = indxArray.length;
                 done = true;
             }
-            let nextArray = indxArray.slice(indexer, end);
-            appendSegment(nextArray);
-            indexer += subsize;
             if (done) {
                 clearInterval(loadSpreader);
                 loadSpreader = undefined;
                 done = false;
+            } else {
+                let nextArray = indxArray.slice(indexer, end);
+                appendSegment(nextArray);
+                indexer += subsize;
             }
         },
         500

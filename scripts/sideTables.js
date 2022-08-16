@@ -11,6 +11,8 @@
  * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
  * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
  * @version 6.2 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
+ * @version 6.3 Had to handle HTML codes in hike names for map.ts/js marker titles; also
+ *              fixed apparent timing issue in formTbl setInterval function.
  */
 /**
  * The 'AllTrails' button listing some advantages from NMHIKES
@@ -75,6 +77,55 @@ function translate(hike) {
         }
     }
     return a.join('');
+}
+/**
+ * When creating the 'title' (mouseover text) for a marker, the unrendered hikeobj.name
+ * (aka function parameter 'hike') needs to be checked for HTML special entities; if
+ * it contains such an item, then the special entity must be removed and replaced with
+ * simple text for the title, as the html rendered version will not be displayed by the
+ * google.Marker function in map.ts/js. The entity's lead-in characters are "&#".
+ */
+var htmlcodes = [];
+for (var l = 0; l < 23; l++) {
+    htmlcodes[l] = l + 192;
+}
+for (var m = 23; m < 54; m++) {
+    htmlcodes[m] = m + 193;
+}
+for (var n = 54; n < 62; n++) {
+    htmlcodes[n] = n + 194;
+}
+var entityString = "AAAAAAACEEEEIIIIDNOOOOOOUUUUYPsaaaaaaaceeeeiiiidnoooooouuuuypy";
+var htmlchars = entityString.split("");
+function unTranslate(hike) {
+    var i = hike.length;
+    var unrendered = [];
+    for (var j = 0; j < i; j++) {
+        var thisChar = hike.charAt(j);
+        if (thisChar !== '&') {
+            unrendered[j] = thisChar;
+        }
+        else {
+            // can't be the last char in hike...
+            if (j !== i - 1) {
+                var teststr = hike.substring(j + 1);
+                var testChar = teststr.charAt(0);
+                if (testChar === '#') {
+                    var spec_char = parseInt(teststr.substring(1, 4)); // code only
+                    var codeindx = htmlcodes.indexOf(spec_char);
+                    unrendered[j] = htmlchars[codeindx];
+                    j = j + 5;
+                }
+                else {
+                    unrendered[j] = thisChar;
+                }
+            }
+            else { // is last char, so can't be HTML entity
+                unrendered[j] = thisChar;
+            }
+        }
+    }
+    return unrendered.join('');
 }
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
@@ -287,13 +338,15 @@ function formTbl(indxArray) {
             end = indxArray.length;
             done = true;
         }
-        var nextArray = indxArray.slice(indexer, end);
-        appendSegment(nextArray);
-        indexer += subsize;
         if (done) {
             clearInterval(loadSpreader);
             loadSpreader = undefined;
             done = false;
+        }
+        else {
+            var nextArray = indxArray.slice(indexer, end);
+            appendSegment(nextArray);
+            indexer += subsize;
         }
     }, 500);
     return;
