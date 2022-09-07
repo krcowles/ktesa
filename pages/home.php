@@ -11,7 +11,8 @@
  * @license No license to date
  */
 session_start();
-$GLOBALS[$entitiesISO8859];
+
+//GLOBAL $entitiesISO8859;  // not sure if this is necessary...
 $entitiesISO8859 = array(
     'Agrave' => '#192',
     'Aacute' => '#193',
@@ -35,7 +36,7 @@ $entitiesISO8859 = array(
     'Oacute' => '#211',
     'Ocirc'  => '#212',
     'Otilde' => '#213',
-    'Ouml'   => '#214',
+    'Ouml'   => '#214', // there is no #215
     'Oslash' => '#216',
     'Ugrave' => '#217',
     'Uacute' => '#218',
