@@ -11,7 +11,8 @@
  * @license No license to date
  */
 session_start();
-$GLOBALS[$entitiesISO8859];
+
+//GLOBAL $entitiesISO8859;  // not sure if this is necessary...
 $entitiesISO8859 = array(
     'Agrave' => '#192',
     'Aacute' => '#193',

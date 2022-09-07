@@ -59,27 +59,41 @@ $clusterObjs = [];
 
 /**
  * A typical cluster object makeup:
- * {group:"Bandelier Index",loc:{lat:35.779039,lng:-106.270788},page:1,hikes:[
+ * { seqno:0,
+ *   group:"Bandelier Index",
+ *   loc:{lat:35.779039,lng:-106.270788},
+ *   page:1,
+ *   hikes:[
  *      (see hike objects)
- * ]}
+ *   ]
+ *  }
+ * NOTE: A sequence number has been added to accommodate cases where a cluster
+ * is deleted, and the clusid's are no longer purely sequential
  */
-$pages = [];
-$pageNames= [];
+$pages     = [];
+$pageNames = [];
+$clus2seq  = []; // associates a clusid to a sequence no in the $clusObjs
 for ($j=0; $j<count($clusters); $j++) {
     // check $clusters[$j]['group'] for the existence of any HTML entity names
     $chkstring = $clusters[$j]['group'];
     $pgtitle = htmlEntityId($chkstring, $entitiesISO8859)[0];
-    $partial = '{group:"' . $pgtitle . '",loc:{lat:' .
+    $cid = $clusters[$j]['clusid'];
+    $clus2seq[$cid] = $j;
+    $partial = '{seqno:' . $j . ',group:"' . $pgtitle . '",loc:{lat:' .
         $clusters[$j]['lat']/LOC_SCALE  . ',lng:' . $clusters[$j]['lng']/LOC_SCALE .
         '},page:' . $clusters[$j]['page'] . ',hikes:[';
-    $clusterObjs[$clusters[$j]['clusid']] = $partial;
+    array_push($clusterObjs, $partial);
+    //$clusterObjs[$clusters[$j]['clusid']] = $partial;
     if (!empty($clusters[$j]['page'])) {
-        array_push($pages, $clusters[$j]['page']);
+        array_push($pages, $clusters[$j]['page']); // 'page' is a HIKES indxNo
         array_push($pageNames, '"' . $clusters[$j]['group'] . '"');
     }
 }
-
-/**
+ /**
+ * There is now a sequentially indexed array of all clusters [$clusObjs],
+ * soon to be CL objects in the javascript used by sideTables.ts/js
+ * once each cluster's list of hikes is appended
+ * 
  * Some indxNo's may have > 1 clusid's: assemble array associating indxNo
  * with one..many clusters (an array itself)
  */
@@ -109,10 +123,10 @@ foreach ($hikes as $hike) {
             // ---- this is a 'Cluster' hike ----
             $repeats = 0; // there can be more than one cluster per hike
             foreach ($pairing as $clusterid) {
+                $clusGroupNo = $clus2seq[$clusterid];
                 // only one locater can be used per hike
-                if ($repeats === 0) {
-                    // NOTE: $clusterObjs array starts at indx 0, so decrement id
-                    $locater = '{type:"cl",group:' . ($clusterid-1) . '}';
+                if ($repeats === 0) { 
+                    $locater = '{type:"cl",group:' . $clusGroupNo . '}';
                     array_push($locaters, $locater);
                     $repeats++;
                 }
@@ -122,10 +136,10 @@ foreach ($hikes as $hike) {
                     $hike['feet'] . ',diff:"' . $hike['diff'] . '",loc:{lat:' .
                     $hike['lat']/LOC_SCALE . ',lng:' . $hike['lng']/LOC_SCALE .
                     '},' . 'prev:"' . $hike['preview'] . '"}';
-                if (substr($clusterObjs[$clusterid], -1) == '}') {
-                    $clusterObjs[$clusterid] .= ',' . $chikeObj;
+                if (substr($clusterObjs[$clusGroupNo], -1) == '}') {
+                    $clusterObjs[$clusGroupNo] .= ',' . $chikeObj;
                 } else {
-                    $clusterObjs[$clusterid] .= $chikeObj;
+                    $clusterObjs[$clusGroupNo] .= $chikeObj;
                 }
             }      
         } else {
@@ -174,4 +188,3 @@ $jsTracks = '[' . implode(",", $trackArray) . ']';
 $jsIndx = '[' . implode(",", $allHikeIndices) . ']';
 // Object location for each index
 $jsLocs = '[' . implode(",", $locaters) . ']';
-// Items which are not hikes but Cluster Pages:
