@@ -98,6 +98,8 @@ if (!empty($allgpx)) {
 } else { // cluster pages defined later...
     $gpxfile  = '';
     $gpxPath  = '';
+    $asc = 0;
+    $dsc = 0;
 }
 $jsonFile = $row['trk'];
 // Pages with old Flickr photos
