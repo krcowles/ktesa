@@ -32,6 +32,7 @@ var maxYValue = 0;
 var maxXValue = 0;
 var tipPt; // when to shift infobox from left side to right side of crosshairs
 var vertTip; // when to shift infobox from over to under crosshairs
+var vertConst = 0.62; // % of displayed altitude for above
 // renderLinesAndLabels(), renderData():
 var ratio;
 var rgMax;
@@ -54,6 +55,7 @@ var ChartObj = function () {
             data = dataObj; // establish the global
             deltaY = data.maxY - data.minY;
             median = data.minY + deltaY / 2;
+            vertTip = data.minY + vertConst * deltaY;
             maxYValue = data.maxY;
             var lastEl = data.dataPoints.length - 1;
             maxXValue = data.dataPoints[lastEl].x;
