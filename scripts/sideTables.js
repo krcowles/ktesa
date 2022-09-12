@@ -1,4 +1,40 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 /// <reference path='./map.d.ts' />
 /**
  * @file This file creates and places the html for the side table, as well as providing
@@ -10,9 +46,9 @@
  * @version 5.0 Typescripted, with some previous type errors corrected
  * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
  * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
- * @version 6.2 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
- * @version 6.3 Had to handle HTML codes in hike names for map.ts/js marker titles; also
- *              fixed apparent timing issue in formTbl setInterval function.
+ * @version 7.0 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
+ * @version 7.1 Had to handle HTML codes in hike names for map.ts/js marker titles; also
+ *              redesigned sideTable creation for improved asynch execution.
  */
 /**
  * The 'AllTrails' button listing some advantages from NMHIKES
@@ -257,26 +293,14 @@ function restoreTracks() {
  * locations: a one-to-one correspondence to allHikes; an array of objects containing
  * the object type of the hike (CL, or NM) and its index in that array.
  */
-function compareObj(a, b) {
-    var hikea = a.name;
-    var hikeb = b.name;
-    var comparison;
-    if (hikea > hikeb) {
-        comparison = 1;
-    }
-    else {
-        comparison = -1;
-    }
-    return comparison;
-}
+// constants and variables used when creating a subset of side table items periodically
+var subsize = 10;
+var waitTime = 80; // msec
+var done = false;
 /**
  * The html 'wrapper' for each item included in the side table
  */
-var subsize = 10;
-var indexer;
-var done = false;
 var tblItemHtml;
-// one tableItem div for each side table hike
 tblItemHtml = '<div class="tableItem"><div class="tip">Add to Favorites</div>';
 // the div holding the favorites icon and the zoom-to-map icon
 tblItemHtml += '<div class="icons">';
@@ -287,10 +311,70 @@ tblItemHtml += '</div>';
 // the div holding the hike-specific data
 tblItemHtml += '<div class="content">';
 /**
- * The DOM elements for the side table are created and attached in this function;
- * To reduce apparent 'thumb image' load times, the table is created 'subsize'
+ * To reduce the impact of the 'thumb image' load times, the table is created 'subsize'
  * elements at a time, per interval. The table will populate the topmost items
  * first with no wait.
+ */
+var sleep = function (ms) { return new Promise(function (resolve) { return setTimeout(resolve, ms); }); };
+function formTbl(indxArray) {
+    return __awaiter(this, void 0, void 0, function () {
+        var size, stItems, sliceStart, end, last, indx, done, i;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    $('#sideTable').empty();
+                    size = indxArray.length;
+                    if (!(size <= subsize)) return [3 /*break*/, 1];
+                    appendSegment(indxArray);
+                    return [3 /*break*/, 5];
+                case 1:
+                    stItems = [];
+                    stItems[0] = indxArray.slice(0, subsize);
+                    sliceStart = subsize;
+                    end = sliceStart + subsize;
+                    last = false;
+                    if (end >= size) {
+                        end = size;
+                        last = true;
+                    }
+                    indx = 1;
+                    done = false;
+                    while (!done) {
+                        stItems[indx++] = indxArray.slice(sliceStart, end);
+                        if (last) {
+                            done = true;
+                        }
+                        else {
+                            sliceStart += subsize;
+                            end = sliceStart + subsize;
+                            if (end >= size) {
+                                end = size;
+                                last = true;
+                            }
+                        }
+                    }
+                    appendSegment(stItems[0]);
+                    i = 1;
+                    _a.label = 2;
+                case 2:
+                    if (!(i < indx)) return [3 /*break*/, 5];
+                    return [4 /*yield*/, sleep(waitTime)];
+                case 3:
+                    _a.sent();
+                    appendSegment(stItems[i]);
+                    _a.label = 4;
+                case 4:
+                    i++;
+                    return [3 /*break*/, 2];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+/**
+ * The DOM elements for the side table are created and attached in this function;
+ * The effect of enlarging the preview on mouseover, and the enabling of the
+ * favorites and zoom icons are functions invoked after posting the elements
  */
 function appendSegment(subset) {
     var jqSubset = [];
@@ -325,30 +409,6 @@ function appendSegment(subset) {
     enlargePreview(jqSubset);
     enableFavorites(jqSubset);
     enableZoom(jqSubset);
-    return;
-}
-function formTbl(indxArray) {
-    $('#sideTable').empty();
-    var primeArray = indxArray.slice(0, subsize);
-    appendSegment(primeArray);
-    indexer = subsize;
-    loadSpreader = setInterval(function () {
-        var end = indexer + subsize;
-        if (end >= indxArray.length) {
-            end = indxArray.length;
-            done = true;
-        }
-        if (done) {
-            clearInterval(loadSpreader);
-            loadSpreader = undefined;
-            done = false;
-        }
-        else {
-            var nextArray = indxArray.slice(indexer, end);
-            appendSegment(nextArray);
-            indexer += subsize;
-        }
-    }, 500);
     return;
 }
 /**
@@ -516,6 +576,7 @@ function enableZoom(items) {
     }
     return;
 }
+// Functions which process the set of hikes within a new map bounds
 /**
  * The following function returns the appropriate hike object based on the
  * incoming object (obj) and the subject hike number (indx) in that object.
@@ -536,6 +597,21 @@ function idHike(indx, obj) {
         return NM[obj.group];
     }
     return '';
+}
+/**
+ * This compare function is used to sort objects alphabetically
+ */
+function compareObj(a, b) {
+    var hikea = a.name;
+    var hikeb = b.name;
+    var comparison;
+    if (hikea > hikeb) {
+        comparison = 1;
+    }
+    else {
+        comparison = -1;
+    }
+    return comparison;
 }
 /**
  * A function to find elements within current map bounds and display them in
@@ -623,6 +699,7 @@ var IdTableElements = function (boundsStr, zoom) {
     }
     return [singles, hikeInfoWins, trackColors];
 };
+// Functions associated with moving the vertical side table bar
 var grabber = document.getElementById('adjustWidth');
 grabber.addEventListener('mousedown', changeWidth, false);
 /**

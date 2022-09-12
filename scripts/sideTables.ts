@@ -18,9 +18,9 @@ interface AutoItem {
  * @version 5.0 Typescripted, with some previous type errors corrected
  * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
  * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
- * @version 6.2 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
- * @version 6.3 Had to handle HTML codes in hike names for map.ts/js marker titles; also
- *              fixed apparent timing issue in formTbl setInterval function.
+ * @version 7.0 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
+ * @version 7.1 Had to handle HTML codes in hike names for map.ts/js marker titles; also
+ *              redesigned sideTable creation for improved asynch execution.
  */
 
 /**
@@ -61,7 +61,6 @@ $("#search").on("autocompleteselect", function(event, ui) {
     var val = translate(replaceTxt);
     popupHikeName(val);
 });
-
 /**
  * HTML presents on the page, and to javascript, an accented letter (letter w/diacritical
  * mark) when it encounters either an HTML entity number, or an HTML entity name - the user
@@ -134,7 +133,6 @@ function unTranslate(hike: string): string {
     }
     return unrendered.join('');
 }
-
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike
@@ -194,7 +192,6 @@ const infoWin = (hike:string, loc:GPS_Coord)  => {
     }
     return;
 }  
-
 /**
  * This function emphasizes the hike track(s) that have been zoomed to;
  * NOTE: A javascript anomaly: passing in a single object in an array
@@ -242,7 +239,6 @@ function highlightTracks() {
     }
     return;
 }
-
 /**
  * Restore stroke weight and reduce opacity for tracks no longer being chosen for highlighting
  */
@@ -256,6 +252,7 @@ function restoreTracks() {
     }
     return;
 }
+
 /**
  * The side table includes all hikes on page load; on pan/zoom it will include only those
  * hikes within the map bounds. In the following code, the variables 'allHikes' and 
@@ -264,26 +261,15 @@ function restoreTracks() {
  * locations: a one-to-one correspondence to allHikes; an array of objects containing
  * the object type of the hike (CL, or NM) and its index in that array.
  */
-function compareObj(a: NM, b: NM) {
-    var hikea = a.name;
-    var hikeb = b.name;
-    var comparison: number;
-    if (hikea > hikeb) {
-        comparison = 1;
-    } else {
-        comparison = -1;
-    }
-    return comparison;
-}
 
+// constants and variables used when creating a subset of side table items periodically
+const subsize  = 10;
+const waitTime = 80; // msec
+var done = false;
 /**
  * The html 'wrapper' for each item included in the side table
  */
-const subsize = 10;
-var indexer: number;
-var done = false;
-var tblItemHtml: string;
-// one tableItem div for each side table hike
+ var tblItemHtml: string;
 tblItemHtml = '<div class="tableItem"><div class="tip">Add to Favorites</div>';
 // the div holding the favorites icon and the zoom-to-map icon
 tblItemHtml += '<div class="icons">';
@@ -293,12 +279,54 @@ tblItemHtml += '<span class="zpop">Zoom to Hike</span>';
 tblItemHtml += '</div>';
 // the div holding the hike-specific data
 tblItemHtml += '<div class="content">';
-
+/**
+ * To reduce the impact of the 'thumb image' load times, the table is created 'subsize'
+ * elements at a time, per interval. The table will populate the topmost items
+ * first with no wait. 
+ */
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+async function formTbl(indxArray: NM[]) {
+    $('#sideTable').empty();
+    var size = indxArray.length;
+    if (size <= subsize) {
+        appendSegment(indxArray);
+    } else {
+        // there are more than 'subsize' no. of elements
+        var stItems = [];
+        stItems[0] = indxArray.slice(0, subsize);
+        var sliceStart = subsize;
+        var end = sliceStart + subsize;
+        var last = false;
+        if (end >= size) {
+            end = size;
+            last = true;
+        }
+        var indx = 1;
+        var done = false;
+        while (!done) {
+            stItems[indx++] = indxArray.slice(sliceStart, end);
+            if (last) {
+                done = true;
+            } else {
+                sliceStart += subsize;
+                end = sliceStart + subsize;
+                if (end >= size) {
+                    end = size;
+                    last = true;
+                }
+            }
+        }
+        appendSegment(stItems[0]);
+        for (let i = 1; i < indx ; i++) {   
+            await sleep(waitTime);
+            appendSegment(stItems[i]);
+        }
+    }  
+}
 /**
  * The DOM elements for the side table are created and attached in this function;
- * To reduce apparent 'thumb image' load times, the table is created 'subsize'
- * elements at a time, per interval. The table will populate the topmost items
- * first with no wait.    
+ * The effect of enlarging the preview on mouseover, and the enabling of the 
+ * favorites and zoom icons are functions invoked after posting the elements   
  */
 function appendSegment(subset: NM[]) {
     let jqSubset: JQuery<HTMLElement>[] = [];
@@ -334,33 +362,6 @@ function appendSegment(subset: NM[]) {
     enableZoom(jqSubset);
     return;
 }
-function formTbl(indxArray: NM[]) {
-    $('#sideTable').empty();
-    let primeArray = indxArray.slice(0, subsize);
-    appendSegment(primeArray);
-    indexer = subsize;
-    loadSpreader = setInterval(
-        function() {
-            let end = indexer + subsize;
-            if (end >= indxArray.length) {
-                end = indxArray.length;
-                done = true;
-            }
-            if (done) {
-                clearInterval(loadSpreader);
-                loadSpreader = undefined;
-                done = false;
-            } else {
-                let nextArray = indxArray.slice(indexer, end);
-                appendSegment(nextArray);
-                indexer += subsize;
-            }
-        },
-        500
-    );
-    return;
-}
-
 /**
  * This function allows the user an enlarged view of the thumb when moused over
  */
@@ -494,7 +495,6 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
     }
     return;
 };
-
 /**
  * This function will zoom to the correct map location for the corresponding
  * hike, and popup its infoWin and highlight it. It also displays a tooltip on mouseover.
@@ -520,7 +520,7 @@ function enableZoom(items: JQuery<HTMLElement>[]) {
     }
     return;
 }
-
+// Functions which process the set of hikes within a new map bounds
 /**
  * The following function returns the appropriate hike object based on the
  * incoming object (obj) and the subject hike number (indx) in that object.
@@ -540,6 +540,20 @@ function enableZoom(items: JQuery<HTMLElement>[]) {
        return NM[obj.group];
     }
     return <never>'';
+}
+/**
+ * This compare function is used to sort objects alphabetically
+ */
+ function compareObj(a: NM, b: NM) {
+    var hikea = a.name;
+    var hikeb = b.name;
+    var comparison: number;
+    if (hikea > hikeb) {
+        comparison = 1;
+    } else {
+        comparison = -1;
+    }
+    return comparison;
 }
 /**
  * A function to find elements within current map bounds and display them in
@@ -627,7 +641,7 @@ function enableZoom(items: JQuery<HTMLElement>[]) {
     return [singles, hikeInfoWins, trackColors];
  
 }
-
+// Functions associated with moving the vertical side table bar
 var grabber = <HTMLElement>document.getElementById('adjustWidth');
 grabber.addEventListener('mousedown', changeWidth, false);
 /**
@@ -639,7 +653,6 @@ function changeWidth(ev:MouseEvent) {
     document.addEventListener('mousemove', widthSizer, false);
     return;
 }
-
 /**
  * The function is called by the mousemove event listener. It is necessary
  * not to use anonymous functions here as those listeners cannot be removed.
@@ -659,7 +672,6 @@ function widthSizer(evt:MouseEvent) {
     locateGeoSym();
     return;
 }
-
 /**
  * This function removes both the mousemove listener and the mouseup listener
  * so that widthSizer ceases to function, and the mousdedown can be re-invoked
