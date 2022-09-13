@@ -23,7 +23,7 @@
 
 <?php if (isset($_SESSION['uplmsg']) && $_SESSION['uplmsg'] !== '') : ?>
 <p style="font-size:18px;color:darkblue;">The following action has resulted
-    from your latest "APPLY": <?= $_SESSION['uplmsg'];?></p>
+    from your latest "APPLY": <?=$_SESSION['uplmsg'];?></p>
     <?php $_SESSION['uplmsg'] = ''; ?>
 <?php endif; ?>
 
@@ -32,7 +32,7 @@
     <?php if (empty($curr_gpx)) : ?>
         <em>None Specified</em><br />
     <?php  else : ?>
-        <em><?= $curr_gpx;?></em>&nbsp;&nbsp;&nbsp;&nbsp;
+        <em><?=$curr_gpx;?></em>&nbsp;&nbsp;&nbsp;&nbsp;
         <span class="brown">Check to Delete&nbsp;&nbsp;</span>
         <input type="checkbox" name="dgpx" /><br />     
     <?php endif; ?>
@@ -63,7 +63,7 @@ additional gpx file[s] to be displayed on the hike page map simultaneously
 <textarea id="hike" class="ctrshift" name="pgTitle"
         maxlength="30"><?=$pgTitle;?></textarea>&nbsp;&nbsp;
 
-<p style="display:none;" id="locality"><?= $locale;?></p>
+<p style="display:none;" id="locality"><?=$locale;?></p>
 <?php require "localeBox.html"; ?>&nbsp;&nbsp;
 [ Add a location&nbsp;&nbsp;<input id="addaloc" name="addaloc"
     type="checkbox" />&nbsp;&nbsp;]<br />
@@ -71,9 +71,9 @@ additional gpx file[s] to be displayed on the hike page map simultaneously
     <select id="locregion" name="locregion">
         <option value="North/Northeast">North/Northeast</option>
         <option value="Northwest">Northwest</option>
-        <option value="Central NM">Cetnral NM</option>
-        <option value="West">West</option>
+        <option value="North Central">North Central</option>
         <option value="South Central">South Central</option>
+        <option value="West">West</option>
         <option value="Southwest">Southwest</option>
     </select>&nbsp;&nbsp;New Location: <input id="userloc" type="text"
         name="userloc" />
@@ -88,7 +88,7 @@ additional gpx file[s] to be displayed on the hike page map simultaneously
     <option value="Out-and-back">Out-and-back</option>
 </select>&nbsp;&nbsp;&nbsp;&nbsp;
 
-<p id="dif" style="display:none"><?= $diff;?></p>
+<p id="dif" style="display:none"><?=$diff;?></p>
 <label for="diff">Level of difficulty: </label>
 <select id="diff" name="diff">
     <option value="Easy">Easy</option>

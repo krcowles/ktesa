@@ -11,6 +11,7 @@
  * @version 3.0 Typescripted, with some type errors corrected
  * @version 4.0 Reworked for new bootstrap navbar on non-mobile platforms
  * @version 5.0 Updated security w/encryption and 2FA
+ * @version 5.1 Add disable to 'Continue Edits' and 'Publish Request' as approp.
  */
 var cookies = navigator.cookieEnabled ? true : false;
 var cookie_info = document.getElementById('cookie_state');
@@ -31,10 +32,20 @@ if (active_member) {
     // set 'Members' choices
     $('#login').addClass('disabled');
     $('#bam').addClass('disabled');
-    $('updte_sec').removeClass('disabled');
+    $('#updte_sec').removeClass('disabled');
     // display appropriate change-cookie text
     var display_choice = user_cookie_choice === 'accept' ? 'Reject Cookies' : 'Accept Cookies';
     $('#usrcookies').text(display_choice);
+    // Look to see if user has any active edit pages
+    var uhikes = parseInt($('#uhikes').text());
+    if (uhikes === 0) {
+        $('#conteditpg').addClass('disabled');
+        $('#pubreqpg').addClass('disabled');
+    }
+    else {
+        $('#conteditpg').removeClass('disabled');
+        $('#pubreqpg').removeClass('disabled');
+    }
 }
 else {
     // disable appropriate 'Members' items
