@@ -25,7 +25,7 @@ $delgpx     = isset($_POST['dgpx']) ? $_POST['dgpx'] : null;
 $noincludes = isset($_POST['deladd']) ? $_POST['deladd'] : false;
 $addfiles   = array('addgpx1', 'addgpx2', 'addgpx3');  
 $addloc     = isset($_POST['addaloc']) ? true : false; 
-$region = filter_input(INPUT_POST, 'locregion'); 
+$region     = filter_input(INPUT_POST, 'locregion'); 
 $newloc     = filter_input(INPUT_POST, 'userloc');        
 $usrmiles   = filter_input(INPUT_POST, 'usrmiles');  // registers user changes
 $usrfeet    = filter_input(INPUT_POST, 'usrfeet');   // registers user changes
@@ -233,8 +233,9 @@ if ($addloc) {
     file_put_contents('localeBox.html', $areas);
     // add this locale to the db so that it will display on page refresh
     $loc_binding = $newloc;
+    include "requestNewLoc.php";  // advise admin to update areas.json
 } else {
-    $loc_binding = filter_input(INPUT_POST, 'locale');
+    $loc_binding = filter_input(INPUT_POST, 'locale'); // select box value
 }
  
 /**
@@ -357,42 +358,5 @@ if ($updateStats) {
     $newstats = $pdo->prepare($newstatsReq);
     $newstats->execute([$miles, $feet, $hikeNo]);
 }
-    /*
-    $milesFeet = [];
-    $mfquery = "UPDATE EHIKES SET miles = ";
-    if (empty($miles)) {
-        $mfquery .= "NULL, feet = ";
-    } else {
-        $mfquery .= "?, feet = ";
-        $milesFeet[0] = $miles;
-    }
-    if (empty($feet)) {
-        $mfquery .= "NULL ";
-    } else {
-        $mfquery .= "? ";
-        array_push($milesFeet, $feet);
-    }
-    $mfquery .= "WHERE indxNo = ?;";
-    array_push($milesFeet, $hikeNo);
-    $pdo->prepare($mfquery)->execute($milesFeet);
-    // preserve NULLs in lat/lng when empty
-    $data = [];
-    $latlng = "UPDATE EHIKES SET lat = ";
-    if (empty($lat)) {
-        $latlng .= "NULL, lng = ";
-    } else {
-        $latlng .= "?, lng =  ";
-        $data[0] = $lat;
-    }
-    if (empty($lng)) {
-        $latlng .= "NULL ";
-    } else {
-        $latlng .= "? ";
-        array_push($data, $lng);
-    }
-    $latlng .= "WHERE indxNo = ?;";
-    array_push($data, $hikeNo);
-    */
-
 
 header("Location: {$redirect}");
