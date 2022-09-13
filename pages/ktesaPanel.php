@@ -11,9 +11,10 @@
 require_once "../accounts/getLogin.php";
 $policy = "../accounts/PrivacyPolicy.pdf";
 $euser = $_SESSION['userid'];
-$edits = "SELECT `usrid`, COUNT(*) AS `edits` FROM `EHIKES` WHERE `usrid`={$euser};";
+// imbedded COUNT function of MySQL crashing on server, but not on localhost...so:
+$edits = "SELECT `indxNo` FROM `EHIKES` WHERE `usrid`={$euser};";
 $ecount = $pdo->query($edits)->fetchAll(PDO::FETCH_ASSOC);
-$user_ehikes = $ecount[0]['edits']; // no. of hikes currently in edit by user
+$user_ehikes = count($ecount); // no. of hikes currently in edit by user
 ?>
 <!-- 'navbar-dark' class results in a light-colored collapsed icon ("hampurger") -->
 <p id="uhikes" style="display:none"><?=$user_ehikes;?></p>
