@@ -1,11 +1,10 @@
 <?php
 /**
- * This script will change the mode of the site between production
- * and development, and redirect back to the admintools page.
+ * This script will toggle the mode setting of the site between production
+ * and development. When reloaded, the page will reflect the new value
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -22,4 +21,3 @@ foreach ($values as &$line) {
     }
 }
 file_put_contents($mode_settings, $values);
-header("Location: admintools.php");

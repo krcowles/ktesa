@@ -19,12 +19,16 @@ $(function () {
      */
     var current_state = $('#currstate').text();
     $('#switchstate').on('click', function () {
-        window.open('changeSiteMode.php?mode=' + current_state);
-        window.close();
+        let changer = 'changeSiteMode.php?mode=' + current_state;
+        $.get(changer, function() {
+            window.location.reload();
+        });
+        
     });
     $('#swdb').on('click', function () {
-        window.open('switchDb.php');
-        window.close();
+        $.get('switchDb.php', function() {
+            window.location.reload();
+        });
     });
     /**
      * Upload to main site and install

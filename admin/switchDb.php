@@ -2,11 +2,9 @@
 /**
  * The current version of this script will switch back and forth
  * between connecting to the test db and the 'normal' site db.
- * The contents of mysql/setenv.php will be altered accordingly.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -23,9 +21,3 @@ foreach ($values as &$line) {
     }
 }
 file_put_contents($mode_settings, $values);
-// need to build in a small amount of time to allow file write completion
-while (time() - filemtime($mode_settings) > 1) {
-    usleep(5000);
-}
-$redirect = 'admintools.php';
-header("Location: {$redirect}");
