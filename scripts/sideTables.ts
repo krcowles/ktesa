@@ -21,6 +21,7 @@ interface AutoItem {
  * @version 7.0 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
  * @version 7.1 Had to handle HTML codes in hike names for map.ts/js marker titles; also
  *              redesigned sideTable creation for improved asynch execution.
+ * @version 7.2 Modified infoWin() to eliminate duplicate side table creation trigger
  */
 
 /**
@@ -182,9 +183,10 @@ const infoWin = (hike:string, loc:GPS_Coord)  => {
     // clicking marker sets zoom
     for (let k=0; k<locaters.length; k++) {
         if (locaters[k].hikeid == hike) {
-            if (locaters[k].clicked === false) {
+            if (locaters[k].clicked === false) {                
                 google.maps.event.trigger(locaters[k].pin, 'click');
             } else {
+                window.newBounds = true;
                 map.setCenter(loc);
             }
             break;
@@ -317,11 +319,11 @@ async function formTbl(indxArray: NM[]) {
             }
         }
         appendSegment(stItems[0]);
-        for (let i = 1; i < indx ; i++) {   
+        for (let i = 1; i < indx ; i++) {
             await sleep(waitTime);
             appendSegment(stItems[i]);
         }
-    }  
+    }
 }
 /**
  * The DOM elements for the side table are created and attached in this function;

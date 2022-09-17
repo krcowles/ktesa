@@ -14,15 +14,16 @@
  * @version 6.0 Change from old panel design to bootstrap navbar design
  * @version 7.0 Rework asynchronous map handlers to better control behavior; increase
  * 				number of track colors available.
+ * @version 7.1 Eliminated remnants of old side table asynch loading; simplified handlers
+ *              to reduce no. of events that triggered side tble creation.
  */
 var zoomThresh = 13;
-var initialLoad = true;
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
 var colors = [
     'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
 var geoOpts = { enableHighAccuracy: true };
-// need to be global:
+// globals:
 var map;
 var $fullScreenDiv; // Google's hidden inner div when clicking on full screen mode
 var $map = $('#map');
@@ -36,10 +37,8 @@ var applyHighlighting = false;
 var hiliteObj = {}; // global object holding hike object & marker type
 var hilited = [];
 var zoom_level;
-// map event handler globals for determining resulting action in handler
+// map event handler global used to prevent repeatitive event triggers
 var panning = false;
-var clickedOnMarker = false;
-var clickedOnGroup = false;
 // setting space for ktesaPanel
 var panel = $('#nav').height() + $('#logo').height();
 /**
@@ -173,18 +172,13 @@ function initMap() {
             locaters[itemno].clicked = false;
         });
         marker.addListener('click', function () {
-            clickedOnGroup = true;
-            if (typeof loadSpreader !== "undefined") {
-                clearInterval(loadSpreader);
-                loadSpreader = void 0; // forces to "undefined"
-            }
-            // clicking on a marker changes the position, but not quite to the marker's loc
-            map.setCenter(location);
             zoom_level = map.getZoom();
-            if (zoom_level < zoomThresh) {
+            // newBounds is true if only a center change and no follow-on zoom
+            window.newBounds = zoom_level >= zoomThresh ? true : false;
+            map.setCenter(location);
+            if (!window.newBounds) {
                 map.setZoom(zoomThresh);
             }
-            // hence, two center_change events will take place consecutively
             iw.open(map, this);
             locaters[itemno].clicked = true;
         });
@@ -220,18 +214,13 @@ function initMap() {
             locaters[itemno].clicked = false;
         });
         marker.addListener('click', function () {
-            clickedOnMarker = true;
-            if (typeof loadSpreader !== "undefined") {
-                clearInterval(loadSpreader);
-                loadSpreader = void 0; // forces var to "undefined"
-            }
-            // clicking on a marker changes the position, but not quite to the marker's loc
-            map.setCenter(markerLoc);
             zoom_level = map.getZoom();
-            if (zoom_level < zoomThresh) {
+            map.setCenter(markerLoc);
+            // newBounds is true if only a center change with no follow-on zoom
+            window.newBounds = zoom_level >= zoomThresh ? true : false;
+            if (!window.newBounds) {
                 map.setZoom(zoomThresh);
             }
-            // hence, two center_change events will take place consecutively
             iw.open(map, this);
             locaters[itemno].clicked = true;
         });
@@ -249,7 +238,8 @@ function initMap() {
     /**
      * NOTE: Loading the map on page load/reload causes an initial center_change AND
      * zoom_change event [with or without the markerclusterer.js and/or kml overlay
-     * (NM Boundary on map)]; The 'center_change' occurs first.
+     * (NM Boundary on map)]; The 'center_change' occurs first. Map event trigger code
+     * has been arranged to call setCenter before setZoom in each case.
      */
     /**
      * PANNING: a 'center_change' event will obviously occur, so a variable called
@@ -258,10 +248,6 @@ function initMap() {
      */
     map.addListener('dragstart', function () {
         panning = true;
-        if (typeof loadSpreader !== "undefined") {
-            clearInterval(loadSpreader);
-            loadSpreader = void 0; // forces var to "undefined"
-        }
     });
     map.addListener('dragend', function () {
         var curr_zoom = map.getZoom();
@@ -278,44 +264,45 @@ function initMap() {
         }
     });
     /**
-     * The 'center_changed' event is utilized as the key to all map event cases since:
-     * 1. A click on any marker will shift center. This is determined by the order of
+     * The goal is to create a side table once and only once per user-initiated
+     * map event. When there is only a center change (not resulting from a pan event,
+     * which is handled separately), form the side table. This will happen, e.g., when
+     * the map is already zoomed in to zoomThresh level (or greater). When a zoom is to
+     * follow the center change, then let only the zoom form the side table, as the side
+     * table would otherwise need to be re-formed immediately after having been formed
+     * by the re-centering, resulting in potential asynch operational conflicts
+     * 1. The var "newBounds" is set false on initialization, so the home page load
+     *    will only form the table after the zoom event is complete.
+     * 2. When completing a search in the searchbar,
+     * 3. A click on any clusterer (see markerclusterer.js) will shift center via
+     *    'map.fitBounds' - the bounds which were established by the clusterer and
+     *    assigned during creation, and when zoomOnClick option is 'true'. This
+     *    seems to register two consecutive 'center change/zoom's the first time
+     *    a cluster is clicked, but only one 'center change/zoom' thereafter. The
+     *    3rd party software has been modified to set var "newBounds" false so that
+     *    the zoom event controls the map formation.
+     * 4. A click on any marker will shift center. This is determined by the order of
      *    code execution as defined in the marker listeners. [NOTE: even if the marker
      *    were already 'dead center', the click would shift it out then back again];
-     * 2. A click on any clusterer (see markerclusterer.js) will shift center as a zoom
-     *    will occur [else there would be no clusterers showing]
+     *    Note that when the zoom is already at zoomThresh or greater, the marker
+     *    click will not be followed by a zoom.
      */
     map.addListener('center_changed', function () {
-        if (panning) {
+        if (panning) { // when panning, simply wait for the dragend event
             return;
         }
         else {
-            if (typeof loadSpreader !== "undefined") {
-                clearInterval(loadSpreader);
-                loadSpreader = void 0; // forces var to "undefined"
+            if (window.newBounds) { // if a center change only, initiate side table formation
+                setIdleListener();
+                window.newBounds = false;
             }
-            setIdleListener();
         }
     });
     /**
-     * Manual zoom will not change the center, but the side table needs to be regenerated;
-     * If the zoom is a post 'center_change' event, only flags are reset, no table generation.
+     * Zoom change will always initiate the side table formation.
      */
     map.addListener('zoom_changed', function () {
-        if (!initialLoad && !cluster_click && !clickedOnGroup && !clickedOnMarker) {
-            // this is a manual zoom after page load/reload
-            if (typeof loadSpreader !== "undefined") {
-                clearInterval(loadSpreader);
-                loadSpreader = void 0; // forces var to "undefined"
-            }
-            setIdleListener();
-        }
-        else {
-            initialLoad = false;
-            cluster_click = false;
-            clickedOnGroup = false;
-            clickedOnMarker = false;
-        }
+        setIdleListener();
     });
     /**
      * The time to update the side table and tracks is when any of the events has completed
@@ -440,9 +427,10 @@ function setupLoc() {
             map: map,
             icon: geoIcon
         });
-        map.setCenter(newWPos);
         var currzoom = map.getZoom();
-        if (currzoom < zoomThresh) {
+        window.newBounds = currzoom >= zoomThresh ? true : false;
+        map.setCenter(newWPos);
+        if (!window.newBounds) {
             map.setZoom(zoomThresh);
         }
     }

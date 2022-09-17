@@ -49,6 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
  * @version 7.0 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
  * @version 7.1 Had to handle HTML codes in hike names for map.ts/js marker titles; also
  *              redesigned sideTable creation for improved asynch execution.
+ * @version 7.2 Modified infoWin() to eliminate duplicate side table creation trigger
  */
 /**
  * The 'AllTrails' button listing some advantages from NMHIKES
@@ -217,6 +218,7 @@ var infoWin = function (hike, loc) {
                 google.maps.event.trigger(locaters[k].pin, 'click');
             }
             else {
+                window.newBounds = true;
                 map.setCenter(loc);
             }
             break;

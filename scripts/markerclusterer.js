@@ -11,7 +11,7 @@
  * The library creates and manages per-zoom-level clusters for large amounts of
  * markers.
  */
-
+// ***** NOTE: Author added line 1082 to eliminate duplicate call to form sideTables
 /**
  * @license
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1078,6 +1078,8 @@ ClusterIcon.prototype.triggerClusterClick = function() {
 
   if (markerClusterer.isZoomOnClick()) {
     // Zoom into the cluster.
+    // Let only the zoom create the side table, not the center change:
+    window.newBounds = false;
     this.map_.fitBounds(this.cluster_.getBounds());
     
   }
