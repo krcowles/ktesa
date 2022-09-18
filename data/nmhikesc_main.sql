@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -353,20 +353,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2022-09-05 14:44:10'),
-('2','CLUSHIKES','2320578160','2022-09-05 14:44:10'),
-('3','CLUSTERS','228460694','2022-09-05 14:44:10'),
-('4','EGPSDAT','0','2022-09-05 14:44:10'),
-('5','EHIKES','0','2022-09-05 14:44:10'),
-('6','EREFS','0','2022-09-05 14:44:10'),
-('7','ETSV','0','2022-09-05 14:44:10'),
-('8','FAVORITES','3651041965','2022-09-05 14:44:10'),
-('9','GPSDAT','968834188','2022-09-05 14:44:10'),
-('10','HIKES','504450803','2022-09-05 14:44:10'),
-('11','LOCKS','0','2022-09-05 14:44:10'),
-('12','REFS','4121231896','2022-09-05 14:44:10'),
-('13','TSV','3962902012','2022-09-05 14:44:10'),
-('14','USERS','1400940135','2022-09-05 14:44:10');
+('1','BOOKS','2674158859','2022-09-13 14:13:05'),
+('2','CLUSHIKES','1214875411','2022-09-13 14:13:05'),
+('3','CLUSTERS','1383753153','2022-09-13 14:13:05'),
+('4','EGPSDAT','0','2022-09-13 14:13:05'),
+('5','EHIKES','0','2022-09-13 14:13:05'),
+('6','EREFS','0','2022-09-13 14:13:05'),
+('7','ETSV','0','2022-09-13 14:13:05'),
+('8','FAVORITES','3651041965','2022-09-13 14:13:05'),
+('9','GPSDAT','968834188','2022-09-13 14:13:05'),
+('10','HIKES','504450803','2022-09-13 14:13:05'),
+('11','LOCKS','0','2022-09-13 14:13:05'),
+('12','REFS','4121231896','2022-09-13 14:13:05'),
+('13','TSV','3962902012','2022-09-13 14:13:05'),
+('14','USERS','1400940135','2022-09-13 14:13:05');
 
 
 
@@ -397,7 +397,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -425,7 +425,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -618,7 +618,7 @@ INSERT INTO HIKES VALUES
 ('85','Chimney Rock','2','Abiquiu','Out-and-back','3.00','400','Moderate','Visitor Center','Great vistas','Any','Full sun','Chimney_Rock.gpx','Chimney_Rock.json','363305250','-1064748199','chimney.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157667485914153',NULL,'https://www.google.com/maps/place/Ghost Ranch/@36.3216675,-106.4853349,14.35z/data=!4m5!3m4!1s0x8717e2c43b59b8b1:0x5ccab3f1f59da464!8m2!3d36.3313275!4d-106.4730319',NULL,'<p><em>Ghost Ranch</em> has many attractions, including beautiful views, interesting and educational events, and some great hiking trails. The <span style=\"color: #1428d2;\"><em>Chimney Rock Trail</em></span> begins close to the Welcome Center (please register for the hike there) and ascends the nearby hill leading to the namesake rock. Along the way, there are lovely views of the canyon.</p>\r\n<p>On the top of the rock, one can gain wonderful panoramas of the surrounding area, including the nearby reservoir and the well-known Pedernal, Georgia O\'Keefe\'s beloved mount.</p>','2014-02-13',NULL,NULL,NULL),
 ('86','Kitchen Mesa','2','Abiquiu','Out-and-back','5.00','600','Moderate','Visitor Center','Colorful rocks','Any','Full sun','Kitchen_Mesa.gpx','Kitchen_Mesa.json','363363530','-1064690070','kitchen.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157669237103060',NULL,'https://www.google.com/maps/place/Ghost Ranch/@36.3216675,-106.4853349,14.35z/data=!4m5!3m4!1s0x8717e2c43b59b8b1:0x5ccab3f1f59da464!8m2!3d36.3313275!4d-106.4730319',NULL,'<p>NOTE: The author did not complete this hike, due to what was perceived as precarious trail conditions. Nonetheless, the hike into the box canyon was rewarding in terms of solitude and views. This hike terminated at approximately the place indicated by the yellow flag on the interactive map. A second attempt succeeded in reaching the top.</p>\r\n<p>Early on, the <span style=\"color: #1428d2;\"><em>Kitchen Mesa</em></span> hike leads through an area where dinosaur bones were discovered. The hike provides great views from the beginning, and is mostly easy up to the point at which it ascends the mesa top.</p>','2013-10-01',NULL,NULL,NULL),
 ('87','Albuquerque Trail','2','Tajique','Loop','5.00','600','Easy-Moderate','Campground','Forest views','Not Winter','Good shade','Albuquerque_Trail.gpx','Albuquerque_Trail.json','347934910','-1063722680','abqtrail.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157670395400435',NULL,'https://www.google.com/maps/place/Fourth of July Campground/@34.7930265,-106.3748498,16.47z/data=!4m5!3m4!1s0x871f52d2949fe9a1:0x7bbfdccd70ccc7db!8m2!3d34.7928336!4d-106.3830769',NULL,'<p>The <span style=\"color: #1428d2;\"><em>Albuquerque Trail</em> <span style=\"color: #000000;\">is set in the Monzano Mountains, southeast of Albuquerque. The area, which includes the <em><span style=\"color: #1428d2;\">Fourth of July Trail</span></em>, is locally well-known for its lovely stand of big-tooth maples, which present a spectacular array of colors in the fall. </span></span></p>\r\n<p>This trail does not ascend to the crest trail, but climbs somewhat up to the Isleta Reservation boundary fence via Gallina Canyon, looping south and occasionally providing some very lovely views. Much of it is in the woods, with reduced visibility, but the hike is very pleasant nonetheless.</p>','2014-10-30',NULL,NULL,NULL),
-('88','Fourth of July Trail','2','Tajique','Out-and-back','4.00','800','Easy-Moderate','Campground','Manzano peak','Not Winter','Full sun','July4-97.123.105.87-1634951010.gpx','July4-97.123.105.87-1634951010.json','347905338','-1063801852','july4.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157670328044815',NULL,'https://www.google.com/maps/place/Fourth of July Campground/@34.7907303,-106.3858832,15.33z/data=!4m5!3m4!1s0x871f52d2949fe9a1:0x7bbfdccd70ccc7db!8m2!3d34.7928336!4d-106.3830769','<p>&nbsp;The road to the campground from Tajique is gravel and can be difficult to navigate if wet. All-wheel drive is recommended at all times of the year.</p>','<p>The <span style=\"color: #1428d2;\"><em>Fourth of July Trail</em></span> begins at the campground of the same name in the <em>Monzano Mountains</em>, near Tajique, off of NM 55. The area is well known for its Bigtooth Maples, which provide beautiful reds and oranges in the autumn - a contrast to the mostly yellow of the aspens and cottonwoods so prevalent in other areas. It is a popular place to visit at that time.</p>\r\n<p>From the campground, the trail ascends and eventually joins the <em><span style=\"color: #1428d2;\">Cerro Blanco Trail</span></em>, which can be taken north to the <em><span style=\"color: #1428d2;\">Monzano </span><span style=\"color: #1428d2;\"><em>Cre</em>st Trail </span></em><span style=\"color: #1428d2;\"><span style=\"color: #000000;\">and</span></span><span style=\"color: #000000;\"> </span>takes the hiker to a nice view of the valley and nearby peaks. In the hike shown, the <em><span style=\"color: #1428d2;\">Cerro Blanco Trail</span></em> is followed south to the gravel road which returns to the 4th of July Campground. Photos from 2010 show the path north in the springtime of 2010.</p>','2021-10-20',NULL,NULL,NULL),
+('88','Fourth of July Trail','2','Tajique','Out-and-back','4.00','800','Easy-Moderate','Campground','Manzano peak','Not Winter','Full sun','Fourth_of_July.gpx','Fourth_of_July.json','347905338','-1063801852','july4.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157670328044815',NULL,'https://www.google.com/maps/place/Fourth of July Campground/@34.7907303,-106.3858832,15.33z/data=!4m5!3m4!1s0x871f52d2949fe9a1:0x7bbfdccd70ccc7db!8m2!3d34.7928336!4d-106.3830769','<p>&nbsp;The road to the campground from Tajique is gravel and can be difficult to navigate if wet. All-wheel drive is recommended at all times of the year.</p>','<p>The <span style=\"color: #1428d2;\"><em>Fourth of July Trail</em></span> begins at the campground of the same name in the <em>Monzano Mountains</em>, near Tajique, off of NM 55. The area is well known for its Bigtooth Maples, which provide beautiful reds and oranges in the autumn - a contrast to the mostly yellow of the aspens and cottonwoods so prevalent in other areas. It is a popular place to visit at that time.</p>\r\n<p>From the campground, the trail ascends and eventually joins the <em><span style=\"color: #1428d2;\">Cerro Blanco Trail</span></em>, which can be taken north to the <em><span style=\"color: #1428d2;\">Monzano </span><span style=\"color: #1428d2;\"><em>Cre</em>st Trail </span></em><span style=\"color: #1428d2;\"><span style=\"color: #000000;\">and</span></span><span style=\"color: #000000;\"> </span>takes the hiker to a nice view of the valley and nearby peaks. In the hike shown, the <em><span style=\"color: #1428d2;\">Cerro Blanco Trail</span></em> is followed south to the gravel road which returns to the 4th of July Campground. Photos from 2010 show the path north in the springtime of 2010.</p>','2021-10-20',NULL,NULL,NULL),
 ('89','San Ysidro Trials','2','San Ysidro','Loop','2.10','836','Easy','None','Canyon/Water','Any','Full sun','SanYsidro_1.gpx','sany.json','355686166','-1068122000','sany.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157670328044815',NULL,'https://www.google.com/maps/place/35%C2%B034\'07.0%22N+106%C2%B048\'43.9%22W/@35.5616139,-106.822436,13z','<p>The <em><span style=\"color: #1428d2;\">San Ysidro Trials</span></em> area is used locally for dirt bike trials several times a year, so please check online (<a href=\"http://nmta.weebly.com/\" target=\"_blank\" rel=\"noopener\">NMTA Home Page</a>) to make sure you are not going when one of those events is scheduled.<br /><br />It is best to drive up to the parking lot (1.2 miles from US 550), but this requires a key to pass the locked gate. A key can be obtained on a first-come, first-served basis from the BLM office, 100 Sun Ave NE, Albuquerque. The key can be retained for several days, if needed. Please Note (!): the dirt road is rather tricky (sandy) and requires 4-wheel drive with good clearance.</p>','<p>Although the <span style=\"color: #1428d2;\"><em>San Ysidro Trials</em></span> area is used for several events, most of the year it is vacated. Drive up to the parking area (see Trail Tips) where there is an information kiosk. Park anywhere, but the trail begins behind the kiosk (north) and quickly turns east.</p>\r\n<p>There are no trail markers! There are occasional stone cairns. More than one possibility exists for hiking, depending on which way you proceed when you encounter a fork about .2 mile in - one going north, one continuing east. Also, there are two canyons in the area: the <em><span style=\"color: #000000;\">East Canyon</span></em> and the <em><span style=\"color: #000000;\">West Canyon</span></em>. This hike illustrates the latter.</p>','2016-09-08',NULL,NULL,NULL),
 ('90','Burnt Mesa','2','Los Alamos','Loop','7.30','481','Easy-Moderate','None','Canyon Views','Any','Full sun','Burnt_Mesa.GPX','Burnt_Mesa.json','358282529','-1063289610','burnt.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157673291961720',NULL,'https://www.google.com/maps/place/35%C2%B049\'41.7%22N+106%C2%B019\'44.3%22W/@35.8343766,-106.3488791,12z','<p>The hike shown on the map was a two-part affair. The first part (the eastern leg of the loop) follows the well-maintained trail described in the Book and AllTrails references below. The second part shows an unsatisfying attempt to follow the track shown in the EveryTrail link below. The authors found no reliable trail but did discover some beautiful vista points into Frijoles Canyon. As evidence, see the southernmost photos on the map above. We suggest turning around at that point and retracing your steps back to the trailhead, as the return loop shown on the map covers mostly difficult, uninteresting ground.</p>','<p><span style=\"color: #1428d2;\"><em>Burnt Mesa</em></span> is part of the <em>Pajarito Plateau</em> and sits within <em>Bandelier National Monument</em>. It is a finger of land that overlooks <em>Frijoles Canyon</em> and some side canyons. The name recalls fires in 1977, but the land retains no obvious scars from that time. Most of the mesa is an open area filled with grasses, flowers, bushes, and the occasional group of medium-sized Ponderosas. It turns out that autumn is an excellent time for this hike, as the fall flowers provide a glowing mixture of colors: yellows, reds, purples, whites.</p>','2016-09-27',NULL,NULL,NULL),
 ('91','Rio En Medio - Lower','2','Santa Fe','Out-and-back','6.00','1553','Moderate','None','Falls & Cascades','Any','Mixed sun/shade','Lower_Rio_En_Medio.GPX','lrioenmedio.json','358211320','-1058937420','lwrrem.jpg','https://www.flickr.com/photos/139088815@N08/albums/72157674031342550',NULL,'https://www.google.com/maps/place/35%C2%B049\'15.7%22N+105%C2%B053\'30.9%22W/@35.8236939,-105.9107273,14z',NULL,'<p>The <span style=\"color: #1428d2;\"><em>Lower Rio En Medio</em></span> hike has its trailhead essentially in the little foothill village of Rio En Medio, north of Santa Fe near Tesuque. Simply follow Route 78B to its end at a small dirt parking lot. Depending on time of year, the small lot can fill up quickly, and it doesn\'t appear there are other options. From there, the trail passes through a short stretch of private property, open to hikers only. In a short while, you will enter the <em>Santa Fe National Forest</em>.<br /><br />The first two miles of the hike are easy, with a small grade uphill. At the end of the two mile stretch, there is a short trail to the main feature (and the place where most hikers stop) - the falls. It is a magnificent falls surrounded by tall Ponderosas and rock cliffs. The trail from the falls juncture becomes rather steep as you continue, but it is well worth the effort! Numerous other falls and cascades can be seen along the way, and eventually, there is a view of the valley looking west. The trail then descends and, in a bit over a mile, the end point is reached: Aspen Ranch - also the terminus for the <em><span style=\"color: #1428d2;\">Upper Rio En Medio</span></em> hike, when starting from the Santa Fe Ski Area.</p>','2016-10-13',NULL,NULL,NULL),
@@ -1906,7 +1906,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=10242 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10236 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -5352,7 +5352,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=906 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=912 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -6269,7 +6269,13 @@ INSERT INTO VISITORS VALUES
 ('902','127.0.0.1','Mozilla Firefox','mac','2022-08-08 03:17:20','http://localhost/pages/responsivePage.php?hikeIndx=295'),
 ('903','127.0.0.1','Mozilla Firefox','mac','2022-08-15 06:42:05','http://localhost/pages/home.php'),
 ('904','127.0.0.1','Mozilla Firefox','mac','2022-08-15 07:12:21','http://localhost/pages/home.php'),
-('905','127.0.0.1','Mozilla Firefox','mac','2022-08-16 08:22:07','http://localhost/pages/home.php');
+('905','127.0.0.1','Mozilla Firefox','mac','2022-08-16 08:22:07','http://localhost/pages/home.php'),
+('906','127.0.0.1','Mozilla Firefox','mac','2022-09-07 07:00:14','http://localhost/pages/home.php'),
+('907','127.0.0.1','Mozilla Firefox','mac','2022-09-10 09:17:39','http://localhost/pages/home.php'),
+('908','127.0.0.1','Mozilla Firefox','mac','2022-09-12 04:13:46','http://localhost/pages/hikePageTemplate.php?hikeIndx=298'),
+('909','127.0.0.1','Mozilla Firefox','mac','2022-09-12 04:41:13','http://localhost/edit/editDB.php?tab=1&hikeNo=1'),
+('910','127.0.0.1','Mozilla Firefox','mac','2022-09-13 09:21:43','http://localhost/pages/home.php'),
+('911','127.0.0.1','Mozilla Firefox','mac','2022-09-17 10:28:42','http://localhost/pages/home.php');
 
 
 
