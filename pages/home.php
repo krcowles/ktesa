@@ -221,9 +221,9 @@ require "getFavorites.php";
     var favlist = <?=$favlist;?>;
     var thumb    = '<?=$rels;?>' + 'pictures/thumbs/';
     var preview  = '<?=$rels;?>' + 'pictures/previews';
-    var loadSpreader; // interval timer for spacing out thumbnail loads
     var cluster_click = false; // linked to clicking a clusterer marker
     var hikeSources = <?=$jsItems;?>;
+    window.newBounds = false;
 </script>
 <script src="../scripts/markerclusterer.js"></script>
 <script src="../scripts/map.js"></script>

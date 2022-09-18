@@ -14,6 +14,7 @@ declare type ClustererType = {
     clusterSet: google.maps.Marker[];
     options: MarkerOpts;
 };
+declare var newBounds: boolean;
 // external lib
 declare class MarkerClusterer {
     constructor(map: google.maps.Map, clusterSet: google.maps.Marker[], options: MarkerOpts);
