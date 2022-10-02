@@ -10,7 +10,7 @@
  */
 require_once "../accounts/getLogin.php";
 $policy = "../accounts/PrivacyPolicy.pdf";
-$euser = $_SESSION['userid'];
+$euser = isset($_SESSION['userid']) ? $_SESSION['userid'] : '0';
 // imbedded COUNT function of MySQL crashing on server, but not on localhost...so:
 $edits = "SELECT `indxNo` FROM `EHIKES` WHERE `usrid`={$euser};";
 $ecount = $pdo->query($edits)->fetchAll(PDO::FETCH_ASSOC);

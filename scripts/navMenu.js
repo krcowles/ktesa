@@ -1,4 +1,3 @@
-"use strict";
 /// <reference types="bootstrap" />
 /**
  * @fileoverview Navbar menu actions where href="#"
@@ -6,6 +5,7 @@
  * @author Ken Cowles
  * @version 1.0 First release of responsive design
  * @version 1.1 Typescripted
+ * @version 1.2 Updated logout menu to reflect state of 'mobile' var
  */
 /**
  * Menu setup
@@ -34,7 +34,12 @@ $('#logout').on('click', function () {
         data: ajax,
         method: "get",
         success: function () {
-            window.open('../pages/landing.php', '_self');
+            if (mobile) {
+                window.open('../pages/landing.php', '_self');
+            }
+            else {
+                window.open('../pages/home.php', '_self');
+            }
         },
         error: function () {
             ajaxerror.show();
