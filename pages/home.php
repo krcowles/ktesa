@@ -3,7 +3,7 @@
  * This is the home page for the ktesa site when not being viewed by a mobile
  * device. It consists of a google map with markers indicating hike locations,
  * and a side table showing all the hikes in the viewing area, along with some
- * links, info, and a thumbnail for each.
+ * links, info, and a thumbnail for each hike in the side table.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -12,7 +12,6 @@
  */
 session_start();
 
-//GLOBAL $entitiesISO8859;  // not sure if this is necessary...
 $entitiesISO8859 = array(
     'Agrave' => '#192',
     'Aacute' => '#193',
@@ -169,6 +168,9 @@ require "getFavorites.php";
                         longer, shorter, or unique extensions or shortcuts to
                         existing hikes
                     </li>
+                    <li>The hike track includes tick marks indicating the direction
+                        taken by the authors on the hike
+                    </li>
                     <li>A member can add photos which will appear on the trail map at
                         the location where they were taken
                     </li>
@@ -221,7 +223,6 @@ require "getFavorites.php";
     var favlist = <?=$favlist;?>;
     var thumb    = '<?=$rels;?>' + 'pictures/thumbs/';
     var preview  = '<?=$rels;?>' + 'pictures/previews';
-    var cluster_click = false; // linked to clicking a clusterer marker
     var hikeSources = <?=$jsItems;?>;
     window.newBounds = false;
 </script>

@@ -3,34 +3,46 @@
  * @fileoverview This routine initializes the google map to view the state
  * of New Mexico, places markers on hike locations, and clusters the markers
  * together displaying the number of markers in the group. It also draws hike
- * tracks when zoomed in, and then also when panned.
+ * tracks when zoomed in, and then also when panned. The script relies on the
+ * externally supplied lib 'markerclusterer.js'. That lib was modified slightly
+ * by adding a line specifying the state of boolean 'newBounds' to prevent
+ * duplicate calls to form a side table (see Pan and Zoom handlers below).
  * 
  * @author Ken Cowles
  * 
  * @version 1.0 Responsive design intro (new menu, etc.)
  * @version 1.1 Typescripted
+ * @version 2.0 Rework asynchronous map handlers per map.ts
  */
 
 /**
  * INITIALIZATION OF PAGE & GLOBAL DEFINITIONS
  */
-// Hike Track Colors: red, blue, orange, purple, black
-var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000']
+const zoomThresh = 13;  // Default zoom level for drawing tracks
+// Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
+const colors = [
+	'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
+];
 var geoOptions: geoOptions = { enableHighAccuracy: true };
+
+//globals
 var map: google.maps.Map;
 var $fullScreenDiv: JQuery; // Google's hidden inner div when clicking on full screen mode
 var $map: JQuery = $('#map');
 var mapht: number;
+// track vars
 var drawnHikes: number[] = [];     // hike numbers which have had tracks created
 var drawnTracks: HikeTrackObj[] = [];    // array of objects: {hike:hikeno , track:polyline}
 var zoomedHikes: [number[], string[], string[]];
+var zoomdone: JQuery.Deferred<void>;
 // globals to register when a zoom needs to call highlightTrack
 var applyHighlighting = false;
 var hilite_obj: Hilite_Obj = {};     // global object holding hike object & marker type
 var hilited: google.maps.Polyline[] = [];
-var zoomLevel: number;
-var zoomdone: JQuery.Deferred<void>;
+var zoom_level: number;
+// map event handler global used to prevent repeatitive event triggers when panning
 var panning = false;
+
 // Custom tick mark for map tracks
 var mapTick = {
     path: 'M 0,0 -5,11 0,8 5,11 Z',
@@ -158,10 +170,13 @@ function initMap() {
 			marker.clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			if (zoomLevel < 13) {
-				map.setZoom(13);
-			}
+			zoom_level = map.getZoom();
+			// newBounds is true if only a center change and no follow-on zoom
+			window.newBounds = zoom_level >= zoomThresh ? true : false;
 			map.setCenter(location);
+			if (!window.newBounds) {
+				map.setZoom(zoomThresh);
+			}
 			iw.open(map, this);
 			marker.clicked = true; // marker prototype property
 		});
@@ -180,7 +195,6 @@ function initMap() {
 		let srchmrkr = {hikeid: hikeobj.name, pin: marker};
 		locaters.push(srchmrkr);
 		clustererMarkerSet.push(marker);
-
 		// infoWin content: add data for this hike
 		var iwContent = '<div id="iwNH"><a href="responsivePage.php?hikeIndx='
 			+ hikeobj.indx + '">' + hikeobj.name + '</a><br />';
@@ -196,10 +210,13 @@ function initMap() {
 			marker.clicked = false;
 		});
 		marker.addListener( 'click', function() {
-			if (zoomLevel < 13) {
-				map.setZoom(13);
-			}
+			zoom_level = map.getZoom();
 			map.setCenter(hikeobj.loc);
+			// newBounds is true if only a center change with no follow-on zoom
+			window.newBounds = zoom_level >= zoomThresh ? true : false;
+			if (!window.newBounds) {
+				map.setZoom(zoomThresh);
+			}
 			iw.open(map, this);
 			marker.clicked = true; // marker prototype property
 		});
@@ -217,56 +234,73 @@ function initMap() {
 		});
 
 	// //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
-	map.addListener('zoom_changed', function() {
-		zoomdone = $.Deferred();
-		var idle = google.maps.event.addListener(map, 'idle', function () {
-			let curZoom = map.getZoom();
-			let perim = String(map.getBounds());
-			if (curZoom >= 13) {
-				zoomedHikes = tracksInBounds(perim);
-			}
-			if (zoomedHikes.length > 0) {
-				$.when(
-					zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2])
-				).then(function() {
-					google.maps.event.removeListener(idle);
-					zoomdone.resolve();
-				});
-			} else {
-				google.maps.event.removeListener(idle);
-			}
-		});
-	});
-	
-	map.addListener('dragstart', function() {
+	/**
+     * NOTE: Loading the map on page load/reload causes an initial 'center_changed'
+	 * AND 'zoom_changed' event to occur. The 'center_changed' occurs first. Map event
+	 * trigger code has been arranged to call setCenter before setZoom in each case,
+	 * hence all map events (except for manual zoom) first trigger the 'center_changed'
+	 * event. When the global variable 'window.newBounds' is false, associated activity (in this
+	 * case, the drawing of tracks), will be determined by the 'zoom_changed' handler.
+	 * When 'window.newBounds' is true, and 'center_changed' occurs, the associated
+	 * activity will be handled by the 'center_changed' handler, as a 'zoom_changed'
+	 * will not occur thereafter. NOTE: in each case, the setIdleListener is called
+	 * only once, and that function determines whether or not to draw tracks.
+     */
+
+	/**
+	 * PANNING: a 'center_changed' event will occur repeatedly, due to the very fast
+	 * processing time of that event. For that reason, a variable called 'panning' is set
+	 * to prevent the 'center_changed' listener from acting. When 'drag_end' occurs, 
+	 * it will set 'panning' false, and let the setIdleListener function determine whether
+	 * or not to execute associated activity (track drawing).
+	 */
+	 map.addListener('dragstart', function() {
 		panning = true;
 	});
-
 	map.addListener('dragend', function() {
-		// no highlighting is required during pan
-		let curr_zoom = map.getZoom();
-		let newBds = String(map.getBounds());
-		if (curr_zoom >= 13) {
-			zoomedHikes = tracksInBounds(newBds);
-		}
-		if (zoomedHikes.length > 0) {
-			zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2]);
-		}
+		setIdleListener(); // listener determines if tracks should be drawn
 		panning = false;
 	});
 
 	map.addListener('center_changed', function() {
-		if (!panning) {
-			$.when(zoomdone).then(function() {
-				if (applyHighlighting) {
-					restoreTracks();
-					highlightTracks();
-				}
-			});
+		if (panning) {
+			return;
 		} else {
-			panning = false;
-		}
+			if (!window.newBounds) { // let idle listener determine track drawing
+				setIdleListener(); 
+			} // else zoom will handle it; setIdleListener will be called only once
+		} 
 	});
+	map.addListener('zoom_changed', function() {
+		setIdleListener();  // always
+	});
+	/**
+	 * The time to update the tracks, if needed, is when any of the events has completed
+	 * and the map has returned to an idle state.
+	 */
+	function setIdleListener() {
+		var idle = google.maps.event.addListener(map, 'idle', function () {
+			var curZoom = map.getZoom();
+			if (curZoom >= zoomThresh) {	
+				var perim = String(map.getBounds());
+				zoomedHikes = tracksInBounds(perim);
+				if (zoomedHikes[0].length > 0) {
+					$.when(
+						zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2])
+					).then(function() {
+						if (applyHighlighting) {
+							restoreTracks();
+							highlightTracks();
+						}
+						google.maps.event.removeListener(idle);
+					});
+				}
+			} else {
+				google.maps.event.removeListener(idle);
+			}			
+		});
+}
+	
 }
 // ////////////////////// END OF MAP INITIALIZATION  ///////////////////////
 
@@ -337,18 +371,18 @@ function tracksInBounds(boundsStr: string):[number[],string[],string[]] {
  * If a track has already been created, it will not be created again.
  */
 function zoom_track(hikenos: number[], infoWins: string[], trackcolors: string[]) {
-	var promises = [];
+	var promises: JQuery.Deferred<void>[] = [];
 	for (let i=0,j=0; i<hikenos.length; i++,j++) {
 		if (!drawnHikes.includes(hikenos[i])) {
 			if (tracks[hikenos[i]] !== '') {
-				let sgldef = $.Deferred();
-				promises.push(sgldef);
+				let trackDef = $.Deferred();
+				promises.push(trackDef);
 				let trackfile = '../json/' + tracks[hikenos[i]];
 				drawnHikes.push(hikenos[i]);
 				if (j === trackcolors.length) {
 					j = 0;  // rollover colors when # of tracks > # of colors
 				}
-				drawTrack(trackfile, infoWins[i], trackcolors[j], hikenos[i], sgldef);
+				drawTrack(trackfile, infoWins[i], trackcolors[j], hikenos[i], trackDef);
 			}
 		}
 	}
@@ -360,7 +394,7 @@ function zoom_track(hikenos: number[], infoWins: string[], trackcolors: string[]
  */
 function drawTrack(json_filename: string, info_win: string, color:string,
 	hikeno: number, deferred: JQueryDeferred<void>) {
-	let sgltrack;
+	let sgltrack: google.maps.Polyline;
 	$.ajax({
 		dataType: "json",
 		url: json_filename,
@@ -483,10 +517,11 @@ function setupLoc() {
 			map: map,
 			icon: "../images/currentLoc.png"
 		});
-		map.setCenter(newWPos);
 		var currzoom = map.getZoom();
-		if (currzoom < 13) {
-			map.setZoom(13);
+		window.newBounds = currzoom >= zoomThresh ? true : false;
+		map.setCenter(newWPos);
+		if (!window.newBounds) {
+			map.setZoom(zoomThresh);
 		}
 	} // end of watchSuccess function
 	function error(eobj: GeoErrorObject) {

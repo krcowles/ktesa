@@ -9,6 +9,8 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
+verifyAccess('ajax');
+
 $type = filter_input(INPUT_POST, 'form');
 $usertype = isset($_POST['reg']) ? "&reg=y&code=" : "&code=";
 
@@ -18,10 +20,13 @@ if ($type === 'reg') {
         "To complete your registration and sign in, your " .
         "one-time code is ";
     $subj = "Registration for NM Hikes";
-} elseif ($type === 'req') {
+} elseif ($type === 'chg') {
     $usermsg .= "<h3>Your request to change/reset your nmhikes.com password " .
         "was received.<br />" . "To reset your password, your one-time code is ";
     $subj = "Password Reset for NM Hikes";
+} else {
+    echo "Bad form type submitted: " . $form;
+    exit;
 }
 
 // Create the one-time code link for use in the email message
@@ -51,8 +56,8 @@ if ($email === false) {
         $savecode->execute([$hash, $name]);
         $to  = $email;
         $subject = $subj;
-        $message = $usermsg . $tmp_pass . "<br />Your username is " 
-            . $name . "</h3>" . $href . $tmp_pass . "&ix=" . $id .
+        $message = $usermsg . $tmp_pass . "</h3><p>Your username is " 
+            . $name . "</p>" . $href . $tmp_pass . "&ix=" . $id .
             '">Click here to complete</a>';
         $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";

@@ -14,7 +14,7 @@ $('#send').on('click', function (ev) {
         alert("You must enter a valid email address");
         return false;
     }
-    var data = { form: 'req', email: email };
+    var data = { form: 'chg', email: email };
     $.ajax({
         url: '../accounts/resetMail.php',
         data: data,
@@ -31,6 +31,9 @@ $('#send').on('click', function (ev) {
                         window.open('../index.html', '_self');
                     }
                 });
+            }
+            else if (result.indexOf('form') !== -1) {
+                alert(result);
             }
             else {
                 var msg = void 0;

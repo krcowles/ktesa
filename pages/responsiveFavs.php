@@ -1,11 +1,10 @@
 <?php
 /**
  * This page displays a map showing only the user's favorites, and markers 
- * on the map for each favorite.
+ * on the map for each favorite. This script is used only for mobile devices.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */

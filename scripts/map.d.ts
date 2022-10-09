@@ -1,7 +1,6 @@
 /// <reference types="googlemaps" />
 /// <reference types="jquery" />
 // variables embedded via php on home.php
-declare var cluster_click: boolean;
 declare var CL: Clusters;
 declare var NM: Normals;
 declare var tracks: string[];

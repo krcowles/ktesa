@@ -4,9 +4,10 @@
  * @fileoverview This routine initializes the google map to view the state
  *		of New Mexico, places markers on hike locations, and clusters the markers
  * 		together displaying the number of hikes in the group. It also draws hike
- * 		tracks when zoomed in, and continues when panned. The script relies on the
- * 		externally supplied lib 'markerclusterer.js'. A modification was added to
- *      that file to add a 'cluster_click' boolean.
+ * 		tracks when zoomed in, and afterwards when panned. The script relies on the
+ * 		externally supplied lib 'markerclusterer.js'. That lib was modified slightly
+ *      by adding a line specifying the state of boolean 'newBounds' to prevent
+ *      duplicate calls to form a side table (see Pan and Zoom handlers below).
  * @author Ken Cowles
  * @version 3.0 Added Cluster Page compatibility (removes indexPageTemplate links)
  * @version 4.0 Typescripted, with some type errors corrected
@@ -16,8 +17,9 @@
  * 				number of track colors available.
  * @version 7.1 Eliminated remnants of old side table asynch loading; simplified handlers
  *              to reduce no. of events that triggered side tble creation.
+ * @version 7.2 Minor 'fileoverview' edit
  */
-var zoomThresh = 13;
+var zoomThresh = 13; // Default zoom level for drawing tracks
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
 var colors = [
     'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
@@ -37,7 +39,7 @@ var applyHighlighting = false;
 var hiliteObj = {}; // global object holding hike object & marker type
 var hilited = [];
 var zoom_level;
-// map event handler global used to prevent repeatitive event triggers
+// map event handler global used to prevent repeatitive event triggers when panning
 var panning = false;
 // setting space for ktesaPanel
 var panel = $('#nav').height() + $('#logo').height();
@@ -250,6 +252,7 @@ function initMap() {
         panning = true;
     });
     map.addListener('dragend', function () {
+        // this should be done by setIdleListener.... always set panning false;
         var curr_zoom = map.getZoom();
         var zoomTracks = curr_zoom >= zoomThresh ? true : false;
         var newBds = String(map.getBounds());

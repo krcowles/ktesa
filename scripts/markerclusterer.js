@@ -1,7 +1,10 @@
-// ==ClosureCompiler==
-// @compilation_level ADVANCED_OPTIMIZATIONS
-// @externs_url http://closure-compiler.googlecode.com/svn/trunk/contrib/externs/maps/google_maps_api_v3_3.js
-// ==/ClosureCompiler==
+/**
+ * NOTE: The google closure compiler has been deprecated...
+ */
+//// // ==ClosureCompiler==
+//// // @compilation_level ADVANCED_OPTIMIZATIONS
+//// // @externs_url http://closure-compiler.googlecode.com/svn/trunk/contrib/externs/maps/google_maps_api_v3_3.js
+//// // ==/ClosureCompiler==
 
 /**
  * @name MarkerClusterer for Google Maps v3
@@ -11,7 +14,9 @@
  * The library creates and manages per-zoom-level clusters for large amounts of
  * markers.
  */
-// ***** NOTE: Author added line 1082 to eliminate duplicate call to form sideTables
+
+// ***** NOTE: Author added line 1083 to eliminate duplicate calls to form sideTables
+
 /**
  * @license
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1072,7 +1077,6 @@ function ClusterIcon(cluster, styles, opt_padding) {
  */
 ClusterIcon.prototype.triggerClusterClick = function() {
   var markerClusterer = this.cluster_.getMarkerClusterer();
-  cluster_click = true;
   // Trigger the clusterclick event.
   google.maps.event.trigger(markerClusterer.map_, 'clusterclick', this.cluster_);
 

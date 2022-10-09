@@ -1,3 +1,4 @@
+"use strict";
 /// <reference types="bootstrap" />
 /**
  * @fileoverview Navbar menu actions where href="#"

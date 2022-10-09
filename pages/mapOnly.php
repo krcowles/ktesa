@@ -1,7 +1,7 @@
 <?php
 /**
  * This page is viewable from mobile devices only: it is a simplified version
- * of the map with sideTables page.
+ * of the home.php page without the side tables.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -9,7 +9,6 @@
  * @license No license to date
  */
 session_start();
-$GLOBALS[$entitiesISO8859];
 $entitiesISO8859 = array(
     'Agrave' => '#192',
     'Aacute' => '#193',
@@ -121,6 +120,7 @@ require "autoComplHikes.php";
 
 <?php
 require "../php/mapJsData.php";
+require "getFavorites.php";
 ?>
 
 <script>
@@ -134,6 +134,7 @@ require "../php/mapJsData.php";
     var pgnames = <?=$jsPageNames;?>;
     var hikeSources = <?=$jsItems;?>;
     window.name = "homePage";
+    window.newBounds = false;
 </script>
 <script src="../scripts/logo.js"></script>
 <script src="../scripts/markerclusterer.js"></script>

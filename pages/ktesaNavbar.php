@@ -1,7 +1,7 @@
 <?php
 /**
- * This script presents the html that comprises the top-of-the-page
- * menu-driven navigation bar and ktesa logo.
+ * This script pertains to mobile usage, and presents the html that comprises
+ * the top-of-the-page menu-driven navigation bar and ktesa logo.
  * PHP Version 7.4
  * 
  * @package Ktesa

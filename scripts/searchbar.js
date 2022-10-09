@@ -121,7 +121,7 @@ function infoWin(hike, loc) {
         if (locaters[k].hikeid == hike) {
             var thismarker = locaters[k].pin;
             if (thismarker.clicked === false) {
-                zoomLevel = map.getZoom();
+                zoom_level = map.getZoom();
                 // clicking will set (prototype) marker.clicked = true
                 google.maps.event.trigger(locaters[k].pin, 'click');
             }

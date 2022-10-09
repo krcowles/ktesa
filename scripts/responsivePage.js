@@ -4,6 +4,7 @@
  *
  * @author Ken Cowles
  * @version 1.0 First release of responsive design
+ * @version 1.1 Added typescript declaration for 'title' found in logo.js
  */
 $('#ctr').text(title);
 // hike number

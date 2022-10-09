@@ -1,5 +1,4 @@
 /// <reference path='./map.d.ts' />
-declare var loadSpreader: any;
 declare var thumb: string;
 declare var preview: string;
 declare var favlist: string[];

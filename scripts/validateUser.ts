@@ -133,7 +133,7 @@ $('#submit_answer').on('click', function() {
  */
  const renewPassword = () => {
     var renew = confirm("You must renew your account to continue\n" +
-        "Do you wish to renew? You will be asked to provide your email");
+        "Do you wish to renew? You will be asked to change your password");
     if (renew) { // send email to reset password
         var renewp = new bootstrap.Modal(<Element>document.getElementById('cpw'), {
             keyboard: false
