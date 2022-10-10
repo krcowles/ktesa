@@ -15,12 +15,12 @@ $hikeNo = filter_input(INPUT_POST, 'dno');
 $htips = filter_input(INPUT_POST, 'tips');
 $hinfo = filter_input(INPUT_POST, 'hinfo');
 $vals = [];
+
 if ($htips === '') {
     $valstr = 'tips = NULL, ';
 } else {
     $valstr = 'tips = ?, ';
-    // A space is needed before the Trail Tips logo...
-    $vals[0] = $hitps[0] === ' ' ? $htips : ' ' . $htips;
+    array_push($vals, $htips);
 }
 if ($hinfo === '') {
     $valstr .= "info = NULL ";
