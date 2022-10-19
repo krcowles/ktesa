@@ -30,6 +30,22 @@ require "hikePageData.php";
     <script type="text/javascript">var iframeWindow;</script>
     <script src="../scripts/canvas.js"></script>
     <script src="../scripts/jquery.js"></script>
+    <script type="text/javascript">
+        var isMobile, isTablet, isAndroid, isiPhone, isiPad;
+        window.addEventListener("load", () => { // TRUE OR NULL!
+            var isMobile = navigator.userAgent.toLowerCase().match(/mobile/i) ? 
+                true : false;
+            var isTablet = navigator.userAgent.toLowerCase().match(/tablet/i) ?
+                true : false;
+            var isAndroid = navigator.userAgent.toLowerCase().match(/android/i) ?
+                true : false;
+            var isiPhone = navigator.userAgent.toLowerCase().match(/iphone/i) ?
+                true : false;
+            var isiPad = navigator.userAgent.toLowerCase().match(/ipad/i) ?
+                true : false;
+        });
+        var mobile = isMobile && !isiPad && !isTablet;
+    </script>
 </head>
      
 <body> 
