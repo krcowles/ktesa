@@ -18,19 +18,17 @@ $user_ehikes = count($ecount); // no. of hikes currently in edit by user
 ?>
 <script type="text/javascript">
     var isMobile, isTablet, isAndroid, isiPhone, isiPad;
-    window.addEventListener("load", () => { // useragent yields TRUE OR NULL!
-        var isMobile = navigator.userAgent.toLowerCase().match(/mobile/i) ? 
-            true : false;
-        var isTablet = navigator.userAgent.toLowerCase().match(/tablet/i) ?
-            true : false;
-        var isAndroid = navigator.userAgent.toLowerCase().match(/android/i) ?
-            true : false;
-        var isiPhone = navigator.userAgent.toLowerCase().match(/iphone/i) ?
-            true : false;
-        var isiPad = navigator.userAgent.toLowerCase().match(/ipad/i) ?
-            true : false;
-        var mobile = isMobile && !isTablet;
-    });
+    isMobile = navigator.userAgent.toLowerCase().match(/mobile/i) ? 
+        true : false;
+    isTablet = navigator.userAgent.toLowerCase().match(/tablet/i) ?
+        true : false;
+    isAndroid = navigator.userAgent.toLowerCase().match(/android/i) ?
+        true : false;
+    isiPhone = navigator.userAgent.toLowerCase().match(/iphone/i) ?
+        true : false;
+    isiPad = navigator.userAgent.toLowerCase().match(/ipad/i) ?
+        true : false;
+    mobile = isMobile && !isTablet;
 </script>
 <!-- 'navbar-dark' class results in a light-colored collapsed icon ("hampurger") -->
 <p id="uhikes" style="display:none"><?=$user_ehikes;?></p>
