@@ -17,7 +17,7 @@ $ecount = $pdo->query($edits)->fetchAll(PDO::FETCH_ASSOC);
 $user_ehikes = count($ecount); // no. of hikes currently in edit by user
 ?>
 <script type="text/javascript">
-    var isMobile, isTablet, isAndroid, isiPhone, isiPad;
+    var isMobile, isTablet, isAndroid, isiPhone, isiPad, mobile;
     isMobile = navigator.userAgent.toLowerCase().match(/mobile/i) ? 
         true : false;
     isTablet = navigator.userAgent.toLowerCase().match(/tablet/i) ?
