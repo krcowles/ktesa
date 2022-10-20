@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 
 
@@ -353,20 +353,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2022-10-02 16:38:57'),
-('2','CLUSHIKES','1214875411','2022-10-02 16:38:57'),
-('3','CLUSTERS','1383753153','2022-10-02 16:38:57'),
-('4','EGPSDAT','0','2022-10-02 16:38:57'),
-('5','EHIKES','0','2022-10-02 16:38:57'),
-('6','EREFS','0','2022-10-02 16:38:57'),
-('7','ETSV','0','2022-10-02 16:38:57'),
-('8','FAVORITES','3651041965','2022-10-02 16:38:57'),
-('9','GPSDAT','968834188','2022-10-02 16:38:57'),
-('10','HIKES','164977454','2022-10-02 16:38:57'),
-('11','LOCKS','0','2022-10-02 16:38:57'),
-('12','REFS','4121231896','2022-10-02 16:38:57'),
-('13','TSV','3962902012','2022-10-02 16:38:57'),
-('14','USERS','1400940135','2022-10-02 16:38:57');
+('1','BOOKS','2674158859','2022-10-18 17:39:48'),
+('2','CLUSHIKES','1214875411','2022-10-18 17:39:48'),
+('3','CLUSTERS','1383753153','2022-10-18 17:39:48'),
+('4','EGPSDAT','0','2022-10-18 17:39:48'),
+('5','EHIKES','0','2022-10-18 17:39:48'),
+('6','EREFS','0','2022-10-18 17:39:48'),
+('7','ETSV','0','2022-10-18 17:39:48'),
+('8','FAVORITES','3651041965','2022-10-18 17:39:48'),
+('9','GPSDAT','968834188','2022-10-18 17:39:48'),
+('10','HIKES','1824529200','2022-10-18 17:39:48'),
+('11','LOCKS','0','2022-10-18 17:39:48'),
+('12','REFS','852830024','2022-10-18 17:39:48'),
+('13','TSV','3227139503','2022-10-18 17:39:48'),
+('14','USERS','3822754621','2022-10-18 17:39:48');
 
 
 
@@ -425,7 +425,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 
 
@@ -531,7 +531,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=301 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=302 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -826,7 +826,8 @@ INSERT INTO HIKES VALUES
 ('297','Trigo Canyon (Partial)','2','Belen','Out-and-back','4.90','1100','Med-Difficult','None','Canyon Views and Wildflowers','Spring-Fall','Mixed sun/shade','Trigo_Canyon-97.123.82.57-1661818385.gpx','Trigo_Canyon-97.123.82.57-1661818385.json','346772383','-1064690803','Trig917706.jpg',NULL,NULL,'https://www.google.com/maps/place/Trigo+Trailhead/@34.6637805,-106.7119782,11.49z/data=!4m5!3m4!1s0x871f56ea2638f635:0xfb0bb4d8efe0a79b!8m2!3d34.6703368!4d-106.4662705','<p>&nbsp;Road conditions deteriorate rapidly as you approach the trail head. The last mile absolutely requires 4-wheel/allwheel drive and good ground clearance. The road is rocky and rutted and travel is very slow. If coming through Belen, allow 45 minutes to reach the trail head parking area.</p>','<p>The <span style=\"color: #1428d2;\"><em>Trigo Canyon Trail</em></span> begins by following a bit of gravel road to the actual forest entrance. From there the conditions can vary, starting as a wide trail with an easy grade, but eventually becoming more rocky, and very overgrown at points, with occasional, somewhat steep grades. The adjacent stream provides the basic path up the canyon, and the trail will be found to cross it over 20 times - sometimes very simply, and other times more extended and trickier. The year this hike was taken (2022), monsoons were favorable, so water was plentiful. This also resulted in a great abundance of beautiful wildflowers at every step - pockets of wild geraniums, prairie verbena, daisies, fleabane, harebells, globe mallows and many more.</p>\r\n<p>Near the conclusion of this hike, the author met someone from the area beginning the ascent. According to this individual, a lovely waterfall and excellent viewing area awaited us had we proceeded another kilometer or so - enticement for a future effort!</p>','2022-08-29',NULL,NULL,NULL),
 ('298','Bull of the Woods Trail','2','Taos','Out-and-back','6.10','2400','Difficult','Ski Valley facilities','Fantastic high mountain views','Not Winter','Mixed sun/shade','Bull-of-the-Woods-97.123.82.57-1662339553.gpx','Bull-of-the-Woods-97.123.82.57-1662339553.json','365968723','-1054498305','Bullcf6a70.jpg',NULL,NULL,'https://www.google.com/maps/place/36%C2%B035\'48.7%22N+105%C2%B026\'59.4%22W/@36.5804815,-105.4617028,13.75z/data=!4m5!3m4!1s0x0:0xae2744b2d1fead1f!8m2!3d36.5968723!4d-105.4498305','<p>&nbsp;This hike is particulary steep at the beginning, and rather relentlessly uphill to the summit. Be sure you are well-provisioned and adjusted to the altitude. It might be good to walk around the Ski Valley a bit before the hike to begin to acclimate to the altitude. If you begin early in the morning, as did the author, be careful of the log crossing of the river, as the logs tend to be wet and slippery early in the day, drying out later on.</p>','<p>The <span style=\"color: #1428d2;\"><em>Bull-of-the-Woods Trail</em></span> is quite challenging and most rewarding! The views at the summit, and many along the way, are more than exhilirating, and photos cannot convey the sense of the expansiveness and majestic beauty of the mountains. The trail begins at the parking lot of the Ski Valley, and proceeds steeply uphill alongside the <em>Rio Hondo</em>, presenting lovely views of rushing water and noisy cascades. Eventually the river is crossed at a log crossing (see <strong>Trail Tips</strong>, above) where the route departs from the river to penetrate into the forest, working its way northeast and uphill towards the incredible views.</p>\r\n<p>The trail eventually crosses the <em>Bull-of-the-Woods Road</em> (a dirt road, being graded at the time of this hike), and then proceeds uphill and south towards the mountain peak. Just before the trail curves around the mountain for its final ascent, a beautfiul view of <em>Red River Valley</em> appears to the east. Once at the peak, the final 100 yards are blocked off with a fallen tree and a sign indicating \'Private Property\' - but no further travel is needed for exceptional viewing.</p>\r\n<p>The descent, of course, presents different, beautiful views of the mountains and valleys, made perhaps a bit more enjoyable by the less difficult process of going downhill!</p>','2022-09-01',NULL,NULL,NULL),
 ('299','Devisadero Trail','2','Taos','Loop','5.60','1100','Moderate','Restroom','Valley views and surrounding Mountains','Any','Mixed sun/shade','Devisadero-97.123.82.57-1662327098.gpx','Devisadero-97.123.82.57-1662327098.json','363758092','-1055468027','Devi894daf.jpg',NULL,NULL,'https://www.google.com/maps/dir//Devisadero+Loop+Trail+108+Trailhead,+Carson+National+Forest,+Taos,+NM+87571/@36.3890889,-105.5739783,13.73z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87176461d49c5139:0xe67d9d48fda451e2!2m2!1d-105.5470502!2d36.3760875',NULL,'<p>The <em><span style=\"color: #1428d2;\">Devisadero Trail</span></em> is somewhat popular and easy to reach from Taos. The <em>El Nogal</em> parking lot accommodates a number of cars and is located directly off <em>NM 64</em>, about 3 miles from the plaza. It serves as the trail head for several hikes. To access the hike, simply (carefully) cross NM 64 and begin the ascent to the point where the loop begins. The initial section is somewhat steep, but becomes more moderate as the trail loops around the peak.</p>\r\n<p>The hike ascends the peak and twists and turns as you progress, offering multiple views of the area as you travel. Similar views appear from different elevations, providing some perspective on the ascent. Once the summit is attained, you will find a large pile of rocks, the summit sign, and a couple of stone-slab chairs by the mound. Owing to the trees on the peak, there are no \'great\' views of the surroundings.</p>\r\n<p>Descending the loop proceeds at a faster pace, as the route is more direct and also a bit more steep. This section is a bit more exposed, and offers nice views of the foothills and valley as you close the loop.</p>','2022-08-31',NULL,NULL,NULL),
-('300','South Boundary to Overlook','2','Taos','Out-and-back','3.10','850','Moderate','Picnic Area','Views overlooking the Taos foothills','Any','Mixed sun/shade','South_Boundary-97.123.82.57-1662328760.gpx','South_Boundary-97.123.82.57-1662328760.json','363757381','-1055469621','Sout1b329d.jpg',NULL,NULL,'https://www.google.com/maps/dir//South+Boundary+Trail,+Taos,+NM+87571/@36.384971,-105.5791928,13.94z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87176461a29a0e6f:0x98a4250840abdf69!2m2!1d-105.5465857!2d36.3756533',NULL,'<p>The <span style=\"color: #1428d2;\"><em>South Boundary Trail</em></span> is actually a 22-mile long trek, but has an overlook at about 1.5 miles in from the trail head, which is the section described by this hike. The trail is accessed from the <em>El Nogal</em> parking lot, just off <em>NM 64</em> about 3 miles from the Taos plaza. The trail starts by crossing a small footbridge at the parking lot, and proceeds to the right, where it begins a moderate ascent. The grade does get a bit steeper as you continue up to the overlook point.</p>\r\n<p>The overlook is not a marked location, but simply an opening in the vegetation as the trail temporarily peaks. There are no exceptional views en route, and the from the overlook, views are not expansive, though pleasant. The trail has become a popular mountain bike route.</p>','2022-08-31',NULL,NULL,NULL);
+('300','South Boundary to Overlook','2','Taos','Out-and-back','3.10','850','Moderate','Picnic Area','Views overlooking the Taos foothills','Any','Mixed sun/shade','South_Boundary-97.123.82.57-1662328760.gpx','South_Boundary-97.123.82.57-1662328760.json','363757381','-1055469621','Sout1b329d.jpg',NULL,NULL,'https://www.google.com/maps/dir//South+Boundary+Trail,+Taos,+NM+87571/@36.384971,-105.5791928,13.94z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87176461a29a0e6f:0x98a4250840abdf69!2m2!1d-105.5465857!2d36.3756533',NULL,'<p>The <span style=\"color: #1428d2;\"><em>South Boundary Trail</em></span> is actually a 22-mile long trek, but has an overlook at about 1.5 miles in from the trail head, which is the section described by this hike. The trail is accessed from the <em>El Nogal</em> parking lot, just off <em>NM 64</em> about 3 miles from the Taos plaza. The trail starts by crossing a small footbridge at the parking lot, and proceeds to the right, where it begins a moderate ascent. The grade does get a bit steeper as you continue up to the overlook point.</p>\r\n<p>The overlook is not a marked location, but simply an opening in the vegetation as the trail temporarily peaks. There are no exceptional views en route, and the from the overlook, views are not expansive, though pleasant. The trail has become a popular mountain bike route.</p>','2022-08-31',NULL,NULL,NULL),
+('301','ABQ Little Theater Loop','2','Albuquerque','Loop','3.20','30','Easy','None','Neighborhood homes & Tingley Beach views','Any','Mixed sun/shade','CentralLoop-97.123.86.236-1666140082.gpx','CentralLoop-97.123.86.236-1666140082.json','350919987','-1066688853','ABQ ed241f.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.0919988,-106.6688854/@35.094065,-106.6786522,14.71z',NULL,'<p>This quiet but lovely neighborhood right off of Central Ave near Rio Grande Bouldevard offers a wide variety of sights. Ranging from large beautiful homes, tree-lined streets, views of the Albuquerque Country Club and Tingley Beach, and the hike and bike trail alongside the Bosque, there is a restful mix of views. It\'s not a long hike, but it offers some nice attractions. This hike was named after the parking lot from which it started.</p>','2022-10-17',NULL,NULL,NULL);
 
 
 
@@ -1906,7 +1907,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=10267 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10282 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -5327,7 +5328,16 @@ INSERT INTO TSV VALUES
 ('10254','231',NULL,'IMG_6191','Y','Y','Spiraling juniper','356738278','-1071837139','3448',NULL,'2022-10-01 11:07:16','IMG_6191','480','640',NULL,'4'),
 ('10255','231',NULL,'IMG_6225','Y','Y','Exploration reveals additional forms','356700111','-1071937556','3449',NULL,'2022-10-01 13:24:04','IMG_6225','480','640',NULL,'16'),
 ('10256','231',NULL,'IMG_6214','Y','Y','A hole-in-the-rock','356753389','-1071902556','3450',NULL,'2022-10-01 12:38:13','IMG_6214','480','640',NULL,'12'),
-('10257','231',NULL,'IMG_6240','Y','Y','A glimpse back along the CDT','356738167','-1071821667','3451',NULL,'2022-10-01 14:32:12','IMG_6240','480','640',NULL,'20');
+('10257','231',NULL,'IMG_6240','Y','Y','A glimpse back along the CDT','356738167','-1071821667','3451',NULL,'2022-10-01 14:32:12','IMG_6240','480','640',NULL,'20'),
+('10267','301',NULL,'IMG_6404','Y','Y','The long walk/bike trail along the Bosque','350812944','-1066696167','3452',NULL,'2022-10-17 09:15:26','IMG_6404','480','640',NULL,'4'),
+('10268','301',NULL,'IMG_6418','Y','Y','A \'real\' tree house','350934861','-1066730500','3453',NULL,'2022-10-17 09:54:42','IMG_6418','640','480',NULL,'8'),
+('10269','301',NULL,'IMG_6403','Y','Y','A lovely acequia crossing','350810250','-1066681972','3454',NULL,'2022-10-17 09:12:49','IMG_6403','640','480',NULL,'3'),
+('10270','301',NULL,'IMG_6407','Y','Y','A view of Tingley Beach','350846444','-1066732778','3455',NULL,'2022-10-17 09:22:47','IMG_6407','480','640',NULL,'5'),
+('10271','301',NULL,'IMG_6399','Y','Y','Heading down the quiet street','350889667','-1066671694','3456',NULL,'2022-10-17 08:46:18','IMG_6399','480','640',NULL,'0'),
+('10272','301',NULL,'IMG_6410','Y','Y','Some  interesting home decor','350943917','-1066743222','3457',NULL,'2022-10-17 09:47:43','IMG_6410','480','640',NULL,'6'),
+('10273','301',NULL,'IMG_6401','Y','Y','Beautiful homes abound in the area','350864528','-1066663194','3458',NULL,'2022-10-17 08:51:55','IMG_6401','480','640',NULL,'1'),
+('10274','301',NULL,'IMG_6402','Y','Y','Autumn adds its touch of beauty','350841222','-1066686028','3459',NULL,'2022-10-17 09:06:00','IMG_6402','480','640',NULL,'2'),
+('10275','301',NULL,'IMG_6416','Y','Y','More autumn gold','350939111','-1066742306','3460',NULL,'2022-10-17 09:51:17','IMG_6416','640','480',NULL,'7');
 
 
 
@@ -5368,7 +5378,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1546 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1629 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -6931,7 +6941,91 @@ INSERT INTO VISITORS VALUES
 ('1542','173.207.116.7','Google Chrome','windows','2022-10-03 10:23:17','https://nmhikes.com:443/pages/home.php'),
 ('1543','173.207.116.7','Google Chrome','windows','2022-10-03 10:47:12','https://nmhikes.com:443/pages/home.php'),
 ('1544','173.207.116.7','Mozilla Firefox','windows','2022-10-03 10:49:31','https://nmhikes.com:443/pages/home.php'),
-('1545','207.46.13.7','Unknown','Unknown','2022-10-03 09:23:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=201');
+('1545','207.46.13.7','Unknown','Unknown','2022-10-03 09:23:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=201'),
+('1546','173.207.116.7','Google Chrome','windows','2022-10-04 11:06:29','https://nmhikes.com:443/pages/home.php'),
+('1547','40.77.167.39','Unknown','Unknown','2022-10-04 12:29:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=122'),
+('1548','157.55.39.103','Unknown','Unknown','2022-10-04 01:25:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=196'),
+('1549','173.207.116.7','Mozilla Firefox','windows','2022-10-04 01:30:16','https://nmhikes.com:443/pages/home.php'),
+('1550','193.148.18.67','Google Chrome','linux','2022-10-04 05:58:23','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=245'),
+('1551','193.148.18.67','Google Chrome','linux','2022-10-04 06:00:25','https://nmhikes.com:443/pages/landing.php'),
+('1552','193.148.18.67','Google Chrome','linux','2022-10-04 06:00:28','https://nmhikes.com:443/pages/mapOnly.php'),
+('1553','193.148.18.67','Google Chrome','linux','2022-10-05 06:07:31','https://nmhikes.com:443/pages/mapOnly.php'),
+('1554','207.46.13.7','Unknown','Unknown','2022-10-05 11:47:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=223'),
+('1555','157.55.39.103','Unknown','Unknown','2022-10-05 10:17:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=143'),
+('1556','40.77.167.39','Google Chrome','Unknown','2022-10-05 11:33:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=237'),
+('1557','154.6.22.154','Unknown','mac','2022-10-06 07:53:04','https://nmhikes.com:443/pages/home.php'),
+('1558','154.6.22.154','Apple Safari','mac','2022-10-06 07:53:04','https://nmhikes.com:443/pages/home.php'),
+('1559','207.46.13.7','Unknown','Unknown','2022-10-06 09:47:37','https://nmhikes.com:443/pages/booklist.php'),
+('1560','165.225.33.8','Google Chrome','windows','2022-10-06 01:13:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('1561','52.177.249.187','Google Chrome','windows','2022-10-06 01:14:48','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('1562','66.249.72.170','Google Chrome','linux','2022-10-06 03:43:51','https://nmhikes.com:443/pages/landing.php'),
+('1563','66.249.72.170','Google Chrome','Unknown','2022-10-06 03:44:49','https://nmhikes.com:443/pages/home.php'),
+('1564','154.6.22.167','Unknown','mac','2022-10-06 05:52:17','https://nmhikes.com:443/pages/home.php'),
+('1565','154.6.22.167','Apple Safari','mac','2022-10-06 05:52:18','https://nmhikes.com:443/pages/home.php'),
+('1566','66.249.72.170','Google Chrome','linux','2022-10-06 06:17:31','https://nmhikes.com:443/pages/home.php'),
+('1567','207.46.13.170','Unknown','Unknown','2022-10-06 10:32:37','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('1568','207.46.13.170','Unknown','Unknown','2022-10-07 02:32:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=268'),
+('1569','207.46.13.70','Google Chrome','Unknown','2022-10-07 06:37:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=258'),
+('1570','3.142.12.147','Google Chrome','windows','2022-10-07 03:07:47','https://nmhikes.com:443/pages/home.php'),
+('1571','207.46.13.7','Unknown','Unknown','2022-10-07 05:03:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=192'),
+('1572','207.46.13.170','Unknown','Unknown','2022-10-07 07:00:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=15'),
+('1573','40.77.167.73','Unknown','Unknown','2022-10-07 07:57:06','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=286'),
+('1574','207.46.13.70','Unknown','Unknown','2022-10-07 08:49:30','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=104'),
+('1575','157.55.39.204','Unknown','Unknown','2022-10-07 09:58:53','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=237'),
+('1576','207.46.13.170','Unknown','Unknown','2022-10-08 02:45:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=30'),
+('1577','207.46.13.170','Unknown','Unknown','2022-10-08 04:25:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=285'),
+('1578','40.77.167.73','Unknown','Unknown','2022-10-08 07:30:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32'),
+('1579','97.123.86.236','Mozilla Firefox','mac','2022-10-08 09:11:01','https://nmhikes.com:443/pages/home.php'),
+('1580','207.46.13.170','Unknown','Unknown','2022-10-08 01:54:29','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=278'),
+('1581','87.250.224.27','Google Chrome','Unknown','2022-10-08 04:41:28','https://nmhikes.com:443/pages/home.php'),
+('1582','207.46.13.170','Unknown','Unknown','2022-10-08 06:49:46','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=15'),
+('1583','207.46.13.7','Unknown','Unknown','2022-10-08 07:01:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=23'),
+('1584','40.77.167.73','Google Chrome','Unknown','2022-10-08 07:45:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32'),
+('1585','207.46.13.170','Unknown','Unknown','2022-10-09 12:27:20','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=272'),
+('1586','207.46.13.7','Unknown','Unknown','2022-10-09 08:28:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=163'),
+('1587','207.46.13.7','Google Chrome','Unknown','2022-10-09 02:56:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=200'),
+('1588','207.46.13.7','Unknown','Unknown','2022-10-09 08:46:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=23'),
+('1589','157.55.39.204','Unknown','Unknown','2022-10-09 11:23:21','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=218'),
+('1590','157.55.39.204','Unknown','Unknown','2022-10-10 12:28:27','https://nmhikes.com:443/pages/tableOnly.php'),
+('1591','157.55.39.204','Unknown','Unknown','2022-10-10 09:03:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=116'),
+('1592','207.46.13.70','Unknown','Unknown','2022-10-11 03:01:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=33'),
+('1593','157.55.39.204','Google Chrome','Unknown','2022-10-12 02:49:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=26'),
+('1594','37.139.53.30','Google Chrome','windows','2022-10-12 10:02:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=175'),
+('1595','157.55.39.103','Unknown','Unknown','2022-10-12 09:46:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=219'),
+('1596','40.77.167.73','Unknown','Unknown','2022-10-12 11:21:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=248'),
+('1597','207.46.13.170','Unknown','Unknown','2022-10-12 11:25:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=265'),
+('1598','40.77.167.73','Unknown','Unknown','2022-10-13 12:18:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=222'),
+('1599','40.77.167.73','Google Chrome','Unknown','2022-10-13 12:56:16','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=25'),
+('1600','207.46.13.7','Google Chrome','Unknown','2022-10-13 07:28:48','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=188');
+INSERT INTO VISITORS VALUES
+('1601','207.46.13.7','Unknown','Unknown','2022-10-13 10:55:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=225'),
+('1602','157.55.39.103','Unknown','Unknown','2022-10-13 11:28:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=236'),
+('1603','157.55.39.103','Unknown','Unknown','2022-10-13 02:33:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=148'),
+('1604','67.164.147.244','Google Chrome','windows','2022-10-13 07:44:30','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('1605','66.249.72.168','Google Chrome','linux','2022-10-14 02:27:35','https://nmhikes.com:443/pages/landing.php'),
+('1606','66.249.72.168','Google Chrome','Unknown','2022-10-14 02:53:22','https://nmhikes.com:443/pages/home.php'),
+('1607','207.46.13.7','Unknown','Unknown','2022-10-14 04:17:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('1608','23.231.13.92','Google Chrome','windows','2022-10-15 06:50:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=105'),
+('1609','207.46.13.7','Google Chrome','Unknown','2022-10-15 12:39:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=87'),
+('1610','207.46.13.70','Google Chrome','Unknown','2022-10-15 06:14:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=151'),
+('1611','157.55.39.204','Google Chrome','Unknown','2022-10-15 10:31:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=69'),
+('1612','207.46.13.7','Google Chrome','Unknown','2022-10-16 03:54:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=224'),
+('1613','66.249.72.168','Google Chrome','linux','2022-10-16 09:20:35','https://nmhikes.com:443/pages/landing.php'),
+('1614','66.249.72.172','Google Chrome','Unknown','2022-10-16 09:25:32','https://nmhikes.com:443/pages/home.php'),
+('1615','207.46.13.170','Google Chrome','Unknown','2022-10-17 05:49:41','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=7'),
+('1616','66.249.75.44','Google Chrome','Unknown','2022-10-18 06:17:42','https://nmhikes.com:443/pages/home.php'),
+('1617','66.249.75.46','Google Chrome','linux','2022-10-18 06:17:42','https://nmhikes.com:443/pages/landing.php'),
+('1618','67.48.72.38','Google Chrome','windows','2022-10-18 07:42:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=95'),
+('1619','207.46.13.170','Unknown','Unknown','2022-10-18 04:45:35','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=95'),
+('1620','97.123.86.236','Mozilla Firefox','mac','2022-10-18 06:41:39','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=2'),
+('1621','207.46.13.170','Google Chrome','Unknown','2022-10-19 01:24:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=125'),
+('1622','40.77.167.73','Google Chrome','Unknown','2022-10-19 02:19:15','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=156'),
+('1623','157.55.39.103','Unknown','Unknown','2022-10-19 06:25:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=143'),
+('1624','45.130.83.213','Unknown','mac','2022-10-19 09:09:24','https://nmhikes.com:443/pages/home.php'),
+('1625','45.130.83.213','Apple Safari','mac','2022-10-19 09:09:24','https://nmhikes.com:443/pages/home.php'),
+('1626','157.55.39.103','Google Chrome','Unknown','2022-10-19 09:36:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=155'),
+('1627','66.249.75.44','Google Chrome','Unknown','2022-10-19 11:27:36','https://nmhikes.com:443/pages/home.php'),
+('1628','97.123.86.236','Mozilla Firefox','mac','2022-10-20 12:57:58','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=2');
 
 
 
