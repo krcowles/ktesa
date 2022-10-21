@@ -227,9 +227,10 @@ function initMap() {
 		});
 		marker.addListener( 'click', function() {
 			zoom_level = map.getZoom();
-			map.setCenter(markerLoc);
 			// newBounds is true if only a center change with no follow-on zoom
+			// this statement must precede the setCenter cmd.
 			window.newBounds = zoom_level >= zoomThresh ? true : false;
+			map.setCenter(markerLoc);
 			if (!window.newBounds) {
 				map.setZoom(zoomThresh);
 			}
