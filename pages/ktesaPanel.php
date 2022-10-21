@@ -61,7 +61,7 @@ $user_ehikes = count($ecount); // no. of hikes currently in edit by user
                         <div id="admintools">
                             <div class="dropdown-divider"></div>
                             <li><a id="adminpg" class="dropdown-item"
-                                href="../admin/admintools.php">Admintools</a></li>
+                                href="#">Admintools</a></li>
                         </div>
                     </ul>
                 </li>

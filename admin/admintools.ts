@@ -31,11 +31,11 @@ if (typeof(nopix) !== 'undefined') {
 var current_state = $('#currstate').text();
 $('#switchstate').on('click', function() {
     window.open('changeSiteMode.php?mode=' + current_state);
-    window.close();
+    window.close(); // window must have been opened via javascript: see panelMenu.ts/js
 });
 $('#swdb').on('click', function() {
     window.open('switchDb.php');
-    window.close();
+    window.close(); // window must have been opened via javascript: see panelMenu.ts/js
 });
 
 /**

@@ -160,4 +160,8 @@ $(function () {
             questions.hide();
         }
     });
+    // In order to be able to close the admintools tab, it must be opened by javasctript:
+    $('#adminpg').on('click', function () {
+        window.open("../admin/admintools.php");
+    });
 }); // end document ready
