@@ -326,6 +326,10 @@ $('#commit').on('click', function() {
 $('#cleanPix').on('click', function() {
     window.open('cleanPix.php', "_blank");
 });
+// Cleanup extraneous gpx/json files
+$('#gpxClean').on('click', function() {
+    window.open('cleanGpxJson.php', "_blank");
+});
 // PHP Info
 $('#pinfo').on('click', function() {
     window.open('phpInfo.php', "_blank");

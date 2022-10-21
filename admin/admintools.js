@@ -19,16 +19,12 @@ $(function () {
      */
     var current_state = $('#currstate').text();
     $('#switchstate').on('click', function () {
-        let changer = 'changeSiteMode.php?mode=' + current_state;
-        $.get(changer, function() {
-            window.location.reload();
-        });
-        
+        window.open('changeSiteMode.php?mode=' + current_state);
+        window.close();
     });
     $('#swdb').on('click', function () {
-        $.get('switchDb.php', function() {
-            window.location.reload();
-        });
+        window.open('switchDb.php');
+        window.close();
     });
     /**
      * Upload to main site and install
@@ -319,6 +315,10 @@ $(function () {
     // Cleanup Pictures
     $('#cleanPix').on('click', function () {
         window.open('cleanPix.php', "_blank");
+    });
+    // Cleanup extraneous gpx/json files
+    $('#gpxClean').on('click', function () {
+        window.open('cleanGpxJson.php', "_blank");
     });
     // PHP Info
     $('#pinfo').on('click', function () {

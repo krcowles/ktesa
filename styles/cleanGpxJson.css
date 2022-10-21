@@ -1,0 +1,18 @@
+body {
+    min-width: 960px;
+    background-color: #eaeaea;
+    margin: 0;
+    font-family: arial, verdana;
+    font-size: 16px;
+}
+#main {
+    margin-left: 24px;
+    width:60%;
+}
+#forceCheck {
+    margin-top: 0.6rem;
+    margin-bottom: 1rem;
+}
+#extgpx, #mgpx, #mgps, #extjson {
+    margin-bottom: 1rem;
+}
