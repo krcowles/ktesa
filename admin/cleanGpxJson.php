@@ -1,10 +1,11 @@
 <?php
 /**
  * This page will present a list of any gpx or json files that exist
- * in those directories, but are not specified in the database. The
- * admin may then choose to delete any or all of them. The E-tables
- * are not scanned, as those may be in various states of hike edits or 
- * creation of new hikes.
+ * in those directories, but are not specified in the database. Note that
+ * one important exception is the json/areas.json file used by the table
+ * page when filtering hikes by locatio. The admin may then choose to delete
+ * any or all of the extraneous files. The E-tables are not scanned, as
+ * those may be in various states of hike edits or creation of new hikes.
  * PHP Version 7.2
  * 
  * @package Ktesa
@@ -92,7 +93,9 @@ $json_iterator = new DirectoryIterator('../json');
 foreach ($json_iterator as $json) {
     if (!$json->isDot()) {
         $jsonName = $json->getFilename();
-        if (!in_array($jsonName, $dbJSON) && $jsonName !== '.DS_Store') {
+        if (!in_array($jsonName, $dbJSON)
+            && $jsonName !== '.DS_Store' && $jsonName !== 'areas.json'
+        ) {
             array_push($extraneousJSON, $json->getFilename());
         } 
     }
