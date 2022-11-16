@@ -30,11 +30,9 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 
-INSERT INTO EHIKES VALUES
-('8','Strip Mine Sidetrack Trails','2','284','Placitas','Strip Mine Group','Loop','9.40','1000','Moderate','None','Views of the Northern Sandias','Not Summer','Full sun','Sidetrack-97.123.126.42-1668560046.gpx','Sidetrack-97.123.126.42-1668560046.json','353039743','Stri83f0a4.jpg','-1064860019',NULL,NULL,'https://www.google.com/maps/dir//Placitas+Trailhead,+Forest+Loop+Rd,+Placitas,+NM+87043/@35.3019345,-106.4958083,15.2z/data=!4m8!4m7!1m0!1m5!1m1!1s0x871883281bfde5fb:0x99e1930ad84c4a44!2m2!1d-106.4861668!2d35.3040521',NULL,'<p>This set of trails is another \'composition\' of the author based on trail maps of the area. It all begins at the <em><span style=\"color: #1428d2;\">Strip Mine Trail</span></em> in Placitas. In rather short order, this hike diverts onto the <span style=\"color: #1428d2;\"><em>Sidetrack Trail</em></span> to gain extra mileage and additional scenery. That trail soon intersects the <em><span style=\"color: #1428d2;\">Sidewinder Trail,</span></em> aptly named as it weaves its way south. Note that the standard designation for flag colors on the interactive map is \"red -&gt; right; green -&gt; left\" (the blue flag indicates the end of the <em><span style=\"color: #1428d2;\">Agua Sarca Link</span></em> at the <span style=\"color: #1428d2;\"><em>Agua Sarca Trail</em></span>).</p>\r\n<p>When the <span style=\"color: #1428d2;\"><em>Sidewinder Trail </em></span>approaches the <em>Forest Loop Road </em>(a trail entrance exists there), it curves southeast and soon intersects the <em><span style=\"color: #1428d2;\">High Voltage Trail</span></em>&nbsp; which heads in an easterly direction. Carefully follow the track of this hike, as the <span style=\"color: #1428d2;\"><em>High Voltage Trail </em></span>later splits to the north, and the trail going forward from there becomes <span style=\"color: #1428d2;\"><em>ES06W</em></span> then <span style=\"color: #1428d2;\"><em>ES08W</em></span> according to maps, though unmarked and unnamed on the trail itself. At the next red flag on the map, the trail changes again to <em><span style=\"color: #1428d2;\">ES03</span></em>. The point at which the hike heads sharply southeast is at an unmamed junction, designated as <em><span style=\"color: #1428d2;\">ES18W</span></em>.</p>\r\n<p>Note that the \'Track Box\' in the upper right hand corner of the interactive map lists several tracks in addition to the loop. These represent two \'dead end\' trails and the <em><span style=\"color: #1428d2;\">Agua Sarca Link</span></em> (unmarked). To view these segments, check the corresponding boxes on the map\'s track box. Any or all of these tracks will add a nice extension to the hike.</p>\r\n<p>The first two \"<em><span style=\"color: #1428d2;\">Dead End</span> <span style=\"color: #1428d2;\">Trails</span></em>\" were explored by the author to see if an overlook or other viewing feature was offered. Primarily, these trails ascend the hills and offer some views, but nothing exceptional.&nbsp; The trails tend to become rather indistinct as you proceed, and the author did not follow them to the very end indicated by the area maps. The third track, the <em><span style=\"color: #1428d2;\">Agua Sarca Link</span></em> is a bit longer and more interesting, ending at the <span style=\"color: #1428d2;\"><em>Agua Sarca Trail</em></span>. The views of the northern Sandias are rather nice from there.</p>\r\n<p>The loop trail again changes its name at the first <em><span style=\"color: #1428d2;\">Dead End</span></em> to become <em><span style=\"color: #1428d2;\">ES16W</span></em>. It retains that name as it winds to the northwest, eventually intersecting the <em><span style=\"color: #1428d2;\">Strip Mine Trail.&nbsp;</span></em> Follow the <em><span style=\"color: #1428d2;\">Strip Mine Trail&nbsp;</span></em> westerly a short distance to the <span style=\"color: #1428d2;\"><em>Chalk Dust Trail</em></span>. The <em><span style=\"color: #1428d2;\">Chalk Dust Trail</span></em> is well worth taking as the views along it are quite pleasant.</p>\r\n<p>&nbsp;</p>','2022-11-05',NULL,NULL,NULL);
 
 
 
@@ -356,20 +354,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2022-11-15 10:21:44'),
-('2','CLUSHIKES','363249540','2022-11-15 10:21:44'),
-('3','CLUSTERS','1383753153','2022-11-15 10:21:44'),
-('4','EGPSDAT','0','2022-11-15 10:21:44'),
-('5','EHIKES','0','2022-11-15 10:21:44'),
-('6','EREFS','0','2022-11-15 10:21:44'),
-('7','ETSV','0','2022-11-15 10:21:44'),
-('8','FAVORITES','3651041965','2022-11-15 10:21:44'),
-('9','GPSDAT','968834188','2022-11-15 10:21:44'),
-('10','HIKES','2427658332','2022-11-15 10:21:44'),
-('11','LOCKS','0','2022-11-15 10:21:44'),
-('12','REFS','2315030645','2022-11-15 10:21:44'),
-('13','TSV','2485028715','2022-11-15 10:21:44'),
-('14','USERS','3822754621','2022-11-15 10:21:44');
+('1','BOOKS','2674158859','2022-11-16 09:29:15'),
+('2','CLUSHIKES','363249540','2022-11-16 09:29:15'),
+('3','CLUSTERS','1383753153','2022-11-16 09:29:15'),
+('4','EGPSDAT','0','2022-11-16 09:29:15'),
+('5','EHIKES','327619462','2022-11-16 09:29:15'),
+('6','EREFS','1439197936','2022-11-16 09:29:15'),
+('7','ETSV','1205517115','2022-11-16 09:29:15'),
+('8','FAVORITES','3651041965','2022-11-16 09:29:15'),
+('9','GPSDAT','968834188','2022-11-16 09:29:15'),
+('10','HIKES','1687755908','2022-11-16 09:29:15'),
+('11','LOCKS','0','2022-11-16 09:29:15'),
+('12','REFS','2315030645','2022-11-16 09:29:15'),
+('13','TSV','3071224650','2022-11-16 09:29:15'),
+('14','USERS','3822754621','2022-11-16 09:29:15');
 
 
 
@@ -400,12 +398,9 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 
-INSERT INTO EREFS VALUES
-('7','8','App:','https://www.alltrails.com/explore/trail/us/new-mexico/la-puerta-loop','AllTrails.com (Similar hike)'),
-('8','8','Website:','https://www.hikingproject.com/trail/7061042/placitas-stripmine-loop','Hiking Project (Similar hike/bike)');
 
 
 
@@ -431,38 +426,9 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=220 DEFAULT CHARSET=utf8;
 
 
-INSERT INTO ETSV VALUES
-('146','8',NULL,'IMG_4754','Y','Y','The sun casts an aura around the cactus','352947222','-1064751194','3085',NULL,'2021-12-17 09:01:33','IMG_4754','640','480',NULL,'9'),
-('147','8',NULL,'IMG_4744','Y','N','The Sidetrack Trail begins shortly after the Strip Mine trail head','352988944','-1064779194','3086',NULL,'2021-12-17 08:50:34','IMG_4744','640','480',NULL,'0'),
-('148','8',NULL,'IMG_4760','Y','Y','Towards Agua Sarca canyon','352901361','-1064671111','3087',NULL,'2021-12-17 09:41:02','IMG_4760','480','640',NULL,'13'),
-('149','8',NULL,'IMG_4757','Y','Y','A definite trail blocker!','352884861','-1064711139','3088',NULL,'2021-12-17 09:30:10','IMG_4757','480','640',NULL,'10'),
-('150','8',NULL,'IMG_4748','Y','N','Winter morning\'s long shadows on the foothills','352985083','-1064778972','3089',NULL,'2021-12-17 08:52:06','IMG_4748','480','640',NULL,'8'),
-('151','8',NULL,'IMG_4758','Y','Y','The earth seems to change color en route','352888444','-1064688111','3090',NULL,'2021-12-17 09:35:08','IMG_4758','480','640',NULL,'11'),
-('152','8',NULL,'IMG_4770','Y','Y','The rich-colored foothills of Placitas','352900167','-1064611972','3091',NULL,'2021-12-17 10:02:09','IMG_4770','480','640',NULL,'19'),
-('153','8',NULL,'IMG_4769','Y','N','A longer view of Cabezon Peak and White Mesa','352902639','-1064617083','3092',NULL,'2021-12-17 10:00:43','IMG_4769','480','640',NULL,'17'),
-('154','8',NULL,'IMG_4777','Y','Y','Rippled mesas looking northeast towards the Sangre de Cristos','352858806','-1064542528','3093',NULL,'2021-12-17 10:24:37','IMG_4777','480','640',NULL,'21'),
-('155','8',NULL,'IMG_4772','Y','Y','Interesting stone features dot the ridge','352883389','-1064578028','3094',NULL,'2021-12-17 10:10:11','IMG_4772','480','640',NULL,'20'),
-('156','8',NULL,'IMG_4761','Y','Y','The foothills are rich with scrub Cedars','352900556','-1064653639','3095',NULL,'2021-12-17 09:43:42','IMG_4761','480','640',NULL,'14'),
-('157','8',NULL,'IMG_4787','Y','Y','An old wilderness boundary?','352905056','-1064528361','3096',NULL,'2021-12-17 11:40:52','IMG_4787','480','640',NULL,'23'),
-('158','8',NULL,'IMG_4765','Y','Y','The rocky trail proceeds uphill','352913583','-1064637139','3097',NULL,'2021-12-17 09:49:16','IMG_4765','480','640',NULL,'16'),
-('159','8',NULL,'IMG_4780','Y','Y','The northern end of the Sandias','352854194','-1064547972','3098',NULL,'2021-12-17 10:30:28','IMG_4780','480','640',NULL,'22'),
-('160','8',NULL,'IMG_4789','Y','Y','The strip mine from the trail juncture','352954222','-1064569389','3099',NULL,'2021-12-17 11:52:12','IMG_4789','480','640',NULL,'24'),
-('161','8',NULL,'IMG_4790','Y','Y','The Chalk Dust joins the Strip Mine Trail','352954306','-1064613278','3100',NULL,'2021-12-17 11:59:05','IMG_4790','640','480',NULL,'25'),
-('162','8',NULL,'IMG_4793','Y','Y','Beautiful views along the Chalk Dust','352990278','-1064650361','3101',NULL,'2021-12-17 12:08:54','IMG_4793','480','640',NULL,'26'),
-('163','8',NULL,'IMG_4796','Y','Y','A fun surprise on the Chalk Dust!','352986000','-1064722361','3102',NULL,'2021-12-17 12:21:42','IMG_4796','480','640',NULL,'27'),
-('164','8',NULL,'IMG_4810','Y','Y','A view towards Cabezon Peak','352880028','-1064574139','3103',NULL,'2021-12-29 09:52:11','IMG_4810','480','640',NULL,'12'),
-('165','8',NULL,'IMG_4813','Y','Y','Placitas mesas in the distance','352892722','-1064471972','3104',NULL,'2021-12-29 10:24:14','IMG_4813','480','640',NULL,'15'),
-('166','8',NULL,'IMG_4815','Y','Y','Agua Sarca trail view at the junction','352886639','-1064428333','3105',NULL,'2021-12-29 10:36:43','IMG_4815','480','640',NULL,'18'),
-('167','8',NULL,'IMG_4805','Y','Y','A Christmas surprise!','352962722','-1064767389','3106',NULL,'2021-12-29 08:50:00','IMG_4805','480','640',NULL,'7'),
-('168','8',NULL,'IMG_4803','Y','Y','A light snow adds significant beauty','352985361','-1064779361','3107',NULL,'2021-12-29 08:44:44','IMG_4803','480','640',NULL,'6'),
-('169','8',NULL,'IMG_6472','Y','Y','Towards the Santa Ana mesas','353001944','-1064808056','3480',NULL,'2022-11-04 08:57:04','IMG_6472','480','640',NULL,'5'),
-('170','8',NULL,'IMG_6480','Y','Y','Cabezon, White Mesa, and the Naciementos can be seen from the trail','352867444','-1064541694','3481',NULL,'2022-11-05 09:37:01','IMG_6480','480','640',NULL,'4'),
-('171','8',NULL,'IMG_6479','Y','Y','Looking back from the high point of the trail','352875389','-1064526222','3482',NULL,'2022-11-05 09:31:10','IMG_6479','480','640',NULL,'3'),
-('172','8',NULL,'IMG_6486','Y','Y','Towards Agua Sarca Canyon','352885250','-1064584889','3483',NULL,'2022-11-05 09:48:25','IMG_6486','480','640',NULL,'2'),
-('173','8',NULL,'IMG_6477','Y','Y','A hikers gate heading up into the foothills','352945361','-1064564056','3484',NULL,'2022-11-05 09:17:00','IMG_6477','480','640',NULL,'1');
 
 
 
@@ -889,7 +855,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3251 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3255 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1920,9 +1886,9 @@ INSERT INTO REFS VALUES
 ('3244','72','Website: ','http://www.summitpost.org/williams-lake-trail/162410','Summit Post'),
 ('3245','231','Book:','2',NULL),
 ('3246','302','App:','https://www.alltrails.com/trail/us/new-mexico/burro-trail','AllTrails.com'),
-('3247','284','App:','https://www.alltrails.com/explore/trail/us/new-mexico/la-puerta-loop','AllTrails.com (Similar hike)'),
-('3248','284','Website:','https://www.hikingproject.com/trail/7061042/placitas-stripmine-loop','Hiking Project (Similar hike/bike)'),
-('3250','303','Website:','https://www.alltrails.com/trail/us/new-mexico/valley-of-dreams-loop?search=true','AllTrails.com');
+('3251','284','App:','https://www.alltrails.com/explore/trail/us/new-mexico/la-puerta-loop','AllTrails.com (Similar hike)'),
+('3252','284','Website:','https://www.hikingproject.com/trail/7061042/placitas-stripmine-loop','Hiking Project (Similar hike/bike)'),
+('3254','303','Website:','https://www.alltrails.com/trail/us/new-mexico/valley-of-dreams-loop?search=true','AllTrails.com');
 
 
 
@@ -1946,7 +1912,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=10405 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10467 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -5362,56 +5328,6 @@ INSERT INTO TSV VALUES
 ('10296','302',NULL,'IMG_6428','Y','Y','Looking back half-way up','357787139','-1062729806','3474',NULL,'2022-10-22 10:21:25','IMG_6428','480','640',NULL,'1'),
 ('10297','302',NULL,'IMG_6431','Y','Y','Beginning the Burro','357771306','-1062738944','3475',NULL,'2022-10-22 10:48:40','IMG_6431','480','640',NULL,'3'),
 ('10298','302',NULL,'Branch from Burro Trail',NULL,'Y',NULL,'357645100','-1062665400',NULL,NULL,NULL,NULL,NULL,NULL,'Flag, Green',NULL),
-('10328','284',NULL,'IMG_4754','Y','Y','The sun casts an aura around the cactus','352947222','-1064751194','3085',NULL,'2021-12-17 09:01:33','IMG_4754','640','480',NULL,'9'),
-('10329','284',NULL,'IMG_4744','Y','N','The Sidetrack Trail begins shortly after the Strip Mine trail head','352988944','-1064779194','3086',NULL,'2021-12-17 08:50:34','IMG_4744','640','480',NULL,'0'),
-('10330','284',NULL,'IMG_4760','Y','Y','Towards Agua Sarca canyon','352901361','-1064671111','3087',NULL,'2021-12-17 09:41:02','IMG_4760','480','640',NULL,'13'),
-('10331','284',NULL,'IMG_4757','Y','Y','A definite trail blocker!','352884861','-1064711139','3088',NULL,'2021-12-17 09:30:10','IMG_4757','480','640',NULL,'10'),
-('10332','284',NULL,'IMG_4748','Y','N','Winter morning\'s long shadows on the foothills','352985083','-1064778972','3089',NULL,'2021-12-17 08:52:06','IMG_4748','480','640',NULL,'8'),
-('10333','284',NULL,'IMG_4758','Y','Y','The earth seems to change color en route','352888444','-1064688111','3090',NULL,'2021-12-17 09:35:08','IMG_4758','480','640',NULL,'11'),
-('10334','284',NULL,'IMG_4770','Y','Y','The rich-colored foothills of Placitas','352900167','-1064611972','3091',NULL,'2021-12-17 10:02:09','IMG_4770','480','640',NULL,'19'),
-('10335','284',NULL,'IMG_4769','Y','N','A longer view of Cabezon Peak and White Mesa','352902639','-1064617083','3092',NULL,'2021-12-17 10:00:43','IMG_4769','480','640',NULL,'17'),
-('10336','284',NULL,'IMG_4777','Y','Y','Rippled mesas looking northeast towards the Sangre de Cristos','352858806','-1064542528','3093',NULL,'2021-12-17 10:24:37','IMG_4777','480','640',NULL,'21'),
-('10337','284',NULL,'IMG_4772','Y','Y','Interesting stone features dot the ridge','352883389','-1064578028','3094',NULL,'2021-12-17 10:10:11','IMG_4772','480','640',NULL,'20'),
-('10338','284',NULL,'IMG_4761','Y','Y','The foothills are rich with scrub Cedars','352900556','-1064653639','3095',NULL,'2021-12-17 09:43:42','IMG_4761','480','640',NULL,'14'),
-('10339','284',NULL,'IMG_4787','Y','Y','An old wilderness boundary?','352905056','-1064528361','3096',NULL,'2021-12-17 11:40:52','IMG_4787','480','640',NULL,'23'),
-('10340','284',NULL,'IMG_4765','Y','Y','The rocky trail proceeds uphill','352913583','-1064637139','3097',NULL,'2021-12-17 09:49:16','IMG_4765','480','640',NULL,'16'),
-('10341','284',NULL,'IMG_4780','Y','Y','The northern end of the Sandias','352854194','-1064547972','3098',NULL,'2021-12-17 10:30:28','IMG_4780','480','640',NULL,'22'),
-('10342','284',NULL,'IMG_4789','Y','Y','The strip mine from the trail juncture','352954222','-1064569389','3099',NULL,'2021-12-17 11:52:12','IMG_4789','480','640',NULL,'24'),
-('10343','284',NULL,'IMG_4790','Y','Y','The Chalk Dust joins the Strip Mine Trail','352954306','-1064613278','3100',NULL,'2021-12-17 11:59:05','IMG_4790','640','480',NULL,'25'),
-('10344','284',NULL,'IMG_4793','Y','Y','Beautiful views along the Chalk Dust','352990278','-1064650361','3101',NULL,'2021-12-17 12:08:54','IMG_4793','480','640',NULL,'26'),
-('10345','284',NULL,'IMG_4796','Y','Y','A fun surprise on the Chalk Dust!','352986000','-1064722361','3102',NULL,'2021-12-17 12:21:42','IMG_4796','480','640',NULL,'27'),
-('10346','284',NULL,'IMG_4810','Y','Y','A view towards Cabezon Peak','352880028','-1064574139','3103',NULL,'2021-12-29 09:52:11','IMG_4810','480','640',NULL,'12'),
-('10347','284',NULL,'IMG_4813','Y','Y','Placitas mesas in the distance','352892722','-1064471972','3104',NULL,'2021-12-29 10:24:14','IMG_4813','480','640',NULL,'15'),
-('10348','284',NULL,'IMG_4815','Y','Y','Agua Sarca trail view at the junction','352886639','-1064428333','3105',NULL,'2021-12-29 10:36:43','IMG_4815','480','640',NULL,'18');
-INSERT INTO TSV VALUES
-('10349','284',NULL,'IMG_4805','Y','Y','A Christmas surprise!','352962722','-1064767389','3106',NULL,'2021-12-29 08:50:00','IMG_4805','480','640',NULL,'7'),
-('10350','284',NULL,'IMG_4803','Y','Y','A light snow adds significant beauty','352985361','-1064779361','3107',NULL,'2021-12-29 08:44:44','IMG_4803','480','640',NULL,'6'),
-('10351','284',NULL,'IMG_6472','Y','Y','Towards the Santa Ana mesas','353001944','-1064808056','3480',NULL,'2022-11-04 08:57:04','IMG_6472','480','640',NULL,'5'),
-('10352','284',NULL,'IMG_6480','Y','Y','Cabezon, White Mesa, and the Naciementos can be seen from the trail','352867444','-1064541694','3481',NULL,'2022-11-05 09:37:01','IMG_6480','480','640',NULL,'4'),
-('10353','284',NULL,'IMG_6479','Y','Y','Looking back from the high point of the trail','352875389','-1064526222','3482',NULL,'2022-11-05 09:31:10','IMG_6479','480','640',NULL,'3'),
-('10354','284',NULL,'IMG_6486','Y','Y','Towards Agua Sarca Canyon','352885250','-1064584889','3483',NULL,'2022-11-05 09:48:25','IMG_6486','480','640',NULL,'2'),
-('10355','284',NULL,'IMG_6477','Y','Y','A hikers gate heading up into the foothills','352945361','-1064564056','3484',NULL,'2022-11-05 09:17:00','IMG_6477','480','640',NULL,'1'),
-('10359','303',NULL,'IMG_6554','Y','N','Hoodoos and fallen hoodoo remnants abound','361476944','-1079825278','3485',NULL,'2022-11-13 11:38:08','IMG_6554','480','640',NULL,'12'),
-('10360','303',NULL,'IMG_6525','Y','N','A form resembling an animal of some sort','361472444','-1079802944','3485',NULL,'2022-11-13 10:48:22','IMG_6525','480','640',NULL,'6'),
-('10361','303',NULL,'IMG_6522','Y','Y','Formations are in stark color contrast with the surrounding hills','361468972','-1079807139','3486',NULL,'2022-11-13 10:46:55','IMG_6522','480','640',NULL,'5'),
-('10362','303',NULL,'IMG_6526','Y','N','Shapes and colors weave throughout','361473472','-1079801556','3487',NULL,'2022-11-13 10:48:47','IMG_6526','480','640',NULL,'3'),
-('10363','303',NULL,'IMG_6559','Y','Y','Absolutely not a natural pile of rock!','361479444','-1079827278','3488',NULL,'2022-11-13 11:41:11','IMG_6559','480','640',NULL,'13'),
-('10364','303',NULL,'IMG_6563','Y','Y','The \"Alien\'s Throne\"','361488389','-1079805833','3489',NULL,'2022-11-13 11:52:35','IMG_6563','640','480',NULL,'16'),
-('10365','303',NULL,'IMG_6527','Y','N','Black hills provide unique contrast','361474750','-1079804000','3490',NULL,'2022-11-13 10:49:23','IMG_6527','480','640',NULL,'7'),
-('10366','303',NULL,'IMG_6560','Y','N','Beautiful colored strata and loose rock dominate the landscape','361481667','-1079819861','3491',NULL,'2022-11-13 11:43:22','IMG_6560','480','640',NULL,'14'),
-('10367','303',NULL,'IMG_6533','Y','Y','Blind canyons appear in the midst of black hills','361477000','-1079803694','3492',NULL,'2022-11-13 10:53:56','IMG_6533','480','640',NULL,'8'),
-('10368','303',NULL,'IMG_6561','Y','Y','More evidence of large petrified trees','361482611','-1079814389','3493',NULL,'2022-11-13 11:47:06','IMG_6561','480','640',NULL,'15'),
-('10369','303',NULL,'IMG_6574','Y','Y','King of Wings','361710667','-1079727333','3494',NULL,'2022-11-13 13:21:07','IMG_6574','480','640',NULL,'19'),
-('10370','303',NULL,'IMG_6512','Y','Y','Closer up, the hoodoos take on a unique character','361409444','-1079767306','3495',NULL,'2022-11-13 10:30:57','IMG_6512','480','640',NULL,'1'),
-('10371','303',NULL,'IMG_6543','Y','Y','A veritable village of hoodoos','361480167','-1079790722','3496',NULL,'2022-11-13 11:00:50','IMG_6543','480','640',NULL,'10'),
-('10372','303',NULL,'IMG_6569','Y','Y','\'Chocolate Penguin\'?','361491917','-1079819028','3497',NULL,'2022-11-13 12:15:30','IMG_6569','640','480',NULL,'17'),
-('10373','303',NULL,'IMG_6515','Y','N','Further exploration uncovers a multitude of shapes and forms','361413194','-1079768694','3498',NULL,'2022-11-13 10:32:53','IMG_6515','480','640',NULL,'2'),
-('10374','303',NULL,'IMG_6517','Y','Y','Red hills mark the location of a wide variety of hoodoos','361456611','-1079800556','3499',NULL,'2022-11-13 10:41:04','IMG_6517','480','640',NULL,'4'),
-('10375','303',NULL,'IMG_6553','Y','Y','Solo hoodoos appear in contrast to the hills','361471333','-1079822222','3500',NULL,'2022-11-13 11:34:37','IMG_6553','480','640',NULL,'11'),
-('10376','303',NULL,'IMG_6570','Y','N','The author dubs this \'Petrified Radio-telescope','361492778','-1079818194','3501',NULL,'2022-11-13 12:17:56','IMG_6570','640','480',NULL,'18'),
-('10377','303',NULL,'IMG_6577','Y','Y','Colored hills resemble the painted desert','361712639','-1079724889','3502',NULL,'2022-11-13 13:25:30','IMG_6577','480','640',NULL,'20'),
-('10378','303',NULL,'IMG_6539','Y','N','Many areas feature surprising remnants of petrified wood','361479528','-1079793389','3503',NULL,'2022-11-13 10:58:26','IMG_6539','480','640',NULL,'9'),
-('10379','303',NULL,'IMG_6504','Y','Y','From a flat and desolate parking area, the ground opens up','361343722','-1079734194','3504',NULL,'2022-11-13 10:16:32','IMG_6504','480','640',NULL,'0'),
 ('10390','256',NULL,'IMG_3695','Y','Y','Another tree-born porcupine','351789972','-1066542056','2714',NULL,'2021-01-06 10:03:32','IMG_3695','640','480',NULL,'0'),
 ('10391','256',NULL,'IMG_3696','Y','Y','In the winter, porcupines eat the bark off of trees','351791694','-1066540611','2715',NULL,'2021-01-06 10:04:38','IMG_3696','640','480',NULL,'1'),
 ('10392','256',NULL,'IMG_3691','Y','Y','Porcupine by the river','351684889','-1066596056','2716',NULL,'2021-01-06 09:38:52','IMG_3691','640','480',NULL,'2'),
@@ -5424,7 +5340,66 @@ INSERT INTO TSV VALUES
 ('10399','256',NULL,'IMG_6462','Y','Y','A peaceful view of the Rio Grande','351448361','-1066795194','3476',NULL,'2022-10-26 09:04:44','IMG_6462','480','640',NULL,'9'),
 ('10400','256',NULL,'IMG_6461','Y','Y','Autumn adds its distinctive colors','351575389','-1066711639','3477',NULL,'2022-10-26 08:40:47','IMG_6461','480','640',NULL,'10'),
 ('10401','256',NULL,'IMG_6463','Y','Y','Evidence of a recent burn','351408583','-1066837472','3478',NULL,'2022-10-26 09:20:01','IMG_6463','640','480',NULL,'11'),
-('10402','256',NULL,'IMG_6464','Y','Y','Amongst the Bosque trees','351377250','-1066870639','3479',NULL,'2022-10-26 09:27:40','IMG_6464','640','480',NULL,'12');
+('10402','256',NULL,'IMG_6464','Y','Y','Amongst the Bosque trees','351377250','-1066870639','3479',NULL,'2022-10-26 09:27:40','IMG_6464','640','480',NULL,'12'),
+('10405','284',NULL,'IMG_4754','Y','Y','The sun casts an aura around the cactus','352947222','-1064751194','3085',NULL,'2021-12-17 09:01:33','IMG_4754','640','480',NULL,'9'),
+('10406','284',NULL,'IMG_4744','Y','N','The Sidetrack Trail begins shortly after the Strip Mine trail head','352988944','-1064779194','3086',NULL,'2021-12-17 08:50:34','IMG_4744','640','480',NULL,'0'),
+('10407','284',NULL,'IMG_4760','Y','Y','Towards Agua Sarca canyon','352901361','-1064671111','3087',NULL,'2021-12-17 09:41:02','IMG_4760','480','640',NULL,'13'),
+('10408','284',NULL,'IMG_4757','Y','Y','A definite trail blocker!','352884861','-1064711139','3088',NULL,'2021-12-17 09:30:10','IMG_4757','480','640',NULL,'10'),
+('10409','284',NULL,'IMG_4748','Y','N','Winter morning\'s long shadows on the foothills','352985083','-1064778972','3089',NULL,'2021-12-17 08:52:06','IMG_4748','480','640',NULL,'8'),
+('10410','284',NULL,'IMG_4758','Y','Y','The earth seems to change color en route','352888444','-1064688111','3090',NULL,'2021-12-17 09:35:08','IMG_4758','480','640',NULL,'11'),
+('10411','284',NULL,'IMG_4770','Y','Y','The rich-colored foothills of Placitas','352900167','-1064611972','3091',NULL,'2021-12-17 10:02:09','IMG_4770','480','640',NULL,'19'),
+('10412','284',NULL,'IMG_4769','Y','N','A longer view of Cabezon Peak and White Mesa','352902639','-1064617083','3092',NULL,'2021-12-17 10:00:43','IMG_4769','480','640',NULL,'17');
+INSERT INTO TSV VALUES
+('10413','284',NULL,'IMG_4777','Y','Y','Rippled mesas looking northeast towards the Sangre de Cristos','352858806','-1064542528','3093',NULL,'2021-12-17 10:24:37','IMG_4777','480','640',NULL,'21'),
+('10414','284',NULL,'IMG_4772','Y','Y','Interesting stone features dot the ridge','352883389','-1064578028','3094',NULL,'2021-12-17 10:10:11','IMG_4772','480','640',NULL,'20'),
+('10415','284',NULL,'IMG_4761','Y','Y','The foothills are rich with scrub Cedars','352900556','-1064653639','3095',NULL,'2021-12-17 09:43:42','IMG_4761','480','640',NULL,'14'),
+('10416','284',NULL,'IMG_4787','Y','Y','An old wilderness boundary?','352905056','-1064528361','3096',NULL,'2021-12-17 11:40:52','IMG_4787','480','640',NULL,'23'),
+('10417','284',NULL,'IMG_4765','Y','Y','The rocky trail proceeds uphill','352913583','-1064637139','3097',NULL,'2021-12-17 09:49:16','IMG_4765','480','640',NULL,'16'),
+('10418','284',NULL,'IMG_4780','Y','Y','The northern end of the Sandias','352854194','-1064547972','3098',NULL,'2021-12-17 10:30:28','IMG_4780','480','640',NULL,'22'),
+('10419','284',NULL,'IMG_4789','Y','Y','The strip mine from the trail juncture','352954222','-1064569389','3099',NULL,'2021-12-17 11:52:12','IMG_4789','480','640',NULL,'24'),
+('10420','284',NULL,'IMG_4790','Y','Y','The Chalk Dust joins the Strip Mine Trail','352954306','-1064613278','3100',NULL,'2021-12-17 11:59:05','IMG_4790','640','480',NULL,'25'),
+('10421','284',NULL,'IMG_4793','Y','Y','Beautiful views along the Chalk Dust','352990278','-1064650361','3101',NULL,'2021-12-17 12:08:54','IMG_4793','480','640',NULL,'26'),
+('10422','284',NULL,'IMG_4796','Y','Y','A fun surprise on the Chalk Dust!','352986000','-1064722361','3102',NULL,'2021-12-17 12:21:42','IMG_4796','480','640',NULL,'27'),
+('10423','284',NULL,'IMG_4810','Y','Y','A view towards Cabezon Peak','352880028','-1064574139','3103',NULL,'2021-12-29 09:52:11','IMG_4810','480','640',NULL,'12'),
+('10424','284',NULL,'IMG_4813','Y','Y','Placitas mesas in the distance','352892722','-1064471972','3104',NULL,'2021-12-29 10:24:14','IMG_4813','480','640',NULL,'15'),
+('10425','284',NULL,'IMG_4815','Y','Y','Agua Sarca trail view at the junction','352886639','-1064428333','3105',NULL,'2021-12-29 10:36:43','IMG_4815','480','640',NULL,'18'),
+('10426','284',NULL,'IMG_4805','Y','Y','A Christmas surprise!','352962722','-1064767389','3106',NULL,'2021-12-29 08:50:00','IMG_4805','480','640',NULL,'7'),
+('10427','284',NULL,'IMG_4803','Y','Y','A light snow adds significant beauty','352985361','-1064779361','3107',NULL,'2021-12-29 08:44:44','IMG_4803','480','640',NULL,'6'),
+('10428','284',NULL,'IMG_6472','Y','Y','Towards the Santa Ana mesas','353001944','-1064808056','3480',NULL,'2022-11-04 08:57:04','IMG_6472','480','640',NULL,'5'),
+('10429','284',NULL,'IMG_6480','Y','Y','Cabezon, White Mesa, and the Naciementos can be seen from the trail','352867444','-1064541694','3481',NULL,'2022-11-05 09:37:01','IMG_6480','480','640',NULL,'4'),
+('10430','284',NULL,'IMG_6479','Y','Y','Looking back from the high point of the trail','352875389','-1064526222','3482',NULL,'2022-11-05 09:31:10','IMG_6479','480','640',NULL,'3'),
+('10431','284',NULL,'IMG_6486','Y','Y','Towards Agua Sarca Canyon','352885250','-1064584889','3483',NULL,'2022-11-05 09:48:25','IMG_6486','480','640',NULL,'2'),
+('10432','284',NULL,'IMG_6477','Y','Y','A hikers gate heading up into the foothills','352945361','-1064564056','3484',NULL,'2022-11-05 09:17:00','IMG_6477','480','640',NULL,'1'),
+('10436','303',NULL,'IMG_6554','Y','N','Hoodoos and fallen hoodoo remnants abound','361476944','-1079825278','3485',NULL,'2022-11-13 11:38:08','IMG_6554','480','640',NULL,'24'),
+('10437','303',NULL,'IMG_6525','Y','N','A form resembling an animal of some sort','361472444','-1079802944','3485',NULL,'2022-11-13 10:48:22','IMG_6525','480','640',NULL,'9'),
+('10438','303',NULL,'IMG_6522','Y','Y','Formations are in stark color contrast with the surrounding hills','361468972','-1079807139','3486',NULL,'2022-11-13 10:46:55','IMG_6522','480','640',NULL,'8'),
+('10439','303',NULL,'IMG_6526','Y','N','Shapes and colors weave throughout','361473472','-1079801556','3487',NULL,'2022-11-13 10:48:47','IMG_6526','480','640',NULL,'6'),
+('10440','303',NULL,'IMG_6559','Y','Y','Absolutely not a natural pile of rock!','361479444','-1079827278','3488',NULL,'2022-11-13 11:41:11','IMG_6559','480','640',NULL,'25'),
+('10441','303',NULL,'IMG_6563','Y','Y','The \"Alien\'s Throne\"','361488389','-1079805833','3489',NULL,'2022-11-13 11:52:35','IMG_6563','640','480',NULL,'28'),
+('10442','303',NULL,'IMG_6527','Y','N','Black hills provide unique contrast','361474750','-1079804000','3490',NULL,'2022-11-13 10:49:23','IMG_6527','480','640',NULL,'17'),
+('10443','303',NULL,'IMG_6560','Y','N','Beautiful colored strata and loose rock dominate the landscape','361481667','-1079819861','3491',NULL,'2022-11-13 11:43:22','IMG_6560','480','640',NULL,'26'),
+('10444','303',NULL,'IMG_6533','Y','Y','Blind canyons appear in the midst of black hills','361477000','-1079803694','3492',NULL,'2022-11-13 10:53:56','IMG_6533','480','640',NULL,'20'),
+('10445','303',NULL,'IMG_6561','Y','Y','More evidence of large petrified trees','361482611','-1079814389','3493',NULL,'2022-11-13 11:47:06','IMG_6561','480','640',NULL,'27'),
+('10446','303',NULL,'IMG_6574','Y','Y','King of Wings','361710667','-1079727333','3494',NULL,'2022-11-13 13:21:07','IMG_6574','480','640',NULL,'31'),
+('10447','303',NULL,'IMG_6512','Y','Y','Closer up, the hoodoos take on a unique character','361409444','-1079767306','3495',NULL,'2022-11-13 10:30:57','IMG_6512','480','640',NULL,'4'),
+('10448','303',NULL,'IMG_6543','Y','Y','A veritable village of hoodoos','361480167','-1079790722','3496',NULL,'2022-11-13 11:00:50','IMG_6543','480','640',NULL,'22'),
+('10449','303',NULL,'IMG_6569','Y','Y','\'Chocolate Penguin\'?','361491917','-1079819028','3497',NULL,'2022-11-13 12:15:30','IMG_6569','640','480',NULL,'29'),
+('10450','303',NULL,'IMG_6515','Y','N','Further exploration uncovers a multitude of shapes and forms','361413194','-1079768694','3498',NULL,'2022-11-13 10:32:53','IMG_6515','480','640',NULL,'5'),
+('10451','303',NULL,'IMG_6517','Y','Y','Red hills mark the location of a wide variety of hoodoos','361456611','-1079800556','3499',NULL,'2022-11-13 10:41:04','IMG_6517','480','640',NULL,'7'),
+('10452','303',NULL,'IMG_6553','Y','Y','Solo hoodoos appear in contrast to the hills','361471333','-1079822222','3500',NULL,'2022-11-13 11:34:37','IMG_6553','480','640',NULL,'23'),
+('10453','303',NULL,'IMG_6570','Y','N','The author dubs this \'Petrified Radio-telescope','361492778','-1079818194','3501',NULL,'2022-11-13 12:17:56','IMG_6570','640','480',NULL,'30'),
+('10454','303',NULL,'IMG_6577','Y','Y','Colored hills resemble the painted desert','361712639','-1079724889','3502',NULL,'2022-11-13 13:25:30','IMG_6577','480','640',NULL,'32'),
+('10455','303',NULL,'IMG_6539','Y','N','Many areas feature surprising remnants of petrified wood','361479528','-1079793389','3503',NULL,'2022-11-13 10:58:26','IMG_6539','480','640',NULL,'21'),
+('10456','303',NULL,'IMG_6504','Y','Y','From a flat and desolate parking area, the ground opens up','361343722','-1079734194','3504',NULL,'2022-11-13 10:16:32','IMG_6504','480','640',NULL,'0'),
+('10457','303',NULL,'openTreasure','Y','N','Tilted Treasure Chest',NULL,NULL,'3505',NULL,'2022-10-30 12:20:11','openTreasure','640','426',NULL,'15'),
+('10458','303',NULL,'maiden','Y','N','The Maiden',NULL,NULL,'3506',NULL,'2022-11-13 12:16:21','maiden','640','373',NULL,'10'),
+('10459','303',NULL,'sevenLayeredCake','Y','N','Layered Cake',NULL,NULL,'3508',NULL,'2022-10-30 11:46:47','sevenLayeredCake','640','360',NULL,'16'),
+('10460','303',NULL,'fingerSupport','Y','N','Finger-like supports',NULL,NULL,'3510',NULL,'2022-10-30 12:03:14','fingerSupport','480','640',NULL,'18'),
+('10461','303',NULL,'singleton','Y','N','Towering Displays',NULL,NULL,'3511',NULL,'2022-10-30 12:02:16','singleton','640','480',NULL,'14'),
+('10462','303',NULL,'critter','Y','N','What kind of critter?',NULL,NULL,'3512',NULL,'2022-11-13 11:51:07','critter','640','480',NULL,'12'),
+('10463','303',NULL,'twinStumps','Y','N','Twin Towers',NULL,NULL,'3514',NULL,'2022-11-13 11:36:54','twinStumps','607','640',NULL,'11'),
+('10464','303',NULL,'fungus','Y','N','Fungus-like attachments',NULL,NULL,'3515',NULL,'2022-10-30 11:36:26','fungus','640','480',NULL,'13'),
+('10465','303',NULL,'blackCap','Y','N','Black Capped structures',NULL,NULL,'3516',NULL,'2022-11-13 10:54:58','blackCap','480','640',NULL,'19');
 
 
 
@@ -5465,7 +5440,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1785 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1793 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -7269,7 +7244,15 @@ INSERT INTO VISITORS VALUES
 ('1781','157.55.39.111','Google Chrome','Unknown','2022-11-15 07:01:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=101'),
 ('1782','40.77.167.60','Unknown','Unknown','2022-11-15 11:02:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=202'),
 ('1783','174.205.39.216','Google Chrome','linux','2022-11-15 12:21:46','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
-('1784','207.46.13.188','Unknown','Unknown','2022-11-15 03:20:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=291');
+('1784','207.46.13.188','Unknown','Unknown','2022-11-15 03:20:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=291'),
+('1785','40.77.167.73','Unknown','Unknown','2022-11-15 06:06:03','https://nmhikes.com:443/pages/home.php'),
+('1786','207.46.13.156','Unknown','Unknown','2022-11-15 07:31:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=263'),
+('1787','207.46.13.156','Google Chrome','Unknown','2022-11-16 12:26:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=149'),
+('1788','13.57.254.155','Google Chrome','windows','2022-11-16 02:36:14','https://nmhikes.com:443/pages/home.php'),
+('1789','13.57.254.155','Google Chrome','windows','2022-11-16 02:36:17','https://nmhikes.com:443/pages/home.php'),
+('1790','157.55.39.184','Google Chrome','Unknown','2022-11-16 02:46:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=296'),
+('1791','40.77.167.73','Google Chrome','Unknown','2022-11-16 08:30:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=136'),
+('1792','107.204.74.142','Mozilla Firefox','mac','2022-11-16 11:12:35','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=172');
 
 
 
