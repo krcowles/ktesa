@@ -1,12 +1,17 @@
 /* scss standard definitions */
-$page-min: 960px;
+$page-min-large: 960px;
 $page-fontsize: 16px;
 $page-fonts: arial, verdana;
 $page-margin: 0;
 $page-bg: #eaeaea;
 
 body {
-    min-width: $page-min;
+    @media only screen and (max-width: 600px) {
+        width: 100%;
+    }
+    @media only screen and (min-width: 980px) {
+        min-width: $page-min-large;
+    }
     background-color: $page-bg;
     margin: $page-margin;
     font: {
