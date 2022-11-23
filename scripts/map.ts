@@ -17,6 +17,10 @@
  * @version 7.1 Eliminated remnants of old side table asynch loading; simplified handlers 
  *              to reduce no. of events that triggered side tble creation.
  * @version 7.2 Minor 'fileoverview' edit
+ * @version 7.3 Switched from google raster map to vector map (Note new mapId)
+ * NOTE: 7.3 fixed an unknown problem happening only on the home machine, regardless of
+ * browser used. The side tables would not initially display until a manual zoom occurred.
+ * No other machine (or tablet) seemed to display this anomaly.
  */
 const zoomThresh = 13;  // Default zoom level for drawing tracks
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
@@ -29,6 +33,7 @@ var geoOpts: geoOptions = { enableHighAccuracy: true };
 var map: google.maps.Map;
 var $fullScreenDiv: JQuery; // Google's hidden inner div when clicking on full screen mode
 var $map: JQuery = $('#map');
+var mapEl: HTMLElement = <HTMLElement> $map.get(0);
 var mapht: number;
 // track vars
 var drawnHikes: number[] = [];     // hike numbers which have had tracks created
@@ -100,7 +105,6 @@ const getIcon = (no_of_hikes:number) => {
 	let icon = "../images/pins/hike" + no_of_hikes + ".png";
 	return icon;
 };
-
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
 	var clustererMarkerSet:google.maps.Marker[] = [];
@@ -108,29 +112,33 @@ function initMap() {
 	var json_style_array = <google.maps.MapTypeStyle[]>[
         { "featureType":"poi", "stylers":[{ "visibility": "off" }] }
     ];
-	map = new google.maps.Map($map.get(0), {
+	/* For reasons unknown, placing the options object directly within the
+	 * google.maps.Map argument seems to ignore all mapTypeControl settings
+	 */
+	var options = {
 		center: nmCtr,
 		zoom: 7,
+		mapId: "39681f98dcd429f8",  // vector map
 		// optional settings:
+		isFractionalZoomEnabled: true,
 		zoomControl: true,
 		scaleControl: true,
 		mapTypeControl: true,
 		mapTypeControlOptions: {
-			style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+	      	style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
 			mapTypeIds: [
-				// only two of these show, don't know why...
-				google.maps.MapTypeId.ROADMAP,
 				google.maps.MapTypeId.TERRAIN,
-				google.maps.MapTypeId.SATELLITE,
-				google.maps.MapTypeId.HYBRID
+				google.maps.MapTypeId.SATELLITE
 			]
-		},
+		},	
 		fullscreenControl: true,
 		streetViewControl: false,
 		rotateControl: false,
 		mapTypeId: google.maps.MapTypeId.TERRAIN,
 		styles: json_style_array
-	});
+	};
+	map = new google.maps.Map(mapEl, options);
+		
     new google.maps.KmlLayer({
 		url: "https://nmhikes.com/maps/NM_Borders.kml",
 		map: map

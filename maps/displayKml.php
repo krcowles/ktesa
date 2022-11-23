@@ -10,7 +10,7 @@
 require "../php/global_boot.php";
 $kml = filter_input(INPUT_GET, 'kml');
 $kml_url = 'https://nmhikes.com/gpx/' . $kml;
-$callBack = str_replace('initMap', 'initKml', Google_Map);
+$callBack = str_replace('initMap', 'initKml', GOOGLE_MAP);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">

@@ -140,7 +140,7 @@ require "getFavorites.php";
 <script src="../scripts/markerclusterer.js"></script>
 <script src="../scripts/searchbar.js"></script>
 <script src="../scripts/mapOnly.js"></script>
-<script async defer src="<?=Google_Map;?>"></script>
+<script async defer src="<?=GOOGLE_MAP;?>"></script>
 
 </body>
 </html>
