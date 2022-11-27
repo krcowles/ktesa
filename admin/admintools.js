@@ -14,6 +14,9 @@ $(function () {
     if (typeof (nopix) !== 'undefined') {
         alert(nopix);
     }
+    var chksum_results = new bootstrap.Modal(document.getElementById('chksum_results'), {
+        keyboard: false
+    });
     /**
      * Site Modes
      */
@@ -191,22 +194,57 @@ $(function () {
         $.ajax({
             url: 'manageChecksums.php?act=ajax',
             method: 'get',
-            dataType: 'text',
+            dataType: 'json',
             success: function (result) {
-                if (result !== '') {
-                    var mismatches = result.split("|");
-                    var output = "Note: the following table items have changed checksums\n";
-                    for (var i = 0; i < mismatches.length; i++) {
-                        output += mismatches[i] + "\n";
-                    }
-                    alert(output);
+                var cklist = '';
+                var obs = result.obs;
+                var missing = result.missing;
+                var nomatch = result.nomatch;
+                var alerts = result.alerts;
+                if (obs[0] === 'none' && missing[0] === 'none' && nomatch[0] === 'none') {
+                    // don't display modal
                     deferred.resolve();
                 }
                 else {
-                    deferred.resolve();
+                    if (obs[0] !== 'none') {
+                        cklist += '<h4>The following tables are no longer present</h4><ul>';
+                        for (var i = 0; i < obs.length; i++) {
+                            cklist += '<li>' + obs[i] + '</li>';
+                        }
+                        cklist += '</ul>';
+                    }
+                    if (missing[0] !== 'none') {
+                        cklist += '<h4>The following tables had no previous checksum</h4><ul>';
+                        for (var j = 0; j < missing.length; j++) {
+                            cklist += '<li>' + missing[j] + '</li>';
+                        }
+                        cklist += '</ul>';
+                    }
+                    if (nomatch[0] !== 'none') {
+                        cklist += '<h4>The following table checksums have changed</h4><ul>';
+                        for (var k = 0; k < nomatch.length; k++) {
+                            cklist += '<li>' + nomatch[k] + '</li>';
+                        }
+                        cklist += '</ul>';
+                    }
+                    if (alerts['newuser'] === 'yes') {
+                        cklist += '<h4>There is a new User</h4>';
+                    }
+                    if (alerts['ehikes'] === 'yes') {
+                        cklist += '<h4>A nonadmin user has a hike in Edit</h4>';
+                    }
+                    $('#chksum_lists').empty();
+                    $('#chksum_lists').append(cklist);
+                    chksum_results.show();
+                    // Modal hidden event fired
+                    $('#chksum_results').on('hidden.bs.modal', function () {
+                        deferred.resolve();
+                    });
                 }
+                return;
             },
             error: function (jqXHR) {
+                deferred.reject();
                 var newDoc = document.open();
                 newDoc.write(jqXHR.responseText);
                 newDoc.close();

@@ -2,7 +2,8 @@
 /**
  * This simple script verifies the existence of the `Checksums` table
  * for the purpose of properly executing the 'Reload Database' action via
- * admintools.js. The script is ajaxed from the latter.
+ * admintools.js. The script is ajaxed from the latter. Code revised on
+ * Nov 25, 2023.
  * PHP Version 7.8
  * 
  * @package Ktesa
@@ -12,11 +13,11 @@
 require "../php/global_boot.php";
 verifyAccess('ajax');
 
-$chksumTblReq = "SELECT `indx` FROM `Checksums`;";
-$result = 'yes';
-try {
-    $pdo->query($chksumTblReq);
-} catch (PDOException $pdoe) {
+$tablesReq = $pdo->query("SHOW TABLES;");
+$tables = $tablesReq->fetchAll(PDO::FETCH_COLUMN);
+if (in_array('Checksums', $tables)) {
+    $result = 'yes';
+} else {
     $result = 'no';
 }
 echo $result;
