@@ -14,14 +14,9 @@
 session_start();
 require "../php/global_boot.php";
 
-$reload = isset($_GET['reload']) ? true : false;
-$action = filter_input(INPUT_GET, 'act');
-$ajaxed = $action === 'ajax' ? true : false;
-if ($ajaxed) {
-    $action = $reload ? 'updte' : 'exam';
-}
+$action  = filter_input(INPUT_GET, 'action');
 
-if ($action === "updte") {
+if ($action === 'gen') {
     $dropold = "DROP TABLE IF EXISTS `Checksums`";
     $pdo->query($dropold);
     $createChkSumsReq = "CREATE TABLE `Checksums` (
@@ -50,68 +45,9 @@ if ($action === "updte") {
             $addSum->execute([$tbl, $tblsum[1], $ctime]);
         }
     }
-    if ($reload) {
-        exit;
-    }
-} elseif ($action === 'exam') { // Perform a comparison of current with old
-    // Note: all creation dates are identical, so just check first entry:
-    $getDateReq = "SELECT `creation` FROM `Checksums` WHERE `indx`='1';";
-    $getDate = $pdo->query($getDateReq)->fetch(PDO::FETCH_ASSOC);
-    $lastchk = $getDate['creation'];
-    // Get the current checksums
-    $getSumsReq = "SELECT `name`,`chksum` FROM `Checksums`;";
-    $getSums = $pdo->query($getSumsReq)->fetchAll(PDO::FETCH_KEY_PAIR);
-    $chkTables = array_keys($getSums);   // table names
-    $chkValues = array_values($getSums); // corresponding checksum
-    // Get a list of all tables in the db
-    $allTablesReq = "SHOW TABLES;";
-    $allTables = $pdo->query($allTablesReq)->fetchAll(PDO::FETCH_COLUMN);
-
-    /**
-     * Look for various scenarios, identified by the arrays below. These
-     * will be sent to the caller
-     */
-    $obs     = [];  // the table name in `Checksums` is no longer active
-    $missing = [];  // the table name in the db has no `Checksums` entry
-    $nomatch = [];  // this table has a changed value for checksum
-    $alerts  = [];  // any new users or EHIKES with non-admin user
-    $alerts['newuser'] = 'no';
-    foreach ($chkTables as $ctbl) {
-        if (!in_array($ctbl, $allTables)) {
-            array_push($obs, $ctbl);
-        }
-    }
-    foreach ($allTables as $tbl) {
-        // NOTE: For a reload, the only table not updated is VISITORS
-        if ($tbl !== 'Checksums' && $tbl !== 'VISITORS') {
-            if (!in_array($tbl, $chkTables)) {
-                array_push($missing, $tbl);
-            } else {
-                if ($tbl === 'EHIKES') {
-                    // check to see if this is a non-admin user
-                    $whoReq = "SELECT `usrid` FROM `EHIKES`;";
-                    $userids = $pdo->query($whoReq)->fetchAll(PDO::FETCH_COLUMN);
-                    if (count($userids) > 0
-                        && !in_array('1', $userids) && !in_array('2', $userids)
-                    ) {
-                        $alerts['ehikes'] = 'yes';
-                    } else {
-                        $alerts['ehikes'] = 'no';
-                    }    
-                }
-                $cksumReq = "CHECKSUM TABLE {$tbl};";
-                $tblsum = $pdo->query($cksumReq)->fetch(PDO::FETCH_NUM);
-                if ($getSums[$tbl] !== $tblsum[1]) {
-                    array_push($nomatch, $tbl);
-                    if ($tbl === 'USERS') {
-                        $alerts['newuser'] = 'yes';
-                    }
-                }
-            }
-        }
-    }
 }
-if ($ajaxed) {
+if ($action === 'cmp') { // Perform a comparison of current with old
+    include "dbDiffs.php";
     $returnArr = [];
     $returnArr['obs']     = count($obs) > 0 ? $obs : ['none'];
     $returnArr['missing'] = count($missing) > 0 ? $missing : ['none'];
@@ -119,69 +55,4 @@ if ($ajaxed) {
     $returnArr['alerts']  = $alerts;
     $returnjs = json_encode($returnArr);
     echo $returnjs;
-    exit;
 }
-?>
-<!DOCTYPE html>
-<html lang="en-us">
-<head>
-    <title>Checksum Results</title>
-    <meta charset="utf-8" />
-    <meta name="description" content="Look for database changes" />
-    <meta name="author" content="Tom Sandberg and Ken Cowles" />
-    <meta name="robots" content="nofollow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
-    <script src="../scripts/jquery.js"></script>
-    <style type="text/css">ul {font-weight: bold;}</style>
-</head>
-
-<body style="background-color:#eaeaea;">
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
-<script src="../scripts/bootstrap.min.js"></script>
-<?php require "../pages/ktesaPanel.php"; ?>
-<p id="trail">Database Change Management</p>
-<p id="active" style="display:none">Admin</p>
-
-<div style="margin-left:24px;">
-<?php if ($action === 'updte') : ?>
-    <h3>All current tables in the database have had new checksums created</h3>
-<?php else : ?>
-    <h4>All tables in the database have had their corresponding checksums
-        validated.<br />Results compared to last generated checksums 
-        on <span style="color:brown;"><?=$lastchk;?></span>:</h4><hr />
-    <?php if (count($obs) > 0) : ?>
-        <h5 style="color:brown;">The following tables appear in the Checksums 
-        Table but not in the database:</h5>
-        <ul>
-            <?php foreach ($obs as $old) : ?>
-                <li><?=$old;?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-    <?php if (count($missing) > 0) : ?>
-        <h5 style="color:brown;">The following database tables do not appear 
-        in the Checksums Table:</h5>
-        <ul>
-            <?php foreach ($missing as $out) : ?>
-                <li><?=$out;?></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php endif; ?>
-    <?php if (count($nomatch) > 0) : ?>
-        <h5 style="color:brown;">The following tables have changed:</h5>
-        <ul>
-            <?php for ($j=0; $j<count($nomatch); $j++) : ?>
-                <li><?=$nomatch[$j];?></li>
-            <?php endfor; ?>
-        </ul>
-    <?php else : ?>
-        <h5 style="color:darkblue">No [other] changes have been detected since 
-        the 'last checked' date above</h5>
-    <?php endif; ?>
-<?php endif; ?>
-</div>
-
-</body>
-</html>

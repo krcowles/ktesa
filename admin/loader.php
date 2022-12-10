@@ -14,7 +14,7 @@
  * @license No license to date
  */
 
-// Read in entire file
+// Read in entire file; whether a reload of main, or test db, input file is:
 $dbFile = "../data/nmhikesc_main.sql";
 $db_contents = file($dbFile);
 $lines = [];
@@ -107,6 +107,6 @@ echo PHP_EOL . '<script type="text/javascript">
             alert("Checksums regenerated");
         }
     };
-    xhr.open("get", "manageChecksums.php?act=ajax&reload=y");
+    xhr.open("get", "manageChecksums.php?action=gen");
     xhr.send();
     </script>' . PHP_EOL;

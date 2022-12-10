@@ -12,7 +12,11 @@ require_once "../accounts/getLogin.php";
 $policy = "../accounts/PrivacyPolicy.pdf";
 $euser = isset($_SESSION['userid']) ? $_SESSION['userid'] : '0';
 // imbedded COUNT function of MySQL crashing on server, but not on localhost...so:
-$edits = "SELECT `indxNo` FROM `EHIKES` WHERE `usrid`={$euser};";
+if ($_SESSION['userid'] === '1' || $_SESSION['userid'] === '2') {
+    $edits = "SELECT `indxNo` FROM `EHIKES`;";
+} else {
+    $edits = "SELECT `indxNo` FROM `EHIKES` WHERE `usrid`={$euser};";
+}
 $ecount = $pdo->query($edits)->fetchAll(PDO::FETCH_ASSOC);
 $user_ehikes = count($ecount); // no. of hikes currently in edit by user
 ?>

@@ -205,6 +205,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 <div id="loading">
     <img src="../images/loader-64x/Preloader_3.gif" alt="image while loading" />
 </div>
+
 <!-- modal for displaying results of checksum differences -->
 <div id="chksum_results" class="modal" tabindex="-1">
     <div class="modal-dialog" style="max-width:60%;">
@@ -215,7 +216,8 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
                     data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="chksum_lists"></div>
+                <div id="last_load"></div>
+                <div id="next_load"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
