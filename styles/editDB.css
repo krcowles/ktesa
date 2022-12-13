@@ -1,11 +1,20 @@
 /* "global" colors: local exceptions are contained in their respective modules */
 /* scss standard definitions */
 body {
-  min-width: 960px;
   background-color: #eaeaea;
   margin: 0;
   font-family: arial, verdana;
   font-size: 16px;
+}
+@media only screen and (max-width: 600px) {
+  body {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 980px) {
+  body {
+    min-width: 960px;
+  }
 }
 
 .navbar {
@@ -404,6 +413,13 @@ span.brown {
 
 #thumbstat {
   font-weight: bold;
+}
+
+#gethike {
+  width: 220px;
+  border-radius: 6px;
+  font-size: 16px;
+  padding-left: 4px;
 }
 
 .flex-box {

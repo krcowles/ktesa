@@ -2,6 +2,11 @@ declare var newgrps: UnpubClus[];
 declare var tinymce: {
     init: (parms: settings) => void;
 }
+declare var hikeSources: AutoItem[];
+interface AutoItem {
+    value: string;
+    label: string;
+}
 declare function forcedReset(): void;
 interface settings {
     selector: string;
@@ -320,7 +325,46 @@ if ($("ul.reorder-photos-list").length > 0) {  // there may be no pix yet...
     });
     $("ul-reorder-photos-list").on("sortstop", refreshCapts);
 }
-
+/**
+ * To import photos from another hike page:
+ */
+var ehikeno = $('#ehno').text();
+$("#gethike").autocomplete({
+    source: hikeSources,
+    minLength: 1
+});
+$("#gethike").on("autocompleteselect", function(event, ui) {
+    event.preventDefault();
+    let hike = ui.item.value;
+    let ajaxdata = {hike: hike, ehike: ehikeno};
+    if (confirm("Do you wish to import photos from: " + hike)) {
+        $.ajax({
+            url: "getHikePhotos.php",
+            method: "post",
+            data: ajaxdata,
+            dataType: "text",
+            success: function(result) {
+                if (result === 'ok') {
+                    var curloc = location.href.replace("tab=1", "tab=2");
+                    window.open(curloc, "_self");
+                } else {
+                    alert("Sorry: problem encountered");
+                }
+            },
+            error: function(_jqXHR) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                } else {
+                    alert("Error encountered: admin notified");
+                }
+            }
+        })
+    } else {
+        alert("No action taken");
+    }
+});
 /**
  * The remaining script handles several features of the editor:
  *  1. Initialization of text and numeric fields based on db entries
