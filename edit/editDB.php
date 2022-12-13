@@ -13,8 +13,73 @@
  * @license No license to date
  */
 session_start();
+$entitiesISO8859 = array(
+    'Agrave' => '#192',
+    'Aacute' => '#193',
+    'Acirc'  => '#194',
+    'Atilde' => '#195',
+    'Auml'   => '#196',
+    'Aring'  => '#197',
+    'AElig'  => '#198',
+    'Ccedil' => '#199',
+    'Egrave' => '#200',
+    'Eacute' => '#201',
+    'Ecirc'  => '#202',
+    'Euml'   => '#203',
+    'Igrave' => '#204',
+    'Iacute' => '#205',
+    'Icirc'  => '#206',
+    'Iuml'   => '#207',
+    'ETH'    => '#208',
+    'Ntilde' => '#209',
+    'Ograve' => '#210',
+    'Oacute' => '#211',
+    'Ocirc'  => '#212',
+    'Otilde' => '#213',
+    'Ouml'   => '#214', // there is no #215
+    'Oslash' => '#216',
+    'Ugrave' => '#217',
+    'Uacute' => '#218',
+    'Ucirc'  => '#219',
+    'Uuml'   => '#220',
+    'Yacute' => '#221',
+    'THORN'  => '#222',
+    'szlig'  => '#223',
+    'agrave' => '#224',
+    'aacute' => '#225',
+    'acirc'  => '#226',
+    'atilde' => '#227',
+    'auml'   => '#228',
+    'aring'  => '#229',
+    'aelig'  => '#230',
+    'ccedil' => '#231',
+    'egrave' => '#232',
+    'eacute' => '#233',
+    'ecirc'  => '#234',
+    'euml'   => '#235',
+    'igrave' => '#236',
+    'iacute' => '#237',
+    'icirc'  => '#238',
+    'iuml'   => '#239',
+    'eth'    => '#240',
+    'ntilde' => '#241',
+    'ograve' => '#242',
+    'oacute' => '#243',
+    'ocirc'  => '#244',
+    'otilde' => '#245',
+    'ouml'   => '#246',  // there is no #247
+    'oslash' => '#248',
+    'ugrave' => '#249',
+    'uacute' => '#250',
+    'ucirc'  => '#251',
+    'uuml'   => '#252',
+    'yacute' => '#253',
+    'thorn'  => '#254',
+    'yuml'   => '#255'
+);
 require "../php/global_boot.php";
 require "dataForEditor.php";
+require "../pages/autoComplHikes.php";
 $tinymce = "https://cdn.tiny.cloud/1/" .
     "q5s4ci6ofnx0rvv1oix9zgxsd4cvw83kimrrw0n5ugz3n6d3/tinymce/5/tinymce.min.js";
 ?>
@@ -90,6 +155,9 @@ $tinymce = "https://cdn.tiny.cloud/1/" .
 
 </div> <!-- end main -->
 
+<script>
+    var hikeSources = <?=$jsItems;?>;
+</script>
 <script src="editDB.js"></script>
 <script src="ktesaUploader.js"></script>
 <script src="exifReader.js"></script>

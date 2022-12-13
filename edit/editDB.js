@@ -295,6 +295,41 @@ $(function () {
         $("ul-reorder-photos-list").on("sortstop", refreshCapts);
     }
     /**
+     * To import photos from another hike page:
+     */
+    var ehikeno = $('#ehno').text();
+    $("#gethike").autocomplete({
+        source: hikeSources,
+        minLength: 1
+    });
+    $("#gethike").on("autocompleteselect", function (event, ui) {
+        event.preventDefault();
+        var hike = ui.item.value;
+        var ajaxdata = { hike: hike, ehike: ehikeno };
+        if (confirm("Do you wish to import photos from: " + hike)) {
+            $.ajax({
+                url: "getHikePhotos.php",
+                method: "post",
+                data: ajaxdata,
+                dataType: "text",
+                success: function (result) {
+                    if (result === 'ok') {
+                        var curloc = location.href.replace("tab=1", "tab=2");
+                        window.open(curloc, "_self");
+                    }
+                    else {
+                        alert("Sorry: problem encountered");
+                    }
+                },
+                error: function () {
+                }
+            });
+        }
+        else {
+            alert("No action taken");
+        }
+    });
+    /**
      * The remaining script handles several features of the editor:
      *  1. Initialization of text and numeric fields based on db entries
      *  2. Registering changes in html elements that the server will utilize

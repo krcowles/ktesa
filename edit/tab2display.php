@@ -18,13 +18,26 @@
         margin: 10px 7px; background: none; width: auto; height: auto; }
     .image_link:link { color: black; text-decoration: none;}
 </style>
-<span><strong>Manage Your Photos Below, or&nbsp;&nbsp;</strong>
+
+<div><strong>Manage Your Photos Below, or&nbsp;&nbsp;</strong>
     <a class="btn btn-secondary" href="#wloc" role="button">Manage Waypoints</a>
     <span id="thumbstat">&nbsp;&nbsp;Your thumbnail image&nbsp;&nbsp;
         <a class="btn <?=$btncolor;?>" href="#thumbpic"
             role="button"><?=$tstat;?></a>&nbsp;&nbsp;been saved
     </span>
-</span>
+    <div style="margin-top:8px;">
+        <strong>To Import Photos From Another Hike:&nbsp;&nbsp;</strong>
+        <div style="display:inline-block" class="ui-widget">
+            <style type="text/css">
+                ul.ui-widget {
+                    width: 300px;
+                    clear: both;
+                }
+            </style>
+            <input id="gethike" type="text" placeholder="Type name of hike" />
+        </div>
+    </div>
+</div>
 
 <hr />
 <p id="ehno" style="display:none;"><?= $hikeNo;?></p>
@@ -40,7 +53,8 @@
         <label for="file">
             <span>&nbsp;&nbsp;Choose one or more photos&hellip;</span>
         </label>
-    </span><br />
+    </span>
+    <br />
     <p id="ldg">Processing images&hellip;Please wait</p>
     <div id="preload"><img src="../images/loader-64x/Preloader_4.gif"
         alt="Loading image" />
