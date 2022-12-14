@@ -19,14 +19,24 @@ require_once "../php/global_boot.php";
 $hikeGpxReq   = "SELECT `gpx` FROM `HIKES`;";
 $hikeJSONReq  = "SELECT `trk` FROM `HIKES`;";
 $gpsDatGpxReq = "SELECT `url` FROM `GPSDAT`;";
+$ehikeGpxReq  = "SELECT `gpx` FROM `EHIKES`;";
+$ehikeJSONReq = "SELECT `trk` FROM `EHIKES`;";
+$egpsdatReq   = "SELECT `url` FROM `EGPSDAT`;";
 
-$hikeGpx   = $pdo->query($hikeGpxReq)->fetchAll(PDO::FETCH_ASSOC);
-$hikeJSON  = $pdo->query($hikeJSONReq)->fetchAll(PDO::FETCH_ASSOC);
-$gpsDatGpx = $pdo->query($gpsDatGpxReq)->fetchAll(PDO::FETCH_ASSOC);
-$dbGpx    = [];
-$dbJSON   = [];
-$dbGPSDAT = [];
-// Remove empty items; NOTE: HIKES gpx files can be a comma-separated list
+$hikeGpx    = $pdo->query($hikeGpxReq)->fetchAll(PDO::FETCH_ASSOC);
+$hikeJSON   = $pdo->query($hikeJSONReq)->fetchAll(PDO::FETCH_ASSOC);
+$gpsDatGpx  = $pdo->query($gpsDatGpxReq)->fetchAll(PDO::FETCH_ASSOC);
+$ehikeGpx   = $pdo->query($ehikeGpxReq)->fetchAll(PDO::FETCH_ASSOC);
+$ehikeJSON  = $pdo->query($ehikeJSONReq)->fetchAll(PDO::FETCH_ASSOC);
+$egpsDatGpx = $pdo->query($egpsdatReq)->fetchAll(PDO::FETCH_ASSOC);
+// cleaned up arrays
+$dbGpx     = [];
+$dbeGpx    = [];
+$dbJSON    = [];
+$dbeJSON   = [];
+$dbGPSDAT  = [];
+$dbeGPSDAT = [];
+// Remove empty items; NOTE: HIKES/EHIKES gpx files can be a comma-separated list
 foreach ($hikeGpx as $dbgpx) {
     if (!empty($dbgpx['gpx'])) {
         if (strpos($dbgpx['gpx'], ',') !== false) {
@@ -39,23 +49,51 @@ foreach ($hikeGpx as $dbgpx) {
         }
     }
 }
+foreach ($ehikeGpx as $dbegpx) {
+    if (!empty($dbegpx['gpx'])) {
+        if (strpos($dbegpx['gpx'], ',') !== false) {
+            $list = explode(",", $dbegpx['gpx']);
+            foreach ($list as $item) {
+                array_push($dbeGpx, $item);
+            }
+        } else {
+            array_push($dbeGpx, $dbegpx['gpx']);
+        }
+    }
+}
+// JSON files
 foreach ($hikeJSON as $dbjson) {
     if (!empty($dbjson['trk'])) {
         array_push($dbJSON, $dbjson['trk']);
     }
 }
+foreach ($ehikeJSON as $dbejson) {
+    if (!empty($dbejson['trk'])) {
+        array_push($dbeJSON, $dbejson['trk']);
+    }
+}
+// GPSDAT files need to have path removed from url
 foreach ($gpsDatGpx as $gps) {
     $ext = pathinfo($gps['url'], PATHINFO_EXTENSION);
     if (strtolower($ext) === 'gpx') {
         array_push($dbGPSDAT, pathinfo($gps['url'], PATHINFO_BASENAME));
     }
 }
+foreach ($egpsDatGpx as $dbegps) {
+    $ext = pathinfo($dbegps['url'], PATHINFO_EXTENSION);
+    if (strtolower($ext) === 'gpx') {
+        array_push($dbeGPSDAT, pathinfo($dbegps['url'], PATHINFO_BASENAME));
+    }
+}
 $dir_iterator = new DirectoryIterator('../gpx');
-// First, are any files in the gpx directory that are not in either the HIKES
-// or the GPSDAT table? If so, they are 'extraneous'
+
 $extraneousGpx  = [];
 $missingHikes   = [];
+$missingEhikes  = [];
 $missingGPS     = [];
+$missingEGPS    = [];
+// First, are there any files in the gpx directory that are not in either the
+// HIKES/EHIKES or the GPSDAT/EGPSDAT tables? If so, they are 'extraneous'
 foreach ($dir_iterator as $file) {
     if (!$file->isDot() && !$file->isDir()) {
         $gpxname = $file->getFilename();
@@ -63,10 +101,12 @@ foreach ($dir_iterator as $file) {
         if ($gpxname !== ".DS_Store" && strtolower($kmltest) !== 'kml'
             && $gpxname !== 'filler.gpx'
         ) {
-            if (!in_array($file->getFilename(), $dbGpx)
-                && !in_array($file->getFilename(), $dbGPSDAT)
+            if (!in_array($gpxname, $dbGpx)
+                && !in_array($gpxname, $dbGPSDAT)
+                && !in_array($gpxname, $dbeGpx)
+                && !in_array($gpxname, $dbeGPSDAT)
             ) {
-                array_push($extraneousGpx, $file->getFilename());
+                array_push($extraneousGpx, $gpxname);
             } 
         }
     }
@@ -79,21 +119,36 @@ foreach ($dbGpx as $dbentry) {
         array_push($missingHikes, $dbentry);
     }
 }
+// And also for the EHIKES table:
+foreach ($dbeGpx as $dbitem) {
+    if (!in_array($dbitem, $gpxdir)) {
+        array_push($missingEhikes, $dbitem);
+    }
+}
 // does the GPSDAT table have a corresponding gpx file in the gpx directory
 foreach ($dbGPSDAT as $gps) {
     if (!in_array($gps, $gpxdir)) {
         array_push($missingGPS, $gps);
     }
 }
+// likewise for EGPSDAT
+foreach ($dbeGPSDAT as $egps) {
+    if (!in_array($egps, $gpxdir)) {
+        array_push($missingEGPS, $gps);
+    }
+}
+
 // next, check the JSON files against the db entries:
 $extraneousJSON = [];
 $missingJSON    = [];
-// are any json files not in the database collection (HIKES table)
+$missingeJSON   = [];
+// are any json files not in the database collection (HIKES/EHIKES table)
 $json_iterator = new DirectoryIterator('../json');
 foreach ($json_iterator as $json) {
     if (!$json->isDot()) {
         $jsonName = $json->getFilename();
         if (!in_array($jsonName, $dbJSON)
+            && !in_array($jsonName, $dbeJSON)
             && $jsonName !== '.DS_Store' && $jsonName !== 'areas.json'
         ) {
             array_push($extraneousJSON, $json->getFilename());
@@ -105,6 +160,12 @@ $jsonfiles = scandir('../json');
 foreach ($dbJSON as $dbjson) {
     if (!in_array($dbjson, $jsonfiles)) {
         array_push($missingJSON, $dbjson);
+    }
+}
+// likewise for EHIKES
+foreach ($dbeJSON as $dbejson) {
+    if (!in_array($dbejson, $jsonfiles)) {
+        array_push($missingeJSON, $dbejson);
     }
 }
 ?>
@@ -142,8 +203,8 @@ foreach ($dbJSON as $dbjson) {
     </div>
 
     <h5>There are <?=count($extraneousGpx);?> gpx files existing in the gpx
-        directory that are NOT found in the HIKES table and are also NOT found
-        in the GPSDAT table
+        directory that are NOT found in the HIKES/EHIKES tables and are also NOT
+        found in the GPSDAT/EGPSDAT table
     </h5>
     <div id="extgpx">
     <?php 
@@ -175,6 +236,21 @@ foreach ($dbJSON as $dbjson) {
     ?>
     </div>
 
+    <h5>The following files are specified in the EHIKES gpx db, but NOT found
+        in the gpx directory
+    </h5>
+    <div id="megpx">
+    <?php 
+    if (count($missingEhikes) > 0) {
+        foreach ($missingEhikes as $ehikegpx) {
+            echo $ehikegpx . "<br />";
+        }  
+    } else {
+        echo "No missing EHIKES 'gpx' files found";
+    }
+    ?>
+    </div>
+
     <h5>The following files are specified in the GPSDAT table, but NOT found
         in the gpx directory
     </h5>
@@ -190,8 +266,23 @@ foreach ($dbJSON as $dbjson) {
     ?>
     </div>
 
+    <h5>The following files are specified in the EGPSDAT table, but NOT found
+        in the gpx directory
+    </h5>
+    <div id="megps">
+    <?php
+    if (count($missingEGPS) > 0 ) {
+        foreach ($missingEGPS as $egps) {
+            echo $egps . "<br />";
+        }
+    } else {
+        echo "No  missing EGPSDAT 'gpx' files found";
+    }
+    ?>
+    </div>
+
     <h5>There are <?=count($extraneousJSON);?> JSON files are in the json directory,
-        that are NOT specifiedin the HIKES table
+        that are NOT specifiedin the HIKES/EHIKES tables
     </h5>
     <div id="extjson">
     <?php
@@ -208,9 +299,10 @@ foreach ($dbJSON as $dbjson) {
     ?>
     </div>
 
-    <h5>Finally, the HIKES trk files that are specified in the db but NOT found
+    <h5>HIKES trk files that are specified in the db but NOT found
         in the json directory
     </h5>
+    <div id="mjson">
     <?php
     if (count($missingJSON) > 0) {
         $indx = 0;
@@ -221,8 +313,25 @@ foreach ($dbJSON as $dbjson) {
         echo "No missing HIKES 'trk' files found" . PHP_EOL;
     }
     ?>
+    </div>
+
+    <h5>EHIKES trk files that are specified in the db but NOT found
+        in the json directory
+    </h5>
+    <div>
+    <?php
+    if (count($missingeJSON) > 0) {
+        $indx = 0;
+        foreach ($missingeJSON as $mejson) {
+            echo $mejson . "<br />";
+        }
+    } else {
+        echo "No missing EHIKES 'trk' files found" . PHP_EOL;
+    }
+    ?>
+    </div>
 </form>
-</div><br /><br />
+</div><br /><br />  <!-- end main -->
 
 <script src="cleanGpxJson.js"></script>
 
