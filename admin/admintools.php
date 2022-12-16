@@ -100,6 +100,11 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
                 placeholder="Test Site" /><br />
         </div><br />
 
+        <span class="cats">Test Hike Page Links</span><br />
+        <button id="lnk_test" type="button" class="btn btn-secondary">
+            Test Links Exist</button>&nbsp;&nbsp;NOTE: This routine can
+            take awhile!<br /><br />
+
         <span class="cats">Downloads:</span><br />
         <button id="chgs" type="button" class="btn 
             btn-secondary">Changes Only</button>&nbsp;[Downloads zip file /

@@ -150,6 +150,13 @@ $(function () {
         }, 'json');
     });
     /**
+     * Routine to check if hike page links in 'References' still work...
+     * This should only need to be invoked infrequently
+     */
+    $('#lnk_test').on('click', function () {
+        window.open("linkValidate.php", "_blank");
+    });
+    /**
      * Download Actions
      */
     // Changes only
