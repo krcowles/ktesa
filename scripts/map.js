@@ -22,6 +22,7 @@
  * NOTE: 7.3 fixed an unknown problem happening only on the home machine, regardless of
  * browser used. The side tables would not initially display until a manual zoom occurred.
  * No other machine (or tablet) seemed to display this anomaly.
+ * @version 7.4 Changed <a> links to open new tab
  */
 var zoomThresh = 13; // Default zoom level for drawing tracks
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
@@ -169,7 +170,7 @@ function initMap() {
         }
         link = "hikePageTemplate.php?hikeIndx=";
         clhikes.forEach(function (clobj) {
-            iwContent += '<br /><a href="' + link + clobj.indx + '">' +
+            iwContent += '<br /><a href="' + link + clobj.indx + '" target="_blank">' +
                 clobj.name + '</a>';
             iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' +
                 clobj.elev + ' ft; Diff: ' + clobj.diff;
@@ -211,7 +212,7 @@ function initMap() {
         clustererMarkerSet.push(marker);
         // infoWin content: add data for this hike
         var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
-            + hikeobj.indx + '">' + hikeobj.name + '</a><br />';
+            + hikeobj.indx + '" target="_blank">' + hikeobj.name + '</a><br />';
         iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
         iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
         iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';

@@ -7,6 +7,7 @@
  * @author Ken Cowles
  * @version 1.0 Simplify and fix the display of the Favorites page after having modified
  * sideTables.ts/js to add thumbnail images;
+ * @version 1.1 Change <a> links to open new tab
  */
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
@@ -102,7 +103,7 @@ function appendSegment(subset) {
         var hno = obj.indx;
         var tbl = tblItemHtml;
         var lnk = '<a class="stlinks" href="../pages/hikePageTemplate.php?hikeIndx=' +
-            obj.indx + '">' + obj.name + '</a>';
+            obj.indx + '" target="_blank">' + obj.name + '</a>';
         tbl += lnk;
         tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
             + obj.lgth + ' miles';

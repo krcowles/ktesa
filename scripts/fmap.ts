@@ -11,6 +11,7 @@ declare function formTbl(hikeobjs: NM[]): void;
  * @author Ken Cowles
  * @version  2.0 Typescripted, some type errors corrected
  * @version  3.0 Updated for compatibility with side table that shows previews
+ * @version  3.1 Changed <a> links to open new tab
  */
 var map: google.maps.Map;
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00']
@@ -21,7 +22,9 @@ var maxlat = 0;    // north
 var maxlng = -180; // east
 var minlat = 90;   // south
 var minlng = 0;    // west
-var navHt = $('#nav').height() + $('#logo').height();
+var nht = $('#nav').height() as number;
+var lht = $('#logo').height() as number;
+var navHt = nht + lht;
 
 /**
  * This function is called initially, and again when resizing the window;
@@ -29,7 +32,8 @@ var navHt = $('#nav').height() + $('#logo').height();
  * needs to be specified for the divs to be visible.
  */
 const initDivParms = () => {
-	mapht = $(window).height() - (navHt);
+	var wht = $(window).height() as number;
+	mapht = wht - navHt;
 	$map.css('height', mapht + 'px');
 	$('#adjustWidth').css('height', mapht + 'px');
 	$('#sideTable').css('height', mapht + 'px');
@@ -50,7 +54,7 @@ var mapTick = {   // custom tick-mark symbol for tracks
  */
 function locateGeoSym() {
 	var winht = navHt + mapht - 80;
-	var mapwd = $('#map').width() - 120;
+	var mapwd = $('#map').width() as number - 120;
 	$('#geoCtrl').css('top', winht);
 	$('#geoCtrl').css('left', mapwd);
 	return;
@@ -63,7 +67,7 @@ var smallGeo = '../images/starget.png';
 var medGeo = '../images/purpleTarget.png';
 var lgGeo = '../images/ltarget.png';
 
-var locaters = []; // global used to popup info window on map when hike is searched
+var locaters: MarkerIds = []; // global used to popup info window on map when hike is searched
 formTbl(NM);
 /**
  * This function returns the correct icon for the map based on no. of hikes
@@ -82,7 +86,7 @@ var mapdone = $.Deferred();
  */
 function initMap() {
 	google.maps.Marker.prototype.clicked = false;  // used in favSideTable.ts
-	var clustererMarkerSet = [];
+	var clustererMarkerSet: google.maps.Marker[] = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
 	map = new google.maps.Map($map.get(0), {
 		center: nmCtr,
@@ -129,13 +133,13 @@ function initMap() {
 		  title: hikeobj.name
 		});
 		marker.clicked = false;
-		let srchmrkr = {hikeid: hikeobj.name, pin: marker};
+		let srchmrkr: MarkerId = {hikeid: hikeobj.name, pin: marker};
 		locaters.push(srchmrkr);
 		clustererMarkerSet.push(marker);
 
 		// infoWin content: add data for this hike
 		var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
-			+ hikeobj.indx + '">' + hikeobj.name + '</a><br />';
+			+ hikeobj.indx + '" target="_blank">' + hikeobj.name + '</a><br />';
 		iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
 		iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
 		iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
@@ -192,7 +196,7 @@ function initMap() {
 // ////////////////////// END OF MAP INITIALIZATION  /////////////////////////////
 
 // collect mouseover data for tracks; initialize arrow holding info
-var trackdat = [];
+var trackdat: string[] = [];
 for (let i=0; i<tracks.length; i++) {
 	trackdat[i] = '';
 }
@@ -216,10 +220,10 @@ $.when( mapdone ).then(drawTracks).then(function() {
  */
 function drawTracks() {
 	let trkcolor = 0;
-	var promises = [];
+	var promises:JQueryDeferred<void>[] = [];
 	tracks.forEach(function(fname, indx) {
 		if (fname !== '') {
-			let trackdef = $.Deferred();
+			let trackdef:JQueryDeferred<void> = $.Deferred();
 			promises.push(trackdef);
 			let trkfile = '../json/' + fname;
 			drawTrack(trkfile, colors[trkcolor++], indx, trackdef);
