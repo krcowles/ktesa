@@ -2,11 +2,20 @@
    override either the bootstrap CSS or ktesaNavbar.css settings */
 /* scss standard definitions */
 body {
-  min-width: 960px;
   background-color: #eaeaea;
   margin: 0;
   font-family: arial, verdana;
   font-size: 16px;
+}
+@media only screen and (max-width: 600px) {
+  body {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 980px) {
+  body {
+    min-width: 960px;
+  }
 }
 
 /* Overflow definitions when needed to prevent scroll bars */
@@ -160,6 +169,16 @@ input[id^=q] {
   top: 120px;
   left: 140px;
   z-index: 200;
+}
+
+#clear {
+  position: absolute;
+  font-size: 24px;
+  top: 124px;
+  left: 434px;
+  color: brown;
+  z-index: 9999;
+  cursor: pointer;
 }
 
 #advantages {

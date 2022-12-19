@@ -3,6 +3,7 @@
 $infoWinBackground: #f0f0f0;
 $widthBar: darkgray;
 $tableItem: floralwhite;
+$darkred: brown;
 
 @import "body";
 @import "overflow";
@@ -25,6 +26,15 @@ $tableItem: floralwhite;
 	top: 120px;
 	left: 140px;
 	z-index: 200;
+}
+#clear {
+	position: absolute;
+	font-size: 24px;
+	top: 124px;
+  	left: 434px;
+  	color: $darkred;
+  	z-index: 9999;
+  	cursor: pointer;
 }
 #advantages {
 	position: absolute;
