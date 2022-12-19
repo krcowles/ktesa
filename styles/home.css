@@ -177,7 +177,7 @@ input[id^=q] {
   top: 124px;
   left: 434px;
   color: brown;
-  z-index: 9999;
+  z-index: 220;
   cursor: pointer;
 }
 
