@@ -120,9 +120,10 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             <input style="font-size:12px;width:90px;"
                 id="datepicker" type="text" name="datepicker" /></span><br />
         <span class="cats">Listings:</span><br />
-        <button id="lst" type="button" class="btn 
-            btn-secondary">List New Files</button>&nbsp;&nbsp;
-            [Since last upload]<br />
+        <button id="lst" type="button" class="btn btn-secondary">List New Files
+        </button>&nbsp;&nbsp;<span id="lister">[Specify Test Sites to Skip]</span>
+            &nbsp;&nbsp;<textarea id="skipsites"
+                placeholder="Comma separated list"></textarea><br />
 
         <span id="mgmt" class="cats">Database Management Tools:</span><br />
         <button id="reload" type="button" class="btn 

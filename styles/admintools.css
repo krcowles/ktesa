@@ -192,6 +192,16 @@ legend {
     margin-bottom: 12px;
 }
 
+#lister {
+    position: relative;
+    top: -6px;
+}
+
+#skipsites {
+    height: 32px;
+    width: 220px;
+}
+
 .adminbuttons {
     color: black;
     background-color: ghostwhite;

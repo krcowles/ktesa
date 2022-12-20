@@ -210,7 +210,12 @@ $('#rel2pic').on('click', function() {
  */
 // List new files
 $('#lst').on('click', function() {
-    window.open("list_new_files.php?request=files", "_blank")
+    let list = $('#skipsites').text();
+    if (list === '') {
+        window.open("list_new_files.php?request=files", "_blank")
+    } else {
+        window.open("list_new_files.php?request=files&tsites=" + list, "_blank")
+    }
 });
 
 /**

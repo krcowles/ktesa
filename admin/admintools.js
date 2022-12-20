@@ -200,7 +200,13 @@ $(function () {
      */
     // List new files
     $('#lst').on('click', function () {
-        window.open("list_new_files.php?request=files", "_blank");
+        var list = $('#skipsites').val();
+        if (list === '') {
+            window.open("list_new_files.php?request=files", "_blank");
+        }
+        else {
+            window.open("list_new_files.php?request=files&tsites=" + list, "_blank");
+        }
     });
     /**
      * Database management tools
