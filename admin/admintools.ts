@@ -13,6 +13,7 @@ interface IFile {
  * 
  * @author Ken Cowles
  * @version 2.0 Typescripted
+ * @version 3.0 Modified install code to accommodate new info from installChecks.php
  */
 $( function() {  // doc ready
 
@@ -95,21 +96,21 @@ $('#install').on('click', function() {
     }
     /**
      * Check first to make sure new files currently residing on main
-     * won't be deleted by writing in install files. Example: user uploads
-     * a new gpx file, but it is not populated in the install site.
+     * won't be deleted by writing install files.
      */
     var proceed = false;
     $.post('installChecks.php', {site: copyloc}, function(result) {
         let diffs = result;
         let output = '';
         if (diffs[0] !== 'none') {
-            if (diffs.indexOf('gpx') !== -1) {
-                output += "Mismatch in gpx file count\n";
+            // diffs array may have either GPX or JSON info, or both
+            if (diffs.length === 1) {
+                output = diffs[0] + "\nProceed?";
+            } else if (diffs.length === 2) {
+                output += diffs[0] + "\n" + diffs[1] + "\nProceed?";
+            } else {
+                output += "Error: Bad Return Count"
             }
-            if (diffs.indexOf('json') !== -1) {
-                output += "Mismatch in json file count\n";
-            }
-            output += "Proceed?";
             let ans = confirm(output);
             if (ans) {
                 proceed = true;
@@ -155,7 +156,10 @@ $('#install').on('click', function() {
             }
         }
         return;
-    }, 'json');
+    }, 'json')
+    .fail(function() {
+        alert("Server Error");
+    });
 });
 
 /**

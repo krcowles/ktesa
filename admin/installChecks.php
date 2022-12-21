@@ -31,13 +31,20 @@ $return = [];
 if (count($res_gpx) === count($new_gpx) && count($res_json) === count($new_json)) {
     $return[0] = 'none';
 } else {
-    if (count($res_gpx) === count($new_gpx)) {
-        $return[0] = 'gpx';
+    if (count($res_gpx) !== count($new_gpx)) {
+        if (count($res_gpx) > count($new_gpx)) {
+            $return[0] = 'GPX files missing in test site';
+        } else {
+            $return[0] = 'Test site contains additional GPX files';
+        }
     }
-    if (count($res_json) !== count($site_json)) {
-        array_push($return, 'json');
+    if (count($res_json) !== count($new_json)) {
+        if (count($res_json) > count($new_json)) {
+            array_push($return, 'JSON files missing in test site');
+        } else {
+            array_push($return, 'Test site contains additionl JSON files');
+        }
     }
 }
-// later on, identify the files that are different, if any?
 $result = json_encode($return);
 echo $result;

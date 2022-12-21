@@ -4,6 +4,7 @@
  *
  * @author Ken Cowles
  * @version 2.0 Typescripted
+ * @version 3.0 Modified install code to accommodate new info from installChecks.php
  */
 $(function () {
     // If any alerts were set by scripts
@@ -84,21 +85,23 @@ $(function () {
         }
         /**
          * Check first to make sure new files currently residing on main
-         * won't be deleted by writing in install files. Example: user uploads
-         * a new gpx file, but it is not populated in the install site.
+         * won't be deleted by writing install files.
          */
         var proceed = false;
         $.post('installChecks.php', { site: copyloc }, function (result) {
             var diffs = result;
             var output = '';
             if (diffs[0] !== 'none') {
-                if (diffs.indexOf('gpx') !== -1) {
-                    output += "Mismatch in gpx file count\n";
+                // diffs array may have either GPX or JSON info, or both
+                if (diffs.length === 1) {
+                    output = diffs[0] + "\nProceed?";
                 }
-                if (diffs.indexOf('json') !== -1) {
-                    output += "Mismatch in json file count\n";
+                else if (diffs.length === 2) {
+                    output += diffs[0] + "\n" + diffs[1] + "\nProceed?";
                 }
-                output += "Proceed?";
+                else {
+                    output += "Error: Bad Return Count";
+                }
                 var ans = confirm(output);
                 if (ans) {
                     proceed = true;
@@ -147,7 +150,10 @@ $(function () {
                 }
             }
             return;
-        }, 'json');
+        }, 'json')
+            .fail(function () {
+            alert("Server Error");
+        });
     });
     /**
      * Routine to check if hike page links in 'References' still work...
