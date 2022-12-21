@@ -1,9 +1,11 @@
 <?php
 /**
  * List all the files that are new since the last upload (based on 
- * timestamp), and present that list on a page;
+ * timestamp), and present that list on a page; Allow script to ignore
+ * 'test sites', as hundreds of those files would otherwise be displayed.
  * In all cases, the code will recursively scan the project directory and
- * identify the desired items.
+ * identify the desired items. This same script is used to list only new
+ * pictures - by date or by comparison to selected photo.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -12,10 +14,14 @@
  */
 session_start();
 require '../php/global_boot.php';
+
 $request = filter_input(INPUT_GET, 'request');  // either 'files' or 'pictures'
 $dtFile = filter_input(INPUT_GET, 'dtFile');  // filepath for comparison picture
 $dtTime = filter_input(INPUT_GET, 'dtTime');  // time for locating new pictures
+$testSites = isset($_GET['tsites']) ? filter_input(INPUT_GET, 'tsites') : false;
 $newerThan = (isset($dtFile) || isset($dtTime)) ? true : false;
+
+$noscan = explode(",", $testSites);
 $tmpPix = sys_get_temp_dir() . '/newPix.zip';
 if (file_exists($tmpPix)) {
     unlink($tmpPix);
@@ -75,6 +81,11 @@ foreach ($iterator as $file) {
                 } 
                 array_push($items, $leaf);
             }
+        }
+    } elseif ($file->isDir()) {
+        $dir = basename($file);
+        if (in_array($dir, $noscan)) {
+            continue;
         }
     }
 }
