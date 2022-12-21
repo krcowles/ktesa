@@ -21,6 +21,7 @@ interface AutoItem {
  * @version 7.1 Had to handle HTML codes in hike names for map.ts/js marker titles; also
  *              redesigned sideTable creation for improved asynch execution.
  * @version 7.2 Modified infoWin() to eliminate duplicate side table creation trigger
+ * @version 7.3 Changed <a> links to open new tab
  */
 
 /**
@@ -346,7 +347,7 @@ function appendSegment(subset: NM[]) {
             tbl = tblItemHtml;
         }   
         let lnk = '<a href="../pages/hikePageTemplate.php?hikeIndx=' + obj.indx + 
-            '" class="stlinks">' + obj.name + '</a>';
+            '" class="stlinks" target="_blank">' + obj.name + '</a>';
         tbl += lnk;
         tbl += '<br /><span class="subtxt">Rating: ' + obj.diff + ' / '
             + obj.lgth + ' miles';

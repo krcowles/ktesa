@@ -7,6 +7,7 @@
  * @author Ken Cowles
  * @version  2.0 Typescripted, some type errors corrected
  * @version  3.0 Updated for compatibility with side table that shows previews
+ * @version  3.1 Changed <a> links to open new tab
  */
 var map;
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00'];
@@ -17,14 +18,17 @@ var maxlat = 0; // north
 var maxlng = -180; // east
 var minlat = 90; // south
 var minlng = 0; // west
-var navHt = $('#nav').height() + $('#logo').height();
+var nht = $('#nav').height();
+var lht = $('#logo').height();
+var navHt = nht + lht;
 /**
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
  * needs to be specified for the divs to be visible.
  */
 var initDivParms = function () {
-    mapht = $(window).height() - (navHt);
+    var wht = $(window).height();
+    mapht = wht - navHt;
     $map.css('height', mapht + 'px');
     $('#adjustWidth').css('height', mapht + 'px');
     $('#sideTable').css('height', mapht + 'px');
@@ -123,7 +127,7 @@ function initMap() {
         clustererMarkerSet.push(marker);
         // infoWin content: add data for this hike
         var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
-            + hikeobj.indx + '">' + hikeobj.name + '</a><br />';
+            + hikeobj.indx + '" target="_blank">' + hikeobj.name + '</a><br />';
         iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
         iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
         iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
