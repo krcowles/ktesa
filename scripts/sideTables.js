@@ -60,6 +60,10 @@ var alltrails = new bootstrap.Modal(document.getElementById('alltrails'), {
 $('#advantages').on('click', function () {
     alltrails.show();
 });
+// Clear the searchbar 
+$('#clear').on('click', function () {
+    $('#search').val("");
+});
 /**
  * Autocomplete search bar (jQueryUI):
  * HTML Special Characters are properly rendered in an undisplayed ul on the page,

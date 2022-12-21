@@ -135,7 +135,7 @@ chdir($startDir);
         clear: both;
       }
   </style>
-  <input id="search" placeholder="Search for a Hike" />
+  <input id="search" placeholder="Search for a Hike" /><span id="clear">X</span>
 </div>
  
 <button id="advantages" type="button" class="btn btn-success">
