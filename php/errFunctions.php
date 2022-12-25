@@ -84,6 +84,7 @@ function ktesaErrors($errno, $errstr, $errfile, $errline)
     $lastTrace = getExceptionTraceAsString(new Exception);
     $loc = strpos($lastTrace, "Undefined index: userid");
     if ($loc > 0) { // For an expired session:
+        error_log($lastTrace);
         header("Location: ../accounts/session_expired.php");
         exit;
     } else {

@@ -10,15 +10,20 @@
  */
 require_once "../accounts/getLogin.php";
 $policy = "../accounts/PrivacyPolicy.pdf";
-$euser = isset($_SESSION['userid']) ? $_SESSION['userid'] : '0';
-// imbedded COUNT function of MySQL crashing on server, but not on localhost...so:
-if ($_SESSION['userid'] === '1' || $_SESSION['userid'] === '2') {
-    $edits = "SELECT `indxNo` FROM `EHIKES`;";
+// imbedded MySQL 'COUNT' function crashing on server, but not on localhost...so:
+if (isset($_SESSION['userid'])) {
+    $euser = $_SESSION['userid'];
+    if ($euser === '1' || $euser === '2') {
+        $edits = "SELECT `indxNo` FROM `EHIKES`;";
+    } else {
+        $edits = "SELECT `indxNo` FROM `EHIKES` WHERE `usrid`={$euser};";
+    }
+    $ecount = $pdo->query($edits)->fetchAll(PDO::FETCH_ASSOC);
+    $user_ehikes = count($ecount); // no. of hikes currently in edit by user
 } else {
-    $edits = "SELECT `indxNo` FROM `EHIKES` WHERE `usrid`={$euser};";
+    $user_ehikes = 0;
 }
-$ecount = $pdo->query($edits)->fetchAll(PDO::FETCH_ASSOC);
-$user_ehikes = count($ecount); // no. of hikes currently in edit by user
+
 ?>
 <script type="text/javascript">
     var isMobile, isTablet, isAndroid, isiPhone, isiPad, mobile;
