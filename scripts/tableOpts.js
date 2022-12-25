@@ -5,9 +5,7 @@
  *
  * @author Ken Cowles
  *
- * @version 2.0 Reformatted table options; Fixed broken 'Units Converion'
- * @version 2.1 Typescripted
- * @version 2.2 Big fix for 'backup' button
+ * @version 3.0 Modified to accommodate new use of JQueryUI autocomplete.
  */
 var lgth_hdr;
 var elev_hdr;

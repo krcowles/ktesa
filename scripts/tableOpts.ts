@@ -11,9 +11,7 @@ interface RowData {
  * 
  * @author Ken Cowles
  * 
- * @version 2.0 Reformatted table options; Fixed broken 'Units Converion'
- * @version 2.1 Typescripted
- * @version 2.2 Big fix for 'backup' button
+ * @version 3.0 Modified to accommodate new use of JQueryUI autocomplete.
  */
 
 var lgth_hdr: number;
@@ -27,6 +25,7 @@ var engtxt = "Show English Units";
 var mettxt = "Show Metric Units";
 var bkup_button_set = false;
 const scrolltoAlph = 'aceglnpst';
+
 /**
  * This function will set up the converter to use the originally loaded values
  * for units (English) when recalculating from metric back to English. This

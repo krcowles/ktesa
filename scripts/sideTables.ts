@@ -9,19 +9,14 @@ interface AutoItem {
 }
 /**
  * @file This file creates and places the html for the side table, as well as providing
- *       a search bar capability synchronized to the side table. Note that any globals
- *       needed for map.js are either supplied via home.php, or have already been
- *       declared via map.js, which is called first.
+*       a search bar capability synchronized to the side table. Note that any globals
+*       needed for map.js are either supplied via home.php, or have already been
+*       declared via map.js, which is called first.
  * @author Ken Cowles
- * @version 4.0 Adds track highlighting
- * @version 5.0 Typescripted, with some previous type errors corrected
- * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
- * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
- * @version 7.0 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
- * @version 7.1 Had to handle HTML codes in hike names for map.ts/js marker titles; also
- *              redesigned sideTable creation for improved asynch execution.
- * @version 7.2 Modified infoWin() to eliminate duplicate side table creation trigger
- * @version 7.3 Changed <a> links to open new tab
+ 
+ * @version 8.0 Removed old method of handling Latin1 characters in strings;
+ *      simplified search process by using autocomplete labels w/o diacritical marks.
+ *      Added 'clear' method for searchbar.
  */
 
 /**
@@ -33,111 +28,25 @@ var alltrails = new bootstrap.Modal(<HTMLElement>document.getElementById('alltra
 $('#advantages').on('click', function() {
     alltrails.show();
 });
-// Clear the searchbar 
+
+// Clear searchbar contents when user clicks on the "X"
 $('#clear').on('click', function() {
     $('#search').val("");
 });
-/**
- * Autocomplete search bar (jQueryUI):
- * HTML Special Characters are properly rendered in an undisplayed ul on the page,
- * and used for autocompleteselect, below
- */ 
-var rendered = $('#specchars').children(); // the <li> elements in the undisplayed <ul>
+// Establish searchbar as jQueryUI widget
 $("#search").autocomplete({
     source: hikeSources,
     minLength: 2
 });
+// When user selects item from dropdown:
 $("#search").on("autocompleteselect", function(event, ui) {
-    /**
-     * Apparently, since the menu items are js objects, the HTML special characters
-     * don't render when the item.label is replaced by item.value. Hence, the properly
-     * rendered items are placed in an undisplayed ul, and the javascript extracts these
-     * rendered items to replace the label instead of using default method
-     */
+    // the searchbar dropdown uses 'label', but place 'value' in box & use that
     event.preventDefault();
-    var replaceTxt = '';
-    if (ui.item.value !== ui.item.label) {
-        var lino = parseInt(ui.item.value);
-        replaceTxt = rendered[lino].innerText; // this <li> contains the rendered text
-    } else {
-        replaceTxt = ui.item.value;
-    }
-    $(this).val(replaceTxt);
-    var val = translate(replaceTxt);
-    popupHikeName(val);
+    var entry = ui.item.value;
+    $(this).val(entry);
+    popupHikeName(entry);
 });
-/**
- * HTML presents on the page, and to javascript, an accented letter (letter w/diacritical
- * mark) when it encounters either an HTML entity number, or an HTML entity name - the user
- * may choose either when typing in the title during hike creation. These special entities
- * are listed in the ISO 8859-1 table of characters. When the function 'translate()' is invoked,
- * it looks to see if an HTML special character has been rendered by the HTML as an accented
- * letter. Note that any entity -names- have been converted to entity -numbers- in mapJsData.php.
- * If there is an accented letter in the searchbar input, the function replaces it with its
- * entity number. In this way, the 'translated' name can be successfully compared with the list
- * of hikes as prepared by PHP. PHP, of course, does not render HTML special characters, and so
- * will list the hike as a string with the HTML entity number intact.
- */
- function translate(hike: string): string {
-    var i = hike.length,
-        a: string[] = []; // translated string chars
-    while (i--) {
-        var code = hike.charCodeAt(i);
-       if (code > 191 && code <= 255) {  // special entity characters should be the only chars here
-            a[i] = '&#' + code + ';';
-        } else {
-            a[i] = hike[i];
-        }
-    }
-    return a.join('');
-}
-/**
- * When creating the 'title' (mouseover text) for a marker, the unrendered hikeobj.name
- * (aka function parameter 'hike') needs to be checked for HTML special entities; if
- * it contains such an item, then the special entity must be removed and replaced with
- * simple text for the title, as the html rendered version will not be displayed by the
- * google.Marker function in map.ts/js. The entity's lead-in characters are "&#".
- */
-const htmlcodes: number[] = [];
-for (let l=0; l<23; l++) {
-    htmlcodes[l] = l + 192;
-}
-for (let m=23; m<54; m++) {
-    htmlcodes[m] = m + 193;
-}
-for (let n=54; n<62; n++) {
-    htmlcodes[n] = n + 194;
-}
-const entityString =
-    "AAAAAAACEEEEIIIIDNOOOOOOUUUUYPsaaaaaaaceeeeiiiidnoooooouuuuypy";
-const htmlchars =entityString.split("");
-function unTranslate(hike: string): string {
-    var i = hike.length;
-    var unrendered: string[] = [];
-    for (let j=0; j<i; j++) {
-        let thisChar = hike.charAt(j);
-        if (thisChar !== '&') {
-            unrendered[j] = thisChar;
-        } else {
-            // can't be the last char in hike...
-            if (j !== i-1) {
-                let teststr = hike.substring(j+1);
-                let testChar = teststr.charAt(0);
-                if (testChar === '#') {
-                    let spec_char = parseInt(teststr.substring(1,4)); // code only
-                    let codeindx = htmlcodes.indexOf(spec_char);
-                    unrendered[j] = htmlchars[codeindx];
-                    j = j + 5;
-                } else {
-                    unrendered[j] = thisChar;
-                }
-            } else {  // is last char, so can't be HTML entity
-                unrendered[j] = thisChar;
-            }
-        }
-    }
-    return unrendered.join('');
-}
+
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike
@@ -548,11 +457,47 @@ function enableZoom(items: JQuery<HTMLElement>[]) {
     return <never>'';
 }
 /**
+ * Effectively, remove diacritical from (Latin1) character
+ */
+function normalize(pgtitle: string) {
+    var eng_title
+        = pgtitle.replace(/À|Á|Â|Ã|Ä|Å/g, "A")
+            .replace(/à|á|â|ã|ä|å/g, "a")
+            .replace(/Ñ/g, "N")
+            .replace(/ñ/g, "n")
+            .replace(/Ò|Ó|Ô|Õ|Õ|Ö|Ø/g, "O")
+            .replace(/ò|ó|ô|õ|ö|ø/g, "o")
+            .replace(/È|É|Ê|Ë/g, "E")
+            .replace(/è|é|ê|ë/g, "e")
+            .replace(/Ç/g, "C")
+            .replace(/ç/g, "c")
+            .replace(/Ì|Í|Î|Ï/g, "I")
+            .replace(/ì|í|î|ï/g, "i")
+            .replace(/Ù|Ú|Û|Ü/g, "U")
+            .replace(/ù|ú|û|ü/g, "u");
+    return eng_title;
+}
+
+/**
  * This compare function is used to sort objects alphabetically
  */
  function compareObj(a: NM, b: NM) {
     var hikea = a.name;
     var hikeb = b.name;
+    var cp: number;
+    // render Latin1 chars as if no diacriticals...
+    for (let j=0; j<hikea.length; j++) {
+        cp = hikea.codePointAt(j) as number;
+        if (cp > 127) {
+            hikea = normalize(hikea)
+        }
+    }
+    for (let k=0; k<hikeb.length; k++) {
+        cp = hikeb.codePointAt(k) as number;
+        if (cp > 127) {
+           hikeb = normalize(hikeb);
+        }
+    }
     var comparison: number;
     if (hikea > hikeb) {
         comparison = 1;

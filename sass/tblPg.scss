@@ -1,3 +1,4 @@
+$darkRed: brown;
 $darkBlue: darkblue;
 $dim: dimgray;
 $nodata: ghostwhite;
@@ -196,6 +197,31 @@ select {
 	font-size: 16px;
 	height: 30px;
 }
+#clear1 {
+    position: relative;
+    font-size: 24px;
+    top: 4px;
+    left: -32px;
+    color: $darkRed;
+    z-index: 1000;
+    cursor: pointer;
+}
+#clear2 {
+    position: relative;
+    font-size: 20px;
+    top: 2px;
+    left: -32px;
+    color: $darkRed;
+    z-index: 1000;
+    cursor: pointer;
+}
+#ui-id-1 {
+    width: 220px;
+}
+#ui-id-2 {
+    width: 200px;
+	z-index: 9999;
+}
 #sort {
 	min-width: 46px;
 }
@@ -335,7 +361,7 @@ td a {
 	margin-bottom: 3px;
 }
 #hike2map {
-	height: 24px;
+	height: 28px;
 	width: 200px;
 	font-size: 16px;
 	border-radius: 4px;

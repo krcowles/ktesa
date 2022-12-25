@@ -208,13 +208,12 @@ function initMap() {
 	function AddHikeMarker(hikeobj:NM) {
 		let markerLoc = hikeobj.loc;
 		let nmicon:string = getIcon(1);
-		let utname = unTranslate(hikeobj.name);
 		let marker = new google.maps.Marker({
 		  position: markerLoc,
 		  map: map,
 		  icon: nmicon,
 		  // 'title' is what is displayed on mouseover of the marker
-		  title: utname   /// hikeobj.name
+		  title: hikeobj.name
 		});
 		let srchmrkr:MarkerId = {hikeid: hikeobj.name, clicked: false, pin: marker};
 		locaters.push(srchmrkr);
