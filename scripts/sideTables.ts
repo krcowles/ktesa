@@ -9,18 +9,20 @@ interface AutoItem {
 }
 /**
  * @file This file creates and places the html for the side table, as well as providing
-*       a search bar capability synchronized to the side table. Note that any globals
-*       needed for map.js are either supplied via home.php, or have already been
-*       declared via map.js, which is called first.
+ * a search bar capability synchronized to the side table. Note that any globals
+ * needed for map.js are either supplied via home.php, or have already been
+ * declared via map.js, which is called first.
  * @author Ken Cowles
  
  * @version 8.0 Removed old method of handling Latin1 characters in strings;
  *      simplified search process by using autocomplete labels w/o diacritical marks.
  *      Added 'clear' method for searchbar.
- */
+ * @version 9.0 Major mods to improve side table formation when multiple map events
+ *      occur
+ *\
 
 /**
- * The 'AllTrails' button listing some advantages from NMHIKES
+ * The 'AllTrails' button listing some advantages using nmhikes.com
  */
 var alltrails = new bootstrap.Modal(<HTMLElement>document.getElementById('alltrails'), {
     keyboard: false
@@ -195,16 +197,27 @@ tblItemHtml += '</div>';
 // the div holding the hike-specific data
 tblItemHtml += '<div class="content">';
 /**
- * To reduce the impact of the 'thumb image' load times, the table is created 'subsize'
+ * To reduce the impact of the thumb image load times, the table is created 'subsize'
  * elements at a time, per interval. The table will populate the topmost items
- * first with no wait. 
+ * first with no wait. Due to the possibility of multiple conflicting map events
+ * (pan, center_change, zoom), the routine is invoked from the map.ts/js handlers.
  */
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+// NOTE: async function returns a Promise to the caller (map.ts/js)
 async function formTbl(indxArray: NM[]) {
     $('#sideTable').empty();
+    if (indxArray.length === 0) {
+        let nohikes = '<p style="padding-left:12px;font-size:18px;">' +
+            'There are no hikes in the viewing area</p>';
+        $('#sideTable').html(nohikes);
+        return;
+    }
     var size = indxArray.length;
     if (size <= subsize) {
         appendSegment(indxArray);
+        if (kill_table) {
+            $('#sideTable').empty();
+        }
     } else {
         // there are more than 'subsize' no. of elements
         var stItems = [];
@@ -231,17 +244,34 @@ async function formTbl(indxArray: NM[]) {
                 }
             }
         }
+        // this one gets written regardless, when size > subsize
         appendSegment(stItems[0]);
+        // start repeating load, if no new map events are queueing up
         for (let i = 1; i < indx ; i++) {
-            await sleep(waitTime);
-            appendSegment(stItems[i]);
+            if (kill_table) {
+                console.log("loop: " + i);
+                $('#sideTable').empty();
+                break;
+            } else {
+                await sleep(waitTime);
+                if (kill_table) {
+                    console.log("during loop " + i);
+                    $('#sideTable').empty();
+                    break;
+                } else {
+                    appendSegment(stItems[i]);
+                }
+            }
         }
     }
+    return;
 }
 /**
  * The DOM elements for the side table are created and attached in this function;
  * The effect of enlarging the preview on mouseover, and the enabling of the 
- * favorites and zoom icons are functions invoked after posting the elements   
+ * favorites and zoom icons are functions invoked after posting the elements.
+ * This routine is a non-interruptable function that requires approx. 6 msec,
+ * and can be invoked potentially multiple times by the formTbl async routine.  
  */
 function appendSegment(subset: NM[]) {
     let jqSubset: JQuery<HTMLElement>[] = [];
@@ -513,7 +543,7 @@ function normalize(pgtitle: string) {
  * making tracks when the map zoom >= 13. Clusters are 'segregated' so that the
  * entire set of hikes in the cluster can be drawn, each with a unique color.
  */
- const IdTableElements = (boundsStr:string, zoom:boolean):[number[],string[],string[]] => {
+ const IdTableElements = (boundsStr:string, zoom:boolean): [NM[],number[],string[],string[]] => {
     var singles: number[] = [];       // individual hike nos
     var trackColors: string[] = [];   // for clusters, tracks get unique colors
     var hikeInfoWins: string[] = [];  // info window content for each hikeno in singles
@@ -580,17 +610,11 @@ function normalize(pgtitle: string) {
             }
         }
     });
-    if ( hikearr.length === 0 ) {
-        $('#sideTable').empty();
-        let nohikes = '<p style="padding-left:12px;font-size:18px;">' +
-            'There are no hikes in the viewing area</p>';
-        $('#sideTable').html(nohikes);
-    } else {
+    if (hikearr.length > 0) {
         hikearr.sort(compareObj);
-        formTbl(hikearr);
     }
-    return [singles, hikeInfoWins, trackColors];
- 
+    // hikearr will be used in map.ts/js to invoke formTbl()
+    return [hikearr, singles, hikeInfoWins, trackColors];
 }
 // Functions associated with moving the vertical side table bar
 var grabber = <HTMLElement>document.getElementById('adjustWidth');
