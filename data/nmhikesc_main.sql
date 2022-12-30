@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -403,7 +403,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 
 
@@ -431,7 +431,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=281 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=301 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -539,7 +539,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=306 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=307 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -839,7 +839,8 @@ INSERT INTO HIKES VALUES
 ('302','Burro Trail [Partial]','2','Los Alamos','Out-and-back','4.50','500','Moderate','National Park','Scenic Rio Grande Views','Not Winter','Full sun','Burro_Trail-97.123.86.236-1666556914.gpx','Burro_Trail-97.123.86.236-1666556914.json','357789842','-1062720346','Burr7712a6.jpg',NULL,NULL,'https://www.google.com/maps/place/Bandelier+Visitor+Center/@35.7775413,-106.272438,16z/data=!4m5!3m4!1s0x87186c693ad80d1f:0xca8f2ed6ce83bbba!8m2!3d35.7791035!4d-106.2708964',NULL,'<p>The <span style=\"color: #1428d2;\"><em>Burro Trail </em><span style=\"color: #000000;\">actually </span></span>extends well beyond the end point of this hike and descends into the valley further south (into <em>Lummis Canyon </em>and<em> Alamo Canyon</em>). The viewpoints for this hike are situated a ways off of the <em><span style=\"color: #1428d2;\">Burro Trail</span></em>. This hike proceeds instead on a branch off the <em><span style=\"color: #1428d2;\">Burro Trail</span></em> which is now blocked by dead branches, but is nonetheless in rather good shape most of the way to the viewpoint (see green flag on the interactive map for departure point).</p>\r\n<p>After the initial climb, the trail traverses a largely level mesa top covered with grasses and small trees. At the juncture indicated by the green flag, the trail departs from the <span style=\"color: #1428d2;\"><em>Burro Trail</em></span>, and heads towards a fantastic view of the <em>Rio Grande</em>. On this hike, other interesting features were encountered: archaelogical markers (indicating registered sites of interest intended for further exploration); debitage (stone chips and flakes of basalt, obsidian and chert from ancient tool or weapon-making), pottery shards; insect life (two tarantulas were encountered, as well as a number of substantial quartz-chip covered anthills); large pumice deposits, and an unusual structure which has not yet been fully understood - all making for a very interesting hike!</p>','2022-10-22',NULL,NULL,NULL),
 ('303','Valley Of Dreams','2','Nageezi','Loop','6.90','200','Easy-Moderate','None','Fascinating Hoodoos','Not Summer','Full sun','ValleyOfDreams-97.123.126.42-1668450144.gpx','ValleyOfDreams-97.123.126.42-1668450144.json','361340140','-1079720363','Vall791122.jpg',NULL,NULL,'https://www.google.com/maps/dir//36.1340141,-107.9720364/@36.208263,-108.2115199,10.04z','<p>&nbsp;The county roads in from Nageezi are largely in good shape, and apparently maintained. As you approach the trail head for this hike, though, high clearance all-wheel drive is essential. Don\'t travel if wet or stormy!</p>','<p>This is one of the more fascinating areas of badlands you will find, with a completely different character than either the <em>Bisti Badlands</em>, or the <em>De Na Zin</em>. There is no specific trail to follow, and individual exploration of the hoodoo areas is the most rewarding part of the trip. While there are no major elevation changes, the ground can sometimes be soft, so hiking is not necessarily an easy, straightforward process.</p>\r\n<p>This trip wanders about one of the major hoodoo-populated areas in the <em>Ah Shi Sle Pah Wilderness</em>, so allow plenty of time to explore. The northern portion of this hike in the <em><span style=\"color: #1428d2;\">Valley of Dreams, </span></em>takes you to the \'<em>King of Wing\' -</em> a most fascinating hoodoo, although you will travel through fewer formations en route. The AllTrails site names some of the featured hoodoos, but does not extend it\'s journey to the <em>King of Wing</em>, which is a very worthwhile adventure. Plan on lots of meandering in any case!</p>\r\n<p>This hike may entail a long car trip, so arrive early.</p>','2022-11-13',NULL,NULL,NULL),
 ('304','Church Rock Trail','2','Gallup','Out-and-back','2.30','300','Med-Difficult','State Parrk','Colorful Rock Formations','Any','Full sun','Church_Rock-75.161.152.70-1670346270.gpx','Church_Rock-75.161.152.70-1670346270.json','355428037','-1086099356','Chure0f20b.jpg',NULL,NULL,'https://www.google.com/maps/place/Red+Rock+Convention+Center/@35.5277853,-108.7081711,12.23z/data=!4m5!3m4!1s0x8724c331fd550639:0x318122dd245f8245!8m2!3d35.5417416!4d-108.6140718','<p>This hike is closed when dark, and should be avoided when wet.</p>','<p>The <em><span style=\"color: #1428d2;\">Church Rock Trail </span></em>is a somewhat short and well-traveled, but not-so-easy trail near the namesake rock. The approach is easy, but once you get closer (into the loop portion of the trail), things get rather steep. Fortunately, there are steps carved out of the rock serving as footholds to higher ground, but these may not be sufficient for those challenged by heights.</p>\r\n<p>The trail holds fascinating views of the surrounding terrain, especially the banded sandstone hills which weave in and out of the canyon. Other trails intersect the <em><span style=\"color: #1428d2;\">C</span><span style=\"color: #1428d2;\">hurch Rock Trail</span></em>, affording the hiker opportunities to explore. Even if you don\'t complete the entire route, the hike is worth the effort.</p>','2022-12-03',NULL,NULL,NULL),
-('305','Cañada Del Ojo','2','Tohajiilee','Loop','4.82','250','Easy-Moderate','None','Colorful Rock Formations','Any','Full sun','ojoCombo-97.123.64.220-1671348415.gpx','ojoCombo-97.123.64.220-1671348415.json','352044637','-1071129546','Cañaf77722.jpg',NULL,NULL,'https://www.google.com/maps/dir//Ca%C3%B1ada+del+Ojo+Trailhead+(hiking),+Rio+Puerco,+Laguna,+NM+87026/@35.1210302,-107.1551317,11.85z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87224f5e905115f9:0x56a57a17ebc4eb3a!2m2!1d-107.113633!2d35.204217','<p>&nbsp;The last portion of the road to the trail head can get rather bumpy and pitted, so an all-wheel drive with reasonable clearance is recommended.</p>','<p>The <em><span style=\"color: #1428d2;\">Canada Del Ojo Trail </span></em>is accessed after travelling past the Navajo community of <em>Ca&ntilde;oncito </em>on Trail 56. The road becomes dirt/gravel at that point. Parking is alongside the dirt road just past a fence, and the trail heads due east from there by following the fenceline. Eventually, a point is reached where there is an opening in the fence to allow access uphill to the areas where all of the wildly colored rock formations can be viewed up close. Note that just to the south, it is private land.</p>\r\n<p>Much of the hike is merely wandering about to explore the various features of interest, and there is no trail per se. Allow plenty of time to wander! When done, simply return westward along the fence back to the parking area.</p>\r\n<p>Following the recommendation of the book reference, below, the hiker can also visit some homesteader ruins just north of the parking area. An alternate hike derived from the book\'s description is included on the interactive map and can be seen by checking it\'s track box (\'Book Hike\') in the map\'s upper right corner.</p>','2022-12-17',NULL,NULL,NULL);
+('305','Cañada Del Ojo','2','Tohajiilee','Loop','4.82','250','Easy-Moderate','None','Colorful Rock Formations','Any','Full sun','ojoCombo-97.123.64.220-1671348415.gpx','ojoCombo-97.123.64.220-1671348415.json','352044637','-1071129546','Cañaf77722.jpg',NULL,NULL,'https://www.google.com/maps/dir//Ca%C3%B1ada+del+Ojo+Trailhead+(hiking),+Rio+Puerco,+Laguna,+NM+87026/@35.1210302,-107.1551317,11.85z/data=!4m8!4m7!1m0!1m5!1m1!1s0x87224f5e905115f9:0x56a57a17ebc4eb3a!2m2!1d-107.113633!2d35.204217','<p>&nbsp;The last portion of the road to the trail head can get rather bumpy and pitted, so an all-wheel drive with reasonable clearance is recommended.</p>','<p>The <em><span style=\"color: #1428d2;\">Canada Del Ojo Trail </span></em>is accessed after travelling past the Navajo community of <em>Ca&ntilde;oncito </em>on Trail 56. The road becomes dirt/gravel at that point. Parking is alongside the dirt road just past a fence, and the trail heads due east from there by following the fenceline. Eventually, a point is reached where there is an opening in the fence to allow access uphill to the areas where all of the wildly colored rock formations can be viewed up close. Note that just to the south, it is private land.</p>\r\n<p>Much of the hike is merely wandering about to explore the various features of interest, and there is no trail per se. Allow plenty of time to wander! When done, simply return westward along the fence back to the parking area.</p>\r\n<p>Following the recommendation of the book reference, below, the hiker can also visit some homesteader ruins just north of the parking area. An alternate hike derived from the book\'s description is included on the interactive map and can be seen by checking it\'s track box (\'Book Hike\') in the map\'s upper right corner.</p>','2022-12-17',NULL,NULL,NULL),
+('306','Bursum Springs','2','Lemitar','Loop','3.30','300','Moderate','None','Interesting Geology and Springs','Any','Full sun','Bursum_Springs-97.123.64.220-1672194291.gpx','Bursum_Springs-97.123.64.220-1672194291.json','341080616','-1068243412','Bursc6d53f.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.1080617,-106.8243412/@34.1037849,-106.8856505,13.39z','<p>&nbsp;Access to the area is on the Quebradas National Backcountry By Way - a fairly well-maintained gravel road. Most cars should be able to easily handle the terrain to the access road, but not the descent down towards the Springs.</p>','<p>The <em><span style=\"color: #1428d2;\">Bursum Springs Trail</span></em> features the namesake Springs, which is also referred to as <em>Ojo de Amada</em>. The Springs itself is only about a quarter mile down a steep and badly rutted dirt road, just off the main Quebradas road. This hike begins by heading south, away from the Springs, then enters an arroyo leading up into the eastern hills. It next loops north and then back west to the top of the Springs.</p>\r\n<p>Aside from the great views of banded and colorful hills along the way, the arroyo leads up into a canyon through some colorful rocks and formations. Eventually the hike encounters an old dirt road and then enters a different arroyo which descends slowly back down over white limestone deposits leading to the top of the Springs. A quick jaunt around the Springs overlook leads, somewhat steeply, back down to the dry arroyo and then back to the starting point.</p>\r\n<p>En route there are many great views of the surrounding terrain, as well as fascinating, colorful rocks. At one point, an old barite mine is encountered, and just uphill from it the remnants of azurite/malachite rocks - much of which has been removed or taken elsewhere. There are some places on this hike where mild scrambling is required, and also some sudden drops into the arroyo\'s canyons. These are quite navigable for the average hiker.</p>','2022-12-27',NULL,NULL,NULL);
 
 
 
@@ -864,7 +865,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3271 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3278 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO REFS VALUES
@@ -1901,7 +1902,11 @@ INSERT INTO REFS VALUES
 ('3265','304','App:','https://www.alltrails.com/trail/us/new-mexico/church-rock-trail?search=true','AllTrails.com'),
 ('3266','304','Website:','https://www.trailforks.com/trails/church-rock-loop/','Trailforks'),
 ('3268','305','Book:','2',NULL),
-('3269','305','Blog:','https://womanseekselevation.com/2019/11/18/canada-del-ojo-an-eyeful-of-hoodoos/','Woman Seeks Elevation');
+('3269','305','Blog:','https://womanseekselevation.com/2019/11/18/canada-del-ojo-an-eyeful-of-hoodoos/','Woman Seeks Elevation'),
+('3271','306','App:','https://www.alltrails.com/explore/trail/us/new-mexico/bursum-spring-loop?mobileMap=false&ref=sidebar-static-map','AllTrails.com'),
+('3272','306','Blog:','https://pngyoung.com/Hiking/quebradas-ojo-de-amado-hikes-03-12-2020/','Hiking in New Mexico'),
+('3273','306','Website:','https://www.abqjournal.com/1334294/quebradas-backcountry-byway-the-road-less-traveled.html','Albuquerque Journal'),
+('3274','306','Blog:','https://swarmchairtraveler.blogspot.com/2018/04/bursum2.html','The SW Armchair Traveler');
 
 
 
@@ -1925,7 +1930,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=10535 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10566 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -5450,7 +5455,28 @@ INSERT INTO TSV VALUES
 ('10524','305',NULL,'IMG_6695','Y','Y','Striking contrasts of gold and red','352020556','-1070972139','3551',NULL,'2022-12-17 14:08:29','IMG_6695','480','640',NULL,'21'),
 ('10525','305',NULL,'IMG_6698','Y','Y','Leaning towers against the dark blue sky','352018944','-1070972222','3552',NULL,'2022-12-17 14:12:00','IMG_6698','480','640',NULL,'23'),
 ('10526','305',NULL,'IMG_6687','Y','Y','Can they can any brighter?','352026806','-1070966639','3553',NULL,'2022-12-17 14:00:39','IMG_6687','640','480',NULL,'17'),
-('10527','305',NULL,'IMG_6690','Y','Y','Entering a thicket of red stone','352023778','-1070970472','3554',NULL,'2022-12-17 14:05:35','IMG_6690','480','640',NULL,'20');
+('10527','305',NULL,'IMG_6690','Y','Y','Entering a thicket of red stone','352023778','-1070970472','3554',NULL,'2022-12-17 14:05:35','IMG_6690','480','640',NULL,'20'),
+('10535','306',NULL,'IMG_6700','Y','N','Looking towards the Magdalena range','352521361','-1066137694','3555',NULL,'2022-12-27 10:05:08','IMG_6700','480','640',NULL,'0'),
+('10536','306',NULL,'IMG_6703','Y','N','Heading south away from the Springs','341006167','-1068236917','3556',NULL,'2022-12-27 11:19:20','IMG_6703','480','640',NULL,'1'),
+('10537','306',NULL,'IMG_6704','Y','Y','Near the turn up the arroyo, tilted layers of rock are displayed','341024972','-1068229972','3557',NULL,'2022-12-27 11:24:09','IMG_6704','480','640',NULL,'2'),
+('10538','306',NULL,'IMG_6706','Y','Y','Colorful rock formations along the way','341031389','-1068213722','3558',NULL,'2022-12-27 11:30:18','IMG_6706','480','640',NULL,'4'),
+('10539','306',NULL,'IMG_6705','Y','Y','Careful footing required!','341029500','-1068215472','3559',NULL,'2022-12-27 11:28:12','IMG_6705','640','480',NULL,'3'),
+('10540','306',NULL,'IMG_6716','Y','Y','Distant beauty as the terrain levels out','341066583','-1068087694','3560',NULL,'2022-12-27 12:13:27','IMG_6716','480','640',NULL,'10'),
+('10541','306',NULL,'IMG_6713','Y','Y','A dead-end canyon requires circumnavigation','341045028','-1068179694','3561',NULL,'2022-12-27 11:48:09','IMG_6713','480','640',NULL,'9'),
+('10542','306',NULL,'IMG_6717','Y','Y','The old barite mine','341071139','-1068080361','3562',NULL,'2022-12-27 12:15:22','IMG_6717','480','640',NULL,'11'),
+('10543','306',NULL,'IMG_6718','Y','Y','A rock-sorting bin?','341067167','-1068073111','3563',NULL,'2022-12-27 12:18:27','IMG_6718','480','640',NULL,'12'),
+('10544','306',NULL,'IMG_6708','Y','Y','A geological surprise','341028944','-1068204806','3564',NULL,'2022-12-27 11:35:18','IMG_6708','640','480',NULL,'6'),
+('10545','306',NULL,'IMG_6709','Y','Y','More color and banding ','341027611','-1068202750','3565',NULL,'2022-12-27 11:36:39','IMG_6709','640','480',NULL,'7'),
+('10546','306',NULL,'IMG_6707','Y','Y','The canyon becomes more well-defined and accessible','341033694','-1068206778','3566',NULL,'2022-12-27 11:33:34','IMG_6707','480','640',NULL,'5');
+INSERT INTO TSV VALUES
+('10547','306',NULL,'IMG_6711','Y','Y','The trail begins its descent','341032222','-1068193667','3567',NULL,'2022-12-27 11:41:16','IMG_6711','480','640',NULL,'8'),
+('10548','306',NULL,'IMG_6729','Y','Y','Bursum Springs from below','341079417','-1068213361','3568',NULL,'2022-12-27 13:11:58','IMG_6729','480','640',NULL,'19'),
+('10549','306',NULL,'IMG_6722','Y','Y','White stepping stones','341094778','-1068123472','3569',NULL,'2022-12-27 12:44:42','IMG_6722','480','640',NULL,'13'),
+('10550','306',NULL,'IMG_6727','Y','Y','A drop-down spot along the way','341094639','-1068182222','3570',NULL,'2022-12-27 13:00:58','IMG_6727','640','480',NULL,'17'),
+('10551','306',NULL,'IMG_6728','Y','Y','Bursum Springs from above','341078444','-1068209611','3571',NULL,'2022-12-27 13:07:27','IMG_6728','480','640',NULL,'18'),
+('10552','306',NULL,'IMG_6725','Y','Y','Later, more white rock defines the route','341099278','-1068173528','3572',NULL,'2022-12-27 12:56:02','IMG_6725','640','480',NULL,'15'),
+('10553','306',NULL,'IMG_6724','Y','Y','The white rock constantly changes shape','341103583','-1068161694','3573',NULL,'2022-12-27 12:53:49','IMG_6724','480','640',NULL,'14'),
+('10554','306',NULL,'IMG_6726','Y','Y','The canyon deepens','341096722','-1068180306','3574',NULL,'2022-12-27 12:58:24','IMG_6726','640','480',NULL,'16');
 
 
 
@@ -5491,7 +5517,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2174 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2233 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -7688,7 +7714,67 @@ INSERT INTO VISITORS VALUES
 ('2170','207.46.13.148','Google Chrome','Unknown','2022-12-21 04:19:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=228'),
 ('2171','157.55.39.94','Unknown','Unknown','2022-12-21 08:00:08','https://nmhikes.com:443/pages/tableOnly.php'),
 ('2172','40.77.167.16','Google Chrome','Unknown','2022-12-21 09:06:00','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=225'),
-('2173','207.46.13.148','Unknown','Unknown','2022-12-22 04:32:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=34');
+('2173','207.46.13.148','Unknown','Unknown','2022-12-22 04:32:56','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=34'),
+('2174','97.123.120.245','Mozilla Firefox','windows','2022-12-23 03:23:26','https://nmhikes.com:443/pages/home.php'),
+('2175','97.123.120.245','Mozilla Firefox','windows','2022-12-23 03:25:04','https://nmhikes.com:443/pages/home.php'),
+('2176','216.73.160.99','Unknown','mac','2022-12-23 05:39:31','https://nmhikes.com:443/pages/home.php'),
+('2177','216.73.160.99','Apple Safari','mac','2022-12-23 05:39:31','https://nmhikes.com:443/pages/home.php'),
+('2178','207.46.13.176','Unknown','Unknown','2022-12-23 07:01:35','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=151'),
+('2179','97.123.120.245','Google Chrome','windows','2022-12-23 09:51:50','https://nmhikes.com:443/pages/home.php'),
+('2180','40.77.139.46','Unknown','windows','2022-12-23 09:56:13','https://nmhikes.com:443/pages/home.php'),
+('2181','157.55.39.123','Google Chrome','Unknown','2022-12-24 02:03:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=224'),
+('2182','5.45.207.72','Unknown','Unknown','2022-12-24 06:12:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=112'),
+('2183','72.174.4.56','Google Chrome','Unknown','2022-12-24 10:03:00','https://nmhikes.com:443/pages/home.php'),
+('2184','72.174.4.56','Google Chrome','Unknown','2022-12-24 10:03:26','https://nmhikes.com:443/pages/home.php'),
+('2185','72.174.4.56','Google Chrome','Unknown','2022-12-24 10:03:33','https://nmhikes.com:443/pages/home.php'),
+('2186','97.123.120.245','Mozilla Firefox','windows','2022-12-24 01:31:52','https://nmhikes.com:443/pages/home.php'),
+('2187','75.161.49.154','Mozilla Firefox','windows','2022-12-24 02:29:39','https://nmhikes.com:443/pages/home.php'),
+('2188','75.161.49.154','Mozilla Firefox','windows','2022-12-24 02:29:56','https://nmhikes.com:443/pages/home.php'),
+('2189','75.161.49.154','Mozilla Firefox','windows','2022-12-24 02:31:11','https://nmhikes.com:443/pages/home.php'),
+('2190','75.161.49.154','Mozilla Firefox','windows','2022-12-24 02:36:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=85'),
+('2191','75.161.49.154','Mozilla Firefox','windows','2022-12-24 02:41:52','https://nmhikes.com:443/pages/home.php'),
+('2192','75.161.49.154','Mozilla Firefox','windows','2022-12-24 02:46:31','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('2193','97.123.64.220','Mozilla Firefox','mac','2022-12-24 04:11:33','https://nmhikes.com:443/pages/home.php'),
+('2194','72.174.4.56','Google Chrome','Unknown','2022-12-24 08:58:32','https://nmhikes.com:443/pages/home.php'),
+('2195','72.174.4.56','Google Chrome','Unknown','2022-12-24 08:58:58','https://nmhikes.com:443/pages/tableOnly.php'),
+('2196','72.174.4.56','Google Chrome','Unknown','2022-12-24 09:00:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=144'),
+('2197','66.249.65.8','Google Chrome','linux','2022-12-25 03:37:24','https://nmhikes.com:443/pages/home.php'),
+('2198','165.231.97.252','Google Chrome','mac','2022-12-25 05:18:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('2199','216.73.161.24','Unknown','mac','2022-12-25 08:51:31','https://nmhikes.com:443/pages/home.php'),
+('2200','216.73.161.24','Apple Safari','mac','2022-12-25 08:51:31','https://nmhikes.com:443/pages/home.php');
+INSERT INTO VISITORS VALUES
+('2201','75.161.49.154','Mozilla Firefox','windows','2022-12-25 12:46:26','https://nmhikes.com:443/pages/home.php'),
+('2202','75.161.49.154','Mozilla Firefox','windows','2022-12-25 01:07:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=189'),
+('2203','75.161.49.154','Mozilla Firefox','windows','2022-12-25 01:11:05','https://nmhikes.com:443/pages/home.php'),
+('2204','75.161.49.154','Mozilla Firefox','windows','2022-12-25 01:12:06','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=305'),
+('2205','97.123.64.220','Apple Safari','mac','2022-12-25 01:17:11','https://nmhikes.com:443/pages/landing.php'),
+('2206','75.161.49.154','Mozilla Firefox','windows','2022-12-25 01:37:35','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=269'),
+('2207','207.46.13.160','Unknown','Unknown','2022-12-25 08:50:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('2208','157.55.39.123','Unknown','Unknown','2022-12-26 03:32:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=61'),
+('2209','54.175.74.27','Apple Safari','mac','2022-12-26 06:33:37','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=144'),
+('2210','54.175.74.27','Apple Safari','mac','2022-12-26 06:57:59','https://nmhikes.com:443/pages/home.php'),
+('2211','54.175.74.27','Apple Safari','mac','2022-12-26 06:58:04','https://nmhikes.com:443/pages/tableOnly.php'),
+('2212','207.46.13.194','Google Chrome','Unknown','2022-12-27 02:58:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=125'),
+('2213','157.55.39.9','Google Chrome','Unknown','2022-12-27 03:54:16','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=156'),
+('2214','157.55.39.93','Unknown','Unknown','2022-12-27 07:50:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=143'),
+('2215','157.55.39.93','Unknown','Unknown','2022-12-27 10:54:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=155'),
+('2216','207.46.13.194','Unknown','Unknown','2022-12-27 04:30:07','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=132'),
+('2217','207.46.13.160','Unknown','Unknown','2022-12-28 03:28:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=166'),
+('2218','199.182.169.53','Unknown','mac','2022-12-28 04:43:49','https://nmhikes.com:443/pages/home.php'),
+('2219','199.182.169.53','Apple Safari','mac','2022-12-28 04:43:49','https://nmhikes.com:443/pages/home.php'),
+('2220','149.56.150.134','Unknown','Unknown','2022-12-28 07:33:52','https://nmhikes.com:443/pages/home.php'),
+('2221','40.77.167.51','Unknown','Unknown','2022-12-29 06:11:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('2222','157.55.39.9','Unknown','Unknown','2022-12-29 01:20:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=259'),
+('2223','73.127.166.221','Google Chrome','windows','2022-12-29 01:48:46','https://nmhikes.com:443/pages/home.php'),
+('2224','73.127.166.221','Google Chrome','windows','2022-12-29 01:59:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=204'),
+('2225','73.127.166.221','Google Chrome','windows','2022-12-29 02:03:52','https://nmhikes.com:443/pages/home.php'),
+('2226','73.127.166.221','Google Chrome','windows','2022-12-29 02:04:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=209'),
+('2227','207.46.13.176','Google Chrome','Unknown','2022-12-29 02:09:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=103'),
+('2228','40.77.167.51','Unknown','Unknown','2022-12-30 08:53:15','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('2229','207.46.13.147','Unknown','Unknown','2022-12-30 10:34:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=158'),
+('2230','205.169.39.162','Google Chrome','windows','2022-12-30 01:07:06','https://nmhikes.com:443/pages/home.php'),
+('2231','207.46.13.147','Google Chrome','Unknown','2022-12-30 02:28:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=191'),
+('2232','97.123.64.220','Mozilla Firefox','mac','2022-12-30 03:02:00','https://nmhikes.com:443/admin/admintools.php');
 
 
 
