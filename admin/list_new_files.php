@@ -14,6 +14,7 @@
  */
 session_start();
 require '../php/global_boot.php';
+require 'filterClass.php';
 
 $request = filter_input(INPUT_GET, 'request');  // either 'files' or 'pictures'
 $dtFile = filter_input(INPUT_GET, 'dtFile');  // filepath for comparison picture
@@ -21,22 +22,13 @@ $dtTime = filter_input(INPUT_GET, 'dtTime');  // time for locating new pictures
 $testSites = isset($_GET['tsites']) ? filter_input(INPUT_GET, 'tsites') : false;
 $newerThan = (isset($dtFile) || isset($dtTime)) ? true : false;
 
-$noscan = explode(",", $testSites);
+$ignores = explode(",", $testSites);
 $tmpPix = sys_get_temp_dir() . '/newPix.zip';
 if (file_exists($tmpPix)) {
     unlink($tmpPix);
 }
 
-$dir_iterator = new RecursiveDirectoryIterator(
-    "../", RecursiveDirectoryIterator::SKIP_DOTS
-);
-$iterator = new RecursiveIteratorIterator(
-    $dir_iterator, RecursiveIteratorIterator::SELF_FIRST
-);
-//$inputDate = "02/20/2019 1:30:00"; // Use these lines to manually enter a date
-//$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
-
-// save current directory location, prior to changing to find 'pictures'
+// save current directory location, prior to changing it to find 'pictures'
 $current = getcwd();
 $adminDir = $current;
 // get location of pictures directory
@@ -64,12 +56,15 @@ if (!$newerThan) {
 $udate = date(DATE_RFC2822, $uploadDate);
 
 $dir_iterator = new RecursiveDirectoryIterator(
-    ".", RecursiveDirectoryIterator::SKIP_DOTS
+    $thisSiteRoot, RecursiveDirectoryIterator::SKIP_DOTS
 );
+$filtered = new DirFilter($dir_iterator, $ignores); 
 $iterator = new RecursiveIteratorIterator(
-    $dir_iterator, RecursiveIteratorIterator::SELF_FIRST
+    $filtered, RecursiveIteratorIterator::SELF_FIRST
 );
-// could use CHILD_FIRST if you so wish
+//$inputDate = "02/20/2019 1:30:00";   // Use these lines to manually enter a date
+//$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
+
 $items = [];
 foreach ($iterator as $file) {
     if ($file->isFile()) {
@@ -82,12 +77,7 @@ foreach ($iterator as $file) {
                 array_push($items, $leaf);
             }
         }
-    } elseif ($file->isDir()) {
-        $dir = basename($file);
-        if (in_array($dir, $noscan)) {
-            continue;
-        }
-    }
+    } 
 }
 if ($request === 'pictures') {
     /**
