@@ -3,11 +3,10 @@
  * @fileoverview Performance of the 'map multiple hikes on a page' function.
  *
  * @author Ken Cowles
- * @version 1.0 First release
- * @version 2.0 Updates (mostly CSS) to work with bootstrap navigation
+ * @version 3.0 Modified to replace HTML datalist with JQueryUI autocomplete.
  */
 /**
- * Make the usermodal draggable:
+ * Make the usermodal for map multiple hikes draggable:
  */
 dragElement(document.getElementById("usermodal"));
 function dragElement(elmnt) {
@@ -85,13 +84,39 @@ var mapHikes = [];
 $('#closer').on('click', function () {
     $('#usermodal').hide();
 });
-$('#hike2map').on('input', function () {
-    var $input = $(this), val = $input.val(), list = $input.attr('list'), match = $('#' + list + ' option').filter(function () {
-        return ($(this).val() === val);
-    });
-    if (match.length > 0) {
-        addToList(val);
-    }
+/**
+ * jQuery UI Autocomplete inputs are used in two places:
+ * The hikeselection box (filter), and the map multiple box (tableOpts)
+ */
+// Clear their contents when user clicks on the "X"
+$('#clear1').on('click', function () {
+    $('#usehike').val("");
+});
+$("body").on("click", "#clear2", function () {
+    $('#hike2map').val("");
+});
+// Establish jQueryUI widgets for both
+$("#usehike").autocomplete({
+    source: hikelist,
+    minLength: 2
+});
+$("#hike2map").autocomplete({
+    source: hikelist,
+    minLength: 2
+});
+// When user selects item from hikelist:
+$("#usehike").on("autocompleteselect", function (event, ui) {
+    // the dropdown list uses 'label', but place 'value' in box & use that
+    event.preventDefault();
+    var entry = ui.item.value;
+    $(this).val(entry);
+});
+$('#hike2map').on('autocompleteselect', function (event, ui) {
+    // the dropdown list uses 'label', but place 'value' in box & use that
+    event.preventDefault();
+    var item = ui.item.value;
+    $(this).val(item);
+    addToList(item);
 });
 $('#hikeclr').on('click', function () {
     $('ul li').remove();

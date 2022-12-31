@@ -38,22 +38,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 /// <reference path='./map.d.ts' />
 /**
  * @file This file creates and places the html for the side table, as well as providing
- *       a search bar capability synchronized to the side table. Note that any globals
- *       needed for map.js are either supplied via home.php, or have already been
- *       declared via map.js, which is called first.
+ * a search bar capability synchronized to the side table. Note that any globals
+ * needed for map.js are either supplied via home.php, or have already been
+ * declared via map.js, which is called first.
  * @author Ken Cowles
- * @version 4.0 Adds track highlighting
- * @version 5.0 Typescripted, with some previous type errors corrected
- * @version 6.0 Added thumbnail images to side panel; see 'appendSegment()' notes
- * @version 6.1 Utilize random number to assign colors for tracks to increase diversity on map
- * @version 7.0 Revised search to use JQueryUI autocomplete; handle rendering of HTML char entities
- * @version 7.1 Had to handle HTML codes in hike names for map.ts/js marker titles; also
- *              redesigned sideTable creation for improved asynch execution.
- * @version 7.2 Modified infoWin() to eliminate duplicate side table creation trigger
- * @version 7.3 Changed <a> links to open new tab
- */
+ 
+ * @version 8.0 Removed old method of handling Latin1 characters in strings;
+ *      simplified search process by using autocomplete labels w/o diacritical marks.
+ *      Added 'clear' method for searchbar.
+ * @version 9.0 Major mods to improve side table formation when multiple map events
+ *      occur
+ *\
+
 /**
- * The 'AllTrails' button listing some advantages from NMHIKES
+ * The 'AllTrails' button listing some advantages using nmhikes.com
  */
 var alltrails = new bootstrap.Modal(document.getElementById('alltrails'), {
     keyboard: false
@@ -61,114 +59,23 @@ var alltrails = new bootstrap.Modal(document.getElementById('alltrails'), {
 $('#advantages').on('click', function () {
     alltrails.show();
 });
-// Clear the searchbar 
+// Clear searchbar contents when user clicks on the "X"
 $('#clear').on('click', function () {
     $('#search').val("");
 });
-/**
- * Autocomplete search bar (jQueryUI):
- * HTML Special Characters are properly rendered in an undisplayed ul on the page,
- * and used for autocompleteselect, below
- */
-var rendered = $('#specchars').children(); // the <li> elements in the undisplayed <ul>
+// Establish searchbar as jQueryUI widget
 $("#search").autocomplete({
     source: hikeSources,
     minLength: 2
 });
+// When user selects item from dropdown:
 $("#search").on("autocompleteselect", function (event, ui) {
-    /**
-     * Apparently, since the menu items are js objects, the HTML special characters
-     * don't render when the item.label is replaced by item.value. Hence, the properly
-     * rendered items are placed in an undisplayed ul, and the javascript extracts these
-     * rendered items to replace the label instead of using default method
-     */
+    // the searchbar dropdown uses 'label', but place 'value' in box & use that
     event.preventDefault();
-    var replaceTxt = '';
-    if (ui.item.value !== ui.item.label) {
-        var lino = parseInt(ui.item.value);
-        replaceTxt = rendered[lino].innerText; // this <li> contains the rendered text
-    }
-    else {
-        replaceTxt = ui.item.value;
-    }
-    $(this).val(replaceTxt);
-    var val = translate(replaceTxt);
-    popupHikeName(val);
+    var entry = ui.item.value;
+    $(this).val(entry);
+    popupHikeName(entry);
 });
-/**
- * HTML presents on the page, and to javascript, an accented letter (letter w/diacritical
- * mark) when it encounters either an HTML entity number, or an HTML entity name - the user
- * may choose either when typing in the title during hike creation. These special entities
- * are listed in the ISO 8859-1 table of characters. When the function 'translate()' is invoked,
- * it looks to see if an HTML special character has been rendered by the HTML as an accented
- * letter. Note that any entity -names- have been converted to entity -numbers- in mapJsData.php.
- * If there is an accented letter in the searchbar input, the function replaces it with its
- * entity number. In this way, the 'translated' name can be successfully compared with the list
- * of hikes as prepared by PHP. PHP, of course, does not render HTML special characters, and so
- * will list the hike as a string with the HTML entity number intact.
- */
-function translate(hike) {
-    var i = hike.length, a = []; // translated string chars
-    while (i--) {
-        var code = hike.charCodeAt(i);
-        if (code > 191 && code <= 255) { // special entity characters should be the only chars here
-            a[i] = '&#' + code + ';';
-        }
-        else {
-            a[i] = hike[i];
-        }
-    }
-    return a.join('');
-}
-/**
- * When creating the 'title' (mouseover text) for a marker, the unrendered hikeobj.name
- * (aka function parameter 'hike') needs to be checked for HTML special entities; if
- * it contains such an item, then the special entity must be removed and replaced with
- * simple text for the title, as the html rendered version will not be displayed by the
- * google.Marker function in map.ts/js. The entity's lead-in characters are "&#".
- */
-var htmlcodes = [];
-for (var l = 0; l < 23; l++) {
-    htmlcodes[l] = l + 192;
-}
-for (var m = 23; m < 54; m++) {
-    htmlcodes[m] = m + 193;
-}
-for (var n = 54; n < 62; n++) {
-    htmlcodes[n] = n + 194;
-}
-var entityString = "AAAAAAACEEEEIIIIDNOOOOOOUUUUYPsaaaaaaaceeeeiiiidnoooooouuuuypy";
-var htmlchars = entityString.split("");
-function unTranslate(hike) {
-    var i = hike.length;
-    var unrendered = [];
-    for (var j = 0; j < i; j++) {
-        var thisChar = hike.charAt(j);
-        if (thisChar !== '&') {
-            unrendered[j] = thisChar;
-        }
-        else {
-            // can't be the last char in hike...
-            if (j !== i - 1) {
-                var teststr = hike.substring(j + 1);
-                var testChar = teststr.charAt(0);
-                if (testChar === '#') {
-                    var spec_char = parseInt(teststr.substring(1, 4)); // code only
-                    var codeindx = htmlcodes.indexOf(spec_char);
-                    unrendered[j] = htmlchars[codeindx];
-                    j = j + 5;
-                }
-                else {
-                    unrendered[j] = thisChar;
-                }
-            }
-            else { // is last char, so can't be HTML entity
-                unrendered[j] = thisChar;
-            }
-        }
-    }
-    return unrendered.join('');
-}
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike
@@ -318,22 +225,33 @@ tblItemHtml += '</div>';
 // the div holding the hike-specific data
 tblItemHtml += '<div class="content">';
 /**
- * To reduce the impact of the 'thumb image' load times, the table is created 'subsize'
+ * To reduce the impact of the thumb image load times, the table is created 'subsize'
  * elements at a time, per interval. The table will populate the topmost items
- * first with no wait.
+ * first with no wait. Due to the possibility of multiple conflicting map events
+ * (pan, center_change, zoom), the routine is invoked from the map.ts/js handlers.
  */
 var sleep = function (ms) { return new Promise(function (resolve) { return setTimeout(resolve, ms); }); };
+// NOTE: async function returns a Promise to the caller (map.ts/js)
 function formTbl(indxArray) {
     return __awaiter(this, void 0, void 0, function () {
-        var size, stItems, sliceStart, end, last, indx, done, i;
+        var nohikes, size, stItems, sliceStart, end, last, indx, done, i;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     $('#sideTable').empty();
+                    if (indxArray.length === 0) {
+                        nohikes = '<p style="padding-left:12px;font-size:18px;">' +
+                            'There are no hikes in the viewing area</p>';
+                        $('#sideTable').html(nohikes);
+                        return [2 /*return*/];
+                    }
                     size = indxArray.length;
                     if (!(size <= subsize)) return [3 /*break*/, 1];
                     appendSegment(indxArray);
-                    return [3 /*break*/, 5];
+                    if (kill_table) {
+                        $('#sideTable').empty();
+                    }
+                    return [3 /*break*/, 6];
                 case 1:
                     stItems = [];
                     stItems[0] = indxArray.slice(0, subsize);
@@ -360,20 +278,32 @@ function formTbl(indxArray) {
                             }
                         }
                     }
+                    // this one gets written regardless, when size > subsize
                     appendSegment(stItems[0]);
                     i = 1;
                     _a.label = 2;
                 case 2:
-                    if (!(i < indx)) return [3 /*break*/, 5];
-                    return [4 /*yield*/, sleep(waitTime)];
-                case 3:
-                    _a.sent();
-                    appendSegment(stItems[i]);
-                    _a.label = 4;
+                    if (!(i < indx)) return [3 /*break*/, 6];
+                    if (!kill_table) return [3 /*break*/, 3];
+                    console.log("loop: " + i);
+                    $('#sideTable').empty();
+                    return [3 /*break*/, 6];
+                case 3: return [4 /*yield*/, sleep(waitTime)];
                 case 4:
+                    _a.sent();
+                    if (kill_table) {
+                        console.log("during loop " + i);
+                        $('#sideTable').empty();
+                        return [3 /*break*/, 6];
+                    }
+                    else {
+                        appendSegment(stItems[i]);
+                    }
+                    _a.label = 5;
+                case 5:
                     i++;
                     return [3 /*break*/, 2];
-                case 5: return [2 /*return*/];
+                case 6: return [2 /*return*/];
             }
         });
     });
@@ -381,7 +311,9 @@ function formTbl(indxArray) {
 /**
  * The DOM elements for the side table are created and attached in this function;
  * The effect of enlarging the preview on mouseover, and the enabling of the
- * favorites and zoom icons are functions invoked after posting the elements
+ * favorites and zoom icons are functions invoked after posting the elements.
+ * This routine is a non-interruptable function that requires approx. 6 msec,
+ * and can be invoked potentially multiple times by the formTbl async routine.
  */
 function appendSegment(subset) {
     var jqSubset = [];
@@ -606,11 +538,45 @@ function idHike(indx, obj) {
     return '';
 }
 /**
+ * Effectively, remove diacritical from (Latin1) character
+ */
+function normalize(pgtitle) {
+    var eng_title = pgtitle.replace(/À|Á|Â|Ã|Ä|Å/g, "A")
+        .replace(/à|á|â|ã|ä|å/g, "a")
+        .replace(/Ñ/g, "N")
+        .replace(/ñ/g, "n")
+        .replace(/Ò|Ó|Ô|Õ|Õ|Ö|Ø/g, "O")
+        .replace(/ò|ó|ô|õ|ö|ø/g, "o")
+        .replace(/È|É|Ê|Ë/g, "E")
+        .replace(/è|é|ê|ë/g, "e")
+        .replace(/Ç/g, "C")
+        .replace(/ç/g, "c")
+        .replace(/Ì|Í|Î|Ï/g, "I")
+        .replace(/ì|í|î|ï/g, "i")
+        .replace(/Ù|Ú|Û|Ü/g, "U")
+        .replace(/ù|ú|û|ü/g, "u");
+    return eng_title;
+}
+/**
  * This compare function is used to sort objects alphabetically
  */
 function compareObj(a, b) {
     var hikea = a.name;
     var hikeb = b.name;
+    var cp;
+    // render Latin1 chars as if no diacriticals...
+    for (var j = 0; j < hikea.length; j++) {
+        cp = hikea.codePointAt(j);
+        if (cp > 127) {
+            hikea = normalize(hikea);
+        }
+    }
+    for (var k = 0; k < hikeb.length; k++) {
+        cp = hikeb.codePointAt(k);
+        if (cp > 127) {
+            hikeb = normalize(hikeb);
+        }
+    }
     var comparison;
     if (hikea > hikeb) {
         comparison = 1;
@@ -694,17 +660,11 @@ var IdTableElements = function (boundsStr, zoom) {
             }
         }
     });
-    if (hikearr.length === 0) {
-        $('#sideTable').empty();
-        var nohikes = '<p style="padding-left:12px;font-size:18px;">' +
-            'There are no hikes in the viewing area</p>';
-        $('#sideTable').html(nohikes);
-    }
-    else {
+    if (hikearr.length > 0) {
         hikearr.sort(compareObj);
-        formTbl(hikearr);
     }
-    return [singles, hikeInfoWins, trackColors];
+    // hikearr will be used in map.ts/js to invoke formTbl()
+    return [hikearr, singles, hikeInfoWins, trackColors];
 };
 // Functions associated with moving the vertical side table bar
 var grabber = document.getElementById('adjustWidth');

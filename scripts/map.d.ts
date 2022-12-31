@@ -87,6 +87,7 @@ interface MarkerOpts {
     zoomOnClick: boolean;
 }
 interface NewTracksArray {
+    hike_objs: NM[];
     single_hikes: number[];
     info_wins: string[];
     colors: string[];

@@ -10,67 +10,21 @@ interface AutoItem {
  * 
  * @author Ken Cowles
  * 
- * @version 1.0 Separated from sideTables.js to provide reusable functionality
- * @version 1.1 Typescripted
- * @version 2.0 Switched from HTML datalist to jquery-ui autocomplete for searches
+ * @version 3.0 Modified method for deploying Latin1 charset
  */
 
-// Turn off search on load - wait until map is displayed
-//$('#offOnLoad').hide();
-/**
- * Autocomplete search bar (jQueryUI):
- * HTML Special Characters are properly rendered in an undisplayed ul on the page,
- * and used for autocompleteselect, below
- */ 
- var rendered = $('#specchars').children(); // the <li> elements in the undisplayed <ul>
+ // Autocomplete search bar (jQueryUI):
  $("#search").autocomplete({
-     source: hikeSources,
-     minLength: 2
+    source: hikeSources,
+    minLength: 2
  });
  $("#search").on("autocompleteselect", function(event, ui) {
-     /**
-      * Apparently, since the menu items are js objects, the HTML special characters
-      * don't render when the item.label is replaced by item.value. Hence, the properly
-      * rendered items are placed in an undisplayed ul, and the javascript extracts these
-      * rendered items to replace the label instead of using default method
-      */
-     event.preventDefault();
-     var replaceTxt = '';
-     if (ui.item.value !== ui.item.label) {
-         var lino = parseInt(ui.item.value);
-         replaceTxt = rendered[lino].innerText; // this <li> contains the rendered text
-     } else {
-         replaceTxt = ui.item.value;
-     }
-     $(this).val(replaceTxt);
-     var val = translate(replaceTxt);
-     popupHikeName(val);
+    event.preventDefault();
+    var entry = ui.item.value;
+    $(this).val(entry);
+    popupHikeName(entry);
  });
- /**
-  * HTML presents on the page, and to javascript, an accented letter (letter w/diacritical
-  * mark) when it encounters either an HTML entity number, or an HTML entity name - the user
-  * may choose either when typing in the title during hike creation. These special entities
-  * are listed in the ISO 8859-1 table of characters. When the function 'translate()' is invoked,
-  * it looks to see if an HTML special character has been rendered by the HTML as an accented
-  * letter. Note that any entity -names- have been converted to entity -numbers- in mapJsData.php.
-  * If there is an accented letter in the searchbar input, the function replaces it with its
-  * entity number. In this way, the 'translated' name can be successfully compared with the list
-  * of hikes as prepared by PHP. PHP, of course, does not render HTML special characters, and so
-  * will list the hike as a string with the HTML entity number intact.
-  */
-  function translate(hike: string): string {
-     var i = hike.length,
-         a: string[] = []; // translated string chars
-     while (i--) {
-         var code = hike.charCodeAt(i);
-        if (code > 191 && code <= 255) {  // special entity characters should be the only chars here
-             a[i] = '&#' + code + ';';
-         } else {
-             a[i] = hike[i];
-         }
-     }
-     return a.join('');
- }
+
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike

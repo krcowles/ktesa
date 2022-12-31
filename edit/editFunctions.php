@@ -635,56 +635,85 @@ function cmp($a, $b)
     return  $delta;
 }
 /**
- * A way to check for the existence of HTML special entities (i.e. 'Characters'
- * in the ISO 8859-1 spec, which are letters with diacritical marks). If such an
- * entity exists, it may be a number or a name. If it is a number, leave it intact,
- * and if it is a name, change it to its corresponding number. This provides the
- * sideTables.js searchbar mechanism a mean to prepare a hike name for comparison
- * to clusters/hikes provided by mapJsData.php. Multiple special entities are
- * permitted.
- *  
- * @param string $name        The hike/cluster name to be checked
- * @param array  $entityArray ISO8859 Characters with codes 
+ * This function will take a multi-byte UTF-8 character (argument) and
+ * locate the 'equivalent' English character with no diacritical mark.
+ * A test is used in case the argument is actually standard ASCII.
+ * See codes at https://en.wikipedia.org/wiki/List_of_Unicode_characters
+ * Added 12/23/2022.
  * 
- * @return string
+ * @param string $mb_utf8 The UTF-8 multibyte character
+ * 
+ * @return string English alphabet equivalent
  */
-function htmlEntityId($name, $entityArray)
+function mapChar($mb_utf8)
 {
-    $converted = $name;
-    $present = false;
-    $entities = substr_count($name, '&');
-    $specChars = []; // letters w/o diacritical mark
-    if ($entities > 0) {
-        // for each legit entity, there is a '&' and a ';', with 3-6 chars in between
-        $indx = 0; // start search at beginning of string
-        for ($i=0; $i<$entities; $i++) {
-            $specChars[$i] = ''; // unless over-ridden
-            $start = strpos($name, '&', $indx);
-            $end   = strpos($name, ';', $indx);
-            if ($end !== false) {
-                $chars = $end - $start - 1; // no of chars between
-                $indx  = $start + 1;
-                if ($chars >= 3 && $chars <= 6) {
-                    $present = true;
-                    $item = substr($name, $indx, $chars);
-                    if ($item[0] !== '#') {
-                        // legitimate entity name
-                        $specChars[$i] = $item[0];
-                        $item = $entityArray[$item];
-                        $converted = substr_replace($name, $item, $start+1, $chars);
-                    } else {
-                        // entity number
-                        $keyval = array_search($item, $entityArray);
-                        $specChars[$i] = $keyval[0];
-                    }
-                    $indx = $end + 1;
-                }
-            } else {
-                $indx = $start + 1;
-            } 
-        }
+    $loc = mb_ord($mb_utf8);
+    if ($loc <= 127) { // Max ASCII value
+        return ($mb_utf8);
     } else {
-        $specChars[0] = '';
+        switch ($loc) {
+        case ($loc < 192) :
+            return "Bad";
+            break;
+        case ($loc < 199) :
+            return "A";
+            break;
+        case ($loc === 199) :
+            return "C";
+            break;
+        case ($loc < 204) :
+            return "E";
+            break;
+        case ($loc < 208) :
+            return "I";
+            break;
+        case ($loc === 208) :
+            return "Bad";
+            break;
+        case ($loc === 209) :
+            return "N";
+            break;
+        case ($loc < 215) :
+            return "O";
+            break;
+        case ($loc === 215 || $loc === 216) :
+            return "Bad";
+            break;
+        case ($loc < 221) :
+            return "U";
+            break;
+        case ($loc < 224) :
+            return "Bad";
+            break;
+        case ($loc < 231) :
+            return "a";
+            break;
+        case ($loc === 231) :
+            return "c";
+            break;
+        case ($loc < 236) :
+            return "e";
+            break;
+        case ($loc < 240) :
+            return "i";
+            break;
+        case ($loc === 240) :
+            return "Bad";
+            break;
+        case ($loc === 241) :
+            return "n";
+            break;
+        case ($loc < 247) :
+            return "o";
+            break;
+        case ($loc === 247 || $loc === 248) :
+            return "Bad";
+            break;
+        case ($loc < 253) :
+            return "u";
+            break;
+        default :
+            return "Bad";
+        }
     }
-    return [$converted, $present, $specChars];
 }

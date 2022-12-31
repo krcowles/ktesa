@@ -39,7 +39,7 @@ $clushike_req = "SELECT `indxNo`,`cluster` FROM `CLUSHIKES` WHERE `pub`='Y';";
 $clushikes 
     = $pdo->query($clushike_req)->fetchAll(PDO::FETCH_ASSOC);
 $hike_req = "SELECT `pgTitle`,`indxNo`,`miles`,`feet`,`diff`,`lat`,`lng`," .
-    "`preview`,`dirs` FROM `HIKES`;";
+    "`preview`,`dirs` FROM `HIKES` ORDER BY `pgTitle`;";
 $hikes = $pdo->query($hike_req)->fetchAll(PDO::FETCH_ASSOC);
 
 /**
@@ -74,16 +74,13 @@ $pages     = [];
 $pageNames = [];
 $clus2seq  = []; // associates a clusid to a sequence no in the $clusObjs
 for ($j=0; $j<count($clusters); $j++) {
-    // check $clusters[$j]['group'] for the existence of any HTML entity names
-    $chkstring = $clusters[$j]['group'];
-    $pgtitle = htmlEntityId($chkstring, $entitiesISO8859)[0];
+    $pgtitle = $clusters[$j]['group'];
     $cid = $clusters[$j]['clusid'];
     $clus2seq[$cid] = $j;
     $partial = '{seqno:' . $j . ',group:"' . $pgtitle . '",loc:{lat:' .
         $clusters[$j]['lat']/LOC_SCALE  . ',lng:' . $clusters[$j]['lng']/LOC_SCALE .
         '},page:' . $clusters[$j]['page'] . ',hikes:[';
     array_push($clusterObjs, $partial);
-    //$clusterObjs[$clusters[$j]['clusid']] = $partial;
     if (!empty($clusters[$j]['page'])) {
         array_push($pages, $clusters[$j]['page']); // 'page' is a HIKES indxNo
         array_push($pageNames, '"' . $clusters[$j]['group'] . '"');
@@ -110,8 +107,6 @@ $nmindx = 0;
 foreach ($hikes as $hike) {
     if (!in_array($hike['indxNo'], $pages)) { // no 'Cluster Pages'
         array_push($allHikeIndices, $hike['indxNo']);
-        // convert HTML special char entity names to entity code numbers
-        $hike['pgTitle'] = htmlEntityId($hike['pgTitle'], $entitiesISO8859)[0];
         // PROPOSED HIKES may not have all the data:
         if (strpos($hike['pgTitle'], '[Proposed]') !== false) {
             $hike['miles'] = empty($hike['miles']) ? 0 : $hike['miles'];

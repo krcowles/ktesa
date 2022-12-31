@@ -321,7 +321,15 @@ $(function () {
                         alert("Sorry: problem encountered");
                     }
                 },
-                error: function () {
+                error: function (_jqXHR) {
+                    if (appMode === 'development') {
+                        var newDoc = document.open();
+                        newDoc.write(_jqXHR.responseText);
+                        newDoc.close();
+                    }
+                    else {
+                        alert("Error encountered: admin notified");
+                    }
                 }
             });
         }

@@ -3,34 +3,58 @@
 /**
  * @fileoverview This routine initializes the google map to view the state
  *		of New Mexico, places markers on hike locations, and clusters the markers
- * 		together displaying the number of hikes in the group. It also draws hike
+ * 		together, displaying the number of hikes in each cluster. It also draws hike
  * 		tracks when zoomed in, and afterwards when panned. The script relies on the
  * 		externally supplied lib 'markerclusterer.js'. That lib was modified slightly
  *      by adding a line specifying the state of boolean 'newBounds' to prevent
  *      duplicate calls to form a side table (see Pan and Zoom handlers below).
  * @author Ken Cowles
- * @version 3.0 Added Cluster Page compatibility (removes indexPageTemplate links)
- * @version 4.0 Typescripted, with some type errors corrected
- * @version 5.0 Reworked to synchronize with the new thumbnail loading process
- * @version 6.0 Change from old panel design to bootstrap navbar design
- * @version 7.0 Rework asynchronous map handlers to better control behavior; increase
- * 				number of track colors available.
- * @version 7.1 Eliminated remnants of old side table asynch loading; simplified handlers
- *              to reduce no. of events that triggered side tble creation.
- * @version 7.2 Minor 'fileoverview' edit
- * @version 7.3 Switched from google raster map to vector map (Note new mapId)
- * NOTE: 7.3 fixed an unknown problem happening only on the home machine, regardless of
- * browser used. The side tables would not initially display until a manual zoom occurred.
- * No other machine (or tablet) seemed to display this anomaly.
- * @version 7.4 Changed <a> links to open new tab
+ *
+ * @version 8.0 Major mods to improve side table formation when multiple map events occur
  */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var zoomThresh = 13; // Default zoom level for drawing tracks
 // Hike Track Colors on Map: [NOTE: Yellow is reserved for highlighting]
 var colors = [
     'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
 var geoOpts = { enableHighAccuracy: true };
-// globals:
+// global vars:
 var map;
 var $fullScreenDiv; // Google's hidden inner div when clicking on full screen mode
 var $map = $('#map');
@@ -45,15 +69,20 @@ var applyHighlighting = false;
 var hiliteObj = {}; // global object holding hike object & marker type
 var hilited = [];
 var zoom_level;
-// map event handler global used to prevent repeatitive event triggers when panning
+var first_load = true;
+/**
+ *  'panning' global is used to prevent repetitive event triggers when panning
+ *  'kill_table' informs any current side table formation to 'abort'
+ */
 var panning = false;
-// setting space for ktesaPanel
-var panel = $('#nav').height() + $('#logo').height();
+var kill_table = false;
 /**
  * This function is called initially, and again when resizing the window;
  * Because the map, adjustWidth and sideTable divs are floats, height
- * needs to be specified for the divs to be visible.
+ * needs to be specified for the divs to be visible; 'panel' is also used
+ * in locateGeoSymbol().
  */
+var panel = $('#nav').height() + $('#logo').height();
 var initDivParms = function () {
     mapht = $(window).height() - panel;
     $map.css('height', mapht + 'px');
@@ -198,13 +227,12 @@ function initMap() {
     function AddHikeMarker(hikeobj) {
         var markerLoc = hikeobj.loc;
         var nmicon = getIcon(1);
-        var utname = unTranslate(hikeobj.name);
         var marker = new google.maps.Marker({
             position: markerLoc,
             map: map,
             icon: nmicon,
             // 'title' is what is displayed on mouseover of the marker
-            title: utname /// hikeobj.name
+            title: hikeobj.name
         });
         var srchmrkr = { hikeid: hikeobj.name, clicked: false, pin: marker };
         locaters.push(srchmrkr);
@@ -250,63 +278,66 @@ function initMap() {
     /**
      * NOTE: Loading the map on page load/reload causes an initial center_change AND
      * zoom_change event [with or without the markerclusterer.js and/or kml overlay
-     * (NM Boundary on map)]; The 'center_change' occurs first. Map event trigger code
-     * has been arranged to call setCenter before setZoom in each case.
+     * (NM Boundary on map)]; The 'center_change' occurs first. All map event trigger
+     * code in this script has been arranged to call setCenter() before setZoom().
+     * The 'first_load' condition invokes a simplified 'idle' listener
      */
     /**
      * PANNING: a 'center_change' event will obviously occur, so a variable called
-     * 'panning' is set to prevent the 'center_change' listener from acting. The 'center_change'
-     *  event will be triggered repeatedly but will not affect the pan.
+     * 'panning' is set to prevent the 'center_change' listener from repeatedly
+     * responding as the pan progresses.
      */
     map.addListener('dragstart', function () {
+        kill_table = true;
         panning = true;
     });
     map.addListener('dragend', function () {
-        // this should be done by setIdleListener.... always set panning false;
-        var curr_zoom = map.getZoom();
-        var zoomTracks = curr_zoom >= zoomThresh ? true : false;
-        var newBds = String(map.getBounds());
-        zoomedHikes = IdTableElements(newBds, zoomTracks);
-        if (zoomTracks && zoomedHikes[0].length > 0) {
-            $.when(zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2])).then(function () {
-                panning = false;
-            });
-        }
-        else {
-            panning = false;
-        }
+        setIdleListener('de'); // Drag End...
     });
     /**
      * The goal is to create a side table once and only once per user-initiated
-     * map event. When there is only a center change (not resulting from a pan event,
+     * map event. If a follow-on event occurs while the side table is still under
+     * construction, it will be aborted and started anew with the new bounds.
+     *                    ---- Other considerations ----
+     * When there is only a center change (not resulting from a pan event,
      * which is handled separately), form the side table. This will happen, e.g., when
      * the map is already zoomed in to zoomThresh level (or greater). When a zoom is to
-     * follow the center change, then let only the zoom form the side table, as the side
-     * table would otherwise need to be re-formed immediately after having been formed
-     * by the re-centering, resulting in potential asynch operational conflicts
-     * 1. The var "newBounds" is set false on initialization, so the home page load
-     *    will only form the table after the zoom event is complete.
-     * 2. When completing a search in the searchbar,
+     * follow the center change, then let only the zoom form the side table in order
+     * to reduce invocations of side table formation.
+     *
+     * 1. Since page load/reload triggers a center_change & zoom, the var "newBounds"
+     *    is set false on initialization to prevent the load from invoking both
+     *    center_change and zoom invocations of the side table.
+     * 2. When completing a search in the searchbar, the "newBounds" may be set to
+     *    indicate that only a center change is occurring.
      * 3. A click on any clusterer (see markerclusterer.js) will shift center via
      *    'map.fitBounds' - the bounds which were established by the clusterer and
      *    assigned during creation, and when zoomOnClick option is 'true'. This
      *    seems to register two consecutive 'center change/zoom's the first time
      *    a cluster is clicked, but only one 'center change/zoom' thereafter. The
-     *    3rd party software has been modified to set var "newBounds" false so that
-     *    the zoom event controls the map formation.
+     *    3rd party software has been modified to set the var "newBounds" false so
+     *    that only the zoom event controls the side table formation.
      * 4. A click on any marker will shift center. This is determined by the order of
      *    code execution as defined in the marker listeners. [NOTE: even if the marker
      *    were already 'dead center', the click would shift it out then back again];
      *    Note that when the zoom is already at zoomThresh or greater, the marker
      *    click will not be followed by a zoom.
+     *
+     * Lastly, the setIdleListener function has an argument to indicate the event
+     * invoking the function, but only the 'pan' event requires it. It was originally
+     * used to understand event synchronization.
      */
     map.addListener('center_changed', function () {
         if (panning) { // when panning, simply wait for the dragend event
             return;
         }
         else {
-            if (window.newBounds) { // if a center change only, initiate side table formation
-                setIdleListener();
+            if (!first_load) {
+                kill_table = true;
+            }
+            if (window.newBounds) {
+                // if a center change only, initiate side table formation
+                setIdleListener('cc'); // Center Change
                 window.newBounds = false;
             }
         }
@@ -315,35 +346,74 @@ function initMap() {
      * Zoom change will always initiate the side table formation.
      */
     map.addListener('zoom_changed', function () {
-        setIdleListener();
+        if (!first_load) {
+            kill_table = true;
+        }
+        setIdleListener('zm'); // ZooM
     });
     /**
-     * The time to update the side table and tracks is when any of the events has completed
-     * and the map has returned to an idle state. This function performs the idle ops,
-     * which include re-generating the side table for the new bounds, and if the zoom
-     * threshold is active, then draw any newly included tracks. Note that when done,
-     * the listener is removed.
+     * NOTE: 'idle' does not mean the map is displayed!
+     *
+     * The time to update the side table and tracks is when any of the events has
+     * completed and the map has returned to an idle state. This idle listener
+     * executes the idle ops, which include re-generating the side table for the
+     * new bounds, and if the zoom threshold is active, draw any newly included tracks.
      */
-    function setIdleListener() {
-        var idle = google.maps.event.addListener(map, 'idle', function () {
-            // wait for markerclusterer.js to draw clusters
-            var curZoom = map.getZoom();
-            var zoomTracks = curZoom >= zoomThresh ? true : false;
-            var perim = String(map.getBounds());
-            zoomedHikes = IdTableElements(perim, zoomTracks);
-            if (zoomTracks && zoomedHikes[0].length > 0) {
-                $.when(zoom_track(zoomedHikes[0], zoomedHikes[1], zoomedHikes[2])).then(function () {
-                    if (applyHighlighting) {
-                        restoreTracks();
-                        highlightTracks();
-                    }
-                    google.maps.event.removeListener(idle);
+    function setIdleListener(event_type) {
+        if (first_load) {
+            var init_idle = google.maps.event.addListener(map, 'idle', function () {
+                // first load always has zoom < zoomThresh
+                kill_table = false;
+                first_load = false;
+                var bounds = String(map.getBounds());
+                var hike_result = IdTableElements(bounds, false);
+                formTbl(hike_result[0]);
+                google.maps.event.removeListener(init_idle);
+            });
+        }
+        else {
+            console.log('Idle');
+            var idle = google.maps.event.addListener(map, 'idle', function () {
+                return __awaiter(this, void 0, void 0, function () {
+                    var curZoom, zoomTracks, perim;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                curZoom = map.getZoom();
+                                zoomTracks = curZoom >= zoomThresh ? true : false;
+                                perim = String(map.getBounds());
+                                // in case of intervening map event:
+                                kill_table = false;
+                                zoomedHikes = IdTableElements(perim, zoomTracks);
+                                return [4 /*yield*/, formTbl(zoomedHikes[0])];
+                            case 1:
+                                _a.sent();
+                                if (zoomTracks && zoomedHikes[1].length > 0) {
+                                    $.when(zoom_track(zoomedHikes[1], zoomedHikes[2], zoomedHikes[3])).then(function () {
+                                        if (event_type === 'de') {
+                                            panning = false;
+                                        }
+                                        else {
+                                            if (applyHighlighting) {
+                                                restoreTracks();
+                                                highlightTracks();
+                                            }
+                                        }
+                                        google.maps.event.removeListener(idle);
+                                    });
+                                }
+                                else {
+                                    if (event_type === 'de') {
+                                        panning = false;
+                                    }
+                                    google.maps.event.removeListener(idle);
+                                }
+                                return [2 /*return*/];
+                        }
+                    });
                 });
-            }
-            else {
-                google.maps.event.removeListener(idle);
-            }
-        });
+            });
+        }
     }
 }
 // ////////////////////// END OF MAP INITIALIZATION  ///////////////////////

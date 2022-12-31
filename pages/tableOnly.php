@@ -9,7 +9,7 @@
  */
 session_start();
 require "../php/global_boot.php";
-require "alphabeticHikes.php";
+require "autoComplHikes.php";
 // required by makeTables.php
 $age = 'old';
 $show = 'all';
@@ -27,8 +27,10 @@ $pageType = 'FullTable';
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/jquery-ui.css" rel="stylesheet" />
     <link href="../styles/tblPg.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -87,10 +89,9 @@ $pageType = 'FullTable';
     </div>
     <div id="hikechoice" class="btstrp">
         Hike Name: 
-        <input id="usehike" placeholder="Type in Hike Name" list="hikelist" />
-        <?=$datalist;?>&nbsp;&nbsp;
-        <button id="filthike" class="btstrp">Filter by Hike</button>
-        <br />
+        <input id="usehike" placeholder="Type in Hike Name" />&nbsp;
+        <span id="clear1">X</span>
+        <button id="filthike" class="btstrp">Filter by Hike</button><br />
     </div><br />
     <div id="sorter">
         <strong class="blue">Then sort the results:</strong><br />By&nbsp;&nbsp;
@@ -147,14 +148,17 @@ $pageType = 'FullTable';
         in the box below to select the hikes. When you are ready,
         click on 'Draw Map'</p>
     <button id="mapem">Draw Map</button>
-    <p id="usearch"><input id="hike2map"
-        list="hikelist" />&nbsp;&nbsp;&nbsp;<?=$datalist;?>
-        <button id="hikeclr">Clear Hikes</button>
+    <p id="usearch"><input id="hike2map" placeholder="Hike Name" />
+        <span id="clear2">X</span>&nbsp;&nbsp;&nbsp;<button id="hikeclr">
+            Clear Hikes</button>
     </p>
     <span id="hlist">Hikes you have selected:</span>
     <ul id="selections"></ul>
 </div>
 
+<script type="text/javascript">
+    var hikelist = <?=$jsItems;?>
+</script>
 <script src="../scripts/columnSort.js"></script>
 <script src="../scripts/tableOpts.js"></script>
 <script src="../scripts/filter.js"></script>
