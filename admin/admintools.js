@@ -206,7 +206,7 @@ $(function () {
      */
     // List new files
     $('#lst').on('click', function () {
-        var list = $('#skipsites').val();
+        var list = $('#skipsites').text();
         if (list === '') {
             window.open("list_new_files.php?request=files", "_blank");
         }
@@ -576,8 +576,40 @@ $(function () {
     /**
      * Display of visitation data
      */
-    $('#vdat').on('click', function () {
-        window.open("visitor_data.php", "_blank");
+    $('#today').on('click', function () {
+        var link = "visitor_data.php?time=today";
+        window.open(link, "_blank");
+    });
+    $('#wk').on('click', function () {
+        var link = "visitor_data.php?time=week";
+        window.open(link, "_blank");
+    });
+    $('#dmo').on('click', function () {
+        var vsel = $('#vmonth').val(); // w/leading 0's as needed
+        var link = "visitor_data.php?time=month&mo=" + vsel;
+        window.open(link, "_blank");
+    });
+    $('#range').on('click', function () {
+        var rge = $('#begin').val() + ":" + $('#end').val();
+        var link = "visitor_data.php?time=range&rg=" + rge;
+        window.open(link, "_blank");
+    });
+    $('#arch').on('click', function () {
+        var ysel = $('#archyr').val();
+        var url = "archiveVDAT.php?yr=" + ysel;
+        window.open(url, "_blank");
+        var ans = confirm("Delete the data from the database?");
+        if (ans) {
+            var delurl = "deleteVDAT.php?yr=" + ysel;
+            $.get(delurl, { yr: ysel }, function (result) {
+                if (result === 'ok') {
+                    alert("Data permanently deleted");
+                }
+                else {
+                    alert(result);
+                }
+            });
+        }
     });
     /**
      * GPX File Management

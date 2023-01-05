@@ -1,8 +1,7 @@
 <?php
 /**
- * This page allows the admin to select a time range for which to 
- * display visitor data.
- * PHP Version 7.8
+ * This page displays site visitor data for the incoming date range.
+ * PHP Version 7.4
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
@@ -11,59 +10,66 @@
 session_start();
 require "../php/global_boot.php";
 date_default_timezone_set('America/Denver');
+$curr_yr   = date("Y");
+$today  = date("Y-m-d");
+$lastwk = date("Y-m-d", strtotime("-7 days"));
+$begin_time = ' 00:00:00';
+$end_time   = ' 23:59:59';
 
-$avail_yrs = '<option value="0">Select Year</option>';
-$firstyr = 2021;
-$current = intval(date("Y"));
-// Selectable months for years past
-while (($current - $firstyr) >= 0) {
-    $avail_yrs .= '<option value="' . $current . '">' . $current .
-        '</option>';
-    $current--;
+$span = filter_input(INPUT_GET, 'time');
+switch ($span) {
+case 'today' :
+    $start = $today . $begin_time;
+    $end   = $today . $end_time;
+    break;
+case 'week' :
+    $start = $lastwk . $begin_time;
+    $end   = $today  . $end_time;
+    break;
+case 'month' :
+    $month  = filter_input(INPUT_GET, 'mo');  // string with leading 0's as needed
+    $daycnt = cal_days_in_month(CAL_GREGORIAN, intval($month), intval($curr_yr));
+    $start  = date($curr_yr . "-" . $month . "-01") . $begin_time;
+    $end    = date($curr_yr . "-" . $month . "-" . $daycnt) . $end_time;
+    break;
+case 'range' :
+    $range = filter_input(INPUT_GET, 'rg');
+    $dates = explode(":", $range);
+    $start = date($dates[0]) . $begin_time;
+    $end   = date($dates[1]) . $end_time;
 }
-$months = array('January', 'February', 'March', 'April', 'May', 'June', 'July',
-    'August', 'September', 'October', 'November', 'December');
-$longmos = '<select id="yr1">';
-for ($i=0; $i<12; $i++) {
-    if ($months[$i] === 'January') {
-        $longmos .= '<option value="1" selected>January</option>';
+$dataReq = "SELECT * FROM `VISITORS` WHERE `vdatetime` BETWEEN '{$start}' AND " .
+    "'{$end}';";
+$visitor_data = $pdo->query($dataReq)->fetchAll(PDO::FETCH_ASSOC);
+if (count($visitor_data) === 0) {
+    echo '<span id="nodat">There is no visitation data to display</span>';
+    exit;
+}
+// find locations of IP addresses (Not done in getLogin.php to improve performance)
+$vloc = [];
+$vreg = [];
+$vcnt = [];
+// not local machine
+foreach ($visitor_data as $row) {
+    $details 
+        = json_decode(file_get_contents("http://ipinfo.io/{$row['vip']}/json"));
+    if (isset($details->city)) {
+        array_push($vloc, $details->city);
     } else {
-        $longmos .= '<option value="' . ($i+1) . '">' . $months[$i] . '</option>';
+        array_push($vloc, 'Local Machine');
     }
-}
-$longmos .= '</select>';
-// Selectable months for current year
-$nowmo  = date('m');
-$currmo = intval($nowmo);
-$shortmos = [];
-for ($i=1; $i<13; $i++) {
-    if ($currmo >= $i) {
-        array_push($shortmos, $months[$i-1]);
-    }
-}
-$currmos = '<select id="yr1">';
-for ($j=0; $j<count($shortmos); $j++) {
-    if ($shortmos[$j] === 'January') {
-        $currmos .= '<option value="1" selected>January</option>';
+    if (isset($details->region)) {
+        array_push($vreg, $details->region);
     } else {
-        $currmos .= '<option value="' . ($j+1) . '">' . $shortmos[$j] . '</option>';
+        array_push($vreg, "N/A");
+    }
+    if (isset($details->country)) {
+        array_push($vcnt, $details->country);
+    } else {
+        array_push($vcnt, "N/A");
     }
 }
-$currmos .= '</select>';
-// Minimum days in a month 
-$modays = '<select id="sgldays">';
-for ($k=1; $k<=28; $k++) {
-    $modays .= '<option value="' . $k . '">' . $k . '</option>';
-}
-$modays .= '</select>';
-$curryr = date('Y');
-$onemo = '&nbsp;&nbsp;<button id="onemo" type="button" class="btn ' .
-    'btn-secondary btn-sm">Display Month</button>';
-$currday = date('d');
-// day extensions
-$addone = '<option value="29">29</option>';
-$addtwo = $addone . '<option value="30">30</option>';
-$addmax = $addtwo . '<option value="31">31</option>';
+
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -88,54 +94,39 @@ $addmax = $addtwo . '<option value="31">31</option>';
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Display Selected Visitor Data</p>
 <p id="active" style="display:none">Admin</p>
-
-<div id="main">
-    <p id="curr_yr" style="display:none;"><?=$curryr;?></p>
-    <p id="curr_mo" style="display:none;"><?=$nowmo;?></p>
-    <p id="curr_dy" style="display:none;"><?=$currday;?></p>
-    <h5>Today's Data:&nbsp;&nbsp;<button id="today" class="btn 
-        btn-secondary btn-sm">Today</button>&nbsp;&nbsp;</span>
-        OR:&nbsp;&nbsp;Select a day or month to display visitor data
-        &nbsp;&nbsp;<select id="strt_yr">
-            <?=$avail_yrs;?>
-        </select><br /></h5>
-    <div>
-        <div id="opts">
-            <h5>For a single month in the selected year:</h5>
-            <p id="sglmo"></p>
-            <h5>For a single day in the month selected above:</h5>
-            <p id="sglday"><?=$modays;?>&nbsp;&nbsp;
-                <button id="oneday" class="btn btn-secondary btn-sm">
-                    Display Day</button>
-            </p>
-        </div><br />
-        <div>
-            <h5>Or, If you wish to specify a date range to display, do it here:</h5>
-            <div>
-                <span id="rg">Start:&nbsp;&nbsp;<input id="begin" type="text" 
-                placeholder="Click to select" />
-                &nbsp;&nbsp;End:&nbsp;&nbsp;<input id="end" type="text" 
-                placeholder="Click to select" /></span>
-                &nbsp;&nbsp;<button id="range" type="button"
-                    class="btn btn-secondary btn-sm">Display Range</button>
-            </div>
-        </div>
-    </div>
-</div><br /><br/>
+ 
+<table id="vdat" style="margin-top:24px;">
+    <thead>
+        <tr>
+            <th>User IP</th>
+            <th>User Browser</th>
+            <th>Platform</th>
+            <th>Time of Visit</th>
+            <th>Page Visited</th>
+            <th>IP Location</th>
+            <th>Region</th>
+            <th>Country</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php for ($k=0; $k<count($visitor_data); $k++) : ?>
+        <tr>
+                <td><?=$visitor_data[$k]['vip'];?></td>
+                <td><?=$visitor_data[$k]['vbrowser'];?></td>
+                <td><?=$visitor_data[$k]['vplatform'];?></td>
+                <td><?=$visitor_data[$k]['vdatetime'];?></td>
+                <td><?=$visitor_data[$k]['vpage'];?></td>
+                <td><?=$vloc[$k];?></td>
+                <td><?=$vreg[$k];?></td>
+                <td><?=$vcnt[$k];?></td>
+        </tr>
+    <?php endfor; ?>
+    </tbody>
+</table>
 <div id="loading" style="display:none;text-align:center;">
     <img src="../images/loader-64x/Preloader_4.gif"
         alt="Waiting for server to complete" />
 </div>
 
-<script type="text/javascript">
-    var longmos  = '<?=$longmos;?>';
-    var shortmos = '<?=$currmos;?>';
-    var onemnth  = '<?=$onemo;?>';
-    var mindays  = '<?=$modays;?>';
-    var addone   = '<?=$addone;?>';
-    var addtwo   = '<?=$addtwo;?>';
-    var addmax   = '<?=$addmax;?>';
-</script>
-<script src="visitor_data.js"></script>
 </body>
 </html>

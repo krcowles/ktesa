@@ -1,19 +1,21 @@
 $fieldset: darkgreen;
-$adminButton: ghostwhite;
-$adminButtonHover: #6D3C17;
+$darkred: brown;
 
 @import "colors";
 @import "body";
 @import "ktesaNavbar";
 
+/* Page contents */
 #tools {
     margin-left: 24px;
+    font-size: 16px;
     box-sizing: content-box;
 }
 button {
     margin-bottom: 4px;
     border-width: 1px;
 }
+
 /* Getting fieldset/legend to work in Bootstrap is very tricky! */
 fieldset.afs {
     float: none;
@@ -30,16 +32,19 @@ legend {
     font-size: 18px;
     padding: 0 5px;
 }
+/* GIF image while waiting */
 #loading {
     display: none;
     position: absolute;
     top: 276px;
     left: 32%;
 }
+/* Categories within the Overall Site Management Fieldset */
 .cats {
     font-size: 18px;
     color: $brown;
 }
+
 #testsite {
     margin-left: 24px;
 }
@@ -54,14 +59,7 @@ legend {
 #switchstate, #lst, #swdb {
     margin-bottom: 12px;
 }
-.adminbuttons {
-    color: $black;
-    background-color: $adminButton;
-}
-.adminbuttons:hover {
-    color: $white;
-    background-color: $adminButtonHover
-}
+
 #sitemode, #currstate, #emode, #cdb {
     font-size: 18px;
 }
@@ -72,21 +70,35 @@ legend {
 #test, #real {
     font-weight: bold;
 }
-#tools {
-    margin-left: 24px;
-    font-size: 16px;
+#skipsites {
+    position: relative;
+    top: 4px;
+    width: 240px;
+    height: 32px;
 }
-select {
-    height: 24px;
-    font-size: 16px;
+
+/* Visitor Data Fieldset */
+#vdata {
+    display: flex;
+    flex-wrap: wrap;
 }
-#datepicker, #revlist {
+.vflex {
+    margin-right: 36px;
+}
+.range, #pic_sel {
+    width: 108px;
+}
+.vdatnote {
+    color: $darkred;
+}
+
+.datepicker, #revlist {
     height: 28px;
     border-radius: 4px;
     font-size: 14px;
     padding-left: 4px;
 }
-#revresult, label  {
+#revresult, label  { /* text note */
     font-size: 18px;
 }
 input[type=file] {

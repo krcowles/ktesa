@@ -579,12 +579,42 @@ $('#pub').on('click', function() {
 $('#ehdel').on('click', function() {
     window.open("reldel.php?act=del","_blank");
 });
-
 /**
  * Display of visitation data
  */
- $('#vdat').on('click', function() {
-    window.open("visitor_data.php", "_blank");
+$('#today').on('click', function() {
+    let link = "visitor_data.php?time=today";
+    window.open(link, "_blank");
+});
+$('#wk').on('click', function() {
+    let link = "visitor_data.php?time=week";
+    window.open(link, "_blank");
+});
+$('#dmo').on('click', function() {
+    let vsel = $('#vmonth').val() as string; // w/leading 0's as needed
+    let link = "visitor_data.php?time=month&mo=" + vsel;
+    window.open(link, "_blank");
+});
+$('#range').on('click', function() {
+    let rge = $('#begin').val() + ":" + $('#end').val();
+    let link = "visitor_data.php?time=range&rg=" + rge;
+    window.open(link, "_blank");
+});
+$('#arch').on('click', function() {
+    let ysel = $('#archyr').val();
+    let url = "archiveVDAT.php?yr=" + ysel;
+    window.open(url, "_blank");
+    let ans = confirm("Delete the data from the database?");
+    if (ans) {
+        let delurl = "deleteVDAT.php?yr=" + ysel;
+        $.get(delurl, {yr: ysel}, function(result) {
+            if (result === 'ok') {
+                alert("Data permanently deleted");
+            } else {
+                alert(result);
+            }
+        });
+    }
 });
 
 /**

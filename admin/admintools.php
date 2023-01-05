@@ -11,6 +11,37 @@
  */
 session_start();
 require "../php/global_boot.php";
+date_default_timezone_set('America/Denver');
+
+/**
+ * Visitor data settings
+ */
+$months = array('January', 'February', 'March', 'April', 'May', 'June', 'July',
+    'August', 'September', 'October', 'November', 'December');
+$opts = '';
+for ($i=0; $i<12; $i++) {
+    $moval = $i < 9 ? "0" . ($i+1) : strval($i+1);
+    $opts .= "<option value='{$moval}'>{$months[$i]}</option>" . PHP_EOL;
+}
+
+// Archival of Visitor Data:
+$rangeRequest = "SELECT MIN(vdatetime) AS MinDate, MAX(vdatetime) AS MaxDate " .
+    "FROM `VISITORS`;";
+$getRange = $pdo->query($rangeRequest)->fetch(PDO::FETCH_ASSOC);
+$mindate = $getRange['MinDate'];
+$maxdate = $getRange['MaxDate'];
+$minyr = intval(substr($mindate, 0, 4));
+$maxyr = intval(substr($maxdate, 0, 4));
+$archyears = [];
+for ($k=$minyr; $k<=$maxyr; $k++) {
+    array_push($archyears, $k);
+}
+$archopts = '';
+foreach ($archyears as $yr) {
+    $archopts .= "<option value='{$yr}'>{$yr}</option>" . PHP_EOL;
+}
+
+// if any alerts were encountered via admin page accesses:
 $admin_alert = '';
 if (isset($_SESSION['user_alert'])) {
     $admin_alert = $_SESSION['user_alert'];
@@ -35,7 +66,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
     <script src="../scripts/jquery-ui.js"></script>
     <script type="text/javascript">
         $(function() {
-            $( "#datepicker" ).datepicker({
+            $( ".datepicker" ).datepicker({
                 dateFormat: "yy-mm-dd"
             });
         });
@@ -117,8 +148,8 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             <span id="psel">Select a file from the 'pictures' directory</span>
                 &nbsp;&nbsp;<input id="cmppic" type="file" /><br />
             <span id="dsel">OR specify calendar date&nbsp;&nbsp;
-            <input style="font-size:12px;width:90px;"
-                id="datepicker" type="text" name="datepicker" /></span><br />
+            <input id="pic_sel"
+                class="datepicker" type="text" name="datepicker" /></span><br />
         <span class="cats">Listings:</span><br />
         <button id="lst" type="button" class="btn btn-secondary">List New Files
         </button>&nbsp;&nbsp;<span id="lister">[Specify Test Sites to Skip]</span>
@@ -183,8 +214,44 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 
     <fieldset class="afs">
         <legend class="afs">Visitor Data</legend>
-        <button id="vdat" type="button" class="btn
-            btn-secondary">Display Data</button>
+        <div id="vdata">
+            <div class="vflex"> 
+                <button id="today" type="button" class="btn
+                    btn-secondary">Today's Data</button>
+            </div>
+            <div class="vflex">
+                <button id="wk" type="button" class="btn
+                    btn-secondary">Last Week</button>
+            </div>
+            <div class="vflex nbtn">
+                Select Month:&nbsp;&nbsp;
+                <select id="vmonth">
+                    <?=$opts;?>
+                </select>&nbsp;&nbsp;
+                <button id="dmo" type="button" class="btn
+                    btn-secondary">Display</button>
+            </div>
+            <div class="vflex">
+                Range:&nbsp;&nbsp;
+                <span id="rg">
+                    Start&nbsp;&nbsp;<input id="begin" class="datepicker range"
+                        type="text" placeholder="Click to select" />&nbsp;&nbsp;
+                    End&nbsp;&nbsp;<input id="end" class="datepicker range"
+                        type="text" placeholder="Click to select" />
+                </span>&nbsp;&nbsp;
+                <button id="range" type="button"
+                    class="btn btn-secondary">Display</button>
+            </div>
+        </div><br />
+        <div>
+            <button id="arch" type="button" class="btn
+                btn-warning">Archive Data</button>&nbsp;&nbsp;
+            Archive Year:&nbsp;&nbsp;
+            <select id="archyr">
+                <?=$archopts;?>
+            </select>&nbsp;&nbsp;<span class="vdatnote">
+                NOTE: Data will be removed from database</span>
+        </div>
     </fieldset><br />
 
     <fieldset class="afs">
@@ -232,6 +299,6 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         </div>
     </div>
 </div>
-<script src="admintools.js" type="text/javascript"></script>
+<script src="admintools.js"></script>
 </body>
 </html>
