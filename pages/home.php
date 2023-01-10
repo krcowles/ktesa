@@ -65,13 +65,14 @@ chdir($startDir);
 <img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />
 
 <div class="ui-widget">
-  <style type="text/css">
-      ul.ui-widget {
-        width: 300px;
-        clear: both;
-      }
-  </style>
-  <input id="search" placeholder="Search for a Hike" /><span id="clear">X</span>
+    <style type="text/css">
+        ul.ui-widget {
+            width: 300px;
+            clear: both;
+        }
+    </style>
+    <input id="search" class="search" placeholder="Search for a Hike" />
+    <span id="clear">X</span>
 </div>
  
 <button id="advantages" type="button" class="btn btn-success">

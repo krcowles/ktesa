@@ -27,19 +27,6 @@ function positionMain() {
     return;
 }
 /**
- * Functions which simulate the jquery ui 'spinner' widget
- */
-$('#uparw').on('click', function () {
-    var current = parseInt($('#pseudospin').val());
-    var spinup = current >= 50 ? 50 : current + 1;
-    $('#pseudospin').val(spinup);
-});
-$('#dwnarw').on('click', function () {
-    var current = parseInt($('#pseudospin').val());
-    var spindwn = current > 1 ? current - 1 : 1;
-    $('#pseudospin').val(spindwn);
-});
-/**
  * After selecting an area around which to filter hikes, clicking on the button
  * will perform the filtering
  */

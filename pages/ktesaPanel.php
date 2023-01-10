@@ -38,7 +38,101 @@ if (isset($_SESSION['userid'])) {
     isiPad = navigator.userAgent.toLowerCase().match(/ipad/i) ?
         true : false;
     mobile = isMobile && !isTablet;
+    // New: Panel sub-menu js 
+    document.addEventListener("DOMContentLoaded", function(){
+        // make it as accordion for smaller screens
+        if (window.innerWidth < 992) {
+            // close all inner dropdowns when parent is closed
+            document.querySelectorAll('.navbar .dropdown').forEach(
+                function(everydropdown){
+                everydropdown.addEventListener('hidden.bs.dropdown', function () {
+                // after dropdown is hidden, then find all submenus
+                    this.querySelectorAll('.submenu').forEach(function(everysubmenu){
+                    // hide every submenu as well
+                    everysubmenu.style.display = 'none';
+                    });
+                })
+            });
+            document.querySelectorAll('.dropdown-menu a').forEach(function(element){
+                element.addEventListener('click', function (e) {
+                    let nextEl = this.nextElementSibling;
+                    if(nextEl && nextEl.classList.contains('submenu')) {
+                        // prevent opening link if link needs to open dropdown
+                        e.preventDefault();
+                        if(nextEl.style.display == 'block') {
+                            nextEl.style.display = 'none';
+                        } else {
+                            nextEl.style.display = 'block';
+                        }
+                    }
+                });
+            });
+        }
+    }); 
 </script>
+<style type="text/css">
+/* New: Panel sub-menu styling */
+@media all and (min-width: 992px) {
+    .dropdown-menu li {
+        position: relative;
+    }
+    .nav-item .submenu { 
+        display: none;
+        position: absolute;
+        left:100%; top:-7px;
+    }
+    .nav-item .submenu-left { 
+        right:100%; left:auto;
+    }
+    .dropdown-menu > li:hover {
+        background-color: #f1f1f1
+    }
+    .dropdown-menu > li:hover > .submenu{
+        display: block;
+    }
+}
+/* desktop view .end */
+
+/* small devices */
+@media (max-width: 991px) {
+    .dropdown-menu .dropdown-menu{
+      margin-left:0.7rem; margin-right:0.7rem; margin-bottom: .5rem;
+    }
+}
+/* New: Filtering on Home Page */
+#homepgfilt {
+    display: none;
+}
+#misfromh, #misfroml {
+    width: 36px;
+    padding-left: 4px;
+}
+.spinicons {
+    display: inline-block;
+    position: relative;
+    top: 9px;
+}
+.uparw {
+    cursor: pointer;
+    width: 0px;
+    height: 0px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 10px solid black;
+}
+.separator {
+    max-height: 4px;
+}
+.dwnarw {
+    cursor: pointer;
+    width: 0; 
+    height: 0; 
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid black;
+}
+</style>
+
 <!-- 'navbar-dark' class results in a light-colored collapsed icon ("hampurger") -->
 <p id="uhikes" style="display:none"><?=$user_ehikes;?></p>
 <nav id="nav" class="navbar navbar-expand-sm navbar-dark">
@@ -97,6 +191,34 @@ if (isset($_SESSION['userid'])) {
                             Submit for Publication</a>
                         </li>
                     </ul>
+                </li>
+                <li id="homepgfilt" class="nav-item dropdown" id="myDropdown">
+                <a class="nav-link dropdown-toggle" href="#"
+                        data-bs-toggle="dropdown"> 
+                    Filter / Sort
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item"
+                        href="#">Filter Hikes... &raquo;</a>
+                        <ul class="submenu dropdown-menu">
+                            <li><a class="dropdown-item" id="fhmiles"
+                                href="#">Miles from hike</a></li>
+                            <li><a class="dropdown-item" id="fhloc"
+                                href="#">Miles from location</a></li>
+                        </ul>
+                    </li>
+                    <li><a id="sorter" class="dropdown-item"
+                        href="#">Sort Options... &raquo;</a>
+                        <ul class="submenu dropdown-menu">
+                            <li><a class="dropdown-item" id="sort_rev"
+                                href="#">Reverse Sort Order</a></li>
+                            <li><a class="dropdown-item" id="sort_diff"
+                                href="#">Sort by Difficulty</a></li>
+                            <li><a class="dropdown-item" id="sort_last"
+                                href="#">Sort by Last Hiked Date</a></li>
+                        </ul>
+                    </li>
+                </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -167,7 +289,7 @@ if (isset($_SESSION['userid'])) {
 <p id="admin">admin</p>
 <?php endif; ?>
 
-<?php require "../pages/modals.html"; ?>
+<?php require "../pages/modals.php"; ?>
 
 <script src="../scripts/menuControl.js"></script>
 <script src="../scripts/panelMenu.js"></script>

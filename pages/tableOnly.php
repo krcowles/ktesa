@@ -76,10 +76,10 @@ $pageType = 'FullTable';
     <div>
         <strong class="blue">Filter hikes:&nbsp;&nbsp;</strong>Hikes within
         <input id="pseudospin" type="text" value="5" />
-        <div id="spinicons">
-            <div id="uparw"></div>
-            <div id="separator">&nbsp;</div>
-            <div id="dwnarw"></div>
+        <div class="spinicons">
+            <div class="uparw"></div>
+            <div class="separator">&nbsp;</div>
+            <div class="dwnarw"></div>
         </div>
         <span>miles</span>
     </div>

@@ -19,6 +19,8 @@ $(function () {
     // Modal handles for panel items:
     var resetPassModal = new bootstrap.Modal(document.getElementById('cpw'));
     var questions = new bootstrap.Modal(document.getElementById('security'));
+    var bymiles = new bootstrap.Modal(document.getElementById('bymiles'));
+    var byloc = new bootstrap.Modal(document.getElementById('byloc'));
     /**
      * This function counts the number of security questions and returns
      * true is correct, false (with user alers) if not
@@ -48,6 +50,7 @@ $(function () {
     switch (activeItem) {
         case "Home":
             $('#homepg').addClass('active');
+            $('#homepgfilt').css('display', 'inline-block');
             break;
         case "Table":
             $('#tblpg').addClass('active');
@@ -74,6 +77,74 @@ $(function () {
             $('#pubreqpg').addClass('active');
             break;
     }
+    /**
+     * Filter and Sort modal operation:
+     * Each link provides a modal to process user input
+     */
+    $(".modalsearch").on("autocompleteselect", function (event, ui) {
+        // the searchbar dropdown uses 'label', but place 'value' in box & use that
+        event.preventDefault();
+        var entry = ui.item.value;
+        $(this).val(entry);
+    });
+    $("#startfromh").on("autocompleteselect", function (event, ui) {
+        // the searchbar dropdown uses 'label', but place 'value' in box & use that
+        event.preventDefault();
+        var entry = ui.item.value;
+        $(this).val(entry);
+        popupHikeName(entry);
+    });
+    $('#fhmiles').on('click', function () {
+        bymiles.show();
+        return;
+    });
+    $('#fhloc').on('click', function () {
+        byloc.show();
+        return;
+    });
+    $('#apply_miles').on('click', function () {
+        var hike = $('#startfromh').val();
+        var hmis = $('#misfromh').val();
+    });
+    $('#apply_loc').on('click', function () {
+    });
+    $('#sort_rev').on('click', function () {
+    });
+    $('#sort_diff').on('click', function () {
+    });
+    $('#sort_last').on('click', function () {
+    });
+    /**
+     * Functions which simulate the jquery ui 'spinner' widget
+     */
+    $('.uparw').on('click', function () {
+        var spinner = $('#pseudospin');
+        if (activeItem === 'Home') {
+            if ($('#byloc').css('display') !== 'none') {
+                spinner = $('#misfroml');
+            }
+            else if ($('#bymiles').css('display') !== 'none') {
+                spinner = $('#misfromh');
+            }
+        }
+        var current = parseInt(spinner.val());
+        var spinup = current >= 50 ? 50 : current + 1;
+        spinner.val(spinup);
+    });
+    $('.dwnarw').on('click', function () {
+        var spinner = $('#pseudospin');
+        if (activeItem === 'Home') {
+            if ($('#byloc').css('display') !== 'none') {
+                spinner = $('#misfroml');
+            }
+            else if ($('#bymiles').css('display') !== 'none') {
+                spinner = $('#misfromh');
+            }
+        }
+        var current = parseInt(spinner.val());
+        var spindwn = current > 1 ? current - 1 : 1;
+        spinner.val(spindwn);
+    });
     /**
      * Some menu items require a response that is not simply opening
      * a new window

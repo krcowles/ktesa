@@ -64,7 +64,7 @@ $('#clear').on('click', function () {
     $('#search').val("");
 });
 // Establish searchbar as jQueryUI widget
-$("#search").autocomplete({
+$(".search").autocomplete({
     source: hikeSources,
     minLength: 2
 });
