@@ -186,7 +186,7 @@ $(function () {
     });
     $('#rel2pic').on('click', function () {
         picloc = '';
-        var dateSelected = $('#datepicker').val();
+        var dateSelected = $('#pic_sel').val();
         if (picfile === '' && dateSelected === '') {
             alert("No image or date has been selected");
         }

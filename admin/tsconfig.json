@@ -68,8 +68,7 @@
     "cleanPix.ts",
     "cleanGpxJson.ts",
     "load_progress.ts",
-    "reldel.ts",
-    "visitor_data.ts"
+    "reldel.ts"
   ]
   /* also "include": [] and/or "exclude": [] */
 }
