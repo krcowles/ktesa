@@ -163,6 +163,7 @@ require "getFavorites.php";
 <script src="../scripts/markerclusterer.js"></script>
 <script src="../scripts/map.js"></script>
 <script src="../scripts/sideTables.js"></script>
+<script src="../scripts/homepg_filter.js"></script>
 <script async defer src="<?=GOOGLE_MAP;?>"></script>
 
 </body>

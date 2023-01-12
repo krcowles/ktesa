@@ -214,8 +214,11 @@ if (isset($_SESSION['userid'])) {
                                 href="#">Reverse Sort Order</a></li>
                             <li><a class="dropdown-item" id="sort_diff"
                                 href="#">Sort by Difficulty</a></li>
+                            <li><a class="dropdown-item" id="sort_dist"
+                                href="#">Sort by Hike Length</a></li>
+                            <!-- Nice to have later...
                             <li><a class="dropdown-item" id="sort_last"
-                                href="#">Sort by Last Hiked Date</a></li>
+                                href="#">Sort by Last Hiked Date</a></li> -->
                         </ul>
                     </li>
                 </ul>

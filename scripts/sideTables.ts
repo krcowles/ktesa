@@ -50,6 +50,14 @@ $("#search").on("autocompleteselect", function(event, ui) {
 });
 
 /**
+ * This global of 'sortableHikes' is updated everytime a side table is formed
+ * and can then be used by the sort routines
+ */
+var sortableHikes: NM[] = [];
+var ascending = true;
+var sort_diff = false;
+var sort_dist = false;
+/**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike
  */
@@ -206,6 +214,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 // NOTE: async function returns a Promise to the caller (map.ts/js)
 async function formTbl(indxArray: NM[]) {
     $('#sideTable').empty();
+    sortableHikes = indxArray;
     if (indxArray.length === 0) {
         let nohikes = '<p style="padding-left:12px;font-size:18px;">' +
             'There are no hikes in the viewing area</p>';
@@ -529,10 +538,18 @@ function normalize(pgtitle: string) {
         }
     }
     var comparison: number;
-    if (hikea > hikeb) {
-        comparison = 1;
+    if (ascending) {
+        if (hikea > hikeb) {
+            comparison = 1;
+        } else {
+            comparison = -1;
+        }
     } else {
-        comparison = -1;
+        if (hikea < hikeb) {
+            comparison = 1;
+        } else {
+            comparison = -1;
+        }
     }
     return comparison;
 }
@@ -612,6 +629,7 @@ function normalize(pgtitle: string) {
     });
     if (hikearr.length > 0) {
         hikearr.sort(compareObj);
+        ascending = true;
     }
     // hikearr will be used in map.ts/js to invoke formTbl()
     return [hikearr, singles, hikeInfoWins, trackColors];

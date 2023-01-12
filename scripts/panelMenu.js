@@ -5,8 +5,7 @@
  *
  * @author Ken Cowles
  *
- * @version 1.0 Introduction of bootstrap navbar for non-mobile platforms
- * @version 5.0 Upgraded security with encryption and 2FA
+ * @version 6.0 Added filter & sort functions provided on navbar
  */
 $(function () {
     // establish the page title in the logo's 'ctr' div
@@ -78,8 +77,7 @@ $(function () {
             break;
     }
     /**
-     * Filter and Sort modal operation:
-     * Each link provides a modal to process user input
+     * Filter and Sort (navbar) operation:
      */
     $(".modalsearch").on("autocompleteselect", function (event, ui) {
         // the searchbar dropdown uses 'label', but place 'value' in box & use that
@@ -92,7 +90,6 @@ $(function () {
         event.preventDefault();
         var entry = ui.item.value;
         $(this).val(entry);
-        popupHikeName(entry);
     });
     $('#fhmiles').on('click', function () {
         bymiles.show();
@@ -104,15 +101,48 @@ $(function () {
     });
     $('#apply_miles').on('click', function () {
         var hike = $('#startfromh').val();
-        var hmis = $('#misfromh').val();
+        if (hike === '') {
+            alert("You have not selected a hike");
+            return false;
+        }
+        var hmis = parseInt($('#misfromh').val());
+        miles_from_hike(hike, hmis);
+        bymiles.hide();
+        return;
     });
     $('#apply_loc').on('click', function () {
+        var poi = $('#area').val();
+        var lmis = parseInt($('#misfroml').val());
+        miles_from_locale(poi, lmis);
+        byloc.hide();
+        return;
     });
     $('#sort_rev').on('click', function () {
+        ascending = ascending ? false : true;
+        if (!sort_diff && !sort_dist) {
+            sortableHikes.sort(compareObj);
+        }
+        else if (sort_diff) {
+            sortableHikes.sort(compareDiff);
+        }
+        else {
+            sortableHikes.sort(compareDist);
+        }
+        formTbl(sortableHikes);
     });
     $('#sort_diff').on('click', function () {
+        sort_diff = true;
+        sort_dist = false;
+        ascending = true;
+        sortableHikes.sort(compareDiff);
+        formTbl(sortableHikes);
     });
-    $('#sort_last').on('click', function () {
+    $('#sort_dist').on('click', function () {
+        sort_diff = false;
+        sort_dist = true;
+        ascending = true;
+        sortableHikes.sort(compareDist);
+        formTbl(sortableHikes);
     });
     /**
      * Functions which simulate the jquery ui 'spinner' widget

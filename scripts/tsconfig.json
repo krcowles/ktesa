@@ -75,6 +75,7 @@
     /* Home page */
     "map.ts", // NOTE: fmap.ts overlaps map.ts and cannot be included here; run tsc separately
     "sideTables.ts",
+    "homepg_filter.ts",
     /* Hike page */
     "canvas.ts",
     "hikePageLayout.ts",
