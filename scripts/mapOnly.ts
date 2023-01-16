@@ -10,9 +10,8 @@
  * 
  * @author Ken Cowles
  * 
- * @version 1.0 Responsive design intro (new menu, etc.)
- * @version 1.1 Typescripted
- * @version 2.0 Rework asynchronous map handlers per map.ts
+ * @version 3.0 Removed Geolocate Symbol on map and added GPS tracking modal
+ *              and functionality
  */
 
 /**
@@ -23,13 +22,76 @@ const zoomThresh = 13;  // Default zoom level for drawing tracks
 const colors = [
 	'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
-var geoOptions: geoOptions = { enableHighAccuracy: true };
-
-//globals
 var map: google.maps.Map;
 var $fullScreenDiv: JQuery; // Google's hidden inner div when clicking on full screen mode
 var $map: JQuery = $('#map');
 var mapht: number;
+
+/**
+ * This section is unique to mobile devices and allows the user to create
+ * hike tracks, see his/her current loction, and download tracks as .gpx files
+ */
+var geoOptions: geoOptions = { enableHighAccuracy: true };
+var init_gps = true;  // set first data point for the track data; enable locater
+var gpsloc: google.maps.Marker;  // marks current location
+var rptr: NodeJS.Timeout | null; // interval for cyclig through colors
+var trackData: PolylineSet = []; // the gps track data for creting the track
+var track: google.maps.Polyline; // the gps track
+var gps_tracking: NodeJS.Timeout | null // gps data acquisition timer
+const gps_interval = 8000;  // msec between geolocation acquisitions
+var $gon  = $('#gon');  // turn on tracking button
+var $goff = $('#goff'); // turn off tracking button
+var gps_opts = new bootstrap.Modal(<HTMLElement>document.getElementById('gtrk'));
+
+// Button styling for modal
+$('#gps_modal').on('click', function() {
+	if ($('#gstate').text() === 'Off') {
+		$('#goff').prop('disabled', true);
+		$('#gon').prop('disabled', false);
+		$('#gstate').text('On');
+	} else {
+		$('#goff').prop('disabled', false);
+		$('#gon').prop('disabled', true);
+		$('#gstate').text('Off');
+	}
+	gps_opts.show();
+});
+// Button clicks:
+$gon.on('click', function() { // can't click unless gstate is 'On'
+	gps_location(); // get first data point for trackData
+	gps_opts.hide();
+	gps_tracking = setInterval(function() {
+		gps_location();
+		if (trackData.length > 1) {
+			track = new google.maps.Polyline({
+				path: trackData,
+				geodesic: true,
+				strokeColor: 'red',
+				strokeOpacity: 1.0,
+				strokeWeight: 3,
+				zIndex: 100
+			});
+		}
+		if (trackData.length > 2) {
+			track.setMap(null); // remove previous
+		}	
+		track.setMap(map); // estblish next leg
+		console.log("Data length: " + trackData.length);
+	}, gps_interval)
+});
+$goff.on('click', function() { // can't click unless gstate is 'Off'
+	$('#goff').prop('disabled', true);
+	$('#gon').prop('disabled', false);
+	$('#gstate').text('Off');
+	rptr = null;
+	gpsloc.setMap(null);
+	gps_tracking = null;
+});
+$('#gdwnld').on('click', function() {
+	alert("download track");
+	gps_opts.hide();
+});
+
 // track vars
 var drawnHikes: number[] = [];     // hike numbers which have had tracks created
 var drawnTracks: HikeTrackObj[] = [];    // array of objects: {hike:hikeno , track:polyline}
@@ -62,21 +124,6 @@ $('#search').css({
 	top: srchtop,
 	left: '40px'
 });
-/**
- * This function positions the geosymbol in the bottom right corner of the map,
- * left of the google map zoom control 
- */
-function locateGeoSym() {
-	let winht = window.innerHeight - 64;
-	let mapwd = <number>$('#map').width() - 80;
-	$('#geoCtrl').css({
-		top: winht,
-		left: mapwd
-	});
-	return;
-}
-locateGeoSym();
-$('#geoCtrl').on('click', setupLoc);
 
 /**
  * Use the arrays passed in to the home page by php: one for each type 
@@ -123,7 +170,11 @@ function initMap() {
 		rotateControl: false,
 		mapTypeId: google.maps.MapTypeId.TERRAIN
 	});
-
+	
+	gpsloc = new google.maps.Marker({
+		icon: '../images/circ0.png'
+	});
+	
 	// ///////////////////////////   MARKER CREATION   ////////////////////////////
 	CL.forEach(function(clobj) {
 		AddClusterMarker(clobj.loc, clobj.group, clobj.hikes, clobj.page);
@@ -505,24 +556,56 @@ function restoreTracks() {
 // /////////////////////////  END TRACK DRAWING  ///////////////////////////
 
 // //////////////////////////  GEOLOCATION CODE ////////////////////////////
-function setupLoc() {
+function gps_location() {
 	navigator.geolocation.getCurrentPosition(success, error, geoOptions);
 	function success(pos: any) {
 		var geoPos = pos.coords;
 		var geoLat = geoPos.latitude;
 		var geoLng = geoPos.longitude;
-		var newWPos = {lat: geoLat, lng: geoLng };
-		new google.maps.Marker({
-			position: newWPos,
-			map: map,
-			icon: "../images/currentLoc.png"
-		});
-		var currzoom = map.getZoom();
-		window.newBounds = currzoom >= zoomThresh ? true : false;
-		map.setCenter(newWPos);
-		if (!window.newBounds) {
-			map.setZoom(zoomThresh);
+		var newPos = {lat: geoLat, lng: geoLng };
+		if (init_gps) {
+			var currzoom = map.getZoom();
+			window.newBounds = currzoom >= zoomThresh ? true : false;
+			map.setCenter(newPos);
+			if (!window.newBounds) {
+				map.setZoom(zoomThresh);
+			}
+			gpsloc.setPosition(newPos);
+			gpsloc.setMap(map);
+			var icnt = 0;
+			rptr = setInterval(function() {
+				var clr = icnt%7;
+				switch(clr) {
+					case 0: 
+						gpsloc.setIcon('../images/circ0.png');
+						break;
+					case 1:
+						gpsloc.setIcon('../images/circ1.png');	
+						break;
+					case 2:
+						gpsloc.setIcon('../images/circ2.png');
+						break;
+					case 3:
+						gpsloc.setIcon('../images/circ3.png');
+						break;
+					case 4:
+						gpsloc.setIcon('../images/circ4.png');
+						break;
+					case 5:
+						gpsloc.setIcon('../images/circ5.png');
+						break;
+					case 6:
+						gpsloc.setIcon('../images/circ6.png');
+						break;	
+				}
+				icnt++;
+			}, 150);
+			init_gps = false;
+		} else {
+			trackData.push(newPos);
+			gpsloc.setPosition(newPos);
 		}
+		return;
 	} // end of watchSuccess function
 	function error(eobj: GeoErrorObject) {
 		let msg = 'Error retrieving position; Code: ' + eobj.code;
@@ -547,11 +630,6 @@ $(document).bind(
 		} else {
 			console.log('NO fullScreen!');
 		}
-});
-
-// //////////////////////  WINDOW RESIZE EVENT  //////////////////////
-$(window).on('resize', function() {
-	locateGeoSym();
 });
 
 // //////////////////////////////////////////////////////////////

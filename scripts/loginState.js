@@ -79,13 +79,5 @@ function notLoggedInItems() {
     $('#bam').addClass('active');
     $('#chg').removeClass('active');
     $('#chg').addClass('disabled');
-    $('admin').css('display', 'none');
-    return;
-}
-/**
- * Enable admintools for admins
- */
-function adminLoggedIn() {
-    $('#admintools').css('display', 'block');
     return;
 }

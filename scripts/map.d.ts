@@ -35,6 +35,9 @@ interface GPS_Coord {
     lat: number;
     lng: number;
 }
+interface PolylineSet extends Array<GPS_Coord> {
+    [index: number]: GPS_Coord;
+}
 interface CL {
     group: string;
     loc: GPS_Coord;

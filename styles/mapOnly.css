@@ -228,4 +228,8 @@ li {
   position: absolute;
 }
 
+#gstate {
+  display: none;
+}
+
 /*# sourceMappingURL=mapOnly.css.map */
