@@ -32,15 +32,15 @@ var mapht: number;
  * hike tracks, see his/her current loction, and download tracks as .gpx files
  */
 var geoOptions: geoOptions = { enableHighAccuracy: true };
-var init_gps = true;  // set first data point for the track data; enable locater
-var gpsloc: google.maps.Marker;  // marks current location
-var rptr: NodeJS.Timeout | null; // interval for cyclig through colors
-var trackData: PolylineSet = []; // the gps track data for creting the track
-var track: google.maps.Polyline; // the gps track
-var gps_tracking: NodeJS.Timeout | null // gps data acquisition timer
-const gps_interval = 8000;  // msec between geolocation acquisitions
-var $gon  = $('#gon');  // turn on tracking button
-var $goff = $('#goff'); // turn off tracking button
+var init_gps = true;              // set first data points; enable locater
+var gpsloc: google.maps.Marker;   // marks current location
+var rptr: NodeJS.Timeout;         // interval for cyclig through marker colors
+var trackData: PolylineSet = [];  // the gps track data for creting the track
+var track: google.maps.Polyline;  // the gps track
+var gps_tracking: NodeJS.Timeout; // gps data acquisition timer
+const gps_interval = 10000;        // msec between geolocation acquisitions
+var $gon  = $('#gon');            // turn on tracking button
+var $goff = $('#goff');           // turn off tracking button
 var gps_opts = new bootstrap.Modal(<HTMLElement>document.getElementById('gtrk'));
 
 // Button styling for modal
@@ -60,6 +60,8 @@ $('#gps_modal').on('click', function() {
 $gon.on('click', function() { // can't click unless gstate is 'On'
 	gps_location(); // get first data point for trackData
 	gps_opts.hide();
+	$('#ktesaMenu').addClass('collapse');
+
 	gps_tracking = setInterval(function() {
 		gps_location();
 		if (trackData.length > 1) {
@@ -83,9 +85,9 @@ $goff.on('click', function() { // can't click unless gstate is 'Off'
 	$('#goff').prop('disabled', true);
 	$('#gon').prop('disabled', false);
 	$('#gstate').text('Off');
-	rptr = null;
+	clearInterval(rptr);
 	gpsloc.setMap(null);
-	gps_tracking = null;
+	clearInterval(gps_tracking);
 });
 $('#gdwnld').on('click', function() {
 	alert("download track");

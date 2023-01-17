@@ -11,8 +11,14 @@ interface AutoItem {
  * @author Ken Cowles
  * 
  * @version 3.0 Modified method for deploying Latin1 charset
+ * @version 3.1 Hide searchbar when navbar menu expands
  */
-
+$(".navbar").on("show.bs.collapse", function() {
+    $('#search').hide();
+});
+$(".navbar").on("hide.bs.collapse", function() {
+    $('#search').show();
+});
  // Autocomplete search bar (jQueryUI):
  $("#search").autocomplete({
     source: hikeSources,

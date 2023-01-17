@@ -59,6 +59,7 @@ $('#gps_modal').on('click', function () {
 $gon.on('click', function () {
     gps_location(); // get first data point for trackData
     gps_opts.hide();
+    $('#ktesaMenu').addClass('collapse');
     gps_tracking = setInterval(function () {
         gps_location();
         if (trackData.length > 1) {
@@ -82,9 +83,9 @@ $goff.on('click', function () {
     $('#goff').prop('disabled', true);
     $('#gon').prop('disabled', false);
     $('#gstate').text('Off');
-    rptr = null;
+    clearInterval(rptr);
     gpsloc.setMap(null);
-    gps_tracking = null;
+    clearInterval(gps_tracking);
 });
 $('#gdwnld').on('click', function () {
     alert("download track");
