@@ -32,7 +32,7 @@ $policy = "../accounts/PrivacyPolicy.pdf";
     <div class="container-fluid"> 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#ktesaMenu" aria-controls="ktesaMenu"
-            aria-expanded="false" aria-label="Toggle navigation">
+            aria-expanded="false" aria-label="Toggle navigation" id="closer">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="ktesaMenu">

@@ -31,16 +31,18 @@ var mapht;
  * hike tracks, see his/her current loction, and download tracks as .gpx files
  */
 var geoOptions = { enableHighAccuracy: true };
-var init_gps = true; // set first data point for the track data; enable locater
+var init_gps = true; // set first data points; enable locater
 var gpsloc; // marks current location
-var rptr; // interval for cyclig through colors
+var rptr; // interval for cyclig through marker colors
 var trackData = []; // the gps track data for creting the track
 var track; // the gps track
 var gps_tracking; // gps data acquisition timer
-var gps_interval = 8000; // msec between geolocation acquisitions
+var gps_interval = 10000; // msec between geolocation acquisitions
 var $gon = $('#gon'); // turn on tracking button
 var $goff = $('#goff'); // turn off tracking button
 var gps_opts = new bootstrap.Modal(document.getElementById('gtrk'));
+var connection = new bootstrap.Modal(document.getElementById('offline'));
+var notice = false;
 // Button styling for modal
 $('#gps_modal').on('click', function () {
     if ($('#gstate').text() === 'Off') {
@@ -59,24 +61,30 @@ $('#gps_modal').on('click', function () {
 $gon.on('click', function () {
     gps_location(); // get first data point for trackData
     gps_opts.hide();
-    $('#ktesaMenu').addClass('collapse');
+    $('#closer').trigger('click');
     gps_tracking = setInterval(function () {
         gps_location();
-        if (trackData.length > 1) {
+        if (!notice && navigator.onLine) {
+            connection.show();
+        }
+        if (trackData.length > 2) {
+            if (navigator.onLine) {
+                track.setMap(null); // remove previous
+            }
+        }
+        if (trackData.length > 1) { // begin creating track
             track = new google.maps.Polyline({
                 path: trackData,
                 geodesic: true,
-                strokeColor: 'red',
+                strokeColor: '#F00',
                 strokeOpacity: 1.0,
                 strokeWeight: 3,
                 zIndex: 100
             });
+            if (navigator.onLine) {
+                track.setMap(map);
+            }
         }
-        if (trackData.length > 2) {
-            track.setMap(null); // remove previous
-        }
-        track.setMap(map); // estblish next leg
-        console.log("Data length: " + trackData.length);
     }, gps_interval);
 });
 $goff.on('click', function () {
@@ -581,7 +589,9 @@ function gps_location() {
         }
         else {
             trackData.push(newPos);
-            gpsloc.setPosition(newPos);
+            if (navigator.onLine) {
+                gpsloc.setPosition(newPos);
+            }
         }
         return;
     } // end of watchSuccess function

@@ -42,6 +42,8 @@ const gps_interval = 10000;        // msec between geolocation acquisitions
 var $gon  = $('#gon');            // turn on tracking button
 var $goff = $('#goff');           // turn off tracking button
 var gps_opts = new bootstrap.Modal(<HTMLElement>document.getElementById('gtrk'));
+var connection = new bootstrap.Modal(<HTMLElement>document.getElementById('offline'));
+var notice = false;
 
 // Button styling for modal
 $('#gps_modal').on('click', function() {
@@ -60,25 +62,31 @@ $('#gps_modal').on('click', function() {
 $gon.on('click', function() { // can't click unless gstate is 'On'
 	gps_location(); // get first data point for trackData
 	gps_opts.hide();
-	$('#ktesaMenu').addClass('collapse');
+	$('#closer').trigger('click');
 
 	gps_tracking = setInterval(function() {
 		gps_location();
-		if (trackData.length > 1) {
+		if (!notice && navigator.onLine) {
+			connection.show();
+		}
+		if (trackData.length > 2) {
+			if (navigator.onLine) {
+				track.setMap(null); // remove previous
+			}
+		}
+		if (trackData.length > 1) { // begin creating track
 			track = new google.maps.Polyline({
 				path: trackData,
 				geodesic: true,
-				strokeColor: 'red',
+				strokeColor: '#F00',
 				strokeOpacity: 1.0,
 				strokeWeight: 3,
-				zIndex: 100
+				zIndex: 100,
 			});
+			if (navigator.onLine) {
+				track.setMap(map);
+			}
 		}
-		if (trackData.length > 2) {
-			track.setMap(null); // remove previous
-		}	
-		track.setMap(map); // estblish next leg
-		console.log("Data length: " + trackData.length);
 	}, gps_interval)
 });
 $goff.on('click', function() { // can't click unless gstate is 'Off'
@@ -605,7 +613,9 @@ function gps_location() {
 			init_gps = false;
 		} else {
 			trackData.push(newPos);
-			gpsloc.setPosition(newPos);
+			if (navigator.onLine) {
+				gpsloc.setPosition(newPos);
+			}
 		}
 		return;
 	} // end of watchSuccess function
