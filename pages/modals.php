@@ -1,6 +1,6 @@
 <?php
 /**
- * This page presents a sortable, filterable table of hikes
+ * This page presents security, filtering and editing bootstrap modals.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -49,6 +49,43 @@
                     class="btn btn-success">Apply</button>
             </div>
         </div>
+    </div>
+</div>
+<!-- GPX Editor Modal -->
+<div class="modal fade" id="ged" tabindex="-1"
+    aria-labelledby="GPX File Editor" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="edform" action="../edit/gpxEditor.php" method="POST"
+            enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Edit GPX File</h5>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="backurl" type="hidden" name="backurl" />
+                    <label for="file2edit">
+                        Select the GPX File to be edited: </label>
+                    <input id="file2edit" type="file" name="file2edit" />
+                    <br /><br />
+                    <div id="gpxnote" style="font-style:italic;">
+                        For GPX Files with more than one track, specify
+                            which track to edit:&nbsp;&nbsp;&nbsp;
+                        <input id="trackno" name="trackno" type="text"
+                            value="1" size="2" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button id="gotoedit" type="submit" class="btn btn-secondary">
+                        Edit File
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <!-- For 'Forgot password', 'Renew password' & 'Change password' Modal -->

@@ -5,6 +5,7 @@
  * @author Ken Cowles
  * 
  * @version 6.0 Added filter & sort functions provided on navbar
+ * @version 7.0 Added gpx file editing capability
  */
 $(function() {  // document ready function
 
@@ -20,6 +21,7 @@ var resetPassModal = new bootstrap.Modal(<HTMLElement>document.getElementById('c
 var questions = new bootstrap.Modal(<HTMLElement>document.getElementById('security'));
 var bymiles   = new bootstrap.Modal(<HTMLElement>document.getElementById('bymiles'));
 var byloc     = new bootstrap.Modal(<HTMLElement>document.getElementById('byloc'));
+var gpxedit   = new bootstrap.Modal(<HTMLElement>document.getElementById('ged'));
 /**
  * This function counts the number of security questions and returns
  * true is correct, false (with user alers) if not
@@ -178,6 +180,21 @@ $('.dwnarw').on('click', function() {
  * Some menu items require a response that is not simply opening
  * a new window
  */
+$('#editgpx').on('click', function() {
+    gpxedit.show();
+});
+$('#edform').on('submit', function() {
+    var ifile = $('#file2edit').val();
+    if (ifile == '') {
+        alert("No file has been selected");
+        return false;
+    }
+    var back = window.location.href;
+    var uricode = encodeURIComponent(back);
+    $('#backurl').val(uricode);
+    gpxedit.hide();
+    return;
+});
 $('#logout').on('click', function() {
     $.ajax({
         url: '../accounts/logout.php',
@@ -259,6 +276,7 @@ $('#closesec').on('click', function() {
         questions.hide();
     }
 });
+$()
 // In order to be able to close the admintools tab, it must be opened by javasctript:
 $('#adminpg').on('click', function() {
     window.open("../admin/admintools.php");

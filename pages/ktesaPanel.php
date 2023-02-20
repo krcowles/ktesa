@@ -247,6 +247,11 @@ if (isset($_SESSION['userid'])) {
                             Security Questions</a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a id="editgpx" class="nav-link active" aria-current="page"
+                        href="#">Edit GPX File
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                         role="button" data-bs-toggle="dropdown"

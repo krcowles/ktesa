@@ -72,7 +72,9 @@
     "photoSelect.ts",
     "picPops.ts",
     "refs.ts",
-    "startNewPg.ts"
+    "startNewPg.ts",
+    "loadGPX.ts",
+    "gpxEditor.ts"
   ]
   /* also "include": [] and/or "exclude": [] */
 }
