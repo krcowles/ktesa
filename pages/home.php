@@ -102,9 +102,6 @@ require "getFavorites.php";
                         longer, shorter, or unique extensions or shortcuts to
                         existing hikes
                     </li>
-                    <li>The hike track includes tick marks indicating the direction
-                        taken by the authors on the hike
-                    </li>
                     <li>A member can add photos which will appear on the trail map at
                         the location where they were taken
                     </li>
@@ -112,6 +109,8 @@ require "getFavorites.php";
                         features or points of interest, or useful information at
                         various points on the map. (These might be, for example, 
                         Waypoints from a Garmin or other device)
+                    </li>
+                    <li>You can edit a gpx file with the gpxEditor GUI
                     </li>
                     <li>The hike page maps have many (over 50) map 'overlays'
                         available - these allow looking at the trail from aerial,
@@ -125,8 +124,8 @@ require "getFavorites.php";
                         opportunity to view several user-selected hikes on a separate
                         page.
                     </li>
-                    <li>Hike pages also list references - book or online - and a
-                        collection of photos taken at the hike site.
+                    <li>Hike pages also list references - books, websites, blogs,
+                        apps, magazine articles, on-line maps, etc.
                     </li>
                 </ol>
                 These are features not found on AllTrails. The author still uses
