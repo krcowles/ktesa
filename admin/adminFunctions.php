@@ -385,3 +385,22 @@ function strleft($s1, $s2)
 {
     return substr($s1, 0, strpos($s1, $s2)); 
 }
+/**
+ * This function will compare two arrays - if they are different,
+ * the difference is reported.
+ * 
+ * @param array $a1 an array to compare
+ * @param array $a2 an array to compare
+ * 
+ * @return array an array containing the difference between the two
+ */
+function arrdiff($a1, $a2)
+{
+    $res = array();
+    foreach ($a2 as $a) {
+        if (array_search($a, $a1) === false) {
+            $res[] = $a;
+        }
+    }
+    return $res;
+}

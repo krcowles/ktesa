@@ -100,6 +100,7 @@ $(function () {
         return;
     });
     $('#apply_miles').on('click', function () {
+        ascending = true;
         var hike = $('#startfromh').val();
         if (hike === '') {
             alert("You have not selected a hike");
@@ -111,6 +112,7 @@ $(function () {
         return;
     });
     $('#apply_loc').on('click', function () {
+        ascending = true;
         var poi = $('#area').val();
         var lmis = parseInt($('#misfroml').val());
         miles_from_locale(poi, lmis);
