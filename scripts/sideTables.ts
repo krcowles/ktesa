@@ -34,6 +34,9 @@ $('#advantages').on('click', function() {
 // Clear searchbar contents when user clicks on the "X"
 $('#clear').on('click', function() {
     $('#search').val("");
+    var searchbox = document.getElementById('search') as HTMLElement;
+    searchbox.focus();
+
 });
 // Establish searchbar as jQueryUI widget
 $(".search").autocomplete({
