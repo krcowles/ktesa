@@ -362,7 +362,11 @@ $(function () {
     */
     // Locale:
     var sel = $('#locality').text();
-    $('#area').val(sel);
+    /**
+     * All of a sudden, the  $('#area').val(sel); stopped working! I have
+     * switched to the following method, which seems to work:
+     */
+    $('#area option[value=' + sel + ']').attr('selected', 'selected');
     // Hike type:
     var htype = $('#ctype').text();
     $('#type').val(htype);
