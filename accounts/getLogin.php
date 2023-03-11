@@ -104,6 +104,16 @@ if (!$admin) {
      */
     $user_ip = getIpAddress(); // can be null!
     $user_ip = isset($user_ip) ? $user_ip : 'no ipaddr';
+    if ($user_ip === '91.240.118.252') { // Chang Way Enterprise
+        die("Access not permitted");
+    }
+    if ($user_ip !== 'no ipaddr') {
+        $details 
+            = json_decode(file_get_contents("http://ipinfo.io/{$user_ip}/json"));
+        if ($details->country === 'RU') {
+            die("Access not permitted");
+        }
+    }
     $browser = getBrowserType(); // can be null!
     if (!isset($browser)) {
         $browser['name'] = "no name";
