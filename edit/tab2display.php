@@ -40,12 +40,18 @@
 </div>
 
 <hr />
+<p>NOTE: If you wish to upload .heic files, you must first convert them to .jpg
+    using the following utility:</p>
+<button id="heic" type="button" class="btn btn-secondary">
+    HEIC/HEIF Converter</button>
+<hr />
+
 <p id="ehno" style="display:none;"><?= $hikeNo;?></p>
 
 <form id="f2" class="box" action="saveTab2.php" method="POST">
 
 <div id="pupld"> <!-- a div around photos for DnD -->
-    <span id="userupld">Add Photos using drag-and-drop onto the page,
+    <span class="userupld">Add Photos using drag-and-drop onto the page,
         or select:</span>
     <span class="box__input">
         <input type="file" name="files[]" id="file" class="inputfile"
@@ -55,8 +61,9 @@
         </label>
     </span>
     <br />
-    <p id="ldg">Processing images&hellip;Please wait</p>
-    <div id="preload"><img src="../images/loader-64x/Preloader_4.gif"
+    <div id="preload">
+        <p id="ldg">Processing images&hellip;Please wait</p>
+        <img src="../images/loader-64x/Preloader_4.gif"
         alt="Loading image" />
     </div>
     <p>
@@ -153,7 +160,6 @@
 <script src="../scripts/popupCaptions.js"></script>
 <script src="photoSelect.js"></script>
 <script src="makeThumbs.js"></script>
-
 <div class="popupCap"></div>
 <input type="hidden" name="usepics" value="<?= $inclPix;?>" />
 <input type="hidden" name="hikeno" value="<?= $hikeNo;?>" />

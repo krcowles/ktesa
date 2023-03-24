@@ -337,6 +337,10 @@ $(function () {
             alert("No action taken");
         }
     });
+    // use the jpg converter for heic photos
+    $('#heic').on('click', function () {
+        window.open('heic_convert.php', "_blank");
+    });
     /**
      * The remaining script handles several features of the editor:
      *  1. Initialization of text and numeric fields based on db entries

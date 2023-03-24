@@ -396,12 +396,24 @@ span.brown {
 }
 
 /* tab2 only items */
+#heic_upld {
+  margin-top: 1rem;
+  margin-left: 2rem;
+  background-color: lightgray;
+  padding-top: 6px;
+  padding-left: 8px;
+}
+
 #pupld.is-dragover {
   box-sizing: content-box;
   background-color: gray;
 }
 
-#userupld {
+#heic_upld.is-dragover {
+  background-color: gray;
+}
+
+.userupld {
   font-weight: bold;
   font-size: 18px;
 }
@@ -459,7 +471,6 @@ span.brown {
 
 #ldg {
   color: brown;
-  display: none;
   font-weight: bold;
 }
 
@@ -619,6 +630,34 @@ ol li::marker {
   top: 0px;
   height: 100px;
   text-align: center;
+}
+
+#selbtn {
+  position: relative;
+  top: 6px;
+  left: 1rem;
+}
+
+.converted {
+  margin-bottom: 4px;
+}
+
+#previews {
+  margin-left: 2rem;
+}
+
+.newnames {
+  margin-left: 1rem;
+}
+
+#convgif {
+  display: block;
+}
+
+#phdrs {
+  margin-top: 0;
+  text-align: center;
+  font-weight: bold;
 }
 
 /* tab4 only items */

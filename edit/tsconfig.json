@@ -74,7 +74,8 @@
     "refs.ts",
     "startNewPg.ts",
     "loadGPX.ts",
-    "gpxEditor.ts"
+    "gpxEditor.ts",
+    "heic_convert.ts"
   ]
   /* also "include": [] and/or "exclude": [] */
 }

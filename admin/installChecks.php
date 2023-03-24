@@ -28,23 +28,13 @@ $res_json = scandir('../json');
 $new_gpx  = scandir($site_gpx);
 $new_json = scandir($site_json);
 $return = [];
-if (count($res_gpx) === count($new_gpx) && count($res_json) === count($new_json)) {
-    $return[0] = 'none';
-} else {
-    if (count($res_gpx) !== count($new_gpx)) {
-        if (count($res_gpx) > count($new_gpx)) {
-            $return[0] = 'GPX files missing in test site';
-        } else {
-            $return[0] = 'Test site contains additional GPX files';
-        }
-    }
-    if (count($res_json) !== count($new_json)) {
-        if (count($res_json) > count($new_json)) {
-            array_push($return, 'JSON files missing in test site');
-        } else {
-            array_push($return, 'Test site contains additionl JSON files');
-        }
-    }
-}
+
+// Assumes test site has fewer/different files; 'nit' => not in test site
+$return['nit_gpx']  = arrdiff($new_gpx, $res_gpx);
+$return['nit_json'] = arrdiff($new_json, $res_json);
+// Case where the main site has fewer/different files; 'nim' => not in main site
+$return['nim_gpx']  = arrdiff($res_gpx, $new_gpx);
+$return['nim_json'] = arrdiff($res_json, $new_json);
+
 $result = json_encode($return);
 echo $result;

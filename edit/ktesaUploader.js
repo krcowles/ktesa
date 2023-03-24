@@ -148,6 +148,15 @@ var filechecks = function (candidates) {
         var lastdot = fname.lastIndexOf('.');
         if (lastdot !== -1) {
             var ext = fname.slice(lastdot + 1);
+            if (ext.toLowerCase() === 'heic') {
+                /**
+                 * Need to convert to jpg, extract heic metadata
+                 * and then import metadata to jpg
+                 */
+                alert("Please convert .heic files to .jpg before proceeding\n" +
+                    "File cannot be uploaded as is");
+                continue;
+            }
             if (ext.toLowerCase() !== 'jpg' && ext.toLowerCase() !== 'jpeg') {
                 alert('Type ".' + ext + '" (' + fname + ')' +
                     " is not supported at this time");
