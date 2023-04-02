@@ -1,12 +1,33 @@
-/// <reference path="./heic2any.d.ts" />
 interface HeicPhoto {
     blob: File;
     toType: String;
 }
+interface EXIF_Tag {
+    [key: string]: number | string | LatLngObject[] | undefined;
+}
+interface LatLngObject {
+    numerator: number;
+    denominator: number;
+}
 declare function heic2any(photo: HeicPhoto): Promise<Blob>;
-
-const preview_ht = 80;
-const $anchor = $('#anchor') as JQuery<HTMLAnchorElement>
+declare function findEXIFinHEIC(exif_data: ArrayBuffer): EXIF_Tag;
+/**
+ * @fileoverview This routine will collect .heic files selected by the user, extract
+ * their Exif data, convert the photos to jpeg, and upload the resized images to the
+ * server's pictures directory. In that process, the ETSV table will be updated with
+ * the image fields and extracted Exif data. The routine will also display a preview
+ * version of the image on the page along with a link which will allow the user to
+ * delete the upload if so desired. The user may then, when satisfied, return to an
+ * updated editor's tab2 where, the newly uploaded images will be displayed.
+ *
+ * @author Ken Cowles
+ * @version 1.0 First release finalized
+ */
+const preview_height = 120; // image height of the preview
+const upld_width = 640;     // standard z-size image width
+const $anchor = $('#anchor') as JQuery<HTMLAnchorElement>; // prototype for links
+var ehike_stats = [] as ExifData[]; // global array holding photo Exif data
+var ehikeNo = $('#ehike').text();
 var droppedFiles: boolean | FileList = false; 
 // test browser's feature support
 var isAdvancedUpload = 'FormData' in window && 'FileReader' in window;
@@ -21,7 +42,9 @@ $('#preload').css({
     position: 'fixed'
 });
 var heic_cnt = 0;
-var img_id = 0;
+var img_id = 0; // a unique id for image links
+var conv_names: string[] = [];
+var link_ids: number[] = [];
 
 /**
  * For drag and drop files
@@ -67,7 +90,7 @@ $('#file').on('change', function() {
 
 // The conversion, previews, and uploads
 function convertHeicToJpg(input: FileList) {
-    $('#preload').css('display', 'block');
+    $('#preload').css('display', 'block'); // turn on the 'image loading' gif
     for (let j=0; j<input.length; j++) {
         var file = input[j];
         var fname = file.name;
@@ -82,7 +105,7 @@ function convertHeicToJpg(input: FileList) {
             alert("Please rename this file such that the name is\n" +
                 "less than 1024 characters (including file extension\n" +
                 "This file will not be displayed...");
-            heic_cnt--;
+                heic_cnt--;
             continue;
         }
         // test the file extension - only heic files allowed at this time
@@ -90,7 +113,19 @@ function convertHeicToJpg(input: FileList) {
         if (lastdot !== -1) {
             var ext = fname.slice(lastdot+1);
             var newname = fname.slice(0, lastdot) + ".jpg";
+            conv_names.push(newname);
             if (ext.toLowerCase() === 'heic') {
+                /**
+                 * The .heic EXIF data is extracted prior to the conversion,
+                 * as the current conversion tools do not save it to the jpg file.
+                 * Because of this, that data must be saved until needed, and
+                 * is tied to the image number (img_id) for retrieval later. 
+                 * When the conversion is made, and before the jpg is uploaded,
+                 * the EXIF data is located and added to the upload package.
+                 */
+                getHeicExifData(conv_names[j], file, img_id);
+                var preview_id = img_id++;
+                link_ids.push(preview_id);
                 var blob = file;
                 heic2any({
                     blob: blob,
@@ -99,31 +134,65 @@ function convertHeicToJpg(input: FileList) {
                 .then(function(resultBlob: Blob) {
                     if (!resultBlob.type.startsWith("image/")) {
                         alert("Not an image file");
+                        heic_cnt--;
                         return false;
                     }
+                    var cname = conv_names[j];
+                    var linkid = link_ids[j];
+                    // extract key EXIF data to prepare for upload by retrieving
+                    // from the stored array of exif objects, 'ehike_stats'.
+                    var found = false;
+                    var thislat = '0';
+                    var thislng = '0';
+                    var thisdte = '';
+                    var ismappable = '0';
+                    for (var k=0; k<ehike_stats.length; k++) {
+                        if (ehike_stats[k]['ino'] === linkid) {
+                            thislat    = ehike_stats[k]['lat'] as string;
+                            thislng    = ehike_stats[k]['lng'] as string;
+                            thisdte    = ehike_stats[k]['date'] as string
+                            ismappable = ehike_stats[k]['mappable'] as string;
+                            found = true;
+                        }
+                        if (found) {
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        alert("Could not find associated GPS data...");
+                        heic_cnt--;
+                        return false;
+                    }
+                    var img_wd = 0;
+                    var img_ht = 0;
+                    var scale  = 0;
+                    var prev_ht = 0;
+                    var prev_wd = 0;
+                    var canv_ht = 0;
+                    var canv_wd = 0;
+                    // prepare image data: get width/height from loaded image 
                     const url = URL.createObjectURL(resultBlob);
-                    const img = document.createElement("img");
-                    img.classList.add("converted");
-                    img.height = preview_ht;
-                    img.onload = () => {
-                         //URL.revokeObjectURL(img.src);      
-                    };
-                    img.src = url;
-                    const picdiv = document.createElement('div');
-                    const info = document.createElement("span");
-                    info.classList.add('newnames');
-                    const dwnldr = $anchor.clone();
-                    const a = dwnldr[0];
-                    a.id = 'img' + img_id++;
-                    //a.classList.add('dld');
-                    a.href = url;
-                    a.text = "Download: " + newname;
-                    a.style.display = 'inline-block';
-                    a.download = newname;
-                    info.appendChild(a);
-                    picdiv.appendChild(img);
-                    picdiv.appendChild(info);
-                    previews.appendChild(picdiv);
+                    const source_img = document.createElement("img") as HTMLImageElement;
+                    source_img.onload = () => {
+                        img_wd = source_img.naturalWidth;
+                        img_ht = source_img.naturalHeight;
+                        scale  = img_wd/img_ht;
+                        if (scale !== 0 && scale > 1) { // horizontal photo
+                            prev_ht = preview_height;
+                            prev_wd = Math.floor(prev_ht * scale);
+                            canv_wd = upld_width;
+                            canv_ht = Math.floor(canv_wd/scale);
+                        } else { // vertical photo
+                            prev_wd = preview_height;
+                            prev_ht = Math.floor(prev_wd/scale);
+                            canv_ht = upld_width;
+                            canv_wd = Math.floor(canv_ht * scale);
+                        }
+                        placePreview(url, cname, prev_ht, prev_wd, linkid);
+                        uploadImage(url, cname, ehikeNo, canv_ht, canv_wd, thislat,
+                            thislng, thisdte, ismappable, linkid);
+                    }
+                    source_img.src = url;
                     return;
                 })
                 .catch(function (x) {
@@ -145,19 +214,194 @@ function convertHeicToJpg(input: FileList) {
         var $items =$('.converted').length;
         if ($items === heic_cnt) {
             $('#preload').css('display', 'none');
-            for (var k=0; k<$items; k++) {
-                var aid = '#img' + k;
-                if (!$(aid).hasClass('created')) {
-                    $(aid).addClass('created');
-                    $(aid).on('click', function() {
-                        alert("Downloaded...");
-                        $(this).parent().parent().remove();
-                        heic_cnt--;
-                    });
-                }   
-            }
+            alert("Items uploaded");
             clearInterval(ld_check);
         }
     }, 400);
     return;
+}
+/**
+ * HEIC EXIF Data is extracted prior to jpg conversion, and occurs
+ * quickly. For this reason, the key EXIF attributes for the image
+ * are stored in a window object for retrieval by the uploader later.
+ */
+function getHeicExifData(filename: string, photo: File, imgno: number) {
+    let reader = new FileReader();
+
+    reader.onload = function ()
+    {
+        var exif = reader.result as ArrayBuffer;
+        var tags = findEXIFinHEIC(exif);
+        // tags to save for uploader:
+        var lat = '0';
+        var lng = '0';
+        var date = '';
+        var mappable = '1';
+        // temp calculation vars
+        var deg: number;
+        var min: number;
+        var sec: number;
+        // get EXIF parms
+        var exifdate = tags["DateTimeOriginal"];
+        if (exifdate !== undefined) {
+            date = tags["DateTimeOriginal"] as string;
+        }
+        var latitudeComponents = tags["GPSLatitude"] as LatLngObject[] | undefined;
+        var latitudeRef = tags["GPSLatitudeRef"];
+        if (latitudeComponents === undefined || latitudeRef === undefined) {
+            mappable = '0';
+        }
+        var longitudeComponents = tags["GPSLongitude"] as LatLngObject[] | undefined;
+        var longitudeRef = tags["GPSLongitudeRef"];
+        if (longitudeComponents === undefined || longitudeRef === undefined) {
+            mappable = '0';
+        }
+        var uploader_data = {ehike: ehikeNo, fname: filename} as ExifData;        
+        // type to LatlngObject
+        var latdat = latitudeComponents as LatLngObject[];
+        deg = Math.floor(latdat[0]['numerator'] / latdat[0]['denominator']);
+        min = latdat[1]['numerator'] / latdat[1]['denominator'];
+        sec = (latdat[2]['numerator'] / latdat[2]['denominator'])/60;
+        min = (min + sec)/60;
+        // always < 1; gives leading 0...
+        var fractional = min.toFixed(7).split(".");
+        lat = deg + "." + fractional[1];
+        lat = latitudeRef === 'N' ? lat : "-" + lat;
+        uploader_data.lat = lat;
+        var lngdat = longitudeComponents as LatLngObject[];
+        deg = Math.floor(lngdat[0]['numerator'] / lngdat[0]['denominator']);
+        min = lngdat[1]['numerator'] / lngdat[1]['denominator'];
+        sec = (lngdat[2]['numerator'] / lngdat[2]['denominator'])/60;
+        min = (min + sec)/60;
+        fractional = min.toFixed(7).split(".");
+        lng = deg + "." + fractional[1];
+        lng = longitudeRef === 'W' ? "-" + lng : lng;
+        uploader_data.lng = lng;
+        uploader_data.date = date;
+        uploader_data.mappable = mappable;
+        uploader_data.ino = imgno;
+        ehike_stats.push(uploader_data);
+    };
+    reader.readAsArrayBuffer(photo);
+}
+/**
+ * This function converts a dataURI from a canvas element to a Blob, 
+ * which can then be appended to a FormData object for ajax.
+ */
+function dataURItoBlob(dataURI: string) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(dataURI.split(',')[1]);
+    } else {
+        byteString = decodeURIComponent(dataURI.split(',')[1]);
+    }
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    var bb = new Blob([ia], {"type": mimeString});
+    return bb;
+}
+$('#tab2').on('click', function() {
+    var editpg = 'editDB.php?tab=2&hikeNo=' + ehikeNo;
+    window.open(editpg, "_self");
+});
+/**
+ * This function will add a preview image to the page
+ */
+function placePreview(
+    dataUrl: string, filename: string, height: number, width: number, linkid: number
+) {
+    const preview_img = document.createElement("img");
+    preview_img.classList.add("converted");
+    preview_img.height = height;
+    preview_img.width = width;
+    preview_img.onload = () => {
+        //URL.revokeObjectURL(preview_img.src); 
+        const picdiv = document.createElement('div');
+        const info = document.createElement("span");
+        info.classList.add('newnames');
+        const dwnldr = $anchor.clone();
+        const a = dwnldr[0];
+        a.id = 'img' + linkid;
+        a.href = "#"; // will be replaced by image thumb value after upload
+        a.text = "Delete upload: " + filename;
+        a.style.display = 'inline-block';
+        info.appendChild(a);
+        picdiv.appendChild(preview_img);
+        picdiv.appendChild(info);
+        previews.appendChild(picdiv);      
+    };
+    preview_img.src = dataUrl;
+}
+/**
+ * This function uploads the image to the server's pictures directory
+ */
+function uploadImage(
+    url: string, filename: string, hikeno: string, height: number, width: number,
+    lat: string, lng: string, date: string, mappable: string, linkid: number
+) {
+    const canvas_img = document.createElement("img") as HTMLImageElement;
+    canvas_img.onload = () => {
+        var canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        var ajaxwd = width.toString();
+        var ajaxht = height.toString();
+        var ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
+        ctx.drawImage(canvas_img, 0, 0, width, height);
+        var dataurl = canvas.toDataURL('image/jpeg', 0.75);
+        var blob = dataURItoBlob(dataurl); // local function
+        var thumb = '';
+        // Upload this image to the server's 'pictures' directory
+        var formDat = new FormData();
+        formDat.append("file", blob);
+        formDat.append("ehike", hikeno);
+        formDat.append("fname", filename);
+        formDat.append("imght", ajaxht);
+        formDat.append("imgwd", ajaxwd);
+        formDat.append("lat", lat);
+        formDat.append("lng", lng);
+        formDat.append("date", date);
+        formDat.append("mappable", mappable);
+        formDat.append("page", 'converter');
+        var del_id = '#img' + linkid;
+        $.ajax({
+            url: 'saveImage.php',
+            method: 'post',
+            data: formDat,
+            processData: false,
+            contentType: false,
+            success: function(parms) {
+                if (parms.indexOf('NO') !== -1) {
+                    alert(filename + " has no location data - " +
+                        "it was uploaded,\nbut cannot be attached " +
+                        "to the hike map");
+                }
+                thumb = parms.replace("YES.", "");
+                $(del_id).attr('href', thumb);
+                $(del_id).on('click', function(ev) {
+                    ev.preventDefault();
+                    $.get('del_converted.php?thumb=' + thumb, function(result) {
+                        if (result === 'DONE') {
+                            alert("Uploaded photo deleted");
+                        } else {
+                            alert("Could not remove uploaded photo");
+                        }    
+                    });
+                    $(this).parent().parent().remove();
+                });
+            },
+            error: function(jqXHR) {
+                var newDoc = document.open();
+                newDoc.write(jqXHR.responseText);
+                newDoc.close();
+            }
+        });
+    }
+    canvas_img.src = url; 
 }

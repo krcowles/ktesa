@@ -28,6 +28,8 @@ interface ExifData {
     lat: string;
     lng: string;
     date: string;
+    mappable?: string;  // EXIF data exists for lat/lng? heic converter
+    ino?: number;       // heic converter's assigned (unique) image number
 }
 /**
  * @fileoverview This is a standalone utility that will preview selected
@@ -36,13 +38,14 @@ interface ExifData {
  * 
  * @author Ken Cowles
  * @version 2.0 Typescripted
+ * @version 2.1 Updated per heic_convert.ts
  */
 
 // admin and server defined constants
 const MAX_UPLOAD_SIZE = 20000000; // no longer required
 const Z_WIDTH = 640;
-const Z_HEIGHT = 480;
-const DISPLAY_HEIGHT = 220;
+const Z_HEIGHT = 480; // ref only
+const DISPLAY_HEIGHT = 220; // ref only
 // globals
 var ehikeIndxNo = $('#ehno').text(); // get the associated hike no
 var droppedFiles: boolean | FileList = false; 
@@ -187,8 +190,8 @@ const filechecks = (candidates: FileList) => { // rely on implicit typing of ret
                  * Need to convert to jpg, extract heic metadata
                  * and then import metadata to jpg
                  */
-                alert("Please convert .heic files to .jpg before proceeding\n" +
-                    "File cannot be uploaded as is");
+                alert(".heic files require conversion to .jpg before proceeding;\n" +
+                    "Use converter button on this page for those files");
                 continue;
             }
             if (ext.toLowerCase() !== 'jpg' && ext.toLowerCase() !== 'jpeg') {
@@ -286,13 +289,13 @@ const extractLatLng = (exifArray: any[]) => {
  * This function converts a dataURI from a canvas element to a Blob, 
  * which can then be appended to a FormData object for ajax.
  */
-function dataURItoBlob(dataURI: string) {
+function canvasDataURItoBlob(dataURI: string) {
     // convert base64/URLEncoded data component to raw binary data held in a string
     var byteString;
     if (dataURI.split(',')[0].indexOf('base64') >= 0) {
         byteString = atob(dataURI.split(',')[1]);
     } else {
-        byteString = unescape(dataURI.split(',')[1]);
+        byteString = decodeURIComponent(dataURI.split(',')[1]);
     }
     // separate out the mime component
     var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
@@ -318,16 +321,12 @@ const ldNodes = (fr_objs: ImageObject[]) => {
     for (var j=0; j<noOfImgs; j++) {
         // create image node:
         imgs[j] = document.createElement('img');
-        // identify the index in the FileReader object for this file
-        //var imgid = fr_objs[j]['indx'];
         var picname = fr_objs[j]['fname'];
         var def = $.Deferred();
         promises.push(def);
 
         (function(def, imgname, data){
             imgs[j].onload = function() {
-                // establish init values solely to appease typescript...
-                //var ajxexif: ExifData = {ehike: '0', fname: '', lat: '0', lng: '0', date: ''};
                 var item = this;
                 window.loaded_imgs++;
                 var usable = true;
@@ -379,14 +378,11 @@ const ldNodes = (fr_objs: ImageObject[]) => {
                             lat: ajxlat, lng: ajxlng, date: pdate};
                     }
                 });
-                //exifdat = ajxexif;
                 if (usable) {
                     // create a DOM element in which to place the image
                     var img = document.createElement("img");
                     img.src = data;
                     var canvas = document.createElement("canvas");
-                    var ctx = <CanvasRenderingContext2D>canvas.getContext("2d");
-                    ctx.drawImage(img, 0, 0);
                     // establish dimensions based on landscape/portrait
                     var width = img.width;
                     var height = img.height;
@@ -403,13 +399,12 @@ const ldNodes = (fr_objs: ImageObject[]) => {
                     ctx.drawImage(img, 0, 0, width, height);
                     // the resized image:
                     var dataurl = canvas.toDataURL('image/jpeg', 0.6);
-                    var blob = dataURItoBlob(dataurl);
+                    var blob = canvasDataURItoBlob(dataurl); // local function
                     // prepare ajax data
                     var ajxwd = width.toString();
                     var ajxht = height.toString();
                     var formDat = new FormData();
                     formDat.append("file", blob);
-                    formDat.append("fname", imgname);
                     formDat.append("ehike", window.exifdat.ehike);
                     formDat.append("fname", window.exifdat.fname);
                     formDat.append("imght", ajxht);

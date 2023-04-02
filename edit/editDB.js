@@ -8,6 +8,7 @@
  * @version 2.0 First release with Cluster Page editing
  * @version 2.1 Typescripted
  * @version 2.2 Updated tab1 look and feel
+ * @version 2.3 Functionality added for heic converter button on tab2
  */
 $(function () {
     // Wysiwyg editor for tab3 hike info:
@@ -22,7 +23,6 @@ $(function () {
      * The framework/appearance of the edit page and buttons
      */
     var tabCnt = $('.tablist').length;
-    // all tabs assumed to be the same width
     var tabWidth = $('#t1').css('width');
     var listwidth = tabCnt * parseInt(tabWidth); // fixed (no change w/resize)
     var linewidth = $('#main').width() - listwidth;
@@ -339,7 +339,8 @@ $(function () {
     });
     // use the jpg converter for heic photos
     $('#heic').on('click', function () {
-        window.open('heic_convert.php', "_blank");
+        var heic_page = "heic_convert.php?ehike=" + ehikeno;
+        window.open(heic_page, "_blank");
     });
     /**
      * The remaining script handles several features of the editor:

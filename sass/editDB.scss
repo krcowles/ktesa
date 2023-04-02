@@ -426,6 +426,7 @@ ol li::marker {
     top: 6px;
     left: 1rem;
 }
+/* HEIC Converter Page */
 .converted {
     margin-bottom: 4px;
 }
@@ -442,6 +443,20 @@ ol li::marker {
     margin-top: 0;
     text-align: center;
     font-weight: bold;
+}
+#heic_done {
+    position: relative;
+    top: 4px;
+    display: inline-block;
+    margin-left: 4rem;
+}
+#tab2 {
+    font-size: 16px;
+    height: 27px;
+    box-sizing: content-box;
+    border-radius: 6px;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 /* tab4 only items */
