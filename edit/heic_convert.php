@@ -73,7 +73,7 @@ $ehike = filter_input(INPUT_GET, 'ehike');
     src="https://cdn.jsdelivr.net/gh/exif-heic-js/exif-heic-js/exif-heic.min.js">
 </script>
 <script src="./heic2any.min.js"></script>
-<script src="./heic_convert.js"></script>
+<script src="./heic_converter.js"></script>
 </body>
 
 </html>
