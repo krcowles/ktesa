@@ -40,6 +40,8 @@ declare function findEXIFinHEIC(exif_data: ArrayBuffer): EXIF_Tag;
 const preview_height = 120; // image height of the preview
 const upld_width = 640;     // standard z-size image width
 const $anchor = $('#anchor') as JQuery<HTMLAnchorElement>; // prototype for links
+const downloads = document.getElementById('dwnlds') as HTMLElement;
+const previews = document.getElementById('previews') as HTMLElement;
 var ehike_stats = [] as ExifData[]; // global array holding photo Exif data
 var ehikeNo = $('#ehike').text();
 var droppedFiles: boolean | FileList = false; 
@@ -49,9 +51,8 @@ var $div = $('#heic_upld');
 var image: HTMLImageElement;
 var reader: FileReader;
 var base64data: string | ArrayBuffer | null;
-var previews = document.getElementById('previews') as HTMLElement;
 $('#preload').css({
-    top: '360px',
+    top: '420px',
     left: '360px',
     position: 'fixed'
 });
@@ -202,6 +203,17 @@ async function convertHeicToJpg(input: FileList) {
                             thislng, thisdte, ismappable, preview_id, uploader);
                     }
                     source_img.src = url;
+                    const span = document.createElement("SPAN");
+                    span.classList.add('dlinks');
+                    const dwnld = $anchor.clone();
+                    const dimage = dwnld[0];
+                    dimage.id = 'dld' + preview_id;
+                    dimage.href = url;
+                    dimage.download = cname
+                    dimage.text = "Download " + cname;
+                    dimage.style.display = 'inline-block';
+                    span.appendChild(dimage);
+                    downloads.appendChild(span);
                     return(uploader);
                 }).catch (function (x) {
                     console.log(x.code);
@@ -218,9 +230,8 @@ async function convertHeicToJpg(input: FileList) {
             heic_cnt--;
             continue;
         }
-
-
     }
+    $('#preload').css('display', 'none');
 }
 /**
  * HEIC EXIF Data is extracted prior to jpg conversion, and occurs
@@ -327,8 +338,8 @@ function placePreview(
         const picdiv = document.createElement('div');
         const info = document.createElement("span");
         info.classList.add('newnames');
-        const dwnldr = $anchor.clone();
-        const a = dwnldr[0];
+        const upldr = $anchor.clone();
+        const a = upldr[0];
         a.id = 'img' + linkid;
         a.href = "#"; // will be replaced by image thumb value after upload
         a.text = "Delete upload: " + filename;

@@ -62,6 +62,14 @@ $ehike = filter_input(INPUT_GET, 'ehike');
     <br /><br /><br />
 </div>
 <hr />
+<!-- Download links here -->
+<div id="dwnlds">
+    <div id="darea">
+        <p>Download any converted image: required if desired as 'thumbnail'
+            in editor</p>
+    </div>  
+</div>
+<hr />
 <!-- Preview the converted images -->
 <div id="previews">
     <div id="phdrs">

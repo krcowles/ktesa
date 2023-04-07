@@ -430,7 +430,7 @@ ol li::marker {
 .converted {
     margin-bottom: 4px;
 }
-#previews {
+#previews, #dwnlds {
     margin-left: 2rem;
 }
 .newnames {
@@ -439,10 +439,13 @@ ol li::marker {
 #convgif {
     display: block;
 }
-#phdrs {
+#phdrs, #darea {
     margin-top: 0;
     text-align: center;
     font-weight: bold;
+}
+.dlinks {
+    margin-right: 1rem;
 }
 #heic_done {
     position: relative;

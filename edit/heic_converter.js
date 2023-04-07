@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -49,6 +50,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var preview_height = 120; // image height of the preview
 var upld_width = 640; // standard z-size image width
 var $anchor = $('#anchor'); // prototype for links
+var downloads = document.getElementById('dwnlds');
+var previews = document.getElementById('previews');
 var ehike_stats = []; // global array holding photo Exif data
 var ehikeNo = $('#ehike').text();
 var droppedFiles = false;
@@ -58,9 +61,8 @@ var $div = $('#heic_upld');
 var image;
 var reader;
 var base64data;
-var previews = document.getElementById('previews');
 $('#preload').css({
-    top: '360px',
+    top: '420px',
     left: '360px',
     position: 'fixed'
 });
@@ -217,6 +219,17 @@ function convertHeicToJpg(input) {
                                 uploadImage(url, cname, ehikeNo, canv_ht, canv_wd, thislat, thislng, thisdte, ismappable, preview_id, uploader);
                             };
                             source_img.src = url;
+                            var span = document.createElement("SPAN");
+                            span.classList.add('dlinks');
+                            var dwnld = $anchor.clone();
+                            var dimage = dwnld[0];
+                            dimage.id = 'dld' + preview_id;
+                            dimage.href = url;
+                            dimage.download = cname;
+                            dimage.text = "Download " + cname;
+                            dimage.style.display = 'inline-block';
+                            span.appendChild(dimage);
+                            downloads.appendChild(span);
                             return (uploader);
                         })["catch"](function (x) {
                             console.log(x.code);
@@ -238,7 +251,9 @@ function convertHeicToJpg(input) {
                 case 6:
                     j++;
                     return [3 /*break*/, 1];
-                case 7: return [2 /*return*/];
+                case 7:
+                    $('#preload').css('display', 'none');
+                    return [2 /*return*/];
             }
         });
     });
@@ -345,8 +360,8 @@ function placePreview(dataUrl, filename, height, width, linkid) {
         var picdiv = document.createElement('div');
         var info = document.createElement("span");
         info.classList.add('newnames');
-        var dwnldr = $anchor.clone();
-        var a = dwnldr[0];
+        var upldr = $anchor.clone();
+        var a = upldr[0];
         a.id = 'img' + linkid;
         a.href = "#"; // will be replaced by image thumb value after upload
         a.text = "Delete upload: " + filename;
