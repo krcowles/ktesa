@@ -70,90 +70,123 @@ $(function () {
     $('#install').on('click', function () {
         if (hostIs !== 'nmhikes.com' || server_loc !== 'main') {
             alert("This tool only works on the server docroot");
-            return;
+            return false;
         }
         if (typeof auth !== 'undefined') {
             alert("There is no authorization to run this utility");
-            return;
+            return false;
         }
         var deletions = [];
         var deleters = $('#sites').val();
         var copyloc = $('#copyloc').val();
         if (copyloc == '') {
             alert("Please specify a location from which to install files");
-            return;
+            return false;
         }
         /**
-         * Check first to make sure new files currently residing on main
-         * won't be deleted by writing install files.
+         * First compare the gpx and json directories and identify any
+         * differences so that something is not lost or over-written
          */
-        var proceed = false;
-        $.post('installChecks.php', { site: copyloc }, function (result) {
-            var diffs = result;
-            var output = '';
-            if (diffs[0] !== 'none') {
-                // diffs array may have either GPX or JSON info, or both
-                if (diffs.length === 1) {
-                    output = diffs[0] + "\nProceed?";
+        var stage1 = $.Deferred();
+        var issues = '';
+        $.ajax({
+            url: 'installChecks.php',
+            method: 'post',
+            data: { site: copyloc },
+            dataType: 'json',
+            success: function (results) {
+                if (results['nit_gpx'].length > 0) {
+                    issues += "The following main gpx files are not present in " +
+                        "the test site:\n";
+                    for (var i = 0; i < results['nit_gpx'].length; i++) {
+                        issues += results['nit_gpx'][i] + "; ";
+                    }
+                    issues += "\n";
                 }
-                else if (diffs.length === 2) {
-                    output += diffs[0] + "\n" + diffs[1] + "\nProceed?";
+                if (results['nit_json'].length > 0) {
+                    issues += "The following main json files are not present in " +
+                        "the test site:\n";
+                    for (var j = 0; j < results['nit_json'].length; j++) {
+                        issues += results['nit_json'][j] + "; ";
+                    }
+                    issues += "\n";
+                }
+                if (results['nim_gpx'].length > 0) {
+                    issues += "The following test site gpx files are not present in " +
+                        "main:\n";
+                    for (var k = 0; k < results['nim_gpx'].length; k++) {
+                        issues += results['nim_gpx'][k] + "; ";
+                    }
+                    issues += "\n";
+                }
+                if (results['nim_json'].length > 0) {
+                    issues += "The following test site json files are not present in " +
+                        "main:\n";
+                    for (var l = 0; l < results['nim_gpx'].length; l++) {
+                        issues += results['nim_gpx'][l] + "; ";
+                    }
+                    issues += "\n";
+                }
+                if (issues !== '') {
+                    var ans = confirm(issues + "Continue with install?");
+                    if (!ans) {
+                        return false;
+                    }
+                }
+                stage1.resolve();
+                return;
+            },
+            error: function (jqXHR) {
+                stage1.reject();
+                var newDoc = document.open();
+                newDoc.write(jqXHR.responseText);
+                newDoc.close();
+            }
+        });
+        /**
+         * Now continue with install
+         */
+        $.when(stage1).then(function () {
+            var ajax = false;
+            if (deleters == '') {
+                var ans = confirm("No test site files will be deleted. Proceed?");
+                if (ans) {
+                    ajax = true;
+                    deletions = [];
                 }
                 else {
-                    output += "Error: Bad Return Count";
-                }
-                var ans = confirm(output);
-                if (ans) {
-                    proceed = true;
+                    return false;
                 }
             }
             else {
-                proceed = true;
+                var userspec = deleters.split(",");
+                for (var i = 0; i < userspec.length; i++) {
+                    var item = userspec[i].trim();
+                    deletions.push(item);
+                }
+                ajax = true;
             }
-            if (proceed) {
-                var ajax = false;
-                if (deleters == '') {
-                    var ans = confirm("No additional test site files will be deleted");
-                    if (ans) {
-                        ajax = true;
-                        deletions = [];
+            if (ajax) {
+                $('#loading').show();
+                var postdata = { install: copyloc, "delete": deletions };
+                $.ajax({
+                    url: 'install.php',
+                    method: "post",
+                    data: postdata,
+                    success: function (result) {
+                        $('#loading').hide();
+                        alert(result);
+                    },
+                    error: function (jqXHR) {
+                        var newDoc = document.open();
+                        newDoc.write(jqXHR.responseText);
+                        newDoc.close();
                     }
-                    else {
-                        return;
-                    }
-                }
-                else {
-                    var userspec = deleters.split(",");
-                    for (var i = 0; i < userspec.length; i++) {
-                        var item = userspec[i].trim();
-                        deletions.push(item);
-                    }
-                    ajax = true;
-                }
-                if (ajax) {
-                    $('#loading').show();
-                    var postdata = { install: copyloc, "delete": deletions };
-                    $.ajax({
-                        url: 'install.php',
-                        method: "post",
-                        data: postdata,
-                        success: function (result) {
-                            $('#loading').hide();
-                            alert(result);
-                        },
-                        error: function (jqXHR) {
-                            var newDoc = document.open();
-                            newDoc.write(jqXHR.responseText);
-                            newDoc.close();
-                        }
-                    });
-                }
+                });
             }
             return;
-        }, 'json')
-            .fail(function () {
-            alert("Server Error");
         });
+        return;
     });
     /**
      * Routine to check if hike page links in 'References' still work...
