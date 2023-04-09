@@ -366,20 +366,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2023-04-05 15:00:00'),
-('2','CLUSHIKES','4060861211','2023-04-05 15:00:00'),
-('3','CLUSTERS','1403640486','2023-04-05 15:00:00'),
-('4','EGPSDAT','0','2023-04-05 15:00:00'),
-('5','EHIKES','1409032044','2023-04-05 15:00:00'),
-('6','EREFS','0','2023-04-05 15:00:00'),
-('7','ETSV','2858521055','2023-04-05 15:00:00'),
-('8','FAVORITES','3651041965','2023-04-05 15:00:00'),
-('9','GPSDAT','1015009886','2023-04-05 15:00:00'),
-('10','HIKES','937721515','2023-04-05 15:00:00'),
-('11','LOCKS','0','2023-04-05 15:00:00'),
-('12','REFS','1481688899','2023-04-05 15:00:00'),
-('13','TSV','758890024','2023-04-05 15:00:00'),
-('14','USERS','3781408669','2023-04-05 15:00:00');
+('1','BOOKS','2674158859','2023-04-08 17:37:08'),
+('2','CLUSHIKES','254447795','2023-04-08 17:37:08'),
+('3','CLUSTERS','3528998801','2023-04-08 17:37:08'),
+('4','EGPSDAT','0','2023-04-08 17:37:08'),
+('5','EHIKES','1409032044','2023-04-08 17:37:08'),
+('6','EREFS','0','2023-04-08 17:37:08'),
+('7','ETSV','2858521055','2023-04-08 17:37:08'),
+('8','FAVORITES','3651041965','2023-04-08 17:37:08'),
+('9','GPSDAT','1015009886','2023-04-08 17:37:08'),
+('10','HIKES','1735277057','2023-04-08 17:37:08'),
+('11','LOCKS','0','2023-04-08 17:37:08'),
+('12','REFS','1041369745','2023-04-08 17:37:08'),
+('13','TSV','3516546767','2023-04-08 17:37:08'),
+('14','USERS','1790517437','2023-04-08 17:37:08');
 
 
 
@@ -5662,7 +5662,7 @@ CREATE TABLE `USERS` (
   `an2` varchar(4096) DEFAULT NULL,
   `an3` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO USERS VALUES
@@ -5673,7 +5673,8 @@ INSERT INTO USERS VALUES
 ('11','KenUser','$2y$10$r9O0VTfVtV2IuQOJ.Q4BQ.1NOlqDshmK7aF89LV/MIo6qqtd8qUiC',NULL,'Fabeetz','Joe','hawk109@icloud.com',NULL,NULL,NULL,NULL,NULL),
 ('12','kshannon12','$2y$10$u/h4Hnb9Aw39bFe8bngg.uhgF8N6MR8Bw2OdaPgscZOCEWh3.Q0ce','2023-10-03','Shannon','Keith','kshannon1@yahoo.com','accept','1,2,3','5472b5a63727da5b608000ee10498959370b1ba7175a5fdcc3bd6cc807dd1c6984ffcb99a0549735b06b8710d7a978ca0aa758f64756fffc4b631a5d2e9c3bd74cf3d110f7cd1777722ed8ddc8d4bd3ad725737b111eb6829213d4e0c372e1a6f7b2531354fbf7783e9e06ceed3d43cc90c1bb6767ea5c9ef981ccb94036c8c5','2017a443801b89d485d56d00edcf4221f2b0f1f600337834f7604b198d13f1dfe78b63331b77f9aa5f7f4d0638219b97388b193fc13c2bc0d5050d90930eb32879493b82e9ab7352330d68940a2ed6d658d6394ce90cecba061f8e6381212881e5b304837959166e695679386fd376026c0838e9c26ffb9a83dbeab205264107','28c66cc5a085a9168ce7f1f8ba03bcc0cbad39a0a276f75d7ddb2c235e2a17722fa52852d80d81571dd50617a93700a7874e0f22bd4f42a739f37c9c1c2dceef699b69cd1163403553da59b8acc527b320bbe4d3e6a304facec9a0eca8041f7060ddeb136545ae1d2d2d843432ccf67d9276971dfe72c715f95a69007fc4544e'),
 ('13','Dpizarrojr','$2y$10$n7CNynR8sDBu111g.v9EHevWQR65yxsKbn38uTKriUXnqSlN.4zkm','2024-01-14','Pizarro','David','dpizarrojr@yahoo.com','accept','1,2,3','9043936c21dcd6849f97e47cb211a378f4c481eaa8357fbc2f6183147a4bfbf31b6a1c87b708ae3667d8751ed92aa67e1b8233b261048e4864af747c670125e34546734ce7d8bc21df66a90a2c73d36c8d74cb5aa14d6d998a0b7b71e0aa0ddff6f238f5bdedfa42a838c2fa599fbe62b48eba3b736ee082cdcae0c2fe5c4a25','a269b2b7b0e4ece36d110ea53215ea77c2bb8be622a06596d4070547cc5a7653aff9ce66a54c3ece7a792aed32e72a4c61dcca3b171466a05fefc71f095e4484b7ab78addfcb597b201483ff1471006e7840ce42be21f73f743423529df823a3ecffa26b278ce0340f811e546cb5972462962b1e110dd877524224aa21f05459','157eb22ccd63e3fbcd3c2773496e2275b70252e1ce28fc1918f0dfe39caf3c575774b8cfb430e6834e8e386748cd1c9c8076055dd3640a174376b96ad2eba2ab1d0aac80c1720bd940e17167b9a6183c502ed14139fc1d44093ebea0946d4cf5efbdc67b31d7be41cb307d5e685e0dd5b13b915f01800cae4a91972ab21d93d9'),
-('14','Rockcogar','$2y$10$CMDz4Bg.b0M4EQ9YGk7PVeqQVdbe8nb03H//dGYJPt6nAvIEZi4zS','2024-03-07','Cogar','Rock','rock_cogar@yahoo.com','accept','0,1,3','51019201f4847d27505e5b05c35813432798d8f30e624075fd955f62595f5c2b7ff20731d411f06588ba46a8ea54ee461b4ac92c3a75cc8c08e5834071ba1b644d82750a6790f83fef084dc1bb9d8929848e2ae317346545618256df216db19b1ce1dc9681c5c7a939869fa7e616e710dae1f593b7856f453e63cc19ccfd3797','ce85231ac9482cfcfbab5db9f846b5df14762f19c7844203c64a968f4beeffc76d739f5903964f352f86eb916ee73d0757690eda00377d91fd0b2155ec2ed36ca1473f2081b146ec0879506df56a82ae727eb131b807bf3f6cd59505def6733aeccfcd08736b850b511f32c5a417530a86367a1f54425deaf86c4fec689839ad','6bdd92852249ee83342fa00bb976602c1a73b137c6d1b1c67444e0d0d504725a75fc1d867bc6f67bc7aa2368b1e237e0846e43eabd3dd2a04fc41174b5ba5e869d319bf97c9e29b5a1f948883cb8b111ef95538fecded44b50f977cb0a687d919f4f6e25c9c0b7a70448316f8755bebea8a569a628a443056ab7461fbf48aed6');
+('14','Rockcogar','$2y$10$CMDz4Bg.b0M4EQ9YGk7PVeqQVdbe8nb03H//dGYJPt6nAvIEZi4zS','2024-03-07','Cogar','Rock','rock_cogar@yahoo.com','accept','0,1,3','51019201f4847d27505e5b05c35813432798d8f30e624075fd955f62595f5c2b7ff20731d411f06588ba46a8ea54ee461b4ac92c3a75cc8c08e5834071ba1b644d82750a6790f83fef084dc1bb9d8929848e2ae317346545618256df216db19b1ce1dc9681c5c7a939869fa7e616e710dae1f593b7856f453e63cc19ccfd3797','ce85231ac9482cfcfbab5db9f846b5df14762f19c7844203c64a968f4beeffc76d739f5903964f352f86eb916ee73d0757690eda00377d91fd0b2155ec2ed36ca1473f2081b146ec0879506df56a82ae727eb131b807bf3f6cd59505def6733aeccfcd08736b850b511f32c5a417530a86367a1f54425deaf86c4fec689839ad','6bdd92852249ee83342fa00bb976602c1a73b137c6d1b1c67444e0d0d504725a75fc1d867bc6f67bc7aa2368b1e237e0846e43eabd3dd2a04fc41174b5ba5e869d319bf97c9e29b5a1f948883cb8b111ef95538fecded44b50f977cb0a687d919f4f6e25c9c0b7a70448316f8755bebea8a569a628a443056ab7461fbf48aed6'),
+('15','rfoster29@gmail.com','$2y$10$qKAEEufIhrny0V50Z5OHeO026EE/mGQ7WOvQiBuKu/aIberbxqw0y',NULL,'Foster','Rick','rfoster29@gmail.com',NULL,NULL,NULL,NULL,NULL);
 
 
 
@@ -5686,7 +5687,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3013 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3078 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -6456,7 +6457,73 @@ INSERT INTO VISITORS VALUES
 ('3009','52.167.144.38','Google Chrome','Unknown','2023-04-03 07:21:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=178'),
 ('3010','52.167.144.77','Google Chrome','Unknown','2023-04-03 08:48:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=160'),
 ('3011','52.167.144.77','Google Chrome','Unknown','2023-04-03 10:28:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=251'),
-('3012','40.77.167.245','Google Chrome','Unknown','2023-04-04 02:52:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182');
+('3012','40.77.167.245','Google Chrome','Unknown','2023-04-04 02:52:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('3013','157.55.39.210','Google Chrome','Unknown','2023-04-06 07:57:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=224'),
+('3014','52.167.144.77','Google Chrome','Unknown','2023-04-06 09:21:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=69'),
+('3015','24.93.160.254','Mozilla Firefox','windows','2023-04-06 09:27:00','https://nmhikes.com:443/pages/home.php'),
+('3016','24.93.160.254','Mozilla Firefox','windows','2023-04-06 09:27:51','https://nmhikes.com:443/pages/about.php'),
+('3017','24.93.160.254','Google Chrome','windows','2023-04-06 09:28:51','https://nmhikes.com:443/pages/home.php'),
+('3018','98.230.193.181','Apple Safari','mac','2023-04-06 07:44:07','https://nmhikes.com:443/pages/home.php'),
+('3019','98.230.193.181','Apple Safari','mac','2023-04-06 07:44:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=296'),
+('3020','98.230.193.181','Apple Safari','mac','2023-04-06 07:45:28','https://nmhikes.com:443/pages/home.php'),
+('3021','98.230.193.181','Apple Safari','mac','2023-04-06 07:45:58','https://nmhikes.com:443/pages/home.php'),
+('3022','98.230.193.181','Apple Safari','mac','2023-04-06 07:53:58','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('3023','98.230.193.181','Apple Safari','mac','2023-04-06 08:21:41','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=168'),
+('3024','98.230.193.181','Apple Safari','mac','2023-04-06 08:23:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=225'),
+('3025','98.230.193.181','Apple Safari','mac','2023-04-06 08:23:27','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=264'),
+('3026','98.230.193.181','Apple Safari','mac','2023-04-06 08:24:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=299'),
+('3027','98.230.193.181','Apple Safari','mac','2023-04-06 08:25:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=298'),
+('3028','98.230.193.181','Apple Safari','mac','2023-04-06 08:27:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=217'),
+('3029','98.230.193.181','Apple Safari','mac','2023-04-06 08:28:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=23'),
+('3030','98.230.193.181','Apple Safari','mac','2023-04-06 08:29:53','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=35'),
+('3031','98.230.193.181','Apple Safari','mac','2023-04-06 08:31:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=97'),
+('3032','98.230.193.181','Apple Safari','mac','2023-04-06 08:33:26','https://nmhikes.com:443/pages/home.php'),
+('3033','206.85.159.48','Apple Safari','mac','2023-04-06 08:52:10','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('3034','166.199.151.112','Apple Safari','mac','2023-04-07 08:29:03','https://nmhikes.com:443/pages/landing.php'),
+('3035','166.199.151.112','Apple Safari','mac','2023-04-07 08:29:10','https://nmhikes.com:443/pages/responsiveTable.php'),
+('3036','166.199.151.112','Apple Safari','mac','2023-04-07 08:29:57','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=120'),
+('3037','166.199.151.112','Apple Safari','mac','2023-04-07 10:45:03','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=120'),
+('3038','206.85.159.48','Apple Safari','mac','2023-04-07 04:03:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('3039','149.56.150.68','Unknown','Unknown','2023-04-07 07:06:27','https://nmhikes.com:443/pages/home.php'),
+('3040','40.77.167.123','Google Chrome','Unknown','2023-04-08 02:53:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=199'),
+('3041','40.77.167.123','Google Chrome','Unknown','2023-04-08 03:17:48','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=61'),
+('3042','66.249.75.147','Google Chrome','Unknown','2023-04-08 01:20:05','https://nmhikes.com:443/pages/home.php'),
+('3043','52.167.144.86','Google Chrome','Unknown','2023-04-08 02:04:01','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=79'),
+('3044','172.58.61.24','Google Chrome','linux','2023-04-08 04:02:10','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=189'),
+('3045','172.58.61.24','Google Chrome','linux','2023-04-08 04:02:11','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=189&tbl='),
+('3046','172.58.61.24','Apple Safari','mac','2023-04-08 04:02:20','https://nmhikes.com:443/pages/landing.php'),
+('3047','172.58.61.24','Apple Safari','mac','2023-04-08 04:02:31','https://nmhikes.com:443/pages/responsiveTable.php'),
+('3048','172.58.61.24','Google Chrome','linux','2023-04-08 04:03:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=189'),
+('3049','172.58.61.24','Google Chrome','linux','2023-04-08 04:03:03','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=189&tbl='),
+('3050','172.58.61.24','Apple Safari','mac','2023-04-08 04:03:12','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35'),
+('3051','172.58.61.24','Google Chrome','linux','2023-04-08 04:03:33','https://nmhikes.com:443/pages/responsiveTable.php'),
+('3052','172.58.61.24','Google Chrome','linux','2023-04-08 04:04:02','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35');
+INSERT INTO VISITORS VALUES
+('3053','172.58.61.24','Apple Safari','mac','2023-04-08 04:05:20','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=15'),
+('3054','172.58.61.24','Google Chrome','linux','2023-04-08 04:05:32','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35'),
+('3055','172.58.61.24','Google Chrome','linux','2023-04-08 04:15:03','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=189'),
+('3056','172.58.61.24','Google Chrome','linux','2023-04-08 04:15:04','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=189&tbl='),
+('3057','172.58.61.24','Apple Safari','mac','2023-04-08 04:15:04','https://nmhikes.com:443/pages/responsiveTable.php'),
+('3058','172.58.61.24','Apple Safari','mac','2023-04-08 04:15:30','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35'),
+('3059','172.58.61.24','Apple Safari','mac','2023-04-08 04:18:59','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35'),
+('3060','172.58.61.24','Google Chrome','linux','2023-04-08 04:19:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=189'),
+('3061','172.58.61.24','Google Chrome','linux','2023-04-08 04:19:47','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=189&tbl='),
+('3062','172.58.61.24','Apple Safari','mac','2023-04-08 04:21:00','https://nmhikes.com:443/pages/responsiveTable.php'),
+('3063','172.58.61.24','Apple Safari','mac','2023-04-08 04:21:16','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35'),
+('3064','172.225.199.73','Apple Safari','mac','2023-04-08 04:29:39','https://nmhikes.com:443/pages/landing.php'),
+('3065','172.225.199.73','Apple Safari','mac','2023-04-08 04:29:42','https://nmhikes.com:443/pages/responsiveTable.php'),
+('3066','172.225.199.73','Apple Safari','mac','2023-04-08 04:29:52','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35'),
+('3067','172.225.199.73','Apple Safari','mac','2023-04-08 04:29:52','https://nmhikes.com:443/pages/responsiveTable.php'),
+('3068','172.225.198.123','Apple Safari','mac','2023-04-08 04:30:50','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35'),
+('3069','172.58.61.24','Apple Safari','mac','2023-04-08 04:35:39','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=35'),
+('3070','75.161.159.167','Apple Safari','mac','2023-04-08 04:44:27','https://nmhikes.com:443/gps/pages/landing.php'),
+('3071','75.161.159.167','Apple Safari','mac','2023-04-08 04:44:29','https://nmhikes.com:443/gps/pages/responsiveTable.php'),
+('3072','75.161.159.167','Apple Safari','mac','2023-04-08 04:44:35','https://nmhikes.com:443/gps/pages/responsivePage.php?hikeIndx=225'),
+('3073','75.161.159.167','Apple Safari','mac','2023-04-08 04:49:23','https://nmhikes.com:443/pages/home.php'),
+('3074','75.161.159.167','Apple Safari','mac','2023-04-08 04:49:55','https://nmhikes.com:443/gps/pages/landing.php'),
+('3075','75.161.159.167','Apple Safari','mac','2023-04-08 04:50:16','https://nmhikes.com:443/pages/landing.php'),
+('3076','75.161.159.167','Apple Safari','mac','2023-04-08 04:50:18','https://nmhikes.com:443/pages/responsiveTable.php'),
+('3077','75.161.159.167','Apple Safari','mac','2023-04-08 04:50:22','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=33');
 
 
 
