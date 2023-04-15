@@ -310,7 +310,7 @@ $('#redo_thumb').on('click', function(ev) {
         ctx1.putImageData(cropData, 0, 0);
         // prepare this for uploading and for forming thumb.jpg
         var dataurl = saveCanvas.toDataURL('image/jpeg', 0.7);
-        var blob1 = dataURItoBlob(dataurl); // this will be uploaded
+        var blob1 = canvasDataURItoBlob(dataurl); // this will be uploaded
         var imageSrc = urlCreator.createObjectURL(blob1);
         // create the smaller thumb image
         let thumbimg = document.createElement("img");
@@ -323,7 +323,7 @@ $('#redo_thumb').on('click', function(ev) {
             let tctx = <CanvasRenderingContext2D>tcanvas.getContext('2d');
             tctx.drawImage(loadedThmb, 0, 0, thWd, thHt);
             var tdataurl = tcanvas.toDataURL('image/jpg', .7);
-            var blob2 = dataURItoBlob(tdataurl);
+            var blob2 = canvasDataURItoBlob(tdataurl);
             var cpDat = new FormData();
             cpDat.append("prev", blob1);
             cpDat.append("thmb", blob2);
@@ -346,7 +346,7 @@ $('#redo_thumb').on('click', function(ev) {
             let tctx = <CanvasRenderingContext2D>tcanvas.getContext('2d');
             tctx.drawImage(loadedThmb, 0, 0, thWd, thHt);
             var tdataurl = tcanvas.toDataURL('image/jpg', .7);
-            var blob2 = dataURItoBlob(tdataurl);
+            var blob2 = canvasDataURItoBlob(tdataurl);
             var psDat = new FormData();
             psDat.append("prev", blob1);
             psDat.append("thmb", blob2);
