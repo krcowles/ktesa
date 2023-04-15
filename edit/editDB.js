@@ -368,10 +368,17 @@ $(function () {
     // Locale:
     var sel = $('#locality').text();
     /**
-     * All of a sudden, the  $('#area').val(sel); stopped working! I have
-     * switched to the following method, which seems to work:
+     * All of a sudden, the $('#area').val(sel) and the $('#clusters').val(orignme)
+     * stopped working! Select boxes continue to be a challenge - apparently now a
+     * string containing blanks must be quoted as a value. I have
+     * switched to the following method, which seems to work, and yet it cannot
+     * set the #area element to blank - but blank CAN be set for #clusters!???
      */
-    $('#area option[value=' + sel + ']').attr('selected', 'selected');
+    if (sel !== '') {
+        $('#area option[value="' + sel + '"]').attr('selected', 'selected');
+    } /* else {
+        $('#area').val('');
+    } */
     // Hike type:
     var htype = $('#ctype').text();
     $('#type').val(htype);
@@ -381,34 +388,18 @@ $(function () {
     // Exposure:
     var exposure = $('#expo').text();
     $('#sun').val(exposure);
-    // Waypoint icons when present in the gpx file:
-    var $gicons = $('[id^="gicn"]');
-    var $gbox = $('[id^="gselicon"]');
-    $gbox.each(function (indx) {
-        if ($gicons[indx].innerText == '') {
-            $(this).val('googlemini');
-        }
-        else {
-            $(this).val($gicons[indx].innerText);
-        }
-    });
-    // Waypoint icons when present in the database
-    var $wicons = $('[id^="dicn"]');
-    var $wbox = $('[id^="dselicon"]');
-    $wbox.each(function (indx) {
-        if ($wicons[indx].innerText == '') {
-            $(this).val('googlemini');
-        }
-        else {
-            $(this).val($wicons[indx].innerText);
-        }
-    });
-    $('#wpteds textarea').addClass('wpticonshift');
     /**
      * Cluster operation
      */
     var orignme = $('#group').text();
-    $('#clusters').val(orignme); // page load value
+    // setting the Cluster assignment select box
+    if (orignme !== '') {
+        $('#clusters option[value="' + orignme + '"]').attr('selected', 'selected'); // page load value
+    }
+    else {
+        $('#clusters').val('');
+    }
+    // associated displays
     if (orignme == '') { // no incoming assignment:
         $('#notclus').css('display', 'inline');
     }
@@ -484,6 +475,29 @@ $(function () {
         }
     });
     // End of cluster processing
+    // Waypoint icons when present in the gpx file:
+    var $gicons = $('[id^="gicn"]');
+    var $gbox = $('[id^="gselicon"]');
+    $gbox.each(function (indx) {
+        if ($gicons[indx].innerText == '') {
+            $(this).val('googlemini');
+        }
+        else {
+            $(this).val($gicons[indx].innerText);
+        }
+    });
+    // Waypoint icons when present in the database
+    var $wicons = $('[id^="dicn"]');
+    var $wbox = $('[id^="dselicon"]');
+    $wbox.each(function (indx) {
+        if ($wicons[indx].innerText == '') {
+            $(this).val('googlemini');
+        }
+        else {
+            $(this).val($wicons[indx].innerText);
+        }
+    });
+    $('#wpteds textarea').addClass('wpticonshift');
     $(window).on('resize', function () {
         $('.subbtn').remove();
         linewidth = $('#main').width() - listwidth;
