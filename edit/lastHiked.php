@@ -12,7 +12,11 @@ $getPixReq
 $photoDates = $pdo->prepare($getPixReq);
 $photoDates->execute([$hikeNo]);
 $mostRecent = $photoDates->fetch(PDO::FETCH_ASSOC);
-if ($mostRecent !== false && count($mostRecent) === 1) {
+/**
+ * NOTE: on localhost, $mostRecent is false when no photos; on server $mostRecent
+ * is an array with an empty value... The statement below captures both scenarios
+ */
+if ($mostRecent !== false && !empty($mostRecent['date'])) {
     $lastHiked = substr($mostRecent['date'], 0, 10); // dispose of 'time'
     $writeDateReq = "UPDATE `EHIKES` SET `last_hiked` = '{$lastHiked}' WHERE " .
         "`indxNo` = {$hikeNo};";
