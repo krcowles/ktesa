@@ -10,6 +10,8 @@
  */
 require "../php/global_boot.php";
 verifyAccess('ajax');
+require "gmail.php";
+
 
 $type = filter_input(INPUT_POST, 'form');
 $usertype = isset($_POST['reg']) ? "&reg=y&code=" : "&code=";
@@ -59,10 +61,22 @@ if ($email === false) {
         $message = $usermsg . $tmp_pass . "</h3><p>Your username is " 
             . $name . "</p>" . $href . $tmp_pass . "&ix=" . $id .
             '">Click here to complete</a>';
-        $headers = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-        // Mail it
-        mail($to, $subject, $message, $headers);
+        $mail->isHTML(true);
+        $mail->setFrom('webmaster@nmhikes.com', 'Do not reply');
+        $mail->addAddress($email, 'nmhikes.com User');
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+        @$mail->send();
+        /**
+         * Note: can't send on localhost:25
+         */
+        /*$email = (new Email())
+            ->from('admin@nmhikes.com')
+            ->to($to)
+            ->subject($subject)
+            ->html($message);
+        $mailer->send($email);    
+        */
         echo "OK";
     }
 }

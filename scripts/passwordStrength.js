@@ -48,6 +48,7 @@ var addKey = function (type, key) {
     if (total >= 10 && lc > 0 && uc > 0 && nm > 0 && sp > 0) {
         $('#wk').hide();
         $('#st').show();
+        $('#st').css('color', 'darkgreen');
         $('#showdet').css('display', 'none');
     }
 };

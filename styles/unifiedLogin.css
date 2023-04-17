@@ -289,6 +289,10 @@ button {
   padding: 5px;
 }
 
+#st {
+  display: none;
+}
+
 /* modals */
 .modal-header, .modal-footer {
   background-color: #dfe9e3;
@@ -304,4 +308,4 @@ input[id^=q] {
   margin-bottom: 4px;
 }
 
-/*# sourceMappingURL=unifiedLogin.scss.map */
+/*# sourceMappingURL=unifiedLogin.css.map */
