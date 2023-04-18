@@ -1,5 +1,4 @@
 declare var edit_mode: boolean; // only defined in editDB.php
-declare var phMaps: number[]; // supplied by hikePageTemplate.php or editDB.php
 /**
  * @fileoverview This script supplies routines to popup photo captions
  * over the top of each photo when mouseover occur. It is used either by
@@ -7,6 +6,7 @@ declare var phMaps: number[]; // supplied by hikePageTemplate.php or editDB.php
  * 
  * @author Ken Cowles
  * @version 1.0 Designed to reduce duplication of code in previous scripts
+ * @version 2.0 Redesigned method to show unmappable pix
  */
 // global vars
 var $photos: any; //JQuery<HTMLImageElement> | null;
@@ -103,8 +103,9 @@ function initActions() {
     $photos.css('z-index','1'); // keep pix in the background
     $photos.on('mouseover', function(ev: MouseEvent) {
         var targ = <HTMLImageElement>ev.target;
-        var selected = targ.alt;
-        picPop(selected);
+        var selected = targ.id;
+        var picCap = targ.alt;
+        picPop(selected, picCap);
     });
     // kill the popup when mouseout
     $photos.on('mouseout', function() {
@@ -128,26 +129,29 @@ function initActions() {
 /**
  *  The function that actually places the popup on the photo
  */
-function picPop(caption: string) {
+function picPop(tsvId: string, caption: string) {
+    // need picNo reference:
     var picNo = 0;
-    // which photo is being processed?
     for (var x=0; x<noOfPix; x++) {
         if (caption == captions[x]) {
             picNo = x;
             break;
         }
     }
+    var nomapper = false;
+    $('.mpguse').each(function() {
+        if ($(this).val() == tsvId && $(this).hasClass('nomap')) {
+            nomapper = true;
+            return;
+        }
+    });
     var htmlDesc = '<p class="capLine">' + caption;
-    if (phMaps.length > 0) {
-        if (phMaps[picNo] == 0) {
+    if (nomapper) {
             htmlDesc += '<br /><span style="color:brown">No Location Data: ' +
                 'Photo Cannot Be Mapped</span></p>';
         } else {
             htmlDesc += '</p>';
-        }
-    } else {
-        htmlDesc += '</p>';
-    }
+        } 
     $('.popupCap').css('display','block');
     $('.popupCap').css('position','absolute');
     $('.popupCap').css('top',capTop[picNo]);

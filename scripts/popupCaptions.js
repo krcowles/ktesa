@@ -6,6 +6,7 @@
  *
  * @author Ken Cowles
  * @version 1.0 Designed to reduce duplication of code in previous scripts
+ * @version 2.0 Redesigned method to show unmappable pix
  */
 // global vars
 var $photos; //JQuery<HTMLImageElement> | null;
@@ -101,8 +102,9 @@ function initActions() {
     $photos.css('z-index', '1'); // keep pix in the background
     $photos.on('mouseover', function (ev) {
         var targ = ev.target;
-        var selected = targ.alt;
-        picPop(selected);
+        var selected = targ.id;
+        var picCap = targ.alt;
+        picPop(selected, picCap);
     });
     // kill the popup when mouseout
     $photos.on('mouseout', function () {
@@ -126,24 +128,26 @@ function initActions() {
 /**
  *  The function that actually places the popup on the photo
  */
-function picPop(caption) {
+function picPop(tsvId, caption) {
+    // need picNo reference:
     var picNo = 0;
-    // which photo is being processed?
     for (var x = 0; x < noOfPix; x++) {
         if (caption == captions[x]) {
             picNo = x;
             break;
         }
     }
+    var nomapper = false;
+    $('.mpguse').each(function () {
+        if ($(this).val() == tsvId && $(this).hasClass('nomap')) {
+            nomapper = true;
+            return;
+        }
+    });
     var htmlDesc = '<p class="capLine">' + caption;
-    if (phMaps.length > 0) {
-        if (phMaps[picNo] == 0) {
-            htmlDesc += '<br /><span style="color:brown">No Location Data: ' +
-                'Photo Cannot Be Mapped</span></p>';
-        }
-        else {
-            htmlDesc += '</p>';
-        }
+    if (nomapper) {
+        htmlDesc += '<br /><span style="color:brown">No Location Data: ' +
+            'Photo Cannot Be Mapped</span></p>';
     }
     else {
         htmlDesc += '</p>';

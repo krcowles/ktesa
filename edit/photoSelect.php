@@ -1,10 +1,6 @@
 <?php
 /**
  * This module produces the html for placing photos with selection boxes.
- * REQUIREMENTS:
- *    - picPops.js is looking for a <p id="ptype"> on the caller's page
- *      identifying the page type: Edit (This may 
- *      be related to Flickr uploads; not currently required)
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -18,9 +14,6 @@ $picq = $pdo->prepare($picreq);
 $picq->execute(["hikeno" => $hikeNo]);
 if ($picq->rowCount() === 0) {
     $inclPix = 'NO';
-    $jsTitles = "''";
-    $jsDescs = "''";
-    $jsMaps = "''";
 } else {
     $inclPix = 'YES';
     $picarray = $picq->fetchAll(PDO::FETCH_ASSOC);
@@ -93,9 +86,9 @@ if ($picq->rowCount() === 0) {
     /**
      * Photo html creation:
      * Each photo and its checkboxes will be held in a wrapper for insertion
-     * in the CSS flex box.
+     * in the CSS flex box and div for jQueryUI sortable operation
      */ 
-    for ($i=0; $i<$picCount; $i++) { // added re-ordering via ul/li/a elements
+    for ($i=0; $i<$picCount; $i++) {
         $wrapper = '<li id="' . $tsvId[$i] . '" class="ui-sortable-handle">';
         $wrapper .= '<a href="javascript:void(0);" class="image_link" ' .
             'style="float:none;">';
@@ -120,18 +113,18 @@ if ($picq->rowCount() === 0) {
                 $mpbox .= '" />&nbsp;Map</span><br />' . PHP_EOL;
             }
         } else {
-            $mpbox = '<span class="nomap"><input class="mpguse" type="checkbox" '
-                . 'name="mapit[]" value="NO" onclick="return false;" ' .
-                'disabled="disabled" /><span style="color:gray">Map</span>' .
-                '<br /></span>';
+            $mpbox = '<span><input class="mpguse nomap" type="checkbox" ' .
+                'name="mapit[]" value="' . $tsvId[$i] . '" ' .
+                'onclick="return false;" disabled="disabled" />' .
+                '<span style="color:gray">Map</span></span><br />';
         }
         // 'delete photo' checkbox
         $delbox = '<input class="delp" type="checkbox" name="rem[]" value="' .
             $tsvId[$i] . '" />&nbsp;Delete<br />';
         // photo
-        $photo = '<img class="allPhotos" height="200px" width="' . 
-            $phWds[$i] . 'px" src="' . $picpath . $phPics[$i] . "_z.jpg" .
-            '" alt="' . $phPics[$i] . '" /><br />' . PHP_EOL;
+        $photo = '<img id="' . $tsvId[$i] . '" class="allPhotos" height="200px" ' .
+            'width="' . $phWds[$i] . 'px" src="' . $picpath . $phPics[$i] .
+            "_z.jpg" . '" alt="' . $phPics[$i] . '" /><br />' . PHP_EOL;
         // caption textarea
         $tawd = $phWds[$i] - 12; // padding and borders
         $caption = '<textarea class="capts" style="width:' . $tawd .
@@ -140,47 +133,9 @@ if ($picq->rowCount() === 0) {
         /**
          * Add all items to $wrapper: a self-contained <li> element which can be
          * reordered (via jquery ui 'sortable' widget)
-         * NOTE: If textarea is placed inside the div, for some reason it cannot
-         * be edited; hence it is placed outside the div but inside the <a> link
          */
         $wrapper .= $pgbox . $mpbox . $delbox . $photo . "</div></a>" .
             $caption . "</li>";
         $html .= $wrapper;
     }
-    // create the js arrays to be passed to the accompanying script:
-    $jsTitles = '[';
-    for ($n=0; $n<count($phPics); $n++) {
-        if ($n === 0) {
-            $jsTitles .= '"' . $phPics[0] . '"';
-        } else {
-            $jsTitles .= ',"' . $phPics[$n] . '"';
-        }
-    }
-    $jsTitles .= ']';
-    $jsDescs = '[';
-    for ($m=0; $m<count($phDescs); $m++) {
-        if ($m === 0) {
-            $jsDescs .= '"' . $phDescs[0] . '"';
-        } else {
-            $jsDescs .= ',"' . $phDescs[$m] . '"';
-        }
-    }
-    $jsDescs .= ']';
-    $jsMaps = '[';
-    for ($p=0; $p<count($pMap); $p++) {
-        if ($pMap[$p]) {
-            if ($p === 0) {
-                $jsMaps .= '1';
-            } else {
-                $jsMaps .= ',1';
-            }
-        } else {
-            if ($p === 0) {
-                $jsMaps .= '0';
-            } else {
-                $jsMaps .= ",0";
-            }
-        }
-    }
-    $jsMaps .= ']';
 }

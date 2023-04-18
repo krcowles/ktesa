@@ -70,7 +70,6 @@
     "ktesaUploader.ts",
     "makeThumbs.ts",
     "photoSelect.ts",
-    "picPops.ts",
     "refs.ts",
     "startNewPg.ts",
     "loadGPX.ts",
