@@ -179,7 +179,6 @@ if (mobile) {
     var c  = "<?=implode("|", $captions);?>";
     var as = "<?=implode("|", $aspects);?>";
     var w  = "<?=implode("|", $widths);?>";
-    var phMaps = [];
     <?php endif; ?>
 </script>
 <script src="../scripts/hikePageLayout.js"></script>

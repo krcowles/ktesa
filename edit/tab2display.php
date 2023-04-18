@@ -155,7 +155,6 @@
 
 <script type="text/javascript">
     var edit_mode = true;
-    var phMaps = <?=$jsMaps;?>; // cases where there is no lat/lng data
 </script>
 <script src="../scripts/popupCaptions.js"></script>
 <script src="photoSelect.js"></script>
