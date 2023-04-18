@@ -9,8 +9,8 @@
  * @license No license to date
  */
 require "../php/global_boot.php";
-verifyAccess('ajax');
 require "gmail.php";
+verifyAccess('ajax');
 
 
 $type = filter_input(INPUT_POST, 'form');
@@ -56,27 +56,17 @@ if ($email === false) {
         $savecodeReq = "UPDATE `USERS` SET `passwd` = ? WHERE `username` = ?;";
         $savecode = $pdo->prepare($savecodeReq);
         $savecode->execute([$hash, $name]);
-        $to  = $email;
         $subject = $subj;
-        $message = $usermsg . $tmp_pass . "</h3><p>Your username is " 
-            . $name . "</p>" . $href . $tmp_pass . "&ix=" . $id .
+        $message = $usermsg . $tmp_pass . "<br />Your username is " 
+            . $name . "</p></h3>" . $href . $tmp_pass . "&ix=" . $id .
             '">Click here to complete</a>';
+        $mail->setFrom('admin@nmhikes.com', 'Do not reply');
+        $mail->addAddress($email, $name);
+        $mail->addReplyTo("admin@nmhikes.com", "Admin");
         $mail->isHTML(true);
-        $mail->setFrom('webmaster@nmhikes.com', 'Do not reply');
-        $mail->addAddress($email, 'nmhikes.com User');
         $mail->Subject = $subject;
         $mail->Body = $message;
         @$mail->send();
-        /**
-         * Note: can't send on localhost:25
-         */
-        /*$email = (new Email())
-            ->from('admin@nmhikes.com')
-            ->to($to)
-            ->subject($subject)
-            ->html($message);
-        $mailer->send($email);    
-        */
         echo "OK";
     }
 }

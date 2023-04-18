@@ -10,6 +10,7 @@
  */
 session_start();
 require "../php/global_boot.php";
+require "../accounts/gmail.php";
 verifyAccess('ajax');
 
 $hikeNo = filter_input(INPUT_GET, 'hikeNo');
@@ -21,9 +22,11 @@ $user = $hikeid['usrid'];
 
 $subject = "Publish hike {$hikeNo}";
 $message = "<h2>User {$user} requests publication of hike no {$hikeNo}</h2>";
-$to = "krcowles29@gmail.com";
-$headers = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
 // Mail it
-mail($to, $subject, $message, $headers);
+$mail->isHTML(true);
+$mail->setFrom('admin@nmhikes.com', 'Do not reply');
+$mail->addAddress(ADMIN, 'Admin');
+$mail->Subject = $subject;
+$mail->Body = $message;
+@$mail->send();
 echo "OK";

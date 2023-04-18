@@ -19,8 +19,11 @@ $message = "<h2>User {$_SESSION['userid']}: {$_SESSION['username']} " .
     "requests the addition of a location: " . $newloc . " in " . $region .
     "</h2>";
 
-$to = "krcowles29@gmail.com";
-$headers = 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+$mail->isHTML(true);
+$mail->setFrom('admin@nmhikes.com', 'Do not reply');
+$mail->addAddress(ADMIN, 'Admin');
+$mail->Subject = $subject;
+$mail->Body = $message;
+@$mail->send();
 // Mail it
-mail($to, $subject, $message, $headers);
+

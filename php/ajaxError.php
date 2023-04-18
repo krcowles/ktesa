@@ -12,13 +12,18 @@
  */
 session_start();
 require "../php/global_boot.php";
+require "../accounts/gmail.php";
 verifyAccess('ajax');
 
 $errmsg = filter_input(INPUT_POST, 'err'); // always present
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : 'no user';
 
-$admin_msg = "User " . $username . " encountered an ajax error: " . 
+$message = "User " . $username . " encountered an ajax error: " . 
     PHP_EOL . $errmsg . PHP_EOL;
-$to = "krcowles29@gmail.com";
 $subject = "User ajax error";
-mail($to, $subject, $admin_msg);
+$mail->isHTML(true);
+$mail->setFrom('admin@nmhikes.com', 'Do not reply');
+$mail->addAddress(ADMIN, 'Admin');
+$mail->Subject = $subject;
+$mail->Body = $message;
+@$mail->send();

@@ -1,7 +1,7 @@
 <?php
 /**
- * This script is required to generate mail via gmail, since the InfinityFree
- * site restricts usage of php mail() for free uers.
+ * This script is required to generate mail via gmail; the host's
+ * php mail doesn't seem to work.
  * PHP Version 7.1
  *
  * @package Budget
@@ -24,5 +24,5 @@ $mail->Host = 'smtp.gmail.com'; // Which SMTP server to use.
 $mail->Port = 587; // Which port to use, 587 is the default port for TLS security.
 $mail->SMTPSecure = 'tls'; // Which security method to use. TLS is most secure.
 $mail->SMTPAuth = true;
-$mail->Username = "krcowles29@gmail.com";
+$mail->Username = ADMIN;
 $mail->Password = GMAIL_ID; // App Specific Password.

@@ -17,6 +17,7 @@
  */
 session_start();
 require "../php/global_boot.php";
+require "../accounts/gmail.php";
 require_once "../php/gpxFunctions.php";
 
 $hikeNo     = filter_input(INPUT_POST, 'hikeNo');
@@ -235,9 +236,9 @@ if ($addloc) {
     file_put_contents('localeBox.html', $areas);
     // add this locale to the db so that it will display on page refresh
     $loc_binding = $newloc;
-    // Now update areas.json:
-    $jsonareas = file('../json/areas.json');
+    // Now update areas.json or notify admin to update
     if (!empty($newlat) && !empty($newlng)) {
+        $jsonareas = file('../json/areas.json');
         $locobj = [
             '        {"loc": "' . $newloc . '", "lat": ' . $newlat .
             ', "lng": ' . $newlng . '},' . PHP_EOL

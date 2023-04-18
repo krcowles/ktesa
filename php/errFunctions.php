@@ -7,6 +7,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require "../accounts/gmail.php";
 /*if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -186,10 +187,14 @@ function errorEmail($msg)
 {
     date_default_timezone_set('America/Denver');
     $user = isset($_SESSION['username']) ? $_SESSION['username'] : 'no_user';
-    $to = "krcowles29@gmail.com";
     $subject = "Production error encountered";
     $message = "User " . $user . " encountered the following error on " .
         date("Y-m-d G:i:s") . PHP_EOL . $msg;
     // Mail it
-    mail($to, $subject, $message);
+    $mail->isHTML(true);
+    $mail->setFrom('admin@nmhikes.com', 'Do not reply');
+    $mail->addAddress(ADMIN, 'Admin');
+    $mail->Subject = $subject;
+    $mail->Body = $message;
+    @$mail->send();
 }
