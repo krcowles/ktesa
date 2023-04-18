@@ -26,7 +26,9 @@ $noincludes = isset($_POST['deladd']) ? $_POST['deladd'] : false;
 $addfiles   = array('addgpx1', 'addgpx2', 'addgpx3');  
 $addloc     = isset($_POST['addaloc']) ? true : false; 
 $region     = filter_input(INPUT_POST, 'locregion'); 
-$newloc     = filter_input(INPUT_POST, 'userloc');        
+$newloc     = filter_input(INPUT_POST, 'userloc');
+$newlat     = filter_input(INPUT_POST, 'newloclat');
+$newlng     = filter_input(INPUT_POST, 'newloclng');      
 $usrmiles   = filter_input(INPUT_POST, 'usrmiles');  // registers user changes
 $usrfeet    = filter_input(INPUT_POST, 'usrfeet');   // registers user changes
 $_SESSION['uplmsg'] = ''; // return status to user on tab1
@@ -233,7 +235,18 @@ if ($addloc) {
     file_put_contents('localeBox.html', $areas);
     // add this locale to the db so that it will display on page refresh
     $loc_binding = $newloc;
-    include "requestNewLoc.php";  // advise admin to update areas.json
+    // Now update areas.json:
+    $jsonareas = file('../json/areas.json');
+    if (!empty($newlat) && !empty($newlng)) {
+        $locobj = [
+            '        {"loc": "' . $newloc . '", "lat": ' . $newlat .
+            ', "lng": ' . $newlng . '},' . PHP_EOL
+        ];
+        array_splice($jsonareas, 2, 0, $locobj);
+        file_put_contents('../json/areas.json', $jsonareas);
+    } else {
+        include "requestNewLoc.php";  // advise admin to update areas.json
+    }
 } else {
     $loc_binding = filter_input(INPUT_POST, 'locale'); // select box value
 }

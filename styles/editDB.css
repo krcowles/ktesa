@@ -306,13 +306,21 @@ span.brown {
   height: 34px;
 }
 
+#usrlat, #usrlng {
+  width: 116px;
+}
+
 #userloc {
+  width: 140px;
+}
+
+#userloc, #usrlat, #usrlng {
   height: 32px;
   font-size: 16px;
   background-color: lavenderblush;
 }
 
-#userloc:focus {
+#userloc:focus, #usrlat:focus, #usrlng:focus {
   background-color: papayawhip;
 }
 

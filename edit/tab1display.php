@@ -75,8 +75,10 @@ additional gpx file[s] to be displayed on the hike page map simultaneously
         <option value="South Central">South Central</option>
         <option value="West">West</option>
         <option value="Southwest">Southwest</option>
-    </select>&nbsp;&nbsp;New Location: <input id="userloc" type="text"
-        name="userloc" />
+    </select>
+    &nbsp;&nbsp;New Location: <input id="userloc" type="text" name="userloc" />
+    &nbsp;&nbsp;Decimal Latitude: <input id="usrlat" type="text" name="newloclat" />
+    &nbsp;&nbsp;Decimal Longitude: <input id="usrlat" type="text" name="newloclng" />
     <hr />
 </div>
 <br />
