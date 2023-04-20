@@ -17,6 +17,7 @@ $form   = filter_input(INPUT_GET, 'form');
 $code   = isset($_GET['code']) ? filter_input(INPUT_GET, 'code') : '';
 $ix     = isset($_GET['ix']) ? filter_input(INPUT_GET, 'ix') : false;
 $newusr = isset($_GET['reg']) ? true : false;
+$title   = "Query string missing!"; // otherwise error fct called
 if ($form === 'reg') {
     $title = "Complete Registration";
 } elseif ($form === 'renew') {
