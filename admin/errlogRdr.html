@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <title>Error Log Contents</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="Edit the selected hike" />
+    <meta name="author" content="Tom Sandberg and Ken Cowles" />
+    <meta name="robots" content="nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../scripts/jquery.js"></script>
+</head>
+<body>
+<textrea id="elog"></textrea>
+<script>
+$.ajax({
+    url: 'getErrorLog.php', 
+    dataType: "text",
+    success: function(txt) {
+        $('#elog').append(txt);
+    },
+    error: function() {
+        alert("No go");
+    }
+});
+</script>
+</body>
+</html>

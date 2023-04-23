@@ -196,6 +196,8 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         <button id="gpxClean" type="button" class="btn
             btn-secondary">Cleanup GPX/JSON Files</button>&nbsp;&nbsp;
             [removes gpx/json not specified in database]<br />
+        <button id="rdlog" type="button" 
+            class="btn btn-secondary">Read Error Log</button><br />
         <button id="pinfo" type="button" class="btn 
             btn-secondary">Php Info</button><br />
         <button id="addbk" type="button" class="btn 

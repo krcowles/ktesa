@@ -587,6 +587,10 @@ $(function () {
     $('#gpxClean').on('click', function () {
         window.open('cleanGpxJson.php', "_blank");
     });
+    // Read the ktesa error log
+    $('#rdlog').on('click', function () {
+        window.open('errlogRdr.html', "_blank");
+    });
     // PHP Info
     $('#pinfo').on('click', function () {
         window.open('phpInfo.php', "_blank");
