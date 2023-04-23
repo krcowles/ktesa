@@ -30,6 +30,7 @@ $newClusterPage = str_replace('id="clusters"', 'id="cpages"', $newClusterPage);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/startNewPg.css" type="text/css" rel="stylesheet" />
+    <?php require "../pages/iconLinks.html"; ?>
     <script src="../scripts/jquery.js"></script>
 </head>
 <body> 

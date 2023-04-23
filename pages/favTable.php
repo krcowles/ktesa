@@ -68,6 +68,7 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/home.css" type="text/css" rel="stylesheet" />
+    <?php require "../pages/iconLinks.html"; ?>
     <script src="../scripts/jquery.js"></script>
 </head>
 

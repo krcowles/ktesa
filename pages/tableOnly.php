@@ -29,6 +29,7 @@ $pageType = 'FullTable';
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/jquery-ui.css" rel="stylesheet" />
     <link href="../styles/tblPg.css" type="text/css" rel="stylesheet" />
+    <?php require "../pages/iconLinks.html"; ?>
     <script src="../scripts/jquery.js"></script>
     <script src="../scripts/jquery-ui.js"></script>
 </head>

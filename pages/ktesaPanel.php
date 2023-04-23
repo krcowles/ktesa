@@ -143,7 +143,9 @@ if (isset($_SESSION['userid'])) {
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="ktesaMenu">
-            <a class="navbar-brand" href="../pages/about.php">nmhikes.com:</a>
+            <a class="navbar-brand" href="../pages/about.php">
+                <img src="../images/nmboots.png" alt="Brand Icon" />
+            </a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#"
