@@ -8,7 +8,9 @@
  * @license None to date
  */
 require "../php/global_boot.php";
-$error_log = file("../../ktprivate/ktesa/ktesa.log");
+
+$log = $sitePrivateDir . "/public_html/ktesa.log";
+$error_log = file($log);
 foreach ($error_log as $line) {
     echo $line . "<br />";
 }
