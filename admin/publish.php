@@ -19,6 +19,7 @@ require "../php/global_boot.php";
 $hikeNo      = filter_input(INPUT_GET, 'hno');
 $clusterPage = isset($_GET['clus']) && $_GET['clus'] === 'y' ? true : false;
 $msgout      = '';
+$type        = 'Edited Page';
 
 // next hike no if published as brand new hike
 $last = "SELECT * FROM HIKES ORDER BY 1 DESC LIMIT 1;";
@@ -129,6 +130,7 @@ if ($msgout == '') {
     // Assign the hike number for the remaining tables based on status:
     if ($status === 0) { // this will be the newly added hikeno.
         $indxNo = $lastHikeNo + 1;
+        $type   = 'New Hike';
     } else { // this will be the already published hikeno
         $indxNo = $status;
     }
@@ -265,7 +267,7 @@ if ($msgout == '') {
     <?php else : ?>
         <p>E-Hike <?=$hikeNo;?> Has Been Released to the Main Site and 
             may now be viewed from the main page as hike no <?=$indxNo;?>
-            (<a href="<?=$newPage;?>">New Hike</a>)</p>
+            (<a href="<?=$newPage;?>"><?=$type;?></a>)</p>
         <p>Edited hike has been removed from the list of New/In-Edit Hikes</p>
     <?php endif; ?>
 </div>
