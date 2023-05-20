@@ -5,13 +5,9 @@
  * menu options.
  *
  * @author Ken Cowles
- * @version 2.0 Redesigned login for security improvement (script formerly
- * called getLogin.js)
- * @version 2.1 Added mobile platform detection for responsive design
- * @version 3.0 Typescripted, with some type errors corrected
- * @version 4.0 Reworked for new bootstrap navbar on non-mobile platforms
  * @version 5.0 Updated security w/encryption and 2FA
  * @version 5.1 Add disable to 'Continue Edits' and 'Publish Request' as approp.
+ * @version 5.2 Added 'Membership Benefits' icon to navbar
  */
 var cookies = navigator.cookieEnabled ? true : false;
 var cookie_info = document.getElementById('cookie_state');
@@ -24,6 +20,9 @@ if (active_member) {
     var user_cookie_choice = cookie_choice.innerText;
     // members will have the 'Contribute' menu items displayed
     $('#contrib').css('display', 'block');
+    // hide the member benefits star
+    $('#memspace').css('display', 'none');
+    $('#benefits').css('display', 'none');
     // enable admintools if admin logged in
     var adminState = document.getElementById('admin');
     if (adminState !== null) {
@@ -53,6 +52,8 @@ else {
     $('#chg').addClass('disabled');
     $('#updte_sec').addClass('disabled');
     $('#change_cookies').css('display', 'none');
+    // and favorites page
+    $('#favpg').addClass('disabled');
 }
 // check to see if cookies are enabled for the browser
 if (cookies) { // exception messages only: auto login may still occur

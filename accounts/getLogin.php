@@ -107,7 +107,7 @@ if (!$admin) {
     if ($user_ip === '91.240.118.252') { // Chang Way Enterprise
         die("Access not permitted");
     }
-    if ($user_ip !== 'no ipaddr' && $user_ip !== '127.0.0.1') {
+    if ($user_ip !== 'no ipaddr' && $user_ip !== '127.0.0.1' && $user_ip !== '::1') {
         $details 
             = json_decode(file_get_contents("http://ipinfo.io/{$user_ip}/json"));
         if ($details->country === 'RU') {
