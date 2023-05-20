@@ -7,6 +7,7 @@
  *
  * @version 6.0 Added filter & sort functions provided on navbar
  * @version 7.0 Added gpx file editing capability
+ * @version 7.1 Added 'Membership Benefits' to navbar
  */
 $(function () {
     // establish the page title in the logo's 'ctr' div
@@ -22,6 +23,10 @@ $(function () {
     var bymiles = new bootstrap.Modal(document.getElementById('bymiles'));
     var byloc = new bootstrap.Modal(document.getElementById('byloc'));
     var gpxedit = new bootstrap.Modal(document.getElementById('ged'));
+    var membens = new bootstrap.Modal(document.getElementById('membennies'));
+    var $benmo = $("<div id=movr style='border-style:solid;border-width:1px;border-radius:6px;" +
+        "border-color:darkslategray;background-color:khaki;padding-top:2px;padding-left:4px;" +
+        "color:darkslategray;'>Free Membership<br />Click for Benefits</div>");
     /**
      * This function counts the number of security questions and returns
      * true is correct, false (with user alers) if not
@@ -78,6 +83,27 @@ $(function () {
             $('#pubreqpg').addClass('active');
             break;
     }
+    /**
+     * Menu item locations are now set, so establish popup for member benefits
+     */
+    var starpos = $('#benefits').offset();
+    $benmo.css({
+        width: '140px',
+        height: '52px',
+        position: 'absolute',
+        left: starpos.left,
+        top: starpos.top + 40
+    });
+    $('#benefits').on('mouseover', function () {
+        $('body').append($benmo);
+    });
+    $('#benefits').on('mouseout', function () {
+        $benmo.remove();
+    });
+    $('#benefits').on('click', function (ev) {
+        ev.preventDefault();
+        membens.show();
+    });
     /**
      * Filter and Sort (navbar) operation:
      */

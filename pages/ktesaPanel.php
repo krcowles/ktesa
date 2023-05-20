@@ -230,6 +230,17 @@ if (isset($_SESSION['userid'])) {
                         href="#">Edit GPX File
                     </a>
                 </li>
+                </li>
+                <li id="memspace" class="nav-item">
+                    &nbsp;&nbsp;&nbsp;
+                </li>
+                <li id="benefits" class="nav-item">
+                    <a id="benies" class="nv-link active" aria-current="page"
+                        href="#">
+                        <img id="memben" src="../images/benies.png"
+                        alt="Member Benefits" />
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                         role="button" data-bs-toggle="dropdown"
@@ -253,7 +264,6 @@ if (isset($_SESSION['userid'])) {
                         <li><a id="updte_sec" class="dropdown-item" href="#">
                             Security Questions</a></li>
                     </ul>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                         role="button" data-bs-toggle="dropdown"
@@ -288,6 +298,31 @@ if (isset($_SESSION['userid'])) {
     <div id="rightside" class="logo_items">
         <img id="tmap" src="../images/trail.png" alt="trail map icon" />
         <p id="logo_right">w/Tom &amp; Ken</p>
+    </div>
+</div>
+<div id="membennies" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Membership Explained</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="ap" class="modal-body">
+            <p>Membership is <em>free</em>. And as a member, you can create
+                your own hike page, or edit an existing one. All you
+                need is a gpx track file(s), photos taken during the
+                hike, a good description, and external references, if
+                any (books, weblinks, blogs, etc).</p>
+            <p>Another benefit is that you can save 'favorites' and map
+                them on a separate page (Explore->Show Favorites)</p>
+            <p>Join now and start creating!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 <!-- login data -->

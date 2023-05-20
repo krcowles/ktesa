@@ -7,10 +7,12 @@ $modal:  #dfe9e3;
 .navbar {
     background-color: $navbar;
 }
+/* No longer a text item
 .navbar-brand {
     color: $brand !important;
     font-style: italic;
 }
+*/
 .nav-link {
     color: $link !important;
 }
@@ -53,6 +55,8 @@ ul.dropdown-menu {
     clear: both;
     margin-top: 4px;
     margin-bottom: 0px;
+    font-size: 18px;
+    font-weight: bold;
 }
 #rightside {
     float: right;
@@ -74,10 +78,6 @@ ul.dropdown-menu {
     margin-top: 4px;
     color: $navbar;
     z-index:5; }
-#ctr {
-    font-size: 18px;
-    font-weight: bold;
-}
 #logo_right {
     float: right;
     margin-right: 10px;
