@@ -193,6 +193,7 @@ function validateUser(user: string, password: string) {
                         $('#the_question').text(qdat.ques);
                         random = qdat.rindx;
                         question.show();
+                        $('#the_answer').trigger('focus');
                     }
                 }, 'json');
             } else if (json.status === "RENEW") {
