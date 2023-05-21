@@ -23,8 +23,8 @@ if (isset($_SESSION['userid'])) {
 } else {
     $user_ehikes = 0;
 }
-
 ?>
+
 <script type="text/javascript">
     var isMobile, isTablet, isAndroid, isiPhone, isiPad, mobile;
     isMobile = navigator.userAgent.toLowerCase().match(/mobile/i) ? 
@@ -70,68 +70,6 @@ if (isset($_SESSION['userid'])) {
         }
     }); 
 </script>
-<style type="text/css">
-/* New: Panel sub-menu styling */
-@media all and (min-width: 992px) {
-    .dropdown-menu li {
-        position: relative;
-    }
-    .nav-item .submenu { 
-        display: none;
-        position: absolute;
-        left:100%; top:-7px;
-    }
-    .nav-item .submenu-left { 
-        right:100%; left:auto;
-    }
-    .dropdown-menu > li:hover {
-        background-color: #f1f1f1
-    }
-    .dropdown-menu > li:hover > .submenu{
-        display: block;
-    }
-}
-/* desktop view .end */
-
-/* small devices */
-@media (max-width: 991px) {
-    .dropdown-menu .dropdown-menu{
-      margin-left:0.7rem; margin-right:0.7rem; margin-bottom: .5rem;
-    }
-}
-/* New: Filtering on Home Page */
-#homepgfilt {
-    display: none;
-}
-#misfromh, #misfroml {
-    width: 36px;
-    padding-left: 4px;
-}
-.spinicons {
-    display: inline-block;
-    position: relative;
-    top: 9px;
-}
-.uparw {
-    cursor: pointer;
-    width: 0px;
-    height: 0px;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 10px solid black;
-}
-.separator {
-    max-height: 4px;
-}
-.dwnarw {
-    cursor: pointer;
-    width: 0; 
-    height: 0; 
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 10px solid black;
-}
-</style>
 
 <!-- 'navbar-dark' class results in a light-colored collapsed icon ("hampurger") -->
 <p id="uhikes" style="display:none"><?=$user_ehikes;?></p>
