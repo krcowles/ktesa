@@ -9,7 +9,7 @@
  * @license No license to date
  */
 require_once "../accounts/getLogin.php";
-$policy = "../accounts/PrivacyPolicy.pdf";
+$policy = "../php/PrivacyPolicy.pdf";
 ?>
 <!-- navbar-dark cause light collapsed icon (hampurger) -->
 <nav id="nav" class="navbar navbar-expand-sm navbar-dark">
