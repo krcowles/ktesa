@@ -9,7 +9,8 @@
  * @license No license to date
  */
 require_once "../accounts/getLogin.php";
-$policy = "../accounts/PrivacyPolicy.pdf";
+$policy = urlencode("PrivacyPolicy.pdf");
+
 // imbedded MySQL 'COUNT' function crashing on server, but not on localhost...so:
 if (isset($_SESSION['userid'])) {
     $euser = $_SESSION['userid'];
@@ -212,9 +213,9 @@ if (isset($_SESSION['userid'])) {
                         <li><a id="aboutpg" class="dropdown-item"
                             href="../pages/about.php">About This Site</a>
                         </li>
-                        <li><a class="dropdown-item"
-                            href="../php/postPDF.php?doc=<?=$policy;?>"
-                            target="_blank">Privacy Policy</a>
+                        <li><a class="dropdown-item" 
+                            href="../php/postPDF.php?doc=<?=$policy;?>">
+                            Privacy Policy</a>
                         </li>
                         <li id="change_cookies"><a id="usrcookies"
                             class="dropdown-item" href="#">Accept Cookies</a>
