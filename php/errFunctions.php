@@ -7,11 +7,7 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-require "../accounts/gmail.php";
-/*if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-*/
+
 /**
  * Exception traces seem to get truncated, which isn't helpful! This
  * function expands the information so that it is not truncated...
@@ -185,6 +181,7 @@ function errorPage()
  */
 function errorEmail($msg)
 {
+    include "../accounts/gmail.php";
     date_default_timezone_set('America/Denver');
     $user = isset($_SESSION['username']) ? $_SESSION['username'] : 'no_user';
     $subject = "Production error encountered";
