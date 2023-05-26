@@ -11,6 +11,9 @@
  */
 session_start();
 require "../php/global_boot.php";
+if (!isset($_SESSION['userid'])) {
+    throw new Exception("No userid id - session expired or illegal access");
+}
 $userid = $_SESSION['userid'];
 
 $age = filter_input(INPUT_GET, 'age');

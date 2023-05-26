@@ -74,6 +74,9 @@ $basic = "SELECT * FROM {$htable} WHERE indxNo = :indxNo";
 $basicPDO = $pdo->prepare($basic);
 $basicPDO->execute(["indxNo" => $hikeIndexNo]);
 $row = $basicPDO->fetch(PDO::FETCH_ASSOC);
+if (empty($row)) {
+    throw new Exception("Hike index {$hikeIndexNo} not found");
+}
 $hikeTitle      = $row['pgTitle'];
 $hikeLocale     = $row['locale'];
 $hikeGroup      = $tbl === 'new' ? $row['cname'] : '';

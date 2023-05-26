@@ -35,7 +35,8 @@ if (!empty($curr_gpx) && file_exists($gpxloc)) {
     }
 }
 
-$wptedits = '';
+$wptedits = '<p><strong>Use "Parking" icon when trail begins very close
+to parking area</strong></p>';
 
 // Header when no waypoints exist yet:
 $noPrevious = <<<NEWPTS
@@ -70,6 +71,7 @@ $icons = <<<WPTICONS
     <option value="Flag, Green">Green Flag</option>
     <option value="Flag, Yellow">Yellow Flag</option>
     <option value="Trail Head">Hiker</option>
+    <option value="Parking Area">Parking</option>
     <option value="Triangle, Red">Red Triangle</option>
     <option value="Triangle, Yellow">Yellow Triangle</option>
 </select>
