@@ -208,6 +208,16 @@ if ($('.gpxview').length) {
         });
     });
 }
+if ($('.gpxmap').length) {
+    $('.gpxmap').each(function() {
+        $(this).on('click', function(ev) {
+            ev.preventDefault();
+            let path = <string>$(this).attr('href');
+            
+            window.open(path, "_blank");
+        });
+    });
+}
 // If there is a kml file, process it via displayKml.php
 if ($('.mapfile').length) {
     $('.mapfile').each(function() {

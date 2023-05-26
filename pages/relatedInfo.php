@@ -147,7 +147,7 @@ foreach ($gpsData as $row) {
                 '&nbsp;&nbsp;' . ' <a href="' .
                 $url . '" download>Download</a>&nbsp;&nbsp;<a class="gpxview" ' .
                 'href="' .$url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
-                '<a href="' . $mapLink . 
+                '<a class="gpxmap" href="' . $mapLink . 
                 '" target="_blank">View as Map</a></li>' . PHP_EOL;
         } else {
             $gpsHtml .= '<li>' . $row['label'] . '&nbsp;<a class="mapfile" href="' .
