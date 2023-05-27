@@ -141,14 +141,20 @@ foreach ($gpsData as $row) {
             } else {
                 $age = 'old';
             }
+            /**
+             * NOTE: fullPgMapLink.php expects the gpx files to be indicated
+             * without the preliminary '../gpx/'
+             */
+            $fmp_url = str_replace('../gpx/', '', $url);
             $mapLink = "../maps/fullPgMapLink.php?maptype=extra&" .
-                "hno={$hikeIndexNo}&hike={$hikeTitle}&gpx={$url}&tbl={$age}";
+                "hno={$hikeIndexNo}&hike={$hikeTitle}&gpx={$fmp_url}&tbl={$age}";
+            // Links for each gpsData row: 'Download', 'View as File', 'View as Map'
             $gpsHtml .= '<li class="gpslnks">' . $row['clickText'] .
-                '&nbsp;&nbsp;' . ' <a href="' .
-                $url . '" download>Download</a>&nbsp;&nbsp;<a class="gpxview" ' .
-                'href="' .$url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
-                '<a href="' . $mapLink . 
-                '" target="_blank">View as Map</a></li>' . PHP_EOL;
+                '&nbsp;&nbsp; <a href="' . $url .
+                '" download>Download</a>&nbsp;&nbsp;<a class="gpxview" href="' .
+                $url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
+                '<a href="' . $mapLink . '" target="_blank">View as Map</a></li>' .
+                PHP_EOL;
         } else {
             $gpsHtml .= '<li>' . $row['label'] . '&nbsp;<a class="mapfile" href="' .
                 $url . '" target="_blank">' . $row['clickText'] . '</a></li>' .
