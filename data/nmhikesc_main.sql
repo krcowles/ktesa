@@ -89,6 +89,7 @@ INSERT INTO CLUSHIKES VALUES
 ('2','6','Y','1'),
 ('3','7','Y','1'),
 ('4','8','Y','1'),
+('5','9','Y','1'),
 ('6','47','Y','5'),
 ('7','82','Y','2'),
 ('8','96','Y','6'),
@@ -183,9 +184,9 @@ INSERT INTO CLUSHIKES VALUES
 ('103','168','Y','42'),
 ('104','170','Y','30'),
 ('105','171','Y','43'),
-('106','173','Y','14'),
-('107','174','Y','32');
+('106','173','Y','14');
 INSERT INTO CLUSHIKES VALUES
+('107','174','Y','32'),
 ('108','175','Y','43'),
 ('109','176','Y','17'),
 ('110','177','Y','25'),
@@ -369,20 +370,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2023-05-26 10:01:52'),
-('2','CLUSHIKES','3932342407','2023-05-26 10:01:52'),
-('3','CLUSTERS','3220122918','2023-05-26 10:01:52'),
-('4','EGPSDAT','0','2023-05-26 10:01:52'),
-('5','EHIKES','1409032044','2023-05-26 10:01:52'),
-('6','EREFS','0','2023-05-26 10:01:52'),
-('7','ETSV','2858521055','2023-05-26 10:01:52'),
-('8','FAVORITES','3651041965','2023-05-26 10:01:52'),
-('9','GPSDAT','1140033002','2023-05-26 10:01:52'),
-('10','HIKES','2516906558','2023-05-26 10:01:52'),
-('11','LOCKS','0','2023-05-26 10:01:52'),
-('12','REFS','517778236','2023-05-26 10:01:52'),
-('13','TSV','50109279','2023-05-26 10:01:52'),
-('14','USERS','1998519481','2023-05-26 10:01:52');
+('1','BOOKS','2674158859','2023-05-28 11:16:55'),
+('2','CLUSHIKES','242581473','2023-05-28 11:16:55'),
+('3','CLUSTERS','3220122918','2023-05-28 11:16:55'),
+('4','EGPSDAT','0','2023-05-28 11:16:55'),
+('5','EHIKES','1409032044','2023-05-28 11:16:55'),
+('6','EREFS','0','2023-05-28 11:16:55'),
+('7','ETSV','2858521055','2023-05-28 11:16:55'),
+('8','FAVORITES','3651041965','2023-05-28 11:16:55'),
+('9','GPSDAT','1140033002','2023-05-28 11:16:55'),
+('10','HIKES','2516906558','2023-05-28 11:16:55'),
+('11','LOCKS','0','2023-05-28 11:16:55'),
+('12','REFS','517778236','2023-05-28 11:16:55'),
+('13','TSV','50109279','2023-05-28 11:16:55'),
+('14','USERS','1998519481','2023-05-28 11:16:55');
 
 
 
@@ -5787,7 +5788,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3411 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3423 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -6959,7 +6960,19 @@ INSERT INTO VISITORS VALUES
 ('3407','172.58.143.38','Mozilla Firefox','linux','2023-05-25 09:50:29','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
 ('3408','207.46.13.223','Google Chrome','Unknown','2023-05-26 03:40:13','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
 ('3409','52.167.144.152','Google Chrome','Unknown','2023-05-26 06:27:01','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
-('3410','174.50.94.29','Apple Safari','mac','2023-05-26 07:27:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=132');
+('3410','174.50.94.29','Apple Safari','mac','2023-05-26 07:27:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=132'),
+('3411','52.167.144.148','Google Chrome','Unknown','2023-05-26 03:34:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=252'),
+('3412','75.161.37.126','Mozilla Firefox','mac','2023-05-26 06:35:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=120'),
+('3413','75.161.37.126','Mozilla Firefox','mac','2023-05-26 06:41:14','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=120'),
+('3414','75.161.37.126','Mozilla Firefox','mac','2023-05-26 06:45:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=120'),
+('3415','66.249.72.164','Google Chrome','linux','2023-05-27 07:07:58','https://nmhikes.com:443/pages/landing.php'),
+('3416','173.239.224.178','Apple Safari','mac','2023-05-27 07:19:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=200'),
+('3417','173.239.224.196','Apple Safari','mac','2023-05-27 07:21:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=200'),
+('3418','75.161.37.126','Mozilla Firefox','mac','2023-05-27 08:12:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=120'),
+('3419','207.46.13.223','Google Chrome','Unknown','2023-05-27 12:14:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=70'),
+('3420','52.167.144.144','Google Chrome','Unknown','2023-05-27 10:54:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=199'),
+('3421','216.147.122.165','Apple Safari','mac','2023-05-28 06:23:10','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('3422','52.167.144.144','Google Chrome','Unknown','2023-05-28 09:39:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=79');
 
 
 
