@@ -1,17 +1,13 @@
 <?php
 /**
- * This module checks a database for changes that have occurred since the
- * last reload. ]
+ * This module checks a database for resident changes that have occurred
+ * since the last time checksums were generated.
  * PHP Version 7.4
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-// Note: all `Checksums` creation dates are identical, so just check first entry:
-$getDateReq = "SELECT `creation` FROM `Checksums` WHERE `indx`='1';";
-$getDate = $pdo->query($getDateReq)->fetch(PDO::FETCH_ASSOC);
-$lastchk = $getDate['creation'];
 // Get the current checksums
 $getSumsReq = "SELECT `name`,`chksum` FROM `Checksums`;";
 $getSums = $pdo->query($getSumsReq)->fetchAll(PDO::FETCH_KEY_PAIR);
@@ -28,15 +24,16 @@ $allTables = $pdo->query($allTablesReq)->fetchAll(PDO::FETCH_COLUMN);
 $obs     = [];  // the table name in `Checksums` is no longer active
 $missing = [];  // the table name in the db has no `Checksums` entry
 $nomatch = [];  // this table has a changed value for checksum
-$alerts['newuser'] = 'no';
-$alerts['ehikes']  = 'no';
+$alerts['newuser'] = 'no'; // a new user has been added to USERS
+$alerts['ehikes']  = 'no'; // there are EHIKES present in resident db
+$alerts['usrehk']  = 'no'; // a non-admin user has an EHIKE present
 foreach ($chkTables as $ctbl) {
     if (!in_array($ctbl, $allTables)) {
         array_push($obs, $ctbl);
     }
 }
 foreach ($allTables as $tbl) {
-    // NOTE: For a reload, the only table not updated is VISITORS
+    // NOTE: For a reload, the only table not reloaded is VISITORS
     if ($tbl !== 'Checksums' && $tbl !== 'VISITORS') {
         if (!in_array($tbl, $chkTables)) {
             array_push($missing, $tbl);
@@ -47,16 +44,18 @@ foreach ($allTables as $tbl) {
             if ($tblsum[1] !== $chkValues[$tbl_loc]) {
                 array_push($nomatch, $tbl);
                 if ($tbl === 'EHIKES') {
-                    // check to see if this is a non-admin user
+                    $alerts['ehikes'] = 'yes';
+                    // identify any non-admin users
                     $whoReq = "SELECT `usrid` FROM `EHIKES`;";
                     $userids = $pdo->query($whoReq)->fetchAll(PDO::FETCH_COLUMN);
-                    if (count($userids) > 0
-                        && !in_array('1', $userids) && !in_array('2', $userids)
-                    ) {
-                        $alerts['ehikes'] = 'yes';
-                    } else {
-                        $alerts['ehikes'] = 'no';
-                    }    
+                    $allusers = count($userids);
+                    $tally = array_count_values($userids);
+                    $admin1 = isset($tally['1']) ? $tally['1'] : 0;
+                    $admin2 = isset($tally['2']) ? $tally['2'] : 0;
+                    $admins = $admin1 + $admin2;
+                    if ($allusers - $admins > 0) {
+                        $alerts['usrehk'] = 'yes';
+                    }   
                 }
                 if ($tbl === 'USERS') {
                     $alerts['newuser'] = 'yes';                }

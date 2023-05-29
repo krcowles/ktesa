@@ -1,5 +1,6 @@
 declare var hostIs: string;
 declare var server_loc: string;
+declare var dbState: string;
 declare var auth: string;
 declare var nopix: string;
 interface InputFiles extends EventTarget {
@@ -279,6 +280,7 @@ $('#lst').on('click', function() {
  * presented to the admin in the form of a modal (id=chksum_results).
  * 1. The current db may have changed since the last reload
  * 2. The new db may have critical differnces that need to be communicated
+ * ALSO: When reloading the test db, checks are not performed.
  */
 // -------------- reload functions ------------
 function checkChecksums(deferred:JQueryDeferred<void>) {
@@ -287,18 +289,20 @@ function checkChecksums(deferred:JQueryDeferred<void>) {
         method: 'get',
         dataType: 'json',
         success: function(result) {
+            $('#last_load').empty();
             let obs = result.obs;
             let missing = result.missing;
             let nomatch = result.nomatch;
             let alerts = result.alerts;
-            if (obs[0] === 'none' && missing[0] === 'none' && nomatch[0] === 'none'
-            && alerts['newuser'] === 'no' && alerts['ehikes'] === 'no') {
-                // don't display modal
-                deferred.resolve();
-            } else {
-                setChksumModal(obs, missing, nomatch, alerts['newuser'], alerts['ehikes']);             
-                deferred.resolve();
-            }
+            if (
+                !(obs[0] === 'none' && missing[0] === 'none' && nomatch[0] === 'none'
+                    && alerts['newuser'] === 'no' && alerts['ehikes'] === 'no'
+                    && alerts['usrehk'] === 'no')
+            ) {
+                setChksumModal(obs, missing, nomatch, alerts['newuser'], 
+                    alerts['ehikes'], alerts['usrehk']);                
+            } 
+            deferred.resolve();
         },
         error: function(jqXHR) {
             deferred.reject();
@@ -309,7 +313,8 @@ function checkChecksums(deferred:JQueryDeferred<void>) {
     });
     return;
 }
-function setChksumModal(obs:string[], missing:string[], nomatch:string[], newuser:string, newehike:string) {
+function setChksumModal(obs:string[], missing:string[], nomatch:string[], newuser:string, 
+        newehikes:string, nonadmin:string) {
     var cklist = '';
     cklist += "<h5><em style='color:brown;'>Changes to the resident database since the " +
         "last reload</em></h5>";
@@ -335,13 +340,15 @@ function setChksumModal(obs:string[], missing:string[], nomatch:string[], newuse
         cklist += '</ul>';
     }
     if (newuser === 'yes') {
-        cklist += '<h5>The USERS table has changed</h5>';
+        cklist += '<h5>The USERS table has changed!</h5>';
     }
-    if (newehike  === 'yes') {
-        cklist += '<h5>A NEW nonadmin user has a hike in Edit</h5>';
+    if (newehikes  === 'yes') {
+        cklist += '<h5>NOTE: The EHIKES table has changed!</h5>';
+    }
+    if (nonadmin === 'yes') {
+        cklist += '<h5>At least one non-admin user has an EHIKE</h5>';
     }
     cklist += "<h5>Above items may be regenerated or lost during reload</h5>\n<hr />";
-    $('#last_load').empty();
     $('#last_load').append(cklist);
     return;
 }
@@ -358,90 +365,86 @@ function checkAgainstNewDB (deferred:JQueryDeferred<void>) {
         dataType: 'json',
         success: function(results) {
             // append messages to the modal, then display
-            if (results !== '') {
-                var cklist = "<h5><em style='color:brown;'>The sql file used for " +
-                    "reloading differs from the resident database</em></h5>";
-                let mismatch   = results.mismatch;
-                let not_in_new = results.not_in_new;
-                let not_in_old = results.not_in_old;
-                let new_users  = results.new_users;
-                let del_users  = results.del_users;
-                let new_hikes  = results.new_hikes;
-                let del_hikes  = results.del_hikes;
-                if (mismatch[0] === 'none' && not_in_new[0] === 'none' 
-                && not_in_old[0] === 'none' && new_users[0] === 'none'
-                && del_users[0] === 'none' && new_hikes[0] === 'none'
-                && del_hikes[0] === 'none') {
-                    if ($('#last_load').children().length !== 0) {
-                        chksum_results.show();
-                        // Modal hidden event fired
-                        $('#chksum_results').on('hidden.bs.modal', function () {
-                        deferred.resolve();
-                    });
-                    } else {
-                        deferred.resolve();
-                    }  
-                } else {
-                    if (mismatch[0] !== 'none') {
-                        cklist += '<h5>Checksums for the following tables differ</h5><ul>';
-                        for (let i=0; i<mismatch.length; i++) {
-                            cklist += '<li>' + mismatch[i] + '</li>';
-                        }
-                        cklist += '</ul>';
-                    }
-                    if (not_in_new[0] !== 'none') {
-                        cklist += '<h5>The following tables will no longer exist</h5><ul>';
-                        for (let i=0; i<not_in_new.length; i++) {
-                            cklist += '<li>' + not_in_new[i] + '</li>';
-                        }
-                        cklist += '</ul>';
-                    }
-                    if (not_in_old[0] !== 'none') {
-                        cklist += '<h5>The following tables will be added</h5><ul>';
-                        for (let i=0; i<not_in_old.length; i++) {
-                            cklist += '<li>' + not_in_old[i] + '</li>';
-                        }
-                        cklist += '</ul>';
-                    }
-                    if (new_users[0] !== 'none') {
-                        cklist += '<h5>The following users will be added</h5><ul>';
-                        for (let i=0; i<new_users.length; i++) {
-                            cklist += '<li>' + new_users[i] + '</li>';
-                        }
-                        cklist += '</ul>';
-                    }
-                    if (del_users[0] !== 'none') {
-                        cklist += '<h5>The following users will be deleted</h5><ul>';
-                        for (let i=0; i<del_users.length; i++) {
-                            cklist += '<li>' + del_users[i] + '</li>';
-                        }
-                        cklist += '</ul>';
-                    }
-                    if (new_hikes[0] !== 'none') {
-                        cklist += '<h5>The following EHIKES will be added</h5><ul>';
-                        for (let i=0; i<new_hikes.length; i++) {
-                            cklist += '<li>' + new_hikes[i] + '</li>';
-                        }
-                        cklist += '</ul>';
-                    }
-                    if (del_hikes[0] !== 'none') {
-                        cklist += '<h5>The following EHIKES will be deleted</h5><ul>';
-                        for (let i=0; i<del_hikes.length; i++) {
-                            cklist += '<li>' + del_hikes[i] + '</li>';
-                        }
-                        cklist += "</ul>";
-                    }
-                    $('#next_load').empty();
-                    $('#next_load').append(cklist);
+            $('#next_load').empty();
+            var cklist = "<h5><em style='color:brown;'>The sql file used for " +
+                "reloading differs from the resident database</em></h5>";
+            let mismatch   = results.mismatch;
+            let not_in_new = results.not_in_new;
+            let not_in_old = results.not_in_old;
+            let new_users  = results.new_users;
+            let del_users  = results.del_users;
+            let new_hikes  = results.new_hikes;
+            let del_hikes  = results.del_hikes;
+            if (mismatch[0] === 'none' && not_in_new[0] === 'none' 
+            && not_in_old[0] === 'none' && new_users[0] === 'none'
+            && del_users[0] === 'none' && new_hikes[0] === 'none'
+            && del_hikes[0] === 'none') {
+                if ($('#last_load').children().length !== 0) {
                     chksum_results.show();
                     // Modal hidden event fired
                     $('#chksum_results').on('hidden.bs.modal', function () {
                         deferred.resolve();
                     });
-                }
+                } else {
+                    deferred.resolve();
+                }  
             } else {
-                deferred.reject();
-            } 
+                if (mismatch[0] !== 'none') {
+                    cklist += '<h5>Checksums for the following tables differ</h5><ul>';
+                    for (let i=0; i<mismatch.length; i++) {
+                        cklist += '<li>' + mismatch[i] + '</li>';
+                    }
+                    cklist += '</ul>';
+                }
+                if (not_in_new[0] !== 'none') {
+                    cklist += '<h5>The following tables will no longer exist</h5><ul>';
+                    for (let i=0; i<not_in_new.length; i++) {
+                        cklist += '<li>' + not_in_new[i] + '</li>';
+                    }
+                    cklist += '</ul>';
+                }
+                if (not_in_old[0] !== 'none') {
+                    cklist += '<h5>The following tables will be added</h5><ul>';
+                    for (let i=0; i<not_in_old.length; i++) {
+                        cklist += '<li>' + not_in_old[i] + '</li>';
+                    }
+                    cklist += '</ul>';
+                }
+                if (new_users[0] !== 'none') {
+                    cklist += '<h5>The following users will be added</h5><ul>';
+                    for (let i=0; i<new_users.length; i++) {
+                        cklist += '<li>' + new_users[i] + '</li>';
+                    }
+                    cklist += '</ul>';
+                }
+                if (del_users[0] !== 'none') {
+                    cklist += '<h5>The following users will be deleted</h5><ul>';
+                    for (let i=0; i<del_users.length; i++) {
+                        cklist += '<li>' + del_users[i] + '</li>';
+                    }
+                    cklist += '</ul>';
+                }
+                if (new_hikes[0] !== 'none') {
+                    cklist += '<h5>The following EHIKES will be added</h5><ul>';
+                    for (let i=0; i<new_hikes.length; i++) {
+                        cklist += '<li>' + new_hikes[i] + '</li>';
+                    }
+                    cklist += '</ul>';
+                }
+                if (del_hikes[0] !== 'none') {
+                    cklist += '<h5>The following EHIKES will be deleted</h5><ul>';
+                    for (let i=0; i<del_hikes.length; i++) {
+                        cklist += '<li>' + del_hikes[i] + '</li>';
+                    }
+                    cklist += "</ul>";
+                }
+                $('#next_load').append(cklist);
+                chksum_results.show();
+                // Modal hidden event fired
+                $('#chksum_results').on('hidden.bs.modal', function () {
+                    deferred.resolve();
+                });
+            }
         },
         error: function(jqXHR) {
             deferred.reject();
@@ -469,17 +472,26 @@ $('#reload').on('click', function() {
     // check for the existence of a Checksums table
     let checksumsDef = $.Deferred();
     let newdbDef     = $.Deferred();
-    $.get("checksumTest.php", function(result) {
-        if (result === 'no') {
-            alert("No Checksum table currently exists");
-            checksumsDef.resolve();
-        } else {
-            checkChecksums(checksumsDef);
-        }
-    });
+    // When reloading the test db, it is not necessary to perform db checking
+    if (dbState !== 'test') {
+        $.get("checksumTest.php", function(result) {
+            if (result === 'no') {
+                alert("No Checksum table currently exists");
+                checksumsDef.resolve();
+            } else {
+                checkChecksums(checksumsDef);
+            }
+        });
+    } else {
+        checksumsDef.resolve();
+    }
     // after validating Checksums table exists (or not), check against new db (only if main)
     $.when(checksumsDef).then(function() {
-        checkAgainstNewDB(newdbDef);
+        if (dbState !== 'test') {
+            checkAgainstNewDB(newdbDef);
+        } else {
+            newdbDef.resolve();
+        }
     });
     $.when(newdbDef).then(function() {
         if (confirm("Do you really want to drop all tables and reload them?")) {
@@ -531,8 +543,10 @@ $('#dbchanges').on('click', function() {
         let nomatch = result.nomatch;
         let alerts = result.alerts;
         if (obs[0] !== 'none' || missing[0] !== 'none' || nomatch[0] !== 'none'
-        || alerts['newuser'] !== 'no' || alerts['ehikes'] !== 'no') {
-            setChksumModal(obs, missing, nomatch, alerts['newuser'], alerts['ehikes']);
+        || alerts['newuser'] !== 'no' || alerts['ehikes'] !== 'no'
+        || alerts['usrehk'] !== 'no') {
+            setChksumModal(obs, missing, nomatch,
+                alerts['newuser'], alerts['ehikes'], alerts['usrehk']);
             chksum_results.show();
         } else {
             alert("No differences found since last reload/install");

@@ -1,12 +1,7 @@
 <?php
 /**
- * This script is the essence of the action for loading all tables. It
- * can be called individually, or as a part of the reload action. NOTE:
- * if the sql file was created via a phpMyAdmin 'export', additional SQL
- * commands (ones not present when performing 'EXPORT ALL TABLES') may
- * be present and require modifications (e.g. a "COMMIT" statement at the
- * end of file, and/or C-style comment lines). The VISITORS table will not
- * have been dropped and will not be reloaded.
+ * This script is a virtual copy of the loader.php script except that
+ * it drops and reloads only the 'E' tables (see "query" below)
  * PHP Version 7.8
  * 
  * @package Ktesa

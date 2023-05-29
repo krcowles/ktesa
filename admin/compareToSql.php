@@ -13,12 +13,6 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-/**
- * If the current $dbState points to the test db, then there is no sense
- * in comparing  with the new db, as this module's method overwrites the
- * test db. A new 'compare' db could be created to resolve this scenario,
- * but has been deferred for now.
- */
 session_start();
 require "../php/global_boot.php";
 
@@ -37,8 +31,8 @@ $resSums      = array_values($residentChksums);
 $resUsersReq  = "SELECT `username` FROM `USERS`;";
 $resUsers     = $pdo->query($resUsersReq)->fetchAll(PDO::FETCH_COLUMN);
 // Page titles are guaranteed unique (usrid's are not!)
-$resEhikesReq = "SELECT `pgTitle`,`usrid` FROM `EHIKES`;";
-$resEhikes    = $pdo->query($resEhikesReq)->fetchAll(PDO::FETCH_KEY_PAIR);
+$resEhikesReq = "SELECT `pgTitle` FROM `EHIKES`;";
+$resEhikes    = $pdo->query($resEhikesReq)->fetchAll(PDO::FETCH_COLUMN);
 
 // LOAD sql fle
 $dbFile = "../data/nmhikesc_main.sql";
@@ -99,10 +93,13 @@ foreach ($ehike_data as $ehike) {
     $ehike_end   = strpos($ehike, "|", $ehike_start);
     $ehike_lgth  = $ehike_end - $ehike_start;
     $ehike_pg    = substr($ehike, $ehike_start, $ehike_lgth);
+    array_push($sqlEhikes, $ehike_pg);
+    /*
     $remainder   = substr($ehike, $ehike_end + 1);
     $hike_id_end = strpos($remainder, "|");
     $id          = substr($remainder, 0, $hike_id_end);
     $sqlEhikes[$ehike_pg] = $id;
+    */
 }
 // Users
 $sqlUsers = [];
@@ -148,7 +145,6 @@ for ($k=0; $k<count($sqlTbls); $k++) {
  * value (or difference) occurs in the USERS or EHIKES table, further
  * identify the responsible items.
  */
-
 for ($l=0; $l<count($resTbls); $l++) {
     // For every table that still resides in the new (sql) db:
     if (!in_array($resTbls[$l], $not_in_new)) {
@@ -156,18 +152,51 @@ for ($l=0; $l<count($resTbls); $l++) {
         if ($resSums[$l] !== $sqlSums[$sqlSumsLoc]) {
             $nomatch = "<h5>The checksums for {$resTbls[$l]} do not match</h5>";
             array_push($mismatched, $nomatch);
-            // if USERS or non-addmin EHIKES, what are the differences?
+            // if USERS or non-admin EHIKES, what are the differences?
             if ($resTbls[$l] === 'USERS') {
-                $new = array_diff($sqlUsers, $resUsers);
-                $new_users = array_values($new);
-                $del = array_diff($resUsers, $sqlUsers);
-                $del_users = array_values($del);
+                $nusers = array_diff($sqlUsers, $resUsers);
+                $new_users = array_merge($new_users, $nusers);
+                $dusers = array_diff($resUsers, $sqlUsers);
+                $del_users = array_merge($del_users, $dusers);
             } elseif ($resTbls[$l] === 'EHIKES') {
-                $nhikes = array_diff_assoc($sqlEhikes, $resEhikes);
-                $new_hikes = array_keys($nhikes);
-                $dhikes = array_diff_assoc($resEhikes, $sqlEhikes);
-                $del_hikes = array_keys($dhikes);
+                $nhikes = array_diff($sqlEhikes, $resEhikes);
+                $new_hikes = array_merge($new_hikes, $nhikes);
+                $dhikes = array_diff($resEhikes, $sqlEhikes);
+                $del_hikes = array_merge($del_hikes, $dhikes);
             }
+        }
+    }
+}
+/**
+ * The above assumes that any changes in the sql database had been 'registered'
+ * by means of the checksum, but that may not have happened, so: for USERS and
+ * EHIKES [ONLY], check again! Compare the actual data
+ */
+foreach ($resUsers as $usr) {
+    if (!in_array($usr, $sqlUsers)) {
+        if (!in_array($usr, $del_users)) {
+            array_push($del_users, $usr);
+        }
+    }
+}
+foreach ($resEhikes as $ehk) {
+    if (!in_array($ehk, $sqlEhikes)) {
+        if (!in_array($ehk, $del_hikes)) {
+            array_push($del_hikes, $ehk);
+        } 
+    }
+}
+foreach ($sqlUsers as $susr) {
+    if (!in_array($susr, $resUsers)) {
+        if (!in_array($susr, $new_users)) {
+            array_push($new_users, $susr);
+        }
+    }
+}
+foreach ($sqlEhikes as $sehk) {
+    if (!in_array($sehk, $resEhikes)) {
+        if (!in_array($sehk, $new_hikes)) {
+            array_push($new_hikes, $sehk);
         }
     }
 }

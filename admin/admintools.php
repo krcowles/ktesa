@@ -72,6 +72,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         });
         var hostIs = "<?=$_SERVER['SERVER_NAME'];?>";
         var server_loc = "<?=$server_loc;?>";
+        var dbState = "<?=$dbState;?>";
         var auth;
     </script>
 </head>
