@@ -268,7 +268,12 @@ if ($msgout == '') {
         <p>E-Hike <?=$hikeNo;?> Has Been Released to the Main Site and 
             may now be viewed from the main page as hike no <?=$indxNo;?>
             (<a href="<?=$newPage;?>"><?=$type;?></a>)</p>
-        <p>Edited hike has been removed from the list of New/In-Edit Hikes</p>
+        <p>Edited hike has been removed from the list of New/In-Edit Hikes and
+            checksums have been regenerated.
+        </p>
+        <script type="text/javascript">
+            $.get('manageChecksums.php', {action: 'gen'});
+        </script>
     <?php endif; ?>
 </div>
 
