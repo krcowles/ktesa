@@ -30,7 +30,7 @@ CREATE TABLE `EHIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO EHIKES VALUES
@@ -370,20 +370,20 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','2674158859','2023-05-28 11:16:55'),
-('2','CLUSHIKES','242581473','2023-05-28 11:16:55'),
-('3','CLUSTERS','3220122918','2023-05-28 11:16:55'),
-('4','EGPSDAT','0','2023-05-28 11:16:55'),
-('5','EHIKES','1409032044','2023-05-28 11:16:55'),
-('6','EREFS','0','2023-05-28 11:16:55'),
-('7','ETSV','2858521055','2023-05-28 11:16:55'),
-('8','FAVORITES','3651041965','2023-05-28 11:16:55'),
-('9','GPSDAT','1140033002','2023-05-28 11:16:55'),
-('10','HIKES','2516906558','2023-05-28 11:16:55'),
-('11','LOCKS','0','2023-05-28 11:16:55'),
-('12','REFS','517778236','2023-05-28 11:16:55'),
-('13','TSV','50109279','2023-05-28 11:16:55'),
-('14','USERS','1998519481','2023-05-28 11:16:55');
+('1','BOOKS','2674158859','2023-06-02 17:49:50'),
+('2','CLUSHIKES','242581473','2023-06-02 17:49:50'),
+('3','CLUSTERS','3220122918','2023-06-02 17:49:50'),
+('4','EGPSDAT','0','2023-06-02 17:49:50'),
+('5','EHIKES','1409032044','2023-06-02 17:49:50'),
+('6','EREFS','0','2023-06-02 17:49:50'),
+('7','ETSV','2858521055','2023-06-02 17:49:50'),
+('8','FAVORITES','3651041965','2023-06-02 17:49:50'),
+('9','GPSDAT','2960327432','2023-06-02 17:49:50'),
+('10','HIKES','260450826','2023-06-02 17:49:50'),
+('11','LOCKS','0','2023-06-02 17:49:50'),
+('12','REFS','517778236','2023-06-02 17:49:50'),
+('13','TSV','3332177975','2023-06-02 17:49:50'),
+('14','USERS','1998519481','2023-06-02 17:49:50');
 
 
 
@@ -398,7 +398,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 
 
@@ -442,7 +442,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=253 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=269 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO ETSV VALUES
@@ -459,7 +459,7 @@ CREATE TABLE `GPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=154 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO GPSDAT VALUES
@@ -518,7 +518,8 @@ INSERT INTO GPSDAT VALUES
 ('149','196','P','GPX:','../gpx/AltGallegosBoundary.gpx','Alternate Loop via 505-230A'),
 ('150','196','P','GPX:','../gpx/DoubleLoop-97.123.100.126-1654218061.gpx','Gallegos Double Loop'),
 ('151','196','P','GPX:','../gpx/GallegosBounday366-97.123.103.120-1678358514.gpx','Loop via 366'),
-('152','120','P','GPX:','../gpx/PalizaProposedActual.GPX','Proposed + Actual Track Data');
+('152','120','P','GPX:','../gpx/PalizaProposedActual.GPX','Proposed + Actual Track Data'),
+('153','319','P','MAP:','../maps/BridgeRoad.html-75.161.37.126-1685749333.html','Bridge Road Access');
 
 
 
@@ -551,7 +552,7 @@ CREATE TABLE `HIKES` (
   `eThresh` tinyint(2) DEFAULT NULL,
   `maWin` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=319 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=320 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO HIKES VALUES
@@ -865,7 +866,8 @@ INSERT INTO HIKES VALUES
 ('315','Peñasco Blanco','2','Lybrook','Out-and-back','7.70','200','Easy-Moderate','Visitor Centerr','Ancient Ruins and Canyon','Not Summer','Full sun','Penasco_Blanco-75.161.159.167-1680739499.gpx','Penasco_Blanco-75.161.159.167-1680739499.json','360628317','-1079660225','Peña270c34.jpg',NULL,NULL,'https://www.google.com/maps/dir//Parking+lot,+New+Mexico/@36.0381909,-108.0098291,17556m/data=!3m1!1e3!4m8!4m7!1m0!1m5!1m1!1s0x873ca8daa1a9da07:0xfe8399b70dbd35a0!2m2!1d-107.9652668!2d36.0621725',NULL,'<p>Chaco Canyon is the home of multiple ancient ruins dating back from 900 AD to 1150 AD. The <em><span style=\"color: #1428d2;\">Penasco Blanco Trail </span></em>heads out to the namesake ruins as it follows the base of the northeastern cliffs. The Penasco Blanco ruins can be seen on the opposite cliff wall as you approach. They constitute a large circle of houses and walls, in a straight line with Pueblo Bonito and Hungo Pavi.</p>\r\n<p>The trail itself has other points of interest: it passes Kin Kletso, a large complex of ancient houses, and the smaller Casa Chiquita. About a mile in is a long stretch of petroglyphs (about .4 miles) on the cliff walls. Later, approaching the ascent to Penasco Blanco, a pictograph is seen which depicts the supernova from 1054, as recorded in ancient Chinese texts.</p>\r\n<p>The cliffs hold their own beauty with a meandering wall, desert varnished edges, caves, and occasional balanced rocks. It is a trip well worth the effort.</p>','2023-04-01',NULL,NULL,NULL),
 ('316','Piedra Lumbre','2','San Luis','Loop','5.50','200','Med-Difficult','None','Hoodoos and Colorful Formations','Not Summer','Full sun','PiedraLumbre-75.161.159.167-1681307154.gpx','PiedraLumbre-75.161.159.167-1681307154.json','357105560','-1071733775','Piedaa7286.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.7105561,-107.1733776/@35.6992642,-107.1941271,13.02z','<p>&nbsp;The access to the location can be somewhat difficult and it is recommended to use all-wheel drive with sufficient clearance - the roads are not always maintained. There is no parking area for the hike, and the starting point is simply off-road on a large flat area adjacent to a cow path which marks the beginning of the trail.</p>','<p>The <span style=\"color: #1428d2;\"><em>Piedra Lumbre</em></span> area is very rich with hoodoos and fascinating geology, and is criss-crossed with multiple arroyos. The arroyos can be quite steep and not amenable to traversing, but the hike begins with a cow path that meanders somewhat gently down into the main <em>Arroyo Lumbre</em>. The opposite bank yieds an upward path that is also not challenging. From there, the hike leads to areas filled with astounding formations, colors, and hoodoos. Soon a ruins was encountered, though not an ancient one. It was, on this occasion, \'guarded\' by a group of curious deer. Following the indicated trail will take the hiker to several clusters of hoodoo-rich terrain, and also to steep and rocky cliffs and bluffs. The translation of \'Piedra Lumbre\' is \'Fire Stone\'.</p>\r\n<p><strong>IMPORTANT NOTE</strong>: At the yellow triangle indicated on the interactive map, the route is very steep and challenging - only experienced hikers should attempt the climb. If you are able to proceed beyond this point, another set of crazy rock formations awaits you. From there the hike loops back to the starting point. If you are <span style=\"text-decoration: underline;\">not</span> climbing the steep and rather loose, gravelly area up, you can turn back and further explore this amazing area, returning the same route you came in. This first part of the hike contains the largest set of unique formations. The rating of \'medium-difficult\' applies only to the steep section indicated, as the terrain is otherwise \'easy-moderate\'.</p>','2023-04-06',NULL,NULL,NULL),
 ('317','Mesita Blanca','2','Tohajiilee','Loop','3.00','350','Med-Difficult','None','Geological features and canyons','Not Summer','Full sun','MesitaBlanca-70.58.228.198-1681588539.gpx','MesitaBlanca-70.58.228.198-1681588539.json','351935625','-1070571619','Mesi145aae.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B011\'36.8%22N+107%C2%B003\'25.8%22W/@35.1931729,-107.0621446,1735m/data=!3m1!1e3!4m4!3m3!8m2!3d35.1935625!4d-107.057162!5m1!1e4','<p>&nbsp;In order to proceed to the point where this hike begins, a rugged four-wheel drive vehicle is required.</p>','<p>The <em><span style=\"color: #1428d2;\">Mesita Blanca</span></em> hike is not on any trail, nor does it appear in apps. It is largely an off-trail exploratory adventure, ascending the mesita where there are great vistas, and discovering slot canyons and odd geological features, as well as beautifully colored sandstones. The photos speak for themselves. You will most certainly be in solitude here with fascinating features to examine. Explorations outside of the displayed hike track are most certainly possible and may reveal more intriguing landscapes.</p>','2023-04-09',NULL,NULL,NULL),
-('318','Box Canyon','2','Abiquiu','Out-and-back','3.50','250','Moderate','Welcome Center','Colorful rock and canyons','Not Summer','Full sun','BoxCanyon-70.58.228.198-1681591638.gpx','BoxCanyon-70.58.228.198-1681591638.json','363310808','-1064723861','Box bbdd7a.jpg',NULL,NULL,'https://www.google.com/maps/place/Ghost+Ranch+Education+%26+Retreat+Center/@36.2974726,-106.5218395,12.64z/data=!4m14!1m7!3m6!1s0x8717e2c43b59b8b1:0x5ccab3f1f59da464!2sGhost+Ranch!8m2!3d36.3137133!4d-106.481966!16zL20vMDl0cnY1!3m5!1s0x8717e33c80a345e3:0xa10bcebfe538f0cc!8m2!3d36.3313342!4d-106.4730513!16s%2Fg%2F12hm76l5n',NULL,'<p>The <em>Ghost Ranch</em> retreat center is the point of departure for several <em>Ghost Ranch</em> trails. For this hike, <em><span style=\"color: #1428d2;\">Box Canyon</span></em>, the trail enters a beautiful canyon with towering, colorful mesas and bluffs. At the time this hike was taken, the stream was flowing, and must be crossed almost a dozen times en route. As the trail progresses, moderate scrambling is required to continue, and the trail seems to get a bit more rugged as you near the end. The hike takes you into an area that ventures in to National Forest property, and introduces you to a rather different landscape than the other <em>Ghost Ranch</em> hikes. It is scenic and well worth the trip.</p>','2023-04-10',NULL,NULL,NULL);
+('318','Box Canyon','2','Abiquiu','Out-and-back','3.50','250','Moderate','Welcome Center','Colorful rock and canyons','Not Summer','Full sun','BoxCanyon-70.58.228.198-1681591638.gpx','BoxCanyon-70.58.228.198-1681591638.json','363310808','-1064723861','Box bbdd7a.jpg',NULL,NULL,'https://www.google.com/maps/place/Ghost+Ranch+Education+%26+Retreat+Center/@36.2974726,-106.5218395,12.64z/data=!4m14!1m7!3m6!1s0x8717e2c43b59b8b1:0x5ccab3f1f59da464!2sGhost+Ranch!8m2!3d36.3137133!4d-106.481966!16zL20vMDl0cnY1!3m5!1s0x8717e33c80a345e3:0xa10bcebfe538f0cc!8m2!3d36.3313342!4d-106.4730513!16s%2Fg%2F12hm76l5n',NULL,'<p>The <em>Ghost Ranch</em> retreat center is the point of departure for several <em>Ghost Ranch</em> trails. For this hike, <em><span style=\"color: #1428d2;\">Box Canyon</span></em>, the trail enters a beautiful canyon with towering, colorful mesas and bluffs. At the time this hike was taken, the stream was flowing, and must be crossed almost a dozen times en route. As the trail progresses, moderate scrambling is required to continue, and the trail seems to get a bit more rugged as you near the end. The hike takes you into an area that ventures in to National Forest property, and introduces you to a rather different landscape than the other <em>Ghost Ranch</em> hikes. It is scenic and well worth the trip.</p>','2023-04-10',NULL,NULL,NULL),
+('319','Jemez Hoodoo Canyon','2','Jemez Springs','Loop','3.00','600','Difficult','None','Hoodoos and Colorful Rock','Not Summer','Full sun','JemezHoodoos-75.161.37.126-1685577850.gpx','JemezHoodoos-75.161.37.126-1685577850.json','357072200','-1066956200','Jemee04442.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.70722,-106.69562/@35.7009252,-106.7380108,12.99z?entry=ttu','<p>&nbsp;Access to Bridge Road is closed at the south end, so it is necessary to approach from the north. The road is well kept and does not present challenges to most vehicles. Please review the Bridge Road map in the GPS Data section below.</p>','<p>The <em><span style=\"color: #1428d2;\">Jemez Hoodoo Canyon Hike </span></em>is an off-trail adventure, and in this case begins from the top of the north end of the <em>Mesa de los Datiles</em> in the Jemez. The canyon appears to be bounded on the east by the <em>Mesa de los Palomeras</em>. The first half-mile traverses the mesa top and then drops down into the hoodoo-filled canyon. Please proceed with caution as the 300-foot drop can be loose and slippery.</p>\r\n<p>The variety of rock structures is quite fascinating, ranging from tent rocks, to pillars (sometimes with caprock balanced on top), to smooth colorful canyon walls. Returning to the mesa top can be difficult with loose gravel and sand and can require some scrambling over boulders.</p>\r\n<p>The return portion of this hike also presented pottery shards and worked obsidian chips. Though fascinating, <em>this is not a hike for beginners</em>.</p>','2023-05-29',NULL,NULL,NULL);
 
 
 
@@ -1969,7 +1971,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=11049 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11080 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -5746,7 +5748,23 @@ INSERT INTO TSV VALUES
 ('11038','120','Folder2','IMG_20171128_115508','Y','Y','A great view of the valley from above','357272472','-1066202444','1129','72157690299339355','2017-11-28 11:55:08','24840404168_e207dbd5da','1512','2688','','20'),
 ('11039','120','Folder2','IMG_20171128_115708','Y','N','Tower of power','357267333','-1066202833','1130','72157690299339355','2017-11-28 11:57:09','38659756706_a3f020c703','2688','1512','','21'),
 ('11040','120','Folder1','NewMexicoBlue','Y','Y','Tom and Bill against that incredible sky','357254250','-1066210777','1131','72157680666183383','2017-11-28 12:09:19','24994126497_66e6e976fe','2448','3264','','22'),
-('11041','120',NULL,'IMG_7661','Y','N','A wet section of the Paliza Creek trail','357209556','-1066169583','3814',NULL,'2023-05-25 10:09:07','IMG_7661','640','480',NULL,'23');
+('11041','120',NULL,'IMG_7661','Y','N','A wet section of the Paliza Creek trail','357209556','-1066169583','3814',NULL,'2023-05-25 10:09:07','IMG_7661','640','480',NULL,'23'),
+('11049','319',NULL,'IMG_6857','Y','N','Turkey like hoodoo','356995222','-1066933056','3815',NULL,'2023-05-29 10:25:27','IMG_6857','640','360',NULL,'2'),
+('11050','319',NULL,'IMG_6828','Y','Y','View from above','357032778','-1066953278','3816',NULL,'2023-05-29 09:49:16','IMG_6828','360','640',NULL,'0'),
+('11051','319',NULL,'IMG_6867','Y','Y','The canyon is lined with smooth steep walls','356993472','-1066935056','3817',NULL,'2023-05-29 10:31:15','IMG_6867','360','640',NULL,'3'),
+('11052','319',NULL,'IMG_6847','Y','Y','Entering hoodoo territory up close','356997861','-1066934139','3818',NULL,'2023-05-29 10:21:06','IMG_6847','360','640',NULL,'1'),
+('11053','319',NULL,'IMG_6894','Y','Y','Stark pillars of rock aboud','356978444','-1066965778','3819',NULL,'2023-05-29 10:50:23','IMG_6894','360','640',NULL,'8'),
+('11054','319',NULL,'IMG_6930','Y','Y','Unusual shapes appear in the canyon','356962028','-1066990139','3820',NULL,'2023-05-29 11:56:10','IMG_6930','360','640',NULL,'9'),
+('11055','319',NULL,'IMG_6875','Y','Y','Tent rocks are interspersed','356992556','-1066943361','3821',NULL,'2023-05-29 10:36:01','IMG_6875','360','640',NULL,'4'),
+('11056','319',NULL,'IMG_6891','Y','Y','Window to the sky','356977083','-1066958556','3822',NULL,'2023-05-29 10:47:12','IMG_6891','640','360',NULL,'7'),
+('11057','319',NULL,'IMG_6884','Y','Y','Another cap-rocked spire','356982806','-1066952139','3823',NULL,'2023-05-29 10:41:55','IMG_6884','360','640',NULL,'6'),
+('11058','319',NULL,'IMG_6918','Y','Y','Beautiful Spring flowers soften the view','356951139','-1066993944','3824',NULL,'2023-05-29 11:11:19','IMG_6918','360','640',NULL,'10'),
+('11059','319',NULL,'IMG_6876','Y','Y','Balanced rock among the hoodoos','356992972','-1066945944','3825',NULL,'2023-05-29 10:36:46','IMG_6876','360','640',NULL,'5'),
+('11060','319',NULL,'IMG_6942','Y','Y','Climbing back to the mesa top','356992389','-1066981667','3826',NULL,'2023-05-29 12:19:27','IMG_6942','360','640',NULL,'14'),
+('11061','319',NULL,'IMG_6939','Y','N','Rock faces riddled with holes','356990778','-1066982278','3827',NULL,'2023-05-29 12:17:34','IMG_6939','360','640',NULL,'13'),
+('11062','319',NULL,'IMG_6954','Y','Y','A parting view of the canyon','356999389','-1066980889','3828',NULL,'2023-05-29 12:30:58','IMG_6954','360','640',NULL,'15'),
+('11063','319',NULL,'IMG_6937','Y','N','Gorgeous colors enhance the view','356989444','-1066987694','3829',NULL,'2023-05-29 12:10:04','IMG_6937','360','640',NULL,'12'),
+('11064','319',NULL,'IMG_6935','Y','Y','Smoother multi-colored slopes appear','356988694','-1066987528','3830',NULL,'2023-05-29 12:09:28','IMG_6935','360','640',NULL,'11');
 
 
 
@@ -5788,7 +5806,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3423 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3449 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO VISITORS VALUES
@@ -6972,7 +6990,33 @@ INSERT INTO VISITORS VALUES
 ('3419','207.46.13.223','Google Chrome','Unknown','2023-05-27 12:14:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=70'),
 ('3420','52.167.144.144','Google Chrome','Unknown','2023-05-27 10:54:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=199'),
 ('3421','216.147.122.165','Apple Safari','mac','2023-05-28 06:23:10','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
-('3422','52.167.144.144','Google Chrome','Unknown','2023-05-28 09:39:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=79');
+('3422','52.167.144.144','Google Chrome','Unknown','2023-05-28 09:39:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=79'),
+('3423','207.46.13.223','Google Chrome','Unknown','2023-05-28 01:41:51','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=148'),
+('3424','52.167.144.148','Google Chrome','Unknown','2023-05-28 04:14:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187'),
+('3425','27.34.100.124','Google Chrome','windows','2023-05-29 01:51:11','https://nmhikes.com:443/pages/home.php'),
+('3426','146.70.185.10','Google Chrome','windows','2023-05-29 12:55:29','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=68%27'),
+('3427','52.167.144.148','Google Chrome','Unknown','2023-05-29 04:17:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=132'),
+('3428','37.19.200.146','Google Chrome','windows','2023-05-29 04:58:04','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=187%27'),
+('3429','5.161.204.130','Google Chrome','windows','2023-05-29 07:12:05','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=103'),
+('3430','75.161.37.126','Apple Safari','mac','2023-05-30 08:00:11','https://nmhikes.com:443/pages/landing.php'),
+('3431','146.70.185.10','Google Chrome','windows','2023-05-30 08:49:24','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=68%27'),
+('3432','40.77.189.105','Google Chrome','Unknown','2023-05-30 11:58:53','https://nmhikes.com:443/pages/home.php'),
+('3433','52.167.144.144','Google Chrome','Unknown','2023-05-30 11:25:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=147'),
+('3434','52.167.144.144','Google Chrome','Unknown','2023-05-30 11:30:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('3435','37.19.200.146','Google Chrome','windows','2023-05-31 09:59:26','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=68%27'),
+('3436','52.167.144.144','Google Chrome','Unknown','2023-05-31 05:05:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=42'),
+('3437','54.198.55.229','Unknown','Unknown','2023-06-01 12:17:48','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=13'),
+('3438','54.198.55.229','Unknown','Unknown','2023-06-01 12:17:48','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('3439','52.167.144.144','Google Chrome','Unknown','2023-06-01 11:31:43','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('3440','52.167.144.148','Google Chrome','Unknown','2023-06-01 03:15:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=177'),
+('3441','52.167.144.144','Google Chrome','Unknown','2023-06-01 07:23:59','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28'),
+('3442','207.46.13.223','Google Chrome','Unknown','2023-06-01 10:19:42','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=276'),
+('3443','85.193.95.82','Google Chrome','mac','2023-06-02 01:13:09','https://nmhikes.com:443/pages/home.php'),
+('3444','52.167.144.20','Google Chrome','Unknown','2023-06-02 05:54:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=191'),
+('3445','98.97.153.159','Google Chrome','windows','2023-06-02 08:10:30','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=206'),
+('3446','207.46.13.223','Google Chrome','Unknown','2023-06-02 01:42:16','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=148'),
+('3447','52.167.144.148','Google Chrome','Unknown','2023-06-02 03:59:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=73'),
+('3448','52.167.144.144','Google Chrome','Unknown','2023-06-02 04:14:18','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=28');
 
 
 
