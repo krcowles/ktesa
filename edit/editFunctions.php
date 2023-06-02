@@ -75,6 +75,27 @@ function uploadGpxKmlFile($name, $init, $elev=false)
     return $saveloc;
 }
 /**
+ * When the user uploads a map on tab4, it will be saved in the 'maps' directory
+ * with a unique name. When this function is called, it has already cleared the
+ * 'validateUpload' functionality.
+ *
+ * @param string $basefname  The file name without .html extension 
+ * @param string $server_loc The temporary location where the html is stored.
+ * 
+ * @return string $unique_file_name
+ */
+function uploadHTML($basefname, $server_loc)
+{
+    $user_ip = getIpAddress();
+    $unique_file_name = $basefname . "-" . $user_ip . "-" . time() . '.html';
+    $saveloc = "../maps/" . $unique_file_name;
+    if (!move_uploaded_file($server_loc, $saveloc)) {
+        $nomove = "Could not save {$basefname} to site: contact Site Master";
+        throw new Exception($nomove);
+    }
+    return $unique_file_name;
+}
+/**
  * This function validates the uploaded file against currently allowed types.
  * Errors encountered are communicated via session variable 'user_alert'.
  * 
@@ -103,6 +124,9 @@ function validateUpload($name, $elev=false)
                 $uploadType = validateType($filetype);
                 if ($uploadType === 'unknown') {
                     $_SESSION['user_alert'] .= " Incorrect file type for upload; ";
+                } elseif ($uploadType === 'html') {
+                    $basefilename = pathinfo($filename, PATHINFO_BASENAME);
+                    $filename = uploadHTML($basefilename, $tmp_upload);
                 }
             }
         }

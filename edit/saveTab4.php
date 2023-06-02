@@ -26,59 +26,51 @@ $redirect = "editDB.php?tab=4&hikeNo={$hikeNo}";
  *      which are visible, as those represent ones that may have been added.
  *      For every rit1 and rit2 there is a corresponding hidden rit1, rit2.
  */
-// Delete all References already existing in the database:
+// Delete all References already existing in the database when they exist
 $delrefsreq = "DELETE FROM EREFS WHERE indxNo = ?;";
 $delrefs = $pdo->prepare($delrefsreq);
 $delrefs->execute([$hikeNo]);
 // 1. Now add the newly edited ones back in (if any), sans any deletions
-if (isset($_POST['drtype'])) {
+$drit1s = isset($_POST['drit1']) ? $_POST['drit1'] : false;
+if ($drit1s) {
     $drtypes = $_POST['drtype'];  // reference type from select drop-down
-}
-if (isset($_POST['drit1'])) {  // item1 : either book name or url
-    $drit1s = $_POST['drit1'];
-}
-if (isset($_POST['drit2'])) {  // item2 : either author or click-text
-    $drit2s = $_POST['drit2'];
-}
-// determine if any refs were marked for deletion ('delref's)
-if (isset($_POST['delref'])) {
-    $deletes = $_POST['delref']; // any entries will contain the ref# on editDB.php
-    $chk_del = true;
-} else {
-    $deletes = [];
-    $chk_del = false;
-}
-$dindx = 0;
-if (isset($_POST['drit1'])) {
-    $newcnt = count($drit1s);
-} else {
-    $newcnt = 0;
-}
-for ($j=0; $j<$newcnt; $j++) {
-    $addit = true;
-    if ($chk_del) {
-        if ($j === intval($deletes[$dindx])) {
-            $dindx++; // skip this and look for the next;
-            if ($dindx === count($deletes)) {
-                $chk_del = false;
-            }
-            $addit = false;
-        }
+    $drit2s = isset($_POST['drit2']) ? $_POST['drit2'] : [];
+    // determine if any refs were marked for deletion ('delref's)
+    if (isset($_POST['delref'])) {
+        $deletes = $_POST['delref']; // array will contain the ref# on editDB.php
+        $chk_del = true;
+    } else {
+        $deletes = [];
+        $chk_del = false;
     }
-    if ($addit && !empty($drit1s[$j])) {
-        if ($drtypes[$j] !== 'Book:' && $drtypes[$j] !== 'Photo Essay:'
-            && $drtypes[$j] !== 'Text:'
-        ) {
-            $rit1 = filter_var($drit1s[$j], FILTER_VALIDATE_URL);
-            if (empty($rit1) || $rit1 === false) {
-                $rit1 = " --- INVALID URL DETECTED ---";
+    $dindx = 0;
+    for ($j=0; $j<count($drit1s); $j++) {
+        $addit = true;
+        if ($chk_del) {
+            if ($j === intval($deletes[$dindx])) {
+                $dindx++; // skip this and look for the next;
+                if ($dindx === count($deletes)) {
+                    $chk_del = false;
+                }
+                $addit = false;
             }
-        } else {
-            $rit1 = $drit1s[$j];  // constrained text, no filter required
         }
-        $addrefreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES (?,?,?,?);";
-        $orefs = $pdo->prepare($addrefreq);
-        $orefs->execute([$hikeNo, $drtypes[$j], $rit1, $drit2s[$j]]);
+        if ($addit && !empty($drit1s[$j])) {
+            if ($drtypes[$j] !== 'Book:' && $drtypes[$j] !== 'Photo Essay:'
+                && $drtypes[$j] !== 'Text:'
+            ) {
+                $rit1 = filter_var($drit1s[$j], FILTER_VALIDATE_URL);
+                if (empty($rit1) || $rit1 === false) {
+                    $rit1 = " --- INVALID URL DETECTED ---";
+                }
+            } else {
+                $rit1 = $drit1s[$j];  // constrained text, no filter required
+            }
+            $addrefreq = "INSERT INTO EREFS (indxNo,rtype,rit1,rit2) VALUES " .
+                "(?,?,?,?);";
+            $orefs = $pdo->prepare($addrefreq);
+            $orefs->execute([$hikeNo, $drtypes[$j], $rit1, $drit2s[$j]]);
+        }
     }
 }
 // 2. New references added, if any: (displayed items are yes/no)
@@ -96,7 +88,7 @@ for ($s=0; $s<count($usebooks); $s++) {
     $o2id = 'orit2' . $s;  // input contains clickText
     if ($usebooks[$s] === 'yes' && $useothrs[$s] === 'no') {
         $auth = filter_input(INPUT_POST, $auid);
-        if ($_POST[$auid] !== '') {
+        if (!empty($auth)) {
             // this is a new book or photo essay reference:
             array_push($addtypes, $newtypes[$s]);
             $bkname = filter_input(INPUT_POST, $bkid);
@@ -151,8 +143,8 @@ $gpsfile = uploadGpxKmlFile('newgps', true, true);
 if ($_SESSION['user_alert'] !== 'No file specified') {
     if (empty($_SESSION['user_alert'])) {
         $ngpsreq
-            = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`,`clickText`) " .
-                "VALUES (?,'P','GPX:',?,'GPX Track File');";
+            = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`,`clickText`) "
+                . "VALUES (?,'P','GPX:',?,'GPX Track File');";
         $newgps = $pdo->prepare($ngpsreq);
         $newgps->execute([$hikeNo, $gpsfile]);
         $gfile = pathinfo($gpsfile, PATHINFO_FILENAME);
@@ -186,34 +178,39 @@ if (!empty($htmlfile['file'])) {
 }  
 /**
  * NOTE: the only items that have 'delete' boxes are those for which GPS data
- * already existed in the database. Those checkboxes will have values of
- * 0..$newcnt.
+ * already existed in the database.
  */
-// Pick up any changes to click-text
+// Pick up values of any present 'clickText' textareas
 $clickText = isset($_POST['clickText']) ? $_POST['clickText'] : [];
 $datId = isset($_POST['datId']) ? $_POST['datId'] : [];
+// Record and checked checkboxes
 if (isset($_POST['delgps'])) {
-    // any entries will contain datId of the corresponding text
+    // any entries will contain datId of the corresponding text item
     $deletes = $_POST['delgps'];
     $chk_del = true;
 } else {
     $deletes = [];
     $chk_del = false;
 }
-$datacnt = empty($clickText) ? 0 : count($clickText);
-$cb_indx = 0;
+$datacnt = count($clickText);
 for ($j=0; $j<$datacnt; $j++) {
     $update = true;
-    if ($chk_del) {  // delete checkboxes exist
-        if ($datId[$j] == $deletes[$cb_indx]) {
+    $thisId = $datId[$j];
+    if ($chk_del) {
+        if (in_array($thisId, $deletes)) {
+            // delete this entry, don't update it...
+            $update = false;
+            $gpsfileReq = "SELECT `url` FROM EGPSDAT WHERE `datId`=?;";
+            $fileUrl = $pdo->prepare($gpsfileReq);
+            $fileUrl->execute([$thisId]);
+            $delFile = $fileUrl->fetch(PDO::FETCH_ASSOC);
+            if (!unlink($delFile['url'])) {
+                throw new Exception("Could not delete {$delFile['url']}");
+            }
             $delgpsreq = "DELETE FROM EGPSDAT WHERE datId = ?;";
             $delgps = $pdo->prepare($delgpsreq);
-            $delgps->execute([$datId[$j]]);
-            $cb_indx++; // advance to next delete checkbox, if there is one
+            $delgps->execute([$thisId]);
             $update = false;
-            if ($cb_indx >= count($deletes)) {
-                $chk_del = false;
-            }
         }
     }
     if ($update) {
