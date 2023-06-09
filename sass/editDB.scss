@@ -118,6 +118,9 @@ textarea.ctrshift {
 .tstyle4 {
     @include TA_size($width: 160px);
 }
+.tstyle5 {
+    @include TA_size($width: 80px);
+}
 
 /*  next are tab1 only */
 #hilite {
@@ -339,8 +342,15 @@ span.brown {
     position: relative;
     top: 7px;
     height: 33px;
-    font-size: 16px;
+    font-size: 14px;
     margin-left: 12px;
+    padding-bottom: 12px;
+}
+#type_desc {
+    color: blue;
+}
+#wptstyle {
+    height: 32px;
 }
 .wpticons {
     height: 32px;

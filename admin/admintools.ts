@@ -134,8 +134,8 @@ $('#install').on('click', function() {
             if (results['nim_json'].length > 0) {
                 issues += "The following test site json files are not present in " +
                     "main:\n";
-                for (var l=0; l<results['nim_gpx'].length; l++) {
-                    issues += results['nim_gpx'][l] + "; ";
+                for (var l=0; l<results['nim_json'].length; l++) {
+                    issues += results['nim_json'][l] + "; ";
                 }
                 issues += "\n";
             }
