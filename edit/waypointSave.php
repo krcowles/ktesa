@@ -14,7 +14,12 @@
 // waypoint data, if present in database
 $gpxfile = filter_input(INPUT_POST, 'track');
 
-// 1. No waypoints previously existed in either the gpx file or database
+/**
+ * The following code retrieves NEW database waypoint entries. This can happen
+ * when either: (1) No waypoints previously existed in either the gpx file or
+ * in the database or (3) Waypoints previously existed in the database, and
+ * new ones can be added. Case 1 and Case 3 can never happen simultaneously.
+ */
 if (!empty($_POST['ndes'])) {
     $newdesc = $_POST['ndes'];
     $newicon = $_POST['nsym'];
@@ -48,7 +53,7 @@ if (!empty($_POST['ndes'])) {
     }
 }
 
-// 2. If the current gpx file has embedded waypoints
+// Case 2. If the current gpx file has embedded waypoints
 if (!empty($_POST['gdes'])) {
     $newgdesc = $_POST['gdes'];
     $newgicon = $_POST['gsym'];
@@ -118,7 +123,7 @@ if (!empty($_POST['gdes'])) {
     $dom->save($gpxloc);
 }
 
-// 3. If there are any waypoints in the database for this hike
+// Case 3. If there are any waypoints in the database for this hike
 if (!empty($_POST['ddes'])) {
     $chgdesc = $_POST['ddes'];
     $chgicon = $_POST['dsym'];
@@ -126,22 +131,11 @@ if (!empty($_POST['ddes'])) {
     $chglng  = $_POST['dlng'];
     $chgidx  = $_POST['didx'];
     $remwpt  = isset($_POST['ddel']) ? $_POST['ddel'] : false;
-    $newdbdesc = $_POST['nddes'];
-    $newdbicon = $_POST['ndsym'];
-    $newdblat  = $_POST['ndlat'];
-    $newdblng  = $_POST['ndlng'];
-    // current
     $des = [];
     $icn = [];
     $lat = [];
     $lng = [];
     $idx = [];
-    // new adds
-    $ndes = [];
-    $nicn = [];
-    $nlat = [];
-    $nlng = [];
-    // current database points:
     for ($n=0; $n<count($chgdesc); $n++) {
         $tag = 'd' . $n;
         if ($remwpt && in_array($tag, $remwpt)) {
@@ -156,30 +150,10 @@ if (!empty($_POST['ddes'])) {
             array_push($idx, $chgidx[$n]);
         }
     }
-    // update current point data
     for ($t=0; $t<count($des); $t++) {
         $updtequery = "UPDATE ETSV SET title = ?, lat = ?, lng = ?,  "
             . "iclr = ? WHERE picIdx = ?;";
         $updte = $pdo->prepare($updtequery);
         $updte->execute([$des[$t], $lat[$t], $lng[$t], $icn[$t], $idx[$t]]);
-    }
-    // newly added database points:
-    for ($p=0; $p<count($newdbdesc); $p++) {
-        if (!empty($newdbdesc[$p]) || !empty($newdblat[$p]) 
-            || !empty($newdblng[$p])
-        ) {
-            array_push($ndes, $newdbdesc[$p]);
-            array_push($nicn, $newdbicon[$p]);
-            array_push($nlat, (int) ((float) $newdblat[$p] * LOC_SCALE));
-            array_push($nlng, (int) ((float) $newdblng[$p] * LOC_SCALE));
-        }
-    }
-    $dbquery = "INSERT INTO ETSV (indxNo,title,mpg,lat,lng,iclr) "
-        . "VALUES (?,?,'Y',?,?,? );";
-    for ($q=0; $q<count($ndes); $q++) {
-        $db = $pdo->prepare($dbquery);
-        $db->execute(
-            [$hikeNo, $ndes[$q], $nlat[$q], $nlng[$q], $nicn[$q]]
-        );
     }
 }

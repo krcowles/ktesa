@@ -105,7 +105,7 @@ if (isset($_SESSION['user_alert']) && !empty($_SESSION['user_alert'])) {
 /**
  * Tab2: [photo displays (already uploaded) and any waypoints]
  */
-require "photoSelect.php";
+require "photoSelect.php"; // prior to wayPointEdits.php to define $wlat/$wlng
 require "wayPointEdits.php";
 $picdir  = getPicturesDirectory();
 $prevdir = str_replace('zsize', 'previews', $picdir);

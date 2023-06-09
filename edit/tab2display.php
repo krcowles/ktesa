@@ -149,16 +149,30 @@
 <hr id="wloc" />
 <div id="wpteds">
     <?= $wptedits;?>
-</div>
+</div> <!-- end of tab2 waypoints div -->
 
 </form>
 
 <script type="text/javascript">
     var edit_mode = true;
+    // formatted lat/lngs
+    var gpxLatDeg = JSON.parse('<?=$jsgpxLatDeg;?>');
+    var gpxLatDM  = JSON.parse('<?=$jsgpxLatDM;?>');
+    var gpxLatDMS = JSON.parse('<?=$jsgpxLatDMS;?>');
+    var gpxLngDeg = JSON.parse('<?=$jsgpxLngDeg;?>');
+    var gpxLngDM  = JSON.parse('<?=$jsgpxLngDM;?>');
+    var gpxLngDMS = JSON.parse('<?=$jsgpxLngDMS;?>');
+    var wLatDeg   = JSON.parse('<?=$jswLatDeg;?>');
+    var wLatDM    = JSON.parse('<?=$jswLatDM;?>');
+    var wLatDMS   = JSON.parse('<?=$jswLatDMS;?>');
+    var wLngDeg   = JSON.parse('<?=$jswLngDeg;?>');
+    var wLngDM    = JSON.parse('<?=$jswLngDM;?>');
+    var wLngDMS   = JSON.parse('<?=$jswLngDMS;?>');
 </script>
 <script src="../scripts/popupCaptions.js"></script>
 <script src="photoSelect.js"></script>
 <script src="makeThumbs.js"></script>
+<script src="waypoints.js"></script>
 <div class="popupCap"></div>
 <input type="hidden" name="usepics" value="<?= $inclPix;?>" />
 <input type="hidden" name="hikeno" value="<?= $hikeNo;?>" />

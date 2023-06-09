@@ -390,7 +390,6 @@ $('#heic').on('click', function() {
  *      - difficulty
  *      - exposure
  *      - references
- *      - waypoint icons
  * Each is treated, with identifiers, below:
 */
 // Locale:
@@ -502,28 +501,6 @@ $('#deassign').on('change', function() {
     }
 });
 // End of cluster processing
-
-// Waypoint icons when present in the gpx file:
-var $gicons = $('[id^="gicn"]');
-var $gbox   = $('[id^="gselicon"]');
-$gbox.each(function(indx) {
-    if ($gicons[indx].innerText == '') {
-        $(this).val('googlemini');
-    } else {
-        $(this).val($gicons[indx].innerText);
-    }
-});
-// Waypoint icons when present in the database
-var $wicons = $('[id^="dicn"]');
-var $wbox   = $('[id^="dselicon"]');
-$wbox.each(function(indx) {
-    if ($wicons[indx].innerText == '') {
-        $(this).val('googlemini');
-    } else {
-        $(this).val($wicons[indx].innerText);
-    }
-});
-$('#wpteds textarea').addClass('wpticonshift');
 
 $(window).on('resize', function() {
     $('.subbtn').remove();

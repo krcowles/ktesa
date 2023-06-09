@@ -1,81 +1,97 @@
 <?php
 /**
- * This file constructs the html for editing waypoints based on 
- * which, if any, waypoints may exist either in the gpx file or in 
- * the database. 
+ * This file constructs the html for editing waypoints on tab2. Any displayed
+ * html on that tab is based on which waypoints, if any, already exist either
+ * in the gpx file or in the database. New waypoints can be added in all cases.
+ * Multiple formats for lat/lngs are supported. Database waypoints are defined
+ * in photoSelect.php.
  * PHP Version 7.4
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+require "wptHtmlDefs.php";
+
 /**
- * If the current gpx file has embedded waypoints, they are captured here
+ * If the current gpx file has embedded waypoints, they are retrieved here
  * and will be presented in tab2 for editing, along with any waypoints 
  * associated with the page that are contained in the database (see 
- * photoSelect.php, which extract db wpts from the ETSV table while gathering
+ * photoSelect.php, which extracts db wpts from the ETSV table while gathering
  * photo data). After 'Apply, waypoints embedded in the gpx file remain
- * embedded there; waypoints present in the database will remain there.
+ * embedded there (as well as new gpx wpts); waypoints present in the database
+ * will remain there (as well as new db wpts).
  */
 $gpxloc = '../gpx/' . $curr_gpx;
 $gpxWptCount = 0;
+$gpxWptDes = [];
+$gpxWptLat = [];
+$gpxWptLng = [];
+$gpxWptIcn = [];
+$gpxDMlat  = [];
+$gpxDMSlat = [];
+$gpxDMlng  = [];
+$gpxDMSlng = [];
 // NOTE: 'file_exists' treats an empty dir as existing: [../gpx/ returns 'true']
 if (!empty($curr_gpx) && file_exists($gpxloc)) {
     $rawgpx = simplexml_load_file($gpxloc);
     $gpxWptCount = $rawgpx->wpt->count();
-    $gpxWptDes = [];
-    $gpxWptLat = [];
-    $gpxWptLng = [];
-    $gpxWptIcn = [];
     for ($j=0; $j<$gpxWptCount; $j++) {
+        //
         $gpxWptDes[$j] = $rawgpx->wpt[$j]->name;
-        $gpxWptLat[$j] = $rawgpx->wpt[$j]['lat'];
-        $gpxWptLng[$j] = $rawgpx->wpt[$j]['lon'];
+        $gpxWptLat[$j] = $rawgpx->wpt[$j]['lat']->__toString();
+        $gpxWptLng[$j] = $rawgpx->wpt[$j]['lon']->__toString();
         $gpxWptIcn[$j] = $rawgpx->wpt[$j]->sym;
     }
 }
+if ($gpxWptCount > 0) {
+    /**
+     * GPX Waypoints can also be presented on the page as Degrees/Minutes or as
+     * Degrees/Minutes/Seconds. The other formats are calculated here for
+     * selection by the js
+     */
+    foreach ($gpxWptLat as &$Dlat) {
+        // get fractional degrees
+        $fractLatDeg = $Dlat - floor($Dlat);
+        $MinLat = $fractLatDeg * 60;
+        $DMlat = floor($Dlat) . "|" . round($MinLat, 5);
+        array_push($gpxDMlat, $DMlat);
+        // get fractional seconds
+        $fractLatMin = $MinLat - floor($MinLat);
+        $SecLat = 60 * $fractLatMin;
+        $DMSlat = floor($Dlat) . "|" . floor($MinLat) . "|" .
+            round($SecLat, 3);
+        array_push($gpxDMSlat, $DMSlat);
+    }
+    foreach ($gpxWptLng as &$Dlng) {
+        // requires using absolute values instead of negatives:
+        $ablng = abs($Dlng);
+        $fractLngDeg = $ablng - floor($ablng);
+        $MinLng = $fractLngDeg * 60;
+        $DMlng = "-" . floor($ablng) . "|" . round($MinLng, 5);
+        array_push($gpxDMlng, $DMlng);
+        $fractLngMin = $MinLng - floor($MinLng);
+        $SecLng = $fractLngMin * 60;
+        $DMSlng = "-" . floor($ablng) . "|" . floor($MinLng) . "|" .
+            round($SecLng, 3);
+        array_push($gpxDMSlng, $DMSlng);
+    }
+}
+// for import to javascript
+$jsgpxLatDeg = json_encode($gpxWptLat);
+$jsgpxLatDM  = json_encode($gpxDMlat);
+$jsgpxLatDMS = json_encode($gpxDMSlat);
+$jsgpxLngDeg = json_encode($gpxWptLng);
+$jsgpxLngDM  = json_encode($gpxDMlng);
+$jsgpxLngDMS = json_encode($gpxDMSlng);
+//
 
-$wptedits = '<p><strong>Use "Parking" icon when trail begins very close
-to parking area</strong></p>';
-
-// Header when no waypoints exist yet:
-$noPrevious = <<<NEWPTS
-<!-- New Waypoints When None Previously Exist -->
-<p style="color:brown;"><em>There are currently no waypoints associated
-    with this hike. You may add waypoints below; they will be saved to
-    the database.</em></p>
-NEWPTS;
-
-// Header when waypoints exist in gpx file
-$gpxWpts = <<<GPXPTS
-<!-- GPX File Waypoints -->
-<p style="color:brown;"><em>The following waypoints were identified in
-the gpx file. Any edits made will be saved to the file and not to the
-database.</em></p>
-GPXPTS;
-
-// Header when waypoints exist in the database
-$dbWpts = <<<DBPTS
-<!-- DATABASE Waypoints -->
-<p style="color:brown;"><em>The following waypoints were found in the database
-associated with this hike. Any changes will be saved to the database.</em></p>
-DBPTS;
-
-$wptDescriptions = '<p>NOTE: Waypoint descriptions appear during mouseover</p>';
-
-// Drop-down select box for icons currently supported
-$icons = <<<WPTICONS
-    <option value="googlemini">[Default] Google</option>
-    <option value="Flag, Red">Red Flag</option>
-    <option value="Flag, Blue">Blue Flag</option>
-    <option value="Flag, Green">Green Flag</option>
-    <option value="Flag, Yellow">Yellow Flag</option>
-    <option value="Trail Head">Hiker</option>
-    <option value="Parking Area">Parking</option>
-    <option value="Triangle, Red">Red Triangle</option>
-    <option value="Triangle, Yellow">Yellow Triangle</option>
-</select>
-WPTICONS;
+$wptedits = '';
+/**
+ * For each displayed lat/lng, only one of three textarea lines will appear,
+ * depending on the format selected. The actual saved value will be held in
+ * a hidden input and updated by the js when data changes.
+ */
 
 // Three possible states:
 // 1. No waypoints exist yet
@@ -91,9 +107,8 @@ if ($gpxWptCount === 0 && $wayPointCount === 0) {
         $wptedits .= '<select class="wpticons" name="nsym[]">' . PHP_EOL;
         $wptedits .= $icons . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" name="nlat[]"></textarea>'
-            . '&nbsp;&nbsp;Longitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" name="nlng[]"></textarea>'
+        $wptedits .= $newdblats . $newdblatdeg . $newdblatdm . $newdblatdms;
+        $wptedits .= $newdblngs . $newdblngdeg . $newdblngdm . $newdblngdms
             . '<br /><br />' . PHP_EOL;
     }
     $wptedits .= '</div>' . PHP_EOL;
@@ -104,10 +119,8 @@ if ($gpxWptCount > 0) {
     $wptedits .= $wptDescriptions . PHP_EOL;
     $wptedits .= '<div id="gpts">' . PHP_EOL;
     for ($m=0; $m<$gpxWptCount; $m++) {
-        // for initialization of drop-down
         $wptedits .= '<p id="gicn' . $m . '" style="display:none;">'
             . $gpxWptIcn[$m] . '</p>' . PHP_EOL;
-        // presentation on page
         $wptedits .= 'Description:' . PHP_EOL;
         $wptedits .= '<textarea class="tstyle2" name="gdes[]">'
             . $gpxWptDes[$m] . '</textarea>' . PHP_EOL;
@@ -120,17 +133,19 @@ if ($gpxWptCount > 0) {
             . '<input id="gdel' . $m . '" type="checkbox" '
             . 'name="gdel[]" value="g' . $m . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" '
-            . 'name="glat[]">' . $gpxWptLat[$m] . '</textarea>'
-            . '&nbsp;&nbsp;Longitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" '
-            . 'name="glng[]">' . $gpxWptLng[$m] . '</textarea>'
-            . '<br /><br />' . PHP_EOL;
+        $gpxlats = '<input id="set' . $m . '" type="hidden" name="glat[]" ' .
+            'value="' . $gpxWptLat[$m] .'" />' . PHP_EOL;
+        $gpxlngs = '<input id="set' . $m . '" type="hidden" name="glng[]" ' .
+            'value="' . $gpxWptLng[$m] .'" />' . PHP_EOL;
+        $wptedits .= $gpxlats . $gpxlatdeg . $gpxlatdm . $gpxlatdms;
+        $wptedits .= $gpxlngs . $gpxlngdeg . $gpxlngdm . $gpxlngdms .
+            '<br /><br />' . PHP_EOL;
     }
     $wptedits .= '</div>' . PHP_EOL;
-
+    // place for new additions
     $wptedits .= '<p style="color:brown;">You may add the following waypoints '
         . '<strong>to the GPX file</strong></p>' . PHP_EOL;
+    $wptedits .= '<div id="ngpts">' . PHP_EOL;
     for ($k=0; $k<2; $k++) {
         $wptedits .= 'Description:' . PHP_EOL;
         $wptedits .= '<textarea class="tstyle2" '
@@ -140,11 +155,11 @@ if ($gpxWptCount > 0) {
         $wptedits .= '<select class="wpticons" name="ngsym[]">' . PHP_EOL;
         $wptedits .= $icons . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" name="nglat[]"></textarea>'
-            . '&nbsp;&nbsp;Longitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" name="nglng[]"></textarea>'
+        $wptedits .= $newgpxLats . $newglatdeg . $newglatdm . $newglatdms;
+        $wptedits .= $newgpxLngs . $newglngdeg . $newglngdm . $newglngdms
             . '<br /><br />' . PHP_EOL;
     }
+    $wptedits .= '</div>' . PHP_EOL;
 }
 // 3. Some waypoints are present in the database
 if ($wayPointCount > 0) {
@@ -152,10 +167,8 @@ if ($wayPointCount > 0) {
     $wptedits .= $wptDescriptions . PHP_EOL;
     $wptedits .= '<div id="wpts">' . PHP_EOL;
     for ($n=0; $n<$wayPointCount; $n++) {
-        // for initialization of drop-down box
         $wptedits .= '<p id="dicn' . $n . '" style="display:none;">'
             . $wicn[$n] . '</p>' . PHP_EOL;
-        // presentation on page
         $wptedits .= 'Description:' . PHP_EOL;
         $wptedits .= '<textarea class="tstyle2" name="ddes[]">'
             . $wdes[$n] . '</textarea>' . PHP_EOL;
@@ -168,31 +181,30 @@ if ($wayPointCount > 0) {
             . '<input id="ddel' . $n . '" type="checkbox" '
             . 'name="ddel[]" value="d' . $n . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" '
-            . 'name="dlat[]">' . $wlat[$n] . '</textarea>'
-            . '&nbsp;&nbsp;Longitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" '
-            . 'name="dlng[]">' . $wlng[$n] . '</textarea>'
+        $dblats    = str_replace('dblatval', $wlat[$n], $dblats);
+        $dblngs    = str_replace('dblngval', $wlng[$n], $dblngs);
+        $wptedits .= $dblats . $dblatdeg . $dblatdm . $dblatdms;
+        $wptedits .= $dblngs . $dblngdeg . $dblngdm . $dblngdms
             . '<br /><br />' . PHP_EOL;
         $wptedits .= '<input type="hidden" name="didx[]" value="'
             . $wids[$n] . '" />';
     }
     $wptedits .= '</div>';
-
+    // place for new additions
     $wptedits .= '<p style="color:brown;">You may add the following waypoints '
         . '<strong>to the database</strong></p>' . PHP_EOL;
-    for ($i=0; $i<2; $i++) {
+    $wptedits .= '<div id="npts">' . PHP_EOL;
+    for ($l=0; $l<2; $l++) {
         $wptedits .= 'Description:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle2" '
-            . 'name="nddes[]"></textarea>' . PHP_EOL;
+        $wptedits .= '<textarea class="tstyle2" name="ndes[]"></textarea>' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
-        $wptedits .= '<select name="ndsym[]" class="wpticons">' . PHP_EOL;
+        $wptedits .= '<select class="wpticons" name="nsym[]">' . PHP_EOL;
         $wptedits .= $icons . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" name="ndlat[]"></textarea>'
-            . '&nbsp;&nbsp;Longitude:' . PHP_EOL;
-        $wptedits .= '<textarea class="tstyle4 coords" name="ndlng[]"></textarea>'
+        $wptedits .= $newdblats . $newdblatdeg . $newdblatdm . $newdblatdms;
+        $wptedits .= $newdblngs . $newdblngdeg . $newdblngdm . $newdblngdms
             . '<br /><br />' . PHP_EOL;
     }
+    $wptedits .= '</div>' . PHP_EOL;
 }
