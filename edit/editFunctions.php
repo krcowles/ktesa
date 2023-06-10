@@ -87,7 +87,8 @@ function uploadGpxKmlFile($name, $init, $elev=false)
 function uploadHTML($basefname, $server_loc)
 {
     $user_ip = getIpAddress();
-    $unique_file_name = $basefname . "-" . $user_ip . "-" . time() . '.html';
+    $basename = pathinfo($basefname, PATHINFO_FILENAME); // strip extension
+    $unique_file_name = $basename . "-" . $user_ip . "-" . time() . '.html';
     $saveloc = "../maps/" . $unique_file_name;
     if (!move_uploaded_file($server_loc, $saveloc)) {
         $nomove = "Could not save {$basefname} to site: contact Site Master";
