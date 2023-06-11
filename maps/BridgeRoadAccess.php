@@ -1,3 +1,6 @@
+<?php
+require "../php/global_boot.php";
+?>
 <!DOCTYPE html>
 <html xmlns="https://www.w3.org/1999/xhtml">
 	<head>
@@ -13,7 +16,7 @@
 		<script type="text/javascript">
 			API = 'google'; // can be either 'leaflet' or 'google'
 			if (self.API && API.match(/^g/i)) {
-				google_api_key = 'AIzaSyA2Guo3uZxkNdAQZgWS43RO_xUsKk1gJpU'; // Your project's Google Maps API key goes here (https://code.google.com/apis/console)
+				google_api_key = '<?=API_KEY;?>'; // Your project's Google Maps API key goes here (https://code.google.com/apis/console)
 				language_code = '';
 				document.writeln('<script src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry&amp;language='+(self.language_code?self.language_code:'')+'&amp;key='+(self.google_api_key?self.google_api_key:'')+'" type="text/javascript"><'+'/script>');
 			} else {
@@ -24,7 +27,6 @@
 			ign_api_key = ''; // To display topo tiles from IGN.fr, you need a key (https://api.ign.fr/)
 		</script>
 
-		
 		<!--
 			If you want to transplant this map into another Web page, by far the best method is to
 			simply include it in a IFRAME tag (see https://www.gpsvisualizer.com/faq.html#google_html).
