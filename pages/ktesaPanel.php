@@ -83,7 +83,7 @@ if (isset($_SESSION['userid'])) {
         </button>
         <div class="collapse navbar-collapse" id="ktesaMenu">
             <a class="navbar-brand" href="../pages/about.php">
-                <img src="../images/nmboots.png" alt="Brand Icon" />
+                <img src="../images/logo32.png" alt="Brand Icon" />
             </a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item dropdown">
