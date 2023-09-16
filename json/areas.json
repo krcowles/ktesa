@@ -1,5 +1,9 @@
 { "areas":
     [
+        {"loc": "Cedar Crest", "lat": 35.107546, "lng": -106.372802},
+        {"loc": "San Antonito", "lat": 35.163100, "lng": -106.347524},
+        {"loc": "Cloudcroft", "lat": 32.957313, "lng": -105.742486},
+        {"loc": "Tierra Amarilla", "lat": 36.698669, "lng": -106.551882},
         {"loc": "Jemez Springs", "lat": 35.770850, "lng": -106.690840},
         {"loc": "Valles Caldera", "lat": 35.831713, "lng": -106.487100},
         {"loc": "Los Alamos", "lat": 35.881940, "lng": -106.307720},
