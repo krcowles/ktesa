@@ -90,7 +90,8 @@ $wptedits = '';
 /**
  * For each displayed lat/lng, only one of three textarea lines will appear,
  * depending on the format selected. The actual saved value will be held in
- * a hidden input and updated by the js when data changes.
+ * a hidden input and updated by the js when data changes. The input is posted,
+ * but the various textareas are not, hence there is no 'name' attribute for these.
  */
 
 // Three possible states:
@@ -133,9 +134,9 @@ if ($gpxWptCount > 0) {
             . '<input id="gdel' . $m . '" type="checkbox" '
             . 'name="gdel[]" value="g' . $m . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
-        $gpxlats = '<input id="set' . $m . '" type="hidden" name="glat[]" ' .
+        $gpxlats = '<input type="hidden" name="glat[]" ' .
             'value="' . $gpxWptLat[$m] .'" />' . PHP_EOL;
-        $gpxlngs = '<input id="set' . $m . '" type="hidden" name="glng[]" ' .
+        $gpxlngs = '<input  type="hidden" name="glng[]" ' .
             'value="' . $gpxWptLng[$m] .'" />' . PHP_EOL;
         $wptedits .= $gpxlats . $gpxlatdeg . $gpxlatdm . $gpxlatdms;
         $wptedits .= $gpxlngs . $gpxlngdeg . $gpxlngdm . $gpxlngdms .
@@ -190,7 +191,7 @@ if ($wayPointCount > 0) {
             . $wids[$n] . '" />';
     }
     $wptedits .= '</div>';
-    // place for new additions
+    // place for new additions: NOTE 'name' same as when no pts exist
     $wptedits .= '<p style="color:brown;">You may add the following waypoints '
         . '<strong>to the database</strong></p>' . PHP_EOL;
     $wptedits .= '<div id="npts">' . PHP_EOL;

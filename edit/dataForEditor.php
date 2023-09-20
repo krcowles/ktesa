@@ -57,21 +57,15 @@ $preview_name = $hike['preview'];
 $dirs     = $hike['dirs'];
 
 // collect data for any unpublished cluster groups
-$pubReq = "SELECT `group` FROM `CLUSTERS` WHERE `pub`='N';";
-$nonpubs = $pdo->query($pubReq)->fetchAll(PDO::FETCH_COLUMN);
+$pubReq = "SELECT `group`,`lat`,`lng` FROM `CLUSTERS` WHERE `pub`='N';";
+$nonpubs = $pdo->query($pubReq)->fetchAll(PDO::FETCH_ASSOC);
 $jsData = [];
-if (count($nonpubs) > 0) {
-    foreach ($nonpubs as $unpub) {
-        $getNPdataReq = "SELECT `lat`,`lng` FROM `CLUSTERS` WHERE `group`=?;";
-        $getNPdata = $pdo->prepare($getNPdataReq);
-        $getNPdata->execute([$unpub]);
-        $coords = $getNPdata->fetch(PDO::FETCH_ASSOC);
-        $clat = is_null($coords['lat']) ? '""' : $coords['lat']/LOC_SCALE;
-        $clng = is_null($coords['lng']) ? '""' : $coords['lng']/LOC_SCALE;
-        $groupdat = '{group:"' . $unpub . '",loc:{lat:' . $clat .
-            ',lng:' . $clng . '}}';
-        array_push($jsData, $groupdat);
-    }
+foreach ($nonpubs as $unpub) {
+    $clat = is_null($unpub['lat']) ? '""' : $unpub['lat']/LOC_SCALE;
+    $clng = is_null($unpub['lng']) ? '""' : $unpub['lng']/LOC_SCALE;
+    $groupdat = '{group:"' . $unpub['group'] . '",loc:{lat:' . $clat .
+        ',lng:' . $clng . '}}';
+    array_push($jsData, $groupdat);
 }
 $newgrps = '[' . implode(",", $jsData) . ']';
 

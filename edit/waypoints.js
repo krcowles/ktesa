@@ -6,7 +6,6 @@
  * @author Ken Cowles
  *
  * @version 1.0 Handling multiple formats for lat/lngs
- *
  */
 $(function () {
     var checkForFractionalEntry = function (entry) {
@@ -18,99 +17,141 @@ $(function () {
         }
         return result;
     };
-    var recalculateFormats = function (format, // deg, dm, or dms
-    target) {
-        var degs = 0.00;
-        var mins = 0.00;
-        var secs = 0.00;
+    /**
+     * The following functions update all formats of waypoint displays;
+     * The posted value is held in a hidden input, and siblings of that
+     * input contain the textareas for displaying/editing waypoints in
+     * the various formats: degrees, degrees/decimal minutes,
+     * degrees/minutes/decimal seconds.
+     */
+    var getDegreeData = function ($span, format) {
+        var $kids = $span.children();
+        var degs = parseFloat($kids.eq(0).val());
+        var mins = parseFloat($kids.eq(1).val());
+        var val;
+        var neg = degs < 0 ? true : false;
+        if (format === 'dm') {
+            val = Math.abs(degs) + mins / 60;
+        }
+        else {
+            // dms
+            var secs = parseFloat($kids.eq(2).val());
+            val = Math.abs(degs) + (mins + secs / 60) / 60;
+        }
+        if (neg) {
+            return -1 * val;
+        }
+        else {
+            return val;
+        }
+    };
+    var updatePostInput = function (
+    // use hidden input to store posted value
+    $inp, val) {
+        $inp.val(val.toFixed(7));
+        return;
+    };
+    var updateDegrees = function ($d, val) {
+        $d.children().eq(0).val(val.toFixed(7));
+        return;
+    };
+    var updateDM = function (
+    // use span holding class 'dm'
+    $dm_span, degrees) {
+        var act = Math.abs(degrees);
+        degrees = Math.trunc(degrees); // retains negative sign if present
+        //var tdeg = gpstype === 'lat' ? degs : "-" + degs; // same for dm & dms
+        var mant = act - Math.abs(degrees);
+        var mins = mant * 60;
+        var tmin = mins.toFixed(5);
+        var $els = $dm_span.children();
+        $els.eq(0).val(degrees);
+        $els.eq(1).val(tmin);
+        return mins;
+    };
+    var updateDMS = function (
+    // use span holding class 'dms'
+    $dms_span, degrees, minutes) {
+        var dmin = Math.floor(minutes);
+        var mant = minutes - dmin;
+        var secs = mant * 60;
+        var tsec = secs.toFixed(3);
+        var $els = $dms_span.children();
+        $els.eq(0).val(Math.trunc(degrees));
+        $els.eq(1).val(dmin);
+        $els.eq(2).val(tsec);
+        return;
+    };
+    var recalculateFormats = function (format, // 'deg', 'dm', or 'dms'
+    target // the <textarea> that changed
+    ) {
+        var new_degrees = 0.00;
+        var minutes = 0.00;
         switch (format) {
-            case 'deg': // tested
-                degs = parseFloat(target.val());
-                // store new value in hidden input:
-                target.parent().prev().val(degs.toFixed(7));
-                // update dm and dms
-                var act = Math.abs(degs);
-                degs = Math.trunc(degs); // retains negative sign if present
-                //var tdeg = gpstype === 'lat' ? degs : "-" + degs; // same for dm & dms
-                var mant = act - Math.abs(degs);
-                var mins = mant * 60;
-                var tmin = mins.toFixed(5);
-                // dm span
-                var $tas = target.parent().next().children();
-                $tas.eq(0).val(degs);
-                $tas.eq(1).val(tmin);
-                var dmin = Math.floor(mins);
-                mant = mins - dmin;
-                var secs = mant * 60;
-                var tsec = secs.toFixed(3);
-                // dms span
-                $tas = target.parent().next().next().children();
-                $tas.eq(0).val(degs);
-                $tas.eq(1).val(dmin);
-                $tas.eq(2).val(tsec);
+            case 'deg':
+                new_degrees = parseFloat(target.val());
+                updatePostInput(target.parent().prev(), new_degrees);
+                // no need to update degrees, as it is the target
+                minutes = updateDM(target.parent().next(), new_degrees);
+                updateDMS(target.parent().next().next(), new_degrees, minutes);
                 break;
             case 'dm':
-                var $parent = target.parent(); // regardles of which of the two changed
-                // test if new waypt (gpx or db):
+                var $parent = target.parent(); // <span> regardless which of the two changed
                 var $els = $parent.children();
                 var dm_input = $parent.prev().prev().attr('name');
+                // if this is a new waypoint, the first char of the input name is 'n'
                 if (dm_input.substring(0, 1) === 'n') {
                     /**
                      * For new entries, don't calculate until all fields are specified
                      */
                     if ($els.eq(0).val() !== "" && $els.eq(1).val() !== "") {
-                        // recalc the deg lat/lng:
-                        var degs = parseFloat($els.eq(0).val());
-                        var mins = parseFloat($els.eq(1).val());
-                        var mant = mins / 60;
-                        var whole = degs < 0 ? (degs - mant).toFixed(7) : (degs + mant).toFixed(7);
-                        $parent.prev().children().eq(0).val(whole);
-                        $parent.prev().prev().val(whole);
-                        // now calc dms values (degrees won't change)
-                        var tamin = Math.floor(mins);
-                        mant = mins - tamin;
-                        var tasec = (60 * mant).toFixed(3);
-                        var $dms_span = target.parent().next(); // dms span
-                        var $dms = $dms_span.children();
-                        $dms.eq(0).val(degs);
-                        $dms.eq(1).val(tamin);
-                        $dms.eq(2).val(tasec);
+                        new_degrees = getDegreeData($parent, 'dm');
+                        updatePostInput($parent.prev().prev(), new_degrees);
+                        updateDegrees($parent.prev(), new_degrees);
+                        minutes = updateDM($parent, new_degrees);
+                        updateDMS($parent.next(), new_degrees, minutes);
                     }
                     else {
                         alert("Waypt not completely specified yet: other formats not calculated");
                     }
                 }
+                else {
+                    // use new data in target to update all formats
+                    new_degrees = getDegreeData($parent, 'dm');
+                    updatePostInput($parent.prev().prev(), new_degrees);
+                    updateDegrees($parent.prev(), new_degrees);
+                    minutes = updateDM($parent, new_degrees);
+                    updateDMS($parent.next(), new_degrees, minutes);
+                }
                 break;
             case 'dms':
-                var $dms_parent = target.parent(); // regardless of which of the three changed
+                var $dms_parent = target.parent(); // <span> regardless which of the three changed
                 var $dms_els = $dms_parent.children();
                 var dms_input = $dms_parent.prev().prev().prev().attr('name');
+                // if this is a new waypoint, the first char of the input name is 'n'
                 if (dms_input.substring(0, 1) === 'n') {
                     /**
                      * For new entries, don't calculate until all fields are specified
                      */
                     if ($dms_els.eq(0).val() !== "" && $dms_els.eq(1).val() !== ""
                         && $dms_els.eq(2).val() !== "") {
-                        // recalc deg value
-                        var dms_deg = parseFloat($dms_els.eq(0).val());
-                        var dms_min = parseFloat($dms_els.eq(1).val());
-                        var dms_sec = parseFloat($dms_els.eq(2).val());
-                        var degree = dms_deg < 0 ? dms_deg - (dms_min + dms_sec / 60) / 60 :
-                            dms_deg + (dms_min + dms_sec / 60) / 60;
-                        $dms_parent.prev().prev().prev().val(degree.toFixed(7)); // input el
-                        $dms_parent.prev().prev().children().eq(0).val(degree.toFixed(7)); // degree ta
-                        // recalc dm values
-                        var dm_degree = Math.trunc(degree);
-                        var dm_deg = Math.abs(dm_degree); // retains negative value
-                        var dm_fract = Math.abs(degree) - dm_deg;
-                        var ta_min = (dm_fract * 60).toFixed(5);
-                        var $dm_els = $dms_parent.prev().children();
-                        $dm_els.eq(0).val(Math.trunc(dm_degree));
-                        $dm_els.eq(1).val(ta_min);
+                        new_degrees = getDegreeData($dms_parent, 'dms');
+                        updatePostInput($dms_parent.prev().prev().prev(), new_degrees);
+                        updateDegrees($dms_parent.prev().prev(), new_degrees);
+                        minutes = updateDM($dms_parent.prev(), new_degrees);
+                        updateDMS($dms_parent, new_degrees, minutes);
                     }
                     else {
                         alert("Waypt not completely specified yet: other formats not calculated");
                     }
+                }
+                else {
+                    // use new data in target to update all formats
+                    var new_degrees = getDegreeData($dms_parent, 'dms');
+                    updatePostInput($dms_parent.prev().prev().prev(), new_degrees);
+                    updateDegrees($dms_parent.prev().prev(), new_degrees);
+                    var minutes = updateDM($dms_parent.prev(), new_degrees);
+                    updateDMS($dms_parent, new_degrees, minutes);
                 }
         }
         return;
