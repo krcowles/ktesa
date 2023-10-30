@@ -2,32 +2,56 @@
 /**
  * Allows user to edit a validated gpx file. When done, the user
  * can download the file containing the edits as 'editedGpx.gpx'.
+ * This script is invoked via the gpx menu editor (modal). For 
+ * upload issues, a blank page is presented listing the problems
+ * encountered.
  * PHP Version 7.4
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
 require "../php/global_boot.php";
+verifyAccess('post');
 
 $trackno = filter_input(INPUT_POST, 'trackno', FILTER_VALIDATE_INT) - 1;
 $backuri  = urldecode(filter_input(INPUT_POST, 'backurl'));
-$_SESSION['user_alert'] = '';
-$file_data = validateUpload('file2edit', false);
-if ($file_data['type'] !== 'gpx' && empty($_SESSION['user_alert'])) {
-    $_SESSION['user_alert'] = "Incorrect file type [Not GPX]";
+$msg = '';
+$noupload = false;
+$path_literals = '';
+
+// prevent errors seen in production mode: someone shortcutting the system?
+try {
+    $ifile = $_FILES['file2edit']['name'];
+} catch (Exception $e) {
+    $msg =  "The required input file cannot be located;<br />" .
+        "This script must be executed via the GPX Editor on the menu bar<br />";
+    $msg .= "If you need help, submit details to: admin@nmhikes.com<br />";
+    $noupload = true;
 }
-if (empty($_SESSION['user_alert'])) {
-    $gpxfile = $file_data['file'];
-    $tmploc  = $file_data['loc'];
+
+unset($_SESSION['alerts']);
+if (!empty($_FILES['file2edit']['name'])) {
+    $file_data = uploadFile(prepareUpload('file2edit'));
+    if ($file_data === 'none') {
+        $msg .= $_SESSION['alerts'][0];
+        $noupload = true;
+        unset($_SESSION['alerts']); // data now resides in $msg
+    } 
+}
+if (!$noupload) {
+    // Proceed with edits
+    $gpxfile = pathinfo($file_data, PATHINFO_BASENAME);
     // formulate json data for google maps polyline path
-    $gpxdat = simplexml_load_file($tmploc);
+    $gpxdat = simplexml_load_file($file_data);
     if ($gpxdat === false) {
         throw new Exception(
-            __FILE__ . "Line " . __LINE__ . "Could not load {$gpxfile} as " .
+            __FILE__ . "Line " . __LINE__ . "Could not load {$ifile} as " .
             "simplexml"
         );
     }
+    unlink($file_data);
     if ($gpxdat->rte->count() > 0) {
         $gpxdat = convertRtePts($gpxdat);
     }
@@ -60,19 +84,13 @@ if (empty($_SESSION['user_alert'])) {
         }
     }
     $path_literals .= ']';
-} else {
-    echo "<div style='color:brown;margin-left:24px;font-size:18px;".
-        "font-weight:bold;'>" .
-        "<p>There was problem with the specified GPX file:</p>" .
-        $_SESSION['user_alert'] . "</div>";
-    exit;
 }
 ?>
 <!DOCTYPE html>
 <html lang="eng-us">
     <head>
         <title>GPX Editor</title>
-        <link href="./gpxEditor.css" rel="stylesheet" />
+        <link href="gpxEditor.css" rel="stylesheet" />
         <script src="../scripts/jquery.js"></script>
         <script type="text/javascript">
             var trk_json = <?=$path_literals;?>;
@@ -81,7 +99,18 @@ if (empty($_SESSION['user_alert'])) {
     </head>
     
     <body>
-        <div id="editbar"> 
+        <?php if ($noupload) : ?>
+        <div style="margin-left:24px;font-size:20px;">
+            <form method="get" action="../pages/home.php">
+                <p><em>The following issue has occurred preventing upload
+                    of the selected gpx file [<?=$ifile;?>]:</em><br />
+                <?=$msg;?></p>
+                <button id="restart">Return to Home Page</button>
+            </form>
+        </div>
+
+        <?php else : ?>
+        <div id="editbar">
             <a class="link-button" href="usergpx.gpx"
                 download="editedGpx.gpx">Save Edited File</a>
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -91,13 +120,17 @@ if (empty($_SESSION['user_alert'])) {
                 Undo Delete(s)</a>&nbsp;&nbsp;&nbsp;&nbsp;
             <span id="pttxt" class="regfonts">Point ID: </span>
             <input type="text" id="ptid" />
+            <button id="back">Home Page</button> 
         </div>
         <span id="dproc">&nbsp;&nbsp;[Select points in side table]</span>
     
         <div id="map"></div>
         <div id="gpxpts"></div>
+
         <script src="./loadGPX.js"></script>
         <script src="./gpxEditor.js"></script>
         <script src="<?=GOOGLE_MAP;?>" defer></script>
+        <?php endif; ?>
     </body>
+
 </html>

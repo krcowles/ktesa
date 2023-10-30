@@ -33,7 +33,10 @@ function verifyAccess($method)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             return;
         } else {
-            die($msg);
+            die(
+                $msg . " It must be accessed via a form submit or
+            appropriate XMLHttpRequest or JQuery post method"
+            );
         }
     }
     if ($method === "GET") {
@@ -278,7 +281,17 @@ function reduceLocks($count, $ipadd, $pdo)
  */
 function getBrowserType()
 {
-    $u_agent = $_SERVER['HTTP_USER_AGENT'];
+    if (!isset($_SERVER['HTTP_USER_AGENT'])) {
+        return array(
+            'userAgent' => 'NOT SET',
+            'name'      => 'unknown',
+            'version'   => 'unknown',
+            'platform'  => 'unknown',
+            'pattern'   => 'unknown'
+        );
+    } else {
+        $u_agent = $_SERVER['HTTP_USER_AGENT'];
+    }
     if (!empty($u_agent)) {
         $bname    = 'Unknown';
         $platform = 'Unknown';

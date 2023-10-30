@@ -30,49 +30,239 @@ function getIpAddress()
     return $ip;
 }
 /**
- * Multiple places require uploading a gpx (or possibly a kml file). 
- * Only one file at a time may be uploaded.
+ * If there are non-empty string elements in an array, return
+ * them. 
  * 
- * @param string  $name <input type="file" name="$name" />
- * @param boolean $init Reset alerts if true, Accumulate if false
- * @param boolean $elev Test for elevation data if true, ignore otherwise 
+ * @param array $array The array to be examined for empty values
  * 
- * @return string Location of file save, otherwise all msgs are in SESSION
+ * @return array $set_array
  */
-function uploadGpxKmlFile($name, $init, $elev=false)
+function checkForEmptyArray($array)
 {
-    $user_ip = getIpAddress();
-    $_SESSION['user_alert'] = $init ? '' : $_SESSION['user_alert'];
-    // first, validate the file as as <gpx> or <kml>
-    $valid = validateUpload($name, $elev);
-    if (empty($valid['file'])) {
-        $_SESSION['user_alert'] .= "No file specified";
-        return 'none';
-    } else {
-        if ($_SESSION['user_alert'] !== '' && $init) {
-            return;
+    return array_filter(
+        $array, function ($element) { 
+            return  $element !== '';
+        }
+    );
+}
+/**
+ * For each file upload, an array is established to capture data pertinent to
+ * the upload process. The array is created to facilitate the potential interrupt
+ * of the save process (see saveTab1.php), as when a 'save' script is exited, the
+ * server $_FILES global data is lost. The array captures the temporary server 
+ * data and stores the server's file upload to the local 'edit' directory. Note
+ * that the saved file may have an 'disallowed' file extension.
+ * 
+ * @param string $input_file_name Input file name attribute
+ * 
+ * @return array $upload_data Data pertinent for upload validation and saving
+ */
+function prepareUpload($input_file_name)
+{
+    $user_file = $_FILES[$input_file_name]['name'];
+    $requested = empty($user_file) ? false : true;
+    $upload_data = array(
+        'areq' => $requested,
+        'ifn'  => $input_file_name,
+        'err'  => 0,
+        'ufn'  => $requested ? $user_file : '',
+        'ext'  => $requested ?
+            strToLower(pathinfo($user_file, PATHINFO_EXTENSION)) : '',
+        'type' => '',
+        'apos' => 0
+    );
+    $upload_data['err'] = $_FILES[$input_file_name]['error'];
+    if ($upload_data['err'] === UPLOAD_ERR_OK) {
+        $upload_data['type'] = $_FILES[$input_file_name]['type'];
+        $tmploc = $input_file_name . "." . $upload_data['ext'];
+        move_uploaded_file($_FILES[$input_file_name]['tmp_name'], $tmploc);
+        if (strpos($input_file_name, "addgpx") !== false) {
+            $upload_data['apos'] = intval(substr($input_file_name, -1));
         }
     }
-    if ($valid['type'] === 'gpx' || $valid['type'] === 'kml') {
-        $file_ext = $valid['type'] === 'gpx' ? '.gpx' : '.kml';
-        $barefile = pathinfo($valid['file'], PATHINFO_FILENAME);
+    return $upload_data;
+}
+/**
+ * Validate and potentially save an upload file. No validation occurs for
+ * an .html or .kml file at this time, beyond verifying the file extension. 
+ * When $save is false, the $tmpfile is not removed; when true, the $tmpfile
+ * is either renamed or deleted.
+ * 
+ * @param array   $upload An array of the file upload characteristics
+ * @param boolean $elev   Test for elevation data if true
+ * @param boolean $syms   Test for unsupported symbols if true
+ * 
+ * @return string $saveloc Where file is saved
+ */
+function uploadFile($upload, $elev=false, $syms=false)
+{
+    if (!isset($_SESSION['alerts'])) {
+        $_SESSION['alerts'] = ["", "", "", ""];
+    }
+    if ($upload['err'] !== UPLOAD_ERR_OK) {  // no $tmpfile has been created...
+        $_SESSION['alerts'][$upload['apos']] = "Server Error: " .
+            "Failed to upload {$upload['ufn']}: " . uploadErr($upload['err']) . "; ";
+        return 'none';
+    }
+    $tmpfile = $upload['ifn'] . '.' . $upload['ext'];
+    $save = true;
+    $allowed = ['gpx'];
+    if ($upload['ifn'] === 'newmap') {
+        $allowed = ['html'];
+    } elseif ($upload['ifn'] === 'newgps') {
+        $allowed = ['gpx', 'kml'];
+    } elseif ($upload['ifn'] === 'gpx2edit' || $upload['ifn'] === 'file2edit') {
+        $save = false;
+    }
+    if (!in_array($upload['ext'], $allowed)) {
+        // remove $tmpfile w/disallowed file extension
+        unlink($tmpfile);
+        $_SESSION['alerts'][$upload['apos']]
+            = "Incorrect file extension specified: {$upload['ufn']}; ";
+        return 'none';
+    }
+    // Only allowed file extensions from here on...
+    if ($upload['ext'] === 'gpx') {
+        $file_type = 'gpx';
+    } else {
+        $file_type = validateType($upload['type']); // html, kml, or unknown
+    }
+    if ($file_type === 'unknown') {
+        // remove unknonwn file type's $tmpfile (type not based on file extension)
+        unlink($tmpfile);
+        $_SESSION['alerts'][$upload['apos']] = "The file type for {$filename} " .
+            "is not permitted; ";
+        return 'none';
+    } 
+    $valid = validateUpload(
+        $upload['ifn'], $upload['ufn'], $file_type, $upload['apos'], $elev, $syms
+    );
+    // if any alerts were registered, no upload;
+    if ($_SESSION['alerts'][$upload['apos']] !== '') {
+        unlink($tmpfile);
+        return 'none';
+    }
+    // also, if a gpx and symfault detected, no upload
+    if ($syms && isset($_SESSION['symfault']) && $file_type === 'gpx'
+        && strpos($_SESSION['symfault'], $upload['ifn']) !== false
+    ) {
+        // $tmpfile exists and will be renamed by resumeUploadGpx
+        return 'none';
+    }
+    if ($file_type === 'html') {
+        $saveloc = $valid; // path to saved html file; $tmpfile renamed
+    } elseif ($file_type === 'gpx' || $file_type === 'kml') {
+        $file_ext = $file_type === 'gpx' ? '.gpx' : '.kml';
+        $barefile = pathinfo($upload['ufn'], PATHINFO_FILENAME);
+        $user_ip = getIpAddress();
         $unique_file_name = $barefile . "-" . $user_ip . "-" . time() . $file_ext;
         $saveloc = "../gpx/" . $unique_file_name;
-        if (!move_uploaded_file($valid['loc'], $saveloc)) {
-            $nomove = "Could not save {$valid['file']} to site: contact Site Master";
-            throw new Exception($nomove);
-        } else if (isset($_SESSION['uplmsg'])) {
-            $_SESSION['uplmsg'].= "Your file [{$valid['file']}] was saved as " .
-                $unique_file_name . "; ";
-        } else if (isset($_SESSION['gpsmsg'])) {
-            $_SESSION['gpsmsg'].= "Your file [{$valid['file']}] was saved as " .
-                $unique_file_name . "; ";
+        if ($save) {
+            if (!rename($tmpfile, $saveloc)) {
+                throw new Exception("Could not rename {$tmpfile}");
+            } else if (isset($_SESSION['uplmsg'])) {
+                $_SESSION['uplmsg'] .= "Your file [{$upload['ufn']}] was saved as " .
+                    $unique_file_name . "; ";
+            } else if (isset($_SESSION['gpsmsg'])) {
+                $_SESSION['gpsmsg'] .= "Your file [{$upload['ufn']}] was saved as " .
+                    $unique_file_name . "; ";
+            }
+        } else {
+            // return the upload location without renaming $tmpfile
+            $saveloc = $tmpfile;
         }
-    } else {
-        $saveloc = '';
-        $_SESSION['user_alert'] .= " Incorrect file type: not gpx or kml; ";
     }
     return $saveloc;
+}
+/**
+ * This function is invoked when an upload is interrupted and then continued again.
+ * Presumably, all issues are fixed and the file may be safely stored on the server.
+ * The file is actually retrieved from the edit directory, and has been saved under
+ * the input file name attribute plus ".gpx". This is due to the fact that once the
+ * form's save page ('action=') is exited to correct a fault, the
+ * $_FILES[$name]['tmp_name'] data is lost. At this time only the 'unsupported 
+ * symbol' issue can be resolved by the user without offline editing.
+ * 
+ * @param string $input_file The temporaray location the 'repaired' file in edit/
+ * @param string $user_name  The user's uploaded file name
+ * 
+ * @return string
+ */
+function resumeUploadGpx($input_file, $user_name)
+{
+    $tmpfile = $input_file . '.gpx';
+    $user_base = pathinfo($user_name, PATHINFO_FILENAME);
+    $user_ip = getIpAddress();
+    $unique_file_name = $user_base . "-" . $user_ip . "-" . time() . ".gpx";
+    $saveloc = "../gpx/" . $unique_file_name;
+    // reset symfault for this input_file...
+    resetSymfault($input_file);
+    if (rename($tmpfile, $saveloc) === false) {
+        throw new Exception("Could not move {$tmpfile} to gpx directory; ");
+    }
+    if (isset($_SESSION['uplmsg'])) {
+        $_SESSION['uplmsg'].= "Your file [{$user_name}] was saved as " .
+            $unique_file_name . "; ";
+    } elseif (isset($_SESSION['gpsmsg'])) {
+        $_SESSION['gpsmsg'].= "Your file [{$user_name}] was saved as " .
+            $unique_file_name . "; ";
+    }
+    return $unique_file_name;
+}
+/**
+ * Find the symfault(s) corresponding to the specified input file. This function
+ * is only called when the symfault has been corrected and 'resumeUploadGpx' invoked.
+ * 
+ * @param string $input_file The name attribute for the corrected file
+ * 
+ * @return null
+ */
+function resetSymfault($input_file)
+{
+    $allFaults = $_SESSION['symfault'];
+    $fault_list = explode("|", $allFaults);
+    $delete_indices = [];
+    for ($k=0; $k<count($fault_list); $k++) {
+        if (strpos($fault_list[$k], $input_file) !== false) {
+            array_push($delete_indices, $k);
+        }
+    }
+    for ($j=count($delete_indices)-1; $j >= 0; $j--) {
+        unset($fault_list[$delete_indices[$j]]);
+    }
+    $resetFaults = implode("|", $fault_list);
+    $_SESSION['symfault'] = $resetFaults;
+    return;
+}
+/**
+ * This function validates the uploaded file against currently allowed types.
+ * Errors encountered are communicated via session variable 'alerts'. For
+ * gpx and kml files, this function is called from uploadKtesaFile(), and
+ * for html files, it is called directly from saveTab4.php.
+ * 
+ * @param string  $ifn       Input file name attribute
+ * @param string  $filename  User's uploaded file name
+ * @param string  $type      Server identified file type 
+ * @param string  $alert_pos Index into $_SESSION['alerts'] for alert msg
+ * @param boolean $elev      Test for elevation data if true, ignore otherwise
+ * @param boolean $symbols   Test for supported waypoint symbols if true
+ * 
+ * @return array The client filename that was uploaded & server location
+ */
+function validateUpload($ifn, $filename, $type, $alert_pos, $elev, $symbols)
+{
+    $tmp_upload = '';
+    if ($type === 'gpx') {
+        validateGpx(
+            $ifn, $alert_pos, $filename, $elev, $symbols
+        );
+    } elseif ($type === 'html') { 
+        // $type = html || kml
+        $basefilename = pathinfo($filename, PATHINFO_BASENAME);
+        $tmpfile = 'newmap.html';
+        $tmp_upload = uploadHTML($basefilename, $tmpfile);
+    }
+    return  $tmp_upload; 
 }
 /**
  * When the user uploads a map on tab4, it will be saved in the 'maps' directory
@@ -90,51 +280,13 @@ function uploadHTML($basefname, $server_loc)
     $basename = pathinfo($basefname, PATHINFO_FILENAME); // strip extension
     $unique_file_name = $basename . "-" . $user_ip . "-" . time() . '.html';
     $saveloc = "../maps/" . $unique_file_name;
-    if (!move_uploaded_file($server_loc, $saveloc)) {
+    if (!rename($server_loc, $saveloc)) {
         $nomove = "Could not save {$basefname} to site: contact Site Master";
         throw new Exception($nomove);
     }
-    return $unique_file_name;
-}
-/**
- * This function validates the uploaded file against currently allowed types.
- * Errors encountered are communicated via session variable 'user_alert'.
- * 
- * @param string  $name <input type="file" name="$name" />
- * @param boolean $elev Test for elevation data if true, ignore otherwise
- * 
- * @return array The client filename that was uploaded & server location
- */
-function validateUpload($name, $elev=false)
-{
-    $filename = basename($_FILES[$name]['name']);
-    $uploadType = 'none';
-    if (!empty($filename)) {
-        $tmp_upload = $_FILES[$name]['tmp_name'];    
-        $filestat = $_FILES[$name]['error'];
-        if ($filestat !== UPLOAD_ERR_OK) {
-            $_SESSION['user_alert'] .= " Server error: " .
-                "Failed to upload {$filename}: " . uploadErr($filestat);
-        } else {
-            $ext = pathinfo($filename, PATHINFO_EXTENSION);
-            if (strtolower($ext) === 'gpx') {
-                $uploadType = 'gpx';
-                validateGpx($tmp_upload, $filename, $elev);
-            } else { 
-                $filetype = $_FILES[$name]['type'];
-                $uploadType = validateType($filetype);
-                if ($uploadType === 'unknown') {
-                    $_SESSION['user_alert'] .= " Incorrect file type for upload; ";
-                } elseif ($uploadType === 'html') {
-                    $basefilename = pathinfo($filename, PATHINFO_BASENAME);
-                    $filename = uploadHTML($basefilename, $tmp_upload);
-                }
-            }
-        }
-    } else {
-        $tmp_upload = '';
-    }
-    return array("file" => $filename, "type" => $uploadType, "loc" => $tmp_upload);
+    $_SESSION['gpsmsg'].= "Your file [{$basefname}] was saved as " .
+        $unique_file_name . "; ";
+    return $saveloc;
 }
 /**
  * This function supplies a message appropriate to the type of upload
@@ -178,7 +330,8 @@ function validateType($filetype)
     case "text/html":
         $usertype = 'html';
         break;
-    case "application/vnd.google-earth.kml+xml": // add Google Earth - KML  ??
+    case "application/octet-stream"; // apparently possible for a kml file...
+    case "application/vnd.google-earth.kml+xml":
         $usertype = 'kml';
         break;
     default;
@@ -188,34 +341,71 @@ function validateType($filetype)
 }
 /**
  * This function will validate the basic file formatting for a (gpx) file.
- * If an error occurred, $_SESSION['user_alert'] will retain error.
+ * If an error occurred, $_SESSION['alerts'] will retain error.
+ *
+ * @param string  $input     Input file 'name' attribute 
+ * @param string  $alert_pos Index into $_SESSION['alerts'] for msg
+ * @param string  $filename  The name of the gpxfile
+ * @param boolean $etest     Test for elevation data if true
+ * @param boolean $symtest   Test for supported waypoint symbols
  * 
- * @param string  $file     The path to the file to be validated
- * @param string  $filename The name of the file
- * @param boolean $etest    Test for elevation data if true
- * 
- * @return null;
+ * @return null; // may set alerts or symfault but returns nothing
  */
-function validateGpx($file, $filename, $etest)
+function validateGpx($input, $alert_pos, $filename, $etest, $symtest)
 {
+    $tmpfile = $input . '.gpx';
     $dom = new DOMDocument;
-    if (!$dom->load($file)) {
-        displayGpxUserAlert($filename);
+    if (!$dom->load($tmpfile)) {
+        displayGpxUserAlert($filename, $alert_pos);
         return;
     }
     if (!$dom->schemaValidate(
         "http://www.topografix.com/GPX/1/1/gpx.xsd", LIBXML_SCHEMA_CREATE
     )
     ) {
-        displayGpxUserAlert($filename);
+        displayGpxUserAlert($filename, $alert_pos);
         return;
     }
     if ($etest) {
         $elevs = $dom->getElementsByTagName('ele');
         if ($elevs->length === 0) {
-            $_SESSION['user_alert'] .= " {$filename} cannot be used " .
-                "without elevation data";
+            $_SESSION['alerts'][$alert_pos] .= " {$filename} cannot be used " .
+                "without elevation data; ";
+            return;
         }
+    }
+    if ($symtest) {
+        if (!isset($_SESSION['symfault'])) {
+            $_SESSION['symfault'] = '';
+        }
+        // look for unsupported waypoint symbols in the file
+        include "gpxWaypointSymbols.php";
+        $gpxsyms = array_keys($supported_syms);
+        $wpts = $dom->getElementsByTagName('wpt');
+        $sym_string = '';
+        foreach ($wpts as $item) {
+            $children = $item->childNodes;
+            $wptname = 'Undefined';
+            // according to gpx schema, <name> occurs before <sym>
+            foreach ($children as $node) {
+                if ($node->nodeName === 'name') {
+                    $wptname = $node->nodeValue;
+                } elseif ($node->nodeName === 'sym') {
+                    $gpxsymbol = $node->nodeValue;
+                    if (!in_array($gpxsymbol, $gpxsyms)) {
+                        /**
+                         * This is an unsupported <sym>; 
+                         * There may be multiple appearances of the
+                         * same symbol in different waypoints, hence
+                         * include the waypoint's name (if it exists)
+                         */
+                        $sym_string .= $input . "^" . $filename . "^" .
+                            $gpxsymbol . "^" . $wptname . "|";
+                    }
+                }
+            }
+        }
+        $_SESSION['symfault'] .= $sym_string;
     }
     return;
 }
@@ -223,15 +413,16 @@ function validateGpx($file, $filename, $etest)
  * Display a message for the user about the gpx file failure encountered
  * 
  * @param string $filename The gpx file containing the error
+ * @param string $position Index into $_SESSION['alerts'] for msg
  * 
  * @return null
  */
-function displayGpxUserAlert($filename)
+function displayGpxUserAlert($filename, $position)
 {
     $err_array = libxml_get_errors();
     $usr_msg = "There is an error in {$filename}:\n" .
         displayXmlError($err_array[0]);
-    $_SESSION['user_alert'] .= $usr_msg;
+    $_SESSION['alerts'][$position] .= $usr_msg;
     return;
 }
 /**
@@ -266,12 +457,14 @@ function displayXmlError($error)
 /**
  * This function will create a JSON track file from the specified gpx.
  * 
+ * @param PDO    $pdo     Database PDO
  * @param string $gpxfile The filepath for the file to be converted.
+ * @param string $hikeNo  The index to the hike in the database
  * 
  * @return array JSON file made from target gpx file, lat & lng of 
  * track starting point
  */
-function makeTrackFile($gpxfile) 
+function makeTrackFile($pdo, $gpxfile, $hikeNo) 
 {
     $basename = basename($gpxfile);
     $ext = strrpos($basename, ".");
@@ -280,16 +473,93 @@ function makeTrackFile($gpxfile)
     $trkloc = '../json/' . $trkfile;
     $gpxdat = gpxLatLng($gpxfile, "1");
     $trklat = $gpxdat[0][0];
+    $lat = (int) ((float)($trklat) * LOC_SCALE);
     $trklng = $gpxdat[1][0];
+    $lng = (int) ((float)($trklng) * LOC_SCALE);
     $trk = fopen($trkloc, "w");
     $dwnld = fwrite($trk, $gpxdat[3]);
     if ($dwnld === false) {
         $trkfail =  "editFunctions.php: Failed to write out {$trkfile} " .
-            "[length: " . strlen($jdat) . "]; Please contact Site Master";
+            "[length: " . strlen($jdat) . "]; ";
         throw new Exception($trkfail);
     } 
     fclose($trk);
-    return array($trkfile, $trklat, $trklng);
+    $newdatReq = "UPDATE EHIKES SET lat = ?, lng = ? WHERE indxNo = ?;";
+    $newdat = $pdo->prepare($newdatReq);
+    $newdat->execute([$lat, $lng, $hikeNo]);
+    return $trkfile;
+}
+/**
+ * This function calculates the gpx statistics for the main gpx file
+ * of a hike.
+ * 
+ * @param string $gpxPath The hike's main gpx file uploaded via 'newgpx'
+ * 
+ * @return array miles and elevation change in feet
+ */
+function getGpxFileStats($gpxPath)
+{
+    // Now calculate the new gpx file's statistics (miles, feet, ...)
+    $gpxdat = simplexml_load_file($gpxPath);
+    if ($gpxdat === false) {
+        throw new Exception("Failed to open {$gpxPath}");
+    }
+    if ($gpxdat->rte->count() > 0) {
+        $gpxdat = convertRtePts($gpxdat);
+    }
+    $noOfTrks = $gpxdat->trk->count();
+    // threshold in meters to filter out elevation and distance value variation
+    // set by default if command line parameter(s) is not given
+    $elevThresh = 1.0;
+    $distThresh = 5.0;
+    $maWindow = 3;
+    
+    // calculate stats for all tracks:
+    $pup = (float)0;
+    $pdwn = (float)0;
+    $pmax = (float)0;
+    $pmin = (float)50000;
+    $hikeLgthTot = (float)0;
+    for ($k=0; $k<$noOfTrks; $k++) {
+        $calcs = getTrackDistAndElev(
+            0, $k, "", $gpxPath, $gpxdat, false, null,
+            null, $distThresh, $elevThresh, $maWindow
+        );
+        $hikeLgthTot += $calcs[0];
+        if ($calcs[1] > $pmax) {
+            $pmax = $calcs[1];
+        }
+        if ($calcs[2] < $pmin) {
+            $pmin = $calcs[2];
+        }
+        $pup  += $calcs[3];
+        $pdwn += $calcs[4];
+    } // end for: PROCESS EACH TRK
+    
+    $totalDist = $hikeLgthTot / 1609;
+    $miles = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
+    $elev = ($pmax - $pmin) * 3.28084;
+    if ($elev < 100) { // round to nearest 10
+        $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
+        $feet = 10 * $adj;
+    } elseif ($elev < 1000) { // 100-999: round to nearest 50
+        $adj = $elev/100;
+        $lead = substr($adj, 0, 1);
+        $n5 = $lead + 0.50;
+        $n2 = $lead + 0.25;
+        if ($adj > $n5) {
+            $adj = $lead + 1;
+        } elseif ($adj >$n2) {
+            $adj = $lead + 0.5;
+        } else {
+            $adj = $lead;
+        }
+        $feet = 100 * $adj;
+    } else { // 1000+: round to nearest 100
+        $adj = round($elev/100, 0, PHP_ROUND_HALF_UP);
+        $feet = 100 * $adj;
+    }
+    return [$miles, $feet];
 }
 /**
  * This function extracts existing cluster info from the CLUSTERS table

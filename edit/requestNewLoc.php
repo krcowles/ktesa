@@ -16,8 +16,8 @@
 
 $subject = "Update Areas.json";
 $message = "<h2>User {$_SESSION['userid']}: {$_SESSION['username']} " .
-    "requests the addition of a location: " . $newloc . " in " . $region .
-    "</h2>";
+    "requests the addition of a location: " . $newloc . " in " .
+    $basic_data['region'] . "</h2>";
 
 $mail->isHTML(true);
 $mail->setFrom('admin@nmhikes.com', 'Do not reply');

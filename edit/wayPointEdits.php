@@ -106,7 +106,7 @@ if ($gpxWptCount === 0 && $wayPointCount === 0) {
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
         $wptedits .= '<select class="wpticons" name="nsym[]">' . PHP_EOL;
-        $wptedits .= $icons . '<br />' . PHP_EOL;
+        $wptedits .= $icon_opts . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
         $wptedits .= $newdblats . $newdblatdeg . $newdblatdm . $newdblatdms;
         $wptedits .= $newdblngs . $newdblngdeg . $newdblngdm . $newdblngdms
@@ -129,7 +129,7 @@ if ($gpxWptCount > 0) {
         $wptedits .= 'Icon:' . PHP_EOL;
         $wptedits .= '<select id="gselicon' . $m . '" name="gsym[]" ' . 
             'class="wpticons">' . PHP_EOL;
-        $wptedits .= $icons . PHP_EOL;
+        $wptedits .= $icon_opts . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;Remove this waypoint:&nbsp;&nbsp;'
             . '<input id="gdel' . $m . '" type="checkbox" '
             . 'name="gdel[]" value="g' . $m . '" /><br />' . PHP_EOL;
@@ -154,7 +154,7 @@ if ($gpxWptCount > 0) {
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
         $wptedits .= '<select class="wpticons" name="ngsym[]">' . PHP_EOL;
-        $wptedits .= $icons . '<br />' . PHP_EOL;
+        $wptedits .= $icon_opts . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
         $wptedits .= $newgpxLats . $newglatdeg . $newglatdm . $newglatdms;
         $wptedits .= $newgpxLngs . $newglngdeg . $newglngdm . $newglngdms
@@ -177,7 +177,7 @@ if ($wayPointCount > 0) {
         $wptedits .= 'Icon:' . PHP_EOL;
         $wptedits .= '<select id="dselicon' . $n . '" name="dsym[]" ' .
             'class="wpticons">' . PHP_EOL;
-        $wptedits .= $icons . PHP_EOL;
+        $wptedits .= $icon_opts . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;Remove this waypoint:&nbsp;&nbsp;'
             . '<input id="ddel' . $n . '" type="checkbox" '
             . 'name="ddel[]" value="d' . $n . '" /><br />' . PHP_EOL;
@@ -201,7 +201,7 @@ if ($wayPointCount > 0) {
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
         $wptedits .= '<select class="wpticons" name="nsym[]">' . PHP_EOL;
-        $wptedits .= $icons . '<br />' . PHP_EOL;
+        $wptedits .= $icon_opts . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
         $wptedits .= $newdblats . $newdblatdeg . $newdblatdm . $newdblatdms;
         $wptedits .= $newdblngs . $newdblngdeg . $newdblngdm . $newdblngdms

@@ -75,7 +75,8 @@
     "loadGPX.ts",
     "gpxEditor.ts",
     "heic_converter.ts",
-    "waypoints.ts"
+    "waypoints.ts",
+    "correctableFault.ts"
   ]
   /* also "include": [] and/or "exclude": [] */
 }

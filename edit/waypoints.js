@@ -21,29 +21,23 @@ $(function () {
      * The following functions update all formats of waypoint displays;
      * The posted value is held in a hidden input, and siblings of that
      * input contain the textareas for displaying/editing waypoints in
-     * the various formats: degrees, degrees/decimal minutes,
+     * the various formats: degrees, degrees/decimal minutes, and
      * degrees/minutes/decimal seconds.
      */
     var getDegreeData = function ($span, format) {
         var $kids = $span.children();
-        var degs = parseFloat($kids.eq(0).val());
-        var mins = parseFloat($kids.eq(1).val());
+        var degs = $kids.eq(0).val() === '' ? 0 : parseFloat($kids.eq(0).val());
+        var mins = $kids.eq(1).val() === '' ? 0 : parseFloat($kids.eq(1).val());
         var val;
-        var neg = degs < 0 ? true : false;
         if (format === 'dm') {
             val = Math.abs(degs) + mins / 60;
         }
         else {
             // dms
-            var secs = parseFloat($kids.eq(2).val());
+            var secs = $kids.eq(2).val() === '' ? 0 : parseFloat($kids.eq(2).val());
             val = Math.abs(degs) + (mins + secs / 60) / 60;
         }
-        if (neg) {
-            return -1 * val;
-        }
-        else {
-            return val;
-        }
+        return degs < 0 ? -1 * val : val;
     };
     var updatePostInput = function (
     // use hidden input to store posted value
@@ -52,6 +46,7 @@ $(function () {
         return;
     };
     var updateDegrees = function ($d, val) {
+        // use span holding class 'deg'
         $d.children().eq(0).val(val.toFixed(7));
         return;
     };
@@ -60,7 +55,6 @@ $(function () {
     $dm_span, degrees) {
         var act = Math.abs(degrees);
         degrees = Math.trunc(degrees); // retains negative sign if present
-        //var tdeg = gpstype === 'lat' ? degs : "-" + degs; // same for dm & dms
         var mant = act - Math.abs(degrees);
         var mins = mant * 60;
         var tmin = mins.toFixed(5);
@@ -156,6 +150,9 @@ $(function () {
         }
         return;
     };
+    /**
+     * MAIN ROUTINE
+     */
     var non_num_entry = /[^\-\+0-9\.]/;
     // Display default waypoint format:
     $('.show_deg').show();

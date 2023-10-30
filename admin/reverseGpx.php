@@ -1,13 +1,12 @@
 <?php
 /**
  * This module will reverse the order of trackpoints within a given
- * track no of the input file. If there are multiple segments within
- * a track, each segment within the track will have its trackpts 
- * reversed independently.
+ * track no (or all tracks) of the input file. If there are multiple segments
+ * within a track, each segment within the track will have its trackpts 
+ * reversed independently. Elevation data is not required here.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -16,21 +15,25 @@ require "../php/global_boot.php";
 $revtype = filter_input(INPUT_POST, 'revtype');
 $revlist = filter_input(INPUT_POST, 'revlist');
 
-$upload = validateUpload("gpx2edit", true);
-if ($upload['file'] == '') {
-    $_SESSION['user_alert'] = "No file specified";
-} elseif ($upload['type'] !== 'gpx') {
-    $_SESSION['user_alert'] = "Incorrect file type";
-}
-if (!empty($_SESSION['user_alert'])) {
-    header("Location: admintools.php", true);
+unset($_SESSION['alerts']); // start clean
+if (!empty($_FILES['gpx2edit']['name'])) {
+    $upload = uploadFile(prepareUpload('gpx2edit'));
+    if ($upload === 'none') {
+        header("Location: admintools.php", true); // display any alerts
+        exit;
+    }
+} else {
+    // nothing to do here
+    header("Location: admintools.php");
     exit;
 }
+
 $dom = new DOMDocument();
 $dom->formatOutput = true;
-$dom->load($upload['loc']);
+$dom->load($upload);
 $tracks = $dom->getElementsByTagName('trk'); // DONMNodeList object
 $trkcnt = $tracks->length;
+unlink("gpx2edit.gpx");
 // process user input to determine tracks to be iteratively reversed
 $tracklist = [];
 if ($revtype === 'gpxall') {

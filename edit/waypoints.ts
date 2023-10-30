@@ -42,14 +42,14 @@ const getDegreeData = (
     format: string
 ) => {
     var $kids = $span.children();
-    var degs  = parseFloat(<string>$kids.eq(0).val());
-    var mins  = parseFloat(<string>$kids.eq(1).val());
+    var degs  = $kids.eq(0).val() === '' ? 0 : parseFloat(<string>$kids.eq(0).val());
+    var mins  = $kids.eq(1).val() === '' ? 0 : parseFloat(<string>$kids.eq(1).val());
     var val: number;
     if (format === 'dm') {
         val = Math.abs(degs) + mins/60;
     } else {
         // dms
-        var secs = parseFloat(<string>$kids.eq(2).val());
+        var secs = $kids.eq(2).val() === '' ? 0 : parseFloat(<string>$kids.eq(2).val());
         val = Math.abs(degs) + (mins + secs/60)/60;
     }
     return degs < 0 ? -1 * val : val;

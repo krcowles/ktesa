@@ -89,11 +89,16 @@ for ($k=0; $k<count($additional_files); $k++) {
 }
 $adders .= '</ul>' . PHP_EOL;
 
-// any alerts to display?
+// Any alerts to display? These appear in a javascript alert only, not on the page
 $user_alert = '';
-if (isset($_SESSION['user_alert']) && !empty($_SESSION['user_alert'])) {
-    $user_alert = $_SESSION['user_alert'];
-    $_SESSION['user_alert'] == '';
+if (isset($_SESSION['alerts']) && !empty(checkForEmptyArray($_SESSION['alerts']))) {
+    $user_alert = '';
+    foreach ($_SESSION['alerts'] as $alert) {
+        if ($alert !== '') {
+            $user_alert .= $alert . "\n";
+        }
+    }
+    $_SESSION['alerts'] = ["", "", "", ""];
 }
 
 /**

@@ -45,18 +45,8 @@ $iconNote = '<p><strong>Use "Parking" icon when trail begins very close
 $wptDescriptions = $wptstyle . $iconNote;
    
 // Drop-down select box for icons currently supported
-$icons = <<<WPTICONS
-    <option value="googlemini">[Default] Google</option>
-    <option value="Flag, Red">Red Flag</option>
-    <option value="Flag, Blue">Blue Flag</option>
-    <option value="Flag, Green">Green Flag</option>
-    <option value="Flag, Yellow">Yellow Flag</option>
-    <option value="Trail Head">Hiker</option>
-    <option value="Parking Area">Parking</option>
-    <option value="Triangle, Red">Red Triangle</option>
-    <option value="Triangle, Yellow">Yellow Triangle</option>
-</select>
-WPTICONS;
+require "gpxWaypointSymbols.php";
+$icons = $select_sym;
 
 /**
  * All waypoints are presented in a format selected by the user in the select

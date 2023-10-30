@@ -138,44 +138,36 @@ if ($addcnt > 0) {
  *
  * GPS Data File upload section. May be a gpx or kml file, or an html map file
  */
+unset($_SESSION['uplmsg']);
 $_SESSION['gpsmsg'] = '';
-$gpsfile = uploadGpxKmlFile('newgps', true, true);
-if ($_SESSION['user_alert'] !== 'No file specified') {
-    if (empty($_SESSION['user_alert'])) {
+if (!empty($_FILES['newgps']['name'])) {
+    $gpsfile = uploadFile(prepareUpload('newgps'));
+    if ($gpsfile !== 'none') {
         $ngpsreq
             = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`,`clickText`) "
                 . "VALUES (?,'P','GPX:',?,'GPX Track File');";
         $newgps = $pdo->prepare($ngpsreq);
         $newgps->execute([$hikeNo, $gpsfile]);
-        $gfile = pathinfo($gpsfile, PATHINFO_FILENAME);
-        $_SESSION['gpsmsg'] .= "{$gfile} was successfully uploaded; ";
     } else {
         header("Location: {$redirect}");
         exit;
     }
-} else {
-    $_SESSION['user_alert'] = '';
 }
-$htmlfile = validateUpload('newmap');
-if (!empty($htmlfile['file'])) {
-    if ($htmlfile['type'] === 'html') {
-        if (empty($_SESSION['user_alert'])) {
-            $newurl = '../maps/' . $htmlfile['file'];
-            $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`," .
-                "clickText) VALUES (?,'P','MAP:',?,'Map File');";
-            $newgps = $pdo->prepare($ngpsreq);
-            $newgps->execute([$hikeNo, $newurl]);
-            $_SESSION['gpsmsg'] .= " {$htmlfile['file']} was successfully uploaded" ;
-        } else {
-            header("Location: {$redirect}");
-            exit;
-        } 
-    } else {
-        $_SESSION['user_alert'] = "Only html files can be uploaded here";
+// Uploading of html map files:
+if (!empty($_FILES['newmap']['name'])) {
+    $htmlfile = uploadFile(prepareUpload('newmap'));
+    // Any issues?
+    if ($htmlfile === 'none') {
         header("Location: {$redirect}");
         exit;
+    } else {
+        $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`," .
+            "clickText) VALUES (?,'P','MAP:',?,'Map File');";
+        $newgps = $pdo->prepare($ngpsreq);
+        $newgps->execute([$hikeNo, $htmlfile]);
     }
-}  
+}
+$_SESSION['alerts'] = ["", "", "", ""];
 /**
  * NOTE: the only items that have 'delete' boxes are those for which GPS data
  * already existed in the database.
