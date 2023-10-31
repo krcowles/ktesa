@@ -272,12 +272,16 @@ if ($('#redo_thumb').length) {
 }
 /**
  * If the user wishes to delete the saved preview and start over, he/she may
- * click the 'Delete Preview' button.
+ * click the 'Delete Preview' button. NOTE: the host server now crashes the
+ * $.post when passing a string that contains a url! Hence the filename is
+ * passed as a parameter instead. The very misleading server error message is:
+ * "Access denied/authorization required".
  */
 $('#redo_thumb').on('click', function(ev) {
     ev.preventDefault();
-    let img2delete = $('#current_preview').attr('src');
-    let post_data = {indxNo: indxNo, img: img2delete};
+    let img_src    = $('#current_preview').attr('src') as string;
+    let img2delete = img_src.split('/').pop();
+    let post_data  = {indxNo: indxNo, img: img2delete};
     $.post('deletePreview.php', post_data, function(result) {
         if (result === 'OK') {
             // note: using reload() can return the user to tab1

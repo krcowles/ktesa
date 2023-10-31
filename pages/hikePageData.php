@@ -92,6 +92,8 @@ if ($tbl === 'old') {
  * It is permitted to have more than one gpx file per hike (e.g. Knife's Edge)
  * Also, 'old style' hikes and cluster pages will have no files specified
  */
+$asc = 0;
+$dsc = 0;
 $allgpx = $row['gpx'];
 if (!empty($allgpx)) {
     $files    = explode(",", $allgpx);

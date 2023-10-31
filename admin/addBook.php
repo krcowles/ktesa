@@ -10,6 +10,7 @@
  * @license No license to date
  */
 session_start();
+require "../php/global_boot.php";
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -22,7 +23,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/ktesaNavbar.css" rel="stylesheet" />
-    <link href="admintools.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/admintools.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
 </head>
 

@@ -11,8 +11,10 @@
 require "../php/global_boot.php";
 
 $indxNo  = filter_input(INPUT_POST, 'indxNo');
-$prevloc = filter_input(INPUT_POST, 'img');
-$thmbloc = str_replace("previews", "thumbs", $prevloc);
+$image   = filter_input(INPUT_POST, 'img');
+$picdir  = getPicturesDirectory();
+$prevloc = str_replace("zsize", "previews", $picdir) . $image;
+$thmbloc = str_replace("zsize", "thumbs", $picdir) . $image;
 if (!unlink($prevloc)) {
     throw New Exception("Could not delete preview image");
 }
