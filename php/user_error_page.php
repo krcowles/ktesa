@@ -130,7 +130,12 @@ if (session_status() === PHP_SESSION_NONE) {
         investigated promptly.
     </p>
     <p>You may wish to try again at a later date/time.
-        Thanks for your patience!</p>   
+        Thanks for your patience!</p> 
+    <p>NOTE: If you continue to encounter this issue, please send an email
+        to the system admin with details about what you were trying to do when
+        the issue occurred. Include info like hike name, whether viewing or
+        editing, how you arrived at the problem page, etc. Send to 
+        admin@nmhikes.com</p>  
 </div>
 
 <script src="../scripts/logo.js"></script>
