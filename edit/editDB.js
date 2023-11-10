@@ -91,9 +91,6 @@ $(function () {
                 evt.preventDefault();
                 return;
             }
-            else {
-                // proceed w/submit
-            }
         });
     }
     // clicking on tab buttons:

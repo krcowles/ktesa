@@ -165,7 +165,10 @@ if ($gpxWptCount > 0) {
 // 3. Some waypoints are present in the database
 if ($wayPointCount > 0) {
     $wptedits .= $dbWpts . PHP_EOL;
-    $wptedits .= $wptDescriptions . PHP_EOL;
+    // When both db & gpx pts exist, don't duplicate the format <select>
+    if ($gpxWptCount === 0) {
+        $wptedits .= $wptDescriptions . PHP_EOL;
+    }
     $wptedits .= '<div id="wpts">' . PHP_EOL;
     for ($n=0; $n<$wayPointCount; $n++) {
         $wptedits .= '<p id="dicn' . $n . '" style="display:none;">'
@@ -182,10 +185,10 @@ if ($wayPointCount > 0) {
             . '<input id="ddel' . $n . '" type="checkbox" '
             . 'name="ddel[]" value="d' . $n . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
-        $dblats    = str_replace('dblatval', $wlat[$n], $dblats);
-        $dblngs    = str_replace('dblngval', $wlng[$n], $dblngs);
-        $wptedits .= $dblats . $dblatdeg . $dblatdm . $dblatdms;
-        $wptedits .= $dblngs . $dblngdeg . $dblngdm . $dblngdms
+        $latin     = str_replace('dblatval', $wlat[$n], $dblats);
+        $lngin     = str_replace('dblngval', $wlng[$n], $dblngs);
+        $wptedits .= $latin . $dblatdeg . $dblatdm . $dblatdms;
+        $wptedits .= $lngin . $dblngdeg . $dblngdm . $dblngdms
             . '<br /><br />' . PHP_EOL;
         $wptedits .= '<input type="hidden" name="didx[]" value="'
             . $wids[$n] . '" />';

@@ -125,9 +125,7 @@ function positionApply(tab: number) {
             alert(msg);
             evt.preventDefault();
             return;
-        } else {
-            // proceed w/submit
-        }
+        } 
     });
 }
 // clicking on tab buttons:

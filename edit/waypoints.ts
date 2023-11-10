@@ -1,7 +1,7 @@
 declare var gpxLatDeg: string[];
-declare var gpxLngDeg: string[];
 declare var gpxLatDM: string[];
 declare var gpxLatDMS: string[];
+declare var gpxLngDeg: string[];
 declare var gpxLngDM: string[];
 declare var gpxLngDMS: string[];
 declare var wLatDeg: string[];
@@ -16,10 +16,27 @@ declare var wLngDMS: string[];
  * 
  * @author Ken Cowles
  * 
- * @version 1.0 Handling multiple formats for lat/lngs
+ * @version 1.0 Handling multiple formats for lat/lngs; first release
  */
 $( function () {
 
+// Display user-selected waypoint format
+const showFractionalDegrees = () => {
+    $('.show_deg').show();
+    $('.show_dm').hide();
+    $('.show_dms').hide();
+}
+const showFractionalMinutes = () => {
+    $('.show_deg').hide();
+    $('.show_dm').show();
+    $('.show_dms').hide();
+}
+const showFractionalSeconds = () => {
+    $('.show_deg').hide();
+    $('.show_dm').hide();
+    $('.show_dms').show();
+}
+// Integrity check
 const checkForFractionalEntry = (entry: number) => {
     var result = false;
     if ((entry % 1) > 0) {
@@ -37,11 +54,11 @@ const checkForFractionalEntry = (entry: number) => {
  * the various formats: degrees, degrees/decimal minutes, and
  * degrees/minutes/decimal seconds.
  */
-const getDegreeData = (
-    $span: JQuery<HTMLTextAreaElement>,
+const getDegreeData = ( 
+    $span: JQuery<HTMLTextAreaElement>, // the changed <span>
     format: string
 ) => {
-    var $kids = $span.children();
+    var $kids = $span.children(); // either 2 or 3 <textarea> children
     var degs  = $kids.eq(0).val() === '' ? 0 : parseFloat(<string>$kids.eq(0).val());
     var mins  = $kids.eq(1).val() === '' ? 0 : parseFloat(<string>$kids.eq(1).val());
     var val: number;
@@ -71,8 +88,7 @@ const updateDegrees = (
     return;
 }
 const updateDM = (
-    // use span holding class 'dm'
-    $dm_span: JQuery<HTMLTextAreaElement>,
+    $dm_span: JQuery<HTMLTextAreaElement>, // span holding class 'dm'
     degrees: number
 ) => {
     var act = Math.abs(degrees);
@@ -83,7 +99,7 @@ const updateDM = (
     var $els = $dm_span.children();
     $els.eq(0).val(degrees);
     $els.eq(1).val(tmin);
-    return mins;
+    return Number(tmin);  // due to rounding/math, mins can be marginally 'off'
 }
 const updateDMS = (
     // use span holding class 'dms'
@@ -109,66 +125,77 @@ const recalculateFormats = (
     var minutes = 0.00;
     switch(format) {
         case 'deg':
+            // variables assigned primarily for readability...
+            var $deg_span = target.parent();
+            var $hidden_input = $deg_span.prev();
+            var $dm_span  = $deg_span.next();
+            var $dms_span = $deg_span.next().next();
             new_degrees = parseFloat(<string>target.val());
-            updatePostInput(target.parent().prev(), new_degrees);
+            updatePostInput($hidden_input, new_degrees);
             // no need to update degrees, as it is the target
-            minutes = updateDM(target.parent().next(), new_degrees);
-            updateDMS(target.parent().next().next(), new_degrees, minutes);
+            minutes = updateDM($dm_span, new_degrees);
+            updateDMS($dms_span, new_degrees, minutes);
             break;
         case 'dm':
-            var $parent = target.parent();  // <span> regardless which of the two changed
-            var $els = $parent.children();
-            var dm_input = $parent.prev().prev().attr('name') as string;
-            // if this is a new waypoint, the first char of the input name is 'n'
+            var deg_blank = false; // blank-field boolean
+            var min_blank = false; // blank-field boolean
+            // variables assigned primarily for readability...
+            var $dm_span = target.parent();  
+            var $els = $dm_span.children(); // deg, min
+            var $hidden_input = $dm_span.prev().prev();
+            var $dm_deg = $dm_span.prev();
+            var $dm_sec = $dm_span.next();
+            var dm_input = $hidden_input.attr('name') as string;
+            // if this is a new waypoint:
             if (dm_input.substring(0, 1) === 'n') {
-                /**
-                 * For new entries, don't calculate until all fields are specified
-                 */
-                if ($els.eq(0).val() !== "" && $els.eq(1).val() !== "") {
-                    new_degrees = getDegreeData($parent, 'dm');
-                    updatePostInput($parent.prev().prev(), new_degrees);
-                    updateDegrees($parent.prev(), new_degrees)
-                    minutes = updateDM($parent, new_degrees);
-                    updateDMS($parent.next(), new_degrees, minutes);
-                } else {
-                    alert("Waypt not completely specified yet: other formats not calculated")
-                }
-            }  else {
-                // use new data in target to update all formats
-                new_degrees = getDegreeData($parent, 'dm');
-                updatePostInput($parent.prev().prev(), new_degrees);
-                updateDegrees($parent.prev(), new_degrees);
-                minutes = updateDM($parent, new_degrees);
-                updateDMS($parent.next(), new_degrees, minutes);
-            }     
+                // id not-yet-filled fields
+                deg_blank = $els.eq(0).val() === "" ? true : false;
+                min_blank = $els.eq(1).val() === "" ? true : false;
+            } 
+            new_degrees = getDegreeData($dm_span, 'dm');
+            updatePostInput($hidden_input, new_degrees);
+            updateDegrees($dm_deg, new_degrees);
+            minutes = updateDM($dm_span, new_degrees);
+            updateDMS($dm_sec, new_degrees, minutes);
+            // default blanks instead of filling w/zero
+            if (deg_blank) {
+                $els.eq(0).val("");
+            } 
+            if (min_blank) {
+                $els.eq(1).val("");
+            }
             break;
         case 'dms':
-            var $dms_parent = target.parent(); // <span> regardless which of the three changed
-            var $dms_els = $dms_parent.children();
-            var dms_input = $dms_parent.prev().prev().prev().attr('name') as string;
-            // if this is a new waypoint, the first char of the input name is 'n'
+            var deg_blank = false; // blank field boolean
+            var min_blank = false;
+            var sec_blank = false;
+            var $dms_span = target.parent(); // <span> regardless which of the three changed
+            var $els  = $dms_span.children();
+            var $hidden_input = $dms_span.prev().prev().prev();
+            var $dms_deg  = $dms_span.prev().prev(); // <span>> contaning display deg
+            var $dms_min  = $dms_span.prev(); // <span> containing display minutes
+            var dms_input = $hidden_input.attr('name') as string;
+            // if this is a new waypoint:
             if (dms_input.substring(0, 1) === 'n') {
-                /**
-                 * For new entries, don't calculate until all fields are specified
-                 */
-                if ($dms_els.eq(0).val() !== "" && $dms_els.eq(1).val() !== ""
-                && $dms_els.eq(2).val() !== ""
-                ) {
-                    new_degrees = getDegreeData($dms_parent, 'dms');
-                    updatePostInput($dms_parent.prev().prev().prev(), new_degrees);
-                    updateDegrees($dms_parent.prev().prev(), new_degrees);
-                    minutes = updateDM($dms_parent.prev(), new_degrees);
-                    updateDMS($dms_parent, new_degrees, minutes);        
-                }  else {
-                    alert("Waypt not completely specified yet: other formats not calculated")
-                }
-            } else {
-                // use new data in target to update all formats
-                var new_degrees = getDegreeData($dms_parent, 'dms');
-                updatePostInput($dms_parent.prev().prev().prev(), new_degrees);
-                updateDegrees($dms_parent.prev().prev(), new_degrees);
-                var minutes = updateDM($dms_parent.prev(), new_degrees);
-                updateDMS($dms_parent, new_degrees, minutes);
+                // id not-yet-filled fields
+                deg_blank = $els.eq(0).val() === "" ? true : false;
+                min_blank = $els.eq(1).val() === "" ? true : false;
+                sec_blank = $els.eq(2).val() === "" ? true : false;
+            }
+            new_degrees = getDegreeData($dms_span, 'dms');
+            updatePostInput($hidden_input, new_degrees);
+            updateDegrees($dms_deg, new_degrees);
+            var minutes = updateDM($dms_min, new_degrees);
+            updateDMS($dms_span, new_degrees, minutes);
+            // default blanks instead of filling w/zero
+            if (deg_blank) {
+                $els.eq(0).val("");
+            }
+            if (min_blank) {
+                $els.eq(1).val("");
+            }
+            if (sec_blank) {
+                $els.eq(2).val("");
             }
     }
     return;
@@ -178,17 +205,25 @@ const recalculateFormats = (
  * MAIN ROUTINE
  */
 const non_num_entry = /[^\-\+0-9\.]/;
-
-// Display default waypoint format:
-$('.show_deg').show();
-$('.show_dm').hide();
-$('.show_dms').hide();
+// Display waypoint format:
+var wpt_format = $('#wpt_format').text();
+if (wpt_format == "") {
+    showFractionalDegrees();
+} else {
+    if (wpt_format === 'deg') {
+        showFractionalDegrees();
+    } else if (wpt_format === 'dm') {
+        showFractionalMinutes();
+    } else {
+        showFractionalSeconds();
+    }
+}
 // Check for presence of div's requiring initialization
 var gpxwpts  = $('#gpts').length ? true : false;
 var dbwpts   = $('#wpts').length ? true : false;
 /**
  * Initialize states;
- * Only the gpx waypts and existing (stored) database waypts need be initialized
+ * If there are gpx and/or existing (stored) database waypts
  */
 if (gpxwpts) { // there are gpx wpts on page...
     var $gLatDeg = $('.glat_deg') as JQuery<HTMLSpanElement>;
@@ -250,7 +285,7 @@ if (dbwpts) { // there are wpts from the database on page...
  * When a lat/lng value changes, in any format, all formats are recalculated for that wpt;
  * Also, fields are checked for legitimate values
  */
-$('.deg, .dm, .dms').on('change', function() {
+$(".deg, .dm, .dms").on('focusout', function() {
     var type = 'none';
     var $jqTA = $(this) as JQuery<HTMLTextAreaElement>;
     var raw_value = $jqTA.val() as string | number;
@@ -263,14 +298,14 @@ $('.deg, .dm, .dms').on('change', function() {
     if (non_num_entry.test(raw_value as string)) {
         alert("Please enter only numbers:\nNOTE: Other formats will not be recalculated!");
         $jqTA.val("");
-        return false;
+        return;
     }
     // Will find '-' or '.' if not at the beginning
     if (raw_value !== "") {
         if (isNaN(raw_value as number)) {
             alert("This is not a number:\nNOTE: Other formats will not be recalculated!");
             $jqTA.val("");
-            return false;
+            return;
         }
     }
     // eliminate any '+' signs
@@ -282,33 +317,43 @@ $('.deg, .dm, .dms').on('change', function() {
     if (nofract) {
         if (checkForFractionalEntry(value)) {
             $jqTA.val("");
-            return false;
+            return;
         }
     }
     // certain fields cannot be negative or have a value greater than 60
-    if ($jqTA.hasClass('tstyle5') || ($jqTA.hasClass('tstyle1') && $jqTA.hasClass('noneg'))) {
+    if ($jqTA.hasClass('noneg')) {
         if (value < 0) {
             alert("This field cannot be negative:\n" +
                 "NOTE: Other formats will not be recalculated");
                 $jqTA.val("");
-            return false;
+            return;
         } else if (value > 60) {
-            alert("Minutes/degrees can have a max value of 60:\n" +
+            alert("Degrees/minutes/seconds can have a max value of 60:\n" +
                 +"NOTE: Other formats will not be recalculated");
             $jqTA.val("");
-            return false;
+            return;
         }
     }
-    // Finished integrity tests, proceed to recalculate data for all formats
-    
-    if ($jqTA.hasClass('deg')) {
-        type = 'deg';
-    } else if ($jqTA.hasClass('dm')) {
-        type = 'dm';
-    } else {
-        type = 'dms';
+    // lng values must be negative
+    if ($jqTA.hasClass('lng_neg')) {
+        if (value > 0) {
+            alert("Longitude values must be negative\nNOTE: Other formats " +
+                "will not be recalculated");
+            $jqTA.val("");
+        }
+        return;
     }
-    recalculateFormats(type, $jqTA);
+    // Finished integrity tests, proceed to recalculate data for all formats
+    if (raw_value !== "") {
+        if ($jqTA.hasClass('deg')) {
+            type = 'deg';
+        } else if ($jqTA.hasClass('dm')) {
+            type = 'dm';
+        } else {
+            type = 'dms';
+        }
+        recalculateFormats(type, $jqTA);
+    }   
     return;
 });
 
@@ -316,19 +361,13 @@ $('#wptstyle').on('change', function() {
     var format = $(this).val() as string;
     switch (format) {
         case "deg":
-            $('.show_deg').show(); // defaults
-            $('.show_dm').hide();
-            $('.show_dms').hide();
+            showFractionalDegrees();
             break;
         case "dm":
-            $('.show_deg').hide(); // defaults
-            $('.show_dm').show();
-            $('.show_dms').hide();
+            showFractionalMinutes();
             break;
         case "dms":
-            $('.show_deg').hide(); // defaults
-            $('.show_dm').hide();
-            $('.show_dms').show();
+            showFractionalSeconds();
     }
 });
 // Waypoint icons when present in the gpx file:

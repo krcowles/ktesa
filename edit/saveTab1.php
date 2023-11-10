@@ -284,7 +284,11 @@ if (!$form_saved) {
      * additional files associated with the main gpx file, they will also be deleted.
      * Deletion occurs once and not during re-invocation of the script (it is
      * possible that a main gpx file is being deleted while a new one is being
-     * uploaded).
+     * uploaded). It is assumed that when deleting a main track file, the basic tab1
+     * data, the photos, any description or trail tips, references, and gps data 
+     * may still be valid and are not deleted. The user can alter as he/she sees fit.
+     * However, if this hike had database waypoints, they will be deleted, as they
+     * are generally associated with a track.
      */
     if ($tab1_file_data['del_main']) {
         $mgpx_fname = $maingpx;
@@ -310,6 +314,17 @@ if (!$form_saved) {
                 $_SESSION['uplmsg']
                     .= " Deleted additional file {$tab1_file_data['allgpx'][$i]}; ";
             }
+        }
+        // delete any database waypoints
+        $getWayptsReq = "SELECT `picIdx` FROM `ETSV` WHERE `thumb` IS NULL AND " .
+            "`indxNo`=?;";
+        $getWaypts = $pdo->prepare($getWayptsReq);
+        $getWaypts->execute([$hikeNo]);
+        $dbPts = $getWaypts->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($dbPts as $waypoint) {
+            $removeWayptReq = "DELETE FROM `ETSV` WHERE `picIdx`=?;";
+            $removeWaypt = $pdo->prepare($removeWayptReq);
+            $removeWaypt->execute([$waypoint['picIdx']]);
         }
         $tab1_file_data['del_main'] = false;
         $allgpx = [];

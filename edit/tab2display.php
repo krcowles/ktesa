@@ -148,6 +148,7 @@
 <!-- waypoint section -->
 <hr id="wloc" />
 <div id="wpteds">
+    <p id="wpt_format" style="display:none;"></p>
     <?= $wptedits;?>
 </div> <!-- end of tab2 waypoints div -->
 
