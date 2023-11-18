@@ -195,6 +195,7 @@ $(function () {
             showFractionalSeconds();
         }
     }
+    $('#wpteds textarea').addClass('wpticonshift');
     // Check for presence of div's requiring initialization
     var gpxwpts = $('#gpts').length ? true : false;
     var dbwpts = $('#wpts').length ? true : false;
@@ -229,6 +230,18 @@ $(function () {
             $($gLngDMS[i]).children().eq(1).val(dms[1]);
             $($gLngDMS[i]).children().eq(2).val(dms[2]);
         });
+        // Waypoint icons:
+        var $gicons = $('[id^="gicn"]');
+        var $gbox = $('[id^="gselicon"]');
+        $gbox.each(function (indx) {
+            var gpx_icon = $gicons[indx].innerText;
+            if (wpt_icons.includes(gpx_icon)) {
+                $(this).val(gpx_icon);
+            }
+            else {
+                $(this).val('googlemini');
+            }
+        });
     }
     if (dbwpts) { // there are wpts from the database on page...
         var $wLatDeg = $('.dlat_deg');
@@ -256,6 +269,17 @@ $(function () {
             $($wLngDMS[i]).children().eq(0).val(dms[0]);
             $($wLngDMS[i]).children().eq(1).val(dms[1]);
             $($wLngDMS[i]).children().eq(2).val(dms[2]);
+        });
+        // Waypoint icons:
+        var $wicons = $('[id^="dicn"]');
+        var $wbox = $('[id^="dselicon"]');
+        $wbox.each(function (indx) {
+            if ($wicons[indx].innerText == '') {
+                $(this).val('googlemini');
+            }
+            else {
+                $(this).val($wicons[indx].innerText);
+            }
         });
     }
     /**
@@ -349,27 +373,4 @@ $(function () {
                 showFractionalSeconds();
         }
     });
-    // Waypoint icons when present in the gpx file:
-    var $gicons = $('[id^="gicn"]');
-    var $gbox = $('[id^="gselicon"]');
-    $gbox.each(function (indx) {
-        if ($gicons[indx].innerText == '') {
-            $(this).val('googlemini');
-        }
-        else {
-            $(this).val($gicons[indx].innerText);
-        }
-    });
-    // Waypoint icons when present in the database
-    var $wicons = $('[id^="dicn"]');
-    var $wbox = $('[id^="dselicon"]');
-    $wbox.each(function (indx) {
-        if ($wicons[indx].innerText == '') {
-            $(this).val('googlemini');
-        }
-        else {
-            $(this).val($wicons[indx].innerText);
-        }
-    });
-    $('#wpteds textarea').addClass('wpticonshift');
 });

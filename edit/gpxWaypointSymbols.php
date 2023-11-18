@@ -25,3 +25,4 @@ foreach ($supported_syms as $sym => $value) {
 }
 $icon_opts .= '</select>';
 $select_sym = '<select class="syms">' . $icon_opts;
+$jsSymbols = json_encode(array_keys($supported_syms));

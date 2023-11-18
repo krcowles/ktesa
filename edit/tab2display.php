@@ -169,6 +169,8 @@
     var wLngDeg   = JSON.parse('<?=$jswLngDeg;?>');
     var wLngDM    = JSON.parse('<?=$jswLngDM;?>');
     var wLngDMS   = JSON.parse('<?=$jswLngDMS;?>');
+    // list of waypoint symbols supported by this app
+    var wpt_icons = <?=$jsSymbols;?>
 </script>
 <script src="../scripts/popupCaptions.js"></script>
 <script src="photoSelect.js"></script>
