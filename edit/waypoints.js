@@ -274,11 +274,12 @@ $(function () {
         var $wicons = $('[id^="dicn"]');
         var $wbox = $('[id^="dselicon"]');
         $wbox.each(function (indx) {
-            if ($wicons[indx].innerText == '') {
-                $(this).val('googlemini');
+            var db_icon = $wicons[indx].innerText;
+            if (wpt_icons.includes(db_icon)) {
+                $(this).val(db_icon);
             }
             else {
-                $(this).val($wicons[indx].innerText);
+                $(this).val('googlemini');
             }
         });
     }
@@ -342,8 +343,8 @@ $(function () {
                 alert("Longitude values must be negative\nNOTE: Other formats " +
                     "will not be recalculated");
                 $jqTA.val("");
+                return;
             }
-            return;
         }
         // Finished integrity tests, proceed to recalculate data for all formats
         if (raw_value !== "") {
