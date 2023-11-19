@@ -138,6 +138,7 @@ if ($addcnt > 0) {
  *
  * GPS Data File upload section. May be a gpx or kml file, or an html map file
  */
+$alert_set = false;
 unset($_SESSION['uplmsg']);
 $_SESSION['gpsmsg'] = '';
 if (!empty($_FILES['newgps']['name'])) {
@@ -149,8 +150,7 @@ if (!empty($_FILES['newgps']['name'])) {
         $newgps = $pdo->prepare($ngpsreq);
         $newgps->execute([$hikeNo, $gpsfile]);
     } else {
-        header("Location: {$redirect}");
-        exit;
+        $alert_set = true;
     }
 }
 // Uploading of html map files:
@@ -158,8 +158,7 @@ if (!empty($_FILES['newmap']['name'])) {
     $htmlfile = uploadFile(prepareUpload('newmap'));
     // Any issues?
     if ($htmlfile === 'none') {
-        header("Location: {$redirect}");
-        exit;
+        $alert_set = true;
     } else {
         $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`," .
             "clickText) VALUES (?,'P','MAP:',?,'Map File');";
@@ -167,7 +166,9 @@ if (!empty($_FILES['newmap']['name'])) {
         $newgps->execute([$hikeNo, $htmlfile]);
     }
 }
-$_SESSION['alerts'] = ["", "", "", ""];
+if (!$alert_set) {
+    $_SESSION['alerts'] = ["", "", "", ""];
+}
 /**
  * NOTE: the only items that have 'delete' boxes are those for which GPS data
  * already existed in the database.

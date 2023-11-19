@@ -78,6 +78,10 @@ function prepareUpload($input_file_name)
         move_uploaded_file($_FILES[$input_file_name]['tmp_name'], $tmploc);
         if (strpos($input_file_name, "addgpx") !== false) {
             $upload_data['apos'] = intval(substr($input_file_name, -1));
+        } else {
+            if ($upload_data['ifn'] === 'newmap') {
+                $upload_data['apos'] = 1;
+            }
         }
     }
     return $upload_data;
