@@ -173,7 +173,7 @@ $alert_ff_user = $browser['name'] === 'Mozilla Firefox' ? true : false;
     var wLngDM    = JSON.parse('<?=$jswLngDM;?>');
     var wLngDMS   = JSON.parse('<?=$jswLngDMS;?>');
     // list of waypoint symbols supported by this app
-    var wpt_icons = <?=$jsSymbols;?>
+    var wpt_icons = <?=$jsSymbols;?>;
     <?php if ($alert_ff_user) : ?>
     alert("Firefox Users: There is a bug in v119 that disallows checking\n" +
         "the individual photo checkboxes on the 'Photo Selection' tab.\n"
