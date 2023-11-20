@@ -151,6 +151,7 @@ $alert_ff_user = $browser['name'] === 'Mozilla Firefox' ? true : false;
 <!-- waypoint section -->
 <hr id="wloc" />
 <div id="wpteds">
+    <p id="wpt_format" style="display:none;"></p>
     <?= $wptedits;?>
 </div> <!-- end of tab2 waypoints div -->
 
@@ -171,6 +172,8 @@ $alert_ff_user = $browser['name'] === 'Mozilla Firefox' ? true : false;
     var wLngDeg   = JSON.parse('<?=$jswLngDeg;?>');
     var wLngDM    = JSON.parse('<?=$jswLngDM;?>');
     var wLngDMS   = JSON.parse('<?=$jswLngDMS;?>');
+    // list of waypoint symbols supported by this app
+    var wpt_icons = <?=$jsSymbols;?>
     <?php if ($alert_ff_user) : ?>
     alert("Firefox Users: There is a bug in v119 that disallows checking\n" +
         "the individual photo checkboxes on the 'Photo Selection' tab.\n"

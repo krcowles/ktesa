@@ -43,9 +43,9 @@ foreach ($archyears as $yr) {
 
 // if any alerts were encountered via admin page accesses:
 $admin_alert = '';
-if (isset($_SESSION['user_alert'])) {
-    $admin_alert = $_SESSION['user_alert'];
-    unset($_SESSION['user_alert']);
+if (isset($_SESSION['alerts'][0])) {
+    $admin_alert = $_SESSION['alerts'][0];
+    unset($_SESSION['alerts']);
 }
 $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
     'test' : 'main';

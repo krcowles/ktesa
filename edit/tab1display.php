@@ -7,8 +7,10 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+//$_SESSION['symfault'] = ''; // for testing
 ?>
 <!-- Hidden inputs required by saveTab1.php, & non-displayed <p>'s' for editDB.js -->
+<input type="hidden" name="fsaved" value="N" />
 <input type="hidden" name="hikeNo" value="<?=$hikeNo;?>" />
 <input type="hidden" name="mtrk" value="<?=$curr_trk;?>" />
 <p id="mgpx" style="display:none;"><?=$curr_gpx;?></p>
@@ -17,6 +19,9 @@
 <p id="ctype" style="display:none;"><?=$logistics;?></p>
 <p id="ptype" style="display:none;">Edit</p>
 <p id="ua1" class="user_alert" style="display:none;"><?=$user_alert;?></p>
+<?php if (isset($_SESSION['symfault']) && $_SESSION['symfault'] !== '') : ?>
+<p id="symfault" style="display:none;"><?=$_SESSION['symfault'];?></p>
+<?php endif; ?>
 
 <!-- File upload for all gpx files to be displayed on hike page map -->
 <h4 class="up">File Upload for Hike Page Map and Track: (.gpx file)</h4>
@@ -26,6 +31,7 @@
     from your latest "APPLY": <?=$_SESSION['uplmsg'];?></p>
     <?php $_SESSION['uplmsg'] = ''; ?>
 <?php endif; ?>
+
 
 <div id="hilite">
     <span class="brown">Current Main Hike Track File: </span>
@@ -133,7 +139,7 @@ additional gpx file[s] to be displayed on the hike page map simultaneously
 
 <h5 id="gpxcalcs">Hike length, elevation change, and latitude/longitude data are
     calculated from the gpx file and will be grayed out when no
-    file has been specified. They are displayed here for reference
+    file has been specified. They are displayed on the page for reference
     only if a main gpx file has been specified (and 'Applied')</h5>
 
 <div id="file_exists">

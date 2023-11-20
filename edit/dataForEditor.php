@@ -57,21 +57,15 @@ $preview_name = $hike['preview'];
 $dirs     = $hike['dirs'];
 
 // collect data for any unpublished cluster groups
-$pubReq = "SELECT `group` FROM `CLUSTERS` WHERE `pub`='N';";
-$nonpubs = $pdo->query($pubReq)->fetchAll(PDO::FETCH_COLUMN);
+$pubReq = "SELECT `group`,`lat`,`lng` FROM `CLUSTERS` WHERE `pub`='N';";
+$nonpubs = $pdo->query($pubReq)->fetchAll(PDO::FETCH_ASSOC);
 $jsData = [];
-if (count($nonpubs) > 0) {
-    foreach ($nonpubs as $unpub) {
-        $getNPdataReq = "SELECT `lat`,`lng` FROM `CLUSTERS` WHERE `group`=?;";
-        $getNPdata = $pdo->prepare($getNPdataReq);
-        $getNPdata->execute([$unpub]);
-        $coords = $getNPdata->fetch(PDO::FETCH_ASSOC);
-        $clat = is_null($coords['lat']) ? '""' : $coords['lat']/LOC_SCALE;
-        $clng = is_null($coords['lng']) ? '""' : $coords['lng']/LOC_SCALE;
-        $groupdat = '{group:"' . $unpub . '",loc:{lat:' . $clat .
-            ',lng:' . $clng . '}}';
-        array_push($jsData, $groupdat);
-    }
+foreach ($nonpubs as $unpub) {
+    $clat = is_null($unpub['lat']) ? '""' : $unpub['lat']/LOC_SCALE;
+    $clng = is_null($unpub['lng']) ? '""' : $unpub['lng']/LOC_SCALE;
+    $groupdat = '{group:"' . $unpub['group'] . '",loc:{lat:' . $clat .
+        ',lng:' . $clng . '}}';
+    array_push($jsData, $groupdat);
 }
 $newgrps = '[' . implode(",", $jsData) . ']';
 
@@ -95,11 +89,16 @@ for ($k=0; $k<count($additional_files); $k++) {
 }
 $adders .= '</ul>' . PHP_EOL;
 
-// any alerts to display?
+// Any alerts to display? These appear in a javascript alert only, not on the page
 $user_alert = '';
-if (isset($_SESSION['user_alert']) && !empty($_SESSION['user_alert'])) {
-    $user_alert = $_SESSION['user_alert'];
-    $_SESSION['user_alert'] == '';
+if (isset($_SESSION['alerts']) && !empty(checkForEmptyArray($_SESSION['alerts']))) {
+    $user_alert = '';
+    foreach ($_SESSION['alerts'] as $alert) {
+        if ($alert !== '') {
+            $user_alert .= $alert . "\n";
+        }
+    }
+    $_SESSION['alerts'] = ["", "", "", ""];
 }
 
 /**

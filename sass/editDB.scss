@@ -227,6 +227,12 @@ span.brown {
 #cluslat, #cluslng {
     height: 34px;
 }
+.symfile {
+    color: blue;
+}
+.symbad {
+    color: brown;
+}
 
 /* tab2 only items */
 #heic_upld {
@@ -348,6 +354,8 @@ span.brown {
 }
 #type_desc {
     color: blue;
+    font-size: 18px;
+    font-weight: bold;
 }
 #wptstyle {
     height: 32px;

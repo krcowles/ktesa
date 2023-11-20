@@ -343,3 +343,6 @@ function displayJson() {
         $('#gpxpts').append(next);
     });
 }
+$('#back').on('click', function() {
+    window.open("../pages/home.php", "_self");
+});

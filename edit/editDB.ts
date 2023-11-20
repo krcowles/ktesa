@@ -43,6 +43,7 @@ interface Issue {
  * @version 2.1 Typescripted
  * @version 2.2 Updated tab1 look and feel
  * @version 2.3 Functionality added for heic converter button on tab2
+ * @version 2.4 Check 'additional file' boxes when deleting main
  */
 $( function () {
 // Wysiwyg editor for tab3 hike info:
@@ -124,9 +125,7 @@ function positionApply(tab: number) {
             alert(msg);
             evt.preventDefault();
             return;
-        } else {
-            // proceed w/submit
-        }
+        } 
     });
 }
 // clicking on tab buttons:
@@ -195,6 +194,7 @@ if (count > 0 && count < 3) {
  * specified, AND no newmain is specified, alert user that a new main file must be
  * specified to keep the additional files.
  */
+var checked_adds = false;
 $('input[name=dgpx]').on('change', function() {
     if ($(this).is(':checked')) {
         let gpxfile_selected = <DOMFiles>$('#gpxfile1').get(0);
@@ -202,8 +202,33 @@ $('input[name=dgpx]').on('change', function() {
             if (count > 0) {
                 alert("You must specify a main file\n" +
                     "Otherwise additional files will be removed");
+                if ($('#addlist').length > 0) {
+                    var $deladd_list = $('#addlist');
+                    var $deladd_boxes = $deladd_list.find('input[name^=deladd]');
+                    for (var k=0; k<$deladd_boxes.length; k++) {
+                        $($deladd_boxes[k]).prop('checked', true);
+                    }
+                    checked_adds = true;
+                }
             } 
         }
+    } else {
+        if (checked_adds) {
+            var $deladd_list = $('#addlist');
+            var $deladd_boxes = $deladd_list.find('input[name^=deladd]');
+            for (var k=0; k<$deladd_boxes.length; k++) {
+                $($deladd_boxes[k]).prop('checked', false);
+            }
+            checked_adds = false;
+        }
+    }
+});
+// if no mainfile selected and checked_adds = true, alert when changes
+$('#gpxfile1').on('change', function() {
+    if ($(this).val() !== '' && checked_adds) {
+        alert("You may wish to uncheck one or more of the additional file" + 
+            " delete checkboxes if they were checked automatically when " +
+            "the main file delete box was checked");
     }
 });
 // only allow additional file specs if there is a main

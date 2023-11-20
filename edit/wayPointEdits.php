@@ -90,7 +90,8 @@ $wptedits = '';
 /**
  * For each displayed lat/lng, only one of three textarea lines will appear,
  * depending on the format selected. The actual saved value will be held in
- * a hidden input and updated by the js when data changes.
+ * a hidden input and updated by the js when data changes. The input is posted,
+ * but the various textareas are not, hence there is no 'name' attribute for these.
  */
 
 // Three possible states:
@@ -105,7 +106,7 @@ if ($gpxWptCount === 0 && $wayPointCount === 0) {
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
         $wptedits .= '<select class="wpticons" name="nsym[]">' . PHP_EOL;
-        $wptedits .= $icons . '<br />' . PHP_EOL;
+        $wptedits .= $icon_opts . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
         $wptedits .= $newdblats . $newdblatdeg . $newdblatdm . $newdblatdms;
         $wptedits .= $newdblngs . $newdblngdeg . $newdblngdm . $newdblngdms
@@ -128,14 +129,14 @@ if ($gpxWptCount > 0) {
         $wptedits .= 'Icon:' . PHP_EOL;
         $wptedits .= '<select id="gselicon' . $m . '" name="gsym[]" ' . 
             'class="wpticons">' . PHP_EOL;
-        $wptedits .= $icons . PHP_EOL;
+        $wptedits .= $icon_opts . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;Remove this waypoint:&nbsp;&nbsp;'
             . '<input id="gdel' . $m . '" type="checkbox" '
             . 'name="gdel[]" value="g' . $m . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
-        $gpxlats = '<input id="set' . $m . '" type="hidden" name="glat[]" ' .
+        $gpxlats = '<input type="hidden" name="glat[]" ' .
             'value="' . $gpxWptLat[$m] .'" />' . PHP_EOL;
-        $gpxlngs = '<input id="set' . $m . '" type="hidden" name="glng[]" ' .
+        $gpxlngs = '<input  type="hidden" name="glng[]" ' .
             'value="' . $gpxWptLng[$m] .'" />' . PHP_EOL;
         $wptedits .= $gpxlats . $gpxlatdeg . $gpxlatdm . $gpxlatdms;
         $wptedits .= $gpxlngs . $gpxlngdeg . $gpxlngdm . $gpxlngdms .
@@ -153,7 +154,7 @@ if ($gpxWptCount > 0) {
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
         $wptedits .= '<select class="wpticons" name="ngsym[]">' . PHP_EOL;
-        $wptedits .= $icons . '<br />' . PHP_EOL;
+        $wptedits .= $icon_opts . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
         $wptedits .= $newgpxLats . $newglatdeg . $newglatdm . $newglatdms;
         $wptedits .= $newgpxLngs . $newglngdeg . $newglngdm . $newglngdms
@@ -164,7 +165,10 @@ if ($gpxWptCount > 0) {
 // 3. Some waypoints are present in the database
 if ($wayPointCount > 0) {
     $wptedits .= $dbWpts . PHP_EOL;
-    $wptedits .= $wptDescriptions . PHP_EOL;
+    // When both db & gpx pts exist, don't duplicate the format <select>
+    if ($gpxWptCount === 0) {
+        $wptedits .= $wptDescriptions . PHP_EOL;
+    }
     $wptedits .= '<div id="wpts">' . PHP_EOL;
     for ($n=0; $n<$wayPointCount; $n++) {
         $wptedits .= '<p id="dicn' . $n . '" style="display:none;">'
@@ -176,21 +180,21 @@ if ($wayPointCount > 0) {
         $wptedits .= 'Icon:' . PHP_EOL;
         $wptedits .= '<select id="dselicon' . $n . '" name="dsym[]" ' .
             'class="wpticons">' . PHP_EOL;
-        $wptedits .= $icons . PHP_EOL;
+        $wptedits .= $icon_opts . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;Remove this waypoint:&nbsp;&nbsp;'
             . '<input id="ddel' . $n . '" type="checkbox" '
             . 'name="ddel[]" value="d' . $n . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
-        $dblats    = str_replace('dblatval', $wlat[$n], $dblats);
-        $dblngs    = str_replace('dblngval', $wlng[$n], $dblngs);
-        $wptedits .= $dblats . $dblatdeg . $dblatdm . $dblatdms;
-        $wptedits .= $dblngs . $dblngdeg . $dblngdm . $dblngdms
+        $latin     = str_replace('dblatval', $wlat[$n], $dblats);
+        $lngin     = str_replace('dblngval', $wlng[$n], $dblngs);
+        $wptedits .= $latin . $dblatdeg . $dblatdm . $dblatdms;
+        $wptedits .= $lngin . $dblngdeg . $dblngdm . $dblngdms
             . '<br /><br />' . PHP_EOL;
         $wptedits .= '<input type="hidden" name="didx[]" value="'
             . $wids[$n] . '" />';
     }
     $wptedits .= '</div>';
-    // place for new additions
+    // place for new additions: NOTE 'name' same as when no pts exist
     $wptedits .= '<p style="color:brown;">You may add the following waypoints '
         . '<strong>to the database</strong></p>' . PHP_EOL;
     $wptedits .= '<div id="npts">' . PHP_EOL;
@@ -200,7 +204,7 @@ if ($wayPointCount > 0) {
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL; 
         $wptedits .= '<select class="wpticons" name="nsym[]">' . PHP_EOL;
-        $wptedits .= $icons . '<br />' . PHP_EOL;
+        $wptedits .= $icon_opts . '<br />' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;&nbsp;Waypoint Latitude:' . PHP_EOL;
         $wptedits .= $newdblats . $newdblatdeg . $newdblatdm . $newdblatdms;
         $wptedits .= $newdblngs . $newdblngdeg . $newdblngdm . $newdblngdms

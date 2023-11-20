@@ -479,6 +479,14 @@ span.brown {
   height: 34px;
 }
 
+.symfile {
+  color: blue;
+}
+
+.symbad {
+  color: brown;
+}
+
 /* tab2 only items */
 #heic_upld {
   margin-top: 1rem;
@@ -619,6 +627,8 @@ span.brown {
 
 #type_desc {
   color: blue;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 #wptstyle {

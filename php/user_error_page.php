@@ -135,7 +135,7 @@ if (session_status() === PHP_SESSION_NONE) {
         to the system admin with details about what you were trying to do when
         the issue occurred. Include info like hike name, whether viewing or
         editing, how you arrived at the problem page, etc. Send to 
-        admin@nmhikes.com</p>  
+        admin@nmhikes.com</p>
 </div>
 
 <script src="../scripts/logo.js"></script>

@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: #eaeaea;
 }
 #editbar {
     position: absolute;
@@ -72,6 +73,16 @@ html, body {
     background-color: #e6e6e6;
     cursor: pointer;
 }
+#back {
+    margin-left: 20px;
+    height: 32px;
+    text-align: center;
+    background-color: #e6e6e6;
+    cursor: pointer;
+    border: 1px solid black;
+    box-sizing: content-box;
+    border-radius: 6px;
+}
 #map {
     height: 100%;
     width:  860px;
@@ -116,4 +127,11 @@ html, body {
     position: absolute;
     left: 0;
     z-index: 5;
+}
+#restart {
+    padding: 4px;
+    border-radius: 6px;
+    background-color: blanchedalmond;
+    font-size: 1.2rem;
+    cursor: pointer;
 }
