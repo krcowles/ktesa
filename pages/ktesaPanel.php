@@ -207,9 +207,12 @@ if (isset($_SESSION['userid'])) {
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
                         role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                    Help
+                    More&hellip;
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a id="latest" class="dropdown-item"
+                            href="#">Recent Hikes</a></li>
+                        </a></li>
                         <li><a id="aboutpg" class="dropdown-item"
                             href="../pages/about.php">About This Site</a>
                         </li>
@@ -239,6 +242,7 @@ if (isset($_SESSION['userid'])) {
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
 </div>
+<!-- Member benefits modal -->
 <div id="membennies" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -256,6 +260,29 @@ if (isset($_SESSION['userid'])) {
             <p>Another benefit is that you can save 'favorites' and map
                 them on a separate page (Explore->Show Favorites)</p>
             <p>Join now and start creating!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Latest Additions Modal -->
+<div id="newpgs" class="modal" tabindex="-1">
+    <div class="modal-dialog" style="max-width:40%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Most recent hikes</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    These are the latest hike page additions, in order of
+                    most recent:
+                    <div id="newest"></div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"

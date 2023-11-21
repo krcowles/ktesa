@@ -221,6 +221,10 @@ if ($('.mapfile').length) {
                 var kmlfile = '../maps/displayKml.php?kml=' + filename;
                 window.open(kmlfile, "_blank");
             }
+            else if (file_ext === 'pdf') {
+                var pdflnk = '../php/postPDF.php?doc=' + path;
+                window.open(pdflnk, '_blank');
+            }
         });
     });
 }

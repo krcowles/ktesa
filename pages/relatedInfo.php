@@ -183,6 +183,6 @@ if (!$clusterPage && $noOfRelatedHikes > 0) {
 }
 if ($noOfGps > 0) {
     $bop .= '<span class="boptag" style="margin-bottom:0px;">GPS DATA: ' .
-        '</span>' . PHP_EOL . $gpsHtml . PHP_EOL;
+        'PDF Maps will be downloaded</span>' . PHP_EOL . $gpsHtml . PHP_EOL;
 }
 $bop .= '</fieldset>' . PHP_EOL;

@@ -112,7 +112,7 @@ function uploadFile($upload, $elev=false, $syms=false)
     $save = true;
     $allowed = ['gpx'];
     if ($upload['ifn'] === 'newmap') {
-        $allowed = ['html'];
+        $allowed = ['html', 'pdf'];
     } elseif ($upload['ifn'] === 'newgps') {
         $allowed = ['gpx', 'kml'];
     } elseif ($upload['ifn'] === 'gpx2edit' || $upload['ifn'] === 'file2edit') {
@@ -125,7 +125,7 @@ function uploadFile($upload, $elev=false, $syms=false)
             = "Incorrect file extension specified: {$upload['ufn']}; ";
         return 'none';
     }
-    // Only allowed file extensions from here on...
+    // Only 'allowed' file extensions from here on...
     if ($upload['ext'] === 'gpx') {
         $file_type = 'gpx';
     } else {
@@ -153,7 +153,7 @@ function uploadFile($upload, $elev=false, $syms=false)
         // $tmpfile exists and will be renamed by resumeUploadGpx
         return 'none';
     }
-    if ($file_type === 'html') {
+    if ($file_type === 'html' || $file_type === 'pdf') {
         $saveloc = $valid; // path to saved html file; $tmpfile renamed
     } elseif ($file_type === 'gpx' || $file_type === 'kml') {
         $file_ext = $file_type === 'gpx' ? '.gpx' : '.kml';
@@ -260,11 +260,11 @@ function validateUpload($ifn, $filename, $type, $alert_pos, $elev, $symbols)
         validateGpx(
             $ifn, $alert_pos, $filename, $elev, $symbols
         );
-    } elseif ($type === 'html') { 
-        // $type = html || kml
+    } elseif ($type === 'html' || $type === 'pdf') { 
+        // $type = html || pdf || kml
         $basefilename = pathinfo($filename, PATHINFO_BASENAME);
-        $tmpfile = 'newmap.html';
-        $tmp_upload = uploadHTML($basefilename, $tmpfile);
+        $tmpfile = $type === 'html' ? 'newmap.html' : 'newmap.pdf';
+        $tmp_upload = uploadHTML($type, $basefilename, $tmpfile);
     }
     return  $tmp_upload; 
 }
@@ -273,16 +273,18 @@ function validateUpload($ifn, $filename, $type, $alert_pos, $elev, $symbols)
  * with a unique name. When this function is called, it has already cleared the
  * 'validateUpload' functionality.
  *
+ * @param string $filetype   HTML or PDF
  * @param string $basefname  The file name without .html extension 
  * @param string $server_loc The temporary location where the html is stored.
  * 
  * @return string $unique_file_name
  */
-function uploadHTML($basefname, $server_loc)
+function uploadHTML($filetype, $basefname, $server_loc)
 {
     $user_ip = getIpAddress();
     $basename = pathinfo($basefname, PATHINFO_FILENAME); // strip extension
-    $unique_file_name = $basename . "-" . $user_ip . "-" . time() . '.html';
+    $unique_file_name = $basename . "-" . $user_ip . "-" . time();
+    $unique_file_name .= $filetype === 'html' ? '.html' : '.pdf';
     $saveloc = "../maps/" . $unique_file_name;
     if (!rename($server_loc, $saveloc)) {
         $nomove = "Could not save {$basefname} to site: contact Site Master";
@@ -337,6 +339,9 @@ function validateType($filetype)
     case "application/octet-stream"; // apparently possible for a kml file...
     case "application/vnd.google-earth.kml+xml":
         $usertype = 'kml';
+        break;
+    case "application/pdf":
+        $usertype = 'pdf';
         break;
     default;
         $usertype = 'unknown';

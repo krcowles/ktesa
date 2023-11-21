@@ -7,6 +7,7 @@
  * @version 6.0 Added filter & sort functions provided on navbar
  * @version 7.0 Added gpx file editing capability
  * @version 7.1 Added 'Membership Benefits' to navbar
+ * @version 7.2 Added 'Latest Additions' to navbar
  */
 $(function() {  // document ready function
 
@@ -23,6 +24,7 @@ var questions = new bootstrap.Modal(<HTMLElement>document.getElementById('securi
 var bymiles   = new bootstrap.Modal(<HTMLElement>document.getElementById('bymiles'));
 var byloc     = new bootstrap.Modal(<HTMLElement>document.getElementById('byloc'));
 var gpxedit   = new bootstrap.Modal(<HTMLElement>document.getElementById('ged'));
+var newpgs    = new bootstrap.Modal(<HTMLElement>document.getElementById('newpgs'));
 const membens = new bootstrap.Modal(<HTMLElement>document.getElementById('membennies'));
 const $benmo  = $("<div id=movr style='border-style:solid;border-width:1px;border-radius:6px;" +
     "border-color:darkslategray;background-color:khaki;padding-top:2px;padding-left:4px;" +
@@ -303,9 +305,25 @@ $('#closesec').on('click', function() {
     }
 });
 $()
-// In order to be able to close the admintools tab, it must be opened by javasctript:
+// In order to be able to close the admintools tab, it must be opened by javascript:
 $('#adminpg').on('click', function() {
     window.open("../admin/admintools.php");
+});
+
+$('#latest').on('click', function() {
+    $.ajax({
+        url: '../pages/newHikes.php',
+        method: 'post',
+        dataType: 'html',
+        success: function(list) {
+            $('#newest').empty();
+            $('#newest').append(list);
+            newpgs.show();
+        },
+        error: function(_jqXHR) {
+            alert("Bombed");
+        }
+    });
 });
 
 });  // end document ready

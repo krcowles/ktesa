@@ -24,7 +24,7 @@
 
 <h4>GPS Data:</h4>
 <p id="ua4" class="user_alert" style="display:none;"><?=$user_alert;?></p>
-<h4>File Upload for 'Related Hike Information' (types .gpx, .kml, .html):</h4>
+<h4>File Upload for 'Related Hike Information' (types .gpx, .kml, .html, .pdf):</h4>
 <p>Note: These files are generally useful for proposed hike track data
 and/or maps</p>
 <?php if (isset($_SESSION['gpsmsg']) && $_SESSION['gpsmsg'] !== '') : ?>
@@ -38,12 +38,12 @@ and/or maps</p>
     - Note: You will be able to specify the link text after the 'Apply'
     Is Performed</em></span><br />
 <ul style="margin-top:0px;" id="relgpx">
-    <li>Track Data Uploads:<br />
+    <li>Hike Data Uploads:<br />
         <label style="color:brown;">Upload New File&nbsp;(Accepted file types:
         gpx, kml)</label>&nbsp;<input type="file" name="newgps" /></li>
     <li>Map Uploads:<br />
-        <label style="color:brown;">Upload New File&nbsp;(Accepted file type:
-        html)</label>&nbsp;<input type="file" name="newmap" /></li>
+        <label style="color:brown;">Upload New File&nbsp;(Accepted file types:
+        html, pdf)</label>&nbsp;<input type="file" name="newmap" /></li>
 </ul>
 <!-- Pre-populated GPS Data -->
 <?php for ($n=0; $n<$gpsDbCnt; $n++) : ?>
