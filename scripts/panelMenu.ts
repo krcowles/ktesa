@@ -321,7 +321,7 @@ $('#latest').on('click', function() {
             newpgs.show();
         },
         error: function(_jqXHR) {
-            alert("Bombed");
+            alert("Failed to create list...");
         }
     });
 });
