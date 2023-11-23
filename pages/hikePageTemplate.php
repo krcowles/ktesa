@@ -33,7 +33,7 @@ require "hikePageData.php";
     <script src="../scripts/jquery.js"></script>
 </head>
      
-<body> 
+<body>
 <?php if (strpos($hikeTitle, '[Proposed]') !== false) : ?>
 <script> 
 function off() {
@@ -50,6 +50,7 @@ function off() {
 <script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php";?>
+
 <script type="text/javascript">
 if (mobile) {
     // redirect to mobile page
@@ -64,7 +65,6 @@ if (mobile) {
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
 
 <!-- Side Panel: -->
-<div id="advisory">Estimate based on track data</div>
 <div id="unhide">></div>
 <div id="sidePanel">
     <div id="hide"><</div>
@@ -80,7 +80,8 @@ if (mobile) {
                 <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
             <span id="adnote">* Total Ascent / Descent:
                 <span id="ascent" class="sumClr"><?=$asc;?></span> / 
-                <span id="descent" class="sumClr"><?=$dsc;?></span> ft</span><br />
+                <span id="descent" class="sumClr"><?=$dsc;?></span> ft</span>
+            <span id="advisory">Estimate based on track data<br /></span><br />
             Logistics: <span id="hlog" class="sumClr"><?= $hikeType;?></span><br />
             Exposure Type: <span id="hexp" 
                 class="sumClr"><?= $hikeExposure;?></span><br />

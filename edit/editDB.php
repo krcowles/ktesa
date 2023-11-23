@@ -60,7 +60,8 @@ $tinymce = "https://cdn.tiny.cloud/1/" .
 </h4>
 <p style="font-size:18px;margin-top:8px;">Preview this page with applied edits:&nbsp;
     <button id="preview" type="button" class="btn btn-secondary">
-        Preview</button><span id="atxt">Apply the Edits</span>
+        Preview</button>
+    <span id="atxt">Apply the Edits</span>
 </p>
 <!-- tabs -->
 <button id="t1" class="tablist active">Basic Data</button>

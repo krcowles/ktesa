@@ -528,7 +528,6 @@ $('#deassign').on('change', function() {
 // End of cluster processing
 
 $(window).on('resize', function() {
-    $('.subbtn').remove();
     linewidth = <number>$('#main').width() - listwidth;
     $('#line').width(linewidth);
     positionApply(tabint);

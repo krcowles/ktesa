@@ -69,9 +69,8 @@ $thumbDiv: blanchedalmond;
 .tab-panel.active {
     display: block;
 }
-.subbtn {
-    z-index: 9999;
-    width: 100px;
+input[id^=ap] {
+    box-sizing: border-box;
 }
 /* The next several apply to tab1 plus other tabs as well */
 .up {

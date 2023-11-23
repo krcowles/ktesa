@@ -17,7 +17,10 @@ $supported_syms = [
     'Trail Head' => 'Hiker',
     'Parking Area' => 'Parking',
     'Triangle, Red' => 'Red Triangle',
-    'Triangle, Yellow' => 'Yellow Triangle'
+    'Triangle, Yellow' => 'Yellow Triangle',
+    'Pin, Green' => 'Green Pin',
+    'Pin, Red' => 'Red Pin',
+    'Pin, Blue' => 'Blue Pin'
 ];
 $icon_opts = '';
 foreach ($supported_syms as $sym => $value) {

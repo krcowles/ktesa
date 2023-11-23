@@ -13,6 +13,7 @@
  * @version 4.0 Typescripted, some type errors corrected
  * @version 4.1 Modified viewport calculations to improve zoom performance
  * @version 4.2 Segregated #adnote for inclusion only in non-mobile case
+ * @version 4.3 Fixed #advisory positioning when scrolling
  */
 //GPSV iframe: The following code addresses tracklist checkboxes in the iframe map
 var trackNames = [];
@@ -33,6 +34,7 @@ var do_resize = true;
 var trackNumber; // global used to identify current active track (topmost in tracklist)
 var chartConst;
 var pnlMarg;
+var $jqnote = $('#advisory');
 if (!mobile) {
     chartConst = 0.768; // panel = 23% in CSS
     // Hide/unhide side panel (changes width of elevation profile chart)
@@ -58,27 +60,21 @@ if (!mobile) {
         $('iframe').width(orgWidth);
         $('#unhide').css('display', 'none');
     });
+    $('#adnote').on('mouseover', function () {
+        var asc_desc_pos = $(this).offset();
+        $(this).next().css({
+            top: asc_desc_pos.top + 16,
+            left: asc_desc_pos.left
+        });
+        $jqnote.show();
+    });
+    $('#adnote').on('mouseout', function () {
+        $jqnote.hide();
+    });
 }
 else {
     chartConst = 1.0000;
 }
-var nvbar = $('#nav').outerHeight();
-var pglogo = $('#logo').outerHeight();
-var sumpos = $('#sidePanel').position();
-var note_top = nvbar + pglogo + sumpos.top;
-var note_lft = 48;
-if (!mobile) {
-    var asc_dsc_note = document.getElementById('adnote');
-    asc_dsc_note.onmouseover = function () {
-        $jqnote.show();
-    };
-    asc_dsc_note.onmouseout = function () {
-        $jqnote.hide();
-    };
-}
-var note_pos = { top: note_top, left: note_lft };
-var $jqnote = $('#advisory');
-$jqnote.offset(note_pos);
 $jqnote.hide();
 /**
  * Once a track is identified for display, show that gpx file's data in the
