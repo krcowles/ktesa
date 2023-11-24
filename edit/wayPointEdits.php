@@ -14,6 +14,16 @@
 require "wptHtmlDefs.php";
 
 /**
+ * If the member has specified a waypoint format preference, pass that
+ * to tab2display.php
+ */
+$wptPrefReq = "SELECT `wpt_format` FROM `MEMBER_PREFS` WHERE `userid`=?;";
+$wptPref = $pdo->prepare($wptPrefReq);
+$wptPref->execute([$_SESSION['userid']]);
+$memberWptPref = $wptPref->fetch(PDO::FETCH_ASSOC);
+$wpt_pref = $memberWptPref === false ? '' : $memberWptPref['wpt_format'];
+
+/**
  * If the current gpx file has embedded waypoints, they are retrieved here
  * and will be presented in tab2 for editing, along with any waypoints 
  * associated with the page that are contained in the database (see 

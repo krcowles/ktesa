@@ -10,10 +10,24 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
+session_start();
+
 // waypoint data, if present in database
 $gpxfile    = filter_input(INPUT_POST, 'track');
-// Retrieve waypoint format: FUTURE ENHANCEMENT!!!
-$wpt_format = filter_input(INPUT_POST, 'wpt_format'); 
+
+// Retrieve waypoint format:
+$wpt_format = filter_input(INPUT_POST, 'wpt_format');
+$user = $_SESSION['userid'];
+$entryExists = $pdo->query("SELECT `userid` FROM `MEMBER_PREFS`;")
+    ->fetchAll(PDO::FETCH_COLUMN);
+if (in_array($user, $entryExists)) {
+    $prefDB = "UPDATE `MEMBER_PREFS` SET `wpt_format`=:wpt WHERE `userid`=:uid;";
+} else {
+    $prefDB = "INSERT INTO `MEMBER_PREFS` (`userid`,`wpt_format`) VALUES " .
+        "(:uid,:wpt);";
+}
+$fixFormat = $pdo->prepare($prefDB);
+$fixFormat->execute(["uid"=>$user, "wpt"=>$wpt_format]);
 
 /**
  * The following code retrieves NEW database waypoint entries. This can happen

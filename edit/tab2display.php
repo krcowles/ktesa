@@ -151,7 +151,7 @@ $alert_ff_user = $browser['name'] === 'Mozilla Firefox' ? true : false;
 <!-- waypoint section -->
 <hr id="wloc" />
 <div id="wpteds">
-    <p id="wpt_format" style="display:none;"></p>
+    <input id="wpt_format" type="hidden" name="wpt_format" value="<?=$wpt_pref;?>" />
     <?= $wptedits;?>
 </div> <!-- end of tab2 waypoints div -->
 

@@ -180,18 +180,21 @@ $(function () {
      */
     var non_num_entry = /[^\-\+0-9\.]/;
     // Display waypoint format:
-    var wpt_format = $('#wpt_format').text();
+    var wpt_format = $('#wpt_format').val();
     if (wpt_format == "") {
         showFractionalDegrees();
     }
     else {
         if (wpt_format === 'deg') {
+            $('#wptstyle').val('deg');
             showFractionalDegrees();
         }
         else if (wpt_format === 'dm') {
+            $('#wptstyle').val('dm');
             showFractionalMinutes();
         }
         else {
+            $('#wptstyle').val('dms');
             showFractionalSeconds();
         }
     }
