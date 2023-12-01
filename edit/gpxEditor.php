@@ -90,7 +90,7 @@ if (!$noupload) {
 <html lang="eng-us">
     <head>
         <title>GPX Editor</title>
-        <link href="gpxEditor.css" rel="stylesheet" />
+        <link href="../styles/gpxEditor.css" rel="stylesheet" />
         <script src="../scripts/jquery.js"></script>
         <script type="text/javascript">
             var trk_json = <?=$path_literals;?>;

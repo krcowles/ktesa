@@ -139,8 +139,9 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
 
         <span class="cats">Downloads:</span><br />
         <button id="chgs" type="button" class="btn 
-            btn-secondary">Changes Only</button>&nbsp;[Downloads zip file /
-            NOTE: buildPhar & zipArchive not currently working]<br />
+            btn-secondary">Changes Only</button>&nbsp;[Archive is too
+                big to download; Saved location will be printed;
+                use 'unzip -qq']<br />
         <button id="npix" type="button" class="btn 
             btn-secondary">New Pictures</button>
             &nbsp;[Downloads new pictures since last Site upload: Max 20MB]<br />
@@ -202,7 +203,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
         <button id="pinfo" type="button" class="btn 
             btn-secondary">Php Info</button><br />
         <button id="addbk" type="button" class="btn 
-            btn-secondary">Add Book</button><br />
+            btn-danger">Add Book</button><br />
     </fieldset><br />
 
     <fieldset class="afs">

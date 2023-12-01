@@ -1,0 +1,188 @@
+/* "global" colors: local exceptions are contained in their respective modules */
+/* scss standard definitions */
+body {
+  background-color: #eaeaea;
+  margin: 0;
+  font-family: arial, verdana;
+  font-size: 16px;
+}
+@media only screen and (max-width: 600px) {
+  body {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 980px) {
+  body {
+    min-width: 960px;
+  }
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #eaeaea;
+  font-size: 14px;
+}
+
+/* NOTE: Different browsers render text, border widths etc differently.
+   so extra margin was added to editbar width */
+#editbar {
+  position: absolute;
+  top: 16px;
+  left: 160px;
+  text-align: center;
+  width: 710px;
+  height: 40px;
+  z-index: 100;
+}
+
+#del {
+  box-sizing: content-box;
+  height: 33px;
+  width: 120px;
+  font-size: 14px;
+  background: #e6e6e6;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  top: -2px;
+}
+
+#note {
+  position: relative;
+  top: 6px;
+  left: -12px;
+}
+
+.bgfonts {
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.regfonts {
+  text-shadow: none;
+  color: black;
+}
+
+.link-button {
+  display: inline-block;
+  width: 115px;
+  height: 17px;
+  padding: 11px 9px 7px 9px;
+  text-align: center;
+  line-height: 16px;
+  background: #e6e6e6;
+  color: black;
+  text-decoration: none;
+  font-weight: normal;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 6px;
+  box-sizing: content-box;
+  position: relative;
+  top: -2px;
+}
+
+#udel {
+  height: 18px;
+}
+
+.udel_off {
+  color: gray;
+  border-color: dimgray;
+  background-color: #f2f2f2;
+  cursor: default;
+}
+
+.udel_on {
+  color: black;
+  border-color: black;
+  background-color: #e6e6e6;
+  cursor: pointer;
+}
+
+#back {
+  position: relative;
+  top: -1px;
+  margin-left: 20px;
+  height: 32px;
+  text-align: center;
+  background-color: #e6e6e6;
+  cursor: pointer;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 6px;
+  box-sizing: content-box;
+}
+
+#map {
+  height: 100%;
+  width: 860px;
+  float: left;
+}
+
+#gpxpts {
+  box-sizing: border-box;
+  width: 260px;
+  height: 100%;
+  background-color: #f2f2f2;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: black;
+  overflow: scroll;
+  padding-left: 4px;
+}
+
+.gpxitems, .deletes {
+  padding-left: 6px;
+}
+
+.deletes {
+  color: #808080;
+  text-decoration: line-through;
+  font-style: italic;
+}
+
+#ptnos {
+  position: fixed;
+  top: 40px;
+  right: 290px;
+  z-index: 2;
+}
+
+#ptid {
+  position: relative;
+  top: -1px;
+  box-sizing: content-box;
+  width: 46px;
+  height: 23px;
+  padding: 5px;
+  font-size: 16px;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 6px;
+  background: #e6e6e6;
+}
+
+#dproc {
+  position: absolute;
+  left: 0;
+  z-index: 5;
+}
+
+#restart {
+  padding: 4px;
+  border-radius: 6px;
+  background-color: blanchedalmond;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=gpxEditor.css.map */

@@ -1,31 +1,44 @@
+$btn-background: #e6e6e6;
+$lightest-gray: #f2f2f2;
+$strike-thru: #808080;
+$return-home: blanchedalmond;
+@mixin btn-border($style, $color, $width) {
+    border-style: $style;
+    border-color: $color;
+    border-width: $width;
+    border-radius: 6px;
+}
+@import "colors";
+@import "body";
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: #eaeaea;
+    background-color: $page-bg;
+    font-size: 14px;
 }
+/* NOTE: Different browsers render text, border widths etc differently.
+   so extra margin was added to editbar width */
 #editbar {
     position: absolute;
     top: 16px;
     left: 160px;
     text-align: center;
-    width: calc(860px - 160px);
+    width: 710px;
     height: 40px;
     z-index: 100;
 }
 #del {
     box-sizing: content-box;
-    height: 32px;
+    height: 33px;
     width: 120px;
     font-size: 14px;
-    border-radius: 6px;
-    background: #e6e6e6;
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
+    background: $btn-background;
+    @include btn-border(solid, $black, 1px);
     cursor: pointer;
     position: relative;
-    top: -1px;
+    top: -2px;
 }
 #note {
     position: relative;
@@ -42,7 +55,7 @@ html, body {
 }
 .regfonts {
     text-shadow: none;
-    color: black;
+    color: $black;
 }
 .link-button {
     display: inline-block;
@@ -50,38 +63,42 @@ html, body {
     height: 17px;
     padding: 11px 9px 7px 9px;
     text-align: center;
-    border-radius: 6px;
     line-height: 16px;
-    background: #e6e6e6;
-    color: black;
+    background: $btn-background;
+    color: $black;
     text-decoration: none;
     font-weight: normal;
-    border: 1px solid black;
+    @include btn-border(solid, $black, 1px);
     box-sizing: content-box;
     position: relative;
     top: -2px;
 }
+#udel {
+    height: 18px;
+}
 .udel_off {
-    color: gray;
-    border-color: dimgray;
-    background-color: #f2f2f2;
+    color: $gray;
+    border-color: $dim-gray;
+    background-color: $lightest-gray;
     cursor: default;
 }
 .udel_on {
-    color: black;
-    border-color: black;
-    background-color: #e6e6e6;
+    color: $black;
+    border-color: $black;
+    background-color: $btn-background;
     cursor: pointer;
 }
 #back {
+    position: relative;
+    top: -1px;
     margin-left: 20px;
     height: 32px;
     text-align: center;
-    background-color: #e6e6e6;
+    background-color: $btn-background;
     cursor: pointer;
-    border: 1px solid black;
+    @include btn-border(solid, $black, 1px);
+   
     box-sizing: content-box;
-    border-radius: 6px;
 }
 #map {
     height: 100%;
@@ -92,10 +109,10 @@ html, body {
     box-sizing: border-box;
     width: 260px;
     height: 100%;
-    background-color: #f2f2f2;
+    background-color: $lightest-gray;
     border-left-width: 1px;
     border-left-style: solid;
-    border-left-color: black;
+    border-left-color: $black;
     overflow: scroll;
     padding-left: 4px;
 }
@@ -103,7 +120,7 @@ html, body {
     padding-left: 6px;
 }
 .deletes {
-    color: #808080;
+    color: $strike-thru;
     text-decoration: line-through;
     font-style: italic;
 }
@@ -114,14 +131,15 @@ html, body {
     z-index: 2;
 }
 #ptid {
+    position: relative;
+    top: -1px;
     box-sizing: content-box;
     width: 46px;
-    height: 22px;
+    height: 23px;
     padding: 5px;
     font-size: 16px;
-    border: 1px solid black;
-    background: #e6e6e6;
-    border-radius: 6px;
+    @include btn-border(solid, $black, 1px);
+    background: $btn-background;
 }
 #dproc {
     position: absolute;
@@ -131,7 +149,7 @@ html, body {
 #restart {
     padding: 4px;
     border-radius: 6px;
-    background-color: blanchedalmond;
+    background-color: $return-home;
     font-size: 1.2rem;
     cursor: pointer;
 }

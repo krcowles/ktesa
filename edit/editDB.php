@@ -32,7 +32,7 @@ $tinymce = "https://cdn.tiny.cloud/1/" .
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
     <link href="../styles/jquery-ui.css" type="text/css" rel="stylesheet" />
     <link href="../styles/editDB.css" type="text/css" rel="stylesheet" />
-    <link href="refs.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/refs.css" type="text/css" rel="stylesheet" />
     <?php require "../pages/iconLinks.html"; ?>
     <script src="<?=$tinymce;?>" referrerpolicy="origin"></script>
     <script src="../scripts/jquery.js"></script>

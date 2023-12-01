@@ -1,0 +1,107 @@
+/* All reference elements: */
+select, .refs {
+  font-size: 14px;
+  background-color: LavenderBlush;
+  font-family: Tahoma, sans-serif;
+}
+
+select:focus, input:focus, textarea:focus {
+  background-color: PapayaWhip;
+}
+
+/* Pre-populated reference elements */
+/* books  & 'delete' checkboxes */
+select[id^=sel] {
+  height: 30px;
+  width: 164px;
+}
+
+select[id^=bkname] {
+  height: 30px;
+  width: 386px;
+}
+
+input[id^=auth] {
+  height: 30px;
+  width: 280px;
+  position: relative;
+  top: -1px;
+  margin-bottom: 6px;
+  padding-left: 5px;
+}
+
+input[type=checkbox] {
+  /* Double-sized Checkboxes  - Browser dependent code */
+  transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  /* IE */
+  -moz-transform: scale(1.5);
+  /* FF */
+  -webkit-transform: scale(1.5);
+  /* Safari and Chrome */
+  -o-transform: scale(1.5);
+  /* Opera */
+  padding: 10px;
+  z-index: 1;
+}
+
+/* deletions for pre-populated elements */
+.upbox {
+  position: relative;
+  top: -8px;
+  margin-bottom: 6px;
+}
+
+/* url boxes */
+input[id^=url] {
+  height: 30px;
+  width: 386px;
+  padding-left: 5px;
+}
+
+input[id^=txt] {
+  height: 30px;
+  width: 280px;
+  padding-left: 5px;
+  margin-bottom: 6px;
+}
+
+/* Unpopulated reference elements */
+select[id^=href] {
+  height: 30px;
+  width: 164px;
+}
+
+select[id^=bkttl] {
+  height: 30px;
+  width: 386px;
+}
+
+input[id^=bkauth] {
+  height: 30px;
+  width: 280px;
+  position: relative;
+  top: -1px;
+  margin-bottom: 6px;
+  padding-left: 5px;
+}
+
+input[id^=nr1] {
+  height: 30px;
+  width: 380px;
+  padding-left: 5px;
+}
+
+input[id^=nr2] {
+  height: 30px;
+  width: 282px;
+  margin-bottom: 6px;
+  padding-left: 5px;
+}
+
+span[id^=nbk] {
+  display: none;
+  position: relative;
+}
+
+/*# sourceMappingURL=refs.css.map */

@@ -1,11 +1,13 @@
+$select: LavenderBlush;
+$focus: PapayaWhip;
 /* All reference elements: */
 select, .refs {
     font-size: 14px;
-    background-color: LavenderBlush;
+    background-color: $select;
     font-family: Tahoma, sans-serif;
 }
 select:focus, input:focus, textarea:focus {
-    background-color: PapayaWhip;
+    background-color: $focus
 }
 
 /* Pre-populated reference elements */
