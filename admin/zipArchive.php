@@ -13,15 +13,45 @@
  */
 session_start();
 ignore_user_abort(true);
-require "../mysql/setenv.php";
 
-$db = sys_get_temp_dir() . '/' . $DATABASE . '.sql';
-$tmpFilename = sys_get_temp_dir() . '/changes.zip';
+/**
+ * The settings file contains a list of 'defines' at the end of the
+ * file. These will conflict with this script, so a tmp_settings is
+ * created that eliminates the defines.
+ */
+$settings_file = $_SERVER['DOCUMENT_ROOT'] . "/../settings.php";
+$settings = file($settings_file);
+$tmp_settings = [];
+foreach ($settings as $line) {
+    if (strpos($line, "define") !== false) {
+        break;
+    } else {
+        array_push($tmp_settings, $line);
+    }
+}
+file_put_contents("tmp_settings.php", $tmp_settings);
+// mode_settings must be read before invoking 'tmp_settings'
+require "../admin/mode_settings.php";
+require "tmp_settings.php";
+unlink("tmp_settings.php");
+
+// zip file storage location depends on site:
+$db_save = '../data/' . $DATABASE . '.sql';
+if ($devhost) {
+    // currently in admin directory
+    exec('mkdir ../tmp');
+    $tmpFilename = "../tmp/changes.zip";
+} else {
+    $tmpFilename = sys_get_temp_dir() . '/changes.zip';
+}
 if (file_exists($tmpFilename)) {
     unlink($tmpFilename);
 }
+
+// make the zip file
 $zip = new ZipArchive();
 $ziparch = $zip->open($tmpFilename, ZipArchive::CREATE);
+
 // get new file list:
 $dir_iterator = new RecursiveDirectoryIterator(
     "../", RecursiveDirectoryIterator::SKIP_DOTS
@@ -43,15 +73,18 @@ foreach ($iterator as $file) {
         }
     }
 }
-$zip->addFile($db, '../data/' . $DATABASE . '.sql');
+// db was saved in exportDatabase() [$loc] prior to invoking this script
+$zip->addFile($loc, $db_save);
 $zip->close();
+unlink($loc);
+
+echo "Zip archive has been saved to " . $tmpFilename;
+
+/* Apparently too big to download...
 // Download the zip file
 header("Content-Type: application/x-gzip");
-header("Content-Disposition: attachment; filename=".basename($tmpFilename));
-header("Content-Length: " . filesize($tmpFilename));    
 header("Content-Transfer-Encoding: binary");
-readfile($tmpFilename);
-// clean up
-unlink($tmpFilename);
-unlink($db);
-?>
+header("Content-Disposition: attachment; filename=" . basename($tmpFilename));
+header("Content-Length: " . filesize($tmpFilename));    
+@readfile($tmpFilename);
+*/

@@ -17,12 +17,16 @@ require '../php/global_boot.php';
 require 'filterClass.php';
 
 $request = filter_input(INPUT_GET, 'request');  // either 'files' or 'pictures'
-$dtFile = filter_input(INPUT_GET, 'dtFile');  // filepath for comparison picture
-$dtTime = filter_input(INPUT_GET, 'dtTime');  // time for locating new pictures
 $testSites = isset($_GET['tsites']) ? filter_input(INPUT_GET, 'tsites') : false;
+// parms when looking for pictures 'newer than...' (both parms must exist)
+$dtFile = isset($_GET['dtFile']) ? filter_input(INPUT_GET, 'dtFile') : false;
+$dtTime = isset($_GET['dtTime']) ? filter_input(INPUT_GET, 'dtTime') : false;
 $newerThan = (isset($dtFile) || isset($dtTime)) ? true : false;
 
-$ignores = explode(",", $testSites);
+$ignores = [];
+if ($testSites) {
+    $ignores = explode(",", $testSites);
+}
 $tmpPix = sys_get_temp_dir() . '/newPix.zip';
 if (file_exists($tmpPix)) {
     unlink($tmpPix);
@@ -42,6 +46,7 @@ while (!in_array('pictures', scandir($current))) {
         throw new Exception("Can't find pictures directory!");
     }
 }
+
 if (!$newerThan) {
     // Upload time plus 20 seconds for unzip
     $uploadDate = filemtime("{$adminDir}/dummy.txt") + 20;
@@ -65,6 +70,7 @@ $iterator = new RecursiveIteratorIterator(
 //$inputDate = "02/20/2019 1:30:00";   // Use these lines to manually enter a date
 //$uploadDate = strtotime($inputDate); // Use these lines to manually enter a date
 
+$toobig = false;
 $items = [];
 foreach ($iterator as $file) {
     if ($file->isFile()) {
@@ -105,11 +111,16 @@ if ($request === 'pictures') {
         $_SESSION['nopix'] = "No new pictures to download";
         header("Location: admintools.php");
     } else {
-        header('Content-Type: application/octet-stream');
-        header("Content-Transfer-Encoding: Binary");
-        header("Content-disposition: attachment; filename=newPix.zip");
-        readfile($tmpPix);
-        exit();
+        if (filesize($tmpPix) > 19500000) {
+            $toobig = true;
+
+        } else {
+            header('Content-Type: application/octet-stream');
+            header("Content-Transfer-Encoding: Binary");
+            header("Content-disposition: attachment; filename=newPix.zip");
+            readfile($tmpPix);
+            exit();
+        }
     }
 }
 chdir($adminDir);
@@ -124,7 +135,7 @@ chdir($adminDir);
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
-\    <link href="../styles/admintools.css" type="text/css" rel="stylesheet" />
+    <link href="../styles/admintools.css" type="text/css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
 </head>
 <body>
@@ -136,10 +147,15 @@ chdir($adminDir);
 
 <div style="margin-left:24px;">
 <p style="font-size:16px;">Upload date: <?= $udate;?></p>
-<p style="font-size:16px;color:brown;">Files changed since upload:</p>
-<?php foreach ($items as $nfile) : ?>
-    <?= $nfile;?><br />
-<?php endforeach; ?>
+<?php if ($toobig) : ?>
+    <p style="font-size:18px;color:brown;">File size exceeded 20MB
+        and was not downloaded</p>
+<?php else : ?>
+    <p style="font-size:16px;color:brown;">Files changed since upload:</p>
+    <?php foreach ($items as $nfile) : ?>
+        <?= $nfile;?><br />
+    <?php endforeach; ?>
+<?php endif; ?>
 <p style="font-size:18px;color:brown;">DONE</p>
 </div>
 

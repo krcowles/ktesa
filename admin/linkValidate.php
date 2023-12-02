@@ -1,17 +1,6 @@
 <?php
 /**
- * This maintenance script will walk through the links found on the hike
- * pages reference section (REFS table) in order to validate their existence.
- * Some sites become obsolete and may need to be updated. Since the php
- * get_headers() function seems to generate errors and NOT return 'false'
- * as the manual would suggest, it is necessary to handle those errors
- * by throwing an ErrorException [lines18-21], which can then be seen by a
- * try-catch block. This catches, at least, timeouts when a site no longer
- * exists. Note that because of timeouts, this script can take quite awhile
- * to complete. Also, when attempting to get headers from an unsecured http 
- * site, it is necessary to introduce the stream_context_set_default() function
- * in order to prevent more errors :: thanks to Stackoverflow.com:
- * https://stackoverflow.com/questions/40830265/php-errors-with-get-headers-and-ssl
+ * Show non-existent links currently embedded on hike pages
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -20,53 +9,8 @@
  */
 session_start();
 require "../php/global_boot.php";
-
-set_error_handler(
-    function ($errno, $errstr, $errfile, $errline ) {
-        throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
-    }   
-);
-$allRefs = $pdo->query("SELECT `rit1`,`indxNo` FROM `REFS`;");
-$tableRefs = $allRefs->fetchAll(PDO::FETCH_KEY_PAIR);
-$rit1      = array_keys($tableRefs);
-$links     = [];
-$hikenos   = [];
-$bad_lnks  = [];
-$lnk_indx  = [];
-for ($k=0; $k<count($rit1); $k++) {
-    $url = $rit1[$k];
-    if (strpos($url, "http") !== false) {
-        array_push($links, $url);
-        array_push($hikenos, $tableRefs[$url]);
-    }
-}
-
-// prepare get_headers() for SSL problems with http sites:
-stream_context_set_default(
-    [
-        'ssl' => [
-            'verify_peer' => false,
-            'verify_peer_name' => false,
-        ],
-    ]
-);
-// begin the validation process
-for ($i=0; $i<count($links); $i++) {
-    try {
-        $hdrs = get_headers($links[$i]);
-    } catch (Exception $ex) {
-        array_push($bad_lnks, $links[$i]);
-        array_push($lnk_indx, $hikenos[$i]);
-    }
-}
-// Format for use in javascript ajax: contents of array must be strings
-$jsLinks = [];
-foreach ($bad_lnks as $bad) {
-    array_push($jsLinks, "'" . $bad . "'");
-}
-$jsUrls = "[" . implode(",", $jsLinks) . "]";
+$default_size = 50;
 ?>
-
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -87,7 +31,29 @@ $jsUrls = "[" . implode(",", $jsLinks) . "]";
 <p id="trail">Hike Page Link Check</p>
 <p id="active" style="display:none">Admin</p>
 
-<div id="contents">
+<div id="constraints" class="margins">
+    <p id="prelim" class="bottom">In order to prevent choking the
+        script with timeouts, a limited number of links will be tested
+        at a time, with a chance for the admin to continue to the next set,
+        or to stop after each test execution.<br />
+        NOTE: The routine defaults to testing <?=$default_size;?> links
+        per execution. Expect to wait 2-5 minutes per bad link
+        uncovered. If you wish to change the test lot size from
+        <?=$default_size;?>, specify the new size below:<br/>
+        No of links to check per test: <input id="new_size" type="text" 
+        value="50" />
+    </p>
+    <p class="bottom">Start with link <input id="start" type="text" value="0" /></p>
+    <button id="test">Begin Test</button></p>
+</div>
+
+<div id="loading" class="margins">
+    <p class="bottom">Testing links will take some time!</p>
+    <img id="gif" src="../images/loader-64x/Preloader_5.gif" 
+        height="128" width="128" />
+</div>
+
+<div id="contents" class="margins">
     <p>The following links are no longer valid:</p>
 
     <table id="lnk_results">
@@ -98,12 +64,7 @@ $jsUrls = "[" . implode(",", $jsLinks) . "]";
             </tr>
         </thead>
         <tbody>
-            <?php for ($j=0; $j<count($bad_lnks); $j++) : ?>
-            <tr>
-                <td><?=$lnk_indx[$j];?></td>
-                <td><?=$bad_lnks[$j];?></td>
-            </tr>
-            <?php endfor; ?>
+            
         </tbody>
     </table><br />
 
@@ -113,26 +74,7 @@ $jsUrls = "[" . implode(",", $jsLinks) . "]";
     </div>
 </div>
 
-<script>
-$('#del_lnks').on('click', function() {
-    let jslinks = <?=$jsUrls;?>;
-    let links   = JSON.stringify(jslinks);
-    let ajaxdata = {links: links};
-    $.ajax({
-        url: 'deleteBadLinks.php',
-        data: ajaxdata,
-        dataType: 'text',
-        method: "post",
-        success: function(status) {
-            if (status === 'ok') {
-                alert("Links deleted");
-            } else {
-                alert("Problem encountered");
-            }
-        }
-    });
-});
-</script>
+<script src="linkValidate.js"></script>
 
 </body>
 </html>

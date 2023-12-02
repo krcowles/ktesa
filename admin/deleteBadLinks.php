@@ -1,8 +1,9 @@
 <?php
 /**
- * This routine is invoked via ajax from the linkValidate.php module.
- * Incoming links and their associated hike numbers are deleted from
- * the REFS table.
+ * This routine is invoked via ajax from the linkValidate.js script.
+ * Incoming links are deleted from the REFS table. Only the links need
+ * be processed here, as when a link is bad with one hike, it is bad
+ * with another...
  * PHP Version 7.4
  * 
  * @package Ktesa
