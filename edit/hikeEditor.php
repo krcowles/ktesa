@@ -12,6 +12,7 @@
 session_start();
 require "../php/global_boot.php";
 if (!isset($_SESSION['userid'])) {
+    echo "Your session has expired, or you are not a registered user...";
     throw new Exception("No userid id - session expired or illegal access");
 }
 $userid = $_SESSION['userid'];
