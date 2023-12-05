@@ -189,7 +189,7 @@ if ($form === 'reg') {
     </div>
 <?php endif; ?>
 </div>   <!-- end of #container -->
-<?php require "../pages/modals.php"; ?>
+<?php require "unifiedLoginModals.html"; ?>
 
 <div id="cookie_banner">
     <h3>This site uses cookies to save member usernames</h3>

@@ -56,6 +56,7 @@ if (count($entries) === 0) {
 // validate user info (prior to security questions)
 $user_dat = $pdo->query("SELECT * FROM `USERS`")->fetchAll(PDO::FETCH_ASSOC);
 $nomatch = true;
+$return_data['status'] = "Not processed";
 foreach ($user_dat as $user) {
     if ($username === $user['username'] && password_verify(
         $userpass, $user['passwd']
@@ -92,7 +93,7 @@ foreach ($user_dat as $user) {
     }
 }
 if ($nomatch) { // no user or bad password
-    updateFailures(++$fails, $ip, $pdo);
+    updateFailures(++$fails, $ip, $pdo); // see adminFunctions.php
     $return_data['status'] = 'FAIL';
     $return_data['fail_cnt'] = $fails;
 }

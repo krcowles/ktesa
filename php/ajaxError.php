@@ -1,9 +1,9 @@
 <?php
 /**
- * This script is invoked when a user an ajax error was encountered
+ * This script is invoked when a user routine encounters an ajax error
  * in production mode. The admin is notified of the error and its code.
  * Because of the number of ajax calls, the message construction has
- * many optios.
+ * many options.
  * PHP Version 7.4
  * 
  * @package Ktesa

@@ -2,6 +2,7 @@
 /**
  * This script presents the html that comprises the top-of-the-page
  * menu-driven navigation bar and ktesa logo for every viewable page.
+ * See ktesaNavbar.php for mobile implementation.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -242,55 +243,6 @@ if (isset($_SESSION['userid'])) {
         <p id="logo_right">w/Tom &amp; Ken</p>
     </div>
 </div>
-<!-- Member benefits modal -->
-<div id="membennies" class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Membership Explained</h5>
-                <button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div id="ap" class="modal-body">
-            <p>Membership is <em>free</em>. And as a member, you can create
-                your own hike page, or edit an existing one. All you
-                need is a gpx track file(s), photos taken during the
-                hike, a good description, and external references, if
-                any (books, weblinks, blogs, etc).</p>
-            <p>Another benefit is that you can save 'favorites' and map
-                them on a separate page (Explore->Show Favorites)</p>
-            <p>Join now and start creating!</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Latest Additions Modal -->
-<div id="newpgs" class="modal" tabindex="-1">
-    <div class="modal-dialog" style="max-width:40%;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Most recent hikes</h5>
-                <button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    These are the latest hike page additions, in order of
-                    most recent:
-                    <div id="newest"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"
-                    data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 <!-- login data -->
 <p id="cookie_state"><?= $_SESSION['cookie_state'];?></p>
 <?php if (isset($_SESSION['cookies'])) : ?>
@@ -299,8 +251,7 @@ if (isset($_SESSION['userid'])) {
 <?php if (isset($admin) && $admin) : ?>
 <p id="admin">admin</p>
 <?php endif; ?>
-
-<?php require "../pages/modals.php"; ?>
+<?php require "../pages/panelModals.php"; // all modals required by ktesaPanel ?>
 
 <script src="../scripts/menuControl.js"></script>
 <script src="../scripts/panelMenu.js"></script>
