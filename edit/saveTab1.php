@@ -146,46 +146,47 @@ if (!$form_saved) {
             // minimum validation of lat/lng values for cluster:
             $vlat = $basic_data['clusterlat']; // entered by user (may be false)
             $vlng = $basic_data['clusterlng']; // entered by user (may be false)
+            $valid_latlng = true;
             if ($vlat && $vlng) {
                 $vlat = $vlat < 37 && $vlat > 31.3 ? $vlat * LOC_SCALE : 0;
                 $vlng = $vlng < -103 && $vlat > -109.1 ? $vlng * LOC_SCALE : 0;
                 if ($valt === 0 || $vlng === 0) {
-                    $_SESSION['user_alert'] = " Cluster latitude or longitude " .
+                    $_SESSION['clus_loc'] = " Cluster latitude or longitude " .
                         "appears to be out of bounds; ";
-                    header("Location: {$tab1}");
-                    exit;
+                    $valid_latlng = false;
                 }
             }
             // either/both may be false:
             $clat = !$vlat ? null : $vlat;
             $clng = !$vlng ? null : $vlng;
-            if (is_null($clat) || !is_null($clng)) {
-                $_SESSION['user_alert'] = " Cluster latitude or longitude " . 
+            if (is_null($clat) || is_null($clng)) {
+                $_SESSION['clus_loc'] = " Cluster latitude or longitude " . 
                     "is missing; ";
-                header("Location: {$tab1}");
-                exit;
-            }       
-            $updte_req = "UPDATE `CLUSTERS` SET `lat` = :lat, `lng` = :lng WHERE " .
-                "`group` = :group;";
-            $updte = $pdo->prepare($updte_req);
-            $updte->execute(["lat" => $clat, "lng" => $clng, "group" => $cname]);
-            /**
-             * If there is a Cluster Page in-edit for this new group, update it's
-             * lat/lng values. 
-             * Note: if a Cluster Page for this new group was published, it must
-             * already have had lat/lng specified (it won't publish otherwise).
-             * Therefore, the only scenario to update is if the Cluster Page for
-             * the new group is in-edit.
-             */
-            $checkForCPReq = "SELECT `pgTitle` FROM `EHIKES` WHERE `pgTitle`=?;";
-            $checkForCP = $pdo->prepare($checkForCPReq);
-            $checkForCP->execute([$cname]);
-            $CP_InEdit = $checkForCP->fetch(PDO::FETCH_ASSOC);
-            if ($CP_InEdit !== false) {
-                $newLatLngReq = "UPDATE `EHIKES` SET `lat`=?,`lng`=? WHERE " .
-                    "`pgTitle`=?;";
-                $newLatLng = $pdo->prepare($newLatLngReq);
-                $newLatLng->execute([$clat, $clng, $cname]);
+                $valid_latlng = false;
+            } 
+            if ($valid_latlng) {      
+                $updte_req = "UPDATE `CLUSTERS` SET `lat`=:lat, `lng`=:lng WHERE " .
+                    "`group` = :group;";
+                $updte = $pdo->prepare($updte_req);
+                $updte->execute(["lat" => $clat, "lng" => $clng, "group" => $cname]);
+                /**
+                 * If there is a Cluster Page in-edit for this new group, update it's
+                 * lat/lng values. 
+                 * Note: if a Cluster Page for this new group was published, it must
+                 * already have had lat/lng specified (it won't publish otherwise).
+                 * Therefore, the only scenario to update is if the Cluster Page for
+                 * the new group is in-edit.
+                 */
+                $checkForCPReq = "SELECT `pgTitle` FROM `EHIKES` WHERE `pgTitle`=?;";
+                $checkForCP = $pdo->prepare($checkForCPReq);
+                $checkForCP->execute([$cname]);
+                $CP_InEdit = $checkForCP->fetch(PDO::FETCH_ASSOC);
+                if ($CP_InEdit !== false) {
+                    $newLatLngReq = "UPDATE `EHIKES` SET `lat`=?,`lng`=? WHERE " .
+                        "`pgTitle`=?;";
+                    $newLatLng = $pdo->prepare($newLatLngReq);
+                    $newLatLng->execute([$clat, $clng, $cname]);
+                }
             }
         }
     } else {

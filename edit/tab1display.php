@@ -7,7 +7,6 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-//$_SESSION['symfault'] = ''; // for testing
 ?>
 <!-- Hidden inputs required by saveTab1.php, & non-displayed <p>'s' for editDB.js -->
 <input type="hidden" name="fsaved" value="N" />
@@ -21,6 +20,9 @@
 <p id="ua1" class="user_alert" style="display:none;"><?=$user_alert;?></p>
 <?php if (isset($_SESSION['symfault']) && $_SESSION['symfault'] !== '') : ?>
 <p id="symfault" style="display:none;"><?=$_SESSION['symfault'];?></p>
+<?php endif; ?>
+<?php if (isset($clus_loc_alert)) : ?>
+<p id="clus_loc_alert"><?=$clus_loc_alert;?></p>
 <?php endif; ?>
 
 <!-- File upload for all gpx files to be displayed on hike page map -->
