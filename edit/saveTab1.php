@@ -150,7 +150,7 @@ if (!$form_saved) {
             if ($vlat && $vlng) {
                 $vlat = $vlat < 37 && $vlat > 31.3 ? $vlat * LOC_SCALE : 0;
                 $vlng = $vlng < -103 && $vlat > -109.1 ? $vlng * LOC_SCALE : 0;
-                if ($valt === 0 || $vlng === 0) {
+                if ($vlat === 0 || $vlng === 0) {
                     $_SESSION['clus_loc'] = " Cluster latitude or longitude " .
                         "appears to be out of bounds; ";
                     $valid_latlng = false;
