@@ -157,7 +157,10 @@ $('button[id^=t]').on('click', function(ev) {
 // place correct tab (and apply button) in foreground - on page load only
 $(tabon).trigger('click');
 
-// If there is a user alert to show, set the message text:
+// If there are any user alerts to show, display them for user
+if ($('#clus_loc_alert').length > 0) {
+    alert($('#clus_loc_alert').text());
+}
 var user_alert = '';
 if (tabstr == '1' && $('#ua1').text() !== '') {
     user_alert = $('#ua1').text();

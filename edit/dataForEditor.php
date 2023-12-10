@@ -90,6 +90,10 @@ for ($k=0; $k<count($additional_files); $k++) {
 $adders .= '</ul>' . PHP_EOL;
 
 // Any alerts to display? These appear in a javascript alert only, not on the page
+if (isset($_SESSION['clus_loc'])) {
+    $clus_loc_alert = $_SESSION['clus_loc'];
+    unset($_SESSION['clus_loc']);
+}
 $user_alert = '';
 if (isset($_SESSION['alerts']) && !empty(checkForEmptyArray($_SESSION['alerts']))) {
     $user_alert = '';
