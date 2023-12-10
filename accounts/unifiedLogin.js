@@ -86,12 +86,12 @@ $(function () {
                             $('#email').css('color', 'red');
                         }
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function (_jqXHR, _textStatus, _errorThrown) {
                         dup_email = true;
                         $('#email').css('color', 'red');
                         if (appMode === 'development') {
                             var newDoc = document.open();
-                            newDoc.write(jqXHR.responseText);
+                            newDoc.write(_jqXHR.responseText);
                             newDoc.close();
                         }
                         else { // production
@@ -99,8 +99,9 @@ $(function () {
                                 "We apologize for any inconvenience\n" +
                                 "The webmaster has been notified; please try again later";
                             alert(msg);
-                            var ajaxerr = "Trying to access dupCheck; Error text: " +
-                                textStatus + "; Error: " + errorThrown;
+                            var ajaxerr = "Trying to access dupCheck via duplicate email\n" +
+                                "Error text: " + _textStatus + "; Error: " +
+                                _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
                             var errobj = { err: ajaxerr };
                             $.post('../php/ajaxError.php', errobj);
                         }
@@ -151,10 +152,10 @@ $(function () {
                             alert("Please select another user name");
                         }
                     },
-                    error: function (jqXHR, textStatus, errorThrown) {
+                    error: function (_jqXHR, _textStatus, _errorThrown) {
                         if (appMode === 'development') {
                             var newDoc = document.open();
-                            newDoc.write(jqXHR.responseText);
+                            newDoc.write(_jqXHR.responseText);
                             newDoc.close();
                         }
                         else { // production
@@ -164,8 +165,9 @@ $(function () {
                                 "We apologize for any inconvenience\n" +
                                 "The webmaster has been notified; please try again later";
                             alert(msg);
-                            var ajaxerr = "Trying to get Users list; Error text: " +
-                                textStatus + "; Error: " + errorThrown;
+                            var ajaxerr = "Trying to get Users list from dupCheck.php (uniqueuser);\n" +
+                                "Error text: " + _textStatus + "; Error: " + _errorThrown +
+                                ";\njqXHR: " + _jqXHR.responseText;
                             var errobj = { err: ajaxerr };
                             $.post('../php/ajaxError.php', errobj);
                         }
@@ -216,7 +218,7 @@ $(function () {
                             var mail_data = { form: 'reg', reg: 'y', email: email };
                             // admin action to cleanup database if errors here
                             $.ajax({
-                                url: 'resetMail.php?',
+                                url: 'resetMail.php',
                                 method: 'post',
                                 data: mail_data,
                                 success: function (result) {
@@ -229,7 +231,8 @@ $(function () {
                                         alert("There was a problem with the email you supplied\n" +
                                             "The admin has been notified");
                                         $('#email').css('color', 'red');
-                                        var ajaxerr = "User email not sent, but entry has " +
+                                        var ajaxerr = "resetMail.php 'success' w/bad 'result'\n" +
+                                            "User email not sent, but entry has " +
                                             "been created in USERS: " + result;
                                         ajaxerr += "\nuser: " + proposed_name + " email: " +
                                             proposed_email;
@@ -237,10 +240,10 @@ $(function () {
                                         $.post('../php/ajaxError.php', errobj);
                                     }
                                 },
-                                error: function (jqXHR, _textStatus, _errorThrown) {
+                                error: function (_jqXHR, _textStatus, _errorThrown) {
                                     if (appMode === 'development') {
                                         var newDoc = document.open();
-                                        newDoc.write(jqXHR.responseText);
+                                        newDoc.write(_jqXHR.responseText);
                                         newDoc.close();
                                     }
                                     else {
@@ -251,8 +254,10 @@ $(function () {
                                             " to correct the situation.";
                                         alert(err);
                                         var ajaxerr = "Server error: cleanup USERS\n" +
-                                            "registrant" + proposed_name + "; email " +
-                                            proposed_email;
+                                            "registrant; resetMail.php access failed:\n" +
+                                            "Error text: " + _textStatus + "; Error: " +
+                                            _errorThrown + "\njqXHR: " + _jqXHR.responseText +
+                                            "\nName: " + proposed_name + "; email " + proposed_email;
                                         var errobj = { err: ajaxerr };
                                         $.post('../php/ajaxError.php', errobj);
                                     }
@@ -260,10 +265,23 @@ $(function () {
                             });
                         }
                     },
-                    error: function (jqXHR) {
-                        var newDoc = document.open();
-                        newDoc.write(jqXHR.responseText);
-                        newDoc.close();
+                    error: function (_jqXHR, _textStatus, _errorThrown) {
+                        if (appMode === 'development') {
+                            var newDoc = document.open();
+                            newDoc.write(_jqXHR.responseText);
+                            newDoc.close();
+                        }
+                        else { // production
+                            var msg = "An error has occurred: " +
+                                "We apologize for any inconvenience\n" +
+                                "The webmaster has been notified; please try again later";
+                            alert(msg);
+                            var ajaxerr = "Trying to access create_user.php/registration;\n" +
+                                "Error text: " + _textStatus + "; Error: " +
+                                _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                            var errobj = { err: ajaxerr };
+                            $.post('../php/ajaxError.php', errobj);
+                        }
                     }
                 });
                 return true;
@@ -377,10 +395,23 @@ $(function () {
                             return;
                         }
                     },
-                    error: function (jqXHR) {
-                        var newDoc = document.open();
-                        newDoc.write(jqXHR.responseText);
-                        newDoc.close();
+                    error: function (_jqXHR, _textStatus, _errorThrown) {
+                        if (appMode === 'development') {
+                            var newDoc = document.open();
+                            newDoc.write(_jqXHR.responseText);
+                            newDoc.close();
+                        }
+                        else { // production
+                            var msg = "An error has occurred: " +
+                                "We apologize for any inconvenience\n" +
+                                "The webmaster has been notified; please try again later";
+                            alert(msg);
+                            var ajaxerr = "Attempt to renew via create_user.php/renew\n" +
+                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                                _jqXHR.responseText;
+                            var errobj = { err: ajaxerr };
+                            $.post('../php/ajaxError.php', errobj);
+                        }
                     }
                 });
                 return true;

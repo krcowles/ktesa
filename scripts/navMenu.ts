@@ -12,6 +12,7 @@ declare var mobile: boolean;
 /**
  * Menu setup
  */
+var appMode = $('#appMode').text() as string;
 var choice = $('#cookies_choice').text();
 if (choice === 'accept') {
     $('#cookies').text('Reject Cookies');
@@ -21,6 +22,7 @@ if (choice === 'accept') {
 var chg_modal = new bootstrap.Modal(<HTMLElement>document.getElementById('cpw'), {
     keyboard: false
 });
+var ajaxerror = new bootstrap.Modal(<HTMLElement>document.getElementById('ajaxerr'));
 
 // Setup modal as a user presentation for any ajax errors.
 var ajaxerror = new bootstrap.Modal(<HTMLElement>document.getElementById('ajaxerr'), {
@@ -43,10 +45,20 @@ $('#logout').on('click', function() {
                 window.open('../pages/home.php', '_self');
             }
         },
-        error: function() {
-           ajaxerror.show();
-           let err = {err: "Mobile logout error"};
-           $.post('../php/ajaxError.php', err);
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var ajaxerr = "Trying to access mobile logout;\nError text: " +
+                    _textStatus + "; Error: " + _errorThrown + "; jqXHR: " +
+                    _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+                ajaxerror.show();
+            }
         }
     });
 });
