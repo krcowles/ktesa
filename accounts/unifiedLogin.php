@@ -77,7 +77,7 @@ if ($form === 'reg') {
     </div>   
 </div>
 
-<p id="appMode"><?=$appMode;?></p>
+<p id="appMode" style="display:none;"><?=$appMode;?></p>
 <p id="formtype" style="display:none;"><?=$form;?></p>
 <div id="container">  <!-- only one of the three sections will appear on page -->
 <?php if ($form === 'reg') : ?>

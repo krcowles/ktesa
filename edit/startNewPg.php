@@ -38,7 +38,8 @@ $newClusterPage = str_replace('id="clusters"', 'id="cpages"', $newClusterPage);
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">New Hike Page</p>
-<p id="active" style="display:none">Create</p>
+<p id="active" style="display:none;">Create</p>
+<p id="appMode" style="display:none;"><?=$appMode;?></p>
 
 <div id="main">
     <p id="pgerror" style="display:none;"><?=$pgerror;?></p>

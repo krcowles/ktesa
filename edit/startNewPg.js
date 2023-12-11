@@ -31,6 +31,7 @@ $(function () {
         'ocirc', 'otilde', 'ouml', 'ugrave', 'uacute', 'ucirc', 'uuml'];
     var not_allowed = "Unacceptable character in the name supplied\n" +
         "The string will be truncated at that point";
+    var appMode = $('#appMode').text();
     // load lists of 'pgTitle's & 'clusters' for data validation 
     var titleList;
     /**
@@ -95,10 +96,23 @@ $(function () {
         success: function (titles) {
             titleList = titles;
         },
-        error: function (jqXHR) {
-            var newDoc = document.open();
-            newDoc.write(jqXHR.responseText);
-            newDoc.close();
+        error: function (_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "Trying to access getTitles.php;\nError text: " +
+                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                    _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
         }
     });
     /**
@@ -114,10 +128,23 @@ $(function () {
                 groups = data;
                 def.resolve();
             },
-            error: function (jqXHR) {
-                var newDoc = document.open();
-                newDoc.write(jqXHR.responseText);
-                newDoc.close();
+            error: function (_jqXHR, _textStatus, _errorThrown) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "An error has occurred: " +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "Trying to access getGroups.php;\nError text: " +
+                        _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                        _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
             }
         });
         return;

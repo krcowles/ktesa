@@ -18,8 +18,8 @@ $.ajax({
     success: function(txt) {
         $('#elog').append(txt);
     },
-    error: function() {
-        alert("No go");
+    error: function(_jqXHR) {
+        alert(_jqXHR.responseText);
     }
 });
 </script>

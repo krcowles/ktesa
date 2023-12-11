@@ -1,7 +1,6 @@
 declare function validateUser(user: string, pass: string): void;
 declare const countAns: () => boolean;
 declare var mobile: boolean;
-declare var appMode: string;
 declare var updates: Bootstrap.Modal;
 declare var tbl_indx: string;
 /**
@@ -15,6 +14,7 @@ declare var tbl_indx: string;
 
 $(function() {
 
+var appMode = $('#appMode').text() as string;
 var reg = mobile ? {top: 20, height: 510} : {top: 48, height: 540};
 var log = mobile ? {top: 48, height: 340} : {top: 80, height: 380};
 var ren = mobile ? {top: 20, height: 480} : {top: 80, height: 460};

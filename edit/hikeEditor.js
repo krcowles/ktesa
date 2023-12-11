@@ -10,6 +10,7 @@
  * @version 2.1 Typescripted
  * @version 2.2 Replaced local sort with new columnSort.ts/js script
  */
+var appMode = $('#appMode').text();
 // when preview buttons are displayed:
 var preview = '../pages/hikePageTemplate.php?age=new&hikeIndx=';
 var btnId = '<a id="prev';
@@ -109,16 +110,22 @@ $(function () {
                             alert("An email has been sent to the admin");
                         } // no other results available in script
                     },
-                    error: function (jqXHR) {
+                    error: function (_jqXHR, _textStatus, _errorThrown) {
                         if (appMode === 'development') {
                             var newDoc = document.open();
-                            newDoc.write(jqXHR.responseText);
+                            newDoc.write(_jqXHR.responseText);
                             newDoc.close();
                         }
-                        else {
-                            var msg = "Problem encountered sending admin mail\n" +
-                                "The admin has been notified.";
+                        else { // production
+                            var msg = "An error has occurred: " +
+                                "We apologize for any inconvenience\n" +
+                                "The webmaster has been notified; please try again later";
                             alert(msg);
+                            var ajaxerr = "Trying to access notifyAdmin.php;\nError text: " +
+                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                                _jqXHR.responseText;
+                            var errobj = { err: ajaxerr };
+                            $.post('../php/ajaxError.php', errobj);
                         }
                     }
                 });

@@ -39,6 +39,7 @@ $ehike = filter_input(INPUT_GET, 'ehike');
 <p id="active" style="display:none;">Edit</p>
 <a id="anchor" style="display:none;"></a>
 <p id="ehike"  style="display:none;"><?=$ehike;?></p>
+<p id="appMode" style="display:none;"><?=$appMode;?></p>
 
 <span id="selbtn">
     <input type="file" name="files[]" id="file" class="inputfile"

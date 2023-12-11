@@ -64,6 +64,9 @@ const subsetScan = (remaining: number, first: number, size: number): void => {
                 return false;
             }
             return;
+        },
+        error: function() {
+            alert("Failed to access getBadLinks.php");
         }
     });
 }
@@ -81,7 +84,7 @@ $(function() {
             total += count + "</p>";
             $('#prelim').after(total);
         },
-        error: function(_jqXHR) {
+        error: function() {
             alert("Failed to retrieve count of links in getRefsLinks.php");
         }
     });
@@ -119,7 +122,7 @@ $(function() {
                 }
             },
             error: function() {
-                alert("Failed to delete links");
+                alert("Failed to delete links: deleteBadLinks.php");
             }
         });
     });

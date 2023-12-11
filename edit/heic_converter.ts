@@ -42,6 +42,7 @@ const upld_width = 640;     // standard z-size image width
 const $anchor = $('#anchor') as JQuery<HTMLAnchorElement>; // prototype for links
 const downloads = document.getElementById('dwnlds') as HTMLElement;
 const previews = document.getElementById('previews') as HTMLElement;
+var appMode = $('#appMode').text() as string;
 var ehike_stats = [] as ExifData[]; // global array holding photo Exif data
 var ehikeNo = $('#ehike').text();
 var droppedFiles: boolean | FileList = false; 
@@ -412,10 +413,23 @@ function uploadImage(
                 var res_msg = 'Upload ' + linkid + ' done';
                 def.resolve(res_msg);
             },
-            error: function(jqXHR) {
-                var newDoc = document.open();
-                newDoc.write(jqXHR.responseText);
-                newDoc.close();
+            error: function(_jqXHR, _textStatus, _errorThrown) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "An error has occurred: " +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "Trying to access saveImage.php;\nError text: " +
+                        _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                        _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
             }
         });
     }

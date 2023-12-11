@@ -47,6 +47,7 @@ const Z_WIDTH = 640;
 const Z_HEIGHT = 480; // ref only
 const DISPLAY_HEIGHT = 220; // ref only
 // globals
+var appMode = $('#appMode').text() as string;
 var ehikeIndxNo = $('#ehno').text(); // get the associated hike no
 var droppedFiles: boolean | FileList = false; 
 var validated: File[] = [];
@@ -427,11 +428,25 @@ const ldNodes = (fr_objs: ImageObject[]) => {
                             }
                             def.resolve();
                         },
-                        error: function(jqXHR) {
-                            var newDoc = document.open();
-                            newDoc.write(jqXHR.responseText);
-                            newDoc.close();
+                        error: function(_jqXHR, _textStatus, _errorThrown) {
                             def.reject();
+                            if (appMode === 'development') {
+                                var newDoc = document.open();
+                                newDoc.write(_jqXHR.responseText);
+                                newDoc.close();
+                            }
+                            else { // production
+                                var msg = "An error has occurred: " +
+                                    "We apologize for any inconvenience\n" +
+                                    "The webmaster has been notified; please try again later";
+                                alert(msg);
+                                var ajaxerr = "Trying to access saveImage.php;\nError text: " +
+                                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                                    _jqXHR.responseText;
+                                var errobj = { err: ajaxerr };
+                                $.post('../php/ajaxError.php', errobj);
+                            }
+                            
                         }
                     });
                 } else {
