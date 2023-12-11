@@ -77,6 +77,7 @@ function compareObj(a, b) {
  * The html 'wrapper' for each item included in the side table
  */
 var subsize = 10;
+var appMode = $('#appMode').text();
 var indexer;
 var done = false;
 var tblItemHtml;
@@ -237,13 +238,23 @@ function enableFavorites(items) {
                                 "in order to save Favorites");
                         }
                     },
-                    error: function () {
-                        var msg = "A server error occurred\nYou will not be able " +
-                            "to save Favorites at this time:\nThe admin has been " +
-                            "notified";
-                        alert(msg);
-                        var ajxerr = { err: "Mark favorites php error: save" };
-                        $.post('../php/ajaxError.php', ajxerr);
+                    error: function (_jqXHR, _textStatus, _errorThrown) {
+                        if (appMode === 'development') {
+                            var newDoc = document.open();
+                            newDoc.write(_jqXHR.responseText);
+                            newDoc.close();
+                        }
+                        else { // production
+                            var msg = "A server error occurred\nYou will not be able " +
+                                "to save Favorites at this time:\nThe admin has been " +
+                                "notified";
+                            alert(msg);
+                            var ajaxerr = "Trying to access markFavorites.php: add;\nError text: " +
+                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                                _jqXHR.responseText;
+                            var errobj = { err: ajaxerr };
+                            $.post('../php/ajaxError.php', errobj);
+                        }
                     }
                 });
             }
@@ -265,13 +276,23 @@ function enableFavorites(items) {
                                 "in order to save Favorites");
                         }
                     },
-                    error: function () {
-                        var msg = "A server error occurred\nYou will not be able " +
-                            "to unsave Favorites at this time:\nThe admin has been " +
-                            "notified";
-                        alert(msg);
-                        var ajxerr = { err: "Mark favorites php error: unsave" };
-                        $.post('../php/ajaxError.php', ajxerr);
+                    error: function (_jqXHR, _textStatus, _errorThrown) {
+                        if (appMode === 'development') {
+                            var newDoc = document.open();
+                            newDoc.write(_jqXHR.responseText);
+                            newDoc.close();
+                        }
+                        else { // production
+                            var msg = "A server error occurred\nYou will not be able " +
+                                "to unsave Favorites at this time:\nThe admin has been " +
+                                "notified";
+                            alert(msg);
+                            var ajaxerr = "Trying to access markFavorites.php: delete;\nError text: " +
+                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                                _jqXHR.responseText;
+                            var errobj = { err: ajaxerr };
+                            $.post('../php/ajaxError.php', errobj);
+                        }
                     }
                 });
             }

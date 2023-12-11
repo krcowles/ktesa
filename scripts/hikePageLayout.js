@@ -28,6 +28,7 @@ else {
     itemcnt = 0;
 }
 // globals
+var appMode = $('#appMode').text();
 var hikegpx = $('#gpx').text();
 var winWidth = document.body.clientWidth;
 var vpHeight;

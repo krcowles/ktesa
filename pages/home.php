@@ -57,6 +57,7 @@ chdir($startDir);
 <?php require "ktesaPanel.php"; ?>
 <p id="trail">Find Your Hike!</p>
 <p id="active" style="display:none">Home</p>
+<p id="appMode" style="display:none"><?=$appMode;?></p>
 
 <div id="map"></div>
 

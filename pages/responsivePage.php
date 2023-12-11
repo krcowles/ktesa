@@ -76,6 +76,7 @@ if (!mobile) {
 <p id="gpx" style="display:none"><?=$gpxPath;?></p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
 <p id="hikeno" style="display:none;"><?=$hikeno;?></p>
+<p id="appMode" style="display:none;"><?=$appMode;?></p>
 
 <!-- Hike Stats -->
 <div id="hike_stats"></div>

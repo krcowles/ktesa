@@ -33,6 +33,7 @@ if (!cluster_page) {
     itemcnt = 0;
 }
 // globals
+var appMode = $('#appMode').text() as string;
 var hikegpx = $('#gpx').text();
 var winWidth = document.body.clientWidth;
 var vpHeight: number;

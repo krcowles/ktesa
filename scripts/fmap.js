@@ -272,10 +272,23 @@ function drawTrack(jsonfile, color, ptr, def) {
             });
             def.resolve();
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            var msg = 'Did not succeed in getting JSON data: ' + jsonfile +
-                "\nError: " + textStatus;
-            alert(msg);
+        error: function (_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "Trying to access json file: ".concat(jsonfile, ";\n") +
+                    "Error text: ".concat(_textStatus, "; Error: ").concat(_errorThrown, "\n") +
+                    "jqXHR: ".concat(_jqXHR.responseText);
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
             def.reject();
         }
     });

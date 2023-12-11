@@ -35,6 +35,7 @@ $('#areas').hide();
 let title = $('#trail').text();
 $('#ctr').text(title);
 
+var appMode = $('#appMode').text() as string;
 // table parms
 var $tbody = $('table').find('tbody');
 var rows = $tbody.find('tr').toArray();
@@ -65,7 +66,7 @@ let $loc_list = $('#alist').find('li a'); // drop-down list of locales
 $loc_list.each(function() {
     $(this).on('click', function(ev) {
         ev.preventDefault();
-        let lochikes = [];
+        let lochikes = [] as HTMLTableRowElement[];
         let locarea = <any>$(this).text();
         let hikeset: any = regions[locarea]; // regions are objects whose key is a locale (string)
         for (let i=0; i<rows.length; i++) {
@@ -114,12 +115,23 @@ $('#show').on('click', function(ev) {
                 }
                 filterHikes(miles_no, coords);
             },
-            error: function() {
-                alert("Sorry, we can't find the coordinates\nThe admin " +
-                    "has been notified");
-                let err = "Mobile access of areas.json failed";
-                let errobj = {err: err};
-                $.post('../php/ajaxError.php', errobj);
+            error: function(_jqXHR, _textStatus, _errorThrown) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "An error has occurred: " +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "Trying to access areas.json;\nError text: " +
+                        _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                        _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
                 return false;
             }
         });
@@ -133,7 +145,7 @@ $('#show').on('click', function(ev) {
  * the table, it displays the results
  */
 function filterHikes(radius: number, geo: Geo) {
-    var nearby = [];
+    var nearby = [] as HTMLTableRowElement[];
     for (let j=0; j<rows.length; j++) {
         let lat = $(rows[j]).data('lat');
         let lng = $(rows[j]).data('lon');

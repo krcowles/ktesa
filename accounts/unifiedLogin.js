@@ -8,7 +8,6 @@
  * @version 5.0 Upgraded security with encryption and 2FA
  */
 $(function () {
-    var appMode = $('#appMode').text();
     var reg = mobile ? { top: 20, height: 510 } : { top: 48, height: 540 };
     var log = mobile ? { top: 48, height: 340 } : { top: 80, height: 380 };
     var ren = mobile ? { top: 20, height: 480 } : { top: 80, height: 460 };

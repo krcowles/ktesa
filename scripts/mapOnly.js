@@ -23,6 +23,7 @@ var zoomThresh = 13; // Default zoom level for drawing tracks
 var colors = [
     'Red', 'Blue', 'DarkGreen', 'HotPink', 'DarkBlue', 'Chocolate', 'DarkViolet', 'Black'
 ];
+var appMode = $('#appMode').text();
 var geoOptions = { enableHighAccuracy: true };
 //globals
 var map;
@@ -408,10 +409,23 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
             drawnTracks.push(newtrack);
             deferred.resolve();
         },
-        error: function () {
-            var msg = 'Did not succeed in getting track data: ' +
-                json_filename;
-            alert(msg);
+        error: function (_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = 'Did not succeed in getting track data: ' +
+                    json_filename + "\nWe apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "Trying to access " + json_filename +
+                    ";\nError text: " + _textStatus + "; Error: " +
+                    _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
             deferred.reject();
         }
     });

@@ -1,4 +1,5 @@
 /// <reference path='./map.d.ts' />
+declare var appMode: string;
 declare var thumb: string;
 declare var preview: string;
 declare var favlist: string[];

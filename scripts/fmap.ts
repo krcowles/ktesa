@@ -1,5 +1,6 @@
 /// <reference path='./map.d.ts' />
 declare var NM: NM[];
+declare var appMode: string;
 declare function positionFavToolTip(div: JQuery<HTMLElement>, like: JQuery<HTMLElement>): void;
 declare function IdTableElements(bounds: string, zooms: boolean): void;
 declare function formTbl(hikeobjs: NM[]): void;
@@ -293,10 +294,23 @@ function drawTrack(jsonfile: string, color: string, ptr: number, def: JQuery.Def
 			});
 			def.resolve();
 		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			let msg = 'Did not succeed in getting JSON data: ' + jsonfile +
-				"\nError: " + textStatus;
-			alert(msg);
+		error: function(_jqXHR, _textStatus, _errorThrown) {
+			if (appMode === 'development') {
+				var newDoc = document.open();
+				newDoc.write(_jqXHR.responseText);
+				newDoc.close();
+			}
+			else { // production
+				var msg = "An error has occurred: " +
+					"We apologize for any inconvenience\n" +
+					"The webmaster has been notified; please try again later";
+				alert(msg);
+				var ajaxerr = `Trying to access json file: ${jsonfile};\n` +
+					`Error text: ${_textStatus}; Error: ${_errorThrown}\n` +
+					`jqXHR: ${_jqXHR.responseText}`;
+				var errobj = { err: ajaxerr };
+				$.post('../php/ajaxError.php', errobj);
+			}
 			def.reject();
 		}
 	});
