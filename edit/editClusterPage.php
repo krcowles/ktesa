@@ -62,8 +62,9 @@ $info   = !empty($pgdata['info']) ?   $pgdata['info'] : '';
             <button id="submit" type="submit" class="btn btn-secondary">
                 Apply</button>
         </div>
-        <span id="locale">Enter a representative locale for this group&nbsp;&nbsp;
-            <?php require "localeBox.html"; ?><br /><br />
+        <span id="select_locale">Enter a representative locale for
+            this group&nbsp;&nbsp;
+            <?php require "localeBox.html"; ?></span><br /><br />
         <p>GPS Coordinates: <input class="coords ta" type="text" value="<?=$lat;?>"
             name="lat" placeholder="Latitude" />
             &nbsp;&nbsp;<input class="coords ta" type="text" name="lng"

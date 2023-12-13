@@ -7,12 +7,14 @@ declare var mobile: boolean;
  * @version 1.0 First release of responsive design
  * @version 1.1 Typescripted
  * @version 1.2 Updated logout menu to reflect state of 'mobile' var
+ * @version 1.3 Updated ajax error handling
  */
 
+$(function() { // document ready function
 /**
  * Menu setup
  */
-var appMode = $('#appMode').text() as string;
+var appMode = $('#appMode').text() as string;  // LOCAL navbar var
 var choice = $('#cookies_choice').text();
 if (choice === 'accept') {
     $('#cookies').text('Reject Cookies');
@@ -122,4 +124,6 @@ $('#cookies').on('click', function() {
             $.post('../php/ajaxError.php', err);
         }
     });
+});
+
 });

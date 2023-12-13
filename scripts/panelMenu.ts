@@ -8,6 +8,7 @@
  * @version 7.0 Added gpx file editing capability
  * @version 7.1 Added 'Membership Benefits' to navbar
  * @version 7.2 Added 'Latest Additions' to navbar
+ * @version 7.3 Updated ajax error handling
  */
 $(function() {  // document ready function
 
@@ -52,6 +53,7 @@ const $benmo  = $("<div id=movr style='border-style:solid;border-width:1px;borde
     }
 }
 
+// NOTE: Here, appMode is a LOCAL variable for the panel
 var appMode = $('#appMode').text() as string;
 // when page is called, clear any menu items that are/were active
 $('.dropdown-item a').removeClass('active');

@@ -12,7 +12,7 @@ $(function () {
     // initialize select box display (blank if none saved)
     var indxNo = $('input[name=indxNo]').val();
     var locale = $('#locale').text();
-    $('#area').val(locale);
+    $('select#area').val(locale);
     // prevent enter key from submitting form:
     $('form').find('.ta').on('keydown', function (ev) {
         var retval = true;
