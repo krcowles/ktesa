@@ -40,6 +40,10 @@ if ($age === 'old') {
         $include_previews = 'true';
     }
 }
+// get a complete list of hikes for use in the autocomplete widget
+if ($pageType === 'EditPub') {
+    include "../pages/autoComplHikes.php";
+}
 // prepare list of existing hikes in edit mode
 $editPgReq = "SELECT `pgTitle` FROM `EHIKES`;";
 $nowInEdit = $pdo->query($editPgReq)->fetchAll(PDO::FETCH_COLUMN);
@@ -56,13 +60,11 @@ $jsInEdit = json_encode($nowInEdit);
     <meta name="robots" content="nofollow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="../styles/hikeEditor.css" rel="stylesheet" />
     <link href="../styles/tables.css" type="text/css" rel="stylesheet" />
     <?php require "../pages/iconLinks.html"; ?>
-    <style type="text/css">
-       .styled { font-size: 12px;
-                 position: absolute; }
-    </style>
     <script src="../scripts/jquery.js"></script>
+    <script src="../scripts/jquery-ui.js"></script>
 </head>
 
 <body>
@@ -70,28 +72,45 @@ $jsInEdit = json_encode($nowInEdit);
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Select A Hike To <?=$navbar;?></p>
-<p id="active" style="display:none"><?=$pageType;?></p>
+<p id="active"><?=$pageType;?></p>
 
 <div>
     <?php if ($pubreq) : ?>
-        <p id="pubrequest" style="display:none;"><?=$pubreq;?></p>
-        <p style="text-align:center;font-size:18px;">Click on the hike you
-            wish to publish; an email notification will be sent to the
-            admin.<br />You will be advised when the hike has been published.</p>
+        <p id="pubrequest"><?=$pubreq;?></p>
+        <p id="hdr_notes">Click on the hike you wish to publish; an email
+            notification will be sent to the admin.<br />
+            You will be advised when the hike has been published.
+        </p>
     <?php else : ?>
-        <p style="text-align:center;font-size:18px;">When you click on a hike
-            in the table below, you will be presented with <?=$msg;?>.</p>
+        <p id="clicking">When you click on a hike in the table below,
+            you will be presented with <?=$msg;?>.
+        </p>
         <?php if ($pageType === 'EditPub') : ?>
-            <p style="text-align:center;"><span style="color:brown;"><strong>NOTE:
-                </strong></span>
-            Rows that are grayed out are already in-edit and cannot be edited
-            further until released</p>
+            <p id="editpub_note"><span style="color:brown;">
+                <strong>NOTE:</strong></span> Rows that are grayed out
+                are already in-edit and cannot be edited further until released
+            </p>
+            <div id="searcher" class="ui-widget">
+                <style type="text/css">
+                    ul.ui-widget {
+                        width: 300px;
+                        clear: both;
+                    }
+                </style>
+                Scroll to:&nbsp;&nbsp;
+                <input id="search" class="search" placeholder="Hike Name" />
+                <span id="clear">X</span>
+            </div>
+            <script type="text/javascript">
+                var hikeSources = <?=$jsItems;?>;
+            </script>
         <?php endif; ?>
     <?php endif; ?>
 </div>
 <div>
 
 <div id="prev_btns" style="position:absolute"></div>
+
 <?php require "../php/makeTables.php"; ?>
 </div>
 <div id="ineditModal">
@@ -101,7 +120,8 @@ $jsInEdit = json_encode($nowInEdit);
 <script type="text/javascript">
     var age = "<?=$age;?>";
     var inEdits = <?=$jsInEdit;?>;
-    var previewSort = <?=$include_previews;?>;
+    var include_previews = <?=$include_previews;?>;
+    var include_search = "<?=$pageType;?>";
 </script>
 <script src="hikeEditor.js"></script>
 <script src="../scripts/columnSort.js"></script>
