@@ -9,8 +9,47 @@
  * @version 2.0 Support for cluster pages
  * @version 2.1 Typescripted
  * @version 2.2 Replaced local sort with new columnSort.ts/js script
+ * @version 3.0 Added searchbar to scroll to a hike in 'Edit Published'
  */
 var appMode = $('#appMode').text();
+if (include_search === 'EditPub') {
+    $('#search').autocomplete({
+        source: hikeSources,
+        minLength: 1
+    });
+    // When user selects item in 'autocomplete'
+    $("#search").on("autocompleteselect", function (event, ui) {
+        // the searchbar dropdown uses 'label', but place 'value' in box & use that
+        event.preventDefault();
+        var entry = ui.item.value;
+        $(this).val(entry);
+        scrollToHike_1(entry);
+    });
+    $('#clear').on('click', function () {
+        $('#search').val("");
+        var searchbox = document.getElementById('search');
+        searchbox.focus();
+    });
+    var scrollToHike_1 = function (hikename) {
+        var $tbl = $('#editTbl');
+        var $rows = $tbl.find('tr');
+        var $scroll_row = $rows.eq(0);
+        $rows.each(function () {
+            var hikeTitle = $(this).children().eq(0).children().eq(0).text();
+            if (hikeTitle == hikename) {
+                $scroll_row = $(this);
+                return false;
+            }
+            else {
+                return;
+            }
+        });
+        var row_pos = $scroll_row.offset();
+        $(document).scrollTop(row_pos.top - 40);
+        $scroll_row.css('background-color', '#e9d0af');
+        return;
+    };
+}
 // when preview buttons are displayed:
 var preview = '../pages/hikePageTemplate.php?age=new&hikeIndx=';
 var btnId = '<a id="prev';
@@ -73,7 +112,8 @@ $(function () {
      *     selected hike page.
      */
     var page_type = $('#active').text();
-    var display_preview = page_type === 'Edit' ? true : false;
+    var display_preview = page_type === 'Edit' && include_search !== 'EditPub'
+        ? true : false;
     var useHikeEd = 'editDB.php?tab=1&hikeNo=';
     var useClusEd = 'editClusterPage.php?hikeNo=';
     var xfrPage = 'xfrPub.php?hikeNo=';

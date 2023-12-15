@@ -1,0 +1,49 @@
+.styled {
+  font-size: 12px;
+  position: absolute;
+}
+
+#active, #pubrequest {
+  display: none;
+}
+
+#hdr_notes, #clicking, #editpub_note, #searcher {
+  text-align: center;
+  font-size: 18px;
+}
+
+#editpub_note {
+  margin-bottom: 3px;
+}
+
+#searcher {
+  margin-bottom: 6px;
+}
+
+#search {
+  border-radius: 6px;
+  width: 300px;
+  padding-left: 4px;
+}
+
+#clear {
+  position: relative;
+  font-size: 22px;
+  top: 2px;
+  left: -32px;
+  color: darkred;
+  z-index: 220;
+  cursor: pointer;
+}
+
+/* background holding autocomplete choices: */
+#ui-id-1 {
+  list-style-type: none;
+  margin: 0;
+  padding-left: 4px;
+  width: 200px;
+  z-index: 9999;
+  background-color: #eaeaea;
+}
+
+/*# sourceMappingURL=hikeEditor.css.map */
