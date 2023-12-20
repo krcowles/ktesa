@@ -73,26 +73,16 @@ img#tompic {
     cursor: pointer;
     color: darkblue;
 }
-#mapfeat {
+#navfeat, #mapfeat, #tblfeat, #hikefeat {
     position: relative;
     top: -4px;
+    margin-bottom: 2px;
 }
-#mul {
+#nul, #mul, #tul, #hul {
     display: none;
-}
-#tblfeat {
     position: relative;
-    top: -4px;
-}
-#tul {
-    display: none;
-}
-#hikefeat {
-    position: relative;
-    top: -4px;
-}
-#hul {
-    display: none;
+    top: -6px;
+    margin-bottom: 2px;
 }
 .dashed {
     list-style-type: disc;

@@ -24,6 +24,9 @@ $(function () {
         }
         list.slideToggle();
     }
+    $('#navfeat').on('click', function () {
+        toggleTwisty('n', 'navfeat', 'nul');
+    });
     $('#mapfeat').on('click', function () {
         toggleTwisty('m', 'mapfeat', 'mul');
     });

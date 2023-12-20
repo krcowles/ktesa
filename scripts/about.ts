@@ -23,6 +23,9 @@ function toggleTwisty(tid:string , ttxt: string, dashed: string) {
     }
     list.slideToggle();
 }
+$('#navfeat').on('click', function() {
+    toggleTwisty('n', 'navfeat', 'nul');
+});
 $('#mapfeat').on('click', function() {
     toggleTwisty('m', 'mapfeat', 'mul');
 });

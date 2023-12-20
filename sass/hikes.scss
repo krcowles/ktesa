@@ -217,6 +217,15 @@ fieldset {
 }
 
 /* image alignment and pop-up caption styles */
+#bigpic {
+    padding-left: 0.5rem;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: $up_dwn;
+    background-color: $hikePageBackground;
+}
 .ImgRow {
     min-width: 960px;
     overflow: hidden;

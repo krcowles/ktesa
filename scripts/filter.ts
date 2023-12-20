@@ -16,7 +16,10 @@ interface GPSData {
 var appMode = $('#appMode').text() as string;
 var arealoc: GPSData = {}; // coordinates of location from which to calculate radius
 var mapHikes: string[] = []; // save hikes to be drawn together on a new map
-
+var hikearea = $('#area').val(); // top value of select set as a 'primer'
+$('body').on('change', '#area', function() {
+    hikearea = $(this).val();
+});
 positionMain();
 /**
  * This function will place position elements on the page on page
@@ -45,7 +48,7 @@ $('#filtpoi').on('click', function() {
     $('#sort1').val("No Sort");
     $('#sort2').val("No Sort");
     var epsilon = <number>$('#pseudospin').val();
-    var area = $('#area').find(":selected").text();
+    var area = hikearea;
     $.ajax({ // returns array of location centers on success
         url:      '../json/areas.json',
         dataType: 'json',
