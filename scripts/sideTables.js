@@ -331,9 +331,9 @@ function appendSegment(subset) {
     for (var m = 0; m < subset.length; m++) {
         var obj = subset[m];
         var hno = obj.indx;
-        var hike_no = hno.toString();
+        //let hike_no = hno.toString()
         var tbl;
-        if (favlist.includes(hike_no)) {
+        if (favlist.includes(hno)) {
             tbl = tblItemHtml.replace('Yellow', 'Red');
         }
         else {
@@ -417,7 +417,8 @@ function positionFavToolTip(tipdiv, icon) {
     return;
 }
 /**
- * This function will track events on the favorites icons
+ * This function will track events on the favorites icons;
+ * Note: update any 'favorites' [default from ]
  */
 function enableFavorites(items) {
     var _loop_1 = function (k) {
@@ -443,7 +444,7 @@ function enableFavorites(items) {
                     dataType: "text",
                     success: function (results) {
                         if (results === "OK") {
-                            favlist.push(hno);
+                            favlist.push(hikeno);
                             newsrc = isrc.replace('Yellow', 'Red');
                             $tooltip.text('Unmark');
                             $that.attr('src', newsrc);
@@ -472,7 +473,7 @@ function enableFavorites(items) {
                     dataType: "text",
                     success: function (results) {
                         if (results === 'OK') {
-                            var key = favlist.indexOf(hno);
+                            var key = favlist.indexOf(hikeno);
                             favlist.splice(key, 1);
                             newsrc = isrc.replace('Red', 'Yellow');
                             $tooltip.text('Add to Favorites');

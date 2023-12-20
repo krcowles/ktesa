@@ -175,7 +175,7 @@ $alert_ff_user = $browser['name'] === 'Mozilla Firefox' ? true : false;
     // list of waypoint symbols supported by this app
     var wpt_icons = <?=$jsSymbols;?>;
     <?php if ($alert_ff_user) : ?>
-    alert("Firefox Users: There is a bug in v119 that disallows checking\n" +
+    alert("Firefox Users: There is a bug in v119-121 that disallows checking\n" +
         "the individual photo checkboxes on the 'Photo Selection' tab.\n"
         + "The 'Select All' button still functions. For now, you may email\n"
         + "your desired list of selections to: admin@nmhikes.com, or \n" +

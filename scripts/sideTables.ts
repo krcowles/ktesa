@@ -2,7 +2,7 @@
 declare var appMode: string;
 declare var thumb: string;
 declare var preview: string;
-declare var favlist: string[];
+declare var favlist: number[];
 declare var hikeSources: AutoItem[];
 interface AutoItem {
     value: string;
@@ -291,9 +291,9 @@ function appendSegment(subset: NM[]) {
     for (let m=0; m<subset.length; m++) {
         let obj = subset[m];
         let hno = obj.indx;
-        let hike_no = hno.toString()
+        //let hike_no = hno.toString()
         var tbl;
-        if (favlist.includes(hike_no)) {
+        if (favlist.includes(hno)) {
             tbl = tblItemHtml.replace('Yellow', 'Red');
         } else {
             tbl = tblItemHtml;
@@ -376,7 +376,8 @@ function positionFavToolTip(tipdiv: JQuery<HTMLElement>, icon: JQuery<HTMLElemen
     return;
 }
 /**
- * This function will track events on the favorites icons
+ * This function will track events on the favorites icons; 
+ * Note: update any 'favorites' [default from ]
  */
 function enableFavorites(items: JQuery<HTMLElement>[]) {
     for (let k=0; k<items.length; k++) {
@@ -402,7 +403,7 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                     dataType: "text",
                     success: function(results) {
                         if (results === "OK") {
-                            favlist.push(hno);
+                            favlist.push(hikeno);
                             newsrc = isrc.replace('Yellow', 'Red');
                             $tooltip.text('Unmark');
                             $that.attr('src', newsrc);
@@ -429,7 +430,7 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                     dataType: "text",
                     success: function(results) {
                         if (results === 'OK') {
-                            let key = favlist.indexOf(hno);
+                            let key = favlist.indexOf(hikeno);
                             favlist.splice(key, 1);
                             newsrc = isrc.replace('Red', 'Yellow');
                             $tooltip.text('Add to Favorites');
