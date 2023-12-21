@@ -19,7 +19,6 @@ $alert_ff_user = $browser['name'] === 'Mozilla Firefox' ? true : false;
     .gallery ul {margin: 0; padding: 0; list-style-type: none; }
     .gallery ul li { padding: 7px; border: 2px solid #ccc; float: left;
         margin: 10px 7px; background: none; width: auto; height: auto; }
-    .image_link:link { color: black; text-decoration: none;}
 </style>
 
 <div><strong>Manage Your Photos Below, or&nbsp;&nbsp;</strong>
@@ -90,7 +89,7 @@ $alert_ff_user = $browser['name'] === 'Mozilla Firefox' ? true : false;
     </div>
     <div id="picbox">
         <div class="gallery">
-            <ul class="reorder-ul reorder-photos-list">
+            <ul class="reorder-photos-list">
             <?= $html;?>
             </ul>
         </div>

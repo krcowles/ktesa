@@ -125,8 +125,6 @@ if ($picq->rowCount() === 0) {
      */ 
     for ($i=0; $i<$picCount; $i++) {
         $wrapper = '<li id="' . $tsvId[$i] . '" class="ui-sortable-handle">';
-        $wrapper .= '<a href="javascript:void(0);" class="image_link" ' .
-            'style="float:none;">';
         // the div is the container for the gallery of re-orderable elements
         $wrapper .= '<div style="margin-right:12px;width:' . $phWds[$i] . 'px;' .
             'box-sizing:content-box;">';
@@ -140,18 +138,18 @@ if ($picq->rowCount() === 0) {
         }
         // 'add to map' checkbox - don't allow mapping for pix w/no lat/lng:
         if ($pMap[$i]) {
-            $mpbox = '<span><input class="mpguse" type="checkbox" name="mapit[]" ' .
+            $mpbox = '<input class="mpguse" type="checkbox" name="mapit[]" ' .
                 'value="' . $tsvId[$i];
             if ($mpg[$i] === 'Y') {
-                $mpbox .= '" checked />&nbsp;Map</span><br />' . PHP_EOL;
+                $mpbox .= '" checked />&nbsp;Map<br />' . PHP_EOL;
             } else {
-                $mpbox .= '" />&nbsp;Map</span><br />' . PHP_EOL;
+                $mpbox .= '" />&nbsp;Map<br />' . PHP_EOL;
             }
         } else {
-            $mpbox = '<span><input class="mpguse nomap" type="checkbox" ' .
+            $mpbox = '<input class="mpguse nomap" type="checkbox" ' .
                 'name="mapit[]" value="' . $tsvId[$i] . '" ' .
                 'onclick="return false;" disabled="disabled" />' .
-                '<span style="color:gray">Map</span></span><br />';
+                '<span style="color:gray">Map</span><br />';
         }
         // 'delete photo' checkbox
         $delbox = '<input class="delp" type="checkbox" name="rem[]" value="' .
@@ -169,7 +167,7 @@ if ($picq->rowCount() === 0) {
          * Add all items to $wrapper: a self-contained <li> element which can be
          * reordered (via jquery ui 'sortable' widget)
          */
-        $wrapper .= $pgbox . $mpbox . $delbox . $photo . "</div></a>" .
+        $wrapper .= $pgbox . $mpbox . $delbox . $photo . "</div>" .
             $caption . "</li>";
         $html .= $wrapper;
     }
