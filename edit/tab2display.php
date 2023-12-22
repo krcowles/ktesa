@@ -9,9 +9,6 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-// Firefox v119 bug prevents checkboxes from working in photo section.
-$browser = getBrowserType();
-$alert_ff_user = $browser['name'] === 'Mozilla Firefox' ? true : false;
 ?>
 <!-- Photo entry and management section -->
 <style type="text/css">
@@ -173,13 +170,6 @@ $alert_ff_user = $browser['name'] === 'Mozilla Firefox' ? true : false;
     var wLngDMS   = JSON.parse('<?=$jswLngDMS;?>');
     // list of waypoint symbols supported by this app
     var wpt_icons = <?=$jsSymbols;?>;
-    <?php if ($alert_ff_user) : ?>
-    alert("Firefox Users: There is a bug in v119-121 that disallows checking\n" +
-        "the individual photo checkboxes on the 'Photo Selection' tab.\n"
-        + "The 'Select All' button still functions. For now, you may email\n"
-        + "your desired list of selections to: admin@nmhikes.com, or \n" +
-        "use a different browser. The bug has been submitted to Mozilla");
-    <?php endif; ?>
 </script>
 <script src="../scripts/popupCaptions.js"></script>
 <script src="photoSelect.js"></script>
