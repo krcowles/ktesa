@@ -50,6 +50,7 @@ $faultInfo = $_SESSION['symfault'];
             </div>
         </div>   
     </div>
+    <p id="appMode" style="display:none;"><?=$appMode;?></p>
     <p id="hikeNo" style="display:none;"><?=$hikeNo;?></p>
     <div id="content">
         <h4>One or more user-correctable faults were discovered while uploading

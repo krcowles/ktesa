@@ -23,6 +23,7 @@ $(function () {
     /**
      * The framework/appearance of the edit page and buttons
      */
+    var appMode = $('#appMode').text();
     var tabCnt = $('.tablist').length;
     var tabWidth = $('#t1').css('width');
     var listwidth = tabCnt * parseInt(tabWidth); // fixed (no change w/resize)
@@ -349,14 +350,22 @@ $(function () {
                         alert("Sorry: problem encountered");
                     }
                 },
-                error: function (_jqXHR) {
+                error: function (_jqXHR, _textStatus, _errorThrown) {
                     if (appMode === 'development') {
                         var newDoc = document.open();
                         newDoc.write(_jqXHR.responseText);
                         newDoc.close();
                     }
-                    else {
-                        alert("Error encountered: admin notified");
+                    else { // production
+                        var msg = "An error has occurred: " +
+                            "We apologize for any inconvenience\n" +
+                            "The webmaster has been notified; please try again later";
+                        alert(msg);
+                        var ajaxerr = "Trying to access getHikePhotos.php;\nError text: " +
+                            _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                            _jqXHR.responseText;
+                        var errobj = { err: ajaxerr };
+                        $.post('../php/ajaxError.php', errobj);
                     }
                 }
             });

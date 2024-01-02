@@ -164,18 +164,22 @@ function getTrackData(promise) {
             });
             promise.resolve();
         },
-        error: function (_jqXHR, textStatus, errorThrown) {
-            if (appMode === 'production') {
-                var msg_1 = "Could not read " + hikeTrack + ";\nThere will " +
-                    "be no chart data for it";
-                alert(msg_1);
+        error: function (_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
             }
-            else {
-                var msg = "Ajax call in prepareTracks.js failed " +
-                    "with error code: " + errorThrown +
-                    "Could not extract XML data from " + hikeTrack +
-                    "\nSystem error message: " + textStatus;
+            else { // production
+                var msg = "Could not read " + hikeTrack +
+                    "\nWe apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
                 alert(msg);
+                var ajaxerr = "Trying to access gpx file: " + hikeTrack +
+                    ";\nError text: " + _textStatus + "; Error: " +
+                    _errorThrown + ";\njqXHR: " + _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
             }
             promise.reject();
         }

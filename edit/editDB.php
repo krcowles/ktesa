@@ -48,6 +48,7 @@ $tinymce = "https://cdn.tiny.cloud/1/" .
 <p id="hikeNo" style="display:none"><?= $hikeNo;?></p>
 <p id="entry" style="display:none"><?= $tab;?></p>
 <p id="htitle" style="display:none"><?=$pgTitle;?></p>
+<p id="appMode" style="display:none"><?=$appMode;?></p>
 
 <div id="main" style="padding:16px;margin-bottom:0px;">
 <h4 style="margin-top:0px;margin-bottom:0px;">

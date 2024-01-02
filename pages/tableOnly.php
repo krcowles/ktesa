@@ -40,6 +40,7 @@ $pageType = 'FullTable';
 <?php require "ktesaPanel.php"; ?>
 <p id="trail">Sortable Table of Hikes</p>
 <p id="active" style="display:none">Table</p>
+<p id="appMode" style="display:none;"><?=$appMode;?></p>
 
 <div id="main">
 <div id="optcontainer">

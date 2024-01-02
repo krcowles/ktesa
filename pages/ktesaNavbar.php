@@ -9,8 +9,10 @@
  * @license No license to date
  */
 require_once "../accounts/getLogin.php";
+require "../admin/mode_settings.php";
 $policy = urlencode("PrivacyPolicy.pdf");
 ?>
+<p id="appMode"><?=$appMode;?></p>
 <!-- navbar-dark cause light collapsed icon (hampurger) -->
 <nav id="nav" class="navbar navbar-expand-sm navbar-dark">
     <div class="container-fluid"> 

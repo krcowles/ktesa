@@ -9,6 +9,7 @@
  * @version 7.0 Added gpx file editing capability
  * @version 7.1 Added 'Membership Benefits' to navbar
  * @version 7.2 Added 'Latest Additions' to navbar
+ * @version 7.3 Updated ajax error handling
  */
 $(function () {
     // establish the page title in the logo's 'ctr' div
@@ -52,6 +53,8 @@ $(function () {
             return true;
         }
     };
+    // NOTE: Here, appMode is a LOCAL variable for the panel
+    var appMode = $('#appMode').text();
     // when page is called, clear any menu items that are/were active
     $('.dropdown-item a').removeClass('active');
     var activeItem = $('#active').text();
@@ -234,10 +237,23 @@ $(function () {
                 alert("You have been successfully logged out");
                 window.open('../index.html', '_self');
             },
-            error: function () {
-                alert("Failed to execute logout; Admin notified");
-                var ajxerr = { err: "Could not execute logout.php" };
-                $.post('../php/ajaxError.php', ajxerr);
+            error: function (_jqXHR, _textStatus, _errorThrown) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = alert("Failed to execute logout;\n" +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later");
+                    alert(msg);
+                    var ajaxerr = "Trying to logout;\nError text: " +
+                        _textStatus + "; Error: " + _errorThrown + "; jqXHR: " +
+                        _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
             }
         });
         return;
@@ -258,12 +274,23 @@ $(function () {
             success: function () {
                 window.location.reload();
             },
-            error: function () {
-                var msg = "Cannot change cookie preference at this time:\n" +
-                    "The admin has been notified";
-                alert(msg);
-                var errobj = { err: msg };
-                $.post('../php/ajaxError.php', errobj);
+            error: function (_jqXHR, _textStatus, _errorThrown) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "Cannot change cookie preference at this time:\n" +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "Trying to access [];\nError text: " +
+                        _textStatus + "; Error: " + _errorThrown + "; jqXHR: " +
+                        _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
             }
         });
         return;
@@ -323,8 +350,23 @@ $(function () {
                 $('#newest').append(list);
                 newpgs.show();
             },
-            error: function (_jqXHR) {
-                alert("Failed to create list...");
+            error: function (_jqXHR, _textStatus, _errorThrown) {
+                if (appMode === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    var msg = "An error has occurred: " +
+                        "We apologize for any inconvenience\n" +
+                        "The webmaster has been notified; please try again later";
+                    alert(msg);
+                    var ajaxerr = "Trying to access Latest Hikes\nError text: " +
+                        _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                        _jqXHR.responseText;
+                    var errobj = { err: ajaxerr };
+                    $.post('../php/ajaxError.php', errobj);
+                }
             }
         });
     });

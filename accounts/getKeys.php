@@ -2,7 +2,8 @@
 /**
  * This file creates RSA keys and stores them temporarily in the accounts
  * directory. The keys used for the site however will be moved into a private
- * directory of the server, above the project's DOCUMENT_ROOT.
+ * directory of the server, above the project's DOCUMENT_ROOT. This script is
+ * not used by site modules.
  * PHP Version 7.4
  * 
  * @package Ktesa

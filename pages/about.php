@@ -41,56 +41,82 @@ require "../php/global_boot.php";
     </p>
     <div id="intro">
         <p id="introp">The intention of this site is to provide you, the viewer,
-        a look at a variety of hikes, all undertaken by the authors in 
-        <em class="blue">The Land of Enchantment</em>. These hikes cover a broad,
-        cross-state array of possibilities, all found in the diverse terrain o
-         New Mexico - from short treks, to longer, uphill/downhill adventures.
+            a look at a variety of hikes, all undertaken by the authors in 
+            <em class="blue">The Land of Enchantment</em>. These hikes cover a broad,
+            cross-state array of possibilities, all found in the diverse terrain of
+            New Mexico - from short treks, to longer, uphill/downhill adventures.
         </p> 
         <p id="features">
             One of the features of this site 
             is that not all of the hikes listed can be found in popular hiking books,
-            or even in on-line trail apps. Check out "What You Will See" below.
+            or even in on-line trail apps! Check out "What You Will See" below.
         </p>
     </div>
     <p id="expect">WHAT YOU WILL SEE:</p>
     <div id="expl">
         <p><img id="mrkrs" src="../images/mapmrkrs.jpg" alt="map symbols"
         align="left" />
-        The home page for this site displays a large map with <em class="red">
-        red</em>, <em class="blue">blue</em>, or <em class="green">green</em>
-        'cluster' markers indicating the number of hikes to be found in that area.
-        Clicking on a cluster marker will zoom in on the map and decompose the
-        cluster markers into groups of smaller clusters, until they appear as
-        non-reducible <em class="purple">purple</em> markers. When a purple marker
-        is displayed, it cannot be further decomposed, and will indicate the actual
-        number of hikes in that location. Clicking on a purple marker will display
-        an information window about the hike(s). 
+            The home page for this site displays a large map with <em class="red">
+            red</em>, <em class="blue">blue</em>, or <em class="green">green</em>
+            'cluster' markers indicating the number of hikes to be found in that
+            area. Clicking on a cluster marker will zoom in on the map and
+            decompose the cluster markers into groups of smaller clusters, until
+            they appear as non-reducible <em class="purple">purple</em> markers.
+            When a purple marker is displayed, it cannot be further decomposed,
+            and will indicate the actual number of hikes in that location.
+            Clicking on a purple marker will display an information window about
+            the hike(s). 
         </p>
         <p>The home page also shows a side table of all hikes appearing in the
-        currently viewable portion of the map. Each hike has essential statistics
-        listed, along with a 'preview' image on the right side. If you mouse over
-        that image, you will see a bigger, more viewable image of it. You may zoom
-        in on any given hike, mark it as a favorite, or go directly to the
-        hike's page. You can also change the side table's width by dragging it's
-        left edge.
+            currently viewable portion of the map. Each hike has essential statistics
+            listed, along with a 'preview' image on the right side. If you mouse over
+            that image, you will see a bigger, more viewable image of it. You may
+            zoom in on any given hike, mark it as a favorite, or go directly to the
+            hike's page. You can also change the side table's width by dragging it's
+            left edge.
         </p>
-        
-        <p>There are several menu options at the top of each page allowing you
-        to use other portions of the site. The main menu item, the 'Explore' menu,
-        provides several viewing options. In addition to the home page described
-        above, a 'Table Only' page is available. This is further described below;
-        for members (you can sign up for free, and with no obligations), you will
-        also see a 'Show Favorites' page option in the 'Explore' menu, which will
-        show on a map all hikes in your list of favorites, along with their hike
-        tracks. Members have the added benefit of being able to create their own
-        hike pages with our hike page editor.
-        </p>
+
+        <div id="n" class="twisty-right"></div>
+        <p id="navfeat" class="maindisp">&nbsp;Navigation Bar</p>
+        <ul id="nul" class="dashed">
+            <li>The navigation bar/menu appears at the top of every viewable page.
+                Some options are enabled only by becoming a member (free!).
+            </li>
+            <li>The 'Explore' menu allows a user to select the home page or the
+                table page (see below). When a user becomes a member, a third option
+                is enabled: 'Show Favorites', which brings up a page showing only the
+                member's favorite hikes. 
+            </li>
+            <li>The 'Contribute' menu is only enabled for members to: 1) Create a 
+                new hike page; 2) Continue editing a page already in-edit; 3) Edit
+                an existing, published page (that will remain unchanged on the site
+                until the edited version is published); 4) Request a hike to be 
+                pubished when editing is completed.
+            </li>
+            <li>The 'Filter/Sort' menu offers options for displaying the side table
+                on the home page. The menu only appears when the home page is
+                displayed.
+            <li>Any user or member can upload and edit a gpx file - delete, add, or
+                move trackpoints - and save the edited version without changing the
+                original.
+            </li>
+            <li>A user may sign up for free with no obligations by selecting the
+                'Members->Become a member' menu item, and existing members will find
+                other options under the 'Members' menu.
+            </li>
+            <li>To get a list of the 10 most recent hikes taken by the authors,
+                select the corresponding 'More...' menu item, where a few other
+                miscellaneous options appear
+            </li>
+        </ul>
+
         <div id="m" class="twisty-right"></div>
-        <p id="mapfeat" class="maindisp">&nbsp;Home Page Map Features
-            
+        <p id="mapfeat" class="maindisp">&nbsp;Home Page Map Features</p>
         <ul id="mul" class="dashed">
-            <li>Maps are standard Google maps, which allow pan, zoom and full-screen
-                    display.
+            <li>Maps are standard Google maps. Some of the standard google controls
+                appear on the page, such as the 'full-page' map option, a +/- zoom
+                control, and a drop-down box allowing the user to select either the
+                'Terrain' display or the 'Satellite' view.
             </li>
             <li>Marker pins (purple) display an "info-window" when clicked. That
                 window shows hike details, and contains links to the corresponding
@@ -98,17 +124,38 @@ require "../php/global_boot.php";
                 trail head.
             </li>
             <li>When zoomed in sufficiently, tracks indicating the trail or path
-                    the authors took will display, with arrows indicating
-                    the direction the authors traveled. Mousing over a track will
-                    also display an info-window with a link to the hike page.
+                the authors took will display, with arrows indicating
+                the direction the authors traveled. Mousing over a track will
+                also display an info-window with a link to the hike page.
+            </li>
+            <li>The side table of hikes may be filtered or sorted via the
+                'Filter/Sort' menu item. When filtered, the list of hikes in the
+                side table and the viewport will be adjusted
+                to show only the filtered hikes. Sorting applies only to the
+                hikes currently showing in the side table.
+            </li>
+            <li>The width of the side table can be changed to allow more or less
+                viewing space for the map. Simply mouse over the vertical
+                double-bar at the left side of the table, click and hold, and 
+                drag the bar left or right.
+            </li>
+            <li>A powerful feature of the home page is the search bar, where a 
+                user may begin typing and a list of hikes will appear whose
+                name contains the sequence of letters typed. It is not necessary
+                to capitalize names.
+            </li>
+            <li>Users may zoom in on any hike by clicking the magnifying glass
+                icon adjacent to a hike in the side table. Members can also 
+                designate a 'favorite' by clicking the star above that icon.
             </li>
         </ul>
+
         <div id="t" class="twisty-right"></div>
         <p id="tblfeat" class="maindisp">&nbsp;Table Only Features:</p>
         <ul id = 'tul' class="dashed">
             <li>The table of hikes is intended to provide a brief summary of hike
                 statistics, and links to the corresponding hike page, along
-                with Google driving directions.
+                with Google map driving directions.
             </li>
             <li>The table of hikes initially displayed is sorted in ascending
                 alphabetic order, but clicking on any column header (excepting
@@ -140,6 +187,7 @@ require "../php/global_boot.php";
                 you back to the top of the table.
             </li>
         </ul>
+
         <div id="h" class="twisty-right"></div>
         <p id="hikefeat" class="maindisp">&nbsp;Hike Pages:</p>
         <ul id='hul' class="dashed"</ul>
@@ -147,24 +195,26 @@ require "../php/global_boot.php";
                 and an interactive elevation chart, showing the elevation at any
                 point along the track.
             </li>
-            <li>As you cursor along the chart, the corresponding hike location
-                shows up on the local map.
+            <li>As you cursor along the elevation chart, the corresponding location
+                on the trail shows up on the interactive map.
             </li>
             <li>For hikes with multiple tracks, the tracks will be available for
                 display by clicking on their respective checkboxes in the 'track
-                box' area, upper right corner of the map. The topmost track displayed
-                will have its data reflected in the sidebar statistics, and will be
-                the track displayed in the elevation chart.
+                box' area, located in the upper right corner of the map. The topmost
+                track checked will have its data reflected in the sidebar
+                statistics, and will alos be the track displayed in the elevation
+                chart.
             </li>
-            <li>If there were photos included that had GPS data, they are viewable
-                on the map at the marker points. Mousing over the marker displays a
-                small preview of the image. Click on the marker to get a
-                slightly larger image displayed. Clicking on that image will take
-                you to a separate page with the photo further enlarged.
+            <li>If there were photos included that had GPS metadata, they are
+                viewable on the map as marker icons. Mousing over the marker
+                displays a small preview of the image. Click on the marker to get a
+                slightly larger image displayed. Clicking on the larger image will
+                take you to a separate page with the photo further enlarged.
             </li>
-            <li>Each page also includes trail descriptions,
-                links to related materials, and sample photos taken on the hike,
-                as well as other nearby hikes, and ocassionaly alternate routes.
+            <li>Each page also includes trail descriptions, a list of any available
+                references to the hike - including links to websites or online apps,
+                sample photos taken on the hike, a list of nearby hikes (if any),
+                and ocassionaly, alternate routes.
             </li>
             <li>Note: to allow for a wider view of the map and elevation chart, the
                 sidebar of statistics can be hidden (by clicking on the box with

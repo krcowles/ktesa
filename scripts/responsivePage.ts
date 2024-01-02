@@ -8,6 +8,7 @@ declare var title: string; // defined in logo.js
  */
 $('#ctr').text(title);
 
+var appMode = $('#appMode').text() as string;
 // hike number
 var hikeno = $('#hikeno').text();
 
@@ -113,10 +114,23 @@ $('#favs').on('click', function() {
             }
             $('#favs').text(newtext);
         },
-        error: function (jqXHR) {
-            let newDoc = document.open();
-            newDoc.write(jqXHR.responseText);
-            newDoc.close();
+        error: function (_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "Trying to access [];\nError text: " +
+                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                    _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
         }
     });
 });

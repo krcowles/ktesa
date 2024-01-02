@@ -245,6 +245,14 @@ if (!$clusterPage) {
     $captions = [];
     $aspects = [];
     $widths = [];
+    /**
+     * NOTE: In some cases, no captions were provided by the user, so only the
+     * date string appears as a caption. Since the popupCaptions.js uses the
+     * caption to match the popup to the pictures, duplicate date strings cause
+     * a mis-placed caption. To prevent this, when a caption repeats during the
+     * creation of the $captions array, it is given a unique identifier.
+     */
+    $unique_id = 1;
     foreach ($photos as $pics) {
         if ($pics['hpg'] === 'Y') {
             array_push($descs, $pics['title']);
@@ -254,20 +262,23 @@ if (!$clusterPage) {
             $pDesc = htmlspecialchars($pics['desc']);
             $dateStr = $pics['date'];
             if ($dateStr == '') {
-                array_push($captions, $pDesc);
+                $thiscap = $pDesc;    
             } else {
                 $year = substr($dateStr, 0, 4);
                 $month = intval(substr($dateStr, 5, 2));
                 $day = intval(substr($dateStr, 8, 2)); // intval strips leading 0
-                $date = $months[$month-1] . ' ' . $day . ', ' . $year .
+                $thiscap = $months[$month-1] . ' ' . $day . ', ' . $year .
                         ': ' . $pDesc;
-                array_push($captions, $date);
             }
-                $ht = intval($pics['imgHt']);
-                $wd = intval($pics['imgWd']);
-                array_push($widths, $wd);
-                $picRatio = $wd/$ht;
-                array_push($aspects, $picRatio);
+            if (in_array($thiscap, $captions)) {
+                $thiscap .= " (" . $unique_id++ . ")";
+            } 
+            array_push($captions, $thiscap);
+            $ht = intval($pics['imgHt']);
+            $wd = intval($pics['imgWd']);
+            array_push($widths, $wd);
+            $picRatio = $wd/$ht;
+            array_push($aspects, $picRatio);
         }
     }
     $capCnt = count($descs);

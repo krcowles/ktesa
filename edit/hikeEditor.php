@@ -72,7 +72,8 @@ $jsInEdit = json_encode($nowInEdit);
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Select A Hike To <?=$navbar;?></p>
-<p id="active"><?=$pageType;?></p>
+<p id="active" style="display:none"><?=$pageType;?></p>
+<p id="appMode" style="display:none"><?=$appMode;?></p>
 
 <div>
     <?php if ($pubreq) : ?>

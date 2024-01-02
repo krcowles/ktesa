@@ -1,3 +1,4 @@
+declare var appMode: string;
 interface GPSData {
     lat?: number;
     lng?: number;
@@ -91,10 +92,23 @@ function miles_from_locale(locale: string, miles: number) {
             filterByMiles(miles, arealoc);
             return;
         },
-        error: function() {
-            alert("Unable to retrieve area data\nAdmin has been notified");
-            let errobj = {err: "No areas.json file"};
-            $.post('../php/ajaxError.php', errobj);
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "Trying to access areas.json;\nError text: " +
+                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                    _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
             return false;
         }
     });

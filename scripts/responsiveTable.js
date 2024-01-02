@@ -24,6 +24,7 @@ $(function () {
     $('#areas').hide();
     var title = $('#trail').text();
     $('#ctr').text(title);
+    var appMode = $('#appMode').text();
     // table parms
     var $tbody = $('table').find('tbody');
     var rows = $tbody.find('tr').toArray();
@@ -102,12 +103,23 @@ $(function () {
                     }
                     filterHikes(miles_no, coords);
                 },
-                error: function () {
-                    alert("Sorry, we can't find the coordinates\nThe admin " +
-                        "has been notified");
-                    var err = "Mobile access of areas.json failed";
-                    var errobj = { err: err };
-                    $.post('../php/ajaxError.php', errobj);
+                error: function (_jqXHR, _textStatus, _errorThrown) {
+                    if (appMode === 'development') {
+                        var newDoc = document.open();
+                        newDoc.write(_jqXHR.responseText);
+                        newDoc.close();
+                    }
+                    else { // production
+                        var msg = "An error has occurred: " +
+                            "We apologize for any inconvenience\n" +
+                            "The webmaster has been notified; please try again later";
+                        alert(msg);
+                        var ajaxerr = "Trying to access areas.json;\nError text: " +
+                            _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                            _jqXHR.responseText;
+                        var errobj = { err: ajaxerr };
+                        $.post('../php/ajaxError.php', errobj);
+                    }
                     return false;
                 }
             });

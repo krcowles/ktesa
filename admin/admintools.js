@@ -21,7 +21,7 @@ $(function () {
     /**
      * Site Modes
      */
-    var current_state = $('#currstate').text();
+    var current_state = $('#currstate').text(); // appMode
     $('#switchstate').on('click', function () {
         window.open('changeSiteMode.php?mode=' + current_state);
         window.close(); // window must have been opened via javascript: see panelMenu.ts/js
@@ -58,10 +58,15 @@ $(function () {
                         alert("Test site successfully uploaded via ftp");
                     }
                 },
-                error: function (jqXHR) {
-                    var newDoc = document.open();
-                    newDoc.write(jqXHR.responseText);
-                    newDoc.close();
+                error: function (_jqXHR) {
+                    if (current_state === 'development') {
+                        var newDoc = document.open();
+                        newDoc.write(_jqXHR.responseText);
+                        newDoc.close();
+                    }
+                    else { // production
+                        alert(_jqXHR.responseText);
+                    }
                 }
             });
         }
@@ -136,11 +141,16 @@ $(function () {
                 stage1.resolve();
                 return;
             },
-            error: function (jqXHR) {
+            error: function (_jqXHR) {
                 stage1.reject();
-                var newDoc = document.open();
-                newDoc.write(jqXHR.responseText);
-                newDoc.close();
+                if (current_state === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    alert(_jqXHR.responseText);
+                }
             }
         });
         /**
@@ -177,10 +187,15 @@ $(function () {
                         $('#loading').hide();
                         alert(result);
                     },
-                    error: function (jqXHR) {
-                        var newDoc = document.open();
-                        newDoc.write(jqXHR.responseText);
-                        newDoc.close();
+                    error: function (_jqXHR) {
+                        if (current_state === 'development') {
+                            var newDoc = document.open();
+                            newDoc.write(_jqXHR.responseText);
+                            newDoc.close();
+                        }
+                        else { // production
+                            alert(_jqXHR.responseText);
+                        }
                     }
                 });
             }
@@ -288,11 +303,16 @@ $(function () {
                 }
                 deferred.resolve();
             },
-            error: function (jqXHR) {
+            error: function (_jqXHR) {
                 deferred.reject();
-                var newDoc = document.open();
-                newDoc.write(jqXHR.responseText);
-                newDoc.close();
+                if (current_state === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    alert(_jqXHR.responseText);
+                }
             }
         });
         return;
@@ -431,11 +451,16 @@ $(function () {
                     });
                 }
             },
-            error: function (jqXHR) {
+            error: function (_jqXHR) {
                 deferred.reject();
-                var newDoc = document.open();
-                newDoc.write(jqXHR.responseText);
-                newDoc.close();
+                if (current_state === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    alert(_jqXHR.responseText);
+                }
             }
         });
         return;
@@ -563,10 +588,15 @@ $(function () {
             success: function (resp) {
                 $('#emode').text(resp);
             },
-            error: function (jqXHR) {
-                var newDoc = document.open();
-                newDoc.write(jqXHR.responseText);
-                newDoc.close();
+            error: function (_jqXHR) {
+                if (current_state === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    alert(_jqXHR.responseText);
+                }
             }
         });
     });
@@ -579,11 +609,15 @@ $(function () {
                 alert("The current commit number\nassociated" +
                     " with this site is:\n\n\t" + resp);
             },
-            error: function (_jqXHR, textStatus, errorThrown) {
-                var msg = "Ajax call in admintools.js line 105 has failed " +
-                    "with error code: " + errorThrown + "\nSystem error message: "
-                    + textStatus;
-                alert(msg);
+            error: function (_jqXHR) {
+                if (current_state === 'development') {
+                    var newDoc = document.open();
+                    newDoc.write(_jqXHR.responseText);
+                    newDoc.close();
+                }
+                else { // production
+                    alert(_jqXHR.responseText);
+                }
             }
         });
     });

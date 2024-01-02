@@ -78,6 +78,7 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 <?php require "ktesaPanel.php"; ?>
 <p id="trail">Your Favorite Hikes</p>
 <p id="active" style="display:none;">Favorites</p>
+<p id="appMode" style="display:none;"><?=$appMode;?></p>
 
 <p id="geoSetting">ON</p>
 <img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />

@@ -17,6 +17,7 @@ declare function tableSort(tableid: string): void;
  * @version 2.2 Replaced local sort with new columnSort.ts/js script
  * @version 3.0 Added searchbar to scroll to a hike in 'Edit Published'
  */
+var appMode = $('#appMode').text() as string;
 if (include_search === 'EditPub') {
 	$('#search').autocomplete({
 		source: hikeSources,
@@ -153,15 +154,22 @@ $rows.each(function() {
 						alert("An email has been sent to the admin");
 					} // no other results available in script
 				},
-				error: function (jqXHR) {
+				error: function (_jqXHR, _textStatus, _errorThrown) {
 					if (appMode === 'development') {
-						let newDoc = document.open();
-						newDoc.write(jqXHR.responseText);
+						var newDoc = document.open();
+						newDoc.write(_jqXHR.responseText);
 						newDoc.close();
-					} else {
-						let msg = "Problem encountered sending admin mail\n" +
-							"The admin has been notified.";
+					}
+					else { // production
+						var msg = "An error has occurred: " +
+							"We apologize for any inconvenience\n" +
+							"The webmaster has been notified; please try again later";
 						alert(msg);
+						var ajaxerr = "Trying to access notifyAdmin.php;\nError text: " +
+							_textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+							_jqXHR.responseText;
+						var errobj = { err: ajaxerr };
+						$.post('../php/ajaxError.php', errobj);
 					}
 				}
 			});

@@ -46,3 +46,30 @@ input {
 form {
     font-size: 18px;
 }
+/* References styles */
+select:not(#area), input:not(.coords) {
+    font-size: 14px;
+    padding-left: 4px;
+}
+
+.refs {  
+    background-color: $entryInactive;
+}
+span[id^=nbk] {
+    display: none;
+}
+select[id^=sel], select[id^=href] {
+    height: 30px;
+    width: 164px;
+}
+select[id^=bk], input[id^=url], input[id^=nr1] {
+    height: 30px;
+    width: 386px; 
+    background-color: $entryInactive;
+}
+input[id^=auth], input[id^=txt], input[id^=bkauth], input[id^=nr2] {
+    height: 30px;
+    width: 280px;
+    padding-left: 4px;
+    margin-bottom: 6px;
+}

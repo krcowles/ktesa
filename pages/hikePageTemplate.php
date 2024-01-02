@@ -159,7 +159,7 @@ if (mobile) {
 <div id="hikeInfo"><?= $hikeInfo;?></div></div>
 
 <?=$bop;?>
-
+<div id="bigpic">Click on any photo for an enlarged view</div>
 <div id="imgArea"></div>
 <br />
 <p id="ptype" style="display:none">Hike</p>

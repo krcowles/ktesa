@@ -31,6 +31,7 @@ const entitymap = ['Agrave','Aacute','Acirc','Atilde','Auml','Aring','Ccedil',
     'ocirc','otilde','ouml','ugrave','uacute','ucirc','uuml'];
 const not_allowed = "Unacceptable character in the name supplied\n" +
     "The string will be truncated at that point";
+var appMode = $('#appMode').text() as string;
 // load lists of 'pgTitle's & 'clusters' for data validation 
 var titleList: string[];
 /**
@@ -93,10 +94,23 @@ $.ajax({
     success: function(titles) {
         titleList = titles;
     },
-    error: function(jqXHR) {
-        var newDoc = document.open();
-		newDoc.write(jqXHR.responseText);
-		newDoc.close();
+    error: function(_jqXHR, _textStatus, _errorThrown) {
+        if (appMode === 'development') {
+            var newDoc = document.open();
+            newDoc.write(_jqXHR.responseText);
+            newDoc.close();
+        }
+        else { // production
+            var msg = "An error has occurred: " +
+                "We apologize for any inconvenience\n" +
+                "The webmaster has been notified; please try again later";
+            alert(msg);
+            var ajaxerr = "Trying to access getTitles.php;\nError text: " +
+                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                _jqXHR.responseText;
+            var errobj = { err: ajaxerr };
+            $.post('../php/ajaxError.php', errobj);
+        }
     }
 });
 /**
@@ -112,10 +126,23 @@ const getClusters = (def: JQueryDeferred<void>) => {
             groups = data;
             def.resolve();
         },
-        error: function(jqXHR) {
-            var newDoc = document.open();
-            newDoc.write(jqXHR.responseText);
-            newDoc.close();
+        error: function(_jqXHR, _textStatus, _errorThrown) {
+            if (appMode === 'development') {
+                var newDoc = document.open();
+                newDoc.write(_jqXHR.responseText);
+                newDoc.close();
+            }
+            else { // production
+                var msg = "An error has occurred: " +
+                    "We apologize for any inconvenience\n" +
+                    "The webmaster has been notified; please try again later";
+                alert(msg);
+                var ajaxerr = "Trying to access getGroups.php;\nError text: " +
+                    _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                    _jqXHR.responseText;
+                var errobj = { err: ajaxerr };
+                $.post('../php/ajaxError.php', errobj);
+            }
         }
     });
     return;

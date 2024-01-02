@@ -83,6 +83,7 @@ function compareObj(a: NM, b: NM) {
  * The html 'wrapper' for each item included in the side table
  */
 const subsize = 10;
+var appMode = $('#appMode').text() as string;
 var indexer: number;
 var done = false;
 var tblItemHtml: string;
@@ -153,7 +154,7 @@ function formTbl(indxArray: NM[]) {
             }
         },
         500
-    );
+    ) as NodeJS.Timeout | undefined;
     return;
 }
 
@@ -247,13 +248,23 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                                 "in order to save Favorites");
                         }
                     },
-                    error: function() {
-                        let msg = "A server error occurred\nYou will not be able " +
-                        "to save Favorites at this time:\nThe admin has been " +
-                        "notified";
-                        alert(msg);
-                        let ajxerr = {err: "Mark favorites php error: save"};
-                        $.post('../php/ajaxError.php', ajxerr);
+                    error: function(_jqXHR, _textStatus, _errorThrown) {
+                        if (appMode === 'development') {
+                            var newDoc = document.open();
+                            newDoc.write(_jqXHR.responseText);
+                            newDoc.close();
+                        }
+                        else { // production
+                            let msg = "A server error occurred\nYou will not be able " +
+                                "to save Favorites at this time:\nThe admin has been " +
+                                "notified";
+                            alert(msg);
+                            var ajaxerr = "Trying to access markFavorites.php: add;\nError text: " +
+                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                                _jqXHR.responseText;
+                            var errobj = { err: ajaxerr };
+                            $.post('../php/ajaxError.php', errobj);
+                        }
                     }
                 });
             } else { // currently a favorite
@@ -273,13 +284,23 @@ function enableFavorites(items: JQuery<HTMLElement>[]) {
                                 "in order to save Favorites");
                         }
                     },
-                    error: function() {
-                        let msg = "A server error occurred\nYou will not be able " +
-                            "to unsave Favorites at this time:\nThe admin has been " +
-                            "notified";
-                        alert(msg);
-                        let ajxerr = {err: "Mark favorites php error: unsave"};
-                        $.post('../php/ajaxError.php', ajxerr);
+                    error: function(_jqXHR, _textStatus, _errorThrown) {
+                        if (appMode === 'development') {
+                            var newDoc = document.open();
+                            newDoc.write(_jqXHR.responseText);
+                            newDoc.close();
+                        }
+                        else { // production
+                            let msg = "A server error occurred\nYou will not be able " +
+                                "to unsave Favorites at this time:\nThe admin has been " +
+                                "notified";
+                            alert(msg);
+                            var ajaxerr = "Trying to access markFavorites.php: delete;\nError text: " +
+                                _textStatus + "; Error: " + _errorThrown + ";\njqXHR: " +
+                                _jqXHR.responseText;
+                            var errobj = { err: ajaxerr };
+                            $.post('../php/ajaxError.php', errobj);
+                        }
                     }
                 });
             }
