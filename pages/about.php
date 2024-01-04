@@ -202,7 +202,7 @@ require "../php/global_boot.php";
                 display by clicking on their respective checkboxes in the 'track
                 box' area, located in the upper right corner of the map. The topmost
                 track checked will have its data reflected in the sidebar
-                statistics, and will alos be the track displayed in the elevation
+                statistics, and will also be the track displayed in the elevation
                 chart.
             </li>
             <li>If there were photos included that had GPS metadata, they are
