@@ -2,7 +2,9 @@
 /**
  * This page displays a map showing only the user's favorites with markers 
  * on the map for each favorite. A message is displayed when there are no
- * favorites saved by the user.
+ * favorites saved by the user. The user may also specify a subset of favorites
+ * via a modal window. A subset may be useful when favorites are far apart and
+ * the resulting map covers a large area with dispersed small hike tracks.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -11,12 +13,18 @@
  */
 session_start();
 require "../php/global_boot.php";
-$userid = $_SESSION['userid'];
+$userid  = $_SESSION['userid'];
 
 $favreq = "SELECT `hikeNo` FROM `FAVORITES` WHERE `userid` = :uid;";
 $usrfavs = $pdo->prepare($favreq);
 $usrfavs->execute(["uid" => $userid]);
 $favarray = $usrfavs->fetchAll(PDO::FETCH_COLUMN);
+$modal_hikes = isset($_GET['modal_hikes']) ? $_GET['modal_hikes'] : false;
+$favmode = $modal_hikes ? 'yes' : 'no';
+if ($favmode === 'yes') {
+    $favarray = $modal_hikes;
+}
+
 /**
  * >>> NOTE: This page does not call mapJsData.php but rather creates data below. <<<
  * Get hike data for each favorite (this should be a rather small list!);
@@ -77,8 +85,9 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php"; ?>
 <p id="trail">Your Favorite Hikes</p>
-<p id="active" style="display:none;">Favorites</p>
+<p id="active"  style="display:none;">Favorites</p>
 <p id="appMode" style="display:none;"><?=$appMode;?></p>
+<p id="favmode" style="display:none;"><?=$favmode;?></p>
 
 <p id="geoSetting">ON</p>
 <img id="geoCtrl" src="../images/geoloc.png" alt="Geolocation symbol" />
@@ -88,6 +97,32 @@ $jsTracks = '[' . implode(",", $tracks)   . ']';
 <div id="adjustWidth" class="custom"></div>
 
 <div id="sideTable"></div>
+
+<!-- 'Limit Hikes Shown' Modal -->
+<div id="favlimit" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Limit Hikes Shown</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Limit the hikes shown on this page by checking the corresponding
+                    boxes:</p>
+                <ul id="show_only">
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button id="show_limited" type="button" class="btn btn-success">
+                    Display selected hikes
+                </button>
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     var NM = <?=$jsHikes;?>;
