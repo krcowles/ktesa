@@ -1,0 +1,17 @@
+This code creates the "New Mexico Hikes" website, and includes the .sql file of the current data base. Some settings (e.g. Database credentials, Google API_Key, RSA keys) exist outside the project and are not held in git.
+- A home page includes a New Mexico (Google) Map with markerclusterers showing the total number of hikes in an area. Also a sortable/filterable side panel lists all hikes in the current viewing area. Each hike lists stats, has a 'Zoom to' icon and a 'Favorites' icon [only available to members];
+- A user may become a (free) member, enabling the ability to add new hike pages or edit existing ones;
+- A Bootstrap navigation bar allows users to visit other pages and/or login/logout, become a member, change password or security questions, edit a GPX file, download the Privacy Policy, accept/reject cookies, or show the 10 most recent hikes added; Main pages:
+    - About the site;
+    - Table of hikes with sorting/filtering, english/metric conversion, and the ability to show user-selected hikes on a separate page;
+    - [Members Only] A separate map page showing only 'Favorites'
+    - [Admin Only] Admin tools
+- Each hike has its own page with several components:
+    - A map is presented with multiple overlay possibilities. It also include a 'Track Box' listing all GPX tracks uploaded by the user. Each can be selected for display by the user; the default is to show only the top track listed. A geolocation icon is provided.
+    - A map displays the hike track with direction flow. It includes photo markers which display photos taken at the corresponding point - these will  reveal a thumbnail when moused over, or a larger image when clicked. The larger image can be clicked for a larger image on a separate page. Other markers are sometimes provided to highlight certain features or turn-offs.
+    - There is a panel on the left side of the map with hike statistics and some notes, with options to view the map as a full page, download the track file, or view the Google directions to the trail head. The panel may be collapsed to enlarge the map
+    - Below the map is an elevation chart which identifies the corresponding point on the track when moused over.
+    - Hike information and/or hike tips are listed below the elevation chart.
+    - A box of 'Related Information' below the information field lists books or on-line references relating to the hike, related hikes in the area, and possibly alternate maps or tracks of interest
+    - Below the Related Information field are any photos selected to illustrate the hike (may or may not include those on the map). Each photo displays a caption with date/time taken when moused over. Any photo can be clicked to show a larger image on a separate page.
+- [Admins Only] A special page exists to administer the site, protected by .htaccess authorization.
