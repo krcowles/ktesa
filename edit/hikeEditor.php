@@ -69,7 +69,7 @@ $jsInEdit = json_encode($nowInEdit);
 </head>
 
 <body>
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Select A Hike To <?=$navbar;?></p>

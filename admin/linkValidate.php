@@ -25,7 +25,7 @@ $default_size = 50;
     <script src="../scripts/jquery.js"></script>
 <body>
 
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Hike Page Link Check</p>

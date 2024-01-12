@@ -59,7 +59,7 @@ if ($form === 'reg') {
 </head>
 
 <body>
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <!-- only the logo is presented on this page, no navbar -->
 <div id="logo">

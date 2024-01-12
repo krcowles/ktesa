@@ -182,7 +182,7 @@ foreach ($dbeJSON as $dbejson) {
     <link href="../styles/cleanGpxJson.css" rel="stylesheet" />
     <script src="../scripts/jquery.js"></script>
 <body>
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
 <p id="trail">Gpx & JSON File Cleanup</p>
