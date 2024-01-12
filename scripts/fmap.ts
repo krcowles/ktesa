@@ -13,6 +13,7 @@ declare function formTbl(hikeobjs: NM[]): void;
  * @version  2.0 Typescripted, some type errors corrected
  * @version  3.0 Updated for compatibility with side table that shows previews
  * @version  3.1 Changed <a> links to open new tab
+ * @version  3.2 Added link to page on track hover
  */
 var map: google.maps.Map;
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00']
@@ -202,7 +203,8 @@ for (let i=0; i<tracks.length; i++) {
 	trackdat[i] = '';
 }
 NM.forEach(function(hobj, indx) {
-	trackdat[indx] = '<div id="iwNH">' + hobj.name + '<br />Length: ' +
+	trackdat[indx] = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx=' + 
+		hobj.indx + '" target="_blank">' + hobj.name + '</a><br />Length: ' +
 		hobj.lgth + ' miles<br />Elev Chg: ' + hobj.elev +
 		'<br />Difficulty: ' + hobj.diff + '</div>';
 });

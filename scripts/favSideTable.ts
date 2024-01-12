@@ -14,7 +14,63 @@ declare function locateGeoSym(): void;
  * @version 1.0 Simplify and fix the display of the Favorites page after having modified
  * sideTables.ts/js to add thumbnail images;
  * @version 1.1 Change <a> links to open new tab
+ * @version 2.0 Allow user to select which favorites are displayed on the page (some may
+ * be far apart, making it difficult to view the desired hikes)
  */
+
+var subset_modal = new bootstrap.Modal(<HTMLElement>document.getElementById('favlimit'), {
+    keyboard: false
+});
+$('body').on('click', '#show_limited', function() {
+    var keepAll = false;
+    var items = $('input.mod_chk');
+    if ($(items[0]).prop("checked")) {
+        keepAll = true;
+    }
+    var showHikes = [] as string[];
+    items.each(function(indx, hike) {
+        if (keepAll && indx !== 0) {
+            showHikes.push(hike.id);
+        } else if (!keepAll) {
+            if ($(hike).prop("checked")) {
+                showHikes.push(hike.id);
+            }
+        }
+    });
+    if (showHikes.length === 0) {
+        alert("You have not checked any boxes...");
+        return false;
+    } else {
+        var qstring: string[] = [];
+        var query: string;
+        showHikes.forEach(function(hike) {
+            qstring.push("modal_hikes[]=" + hike);
+        });
+        if (qstring.length > 1) {
+            query = qstring.join("&");
+        } else {
+            query = qstring[0];
+        }
+        var redo = "../pages/favTable.php?" + query;
+        window.open(redo, "_self");
+    }
+
+});
+if (NM.length > 1 && $('#favmode').text() === 'no') {  // modal not previously displayed
+    // create list
+    var modalHikes = '<li><input id="0" class="mod_chk" type="checkbox" />&nbsp;&nbsp;' +
+        'Keep All Hikes</li>';
+    NM.forEach(function(hikeobj) {
+        modalHikes += '<li><input id="' + hikeobj.indx + '" type="checkbox" class="mod_chk"' + 
+            '<scan>&nbsp;&nbsp;' + hikeobj.name + '</scan></li>';
+    });
+    $('#show_only').append(modalHikes);
+    subset_modal.show();
+}
+
+
+
+
 /**
  * This function [coupled with infoWin()] 'clicks' the infoWin
  * for the corresponding hike
@@ -154,7 +210,7 @@ function formTbl(indxArray: NM[]) {
             }
         },
         500
-    ) as NodeJS.Timeout | undefined;
+    ) as any;
     return;
 }
 

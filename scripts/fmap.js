@@ -183,7 +183,8 @@ for (var i = 0; i < tracks.length; i++) {
     trackdat[i] = '';
 }
 NM.forEach(function (hobj, indx) {
-    trackdat[indx] = '<div id="iwNH">' + hobj.name + '<br />Length: ' +
+    trackdat[indx] = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx=' +
+        hobj.indx + '" target="_blank">' + hobj.name + '</a><br />Length: ' +
         hobj.lgth + ' miles<br />Elev Chg: ' + hobj.elev +
         '<br />Difficulty: ' + hobj.diff + '</div>';
 });
