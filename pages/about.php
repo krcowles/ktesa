@@ -27,7 +27,7 @@ require "../php/global_boot.php";
     <script src="../scripts/jquery.js"></script>
 </head>
 <body>
-<script src="https://unpkg.com/@popperjs/core@2.4/dist/umd/popper.min.js"></script>
+<script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "ktesaPanel.php"; ?>
 <p id="active" style="display:none">About</p>
