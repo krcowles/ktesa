@@ -49,8 +49,32 @@ $fac      = $hike['fac'];
 $wow      = $hike['wow'];
 $seasons  = $hike['seasons'];
 $expo     = $hike['expo'];
-$curr_gpx = $hike['gpx'];  // can contain more than one filename, comma-separated
-$curr_trk = $hike['trk'];
+if (empty($hike['gpx'])) {
+    $gpx_arr = ['main'=>[], 'add1'=>[], 'add2'=>[], 'add3'=>[]];
+} else {
+    // decoded data is of type stdClass - deep convert to standard php arrays
+    $stdClass = json_decode($hike['gpx'], true);
+    $gpx_arr = [];
+    foreach ($stdClass as $item => $value) {
+        $gpx_arr[$item] = $value;
+    }
+}
+// assign gpx data if present
+$curr_gpx  = empty($gpx_arr['main']) ? '' : array_keys($gpx_arr['main'])[0];
+$additional_files = [];
+$add1 = $gpx_arr['add1'];
+$add2 = $gpx_arr['add2'];
+$add3 = $gpx_arr['add3'];
+if (!empty($add1)) {
+    array_push($additional_files, array_keys($add1)[0]);
+}
+if (!empty($add2)) {
+    array_push($additional_files, array_keys($add2)[0]);
+}
+if (!empty($add3)) {
+    array_push($additional_files, array_keys($add3)[0]);
+}
+// remaining tab1 fields:
 $lat      = !empty($hike['lat']) ? $hike['lat']/LOC_SCALE : '';
 $lng      = !empty($hike['lng']) ? $hike['lng']/LOC_SCALE : '';
 $preview_name = $hike['preview'];
@@ -69,23 +93,12 @@ foreach ($nonpubs as $unpub) {
 }
 $newgrps = '[' . implode(",", $jsData) . ']';
 
-// separate gpx files if multiple
-$additional_files = [];
 $adders = '<ul id="addlist" style="margin-top:4px;">' . PHP_EOL;
-$all_files = explode(",", $curr_gpx);
-$curr_gpx = $all_files[0];
-if (count($all_files) > 1) {
-    for ($j=1; $j<count($all_files); $j++) {
-        $extra = trim($all_files[$j]);
-        array_push($additional_files, $extra); 
-    }
-}
 for ($k=0; $k<count($additional_files); $k++) {
-    $fileno = $k +1;
     $adders .= '<li><em>' . $additional_files[$k] . '</em>&nbsp;&nbsp;<span ' .
         'class="brown"> Do not include this file:&nbsp;&nbsp;' .
-        '<input type="checkbox" name="deladd[]" value="' . $fileno .'" />' .
-        '</span></li>' . PHP_EOL;
+        '<input type="checkbox" name="deladd[]" value="' . $additional_files[$k] .
+        '" />' . '</span></li>' . PHP_EOL;
 }
 $adders .= '</ul>' . PHP_EOL;
 
@@ -125,23 +138,43 @@ $info    = $hike['info'];
 /**
  * Tab 4: [GPS data] Note: tab4display.php calls references from EREFS
  */
-$gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = :hikeno " .
-    "AND (datType = 'P' OR datType = 'A');";
+$gpsreq = "SELECT * FROM EGPSDAT WHERE indxNo = :hikeno;";
 $gpsq = $pdo->prepare($gpsreq);
 $gpsq->execute(["hikeno" => $hikeNo]);
 $gpsDbCnt = $gpsq->rowCount(); // needed for tab4display.php
-$label = [];
-$url = [];
+$gps_label = [];
+$url       = [];
 $clickText = [];
-$datId = [];
+$datId     = [];
+$del_str   = [];
+$user_file = [];
 for ($j=0; $j<$gpsDbCnt; $j++) {
     $gpsdat = $gpsq->fetch(PDO::FETCH_ASSOC);
-    $datId[$j] = $gpsdat['datId'];
-    $url[$j] = $gpsdat['url'];
+    $datId[$j]     = $gpsdat['datId'];
+    $gps_label[$j] = $gpsdat['label'];
+    $url[$j]       = $gpsdat['url'];
     $clickText[$j] = $gpsdat['clickText'];
-    if ($gpsdat['label'] !== 'GPX:') {
-        $fname[$j] = substr($url[$j], 8);
-    } else {
-        $fname[$j] = substr($url[$j], 7);
+    if ($gps_label[$j] === 'GPX:') {
+        $stdClassGpx = json_decode($url[$j], true);
+        // Convert stdClass to array: 
+        $gpxFiles = [];
+        foreach ($stdClassGpx as $item => $value) {
+            $gpxFiles[$item] = $value;
+        }
+        $fname[$j]= array_keys($gpxFiles)[0];
+        $gps_json = array_values($gpxFiles)[0];
+        $json_str = implode(",", $gps_json);
+        $del_str[$j] = $json_str;
+        $user_file[$j] = $fname[$j];
+    } else { // kml or map (html/pdf)
+        $fname[$j] = $url[$j];
+        $del_str[$j] = $fname[$j];
+        $ext = pathinfo($fname[$j], PATHINFO_EXTENSION);
+        $start_pos = strpos($fname[$j], 'maps') !== false ? 8 : 7;
+        $barefile = substr($fname[$j], $start_pos);
+        $user_length = strpos($barefile, "-");
+        // NOTE: assumes user filename has no embedded hyphen; case not addressed
+        $user_file[$j] = substr($barefile, 0, $user_length) . "." . $ext;
     }
+      
 }

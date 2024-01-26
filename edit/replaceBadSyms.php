@@ -14,14 +14,13 @@ $wayptname = filter_input(INPUT_POST, 'wptname');
 $unsupptd  = filter_input(INPUT_POST, 'symfault');
 $replacer  = filter_input(INPUT_POST, 'replacer');
 
-$tmpFile = $file_name . ".gpx";
-$wptFile = simplexml_load_file($tmpFile);
+$wptFile = simplexml_load_file($file_name);
 foreach ($wptFile->wpt as $wpt) {
     $tag = $wpt->name->__toString();
     $sym = $wpt->sym->__toString();
     if ($tag === $wayptname && $sym === $unsupptd) {
         $wpt->sym = $replacer;
-        $wptFile->asXML($tmpFile);
+        $wptFile->asXML($file_name);
         break;
     }
 }

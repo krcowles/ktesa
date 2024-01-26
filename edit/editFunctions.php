@@ -47,11 +47,14 @@ function checkForEmptyArray($array)
 }
 /**
  * For each file upload, an array is established to capture data pertinent to
- * the upload process. The array is created to facilitate the potential interrupt
- * of the save process (see saveTab1.php), as when a 'save' script is exited, the
- * server $_FILES global data is lost. The array captures the temporary server 
- * data and stores the server's file upload to the local 'edit' directory. Note
- * that the saved file may have an 'disallowed' file extension.
+ * the upload process. The array captures the temporary server data and stores
+ * that data to the local 'edit' directory. Locally stored files are temporary
+ * and will be deleted when processing is complete.
+ * NOTE: When saving tab1, clicking 'Apply' will potentially upload 4 different
+ * files; hence 'ureq' indicates whether or not a file upload was specified for
+ * the given file type (e.g main, or 1 of 3 additional gpx files); When saving
+ * tab4, two possible file uploads are possible - 'ureq' again specifies if a
+ * file upload was specified.
  * 
  * @param string $input_file_name Input file name attribute
  * 
@@ -61,38 +64,39 @@ function prepareUpload($input_file_name)
 {
     $user_file = $_FILES[$input_file_name]['name'];
     $requested = empty($user_file) ? false : true;
+    $error_stat = $requested ? 
+        $_FILES[$input_file_name]['error'] : UPLOAD_ERR_NO_FILE;
+    $extension = $requested ?
+        strToLower(pathinfo($user_file, PATHINFO_EXTENSION)) : '';
     $upload_data = array(
-        'areq' => $requested,
+        'ureq' => $requested,
         'ifn'  => $input_file_name,
-        'err'  => 0,
+        'err'  => $error_stat,
         'ufn'  => $requested ? $user_file : '',
-        'ext'  => $requested ?
-            strToLower(pathinfo($user_file, PATHINFO_EXTENSION)) : '',
+        'ext'  => $extension,
         'type' => '',
-        'apos' => 0
+        'apos' => 0 // default index into user_alerts[]
     );
-    $upload_data['err'] = $_FILES[$input_file_name]['error'];
-    if ($upload_data['err'] === UPLOAD_ERR_OK) {
+    if (strpos($input_file_name, "addgpx") !== false) {
+        $upload_data['apos'] = intval(substr($input_file_name, -1));
+    } elseif ($upload_data['ifn'] === 'newmap') {
+            $upload_data['apos'] = 1;
+    }
+    if ($requested && $upload_data['err'] === UPLOAD_ERR_OK ) {
         $upload_data['type'] = $_FILES[$input_file_name]['type'];
         $tmploc = $input_file_name . "." . $upload_data['ext'];
         move_uploaded_file($_FILES[$input_file_name]['tmp_name'], $tmploc);
-        if (strpos($input_file_name, "addgpx") !== false) {
-            $upload_data['apos'] = intval(substr($input_file_name, -1));
-        } else {
-            if ($upload_data['ifn'] === 'newmap') {
-                $upload_data['apos'] = 1;
-            }
-        }
     }
     return $upload_data;
 }
 /**
- * Validate and potentially save an upload file. No validation occurs for
- * an .html or .kml file at this time, beyond verifying the file extension. 
- * When $save is false, the $tmpfile is not removed; when true, the $tmpfile
- * is either renamed or deleted.
+ * Validate and potentially save an upload file. For gpx files, this means
+ * json tracks will need to be created by the caller. No validation occurs
+ * for .html or .kml files at this time, beyond verifying the file extension.
+ * These are saved, other file types are not. 
  * 
  * @param array   $upload An array of the file upload characteristics
+ *                        created by 'prepareUpload()'
  * @param boolean $elev   Test for elevation data if true
  * @param boolean $syms   Test for unsupported symbols if true
  * 
@@ -109,15 +113,12 @@ function uploadFile($upload, $elev=false, $syms=false)
         return 'none';
     }
     $tmpfile = $upload['ifn'] . '.' . $upload['ext'];
-    $save = true;
     $allowed = ['gpx'];
     if ($upload['ifn'] === 'newmap') {
         $allowed = ['html', 'pdf'];
     } elseif ($upload['ifn'] === 'newgps') {
         $allowed = ['gpx', 'kml'];
-    } elseif ($upload['ifn'] === 'gpx2edit' || $upload['ifn'] === 'file2edit') {
-        $save = false;
-    }
+    } 
     if (!in_array($upload['ext'], $allowed)) {
         // remove $tmpfile w/disallowed file extension
         unlink($tmpfile);
@@ -146,7 +147,7 @@ function uploadFile($upload, $elev=false, $syms=false)
         unlink($tmpfile);
         return 'none';
     }
-    // also, if a gpx and symfault detected, no upload
+    // also, if a gpx file and symfault detected, no upload
     if ($syms && isset($_SESSION['symfault']) && $file_type === 'gpx'
         && strpos($_SESSION['symfault'], $upload['ifn']) !== false
     ) {
@@ -154,64 +155,69 @@ function uploadFile($upload, $elev=false, $syms=false)
         return 'none';
     }
     if ($file_type === 'html' || $file_type === 'pdf') {
-        $saveloc = $valid; // path to saved html file; $tmpfile renamed
+        $saveloc = $valid; // path to saved html/pdf file; $tmpfile renamed
     } elseif ($file_type === 'gpx' || $file_type === 'kml') {
+        // gpx could be from tab1 or tab4
         $file_ext = $file_type === 'gpx' ? '.gpx' : '.kml';
-        $barefile = pathinfo($upload['ufn'], PATHINFO_FILENAME);
-        $user_ip = getIpAddress();
-        $unique_file_name = $barefile . "-" . $user_ip . "-" . time() . $file_ext;
-        $saveloc = "../gpx/" . $unique_file_name;
-        if ($save) {
+        if ($file_type === 'kml') {
+            $barefile = pathinfo($upload['ufn'], PATHINFO_FILENAME);
+            $user_ip = getIpAddress();
+            $unique_file_name = $barefile . "-" . $user_ip . "-" .
+                time() . $file_ext;
+            $saveloc = "../kml/" . $unique_file_name;
             if (!rename($tmpfile, $saveloc)) {
                 throw new Exception("Could not rename {$tmpfile}");
-            } else if (isset($_SESSION['uplmsg'])) {
-                $_SESSION['uplmsg'] .= "Your file [{$upload['ufn']}] was saved as " .
-                    $unique_file_name . "; ";
-            } else if (isset($_SESSION['gpsmsg'])) {
-                $_SESSION['gpsmsg'] .= "Your file [{$upload['ufn']}] was saved as " .
-                    $unique_file_name . "; ";
-            }
+            } 
         } else {
-            // return the upload location without renaming $tmpfile
+            // gpx returns only $tmpfile, no path
             $saveloc = $tmpfile;
         }
+    } 
+    /**
+     * Tab1 only uploads gpx files, 'uplmsg' is set
+     * Tab4 allows gpx, html, or pdf files, 'gpsmsg' is set
+     */
+    if (isset($_SESSION['uplmsg'])) {
+        $_SESSION['uplmsg'] .= "Your file [{$upload['ufn']}] was saved; ";
+    } else if (isset($_SESSION['gpsmsg'])) {
+        $_SESSION['gpsmsg'] .= "Your file [{$upload['ufn']}] was saved; ";
     }
     return $saveloc;
 }
 /**
- * This function is invoked when an upload is interrupted and then continued again.
- * Presumably, all issues are fixed and the file may be safely stored on the server.
- * The file is actually retrieved from the edit directory, and has been saved under
- * the input file name attribute plus ".gpx". This is due to the fact that once the
- * form's save page ('action=') is exited to correct a fault, the
- * $_FILES[$name]['tmp_name'] data is lost. At this time only the 'unsupported 
- * symbol' issue can be resolved by the user without offline editing.
+ * Any completed gpx file upload will require 'processing', which means that
+ * the corresponding json track files must be created and stored, and 
  * 
- * @param string $input_file The temporaray location the 'repaired' file in edit/
- * @param string $user_name  The user's uploaded file name
+ * @param PDO    $pdo    Database connection object
+ * @param array  $upload The array holding the pre-processed upload info for 
+ *                       the <input> specified
+ * @param array  $ifiles The list of input files preprocessed
+ * @param array  $jfiles The list of corresponding $org_names file types
+ * @param string $hikeNo The EHIKES indxNo
  * 
- * @return string
+ * @return array $new_orgdat The associative array to replace current entry
+ *                           in $org_names
  */
-function resumeUploadGpx($input_file, $user_name)
+function processGpx($pdo, $upload, $ifiles, $jfiles, $hikeNo)
 {
-    $tmpfile = $input_file . '.gpx';
-    $user_base = pathinfo($user_name, PATHINFO_FILENAME);
-    $user_ip = getIpAddress();
-    $unique_file_name = $user_base . "-" . $user_ip . "-" . time() . ".gpx";
-    $saveloc = "../gpx/" . $unique_file_name;
-    // reset symfault for this input_file...
-    resetSymfault($input_file);
-    if (rename($tmpfile, $saveloc) === false) {
-        throw new Exception("Could not move {$tmpfile} to gpx directory; ");
+    $indx = array_search($upload['ifn'], $ifiles);
+    $org_key = $jfiles[$indx];
+    $tmpfile = $upload['ifn'] . ".gpx";
+    $new_orgdat = makeTrackFiles(
+        $pdo, $org_key, $upload['ufn'], $tmpfile, $hikeNo
+    );
+    if ($org_key === 'main') {
+        $calcs = getGpxFileStats($tmpfile);
+        $newstatsReq
+            = "UPDATE `EHIKES` SET `miles`=?,`feet`=? WHERE " .
+              "`indxNo`=?;";
+        $newstats = $pdo->prepare($newstatsReq);
+        $newstats->execute([$calcs[0], $calcs[1], $hikeNo]);
     }
-    if (isset($_SESSION['uplmsg'])) {
-        $_SESSION['uplmsg'].= "Your file [{$user_name}] was saved as " .
-            $unique_file_name . "; ";
-    } elseif (isset($_SESSION['gpsmsg'])) {
-        $_SESSION['gpsmsg'].= "Your file [{$user_name}] was saved as " .
-            $unique_file_name . "; ";
+    if (!unlink($tmpfile)) {
+        new Exception("Failed to delete temporary gpx {$tmpfile}");
     }
-    return $unique_file_name;
+    return [$org_key, $new_orgdat];
 }
 /**
  * Find the symfault(s) corresponding to the specified input file. This function
@@ -290,8 +296,6 @@ function uploadHTML($filetype, $basefname, $server_loc)
         $nomove = "Could not save {$basefname} to site: contact Site Master";
         throw new Exception($nomove);
     }
-    $_SESSION['gpsmsg'].= "Your file [{$basefname}] was saved as " .
-        $unique_file_name . "; ";
     return $saveloc;
 }
 /**
@@ -388,8 +392,9 @@ function validateGpx($input, $alert_pos, $filename, $etest, $symtest)
             $_SESSION['symfault'] = '';
         }
         // look for unsupported waypoint symbols in the file
-        include "gpxWaypointSymbols.php";
+        include "gpxWaypointSymbols.php"; // holds $supported_syms
         $gpxsyms = array_keys($supported_syms);
+
         $wpts = $dom->getElementsByTagName('wpt');
         $sym_string = '';
         foreach ($wpts as $item) {
@@ -408,8 +413,8 @@ function validateGpx($input, $alert_pos, $filename, $etest, $symtest)
                          * same symbol in different waypoints, hence
                          * include the waypoint's name (if it exists)
                          */
-                        $sym_string .= $input . "^" . $filename . "^" .
-                            $gpxsymbol . "^" . $wptname . "|";
+                        $sym_string .= $tmpfile . "^" . $filename . "^" .
+                            $gpxsymbol . "^" . $wptname . "^" . "|";
                     }
                 }
             }
@@ -464,39 +469,103 @@ function displayXmlError($error)
 }
 
 /**
- * This function will create a JSON track file from the specified gpx.
+ * This function will create one or more JSON track file(s) from the specified gpx
+ * for each track in the gpx file.
  * 
  * @param PDO    $pdo     Database PDO
+ * @param string $type    Determines file name [<input> identifier]
  * @param string $gpxfile The filepath for the file to be converted.
+ * @param string $tmploc  Location of the uploaded tmpfile in 'edit' dir
  * @param string $hikeNo  The index to the hike in the database
  * 
- * @return array JSON file made from target gpx file, lat & lng of 
- * track starting point
+ * @return array $org_name The array used to store original file name w/tracks
  */
-function makeTrackFile($pdo, $gpxfile, $hikeNo) 
+function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo) 
 {
-    $basename = basename($gpxfile);
-    $ext = strrpos($basename, ".");
-    $base = substr($basename, 0, $ext);
-    $trkfile = $base . ".json";
-    $trkloc = '../json/' . $trkfile;
-    $gpxdat = gpxLatLng($gpxfile, "1");
-    $trklat = $gpxdat[0][0];
-    $lat = (int) ((float)($trklat) * LOC_SCALE);
-    $trklng = $gpxdat[1][0];
-    $lng = (int) ((float)($trklng) * LOC_SCALE);
-    $trk = fopen($trkloc, "w");
-    $dwnld = fwrite($trk, $gpxdat[3]);
-    if ($dwnld === false) {
-        $trkfail =  "editFunctions.php: Failed to write out {$trkfile} " .
-            "[length: " . strlen($jdat) . "]; ";
-        throw new Exception($trkfail);
-    } 
-    fclose($trk);
-    $newdatReq = "UPDATE EHIKES SET lat = ?, lng = ? WHERE indxNo = ?;";
-    $newdat = $pdo->prepare($newdatReq);
-    $newdat->execute([$lat, $lng, $hikeNo]);
-    return $trkfile;
+    $ftype = ''; // will be the 1st 3 chars in name
+    $fno   = 1;  // suffix indicating file no.
+    switch ($type) {
+    case 'main':
+        $ftype = 'emn';
+        break;
+    case 'add1':
+        $ftype = 'ea1';
+        break;
+    case 'add2':
+        $ftype = 'ea2';
+        break;
+    case 'add3':
+        $ftype = 'ea3';
+        break;
+    case 'gps':
+        $ftype = 'egp';
+    }
+    // get file as simple xml
+    $gpxdat = simplexml_load_file($tmploc);
+    if ($gpxdat === false) {
+        throw new Exception(
+            __FILE__ . "Line " . __LINE__ . "Could not load {$gpxfile} as " .
+            "simplexml"
+        );
+    }
+    // If file happens to contain routes instead of tracks, convert:
+    if ($gpxdat->rte->count() > 0) {
+        $gpxdat = convertRtePts($gpxdat);
+    }
+    // Save any gpxfile waypoints in json file
+    if ($gpxdat->wpt->count() > 0) {
+        $waypoints = [];
+        foreach ($gpxdat->wpt as $waypt) {
+            if (!empty($waypt->sym)) {
+                $name = empty($waypt->name) ? "" : $waypt->name;
+                $wpts = '{"lat":' . $waypt['lat'] . ',"lng":' . $waypt['lon'] .
+                    ',"name":"' . $name . '","sym":"' . $waypt->sym . '"}';
+                array_push($waypoints, $wpts);
+            }
+        }
+        $allpts = '[' . implode(",", $waypoints) . '],';
+    } else {
+        $allpts = '[],';
+    }
+    $json_data = '{"wpts":' . $allpts; 
+    $trk_array = []; // file names for all tracks of this gpx
+    $org_name  = []; // name of gpx file & associated tracks
+    $org_dat   = []; // <input> type and its associated gpx data
+    $trkcnt = $gpxdat->trk->count();
+    $track_files = gpxLatLng($gpxdat, $trkcnt); // returns array of arrays
+    for ($k=0; $k<$trkcnt; $k++) {
+        $json_array = $track_files[$k];
+        $no_of_entries = count($json_array[0]); // lats, lngs, eles have same cnt
+        $jdat = '"trk":[';   // array of objects
+        for ($n=0; $n<$no_of_entries; $n++) {
+            $jdat .= '{"lat":' . $json_array[0][$n] . ',"lng":' .
+                $json_array[1][$n] . ',"ele":' . $json_array[2][$n] . '},';
+        }
+        $jdat = rtrim($jdat, ","); 
+        $jdat .= ']}';
+        $json_data .= $jdat;
+        // now save the json file data for this track
+        $basename = $ftype . $hikeNo . "_" . $fno++ . ".json";
+        $jname = "../json/" . $basename;
+        file_put_contents($jname, $json_data);
+        array_push($trk_array, $basename);
+
+        // for main gpx file only, record new lat/lng (only 1st track is used)
+        if ($k === 0 && $ftype === 'emn') {
+            $trk_loc = strpos($json_data, '"trk":[{');
+            $latlng_str = substr($json_data, $trk_loc+14, 70);
+            $latlng_arr = explode(",", $latlng_str);
+            $trklat = (float) $latlng_arr[0];
+            $lat = (int) ($trklat * LOC_SCALE);
+            $trklng = (float) substr($latlng_arr[1], 6);
+            $lng = (int) ($trklng * LOC_SCALE);
+            $newdatReq = "UPDATE EHIKES SET lat = ?, lng = ? WHERE indxNo = ?;";
+            $newdat = $pdo->prepare($newdatReq);
+            $newdat->execute([$lat, $lng, $hikeNo]);
+        }
+    }
+    $org_name[$gpxfile] = $trk_array;
+    return $org_name;
 }
 /**
  * This function calculates the gpx statistics for the main gpx file
@@ -684,36 +753,20 @@ function mantissa($degrees)
  * NOTE: if there are multiple segments within a track, they are essentially
  * combined into one seqment.
  * 
- * @param string $gpxfile      The (full or relative) path to the gpx file
- * @param string $no_of_tracks Return data for number of tracks specified (or all)
+ * @param SimpleXML $gpxdat       Pre-loaded simplexml for gpx file
+ * @param int       $no_of_tracks Write one json file per track
  * 
  * @return array $track_data
  */
-function gpxLatLng($gpxfile, $no_of_tracks)
+function gpxLatLng($gpxdat, $no_of_tracks)
 {
+    $track_data = [];
     $gpxlats = [];
     $gpxlons = [];
     $gpxelev = [];
     $plat = 0;
     $plng = 0;
-    // get file as simple xml
-    $gpxdat = simplexml_load_file($gpxfile);
-    if ($gpxdat === false) {
-        throw new Exception(
-            __FILE__ . "Line " . __LINE__ . "Could not load {$gpxfile} as " .
-            "simplexml"
-        );
-    }
-    // If file happens to contain routes instead of tracks, convert:
-    if ($gpxdat->rte->count() > 0) {
-        $gpxdat = convertRtePts($gpxdat);
-    }
-    if ($no_of_tracks === 'all') {
-        $trkcnt = $gpxdat->trk->count();
-    } else {
-        $trkcnt = intval($no_of_tracks);
-    }
-    for ($i=0; $i<$trkcnt; $i++) {
+    for ($i=0; $i<$no_of_tracks; $i++) {
         foreach ($gpxdat->trk[$i]->trkseg as $trackdat) {
             foreach ($trackdat->trkpt as $datum) {
                 if (!( $datum['lat'] === $plat && $datum['lon'] === $plng )) {
@@ -727,17 +780,12 @@ function gpxLatLng($gpxfile, $no_of_tracks)
                 }
             }
         }
-        if ($trkcnt === 1) {
-            $jdat = '[';   // array of objects
-            for ($n=0; $n<count($gpxlats); $n++) {
-                $jdat .= '{"lat":' . $gpxlats[$n] . ',"lng":' . $gpxlons[$n] . '},';
-            }
-            $jdat = substr($jdat, 0, strlen($jdat)-1);
-            $jdat .= ']';
-            return array($gpxlats, $gpxlons, $gpxelev, $jdat);
-        }
+        $track_array = array(
+            $gpxlats, $gpxlons, $gpxelev
+        );
+        array_push($track_data, $track_array);
     }
-    return array($gpxlats, $gpxlons, $gpxelev);
+    return $track_data;
 }
 /**
  * Function to calculate the distance between two lat/lng coordinates.

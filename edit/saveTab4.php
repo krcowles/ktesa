@@ -142,28 +142,43 @@ $alert_set = false;
 unset($_SESSION['uplmsg']);
 $_SESSION['gpsmsg'] = '';
 if (!empty($_FILES['newgps']['name'])) {
-    $gpsfile = uploadFile(prepareUpload('newgps'));
+    $tab4upload = prepareUpload('newgps');
+    $gpsfile = uploadFile($tab4upload);
     if ($gpsfile !== 'none') {
-        $ngpsreq
-            = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`,`clickText`) "
-                . "VALUES (?,'P','GPX:',?,'GPX Track File');";
+        if ($tab4upload['ext'] === "gpx") {
+            $gps_array = makeTrackFiles(
+                $pdo, 'gps', $tab4upload['ufn'], "newgps.gpx", $hikeNo
+            );
+            $gpsDbDat = json_encode($gps_array);
+            $ngpsreq
+                = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`," .
+                    "`clickText`) VALUES (?,'P','GPX:',?,'GPX Track File');";
+            if (!unlink($gpsfile)) {
+                throw new Exception("Could not delete temporary file {$gpsfile}; ");
+            }
+        } else { // kml
+            $gpsDbDat = $gpsfile;
+            $ngpsreq
+                = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`," .
+                    "`clickText`) VALUES (?,'P','KML:',?,'KML File');";
+        }
         $newgps = $pdo->prepare($ngpsreq);
-        $newgps->execute([$hikeNo, $gpsfile]);
+        $newgps->execute([$hikeNo, $gpsDbDat]);
     } else {
         $alert_set = true;
     }
 }
 // Uploading of html map files:
 if (!empty($_FILES['newmap']['name'])) {
-    $htmlfile = uploadFile(prepareUpload('newmap'));
+    $mapfile = uploadFile(prepareUpload('newmap'));
     // Any issues?
-    if ($htmlfile === 'none') {
+    if ($mapfile === 'none') {
         $alert_set = true;
     } else {
         $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`," .
             "clickText) VALUES (?,'P','MAP:',?,'Map File');";
         $newgps = $pdo->prepare($ngpsreq);
-        $newgps->execute([$hikeNo, $htmlfile]);
+        $newgps->execute([$hikeNo, $mapfile]);
     }
 }
 if (!$alert_set) {
@@ -173,44 +188,36 @@ if (!$alert_set) {
  * NOTE: the only items that have 'delete' boxes are those for which GPS data
  * already existed in the database.
  */
-// Pick up values of any present 'clickText' textareas
 $clickText = isset($_POST['clickText']) ? $_POST['clickText'] : [];
-$datId = isset($_POST['datId']) ? $_POST['datId'] : [];
-// Record and checked checkboxes
-if (isset($_POST['delgps'])) {
-    // any entries will contain datId of the corresponding text item
-    $deletes = $_POST['delgps'];
-    $chk_del = true;
-} else {
-    $deletes = [];
-    $chk_del = false;
-}
-$datacnt = count($clickText);
-for ($j=0; $j<$datacnt; $j++) {
-    $update = true;
-    $thisId = $datId[$j];
-    if ($chk_del) {
-        if (in_array($thisId, $deletes)) {
-            // delete this entry, don't update it...
-            $update = false;
-            $gpsfileReq = "SELECT `url` FROM EGPSDAT WHERE `datId`=?;";
-            $fileUrl = $pdo->prepare($gpsfileReq);
-            $fileUrl->execute([$thisId]);
-            $delFile = $fileUrl->fetch(PDO::FETCH_ASSOC);
-            if (!unlink($delFile['url'])) {
-                throw new Exception("Could not delete {$delFile['url']}");
+$datId     = isset($_POST['datId']) ? $_POST['datId'] : [];
+$label     = isset($_POST['label']) ? $_POST['label'] : [];
+$del_value = isset($_POST['del_value']) ? $_POST['del_value'] : [];
+$deletes   = isset($_POST['delgps']) ? $_POST['delgps'] : [];
+for ($j=0; $j<count($clickText); $j++) {
+    if (in_array($datId[$j], $deletes)) {
+        if ($label[$j] === "GPX:") {
+            $json_files = explode(",", $del_value[$j]);
+            foreach ($json_files as $file) {
+                if (!unlink("../json/" . $file)) {
+                    throw new Excdeption("Could not remove {$file}");
+                }
             }
-            $delgpsreq = "DELETE FROM EGPSDAT WHERE datId = ?;";
-            $delgps = $pdo->prepare($delgpsreq);
-            $delgps->execute([$thisId]);
-            $update = false;
+        } else {
+            // delete html, pdf, or kml file
+            if (!unlink($del_value[$j])) {
+                throw new Exception("Could not remove file: {$del_value[$j]}; ");
+            }
         }
-    }
-    if ($update) {
-        $addgpsreq = "UPDATE EGPSDAT SET clickText = ? WHERE datID = ?;";
-        $addgps = $pdo->prepare($addgpsreq);
-        $addgps->execute([$clickText[$j], $datId[$j]]);
+        $delReq = "DELETE FROM `EGPSDAT` WHERE `datId`=?;";
+        $delEntry = $pdo->prepare($delReq);
+        $delEntry->execute([$datId[$j]]);
+    } else {
+        $updteReq = "UPDATE `EGPSDAT` SET `clickText`=? WHERE " .
+        "`datId`=?;";
+        $updte = $pdo->prepare($updteReq);
+        $updte->execute([$clickText[$j], $datId[$j]]);
     }
 }
+
 // return to editor with new data:
 header("Location: {$redirect}");

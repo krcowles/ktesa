@@ -9,7 +9,7 @@
  * symbol not currently supported by this application, a page will be presented
  * to the user wherein the issue can be resolved, thus allowing the upload to 
  * complete automatically. In this latter case, the save process will have been
- * temporarily interrupted, but  will resume after symbol correction. When
+ * temporarily interrupted, but will resume after symbol correction. When
  * this occurs, this script will be re-invoked as outlined below.
  *  
  * When the 'Apply' on tab1 is hit, '$form_saved' will be false, and all user
@@ -34,7 +34,6 @@ $tab1      = "editDB.php?tab=1&hikeNo={$hikeNo}";
 if (!$form_saved) {
     // set alerts to empty every time tab1 is saved
     $_SESSION['alerts'] = ["", "", "", ""]; // [main, addgpx1, addgpx2, addgpx3]
-    // test?
     $_SESSION['symfault'] = '';
 
     /**
@@ -214,10 +213,10 @@ if (!$form_saved) {
      * Save the basic user data prior to processing any upload file requests:
      */
     $svreq = "UPDATE EHIKES SET " .
-    "pgTitle = :pgTitle, locale = :locale, cname = :cname, " .
-    "logistics = :logistics, diff = :diff, fac = :fac, wow = :wow, " .
-    "seasons = :seasons, expo = :expo, dirs = :dirs " .
-    "WHERE indxNo = :hikeNo";
+        "pgTitle = :pgTitle, locale = :locale, cname = :cname, " .
+        "logistics = :logistics, diff = :diff, fac = :fac, wow = :wow, " .
+        "seasons = :seasons, expo = :expo, dirs = :dirs " .
+        "WHERE indxNo = :hikeNo";
     $basic = $pdo->prepare($svreq);
     $basic->execute(
         [$basic_data['pgTitle'], $basic_data['locale'], $basic_data['cname'],
@@ -227,34 +226,60 @@ if (!$form_saved) {
     );
 
     /**
-     * All database gpx file and upload file data is collected in $tab1_file_data.
-     * Gpx file(s) from the database, if present, may be a comma-separated string;
-     * Note that currently, a user may specify up to 3 additional gpx files to
-     * appear on the hike page along with the main track.
+     * All current database gpx file and new upload file data is assembled in the
+     * $tab1_file_data array. Gpx file tracks, whether originally contained in a
+     * single gpx file or in separate files, will each be assigned a separate json
+     * file. The gpx's track files will be indicated consecutively by the numbers
+     * 1, 2, 3 appearing at the end of the file's base name to indicate track no
+     * within the original gpx file (note that it quite infrequent that a gpx file
+     * has multiple tracks). A user may specify up to 3 additional gpx files to
+     * appear on the hike page along with the main track. The orginal uploaded gpx
+     * file names are saved in the 'gpx' field as a JSON string. When decoded it
+     * is an associative array whose keys are always: 'main', 'add1', 'add2', and
+     * 'add3'. Each key is subsequently an associative array whose key is the
+     * original gpx filename and whose value is the corresponding json track files.
+     * Filenames are constructed as follow: 1) 'e' or 'p' for in-edit or production;
+     * 2) 2-char for input filename - 'mn'-> main, 'a1'->add1gpx, 'a2'->add2gpx,
+     * 'a3'->add3gpx; 3) hike indexNo; 4) '_1', ... '_n' track file number
+     * e.g.
+     *  [NO gpx files specified]:
+     *      ['main'=>[], 'add1'=>[], 'add2'=>[], 'add3'=>[]]
+     * 
+     *  [2 gpx files uploaded]: main gpx had 2 tracks, add2 had 1 track (hikeNo 3)
+     *      ['main'=>'abrigo.gpx'=>['emn3_1.json', 'emn3_2.json'], 'add1'=>'',
+     *          'add2'=>'proposed.gpx'=>['ea23_1.json'], 'add3'=>'']
+     * 
+     * Filenames are guaranted unique by virtue of the unique hike index no
+     * plus assigned suffix
      */
+    $empty_org = ['main'=>[], 'add1'=>[], 'add2'=>[],'add3'=>[]];
     $getGpxReq = "SELECT `gpx` FROM `EHIKES` WHERE `indxNo` = ?;";
-    $getGpx  = $pdo->prepare($getGpxReq);
+    $getGpx    = $pdo->prepare($getGpxReq);
     $getGpx->execute([$hikeNo]);
-    $gpxList = $getGpx->fetch(PDO::FETCH_ASSOC);
-    $allgpx = explode(",", $gpxList['gpx']); // empty string returns array[0] = ''
-    foreach ($allgpx as &$gpx) { // count($allgpx) always > 0
-        $gpx = trim($gpx);
+    $gpx_data   = $getGpx->fetch(PDO::FETCH_ASSOC);
+    if (empty($gpx_data['gpx'])) {
+        $org_names  = $empty_org;
+    } else {
+        $stdClassGpx = json_decode($gpx_data['gpx'], true);
+        // Convert stdClass to array: 
+        $org_names = [];
+        foreach ($stdClassGpx as $item => $value) {
+            $org_names[$item] = $value;
+        }
     }
-    $maingpx    = $allgpx[0];
-    $maintrack  = filter_input(INPUT_POST, 'mtrk'); // already uploaded track
+    // associative arrays, else empty array              
+    $main = $org_names['main'];
+    $add1 = $org_names['add1'];
+    $add2 = $org_names['add2'];
+    $add3 = $org_names['add3'];
     // some files may have been specified for removal:
     $delgpx     = isset($_POST['dgpx']) ? $_POST['dgpx'] : false;
     $noincludes = isset($_POST['deladd']) ? $_POST['deladd'] : false;
-    if ($noincludes) { // need ints for comparison later
-        foreach ($noincludes as &$value) {
-            $value = (int) $value;
-        }
-    }
     $uploads = [];
     $upload_files = ['newgpx', 'addgpx1', 'addgpx2', 'addgpx3'];
     /**
      * Relevant upload data for each input file on tab1 consists of:
-     *  areq => boolean: is an input file specified by user?
+     *  ureq => boolean: is an input file specified by user?
      *  ifn  => string: input file name attribute
      *  err  => int: server code for upload result
      *  ufn  => string: user's file name
@@ -268,9 +293,9 @@ if (!$form_saved) {
         array_push($uploads, prepareUpload($upld));
     }
     $tab1_file_data = array(
-        'maingpx'  => $maingpx,  // the current main file specified in the db
-        'allgpx'   => $allgpx,   // all gpxfiles specified in the db
-        'json_trk' => $maintrack,
+        'org_gpx'  => $org_names, // original gpx filenames, each w/track files
+        'ifiles'   => $upload_files,
+        'jtype'    => ['main', 'add1', 'add2', 'add3'],
         'del_main' => $delgpx,
         'del_adds' => $noincludes,
         'uploads'  => $uploads
@@ -283,79 +308,123 @@ if (!$form_saved) {
      * This section handles the main gpx file delete. Lat/lngs and miles/feet are
      * always updated when the existing main file is deleted. NOTE: If there are
      * additional files associated with the main gpx file, they will also be deleted.
-     * Deletion occurs once and not during re-invocation of the script (it is
+     * Deletion occurs once and not during re-invocation of this script (it is
      * possible that a main gpx file is being deleted while a new one is being
      * uploaded). It is assumed that when deleting a main track file, the basic tab1
      * data, the photos, any description or trail tips, references, and gps data 
      * may still be valid and are not deleted. The user can alter as he/she sees fit.
-     * However, if this hike had database waypoints, they will be deleted, as they
+     * However, if this file had database waypoints, they will be deleted, as they
      * are generally associated with a track.
      */
+    $mainkey = empty($main) ? '' : array_keys($main)[0];
+    $add1key = empty($add1) ? '' : array_keys($add1)[0];
+    $add2key = empty($add2) ? '' : array_keys($add2)[0];
+    $add3key = empty($add3) ? '' : array_keys($add3)[0];
     if ($tab1_file_data['del_main']) {
-        $mgpx_fname = $maingpx;
-        $delmain = '../gpx/' . $maingpx;
-        if (!unlink($delmain)) {
-            throw new Exception("Could not remove {$delmain} from site");
-        }
-        $deltrk = '../json/' . $tab1_file_data['json_trk'];
-        if (!unlink($deltrk)) {
-            throw new Exception("Could not remove {$deltrk} from site");
-        }
-        $_SESSION['uplmsg']
-            .= "Deleted file {$mgpx_fname} and it's associated track from site; ";
-        $maingpx = ''; // now deleted...
-        $tab1_file_data['maingpx'] = '';
-        $tab1_file_data['json_trk'] = '';
-        if (count($tab1_file_data['allgpx']) > 1) {
-            for ($i=1; $i<count($tab1_file_data['allgpx']); $i++) {
-                $addit_addr = '../gpx/' . $tab1_file_data['allgpx'][$i];
-                if (!unlink($addit_addr)) {
-                    throw new Exception("Could not remove {$addit_addr} from site");
-                }
-                $_SESSION['uplmsg']
-                    .= " Deleted additional file {$tab1_file_data['allgpx'][$i]}; ";
+        $tracks  = $main[$mainkey];
+        foreach ($tracks as $track) {
+            $deltrk = '../json/' . $track;
+            if (!unlink($deltrk)) {
+                throw new Exception("Could not remove {$deltrk} from site");
             }
         }
-        // delete any database waypoints
-        $getWayptsReq = "SELECT `picIdx` FROM `ETSV` WHERE `thumb` IS NULL AND " .
-            "`indxNo`=?;";
-        $getWaypts = $pdo->prepare($getWayptsReq);
-        $getWaypts->execute([$hikeNo]);
-        $dbPts = $getWaypts->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($dbPts as $waypoint) {
-            $removeWayptReq = "DELETE FROM `ETSV` WHERE `picIdx`=?;";
-            $removeWaypt = $pdo->prepare($removeWayptReq);
-            $removeWaypt->execute([$waypoint['picIdx']]);
+        $_SESSION['uplmsg']
+            .= "Deleted file {$mainkey} and it's associated track(s) from site; ";
+        $org_names['main'] = [];
+        // Also delete additional files for this hike if no new main
+        if (!$tab1_file_data['uploads'][0]['ureq']) {
+            $tab1_file_data['del_adds'] = false;
+            $additional_deletes = [];
+            if (!empty($add1)) {
+                $jdels = $add1[$add1key];
+                foreach ($jdels as $del) {
+                    array_push($additional_deletes, $del);
+                }
+                $_SESSION['uplmsg'] .= " Deleted additional file {$add1key}; ";
+                $org_names['add1'] = [];
+            }
+            if (!empty($add2)) {
+                $jdels = $add2[$add2key];
+                foreach ($jdels as $del) {
+                    array_push($additional_deletes, $del);
+                }
+                $_SESSION['uplmsg'] .= " Deleted additional file {$add2key}; ";
+                $org_names['add2'] = [];
+            }
+            if (!empty($add3)) {
+                $jdels = $add3[$add3key];
+                foreach ($jdels as $del) {
+                    array_push($additional_deletes, $del);
+                }
+                $_SESSION['uplmsg'] .= " Deleted additional file {$add3key}; ";
+                $org_names['add3'] = [];
+            }
+            foreach ($additional_deletes as $json) {
+                $delfile = "../json/" . $json;
+                if (!unlink($delfile)) {
+                    throw new Exception("Could not remove {$delfile} from site");
+                }
+            }
+            // delete any database waypoints for this hike
+            $waypointsReq = "DELETE FROM `ETSV` WHERE `thumb` IS NULL AND " .
+                "`indxNo`=?;";
+            $rmWaypts = $pdo->prepare($waypointsReq);
+            $rmWaypts->execute([$hikeNo]);
+            // update 'gpx' field in EHIKES db
+            $new_org = json_encode($org_names);
+            $udgpxreq = "UPDATE EHIKES SET gpx=?,lat=NULL,lng=NULL,
+                miles=NULL,feet=NULL WHERE indxNo=?;";
+            $udgpx = $pdo->prepare($udgpxreq);
+            $udgpx->execute([$new_org, $hikeNo]);
         }
         $tab1_file_data['del_main'] = false;
-        $allgpx = [];
-        $allgpx[0] = '';
-        $tab1_file_data['allgpx'] = $allgpx;
-        $udgpxreq = "UPDATE EHIKES SET gpx=NULL,trk=NULL,lat=NULL,lng=NULL,
-            miles=NULL,feet=NULL WHERE indxNo = ?;";
-        $udgpx = $pdo->prepare($udgpxreq);
-        $udgpx->execute([$hikeNo]);
+        $tab1_file_data['org_gpx']  = $org_names;
     }
     /**
      * This section handles the deletion of any additional files specified.
      */
-    if ($tab1_file_data['del_adds']) {
-        $addfiles = $tab1_file_data['allgpx'];
-        for ($x=1; $x<count($addfiles); $x++) {
-            if (in_array($x, $tab1_file_data['del_adds'])) {
-                $unlinkAdder = '../gpx/' . $addfiles[$x];
-                if (!unlink($unlinkAdder)) {
-                    throw new Exception(
-                        "Could not remove additional file from site"
-                    );
+    $add_deletes = $tab1_file_data['del_adds'];
+    if ($add_deletes) {
+        foreach ($add_deletes as $del) {
+            $addfiles = [];
+            if ($add1key === $del) {
+                $jdels = $add1[$add1key];
+                foreach ($jdels as $del) {
+                    array_push($addfiles, $del);
                 }
                 $_SESSION['uplmsg']
-                    .= " Deleted additional file {$allgpx[$x]}; ";
-                unset($addfiles[$x]);
+                        .= " Deleted additional file {$add1key}; ";
+                $org_names['add1'] = [];
+            } elseif ($add2key === $del) {
+                $jdels = $add2[$add2key];
+                foreach ($jdels as $del) {
+                    array_push($addfiles, $del);
+                }
+                $_SESSION['uplmsg']
+                        .= " Deleted additional file {$add2key}; ";
+                $org_names['add2'] = [];
+            } elseif ($add3key === $del) {
+                $jdels = $add3[$add3key];
+                foreach ($jdels as $del) {
+                    array_push($addfiles, $del);
+                }
+                $_SESSION['uplmsg']
+                        .= " Deleted additional file {$add3key}; ";
+                $org_names['add3'] = [];
+            }
+            foreach ($addfiles as $json) {
+                $delfile = "../json/" . $json;
+                if (!unlink($delfile)) {
+                    throw new Exception("Could not remove {$json} from site");
+                }
             }
         }
-        $addfiles = array_values($addfiles); // re-index array
-        $tab1_file_data['allgpx'] = $addfiles;
+        // update 'gpx' field in EHIKES db
+        $new_org = json_encode($org_names);
+        $udgpxreq = "UPDATE EHIKES SET gpx=? WHERE indxNo=?;";
+        $udgpx = $pdo->prepare($udgpxreq);
+        $udgpx->execute([$new_org, $hikeNo]);
+        $tab1_file_data['org_gpx'] = $org_names;
         $tab1_file_data['del_adds'] = false; // don't re-process
     }
 } else {
@@ -389,61 +458,53 @@ if (!$form_saved) {
  */
 $file_uploads = $tab1_file_data['uploads'];
 foreach ($file_uploads as &$upload) {
-    if ($upload['areq']) {
+    if ($upload['ureq']) {
         if (!$form_saved) {
             $file_path = uploadFile($upload, true, true);
             $base_file = pathinfo($file_path, PATHINFO_BASENAME);
-            $tmpfile = $upload['ifn'] . '.gpx';
+            $tmpfile = $upload['ifn'] . '.gpx'; // potentially same as $file_path
             if (!empty($_SESSION['alerts'][$upload['apos']])) {
-                $upload['areq'] = false;
+                $upload['ureq'] = false;
                 if (file_exists($tmpfile)) {
                     if (!unlink($tmpfile)) {
                         throw new Exception("Could not remove tmp file {$badfile}");
                     }
                 }
-            
             } elseif (!(isset($_SESSION['symfault']) && $upload['ext'] === 'gpx'
                 && strpos($_SESSION['symfault'], $upload['ifn']) !== false)
             ) {
-                // Tmpfile should have been removed during uploadFile()...
-                /*
-                if (file_exists($tmpfile)) {
-                    $msg = "Upload did not remove {$tmpfile} from site";
-                    throw new Exception($msg);
-                }
-                */
-                if ($upload['ifn'] === 'newgpx') {
-                    $tab1_file_data['json_trk']
-                        = makeTrackFile($pdo, $file_path, $hikeNo);
-                    $calcs = getGpxFileStats($file_path);
-                    $newstatsReq = "UPDATE `EHIKES` SET `miles`=?,`feet`=? WHERE " .
-                        "`indxNo`=?;";
-                    $newstats = $pdo->prepare($newstatsReq);
-                    $newstats->execute([$calcs[0], $calcs[1], $hikeNo]);
-                    $tab1_file_data['maingpx']   = $base_file;
-                    $tab1_file_data['allgpx'][0] = $base_file;
-                } else {
-                    array_push($tab1_file_data['allgpx'], $base_file);
-                }
-                $upload['areq'] = false;
+                if ($upload['ext'] === 'gpx' && $upload['ifn'] !== 'file2edit'
+                    && $upload['ifn'] !== 'gpx2edit'
+                ) {
+                    $new_data = processGpx(
+                        $pdo, $upload, $tab1_file_data['ifiles'],
+                        $tab1_file_data['jtype'], $hikeNo
+                    );
+                    $org_key = $new_data[0];
+                    $org_names[$org_key] = $new_data[1];
+                    $tab1_file_data['org_gpx'] = $org_names;
+                } 
             }
-        } else {
-            $correctedFile = resumeUploadGpx($upload['ifn'], $upload['ufn']);
-            $file_path = "../gpx/" . $correctedFile;
-            if ($upload['ifn'] === 'newgpx') {
-                $tab1_file_data['json_trk']
-                    = makeTrackFile($pdo, $file_path, $hikeNo);
-                $calcs = getGpxFileStats($file_path);
-                $newstatsReq = "UPDATE `EHIKES` SET `miles`=?,`feet`=? WHERE " .
-                    "`indxNo`=?;";
-                $newstats = $pdo->prepare($newstatsReq);
-                $newstats->execute([$calcs[0], $calcs[1], $hikeNo]);
-                $tab1_file_data['maingpx']   = $correctedFile;
-                $tab1_file_data['allgpx'][0] = $correctedFile;
+            if (isset($_SESSION['symfault']) 
+                && strpos($_SESSION['symfault'], $upload['ifn']) !== false
+            ) {
+                $upload['ureq'] = true;
             } else {
-                array_push($tab1_file_data['allgpx'], $correctedFile);
-            }
-            $upload['areq'] = false;
+                $upload['ureq'] = false;
+            }      
+        } else {
+            /**
+             * $upload now points to the interrupted (but corrected) file load
+             */
+            resetSymfault($upload['ifn']);
+            $new_data = processGpx(
+                $pdo, $upload, $tab1_file_data['ifiles'],
+                $tab1_file_data['jtype'], $hikeNo
+            );
+            $org_key = $new_data[0];
+            $tab1_file_data['org_gpx'][$org_key] = $new_data[1];
+            $_SESSION['uplmsg'] .= "Your file [" . $upload['ufn'] . "] was saved; ";
+            $upload['ureq'] = false;
         }
     }
 }
@@ -455,11 +516,11 @@ if (isset($_SESSION['symfault']) && $_SESSION['symfault'] !== '') {
     exit;
 } 
 
-// write out the updated gpx file and track list:
-$gpx_file_list = implode(",", $tab1_file_data['allgpx']);
-$newlistReq = "UPDATE `EHIKES` SET `gpx`=?, `trk`=?  WHERE `indxNo` =?;";
+// write out the updated gpx file and track info:
+$newgpx = json_encode($tab1_file_data['org_gpx']);
+$newlistReq = "UPDATE `EHIKES` SET `gpx`=? WHERE `indxNo` =?;";
 $newlist = $pdo->prepare($newlistReq);
-$newlist->execute([$gpx_file_list, $tab1_file_data['json_trk'], $hikeNo]);
+$newlist->execute([$newgpx, $hikeNo]);
 
 if (file_exists('tab1FileData.json')) {
     unlink('tab1FileData.json');
