@@ -48,34 +48,6 @@ function verifyAccess($method)
     }
 }
 /**
- * This function acts on a library of ip_address-to-country files in order
- * to arrive at the country associated with the ip address.
- * NOTE: adjust ip_files path for test sites, as $global_boot may not yet be invoked
- * 
- * @param string $ip_addr The queried ip address
- * 
- * @return string $country 2-character country ID
- */
-function ipToCountry($ip_addr)
-{
-    $numbers = preg_split("/\./", $ip_addr);   
-    include "../ip_files/" . $numbers[0] . ".php";
-    $code=($numbers[0] * 16777216) + ($numbers[1] * 65536) +
-        ($numbers[2] * 256) + ($numbers[3]);   
-    foreach ($ranges as $key => $value) {
-        if ($key <= $code) {
-            if ($ranges[$key][0] >= $code) {
-                $country = $ranges[$key][1];
-                break;
-            }
-        }
-    }
-    if ($country == "") {
-        $country="unkown";
-    }
-    return $country;
-}
-/**
  * This function specifies which track, in the list of tracks, to reverse.
  * The function will be called iteratively if multiple tracks are to be
  * reversed. When there are multiple segments within the subject track, 
@@ -129,6 +101,7 @@ function reverseTrack($trknodes, $trkno)
  * @param string $name        As above
  * @param array  $tables      An array containg table names to export
  * @param string $dwnld       N->not a download; C->changes only; S->site dwnld
+ *                            V->only the VISITORS table
  * @param bool   $backup_name Backup name, if used
  * 
  * @return null;
@@ -180,7 +153,7 @@ function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = fa
         $content .= "\n\n\n";
     }
     $backup_name = $backup_name ? $backup_name : $name.".sql";
-    if ($dwnld !== 'N') {
+    if ($dwnld !== 'N' && $dwnld !== 'V') {
         // save the new db to the standard data directory
         $loc = sys_get_temp_dir() . '/' . $backup_name;
         file_put_contents($loc, $content);

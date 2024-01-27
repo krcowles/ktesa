@@ -668,6 +668,12 @@ $('#ehdel').on('click', function() {
     window.open("reldel.php?act=del","_blank");
 });
 /**
+ * Download only the VISITORS database
+ */
+$('#getVdat').on('click', function() {
+    window.open("export_all_tables.php?dwnld=V", "_blank");
+});
+/**
  * Display of visitation data
  */
 $('#today').on('click', function() {

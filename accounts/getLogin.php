@@ -107,15 +107,18 @@ if (!$admin) {
      */
     $user_ip = getIpAddress(); // can be null!
     $user_ip = isset($user_ip) ? $user_ip : 'no ipaddr';
+    $country_name = "Unknown";
     if ($user_ip === '91.240.118.252') { // Chang Way Enterprise
         die("Access not permitted");
     }
     if ($user_ip !== 'no ipaddr' && $user_ip !== '127.0.0.1' && $user_ip !== '::1') {
         // New method: former ipinfo site limits no of requests
-        $country_code = ipToCountry($user_ip);
+        $country_code = ipToCountry($user_ip); // two-letter code
         if ($country_code === 'RU' || $country_code === 'CN') {
             die("Access not permitted");
         }
+        include "../ip_files/countries.php";
+        $country_name = $countries[$country_code][1];
     }
     $browser = getBrowserType(); // can be null!
     if (!isset($browser)) {
@@ -127,8 +130,8 @@ if (!$admin) {
     $vpage = selfURL(); // can be null
     $vpage = isset($vpage) ? $vpage : "no page";
     $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`vbrowser`,`vplatform`," .
-        "`vdatetime`,`vpage`) " .
-        "VALUES (?,?,?,?,?);";
+        "`vdatetime`,`vpage`,`vcountry`) " .
+        "VALUES (?,?,?,?,?,?);";
     $visitor_data = $pdo->prepare($visitor_data_req);
     $visitor_data->execute(
         [
@@ -136,7 +139,8 @@ if (!$admin) {
             $browser['name'],
             $browser['platform'],
             $visit_time,
-            $vpage
+            $vpage,
+            $country_name
         ]
     );
 }
