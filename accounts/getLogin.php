@@ -107,18 +107,27 @@ if (!$admin) {
      */
     $user_ip = getIpAddress(); // can be null!
     $user_ip = isset($user_ip) ? $user_ip : 'no ipaddr';
-    $country_name = "Unknown";
     if ($user_ip === '91.240.118.252') { // Chang Way Enterprise
         die("Access not permitted");
     }
     if ($user_ip !== 'no ipaddr' && $user_ip !== '127.0.0.1' && $user_ip !== '::1') {
         // New method: former ipinfo site limits no of requests
-        $country_code = ipToCountry($user_ip); // two-letter code
-        if ($country_code === 'RU' || $country_code === 'CN') {
+        $country = '';
+        $numbers = preg_split("/\./", $user_ip);   
+        include "../ip_files/" . $numbers[0] . ".php";
+        $code = ($numbers[0] * 16777216) + ($numbers[1] * 65536) +
+            ($numbers[2] * 256) + ($numbers[3]);   
+        foreach ($ranges as $key => $value) {
+            if ($key <= $code) {
+                if ($ranges[$key][0] >= $code) {
+                    $country = $ranges[$key][1];
+                    break;
+                }
+            }
+        }
+        if ($country === 'RU' || $country === 'CN') {
             die("Access not permitted");
         }
-        include "../ip_files/countries.php";
-        $country_name = $countries[$country_code][1];
     }
     $browser = getBrowserType(); // can be null!
     if (!isset($browser)) {
@@ -130,8 +139,8 @@ if (!$admin) {
     $vpage = selfURL(); // can be null
     $vpage = isset($vpage) ? $vpage : "no page";
     $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`vbrowser`,`vplatform`," .
-        "`vdatetime`,`vpage`,`vcountry`) " .
-        "VALUES (?,?,?,?,?,?);";
+        "`vdatetime`,`vpage`) " .
+        "VALUES (?,?,?,?,?);";
     $visitor_data = $pdo->prepare($visitor_data_req);
     $visitor_data->execute(
         [
@@ -139,8 +148,7 @@ if (!$admin) {
             $browser['name'],
             $browser['platform'],
             $visit_time,
-            $vpage,
-            $country_name
+            $vpage
         ]
     );
 }

@@ -64,9 +64,9 @@ foreach ($visitor_data as $row) {
     }
     // Get geolocation data 
     if (empty($api_error)) { 
-        $country_code
-            = !empty($record->country->isoCode)?$record->country->isoCode : '';
-        array_push($vcnt, "N/A");
+        $country_code = !empty($record->country->isoCode) ?
+            $record->country->isoCode : '';
+        array_push($vcnt, $country_code);
         $state_name
             = !empty($record->mostSpecificSubdivision->name) ?
                 $record->mostSpecificSubdivision->name : ''; 
