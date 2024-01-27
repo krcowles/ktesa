@@ -101,6 +101,7 @@ function reverseTrack($trknodes, $trkno)
  * @param string $name        As above
  * @param array  $tables      An array containg table names to export
  * @param string $dwnld       N->not a download; C->changes only; S->site dwnld
+ *                            V->only the VISITORS table
  * @param bool   $backup_name Backup name, if used
  * 
  * @return null;
@@ -152,7 +153,7 @@ function exportDatabase($pdo, $mysqli, $name, $tables, $dwnld, $backup_name = fa
         $content .= "\n\n\n";
     }
     $backup_name = $backup_name ? $backup_name : $name.".sql";
-    if ($dwnld !== 'N') {
+    if ($dwnld !== 'N' && $dwnld !== 'V') {
         // save the new db to the standard data directory
         $loc = sys_get_temp_dir() . '/' . $backup_name;
         file_put_contents($loc, $content);
