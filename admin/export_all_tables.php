@@ -17,7 +17,7 @@ require "../php/global_boot.php";
 
 $download = filter_input(INPUT_GET, 'dwnld');
 // For exporting only the VISITORS table:
-if ($download = 'V') {
+if ($download === 'V') {
     $tables = ['VISITORS'];
     $backup_name = "visitors.sql";
 } else {
