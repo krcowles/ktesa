@@ -219,7 +219,13 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
     <fieldset class="afs">
         <legend class="afs">Visitor Data</legend>
         <button id="getVdat" type="button" class="btn btn-secondary">
+<<<<<<< HEAD
             Download</button>&nbsp;Download VISITORS Database
+=======
+            Download</button>&nbsp;Download VISITORS Database&nbsp;&nbsp;&nbsp;
+        <button id="loadVdat" type="button" class="btn btn-danger">
+            Load Data</button>&nbsp;&nbsp;[NOTE: Localhost only]
+>>>>>>> countryChecks
         <hr />
         <div id="vdata">
             <div class="vflex"> 

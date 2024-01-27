@@ -1,6 +1,10 @@
 <?php
 /**
  * This page displays site visitor data for the incoming date range.
+ * Do to limitations imposed by the ipinfo site, this script now uses
+ * the MaxMind geolocation db and software library to access key data.
+ * The download and scripting information is provided by CodexWorld:
+ * https://www.codexworld.com/get-geolocation-from-ip-address-using-php/
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -9,6 +13,8 @@
  */
 session_start();
 require "../php/global_boot.php";
+use GeoIp2\Database\Reader;
+
 date_default_timezone_set('America/Denver');
 $curr_yr   = date("Y");
 $today  = date("Y-m-d");
@@ -49,24 +55,26 @@ if (count($visitor_data) === 0) {
 $vloc = [];
 $vreg = [];
 $vcnt = [];
-// not local machine
 foreach ($visitor_data as $row) {
-    $details 
-        = json_decode(file_get_contents("http://ipinfo.io/{$row['vip']}/json"));
-    if (isset($details->city)) {
-        array_push($vloc, $details->city);
-    } else {
-        array_push($vloc, 'Local Machine');
+    try {
+        $cityDbReader = new Reader('../GeoLite2-City.mmdb'); 
+        $record = $cityDbReader->city($row['vip']); 
+    } catch(Exception $e) {
+        $api_error = $e->getMessage(); 
     }
-    if (isset($details->region)) {
-        array_push($vreg, $details->region);
-    } else {
-        array_push($vreg, "N/A");
-    }
-    if (isset($details->country)) {
-        array_push($vcnt, $details->country);
-    } else {
-        array_push($vcnt, "N/A");
+    // Get geolocation data 
+    if (empty($api_error)) { 
+        $country_code = !empty($record->country->isoCode) ?
+            $record->country->isoCode : '';
+        array_push($vcnt, $country_code);
+        $state_name
+            = !empty($record->mostSpecificSubdivision->name) ?
+                $record->mostSpecificSubdivision->name : ''; 
+        array_push($vreg, $state_name);
+        $city_name = !empty($record->city->name)?$record->city->name : '';
+        array_push($vloc, $city_name);
+    } else { 
+        echo $api_error; 
     }
 }
 
