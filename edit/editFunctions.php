@@ -482,8 +482,8 @@ function displayXmlError($error)
  */
 function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo) 
 {
-    $ftype = ''; // will be the 1st 3 chars in name
-    $fno   = 1;  // suffix indicating file no.
+    $ftype = ''; // will be the 1st 3 chars in json filename
+    $fno   = 1;  // suffix indicating file no. (when multiple tracks)
     switch ($type) {
     case 'main':
         $ftype = 'emn';
@@ -499,6 +499,11 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo)
         break;
     case 'gps':
         $ftype = 'egp';
+        // ensure a unique suffix as multiple gps are possible
+        $base_gps = "../json/egp" . $hikeNo . "_";
+        while (file_exists($base_gps . $fno . ".json")) {
+            $fno++;
+        }
     }
     // get file as simple xml
     $gpxdat = simplexml_load_file($tmploc);
@@ -512,43 +517,61 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo)
     if ($gpxdat->rte->count() > 0) {
         $gpxdat = convertRtePts($gpxdat);
     }
-    // Save any gpxfile waypoints in json file
+    /**
+     * Waypoints, if present, appear prior to the <trk>s, per gpx schema, and
+     * therefore there is only one set of waypoints regardless of the number
+     * of tracks present in the file. Waypoints are placed in the json file so
+     * as to be able to quickly reproduce a simplified version of the original
+     * uploaded gpx file if the user requests a download of that file. The
+     * simplification strips metadata and extensions from the file.
+     */
     if ($gpxdat->wpt->count() > 0) {
         $waypoints = [];
         foreach ($gpxdat->wpt as $waypt) {
-            if (!empty($waypt->sym)) {
-                $name = empty($waypt->name) ? "" : $waypt->name;
-                $wpts = '{"lat":' . $waypt['lat'] . ',"lng":' . $waypt['lon'] .
-                    ',"name":"' . $name . '","sym":"' . $waypt->sym . '"}';
-                array_push($waypoints, $wpts);
-            }
+            $sym  = empty($waypt->sym)  ? "googlemini" : $waypt->sym;
+            $name = empty($waypt->name) ? "Noname" : $waypt->name;
+            $wpts = '{"lat":' . $waypt['lat'] . ',"lng":' . $waypt['lon'] .
+                ',"name":"' . $name . '","sym":"' . $sym . '"}';
+            array_push($waypoints, $wpts);
         }
-        $allpts = '[' . implode(",", $waypoints) . '],';
+        $json_start = '{"wpts":[' . implode(",", $waypoints) . '],';
     } else {
-        $allpts = '[],';
+        $json_start  = '{';
     }
-    $json_data = '{"wpts":' . $allpts; 
-    $trk_array = []; // file names for all tracks of this gpx
-    $org_name  = []; // name of gpx file & associated tracks
-    $org_dat   = []; // <input> type and its associated gpx data
+    $trk_array   = []; // json file names for all tracks of this gpx
+    $track_names = []; // <name> for each track
+    $org_name    = []; // name of gpx file & associated tracks
+    $org_dat     = []; // <input> type and its associated gpx data
     $trkcnt = $gpxdat->trk->count();
-    $track_files = gpxLatLng($gpxdat, $trkcnt); // returns array of arrays
+    for ($j=0; $j<$trkcnt; $j++) {
+        $trkname= $gpxdat->trk[$j]->name->__toString();
+        $track_name = empty($trkname) ? "No Track Name" : $trkname;
+        array_push($track_names, $track_name);
+    }
+    /**
+     * This next function call extracts lats/lngs/eles from the gpx file.
+     * Each track has one set of three arrays [one each for lats, lngs, eles]
+     * containing this data. All tracks are therefore returned as an array
+     * of arrays.
+     */
+    $track_files = gpxLatLng($gpxdat, $trkcnt);
     for ($k=0; $k<$trkcnt; $k++) {
-        $json_array = $track_files[$k];
+        $json_array = $track_files[$k]; // $k is the kth track
         $no_of_entries = count($json_array[0]); // lats, lngs, eles have same cnt
-        $jdat = '"trk":[';   // array of objects
+        $jdat = '"name":"' . $track_names[$k] . '","trk":[';   // array of objects
         for ($n=0; $n<$no_of_entries; $n++) {
             $jdat .= '{"lat":' . $json_array[0][$n] . ',"lng":' .
                 $json_array[1][$n] . ',"ele":' . $json_array[2][$n] . '},';
         }
         $jdat = rtrim($jdat, ","); 
         $jdat .= ']}';
-        $json_data .= $jdat;
+        $json_data = $json_start . $jdat;
         // now save the json file data for this track
         $basename = $ftype . $hikeNo . "_" . $fno++ . ".json";
         $jname = "../json/" . $basename;
         file_put_contents($jname, $json_data);
         array_push($trk_array, $basename);
+        $json_start = '{';
 
         // for main gpx file only, record new lat/lng (only 1st track is used)
         if ($k === 0 && $ftype === 'emn') {
@@ -640,6 +663,134 @@ function getGpxFileStats($gpxPath)
     return [$miles, $feet];
 }
 /**
+ * Using json data, calculate total track distance and elevation for the
+ * track file submitted. Calculations are made on a per-track basis.
+ * NOTE: By default, a track combines all <trsegs> if there are multiple
+ * 
+ * @param array  $json_data The json-decoded array of lat/lng/ele elements
+ * @param string $trkname   The name associated with the track
+ * @param array  $lats      The callers array of this track's lats
+ * @param array  $lngs      The callers array of this track's lngs
+ * @param array  $ticks     The callers array of gpsv tickmarks
+ * @param int    $trackno   The trackno represented by the file (1-based)
+ * 
+ * @return array $track_dat 
+ */
+function trackStats($json_data, $trkname, &$lats, &$lngs, &$ticks, $trackno)
+{
+    $pup = (float)0;
+    $pdwn = (float)0;
+    $pmax = (float)0;
+    $pmin = (float)50000;
+    $tickMrk  = (float)0;
+    $hikeLgth = (float)0;
+    $prevLat  = $json_data[0]["lat"];
+    $prevLng  = $json_data[0]["lng"];
+    $prevEle  = $json_data[0]["ele"];
+    $gpsv_trackdat = '[ [';
+
+    for ($k=0; $k<count($json_data); $k++) {
+        array_push($lats, $json_data[$k]["lat"]);
+        array_push($lngs, $json_data[$k]["lng"]);
+        $parms = distance(
+            $prevLat, $prevLng, $json_data[$k]["lat"], $json_data[$k]["lng"]
+        );
+        $hikeLgth += $parms[0];
+        $prevLat = $json_data[$k]["lat"];
+        $prevLng = $json_data[$k]["lng"];
+        if ($json_data[$k]["ele"] > $pmax) {
+            $pmax = $json_data[$k]["ele"];
+        }
+        if ($json_data[$k]["ele"] < $pmin) {
+            $pmin = $json_data[$k]["ele"];
+        }
+        $elevChg = $json_data[$k]["ele"] - $prevEle;
+        if ($elevChg > 0) {
+            $pup += $elevChg;
+        } else {
+            $pdwn -= $elevChg;
+        }
+        $prevEle = $json_data[$k]["ele"];
+        // Form GPSV javascript track and tickmark data for this trkpt
+        $rotation = $parms[1];
+        // $gpsv_trackdat => track "points" in trk[t].segments.push({ points:  })
+        $gpsv_trackdat .= $json_data[$k]["lat"] . "," . 
+            $json_data[$k]["lng"] . "],[";
+        if ($hikeLgth > $tickMrk) {
+            $tick
+                = "GV_Draw_Marker({lat:" . $json_data[$k]["lat"] .
+                    ",lon:" . $json_data[$k]["lng"] . ",alt:" . 
+                    $json_data[$k]["ele"] . ",name:'" . $tickMrk/1609 . 
+                    " mi',desc:trk[" . ($trackno) . "].info.name,color:trk["
+                    . $trackno . "]"
+                    . ".info.color,icon:'tickmark',type:'tickmark',folder:'"
+                    . $trkname . " [tickmarks]',rotation:" . $rotation
+                    . ",track_number:" . $trackno . ",dd:false});";
+            array_push($ticks, $tick);
+            $tickMrk += 0.30 * 1609; // interval in miles converted to meters
+        }
+    }
+    // remove trailing characters forming next lat/lng array
+    $gpsv_trackdat = substr($gpsv_trackdat, 0, strlen($gpsv_trackdat)-3);
+    // complete the string
+    $gpsv_trackdat .= '] ]';
+    return [$hikeLgth, $pmax, $pmin, $pup, $pdwn, $gpsv_trackdat];
+}
+/**
+ * Whenever a routine requires 'multiMap.php', which subsequently requires
+ * 'fillGpsvTemplate.php', those routines expect to have certain variables
+ * pre-defined. This function establishes those variables derivable from
+ * the json track files. The calculations performed also extract info for
+ * the hike page side panel and that data is returned as a set of arrays
+ * 
+ * @param array $tracks    An array of all track names (json files) to be mapped
+ * @param array $trk_nmes  An array in caller holding the names of the tracks
+ * @param array $gpsv_trk  An array in caller holding the gpsv-style track data
+ * @param array $trk_lats  An array in caller holding lats stored in the files
+ * @param array $trk_lngs  An array in caller holding lngs stored in the files
+ * @param array $gpsv_tick An array in caller holding 
+ * 
+ * @return array calc data for side panel; $gpsv_trk = [];
+ */
+function prepareMappingData(
+    $tracks, &$trk_nmes, &$gpsv_trk, &$trk_lats, &$trk_lngs, &$gpsv_tick
+) {
+    $trkno = 1;
+    $miles  = [];
+    $maxmin = [];
+    $asc    = [];
+    $dsc    = [];
+    foreach ($tracks as $json_file) {
+        $trk_file = "../json/" . $json_file;
+        $jdat = file_get_contents($trk_file);
+        $stdClass = json_decode($jdat, true);
+        // Convert stdClass to php array: 
+        $trk_dat = [];
+        foreach ($stdClass as $item => $value) {
+            $trk_dat[$item] = $value;
+        }
+        array_push($trk_nmes, $trk_dat['name']);
+        $track  = $trk_dat['trk'];
+        $lats   = [];
+        $lngs   = [];
+        $ticks  = [];
+        $calcs = trackStats(
+            $track, $trk_dat['name'], $lats, $lngs, $ticks, $trkno++
+        );
+        // map data
+        array_push($gpsv_trk, $calcs[5]);
+        array_push($trk_lats, $lats);
+        array_push($trk_lngs, $lngs);
+        array_push($gpsv_tick, $ticks);
+        // side panel data for hike pages
+        array_push($miles, $calcs[0]);
+        array_push($maxmin, ($calcs[1] - $calcs[2]));
+        array_push($asc, $calcs[3]);
+        array_push($dsc, $calcs[4]);
+    }
+    return [$miles, $maxmin, $asc, $dsc];
+}
+/**
  * This function extracts existing cluster info from the CLUSTERS table
  * needed to display the 'select' drop-down boxes for the editor.
  * 
@@ -661,38 +812,25 @@ function getClusters($pdo)
     return $select;
 }
 /**
- * When there is no gpxfile, a pseudo-gpx file is created for display on
+ * When there is no gpxfile, a pseudo-json file is created for display on
  * the map.
  * 
- * @param float  $clat    Map center latitude
- * @param float  $clng    Map center longitude
- * @param string $gpxfile Gpx file name
- * @param array  $files   All gpx files associated
+ * @param float $clat Map center latitude
+ * @param float $clng Map center longitude
  * 
  * @return null
  */
-function createPseudoGpx($clat, $clng, &$gpxfile, &$files)
+function createPseudoJson($clat, $clng)
 {
-    $pseudo = simplexml_load_file("../edit/pseudo.gpx");
-    if ($pseudo === false) {
-        throw new Exception("Couldn't load pseudo.gpx");
-    }
-    $y = $pseudo->trk->trkseg[0];
-    $y->trkpt[0]['lat'] = $clat;
-    $y->trkpt[0]['lon'] = $clng;
-    $y->trkpt[1]['lat'] = $clat + .004507;
-    $y->trkpt[1]['lon'] = $clng;
-    $y->trkpt[2]['lat'] = $clat - .004507;
-    $y->trkpt[2]['lon'] = $clng;
-    $y->trkpt[3]['lat'] = $clat;
-    $y->trkpt[3]['lon'] = $clng;
-    $y->trkpt[4]['lat'] = $clat;
-    $y->trkpt[4]['lon'] = $clng - .005477;
-    $y->trkpt[5]['lat'] = $clat;
-    $y->trkpt[5]['lon'] = $clng + .005477;
-    $pseudo->asXML("../gpx/filler.gpx");
-    $gpxfile = "filler.gpx";
-    $files = [$gpxfile];
+    // The lat/lng of center may change, and therefore appear as variables
+    $json_file  = '{"lat":' . $clat . ',"lng":' . $clng . '},';
+    $json_file .= '{"lat":' . ($clat+.004507) . ',"lng":' . $clng . '},';
+    $json_file .= '{"lat":' . ($clat-.004507) . ',"lng":' . $clng . '},';
+    $json_file .= '{"lat":' . $clat . ',"lng":' . $clng . '},';
+    $json_file .= '{"lat":' . $clat . ',"lng":' . ($clng-.005477) . '},';
+    $json_file .= '{"lat":' . $clat . ',"lng":' . ($clng+.005466) . '},';
+    file_put_contents('../json/filler.json', $json_file);
+    return;
 }
 /**
  * For Flickr Albums ONLY: retrieve photo date from Flickr html based
@@ -750,8 +888,8 @@ function mantissa($degrees)
  * This function extracts the lats, lngs, and elevs from a gpx file,
  * and returns them as arrays. It also creates a json file for use in javascript,
  * if and only if a single track is requested from the caller.
- * NOTE: if there are multiple segments within a track, they are essentially
- * combined into one seqment.
+ * NOTE: if there are multiple segments within a track, they are effectively
+ * combined into one segment.
  * 
  * @param SimpleXML $gpxdat       Pre-loaded simplexml for gpx file
  * @param int       $no_of_tracks Write one json file per track
@@ -784,6 +922,9 @@ function gpxLatLng($gpxdat, $no_of_tracks)
             $gpxlats, $gpxlons, $gpxelev
         );
         array_push($track_data, $track_array);
+        $gpxlats = [];
+        $gpxlons = [];
+        $gpxelev = [];
     }
     return $track_data;
 }
@@ -832,7 +973,7 @@ function distance($lat1, $lon1, $lat2, $lon2)
         $rotation = 90.0 + -$angle;     // South
     }
     $rotation = round($rotation);
-    return array ($dist,$rotation);
+    return array ($dist, $rotation);
 }
 /**
  * This module will replace all occurances of <rtept> in a gpx

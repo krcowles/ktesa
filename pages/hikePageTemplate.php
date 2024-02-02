@@ -61,7 +61,7 @@ if (mobile) {
 </script>
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="active" style="display:none">Page</p>
-<p id="gpx" style="display:none"><?=$gpxPath;?></p>
+<p id="gpx" style="display:none"><?=$gpxfile;?></p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
 
 <!-- Side Panel: -->
@@ -75,12 +75,12 @@ if (mobile) {
             Hike Difficulty: <span id="hdiff" class="sumClr">
                 <?= $hikeDifficulty;?></span><br />
             Total Length of Hike: <span id="hlgth" class="sumClr">
-                <?= $hikeLength;?></span><br />
+                <?= $main_dist;?></span><br />
             Max to Min Elevation: <span id="hmmx" class="sumClr">
-                <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
+                <?=$main_echg;?> ft</span><br />
             <span id="adnote">* Total Ascent / Descent:
-                <span id="ascent" class="sumClr"><?=$asc;?></span> / 
-                <span id="descent" class="sumClr"><?=$dsc;?></span> ft</span>
+                <span id="ascent" class="sumClr"><?=$main_asc;?></span> / 
+                <span id="descent" class="sumClr"><?=$main_dsc;?></span> ft</span>
             <span id="advisory">Estimate based on track data<br /></span><br />
             Logistics: <span id="hlog" class="sumClr"><?= $hikeType;?></span><br />
             Exposure Type: <span id="hexp" 
@@ -96,10 +96,7 @@ if (mobile) {
             <p id="addtl"><strong>More!</strong></p>
             <p id="mlnk">View <a href="<?= $fpLnk;?>"
                 target="_blank">Full Page Map</a><br />
-                <!-- Apparently unused feature:
-                    <span class="track">View <a id="view" href="<?= $gpxPath;?>"
-                    target="_blank">GPX File</a></span><br />  -->
-                <span class="track">Download <a id="dwn" href="<?= $gpxPath;?>"
+                <span class="track">Download <a id="dwn" href="<?= $gpxfile;?>"
                         download>GPX File</a></span>
             </p>
             <?= $photoAlbum;?>
@@ -147,7 +144,7 @@ if (mobile) {
 </div>
 <!-- Map & Chart on right adjacent to side panel: -->
 <iframe id="mapline" src="<?=  $tmpMap;?>"></iframe>
-<div data-gpx="<?= $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
+<div data-gpx="<?= $gpxfile;?>" id="chartline"><canvas id="grph"></canvas></div>
 <!-- BOTH STYLES: -->
 <div style="clear:both;padding-top:12px;">
 <?php if (!is_null($hikeTips)) : ?>
@@ -167,9 +164,8 @@ if (mobile) {
 <div class="popupCap"></div>
 
 <script type="text/javascript">
-    <?php if (isset($hikeFiles)) : ?>
-    var hikeFiles = <?=$hikeFiles;?>;
-    <?php endif; ?>
+    // some vars not set for Cluster Pages...
+    var hike_file_list = <?=$hike_file_list;?>;
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
     <?php endif; ?>

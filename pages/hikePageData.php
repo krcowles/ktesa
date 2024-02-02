@@ -12,6 +12,7 @@
  * 
  * @package Ktesa
  * @author  Ken Cowles <krcowles29@gmail.com>
+ * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @license No license to date
  */
 
@@ -88,71 +89,47 @@ if ($tbl === 'old') {
 } else {
     $hikedLast  = false;
 }
-/**
- * It is permitted to have more than one gpx file per hike (e.g. Knife's Edge)
- * Also, 'old style' hikes and cluster pages will have no files specified
- */
+
 $asc = 0;
 $dsc = 0;
-$allgpx = $row['gpx'];
-if (!empty($allgpx)) {
-    $files    = explode(",", $allgpx);
-    $gpxfile  = $files[0];
-    $gpxPath  = '../gpx/' . $gpxfile;
-} else { // cluster pages defined later...
-    $gpxfile  = '';
-    $gpxPath  = '';
-    $asc = 0;
-    $dsc = 0;
-}
-
 /**
- * Set smoothing parameter values per the following hierarchy:
- * from query string, hike-specific value from database, or set defaults;
- * Params required in multiMap.php
-*/
-$distThreshParm = isset($_GET['distThreshParm']) ?
-filter_input(INPUT_GET, 'distThreshParm', FILTER_SANITIZE_NUMBER_INT) : false;
-$elevThreshParm = isset($_GET['elevThreshParm']) ?
-filter_input(INPUT_GET, 'elevThreshParm', FILTER_SANITIZE_NUMBER_INT) : false;
-$maWindowParm = isset($_GET['maWindowParm']) ?
-filter_input(INPUT_GET, 'maWindowParm', FILTER_SANITIZE_NUMBER_INT) : false;
-$makeGpsvDebugParm = isset($_GET['makeGpxvDebug']) ?
-filter_input(INPUT_GET, 'makeGpsvDebugParm') : false;
-$showAscDsc = isset($_GET['showAscDsc']) ?
-filter_input(INPUT_GET, 'showAscDsc') : false;
-$hikeEThresh    = $row['eThresh'];
-$hikeDThresh    = $row['dThresh'];
-$hikeMaWin      = $row['maWin'];
-$displayAscDsc 
-    = ($showAscDsc == true) || is_numeric($hikeEThresh) ? true : false;
-if ($elevThreshParm) { // threshold (meters) for elevation smoothing
-    $elevThresh = $elevThreshParm;
+ * It is permitted to have more than one gpx/track file per hike (e.g. Knife's Edge);
+ * The main gpx filename is $gpxfile, and $hike_tracks is an array of all the hike's
+ * uploaded tracknames [as json files]. $hike_tracks are physically located in
+ * '../json'.
+ */
+if (empty($row['gpx'])) {
+    if (empty($row['lat']) || empty($row['lng'])) {
+        // use NM State geographic center
+        $ctrlat = 34.450;
+        $ctrlng = -106.042;
+    } else {
+        // use lat/lng currently residing in db
+        $ctrlat = $row['lat'];
+        $ctrlng = $row['lng'];
+    }
+    createPseudoJson($ctrlat, $ctrlng);
+    $gpxfile = 'Filler';
+    $hike_tracks = ['filler.json'];
 } else {
-    $elevThresh = isset($hikeEThresh) ? $hikeEThresh : 1;
+    $stdClassGpx = json_decode($row['gpx'], true);
+    // Convert stdClass to array: 
+    $gpx_arr = [];
+    foreach ($stdClassGpx as $item => $value) {
+        $gpx_arr[$item] = $value;
+    }
+    // NOTE: track names will be the same as the original filename (sans '.gpx')
+    $main = $gpx_arr["main"];
+    $gpxfile = array_keys($main)[0];   // original filename
+    $gpxjson = array_values($main)[0]; // associated json track files [array]
+    $add1 = empty($gpx_arr["add1"]) ? [] : array_values($gpx_arr["add1"])[0];
+    $add2 = empty($gpx_arr["add2"]) ? [] : array_values($gpx_arr["add2"])[0];
+    $add3 = empty($gpx_arr["add3"]) ? [] : array_values($gpx_arr["add3"])[0];
+    $hike_tracks = array_merge($gpxjson, $add1, $add2, $add3);
 }
-if ($distThreshParm) { // threshold (meters) for distance smoothing
-    $distThresh = $distThreshParm;
-} else {
-    $distThresh = isset($hikeDThresh) ? $hikeDThresh : 1;
-}
-if ($maWindowParm) { // moving average window size for elevation smoothing
-    $maWindow = $maWindowParm;
-} else {
-    $maWindow = isset($hikeMaWin) ? $hikeMaWin : 1;
-}
-if ($makeGpsvDebugParm) {
-    $makeGpsvDebug = $makeGpsvDebug === "true" ? true : false;
-} else {
-    $makeGpsvDebug = false;
-}
-// Open debug files with headers, if requested by query string
-$handleDfa = null;
-$handleDfc = null;
-if ($makeGpsvDebug) {
-    $handleDfa = gpsvDebugFileArray($gpxPath);
-    $handleDfc = gpsvDebugComputeArray($gpxPath);
-}
+$noOfTrks = count($hike_tracks);
+// for hikePageTemplate.php js:
+$hike_file_list = json_encode($hike_tracks);
 
 if (!$clusterPage) {
     // Pages with old Flickr photos
@@ -170,62 +147,54 @@ if (!$clusterPage) {
         }
         $photoAlbum .= '</span></p>';
     }
-    if ($gpxfile === '') {  // hike page has no gpx file
-        if (empty($row['lat']) || empty($row['lng'])) {
-            // use NM State geographic center
-            $ctrlat = 34.450;
-            $ctrlng = -106.042;
-        } else {
-            $ctrlat = $row['lat'];
-            $ctrlng = $row['lng'];
-        }
-        createPseudoGpx($ctrlat, $ctrlng, $gpxfile, $files);
-    } else {  // hike page has at least one gpx file
-        if (strpos($allgpx, ",") !== false) {
-            $hikeTrackFiles = explode(",", $allgpx);
-            foreach ($hikeTrackFiles as &$hikegpx) {
-                $hikegpx = trim($hikegpx);
-            }
-        } else {
-            $hikeTrackFiles = [$gpxfile];
-        }
-        $hike_data = []; // array to collect info for javascript
-        foreach ($hikeTrackFiles as $gpx) {
-            $gpxPath = '../gpx/' . $gpx;
-            $gpxData = simplexml_load_file($gpxPath);
-            if ($gpxData === false) {
-                throw new Exception("GPX File could not be loaded: " . $gpx);
-            }
-            // there may be more than one track in a file (e.g. Black Canyon)
-            $noOfTrks = $gpxData->trk->count();
-            for ($j=0; $j<$noOfTrks; $j++) {
-                $trkname = $gpxData->trk[$j]->name->__toString();
-                $calcs = getTrackDistAndElev(
-                    1, $j, $trkname, $gpxPath, $gpxData, false, null, null, 1, 1, 1
-                );
-                $asc = round($calcs[3] * 3.28084);
-                $dsc = round($calcs[4] * 3.28084);
-                $max2min  = 3.28084 * ($calcs[1] - $calcs[2]);
-                $feet  = round($max2min);
-                $miles = 0.00062137119223733 * $calcs[0];
-                $miles = round($miles, 2);
-                $sidepanel = array(
-                    'logistics' => $hikeType,
-                    'miles' => $miles,
-                    'feet' => $feet,
-                    'ascent' => $asc,
-                    'descent' => $dsc,
-                    'diff' => $hikeDifficulty,
-                    'wow' => $hikeWow,
-                    'seasons' => $hikeSeasons,
-                    'expo' => $hikeExposure
-                );
-                $trkrel = array($trkname => $sidepanel);
-                $hike_data += $trkrel;  // "+" is union operator for arrays
-                $sidePanelData = json_encode($hike_data);
-            }
+    // arrays filled by mapping data routine:
+    $trk_nmes = [];
+    $gpsv_trk = [];
+    $trk_lats = [];
+    $trk_lngs = [];
+    $gpsv_tick = [];
+    $side_panel_data = prepareMappingData(
+        $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
+    );
+    // Prepare SidePanel data
+    $hike_data = []; // used to construct side panel
+    $trkno = 1;
+    $main_asc = 0;
+    $main_dsc = 0;
+    $main_echg = 0;
+    for ($j=0; $j<count($hike_tracks); $j++) {
+        /**
+         * Retrieve unique side panel data for each trackfile
+         * Track elevations & miles are in metric units and are
+         * converted below.
+         */
+        $miles   = round(0.00062137119223733 * $side_panel_data[0][$j], 1);
+        $miles = round($miles, 1);
+        $ascent  = round($side_panel_data[2][$j] * 3.28084);
+        $descent = round($side_panel_data[3][$j] * 3.28084);
+        $max2min = 3.28084 * ($side_panel_data[1][$j]);
+        $feet  = round($max2min);
+        $sidepanel = array(
+            'logistics' => $hikeType,
+            'miles' => $miles,
+            'feet' => $feet,
+            'ascent' => $ascent,
+            'descent' => $descent,
+            'diff' => $hikeDifficulty,
+            'wow' => $hikeWow,
+            'seasons' => $hikeSeasons,
+            'expo' => $hikeExposure
+        );
+        $trkrel = array($trk_nmes[$j] => $sidepanel);
+        $hike_data += $trkrel;  // "+" is union operator for arrays
+        if ($trkno++ === 1) {
+            $main_dist = $miles;
+            $main_asc  = $ascent;
+            $main_dsc  = $descent;
+            $main_echg = $feet;
         }
     }
+    $sidePanelData = json_encode($hike_data);
     /**
      * This section collects the information from TSV/ETSV table needed
      * to build the picture rows a hike page
@@ -372,14 +341,17 @@ if (($mapHandle = fopen($tmpMap, "w")) === false) {
 $fpLnk = "../maps/fullPgMapLink.php?hike={$hikeTitle}" .
     "&hno={$hikeIndexNo}&tbl={$tbl}";
 if ($clusterPage) {
+    /*
     $fpLnk .= "&clus=y";
     foreach ($files as $gpx) {
         $fpLnk .= "&gpx[]={$gpx}";
     }
+    */
 } else {
-    $fpLnk .= "&gpx={$allgpx}";
+    $query_items = implode(",", $hike_tracks);
+    $fpLnk .= "&json={$query_items}";
 }
- 
+
 $zoom = isset($respPg) && $respPg ? 'small' : 'large';
 $map_opts = [
     'zoom' => 18,
@@ -393,7 +365,6 @@ $map_opts = [
         "'measure':true, 'export':true }",
     'tracklist_options' => 'true',
     'marker_list_options' => 'false',
-    'show_markers' => 'true',
     'dynamicMarker' => 'true'  
 ];
 

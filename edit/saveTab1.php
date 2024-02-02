@@ -287,7 +287,7 @@ if (!$form_saved) {
      *  apos => int: $_SESSION['alerts'] index: each file has its own
      * 
      * NOTE: Since the script may be exited to service correctable errors,
-     * server tmp files are stored locally, as $_FILES data will be lost
+     * server tmp files are stored locally, as $_FILES data will be lost;
      */
     foreach ($upload_files as $upld) {
         array_push($uploads, prepareUpload($upld));
@@ -314,13 +314,16 @@ if (!$form_saved) {
      * data, the photos, any description or trail tips, references, and gps data 
      * may still be valid and are not deleted. The user can alter as he/she sees fit.
      * However, if this file had database waypoints, they will be deleted, as they
-     * are generally associated with a track.
+     * are generally associated with a track. If a new upload is being requested and
+     * a main file already existed, the previous main will be deleted ($replace_main).
      */
     $mainkey = empty($main) ? '' : array_keys($main)[0];
     $add1key = empty($add1) ? '' : array_keys($add1)[0];
     $add2key = empty($add2) ? '' : array_keys($add2)[0];
     $add3key = empty($add3) ? '' : array_keys($add3)[0];
-    if ($tab1_file_data['del_main']) {
+    $replace_main = $tab1_file_data['uploads'][0]['ureq'] && !empty($mainkey) ?
+        true : false;
+    if ($tab1_file_data['del_main'] || $replace_main) {
         $tracks  = $main[$mainkey];
         foreach ($tracks as $track) {
             $deltrk = '../json/' . $track;
