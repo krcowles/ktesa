@@ -49,12 +49,14 @@ if ($ehikes) {
     $rtable = 'EREFS';
     $gtable = 'EGPSDAT';
     $ttable = 'ETSV';
+    $wtable = 'EWAYPTS';
     $tbl    = 'new';
 } else {
     $htable = 'HIKES';
     $rtable = 'REFS';
     $gtable = 'GPSDAT';
     $ttable = 'TSV';
+    $wtable = 'WAYPTS';
     $tbl    = 'old';
 }
 $cluspg   = 'no'; // hidden <p> element => is/not cluster page, for js

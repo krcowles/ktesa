@@ -518,25 +518,22 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo)
         $gpxdat = convertRtePts($gpxdat);
     }
     /**
-     * Waypoints, if present, appear prior to the <trk>s, per gpx schema, and
-     * therefore there is only one set of waypoints regardless of the number
-     * of tracks present in the file. Waypoints are placed in the json file so
-     * as to be able to quickly reproduce a simplified version of the original
-     * uploaded gpx file if the user requests a download of that file. The
-     * simplification strips metadata and extensions from the file.
+     * Waypoints: there is only one set of waypoints regardless of the
+     * number of tracks present in the file (refer to GPX Schema). The
+     * gpx waypoint data is simplified by stripping metadata and extensions
+     * from the file and uses only fields relevant to this application.
      */
     if ($gpxdat->wpt->count() > 0) {
-        $waypoints = [];
         foreach ($gpxdat->wpt as $waypt) {
             $sym  = empty($waypt->sym)  ? "googlemini" : $waypt->sym;
             $name = empty($waypt->name) ? "Noname" : $waypt->name;
-            $wpts = '{"lat":' . $waypt['lat'] . ',"lng":' . $waypt['lon'] .
-                ',"name":"' . $name . '","sym":"' . $sym . '"}';
-            array_push($waypoints, $wpts);
+            $wptlat = LOC_SCALE * $waypt['lat'];
+            $wptlng = LOC_SCALE * $waypt['lon'];
+            $gpswptReq = "INSERT INTO `EWAYPTS` (`indxNo`,`type`,`name`," .
+            "`lat`,`lng`,`sym`) VALUES (?,'gpx',?,?,?,?);";
+            $gpswpt = $pdo->prepare($gpswptReq);
+            $gpswpt->execute([$hikeNo, $name, $wptlat, $wptlng, $sym]);
         }
-        $json_start = '{"wpts":[' . implode(",", $waypoints) . '],';
-    } else {
-        $json_start  = '{';
     }
     $trk_array   = []; // json file names for all tracks of this gpx
     $track_names = []; // <name> for each track
@@ -549,7 +546,7 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo)
         array_push($track_names, $track_name);
     }
     /**
-     * This next function call extracts lats/lngs/eles from the gpx file.
+     * This next function call extracts lats/lngs/eles from the gpx track.
      * Each track has one set of three arrays [one each for lats, lngs, eles]
      * containing this data. All tracks are therefore returned as an array
      * of arrays.
@@ -558,25 +555,23 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo)
     for ($k=0; $k<$trkcnt; $k++) {
         $json_array = $track_files[$k]; // $k is the kth track
         $no_of_entries = count($json_array[0]); // lats, lngs, eles have same cnt
-        $jdat = '"name":"' . $track_names[$k] . '","trk":[';   // array of objects
+        $jdat = '{"name":"' . $track_names[$k] . '","trk":[';   // array of objects
         for ($n=0; $n<$no_of_entries; $n++) {
             $jdat .= '{"lat":' . $json_array[0][$n] . ',"lng":' .
                 $json_array[1][$n] . ',"ele":' . $json_array[2][$n] . '},';
         }
         $jdat = rtrim($jdat, ","); 
         $jdat .= ']}';
-        $json_data = $json_start . $jdat;
         // now save the json file data for this track
         $basename = $ftype . $hikeNo . "_" . $fno++ . ".json";
         $jname = "../json/" . $basename;
-        file_put_contents($jname, $json_data);
+        file_put_contents($jname, $jdat);
         array_push($trk_array, $basename);
-        $json_start = '{';
-
+ 
         // for main gpx file only, record new lat/lng (only 1st track is used)
         if ($k === 0 && $ftype === 'emn') {
-            $trk_loc = strpos($json_data, '"trk":[{');
-            $latlng_str = substr($json_data, $trk_loc+14, 70);
+            $trk_loc = strpos($jdat, '"trk":[{');
+            $latlng_str = substr($jdat, $trk_loc+14, 70);
             $latlng_arr = explode(",", $latlng_str);
             $trklat = (float) $latlng_arr[0];
             $lat = (int) ($trklat * LOC_SCALE);

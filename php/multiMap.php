@@ -100,29 +100,20 @@ foreach ($hike_tracks as $json) {
     }  // end PROCESS EACH TRK
 
     /**
-     *   ---- ESTABLISH ANY WAYPOINTS IN GPX FILE ----
+     *   ---- ESTABLISH ANY WAYPOINTS ----
      */
-    /*
-    $gpxWaypts = $gpxdat->wpt->count();
-    if ($gpxWaypts > 0) {
-        foreach ($gpxdat->wpt as $waypt) {
-            $wlat = $waypt['lat'];
-            $wlng = $waypt['lon'];
-            $sym = $waypt->sym;
-            // Note Garmin editor can introduce whitespace
-            $wname = trim($waypt->name);
-            $wdesc = trim($waypt->desc);
-            //$text = preg_replace("/'/", "\'", $waypt->name);
-            $text = str_replace("'", "\'", $wname);
-            $desc = str_replace("'", "\'", $wdesc);
-            $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng .
-                ",name:'" . $text . "',desc:'" . $desc . "',color:'" . "blue" .
-                "',icon:'" . $sym . "'});\n";
-            array_push($waypoints, $wlnk);
-        }
-        $noOfWaypts += $gpxWaypts;
+    $getAllWptsReq = "SELECT * FROM {$wtable} WHERE `indxNo`={$hikeIndexNo};";
+    $allWpts = $pdo->query($getAllWptsReq)->fetchAll(PDO::FETCH_BOTH);
+    foreach ($allWpts as $wpt) {
+        $lat = $wpt['lat']/LOC_SCALE;
+        $lng = $wpt['lng']/LOC_SCALE;
+        $wlnk = "GV_Draw_Marker({lat:" . $lat . ",lon:" . $lng .
+            ",name:'" . $wpt['name'] . "',desc:'',color:'blue'," .
+            "icon:'" . $wpt['sym'] . "'});\n";
+        array_push($waypoints, $wlnk);
     }
-    */
+    $noOfWaypts = count($allWpts);
+
     /**
      *   ---- OPTIONAL PHOTOS ----
      */

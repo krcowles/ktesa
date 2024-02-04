@@ -142,7 +142,7 @@ $newglngdms  = '<span class="show_dms"><textarea class="tstyle1 dms lng_neg">' .
  */
 // database lat formats
 $dblats   = '<input type="hidden" name="dlat[]" value="dblatval"/>' . PHP_EOL;
-$dblatdeg = '<span class=" show_deg dlat_deg">' .
+$dblatdeg = '<span class="show_deg dlat_deg">' .
     '<textarea class="tstyle4 deg"></textarea> º' .
     '&nbsp;&nbsp;Longitude:</span>' . PHP_EOL;
 $dblatdm  = '<span class="show_dm dlat_dm">' .

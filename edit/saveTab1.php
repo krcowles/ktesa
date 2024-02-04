@@ -369,8 +369,7 @@ if (!$form_saved) {
                 }
             }
             // delete any database waypoints for this hike
-            $waypointsReq = "DELETE FROM `ETSV` WHERE `thumb` IS NULL AND " .
-                "`indxNo`=?;";
+            $waypointsReq = "DELETE FROM `EWAYPTS` WHERE `indxNo`=?;";
             $rmWaypts = $pdo->prepare($waypointsReq);
             $rmWaypts->execute([$hikeNo]);
             // update 'gpx' field in EHIKES db

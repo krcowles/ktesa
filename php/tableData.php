@@ -113,7 +113,6 @@ for ($i=0; $i<$entries; $i++) {
     $hikeLat = $row['lat']/LOC_SCALE;
     $hikeLon = $row['lng']/LOC_SCALE;
     $gpxFile = $row['gpx'];
-    $hikeTrk = $row['trk'];
     // 
     $hikeLocale[$i] = $row['locale'];
     $hikeWow[$i]    = $row['wow'];
@@ -143,8 +142,7 @@ for ($i=0; $i<$entries; $i++) {
     $hikeGpx[$i] = $row['gpx'];
     // HTML data-* attributes
     $hikeHiddenDat[$i] = 'data-indx="' . $indx . '" data-lat="' . $hikeLat .
-        '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '" ' .
-        'data-gpx="' . $gpxFile . '"';
+        '" data-lon="' . $hikeLon . '" data-gpx="' . $gpxFile . '"';
 }
 if ($age === 'new') { // forming javascript array data
     if (strlen($status) !== 1) {

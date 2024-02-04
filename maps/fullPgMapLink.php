@@ -14,7 +14,9 @@ $geoloc = '../../images/geoloc.png';
 
 $hikeIndexNo = filter_input(INPUT_GET, 'hno');
 $hikeTitle   = filter_input(INPUT_GET, 'hike');
-$ttable      = filter_input(INPUT_GET, 'tbl') === 'new' ? "ETSV" : "TSV";
+$table_age   = filter_input(INPUT_GET, 'tbl');
+$ttable      = $table_age === 'new' ? 'ETSV' : 'TSV';
+$wtable      = $table_age === 'new' ? 'EWAYPTS' : 'WAYPTS';
 if (isset($_GET['clus']) && $_GET['clus'] === 'y') {
     $hike_tracks = $_GET['json'];
 
