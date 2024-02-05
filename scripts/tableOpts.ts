@@ -3,7 +3,7 @@ interface RowData {
 	hikeno: string;
 	dist: string;
 	elev: string;
-	gpx: string;
+	tracks: string;
 }
 /**
  * @fileoverview This script contains functions that handle options in the 
@@ -46,9 +46,9 @@ const scrolltoAlph = 'aceglnpst';
 			let orgdist = $disttd.text();
 			let $elevtd = $(this).find('td').eq(elev_hdr);
 			let orgelev = $elevtd.text();
-			let gpxdat = $(this).data('gpx');
-			let orgdata: RowData =
-				{trail: trail, hikeno: hike, dist: orgdist, elev: orgelev, gpx: gpxdat};
+			let orgtrks = $(this).data('trk');
+			let orgdata: RowData = {trail: trail, hikeno: hike, dist: orgdist,
+				elev: orgelev, tracks: orgtrks};
 			eng_units.push(orgdata);
 		});
 	}

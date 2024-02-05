@@ -51,7 +51,7 @@ function dragElement(elmnt: HTMLElement) {
         document.onmousemove = null;
     }
 }
-var selectedHikes: string[] = [];
+var selectedHikes: string[] = []; // a list of the hike's track files
 var orgHt = <number>$('#usermodal').height();
 /**
  * Add a hike to the 'Selected' list
@@ -59,16 +59,8 @@ var orgHt = <number>$('#usermodal').height();
 function addToList(hike: string) {
     for (let k=0; k< eng_units.length; k++) {
         if (eng_units[k].trail === hike) {
-            let gpxinfo = eng_units[k].gpx;
-            if (gpxinfo.indexOf(',') !== -1) {
-                // this hike has multiple track files
-                let gpxfiles = gpxinfo.split(",");
-                for (let i=0; i<gpxfiles.length; i++) {
-                    selectedHikes.push(gpxfiles[i]);
-                }
-            } else {
-                selectedHikes.push(gpxinfo);
-            }
+            let htracks = eng_units[k].tracks.split(",");
+            selectedHikes = selectedHikes.concat(htracks);
             break;
         }
     }

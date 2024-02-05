@@ -21,6 +21,7 @@ $tblOnly = isset($hikeIndexNo) ? false : true;
 // tblOnly files are input via query string as an array of track names
 if ($tblOnly) {
     $hike_tracks = $_GET['m'];
+    $wtable = 'WAYPTS'; // only production hikes will use this routine
     $gpsv_trk = [];
     $trk_nmes = [];
     $trk_lats = [];
@@ -102,17 +103,20 @@ foreach ($hike_tracks as $json) {
     /**
      *   ---- ESTABLISH ANY WAYPOINTS ----
      */
-    $getAllWptsReq = "SELECT * FROM {$wtable} WHERE `indxNo`={$hikeIndexNo};";
-    $allWpts = $pdo->query($getAllWptsReq)->fetchAll(PDO::FETCH_BOTH);
-    foreach ($allWpts as $wpt) {
-        $lat = $wpt['lat']/LOC_SCALE;
-        $lng = $wpt['lng']/LOC_SCALE;
-        $wlnk = "GV_Draw_Marker({lat:" . $lat . ",lon:" . $lng .
-            ",name:'" . $wpt['name'] . "',desc:'',color:'blue'," .
-            "icon:'" . $wpt['sym'] . "'});\n";
-        array_push($waypoints, $wlnk);
+    if (isset($hikeIndexNo)) {
+        $getAllWptsReq = "SELECT * FROM {$wtable} WHERE `indxNo`={$hikeIndexNo};";
+        $allWpts = $pdo->query($getAllWptsReq)->fetchAll(PDO::FETCH_BOTH);
+        foreach ($allWpts as $wpt) {
+            $lat = $wpt['lat']/LOC_SCALE;
+            $lng = $wpt['lng']/LOC_SCALE;
+            $wlnk = "GV_Draw_Marker({lat:" . $lat . ",lon:" . $lng .
+                ",name:'" . $wpt['name'] . "',desc:'',color:'blue'," .
+                "icon:'" . $wpt['sym'] . "'});\n";
+            array_push($waypoints, $wlnk);
+        }
+        $noOfWaypts = count($allWpts);
     }
-    $noOfWaypts = count($allWpts);
+
 
     /**
      *   ---- OPTIONAL PHOTOS ----

@@ -586,6 +586,53 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo)
     return $org_name;
 }
 /**
+ * It is often required to extract the information contained in the 
+ * HIKES/EHIKES 'gpx' field and convert it to a usable array (or
+ * comma-separated string) of any and all track files associated with
+ * the hike. The stored json data, when decoded, results in an array
+ * of stdClass type, and must be converted to standard php string arrays.
+ * 
+ * @param PDO    $pdo    The database connection
+ * @param string $hikeNo The hike's unique indxNo in the HIKES/EHIKES table
+ * @param string $state  Whether hike is in-edit or published 
+ * 
+ * @return array $converted An array of gpx data as both an array of
+ *                          track files, or a comma-separated string 
+ */
+function getTrackFiles($pdo, $hikeNo, $state)
+{
+    $table = $state === 'pub' ? 'HIKES' : 'EHIKES';
+    $getGpxFieldReq = "SELECT `gpx` FROM `{$table}` WHERE `indxNo`={$hikeNo};";
+    $gpxField = $pdo->query($getGpxFieldReq)->fetch(PDO::FETCH_ASSOC);
+    if (!empty($gpxField['gpx'])) {
+        $stdClassGpx = json_decode($gpxField['gpx'], true);
+        // Convert stdClass to array: 
+        $gpx_array = [];
+        foreach ($stdClassGpx as $item => $value) {
+            $gpx_array[$item] = $value;
+        }
+        $main = array_values($gpx_array["main"])[0];
+        // it is possible for main to be empty:
+        if (empty($main)) {
+            $track_array  = [];
+            $track_string = '';
+        } else {
+            $add1 = empty($gpx_array["add1"]) ?
+                [] : array_values($gpx_array["add1"])[0];
+            $add2 = empty($gpx_array["add2"]) ?
+                [] : array_values($gpx_array["add2"])[0];
+            $add3 = empty($gpx_array["add3"]) ?
+                [] : array_values($gpx_array["add3"])[0];
+            $track_array = array_merge($main, $add1, $add2, $add3);
+            $track_string = implode(",", $track_array);
+        }
+    } else {
+        $track_array  = [];
+        $track_string = '';
+    }
+    return [$track_array, $track_string];
+}
+/**
  * This function calculates the gpx statistics for the main gpx file
  * of a hike.
  * 
@@ -881,8 +928,7 @@ function mantissa($degrees)
 }
 /**
  * This function extracts the lats, lngs, and elevs from a gpx file,
- * and returns them as arrays. It also creates a json file for use in javascript,
- * if and only if a single track is requested from the caller.
+ * and returns them as arrays. 
  * NOTE: if there are multiple segments within a track, they are effectively
  * combined into one segment.
  * 
