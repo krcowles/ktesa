@@ -20,7 +20,6 @@ $wtable      = $table_age === 'new' ? 'EWAYPTS' : 'WAYPTS';
 if (isset($_GET['clus']) && $_GET['clus'] === 'y') {
     $hike_tracks = $_GET['json'];
 
-
 } else {
     $hike_list = $_GET['json'];
     if (strpos($hike_list, ",") !== false) {
@@ -28,17 +27,16 @@ if (isset($_GET['clus']) && $_GET['clus'] === 'y') {
     } else {
         $hike_tracks = [$hike_list];
     }
-    $trkno = 1;
-    $trk_nmes = [];
-    $gpsv_trk = [];
-    $trk_lats = [];
-    $trk_lngs = [];
-    $gpsv_tick = [];
-    prepareMappingData(
-        $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
-    );
-    
 }
+$trkno = 1;
+$trk_nmes = [];
+$gpsv_trk = [];
+$trk_lats = [];
+$trk_lngs = [];
+$gpsv_tick = [];
+$pageData = prepareMappingData(
+    $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
+);
 
 /**
  * The map_opts specify the optional settings for the full-page map.

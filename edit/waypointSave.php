@@ -124,7 +124,7 @@ if (!empty($_POST['ddes'])) {
    
     for ($n=0; $n<count($chgdesc); $n++) {
         if (in_array($chgidx[$n], $remwpt)) {
-            $delquery = "DELETE FROM `EWAYPTS`` WHERE `wptId` = ?;";
+            $delquery = "DELETE FROM `EWAYPTS` WHERE `wptId` = ?;";
             $delpt = $pdo->prepare($delquery);
             $delpt->execute([$chgidx[$n]]);
         } else {

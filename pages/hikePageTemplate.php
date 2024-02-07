@@ -182,6 +182,7 @@ if (mobile) {
 <script src="../scripts/hikePageLayout.js"></script>
 <script src="../scripts/popupCaptions.js"></script>
 <script src="../scripts/rowManagement.js"></script>
+
 <script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>
 

@@ -586,6 +586,33 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo)
     return $org_name;
 }
 /**
+ * An often required function is presented to simplify access to the
+ * gpx field and convert the info to a corresponding php array.
+ * 
+ * @param PDO    $pdo    Database connection
+ * @param string $hikeno Unique hike indxNo
+ * @param string $state  Determines which database table to use
+ * 
+ * @return array $gpx_array The converted php array
+ */
+function getGpxArray($pdo, $hikeno, $state) 
+{
+    $table = $state === 'pub' ? 'HIKES' : 'EHIKES';
+    $getGpxFieldReq = "SELECT `gpx` FROM `{$table}` WHERE `indxNo`={$hikeno};";
+    $gpxField = $pdo->query($getGpxFieldReq)->fetch(PDO::FETCH_ASSOC);
+    if (!empty($gpxField['gpx'])) {
+        $stdClassGpx = json_decode($gpxField['gpx'], true);
+        // Convert stdClass to array: 
+        $gpx_array = [];
+        foreach ($stdClassGpx as $item => $value) {
+            $gpx_array[$item] = $value;
+        }
+    } else {
+        $gpx_array = ["main"=>[], "add1"=>[], "add2"=>[], "add3"=>[]];
+    }
+    return $gpx_array;
+}
+/**
  * It is often required to extract the information contained in the 
  * HIKES/EHIKES 'gpx' field and convert it to a usable array (or
  * comma-separated string) of any and all track files associated with
@@ -601,36 +628,24 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo)
  */
 function getTrackFiles($pdo, $hikeNo, $state)
 {
-    $table = $state === 'pub' ? 'HIKES' : 'EHIKES';
-    $getGpxFieldReq = "SELECT `gpx` FROM `{$table}` WHERE `indxNo`={$hikeNo};";
-    $gpxField = $pdo->query($getGpxFieldReq)->fetch(PDO::FETCH_ASSOC);
-    if (!empty($gpxField['gpx'])) {
-        $stdClassGpx = json_decode($gpxField['gpx'], true);
-        // Convert stdClass to array: 
-        $gpx_array = [];
-        foreach ($stdClassGpx as $item => $value) {
-            $gpx_array[$item] = $value;
-        }
+    $gpx_array = getGpxArray($pdo, $hikeNo, $state);
+    if (!empty($gpx_array["main"])) {
         $main = array_values($gpx_array["main"])[0];
-        // it is possible for main to be empty:
-        if (empty($main)) {
-            $track_array  = [];
-            $track_string = '';
-        } else {
-            $add1 = empty($gpx_array["add1"]) ?
-                [] : array_values($gpx_array["add1"])[0];
-            $add2 = empty($gpx_array["add2"]) ?
-                [] : array_values($gpx_array["add2"])[0];
-            $add3 = empty($gpx_array["add3"]) ?
-                [] : array_values($gpx_array["add3"])[0];
-            $track_array = array_merge($main, $add1, $add2, $add3);
-            $track_string = implode(",", $track_array);
-        }
+        $mainfile = array_keys($gpx_array["main"])[0];
+        $add1 = empty($gpx_array["add1"]) ?
+            [] : array_values($gpx_array["add1"])[0];
+        $add2 = empty($gpx_array["add2"]) ?
+            [] : array_values($gpx_array["add2"])[0];
+        $add3 = empty($gpx_array["add3"]) ?
+            [] : array_values($gpx_array["add3"])[0];
+        $track_array = array_merge($main, $add1, $add2, $add3);
+        $track_string = implode(",", $track_array);
     } else {
         $track_array  = [];
         $track_string = '';
+        $mainfile = '';
     }
-    return [$track_array, $track_string];
+    return [$track_array, $track_string, $mainfile];
 }
 /**
  * This function calculates the gpx statistics for the main gpx file
@@ -864,13 +879,14 @@ function getClusters($pdo)
  */
 function createPseudoJson($clat, $clng)
 {
+    $json_file = '{"name":"filler","trk":[';
     // The lat/lng of center may change, and therefore appear as variables
-    $json_file  = '{"lat":' . $clat . ',"lng":' . $clng . '},';
+    $json_file .= '{"lat":' . $clat . ',"lng":' . $clng . '},';
     $json_file .= '{"lat":' . ($clat+.004507) . ',"lng":' . $clng . '},';
     $json_file .= '{"lat":' . ($clat-.004507) . ',"lng":' . $clng . '},';
     $json_file .= '{"lat":' . $clat . ',"lng":' . $clng . '},';
     $json_file .= '{"lat":' . $clat . ',"lng":' . ($clng-.005477) . '},';
-    $json_file .= '{"lat":' . $clat . ',"lng":' . ($clng+.005466) . '},';
+    $json_file .= '{"lat":' . $clat . ',"lng":' . ($clng+.005466) . '}]}';
     file_put_contents('../json/filler.json', $json_file);
     return;
 }
