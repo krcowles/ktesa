@@ -47,7 +47,7 @@ if ($hike) {
     $jname = "../json/" . $basename;
     file_put_contents($jname, $json_data);
 } elseif ($range) {
-    $list = explode(",", $range);
+    $list = explode("-", $range);
     $start = $list[0];
     // NOTE: first record will be $start + 1...
     $noOfRecords = $list[1];
@@ -92,7 +92,7 @@ if ($hike) {
                 }
                 $json_value_array = [];
                 if (($k+1) <= $noOfGpx) {
-                    $fileName = $gpxfiles[$k];
+                    $fileName = $gpxfiles[$k]; // array of indiv. gpx files in `gpx`
                     $file = "../gpx/" . $fileName;
                     $gpxdat = simplexml_load_file($file);
                     if ($gpxdat === false) {
@@ -105,12 +105,13 @@ if ($hike) {
                     $noOfTracks = $gpxdat->trk->count();
                     $trackFileExt = 1; // increments for each track written
                     for ($j=0; $j<$noOfTracks; $j++) {
+                        $trk_name = $gpxdat->trk[$j]->name;
                         // $track_files has an array for each track,
                         // containing arrays of lats, lngs, eles
                         $track_files = gpxLatLng($gpxdat, $noOfTracks);
                         $json_array = $track_files[$j]; // this track's set of arrays
                         $no_of_entries = count($json_array[0]); // cnt lats/lngs/eles
-                        $jdat = '{"name":"' . $fileName . '","trk":['; // fill w/objs
+                        $jdat = '{"name":"' . $trk_name . '","trk":['; // fill w/objs
                         for ($n=0; $n<$no_of_entries; $n++) {
                             $jdat .= '{"lat":' . $json_array[0][$n] . ',"lng":' .
                                 $json_array[1][$n] . ',"ele":' . $json_array[2][$n]

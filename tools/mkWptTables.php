@@ -7,7 +7,7 @@ require "../php/global_boot.php";
 $wptTableReq = <<< TBL
 CREATE TABLE `WAYPTS` (
     `wptId` smallint(6) NOT NULL AUTO_INCREMENT,
-    `indexNo` smallint(6) DEFAULT NULL,
+    `indxNo` smallint(6) DEFAULT NULL,
     `type` varchar(3) DEFAULT NULL,
     `name` varchar(60) DEFAULT NULL,
     `lat` int(10) DEFAULT NULL,
