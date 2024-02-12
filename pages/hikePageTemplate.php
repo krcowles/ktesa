@@ -13,7 +13,6 @@
 session_start();
 $geoloc = "../../images/geoloc.png";
 require "../php/global_boot.php";
-require "../php/gpxFunctions.php";
 require "hikePageData.php";
 ?>
 <!DOCTYPE html>

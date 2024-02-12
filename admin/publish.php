@@ -9,7 +9,6 @@
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
@@ -22,17 +21,35 @@ $msgout      = '';
 $type        = 'Edited Page';
 
 // next hike no if published as brand new hike
-$last = "SELECT * FROM HIKES ORDER BY 1 DESC LIMIT 1;";
+$last = "SELECT `indxNo` FROM `HIKES` ORDER BY 1 DESC LIMIT 1;";
 $lasthike = $pdo->query($last);
-$item = $lasthike->fetch(PDO::FETCH_NUM);
-$lastHikeNo = intval($item[0]);
+$item = $lasthike->fetch(PDO::FETCH_ASSOC);
+$lastHikeNo = intval($item['indxNo']);
+/**
+ *  NOTE: Guarantee that the AUTO_INCREMENT value agrees with the value
+ * of $lastHikeNo + 1 [This has caused errors during past testing!]
+ */
+$ai_state = <<<AI
+SELECT AUTO_INCREMENT
+FROM information_schema.tables
+WHERE table_name = 'HIKES'
+AND table_schema = DATABASE( );
+AI;
+$state = $pdo->query($ai_state)->fetch(PDO::FETCH_NUM);
+$testNo = $lastHikeNo + 1;
+if ($state[0] !== $testNo) {
+    throw new Exception(
+        "AUTO_INCREMENT value {$state[0]} does not agree with" .
+        " next hike no {$testNo}"
+    );
+}
 
 $query = "SELECT * FROM EHIKES WHERE indxNo = :hikeNo;";
 $ehk = $pdo->prepare($query);
 $ehk->execute(["hikeNo" => $hikeNo]);
 $ehike = $ehk->fetch(PDO::FETCH_ASSOC);
 if ($ehike === false) {
-    $msgout .= "<p class='brown'>Hike {$hikeNo} has no data!</p>";
+    throw new Exception("EHIKE data not found for indxNo {$hikeNo}");
 }
 $clusPgField = $ehike['pgTitle']; // used if publishing a new cluster page
 $cname = $ehike['cname'];
@@ -90,16 +107,19 @@ if ($status > $lastHikeNo || $status < 0) {
 
 /**
  * Continue ONLY IF NO ERRORS...
+ * Get all associated json track files, which must have their filenames
+ * altered to correspond to the new production hike no.
  */
-if ($msgout == '') {    
+if ($msgout == '') {   
     // Get column names for building query strings
     $result = $pdo->query("SHOW COLUMNS FROM EHIKES;");
     $columns = $result->fetchAll(PDO::FETCH_BOTH);
+    // NOTE: HIKES gpx field is not updated/inserted as it will be set later
     if ($status > 0) { // this is an existing hike, UPDATE its record in HIKES
         $query = "UPDATE HIKES, EHIKES SET ";
         foreach ($columns as $column) {
             if (($column[0] !== "indxNo") && ($column[0] !== "stat")
-                && $column[0] !== "cname"
+                && $column[0] !== "cname" && ($column[0] !== "gpx")
             ) {
                 $query .= "HIKES.{$column[0]} = EHIKES.{$column[0]}, ";
             }
@@ -114,7 +134,7 @@ if ($msgout == '') {
         $fields = '';
         foreach ($columns as $column) {
             if (($column[0] !== "indxNo") && ($column[0] !== "stat")
-                && ($column[0] !== "cname")
+                && ($column[0] !== "cname") && ($column[0] !== "gpx")
             ) {
                 $fields .= "{$column[0]}, ";
             }
@@ -126,7 +146,7 @@ if ($msgout == '') {
         $updte->bindValue(":hikeNo", $hikeNo);
     }
     $updte->execute();
-
+    
     // Assign the hike number for the remaining tables based on status:
     if ($status === 0) { // this will be the newly added hikeno.
         $indxNo = $lastHikeNo + 1;
@@ -135,6 +155,83 @@ if ($msgout == '') {
         $indxNo = $status;
     }
     $newPage = "../pages/hikePageTemplate.php?hikeIndx=" . $indxNo;
+
+    if (!$clusterPage) { // Fix gpx field ($clusterPage has null)
+        $track_files = getTrackFileNames($pdo, $hikeNo, 'edit')[0]; 
+        /**
+         * For already published hikes, first remove old json files [There may be
+         * more old json tracks than there are replacements]. Remember that the
+         * HIKES gpx field has not yet been updated.
+         */
+        if ($type === "Edited Page") {
+            $old_json = getTrackFileNames($pdo, $indxNo, 'pub')[0];
+            foreach ($old_json as $old) {
+                unlink("../json/" . $old);
+            }
+        }
+        /**
+         * Identify the new gpx_array, store it in the database, and rename
+         * EHIKE json files. Move the renamed files to their new location in
+         * '../json' directory. 
+         */
+        $main_val = [];
+        $add1_val = [];
+        $add2_val = [];
+        $add3_val = [];
+        $egpx_array = getGpxArray($pdo, $hikeNo, 'edit');
+        $emain = $egpx_array['main'];
+        if (empty($emain)) {
+            throw new Exception(
+                "No EHIKES gpx file has been uploaded for EHIKE No. {$hikeNo}"
+            );
+        }
+        $eadd1 = empty($egpx_array['add1']) ? [] : $egpx_array['add1'];
+        $eadd2 = empty($egpx_array['add2']) ? [] : $egpx_array['add2'];
+        $eadd3 = empty($egpx_array['add3']) ? [] : $egpx_array['add3'];
+        $emain_gpx = array_keys($emain)[0];
+        $eadd1_gpx = empty($eadd1) ? '' : array_keys($eadd1)[0];
+        $eadd2_gpx = empty($eadd2) ? '' : array_keys($eadd2)[0];
+        $eadd3_gpx = empty($eadd3) ? '' : array_keys($eadd3)[0];
+        foreach ($track_files as $fname) {
+            $ftype        = substr($fname, 1, 2);  // 'mn', 'a1', 'a2', or 'a3'
+            $extensionloc = strpos($fname, "_");
+            $extension    = substr($fname, $extensionloc); // _#.json
+            $new_fname    = 'p' . $ftype . $indxNo . $extension;
+            switch ($ftype) {
+            case "mn":
+                array_push($main_val, $new_fname);
+                break;
+            case "a1":
+                array_push($add1_val, $new_fname);
+                break;
+            case "a2":
+                array_push($add2_val, $new_fname);
+                break;
+            default:
+                array_push($add3_val, $new_fname);
+            }
+            $old_loc = "../json/" . $fname;
+            $new_loc = "../json/" . $new_fname;
+            if (!rename($old_loc, $new_loc)) {
+                throw new Exception("Could not move {$fname}");
+            }
+        }
+        $add1_array = empty($eadd1_gpx) ? [] : array($eadd1_gpx => $add1_val);
+        $add2_array = empty($eadd2_gpx) ? [] : array($eadd2_gpx => $add2_val);
+        $add3_array = empty($eadd3_gpx) ? [] : array($eadd3_gpx => $add3_val);
+        $new_gpx_array = array(
+            "main" => [$emain_gpx => $main_val],
+            "add1" => $add1_array,
+            "add2" => $add2_array,
+            "add3" => $add3_array
+        );
+        // set HIKES gpx field with new gpx array
+        $new_gpx = json_encode($new_gpx_array);
+        $updateGpxReq = "UPDATE `HIKES` SET `gpx`=? WHERE `indxNo`=?;";
+        $updateGpx = $pdo->prepare($updateGpxReq);
+        $updateGpx->execute([$new_gpx, $indxNo]);
+    }
+
     /**
      * In the cases of EGPSDAT, EREFS, and ETSV, elements may have been
      * deleted during edit, therefore, remove ALL the old data if the
@@ -222,9 +319,9 @@ if ($msgout == '') {
      * to the new indxNo in HIKES; Already published cluster pages require no change.
      */
     if ($clusterPage && $status == 0) {
-        $newPageReq = "UPDATE `CLUSTERS` SET `page`=?,`pub`='Y' WHERE `group`=?;";
-        $newPage = $pdo->prepare($newPageReq);
-        $newPage->execute([$indxNo, $clusPgField]);
+        $newPgReq = "UPDATE `CLUSTERS` SET `page`=?,`pub`='Y' WHERE `group`=?;";
+        $newPg = $pdo->prepare($newPgReq);
+        $newPg->execute([$indxNo, $clusPgField]);
     }
 
     /**

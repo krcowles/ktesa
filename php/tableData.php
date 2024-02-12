@@ -22,7 +22,7 @@
  *        c. Submitting a hike-in-edit for publication
  *           [...Submit for publication]
  *           $pageType = 'PubReq'
- *           [age=new, pub=usr]    
+ *           [age=new, pub=usr] 
  *  3.  By 'admin/reldel.php': via Admintools.php
  *      Here it is used to list ALL EHIKES (for admin) to release or delete:
  *      $pageType = 'Publish'
@@ -37,6 +37,7 @@
  * @license No license to date
  */
 $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : '';
+$sort   = isset($act) && $act === 'pub' ? false : true;
 
 // Icons used for table display:
 $dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
@@ -68,9 +69,11 @@ $hikeDirections = array();
 $hikeAlbum = array();
 $table = $age === 'new' ? 'EHIKES' : 'HIKES';
 $state = $age === 'new' ? 'edit' : 'pub';
-$query = "SELECT * FROM {$table} ";
-$qualifier = $show === 'usr' ? "WHERE `usrid`={$userid} " : '';
-$query .= $qualifier . "ORDER BY `pgTitle`;";
+$query = "SELECT * FROM {$table}";
+$user_qualifier = $show === 'usr' ? " WHERE `usrid`={$userid}" : '';
+// NOTE: publish list must not be sorted in order to synch w/hike nos
+$sort_qualifier = $sort ? " ORDER BY `pgTitle`;" : ";";
+$query .= $user_qualifier . $sort_qualifier;
 $tblquery = $pdo->query($query);
 $entries = $tblquery->rowCount();
 // adjust link based on caller location
@@ -85,7 +88,7 @@ for ($i=0; $i<$entries; $i++) {
     $indx    = $row['indxNo'];
     $hikeLat = $row['lat']/LOC_SCALE;
     $hikeLon = $row['lng']/LOC_SCALE;
-    $tracklist = getTrackFiles($pdo, $indx, $state);
+    $tracklist = getTrackFileNames($pdo, $indx, $state);
     // 
     $hikeLocale[$i] = $row['locale'];
     $hikeWow[$i]    = $row['wow'];

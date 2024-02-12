@@ -12,7 +12,6 @@ session_start();
 $respPg = true;
 $geoloc = "../../images/mobileloc.png";
 require "../php/global_boot.php";
-require_once "../php/gpxFunctions.php";
 require "hikePageData.php";
 $hikeno = filter_input(INPUT_GET, 'hikeIndx');
 

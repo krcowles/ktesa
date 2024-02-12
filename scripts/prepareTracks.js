@@ -58,8 +58,6 @@ function getTrackData(promise) {
             trkLats.push(lats);
             trkLngs.push(lngs);
             trkEles.push(elevs);
-            // form the array of datapoint objects for this track:
-            rows[0] = { x: 0, y: elevs[0], g: 0 };
             var emax = 0;
             var emin = 20000;
             var dist = [];
@@ -69,38 +67,42 @@ function getTrackData(promise) {
             var runs = [];
             var runindx = 0;
             for (var i = 0; i < lats.length - 1; i++) {
-                dist = distInMiles(lats[i], lngs[i], lats[i + 1], lngs[i + 1], elevs[i], elevs[i + 1]);
-                hikelgth += dist[0];
-                // check for consecutive 'steep' grades
-                var degrees = Math.abs(dist[1]);
-                if (degrees > grade_threshold) {
-                    start = true;
-                    steeps.push(i);
-                    consec++;
-                    // once start is true, keep tracking until below threshhold
-                }
-                else if (start && degrees >= grade_threshold - 1) {
-                    steeps.push(i);
-                    consec++;
-                }
-                if (start && degrees < grade_threshold - 1) {
-                    start = false;
-                    if (consec >= min_run) {
-                        for (var j = 0; j < steeps.length; j++) {
-                            runs[runindx++] = steeps[j];
-                        }
+                if (elevs[i] !== 0) {
+                    dist = distInMiles(lats[i], lngs[i], lats[i + 1], lngs[i + 1], elevs[i], elevs[i + 1]);
+                    hikelgth += dist[0];
+                    // check for consecutive 'steep' grades
+                    var degrees = Math.abs(dist[1]);
+                    if (degrees > grade_threshold) {
+                        start = true;
+                        steeps.push(i);
+                        consec++;
+                        // once start is true, keep tracking until below threshhold
                     }
-                    consec = 0;
-                    steeps = [];
+                    else if (start && degrees >= grade_threshold - 1) {
+                        steeps.push(i);
+                        consec++;
+                    }
+                    if (start && degrees < grade_threshold - 1) {
+                        start = false;
+                        if (consec >= min_run) {
+                            for (var j = 0; j < steeps.length; j++) {
+                                runs[runindx++] = steeps[j];
+                            }
+                        }
+                        consec = 0;
+                        steeps = [];
+                    }
+                    if (elevs[i + 1] !== 0) {
+                        if (elevs[i + 1] > emax) {
+                            emax = elevs[i + 1];
+                        }
+                        if (elevs[i + 1] < emin) {
+                            emin = elevs[i + 1];
+                        }
+                        var dataPtObj = { x: hikelgth, y: elevs[i + 1], g: 0 };
+                        rows.push(dataPtObj);
+                    }
                 }
-                if (elevs[i + 1] > emax) {
-                    emax = elevs[i + 1];
-                }
-                if (elevs[i + 1] < emin) {
-                    emin = elevs[i + 1];
-                }
-                var dataPtObj = { x: hikelgth, y: elevs[i + 1], g: 0 };
-                rows.push(dataPtObj);
             }
             var rindx = 0;
             for (var k = 0; k < rows.length; k++) {

@@ -12,6 +12,7 @@ require "../php/global_boot.php";
 
 $range = isset($_GET['range']) ? filter_input(INPUT_GET, 'range') : false;
 $hike  = isset($_GET['hike'])  ? filter_input(INPUT_GET, 'hike')  : false;
+$redo  = isset($_GET['redo'])  ? filter_input(INPUT_GET, 'redo')  : false;
 
 if ($hike) {
     $hikeReq = "SELECT `indxNo`,`gpx` FROM `HIKES` WHERE `pgTitle`=?;";
@@ -136,6 +137,29 @@ if ($hike) {
         $updateGpx = $pdo->prepare($updateReq);
         $updateGpx->execute([$newgpx, $hikeNo]);
     }
+} elseif ($redo) {
+    // For already converted, but missing json files...
+    $arr = getGpxArray($pdo, $redo, 'pub');
+    $main = $arr['main'];
+    $main_gpx = array_keys($main)[0];
+    gpxToJason($main_gpx, 'mn', $redo);
+    if (!empty($arr['add1'])) {
+        $add1 = $arr['add1'];
+        $add1_gpx = array_keys($add1)[0];
+        gpxToJason($add1_gpx, 'a1', $redo);
+    }
+    if (!empty($arr['add2'])) {
+        $add2 = $arr['add2'];
+        $add2_gpx = array_keys($add2)[0];
+        gpxToJsaon($add2_gpx, 'a2', $redo);
+    }
+    if (!empty($arr['add3'])) {
+        $add3 = $arr['add3'];
+        $add3_gpx = array_keys($add3)[0];
+        gpxToJason($add3_gpx, 'a3', $redo);
+    }
+    echo "Single gpx file converted for hike no {$redo}";
+    exit;
 }
 // THe numbering is very unreliable!!!!!
 $first = $start - 4;

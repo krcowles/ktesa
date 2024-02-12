@@ -53,6 +53,7 @@ $enos =  rtrim($enos, ",") . ']';
 <p id="active" style="display:none">Admin</p>
 <p id="action" style="display:none"><?= $act;?></p>
 <?php
+$act = 'pub';
 require '../php/makeTables.php';
 ?>
 <script type="text/javascript">

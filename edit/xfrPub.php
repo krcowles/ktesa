@@ -42,7 +42,7 @@ if (count($clusHike) > 0) {
     $cname = $groupName['group'];
 }
 /*
- * Place HIKES data into EHIKES
+ * Place HIKES data into EHIKES: NOTE: gpx will have production json names
  */
 
 $xfrReq = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`,`locale`," .
@@ -55,8 +55,9 @@ $xfrReq = "INSERT INTO `EHIKES` (`pgTitle`,`usrid`,`stat`,`locale`," .
     "FROM `HIKES` WHERE `indxNo` = ?;";
 $query = $pdo->prepare($xfrReq);
 $query->execute([$userid, $getHike, $cname, $getHike]);
+
 // Fetch the new hike no in EHIKES:
-$indxReq = "SELECT indxNo FROM EHIKES ORDER BY indxNo DESC LIMIT 1;";
+$indxReq = "SELECT `indxNo` FROM `EHIKES` ORDER BY `indxNo` DESC LIMIT 1;";
 $indxq = $pdo->query($indxReq);
 $indxNo = $indxq->fetch(PDO::FETCH_NUM);
 $hikeNo = $indxNo[0];
@@ -79,6 +80,59 @@ if (!$cluspg) {
         "`indxNo` = ?;";
     $gpsq = $pdo->prepare($gpsDatReq);
     $gpsq->execute([$hikeNo, $getHike]);
+
+    /**
+     * Transfer published json files and reset gpx field in EHIKES;
+     * At this point, gpx still holds the production names of json
+     */
+    $previousJson = getTrackFileNames($pdo, $getHike, 'pub')[0];
+    $main_val = [];
+    $add1_val = [];
+    $add2_val = [];
+    $add3_val = [];
+    foreach ($previousJson as $json) {
+        $ftype     = substr($json, 1, 2);  // 'mn', 'a1', 'a2', or 'a3'
+        $dash_loc  = strpos($json, "_");
+        $extension = substr($json, $dash_loc);
+        $new_name  = "e" . $ftype . $hikeNo . $extension;
+        $to_loc   = "../json/" . $new_name;
+        $from_loc = "../json/" . $json;
+        
+        // Published hike still requires its files, so copy, not move!
+        if (!copy($from_loc, $to_loc)) {
+            throw new Exception("Could not relocate {$json}");
+        }
+        switch ($ftype) {
+        case "mn":
+            array_push($main_val, $new_name);
+            break;
+        case "a1":
+            array_push($add1_val, $new_name);
+            break;
+        case "a2":
+            array_push($add2_val, $new_name);
+            break;
+        default:
+            array_push($add3_val, $new_name);
+        }
+    }
+    $old_gpx_array = getGpxArray($pdo, $hikeNo, 'edit'); // same as 'pub' right now
+    $main_gpx = array_keys($old_gpx_array['main'])[0];
+    $add1_gpx = empty($old_gpx_array['add1']) ? 
+        '' : array_keys($old_gpx_array['add1'])[0];
+    $add2_gpx = empty($old_gpx_array['add2']) ? 
+        '' : array_keys($old_gpx_array['add2'])[0];
+    $add3_gpx = empty($old_gpx_array['add3']) ? 
+        '' : array_keys($old_gpx_array['add3'])[0];
+    // update gpx array
+    $old_gpx_array["main"] = array($main_gpx => $main_val);
+    $old_gpx_array["add1"] = empty($add1_gpx) ? [] : array($add1_gpx => $add1_val);
+    $old_gpx_array["add2"] = empty($add2_gpx) ? [] : array($add2_gpx => $add2_val);
+    $old_gpx_array["add1"] = empty($add3_gpx) ? [] : array($add3_gpx => $add1_val);
+    $new_gpx_array = json_encode($old_gpx_array);
+    $updateGpxReq = "UPDATE `EHIKES` SET `gpx`=? WHERE `indxNo`=?;";
+    $updateGpx = $pdo->prepare($updateGpxReq);
+    $updateGpx->execute([$new_gpx_array, $hikeNo]);
 }
 /*
  * Place REFS data into EREFS

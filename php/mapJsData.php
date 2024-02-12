@@ -41,6 +41,7 @@ $clushikes
 $hike_req = "SELECT `pgTitle`,`indxNo`,`miles`,`feet`,`diff`,`lat`,`lng`," .
     "`preview`,`dirs` FROM `HIKES` ORDER BY `pgTitle`;";
 $hikes = $pdo->query($hike_req)->fetchAll(PDO::FETCH_ASSOC);
+$noOfHikes = count($hikes);
 
 /**
  * Retrieve the highest indxNo in HIKES for sizing the $hikePairings array:
@@ -162,19 +163,18 @@ $jsPages    = '[' . implode(",", $pages) . ']';
 $jsPageNames  = '[' . implode(",", $pageNames) . ']';
 
 /**
- * Form array of json file names
- */
+ * Form array of json file names:
+ * All json files for tracks will use the main gpx json file: pmn#_1.json
+ */ 
 $trackArray = [];
-$inos = $pdo->query('SELECT MAX(indxNo) FROM `HIKES`;')->fetch(PDO::FETCH_NUM);
-for ($t=0; $t<$inos[0]; $t++) {
-    $trackArray[$t] = "''";
-}
-$trackdat = $pdo->query('SELECT `indxNo`,`trk` FROM `HIKES`');
-$tracks = $trackdat->fetchAll(PDO::FETCH_ASSOC);
-foreach ($tracks as $track) {
-    if (!empty($track['trk'])) {
-        $track['trk'] = "'" . $track['trk'] . "'";
-        $trackArray[$track['indxNo']] = $track['trk'];
+$getGpxReq = "SELECT `indxNo`,`gpx` FROM `HIKES`;";
+$gpxField = $pdo->query($getGpxReq)->fetchAll(PDO::FETCH_ASSOC);
+foreach ($gpxField as $gpx) {
+    if (empty($gpx['gpx'])) {
+        array_push($trackArray, "''");
+    } else {
+        $json_filename = '"pmn' . $gpx['indxNo'] . '_1.json"';
+        array_push($trackArray, $json_filename);
     }
 }
 $jsTracks = '[' . implode(",", $trackArray) . ']';

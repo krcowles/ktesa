@@ -186,7 +186,8 @@ function uploadFile($upload, $elev=false, $syms=false)
 }
 /**
  * Any completed gpx file upload will require 'processing', which means that
- * the corresponding json track files must be created and stored, and 
+ * the corresponding json track files must be created and stored. Lats
+ * and lngs and eles are extracted and data is returned.
  * 
  * @param PDO    $pdo    Database connection object
  * @param array  $upload The array holding the pre-processed upload info for 
@@ -207,7 +208,8 @@ function processGpx($pdo, $upload, $ifiles, $jfiles, $hikeNo)
         $pdo, $org_key, $upload['ufn'], $tmpfile, $hikeNo
     );
     if ($org_key === 'main') {
-        $calcs = getGpxFileStats($tmpfile);
+        $gpx_data = simplexml_load_file($tmpfile);
+        $calcs = getGpxStats($gpx_data, 0);
         $newstatsReq
             = "UPDATE `EHIKES` SET `miles`=?,`feet`=? WHERE " .
               "`indxNo`=?;";
@@ -587,7 +589,7 @@ function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo)
 }
 /**
  * An often required function is presented to simplify access to the
- * gpx field and convert the info to a corresponding php array.
+ * gpx field and convert the contents to a corresponding php array.
  * 
  * @param PDO    $pdo    Database connection
  * @param string $hikeno Unique hike indxNo
@@ -623,11 +625,13 @@ function getGpxArray($pdo, $hikeno, $state)
  * @param string $hikeNo The hike's unique indxNo in the HIKES/EHIKES table
  * @param string $state  Whether hike is in-edit or published 
  * 
- * @return array $converted An array of gpx data as both an array of
- *                          track files, or a comma-separated string 
+ * @return array $converted An array of track data as both an array of
+ *                          track files, or a comma-separated string;
+ *                          includes name of the main gpx file 
  */
-function getTrackFiles($pdo, $hikeNo, $state)
+function getTrackFileNames($pdo, $hikeNo, $state)
 {
+    // Get a complete list of tracks [from 'gpx'] associated with this hike 
     $gpx_array = getGpxArray($pdo, $hikeNo, $state);
     if (!empty($gpx_array["main"])) {
         $main = array_values($gpx_array["main"])[0];
@@ -648,81 +652,70 @@ function getTrackFiles($pdo, $hikeNo, $state)
     return [$track_array, $track_string, $mainfile];
 }
 /**
- * This function calculates the gpx statistics for the main gpx file
- * of a hike.
+ * Replacement for former gpxFunction: getTrackDistAndElev.
+ * gpxFunctions.php no longer exists. This function will
+ * calculate miles/feet from the original gpx file.
+ * Note, for any gpx file w/multiple trkseg's in a trk, all
+ * trkpt's will be assembled in one array ($track_pts);
  * 
- * @param string $gpxPath The hike's main gpx file uploaded via 'newgpx'
+ * @param SimpleXML $xml_data Pre-loaded xml data from gpx file
+ * @param int       $track_no Which track in the data to use
  * 
- * @return array miles and elevation change in feet
+ * @return array $data Hike distance (miles) and elevation change (feet)
  */
-function getGpxFileStats($gpxPath)
+function getGpxStats($xml_data, $track_no)
 {
-    // Now calculate the new gpx file's statistics (miles, feet, ...)
-    $gpxdat = simplexml_load_file($gpxPath);
-    if ($gpxdat === false) {
-        throw new Exception("Failed to open {$gpxPath}");
+    if ($xml_data->rte->count() > 0) {
+        $xml_data = convertRtePts($xml_data);
     }
-    if ($gpxdat->rte->count() > 0) {
-        $gpxdat = convertRtePts($gpxdat);
+    $track_pts = [];
+    $noOfSegs = $xml_data->trk[$track_no]->trkseg->count();
+    for ($i=0; $i<$noOfSegs; $i++) {
+        $xml_elements = $xml_data->trk[$track_no]->trkseg[$i];
+        foreach ($xml_elements as $trkpt) {
+            array_push($track_pts, $trkpt);
+        }
     }
-    $noOfTrks = $gpxdat->trk->count();
-    // threshold in meters to filter out elevation and distance value variation
-    // set by default if command line parameter(s) is not given
-    $elevThresh = 1.0;
-    $distThresh = 5.0;
-    $maWindow = 3;
-    
-    // calculate stats for all tracks:
-    $pup = (float)0;
-    $pdwn = (float)0;
+    // variables for each track's calcs
+    $hikeLgth = (float)0;
     $pmax = (float)0;
     $pmin = (float)50000;
-    $hikeLgthTot = (float)0;
-    for ($k=0; $k<$noOfTrks; $k++) {
-        $calcs = getTrackDistAndElev(
-            0, $k, "", $gpxPath, $gpxdat, false, null,
-            null, $distThresh, $elevThresh, $maWindow
-        );
-        $hikeLgthTot += $calcs[0];
-        if ($calcs[1] > $pmax) {
-            $pmax = $calcs[1];
+    // 1st lat/lng, used when calling 'distance()'
+    $prevLat  = (float)$track_pts[0]["lat"]->__toString(); 
+    $prevLng  = (float)$track_pts[0]["lon"]->__toString();
+    $prevEle  = (float)$track_pts[0]->ele->__toString();
+
+    for ($k=0; $k<count($track_pts); $k++) {
+        $curlat = (float)$track_pts[$k]["lat"]->__toString();
+        $curlng = (float)$track_pts[$k]["lon"]->__toString();
+        $curele = (float)$track_pts[$k]->ele->__toString();
+        // 1st distance = 0
+        $parms = distance($prevLat, $prevLng, $curlat, $curlng);
+        $hikeLgth += $parms[0];
+        $prevLat = $curlat;
+        $prevLng = $curlng;
+        if (!($curele === 0 || $prevEle === 0)) {
+            if ($curele > $pmax) {
+                $pmax = $curele;
+            }
+            if ($curele < $pmin) {
+                $pmin = $curele;
+            }
         }
-        if ($calcs[2] < $pmin) {
-            $pmin = $calcs[2];
-        }
-        $pup  += $calcs[3];
-        $pdwn += $calcs[4];
-    } // end for: PROCESS EACH TRK
-    
-    $totalDist = $hikeLgthTot / 1609;
-    $miles = round($totalDist, 1, PHP_ROUND_HALF_DOWN);
-    $elev = ($pmax - $pmin) * 3.28084;
-    if ($elev < 100) { // round to nearest 10
-        $adj = round($elev/10, 0, PHP_ROUND_HALF_UP);
-        $feet = 10 * $adj;
-    } elseif ($elev < 1000) { // 100-999: round to nearest 50
-        $adj = $elev/100;
-        $lead = substr($adj, 0, 1);
-        $n5 = $lead + 0.50;
-        $n2 = $lead + 0.25;
-        if ($adj > $n5) {
-            $adj = $lead + 1;
-        } elseif ($adj >$n2) {
-            $adj = $lead + 0.5;
-        } else {
-            $adj = $lead;
-        }
-        $feet = 100 * $adj;
-    } else { // 1000+: round to nearest 100
-        $adj = round($elev/100, 0, PHP_ROUND_HALF_UP);
-        $feet = 100 * $adj;
+        $prevEle = (float)$track_pts[$k]->ele->__toString();
     }
-    return [$miles, $feet];
+    $trackDistance = round($hikeLgth/1609, 2); // converted to miles
+    $echg = 3.28084 * ($pmax - $pmin); // converted to feet
+    $elevChange = round($echg); 
+
+    return [$trackDistance, $elevChange];
 }
+
 /**
  * Using json data, calculate total track distance and elevation for the
- * track file submitted. Calculations are made on a per-track basis.
+ * track file submitted. Calculations are returned on a per-track basis.
  * NOTE: By default, a track combines all <trsegs> if there are multiple
+ * This function fills the caller's $lats, $lngs, and $ticks arrays.
  * 
  * @param array  $json_data The json-decoded array of lat/lng/ele elements
  * @param string $trkname   The name associated with the track
@@ -739,9 +732,9 @@ function trackStats($json_data, $trkname, &$lats, &$lngs, &$ticks, $trackno)
     $pdwn = (float)0;
     $pmax = (float)0;
     $pmin = (float)50000;
-    $tickMrk  = (float)0;
+    $tickMrk  = 0.3; // 0.3 miles as meters
     $hikeLgth = (float)0;
-    $prevLat  = $json_data[0]["lat"];
+    $prevLat  = $json_data[0]["lat"]; // 1st lat, used when calling 'distance()'
     $prevLng  = $json_data[0]["lng"];
     $prevEle  = $json_data[0]["ele"];
     $gpsv_trackdat = '[ [';
@@ -749,23 +742,25 @@ function trackStats($json_data, $trkname, &$lats, &$lngs, &$ticks, $trackno)
     for ($k=0; $k<count($json_data); $k++) {
         array_push($lats, $json_data[$k]["lat"]);
         array_push($lngs, $json_data[$k]["lng"]);
-        $parms = distance(
+        $parms = distance( // 1st distance is 0
             $prevLat, $prevLng, $json_data[$k]["lat"], $json_data[$k]["lng"]
         );
         $hikeLgth += $parms[0];
         $prevLat = $json_data[$k]["lat"];
         $prevLng = $json_data[$k]["lng"];
-        if ($json_data[$k]["ele"] > $pmax) {
-            $pmax = $json_data[$k]["ele"];
-        }
-        if ($json_data[$k]["ele"] < $pmin) {
-            $pmin = $json_data[$k]["ele"];
-        }
-        $elevChg = $json_data[$k]["ele"] - $prevEle;
-        if ($elevChg > 0) {
-            $pup += $elevChg;
-        } else {
-            $pdwn -= $elevChg;
+        if (!($json_data[$k]["ele"] === 0 || $prevEle === 0)) {
+            if ($json_data[$k]["ele"] > $pmax) {
+                $pmax = $json_data[$k]["ele"];
+            }
+            if ($json_data[$k]["ele"] < $pmin) {
+                $pmin = $json_data[$k]["ele"];
+            }
+            $elevChg = $json_data[$k]["ele"] - $prevEle; // 1st chg is 0
+            if ($elevChg >= 0) {
+                $pup += $elevChg;
+            } else {
+                $pdwn -= $elevChg;
+            }
         }
         $prevEle = $json_data[$k]["ele"];
         // Form GPSV javascript track and tickmark data for this trkpt
@@ -777,21 +772,23 @@ function trackStats($json_data, $trkname, &$lats, &$lngs, &$ticks, $trackno)
             $tick
                 = "GV_Draw_Marker({lat:" . $json_data[$k]["lat"] .
                     ",lon:" . $json_data[$k]["lng"] . ",alt:" . 
-                    $json_data[$k]["ele"] . ",name:'" . $tickMrk/1609 . 
+                    $json_data[$k]["ele"] . ",name:'" . $tickMrk . 
                     " mi',desc:trk[" . ($trackno) . "].info.name,color:trk["
                     . $trackno . "]"
                     . ".info.color,icon:'tickmark',type:'tickmark',folder:'"
                     . $trkname . " [tickmarks]',rotation:" . $rotation
                     . ",track_number:" . $trackno . ",dd:false});";
             array_push($ticks, $tick);
-            $tickMrk += 0.30 * 1609; // interval in miles converted to meters
+            $tickMrk += 0.30 * 1609.344; // increase interval (meters)
         }
     }
     // remove trailing characters forming next lat/lng array
     $gpsv_trackdat = substr($gpsv_trackdat, 0, strlen($gpsv_trackdat)-3);
     // complete the string
     $gpsv_trackdat .= '] ]';
-    return [$hikeLgth, $pmax, $pmin, $pup, $pdwn, $gpsv_trackdat];
+    
+    return [$hikeLgth, round($pmax), round($pmin), 
+        round($pup), round($pdwn), $gpsv_trackdat];
 }
 /**
  * Whenever a routine requires 'multiMap.php', which subsequently requires
@@ -831,7 +828,7 @@ function prepareMappingData(
         $lats   = [];
         $lngs   = [];
         $ticks  = [];
-        $calcs = trackStats(
+        $calcs = trackStats( // for a single track [$track]...
             $track, $trk_dat['name'], $lats, $lngs, $ticks, $trkno++
         );
         // map data
@@ -881,66 +878,14 @@ function createPseudoJson($clat, $clng)
 {
     $json_file = '{"name":"filler","trk":[';
     // The lat/lng of center may change, and therefore appear as variables
-    $json_file .= '{"lat":' . $clat . ',"lng":' . $clng . '},';
-    $json_file .= '{"lat":' . ($clat+.004507) . ',"lng":' . $clng . '},';
-    $json_file .= '{"lat":' . ($clat-.004507) . ',"lng":' . $clng . '},';
-    $json_file .= '{"lat":' . $clat . ',"lng":' . $clng . '},';
-    $json_file .= '{"lat":' . $clat . ',"lng":' . ($clng-.005477) . '},';
-    $json_file .= '{"lat":' . $clat . ',"lng":' . ($clng+.005466) . '}]}';
+    $json_file .= '{"lat":' . $clat . ',"lng":' . $clng . ',"ele":500},';
+    $json_file .= '{"lat":' . ($clat+.004507) . ',"lng":' . $clng . ',"ele":510},';
+    $json_file .= '{"lat":' . ($clat-.004507) . ',"lng":' . $clng . ',"ele":510},';
+    $json_file .= '{"lat":' . $clat . ',"lng":' . $clng . ',"ele":500},';
+    $json_file .= '{"lat":' . $clat . ',"lng":' . ($clng-.005477) . ',"ele":500},';
+    $json_file .= '{"lat":' . $clat . ',"lng":' . ($clng+.005466) . ',"ele":500}]}';
     file_put_contents('../json/filler.json', $json_file);
     return;
-}
-/**
- * For Flickr Albums ONLY: retrieve photo date from Flickr html based
- * on Flickr's photomodel javascript object.
- * 
- * @param string $photomodel extracted string of javascript object defni
- * @param string $size       letter representation of stored image size
- * 
- * @return string $url Exptracted url for corresponding letter size
- */
-function getFlickrDat($photomodel, $size)
-{
-    $ltrSize = strlen($size);  // NOTE: at least 1 size is two letters
-    $offset = 4 + $ltrSize;
-    $modelLtr = '"' . $size . '":{';
-    $sizePos = strpos($photomodel, $modelLtr) + $offset;
-    $urlPos = strpos($photomodel, '"url":"', $sizePos) + 7;
-    $urlEnd = strpos($photomodel, '"', $urlPos);
-    $urlLgth = $urlEnd - $urlPos;
-    $rawurl = substr($photomodel, $urlPos, $urlLgth);
-    $url = 'https:' . preg_replace('/\\\\/', '', $rawurl);
-    return $url;
-}
-/**
- * The latitude and longitude in exif data are given as numeric arrays.
- * This function forms the float value corresponding to the array.
- * 
- * @param array $degrees Exif data for lat or lng in native exif array
- * 
- * @return float $coords The array value given as a floating point no.
- */
-function mantissa($degrees)
-{
-    $coords = 0;
-    for ($z = 0; $z < 3; $z++) {
-        $div = strpos($degrees[$z], '/');
-        $body = substr($degrees[$z], 0, $div);
-        $divisor = substr($degrees[$z], $div + 1);
-        switch ($z) {
-        case 0:
-            $coords = $body / $divisor;
-            break;
-        case 1:
-            $mins = $body / $divisor;
-            break;
-        case 2:
-            $secs = $body / $divisor;
-            break;
-        }
-    }
-    $coords += ($mins + $secs / 60) / 60;
-    return $coords;
 }
 /**
  * This function extracts the lats, lngs, and elevs from a gpx file,
@@ -1087,71 +1032,6 @@ function genLatLng($gpxobj, $trkno)
     }
 }
 /**
- * This function will insert a new simpleXMLElement after a specified node.
- * See https://stackoverflow.com/questions/3361036/php-simplexml-insert-node-at-certain-position
- * 
- * @param simpleXMLElement $insert node which is to be inserted
- * @param simpleXMLElement $target node after which $insert will be placed
- * 
- * @return DOMNode original parent node
- */
-function simplexmlInsertAfter(SimpleXMLElement $insert, SimpleXMLElement $target)
-{
-    $domTarg = dom_import_simplexml($target);
-    if ($domTarg === false) {
-        throw new Exception(
-            "Function simplexmlInsertAfter failed with attempt to load as dom"
-        );
-    }
-    $domIns = $domTarg->ownerDocument->importNode(
-        dom_import_simplexml($insert), true
-    );
-    return $domTarg->parentNode->insertBefore($domIns, $domTarg);
-    /*
-    if ($domTarg->nextSibling) {
-        return $domTarg->parentNode->insertBefore($domIns, $domTarg);
-    } else {
-        return $domTarg->parentNode->appendChild($domIns);
-    }
-    */
-}
-/**
- * This function will resize an image and store it in the target_dir
- * as specified by the code and incoming file name.
- * 
- * @param string  $targ_fname     Target file name
- * @param string  $org_file       File contents of original image
- * @param integer $new_img_width  Resize width of image
- * @param integer $new_img_height Resize height of image
- * 
- * @return string $target_file New resized filepath
- */
-function storeUploadedImage($targ_fname, $org_file, $new_img_width, $new_img_height)
-{
-    // find the location of the 'pictures' dir in server:
-    $picpath = "";
-    $current = getcwd();
-    $startdir = $current;
-    while (!in_array('pictures', scandir($current))) {
-        $picpath .= "../";
-        chdir('..');
-        $current = getcwd();
-    }
-    $picpath .= "pictures/";
-    // return to starting point:
-    chdir($startdir);
-    $target_dir = $picpath . "zsize/";
-    $target_file = $target_dir . $targ_fname;
-    $image = new \claviska\SimpleImage();
-    $image->fromFile($org_file);
-    $image->autoOrient();
-    $image->resize($new_img_width, $new_img_height);
-    $image->toFile($target_file);
-    // return name of saved file in case you want to store it 
-    // in your database or show confirmation message to user
-    return $target_file;
-}
-/**
  * Find the location of the 'pictures' directory on the site (it will be situated
  * differently for a test site, for example)
  * 
@@ -1266,4 +1146,57 @@ function mapChar($mb_utf8)
             return "Bad";
         }
     }
+}
+/**
+ * This function is used in conjunction with the 'jsonConvert' tool
+ * to create one or more json files from the indicated published hike's
+ * gpxfile(s) and store it in the json directory. Nothing is returned.
+ * The use case is that the published hike has had its gpx field updated
+ * to the new "no gpx" format, i.e. has the json-encoded file data.
+ * 
+ * @param string $gpxfile  The filename to be converted
+ * @param string $jsonType Which of the 4 file types to write out
+ * @param string $hikeNo   'indxNo' of hike in database
+ * 
+ * @return null
+ */
+function gpxToJason($gpxfile, $jsonType, $hikeNo)
+{
+    $base = "p" . $jsonType;
+    $file = "../gpx/" . $gpxfile;
+
+    $gpxdat = simplexml_load_file($file);
+    if ($gpxdat === false) {
+        throw new Exception(
+            __FILE__ . "Line " . __LINE__ .
+            "Could not load {$gpxfile} as simplexml."
+        );
+    }
+    if ($gpxdat->rte->count() > 0) {
+        $gpxdat = convertRtePts($gpxdat);
+    }
+    // any given gpx may have multiple tracks:
+    $noOfTracks = $gpxdat->trk->count();
+    $trackFileExt = 1; // this increments for each track written
+    for ($j=0; $j<$noOfTracks; $j++) {
+        $trk_name = $gpxdat->trk[$j]->name;
+        // $track_files has an array for each track,
+        // containing arrays of lats, lngs, eles
+        $track_files = gpxLatLng($gpxdat, $noOfTracks);
+        $json_array = $track_files[$j]; // this track's set of arrays
+        $no_of_entries = count($json_array[0]); // cnt lats/lngs/eles
+        $jdat = '{"name":"' . $trk_name . '","trk":['; // fill w/objs
+        for ($n=0; $n<$no_of_entries; $n++) {
+            $jdat .= '{"lat":' . $json_array[0][$n] . ',"lng":' .
+                $json_array[1][$n] . ',"ele":' . $json_array[2][$n]
+                . '},';
+        }
+        $jdat = rtrim($jdat, ","); 
+        $jdat .= ']}';
+        $json_name = $base . $hikeNo . '_' . $trackFileExt++ .
+            '.json';
+        $trackfile = '../json/' . $json_name;
+        file_put_contents($trackfile, $jdat);
+    }
+    return;
 }

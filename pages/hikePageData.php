@@ -71,7 +71,6 @@ $row = $basicPDO->fetch(PDO::FETCH_ASSOC);
 if (empty($row)) {
     throw new Exception("Hike index {$hikeIndexNo} not found");
 }
-$files          = []; // required by multiMap.php
 $hikeTitle      = $row['pgTitle'];
 $hikeLocale     = $row['locale'];
 $hikeGroup      = $tbl === 'new' ? $row['cname'] : '';
@@ -119,7 +118,7 @@ if (empty($row['gpx'])) {
     $gpxfile = 'Filler';
     $hike_tracks = ['filler.json'];
 } else {
-    $jsonfiles = getTrackFiles($pdo, $hikeIndexNo, $state);
+    $jsonfiles = getTrackFileNames($pdo, $hikeIndexNo, $state);
     $gpxfile = $jsonfiles[2];
     $hike_tracks = $jsonfiles[0];
 }
@@ -166,9 +165,9 @@ if (!$clusterPage) {
          */
         $miles   = round(0.00062137119223733 * $side_panel_data[0][$j], 1);
         $miles = round($miles, 1);
-        $ascent  = round($side_panel_data[2][$j] * 3.28084);
-        $descent = round($side_panel_data[3][$j] * 3.28084);
-        $max2min = 3.28084 * ($side_panel_data[1][$j]);
+        $ascent  = round($side_panel_data[2][$j]);
+        $descent = round($side_panel_data[3][$j]);
+        $max2min = $side_panel_data[1][$j];
         $feet  = round($max2min);
         $sidepanel = array(
             'logistics' => $hikeType,
@@ -251,15 +250,11 @@ if (!$clusterPage) {
     /**
      * For Cluster Pages only: find all the hikes in this cluster and extract the
      * data required to display each hike's corresponding info in the side panel.
-     * Also, since there are no gpx files listed in [E]HIKES for a Cluster Page,
-     * the $files array (used in multiMap.php) is populated here for map creation.
      * Note that the GPSV map 'tracklist' displays the TRACK name found in the gpx
-     * file, not the gpx FILE name. For that reason, a javascript object is formed
-     * which correlates track name with gpx file. Thus, when a track is chosen
-     * for display on the map, its corresponding gpx file data will populate the
-     * side panel.
+     * file, not the gpx FILE name.
      */
-    $cluspg = 'yes'; 
+    $cluspg = 'yes';
+    $tracks = []; 
     // get cluster id
     $clusPgReq= "SELECT `clusid`,`lat`,`lng` FROM `CLUSTERS` WHERE `group`=?;";
     $clusPg = $pdo->prepare($clusPgReq);
@@ -275,16 +270,8 @@ if (!$clusterPage) {
     /**
      * NOTE: Only show published hikes as there may also be an in-edit
      * version of the hike, and the complications managing hikes-in-edit
-     * along with published hikes seems high effort with low return. In
-     * addition, new hikes may not yet have gpx files, complicating the 
-     * formation of $files for multiMap.php
+     * along with published hikes seems high effort with low return.
      */
-    $tracks = [];
-    $trk_nmes = [];
-    $gpsv_trk = [];
-    $trk_lats = [];
-    $trk_lngs = [];
-    $gpsv_tick = [];
     $chikesReq = "SELECT `indxNo` FROM `CLUSHIKES` WHERE `cluster`=? AND `pub`='Y';";
     $chikes = $pdo->prepare($chikesReq);
     $chikes->execute([$cpdata['clusid']]);
@@ -299,28 +286,20 @@ if (!$clusterPage) {
             $hikedat->execute([$hike]);
             $sidepnl = $hikedat->fetch(PDO::FETCH_ASSOC);
             // ASSUMPTION all published hikes have non-empty data in `gpx` field
-            $json_data = getTrackFiles($pdo, $hike, 'pub');
-            array_push($files, $json_data[2]); // "main" filename
-            $gpx_array = getGpxArray($pdo, $hike, 'pub');
-            if (!empty($gpx_array["add1"])) {
-                $add1filename = array_keys($gpx_array["add1"])[0];
-                array_push($files, $add1filename);
-            }
-            if (!empty($gpx_array["add2"])) {
-                $add2filename = array_keys($gpx_array["add2"])[0];
-                array_push($files, $add2filename);
-            } 
-            if (!empty($gpx_array["add3"])) {
-                $add3filename = array_keys($gpx_array["add3"])[0];
-                array_push($files, $add3filename);
-            } 
+            $json_data = getTrackFileNames($pdo, $hike, 'pub');
             foreach ($json_data[0] as $track) {
                 array_push($tracks, $track);
                 $json_data = file_get_contents("../json/" . $track);
-                $name_pos = strpos($json_data, "name");
-                $name_string = substr($json_data, $name_pos+7, 200);
-                $end_strpos = strpos($name_string, '"');
-                $tname = substr($name_string, 0, $end_strpos);
+                $trkdat = json_decode($json_data, true);
+                $tname = $trkdat['name'];
+                $lats  = [];
+                $lngs  = [];
+                $ticks = [];
+                $additional_info = trackStats(
+                    $trkdat['trk'], $tname, $lats, $lngs, $ticks, 1
+                );
+                $sidepnl['ascent']  = $additional_info[3];
+                $sidepnl['descent'] = $additional_info[4];
                 $trkrel = array($tname => $sidepnl);
                 $hike_data += $trkrel;  // "+" is union operator for arrays
             }
@@ -330,7 +309,13 @@ if (!$clusterPage) {
         $ctrlat = $cpdata['lat']/LOC_SCALE;
         $ctrlng = $cpdata['lng']/LOC_SCALE;
         createPseudoJson($ctrlat, $ctrlng);
+        $tracks = ["filler.json"];
     }
+    $trk_nmes = [];
+    $gpsv_trk = [];
+    $trk_lats = [];
+    $trk_lngs = [];
+    $gpsv_tick = [];
     $pageData = prepareMappingData(
         $tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
     );

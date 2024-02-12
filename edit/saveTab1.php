@@ -24,7 +24,6 @@
 session_start();
 require "../php/global_boot.php";
 require "../accounts/gmail.php";
-require_once "../php/gpxFunctions.php";
 $hikeNo    = filter_input(INPUT_POST, 'hikeNo');
 $form_saved = filter_input(INPUT_POST, 'fsaved') === 'N' ? false : true;
 // redirect locations

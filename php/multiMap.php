@@ -15,7 +15,6 @@
  * @license None at this time
  */
 require_once "../php/global_boot.php";
-require_once "../php/gpxFunctions.php";
 
 $tblOnly = isset($hikeIndexNo) ? false : true;
 // tblOnly files are input via query string as an array of track names
