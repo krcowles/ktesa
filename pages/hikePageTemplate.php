@@ -60,8 +60,9 @@ if (mobile) {
 </script>
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="active" style="display:none">Page</p>
-<p id="gpx" style="display:none"><?=$gpxfile;?></p>
-<p id="cpg" style="display:none"><?=$cluspg;?></p>
+<p id="gpx" style="display:none;"><?=$gpxfile;?></p>
+<p id="cpg" style="display:none;"><?=$cluspg;?></p>
+<p id="age" style="display:none;"><?=$state;?></p>
 
 <!-- Side Panel: -->
 <div id="unhide">></div>
@@ -95,8 +96,7 @@ if (mobile) {
             <p id="addtl"><strong>More!</strong></p>
             <p id="mlnk">View <a href="<?= $fpLnk;?>"
                 target="_blank">Full Page Map</a><br />
-                <span class="track">Download <a id="dwn" href="<?= $gpxfile;?>"
-                        download>GPX File</a></span>
+                <span class="track">Download <a id="dwn" href="#">GPX File</a></span>
             </p>
             <?= $photoAlbum;?>
             <p id="directions">On-line directions to the trailhead:<br />
@@ -162,9 +162,37 @@ if (mobile) {
 
 <div class="popupCap"></div>
 
+<!-- Gpx Files Download -->
+<div class="modal fade" id="multigpx" tabindex="-1"
+    aria-labelledby="Download Multiple GPX" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Download Multiple Gpx Fils</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>This hike was created by multiple gpx files.
+                    You may download any or all of them below</h5>
+                <ul id="idfiles" style="list-style:none;">
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+                <button id="dwnldGpx" type="button" class="btn btn-success">
+                    Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     // some vars not set for Cluster Pages...
     var hike_file_list = <?=$hike_file_list;?>;
+    var gpx_file_list  = <?=$gpx_files;?>;
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
     <?php endif; ?>

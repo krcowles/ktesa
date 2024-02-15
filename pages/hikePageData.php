@@ -118,6 +118,18 @@ if (empty($row['gpx'])) {
     $gpxfile = 'Filler';
     $hike_tracks = ['filler.json'];
 } else {
+    $gpx_arr = getGpxArray($pdo, $hikeIndexNo, $state);
+    $allGpx = [$gpx_arr['main']];
+    if (!empty($gpx_arr['add1'])) {
+        array_push($allGpx, $gpx_arr['add1']);
+    }
+    if (!empty($gpx_arr['add2'])) {
+        array_push($allGpx, $gpx_arr['add2']);
+    }
+    if (!empty($gpx_arr['add3'])) {
+        array_push($allGpx, $gpx_arr['add3']);
+    }
+    $gpx_files = json_encode($allGpx);
     $jsonfiles = getTrackFileNames($pdo, $hikeIndexNo, $state);
     $gpxfile = $jsonfiles[2];
     $hike_tracks = $jsonfiles[0];
