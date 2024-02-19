@@ -479,13 +479,14 @@ function displayXmlError($error)
  * @param string $gpxfile The filepath for the file to be converted.
  * @param string $tmploc  Location of the uploaded tmpfile in 'edit' dir
  * @param string $hikeNo  The index to the hike in the database
+ * @param string $ext     Extension to start with for json file, if requested
  * 
  * @return array $org_name The array used to store original file name w/tracks
  */
-function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo) 
+function makeTrackFiles($pdo, $type, $gpxfile, $tmploc, $hikeNo, $ext=false) 
 {
     $ftype = ''; // will be the 1st 3 chars in json filename
-    $fno   = 1;  // suffix indicating file no. (when multiple tracks)
+    $fno   = $ext ? $ext : 1;  // suffix indicating file no. (when multiple tracks)
     switch ($type) {
     case 'main':
         $ftype = 'emn';
@@ -1154,13 +1155,16 @@ function mapChar($mb_utf8)
  * The use case is that the published hike has had its gpx field updated
  * to the new "no gpx" format, i.e. has the json-encoded file data.
  * 
- * @param string $gpxfile  The filename to be converted
- * @param string $jsonType Which of the 4 file types to write out
- * @param string $hikeNo   'indxNo' of hike in database
+ * @param string  $gpxfile        The filename to be converted
+ * @param string  $jsonType       Which of the 4 file types to write out
+ * @param string  $hikeNo         'indxNo' of hike in database
+ * @param integer $forceExtension In GPSDAT, there can be more than 1 gpx per 
+ *                                'indxNo', so provide correct extension
  * 
- * @return null
+ * @return array $allFiles Array of all track filenames created and stored
+ *                         [as an array] and the next ext_no to use
  */
-function gpxToJason($gpxfile, $jsonType, $hikeNo)
+function gpxToJason($gpxfile, $jsonType, $hikeNo, $forceExtension=false)
 {
     $base = "p" . $jsonType;
     $file = "../gpx/" . $gpxfile;
@@ -1177,7 +1181,9 @@ function gpxToJason($gpxfile, $jsonType, $hikeNo)
     }
     // any given gpx may have multiple tracks:
     $noOfTracks = $gpxdat->trk->count();
-    $trackFileExt = 1; // this increments for each track written
+    $allFiles = [];
+    // extension increments per track in file.
+    $trackFileExt = $forceExtension ? $forceExtension : 1;
     for ($j=0; $j<$noOfTracks; $j++) {
         $trk_name = $gpxdat->trk[$j]->name;
         // $track_files has an array for each track,
@@ -1195,8 +1201,9 @@ function gpxToJason($gpxfile, $jsonType, $hikeNo)
         $jdat .= ']}';
         $json_name = $base . $hikeNo . '_' . $trackFileExt++ .
             '.json';
+        array_push($allFiles, $json_name);
         $trackfile = '../json/' . $json_name;
         file_put_contents($trackfile, $jdat);
     }
-    return;
+    return [$allFiles, $trackFileExt];
 }

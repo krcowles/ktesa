@@ -146,21 +146,24 @@ if (!empty($_FILES['newgps']['name'])) {
     $gpsfile = uploadFile($tab4upload);
     if ($gpsfile !== 'none') {
         if ($tab4upload['ext'] === "gpx") {
+            $prevs = 'ls ' . '../json/egp' . $hikeNo . '_* | wc -l';
+            $preloads = intval(system($prevs));
+            $next  = $preloads + 1;
             $gps_array = makeTrackFiles(
-                $pdo, 'gps', $tab4upload['ufn'], "newgps.gpx", $hikeNo
+                $pdo, 'gps', $tab4upload['ufn'], "newgps.gpx", $hikeNo, $next
             );
             $gpsDbDat = json_encode($gps_array);
             $ngpsreq
-                = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`," .
-                    "`clickText`) VALUES (?,'P','GPX:',?,'GPX Track File');";
+                = "INSERT INTO `EGPSDAT` (`indxNo`,`label`,`url`," .
+                    "`clickText`) VALUES (?,'GPX:',?,'GPX Track File');";
             if (!unlink($gpsfile)) {
                 throw new Exception("Could not delete temporary file {$gpsfile}; ");
             }
         } else { // kml
             $gpsDbDat = $gpsfile;
             $ngpsreq
-                = "INSERT INTO `EGPSDAT` (`indxNo`,`datType`,`label`,`url`," .
-                    "`clickText`) VALUES (?,'P','KML:',?,'KML File');";
+                = "INSERT INTO `EGPSDAT` (`indxNo`,`label`,`url`," .
+                    "`clickText`) VALUES (?,'KML:',?,'KML File');";
         }
         $newgps = $pdo->prepare($ngpsreq);
         $newgps->execute([$hikeNo, $gpsDbDat]);
@@ -175,8 +178,8 @@ if (!empty($_FILES['newmap']['name'])) {
     if ($mapfile === 'none') {
         $alert_set = true;
     } else {
-        $ngpsreq = "INSERT INTO EGPSDAT (indxNo,datType,label,`url`," .
-            "clickText) VALUES (?,'P','MAP:',?,'Map File');";
+        $ngpsreq = "INSERT INTO EGPSDAT (indxNo,label,`url`," .
+            "clickText) VALUES (?,'MAP:',?,'Map File');";
         $newgps = $pdo->prepare($ngpsreq);
         $newgps->execute([$hikeNo, $mapfile]);
     }

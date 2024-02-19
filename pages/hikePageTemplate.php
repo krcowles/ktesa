@@ -192,7 +192,6 @@ if (mobile) {
 <script type="text/javascript">
     // some vars not set for Cluster Pages...
     var hike_file_list = <?=$hike_file_list;?>;
-    var gpx_file_list  = <?=$gpx_files;?>;
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
     <?php endif; ?>

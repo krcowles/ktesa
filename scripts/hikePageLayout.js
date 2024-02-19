@@ -206,8 +206,9 @@ function downloadURI(gpxfile) {
     link.click();
     $.post("deleteGpx.php", { gpx: gpxfile });
 }
-// To download a gpx file:
-$('#dwn').on('click', function () {
+// To download a gpx file from side panel:
+$('#dwn').on('click', function (ev) {
+    ev.preventDefault();
     $('#idfiles').empty();
     if (gpx_file_list.length > 1) {
         var ajax_files;
@@ -253,7 +254,8 @@ $('#dwn').on('click', function () {
         });
     }
 });
-$('body').on('click', '.dwnldgpx', function () {
+$('body').on('click', '.dwnldgpx', function (ev) {
+    ev.preventDefault();
     var gpx = $(this).text();
     var file_list = $(this).next().text();
     $.post("makeGpx.php", { name: gpx, json_files: file_list }, function () {
@@ -262,15 +264,16 @@ $('body').on('click', '.dwnldgpx', function () {
     });
     return;
 });
-// When there are gpx files in the GPS Data section:
-if ($('.gpxview').length) {
-    $('.gpxview').each(function () {
+// To download a gpx file from the GPSData section:
+if ($('.gpsdwnld').length) {
+    $('.gpsdwnld').each(function () {
         $(this).on('click', function (ev) {
             ev.preventDefault();
-            var path = $(this).attr('href');
-            var filename = path.substring(7);
-            var file_display = '../php/viewGpxFile.php?gpx=' + filename;
-            window.open(file_display, "_blank");
+            var fname = $(this).next().text();
+            var files = $(this).next().next().text();
+            $.post("makeGpx.php", { name: fname, json_files: files }, function () {
+                downloadURI(fname);
+            });
         });
     });
 }

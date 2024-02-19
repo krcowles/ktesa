@@ -18,7 +18,7 @@
 session_start();
 require "../php/global_boot.php";
 
-$getHike = filter_input(INPUT_GET, 'hikeNo'); // published indxNo
+$getHike = filter_input(INPUT_GET, 'hikeNo'); // PUBLISHED indxNo
 $cluspg  = isset($_GET['clus']) && $_GET['clus'] === 'y' ? true : false;
 $userid = $_SESSION['userid'];
 
@@ -60,7 +60,7 @@ $query->execute([$userid, $getHike, $cname, $getHike]);
 $indxReq = "SELECT `indxNo` FROM `EHIKES` ORDER BY `indxNo` DESC LIMIT 1;";
 $indxq = $pdo->query($indxReq);
 $indxNo = $indxq->fetch(PDO::FETCH_NUM);
-$hikeNo = $indxNo[0];
+$hikeNo = $indxNo[0]; // EHIKES indxNo
 
 /*
  * PLace TSV data into ETSV
@@ -75,15 +75,15 @@ if (!$cluspg) {
     /*
     * Place GPSDATA into EGPSDATA
     */
-    $gpsDatReq = "INSERT INTO `EGPSDAT` (indxNo,datType,label,`url`,clickText) " .
-        "SELECT ?,datType,label,`url`,clickText FROM `GPSDAT` WHERE " .
+    $gpsDatReq = "INSERT INTO `EGPSDAT` (`indxNo`,`label`,`url`,`clickText`) " .
+        "SELECT ?,`label`,`url`,`clickText` FROM `GPSDAT` WHERE " .
         "`indxNo` = ?;";
     $gpsq = $pdo->prepare($gpsDatReq);
     $gpsq->execute([$hikeNo, $getHike]);
 
     /**
      * Transfer published json files and reset gpx field in EHIKES;
-     * At this point, gpx still holds the production names of json
+     * At this point, EGPSDAT gpx still holds the PUBLISHED names of json
      */
     $previousJson = getTrackFileNames($pdo, $getHike, 'pub')[0];
     $main_val = [];
@@ -96,8 +96,7 @@ if (!$cluspg) {
         $extension = substr($json, $dash_loc);
         $new_name  = "e" . $ftype . $hikeNo . $extension;
         $to_loc   = "../json/" . $new_name;
-        $from_loc = "../json/" . $json;
-        
+        $from_loc = "../json/" . $json;  
         // Published hike still requires its files, so copy, not move!
         if (!copy($from_loc, $to_loc)) {
             throw new Exception("Could not relocate {$json}");

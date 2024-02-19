@@ -17,17 +17,9 @@ $hikeTitle   = filter_input(INPUT_GET, 'hike');
 $table_age   = filter_input(INPUT_GET, 'tbl');
 $ttable      = $table_age === 'new' ? 'ETSV' : 'TSV';
 $wtable      = $table_age === 'new' ? 'EWAYPTS' : 'WAYPTS';
-if (isset($_GET['clus']) && $_GET['clus'] === 'y') {
-    $hike_tracks = $_GET['json'];
+$hike_list   = filter_input(INPUT_GET, 'json');
+$hike_tracks = explode(",", $hike_list);
 
-} else {
-    $hike_list = $_GET['json'];
-    if (strpos($hike_list, ",") !== false) {
-        $hike_tracks = explode(",", $hike_list);
-    } else {
-        $hike_tracks = [$hike_list];
-    }
-}
 $trkno = 1;
 $trk_nmes = [];
 $gpsv_trk = [];

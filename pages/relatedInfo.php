@@ -8,7 +8,8 @@
  * 4) and any other links or data desired (to be defined).
  * This file is to be included on the hikePageTemplate.php and
  * expects definition of the following variables:
- *   $hikeIndexNo = the hike number in either EHIKES or HIKES
+ *   $hikeIndexNo = `indxNo` in database for the hike
+ *   $hikeTitle => `pgTitle` in database for above
  *   $rtable = either EREFS or REFS 
  *   $gtable = either GPSDAT or EGPSDAT
  *   $row = the fetched EHIKE row data if in-edit hike
@@ -83,7 +84,7 @@ $bkPDO = $pdo->prepare($bkReq);
 $refReq = "SELECT rtype,rit1,rit2 FROM {$rtable} WHERE indxNo = :indxNo";
 $refPDO = $pdo->prepare($refReq);
 // gps data
-$gpsReq = "SELECT datType,label,`url`,clickText FROM {$gtable} "
+$gpsReq = "SELECT `label`,`url`,`clickText` FROM {$gtable} "
     . "WHERE indxNo = :indxNo";
 $gpsPDO = $pdo->prepare($gpsReq);
 $pdo->beginTransaction();
@@ -130,38 +131,36 @@ $noOfGps = 0;
 $gpsHtml = '<ul id="gps">' . PHP_EOL;
 $gpsData = $gpsPDO->fetchAll(PDO::FETCH_ASSOC);
 foreach ($gpsData as $row) {
-    // Originally P => Proposed; A => Actual:  no longer used
-    if ($row['datType'] === 'P' || $row['datType'] === 'A') {
-        $url = $row['url'];
-        $extpos = strrpos($url, ".") + 1;
-        $ext = strtolower(substr($url, $extpos, 3));
-        if ($ext === 'gpx') {
-            if (substr($gtable, 0, 1) === 'E') {
-                $age = 'new';
-            } else {
-                $age = 'old';
-            }
-            /**
-             * NOTE: fullPgMapLink.php expects the gpx files to be indicated
-             * without the preliminary '../gpx/'
-             */
-            $fmp_url = str_replace('../gpx/', '', $url);
-            $mapLink = "../maps/fullPgMapLink.php?maptype=extra&" .
-                "hno={$hikeIndexNo}&hike={$hikeTitle}&gpx={$fmp_url}&tbl={$age}";
-            // Links for each gpsData row: 'Download', 'View as File', 'View as Map'
-            $gpsHtml .= '<li class="gpslnks">' . $row['clickText'] .
-                '&nbsp;&nbsp; <a href="' . $url .
-                '" download>Download</a>&nbsp;&nbsp;<a class="gpxview" href="' .
-                $url . '" target="_blank">View as File</a>&nbsp;&nbsp;' .
-                '<a href="' . $mapLink . '" target="_blank">View as Map</a></li>' .
-                PHP_EOL;
+    if (strpos($row['label'], "GPX") !== false) {
+        $data_arr  = json_decode($row['url'], true);
+        $gpxname   = array_keys($data_arr)[0];
+        $jsonfiles = array_values($data_arr)[0];
+        $json      = implode(",", $jsonfiles);
+        if (substr($gtable, 0, 1) === 'E') {
+            $age = 'new';
         } else {
-            $gpsHtml .= '<li>' . $row['label'] . '&nbsp;<a class="mapfile" href="' .
-                $url . '" target="_blank">' . $row['clickText'] . '</a></li>' .
-                PHP_EOL;
+            $age = 'old';
         }
-    } 
-    $noOfGps += 1;
+        $mapLink = "../maps/fullPgMapLink.php?hno={$hikeIndexNo}" .
+            "&hike={$hikeTitle}&tbl={$age}&json={$json}";
+        // Links for each entry:
+        $gpsHtml .= '<li class="gpslnks">' . $row['clickText'] . '&nbsp;&nbsp;' .
+            '<a class="gpsdwnld" href="#">Download</a><span style="display:none;">' .
+            $gpxname . '</span><span style="display:none;">' . $json . 
+            '</span>&nbsp;&nbsp;&nbsp;<a href="' . $mapLink .
+            '" target="_blank">View as Map</a></li>' . PHP_EOL;
+    } elseif (strpos(strtolower($row['label']), "map") !== false) {
+        $type = strtolower(pathinfo($row['url'], PATHINFO_EXTENSION));
+        $msg = $type === 'pdf' ? '" download="download">Download' :
+            '" target="_blank">View Map';
+        $gpsHtml .= '<li class="mapfile">' . $row['clickText'] . '&nbsp;&nbsp;' .
+            '<a class="mapfile" href="' . $row['url'] . $msg . '</a></li>' . PHP_EOL;
+    } elseif (strpos($row['label'], "KML") !== false) {
+        $gpsHtml .= '<li class="kmlfile">' . $row['clickText'] . '&nbsp;&nbsp;' .
+            '<a href="' . $row['url'] . '" download="download">Download</a></li>' .
+            PHP_EOL;
+    }
+    $noOfGps++;
 }
 $gpsHtml .= "</ul>";
 
