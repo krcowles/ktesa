@@ -26,7 +26,7 @@ if ($favmode === 'yes') {
 }
 
 /**
- * >>> NOTE: This page does not call mapJsData.php but rather creates data below. <<<
+ * >>> NOTE: This page does not call mapJsData.php but rather creates data below.
  * Get hike data for each favorite (this should be a rather small list!);
  * Form js arrays for side table and marker creation (akin to jsMapData.php 
  * on home.php). No CL hikes on this page.
@@ -38,14 +38,16 @@ foreach ($favarray as $hike) {
     $fhike = $pdo->prepare($fhikereq);
     $fhike->execute(["hno" => $hike]);
     $hikedat = $fhike->fetch(PDO::FETCH_ASSOC);
-    $hike = '{name:"' . $hikedat['pgTitle'] . '",indx:' . $hikedat['indxNo'] .
+    $hike_tracks = getTrackFileNames($pdo, $hike, 'pub')[0];
+    $str_name = '"' . $hike_tracks[0] . '"'; // just main tracks
+    array_push($tracks, $str_name);
+    $fav = '{name:"' . $hikedat['pgTitle'] . '",indx:' . $hikedat['indxNo'] .
         ',loc:{lat:' . $hikedat['lat']/LOC_SCALE . ',lng:' .
         $hikedat['lng']/LOC_SCALE . '},lgth:' .
         $hikedat['miles'] . ',elev:' . $hikedat['feet'] . ',diff:"' . 
-        $hikedat['diff'] . '",dir:"' . $hikedat['dirs'] . '",prev:"' .
+        $hikedat['diff'] . '",dirs:"' . $hikedat['dirs'] . '",prev:"' .
         $hikedat['preview'] . '"}';
-    array_push($hikeobj, $hike);
-    array_push($tracks, '"' . $hikedat['trk'] . '"');
+    array_push($hikeobj, $fav);
     
 }
 $locaters = [];
@@ -58,7 +60,7 @@ for ($j=0; $j<count($favarray); $j++) {
 $zsizedir = getPicturesDirectory();
 $thumbdir = '"' . str_replace('zsize', 'thumbs', $zsizedir) . '"';
 
-$jsHikes  = '[' . implode(",", $hikeobj)  . ']';
+$jsHikes  = '[' . implode(",", $hikeobj) . ']';
 $allHikes = '[' . implode(",", $favarray) . ']';
 $jsLocs   = '[' . implode(",", $locaters) . ']';
 $jsTracks = '[' . implode(",", $tracks)   . ']';

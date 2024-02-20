@@ -1,5 +1,4 @@
 /// <reference path='./map.d.ts' />
-// Overload & redeclare block warnings do not show up during compile
 /**
  * @fileoverview Set up a full page map showing the Favorites selected
  * by the user
@@ -8,6 +7,7 @@
  * @version  2.0 Typescripted, some type errors corrected
  * @version  3.0 Updated for compatibility with side table that shows previews
  * @version  3.1 Changed <a> links to open new tab
+ * @version  3.2 Added link to page on track hover
  */
 var map;
 var colors = ['#FF0000', '#0000FF', '#F88C00', '#9400D3', '#000000', '#FFFF00'];
@@ -131,7 +131,7 @@ function initMap() {
         iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
         iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
         iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
-        iwContent += '<a href="' + hikeobj.dir + '">Directions</a></div>';
+        iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
         var iw = new google.maps.InfoWindow({
             content: iwContent,
             maxWidth: 400
@@ -231,13 +231,14 @@ function drawTrack(jsonfile, color, ptr, def) {
         dataType: "json",
         url: jsonfile,
         success: function (trackDat) {
+            var json_track = trackDat['trk'];
             var track = new google.maps.Polyline({
                 icons: [{
                         icon: mapTick,
                         offset: '0%',
                         repeat: '15%'
                     }],
-                path: trackDat,
+                path: json_track,
                 geodesic: true,
                 strokeColor: color,
                 strokeOpacity: 1.0,
@@ -257,7 +258,7 @@ function drawTrack(jsonfile, color, ptr, def) {
                 iw.close();
             });
             // establish map boundaries
-            trackDat.forEach(function (latlngpair) {
+            json_track.forEach(function (latlngpair) {
                 if (latlngpair.lat > maxlat) {
                     maxlat = latlngpair.lat;
                 }
