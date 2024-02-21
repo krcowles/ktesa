@@ -101,6 +101,9 @@ if (!$admin) {
      * https://stackoverflow.com/questions/2199793/php-get-the-browser-name
      * For page url identification: [PSR syntax corrections made]
      * http://geeklabel.com/tutorial/track-visitors-php-tutorial/ 
+     * Using country identification method outline in 
+     * http://www.phptutorial.info/iptocountry/the_script.html#example1
+     * which is a free downloaded library not requiring http:// lookups.
      */
     $user_ip = getIpAddress(); // can be null!
     $user_ip = isset($user_ip) ? $user_ip : 'no ipaddr';
@@ -108,9 +111,21 @@ if (!$admin) {
         die("Access not permitted");
     }
     if ($user_ip !== 'no ipaddr' && $user_ip !== '127.0.0.1' && $user_ip !== '::1') {
-        $details 
-            = json_decode(file_get_contents("http://ipinfo.io/{$user_ip}/json"));
-        if ($details->country === 'RU') {
+        // New method: former ipinfo site limits no of requests
+        $country = '';
+        $numbers = preg_split("/\./", $user_ip);   
+        include "../ip_files/" . $numbers[0] . ".php";
+        $code = ($numbers[0] * 16777216) + ($numbers[1] * 65536) +
+            ($numbers[2] * 256) + ($numbers[3]);   
+        foreach ($ranges as $key => $value) {
+            if ($key <= $code) {
+                if ($ranges[$key][0] >= $code) {
+                    $country = $ranges[$key][1];
+                    break;
+                }
+            }
+        }
+        if ($country === 'RU' || $country === 'CN') {
             die("Access not permitted");
         }
     }
