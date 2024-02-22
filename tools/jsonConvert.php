@@ -1,7 +1,8 @@
 <?php
 /**
  * Convert one or more gpx files to their equivalent track files: specify
- * either an alphabetic range or a hike name in the query string.
+ * either an alphabetic range or a hike name in the query string, or 'gpsdat'
+ * for converting all values in only those tables (EGPSDAT, GPSDAT).
  * PHP Version 7.4
  * 
  * @package Ktesa

@@ -641,7 +641,7 @@ $('#cleanPix').on('click', function() {
 });
 // Cleanup extraneous gpx/json files
 $('#gpxClean').on('click', function() {
-    window.open('cleanGpxJson.php', "_blank");
+    window.open('cleanJSON.php', "_blank");
 });
 // Read the ktesa error log
 $('#rdlog').on('click', function() {

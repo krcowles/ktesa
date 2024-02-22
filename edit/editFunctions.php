@@ -901,6 +901,9 @@ function createPseudoJson($clat, $clng)
  */
 function gpxLatLng($gpxdat, $no_of_tracks)
 {
+    if ($gpxdat->rte->count() > 0) {
+        $gpxdat = convertRtePts($gpxdat);
+    }
     $track_data = [];
     $gpxlats = [];
     $gpxlons = [];

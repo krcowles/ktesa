@@ -11,27 +11,18 @@
 session_start();
 require "../php/global_boot.php";
 
-$extGpx  = isset($_POST['egpx'])  ? $_POST['egpx'] :  false;
-$extJSON = isset($_POST['ejson']) ? $_POST['ejson'] : false;
-if ($extGpx !== false) {
-    foreach ($extGpx as $gpx) {
-        $loc = '../gpx/' . $gpx;
-        unlink($loc);
-    }
-}
-if ($extJSON !== false) {
-    foreach ($extJSON as $json) {
+$extraneous  = isset($_POST['ext'])  ? $_POST['ext'] :  false;
+if ($extraneous !== false) {
+    foreach ($extraneous as $json) {
         $loc = '../json/' . $json;
         unlink($loc);
     }
 }
-$nothing = !$extGpx && !$extJSON ? true : false;
-
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-    <title>Cleanup GPX and JSON files</title>
+    <title>Cleanup JSON files</title>
     <meta charset="utf-8" />
     <meta name="description" content="Check for extraneous photos" />
     <meta name="author" content="Tom Sandberg and Ken Cowles" />
@@ -46,30 +37,20 @@ $nothing = !$extGpx && !$extJSON ? true : false;
 <script src="../scripts/popper.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
 <?php require "../pages/ktesaPanel.php"; ?>
-<p id="trail">Gpx & JSON File Cleanup</p>
+<p id="trail">JSON File Cleanup</p>
 <p id="active" style="display:none">Admin</p>
 
 <div id="content">
-<?php if ($nothing) : ?>
+<?php if (!$extraneous) : ?>
     <p>No files were removed</p>
 <?php else : ?>
-    <?php if ($extGpx !== false) : ?>
-        <h5>The following gpx files were removed:</h5>
-        <?php 
-        foreach ($extGpx as $gpx) {
-            echo $gpx . "<br />";
-        }
-        echo "<br />";
-        ?>
-    <?php endif; ?>
-    <?php if ($extJSON !== false) : ?>
-        <h5>The following JSON files were removed:</h5>
-        <?php 
-        foreach ($extJSON as $json) {
-            echo $json . "<br />";
-        }
-        ?>
-    <?php endif; ?>
+    <h5>The following JSON files were removed:</h5>
+    <?php 
+    foreach ($extraneous as $json) {
+        echo $json . "<br />";
+    }
+    echo "<br />";
+    ?>
 <?php endif; ?>
 </div>
 
