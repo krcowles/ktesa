@@ -26,7 +26,7 @@ CREATE TABLE `EHIKES` (
   `info` varchar(4096) DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 
 
@@ -76,7 +76,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=latin1;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -286,7 +286,8 @@ INSERT INTO CLUSHIKES VALUES
 ('217','335','Y','67'),
 ('218','89','Y','67'),
 ('219','337','Y','65'),
-('220','338','Y','68');
+('220','338','Y','68'),
+('221','308','Y','68');
 
 
 
@@ -384,23 +385,23 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','381683775','2024-02-23 13:37:03'),
-('2','CLUSHIKES','2355503037','2024-02-23 13:37:03'),
-('3','CLUSTERS','2577509453','2024-02-23 13:37:03'),
-('4','EGPSDAT','0','2024-02-23 13:37:03'),
-('5','EHIKES','0','2024-02-23 13:37:03'),
-('6','EREFS','0','2024-02-23 13:37:03'),
-('7','ETSV','0','2024-02-23 13:37:03'),
-('8','EWAYPTS','0','2024-02-23 13:37:03'),
-('9','FAVORITES','3651041965','2024-02-23 13:37:03'),
-('10','GPSDAT','1373172488','2024-02-23 13:37:03'),
-('11','HIKES','117748441','2024-02-23 13:37:03'),
-('12','LOCKS','0','2024-02-23 13:37:03'),
-('13','MEMBER_PREFS','945859736','2024-02-23 13:37:03'),
-('14','REFS','1498051927','2024-02-23 13:37:03'),
-('15','TSV','1837474281','2024-02-23 13:37:03'),
-('16','USERS','1998519481','2024-02-23 13:37:03'),
-('17','WAYPTS','1165130149','2024-02-23 13:37:03');
+('1','BOOKS','381683775','2024-02-23 17:30:56'),
+('2','CLUSHIKES','1554217511','2024-02-23 17:30:56'),
+('3','CLUSTERS','2577509453','2024-02-23 17:30:56'),
+('4','EGPSDAT','0','2024-02-23 17:30:56'),
+('5','EHIKES','0','2024-02-23 17:30:56'),
+('6','EREFS','0','2024-02-23 17:30:56'),
+('7','ETSV','0','2024-02-23 17:30:56'),
+('8','EWAYPTS','0','2024-02-23 17:30:56'),
+('9','FAVORITES','3651041965','2024-02-23 17:30:56'),
+('10','GPSDAT','1373172488','2024-02-23 17:30:56'),
+('11','HIKES','425504037','2024-02-23 17:30:56'),
+('12','LOCKS','0','2024-02-23 17:30:56'),
+('13','MEMBER_PREFS','945859736','2024-02-23 17:30:56'),
+('14','REFS','1498051927','2024-02-23 17:30:56'),
+('15','TSV','3494605957','2024-02-23 17:30:56'),
+('16','USERS','1998519481','2024-02-23 17:30:56'),
+('17','WAYPTS','1165130149','2024-02-23 17:30:56');
 
 
 
@@ -458,7 +459,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8;
 
 
 
@@ -2053,7 +2054,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=11512 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11574 DEFAULT CHARSET=utf8;
 
 
 INSERT INTO TSV VALUES
@@ -5536,24 +5537,6 @@ INSERT INTO TSV VALUES
 ('10811','315',NULL,'IMG_7298','Y','N','Odd formation climbing the mesa',NULL,NULL,'3718',NULL,'2023-04-01 14:49:26','IMG_7298','480','640',NULL,'8'),
 ('10812','315',NULL,'IMG_7293','Y','Y','Remnants will windows','360821139','-1080029611','3719',NULL,'2023-04-01 13:46:13','IMG_7293','480','640',NULL,'14'),
 ('10813','315',NULL,'IMG_7253','Y','Y','On the Petroglyphs Trail','360722500','-1079828278','3720',NULL,'2023-04-01 11:56:37','IMG_7253','480','640',NULL,'5'),
-('10814','308',NULL,'IMG_6831','Y','Y','View of the terrain from the parking area','340326528','-1067726139','3612',NULL,'2023-01-22 10:38:24','IMG_6831','480','640',NULL,'0'),
-('10815','308',NULL,'IMG_6843','Y','Y','Tilted formations indicate the geological stresses in the ara','340341694','-1067687917','3613',NULL,'2023-01-22 11:02:22','IMG_6843','480','640',NULL,'7'),
-('10816','308',NULL,'IMG_6840','Y','Y','The arroyo is wide and slopes gently upward','340307556','-1067710278','3614',NULL,'2023-01-22 10:50:52','IMG_6840','480','640',NULL,'6'),
-('10817','308',NULL,'IMG_6844','Y','N','Scenery from the road','340341083','-1067680667','3615',NULL,'2023-01-22 11:03:43','IMG_6844','480','640',NULL,'9'),
-('10818','308',NULL,'IMG_6842','Y','Y','The arroyo\'s water attracts plant life','340332722','-1067696000','3616',NULL,'2023-01-22 11:00:11','IMG_6842','640','480',NULL,'8'),
-('10819','308',NULL,'IMG_6833','Y','Y','This section of the arroyo has beautiful colored rock and even water.','340322583','-1067740639','3617',NULL,'2023-01-22 10:43:38','IMG_6833','480','640',NULL,'1'),
-('10820','308',NULL,'IMG_6868','Y','Y','View from the high point of the loop','340520583','-1067486500','3618',NULL,'2023-01-22 12:41:06','IMG_6868','480','640',NULL,'16'),
-('10821','308',NULL,'IMG_6861','Y','Y','The hill around which the hike will loop','340480389','-1067522194','3619',NULL,'2023-01-22 12:18:57','IMG_6861','480','640',NULL,'13'),
-('10822','308',NULL,'IMG_6847','Y','Y','Distant structures vary as you progress','340331333','-1067635944','3620',NULL,'2023-01-22 11:16:14','IMG_6847','480','640',NULL,'10'),
-('10823','308',NULL,'IMG_6865','Y','Y','Looking back from the uphill climb','340508278','-1067485194','3621',NULL,'2023-01-22 12:36:38','IMG_6865','480','640',NULL,'15'),
-('10824','308',NULL,'IMG_6858','Y','Y','Beautiful hills against the deep blue sky','340417833','-1067538056','3622',NULL,'2023-01-22 11:58:25','IMG_6858','480','640',NULL,'12'),
-('10825','308',NULL,'IMG_6862','Y','N','Interesting colors and shapes','340496722','-1067496806','3623',NULL,'2023-01-22 12:29:22','IMG_6862','480','640',NULL,'17'),
-('10826','308',NULL,'IMG_6873','Y','Y','One of the sights along the arroyo','340346139','-1067625889','3624',NULL,'2023-01-22 14:19:24','IMG_6873','480','640',NULL,'11'),
-('10827','308',NULL,'IMG_6864','Y','Y','Climbing up the hill to its shoulder','340500028','-1067491139','3625',NULL,'2023-01-22 12:32:42','IMG_6864','480','640',NULL,'14'),
-('10828','308',NULL,'IMG_7195','Y','Y','Green highlights the arroyo','340312306','-1067750389','3721',NULL,'2023-03-27 14:56:52','IMG_7195','640','480',NULL,'3'),
-('10829','308',NULL,'IMG_7196','Y','Y','Peaceful waters and colorful rock','340312889','-1067775889','3722',NULL,'2023-03-27 15:02:41','IMG_7196','480','640',NULL,'4'),
-('10830','308',NULL,'IMG_7198','Y','Y','A green waterfall to delight','340309000','-1067790833','3723',NULL,'2023-03-27 15:06:25','IMG_7198','640','480',NULL,'5'),
-('10831','308',NULL,'IMG_7192','Y','Y','Along the bend...','340319972','-1067743083','3724',NULL,'2023-03-27 14:52:40','IMG_7192','480','640',NULL,'2'),
 ('10833','316',NULL,'IMG_7316','Y','Y','Curious deer check us out','357143556','-1071808250','3725',NULL,'2023-04-06 10:06:39','IMG_7316','480','640',NULL,'2'),
 ('10834','316',NULL,'IMG_7322','Y','Y','Hoodoos begin to make their appearance','357146028','-1071822806','3726',NULL,'2023-04-06 10:13:13','IMG_7322','480','640',NULL,'5'),
 ('10835','316',NULL,'IMG_7323','Y','Y','Rock guardian','357152667','-1071824028','3727',NULL,'2023-04-06 10:14:21','IMG_7323','480','640',NULL,'6'),
@@ -5590,8 +5573,7 @@ INSERT INTO TSV VALUES
 ('10900','318',NULL,'IMG_7488','Y','Y','Begin at the Welcome Center','363310722','-1064725722','3784',NULL,'2023-04-10 12:20:21','IMG_7488','480','640',NULL,'0'),
 ('10901','318',NULL,'IMG_7505','Y','Y','Beautiful views entering the canyon','363428278','-1064623944','3785',NULL,'2023-04-10 12:48:47','IMG_7505','480','640',NULL,'6'),
 ('10902','318',NULL,'IMG_7503','Y','Y','The trail approaches the stream','363421972','-1064634556','3786',NULL,'2023-04-10 12:46:49','IMG_7503','480','640',NULL,'5'),
-('10903','318',NULL,'IMG_7495','Y','Y','Large bluffs preside over the landscape','363409583','-1064668111','3787',NULL,'2023-04-10 12:40:09','IMG_7495','480','640',NULL,'2');
-INSERT INTO TSV VALUES
+('10903','318',NULL,'IMG_7495','Y','Y','Large bluffs preside over the landscape','363409583','-1064668111','3787',NULL,'2023-04-10 12:40:09','IMG_7495','480','640',NULL,'2'),
 ('10904','318',NULL,'IMG_7506','Y','Y','Water accentuates the scene','363433444','-1064621639','3788',NULL,'2023-04-10 12:49:54','IMG_7506','640','480',NULL,'7'),
 ('10905','318',NULL,'IMG_7521','Y','Y','On the return trail','363442306','-1064611583','3789',NULL,'2023-04-10 13:26:24','IMG_7521','480','640',NULL,'14'),
 ('10906','318',NULL,'IMG_7511','Y','Y','At points the path narrows','363444139','-1064577028','3790',NULL,'2023-04-10 13:00:11','IMG_7511','640','480',NULL,'8'),
@@ -5609,7 +5591,8 @@ INSERT INTO TSV VALUES
 ('10933','85',NULL,'IMG_2500','Y','Y','Astounding color in the surrounding hills','363401111','-1064837111','2786',NULL,'2014-02-13 14:49:32','IMG_2500','480','640',NULL,NULL),
 ('10934','85',NULL,'IMG_2502','Y','Y','A peek at the peaks','363382000','-1064837639','2787',NULL,'2014-02-13 14:55:57','IMG_2502','640','480',NULL,NULL),
 ('10940','86','Folder','Trailhead','Y','N','Autumn at the trailhead',NULL,NULL,'427','72157669237103060','2013-10-01 12:59:54','27619761510_e034054631','320','240',NULL,NULL),
-('10941','86',NULL,'TrailGetsTricky','Y','N','Higher ascent with steeper slopes ahead',NULL,NULL,'428','72157669237103060','2013-10-01 13:39:36','27619788530_462dd1f63b','240','320',NULL,NULL),
+('10941','86',NULL,'TrailGetsTricky','Y','N','Higher ascent with steeper slopes ahead',NULL,NULL,'428','72157669237103060','2013-10-01 13:39:36','27619788530_462dd1f63b','240','320',NULL,NULL);
+INSERT INTO TSV VALUES
 ('10942','86',NULL,'ThroughDinasaufTurf','Y','N','The area where dinosaur bones were found',NULL,NULL,'429','72157669237103060','2013-10-01 13:14:32','27285520283_9b2b222f5a','240','320',NULL,NULL),
 ('10943','86',NULL,'SurroundedByRock','Y','N','Beautiful rock abounds throughout the trail',NULL,NULL,'430','72157669237103060','2013-10-01 13:38:16','27796855842_4327a9037c','320','240',NULL,NULL),
 ('10944','86',NULL,'OnTheWayIn','Y','N','A short ascent near the beginning',NULL,NULL,'431','72157669237103060','2013-10-01 13:10:36','27796879032_05f64db72d','320','240',NULL,NULL),
@@ -5691,8 +5674,7 @@ INSERT INTO TSV VALUES
 ('11040','120','Folder1','NewMexicoBlue','Y','Y','Tom and Bill against that incredible sky','357254250','-1066210777','1131','72157680666183383','2017-11-28 12:09:19','24994126497_66e6e976fe','2448','3264','','22'),
 ('11041','120',NULL,'IMG_7661','Y','N','A wet section of the Paliza Creek trail','357209556','-1066169583','3814',NULL,'2023-05-25 10:09:07','IMG_7661','640','480',NULL,'23'),
 ('11049','319',NULL,'IMG_6857','Y','N','Turkey like hoodoo','356995222','-1066933056','3815',NULL,'2023-05-29 10:25:27','IMG_6857','640','360',NULL,'2'),
-('11050','319',NULL,'IMG_6828','Y','Y','View from above','357032778','-1066953278','3816',NULL,'2023-05-29 09:49:16','IMG_6828','360','640',NULL,'0');
-INSERT INTO TSV VALUES
+('11050','319',NULL,'IMG_6828','Y','Y','View from above','357032778','-1066953278','3816',NULL,'2023-05-29 09:49:16','IMG_6828','360','640',NULL,'0'),
 ('11051','319',NULL,'IMG_6867','Y','Y','The canyon is lined with smooth steep walls','356993472','-1066935056','3817',NULL,'2023-05-29 10:31:15','IMG_6867','360','640',NULL,'3'),
 ('11052','319',NULL,'IMG_6847','Y','Y','Entering hoodoo territory up close','356997861','-1066934139','3818',NULL,'2023-05-29 10:21:06','IMG_6847','360','640',NULL,'1'),
 ('11053','319',NULL,'IMG_6894','Y','Y','Stark pillars of rock aboud','356978444','-1066965778','3819',NULL,'2023-05-29 10:50:23','IMG_6894','360','640',NULL,'8'),
@@ -5710,7 +5692,8 @@ INSERT INTO TSV VALUES
 ('11065','320',NULL,'20230608_142613','Y','Y','An open view of San Antonio Creek','359183818','-1066544604','3831',NULL,'2023-06-08 14:26:13','20230608_142613','480','640',NULL,'0'),
 ('11066','320',NULL,'20230608_125355','Y','N','The trail leads into the woods','359380724','-1066472171','3837',NULL,'2023-06-08 12:53:55','20230608_125355','640','480',NULL,'3'),
 ('11067','320',NULL,'20230608_125401','Y','Y','Colorful dandelions beautify the trail','359380723','-1066472188','3838',NULL,'2023-06-08 12:54:01','20230608_125401','480','640',NULL,'4'),
-('11068','320',NULL,'20230608_124703','Y','N','Irises dot the grassy fields','359356224','-1066493865','3839',NULL,'2023-06-08 12:47:03','20230608_124703','480','640',NULL,'2'),
+('11068','320',NULL,'20230608_124703','Y','N','Irises dot the grassy fields','359356224','-1066493865','3839',NULL,'2023-06-08 12:47:03','20230608_124703','480','640',NULL,'2');
+INSERT INTO TSV VALUES
 ('11069','320',NULL,'20230608_130913','Y','N','Looking down at the multiple pools','359399002','-1066434300','3841',NULL,'2023-06-08 13:09:13','20230608_130913','640','480',NULL,'6'),
 ('11070','320',NULL,'20230608_124636','Y','Y','Grasses and flowers are abundant on the forest floor','359355660','-1066494006','3842',NULL,'2023-06-08 12:46:36','20230608_124636','480','640',NULL,'1'),
 ('11071','320',NULL,'20230608_130916','Y','Y','One of the lovely pools','359398988','-1066434247','3843',NULL,'2023-06-08 13:09:15','20230608_130916','640','480',NULL,'5'),
@@ -5792,8 +5775,7 @@ INSERT INTO TSV VALUES
 ('11149','327',NULL,'IMG_8167','Y','Y','Begin the surprising journey!','362351556','-1063737861','3906',NULL,'2023-10-26 11:38:56','IMG_8167','640','480',NULL,'2'),
 ('11150','327',NULL,'IMG_8178','Y','Y','A possible trail continues out ','362359472','-1063733667','3907',NULL,'2023-10-26 11:48:54','IMG_8178','640','480',NULL,'7'),
 ('11151','327',NULL,'IMG_8168','Y','N','Blue sky peeks in at various points','362351389','-1063738389','3908',NULL,'2023-10-26 11:39:26','IMG_8168','640','480',NULL,'3'),
-('11152','327',NULL,'IMG_8171','Y','N','Pausing to take it in','362351139','-1063738167','3909',NULL,'2023-10-26 11:40:57','IMG_8171','640','480',NULL,'5');
-INSERT INTO TSV VALUES
+('11152','327',NULL,'IMG_8171','Y','N','Pausing to take it in','362351139','-1063738167','3909',NULL,'2023-10-26 11:40:57','IMG_8171','640','480',NULL,'5'),
 ('11153','327',NULL,'IMG_8177','Y','Y','Emerging into the daylight','362358278','-1063732917','3910',NULL,'2023-10-26 11:48:33','IMG_8177','480','640',NULL,'6'),
 ('11154','327',NULL,'IMG_8175','Y','Y','Some areas get rather narrow','362353861','-1063735278','3911',NULL,'2023-10-26 11:43:17','IMG_8175','640','480',NULL,'4'),
 ('11155','327',NULL,'IMG_8176','Y','N','Walls are largely a conglomerate','362357778','-1063734194','3912',NULL,'2023-10-26 11:48:05','IMG_8176','480','640',NULL,'10'),
@@ -5811,7 +5793,8 @@ INSERT INTO TSV VALUES
 ('11171','328',NULL,'IMG_8205','Y','Y','Autumn leaves adorn the trail','351802639','-1063831028','3938',NULL,'2023-10-29 10:02:14','IMG_8205','640','480',NULL,'1'),
 ('11175','307',NULL,'IMG_6747','Y','N','Corrugated hills in the valley','362450861','-1063806083','3575',NULL,'2023-01-08 11:28:57','IMG_6747','480','640',NULL,'6'),
 ('11176','307',NULL,'IMG_6743','Y','Y','Surprise petroglyph stone','362420500','-1063792556','3576',NULL,'2023-01-08 11:04:42','IMG_6743','480','640',NULL,'3'),
-('11177','307',NULL,'IMG_6752','Y','Y','Looking into the Red Wash','362463917','-1063794250','3577',NULL,'2023-01-08 11:35:12','IMG_6752','480','640',NULL,'8'),
+('11177','307',NULL,'IMG_6752','Y','Y','Looking into the Red Wash','362463917','-1063794250','3577',NULL,'2023-01-08 11:35:12','IMG_6752','480','640',NULL,'8');
+INSERT INTO TSV VALUES
 ('11178','307',NULL,'IMG_6739','Y','Y','Innocent beginnings - parking area','362319222','-1063758778','3578',NULL,'2023-01-08 10:29:02','IMG_6739','480','640',NULL,'0'),
 ('11179','307',NULL,'IMG_6744','Y','Y','Steep uphill w/cairns','362435306','-1063799056','3579',NULL,'2023-01-08 11:14:10','IMG_6744','640','480',NULL,'4'),
 ('11180','307',NULL,'IMG_6741','Y','N','From the first ledge','362416083','-1063785861','3580',NULL,'2023-01-08 10:59:11','IMG_6741','480','640',NULL,'2'),
@@ -5893,8 +5876,7 @@ INSERT INTO TSV VALUES
 ('11271','332',NULL,'IMG_8340','Y','Y','Immediately, a shallow but interesting canyon','355177528','-1069584194','3986',NULL,'2023-11-28 10:41:24','IMG_8340','480','640',NULL,'1'),
 ('11272','332',NULL,'IMG_8352','Y','Y','Colors begin to unfold before us','355240861','-1069447389','3987',NULL,'2023-11-28 11:25:10','IMG_8352','480','640',NULL,'3'),
 ('11273','332',NULL,'IMG_8354','Y','N','An owl-shaped monument','355247083','-1069441389','3988',NULL,'2023-11-28 11:27:51','IMG_8354','480','640',NULL,'4'),
-('11274','332',NULL,'IMG_8338','Y','Y','Deceiving terrain at the start!','355156667','-1069621889','3989',NULL,'2023-11-28 10:30:52','IMG_8338','480','640',NULL,'0');
-INSERT INTO TSV VALUES
+('11274','332',NULL,'IMG_8338','Y','Y','Deceiving terrain at the start!','355156667','-1069621889','3989',NULL,'2023-11-28 10:30:52','IMG_8338','480','640',NULL,'0'),
 ('11275','332',NULL,'IMG_8360','Y','N','A valley of monoliths','355242000','-1069427472','3990',NULL,'2023-11-28 11:36:02','IMG_8360','480','640',NULL,'6'),
 ('11276','332',NULL,'IMG_8358','Y','N','Massive pillars surround us','355243611','-1069431306','3991',NULL,'2023-11-28 11:33:43','IMG_8358','480','640',NULL,'5'),
 ('11277','332',NULL,'IMG_8368','Y','Y','Old ruins - note, there are two here','355229417','-1069413306','3992',NULL,'2023-11-28 11:57:32','IMG_8368','480','640',NULL,'8'),
@@ -5912,7 +5894,8 @@ INSERT INTO TSV VALUES
 ('11303','63',NULL,'RockWall','Y','N','Driving in also affords great views',NULL,NULL,'316','72157669105693376','2015-03-08 15:52:28','26793031984_9eb713d902','240','320',NULL,'1'),
 ('11304','63',NULL,'PauseForAView','Y','N','Along the trail there is time to enjoy',NULL,NULL,'317','72157669105693376','2011-05-18 15:25:15','27401049675_5a5b4cf20d','213','320',NULL,'6'),
 ('11305','63',NULL,'OnTheRoad','Y','N','The first sign of formations when driving in',NULL,NULL,'318','72157669105693376','2015-03-08 14:54:03','26793841123_5fbdea1b11','240','320',NULL,'0'),
-('11306','63',NULL,'IMG_7614','Y','Y','One of many side canyon views','342376139','-1070141833','3794',NULL,'2023-04-29 10:34:53','IMG_7614','480','640',NULL,'15'),
+('11306','63',NULL,'IMG_7614','Y','Y','One of many side canyon views','342376139','-1070141833','3794',NULL,'2023-04-29 10:34:53','IMG_7614','480','640',NULL,'15');
+INSERT INTO TSV VALUES
 ('11307','63',NULL,'IMG_7628','Y','Y','Lush greenery on the arroyo','342385028','-1070166028','3795',NULL,'2023-04-29 11:01:59','IMG_7628','480','640',NULL,'16'),
 ('11308','63',NULL,'IMG_7593','Y','Y','Stand-alone monitor','342438722','-1069950944','3796',NULL,'2023-04-29 09:37:21','IMG_7593','480','640',NULL,'3'),
 ('11309','63',NULL,'IMG_7632','Y','Y','Slanted geology','342356917','-1070123361','3797',NULL,'2023-04-29 11:18:34','IMG_7632','480','640',NULL,'13'),
@@ -5994,8 +5977,7 @@ INSERT INTO TSV VALUES
 ('11419','335',NULL,'IMG_8528','Y','Y','Formations increase in size and the canyon narrows','355689278','-1067987889','4047',NULL,'2023-12-26 11:25:47','IMG_8528','480','640',NULL,'4'),
 ('11420','335',NULL,'IMG_8534','Y','Y','A long view of the canyon','355709083','-1067997194','4048',NULL,'2023-12-26 12:06:38','IMG_8534','480','640',NULL,'10'),
 ('11421','335',NULL,'IMG_8529','Y','Y','Red sanstone silt and water line the bottom','355702583','-1067993556','4049',NULL,'2023-12-26 11:34:07','IMG_8529','480','640',NULL,'5'),
-('11422','335',NULL,'IMG_8539','Y','Y','Climbing back up and out','355649833','-1068095556','4050',NULL,'2023-12-26 12:52:04','IMG_8539','480','640',NULL,'12');
-INSERT INTO TSV VALUES
+('11422','335',NULL,'IMG_8539','Y','Y','Climbing back up and out','355649833','-1068095556','4050',NULL,'2023-12-26 12:52:04','IMG_8539','480','640',NULL,'12'),
 ('11425','336',NULL,'IMG_8542','Y','Y','To the northeast, the Sangre de Cristos can be seen','352484111','-1066357556','4051',NULL,'2023-12-28 13:17:06','IMG_8542','480','640',NULL,'1'),
 ('11426','336',NULL,'IMG_8540','Y','Y','The trail begins facing a lovely view of the Sandias','352497250','-1066381306','4052',NULL,'2023-12-28 13:09:08','IMG_8540','480','640',NULL,'0'),
 ('11427','336',NULL,'IMG_8545','Y','Y','A restful view with benches has been provided just off-trail','352433139','-1066368333','4053',NULL,'2023-12-28 13:27:20','IMG_8545','480','640',NULL,'2'),
@@ -6013,7 +5995,8 @@ INSERT INTO TSV VALUES
 ('11446','89',NULL,'IMG_3201','Y','Y','A well-marked trail at this point','355706861','-1068099583','2809',NULL,'2016-09-08 10:17:10','IMG_3201','640','640',NULL,NULL),
 ('11447','89',NULL,'IMG_3217','Y','N','Pointing out possibilities','355666917','-1068112500','2811',NULL,'2016-09-08 11:41:29','IMG_3217','480','640',NULL,NULL),
 ('11449','337',NULL,'IMG_8580','Y','Y','Ladrone Peak towers in the distance','342311389','-1069987472','4059',NULL,'2024-01-09 12:31:15','IMG_8580','480','640',NULL,'6'),
-('11450','337',NULL,'IMG_8564','Y','N','In the beginning...','342421556','-1069846111','4060',NULL,'2024-01-09 11:25:55','IMG_8564','480','640',NULL,'0'),
+('11450','337',NULL,'IMG_8564','Y','N','In the beginning...','342421556','-1069846111','4060',NULL,'2024-01-09 11:25:55','IMG_8564','480','640',NULL,'0');
+INSERT INTO TSV VALUES
 ('11451','337',NULL,'IMG_8567','Y','Y','Canyon walls soon surround you','342413889','-1069887917','4064',NULL,'2024-01-09 11:41:01','IMG_8567','480','640',NULL,'1'),
 ('11452','337',NULL,'IMG_8586','Y','Y',' A view of Polvadera','342256194','-1070107111','4065',NULL,'2024-01-09 13:02:07','IMG_8586','480','640',NULL,'8'),
 ('11453','337',NULL,'IMG_8589','Y','Y','Approaching the main canyon','342321472','-1070130611','4066',NULL,'2024-01-09 13:41:58','IMG_8589','480','640',NULL,'10'),
@@ -6070,7 +6053,25 @@ INSERT INTO TSV VALUES
 ('11507','338',NULL,'IMG_8688','Y','Y','A rich variety of geology in every view','340070083','-1067590722','4094',NULL,'2024-02-13 14:01:11','IMG_8688','480','640',NULL,'10'),
 ('11508','338',NULL,'IMG_8686','Y','Y','Exposed strata line the arroyos','340088194','-1067580806','4095',NULL,'2024-02-13 13:52:33','IMG_8686','480','640',NULL,'9'),
 ('11509','338',NULL,'IMG_8690','Y','Y','Another perspective from up high','340040500','-1067545083','4096',NULL,'2024-02-13 14:18:47','IMG_8690','480','640',NULL,'12'),
-('11510','338',NULL,'IMG_8691','Y','Y','Winding down the colorful arroyo','340065222','-1067559528','4097',NULL,'2024-02-13 14:27:37','IMG_8691','480','640',NULL,'13');
+('11510','338',NULL,'IMG_8691','Y','Y','Winding down the colorful arroyo','340065222','-1067559528','4097',NULL,'2024-02-13 14:27:37','IMG_8691','480','640',NULL,'13'),
+('11543','308',NULL,'IMG_6831','Y','Y','View of the terrain from the parking area','340326528','-1067726139','3612',NULL,'2023-01-22 10:38:24','IMG_6831','480','640',NULL,'0'),
+('11544','308',NULL,'IMG_6843','Y','Y','Tilted formations indicate the geological stresses in the ara','340341694','-1067687917','3613',NULL,'2023-01-22 11:02:22','IMG_6843','480','640',NULL,'7'),
+('11545','308',NULL,'IMG_6840','Y','Y','The arroyo is wide and slopes gently upward','340307556','-1067710278','3614',NULL,'2023-01-22 10:50:52','IMG_6840','480','640',NULL,'6'),
+('11546','308',NULL,'IMG_6844','Y','N','Scenery from the road','340341083','-1067680667','3615',NULL,'2023-01-22 11:03:43','IMG_6844','480','640',NULL,'9'),
+('11547','308',NULL,'IMG_6842','Y','Y','The arroyo\'s water attracts plant life','340332722','-1067696000','3616',NULL,'2023-01-22 11:00:11','IMG_6842','640','480',NULL,'8'),
+('11548','308',NULL,'IMG_6833','Y','Y','This section of the arroyo has beautiful colored rock and even water.','340322583','-1067740639','3617',NULL,'2023-01-22 10:43:38','IMG_6833','480','640',NULL,'1'),
+('11549','308',NULL,'IMG_6868','Y','Y','View from the high point of the loop','340520583','-1067486500','3618',NULL,'2023-01-22 12:41:06','IMG_6868','480','640',NULL,'16'),
+('11550','308',NULL,'IMG_6861','Y','Y','The hill around which the hike will loop','340480389','-1067522194','3619',NULL,'2023-01-22 12:18:57','IMG_6861','480','640',NULL,'13'),
+('11551','308',NULL,'IMG_6847','Y','Y','Distant structures vary as you progress','340331333','-1067635944','3620',NULL,'2023-01-22 11:16:14','IMG_6847','480','640',NULL,'10'),
+('11552','308',NULL,'IMG_6865','Y','Y','Looking back from the uphill climb','340508278','-1067485194','3621',NULL,'2023-01-22 12:36:38','IMG_6865','480','640',NULL,'15'),
+('11553','308',NULL,'IMG_6858','Y','Y','Beautiful hills against the deep blue sky','340417833','-1067538056','3622',NULL,'2023-01-22 11:58:25','IMG_6858','480','640',NULL,'12'),
+('11554','308',NULL,'IMG_6862','Y','N','Interesting colors and shapes','340496722','-1067496806','3623',NULL,'2023-01-22 12:29:22','IMG_6862','480','640',NULL,'17'),
+('11555','308',NULL,'IMG_6873','Y','Y','One of the sights along the arroyo','340346139','-1067625889','3624',NULL,'2023-01-22 14:19:24','IMG_6873','480','640',NULL,'11'),
+('11556','308',NULL,'IMG_6864','Y','Y','Climbing up the hill to its shoulder','340500028','-1067491139','3625',NULL,'2023-01-22 12:32:42','IMG_6864','480','640',NULL,'14'),
+('11557','308',NULL,'IMG_7195','Y','Y','Green highlights the arroyo','340312306','-1067750389','3721',NULL,'2023-03-27 14:56:52','IMG_7195','640','480',NULL,'3'),
+('11558','308',NULL,'IMG_7196','Y','Y','Peaceful waters and colorful rock','340312889','-1067775889','3722',NULL,'2023-03-27 15:02:41','IMG_7196','480','640',NULL,'4'),
+('11559','308',NULL,'IMG_7198','Y','Y','A green waterfall to delight','340309000','-1067790833','3723',NULL,'2023-03-27 15:06:25','IMG_7198','640','480',NULL,'5'),
+('11560','308',NULL,'IMG_7192','Y','Y','Along the bend...','340319972','-1067743083','3724',NULL,'2023-03-27 14:52:40','IMG_7192','480','640',NULL,'2');
 
 
 
