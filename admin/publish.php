@@ -235,7 +235,7 @@ if ($msgout == '') {
         $updateGpx = $pdo->prepare($updateGpxReq);
         $updateGpx->execute([$new_gpx, $indxNo]);
         /**
-         * In the cases of EGPSDAT, EREFS, and ETSV, elements may have been
+         * In the cases of EGPSDAT, EREFS, ETSV, and EWAYPTS elements may have been
          * deleted during edit, therefore, remove ALL the old data if the
          * hike was type 'published'. Insert new data (no UPDATEs, only INSERTs)
          */
@@ -319,6 +319,17 @@ if ($msgout == '') {
         $instsv->bindValue(":indxNo", $indxNo); // the indxNo of the new/updated hike
         $instsv->bindValue(":ehikeNo", $hikeNo); // the EHIKES indxNo
         $instsv->execute();
+        // insert new data for WAYPTS
+        if ($status > 0) {
+            $query = "DELETE FROM `WAYPTS` WHERE `indxNo` = :indxNo;";
+            $delwpt = $pdo->prepare($query);
+            $delwpt->execute([$indxNo]);
+        }
+        $query = "INSERT INTO `WAYPTS` (`indxNo`,`type`,`name`,`lat`,`lng`,`sym`) " .
+            "SELECT ?,`type`,`name`,`lat`,`lng`,`sym` FROM `EWAYPTS` WHERE " .
+            "`indxNo`=?;";
+        $inswpt = $pdo->prepare($query);
+        $inswpt->execute([$indxNo, $hikeNo]);
     }
     // Cluster pages also receive REFS updates
     // ---------------------  REFS -------------------

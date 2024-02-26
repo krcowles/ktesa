@@ -132,6 +132,14 @@ if (!$cluspg) {
     $updateGpxReq = "UPDATE `EHIKES` SET `gpx`=? WHERE `indxNo`=?;";
     $updateGpx = $pdo->prepare($updateGpxReq);
     $updateGpx->execute([$new_gpx_array, $hikeNo]);
+    /**
+     * UPDATE EWAYPTS
+     */
+    $ewptsReq = "INSERT INTO `EWAYPTS` (`indxNo`,`type`,`name`,`lat`," .
+        "`lng`,`sym`) SELECT ?,`type`,`name`,`lat`,`lng`,`sym` " .
+        "FROM `WAYPTS` WHERE `indxNo`=?;";
+    $ewpts = $pdo->prepare($ewptsReq);
+    $ewpts->execute([$hikeNo, $getHike]);
 }
 /*
  * Place REFS data into EREFS
