@@ -37,7 +37,7 @@ AND table_schema = DATABASE( );
 AI;
 $state = $pdo->query($ai_state)->fetch(PDO::FETCH_NUM);
 $testNo = $lastHikeNo + 1;
-if ($state[0] !== $testNo) {
+if (intval($state[0]) !== $testNo) {
     throw new Exception(
         "AUTO_INCREMENT value {$state[0]} does not agree with" .
         " next hike no {$testNo}"
