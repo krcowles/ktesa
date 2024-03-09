@@ -19,7 +19,6 @@ $ttable      = $table_age === 'new' ? 'ETSV' : 'TSV';
 $wtable      = $table_age === 'new' ? 'EWAYPTS' : 'WAYPTS';
 $hike_list   = filter_input(INPUT_GET, 'json');
 $hike_tracks = explode(",", $hike_list);
-$wpt_type    = strpos($hike_tracks[0], "gp") !== false ? 'gps' : 'gpx';
 
 $trkno = 1;
 $trk_nmes = [];

@@ -16,7 +16,6 @@
  */
 require_once "../php/global_boot.php";
 
-$wpt_type = isset($wpt_type) ? $wpt_type : 'gpx';
 $tblOnly = isset($hikeIndexNo) ? false : true;
 // tblOnly files are input via query string as an array of track names
 if ($tblOnly) {
@@ -105,8 +104,7 @@ foreach ($hike_tracks as $json) {
      */
     if (isset($hikeIndexNo)) {
         $getAllWptsReq
-            = "SELECT * FROM {$wtable} WHERE `indxNo`={$hikeIndexNo} AND " .
-                "`type`='{$wpt_type}';";
+            = "SELECT * FROM {$wtable} WHERE `indxNo`={$hikeIndexNo}";
         $allWpts = $pdo->query($getAllWptsReq)->fetchAll(PDO::FETCH_ASSOC);
         foreach ($allWpts as $wpt) {
             $lat = $wpt['lat']/LOC_SCALE;
