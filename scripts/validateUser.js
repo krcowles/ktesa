@@ -84,7 +84,7 @@ $('#closesec').on('click', function () {
             if (result === 'ok') {
                 if (sec0) { // more temporary security updates...
                     var logdata = { ix: tbl_indx };
-                    var msg_1 = tbl_indx == '1' || tbl_indx == '2' ?
+                    var msg_1 = tbl_indx == '1' || tbl_indx == '2' || tbl_indx == '14' ?
                         'Admin logged in' : 'You are logged in';
                     $.post('../accounts/login.php', logdata, function (status) {
                         if (status === 'OK') {
@@ -113,7 +113,7 @@ $('#submit_answer').on('click', function () {
     usubmitted = usubmitted.toLowerCase();
     var postdata = { ix: tbl_indx, rx: random };
     $.post('../accounts/retrieveAnswer.php', postdata, function (ans) {
-        var msg = tbl_indx == '1' || tbl_indx == '2' ? "Admin logged in" :
+        var msg = tbl_indx == '1' || tbl_indx == '2' || tbl_indx == '14' ? "Admin logged in" :
             "You are logged in";
         if (usubmitted === ans) {
             $('#the_answer').val("");
