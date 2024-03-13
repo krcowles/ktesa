@@ -74,11 +74,14 @@ if (!isset($_SESSION['username'])) { // No login yet...
         } else {
             $cookie_state = "MULTIPLE"; // for testing only; no longer possible
         }
-    } elseif ($master) { // Currently only 2 masters...
+    } elseif ($master) { // Currently 3 masters...
         $cookie_state = "OK";
         if ($_COOKIE['nmh_mstr'] === 'mstr') {
             $_SESSION['userid'] = '1';
             $_SESSION['username'] = 'tom';
+        } elseif ($_COOKIE['nmh_mstr'] === 'Rockcogar') {
+            $_SESSION['userid'] = '14';
+            $_SESSION['username'] = 'Rockcogar';
         } else {
             $_SESSION['userid'] = '2';
             $_SESSION['username'] = 'kc';
@@ -89,7 +92,7 @@ if (!isset($_SESSION['username'])) { // No login yet...
     $_SESSION['cookie_state'] = $cookie_state;
 } else {
     // LOGGED IN: (User data is in $_SESSION vars);
-    if ($_SESSION['userid'] == '1'  || $_SESSION['userid'] == '2') {
+    if ($_SESSION['userid'] == '1'  || $_SESSION['userid'] == '2' || $_SESSION['userid'] == '14') {
         $admin = true;
         $cookie_state = "OK";
     } 

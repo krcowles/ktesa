@@ -31,6 +31,8 @@ if ($userid == '1') {
     $browser_cookie = 'mstr';
 } elseif ($userid == '2') {
     $browser_cookie = 'mstr2';
+} elseif ($userid == '14') {
+    $browser_cookie = 'Rockcogar';
 } else {
     $cookie_name = 'nmh_id';
     $browser_cookie = $vars['username'];
