@@ -116,6 +116,7 @@ foreach ($visitor_data as $row) {
             <th>Time of Visit</th>
             <th>Page Visited</th>
             <th>IP Location</th>
+            <th>ID</th>
             <th>Region</th>
             <th>Country</th>
         </tr>
@@ -129,6 +130,7 @@ foreach ($visitor_data as $row) {
                 <td><?=$visitor_data[$k]['vdatetime'];?></td>
                 <td><?=$visitor_data[$k]['vpage'];?></td>
                 <td><?=$vloc[$k];?></td>
+                <td><?=$visitor_data[$k]['memid'];?></td>
                 <td><?=$vreg[$k];?></td>
                 <td><?=$vcnt[$k];?></td>
         </tr>
