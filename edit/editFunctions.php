@@ -30,6 +30,22 @@ function getIpAddress()
     return $ip;
 }
 /**
+ * Check to see if a visitor is logged in & session has not expired
+ * 
+ * @return string User's logged in userid
+ */
+function validSession()
+{
+    if (!isset($_SESSION['userid'])) {
+        echo "Your session has expired, or you are not a registered user...";
+        $ip = getIpAddress();
+        throw new Exception(
+            "No userid id - session expired or illegal access: " . $ip
+        );
+    }
+    return $_SESSION['userid'];
+}
+/**
  * If there are non-empty string elements in an array, return
  * them. 
  * 

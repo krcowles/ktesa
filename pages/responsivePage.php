@@ -192,8 +192,8 @@ if (!mobile) {
 <div class="popupCap"></div>
 
 <script type="text/javascript">
-    <?php if (isset($hikeFiles)) : ?>
-    var hikeFiles = <?=$hikeFiles;?>;
+    <?php if (isset($hike_file_list)) : ?>
+    var hike_file_list = <?=$hike_file_list;?>;
     <?php endif; ?>
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;

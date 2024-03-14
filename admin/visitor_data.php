@@ -70,8 +70,12 @@ foreach ($visitor_data as $row) {
         $state_name
             = !empty($record->mostSpecificSubdivision->name) ?
                 $record->mostSpecificSubdivision->name : ''; 
-        array_push($vreg, $state_name);
         $city_name = !empty($record->city->name)?$record->city->name : '';
+        if (empty($state_name) || empty($city_name)) {
+            $state_name = empty($state_name) ? 'Proxy?' : $state_name;
+            $city_name  = empty($city_name)  ? 'Proxy?' : $city_name;
+        } 
+        array_push($vreg, $state_name);
         array_push($vloc, $city_name);
     } else { 
         echo $api_error; 

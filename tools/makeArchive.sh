@@ -8,6 +8,7 @@
 cd /Users/kencowles/src/ktesa
 /usr/local/git/bin/git archive -o ../CuArchives/$1_$2.zip $1   # Create archive
 zip -rq ../CuArchives/$1_$2.zip vendor      # Add vendor directory
+zip -rq ../CuArchives/$1_$2.zip ip_files    # add ip_files (visitor ip country)
 echo $1_$2 > admin/commit_number.txt        # Commit number to text file
 zip -rq ../CuArchives/$1_$2.zip admin/commit_number.txt # Add file to archive
 echo "DONE"
