@@ -92,18 +92,20 @@ if ($gpsdat) {
         $track_files = gpxLatLng($gpxdat, 1); // returns array of arrays
         $json_array = $track_files[0];
         $no_of_entries = count($json_array[0]); // lats, lngs, eles have same cnt
-        $jdat = '{"name":"' . $fileName . ',"trk":[';   // array of objects
+        $jdat = '{"name":"' . $fileName . '","trk":[';   // array of objects
         for ($n=0; $n<$no_of_entries; $n++) {
             $jdat .= '{"lat":' . $json_array[0][$n] . ',"lng":' .
                 $json_array[1][$n] . ',"ele":' . $json_array[2][$n] . '},';
         }
         $jdat = rtrim($jdat, ","); 
         $jdat .= ']}';
-        $json_data .= $jdat;
+        $json_data = $jdat;
         // now save the json file data for this track
         $basename = 'pmn' . $hikeNo . "_1.json";
         $jname = "../json/" . $basename;
         file_put_contents($jname, $json_data);
+        echo "Conversion complete for " . $mainfile;
+        exit;
     } elseif ($range) {
         $list = explode("-", $range);
         $start = $list[0];
