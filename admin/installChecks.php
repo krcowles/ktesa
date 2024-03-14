@@ -17,23 +17,22 @@
 require "../php/global_boot.php";
 verifyAccess('post');
 
-$site = filter_input(INPUT_POST, 'site');
-$site_gpx  = '../' . $site . '/gpx';
+$site = filter_input(INPUT_POST, 'site'); // the test site to install
 $site_json = '../' . $site . '/json';
 
 // resident site files
-$res_gpx  = scandir('../gpx');
 $res_json = scandir('../json');
 // test site loc
-$new_gpx  = scandir($site_gpx);
 $new_json = scandir($site_json);
-$return = [];
+$return['nit_json'] = [];
+$return['nim_json'] = [];
+// THE FIRST TIME install from noGpx branch:
+return json_encode($return);
+
 
 // Assumes test site has fewer/different files; 'nit' => not in test site
-$return['nit_gpx']  = arrdiff($new_gpx, $res_gpx);
 $return['nit_json'] = arrdiff($new_json, $res_json);
 // Case where the main site has fewer/different files; 'nim' => not in main site
-$return['nim_gpx']  = arrdiff($res_gpx, $new_gpx);
 $return['nim_json'] = arrdiff($res_json, $new_json);
 
 $result = json_encode($return);

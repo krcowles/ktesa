@@ -82,8 +82,8 @@ $(function () {
             return false;
         }
         var deletions = [];
-        var deleters = $('#sites').val();
-        var copyloc = $('#copyloc').val();
+        var deleters = $('#sites').val(); // sites to delete
+        var copyloc = $('#copyloc').val(); // test site to install
         if (copyloc == '') {
             alert("Please specify a location from which to install files");
             return false;
@@ -100,27 +100,11 @@ $(function () {
             data: { site: copyloc },
             dataType: 'json',
             success: function (results) {
-                if (results['nit_gpx'].length > 0) {
-                    issues += "The following main gpx files are not present in " +
-                        "the test site:\n";
-                    for (var i = 0; i < results['nit_gpx'].length; i++) {
-                        issues += results['nit_gpx'][i] + "; ";
-                    }
-                    issues += "\n";
-                }
                 if (results['nit_json'].length > 0) {
                     issues += "The following main json files are not present in " +
                         "the test site:\n";
                     for (var j = 0; j < results['nit_json'].length; j++) {
                         issues += results['nit_json'][j] + "; ";
-                    }
-                    issues += "\n";
-                }
-                if (results['nim_gpx'].length > 0) {
-                    issues += "The following test site gpx files are not present in " +
-                        "main:\n";
-                    for (var k = 0; k < results['nim_gpx'].length; k++) {
-                        issues += results['nim_gpx'][k] + "; ";
                     }
                     issues += "\n";
                 }
@@ -627,7 +611,7 @@ $(function () {
     });
     // Cleanup extraneous gpx/json files
     $('#gpxClean').on('click', function () {
-        window.open('cleanGpxJson.php', "_blank");
+        window.open('cleanJSON.php', "_blank");
     });
     // Read the ktesa error log
     $('#rdlog').on('click', function () {
