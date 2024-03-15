@@ -9,7 +9,7 @@
  */
 
 // Positioning of elements on page
-let title = $('#trail').text();
+//let title = $('#trail').text();
 $('#ctr').text(title);
 /**
  * Position the links button
@@ -250,13 +250,14 @@ function drawTrack(jsonfile, color, ptr, def) {
 		dataType: "json",
 		url: jsonfile,
 		success: function(trackDat) {
+			let json_track = trackDat['trk'];
 			let track = new google.maps.Polyline({
 				icons: [{
 						icon: mapTick,
 						offset: '0%',
 						repeat: '15%' 
 				}],
-				path: trackDat,
+				path: json_track,
 				geodesic: true,
 				strokeColor: color,
 				strokeOpacity: 1.0,
@@ -276,7 +277,7 @@ function drawTrack(jsonfile, color, ptr, def) {
 				iw.close();
 			});
 			// establish map boundaries
-			trackDat.forEach(function(latlngpair) {
+			json_track.forEach(function(latlngpair) {
 				if (latlngpair.lat > maxlat) {
 					maxlat = latlngpair.lat;
 				}

@@ -11,7 +11,6 @@
 <!-- Hidden inputs required by saveTab1.php, & non-displayed <p>'s' for editDB.js -->
 <input type="hidden" name="fsaved" value="N" />
 <input type="hidden" name="hikeNo" value="<?=$hikeNo;?>" />
-<input type="hidden" name="mtrk" value="<?=$curr_trk;?>" />
 <p id="mgpx" style="display:none;"><?=$curr_gpx;?></p>
 <p id="group" style="display:none;"><?=$cname;?></p>
 <input type="hidden" name="cname" value="<?=$cname;?>" />

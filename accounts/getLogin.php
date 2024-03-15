@@ -22,6 +22,7 @@ $master = isset($_COOKIE['nmh_mstr']) ? true : false;
 $regusr = isset($_COOKIE['nmh_id'])   ? true : false;
 $cookie_state = "NOLOGIN";  // default
 $admin = false;
+$memid = '0';
 
 // Some use cases have 'partial logins':
 if (!isset($_SESSION['username']) || !isset($_SESSION['userid']) 
@@ -50,6 +51,7 @@ if (!isset($_SESSION['username'])) { // No login yet...
             $userid  = $user_info['userid'];
             $expDate = $user_info['passwd_expire'];
             $cookies = $user_info['cookies'];
+            $memid   = $userData['userid'];
             $choice  = 'reject';  // default if no user selection recorded
             if (!empty($cookies)) {
                 $choice = $cookies;
@@ -141,13 +143,13 @@ if (!$admin) {
     $visit_time = date('Y-m-d h:i:s');
     $vpage = selfURL(); // can be null
     $vpage = isset($vpage) ? $vpage : "no page";
-    $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`vbrowser`,`vplatform`," .
-        "`vdatetime`,`vpage`) " .
-        "VALUES (?,?,?,?,?);";
+    $visitor_data_req = "INSERT INTO `VISITORS` (`vip`,`memid`,`vbrowser`," .
+        "`vplatform`,`vdatetime`,`vpage`) VALUES (?,?,?,?,?,?);";
     $visitor_data = $pdo->prepare($visitor_data_req);
     $visitor_data->execute(
         [
             $user_ip,
+            $memid,
             $browser['name'],
             $browser['platform'],
             $visit_time,

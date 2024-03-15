@@ -89,21 +89,21 @@ foreach ($gpsv as $line) {
         $maphtml .= $line . PHP_EOL;
     }
 }
-// Add end-of-file unique data
-for ($i=0; $i<$noOfTrks; $i++) {
+// Add end-of-file unique data: begins after GV_Map_Setup
+for ($i=0; $i<$noOfTracks; $i++) {
     $maphtml .= "                // Track #" . ($i+1) . PHP_EOL;
     $maphtml .= $GPSV_Tracks[$i];
 }
 $maphtml .= "                // List the tracks" . PHP_EOL;
-for ($j=1; $j<=$noOfTrks; $j++) {
+for ($j=1; $j<=$noOfTracks; $j++) {
     $maphtml .= "                t = " . $j .
         "; GV_Add_Track_to_Tracklist({bullet:'- ',name:trk[t].info.name,desc:" .
         "trk[t].info.desc,color:trk[t].info.color,number:t});" . PHP_EOL;
 }
 $maphtml .= PHP_EOL . "                // Add tick marks" . PHP_EOL;
-for ($j=0; $j<count($trackTicks); $j++) {
-    for ($k=0; $k<count($trackTicks[$j]); $k++) {
-        $maphtml .= '                ' . $trackTicks[$j][$k] . PHP_EOL;
+for ($j=0; $j<count($gpsv_tick); $j++) {
+    for ($k=0; $k<count($gpsv_tick[$j]); $k++) {
+        $maphtml .= '                ' . $gpsv_tick[$j][$k] . PHP_EOL;
     }
 }
 $maphtml .= PHP_EOL . "                // Add any waypoints" . PHP_EOL;

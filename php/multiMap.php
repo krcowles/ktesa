@@ -1,15 +1,13 @@
 <?php
 /**
  * This module constructs the html for a GPSVisualizer map using one or
- * more gpx files. This module can be included by any of three possible
- * sources, each of which can specify optional elements to be included:
+ * more track files [hence the script name 'multiMap']. This module can
+ * be included by any of three possible sources, each of which can specify
+ * optional elements to be included:
  *      1. "Draw Map" button on Table Only page (tableOnly.php)
  *      2. Hike Page via hikePageTemplate.php   (hikePageData.php)
  *      3. Full page map via link on Hike Page  (fullPgMapLink.php)
  * Optional elements are waypoints and photo markers.
- * Whether required by the calling program or not, latitude and longitude
- * values are extracted, and, if requested,  ascent/descent data and debug
- * summary file (query string parameters).
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -17,27 +15,21 @@
  * @license None at this time
  */
 require_once "../php/global_boot.php";
-require_once "../php/gpxFunctions.php";
 
-// detect if script called as window (Table Only page)
 $tblOnly = isset($hikeIndexNo) ? false : true;
-
-// tblOnly files are input via query string, $map_opts are included below:
+// tblOnly files are input via query string as an array of track names
 if ($tblOnly) {
-    $geoloc = "../../images/geoloc.png";
-    $query_files = $_GET['m'];
-    $files = [];
-    for ($j=0; $j<count($query_files); $j++) {
-        // If > 1 file listed in a single "m[]" parameter, get extra files
-        if (strpos($query_files[$j], ",") !== false) {
-            $merged = explode(",", $query_files[$j]);
-            foreach ($merged as $new) {
-                array_push($files, $new);
-            }
-        } else {
-            array_push($files, $query_files[$j]);
-        }
-    }
+    $hike_tracks = $_GET['m'];
+    $wtable = 'WAYPTS'; // only production hikes will use this routine
+    $gpsv_trk = [];
+    $trk_nmes = [];
+    $trk_lats = [];
+    $trk_lngs = [];
+    $gpsv_tick = [];
+    $trkno = 1;
+    prepareMappingData(
+        $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
+    );
     $map_opts = [
         'zoom' => 17,
         'map_type' => 'ARCGIS_TOPO_WORLD',
@@ -50,55 +42,49 @@ if ($tblOnly) {
              "'measure':true, 'export':true }",
         'tracklist_options' => 'true',
         'marker_list_options' => 'false',
-        'show_markers' => 'true',
-        'dynamicMarker' => 'true'  
+        'dynamicMarker' => 'false'  
     ];
     $hikeTitle = "Multiple GPX File Map";
-    $makeGpsvDebug = false;
-    $handleDfa  = null;
-    $handleDfc  = null;
-    $distThresh = 1;
-    $elevThresh = 1;
-    $maWindow   = 1;
 }
-// data for hike page, if required
-$hikeFiles = json_encode($files);
-// data for map
-$allLats     = [];
-$allLngs     = [];
+
+/**
+ * '$hike_tracks' is an array of 1 or more json files to be applied to the map.
+ * The following variables must be defined in the caller:
+ *  - $trk_lats
+ *  - $trk_lngs
+ *  - $trk_nmes
+ *  - $gpsv_trk
+ */
+$allLats     = []; // for calculating map bounds
+$allLngs     = []; // for calculating map bounds
 $defClrs     = array('red','blue','aqua','green','fuchsia','pink','orange','black');
 $colorIndx   = 0;
-$noOfTrks    = 0;  // sequentially increasing with each file
+$gpsv_trkno  = 1;  // sequentially increasing with each file
 $GPSV_Tracks = [];
 $waypoints   = [];
 $noOfWaypts  = 0;
-$trackTicks  = []; // each member is an array of ticks for a track 
-foreach ($files as $gpx) {
-    $gpxPath = '../gpx/' . $gpx;
-    $gpxdat  = simplexml_load_file($gpxPath);
-    if ($gpxdat === false) {
-        throw new Exception("Could not retrieve {$gpx} in multiMap.php");
-    }
-    if ($gpxdat->rte->count() > 0) {
-        $gpxdat = convertRtePts($gpxdat);
-    }
-    $noOfFileTrks = $gpxdat->trk->count();
-    
-    // calculated stats for all tracks within the file
-    $pup = (float)0;
-    $pdwn = (float)0;
-    $pmax = (float)0;
-    $pmin = (float)50000;
-    $hikeLgthTot = (float)0;
-    // Iterate through all tracks in this gpx file
-    for ($k=0; $k<$noOfFileTrks; $k++) { // PROCESS EACH TRK
-        $ticks = []; // one set of ticks per track
-        $trkNo = $noOfTrks + $k + 1;
-        $trkname = str_replace("'", "\'", $gpxdat->trk[$k]->name);
-        $line = "                t = " . $trkNo . "; trk[t] = " .
-            "{info:[],segments:[]};\n";
-        $line .= "                trk[t].info.name = '" . $trkname .
-            "'; trk[t].info.desc = ''; trk[t].info.clickable = true;\n";
+$geoloc = "../../images/geoloc.png"; 
+$noOfTracks  = count($hike_tracks);
+$trkno       = 1;
+
+foreach ($hike_tracks as $json) {
+    $line = '';
+    // Iterate through all tracks
+    for ($k=0; $k<$noOfTracks; $k++) { // PROCESS EACH TRK 
+        // Accumulate data for finding map bounds:
+        $allLats = array_merge($allLats, $trk_lats[$k]);
+        $allLngs = array_merge($allLngs, $trk_lngs[$k]); 
+        /**
+         * Prepare track data for map setup (GV_Map_Setup)
+         */
+        if ($colorIndx === 8) { // colors should rollover to the beginning now
+            $colorIndx = 0;
+        }
+        $trkNo = $gpsv_trkno++;
+        $line  = "                t = " . $trkNo .
+                                        "; trk[t] = {info:[],segments:[]};\n";
+        $line .= "                trk[t].info.name = '" . $trk_nmes[$k] .
+                "'; trk[t].info.desc = ''; trk[t].info.clickable = true;\n";
         $line .= "                trk[t].info.color = '" .
             $defClrs[$colorIndx] . "'; trk[t].info." .
             "width = 3; trk[t].info.opacity = 0.9; trk[t].info.hidden = false;\n";
@@ -106,72 +92,32 @@ foreach ($files as $gpx) {
             "'black'; trk[t].info." .
             "outline_width = 0; trk[t].info.fill_color = '" .
             $defClrs[$colorIndx++] . "'; trk[t].info.fill_opacity = 0;\n";
-        $tdat = "                trk[t].segments.push({ points:[ [";
-        /**
-         * Get gpx data into individual arrays and do first level
-         * processing. $tdat will be updated with all lats/lngs
-         */
-        $calcs = getTrackDistAndElev(
-            $trkNo, $k, $trkname, $gpxPath, $gpxdat, $makeGpsvDebug, $handleDfa,
-            $handleDfc, $distThresh, $elevThresh, $maWindow, $tdat, $ticks
-        );
-        array_push($trackTicks, $ticks);
-        $hikeLgthTot += $calcs[0];
-        if ($calcs[1] > $pmax) {
-            $pmax = $calcs[1];
-        }
-        if ($calcs[2] < $pmin) {
-            $pmin = $calcs[2];
-        }
-        $pup  += $calcs[3];
-        $pdwn += $calcs[4];
-        $allLats = array_merge($allLats, $calcs[5]);
-        $allLngs = array_merge($allLngs, $calcs[6]);
-        // Finish javascript for this trk: remove last ",[" and end string:
-        $tdat = substr($tdat, 0, strlen($tdat)-2);
-        $line .= $tdat . " ] });\n";
+
+        $line .= "                trk[t].segments.push({ points:" . 
+                    $gpsv_trk[$k] ." });\n";
         $line .= "                GV_Draw_Track(t);\n";
         array_push($GPSV_Tracks, $line);
     }  // end PROCESS EACH TRK
 
-    // Do debug output (summary stats for entire hike)
-    if ($makeGpsvDebug) { // only if param is set
-        fputs(
-            $handleDfc,
-            sprintf("hikeLgthTot,%.2f mi", $hikeLgthTot / 1609) .
-            sprintf(",pmax %.2fm,%.2fft", $pmax, $pmax * 3.28084) .
-            sprintf(",pmin:%.2fm,%.2fft", $pmin, $pmin * 3.28084) .
-            sprintf(",pup:%.2fm,%.2fft", $pup, $pup * 3.28084) .
-            sprintf(",pdwn:%.2fm,%.2fft", $pdwn, $pdwn * 3.28084) .
-            PHP_EOL .
-            "distThresh:{$distThresh},elevThresh:{$elevThresh}" .
-            ",maWindow:{$maWindow}" . PHP_EOL
-        );
-        fclose($handleDfa);
-        fclose($handleDfc);
-    }
     /**
-     *   ---- ESTABLISH ANY WAYPOINTS IN GPX FILE ----
+     *   ---- ESTABLISH ANY WAYPOINTS ----
      */
-    $gpxWaypts = $gpxdat->wpt->count();
-    if ($gpxWaypts > 0) {
-        foreach ($gpxdat->wpt as $waypt) {
-            $wlat = $waypt['lat'];
-            $wlng = $waypt['lon'];
-            $sym = $waypt->sym;
-            // Note Garmin editor can introduce whitespace
-            $wname = trim($waypt->name);
-            $wdesc = trim($waypt->desc);
-            //$text = preg_replace("/'/", "\'", $waypt->name);
-            $text = str_replace("'", "\'", $wname);
-            $desc = str_replace("'", "\'", $wdesc);
-            $wlnk = "GV_Draw_Marker({lat:" . $wlat . ",lon:" . $wlng .
-                ",name:'" . $text . "',desc:'" . $desc . "',color:'" . "blue" .
-                "',icon:'" . $sym . "'});\n";
+    if (isset($hikeIndexNo)) {
+        $getAllWptsReq
+            = "SELECT * FROM {$wtable} WHERE `indxNo`={$hikeIndexNo}";
+        $allWpts = $pdo->query($getAllWptsReq)->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($allWpts as $wpt) {
+            $lat = $wpt['lat']/LOC_SCALE;
+            $lng = $wpt['lng']/LOC_SCALE;
+            $wpt['sym'] = empty($wpt['sym']) ? "Triangle, Yellow" : $wpt['sym'];
+            $wlnk = "GV_Draw_Marker({lat:" . $lat . ",lon:" . $lng .
+                ",name:'" . $wpt['name'] . "',desc:'',color:'blue'," .
+                "icon:'" . $wpt['sym'] . "'});\n";
             array_push($waypoints, $wlnk);
         }
-        $noOfWaypts += $gpxWaypts;
+        $noOfWaypts = count($allWpts);
     }
+
     /**
      *   ---- OPTIONAL PHOTOS ----
      */
@@ -240,7 +186,6 @@ foreach ($files as $gpx) {
             }
         }
     }
-    $noOfTrks += $noOfFileTrks;
 }
 // Calculate map bounds and center coordiantes
 $north = $allLats[0];
@@ -266,7 +211,9 @@ for ($i=1; $i<count($allLngs)-1; $i++) {
 }
 $clat = $south + ($north - $south)/2;
 $clon = $west + ($east - $west)/2;
+
 require "fillGpsvTemplate.php";
+
 if (!isset($hikepage)) {
     $lines = explode("\n", $maphtml);
     foreach ($lines as &$dat) {

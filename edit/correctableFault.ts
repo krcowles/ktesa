@@ -17,6 +17,13 @@ var line_items = fault_data.split("|");
 for (var j=0; j<line_items.length; j++) {
     var btn_id = "fix" + j;
     var fault_info = line_items[j].split("^");
+    /**
+     * [0] => saved tmpfile name
+     * [1] => gpx filename
+     * [2] => unsupported sym name
+     * [3] => waypoint name
+     * html_syms is <select> box for supported syms
+     */
     var $div_item = $("<div class='fixwpt'><p class='sfault'>In file <span class='symfile'>" +
         fault_info[1] + "</span>, for waypoint: <span class='wname'>" +
         fault_info[3] + "</span><br />Replace symbol: '<span class='symbad'>" + fault_info[2] +
@@ -28,9 +35,9 @@ for (var j=0; j<line_items.length; j++) {
     $div_item.append("</div><br />");
     $('#corrections').append($div_item);
 }
-var $inpnames = $('.iname');
-var $wptnames = $('.wname');
-var $faults   = $('.symbad');
+var $inpnames = $('.iname');  // saved tmpfile name
+var $wptnames = $('.wname');  // waypoint name
+var $faults   = $('.symbad'); // unsupported symbol
 var $repls    = $('.syms') as JQuery<HTMLSelectElement>;
 $('.fix').each(function(indx) {
     var btn_id = "#fix" + indx;
@@ -86,7 +93,7 @@ $('#finish').on('click', function() {
             return false;
         }
     }
-    // can't use ajax as a response is expected therefrom...
+    // can't use ajax, as a response is expected therefrom...
     $('<form method="post" action="saveTab1.php">' +
         '<input type="hidden" name="fsaved" value="Y" />' +
         '<input type="hidden" name="hikeNo" value="' + hikeNo + '" />' +

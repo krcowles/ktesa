@@ -7,7 +7,6 @@
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
-$wayPointCount = 0;
 $picCount = 0;
 $picreq = "SELECT * FROM ETSV WHERE indxNo = :hikeno;";
 $picq = $pdo->prepare($picreq);
@@ -19,13 +18,6 @@ $picq->execute(["hikeno" => $hikeNo]);
  * data arrays set up alternate gps formats for lat/lngs when waypoints
  * already exist in the database for the edited hike.
  */
-$wlat = [];
-$wDMlat  = [];
-$wDMSlat = [];
-$wlng = [];
-$wDMlng  = [];
-$wDMSlng = [];
-
 if ($picq->rowCount() === 0) {
     $inclPix = 'NO';
 } else {
@@ -38,13 +30,10 @@ if ($picq->rowCount() === 0) {
      * ordinal assignment. If its 'org' field is empty, then use the default order.
      */
     $photos = [];
-    $waypoints = [];
     foreach ($picarray as $item) {
         if (!empty($item['mid'])) {
             array_push($photos, $item);
-        } else {
-            array_push($waypoints, $item);
-        }
+        } 
     }
     if (count($photos) > 0 && strlen(($photos[0]['org'])) > 0) {
         usort($photos, "cmp");
@@ -57,11 +46,7 @@ if ($picq->rowCount() === 0) {
      */
     $picpath = getPicturesDirectory();
     $html = '';
-    $wids = [];  // 'picIdx' of waypoint
-    $wdes = [];  // 'title'
-    $wicn = []; // 'iclr' = icon symbol
     $picno = 0;
-    $wptno = 0;
     $tsvId = [];
     $phDescs = []; // caption
     $hpg = [];
@@ -84,40 +69,8 @@ if ($picq->rowCount() === 0) {
             $pMap[$picno] = false;
         }
         $phWds[$picno++] = floor($aspect * $pWidth);
-    }
-    foreach ($waypoints as $waypt) {
-        $wids[$wptno] = $waypt['picIdx'];
-        $wdes[$wptno] = $waypt['title'];
-        $wlat[$wptno] = $waypt['lat']/LOC_SCALE;
-        $wlng[$wptno] = $waypt['lng']/LOC_SCALE;
-        $wicn[$wptno++] = $waypt['iclr'];
-    }
-    foreach ($wlat as &$Dlat) {
-        // get fractional degrees
-        $fractLatDeg = $Dlat - floor($Dlat);
-        $MinLat = $fractLatDeg * 60;
-        $DMlat = floor($Dlat) . "|" . round($MinLat, 5);
-        array_push($wDMlat, $DMlat);
-        // get fractional seconds
-        $fractLatMin = $MinLat - floor($MinLat);
-        $SecLat = 60 * $fractLatMin;
-        $DMSlat = floor($Dlat) . "|" . floor($MinLat) . "|" . round($SecLat, 3);
-        array_push($wDMSlat, $DMSlat);
-    }
-    foreach ($wlng as &$Dlng) {
-        $ablng = abs($Dlng);
-        $fractLngDeg = $ablng - floor($ablng);
-        $MinLng = $fractLngDeg * 60;
-        $DMlng = "-" . floor($ablng) . "|" . round($MinLng, 5);
-        array_push($wDMlng, $DMlng);
-        $fractLngMin = $MinLng - floor($MinLng);
-        $SecLng = $fractLngMin * 60;
-        $DMSlng = "-" . floor($ablng) . "|" . floor($MinLng) . "|" .
-            round($SecLng, 3);
-        array_push($wDMSlng, $DMSlng);
-    }
+    }  
     $picCount = $picno;
-    $wayPointCount = $wptno;
     /**
      * Photo html creation:
      * Each photo and its checkboxes will be held in a wrapper for insertion
@@ -172,10 +125,3 @@ if ($picq->rowCount() === 0) {
         $html .= $wrapper;
     }
 }
-// for import to javascript
-$jswLatDeg = json_encode($wlat);
-$jswLatDM  = json_encode($wDMlat);
-$jswLatDMS = json_encode($wDMSlat);
-$jswLngDeg = json_encode($wlng);
-$jswLngDM  = json_encode($wDMlng);
-$jswLngDMS = json_encode($wDMSlng);

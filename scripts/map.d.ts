@@ -100,3 +100,19 @@ interface HTMLPosition {
     left: number;
     top: number;
 }
+interface JsonElement{
+	lat: number;
+	lng: number;
+	ele?: number;
+}
+interface WayptElement {
+	lat: number;
+	lng: number;
+	name: string;
+	sym: string;
+}
+interface JsonFile {
+	wpts?: WayptElement[];
+    name: string;
+	trk: JsonElement[];
+}

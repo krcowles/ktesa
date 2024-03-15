@@ -427,16 +427,15 @@ function zoom_track(hikenos, infoWins, trackcolors) {
     var promises = [];
     for (var i = 0, j = 0; i < hikenos.length; i++, j++) {
         if (!drawnHikes.includes(hikenos[i])) {
-            if (tracks[hikenos[i]] !== '') {
-                var sgldef = $.Deferred();
-                promises.push(sgldef);
-                var trackfile = '../json/' + tracks[hikenos[i]];
-                drawnHikes.push(hikenos[i]);
-                if (j === trackcolors.length) {
-                    j = 0; // rollover colors when # of tracks > # of colors
-                }
-                drawTrack(trackfile, infoWins[i], trackcolors[j], hikenos[i], sgldef);
+            // All hikes should have a json file
+            var sgldef = $.Deferred();
+            promises.push(sgldef);
+            var trackfile = "../json/pmn" + hikenos[i] + "_1.json";
+            drawnHikes.push(hikenos[i]);
+            if (j === trackcolors.length) {
+                j = 0; // rollover colors when # of tracks > # of colors
             }
+            drawTrack(trackfile, infoWins[i], trackcolors[j], hikenos[i], sgldef);
         }
     }
     return $.when.apply($, promises);
@@ -451,13 +450,18 @@ function drawTrack(json_filename, info_win, color, hikeno, deferred) {
         dataType: "json",
         url: json_filename,
         success: function (trackDat) {
+            var track_data = trackDat["trk"];
+            for (var j = 0; j < track_data.length; j++) {
+                var org_json = track_data[j];
+                delete org_json["ele"];
+            }
             sgltrack = new google.maps.Polyline({
                 icons: [{
                         icon: mapTick,
                         offset: '0%',
                         repeat: '15%'
                     }],
-                path: trackDat,
+                path: track_data,
                 geodesic: true,
                 strokeColor: color,
                 strokeOpacity: .6,

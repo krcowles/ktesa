@@ -41,6 +41,7 @@ $clushikes
 $hike_req = "SELECT `pgTitle`,`indxNo`,`miles`,`feet`,`diff`,`lat`,`lng`," .
     "`preview`,`dirs` FROM `HIKES` ORDER BY `pgTitle`;";
 $hikes = $pdo->query($hike_req)->fetchAll(PDO::FETCH_ASSOC);
+$noOfHikes = count($hikes);
 
 /**
  * Retrieve the highest indxNo in HIKES for sizing the $hikePairings array:
@@ -97,7 +98,6 @@ for ($j=0; $j<count($clusters); $j++) {
 foreach ($clushikes as $entry) {
     array_push($hikePairings[$entry['indxNo']], $entry['cluster']);
 }
-
 /**
  * Walk through the all the hikes and assign cluster objects;
  * Some hikes may be in more than one cluster, so find frequency 
@@ -114,10 +114,11 @@ foreach ($hikes as $hike) {
             $hike['diff']  = empty($hike['diff'])  ? "Unrated" : $hike['diff'];
         }
         $pairing = $hikePairings[$hike['indxNo']];  // this is an array
-        if (count($pairing) > 0) { 
+        if (count($pairing) > 0) {
             // ---- this is a 'Cluster' hike ----
             $repeats = 0; // there can be more than one cluster per hike
             foreach ($pairing as $clusterid) {
+                $indx = $hike['indxNo'];
                 $clusGroupNo = $clus2seq[$clusterid];
                 // only one locater can be used per hike
                 if ($repeats === 0) { 
@@ -162,20 +163,20 @@ $jsPages    = '[' . implode(",", $pages) . ']';
 $jsPageNames  = '[' . implode(",", $pageNames) . ']';
 
 /**
- * Form array of json file names
+ * Form array of json file names:
+ * All json files for tracks will use the main gpx json file: pmn#_1.json
  */
 $trackArray = [];
-$inos = $pdo->query('SELECT MAX(indxNo) FROM `HIKES`;')->fetch(PDO::FETCH_NUM);
-for ($t=0; $t<$inos[0]; $t++) {
-    $trackArray[$t] = "''";
+$getGpxReq = "SELECT `indxNo`,`gpx` FROM `HIKES`;";
+$gpxField = $pdo->query($getGpxReq)->fetchAll(PDO::FETCH_ASSOC);
+for ($i=0; $i<=count($gpxField); $i++) {
+    $trackArray[$i] = '';
 }
-$trackdat = $pdo->query('SELECT `indxNo`,`trk` FROM `HIKES`');
-$tracks = $trackdat->fetchAll(PDO::FETCH_ASSOC);
-foreach ($tracks as $track) {
-    if (!empty($track['trk'])) {
-        $track['trk'] = "'" . $track['trk'] . "'";
-        $trackArray[$track['indxNo']] = $track['trk'];
-    }
+foreach ($gpxField as $gpx) {
+    $ix = intval($gpx['indxNo']);
+    if (!empty($gpx['gpx'])) {
+        $trackArray[$ix] = '"pmn' . $ix . '_1.json"';
+    } 
 }
 $jsTracks = '[' . implode(",", $trackArray) . ']';
 
@@ -183,3 +184,4 @@ $jsTracks = '[' . implode(",", $trackArray) . ']';
 $jsIndx = '[' . implode(",", $allHikeIndices) . ']';
 // Object location for each index
 $jsLocs = '[' . implode(",", $locaters) . ']';
+

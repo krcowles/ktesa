@@ -196,7 +196,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             btn-secondary">Cleanup Pictures</button>&nbsp;&nbsp;
             [removes photos not related to hikes]<br />
         <button id="gpxClean" type="button" class="btn
-            btn-secondary">Cleanup GPX/JSON Files</button>&nbsp;&nbsp;
+            btn-secondary">Cleanup JSON Files</button>&nbsp;&nbsp;
             [removes gpx/json not specified in database]<br />
         <button id="rdlog" type="button" 
             class="btn btn-secondary">Read Error Log</button><br />

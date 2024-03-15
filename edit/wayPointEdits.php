@@ -24,15 +24,11 @@ $memberWptPref = $wptPref->fetch(PDO::FETCH_ASSOC);
 $wpt_pref = $memberWptPref === false ? '' : $memberWptPref['wpt_format'];
 
 /**
- * If the current gpx file has embedded waypoints, they are retrieved here
- * and will be presented in tab2 for editing, along with any waypoints 
- * associated with the page that are contained in the database (see 
- * photoSelect.php, which extracts db wpts from the ETSV table while gathering
- * photo data). After 'Apply, waypoints embedded in the gpx file remain
- * embedded there (as well as new gpx wpts); waypoints present in the database
- * will remain there (as well as new db wpts).
+ * Retrieve any waypoints loaded into the EWAYPTS table: 'gpx' => came from
+ * a gpx file [held separate so that a similar gpx file can be downloaded]; 
+ * 'db' => entered by the user [not in the original gpx file] and saved in
+ * the database table.
  */
-$gpxloc = '../gpx/' . $curr_gpx;
 $gpxWptCount = 0;
 $gpxWptDes = [];
 $gpxWptLat = [];
@@ -42,17 +38,18 @@ $gpxDMlat  = [];
 $gpxDMSlat = [];
 $gpxDMlng  = [];
 $gpxDMSlng = [];
-// NOTE: 'file_exists' treats an empty dir as existing: [../gpx/ returns 'true']
-if (!empty($curr_gpx) && file_exists($gpxloc)) {
-    $rawgpx = simplexml_load_file($gpxloc);
-    $gpxWptCount = $rawgpx->wpt->count();
-    for ($j=0; $j<$gpxWptCount; $j++) {
-        //
-        $gpxWptDes[$j] = $rawgpx->wpt[$j]->name;
-        $gpxWptLat[$j] = $rawgpx->wpt[$j]['lat']->__toString();
-        $gpxWptLng[$j] = $rawgpx->wpt[$j]['lon']->__toString();
-        $gpxWptIcn[$j] = $rawgpx->wpt[$j]->sym;
-    }
+$gpxWptId  = [];
+$getGpxWayptsReq = "SELECT * FROM `EWAYPTS` WHERE `indxNo`={$hikeNo} AND " .
+    "`type`='gpx';";
+$gpxWaypoints = $pdo->query($getGpxWayptsReq)->fetchAll(PDO::FETCH_ASSOC);
+foreach ($gpxWaypoints as $gpxpt) {
+    $gpxWptCount++;
+    array_push($gpxWptDes, $gpxpt['name']);
+    array_push($gpxWptLat, $gpxpt['lat']/LOC_SCALE);
+    array_push($gpxWptLng, $gpxpt['lng']/LOC_SCALE);
+    array_push($gpxWptIcn, $gpxpt['sym']);
+    array_push($gpxWptId, $gpxpt['wptId']);
+
 }
 if ($gpxWptCount > 0) {
     /**
@@ -94,7 +91,64 @@ $jsgpxLatDMS = json_encode($gpxDMSlat);
 $jsgpxLngDeg = json_encode($gpxWptLng);
 $jsgpxLngDM  = json_encode($gpxDMlng);
 $jsgpxLngDMS = json_encode($gpxDMSlng);
-//
+
+/**
+ * Database waypoints:
+ */
+$wayPointCount = 0;
+$dbWptDes = [];
+$dbWptLat = [];
+$dbWptLng = [];
+$dbWptIcn = [];
+$dbDMlat  = [];
+$dbDMSlat = [];
+$dbDMlng  = [];
+$dbDMSlng = [];
+$dbWptId  = [];
+$getDbWayptsReq = "SELECT * FROM `EWAYPTS` WHERE `indxNo`={$hikeNo} AND " .
+    "`type`='db';";
+$dbWaypoints = $pdo->query($getDbWayptsReq)->fetchAll(PDO::FETCH_ASSOC);
+foreach ($dbWaypoints as $dbpt) {
+    $wayPointCount++;
+    array_push($dbWptDes, $dbpt['name']);
+    array_push($dbWptLat, $dbpt['lat']/LOC_SCALE);
+    array_push($dbWptLng, $dbpt['lng']/LOC_SCALE);
+    array_push($dbWptIcn, $dbpt['sym']);
+    array_push($dbWptId, $dbpt['wptId']);
+}
+if ($wayPointCount > 0) {
+    foreach ($dbWptLat as &$Dlat) {
+        // get fractional degrees
+        $fractLatDeg = $Dlat - floor($Dlat);
+        $MinLat = $fractLatDeg * 60;
+        $DMlat = floor($Dlat) . "|" . round($MinLat, 5);
+        array_push($dbDMlat, $DMlat);
+        // get fractional seconds
+        $fractLatMin = $MinLat - floor($MinLat);
+        $SecLat = 60 * $fractLatMin;
+        $DMSlat = floor($Dlat) . "|" . floor($MinLat) . "|" . round($SecLat, 3);
+        array_push($dbDMSlat, $DMSlat);
+    }
+    foreach ($dbWptLng as &$Dlng) {
+        $ablng = abs($Dlng);
+        $fractLngDeg = $ablng - floor($ablng);
+        $MinLng = $fractLngDeg * 60;
+        $DMlng = "-" . floor($ablng) . "|" . round($MinLng, 5);
+        array_push($dbDMlng, $DMlng);
+        $fractLngMin = $MinLng - floor($MinLng);
+        $SecLng = $fractLngMin * 60;
+        $DMSlng = "-" . floor($ablng) . "|" . floor($MinLng) . "|" .
+            round($SecLng, 3);
+        array_push($dbDMSlng, $DMSlng);
+    }
+}
+// for import to javascript
+$jswLatDeg = json_encode($dbWptLat);
+$jswLatDM  = json_encode($dbDMlat);
+$jswLatDMS = json_encode($dbDMSlat);
+$jswLngDeg = json_encode($dbWptLng);
+$jswLngDM  = json_encode($dbDMlng);
+$jswLngDMS = json_encode($dbDMSlng);
 
 $wptedits = '';
 /**
@@ -142,7 +196,7 @@ if ($gpxWptCount > 0) {
         $wptedits .= $icon_opts . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;Remove this waypoint:&nbsp;&nbsp;'
             . '<input id="gdel' . $m . '" type="checkbox" '
-            . 'name="gdel[]" value="g' . $m . '" /><br />' . PHP_EOL;
+            . 'name="gdel[]" value="' . $gpxWptId[$m] . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
         $gpxlats = '<input type="hidden" name="glat[]" ' .
             'value="' . $gpxWptLat[$m] .'" />' . PHP_EOL;
@@ -151,6 +205,8 @@ if ($gpxWptCount > 0) {
         $wptedits .= $gpxlats . $gpxlatdeg . $gpxlatdm . $gpxlatdms;
         $wptedits .= $gpxlngs . $gpxlngdeg . $gpxlngdm . $gpxlngdms .
             '<br /><br />' . PHP_EOL;
+        $wptedits .= '<input type="hidden" name="gidx[]" value="'
+            . $gpxWptId[$m] . '" />';
     }
     $wptedits .= '</div>' . PHP_EOL;
     // place for new additions
@@ -182,10 +238,10 @@ if ($wayPointCount > 0) {
     $wptedits .= '<div id="wpts">' . PHP_EOL;
     for ($n=0; $n<$wayPointCount; $n++) {
         $wptedits .= '<p id="dicn' . $n . '" style="display:none;">'
-            . $wicn[$n] . '</p>' . PHP_EOL;
+            . $dbWptIcn[$n] . '</p>' . PHP_EOL;
         $wptedits .= 'Description:' . PHP_EOL;
         $wptedits .= '<textarea class="tstyle2" name="ddes[]">'
-            . $wdes[$n] . '</textarea>' . PHP_EOL;
+            . $dbWptDes[$n] . '</textarea>' . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;';
         $wptedits .= 'Icon:' . PHP_EOL;
         $wptedits .= '<select id="dselicon' . $n . '" name="dsym[]" ' .
@@ -193,15 +249,16 @@ if ($wayPointCount > 0) {
         $wptedits .= $icon_opts . PHP_EOL;
         $wptedits .= '&nbsp;&nbsp;Remove this waypoint:&nbsp;&nbsp;'
             . '<input id="ddel' . $n . '" type="checkbox" '
-            . 'name="ddel[]" value="d' . $n . '" /><br />' . PHP_EOL;
+            . 'name="ddel[]" value="' . $dbWptId[$n] . '" /><br />' . PHP_EOL;
         $wptedits .= 'Waypoint Latitude:' . PHP_EOL;
-        $latin     = str_replace('dblatval', $wlat[$n], $dblats);
-        $lngin     = str_replace('dblngval', $wlng[$n], $dblngs);
+        $latin     = str_replace('dblatval', $dbWptLat[$n], $dblats);
+        $lngin     = str_replace('dblngval', $dbWptLng[$n], $dblngs);
         $wptedits .= $latin . $dblatdeg . $dblatdm . $dblatdms;
         $wptedits .= $lngin . $dblngdeg . $dblngdm . $dblngdms
             . '<br /><br />' . PHP_EOL;
+        $str = $lngin . $dblngdeg . $dblngdm . $dblngdms;
         $wptedits .= '<input type="hidden" name="didx[]" value="'
-            . $wids[$n] . '" />';
+            . $dbWptId[$n] . '" />';
     }
     $wptedits .= '</div>';
     // place for new additions: NOTE 'name' same as when no pts exist

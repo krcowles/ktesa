@@ -23,6 +23,13 @@ $usr = 'mstr';
 $age = 'new';
 $show = 'all';
 $pageType = "Publish";
+$getEhikesReq = "SELECT `indxNo` FROM `EHIKES`;";
+$ehikes = $pdo->query($getEhikesReq)->fetchAll(PDO::FETCH_ASSOC);
+$enos = '[';
+foreach ($ehikes as $hike) {
+    $enos .= $hike['indxNo'] . ",";
+}
+$enos =  rtrim($enos, ",") . ']';
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -46,10 +53,11 @@ $pageType = "Publish";
 <p id="active" style="display:none">Admin</p>
 <p id="action" style="display:none"><?= $act;?></p>
 <?php
+$act = 'pub';
 require '../php/makeTables.php';
 ?>
 <script type="text/javascript">
-    var enos = <?= $enos;?>;
+    var enos = <?=$enos;?>;
 </script>
 <script src="../scripts/columnSort.js"></script>
 <script src ="reldel.js"></script>

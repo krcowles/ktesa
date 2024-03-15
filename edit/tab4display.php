@@ -50,10 +50,12 @@ and/or maps</p>
     Specify click-text here: <textarea class="tstyle2 ctrshift"
         name="clickText[]"><?= $clickText[$n];?></textarea>
     <input type="hidden" name="datId[]" value="<?= $datId[$n];?>" />
+    <input type="hidden" name="del_value[]" value="<?=$del_str[$n];?>" />
+    <input type="hidden" name="label[]" value="<?=$gps_label[$n];?>" />
     &nbsp;&nbsp;
     <label>Delete Reference ? </label>&nbsp;&nbsp;
     <input style="height:18px;width:18px;" type="checkbox"
-        name="delgps[]" value="<?= $datId[$n];?>" />
+        name="delgps[]" value="<?=$datId[$n];?>" />
     &nbsp;&nbsp;For File: <span 
-        style="color:brown;"><?= $fname[$n];?></span><br /><br />
+        style="color:brown;"><?=$user_file[$n];?></span><br /><br />
 <?php endfor; ?>

@@ -66,7 +66,7 @@
   "files": [   /* .ts sources to be compiled */
     "admintools.ts",
     "cleanPix.ts",
-    "cleanGpxJson.ts",
+    "cleanJSON.ts",
     "load_progress.ts",
     "reldel.ts",
     "linkValidate.ts"

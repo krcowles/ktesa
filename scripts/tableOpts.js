@@ -38,8 +38,9 @@ function setupConverter(tblid, org) {
             var orgdist = $disttd.text();
             var $elevtd = $(this).find('td').eq(elev_hdr);
             var orgelev = $elevtd.text();
-            var gpxdat = $(this).data('gpx');
-            var orgdata = { trail: trail, hikeno: hike, dist: orgdist, elev: orgelev, gpx: gpxdat };
+            var orgtrks = $(this).data('trk');
+            var orgdata = { trail: trail, hikeno: hike, dist: orgdist,
+                elev: orgelev, tracks: orgtrks };
             eng_units.push(orgdata);
         });
     }

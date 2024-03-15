@@ -28,14 +28,15 @@ foreach ($favarray as $hike) {
     $fhike = $pdo->prepare($fhikereq);
     $fhike->execute(["hno" => $hike]);
     $hikedat = $fhike->fetch(PDO::FETCH_ASSOC);
+    $hike_tracks = getTrackFileNames($pdo, $hike, 'pub')[0];
+    $str_name = '"' . $hike_tracks[0] . '"'; // just main tracks
+    array_push($tracks, $str_name);
     $hike = '{name:"' . $hikedat['pgTitle'] . '",indx:' . $hikedat['indxNo'] .
         ',loc:{lat:' . $hikedat['lat']/LOC_SCALE . ',lng:' .
         $hikedat['lng']/LOC_SCALE . '},lgth:' .
         $hikedat['miles'] . ',elev:' . $hikedat['feet'] . ',diff:"' . 
         $hikedat['diff'] . '",dir:"' . $hikedat['dirs'] . '"}';
     array_push($hikeobj, $hike);
-    array_push($tracks, '"' . $hikedat['trk'] . '"');
-    
 }
 $locaters = [];
 $nmindx = 0;

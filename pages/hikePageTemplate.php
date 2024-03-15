@@ -13,7 +13,6 @@
 session_start();
 $geoloc = "../../images/geoloc.png";
 require "../php/global_boot.php";
-require "../php/gpxFunctions.php";
 require "hikePageData.php";
 ?>
 <!DOCTYPE html>
@@ -61,8 +60,9 @@ if (mobile) {
 </script>
 <p id="trail"><?= $hikeTitle;?></p>
 <p id="active" style="display:none">Page</p>
-<p id="gpx" style="display:none"><?=$gpxPath;?></p>
-<p id="cpg" style="display:none"><?=$cluspg;?></p>
+<p id="gpx" style="display:none;"><?=$gpxfile;?></p>
+<p id="cpg" style="display:none;"><?=$cluspg;?></p>
+<p id="age" style="display:none;"><?=$state;?></p>
 
 <!-- Side Panel: -->
 <div id="unhide">></div>
@@ -75,12 +75,12 @@ if (mobile) {
             Hike Difficulty: <span id="hdiff" class="sumClr">
                 <?= $hikeDifficulty;?></span><br />
             Total Length of Hike: <span id="hlgth" class="sumClr">
-                <?= $hikeLength;?></span><br />
+                <?= $main_dist;?></span><br />
             Max to Min Elevation: <span id="hmmx" class="sumClr">
-                <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
+                <?=$main_echg;?> ft</span><br />
             <span id="adnote">* Total Ascent / Descent:
-                <span id="ascent" class="sumClr"><?=$asc;?></span> / 
-                <span id="descent" class="sumClr"><?=$dsc;?></span> ft</span>
+                <span id="ascent" class="sumClr"><?=$main_asc;?></span> / 
+                <span id="descent" class="sumClr"><?=$main_dsc;?></span> ft</span>
             <span id="advisory">Estimate based on track data<br /></span><br />
             Logistics: <span id="hlog" class="sumClr"><?= $hikeType;?></span><br />
             Exposure Type: <span id="hexp" 
@@ -96,11 +96,7 @@ if (mobile) {
             <p id="addtl"><strong>More!</strong></p>
             <p id="mlnk">View <a href="<?= $fpLnk;?>"
                 target="_blank">Full Page Map</a><br />
-                <!-- Apparently unused feature:
-                    <span class="track">View <a id="view" href="<?= $gpxPath;?>"
-                    target="_blank">GPX File</a></span><br />  -->
-                <span class="track">Download <a id="dwn" href="<?= $gpxPath;?>"
-                        download>GPX File</a></span>
+                <span class="track">Download <a id="dwn" href="#">GPX File</a></span>
             </p>
             <?= $photoAlbum;?>
             <p id="directions">On-line directions to the trailhead:<br />
@@ -147,7 +143,7 @@ if (mobile) {
 </div>
 <!-- Map & Chart on right adjacent to side panel: -->
 <iframe id="mapline" src="<?=  $tmpMap;?>"></iframe>
-<div data-gpx="<?= $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
+<div data-gpx="<?= $gpxfile;?>" id="chartline"><canvas id="grph"></canvas></div>
 <!-- BOTH STYLES: -->
 <div style="clear:both;padding-top:12px;">
 <?php if (!is_null($hikeTips)) : ?>
@@ -166,10 +162,36 @@ if (mobile) {
 
 <div class="popupCap"></div>
 
+<!-- Gpx Files Download -->
+<div class="modal fade" id="multigpx" tabindex="-1"
+    aria-labelledby="Download Multiple GPX" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Download Multiple Gpx Fils</h5>
+                <button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>This hike was created by multiple gpx files.
+                    You may download any or all of them below</h5>
+                <ul id="idfiles" style="list-style:none;">
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+                <button id="dwnldGpx" type="button" class="btn btn-success">
+                    Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
-    <?php if (isset($hikeFiles)) : ?>
-    var hikeFiles = <?=$hikeFiles;?>;
-    <?php endif; ?>
+    // some vars not set for Cluster Pages...
+    var hike_file_list = <?=$hike_file_list;?>;
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
     <?php endif; ?>
@@ -186,6 +208,7 @@ if (mobile) {
 <script src="../scripts/hikePageLayout.js"></script>
 <script src="../scripts/popupCaptions.js"></script>
 <script src="../scripts/rowManagement.js"></script>
+
 <script src="../scripts/prepareTracks.js"></script>
 <script src="../scripts/dynamicChart.js"></script>
 

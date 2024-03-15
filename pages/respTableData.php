@@ -61,6 +61,7 @@ if ($age === 'new') {
 } else {
     throw new Exception("Unrecognized age parameter: " . $age);
 }
+$state = $age === 'new' ? 'edit' : 'pub';
 $query .= ';';
 // Now execute the query:
 if ($show === 'all') {
@@ -89,10 +90,10 @@ for ($i=0; $i<$entries; $i++) {
     $indx    = $row['indxNo'];
     $hikeLat = $row['lat']/LOC_SCALE;
     $hikeLon = $row['lng']/LOC_SCALE;
-    $hikeTrk = $row['trk'];
+    $tracklist = getTrackFileNames($pdo, $indx, $state);
     // HTML data- attributes (not visible to user)
     $hikeHiddenDat[$i] = 'data-indx="' . $indx . '" data-lat="' . $hikeLat .
-        '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '"';
+        '" data-lon="' . $hikeLon . '" data-track="' . $tracklist[1] . '"';
 
     //locale requires extra processing
     $loc = $row['locale'];

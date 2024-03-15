@@ -12,7 +12,6 @@ session_start();
 $respPg = true;
 $geoloc = "../../images/mobileloc.png";
 require "../php/global_boot.php";
-require_once "../php/gpxFunctions.php";
 require "hikePageData.php";
 $hikeno = filter_input(INPUT_GET, 'hikeIndx');
 
@@ -73,7 +72,7 @@ if (!mobile) {
 }
 </script>
 <p id="trail"><?= $hikeTitle;?></p>
-<p id="gpx" style="display:none"><?=$gpxPath;?></p>
+<p id="gpx" style="display:none">$gpxfile;?></p>
 <p id="cpg" style="display:none"><?=$cluspg;?></p>
 <p id="hikeno" style="display:none;"><?=$hikeno;?></p>
 <p id="appMode" style="display:none;"><?=$appMode;?></p>
@@ -115,7 +114,7 @@ if (!mobile) {
 </div>
 
 <iframe id="mapline" src="<?=$tmpMap;?>"></iframe>
-<div data-gpx="<?= $gpxPath;?>" id="chartline"><canvas id="grph"></canvas></div>
+<div data-gpx="<?=$gpxfile;?>" id="chartline"><canvas id="grph"></canvas></div>
 
 <?php if (!is_null($hikeTips)) : ?>
 <div id="trailTips">
@@ -160,9 +159,9 @@ if (!mobile) {
                 Logistics: <span id="hlog" class="sumClr"><?= $hikeType;?></span>
                 <br />
                 Total Length of Hike: <span id="hlgth" class="sumClr">
-                    <?= $hikeLength;?></span><br />
+                    <?= $main_dist;?></span><br />
                 Max to Min Elevation: <span id="hmmx" class="sumClr">
-                    <?= sprintf("%.0f", ($pmax - $pmin) * 3.28084);?> ft</span><br />
+                    <?= $main_echg;?> ft</span><br />
                 Hike Difficulty: <span id="hdiff" class="sumClr">
                     <?= $hikeDifficulty;?></span><br />
                 Exposure Type: <span id="hexp" class="sumClr">
@@ -177,9 +176,9 @@ if (!mobile) {
                 <p>View <a href="<?= $fpLnk;?>" target="_blank">Full Page Map</a>
                 <br />
                 Hike track:
-                <span>View <a id="view" href="<?= $gpxPath;?>"
+                <span>View <a id="view" href="<?= $gpxfile;?>"
                     target="_blank">GPX File</a></span><br />
-                <span>Download <a id="dwn" href="<?= $gpxPath;?>"
+                <span>Download <a id="dwn" href="<?= $gpxfile;?>"
                         download>GPX File</a></span>
             </div>
             <div class="modal-footer">
@@ -193,8 +192,8 @@ if (!mobile) {
 <div class="popupCap"></div>
 
 <script type="text/javascript">
-    <?php if (isset($hikeFiles)) : ?>
-    var hikeFiles = <?=$hikeFiles;?>;
+    <?php if (isset($hike_file_list)) : ?>
+    var hike_file_list = <?=$hike_file_list;?>;
     <?php endif; ?>
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;

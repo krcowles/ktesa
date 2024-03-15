@@ -14,28 +14,22 @@ $geoloc = '../../images/geoloc.png';
 
 $hikeIndexNo = filter_input(INPUT_GET, 'hno');
 $hikeTitle   = filter_input(INPUT_GET, 'hike');
-$ttable      = filter_input(INPUT_GET, 'tbl') === 'new' ? "ETSV" : "TSV";
-if (isset($_GET['clus']) && $_GET['clus'] === 'y') {
-    $files = $_GET['gpx'];
-} else {
-    $gpx = filter_input(INPUT_GET, 'gpx');
-    if (strpos($gpx, ",") === false) {
-        $files = [$gpx];
-    } else {
-        $files = explode(",", $gpx);
-        foreach ($files as &$file) {
-            $file = trim($file);
-        }
-    }
-}
+$table_age   = filter_input(INPUT_GET, 'tbl');
+$ttable      = $table_age === 'new' ? 'ETSV' : 'TSV';
+$wtable      = $table_age === 'new' ? 'EWAYPTS' : 'WAYPTS';
+$hike_list   = filter_input(INPUT_GET, 'json');
+$hike_tracks = explode(",", $hike_list);
 
-// required by multiMap.php
-$makeGpsvDebug = false;
-$handleDfa  = null;
-$handleDfc  = null;
-$distThresh = 1;
-$elevThresh = 1;
-$maWindow   = 1;
+$trkno = 1;
+$trk_nmes = [];
+$gpsv_trk = [];
+$trk_lats = [];
+$trk_lngs = [];
+$gpsv_tick = [];
+$pageData = prepareMappingData(
+    $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
+);
+
 /**
  * The map_opts specify the optional settings for the full-page map.
  */
@@ -51,7 +45,6 @@ $map_opts = [
         "'measure':true, 'export':true }",
     'tracklist_options' => 'true',
     'marker_list_options' => 'true',
-    'show_markers' => 'true',
     'dynamicMarker' => 'false'  
 ];
 /**

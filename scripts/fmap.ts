@@ -4,7 +4,6 @@ declare var appMode: string;
 declare function positionFavToolTip(div: JQuery<HTMLElement>, like: JQuery<HTMLElement>): void;
 declare function IdTableElements(bounds: string, zooms: boolean): void;
 declare function formTbl(hikeobjs: NM[]): void;
-// Overload & redeclare block warnings do not show up during compile
 /**
  * @fileoverview Set up a full page map showing the Favorites selected
  * by the user
@@ -74,7 +73,7 @@ formTbl(NM);
 /**
  * This function returns the correct icon for the map based on no. of hikes
  */
-const getIcon = (no_of_hikes) => {
+const getIcon = (no_of_hikes:number) => {
 	let icon = "../images/pins/hike" + no_of_hikes + ".png";
 	return icon;
 };
@@ -86,7 +85,7 @@ var mapdone = $.Deferred();
  * 
  * @return {null}
  */
-function initMap() {
+function initMap():void {
 	google.maps.Marker.prototype.clicked = false;  // used in favSideTable.ts
 	var clustererMarkerSet: google.maps.Marker[] = [];
 	var nmCtr = {lat: 34.450, lng: -106.042};
@@ -126,7 +125,7 @@ function initMap() {
 	 * 
 	 * @return {null}
 	 */
-	function AddHikeMarker(hikeobj) {
+	function AddHikeMarker(hikeobj:NM) {
 		let nmicon = getIcon(1);
 		var marker = new google.maps.Marker({
 		  position: hikeobj.loc,
@@ -145,7 +144,7 @@ function initMap() {
 		iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
 		iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
 		iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
-		iwContent += '<a href="' + hikeobj.dir + '">Directions</a></div>';
+		iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
 		var iw = new google.maps.InfoWindow({
 				content: iwContent,
 				maxWidth: 400
@@ -254,13 +253,14 @@ function drawTrack(jsonfile: string, color: string, ptr: number, def: JQuery.Def
 		dataType: "json",
 		url: jsonfile,
 		success: function(trackDat) {
+			var json_track = trackDat['trk']
 			let track = new google.maps.Polyline({
 				icons: [{
 						icon: mapTick,
 						offset: '0%',
 						repeat: '15%' 
 				}],
-				path: trackDat,
+				path: json_track,
 				geodesic: true,
 				strokeColor: color,
 				strokeOpacity: 1.0,
@@ -280,7 +280,7 @@ function drawTrack(jsonfile: string, color: string, ptr: number, def: JQuery.Def
 				iw.close();
 			});
 			// establish map boundaries
-			trackDat.forEach(function(latlngpair) {
+			json_track.forEach(function(latlngpair) {
 				if (latlngpair.lat > maxlat) {
 					maxlat = latlngpair.lat;
 				}

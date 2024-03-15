@@ -22,7 +22,7 @@
  *        c. Submitting a hike-in-edit for publication
  *           [...Submit for publication]
  *           $pageType = 'PubReq'
- *           [age=new, pub=usr]    
+ *           [age=new, pub=usr] 
  *  3.  By 'admin/reldel.php': via Admintools.php
  *      Here it is used to list ALL EHIKES (for admin) to release or delete:
  *      $pageType = 'Publish'
@@ -37,6 +37,7 @@
  * @license No license to date
  */
 $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : '';
+$sort   = isset($act) && $act === 'pub' ? false : true;
 
 // Icons used for table display:
 $dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';
@@ -66,35 +67,14 @@ $hikeDiff = array();
 $hikeExpIcon = array();
 $hikeDirections = array();
 $hikeAlbum = array();
-// formulate the database query based on predefined variables:
-if ($age === 'new') {
-    $status = '[';  // editing new hikes requires gathering the 'stat' field
-    $enos = '[';    // and their corresponding EHIKES indxNo's
-    $query = "SELECT * FROM `EHIKES`";
-    if ($show === 'usr') {
-        $query .= " WHERE `usrid` = :userid ";
-    }
-    $query .= "ORDER BY `pgTitle`;";
-} elseif ($age === 'old') {
-    $query = "SELECT * FROM `HIKES` ";
-    if ($show === 'usr') {
-        $query .= "WHERE `usrid` = :userid ";
-    }
-    $query .= "ORDER BY `pgTitle`;";
-    $status = '[]';
-    $enos = '[]';
-} else {
-    throw new Exception("Unrecognized age parameter: " . $age);
-}
-$query .= ';';
-// Now execute the query:
-if ($show === 'all') {
-    $tblquery = $pdo->query($query);
-} else {
-    $tblquery = $pdo->prepare($query);
-    $tblquery->bindValue("userid", $userid);
-    $tblquery->execute();
-}
+$table = $age === 'new' ? 'EHIKES' : 'HIKES';
+$state = $age === 'new' ? 'edit' : 'pub';
+$query = "SELECT * FROM {$table}";
+$user_qualifier = $show === 'usr' ? " WHERE `usrid`={$userid}" : '';
+// NOTE: publish list must not be sorted in order to synch w/hike nos
+$sort_qualifier = $sort ? " ORDER BY `pgTitle`;" : ";";
+$query .= $user_qualifier . $sort_qualifier;
+$tblquery = $pdo->query($query);
 $entries = $tblquery->rowCount();
 // adjust link based on caller location
 $url_prefix = '';
@@ -104,16 +84,11 @@ if ($show !== 'all') {
 // assign row data
 for ($i=0; $i<$entries; $i++) {
     $row = $tblquery->fetch(PDO::FETCH_ASSOC);
-    if ($age === 'new') {
-        $status .= '"' . $row['stat'] . '",';
-        $enos .= '"' . $row['indxNo'] . '",';
-    }
     // part of hidden data:
     $indx    = $row['indxNo'];
     $hikeLat = $row['lat']/LOC_SCALE;
     $hikeLon = $row['lng']/LOC_SCALE;
-    $gpxFile = $row['gpx'];
-    $hikeTrk = $row['trk'];
+    $tracklist = getTrackFileNames($pdo, $indx, $state);
     // 
     $hikeLocale[$i] = $row['locale'];
     $hikeWow[$i]    = $row['wow'];
@@ -143,16 +118,5 @@ for ($i=0; $i<$entries; $i++) {
     $hikeGpx[$i] = $row['gpx'];
     // HTML data-* attributes
     $hikeHiddenDat[$i] = 'data-indx="' . $indx . '" data-lat="' . $hikeLat .
-        '" data-lon="' . $hikeLon . '" data-track="' . $hikeTrk . '" ' .
-        'data-gpx="' . $gpxFile . '"';
-}
-if ($age === 'new') { // forming javascript array data
-    if (strlen($status) !== 1) {
-        $status = substr($status, 0, strlen($status)-1);
-    }
-    $status .= ']';
-    if (strlen($enos) !== 1) {
-        $enos = substr($enos, 0, strlen($enos)-1);
-    }
-    $enos .= ']';
+        '" data-lon="' . $hikeLon . '" data-trk="' . $tracklist[1] . '"';
 }
