@@ -24,12 +24,14 @@ $site_json = '../' . $site . '/json';
 $res_json = scandir('../json');
 // test site loc
 $new_json = scandir($site_json);
+$return = [];
 $return['nit_json'] = [];
 $return['nim_json'] = [];
 // THE FIRST TIME install from noGpx branch:
-return json_encode($return);
+$result = json_encode($return);
+echo $result;
 
-
+/*
 // Assumes test site has fewer/different files; 'nit' => not in test site
 $return['nit_json'] = arrdiff($new_json, $res_json);
 // Case where the main site has fewer/different files; 'nim' => not in main site
@@ -37,3 +39,4 @@ $return['nim_json'] = arrdiff($res_json, $new_json);
 
 $result = json_encode($return);
 echo $result;
+*/
