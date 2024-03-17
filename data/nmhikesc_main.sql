@@ -26,7 +26,7 @@ CREATE TABLE `EHIKES` (
   `info` varchar(4096) DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -38,7 +38,7 @@ CREATE TABLE `BOOKS` (
   `title` varchar(200) NOT NULL,
   `author` varchar(200) NOT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO BOOKS VALUES
@@ -76,7 +76,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -291,7 +291,8 @@ INSERT INTO CLUSHIKES VALUES
 ('222','339','Y','69'),
 ('223','340','Y','69'),
 ('224','317','Y','69'),
-('225','305','Y','69');
+('225','305','Y','69'),
+('226','341','Y','69');
 
 
 
@@ -304,7 +305,7 @@ CREATE TABLE `CLUSTERS` (
   `pub` char(1) DEFAULT NULL,
   `page` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`clusid`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 
 INSERT INTO CLUSTERS VALUES
@@ -386,27 +387,27 @@ CREATE TABLE `Checksums` (
   `chksum` bigint(20) DEFAULT NULL,
   `creation` datetime DEFAULT NULL,
   PRIMARY KEY (`indx`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','381683775','2024-03-14 13:51:20'),
-('2','CLUSHIKES','1939037094','2024-03-14 13:51:20'),
-('3','CLUSTERS','768871527','2024-03-14 13:51:20'),
-('4','EGPSDAT','0','2024-03-14 13:51:20'),
-('5','EHIKES','0','2024-03-14 13:51:20'),
-('6','EREFS','0','2024-03-14 13:51:20'),
-('7','ETSV','0','2024-03-14 13:51:20'),
-('8','EWAYPTS','0','2024-03-14 13:51:20'),
-('9','FAVORITES','3651041965','2024-03-14 13:51:20'),
-('10','GPSDAT','1373172488','2024-03-14 13:51:20'),
-('11','HIKES','2748751039','2024-03-14 13:51:20'),
-('12','LOCKS','0','2024-03-14 13:51:20'),
-('13','MEMBER_PREFS','945859736','2024-03-14 13:51:20'),
-('14','REFS','1498051927','2024-03-14 13:51:20'),
-('15','TSV','1121363316','2024-03-14 13:51:20'),
-('16','USERS','1998519481','2024-03-14 13:51:20'),
-('17','WAYPTS','1079275781','2024-03-14 13:51:20');
+('1','BOOKS','381683775','2024-03-17 17:05:03'),
+('2','CLUSHIKES','2800958483','2024-03-17 17:05:03'),
+('3','CLUSTERS','768871527','2024-03-17 17:05:03'),
+('4','EGPSDAT','0','2024-03-17 17:05:03'),
+('5','EHIKES','0','2024-03-17 17:05:03'),
+('6','EREFS','0','2024-03-17 17:05:03'),
+('7','ETSV','0','2024-03-17 17:05:03'),
+('8','EWAYPTS','0','2024-03-17 17:05:03'),
+('9','FAVORITES','3651041965','2024-03-17 17:05:03'),
+('10','GPSDAT','1373172488','2024-03-17 17:05:03'),
+('11','HIKES','1213945604','2024-03-17 17:05:03'),
+('12','LOCKS','0','2024-03-17 17:05:03'),
+('13','MEMBER_PREFS','945859736','2024-03-17 17:05:03'),
+('14','REFS','1498051927','2024-03-17 17:05:03'),
+('15','TSV','3008713815','2024-03-17 17:05:03'),
+('16','USERS','1998519481','2024-03-17 17:05:03'),
+('17','WAYPTS','1079275781','2024-03-17 17:05:03');
 
 
 
@@ -420,7 +421,7 @@ CREATE TABLE `EGPSDAT` (
   PRIMARY KEY (`datId`),
   KEY `EGPSDAT_Constraint` (`indxNo`),
   CONSTRAINT `EGPSDAT_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -436,7 +437,7 @@ CREATE TABLE `EREFS` (
   PRIMARY KEY (`refId`),
   KEY `EREFS_Constraint` (`indxNo`),
   CONSTRAINT `EREFS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -464,7 +465,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -482,7 +483,7 @@ CREATE TABLE `EWAYPTS` (
   PRIMARY KEY (`wptId`),
   KEY `EWAYPTS_Constraint` (`indxNo`),
   CONSTRAINT `EWAYPTS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -496,7 +497,7 @@ CREATE TABLE `GPSDAT` (
   `url` varchar(1024) DEFAULT NULL,
   `clickText` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`datId`)
-) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=156 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO GPSDAT VALUES
@@ -586,7 +587,7 @@ CREATE TABLE `HIKES` (
   `info` varchar(4096) DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=341 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=342 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO HIKES VALUES
@@ -922,7 +923,8 @@ INSERT INTO HIKES VALUES
 ('337','San Lorenzo Main Loop','2','San Acacia','Loop','5.64','500','Med-Difficult','None','Great Canyon Geology and Formations','Any','Full sun','{\"main\":{\"LorenzoMainLoop-97.123.89.111-1704938630.gpx\":[\"pmn337_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','342421523','-1069847305','San 9c0304.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.24203,-106.9845068/@34.2388421,-106.9931617,13z?entry=ttu',NULL,'<p>The <em><span style=\"color: #5a51d9;\">Main Loop Trail</span></em> of <em>San Lorenzo Canyon</em> penetrates some of the scarcely visited backcountry, and includes multiple canyons, pour-overs, and scenic views of the nearby mountains<em>.</em> Some of the pour-overs require bypass routes, and others can be descended with some difficulty. Caution should be exercised in these areas.</p>\r\n<p>The early part of the hike takes you through some geologically interesting canyons, parts of which expose non-comformities and cross-bedded rock. Narrow passageways add to the intrigue as you ascend the arroyos. Emerging from the first arroyo, you rise to the top of a mesa which has great views of nearby ranges, and includes perspectives of <em>Polvadrera Peak</em> and <em>Ladrone Peak</em>. Crossing the mesa brings you to another canyon which descends into the main <em>San Lorenzo Canyon </em>area. Overall it is a fascinating adventure where you will not likely encounter other hikers.</p>','2024-01-09'),
 ('338','Sierra de las Cañas','2','Lemitar','Out-and-back','4.13','217','Moderate','None','Colorful Arroyos','Not Summer','Full sun','{\"main\":{\"SierraDeLasCanas.GPX\":[\"pmn338_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','340053892','-1067655278','Sier0d8120.jpg',NULL,NULL,'https://www.google.com/maps/place/34°00\'19.4%22N+106°45\'55.9%22W/@34.0046815,-106.7714679,16z/data=!4m4!3m3!8m2!3d34.0053893!4d-106.7655278?entry=ttu',NULL,'<p>The Quebradas Back Country Road holds a vast variety of geology, replete with arroyos of all sizes. This exploratory hike cuts through part of the <em><span style=\"color: #5a51d9;\">Sierra de las Ca&ntilde;as Wilderness Study Area</span></em>. Along the arroyos is a wide variety of fascinating geology, but some hiking is necessary to see it. What appears to start as an almost mundane, yet curious walk into the arroyos, soon reveals multiple areas of layered rock and easy scrambles. There is a wide variety of interesting terraces and steps embedded in the arroyo, which is surrounded by banded hills. It is an adventure which holds much more opportunity for exploration. Due to its remote location, solitude is the order of the day.</p>','2024-02-13'),
 ('339','Mesita Blanca North','2','Tohajiilee','Out-and-back','2.70','300','Easy-Moderate','None','Red Rock and Rock Formations','Not Summer','Full sun','{\"main\":{\"NorthBlanca.GPX\":[\"pmn339_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','352008611','-1070575107','Mesi8d4b43.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.2008612,-107.0575107/@35.11158,-107.1101085,11.64z?entry=ttu','<p>&nbsp;The access road to the area is in very poor condition and requires an all-wheel drive vehicle with at least 9 inches of road clearance. The last part of the road in cannot be travelled over 5 mph. There is a gate across the last section of road which must be manually opened to gain access to the BLM territory.</p>','<p>This area has no actual moniker and has been dubbed \'<em><span style=\"color: #5a51d9;\">Mesita Blanca North</span></em>\' owing to its proximity and location with respect to Mesita Blanca. There is a section of dirt road leading down into the valley, but the hike terminates at the boundary of Laguna Pueblo lands. The terminus of the hike presents the most interesting views, with multiple bright red sandstones on the mesa top, a human-made stone wall, and other large and interesting rock formations. The area\'s geology comprises a marine-based sandstone [Gallup Sandstone], siltstone and mudstone with unconsolidated sediments. Though the hike is relatively short, allow time to explore!</p>','2024-03-06'),
-('340','Herrera OMG Mesa','2','Tohajiilee','Loop','1.90','200','Moderate','None','Prolific red sandstones and fascinating formations','Not summer','Full sun','{\"main\":{\"Herrera_OMG_Mesa.GPX\":[\"pmn340_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','352121002','-1070718740','Herr05e055.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'43.6%22N+107%C2%B004\'18.8%22W/@35.1870848,-107.1203953,13.2z/data=!4m4!3m3!8m2!3d35.2121002!4d-107.0718741?entry=ttu','<p>&nbsp;As with other hikes in this area, the road conditions are very poor, and an all-wheel vehicle with at least 9 inches of ground clearance is required. A gate leading into the BLM lands must be manually opened to gain access, and from there the top speed on the road will be around 5 mph.</p>','<p>The <em><span style=\"color: #5a51d9;\">Herrera OMG Mesa </span></em>has some local notoriety for its rich red sandstones and rock formations, but is rarely visited. There are no actual trails into the area, so it is recommended to download this GPS track (gpx file) for reference. Follow the arroyo down into the valley from the parking spot. There are many possible routes around and into the formations from there, so leave sufficient time to explore. Like other nearby hikes, the geology consists of Gallup Sandstone (a marine-based sandstone), mudstone and siltstone, along with unconsolidated sediments. Living up to its \'OMG\' moniker, the views are unforgettable!</p>\r\n<p>To enter the slot canyon from its open end, the recommended route is to trek down into the arroyo somewhere near the location of the pour-over shown on the interactive map. Follow the arroyo north to the slot.</p>','2024-03-06');
+('340','Herrera OMG Mesa','2','Tohajiilee','Loop','1.90','200','Moderate','None','Prolific red sandstones and fascinating formations','Not summer','Full sun','{\"main\":{\"Herrera_OMG_Mesa.GPX\":[\"pmn340_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','352121002','-1070718740','Herr05e055.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'43.6%22N+107%C2%B004\'18.8%22W/@35.1870848,-107.1203953,13.2z/data=!4m4!3m3!8m2!3d35.2121002!4d-107.0718741?entry=ttu','<p>&nbsp;As with other hikes in this area, the road conditions are very poor, and an all-wheel vehicle with at least 9 inches of ground clearance is required. A gate leading into the BLM lands must be manually opened to gain access, and from there the top speed on the road will be around 5 mph.</p>','<p>The <em><span style=\"color: #5a51d9;\">Herrera OMG Mesa </span></em>has some local notoriety for its rich red sandstones and rock formations, but is rarely visited. There are no actual trails into the area, so it is recommended to download this GPS track (gpx file) for reference. Follow the arroyo down into the valley from the parking spot. There are many possible routes around and into the formations from there, so leave sufficient time to explore. Like other nearby hikes, the geology consists of Gallup Sandstone (a marine-based sandstone), mudstone and siltstone, along with unconsolidated sediments. Living up to its \'OMG\' moniker, the views are unforgettable!</p>\r\n<p>To enter the slot canyon from its open end, the recommended route is to trek down into the arroyo somewhere near the location of the pour-over shown on the interactive map. Follow the arroyo north to the slot.</p>','2024-03-06'),
+('341','Cañada del Ojo Norte','2','Tohajiilee','Out-and-back','8.63','515','Moderate','None','Amazing Red Rock Formations','Not Summer','Full sun','{\"main\":{\"CanadaNorte.gpx\":[\"pmn341_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','351915616','-1070970999','Caña81e740.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.1915616,-107.0971/@35.1798662,-107.1226799,13.24z?entry=ttu','<p>&nbsp;The road to the area can be rutted and challenging, so an all-wheel vehicle is required with good clearance.</p>','<p>The location of this hike is not identified in any trail app, and, outside of the old dirt two-tracks in the interior, there is no trail. The <em><span style=\"color: #5a51d9;\">Canada del Ojo Norte</span></em> hike\'s name was derived from its location near the <span style=\"color: #5a51d9;\"><em>Canada del Ojo</em></span> trail, and in fact touches that area at the south end. The sections of two-track between the north and south ends are unremarkable, but upon arriving at the north end, that will soon be forgotten.</p>\r\n<p>This three-acre area is one of the mostly densely packed clusters of deep red sandstone to be found anywhere, and differs from the <em><span style=\"color: #5a51d9;\">Canada del Ojo</span></em> area by virtue of the fact that it is somewhat smaller and the formations are somewhat different in nature. There are other possible ways to access the north section pictured in this hike, but the hike also allows for wondering in the are of <em><span style=\"color: #5a51d9;\">Canada del Ojo</span></em>. As the hike is not mentioned elsewhere, solitude is the order of the day, and you will have as much time as you wish to enjoy the incredible scenery. It is one of those unforgettable hikes!</p>','2024-03-12');
 
 
 
@@ -930,10 +932,10 @@ INSERT INTO HIKES VALUES
 CREATE TABLE `LOCKS` (
   `indx` smallint(6) NOT NULL AUTO_INCREMENT,
   `ipaddr` varchar(15) DEFAULT NULL,
-  `fails` smallint(6) DEFAULT '0',
+  `fails` smallint(6) DEFAULT 0,
   `lockout` datetime DEFAULT NULL,
   PRIMARY KEY (`indx`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 
 
@@ -944,7 +946,7 @@ CREATE TABLE `MEMBER_PREFS` (
   `userid` smallint(5) NOT NULL,
   `wpt_format` varchar(3) NOT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO MEMBER_PREFS VALUES
@@ -960,7 +962,7 @@ CREATE TABLE `REFS` (
   `rit1` varchar(1024) DEFAULT NULL,
   `rit2` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`refId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3386 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3386 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO REFS VALUES
@@ -2061,7 +2063,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=11593 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11624 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO TSV VALUES
@@ -6109,7 +6111,24 @@ INSERT INTO TSV VALUES
 ('11589','340',NULL,'IMG_8775','Y','Y','Some pieces appear animal like - a lizard?','352150000','-1070701139','4125',NULL,'2024-03-06 15:08:09','IMG_8775','480','640',NULL,'15'),
 ('11590','340',NULL,'1920-herrara-20240306_144916','Y','Y','A solo pair of red hoodoos further along','352173126','-1070668065','4126',NULL,'2024-03-06 14:49:16','1920-herrara-20240306_144916','480','640',NULL,'13'),
 ('11591','340',NULL,'IMG_8772','Y','Y','Magical stepped layers of gray limestone','352145944','-1070688389','4127',NULL,'2024-03-06 15:01:13','IMG_8772','480','640',NULL,'14'),
-('11592','340',NULL,'IMG_8776','Y','Y','The edge of the mesa','352140056','-1070732417','4128',NULL,'2024-03-06 15:26:13','IMG_8776','480','640',NULL,'16');
+('11592','340',NULL,'IMG_8776','Y','Y','The edge of the mesa','352140056','-1070732417','4128',NULL,'2024-03-06 15:26:13','IMG_8776','480','640',NULL,'16'),
+('11593','341',NULL,'IMG_8797','Y','Y','First Landmark','351988111','-1070988694','4129',NULL,'2024-03-12 10:48:09','IMG_8797','480','640',NULL,'0'),
+('11594','341',NULL,'IMG_8808','Y','Y','More red rock coming!','352021528','-1070967250','4130',NULL,'2024-03-12 11:11:54','IMG_8808','480','640',NULL,'3'),
+('11595','341',NULL,'IMG_8810','Y','N','An uncolored valley of formations en route','352043611','-1070934750','4131',NULL,'2024-03-12 11:23:21','IMG_8810','480','640',NULL,'5'),
+('11596','341',NULL,'IMG_8814','Y','Y','Almost hidden from view, the discovery is striking','352262722','-1070830167','4132',NULL,'2024-03-12 12:33:55','IMG_8814','480','640',NULL,'8'),
+('11597','341',NULL,'IMG_8819','Y','N','All kinds of formations abound','352264194','-1070826417','4133',NULL,'2024-03-12 12:38:14','IMG_8819','480','640',NULL,'9'),
+('11598','341',NULL,'IMG_8825','Y','N','A tower with children','352265194','-1070828333','4134',NULL,'2024-03-12 12:42:41','IMG_8825','480','640',NULL,'10'),
+('11599','341',NULL,'IMG_8845','Y','N','The landscape is varied and beautiful','352262361','-1070823972','4135',NULL,'2024-03-12 13:24:06','IMG_8845','480','640',NULL,'11'),
+('11600','341',NULL,'IMG_8847','Y','Y','At the north end, a tinge of red on the bluffs','352310750','-1070906972','4136',NULL,'2024-03-12 13:53:55','IMG_8847','480','640',NULL,'12'),
+('11601','341',NULL,'IMG_8831','Y','Y','Into the valley of red','352262306','-1070822361','4137',NULL,'2024-03-12 12:47:56','IMG_8831','480','640',NULL,'13'),
+('11602','341',NULL,'IMG_8840','Y','N','Clusters of red rock','352262917','-1070823222','4138',NULL,'2024-03-12 13:07:43','IMG_8840','480','640',NULL,'14'),
+('11603','341',NULL,'IMG_8828','Y','Y','Formations appear in every direction','352263750','-1070822222','4139',NULL,'2024-03-12 12:45:40','IMG_8828','480','640',NULL,'15'),
+('11604','341',NULL,'IMG_8843','Y','N','Overlooking nature\'s red bounty','352262194','-1070824139','4140',NULL,'2024-03-12 13:10:28','IMG_8843','480','640',NULL,'16'),
+('11605','341',NULL,'IMG_8858','Y','Y','A view near the south end','352017889','-1070973361','4141',NULL,'2024-03-12 16:08:10','IMG_8858','480','640',NULL,'2'),
+('11606','341',NULL,'IMG_8851','Y','Y','The wise man','352042389','-1070933833','4142',NULL,'2024-03-12 15:43:39','IMG_8851','480','640',NULL,'7'),
+('11607','341',NULL,'IMG_8850','Y','N','Reds contrast with the gray sandstones','352042056','-1070933917','4143',NULL,'2024-03-12 15:43:34','IMG_8850','480','640',NULL,'6'),
+('11608','341',NULL,'IMG_8852','Y','Y','A wall of gradient red','352046694','-1070955278','4144',NULL,'2024-03-12 15:52:04','IMG_8852','480','640',NULL,'4'),
+('11609','341',NULL,'IMG_8859','Y','Y','The landmark in review','351996472','-1070987083','4145',NULL,'2024-03-12 16:15:19','IMG_8859','480','640',NULL,'1');
 
 
 
@@ -6128,7 +6147,7 @@ CREATE TABLE `USERS` (
   `an2` varchar(4096) DEFAULT NULL,
   `an3` varchar(4096) DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO USERS VALUES
@@ -6152,7 +6171,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2087 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2110 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO VISITORS VALUES
@@ -7434,7 +7453,30 @@ INSERT INTO VISITORS VALUES
 ('2083','75.161.63.162','','Apple Safari','mac','2024-03-13 05:28:01','https://nmhikes.com:443/phoneNoGpx/pages/responsivePage.php?hikeIndx=78'),
 ('2084','75.161.63.162','','Apple Safari','mac','2024-03-13 05:28:27','https://nmhikes.com:443/phoneNoGpx/pages/responsivePage.php?hikeIndx=78'),
 ('2085','75.161.63.162','','Apple Safari','mac','2024-03-13 05:28:36','https://nmhikes.com:443/phoneNoGpx/pages/responsiveTable.php'),
-('2086','75.161.63.162','','Apple Safari','mac','2024-03-13 05:28:40','https://nmhikes.com:443/phoneNoGpx/pages/responsivePage.php?hikeIndx=225');
+('2086','75.161.63.162','','Apple Safari','mac','2024-03-13 05:28:40','https://nmhikes.com:443/phoneNoGpx/pages/responsivePage.php?hikeIndx=225'),
+('2087','52.167.144.174','0','Google Chrome','Unknown','2024-03-15 10:01:21','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2088','52.167.144.185','0','Google Chrome','Unknown','2024-03-16 07:10:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=340'),
+('2089','40.77.167.136','0','Google Chrome','Unknown','2024-03-16 07:13:31','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=339'),
+('2090','40.77.167.14','0','Google Chrome','Unknown','2024-03-16 09:45:16','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=180'),
+('2091','40.77.167.241','0','Google Chrome','Unknown','2024-03-16 10:34:22','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=340'),
+('2092','52.167.144.187','0','Google Chrome','Unknown','2024-03-16 02:39:45','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=335'),
+('2093','52.66.239.91','0','Google Chrome','linux','2024-03-16 02:52:59','https://nmhikes.com:443/pages/home.php'),
+('2094','157.55.39.61','0','Google Chrome','Unknown','2024-03-16 04:32:20','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('2095','157.55.39.61','0','Google Chrome','Unknown','2024-03-16 05:33:58','https://nmhikes.com:443/pages/tableOnly.php'),
+('2096','40.77.167.38','0','Google Chrome','Unknown','2024-03-16 10:36:20','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2097','40.77.167.25','0','Google Chrome','Unknown','2024-03-16 11:51:02','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32'),
+('2098','65.154.226.167','0','Google Chrome','windows','2024-03-16 11:54:30','https://nmhikes.com:443/pages/home.php'),
+('2099','207.46.13.107','0','Google Chrome','Unknown','2024-03-16 11:59:25','https://nmhikes.com:443/pages/tableOnly.php'),
+('2100','52.167.144.163','0','Google Chrome','Unknown','2024-03-17 12:25:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=335'),
+('2101','52.167.144.181','0','Google Chrome','Unknown','2024-03-17 07:52:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=340'),
+('2102','52.167.144.219','0','Google Chrome','Unknown','2024-03-17 08:02:21','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2103','40.77.167.70','0','Google Chrome','Unknown','2024-03-17 12:19:33','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=339'),
+('2104','174.234.207.201','0','Google Chrome','linux','2024-03-17 02:14:13','https://nmhikes.com:443/pages/landing.php'),
+('2105','174.234.207.201','0','Google Chrome','linux','2024-03-17 02:14:19','https://nmhikes.com:443/pages/landing.php'),
+('2106','67.0.13.132','0','Google Chrome','linux','2024-03-17 02:41:35','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=34'),
+('2107','67.0.13.132','0','Google Chrome','linux','2024-03-17 02:41:37','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=34&tbl='),
+('2108','73.127.160.152','0','Google Chrome','linux','2024-03-17 03:31:21','https://nmhikes.com:443/pages/home.php'),
+('2109','73.127.160.152','0','Google Chrome','linux','2024-03-17 03:36:04','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=3');
 
 
 
@@ -7448,7 +7490,7 @@ CREATE TABLE `WAYPTS` (
   `lng` int(10) DEFAULT NULL,
   `sym` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`wptId`)
-) ENGINE=InnoDB AUTO_INCREMENT=420 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=420 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO WAYPTS VALUES
@@ -7886,7 +7928,7 @@ CREATE TABLE `FAVORITES` (
   KEY `forExportConsistency` (`hikeNo`),
   CONSTRAINT `FAVORITES_to_HIKES` FOREIGN KEY (`hikeNo`) REFERENCES `HIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FAVORITES_to_USERS` FOREIGN KEY (`userid`) REFERENCES `USERS` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO FAVORITES VALUES
