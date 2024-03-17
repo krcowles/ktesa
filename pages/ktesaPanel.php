@@ -3,6 +3,8 @@
  * This script presents the html that comprises the top-of-the-page
  * menu-driven navigation bar and ktesa logo for every viewable page.
  * See ktesaNavbar.php for mobile implementation.
+ * NOTE: Recent addition of 'Own This Site!' animation compliments of
+ * https://alvarotrigo.com/blog/css-text-animations/ (with mods)
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -72,6 +74,38 @@ if (isset($_SESSION['userid'])) {
         }
     }); 
 </script>
+<style>
+    .animate-character {
+        text-transform: uppercase;
+        background-image: linear-gradient(
+            -225deg,
+            lightsteelblue 0%,
+            paleturquoise 29%,
+            palevioletred 67%,
+            navajowhite 100%
+        );
+        background-size: auto auto;
+        background-clip: border-box;
+        background-size: 200% auto;
+        color: #fff;
+        background-clip: text;
+        /*text-fill-color: transparent;*/
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: textclip 2s linear infinite;
+        display: inline-block;
+        font-size: 16px;
+        position: relative;
+        top: 8px;
+        left: 8px;
+    }
+
+    @keyframes textclip {
+        to {
+            background-position: 200% center;
+        }
+        }
+ </style>
 
 <!-- 'navbar-dark' class results in a light-colored collapsed icon ("hampurger") -->
 <p id="uhikes" style="display:none"><?=$user_ehikes;?></p>
@@ -226,6 +260,12 @@ if (isset($_SESSION['userid'])) {
                             class="dropdown-item" href="#">Accept Cookies</a>
                         </li>
                     </ul>
+                </li>
+                <li id="owner" class="nav-item">
+                    <a id="ownit" class="nv-link active" aria-current="page"
+                        href="../pages/ownership.php">
+                        <span class="animate-character">Own this site!</span>
+                    </a>
                 </li>
             </ul>
         </div>

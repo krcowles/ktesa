@@ -1,0 +1,23 @@
+@import "body";
+@import "colors";
+@import "ktesaNavbar";
+
+#contents {
+    margin: 12px 24px 12px 24px;
+}
+#message {
+    width: 80%;
+    height: 64px;
+}
+input:focus, textarea:focus {
+    outline: none;
+    border-color: maroon;
+    border-width: 2px;
+    border-style: solid;
+    transition: border-color 1s;
+    background-color: antiquewhite;
+}
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: $gray;
+    opacity: 1; /* Firefox */
+}

@@ -90,7 +90,9 @@
     "multi-sort.ts",
     "map-multiples.ts",
     /* Password Strength Indicator */
-    "passwordStrength.ts"
+    "passwordStrength.ts",
+    /* Request for new ownership */
+    "ownership.ts"
   ]
   /* also "include": [] and/or "exclude": [] */
 }
