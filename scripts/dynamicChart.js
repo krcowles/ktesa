@@ -166,7 +166,13 @@ mapdiv.onload = function () {
             });
         });
         $.when(allTracks).then(function () {
-            trackNumber = gpsvTracks.indexOf(trackNames[0]);
+            trackNumber = gpsvTracks.indexOf(trackNames[0]) === -1 ?
+                0 : gpsvTracks.indexOf(trackNames[0]);
+            /* NOTE: If the track name is empty in the json file,
+             * trackNumber = -1. In this case, the trackNumber
+             * needs to be set to 0, else no echart is displayed.
+             * The json file should be fixed to prevent confusion.
+             */
             drawChart(trackNumber);
         });
     }, 200);
