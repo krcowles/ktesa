@@ -358,9 +358,8 @@ $fpLnk = "../maps/fullPgMapLink.php?hike={$hikeTitle}" .
     "&hno={$hikeIndexNo}&tbl={$tbl}";
 if ($clusterPage) {
     $fpLnk .= "&clus=y";
-    foreach ($tracks as $jsonfile) {
-        $fpLnk .= "&json[]={$jsonfile}";
-    }
+    $json = implode(",", $tracks);
+    $fpLnk .= "&json={$json}";
     $hike_tracks = $tracks;
 } else {
     $query_items = implode(",", $hike_tracks);
