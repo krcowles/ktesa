@@ -12,6 +12,11 @@
 require "../php/global_boot.php";
 $geoloc = '../../images/geoloc.png';
 
+$origin      = isset($_GET['org']) ? filter_input(INPUT_GET, 'org') : 'x';
+if ($origin === 'x' || ($origin !== 'd' && $origin !== 'g')) {
+    echo "This link must be executed as an embedded link in a hike page";
+    exit;
+}
 $hikeIndexNo = filter_input(INPUT_GET, 'hno');
 $hikeTitle   = filter_input(INPUT_GET, 'hike');
 $table_age   = filter_input(INPUT_GET, 'tbl');
@@ -19,6 +24,11 @@ $ttable      = $table_age === 'new' ? 'ETSV' : 'TSV';
 $wtable      = $table_age === 'new' ? 'EWAYPTS' : 'WAYPTS';
 $hike_list   = filter_input(INPUT_GET, 'json');
 $hike_tracks = explode(",", $hike_list);
+if (empty($hike_tracks)) {
+    throw new Exception(
+        "Link from {$origin}, indx {$hikeIndexNo}, contains empty track list"
+    );
+}
 
 $trkno = 1;
 $trk_nmes = [];
@@ -28,7 +38,7 @@ $trk_lngs = [];
 $gpsv_tick = [];
 $pageData = prepareMappingData(
     $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
-);
+); // returns miles, maxmin, asc, dsc & fills above arrays
 
 /**
  * The map_opts specify the optional settings for the full-page map.

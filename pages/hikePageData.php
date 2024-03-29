@@ -354,7 +354,7 @@ if (($mapHandle = fopen($tmpMap, "w")) === false) {
         $tmpMap . ", for writing";
     throw new Exception($mapmsg);
 }
-$fpLnk = "../maps/fullPgMapLink.php?hike={$hikeTitle}" .
+$fpLnk = "../maps/fullPgMapLink.php?org=d&hike={$hikeTitle}" .
     "&hno={$hikeIndexNo}&tbl={$tbl}";
 if ($clusterPage) {
     $fpLnk .= "&clus=y";

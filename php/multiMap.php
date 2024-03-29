@@ -20,16 +20,15 @@ $tblOnly = isset($hikeIndexNo) ? false : true;
 // tblOnly files are input via query string as an array of track names
 if ($tblOnly) {
     $hike_tracks = $_GET['m'];
-    $wtable = 'WAYPTS'; // only production hikes will use this routine
+    $wtable = 'WAYPTS'; // only published hikes will use this routine
     $gpsv_trk = [];
     $trk_nmes = [];
     $trk_lats = [];
     $trk_lngs = [];
     $gpsv_tick = [];
-    $trkno = 1;
     prepareMappingData(
         $hike_tracks, $trk_nmes, $gpsv_trk, $trk_lats, $trk_lngs, $gpsv_tick
-    );
+    ); // returns miles, maxmin, asc, dsc & fills above array
     $map_opts = [
         'zoom' => 17,
         'map_type' => 'ARCGIS_TOPO_WORLD',
@@ -49,11 +48,12 @@ if ($tblOnly) {
 
 /**
  * '$hike_tracks' is an array of 1 or more json files to be applied to the map.
- * The following variables must be defined in the caller:
+ * The following variables must be defined in the caller if not above:
+ *  - $gpsv_trk
+ *  - $trk_nmes
  *  - $trk_lats
  *  - $trk_lngs
- *  - $trk_nmes
- *  - $gpsv_trk
+ *  - $gpsv_tick
  */
 $allLats     = []; // for calculating map bounds
 $allLngs     = []; // for calculating map bounds
@@ -127,7 +127,6 @@ foreach ($hike_tracks as $json) {
     if (!$tblOnly) {
         // see GPSVisualizer for complete list of icon styles:
         $mapicon = $defIconStyle;
-        $mcnt = 0;
         $picReq = "SELECT * FROM {$ttable} WHERE indxNo = :hikeIndexNo;";
         $dbdat = $pdo->prepare($picReq);
         $dbdat->bindValue(":hikeIndexNo", $hikeIndexNo);
@@ -144,45 +143,19 @@ foreach ($hike_tracks as $json) {
                 } else {
                     $iconColor = $photos['iclr'];
                 }
-                // If wypt in E/TSV file....
-                if (empty($photos['mid'])) { // waypoint icon
-                    // determine icon color and style (clumsy for now, but works)
-                    if (empty($photos['iclr'])) {
-                        $colortxt = $defIconColor;
-                        $iconStyle = $defIconStyle;
-                    } else {
-                        $colortxt = $iconColor;
-                        $iconStyle = $iconColor;
-                    }
-                    if (strpos($colortxt, "Blue")
-                        || strpos($colortxt, "Trail Head")
-                    ) {
-                        $iconColor = 'Blue';
-                    } elseif (strpos($iconColor, "Green")) {
-                        $iconColor = 'Green';
-                    } else {
-                        $iconColor = 'Red';
-                    }
-                    $plnk = "GV_Draw_Marker({lat:" . $photos['lat']/LOC_SCALE .
-                        ",lon:" . $photos['lng']/LOC_SCALE . ",name:'" .
-                        $procName . "',desc:'" . $procDesc . "',color:'" .
-                        $iconColor . "',icon:'" . $iconStyle . "'});";
-                } else { // photo
-                    $aspect = $photos['imgWd']/$photos['imgHt'];
-                    $thumb_nom = 300;
-                    $thumb_width = $aspect < 1 ? $aspect * $thumb_nom : $thumb_nom;
-                    $plnk = "GV_Draw_Marker({lat:" . $photos['lat']/LOC_SCALE .
-                        ",lon:" . $photos['lng']/LOC_SCALE . ",name:'" . $procDesc .
-                        "',desc:'',color:'" . $iconColor . "',icon:'" . $mapicon .
-                        "',url:'/pictures/zsize/" . $photos['mid'] . "_" . 
-                        $photos['thumb'] .
-                        "_z.jpg" . "',thumbnail:'/pictures/zsize/" . 
-                        $photos['mid'] . "_" . $photos['thumb'] . "_z.jpg" .
-                        "',thumbnail_width:'" . $thumb_width . 
-                        "',folder:'" . $photos['folder'] . "'});";
-                }
+                $aspect = $photos['imgWd']/$photos['imgHt'];
+                $thumb_nom = 300;
+                $thumb_width = $aspect < 1 ? $aspect * $thumb_nom : $thumb_nom;
+                $plnk = "GV_Draw_Marker({lat:" . $photos['lat']/LOC_SCALE .
+                    ",lon:" . $photos['lng']/LOC_SCALE . ",name:'" . $procDesc .
+                    "',desc:'',color:'" . $iconColor . "',icon:'" . $mapicon .
+                    "',url:'/pictures/zsize/" . $photos['mid'] . "_" . 
+                    $photos['thumb'] .
+                    "_z.jpg" . "',thumbnail:'/pictures/zsize/" . 
+                    $photos['mid'] . "_" . $photos['thumb'] . "_z.jpg" .
+                    "',thumbnail_width:'" . $thumb_width . 
+                    "',folder:'" . $photos['folder'] . "'});";
                 array_push($plnks, $plnk);
-                $mcnt++;
             }
         }
     }

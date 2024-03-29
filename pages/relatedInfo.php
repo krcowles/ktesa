@@ -141,7 +141,7 @@ foreach ($gpsData as $row) {
         } else {
             $age = 'old';
         }
-        $mapLink = "../maps/fullPgMapLink.php?hno={$hikeIndexNo}" .
+        $mapLink = "../maps/fullPgMapLink.php?org=g&hno={$hikeIndexNo}" .
             "&hike={$hikeTitle}&tbl={$age}&json={$json}";
         // Links for each entry:
         $gpsHtml .= '<li class="gpslnks">' . $row['clickText'] . '&nbsp;&nbsp;' .
