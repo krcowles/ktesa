@@ -26,7 +26,7 @@ CREATE TABLE `EHIKES` (
   `info` varchar(4096) DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -76,7 +76,7 @@ CREATE TABLE `CLUSHIKES` (
   `pub` char(1) DEFAULT NULL,
   `cluster` smallint(6) NOT NULL,
   PRIMARY KEY (`tblid`)
-) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 
 INSERT INTO CLUSHIKES VALUES
@@ -292,7 +292,8 @@ INSERT INTO CLUSHIKES VALUES
 ('223','340','Y','69'),
 ('224','317','Y','69'),
 ('225','305','Y','69'),
-('226','341','Y','69');
+('226','341','Y','69'),
+('227','343','Y','66');
 
 
 
@@ -391,23 +392,23 @@ CREATE TABLE `Checksums` (
 
 
 INSERT INTO Checksums VALUES
-('1','BOOKS','381683775','2024-03-20 10:51:34'),
-('2','CLUSHIKES','2800958483','2024-03-20 10:51:34'),
-('3','CLUSTERS','768871527','2024-03-20 10:51:34'),
-('4','EGPSDAT','0','2024-03-20 10:51:34'),
-('5','EHIKES','0','2024-03-20 10:51:34'),
-('6','EREFS','0','2024-03-20 10:51:34'),
-('7','ETSV','0','2024-03-20 10:51:34'),
-('8','EWAYPTS','0','2024-03-20 10:51:34'),
-('9','FAVORITES','3651041965','2024-03-20 10:51:34'),
-('10','GPSDAT','1373172488','2024-03-20 10:51:34'),
-('11','HIKES','651323547','2024-03-20 10:51:34'),
-('12','LOCKS','0','2024-03-20 10:51:34'),
-('13','MEMBER_PREFS','945859736','2024-03-20 10:51:34'),
-('14','REFS','3052568475','2024-03-20 10:51:34'),
-('15','TSV','177209205','2024-03-20 10:51:34'),
-('16','USERS','1998519481','2024-03-20 10:51:34'),
-('17','WAYPTS','1079275781','2024-03-20 10:51:34');
+('1','BOOKS','381683775','2024-03-30 17:27:13'),
+('2','CLUSHIKES','1201433233','2024-03-30 17:27:13'),
+('3','CLUSTERS','768871527','2024-03-30 17:27:13'),
+('4','EGPSDAT','0','2024-03-30 17:27:13'),
+('5','EHIKES','0','2024-03-30 17:27:13'),
+('6','EREFS','0','2024-03-30 17:27:13'),
+('7','ETSV','0','2024-03-30 17:27:13'),
+('8','EWAYPTS','0','2024-03-30 17:27:13'),
+('9','FAVORITES','3651041965','2024-03-30 17:27:13'),
+('10','GPSDAT','1373172488','2024-03-30 17:27:13'),
+('11','HIKES','1389098210','2024-03-30 17:27:13'),
+('12','LOCKS','0','2024-03-30 17:27:13'),
+('13','MEMBER_PREFS','945859736','2024-03-30 17:27:13'),
+('14','REFS','3052568475','2024-03-30 17:27:13'),
+('15','TSV','348836515','2024-03-30 17:27:13'),
+('16','USERS','1998519481','2024-03-30 17:27:13'),
+('17','WAYPTS','2845164045','2024-03-30 17:27:13');
 
 
 
@@ -465,7 +466,7 @@ CREATE TABLE `ETSV` (
   PRIMARY KEY (`picIdx`),
   KEY `ETSV_Constraint` (`indxNo`),
   CONSTRAINT `ETSV_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -483,7 +484,7 @@ CREATE TABLE `EWAYPTS` (
   PRIMARY KEY (`wptId`),
   KEY `EWAYPTS_Constraint` (`indxNo`),
   CONSTRAINT `EWAYPTS_Constraint` FOREIGN KEY (`indxNo`) REFERENCES `EHIKES` (`indxNo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 
@@ -587,7 +588,7 @@ CREATE TABLE `HIKES` (
   `info` varchar(4096) DEFAULT NULL,
   `last_hiked` date DEFAULT NULL,
   PRIMARY KEY (`indxNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=343 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=344 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO HIKES VALUES
@@ -925,7 +926,8 @@ INSERT INTO HIKES VALUES
 ('339','Mesita Blanca North','2','Tohajiilee','Out-and-back','2.70','300','Easy-Moderate','None','Red Rock and Rock Formations','Not Summer','Full sun','{\"main\":{\"NorthBlanca.GPX\":[\"pmn339_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','352008611','-1070575107','Mesi8d4b43.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.2008612,-107.0575107/@35.11158,-107.1101085,11.64z?entry=ttu','<p>&nbsp;The access road to the area is in very poor condition and requires an all-wheel drive vehicle with at least 9 inches of road clearance. The last part of the road in cannot be travelled over 5 mph. There is a gate across the last section of road which must be manually opened to gain access to the BLM territory.</p>','<p>This area has no actual moniker and has been dubbed \'<em><span style=\"color: #5a51d9;\">Mesita Blanca North</span></em>\' owing to its proximity and location with respect to Mesita Blanca. There is a section of dirt road leading down into the valley, but the hike terminates at the boundary of Laguna Pueblo lands. The terminus of the hike presents the most interesting views, with multiple bright red sandstones on the mesa top, a human-made stone wall, and other large and interesting rock formations. The area\'s geology comprises a marine-based sandstone [Gallup Sandstone], siltstone and mudstone with unconsolidated sediments. Though the hike is relatively short, allow time to explore!</p>','2024-03-06'),
 ('340','Herrera OMG Mesa','2','Tohajiilee','Loop','1.90','200','Moderate','None','Prolific red sandstones and fascinating formations','Not summer','Full sun','{\"main\":{\"Herrera_OMG_Mesa.GPX\":[\"pmn340_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','352121002','-1070718740','Herr05e055.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B012\'43.6%22N+107%C2%B004\'18.8%22W/@35.1870848,-107.1203953,13.2z/data=!4m4!3m3!8m2!3d35.2121002!4d-107.0718741?entry=ttu','<p>&nbsp;As with other hikes in this area, the road conditions are very poor, and an all-wheel vehicle with at least 9 inches of ground clearance is required. A gate leading into the BLM lands must be manually opened to gain access, and from there the top speed on the road will be around 5 mph.</p>','<p>The <em><span style=\"color: #5a51d9;\">Herrera OMG Mesa </span></em>has some local notoriety for its rich red sandstones and rock formations, but is rarely visited. There are no actual trails into the area, so it is recommended to download this GPS track (gpx file) for reference. Follow the arroyo down into the valley from the parking spot. There are many possible routes around and into the formations from there, so leave sufficient time to explore. Like other nearby hikes, the geology consists of Gallup Sandstone (a marine-based sandstone), mudstone and siltstone, along with unconsolidated sediments. Living up to its \'OMG\' moniker, the views are unforgettable!</p>\r\n<p>To enter the slot canyon from its open end, the recommended route is to trek down into the arroyo somewhere near the location of the pour-over shown on the interactive map. Follow the arroyo north to the slot.</p>','2024-03-06'),
 ('341','Cañada del Ojo Norte','2','Tohajiilee','Out-and-back','8.63','515','Moderate','None','Amazing Red Rock Formations','Not Summer','Full sun','{\"main\":{\"CanadaNorte.gpx\":[\"pmn341_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','351915616','-1070970999','Caña81e740.jpg',NULL,NULL,'https://www.google.com/maps/dir//35.1915616,-107.0971/@35.1798662,-107.1226799,13.24z?entry=ttu','<p>&nbsp;The road to the area can be rutted and challenging, so an all-wheel vehicle is required with good clearance.</p>','<p>The location of this hike is not identified in any trail app, and, outside of the old dirt two-tracks in the interior, there is no trail. The <em><span style=\"color: #5a51d9;\">Canada del Ojo Norte</span></em> hike\'s name was derived from its location near the <span style=\"color: #5a51d9;\"><em>Canada del Ojo</em></span> trail, and in fact touches that area at the south end. The sections of two-track between the north and south ends are unremarkable, but upon arriving at the north end, that will soon be forgotten.</p>\r\n<p>This three-acre area is one of the mostly densely packed clusters of deep red sandstone to be found anywhere, and differs from the <em><span style=\"color: #5a51d9;\">Canada del Ojo</span></em> area by virtue of the fact that it is somewhat smaller and the formations are somewhat different in nature. There are other possible ways to access the north section pictured in this hike, but the hike also allows for wondering in the are of <em><span style=\"color: #5a51d9;\">Canada del Ojo</span></em>. As the hike is not mentioned elsewhere, solitude is the order of the day, and you will have as much time as you wish to enjoy the incredible scenery. It is one of those unforgettable hikes!</p>','2024-03-12'),
-('342','Red Mesa West','2','San Ysidro','Out-and-back','5.93','932','Moderate','None','Canyons and Water Pockets','Any','Full sun','{\"main\":{\"RedMesaWest.gpx\":[\"pmn342_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','355423846','-1068387718','Red c52d71.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B032\'32.6%22N+106%C2%B050\'19.6%22W/@35.5402248,-106.8432118,13.3z/data=!4m4!3m3!8m2!3d35.5423847!4d-106.8387718?entry=ttu','<p>&nbsp;The parking area for access to this BLM area is immediately off NM 550, just north of the San Ysidro Trials area. It is a small opening in the fence on the north side of the road, with a relatively small dirt parking area. It is easy to miss, so be on the lookout!</p>','<p>This area is actually quite lovely, with lots of surprising and colorful features. As you traverse the arroyo, you encounter a variety of landscapes, from broad, wide, rocky flats, to bumpy terrain with hidden pockets of water. As you travel up the lower arroyo for a mile and about 500 ft of elevation, an open and less interesting stretch of more level ground appears en route to the next hilly section. There are some nice vistas from here, nonetheless, with a clear view of the mesa top ahead. Unexpectedly, upon ascending further to the mesa top, a bike trail appears which originates in the San Ysidro Trials area.</p>\r\n<p>The bike trail leads to the edge of an interesting, somewhat deep canyon, the opposite side of which holds colorful rock features. Follow the bike trail to the point where the canyon can be easily crossed, and then proceed to the rock formations. Along the way, a \'micro-slot\' canyon appeared, weaving upwards and leading into a deeper canyon. The colorful rocks on the top are adjacent to views from the edge of Red Mesa.</p>\r\n<p>From here, a small return loop eventually brings you back to the bike trail, but not without first traversing more beautiful stretches of water pockets, and a view of a sudden drop-off into a very steep canyon. This area is seldom visited, so it makes for a great get-away.</p>','2024-03-19');
+('342','Red Mesa West','2','San Ysidro','Out-and-back','5.93','932','Moderate','None','Canyons and Water Pockets','Any','Full sun','{\"main\":{\"RedMesaWest.gpx\":[\"pmn342_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','355423846','-1068387718','Red c52d71.jpg',NULL,NULL,'https://www.google.com/maps/place/35%C2%B032\'32.6%22N+106%C2%B050\'19.6%22W/@35.5402248,-106.8432118,13.3z/data=!4m4!3m3!8m2!3d35.5423847!4d-106.8387718?entry=ttu','<p>&nbsp;The parking area for access to this BLM area is immediately off NM 550, just north of the San Ysidro Trials area. It is a small opening in the fence on the north side of the road, with a relatively small dirt parking area. It is easy to miss, so be on the lookout!</p>','<p>This area is actually quite lovely, with lots of surprising and colorful features. As you traverse the arroyo, you encounter a variety of landscapes, from broad, wide, rocky flats, to bumpy terrain with hidden pockets of water. As you travel up the lower arroyo for a mile and about 500 ft of elevation, an open and less interesting stretch of more level ground appears en route to the next hilly section. There are some nice vistas from here, nonetheless, with a clear view of the mesa top ahead. Unexpectedly, upon ascending further to the mesa top, a bike trail appears which originates in the San Ysidro Trials area.</p>\r\n<p>The bike trail leads to the edge of an interesting, somewhat deep canyon, the opposite side of which holds colorful rock features. Follow the bike trail to the point where the canyon can be easily crossed, and then proceed to the rock formations. Along the way, a \'micro-slot\' canyon appeared, weaving upwards and leading into a deeper canyon. The colorful rocks on the top are adjacent to views from the edge of Red Mesa.</p>\r\n<p>From here, a small return loop eventually brings you back to the bike trail, but not without first traversing more beautiful stretches of water pockets, and a view of a sudden drop-off into a very steep canyon. This area is seldom visited, so it makes for a great get-away.</p>','2024-03-19'),
+('343','Bursum Canyon Exploratory','2','Lemitar','Loop','7.53','385','Moderate','None','Arroyos and Hills','Not Summer','Full sun','{\"main\":{\"BursumExplore.GPX\":[\"pmn343_1.json\"]},\"add1\":[],\"add2\":[],\"add3\":[]}','341002224','-1068236818','Burs5a2b0a.jpg',NULL,NULL,'https://www.google.com/maps/dir//34.1002224,-106.8236819/@34.0943995,-106.8876272,13.24z?entry=ttu','<p>&nbsp;Note that the starting point of this hike was achieved by driving down an incredibly steep and rocky slope, and along portions of the rock-filled arroyo. It is an absolute must to have a vehicle with clearance of 9.5 inches or more, and to use very low gear ratios. Otherwise, proceed from the spot indicated on the interactive map by a yellow triangle, and walk to the starting point. That area does not require a special vehicle. From that area, you will add less than a mile total to the hike.</p>','<p>The entire <span style=\"background-color: #ffffff; color: #5a51d9;\"><em>Bursum Springs Area</em></span> is a vast matrix of canyons and arroyos, and exploration possibilities are many. This hike sought to further explore some of the territory, and proceeded along arroyos, 2-tracks, and some trail-less terrain. The arroyos provide a wide variety of scenery and geology, making for a fascinating trip. En route, an odd double-layered pour-over was encountered, which should be by-passed due to its remarkably deep pocket. The hike finished up by overlapping with another <em><span style=\"color: #5a51d9;\">Bursum Springs</span></em> hike which offers a trek down a slanted slot canyon.</p>\r\n<p>The hike affords many different views along the arroyo, in many directions, and the area is fairly isolated, providing a pleasant measure of solitude. The inviting terrain stimulates even more exploration.</p>','2024-03-27');
 
 
 
@@ -2067,7 +2069,7 @@ CREATE TABLE `TSV` (
   `iclr` varchar(32) DEFAULT NULL,
   `org` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`picIdx`)
-) ENGINE=InnoDB AUTO_INCREMENT=11655 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11656 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO TSV VALUES
@@ -6149,7 +6151,20 @@ INSERT INTO TSV VALUES
 ('11637','342',NULL,'IMG_8907','Y','Y','Near a very steep drop-off, the last of the water pockets','355691806','-1068458639','4159',NULL,'2024-03-19 13:31:20','IMG_8907','480','640',NULL,'15'),
 ('11638','342',NULL,'IMG_8908','Y','Y','The canyon descends 1500 ft.','355689194','-1068458194','4160',NULL,'2024-03-19 13:34:26','IMG_8908','640','480',NULL,'16'),
 ('11639','342',NULL,'IMG_8886','Y','Y','The trail winds along the edge of a somewhat deep canyon','355662139','-1068455444','4161',NULL,'2024-03-19 12:19:52','IMG_8886','480','640',NULL,'9'),
-('11640','342',NULL,'IMG_8897','Y','Y','The slot canyons weaves upward','355696472','-1068424972','4162',NULL,'2024-03-19 12:52:00','IMG_8897','640','480',NULL,'12');
+('11640','342',NULL,'IMG_8897','Y','Y','The slot canyons weaves upward','355696472','-1068424972','4162',NULL,'2024-03-19 12:52:00','IMG_8897','640','480',NULL,'12'),
+('11641','343',NULL,'IMG_8917','Y','Y','Soon, a lovely view west towards the Magdalena Mountains','340979167','-1068274222','4163',NULL,'2024-03-27 12:01:43','IMG_8917','480','640',NULL,'1'),
+('11642','343',NULL,'IMG_8915','Y','N','Begin the hike','341000778','-1068237389','4164',NULL,'2024-03-27 11:45:48','IMG_8915','480','640',NULL,'0'),
+('11643','343',NULL,'IMG_8927','Y','Y','The arroyos hold a wide variety of scenery and geology','340825278','-1068304444','4165',NULL,'2024-03-27 13:20:36','IMG_8927','480','640',NULL,'3'),
+('11644','343',NULL,'IMG_8922','Y','Y','Rugged terrain in the interior','340850972','-1068328861','4166',NULL,'2024-03-27 12:51:43','IMG_8922','480','640',NULL,'2'),
+('11645','343',NULL,'IMG_8931','Y','Y','A banded bluff ahead','340831111','-1068291556','4167',NULL,'2024-03-27 13:24:51','IMG_8931','480','640',NULL,'4'),
+('11646','343',NULL,'IMG_8942','Y','Y','Long views proceeding along the 2-track','340926222','-1068140194','4168',NULL,'2024-03-27 14:33:52','IMG_8942','480','640',NULL,'9'),
+('11647','343',NULL,'IMG_8935','Y','Y','And occasionally, a hoodoo','340865389','-1068260111','4169',NULL,'2024-03-27 13:46:36','IMG_8935','480','640',NULL,'5'),
+('11648','343',NULL,'IMG_8951','Y','Y','New Mexico blue sky around the arch','341029500','-1068204278','4170',NULL,'2024-03-27 16:03:52','IMG_8951','480','640',NULL,'11'),
+('11649','343',NULL,'IMG_8937','Y','Y','Multi-layered pour-over','340878667','-1068207472','4171',NULL,'2024-03-27 14:01:18','IMG_8937','640','480',NULL,'7'),
+('11650','343',NULL,'IMG_8950','Y','Y','Arroyo \'step-ups\' add flavor to the hike','340950556','-1068057778','4172',NULL,'2024-03-27 15:05:15','IMG_8950','480','640',NULL,'10'),
+('11651','343',NULL,'IMG_8936','Y','Y','Deep undercut','340873750','-1068214028','4173',NULL,'2024-03-27 13:58:19','IMG_8936','640','480',NULL,'6'),
+('11652','343',NULL,'IMG_8939','Y','N','Above the pour-over','340879333','-1068206778','4174',NULL,'2024-03-27 14:09:27','IMG_8939','640','480',NULL,'8'),
+('11653','343',NULL,'IMG_8953','Y','Y','Incredibly slanted path up the canyon','341029444','-1068215250','4176',NULL,'2024-03-27 16:14:59','IMG_8953','640','480',NULL,'12');
 
 
 
@@ -6192,7 +6207,7 @@ CREATE TABLE `VISITORS` (
   `vdatetime` datetime DEFAULT NULL,
   `vpage` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`vid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2179 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2255 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO VISITORS VALUES
@@ -7567,7 +7582,84 @@ INSERT INTO VISITORS VALUES
 ('2175','40.77.167.14','0','Google Chrome','Unknown','2024-03-20 03:15:08','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
 ('2176','97.123.78.146','0','Apple Safari','mac','2024-03-20 10:14:50','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=4'),
 ('2177','73.127.160.152','0','Google Chrome','linux','2024-03-20 10:19:47','https://nmhikes.com:443/pages/home.php'),
-('2178','73.127.160.152','0','Google Chrome','linux','2024-03-20 10:20:29','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=4');
+('2178','73.127.160.152','0','Google Chrome','linux','2024-03-20 10:20:29','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=4'),
+('2179','52.167.144.233','0','Google Chrome','Unknown','2024-03-20 12:21:42','https://nmhikes.com:443/pages/ownership.php'),
+('2180','73.127.160.152','0','Google Chrome','linux','2024-03-20 05:27:15','https://nmhikes.com:443/pages/home.php'),
+('2181','73.127.160.152','0','Google Chrome','linux','2024-03-20 05:29:17','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('2182','72.30.14.15','0','Unknown','Unknown','2024-03-20 05:30:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=342'),
+('2183','40.77.167.32','0','Google Chrome','Unknown','2024-03-20 05:55:31','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=341'),
+('2184','52.167.144.185','0','Google Chrome','Unknown','2024-03-20 09:15:28','https://nmhikes.com:443/pages/home.php'),
+('2185','207.46.13.107','0','Google Chrome','Unknown','2024-03-21 04:23:20','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2186','207.46.13.153','0','Google Chrome','Unknown','2024-03-21 04:59:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=41'),
+('2187','50.228.184.14','0','Apple Safari','mac','2024-03-21 12:05:22','https://nmhikes.com:443/pages/landing.php'),
+('2188','50.228.184.14','0','Apple Safari','mac','2024-03-21 12:05:34','https://nmhikes.com:443/pages/responsiveTable.php'),
+('2189','52.167.144.176','0','Google Chrome','Unknown','2024-03-21 06:16:11','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=341'),
+('2190','40.77.167.32','0','Google Chrome','Unknown','2024-03-22 04:40:27','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2191','40.77.167.136','0','Google Chrome','Unknown','2024-03-22 12:04:53','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=71'),
+('2192','40.77.167.235','0','Google Chrome','Unknown','2024-03-22 09:59:22','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2193','40.77.167.59','0','Google Chrome','Unknown','2024-03-23 12:31:49','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=341'),
+('2194','52.167.144.219','0','Google Chrome','Unknown','2024-03-23 04:05:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2195','52.167.144.16','0','Google Chrome','Unknown','2024-03-23 09:01:28','https://nmhikes.com:443/pages/tableOnly.php'),
+('2196','52.167.144.221','0','Google Chrome','Unknown','2024-03-23 09:06:46','https://nmhikes.com:443/pages/home.php'),
+('2197','104.255.19.2','0','Apple Safari','mac','2024-03-23 11:29:30','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('2198','52.167.144.181','0','Google Chrome','Unknown','2024-03-23 11:35:00','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2199','52.167.144.181','0','Google Chrome','Unknown','2024-03-23 04:41:45','https://nmhikes.com:443/pages/tableOnly.php'),
+('2200','52.167.144.9','0','Google Chrome','Unknown','2024-03-23 05:54:46','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=336'),
+('2201','40.77.167.14','0','Google Chrome','Unknown','2024-03-23 08:58:38','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('2202','40.77.167.22','0','Google Chrome','Unknown','2024-03-23 10:01:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2203','40.77.167.235','0','Google Chrome','Unknown','2024-03-24 12:30:11','https://nmhikes.com:443/pages/ownership.php'),
+('2204','52.167.144.235','0','Google Chrome','Unknown','2024-03-24 09:11:26','https://nmhikes.com:443/pages/tableOnly.php'),
+('2205','52.167.144.224','0','Google Chrome','Unknown','2024-03-24 11:43:29','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2206','52.167.144.235','0','Google Chrome','Unknown','2024-03-24 04:36:50','https://nmhikes.com:443/pages/tableOnly.php'),
+('2207','76.113.91.9','0','Google Chrome','windows','2024-03-24 07:22:28','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('2208','52.167.144.214','0','Google Chrome','Unknown','2024-03-24 10:14:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2209','40.77.167.235','0','Google Chrome','Unknown','2024-03-25 04:05:16','https://nmhikes.com:443/pages/home.php'),
+('2210','52.167.144.22','0','Google Chrome','Unknown','2024-03-25 04:16:16','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2211','40.77.167.20','0','Google Chrome','Unknown','2024-03-25 04:44:09','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=4&clus=y'),
+('2212','174.171.31.31','0','Google Chrome','windows','2024-03-25 03:20:32','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=79'),
+('2213','174.207.37.102','0','Google Chrome','linux','2024-03-25 05:51:52','https://nmhikes.com:443/pages/landing.php'),
+('2214','174.207.37.102','0','Google Chrome','linux','2024-03-25 05:51:57','https://nmhikes.com:443/pages/responsiveTable.php'),
+('2215','174.207.37.102','0','Google Chrome','linux','2024-03-25 05:52:21','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=166'),
+('2216','174.207.37.102','0','Google Chrome','linux','2024-03-25 05:53:34','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=318'),
+('2217','174.207.37.102','0','Google Chrome','linux','2024-03-25 05:53:46','https://nmhikes.com:443/pages/landing.php'),
+('2218','174.207.37.102','0','Google Chrome','linux','2024-03-25 05:55:32','https://nmhikes.com:443/pages/landing.php'),
+('2219','174.207.37.102','0','Google Chrome','linux','2024-03-25 05:55:38','https://nmhikes.com:443/pages/mapOnly.php');
+INSERT INTO VISITORS VALUES
+('2220','40.77.167.126','0','Google Chrome','Unknown','2024-03-25 06:57:34','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=55'),
+('2221','66.249.70.70','0','Google Chrome','linux','2024-03-26 12:34:27','https://nmhikes.com:443/pages/landing.php'),
+('2222','52.167.144.17','0','Google Chrome','Unknown','2024-03-26 03:54:40','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2223','66.249.70.70','0','Google Chrome','linux','2024-03-26 12:00:26','https://nmhikes.com:443/pages/landing.php'),
+('2224','66.249.70.69','0','Google Chrome','linux','2024-03-26 12:40:45','https://nmhikes.com:443/pages/landing.php'),
+('2225','52.167.144.219','0','Google Chrome','Unknown','2024-03-26 05:32:33','https://nmhikes.com:443/pages/ownership.php'),
+('2226','52.167.144.235','0','Google Chrome','Unknown','2024-03-27 01:04:47','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2227','52.167.144.191','0','Google Chrome','Unknown','2024-03-27 01:49:55','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=341'),
+('2228','40.77.167.41','0','Google Chrome','Unknown','2024-03-27 06:52:52','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=341'),
+('2229','196.242.131.67','0','Mozilla Firefox','mac','2024-03-27 11:30:57','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=27'),
+('2230','71.114.81.237','0','Mozilla Firefox','Unknown','2024-03-27 04:21:19','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=145'),
+('2231','71.114.81.237','0','Mozilla Firefox','Unknown','2024-03-27 04:21:23','https://nmhikes.com:443/pages/responsivePage.php?hikeIndx=145&tbl='),
+('2232','52.167.144.184','0','Google Chrome','Unknown','2024-03-27 09:48:15','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=223'),
+('2233','40.77.167.60','0','Google Chrome','Unknown','2024-03-28 12:53:12','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2234','40.77.167.126','0','Google Chrome','Unknown','2024-03-28 07:31:54','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=6'),
+('2235','40.77.167.50','0','Google Chrome','Unknown','2024-03-28 02:23:50','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2236','69.24.97.37','0','Google Chrome','windows','2024-03-28 03:36:38','https://nmhikes.com:443/pages/home.php'),
+('2237','69.24.97.37','0','Google Chrome','windows','2024-03-28 04:21:20','https://nmhikes.com:443/pages/home.php'),
+('2238','69.24.97.37','0','Google Chrome','windows','2024-03-28 07:42:48','https://nmhikes.com:443/pages/home.php'),
+('2239','96.77.24.138','0','Apple Safari','mac','2024-03-28 08:18:15','https://nmhikes.com:443/pages/responsiveTable.php'),
+('2240','66.249.70.70','0','Google Chrome','linux','2024-03-28 11:11:55','https://nmhikes.com:443/pages/landing.php'),
+('2241','52.167.144.205','0','Google Chrome','Unknown','2024-03-29 01:06:39','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=182'),
+('2242','66.249.70.69','0','Google Chrome','linux','2024-03-29 03:39:14','https://nmhikes.com:443/pages/landing.php'),
+('2243','52.167.144.3','0','Google Chrome','Unknown','2024-03-29 05:59:33','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=341'),
+('2244','97.123.78.146','0','Apple Safari','mac','2024-03-29 12:43:08','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=5'),
+('2245','73.127.160.152','0','Google Chrome','linux','2024-03-29 02:25:18','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=5'),
+('2246','97.123.78.146','0','Mozilla Firefox','mac','2024-03-29 06:31:10','https://nmhikes.com:443/pages/home.php'),
+('2247','40.77.167.60','0','Google Chrome','Unknown','2024-03-30 12:54:36','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=341'),
+('2248','66.249.70.71','0','Google Chrome','Unknown','2024-03-30 03:00:58','https://nmhikes.com:443/pages/home.php'),
+('2249','66.249.70.71','0','Google Chrome','linux','2024-03-30 03:00:58','https://nmhikes.com:443/pages/landing.php'),
+('2250','52.167.144.237','0','Google Chrome','Unknown','2024-03-30 10:17:19','https://nmhikes.com:443/pages/tableOnly.php'),
+('2251','73.127.160.152','0','Google Chrome','linux','2024-03-30 10:40:26','https://nmhikes.com:443/pages/hikePageTemplate.php?age=new&hikeIndx=5'),
+('2252','40.77.167.59','0','Google Chrome','Unknown','2024-03-30 01:41:43','https://nmhikes.com:443/pages/ownership.php'),
+('2253','69.24.97.37','0','Google Chrome','windows','2024-03-30 04:14:45','https://nmhikes.com:443/pages/home.php'),
+('2254','40.77.167.14','0','Google Chrome','Unknown','2024-03-30 05:07:25','https://nmhikes.com:443/pages/hikePageTemplate.php?hikeIndx=32');
 
 
 
@@ -7581,7 +7673,7 @@ CREATE TABLE `WAYPTS` (
   `lng` int(10) DEFAULT NULL,
   `sym` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`wptId`)
-) ENGINE=InnoDB AUTO_INCREMENT=420 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=423 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
 
 
 INSERT INTO WAYPTS VALUES
@@ -8007,7 +8099,9 @@ INSERT INTO WAYPTS VALUES
 ('416','196','gps','Closure - Fire Danger','351473844','-1064656000','Flag, Blue'),
 ('417','120','gps','0014','357248970','-1066219496','Triangle, Red'),
 ('418','120','gps','0022','357273705','-1066183662','Triangle, Red'),
-('419','340','db','Start Here','352121194','-1070718917','Trail Head');
+('419','340','db','Start Here','352121194','-1070718917','Trail Head'),
+('420','343','db','Start Here','341002224','-1068236819','Trail Head'),
+('421','343','db','Alternate Parking Spot','341080300','-1068244000','Triangle, Yellow');
 
 
 
