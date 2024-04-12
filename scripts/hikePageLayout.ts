@@ -218,13 +218,21 @@ function downloadURI(gpxfile:string):void {
     link.download = gpxfile;
     link.href = gpxfile;
     link.click();
-    $.post("deleteGpx.php", {gpx: gpxfile});
+    // without delay, the download doesn't complete for multiple gpx
+    setTimeout(function() {
+        $.post("deleteGpx.php", {gpx: gpxfile},
+            function() {
+                link.remove();
+            }
+        );
+    }, 250);
 }
 // To download a gpx file from side panel:
 $('#dwn').on('click', function(ev) {
     ev.preventDefault();
     $('#idfiles').empty();  
     if (gpx_file_list.length > 1) {
+        // multiple gpx files...
         var ajax_files: string;
         for (let k=0; k<gpx_file_list.length; k++) {
             var dwnldItem = gpx_file_list[k];
@@ -240,13 +248,13 @@ $('#dwn').on('click', function(ev) {
                 }
             });      
             var list_el = '<li><a class="dwnldgpx" href="#">' +
-                gpx_filename + '</a><span class="jfiles" ' +
-                'style="display:none;">' + ajax_files + '</span></li>';
+                gpx_filename + '</a><span style="display:none;">' +
+                ajax_files + '</span></li>';
             $('#idfiles').append(list_el);
         }
         multiDwnld.show();
     } else {
-        // singleton
+        // single gpx file: may be multiple json files...
         var ajax_files = '';
         var main = gpx_file_list[0];
         var gpx_val = Object.keys(main);
@@ -262,7 +270,6 @@ $('#dwn').on('click', function(ev) {
         $.post("makeGpx.php", {name: gpx_filename, json_files: ajax_files},
             function() {
                 downloadURI(gpx_filename);
-                multiDwnld.hide();
             }
         );
     }
@@ -273,7 +280,6 @@ $('body').on('click', '.dwnldgpx', function(ev) {
     var file_list = $(this).next().text() as string;
     $.post("makeGpx.php", {name: gpx, json_files: file_list}, function() {
         downloadURI(gpx);
-        multiDwnld.hide();
     });
     return;
 });

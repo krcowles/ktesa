@@ -175,15 +175,13 @@ if (mobile) {
             </div>
             <div class="modal-body">
                 <h5>This hike was created by multiple gpx files.
-                    You may download any or all of them below</h5>
+                    Click on any or all links to download:</h5>
                 <ul id="idfiles" style="list-style:none;">
                 </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
                     data-bs-dismiss="modal">Close</button>
-                <button id="dwnldGpx" type="button" class="btn btn-success">
-                    Download</button>
             </div>
         </div>
     </div>
@@ -191,7 +189,8 @@ if (mobile) {
 
 <script type="text/javascript">
     // some vars not set for Cluster Pages...
-    var hike_file_list = <?=$hike_file_list;?>;
+    var hike_file_list = <?=$hike_file_list;?>; // list of json track files
+    var gpx_file_list  = <?=$gpx_files;?>;
     <?php if (isset($sidePanelData)) : ?>
     var panelData = <?=$sidePanelData;?>;
     <?php endif; ?>

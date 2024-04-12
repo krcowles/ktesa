@@ -98,11 +98,14 @@ $dsc = 0;
 /**
  * It is permitted to have more than one gpx/track file per hike (e.g. Knife's Edge);
  * The main gpx filename is $gpxfile, and $hike_tracks is an array of all the hike's
- * uploaded tracknames [as json files]. $hike_tracks are physically located in
- * '../json'.
+ * uploaded tracknames [as json files]. The $hike_tracks files are physically located
+ * in '../json'.
  * NOTE: Cluster pages have no gpx entry, and will be 'empty'; hence for those pgs,
  * $hike_file_list defaults to 'filler.json' and must be updated in the $clusterPage
- * section below
+ * section below. In order to download a hike page's gpx file, the file names must be
+ * presented to javascript along with their corresponding json filenames. That 
+ * information is presented by the hikePageTemplate as $gpx_file_list. Cluster pages
+ * do not have gpx download capability.
  */
 if (empty($row['gpx'])) {
     if (empty($row['lat']) || empty($row['lng'])) {
@@ -117,6 +120,7 @@ if (empty($row['gpx'])) {
     createPseudoJson($ctrlat, $ctrlng);
     $gpxfile = 'Filler';
     $hike_tracks = ['filler.json'];
+    $gpx_files   = json_encode(['Filler' => ['filler.json']]);
 } else {
     $gpx_arr = getGpxArray($pdo, $hikeIndexNo, $state);
     $allGpx = [$gpx_arr['main']];
