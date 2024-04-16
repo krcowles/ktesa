@@ -25,6 +25,11 @@ if ($form === 'reg') {
 } elseif ($form === 'log') {
     $title = "Log in";
 }
+if ($newusr) {
+    $btn_note = 'Complete Your Security Questions';
+} else {
+    $btn_note = 'Review/Edit Security Questions';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -133,7 +138,8 @@ if ($form === 'reg') {
         <?php endif; ?>
         <input id="usrchoice" type="hidden" name="cookies" 
             value="nochoice" class="wide" />
-        <span class="mobtxt">One-time code</span>
+        <span class="mobtxt">Your <span id="precode">Pre-populated</span>
+            One-time code</span>
         <input id="one-time" type="password" name="one-time" autocomplete="off"
             value="<?=$code;?>" class="wide" /><br /> 
         <div id="pexpl">
@@ -157,11 +163,9 @@ if ($form === 'reg') {
             autocomplete="new-password" required="required"
             placeholder="Confirm Password" /><br />
         <div>
-            <?php if ($newusr) : ?>
-                <a id="rvw" href="#">Complete Your Security Questions</a>
-            <?php else : ?>
-                <a id="rvw" href="#">Review/Edit Security Questions</a>
-            <?php endif; ?>
+            <button id="rvw" class="rvw_new" type="button" 
+                class="btn btn-warning"><?=$btn_note;?>
+        </button>
         </div> <br />
         <button type="submit" id="formsubmit" class="btn mobinp">
             Submit</button>     

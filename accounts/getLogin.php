@@ -51,7 +51,7 @@ if (!isset($_SESSION['username'])) { // No login yet...
             $userid  = $user_info['userid'];
             $expDate = $user_info['passwd_expire'];
             $cookies = $user_info['cookies'];
-            $memid   = $userData['userid'];
+            $memid   = $user_info['userid'];
             $choice  = 'reject';  // default if no user selection recorded
             if (!empty($cookies)) {
                 $choice = $cookies;

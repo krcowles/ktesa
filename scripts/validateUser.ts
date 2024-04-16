@@ -93,7 +93,10 @@ $('#closesec').on('click', function() {
                         }
                     }, "text");
                 } else {
+                    $('#rvw').removeClass('rvw_new');
+                    $('#rvw').addClass('rvw_accpt');
                     alert("Updated Security Questions");
+
                 }
             } else {
                 alert("Error: could not update Security Questions");

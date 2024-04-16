@@ -10,7 +10,7 @@
 $(function () {
     var reg = mobile ? { top: 20, height: 510 } : { top: 48, height: 540 };
     var log = mobile ? { top: 48, height: 340 } : { top: 80, height: 380 };
-    var ren = mobile ? { top: 20, height: 480 } : { top: 80, height: 460 };
+    var ren = mobile ? { top: 20, height: 480 } : { top: 80, height: 480 };
     var accept_btn = mobile ? '#maccept' : '#accept';
     var reject_btn = mobile ? '#mreject' : '#reject';
     if (mobile) {
