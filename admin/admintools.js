@@ -101,16 +101,16 @@ $(function () {
             dataType: 'json',
             success: function (results) {
                 if (results['nit_json'].length > 0) {
-                    issues += "The following main json files are not present in " +
-                        "the test site:\n";
+                    issues += "The following test site json files are not present in " +
+                        "the main site (i.e. new files):\n";
                     for (var j = 0; j < results['nit_json'].length; j++) {
                         issues += results['nit_json'][j] + "; ";
                     }
                     issues += "\n";
                 }
                 if (results['nim_json'].length > 0) {
-                    issues += "The following test site json files are not present in " +
-                        "main:\n";
+                    issues += "The following main json files are not present in " +
+                        "the test site (i.e. main deleted or missing):\n";
                     for (var l = 0; l < results['nim_json'].length; l++) {
                         issues += results['nim_json'][l] + "; ";
                     }

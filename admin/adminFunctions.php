@@ -404,7 +404,7 @@ function strleft($s1, $s2)
  * the difference is reported.
  * 
  * @param array $a1 an array to compare
- * @param array $a2 an array to compare
+ * @param array $a2 an array to compare: this is compared to $a1 for missing files
  * 
  * @return array an array containing the difference between the two
  */

@@ -25,10 +25,11 @@ $res_json = scandir('../json');
 // test site loc
 $new_json = scandir($site_json);
 $return = [];
-// Assumes test site has fewer/different files; 'nit' => not in test site
-$return['nit_json'] = arrdiff($new_json, $res_json);
-// Case where the main site has fewer/different files; 'nim' => not in main site
-$return['nim_json'] = arrdiff($res_json, $new_json);
+
+// 'nim' => not in main'; deleted or missing compared to '$new_json'
+$return['nim_json'] = arrdiff($new_json, $res_json);
+// 'nit' => new in test site; a new file exists in the test site
+$return['nit_json'] = arrdiff($res_json, $new_json);
 
 $result = json_encode($return);
 echo $result;
