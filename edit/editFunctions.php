@@ -906,7 +906,7 @@ function createPseudoJson($clat, $clng)
 }
 /**
  * This function extracts the lats, lngs, and elevs from a gpx file,
- * and returns them as arrays. 
+ * and returns them as arrays. Gpx files list elevations in meters.
  * NOTE: if there are multiple segments within a track, they are effectively
  * combined into one segment.
  * 
@@ -935,7 +935,7 @@ function gpxLatLng($gpxdat, $no_of_tracks)
                     array_push($gpxlats, (float)$plat);
                     array_push($gpxlons, (float)$plng);
                     $meters = $datum->ele;
-                    $feet = round(3.28084 * $meters, 1);
+                    $feet = round(3.28084 * (float)($meters[0]), 1);
                     array_push($gpxelev, $feet);
                 }
             }
