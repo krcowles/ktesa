@@ -632,6 +632,26 @@ function getGpxArray($pdo, $hikeno, $state)
     return $gpx_array;
 }
 /**
+ * When the [E]GPSDAT table is accessed, this function will convert the 
+ * url field for labels GPX[] into a standard array
+ * 
+ * @param string $url The 'url' field of the row
+ * 
+ * @return array $gps_array
+ */
+function getGPSurlData($url)
+{
+    $stdClassGpx = json_decode($url, true);
+    // Convert stdClass to array: [only 1 to convert]
+    $gpx_array = [];
+    foreach ($stdClassGpx as $item => $value) {
+        $gpx_array[$item] = $value;
+    }
+    $gps_gpx  = array_keys($gpx_array)[0];   // this is the org gpx filename
+    $gps_json = array_values($gpx_array)[0]; // an array of its json files
+    return array($gps_gpx, $gps_json);
+}
+/**
  * It is often required to extract the information contained in the 
  * HIKES/EHIKES 'gpx' field and convert it to a usable array (or
  * comma-separated string) of any and all track files associated with

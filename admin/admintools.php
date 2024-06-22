@@ -212,8 +212,7 @@ $server_loc = strlen($thisSiteRoot) > strlen($documentRoot) ?
             btn-danger">Publish Page</button>&nbsp;
             (Move from EHIKES to HIKES)<br/>
         <button id="ehdel" type="button" class="btn 
-            btn-secondary">Remove Page</button>
-            <span style="color:brown;">(Not implemented at this time)</span><br />
+            btn-danger">Remove Hike-in-Edit</button><br />
     </fieldset><br />
 
     <fieldset class="afs">

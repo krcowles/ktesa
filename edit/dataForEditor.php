@@ -154,16 +154,10 @@ for ($j=0; $j<$gpsDbCnt; $j++) {
     $gps_label[$j] = $gpsdat['label'];
     $url[$j]       = $gpsdat['url'];
     $clickText[$j] = $gpsdat['clickText'];
-    if ($gps_label[$j] === 'GPX:') {
-        $stdClassGpx = json_decode($url[$j], true);
-        // Convert stdClass to array: 
-        $gpxFiles = [];
-        foreach ($stdClassGpx as $item => $value) {
-            $gpxFiles[$item] = $value;
-        }
-        $fname[$j]= array_keys($gpxFiles)[0];
-        $gps_json = array_values($gpxFiles)[0];
-        $json_str = implode(",", $gps_json);
+    if (strpos($gps_label[$j], 'GPX') !== false) {
+        $gpsGpx = getGPSurlData($url[$j]);
+        $fname[$j] = $gpsGpx[0];
+        $json_str = implode(",", $gpsGpx[1]);
         $del_str[$j] = $json_str;
         $user_file[$j] = $fname[$j];
     } else { // kml or map (html/pdf)
@@ -176,5 +170,4 @@ for ($j=0; $j<$gpsDbCnt; $j++) {
         // NOTE: assumes user filename has no embedded hyphen; case not addressed
         $user_file[$j] = substr($barefile, 0, $user_length) . "." . $ext;
     }
-      
 }

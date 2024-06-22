@@ -37,7 +37,7 @@
  * @license No license to date
  */
 $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : '';
-$sort   = isset($act) && $act === 'pub' ? false : true;
+$sort   = isset($act) ? false : true;
 
 // Icons used for table display:
 $dirIcon = '<img src="../images/dirs.png" alt="google driving directions" />';

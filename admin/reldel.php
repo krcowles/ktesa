@@ -17,7 +17,7 @@ $act = filter_input(INPUT_GET, 'act');
 if ($act === 'rel') {
     $msg = "Publish";
 } elseif ($act === 'del') {
-    $msg = "Remove";
+    $msg = "Delete";
 }
 $usr = 'mstr';
 $age = 'new';
@@ -53,7 +53,6 @@ $enos =  rtrim($enos, ",") . ']';
 <p id="active" style="display:none">Admin</p>
 <p id="action" style="display:none"><?= $act;?></p>
 <?php
-$act = 'pub';
 require '../php/makeTables.php';
 ?>
 <script type="text/javascript">

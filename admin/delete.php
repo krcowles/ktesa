@@ -1,17 +1,38 @@
 <?php
 /**
- * This script allows an admin to remove a hike from the HIKES table,
- * including it's associated entries in GPSDAT, REFS and TSV.
+ * This script allows an admin to remove a hike from the EHIKES table,
+ * including it's associated entries in the EGPSDAT, EREFS and ETSV tables.
+ * It does not delete any associated e-json files.
  * PHP Version 7.4
  * 
  * @package Ktesa
- * @author  Tom Sandberg <tjsandberg@yahoo.com>
  * @author  Ken Cowles <krcowles29@gmail.com>
  * @license No license to date
  */
 session_start();
 require '../php/global_boot.php';
 $hikeNo = filter_input(INPUT_GET, 'hno');
+
+$mainJson = getTrackFileNames($pdo, $hikeNo, 'edit');
+$tracks = $mainJson[0];
+$getGPSreq = "SELECT `url` FROM `EGPSDAT` WHERE `label` LIKE 'GPX%' AND " .
+    "`indxNo`=?;";
+$getGPS = $pdo->prepare($getGPSreq);
+$getGPS->execute([$hikeNo]);
+$gpsFields = $getGPS->fetchAll(PDO::FETCH_ASSOC);
+foreach ($gpsFields as $gdata) {
+    $gpsFiles = getGPSurlData($gdata['url']);
+    $tracks = array_merge($tracks, $gpsFiles[1]);
+}
+foreach ($tracks as $json) {
+    $efile = '../json/' . $json;
+    if (!unlink($efile)) {
+        throw new Exception("Could not delete {$json}");
+    }
+}
+$deleteHikeReq = "DELETE FROM `EHIKES` WHERE `indxNo`=?;";
+$deleteHike = $pdo->prepare($deleteHikeReq);
+$deleteHike->execute([$hikeNo]);
 ?>
 <!DOCTYPE html>
 <html lang="en-us">
@@ -36,10 +57,10 @@ $hikeNo = filter_input(INPUT_GET, 'hno');
 
 <div style="margin-left:16px;font-size:20px;">
 <?php
-    echo '<p style="font-size:24px;color:brown;">UNDER CONSTRUCTION</p>';
+    echo '<p style="font-size:24px;color:brown;">Hike-in-Edit ' . 
+        $hikeNo . ' was removed along with any corresponding json files</p>';
 ?>
 </div>
-<script src ="delete.js"></script>
 
 </body>
 </html>

@@ -62,10 +62,10 @@ $indxq = $pdo->query($indxReq);
 $indxNo = $indxq->fetch(PDO::FETCH_NUM);
 $hikeNo = $indxNo[0]; // EHIKES indxNo
 
-/*
- * PLace TSV data into ETSV
- */
 if (!$cluspg) {
+    /*
+     * PLace TSV data into ETSV
+     */
     $xfrTsvReq = "INSERT INTO `ETSV` (indxNo,folder,title,hpg,mpg,`desc`,lat,lng," .
         "thumb,alblnk,date,mid,imgHt,imgWd,iclr,org) SELECT ?,folder,title," .
         "hpg,mpg,`desc`,lat,lng,thumb,alblnk,date,mid,imgHt,imgWd,iclr,org FROM " .
@@ -73,8 +73,9 @@ if (!$cluspg) {
     $tsvq = $pdo->prepare($xfrTsvReq);
     $tsvq->execute([$hikeNo, $getHike]);
     /*
-    * Place GPSDATA into EGPSDATA
-    */
+     * Place GPSDATA into EGPSDATA
+     * NOTE: gpx/json for urls fixed later...
+     */
     $gpsDatReq = "INSERT INTO `EGPSDAT` (`indxNo`,`label`,`url`,`clickText`) " .
         "SELECT ?,`label`,`url`,`clickText` FROM `GPSDAT` WHERE " .
         "`indxNo` = ?;";
@@ -83,7 +84,6 @@ if (!$cluspg) {
 
     /**
      * Transfer published json files and reset gpx field in EHIKES;
-     * At this point, EGPSDAT gpx still holds the PUBLISHED names of json
      */
     $previousJson = getTrackFileNames($pdo, $getHike, 'pub')[0];
     $main_val = [];
@@ -123,7 +123,7 @@ if (!$cluspg) {
         '' : array_keys($old_gpx_array['add2'])[0];
     $add3_gpx = empty($old_gpx_array['add3']) ? 
         '' : array_keys($old_gpx_array['add3'])[0];
-    // update gpx array
+    // update gpx array - assign new values
     $old_gpx_array["main"] = array($main_gpx => $main_val);
     $old_gpx_array["add1"] = empty($add1_gpx) ? [] : array($add1_gpx => $add1_val);
     $old_gpx_array["add2"] = empty($add2_gpx) ? [] : array($add2_gpx => $add2_val);
@@ -140,6 +140,36 @@ if (!$cluspg) {
         "FROM `WAYPTS` WHERE `indxNo`=?;";
     $ewpts = $pdo->prepare($ewptsReq);
     $ewpts->execute([$hikeNo, $getHike]);
+    /**
+     * EGPSDATA needs to update the gpx file pointer & json file[s];
+     * Each 'url' contains json encoded data for 1 gpx file
+     * w/corresponding json file[s]
+     */
+    $egpsDataReq = "SELECT * FROM `EGPSDAT` WHERE `label` LIKE 'GPX%' AND " .
+        "`indxNo`=?;";
+    $egpsData = $pdo->prepare($egpsDataReq);
+    $egpsData->execute([$hikeNo]);
+    $allGps = $egpsData->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($allGps as $gps) {
+        $egpsUrlField = getGPSurlData($gps['url']);
+        $new_json = [];
+        foreach ($egpsUrlField[1] as $pjson) {
+            $dash_loc  = strpos($pjson, "_");
+            $extension = substr($pjson, $dash_loc);
+            $new_name  = "egps" . $hikeNo . $extension;
+            $to_loc   = "../json/" . $new_name;
+            $from_loc = "../json/" . $pjson;
+            if (!copy($from_loc, $to_loc)) {
+                throw new Exception("Could not relocate {$pjson}");
+            }
+            array_push($new_json, $new_name);
+        }
+        $newEntry = [$egpsUrlField[0] => $new_json];
+        $new_gps_array = json_encode($newEntry);
+        $updateGpsReq = "UPDATE `EGPSDAT` SET `url`=? WHERE `datId`=?;";
+        $updateGps = $pdo->prepare($updateGpsReq);
+        $updateGps->execute([$new_gps_array, $gps['datId']]);
+    }
 }
 /*
  * Place REFS data into EREFS
