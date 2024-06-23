@@ -222,8 +222,8 @@ if ($msgout == '') {
             if (!rename($old_loc, $new_loc)) {
                 throw new Exception("Could not move {$fname}");
             }
-            array_push($deleted_json, $old_loc);
-            array_push($added_or_chgd_json, $new_loc);
+            array_push($deleted_json, $fname);
+            array_push($added_or_chgd_json, $new_name);
         }
         $add1_array = empty($eadd1_gpx) ? [] : array($eadd1_gpx => $add1_val);
         $add2_array = empty($eadd2_gpx) ? [] : array($eadd2_gpx => $add2_val);
@@ -392,8 +392,8 @@ if ($msgout == '') {
     $dele = $pdo->prepare($query);
     $dele->bindValue(":ehikeNo", $hikeNo);
     $dele->execute();
-    file_put_contents("deleted.txt", $deleted_json);
-    file_put_contents("changed.txt", $added_or_chgd_json);
+    file_put_contents("deleted.txt", implode(",", $deleted_json));
+    file_put_contents("changed.txt", implode(",", $added_or_chgd_json));
 }
 ?>
 <!DOCTYPE html>
