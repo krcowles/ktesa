@@ -246,7 +246,7 @@ if ($msgout == '') {
          */
         //  ---------------------  GPSDAT -------------------
         if ($status > 0) { // eliminate any existing data
-            $pubDataReq = "SELECT `url` FROM `GPSDAT` `label` LIKE 'GPX%' " .
+            $pubDataReq = "SELECT `url` FROM `GPSDAT` WHERE `label` LIKE 'GPX%' " .
                 "AND `indxNo`=?;";
             $pubData = $pdo->prepare($pubDataReq);
             $pubData->execute([$indxNo]);
