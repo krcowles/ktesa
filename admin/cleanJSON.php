@@ -40,8 +40,8 @@ for ($j=0; $j<count($hikeNos); $j++) {
 if (count($ehikeGpx) > 0) {
     $ehikeNos = array_keys($ehikeGpx);
     for ($k=0; $k<count($ehikeNos); $k++) {
-        if (!empty($ehikeGpx[$ehikeNos[$j]])) {
-            $trk_array = getTrackFileNames($pdo, $ehikeNos[$j], 'edit')[0];
+        if (!empty($ehikeGpx[$ehikeNos[$hikeNos]])) {
+            $trk_array = getTrackFileNames($pdo, $ehikeNos[$k], 'edit')[0];
             $dbJSON = array_merge($dbJSON, $trk_array);  
         } 
     }
