@@ -116,6 +116,8 @@ if ($msgout == '') {
      * move them to the corresponding correct names for pubished file ('pxx.json)
      * noting that the hikeIndxNo will also change when moved.
      */ 
+    $deleted_json = [];
+    $added_or_chgd_json = [];
     // Get column names for building query strings
     $result = $pdo->query("SHOW COLUMNS FROM EHIKES;");
     $columns = $result->fetchAll(PDO::FETCH_BOTH);
@@ -171,6 +173,7 @@ if ($msgout == '') {
             $pub_main_files = getTrackFileNames($pdo, $indxNo, 'pub')[0];
             foreach ($pub_main_files as $old) {
                 unlink("../json/" . $old);
+                array_push($deleted_json, $old);
             }
         }
         /**
@@ -219,6 +222,8 @@ if ($msgout == '') {
             if (!rename($old_loc, $new_loc)) {
                 throw new Exception("Could not move {$fname}");
             }
+            array_push($deleted_json, $old_loc);
+            array_push($added_or_chgd_json, $new_loc);
         }
         $add1_array = empty($eadd1_gpx) ? [] : array($eadd1_gpx => $add1_val);
         $add2_array = empty($eadd2_gpx) ? [] : array($eadd2_gpx => $add2_val);
@@ -241,19 +246,16 @@ if ($msgout == '') {
          */
         //  ---------------------  GPSDAT -------------------
         if ($status > 0) { // eliminate any existing data
-            $pubDataReq = "SELECT `label`,`url` FROM `GPSDAT` WHERE `indxNo`=?;";
+            $pubDataReq = "SELECT `url` FROM `GPSDAT` `label` LIKE 'GPX%' " .
+                "AND `indxNo`=?;";
             $pubData = $pdo->prepare($pubDataReq);
             $pubData->execute([$indxNo]);
             $pub_urls = $pubData->fetchAll(PDO::FETCH_ASSOC);
-            if (count($pub_urls) > 0) {
-                foreach ($pub_urls as $pub) {
-                    if (strpos($pub['label'], 'GPX') !== false) {
-                        $decoded = json_decode($pub['url'], true);
-                        $pub_arr = array_values($decoded)[0];
-                        foreach ($pub_arr as $json) {
-                            unlink('../json/' . $json);
-                        }
-                    }
+            foreach ($pub_urls as $pub) {
+                $gpsUrlData = getGPSurlData($pub['url']);
+                foreach ($gpsUrlData[1] as $json) {
+                    unlink('../json/' . $json);
+                    array_push($deleted_json, $json);
                 }
             }
             $query = "DELETE FROM `GPSDAT` WHERE `indxNo` = :pubNo;";
@@ -269,9 +271,9 @@ if ($msgout == '') {
         if (count($egps) > 0) {
             foreach ($egps as $old) {
                 if (strpos($old['label'], 'GPX') !== false) {
-                    $gps_url = json_decode($old['url'], true);
-                    $url_gpx = array_keys($gps_url)[0];
-                    $url_arr = array_values($gps_url)[0];
+                    $egpsData = getGPSurlData($old['url']);
+                    $url_gpx = $egpsData[0];
+                    $url_arr = $egpsData[1];
                     $new_arr = [];
                     foreach ($url_arr as $json) {
                         $extensionLoc = strpos($json, "_");
@@ -281,6 +283,8 @@ if ($msgout == '') {
                         $old_loc = '../json/' . $json;
                         $new_loc = '../json/' . $new_name;
                         rename($old_loc, $new_loc); 
+                        array_push($deleted_json, $json);
+                        array_push($added_or_chgd_json, $new_name);
                     }
                     $new_url = [$url_gpx => $new_arr];
                     $db_entry = [
@@ -362,7 +366,7 @@ if ($msgout == '') {
         $clushike_req = "UPDATE `CLUSHIKES` SET `pub`='Y', `indxNo`=? WHERE  " .
              "`indxNo`=? AND `pub`='N';";
         $clushike = $pdo->prepare($clushike_req);
-        $clushike->execute([$indxNo, $hikeNo]);
+        $clushike->execute([$indxNo, $hikeNo]); //$hikeNo is (old) EHIKE indxNo
         if ($clusdat['pub'] == 'N') { // $clusdat established near script beginning
             $updateClusReq = "UPDATE `CLUSTERS` SET `pub`='Y' WHERE `clusid`=?;";
             $updateClus = $pdo->prepare($updateClusReq);
@@ -388,6 +392,8 @@ if ($msgout == '') {
     $dele = $pdo->prepare($query);
     $dele->bindValue(":ehikeNo", $hikeNo);
     $dele->execute();
+    file_put_contents("deleted.txt", $deleted_json);
+    file_put_contents("changed.txt", $added_or_chgd_json);
 }
 ?>
 <!DOCTYPE html>

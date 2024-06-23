@@ -156,7 +156,7 @@ if (!$cluspg) {
         foreach ($egpsUrlField[1] as $pjson) {
             $dash_loc  = strpos($pjson, "_");
             $extension = substr($pjson, $dash_loc);
-            $new_name  = "egps" . $hikeNo . $extension;
+            $new_name  = "egp" . $hikeNo . $extension;
             $to_loc   = "../json/" . $new_name;
             $from_loc = "../json/" . $pjson;
             if (!copy($from_loc, $to_loc)) {
