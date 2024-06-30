@@ -8,9 +8,12 @@
  * @author Ken Cowles
  * @version 1.0 Removes duplicate code in several modules
  */
-// To use a variable as an index into an object, the following helper function is
-// required to overcome typescript complaints - compliments of
-// https://dev.to/mapleleaf/indexing-objects-in-typescript-1cgi
+/** To use a variable as an index into an object, the following helper function is
+ * required to overcome [some] typescript complaints - compliments of
+ * https://dev.to/mapleleaf/indexing-objects-in-typescript-1cgi
+ * Recently, however, typescript complains that type 'O' is not assignable
+ * to type 'object' - I gave up trying to come up with a work-around!
+ */
 function hasKey(obj, key) {
     return key in obj;
 }

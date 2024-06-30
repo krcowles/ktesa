@@ -14,7 +14,17 @@
  * @version 1.0 Responsive design intro (new menu, etc.)
  * @version 1.1 Typescripted
  * @version 2.0 Rework asynchronous map handlers per map.ts
+ * @version 3.0 New GoogleMap marker type (AdvancedMarkerElement)
  */
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 /**
  * INITIALIZATION OF PAGE & GLOBAL DEFINITIONS
  */
@@ -29,6 +39,7 @@ var geoOptions = { enableHighAccuracy: true };
 var map;
 var $fullScreenDiv; // Google's hidden inner div when clicking on full screen mode
 var $map = $('#map');
+var mapEl = $map.get(0);
 var mapht;
 // track vars
 var drawnHikes = []; // hike numbers which have had tracks created
@@ -86,141 +97,157 @@ $('#geoCtrl').on('click', setupLoc);
  */
 var locaters = []; // global used to popup info window on map when hike is searched
 /**
- * A simple function which correlates the number of hikes in a group to its icon
+ * Create the NM hikes marker data array and also the CL hikes marker data array
+ * The arrays are mapped into markers for the markerClusterer
  */
 var getIcon = function (no_of_hikes) {
-    var icon = "../images/pins/hike" + no_of_hikes + ".png";
+    var icon = "../images/pins/nmf" + no_of_hikes + ".png";
     return icon;
 };
+var nm_marker_data = [];
+NM.forEach(function (hikeobj) {
+    var mrkr_loc = hikeobj.loc;
+    var iwContent = '<div id="iwNH"><a href="hikePageTemplate.php?hikeIndx='
+        + hikeobj.indx + '" target="_blank">' + hikeobj.name + '</a><br />';
+    iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
+    iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
+    iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
+    iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
+    var nm_icon = document.createElement("IMG");
+    nm_icon.src = "../images/pins/greennm.png";
+    var nm_title = hikeobj.name;
+    var nm_marker = { position: mrkr_loc, iw_content: iwContent,
+        icon: nm_icon, title: nm_title };
+    nm_marker_data.push(nm_marker);
+});
+var cl_marker_data = [];
+CL.forEach(function (clobj) {
+    var mrkr_loc = clobj.loc;
+    var hikecnt = clobj.hikes.length;
+    var iwContent = '<div id="iwCH">';
+    var link;
+    if (clobj.page > 0) {
+        link = "hikePageTemplate.php?clus=y&hikeIndx=";
+        iwContent += '<a href="' + link + clobj.page + '">' +
+            clobj.group + '</a>';
+    }
+    else {
+        iwContent += clobj.group + "<br/>";
+    }
+    link = "hikePageTemplate.php?hikeIndx=";
+    clobj.hikes.forEach(function (clobj) {
+        iwContent += '<br/><a href="' + link + clobj.indx + '" target="_blank">' +
+            clobj.name + '</a>';
+        iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' +
+            clobj.elev + ' ft; Diff: ' + clobj.diff;
+    });
+    var cl_icon = document.createElement("IMG");
+    cl_icon.src = getIcon(hikecnt);
+    var cl_marker = { position: mrkr_loc, iw_content: iwContent,
+        icon: cl_icon, title: clobj.group };
+    cl_marker_data.push(cl_marker);
+});
 // //////////////////////////  INITIALIZE THE MAP /////////////////////////////
 function initMap() {
-    google.maps.Marker.prototype.clicked = false; // used in sideTables.js
-    var clustererMarkerSet = [];
     var nmCtr = { lat: 34.450, lng: -106.042 };
-    map = new google.maps.Map($map.get(0), {
+    map = new google.maps.Map(mapEl, {
         center: nmCtr,
         zoom: 7,
+        mapId: "39681f98dcd429f8",
         // optional settings:
+        isFractionalZoomEnabled: true,
         zoomControl: true,
         scaleControl: true,
-        mapTypeControl: true,
-        mapTypeControlOptions: {
-            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-            mapTypeIds: [
-                // only two of these show, don't know why...
-                google.maps.MapTypeId.ROADMAP,
-                google.maps.MapTypeId.TERRAIN,
-                google.maps.MapTypeId.SATELLITE,
-                google.maps.MapTypeId.HYBRID
-            ]
-        },
         fullscreenControl: true,
         streetViewControl: false,
-        rotateControl: false,
-        mapTypeId: google.maps.MapTypeId.TERRAIN
+        rotateControl: false
+    });
+    new google.maps.KmlLayer({
+        url: "https://nmhikes.com/maps/NM_Borders.kml",
+        map: map
     });
     // ///////////////////////////   MARKER CREATION   ////////////////////////////
-    CL.forEach(function (clobj) {
-        AddClusterMarker(clobj.loc, clobj.group, clobj.hikes, clobj.page);
+    var infoWindow = new google.maps.InfoWindow({
+        content: "",
+        disableAutoPan: true,
+        maxWidth: 400
     });
-    NM.forEach(function (nmobj) {
-        AddHikeMarker(nmobj);
-    });
-    // Cluster Markers:
-    function AddClusterMarker(location, group, clhikes, page) {
-        var hikecnt = clhikes.length;
-        var clicon = getIcon(hikecnt);
-        var marker = new google.maps.Marker({
-            position: location,
-            map: map,
-            icon: clicon,
-            title: group
+    var nm_markers = nm_marker_data.map(function (mrkr_data) {
+        var position = mrkr_data.position;
+        var nm_icon = document.createElement("IMG");
+        nm_icon.src = "../images/pins/rednm.png";
+        var nm_title = mrkr_data.title;
+        // THE MARKER:
+        var marker = new google.maps.marker.AdvancedMarkerElement({
+            position: position,
+            content: nm_icon,
+            title: nm_title
         });
-        marker.clicked = false;
-        var srchmrkr = { hikeid: group, pin: marker };
+        // MARKER SEARCH
+        var srchmrkr = { hikeid: mrkr_data.title, clicked: false, pin: marker };
         locaters.push(srchmrkr);
-        clustererMarkerSet.push(marker);
-        var iwContent = '<div id="iwCH">';
-        if (page > 0) {
-            var link_1 = "hikePageTemplate.php?clus=y&hikeIndx=";
-            iwContent += '<br /><a href="' + link_1 + page + '">' + group + '</a>';
-        }
-        else {
-            iwContent += '<br />' + group;
-        }
-        var link = "responsivePage.php?hikeIndx=";
-        clhikes.forEach(function (clobj) {
-            iwContent += '<br /><a href="' + link + clobj.indx + '">' +
-                clobj.name + '</a>';
-            iwContent += ' Lgth: ' + clobj.lgth + ' miles; Elev Chg: ' +
-                clobj.elev + ' ft; Diff: ' + clobj.diff;
+        var itemno = locaters.length - 1;
+        // CLICK ON MARKER:
+        marker.addListener("click", function () {
+            zoom_level = map.getZoom();
+            // newBounds is true if only a center change with no follow-on zoom
+            // this statement must precede the setCenter cmd.
+            window.newBounds = zoom_level >= zoomThresh ? true : false;
+            map.setCenter(mrkr_data.position);
+            if (!window.newBounds) {
+                map.setZoom(zoomThresh);
+            }
+            locaters[itemno].clicked = true;
+            infoWindow.setContent(mrkr_data.iw_content);
+            infoWindow.open(map, marker);
         });
-        var iw = new google.maps.InfoWindow({
-            content: iwContent,
-            maxWidth: 600
+        // INFO WINDOW CLOSE:
+        infoWindow.addListener('closeclick', function () {
+            locaters[itemno].clicked = false;
         });
-        iw.addListener('closeclick', function () {
-            marker.clicked = false;
+        return marker;
+    });
+    var cl_markers = cl_marker_data.map(function (mrkr_data) {
+        var position = mrkr_data.position;
+        var cl_title = mrkr_data.title;
+        // THE MARKER:
+        var marker = new google.maps.marker.AdvancedMarkerElement({
+            position: position,
+            content: mrkr_data.icon,
+            title: cl_title
         });
-        marker.addListener('click', function () {
+        // MARKER SEARCH:
+        var srchmrkr = { hikeid: mrkr_data.title, clicked: false, pin: marker };
+        locaters.push(srchmrkr);
+        var itemno = locaters.length - 1;
+        // CLICK ON MARKER:
+        marker.addListener("click", function () {
             zoom_level = map.getZoom();
             // newBounds is true if only a center change and no follow-on zoom
             window.newBounds = zoom_level >= zoomThresh ? true : false;
-            map.setCenter(location);
+            map.setCenter(position);
             if (!window.newBounds) {
                 map.setZoom(zoomThresh);
             }
-            iw.open(map, this);
-            marker.clicked = true; // marker prototype property
+            locaters[itemno].clicked = true;
+            infoWindow.setContent(mrkr_data.iw_content);
+            infoWindow.open(map, marker);
         });
-    }
-    // Normal Hike Markers
-    function AddHikeMarker(hikeobj) {
-        var nmicon = getIcon(1);
-        var marker = new google.maps.Marker({
-            position: hikeobj.loc,
-            map: map,
-            icon: nmicon,
-            title: hikeobj.name
+        // INFO WINDOW CLOSE:
+        infoWindow.addListener('closeclick', function () {
+            locaters[itemno].clicked = false;
         });
-        marker.clicked = false;
-        var srchmrkr = { hikeid: hikeobj.name, pin: marker };
-        locaters.push(srchmrkr);
-        clustererMarkerSet.push(marker);
-        // infoWin content: add data for this hike
-        var iwContent = '<div id="iwNH"><a href="responsivePage.php?hikeIndx='
-            + hikeobj.indx + '">' + hikeobj.name + '</a><br />';
-        iwContent += 'Length: ' + hikeobj.lgth + ' miles<br />';
-        iwContent += 'Elevation Change: ' + hikeobj.elev + ' ft<br />';
-        iwContent += 'Difficulty: ' + hikeobj.diff + '<br />';
-        iwContent += '<a href="' + hikeobj.dirs + '">Directions</a></div>';
-        var iw = new google.maps.InfoWindow({
-            content: iwContent,
-            maxWidth: 400
-        });
-        iw.addListener('closeclick', function () {
-            marker.clicked = false;
-        });
-        marker.addListener('click', function () {
-            zoom_level = map.getZoom();
-            map.setCenter(hikeobj.loc);
-            // newBounds is true if only a center change with no follow-on zoom
-            window.newBounds = zoom_level >= zoomThresh ? true : false;
-            if (!window.newBounds) {
-                map.setZoom(zoomThresh);
-            }
-            iw.open(map, this);
-            marker.clicked = true; // marker prototype property
-        });
-    }
-    // /////////////////////// Marker Grouping /////////////////////////
-    new MarkerClusterer(map, clustererMarkerSet, {
-        imagePath: '../images/markerclusters/m',
+        return marker;
+    });
+    var markers = __spreadArray(__spreadArray([], nm_markers, true), cl_markers, true);
+    // Add a marker clusterer to manage the markers.
+    var clusterer_opts = {
         gridSize: 50,
         maxZoom: 12,
         averageCenter: true,
         zoomOnClick: true
-    });
+    };
+    new markerClusterer.MarkerClusterer({ markers: markers, map: map, clusterer_opts: clusterer_opts });
     // //////////////////////// PAN AND ZOOM HANDLERS ///////////////////////////////
     /**
      * NOTE: Loading the map on page load/reload causes an initial 'center_changed'

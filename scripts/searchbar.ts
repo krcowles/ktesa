@@ -77,9 +77,8 @@ function infoWin(hike: string, loc: GPS_Coord) {
     // find the marker associated with the input parameters and pop up its info window
     for (let k=0; k<locaters.length; k++) {
         if (locaters[k].hikeid == hike) {
-            let thismarker = locaters[k].pin;
-            if (thismarker.clicked === false) {
-                zoom_level = map.getZoom();
+            if (locaters[k].clicked === false) {
+                zoom_level = map.getZoom() as number;
                 // clicking will set (prototype) marker.clicked = true
                 google.maps.event.trigger(locaters[k].pin, 'click');
             } else {

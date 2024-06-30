@@ -14,7 +14,7 @@
 var cookies = navigator.cookieEnabled ? true : false;
 var html_cookie = document.getElementById('cookie_state');
 var user_cookie_state = html_cookie === null ? false : <string>html_cookie.innerText;
-var renewp: Bootstrap.Modal;
+var renewp: bootstrap.Modal;
 
 // check to see if cookies are enabled for the browser
 if(cookies) {

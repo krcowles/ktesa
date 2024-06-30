@@ -105,7 +105,7 @@ const infoWin = (hike:string, loc:GPS_Coord)  => {
             } else {
                 map.setCenter(loc);
             }
-            let czoom = map.getZoom();
+            let czoom = map.getZoom() as number;
             if (czoom <= 13) {
                 map.setZoom(13);
             }

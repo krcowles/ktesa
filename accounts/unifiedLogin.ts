@@ -2,7 +2,7 @@ declare function validateUser(user: string, pass: string): void;
 declare const countAns: () => boolean;
 declare var appMode: string;
 declare var mobile: boolean;
-declare var updates: Bootstrap.Modal;
+declare var updates: bootstrap.Modal;
 declare var tbl_indx: string;
 /**
  * @fileoverview Adjust page according to form type

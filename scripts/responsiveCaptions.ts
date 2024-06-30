@@ -1,3 +1,6 @@
+declare var picSetupDone: JQuery.Deferred<any, any, any>;
+declare var docReady: JQuery.Deferred<any, any, any>;
+declare var capbtn: string;
 /**
  * @fileoverview This module is responsible for placing and displaying photo captions
  * one the photo rows have been established (using deferred 'picSetupDone')
@@ -59,7 +62,7 @@ $.when(picSetupDone, docReady).then(function() {
             width: capWidth[picNo],
             zIndex: '100'
         });
-        let pup = $popup.get(0);
+        let pup = $popup.get(0) as HTMLElement;
         // touch to turn off again
         pup.addEventListener('click', function() {
             $popup.hide();
@@ -86,12 +89,12 @@ $.when(picSetupDone, docReady).then(function() {
         });
         $(this).prepend($caption_btn);
         // add touchstart listener
-        let button = $caption_btn.get(0);
+        let button = $caption_btn.get(0) as HTMLElement;
         button.addEventListener('touchstart', function() {
             $caption_btn.hide();
             picPop(pupid, btnid);
         });
-        let photo = $dpimg.get(0);
+        let photo = $dpimg.get(0) as HTMLImageElement;
         photo.addEventListener('touchstart', function() {
             doubletap(this.src);
         });

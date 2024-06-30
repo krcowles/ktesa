@@ -1,4 +1,4 @@
-/// <reference types="googlemaps" />
+/// <reference types="google.maps" />
 /// <reference types="jquery" />
 // variables embedded via php on home.php
 declare var CL: Clusters;
@@ -10,14 +10,12 @@ declare var pages: string[];
 declare var pgnames: string[];
 declare type ClustererType = {
     map: google.maps.Map;
-    clusterSet: google.maps.Marker[];
+    clusterSet: google.maps.marker.AdvancedMarkerElement[];
     options: MarkerOpts;
 };
 declare var newBounds: boolean;
 // external lib
-declare class MarkerClusterer {
-    constructor(map: google.maps.Map, clusterSet: google.maps.Marker[], options: MarkerOpts);
-}
+declare var markerClusterer: any; // no type def for this in google.maps
 interface Clusters extends Array<CL> {
     [index: number]: CL;
 }
@@ -66,7 +64,7 @@ interface MapDoc extends Document {
 interface MarkerId {
     hikeid: string;
     clicked?: boolean;
-    pin: google.maps.Marker;
+    pin: google.maps.marker.AdvancedMarkerElement;
 }
 interface MarkerIds extends Array<MarkerId> {
     //[index: number]: MarkerId;
@@ -80,10 +78,9 @@ interface Hilite_Obj {
     type?: string;
 }
 interface MarkerOpts {
-    imagePath: string;
     gridSize: number;
     maxZoom: number;
-    averageCenter: boolean;
+    averageCenter?: boolean;
     zoomOnClick: boolean;
 }
 interface NewTracksArray {
@@ -115,4 +112,10 @@ interface JsonFile {
 	wpts?: WayptElement[];
     name: string;
 	trk: JsonElement[];
+}
+interface Marker_Data {
+    position: GPS_Coord;
+    iw_content: string;
+    icon: HTMLImageElement;
+    title: string;
 }

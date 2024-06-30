@@ -4,6 +4,8 @@
  * device. It consists of a google map with markers indicating hike locations,
  * and a side table showing all the hikes in the viewing area, along with some
  * links, info, and a thumbnail for each hike in the side table.
+ * NOTE: Due to googles ever-changing API, check 'Settings.php' to ensure the
+ * appropriate script tag.
  * PHP Version 7.4
  * 
  * @package Ktesa
@@ -161,11 +163,15 @@ require "getFavorites.php";
     var hikeSources = <?=$jsItems;?>;
     window.newBounds = false;
 </script>
-<script src="../scripts/markerclusterer.js"></script>
+<script src="../scripts/markerclusterer.min.js"></script>
+<!-- use the following to get the laterst release:
+<script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js">
+</script>
+-->
 <script src="../scripts/map.js"></script>
 <script src="../scripts/sideTables.js"></script>
 <script src="../scripts/homepg_filter.js"></script>
-<script async defer src="<?=GOOGLE_MAP;?>"></script>
+<script async src="<?=GOOGLE_MAP;?>"></script>
 
 </body>
 </html>

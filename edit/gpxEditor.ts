@@ -223,7 +223,7 @@ function setNewTrack() {
         zIndex: 1,
         editable: true
     }); 
-    google.maps.event.addListener(gpxtrack.getPath(), 'set_at', function(ev) {
+    google.maps.event.addListener(gpxtrack.getPath(), 'set_at', function(ev: any) {
         // ev is the zero-based path item number
         var newloc = ev;
         var newpos = gpxtrack.getPath();
@@ -246,7 +246,7 @@ function setNewTrack() {
         var ajaxdata = {type: 'mod', trk: trackno, pt: ev, lat: newlat, lng: newlng};
         $.post("updateGPX.php", ajaxdata);
     });
-    google.maps.event.addListener(gpxtrack.getPath(), 'insert_at', function(ev) {
+    google.maps.event.addListener(gpxtrack.getPath(), 'insert_at', function(ev: any) {
         var newpath = gpxtrack.getPath();
         var added   = newpath.getAt(ev);
         var alat = added.lat();
@@ -264,14 +264,14 @@ function setNewTrack() {
         var ajaxdata = {type: 'add', trk: trackno, pt: ev, lat: alat, lng: alng};
         $.post("updateGPX.php", ajaxdata);
     });
-    gpxtrack.addListener('mouseover', function(ev) {
+    gpxtrack.addListener('mouseover', function(ev: any) {
         var ptno = ev.vertex;
         $('#ptid').val(ptno);
     });
     gpxtrack.addListener('mouseout', function() {
         $('#ptid').val('');
     })
-    gpxtrack.addListener('click', function(ev) {
+    gpxtrack.addListener('click', function(ev: any) {
         var idloc = ev.vertex;
         $('#pt' + idloc).css({
             'color': 'blue',

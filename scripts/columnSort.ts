@@ -1,5 +1,6 @@
 declare var previewSort: boolean;
 declare function assignPreviews(): void;
+
 /**
  * @fileoverview This reusable module specifies the sorting method for all
  * sortable tables (e.g. Table Only: #maintbl, #ftable; Hike Editor table:
@@ -10,11 +11,14 @@ declare function assignPreviews(): void;
  * @version 1.0 Removes duplicate code in several modules
  */
 
-// To use a variable as an index into an object, the following helper function is
-// required to overcome typescript complaints - compliments of
-// https://dev.to/mapleleaf/indexing-objects-in-typescript-1cgi
+/** To use a variable as an index into an object, the following helper function is
+ * required to overcome [some] typescript complaints - compliments of
+ * https://dev.to/mapleleaf/indexing-objects-in-typescript-1cgi
+ * Recently, however, typescript complains that type 'O' is not assignable
+ * to type 'object' - I gave up trying to come up with a work-around!
+ */
 function hasKey<O>(obj: O, key: keyof any): key is keyof O {
-	return key in obj
+	return key in obj;
 }
 
 /**
@@ -190,7 +194,7 @@ function scrollCheck(table_id: string) {
 		if (table_id === '#maintbl') {
 			if  ($('#tblfilter').css('display') === 'none') {
 				let $headers = $('#maintbl').find('th');
-				let title = $headers.get(0);
+				let title = $headers.get(0) as HTMLTableCellElement;
 				if ($(title).hasClass('ascending')) {
 					toggleScrollSelect(true);
 				} else {
