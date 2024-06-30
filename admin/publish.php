@@ -116,8 +116,8 @@ if ($msgout == '') {
      * move them to the corresponding correct names for pubished file ('pxx.json)
      * noting that the hikeIndxNo will also change when moved.
      */ 
-    $deleted_json = [];
-    $added_or_chgd_json = [];
+    $deleted_json = []; // to help identify items to download to new tst branch
+    $added_or_chgd_json = []; // ditto
     // Get column names for building query strings
     $result = $pdo->query("SHOW COLUMNS FROM EHIKES;");
     $columns = $result->fetchAll(PDO::FETCH_BOTH);
@@ -223,7 +223,7 @@ if ($msgout == '') {
                 throw new Exception("Could not move {$fname}");
             }
             array_push($deleted_json, $fname);
-            array_push($added_or_chgd_json, $new_name);
+            array_push($added_or_chgd_json, $new_fname);
         }
         $add1_array = empty($eadd1_gpx) ? [] : array($eadd1_gpx => $add1_val);
         $add2_array = empty($eadd2_gpx) ? [] : array($eadd2_gpx => $add2_val);
